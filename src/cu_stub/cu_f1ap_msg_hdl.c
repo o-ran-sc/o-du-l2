@@ -23,6 +23,7 @@
 #include "odu_common_codec.h"
 #include "cu_stub_sctp.h"
 #include "cu_f1ap_msg_hdl.h"
+#include "legtp.h"
 /*header files needed for Ue Context Setup */
 #include<ProtocolIE-Field.h>
 #include "ProtocolExtensionField.h"
@@ -81,6 +82,11 @@
 #include "GBR-QosInformation.h"
 #include "DRBs-ToBeSetupMod-List.h"
 #include "DRBs-ToBeSetupMod-Item.h"
+#include "DRBs-Setup-Item.h"
+#include "DLUPTNLInformation-ToBeSetup-List.h"
+#include "DLUPTNLInformation-ToBeSetup-Item.h"
+#include "UPTransportLayerInformation.h"
+#include "GTPTunnel.h"
 
 /* MACRO for CUtoDURRCInformation */
 #define CELL_GRP_ID 1
@@ -174,6 +180,7 @@
 #define DMRS_ADDITIONAL_POS  0          /* DMRS Additional poistion */
 #define RES_ALLOC_TYPE       1          /* Resource allocation type */
 #define FIVE_QI_VALUE 9  /*spec 23.501, Table 5.7.4-1*/
+
 /*******************************************************************
  *
  * @brief Sends F1 msg over SCTP
@@ -2165,7 +2172,7 @@ uint8_t BuildFlowsMap(Flows_Mapped_To_DRB_List_t *flowMap)
  *
  *    Functionality: Constructs the UL TnlInfo For DRB list
  *
- * @params[in] ULUPTNLInformation_ToBeSetup_List_t *ulInfo
+ * @params[in]  UPTNLInformation_ToBeSetup_List_t *ulInfo
  *
  * @return ROK     - success
  *         RFAILED - failure
@@ -2263,14 +2270,11 @@ uint8_t BuildULTnlInfo(ULUPTNLInformation_ToBeSetup_List_t *ulInfo)
  * ****************************************************************/
 uint8_t BuildDRBSetup(DRBs_ToBeSetup_List_t *drbSet)
 {
-   uint8_t BuildQOSInforet;
-   uint8_t BuildSNSSAIret;
-   uint8_t BuildFlowsMapret;
-   uint8_t BuildULTnlInforet;
-   uint8_t idx;
-   uint8_t drbCnt;
+   uint8_t BuildQOSInforet = 0,BuildSNSSAIret = 0, idx = 0;
+   uint8_t BuildFlowsMapret =0, BuildULTnlInforet =0, drbCnt = 0;
    DRBs_ToBeSetup_Item_t *drbSetItem;
-   drbCnt = 1;
+   
+   drbCnt = MAX_DRB_SET;
    drbSet->list.count = drbCnt;
    drbSet->list.size = drbCnt*sizeof(DRBs_ToBeSetup_ItemIEs_t *);
    CU_ALLOC(drbSet->list.array,drbSet->list.size);
@@ -2283,66 +2287,66 @@ uint8_t BuildDRBSetup(DRBs_ToBeSetup_List_t *drbSet)
       CU_ALLOC(drbSet->list.array[idx],sizeof(DRBs_ToBeSetup_ItemIEs_t));
       if(drbSet->list.array[idx] == NULLP)
       {
-	 return RFAILED;
+	      return RFAILED;
       }
-   }
-   idx = 0;
-   drbSet->list.array[idx]->id = ProtocolIE_ID_id_DRBs_ToBeSetup_Item;
-   drbSet->list.array[idx]->criticality = Criticality_ignore;
-   drbSet->list.array[idx]->value.present = \
-					    DRBs_ToBeSetup_ItemIEs__value_PR_DRBs_ToBeSetup_Item;
-   drbSetItem = &drbSet->list.array[idx]->value.choice.DRBs_ToBeSetup_Item;	
-   /*dRBID*/
-   drbSetItem->dRBID = 1;	
-   /*qoSInformation*/
-   drbSetItem->qoSInformation.present = QoSInformation_PR_choice_extension;
-   CU_ALLOC(drbSetItem->qoSInformation.choice.choice_extension,sizeof(QoSInformation_ExtIEs_t));
-   if(drbSetItem->qoSInformation.choice.choice_extension == NULLP)
-   {	
-      return RFAILED;
-   }
-   drbSetItem->qoSInformation.choice.choice_extension->id = \
-							    ProtocolIE_ID_id_DRB_Information;
-   drbSetItem->qoSInformation.choice.choice_extension->criticality = \
-								     Criticality_ignore;
-   drbSetItem->qoSInformation.choice.choice_extension->value.present = \
-								       QoSInformation_ExtIEs__value_PR_DRB_Information;
-   BuildQOSInforet =  BuildQOSInfo(&drbSetItem->qoSInformation.choice.\
-	 choice_extension->value.choice.DRB_Information.dRB_QoS);
-   if(BuildQOSInforet != ROK)
-   {
-      return RFAILED;
-   }
-   /*SNSSAI*/
-   BuildSNSSAIret = BuildSNSSAI(&drbSetItem->qoSInformation.choice.\
-	 choice_extension->value.choice.DRB_Information.sNSSAI);
-   if(BuildSNSSAIret != ROK)
-   {	
-      return RFAILED;
-   }
-   /*Flows mapped to DRB List*/
-   BuildFlowsMapret = BuildFlowsMap(&drbSetItem->qoSInformation.choice.\
-	 choice_extension->value.choice.DRB_Information.flows_Mapped_To_DRB_List);
-   if(BuildFlowsMapret != ROK)
-   {
-      return RFAILED;
-   }
-   /*ULUPTNLInformation To Be Setup List*/
-   BuildULTnlInforet = BuildULTnlInfo(&drbSetItem->uLUPTNLInformation_ToBeSetup_List);
-   if(BuildULTnlInforet != ROK)
-   {
-      return RFAILED;
-   }
-   /*RLCMode*/
-   drbSetItem->rLCMode = RLCMode_rlc_um_bidirectional;
 
-   /*UL Configuration*/
-   CU_ALLOC(drbSetItem->uLConfiguration,sizeof(ULConfiguration_t));
-   if(drbSetItem->uLConfiguration == NULLP)
-   {
-      return RFAILED;
-   }
-   drbSetItem->uLConfiguration->uLUEConfiguration = ULUEConfiguration_no_data;
+      drbSet->list.array[idx]->id = ProtocolIE_ID_id_DRBs_ToBeSetup_Item;
+      drbSet->list.array[idx]->criticality = Criticality_ignore;
+      drbSet->list.array[idx]->value.present = \
+	   				    DRBs_ToBeSetup_ItemIEs__value_PR_DRBs_ToBeSetup_Item;
+      drbSetItem = &drbSet->list.array[idx]->value.choice.DRBs_ToBeSetup_Item;
+      /*dRBID*/
+      drbSetItem->dRBID = idx + 1;
+      /*qoSInformation*/
+      drbSetItem->qoSInformation.present = QoSInformation_PR_choice_extension;
+      CU_ALLOC(drbSetItem->qoSInformation.choice.choice_extension,sizeof(QoSInformation_ExtIEs_t));
+      if(drbSetItem->qoSInformation.choice.choice_extension == NULLP)
+      {
+         return RFAILED;
+      }
+      drbSetItem->qoSInformation.choice.choice_extension->id = \
+		   					    ProtocolIE_ID_id_DRB_Information;
+      drbSetItem->qoSInformation.choice.choice_extension->criticality = \
+		  						     Criticality_ignore;
+      drbSetItem->qoSInformation.choice.choice_extension->value.present = \
+								       QoSInformation_ExtIEs__value_PR_DRB_Information;
+      BuildQOSInforet =  BuildQOSInfo(&drbSetItem->qoSInformation.choice.\
+	                      choice_extension->value.choice.DRB_Information.dRB_QoS);
+      if(BuildQOSInforet != ROK)
+      {
+         return RFAILED;
+      }
+      /*SNSSAI*/
+      BuildSNSSAIret = BuildSNSSAI(&drbSetItem->qoSInformation.choice.\
+	                       choice_extension->value.choice.DRB_Information.sNSSAI);
+      if(BuildSNSSAIret != ROK)
+      {
+         return RFAILED;
+      }
+      /*Flows mapped to DRB List*/
+      BuildFlowsMapret = BuildFlowsMap(&drbSetItem->qoSInformation.choice.\
+	           choice_extension->value.choice.DRB_Information.flows_Mapped_To_DRB_List);
+      if(BuildFlowsMapret != ROK)
+      {
+         return RFAILED;
+      }
+      /*ULUPTNLInformation To Be Setup List*/
+      BuildULTnlInforet = BuildULTnlInfo(&drbSetItem->uLUPTNLInformation_ToBeSetup_List);
+      if(BuildULTnlInforet != ROK)
+      {
+         return RFAILED;
+      }
+      /*RLCMode*/
+      drbSetItem->rLCMode = RLCMode_rlc_um_bidirectional;
+
+      /*UL Configuration*/
+      CU_ALLOC(drbSetItem->uLConfiguration,sizeof(ULConfiguration_t));
+      if(drbSetItem->uLConfiguration == NULLP)
+      {
+         return RFAILED;
+      }
+      drbSetItem->uLConfiguration->uLUEConfiguration = ULUEConfiguration_no_data;
+  }
    return ROK;
 }/* End of BuildDRBSetup*/
 
@@ -2548,100 +2552,98 @@ void FreeDRBSetup(DRBs_ToBeSetup_List_t *drbSet)
    {
       for(drbidx=0; drbidx<drbSet->list.count; drbidx++)
       {
-	 if(drbidx==0&&drbSet->list.array[drbidx] != NULLP)
-	 {
-	    drbSetItem =&drbSet->list.array[drbidx]->value.choice.DRBs_ToBeSetup_Item;
-	    if(drbSetItem->qoSInformation.choice.choice_extension != NULLP)
-	    {
-	       if(drbSetItem->qoSInformation.choice.choice_extension->value.choice.DRB_Information.dRB_QoS.\
-		     qoS_Characteristics.choice.non_Dynamic_5QI !=NULLP)
-	       {
-		  if(drbSetItem->qoSInformation.choice.choice_extension->value.choice.DRB_Information.dRB_QoS.\
-			qoS_Characteristics.choice.non_Dynamic_5QI->averagingWindow!=NULLP)
-		  {
-		     if(drbSetItem->qoSInformation.choice.choice_extension->value.choice.DRB_Information.dRB_QoS.\
-			   qoS_Characteristics.choice.non_Dynamic_5QI->maxDataBurstVolume!=NULLP)
-		     {
-			if(drbSetItem->qoSInformation.choice.choice_extension->value.choice.DRB_Information.sNSSAI.sST.buf!=NULLP)
-			{
-			   if(drbSetItem->qoSInformation.choice.choice_extension->value.choice.DRB_Information.sNSSAI.sD!=NULLP)
-			   {
-			      if(drbSetItem->qoSInformation.choice.choice_extension->value.choice.DRB_Information.sNSSAI.sD->buf!=NULLP)
-			      {
-				 if(drbSetItem->qoSInformation.choice.choice_extension->value.choice.DRB_Information.\
-				       flows_Mapped_To_DRB_List.list.array != NULLP)
-				 {
-				    for(flowidx=0;flowidx<drbSetItem->qoSInformation.choice.choice_extension->value.choice.DRB_Information.\
-					  flows_Mapped_To_DRB_List.list.count; flowidx++)
-				    {
-				       if(flowidx==0&&drbSetItem->qoSInformation.choice.choice_extension->value.choice.\
-					     DRB_Information.flows_Mapped_To_DRB_List.list.array[flowidx]!=NULLP)
-				       {
-					  if(drbSetItem->qoSInformation.choice.choice_extension->value.choice.\
-						DRB_Information.flows_Mapped_To_DRB_List.list.array[flowidx]->qoSFlowLevelQoSParameters.\
-						qoS_Characteristics.choice.non_Dynamic_5QI!=NULLP)
-					  {
-					     if(drbSetItem->qoSInformation.choice.choice_extension->value.choice.\
-						   DRB_Information.flows_Mapped_To_DRB_List.list.array[flowidx]->qoSFlowLevelQoSParameters.\
-						   qoS_Characteristics.choice.non_Dynamic_5QI->averagingWindow!=NULLP)
-					     {
-						if(drbSetItem->qoSInformation.choice.choice_extension->value.choice.\
-						      DRB_Information.flows_Mapped_To_DRB_List.list.array[flowidx]->qoSFlowLevelQoSParameters.\
-						      qoS_Characteristics.choice.non_Dynamic_5QI->maxDataBurstVolume!=NULLP)
-						{	
-						   FreeULTnlInfo(&drbSetItem->uLUPTNLInformation_ToBeSetup_List);
-						   CU_FREE(drbSetItem->uLConfiguration,sizeof(ULConfiguration_t));
+         //MultiBearer: more than 1 index of DRB will be present thus removing the check
+	      if(drbSet->list.array[drbidx] != NULLP)
+	      {
+	         drbSetItem =&drbSet->list.array[drbidx]->value.choice.DRBs_ToBeSetup_Item;
+	         if(drbSetItem->qoSInformation.choice.choice_extension != NULLP)
+	         {
+	            if(drbSetItem->qoSInformation.choice.choice_extension->value.choice.DRB_Information.dRB_QoS.\
+		                  qoS_Characteristics.choice.non_Dynamic_5QI !=NULLP)
+               {
+            	   if(drbSetItem->qoSInformation.choice.choice_extension->value.choice.DRB_Information.dRB_QoS.\
+			                  qoS_Characteristics.choice.non_Dynamic_5QI->averagingWindow!=NULLP)
+		            {
+		               if(drbSetItem->qoSInformation.choice.choice_extension->value.choice.DRB_Information.dRB_QoS.\
+			                  qoS_Characteristics.choice.non_Dynamic_5QI->maxDataBurstVolume!=NULLP)
+		               {
+			               if(drbSetItem->qoSInformation.choice.choice_extension->value.choice.DRB_Information.sNSSAI.sST.buf!=NULLP)
+			               {
+			                  if(drbSetItem->qoSInformation.choice.choice_extension->value.choice.DRB_Information.sNSSAI.sD!=NULLP)
+			                  {
+			                     if(drbSetItem->qoSInformation.choice.choice_extension->value.choice.DRB_Information.sNSSAI.sD->buf!=NULLP)
+			                     {
+				                     if(drbSetItem->qoSInformation.choice.choice_extension->value.choice.DRB_Information.\
+				                            flows_Mapped_To_DRB_List.list.array != NULLP)
+				                     {
+				                         for(flowidx=0;flowidx<drbSetItem->qoSInformation.choice.choice_extension->value.choice.DRB_Information.\
+					                              flows_Mapped_To_DRB_List.list.count; flowidx++)
+				                         {
+				                             if(flowidx==0&&drbSetItem->qoSInformation.choice.choice_extension->value.choice.\
+					                                   DRB_Information.flows_Mapped_To_DRB_List.list.array[flowidx]!=NULLP)
+				                             {
+					                             if(drbSetItem->qoSInformation.choice.choice_extension->value.choice.\
+						                                DRB_Information.flows_Mapped_To_DRB_List.list.array[flowidx]->qoSFlowLevelQoSParameters.\
+						                                qoS_Characteristics.choice.non_Dynamic_5QI!=NULLP)
+					                             {
+					                                 if(drbSetItem->qoSInformation.choice.choice_extension->value.choice.\
+						                                   DRB_Information.flows_Mapped_To_DRB_List.list.array[flowidx]->qoSFlowLevelQoSParameters.\
+						                                   qoS_Characteristics.choice.non_Dynamic_5QI->averagingWindow!=NULLP)
+					                                 {
+						                                 if(drbSetItem->qoSInformation.choice.choice_extension->value.choice.\
+						                                 DRB_Information.flows_Mapped_To_DRB_List.list.array[flowidx]->qoSFlowLevelQoSParameters.\
+						                                  qoS_Characteristics.choice.non_Dynamic_5QI->maxDataBurstVolume!=NULLP)
+						                                  {	
+						                                      FreeULTnlInfo(&drbSetItem->uLUPTNLInformation_ToBeSetup_List);
+						                                      CU_FREE(drbSetItem->uLConfiguration,sizeof(ULConfiguration_t));
 
-						   CU_FREE(drbSetItem->qoSInformation.choice.choice_extension->value.choice.\
-							 DRB_Information.flows_Mapped_To_DRB_List.list.array[flowidx]->qoSFlowLevelQoSParameters.\
-							 qoS_Characteristics.choice.non_Dynamic_5QI->maxDataBurstVolume,\
-							 sizeof(MaxDataBurstVolume_t));	  
-						}
-						CU_FREE(drbSetItem->qoSInformation.choice.choice_extension->value.choice.\
-						      DRB_Information.flows_Mapped_To_DRB_List.list.array[flowidx]->qoSFlowLevelQoSParameters.\
-						      qoS_Characteristics.choice.non_Dynamic_5QI->averagingWindow,sizeof(AveragingWindow_t));
-					     }
-					     CU_FREE(drbSetItem->qoSInformation.choice.choice_extension->value.choice.\
-						   DRB_Information.flows_Mapped_To_DRB_List.list.array[flowidx]->qoSFlowLevelQoSParameters.\
-						   qoS_Characteristics.choice.non_Dynamic_5QI,sizeof(NonDynamic5QIDescriptor_t));
-					  }
-				       }
-				       if(drbSetItem->qoSInformation.choice.choice_extension->value.choice.\
-					     DRB_Information.flows_Mapped_To_DRB_List.list.array[flowidx]!=NULLP)
-				       {
-					  CU_FREE(drbSetItem->qoSInformation.choice.choice_extension->value.choice.\
-						DRB_Information.flows_Mapped_To_DRB_List.list.array[flowidx],sizeof(Flows_Mapped_To_DRB_Item_t));
-				       }
-				    }
-				    CU_FREE(drbSetItem->qoSInformation.choice.choice_extension->value.choice.DRB_Information.\
-					  flows_Mapped_To_DRB_List.list.array,drbSetItem->qoSInformation.choice.choice_extension->value.\
-					  choice.DRB_Information.flows_Mapped_To_DRB_List.list.size);
-				 }
-				 CU_FREE(drbSetItem->qoSInformation.choice.choice_extension->value.choice.DRB_Information.sNSSAI.sD->buf,\
-				       drbSetItem->qoSInformation.choice.choice_extension->value.choice.DRB_Information.sNSSAI.sD->size);
-			      }
-			      CU_FREE(drbSetItem->qoSInformation.choice.choice_extension->value.choice.DRB_Information.sNSSAI.sD,\
-				    sizeof(OCTET_STRING_t));
-			   }
-			   CU_FREE(drbSetItem->qoSInformation.choice.choice_extension->value.choice.DRB_Information.sNSSAI.sST.buf,\
-				 drbSetItem->qoSInformation.choice.choice_extension->value.choice.DRB_Information.sNSSAI.sST.size);
-			}
-			CU_FREE(drbSetItem->qoSInformation.choice.choice_extension->value.choice.DRB_Information.dRB_QoS.\
-			      qoS_Characteristics.choice.non_Dynamic_5QI->maxDataBurstVolume,sizeof(MaxDataBurstVolume_t));
-		     }
-		     CU_FREE(drbSetItem->qoSInformation.choice.choice_extension->value.choice.DRB_Information.dRB_QoS.\
-			   qoS_Characteristics.choice.non_Dynamic_5QI->averagingWindow,sizeof(AveragingWindow_t));
-		  }
-		  CU_FREE(drbSetItem->qoSInformation.choice.choice_extension->value.choice.DRB_Information.dRB_QoS.\
-			qoS_Characteristics.choice.non_Dynamic_5QI, sizeof(NonDynamic5QIDescriptor_t));
-	       }
-	       CU_FREE(drbSetItem->qoSInformation.choice.choice_extension,sizeof(QoSInformation_ExtIEs_t));
-	    }
-	 }
-	 if(drbSet->list.array[drbidx]!=NULLP)
-	 {
-	    CU_FREE(drbSet->list.array[drbidx],sizeof(DRBs_ToBeSetup_ItemIEs_t));
-	 }
+						                                      CU_FREE(drbSetItem->qoSInformation.choice.choice_extension->value.choice.\
+							                                           DRB_Information.flows_Mapped_To_DRB_List.list.array[flowidx]->qoSFlowLevelQoSParameters.\
+							                                           qoS_Characteristics.choice.non_Dynamic_5QI->maxDataBurstVolume,\
+							                                           sizeof(MaxDataBurstVolume_t));
+						                                  }
+	                                                 CU_FREE(drbSetItem->qoSInformation.choice.choice_extension->value.choice.\
+						                                           DRB_Information.flows_Mapped_To_DRB_List.list.array[flowidx]->qoSFlowLevelQoSParameters.\
+						                                           qoS_Characteristics.choice.non_Dynamic_5QI->averagingWindow,sizeof(AveragingWindow_t));
+					                                 }
+					                                 CU_FREE(drbSetItem->qoSInformation.choice.choice_extension->value.choice.\
+						                                       DRB_Information.flows_Mapped_To_DRB_List.list.array[flowidx]->qoSFlowLevelQoSParameters.\
+						                                       qoS_Characteristics.choice.non_Dynamic_5QI,sizeof(NonDynamic5QIDescriptor_t));
+					                             }
+				                            }
+				                            if(drbSetItem->qoSInformation.choice.choice_extension->value.choice.\
+					                             DRB_Information.flows_Mapped_To_DRB_List.list.array[flowidx]!=NULLP)
+				                            {
+					                            CU_FREE(drbSetItem->qoSInformation.choice.choice_extension->value.choice.\
+						                                  DRB_Information.flows_Mapped_To_DRB_List.list.array[flowidx],sizeof(Flows_Mapped_To_DRB_Item_t));
+				                            }
+				                        }
+				                        CU_FREE(drbSetItem->qoSInformation.choice.choice_extension->value.choice.DRB_Information.\
+					                              flows_Mapped_To_DRB_List.list.array,drbSetItem->qoSInformation.choice.choice_extension->value.\
+					                              choice.DRB_Information.flows_Mapped_To_DRB_List.list.size);
+				                     }
+				                     CU_FREE(drbSetItem->qoSInformation.choice.choice_extension->value.choice.DRB_Information.sNSSAI.sD->buf,\
+				                             drbSetItem->qoSInformation.choice.choice_extension->value.choice.DRB_Information.sNSSAI.sD->size);
+			                    }
+			                    CU_FREE(drbSetItem->qoSInformation.choice.choice_extension->value.choice.DRB_Information.sNSSAI.sD,\
+				                              sizeof(OCTET_STRING_t));
+			               }
+			               CU_FREE(drbSetItem->qoSInformation.choice.choice_extension->value.choice.DRB_Information.sNSSAI.sST.buf,\
+				                    drbSetItem->qoSInformation.choice.choice_extension->value.choice.DRB_Information.sNSSAI.sST.size);
+			            }
+			            CU_FREE(drbSetItem->qoSInformation.choice.choice_extension->value.choice.DRB_Information.dRB_QoS.\
+			                    qoS_Characteristics.choice.non_Dynamic_5QI->maxDataBurstVolume,sizeof(MaxDataBurstVolume_t));
+		            }
+	               CU_FREE(drbSetItem->qoSInformation.choice.choice_extension->value.choice.DRB_Information.dRB_QoS.\
+			                 qoS_Characteristics.choice.non_Dynamic_5QI->averagingWindow,sizeof(AveragingWindow_t));
+		         }
+		         CU_FREE(drbSetItem->qoSInformation.choice.choice_extension->value.choice.DRB_Information.dRB_QoS.\
+			               qoS_Characteristics.choice.non_Dynamic_5QI, sizeof(NonDynamic5QIDescriptor_t));
+             }
+	          CU_FREE(drbSetItem->qoSInformation.choice.choice_extension,sizeof(QoSInformation_ExtIEs_t));
+	        }
+	        CU_FREE(drbSet->list.array[drbidx],sizeof(DRBs_ToBeSetup_ItemIEs_t));
+	      }
       }
       CU_FREE(drbSet->list.array,drbSet->list.size);
    }
@@ -2722,13 +2724,13 @@ void FreeUeContextSetupReq(F1AP_PDU_t  *f1apMsg)
 	    {
 	       if(ueSetReq->protocolIEs.list.array[ieId] != NULLP)
 	       {
-		  CU_FREE(ueSetReq->protocolIEs.list.array[ieId],sizeof(UEContextSetupRequestIEs_t));
+		       CU_FREE(ueSetReq->protocolIEs.list.array[ieId],sizeof(UEContextSetupRequestIEs_t));
 	       }
 	    }
 	    CU_FREE(ueSetReq->protocolIEs.list.array,ueSetReq->protocolIEs.list.size);
 	 }
 	 CU_FREE(f1apMsg->choice.initiatingMessage,sizeof(InitiatingMessage_t));
-      }
+  }
       CU_FREE(f1apMsg, sizeof(F1AP_PDU_t));
    }
 }
@@ -6575,11 +6577,89 @@ uint8_t BuildAndSendUeContextSetupReq(uint8_t cuUeF1apId, uint8_t duUeF1apId, \
    return ret;
 }/* End of BuildAndSendUeContextSetupReq*/
 
+uint8_t extractTeId(DLUPTNLInformation_ToBeSetup_List_t *dlTnlInfo)
+{
+   uint8_t arrIdx = 0;
+   uint32_t teId = 0;
+   GTPTunnel_t *gtpDl = NULLP;
+
+   for(arrIdx =0; arrIdx < dlTnlInfo->list.count; arrIdx++)
+   {
+      if(dlTnlInfo->list.array[arrIdx]->dLUPTNLInformation.present == UPTransportLayerInformation_PR_gTPTunnel)
+      {
+         if(dlTnlInfo->list.array[arrIdx]->dLUPTNLInformation.choice.gTPTunnel != NULLP)
+         {
+            gtpDl = dlTnlInfo->list.array[arrIdx]->dLUPTNLInformation.choice.gTPTunnel;
+            if(gtpDl->gTP_TEID.size > 0)
+            {
+               teIdStringToInt(gtpDl->gTP_TEID.buf, &teId); 
+            }
+            else
+               printf("\n ERROR: No TeId received");
+            return(teId);
+         }
+      }
+   }
+   return ROK;
+}
+
+
+uint8_t addDrbTunnels(uint8_t teId)
+{
+   uint8_t ret = ROK;
+   EgtpTnlEvt tnlEvt;
+
+   if(teId > MAX_TEID || teId < MIN_TEID)
+   {
+      DU_LOG("\nERROR  -->  EGTP : TEID(%x) OUT Of Range",teId);
+   }
+   memset(&tnlEvt, 0, sizeof(EgtpTnlEvt));
+   tnlEvt.action = EGTP_TNL_MGMT_ADD;
+   tnlEvt.lclTeid = teId;
+   tnlEvt.remTeid = teId;
+   ret = cuEgtpTnlMgmtReq(tnlEvt);
+   if(ret != ROK)
+   {
+      DU_LOG("\nERROR  -->  EGTP : Tunnel management request failed for teId %x", teId);
+   }
+   return ROK;
+}
+
+uint8_t procDrbSetupList(DRBs_Setup_List_t *drbSetupList)
+{
+   uint8_t arrIdx = 0;
+   uint32_t teId = 0;
+   DRBs_Setup_ItemIEs_t *drbItemIe = NULLP;
+
+   if(drbSetupList != NULLP)
+   {
+      for(arrIdx = 0; arrIdx < drbSetupList->list.count; arrIdx++)
+      {
+         drbItemIe = ((DRBs_Setup_ItemIEs_t *)drbSetupList->list.array[arrIdx]);
+         if(drbItemIe->value.present == DRBs_Setup_ItemIEs__value_PR_DRBs_Setup_Item)
+         {
+            /* extracting teId */
+            teId  = extractTeId(&drbItemIe->value.choice.DRBs_Setup_Item.dLUPTNLInformation_ToBeSetup_List);
+            if(teId > 0)
+            {
+              if(addDrbTunnels(teId)== ROK)
+              {
+                printf("\nDEBUG  --> CU: Tunnel Added for TeId %d", teId);
+              }
+            }
+            else
+               return RFAILED;
+         }
+      }
+   }
+   return ROK;
+}
+
 
 uint8_t procUeContextSetupResponse(F1AP_PDU_t *f1apMsg)
 {
    uint8_t idx, duUeF1apId;
-   UEContextSetupResponse_t *ueCtxtSetupRsp;
+   UEContextSetupResponse_t *ueCtxtSetupRsp = NULLP;
    ueCtxtSetupRsp = &f1apMsg->choice.successfulOutcome->value.choice.UEContextSetupResponse;
    
    for(idx=0; idx < ueCtxtSetupRsp->protocolIEs.list.count; idx++)
@@ -6591,9 +6671,17 @@ uint8_t procUeContextSetupResponse(F1AP_PDU_t *f1apMsg)
                 duUeF1apId = ueCtxtSetupRsp->protocolIEs.list.array[idx]->value.choice.GNB_DU_UE_F1AP_ID;
                 break;
              }
+          case ProtocolIE_ID_id_DRBs_Setup_List:
+             {
+                /* Adding Tunnels for successful DRB */
+                procDrbSetupList(&ueCtxtSetupRsp->protocolIEs.list.array[idx]->value.choice.DRBs_Setup_List);
+                break; 
+
+             }
       }
    }
    ueCb[duUeF1apId-1].f1apMsgDb.dlRrcMsgCount++; /* keeping DL RRC Msg Count */
+   return ROK;
 }
 
 /****************************************************************
