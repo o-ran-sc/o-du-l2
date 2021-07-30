@@ -27,7 +27,11 @@
 #define MAX_DU_PORT 2
 #define DU_PORT 38472
 
+/*VALID Tunnel ID*/
+#define MIN_TEID 1   /*[Spec 29.281,Sec 5.1]: All Zero TEIDs are never assigned for setting up GTP-U Tunnel*/
+#define MAX_TEID 10 /*[Spec 29.281]: Max limit is not mentioned but as per GTP-U Header Format, TEID occupies 4 octets */
 /* allocate and zero out a static buffer */
+
 #define CU_ALLOC(_datPtr, _size)                             \
 {                                                            \
    S16 _ret;                                                 \

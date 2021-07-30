@@ -35,6 +35,7 @@
 #include "DRB-ToAddMod.h"
 #include "SDAP-Config.h"
 #include "du_log.h"
+#include "cu_stub.h"
 
 #define ENCODE_FAIL -1
 #define TRANS_ID 1
@@ -50,8 +51,9 @@
 #define SRB1 1
 #define SRB2 2
 #define DRB1 1
-#define DRB2 2
+#define DRB2 6 //Pls Ignore this; to avoid the collision with DRBID=2 in UE COntext setup
 #define QCI  9
+#define MAX_DRB_SET 2
 
 #define CU_UE_F1AP_ID 0
 #define DU_UE_F1AP_ID 1
@@ -66,6 +68,7 @@
 #define SECURITY_MODE_COMPLETE 5
 #define RRC_RECONFIG 6
 #define UE_CONTEXT_MOD_REQ 7
+
 
 typedef struct f1apDb
 {
