@@ -99,7 +99,12 @@
 #define MAX_NUM_K0_IDX 16 /* Max number of pdsch time domain downlink allocation */
 #define MAX_NUM_K1_IDX 8  /* As per spec 38.213 section 9.2.3 Max number of PDSCH-to-HARQ resource indication */
 #define MIN_NUM_K1_IDX 4  /* Min K1 values */
-#define DEFAULT_K0_VALUE 0 /*As per 38.331, PDSCH-TimeDomainResourceAllocation field descriptions*/
+#define DEFAULT_K0_VALUE 0 /* As per 38.331, PDSCH-TimeDomainResourceAllocation field descriptions */
+#define MAX_NUM_K2_IDX 16 /* PUSCH time domain UL resource allocation list */
+#define DEFAULT_K2_VALUE_FOR_SCS15  1 /* As per 38.331, PUSCH-TimeDomainResourceAllocationList field descriptions */
+#define DEFAULT_K2_VALUE_FOR_SCS30  1 /* As per 38.331, PUSCH-TimeDomainResourceAllocationList field descriptions */
+#define DEFAULT_K2_VALUE_FOR_SCS60  2 /* As per 38.331, PUSCH-TimeDomainResourceAllocationList field descriptions */
+#define DEFAULT_K2_VALUE_FOR_SCS120 3 /* As per 38.331, PUSCH-TimeDomainResourceAllocationList field descriptions */
 
 #define ADD_DELTA_TO_TIME(crntTime, toFill, incr)          \
 {                                                          \
@@ -682,11 +687,24 @@ typedef struct schBwpDlCfg
    SchK0K1TimingInfoTbl k0K1InfoTbl;
 }SchBwpDlCfg;
 
+typedef struct schK2TimingInfo
+{
+   uint8_t numK2; 
+   uint8_t k2Indexes[MAX_NUM_K2_IDX]; 
+}SchK2TimingInfo;
+
+typedef struct schK2TimingInfoTbl
+{
+   uint16_t tblSize; 
+   SchK2TimingInfo k2TimingInfo[MAX_NUM_CONFIG_SLOTS]; 
+}SchK2TimingInfoTbl;
+
 typedef struct schBwpUlCfg
 {
    SchBwpParams   bwp;
    SchPucchCfgCmn pucchCommon;
    SchPuschCfgCmn puschCommon;
+   SchK2TimingInfoTbl k2InfoTbl;
 }SchBwpUlCfg;
 
 typedef struct schCellCfg
@@ -1352,6 +1370,7 @@ typedef struct schInitialUlBwp
    SchPucchCfg   pucchCfg;
    bool          puschCfgPres;
    SchPuschCfg   puschCfg;
+   SchK2TimingInfoTbl k2InfoTbl;
 }SchInitialUlBwp;
 
 /* Uplink BWP information */

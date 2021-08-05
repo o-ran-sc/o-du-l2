@@ -1117,6 +1117,158 @@ SchPdschConfig pdschDedCfg, uint8_t ulAckListCount, uint8_t *UlAckTbl)
 #endif
    }
 }
+
+/*******************************************************************
+*
+* @brief Fills K2 information table for FDD
+*
+* @details
+*
+*    Function : BuildK2InfoTableForFdd 
+*
+*    Functionality:
+*       Fills K2 information table for FDD
+*
+* @params[in] SchCellCb *cell,SchPuschTimeDomRsrcAlloc timeDomRsrcAllocList[],
+* uint16_t puschSymTblSize,SchK2TimingInfoTbl *k2InfoTbl
+* @return ROK     - success
+*         RFAILED - failure
+*
+* ****************************************************************/
+void BuildK2InfoTableForFdd(SchCellCb *cell, SchPuschTimeDomRsrcAlloc timeDomRsrcAllocList[], uint16_t puschSymTblSize,\
+SchK2TimingInfoTbl *k2InfoTbl)
+{
+   uint16_t slotIdx=0, k2Index=0, k2TmpVal=0;
+
+   /* Initialization the structure and storing the total slot values. */
+   memset(k2InfoTbl, 0, sizeof(SchK2TimingInfoTbl));
+   k2InfoTbl->tblSize = cell->numSlots;
+   
+   /* Checking all possible indexes for K2. */
+   for(slotIdx = 0; slotIdx < cell->numSlots; slotIdx++)
+   {
+      /* Storing K2 values. */
+      for(k2Index = 0; ((k2Index < puschSymTblSize) && (k2Index < MAX_NUM_K2_IDX)); k2Index++)
+      {
+         k2TmpVal= k2InfoTbl->k2TimingInfo[slotIdx].numK2;
+         k2InfoTbl->k2TimingInfo[slotIdx].k2Indexes[k2TmpVal] = k2Index;
+         k2InfoTbl->k2TimingInfo[slotIdx].numK2++;
+      }
+   }
+}
+
+/*******************************************************************
+ *
+ * @brief Fills K2 information table
+ *
+ * @details
+ *
+ *    Function : BuildK2InfoTable 
+ *
+ *    Functionality:
+ *       Fills K2 information table
+ *
+ * @params[in] SchCellCb *cell,SchPuschTimeDomRsrcAlloc timeDomRsrcAllocList[],
+ * uint16_t puschSymTblSize, SchK2TimingInfoTbl *k2InfoTbl
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+void BuildK2InfoTable(SchCellCb *cell, SchPuschTimeDomRsrcAlloc timeDomRsrcAllocList[], uint16_t puschSymTblSize,\
+SchK2TimingInfoTbl *k2InfoTbl)
+{
+
+#ifdef NR_TDD
+   bool dlSymbolPresent = false;
+   uint8_t slotIdx=0, k2Index=0, k2TmpVal=0, numK2 =0, currentSymbol =0;
+   uint8_t startSymbol =0, endSymbol =0, checkSymbol=0, totalCfgSlot=0, slotCfg=0;
+   SlotConfig currentSlot;
+#endif
+
+   if(cell->cellCfg.dupMode == DUPLEX_MODE_FDD)
+   {
+      BuildK2InfoTableForFdd(cell, timeDomRsrcAllocList, puschSymTblSize, k2InfoTbl);
+   }
+   else
+   {
+#ifdef NR_TDD
+
+      /* Initialization the structure and storing the total slot values. */
+      memset(k2InfoTbl, 0, sizeof(SchK2TimingInfoTbl));
+      k2InfoTbl->tblSize = cell->numSlots;
+      totalCfgSlot = calculateSlotPatternLength(cell->cellCfg.ssbSchCfg.scsCommon, cell->cellCfg.tddCfg.tddPeriod);
+
+      /* Checking all possible indexes for K2. */
+      for(slotIdx = 0; slotIdx < k2InfoTbl->tblSize; slotIdx++)
+      {
+         currentSlot = schGetSlotSymbFrmt(slotIdx % totalCfgSlot, cell->slotFrmtBitMap);
+         
+         /* If current slot is UL then skip because PDCCH is sent only in DL slots */
+         if(currentSlot != UL_SLOT)
+         {
+            for(k2Index = 0; ((k2Index < puschSymTblSize) && (k2Index < MAX_NUM_K2_IDX)); k2Index++)
+            {
+               /* Storing k2, startSymbol, endSymbol information for further processing.
+                * If k2 is absent then fill the default values given in spec 38.331
+                * PUSCH-TimeDomainResourceAllocationList field descriptions */
+               k2TmpVal = timeDomRsrcAllocList[k2Index].k2;
+               if(!k2TmpVal)
+               {
+                  switch(cell->cellCfg.ssbSchCfg.scsCommon)
+                  {
+                     case SCS_15KHZ:
+                        k2TmpVal = DEFAULT_K2_VALUE_FOR_SCS15;
+                        break;
+                     case SCS_30KHZ:
+                        k2TmpVal = DEFAULT_K2_VALUE_FOR_SCS30;
+                        break;
+                     case SCS_60KHZ:
+                        k2TmpVal = DEFAULT_K2_VALUE_FOR_SCS60;
+                        break;
+                     case SCS_120KHZ:
+                        k2TmpVal = DEFAULT_K2_VALUE_FOR_SCS120;
+                        break;
+                  }
+               }
+               
+               /* Current slot + k2 should be either UL or FLEXI slot.
+                * If slot is FLEXI then check all the symbols of that slot,
+                * it should not contain any DL or FLEXI slot */
+               k2TmpVal = (slotIdx + k2TmpVal) % totalCfgSlot;
+               slotCfg = schGetSlotSymbFrmt(k2TmpVal, cell->slotFrmtBitMap);
+               if(slotCfg == DL_SLOT)
+               {
+                  continue;
+               }
+               if(slotCfg == FLEXI_SLOT)
+               {
+                  startSymbol =  timeDomRsrcAllocList[k2Index].startSymbol;
+                  endSymbol   =  startSymbol+ timeDomRsrcAllocList[k2Index].symbolLength;
+                  dlSymbolPresent = false;
+                  for(checkSymbol= startSymbol; checkSymbol<endSymbol; checkSymbol++)
+                  {
+                     currentSymbol = cell->cellCfg.tddCfg.slotCfg[k2TmpVal][checkSymbol];
+                     if(currentSymbol == DL_SLOT || currentSymbol == FLEXI_SLOT)
+                     {
+                        dlSymbolPresent = true;
+                        break;
+                     }
+                  }
+               }
+               /* Store all the values if all condition satisfies. */
+               if(dlSymbolPresent != true || slotCfg == UL_SLOT)
+               {
+                  numK2 = k2InfoTbl->k2TimingInfo[slotIdx].numK2;
+                  k2InfoTbl->k2TimingInfo[slotIdx].k2Indexes[numK2] = k2Index;
+                  k2InfoTbl->k2TimingInfo[slotIdx].numK2++;
+               }
+            }
+         }
+      }
+#endif
+   }
+}
+
 /**********************************************************************
   End of file
  **********************************************************************/
