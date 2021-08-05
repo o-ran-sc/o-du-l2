@@ -876,6 +876,8 @@ uint8_t SchHdlCellCfgReq(Pst *pst, SchCellCfg *schCellCfg)
    BuildK0K1Table(cellCb, &cellCb->cellCfg.schInitialDlBwp.k0K1InfoTbl, true, cellCb->cellCfg.schInitialDlBwp.pdschCommon,
    pdschCfg, DEFAULT_UL_ACK_LIST_COUNT, defaultUlAckTbl);
    
+   BuildK2InfoTable(cellCb, cellCb->cellCfg.schInitialUlBwp.puschCommon.timeDomRsrcAllocList,\
+   cellCb->cellCfg.schInitialUlBwp.puschCommon.numTimeDomRsrcAlloc, &cellCb->cellCfg.schInitialUlBwp.k2InfoTbl);
    /* Initializing global variables */
    cellCb->actvUeBitMap = 0;
    cellCb->boIndBitMap = 0;
