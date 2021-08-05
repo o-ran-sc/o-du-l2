@@ -95,6 +95,8 @@
 #define RAR_PAYLOAD_SIZE 10             /* As per spec 38.321, sections 6.1.5 and 6.2.3, RAR PDU is 8 bytes long and 2 bytes of padding */
 #define TX_PAYLOAD_HDR_LEN 32           /* Intel L1 requires adding a 32 byte header to transmitted payload */
 
+#define MAX_NO_CONFIG_SLOTS 160 /*Max No of slots */
+#define MAX_NUM_K2_IDX 16 /* PUSCH time domain UL resource allocation list */
 
 #define ADD_DELTA_TO_TIME(crntTime, toFill, incr)          \
 {                                                          \
@@ -652,11 +654,24 @@ typedef struct schBwpDlCfg
    SchPdschCfgCmn pdschCommon;
 }SchBwpDlCfg;
 
+typedef struct schK2TimingInfo
+{
+   uint8_t numK2; 
+   uint8_t k2Indexes[MAX_NUM_K2_IDX]; 
+}SchK2TimingInfo;
+
+typedef struct schK2TimingInfoTbl
+{
+   uint16_t tblSize; 
+   SchK2TimingInfo k2TimingInfo[MAX_NO_CONFIG_SLOTS]; 
+}SchK2TimingInfoTbl;
+
 typedef struct schBwpUlCfg
 {
    SchBwpParams   bwp;
    SchPucchCfgCmn pucchCommon;
    SchPuschCfgCmn puschCommon;
+   SchK2TimingInfoTbl k2InfoTbl;
 }SchBwpUlCfg;
 
 typedef struct schCellCfg
@@ -1321,6 +1336,7 @@ typedef struct schInitialUlBwp
    SchPucchCfg   pucchCfg;
    bool          puschCfgPres;
    SchPuschCfg   puschCfg;
+   SchK2TimingInfoTbl k2InfoTbl;
 }SchInitialUlBwp;
 
 /* Uplink BWP information */

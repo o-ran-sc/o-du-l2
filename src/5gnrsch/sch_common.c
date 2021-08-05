@@ -841,6 +841,120 @@ uint8_t schDlRsrcAllocDlMsg(DlMsgAlloc *dlMsgAlloc, SchCellCb *cell, uint16_t cr
    return ROK;
 }
 
+/*******************************************************************
+ *
+ * @brief Fills K2 information table for FDD
+ *
+ * @details
+ *
+ *    Function : fillK2TableForFdd
+ *
+ *    Functionality:
+ *       Fills K2 information table for FDD
+ *
+ * @params[in] SchCellCb *cell,SchPuschTimeDomRsrcAlloc timeDomRsrcAllocList[],
+ * uint16_t puschSymTblSize,SchK2TimingInfoTbl *k2InfoTbl
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+void fillK2TableForFdd(SchCellCb *cell, SchPuschTimeDomRsrcAlloc timeDomRsrcAllocList[], uint16_t puschSymTblSize,\
+SchK2TimingInfoTbl *k2InfoTbl)
+{
+   uint16_t slotIdx,k2Index=0,k2TmpVal=0;
+   
+   memset(k2InfoTbl, 0, sizeof(SchK2TimingInfoTbl));
+   k2InfoTbl->tblSize = cell->numSlots;
+   
+   for(slotIdx = 0; slotIdx < cell->numSlots; slotIdx++)
+   {
+      for(k2Index = 0; ((k2Index < puschSymTblSize) && (k2Index < MAX_NUM_K2_IDX)); k2Index++)
+      {
+         k2TmpVal= k2InfoTbl->k2TimingInfo[slotIdx].numK2;
+         k2InfoTbl->k2TimingInfo[slotIdx].k2Indexes[k2TmpVal] = k2Index;
+         k2InfoTbl->k2TimingInfo[slotIdx].numK2++;
+      }
+   }
+}
+
+/*******************************************************************
+ *
+ * @brief Fills K2 information table
+ *
+ * @details
+ *
+ *    Function : fillK2Table
+ *
+ *    Functionality:
+ *       Fills K2 information table
+ *
+ * @params[in] SchCellCb *cell,SchPuschTimeDomRsrcAlloc timeDomRsrcAllocList[],
+ * uint16_t puschSymTblSize, SchK2TimingInfoTbl *k2InfoTbl
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+void fillK2Table(SchCellCb *cell, SchPuschTimeDomRsrcAlloc timeDomRsrcAllocList[], uint16_t puschSymTblSize,\
+SchK2TimingInfoTbl *k2InfoTbl)
+{
+
+#ifdef NR_TDD
+   bool dlSlotPresent = false;
+   uint8_t numSlot =0, slotIdx,k2Index=0,k2TmpVal=0;
+   uint8_t startSymbol =0, endSymbol =0, checkSymbol=0;
+   SlotConfig currentSlot;
+#endif
+
+   if(cell->cellCfg.dupMode == DUPLEX_MODE_FDD)
+   {
+      fillK2TableForFdd(cell, timeDomRsrcAllocList, puschSymTblSize, k2InfoTbl);
+   }
+   else
+   {
+#ifdef NR_TDD
+      memset(k2InfoTbl, 0, sizeof(SchK2TimingInfoTbl));
+      
+      for(slotIdx = 0; slotIdx < cell->numSlots; slotIdx++)
+      {
+         for(k2Index = 0; ((k2Index < puschSymTblSize) && (k2Index < MAX_NUM_K2_IDX)); k2Index++)
+         {
+            numSlot = (slotIdx)%10;
+            currentSlot = schGetSlotSymbFrmt(numSlot, cell->slotFrmtBitMap);
+            if(currentSlot != UL_SLOT)
+            {
+               numSlot = (slotIdx + timeDomRsrcAllocList[k2Index].k2)%10;
+               currentSlot = schGetSlotSymbFrmt(numSlot, cell->slotFrmtBitMap);
+               if(currentSlot == DL_SLOT)
+               {
+                  continue;
+               }
+               if(currentSlot == FLEXI_SLOT)
+               {
+                  startSymbol =  timeDomRsrcAllocList[k2Index].startSymbol;
+                  endSymbol   =  startSymbol+ timeDomRsrcAllocList[k2Index].symbolLength;
+                  for(checkSymbol= startSymbol; checkSymbol<endSymbol; checkSymbol++)
+                  {
+                     currentSlot = cell->cellCfg.tddCfg.slotCfg[numSlot][checkSymbol];
+                     if(currentSlot == DL_SLOT)
+                     {
+                        dlSlotPresent = true;
+                     }
+                  }
+               }
+               if(dlSlotPresent != true || currentSlot == UL_SLOT)
+               {
+                  k2TmpVal= k2InfoTbl->k2TimingInfo[slotIdx].numK2;
+                  k2InfoTbl->k2TimingInfo[slotIdx].k2Indexes[k2TmpVal] = k2Index;
+                  k2InfoTbl->k2TimingInfo[slotIdx].numK2++;
+               }
+            }
+         }
+      }
+
+#endif
+   }
+}
+
 /**********************************************************************
   End of file
  **********************************************************************/
