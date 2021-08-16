@@ -1,0 +1,327 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c2279f4e_88330540",
+        "filename": "build/odu/makefile",
+        "patchSetId": 4
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-08-16T08:44:05Z",
+      "side": 1,
+      "message": "CALL_FLOW_DEBUG_LOG",
+      "revId": "532b84084527d076ab88f662a4a3c39eb39e427e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4d78ea8e_1912000a",
+        "filename": "src/5gnrmac/lwr_mac_ex_ms.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-08-16T08:44:05Z",
+      "side": 1,
+      "message": "Say \"Invalid Event\"",
+      "revId": "532b84084527d076ab88f662a4a3c39eb39e427e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4e70cf3b_a793859b",
+        "filename": "src/5gnrmac/lwr_mac_ex_ms.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-08-16T08:44:05Z",
+      "side": 1,
+      "message": "Say \"Invalid Event\". Check the same print at all places",
+      "revId": "532b84084527d076ab88f662a4a3c39eb39e427e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "619ac8b7_350e9b21",
+        "filename": "src/5gnrmac/lwr_mac_ex_ms.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 131,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-08-16T08:44:05Z",
+      "side": 1,
+      "message": "Say \"Invalid Source Entity Id\". Check at all places",
+      "revId": "532b84084527d076ab88f662a4a3c39eb39e427e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "422b4e00_606a6f0d",
+        "filename": "src/5gnrmac/lwr_mac_ex_ms.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-08-16T08:44:05Z",
+      "side": 1,
+      "message": "give spaces in between and print format like : [%s] -\u003e [%s] : [%s]\nApplicable everywhere. This is give a cleaner look and readability would increase",
+      "revId": "532b84084527d076ab88f662a4a3c39eb39e427e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9dda62ed_7e1d0afd",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 3330,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-08-16T08:44:05Z",
+      "side": 1,
+      "message": "fix the format at all places as mentioned in previous file",
+      "revId": "532b84084527d076ab88f662a4a3c39eb39e427e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "45a3aad0_2a812cb8",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 4387,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-08-16T08:44:05Z",
+      "side": 1,
+      "message": "instead of adding here. add log in each function call like it was done for DL_TTI/UL_TTI",
+      "revId": "532b84084527d076ab88f662a4a3c39eb39e427e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "76b12afd_0f3e2bbf",
+        "filename": "src/5gnrmac/mac_msg_router.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 640,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-08-16T08:44:05Z",
+      "side": 1,
+      "message": "this is invalid source entity",
+      "revId": "532b84084527d076ab88f662a4a3c39eb39e427e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5268202a_57074470",
+        "filename": "src/5gnrmac/mac_ue_mgr.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 2314,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-08-16T08:44:05Z",
+      "side": 1,
+      "message": "lets add the print at the very beginning of this function so that we get the print even if this function returns at line 2305",
+      "revId": "532b84084527d076ab88f662a4a3c39eb39e427e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5f41223f_6f51e527",
+        "filename": "src/5gnrmac/mac_ue_mgr.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 2364,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-08-16T08:44:05Z",
+      "side": 1,
+      "message": "say \"Invalid Event\" instead of \"Invalid msg\".\nApplicable everywhere",
+      "revId": "532b84084527d076ab88f662a4a3c39eb39e427e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8b2c1644_c874a989",
+        "filename": "src/5gnrrlc/rlc_dl_msg_router.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 390,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-08-16T08:44:05Z",
+      "side": 1,
+      "message": "you can remove the cases for entity and events that are not called currently in our flow.\nApplicable to other layer active task functions too",
+      "revId": "532b84084527d076ab88f662a4a3c39eb39e427e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d4566e20_e8087f45",
+        "filename": "src/du_app/du_egtp.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 479,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-08-16T08:44:05Z",
+      "side": 1,
+      "message": "I see that egtpTnlMgmtReq is also present in ActvTsk. How is it being called? \nIf its LC/LWLC, remove print from here since its already being printed in ActvTsk",
+      "revId": "532b84084527d076ab88f662a4a3c39eb39e427e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "574e21ab_a01352a4",
+        "filename": "src/du_app/du_egtp.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 870,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-08-16T08:44:05Z",
+      "side": 1,
+      "message": "should we add an event at the sending/receiving end too?",
+      "revId": "532b84084527d076ab88f662a4a3c39eb39e427e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d5ce7336_e51e5f3c",
+        "filename": "src/du_app/du_mgr_msg_router.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 334,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-08-16T08:44:05Z",
+      "side": 1,
+      "message": "do we have a call flow print in duapp when data comes from egtp to duapp?",
+      "revId": "532b84084527d076ab88f662a4a3c39eb39e427e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e4d4937a_090e4909",
+        "filename": "src/du_app/du_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1038,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-08-16T08:44:05Z",
+      "side": 1,
+      "message": "All the call flow logs are being printed at the destination.\nEGTP Cfg req : this event\u0027s destination is EGTP. I think you have already added print there.\nSo we can remove from source entity.",
+      "revId": "532b84084527d076ab88f662a4a3c39eb39e427e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "18072dfe_d2d08a41",
+        "filename": "src/du_app/du_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1115,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-08-16T08:44:05Z",
+      "side": 1,
+      "message": "Same as above",
+      "revId": "532b84084527d076ab88f662a4a3c39eb39e427e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a380af97_8638bdbc",
+        "filename": "src/du_app/du_sctp.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 198,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-08-16T08:44:05Z",
+      "side": 1,
+      "message": "call flow print for cfg req from du app to sctp?",
+      "revId": "532b84084527d076ab88f662a4a3c39eb39e427e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4066a344_e9b68074",
+        "filename": "src/du_app/du_sctp.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 380,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-08-16T08:44:05Z",
+      "side": 1,
+      "message": "Call flow print for ASSOC req from duapp to sctp",
+      "revId": "532b84084527d076ab88f662a4a3c39eb39e427e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "65e9264e_8d776c95",
+        "filename": "src/du_app/du_sctp.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 821,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-08-16T08:44:05Z",
+      "side": 1,
+      "message": "F1_Interface and E2_Interface is interface name, not event name. Use correct name",
+      "revId": "532b84084527d076ab88f662a4a3c39eb39e427e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
