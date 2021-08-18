@@ -1,0 +1,140 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7be03a1e_ce0ad316",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-08-18T10:48:08Z",
+      "side": 1,
+      "message": "add print in stop request and tx data request",
+      "revId": "361bc8097446988ace028c59869a446cd2f5265b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0f48c4da_3ff29051",
+        "filename": "src/5gnrmac/mac_msg_router.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 408,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-08-18T10:48:08Z",
+      "side": 1,
+      "message": "you can remove the cases for entity and events that are not called currently in our flow.",
+      "revId": "361bc8097446988ace028c59869a446cd2f5265b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "21754769_21b30398",
+        "filename": "src/5gnrrlc/rlc_dl_msg_router.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 345,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-08-18T10:48:08Z",
+      "side": 1,
+      "message": "you can remove the cases for entity and events that are not called currently in our flow.\nApplicable to other layer active task functions too",
+      "revId": "361bc8097446988ace028c59869a446cd2f5265b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "555099c3_a31c9bf7",
+        "filename": "src/5gnrrlc/rlc_ul_msg_router.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 239,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-08-18T10:48:08Z",
+      "side": 1,
+      "message": "You can remove L2 measurement related prints too.\nApplicable for all layers",
+      "revId": "361bc8097446988ace028c59869a446cd2f5265b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d275ae07_c968285a",
+        "filename": "src/5gnrsch/sch_msg_router.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-08-18T10:48:08Z",
+      "side": 1,
+      "message": "All events come to SCH via MAC. Please confirm that no event (specially Gen cfg) is coming from DU APP directly. In that case, remove ENTSM case altogether",
+      "revId": "361bc8097446988ace028c59869a446cd2f5265b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ffaccdf8_b1813503",
+        "filename": "src/5gnrsch/sch_msg_router.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-08-18T10:48:08Z",
+      "side": 1,
+      "message": "ENTNX can be removed",
+      "revId": "361bc8097446988ace028c59869a446cd2f5265b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b3f27058_6a888ea5",
+        "filename": "src/5gnrsch/sch_msg_router.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 186,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-08-18T10:48:08Z",
+      "side": 1,
+      "message": "ENTRM can be removed",
+      "revId": "361bc8097446988ace028c59869a446cd2f5265b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5fe198cb_f2b6ffdd",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 219,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-08-18T10:48:08Z",
+      "side": 1,
+      "message": "add spaces",
+      "revId": "361bc8097446988ace028c59869a446cd2f5265b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
