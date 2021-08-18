@@ -18,6 +18,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7f9d419a_66c7d221",
+        "filename": "build/odu/makefile",
+        "patchSetId": 4
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-08-18T08:55:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c2279f4e_88330540",
+      "revId": "532b84084527d076ab88f662a4a3c39eb39e427e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4d78ea8e_1912000a",
@@ -31,6 +49,24 @@
       "writtenOn": "2021-08-16T08:44:05Z",
       "side": 1,
       "message": "Say \"Invalid Event\"",
+      "revId": "532b84084527d076ab88f662a4a3c39eb39e427e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7ef4d87a_1fe21a14",
+        "filename": "src/5gnrmac/lwr_mac_ex_ms.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-08-18T08:55:46Z",
+      "side": 1,
+      "message": "corrected at all the places",
+      "parentUuid": "4d78ea8e_1912000a",
       "revId": "532b84084527d076ab88f662a4a3c39eb39e427e",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -52,6 +88,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "521f4776_cec5f318",
+        "filename": "src/5gnrmac/lwr_mac_ex_ms.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-08-18T08:55:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4e70cf3b_a793859b",
+      "revId": "532b84084527d076ab88f662a4a3c39eb39e427e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "619ac8b7_350e9b21",
@@ -65,6 +119,24 @@
       "writtenOn": "2021-08-16T08:44:05Z",
       "side": 1,
       "message": "Say \"Invalid Source Entity Id\". Check at all places",
+      "revId": "532b84084527d076ab88f662a4a3c39eb39e427e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4610f9e7_1ffc8a2f",
+        "filename": "src/5gnrmac/lwr_mac_ex_ms.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 131,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-08-18T08:55:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "619ac8b7_350e9b21",
       "revId": "532b84084527d076ab88f662a4a3c39eb39e427e",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -86,6 +158,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a8922ef3_39e2eaa5",
+        "filename": "src/5gnrmac/lwr_mac_ex_ms.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-08-18T08:55:46Z",
+      "side": 1,
+      "message": "okay",
+      "parentUuid": "422b4e00_606a6f0d",
+      "revId": "532b84084527d076ab88f662a4a3c39eb39e427e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9dda62ed_7e1d0afd",
@@ -99,6 +189,24 @@
       "writtenOn": "2021-08-16T08:44:05Z",
       "side": 1,
       "message": "fix the format at all places as mentioned in previous file",
+      "revId": "532b84084527d076ab88f662a4a3c39eb39e427e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1a3e58ac_5c759ec3",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 3330,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-08-18T08:55:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9dda62ed_7e1d0afd",
       "revId": "532b84084527d076ab88f662a4a3c39eb39e427e",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -120,6 +228,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7ad41321_08d11df5",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 4387,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-08-18T08:55:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "45a3aad0_2a812cb8",
+      "revId": "532b84084527d076ab88f662a4a3c39eb39e427e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "76b12afd_0f3e2bbf",
@@ -133,6 +259,24 @@
       "writtenOn": "2021-08-16T08:44:05Z",
       "side": 1,
       "message": "this is invalid source entity",
+      "revId": "532b84084527d076ab88f662a4a3c39eb39e427e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f99211f1_0f6d211b",
+        "filename": "src/5gnrmac/mac_msg_router.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 640,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-08-18T08:55:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "76b12afd_0f3e2bbf",
       "revId": "532b84084527d076ab88f662a4a3c39eb39e427e",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -154,6 +298,42 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a61ecba7_c9b0166f",
+        "filename": "src/5gnrmac/mac_ue_mgr.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 2314,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-08-18T08:55:46Z",
+      "side": 1,
+      "message": "sure.",
+      "parentUuid": "5268202a_57074470",
+      "revId": "532b84084527d076ab88f662a4a3c39eb39e427e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "97a1bdd5_bd6d27a1",
+        "filename": "src/5gnrmac/mac_ue_mgr.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 2314,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-08-18T08:55:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5268202a_57074470",
+      "revId": "532b84084527d076ab88f662a4a3c39eb39e427e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5f41223f_6f51e527",
@@ -171,6 +351,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "929a2608_ead0e6b9",
+        "filename": "src/5gnrmac/mac_ue_mgr.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 2364,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-08-18T08:55:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5f41223f_6f51e527",
+      "revId": "532b84084527d076ab88f662a4a3c39eb39e427e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8b2c1644_c874a989",
@@ -184,6 +382,24 @@
       "writtenOn": "2021-08-16T08:44:05Z",
       "side": 1,
       "message": "you can remove the cases for entity and events that are not called currently in our flow.\nApplicable to other layer active task functions too",
+      "revId": "532b84084527d076ab88f662a4a3c39eb39e427e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2fed2312_4ae3ba3b",
+        "filename": "src/5gnrrlc/rlc_dl_msg_router.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 390,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-08-18T08:55:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8b2c1644_c874a989",
       "revId": "532b84084527d076ab88f662a4a3c39eb39e427e",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -207,6 +423,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0f0e66c3_67244da1",
+        "filename": "src/du_app/du_egtp.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 479,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-08-18T08:55:46Z",
+      "side": 1,
+      "message": "but in some function we are explicitly calling egtpTnlMgmtReq function also. for example after receiving rsp from RLC AND MAC for uereconfig[duSendEgtpTnlMgmtReq].",
+      "parentUuid": "d4566e20_e8087f45",
+      "revId": "532b84084527d076ab88f662a4a3c39eb39e427e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "574e21ab_a01352a4",
         "filename": "src/du_app/du_egtp.c",
         "patchSetId": 4
@@ -218,6 +452,24 @@
       "writtenOn": "2021-08-16T08:44:05Z",
       "side": 1,
       "message": "should we add an event at the sending/receiving end too?",
+      "revId": "532b84084527d076ab88f662a4a3c39eb39e427e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d6e03f05_30f765a3",
+        "filename": "src/du_app/du_egtp.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 870,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-08-18T08:55:46Z",
+      "side": 1,
+      "message": "yes we should add,but i have already added the event in egtpHdlDatInd, as this egtpSendMsg called from egtpHdlDatInd function .",
+      "parentUuid": "574e21ab_a01352a4",
       "revId": "532b84084527d076ab88f662a4a3c39eb39e427e",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -239,6 +491,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ffcf88e0_80a21990",
+        "filename": "src/du_app/du_mgr_msg_router.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 334,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-08-18T08:55:46Z",
+      "side": 1,
+      "message": "yes.",
+      "parentUuid": "d5ce7336_e51e5f3c",
+      "revId": "532b84084527d076ab88f662a4a3c39eb39e427e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e4d4937a_090e4909",
@@ -252,6 +522,24 @@
       "writtenOn": "2021-08-16T08:44:05Z",
       "side": 1,
       "message": "All the call flow logs are being printed at the destination.\nEGTP Cfg req : this event\u0027s destination is EGTP. I think you have already added print there.\nSo we can remove from source entity.",
+      "revId": "532b84084527d076ab88f662a4a3c39eb39e427e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0d3b1f45_2284ff97",
+        "filename": "src/du_app/du_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1038,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-08-18T08:55:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e4d4937a_090e4909",
       "revId": "532b84084527d076ab88f662a4a3c39eb39e427e",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -273,6 +561,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "45dddbf6_00b7511c",
+        "filename": "src/du_app/du_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1115,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-08-18T08:55:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "18072dfe_d2d08a41",
+      "revId": "532b84084527d076ab88f662a4a3c39eb39e427e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a380af97_8638bdbc",
@@ -286,6 +592,24 @@
       "writtenOn": "2021-08-16T08:44:05Z",
       "side": 1,
       "message": "call flow print for cfg req from du app to sctp?",
+      "revId": "532b84084527d076ab88f662a4a3c39eb39e427e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "474ebfd9_df7e3070",
+        "filename": "src/du_app/du_sctp.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 198,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-08-18T08:55:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a380af97_8638bdbc",
       "revId": "532b84084527d076ab88f662a4a3c39eb39e427e",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -307,6 +631,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7d21b0d0_bfbcbf1c",
+        "filename": "src/du_app/du_sctp.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 380,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-08-18T08:55:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4066a344_e9b68074",
+      "revId": "532b84084527d076ab88f662a4a3c39eb39e427e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "65e9264e_8d776c95",
@@ -320,6 +662,24 @@
       "writtenOn": "2021-08-16T08:44:05Z",
       "side": 1,
       "message": "F1_Interface and E2_Interface is interface name, not event name. Use correct name",
+      "revId": "532b84084527d076ab88f662a4a3c39eb39e427e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "07e91201_6b24ce09",
+        "filename": "src/du_app/du_sctp.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 821,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-08-18T08:55:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "65e9264e_8d776c95",
       "revId": "532b84084527d076ab88f662a4a3c39eb39e427e",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
