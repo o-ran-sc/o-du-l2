@@ -1,0 +1,208 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "68b61e14_5fa3f2d9",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 863,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-08-18T12:26:37Z",
+      "side": 1,
+      "message": "is the name same as what is being used in R\u0026D code?\nwe must not use same names. Check at all places",
+      "revId": "0670b46bc76107d837fd6bb3d83fbe0a685ea0f2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "da810c3e_c65545ef",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 905,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-08-18T12:26:37Z",
+      "side": 1,
+      "message": "Shouldn\u0027t we use a default value if k0 is null",
+      "revId": "0670b46bc76107d837fd6bb3d83fbe0a685ea0f2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1f99a0ad_32a72444",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 907,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-08-18T12:26:37Z",
+      "side": 1,
+      "message": "why checking less than 0? k0TmpVal is a uint8_t variable, it can never store a negative value",
+      "revId": "0670b46bc76107d837fd6bb3d83fbe0a685ea0f2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d60cce55_bd0d9ea0",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 958,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-08-18T12:26:37Z",
+      "side": 1,
+      "message": "where is this called from?",
+      "revId": "0670b46bc76107d837fd6bb3d83fbe0a685ea0f2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4829178c_0f9999d9",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1000,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-08-18T12:26:37Z",
+      "side": 1,
+      "message": "lets not hardcode the periodicity to 10 slots. \nCalculate it using the configuration parameter",
+      "revId": "0670b46bc76107d837fd6bb3d83fbe0a685ea0f2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6b5169ba_e820900f",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1020,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-08-18T12:26:37Z",
+      "side": 1,
+      "message": "should default value of k0 be used if it is null here?",
+      "revId": "0670b46bc76107d837fd6bb3d83fbe0a685ea0f2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "23a986e8_f2497af0",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1025,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-08-18T12:26:37Z",
+      "side": 1,
+      "message": "why this check?",
+      "revId": "0670b46bc76107d837fd6bb3d83fbe0a685ea0f2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6cf809e8_eb0624da",
+        "filename": "src/5gnrsch/sch_slot_ind.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 187,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-08-18T12:26:37Z",
+      "side": 1,
+      "message": "this is not an error, add it as a debug print and return rok.\nAlso check that in this scenario, dlMsgAlloc going upto MAC is null.",
+      "revId": "0670b46bc76107d837fd6bb3d83fbe0a685ea0f2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6e2e1e6f_783621ae",
+        "filename": "src/cm/mac_sch_interface.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 653,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-08-18T12:26:37Z",
+      "side": 1,
+      "message": "schK0TimingInfo",
+      "revId": "0670b46bc76107d837fd6bb3d83fbe0a685ea0f2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f975a202_1263eb89",
+        "filename": "src/cm/mac_sch_interface.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 658,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-08-18T12:26:37Z",
+      "side": 1,
+      "message": "call this SchK0TimingInfo.\nMake sure the names are not exactly same as R\u0026D code",
+      "revId": "0670b46bc76107d837fd6bb3d83fbe0a685ea0f2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c63402cd_5909593e",
+        "filename": "src/cm/mac_sch_interface.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 660,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-08-18T12:26:37Z",
+      "side": 1,
+      "message": "schK0K1TimingInfo",
+      "revId": "0670b46bc76107d837fd6bb3d83fbe0a685ea0f2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "462b5b67_a0b1b586",
+        "filename": "src/cm/mac_sch_interface.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 666,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-08-18T12:26:37Z",
+      "side": 1,
+      "message": "schK0K1TimingInfoTbl",
+      "revId": "0670b46bc76107d837fd6bb3d83fbe0a685ea0f2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
