@@ -16,6 +16,24 @@
       "message": "write full name of DL TTI request, UL TTI request and UL DCI request",
       "revId": "bd2242429c13c21cdd86a94d60e6ff0d45e876e3",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3afe4fa9_152ab7a6",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 3347,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-08-19T14:20:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d451322b_e1a35e86",
+      "revId": "bd2242429c13c21cdd86a94d60e6ff0d45e876e3",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
   ]
 }
