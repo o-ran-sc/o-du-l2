@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d494117e_6e1c0c51",
+        "filename": "src/5gnrrlc/rlc_dl_msg_router.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 382,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-08-19T10:42:06Z",
+      "side": 1,
+      "message": "remove case for lower mac",
+      "revId": "006c55fc10ec650d62c5deeb97a0e3cce6c72278",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4058d339_22eaea4d",
+        "filename": "src/5gnrrlc/rlc_ul_msg_router.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 336,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-08-19T10:42:06Z",
+      "side": 1,
+      "message": "remove case for lwrmac",
+      "revId": "006c55fc10ec650d62c5deeb97a0e3cce6c72278",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9c2eff22_a5362113",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 1020,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-08-19T10:42:06Z",
+      "side": 1,
+      "message": "just check if this function handles only short BSR",
+      "revId": "006c55fc10ec650d62c5deeb97a0e3cce6c72278",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "862fd262_a143600b",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 231,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-08-19T10:42:06Z",
+      "side": 1,
+      "message": "Add call flow print at external interfaces for sending/receiving msgs to/from external entities",
+      "revId": "006c55fc10ec650d62c5deeb97a0e3cce6c72278",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
