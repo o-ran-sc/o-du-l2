@@ -73,7 +73,7 @@ typedef struct rachPduInfo
 typedef struct rachInd
 {
    uint16_t      cellId;
-   SlotIndInfo   timingInfo;
+   SlotTimingInfo   timingInfo;
    uint8_t       numPdu;
    RachPduInfo   rachPdu[MAX_RACH_PDU_PER_SLOT];
 }RachInd;
@@ -94,7 +94,7 @@ typedef struct crcInfo
 typedef struct crcInd
 {
    uint16_t      cellId;
-   SlotIndInfo   timingInfo;
+   SlotTimingInfo   timingInfo;
    uint16_t      numCrc;
    CrcInfo       crcInfo[MAX_CRCS_PER_SLOT];
 }CrcInd;
@@ -114,7 +114,7 @@ typedef struct
 typedef struct
 {
    uint16_t      cellId;
-   SlotIndInfo   timingInfo;
+   SlotTimingInfo   timingInfo;
    uint16_t      numPdus;
    RxDataIndPdu  pdus[MAX_ULSCH_PDUS_PER_TTI];
 }RxDataInd;
@@ -208,21 +208,21 @@ typedef struct
 typedef struct
 {
    uint16_t      cellId;
-   SlotIndInfo   slotInd;
+   SlotTimingInfo   slotInd;
    uint16_t      numUcis;
    UciIndPduInfo pdus[MAX_UCI_PDUS_PER_TTI];
 }UciInd;
 
-typedef uint8_t (*SlotIndFunc)(Pst *pst, SlotIndInfo *slotInd);
+typedef uint8_t (*SlotIndFunc)(Pst *pst, SlotTimingInfo *slotInd);
 typedef uint8_t (*RachIndFunc)(Pst *pst, RachInd *rachInd);
 typedef uint8_t (*CrcIndFunc)(Pst *pst, CrcInd *crcInd);
 typedef uint8_t (*RxDataIndFunc)(Pst *pst, RxDataInd *rxDataInd);
 typedef uint8_t (*StopIndFunc)(Pst *pst, uint16_t *cellId);
 typedef uint8_t (*UciIndFunc)(Pst *pst, UciInd *uciInd);
 
-uint8_t packSlotInd (Pst *pst, SlotIndInfo *slotInd);
+uint8_t packSlotInd (Pst *pst, SlotTimingInfo *slotInd);
 uint8_t unpackSlotInd(SlotIndFunc func, Pst *pst, Buffer *mBuf);
-uint8_t fapiMacSlotInd(Pst  *pst, SlotIndInfo  *slotInd);
+uint8_t fapiMacSlotInd(Pst  *pst, SlotTimingInfo  *slotInd);
 uint8_t packRachInd(Pst *pst, RachInd *rachInd);
 uint8_t unpackRachInd(RachIndFunc func, Pst *pst, Buffer *mBuf);
 uint8_t fapiMacRachInd(Pst *pst, RachInd *rachInd);

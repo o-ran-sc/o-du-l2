@@ -258,12 +258,12 @@ uint8_t SchProcGenCfgReq(Pst *pst, RgMngmt *cfg)
  *      a cell.
  *           
  *  @param[in]  Pst            *pst
- *  @param[in]  SlotIndInfo    *slotInd
+ *  @param[in]  SlotTimingInfo    *slotInd
  *  @return  S16
  *      -# ROK 
  *      -# RFAILED 
  **/
-uint8_t MacSchSlotInd(Pst *pst, SlotIndInfo *slotInd)
+uint8_t MacSchSlotInd(Pst *pst, SlotTimingInfo *slotInd)
 {
    Inst  inst = pst->dstInst-SCH_INST_START;
 

@@ -106,9 +106,9 @@ uint8_t procSlotInd(fapi_slot_ind_t *fapiSlotInd)
    /* fill Pst structure to send to lwr_mac to MAC */
    Pst pst;
    uint16_t ret = 0;
-   SlotIndInfo *slotInd = {0};
+   SlotTimingInfo *slotInd = {0};
 
-   MAC_ALLOC_SHRABL_BUF(slotInd, sizeof(SlotIndInfo));
+   MAC_ALLOC_SHRABL_BUF(slotInd, sizeof(SlotTimingInfo));
    if(slotInd)
    {
       slotInd->cellId = lwrMacCb.cellCb[0].cellId; 

@@ -166,7 +166,7 @@ int sendUlSchInfoToMac(UlSchedInfo *ulSchedInfo, Inst inst)
  *  @param[in]  UlSchedInfo *ulSchedInfo, UL scheduling info
  *  @return  void
  **/
-void schPrachResAlloc(SchCellCb *cell, UlSchedInfo *ulSchedInfo, SlotIndInfo prachOccasionTimingInfo)
+void schPrachResAlloc(SchCellCb *cell, UlSchedInfo *ulSchedInfo, SlotTimingInfo prachOccasionTimingInfo)
 {
    uint8_t  puschScs;
    uint8_t  numPrachRb = 0;
@@ -367,7 +367,7 @@ uint8_t fillUlSchedPucchFormat(uint8_t pucchFormat, SchPucchInfo *ulSchedPucch,\
  **/
 
 uint8_t fillUlSchedPucchDedicatedCfg(uint16_t numSlots, SchPucchCfg *pucchDedCfg,\
-   SlotIndInfo *slotInfo, SchPucchInfo *ulSchedPucch)
+   SlotTimingInfo *slotInfo, SchPucchInfo *ulSchedPucch)
 {
    uint8_t ret, resrcSetIdx, resrcIdx, schedReqIdx, srPeriodicity = 0;
    uint16_t srOffset = 0;
@@ -495,7 +495,7 @@ uint8_t schUlResAlloc(SchCellCb *cell, Inst schInst)
    int ret = ROK;
    UlSchedInfo ulSchedInfo;
    SchUlSlotInfo  *schUlSlotInfo = NULLP;
-   SlotIndInfo ulTimingInfo;
+   SlotTimingInfo ulTimingInfo;
    memset(&ulSchedInfo, 0, sizeof(UlSchedInfo));
 
    /* add PHY delta */

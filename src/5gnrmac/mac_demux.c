@@ -44,7 +44,7 @@
  *         RFAILED
  *
  * ****************************************************************/
-uint8_t unpackRxData(uint16_t cellId, SlotIndInfo slotInfo, RxDataIndPdu *rxDataIndPdu)
+uint8_t unpackRxData(uint16_t cellId, SlotTimingInfo slotInfo, RxDataIndPdu *rxDataIndPdu)
 {
    uint8_t   ueIdx = 0;       /* Iterator for UE list */
    uint8_t   lcId = 0;        /* LC ID of a sub pdu */

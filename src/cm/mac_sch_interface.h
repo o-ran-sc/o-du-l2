@@ -807,11 +807,11 @@ typedef struct dlMsgAlloc
 
 typedef struct schSlotValue
 {
-   SlotIndInfo currentTime;
-   SlotIndInfo broadcastTime;
-   SlotIndInfo rarTime;
-   SlotIndInfo dlMsgTime;
-   SlotIndInfo ulDciTime;
+   SlotTimingInfo currentTime;
+   SlotTimingInfo broadcastTime;
+   SlotTimingInfo rarTime;
+   SlotTimingInfo dlMsgTime;
+   SlotTimingInfo ulDciTime;
 }SchSlotValue;
 
 typedef struct format0_0
@@ -852,7 +852,7 @@ typedef struct dciInfo
 {
    uint16_t      cellId;   
    uint16_t      crnti;          /* CRNI */
-   SlotIndInfo   slotIndInfo;    /* Slot Info: sfn, slot number */
+   SlotTimingInfo   slotIndInfo;    /* Slot Info: sfn, slot number */
    BwpCfg        bwpCfg;         /* BWP Cfg */
    CoresetCfg    coresetCfg;     /* Coreset1 Cfg */
    FormatType    formatType;     /* DCI Format */
@@ -948,7 +948,7 @@ typedef struct ulSchedInfo
 {
    uint16_t      cellId;         /* Cell Id */
    uint16_t      crnti;          /* CRNI */
-   SlotIndInfo   slotIndInfo;    /* Slot Info: sfn, slot number */
+   SlotTimingInfo   slotIndInfo;    /* Slot Info: sfn, slot number */
    uint8_t       dataType;       /* Type of info being scheduled */
    PrachSchInfo  prachSchInfo;   /* Prach scheduling info */
    SchPuschInfo  schPuschInfo;   /* Pusch scheduling info */
@@ -959,7 +959,7 @@ typedef struct rachIndInfo
 {
    uint16_t    cellId;
    uint16_t    crnti;
-   SlotIndInfo timingInfo;
+   SlotTimingInfo timingInfo;
    uint8_t     slotIdx;
    uint8_t     symbolIdx;
    uint8_t     freqIdx;
@@ -972,7 +972,7 @@ typedef struct crcIndInfo
 {
    uint16_t    cellId;
    uint16_t    crnti;
-   SlotIndInfo timingInfo;
+   SlotTimingInfo timingInfo;
    uint16_t    numCrcInd;
    uint8_t     crcInd[MAX_NUMBER_OF_CRC_IND_BITS];
 }CrcIndInfo;
@@ -1551,7 +1551,7 @@ typedef struct srUciIndInfo
 {
    uint16_t    cellId;
    uint16_t    crnti;
-   SlotIndInfo slotInd;
+   SlotTimingInfo slotInd;
    uint8_t     numSrBits;
    uint8_t     srPayload[MAX_SR_BITS_IN_BYTES];
 }SrUciIndInfo;
@@ -1600,7 +1600,7 @@ typedef uint8_t (*SchUeCfgRspFunc) ARGS((
 
 typedef uint8_t (*MacSchSlotIndFunc) ARGS((
          Pst         *pst,          /* Post structure */
-	 SlotIndInfo *slotInd));    /* Slot Info */
+	 SlotTimingInfo *slotInd));    /* Slot Info */
 
 typedef uint8_t (*MacSchBsrFunc)       ARGS((
    Pst                  *pst,
@@ -1636,7 +1636,7 @@ typedef uint8_t (*SchCellDeleteRspFunc) ARGS((
    SchCellDeleteRsp *schCellDeleteRsp));       /* Scheduler UE delete response */
 
 /* function declarations */
-uint8_t packMacSchSlotInd(Pst *pst, SlotIndInfo *slotInd);
+uint8_t packMacSchSlotInd(Pst *pst, SlotTimingInfo *slotInd);
 uint8_t packSchMacDlAlloc(Pst *pst, DlSchedInfo  *dlSchedInfo);
 uint8_t packSchMacUlSchInfo(Pst *pst, UlSchedInfo *ulSchedInfo);
 uint8_t packSchCellCfg(Pst *pst, SchCellCfg  *schCellCfg);
@@ -1657,8 +1657,8 @@ uint8_t packMacSchAddUeConfigReq(Pst *pst, SchUeCfg *ueCfgToSch);
 uint8_t MacSchAddUeConfigReq(Pst *pst, SchUeCfg *ueCfgToSch);
 uint8_t packSchUeCfgRsp(Pst *pst, SchUeCfgRsp *cfgRsp);
 uint8_t MacProcSchUeCfgRsp(Pst *pst, SchUeCfgRsp *cfgRsp);
-uint8_t MacSchSlotInd ARGS((Pst * pst, SlotIndInfo * slotInd));
-uint8_t packMacSchSlotInd(Pst * pst, SlotIndInfo * slotInd);
+uint8_t MacSchSlotInd ARGS((Pst * pst, SlotTimingInfo * slotInd));
+uint8_t packMacSchSlotInd(Pst * pst, SlotTimingInfo * slotInd);
 uint8_t unpackMacSchSlotInd(MacSchSlotIndFunc func, Pst *pst, Buffer  *mBuf);
 uint8_t packMacSchBsr(Pst *pst, UlBufferStatusRptInd *bsrInd);
 uint8_t MacSchBsr(Pst *pst, UlBufferStatusRptInd *bsrInd);

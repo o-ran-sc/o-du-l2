@@ -204,16 +204,16 @@ void fillMsg4Pdu(uint16_t cellId, DlMsgAlloc *msg4Alloc)
  * 
  *      Build and Sends the Muxed Pdu to Lower MAC.
  *           
- *  @param[in]  SlotIndInfo    *slotInd
+ *  @param[in]  SlotTimingInfo    *slotInd
  *  @return  void
  **/
 
-void buildAndSendMuxPdu(SlotIndInfo currTimingInfo)
+void buildAndSendMuxPdu(SlotTimingInfo currTimingInfo)
 {
    uint16_t  cellIdx;
    MacDlSlot *currDlSlot = NULLP;
-   SlotIndInfo muxTimingInfo;
-   memset(&muxTimingInfo, 0, sizeof(SlotIndInfo));
+   SlotTimingInfo muxTimingInfo;
+   memset(&muxTimingInfo, 0, sizeof(SlotTimingInfo));
 
    GET_CELL_IDX(currTimingInfo.cellId, cellIdx);
 
@@ -238,12 +238,12 @@ void buildAndSendMuxPdu(SlotIndInfo currTimingInfo)
  * 
  *      This API is invoked by MAC to send slot ind to scheduler.
  *           
- *  @param[in]  SlotIndInfo    *slotInd
+ *  @param[in]  SlotTimingInfo    *slotInd
  *  @return  
  *      -# ROK 
  *      -# RFAILED 
  **/
-int sendSlotIndMacToSch(SlotIndInfo *slotInd)
+int sendSlotIndMacToSch(SlotTimingInfo *slotInd)
 {
    /* fill Pst structure to send to lwr_mac to MAC */
    Pst pst;
@@ -311,7 +311,7 @@ int sendCellUpIndMacToDuApp(uint16_t cellId)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t macProcSlotInd(SlotIndInfo slotInd)
+uint8_t macProcSlotInd(SlotTimingInfo slotInd)
 {
    uint16_t  cellIdx = 0;
 
@@ -348,12 +348,12 @@ uint8_t macProcSlotInd(SlotIndInfo slotInd)
  *           
  *  @param[in]  Pst            *pst
  *  @param[in]  SuId           suId 
- *  @param[in]  SlotIndInfo    *slotInd
+ *  @param[in]  SlotTimingInfo    *slotInd
  *  @return  
  *      -# ROK 
  *      -# RFAILED 
  **/
-uint8_t fapiMacSlotInd(Pst *pst, SlotIndInfo *slotInd)
+uint8_t fapiMacSlotInd(Pst *pst, SlotTimingInfo *slotInd)
 {
    uint8_t               ret = ROK;
    uint16_t              cellIdx;
@@ -380,7 +380,7 @@ uint8_t fapiMacSlotInd(Pst *pst, SlotIndInfo *slotInd)
    if(ret != ROK)
    {
       DU_LOG("\nERROR  -->  MAC : Sending of slot ind msg from MAC to SCH failed");
-      MAC_FREE_SHRABL_BUF(pst->region, pst->pool, slotInd, sizeof(SlotIndInfo));
+      MAC_FREE_SHRABL_BUF(pst->region, pst->pool, slotInd, sizeof(SlotTimingInfo));
       return ret;
    }
 
@@ -388,7 +388,7 @@ uint8_t fapiMacSlotInd(Pst *pst, SlotIndInfo *slotInd)
    if(ret != ROK)
    {
       DU_LOG("\nERROR  -->  MAC : macProcSlotInd failed");
-      MAC_FREE_SHRABL_BUF(pst->region, pst->pool, slotInd, sizeof(SlotIndInfo));
+      MAC_FREE_SHRABL_BUF(pst->region, pst->pool, slotInd, sizeof(SlotTimingInfo));
       return ret;
    }
 #endif
@@ -400,14 +400,14 @@ uint8_t fapiMacSlotInd(Pst *pst, SlotIndInfo *slotInd)
       if(ret != ROK)
       {
          DU_LOG("\nERROR  -->  MAC :Sending of slot ind msg from MAC to DU APP failed");
-         MAC_FREE_SHRABL_BUF(pst->region, pst->pool, slotInd, sizeof(SlotIndInfo));
+         MAC_FREE_SHRABL_BUF(pst->region, pst->pool, slotInd, sizeof(SlotTimingInfo));
          return ret;
       }
    }
 
    /*stoping Task*/
    ODU_STOP_TASK(startTime, PID_MAC_TTI_IND);
-   MAC_FREE_SHRABL_BUF(pst->region, pst->pool, slotInd, sizeof(SlotIndInfo));
+   MAC_FREE_SHRABL_BUF(pst->region, pst->pool, slotInd, sizeof(SlotTimingInfo));
 
 #ifdef INTEL_WLS_MEM
    lwrMacCb.phySlotIndCntr++;

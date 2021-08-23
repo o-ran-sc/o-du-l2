@@ -299,7 +299,7 @@ uint8_t MacProcRlcDlData(Pst* pstInfo, RlcData *dlData)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t macProcUlData(uint16_t cellId, uint16_t rnti, SlotIndInfo slotInfo, \
+uint8_t macProcUlData(uint16_t cellId, uint16_t rnti, SlotTimingInfo slotInfo, \
 uint8_t lcId, uint16_t pduLen, uint8_t *pdu)
 {
    Pst         pst;
@@ -315,7 +315,7 @@ uint8_t lcId, uint16_t pduLen, uint8_t *pdu)
    memset(ulData, 0, sizeof(RlcData));
    ulData->cellId = cellId; 
    ulData->rnti = rnti;
-   memcpy(&ulData->slotInfo, &slotInfo, sizeof(SlotIndInfo));
+   memcpy(&ulData->slotInfo, &slotInfo, sizeof(SlotTimingInfo));
    ulData->slotInfo.cellId = cellId;
 
    /* Filling pdu info */
@@ -388,7 +388,7 @@ uint8_t MacProcRlcBoStatus(Pst* pst, RlcBoStatus* boStatus)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t sendSchedRptToRlc(DlSchedInfo dlInfo, SlotIndInfo slotInfo)
+uint8_t sendSchedRptToRlc(DlSchedInfo dlInfo, SlotTimingInfo slotInfo)
 {
    Pst      pst;
    uint8_t  lcIdx;

@@ -241,7 +241,7 @@ CmLteTimingInfo   *timeInfo,
 Bool              hqPres
 ));
 
-void schFillCrntTime( SlotIndInfo slotInd,Inst schInst);
+void schFillCrntTime( SlotTimingInfo slotInd,Inst schInst);
 
 #ifdef CA_DBG
 uint32_t delayedApiCnt;
@@ -2375,13 +2375,13 @@ TfuTimingAdvIndInfo *timingAdvInd
  *     4: Fill the Tfu structures for DL and UL Config requests  
  *     5: Handle the RGR Config messages per Cell
  *
- *  @param[in] SlotIndInfo    *slotInd
+ *  @param[in] SlotTimingInfo    *slotInd
  *  @param[in] Inst           schInst
  *  @return  Void
  **/
 Void rgSCHTomTtiInd
 (
-SlotIndInfo        *slotInd,
+SlotTimingInfo        *slotInd,
 Inst               schInst
 )
 {
@@ -7743,7 +7743,7 @@ RgSchCellCb        *cells[]
 }
 #endif
 void schFillCrntTime(
-   SlotIndInfo slotInd,
+   SlotTimingInfo slotInd,
    Inst        schInst)
 {
    uint8_t cellCount = 0;
