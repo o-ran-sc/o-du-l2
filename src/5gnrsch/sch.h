@@ -211,6 +211,18 @@ typedef struct schUeCb
 
 /**
  * @brief
+ * RA Request Info
+ */
+typedef struct schRaReq
+{
+   uint32_t        raRnti;
+   RachIndInfo     *rachInd;
+   SlotTimingInfo  winStartTime;
+   SlotTimingInfo  winEndTime;
+}SchRaReq;
+
+/**
+ * @brief
  * Cell Control block per cell.
  */
 typedef struct schCellCb
@@ -226,7 +238,8 @@ typedef struct schCellCb
    bool          firstSsbTransmitted;
    bool          firstSib1Transmitted;
    uint8_t       ssbStartSymbArr[SCH_MAX_SSB_BEAM]; /*!<start symbol per SSB beam */
-   SchRaCb       raCb[MAX_NUM_UE];                  /*!< Rach Cb */
+   SchRaReq      *raReq[MAX_NUM_UE];                /*!< Pending RA request */
+   SchRaCb       raCb[MAX_NUM_UE];                  /*!< RA Cb */
    uint16_t      numActvUe;                         /*!<Number of active UEs */
    uint32_t      actvUeBitMap;                      /*!<Bit map to find active UEs */
    uint32_t      boIndBitMap;                       /*!<Bit map to indicate UEs that have recevied BO */
@@ -276,7 +289,7 @@ uint16_t schAccumalateLcBoSize(SchCellCb *cell, uint16_t ueIdx);
 uint8_t schFillRar(RarAlloc *rarAlloc, uint16_t raRnti, uint16_t pci, uint8_t offsetPointA, bool ssbPresent, bool sib1Present);
 void BuildK0K1Table(SchCellCb *cell, SchK0K1TimingInfoTbl *k0K1InfoTbl, bool pdschCfgCmnPres, SchPdschCfgCmn pdschCmnCfg,\
 SchPdschConfig pdschDedCfg, uint8_t ulAckListCount, uint8_t *UlAckTbl);
-
+void schProcessRaReq(SlotTimingInfo currTime, SchCellCb *cellCb);
 /**********************************************************************
   End of file
  **********************************************************************/
