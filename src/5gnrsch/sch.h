@@ -274,6 +274,8 @@ uint8_t schDlRsrcAllocDlMsg(DlMsgAlloc *dlMsgAlloc, SchCellCb *cell, uint16_t cr
    uint32_t *accumalatedSize, uint16_t slot);
 uint16_t schAccumalateLcBoSize(SchCellCb *cell, uint16_t ueIdx);
 uint8_t schFillRar(RarAlloc *rarAlloc, uint16_t raRnti, uint16_t pci, uint8_t offsetPointA, bool ssbPresent, bool sib1Present);
+void BuildK0K1Table(SchCellCb *cell, SchK0K1TimingInfoTbl *k0K1InfoTbl, bool pdschCfgCmnPres, SchPdschCfgCmn pdschCmnCfg,\
+SchPdschConfig pdschDedCfg, uint8_t ulAckListCount, uint8_t *UlAckTbl);
 
 /**********************************************************************
   End of file

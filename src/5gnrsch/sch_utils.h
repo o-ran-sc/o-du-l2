@@ -31,6 +31,7 @@
 #define MAX_PRACH_CONFIG_IDX   256
 #define MAX_MU_PUSCH           4
 #define TOTAL_TBSIZE_VALUES    93
+#define DEFAULT_UL_ACK_LIST_COUNT 8 /* Max number of pusch time domain uplink allocation */
 
 #define SET_BITS_MSB(_startBit, _numBits, _byte) \
 {                                                \
@@ -97,6 +98,7 @@
 
 int8_t coresetIdxTable[MAX_CORESET_INDEX][4];
 int8_t searchSpaceIdxTable[MAX_SEARCH_SPACE_INDEX][4];
+uint8_t defaultUlAckTbl[DEFAULT_UL_ACK_LIST_COUNT];
 
 /* functions declarations */
 void freqDomRscAllocType0(uint16_t startPrb, uint16_t prbSize, uint8_t *freqDomain);
@@ -105,6 +107,7 @@ uint16_t schCalcNumPrb(uint16_t tbSize, uint16_t mcs, uint8_t numSymbols);
 uint16_t schCalcTbSizeFromNPrb(uint16_t numPrb, uint16_t mcs, uint8_t numSymbols);
 #ifdef NR_TDD
 SlotConfig schGetSlotSymbFrmt(uint16_t slot, uint32_t bitMap);
+uint8_t calculateSlotPatternLength(uint8_t scs, uint8_t periodicity);
 #endif
 
 /**********************************************************************
