@@ -62,10 +62,10 @@ uint8_t puschDeltaTable[MAX_MU_PUSCH];
 uint16_t calculateRaRnti(uint8_t symbolIdx, uint8_t slotIdx, uint8_t freqIdx)
 {
    uint16_t raRnti = 0;
-   uint8_t ulCarrierIdx = 0; /* configured to 0 */
+   uint8_t  ulCarrierIdx = 0; /* Uplink carrier used for MSG1 transmission. 0:NUL carrier; 1:SUL carrier */
    
-   raRnti = (1+symbolIdx+(14*slotIdx)+(14*80*freqIdx)+(14*80*8*ulCarrierIdx));
-   
+   /* Refer to spec 38.321, section 5.1.3 */
+   raRnti = (1 + symbolIdx + (14*slotIdx) + (14*80*freqIdx) + (14*80*8*ulCarrierIdx));
    return raRnti;
 }
 
@@ -169,7 +169,108 @@ uint8_t schAllocMsg3Pusch(Inst schInst, uint16_t slot, uint16_t crnti, \
    return ROK;
 }
 
+/**
+ * @brief Processes any pending RA request
+ *
+ * @details
+ *
+ *     Function : schProcessRaReq
+ *
+ *     This function process pending RA request
+ *
+ *  @param[in]  Current timing of the cell
+ *  @return  ROK
+ **/
+void schProcessRaReq(SlotTimingInfo currTime, SchCellCb *cell)
+{
+   uint8_t ueIdx = 0;
+   RarInfo *rarInfo = NULLP;
+   uint16_t raRnti = 0;
+   uint16_t rarSlot = 0;
+   uint16_t msg3StartRb;
+   uint8_t  msg3NumRb;
+   uint8_t  ret = ROK;
+   uint8_t delta = 0;
+   uint8_t k2 = 0;
+   uint8_t puschMu = 0;
+   uint16_t msg3Slot = 0;
+#ifdef NR_TDD
+   uint16_t slotIdx = 0;
+#endif
 
+   while(ueIdx < MAX_NUM_UE)
+   {
+      if(cell->raReq[ueIdx] == NULLP)
+      {
+         ueIdx++;
+         continue;
+      }
+
+      //puschMu = cell->cellCfg.puschMu;
+      delta = puschDeltaTable[puschMu];
+      k2 = cell->cellCfg.schInitialUlBwp.puschCommon.timeDomRsrcAllocList[0].k2;
+
+      /* RAR will sent with a delay of RAR_DELAY */
+      rarSlot = (currTime.slot + RAR_DELAY + PHY_DELTA_DL) % cell->numSlots;
+#ifdef NR_TDD
+      for(slotIdx=0; slotIdx<cell->numSlots;slotIdx++)
+      {
+         /* Slot allocation for msg3 based on 38.214 section 6.1.2.1 */
+         msg3Slot = (rarSlot+delta+k2)%cell->numSlots;
+
+         if((schGetSlotSymbFrmt(rarSlot, cell->slotFrmtBitMap) != DL_SLOT) &&\
+               (schGetSlotSymbFrmt(msg3Slot, cell->slotFrmtBitMap) != UL_SLOT))
+         {
+            rarSlot = (rarSlot + 1) % cell->numSlots;
+            continue;
+         }
+         break;
+      }
+      if(slotIdx>=cell->numSlots)
+      {
+         DU_LOG("\nERROR  -->  SCH : NO Slot for Msg2 with Msg3 Grant\n");
+         return RFAILED;
+      }
+#else
+      /* Slot allocation for msg3 based on 38.214 section 6.1.2.1 */
+      msg3Slot = rarSlot + k2 + delta;
+      msg3Slot = msg3Slot % cell->numSlots; 
+#endif
+
+      SchDlSlotInfo *schDlSlotInfo = cell->schDlSlotInfo[rarSlot]; /* RAR will sent in the next slot */
+
+      /* Allocate the rarInfo, this pointer will be checked at schProcessSlotInd function */
+      SCH_ALLOC(rarInfo, sizeof(RarInfo));
+      if(rarInfo == NULLP)
+      {
+         DU_LOG("\nERROR  -->  SCH : Memory Allocation failed for rarInfo");
+         return RFAILED;
+      }
+
+      schDlSlotInfo->rarInfo = rarInfo;
+
+      /* create raCb at SCH */
+      createSchRaCb(cell->raReq[ueIdx]->rachInd->crnti, cell->instIdx);
+
+      /* allocate resources for msg3 */
+      ret = schAllocMsg3Pusch(cell->instIdx, rarSlot, cell->raReq[ueIdx]->rachInd->crnti, &msg3StartRb, &msg3NumRb, msg3Slot);
+      if(ret == ROK)
+      {
+         /* fill RAR info */
+         rarInfo->raRnti                 = cell->raReq[ueIdx]->raRnti;
+         rarInfo->tcrnti                 = cell->raReq[ueIdx]->rachInd->crnti;
+         rarInfo->RAPID                  = cell->raReq[ueIdx]->rachInd->preambleIdx;
+         rarInfo->ta                     = cell->raReq[ueIdx]->rachInd->timingAdv;
+         rarInfo->msg3FreqAlloc.startPrb = msg3StartRb;
+         rarInfo->msg3FreqAlloc.numPrb   = msg3NumRb;
+      }
+
+      SCH_FREE(cell->raReq[ueIdx]->rachInd, sizeof(RachIndInfo));
+      SCH_FREE(cell->raReq[ueIdx], sizeof(SchRaReq));
+      ueIdx++;
+
+   } /* End of while(ueIdx < MAX_NUM_UE) */
+}
 
 /**
  * @brief process rach indication function. 
@@ -187,81 +288,37 @@ uint8_t schAllocMsg3Pusch(Inst schInst, uint16_t slot, uint16_t crnti, \
 uint8_t schProcessRachInd(RachIndInfo *rachInd, Inst schInst)
 {
    SchCellCb *cell = schCb[schInst].cells[schInst];
-   RarInfo *rarInfo = NULLP;
-   uint16_t raRnti = 0;
-   uint16_t rarSlot = 0;
-   uint16_t msg3StartRb;
-   uint8_t  msg3NumRb;
-   uint8_t  ret = ROK;
-   uint8_t delta = 0;
-   uint8_t k2 = 0; 
-   uint8_t puschMu = 0;
-   uint16_t msg3Slot = 0;
-#ifdef NR_TDD
-   uint16_t slotIdx = 0;
-#endif
+   SchRaReq  *raReq = NULLP;
+   float    slotDuration;
+   uint8_t  winNumSlots;
+   uint8_t  ueIdx;
 
-   //puschMu = cell->cellCfg.puschMu;
-   delta = puschDeltaTable[puschMu];
-   k2 = cell->cellCfg.schInitialUlBwp.puschCommon.timeDomRsrcAllocList[0].k2;
-   /* RAR will sent with a delay of RAR_DELAY */
-   rarSlot = (rachInd->timingInfo.slot+RAR_DELAY+PHY_DELTA_DL)%cell->numSlots;
-#ifdef NR_TDD
-   for(slotIdx=0; slotIdx<cell->numSlots;slotIdx++)
+   SCH_ALLOC(raReq, sizeof(SchRaReq));
+   if(!raReq)
    {
-      /* Slot allocation for msg3 based on 38.214 section 6.1.2.1 */
-      msg3Slot = (rarSlot+delta+k2)%cell->numSlots;
-
-      if((schGetSlotSymbFrmt(rarSlot, cell->slotFrmtBitMap) != DL_SLOT) &&\
-         (schGetSlotSymbFrmt(msg3Slot, cell->slotFrmtBitMap) != UL_SLOT))
-      {
-         rarSlot = (rarSlot + 1) % cell->numSlots;
-         continue;
-      }
-      break;
-   }
-   if(slotIdx>=cell->numSlots)
-   {
-       DU_LOG("\nERROR  -->  SCH : NO Slot for Msg2 with Msg3 Grant\n");
-       return RFAILED;
-   }
-#else
-   /* Slot allocation for msg3 based on 38.214 section 6.1.2.1 */
-   msg3Slot = rarSlot + k2 + delta;
-   msg3Slot = msg3Slot % cell->numSlots; 
-#endif
-
-   SchDlSlotInfo *schDlSlotInfo = cell->schDlSlotInfo[rarSlot]; /* RAR will sent in the next slot */
-
-   /* Allocate the rarInfo, this pointer will be checked at schProcessSlotInd function */
-   SCH_ALLOC(rarInfo, sizeof(RarInfo));
-   if(rarInfo == NULLP)
-   {
-      DU_LOG("\nERROR  -->  SCH : Memory Allocation failed for rarInfo");
+      DU_LOG("\nERROR  -->  SCH : Memory allocation failure in schProcessRachInd");
+      SCH_FREE(rachInd, sizeof(RachIndInfo));
       return RFAILED;
    }
 
-   schDlSlotInfo->rarInfo = rarInfo;
-
    /* calculate the ra-rnti value */
-   raRnti = calculateRaRnti(rachInd->symbolIdx,rachInd->slotIdx,rachInd->freqIdx);
+   raReq->raRnti = calculateRaRnti(rachInd->symbolIdx, rachInd->slotIdx, rachInd->freqIdx);
+   raReq->rachInd = rachInd;
+   raReq->winStartTime.sfn = rachInd->timingInfo.sfn;
+   raReq->winStartTime.slot = rachInd->timingInfo.slot;
+  
+   /* Converting window size from ms to number of slots */
+   slotDuration = (1 / pow(2, cell->cellCfg.numerology));
+   winNumSlots = (float)cell->cellCfg.schRachCfg.raRspWindow / slotDuration;
+   
+   /* Adding window size to window start time to get window end time */
+   ADD_DELTA_TO_TIME(raReq->winStartTime, raReq->winEndTime, winNumSlots);
 
-   /* create raCb at SCH */
-   createSchRaCb(rachInd->crnti,schInst);
+   /* Storing RA request in cellCb */
+   GET_UE_IDX(rachInd->crnti, ueIdx);
+   cell->raReq[ueIdx] = raReq;
 
-   /* allocate resources for msg3 */
-   ret = schAllocMsg3Pusch(schInst, rarSlot, rachInd->crnti, &msg3StartRb, &msg3NumRb, msg3Slot);
-   if(ret == ROK)
-   {
-      /* fill RAR info */
-      rarInfo->raRnti                 = raRnti;
-      rarInfo->tcrnti                 = rachInd->crnti;
-      rarInfo->RAPID                  = rachInd->preambleIdx;
-      rarInfo->ta                     = rachInd->timingAdv;
-      rarInfo->msg3FreqAlloc.startPrb = msg3StartRb;
-      rarInfo->msg3FreqAlloc.numPrb   = msg3NumRb;
-   }
-   return ret;
+   return ROK;
 }
 
 /**

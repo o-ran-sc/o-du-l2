@@ -312,6 +312,9 @@ uint8_t schProcessSlotInd(SlotTimingInfo *slotInd, Inst schInst)
       }
    }
 
+   /* Check for Pending RA Requests */
+   schProcessRaReq(*slotInd, cell);
+
    /* check for RAR */
    if(cell->schDlSlotInfo[dlSchedInfo.schSlotValue.rarTime.slot]->rarInfo != NULLP)
    {
