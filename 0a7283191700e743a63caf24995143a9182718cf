@@ -18,6 +18,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0f5424c6_f4f17ebd",
+        "filename": "src/5gnrsch/sch.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 258,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-08-23T12:18:27Z",
+      "side": 1,
+      "message": "Done, move in sch_utils.h",
+      "parentUuid": "7fc41cff_8e4b518d",
+      "revId": "0a7283191700e743a63caf24995143a9182718cf",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "13f9ec24_881eea27",
@@ -31,6 +49,24 @@
       "writtenOn": "2021-08-23T10:52:00Z",
       "side": 1,
       "message": "memseting is no dictionary word. Just say Initialization",
+      "revId": "0a7283191700e743a63caf24995143a9182718cf",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7d944439_7ca8fcbb",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 871,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-08-23T12:18:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "13f9ec24_881eea27",
       "revId": "0a7283191700e743a63caf24995143a9182718cf",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -52,6 +88,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d3b90046_b3a33b55",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 898,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-08-23T12:18:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c3bab5c0_a650cb7c",
+      "revId": "0a7283191700e743a63caf24995143a9182718cf",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d2e6925a_10bf71b3",
@@ -65,6 +119,24 @@
       "writtenOn": "2021-08-23T10:52:00Z",
       "side": 1,
       "message": "Put a full stop after \"allocation list\" since you are starting a new sentence after that.\nIts confusing right now",
+      "revId": "0a7283191700e743a63caf24995143a9182718cf",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d0c68d58_55a949d7",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 899,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-08-23T12:18:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d2e6925a_10bf71b3",
       "revId": "0a7283191700e743a63caf24995143a9182718cf",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -86,6 +158,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fcafb540_eab20bff",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 919,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-08-23T12:18:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9dacbc28_b517543f",
+      "revId": "0a7283191700e743a63caf24995143a9182718cf",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f7ee4d81_aa582590",
@@ -99,6 +189,24 @@
       "writtenOn": "2021-08-23T10:52:00Z",
       "side": 1,
       "message": "not clear what do you mean by \"Current slot + k0 + k1 should UL/FX to send PUSCH/PUCCH hq feedback\"",
+      "revId": "0a7283191700e743a63caf24995143a9182718cf",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ed39ec11_2fa1571b",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 933,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-08-23T12:18:27Z",
+      "side": 1,
+      "message": "not need this comment in FDD.",
+      "parentUuid": "f7ee4d81_aa582590",
       "revId": "0a7283191700e743a63caf24995143a9182718cf",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -120,6 +228,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8dcc972c_a521a619",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 989,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-08-23T12:18:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4299a390_1e28c8c8",
+      "revId": "0a7283191700e743a63caf24995143a9182718cf",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7e9435b7_cd3a1f9e",
@@ -133,6 +259,24 @@
       "writtenOn": "2021-08-23T10:52:00Z",
       "side": 1,
       "message": "say \"common or dedicated\" instead of using \"and\", because at a time only one of the 2 will be used",
+      "revId": "0a7283191700e743a63caf24995143a9182718cf",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d8f6847d_fbcd1419",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 995,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-08-23T12:18:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7e9435b7_cd3a1f9e",
       "revId": "0a7283191700e743a63caf24995143a9182718cf",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -154,6 +298,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "04ed2819_1b50a724",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1016,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-08-23T12:18:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "979db99e_bc017fac",
+      "revId": "0a7283191700e743a63caf24995143a9182718cf",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b50e53e4_020bd57f",
@@ -167,6 +329,24 @@
       "writtenOn": "2021-08-23T10:52:00Z",
       "side": 1,
       "message": "Always start a sentence with capital letter.\nCorrect the spelling of length",
+      "revId": "0a7283191700e743a63caf24995143a9182718cf",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b5892c30_79766ec5",
+        "filename": "src/5gnrsch/sch_utils.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1045,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-08-23T12:18:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b50e53e4_020bd57f",
       "revId": "0a7283191700e743a63caf24995143a9182718cf",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -188,6 +368,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "66aa67f8_050868e4",
+        "filename": "src/5gnrsch/sch_utils.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1057,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-08-23T12:18:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d3e810da_43feb563",
+      "revId": "0a7283191700e743a63caf24995143a9182718cf",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8e09c636_a204a641",
@@ -201,6 +399,24 @@
       "writtenOn": "2021-08-23T10:52:00Z",
       "side": 1,
       "message": "explain the calculation in comment",
+      "revId": "0a7283191700e743a63caf24995143a9182718cf",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "699803c2_1ad5a436",
+        "filename": "src/5gnrsch/sch_utils.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1058,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-08-23T12:18:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8e09c636_a204a641",
       "revId": "0a7283191700e743a63caf24995143a9182718cf",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
