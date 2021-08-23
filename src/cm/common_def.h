@@ -230,12 +230,12 @@ typedef enum
    CELL_DOWN
 }OduCellStatus;
 
-typedef struct slotIndInfo
+typedef struct slotTimingInfo
 {
    uint16_t cellId;
    uint16_t sfn;
    uint16_t slot;
-}SlotIndInfo;
+}SlotTimingInfo;
 
 typedef struct PlmnIdentity
 {

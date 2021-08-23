@@ -96,7 +96,7 @@ uint8_t sendDlAllocToMac(DlSchedInfo *dlSchedInfo, Inst inst)
  *         RFAILED - failure
  *
  * ****************************************************************/
-void schCalcSlotValues(SlotIndInfo slotInd, SchSlotValue *schSlotValue)
+void schCalcSlotValues(SlotTimingInfo slotInd, SchSlotValue *schSlotValue)
 {
    /****************************************************************
     * PHY_DELTA - the physical layer delta                         * 
@@ -227,7 +227,7 @@ uint8_t schFillBoGrantDlSchedInfo(SchCellCb *cell, DlSchedInfo *dlSchedInfo, DlM
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t schProcessSlotInd(SlotIndInfo *slotInd, Inst schInst)
+uint8_t schProcessSlotInd(SlotTimingInfo *slotInd, Inst schInst)
 {
    uint8_t  ssb_rep, ueIdx, lcgIdx, ret = ROK;
    uint16_t slot;
@@ -253,7 +253,7 @@ uint8_t schProcessSlotInd(SlotIndInfo *slotInd, Inst schInst)
       return RFAILED;
    }
    ssb_rep = cell->cellCfg.ssbSchCfg.ssbPeriod;
-   memcpy(&cell->slotInfo, slotInd, sizeof(SlotIndInfo));
+   memcpy(&cell->slotInfo, slotInd, sizeof(SlotTimingInfo));
    dlBrdcstAlloc->ssbIdxSupported = 1;
 
    slot = dlSchedInfo.schSlotValue.currentTime.slot;
@@ -401,13 +401,13 @@ uint8_t schProcessSlotInd(SlotIndInfo *slotInd, Inst schInst)
          }
          memset(dciInfo,0,sizeof(DciInfo));
          /* update the SFN and SLOT */
-         memcpy(&dlSchedInfo.schSlotValue.ulDciTime, slotInd, sizeof(SlotIndInfo));
+         memcpy(&dlSchedInfo.schSlotValue.ulDciTime, slotInd, sizeof(SlotTimingInfo));
          slot = dlSchedInfo.schSlotValue.ulDciTime.slot;
          /* Update PUSCH allocation */
          schFillPuschAlloc(ueCb, slot, totDataReq, &schPuschInfo);
          /* Fill DCI for UL grant */
          schFillUlDci(ueCb, schPuschInfo, dciInfo);
-         memcpy(&dciInfo->slotIndInfo, &dlSchedInfo.schSlotValue.ulDciTime, sizeof(SlotIndInfo));
+         memcpy(&dciInfo->slotIndInfo, &dlSchedInfo.schSlotValue.ulDciTime, sizeof(SlotTimingInfo));
          dlSchedInfo.ulGrant = dciInfo;
       }
    }

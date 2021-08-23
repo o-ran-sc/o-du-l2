@@ -229,7 +229,7 @@ uint8_t unpackRachInd(RachIndFunc func, Pst *pst, Buffer *mBuf)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t packSlotInd (Pst *pst, SlotIndInfo *slotInd)
+uint8_t packSlotInd (Pst *pst, SlotTimingInfo *slotInd)
 {
    if(pst->selector == ODU_SELECTOR_LWLC)
    {
@@ -266,7 +266,7 @@ uint8_t unpackSlotInd(SlotIndFunc func, Pst *pst, Buffer *mBuf)
 {
    if(pst->selector == ODU_SELECTOR_LWLC)
    {
-      SlotIndInfo *slotInd = NULLP;
+      SlotTimingInfo *slotInd = NULLP;
 
       /* unpack the address of the structure */
       CMCHKUNPK(oduUnpackPointer, (PTR *)&slotInd, mBuf);

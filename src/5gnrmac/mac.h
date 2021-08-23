@@ -195,7 +195,7 @@ struct macCellCb
    MacUeCfg    *ueCfgTmpData[MAX_NUM_UE];
    MacUeCb     ueCb[MAX_NUM_UE];
    MacCellCfg  macCellCfg;
-   SlotIndInfo currTime;
+   SlotTimingInfo currTime;
 };
 
 typedef struct macCb
@@ -219,14 +219,14 @@ void createMacRaCb(RachIndInfo *rachIndInfo);
 void fillMsg4DlData(MacDlData *dlData, uint16_t msg4PduLen, uint8_t *msg4Pdu);
 void fillMacCe(MacCeInfo  *macCeData, uint8_t *msg3Pdu);
 void macMuxPdu(MacDlData *dlData, MacCeInfo *macCeData, uint8_t *msg4TxPdu, uint16_t tbSize);
-uint8_t unpackRxData(uint16_t cellId, SlotIndInfo slotInfo, RxDataIndPdu *rxDataIndPdu);
+uint8_t unpackRxData(uint16_t cellId, SlotTimingInfo slotInfo, RxDataIndPdu *rxDataIndPdu);
 void fillMg4Pdu(DlMsgAlloc *msg4Alloc);
-void buildAndSendMuxPdu(SlotIndInfo currTimingInfo);
+void buildAndSendMuxPdu(SlotTimingInfo currTimingInfo);
 uint8_t macProcUlCcchInd(uint16_t cellId, uint16_t crnti, uint16_t rrcContSize, uint8_t *rrcContainer);
 uint8_t macProcShortBsr(uint16_t cellId, uint16_t crnti, uint8_t lcgId, uint32_t bufferSize);
-uint8_t macProcUlData(uint16_t cellId, uint16_t rnti, SlotIndInfo slotInfo, \
+uint8_t macProcUlData(uint16_t cellId, uint16_t rnti, SlotTimingInfo slotInfo, \
    uint8_t lcId, uint16_t pduLen, uint8_t *pdu);
-uint8_t sendSchedRptToRlc(DlSchedInfo dlInfo, SlotIndInfo slotInfo);
+uint8_t sendSchedRptToRlc(DlSchedInfo dlInfo, SlotTimingInfo slotInfo);
 #endif
 /**********************************************************************
   End of file

@@ -55,7 +55,7 @@ typedef struct rlcSchedResultRpt
    uint16_t       cellId;       /*!< CELL ID */
    uint16_t       rnti;         /*!< Temporary CRNTI */
    uint8_t        numLc;        /*!< Number of logical channels scheduled */
-   SlotIndInfo    slotInfo;     /*!< Timing info */
+   SlotTimingInfo    slotInfo;     /*!< Timing info */
    RlcLcSchInfo   lcSch[MAX_NUM_LC];  /*!< Scheduled info of logical channels */
 }RlcSchedResultRpt;
 
@@ -72,7 +72,7 @@ typedef struct rlcData
 {
    uint16_t      cellId;       /*!< CELL ID */
    uint16_t      rnti;         /*!< Temporary CRNTI */
-   SlotIndInfo   slotInfo;     /*!< Timing info */
+   SlotTimingInfo   slotInfo;     /*!< Timing info */
    uint8_t       numPdu;       /*!< Number of RLC PDUs */
    RlcPduInfo    pduInfo[MAX_NUM_PDU];
    uint8_t       numLc;

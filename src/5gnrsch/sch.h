@@ -219,7 +219,7 @@ typedef struct schCellCb
    Inst          instIdx;                           /*!< Index of the scheduler instance */
    Inst          macInst;                           /*!< Index of the MAC instance */
    uint8_t       numSlots;                          /*!< Number of slots in current frame */
-   SlotIndInfo   slotInfo;                          /*!< SFN, Slot info being processed*/
+   SlotTimingInfo   slotInfo;                          /*!< SFN, Slot info being processed*/
    SchDlSlotInfo **schDlSlotInfo;                   /*!< SCH resource allocations in DL */
    SchUlSlotInfo **schUlSlotInfo;                   /*!< SCH resource allocations in UL */
    SchCellCfg    cellCfg;                           /*!< Cell ocnfiguration */
@@ -261,7 +261,7 @@ void schInitDlSlot(SchDlSlotInfo *schDlSlotInfo);
 uint8_t SchSendCfgCfm(Pst *pst, RgMngmt *cfm);
 short int schActvTmr(Ent ent,Inst inst);
 uint8_t schBroadcastAlloc(SchCellCb *cell, DlBrdcstAlloc *dlBrdcstAlloc,uint16_t slot);
-uint8_t schProcessSlotInd(SlotIndInfo *slotInd, Inst inst);
+uint8_t schProcessSlotInd(SlotTimingInfo *slotInd, Inst inst);
 uint8_t schUlResAlloc(SchCellCb *cell, Inst schInst);
 uint8_t schDlRsrcAllocMsg4(DlMsgAlloc *msg4Alloc, SchCellCb *cell, uint16_t slot, bool ssbPresent, bool sib1Present);
 uint16_t schCalcTbSize(uint32_t payLoadSize);

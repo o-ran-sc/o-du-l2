@@ -52,10 +52,10 @@ LwrMacCb lwrMacCb;
 
 uint8_t UnrestrictedSetNcsTable[MAX_ZERO_CORR_CFG_IDX];
 void fapiMacConfigRsp(uint16_t cellId);
-uint16_t sendTxDataReq(SlotIndInfo currTimingInfo, DlSchedInfo *dlInfo, p_fapi_api_queue_elem_t prevElem);
-uint16_t fillUlTtiReq(SlotIndInfo currTimingInfo, p_fapi_api_queue_elem_t prevElem);
-uint16_t fillUlDciReq(SlotIndInfo currTimingInfo, p_fapi_api_queue_elem_t prevElem);
-uint8_t lwr_mac_procStopReqEvt(SlotIndInfo slotInfo, p_fapi_api_queue_elem_t  prevElem);
+uint16_t sendTxDataReq(SlotTimingInfo currTimingInfo, DlSchedInfo *dlInfo, p_fapi_api_queue_elem_t prevElem);
+uint16_t fillUlTtiReq(SlotTimingInfo currTimingInfo, p_fapi_api_queue_elem_t prevElem);
+uint16_t fillUlDciReq(SlotTimingInfo currTimingInfo, p_fapi_api_queue_elem_t prevElem);
+uint8_t lwr_mac_procStopReqEvt(SlotTimingInfo slotInfo, p_fapi_api_queue_elem_t  prevElem);
 
 void lwrMacLayerInit(Region region, Pool pool)
 {
@@ -2371,7 +2371,7 @@ uint8_t lwr_mac_procStartReqEvt(void *msg)
  *
  ********************************************************************/
 
-uint8_t lwr_mac_procStopReqEvt(SlotIndInfo slotInfo, p_fapi_api_queue_elem_t  prevElem)
+uint8_t lwr_mac_procStopReqEvt(SlotTimingInfo slotInfo, p_fapi_api_queue_elem_t  prevElem)
 {
 #ifdef INTEL_FAPI
 #ifdef CALL_FLOW_DEBUG_LOG
@@ -3341,7 +3341,7 @@ uint8_t fillDlMsgTxDataReq(fapi_tx_pdu_desc_t *pduDesc, uint16_t pduIndex, DlMsg
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint16_t fillDlTtiReq(SlotIndInfo currTimingInfo)
+uint16_t fillDlTtiReq(SlotTimingInfo currTimingInfo)
 {
 #ifdef CALL_FLOW_DEBUG_LOG
    DU_LOG("\nCall Flow: ENTMAC -> ENTLWRMAC : DL_TTI_REQUEST\n");
@@ -3354,7 +3354,7 @@ uint16_t fillDlTtiReq(SlotIndInfo currTimingInfo)
    uint16_t cellIdx =0;
    uint16_t pduIndex = 0;
 
-   SlotIndInfo dlTtiReqTimingInfo;
+   SlotTimingInfo dlTtiReqTimingInfo;
    MacDlSlot *currDlSlot = NULLP;
    MacCellCfg macCellCfg;
    RntiType rntiType;
@@ -3588,7 +3588,7 @@ uint16_t fillDlTtiReq(SlotIndInfo currTimingInfo)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint16_t sendTxDataReq(SlotIndInfo currTimingInfo, DlSchedInfo *dlInfo, p_fapi_api_queue_elem_t prevElem)
+uint16_t sendTxDataReq(SlotTimingInfo currTimingInfo, DlSchedInfo *dlInfo, p_fapi_api_queue_elem_t prevElem)
 {
 #ifdef INTEL_FAPI
 #ifdef CALL_FLOW_DEBUG_LOG
@@ -3941,7 +3941,7 @@ void fillPucchPdu(fapi_ul_tti_req_pdu_t *ulTtiReqPdu, MacCellCfg *macCellCfg,\
  *         RFAILED - failure
  *
  ******************************************************************/
-uint16_t fillUlTtiReq(SlotIndInfo currTimingInfo, p_fapi_api_queue_elem_t prevElem)
+uint16_t fillUlTtiReq(SlotTimingInfo currTimingInfo, p_fapi_api_queue_elem_t prevElem)
 {
 #ifdef CALL_FLOW_DEBUG_LOG
    DU_LOG("\nCall Flow: ENTMAC -> ENTLWRMAC : UL_TTI_REQUEST\n");
@@ -3950,7 +3950,7 @@ uint16_t fillUlTtiReq(SlotIndInfo currTimingInfo, p_fapi_api_queue_elem_t prevEl
 #ifdef INTEL_FAPI
    uint16_t   cellIdx =0;
    uint8_t    pduIdx = -1;
-   SlotIndInfo ulTtiReqTimingInfo;
+   SlotTimingInfo ulTtiReqTimingInfo;
    MacUlSlot *currUlSlot = NULLP;
    MacCellCfg macCellCfg;
    fapi_ul_tti_req_t *ulTtiReq = NULLP;
@@ -4239,12 +4239,12 @@ uint8_t fillUlDciPdcchPdu(fapi_dci_pdu_t *ulDciReqPdu, DlSchedInfo *dlInfo, uint
  *         RFAILED - failure
  *
  ******************************************************************/
-uint16_t fillUlDciReq(SlotIndInfo currTimingInfo, p_fapi_api_queue_elem_t prevElem)
+uint16_t fillUlDciReq(SlotTimingInfo currTimingInfo, p_fapi_api_queue_elem_t prevElem)
 {
 #ifdef INTEL_FAPI
    uint8_t      cellIdx =0;
    uint8_t      numPduEncoded = 0;
-   SlotIndInfo  ulDciReqTimingInfo ={0};
+   SlotTimingInfo  ulDciReqTimingInfo ={0};
    MacDlSlot    *currDlSlot = NULLP;
    fapi_ul_dci_req_t        *ulDciReq =NULLP;
    p_fapi_api_queue_elem_t  ulDciElem;
@@ -4252,7 +4252,7 @@ uint16_t fillUlDciReq(SlotIndInfo currTimingInfo, p_fapi_api_queue_elem_t prevEl
    if(lwrMacCb.phyState == PHY_STATE_RUNNING)
    {
       GET_CELL_IDX(currTimingInfo.cellId, cellIdx);
-      memcpy(&ulDciReqTimingInfo, &currTimingInfo, sizeof(SlotIndInfo));
+      memcpy(&ulDciReqTimingInfo, &currTimingInfo, sizeof(SlotTimingInfo));
       currDlSlot = &macCb.macCell[cellIdx]->dlSlot[ulDciReqTimingInfo.slot % MAX_SLOTS];
 
          LWR_MAC_ALLOC(ulDciElem, (sizeof(fapi_api_queue_elem_t) + sizeof(fapi_ul_dci_req_t)));

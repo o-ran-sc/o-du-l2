@@ -20,7 +20,7 @@
  *  @return  S16
  *      -# ROK
  **/
-uint8_t packMacSchSlotInd(Pst *pst, SlotIndInfo *slotInd)
+uint8_t packMacSchSlotInd(Pst *pst, SlotTimingInfo *slotInd)
 {
    Buffer *mBuf = NULLP;
    if (ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf) != ROK)
