@@ -245,14 +245,7 @@ void l1HdlParamReq(uint32_t msgLen, void *msg)
 
 void l1HdlConfigReq(uint32_t msgLen, void *msg)
 {
-   rachIndSent = false;
-   msg3Sent = false;
-   msg5ShortBsrSent = false;
-   msg5Sent = false;
-   dlDedMsg = false;
-   msgSecurityModeComp =  false;
-   msgRrcReconfiguration  =  false;
-   msgRegistrationComp    = false;
+   memset(&ueDb, 0, sizeof(UeDb));
 
 #ifdef INTEL_FAPI
    p_fapi_api_queue_elem_t configReqElem = (p_fapi_api_queue_elem_t)msg;
@@ -348,7 +341,7 @@ uint16_t l1BuildAndSendCrcInd(uint16_t slot, uint16_t sfn)
  * ****************************************************************/
 uint16_t l1BuildAndSendRxDataInd(uint16_t slot, uint16_t sfn, fapi_ul_pusch_pdu_t puschPdu)
 {
-   uint8_t idx = 0;
+   uint8_t idx = 0, ueId = 0;
    fapi_rx_data_indication_t *rxDataInd =NULLP;
    fapi_pdu_ind_info_t       *pduInfo =NULLP;
    uint8_t  *pdu = NULLP;
@@ -356,35 +349,38 @@ uint16_t l1BuildAndSendRxDataInd(uint16_t slot, uint16_t sfn, fapi_ul_pusch_pdu_
    uint32_t msgLen = 0;
    MsgType type = 0;
 
-   if(!msg3Sent)
+   GET_UE_IDX(puschPdu.rnti, ueId);
+   if(!ueDb.ueCb[ueId-1].msg3Sent)
    {
-      msg3Sent = true;
+      ueDb.ueCb[ueId-1].ueId = ueId;
+      ueDb.ueCb[ueId-1].crnti = puschPdu.rnti;
+      ueDb.ueCb[ueId-1].msg3Sent = true;
       type = MSG_TYPE_MSG3;
       sleep(2);
    }
-   else if(!msg5ShortBsrSent)
+   else if(!ueDb.ueCb[ueId-1].msg5ShortBsrSent)
    {
-      msg5ShortBsrSent = true;
+      ueDb.ueCb[ueId-1].msg5ShortBsrSent = true;
       type = MSG_TYPE_SHORT_BSR;
    }
-   else if(!msg5Sent)
+   else if(!ueDb.ueCb[ueId-1].msg5Sent)
    {
-      msg5Sent = true;
+      ueDb.ueCb[ueId-1].msg5Sent = true;
       type = MSG_TYPE_MSG5;
    }
-   else if(!msgRegistrationComp)
+   else if(!ueDb.ueCb[ueId-1].msgRegistrationComp)
    {
-      msgRegistrationComp = true;
+      ueDb.ueCb[ueId-1].msgRegistrationComp = true;
       type = MSG_TYPE_REGISTRATION_COMPLETE; 
    }
-   else if(!msgSecurityModeComp)
+   else if(!ueDb.ueCb[ueId-1].msgSecurityModeComp)
    {
-      msgSecurityModeComp = true;
+      ueDb.ueCb[ueId-1].msgSecurityModeComp = true;
       type = MSG_TYPE_SECURITY_MODE_COMPLETE;
    }
-   else if(!msgRrcReconfiguration)
+   else if(!ueDb.ueCb[ueId-1].msgRrcReconfiguration)
    {
-      msgRrcReconfiguration = true;
+      ueDb.ueCb[ueId-1].msgRrcReconfiguration = true;
       type = MSG_TYPE_RRC_RECONFIG_COMPLETE;
    }
    else
@@ -785,12 +781,7 @@ S16 l1HdlDlTtiReq(uint16_t msgLen, void *msg)
       }
       else if(dlTtiReq->pdus[pduCount].pduType == 0)
       {
-	 DU_LOG("\nINFO   -->  PHY_STUB: PDCCH PDU");
-	 if(dlTtiReq->pdus[pduCount].pdu.pdcch_pdu.\
-	    coreSetType == 1)
-	 {
-	    dlDedMsg = true;
-	 }
+         DU_LOG("\nINFO   -->  PHY_STUB: PDCCH PDU");
       }
       else if(dlTtiReq->pdus[pduCount].pduType == 1)
       {
@@ -829,11 +820,13 @@ S16 l1HdlTxDataReq(uint16_t msgLen, void *msg)
    fapi_tx_data_req_t *txDataReq = (fapi_tx_data_req_t *)(txDataElem +1);
 
    DU_LOG("\nINFO   -->  PHY STUB: TX DATA Request at sfn=%d slot=%d",txDataReq->sfn,txDataReq->slot);
+/*
    if(dlDedMsg)
    {
       DU_LOG("\nINFO   -->  PHY_STUB: TxDataPdu for DED MSG sent");
       dlDedMsg = false;
    }
+*/
    MAC_FREE(msg, msgLen);
 #endif
    return ROK;
@@ -1049,11 +1042,22 @@ S16 l1HdlUlTtiReq(uint16_t msgLen, void *msg)
       numPdus--;
    }
 
-   if(rachIndSent == false && ulTtiReq->sfn == 16 && ulTtiReq->slot == 6)
+   if(ueDb.ueCb[ueDb.numActvUe].rachIndSent == false && ulTtiReq->sfn == 16 && ulTtiReq->slot == 6)
    {
-      rachIndSent = true;
+      ueDb.ueCb[ueDb.numActvUe].rachIndSent = true;
       l1BuildAndSendRachInd(ulTtiReq->slot, ulTtiReq->sfn);
+      ueDb.numActvUe++;
    }
+
+   //Following can be enabled to test with a second UE
+#if 0
+   if(ueDb.ueCb[ueDb.numActvUe].rachIndSent == false && ulTtiReq->sfn == 304 && ulTtiReq->slot == 0)
+   {
+      ueDb.ueCb[ueDb.numActvUe].rachIndSent = true;
+      l1BuildAndSendRachInd(ulTtiReq->slot, ulTtiReq->sfn);
+      ueDb.numActvUe++;
+   }
+#endif
 
    MAC_FREE(msg, msgLen);
 #endif
@@ -1138,14 +1142,7 @@ S16 l1HdlStopReq(uint32_t msgLen, void *msg)
       /* Initialize all global variables */
       sfnValue = 0;
       slotValue = 0;
-      rachIndSent = false;
-      msg3Sent = false;
-      msg5ShortBsrSent = false;
-      msg5Sent = false;
-      dlDedMsg = false;
-      msgSecurityModeComp =  false;
-      msgRrcReconfiguration  =  false;
-      msgRegistrationComp    = false;
+      memset(&ueDb, 0, sizeof(UeDb));
 
       DU_LOG("\nINFO   -->  PHY_STUB: Slot Indication is stopped successfully");
       MAC_FREE(msg, msgLen);
@@ -1160,6 +1157,7 @@ S16 l1HdlStopReq(uint32_t msgLen, void *msg)
    return ROK;
 }
 
+#if 0
 /*******************************************************************
  *
  * @brief Build And Send Rx Data Ind for Msg5
@@ -1263,6 +1261,7 @@ uint8_t l1BuildAndSendMsg5(uint16_t sfn, uint16_t slot)
 #endif
    return ROK;
 }
+#endif
 
 /*******************************************************************
  *
