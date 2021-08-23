@@ -1,0 +1,123 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "12feebcf_573ea001",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-08-23T05:55:58Z",
+      "side": 1,
+      "message": "put it in sch_utils.h",
+      "revId": "d1b424375c4ccd60b2489da2b8ad9770cca6a400",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6e5d098f_a93ba8cb",
+        "filename": "src/5gnrsch/sch.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-08-23T05:55:58Z",
+      "side": 1,
+      "message": "remove",
+      "revId": "d1b424375c4ccd60b2489da2b8ad9770cca6a400",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a034aaa6_d3c27c9d",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1026,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-08-23T05:55:58Z",
+      "side": 1,
+      "message": "use macro to define default k0",
+      "revId": "d1b424375c4ccd60b2489da2b8ad9770cca6a400",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9014b41b_922eb209",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1032,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-08-23T05:55:58Z",
+      "side": 1,
+      "message": "add comments for all blocks to explain the processing\nadd spec reference wherever needed",
+      "revId": "d1b424375c4ccd60b2489da2b8ad9770cca6a400",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "311dbce0_ead221dd",
+        "filename": "src/5gnrsch/sch_utils.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1053,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-08-23T05:55:58Z",
+      "side": 1,
+      "message": "Change variable and function names to something more appropriate\nAdd comments to explain the calculations",
+      "revId": "d1b424375c4ccd60b2489da2b8ad9770cca6a400",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3754ea83_d5cd10b9",
+        "filename": "src/cm/mac_sch_interface.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 658,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-08-23T05:55:58Z",
+      "side": 1,
+      "message": "K1TimingInfo",
+      "revId": "d1b424375c4ccd60b2489da2b8ad9770cca6a400",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ac6b38cd_213a5ace",
+        "filename": "src/cm/mac_sch_interface.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 664,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-08-23T05:55:58Z",
+      "side": 1,
+      "message": "K0TimingInfo",
+      "revId": "d1b424375c4ccd60b2489da2b8ad9770cca6a400",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
