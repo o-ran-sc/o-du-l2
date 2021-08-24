@@ -50,6 +50,24 @@
 #define MAC_LCID_CRI               62
 #define MAC_LCID_PADDING           63
 
+/* Definitions for size of RAR PDU contents (in bits).
+ * Refer spec 38.321, sections 6.1.4, 6.2.2 and 6.2.3*/
+#define E_BIT_SIZE 1
+#define T_BIT_SIZE 1
+#define R_BIT_SIZE 1
+#define RAPID_SIZE 6
+#define LC_ID_SIZE 6
+#define TIMING_ADVANCE_SIZE 12
+#define T_CRNTI_SIZE 16
+/*  UL Grant is of size = 27 bits. Refer to Spec 38.213, Table 8.2-1 for
+ *  contents of UL grant in RAR */
+#define FREQ_HOP_FLAG_SIZE 1
+#define FREQ_RSRC_ALLOC_SIZE 14
+#define TIME_RSRC_ALLOC_SIZE 4
+#define MCS_SIZE 4
+#define TPC_COMMAND_SIZE 3
+#define CSI_REQUEST_SIZE 1
+
 typedef struct macCellCb MacCellCb;
 
 typedef enum

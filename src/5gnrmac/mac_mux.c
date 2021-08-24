@@ -97,44 +97,31 @@ void packBytes(uint8_t *buf, uint16_t *bytePos, uint8_t *bitPos, uint32_t val, u
 void fillRarPdu(RarInfo *rarInfo)
 {
    uint8_t   *rarPdu = rarInfo->rarPdu;
-   uint16_t  bytePos= 0;
    uint8_t   bitPos = 0;
+   uint16_t  bytePos= 0, bwpSize = 0, rbStart = 0, rbLen = 0;
+   uint8_t   numHopInfoBitsInFreqAlloc = 0;
+   uint8_t   actualFreqRsrcAllocSize = 0;
 
    /* RAR subheader fields */
    uint8_t   EBit = 0;
    uint8_t   TBit = 0;
-   uint8_t   rapId = 0;
 
    /* RAR payload fields */
    uint8_t   RBit = 0;
-   uint16_t  timeAdv = 0;
-   uint32_t  ulGrant = 0;
-   uint16_t  tmpCrnti = 0; 
+   uint16_t  msg3FreqResource = 0;
    uint8_t   paddingLcid = 63;
 
-   /* Size(in bits) of RAR subheader files */
-   uint8_t   EBitSize = 1;
-   uint8_t   TBitSize = 1;
-   uint8_t   rapidSize = 6;
-   uint8_t   paddingLcidSize = 6;
+   /* Considering 2 bytes of padding in RAR PDU. 
+    * 1st byte is MAC sub-header for padding
+    * 2nd byte contains padding bits
+    */
    uint8_t   paddingSize = 8;
-
-
-   /* Size(in bits) of RAR payload fields */
-   uint8_t   RBitSize = 1;
-   uint8_t   timeAdvSize = 12;
-   uint8_t   ulGrantSize = 27;
-   uint8_t   tmpCrntiSize = 16;
 
    /* Fill RAR pdu fields */
    EBit = 0;
    TBit = 1;
-   rapId = rarInfo->RAPID;
-
    RBit = 0;
-   timeAdv = rarInfo->ta;
-   ulGrant = 0; /* this will be done when implementing msg3 */ 
-   tmpCrnti = rarInfo->tcrnti;
+
    rarInfo->rarPduLen = RAR_PAYLOAD_SIZE;
 
    /* Initialize buffer */
@@ -145,17 +132,78 @@ void fillRarPdu(RarInfo *rarInfo)
    bitPos = 7;
 
    /* Packing fields into RAR PDU */
-   packBytes(rarPdu, &bytePos, &bitPos, EBit, EBitSize); 
-   packBytes(rarPdu, &bytePos, &bitPos, TBit, TBitSize);
-   packBytes(rarPdu, &bytePos, &bitPos, rapId, rapidSize);
-   packBytes(rarPdu, &bytePos, &bitPos, RBit, RBitSize);
-   packBytes(rarPdu, &bytePos, &bitPos, timeAdv, timeAdvSize);
-   packBytes(rarPdu, &bytePos, &bitPos, ulGrant, ulGrantSize);
-   packBytes(rarPdu, &bytePos, &bitPos, tmpCrnti, tmpCrntiSize);
+   packBytes(rarPdu, &bytePos, &bitPos, EBit, E_BIT_SIZE); 
+   packBytes(rarPdu, &bytePos, &bitPos, TBit, T_BIT_SIZE);
+   packBytes(rarPdu, &bytePos, &bitPos, rarInfo->RAPID, RAPID_SIZE);
+   packBytes(rarPdu, &bytePos, &bitPos, RBit, R_BIT_SIZE);
+   packBytes(rarPdu, &bytePos, &bitPos, rarInfo->ta, TIMING_ADVANCE_SIZE);
+ 
+   /* Packing MSG3 UL Grant in RAR */
+   packBytes(rarPdu, &bytePos, &bitPos, rarInfo->ulGrant.freqHopFlag, FREQ_HOP_FLAG_SIZE);
+
+   /* Calculating freq domain resource allocation field value
+    * bwpSize = Size of BWP
+    * RBStart = Starting Resource block
+    * RBLen = length of contiguously allocted RBs
+    * Spec 38.214 Sec 6.1.2.2.2
+    */
+   bwpSize = rarInfo->ulGrant.bwpSize;
+   rbStart = rarInfo->ulGrant.msg3FreqAlloc.startPrb;
+   rbLen = rarInfo->ulGrant.msg3FreqAlloc.numPrb;
+
+   if((rbLen >=1) && (rbLen <= bwpSize - rbStart))
+   {
+      if((rbLen - 1) <= floor(bwpSize / 2))
+         msg3FreqResource = (bwpSize * (rbLen-1)) + rbStart;
+      else
+         msg3FreqResource = (bwpSize * (bwpSize - rbLen + 1)) \
+                            + (bwpSize - 1 - rbStart);
+   }
+
+   /* Calculating frequency domain resource allocation field size 
+    * and packing frequency domain resource allocation accordingly 
+    * Spec 38.213 Sec 8.3 
+    */
+   if(bwpSize < 180)
+   {
+      actualFreqRsrcAllocSize = ceil(log2(bwpSize * (bwpSize + 1) / 2));
+      packBytes(rarPdu, &bytePos, &bitPos, 0, FREQ_RSRC_ALLOC_SIZE - actualFreqRsrcAllocSize);
+      packBytes(rarPdu, &bytePos, &bitPos, msg3FreqResource, actualFreqRsrcAllocSize);
+   }
+   else
+   {
+      if(rarInfo->ulGrant.freqHopFlag == 0)
+      {
+         numHopInfoBitsInFreqAlloc = 1;
+         packBytes(rarPdu, &bytePos, &bitPos, 0, numHopInfoBitsInFreqAlloc);
+         
+         actualFreqRsrcAllocSize = abs(log2(bwpSize * (bwpSize + 1) / 2));
+         packBytes(rarPdu, &bytePos, &bitPos, 0, actualFreqRsrcAllocSize - FREQ_RSRC_ALLOC_SIZE);
+         packBytes(rarPdu, &bytePos, &bitPos, msg3FreqResource, \
+            actualFreqRsrcAllocSize - numHopInfoBitsInFreqAlloc);
+      }
+      else
+      {
+         /* TODO : If frequency hopping is supported,
+          * Fetch the Number of bits to store hopping information in frequency
+          * resource allocation field and the value to be filled from Spec 38.213, Table 8.3-1. 
+          * Fill the frequency resource allocation field as described in Spec 38.213 sec 8.3
+          */
+      }
+   }
+
+   /* Packing time domain resource allocation for UL grant */
+   packBytes(rarPdu, &bytePos, &bitPos, rarInfo->ulGrant.k2Index, TIME_RSRC_ALLOC_SIZE);
+
+   packBytes(rarPdu, &bytePos, &bitPos, rarInfo->ulGrant.mcs, MCS_SIZE);
+   packBytes(rarPdu, &bytePos, &bitPos, rarInfo->ulGrant.tpc, TPC_COMMAND_SIZE);
+   packBytes(rarPdu, &bytePos, &bitPos, rarInfo->ulGrant.csiReq, CSI_REQUEST_SIZE);
+
+   packBytes(rarPdu, &bytePos, &bitPos, rarInfo->tcrnti, T_CRNTI_SIZE);
 
    /* padding of 2 bytes */
-   packBytes(rarPdu, &bytePos, &bitPos, RBit, RBitSize*2);
-   packBytes(rarPdu, &bytePos, &bitPos, paddingLcid, paddingLcidSize);
+   packBytes(rarPdu, &bytePos, &bitPos, RBit, R_BIT_SIZE*2);
+   packBytes(rarPdu, &bytePos, &bitPos, paddingLcid, LC_ID_SIZE);
    packBytes(rarPdu, &bytePos, &bitPos, 0, paddingSize);
 
 }
