@@ -754,12 +754,23 @@ typedef struct dlBrdcstAlloc
    Sib1AllocInfo sib1Alloc;
 }DlBrdcstAlloc;
 
+typedef struct msg3UlGrant
+{
+   uint8_t         freqHopFlag;
+   uint16_t        bwpSize;
+   FreqDomainAlloc msg3FreqAlloc;
+   uint8_t         k2Index;
+   uint8_t         mcs;
+   uint8_t         tpc;
+   uint8_t         csiReq;
+}Msg3UlGrant;
+
 typedef struct rarInfo
 {
    uint16_t        raRnti;
    uint8_t         RAPID;
    uint16_t        ta;
-   FreqDomainAlloc msg3FreqAlloc;
+   Msg3UlGrant     ulGrant;
    uint16_t        tcrnti;
    uint8_t         rarPdu[RAR_PAYLOAD_SIZE];
    uint8_t         rarPduLen;
