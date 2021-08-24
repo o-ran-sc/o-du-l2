@@ -603,7 +603,8 @@ RgErrInfo   *errInfo
    SuId       rguUlSapId = 0;
    SuId       rguDlSapId = 0;
    /* RLC SAP to allocate flowCntrlInd buffer*/
-   Pst        *pst ;
+   /* Commented below to resolve compilation warning */
+   //Pst        *pst ;
 
    errInfo->errCause = RGERR_CFG_CRG_CELL_CFG;
    
@@ -686,7 +687,8 @@ RgErrInfo   *errInfo
    rgUpdtCellCnt(inst,RG_CFG_ADD);
    errInfo->errCause = RGERR_NONE;
   
-   pst = &rgCb[inst].rguSap[rguDlSapId].sapCfg.sapPst;
+   /* Commented below to resolve compilation warning */
+   //pst = &rgCb[inst].rguSap[rguDlSapId].sapCfg.sapPst;
    /* Allocate a buffer for flowCntrlInd.*/
    MAC_ALLOC(cell->flowCntrlInd, sizeof(RguFlowCntrlInd));
    if(cell->flowCntrlInd == NULLP)
