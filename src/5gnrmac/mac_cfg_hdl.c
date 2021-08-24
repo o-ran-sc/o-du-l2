@@ -218,7 +218,7 @@ uint8_t MacSchCellCfgReq(Pst *pst, MacCellCfg *macCellCfg)
    schCellCfg.ssbSchCfg.ssbOffsetPointA = macCellCfg->ssbCfg.ssbOffsetPointA;
    schCellCfg.ssbSchCfg.ssbPeriod = ssbPeriodicity[macCellCfg->ssbCfg.ssbPeriod];
    schCellCfg.ssbSchCfg.ssbSubcOffset = macCellCfg->ssbCfg.ssbScOffset;
-   for(uint8_t idx=0; idx<SSB_MASK_SIZE; idx++)
+   for(idx=0; idx<SSB_MASK_SIZE; idx++)
    {
       schCellCfg.ssbSchCfg.nSSBMask[idx] = macCellCfg->ssbCfg.ssbMask[idx];
    }

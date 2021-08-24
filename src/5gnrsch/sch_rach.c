@@ -105,11 +105,10 @@ void createSchRaCb(uint16_t tcrnti, Inst schInst)
  *  @param[out]  msg3NumRb
  *  @return  void
  **/
-uint8_t schAllocMsg3Pusch(Inst schInst, uint16_t slot, uint16_t crnti, \
-   uint16_t *msg3StartRb, uint8_t *msg3NumRb, uint16_t msg3SlotAlloc)
+SchPuschInfo* schAllocMsg3Pusch(Inst schInst, uint16_t slot, uint16_t crnti, uint16_t msg3SlotAlloc)
 {
-   SchCellCb      *cell         = NULLP;
-   SchUlSlotInfo  *schUlSlotInfo    = NULLP;
+   SchCellCb      *cell          = NULLP;
+   SchUlSlotInfo  *schUlSlotInfo = NULLP;
    uint8_t    startSymb     = 0;
    uint8_t    symbLen       = 0; 
    uint8_t    startRb       = 0;
@@ -142,7 +141,7 @@ uint8_t schAllocMsg3Pusch(Inst schInst, uint16_t slot, uint16_t crnti, \
    if(!schUlSlotInfo->schPuschInfo)
    {
       DU_LOG("\nERROR  -->  SCH :  Memory allocation failed in schAllocMsg3Pusch");
-      return RFAILED;
+      return NULLP;
    }
    tbSize = 0;  /* since nPrb has been incremented, recalculating tbSize */
    tbSize = schCalcTbSizeFromNPrb(numRb, mcs, numPdschSymbols);
@@ -164,9 +163,7 @@ uint8_t schAllocMsg3Pusch(Inst schInst, uint16_t slot, uint16_t crnti, \
    schUlSlotInfo->schPuschInfo->nrOfDmrsSymbols   = NUM_DMRS_SYMBOLS;
    schUlSlotInfo->schPuschInfo->dmrsAddPos        = DMRS_ADDITIONAL_POS;
 
-   *msg3StartRb = startRb;
-   *msg3NumRb   = numRb;
-   return ROK;
+   return schUlSlotInfo->schPuschInfo;
 }
 
 /**
@@ -184,14 +181,11 @@ uint8_t schAllocMsg3Pusch(Inst schInst, uint16_t slot, uint16_t crnti, \
 void schProcessRaReq(SlotTimingInfo currTime, SchCellCb *cell)
 {
    uint8_t ueIdx = 0;
+   SchPuschInfo *msg3PuschInfo;
    RarInfo *rarInfo = NULLP;
-   uint16_t raRnti = 0;
    uint16_t rarSlot = 0;
-   uint16_t msg3StartRb;
-   uint8_t  msg3NumRb;
-   uint8_t  ret = ROK;
    uint8_t delta = 0;
-   uint8_t k2 = 0;
+   uint8_t k2Index = 0, k2 = 0;
    uint8_t puschMu = 0;
    uint16_t msg3Slot = 0;
 #ifdef NR_TDD
@@ -208,7 +202,7 @@ void schProcessRaReq(SlotTimingInfo currTime, SchCellCb *cell)
 
       //puschMu = cell->cellCfg.puschMu;
       delta = puschDeltaTable[puschMu];
-      k2 = cell->cellCfg.schInitialUlBwp.puschCommon.timeDomRsrcAllocList[0].k2;
+      k2 = cell->cellCfg.schInitialUlBwp.puschCommon.timeDomRsrcAllocList[k2Index].k2;
 
       /* RAR will sent with a delay of RAR_DELAY */
       rarSlot = (currTime.slot + RAR_DELAY + PHY_DELTA_DL) % cell->numSlots;
@@ -253,16 +247,25 @@ void schProcessRaReq(SlotTimingInfo currTime, SchCellCb *cell)
       createSchRaCb(cell->raReq[ueIdx]->rachInd->crnti, cell->instIdx);
 
       /* allocate resources for msg3 */
-      ret = schAllocMsg3Pusch(cell->instIdx, rarSlot, cell->raReq[ueIdx]->rachInd->crnti, &msg3StartRb, &msg3NumRb, msg3Slot);
-      if(ret == ROK)
+      msg3PuschInfo = schAllocMsg3Pusch(cell->instIdx, rarSlot, cell->raReq[ueIdx]->rachInd->crnti, msg3Slot);
+      if(msg3PuschInfo)
       {
          /* fill RAR info */
-         rarInfo->raRnti                 = cell->raReq[ueIdx]->raRnti;
-         rarInfo->tcrnti                 = cell->raReq[ueIdx]->rachInd->crnti;
-         rarInfo->RAPID                  = cell->raReq[ueIdx]->rachInd->preambleIdx;
-         rarInfo->ta                     = cell->raReq[ueIdx]->rachInd->timingAdv;
-         rarInfo->msg3FreqAlloc.startPrb = msg3StartRb;
-         rarInfo->msg3FreqAlloc.numPrb   = msg3NumRb;
+         rarInfo->raRnti = cell->raReq[ueIdx]->raRnti;
+         rarInfo->tcrnti = cell->raReq[ueIdx]->rachInd->crnti;
+         rarInfo->RAPID = cell->raReq[ueIdx]->rachInd->preambleIdx;
+         rarInfo->ta = cell->raReq[ueIdx]->rachInd->timingAdv;
+         rarInfo->ulGrant.bwpSize = cell->cellCfg.schInitialUlBwp.bwp.freqAlloc.numPrb;
+         /* Spec 38.213, section 8.2, 0 : MSG3 PUSCH will be transmitted without frequency hopping */
+         rarInfo->ulGrant.freqHopFlag = 0;
+         rarInfo->ulGrant.msg3FreqAlloc.startPrb = msg3PuschInfo->fdAlloc.startPrb;
+         rarInfo->ulGrant.msg3FreqAlloc.numPrb = msg3PuschInfo->fdAlloc.numPrb;
+         rarInfo->ulGrant.k2Index = k2Index;
+         rarInfo->ulGrant.mcs = msg3PuschInfo->tbInfo.mcs;
+         rarInfo->ulGrant.tpc = 3;  /* TODO : Check appropriate value to be filled */
+         /* Spec 38.213, section 8.2 : In a contention based random access
+          * procedure, the CSI request field is reserved. */
+         rarInfo->ulGrant.csiReq = 0;
       }
 
       SCH_FREE(cell->raReq[ueIdx]->rachInd, sizeof(RachIndInfo));
