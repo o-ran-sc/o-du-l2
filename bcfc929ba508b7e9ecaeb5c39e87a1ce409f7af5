@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "39e7ee65_e689e444",
+        "filename": "src/5gnrsch/sch_slot_ind.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 186,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-08-26T20:03:33Z",
+      "side": 1,
+      "message": "Words like BO, LC must be in capital letters since they are abbreviations.\nIn this log, say \"No pending BO for any LC id\"",
+      "revId": "bcfc929ba508b7e9ecaeb5c39e87a1ce409f7af5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fda2a61e_8c5cb28b",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 8170,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-08-26T20:03:33Z",
+      "side": 1,
+      "message": "We should not free old entries. \nIn the new timeDomainAllocList received in F1AP msg, \na. If a list entry is same as what was present already in stored macUeCfg, then do nothing. \nb. If there is a new entry present, it should be added to the existing list of timeDomainAllocation in UeCfg",
+      "revId": "bcfc929ba508b7e9ecaeb5c39e87a1ce409f7af5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "45363a9b_d8dace88",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 8976,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-08-26T20:03:33Z",
+      "side": 1,
+      "message": "same as above",
+      "revId": "bcfc929ba508b7e9ecaeb5c39e87a1ce409f7af5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
