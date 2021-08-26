@@ -863,10 +863,15 @@ uint8_t schDlRsrcAllocDlMsg(DlMsgAlloc *dlMsgAlloc, SchCellCb *cell, uint16_t cr
 void BuildK0K1TableForFdd(SchCellCb *cell, SchK0K1TimingInfoTbl *k0K1InfoTbl, bool pdschCfgCmnPres,SchPdschCfgCmn pdschCmnCfg,\
 SchPdschConfig pdschDedCfg, uint8_t ulAckListCount, uint8_t *UlAckTbl)
 {
-   uint8_t k0TmpVal = 0, k1TmpVal =0, cfgIdx=0;
+   
+   uint8_t k1TmpVal =0, cfgIdx=0;
    uint8_t slotIdx=0, k0Index=0, k1Index=0, numK0=0, numK1=0, numTimeDomAlloc=0;
-   SchPdschCfgCmnTimeDomRsrcAlloc cmnTimeDomRsrcAllocList[MAX_NUM_DL_ALLOC];
-   SchPdschTimeDomRsrcAlloc dedTimeDomRsrcAllocList[MAX_NUM_DL_ALLOC];
+   
+   /* Commented this for resolving warnings. Presently variable is not required
+    * But this will require for harq processing */
+   // uint8_t k0TmpVal = 0; 
+   // SchPdschCfgCmnTimeDomRsrcAlloc cmnTimeDomRsrcAllocList[MAX_NUM_DL_ALLOC];
+   // SchPdschTimeDomRsrcAlloc dedTimeDomRsrcAllocList[MAX_NUM_DL_ALLOC];
 
    /* Initialization the structure and storing the total slot values. */
    memset(k0K1InfoTbl, 0, sizeof(SchK0K1TimingInfoTbl));
@@ -878,7 +883,7 @@ SchPdschConfig pdschDedCfg, uint8_t ulAckListCount, uint8_t *UlAckTbl)
       numTimeDomAlloc = pdschCmnCfg.numTimeDomAlloc;
       for(cfgIdx = 0; cfgIdx<numTimeDomAlloc; cfgIdx++)
       {
-         cmnTimeDomRsrcAllocList[cfgIdx] = pdschCmnCfg.timeDomRsrcAllocList[cfgIdx];
+        //cmnTimeDomRsrcAllocList[cfgIdx] = pdschCmnCfg.timeDomRsrcAllocList[cfgIdx];
       }
    }
    else
@@ -886,7 +891,7 @@ SchPdschConfig pdschDedCfg, uint8_t ulAckListCount, uint8_t *UlAckTbl)
       numTimeDomAlloc = pdschDedCfg.numTimeDomRsrcAlloc;
       for(cfgIdx = 0; cfgIdx<numTimeDomAlloc; cfgIdx++)
       {
-         dedTimeDomRsrcAllocList[cfgIdx] = pdschDedCfg.timeDomRsrcAllociList[cfgIdx];
+         //dedTimeDomRsrcAllocList[cfgIdx] = pdschDedCfg.timeDomRsrcAllociList[cfgIdx];
       }
    }
    
@@ -899,6 +904,8 @@ SchPdschConfig pdschDedCfg, uint8_t ulAckListCount, uint8_t *UlAckTbl)
        * As per 38.331 PDSCH-TimeDomainResourceAllocation field descriptions. */
       for(k0Index = 0; ((k0Index < numTimeDomAlloc) && (k0Index < MAX_NUM_K0_IDX));  k0Index++)
       {
+         /* These if 0 we will remove during harq processing */
+#if 0
          if(pdschCfgCmnPres == true)
          {
             k0TmpVal = cmnTimeDomRsrcAllocList[k0Index].k0;
@@ -914,7 +921,7 @@ SchPdschConfig pdschDedCfg, uint8_t ulAckListCount, uint8_t *UlAckTbl)
                k0TmpVal = DEFAULT_K0_VALUE;
             }
          }
-         
+#endif         
          /* Checking all the Ul Alloc values. If value is less than MIN_NUM_K1_IDX
           * then skip else continue storing the values. */
          numK1 = 0;

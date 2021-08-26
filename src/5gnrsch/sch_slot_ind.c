@@ -183,7 +183,10 @@ uint8_t schFillBoGrantDlSchedInfo(SchCellCb *cell, DlSchedInfo *dlSchedInfo, DlM
       
       if (!dlMsgAlloc->numLc)
       {
-         DU_LOG("\nDEBUG  -->  SCH : No bo for any lcid\n");
+         DU_LOG("\nDEBUG  -->  SCH : No pending BO for any LC id\n");
+         /* Free the dl ded msg info allocated in macSchDlRlcBoInfo */
+         SCH_FREE(cell->schDlSlotInfo[dlSchedInfo->schSlotValue.dlMsgTime.slot]->dlMsgInfo, \
+               sizeof(DlMsgInfo));
          return ROK;
       }
 

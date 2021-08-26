@@ -1203,7 +1203,7 @@ uint8_t fillMacUeCfg(uint16_t cellId, uint8_t ueIdx, uint16_t crnti, \
       macUeCfg->cellId       = cellId;
       macUeCfg->ueIdx        = ueIdx;
       macUeCfg->crnti        = crnti;
-      ret = procUeReCfgCellInfo(macUeCfg, ueCfgDb->cellGrpCfg);
+      ret = procUeReCfgCellInfo(macUeCfg, NULL, ueCfgDb->cellGrpCfg);
       if(ret == ROK)
       {
          if(macUeCfg->spCellCfgPres == true)
@@ -1262,6 +1262,7 @@ uint8_t fillMacUeCfg(uint16_t cellId, uint8_t ueIdx, uint16_t crnti, \
             break;
          }
       }/*End of Outer FOR loop */
+      memcpy(&ueCfgDb->copyOfmacUeCfg, macUeCfg, sizeof(MacUeCfg));
    }
    return ret;
 }
@@ -1740,12 +1741,12 @@ uint8_t duUpdateMacCfg(MacUeCfg *macUeCfg, F1UeContextSetupDb *f1UeDb)
    uint8_t ret, lcIdx, dbIdx, numLcs, lcDelIdx, cellIdx;
    MacUeCfg *oldMacUeCfg;
    ret = ROK;
-
+   
    GET_CELL_IDX(macUeCfg->cellId, cellIdx);
    oldMacUeCfg = &duCb.actvCellLst[cellIdx]->ueCb[macUeCfg->ueIdx-1].macUeCfg;
 
    /*Filling Cell Group Cfg*/
-   ret =  procUeReCfgCellInfo(macUeCfg, f1UeDb->duUeCfg.cellGrpCfg);
+   ret =  procUeReCfgCellInfo(macUeCfg, &f1UeDb->duUeCfg.copyOfmacUeCfg, f1UeDb->duUeCfg.cellGrpCfg);
    if(ret == ROK)
    {
       if(macUeCfg->spCellCfg.servCellCfg.initDlBwp.pdschPresent)
