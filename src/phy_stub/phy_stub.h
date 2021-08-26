@@ -25,6 +25,8 @@
 #define MAX_SFN_VALUE    1023
 #define NR_PCI            1
 #define SLOT_DELAY       3
+#define UE_IDX_0     0
+#define UE_IDX_1     1
 
 bool     slotIndicationStarted;
 uint16_t sfnValue;
