@@ -1042,18 +1042,18 @@ S16 l1HdlUlTtiReq(uint16_t msgLen, void *msg)
       numPdus--;
    }
 
-   if(ueDb.ueCb[ueDb.numActvUe].rachIndSent == false && ulTtiReq->sfn == 16 && ulTtiReq->slot == 6)
+   if(ueDb.ueCb[0].rachIndSent == false && ulTtiReq->sfn == 16 && ulTtiReq->slot == 6)
    {
-      ueDb.ueCb[ueDb.numActvUe].rachIndSent = true;
+      ueDb.ueCb[0].rachIndSent = true;
       l1BuildAndSendRachInd(ulTtiReq->slot, ulTtiReq->sfn);
       ueDb.numActvUe++;
    }
 
    //Following can be enabled to test with a second UE
 #if 0
-   if(ueDb.ueCb[ueDb.numActvUe].rachIndSent == false && ulTtiReq->sfn == 304 && ulTtiReq->slot == 0)
+   if(ueDb.ueCb[1].rachIndSent == false && ulTtiReq->sfn == 304 && ulTtiReq->slot == 0)
    {
-      ueDb.ueCb[ueDb.numActvUe].rachIndSent = true;
+      ueDb.ueCb[1].rachIndSent = true;
       l1BuildAndSendRachInd(ulTtiReq->slot, ulTtiReq->sfn);
       ueDb.numActvUe++;
    }
