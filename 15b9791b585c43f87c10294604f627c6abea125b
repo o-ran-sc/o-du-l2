@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7d909a5b_a22a786b",
+        "filename": "src/phy_stub/phy_stub_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1045,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-08-26T19:45:34Z",
+      "side": 1,
+      "message": "Agreed, you can create a macro called something like UE_IDX_0 and UE_IDX_1",
+      "parentUuid": "7a550dd7_639f7e9f",
+      "range": {
+        "startLine": 1045,
+        "startChar": 16,
+        "endLine": 1045,
+        "endChar": 17
+      },
+      "revId": "15b9791b585c43f87c10294604f627c6abea125b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "0c515ca4_ccbdd442",
         "filename": "src/phy_stub/phy_stub_msg_hdl.c",
         "patchSetId": 1
@@ -37,6 +61,30 @@
       "writtenOn": "2021-08-26T15:54:52Z",
       "side": 1,
       "message": "please check if this index 1 is available or not.",
+      "range": {
+        "startLine": 1054,
+        "startChar": 16,
+        "endLine": 1054,
+        "endChar": 17
+      },
+      "revId": "15b9791b585c43f87c10294604f627c6abea125b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b17545a7_7eb3b9f4",
+        "filename": "src/phy_stub/phy_stub_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1054,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-08-26T19:45:34Z",
+      "side": 1,
+      "message": "Index 1 will be used in multi-UE scenario for second UE.\nAs of now this code is inside #if 0 ... endif, so its not being used",
+      "parentUuid": "0c515ca4_ccbdd442",
       "range": {
         "startLine": 1054,
         "startChar": 16,
