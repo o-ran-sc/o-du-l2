@@ -164,6 +164,23 @@
       },
       "revId": "9a9bdb5cc7f7311fe977605bb4e6a40294852e80",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cc960f8a_9d6de760",
+        "filename": "src/5gnrsch/sch_rach.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 205,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-08-26T05:55:42Z",
+      "side": 1,
+      "message": "k2Index is always 0. Is it expected? Is it correct that Only 1 index is used from Allocation list?",
+      "revId": "9a9bdb5cc7f7311fe977605bb4e6a40294852e80",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
   ]
 }
