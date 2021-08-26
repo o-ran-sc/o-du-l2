@@ -18,6 +18,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "359f4b8e_2dcdf61d",
+        "filename": "src/5gnrmac/lwr_mac_phy.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 278,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-08-26T20:47:55Z",
+      "side": 1,
+      "message": "Here it is difficult to assign memory dynamically. But since only event name is being printed, we know that the size would be never too large.\nAlso, this array will be used only for debugging purposes and is disabled by default. Hence, it wont affect the run-time processing.",
+      "parentUuid": "ca3280ee_62a64716",
+      "revId": "9a9bdb5cc7f7311fe977605bb4e6a40294852e80",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c7430d50_c7c98546",
@@ -31,6 +49,24 @@
       "writtenOn": "2021-08-25T13:27:45Z",
       "side": 1,
       "message": "rename idx as ssbIdx",
+      "revId": "9a9bdb5cc7f7311fe977605bb4e6a40294852e80",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "192be383_0c8d624a",
+        "filename": "src/5gnrmac/mac_cfg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 221,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-08-26T20:47:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c7430d50_c7c98546",
       "revId": "9a9bdb5cc7f7311fe977605bb4e6a40294852e80",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -52,6 +88,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b5347515_a142a4b3",
+        "filename": "src/5gnrmac/mac_mux.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-08-26T20:47:55Z",
+      "side": 1,
+      "message": "Removed math.h",
+      "parentUuid": "9f7bef26_7240ea1a",
+      "revId": "9a9bdb5cc7f7311fe977605bb4e6a40294852e80",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3bcff56c_4e798db5",
@@ -65,6 +119,24 @@
       "writtenOn": "2021-08-25T13:27:45Z",
       "side": 1,
       "message": "club bytePos as well and initialize to variables to zero",
+      "revId": "9a9bdb5cc7f7311fe977605bb4e6a40294852e80",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8c866f00_2e972af7",
+        "filename": "src/5gnrmac/mac_mux.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-08-26T20:47:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3bcff56c_4e798db5",
       "revId": "9a9bdb5cc7f7311fe977605bb4e6a40294852e80",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -86,6 +158,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "795b4afd_a5dbace9",
+        "filename": "src/5gnrmac/mac_mux.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-08-26T20:47:55Z",
+      "side": 1,
+      "message": "Created macro for all sizes",
+      "parentUuid": "648afd43_48250b37",
+      "revId": "9a9bdb5cc7f7311fe977605bb4e6a40294852e80",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "232aef15_377c47be",
@@ -103,6 +193,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c8fab98d_f5940852",
+        "filename": "src/5gnrmac/mac_mux.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-08-26T20:47:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "232aef15_377c47be",
+      "revId": "9a9bdb5cc7f7311fe977605bb4e6a40294852e80",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e79b3840_0d83a872",
@@ -116,6 +224,24 @@
       "writtenOn": "2021-08-25T07:11:48Z",
       "side": 1,
       "message": "Can\u0027t we remove this.",
+      "revId": "9a9bdb5cc7f7311fe977605bb4e6a40294852e80",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "77460b77_7a415426",
+        "filename": "src/5gnrmac/rg_cfg.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 606,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-08-26T20:47:55Z",
+      "side": 1,
+      "message": "This is part of seed code. I have commented this to remove compilation warning. But lets not delete this so that we have the code for reference. \n\nI will add a comment here to specify the reason for commenting this line",
+      "parentUuid": "e79b3840_0d83a872",
       "revId": "9a9bdb5cc7f7311fe977605bb4e6a40294852e80",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -143,6 +269,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cb422b58_eae7c3ba",
+        "filename": "src/5gnrmac/rg_cfg.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 689,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-08-26T20:47:55Z",
+      "side": 1,
+      "message": "This is part of seed code. I have commented this to remove compilation warning. But lets not delete this so that we have the code for reference. \n\nI will add a comment here to specify the reason for commenting",
+      "parentUuid": "d7090aba_56a6f6a4",
+      "range": {
+        "startLine": 689,
+        "startChar": 17,
+        "endLine": 689,
+        "endChar": 21
+      },
+      "revId": "9a9bdb5cc7f7311fe977605bb4e6a40294852e80",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "81a14c44_607331dd",
@@ -156,6 +306,30 @@
       "writtenOn": "2021-08-25T07:11:48Z",
       "side": 1,
       "message": "please keep all same data type variable together. It looks good.",
+      "range": {
+        "startLine": 190,
+        "startChar": 3,
+        "endLine": 190,
+        "endChar": 11
+      },
+      "revId": "9a9bdb5cc7f7311fe977605bb4e6a40294852e80",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5f02e0a4_9aaa1594",
+        "filename": "src/5gnrsch/sch_rach.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 190,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-08-26T20:47:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "81a14c44_607331dd",
       "range": {
         "startLine": 190,
         "startChar": 3,
