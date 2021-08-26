@@ -5249,23 +5249,23 @@ void FreePuschTimeDomAllocList(PUSCH_Config_t *puschCfg)
       timeDomAllocList_t=puschCfg->pusch_TimeDomainAllocationList;
       if(timeDomAllocList_t->choice.setup)
       {
-	 if(timeDomAllocList_t->choice.setup->list.array)
-	 {
-	    DU_FREE(timeDomAllocList_t->choice.setup->list.array[idx2]->k2, sizeof(long));
-	    for(idx1 = 0; idx1<timeDomAllocList_t->choice.setup->list.count; idx1++)
-	    {
-	       DU_FREE(timeDomAllocList_t->choice.setup->list.array[idx1],\
-		     sizeof(PUSCH_TimeDomainResourceAllocation_t));
-	    }
-	    DU_FREE(timeDomAllocList_t->choice.setup->list.array, \
-		  timeDomAllocList_t->choice.setup->list.size);
-	 }
-	 DU_FREE(timeDomAllocList_t->choice.setup, \
-	       sizeof(struct PUSCH_TimeDomainResourceAllocationList));
+         if(timeDomAllocList_t->choice.setup->list.array)
+         {
+            for(idx1 = 0; idx1<timeDomAllocList_t->choice.setup->list.count; idx1++)
+            {
+               DU_FREE(timeDomAllocList_t->choice.setup->list.array[idx1]->k2, sizeof(long));
+               DU_FREE(timeDomAllocList_t->choice.setup->list.array[idx1],\
+                     sizeof(PUSCH_TimeDomainResourceAllocation_t));
+            }
+            DU_FREE(timeDomAllocList_t->choice.setup->list.array, \
+                  timeDomAllocList_t->choice.setup->list.size);
+         }
+         DU_FREE(timeDomAllocList_t->choice.setup, \
+               sizeof(struct PUSCH_TimeDomainResourceAllocationList));
       }
       DU_FREE(puschCfg->transformPrecoder, sizeof(long));
       DU_FREE(puschCfg->pusch_TimeDomainAllocationList, \
-	    sizeof(struct PUSCH_Config__pusch_TimeDomainAllocationList));
+            sizeof(struct PUSCH_Config__pusch_TimeDomainAllocationList));
    }
 
 }
@@ -8131,7 +8131,7 @@ void extractPdcchCfg(PDCCH_Config_t *cuPdcchCfg, PdcchConfig *macPdcchCfg)
  *
  * ****************************************************************/
 
-void extractPdschCfg(PDSCH_Config_t *cuPdschCfg, PdschConfig *macPdschCfg)
+void extractPdschCfg(PDSCH_Config_t *cuPdschCfg, PdschConfig *macPdschCfg, PdschConfig *storedPdschCfg)
 {
    uint8_t timeDomIdx;
    struct PDSCH_Config__pdsch_TimeDomainAllocationList *timeDomAlloc = NULLP;
@@ -8158,6 +8158,20 @@ void extractPdschCfg(PDSCH_Config_t *cuPdschCfg, PdschConfig *macPdschCfg)
          if(timeDomAlloc->choice.setup)
          {
             macPdschCfg->numTimeDomRsrcAlloc  = timeDomAlloc->choice.setup->list.count;
+            if(storedPdschCfg)
+            {
+               if(storedPdschCfg->numTimeDomRsrcAlloc > 0)
+               {
+                  for(timeDomIdx =0; timeDomIdx<storedPdschCfg->numTimeDomRsrcAlloc; timeDomIdx++)
+                  {
+                     if(storedPdschCfg->timeDomRsrcAllociList[timeDomIdx].k0)
+                     {
+                        DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, storedPdschCfg->timeDomRsrcAllociList[timeDomIdx].k0,\
+                              sizeof(uint8_t));
+                     }
+                  }
+               }
+            }
             for(timeDomIdx = 0; timeDomIdx < timeDomAlloc->choice.setup->list.count; timeDomIdx++)
             {
                macPdschCfg->timeDomRsrcAllociList[timeDomIdx].k0 = NULLP;
@@ -8825,7 +8839,8 @@ void extractSchedReqCfgToAddMod(PucchSchedReqCfg *macSchedReqCfg, struct PUCCH_C
  *
  * ****************************************************************/
 
-uint8_t extractPucchCfg(struct BWP_UplinkDedicated__pucch_Config *cuPucchCfg, PucchCfg *macPucchCfg)         
+uint8_t extractPucchCfg(struct BWP_UplinkDedicated__pucch_Config *cuPucchCfg, PucchCfg *macPucchCfg,\
+PucchCfg *storedPucchCfg)        
 {
    uint8_t arrIdx;
 
@@ -8951,20 +8966,27 @@ uint8_t extractPucchCfg(struct BWP_UplinkDedicated__pucch_Config *cuPucchCfg, Pu
 
          /* Dl_DataToUL_ACK */ 
 	 if(cuPucchCfg->choice.setup->dl_DataToUL_ACK)
-	 {
-            DU_ALLOC_SHRABL_BUF(macPucchCfg->dlDataToUlAck, sizeof(PucchDlDataToUlAck));
-	    if(macPucchCfg->dlDataToUlAck == NULLP)
-	    {
-	       DU_LOG("\nERROR --> F1AP : Failed to extract Dl_DataToUL_ACK in extractPucchCfg()");
-	       return RFAILED;
-	    }
-	    memset(macPucchCfg->dlDataToUlAck, 0, sizeof(PucchDlDataToUlAck));
-            macPucchCfg->dlDataToUlAck->dlDataToUlAckListCount = cuPucchCfg->choice.setup->dl_DataToUL_ACK->list.count;
-	    for(arrIdx = 0; arrIdx < macPucchCfg->dlDataToUlAck->dlDataToUlAckListCount; arrIdx++)
-            {
-               macPucchCfg->dlDataToUlAck->dlDataToUlAckList[arrIdx] =\
-                  *cuPucchCfg->choice.setup->dl_DataToUL_ACK->list.array[arrIdx];
-	    }
+    {
+       if(storedPucchCfg)
+       {
+          if(storedPucchCfg->dlDataToUlAck)
+          {
+             DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, storedPucchCfg->dlDataToUlAck, sizeof(PucchDlDataToUlAck));
+          }
+       }
+       DU_ALLOC_SHRABL_BUF(macPucchCfg->dlDataToUlAck, sizeof(PucchDlDataToUlAck));
+       if(macPucchCfg->dlDataToUlAck == NULLP)
+       {
+          DU_LOG("\nERROR --> F1AP : Failed to extract Dl_DataToUL_ACK in extractPucchCfg()");
+          return RFAILED;
+       }
+       memset(macPucchCfg->dlDataToUlAck, 0, sizeof(PucchDlDataToUlAck));
+       macPucchCfg->dlDataToUlAck->dlDataToUlAckListCount = cuPucchCfg->choice.setup->dl_DataToUL_ACK->list.count;
+       for(arrIdx = 0; arrIdx < macPucchCfg->dlDataToUlAck->dlDataToUlAckListCount; arrIdx++)
+       {
+          macPucchCfg->dlDataToUlAck->dlDataToUlAckList[arrIdx] =\
+          *cuPucchCfg->choice.setup->dl_DataToUL_ACK->list.array[arrIdx];
+       }
 	 }
 
 	 /* Power Control */
@@ -8999,7 +9021,8 @@ uint8_t extractPucchCfg(struct BWP_UplinkDedicated__pucch_Config *cuPucchCfg, Pu
  * @return ROK/RFAILD
  *
  * ****************************************************************/
-uint8_t extractSpCellDedicatedCfg(ServingCellConfig_t *cuSrvCellCfg, ServCellCfgInfo *macSrvCellCfg)
+uint8_t extractSpCellDedicatedCfg(ServingCellConfig_t *cuSrvCellCfg, ServCellCfgInfo *macSrvCellCfg,\
+ServCellCfgInfo *storedSrvCellCfg)
 {
    uint8_t ret = ROK;
    BWP_DownlinkDedicated_t *dlBwp = NULLP;
@@ -9011,18 +9034,34 @@ uint8_t extractSpCellDedicatedCfg(ServingCellConfig_t *cuSrvCellCfg, ServCellCfg
       if(dlBwp->pdcch_Config)
       {
          if(dlBwp->pdcch_Config->choice.setup)
-	 {
-	    macSrvCellCfg->initDlBwp.pdcchPresent = true;
-	    extractPdcchCfg(dlBwp->pdcch_Config->choice.setup, &macSrvCellCfg->initDlBwp.pdcchCfg);
-	 }
+         {
+            macSrvCellCfg->initDlBwp.pdcchPresent = true;
+            extractPdcchCfg(dlBwp->pdcch_Config->choice.setup, &macSrvCellCfg->initDlBwp.pdcchCfg);
+         }
       }
       if(dlBwp->pdsch_Config)
       {
          if(dlBwp->pdsch_Config->choice.setup)
-	 {
-	    macSrvCellCfg->initDlBwp.pdschPresent = true;
-	    extractPdschCfg(dlBwp->pdsch_Config->choice.setup, &macSrvCellCfg->initDlBwp.pdschCfg);
-	 }
+         {
+            macSrvCellCfg->initDlBwp.pdschPresent = true;
+            
+            if(storedSrvCellCfg)
+            {
+               if(!storedSrvCellCfg->initDlBwp.pdschPresent)
+               {
+                  extractPdschCfg(dlBwp->pdsch_Config->choice.setup, &macSrvCellCfg->initDlBwp.pdschCfg, NULL);
+               }
+               else
+               {
+                  extractPdschCfg(dlBwp->pdsch_Config->choice.setup, &macSrvCellCfg->initDlBwp.pdschCfg,\
+                        &storedSrvCellCfg->initDlBwp.pdschCfg);
+               }
+            }
+            else
+            {
+               extractPdschCfg(dlBwp->pdsch_Config->choice.setup, &macSrvCellCfg->initDlBwp.pdschCfg, NULL);
+            }
+         }
       }
    }
    if(cuSrvCellCfg->firstActiveDownlinkBWP_Id)
@@ -9039,15 +9078,15 @@ uint8_t extractSpCellDedicatedCfg(ServingCellConfig_t *cuSrvCellCfg, ServCellCfg
       {
          macSrvCellCfg->bwpInactivityTmr = NULLP;
          DU_ALLOC_SHRABL_BUF(macSrvCellCfg->bwpInactivityTmr, sizeof(uint8_t));
-	 if(macSrvCellCfg->bwpInactivityTmr)
-	 {
+         if(macSrvCellCfg->bwpInactivityTmr)
+         {
             memcpy(macSrvCellCfg->bwpInactivityTmr, cuSrvCellCfg->bwp_InactivityTimer, sizeof(uint8_t));
-	 }
-	 else
-	 {
-	    DU_LOG("\nERROR  --> F1AP : Memory Alloc failed for bwpInactivityTmr at extractSpCellDedicatedCfg()");
-	    return RFAILED;
-	 }
+         }
+         else
+         {
+            DU_LOG("\nERROR  --> F1AP : Memory Alloc failed for bwpInactivityTmr at extractSpCellDedicatedCfg()");
+            return RFAILED;
+         }
       }
    }
    if(cuSrvCellCfg->pdsch_ServingCellConfig)
@@ -9056,31 +9095,42 @@ uint8_t extractSpCellDedicatedCfg(ServingCellConfig_t *cuSrvCellCfg, ServCellCfg
       {
          ret = extractPdschServingCellCfg(cuSrvCellCfg->pdsch_ServingCellConfig->choice.setup, &macSrvCellCfg->pdschServCellCfg);
          if(ret == RFAILED)
-	 {
-	    DU_LOG("\nERROR --> F1AP : Failed at extractPdschServingCellCfg()");
-	    return RFAILED;
-	 }
+         {
+            DU_LOG("\nERROR --> F1AP : Failed at extractPdschServingCellCfg()");
+            return RFAILED;
+         }
       }
    }
    if(cuSrvCellCfg->uplinkConfig)
    {
-     if(cuSrvCellCfg->uplinkConfig->initialUplinkBWP)
-     {
-        ulBwp = ((BWP_UplinkDedicated_t *)(cuSrvCellCfg->uplinkConfig->initialUplinkBWP));
-	if(ulBwp->pusch_Config)
-	{
-	   macSrvCellCfg->initUlBwp.puschPresent = true;
-           extractPuschCfg(ulBwp->pusch_Config, &macSrvCellCfg->initUlBwp.puschCfg);
-	}
-	if(ulBwp->pucch_Config)
-	{
-	   macSrvCellCfg->initUlBwp.pucchPresent = true;
-	   memset(&macSrvCellCfg->initUlBwp.pucchCfg, 0, sizeof(PucchCfg));
-           extractPucchCfg(ulBwp->pucch_Config, &macSrvCellCfg->initUlBwp.pucchCfg); 
-	}
-     }
-     if(cuSrvCellCfg->uplinkConfig->firstActiveUplinkBWP_Id)
-        macSrvCellCfg->firstActvUlBwpId = *(cuSrvCellCfg->uplinkConfig->firstActiveUplinkBWP_Id);
+      if(cuSrvCellCfg->uplinkConfig->initialUplinkBWP)
+      {
+         ulBwp = ((BWP_UplinkDedicated_t *)(cuSrvCellCfg->uplinkConfig->initialUplinkBWP));
+         if(ulBwp->pusch_Config)
+         {
+            macSrvCellCfg->initUlBwp.puschPresent = true;
+            extractPuschCfg(ulBwp->pusch_Config, &macSrvCellCfg->initUlBwp.puschCfg);
+         }
+         if(ulBwp->pucch_Config)
+         {
+            macSrvCellCfg->initUlBwp.pucchPresent = true;
+            memset(&macSrvCellCfg->initUlBwp.pucchCfg, 0, sizeof(PucchCfg));
+            if(storedSrvCellCfg)
+            {
+               if(!storedSrvCellCfg->initUlBwp.pucchPresent)
+                  extractPucchCfg(ulBwp->pucch_Config, &macSrvCellCfg->initUlBwp.pucchCfg, NULL);
+               else
+                  extractPucchCfg(ulBwp->pucch_Config, &macSrvCellCfg->initUlBwp.pucchCfg,\
+                  &storedSrvCellCfg->initUlBwp.pucchCfg);
+            }
+            else
+            {
+               extractPucchCfg(ulBwp->pucch_Config, &macSrvCellCfg->initUlBwp.pucchCfg, NULL);
+            }
+         }
+      }
+      if(cuSrvCellCfg->uplinkConfig->firstActiveUplinkBWP_Id)
+         macSrvCellCfg->firstActvUlBwpId = *(cuSrvCellCfg->uplinkConfig->firstActiveUplinkBWP_Id);
    }
    return ret;
 }
@@ -9099,7 +9149,7 @@ uint8_t extractSpCellDedicatedCfg(ServingCellConfig_t *cuSrvCellCfg, ServCellCfg
  * @return ROK/RFAILED
  *
  * ****************************************************************/
-uint8_t extractUeReCfgCellInfo(CellGroupConfigRrc_t *cellGrp, MacUeCfg *macUeCfg)
+uint8_t extractUeReCfgCellInfo(CellGroupConfigRrc_t *cellGrp, MacUeCfg *macUeCfg, MacUeCfg *storedMacUeCfg)
 {
    uint8_t ret = ROK;
    MAC_CellGroupConfig_t     *macCellGroup = NULLP;
@@ -9182,7 +9232,18 @@ uint8_t extractUeReCfgCellInfo(CellGroupConfigRrc_t *cellGrp, MacUeCfg *macUeCfg
          if(cellGrp->spCellConfig->spCellConfigDedicated)
          {
             servCellCfg = ((ServingCellConfig_t *)(cellGrp->spCellConfig->spCellConfigDedicated));
-            ret = extractSpCellDedicatedCfg(servCellCfg, &macUeCfg->spCellCfg.servCellCfg);
+            if(storedMacUeCfg)
+            {
+               if(!storedMacUeCfg->spCellCfgPres)
+                  ret = extractSpCellDedicatedCfg(servCellCfg, &macUeCfg->spCellCfg.servCellCfg, NULL);
+               else
+                  ret = extractSpCellDedicatedCfg(servCellCfg, &macUeCfg->spCellCfg.servCellCfg,\
+                        &storedMacUeCfg->spCellCfg.servCellCfg);
+            }
+            else
+            {
+               ret = extractSpCellDedicatedCfg(servCellCfg, &macUeCfg->spCellCfg.servCellCfg, NULL);
+            }
             if(ret == RFAILED)
             {
                DU_LOG("\nERROR --> F1AP : Failed at extractSpCellDedicatedCfg()");
@@ -9567,7 +9628,7 @@ void freeAperDecodeDRBSetup(DRBs_ToBeSetup_List_t *drbSet)
  * @return void 
  *
  * ****************************************************************/
-uint8_t procUeReCfgCellInfo(MacUeCfg *macUeCfgToSend, void *cellInfo)
+uint8_t procUeReCfgCellInfo(MacUeCfg *macUeCfgToSend,MacUeCfg *storedMacUeCfg, void *cellInfo)
 {
    uint8_t ret = ROK;
    CellGroupConfigRrc_t *cellGrp = NULLP;
@@ -9575,7 +9636,7 @@ uint8_t procUeReCfgCellInfo(MacUeCfg *macUeCfgToSend, void *cellInfo)
    if(cellInfo)
    {
       cellGrp = (CellGroupConfigRrc_t *)cellInfo;
-      ret = extractUeReCfgCellInfo(cellGrp, macUeCfgToSend);
+      ret = extractUeReCfgCellInfo(cellGrp, macUeCfgToSend, storedMacUeCfg);
       if(ret == RFAILED)
          DU_LOG("\nERROR  -->  F1AP : Failed at procUeReCfgCellInfo()");
    }
