@@ -127,6 +127,7 @@ typedef struct duUeCfg
    AmbrCfg *ambrCfg;
    uint8_t numDrb;
    UpTnlCfg upTnlInfo[MAX_NUM_DRB];  /* User plane TNL Info*/
+   MacUeCfg copyOfmacUeCfg;
 }DuUeCfg;
 
 typedef struct f1UeContextSetup
