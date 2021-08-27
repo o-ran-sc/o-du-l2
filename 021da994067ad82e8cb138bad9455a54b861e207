@@ -1,0 +1,123 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "331382ef_0cd455bb",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 5254,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-08-27T10:36:39Z",
+      "side": 1,
+      "message": "change the idx1 and idx2 naming",
+      "revId": "021da994067ad82e8cb138bad9455a54b861e207",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d8e247ea_b3abbcd1",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 9048,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-08-27T10:36:39Z",
+      "side": 1,
+      "message": "too much if else here.\nextractPdschCfg is checked 3 times. Have to make more efficient.",
+      "revId": "021da994067ad82e8cb138bad9455a54b861e207",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "acb27456_b4da0b8d",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 9128,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-08-27T10:36:39Z",
+      "side": 1,
+      "message": "same comment as above. Has to be more optimized",
+      "revId": "021da994067ad82e8cb138bad9455a54b861e207",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b6b7f280_1022b3d1",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 9245,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-08-27T10:36:39Z",
+      "side": 1,
+      "message": "same comment as above. Have to be more optimized",
+      "revId": "021da994067ad82e8cb138bad9455a54b861e207",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d771e93a_2ddc5612",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 9631,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-08-27T10:36:39Z",
+      "side": 1,
+      "message": "In the function param, two MacUeCfg pointers??\nthis is not the preferred coding style. Logic to be revised.",
+      "revId": "021da994067ad82e8cb138bad9455a54b861e207",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "888fd516_7197f9d0",
+        "filename": "src/du_app/du_f1ap_msg_hdl.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-08-27T10:36:39Z",
+      "side": 1,
+      "message": "two pointers of same structure?? Not recommended.",
+      "revId": "021da994067ad82e8cb138bad9455a54b861e207",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ada635de_81dfcbd5",
+        "filename": "src/du_app/du_f1ap_msg_hdl.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-08-27T10:36:39Z",
+      "side": 1,
+      "message": "same comment as above.",
+      "revId": "021da994067ad82e8cb138bad9455a54b861e207",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
