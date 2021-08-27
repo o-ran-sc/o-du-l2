@@ -48,6 +48,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "66215c8a_909f2232",
+        "filename": "src/phy_stub/phy_stub_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1045,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-08-27T05:26:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7d909a5b_a22a786b",
+      "range": {
+        "startLine": 1045,
+        "startChar": 16,
+        "endLine": 1045,
+        "endChar": 17
+      },
+      "revId": "15b9791b585c43f87c10294604f627c6abea125b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0c515ca4_ccbdd442",
