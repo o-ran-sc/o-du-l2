@@ -99,6 +99,7 @@
 int8_t coresetIdxTable[MAX_CORESET_INDEX][4];
 int8_t searchSpaceIdxTable[MAX_SEARCH_SPACE_INDEX][4];
 uint8_t defaultUlAckTbl[DEFAULT_UL_ACK_LIST_COUNT];
+uint8_t minMsg3SchTime[MAX_NUM_MU];
 
 /* functions declarations */
 void freqDomRscAllocType0(uint16_t startPrb, uint16_t prbSize, uint8_t *freqDomain);
