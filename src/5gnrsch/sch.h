@@ -82,6 +82,13 @@ typedef enum
    SCH_LC_STATE_ACTIVE
 }SchLcState;
 
+typedef enum
+{
+   WINDOW_YET_TO_START,
+   WITHIN_WINDOW,
+   WINDOW_EXPIRED
+}RaRspWindowStatus;
+
 /**
  * @brief
  * Structure holding LTE MAC's General Configuration information.
@@ -111,8 +118,8 @@ typedef struct schDlSlotInfo
    uint8_t   ssbIdxSupported;                   /*!< Max SSB index */
    SsbInfo   ssbInfo[MAX_SSB_IDX];              /*!< SSB info */
    bool      sib1Pres;                          /*!< Flag to determine if SIB1 is present in this slot */
-   RarInfo   *rarInfo;                          /*!< RAR info */
-   DlMsgInfo *dlMsgInfo;                       /*!< DL dedicated Msg info */
+   RarAlloc  *rarAlloc;                         /*!< RAR allocation */
+   DlMsgInfo *dlMsgInfo;                        /*!< DL dedicated Msg info */
 }SchDlSlotInfo;
 
 typedef struct schRaCb
@@ -286,12 +293,18 @@ uint8_t schFillPuschAlloc(SchUeCb *ueCb, uint16_t pdcchSlot, uint32_t dataVol, S
 uint8_t schDlRsrcAllocDlMsg(DlMsgAlloc *dlMsgAlloc, SchCellCb *cell, uint16_t crnti,
    uint32_t *accumalatedSize, uint16_t slot);
 uint16_t schAccumalateLcBoSize(SchCellCb *cell, uint16_t ueIdx);
-uint8_t schFillRar(RarAlloc *rarAlloc, uint16_t raRnti, uint16_t pci, uint8_t offsetPointA, bool ssbPresent, bool sib1Present);
-void BuildK0K1Table(SchCellCb *cell, SchK0K1TimingInfoTbl *k0K1InfoTbl, bool pdschCfgCmnPres, SchPdschCfgCmn pdschCmnCfg,\
-SchPdschConfig pdschDedCfg, uint8_t ulAckListCount, uint8_t *UlAckTbl);
+uint8_t schFillRar(RarAlloc *rarAlloc, uint16_t raRnti, uint16_t pci, uint8_t offsetPointA, \
+    uint8_t k0Index, bool ssbPresent, bool sib1Present);
 void schProcessRaReq(SlotTimingInfo currTime, SchCellCb *cellCb);
-void BuildK2InfoTable(SchCellCb *cell, SchPuschTimeDomRsrcAlloc timeDomRsrcAllocList[], uint16_t puschSymTblSize,\
-SchK2TimingInfoTbl *k2InfoTbl);
+
+void BuildK0K1Table(SchCellCb *cell, SchK0K1TimingInfoTbl *k0K1InfoTbl, bool pdschCfgCmnPres, \
+SchPdschCfgCmn pdschCmnCfg,SchPdschConfig pdschDedCfg, uint8_t ulAckListCount, uint8_t *UlAckTbl);
+void BuildK2InfoTable(SchCellCb *cell, SchPuschTimeDomRsrcAlloc timeDomRsrcAllocList[], \
+uint16_t puschSymTblSize, SchK2TimingInfoTbl *msg3K2InfoTbl, SchK2TimingInfoTbl *k2InfoTbl);
+
+PduTxOccsaion schCheckSsbOcc(SlotTimingInfo slotTime, SchCellCb *cell);
+PduTxOccsaion schCheckSib1Occ(SlotTimingInfo slotTime, SchCellCb *cell);
+
 /**********************************************************************
   End of file
  **********************************************************************/
