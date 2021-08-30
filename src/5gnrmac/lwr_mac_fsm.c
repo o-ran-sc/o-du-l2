@@ -3424,6 +3424,7 @@ uint16_t fillDlTtiReq(SlotTimingInfo currTimingInfo)
                   DU_LOG("\nDEBUG  -->  LWR_MAC: MIB sent..");
                   DU_LOG("\033[0m");
                }
+
                if(currDlSlot->dlInfo.brdcstAlloc.sib1Trans)
                {
                   /* Filling SIB1 param */
@@ -3447,24 +3448,34 @@ uint16_t fillDlTtiReq(SlotTimingInfo currTimingInfo)
                   DU_LOG("\033[0m");
                }
             }
+
             if(currDlSlot->dlInfo.rarAlloc != NULLP)
             {
                /* Filling RAR param */
                rntiType = RA_RNTI_TYPE;
-               fillPdcchPdu(&dlTtiReq->pdus[numPduEncoded], \
-                     &currDlSlot->dlInfo, rntiType, CORESET_TYPE0);
-               numPduEncoded++;
-               fillPdschPdu(&dlTtiReq->pdus[numPduEncoded],
-                     &currDlSlot->dlInfo.rarAlloc->rarPdschCfg,
-                     currDlSlot->dlInfo.rarAlloc->bwp,
-                     pduIndex);
-               numPduEncoded++;
-               pduIndex++;
+               if((currDlSlot->dlInfo.rarAlloc->pduPres == BOTH) || \
+                     (currDlSlot->dlInfo.rarAlloc->pduPres == PDCCH_PDU))
+               {
+                  fillPdcchPdu(&dlTtiReq->pdus[numPduEncoded], \
+                        &currDlSlot->dlInfo, rntiType, CORESET_TYPE0);
+                  numPduEncoded++;
+               }
+               if((currDlSlot->dlInfo.rarAlloc->pduPres == BOTH) || \
+                     (currDlSlot->dlInfo.rarAlloc->pduPres == PDSCH_PDU))
+               {
+                  fillPdschPdu(&dlTtiReq->pdus[numPduEncoded],
+                        &currDlSlot->dlInfo.rarAlloc->rarPdschCfg,
+                        currDlSlot->dlInfo.rarAlloc->bwp,
+                        pduIndex);
+                  numPduEncoded++;
+                  pduIndex++;
 
-               DU_LOG("\033[1;32m");
-               DU_LOG("\nDEBUG  -->  LWR_MAC: RAR sent...");
-               DU_LOG("\033[0m");
+                  DU_LOG("\033[1;32m");
+                  DU_LOG("\nDEBUG  -->  LWR_MAC: RAR sent...");
+                  DU_LOG("\033[0m");
+               }
             }
+
             if(currDlSlot->dlInfo.dlMsgAlloc != NULLP)
             {
                if(currDlSlot->dlInfo.dlMsgAlloc->dlMsgInfo.dlMsgPdu != NULLP)
@@ -3629,16 +3640,20 @@ uint16_t sendTxDataReq(SlotTimingInfo currTimingInfo, DlSchedInfo *dlInfo, p_fap
 	 pduIndex++;
 	 txDataReq->num_pdus++;
       }
+
       if(dlInfo->rarAlloc != NULLP)
       {
-	 fillRarTxDataReq(txDataReq->pdu_desc, pduIndex, &dlInfo->rarAlloc->rarInfo,\
-	    dlInfo->rarAlloc->rarPdschCfg);
-	 pduIndex++;
-	 txDataReq->num_pdus++;
-
-	 MAC_FREE(dlInfo->rarAlloc,sizeof(RarAlloc));
-	 dlInfo->rarAlloc = NULLP;
+         if((dlInfo->rarAlloc->pduPres == BOTH) || (dlInfo->rarAlloc->pduPres == PDSCH_PDU))
+         {
+            fillRarTxDataReq(txDataReq->pdu_desc, pduIndex, &dlInfo->rarAlloc->rarInfo,\
+                  dlInfo->rarAlloc->rarPdschCfg);
+            pduIndex++;
+            txDataReq->num_pdus++;
+         }
+         MAC_FREE(dlInfo->rarAlloc,sizeof(RarAlloc));
+         dlInfo->rarAlloc = NULLP;
       }
+
       if(dlInfo->dlMsgAlloc != NULLP)
       {
          fillDlMsgTxDataReq(txDataReq->pdu_desc, pduIndex, &dlInfo->dlMsgAlloc->dlMsgInfo,\

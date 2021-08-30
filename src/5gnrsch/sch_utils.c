@@ -765,6 +765,12 @@ uint8_t pucchResourceSet[MAX_PUCCH_RES_SET_IDX][4] = {
 { 1,   0, 14,  0 }, /* index 15 */
 };
 
+/* Minimum Msg3 scheduling time should be calculated based on N1+N2+NTAmax+0.5
+ * ms formula.
+ * Refer spec 38.213 section 8.3.
+ * Harcoding the minimum msg3 scheduling for now */
+uint8_t minMsg3SchTime[MAX_NUM_MU] = {6, 6, 6, 6};
+
 uint8_t defaultUlAckTbl[DEFAULT_UL_ACK_LIST_COUNT]= {1, 2, 3 , 4, 5, 6, 7, 8};
 /**
  * @brief frequency domain allocation function. 

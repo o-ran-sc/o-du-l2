@@ -233,7 +233,6 @@ uint8_t schProcessSlotInd(SlotTimingInfo *slotInd, Inst schInst)
    uint16_t slot;
    DlSchedInfo dlSchedInfo;
    DlBrdcstAlloc *dlBrdcstAlloc = NULLP;
-   RarAlloc   *rarAlloc = NULLP;
    DlMsgAlloc  *msg4Alloc = NULLP;
    DlMsgAlloc *dlMsgAlloc = NULLP;
    SchCellCb  *cell = NULLP;
@@ -316,31 +315,11 @@ uint8_t schProcessSlotInd(SlotTimingInfo *slotInd, Inst schInst)
    schProcessRaReq(*slotInd, cell);
 
    /* check for RAR */
-   if(cell->schDlSlotInfo[dlSchedInfo.schSlotValue.rarTime.slot]->rarInfo != NULLP)
+   if(cell->schDlSlotInfo[dlSchedInfo.schSlotValue.rarTime.slot]->rarAlloc != NULLP)
    {
       slot = dlSchedInfo.schSlotValue.rarTime.slot;
-      SCH_ALLOC(rarAlloc, sizeof(RarAlloc));
-      if(!rarAlloc)
-      {
-         DU_LOG("\nERROR  -->  SCH : Memory Allocation failed for RAR alloc");
-         return RFAILED;
-      }
-
-      dlSchedInfo.rarAlloc = rarAlloc;
-
-      /* RAR info is copied, this was earlier filled in schProcessRachInd */
-      memcpy(&rarAlloc->rarInfo,cell->schDlSlotInfo[slot]->rarInfo, sizeof(RarInfo));
-
-      /* pdcch and pdsch data is filled */
-      schFillRar(rarAlloc,
-	    cell->schDlSlotInfo[slot]->rarInfo->raRnti,
-	    cell->cellCfg.phyCellId,
-	    cell->cellCfg.ssbSchCfg.ssbOffsetPointA,
-       dlBrdcstAlloc->ssbTrans,
-       dlBrdcstAlloc->sib1Trans);
-
-      SCH_FREE(cell->schDlSlotInfo[slot]->rarInfo,sizeof(RarInfo));
-      cell->schDlSlotInfo[slot]->rarInfo = NULLP;
+      dlSchedInfo.rarAlloc = cell->schDlSlotInfo[slot]->rarAlloc;
+      cell->schDlSlotInfo[slot]->rarAlloc = NULLP;
    }
 
    /* check for MSG4 */

@@ -401,6 +401,13 @@ typedef enum
    SCH_MCS_TABLE_QAM_64_LOW_SE
 }SchMcsTable;
 
+typedef enum
+{
+   PDCCH_PDU,
+   PDSCH_PDU,
+   BOTH
+}DlPduType;
+
 /*structures*/
 typedef struct timeDomainAlloc
 {
@@ -797,6 +804,8 @@ typedef struct rarInfo
 
 typedef struct rarAlloc
 {
+   DlPduType  pduPres;
+   uint8_t    pdschSlot;
    RarInfo rarInfo;
    BwpCfg  bwp;
    PdcchCfg rarPdcchCfg;
