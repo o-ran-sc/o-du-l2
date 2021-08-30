@@ -38,15 +38,8 @@
 
 
 /*macros*/
-#define NO_SSB 0
-#define SSB_TRANSMISSION 1
-#define SSB_REPEAT 2
 #define MAX_SSB_IDX 1 /* forcing it as 1 for now. Right value is 64 */
 #define SCH_SSB_MASK_SIZE   1
-
-#define NO_SIB1 0
-#define SIB1_TRANSMISSION 1
-#define SIB1_REPITITION 2
 
 #define MAX_NUM_PRG     1 /* max value should be later 275 */
 #define MAX_DIG_BF_INTERFACES 0 /* max value should be later 255 */
@@ -123,6 +116,13 @@
       toFill.sfn%=MAX_SFN;                                 \
    }                                                       \
 }
+
+typedef enum
+{
+   NO_TRANSMISSION,
+   NEW_TRANSMISSION,
+   REPEATITION 
+}PduTxOccsaion;
 
 typedef enum
 {
@@ -400,6 +400,13 @@ typedef enum
    SCH_MCS_TABLE_QAM_256,
    SCH_MCS_TABLE_QAM_64_LOW_SE
 }SchMcsTable;
+
+typedef enum
+{
+   PDCCH_PDU,
+   PDSCH_PDU,
+   BOTH
+}DlPduType;
 
 /*structures*/
 typedef struct timeDomainAlloc
@@ -705,6 +712,7 @@ typedef struct schBwpUlCfg
    SchBwpParams   bwp;
    SchPucchCfgCmn pucchCommon;
    SchPuschCfgCmn puschCommon;
+   SchK2TimingInfoTbl msg3K2InfoTbl;
    SchK2TimingInfoTbl k2InfoTbl;
 }SchBwpUlCfg;
 
@@ -797,6 +805,8 @@ typedef struct rarInfo
 
 typedef struct rarAlloc
 {
+   DlPduType  pduPres;
+   uint8_t    pdschSlot;
    RarInfo rarInfo;
    BwpCfg  bwp;
    PdcchCfg rarPdcchCfg;
