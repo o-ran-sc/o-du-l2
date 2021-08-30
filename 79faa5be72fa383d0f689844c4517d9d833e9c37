@@ -18,6 +18,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7bd16687_5d2362cd",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 179,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-08-30T09:18:28Z",
+      "side": 1,
+      "message": "Removed it",
+      "parentUuid": "c7dc17c6_7a4a61e3",
+      "revId": "79faa5be72fa383d0f689844c4517d9d833e9c37",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0c171e4a_3b7aad93",
@@ -31,6 +49,24 @@
       "writtenOn": "2021-08-26T05:25:00Z",
       "side": 1,
       "message": "init should happen with zero and why hardcoding should be avoid. \nName suitable Macro",
+      "revId": "79faa5be72fa383d0f689844c4517d9d833e9c37",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "acdc0b1b_d5f2d016",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2240,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-08-30T09:18:28Z",
+      "side": 1,
+      "message": "Removed this logic itself as TEID must be unique across Cell between UE. Thus Forming TEID using DRB_ID will be wrong",
+      "parentUuid": "0c171e4a_3b7aad93",
       "revId": "79faa5be72fa383d0f689844c4517d9d833e9c37",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -52,6 +88,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4816d3fc_9b55265e",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2241,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-08-30T09:18:28Z",
+      "side": 1,
+      "message": "Removed this logic itself as TEID must be unique across Cell between multiple UE. Thus Forming TEID using DRB_ID will be wrong",
+      "parentUuid": "9069dd14_6823ba5a",
+      "revId": "79faa5be72fa383d0f689844c4517d9d833e9c37",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "caa3df45_20d1ea68",
@@ -65,6 +119,24 @@
       "writtenOn": "2021-08-26T05:25:00Z",
       "side": 1,
       "message": "club all uint8_t and init to zero",
+      "revId": "79faa5be72fa383d0f689844c4517d9d833e9c37",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "72769439_5e3802dc",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2269,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-08-30T09:18:28Z",
+      "side": 1,
+      "message": "Done.\nFor readability, Will Split into two as len of Variable names are long.",
+      "parentUuid": "caa3df45_20d1ea68",
       "revId": "79faa5be72fa383d0f689844c4517d9d833e9c37",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -86,6 +158,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a444d322_7be42529",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 6953,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-08-30T09:18:28Z",
+      "side": 1,
+      "message": "Removed this logic itself as TEID must be unique across Cell between UE. Thus Forming TEID using DRB_ID will be wrong. Assigning unique TEID for every tunnel created",
+      "parentUuid": "61b1480a_d4972247",
+      "revId": "79faa5be72fa383d0f689844c4517d9d833e9c37",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0250562b_e4dcf1f8",
@@ -99,6 +189,24 @@
       "writtenOn": "2021-08-26T05:25:00Z",
       "side": 1,
       "message": "MAX_DRB_SET",
+      "revId": "79faa5be72fa383d0f689844c4517d9d833e9c37",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "649a22fe_acea068c",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-08-30T09:18:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0250562b_e4dcf1f8",
       "revId": "79faa5be72fa383d0f689844c4517d9d833e9c37",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -122,6 +230,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "67160fea_1cf7a60a",
+        "filename": "src/cu_stub/cu_stub_egtp.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-08-30T09:18:28Z",
+      "side": 1,
+      "message": "This is needed to keep the track of num of PDUs against each DRB",
+      "parentUuid": "8bd13459_ecb9401d",
+      "revId": "79faa5be72fa383d0f689844c4517d9d833e9c37",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "117ea632_2c6b3a66",
         "filename": "src/cu_stub/cu_stub_egtp.c",
         "patchSetId": 2
@@ -133,6 +259,24 @@
       "writtenOn": "2021-08-26T05:25:00Z",
       "side": 1,
       "message": "why to init with INVALID val?",
+      "revId": "79faa5be72fa383d0f689844c4517d9d833e9c37",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f1ab02be_9d3304c7",
+        "filename": "src/cu_stub/cu_stub_egtp.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-08-30T09:18:28Z",
+      "side": 1,
+      "message": "Because Value \u003d 0 is used when DRB/TEID is Added. Zero will guard whether the DRB is created or not before starting the Data flow",
+      "parentUuid": "117ea632_2c6b3a66",
       "revId": "79faa5be72fa383d0f689844c4517d9d833e9c37",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -154,6 +298,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f44fbe58_89851acc",
+        "filename": "src/cu_stub/cu_stub_egtp.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-08-30T09:18:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "972313a6_ea06d11d",
+      "revId": "79faa5be72fa383d0f689844c4517d9d833e9c37",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "141f9b2f_8082b142",
@@ -171,6 +333,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "df845f3a_1ab19371",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 7769,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-08-30T09:18:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "141f9b2f_8082b142",
+      "revId": "79faa5be72fa383d0f689844c4517d9d833e9c37",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e197b43b_ce566686",
@@ -184,6 +364,24 @@
       "writtenOn": "2021-08-26T05:25:00Z",
       "side": 1,
       "message": "to be checked via gdb if lcId is being generated correctly",
+      "revId": "79faa5be72fa383d0f689844c4517d9d833e9c37",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ae8d9eee_c2bb5719",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 9960,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-08-30T09:18:28Z",
+      "side": 1,
+      "message": "Verified",
+      "parentUuid": "e197b43b_ce566686",
       "revId": "79faa5be72fa383d0f689844c4517d9d833e9c37",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }

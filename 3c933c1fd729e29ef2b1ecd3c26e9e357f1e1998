@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e569b25e_f2bc70ff",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-08-30T09:18:28Z",
+      "side": 1,
+      "message": "Mamtha\u0027s review comments are incorporated in Patchset 4",
+      "revId": "3c933c1fd729e29ef2b1ecd3c26e9e357f1e1998",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
