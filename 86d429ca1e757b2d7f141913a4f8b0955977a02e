@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3c837505_75240e4a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-08-30T18:33:19Z",
+      "side": 1,
+      "message": "Patchset 5: PHY Stub (UL data flow with Multi Bearer) , Some bugs solved via UL flow",
+      "revId": "86d429ca1e757b2d7f141913a4f8b0955977a02e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
