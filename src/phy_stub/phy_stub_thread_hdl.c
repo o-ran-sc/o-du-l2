@@ -50,9 +50,9 @@ pthread_t thread = 0;
 void GenerateTicks()
 {
 #ifdef NR_TDD
-   int     milisec = 0.5;        /* 0.5ms */
+   float     milisec = 0.5;        /* 0.5ms */
 #else
-   int     milisec = 1;          /* 1ms */
+   float     milisec = 1;          /* 1ms */
 #endif
    struct timespec req = {0};
 
