@@ -79,7 +79,6 @@ uint8_t sendDlAllocToMac(DlSchedInfo *dlSchedInfo, Inst inst)
 
 }
 
-
 /*******************************************************************
  *
  * @brief Handles slot indication at SCH 
@@ -115,6 +114,79 @@ void schCalcSlotValues(SlotTimingInfo slotInd, SchSlotValue *schSlotValue)
    ADD_DELTA_TO_TIME(slotInd, schSlotValue->broadcastTime, PHY_DELTA_DL + SCHED_DELTA);
    ADD_DELTA_TO_TIME(slotInd, schSlotValue->rarTime, PHY_DELTA_DL + SCHED_DELTA);
    ADD_DELTA_TO_TIME(slotInd, schSlotValue->dlMsgTime, PHY_DELTA_DL + SCHED_DELTA);
+}
+
+/*******************************************************************
+ *
+ * @brief Checks if a slot is to be scheduled for SSB transmission
+ *
+ * @details
+ *
+ *    Function : schCheckSsbOcc 
+ *
+ *    Functionality:
+ *       Checks if a slot is to be scheduled for SSB transmission
+ *
+ * @params[in] SlotTimingInfo slotTime
+ *             SchCellCb *cell 
+ * @return  Pdu transmission 
+ *
+ * ****************************************************************/
+PduTxOccsaion schCheckSsbOcc(SlotTimingInfo slotTime, SchCellCb *cell)
+{
+   uint8_t  ssb_rep;
+
+   ssb_rep = cell->cellCfg.ssbSchCfg.ssbPeriod;
+
+   /* Identify SSB ocassion*/
+   if ((slotTime.sfn % SCH_MIB_TRANS == 0) && (slotTime.slot ==0))
+   {
+      return NEW_TRANSMISSION;
+   }
+   else if(cell->firstSsbTransmitted) 
+   {
+      if((ssb_rep == 5) && ((slotTime.slot == 0 || slotTime.slot == 10)))
+         return REPEATITION;
+      else if((slotTime.sfn % (ssb_rep/10) == 0) && slotTime.slot == 0)
+         return REPEATITION;
+   }
+   /* not SSB occassion */
+   return NO_TRANSMISSION;
+}
+
+/*******************************************************************
+ *
+ * @brief Checks if a slot is to be scheduled for SIB1 transmission
+ *
+ * @details
+ *
+ *    Function : schCheckSib1Occ
+ *
+ *    Functionality:
+ *       Checks if a slot is to be scheduled for SIB1 transmission
+ *
+ * @params[in] SlotTimingInfo slotTime
+ *             SchCellCb *cell
+ * @return  Pdu transmission
+ *
+ * ****************************************************************/
+PduTxOccsaion schCheckSib1Occ(SlotTimingInfo slotTime, SchCellCb *cell)
+{
+   /* Identify SIB1 occasions */
+   if((slotTime.sfn % SCH_SIB1_TRANS == 0) && (slotTime.slot ==0))
+   {
+      return NEW_TRANSMISSION;
+   }
+   else if(cell->firstSib1Transmitted) 
+   {
+      if((slotTime.sfn % (cell->cellCfg.sib1SchCfg.sib1RepetitionPeriod/10) == 0) &&
+            (slotTime.slot == 0))
+      {
+         return REPEATITION;
+      }
+   }
+   /* not SIB1 occassion */
+   return NO_TRANSMISSION;
 }
 
 /*******************************************************************
@@ -229,22 +301,20 @@ uint8_t schFillBoGrantDlSchedInfo(SchCellCb *cell, DlSchedInfo *dlSchedInfo, DlM
  * ****************************************************************/
 uint8_t schProcessSlotInd(SlotTimingInfo *slotInd, Inst schInst)
 {
-   uint8_t  ssb_rep, ueIdx, lcgIdx, ret = ROK;
+   uint8_t  ueIdx, lcgIdx, ret = ROK;
    uint16_t slot;
    DlSchedInfo dlSchedInfo;
    DlBrdcstAlloc *dlBrdcstAlloc = NULLP;
-   RarAlloc   *rarAlloc = NULLP;
    DlMsgAlloc  *msg4Alloc = NULLP;
    DlMsgAlloc *dlMsgAlloc = NULLP;
    SchCellCb  *cell = NULLP;
-
 
    memset(&dlSchedInfo,0,sizeof(DlSchedInfo));
    dlSchedInfo.dlMsgAlloc = NULLP;
    schCalcSlotValues(*slotInd, &dlSchedInfo.schSlotValue);
    dlBrdcstAlloc = &dlSchedInfo.brdcstAlloc;
-   dlBrdcstAlloc->ssbTrans = NO_SSB;
-   dlBrdcstAlloc->sib1Trans = NO_SIB1;
+   dlBrdcstAlloc->ssbTrans = NO_TRANSMISSION;
+   dlBrdcstAlloc->sib1Trans = NO_TRANSMISSION;
 
    cell = schCb[schInst].cells[schInst];
    if(cell == NULLP)
@@ -252,7 +322,6 @@ uint8_t schProcessSlotInd(SlotTimingInfo *slotInd, Inst schInst)
       DU_LOG("\nERROR  -->  SCH : Cell Does not exist");
       return RFAILED;
    }
-   ssb_rep = cell->cellCfg.ssbSchCfg.ssbPeriod;
    memcpy(&cell->slotInfo, slotInd, sizeof(SlotTimingInfo));
    dlBrdcstAlloc->ssbIdxSupported = 1;
 
@@ -260,45 +329,15 @@ uint8_t schProcessSlotInd(SlotTimingInfo *slotInd, Inst schInst)
 
    dlSchedInfo.cellId = cell->cellId;
 
-   /* Identify SSB ocassion*/
-   if ((dlSchedInfo.schSlotValue.broadcastTime.sfn % SCH_MIB_TRANS == 0) && (dlSchedInfo.schSlotValue.broadcastTime.slot ==0))
-   {
-      dlBrdcstAlloc->ssbTrans = SSB_TRANSMISSION;
-      if(!cell->firstSsbTransmitted)
-         cell->firstSsbTransmitted = true;
-   }
-   else if (cell->firstSsbTransmitted) 
-   {
-      if((ssb_rep == 5) && ((dlSchedInfo.schSlotValue.broadcastTime.slot == 0 || dlSchedInfo.schSlotValue.broadcastTime.slot == 10)))
-         dlBrdcstAlloc->ssbTrans = SSB_REPEAT;
-      else if((dlSchedInfo.schSlotValue.broadcastTime.sfn % (ssb_rep/10) == 0) && dlSchedInfo.schSlotValue.broadcastTime.slot == 0)
-         dlBrdcstAlloc->ssbTrans = SSB_REPEAT;
-   }
-   else
-   {
-      /* not SSB occassion */
-   }
+   /* Check if this slot is SSB occassion */
+   dlBrdcstAlloc->ssbTrans = schCheckSsbOcc(dlSchedInfo.schSlotValue.broadcastTime, cell); 
+   if((dlBrdcstAlloc->ssbTrans == NEW_TRANSMISSION) && (!cell->firstSsbTransmitted))
+      cell->firstSsbTransmitted = true;
 
-   /* Identify SIB1 occasions */
-   if((dlSchedInfo.schSlotValue.broadcastTime.sfn % SCH_SIB1_TRANS == 0) && (dlSchedInfo.schSlotValue.broadcastTime.slot ==0))
-   {
-      dlBrdcstAlloc->sib1Trans = SIB1_TRANSMISSION;
-      if(!cell->firstSib1Transmitted)
-         cell->firstSib1Transmitted = true;
-   }
-   else if (cell->firstSib1Transmitted) 
-   {
-      if((dlSchedInfo.schSlotValue.broadcastTime.sfn % (cell->cellCfg.sib1SchCfg.sib1RepetitionPeriod/10) == 0) &&
-            (dlSchedInfo.schSlotValue.broadcastTime.slot == 0))
-      {
-         dlBrdcstAlloc->sib1Trans = SIB1_REPITITION;
-      }
-   }
-   else
-   {
-      /* not SIB1 occassion */
-   }
-
+   /* Check if this slot is SIB1 occassion */
+   dlBrdcstAlloc->sib1Trans = schCheckSib1Occ(dlSchedInfo.schSlotValue.broadcastTime, cell);
+   if((dlBrdcstAlloc->sib1Trans == NEW_TRANSMISSION) && (!cell->firstSib1Transmitted))
+      cell->firstSib1Transmitted = true;
 
    if(dlBrdcstAlloc->ssbTrans || dlBrdcstAlloc->sib1Trans)
    {
@@ -316,31 +355,11 @@ uint8_t schProcessSlotInd(SlotTimingInfo *slotInd, Inst schInst)
    schProcessRaReq(*slotInd, cell);
 
    /* check for RAR */
-   if(cell->schDlSlotInfo[dlSchedInfo.schSlotValue.rarTime.slot]->rarInfo != NULLP)
+   if(cell->schDlSlotInfo[dlSchedInfo.schSlotValue.rarTime.slot]->rarAlloc != NULLP)
    {
       slot = dlSchedInfo.schSlotValue.rarTime.slot;
-      SCH_ALLOC(rarAlloc, sizeof(RarAlloc));
-      if(!rarAlloc)
-      {
-         DU_LOG("\nERROR  -->  SCH : Memory Allocation failed for RAR alloc");
-         return RFAILED;
-      }
-
-      dlSchedInfo.rarAlloc = rarAlloc;
-
-      /* RAR info is copied, this was earlier filled in schProcessRachInd */
-      memcpy(&rarAlloc->rarInfo,cell->schDlSlotInfo[slot]->rarInfo, sizeof(RarInfo));
-
-      /* pdcch and pdsch data is filled */
-      schFillRar(rarAlloc,
-	    cell->schDlSlotInfo[slot]->rarInfo->raRnti,
-	    cell->cellCfg.phyCellId,
-	    cell->cellCfg.ssbSchCfg.ssbOffsetPointA,
-       dlBrdcstAlloc->ssbTrans,
-       dlBrdcstAlloc->sib1Trans);
-
-      SCH_FREE(cell->schDlSlotInfo[slot]->rarInfo,sizeof(RarInfo));
-      cell->schDlSlotInfo[slot]->rarInfo = NULLP;
+      dlSchedInfo.rarAlloc = cell->schDlSlotInfo[slot]->rarAlloc;
+      cell->schDlSlotInfo[slot]->rarAlloc = NULLP;
    }
 
    /* check for MSG4 */
@@ -371,6 +390,7 @@ uint8_t schProcessSlotInd(SlotTimingInfo *slotInd, Inst schInst)
       SCH_FREE(cell->schDlSlotInfo[dlSchedInfo.schSlotValue.dlMsgTime.slot]->dlMsgInfo, sizeof(DlMsgInfo));
       cell->schDlSlotInfo[dlSchedInfo.schSlotValue.dlMsgTime.slot]->dlMsgInfo = NULL;
    }
+
    /* check if UL grant must be sent in this slot for a SR/BSR that had been received */
    for(ueIdx=0; ueIdx<cell->numActvUe; ueIdx++)
    {
