@@ -4034,8 +4034,6 @@ Size size           /* size */
 )
 {
 
-   S16 ret;
-
    if ((data == NULLP) || (*data == NULLP) || (size == 0))
    {
       return;
