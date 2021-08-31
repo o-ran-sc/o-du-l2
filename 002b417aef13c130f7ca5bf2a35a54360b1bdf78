@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "06e9a31b_6c9e9323",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 874,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-08-31T08:42:49Z",
+      "side": 1,
+      "message": "add the tag \"TODO\" so it gets highlighted.\nApplicable to all the code you commented that will be used later",
+      "revId": "002b417aef13c130f7ca5bf2a35a54360b1bdf78",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "25398d7f_3a72285e",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1206,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-08-31T08:42:49Z",
+      "side": 1,
+      "message": "why are we passing null here?\nAs we discussed in our last call, if UE is being reconfigured, then either the updated values should be filled in MacUeCfgToSend or the old values should be filled for the parameters that are not updated.\nSo instead of null, the old MAC UE cfg should be passed i.e. duMacDb",
+      "revId": "002b417aef13c130f7ca5bf2a35a54360b1bdf78",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
