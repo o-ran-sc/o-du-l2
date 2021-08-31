@@ -18,6 +18,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7f1b4666_826b5b74",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 5254,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-08-31T06:22:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "331382ef_0cd455bb",
+      "revId": "021da994067ad82e8cb138bad9455a54b861e207",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d8e247ea_b3abbcd1",
@@ -31,6 +49,24 @@
       "writtenOn": "2021-08-27T10:36:39Z",
       "side": 1,
       "message": "too much if else here.\nextractPdschCfg is checked 3 times. Have to make more efficient.",
+      "revId": "021da994067ad82e8cb138bad9455a54b861e207",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "04261d7b_4893ca58",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 9048,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-08-31T06:22:59Z",
+      "side": 1,
+      "message": "each if condition is mandatory here otherwise we will face segmentation fault.\nAs per the discussion, Will work on efficiency in next commits.",
+      "parentUuid": "d8e247ea_b3abbcd1",
       "revId": "021da994067ad82e8cb138bad9455a54b861e207",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -54,6 +90,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "bcd462b7_32c00428",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 9128,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-08-31T06:22:59Z",
+      "side": 1,
+      "message": "will work on optimization.",
+      "parentUuid": "acb27456_b4da0b8d",
+      "revId": "021da994067ad82e8cb138bad9455a54b861e207",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b6b7f280_1022b3d1",
         "filename": "src/du_app/du_f1ap_msg_hdl.c",
         "patchSetId": 2
@@ -65,6 +119,24 @@
       "writtenOn": "2021-08-27T10:36:39Z",
       "side": 1,
       "message": "same comment as above. Have to be more optimized",
+      "revId": "021da994067ad82e8cb138bad9455a54b861e207",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0b7875c6_563cafe7",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 9245,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-08-31T06:22:59Z",
+      "side": 1,
+      "message": "same as above.",
+      "parentUuid": "b6b7f280_1022b3d1",
       "revId": "021da994067ad82e8cb138bad9455a54b861e207",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -88,6 +160,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "95470f52_4f874fc2",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 9631,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-08-31T06:22:59Z",
+      "side": 1,
+      "message": "same as above.",
+      "parentUuid": "d771e93a_2ddc5612",
+      "revId": "021da994067ad82e8cb138bad9455a54b861e207",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "888fd516_7197f9d0",
         "filename": "src/du_app/du_f1ap_msg_hdl.h",
         "patchSetId": 2
@@ -105,6 +195,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1c4d0277_966b4516",
+        "filename": "src/du_app/du_f1ap_msg_hdl.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-08-31T06:22:59Z",
+      "side": 1,
+      "message": "will try to optimize this in upcoming reviews.",
+      "parentUuid": "888fd516_7197f9d0",
+      "revId": "021da994067ad82e8cb138bad9455a54b861e207",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ada635de_81dfcbd5",
         "filename": "src/du_app/du_f1ap_msg_hdl.h",
         "patchSetId": 2
@@ -116,6 +224,24 @@
       "writtenOn": "2021-08-27T10:36:39Z",
       "side": 1,
       "message": "same comment as above.",
+      "revId": "021da994067ad82e8cb138bad9455a54b861e207",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e45cf19f_95892fd9",
+        "filename": "src/du_app/du_f1ap_msg_hdl.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-08-31T06:22:59Z",
+      "side": 1,
+      "message": "same as above.",
+      "parentUuid": "ada635de_81dfcbd5",
       "revId": "021da994067ad82e8cb138bad9455a54b861e207",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
