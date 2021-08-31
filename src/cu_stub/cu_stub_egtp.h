@@ -48,8 +48,8 @@
 #define EGTP_MASK_BIT8                   0x80
 
 /*VALID Tunnel ID*/
-#define MIN_TEID 1
-#define MAX_TEID 10
+#define MIN_TEID 1   /*[Spec 29.281,Sec 5.1]: All Zero TEIDs are never assigned for setting up GTP-U Tunnel*/
+#define MAX_TEID 10 /*[Spec 29.281]: Max limit is not mentioned but as per GTP-U Header Format, TEID occupies 4 octets */
 
 uint8_t         sockType;
 uint8_t         protType;

@@ -12719,8 +12719,7 @@ uint8_t procF1UeContextModificationReq(F1AP_PDU_t *f1apMsg)
                      if((duCb.actvCellLst[cellIdx]->ueCb[ueIdx].gnbDuUeF1apId == gnbDuUeF1apId)&&\
                            (duCb.actvCellLst[cellIdx]->ueCb[ueIdx].gnbCuUeF1apId == gnbCuUeF1apId))
                      {
-
-                        duUeCb = &duCb.actvCellLst[cellIdx]->ueCb[ueIdx];
+                           duUeCb = &duCb.actvCellLst[cellIdx]->ueCb[ueIdx];
                            DU_ALLOC(duUeCb->f1UeDb, sizeof(F1UeContextSetupDb));
                            if(duUeCb->f1UeDb)
                            {
@@ -12735,6 +12734,11 @@ uint8_t procF1UeContextModificationReq(F1AP_PDU_t *f1apMsg)
                                  ret = RFAILED;
                               }
                            }
+                           else
+                           {
+                              DU_LOG("\nERROR  -->  DU APP : UeDB is emty for UEIDX: %d",ueIdx);
+                              ret = RFAILED;
+                           }
                         break;
                      }
                   }
@@ -12746,7 +12750,53 @@ uint8_t procF1UeContextModificationReq(F1AP_PDU_t *f1apMsg)
                }
                break;
             }
-      }
+
+       /*TODO : To modify/create a new function which can substitute extractDrbListToSetup     */
+       #if 0
+		 case ProtocolIE_ID_id_DRBs_ToBeModified_List:
+		 {
+		      for(cellIdx = 0; cellIdx < duCb.numActvCells; cellIdx++)
+               {
+                  for(ueIdx = 0; ueIdx < duCb.actvCellLst[cellIdx]->numActvUes; ueIdx++)
+                  {
+                     if((duCb.actvCellLst[cellIdx]->ueCb[ueIdx].gnbDuUeF1apId == gnbDuUeF1apId)&&\
+                           (duCb.actvCellLst[cellIdx]->ueCb[ueIdx].gnbCuUeF1apId == gnbCuUeF1apId))
+                     {
+                           duUeCb = &duCb.actvCellLst[cellIdx]->ueCb[ueIdx];
+
+                           DU_ALLOC(duUeCb->f1UeDb, sizeof(F1UeContextSetupDb));
+                           if(duUeCb->f1UeDb)
+                           {
+                              duUeCb->f1UeDb->actionType = UE_CTXT_MOD;
+                              drbSetupModCfg = &ueContextModifyReq->protocolIEs.list.array[ieIdx]->value.\
+                                                      choice.DRBs_ToBeSetupMod_List;
+                              
+                              if(extractDrbListToSetup(NULL, drbSetupModCfg ,drbSetupModCfg->list.count, \
+                                    &duUeCb->f1UeDb->duUeCfg,&duUeCb->drbBitMap))
+                              { 
+                                 DU_LOG("\nERROR  -->  DU APP : Failed at extractDrbListToSetup()");
+                                 ret = RFAILED;
+                              }
+                           }
+                           else
+                           {
+                              DU_LOG("\nERROR  -->  DU APP : UeDB is emty for UEIDX: %d",ueIdx);
+                              ret = RFAILED;
+                           }
+                        break;
+                     }
+                  }
+                  if(ueIdx >= duCb.actvCellLst[cellIdx]->numActvUes)
+                  {
+                     DU_LOG("\nERROR  -->  DU APP : wrong values of gnbCuUeF1apId and gnbDuUeF1apId ");
+                     ret = RFAILED;
+                  }
+               }
+             break;
+		     } 	 
+       #endif
+		 }
+
    }
    if(ret != RFAILED)
    {
