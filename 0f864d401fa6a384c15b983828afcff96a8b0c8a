@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6631f013_e380de14",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1265,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-09-01T04:40:11Z",
+      "side": 1,
+      "message": "here the memcpy should happen only when ret \u003d ROK.",
+      "revId": "0f864d401fa6a384c15b983828afcff96a8b0c8a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
