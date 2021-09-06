@@ -20,7 +20,7 @@ Version history
 | **Date**           | **Ver.**           | **Author**         | **Comment**        |
 |                    |                    |                    |                    |
 +--------------------+--------------------+--------------------+--------------------+
-| 2021-07-07         | 4.0.0              | Radisys,           | D Release          |
+| 2021-09-06         | 4.0.0              | Radisys,           | D Release          |
 |                    |                    | HCL Technologies   |                    |
 |                    |                    | Ltd.               |                    |
 +--------------------+--------------------+--------------------+--------------------+
@@ -59,6 +59,16 @@ This release contains the following:
       VES PNF Registration.
 
       Support for Closed Loop Automation use-case.
+
+ - Maintenance release includes :
+
+      Memory handling optimization and fixes.
+
+      Improvement in logging.
+
+      K0, K1 and K2 configuration.
+      
+      Fixes in proccessing of RACH Indication and RAR.
 
 Cherry
 ^^^^^^^^
@@ -136,7 +146,7 @@ D
 | **Release designation**              | D Release                            |
 |                                      |                                      |
 +--------------------------------------+--------------------------------------+
-| **Release date**                     | 2021-07-07                           |
+| **Release date**                     | 2021-09-06                           |
 |                                      |                                      |
 +--------------------------------------+--------------------------------------+
 | **Purpose of the delivery**          | D Release                            |
