@@ -1,0 +1,191 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e5889c7e_e7117b1b",
+        "filename": "src/5gnrrlc/rlc_utl_ul.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 237,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-09-08T07:34:19Z",
+      "side": 1,
+      "message": "should this comment remain in code?",
+      "revId": "4604b68bfd198546dd43293c92c1a260ab062676",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2174ae04_89a8390f",
+        "filename": "src/5gnrrlc/rlc_utl_ul.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 272,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-09-08T07:34:19Z",
+      "side": 1,
+      "message": "same comment as above",
+      "revId": "4604b68bfd198546dd43293c92c1a260ab062676",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e8accfcc_d41cb123",
+        "filename": "src/5gnrrlc/rlc_utl_ul.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 279,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-09-08T07:34:19Z",
+      "side": 1,
+      "message": "Are you printing rb Id or rb Idx?\nIf we are printing rbId, then in logs we should call it DRB ID and not IDX",
+      "revId": "4604b68bfd198546dd43293c92c1a260ab062676",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "89c8be90_c22cccab",
+        "filename": "src/cm/common_def.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-09-08T07:34:19Z",
+      "side": 1,
+      "message": "Since TEID is to be used only at DU APP, dont keep these macro definition in common file",
+      "revId": "4604b68bfd198546dd43293c92c1a260ab062676",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bbeae36d_744ad267",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 6628,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-09-08T07:34:19Z",
+      "side": 1,
+      "message": "add function description for all new functions",
+      "revId": "4604b68bfd198546dd43293c92c1a260ab062676",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e3b73d8b_5b908ff8",
+        "filename": "src/cu_stub/cu_stub_egtp.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-09-08T07:34:19Z",
+      "side": 1,
+      "message": "add this as part of egtp global structure",
+      "revId": "4604b68bfd198546dd43293c92c1a260ab062676",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "86ae48ae_4e8311ba",
+        "filename": "src/cu_stub/cu_stub_egtp.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 623,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-09-08T07:34:19Z",
+      "side": 1,
+      "message": "change S16 to standard datatype",
+      "revId": "4604b68bfd198546dd43293c92c1a260ab062676",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "26a6a11c_d6fac0ab",
+        "filename": "src/cu_stub/cu_stub_egtp.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 661,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-09-08T07:34:19Z",
+      "side": 1,
+      "message": "remove code if not needed",
+      "revId": "4604b68bfd198546dd43293c92c1a260ab062676",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "12a3d739_8fc8a297",
+        "filename": "src/cu_stub/cu_stub_egtp.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 775,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-09-08T07:34:19Z",
+      "side": 1,
+      "message": "gCntPdu will be incremented to max value and then loop around to start from 0.\nIs 0 a valid value for nPdu.val field. If not, start from 1 after gCntPdu has reached max",
+      "revId": "4604b68bfd198546dd43293c92c1a260ab062676",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "81236946_797799da",
+        "filename": "src/cu_stub/cu_stub_egtp.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 795,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-09-08T07:34:19Z",
+      "side": 1,
+      "message": "Is this print needed ?\nIf yes, comply to the log format",
+      "revId": "4604b68bfd198546dd43293c92c1a260ab062676",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bbbe318b_b6056907",
+        "filename": "src/phy_stub/phy_stub_thread_hdl.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-09-08T07:34:19Z",
+      "side": 1,
+      "message": "call it DRB ID in the print",
+      "revId": "4604b68bfd198546dd43293c92c1a260ab062676",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
