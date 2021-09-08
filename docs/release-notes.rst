@@ -254,6 +254,9 @@ D
 | https://jira.o-ran-sc.org/browse/ODUHIGH-196  | Netconf session for O1 interface for CM       |
 |                                               |                                               |
 +-----------------------------------------------+-----------------------------------------------+
+| https://jira.o-ran-sc.org/browse/ODUHIGH-340  | Resource allocation in time domain changes to |
+|                                               | meet flexible k0, k1 and k2 values            |
++-----------------------------------------------+-----------------------------------------------+
 
 Cherry
 ^^^^^^^
