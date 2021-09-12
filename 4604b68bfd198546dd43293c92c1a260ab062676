@@ -18,6 +18,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e6deffe8_0a5e40bc",
+        "filename": "src/5gnrrlc/rlc_utl_ul.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 237,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-09-12T23:55:54Z",
+      "side": 1,
+      "message": "removed",
+      "parentUuid": "e5889c7e_e7117b1b",
+      "revId": "4604b68bfd198546dd43293c92c1a260ab062676",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2174ae04_89a8390f",
@@ -31,6 +49,24 @@
       "writtenOn": "2021-09-08T07:34:19Z",
       "side": 1,
       "message": "same comment as above",
+      "revId": "4604b68bfd198546dd43293c92c1a260ab062676",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fcb6ba00_08a8ebad",
+        "filename": "src/5gnrrlc/rlc_utl_ul.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 272,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-09-12T23:55:54Z",
+      "side": 1,
+      "message": "removed",
+      "parentUuid": "2174ae04_89a8390f",
       "revId": "4604b68bfd198546dd43293c92c1a260ab062676",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -52,6 +88,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "50a2d0d0_bdb6f432",
+        "filename": "src/5gnrrlc/rlc_utl_ul.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 279,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-09-12T23:55:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e8accfcc_d41cb123",
+      "revId": "4604b68bfd198546dd43293c92c1a260ab062676",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "89c8be90_c22cccab",
@@ -65,6 +119,24 @@
       "writtenOn": "2021-09-08T07:34:19Z",
       "side": 1,
       "message": "Since TEID is to be used only at DU APP, dont keep these macro definition in common file",
+      "revId": "4604b68bfd198546dd43293c92c1a260ab062676",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d9151fed_0946032c",
+        "filename": "src/cm/common_def.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-09-12T23:55:54Z",
+      "side": 1,
+      "message": "This teid is used to check in CU stub as well. Hence keeping in the common file",
+      "parentUuid": "89c8be90_c22cccab",
       "revId": "4604b68bfd198546dd43293c92c1a260ab062676",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -86,6 +158,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1cb45e31_892d507f",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 6628,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-09-12T23:55:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bbeae36d_744ad267",
+      "revId": "4604b68bfd198546dd43293c92c1a260ab062676",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e3b73d8b_5b908ff8",
@@ -103,6 +193,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "baa6c608_169d47fe",
+        "filename": "src/cu_stub/cu_stub_egtp.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-09-12T23:55:54Z",
+      "side": 1,
+      "message": "done",
+      "parentUuid": "e3b73d8b_5b908ff8",
+      "revId": "4604b68bfd198546dd43293c92c1a260ab062676",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "86ae48ae_4e8311ba",
@@ -116,6 +224,24 @@
       "writtenOn": "2021-09-08T07:34:19Z",
       "side": 1,
       "message": "change S16 to standard datatype",
+      "revId": "4604b68bfd198546dd43293c92c1a260ab062676",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5f105ddc_c9ef2c25",
+        "filename": "src/cu_stub/cu_stub_egtp.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 623,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-09-12T23:55:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "86ae48ae_4e8311ba",
       "revId": "4604b68bfd198546dd43293c92c1a260ab062676",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -154,6 +280,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2e0c712e_1979831d",
+        "filename": "src/cu_stub/cu_stub_egtp.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 775,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-09-12T23:55:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "12a3d739_8fc8a297",
+      "revId": "4604b68bfd198546dd43293c92c1a260ab062676",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "81236946_797799da",
@@ -184,6 +328,24 @@
       "writtenOn": "2021-09-08T07:34:19Z",
       "side": 1,
       "message": "call it DRB ID in the print",
+      "revId": "4604b68bfd198546dd43293c92c1a260ab062676",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ab6140d2_a40905e5",
+        "filename": "src/phy_stub/phy_stub_thread_hdl.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-09-12T23:55:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bbbe318b_b6056907",
       "revId": "4604b68bfd198546dd43293c92c1a260ab062676",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
