@@ -315,6 +315,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8e421cdc_e82ab04c",
+        "filename": "src/cu_stub/cu_stub_egtp.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 795,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-09-12T23:56:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "81236946_797799da",
+      "revId": "4604b68bfd198546dd43293c92c1a260ab062676",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bbbe318b_b6056907",
