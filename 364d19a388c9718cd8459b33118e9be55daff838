@@ -18,6 +18,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "aba97216_199efda0",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 10
+      },
+      "lineNbr": 2555,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-09-14T11:47:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e81887f8_0aa51bd9",
+      "revId": "364d19a388c9718cd8459b33118e9be55daff838",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8549c881_7d1f2ba1",
@@ -31,6 +49,24 @@
       "writtenOn": "2021-09-14T10:06:54Z",
       "side": 1,
       "message": "use DU_LOG and our logging format",
+      "revId": "364d19a388c9718cd8459b33118e9be55daff838",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cf27b7a1_c4201347",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 10
+      },
+      "lineNbr": 6613,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-09-14T11:47:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8549c881_7d1f2ba1",
       "revId": "364d19a388c9718cd8459b33118e9be55daff838",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -52,6 +88,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1b6edcca_f0ebba26",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 10
+      },
+      "lineNbr": 6618,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-09-14T11:47:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c079354a_70a9444f",
+      "revId": "364d19a388c9718cd8459b33118e9be55daff838",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "921066dc_8f182833",
@@ -65,6 +119,24 @@
       "writtenOn": "2021-09-14T10:06:54Z",
       "side": 1,
       "message": "use DU_LOG",
+      "revId": "364d19a388c9718cd8459b33118e9be55daff838",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2330e1d3_02ec695a",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 10
+      },
+      "lineNbr": 6691,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-09-14T11:47:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "921066dc_8f182833",
       "revId": "364d19a388c9718cd8459b33118e9be55daff838",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -86,6 +158,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "048d7d09_d001b436",
+        "filename": "src/cu_stub/cu_stub_egtp.c",
+        "patchSetId": 10
+      },
+      "lineNbr": 661,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-09-14T11:47:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "289678e6_33cd2ed8",
+      "revId": "364d19a388c9718cd8459b33118e9be55daff838",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5a4df494_d1a8aba7",
@@ -99,6 +189,24 @@
       "writtenOn": "2021-09-14T10:06:54Z",
       "side": 1,
       "message": "EGTP_NUM_PDUS",
+      "revId": "364d19a388c9718cd8459b33118e9be55daff838",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "572913f3_edbaf2ee",
+        "filename": "src/cu_stub/cu_stub_egtp.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-09-14T11:47:57Z",
+      "side": 1,
+      "message": "renamed to NUM_DL_PACKETS",
+      "parentUuid": "5a4df494_d1a8aba7",
       "revId": "364d19a388c9718cd8459b33118e9be55daff838",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -120,6 +228,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c4c30168_f4223a18",
+        "filename": "src/cu_stub/cu_stub_egtp.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-09-14T11:47:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7505cf2a_0913f5cc",
+      "revId": "364d19a388c9718cd8459b33118e9be55daff838",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cfe39c67_2925b6e5",
@@ -137,6 +263,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "251e9655_d084a111",
+        "filename": "src/phy_stub/phy_stub.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-09-14T11:47:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cfe39c67_2925b6e5",
+      "revId": "364d19a388c9718cd8459b33118e9be55daff838",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c79549f1_5d940091",
@@ -150,6 +294,24 @@
       "writtenOn": "2021-09-14T10:06:54Z",
       "side": 1,
       "message": "lets have a macro here to specify how many packets to be pumped.\nSomething line NUM_UL_PACKETS\nDo the same in cu stub as well for the loop triggering DL packets",
+      "revId": "364d19a388c9718cd8459b33118e9be55daff838",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "91fca354_4551ba98",
+        "filename": "src/phy_stub/phy_stub_msg_hdl.c",
+        "patchSetId": 10
+      },
+      "lineNbr": 1406,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-09-14T11:47:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c79549f1_5d940091",
       "revId": "364d19a388c9718cd8459b33118e9be55daff838",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
