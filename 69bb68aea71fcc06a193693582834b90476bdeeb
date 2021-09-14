@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6210dda5_c6cab4c1",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 11
+      },
+      "lineNbr": 10058,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-09-14T13:44:40Z",
+      "side": 1,
+      "message": "multi line comment",
+      "revId": "69bb68aea71fcc06a193693582834b90476bdeeb",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
