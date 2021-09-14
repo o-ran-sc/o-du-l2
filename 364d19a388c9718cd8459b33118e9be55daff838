@@ -1,0 +1,157 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e81887f8_0aa51bd9",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 10
+      },
+      "lineNbr": 2555,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-09-14T10:06:54Z",
+      "side": 1,
+      "message": "remove this comment",
+      "revId": "364d19a388c9718cd8459b33118e9be55daff838",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8549c881_7d1f2ba1",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 10
+      },
+      "lineNbr": 6613,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-09-14T10:06:54Z",
+      "side": 1,
+      "message": "use DU_LOG and our logging format",
+      "revId": "364d19a388c9718cd8459b33118e9be55daff838",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c079354a_70a9444f",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 10
+      },
+      "lineNbr": 6618,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-09-14T10:06:54Z",
+      "side": 1,
+      "message": "return teId. If function doesnt return from line 6614, here 0 will be returned",
+      "revId": "364d19a388c9718cd8459b33118e9be55daff838",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "921066dc_8f182833",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 10
+      },
+      "lineNbr": 6691,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-09-14T10:06:54Z",
+      "side": 1,
+      "message": "use DU_LOG",
+      "revId": "364d19a388c9718cd8459b33118e9be55daff838",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "289678e6_33cd2ed8",
+        "filename": "src/cu_stub/cu_stub_egtp.c",
+        "patchSetId": 10
+      },
+      "lineNbr": 661,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-09-14T10:06:54Z",
+      "side": 1,
+      "message": "Repeated comment : remove above code if not needed\nIf needed, please specify in comment above that when is the loop to be used and when will only line #649 be sufficient",
+      "revId": "364d19a388c9718cd8459b33118e9be55daff838",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5a4df494_d1a8aba7",
+        "filename": "src/cu_stub/cu_stub_egtp.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-09-14T10:06:54Z",
+      "side": 1,
+      "message": "EGTP_NUM_PDUS",
+      "revId": "364d19a388c9718cd8459b33118e9be55daff838",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7505cf2a_0913f5cc",
+        "filename": "src/cu_stub/cu_stub_egtp.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-09-14T10:06:54Z",
+      "side": 1,
+      "message": "always use multi-line comment i.e. /* ... */ . This is our convention.\nSame comment is applicable at other places too where single line comment is used.\n\nCan be skipped for CU stub but must be fixed for comments added in DU",
+      "revId": "364d19a388c9718cd8459b33118e9be55daff838",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cfe39c67_2925b6e5",
+        "filename": "src/phy_stub/phy_stub.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-09-14T10:06:54Z",
+      "side": 1,
+      "message": "NUM_DRB_TO_PUMP_DATA",
+      "revId": "364d19a388c9718cd8459b33118e9be55daff838",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c79549f1_5d940091",
+        "filename": "src/phy_stub/phy_stub_msg_hdl.c",
+        "patchSetId": 10
+      },
+      "lineNbr": 1406,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-09-14T10:06:54Z",
+      "side": 1,
+      "message": "lets have a macro here to specify how many packets to be pumped.\nSomething line NUM_UL_PACKETS\nDo the same in cu stub as well for the loop triggering DL packets",
+      "revId": "364d19a388c9718cd8459b33118e9be55daff838",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
