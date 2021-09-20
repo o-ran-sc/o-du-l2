@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8a146ad8_c97dd8a5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-09-20T11:36:45Z",
+      "side": 1,
+      "message": "PatchSet 2:\n1. Build S-NSSAI from CU\u0027s DB(stored during F1 Setup). One for UE CONTEXT SETUP and other for UE MODIFICATION\n\n2. Value of PDU_SESSION_ID (1 and 2)for UE CONTEXT SETUP and MODIFICATION respectively",
+      "revId": "2bb01806dabce9f2da94c352fac6311422f982a8",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
