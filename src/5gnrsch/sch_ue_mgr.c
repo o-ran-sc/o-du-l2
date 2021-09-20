@@ -114,6 +114,18 @@ void fillSchDlLcCtxt(SchDlLcCtxt *ueCbLcCfg, SchLcCfg *lcCfg)
    ueCbLcCfg->lcp = lcCfg->dlLcCfg.lcp;
    ueCbLcCfg->lcState = SCH_LC_STATE_ACTIVE;
    ueCbLcCfg->bo = 0;
+    /*VS:NS*/
+   if(lcCfg->drbQos)
+   {
+      ueCbLcCfg->pduSessionId = lcCfg->drbQos->pduSessionId;
+   }
+   if(lcCfg->snssai)
+   {
+     SCH_ALLOC(ueCbLcCfg->snssai, sizeof(SchSnssai));
+     memcpy(ueCbLcCfg->snssai, lcCfg->snssai,sizeof(SchSnssai));
+     DU_LOG("\nDEBUG  -->  SCH: (DL LC CTXT) sst:%d; sd:[%d,%d,%d]", ueCbLcCfg->snssai->sst,\
+                  ueCbLcCfg->snssai->sd[0], ueCbLcCfg->snssai->sd[1], ueCbLcCfg->snssai->sd[2]);
+   }
 }
 
 /*******************************************************************
@@ -141,7 +153,18 @@ void fillSchUlLcCtxt(SchUlLcCtxt *ueCbLcCfg, SchLcCfg *lcCfg)
    ueCbLcCfg->schReqId = lcCfg->ulLcCfg.schReqId;
    ueCbLcCfg->pbr     = lcCfg->ulLcCfg.pbr;
    ueCbLcCfg->bsd     = lcCfg->ulLcCfg.bsd;
-
+   /*VS:NS*/
+   if(lcCfg->drbQos)
+   {
+      ueCbLcCfg->pduSessionId = lcCfg->drbQos->pduSessionId;
+   }
+   if(lcCfg->snssai)
+   {
+     SCH_ALLOC(ueCbLcCfg->snssai, sizeof(SchSnssai));
+     memcpy(ueCbLcCfg->snssai, lcCfg->snssai,sizeof(SchSnssai));
+     DU_LOG("\nDEBUG  -->  SCH: (UL LC CTXT) sst:%d; sd:[%d,%d,%d]", ueCbLcCfg->snssai->sst,\
+                  ueCbLcCfg->snssai->sd[0], ueCbLcCfg->snssai->sd[1], ueCbLcCfg->snssai->sd[2]);
+   }
 }
 
 /*******************************************************************
@@ -282,12 +305,16 @@ uint8_t fillSchUeCb(SchUeCb *ueCb, SchUeCfg *ueCfg)
                }
                if(ueCfg->schLcCfg[ueLcIdx].configType == CONFIG_DEL)
                {
+                  SCH_FREE(ueCb->ulInfo.ulLcCtxt[ueLcIdx].snssai, sizeof(SchSnssai)); /*VS:NS*/
                   memset(&ueCb->ulInfo.ulLcCtxt[ueLcIdx], 0, sizeof(SchUlLcCtxt));
                   ueCb->ulInfo.numUlLc--;
-                  updateSchUlCb(ueLcIdx, &ueCb->ulInfo); //moving arr elements one idx ahead 
+                  updateSchUlCb(ueLcIdx, &ueCb->ulInfo); //moving arr elements one idx ahead
+
+				      SCH_FREE(ueCb->dlInfo.dlLcCtxt[ueLcIdx].snssai, sizeof(SchSnssai)); /*VS:NS*/
                   memset(&ueCb->dlInfo.dlLcCtxt[ueLcIdx], 0, sizeof(SchDlLcCtxt));
                   ueCb->dlInfo.numDlLc--;
                   updateSchDlCb(ueLcIdx, &ueCb->dlInfo); //moving arr elements one idx ahead
+
                   break;
                }
             }
@@ -784,7 +811,7 @@ void deleteSchPdschServCellCfg(SchPdschServCellCfg *pdschServCellCfg)
 * ****************************************************************/
 void deleteSchUeCb(SchUeCb *ueCb) 
 {
-   uint8_t timeDomRsrcIdx;
+   uint8_t timeDomRsrcIdx = 0, ueLcIdx = 0;
    SchPucchCfg *pucchCfg = NULLP;
    SchPdschConfig *pdschCfg = NULLP;
 
@@ -822,6 +849,12 @@ void deleteSchUeCb(SchUeCb *ueCb)
          SCH_FREE(ueCb->ueCfg.spCellCfg.servCellCfg.bwpInactivityTmr, sizeof(uint8_t));
          deleteSchPdschServCellCfg(&ueCb->ueCfg.spCellCfg.servCellCfg.pdschServCellCfg);
       }
+	  /*VS:NS Need to Free the memory allocated for S-NSSAI*/
+	  for(ueLcIdx = 0; ueLcIdx < ueCb->ulInfo.numUlLc; ueLcIdx++) //searching for Lc to be Mod
+     {
+         SCH_FREE(ueCb->ulInfo.ulLcCtxt[ueLcIdx].snssai, sizeof(SchSnssai));
+         SCH_FREE(ueCb->dlInfo.dlLcCtxt[ueLcIdx].snssai, sizeof(SchSnssai));
+	  }
       memset(ueCb, 0, sizeof(SchUeCb));
    }
 }

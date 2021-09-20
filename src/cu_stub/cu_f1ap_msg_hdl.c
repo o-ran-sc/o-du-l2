@@ -180,7 +180,8 @@
 #define DMRS_ADDITIONAL_POS  0          /* DMRS Additional poistion */
 #define RES_ALLOC_TYPE       1          /* Resource allocation type */
 #define FIVE_QI_VALUE 9  /*spec 23.501, Table 5.7.4-1*/
-
+#define PDU_SESSION_ID_1 1 /*VS:NS*/
+#define PDU_SESSION_ID_2 2 /*VS:NS*/
 /*******************************************************************
  *
  * @brief Sends F1 msg over SCTP
@@ -2027,13 +2028,18 @@ uint8_t BuildSRBSetup(SRBs_ToBeSetup_List_t *srbSet)
  *    Functionality: Constructs the QOS Info for DRB Setup Item
  *
  * @params[in] QoSInformation_t *qosinfo
+ *             uint8_t pduSessionFlag  (Presence flag)
+ *             uint8_t pduSessionID
  *
  * @return ROK     - success
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t BuildQOSInfo(QoSFlowLevelQoSParameters_t *drbQos)
+uint8_t BuildQOSInfo(QoSFlowLevelQoSParameters_t *drbQos, uint8_t pduSessionFlag, uint8_t pduSessionID)
 {
+   uint8_t elementCnt = 0, idx = 0;
+   ProtocolExtensionContainer_4624P74_t *qosIeExt = NULLP;  /*VS:NS*/
+
    /* NonDynamic5QIDescriptor */
    drbQos->qoS_Characteristics.present = QoS_Characteristics_PR_non_Dynamic_5QI;
    CU_ALLOC(drbQos->qoS_Characteristics.choice.non_Dynamic_5QI,sizeof(NonDynamic5QIDescriptor_t));
@@ -2067,6 +2073,53 @@ uint8_t BuildQOSInfo(QoSFlowLevelQoSParameters_t *drbQos)
    drbQos->nGRANallocationRetentionPriority.pre_emptionCapability = Pre_emptionCapability_may_trigger_pre_emption;
    drbQos->nGRANallocationRetentionPriority.pre_emptionVulnerability = Pre_emptionVulnerability_not_pre_emptable;
 
+   /*VS:NS*/
+   if(pduSessionFlag == FALSE)
+   {
+       return ROK;
+   }
+   
+   CU_ALLOC(drbQos->iE_Extensions, sizeof(ProtocolExtensionContainer_4624P74_t));
+   qosIeExt = (ProtocolExtensionContainer_4624P74_t *)drbQos->iE_Extensions;
+
+   if(qosIeExt)
+   {
+      elementCnt = NUM_QOS_EXT;
+      qosIeExt->list.count = elementCnt;
+	   qosIeExt->list.size = elementCnt * sizeof(QoSFlowLevelQoSParameters_ExtIEs_t);
+
+	   /*Initialize QoSFlowLevelQoSParameters_ExtIEs_t*/
+      CU_ALLOC(qosIeExt->list.array, qosIeExt->list.size);
+
+	   if(qosIeExt->list.array == NULLP)
+	   {
+         DU_LOG("\nERROR  -->	F1AP : Memory allocation for QoSFlowLevelQoSParameters_ExtIEs_t failed");
+		   return  RFAILED;
+	   }
+	  
+      for(idx=0; idx < elementCnt; idx++)
+	   {
+	     CU_ALLOC(qosIeExt->list.array[idx], sizeof(QoSFlowLevelQoSParameters_ExtIEs_t));
+	     if(qosIeExt->list.array[idx] == NULLP)
+	     {
+	        DU_LOG("\nERROR  -->	F1AP : Memory allocation for QoSFlowLevelQoSParameters_ExtIEs_t array failed");
+		     return  RFAILED;
+	     }
+	 	  /*Filling QoSFlowLevelQoSParameters_ExtIEs_t*/
+	     qosIeExt->list.array[idx]->id = ProtocolIE_ID_id_PDUSessionID;
+        /*Below Criticality mentioned in Spec38.473, 15.4.1 and later*/
+		  qosIeExt->list.array[idx]->criticality = Criticality_ignore; 
+		  qosIeExt->list.array[idx]->extensionValue.present = \
+		                              QoSFlowLevelQoSParameters_ExtIEs__extensionValue_PR_PDUSessionID;
+		 qosIeExt->list.array[idx]->extensionValue.choice.PDUSessionID = (PDUSessionID_t)pduSessionID;
+	  }
+   }
+   else
+   {
+      DU_LOG("\nERROR  -->	F1AP : Memory allocation for QosIE_extension failed");
+   }
+   /*VS:NS end*/
+   
    return ROK;
 }/*End of BuildQOSInfo*/
 
@@ -2081,12 +2134,13 @@ uint8_t BuildQOSInfo(QoSFlowLevelQoSParameters_t *drbQos)
  *    Functionality: Constructs the SNSSAI For DRB list
  *
  * @params[in] SNSSAI_t *snssai
+ *             Snssai  *snssaiToCopy S-NSSAI from CuCfgParam to be copied
  *
  * @return ROK     - success
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t BuildSNSSAI(SNSSAI_t *snssai)
+uint8_t BuildSNSSAI(SNSSAI_t *snssai, Snssai *snssaiToCopy)/*VS:NS*/
 {
    /*SNSSAI*/
    /*ssT*/
@@ -2096,7 +2150,7 @@ uint8_t BuildSNSSAI(SNSSAI_t *snssai)
    {
       return RFAILED;
    }
-   snssai->sST.buf[0] = 3;
+   memcpy(snssai->sST.buf, &snssaiToCopy->sst, snssai->sST.size);/*VS:NS*/
    /*sD*/
    CU_ALLOC(snssai->sD,sizeof(OCTET_STRING_t));
    if(snssai->sD == NULLP)
@@ -2109,9 +2163,7 @@ uint8_t BuildSNSSAI(SNSSAI_t *snssai)
    {
       return RFAILED;
    }
-   snssai->sD->buf[0] = 3;
-   snssai->sD->buf[1] = 6;
-   snssai->sD->buf[2] = 9;
+   memcpy(snssai->sD->buf, snssaiToCopy->sd, snssai->sD->size); /*VS:NS*/
    return ROK;
 }/*End of BuildSNSSAI*/
 
@@ -2154,7 +2206,7 @@ uint8_t BuildFlowsMap(Flows_Mapped_To_DRB_List_t *flowMap)
    }
    idx = 0;
    flowMap->list.array[idx]->qoSFlowIdentifier = 0;
-   ret = BuildQOSInfo(&flowMap->list.array[idx]->qoSFlowLevelQoSParameters);
+   ret = BuildQOSInfo(&flowMap->list.array[idx]->qoSFlowLevelQoSParameters, FALSE, 0); /*VS:NS*/
    if(ret != ROK)
    {
       return RFAILED;
@@ -2311,14 +2363,14 @@ uint8_t BuildDRBSetup(DRBs_ToBeSetup_List_t *drbSet)
       drbSetItem->qoSInformation.choice.choice_extension->value.present = \
 								       QoSInformation_ExtIEs__value_PR_DRB_Information;
       BuildQOSInforet =  BuildQOSInfo(&drbSetItem->qoSInformation.choice.\
-	                      choice_extension->value.choice.DRB_Information.dRB_QoS);
+	                      choice_extension->value.choice.DRB_Information.dRB_QoS, TRUE, PDU_SESSION_ID_1); /*VS:NS*/
       if(BuildQOSInforet != ROK)
       {
          return RFAILED;
       }
       /*SNSSAI*/
       BuildSNSSAIret = BuildSNSSAI(&drbSetItem->qoSInformation.choice.\
-	                       choice_extension->value.choice.DRB_Information.sNSSAI);
+	                       choice_extension->value.choice.DRB_Information.sNSSAI, cuCfgParams.snssaiList[0]); /*VS:NS*/
       if(BuildSNSSAIret != ROK)
       {
          return RFAILED;
@@ -7273,7 +7325,8 @@ uint8_t FillDrb2Item(DRBs_ToBeSetupMod_Item_t *drbItem)
 	 drbItem->qoSInformation.choice.choice_extension->id = ProtocolIE_ID_id_DRB_Information;
 	 drbItem->qoSInformation.choice.choice_extension->criticality = Criticality_ignore;
 	 drbItem->qoSInformation.choice.choice_extension->value.present = QoSInformation_ExtIEs__value_PR_DRB_Information;
-	 ret =  BuildQOSInfo(&drbItem->qoSInformation.choice.choice_extension->value.choice.DRB_Information.dRB_QoS);
+	 ret =  BuildQOSInfo(&drbItem->qoSInformation.choice.choice_extension->value.choice.DRB_Information.dRB_QoS,\
+	 	                  TRUE, PDU_SESSION_ID_2); /*VS:NS*/
 	 if(ret != ROK)
 	 {
 	    DU_LOG("\nERROR  -->  F1AP : BuildQOSInfo failed");
@@ -7282,7 +7335,7 @@ uint8_t FillDrb2Item(DRBs_ToBeSetupMod_Item_t *drbItem)
 	 
 	 /*SNSSAI*/
 	 ret = BuildSNSSAI(&drbItem->qoSInformation.choice.\
-	       choice_extension->value.choice.DRB_Information.sNSSAI);
+	       choice_extension->value.choice.DRB_Information.sNSSAI, cuCfgParams.snssaiList[1]);
 	 if(ret != ROK)
 	 {
 	    DU_LOG("\nERROR  -->  F1AP : BuildSNSSAI failed");
@@ -8024,6 +8077,23 @@ void F1APMsgHdlr(Buffer *mBuf)
                case InitiatingMessage__value_PR_F1SetupRequest:
                   {
                      DU_LOG("\nINFO  -->  F1AP : F1 setup request received");
+					 /*VS:NS temp :Please ignore the following lines(Testing purpose)*/
+                      for(i = 0;i<2;i++)
+                      {
+                        CU_ALLOC( cuCfgParams.snssaiList[i], sizeof(Snssai))
+						  	   if(cuCfgParams.snssaiList[i] == NULLP)
+						      {
+                           return;
+							   }
+                         cuCfgParams.snssaiList[i]->sst = (i+1)*2;
+						  cuCfgParams.snssaiList[i]->sd[0] = (i+1)*3;
+						  cuCfgParams.snssaiList[i]->sd[1] = (i+1)*4;
+						  cuCfgParams.snssaiList[i]->sd[2] = (i+1)*5;
+						  DU_LOG("\nDEBUG  -->  CU_STUB: genertated snssai size:%d", sizeof(Snssai));
+					  }
+					  
+				     /*VS:NS end*/
+					  
                      BuildAndSendF1SetupRsp();
                      break;
                   }
