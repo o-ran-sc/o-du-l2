@@ -32,6 +32,8 @@
 #define MAX_TEID 10 /*[Spec 29.281]: Max limit is not mentioned but as per GTP-U Header Format, TEID occupies 4 octets */
 /* allocate and zero out a static buffer */
 
+#define SD_SIZE   3 /*VS:NS temp*/
+
 #define CU_ALLOC(_datPtr, _size)                             \
 {                                                            \
    S16 _ret;                                                 \
@@ -48,6 +50,13 @@
    if(_datPtr)                                               \
    SPutSBuf(CU_APP_MEM_REG, CU_POOL,                         \
          (Data *)_datPtr, _size);
+
+/*VS:NS temp Single Network Slice Selection assistance Info */
+typedef struct snssai
+{
+   uint8_t sst;                /* Slice Type */
+   uint8_t sd[SD_SIZE];        /* Slice Differentiator */
+}Snssai;
 
 
 typedef struct ipAddr
@@ -91,6 +100,7 @@ typedef struct cuCfgParams
    Plmn             plmn;
    EgtpParams       egtpParams;
    RrcVersion       rrcVersion;
+   Snssai           *snssaiList[2];//VS:NS temp
 }CuCfgParams;
 CuCfgParams cuCfgParams; //global variable to hold all configs
 

@@ -1457,6 +1457,7 @@ void fillSchDrbQosInfo(DrbQosInfo *macDrbQos, SchDrbQosInfo *schDrbQos)
    schDrbQos->grbQosFlowInfo.guarFlowBitRateDl= macDrbQos->grbQosInfo.guarFlowBitRateDl;
    schDrbQos->grbQosFlowInfo.guarFlowBitRateUl= macDrbQos->grbQosInfo.guarFlowBitRateUl;
    schDrbQos->pduSessionId = macDrbQos->pduSessionId;
+   DU_LOG("\nDEBUG  -->  MAC : fillSchDrbQosInfo: PDU Session ID:%d",  schDrbQos->pduSessionId); /*VS:NS*/
    schDrbQos->ulPduSessAggMaxBitRate = macDrbQos->ulPduSessAggMaxBitRate;
 }
 
