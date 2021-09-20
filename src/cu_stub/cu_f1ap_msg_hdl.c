@@ -180,7 +180,7 @@
 #define DMRS_ADDITIONAL_POS  0          /* DMRS Additional poistion */
 #define RES_ALLOC_TYPE       1          /* Resource allocation type */
 #define FIVE_QI_VALUE 9  /*spec 23.501, Table 5.7.4-1*/
-
+#define PDU_SESSION_ID 1 /*VS:NS*/
 /*******************************************************************
  *
  * @brief Sends F1 msg over SCTP
@@ -2034,6 +2034,9 @@ uint8_t BuildSRBSetup(SRBs_ToBeSetup_List_t *srbSet)
  * ****************************************************************/
 uint8_t BuildQOSInfo(QoSFlowLevelQoSParameters_t *drbQos)
 {
+   uint8_t elementCnt = 0, idx = 0;
+   ProtocolExtensionContainer_4624P74_t *qosIeExt = NULLP;  /*VS:NS*/
+
    /* NonDynamic5QIDescriptor */
    drbQos->qoS_Characteristics.present = QoS_Characteristics_PR_non_Dynamic_5QI;
    CU_ALLOC(drbQos->qoS_Characteristics.choice.non_Dynamic_5QI,sizeof(NonDynamic5QIDescriptor_t));
@@ -2067,6 +2070,48 @@ uint8_t BuildQOSInfo(QoSFlowLevelQoSParameters_t *drbQos)
    drbQos->nGRANallocationRetentionPriority.pre_emptionCapability = Pre_emptionCapability_may_trigger_pre_emption;
    drbQos->nGRANallocationRetentionPriority.pre_emptionVulnerability = Pre_emptionVulnerability_not_pre_emptable;
 
+   /*VS:NS*/
+   CU_ALLOC(drbQos->iE_Extensions, sizeof(ProtocolExtensionContainer_4624P74_t));
+   qosIeExt = (ProtocolExtensionContainer_4624P74_t *)drbQos->iE_Extensions;
+
+   if(qosIeExt)
+   {
+      elementCnt = NUM_QOS_EXT;
+      qosIeExt->list.count = elementCnt;
+	   qosIeExt->list.size = elementCnt * sizeof(QoSFlowLevelQoSParameters_ExtIEs_t);
+
+	   /*Initialize QoSFlowLevelQoSParameters_ExtIEs_t*/
+      CU_ALLOC(qosIeExt->list.array, qosIeExt->list.size);
+
+	   if(qosIeExt->list.array == NULLP)
+	   {
+         DU_LOG("\nERROR  -->	F1AP : Memory allocation for QoSFlowLevelQoSParameters_ExtIEs_t failed");
+		   return  RFAILED;
+	   }
+	  
+      for(idx=0; idx < elementCnt; idx++)
+	   {
+	     CU_ALLOC(qosIeExt->list.array[idx], sizeof(QoSFlowLevelQoSParameters_ExtIEs_t));
+	     if(qosIeExt->list.array[idx] == NULLP)
+	     {
+	        DU_LOG("\nERROR  -->	F1AP : Memory allocation for QoSFlowLevelQoSParameters_ExtIEs_t array failed");
+		     return  RFAILED;
+	     }
+	 	  /*Filling QoSFlowLevelQoSParameters_ExtIEs_t*/
+	     qosIeExt->list.array[idx]->id = ProtocolIE_ID_id_PDUSessionID;
+        /*Below Criticality mentioned in Spec38.473, 15.4.1 and later*/
+		  qosIeExt->list.array[idx]->criticality = Criticality_ignore; 
+		  qosIeExt->list.array[idx]->extensionValue.present = \
+		                              QoSFlowLevelQoSParameters_ExtIEs__extensionValue_PR_PDUSessionID;
+		  qosIeExt->list.array[idx]->extensionValue.choice.PDUSessionID = PDU_SESSION_ID;
+	  }
+   }
+   else
+   {
+      DU_LOG("\nERROR  -->	F1AP : Memory allocation for QosIE_extension failed");
+   }
+   /*VS:NS end*/
+   
    return ROK;
 }/*End of BuildQOSInfo*/
 
