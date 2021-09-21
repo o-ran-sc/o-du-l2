@@ -7552,7 +7552,7 @@ uint8_t extractDrbQosCfg(DRB_Information_t *drbInfo, LcCfg *macLcToAdd )
       DU_ALLOC_SHRABL_BUF(macLcToAdd->drbQos, sizeof(DrbQosInfo));
       if(macLcToAdd->drbQos == NULLP)
       {
-         DU_LOG("\nERROR  -->  DUAPP:Memory failed at allocating DrbQos at extractDrbCfg()");
+         DU_LOG("\nERROR  -->  DUAPP:Memory failed at allocating DrbQos at extractDrbQosCfg()");
          return RFAILED;
       }
 
@@ -7567,7 +7567,7 @@ uint8_t extractDrbQosCfg(DRB_Information_t *drbInfo, LcCfg *macLcToAdd )
       DU_ALLOC_SHRABL_BUF(macLcToAdd->snssai, sizeof(Snssai));
       if(macLcToAdd->snssai == NULLP)
       {
-         DU_LOG("\nERROR  -->  DUAPP : Memory failed at allocating SNSSAI at extractDrbCfg()");
+         DU_LOG("\nERROR  -->  DUAPP : Memory failed at allocating SNSSAI at extractDrbQosCfg()");
          return RFAILED;
       }
    }
@@ -7594,8 +7594,8 @@ uint8_t extractDrbQosCfg(DRB_Information_t *drbInfo, LcCfg *macLcToAdd )
  * @return void
  *
  * ****************************************************************/
-uint8_t extractDrbCfg(DRBs_ToBeSetup_Item_t *drbItem,DRBs_ToBeSetupMod_Item_t *drbSetupModItem,\
-LcCfg *macLcToAdd, UpTnlCfg *upTnlInfo)
+uint8_t extractDrbCfg(DRBs_ToBeSetup_Item_t *drbItem, DRBs_ToBeSetupMod_Item_t *drbSetupModItem,\
+DRBs_ToBeModified_Item_t *drbModItem,  LcCfg *macLcToAdd, UpTnlCfg *upTnlInfo)
 {
    DRB_Information_t *drbInfo = NULLP;
 
@@ -7642,7 +7642,32 @@ LcCfg *macLcToAdd, UpTnlCfg *upTnlInfo)
          }
       }
    }
+   else if(drbModItem != NULLP)
+   {
+      if(extractUpTnlInfo(drbModItem->dRBID, CONFIG_MOD, &drbModItem->uLUPTNLInformation_ToBeSetup_List,\
+      upTnlInfo) != ROK)
+      {
+         DU_LOG("\nERROR  -->  DUAPP : Failed to extract tunnel Cfg at extractDrbCfg()");
+         return RFAILED;
+      }
+      if(drbModItem->qoSInformation != NULLP)
+      {
+         if(drbModItem->qoSInformation->present == QoSInformation_PR_choice_extension)
+         {
+            if(drbModItem->qoSInformation->choice.choice_extension->value.present ==\
+                  QoSInformation_ExtIEs__value_PR_DRB_Information)
+            {
+               drbInfo = &drbModItem->qoSInformation->choice.choice_extension->value.choice.DRB_Information;
+               if(extractDrbQosCfg(drbInfo , macLcToAdd) != ROK)
+               {
+                  DU_LOG("\nERROR  -->  DUAPP : Failed to extract qos Cfg at extractDrbCfg()");  
+                  return RFAILED;
+               }
 
+            }
+         }
+      }
+   }
    return ROK;
 }
 
@@ -7662,11 +7687,11 @@ LcCfg *macLcToAdd, UpTnlCfg *upTnlInfo)
  * ****************************************************************/
 
 uint8_t extractMacRbCfg(uint8_t lcId, DRBs_ToBeSetup_Item_t *drbCfg,\
-DRBs_ToBeSetupMod_Item_t *drbSetupModCfg,  LogicalChannelConfig_t *ulLcCfg, LcCfg *lcCfg, UpTnlCfg *upTnlInfo)
+DRBs_ToBeSetupMod_Item_t *drbSetupModCfg,  DRBs_ToBeModified_Item_t *drbModCfg, LogicalChannelConfig_t *ulLcCfg, LcCfg *lcCfg, UpTnlCfg *upTnlInfo)
 {
    if(drbCfg != NULLP)
    {
-      if(extractDrbCfg(drbCfg, NULL, lcCfg, upTnlInfo) != ROK)
+      if(extractDrbCfg(drbCfg, NULL, NULL, lcCfg, upTnlInfo) != ROK)
       {
          DU_LOG("ERROR  -->  F1AP : Failed to build Drb Qos at extractMacRbCfg()");
          return RFAILED;
@@ -7674,7 +7699,15 @@ DRBs_ToBeSetupMod_Item_t *drbSetupModCfg,  LogicalChannelConfig_t *ulLcCfg, LcCf
    }
    else if(drbSetupModCfg != NULLP)
    { 
-      if(extractDrbCfg(NULL, drbSetupModCfg, lcCfg, upTnlInfo) != ROK)
+      if(extractDrbCfg(NULL, drbSetupModCfg, NULL, lcCfg, upTnlInfo) != ROK)
+      {
+         DU_LOG("ERROR  -->  F1AP : Failed to build Drb Qos at extractMacRbCfg()");
+         return RFAILED;
+      }
+   }
+   else if(drbModCfg != NULLP)
+   { 
+      if(extractDrbCfg(NULL, NULL, drbModCfg, lcCfg, upTnlInfo) != ROK)
       {
          DU_LOG("ERROR  -->  F1AP : Failed to build Drb Qos at extractMacRbCfg()");
          return RFAILED;
@@ -7714,8 +7747,8 @@ DRBs_ToBeSetupMod_Item_t *drbSetupModCfg,  LogicalChannelConfig_t *ulLcCfg, LcCf
  *
  * ****************************************************************/
 
-uint8_t procMacLcCfg(uint8_t lcId, uint8_t rbType, uint8_t configType,\
-DRBs_ToBeSetup_Item_t *drbItem, DRBs_ToBeSetupMod_Item_t *drbSetupModItem, LogicalChannelConfig_t *ulLcCfg,\
+uint8_t procMacLcCfg(uint8_t lcId, uint8_t rbType, uint8_t configType, DRBs_ToBeSetup_Item_t *drbItem,\
+DRBs_ToBeSetupMod_Item_t *drbSetupModItem, DRBs_ToBeModified_Item_t *drbModItem, LogicalChannelConfig_t *ulLcCfg,\
 LcCfg *lcCfg, UpTnlCfg *upTnlInfo)
 {
    uint8_t ret = ROK;
@@ -7724,14 +7757,16 @@ LcCfg *lcCfg, UpTnlCfg *upTnlInfo)
    lcCfg->configType = configType;
    if(rbType == RB_TYPE_SRB)
    {
-      ret = extractMacRbCfg(lcId, NULL,NULL, ulLcCfg, lcCfg, NULL);
+      ret = extractMacRbCfg(lcId, NULL, NULL, NULL, ulLcCfg, lcCfg, NULL);
    }
    else if(rbType == RB_TYPE_DRB)
    {
       if(drbItem != NULL)
-        ret = extractMacRbCfg(lcId, drbItem, NULL, ulLcCfg, lcCfg, upTnlInfo);
+        ret = extractMacRbCfg(lcId, drbItem, NULL, NULL, ulLcCfg, lcCfg, upTnlInfo);
       else if(drbSetupModItem != NULL)
-        ret = extractMacRbCfg(lcId, NULL, drbSetupModItem, ulLcCfg, lcCfg, upTnlInfo);
+        ret = extractMacRbCfg(lcId, NULL, drbSetupModItem, NULL, ulLcCfg, lcCfg, upTnlInfo);
+      else if(drbModItem != NULL)
+        ret = extractMacRbCfg(lcId, NULL, NULL, drbModItem, ulLcCfg, lcCfg, upTnlInfo);
    }
    return ret;
 }
@@ -7803,7 +7838,7 @@ uint8_t extractRlcCfgToAddMod(struct CellGroupConfigRrc__rlc_BearerToAddModList 
      memset(&ueCfgDb->macLcCfg[idx], 0, sizeof(LcCfg));
      memset(&ueCfgDb->rlcLcCfg[idx], 0, sizeof(RlcBearerCfg));
      procRlcLcCfg(rbId, lcId, rbType, rlcMode, CONFIG_UNKNOWN, f1RlcCfg, &(ueCfgDb->rlcLcCfg[idx]));
-     if(procMacLcCfg(lcId, rbType, CONFIG_UNKNOWN, NULL, NULL, macUlLcCfg, &ueCfgDb->macLcCfg[idx], NULL) != ROK)
+     if(procMacLcCfg(lcId, rbType, CONFIG_UNKNOWN, NULL, NULL, NULL, macUlLcCfg, &ueCfgDb->macLcCfg[idx], NULL) != ROK)
      {
         DU_LOG("\nERROR  -->  DU APP : Failed while filling MAC LC config at extractRlcCfgToAddMod()");
         return RFAILED;
@@ -9938,7 +9973,7 @@ uint8_t procSrbListToSetup(SRBs_ToBeSetup_Item_t * srbItem, LcCfg *macLcToAdd, R
    procRlcLcCfg(srbItem->sRBID, srbItem->sRBID, RB_TYPE_SRB, RLC_AM, CONFIG_ADD, NULL, rlcLcToAdd);
 
    /* Filling MAC INFO */
-   ret = procMacLcCfg(srbItem->sRBID, RB_TYPE_SRB, CONFIG_ADD, NULL,NULL, NULL, macLcToAdd, NULL);
+   ret = procMacLcCfg(srbItem->sRBID, RB_TYPE_SRB, CONFIG_ADD, NULL,NULL, NULL, NULL, macLcToAdd, NULL);
    if(ret == RFAILED)
    { 
       DU_LOG("\nERROR  -->  F1AP : Failed at MAC LC Cfg in procSrbListToSetup()");
@@ -10015,7 +10050,7 @@ uint8_t extractSrbListToSetup(SRBs_ToBeSetup_List_t *srbCfg, DuUeCfg *ueCfgDb)
  *
  * @details
  *
- *    Function : procDrbListToSetup
+ *    Function : procDrbListToSetupMod
  *
  *    Functionality: Fills Drb List received by CU
  *                   for both MAC and RLC
@@ -10027,8 +10062,8 @@ uint8_t extractSrbListToSetup(SRBs_ToBeSetup_List_t *srbCfg, DuUeCfg *ueCfgDb)
  *
  * ****************************************************************/
 
-uint8_t procDrbListToSetup(uint8_t lcId, DRBs_ToBeSetup_Item_t *drbItem,\
-DRBs_ToBeSetupMod_Item_t *drbSetupModItem, LcCfg *macLcToAdd, RlcBearerCfg *rlcLcToAdd, UpTnlCfg *upTnlInfo)
+uint8_t procDrbListToSetupMod(uint8_t lcId, DRBs_ToBeSetup_Item_t *drbItem,\
+DRBs_ToBeSetupMod_Item_t *drbSetupModItem, DRBs_ToBeModified_Item_t *drbModItem, LcCfg *macLcToAdd, RlcBearerCfg *rlcLcToAdd, UpTnlCfg *upTnlInfo)
 {
 
    if(drbItem != NULLP)
@@ -10037,9 +10072,9 @@ DRBs_ToBeSetupMod_Item_t *drbSetupModItem, LcCfg *macLcToAdd, RlcBearerCfg *rlcL
       procRlcLcCfg(drbItem->dRBID, lcId, RB_TYPE_DRB, drbItem->rLCMode, CONFIG_ADD, NULL, rlcLcToAdd);
 
       /* Filling MAC INFO */
-      if(procMacLcCfg(lcId, RB_TYPE_DRB, CONFIG_ADD, drbItem, NULL, NULL, macLcToAdd, upTnlInfo) != ROK)
+      if(procMacLcCfg(lcId, RB_TYPE_DRB, CONFIG_ADD, drbItem, NULL, NULL, NULL, macLcToAdd, upTnlInfo) != ROK)
       { 
-         DU_LOG("\nERROR  --> F1AP : Failed at RLC LC Cfg in procDrbListToSetup()");
+         DU_LOG("\nERROR  --> F1AP : Failed at RLC LC Cfg in procDrbListToSetupMod()");
          return RFAILED;
       }
    }
@@ -10047,9 +10082,19 @@ DRBs_ToBeSetupMod_Item_t *drbSetupModItem, LcCfg *macLcToAdd, RlcBearerCfg *rlcL
    {
       procRlcLcCfg(drbSetupModItem->dRBID, lcId, RB_TYPE_DRB, drbSetupModItem->rLCMode, CONFIG_ADD, NULL, rlcLcToAdd);
 
-      if(procMacLcCfg(lcId, RB_TYPE_DRB, CONFIG_ADD, NULL, drbSetupModItem, NULL, macLcToAdd, upTnlInfo) != ROK)
+      if(procMacLcCfg(lcId, RB_TYPE_DRB, CONFIG_ADD, NULL, drbSetupModItem, NULL, NULL, macLcToAdd, upTnlInfo) != ROK)
       {
-         DU_LOG("\nERROR  --> F1AP : Failed at RLC LC Cfg in procDrbListToSetup()");
+         DU_LOG("\nERROR  --> F1AP : Failed at RLC LC Cfg in procDrbListToSetupMod()");
+         return RFAILED;
+      }
+   }
+   else if(drbModItem != NULLP)
+   {
+      /* Drb to Mod IEs doesnot have rlcMode to be modified
+       * in ASN. Hence no change in RLC configurations */
+      if(procMacLcCfg(lcId, RB_TYPE_DRB, CONFIG_MOD, NULL, NULL, drbModItem, NULL, macLcToAdd, upTnlInfo) != ROK)
+      {
+         DU_LOG("\nERROR  --> F1AP : Failed at RLC LC Cfg in procDrbListToSetupMod()");
          return RFAILED;
       }
    }
@@ -10062,7 +10107,7 @@ DRBs_ToBeSetupMod_Item_t *drbSetupModItem, LcCfg *macLcToAdd, RlcBearerCfg *rlcL
  *
  * @details
  *
- *    Function : extractDrbListToSetup
+ *    Function : extractDrbListToSetupMod
  *
  *    Functionality: extract Drb List received by CU
  *                   for both MAC and RLC
@@ -10073,12 +10118,13 @@ DRBs_ToBeSetupMod_Item_t *drbSetupModItem, LcCfg *macLcToAdd, RlcBearerCfg *rlcL
  *
  * ****************************************************************/
 
-uint8_t extractDrbListToSetup(DRBs_ToBeSetup_List_t *drbCfg,DRBs_ToBeSetupMod_List_t *drbSetupModCfg,\
-uint8_t drbCount, DuUeCfg *ueCfgDb, uint32_t *drbBitMap)
+uint8_t extractDrbListToSetupMod(DRBs_ToBeSetup_List_t *drbCfg, DRBs_ToBeSetupMod_List_t *drbSetupModCfg,\
+ DRBs_ToBeModified_List_t *drbModCfg, uint8_t drbCount, DuUeCfg *ueCfgDb, uint32_t *drbBitMap)
 {
    uint8_t ret, drbIdx, lcId = 0;
    DRBs_ToBeSetup_Item_t *drbItem = NULLP;
    DRBs_ToBeSetupMod_ItemIEs_t *drbSetupModItem = NULLP;
+   DRBs_ToBeModified_ItemIEs_t *drbModItem = NULLP;
 
    ret = ROK;
    if(drbCount > 0)
@@ -10087,58 +10133,80 @@ uint8_t drbCount, DuUeCfg *ueCfgDb, uint32_t *drbBitMap)
       {
          if(ueCfgDb->numMacLcs > MAX_NUM_LC)
          { 
-            DU_LOG("\nERROR  -->  F1AP :  MAX LC Reached in MAC at extractDrbListToSetup()");
+            DU_LOG("\nERROR  -->  F1AP :  MAX LC Reached in MAC at extractDrbListToSetupMod()");
             ret = RFAILED;
             break;
          }
          if(ueCfgDb->numRlcLcs > MAX_NUM_LC)
          {
-            DU_LOG("\nERROR  -->  F1AP :  MAX LC Reached in RLC at extractDrbListToSetup()");
+            DU_LOG("\nERROR  -->  F1AP :  MAX LC Reached in RLC at extractDrbListToSetupMod()");
             ret = RFAILED;
             break;
          }
          memset(&ueCfgDb->macLcCfg[ueCfgDb->numMacLcs], 0, sizeof(LcCfg));
          memset(&ueCfgDb->rlcLcCfg[ueCfgDb->numRlcLcs], 0, sizeof(RlcBearerCfg));
 
-         lcId = getDrbLcId(drbBitMap);
-         if(lcId == RFAILED)
+         if(drbModCfg != NULLP)
          {
-            DU_LOG("\nERROR  -->  F1AP :  InCorrect LCID extractDrbListToSetup()");
-            ret = RFAILED;
-            break;
-         }
-         if(drbCfg != NULL)
-         {
-            drbItem = &drbCfg->list.array[drbIdx]->value.choice.DRBs_ToBeSetup_Item;
-            ret = procDrbListToSetup(lcId, drbItem, NULL, &ueCfgDb->macLcCfg[ueCfgDb->numMacLcs],\
-               &ueCfgDb->rlcLcCfg[ueCfgDb->numRlcLcs], &ueCfgDb->upTnlInfo[ueCfgDb->numDrb]);
-            if(ret == RFAILED)
+            drbModItem = (DRBs_ToBeModified_ItemIEs_t *) drbModCfg->list.array[drbIdx];
+            lcId = fetchLcId(drbModItem->value.choice.DRBs_ToBeModified_Item.dRBID);
+            if(lcId < MIN_DRB_LCID)
             {
-               DU_LOG("\nERROR  --> F1AP : Failed at extractDrbListToSetup()");
+               DU_LOG("\nERROR  --> F1AP : Failed fetching LCID %d in extractDrbListToSetupMod() for Modified List", lcId);
                break;
-            }
-         }
-         else if(drbSetupModCfg != NULL)
-         {
-            drbSetupModItem = (DRBs_ToBeSetupMod_ItemIEs_t *) drbSetupModCfg->list.array[drbIdx];
-            ret = procDrbListToSetup(lcId, NULL, &(drbSetupModItem->value.choice.DRBs_ToBeSetupMod_Item) ,\
+            } 
+            ret = procDrbListToSetupMod(lcId, NULL, NULL, &(drbModItem->value.choice.DRBs_ToBeModified_Item),\
             &ueCfgDb->macLcCfg[ueCfgDb->numMacLcs], &ueCfgDb->rlcLcCfg[ueCfgDb->numRlcLcs],\
             &ueCfgDb->upTnlInfo[ueCfgDb->numDrb]);
             if(ret == RFAILED)
             {
-               DU_LOG("\nERROR  --> F1AP : Failed at extractDrbListToSetup()");
+               DU_LOG("\nERROR  --> F1AP : Failed at extractDrbListToSetupMod() for Modified List");
                break;
             }
+
          }
-         ueCfgDb->numRlcLcs++;
+         else
+         {
+            lcId = getDrbLcId(drbBitMap);
+            if(lcId == RFAILED)
+            {
+               DU_LOG("\nERROR  -->  F1AP :  InCorrect LCID extractDrbListToSetupMod()");
+               ret = RFAILED;
+               break;
+            }
+            if(drbCfg != NULL)
+            {
+               drbItem = &drbCfg->list.array[drbIdx]->value.choice.DRBs_ToBeSetup_Item;
+               ret = procDrbListToSetupMod(lcId, drbItem, NULL, NULL, &ueCfgDb->macLcCfg[ueCfgDb->numMacLcs],\
+                     &ueCfgDb->rlcLcCfg[ueCfgDb->numRlcLcs], &ueCfgDb->upTnlInfo[ueCfgDb->numDrb]);
+               if(ret == RFAILED)
+               {
+                  DU_LOG("\nERROR  --> F1AP : Failed at extractDrbListToSetupMod() for DrbSetup List");
+                  break;
+               }
+            }
+            else if(drbSetupModCfg != NULL)
+            {
+               drbSetupModItem = (DRBs_ToBeSetupMod_ItemIEs_t *) drbSetupModCfg->list.array[drbIdx];
+               ret = procDrbListToSetupMod(lcId, NULL, &(drbSetupModItem->value.choice.DRBs_ToBeSetupMod_Item), NULL,\
+                     &ueCfgDb->macLcCfg[ueCfgDb->numMacLcs], &ueCfgDb->rlcLcCfg[ueCfgDb->numRlcLcs],\
+                     &ueCfgDb->upTnlInfo[ueCfgDb->numDrb]);
+               if(ret == RFAILED)
+               {
+                  DU_LOG("\nERROR  --> F1AP : Failed at extractDrbListToSetupMod() for DrbSetupMod List");
+                  break;
+               }
+            }
+            ueCfgDb->numRlcLcs++;
+         }
          ueCfgDb->numMacLcs++;
          ueCfgDb->numDrb++;
  
-         DU_LOG("\nDEBUG --> DUAPP: extractDrbListToSetup:lcId:%x ,BitMap:%x, [RLC,MAC,NumDrb]:[%x,%x,%x]",\
+         DU_LOG("\nDEBUG --> DUAPP: extractDrbListToSetupMod:lcId:%x ,BitMap:%x, [RLC,MAC,NumDrb]:[%x,%x,%x]",\
                             lcId,*drbBitMap, ueCfgDb->numRlcLcs, ueCfgDb->numMacLcs,  ueCfgDb->numDrb);
          if(ret == RFAILED)
          {
-            DU_LOG("\nERROR  --> F1AP : Failed at extractDrbListToSetup()");
+            DU_LOG("\nERROR  --> F1AP : Failed at extractDrbListToSetupMod()");
             break;
          }
       }
@@ -10473,9 +10541,9 @@ uint8_t procF1UeContextSetupReq(F1AP_PDU_t *f1apMsg)
             {
                   drbCfg = &ueSetReq->protocolIEs.list.array[ieIdx]->value.choice.DRBs_ToBeSetup_List;
 
-                  if(extractDrbListToSetup(drbCfg, NULL, drbCfg->list.count, &duUeCb->f1UeDb->duUeCfg, &duUeCb->drbBitMap))
+                  if(extractDrbListToSetupMod(drbCfg, NULL, NULL, drbCfg->list.count, &duUeCb->f1UeDb->duUeCfg, &duUeCb->drbBitMap))
                   {
-                     DU_LOG("\nERROR  -->  DU APP : Failed at extractDrbListToSetup()");
+                     DU_LOG("\nERROR  -->  DU APP : Failed at extractDrbListToSetupMod()");
                      //TODO: Update the failure cause in ue context Setup Response
                      ret = RFAILED;
                   }
@@ -12835,6 +12903,7 @@ uint8_t procF1UeContextModificationReq(F1AP_PDU_t *f1apMsg)
    uint8_t  ret = ROK, ieIdx = 0, cellIdx=0, ueIdx=0;
    DuUeCb   *duUeCb = NULLP;
    DRBs_ToBeSetupMod_List_t *drbSetupModCfg;
+   DRBs_ToBeModified_List_t *drbModifiedCfg;
    uint32_t gnbCuUeF1apId, gnbDuUeF1apId;
 
    ueContextModifyReq = &f1apMsg->choice.initiatingMessage->value.choice.UEContextModificationRequest;
@@ -12853,6 +12922,7 @@ uint8_t procF1UeContextModificationReq(F1AP_PDU_t *f1apMsg)
                break;
             }
          case ProtocolIE_ID_id_DRBs_ToBeSetupMod_List:
+         case ProtocolIE_ID_id_DRBs_ToBeModified_List:
             {
                for(cellIdx = 0; cellIdx < duCb.numActvCells; cellIdx++)
                {
@@ -12863,19 +12933,41 @@ uint8_t procF1UeContextModificationReq(F1AP_PDU_t *f1apMsg)
                      {
 
                         duUeCb = &duCb.actvCellLst[cellIdx]->ueCb[ueIdx];
+                        if(duUeCb->f1UeDb == NULLP)
+                        {
                            DU_ALLOC(duUeCb->f1UeDb, sizeof(F1UeContextSetupDb));
-                           if(duUeCb->f1UeDb)
+                        }
+                        if(duUeCb->f1UeDb)
+                        {
+                           duUeCb->f1UeDb->actionType = UE_CTXT_MOD;
+                           if(ueContextModifyReq->protocolIEs.list.array[ieIdx]->value.present ==\
+                                 UEContextModificationRequestIEs__value_PR_DRBs_ToBeSetupMod_List)
                            {
-                              duUeCb->f1UeDb->actionType = UE_CTXT_MOD;
                               drbSetupModCfg = &ueContextModifyReq->protocolIEs.list.array[ieIdx]->value.\
                               choice.DRBs_ToBeSetupMod_List;
-                              if(extractDrbListToSetup(NULL, drbSetupModCfg ,drbSetupModCfg->list.count, \
-                              &duUeCb->f1UeDb->duUeCfg, &duUeCb->drbBitMap))
+                              
+                              if(extractDrbListToSetupMod(NULL, drbSetupModCfg, NULL, drbSetupModCfg->list.count,\
+                                    &duUeCb->f1UeDb->duUeCfg, &duUeCb->drbBitMap))
                               {
-                                 DU_LOG("\nERROR  -->  DU APP : Failed at extractDrbListToSetup()");
+                                 DU_LOG("\nERROR  -->  DU APP : Failed at extractDrbListToSetupMod() for DrbSetupModList");
                                  ret = RFAILED;
                               }
                            }
+
+                           if(ueContextModifyReq->protocolIEs.list.array[ieIdx]->value.present == \
+                                  UEContextModificationRequestIEs__value_PR_DRBs_ToBeModified_List)
+
+                           {
+                              drbModifiedCfg = &ueContextModifyReq->protocolIEs.list.array[ieIdx]->value.\
+                              choice.DRBs_ToBeModified_List;
+                              if(extractDrbListToSetupMod(NULL, NULL, drbModifiedCfg, drbSetupModCfg->list.count,\
+                                 &duUeCb->f1UeDb->duUeCfg, &duUeCb->drbBitMap))
+                              {
+                                 DU_LOG("\nERROR  -->  DU APP : Failed at extractDrbListToSetupMod() for DrbModifiedList");
+                                 ret = RFAILED;
+                              }
+                           }
+                        }
                         break;
                      }
                   }
