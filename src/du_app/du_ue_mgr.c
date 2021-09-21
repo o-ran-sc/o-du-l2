@@ -1122,6 +1122,43 @@ uint8_t sendUeReCfgReqToMac(MacUeCfg *macUeCfg)
 
 /******************************************************************
  *
+ * @brief Function to fetch lcId based on DRB Id
+ *
+ * @details
+ *
+ *    Function : fetchLcId
+ *
+ *    Functionality: Function to fetch lcId based on DRB Id
+ *
+ * Returns: lcId - SUCCESS
+ *          RFAILED - FAILURE
+ *****************************************************************/
+
+uint8_t fetchLcId(uint8_t drbId)
+{
+   uint8_t cellIdx = 0, ueIdx = 0, lcIdx = 0, numLcs = 0, lcId = 0;
+
+   for(cellIdx = 0; cellIdx < MAX_NUM_CELL; cellIdx++)
+   {
+      for(ueIdx = 0; ueIdx < MAX_NUM_UE; ueIdx++)
+      {
+         numLcs = duCb.actvCellLst[cellIdx]->ueCb[ueIdx].rlcUeCfg.numLcs;
+         for(lcIdx = 0; lcIdx < numLcs; lcIdx++)
+         {
+            if(duCb.actvCellLst[cellIdx]->ueCb[ueIdx].rlcUeCfg.rlcLcCfg[lcIdx].rbId == drbId)
+            {
+               lcId = duCb.actvCellLst[cellIdx]->ueCb[ueIdx].rlcUeCfg.rlcLcCfg[lcIdx].lcId;
+               return lcId;
+               break;
+            }
+         }
+      }
+   }
+   return RFAILED;
+}
+
+/******************************************************************
+ *
  * @brief Function to return Drb LcId
  *
  * @details
@@ -1377,69 +1414,68 @@ void fillDefaultUmDlInfo(UmUniDirDlBearerCfg *UmDlCfg)
 
 uint8_t fillDefaultRlcModeCfg(uint8_t rlcMode, RlcBearerCfg *lcCfg)
 {
-
    if(lcCfg)
    {
       switch(rlcMode)
       {
          case RLC_AM :
             {
-	       if(!lcCfg->u.amCfg)
-	       {
-                 DU_ALLOC_SHRABL_BUF(lcCfg->u.amCfg, sizeof(AmBearerCfg));
-		 if(lcCfg->u.amCfg)
-		    fillDefaultAmInfo(lcCfg->u.amCfg);
-		 else
-		 {
-                    DU_LOG("\n ERROR  -->  DU APP : Memory Alloc failed at AmCfg at fillDefaultRlcModeCfg()");
-		    return RFAILED;
-		 }
-	       }
+               if(!lcCfg->u.amCfg)
+               {
+                  DU_ALLOC_SHRABL_BUF(lcCfg->u.amCfg, sizeof(AmBearerCfg));
+                  if(lcCfg->u.amCfg)
+                     fillDefaultAmInfo(lcCfg->u.amCfg);
+                  else
+                  {
+                     DU_LOG("\n ERROR  -->  DU APP : Memory Alloc failed at AmCfg at fillDefaultRlcModeCfg()");
+                     return RFAILED;
+                  }
+               }
                break;
             }
          case RLC_UM_BI_DIRECTIONAL :
             {
-	       if(!lcCfg->u.umBiDirCfg)
-	       {
-                 DU_ALLOC_SHRABL_BUF(lcCfg->u.umBiDirCfg, sizeof(UmBiDirBearerCfg));
-	         if(lcCfg->u.umBiDirCfg)
-                    fillDefaultUmBiInfo(lcCfg->u.umBiDirCfg);
-                 else
-		 {
-                    DU_LOG("\n ERROR  -->  DU APP : Memory Alloc failed at UmBiDirCfg at fillDefaultRlcModeCfg()");
-		    return RFAILED;
-		 }
-	       }
+               if(!lcCfg->u.umBiDirCfg)
+               {
+                  DU_ALLOC_SHRABL_BUF(lcCfg->u.umBiDirCfg, sizeof(UmBiDirBearerCfg));
+                  if(lcCfg->u.umBiDirCfg)
+                     fillDefaultUmBiInfo(lcCfg->u.umBiDirCfg);
+                  else
+                  {
+                     DU_LOG("\n ERROR  -->  DU APP : Memory Alloc failed at UmBiDirCfg at fillDefaultRlcModeCfg()");
+                     return RFAILED;
+                  }
+               }
                break;
             }
          case RLC_UM_UNI_DIRECTIONAL_UL :
             {
-	       if(!lcCfg->u.umUniDirUlCfg)
-	       {
+               if(!lcCfg->u.umUniDirUlCfg)
+               {
                   DU_ALLOC_SHRABL_BUF(lcCfg->u.umUniDirUlCfg, sizeof(UmUniDirUlBearerCfg));
-		  if(lcCfg->u.umUniDirUlCfg)
-                    fillDefaultUmUlInfo(lcCfg->u.umUniDirUlCfg);
+                  if(lcCfg->u.umUniDirUlCfg)
+                     fillDefaultUmUlInfo(lcCfg->u.umUniDirUlCfg);
                   else
-		  {
+                  {
                      DU_LOG("\n ERROR  -->  DU APP : Memory Alloc failed at UmUniDirUlCfg at fillDefaultRlcModeCfg()");
-		     return RFAILED;
-		  }
-	       }
+                     return RFAILED;
+                  }
+               }
                break;
             }
          case RLC_UM_UNI_DIRECTIONAL_DL :
             {
-	       if(!lcCfg->u.umUniDirDlCfg)
-	       {
+               if(!lcCfg->u.umUniDirDlCfg)
+               {
                   DU_ALLOC_SHRABL_BUF(lcCfg->u.umUniDirDlCfg, sizeof(UmUniDirDlBearerCfg));
                   if(lcCfg->u.umUniDirDlCfg)
-		   fillDefaultUmDlInfo(lcCfg->u.umUniDirDlCfg);
+                     fillDefaultUmDlInfo(lcCfg->u.umUniDirDlCfg);
                   else
-		  {
+                  {
                      DU_LOG("\n ERROR  -->  DU APP : Memory Alloc failed at UmUniDirDlCfg at fillDefaultRlcModeCfg()");
-		     return RFAILED;
-		  }
-	       }
+                     return RFAILED;
+                  }
+               }
                break;
             }
          default:
@@ -1588,6 +1624,8 @@ uint8_t fillRlcUeCfg(uint16_t cellId, uint8_t ueIdx,\
                {
                   /* MOD */ 
                   ueCfgDb->rlcLcCfg[dbIdx].configType = CONFIG_MOD; /* update Db for MOD type */
+                  ueCfgDb->rlcLcCfg[dbIdx].rlcMode = duRlcDb->rlcLcCfg[lcIdx].rlcMode; /* updated RLC mode */
+                  fillDefaultRlcModeCfg(ueCfgDb->rlcLcCfg[dbIdx].rlcMode, &ueCfgDb->rlcLcCfg[dbIdx]);
                   memcpy(&rlcUeCfg->rlcLcCfg[dbIdx], &ueCfgDb->rlcLcCfg[dbIdx], sizeof(RlcBearerCfg));
                }
             }
