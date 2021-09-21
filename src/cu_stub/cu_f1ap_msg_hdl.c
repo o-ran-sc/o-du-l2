@@ -87,6 +87,7 @@
 #include "DLUPTNLInformation-ToBeSetup-Item.h"
 #include "UPTransportLayerInformation.h"
 #include "GTPTunnel.h"
+#include "QoSInformation.h"
 
 /* MACRO for CUtoDURRCInformation */
 #define CELL_GRP_ID 1
@@ -179,7 +180,8 @@
 #define SCRAMBLING_ID  NR_PCI
 #define DMRS_ADDITIONAL_POS  0          /* DMRS Additional poistion */
 #define RES_ALLOC_TYPE       1          /* Resource allocation type */
-#define FIVE_QI_VALUE 9  /*spec 23.501, Table 5.7.4-1*/
+#define FIVE_QI_VALUE9 9  /*spec 23.501, Table 5.7.4-1*/
+#define FIVE_QI_VALUE8 8  /*spec 23.501, Table 5.7.4-1*/
 
 /*******************************************************************
  *
@@ -2032,7 +2034,7 @@ uint8_t BuildSRBSetup(SRBs_ToBeSetup_List_t *srbSet)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t BuildQOSInfo(QoSFlowLevelQoSParameters_t *drbQos)
+uint8_t BuildQOSInfo(QoSFlowLevelQoSParameters_t *drbQos, uint8_t actionType)
 {
    /* NonDynamic5QIDescriptor */
    drbQos->qoS_Characteristics.present = QoS_Characteristics_PR_non_Dynamic_5QI;
@@ -2042,7 +2044,11 @@ uint8_t BuildQOSInfo(QoSFlowLevelQoSParameters_t *drbQos)
       return RFAILED;
    }
    /*FiveQI*/
-   drbQos->qoS_Characteristics.choice.non_Dynamic_5QI->fiveQI = FIVE_QI_VALUE;
+   if(actionType == ProtocolIE_ID_id_DRBs_ToBeModified_Item)
+      drbQos->qoS_Characteristics.choice.non_Dynamic_5QI->fiveQI = FIVE_QI_VALUE8;
+   else
+      drbQos->qoS_Characteristics.choice.non_Dynamic_5QI->fiveQI = FIVE_QI_VALUE9;
+
    /*AveragingWindow*/
    CU_ALLOC(drbQos->qoS_Characteristics.choice.non_Dynamic_5QI->averagingWindow,\
 	 sizeof(AveragingWindow_t));
@@ -2131,7 +2137,7 @@ uint8_t BuildSNSSAI(SNSSAI_t *snssai)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t BuildFlowsMap(Flows_Mapped_To_DRB_List_t *flowMap)
+uint8_t BuildFlowsMap(Flows_Mapped_To_DRB_List_t *flowMap , uint8_t actionType)
 {
    uint8_t  ret;
    uint8_t  idx;
@@ -2154,7 +2160,8 @@ uint8_t BuildFlowsMap(Flows_Mapped_To_DRB_List_t *flowMap)
    }
    idx = 0;
    flowMap->list.array[idx]->qoSFlowIdentifier = 0;
-   ret = BuildQOSInfo(&flowMap->list.array[idx]->qoSFlowLevelQoSParameters);
+   ret = BuildQOSInfo(&flowMap->list.array[idx]->qoSFlowLevelQoSParameters,\
+         actionType);
    if(ret != ROK)
    {
       return RFAILED;
@@ -2274,12 +2281,13 @@ uint8_t BuildDRBSetup(DRBs_ToBeSetup_List_t *drbSet)
    uint8_t BuildFlowsMapret =0, BuildULTnlInforet =0, drbCnt = 0;
    DRBs_ToBeSetup_Item_t *drbSetItem;
    
-   drbCnt = MAX_DRB_SET;
+   drbCnt = MAX_DRB_SET_UE_CONTEXT_SETUP_REQ;
    drbSet->list.count = drbCnt;
    drbSet->list.size = drbCnt*sizeof(DRBs_ToBeSetup_ItemIEs_t *);
    CU_ALLOC(drbSet->list.array,drbSet->list.size);
    if(drbSet->list.array == NULLP)
    {
+      DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in BuildDRBSetup");
       return RFAILED;
    }
    for(idx=0; idx<drbCnt; idx++)
@@ -2287,6 +2295,7 @@ uint8_t BuildDRBSetup(DRBs_ToBeSetup_List_t *drbSet)
       CU_ALLOC(drbSet->list.array[idx],sizeof(DRBs_ToBeSetup_ItemIEs_t));
       if(drbSet->list.array[idx] == NULLP)
       {
+         DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in BuildDRBSetup for arry idx [%d]", idx);
 	      return RFAILED;
       }
 
@@ -2311,7 +2320,8 @@ uint8_t BuildDRBSetup(DRBs_ToBeSetup_List_t *drbSet)
       drbSetItem->qoSInformation.choice.choice_extension->value.present = \
 								       QoSInformation_ExtIEs__value_PR_DRB_Information;
       BuildQOSInforet =  BuildQOSInfo(&drbSetItem->qoSInformation.choice.\
-	                      choice_extension->value.choice.DRB_Information.dRB_QoS);
+	                      choice_extension->value.choice.DRB_Information.dRB_QoS,\
+                         ProtocolIE_ID_id_DRBs_ToBeSetup_Item);
       if(BuildQOSInforet != ROK)
       {
          return RFAILED;
@@ -2325,7 +2335,8 @@ uint8_t BuildDRBSetup(DRBs_ToBeSetup_List_t *drbSet)
       }
       /*Flows mapped to DRB List*/
       BuildFlowsMapret = BuildFlowsMap(&drbSetItem->qoSInformation.choice.\
-	           choice_extension->value.choice.DRB_Information.flows_Mapped_To_DRB_List);
+	           choice_extension->value.choice.DRB_Information.flows_Mapped_To_DRB_List,\
+              ProtocolIE_ID_id_DRBs_ToBeSetup_Item);
       if(BuildFlowsMapret != ROK)
       {
          return RFAILED;
@@ -2338,14 +2349,6 @@ uint8_t BuildDRBSetup(DRBs_ToBeSetup_List_t *drbSet)
       }
       /*RLCMode*/
       drbSetItem->rLCMode = RLCMode_rlc_um_bidirectional;
-
-      /*UL Configuration*/
-      CU_ALLOC(drbSetItem->uLConfiguration,sizeof(ULConfiguration_t));
-      if(drbSetItem->uLConfiguration == NULLP)
-      {
-         return RFAILED;
-      }
-      drbSetItem->uLConfiguration->uLUEConfiguration = ULUEConfiguration_no_data;
   }
    return ROK;
 }/* End of BuildDRBSetup*/
@@ -7027,13 +7030,52 @@ void FreeUlTnlInfoforDrb2(ULUPTNLInformation_ToBeSetup_List_t *ulInfo)
       CU_FREE(ulInfo->list.array,ulInfo->list.size);
    }
 }
+
+/*******************************************************************
+*
+* @brief Deletes the EGTP tunnel
+*
+* @details
+*
+*    Function : deleteEgtpTunnel 
+*
+*    Functionality: Deletes the EGTP tunnel
+*
+* @params[in] uint8_t *buf
+*
+* @return ROK     - success
+*         RFAILED - failure
+*
+* ****************************************************************/
+uint8_t deleteEgtpTunnel(uint8_t *buf)
+{
+   uint32_t teId = 0;
+   EgtpTnlEvt tnlEvt;
+
+   teIdStringToInt(buf, &teId); 
+   if(teId > MAX_TEID || teId < MIN_TEID)
+   {
+      DU_LOG("\nERROR  -->  EGTP : TEID(%d) OUT Of Range", teId);
+      return RFAILED;
+   }
+   memset(&tnlEvt, 0, sizeof(EgtpTnlEvt));
+   tnlEvt.action = EGTP_TNL_MGMT_DEL;
+   tnlEvt.lclTeid = teId;
+   tnlEvt.remTeid = teId;
+   if((cuEgtpTnlMgmtReq(tnlEvt)) != ROK)
+   {
+      DU_LOG("\nERROR  -->  EGTP : Failed to delete tunnel Id %d", teId);
+   }
+   return ROK;
+}
+
 /*******************************************************************
 *
 * @brief Builds the Uplink Tunnel Info
 *
 * @details
 *
-*    Function : BuildUlTnlInfoforDrb2 
+*    Function : BuildUlTnlInfoforSetupMod 
 *
 *    Functionality: Constructs the UL TnlInfo For DRB list
 *
@@ -7043,7 +7085,7 @@ void FreeUlTnlInfoforDrb2(ULUPTNLInformation_ToBeSetup_List_t *ulInfo)
 *         RFAILED - failure
 *
 * ****************************************************************/
-uint8_t BuildUlTnlInfoforDrb2(ULUPTNLInformation_ToBeSetup_List_t *ulInfo)
+uint8_t BuildUlTnlInfoforSetupMod(ULUPTNLInformation_ToBeSetup_List_t *ulInfo, uint8_t actionType)
 {
    uint8_t arrIdx;
    uint8_t ulCnt;
@@ -7054,7 +7096,7 @@ uint8_t BuildUlTnlInfoforDrb2(ULUPTNLInformation_ToBeSetup_List_t *ulInfo)
    CU_ALLOC(ulInfo->list.array,ulInfo->list.size);
    if(ulInfo->list.array == NULLP)
    {
-      DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in BuildUlTnlInfoforDrb2");
+      DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in BuildUlTnlInfoforSetupMod");
       return RFAILED;
    }
    for(arrIdx=0; arrIdx<ulCnt; arrIdx++)
@@ -7062,7 +7104,7 @@ uint8_t BuildUlTnlInfoforDrb2(ULUPTNLInformation_ToBeSetup_List_t *ulInfo)
       CU_ALLOC(ulInfo->list.array[arrIdx],sizeof(ULUPTNLInformation_ToBeSetup_Item_t));
       if(ulInfo->list.array[arrIdx] == NULLP)
       {
-         DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in BuildUlTnlInfoforDrb2");
+         DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in BuildUlTnlInfoforSetupMod");
 	 return RFAILED;
       }
    }
@@ -7076,7 +7118,7 @@ uint8_t BuildUlTnlInfoforDrb2(ULUPTNLInformation_ToBeSetup_List_t *ulInfo)
 	 sizeof(GTPTunnel_t));
    if(ulInfo->list.array[arrIdx]->uLUPTNLInformation.choice.gTPTunnel == NULLP)
    {
-      DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in BuildUlTnlInfoforDrb2");
+      DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in BuildUlTnlInfoforSetupMod");
       return RFAILED;
    }
    ulInfo->list.array[arrIdx]->uLUPTNLInformation.choice.gTPTunnel->\
@@ -7087,7 +7129,7 @@ uint8_t BuildUlTnlInfoforDrb2(ULUPTNLInformation_ToBeSetup_List_t *ulInfo)
    if(ulInfo->list.array[arrIdx]->uLUPTNLInformation.choice.gTPTunnel->\
 	 transportLayerAddress.buf == NULLP)
    {
-      DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in BuildUlTnlInfoforDrb2");
+      DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in BuildUlTnlInfoforSetupMod");
       return RFAILED;
    }
    
@@ -7111,7 +7153,7 @@ uint8_t BuildUlTnlInfoforDrb2(ULUPTNLInformation_ToBeSetup_List_t *ulInfo)
    if(ulInfo->list.array[arrIdx]->uLUPTNLInformation.choice.gTPTunnel->gTP_TEID.buf\
 	 == NULLP)
    {
-      DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in BuildUlTnlInfoforDrb2");
+      DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in BuildUlTnlInfoforSetupMod");
       return RFAILED;
    }
    ulInfo->list.array[arrIdx]->uLUPTNLInformation.choice.gTPTunnel->\
@@ -7120,20 +7162,31 @@ uint8_t BuildUlTnlInfoforDrb2(ULUPTNLInformation_ToBeSetup_List_t *ulInfo)
       gTP_TEID.buf[1] = 0;
    ulInfo->list.array[arrIdx]->uLUPTNLInformation.choice.gTPTunnel->\
       gTP_TEID.buf[2] = 0;
-   ulInfo->list.array[arrIdx]->uLUPTNLInformation.choice.gTPTunnel->\
-      gTP_TEID.buf[3] = cuCfgParams.egtpParams.currTunnelId++;
+   if(actionType == ProtocolIE_ID_id_DRBs_ToBeModified_Item)
+   {
+     /*TODO: DRB context to be stored in CU STUB so that tunnel Id can be easily
+      * fetched based on the Drb Id */
+      ulInfo->list.array[arrIdx]->uLUPTNLInformation.choice.gTPTunnel->\
+         gTP_TEID.buf[3] = 2; /* Tunnel Id for Drb is 2. Hence passing the same TeId */
 
+   }
+   else
+   {
+      ulInfo->list.array[arrIdx]->uLUPTNLInformation.choice.gTPTunnel->\
+        gTP_TEID.buf[3] = cuCfgParams.egtpParams.currTunnelId++;
+   }
    return ROK;
 }/*End of BuildULTnlInfo*/
+
 /*******************************************************************
 *
-* @brief freeing the DRB 2 item
+* @brief freeing the DRB item
 *
 * @details
 *
-*    Function : FreeDrb2Item 
+*    Function : FreeDrbItem 
 *
-*    Functionality: freeing the DRB 2 item
+*    Functionality: freeing the DRB item
 *
 * @params[in] DRBs_ToBeSetupMod_Item_t *drbItem
 *
@@ -7142,7 +7195,7 @@ uint8_t BuildUlTnlInfoforDrb2(ULUPTNLInformation_ToBeSetup_List_t *ulInfo)
 *
 * ****************************************************************/
 
-void FreeDrb2Item(DRBs_ToBeSetupMod_Item_t *drbItem)
+void FreeDrbItem(DRBs_ToBeSetupMod_Item_t *drbItem)
 {
    uint8_t arrIdx =0;
    SNSSAI_t *snssai =NULLP;
@@ -7207,16 +7260,18 @@ void FreeDrb2Item(DRBs_ToBeSetupMod_Item_t *drbItem)
       CU_FREE(drbItem->uLConfiguration,sizeof(ULConfiguration_t));
    }
 }
+
 /*******************************************************************
 *
-* @brief filling the DRB 2 item 
+* @brief filling the DRB setup Mod item 
 *
 * @details
 *
-*    Function : FillDrb2Item 
+*    Function : FillDrbItemToSetupMod 
 *
-*    Functionality: filling the DRB 2 item 
-*
+*    Functionality: filling the DRB setup Mod item
+*    
+*    
 * @params[in] DRBs_ToBeSetupMod_Item_t *drbItem 
 *
 * @return ROK     - success
@@ -7224,12 +7279,12 @@ void FreeDrb2Item(DRBs_ToBeSetupMod_Item_t *drbItem)
 *
 * ****************************************************************/
 
-uint8_t FillDrb2Item(DRBs_ToBeSetupMod_Item_t *drbItem)
+uint8_t FillDrbItemToSetupMod(uint8_t arrIdx, DRBs_ToBeSetupMod_Item_t *drbItem)
 {
    uint8_t ret = ROK;
 
    /*Drb Id */
-   drbItem->dRBID = DRB2;
+   drbItem->dRBID = arrIdx + DRB3;
    
    /*qoSInformation*/
    drbItem->qoSInformation.present = QoSInformation_PR_choice_extension;
@@ -7246,7 +7301,7 @@ uint8_t FillDrb2Item(DRBs_ToBeSetupMod_Item_t *drbItem)
 	 CU_ALLOC(drbItem->qoSInformation.choice.eUTRANQoS, sizeof(EUTRANQoS_t));
 	 if(drbItem->qoSInformation.choice.eUTRANQoS)
 	 {  
-	    DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in FillDrb2Item");
+	    DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in FillDrbItemToSetupMod");
 	    return RFAILED;
 	 }
 	 drbItem->qoSInformation.choice.eUTRANQoS->qCI = QCI;
@@ -7266,14 +7321,15 @@ uint8_t FillDrb2Item(DRBs_ToBeSetupMod_Item_t *drbItem)
 	 CU_ALLOC(drbItem->qoSInformation.choice.choice_extension,sizeof(QoSInformation_ExtIEs_t));
 	 if(drbItem->qoSInformation.choice.choice_extension == NULLP)
 	 {
-	    DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in FillDrb2Item"); 
+	    DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in FillDrbItemToSetupMod"); 
 	    return RFAILED;
 	 }
 
 	 drbItem->qoSInformation.choice.choice_extension->id = ProtocolIE_ID_id_DRB_Information;
 	 drbItem->qoSInformation.choice.choice_extension->criticality = Criticality_ignore;
 	 drbItem->qoSInformation.choice.choice_extension->value.present = QoSInformation_ExtIEs__value_PR_DRB_Information;
-	 ret =  BuildQOSInfo(&drbItem->qoSInformation.choice.choice_extension->value.choice.DRB_Information.dRB_QoS);
+	 ret =  BuildQOSInfo(&drbItem->qoSInformation.choice.choice_extension->value.choice.DRB_Information.dRB_QoS,\
+           ProtocolIE_ID_id_DRBs_ToBeSetupMod_Item);
 	 if(ret != ROK)
 	 {
 	    DU_LOG("\nERROR  -->  F1AP : BuildQOSInfo failed");
@@ -7291,7 +7347,8 @@ uint8_t FillDrb2Item(DRBs_ToBeSetupMod_Item_t *drbItem)
 	 
 	 /*Flows mapped to DRB List*/
          ret = BuildFlowsMap(&drbItem->qoSInformation.choice.\
-	       choice_extension->value.choice.DRB_Information.flows_Mapped_To_DRB_List);
+	       choice_extension->value.choice.DRB_Information.flows_Mapped_To_DRB_List,\ 
+          ProtocolIE_ID_id_DRBs_ToBeSetupMod_Item);
 	 if(ret != ROK)
 	 {
 	    DU_LOG("\nERROR  -->  F1AP : BuildFlowsMap failed");
@@ -7301,26 +7358,18 @@ uint8_t FillDrb2Item(DRBs_ToBeSetupMod_Item_t *drbItem)
    }
    
    /*ULUPTNLInformation To Be Setup List*/
-   ret = BuildUlTnlInfoforDrb2(&drbItem->uLUPTNLInformation_ToBeSetup_List);
+   ret = BuildUlTnlInfoforSetupMod(&drbItem->uLUPTNLInformation_ToBeSetup_List, ProtocolIE_ID_id_DRBs_ToBeSetupMod_Item);
    if(ret != ROK)
    {
-      DU_LOG("\nERROR  -->  F1AP : BuildUlTnlInfoforDrb2 failed");
+      DU_LOG("\nERROR  -->  F1AP : BuildUlTnlInfoforSetupMod failed");
       return RFAILED;
    }
 
    /*RLCMode*/
    drbItem->rLCMode = RLCMode_rlc_um_bidirectional;
-
-   /*UL Configuration*/
-   CU_ALLOC(drbItem->uLConfiguration,sizeof(ULConfiguration_t));
-   if(drbItem->uLConfiguration == NULLP)
-   {
-      DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in FillDrb2Item");
-      return RFAILED;
-   }
-   drbItem->uLConfiguration->uLUEConfiguration = ULUEConfiguration_no_data;
    return ROK;
 }
+
 /*******************************************************************
 *
 * @brief Builds the DRB to be Setup Mod ItemIes
@@ -7338,15 +7387,15 @@ uint8_t FillDrb2Item(DRBs_ToBeSetupMod_Item_t *drbItem)
 *
 * ****************************************************************/
 
-uint8_t FillDrbItemList(struct DRBs_ToBeSetupMod_ItemIEs *drbItemIe)
+uint8_t FillDrbItemList(uint8_t arrIdx, struct DRBs_ToBeSetupMod_ItemIEs *drbItemIe)
 {
    drbItemIe->id = ProtocolIE_ID_id_DRBs_ToBeSetupMod_Item;
    drbItemIe->criticality = Criticality_reject;
    drbItemIe->value.present = DRBs_ToBeSetupMod_ItemIEs__value_PR_DRBs_ToBeSetupMod_Item;
 
-   if(FillDrb2Item(&(drbItemIe->value.choice.DRBs_ToBeSetupMod_Item)) != ROK)
+   if(FillDrbItemToSetupMod(arrIdx, (&(drbItemIe->value.choice.DRBs_ToBeSetupMod_Item))) != ROK)
    {
-      DU_LOG("\nERROR  -->  F1AP : FillDrb2Item failed"); 
+      DU_LOG("\nERROR  -->  F1AP : FillDrbItemToSetupMod failed"); 
       return RFAILED;
    }
    return ROK;
@@ -7381,7 +7430,7 @@ void FreeDrbToBeSetupModList(DRBs_ToBeSetupMod_List_t *drbSet)
 	    if(arrIdx == 0)
 	    {
 	       drbItemIe = (DRBs_ToBeSetupMod_ItemIEs_t *)drbSet->list.array[arrIdx];
-	       FreeDrb2Item(&(drbItemIe->value.choice.DRBs_ToBeSetupMod_Item));
+	       FreeDrbItem(&(drbItemIe->value.choice.DRBs_ToBeSetupMod_Item));
 	    }
 	    CU_FREE(drbSet->list.array[arrIdx], sizeof(DRBs_ToBeSetupMod_ItemIEs_t));
 	 }
@@ -7391,14 +7440,13 @@ void FreeDrbToBeSetupModList(DRBs_ToBeSetupMod_List_t *drbSet)
    
 }
 
-
 /*******************************************************************
 *
 * @brief Builds the DRB to be Setup Mod list 
 *
 * @details
 *
-*    Function : BuildDrbToBeSetupModList 
+*    Function : BuildDrbToBeSetupList 
 *
 *    Functionality: Constructs the DRB to be Setup Mod list
 *
@@ -7409,33 +7457,34 @@ void FreeDrbToBeSetupModList(DRBs_ToBeSetupMod_List_t *drbSet)
 *
 * ****************************************************************/
 
-uint8_t BuildDrbToBeSetupModList(DRBs_ToBeSetupMod_List_t *drbSet)
+uint8_t BuildDrbToBeSetupList(DRBs_ToBeSetupMod_List_t *drbSet)
 {
    uint8_t ret = ROK;
    uint8_t arrIdx =0;
    uint8_t drbCnt =0;
 
-   drbCnt = 1;
+   drbCnt = MAX_DRB_SET_UE_CONTEXT_MOD_REQ;
    drbSet->list.count = drbCnt;
    drbSet->list.size = drbCnt * sizeof(DRBs_ToBeSetupMod_ItemIEs_t *);
    CU_ALLOC(drbSet->list.array, drbSet->list.size);
    if(drbSet->list.array == NULLP)
    {
-      DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in BuildDrbToBeSetupModList");
+      DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in BuildDrbToBeSetupList");
       return  RFAILED;
    }
+
    for(arrIdx=0; arrIdx<drbCnt; arrIdx++)
    {
       CU_ALLOC(drbSet->list.array[arrIdx], sizeof(DRBs_ToBeSetupMod_ItemIEs_t));
       if(drbSet->list.array[arrIdx] == NULLP)
       {
-         DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in BuildDrbToBeSetupModList");
+         DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in BuildDrbToBeSetupList for array idx [%d]", arrIdx);
 	 return  RFAILED;
       }
    }
 
-   arrIdx=0;
-   ret = FillDrbItemList((DRBs_ToBeSetupMod_ItemIEs_t *)drbSet->list.array[arrIdx]);
+   arrIdx = 0;
+   ret = FillDrbItemList(arrIdx, (DRBs_ToBeSetupMod_ItemIEs_t *)drbSet->list.array[arrIdx]);
    if(ret != ROK)
    {
       DU_LOG("\nERROR  -->  F1AP : FillDrbItemList failed");
@@ -7443,6 +7492,325 @@ uint8_t BuildDrbToBeSetupModList(DRBs_ToBeSetupMod_List_t *drbSet)
 
    return ret;
 }
+
+/*******************************************************************
+*
+* @brief Filling the DRB to be modified item 
+*
+* @details
+*
+*    Function : FillDrbToBeModItem
+*
+*    Functionality: filling the DRB to be modified item
+*
+* @params[in] DRBs_ToBeModified_Item_t *drbItem 
+*
+* @return ROK     - success
+*         RFAILED - failure
+*
+* ****************************************************************/
+
+uint8_t FillDrbToBeModItem(DRBs_ToBeModified_Item_t *drbItem)
+{
+   uint8_t ret = ROK;
+
+   /*Drb Id */
+   drbItem->dRBID = DRB2;
+
+   /*qoSInformation*/
+   drbItem->qoSInformation = NULLP;
+   CU_ALLOC(drbItem->qoSInformation, sizeof(QoSInformation_t));
+   if(drbItem->qoSInformation != NULLP)
+   {
+      drbItem->qoSInformation->present = QoSInformation_PR_choice_extension;
+
+      switch(drbItem->qoSInformation->present)
+      {
+         case QoSInformation_PR_NOTHING:
+            {
+               break;
+            }
+         case QoSInformation_PR_eUTRANQoS:
+            {
+
+               CU_ALLOC(drbItem->qoSInformation->choice.eUTRANQoS, sizeof(EUTRANQoS_t));
+               if(drbItem->qoSInformation->choice.eUTRANQoS)
+               {  
+                  DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in FillDrbToBeModItem");
+                  return RFAILED;
+               }
+               drbItem->qoSInformation->choice.eUTRANQoS->qCI = QCI;
+               drbItem->qoSInformation->choice.eUTRANQoS->allocationAndRetentionPriority.priorityLevel =
+                  PriorityLevel_no_priority;
+
+               drbItem->qoSInformation->choice.eUTRANQoS->allocationAndRetentionPriority.pre_emptionCapability =
+                  Pre_emptionCapability_may_trigger_pre_emption;
+
+               drbItem->qoSInformation->choice.eUTRANQoS->allocationAndRetentionPriority.pre_emptionVulnerability =
+                  Pre_emptionVulnerability_pre_emptable;
+
+               break;
+            }
+         case QoSInformation_PR_choice_extension:
+            {
+               CU_ALLOC(drbItem->qoSInformation->choice.choice_extension,sizeof(QoSInformation_ExtIEs_t));
+               if(drbItem->qoSInformation->choice.choice_extension == NULLP)
+               {
+                  DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in FillDrbItemToSetupMod"); 
+                  return RFAILED;
+               }
+
+               drbItem->qoSInformation->choice.choice_extension->id = ProtocolIE_ID_id_DRB_Information;
+               drbItem->qoSInformation->choice.choice_extension->criticality = Criticality_ignore;
+               drbItem->qoSInformation->choice.choice_extension->value.present = QoSInformation_ExtIEs__value_PR_DRB_Information;
+               ret =  BuildQOSInfo(&drbItem->qoSInformation->choice.choice_extension->value.choice.DRB_Information.dRB_QoS,\
+                     ProtocolIE_ID_id_DRBs_ToBeModified_Item);
+               if(ret != ROK)
+               {
+                  DU_LOG("\nERROR  -->  F1AP : BuildQOSInfo failed");
+                  return RFAILED;
+               }
+
+               /*SNSSAI*/
+               ret = BuildSNSSAI(&drbItem->qoSInformation->choice.\
+                     choice_extension->value.choice.DRB_Information.sNSSAI);
+               if(ret != ROK)
+               {
+                  DU_LOG("\nERROR  -->  F1AP : BuildSNSSAI failed");
+                  return RFAILED;
+               }
+
+               /*Flows mapped to DRB List*/
+               ret = BuildFlowsMap(&drbItem->qoSInformation->choice.\
+                     choice_extension->value.choice.DRB_Information.flows_Mapped_To_DRB_List,\
+                     ProtocolIE_ID_id_DRBs_ToBeModified_Item);
+               if(ret != ROK)
+               {
+                  DU_LOG("\nERROR  -->  F1AP : BuildFlowsMap failed");
+                  return RFAILED;
+               }
+            }
+      }
+   }/* End of QoS */
+
+   /*ULUPTNLInformation To Be Setup List*/
+   ret = BuildUlTnlInfoforSetupMod(&drbItem->uLUPTNLInformation_ToBeSetup_List,\
+            ProtocolIE_ID_id_DRBs_ToBeModified_Item);
+   if(ret != ROK)
+   {
+      DU_LOG("\nERROR  -->  F1AP : BuildUlTnlInfoforSetupMod failed");
+      return RFAILED;
+   }
+   return ROK;
+}
+
+/*******************************************************************
+*
+* @brief Builds the DRB to be modified Item IE
+*
+* @details
+*
+*    Function : FillDrbToBeModItemList
+*
+*    Functionality: Constructs the DRB to be modified Mod Item Ies
+*
+* @params[in] struct DRBs_ToBeModified_ItemIEs *drbItemIe
+*
+* @return ROK     - success
+*         RFAILED - failure
+*
+* ****************************************************************/
+
+uint8_t FillDrbToBeModItemList(struct DRBs_ToBeModified_ItemIEs *drbItemIe)
+{
+   drbItemIe->id = ProtocolIE_ID_id_DRBs_ToBeModified_Item;
+   drbItemIe->criticality = Criticality_reject;
+   drbItemIe->value.present = DRBs_ToBeModified_ItemIEs__value_PR_DRBs_ToBeModified_Item;
+   if(FillDrbToBeModItem(&(drbItemIe->value.choice.DRBs_ToBeModified_Item)) != ROK)
+   {
+      DU_LOG("\nERROR  -->  F1AP : FillDrbToBeModItem failed"); 
+      return RFAILED;
+   }
+
+   return ROK;
+}
+
+/*******************************************************************
+*
+* @brief Builds the DRB to be modified list 
+*
+* @details
+*
+*    Function : BuildDrbToBeModList 
+*
+*    Functionality: Constructs the DRB to be modified list
+*
+* @params[in] DRBs_ToBeModified_List_t *drbSet 
+*
+* @return ROK     - success
+*         RFAILED - failure
+*
+* ****************************************************************/
+
+uint8_t BuildDrbToBeModifiedList(DRBs_ToBeModified_List_t *drbSet)
+{
+   uint8_t ret = ROK;
+   uint8_t arrIdx =0;
+   uint8_t drbCnt =0;
+
+   drbCnt = 1;
+   drbSet->list.count = drbCnt;
+   drbSet->list.size = drbCnt * sizeof(DRBs_ToBeModified_ItemIEs_t *);
+   CU_ALLOC(drbSet->list.array, drbSet->list.size);
+   if(drbSet->list.array == NULLP)
+   {
+      DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in BuildDrbToBeModifiedList");
+      return  RFAILED;
+   }
+   for(arrIdx=0; arrIdx<drbCnt; arrIdx++)
+   {
+      CU_ALLOC(drbSet->list.array[arrIdx], sizeof(DRBs_ToBeModified_ItemIEs_t));
+      if(drbSet->list.array[arrIdx] == NULLP)
+      {
+         DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in BuildDrbToBeSetupList");
+	 return  RFAILED;
+      }
+   }
+
+   arrIdx=0;
+   ret = FillDrbToBeModItemList((DRBs_ToBeModified_ItemIEs_t *)drbSet->list.array[arrIdx]);
+   if(ret != ROK)
+   {
+      DU_LOG("\nERROR  -->  F1AP : FillDrbToBeModItemList failed");
+   }
+
+   return ret;
+}
+
+/*******************************************************************
+*
+* @brief freeing the DRB  item
+*
+* @details
+*
+*    Function : FreeModifiedDrbItem
+*
+*    Functionality: freeing the DRB 2 item
+*
+* @params[in] DRBs_ToBeSetupMod_Item_t *drbItem
+*
+* @return ROK     - success
+*         RFAILED - failure
+*
+* ****************************************************************/
+
+void FreeModifiedDrbItem(DRBs_ToBeModified_Item_t *drbItem)
+{
+   uint8_t arrIdx =0;
+   SNSSAI_t *snssai =NULLP;
+   Flows_Mapped_To_DRB_List_t *flowMap = NULLP;
+
+   if(drbItem->qoSInformation != NULLP)
+   { 
+      switch(drbItem->qoSInformation->present)
+      {
+         case QoSInformation_PR_NOTHING:
+            break;
+         case QoSInformation_PR_eUTRANQoS:
+            {
+               if(drbItem->qoSInformation->choice.eUTRANQoS)
+               {
+                  CU_FREE(drbItem->qoSInformation->choice.eUTRANQoS, sizeof(EUTRANQoS_t));
+               }
+               break;
+            }
+         case QoSInformation_PR_choice_extension:
+            {
+               if(drbItem->qoSInformation->choice.choice_extension)
+               {
+                  FreeQOSInfo(&drbItem->qoSInformation->choice.choice_extension->value.choice.DRB_Information.dRB_QoS);
+
+                  snssai = &drbItem->qoSInformation->choice.choice_extension->value.choice.DRB_Information.sNSSAI;
+                  if(snssai->sST.buf)
+                  {
+                     CU_FREE(snssai->sST.buf,snssai->sST.size);
+                  }
+                  if(snssai->sD)
+                  {
+                     if(snssai->sD->buf)
+                     {
+                        CU_FREE(snssai->sD->buf,snssai->sD->size);
+                     }
+                     CU_FREE(snssai->sD,sizeof(OCTET_STRING_t));
+                  }
+
+                  flowMap = &drbItem->qoSInformation->choice.choice_extension->value.choice.DRB_Information.flows_Mapped_To_DRB_List;
+                  if(flowMap->list.array)
+                  {
+                     for(arrIdx=0; arrIdx<flowMap->list.count; arrIdx++)
+                     {
+                        if(flowMap->list.array[arrIdx] )
+                        {
+                           FreeQOSInfo(&flowMap->list.array[arrIdx]->qoSFlowLevelQoSParameters);
+                           CU_FREE(flowMap->list.array[arrIdx],sizeof(Flows_Mapped_To_DRB_Item_t));
+                        }
+                     }
+                     CU_FREE(flowMap->list.array,flowMap->list.size);
+                  }
+
+                  CU_FREE(drbItem->qoSInformation->choice.choice_extension,sizeof(QoSInformation_ExtIEs_t));
+               }
+               break;
+            }
+      }
+   }
+   FreeUlTnlInfoforDrb2(&drbItem->uLUPTNLInformation_ToBeSetup_List);
+   if(drbItem->uLConfiguration)
+   {
+      CU_FREE(drbItem->uLConfiguration,sizeof(ULConfiguration_t));
+   }
+}
+
+/*******************************************************************
+*
+* @brief free the DRB to be modfified list
+*
+* @details
+*
+*    Function : FreeDrbToBeModifiedList
+*
+*    Functionality: free the DRB to be Setup Mod list
+*
+* @params[in] FreeDrbToBeModifiedList_t *drbSet
+*
+* @return ROK     - success
+*         RFAILED - failure
+*
+* ****************************************************************/
+void FreeDrbToBeModifiedList(DRBs_ToBeModified_List_t *drbSet)
+{
+   uint8_t arrIdx =0;
+   struct DRBs_ToBeModified_ItemIEs *drbItemIe;
+
+   if(drbSet->list.array)
+   {
+      for(arrIdx=0; arrIdx<drbSet->list.count ; arrIdx++)
+      {
+         if(drbSet->list.array[arrIdx] != NULLP)
+         {
+            if(arrIdx == 0)
+            {
+               drbItemIe = (struct DRBs_ToBeModified_ItemIEs *)drbSet->list.array[arrIdx];
+               FreeModifiedDrbItem(&(drbItemIe->value.choice.DRBs_ToBeModified_Item));
+            }
+            CU_FREE(drbSet->list.array[arrIdx], sizeof(DRBs_ToBeModified_ItemIEs_t));
+         }
+      }
+      CU_FREE(drbSet->list.array, drbSet->list.size);
+   }
+
+}
+
 /*******************************************************************
  *
  * @brief  free the UeContextModification Request 
@@ -7468,33 +7836,40 @@ void FreeUeContextModicationRequest(F1AP_PDU_t *f1apMsg)
    {
       if(f1apMsg->choice.initiatingMessage)
       {
-	 UeContextModifyReq =&f1apMsg->choice.initiatingMessage->value.choice.UEContextModificationRequest;
-	 if(UeContextModifyReq->protocolIEs.list.array)
-	 {
-	    for( arrIdx = 0 ; arrIdx<UeContextModifyReq->protocolIEs.list.count ; arrIdx++)
-	    {
-	       if(UeContextModifyReq->protocolIEs.list.array[arrIdx])
-	       {
-		  ieId = UeContextModifyReq->protocolIEs.list.array[arrIdx]->id;
-		  switch(ieId)
-		  {
-		     case ProtocolIE_ID_id_gNB_CU_UE_F1AP_ID:
-			break;
-		     case ProtocolIE_ID_id_gNB_DU_UE_F1AP_ID:
-			break;
-		     case ProtocolIE_ID_id_DRBs_ToBeSetupMod_List:
-			{
-			   FreeDrbToBeSetupModList(&UeContextModifyReq->protocolIEs.list.array[arrIdx]->value.\
-			   choice.DRBs_ToBeSetupMod_List);
-			   break;
-			}
-		  }
-		  CU_FREE(UeContextModifyReq->protocolIEs.list.array[arrIdx], sizeof(UEContextModificationRequest_t));
-	       }	  
-	    }
-	    CU_FREE(UeContextModifyReq->protocolIEs.list.array, UeContextModifyReq->protocolIEs.list.size);
-	 }
-	 CU_FREE(f1apMsg->choice.initiatingMessage, sizeof(InitiatingMessage_t));
+         UeContextModifyReq =&f1apMsg->choice.initiatingMessage->value.choice.UEContextModificationRequest;
+         if(UeContextModifyReq->protocolIEs.list.array)
+         {
+            for( arrIdx = 0 ; arrIdx<UeContextModifyReq->protocolIEs.list.count ; arrIdx++)
+            {
+               if(UeContextModifyReq->protocolIEs.list.array[arrIdx])
+               {
+                  ieId = UeContextModifyReq->protocolIEs.list.array[arrIdx]->id;
+                  switch(ieId)
+                  {
+                     case ProtocolIE_ID_id_gNB_CU_UE_F1AP_ID:
+                        break;
+                     case ProtocolIE_ID_id_gNB_DU_UE_F1AP_ID:
+                        break;
+                     case ProtocolIE_ID_id_DRBs_ToBeSetupMod_List:
+                        {
+                           FreeDrbToBeSetupModList(&UeContextModifyReq->protocolIEs.list.array[arrIdx]->value.\
+                                 choice.DRBs_ToBeSetupMod_List);
+                           break;
+                        }
+                     case ProtocolIE_ID_id_DRBs_ToBeModified_List:
+                        {
+                           FreeDrbToBeModifiedList(&UeContextModifyReq->protocolIEs.list.array[arrIdx]->value.\
+                                 choice.DRBs_ToBeSetupMod_List);
+                           break;
+                        }
+
+                  }
+                  CU_FREE(UeContextModifyReq->protocolIEs.list.array[arrIdx], sizeof(UEContextModificationRequest_t));
+               }	  
+            }
+            CU_FREE(UeContextModifyReq->protocolIEs.list.array, UeContextModifyReq->protocolIEs.list.size);
+         }
+         CU_FREE(f1apMsg->choice.initiatingMessage, sizeof(InitiatingMessage_t));
       }
       CU_FREE(f1apMsg, sizeof(F1AP_PDU_t));
    }
@@ -7549,7 +7924,7 @@ uint8_t BuildAndSendUeContextModificationReq(uint8_t ueId)
 
       ueContextModifyReq =&f1apMsg->choice.initiatingMessage->value.choice.UEContextModificationRequest;
 
-      elementCnt = 3;
+      elementCnt = 4;
       ueContextModifyReq->protocolIEs.list.count = elementCnt;
       ueContextModifyReq->protocolIEs.list.size = elementCnt*sizeof(UEContextModificationRequest_t *);
 
@@ -7586,13 +7961,26 @@ uint8_t BuildAndSendUeContextModificationReq(uint8_t ueId)
                                                                        UEContextModificationRequestIEs__value_PR_GNB_DU_UE_F1AP_ID;
       ueContextModifyReq->protocolIEs.list.array[ieIdx]->value.choice.GNB_DU_UE_F1AP_ID = ueId;
 
+      /* DRB to be setup list */
       ieIdx++;
       ueContextModifyReq->protocolIEs.list.array[ieIdx]->id = ProtocolIE_ID_id_DRBs_ToBeSetupMod_List;
       ueContextModifyReq->protocolIEs.list.array[ieIdx]->criticality = Criticality_reject;
       ueContextModifyReq->protocolIEs.list.array[ieIdx]->value.present =\
          UEContextModificationRequestIEs__value_PR_DRBs_ToBeSetupMod_List;
-      ret = BuildDrbToBeSetupModList(&(ueContextModifyReq->protocolIEs.list.array[ieIdx]->\
+      ret = BuildDrbToBeSetupList(&(ueContextModifyReq->protocolIEs.list.array[ieIdx]->\
          value.choice.DRBs_ToBeSetupMod_List));
+
+      /* DRB to be modified list */
+      ieIdx++;
+      ueContextModifyReq->protocolIEs.list.array[ieIdx]->id = ProtocolIE_ID_id_DRBs_ToBeModified_List;
+      ueContextModifyReq->protocolIEs.list.array[ieIdx]->criticality = Criticality_reject;
+      ueContextModifyReq->protocolIEs.list.array[ieIdx]->value.present =\
+         UEContextModificationRequestIEs__value_PR_DRBs_ToBeModified_List;
+      ret = BuildDrbToBeModifiedList(&(ueContextModifyReq->protocolIEs.list.array[ieIdx]->\
+         value.choice.DRBs_ToBeModified_List));
+
+      /* TODO: DRB to be release list */
+         
       if(ret != ROK)
       {
          break;
@@ -7784,7 +8172,7 @@ uint8_t BuildAndSendUeContextReleaseCommand(uint8_t cuUeF1apId, uint8_t duUeF1ap
       ueContextReleaseCommand->protocolIEs.list.array[ieIdx]->value.choice.RRCContainer.size);
       if(!ueContextReleaseCommand->protocolIEs.list.array[ieIdx]->value.choice.RRCContainer.buf)
       {
-      DU_LOG("\nERROR  -->  F1AP : Memory allocation for BuildAndSendUeContextSetupReq failed");
+      DU_LOG("\nERROR  -->  F1AP : Memory allocation for BuildAndSendUeContextReleaseCommand failed");
       break;
       }
       memset(ueContextReleaseCommand->protocolIEs.list.array[ieIdx]->value.choice.RRCContainer.buf, 0, bufLen);
@@ -7995,6 +8383,51 @@ uint8_t buildSliceList(SliceSupportList_t *sliceSupportList)
    return ROK;
 }
 
+/****************************************************************
+ * @brief Function to process Drb Setup Mod List 
+ *
+ * @details
+ *
+ *    Function : procDrbSetupModList
+ *    
+ *    Functionality:
+ *         - Function to process DRB Setup Mod List
+ *
+ * @params[in]
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t procDrbSetupModList(DRBs_SetupMod_List_t *drbSetupList)
+{
+   uint8_t arrIdx = 0;
+   uint32_t teId = 0;
+   struct DRBs_SetupMod_ItemIEs *drbItemIe = NULLP;
+
+   if(drbSetupList != NULLP)
+   {
+      for(arrIdx = 0; arrIdx < drbSetupList->list.count; arrIdx++)
+      {
+         drbItemIe = ((struct DRBs_SetupMod_ItemIEs *)drbSetupList->list.array[arrIdx]);
+         if(drbItemIe->value.present == DRBs_SetupMod_ItemIEs__value_PR_DRBs_SetupMod_Item)
+         {
+            /* extracting teId */
+            teId  = extractTeId(&drbItemIe->value.choice.DRBs_SetupMod_Item.dLUPTNLInformation_ToBeSetup_List);
+            if(teId > 0)
+            {
+              if(addDrbTunnels(teId)== ROK)
+              {
+                DU_LOG("\nDEBUG  --> EGTP: Tunnel Added for TeId %d", teId);
+              }
+            }
+            else
+               return RFAILED;
+         }
+      }
+   }
+   return ROK;
+}
+
 /*******************************************************************
 *
 * @brief processing of GNB_DU_Served_Cells Plmn list  information
@@ -8053,6 +8486,49 @@ uint8_t procServedCellPlmnList(ServedPLMNs_List_t *srvPlmn)
    }
    return ROK;
 }
+
+/****************************************************************
+ * @brief Function to process Ue Context Modification Response 
+ *
+ * @details
+ *
+ *    Function : procUeContextModificationResponse
+ *    
+ *    Functionality:
+ *         - Function to process Ue Context Modification Response
+ *
+ * @params[in]
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t procUeContextModificationResponse(F1AP_PDU_t *f1apMsg)
+{
+   uint8_t idx, duUeF1apId;
+	UEContextModificationResponse_t *ueCtxtModRsp = NULLP;
+   ueCtxtModRsp = &f1apMsg->choice.successfulOutcome->value.choice.UEContextModificationResponse;
+   
+   for(idx=0; idx < ueCtxtModRsp->protocolIEs.list.count; idx++)
+   {
+      switch(ueCtxtModRsp->protocolIEs.list.array[idx]->id)
+      {
+          case ProtocolIE_ID_id_gNB_DU_UE_F1AP_ID:
+             {
+                duUeF1apId = ueCtxtModRsp->protocolIEs.list.array[idx]->value.choice.GNB_DU_UE_F1AP_ID;
+                break;
+             }
+          case ProtocolIE_ID_id_DRBs_SetupMod_List:
+             {
+                /* Adding Tunnels for successful DRB */
+                procDrbSetupModList(&ueCtxtModRsp->protocolIEs.list.array[idx]->value.choice.DRBs_SetupMod_List);
+                break; 
+
+             }
+      }
+   }
+   return ROK;
+}
+
 /*******************************************************************
 *
 * @brief processing of F1 setup request
@@ -8113,6 +8589,7 @@ void procF1SetupReq(F1AP_PDU_t *f1apMsg)
        DU_LOG("\nERROR  --> CU_STUB: procF1SetupReq(): Failed to process F1 setup request");
    }
 }
+
 /*******************************************************************
  *
  * @brief Handles received F1AP message and sends back response  
@@ -8257,6 +8734,7 @@ void F1APMsgHdlr(Buffer *mBuf)
                case SuccessfulOutcome__value_PR_UEContextModificationResponse:
                   {
                      DU_LOG("\nINFO  -->  F1AP : UE Context Modification Response received");
+                     procUeContextModificationResponse(f1apMsg);
                      break;
                   }
                case SuccessfulOutcome__value_PR_UEContextReleaseComplete:
