@@ -51,9 +51,11 @@
 #define SRB1 1
 #define SRB2 2
 #define DRB1 1
-#define DRB2 6 //Pls Ignore this; to avoid the collision with DRBID=2 in UE COntext setup
+#define DRB2 2
+#define DRB3 3
 #define QCI  9
-#define MAX_DRB_SET 2
+#define MAX_DRB_SET_UE_CONTEXT_SETUP_REQ 2
+#define MAX_DRB_SET_UE_CONTEXT_MOD_REQ 1
 
 #define CU_UE_F1AP_ID 0
 #define DU_UE_F1AP_ID 1
