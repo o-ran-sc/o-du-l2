@@ -231,7 +231,9 @@
 #define MAXNUMOFUACPERPLMN 64       /* Maximum number of signalled categories per PLMN */
 #define NR_RANAC           150      /* RANAC */
 #define DEFAULT_CELLS      1        /* Max num of broadcast PLMN ids */
-
+#define NUM_OF_SUPPORTED_SLICE  2
+#define DEDICATED_SLICE_INDEX   1 
+#define IE_EXTENSION_LIST_COUNT 1
 
 /* Macro definitions for MIB/SIB1 */
 #define SYS_FRAME_NUM 0
@@ -491,6 +493,12 @@ typedef enum
    PUSCH_MAPPING_TYPE_B,
 }puschMappingType;
 
+typedef enum
+{
+   PRB,
+   DRB,
+   RRC_CONNECTED_USERS
+}ResourceType;
 
 typedef struct f1RrcVersion
 {
@@ -651,7 +659,7 @@ typedef struct f1EutraModeInfo
 typedef struct f1Snsaai
 {
    uint8_t   sst;
-   uint32_t  sd;
+   uint8_t   sd[SD_SIZE];
 }F1Snsaai;
 
 typedef struct epIpAddr
@@ -665,16 +673,40 @@ typedef struct epIpAddrPort
    char   port[2];
 }EpIpAddrPort;
 
+typedef struct policyMemberList
+{
+   Plmn   plmn;
+   F1Snsaai snsaai;   
+}PolicyMemberList;
+
+typedef struct rrmPolicyRatio
+{
+   uint8_t policyMaxRatio;
+   uint8_t policyMinRatio;
+   uint8_t policyDedicatedRatio;
+}RrmPolicyRatio;
+
+typedef struct rrmPolicy
+{
+   bool present;
+   ResourceType     rsrcType;
+   PolicyMemberList memberList;
+   RrmPolicyRatio   rrmPolicyRatio;
+}RrmPolicy;
+
 typedef struct f1TaiSliceSuppLst
 {
    bool       pres;
-   F1Snsaai   snssai[MAX_NUM_OF_SLICE_ITEMS];   
+   uint8_t    numSupportedSlices;
+   F1Snsaai   *snssai[MAX_NUM_OF_SLICE_ITEMS];   
 }F1TaiSliceSuppLst;
 
 typedef struct f1SrvdPlmn
 {
-   Plmn              plmn;
-   F1TaiSliceSuppLst   taiSliceSuppLst;
+   Plmn   plmn;
+   Plmn   extPlmn;    /* Extended available PLMN list */
+   F1TaiSliceSuppLst taiSliceSuppLst;
+   RrmPolicy  rrmPolicy;
 }F1SrvdPlmn;
 
 typedef struct f1BrdcstPlmnInfo
@@ -690,8 +722,7 @@ typedef struct f1CellInfo
 {
    NrEcgi   nrCgi;                   /* Cell global Identity */
    uint32_t nrPci;                   /* Physical Cell Identity */
-   Plmn   plmn[MAX_PLMN];     /* Available PLMN list */
-   Plmn   extPlmn[MAX_PLMN];  /* Extended available PLMN list */
+   F1SrvdPlmn srvdPlmn[MAX_PLMN];
 }F1CellInfo;
 
 typedef struct f1DuCellInfo
