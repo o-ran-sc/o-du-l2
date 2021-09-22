@@ -26,6 +26,8 @@
 #define CU_POOL 1
 #define MAX_DU_PORT 2
 #define DU_PORT 38472
+#define SD_SIZE   3 /*  As per the spec 38.473, SD size must be of size(3) */
+#define MAX_NUM_OF_SLICE 1024 /* As per the spec 38.473, maxnoofSliceItems = 1024*/
 
 /* allocate and zero out a static buffer */
 #define CU_ALLOC(_datPtr, _size)                             \
@@ -79,6 +81,13 @@ typedef struct CuSctpParams
    uint16_t    cuPort;
 }CuSctpParams;
 
+/* Single Network Slice Selection assistance Info */
+typedef struct snssai
+{
+   uint8_t sst;                /* Slice Type */
+   uint8_t sd[SD_SIZE];        /* Slice Differentiator */
+}Snssai;
+
 typedef struct cuCfgParams
 {
    uint32_t         cuId;
@@ -87,6 +96,8 @@ typedef struct cuCfgParams
    Plmn             plmn;
    EgtpParams       egtpParams;
    RrcVersion       rrcVersion;
+   uint8_t          numSnssaiSupported;
+   Snssai           *snssaiList[MAX_NUM_OF_SLICE];
 }CuCfgParams;
 CuCfgParams cuCfgParams; //global variable to hold all configs
 
