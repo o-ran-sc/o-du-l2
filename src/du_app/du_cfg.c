@@ -215,10 +215,7 @@ uint8_t readMacCfg()
    }
    else
    {
-      for(uint8_t idx=0; idx<encBufSize; idx++)
-      {
-	 duCfgParam.macCellCfg.ssbCfg.mibPdu[idx]=encBuf[idx];
-      }
+      memcpy(&duCfgParam.macCellCfg.ssbCfg.mibPdu, encBuf,encBufSize);
    }
    duCfgParam.macCellCfg.ssbCfg.multCarrBand = SSB_MULT_CARRIER_BAND;
    duCfgParam.macCellCfg.ssbCfg.multCellCarr = MULT_CELL_CARRIER;
@@ -599,10 +596,23 @@ uint8_t fillServCellCfgCommSib(SrvCellCfgCommSib *srvCellCfgComm)
 
 uint8_t readCfg()
 {
-   uint8_t i,j,k;
+   uint8_t srvdCellIdx, bandIdx, sliceIdx, plmnIdx;
+   uint8_t brdcstPlmnIdx, freqBandIdx, srvdPlmnIdx;
    uint32_t ipv4_du, ipv4_cu, ipv4_ric;
    MibParams mib;
-   Sib1Params sib1;	
+   Sib1Params sib1;
+   F1TaiSliceSuppLst *taiSliceSuppLst;
+   RrmPolicy  *rrmPolicy;
+
+   /* TODO Added these below variable for local testing, once we will receive the
+    * configuration from O1 we can remove these variable */
+   F1Snsaai snsaai[NUM_OF_SUPPORTED_SLICE] = {{1,{2,3,4}},{5,{6,7,8}}};
+   ResourceType rsrcType = PRB;
+   RrmPolicyRatio policyRatio= {10,20,30};
+   PolicyMemberList memberList;
+   
+   memset(&memberList, 0, sizeof(PolicyMemberList));
+   memberList.snsaai =  snsaai[DEDICATED_SLICE_INDEX];
 
 #ifdef O1_ENABLE
    if( getStartupConfig(&g_cfg) != ROK )
@@ -676,14 +686,11 @@ uint8_t readCfg()
    sib1.tac = DU_TAC;
    sib1.ranac = DU_RANAC;
    sib1.cellIdentity = CELL_IDENTITY;
-   sib1.cellResvdForOpUse =\
-      PLMN_IdentityInfo__cellReservedForOperatorUse_notReserved;
+   sib1.cellResvdForOpUse = PLMN_IdentityInfo__cellReservedForOperatorUse_notReserved;
    sib1.connEstFailCnt = ConnEstFailureControl__connEstFailCount_n3;
-   sib1.connEstFailOffValidity =\
-      ConnEstFailureControl__connEstFailOffsetValidity_s120;
+   sib1.connEstFailOffValidity = ConnEstFailureControl__connEstFailOffsetValidity_s120;
    sib1.siSchedInfo.winLen = SI_SchedulingInfo__si_WindowLength_s5;
-   sib1.siSchedInfo.broadcastSta = \
-      SchedulingInfo__si_BroadcastStatus_broadcasting;
+   sib1.siSchedInfo.broadcastSta = SchedulingInfo__si_BroadcastStatus_broadcasting;
    sib1.siSchedInfo.preiodicity = SchedulingInfo__si_Periodicity_rf8;
    sib1.siSchedInfo.sibType = SIB_TypeInfo__type_sibType2;
    sib1.siSchedInfo.sibValTag = SIB1_VALUE_TAG;
@@ -692,154 +699,204 @@ uint8_t readCfg()
 
    duCfgParam.sib1Params = sib1;
 
-   for(i=0; i<DEFAULT_CELLS; i++)
+   for(srvdCellIdx=0; srvdCellIdx<DEFAULT_CELLS; srvdCellIdx++)
    { 
-      memset(&duCfgParam.srvdCellLst[i].duCellInfo.cellInfo.nrCgi.plmn, 0, sizeof(Plmn));
-      duCfgParam.srvdCellLst[i].duCellInfo.cellInfo.nrCgi.plmn.mcc[0] = PLMN_MCC0;
-      duCfgParam.srvdCellLst[i].duCellInfo.cellInfo.nrCgi.plmn.mcc[1] = PLMN_MCC1;
-      duCfgParam.srvdCellLst[i].duCellInfo.cellInfo.nrCgi.plmn.mcc[2] = PLMN_MCC2;
-      duCfgParam.srvdCellLst[i].duCellInfo.cellInfo.nrCgi.plmn.mnc[0] = PLMN_MNC0;
-      duCfgParam.srvdCellLst[i].duCellInfo.cellInfo.nrCgi.plmn.mnc[1] = PLMN_MNC1;
+      memset(&duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.cellInfo.nrCgi.plmn, 0, sizeof(Plmn));
+      duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.cellInfo.nrCgi.plmn.mcc[0] = PLMN_MCC0;
+      duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.cellInfo.nrCgi.plmn.mcc[1] = PLMN_MCC1;
+      duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.cellInfo.nrCgi.plmn.mcc[2] = PLMN_MCC2;
+      duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.cellInfo.nrCgi.plmn.mnc[0] = PLMN_MNC0;
+      duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.cellInfo.nrCgi.plmn.mnc[1] = PLMN_MNC1;
 
       /*Cell ID */
-      duCfgParam.srvdCellLst[i].duCellInfo.cellInfo.nrCgi.cellId = NR_CELL_ID;
-      duCfgParam.srvdCellLst[i].duCellInfo.cellInfo.nrPci = NR_PCI;
+      duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.cellInfo.nrCgi.cellId = NR_CELL_ID;
+      duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.cellInfo.nrPci = NR_PCI;
 
       /* List of Available PLMN */
-      for(j=0;j<MAX_PLMN;j++)
+      for(srvdPlmnIdx=0; srvdPlmnIdx<MAX_PLMN; srvdPlmnIdx++)
       {
-	 memset(&duCfgParam.srvdCellLst[i].duCellInfo.cellInfo.plmn[j], 0, sizeof(Plmn));
-	 duCfgParam.srvdCellLst[i].duCellInfo.cellInfo.plmn[j].mcc[0] = PLMN_MCC0;
-	 duCfgParam.srvdCellLst[i].duCellInfo.cellInfo.plmn[j].mcc[1] = PLMN_MCC1;
-	 duCfgParam.srvdCellLst[i].duCellInfo.cellInfo.plmn[j].mcc[2] = PLMN_MCC2;
-	 duCfgParam.srvdCellLst[i].duCellInfo.cellInfo.plmn[j].mnc[0] = PLMN_MNC0;
-	 duCfgParam.srvdCellLst[i].duCellInfo.cellInfo.plmn[j].mnc[1] = PLMN_MNC1;
+         /* As per spec 38.473, Plmn identity consists of 3 digit from mcc
+          * followed by either 2 digit or 3 digits of mnc */ 
+
+         memset(&duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.cellInfo.srvdPlmn[srvdPlmnIdx].plmn, 0,\
+         sizeof(Plmn));
+         duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.cellInfo.srvdPlmn[srvdPlmnIdx].plmn.mcc[0] = PLMN_MCC0;
+         duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.cellInfo.srvdPlmn[srvdPlmnIdx].plmn.mcc[1] = PLMN_MCC1;
+         duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.cellInfo.srvdPlmn[srvdPlmnIdx].plmn.mcc[2] = PLMN_MCC2;
+         duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.cellInfo.srvdPlmn[srvdPlmnIdx].plmn.mnc[0] = PLMN_MNC0;
+         duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.cellInfo.srvdPlmn[srvdPlmnIdx].plmn.mnc[1] = PLMN_MNC1;
       }
       /* List of Extended PLMN */
-      for(j=0;j<MAX_PLMN;j++)
+      for(srvdPlmnIdx=0; srvdPlmnIdx<MAX_PLMN; srvdPlmnIdx++)
       {
-	 memset(&duCfgParam.srvdCellLst[i].duCellInfo.cellInfo.extPlmn[j], 0, sizeof(Plmn));
-	 duCfgParam.srvdCellLst[i].duCellInfo.cellInfo.extPlmn[j].mcc[0] = PLMN_MCC0;
-	 duCfgParam.srvdCellLst[i].duCellInfo.cellInfo.extPlmn[j].mcc[1] = PLMN_MCC1;
-	 duCfgParam.srvdCellLst[i].duCellInfo.cellInfo.extPlmn[j].mcc[2] = PLMN_MCC2;
-	 duCfgParam.srvdCellLst[i].duCellInfo.cellInfo.extPlmn[j].mnc[0] = PLMN_MNC0;
-	 duCfgParam.srvdCellLst[i].duCellInfo.cellInfo.extPlmn[j].mnc[1] = PLMN_MNC1;
+         /* As per spec 38.473, Plmn identity consists of 3 digit from mcc
+          * followed by either 2 digit or 3 digits of mnc */ 
+
+         memset(&duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.cellInfo.srvdPlmn[srvdPlmnIdx].extPlmn, 0, sizeof(Plmn));
+         duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.cellInfo.srvdPlmn[srvdPlmnIdx].extPlmn.mcc[0] = PLMN_MCC0;
+         duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.cellInfo.srvdPlmn[srvdPlmnIdx].extPlmn.mcc[1] = PLMN_MCC1;
+         duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.cellInfo.srvdPlmn[srvdPlmnIdx].extPlmn.mcc[2] = PLMN_MCC2;
+         duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.cellInfo.srvdPlmn[srvdPlmnIdx].extPlmn.mnc[0] = PLMN_MNC0;
+         duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.cellInfo.srvdPlmn[srvdPlmnIdx].extPlmn.mnc[1] = PLMN_MNC1;
       } 
+      /* List of Supporting Slices */
+      for(srvdPlmnIdx=0; srvdPlmnIdx<MAX_PLMN; srvdPlmnIdx++)
+      {
+         taiSliceSuppLst = &duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.cellInfo.srvdPlmn[srvdPlmnIdx].taiSliceSuppLst;
 
+         taiSliceSuppLst->pres = true;
+         taiSliceSuppLst->numSupportedSlices = NUM_OF_SUPPORTED_SLICE;
+
+         memset(&taiSliceSuppLst->snssai, 0, sizeof(F1Snsaai));
+         for(sliceIdx=0; sliceIdx<NUM_OF_SUPPORTED_SLICE; sliceIdx++)
+         {
+            DU_ALLOC(taiSliceSuppLst->snssai[sliceIdx], sizeof(F1Snsaai));
+            if(taiSliceSuppLst->snssai[sliceIdx] == NULLP)
+            {
+               DU_LOG("\nERROR --> DU_APP: readCfg():Memory allocation failed");
+               return RFAILED;
+            }
+            memcpy(taiSliceSuppLst->snssai[sliceIdx], &snsaai[sliceIdx], sizeof(F1Snsaai));
+            
+            /* Checking rrmPolicy Slice list available or not */
+            if(!memcmp(&snsaai[sliceIdx], &memberList.snsaai, sizeof(F1Snsaai)))
+            {
+               rrmPolicy = &duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.cellInfo.srvdPlmn[srvdPlmnIdx].rrmPolicy;
+               rrmPolicy->present = true;
+               rrmPolicy->rsrcType = rsrcType; 
+               rrmPolicy->memberList.snsaai = memberList.snsaai;
+               rrmPolicy->rrmPolicyRatio = policyRatio;
+            }
+         }
+      }
       /* TAC and EPSTAC */
-      duCfgParam.srvdCellLst[i].duCellInfo.tac = DU_TAC;
-      duCfgParam.srvdCellLst[i].duCellInfo.epsTac = DU_TAC; //to check and fill
+      duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.tac = DU_TAC;
+      duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.epsTac = DU_TAC; //to check and fill
       /* NR Mode info */
-      duCfgParam.srvdCellLst[i].duCellInfo.f1Mode.mode.fdd.ulNrFreqInfo.nrArfcn = NR_UL_ARFCN;
-      duCfgParam.srvdCellLst[i].duCellInfo.f1Mode.mode.fdd.ulNrFreqInfo.sulInfo.sulArfcn = SUL_ARFCN;
-      duCfgParam.srvdCellLst[i].duCellInfo.f1Mode.mode.fdd.ulNrFreqInfo.sulInfo.sulTxBw.nrScs = SCS_15;
-      duCfgParam.srvdCellLst[i].duCellInfo.f1Mode.mode.fdd.ulNrFreqInfo.sulInfo.sulTxBw.nrb = NRB_106;
+      duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.f1Mode.mode.fdd.ulNrFreqInfo.nrArfcn = NR_UL_ARFCN;
+      duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.f1Mode.mode.fdd.ulNrFreqInfo.sulInfo.sulArfcn = SUL_ARFCN;
+      duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.f1Mode.mode.fdd.ulNrFreqInfo.sulInfo.sulTxBw.nrScs = SCS_15;
+      duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.f1Mode.mode.fdd.ulNrFreqInfo.sulInfo.sulTxBw.nrb = NRB_106;
 
 #if 0
       /* NR Mode info */
-      duCfgParam.srvdCellLst[i].duCellInfo.f1Mode.mode.tdd.nrFreqInfo.nrArfcn = NR_ARFCN;
-      duCfgParam.srvdCellLst[i].duCellInfo.f1Mode.mode.tdd.nrFreqInfo.sulInfo.sulArfcn = SUL_ARFCN;
-      duCfgParam.srvdCellLst[i].duCellInfo.f1Mode.mode.tdd.nrFreqInfo.sulInfo.sulTxBw.nrScs = SCS_15; 		
-      duCfgParam.srvdCellLst[i].duCellInfo.f1Mode.mode.tdd.nrFreqInfo.sulInfo.sulTxBw.nrb = NRB_106;	       
+      duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.f1Mode.mode.tdd.nrFreqInfo.nrArfcn = NR_ARFCN;
+      duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.f1Mode.mode.tdd.nrFreqInfo.sulInfo.sulArfcn = SUL_ARFCN;
+      duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.f1Mode.mode.tdd.nrFreqInfo.sulInfo.sulTxBw.nrScs = SCS_15; 		
+      duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.f1Mode.mode.tdd.nrFreqInfo.sulInfo.sulTxBw.nrb = NRB_106;	       
 
-      for(j=0;j<MAXNRCELLBANDS;j++)
+      for(freqBandIdx=0; freqBandIdx<MAX_NRCELL_BANDS; freqBandIdx++)
       {
-	 duCfgParam.srvdCellLst[i].duCellInfo.f1Mode.mode.tdd.nrFreqInfo.freqBand[j].nrFreqBand = NR_FREQ_BAND;
-	 for(k=0;k<MAXNRCELLBANDS;k++)
-	 {
-	    duCfgParam.srvdCellLst[i].duCellInfo.f1Mode.mode.tdd.nrFreqInfo.freqBand[j].sulBand[k] = SUL_BAND; 	
-	 }
+         duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.f1Mode.mode.tdd.nrFreqInfo.freqBand[freqBandIdx].nrFreqBand =\
+         NR_FREQ_BAND;
+         for(bandIdx=0; bandIdx<MAX_NRCELL_BANDS; bandIdx++)
+         {
+            duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.f1Mode.mode.tdd.nrFreqInfo.freqBand[freqBandIdx].sulBand[bandIdx]\
+            = SUL_BAND; 	
+         }
       }
 #endif
-      for(j=0;j<MAXNRCELLBANDS;j++)
+      for(freqBandIdx=0; freqBandIdx<MAX_NRCELL_BANDS; freqBandIdx++)
       {
-	 duCfgParam.srvdCellLst[i].duCellInfo.f1Mode.mode.fdd.ulNrFreqInfo.freqBand[j].nrFreqBand = NR_FREQ_BAND;
-	 for(k=0;k<MAXNRCELLBANDS;k++)
-	 {
-	    duCfgParam.srvdCellLst[i].duCellInfo.f1Mode.mode.fdd.ulNrFreqInfo.freqBand[j].sulBand[k] = SUL_BAND;
-	 }
+         duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.f1Mode.mode.fdd.ulNrFreqInfo.freqBand[freqBandIdx].\
+         nrFreqBand = NR_FREQ_BAND;
+         for(bandIdx=0; bandIdx<MAX_NRCELL_BANDS; bandIdx++)
+         {
+            duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.f1Mode.mode.fdd.ulNrFreqInfo.freqBand[freqBandIdx].\
+            sulBand[bandIdx] = SUL_BAND;
+         }
       }
-      duCfgParam.srvdCellLst[i].duCellInfo.f1Mode.mode.fdd.dlNrFreqInfo.nrArfcn = NR_DL_ARFCN;
-      duCfgParam.srvdCellLst[i].duCellInfo.f1Mode.mode.fdd.dlNrFreqInfo.sulInfo.sulArfcn = SUL_ARFCN;
-      duCfgParam.srvdCellLst[i].duCellInfo.f1Mode.mode.fdd.dlNrFreqInfo.sulInfo.sulTxBw.nrScs = SCS_15;
-      duCfgParam.srvdCellLst[i].duCellInfo.f1Mode.mode.fdd.dlNrFreqInfo.sulInfo.sulTxBw.nrb = NRB_106;
-      for(j=0;j<MAXNRCELLBANDS;j++)
+      duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.f1Mode.mode.fdd.dlNrFreqInfo.nrArfcn = NR_DL_ARFCN;
+      duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.f1Mode.mode.fdd.dlNrFreqInfo.sulInfo.sulArfcn = SUL_ARFCN;
+      duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.f1Mode.mode.fdd.dlNrFreqInfo.sulInfo.sulTxBw.nrScs = SCS_15;
+      duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.f1Mode.mode.fdd.dlNrFreqInfo.sulInfo.sulTxBw.nrb = NRB_106;
+      for(freqBandIdx=0; freqBandIdx<MAX_NRCELL_BANDS; freqBandIdx++)
       {
-	 duCfgParam.srvdCellLst[i].duCellInfo.f1Mode.mode.fdd.dlNrFreqInfo.freqBand[j].nrFreqBand = NR_FREQ_BAND;
-	 for(k=0;k<MAXNRCELLBANDS;k++)
-	 {
-	    duCfgParam.srvdCellLst[i].duCellInfo.f1Mode.mode.fdd.dlNrFreqInfo.freqBand[j].sulBand[k] = SUL_BAND;
-	 }
+         duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.f1Mode.mode.fdd.dlNrFreqInfo.freqBand[freqBandIdx].\
+         nrFreqBand = NR_FREQ_BAND;
+         for(bandIdx=0; bandIdx<MAX_NRCELL_BANDS; bandIdx++)
+         {
+            duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.f1Mode.mode.fdd.dlNrFreqInfo.freqBand[freqBandIdx].\
+            sulBand[bandIdx] = SUL_BAND;
+         }
       }
 
-      duCfgParam.srvdCellLst[i].duCellInfo.f1Mode.mode.fdd.ulTxBw.nrScs = SCS_15;
-      duCfgParam.srvdCellLst[i].duCellInfo.f1Mode.mode.fdd.ulTxBw.nrb = NRB_106;
+      duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.f1Mode.mode.fdd.ulTxBw.nrScs = SCS_15;
+      duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.f1Mode.mode.fdd.ulTxBw.nrb = NRB_106;
 
-      duCfgParam.srvdCellLst[i].duCellInfo.f1Mode.mode.fdd.dlTxBw.nrScs = SCS_15;
-      duCfgParam.srvdCellLst[i].duCellInfo.f1Mode.mode.fdd.dlTxBw.nrb = NRB_106;
+      duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.f1Mode.mode.fdd.dlTxBw.nrScs = SCS_15;
+      duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.f1Mode.mode.fdd.dlTxBw.nrb = NRB_106;
 
-#if 0
-      duCfgParam.srvdCellLst[i].duCellInfo.f1Mode.mode.tdd.nrTxBw.nrScs = SCS_15;
-      duCfgParam.srvdCellLst[i].duCellInfo.f1Mode.mode.tdd.nrTxBw.nrb = NRB_106;
-#endif
       /*Measurement Config and Cell Config */ 
-      duCfgParam.srvdCellLst[i].duCellInfo.measTimeCfg = TIME_CFG; 
+      duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.measTimeCfg = TIME_CFG; 
 
-      duCfgParam.srvdCellLst[i].duCellInfo.cellDir = DL_UL; 
+      duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.cellDir = DL_UL; 
 
-      duCfgParam.srvdCellLst[i].duCellInfo.cellType=CELL_TYPE;
+      duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.cellType=CELL_TYPE;
 
       /* Broadcast PLMN Identity */
-      for(j=0;j<MAXBPLMNNRMINUS1;j++)
+      for(brdcstPlmnIdx=0; brdcstPlmnIdx<MAX_BPLMN_NRCELL_MINUS_1; brdcstPlmnIdx++)
       { 
-	 for(k=0;k<MAX_PLMN;k++)
-	 {
-	    memset(&duCfgParam.srvdCellLst[i].duCellInfo.brdcstPlmnInfo[j].plmn[k], 0, sizeof(Plmn));
-	    duCfgParam.srvdCellLst[i].duCellInfo.brdcstPlmnInfo[j].plmn[k].mcc[0] = PLMN_MCC0;
-	    duCfgParam.srvdCellLst[i].duCellInfo.brdcstPlmnInfo[j].plmn[k].mcc[1] = PLMN_MCC1;
-	    duCfgParam.srvdCellLst[i].duCellInfo.brdcstPlmnInfo[j].plmn[k].mcc[2] = PLMN_MCC2;
-	    duCfgParam.srvdCellLst[i].duCellInfo.brdcstPlmnInfo[j].plmn[k].mnc[0] = PLMN_MNC0;
-	    duCfgParam.srvdCellLst[i].duCellInfo.brdcstPlmnInfo[j].plmn[k].mnc[1] = PLMN_MNC1;                                         
-	 }
-	 /* Extended PLMN List */	 
-	 for(k=0;k<MAX_PLMN;k++)
-	 {
-	    memset(&duCfgParam.srvdCellLst[i].duCellInfo.brdcstPlmnInfo[j].extPlmn[k], 0, sizeof(Plmn));
-	    duCfgParam.srvdCellLst[i].duCellInfo.brdcstPlmnInfo[j].extPlmn[k].mcc[0] = PLMN_MCC0;
-	    duCfgParam.srvdCellLst[i].duCellInfo.brdcstPlmnInfo[j].extPlmn[k].mcc[1] = PLMN_MCC1;
-	    duCfgParam.srvdCellLst[i].duCellInfo.brdcstPlmnInfo[j].extPlmn[k].mcc[2] = PLMN_MCC2;
-	    duCfgParam.srvdCellLst[i].duCellInfo.brdcstPlmnInfo[j].extPlmn[k].mnc[0] = PLMN_MNC0;
-	    duCfgParam.srvdCellLst[i].duCellInfo.brdcstPlmnInfo[j].extPlmn[k].mnc[1] = PLMN_MNC1;
-	 }
+         for(plmnIdx=0; plmnIdx<MAX_PLMN; plmnIdx++)
+         {
+            memset(&duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.brdcstPlmnInfo[brdcstPlmnIdx].plmn[plmnIdx],\
+            0, sizeof(Plmn));
+            duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.brdcstPlmnInfo[brdcstPlmnIdx].plmn[plmnIdx].mcc[0] =\
+            PLMN_MCC0;
+            duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.brdcstPlmnInfo[brdcstPlmnIdx].plmn[plmnIdx].mcc[1] =\
+            PLMN_MCC1;
+            duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.brdcstPlmnInfo[brdcstPlmnIdx].plmn[plmnIdx].mcc[2] =\
+            PLMN_MCC2;
+            duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.brdcstPlmnInfo[brdcstPlmnIdx].plmn[plmnIdx].mnc[0] =\
+            PLMN_MNC0;
+            duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.brdcstPlmnInfo[brdcstPlmnIdx].plmn[plmnIdx].mnc[1] =\
+            PLMN_MNC1;
+         }
+         /* Extended PLMN List */	 
+         for(plmnIdx=0; plmnIdx<MAX_PLMN; plmnIdx++)
+         {
+            memset(&duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.brdcstPlmnInfo[brdcstPlmnIdx].\
+            extPlmn[plmnIdx], 0, sizeof(Plmn));
+            duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.brdcstPlmnInfo[brdcstPlmnIdx].\
+            extPlmn[plmnIdx].mcc[0] = PLMN_MCC0;
+            duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.brdcstPlmnInfo[brdcstPlmnIdx].\
+            extPlmn[plmnIdx].mcc[1] = PLMN_MCC1;
+            duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.brdcstPlmnInfo[brdcstPlmnIdx].\
+            extPlmn[plmnIdx].mcc[2] = PLMN_MCC2;
+            duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.brdcstPlmnInfo[brdcstPlmnIdx].\
+            extPlmn[plmnIdx].mnc[0] = PLMN_MNC0;
+            duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.brdcstPlmnInfo[brdcstPlmnIdx].\
+            extPlmn[plmnIdx].mnc[1] = PLMN_MNC1;
+         }
 
-	 duCfgParam.srvdCellLst[i].duCellInfo.brdcstPlmnInfo[j].tac = DU_TAC;
-	 duCfgParam.srvdCellLst[i].duCellInfo.brdcstPlmnInfo[j].nrCellId = NR_CELL_ID;
-	 duCfgParam.srvdCellLst[i].duCellInfo.brdcstPlmnInfo[j].ranac = NR_RANAC;
+         duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.brdcstPlmnInfo[brdcstPlmnIdx].tac = DU_TAC;
+         duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.brdcstPlmnInfo[brdcstPlmnIdx].nrCellId = NR_CELL_ID;
+         duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.brdcstPlmnInfo[brdcstPlmnIdx].ranac = NR_RANAC;
       }
 
       /*gnb DU System Info mib msg*/
       BuildMibMsg();
-      DU_ALLOC(duCfgParam.srvdCellLst[i].duSysInfo.mibMsg, encBufSize);
-      if(!(duCfgParam.srvdCellLst[i].duSysInfo.mibMsg))
+      DU_ALLOC(duCfgParam.srvdCellLst[srvdCellIdx].duSysInfo.mibMsg, encBufSize);
+      if(!(duCfgParam.srvdCellLst[srvdCellIdx].duSysInfo.mibMsg))
       {
-	 DU_LOG("\nERROR  -->  DU APP : Memory allocation failure at readCfg");
-	 return RFAILED;
+         DU_LOG("\nERROR  -->  DU APP : Memory allocation failure at readCfg");
+         return RFAILED;
       }
-      memcpy(duCfgParam.srvdCellLst[i].duSysInfo.mibMsg, encBuf, encBufSize);
-      duCfgParam.srvdCellLst[i].duSysInfo.mibLen = encBufSize;
+      memcpy(duCfgParam.srvdCellLst[srvdCellIdx].duSysInfo.mibMsg, encBuf, encBufSize);
+      duCfgParam.srvdCellLst[srvdCellIdx].duSysInfo.mibLen = encBufSize;
 
       /*gnb DU System Info mib msg*/
       BuildSib1Msg();
-      DU_ALLOC(duCfgParam.srvdCellLst[i].duSysInfo.sib1Msg,\
-	    encBufSize);
-      if(!(duCfgParam.srvdCellLst[i].duSysInfo.sib1Msg))
+      DU_ALLOC(duCfgParam.srvdCellLst[srvdCellIdx].duSysInfo.sib1Msg,\
+            encBufSize);
+      if(!(duCfgParam.srvdCellLst[srvdCellIdx].duSysInfo.sib1Msg))
       {
-	 DU_LOG("\nERROR  -->  DU APP : Memory allocation failure at readCfg");
-	 return RFAILED;
+         DU_LOG("\nERROR  -->  DU APP : Memory allocation failure at readCfg");
+         return RFAILED;
       }
-      memcpy(duCfgParam.srvdCellLst[i].duSysInfo.sib1Msg,\
-	    encBuf,encBufSize);
-      duCfgParam.srvdCellLst[i].duSysInfo.sib1Len = encBufSize;
+      memcpy(duCfgParam.srvdCellLst[srvdCellIdx].duSysInfo.sib1Msg,\
+            encBuf,encBufSize);
+      duCfgParam.srvdCellLst[srvdCellIdx].duSysInfo.sib1Len = encBufSize;
 
    }
 
@@ -875,6 +932,7 @@ uint8_t duReadCfg()
    Buffer *mBuf;
 
    memset(&duCfgParam, 0, sizeof(DuCfgParams));
+
    //Read configs into duCfgParams
    if(readCfg() != ROK)
    {
