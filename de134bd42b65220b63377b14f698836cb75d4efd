@@ -1,0 +1,136 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3df08c0f_265db1b8",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2163,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-09-22T13:57:40Z",
+      "side": 1,
+      "message": "2nd Parameter is uint8. Can we use some Interger value (0 or 0xFF) for invalid value?",
+      "range": {
+        "startLine": 2163,
+        "startChar": 75,
+        "endLine": 2163,
+        "endChar": 80
+      },
+      "revId": "de134bd42b65220b63377b14f698836cb75d4efd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e0336b38_64ae8f43",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2320,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-09-22T13:57:40Z",
+      "side": 1,
+      "message": "Same as above",
+      "revId": "de134bd42b65220b63377b14f698836cb75d4efd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "68fb6f57_922835c1",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 7053,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-09-22T13:57:40Z",
+      "side": 1,
+      "message": "Can you please explain the significance of this function? I cant find the usage of this one, Is it for future functionality?",
+      "range": {
+        "startLine": 7053,
+        "startChar": 8,
+        "endLine": 7053,
+        "endChar": 24
+      },
+      "revId": "de134bd42b65220b63377b14f698836cb75d4efd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f22dec24_8a020c8b",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 7170,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-09-22T13:57:40Z",
+      "side": 1,
+      "message": "Are we changing Tunnel Information during Modification of DRB\u003d2? If not, Is it possible to skip sending the Tunnel information again since it is not getting modified?",
+      "range": {
+        "startLine": 7170,
+        "startChar": 24,
+        "endLine": 7170,
+        "endChar": 25
+      },
+      "revId": "de134bd42b65220b63377b14f698836cb75d4efd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2254267c_9b1e8ac9",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 7356,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-09-22T13:57:40Z",
+      "side": 1,
+      "message": "Can you check the NULL can be given for uint8 data type?",
+      "range": {
+        "startLine": 7356,
+        "startChar": 76,
+        "endLine": 7356,
+        "endChar": 81
+      },
+      "revId": "de134bd42b65220b63377b14f698836cb75d4efd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e8455778_ca58d236",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 10048,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-09-22T13:57:40Z",
+      "side": 1,
+      "message": "Is it correct to hardcode the RLC mode? Can we extract it from RLC context from DUAPPs UE CB for this DRB?",
+      "range": {
+        "startLine": 10048,
+        "startChar": 57,
+        "endLine": 10048,
+        "endChar": 85
+      },
+      "revId": "de134bd42b65220b63377b14f698836cb75d4efd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
