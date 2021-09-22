@@ -24,6 +24,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3a80a5b2_43a45776",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2163,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-09-22T15:37:11Z",
+      "side": 1,
+      "message": "Changing to NULLP, as it takes a value as 0. And this field is created to mention a action Type. In future use this can be updated according to usage.",
+      "parentUuid": "3df08c0f_265db1b8",
+      "range": {
+        "startLine": 2163,
+        "startChar": 75,
+        "endLine": 2163,
+        "endChar": 80
+      },
+      "revId": "de134bd42b65220b63377b14f698836cb75d4efd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e0336b38_64ae8f43",
@@ -41,6 +65,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "58757e34_f7ed9456",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2320,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-09-22T15:37:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e0336b38_64ae8f43",
+      "revId": "de134bd42b65220b63377b14f698836cb75d4efd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "68fb6f57_922835c1",
@@ -54,6 +96,30 @@
       "writtenOn": "2021-09-22T13:57:40Z",
       "side": 1,
       "message": "Can you please explain the significance of this function? I cant find the usage of this one, Is it for future functionality?",
+      "range": {
+        "startLine": 7053,
+        "startChar": 8,
+        "endLine": 7053,
+        "endChar": 24
+      },
+      "revId": "de134bd42b65220b63377b14f698836cb75d4efd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1dd17c9c_a069fc1d",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 7053,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-09-22T15:37:11Z",
+      "side": 1,
+      "message": "Yes this function can be used in future, i can we have to delete tunnel in CU_STUB",
+      "parentUuid": "68fb6f57_922835c1",
       "range": {
         "startLine": 7053,
         "startChar": 8,
@@ -87,6 +153,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "aa01fc1d_24a52bbb",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 7170,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-09-22T15:37:11Z",
+      "side": 1,
+      "message": "No I am not changing any tunnel Id here. \nfor Drb2 the tunnel Id is 2 only. Since tunnel Id is mandatory, I have retained it",
+      "parentUuid": "f22dec24_8a020c8b",
+      "range": {
+        "startLine": 7170,
+        "startChar": 24,
+        "endLine": 7170,
+        "endChar": 25
+      },
+      "revId": "de134bd42b65220b63377b14f698836cb75d4efd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2254267c_9b1e8ac9",
@@ -110,6 +200,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c45038f6_8c0297ff",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 7356,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-09-22T15:37:11Z",
+      "side": 1,
+      "message": "We can created a macro NULLP to assign zero/invalid.\nHence I have used the same here. It can be applied to uint8_t as well",
+      "parentUuid": "2254267c_9b1e8ac9",
+      "range": {
+        "startLine": 7356,
+        "startChar": 76,
+        "endLine": 7356,
+        "endChar": 81
+      },
+      "revId": "de134bd42b65220b63377b14f698836cb75d4efd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e8455778_ca58d236",
@@ -123,6 +237,30 @@
       "writtenOn": "2021-09-22T13:57:40Z",
       "side": 1,
       "message": "Is it correct to hardcode the RLC mode? Can we extract it from RLC context from DUAPPs UE CB for this DRB?",
+      "range": {
+        "startLine": 10048,
+        "startChar": 57,
+        "endLine": 10048,
+        "endChar": 85
+      },
+      "revId": "de134bd42b65220b63377b14f698836cb75d4efd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "be61e0e4_cd8953c3",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 10048,
+      "author": {
+        "id": 1000305
+      },
+      "writtenOn": "2021-09-22T15:37:11Z",
+      "side": 1,
+      "message": "Yes I have extracted rlcMode from RLC context and the changes are already taken done by ue mgr.c. As this file is F1AP msg hdl, I can\u0027t provide that much intelligence to F1AP, hence I have harcoded it. But later the rlcMode is recovered from the DB",
+      "parentUuid": "e8455778_ca58d236",
       "range": {
         "startLine": 10048,
         "startChar": 57,
