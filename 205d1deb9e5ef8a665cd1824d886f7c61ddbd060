@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4f87a918_fe9352d7",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 10048,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-09-23T06:10:28Z",
+      "side": 1,
+      "message": "As discussed, Can you please add comment for RLC mode in MOD, for future use.",
+      "range": {
+        "startLine": 10048,
+        "startChar": 57,
+        "endLine": 10048,
+        "endChar": 85
+      },
+      "revId": "205d1deb9e5ef8a665cd1824d886f7c61ddbd060",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cb8ef6e9_5ad6f6e3",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1628,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-09-23T06:10:28Z",
+      "side": 1,
+      "message": "Instead of Filling default Mode, Can you please copy Cfg from DB?",
+      "range": {
+        "startLine": 1628,
+        "startChar": 18,
+        "endLine": 1628,
+        "endChar": 39
+      },
+      "revId": "205d1deb9e5ef8a665cd1824d886f7c61ddbd060",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
