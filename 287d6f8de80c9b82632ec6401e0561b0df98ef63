@@ -24,6 +24,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a42662c0_b269b335",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 7835,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-09-23T09:55:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "eaee22d9_d8497dcc",
+      "range": {
+        "startLine": 7835,
+        "startChar": 29,
+        "endLine": 7835,
+        "endChar": 34
+      },
+      "revId": "287d6f8de80c9b82632ec6401e0561b0df98ef63",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1175aef9_3dcce8db",
@@ -37,6 +61,30 @@
       "writtenOn": "2021-09-22T18:53:50Z",
       "side": 1,
       "message": "Below lines can be segregated into different functions. Nested for and ifs are confusing",
+      "range": {
+        "startLine": 7894,
+        "startChar": 46,
+        "endLine": 7894,
+        "endChar": 58
+      },
+      "revId": "287d6f8de80c9b82632ec6401e0561b0df98ef63",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e54af436_a5356206",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 7894,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-09-23T09:55:24Z",
+      "side": 1,
+      "message": "Sure, created different functions.",
+      "parentUuid": "1175aef9_3dcce8db",
       "range": {
         "startLine": 7894,
         "startChar": 46,
@@ -70,6 +118,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cbd561d1_bed6fd2e",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 7937,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-09-23T09:55:24Z",
+      "side": 1,
+      "message": "yes.",
+      "parentUuid": "d066c87d_a67eb89b",
+      "range": {
+        "startLine": 7937,
+        "startChar": 27,
+        "endLine": 7937,
+        "endChar": 31
+      },
+      "revId": "287d6f8de80c9b82632ec6401e0561b0df98ef63",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "45ca7dcd_4fad0953",
@@ -83,6 +155,30 @@
       "writtenOn": "2021-09-22T18:53:50Z",
       "side": 1,
       "message": "Here, can we use a pointer instead of \"duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.cellInfo.srvdPlmn[srvdPlmnIdx].taiSliceSuppLst\" for better readability",
+      "range": {
+        "startLine": 755,
+        "startChar": 21,
+        "endLine": 755,
+        "endChar": 114
+      },
+      "revId": "287d6f8de80c9b82632ec6401e0561b0df98ef63",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a36b1b0e_c9341f16",
+        "filename": "src/du_app/du_cfg.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 755,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-09-23T09:55:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "45ca7dcd_4fad0953",
       "range": {
         "startLine": 755,
         "startChar": 21,
@@ -116,6 +212,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9511e7a6_29d0f0f1",
+        "filename": "src/du_app/du_cfg.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 758,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-09-23T09:55:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "078d74f8_de16aea8",
+      "range": {
+        "startLine": 758,
+        "startChar": 12,
+        "endLine": 758,
+        "endChar": 22
+      },
+      "revId": "287d6f8de80c9b82632ec6401e0561b0df98ef63",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7e663a67_a582c7be",
@@ -129,6 +249,30 @@
       "writtenOn": "2021-09-22T18:53:50Z",
       "side": 1,
       "message": "Here, Please check Can we use memcmp?",
+      "range": {
+        "startLine": 772,
+        "startChar": 39,
+        "endLine": 772,
+        "endChar": 49
+      },
+      "revId": "287d6f8de80c9b82632ec6401e0561b0df98ef63",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "eab029c0_8f31e6cc",
+        "filename": "src/du_app/du_cfg.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 772,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-09-23T09:55:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7e663a67_a582c7be",
       "range": {
         "startLine": 772,
         "startChar": 39,
@@ -162,6 +306,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "229a035a_af085203",
+        "filename": "src/du_app/du_cfg.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 660,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-09-23T09:55:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0416f845_1cb03915",
+      "range": {
+        "startLine": 660,
+        "startChar": 16,
+        "endLine": 660,
+        "endChar": 17
+      },
+      "revId": "287d6f8de80c9b82632ec6401e0561b0df98ef63",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8f97cc84_b56561a5",
@@ -175,6 +343,30 @@
       "writtenOn": "2021-09-22T18:53:50Z",
       "side": 1,
       "message": "Can we club multiple Uint_8 into few (eg: 5 uint8_t into 2)",
+      "range": {
+        "startLine": 963,
+        "startChar": 19,
+        "endLine": 963,
+        "endChar": 29
+      },
+      "revId": "287d6f8de80c9b82632ec6401e0561b0df98ef63",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f7e94531_6c842f97",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 963,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-09-23T09:55:24Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "8f97cc84_b56561a5",
       "range": {
         "startLine": 963,
         "startChar": 19,
@@ -208,6 +400,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "83c90170_2c60c27d",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 965,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-09-23T09:55:24Z",
+      "side": 1,
+      "message": "created.",
+      "parentUuid": "e54b7789_1d463b16",
+      "range": {
+        "startLine": 965,
+        "startChar": 16,
+        "endLine": 965,
+        "endChar": 17
+      },
+      "revId": "287d6f8de80c9b82632ec6401e0561b0df98ef63",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e20103ce_992dcfe3",
@@ -221,6 +437,30 @@
       "writtenOn": "2021-09-22T18:53:50Z",
       "side": 1,
       "message": "Again , Same comments. Can we use memcpy for better readability?",
+      "range": {
+        "startLine": 2173,
+        "startChar": 55,
+        "endLine": 2173,
+        "endChar": 65
+      },
+      "revId": "287d6f8de80c9b82632ec6401e0561b0df98ef63",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4d1c551c_70c144f5",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2173,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-09-23T09:55:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e20103ce_992dcfe3",
       "range": {
         "startLine": 2173,
         "startChar": 55,
