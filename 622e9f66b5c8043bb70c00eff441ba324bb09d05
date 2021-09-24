@@ -1,0 +1,170 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "31a96ebd_ddae1e27",
+        "filename": "src/5gnrsch/sch_rach.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-09-24T14:54:18Z",
+      "side": 1,
+      "message": "in ducfg PDSCH_LENGTH_SYMBOl is 11 and here we are taking 14?  are they different.",
+      "range": {
+        "startLine": 118,
+        "startChar": 31,
+        "endLine": 118,
+        "endChar": 33
+      },
+      "revId": "622e9f66b5c8043bb70c00eff441ba324bb09d05",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1b09d677_f0042451",
+        "filename": "src/5gnrsch/sch_rach.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-09-24T14:54:18Z",
+      "side": 1,
+      "message": "check cell is available or not.",
+      "revId": "622e9f66b5c8043bb70c00eff441ba324bb09d05",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d23d025e_2263e39e",
+        "filename": "src/5gnrsch/sch_rach.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 159,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-09-24T14:54:18Z",
+      "side": 1,
+      "message": "NEW_TRANSMISSION use enum.",
+      "range": {
+        "startLine": 159,
+        "startChar": 57,
+        "endLine": 159,
+        "endChar": 58
+      },
+      "revId": "622e9f66b5c8043bb70c00eff441ba324bb09d05",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "307b81eb_c2f02107",
+        "filename": "src/5gnrsch/sch_rach.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 231,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-09-24T14:54:18Z",
+      "side": 1,
+      "message": "initialize all.",
+      "revId": "622e9f66b5c8043bb70c00eff441ba324bb09d05",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "16892d84_8458beea",
+        "filename": "src/5gnrsch/sch_rach.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 427,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-09-24T14:54:18Z",
+      "side": 1,
+      "message": "cell is pointer. check it is null or not before using. otherwise it leads to unusual behavior.",
+      "range": {
+        "startLine": 427,
+        "startChar": 34,
+        "endLine": 427,
+        "endChar": 35
+      },
+      "revId": "622e9f66b5c8043bb70c00eff441ba324bb09d05",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aca9d813_8b75a004",
+        "filename": "src/5gnrsch/sch_rach.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 434,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-09-24T14:54:18Z",
+      "side": 1,
+      "message": "if we get ueIdx \u003d\u003d 0, then it will below [ueIdx -1] may cause issue.",
+      "revId": "622e9f66b5c8043bb70c00eff441ba324bb09d05",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f5340f42_1228664e",
+        "filename": "src/5gnrsch/sch_slot_ind.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 182,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-09-24T14:54:18Z",
+      "side": 1,
+      "message": "Does this 10 refer to slot pattern length?\nif yes then cann\u0027t we directly use that.",
+      "range": {
+        "startLine": 182,
+        "startChar": 72,
+        "endLine": 182,
+        "endChar": 74
+      },
+      "revId": "622e9f66b5c8043bb70c00eff441ba324bb09d05",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c7acc140_b0609f88",
+        "filename": "src/5gnrsch/sch_slot_ind.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 326,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-09-24T14:54:18Z",
+      "side": 1,
+      "message": "create macro.",
+      "range": {
+        "startLine": 326,
+        "startChar": 37,
+        "endLine": 326,
+        "endChar": 38
+      },
+      "revId": "622e9f66b5c8043bb70c00eff441ba324bb09d05",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
