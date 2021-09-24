@@ -20,7 +20,7 @@
 
 #define TRANS_ID 1
 #define RRC_SIZE 1
-#define SUL_BAND_COUNT 0
+#define SUL_BAND_COUNT  0
 #define UL_SRBID        1
 #define DL_SRBID        0
 #define DU_ID           1
