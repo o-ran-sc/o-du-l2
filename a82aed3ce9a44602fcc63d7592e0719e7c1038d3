@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "acd7c47b_89a08d88",
+        "filename": "src/du_app/du_cfg.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 756,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-09-24T14:07:24Z",
+      "side": 1,
+      "message": "Please do memcheck allocation status?",
+      "range": {
+        "startLine": 756,
+        "startChar": 12,
+        "endLine": 756,
+        "endChar": 20
+      },
+      "revId": "a82aed3ce9a44602fcc63d7592e0719e7c1038d3",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6b088e26_63d8eb12",
+        "filename": "src/du_app/du_cfg.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 938,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-09-24T14:07:24Z",
+      "side": 1,
+      "message": "Pls Replace with MACRO \"NUM_OF_SUPPORTED_SLICE\"",
+      "range": {
+        "startLine": 938,
+        "startChar": 19,
+        "endLine": 938,
+        "endChar": 20
+      },
+      "revId": "a82aed3ce9a44602fcc63d7592e0719e7c1038d3",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "47c14084_55874f09",
+        "filename": "src/du_app/du_cfg.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 943,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-09-24T14:07:24Z",
+      "side": 1,
+      "message": "Please replace with MACRO (DEDICATED_SLICE_INDEX)",
+      "range": {
+        "startLine": 943,
+        "startChar": 31,
+        "endLine": 943,
+        "endChar": 32
+      },
+      "revId": "a82aed3ce9a44602fcc63d7592e0719e7c1038d3",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
