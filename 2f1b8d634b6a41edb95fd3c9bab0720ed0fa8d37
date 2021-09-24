@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "21533977_934c6f24",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 10108,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-09-24T11:59:03Z",
+      "side": 1,
+      "message": "DRB\u0027s LCID must start from 4 MIN_DRB_LCID. LCID 0,1,2,3 are for SRBs",
+      "range": {
+        "startLine": 10108,
+        "startChar": 23,
+        "endLine": 10108,
+        "endChar": 24
+      },
+      "revId": "2f1b8d634b6a41edb95fd3c9bab0720ed0fa8d37",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c15b0c6f_9af1d63d",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 10157,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-09-24T11:59:03Z",
+      "side": 1,
+      "message": "Since we are modifying parameters of an existing LCID, Do we need to increment MAC and DRB numbers as well for MOD case?",
+      "range": {
+        "startLine": 10157,
+        "startChar": 0,
+        "endLine": 10157,
+        "endChar": 9
+      },
+      "revId": "2f1b8d634b6a41edb95fd3c9bab0720ed0fa8d37",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
