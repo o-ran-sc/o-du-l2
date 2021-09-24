@@ -129,13 +129,13 @@ uint8_t fillDlUserDataInfo(uint32_t teId, RlcDlUserDataInfo *dlDataMsgInfo)
    {
       if(duCb.upTnlCfg[drbIdx] && (duCb.upTnlCfg[drbIdx]->tnlCfg1 != NULLP))
       {
-        if(duCb.upTnlCfg[drbIdx]->tnlCfg1->teId == teId)
-	{
-	   dlDataMsgInfo->cellId = duCb.upTnlCfg[drbIdx]->cellId;
-	   dlDataMsgInfo->ueIdx = duCb.upTnlCfg[drbIdx]->ueIdx;
-           dlDataMsgInfo->rbId = duCb.upTnlCfg[drbIdx]->drbId;
-	   return ROK;
-	}
+         if(duCb.upTnlCfg[drbIdx]->tnlCfg1->teId == teId)
+         {
+            dlDataMsgInfo->cellId = duCb.upTnlCfg[drbIdx]->cellId;
+            dlDataMsgInfo->ueIdx = duCb.upTnlCfg[drbIdx]->ueIdx;
+            dlDataMsgInfo->rbId = duCb.upTnlCfg[drbIdx]->drbId;
+            return ROK;
+         }
       }
    }
    return RFAILED;
