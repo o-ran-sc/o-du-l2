@@ -3,6 +3,182 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "19bffb6d_a101cfbd",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2163,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-09-24T13:02:17Z",
+      "side": 1,
+      "message": "BuildFlowsMap() this function gets called for both new DRB setup and DRB modification.\nBut in BuildQOSInfo, always NULL is being passed.\nAction should be passed based on which flow call this function",
+      "revId": "2f1b8d634b6a41edb95fd3c9bab0720ed0fa8d37",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "abf7f28f_e71ac249",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2320,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-09-24T13:02:17Z",
+      "side": 1,
+      "message": "Instead of NULL, pass \"ProtocolIE_ID_id_DRBs_ToBeSetup_Item\"",
+      "revId": "2f1b8d634b6a41edb95fd3c9bab0720ed0fa8d37",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "53b6b121_bcbace9a",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 6623,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-09-24T13:02:17Z",
+      "side": 1,
+      "message": "This function will be able to return only one tunnel Id. \nSince we are passing a list into this function, there is a possibility of multiple teId being present in the list.\n\nIf it is mandatory that there will be only one tunnel for each RB, then this is fine.\nPlease confirm",
+      "revId": "2f1b8d634b6a41edb95fd3c9bab0720ed0fa8d37",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "59449fbc_f501ecb7",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 7061,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-09-24T13:02:17Z",
+      "side": 1,
+      "message": "Do not add tunned if teId is out of range. Return.",
+      "revId": "2f1b8d634b6a41edb95fd3c9bab0720ed0fa8d37",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f39b600b_1192f218",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 7170,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-09-24T13:02:17Z",
+      "side": 1,
+      "message": "Rather than hardcoding, can we fetch teId based on which DRB is being modified?",
+      "revId": "2f1b8d634b6a41edb95fd3c9bab0720ed0fa8d37",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f1315bf1_ada0de75",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 7278,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-09-24T13:02:17Z",
+      "side": 1,
+      "message": "Lets not call it FillDrb2Item since we are adding DRB3 here.",
+      "range": {
+        "startLine": 7278,
+        "startChar": 14,
+        "endLine": 7278,
+        "endChar": 15
+      },
+      "revId": "2f1b8d634b6a41edb95fd3c9bab0720ed0fa8d37",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "970ed511_fe77b8c5",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 7356,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-09-24T13:02:17Z",
+      "side": 1,
+      "message": "As per my understanding, this function is not just for DRB2. Please check.\nIf it is being used for any DRB to be setup/modified, rename to BuildUlTnlInfoforDrb()",
+      "revId": "2f1b8d634b6a41edb95fd3c9bab0720ed0fa8d37",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "03668262_87d052ec",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 7520,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-09-24T13:02:17Z",
+      "side": 1,
+      "message": "lets use macro for DRB2 as well",
+      "revId": "2f1b8d634b6a41edb95fd3c9bab0720ed0fa8d37",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9f410d5b_d7bbcb4b",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 7612,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-09-24T13:02:17Z",
+      "side": 1,
+      "message": "does this mean that this DRB is only for DL?",
+      "revId": "2f1b8d634b6a41edb95fd3c9bab0720ed0fa8d37",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6173289c_c1233b5c",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-09-24T13:02:17Z",
+      "side": 1,
+      "message": "Define DRB3 \u003d 3",
+      "revId": "2f1b8d634b6a41edb95fd3c9bab0720ed0fa8d37",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "21533977_934c6f24",
         "filename": "src/du_app/du_f1ap_msg_hdl.c",
         "patchSetId": 3
@@ -26,6 +202,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2ed5678a_4994b915",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 10113,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-09-24T13:02:17Z",
+      "side": 1,
+      "message": "procDrbListToSetup() : the same function is being used for both setup and modification. Please rename to may be \"procDrbListToSetupOrModify\"",
+      "revId": "2f1b8d634b6a41edb95fd3c9bab0720ed0fa8d37",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c15b0c6f_9af1d63d",
         "filename": "src/du_app/du_f1ap_msg_hdl.c",
         "patchSetId": 3
@@ -43,6 +236,81 @@
         "endLine": 10157,
         "endChar": 9
       },
+      "revId": "2f1b8d634b6a41edb95fd3c9bab0720ed0fa8d37",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "47c697c1_fc59fcbf",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 10157,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-09-24T13:02:17Z",
+      "side": 1,
+      "message": "As per my understanding, ueCfgDb is a temporary structure created to store the UE information for the time being until DRB cfg is updated at all layers. Since this is a new temporary structure created, it needs total count of LC to be worked upon(either to be added or to be modified)\n\n@Mamtha, please confirm if this is correct?\nIf yes, then shall we not move  \"ueCfgDb-\u003enumRlcLcs++;\" also outside of the else condition?",
+      "parentUuid": "c15b0c6f_9af1d63d",
+      "range": {
+        "startLine": 10157,
+        "startChar": 0,
+        "endLine": 10157,
+        "endChar": 9
+      },
+      "revId": "2f1b8d634b6a41edb95fd3c9bab0720ed0fa8d37",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b40f413c_acccd5a9",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 12918,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-09-24T13:02:17Z",
+      "side": 1,
+      "message": "extractDrbListToSetup() : the same function is being used for both setup and modification. Please rename to may be \"extractDrbListToSetupOrModify\"",
+      "revId": "2f1b8d634b6a41edb95fd3c9bab0720ed0fa8d37",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c02e5193_f8aa8fbf",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1137,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-09-24T13:02:17Z",
+      "side": 1,
+      "message": "move to du_utils",
+      "revId": "2f1b8d634b6a41edb95fd3c9bab0720ed0fa8d37",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3e905a6b_eef34f44",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1143,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-09-24T13:02:17Z",
+      "side": 1,
+      "message": "A DRB is always used in context to a specific UE.\nPass UE Id also here to avoid looping through all UEs",
       "revId": "2f1b8d634b6a41edb95fd3c9bab0720ed0fa8d37",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
