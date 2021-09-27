@@ -24,6 +24,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ce52c16f_62b0e89c",
+        "filename": "src/5gnrsch/sch_rach.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-09-27T15:50:13Z",
+      "side": 1,
+      "message": "It should be 11. corrected here",
+      "parentUuid": "31a96ebd_ddae1e27",
+      "range": {
+        "startLine": 118,
+        "startChar": 31,
+        "endLine": 118,
+        "endChar": 33
+      },
+      "revId": "622e9f66b5c8043bb70c00eff441ba324bb09d05",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1b09d677_f0042451",
@@ -37,6 +61,24 @@
       "writtenOn": "2021-09-24T14:54:18Z",
       "side": 1,
       "message": "check cell is available or not.",
+      "revId": "622e9f66b5c8043bb70c00eff441ba324bb09d05",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7d84e883_ea86ca64",
+        "filename": "src/5gnrsch/sch_rach.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-09-27T15:50:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1b09d677_f0042451",
       "revId": "622e9f66b5c8043bb70c00eff441ba324bb09d05",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -64,6 +106,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "63aebeec_32e9f42f",
+        "filename": "src/5gnrsch/sch_rach.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 159,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-09-27T15:50:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d23d025e_2263e39e",
+      "range": {
+        "startLine": 159,
+        "startChar": 57,
+        "endLine": 159,
+        "endChar": 58
+      },
+      "revId": "622e9f66b5c8043bb70c00eff441ba324bb09d05",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "307b81eb_c2f02107",
@@ -77,6 +143,24 @@
       "writtenOn": "2021-09-24T14:54:18Z",
       "side": 1,
       "message": "initialize all.",
+      "revId": "622e9f66b5c8043bb70c00eff441ba324bb09d05",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "aed52260_aaa53a36",
+        "filename": "src/5gnrsch/sch_rach.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 231,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-09-27T15:50:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "307b81eb_c2f02107",
       "revId": "622e9f66b5c8043bb70c00eff441ba324bb09d05",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -104,6 +188,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3bc011f2_9f574a4e",
+        "filename": "src/5gnrsch/sch_rach.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 427,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-09-27T15:50:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "16892d84_8458beea",
+      "range": {
+        "startLine": 427,
+        "startChar": 34,
+        "endLine": 427,
+        "endChar": 35
+      },
+      "revId": "622e9f66b5c8043bb70c00eff441ba324bb09d05",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "aca9d813_8b75a004",
@@ -117,6 +225,24 @@
       "writtenOn": "2021-09-24T14:54:18Z",
       "side": 1,
       "message": "if we get ueIdx \u003d\u003d 0, then it will below [ueIdx -1] may cause issue.",
+      "revId": "622e9f66b5c8043bb70c00eff441ba324bb09d05",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5ddc9986_0ddce88d",
+        "filename": "src/5gnrsch/sch_rach.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 434,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-09-27T15:50:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "aca9d813_8b75a004",
       "revId": "622e9f66b5c8043bb70c00eff441ba324bb09d05",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -144,6 +270,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e6e9709b_8db1a378",
+        "filename": "src/5gnrsch/sch_slot_ind.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 182,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-09-27T15:50:13Z",
+      "side": 1,
+      "message": "No this is not slot patter length.\nAs per spec, all possible values for \"SIB1 repetition period\" is in multiples of 10. Hence dividing by 10",
+      "parentUuid": "f5340f42_1228664e",
+      "range": {
+        "startLine": 182,
+        "startChar": 72,
+        "endLine": 182,
+        "endChar": 74
+      },
+      "revId": "622e9f66b5c8043bb70c00eff441ba324bb09d05",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c7acc140_b0609f88",
@@ -157,6 +307,30 @@
       "writtenOn": "2021-09-24T14:54:18Z",
       "side": 1,
       "message": "create macro.",
+      "range": {
+        "startLine": 326,
+        "startChar": 37,
+        "endLine": 326,
+        "endChar": 38
+      },
+      "revId": "622e9f66b5c8043bb70c00eff441ba324bb09d05",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "af20a572_0c416288",
+        "filename": "src/5gnrsch/sch_slot_ind.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 326,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-09-27T15:50:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c7acc140_b0609f88",
       "range": {
         "startLine": 326,
         "startChar": 37,
