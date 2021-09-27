@@ -1,0 +1,259 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9fa1702d_b64b9944",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 7826,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-09-27T06:44:23Z",
+      "side": 1,
+      "message": "You can store the list.count before for loop starts.\nAs of now, it is getting executed for each iteration.",
+      "revId": "93fdb0647da11933b17a0b98d7235298fbea2cd8",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f7d241b1_a406aae1",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 7838,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-09-27T06:44:23Z",
+      "side": 1,
+      "message": "test this thoroughly since value is getting copied from buffer to uint8_t",
+      "revId": "93fdb0647da11933b17a0b98d7235298fbea2cd8",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f5895e32_469e2b09",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 7844,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-09-27T06:44:23Z",
+      "side": 1,
+      "message": "same as above",
+      "revId": "93fdb0647da11933b17a0b98d7235298fbea2cd8",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "538ee110_942474cb",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 7887,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-09-27T06:44:23Z",
+      "side": 1,
+      "message": "Give space after each semi colon, makes it easily readable.\nAlso, you can have upto 120 characters in each line, so for loop need to be broken into 2 lines here",
+      "revId": "93fdb0647da11933b17a0b98d7235298fbea2cd8",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "65274e60_92fe5710",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 7954,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-09-27T06:44:23Z",
+      "side": 1,
+      "message": "use the term \"Served\" instead of \"Serve\"",
+      "revId": "93fdb0647da11933b17a0b98d7235298fbea2cd8",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d9dfb4be_ad68dd01",
+        "filename": "src/du_app/du_cfg.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 690,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-09-27T06:44:23Z",
+      "side": 1,
+      "message": "In all above line, line break is not needed. We can have 120 characters in each line",
+      "revId": "93fdb0647da11933b17a0b98d7235298fbea2cd8",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "62fb3dab_a686916b",
+        "filename": "src/du_app/du_cfg.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 713,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-09-27T06:44:23Z",
+      "side": 1,
+      "message": "give proper spaces.",
+      "revId": "93fdb0647da11933b17a0b98d7235298fbea2cd8",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1d124dae_44428771",
+        "filename": "src/du_app/du_cfg.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 727,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-09-27T06:44:23Z",
+      "side": 1,
+      "message": "same as above. Repeated comment for all for loops",
+      "revId": "93fdb0647da11933b17a0b98d7235298fbea2cd8",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "45487cff_bd79330c",
+        "filename": "src/du_app/du_cfg.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 743,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-09-27T06:44:23Z",
+      "side": 1,
+      "message": "in all above lines, line break not needed upto 120 characters",
+      "revId": "93fdb0647da11933b17a0b98d7235298fbea2cd8",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1912322a_22fd1714",
+        "filename": "src/du_app/du_cfg.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 820,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-09-27T06:44:23Z",
+      "side": 1,
+      "message": "spaces.\nCall the macro MAX_NRCELL_BANDS",
+      "revId": "93fdb0647da11933b17a0b98d7235298fbea2cd8",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "17ca9a9a_9f8c0ef2",
+        "filename": "src/du_app/du_cfg.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 836,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-09-27T06:44:23Z",
+      "side": 1,
+      "message": "remove if not needed",
+      "revId": "93fdb0647da11933b17a0b98d7235298fbea2cd8",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "806ebb62_cd543b6f",
+        "filename": "src/du_app/du_cfg.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 845,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-09-27T06:44:23Z",
+      "side": 1,
+      "message": "when defining a macro, use underscore(_) between each word. Rename MAXBPLMNNRMINUS1 accordingly",
+      "revId": "93fdb0647da11933b17a0b98d7235298fbea2cd8",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "71f5aa30_b52a23a6",
+        "filename": "src/du_app/du_cfg.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 953,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-09-27T06:44:23Z",
+      "side": 1,
+      "message": "Move the above code changes within readCfg itself instead of passing as function parameter",
+      "revId": "93fdb0647da11933b17a0b98d7235298fbea2cd8",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bf895e08_75f0ae76",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 2058,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-09-27T06:44:23Z",
+      "side": 1,
+      "message": "replace 0 with arrayIdx and initialise arrayIdx to 0",
+      "revId": "93fdb0647da11933b17a0b98d7235298fbea2cd8",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2168979f_d8e01e43",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 2079,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-09-27T06:44:23Z",
+      "side": 1,
+      "message": "replace 0 in iE_Extensions-\u003elist.array[0] with ieIdx.\nLets try not to hardcode as much as possible",
+      "revId": "93fdb0647da11933b17a0b98d7235298fbea2cd8",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
