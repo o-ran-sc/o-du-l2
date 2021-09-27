@@ -160,6 +160,30 @@
       },
       "revId": "a8239f63feae910b905e6db82198f203ab32f727",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f8be0d62_aa464763",
+        "filename": "src/5gnrsch/sch_rach.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 585,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-09-27T16:37:37Z",
+      "side": 1,
+      "message": "memory check required for schCb[inst].cells[inst]",
+      "parentUuid": "10ac7ba9_7b2e0645",
+      "range": {
+        "startLine": 585,
+        "startChar": 53,
+        "endLine": 585,
+        "endChar": 60
+      },
+      "revId": "a8239f63feae910b905e6db82198f203ab32f727",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
   ]
 }
