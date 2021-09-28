@@ -132,7 +132,8 @@ uint8_t fetchLcId(uint8_t drbId)
             numLcs = duCb.actvCellLst[cellIdx]->ueCb[ueIdx].rlcUeCfg.numLcs;
             for(lcIdx = 0; lcIdx < numLcs; lcIdx++)
             {
-               if(duCb.actvCellLst[cellIdx]->ueCb[ueIdx].rlcUeCfg.rlcLcCfg[lcIdx].rbId == drbId)
+               if(duCb.actvCellLst[cellIdx]->ueCb[ueIdx].rlcUeCfg.rlcLcCfg[lcIdx].rbId == drbId && \
+                  duCb.actvCellLst[cellIdx]->ueCb[ueIdx].rlcUeCfg.rlcLcCfg[lcIdx].rbType == RB_TYPE_DRB)
                {
                   lcId = duCb.actvCellLst[cellIdx]->ueCb[ueIdx].rlcUeCfg.rlcLcCfg[lcIdx].lcId;
                   return lcId;
