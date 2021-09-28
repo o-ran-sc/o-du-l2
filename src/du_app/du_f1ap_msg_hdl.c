@@ -956,95 +956,107 @@ uint8_t BuildNrMode(NR_Mode_Info_t *mode)
  * ****************************************************************/
 uint8_t BuildExtensions(ProtocolExtensionContainer_4624P3_t **ieExtend)
 {
-   uint8_t idx;
-   uint8_t plmnidx;
-   uint8_t extensionCnt=1;
-   uint8_t sliceId=0;
-   uint8_t sdId;
+   uint8_t idx=0, plmnidx=0, sliceLstIdx=0;
+   uint8_t elementCnt=0, extensionCnt=0;
+
+   extensionCnt=IE_EXTENSION_LIST_COUNT;
    DU_ALLOC(*ieExtend,sizeof(ProtocolExtensionContainer_4624P3_t));
    if((*ieExtend) == NULLP)
    {
+      DU_LOG("ERROR  --> DU_APP : BuildExtensions(): Memory allocation failed");
       return RFAILED;
    }
    (*ieExtend)->list.count = extensionCnt;
    (*ieExtend)->list.size = \
-			    extensionCnt * sizeof(ServedPLMNs_ItemExtIEs_t *);
+                            extensionCnt * sizeof(ServedPLMNs_ItemExtIEs_t *);
    DU_ALLOC((*ieExtend)->list.array,(*ieExtend)->list.size);
    if((*ieExtend)->list.array == NULLP)
    {
+      DU_LOG("ERROR  --> DU_APP : BuildExtensions(): Memory allocation failed");
       return RFAILED;
    }
    for(plmnidx=0;plmnidx<extensionCnt;plmnidx++)
    {
       DU_ALLOC((*ieExtend)->list.array[plmnidx],\
-	    sizeof(ServedPLMNs_ItemExtIEs_t));
+            sizeof(ServedPLMNs_ItemExtIEs_t));
       if((*ieExtend)->list.array[plmnidx] == NULLP)
       {
-	 return RFAILED;
+         DU_LOG("ERROR  --> DU_APP : BuildExtensions(): Memory allocation failed");
+         return RFAILED;
       }
    }
+   
+   elementCnt = NUM_OF_SUPPORTED_SLICE;
    idx = 0;
    (*ieExtend)->list.array[idx]->id = ProtocolIE_ID_id_TAISliceSupportList;
    (*ieExtend)->list.array[idx]->criticality = Criticality_ignore;
    (*ieExtend)->list.array[idx]->extensionValue.present = \
-							  ServedPLMNs_ItemExtIEs__extensionValue_PR_SliceSupportList;
+   ServedPLMNs_ItemExtIEs__extensionValue_PR_SliceSupportList;
    (*ieExtend)->list.array[idx]->extensionValue.choice.SliceSupportList.\
-      list.count = 1;
+      list.count = elementCnt;
    (*ieExtend)->list.array[idx]->extensionValue.choice.SliceSupportList.\
-      list.size = sizeof(SliceSupportItem_t *);
+      list.size = (*ieExtend)->list.array[idx]->extensionValue.choice.SliceSupportList.\
+      list.count * sizeof(SliceSupportItem_t *);
+
    DU_ALLOC((*ieExtend)->list.array[idx]->extensionValue.choice.SliceSupportList.\
-	 list.array,sizeof(SliceSupportItem_t *));
+         list.array, elementCnt * sizeof(SliceSupportItem_t *));
    if((*ieExtend)->list.array[idx]->extensionValue.choice.SliceSupportList.\
-	 list.array == NULLP)
+         list.array == NULLP)
    {
+      DU_LOG("ERROR  --> DU_APP : BuildExtensions(): Memory allocation failed");
       return RFAILED;
    }
-   DU_ALLOC((*ieExtend)->list.array[idx]->extensionValue.choice.SliceSupportList.\
-	 list.array[sliceId],sizeof(SliceSupportItem_t));
-   if((*ieExtend)->list.array[idx]->extensionValue.choice.SliceSupportList.\
-	 list.array[sliceId] == NULLP) 
+
+   for(sliceLstIdx =0; sliceLstIdx<elementCnt; sliceLstIdx++)
    {
-      return RFAILED;
+      DU_ALLOC((*ieExtend)->list.array[idx]->extensionValue.choice.SliceSupportList.\
+            list.array[sliceLstIdx],sizeof(SliceSupportItem_t));
+      if((*ieExtend)->list.array[idx]->extensionValue.choice.SliceSupportList.\
+            list.array[sliceLstIdx] == NULLP) 
+      {
+         DU_LOG("ERROR  --> DU_APP : BuildExtensions(): Memory allocation failed");
+         return RFAILED;
+      }
+      (*ieExtend)->list.array[idx]->extensionValue.choice.SliceSupportList.\
+         list.array[sliceLstIdx]->sNSSAI.sST.size = sizeof(uint8_t);
+      DU_ALLOC((*ieExtend)->list.array[idx]->extensionValue.choice.SliceSupportList\
+            .list.array[sliceLstIdx]->sNSSAI.sST.buf,(*ieExtend)->list.array[idx]->\
+            extensionValue.choice.SliceSupportList.\
+            list.array[sliceLstIdx]->sNSSAI.sST.size);
+      if((*ieExtend)->list.array[idx]->extensionValue.choice.SliceSupportList\
+            .list.array[sliceLstIdx]->sNSSAI.sST.buf == NULLP)
+      {
+         DU_LOG("ERROR  --> DU_APP : BuildExtensions(): Memory allocation failed");
+         return RFAILED;
+      }
+      (*ieExtend)->list.array[idx]->extensionValue.choice.SliceSupportList.\
+         list.array[sliceLstIdx]->sNSSAI.sST.buf[0] = duCfgParam.srvdCellLst[0].duCellInfo.\
+         cellInfo.srvdPlmn[0].taiSliceSuppLst.snssai[sliceLstIdx]->sst;
+      
+      DU_ALLOC((*ieExtend)->list.array[idx]->extensionValue.choice.SliceSupportList.\
+            list.array[sliceLstIdx]->sNSSAI.sD,sizeof(OCTET_STRING_t));
+      if((*ieExtend)->list.array[idx]->extensionValue.choice.SliceSupportList.\
+            list.array[sliceLstIdx]->sNSSAI.sD == NULLP)
+      {
+         DU_LOG("ERROR  --> DU_APP : BuildExtensions(): Memory allocation failed");
+         return RFAILED;
+      }
+      (*ieExtend)->list.array[idx]->extensionValue.choice.SliceSupportList.\
+         list.array[sliceLstIdx]->sNSSAI.sD->size = 3 * sizeof(uint8_t);
+      DU_ALLOC((*ieExtend)->list.array[idx]->extensionValue.choice.SliceSupportList.\
+            list.array[sliceLstIdx]->sNSSAI.sD->buf, (*ieExtend)->list.array[idx]->extensionValue.choice.\
+            SliceSupportList.list.array[sliceLstIdx]->sNSSAI.sD->size);
+      if((*ieExtend)->list.array[idx]->extensionValue.choice.SliceSupportList.\
+            list.array[sliceLstIdx]->sNSSAI.sD->buf == NULLP)
+      {
+         DU_LOG("ERROR  --> DU_APP : BuildExtensions(): Memory allocation failed");
+         return RFAILED;
+      }
+      memcpy((*ieExtend)->list.array[idx]->extensionValue.choice.SliceSupportList.\
+      list.array[sliceLstIdx]->sNSSAI.sD->buf, duCfgParam.srvdCellLst[0].duCellInfo.\
+      cellInfo.srvdPlmn[0].taiSliceSuppLst.snssai[sliceLstIdx]->sd, (*ieExtend)->list.array[idx]->\
+      extensionValue.choice.SliceSupportList.list.array[sliceLstIdx]->sNSSAI.sD->size);
    }
-   (*ieExtend)->list.array[idx]->extensionValue.choice.SliceSupportList.\
-      list.array[sliceId]->sNSSAI.sST.size = sizeof(uint8_t);
-   DU_ALLOC((*ieExtend)->list.array[idx]->extensionValue.choice.SliceSupportList\
-	 .list.array[sliceId]->sNSSAI.sST.buf,(*ieExtend)->list.array[idx]->\
-	 extensionValue.choice.SliceSupportList.\
-	 list.array[sliceId]->sNSSAI.sST.size);
-   if((*ieExtend)->list.array[idx]->extensionValue.choice.SliceSupportList\
-	 .list.array[sliceId]->sNSSAI.sST.buf == NULLP)
-   {
-      return RFAILED;
-   }
-   (*ieExtend)->list.array[idx]->extensionValue.choice.SliceSupportList.\
-      list.array[sliceId]->sNSSAI.sST.buf[0] = 3;
-   DU_ALLOC((*ieExtend)->list.array[idx]->extensionValue.choice.SliceSupportList.\
-	 list.array[sliceId]->sNSSAI.sD,sizeof(OCTET_STRING_t));
-   if((*ieExtend)->list.array[idx]->extensionValue.choice.SliceSupportList.\
-	 list.array[sliceId]->sNSSAI.sD == NULLP)
-   {
-      return RFAILED;
-   }
-   (*ieExtend)->list.array[idx]->extensionValue.choice.SliceSupportList.\
-      list.array[sliceId]->sNSSAI.sD->size = 3*sizeof(uint8_t);
-   DU_ALLOC((*ieExtend)->list.array[idx]->extensionValue.choice.SliceSupportList.\
-	 list.array[sliceId]->sNSSAI.sD->buf,(*ieExtend)->list.array[idx]->extensionValue.choice.\
-	 SliceSupportList.list.array[sliceId]->sNSSAI.sD->size);
-   if((*ieExtend)->list.array[idx]->extensionValue.choice.SliceSupportList.\
-	 list.array[sliceId]->sNSSAI.sD->buf == NULLP)
-   {
-      return RFAILED;
-   }
-   sdId = 0;
-   (*ieExtend)->list.array[idx]->extensionValue.choice.SliceSupportList.\
-      list.array[sliceId]->sNSSAI.sD->buf[sdId] = 3;
-   sdId++;
-   (*ieExtend)->list.array[idx]->extensionValue.choice.SliceSupportList.\
-      list.array[sliceId]->sNSSAI.sD->buf[sdId] = 6;
-   sdId++;
-   (*ieExtend)->list.array[idx]->extensionValue.choice.SliceSupportList.\
-      list.array[sliceId]->sNSSAI.sD->buf[sdId] = 9;
    return ROK;
 }
 /*******************************************************************
@@ -1406,10 +1418,9 @@ void FreeRrcVer(RRC_Version_t *rrcVer)
  * ****************************************************************/
 void FreeServedCellList( GNB_DU_Served_Cells_List_t *duServedCell)
 {
-   uint8_t   plmnCnt=1;
-   uint8_t  sliceId=0;
-   uint8_t  extensionCnt=1;
-   uint8_t  plmnIdx=0;
+   uint8_t   plmnCnt=MAX_PLMN;
+   uint8_t  extensionCnt=IE_EXTENSION_LIST_COUNT;
+   uint8_t  plmnIdx=0, sliceIdx=0;
    GNB_DU_Served_Cells_Item_t *srvCellItem;
    ServedPLMNs_Item_t  *servedPlmnItem;
    SliceSupportItem_t  *sliceSupportItem;
@@ -1437,7 +1448,7 @@ void FreeServedCellList( GNB_DU_Served_Cells_List_t *duServedCell)
             if(srvCellItem->served_Cell_Information.servedPLMNs.list.array[plmnIdx] != NULLP)
             {
                servedPlmnItem = srvCellItem->served_Cell_Information.servedPLMNs.list.array[plmnIdx];
-               DU_FREE(servedPlmnItem->pLMN_Identity.buf, servedPlmnItem->pLMN_Identity.size * sizeof(uint8_t));
+               DU_FREE(servedPlmnItem->pLMN_Identity.buf, servedPlmnItem->pLMN_Identity.size);
 
                if(servedPlmnItem->iE_Extensions != NULLP)
                {
@@ -1445,38 +1456,47 @@ void FreeServedCellList( GNB_DU_Served_Cells_List_t *duServedCell)
                   {
                      if(servedPlmnItem->iE_Extensions->list.array[0] != NULLP)
                      {
-                        if(servedPlmnItem->iE_Extensions->list.array[0]->extensionValue.choice.SliceSupportList.list.\
-                              array != NULLP)
+                        if(servedPlmnItem->iE_Extensions->list.array[0]->extensionValue.choice.\
+                        SliceSupportList.list.array != NULLP)
                         {
-                           if(servedPlmnItem->iE_Extensions->list.array[0]->extensionValue.choice.SliceSupportList.list.\
-                                 array[sliceId] != NULLP)
+                           for(sliceIdx =0; sliceIdx<servedPlmnItem->iE_Extensions->list.array[0]->\
+                           extensionValue.choice.SliceSupportList.list.count; sliceIdx++)
                            {
-                              sliceSupportItem = servedPlmnItem->iE_Extensions->list.array[0]->extensionValue.choice.\
-                                                 SliceSupportList.list.array[sliceId];
-
-                              DU_FREE(sliceSupportItem->sNSSAI.sST.buf, sizeof(uint8_t));
-
-                              if(sliceSupportItem->sNSSAI.sD != NULLP)
+                              if(servedPlmnItem->iE_Extensions->list.array[0]->extensionValue.choice.\
+                              SliceSupportList.list.array[sliceIdx] != NULLP)
                               {
-                                 DU_FREE(sliceSupportItem->sNSSAI.sD->buf, sliceSupportItem->sNSSAI.sD->size);
-                                 DU_FREE(sliceSupportItem->sNSSAI.sD, sizeof(OCTET_STRING_t));
-                              }
+                                 sliceSupportItem = servedPlmnItem->iE_Extensions->list.array[0]->\
+                                 extensionValue.choice.SliceSupportList.list.array[sliceIdx];
 
-                              DU_FREE(servedPlmnItem->iE_Extensions->list.array[0]->extensionValue.choice.SliceSupportList.\
-                                    list.array[sliceId], sizeof(SliceSupportItem_t));
+                                 DU_FREE(sliceSupportItem->sNSSAI.sST.buf, sizeof(uint8_t));
+
+                                 if(sliceSupportItem->sNSSAI.sD != NULLP)
+                                 {
+                                    DU_FREE(sliceSupportItem->sNSSAI.sD->buf,\
+                                    sliceSupportItem->sNSSAI.sD->size);
+                                    DU_FREE(sliceSupportItem->sNSSAI.sD, sizeof(OCTET_STRING_t));
+                                 }
+
+                                 DU_FREE(servedPlmnItem->iE_Extensions->list.array[0]->extensionValue.\
+                                 choice.SliceSupportList.list.array[sliceIdx], sizeof(SliceSupportItem_t));
+                              }
                            }
-                           DU_FREE(servedPlmnItem->iE_Extensions->list.array[0]->extensionValue.choice.SliceSupportList.\
-                                 list.array, sizeof(SliceSupportItem_t*));
+                           DU_FREE(servedPlmnItem->iE_Extensions->list.array[0]->extensionValue.choice.\
+                           SliceSupportList.list.array, sizeof(SliceSupportItem_t*));
                         }
-                        DU_FREE(servedPlmnItem->iE_Extensions->list.array[0], sizeof(ServedPLMNs_ItemExtIEs_t));
+                        DU_FREE(servedPlmnItem->iE_Extensions->list.array[0],\
+                        sizeof(ServedPLMNs_ItemExtIEs_t));
                      }
-                     DU_FREE(servedPlmnItem->iE_Extensions->list.array, extensionCnt*sizeof(ServedPLMNs_ItemExtIEs_t*));
+                     DU_FREE(servedPlmnItem->iE_Extensions->list.array,\
+                     extensionCnt*sizeof(ServedPLMNs_ItemExtIEs_t*));
                   }
                   DU_FREE(servedPlmnItem->iE_Extensions, sizeof(ProtocolExtensionContainer_4624P3_t));
                }
-               DU_FREE(srvCellItem->served_Cell_Information.servedPLMNs.list.array[plmnIdx], sizeof(ServedPLMNs_Item_t));
+               DU_FREE(srvCellItem->served_Cell_Information.servedPLMNs.list.array[plmnIdx],\
+               sizeof(ServedPLMNs_Item_t));
             }
-            DU_FREE(srvCellItem->served_Cell_Information.servedPLMNs.list.array, sizeof(ServedPLMNs_Item_t *));
+            DU_FREE(srvCellItem->served_Cell_Information.servedPLMNs.list.array,\
+            sizeof(ServedPLMNs_Item_t *));
          }
 
          if(srvCellItem->served_Cell_Information.nR_Mode_Info.choice.fDD != NULLP)
@@ -1484,10 +1504,10 @@ void FreeServedCellList( GNB_DU_Served_Cells_List_t *duServedCell)
             if(srvCellItem->served_Cell_Information.nR_Mode_Info.choice.fDD->uL_NRFreqInfo.\
                   freqBandListNr.list.array != NULLP)
             {
-               DU_FREE(srvCellItem->served_Cell_Information.nR_Mode_Info.choice.fDD->uL_NRFreqInfo.freqBandListNr.\
-                     list.array[0],sizeof(FreqBandNrItem_t));
-               DU_FREE(srvCellItem->served_Cell_Information.nR_Mode_Info.choice.fDD->uL_NRFreqInfo.freqBandListNr.\
-                     list.array,sizeof(FreqBandNrItem_t*));
+               DU_FREE(srvCellItem->served_Cell_Information.nR_Mode_Info.choice.fDD->\
+               uL_NRFreqInfo.freqBandListNr.list.array[0],sizeof(FreqBandNrItem_t));
+               DU_FREE(srvCellItem->served_Cell_Information.nR_Mode_Info.choice.fDD->\
+               uL_NRFreqInfo.freqBandListNr.list.array,sizeof(FreqBandNrItem_t*));
             }
 
             if(srvCellItem->served_Cell_Information.nR_Mode_Info.choice.fDD->dL_NRFreqInfo.\
@@ -1796,7 +1816,7 @@ uint8_t BuildAndSendF1SetupReq()
 
 void freeCellsToModifyItem(Served_Cells_To_Modify_Item_t *modifyItem)
 {
-   uint8_t arrIdx=0,i=0;
+   uint8_t arrIdx=0, servedPlmnIdx=0, sliceLstIdx=0;
    ServedPLMNs_Item_t *servedPlmnItem = NULLP;
    SliceSupportItem_t *sliceSupportItem = NULLP;
 
@@ -1822,41 +1842,50 @@ void freeCellsToModifyItem(Served_Cells_To_Modify_Item_t *modifyItem)
             {
                if(servedPlmnItem->iE_Extensions->list.array[arrIdx] != NULLP)
                {
-                  if(servedPlmnItem->iE_Extensions->list.array[arrIdx]->extensionValue.choice.SliceSupportList.list.array != NULLP)
+                  if(servedPlmnItem->iE_Extensions->list.array[arrIdx]->extensionValue.choice.SliceSupportList.\
+                        list.array != NULLP)
                   {
-                     if(servedPlmnItem->iE_Extensions->list.array[arrIdx]->extensionValue.choice.SliceSupportList.list.array[arrIdx] != NULLP)
+                     for(sliceLstIdx =0; sliceLstIdx<servedPlmnItem->iE_Extensions->list.array[arrIdx]->\
+                           extensionValue.choice.SliceSupportList.list.count; sliceLstIdx++)
                      {
-                        sliceSupportItem = modifyItem->served_Cell_Information.servedPLMNs.list.array[arrIdx]->iE_Extensions->\
-                                           list.array[arrIdx]->extensionValue.choice.SliceSupportList.list.array[arrIdx];
-
-                        DU_FREE(sliceSupportItem->sNSSAI.sST.buf, sliceSupportItem->sNSSAI.sST.size);
-                        if(sliceSupportItem->sNSSAI.sD != NULLP)
+                        if(servedPlmnItem->iE_Extensions->list.array[arrIdx]->extensionValue.choice.SliceSupportList.\
+                              list.array[sliceLstIdx] != NULLP)
                         {
-                           DU_FREE(sliceSupportItem->sNSSAI.sD->buf, sliceSupportItem->sNSSAI.sD->size);
-                           DU_FREE(sliceSupportItem->sNSSAI.sD,sizeof(OCTET_STRING_t));
+
+                           sliceSupportItem = servedPlmnItem->iE_Extensions->list.array[arrIdx]->extensionValue.choice.\
+                                              SliceSupportList.list.array[sliceLstIdx];
+
+                           DU_FREE(sliceSupportItem->sNSSAI.sST.buf, sliceSupportItem->sNSSAI.sST.size);
+                           if(sliceSupportItem->sNSSAI.sD != NULLP)
+                           {
+                              DU_FREE(sliceSupportItem->sNSSAI.sD->buf, sliceSupportItem->sNSSAI.sD->size);
+                              DU_FREE(sliceSupportItem->sNSSAI.sD,sizeof(OCTET_STRING_t));
+                           }
+                           DU_FREE(servedPlmnItem->iE_Extensions->list.array[arrIdx]->extensionValue.choice.\
+                                 SliceSupportList.list.array[sliceLstIdx], sizeof(SliceSupportItem_t));
                         }
-                        DU_FREE(servedPlmnItem->iE_Extensions->list.array[arrIdx]->extensionValue.choice.SliceSupportList.\
-                              list.array[arrIdx], sizeof(SliceSupportItem_t));
                      }
-                     DU_FREE(servedPlmnItem->iE_Extensions->list.array[arrIdx]->extensionValue.choice.SliceSupportList.list.array,
-                           servedPlmnItem->iE_Extensions->list.array[arrIdx]->extensionValue.choice.SliceSupportList.list.size);
+                     DU_FREE(servedPlmnItem->iE_Extensions->list.array[arrIdx]->extensionValue.\
+                           choice.SliceSupportList.list.array,\
+                           servedPlmnItem->iE_Extensions->list.array[arrIdx]->\
+                           extensionValue.choice.SliceSupportList.list.size);
                   }
                }
-               for(i=0; i < servedPlmnItem->iE_Extensions->list.count ; i++)
+               for(servedPlmnIdx=0; servedPlmnIdx< servedPlmnItem->iE_Extensions->list.count ; servedPlmnIdx++)
                {
-                  DU_FREE(servedPlmnItem->iE_Extensions->list.array[i], sizeof(ServedPLMNs_ItemExtIEs_t ));
+                  DU_FREE(servedPlmnItem->iE_Extensions->list.array[servedPlmnIdx], sizeof(ServedPLMNs_ItemExtIEs_t ));
                }
                DU_FREE(servedPlmnItem->iE_Extensions->list.array, servedPlmnItem->iE_Extensions->list.size);
             }
             DU_FREE(servedPlmnItem->iE_Extensions,sizeof(ProtocolExtensionContainer_4624P3_t));
          }
       }
-      for(i=0;i<modifyItem->served_Cell_Information.servedPLMNs.list.count;i++)
+      for(servedPlmnIdx=0; servedPlmnIdx<modifyItem->served_Cell_Information.servedPLMNs.list.count; servedPlmnIdx++)
       {
-         DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.array[i], sizeof(ServedPLMNs_Item_t));
+         DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.array[servedPlmnIdx], sizeof(ServedPLMNs_Item_t));
       }
       DU_FREE(modifyItem->served_Cell_Information.servedPLMNs.list.array,\
-            modifyItem->served_Cell_Information.servedPLMNs.list.size);
+         modifyItem->served_Cell_Information.servedPLMNs.list.size);
    }
 
    if(modifyItem->served_Cell_Information.nR_Mode_Info.choice.fDD != NULLP)
@@ -2006,119 +2035,135 @@ void FreeDUConfigUpdate(F1AP_PDU_t *f1apDuCfg)
 
 uint8_t fillServedPlmns(ServedPLMNs_List_t *servedPlmn)
 {
-   uint8_t ieIdx, ieListCnt;
+   uint8_t ieIdx=0, arrayIdx=0, ieListCnt=0, elementCnt=0, sliceLstIdx=0;
 
-   servedPlmn->list.array[0]->pLMN_Identity.size = 3*sizeof(uint8_t);
-   DU_ALLOC(servedPlmn->list.array[0]->pLMN_Identity.buf, servedPlmn->list.\
-	 array[0]->pLMN_Identity.size);
-   if(servedPlmn->list.array[0]->pLMN_Identity.buf == NULLP)
+   servedPlmn->list.array[arrayIdx]->pLMN_Identity.size = 3*sizeof(uint8_t);
+   DU_ALLOC(servedPlmn->list.array[arrayIdx]->pLMN_Identity.buf, servedPlmn->list.\
+         array[arrayIdx]->pLMN_Identity.size);
+   if(servedPlmn->list.array[arrayIdx]->pLMN_Identity.buf == NULLP)
    {
+      DU_LOG("ERROR  --> DU_APP : fillServedPlmns(): Memory allocation failed");
       return RFAILED;
    }
-   buildPlmnId(duCfgParam.srvdCellLst[0].duCellInfo.cellInfo.plmn[0],\
-	 servedPlmn->list.array[0]->pLMN_Identity.buf);
-   DU_ALLOC(servedPlmn->list.array[0]->iE_Extensions,sizeof(ProtocolExtensionContainer_4624P3_t));
-   if(servedPlmn->list.array[0]->iE_Extensions == NULLP)
+   buildPlmnId(duCfgParam.srvdCellLst[arrayIdx].duCellInfo.cellInfo.srvdPlmn[arrayIdx].plmn,\
+         servedPlmn->list.array[arrayIdx]->pLMN_Identity.buf);
+   DU_ALLOC(servedPlmn->list.array[arrayIdx]->iE_Extensions,sizeof(ProtocolExtensionContainer_4624P3_t));
+   if(servedPlmn->list.array[arrayIdx]->iE_Extensions == NULLP)
    {
+      DU_LOG("ERROR  --> DU_APP : fillServedPlmns(): Memory allocation failed");
       return RFAILED;
    }
 
    ieListCnt=1;
-   servedPlmn->list.array[0]->iE_Extensions->list.count = ieListCnt;
-   servedPlmn->list.array[0]->iE_Extensions->list.size = ieListCnt *sizeof(ServedPLMNs_ItemExtIEs_t *);
-   DU_ALLOC(servedPlmn->list.array[0]->iE_Extensions->list.array,servedPlmn->list.array[0]->\
-	 iE_Extensions->list.size);
-   if(servedPlmn->list.array[0]->iE_Extensions->list.array == NULLP)
+   servedPlmn->list.array[arrayIdx]->iE_Extensions->list.count = ieListCnt;
+   servedPlmn->list.array[arrayIdx]->iE_Extensions->list.size = ieListCnt *sizeof(ServedPLMNs_ItemExtIEs_t *);
+   DU_ALLOC(servedPlmn->list.array[arrayIdx]->iE_Extensions->list.array,servedPlmn->list.array[arrayIdx]->\
+         iE_Extensions->list.size);
+   if(servedPlmn->list.array[arrayIdx]->iE_Extensions->list.array == NULLP)
    {
+      DU_LOG("ERROR  --> DU_APP : fillServedPlmns(): Memory allocation failed");
       return RFAILED;
    }
-   for(ieIdx=0;ieIdx<ieListCnt;ieIdx++)
+   for(ieIdx=arrayIdx;ieIdx<ieListCnt;ieIdx++)
    {
-      DU_ALLOC(servedPlmn->list.array[0]->iE_Extensions->list.array[ieIdx],\
-	    sizeof(ServedPLMNs_ItemExtIEs_t));
-      if(servedPlmn->list.array[0]->iE_Extensions->list.array[ieIdx] == NULLP)
+      DU_ALLOC(servedPlmn->list.array[arrayIdx]->iE_Extensions->list.array[ieIdx],\
+            sizeof(ServedPLMNs_ItemExtIEs_t));
+      if(servedPlmn->list.array[arrayIdx]->iE_Extensions->list.array[ieIdx] == NULLP)
       {
-	 return RFAILED;
+         DU_LOG("ERROR  --> DU_APP : fillServedPlmns(): Memory allocation failed");
+         return RFAILED;
       }
    }
-   //plmnIeExt = servedPlmn->list.array[0]->iE_Extensions; 
-   servedPlmn->list.array[0]->iE_Extensions->list.array[0]->id =ProtocolIE_ID_id_TAISliceSupportList;
-   servedPlmn->list.array[0]->iE_Extensions->list.array[0]->criticality = Criticality_ignore;
-   servedPlmn->list.array[0]->iE_Extensions->list.array[0]->extensionValue.present = \
-      ServedPLMNs_ItemExtIEs__extensionValue_PR_SliceSupportList;
-   servedPlmn->list.array[0]->iE_Extensions->list.array[0]->extensionValue.choice.SliceSupportList.\
-      list.count = 1;
-   servedPlmn->list.array[0]->\
-      iE_Extensions->list.array[0]->extensionValue.choice.SliceSupportList.\
-      list.size = sizeof(SliceSupportItem_t *);
-   DU_ALLOC(servedPlmn->list.array[0]->\
-	 iE_Extensions->list.array[0]->extensionValue.choice.SliceSupportList.\
-	 list.array,servedPlmn->list.array[0]->\
-	 iE_Extensions->list.array[0]->extensionValue.choice.SliceSupportList.list.size);
-   if(servedPlmn->list.array[0]->\
-	 iE_Extensions->list.array[0]->extensionValue.choice.SliceSupportList.\
-	 list.array == NULLP)
+   
+   ieIdx = 0;
+   elementCnt = NUM_OF_SUPPORTED_SLICE; 
+   servedPlmn->list.array[arrayIdx]->iE_Extensions->list.array[ieIdx]->id =ProtocolIE_ID_id_TAISliceSupportList;
+   servedPlmn->list.array[arrayIdx]->iE_Extensions->list.array[ieIdx]->criticality = Criticality_ignore;
+   servedPlmn->list.array[arrayIdx]->iE_Extensions->list.array[ieIdx]->extensionValue.present = \
+   ServedPLMNs_ItemExtIEs__extensionValue_PR_SliceSupportList;
+   servedPlmn->list.array[arrayIdx]->iE_Extensions->list.array[ieIdx]->extensionValue.choice.SliceSupportList.\
+      list.count = elementCnt;
+   servedPlmn->list.array[arrayIdx]->\
+      iE_Extensions->list.array[ieIdx]->extensionValue.choice.SliceSupportList.\
+      list.size = elementCnt * sizeof(SliceSupportItem_t *);
+   DU_ALLOC(servedPlmn->list.array[arrayIdx]->\
+         iE_Extensions->list.array[ieIdx]->extensionValue.choice.SliceSupportList.\
+         list.array,servedPlmn->list.array[arrayIdx]->\
+         iE_Extensions->list.array[ieIdx]->extensionValue.choice.SliceSupportList.list.size);
+   if(servedPlmn->list.array[arrayIdx]->\
+         iE_Extensions->list.array[ieIdx]->extensionValue.choice.SliceSupportList.\
+         list.array == NULLP)
    {
+      DU_LOG("ERROR  --> DU_APP : fillServedPlmns(): Memory allocation failed");
       return RFAILED;
    }
 
-   DU_ALLOC(servedPlmn->list.array[0]->\
-	 iE_Extensions->list.array[0]->extensionValue.choice.SliceSupportList.\
-	 list.array[0],sizeof( SliceSupportItem_t));
-   if(servedPlmn->list.array[0]->\
-	 iE_Extensions->list.array[0]->extensionValue.choice.SliceSupportList.\
-	 list.array[0] == NULLP)
+   for(sliceLstIdx =0; sliceLstIdx< elementCnt; sliceLstIdx++)
    {
-      return RFAILED;
+      DU_ALLOC(servedPlmn->list.array[arrayIdx]->\
+      iE_Extensions->list.array[ieIdx]->extensionValue.choice.SliceSupportList.\
+      list.array[sliceLstIdx],sizeof( SliceSupportItem_t));
+      if(servedPlmn->list.array[arrayIdx]->\
+      iE_Extensions->list.array[ieIdx]->extensionValue.choice.SliceSupportList.\
+      list.array[sliceLstIdx] == NULLP)
+      {   
+         DU_LOG("ERROR  --> DU_APP : fillServedPlmns(): Memory allocation failed");
+         return RFAILED;
+      }
+      
+      servedPlmn->list.array[arrayIdx]->\
+      iE_Extensions->list.array[ieIdx]->extensionValue.choice.SliceSupportList.\
+      list.array[sliceLstIdx]->sNSSAI.sST.size = sizeof(uint8_t);
+      DU_ALLOC(servedPlmn->list.array[arrayIdx]->\
+      iE_Extensions->list.array[ieIdx]->extensionValue.choice.SliceSupportList.\
+      list.array[sliceLstIdx]->sNSSAI.sST.buf,servedPlmn->list.array[arrayIdx]->\
+      iE_Extensions->list.array[ieIdx]->extensionValue.choice.SliceSupportList.list.array[sliceLstIdx]->\
+      sNSSAI.sST.size);
+      
+      if(servedPlmn->list.array[arrayIdx]->\
+      iE_Extensions->list.array[ieIdx]->extensionValue.choice.SliceSupportList.\
+      list.array[sliceLstIdx]->sNSSAI.sST.buf == NULLP)
+      {
+         DU_LOG("ERROR  --> DU_APP : fillServedPlmns(): Memory allocation failed");
+         return RFAILED;
+      }
+      servedPlmn->list.array[arrayIdx]->\
+      iE_Extensions->list.array[ieIdx]->extensionValue.choice.SliceSupportList.\
+      list.array[sliceLstIdx]->sNSSAI.sST.buf[arrayIdx] =  duCfgParam.srvdCellLst[arrayIdx].duCellInfo.\
+      cellInfo.srvdPlmn[arrayIdx].taiSliceSuppLst.snssai[sliceLstIdx]->sst;
+
+      DU_ALLOC(servedPlmn->list.array[arrayIdx]->\
+      iE_Extensions->list.array[ieIdx]->extensionValue.choice.SliceSupportList.\
+      list.array[sliceLstIdx]->sNSSAI.sD,sizeof(OCTET_STRING_t));
+      if(servedPlmn->list.array[arrayIdx]->\
+      iE_Extensions->list.array[ieIdx]->extensionValue.choice.SliceSupportList.\
+      list.array[sliceLstIdx]->sNSSAI.sD == NULLP)
+      {
+         DU_LOG("ERROR  --> DU_APP : fillServedPlmns(): Memory allocation failed");
+         return RFAILED;
+      }
+      servedPlmn->list.array[arrayIdx]->\
+      iE_Extensions->list.array[ieIdx]->extensionValue.choice.SliceSupportList.\
+      list.array[sliceLstIdx]->sNSSAI.sD->size = 3 * sizeof(uint8_t);
+      DU_ALLOC(servedPlmn->list.array[arrayIdx]->\
+      iE_Extensions->list.array[ieIdx]->extensionValue.choice.SliceSupportList.\
+      list.array[sliceLstIdx]->sNSSAI.sD->buf,servedPlmn->list.array[arrayIdx]->\
+      iE_Extensions->list.array[ieIdx]->extensionValue.choice.SliceSupportList.\
+      list.array[sliceLstIdx]->sNSSAI.sD->size);
+      if(servedPlmn->list.array[arrayIdx]->\
+      iE_Extensions->list.array[ieIdx]->extensionValue.choice.SliceSupportList.\
+      list.array[sliceLstIdx]->sNSSAI.sD->buf == NULLP)
+      {
+         DU_LOG("ERROR  --> DU_APP : fillServedPlmns(): Memory allocation failed");
+         return RFAILED;
+      }
+      memcpy(servedPlmn->list.array[arrayIdx]->\
+      iE_Extensions->list.array[ieIdx]->extensionValue.choice.SliceSupportList.\
+      list.array[sliceLstIdx]->sNSSAI.sD->buf, duCfgParam.srvdCellLst[arrayIdx].duCellInfo.\
+      cellInfo.srvdPlmn[arrayIdx].taiSliceSuppLst.snssai[sliceLstIdx]->sd,\
+      servedPlmn->list.array[arrayIdx]->iE_Extensions->list.array[ieIdx]->extensionValue.choice.SliceSupportList.\
+      list.array[sliceLstIdx]->sNSSAI.sD->size);
    }
-   servedPlmn->list.array[0]->\
-      iE_Extensions->list.array[0]->extensionValue.choice.SliceSupportList.\
-      list.array[0]->sNSSAI.sST.size = sizeof(uint8_t);
-   DU_ALLOC(servedPlmn->list.array[0]->\
-	 iE_Extensions->list.array[0]->extensionValue.choice.SliceSupportList.\
-	 list.array[0]->sNSSAI.sST.buf,servedPlmn->list.array[0]->\
-	 iE_Extensions->list.array[0]->extensionValue.choice.SliceSupportList.list.array[0]->sNSSAI.sST.size);
-   if(servedPlmn->list.array[0]->\
-	 iE_Extensions->list.array[0]->extensionValue.choice.SliceSupportList.\
-	 list.array[0]->sNSSAI.sST.buf == NULLP)
-   {
-      return RFAILED;
-   }
-   servedPlmn->list.array[0]->\
-      iE_Extensions->list.array[0]->extensionValue.choice.SliceSupportList.\
-      list.array[0]->sNSSAI.sST.buf[0] = 3;
-   DU_ALLOC(servedPlmn->list.array[0]->\
-	 iE_Extensions->list.array[0]->extensionValue.choice.SliceSupportList.\
-	 list.array[0]->sNSSAI.sD,sizeof(OCTET_STRING_t));
-   if(servedPlmn->list.array[0]->\
-	 iE_Extensions->list.array[0]->extensionValue.choice.SliceSupportList.\
-	 list.array[0]->sNSSAI.sD == NULLP)
-   {
-      return RFAILED;
-   }
-   servedPlmn->list.array[0]->\
-      iE_Extensions->list.array[0]->extensionValue.choice.SliceSupportList.\
-      list.array[0]->sNSSAI.sD->size = 3*sizeof(uint8_t);
-   DU_ALLOC(servedPlmn->list.array[0]->\
-	 iE_Extensions->list.array[0]->extensionValue.choice.SliceSupportList.\
-	 list.array[0]->sNSSAI.sD->buf,servedPlmn->list.array[0]->\
-	 iE_Extensions->list.array[0]->extensionValue.choice.SliceSupportList.\
-	 list.array[0]->sNSSAI.sD->size);
-   if(servedPlmn->list.array[0]->\
-	 iE_Extensions->list.array[0]->extensionValue.choice.SliceSupportList.\
-	 list.array[0]->sNSSAI.sD->buf == NULLP)
-   {
-      return RFAILED;
-   }
-   servedPlmn->list.array[0]->\
-      iE_Extensions->list.array[0]->extensionValue.choice.SliceSupportList.\
-      list.array[0]->sNSSAI.sD->buf[0] = 3;
-   servedPlmn->list.array[0]->\
-      iE_Extensions->list.array[0]->extensionValue.choice.SliceSupportList.\
-      list.array[0]->sNSSAI.sD->buf[1] = 6;
-   servedPlmn->list.array[0]->\
-      iE_Extensions->list.array[0]->extensionValue.choice.SliceSupportList.\
-      list.array[0]->sNSSAI.sD->buf[2] = 9;
    return ROK;
 }
 

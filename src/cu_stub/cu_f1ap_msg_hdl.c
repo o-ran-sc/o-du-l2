@@ -7898,7 +7898,6 @@ uint8_t procGnbDuUpdate(F1AP_PDU_t *f1apMsg)
    GNBDUConfigurationUpdate_t *duCfgUpdate = NULLP;
 
    duCfgUpdate = &f1apMsg->choice.initiatingMessage->value.choice.GNBDUConfigurationUpdate;
-
    for(ieIdx=0; ieIdx < duCfgUpdate->protocolIEs.list.count; ieIdx++)
    {
       switch(duCfgUpdate->protocolIEs.list.array[ieIdx]->id)
@@ -7941,6 +7940,178 @@ uint8_t procGnbDuUpdate(F1AP_PDU_t *f1apMsg)
    }
 
    return ROK;
+}
+
+/*******************************************************************
+*
+* @brief storing slice list in CU database
+*
+* @details
+*
+*    Function : buildSliceList
+*
+*    Functionality:
+*         - storing slice list in CU database 
+*
+* @params[in] SliceSupportList_t *sliceSupportList
+* @return ROK     - success
+*         RFAILED - failure
+*
+* ****************************************************************/
+uint8_t buildSliceList(SliceSupportList_t *sliceSupportList)
+{
+   uint8_t sliceListIdx = 0;
+
+   if(sliceSupportList)
+   {
+      if(sliceSupportList->list.array)
+      {
+         cuCfgParams.numSnssaiSupported = sliceSupportList->list.count;
+         for(sliceListIdx=0; sliceListIdx<sliceSupportList->list.count; sliceListIdx++)
+         {
+            if(sliceSupportList->list.array[sliceListIdx])
+            {
+               CU_ALLOC(cuCfgParams.snssaiList[sliceListIdx], sizeof(Snssai)); 
+               if(cuCfgParams.snssaiList[sliceListIdx] == NULLP)
+               {
+                   DU_LOG("\nERROR  --> CU_STUB: buildSliceList(): Memory allocation failed");
+                   return RFAILED;
+               }
+               if(sliceSupportList->list.array[sliceListIdx]->sNSSAI.sST.buf)
+               {
+                  memcpy(&cuCfgParams.snssaiList[sliceListIdx]->sst, sliceSupportList->list.array[sliceListIdx]->\
+                  sNSSAI.sST.buf, sliceSupportList->list.array[sliceListIdx]->sNSSAI.sST.size);
+               }
+               if(sliceSupportList->list.array[sliceListIdx]->sNSSAI.sD->size)
+               {
+                  memcpy(&cuCfgParams.snssaiList[sliceListIdx]->sd,\
+                  sliceSupportList->list.array[sliceListIdx]->sNSSAI.sD->buf,\
+                  sliceSupportList->list.array[sliceListIdx]->sNSSAI.sD->size);
+               }
+            }
+         }
+      }
+   }
+   return ROK;
+}
+
+/*******************************************************************
+*
+* @brief processing of GNB_DU_Served_Cells Plmn list  information
+*
+* @details
+*
+*    Function : procServedCellPlmnList
+*
+*    Functionality:
+*         - processing of GNB_DU_Served_Cells Plmn list information for storing
+*         SNSSAI list
+*
+* @params[in] F1AP_PDU_t *f1apMsg
+* @return ROK     - success
+*         RFAILED - failure
+*
+* ****************************************************************/
+uint8_t procServedCellPlmnList(ServedPLMNs_List_t *srvPlmn)
+{
+   uint8_t srvPlmnIdx=0, ieExtensionsLstIdx=0;
+   ProtocolExtensionContainer_4624P3_t **ieExtend;
+
+   if(srvPlmn->list.array)
+   {
+      for(srvPlmnIdx=0; srvPlmnIdx<srvPlmn->list.count; srvPlmnIdx++)
+      {
+         if(srvPlmn->list.array[srvPlmnIdx])
+         {
+            ieExtend =  &srvPlmn->list.array[srvPlmnIdx]->iE_Extensions;
+            if(*ieExtend)
+            {
+               if((*ieExtend)->list.array)
+               {
+                  for(ieExtensionsLstIdx = 0; ieExtensionsLstIdx<(*ieExtend)->list.count; ieExtensionsLstIdx++)
+                  {
+                     if((*ieExtend)->list.array[ieExtensionsLstIdx])
+                     {
+                        switch((*ieExtend)->list.array[ieExtensionsLstIdx]->id )
+                        {
+                           case ProtocolIE_ID_id_TAISliceSupportList:
+                              {
+                                 if(buildSliceList(&(*ieExtend)->list.array[ieExtensionsLstIdx]->\
+                                          extensionValue.choice.SliceSupportList) != ROK)
+                                 {
+                                    DU_LOG("\nERROR  --> CU_STUB: procServedCellPlmnList(): Failed to build slice List");
+                                    return RFAILED;
+                                 }
+                              }
+                        }
+                     }
+                  }
+               }
+            }
+         }
+      }
+   }
+   return ROK;
+}
+/*******************************************************************
+*
+* @brief processing of F1 setup request
+*
+* @details
+*
+*    Function : procF1SetupReq 
+*
+*    Functionality:
+*         - processing of  F1 setup request
+*
+* @params[in] F1AP_PDU_t *f1apMsg
+* @return ROK     - success
+*         RFAILED - failure
+*
+* ****************************************************************/
+void procF1SetupReq(F1AP_PDU_t *f1apMsg)
+{
+   uint8_t ieIdx = 0, plmnidx=0, ret=ROK;
+   F1SetupRequest_t *f1SetupReq = NULLP;
+   GNB_DU_Served_Cells_Item_t *srvCellItem = NULLP; 
+   GNB_DU_Served_Cells_List_t *duServedCell = NULLP;
+
+   f1SetupReq = &f1apMsg->choice.initiatingMessage->value.choice.F1SetupRequest;
+   for(ieIdx=0; ieIdx < f1SetupReq->protocolIEs.list.count; ieIdx++)
+   {
+      switch(f1SetupReq->protocolIEs.list.array[ieIdx]->id)
+      {
+         case ProtocolIE_ID_id_gNB_DU_Served_Cells_List:
+           {
+               duServedCell = &f1SetupReq->protocolIEs.list.array[ieIdx]->value.choice.GNB_DU_Served_Cells_List;
+               if(duServedCell->list.array)
+               {
+                  for(plmnidx=0; plmnidx<duServedCell->list.count; plmnidx++)
+                  {
+                     if(duServedCell->list.array[plmnidx])
+                     {
+                        switch(duServedCell->list.array[plmnidx]->id)
+                        {
+                           case ProtocolIE_ID_id_GNB_DU_Served_Cells_Item:
+                           {
+                              srvCellItem =  &duServedCell->list.array[plmnidx]->value.choice.GNB_DU_Served_Cells_Item;
+                              ret = procServedCellPlmnList(&srvCellItem->served_Cell_Information.servedPLMNs);
+                           }
+                        }
+                     }
+                  }
+               }
+           }
+      }
+   }
+   if(ret == ROK)
+   {
+      BuildAndSendF1SetupRsp();
+   }
+   else
+   {
+       DU_LOG("\nERROR  --> CU_STUB: procF1SetupReq(): Failed to process F1 setup request");
+   }
 }
 /*******************************************************************
  *
@@ -8024,7 +8195,7 @@ void F1APMsgHdlr(Buffer *mBuf)
                case InitiatingMessage__value_PR_F1SetupRequest:
                   {
                      DU_LOG("\nINFO  -->  F1AP : F1 setup request received");
-                     BuildAndSendF1SetupRsp();
+                     procF1SetupReq(f1apMsg);
                      break;
                   }
 
