@@ -309,6 +309,7 @@ uint8_t readMacCfg()
       PDSCH_START_SYMBOL;
    duCfgParam.macCellCfg.initialDlBwp.pdschCommon.timeDomRsrcAllocList[idx].lengthSymbol =
       PDSCH_LENGTH_SYMBOL;
+ 
    idx++;
    duCfgParam.macCellCfg.initialDlBwp.pdschCommon.timeDomRsrcAllocList[idx].k0 = PDSCH_K0_CFG2;
    duCfgParam.macCellCfg.initialDlBwp.pdschCommon.timeDomRsrcAllocList[idx].mappingType = 
@@ -488,6 +489,7 @@ uint8_t fillServCellCfgCommSib(SrvCellCfgCommSib *srvCellCfgComm)
    pdschCfg.timeDomAlloc[0].mapType = \
       PDSCH_TimeDomainResourceAllocation__mappingType_typeA;
    pdschCfg.timeDomAlloc[0].sliv = calcSliv(PDSCH_START_SYMBOL,PDSCH_LENGTH_SYMBOL);
+
    pdschCfg.timeDomAlloc[1].k0 = PDSCH_K0_CFG2;
    pdschCfg.timeDomAlloc[1].mapType = \
       PDSCH_TimeDomainResourceAllocation__mappingType_typeA;
@@ -528,7 +530,7 @@ uint8_t fillServCellCfgCommSib(SrvCellCfgCommSib *srvCellCfgComm)
    rachCfg.preambleRcvdTgtPwr = PRACH_PREAMBLE_RCVD_TGT_PWR;
    rachCfg.preambleTransMax = RACH_ConfigGeneric__preambleTransMax_n200;
    rachCfg.pwrRampingStep = RACH_ConfigGeneric__powerRampingStep_dB2;
-   rachCfg.raRspWindow = RACH_ConfigGeneric__ra_ResponseWindow_sl20;
+   rachCfg.raRspWindow = RACH_ConfigGeneric__ra_ResponseWindow_sl10;
    rachCfg.numRaPreamble = NUM_RA_PREAMBLE;
    rachCfg.ssbPerRachOccPresent = \
       RACH_ConfigCommon__ssb_perRACH_OccasionAndCB_PreamblesPerSSB_PR_one;

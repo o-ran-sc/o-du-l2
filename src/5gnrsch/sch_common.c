@@ -47,6 +47,7 @@ SchCb schCb[SCH_MAX_INST];
 uint16_t prachCfgIdxTable[MAX_PRACH_CONFIG_IDX][8];
 uint16_t numRbForPrachTable[MAX_RACH_NUM_RB_IDX][5];
 uint8_t pucchResourceSet[MAX_PUCCH_RES_SET_IDX][4];
+uint8_t puschDeltaTable[MAX_MU_PUSCH];
 
 SchMacUlSchInfoFunc schMacUlSchInfoOpts[] =
 {
@@ -1145,13 +1146,15 @@ SchPdschConfig pdschDedCfg, uint8_t ulAckListCount, uint8_t *UlAckTbl)
 *
 * ****************************************************************/
 void BuildK2InfoTableForFdd(SchCellCb *cell, SchPuschTimeDomRsrcAlloc timeDomRsrcAllocList[], uint16_t puschSymTblSize,\
-SchK2TimingInfoTbl *k2InfoTbl)
+SchK2TimingInfoTbl *msg3K2InfoTbl, SchK2TimingInfoTbl *k2InfoTbl)
 {
-   uint16_t slotIdx=0, k2Index=0, k2TmpVal=0;
+   uint16_t slotIdx=0, k2Index=0, k2TmpIdx=0, msg3K2TmpIdx=0;
 
    /* Initialization the structure and storing the total slot values. */
    memset(k2InfoTbl, 0, sizeof(SchK2TimingInfoTbl));
    k2InfoTbl->tblSize = cell->numSlots;
+   if(msg3K2InfoTbl)
+      msg3K2InfoTbl->tblSize = cell->numSlots;
    
    /* Checking all possible indexes for K2. */
    for(slotIdx = 0; slotIdx < cell->numSlots; slotIdx++)
@@ -1159,9 +1162,17 @@ SchK2TimingInfoTbl *k2InfoTbl)
       /* Storing K2 values. */
       for(k2Index = 0; ((k2Index < puschSymTblSize) && (k2Index < MAX_NUM_K2_IDX)); k2Index++)
       {
-         k2TmpVal= k2InfoTbl->k2TimingInfo[slotIdx].numK2;
-         k2InfoTbl->k2TimingInfo[slotIdx].k2Indexes[k2TmpVal] = k2Index;
+         k2TmpIdx= k2InfoTbl->k2TimingInfo[slotIdx].numK2;
+         k2InfoTbl->k2TimingInfo[slotIdx].k2Indexes[k2TmpIdx] = k2Index;
          k2InfoTbl->k2TimingInfo[slotIdx].numK2++;
+
+         /* Updating K2 values for MSG3 */
+         if(msg3K2InfoTbl)
+         {
+            msg3K2TmpIdx = msg3K2InfoTbl->k2TimingInfo[slotIdx].numK2;
+            msg3K2InfoTbl->k2TimingInfo[slotIdx].k2Indexes[msg3K2TmpIdx] = k2Index;
+            msg3K2InfoTbl->k2TimingInfo[slotIdx].numK2++;
+         }
       }
    }
 }
@@ -1184,19 +1195,19 @@ SchK2TimingInfoTbl *k2InfoTbl)
  *
  * ****************************************************************/
 void BuildK2InfoTable(SchCellCb *cell, SchPuschTimeDomRsrcAlloc timeDomRsrcAllocList[], uint16_t puschSymTblSize,\
-SchK2TimingInfoTbl *k2InfoTbl)
+SchK2TimingInfoTbl *msg3K2InfoTbl, SchK2TimingInfoTbl *k2InfoTbl)
 {
 
 #ifdef NR_TDD
    bool dlSymbolPresent = false;
-   uint8_t slotIdx=0, k2Index=0, k2TmpVal=0, numK2 =0, currentSymbol =0;
+   uint8_t slotIdx=0, k2Index=0, k2Val=0, k2TmpVal=0, msg3K2TmpVal=0, msg3Delta=0, numK2 =0, currentSymbol =0;
    uint8_t startSymbol =0, endSymbol =0, checkSymbol=0, totalCfgSlot=0, slotCfg=0;
    SlotConfig currentSlot;
 #endif
 
    if(cell->cellCfg.dupMode == DUPLEX_MODE_FDD)
    {
-      BuildK2InfoTableForFdd(cell, timeDomRsrcAllocList, puschSymTblSize, k2InfoTbl);
+      BuildK2InfoTableForFdd(cell, timeDomRsrcAllocList, puschSymTblSize, msg3K2InfoTbl, k2InfoTbl);
    }
    else
    {
@@ -1205,10 +1216,12 @@ SchK2TimingInfoTbl *k2InfoTbl)
       /* Initialization the structure and storing the total slot values. */
       memset(k2InfoTbl, 0, sizeof(SchK2TimingInfoTbl));
       k2InfoTbl->tblSize = cell->numSlots;
+      if(msg3K2InfoTbl)
+         msg3K2InfoTbl->tblSize = cell->numSlots;
       totalCfgSlot = calculateSlotPatternLength(cell->cellCfg.ssbSchCfg.scsCommon, cell->cellCfg.tddCfg.tddPeriod);
 
       /* Checking all possible indexes for K2. */
-      for(slotIdx = 0; slotIdx < k2InfoTbl->tblSize; slotIdx++)
+      for(slotIdx = 0; slotIdx < cell->numSlots; slotIdx++)
       {
          currentSlot = schGetSlotSymbFrmt(slotIdx % totalCfgSlot, cell->slotFrmtBitMap);
          
@@ -1220,22 +1233,22 @@ SchK2TimingInfoTbl *k2InfoTbl)
                /* Storing k2, startSymbol, endSymbol information for further processing.
                 * If k2 is absent then fill the default values given in spec 38.331
                 * PUSCH-TimeDomainResourceAllocationList field descriptions */
-               k2TmpVal = timeDomRsrcAllocList[k2Index].k2;
-               if(!k2TmpVal)
+               k2Val = timeDomRsrcAllocList[k2Index].k2;
+               if(!k2Val)
                {
                   switch(cell->cellCfg.ssbSchCfg.scsCommon)
                   {
                      case SCS_15KHZ:
-                        k2TmpVal = DEFAULT_K2_VALUE_FOR_SCS15;
+                        k2Val = DEFAULT_K2_VALUE_FOR_SCS15;
                         break;
                      case SCS_30KHZ:
-                        k2TmpVal = DEFAULT_K2_VALUE_FOR_SCS30;
+                        k2Val = DEFAULT_K2_VALUE_FOR_SCS30;
                         break;
                      case SCS_60KHZ:
-                        k2TmpVal = DEFAULT_K2_VALUE_FOR_SCS60;
+                        k2Val = DEFAULT_K2_VALUE_FOR_SCS60;
                         break;
                      case SCS_120KHZ:
-                        k2TmpVal = DEFAULT_K2_VALUE_FOR_SCS120;
+                        k2Val = DEFAULT_K2_VALUE_FOR_SCS120;
                         break;
                   }
                }
@@ -1243,33 +1256,69 @@ SchK2TimingInfoTbl *k2InfoTbl)
                /* Current slot + k2 should be either UL or FLEXI slot.
                 * If slot is FLEXI then check all the symbols of that slot,
                 * it should not contain any DL or FLEXI slot */
-               k2TmpVal = (slotIdx + k2TmpVal) % totalCfgSlot;
+               k2TmpVal = (slotIdx + k2Val) % totalCfgSlot;
                slotCfg = schGetSlotSymbFrmt(k2TmpVal, cell->slotFrmtBitMap);
-               if(slotCfg == DL_SLOT)
+               if(slotCfg != DL_SLOT)
                {
-                  continue;
-               }
-               if(slotCfg == FLEXI_SLOT)
-               {
-                  startSymbol =  timeDomRsrcAllocList[k2Index].startSymbol;
-                  endSymbol   =  startSymbol+ timeDomRsrcAllocList[k2Index].symbolLength;
-                  dlSymbolPresent = false;
-                  for(checkSymbol= startSymbol; checkSymbol<endSymbol; checkSymbol++)
+                  if(slotCfg == FLEXI_SLOT)
                   {
-                     currentSymbol = cell->cellCfg.tddCfg.slotCfg[k2TmpVal][checkSymbol];
-                     if(currentSymbol == DL_SLOT || currentSymbol == FLEXI_SLOT)
+                     startSymbol =  timeDomRsrcAllocList[k2Index].startSymbol;
+                     endSymbol   =  startSymbol+ timeDomRsrcAllocList[k2Index].symbolLength;
+                     dlSymbolPresent = false;
+                     for(checkSymbol= startSymbol; checkSymbol<endSymbol; checkSymbol++)
                      {
-                        dlSymbolPresent = true;
-                        break;
+                        currentSymbol = cell->cellCfg.tddCfg.slotCfg[k2TmpVal][checkSymbol];
+                        if(currentSymbol == DL_SLOT || currentSymbol == FLEXI_SLOT)
+                        {
+                           dlSymbolPresent = true;
+                           break;
+                        }
                      }
                   }
+                  /* Store all the values if all condition satisfies. */
+                  if(dlSymbolPresent != true || slotCfg == UL_SLOT)
+                  {
+                     numK2 = k2InfoTbl->k2TimingInfo[slotIdx].numK2;
+                     k2InfoTbl->k2TimingInfo[slotIdx].k2Indexes[numK2] = k2Index;
+                     k2InfoTbl->k2TimingInfo[slotIdx].numK2++;
+                  }
                }
-               /* Store all the values if all condition satisfies. */
-               if(dlSymbolPresent != true || slotCfg == UL_SLOT)
+
+               if(msg3K2InfoTbl)
                {
-                  numK2 = k2InfoTbl->k2TimingInfo[slotIdx].numK2;
-                  k2InfoTbl->k2TimingInfo[slotIdx].k2Indexes[numK2] = k2Index;
-                  k2InfoTbl->k2TimingInfo[slotIdx].numK2++;
+                   msg3Delta = puschDeltaTable[cell->cellCfg.numerology];
+
+                  /* Check for K2 for MSG3 */
+                  /* Current slot + k2 should be either UL or FLEXI slot.
+                   * If slot is FLEXI then check all the symbols of that slot,
+                   * it should not contain any DL or FLEXI slot */
+                  msg3K2TmpVal = (slotIdx + k2Val + msg3Delta) % totalCfgSlot;
+                  slotCfg = schGetSlotSymbFrmt(msg3K2TmpVal, cell->slotFrmtBitMap);
+                  if(slotCfg != DL_SLOT)
+                  {
+                     if(slotCfg == FLEXI_SLOT)
+                     {
+                        startSymbol =  timeDomRsrcAllocList[k2Index].startSymbol;
+                        endSymbol   =  startSymbol+ timeDomRsrcAllocList[k2Index].symbolLength;
+                        dlSymbolPresent = false;
+                        for(checkSymbol= startSymbol; checkSymbol<endSymbol; checkSymbol++)
+                        {
+                           currentSymbol = cell->cellCfg.tddCfg.slotCfg[msg3K2TmpVal][checkSymbol];
+                           if(currentSymbol == DL_SLOT || currentSymbol == FLEXI_SLOT)
+                           {
+                              dlSymbolPresent = true;
+                              break;
+                           }
+                        }
+                     }
+                     /* Store all the values if all condition satisfies. */
+                     if(dlSymbolPresent != true || slotCfg == UL_SLOT)
+                     {
+                        numK2 = msg3K2InfoTbl->k2TimingInfo[slotIdx].numK2;
+                        msg3K2InfoTbl->k2TimingInfo[slotIdx].k2Indexes[numK2] = k2Index;
+                        msg3K2InfoTbl->k2TimingInfo[slotIdx].numK2++;
+                     }
+                  }
                }
             }
          }

@@ -38,15 +38,8 @@
 
 
 /*macros*/
-#define NO_SSB 0
-#define SSB_TRANSMISSION 1
-#define SSB_REPEAT 2
 #define MAX_SSB_IDX 1 /* forcing it as 1 for now. Right value is 64 */
 #define SCH_SSB_MASK_SIZE   1
-
-#define NO_SIB1 0
-#define SIB1_TRANSMISSION 1
-#define SIB1_REPITITION 2
 
 #define MAX_NUM_PRG     1 /* max value should be later 275 */
 #define MAX_DIG_BF_INTERFACES 0 /* max value should be later 255 */
@@ -91,6 +84,7 @@
 #define MAX_NUM_PATH_LOSS_REF_RS 4
 #define MAX_NUM_DL_DATA_TO_UL_ACK 15
 #define SD_SIZE   3
+#define QPSK_MODULATION 2
 
 #define RAR_PAYLOAD_SIZE 10             /* As per spec 38.321, sections 6.1.5 and 6.2.3, RAR PDU is 8 bytes long and 2 bytes of padding */
 #define TX_PAYLOAD_HDR_LEN 32           /* Intel L1 requires adding a 32 byte header to transmitted payload */
@@ -123,6 +117,13 @@
       toFill.sfn%=MAX_SFN;                                 \
    }                                                       \
 }
+
+typedef enum
+{
+   NO_TRANSMISSION,
+   NEW_TRANSMISSION,
+   REPEATITION 
+}PduTxOccsaion;
 
 typedef enum
 {
@@ -400,6 +401,13 @@ typedef enum
    SCH_MCS_TABLE_QAM_256,
    SCH_MCS_TABLE_QAM_64_LOW_SE
 }SchMcsTable;
+
+typedef enum
+{
+   PDCCH_PDU,
+   PDSCH_PDU,
+   BOTH
+}DlPduType;
 
 /*structures*/
 typedef struct timeDomainAlloc
@@ -705,6 +713,7 @@ typedef struct schBwpUlCfg
    SchBwpParams   bwp;
    SchPucchCfgCmn pucchCommon;
    SchPuschCfgCmn puschCommon;
+   SchK2TimingInfoTbl msg3K2InfoTbl;
    SchK2TimingInfoTbl k2InfoTbl;
 }SchBwpUlCfg;
 
@@ -797,6 +806,8 @@ typedef struct rarInfo
 
 typedef struct rarAlloc
 {
+   DlPduType  pduPres;
+   uint8_t    pdschSlot;
    RarInfo rarInfo;
    BwpCfg  bwp;
    PdcchCfg rarPdcchCfg;
