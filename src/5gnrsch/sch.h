@@ -161,7 +161,7 @@ typedef struct schLcCtxt
    SchLcState lcState;
    uint32_t bo;
    uint16_t   pduSessionId; /*Pdu Session Id*/
-   SchSnssai  *snssai;      /*S-NSSAI assoc with LCID*/
+   Snssai  *snssai;      /*S-NSSAI assoc with LCID*/
 }SchDlLcCtxt;
 
 typedef struct schDlCb
@@ -180,7 +180,7 @@ typedef struct schUlLcCtxt
    uint8_t pbr;        // prioritisedBitRate
    uint8_t bsd;        // bucketSizeDuration
    uint16_t   pduSessionId; /*Pdu Session Id*/
-   SchSnssai  *snssai;      /*S-NSSAI assoc with LCID*/
+   Snssai  *snssai;      /*S-NSSAI assoc with LCID*/
 }SchUlLcCtxt;
 
 typedef struct schUlCb
