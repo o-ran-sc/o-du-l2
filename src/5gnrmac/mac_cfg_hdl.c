@@ -134,7 +134,7 @@ uint8_t MacProcCellCfgReq(Pst *pst, MacCellCfg *macCellCfg)
 {
    Pst cfmPst;
    uint16_t cellIdx;
-   uint8_t ret = ROK;
+   uint8_t ret = ROK, sliceIdx = 0;
    MacCellCb     *macCellCb;
 
    memset((uint8_t *)&cfmPst, 0, sizeof(Pst));
@@ -161,6 +161,32 @@ uint8_t MacProcCellCfgReq(Pst *pst, MacCellCfg *macCellCfg)
    }
    memcpy(macCb.macCell[cellIdx]->macCellCfg.sib1Cfg.sib1Pdu, macCellCfg->sib1Cfg.sib1Pdu, \
 	 macCb.macCell[cellIdx]->macCellCfg.sib1Cfg.sib1PduLen);
+   
+   macCb.macCell[cellIdx]->macCellCfg.numSupportedSlice = macCellCfg->numSupportedSlice;
+   MAC_ALLOC(macCb.macCell[cellIdx]->macCellCfg.snssai, macCb.macCell[cellIdx]->macCellCfg.numSupportedSlice\
+         * sizeof(Snssai*));
+   if(macCb.macCell[cellIdx]->macCellCfg.snssai == NULLP)
+   {
+      DU_LOG("\nERROR  --> MAC: Memory allocation failed at MacProcCellCfgReq");
+      return RFAILED;
+   }
+
+   if(macCb.macCell[cellIdx]->macCellCfg.snssai)
+   {
+      for(sliceIdx=0; sliceIdx<macCb.macCell[cellIdx]->macCellCfg.numSupportedSlice; sliceIdx++)
+      {
+         if(macCellCfg->snssai[sliceIdx])
+         {
+            MAC_ALLOC(macCb.macCell[cellIdx]->macCellCfg.snssai[sliceIdx], sizeof(Snssai));
+            if(!macCb.macCell[cellIdx]->macCellCfg.snssai[sliceIdx])
+            {
+               DU_LOG("\nERROR  --> MAC: Memory allocation failed at MacProcCellCfgReq");
+               return RFAILED;
+            }
+            memcpy(macCb.macCell[cellIdx]->macCellCfg.snssai[sliceIdx], macCellCfg->snssai[sliceIdx], sizeof(Snssai));
+         }
+      }
+   }
 
    /* Send cell cfg to scheduler */
    ret = MacSchCellCfgReq(pst, macCellCfg);
@@ -200,7 +226,7 @@ uint8_t MacSchCellCfgReq(Pst *pst, MacCellCfg *macCellCfg)
 {
    SchCellCfg schCellCfg;
    Pst        cfgPst;
-   uint8_t    ssbMaskIdx = 0, rsrcListIdx = 0, ret=0;
+   uint8_t    ssbMaskIdx = 0, rsrcListIdx = 0, ret=0, sliceIdx=0;
 
    memset(&cfgPst, 0, sizeof(Pst));
    memset(&schCellCfg, 0, sizeof(SchCellCfg));
@@ -303,6 +329,41 @@ uint8_t MacSchCellCfgReq(Pst *pst, MacCellCfg *macCellCfg)
       schCellCfg.schInitialUlBwp.puschCommon.timeDomRsrcAllocList[rsrcListIdx].symbolLength =
          macCellCfg->initialUlBwp.puschCommon.timeDomRsrcAllocList[rsrcListIdx].symbolLength;
    }
+
+   if(macCellCfg->snssai) 
+   {
+      schCellCfg.numSliceSupport = macCellCfg->numSupportedSlice;
+      MAC_ALLOC(schCellCfg.snssai, schCellCfg.numSliceSupport * sizeof(Snssai*));
+      if(!schCellCfg.snssai)
+      {
+         DU_LOG("\nERROR  --> MAC: Memory allocation failed at MacSchCellCfgReq");
+         return RFAILED;
+      }
+      for(sliceIdx=0; sliceIdx<schCellCfg.numSliceSupport; sliceIdx++)
+      {
+         if(macCellCfg->snssai[sliceIdx])
+         {
+            MAC_ALLOC(schCellCfg.snssai[sliceIdx], sizeof(Snssai));
+            if(!schCellCfg.snssai[sliceIdx])
+            {
+               DU_LOG("\nERROR  --> MAC: Memory allocation failed at MacSchCellCfgReq");
+               return RFAILED;
+            }
+            memcpy(schCellCfg.snssai[sliceIdx], macCellCfg->snssai[sliceIdx],  sizeof(Snssai));
+         }
+      }
+   }
+   if(macCellCfg->rrmPolicy)
+   {
+      MAC_ALLOC(schCellCfg.rrmPolicy, sizeof(SchRrmPolicy));
+      if(!schCellCfg.rrmPolicy)
+      {
+         DU_LOG("\nERROR  --> MAC: Memory allocation failed at MacProcCellCfgReq");
+         return RFAILED;
+      }
+      memcpy(schCellCfg.rrmPolicy, macCellCfg->rrmPolicy, sizeof(SchRrmPolicy));
+   }
+
 #ifdef NR_TDD
    memcpy(&schCellCfg.tddCfg, &macCellCfg->tddCfg, sizeof(TDDCfg));
 #endif
@@ -470,7 +531,7 @@ uint8_t MacSendCellDeleteRsp(CellDeleteStatus result, uint8_t cellId)
  * * ****************************************************************/
 uint8_t MacProcSchCellDeleteRsp(Pst *pst, SchCellDeleteRsp *schCellDelRsp)
 {
-   uint8_t  ret = ROK;
+   uint8_t  ret = ROK, sliceIdx = 0;
    uint16_t cellIdx=0;
    CellDeleteStatus status;
    
@@ -490,6 +551,19 @@ uint8_t MacProcSchCellDeleteRsp(Pst *pst, SchCellDeleteRsp *schCellDelRsp)
             if(macCb.macCell[cellIdx]->cellId == schCellDelRsp->cellId)
             {
                status  = SUCCESSFUL_RSP;
+               if(macCb.macCell[cellIdx]->macCellCfg.snssai)
+               {
+                  for(sliceIdx = 0; sliceIdx<macCb.macCell[cellIdx]->macCellCfg.numSupportedSlice; sliceIdx++)
+                  {
+                     if(macCb.macCell[cellIdx]->macCellCfg.snssai[sliceIdx])
+                     {
+                        MAC_FREE(macCb.macCell[cellIdx]->macCellCfg.snssai[sliceIdx],\
+                              sizeof(Snssai));
+                     }
+                  }
+                  MAC_FREE(macCb.macCell[cellIdx]->macCellCfg.snssai, macCb.macCell[cellIdx]->macCellCfg.\
+                  numSupportedSlice * sizeof(Snssai*));
+               }
                MAC_FREE(macCb.macCell[cellIdx]->macCellCfg.sib1Cfg.sib1Pdu, \
                   macCb.macCell[cellIdx]->macCellCfg.sib1Cfg.sib1PduLen);
                MAC_FREE(macCb.macCell[cellIdx], sizeof(MacCellCb));

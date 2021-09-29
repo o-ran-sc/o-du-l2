@@ -986,7 +986,7 @@ uint8_t BuildExtensions(ProtocolExtensionContainer_4624P3_t **ieExtend)
       }
    }
    
-   elementCnt = NUM_OF_SUPPORTED_SLICE;
+   elementCnt = duCfgParam.srvdCellLst[0].duCellInfo.cellInfo.srvdPlmn[0].taiSliceSuppLst.numSupportedSlices;
    idx = 0;
    (*ieExtend)->list.array[idx]->id = ProtocolIE_ID_id_TAISliceSupportList;
    (*ieExtend)->list.array[idx]->criticality = Criticality_ignore;
@@ -1482,7 +1482,8 @@ void FreeServedCellList( GNB_DU_Served_Cells_List_t *duServedCell)
                               }
                            }
                            DU_FREE(servedPlmnItem->iE_Extensions->list.array[0]->extensionValue.choice.\
-                           SliceSupportList.list.array, sizeof(SliceSupportItem_t*));
+                           SliceSupportList.list.array, servedPlmnItem->iE_Extensions->list.array[0]->\
+                           extensionValue.choice.SliceSupportList.list.size);
                         }
                         DU_FREE(servedPlmnItem->iE_Extensions->list.array[0],\
                         sizeof(ServedPLMNs_ItemExtIEs_t));
@@ -2076,7 +2077,7 @@ uint8_t fillServedPlmns(ServedPLMNs_List_t *servedPlmn)
    }
    
    ieIdx = 0;
-   elementCnt = NUM_OF_SUPPORTED_SLICE; 
+   elementCnt = duCfgParam.srvdCellLst[0].duCellInfo.cellInfo.srvdPlmn[0].taiSliceSuppLst.numSupportedSlices; 
    servedPlmn->list.array[arrayIdx]->iE_Extensions->list.array[ieIdx]->id =ProtocolIE_ID_id_TAISliceSupportList;
    servedPlmn->list.array[arrayIdx]->iE_Extensions->list.array[ieIdx]->criticality = Criticality_ignore;
    servedPlmn->list.array[arrayIdx]->iE_Extensions->list.array[ieIdx]->extensionValue.present = \

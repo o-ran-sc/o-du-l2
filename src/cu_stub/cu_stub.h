@@ -26,7 +26,6 @@
 #define CU_POOL 1
 #define MAX_DU_PORT 2
 #define DU_PORT 38472
-#define SD_SIZE   3 /*  As per the spec 38.473, SD size must be of size(3) */
 #define MAX_NUM_OF_SLICE 1024 /* As per the spec 38.473, maxnoofSliceItems = 1024*/
 
 /*VALID Tunnel ID*/
@@ -84,13 +83,6 @@ typedef struct CuSctpParams
    SctpIpAddr  cuIpAddr;
    uint16_t    cuPort;
 }CuSctpParams;
-
-/* Single Network Slice Selection assistance Info */
-typedef struct snssai
-{
-   uint8_t sst;                /* Slice Type */
-   uint8_t sd[SD_SIZE];        /* Slice Differentiator */
-}Snssai;
 
 typedef struct cuCfgParams
 {
