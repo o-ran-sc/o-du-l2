@@ -951,29 +951,39 @@ uint8_t SchSendCellDeleteRspToMac(SchCellDelete  *ueDelete, Inst inst, SchMacRsp
  * ****************************************************************/
 void deleteSchCellCb(SchCellCb *cellCb)
 {
-   uint8_t idx=0;
+   uint8_t sliceIdx=0, slotIdx=0;
    if(cellCb->schDlSlotInfo)
    {
-      for(idx=0; idx<cellCb->numSlots; idx++)
+      for(slotIdx=0; slotIdx<cellCb->numSlots; slotIdx++)
       {
-         if(cellCb->schDlSlotInfo[idx])
+         if(cellCb->schDlSlotInfo[slotIdx])
          {
-            SCH_FREE(cellCb->schDlSlotInfo[idx], sizeof(SchDlSlotInfo));
+            SCH_FREE(cellCb->schDlSlotInfo[slotIdx], sizeof(SchDlSlotInfo));
          }
       }
       SCH_FREE(cellCb->schDlSlotInfo, cellCb->numSlots *sizeof(SchDlSlotInfo*));
    }
    if(cellCb->schUlSlotInfo)
    {
-      for(idx=0; idx<cellCb->numSlots; idx++)
+      for(slotIdx=0; slotIdx<cellCb->numSlots; slotIdx++)
       {
-         if(cellCb->schUlSlotInfo[idx])
+         if(cellCb->schUlSlotInfo[slotIdx])
          {
-            SCH_FREE(cellCb->schUlSlotInfo[idx], sizeof(SchUlSlotInfo));  
+            SCH_FREE(cellCb->schUlSlotInfo[slotIdx], sizeof(SchUlSlotInfo));  
          }
       }
       SCH_FREE(cellCb->schUlSlotInfo,  cellCb->numSlots * sizeof(SchUlSlotInfo*));
    }
+
+   if(cellCb->cellCfg.snssai)
+   {
+      for(sliceIdx=0; sliceIdx<cellCb->cellCfg.numSliceSupport; sliceIdx++)
+      {
+         SCH_FREE(cellCb->cellCfg.snssai[sliceIdx], sizeof(SchSnssai));
+      }
+      SCH_FREE(cellCb->cellCfg.snssai, cellCb->cellCfg.numSliceSupport*sizeof(SchSnssai*));
+   }
+   SCH_FREE(cellCb->cellCfg.rrmPolicy, sizeof(SchRrmPolicy));
    memset(cellCb, 0, sizeof(SchCellCb));
 
 }

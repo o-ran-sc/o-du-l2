@@ -101,6 +101,8 @@
 #define DEFAULT_K2_VALUE_FOR_SCS60  2
 #define DEFAULT_K2_VALUE_FOR_SCS120 3 
 
+#define MAX_NUM_OF_SLICES 1024
+
 #define ADD_DELTA_TO_TIME(crntTime, toFill, incr)          \
 {                                                          \
    if ((crntTime.slot + incr) > (MAX_SLOTS - 1))           \
@@ -117,6 +119,13 @@
       toFill.sfn%=MAX_SFN;                                 \
    }                                                       \
 }
+
+typedef enum
+{
+   PRB_RSRC,
+   DRB_RSRC,
+   RRC_CONNECTED_USERS_RSRC
+}SchResourceType;
 
 typedef enum
 {
@@ -717,6 +726,28 @@ typedef struct schBwpUlCfg
    SchK2TimingInfoTbl k2InfoTbl;
 }SchBwpUlCfg;
 
+typedef struct schSnssai
+{
+   uint8_t   sst;
+   uint8_t   sd[SD_SIZE];
+}SchSnssai;
+
+typedef struct schPolicyMemberList
+{
+   uint8_t mcc[3];
+   uint8_t mnc[3];
+   SchSnssai snssai;
+}SchPolicyMemberList;
+
+typedef struct schRrmPolicy
+{
+   SchResourceType     rsrcType;
+   SchPolicyMemberList memberList;
+   uint8_t             policyMaxRatio;
+   uint8_t             policyMinRatio;
+   uint8_t             policyDedicatedRatio;
+}SchRrmPolicy;
+
 typedef struct schCellCfg
 {
    uint16_t       cellId;           /* Cell Id */
@@ -731,9 +762,12 @@ typedef struct schCellCfg
    SchRachCfg     schRachCfg;       /* PRACH config */
    SchBwpDlCfg    schInitialDlBwp;  /* Initial DL BWP */
    SchBwpUlCfg    schInitialUlBwp;  /* Initial UL BWP */
+   uint8_t        numSliceSupport;   /* Total num of slice support */
+   SchSnssai      **snssai;        /* List of supporting snssai*/
+   SchRrmPolicy   *rrmPolicy;
 #ifdef NR_TDD
    TDDCfg         tddCfg;           /* TDD Cfg */ 
-#endif
+#endif   
 }SchCellCfg;
 
 typedef struct schCellCfgCfm
@@ -1467,12 +1501,6 @@ typedef struct schDrbQos
    uint16_t                pduSessionId;
    uint32_t                ulPduSessAggMaxBitRate;   /* UL PDU Session Aggregate max bit rate */
 }SchDrbQosInfo;
-
-typedef struct schSnssai
-{
-   uint8_t   sst;
-   uint8_t   sd[SD_SIZE];
-}SchSnssai;
 
 /* Special cell configuration */
 typedef struct schSpCellCfg

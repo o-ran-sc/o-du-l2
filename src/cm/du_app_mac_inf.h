@@ -82,6 +82,8 @@
 #define BSR_PERIODIC_TIMER_SF_10 10
 #define BSR_RETX_TIMER_SF_320 320
 #define BSR_SR_DELAY_TMR_2560 2560
+#define MAX_NUM_OF_SLICES  1024     /* Maximum number of signalled slice support items */
+#define NUM_OF_SUPPORTED_SLICE  2
 
 typedef enum
 {
@@ -489,6 +491,13 @@ typedef enum
    MCS_TABLE_QAM64_LOW_SE
 }McsTable;
 
+typedef enum
+{
+   RSRC_PRB,
+   RSRC_DRB,
+   RSRC_RRC_CONNECTED_USERS
+}MacResourceType;
+
 typedef struct failureCause
 {
    CauseGrp   type;
@@ -654,6 +663,29 @@ typedef struct bwpUlConfig
    PuschConfigCommon puschCommon;
 }BwpUlConfig;
 
+/* Single Network Slice Selection assistance Info */
+typedef struct snssai
+{
+   uint8_t sst;                /* Slice Type */
+   uint8_t sd[SD_SIZE];        /* Slice Differentiator */
+}Snssai;
+
+typedef struct macPolicyMemberList
+{
+   uint8_t mcc[3];
+   uint8_t mnc[3];
+   Snssai  snssai;
+}MacPolicyMemberList;
+
+typedef struct macRrmPolicy
+{
+   MacResourceType     rsrcType;
+   MacPolicyMemberList memberList;
+   uint8_t             policyMaxRatio;
+   uint8_t             policyMinRatio;
+   uint8_t             policyDedicatedRatio;
+}MacRrmPolicy;
+
 typedef struct macCellCfg
 {
    uint16_t       cellId;           /* Cell Id */
@@ -674,6 +706,9 @@ typedef struct macCellCfg
    BwpDlConfig    initialDlBwp;     /* Initial DL BWP */
    BwpUlConfig    initialUlBwp;     /* Initial UL BWP */
    uint8_t        dmrsTypeAPos;     /* DMRS Type A position */
+   uint8_t        numSupportedSlice; /* Total slice supporting */
+   Snssai         **snssai;         /* List of supporting snssai*/
+   MacRrmPolicy   *rrmPolicy;       /* RRM policy details */
 }MacCellCfg;
 
 typedef struct macCellCfgCfm
@@ -1111,13 +1146,6 @@ typedef struct ambrCfg
 {
    uint32_t ulBr;   /* UL Bit rate */
 }AmbrCfg;
-
-/* Single Network Slice Selection assistance Info */
-typedef struct snssai
-{
-   uint8_t sst;                /* Slice Type */
-   uint8_t sd[SD_SIZE];        /* Slice Differentiator */
-}Snssai;
 
 typedef struct nonDynFiveQi
 {
