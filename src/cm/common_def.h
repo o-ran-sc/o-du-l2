@@ -125,6 +125,9 @@
 #define ODU_SET_THREAD_AFFINITY SSetAffinity
 #define ODU_CREATE_TASK SCreateSTsk
 
+/* Slice */
+#define SD_SIZE 3
+
 #ifdef NR_TDD
 /* Maximum slots for max periodicity and highest numerology is 320.
  * However, aligning to fapi_interface.h, setting this macro to 160 */
@@ -249,6 +252,12 @@ typedef struct PlmnIdentity
    uint8_t mcc[3];
    uint8_t mnc[3];
 }Plmn;
+
+typedef struct snssai
+{
+   uint8_t   sst;
+   uint8_t   sd[SD_SIZE];
+}Snssai;
 
 typedef struct oduCellId
 {

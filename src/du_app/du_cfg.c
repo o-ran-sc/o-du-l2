@@ -142,7 +142,8 @@ void FillSlotConfig()
 /* This function is used to fill up the cell configuration for CL */
 uint8_t readMacCfg()
 {
-   uint8_t idx;
+   uint8_t idx=0, sliceIdx=0;
+   F1TaiSliceSuppLst *taiSliceSuppLst;
 
    duCfgParam.macCellCfg.carrierId = CARRIER_IDX;
 
@@ -353,6 +354,48 @@ uint8_t readMacCfg()
    /* fill PUCCH config common */
    duCfgParam.macCellCfg.initialUlBwp.pucchCommon.pucchResourceCommon = PUCCH_RSRC_COMMON;
    duCfgParam.macCellCfg.initialUlBwp.pucchCommon.pucchGroupHopping = PUCCH_GROUP_HOPPING;
+   
+   /* SNSSAI And RRM policy Configuration */
+   taiSliceSuppLst = &duCfgParam.srvdCellLst[0].duCellInfo.cellInfo.srvdPlmn[0].taiSliceSuppLst;
+   duCfgParam.macCellCfg.numSupportedSlice = taiSliceSuppLst->numSupportedSlices;
+   if(taiSliceSuppLst->snssai)
+   {
+      DU_ALLOC_SHRABL_BUF(duCfgParam.macCellCfg.snssai, (duCfgParam.macCellCfg.numSupportedSlice) * sizeof(Snssai*));
+      if(duCfgParam.macCellCfg.snssai == NULLP)
+      {
+         DU_LOG("\nERROR  --> DU_APP: Memory allocation failed at readMacCfg");
+         return RFAILED;
+      }
+   }
+   for(sliceIdx=0; sliceIdx<taiSliceSuppLst->numSupportedSlices; sliceIdx++)
+   {
+      if(taiSliceSuppLst->snssai[sliceIdx] != NULLP)
+      {
+         DU_ALLOC_SHRABL_BUF(duCfgParam.macCellCfg.snssai[sliceIdx], sizeof(Snssai));
+         if(duCfgParam.macCellCfg.snssai[sliceIdx] == NULLP)
+         {
+            DU_LOG("\nERROR  --> DU_APP: Memory allocation failed at readMacCfg");
+            return RFAILED;
+         }
+         memcpy(duCfgParam.macCellCfg.snssai[sliceIdx], taiSliceSuppLst->snssai[sliceIdx], sizeof(Snssai));
+      }
+   }
+   
+   DU_ALLOC_SHRABL_BUF(duCfgParam.macCellCfg.rrmPolicy, sizeof(RrmPolicy));
+   if(duCfgParam.macCellCfg.rrmPolicy == NULLP)
+   {
+      DU_LOG("\nERROR  --> DU_APP: Memory allocation failed at readMacCfg");
+      return RFAILED;
+   }
+   memset(duCfgParam.macCellCfg.rrmPolicy, 0, sizeof(RrmPolicy));
+   /* TODO Check the exact data type of resource type once will receive the
+    * information from O1 interface */
+   duCfgParam.macCellCfg.rrmPolicy->rsrcType = RSRC_PRB;
+   memcpy(&duCfgParam.macCellCfg.rrmPolicy->memberList.snssai, duCfgParam.macCellCfg.snssai[DEDICATED_SLICE_INDEX],\
+   sizeof(Snssai));
+   duCfgParam.macCellCfg.rrmPolicy->policyMaxRatio = MAX_RATIO;
+   duCfgParam.macCellCfg.rrmPolicy->policyMinRatio = MIN_RATIO;
+   duCfgParam.macCellCfg.rrmPolicy->policyDedicatedRatio = DEDICATED_RATIO;
 
    return ROK;
 }
@@ -605,17 +648,10 @@ uint8_t readCfg()
    MibParams mib;
    Sib1Params sib1;
    F1TaiSliceSuppLst *taiSliceSuppLst;
-   RrmPolicy  *rrmPolicy;
 
    /* TODO Added these below variable for local testing, once we will receive the
     * configuration from O1 we can remove these variable */
-   F1Snsaai snsaai[NUM_OF_SUPPORTED_SLICE] = {{1,{2,3,4}},{5,{6,7,8}}};
-   ResourceType rsrcType = PRB;
-   RrmPolicyRatio policyRatio= {10,20,30};
-   PolicyMemberList memberList;
-   
-   memset(&memberList, 0, sizeof(PolicyMemberList));
-   memberList.snsaai =  snsaai[DEDICATED_SLICE_INDEX];
+   Snssai snssai[NUM_OF_SUPPORTED_SLICE] = {{1,{2,3,4}},{5,{6,7,8}}};
 
 #ifdef O1_ENABLE
    if( getStartupConfig(&g_cfg) != ROK )
@@ -745,31 +781,35 @@ uint8_t readCfg()
       /* List of Supporting Slices */
       for(srvdPlmnIdx=0; srvdPlmnIdx<MAX_PLMN; srvdPlmnIdx++)
       {
-         taiSliceSuppLst = &duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.cellInfo.srvdPlmn[srvdPlmnIdx].taiSliceSuppLst;
-
-         taiSliceSuppLst->pres = true;
+         taiSliceSuppLst = &duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.cellInfo.srvdPlmn[srvdPlmnIdx].\
+         taiSliceSuppLst;
+         
+         /* TODO Calculte the exact number of supported slices once will get
+          * cell configuration from O1 */
          taiSliceSuppLst->numSupportedSlices = NUM_OF_SUPPORTED_SLICE;
-
-         memset(&taiSliceSuppLst->snssai, 0, sizeof(F1Snsaai));
-         for(sliceIdx=0; sliceIdx<NUM_OF_SUPPORTED_SLICE; sliceIdx++)
+         if(taiSliceSuppLst->numSupportedSlices > MAX_NUM_OF_SLICE_ITEMS)
          {
-            DU_ALLOC(taiSliceSuppLst->snssai[sliceIdx], sizeof(F1Snsaai));
+            DU_LOG("\nERROR --> DU_APP: readCfg(): Number of supported slice [%d] is more than 1024",\
+            taiSliceSuppLst->numSupportedSlices);
+            return RFAILED;
+         }
+
+         DU_ALLOC(taiSliceSuppLst->snssai, taiSliceSuppLst->numSupportedSlices*sizeof(Snssai*));
+         if(taiSliceSuppLst->snssai == NULLP)
+         {
+            DU_LOG("\nERROR --> DU_APP: readCfg():Memory allocation failed");
+            return RFAILED;
+         }
+         
+         for(sliceIdx=0; sliceIdx<taiSliceSuppLst->numSupportedSlices; sliceIdx++)
+         {
+            DU_ALLOC(taiSliceSuppLst->snssai[sliceIdx], sizeof(Snssai));
             if(taiSliceSuppLst->snssai[sliceIdx] == NULLP)
             {
                DU_LOG("\nERROR --> DU_APP: readCfg():Memory allocation failed");
                return RFAILED;
             }
-            memcpy(taiSliceSuppLst->snssai[sliceIdx], &snsaai[sliceIdx], sizeof(F1Snsaai));
-            
-            /* Checking rrmPolicy Slice list available or not */
-            if(!memcmp(&snsaai[sliceIdx], &memberList.snsaai, sizeof(F1Snsaai)))
-            {
-               rrmPolicy = &duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.cellInfo.srvdPlmn[srvdPlmnIdx].rrmPolicy;
-               rrmPolicy->present = true;
-               rrmPolicy->rsrcType = rsrcType; 
-               rrmPolicy->memberList.snsaai = memberList.snsaai;
-               rrmPolicy->rrmPolicyRatio = policyRatio;
-            }
+            memcpy(taiSliceSuppLst->snssai[sliceIdx], &snssai[sliceIdx], sizeof(Snssai));
          }
       }
       /* TAC and EPSTAC */
