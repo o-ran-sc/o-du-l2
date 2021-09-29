@@ -1539,7 +1539,7 @@ uint8_t fillLogicalChannelCfg(SchLcCfg *schLcCfg, LcCfg *macLcCfg)
       {
          if(!schLcCfg->snssai)
          {
-            MAC_ALLOC(schLcCfg->snssai, sizeof(SchSnssai));
+            MAC_ALLOC(schLcCfg->snssai, sizeof(Snssai));
             if(!schLcCfg->snssai)
             {
                DU_LOG("\nERROR  -->  MAC : Memory alloc failed at snssai at fillLogicalChannelCfg()");

@@ -224,8 +224,6 @@
 #define MAXNUMOFUACPERPLMN 64       /* Maximum number of signalled categories per PLMN */
 #define NR_RANAC           150      /* RANAC */
 #define DEFAULT_CELLS      1        /* Max num of broadcast PLMN ids */
-#define NUM_OF_SUPPORTED_SLICE  2
-#define DEDICATED_SLICE_INDEX   1 
 #define IE_EXTENSION_LIST_COUNT 1
 
 /* Macro definitions for MIB/SIB1 */
@@ -287,6 +285,13 @@
 /*VALID Tunnel ID*/
 #define MIN_TEID 1   /*[Spec 29.281,Sec 5.1]: All Zero TEIDs are never assigned for setting up GTP-U Tunnel*/
 #define MAX_TEID 10 /*[Spec 29.281]: Max limit is not mentioned but as per GTP-U Header Format, TEID occupies 4 octets */
+
+/* Slice Ratio */
+#define MAX_RATIO        30
+#define MIN_RATIO        20
+#define DEDICATED_RATIO  10
+#define DEDICATED_SLICE_INDEX   1 
+
 typedef enum
 {
    GNBDU,
@@ -483,13 +488,6 @@ typedef enum
    PUSCH_MAPPING_TYPE_B,
 }puschMappingType;
 
-typedef enum
-{
-   PRB,
-   DRB,
-   RRC_CONNECTED_USERS
-}ResourceType;
-
 typedef struct f1RrcVersion
 {
    char    rrcVer[30];     /* Latest RRC Version */
@@ -646,12 +644,6 @@ typedef struct f1EutraModeInfo
    }mode;
 }F1EutraModeInfo;
 
-typedef struct f1Snsaai
-{
-   uint8_t   sst;
-   uint8_t   sd[SD_SIZE];
-}F1Snsaai;
-
 typedef struct epIpAddr
 {
    char transportAddr[20]; /* Transport Layer Address */
@@ -663,32 +655,10 @@ typedef struct epIpAddrPort
    char   port[2];
 }EpIpAddrPort;
 
-typedef struct policyMemberList
-{
-   Plmn   plmn;
-   F1Snsaai snsaai;   
-}PolicyMemberList;
-
-typedef struct rrmPolicyRatio
-{
-   uint8_t policyMaxRatio;
-   uint8_t policyMinRatio;
-   uint8_t policyDedicatedRatio;
-}RrmPolicyRatio;
-
-typedef struct rrmPolicy
-{
-   bool present;
-   ResourceType     rsrcType;
-   PolicyMemberList memberList;
-   RrmPolicyRatio   rrmPolicyRatio;
-}RrmPolicy;
-
 typedef struct f1TaiSliceSuppLst
 {
-   bool       pres;
    uint8_t    numSupportedSlices;
-   F1Snsaai   *snssai[MAX_NUM_OF_SLICE_ITEMS];   
+   Snssai    **snssai;   
 }F1TaiSliceSuppLst;
 
 typedef struct f1SrvdPlmn
@@ -696,7 +666,6 @@ typedef struct f1SrvdPlmn
    Plmn   plmn;
    Plmn   extPlmn;    /* Extended available PLMN list */
    F1TaiSliceSuppLst taiSliceSuppLst;
-   RrmPolicy  rrmPolicy;
 }F1SrvdPlmn;
 
 typedef struct f1BrdcstPlmnInfo

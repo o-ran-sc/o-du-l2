@@ -83,7 +83,6 @@
 #define MAX_NUM_PUCCH_P0_PER_SET 8
 #define MAX_NUM_PATH_LOSS_REF_RS 4
 #define MAX_NUM_DL_DATA_TO_UL_ACK 15
-#define SD_SIZE   3
 #define QPSK_MODULATION 2
 
 #define RAR_PAYLOAD_SIZE 10             /* As per spec 38.321, sections 6.1.5 and 6.2.3, RAR PDU is 8 bytes long and 2 bytes of padding */
@@ -117,6 +116,13 @@
       toFill.sfn%=MAX_SFN;                                 \
    }                                                       \
 }
+
+typedef enum
+{
+   PRB_RSRC,
+   DRB_RSRC,
+   RRC_CONNECTED_USERS_RSRC
+}SchResourceType;
 
 typedef enum
 {
@@ -717,6 +723,21 @@ typedef struct schBwpUlCfg
    SchK2TimingInfoTbl k2InfoTbl;
 }SchBwpUlCfg;
 
+typedef struct schPolicyMemberList
+{
+   Plmn   plmn;
+   Snssai snssai;
+}SchPolicyMemberList;
+
+typedef struct schRrmPolicy
+{
+   SchResourceType     rsrcType;
+   SchPolicyMemberList memberList;
+   uint8_t             policyMaxRatio;
+   uint8_t             policyMinRatio;
+   uint8_t             policyDedicatedRatio;
+}SchRrmPolicy;
+
 typedef struct schCellCfg
 {
    uint16_t       cellId;           /* Cell Id */
@@ -731,9 +752,12 @@ typedef struct schCellCfg
    SchRachCfg     schRachCfg;       /* PRACH config */
    SchBwpDlCfg    schInitialDlBwp;  /* Initial DL BWP */
    SchBwpUlCfg    schInitialUlBwp;  /* Initial UL BWP */
+   uint8_t        numSliceSupport;   /* Total num of slice support */
+   Snssai         **snssai;        /* List of supporting snssai*/
+   SchRrmPolicy   *rrmPolicy;
 #ifdef NR_TDD
    TDDCfg         tddCfg;           /* TDD Cfg */ 
-#endif
+#endif   
 }SchCellCfg;
 
 typedef struct schCellCfgCfm
@@ -1468,12 +1492,6 @@ typedef struct schDrbQos
    uint32_t                ulPduSessAggMaxBitRate;   /* UL PDU Session Aggregate max bit rate */
 }SchDrbQosInfo;
 
-typedef struct schSnssai
-{
-   uint8_t   sst;
-   uint8_t   sd[SD_SIZE];
-}SchSnssai;
-
 /* Special cell configuration */
 typedef struct schSpCellCfg
 {
@@ -1503,7 +1521,7 @@ typedef struct schLcCfg
    ConfigType     configType;
    uint8_t        lcId;
    SchDrbQosInfo  *drbQos;
-   SchSnssai      *snssai;
+   Snssai         *snssai;
    SchDlLcCfg     dlLcCfg;
    SchUlLcCfg     ulLcCfg;
 }SchLcCfg;

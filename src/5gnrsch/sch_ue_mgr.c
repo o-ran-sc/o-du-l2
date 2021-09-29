@@ -122,9 +122,9 @@ void fillSchDlLcCtxt(SchDlLcCtxt *ueCbLcCfg, SchLcCfg *lcCfg)
    {
      if(ueCbLcCfg->snssai == NULLP)/*In CONFIG_MOD case, no need to allocate SNSSAI memory*/
      {
-        SCH_ALLOC(ueCbLcCfg->snssai, sizeof(SchSnssai));
+        SCH_ALLOC(ueCbLcCfg->snssai, sizeof(Snssai));
      }
-     memcpy(ueCbLcCfg->snssai, lcCfg->snssai,sizeof(SchSnssai));
+     memcpy(ueCbLcCfg->snssai, lcCfg->snssai,sizeof(Snssai));
    }
 }
 
@@ -163,9 +163,9 @@ void fillSchUlLcCtxt(SchUlLcCtxt *ueCbLcCfg, SchLcCfg *lcCfg)
      /*In CONFIG_MOD case, no need to allocate SNSSAI memory again*/
      if(ueCbLcCfg->snssai == NULLP)
      {
-        SCH_ALLOC(ueCbLcCfg->snssai, sizeof(SchSnssai));
+        SCH_ALLOC(ueCbLcCfg->snssai, sizeof(Snssai));
      }
-     memcpy(ueCbLcCfg->snssai, lcCfg->snssai,sizeof(SchSnssai));
+     memcpy(ueCbLcCfg->snssai, lcCfg->snssai,sizeof(Snssai));
    }
 }
 
@@ -365,7 +365,7 @@ uint8_t fillSchUeCb(SchUeCb *ueCb, SchUeCfg *ueCfg)
       }
 
       SCH_FREE(ueCfg->schLcCfg[lcIdx].drbQos, sizeof(SchDrbQosInfo));
-      SCH_FREE(ueCfg->schLcCfg[lcIdx].snssai, sizeof(SchSnssai));
+      SCH_FREE(ueCfg->schLcCfg[lcIdx].snssai, sizeof(Snssai));
 
    }/* End of outer for loop */
    return ROK;
@@ -895,11 +895,11 @@ void deleteSchUeCb(SchUeCb *ueCb)
       /*Need to Free the memory allocated for S-NSSAI*/
       for(ueLcIdx = 0; ueLcIdx < ueCb->ulInfo.numUlLc; ueLcIdx++)
       {
-         SCH_FREE(ueCb->ulInfo.ulLcCtxt[ueLcIdx].snssai, sizeof(SchSnssai));
+         SCH_FREE(ueCb->ulInfo.ulLcCtxt[ueLcIdx].snssai, sizeof(Snssai));
       }
       for(ueLcIdx = 0; ueLcIdx < ueCb->dlInfo.numDlLc; ueLcIdx++)
       {
-         SCH_FREE(ueCb->dlInfo.dlLcCtxt[ueLcIdx].snssai, sizeof(SchSnssai));
+         SCH_FREE(ueCb->dlInfo.dlLcCtxt[ueLcIdx].snssai, sizeof(Snssai));
       }
       memset(ueCb, 0, sizeof(SchUeCb));
    }
@@ -1030,29 +1030,39 @@ uint8_t SchSendCellDeleteRspToMac(SchCellDelete  *ueDelete, Inst inst, SchMacRsp
  * ****************************************************************/
 void deleteSchCellCb(SchCellCb *cellCb)
 {
-   uint8_t idx=0;
+   uint8_t sliceIdx=0, slotIdx=0;
    if(cellCb->schDlSlotInfo)
    {
-      for(idx=0; idx<cellCb->numSlots; idx++)
+      for(slotIdx=0; slotIdx<cellCb->numSlots; slotIdx++)
       {
-         if(cellCb->schDlSlotInfo[idx])
+         if(cellCb->schDlSlotInfo[slotIdx])
          {
-            SCH_FREE(cellCb->schDlSlotInfo[idx], sizeof(SchDlSlotInfo));
+            SCH_FREE(cellCb->schDlSlotInfo[slotIdx], sizeof(SchDlSlotInfo));
          }
       }
       SCH_FREE(cellCb->schDlSlotInfo, cellCb->numSlots *sizeof(SchDlSlotInfo*));
    }
    if(cellCb->schUlSlotInfo)
    {
-      for(idx=0; idx<cellCb->numSlots; idx++)
+      for(slotIdx=0; slotIdx<cellCb->numSlots; slotIdx++)
       {
-         if(cellCb->schUlSlotInfo[idx])
+         if(cellCb->schUlSlotInfo[slotIdx])
          {
-            SCH_FREE(cellCb->schUlSlotInfo[idx], sizeof(SchUlSlotInfo));  
+            SCH_FREE(cellCb->schUlSlotInfo[slotIdx], sizeof(SchUlSlotInfo));  
          }
       }
       SCH_FREE(cellCb->schUlSlotInfo,  cellCb->numSlots * sizeof(SchUlSlotInfo*));
    }
+
+   if(cellCb->cellCfg.snssai)
+   {
+      for(sliceIdx=0; sliceIdx<cellCb->cellCfg.numSliceSupport; sliceIdx++)
+      {
+         SCH_FREE(cellCb->cellCfg.snssai[sliceIdx], sizeof(Snssai));
+      }
+      SCH_FREE(cellCb->cellCfg.snssai, cellCb->cellCfg.numSliceSupport*sizeof(Snssai*));
+   }
+   SCH_FREE(cellCb->cellCfg.rrmPolicy, sizeof(SchRrmPolicy));
    memset(cellCb, 0, sizeof(SchCellCb));
 
 }
