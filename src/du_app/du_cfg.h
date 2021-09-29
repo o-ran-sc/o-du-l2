@@ -483,13 +483,6 @@ typedef enum
    PUSCH_MAPPING_TYPE_B,
 }puschMappingType;
 
-typedef enum
-{
-   PRB,
-   DRB,
-   RRC_CONNECTED_USERS
-}ResourceType;
-
 typedef struct f1RrcVersion
 {
    char    rrcVer[30];     /* Latest RRC Version */
@@ -646,12 +639,6 @@ typedef struct f1EutraModeInfo
    }mode;
 }F1EutraModeInfo;
 
-typedef struct f1Snsaai
-{
-   uint8_t   sst;
-   uint8_t   sd[SD_SIZE];
-}F1Snsaai;
-
 typedef struct epIpAddr
 {
    char transportAddr[20]; /* Transport Layer Address */
@@ -663,32 +650,10 @@ typedef struct epIpAddrPort
    char   port[2];
 }EpIpAddrPort;
 
-typedef struct policyMemberList
-{
-   Plmn   plmn;
-   F1Snsaai snsaai;   
-}PolicyMemberList;
-
-typedef struct rrmPolicyRatio
-{
-   uint8_t policyMaxRatio;
-   uint8_t policyMinRatio;
-   uint8_t policyDedicatedRatio;
-}RrmPolicyRatio;
-
-typedef struct rrmPolicy
-{
-   bool present;
-   ResourceType     rsrcType;
-   PolicyMemberList memberList;
-   RrmPolicyRatio   rrmPolicyRatio;
-}RrmPolicy;
-
 typedef struct f1TaiSliceSuppLst
 {
-   bool       pres;
    uint8_t    numSupportedSlices;
-   F1Snsaai   *snssai[MAX_NUM_OF_SLICE_ITEMS];   
+   Snssai    **snssai;   
 }F1TaiSliceSuppLst;
 
 typedef struct f1SrvdPlmn
@@ -696,7 +661,6 @@ typedef struct f1SrvdPlmn
    Plmn   plmn;
    Plmn   extPlmn;    /* Extended available PLMN list */
    F1TaiSliceSuppLst taiSliceSuppLst;
-   RrmPolicy  rrmPolicy;
 }F1SrvdPlmn;
 
 typedef struct f1BrdcstPlmnInfo

@@ -48,8 +48,6 @@
 #define MONITORING_SYMB_WITHIN_SLOT_SIZE 2  /* i.e. 2 bytes because size of monitoring symbols within slot is 14 bits */
 #define MAX_NUM_DL_ALLOC 16             /* Max number of pdsch time domain downlink allocation */
 #define MAX_NUM_UL_ALLOC 16             /* Max number of pusch time domain uplink allocation */
-#define SD_SIZE   3                     /* Max size of Slice Differentiator in S-NSSAI */
-
 #define MAX_NUM_SCELL  32
 
 /* PUCCH Configuration Macro */
@@ -82,6 +80,8 @@
 #define BSR_PERIODIC_TIMER_SF_10 10
 #define BSR_RETX_TIMER_SF_320 320
 #define BSR_SR_DELAY_TMR_2560 2560
+#define MAX_NUM_OF_SLICES  1024     /* Maximum number of signalled slice support items */
+#define NUM_OF_SUPPORTED_SLICE  2
 
 typedef enum
 {
@@ -489,6 +489,13 @@ typedef enum
    MCS_TABLE_QAM64_LOW_SE
 }McsTable;
 
+typedef enum
+{
+   RSRC_PRB,
+   RSRC_DRB,
+   RSRC_RRC_CONNECTED_USERS
+}ResourceType;
+
 typedef struct failureCause
 {
    CauseGrp   type;
@@ -654,6 +661,23 @@ typedef struct bwpUlConfig
    PuschConfigCommon puschCommon;
 }BwpUlConfig;
 
+/* Single Network Slice Selection assistance Info */
+
+typedef struct policyMemberList
+{
+   Plmn plmn;
+   Snssai  snssai;
+}PolicyMemberList;
+
+typedef struct rrmPolicy
+{
+   ResourceType     rsrcType;
+   PolicyMemberList memberList;
+   uint8_t          policyMaxRatio;
+   uint8_t          policyMinRatio;
+   uint8_t          policyDedicatedRatio;
+}RrmPolicy;
+
 typedef struct macCellCfg
 {
    uint16_t       cellId;           /* Cell Id */
@@ -674,6 +698,9 @@ typedef struct macCellCfg
    BwpDlConfig    initialDlBwp;     /* Initial DL BWP */
    BwpUlConfig    initialUlBwp;     /* Initial UL BWP */
    uint8_t        dmrsTypeAPos;     /* DMRS Type A position */
+   uint8_t        numSupportedSlice; /* Total slice supporting */
+   Snssai         **snssai;         /* List of supporting snssai*/
+   RrmPolicy   *rrmPolicy;       /* RRM policy details */ 
 }MacCellCfg;
 
 typedef struct macCellCfgCfm
@@ -1111,13 +1138,6 @@ typedef struct ambrCfg
 {
    uint32_t ulBr;   /* UL Bit rate */
 }AmbrCfg;
-
-/* Single Network Slice Selection assistance Info */
-typedef struct snssai
-{
-   uint8_t sst;                /* Slice Type */
-   uint8_t sd[SD_SIZE];        /* Slice Differentiator */
-}Snssai;
 
 typedef struct nonDynFiveQi
 {

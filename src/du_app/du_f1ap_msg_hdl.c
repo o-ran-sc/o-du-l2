@@ -1482,7 +1482,8 @@ void FreeServedCellList( GNB_DU_Served_Cells_List_t *duServedCell)
                               }
                            }
                            DU_FREE(servedPlmnItem->iE_Extensions->list.array[0]->extensionValue.choice.\
-                           SliceSupportList.list.array, sizeof(SliceSupportItem_t*));
+                           SliceSupportList.list.array, servedPlmnItem->iE_Extensions->list.array[0]->\
+                           extensionValue.choice.SliceSupportList.list.size);
                         }
                         DU_FREE(servedPlmnItem->iE_Extensions->list.array[0],\
                         sizeof(ServedPLMNs_ItemExtIEs_t));
