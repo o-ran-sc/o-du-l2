@@ -142,7 +142,9 @@ void FillSlotConfig()
 /* This function is used to fill up the cell configuration for CL */
 uint8_t readMacCfg()
 {
-   uint8_t idx;
+   uint8_t idx=0, sliceIdx=0;
+   F1TaiSliceSuppLst *taiSliceSuppLst;
+   RrmPolicy *rrmPolicy;
 
    duCfgParam.macCellCfg.carrierId = CARRIER_IDX;
 
@@ -353,6 +355,40 @@ uint8_t readMacCfg()
    /* fill PUCCH config common */
    duCfgParam.macCellCfg.initialUlBwp.pucchCommon.pucchResourceCommon = PUCCH_RSRC_COMMON;
    duCfgParam.macCellCfg.initialUlBwp.pucchCommon.pucchGroupHopping = PUCCH_GROUP_HOPPING;
+   
+   /* SNSSAI And RRM policy Configuration */
+   taiSliceSuppLst = &duCfgParam.srvdCellLst[0].duCellInfo.cellInfo.srvdPlmn[0].taiSliceSuppLst;
+   if(taiSliceSuppLst->pres == true)
+   {
+      for(sliceIdx=0; sliceIdx<taiSliceSuppLst->numSupportedSlices; sliceIdx++)
+      {
+         if(taiSliceSuppLst->snssai[sliceIdx] != NULLP)
+         {
+            DU_ALLOC_SHRABL_BUF(duCfgParam.macCellCfg.snssai[sliceIdx], sizeof(Snssai));
+            if(duCfgParam.macCellCfg.snssai[sliceIdx] == NULLP)
+            {
+               DU_LOG("\nERROR  --> DU_APP: Memory allocation failed at readMacCfg");
+               return RFAILED;
+            }
+            memcpy(duCfgParam.macCellCfg.snssai[sliceIdx], taiSliceSuppLst->snssai[sliceIdx], sizeof(Snssai));
+         }
+      }
+   }
+   rrmPolicy = &duCfgParam.srvdCellLst[0].duCellInfo.cellInfo.srvdPlmn[0].rrmPolicy;
+   if(rrmPolicy->present == true)
+   {
+      DU_ALLOC_SHRABL_BUF(duCfgParam.macCellCfg.rrmPolicy, sizeof(MacRrmPolicy));
+      if(duCfgParam.macCellCfg.rrmPolicy == NULLP)
+      {
+         DU_LOG("\nERROR  --> DU_APP: Memory allocation failed at readMacCfg");
+         return RFAILED;
+      }
+      duCfgParam.macCellCfg.rrmPolicy->rsrcType = rrmPolicy->rsrcType;
+      memcpy(&duCfgParam.macCellCfg.rrmPolicy->memberList.snssai, &rrmPolicy->memberList.snsaai, sizeof(F1Snsaai));
+      duCfgParam.macCellCfg.rrmPolicy->policyMaxRatio = rrmPolicy->rrmPolicyRatio.policyMaxRatio;
+      duCfgParam.macCellCfg.rrmPolicy->policyMinRatio = rrmPolicy->rrmPolicyRatio.policyMinRatio;
+      duCfgParam.macCellCfg.rrmPolicy->policyDedicatedRatio = rrmPolicy->rrmPolicyRatio.policyDedicatedRatio;
+   }
 
    return ROK;
 }
