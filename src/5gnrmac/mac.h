@@ -152,16 +152,20 @@ typedef struct dlHarqEnt
 /* Uplink deidcated logical channel info */
 typedef struct ulLcCb
 {
-   uint8_t   lcId;      /* Logical Channel Id */
-   uint8_t   lcGrpId;   /* Logical Channel group */
+   uint8_t    lcId;      /* Logical Channel Id */
+   uint8_t    lcGrpId;   /* Logical Channel group */
    MacLcState lcActive;  /* Is LC active ? */
+   uint16_t   pduSessionId;
+   Snssai     *snssai;
 }UlLcCb;
 
 /* Downlink dedicated logical channel info */
 typedef struct dlLcCb
 {
-   uint8_t   lcId;      /* Logical channel Id */ 
-   MacLcState   lcState;  /* Is LC active ? */
+   uint8_t    lcId;      /* Logical channel Id */ 
+   MacLcState lcState;  /* Is LC active ? */
+   uint16_t   pduSessionId;
+   Snssai     *snssai;
 }DlLcCb;
 
 /* BSR Information */

@@ -160,6 +160,8 @@ typedef struct schLcCtxt
    uint8_t lcp;      // logical Channel Prioritization
    SchLcState lcState;
    uint32_t bo;
+   uint16_t   pduSessionId;
+   SchSnssai  *snssai;
 }SchDlLcCtxt;
 
 typedef struct schDlCb
@@ -177,6 +179,8 @@ typedef struct schUlLcCtxt
    uint8_t schReqId;
    uint8_t pbr;        // prioritisedBitRate
    uint8_t bsd;        // bucketSizeDuration
+   uint16_t   pduSessionId;
+   SchSnssai  *snssai;
 }SchUlLcCtxt;
 
 typedef struct schUlCb

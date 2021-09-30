@@ -7435,6 +7435,9 @@ void procRlcLcCfg(uint8_t rbId, uint8_t lcId, uint8_t rbType, uint8_t rlcMode,\
 
 void extractQosInfo(DrbQosInfo *qosToAdd, QoSFlowLevelQoSParameters_t *qosFlowCfg)
 {
+   uint8_t idx = 0;
+   ProtocolExtensionContainer_4624P74_t *qosIeExt = NULLP;
+
    qosToAdd->fiveQiType = qosFlowCfg->qoS_Characteristics.present;
    qosToAdd->u.nonDyn5Qi.fiveQi     =\
          qosFlowCfg->qoS_Characteristics.choice.non_Dynamic_5QI->fiveQI;
@@ -7471,7 +7474,20 @@ void extractQosInfo(DrbQosInfo *qosToAdd, QoSFlowLevelQoSParameters_t *qosFlowCf
          qosFlowCfg->gBR_QoS_Flow_Information->guaranteedFlowBitRateUplink.buf, \
          qosFlowCfg->gBR_QoS_Flow_Information->guaranteedFlowBitRateUplink.size);
    }
-   qosToAdd->pduSessionId = 0;
+   /*Extracting PDU_SESSION_ID*/
+   qosIeExt = (ProtocolExtensionContainer_4624P74_t *)qosFlowCfg->iE_Extensions;
+   if(qosIeExt)
+   {
+      for(idx = 0; idx < qosIeExt->list.count; idx++)
+      {
+         if(qosIeExt->list.array[idx]->extensionValue.present == \
+		                              QoSFlowLevelQoSParameters_ExtIEs__extensionValue_PR_PDUSessionID)
+         {
+            qosToAdd->pduSessionId = qosIeExt->list.array[idx]->extensionValue.choice.PDUSessionID;
+	    	    DU_LOG("\nDEBUG -->  DU_F1AP : extractQosInfo: PDU SessionID:%d",qosToAdd->pduSessionId);
+		   }
+	   }  
+   }
    qosToAdd->ulPduSessAggMaxBitRate = 0;
 }
 
