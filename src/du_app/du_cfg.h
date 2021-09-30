@@ -208,13 +208,6 @@
 /* Events */
 #define EVTCFG 0
 
-#ifdef EGTP_TEST
-/* Macro definitions for EGTP procedures */
-#define EGTP_LCL_TEID 1     /* EGTP local tunnel id */
-#define EGTP_REM_TEID 10    /* EGTP remote tinnel id */
-#endif
-
-
 /* Macro definitions for F1 procedures */
 #define CU_DU_NAME_LEN_MAX 30      /* Max length of CU/DU name string */
 #define MAX_F1_CONNECTIONS 65536    /* Max num of F1 connections */
@@ -282,12 +275,6 @@
 #define SCRAMBLING_ID  NR_PCI
 #define DMRS_ADDITIONAL_POS  0          /* DMRS Additional poistion */
 #define RES_ALLOC_TYPE       1          /* Resource allocation type */
-
-#ifdef EGTP_TEST
-#define UE_ID 1
-#define RB_ID 1
-#define LC_ID 1
-#endif
 
 /* MACRO definitions for modulcation order */
 #define MOD_ORDER_QPSK  2

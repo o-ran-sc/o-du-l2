@@ -358,34 +358,34 @@ void macMuxPdu(MacDlData *dlData, MacCeInfo *macCeData, uint8_t *txPdu, uint16_t
       lcid = dlData->pduInfo[idx].lcId;
       switch(lcid)
       {
-	 case MAC_LCID_CCCH:
-	 case MAC_LCID_MIN ... MAC_LCID_MAX :
-	    {
-	       lenField = dlData->pduInfo[idx].pduLen;
-	       if(dlData->pduInfo[idx].pduLen > 255)
-	       {
-		  FBit = 1;
-		  lenFieldSize = 16;
+         case MAC_LCID_CCCH:
+         case MAC_LCID_MIN ... MAC_LCID_MAX :
+            {
+               lenField = dlData->pduInfo[idx].pduLen;
+               if(dlData->pduInfo[idx].pduLen > 255)
+               {
+                  FBit = 1;
+                  lenFieldSize = 16;
 
-	       }
-	       else
-	       {
-		  FBit = 0;
-		  lenFieldSize = 8;
-	       }
-	       /* Packing fields into MAC PDU R/F/LCID/L */
-	       packBytes(macPdu, &bytePos, &bitPos, RBit, RBitSize);
-	       packBytes(macPdu, &bytePos, &bitPos, FBit, FBitSize);
-	       packBytes(macPdu, &bytePos, &bitPos, lcid, lcidSize);
-	       packBytes(macPdu, &bytePos, &bitPos, lenField, lenFieldSize);
-	       memcpy(&macPdu[bytePos], dlData->pduInfo[idx].dlPdu, lenField);
-	       bytePos += lenField;
-	       break;
-	    }
+               }
+               else
+               {
+                  FBit = 0;
+                  lenFieldSize = 8;
+               }
+               /* Packing fields into MAC PDU R/F/LCID/L */
+               packBytes(macPdu, &bytePos, &bitPos, RBit, RBitSize);
+               packBytes(macPdu, &bytePos, &bitPos, FBit, FBitSize);
+               packBytes(macPdu, &bytePos, &bitPos, lcid, lcidSize);
+               packBytes(macPdu, &bytePos, &bitPos, lenField, lenFieldSize);
+               memcpy(&macPdu[bytePos], dlData->pduInfo[idx].dlPdu, lenField);
+               bytePos += lenField;
+               break;
+            }
 
-	 default:
-	    DU_LOG("\nERROR  -->  MAC: Invalid LCID %d in mac pdu",lcid);
-	    break;
+         default:
+            DU_LOG("\nERROR  -->  MAC: Invalid LCID %d in mac pdu",lcid);
+            break;
       }
    }
    if(bytePos < tbSize && (tbSize-bytePos >= 1))
