@@ -114,6 +114,18 @@ void fillSchDlLcCtxt(SchDlLcCtxt *ueCbLcCfg, SchLcCfg *lcCfg)
    ueCbLcCfg->lcp = lcCfg->dlLcCfg.lcp;
    ueCbLcCfg->lcState = SCH_LC_STATE_ACTIVE;
    ueCbLcCfg->bo = 0;
+   if(lcCfg->drbQos)
+   {
+     ueCbLcCfg->pduSessionId = lcCfg->drbQos->pduSessionId;
+   }
+   if(lcCfg->snssai)
+   {
+     if(ueCbLcCfg->snssai == NULLP)/*In CONFIG_MOD case, no need to allocate SNSSAI memory*/
+     {
+        SCH_ALLOC(ueCbLcCfg->snssai, sizeof(SchSnssai));
+     }
+     memcpy(ueCbLcCfg->snssai, lcCfg->snssai,sizeof(SchSnssai));
+   }
 }
 
 /*******************************************************************
@@ -142,6 +154,19 @@ void fillSchUlLcCtxt(SchUlLcCtxt *ueCbLcCfg, SchLcCfg *lcCfg)
    ueCbLcCfg->pbr     = lcCfg->ulLcCfg.pbr;
    ueCbLcCfg->bsd     = lcCfg->ulLcCfg.bsd;
 
+   if(lcCfg->drbQos)
+   {
+      ueCbLcCfg->pduSessionId = lcCfg->drbQos->pduSessionId;
+   }
+   if(lcCfg->snssai)
+   {
+     /*In CONFIG_MOD case, no need to allocate SNSSAI memory again*/
+     if(ueCbLcCfg->snssai == NULLP)
+     {
+        SCH_ALLOC(ueCbLcCfg->snssai, sizeof(SchSnssai));
+     }
+     memcpy(ueCbLcCfg->snssai, lcCfg->snssai,sizeof(SchSnssai));
+   }
 }
 
 /*******************************************************************
@@ -167,6 +192,20 @@ void updateSchUlCb(uint8_t delIdx, SchUlCb *ulInfo)
       memcpy(&ulInfo->ulLcCtxt[lcIdx], &ulInfo->ulLcCtxt[lcIdx+1], sizeof(SchUlLcCtxt));
       memset(&ulInfo->ulLcCtxt[lcIdx+1], 0, sizeof(SchUlLcCtxt));
    }
+   /*Leakage of Last Index*/
+   /*Last index of ulLcCtxt(before deletion) should be void*/
+   if(ulInfo->ulLcCtxt[ulInfo->numUlLc].snssai != NULLP)
+   {
+      DU_LOG("ERROR  --> SCH: updateSchUlCb Last index:%d (Before Deletion) memory is leaking",\
+            ulInfo->numUlLc);
+      SCH_FREE(ulInfo->ulLcCtxt[ulInfo->numUlLc].snssai, sizeof(Snssai));
+   }
+   else
+   {
+      DU_LOG("INFO  --> SCH: updateSchUlCb Last index:%d (before deletion) memory is freed successfully",\
+            ulInfo->numUlLc);
+
+   }
 }
 
 /*******************************************************************
@@ -191,6 +230,19 @@ void updateSchDlCb(uint8_t delIdx, SchDlCb *dlInfo)
    {
       memcpy(&dlInfo->dlLcCtxt[lcIdx], &dlInfo->dlLcCtxt[lcIdx+1], sizeof(SchDlLcCtxt));
       memset(&dlInfo->dlLcCtxt[lcIdx+1], 0, sizeof(SchDlLcCtxt));
+   }
+   /*Leakage of Last Index*/
+   /*Last index of ulLcCtxt(before deletion) should be void*/
+   if(dlInfo->dlLcCtxt[dlInfo->numDlLc].snssai != NULLP)
+   {
+      DU_LOG("ERROR  --> SCH: updateSchDlCb Last index:%d (before deletion) memory is leaking: Delete the S-NSSAI memory",\
+            dlInfo->numDlLc);
+      SCH_FREE(dlInfo->dlLcCtxt[dlInfo->numDlLc].snssai, sizeof(Snssai));
+   }
+   else
+   {
+      DU_LOG("INFO  --> SCH: updateSchDlCb Last index:%d (before deletion) memory is freed successfully",\
+            dlInfo->numDlLc);
    }
 }
 
@@ -277,14 +329,32 @@ uint8_t fillSchUeCb(SchUeCb *ueCb, SchUeCfg *ueCfg)
                if(ueCfg->schLcCfg[lcIdx].configType == CONFIG_MOD)
                {
                   fillSchUlLcCtxt(&ueCb->ulInfo.ulLcCtxt[ueLcIdx], &ueCfg->schLcCfg[lcIdx]);
-                  fillSchDlLcCtxt(&ueCb->dlInfo.dlLcCtxt[ueLcIdx], &ueCfg->schLcCfg[lcIdx]);
                   break;
                }
-               if(ueCfg->schLcCfg[ueLcIdx].configType == CONFIG_DEL)
+               /*BUG: ueCfg using lcIdx (Looping around numLCs in ueCfg whereas
+                * ueLcIdx Loops around numUlLc in SCH UL DB*/
+               if(ueCfg->schLcCfg[lcIdx].configType == CONFIG_DEL)
                {
                   memset(&ueCb->ulInfo.ulLcCtxt[ueLcIdx], 0, sizeof(SchUlLcCtxt));
                   ueCb->ulInfo.numUlLc--;
-                  updateSchUlCb(ueLcIdx, &ueCb->ulInfo); //moving arr elements one idx ahead 
+                  updateSchUlCb(ueLcIdx, &ueCb->ulInfo); //moving arr elements one idx ahead
+
+                  break;
+               }
+            }
+         }/*End of inner for loop */
+
+         for(ueLcIdx = 0; ueLcIdx < ueCb->dlInfo.numDlLc; ueLcIdx++) //searching for Lc to be Mod
+         {
+            if(ueCb->dlInfo.dlLcCtxt[ueLcIdx].lcId == ueCfg->schLcCfg[lcIdx].lcId)
+            {
+               if(ueCfg->schLcCfg[lcIdx].configType == CONFIG_MOD)
+               {
+                  fillSchDlLcCtxt(&ueCb->dlInfo.dlLcCtxt[ueLcIdx], &ueCfg->schLcCfg[lcIdx]);
+                  break;
+               }
+               if(ueCfg->schLcCfg[lcIdx].configType == CONFIG_DEL)
+               {
                   memset(&ueCb->dlInfo.dlLcCtxt[ueLcIdx], 0, sizeof(SchDlLcCtxt));
                   ueCb->dlInfo.numDlLc--;
                   updateSchDlCb(ueLcIdx, &ueCb->dlInfo); //moving arr elements one idx ahead
@@ -784,7 +854,7 @@ void deleteSchPdschServCellCfg(SchPdschServCellCfg *pdschServCellCfg)
 * ****************************************************************/
 void deleteSchUeCb(SchUeCb *ueCb) 
 {
-   uint8_t timeDomRsrcIdx;
+   uint8_t timeDomRsrcIdx = 0, ueLcIdx = 0;
    SchPucchCfg *pucchCfg = NULLP;
    SchPdschConfig *pdschCfg = NULLP;
 
@@ -821,6 +891,15 @@ void deleteSchUeCb(SchUeCb *ueCb)
          }
          SCH_FREE(ueCb->ueCfg.spCellCfg.servCellCfg.bwpInactivityTmr, sizeof(uint8_t));
          deleteSchPdschServCellCfg(&ueCb->ueCfg.spCellCfg.servCellCfg.pdschServCellCfg);
+      }
+      /*Need to Free the memory allocated for S-NSSAI*/
+      for(ueLcIdx = 0; ueLcIdx < ueCb->ulInfo.numUlLc; ueLcIdx++)
+      {
+         SCH_FREE(ueCb->ulInfo.ulLcCtxt[ueLcIdx].snssai, sizeof(SchSnssai));
+      }
+      for(ueLcIdx = 0; ueLcIdx < ueCb->dlInfo.numDlLc; ueLcIdx++)
+      {
+         SCH_FREE(ueCb->dlInfo.dlLcCtxt[ueLcIdx].snssai, sizeof(SchSnssai));
       }
       memset(ueCb, 0, sizeof(SchUeCb));
    }

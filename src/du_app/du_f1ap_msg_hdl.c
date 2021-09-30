@@ -7435,43 +7435,59 @@ void procRlcLcCfg(uint8_t rbId, uint8_t lcId, uint8_t rbType, uint8_t rlcMode,\
 
 void extractQosInfo(DrbQosInfo *qosToAdd, QoSFlowLevelQoSParameters_t *qosFlowCfg)
 {
+   uint8_t qosCntIdx = 0;
+   ProtocolExtensionContainer_4624P74_t *qosIeExt = NULLP;
+
    qosToAdd->fiveQiType = qosFlowCfg->qoS_Characteristics.present;
    qosToAdd->u.nonDyn5Qi.fiveQi     =\
-         qosFlowCfg->qoS_Characteristics.choice.non_Dynamic_5QI->fiveQI;
+                                     qosFlowCfg->qoS_Characteristics.choice.non_Dynamic_5QI->fiveQI;
    if(qosFlowCfg->qoS_Characteristics.choice.non_Dynamic_5QI->averagingWindow)
    {
       qosToAdd->u.nonDyn5Qi.avgWindow = \
-        *(qosFlowCfg->qoS_Characteristics.choice.non_Dynamic_5QI->averagingWindow);
+                                        *(qosFlowCfg->qoS_Characteristics.choice.non_Dynamic_5QI->averagingWindow);
    }
    qosToAdd->u.nonDyn5Qi.maxDataBurstVol = \
-      *(qosFlowCfg->qoS_Characteristics.choice.non_Dynamic_5QI->maxDataBurstVolume);
+                                           *(qosFlowCfg->qoS_Characteristics.choice.non_Dynamic_5QI->maxDataBurstVolume);
    if(qosFlowCfg->qoS_Characteristics.choice.non_Dynamic_5QI->qoSPriorityLevel)
    {
       qosToAdd->u.nonDyn5Qi.priorLevel = \
-         *(qosFlowCfg->qoS_Characteristics.choice.non_Dynamic_5QI->qoSPriorityLevel);
+                                         *(qosFlowCfg->qoS_Characteristics.choice.non_Dynamic_5QI->qoSPriorityLevel);
    }
    qosToAdd->ngRanRetPri.priorityLevel = \
-      qosFlowCfg->nGRANallocationRetentionPriority.priorityLevel; 
+                                         qosFlowCfg->nGRANallocationRetentionPriority.priorityLevel; 
    qosToAdd->ngRanRetPri.preEmptionCap = \
-      qosFlowCfg->nGRANallocationRetentionPriority.pre_emptionCapability;
+                                         qosFlowCfg->nGRANallocationRetentionPriority.pre_emptionCapability;
    qosToAdd->ngRanRetPri.preEmptionVul = \
-      qosFlowCfg->nGRANallocationRetentionPriority.pre_emptionVulnerability;
+                                         qosFlowCfg->nGRANallocationRetentionPriority.pre_emptionVulnerability;
    if(qosFlowCfg->gBR_QoS_Flow_Information)
    {
       memcpy(&qosToAdd->grbQosInfo.maxFlowBitRateDl, \
-         qosFlowCfg->gBR_QoS_Flow_Information->maxFlowBitRateDownlink.buf, \
-         qosFlowCfg->gBR_QoS_Flow_Information->maxFlowBitRateDownlink.size);
+            qosFlowCfg->gBR_QoS_Flow_Information->maxFlowBitRateDownlink.buf, \
+            qosFlowCfg->gBR_QoS_Flow_Information->maxFlowBitRateDownlink.size);
       memcpy(&qosToAdd->grbQosInfo.maxFlowBitRateUl, \
-         qosFlowCfg->gBR_QoS_Flow_Information->maxFlowBitRateUplink.buf, \
-         qosFlowCfg->gBR_QoS_Flow_Information->maxFlowBitRateUplink.size);
+            qosFlowCfg->gBR_QoS_Flow_Information->maxFlowBitRateUplink.buf, \
+            qosFlowCfg->gBR_QoS_Flow_Information->maxFlowBitRateUplink.size);
       memcpy(&qosToAdd->grbQosInfo.guarFlowBitRateDl,\
-         qosFlowCfg->gBR_QoS_Flow_Information->guaranteedFlowBitRateDownlink.buf, \
-         qosFlowCfg->gBR_QoS_Flow_Information->guaranteedFlowBitRateDownlink.size);
+            qosFlowCfg->gBR_QoS_Flow_Information->guaranteedFlowBitRateDownlink.buf, \
+            qosFlowCfg->gBR_QoS_Flow_Information->guaranteedFlowBitRateDownlink.size);
       memcpy(&qosToAdd->grbQosInfo.guarFlowBitRateUl,\
-         qosFlowCfg->gBR_QoS_Flow_Information->guaranteedFlowBitRateUplink.buf, \
-         qosFlowCfg->gBR_QoS_Flow_Information->guaranteedFlowBitRateUplink.size);
+            qosFlowCfg->gBR_QoS_Flow_Information->guaranteedFlowBitRateUplink.buf, \
+            qosFlowCfg->gBR_QoS_Flow_Information->guaranteedFlowBitRateUplink.size);
    }
-   qosToAdd->pduSessionId = 0;
+   /*Extracting PDU_SESSION_ID*/
+   qosIeExt = (ProtocolExtensionContainer_4624P74_t *)qosFlowCfg->iE_Extensions;
+   if(qosIeExt)
+   {
+      for(qosCntIdx = 0; qosCntIdx < qosIeExt->list.count; qosCntIdx++)
+      {
+         if(qosIeExt->list.array[qosCntIdx]->extensionValue.present == \
+               QoSFlowLevelQoSParameters_ExtIEs__extensionValue_PR_PDUSessionID)
+         {
+            qosToAdd->pduSessionId = qosIeExt->list.array[qosCntIdx]->extensionValue.choice.PDUSessionID;
+            DU_LOG("\nDEBUG -->  DU_F1AP : extractQosInfo: PDU SessionID:%d",qosToAdd->pduSessionId);
+         }
+      }  
+   }
    qosToAdd->ulPduSessAggMaxBitRate = 0;
 }
 

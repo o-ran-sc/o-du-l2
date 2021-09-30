@@ -178,6 +178,12 @@
    _bitPos = __builtin_ctz(_in);                 \
 }
 
+/* MACRO for checking CRNTI range*/
+#define CHECK_CRNTI(_crnti, _isCrntiValid)                                         \
+{                                                                   \
+  _isCrntiValid = ((_crnti >= ODU_START_CRNTI && _crnti <= ODU_END_CRNTI ) ? 1 : 0); \
+}
+
 typedef enum
 {
    UE_CFG_INACTIVE,

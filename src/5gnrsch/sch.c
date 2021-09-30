@@ -642,8 +642,8 @@ uint8_t schInitCellCb(Inst inst, SchCellCfg *schCellCfg)
       SCH_ALLOC(schDlSlotInfo, sizeof(SchDlSlotInfo));
       if(!schDlSlotInfo)
       {
-	 DU_LOG("\nERROR  -->  SCH : Memory allocation failed in schInitCellCb");
-	 return RFAILED;
+         DU_LOG("\nERROR  -->  SCH : Memory allocation failed in schInitCellCb");
+         return RFAILED;
       }
 
       /* UL Alloc */
