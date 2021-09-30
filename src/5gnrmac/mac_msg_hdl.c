@@ -37,11 +37,6 @@
 
 MacCb  macCb;
 
-uint16_t buildMacPdu(RlcData *dlData);
-#ifdef EGTP_TEST
-void macStubBuildUlData(Buffer *mBuf);
-#endif
-
 /* Function pointer for sending crc ind from MAC to SCH */
 MacSchCrcIndFunc macSchCrcIndOpts[]=
 {
