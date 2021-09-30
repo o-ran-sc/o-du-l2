@@ -1711,6 +1711,21 @@ void updateMacUlCb(uint8_t delIdx, UeUlCb *ulCb)
       memcpy(&ulCb->lcCb[lcIdx], &ulCb->lcCb[lcIdx+1], sizeof(UlLcCb));
       memset(&ulCb->lcCb[lcIdx+1], 0, sizeof(UlLcCb));
    }
+   /*Commenting as S-NSSAI and PDU session will be stored in MAC DB in future scope*/
+#if 0
+   /*Checking the Memory Leakage of Last Index*/
+   if(ulCb->lcCb[ulCb->numUlLc].snssai != NULLP)
+   {
+      DU_LOG("ERROR  --> MAC: updateMacUlCb Last index deleted :%d  memory is leaking",\
+            ulCb->numUlLc);
+      MAC_FREE(ulCb->lcCb[ulCb->numUlLc].snssai, sizeof(Snssai));
+   }
+   else
+   {
+      DU_LOG("INFO  --> MAC: updateMacUlCb Last index:%d (before deletion) memory is freed successfully",\
+            ulCb->numUlLc);
+   }
+#endif
 }
 
 /*******************************************************************
@@ -1738,8 +1753,141 @@ void updateMacDlCb(uint8_t delIdx, UeDlCb *dlCb)
       memcpy(&dlCb->lcCb[lcIdx], &dlCb->lcCb[lcIdx+1], sizeof(DlLcCb));
       memset(&dlCb->lcCb[lcIdx+1], 0, sizeof(DlLcCb));
    }
+   /*Commenting as S-NSSAI and PDU session will be stored in MAC DB in future scope*/
+#if 0
+   /*Checking the Memory Leakage of Last Index*/
+   if(dlCb->lcCb[dlCb->numDlLc].snssai != NULLP)
+   {
+      DU_LOG("ERROR  --> MAC: updateMacDlCb Last Deleted index:%d memory is leaking",\
+            dlCb->numDlLc);
+      MAC_FREE(dlCb->lcCb[dlCb->numDlLc].snssai, sizeof(Snssai));
+   }
+   else
+   {
+      DU_LOG("INFO  --> MAC: updateMacDlCb Last index:%d (before deletion) memory is freed successfully",\
+            dlCb->numDlLc);
+   }
+#endif
 }
 
+/*******************************************************************
+ *
+ * @brief Update Mac UL Lc List based on CONFIG_MOD/CONFIG_DEL
+ *
+ * @details
+ *
+ *    Function : updateMacUlLcCtxt
+ *
+ *    Functionality: Update UeUlCb Lc List
+ *
+ * @params[in]  UeUlCb pointer, ueLcCfg(received from DUAPP)
+ * @return void
+ *
+ * ****************************************************************/
+void updateMacUlLcCtxt(UeUlCb *ulInfo, LcCfg *ueLcCfg)
+{
+   uint8_t ueLcIdx = 0; 
+
+   /*Traversing UL LC to be updated/Deleted*/
+   for(ueLcIdx = 0; ueLcIdx < ulInfo->numUlLc; ueLcIdx++)
+   {
+      if(ulInfo->lcCb[ueLcIdx].lcId == ueLcCfg->lcId)
+      {
+         if(ueLcCfg->configType == CONFIG_MOD)
+         {
+            /*Modify UL LC CB */
+            ulInfo->lcCb[ueLcIdx].lcGrpId = ueLcCfg->ulLcCfg.lcGroup;
+
+            /*Commenting as S-NSSAI and PDU session will be stored in MAC DB in future scope*/
+#if 0
+            /*Modifying/Copying PduSession ID and S-NSSAI into MAC's UECB*/
+            if(ueLcCfg->drbQos)
+            {
+               ulInfo->lcCb[ueLcIdx].pduSessionId = ueLcCfg->drbQos->pduSessionId;
+            }
+            if(ueLcCfg->snssai)
+            {
+               if(ulInfo->lcCb[ueLcIdx].snssai == NULLP)
+               {
+                  MAC_ALLOC(ulInfo->lcCb[ueLcIdx].snssai, sizeof(Snssai));
+               }
+
+               memcpy(ulInfo->lcCb[ueLcIdx].snssai, ueLcCfg->snssai, sizeof(Snssai));
+            }
+#endif
+            DU_LOG("\nINFO  -->  MAC: Successfully Modified LC context for lcId[%d], ueLcIdx:%d",\
+                  ueLcCfg->lcId,ueLcIdx);
+            break;
+         }
+         if(ueLcCfg->configType == CONFIG_DEL)
+         {
+            memset(&ulInfo->lcCb[ueLcIdx], 0, sizeof(UlLcCb));
+            (ulInfo->numUlLc)--;
+            updateMacUlCb(ueLcIdx, ulInfo);
+            DU_LOG("\nINFO  -->  MAC: Successfully Deleted LC context for lcId[%d]", ueLcCfg->lcId);
+            break;
+         }
+      }
+   }
+}
+
+/*******************************************************************
+ *
+ * @brief Update Mac DL Lc List based on CONFIG_MOD/CONFIG_DEL
+ *
+ * @details
+ *
+ *    Function : updateMacDlLcCtxt
+ *
+ *    Functionality: Update UeDlCb Lc List
+ *
+ * @params[in]  UeDlCb pointer, ueLcCfg(received from DUAPP)
+ * @return void
+ *
+ * ****************************************************************/
+void updateMacDlLcCtxt(UeDlCb *dlInfo, LcCfg *ueLcCfg)
+{
+   uint8_t ueLcIdx = 0; 
+
+   /*Traversing DL LC to be updated/Deleted*/
+   for(ueLcIdx = 0; ueLcIdx < dlInfo->numDlLc; ueLcIdx++)
+   {
+      if(dlInfo->lcCb[ueLcIdx].lcId == ueLcCfg->lcId)
+      {
+         if(ueLcCfg->configType == CONFIG_MOD)
+         {
+            /*Commenting as S-NSSAI and PDU session will be stored in MAC DB in future scope*/
+#if 0
+            /*Modifying/Copying PduSession ID and S-NSSAI into MAC's UECB*/
+            if(ueLcCfg->drbQos)
+            {
+               dlInfo->lcCb[ueLcIdx].pduSessionId = ueLcCfg->drbQos->pduSessionId;
+            }
+            if(ueLcCfg->snssai)
+            {
+               if(dlInfo->lcCb[ueLcIdx].snssai == NULLP)
+               {
+                  MAC_ALLOC(dlInfo->lcCb[ueLcIdx].snssai, sizeof(Snssai));
+               }
+
+               memcpy(dlInfo->lcCb[ueLcIdx].snssai, ueLcCfg->snssai, sizeof(Snssai));
+            }
+#endif
+            DU_LOG("\nINFO  -->  MAC: Successfully Modified LC context for lcId[%d], ueLcIdx:%d",\
+                  ueLcCfg->lcId,ueLcIdx);
+            break;
+         }
+         if(ueLcCfg->configType == CONFIG_DEL)
+         {
+            memset(&dlInfo->lcCb[ueLcIdx], 0, sizeof(DlLcCb));
+            (dlInfo->numDlLc)--;
+            updateMacDlCb(ueLcIdx, dlInfo);
+            DU_LOG("\nINFO  -->  MAC: Successfully Deleted LC context for lcId[%d]", ueLcCfg->lcId);
+            break;
+         }
+      }
+   }
+}
 /*******************************************************************
  *
  * @brief Fills Logical channel Cfg List to Add/Mod/Del
@@ -1758,7 +1906,7 @@ void updateMacDlCb(uint8_t delIdx, UeDlCb *dlCb)
 
 uint8_t fillMacLcCfgList(MacUeCb *ueCb, MacUeCfg *ueCfg)
 {
-   uint8_t lcIdx, ueLcIdx;
+   uint8_t lcIdx = 0;
 
    for(lcIdx = 0; lcIdx < ueCfg->numLcs; lcIdx++)
    {
@@ -1766,45 +1914,50 @@ uint8_t fillMacLcCfgList(MacUeCb *ueCb, MacUeCfg *ueCfg)
       {
          if(ueCfg->lcCfgList[lcIdx].configType == CONFIG_ADD)
          {
-	    /*Filling DL LC CB */
+            /*Commenting as S-NSSAI and PDU session will be stored in MAC DB in future scope*/
+#if 0
+            /*Copying PduSession ID and S-NSSAI into MAC's UECB*/
+            if(ueCfg->lcCfgList[lcIdx].drbQos)
+            {
+               ueCb->dlInfo.lcCb[ueCb->dlInfo.numDlLc].pduSessionId = \
+                                                                      ueCfg->lcCfgList[lcIdx].drbQos->pduSessionId;
+
+               ueCb->ulInfo.lcCb[ueCb->ulInfo.numUlLc].pduSessionId = \
+                                                                      ueCfg->lcCfgList[lcIdx].drbQos->pduSessionId;
+            }
+            if(ueCfg->lcCfgList[lcIdx].snssai)
+            {
+               if(ueCb->dlInfo.lcCb[ueCb->dlInfo.numDlLc].snssai == NULLP)
+               {
+                  MAC_ALLOC(ueCb->dlInfo.lcCb[ueCb->dlInfo.numDlLc].snssai, sizeof(Snssai));
+               }
+               if(ueCb->ulInfo.lcCb[ueCb->ulInfo.numUlLc].snssai == NULLP)
+               {
+                  MAC_ALLOC(ueCb->ulInfo.lcCb[ueCb->ulInfo.numUlLc].snssai, sizeof(Snssai));
+               }
+
+               memcpy(ueCb->dlInfo.lcCb[ueCb->dlInfo.numDlLc].snssai, \
+                     ueCfg->lcCfgList[lcIdx].snssai, sizeof(Snssai));
+
+               memcpy(ueCb->ulInfo.lcCb[ueCb->ulInfo.numUlLc].snssai, \
+                     ueCfg->lcCfgList[lcIdx].snssai, sizeof(Snssai));
+
+            }
+#endif
+            /*Filling DL LC CB */
             ueCb->dlInfo.lcCb[ueCb->dlInfo.numDlLc].lcId = ueCfg->lcCfgList[lcIdx].lcId;
             ueCb->dlInfo.lcCb[ueCb->dlInfo.numDlLc].lcState = MAC_LC_STATE_ACTIVE;
             ueCb->dlInfo.numDlLc++;
-	    /*Filling UL LC CB */
+            /*Filling UL LC CB */
             ueCb->ulInfo.lcCb[ueCb->ulInfo.numUlLc].lcId = ueCfg->lcCfgList[lcIdx].lcId;
             ueCb->ulInfo.lcCb[ueCb->ulInfo.numUlLc].lcGrpId = ueCfg->lcCfgList[lcIdx].ulLcCfg.lcGroup;
             ueCb->ulInfo.lcCb[ueCb->ulInfo.numUlLc].lcActive = MAC_LC_STATE_ACTIVE;
             ueCb->ulInfo.numUlLc++;
          }/*End of Add Config */
          else
-         { 
-	    //searching for Lc to be Mod
-	    for(ueLcIdx = 0; ueLcIdx < ueCb->ulInfo.numUlLc; ueLcIdx++)
-	    {
-               if(ueCb->ulInfo.lcCb[ueLcIdx].lcId == ueCfg->lcCfgList[lcIdx].lcId)
-               {
-	          if(ueCfg->lcCfgList[lcIdx].configType == CONFIG_MOD)
-		  {
-	             /*Nothing to Modify in DL LC CB */
-                     /*Modify UL LC CB */
-                     ueCb->ulInfo.lcCb[ueLcIdx].lcGrpId = ueCfg->lcCfgList[lcIdx].ulLcCfg.lcGroup;
-                     DU_LOG("\nINFO  -->  MAC: Successfully Modified LC context for lcId[%d]", ueCfg->lcCfgList[lcIdx].lcId);
-                     break;
-		  }
-	          if(ueCfg->lcCfgList[lcIdx].configType == CONFIG_DEL)
-		  {
-                     memset(&ueCb->dlInfo.lcCb[ueLcIdx], 0, sizeof(DlLcCb));
-                     (ueCb->dlInfo.numDlLc)--;
-                     updateMacDlCb(ueLcIdx, &ueCb->dlInfo);
-
-                     memset(&ueCb->ulInfo.lcCb[ueLcIdx], 0, sizeof(UlLcCb));
-                     (ueCb->ulInfo.numUlLc)--;
-                     updateMacUlCb(ueLcIdx, &ueCb->ulInfo);
-                     DU_LOG("\nINFO  -->  MAC: Successfully Deleted LC context for lcId[%d]", ueCfg->lcCfgList[lcIdx].lcId);
-                     break;
-		  }
-	       }
-	    }
+         {
+            updateMacUlLcCtxt(&ueCb->ulInfo, &ueCfg->lcCfgList[lcIdx]);            
+            updateMacDlLcCtxt(&ueCb->dlInfo, &ueCfg->lcCfgList[lcIdx]);            
          }/*End of Mod Config */
       }
    }
@@ -2544,15 +2697,15 @@ void deletePucchResourcesCfg(PucchResrcCfg *resrcCfg)
 
 uint8_t MacProcSchUeDeleteRsp(Pst *pst, SchUeDeleteRsp *schUeDelRsp)
 {
-   uint8_t ueIdx =0;
+   uint8_t ueIdx =0, lcIdx = 0, isCrntiValid = 0;
    uint16_t cellIdx=0;
    uint8_t ret = RFAILED;
    UeDeleteStatus result;
-  
+
 #ifdef CALL_FLOW_DEBUG_LOG
    DU_LOG("\nCall Flow: ENTSCH -> ENTMAC : EVENT_UE_DELETE_RSP_TO_MAC\n");
 #endif   
-   
+
    if(schUeDelRsp)
    {
       if(schUeDelRsp->rsp == RSP_OK)
@@ -2561,18 +2714,41 @@ uint8_t MacProcSchUeDeleteRsp(Pst *pst, SchUeDeleteRsp *schUeDelRsp)
          GET_CELL_IDX(schUeDelRsp->cellId, cellIdx);
          if(macCb.macCell[cellIdx])
          {
-            GET_UE_IDX(schUeDelRsp->crnti, ueIdx);
-            if(macCb.macCell[cellIdx]->ueCb[ueIdx -1].crnti == schUeDelRsp->crnti)
+            CHECK_CRNTI(schUeDelRsp->crnti, isCrntiValid);
+            if(!isCrntiValid)
             {
-               memset(&macCb.macCell[cellIdx]->ueCb[ueIdx -1], 0, sizeof(MacUeCb));
-               macCb.macCell[cellIdx]->numActvUe--;
-               result = SUCCESS;
-               ret = ROK;
+               /*C-RNTI value is out of Acceptable range*/
+               DU_LOG("\nERROR  -->  MAC : MacProcSchUeDeleteRsp(): Invalid crnti[%d] ",schUeDelRsp->crnti);
+               result = UEIDX_INVALID;
             }
             else
             {
-               DU_LOG("\nERROR  -->  MAC : MacProcSchUeDeleteRsp(): crnti[%d] does not exist ",schUeDelRsp->crnti);
-               result = UEIDX_INVALID;
+               GET_UE_IDX(schUeDelRsp->crnti, ueIdx);
+               if(macCb.macCell[cellIdx]->ueCb[ueIdx -1].crnti == schUeDelRsp->crnti)
+               {
+
+                  /*Commenting as S-NSSAI and PDU session will be stored in MAC DB in future scope*/
+#if 0
+                  /*Looping around LCs to free S-NSSAI memory*/
+                  for(lcIdx = 0; lcIdx < (macCb.macCell[cellIdx]->ueCb[ueIdx -1].ulInfo.numUlLc); lcIdx++)
+                  {
+                     MAC_FREE(macCb.macCell[cellIdx]->ueCb[ueIdx -1].ulInfo.lcCb[lcIdx].snssai, sizeof(Snssai));
+                  }
+                  for(lcIdx = 0; lcIdx < (macCb.macCell[cellIdx]->ueCb[ueIdx -1].dlInfo.numDlLc); lcIdx++)
+                  {
+                     MAC_FREE(macCb.macCell[cellIdx]->ueCb[ueIdx -1].dlInfo.lcCb[lcIdx].snssai, sizeof(Snssai));
+                  }
+#endif
+                  memset(&macCb.macCell[cellIdx]->ueCb[ueIdx -1], 0, sizeof(MacUeCb));
+                  macCb.macCell[cellIdx]->numActvUe--;
+                  result = SUCCESS;
+                  ret = ROK;
+               }
+               else
+               {
+                  DU_LOG("\nERROR  -->  MAC : MacProcSchUeDeleteRsp(): crnti[%d] does not exist ",schUeDelRsp->crnti);
+                  result = UEIDX_INVALID;
+               }
             }
          }
          else
