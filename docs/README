@@ -18,7 +18,7 @@ A. Directory Structure :
    f. mt       : wrapper functions over OS
    g. phy_stub : Stub code for Physical layer
    h. rlog     : logging module
-   i. o1       : o1 module
+   i. O1       : O1 module
 
 
 B. Pre-requisite for Compilation :

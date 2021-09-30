@@ -264,12 +264,16 @@ uint8_t schFillBoGrantDlSchedInfo(SchCellCb *cell, DlSchedInfo *dlSchedInfo, DlM
 
       /* pdcch and pdsch data is filled */
       schDlRsrcAllocDlMsg(dlMsgAlloc, cell, crnti, &accumalatedSize, slot);
-      /* Calculated TB size could be less than the total size requested.
-       * Hence, updated the scheduled bytes report. Following is valid only for
-       * one LC.
-       * TODO : Update the scheduling byte report for multiple LC based on QCI
+
+      /* TODO : Update the scheduling byte report for multiple LC based on QCI
        * and Priority */
-      dlMsgAlloc->lcSchInfo[dlMsgAlloc->numLc -1].schBytes = accumalatedSize;
+      /* As of now, the total number of bytes scheduled for a slot is divided
+       * equally amongst all LC with pending data. This is avoid starving of any
+       * LC 
+       * */
+      accumalatedSize = accumalatedSize/dlMsgAlloc->numLc;
+      for(lcIdx = 0; lcIdx < dlMsgAlloc->numLc; lcIdx ++)
+         dlMsgAlloc->lcSchInfo[lcIdx].schBytes = accumalatedSize;
 
       /* PUCCH resource */
       schAllocPucchResource(cell, dlMsgAlloc->crnti, slot);

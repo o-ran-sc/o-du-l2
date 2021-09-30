@@ -1071,9 +1071,7 @@ uint8_t duHdlEgtpCfgComplete(CmStatus cfm)
    if(cfm.status == LCM_PRIM_OK)
    {
       DU_LOG("\nDEBUG   -->  DU_APP : EGTP configuraton complete");
-#ifdef EGTP_TEST
       duSendEgtpSrvOpenReq();
-#endif
    }
    else
    {
