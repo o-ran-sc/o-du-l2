@@ -311,7 +311,7 @@ void macMuxPdu(MacDlData *dlData, MacCeInfo *macCeData, uint8_t *txPdu, uint16_t
 {
    uint16_t bytePos = 0;
    uint8_t bitPos = 7;
-   uint8_t idx = 0;
+   uint8_t pduIdx = 0;
    uint8_t macPdu[tbSize];
    memset(macPdu, 0, (tbSize * sizeof(uint8_t)));
 
@@ -330,62 +330,62 @@ void macMuxPdu(MacDlData *dlData, MacCeInfo *macCeData, uint8_t *txPdu, uint16_t
    /* PACK ALL MAC CE */
    if(macCeData != NULLP)
    {
-      for(idx = 0; idx < macCeData->numCes; idx++)
+      for(pduIdx = 0; pduIdx < macCeData->numCes; pduIdx++)
       {
-	 lcid = macCeData->macCe[idx].macCeLcid;
-	 switch(lcid)
-	 {
-	    case MAC_LCID_CRI:
-	       {
-		  /* Packing fields into MAC PDU R/R/LCID */
-		  packBytes(macPdu, &bytePos, &bitPos, RBit, (RBitSize * 2));
-		  packBytes(macPdu, &bytePos, &bitPos, lcid, lcidSize);
-		  memcpy(&macPdu[bytePos], macCeData->macCe[idx].macCeValue,\
-			MAX_CRI_SIZE);
-		  bytePos += MAX_CRI_SIZE;
-		  break;
-	       }
-	    default:
-	       DU_LOG("\nERROR  -->  MAC: Invalid LCID %d in mac pdu",lcid);
-	       break;
-	 }
+         lcid = macCeData->macCe[pduIdx].macCeLcid;
+         switch(lcid)
+         {
+            case MAC_LCID_CRI:
+               {
+                  /* Packing fields into MAC PDU R/R/LCID */
+                  packBytes(macPdu, &bytePos, &bitPos, RBit, (RBitSize * 2));
+                  packBytes(macPdu, &bytePos, &bitPos, lcid, lcidSize);
+                  memcpy(&macPdu[bytePos], macCeData->macCe[pduIdx].macCeValue,\
+                        MAX_CRI_SIZE);
+                  bytePos += MAX_CRI_SIZE;
+                  break;
+               }
+            default:
+               DU_LOG("\nERROR  -->  MAC: Invalid LCID %d in mac pdu",lcid);
+               break;
+         }
       }
    }
 
    /* PACK ALL MAC SDUs */
-   for(idx = 0; idx < dlData->numPdu; idx++)
+   for(pduIdx = 0; pduIdx < dlData->numPdu; pduIdx++)
    {
-      lcid = dlData->pduInfo[idx].lcId;
+      lcid = dlData->pduInfo[pduIdx].lcId;
       switch(lcid)
       {
-	 case MAC_LCID_CCCH:
-	 case MAC_LCID_MIN ... MAC_LCID_MAX :
-	    {
-	       lenField = dlData->pduInfo[idx].pduLen;
-	       if(dlData->pduInfo[idx].pduLen > 255)
-	       {
-		  FBit = 1;
-		  lenFieldSize = 16;
+         case MAC_LCID_CCCH:
+         case MAC_LCID_MIN ... MAC_LCID_MAX :
+            {
+               lenField = dlData->pduInfo[pduIdx].pduLen;
+               if(dlData->pduInfo[pduIdx].pduLen > 255)
+               {
+                  FBit = 1;
+                  lenFieldSize = 16;
 
-	       }
-	       else
-	       {
-		  FBit = 0;
-		  lenFieldSize = 8;
-	       }
-	       /* Packing fields into MAC PDU R/F/LCID/L */
-	       packBytes(macPdu, &bytePos, &bitPos, RBit, RBitSize);
-	       packBytes(macPdu, &bytePos, &bitPos, FBit, FBitSize);
-	       packBytes(macPdu, &bytePos, &bitPos, lcid, lcidSize);
-	       packBytes(macPdu, &bytePos, &bitPos, lenField, lenFieldSize);
-	       memcpy(&macPdu[bytePos], dlData->pduInfo[idx].dlPdu, lenField);
-	       bytePos += lenField;
-	       break;
-	    }
+               }
+               else
+               {
+                  FBit = 0;
+                  lenFieldSize = 8;
+               }
+               /* Packing fields into MAC PDU R/F/LCID/L */
+               packBytes(macPdu, &bytePos, &bitPos, RBit, RBitSize);
+               packBytes(macPdu, &bytePos, &bitPos, FBit, FBitSize);
+               packBytes(macPdu, &bytePos, &bitPos, lcid, lcidSize);
+               packBytes(macPdu, &bytePos, &bitPos, lenField, lenFieldSize);
+               memcpy(&macPdu[bytePos], dlData->pduInfo[pduIdx].dlPdu, lenField);
+               bytePos += lenField;
+               break;
+            }
 
-	 default:
-	    DU_LOG("\nERROR  -->  MAC: Invalid LCID %d in mac pdu",lcid);
-	    break;
+         default:
+            DU_LOG("\nERROR  -->  MAC: Invalid LCID %d in mac pdu",lcid);
+            break;
       }
    }
    if(bytePos < tbSize && (tbSize-bytePos >= 1))
