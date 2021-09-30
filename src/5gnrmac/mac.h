@@ -152,16 +152,28 @@ typedef struct dlHarqEnt
 /* Uplink deidcated logical channel info */
 typedef struct ulLcCb
 {
-   uint8_t   lcId;      /* Logical Channel Id */
-   uint8_t   lcGrpId;   /* Logical Channel group */
-   MacLcState lcActive;  /* Is LC active ? */
+   uint8_t    lcId;         /* Logical Channel Id */
+   uint8_t    lcGrpId;      /* Logical Channel group */
+   MacLcState lcActive;     /* Is LC active ? */
+   /*Commenting as S-NSSAI and PDU session will be used in future scope*/
+   /*For eg: When we have to send these for AMBR cases*/
+   #if 0
+   uint16_t   pduSessionId; /*Pdu Session Id*/
+   Snssai     *snssai;      /*S-NSSAI assoc with LCID*/
+   #endif
 }UlLcCb;
 
 /* Downlink dedicated logical channel info */
 typedef struct dlLcCb
 {
-   uint8_t   lcId;      /* Logical channel Id */ 
-   MacLcState   lcState;  /* Is LC active ? */
+   uint8_t    lcId;        /* Logical channel Id */ 
+   MacLcState lcState;     /* Is LC active ? */
+   /*Commenting as S-NSSAI and PDU session will be used in future scope*/
+   /*For eg: When we have to send these info via FAPI to phy layer*/
+   #if 0
+   uint16_t   pduSessionId;/*Pdu Session Id*/
+   Snssai     *snssai;    /*S-NSSAI assoc with LCID*/
+   #endif
 }DlLcCb;
 
 /* BSR Information */
