@@ -24,6 +24,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "85b87890_8d8211a2",
+        "filename": "src/5gnrmac/mac_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-09-30T14:23:06Z",
+      "side": 1,
+      "message": "This function definition is not present anymore in the repo.\nHence removed the declaration",
+      "parentUuid": "ca9b54ae_4b15cdde",
+      "range": {
+        "startLine": 40,
+        "startChar": 21,
+        "endLine": 40,
+        "endChar": 28
+      },
+      "revId": "90e97d081520ada0044a657ed0b280908d051d2d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "33cc78f8_3e427362",
@@ -37,6 +61,30 @@
       "writtenOn": "2021-09-30T12:31:56Z",
       "side": 1,
       "message": "change this idx to another name.",
+      "range": {
+        "startLine": 356,
+        "startChar": 7,
+        "endLine": 356,
+        "endChar": 10
+      },
+      "revId": "90e97d081520ada0044a657ed0b280908d051d2d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b27047b2_7eaf57de",
+        "filename": "src/5gnrmac/mac_mux.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 356,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-09-30T14:23:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "33cc78f8_3e427362",
       "range": {
         "startLine": 356,
         "startChar": 7,
