@@ -1,0 +1,140 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "07402786_6df19d42",
+        "filename": "src/5gnrmac/mac_cfg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 193,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-09-30T17:45:25Z",
+      "side": 1,
+      "message": "It is to be discussed that storing of slice information is required at MAC or not",
+      "revId": "4f9e604024464e80884725742e0d398cfb47df1c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a2e14729_b14e8db0",
+        "filename": "src/cm/du_app_mac_inf.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 671,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-09-30T17:45:25Z",
+      "side": 1,
+      "message": "since this is common structure used in multiple layer, move it to common_def.h \nmove SD_SIZE as well",
+      "revId": "4f9e604024464e80884725742e0d398cfb47df1c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3bebf0a8_65028d25",
+        "filename": "src/cm/du_app_mac_inf.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 676,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-09-30T17:45:25Z",
+      "side": 1,
+      "message": "use PLMN defined in common_def.h",
+      "revId": "4f9e604024464e80884725742e0d398cfb47df1c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eaec85ae_9b00a550",
+        "filename": "src/cm/du_app_mac_inf.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 687,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-09-30T17:45:25Z",
+      "side": 1,
+      "message": "prefixing mac to structure name is not needed. Remove from ResourceType and PolicyMemberList too",
+      "revId": "4f9e604024464e80884725742e0d398cfb47df1c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "466cdf39_f7502fd3",
+        "filename": "src/cm/mac_sch_interface.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 733,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-09-30T17:45:25Z",
+      "side": 1,
+      "message": "use common structure for snssai",
+      "revId": "4f9e604024464e80884725742e0d398cfb47df1c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "80eeefc2_45673e18",
+        "filename": "src/cm/mac_sch_interface.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 738,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-09-30T17:45:25Z",
+      "side": 1,
+      "message": "use PLMN from common_Def.h",
+      "revId": "4f9e604024464e80884725742e0d398cfb47df1c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5e7d54a6_c07717ae",
+        "filename": "src/du_app/du_cfg.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 658,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-09-30T17:45:25Z",
+      "side": 1,
+      "message": "use macros for above values",
+      "revId": "4f9e604024464e80884725742e0d398cfb47df1c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f62eb04b_5c7f35a8",
+        "filename": "src/du_app/du_cfg.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 661,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-09-30T17:45:25Z",
+      "side": 1,
+      "message": "1. Do we not need to store rrmPolicy in duCfgParam as done for snssai below?\n2. If not to be stored in du, then why allocating here and passing to readMacCfg.\nCan be directly done in readMacCfg",
+      "revId": "4f9e604024464e80884725742e0d398cfb47df1c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
