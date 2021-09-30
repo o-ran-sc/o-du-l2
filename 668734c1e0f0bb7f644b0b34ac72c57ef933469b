@@ -84,6 +84,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "493584af_4d3df92a",
+        "filename": "src/5gnrmac/mac.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 159,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-09-30T13:58:23Z",
+      "side": 1,
+      "message": "Lets discuss with team if PduSession info is needed at MAC?",
+      "revId": "668734c1e0f0bb7f644b0b34ac72c57ef933469b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "fa6f6a63_f4177a38",
         "filename": "src/5gnrmac/mac.h",
         "patchSetId": 4
@@ -201,6 +218,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7ef4c881_5981823c",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 2042,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-09-30T13:58:23Z",
+      "side": 1,
+      "message": "Instead of passing 2 variables, can we pass pduSessionID \u003d -1 for cases where pduSession is not present.\npduSessionFlag can be removed altogether.",
+      "revId": "668734c1e0f0bb7f644b0b34ac72c57ef933469b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "40444fbc_ea656c97",
         "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
         "patchSetId": 4
@@ -277,6 +311,40 @@
       "side": 1,
       "message": "Done",
       "parentUuid": "a62824d7_cecab1be",
+      "revId": "668734c1e0f0bb7f644b0b34ac72c57ef933469b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d0516c15_783b0646",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 2092,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-09-30T13:58:23Z",
+      "side": 1,
+      "message": "indentation fixes needed in this function",
+      "revId": "668734c1e0f0bb7f644b0b34ac72c57ef933469b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "138f98fd_60f04791",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 2096,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-09-30T13:58:23Z",
+      "side": 1,
+      "message": "list.size \u003d elemectCnt * sizeof(struct *)",
       "revId": "668734c1e0f0bb7f644b0b34ac72c57ef933469b",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
