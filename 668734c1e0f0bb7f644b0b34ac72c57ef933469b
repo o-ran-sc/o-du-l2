@@ -16,6 +16,195 @@
       "message": "PatchSet 4:\n1. Added MAC DB Updation S-NSSAI \u003c-\u003eLCID \u003c-\u003e PDU SESSION ID mapping\n2. Some minor bug fixes. ",
       "revId": "668734c1e0f0bb7f644b0b34ac72c57ef933469b",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "44896269_3fa179f4",
+        "filename": "src/5gnrmac/mac.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-09-30T12:20:50Z",
+      "side": 1,
+      "message": "add comments here as well .",
+      "range": {
+        "startLine": 158,
+        "startChar": 14,
+        "endLine": 158,
+        "endChar": 26
+      },
+      "revId": "668734c1e0f0bb7f644b0b34ac72c57ef933469b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fa6f6a63_f4177a38",
+        "filename": "src/5gnrmac/mac.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 168,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-09-30T12:20:50Z",
+      "side": 1,
+      "message": "same as above.",
+      "revId": "668734c1e0f0bb7f644b0b34ac72c57ef933469b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3f28e8e2_42db9d0a",
+        "filename": "src/5gnrmac/mac_ue_mgr.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1793,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-09-30T12:20:50Z",
+      "side": 1,
+      "message": "please take care of indentation also.",
+      "range": {
+        "startLine": 1793,
+        "startChar": 36,
+        "endLine": 1793,
+        "endChar": 39
+      },
+      "revId": "668734c1e0f0bb7f644b0b34ac72c57ef933469b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "371463dd_88d80eed",
+        "filename": "src/5gnrmac/mac_ue_mgr.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 2645,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-09-30T12:20:50Z",
+      "side": 1,
+      "message": "Check ueIdx should be greater than 0.",
+      "revId": "668734c1e0f0bb7f644b0b34ac72c57ef933469b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "40444fbc_ea656c97",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 2044,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-09-30T12:20:50Z",
+      "side": 1,
+      "message": "use some other names in place of idx.",
+      "range": {
+        "startLine": 2044,
+        "startChar": 27,
+        "endLine": 2044,
+        "endChar": 30
+      },
+      "revId": "668734c1e0f0bb7f644b0b34ac72c57ef933469b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a62824d7_cecab1be",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 2085,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-09-30T12:20:50Z",
+      "side": 1,
+      "message": "add comments.",
+      "revId": "668734c1e0f0bb7f644b0b34ac72c57ef933469b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "90d6e5bc_f8004f60",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 2126,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-09-30T12:20:50Z",
+      "side": 1,
+      "message": "add return RFAILED;",
+      "range": {
+        "startLine": 2126,
+        "startChar": 27,
+        "endLine": 2126,
+        "endChar": 31
+      },
+      "revId": "668734c1e0f0bb7f644b0b34ac72c57ef933469b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b9180545_35d85762",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 7640,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-09-30T12:20:50Z",
+      "side": 1,
+      "message": "we are using cuCfgParams.snssaiList[0] index for UE context setup and cuCfgParams.snssaiList[1] for UE context modification. correct?",
+      "range": {
+        "startLine": 7640,
+        "startChar": 97,
+        "endLine": 7640,
+        "endChar": 98
+      },
+      "revId": "668734c1e0f0bb7f644b0b34ac72c57ef933469b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f3f25edc_35580e47",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 7481,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-09-30T12:20:50Z",
+      "side": 1,
+      "message": "use some appropriate name in place of idx.",
+      "range": {
+        "startLine": 7481,
+        "startChar": 10,
+        "endLine": 7481,
+        "endChar": 13
+      },
+      "revId": "668734c1e0f0bb7f644b0b34ac72c57ef933469b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
   ]
 }
