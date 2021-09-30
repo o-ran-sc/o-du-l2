@@ -70,6 +70,7 @@
 #define SECURITY_MODE_COMPLETE 5
 #define RRC_RECONFIG 6
 #define UE_CONTEXT_MOD_REQ 7
+#define NUM_QOS_EXT 1
 
 
 typedef struct f1apDb
