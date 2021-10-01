@@ -16,6 +16,23 @@
       "message": "fix of libssh clone issue.",
       "revId": "3a9830635b439b3aa4e0b1611837de2a8a75a915",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c9e17135_29f2c739",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000482
+      },
+      "writtenOn": "2021-10-01T13:10:02Z",
+      "side": 1,
+      "message": "Looks good to me.",
+      "revId": "3a9830635b439b3aa4e0b1611837de2a8a75a915",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
   ]
 }
