@@ -97,7 +97,7 @@ install_netconf_lib() {
 
    #1. libssh
    cd $NETCONF_PATH && \
-      git clone -b v0-7 --depth 1 http://git.libssh.org/projects/libssh.git && \
+      git clone -c http.sslverify=false -b v0-7 --depth 1 https://git.libssh.org/projects/libssh.git && \
       cd libssh; mkdir build; cd build && \
       cmake .. && \
       make && \
