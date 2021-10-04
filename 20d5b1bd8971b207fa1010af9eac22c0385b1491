@@ -33,6 +33,24 @@
       "message": "indentation",
       "revId": "20d5b1bd8971b207fa1010af9eac22c0385b1491",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c760ce64_b6e3b257",
+        "filename": "src/5gnrsch/sch_ue_mgr.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 882,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-10-04T09:24:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d9f0c41b_df6fad29",
+      "revId": "20d5b1bd8971b207fa1010af9eac22c0385b1491",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
   ]
 }
