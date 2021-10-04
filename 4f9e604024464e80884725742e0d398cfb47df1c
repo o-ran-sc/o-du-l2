@@ -18,6 +18,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d8137f75_da80e4b8",
+        "filename": "src/5gnrmac/mac_cfg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 193,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-10-04T17:16:43Z",
+      "side": 1,
+      "message": "Made changes as per the discussion, Kept only SNSSAI",
+      "parentUuid": "07402786_6df19d42",
+      "revId": "4f9e604024464e80884725742e0d398cfb47df1c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a2e14729_b14e8db0",
@@ -31,6 +49,24 @@
       "writtenOn": "2021-09-30T17:45:25Z",
       "side": 1,
       "message": "since this is common structure used in multiple layer, move it to common_def.h \nmove SD_SIZE as well",
+      "revId": "4f9e604024464e80884725742e0d398cfb47df1c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "eb5f771b_b3ac5f6b",
+        "filename": "src/cm/du_app_mac_inf.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 671,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-10-04T17:16:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a2e14729_b14e8db0",
       "revId": "4f9e604024464e80884725742e0d398cfb47df1c",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -52,6 +88,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "168012b0_ff2d6990",
+        "filename": "src/cm/du_app_mac_inf.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 676,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-10-04T17:16:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3bebf0a8_65028d25",
+      "revId": "4f9e604024464e80884725742e0d398cfb47df1c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "eaec85ae_9b00a550",
@@ -65,6 +119,24 @@
       "writtenOn": "2021-09-30T17:45:25Z",
       "side": 1,
       "message": "prefixing mac to structure name is not needed. Remove from ResourceType and PolicyMemberList too",
+      "revId": "4f9e604024464e80884725742e0d398cfb47df1c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "08e250e5_1e1530c1",
+        "filename": "src/cm/du_app_mac_inf.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 687,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-10-04T17:16:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "eaec85ae_9b00a550",
       "revId": "4f9e604024464e80884725742e0d398cfb47df1c",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -86,6 +158,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c596d34a_a1664729",
+        "filename": "src/cm/mac_sch_interface.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 733,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-10-04T17:16:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "466cdf39_f7502fd3",
+      "revId": "4f9e604024464e80884725742e0d398cfb47df1c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "80eeefc2_45673e18",
@@ -99,6 +189,24 @@
       "writtenOn": "2021-09-30T17:45:25Z",
       "side": 1,
       "message": "use PLMN from common_Def.h",
+      "revId": "4f9e604024464e80884725742e0d398cfb47df1c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "abc47704_274286f5",
+        "filename": "src/cm/mac_sch_interface.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 738,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-10-04T17:16:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "80eeefc2_45673e18",
       "revId": "4f9e604024464e80884725742e0d398cfb47df1c",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -120,6 +228,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "be84278d_0610e396",
+        "filename": "src/du_app/du_cfg.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 658,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-10-04T17:16:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5e7d54a6_c07717ae",
+      "revId": "4f9e604024464e80884725742e0d398cfb47df1c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f62eb04b_5c7f35a8",
@@ -133,6 +259,24 @@
       "writtenOn": "2021-09-30T17:45:25Z",
       "side": 1,
       "message": "1. Do we not need to store rrmPolicy in duCfgParam as done for snssai below?\n2. If not to be stored in du, then why allocating here and passing to readMacCfg.\nCan be directly done in readMacCfg",
+      "revId": "4f9e604024464e80884725742e0d398cfb47df1c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d5a1e758_5b696703",
+        "filename": "src/du_app/du_cfg.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 661,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-10-04T17:16:43Z",
+      "side": 1,
+      "message": "macCellCfg is also a part of duCfgParams structure which we are using specifically for sending cell cfg to MAC and then SCH, \nand Since the RRM policy required in SCH so i have directly stored the information in duCfgParams.macCellCfg.",
+      "parentUuid": "f62eb04b_5c7f35a8",
       "revId": "4f9e604024464e80884725742e0d398cfb47df1c",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
