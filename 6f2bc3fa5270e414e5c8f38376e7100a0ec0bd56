@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d4fad91f_1ae8fd68",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 2102,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-10-04T07:41:02Z",
+      "side": 1,
+      "message": "Unable to find out Memory Free part?",
+      "range": {
+        "startLine": 2102,
+        "startChar": 6,
+        "endLine": 2102,
+        "endChar": 14
+      },
+      "revId": "6f2bc3fa5270e414e5c8f38376e7100a0ec0bd56",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
