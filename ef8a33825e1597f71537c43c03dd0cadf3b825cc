@@ -16,6 +16,24 @@
       "message": "PatchSet 3:\nAdded S-NSSAI\u003c-\u003ePDU_SESSION_ID mapping against Lcid in SCH UE DB\n",
       "revId": "ef8a33825e1597f71537c43c03dd0cadf3b825cc",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5cdaa3d8_9b1eff17",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-10-04T09:39:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0594fe3c_a36a53cb",
+      "revId": "ef8a33825e1597f71537c43c03dd0cadf3b825cc",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
   ]
 }

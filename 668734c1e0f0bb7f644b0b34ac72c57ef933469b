@@ -52,6 +52,60 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "17791abe_8f92b3f0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-10-04T09:39:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "56ca17af_e3e9a858",
+      "revId": "668734c1e0f0bb7f644b0b34ac72c57ef933469b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dc7c092e_e410d2cf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-10-04T09:39:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "58c1e055_12c94452",
+      "revId": "668734c1e0f0bb7f644b0b34ac72c57ef933469b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3232bd4a_beb39803",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-10-04T09:39:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fd236164_6784fdca",
+      "revId": "668734c1e0f0bb7f644b0b34ac72c57ef933469b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "44896269_3fa179f4",
@@ -130,6 +184,42 @@
       "side": 1,
       "message": "Sure let\u0027s discuss for RLC and MAC",
       "parentUuid": "493584af_4d3df92a",
+      "revId": "668734c1e0f0bb7f644b0b34ac72c57ef933469b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "64330d80_6c811b7c",
+        "filename": "src/5gnrmac/mac.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 159,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-10-04T09:39:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e994d3d5_df6b8877",
+      "revId": "668734c1e0f0bb7f644b0b34ac72c57ef933469b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8c3e063c_e91dd7b7",
+        "filename": "src/5gnrmac/mac.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 159,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-10-04T09:39:53Z",
+      "side": 1,
+      "message": "As discussed, for MAC the changes are commented as it can be used in future.\nFor RLC , creating a new Jira",
+      "parentUuid": "e994d3d5_df6b8877",
       "revId": "668734c1e0f0bb7f644b0b34ac72c57ef933469b",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
