@@ -18,6 +18,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ee736c71_6a2aad1e",
+        "filename": "src/5gnrmac/mac_cfg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 180,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-10-05T13:17:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bd2a0060_00118352",
+      "revId": "7fecd135ef4059106d9650d98146868773247faa",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "61dd90e4_ae1f1de0",
@@ -31,6 +49,24 @@
       "writtenOn": "2021-10-05T10:05:49Z",
       "side": 1,
       "message": "I see the above XYZ_RATIO macros being used in du only. Lets not define these in common file",
+      "revId": "7fecd135ef4059106d9650d98146868773247faa",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8d69d1ae_04524bd1",
+        "filename": "src/cm/common_def.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-10-05T13:17:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "61dd90e4_ae1f1de0",
       "revId": "7fecd135ef4059106d9650d98146868773247faa",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -52,6 +88,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2ed3838f_43f4daa8",
+        "filename": "src/cm/du_app_mac_inf.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-10-05T13:17:15Z",
+      "side": 1,
+      "message": "Now used in du_app/du_cfg.c and 5gnrmac/mac_cfg_hdl.c",
+      "parentUuid": "569ecf49_bd7de22f",
+      "revId": "7fecd135ef4059106d9650d98146868773247faa",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e78c72ec_7cd37b41",
@@ -65,6 +119,24 @@
       "writtenOn": "2021-10-05T10:05:49Z",
       "side": 1,
       "message": "We define all max values that our ODU support such as max number of cells, UEs etc in common_def.h because these values will always stay same in all layers",
+      "revId": "7fecd135ef4059106d9650d98146868773247faa",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d4efa5c9_29c28304",
+        "filename": "src/cm/du_app_mac_inf.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-10-05T13:17:15Z",
+      "side": 1,
+      "message": "Done, created ODU_SUPPORTED_SLICE in common_def.h",
+      "parentUuid": "e78c72ec_7cd37b41",
       "revId": "7fecd135ef4059106d9650d98146868773247faa",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -88,6 +160,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1368523a_349480cb",
+        "filename": "src/cm/du_app_mac_inf.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 668,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-10-05T13:17:15Z",
+      "side": 1,
+      "message": "I have initialized it with 0 and i have added this because  it defined in 3GPP",
+      "parentUuid": "047c6bde_b3a6aa86",
+      "revId": "7fecd135ef4059106d9650d98146868773247faa",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b80597bb_50334119",
         "filename": "src/cm/du_app_mac_inf.h",
         "patchSetId": 3
@@ -99,6 +189,24 @@
       "writtenOn": "2021-10-05T10:05:49Z",
       "side": 1,
       "message": "indentation",
+      "revId": "7fecd135ef4059106d9650d98146868773247faa",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6b47b214_ffe01ae1",
+        "filename": "src/cm/du_app_mac_inf.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 703,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-10-05T13:17:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b80597bb_50334119",
       "revId": "7fecd135ef4059106d9650d98146868773247faa",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -120,6 +228,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c2cc65fc_68fba533",
+        "filename": "src/cm/mac_sch_interface.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-10-05T13:17:15Z",
+      "side": 1,
+      "message": "Right Not it does not required here",
+      "parentUuid": "7b641258_1808e111",
+      "revId": "7fecd135ef4059106d9650d98146868773247faa",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f9e7fc97_f830c442",
@@ -133,6 +259,24 @@
       "writtenOn": "2021-10-05T10:05:49Z",
       "side": 1,
       "message": "storing rrmPolicy in a local structure only?\nThis need not be stored in duCfgParam, like snssai is stored below?",
+      "revId": "7fecd135ef4059106d9650d98146868773247faa",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b5f5e28a_ee8a5d35",
+        "filename": "src/du_app/du_cfg.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 649,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-10-05T13:17:15Z",
+      "side": 1,
+      "message": "we need plmn list and snssai list for F1 setup request msg so i have stored snssai in  duCfgParam as plmn is already present in our code. \nwhere as RRM policy we needed in SCH so i have not stored that in DUAPP",
+      "parentUuid": "f9e7fc97_f830c442",
       "revId": "7fecd135ef4059106d9650d98146868773247faa",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -172,6 +316,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e52cf7aa_686f009a",
+        "filename": "src/du_app/du_cfg.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 945,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-10-05T13:17:15Z",
+      "side": 1,
+      "message": "used the same",
+      "parentUuid": "e14df27b_8d36c909",
+      "revId": "7fecd135ef4059106d9650d98146868773247faa",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cea3f4a8_fe4701a0",
@@ -185,6 +347,42 @@
       "writtenOn": "2021-10-05T11:53:03Z",
       "side": 1,
       "message": "Can we pick this value from duCfgParam (numSupportedSlices)?",
+      "revId": "7fecd135ef4059106d9650d98146868773247faa",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7bd6d938_8116502a",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 989,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-10-05T13:17:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cea3f4a8_fe4701a0",
+      "revId": "7fecd135ef4059106d9650d98146868773247faa",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2dc4bc2a_c15c254d",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 989,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-10-05T13:17:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cea3f4a8_fe4701a0",
       "revId": "7fecd135ef4059106d9650d98146868773247faa",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -212,6 +410,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "26cb1c9a_cf40d56f",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1034,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-10-05T13:17:15Z",
+      "side": 1,
+      "message": "checked.",
+      "parentUuid": "1c4640e8_4eaba3ba",
+      "range": {
+        "startLine": 1034,
+        "startChar": 46,
+        "endLine": 1034,
+        "endChar": 52
+      },
+      "revId": "7fecd135ef4059106d9650d98146868773247faa",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "63c095b3_1225a6fd",
@@ -225,6 +447,30 @@
       "writtenOn": "2021-10-05T11:53:03Z",
       "side": 1,
       "message": "Since snssai has been changed from array to Double pointers, Is it verified again using gdb?",
+      "range": {
+        "startLine": 1057,
+        "startChar": 43,
+        "endLine": 1057,
+        "endChar": 49
+      },
+      "revId": "7fecd135ef4059106d9650d98146868773247faa",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c1b84da9_edd250ae",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1057,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-10-05T13:17:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "63c095b3_1225a6fd",
       "range": {
         "startLine": 1057,
         "startChar": 43,
