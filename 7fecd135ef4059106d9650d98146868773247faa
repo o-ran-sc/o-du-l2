@@ -1,0 +1,140 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bd2a0060_00118352",
+        "filename": "src/5gnrmac/mac_cfg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 180,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-10-05T10:05:49Z",
+      "side": 1,
+      "message": "macCellCfg-\u003esnssai[sliceIdx] is already a pointer. Incorrectly used in memcpy.\nCheck these things thoroughly in gdb that snssai and rrmpolicy is being stored correctly in all layers",
+      "revId": "7fecd135ef4059106d9650d98146868773247faa",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "61dd90e4_ae1f1de0",
+        "filename": "src/cm/common_def.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-10-05T10:05:49Z",
+      "side": 1,
+      "message": "I see the above XYZ_RATIO macros being used in du only. Lets not define these in common file",
+      "revId": "7fecd135ef4059106d9650d98146868773247faa",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "569ecf49_bd7de22f",
+        "filename": "src/cm/du_app_mac_inf.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-10-05T10:05:49Z",
+      "side": 1,
+      "message": "this macro not being used anywhere.",
+      "revId": "7fecd135ef4059106d9650d98146868773247faa",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e78c72ec_7cd37b41",
+        "filename": "src/cm/du_app_mac_inf.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-10-05T10:05:49Z",
+      "side": 1,
+      "message": "We define all max values that our ODU support such as max number of cells, UEs etc in common_def.h because these values will always stay same in all layers",
+      "revId": "7fecd135ef4059106d9650d98146868773247faa",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b80597bb_50334119",
+        "filename": "src/cm/du_app_mac_inf.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 703,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-10-05T10:05:49Z",
+      "side": 1,
+      "message": "indentation",
+      "revId": "7fecd135ef4059106d9650d98146868773247faa",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7b641258_1808e111",
+        "filename": "src/cm/mac_sch_interface.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-10-05T10:05:49Z",
+      "side": 1,
+      "message": "not used",
+      "revId": "7fecd135ef4059106d9650d98146868773247faa",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f9e7fc97_f830c442",
+        "filename": "src/du_app/du_cfg.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 649,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-10-05T10:05:49Z",
+      "side": 1,
+      "message": "storing rrmPolicy in a local structure only?\nThis need not be stored in duCfgParam, like snssai is stored below?",
+      "revId": "7fecd135ef4059106d9650d98146868773247faa",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e14df27b_8d36c909",
+        "filename": "src/du_app/du_cfg.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 945,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-10-05T10:05:49Z",
+      "side": 1,
+      "message": "If rrmPolicy doesnt need to be stored in duCfgParam, can we create it directly in readMacCfg itself, instead of passing from here.",
+      "revId": "7fecd135ef4059106d9650d98146868773247faa",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
