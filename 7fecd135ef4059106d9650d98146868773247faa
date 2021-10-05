@@ -71,6 +71,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "047c6bde_b3a6aa86",
+        "filename": "src/cm/du_app_mac_inf.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 668,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-10-05T11:53:03Z",
+      "side": 1,
+      "message": "Are we using/storing anything in this PLMN? Since 3GPP defines plmn in Memberlist , is that the reason you included it?",
+      "revId": "7fecd135ef4059106d9650d98146868773247faa",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b80597bb_50334119",
         "filename": "src/cm/du_app_mac_inf.h",
         "patchSetId": 3
@@ -133,6 +150,87 @@
       "writtenOn": "2021-10-05T10:05:49Z",
       "side": 1,
       "message": "If rrmPolicy doesnt need to be stored in duCfgParam, can we create it directly in readMacCfg itself, instead of passing from here.",
+      "revId": "7fecd135ef4059106d9650d98146868773247faa",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b3a7a0bc_f982173f",
+        "filename": "src/du_app/du_cfg.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 945,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-10-05T11:53:03Z",
+      "side": 1,
+      "message": "Yes, Agreed with Harshita. Priyanka Can we use snssaiList from duCfgParam.srvdCellLst as rrmMemberList?",
+      "parentUuid": "e14df27b_8d36c909",
+      "revId": "7fecd135ef4059106d9650d98146868773247faa",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cea3f4a8_fe4701a0",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 989,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-10-05T11:53:03Z",
+      "side": 1,
+      "message": "Can we pick this value from duCfgParam (numSupportedSlices)?",
+      "revId": "7fecd135ef4059106d9650d98146868773247faa",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1c4640e8_4eaba3ba",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1034,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-10-05T11:53:03Z",
+      "side": 1,
+      "message": "Pls confirm if memcpy is verified as snssai datatype has been changed in DuCfgParam?",
+      "range": {
+        "startLine": 1034,
+        "startChar": 46,
+        "endLine": 1034,
+        "endChar": 52
+      },
+      "revId": "7fecd135ef4059106d9650d98146868773247faa",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "63c095b3_1225a6fd",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1057,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-10-05T11:53:03Z",
+      "side": 1,
+      "message": "Since snssai has been changed from array to Double pointers, Is it verified again using gdb?",
+      "range": {
+        "startLine": 1057,
+        "startChar": 43,
+        "endLine": 1057,
+        "endChar": 49
+      },
       "revId": "7fecd135ef4059106d9650d98146868773247faa",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
