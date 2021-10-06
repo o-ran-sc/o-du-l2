@@ -703,7 +703,6 @@ void fillSchSib1Cfg(uint8_t mu, uint8_t bandwidth, uint8_t numSlots, SchSib1Cfg 
    /* TODO : This should be filled through freqDomRscAllocType0() */
    uint8_t FreqDomainResource[6] = {15, 0, 0, 0, 0, 0};
    uint16_t tbSize = 0;
-   uint8_t numPdschSymbols = 11; /* considering pdsch region from symbols 3 to 13 */
    uint8_t ssbIdx = 0;
 
    PdcchCfg *pdcch = &(sib1SchCfg->sib1PdcchCfg);
@@ -818,12 +817,12 @@ void fillSchSib1Cfg(uint8_t mu, uint8_t bandwidth, uint8_t numSlots, SchSib1Cfg 
    pdsch->pdschFreqAlloc.resourceAllocType   = 1; /* RAT type-1 RIV format */
    pdsch->pdschFreqAlloc.freqAlloc.startPrb  = offsetPointA + SCH_SSB_NUM_PRB + 1; /* the RB numbering starts from coreset0,
 									    and PDSCH is always above SSB */
-   pdsch->pdschFreqAlloc.freqAlloc.numPrb    = schCalcNumPrb(tbSize,sib1SchCfg->sib1Mcs,numPdschSymbols);
+   pdsch->pdschFreqAlloc.freqAlloc.numPrb    = schCalcNumPrb(tbSize,sib1SchCfg->sib1Mcs, NUM_PDSCH_SYMBOL);
    pdsch->pdschFreqAlloc.vrbPrbMapping       = 0; /* non-interleaved */
    pdsch->pdschTimeAlloc.rowIndex            = 1;
    /* This is Intel's requirement. PDSCH should start after PDSCH DRMS symbol */
    pdsch->pdschTimeAlloc.timeAlloc.startSymb = 3; /* spec-38.214, Table 5.1.2.1-1 */
-   pdsch->pdschTimeAlloc.timeAlloc.numSymb   = numPdschSymbols;
+   pdsch->pdschTimeAlloc.timeAlloc.numSymb   = NUM_PDSCH_SYMBOL;
    pdsch->beamPdschInfo.numPrgs              = 1;
    pdsch->beamPdschInfo.prgSize              = 1;
    pdsch->beamPdschInfo.digBfInterfaces      = 0;
@@ -1078,6 +1077,57 @@ uint8_t MacSchSrUciInd(Pst *pst, SrUciIndInfo *uciInd)
    }
    return ROK;
 }
+
+/*******************************************************************
+ *
+ * @brief Allocates requested PRBs per symbol
+ *
+ * @details
+ *
+ *    Function : allocatePrbPerSymbol
+ *
+ *    Functionality:
+ *      Allocates requested PRBs per symbol
+ *      Keeps track of allocated PRB (using bitmap) and remaining PRBs
+ *
+ * @params[in] prbAllocPerSymbol table
+ *             Start symbol
+ *             Number of symbols
+ *             Start PRB
+ *             Number of PRBs
+ *
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t allocatePrbPerSymbol(SchPrbAlloc *prbAllocPerSymbol, uint8_t startSymbol, uint8_t symbolLength, \
+   uint16_t startPrb, uint16_t numPrb)
+{
+   uint8_t symbol;
+
+   for(symbol=startSymbol; symbol < (startSymbol+symbolLength); symbol++)
+   {
+      /* Check if number of available PRBs are sufficient */
+      if(numPrb > prbAllocPerSymbol[symbol].numRemPrb)
+      {
+         DU_LOG("\nERROR  -->  SCH: Number of requested PRBs [%d] is less than number of available PRBs [%d] for symbol [%d]", \
+              numPrb, prbAllocPerSymbol[symbol].numRemPrb, symbol);
+         return RFAILED;
+      }
+
+      /* Update bitmap to allocate PRBs */
+      if(fillPrbBitmap(prbAllocPerSymbol[symbol].prbBitMap, startPrb, numPrb) != ROK)
+      {
+         DU_LOG("\nERROR  -->  SCH: fillPrbBitmap() failed for symbol [%d] ", symbol);
+         return RFAILED;
+      }
+
+      /* Update the number of remaining prb in this symbol */
+      prbAllocPerSymbol[symbol].numRemPrb -= numPrb;
+   }
+   return ROK;
+}
+
 /**********************************************************************
   End of file
  **********************************************************************/

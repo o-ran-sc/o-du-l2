@@ -839,7 +839,7 @@ uint16_t schCalcNumPrb(uint16_t tbSize, uint16_t mcs, uint8_t numSymbols)
    nreDash = ceil( (12 * numSymbols) - numDmrsRePerPrb - 0);
 
    if (nreDash > 156)
-      nre = 156;
+      nreDash = 156;
 
    numPrb = ceil((float)nre / nreDash);   
    return numPrb;
@@ -955,13 +955,13 @@ SchUeCb* schGetUeCb(SchCellCb *cellCb, uint16_t crnti)
  **/
 void schInitUlSlot(SchUlSlotInfo *schUlSlotInfo)
 {
+   uint8_t symbIdx;
+
    memset(schUlSlotInfo, 0, sizeof(SchUlSlotInfo));
-   schUlSlotInfo->totalPrb = MAX_NUM_RB;
-   for(uint8_t itr=0; itr<SCH_SYMBOL_PER_SLOT; itr++)
+   for(symbIdx = 0 ; symbIdx < SCH_SYMBOL_PER_SLOT; symbIdx++)
    {
-      schUlSlotInfo->assignedPrb[itr] = 0;
+      schUlSlotInfo->prbAllocPerSymbol[symbIdx].numRemPrb = MAX_NUM_RB;
    }
-   schUlSlotInfo->resAllocBitMap = 0;
    schUlSlotInfo->puschCurrentPrb = PUSCH_START_RB;
    schUlSlotInfo->schPuschInfo = NULLP;
 
@@ -981,25 +981,96 @@ void schInitUlSlot(SchUlSlotInfo *schUlSlotInfo)
  **/
 void schInitDlSlot(SchDlSlotInfo *schDlSlotInfo)
 {
-   memset(schDlSlotInfo, 0, sizeof(SchDlSlotInfo));
-   schDlSlotInfo->totalPrb = MAX_NUM_RB;
-   for(uint8_t itr=0; itr<SCH_SYMBOL_PER_SLOT; itr++)
-   {
-      schDlSlotInfo->assignedPrb[itr] = 0;
-   }
-   schDlSlotInfo->resAllocBitMap = 0; 
-   for(uint8_t itr=0; itr<MAX_SSB_IDX; itr++)
-   {
-      memset(&schDlSlotInfo->ssbInfo[itr], 0, sizeof(SsbInfo));
-   }
-#if 0
-   //make allocation for SSB
-   if(cell->firstSsbTransmitted)
-   {
-      //TODO check if this slot and sfn are for ssb
+   uint8_t symbIdx;
 
+   memset(schDlSlotInfo, 0, sizeof(SchDlSlotInfo));
+   for(symbIdx = 0 ; symbIdx < SCH_SYMBOL_PER_SLOT; symbIdx++)
+   {
+      schDlSlotInfo->prbAllocPerSymbol[symbIdx].numRemPrb = MAX_NUM_RB;
    }
-#endif
+}
+
+/**
+ * @brief Fill resource bit map
+ *
+ * @details
+ *
+ *     Function: fillPrbBitmap
+ *
+ *     This function updates bitMap to mark the allocated PRBs
+ *
+ *  @param[in]  schDlSlotInfo
+ *  @return     void
+ **/
+bool fillPrbBitmap(uint64_t *prbBitMap, uint16_t startPrb, uint16_t numPrb)
+{
+   uint16_t bitMapIdx = 0;
+   uint16_t offsetInFirstIdx = 0;
+   uint32_t numBitsToSetInFirstIdx = 0;
+   const uint64_t mask64bitOn = 0xFFFFFFFFFFFFFFFF; 
+   uint64_t mask = mask64bitOn;
+   uint64_t bitmapBackup[PRB_BITMAP_LEN];
+
+   /* Store backup of the bitmap in order to roll back if PRB allocation fails */
+   memcpy(bitmapBackup, prbBitMap, sizeof(bitmapBackup));
+
+   /* Calculate the bitmap idx and offset of bit in that idx, to start
+    * allocating PRBs from */
+   bitMapIdx = startPrb / PRB_BITMAP_IDX_LEN;
+   offsetInFirstIdx = startPrb % PRB_BITMAP_IDX_LEN;
+
+   /* If number of PRBs allocated >= number of unset bits in first idx starting from offset bit
+    * then set all bits in first idx starting from offset bit
+    * else set bits equal to number of PRBs allocated
+    */
+   numBitsToSetInFirstIdx = \
+      (numPrb >= (PRB_BITMAP_IDX_LEN-offsetInFirstIdx)) ? (PRB_BITMAP_IDX_LEN-offsetInFirstIdx) : numPrb;
+
+   mask = mask >> (PRB_BITMAP_IDX_LEN-numBitsToSetInFirstIdx);
+   mask = mask<<offsetInFirstIdx;
+
+   /* If PRBs to be allocated are not already in use, mark these PRBs as allocated */
+   if(!(prbBitMap[bitMapIdx] & mask))
+   {
+      prbBitMap[bitMapIdx] = prbBitMap[bitMapIdx] | mask;
+
+      bitMapIdx++;
+      numPrb = numPrb - numBitsToSetInFirstIdx;
+      /* Set all bits in a bitMapIdx until remaining numPrb is less than PRB_BITMAP_IDX_LEN */
+      while(numPrb > PRB_BITMAP_IDX_LEN)
+      {
+         if(prbBitMap[bitMapIdx])
+         {
+            memcpy(prbBitMap, bitmapBackup, sizeof(bitmapBackup));
+            return RFAILED;
+         }
+         prbBitMap[bitMapIdx] = mask64bitOn;
+         bitMapIdx++;
+         numPrb = numPrb - PRB_BITMAP_IDX_LEN;
+      }
+
+      /* Set bits for the remaining PRBs */
+      if(numPrb)
+      {
+         mask = mask64bitOn;
+         mask = mask >> (PRB_BITMAP_IDX_LEN-numPrb);
+         if(!(prbBitMap[bitMapIdx] & mask))
+         {
+            prbBitMap[bitMapIdx] = prbBitMap[bitMapIdx] | mask;
+         }
+         else
+         {
+            memcpy(prbBitMap, bitmapBackup, sizeof(bitmapBackup));
+            return RFAILED;
+         }
+      }
+   }
+   else
+   {
+      return RFAILED;
+   }
+   
+   return ROK;
 }
 
 #ifdef NR_TDD
