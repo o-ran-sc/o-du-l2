@@ -2697,7 +2697,7 @@ void deletePucchResourcesCfg(PucchResrcCfg *resrcCfg)
 
 uint8_t MacProcSchUeDeleteRsp(Pst *pst, SchUeDeleteRsp *schUeDelRsp)
 {
-   uint8_t ueIdx =0, lcIdx = 0, isCrntiValid = 0;
+   uint8_t ueIdx =0, isCrntiValid = 0;
    uint16_t cellIdx=0;
    uint8_t ret = RFAILED;
    UeDeleteStatus result;
