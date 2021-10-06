@@ -557,7 +557,7 @@ uint8_t schFillPuschAlloc(SchUeCb *ueCb, uint16_t pdcchSlot, uint32_t dataVol, S
   /* Update pusch in cell */
   for(idx=startSymb; idx<symbLen; idx++)
   {
-     cellCb->schUlSlotInfo[puschSlot]->assignedPrb[idx] = startRb + numRb;
+     //cellCb->schUlSlotInfo[puschSlot]->assignedPrb[idx] = startRb + numRb;
   }
 
   schUlSlotInfo = cellCb->schUlSlotInfo[puschSlot];

@@ -115,7 +115,6 @@ SchPuschInfo* schAllocMsg3Pusch(Inst schInst, uint16_t crnti, uint8_t k2Index, u
    uint8_t    numRb         = 0;
    uint8_t    idx           = 0;
    uint8_t    mcs            = 4;
-   uint8_t    numPdschSymbols= 11;
    uint16_t   tbSize         = 0;
 
    cell = schCb[schInst].cells[schInst];
@@ -130,7 +129,7 @@ SchPuschInfo* schAllocMsg3Pusch(Inst schInst, uint16_t crnti, uint8_t k2Index, u
 
    startRb = cell->schUlSlotInfo[msg3Slot]->puschCurrentPrb;
    tbSize = schCalcTbSize(8); /* 6 bytes msg3  and 2 bytes header */
-   numRb = schCalcNumPrb(tbSize, mcs, numPdschSymbols);
+   numRb = schCalcNumPrb(tbSize, mcs, NUM_PDSCH_SYMBOL);
 
    /* allocating 1 extra RB for now */
    numRb++;
@@ -139,7 +138,7 @@ SchPuschInfo* schAllocMsg3Pusch(Inst schInst, uint16_t crnti, uint8_t k2Index, u
 
    for(idx=startSymb; idx<symbLen; idx++)
    {
-      cell->schUlSlotInfo[msg3Slot]->assignedPrb[idx] = startRb + numRb;
+      //cell->schUlSlotInfo[msg3Slot]->assignedPrb[idx] = startRb + numRb;
    }
    schUlSlotInfo = cell->schUlSlotInfo[msg3Slot];
 
@@ -150,7 +149,7 @@ SchPuschInfo* schAllocMsg3Pusch(Inst schInst, uint16_t crnti, uint8_t k2Index, u
       return NULLP;
    }
    tbSize = 0;  /* since nPrb has been incremented, recalculating tbSize */
-   tbSize = schCalcTbSizeFromNPrb(numRb, mcs, numPdschSymbols);
+   tbSize = schCalcTbSizeFromNPrb(numRb, mcs, NUM_PDSCH_SYMBOL);
    tbSize = tbSize / 8 ; /*bits to byte conversion*/
    schUlSlotInfo->schPuschInfo->crnti             = crnti;
    schUlSlotInfo->schPuschInfo->harqProcId        = SCH_HARQ_PROC_ID;
