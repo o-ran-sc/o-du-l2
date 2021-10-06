@@ -36,12 +36,15 @@
 #define SCH_MAX_SSB_BEAM 8 /* since we are supporting only SCS=15KHz and 30KHz */
 #define SCH_SYMBOL_PER_SLOT 14
 #define SCH_SSB_NUM_SYMB 4
-#define SCH_SSB_NUM_PRB 20
+#define SCH_SSB_NUM_PRB 21 /* One extra PRB as buffer */
 #define SCHED_DELTA 1
 #define BO_DELTA 1
 #define RAR_DELAY   2
 #define MSG4_DELAY  1
 #define PDSCH_START_RB 10
+/* Considering pdsch region from 3 to 13, DMRS exclued.
+ * Overlapping of PDSCH DRMS and PDSCH not supported by Intel L1 */
+#define NUM_PDSCH_SYMBOL 11
 #define PUSCH_START_RB 15
 #define PUCCH_NUM_PRB_FORMAT_0_1_4 1  /* number of PRBs in freq domain, spec 38.213 - 9.2.1 */
 #define SI_RNTI 0xFFFF
@@ -58,6 +61,9 @@
 
 #define MAC_HDR_SIZE  3   /* 3 bytes of MAC Header */
 #define UL_GRANT_SIZE 224
+
+#define PRB_BITMAP_IDX_LEN 64
+#define PRB_BITMAP_MAX_IDX ((MAX_NUM_RB + PRB_BITMAP_IDX_LEN-1) / PRB_BITMAP_IDX_LEN)
 
 typedef struct schCellCb SchCellCb;
 typedef struct schUeCb SchUeCb;
@@ -106,21 +112,36 @@ typedef struct schGenCb
 #endif
 }SchGenCb;
 
+typedef struct freePrbBlock
+{
+   uint16_t numFreePrb;
+   uint16_t startPrb;
+   uint16_t endPrb;
+}FreePrbBlock;
+
+/**
+ * @brief
+ * PRB allocations for a symbol within a slot
+ */
+typedef struct schPrbAlloc
+{
+   CmLListCp freePrbBlockList;           /*!< List of continuous blocks for available PRB */
+   uint64_t  prbBitMap[SCH_SYMBOL_PER_SLOT][PRB_BITMAP_MAX_IDX];  /*!< BitMap to store the allocated PRBs */
+}SchPrbAlloc;
+
 /**
  * @brief
  * scheduler allocationsfor DL per cell.
  */
 typedef struct schDlSlotInfo
 {
-   uint16_t  totalPrb;                          /*!< Number of RBs in the cell */
-   uint16_t  assignedPrb[SCH_SYMBOL_PER_SLOT];  /*!< Num RBs and corresponding symbols allocated */
-   uint16_t  resAllocBitMap;                    /*!< Resource allocation bitmap */
-   bool      ssbPres;                           /*!< Flag to determine if SSB is present in this slot */
-   uint8_t   ssbIdxSupported;                   /*!< Max SSB index */
-   SsbInfo   ssbInfo[MAX_SSB_IDX];              /*!< SSB info */
-   bool      sib1Pres;                          /*!< Flag to determine if SIB1 is present in this slot */
-   RarAlloc  *rarAlloc;                         /*!< RAR allocation */
-   DlMsgInfo *dlMsgInfo;                        /*!< DL dedicated Msg info */
+   SchPrbAlloc  prbAlloc;                 /*!< PRB allocated/available in this slot */
+   bool         ssbPres;                  /*!< Flag to determine if SSB is present in this slot */
+   uint8_t      ssbIdxSupported;          /*!< Max SSB index */
+   SsbInfo      ssbInfo[MAX_SSB_IDX];     /*!< SSB info */
+   bool         sib1Pres;                 /*!< Flag to determine if SIB1 is present in this slot */
+   RarAlloc     *rarAlloc;                /*!< RAR allocation */
+   DlMsgInfo    *dlMsgInfo;               /*!< DL dedicated Msg info */
 }SchDlSlotInfo;
 
 typedef struct schRaCb
@@ -134,14 +155,12 @@ typedef struct schRaCb
  */
 typedef struct schUlSlotInfo
 {
-   uint16_t     totalPrb;  /*!< Number of RBs in the cell */
-   uint16_t     assignedPrb[SCH_SYMBOL_PER_SLOT]; /*!< Num RBs and corresponding symbols allocated */
-   uint16_t     resAllocBitMap;                    /*!< Resource allocation bitmap */
-   uint8_t      puschCurrentPrb; /* Current PRB for PUSCH allocation */
-   bool         puschPres; /*!< PUSCH presence field */
-   SchPuschInfo *schPuschInfo; /*!< PUSCH info */
-   bool         pucchPres; /*!< PUCCH presence field */
-   SchPucchInfo schPucchInfo; /*!< PUCCH info */
+   SchPrbAlloc  prbAlloc; /*!< PRB allocated/available per symbol */
+   uint8_t      puschCurrentPrb;                /* Current PRB for PUSCH allocation */
+   bool         puschPres;                      /*!< PUSCH presence field */
+   SchPuschInfo *schPuschInfo;                  /*!< PUSCH info */
+   bool         pucchPres;                      /*!< PUCCH presence field */
+   SchPucchInfo schPucchInfo;                   /*!< PUCCH info */
 }SchUlSlotInfo;
 
 /**
@@ -280,35 +299,41 @@ typedef struct schCb
 SchCb schCb[SCH_MAX_INST];
 
 /* function declarations */
-SchUeCb* schGetUeCb(SchCellCb *cellCb, uint16_t crnti);
+short int schActvTmr(Ent ent,Inst inst);
+
+/* Configuration related function declarations */
 void schInitUlSlot(SchUlSlotInfo *schUlSlotInfo);
 void schInitDlSlot(SchDlSlotInfo *schDlSlotInfo);
+void BuildK0K1Table(SchCellCb *cell, SchK0K1TimingInfoTbl *k0K1InfoTbl, bool pdschCfgCmnPres, \
+   SchPdschCfgCmn pdschCmnCfg,SchPdschConfig pdschDedCfg, uint8_t ulAckListCount, uint8_t *UlAckTbl);
+void BuildK2InfoTable(SchCellCb *cell, SchPuschTimeDomRsrcAlloc timeDomRsrcAllocList[], \
+   uint16_t puschSymTblSize, SchK2TimingInfoTbl *msg3K2InfoTbl, SchK2TimingInfoTbl *k2InfoTbl);
 uint8_t SchSendCfgCfm(Pst *pst, RgMngmt *cfm);
-short int schActvTmr(Ent ent,Inst inst);
-uint8_t schBroadcastAlloc(SchCellCb *cell, DlBrdcstAlloc *dlBrdcstAlloc,uint16_t slot);
+SchUeCb* schGetUeCb(SchCellCb *cellCb, uint16_t crnti);
+
+/* Incoming message handler function declarations */
 uint8_t schProcessSlotInd(SlotTimingInfo *slotInd, Inst inst);
-uint8_t schUlResAlloc(SchCellCb *cell, Inst schInst);
-uint8_t schDlRsrcAllocMsg4(DlMsgAlloc *msg4Alloc, SchCellCb *cell, uint16_t slot, bool ssbPresent, bool sib1Present);
-uint16_t schCalcTbSize(uint32_t payLoadSize);
-uint16_t schCalcNumPrb(uint16_t tbSize, uint16_t mcs, uint8_t numSymbols);
-uint16_t schAllocPucchResource(SchCellCb *cell, uint16_t crnti, uint16_t slot);
 uint8_t schProcessRachInd(RachIndInfo *rachInd, Inst schInst);
+
+/* DL scheduling related function declarations */
+PduTxOccsaion schCheckSsbOcc(SchCellCb *cell, SlotTimingInfo slotTime);
+PduTxOccsaion schCheckSib1Occ(SchCellCb *cell, SlotTimingInfo slotTime);
+uint8_t schBroadcastSsbAlloc(SchCellCb *cell, SlotTimingInfo slotTime, DlBrdcstAlloc *dlBrdcstAlloc);
+uint8_t schBroadcastSib1Alloc(SchCellCb *cell, SlotTimingInfo slotTime, DlBrdcstAlloc *dlBrdcstAlloc);
+void schProcessRaReq(SlotTimingInfo currTime, SchCellCb *cellCb);
+uint8_t schFillRar(SchCellCb *cell, SlotTimingInfo rarTime, uint16_t ueIdx, RarAlloc *rarAlloc, uint8_t k0Index);
+uint8_t schDlRsrcAllocMsg4(SchCellCb *cell, SlotTimingInfo slotTime, DlMsgAlloc *msg4Alloc);
+uint8_t schDlRsrcAllocDlMsg(SchCellCb *cell, SlotTimingInfo slotTime, uint16_t crnti,
+   uint32_t *accumalatedSize, DlMsgAlloc *dlMsgAlloc);
+uint16_t schAccumalateLcBoSize(SchCellCb *cell, uint16_t ueIdx);
+
+/* UL scheduling related function declarations */
+uint8_t schUlResAlloc(SchCellCb *cell, Inst schInst);
+uint16_t schAllocPucchResource(SchCellCb *cell, uint16_t crnti, uint16_t slot);
 uint8_t schFillUlDci(SchUeCb *ueCb, SchPuschInfo puschInfo, DciInfo *dciInfo);
 uint8_t schFillPuschAlloc(SchUeCb *ueCb, uint16_t pdcchSlot, uint32_t dataVol, SchPuschInfo *puschInfo);
-uint8_t schDlRsrcAllocDlMsg(DlMsgAlloc *dlMsgAlloc, SchCellCb *cell, uint16_t crnti,
-   uint32_t *accumalatedSize, uint16_t slot);
-uint16_t schAccumalateLcBoSize(SchCellCb *cell, uint16_t ueIdx);
-uint8_t schFillRar(RarAlloc *rarAlloc, uint16_t raRnti, uint16_t pci, uint8_t offsetPointA, \
-    uint8_t k0Index, bool ssbPresent, bool sib1Present);
-void schProcessRaReq(SlotTimingInfo currTime, SchCellCb *cellCb);
-
-void BuildK0K1Table(SchCellCb *cell, SchK0K1TimingInfoTbl *k0K1InfoTbl, bool pdschCfgCmnPres, \
-SchPdschCfgCmn pdschCmnCfg,SchPdschConfig pdschDedCfg, uint8_t ulAckListCount, uint8_t *UlAckTbl);
-void BuildK2InfoTable(SchCellCb *cell, SchPuschTimeDomRsrcAlloc timeDomRsrcAllocList[], \
-uint16_t puschSymTblSize, SchK2TimingInfoTbl *msg3K2InfoTbl, SchK2TimingInfoTbl *k2InfoTbl);
-
-PduTxOccsaion schCheckSsbOcc(SlotTimingInfo slotTime, SchCellCb *cell);
-PduTxOccsaion schCheckSib1Occ(SlotTimingInfo slotTime, SchCellCb *cell);
+uint8_t allocatePrbDl(SchCellCb *cell, SlotTimingInfo slotTime, uint8_t startSymbol, uint8_t symbolLength, \
+   uint16_t *startPrb, uint16_t numPrb);
 
 /**********************************************************************
   End of file
