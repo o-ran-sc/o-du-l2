@@ -18,6 +18,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e58e929a_0f7cf871",
+        "filename": "src/5gnrmac/mac_cfg_hdl.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 558,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-10-06T11:34:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "47750391_a2d54c9a",
+      "revId": "b6e470c4a24625694dd8df79965432e8c6fd507f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1739119d_0275194b",
@@ -35,6 +53,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "46482d9b_4a83f36d",
+        "filename": "src/5gnrsch/sch_ue_mgr.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 1049,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-10-06T11:34:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1739119d_0275194b",
+      "revId": "b6e470c4a24625694dd8df79965432e8c6fd507f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "49c2771c_2f66cc40",
@@ -48,6 +84,24 @@
       "writtenOn": "2021-10-06T11:24:21Z",
       "side": 1,
       "message": "same as above",
+      "revId": "b6e470c4a24625694dd8df79965432e8c6fd507f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0a9a1112_9e7c7c61",
+        "filename": "src/5gnrsch/sch_ue_mgr.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 1061,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-10-06T11:34:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "49c2771c_2f66cc40",
       "revId": "b6e470c4a24625694dd8df79965432e8c6fd507f",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
