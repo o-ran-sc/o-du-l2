@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "57e623bf_a7b05dc1",
+        "filename": "src/5gnrmac/mac_cfg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-10-06T05:00:46Z",
+      "side": 1,
+      "message": "Since num_of_supported_slice will actually be known from O1, Shldnt the loop shld run \"macCb.macCell[cellIdx]-\u003emacCellCfg.numSupportedSlice\" times intead.. And any MAX checks can be placed in DUAPP instead while reading the SLice Cfg",
+      "range": {
+        "startLine": 170,
+        "startChar": 31,
+        "endLine": 170,
+        "endChar": 51
+      },
+      "revId": "2cc2bb96c526ec4bf417568e680d3903eac9e010",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c86da425_82e8f2ce",
+        "filename": "src/du_app/du_cfg.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 785,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-10-06T05:00:46Z",
+      "side": 1,
+      "message": "Here, once DUAPP is aware of Num of slices in SLiceList, That number can be validated using MAX_NUM_SLICES. I think this check is enough as numSupportedSlices will be propagated to other layers.",
+      "range": {
+        "startLine": 785,
+        "startChar": 47,
+        "endLine": 785,
+        "endChar": 66
+      },
+      "revId": "2cc2bb96c526ec4bf417568e680d3903eac9e010",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b03fa818_075b4fd1",
+        "filename": "src/du_app/du_cfg.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 794,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-10-06T05:00:46Z",
+      "side": 1,
+      "message": "If the above check is done, no need for further checks of MAX_NUM_OF_SLICES",
+      "range": {
+        "startLine": 794,
+        "startChar": 51,
+        "endLine": 794,
+        "endChar": 70
+      },
+      "revId": "2cc2bb96c526ec4bf417568e680d3903eac9e010",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
