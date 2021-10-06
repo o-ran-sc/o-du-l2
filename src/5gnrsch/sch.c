@@ -703,7 +703,6 @@ void fillSchSib1Cfg(uint8_t mu, uint8_t bandwidth, uint8_t numSlots, SchSib1Cfg 
    /* TODO : This should be filled through freqDomRscAllocType0() */
    uint8_t FreqDomainResource[6] = {15, 0, 0, 0, 0, 0};
    uint16_t tbSize = 0;
-   uint8_t numPdschSymbols = 11; /* considering pdsch region from symbols 3 to 13 */
    uint8_t ssbIdx = 0;
 
    PdcchCfg *pdcch = &(sib1SchCfg->sib1PdcchCfg);
@@ -816,14 +815,14 @@ void fillSchSib1Cfg(uint8_t mu, uint8_t bandwidth, uint8_t numSlots, SchSib1Cfg 
    pdsch->dmrs.dmrsAddPos                    = DMRS_ADDITIONAL_POS;
 
    pdsch->pdschFreqAlloc.resourceAllocType   = 1; /* RAT type-1 RIV format */
-   pdsch->pdschFreqAlloc.freqAlloc.startPrb  = offsetPointA + SCH_SSB_NUM_PRB + 1; /* the RB numbering starts from coreset0,
-									    and PDSCH is always above SSB */
-   pdsch->pdschFreqAlloc.freqAlloc.numPrb    = schCalcNumPrb(tbSize,sib1SchCfg->sib1Mcs,numPdschSymbols);
+   /* the RB numbering starts from coreset0, and PDSCH is always above SSB */
+   pdsch->pdschFreqAlloc.freqAlloc.startPrb  = offsetPointA + SCH_SSB_NUM_PRB + 1;
+   pdsch->pdschFreqAlloc.freqAlloc.numPrb    = schCalcNumPrb(tbSize,sib1SchCfg->sib1Mcs, NUM_PDSCH_SYMBOL);
    pdsch->pdschFreqAlloc.vrbPrbMapping       = 0; /* non-interleaved */
    pdsch->pdschTimeAlloc.rowIndex            = 1;
    /* This is Intel's requirement. PDSCH should start after PDSCH DRMS symbol */
    pdsch->pdschTimeAlloc.timeAlloc.startSymb = 3; /* spec-38.214, Table 5.1.2.1-1 */
-   pdsch->pdschTimeAlloc.timeAlloc.numSymb   = numPdschSymbols;
+   pdsch->pdschTimeAlloc.timeAlloc.numSymb   = NUM_PDSCH_SYMBOL;
    pdsch->beamPdschInfo.numPrgs              = 1;
    pdsch->beamPdschInfo.prgSize              = 1;
    pdsch->beamPdschInfo.digBfInterfaces      = 0;
@@ -1078,6 +1077,59 @@ uint8_t MacSchSrUciInd(Pst *pst, SrUciIndInfo *uciInd)
    }
    return ROK;
 }
+
+/*******************************************************************
+ *
+ * @brief Allocates requested PRBs
+ *
+ * @details
+ *
+ *    Function : allocatePrbPer
+ *
+ *    Functionality:
+ *      Allocates requested PRBs
+ *      Keeps track of allocated PRB (using bitmap) and remaining PRBs
+ *
+ * @params[in] prbAlloc table
+ *             Start symbol
+ *             Number of symbols
+ *             Start PRB
+ *             Number of PRBs
+ *
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t allocatePrb(SchPrbAlloc *prbAlloc, uint8_t startSymbol, uint8_t symbolLength, \
+   uint16_t startPrb, uint16_t numPrb)
+{
+   uint8_t  symbol = 0;
+   CmLList  *freePrbBlock = NULLP;
+
+   /* Check if requested PRBs are available */
+   freePrbBlock = isPrbAvailable(&prbAlloc->freePrbBlockList, startPrb, numPrb);
+   if(!freePrbBlock)
+   {
+      DU_LOG("\nERROR  -->  SCH: Requested PRB unavailable");
+      return RFAILED;
+   }
+
+   /* Update bitmap to allocate PRBs */
+   for(symbol=startSymbol; symbol < (startSymbol+symbolLength); symbol++)
+   {
+      if(fillPrbBitmap(prbAlloc->prbBitMap[symbol], startPrb, numPrb) != ROK)
+      {
+         DU_LOG("\nERROR  -->  SCH: fillPrbBitmap() failed for symbol [%d] ", symbol);
+         return RFAILED;
+      }
+   }
+
+   /* Update the remaining number for free PRBs */
+   removeAllocatedPrbFromFreePrbList(&prbAlloc->freePrbBlockList, freePrbBlock, startPrb, numPrb);
+
+   return ROK;
+}
+
 /**********************************************************************
   End of file
  **********************************************************************/
