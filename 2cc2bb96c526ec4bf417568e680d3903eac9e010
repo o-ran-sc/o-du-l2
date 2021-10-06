@@ -24,6 +24,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "496d64fa_60f5d5cc",
+        "filename": "src/5gnrmac/mac_cfg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-10-06T09:43:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "57e623bf_a7b05dc1",
+      "range": {
+        "startLine": 170,
+        "startChar": 31,
+        "endLine": 170,
+        "endChar": 51
+      },
+      "revId": "2cc2bb96c526ec4bf417568e680d3903eac9e010",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c86da425_82e8f2ce",
@@ -60,6 +84,30 @@
       "writtenOn": "2021-10-06T05:00:46Z",
       "side": 1,
       "message": "If the above check is done, no need for further checks of MAX_NUM_OF_SLICES",
+      "range": {
+        "startLine": 794,
+        "startChar": 51,
+        "endLine": 794,
+        "endChar": 70
+      },
+      "revId": "2cc2bb96c526ec4bf417568e680d3903eac9e010",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2a441f9b_2bdc1fd6",
+        "filename": "src/du_app/du_cfg.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 794,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-10-06T09:43:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b03fa818_075b4fd1",
       "range": {
         "startLine": 794,
         "startChar": 51,
