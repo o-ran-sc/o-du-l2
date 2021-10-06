@@ -42,6 +42,8 @@
 #define RAR_DELAY   2
 #define MSG4_DELAY  1
 #define PDSCH_START_RB 10
+#define NUM_PDSCH_SYMBOL 11 /* Considering pdsch region from 3 to 13, DMRS exclued.
+                               Overlapping of PDSCH DRMS and PDSCH not supported by Intel L1 */
 #define PUSCH_START_RB 15
 #define PUCCH_NUM_PRB_FORMAT_0_1_4 1  /* number of PRBs in freq domain, spec 38.213 - 9.2.1 */
 #define SI_RNTI 0xFFFF
@@ -58,6 +60,9 @@
 
 #define MAC_HDR_SIZE  3   /* 3 bytes of MAC Header */
 #define UL_GRANT_SIZE 224
+
+#define PRB_BITMAP_IDX_LEN 64
+#define PRB_BITMAP_LEN ((MAX_NUM_RB + PRB_BITMAP_IDX_LEN-1) / PRB_BITMAP_IDX_LEN)
 
 typedef struct schCellCb SchCellCb;
 typedef struct schUeCb SchUeCb;
@@ -108,19 +113,27 @@ typedef struct schGenCb
 
 /**
  * @brief
+ * PRB allocations for a symbol within a slot
+ */
+typedef struct schPrbAlloc
+{
+   uint16_t  numRemPrb;                      /*!< Number of remaining PRBs available for a symbol */
+   uint64_t  prbBitMap[PRB_BITMAP_LEN];  /*!< BitMap to store the allocated PRBs */
+}SchPrbAlloc;
+
+/**
+ * @brief
  * scheduler allocationsfor DL per cell.
  */
 typedef struct schDlSlotInfo
 {
-   uint16_t  totalPrb;                          /*!< Number of RBs in the cell */
-   uint16_t  assignedPrb[SCH_SYMBOL_PER_SLOT];  /*!< Num RBs and corresponding symbols allocated */
-   uint16_t  resAllocBitMap;                    /*!< Resource allocation bitmap */
-   bool      ssbPres;                           /*!< Flag to determine if SSB is present in this slot */
-   uint8_t   ssbIdxSupported;                   /*!< Max SSB index */
-   SsbInfo   ssbInfo[MAX_SSB_IDX];              /*!< SSB info */
-   bool      sib1Pres;                          /*!< Flag to determine if SIB1 is present in this slot */
-   RarAlloc  *rarAlloc;                         /*!< RAR allocation */
-   DlMsgInfo *dlMsgInfo;                        /*!< DL dedicated Msg info */
+   SchPrbAlloc  prbAllocPerSymbol[SCH_SYMBOL_PER_SLOT];  /*!< PRB allocated/available per symbol */
+   bool         ssbPres;                           /*!< Flag to determine if SSB is present in this slot */
+   uint8_t      ssbIdxSupported;                   /*!< Max SSB index */
+   SsbInfo      ssbInfo[MAX_SSB_IDX];              /*!< SSB info */
+   bool         sib1Pres;                          /*!< Flag to determine if SIB1 is present in this slot */
+   RarAlloc     *rarAlloc;                         /*!< RAR allocation */
+   DlMsgInfo    *dlMsgInfo;                        /*!< DL dedicated Msg info */
 }SchDlSlotInfo;
 
 typedef struct schRaCb
@@ -134,14 +147,12 @@ typedef struct schRaCb
  */
 typedef struct schUlSlotInfo
 {
-   uint16_t     totalPrb;  /*!< Number of RBs in the cell */
-   uint16_t     assignedPrb[SCH_SYMBOL_PER_SLOT]; /*!< Num RBs and corresponding symbols allocated */
-   uint16_t     resAllocBitMap;                    /*!< Resource allocation bitmap */
-   uint8_t      puschCurrentPrb; /* Current PRB for PUSCH allocation */
-   bool         puschPres; /*!< PUSCH presence field */
-   SchPuschInfo *schPuschInfo; /*!< PUSCH info */
-   bool         pucchPres; /*!< PUCCH presence field */
-   SchPucchInfo schPucchInfo; /*!< PUCCH info */
+   SchPrbAlloc  prbAllocPerSymbol[SCH_SYMBOL_PER_SLOT]; /*!< PRB allocated/available per symbol */
+   uint8_t      puschCurrentPrb;                /* Current PRB for PUSCH allocation */
+   bool         puschPres;                      /*!< PUSCH presence field */
+   SchPuschInfo *schPuschInfo;                  /*!< PUSCH info */
+   bool         pucchPres;                      /*!< PUCCH presence field */
+   SchPucchInfo schPucchInfo;                   /*!< PUCCH info */
 }SchUlSlotInfo;
 
 /**
@@ -285,7 +296,8 @@ void schInitUlSlot(SchUlSlotInfo *schUlSlotInfo);
 void schInitDlSlot(SchDlSlotInfo *schDlSlotInfo);
 uint8_t SchSendCfgCfm(Pst *pst, RgMngmt *cfm);
 short int schActvTmr(Ent ent,Inst inst);
-uint8_t schBroadcastAlloc(SchCellCb *cell, DlBrdcstAlloc *dlBrdcstAlloc,uint16_t slot);
+uint8_t schBroadcastSsbAlloc(SchCellCb *cell, DlBrdcstAlloc *dlBrdcstAlloc,uint16_t slot);
+uint8_t schBroadcastSib1Alloc(SchCellCb *cell, DlBrdcstAlloc *dlBrdcstAlloc,uint16_t slot);
 uint8_t schProcessSlotInd(SlotTimingInfo *slotInd, Inst inst);
 uint8_t schUlResAlloc(SchCellCb *cell, Inst schInst);
 uint8_t schDlRsrcAllocMsg4(DlMsgAlloc *msg4Alloc, SchCellCb *cell, uint16_t slot, bool ssbPresent, bool sib1Present);

@@ -61,70 +61,115 @@ SchMacUlSchInfoFunc schMacUlSchInfoOpts[] =
  *
  * @details
  *
- *     Function : schBroadcastAlloc
+ *     Function : schBroadcastSsbAlloc
  *     
- *     This function handles common scheduling for DL
+ *     This function handles common scheduling for SSB
  *     
  *  @param[in]  SchCellCb *cell, cell cb
  *  @param[in]  DlBrdcstAlloc *dlBrdcstAlloc, DL brdcst allocation
  *  @return  void
  **/
-uint8_t schBroadcastAlloc(SchCellCb *cell, DlBrdcstAlloc *dlBrdcstAlloc,
-      uint16_t slot)
+uint8_t schBroadcastSsbAlloc(SchCellCb *cell, DlBrdcstAlloc *dlBrdcstAlloc, uint16_t slot)
 {
    /* schedule SSB */
-   uint8_t ssbStartPrb, ssbStartSymb, idx;
+   uint8_t ssbStartPrb, ssbStartSymb, idx, symbol;
    SchDlSlotInfo *schDlSlotInfo;
    SsbInfo ssbInfo;
 
    schDlSlotInfo = cell->schDlSlotInfo[slot];
+   ssbStartPrb = cell->cellCfg.ssbSchCfg.ssbOffsetPointA; //+Kssb
+   ssbStartSymb = cell->ssbStartSymbArr[dlBrdcstAlloc->ssbIdxSupported-1]; /*since we are
+                                                                             supporting only 1 ssb beam */
 
-   if(dlBrdcstAlloc->ssbTrans)
+   /* Assign interface structure */
+   for(idx=0; idx<dlBrdcstAlloc->ssbIdxSupported; idx++)
    {
-      ssbStartPrb = cell->cellCfg.ssbSchCfg.ssbOffsetPointA; //+Kssb
-      ssbStartSymb = cell->ssbStartSymbArr[dlBrdcstAlloc->ssbIdxSupported-1]; /*since we are
-                                                                                supporting only 1 ssb beam */
-
-      /* Assign interface structure */
-      for(idx=0; idx<dlBrdcstAlloc->ssbIdxSupported; idx++)
-      {
-         ssbInfo.ssbIdx              = idx;
-         ssbInfo.fdAlloc.startPrb    = ssbStartPrb;
-         ssbInfo.fdAlloc.numPrb      = SCH_SSB_NUM_PRB;
-         ssbInfo.tdAlloc.startSymb   = ssbStartSymb;
-         ssbInfo.tdAlloc.numSymb     = SCH_SSB_NUM_SYMB;
-         dlBrdcstAlloc->ssbInfo[idx] = ssbInfo;
-         schDlSlotInfo->ssbInfo[idx] = ssbInfo;
-      }
-
-      schDlSlotInfo->ssbPres = true;
-      schDlSlotInfo->ssbIdxSupported = dlBrdcstAlloc->ssbIdxSupported;
-      for(idx=ssbStartSymb; idx<ssbStartSymb+SCH_SSB_NUM_SYMB; idx++)
-      {
-         schDlSlotInfo->assignedPrb[idx] = ssbStartPrb + SCH_SSB_NUM_PRB + 1; /* +1 for kSsb */
-      }
+      ssbInfo.ssbIdx              = idx;
+      ssbInfo.fdAlloc.startPrb    = ssbStartPrb;
+      ssbInfo.fdAlloc.numPrb      = SCH_SSB_NUM_PRB;
+      ssbInfo.tdAlloc.startSymb   = ssbStartSymb;
+      ssbInfo.tdAlloc.numSymb     = SCH_SSB_NUM_SYMB;
+      dlBrdcstAlloc->ssbInfo[idx] = ssbInfo;
+      schDlSlotInfo->ssbInfo[idx] = ssbInfo;
    }
 
-   /* SIB1 allocation */
-   if(dlBrdcstAlloc->sib1Trans)
+   for(symbol=ssbStartSymb; symbol < (ssbStartSymb+SCH_SSB_NUM_SYMB); symbol++)
    {
-      uint16_t tbSize         = 0;
-      uint8_t numPdschSymbols = 12; /* considering pdsch region from 2 to 13 */
-      uint8_t mcs             = 4;  /* MCS fixed to 4 */
-      uint8_t numSib1Prb      = 0;
-      schDlSlotInfo->sib1Pres = true;
-
-      tbSize = schCalcTbSize(cell->cellCfg.sib1SchCfg.sib1PduLen); /* send this value to the func in bytes when considering sib1 size */
-      numSib1Prb = schCalcNumPrb(tbSize,mcs,numPdschSymbols);
-      for(idx=0; idx<SCH_SYMBOL_PER_SLOT; idx++)
+      /* Check if number of available PRBs are sufficient */
+      if(SCH_SSB_NUM_PRB > schDlSlotInfo->prbAllocPerSymbol[symbol].numRemPrb)
       {
-         schDlSlotInfo->assignedPrb[idx] = ssbStartPrb + SCH_SSB_NUM_PRB + 1 + numSib1Prb; /* 10 PRBs for sib1 */
+         DU_LOG("\nERROR  -->  SCH: PRB allocation failed for SSB for symbol [%d] in slot [%d]. \
+               Number of requested PRBs [%d] is less than number of available PRBs [%d]", \
+               symbol, slot, SCH_SSB_NUM_PRB, schDlSlotInfo->prbAllocPerSymbol[symbol].numRemPrb);
+         return RFAILED;
       }
-      memcpy(&dlBrdcstAlloc->sib1Alloc.bwp, &cell->cellCfg.sib1SchCfg.bwp, sizeof(BwpCfg)); 
-      memcpy(&dlBrdcstAlloc->sib1Alloc.sib1PdcchCfg, &cell->cellCfg.sib1SchCfg.sib1PdcchCfg, sizeof(PdcchCfg)); 
-      memcpy(&dlBrdcstAlloc->sib1Alloc.sib1PdschCfg, &cell->cellCfg.sib1SchCfg.sib1PdschCfg, sizeof(PdschCfg)); 
-      dlBrdcstAlloc->sib1Alloc.sib1PdcchCfg.dci.pdschCfg = &dlBrdcstAlloc->sib1Alloc.sib1PdschCfg;
+
+      /* Update bitmap to allocate PRBs */
+      /* SCH_SSB_NUM_PRB + 1 : Here, +1 for Kssb */
+      if(fillPrbBitmap(schDlSlotInfo->prbAllocPerSymbol[symbol].prbBitMap, ssbStartPrb, SCH_SSB_NUM_PRB + 1) != ROK)
+      {
+         DU_LOG("\nERROR  -->  SCH: PRB allocation failed for SSB for symbol [%d] in slot [%d]",\
+               symbol, slot);
+         return RFAILED;
+      }
+
+      /* Update the number of remaining prb in this symbol */
+      schDlSlotInfo->prbAllocPerSymbol[symbol].numRemPrb -= (ssbStartPrb + SCH_SSB_NUM_PRB + 1);
    }
+
+   schDlSlotInfo->ssbPres = true;
+   schDlSlotInfo->ssbIdxSupported = dlBrdcstAlloc->ssbIdxSupported;
+   return ROK;
+}
+
+/**
+ * @brief common resource allocation for SIB1
+ *
+ * @details
+ *
+ *     Function : schBroadcastSib1Alloc
+ *     
+ *     This function handles common scheduling for SIB1
+ *     
+ *  @param[in]  SchCellCb *cell, cell cb
+ *  @param[in]  DlBrdcstAlloc *dlBrdcstAlloc, DL brdcst allocation
+ *  @return  void
+ **/
+uint8_t schBroadcastSib1Alloc(SchCellCb *cell, DlBrdcstAlloc *dlBrdcstAlloc, uint16_t slot)
+{
+   uint8_t symbol;
+   FreqDomainAlloc freqAlloc = cell->cellCfg.sib1SchCfg.sib1PdschCfg.pdschFreqAlloc.freqAlloc;
+   TimeDomainAlloc timeAlloc = cell->cellCfg.sib1SchCfg.sib1PdschCfg.pdschTimeAlloc.timeAlloc;
+   SchDlSlotInfo *schDlSlotInfo = cell->schDlSlotInfo[slot];
+
+   for(symbol=timeAlloc.startSymb; symbol < (timeAlloc.startSymb+timeAlloc.numSymb); symbol++)
+   {
+      /* Check if number of available PRBs are sufficient */
+      if(freqAlloc.numPrb > schDlSlotInfo->prbAllocPerSymbol[symbol].numRemPrb)
+      {
+         DU_LOG("\nERROR  -->  SCH: PRB allocation failed for SIB1 for symbol [%d] in slot [%d]. \
+               Number of requested PRBs [%d] is less than number of available PRBs [%d]", \
+               symbol, slot, freqAlloc.numPrb, schDlSlotInfo->prbAllocPerSymbol[symbol].numRemPrb);
+         return RFAILED;
+      }
+
+      /* Update bitmap to allocate PRBs */
+      if(fillPrbBitmap(schDlSlotInfo->prbAllocPerSymbol[symbol].prbBitMap, freqAlloc.startPrb, freqAlloc.numPrb) != ROK)
+      {
+         DU_LOG("\nERROR  -->  SCH: PRB allocation failed for SSB for symbol [%d] in slot [%d]",\
+               symbol, slot);
+         return RFAILED;
+      }
+
+      /* Update the number of remaining prb in this symbol */
+      schDlSlotInfo->prbAllocPerSymbol[symbol].numRemPrb -= freqAlloc.numPrb;
+   }
+
+   memcpy(&dlBrdcstAlloc->sib1Alloc.bwp, &cell->cellCfg.sib1SchCfg.bwp, sizeof(BwpCfg)); 
+   memcpy(&dlBrdcstAlloc->sib1Alloc.sib1PdcchCfg, &cell->cellCfg.sib1SchCfg.sib1PdcchCfg, sizeof(PdcchCfg)); 
+   memcpy(&dlBrdcstAlloc->sib1Alloc.sib1PdschCfg, &cell->cellCfg.sib1SchCfg.sib1PdschCfg, sizeof(PdschCfg)); 
+   dlBrdcstAlloc->sib1Alloc.sib1PdcchCfg.dci.pdschCfg = &dlBrdcstAlloc->sib1Alloc.sib1PdschCfg;
+   schDlSlotInfo->sib1Pres = true;
    return ROK;
 }
 
@@ -240,7 +285,7 @@ void schPrachResAlloc(SchCellCb *cell, UlSchedInfo *ulSchedInfo, SlotTimingInfo 
             dataType |= SCH_DATATYPE_PRACH;
             /* Considering first slot in the frame for PRACH */
             idx = 0;
-            schUlSlotInfo->assignedPrb[idx] = freqStart+numPrachRb;
+            //schUlSlotInfo->assignedPrb[idx] = freqStart+numPrachRb;
          }
          ulSchedInfo->dataType = dataType;
          /* prach info */
@@ -568,7 +613,6 @@ uint8_t schDlRsrcAllocMsg4(DlMsgAlloc *msg4Alloc, SchCellCb *cell, uint16_t slot
    uint8_t offsetPointA;
    uint8_t FreqDomainResource[6] = {0};
    uint16_t tbSize = 0;
-   uint8_t numPdschSymbols = 11;            /* considering pdsch region from 3 to 13 */
    uint8_t mcs = 4;                         /* MCS fixed to 4 */
    SchBwpDlCfg *initialBwp;
    FreqDomainAlloc *sib1PdschFreqAlloc = NULL;
@@ -673,10 +717,10 @@ uint8_t schDlRsrcAllocMsg4(DlMsgAlloc *msg4Alloc, SchCellCb *cell, uint16_t slot
       sib1PdschFreqAlloc = &cell->cellCfg.sib1SchCfg.sib1PdschCfg.pdschFreqAlloc.freqAlloc;
       pdsch->pdschFreqAlloc.freqAlloc.startPrb = sib1PdschFreqAlloc->startPrb + sib1PdschFreqAlloc->numPrb + 1; 
    }
-   pdsch->pdschFreqAlloc.freqAlloc.numPrb = schCalcNumPrb(tbSize, mcs, numPdschSymbols);
+   pdsch->pdschFreqAlloc.freqAlloc.numPrb = schCalcNumPrb(tbSize, mcs, NUM_PDSCH_SYMBOL);
    pdsch->pdschFreqAlloc.vrbPrbMapping = 0; /* non-interleaved */
    pdsch->pdschTimeAlloc.timeAlloc.startSymb = 3; /* spec-38.214, Table 5.1.2.1-1 */
-   pdsch->pdschTimeAlloc.timeAlloc.numSymb = numPdschSymbols;
+   pdsch->pdschTimeAlloc.timeAlloc.numSymb = NUM_PDSCH_SYMBOL;
    pdsch->beamPdschInfo.numPrgs = 1;
    pdsch->beamPdschInfo.prgSize = 1;
    pdsch->beamPdschInfo.digBfInterfaces = 0;
