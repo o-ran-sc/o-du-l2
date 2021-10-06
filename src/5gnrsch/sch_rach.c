@@ -115,14 +115,13 @@ SchPuschInfo* schAllocMsg3Pusch(Inst schInst, uint16_t crnti, uint8_t k2Index, u
    uint8_t    numRb         = 0;
    uint8_t    idx           = 0;
    uint8_t    mcs            = 4;
-   uint8_t    numPdschSymbols= 11;
    uint16_t   tbSize         = 0;
 
    cell = schCb[schInst].cells[schInst];
    if(cell == NULL)
    {
       DU_LOG("\n\nERROR  -->  SCH :  Failed to find cell in schAllocMsg3Pusch");
-      return RFAILED;
+      return NULLP;
    }
 
    startSymb = cell->cellCfg.schInitialUlBwp.puschCommon.timeDomRsrcAllocList[k2Index].startSymbol;
@@ -130,7 +129,7 @@ SchPuschInfo* schAllocMsg3Pusch(Inst schInst, uint16_t crnti, uint8_t k2Index, u
 
    startRb = cell->schUlSlotInfo[msg3Slot]->puschCurrentPrb;
    tbSize = schCalcTbSize(8); /* 6 bytes msg3  and 2 bytes header */
-   numRb = schCalcNumPrb(tbSize, mcs, numPdschSymbols);
+   numRb = schCalcNumPrb(tbSize, mcs, NUM_PDSCH_SYMBOL);
 
    /* allocating 1 extra RB for now */
    numRb++;
@@ -139,7 +138,7 @@ SchPuschInfo* schAllocMsg3Pusch(Inst schInst, uint16_t crnti, uint8_t k2Index, u
 
    for(idx=startSymb; idx<symbLen; idx++)
    {
-      cell->schUlSlotInfo[msg3Slot]->assignedPrb[idx] = startRb + numRb;
+      //cell->schUlSlotInfo[msg3Slot]->assignedPrb[idx] = startRb + numRb;
    }
    schUlSlotInfo = cell->schUlSlotInfo[msg3Slot];
 
@@ -150,7 +149,7 @@ SchPuschInfo* schAllocMsg3Pusch(Inst schInst, uint16_t crnti, uint8_t k2Index, u
       return NULLP;
    }
    tbSize = 0;  /* since nPrb has been incremented, recalculating tbSize */
-   tbSize = schCalcTbSizeFromNPrb(numRb, mcs, numPdschSymbols);
+   tbSize = schCalcTbSizeFromNPrb(numRb, mcs, NUM_PDSCH_SYMBOL);
    tbSize = tbSize / 8 ; /*bits to byte conversion*/
    schUlSlotInfo->schPuschInfo->crnti             = crnti;
    schUlSlotInfo->schPuschInfo->harqProcId        = SCH_HARQ_PROC_ID;
@@ -227,15 +226,14 @@ void schProcessRaReq(SlotTimingInfo currTime, SchCellCb *cell)
 #ifdef NR_TDD
    uint8_t   totalCfgSlot = 0;
 #endif
-   uint16_t  dciSlot = 0, rarSlot = 0, msg3Slot = 0;
-   SlotTimingInfo dciTime, rarTime;
-   RarAlloc *dciSlotAlloc = NULLP;  /* Stores info for transmission of PDCCH for RAR */
-   RarAlloc *rarSlotAlloc = NULLP;  /* Stores info for transmission of RAR PDSCH */
-   SchPuschInfo *msg3PuschInfo = NULLP;          /* Stores MSG3 PUSCH scheduling information */
-   PduTxOccsaion  ssbOccasion=0, sib1Occasion=0;
+   uint16_t             dciSlot = 0, rarSlot = 0, msg3Slot = 0;
+   SlotTimingInfo       dciTime, rarTime;
+   RarAlloc             *dciSlotAlloc = NULLP;    /* Stores info for transmission of PDCCH for RAR */
+   RarAlloc             *rarSlotAlloc = NULLP;    /* Stores info for transmission of RAR PDSCH */
+   SchPuschInfo         *msg3PuschInfo = NULLP;   /* Stores MSG3 PUSCH scheduling information */
    SchK0K1TimingInfoTbl *k0K1InfoTbl=NULLP;    
-   SchK2TimingInfoTbl *msg3K2InfoTbl=NULLP;
-   RaRspWindowStatus windowStatus=0;
+   SchK2TimingInfoTbl   *msg3K2InfoTbl=NULLP;
+   RaRspWindowStatus    windowStatus=0;
 
    while(ueIdx < MAX_NUM_UE)
    {
@@ -326,14 +324,14 @@ void schProcessRaReq(SlotTimingInfo currTime, SchCellCb *cell)
          }
          cell->schDlSlotInfo[dciSlot]->rarAlloc = dciSlotAlloc;
 
-         /* Check if RAR PDSCH occasion same as SSB and SIB1 occasion */
-         ssbOccasion = schCheckSsbOcc(rarTime, cell);
-         sib1Occasion = schCheckSib1Occ(rarTime, cell);
-
          /* Fill PDCCH and PDSCH scheduling information for RAR */
-         schFillRar(dciSlotAlloc, cell->raReq[ueIdx]->raRnti,
-            cell->cellCfg.phyCellId, cell->cellCfg.ssbSchCfg.ssbOffsetPointA, k0Index,
-            ssbOccasion, sib1Occasion);
+         if((schFillRar(cell, rarTime, ueIdx, dciSlotAlloc, k0Index)) != ROK)
+         {
+            DU_LOG("\nERROR  -->  SCH: Scheduling of RAR failed in slot [%d]", rarSlot);
+            SCH_FREE(dciSlotAlloc, sizeof(RarAlloc));
+            cell->schDlSlotInfo[dciSlot]->rarAlloc = NULLP;
+            return;
+         }
 
          /* Allocate resources for msg3 */
          msg3PuschInfo = schAllocMsg3Pusch(cell->instIdx, cell->raReq[ueIdx]->rachInd->crnti, k2Index, msg3Slot);
@@ -370,6 +368,7 @@ void schProcessRaReq(SlotTimingInfo currTime, SchCellCb *cell)
             {
                DU_LOG("\nERROR  -->  SCH : Memory Allocation failed for rarSlotAlloc");
                SCH_FREE(dciSlotAlloc, sizeof(RarAlloc));
+               cell->schDlSlotInfo[dciSlot]->rarAlloc = NULLP;
                return;
             }
             cell->schDlSlotInfo[rarSlot]->rarAlloc = rarSlotAlloc;
@@ -470,10 +469,8 @@ uint8_t schProcessRachInd(RachIndInfo *rachInd, Inst schInst)
  *  @param[in]  offset to pointA to determine freq alloc
  *  @return  ROK
  **/
-uint8_t schFillRar(RarAlloc *rarAlloc, uint16_t raRnti, uint16_t pci, uint8_t offsetPointA, \
-uint8_t k0Index, bool ssbPresent, bool sib1Present)
+uint8_t schFillRar(SchCellCb *cell, SlotTimingInfo rarTime, uint16_t ueIdx, RarAlloc *rarAlloc, uint8_t k0Index)
 {
-   Inst inst = 0;
    uint8_t coreset0Idx = 0;
    uint8_t numRbs = 0;
    uint8_t firstSymbol = 0;
@@ -483,17 +480,10 @@ uint8_t k0Index, bool ssbPresent, bool sib1Present)
    uint16_t tbSize = 0;
    uint8_t mcs = 4;  /* MCS fixed to 4 */
 
-   if(schCb[inst].cells[inst] == NULL)
-   {
-      DU_LOG("\nERROR  -->  SCH: Cell not found");
-      return RFAILED;
-   }
-
-   SchBwpDlCfg *initialBwp = &schCb[inst].cells[inst]->cellCfg.schInitialDlBwp;
+   SchBwpDlCfg *initialBwp = &cell->cellCfg.schInitialDlBwp;
    PdcchCfg *pdcch = &rarAlloc->rarPdcchCfg;
    PdschCfg *pdsch = &rarAlloc->rarPdschCfg;
    BwpCfg *bwp = &rarAlloc->bwp;
-   FreqDomainAlloc *sib1PdschFreqAlloc = NULL;
 
    coreset0Idx     = initialBwp->pdcchCommon.commonSearchSpace.coresetId;
 
@@ -514,7 +504,7 @@ uint8_t k0Index, bool ssbPresent, bool sib1Present)
    }
 
    /* calculate the PRBs */
-   freqDomRscAllocType0(((offsetPointA-offset)/6), (numRbs/6), FreqDomainResource);
+   freqDomRscAllocType0(((cell->cellCfg.ssbSchCfg.ssbOffsetPointA - offset)/6), (numRbs/6), FreqDomainResource);
 
    /* fill BWP */
    bwp->freqAlloc.numPrb   = initialBwp->bwp.freqAlloc.numPrb;
@@ -530,11 +520,11 @@ uint8_t k0Index, bool ssbPresent, bool sib1Present)
    pdcch->coresetCfg.regBundleSize = 6;    /* spec-38.211 sec 7.3.2.2 */
    pdcch->coresetCfg.interleaverSize = 2;  /* spec-38.211 sec 7.3.2.2 */
    pdcch->coresetCfg.coreSetType = 0;
-   pdcch->coresetCfg.shiftIndex = pci;
+   pdcch->coresetCfg.shiftIndex = cell->cellCfg.phyCellId;
    pdcch->coresetCfg.precoderGranularity = 0; /* sameAsRegBundle */
    pdcch->numDlDci = 1;
-   pdcch->dci.rnti = raRnti; /* RA-RNTI */
-   pdcch->dci.scramblingId = pci;
+   pdcch->dci.rnti = cell->raReq[ueIdx]->raRnti; /* RA-RNTI */
+   pdcch->dci.scramblingId = cell->cellCfg.phyCellId;
    pdcch->dci.scramblingRnti = 0;
    pdcch->dci.cceIndex = 4; /* considering SIB1 is sent at cce 0-1-2-3 */
    pdcch->dci.aggregLevel = 4;
@@ -550,7 +540,7 @@ uint8_t k0Index, bool ssbPresent, bool sib1Present)
    /* fill the PDSCH PDU */
    uint8_t cwCount = 0;
    pdsch->pduBitmap = 0; /* PTRS and CBG params are excluded */
-   pdsch->rnti = raRnti; /* RA-RNTI */
+   pdsch->rnti = cell->raReq[ueIdx]->raRnti; /* RA-RNTI */
    pdsch->pduIndex = 0;
    pdsch->numCodewords = 1;
    for(cwCount = 0; cwCount < pdsch->numCodewords; cwCount++)
@@ -564,38 +554,37 @@ uint8_t k0Index, bool ssbPresent, bool sib1Present)
       tbSize = schCalcTbSize(RAR_PAYLOAD_SIZE + TX_PAYLOAD_HDR_LEN);
       pdsch->codeword[cwCount].tbSize = tbSize;
    }
-   pdsch->dataScramblingId = pci;
+   pdsch->dataScramblingId = cell->cellCfg.phyCellId;
    pdsch->numLayers = 1;
    pdsch->transmissionScheme = 0;
    pdsch->refPoint = 0;
    pdsch->dmrs.dlDmrsSymbPos = 4;  /* Bitmap value 00000000000100 i.e. using 3rd symbol for PDSCH DMRS */
    pdsch->dmrs.dmrsConfigType = 0; /* type-1 */
-   pdsch->dmrs.dlDmrsScramblingId = pci;
+   pdsch->dmrs.dlDmrsScramblingId = cell->cellCfg.phyCellId;
    pdsch->dmrs.scid = 0;
    pdsch->dmrs.numDmrsCdmGrpsNoData = 1;
    pdsch->dmrs.dmrsPorts = 0;
    pdsch->dmrs.mappingType      = DMRS_MAP_TYPE_A;  /* Type-A */
    pdsch->dmrs.nrOfDmrsSymbols  = NUM_DMRS_SYMBOLS;
    pdsch->dmrs.dmrsAddPos       = DMRS_ADDITIONAL_POS;
-   pdsch->pdschFreqAlloc.resourceAllocType = 1; /* RAT type-1 RIV format */
-   /* The RB numbering starts from coreset0 */ 
-   pdsch->pdschFreqAlloc.freqAlloc.startPrb = PDSCH_START_RB;
-   if(ssbPresent)
-   {
-      /* PDSCH is always above SSB */
-      pdsch->pdschFreqAlloc.freqAlloc.startPrb = offsetPointA + SCH_SSB_NUM_PRB + 1;
-   }
-   if(sib1Present)
-   {
-      /* Must not overlap with SIB1 */
-      sib1PdschFreqAlloc = &schCb[inst].cells[inst]->cellCfg.sib1SchCfg.sib1PdschCfg.pdschFreqAlloc.freqAlloc;
-      pdsch->pdschFreqAlloc.freqAlloc.startPrb = sib1PdschFreqAlloc->startPrb + sib1PdschFreqAlloc->numPrb + 1; 
-   }
-   pdsch->pdschFreqAlloc.freqAlloc.numPrb = schCalcNumPrb(tbSize, mcs, \
-      initialBwp->pdschCommon.timeDomRsrcAllocList[k0Index].lengthSymbol);
-   pdsch->pdschFreqAlloc.vrbPrbMapping = 0; /* non-interleaved */
+
    pdsch->pdschTimeAlloc.timeAlloc.startSymb = initialBwp->pdschCommon.timeDomRsrcAllocList[k0Index].startSymbol;
    pdsch->pdschTimeAlloc.timeAlloc.numSymb = initialBwp->pdschCommon.timeDomRsrcAllocList[k0Index].lengthSymbol;
+
+   pdsch->pdschFreqAlloc.vrbPrbMapping = 0; /* non-interleaved */
+   pdsch->pdschFreqAlloc.resourceAllocType = 1; /* RAT type-1 RIV format */
+   pdsch->pdschFreqAlloc.freqAlloc.startPrb = MAX_NUM_RB;
+   pdsch->pdschFreqAlloc.freqAlloc.numPrb = \
+      schCalcNumPrb(tbSize, mcs, initialBwp->pdschCommon.timeDomRsrcAllocList[k0Index].lengthSymbol);
+
+   /* Allocate the number of PRBs required for RAR PDSCH */
+   if((allocatePrbDl(cell, rarTime, pdsch->pdschTimeAlloc.timeAlloc.startSymb, pdsch->pdschTimeAlloc.timeAlloc.numSymb,\
+      &pdsch->pdschFreqAlloc.freqAlloc.startPrb, pdsch->pdschFreqAlloc.freqAlloc.numPrb)) != ROK)
+   {
+      DU_LOG("\nERROR  --> SCH : allocatePrbDl() failed for RAR");
+      return RFAILED;
+   }
+
    pdsch->beamPdschInfo.numPrgs = 1;
    pdsch->beamPdschInfo.prgSize = 1;
    pdsch->beamPdschInfo.digBfInterfaces = 0;

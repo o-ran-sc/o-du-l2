@@ -132,7 +132,7 @@ void schCalcSlotValues(SlotTimingInfo slotInd, SchSlotValue *schSlotValue)
  * @return  Pdu transmission 
  *
  * ****************************************************************/
-PduTxOccsaion schCheckSsbOcc(SlotTimingInfo slotTime, SchCellCb *cell)
+PduTxOccsaion schCheckSsbOcc(SchCellCb *cell, SlotTimingInfo slotTime)
 {
    uint8_t  ssb_rep;
 
@@ -170,7 +170,7 @@ PduTxOccsaion schCheckSsbOcc(SlotTimingInfo slotTime, SchCellCb *cell)
  * @return  Pdu transmission
  *
  * ****************************************************************/
-PduTxOccsaion schCheckSib1Occ(SlotTimingInfo slotTime, SchCellCb *cell)
+PduTxOccsaion schCheckSib1Occ(SchCellCb *cell, SlotTimingInfo slotTime)
 {
    /* Identify SIB1 occasions */
    if((slotTime.sfn % SCH_SIB1_TRANS == 0) && (slotTime.slot ==0))
@@ -257,13 +257,23 @@ uint8_t schFillBoGrantDlSchedInfo(SchCellCb *cell, DlSchedInfo *dlSchedInfo, DlM
       {
          DU_LOG("\nDEBUG  -->  SCH : No pending BO for any LC id\n");
          /* Free the dl ded msg info allocated in macSchDlRlcBoInfo */
-         SCH_FREE(cell->schDlSlotInfo[dlSchedInfo->schSlotValue.dlMsgTime.slot]->dlMsgInfo, \
-               sizeof(DlMsgInfo));
+         SCH_FREE(dlMsgAlloc, sizeof(DlMsgAlloc));
+         dlSchedInfo->dlMsgAlloc = NULLP;
+         SCH_FREE(cell->schDlSlotInfo[dlSchedInfo->schSlotValue.dlMsgTime.slot]->dlMsgInfo, sizeof(DlMsgInfo));
          return ROK;
       }
 
       /* pdcch and pdsch data is filled */
-      schDlRsrcAllocDlMsg(dlMsgAlloc, cell, crnti, &accumalatedSize, slot);
+      if((schDlRsrcAllocDlMsg(cell, dlSchedInfo->schSlotValue.dlMsgTime, crnti, &accumalatedSize, dlMsgAlloc)) != ROK)
+      {
+         DU_LOG("\nERROR  --> SCH : Scheduling of DL dedicated message failed");
+         /* Free the dl ded msg info allocated in macSchDlRlcBoInfo */
+         SCH_FREE(dlMsgAlloc, sizeof(DlMsgAlloc));
+         dlSchedInfo->dlMsgAlloc = NULLP;
+         SCH_FREE(cell->schDlSlotInfo[dlSchedInfo->schSlotValue.dlMsgTime.slot]->dlMsgInfo, sizeof(DlMsgInfo));
+         return RFAILED;
+
+      }
 
       /* TODO : Update the scheduling byte report for multiple LC based on QCI
        * and Priority */
@@ -332,36 +342,48 @@ uint8_t schProcessSlotInd(SlotTimingInfo *slotInd, Inst schInst)
    memcpy(&cell->slotInfo, slotInd, sizeof(SlotTimingInfo));
    dlBrdcstAlloc->ssbIdxSupported = SSB_IDX_SUPPORTED;
 
-   slot = dlSchedInfo.schSlotValue.currentTime.slot;
-
    dlSchedInfo.cellId = cell->cellId;
 
-   /* Check if this slot is SSB occassion */
-   dlBrdcstAlloc->ssbTrans = schCheckSsbOcc(dlSchedInfo.schSlotValue.broadcastTime, cell); 
-   if((dlBrdcstAlloc->ssbTrans == NEW_TRANSMISSION) && (!cell->firstSsbTransmitted))
-      cell->firstSsbTransmitted = true;
+   slot = dlSchedInfo.schSlotValue.broadcastTime.slot;
 
-   /* Check if this slot is SIB1 occassion */
-   dlBrdcstAlloc->sib1Trans = schCheckSib1Occ(dlSchedInfo.schSlotValue.broadcastTime, cell);
-   if((dlBrdcstAlloc->sib1Trans == NEW_TRANSMISSION) && (!cell->firstSib1Transmitted))
-      cell->firstSib1Transmitted = true;
-
-   if(dlBrdcstAlloc->ssbTrans || dlBrdcstAlloc->sib1Trans)
+   /* Check for SSB occassion */
+   dlBrdcstAlloc->ssbTrans = schCheckSsbOcc(cell, dlSchedInfo.schSlotValue.broadcastTime); 
+   if(dlBrdcstAlloc->ssbTrans)
    {
-      dlSchedInfo.isBroadcastPres = true;
-      slot = dlSchedInfo.schSlotValue.broadcastTime.slot;
-      ret = schBroadcastAlloc(cell,dlBrdcstAlloc,slot);
-      if(ret != ROK)
+      if(schBroadcastSsbAlloc(cell, dlSchedInfo.schSlotValue.broadcastTime, dlBrdcstAlloc) != ROK)
       {
-         DU_LOG("\nERROR  -->  SCH : schBroadcastAlloc failed");
-         return ret;
+         DU_LOG("\nERROR  -->  SCH : schBroadcastSsbAlloc failed");
+         dlBrdcstAlloc->ssbTrans = NO_TRANSMISSION;
+      }
+      else 
+      {
+         dlSchedInfo.isBroadcastPres = true;
+         if((dlBrdcstAlloc->ssbTrans == NEW_TRANSMISSION) && (!cell->firstSsbTransmitted))
+            cell->firstSsbTransmitted = true;
+      }
+   }
+
+   /* Check for SIB1 occassion */
+   dlBrdcstAlloc->sib1Trans = schCheckSib1Occ(cell, dlSchedInfo.schSlotValue.broadcastTime);
+   if(dlBrdcstAlloc->sib1Trans)
+   {
+      if(schBroadcastSib1Alloc(cell, dlSchedInfo.schSlotValue.broadcastTime, dlBrdcstAlloc) != ROK)
+      {
+         DU_LOG("\nERROR  -->  SCH : schBroadcastSib1Alloc failed");
+         dlBrdcstAlloc->sib1Trans = NO_TRANSMISSION;
+      }
+      else 
+      {
+         dlSchedInfo.isBroadcastPres = true;
+         if((dlBrdcstAlloc->sib1Trans == NEW_TRANSMISSION) && (!cell->firstSib1Transmitted))
+            cell->firstSib1Transmitted = true;
       }
    }
 
    /* Check for Pending RA Requests */
    schProcessRaReq(*slotInd, cell);
 
-   /* check for RAR */
+   /* Check for RAR */
    if(cell->schDlSlotInfo[dlSchedInfo.schSlotValue.rarTime.slot]->rarAlloc != NULLP)
    {
       slot = dlSchedInfo.schSlotValue.rarTime.slot;
@@ -369,7 +391,7 @@ uint8_t schProcessSlotInd(SlotTimingInfo *slotInd, Inst schInst)
       cell->schDlSlotInfo[slot]->rarAlloc = NULLP;
    }
 
-   /* check for MSG4 */
+   /* Check for MSG4 */
    if((cell->schDlSlotInfo[dlSchedInfo.schSlotValue.dlMsgTime.slot]->dlMsgInfo != NULLP) &&
       (cell->schDlSlotInfo[dlSchedInfo.schSlotValue.dlMsgTime.slot]->dlMsgInfo->isMsg4Pdu))
    {
@@ -389,16 +411,22 @@ uint8_t schProcessSlotInd(SlotTimingInfo *slotInd, Inst schInst)
 	    sizeof(DlMsgInfo));
 
       /* pdcch and pdsch data is filled */
-      schDlRsrcAllocMsg4(msg4Alloc, cell, dlSchedInfo.schSlotValue.dlMsgTime.slot, dlBrdcstAlloc->ssbTrans, dlBrdcstAlloc->sib1Trans); 
+      if((schDlRsrcAllocMsg4(cell, dlSchedInfo.schSlotValue.dlMsgTime, msg4Alloc)) != ROK)
+      {
+         DU_LOG("\nERROR  -->  SCH : MSG4 scheduling failed");
+         SCH_FREE(msg4Alloc, sizeof(DlMsgAlloc));
+         dlSchedInfo.dlMsgAlloc = NULLP;
+         SCH_FREE(cell->schDlSlotInfo[dlSchedInfo.schSlotValue.dlMsgTime.slot]->dlMsgInfo, sizeof(DlMsgInfo));
+         return RFAILED;
+      }
 
       /* PUCCH resource */
       schAllocPucchResource(cell, msg4Alloc->dlMsgInfo.crnti, dlSchedInfo.schSlotValue.dlMsgTime.slot);
 
       SCH_FREE(cell->schDlSlotInfo[dlSchedInfo.schSlotValue.dlMsgTime.slot]->dlMsgInfo, sizeof(DlMsgInfo));
-      cell->schDlSlotInfo[dlSchedInfo.schSlotValue.dlMsgTime.slot]->dlMsgInfo = NULL;
    }
 
-   /* check if UL grant must be sent in this slot for a SR/BSR that had been received */
+   /* Check if UL grant must be sent in this slot for a SR/BSR that had been received */
    for(ueIdx=0; ueIdx<cell->numActvUe; ueIdx++)
    {
       uint32_t totDataReq = 0; /* in bytes */
@@ -449,7 +477,7 @@ uint8_t schProcessSlotInd(SlotTimingInfo *slotInd, Inst schInst)
       schFillBoGrantDlSchedInfo(cell, &dlSchedInfo, dlMsgAlloc);
    }
 
-   /* send msg to MAC */
+   /* Send msg to MAC */
    ret = sendDlAllocToMac(&dlSchedInfo, schInst);
    if(ret != ROK)
    {

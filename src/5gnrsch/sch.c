@@ -703,7 +703,6 @@ void fillSchSib1Cfg(uint8_t mu, uint8_t bandwidth, uint8_t numSlots, SchSib1Cfg 
    /* TODO : This should be filled through freqDomRscAllocType0() */
    uint8_t FreqDomainResource[6] = {15, 0, 0, 0, 0, 0};
    uint16_t tbSize = 0;
-   uint8_t numPdschSymbols = 11; /* considering pdsch region from symbols 3 to 13 */
    uint8_t ssbIdx = 0;
 
    PdcchCfg *pdcch = &(sib1SchCfg->sib1PdcchCfg);
@@ -816,14 +815,14 @@ void fillSchSib1Cfg(uint8_t mu, uint8_t bandwidth, uint8_t numSlots, SchSib1Cfg 
    pdsch->dmrs.dmrsAddPos                    = DMRS_ADDITIONAL_POS;
 
    pdsch->pdschFreqAlloc.resourceAllocType   = 1; /* RAT type-1 RIV format */
-   pdsch->pdschFreqAlloc.freqAlloc.startPrb  = offsetPointA + SCH_SSB_NUM_PRB + 1; /* the RB numbering starts from coreset0,
-									    and PDSCH is always above SSB */
-   pdsch->pdschFreqAlloc.freqAlloc.numPrb    = schCalcNumPrb(tbSize,sib1SchCfg->sib1Mcs,numPdschSymbols);
+   /* the RB numbering starts from coreset0, and PDSCH is always above SSB */
+   pdsch->pdschFreqAlloc.freqAlloc.startPrb  = offsetPointA + SCH_SSB_NUM_PRB;
+   pdsch->pdschFreqAlloc.freqAlloc.numPrb    = schCalcNumPrb(tbSize,sib1SchCfg->sib1Mcs, NUM_PDSCH_SYMBOL);
    pdsch->pdschFreqAlloc.vrbPrbMapping       = 0; /* non-interleaved */
    pdsch->pdschTimeAlloc.rowIndex            = 1;
    /* This is Intel's requirement. PDSCH should start after PDSCH DRMS symbol */
    pdsch->pdschTimeAlloc.timeAlloc.startSymb = 3; /* spec-38.214, Table 5.1.2.1-1 */
-   pdsch->pdschTimeAlloc.timeAlloc.numSymb   = numPdschSymbols;
+   pdsch->pdschTimeAlloc.timeAlloc.numSymb   = NUM_PDSCH_SYMBOL;
    pdsch->beamPdschInfo.numPrgs              = 1;
    pdsch->beamPdschInfo.prgSize              = 1;
    pdsch->beamPdschInfo.digBfInterfaces      = 0;
@@ -1078,6 +1077,146 @@ uint8_t MacSchSrUciInd(Pst *pst, SrUciIndInfo *uciInd)
    }
    return ROK;
 }
+
+/*******************************************************************
+ *
+ * @brief Allocates requested PRBs for DL
+ *
+ * @details
+ *
+ *    Function : allocatePrbDl
+ *
+ *    Functionality:
+ *      Allocates requested PRBs in DL
+ *      Keeps track of allocated PRB (using bitmap) and remaining PRBs
+ *
+ * @params[in] prbAlloc table
+ *             Start symbol
+ *             Number of symbols
+ *             Start PRB
+ *             Number of PRBs
+ *
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t allocatePrbDl(SchCellCb *cell, SlotTimingInfo slotTime, \
+   uint8_t startSymbol, uint8_t symbolLength, uint16_t *startPrb, uint16_t numPrb)
+{
+   uint8_t        symbol = 0;
+   uint16_t       broadcastPrbStart=0, broadcastPrbEnd=0;
+   FreePrbBlock   *freePrbBlock = NULLP;
+   CmLList        *freePrbNode = NULLP;
+   PduTxOccsaion  ssbOccasion=0, sib1Occasion=0;
+   SchDlSlotInfo  *schDlSlotInfo = cell->schDlSlotInfo[slotTime.slot];
+   SchPrbAlloc    *prbAlloc = &schDlSlotInfo->prbAlloc;
+
+   /* If startPrb is set to MAX_NUM_RB, it means startPrb is not known currently.
+    * Search for an appropriate location in PRB grid and allocate requested resources */
+   if(*startPrb == MAX_NUM_RB)
+   {
+      /* Check if SSB/SIB1 is also scheduled in this slot  */
+      ssbOccasion = schCheckSsbOcc(cell, slotTime);
+      sib1Occasion = schCheckSib1Occ(cell, slotTime);
+
+      if(ssbOccasion && sib1Occasion)
+      {
+         broadcastPrbStart = cell->cellCfg.ssbSchCfg.ssbOffsetPointA; 
+         broadcastPrbEnd = broadcastPrbStart + SCH_SSB_NUM_PRB + cell->cellCfg.sib1SchCfg.sib1PdschCfg.pdschFreqAlloc.freqAlloc.numPrb -1;
+      }
+      else if(ssbOccasion)
+      {
+         broadcastPrbStart = cell->cellCfg.ssbSchCfg.ssbOffsetPointA;
+         broadcastPrbEnd = broadcastPrbStart + SCH_SSB_NUM_PRB -1;
+      }
+      else if(sib1Occasion)
+      {
+         broadcastPrbStart = cell->cellCfg.sib1SchCfg.sib1PdschCfg.pdschFreqAlloc.freqAlloc.startPrb;
+         broadcastPrbEnd = broadcastPrbStart + cell->cellCfg.sib1SchCfg.sib1PdschCfg.pdschFreqAlloc.freqAlloc.numPrb -1;
+      }
+
+      /* Iterate through all free PRB blocks */
+      freePrbNode = prbAlloc->freePrbBlockList.first; 
+      while(freePrbNode)
+      {
+         freePrbBlock = (FreePrbBlock *)freePrbNode->node; 
+
+         /* If broadcast message is scheduled in this slot, then check if its PRBs belong to the current free block.
+          * Since SSB/SIB1 PRB location is fixed, these PRBs cannot be allocated to other message in same slot */
+         if((ssbOccasion || sib1Occasion) && 
+            ((broadcastPrbStart >= freePrbBlock->startPrb) && (broadcastPrbStart <= freePrbBlock->endPrb)) && \
+            ((broadcastPrbEnd >= freePrbBlock->startPrb) && (broadcastPrbEnd <= freePrbBlock->endPrb)))
+         {
+            /* Implmentation is done such that highest-numbered free-RB is allocated first */ 
+            if((freePrbBlock->endPrb > broadcastPrbEnd) && ((freePrbBlock->endPrb - broadcastPrbEnd) >= numPrb))
+            {
+               /* If sufficient free PRBs are available above bradcast message then,
+                * endPrb = freePrbBlock->endPrb
+                * startPrb = endPrb - numPrb +1;
+                */
+               *startPrb = freePrbBlock->endPrb - numPrb +1;
+               break;
+            }
+            else if((broadcastPrbStart > freePrbBlock->startPrb) && ((broadcastPrbStart - freePrbBlock->startPrb) >= numPrb))
+            {
+               /* If free PRBs are available below broadcast message then,
+                * endPrb = broadcastPrbStart - 1
+                * startPrb = endPrb - numPrb +1
+                */
+               *startPrb = broadcastPrbStart - numPrb; 
+               break;
+            }
+            else
+            {
+               freePrbNode = freePrbNode->next;
+               continue;
+            }
+         }
+         else
+         {
+            /* Check if requested number of blocks can be allocated from the current block */ 
+            if (freePrbBlock->numFreePrb < numPrb)
+            {
+               freePrbNode = freePrbNode->next;
+               continue;
+            }
+            *startPrb = freePrbBlock->endPrb - numPrb +1;
+            break;  
+         }
+      }
+
+      /* If no free block can be used to allocated request number of RBs */
+      if(*startPrb == MAX_NUM_RB)
+         return RFAILED;
+   }
+
+   /* If startPrb is known already, check if requested PRBs are available for allocation */
+   else
+   {
+      freePrbNode = isPrbAvailable(&prbAlloc->freePrbBlockList, *startPrb, numPrb);
+      if(!freePrbNode)
+      {
+         DU_LOG("\nERROR  -->  SCH: Requested PRB unavailable");
+         return RFAILED;
+      }
+   }
+
+   /* Update bitmap to allocate PRBs */
+   for(symbol=startSymbol; symbol < (startSymbol+symbolLength); symbol++)
+   {
+      if(fillPrbBitmap(prbAlloc->prbBitMap[symbol], *startPrb, numPrb) != ROK)
+      {
+         DU_LOG("\nERROR  -->  SCH: fillPrbBitmap() failed for symbol [%d] ", symbol);
+         return RFAILED;
+      }
+   }
+
+   /* Update the remaining number for free PRBs */
+   removeAllocatedPrbFromFreePrbList(&prbAlloc->freePrbBlockList, freePrbNode, *startPrb, numPrb);
+
+   return ROK;
+}
+
 /**********************************************************************
   End of file
  **********************************************************************/
