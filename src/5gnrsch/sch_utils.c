@@ -773,6 +773,33 @@ uint8_t minMsg3SchTime[MAX_NUM_MU] = {6, 6, 6, 6};
 
 uint8_t defaultUlAckTbl[DEFAULT_UL_ACK_LIST_COUNT]= {1, 2, 3 , 4, 5, 6, 7, 8};
 
+/**
+ * @brief Function to find first DMRS symbol in PDSCH
+ *
+ * @details
+ *
+ *     Function: findDmrsStartSymbol
+ *
+ *     This function finds first DMRS symbol using DMRS symbol 
+ *     position bitmap.
+ *
+ *  @param[in]  DMRS symbol position bitmap
+ *  @return     First DRMS symbol
+ **/
+uint8_t findDmrsStartSymbol(uint16_t dlDmrsSymbBitMap)
+{
+   uint8_t position = 0;
+   uint16_t mask = 1;
+
+   while(position < MAX_SYMB_PER_SLOT)
+   {
+      if(dlDmrsSymbBitMap & mask)
+         break;  
+      mask = mask << 1;
+      position++;
+   }
+   return position;   
+}
 
 /**
  * @brief Function to add a node to a linked list

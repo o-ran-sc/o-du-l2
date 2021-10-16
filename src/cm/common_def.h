@@ -125,6 +125,8 @@
 #define ODU_SET_THREAD_AFFINITY SSetAffinity
 #define ODU_CREATE_TASK SCreateSTsk
 
+#define MAX_SYMB_PER_SLOT 14 
+
 /* Slice */
 #define SD_SIZE 3
 
@@ -132,7 +134,6 @@
 /* Maximum slots for max periodicity and highest numerology is 320.
  * However, aligning to fapi_interface.h, setting this macro to 160 */
 #define MAX_TDD_PERIODICITY_SLOTS 160 
-#define MAX_SYMB_PER_SLOT 14 
 #endif
 
 #define GET_UE_IDX( _crnti,_ueIdx)         \
