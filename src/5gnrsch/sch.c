@@ -528,8 +528,8 @@ void fillSsbStartSymb(SchCellCb *cellCb)
 	    for(uint8_t idx=0; idx<cnt; idx++)
 	    {
 	       /* start symbol determined using {2, 8} + 14n */
-	       ssbStartSymbArr[symbIdx++] = 2 + SCH_SYMBOL_PER_SLOT*idx;
-	       ssbStartSymbArr[symbIdx++] = 8 + SCH_SYMBOL_PER_SLOT*idx;
+	       ssbStartSymbArr[symbIdx++] = 2 +  MAX_SYMB_PER_SLOT*idx;
+	       ssbStartSymbArr[symbIdx++] = 8 +  MAX_SYMB_PER_SLOT*idx;
 	    }
 	 }
 	 break;
@@ -542,10 +542,10 @@ void fillSsbStartSymb(SchCellCb *cellCb)
 	    for(uint8_t idx=0; idx<cnt; idx++)
 	    {
 	       /* start symbol determined using {4, 8, 16, 20} + 28n */
-	       ssbStartSymbArr[symbIdx++] = 4 + SCH_SYMBOL_PER_SLOT*idx;
-	       ssbStartSymbArr[symbIdx++] = 8 + SCH_SYMBOL_PER_SLOT*idx;
-	       ssbStartSymbArr[symbIdx++] = 16 + SCH_SYMBOL_PER_SLOT*idx;
-	       ssbStartSymbArr[symbIdx++] = 20 + SCH_SYMBOL_PER_SLOT*idx;
+	       ssbStartSymbArr[symbIdx++] = 4 +  MAX_SYMB_PER_SLOT*idx;
+	       ssbStartSymbArr[symbIdx++] = 8 +  MAX_SYMB_PER_SLOT*idx;
+	       ssbStartSymbArr[symbIdx++] = 16 +  MAX_SYMB_PER_SLOT*idx;
+	       ssbStartSymbArr[symbIdx++] = 20 +  MAX_SYMB_PER_SLOT*idx;
             }
 	 }
 	 break;
@@ -700,8 +700,7 @@ void fillSchSib1Cfg(uint8_t mu, uint8_t bandwidth, uint8_t numSlots, SchSib1Cfg 
    uint8_t mValue = 0;
    uint8_t firstSymbol = 0; /* need to calculate using formula mentioned in 38.213 */
    uint8_t slotIndex = 0;
-   /* TODO : This should be filled through freqDomRscAllocType0() */
-   uint8_t FreqDomainResource[6] = {15, 0, 0, 0, 0, 0};
+   uint8_t FreqDomainResource[FREQ_DOM_RSRC_SIZE] = {0};
    uint16_t tbSize = 0;
    uint8_t ssbIdx = 0;
 
@@ -732,9 +731,6 @@ void fillSchSib1Cfg(uint8_t mu, uint8_t bandwidth, uint8_t numSlots, SchSib1Cfg 
    slotIndex = (int)((oValue*pow(2, mu)) + floor(ssbIdx*mValue))%numSlots;
    sib1SchCfg->n0 = slotIndex;
 
-   /* calculate the PRBs */
-   //freqDomRscAllocType0(((offsetPointA-offset)/6), (numRbs/6), FreqDomainResource);
-
    /* fill BWP */
    switch(bandwidth)
    {
@@ -760,7 +756,11 @@ void fillSchSib1Cfg(uint8_t mu, uint8_t bandwidth, uint8_t numSlots, SchSib1Cfg 
    pdcch->coresetCfg.coreSetSize = numRbs;
    pdcch->coresetCfg.startSymbolIndex = firstSymbol;
    pdcch->coresetCfg.durationSymbols = numSymbols;
-   memcpy(pdcch->coresetCfg.freqDomainResource,FreqDomainResource,6);
+   
+   /* Fill Bitmap for PRBs in coreset */
+   fillCoresetFeqDomAllocMap(((offsetPointA-offset)/6), (numRbs/6), FreqDomainResource);
+   covertFreqDomRsrcMapToIAPIFormat(FreqDomainResource, pdcch->coresetCfg.freqDomainResource);
+
    pdcch->coresetCfg.cceRegMappingType = 1; /* coreset0 is always interleaved */
    pdcch->coresetCfg.regBundleSize = 6;    /* spec-38.211 sec 7.3.2.2 */
    pdcch->coresetCfg.interleaverSize = 2;  /* spec-38.211 sec 7.3.2.2 */
@@ -855,6 +855,10 @@ uint8_t SchHdlCellCfgReq(Pst *pst, SchCellCfg *schCellCfg)
    SchCellCfgCfm schCellCfgCfm;
    Pst rspPst;
    Inst inst = pst->dstInst-1; 
+   uint8_t coreset0Idx = 0;
+   uint8_t numRbs = 0;
+   uint8_t offset = 0;
+   uint8_t freqDomainResource[FREQ_DOM_RSRC_SIZE] = {0};
    SchPdschConfig pdschCfg;
 
 #ifdef CALL_FLOW_DEBUG_LOG
@@ -870,6 +874,14 @@ uint8_t SchHdlCellCfgReq(Pst *pst, SchCellCfg *schCellCfg)
 	 &(schCellCfg->sib1SchCfg), schCellCfg->phyCellId,
 	 schCellCfg->ssbSchCfg.ssbOffsetPointA);
    memcpy(&cellCb->cellCfg, schCellCfg, sizeof(SchCellCfg));
+
+   /* Fill coreset frequencyDomainResource bitmap */
+   coreset0Idx = cellCb->cellCfg.schInitialDlBwp.pdcchCommon.commonSearchSpace.coresetId;
+   numRbs = coresetIdxTable[coreset0Idx][1];
+   offset = coresetIdxTable[coreset0Idx][3];
+   fillCoresetFeqDomAllocMap(((cellCb->cellCfg.ssbSchCfg.ssbOffsetPointA - offset)/6), (numRbs/6), freqDomainResource);
+   covertFreqDomRsrcMapToIAPIFormat(freqDomainResource, \
+      cellCb->cellCfg.schInitialDlBwp.pdcchCommon.commonSearchSpace.freqDomainRsrc);
 
    /* Fill K0 - K1 table for common cfg*/ 
    BuildK0K1Table(cellCb, &cellCb->cellCfg.schInitialDlBwp.k0K1InfoTbl, true, cellCb->cellCfg.schInitialDlBwp.pdschCommon,

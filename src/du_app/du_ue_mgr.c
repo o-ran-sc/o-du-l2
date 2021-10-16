@@ -691,7 +691,7 @@ void fillDefaultInitDlBwp(InitialDlBwp *initDlBwp)
 	    coreset1StartPrb = coreset0EndPrb +6;
 	    coreset1NumPrb = CORESET1_NUM_PRB;
 	    /* calculate the PRBs */
-	    freqDomRscAllocType0(((coreset1StartPrb)/6), (coreset1NumPrb/6), freqDomainResource);
+	    fillCoresetFeqDomAllocMap(((coreset1StartPrb)/6), (coreset1NumPrb/6), freqDomainResource);
 	    memcpy(initDlBwp->pdcchCfg.cRSetToAddModList[idx].freqDomainRsrc, freqDomainResource,
 	       FREQ_DOM_RSRC_SIZE);
 

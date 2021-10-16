@@ -98,7 +98,7 @@ uint8_t bitStringToInt(BIT_STRING_t *bitString, void *value)
    {
       *val |= bitString->buf[idx];
       *val <<= 8;
-    }
+   }
    *val |= bitString->buf[idx];
    *val >>= bitString->bits_unused;
 

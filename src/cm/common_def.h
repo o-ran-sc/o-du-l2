@@ -125,6 +125,8 @@
 #define ODU_SET_THREAD_AFFINITY SSetAffinity
 #define ODU_CREATE_TASK SCreateSTsk
 
+#define MAX_SYMB_PER_SLOT 14 
+
 /* Slice */
 #define SD_SIZE 3
 
@@ -132,7 +134,6 @@
 /* Maximum slots for max periodicity and highest numerology is 320.
  * However, aligning to fapi_interface.h, setting this macro to 160 */
 #define MAX_TDD_PERIODICITY_SLOTS 160 
-#define MAX_SYMB_PER_SLOT 14 
 #endif
 
 #define GET_UE_IDX( _crnti,_ueIdx)         \
@@ -277,7 +278,7 @@ OduCellStatus gCellStatus;
 uint64_t gSlotCount;
 uint64_t gDlDataRcvdCnt;   /* Number of DL data received at EGTP */
 
-void freqDomRscAllocType0(uint16_t startPrb, uint16_t prbSize, uint8_t *freqDomain);
+void fillCoresetFeqDomAllocMap(uint16_t startPrb, uint16_t prbSize, uint8_t *freqDomain);
 void oduCpyFixBufToMsg(uint8_t *fixBuf, Buffer *mBuf, uint16_t len);
 uint8_t buildPlmnId(Plmn plmn, uint8_t *buf);
 

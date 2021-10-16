@@ -265,6 +265,7 @@ void updateSchDlCb(uint8_t delIdx, SchDlCb *dlInfo)
 uint8_t fillSchUeCb(SchUeCb *ueCb, SchUeCfg *ueCfg)
 {
    uint8_t   lcIdx, ueLcIdx;
+   uint8_t   freqDomainResource[FREQ_DOM_RSRC_SIZE] = {0};
    SchPdschCfgCmn pdschCfg;
    SchPucchDlDataToUlAck *dlDataToUlAck;
 
@@ -285,6 +286,12 @@ uint8_t fillSchUeCb(SchUeCb *ueCb, SchUeCfg *ueCfg)
    if(ueCfg->spCellCfgPres == true)
    {
       memcpy(&ueCb->ueCfg.spCellCfg , &ueCfg->spCellCfg, sizeof(SchSpCellCfg));
+
+      covertFreqDomRsrcMapToIAPIFormat(ueCb->ueCfg.spCellCfg.servCellCfg.initDlBwp.pdcchCfg.cRSetToAddModList[0].freqDomainRsrc,\
+         freqDomainResource);
+      memset(ueCb->ueCfg.spCellCfg.servCellCfg.initDlBwp.pdcchCfg.cRSetToAddModList[0].freqDomainRsrc, 0, FREQ_DOM_RSRC_SIZE);
+      memcpy(ueCb->ueCfg.spCellCfg.servCellCfg.initDlBwp.pdcchCfg.cRSetToAddModList[0].freqDomainRsrc, freqDomainResource, FREQ_DOM_RSRC_SIZE);
+
       ueCb->ueCfg.spCellCfgPres = true;
       dlDataToUlAck = ueCfg->spCellCfg.servCellCfg.initUlBwp.pucchCfg.dlDataToUlAck;
       if(ueCb->cellCb)

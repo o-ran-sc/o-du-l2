@@ -621,8 +621,9 @@ typedef struct schCandidatesInfo
 
 typedef struct schSearchSpaceCfg
 {
-   uint8_t searchSpaceId;
-   uint8_t coresetId;
+   uint8_t  searchSpaceId;
+   uint8_t  coresetId;
+   uint8_t  freqDomainRsrc[FREQ_DOM_RSRC_SIZE];  /* Frequency domain resource */
    uint16_t monitoringSlot;
    uint16_t duration;
    uint16_t monitoringSymbol;
