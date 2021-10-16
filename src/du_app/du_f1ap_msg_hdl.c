@@ -3412,7 +3412,7 @@ uint8_t BuildRlcBearerToAddModList(struct CellGroupConfigRrc__rlc_BearerToAddMod
    coreset1StartPrb = coreset0EndPrb + 6;
    coreset1NumPrb = CORESET1_NUM_PRB;
    /* calculate the PRBs */
-   freqDomRscAllocType0(((coreset1StartPrb)/6), (coreset1NumPrb/6), freqDomainResource);
+   fillCoresetFeqDomAllocMap(((coreset1StartPrb)/6), (coreset1NumPrb/6), freqDomainResource);
    memcpy(controlRSet->frequencyDomainResources.buf, freqDomainResource, FREQ_DOM_RSRC_SIZE);
    controlRSet->frequencyDomainResources.bits_unused = bitsUnused;
 
@@ -8087,7 +8087,7 @@ void extractTagReconfig(TAG_Config_t *cuTagCfg, TagCfg *macTagCfg)
  *
  * ****************************************************************/
 
-void extractPdcchCfg(PDCCH_Config_t *cuPdcchCfg, PdcchConfig *macPdcchCfg)
+void extractPdcchCfg(PDCCH_Config_t *cuPdcchCfg, PdcchConfig *macPdcchCfg, PdcchConfig *storedPdcchCfg)
 {
    uint8_t cRsetIdx = 0;
    uint8_t srchSpcIdx = 0;
@@ -8105,31 +8105,34 @@ void extractPdcchCfg(PDCCH_Config_t *cuPdcchCfg, PdcchConfig *macPdcchCfg)
       if(cRsetToAddModList->list.count)
       {
          macPdcchCfg->numCRsetToAddMod = cRsetToAddModList->list.count;
-	 for(cRsetIdx = 0; cRsetIdx < cRsetToAddModList->list.count; cRsetIdx++)
-	 {
-	    macPdcchCfg->cRSetToAddModList[cRsetIdx].cRSetId = \
-	      cRsetToAddModList->list.array[cRsetIdx]->controlResourceSetId;
-	    bitStringToInt(&cRsetToAddModList->list.array[cRsetIdx]->frequencyDomainResources,\
-	       macPdcchCfg->cRSetToAddModList[cRsetIdx].freqDomainRsrc);
-            macPdcchCfg->cRSetToAddModList[cRsetIdx].duration = \
-	      cRsetToAddModList->list.array[cRsetIdx]->duration;
+         for(cRsetIdx = 0; cRsetIdx < cRsetToAddModList->list.count; cRsetIdx++)
+         {
+            macPdcchCfg->cRSetToAddModList[cRsetIdx].cRSetId = \
+               cRsetToAddModList->list.array[cRsetIdx]->controlResourceSetId;
+            //freqDomRsrcBitStringToInt(&cRsetToAddModList->list.array[cRsetIdx]->frequencyDomainResources,\
+                  macPdcchCfg->cRSetToAddModList[cRsetIdx].freqDomainRsrc);
+            memcpy(macPdcchCfg->cRSetToAddModList[cRsetIdx].freqDomainRsrc, \
+               cRsetToAddModList->list.array[cRsetIdx]->frequencyDomainResources.buf,
+               cRsetToAddModList->list.array[cRsetIdx]->frequencyDomainResources.size);
 
-	    macPdcchCfg->cRSetToAddModList[cRsetIdx].cceRegMappingType = \
-	      cRsetToAddModList->list.array[cRsetIdx]->cce_REG_MappingType.present;   
+            macPdcchCfg->cRSetToAddModList[cRsetIdx].duration = \
+                cRsetToAddModList->list.array[cRsetIdx]->duration;
+
+            macPdcchCfg->cRSetToAddModList[cRsetIdx].cceRegMappingType = \
+               cRsetToAddModList->list.array[cRsetIdx]->cce_REG_MappingType.present;   
             if(macPdcchCfg->cRSetToAddModList[cRsetIdx].cceRegMappingType == CCE_REG_MAPPINGTYPE_PR_INTERLEAVED)
-	    {
-	       //TODO: handle the case for Interleaved
+            {
+               //TODO: handle the case for Interleaved
             }
             macPdcchCfg->cRSetToAddModList[cRsetIdx].precoderGranularity = \
-	      cRsetToAddModList->list.array[cRsetIdx]->precoderGranularity;
-	    if(cRsetToAddModList->list.array[cRsetIdx]->pdcch_DMRS_ScramblingID)
-	    {
-	       macPdcchCfg->cRSetToAddModList[cRsetIdx].dmrsScramblingId= \
-	          *(cRsetToAddModList->list.array[cRsetIdx]->pdcch_DMRS_ScramblingID);
-	    }
+                cRsetToAddModList->list.array[cRsetIdx]->precoderGranularity;
+            if(cRsetToAddModList->list.array[cRsetIdx]->pdcch_DMRS_ScramblingID)
+            {
+               macPdcchCfg->cRSetToAddModList[cRsetIdx].dmrsScramblingId= \
+                  *(cRsetToAddModList->list.array[cRsetIdx]->pdcch_DMRS_ScramblingID);
+            }
          }
       }
-
    }
    /* Control Resource Set To Release List */
    if(cuPdcchCfg->controlResourceSetToReleaseList)
@@ -8138,10 +8141,10 @@ void extractPdcchCfg(PDCCH_Config_t *cuPdcchCfg, PdcchConfig *macPdcchCfg)
       if(cRsetToRelList->list.count)
       {
          macPdcchCfg->numCRsetToRel = cRsetToRelList->list.count;
-	 for(cRsetIdx = 0; cRsetIdx < cRsetToRelList->list.count; cRsetIdx++)
-	 {
+         for(cRsetIdx = 0; cRsetIdx < cRsetToRelList->list.count; cRsetIdx++)
+         {
             macPdcchCfg->cRSetToRelList[cRsetIdx] = *(cRsetToRelList->list.array[cRsetIdx]);
-	 }
+         }
       }
    }
 
@@ -8152,49 +8155,49 @@ void extractPdcchCfg(PDCCH_Config_t *cuPdcchCfg, PdcchConfig *macPdcchCfg)
       if(srchSpcToAddModList->list.count)
       {
          macPdcchCfg->numSearchSpcToAddMod = srchSpcToAddModList->list.count;
-	 for(srchSpcIdx = 0; srchSpcIdx < srchSpcToAddModList->list.count; srchSpcIdx++)
-	 {
+         for(srchSpcIdx = 0; srchSpcIdx < srchSpcToAddModList->list.count; srchSpcIdx++)
+         {
             macPdcchCfg->searchSpcToAddModList[srchSpcIdx].searchSpaceId =\
-	       srchSpcToAddModList->list.array[srchSpcIdx]->searchSpaceId;
+                                                                          srchSpcToAddModList->list.array[srchSpcIdx]->searchSpaceId;
             macPdcchCfg->searchSpcToAddModList[srchSpcIdx].cRSetId =\
-	       *(srchSpcToAddModList->list.array[srchSpcIdx]->controlResourceSetId);
-	    if(srchSpcToAddModList->list.array[srchSpcIdx]->monitoringSlotPeriodicityAndOffset)
-	    {
+                                                                    *(srchSpcToAddModList->list.array[srchSpcIdx]->controlResourceSetId);
+            if(srchSpcToAddModList->list.array[srchSpcIdx]->monitoringSlotPeriodicityAndOffset)
+            {
                macPdcchCfg->searchSpcToAddModList[srchSpcIdx].mSlotPeriodicityAndOffset =\
-	          srchSpcToAddModList->list.array[srchSpcIdx]->monitoringSlotPeriodicityAndOffset->present;
+                                                                                         srchSpcToAddModList->list.array[srchSpcIdx]->monitoringSlotPeriodicityAndOffset->present;
             }
             if(srchSpcToAddModList->list.array[srchSpcIdx]->monitoringSymbolsWithinSlot)
             {
-	       bitStringToInt(srchSpcToAddModList->list.array[srchSpcIdx]->monitoringSymbolsWithinSlot,\
-	          macPdcchCfg->searchSpcToAddModList[srchSpcIdx].mSymbolsWithinSlot);
+               bitStringToInt(srchSpcToAddModList->list.array[srchSpcIdx]->monitoringSymbolsWithinSlot,\
+                     macPdcchCfg->searchSpcToAddModList[srchSpcIdx].mSymbolsWithinSlot);
             }
-	    if(srchSpcToAddModList->list.array[srchSpcIdx]->nrofCandidates)
+            if(srchSpcToAddModList->list.array[srchSpcIdx]->nrofCandidates)
             {
-	      macPdcchCfg->searchSpcToAddModList[srchSpcIdx].numCandidatesAggLevel1 = \
-	          srchSpcToAddModList->list.array[srchSpcIdx]->nrofCandidates->aggregationLevel1;
-              macPdcchCfg->searchSpcToAddModList[srchSpcIdx].numCandidatesAggLevel2 = \
-	          srchSpcToAddModList->list.array[srchSpcIdx]->nrofCandidates->aggregationLevel2;
-              macPdcchCfg->searchSpcToAddModList[srchSpcIdx].numCandidatesAggLevel4 = \
-              	  srchSpcToAddModList->list.array[srchSpcIdx]->nrofCandidates->aggregationLevel4;
-              
-              macPdcchCfg->searchSpcToAddModList[srchSpcIdx].numCandidatesAggLevel8 = \
-              	  srchSpcToAddModList->list.array[srchSpcIdx]->nrofCandidates->aggregationLevel8;
-              
-              macPdcchCfg->searchSpcToAddModList[srchSpcIdx].numCandidatesAggLevel16 = \
-	          srchSpcToAddModList->list.array[srchSpcIdx]->nrofCandidates->aggregationLevel16;
-	    }
+               macPdcchCfg->searchSpcToAddModList[srchSpcIdx].numCandidatesAggLevel1 = \
+                                                                                       srchSpcToAddModList->list.array[srchSpcIdx]->nrofCandidates->aggregationLevel1;
+               macPdcchCfg->searchSpcToAddModList[srchSpcIdx].numCandidatesAggLevel2 = \
+                                                                                       srchSpcToAddModList->list.array[srchSpcIdx]->nrofCandidates->aggregationLevel2;
+               macPdcchCfg->searchSpcToAddModList[srchSpcIdx].numCandidatesAggLevel4 = \
+                                                                                       srchSpcToAddModList->list.array[srchSpcIdx]->nrofCandidates->aggregationLevel4;
+
+               macPdcchCfg->searchSpcToAddModList[srchSpcIdx].numCandidatesAggLevel8 = \
+                                                                                       srchSpcToAddModList->list.array[srchSpcIdx]->nrofCandidates->aggregationLevel8;
+
+               macPdcchCfg->searchSpcToAddModList[srchSpcIdx].numCandidatesAggLevel16 = \
+                                                                                        srchSpcToAddModList->list.array[srchSpcIdx]->nrofCandidates->aggregationLevel16;
+            }
             if(srchSpcToAddModList->list.array[srchSpcIdx]->searchSpaceType)
-	    {
-	       macPdcchCfg->searchSpcToAddModList[srchSpcIdx].searchSpaceType =\
-	          srchSpcToAddModList->list.array[srchSpcIdx]->searchSpaceType->present;
-	       if(macPdcchCfg->searchSpcToAddModList[srchSpcIdx].searchSpaceType == SEARCHSPACETYPE_PR_UE_SPECIFIC)
-	       {
-		  macPdcchCfg->searchSpcToAddModList[srchSpcIdx].ueSpecificDciFormat =\
-		     srchSpcToAddModList->list.array[srchSpcIdx]->searchSpaceType->choice.ue_Specific->dci_Formats;
-	       }
-         
-	    }
-	 }
+            {
+               macPdcchCfg->searchSpcToAddModList[srchSpcIdx].searchSpaceType =\
+                                                                               srchSpcToAddModList->list.array[srchSpcIdx]->searchSpaceType->present;
+               if(macPdcchCfg->searchSpcToAddModList[srchSpcIdx].searchSpaceType == SEARCHSPACETYPE_PR_UE_SPECIFIC)
+               {
+                  macPdcchCfg->searchSpcToAddModList[srchSpcIdx].ueSpecificDciFormat =\
+                                                                                      srchSpcToAddModList->list.array[srchSpcIdx]->searchSpaceType->choice.ue_Specific->dci_Formats;
+               }
+
+            }
+         }
       }
    }
    /* Search space To Rel List */
@@ -8204,11 +8207,11 @@ void extractPdcchCfg(PDCCH_Config_t *cuPdcchCfg, PdcchConfig *macPdcchCfg)
       if(srchSpcToRelList->list.count)
       {
          macPdcchCfg->numSearchSpcToRel = srchSpcToRelList->list.count;
-	 for(srchSpcIdx = 0; srchSpcIdx < srchSpcToRelList->list.count; srchSpcIdx++)
-	 {
+         for(srchSpcIdx = 0; srchSpcIdx < srchSpcToRelList->list.count; srchSpcIdx++)
+         {
             macPdcchCfg->searchSpcToRelList[srchSpcIdx] =\
-	       *(srchSpcToRelList->list.array[srchSpcIdx]);
-	 }
+                                                         *(srchSpcToRelList->list.array[srchSpcIdx]);
+         }
       }
    }
 }
@@ -9160,7 +9163,22 @@ ServCellCfgInfo *storedSrvCellCfg)
          if(dlBwp->pdcch_Config->choice.setup)
          {
             macSrvCellCfg->initDlBwp.pdcchPresent = true;
-            extractPdcchCfg(dlBwp->pdcch_Config->choice.setup, &macSrvCellCfg->initDlBwp.pdcchCfg);
+            if(storedSrvCellCfg)
+            {
+               if(!storedSrvCellCfg->initDlBwp.pdcchPresent)
+               {
+                  extractPdcchCfg(dlBwp->pdcch_Config->choice.setup, &macSrvCellCfg->initDlBwp.pdcchCfg, NULL);
+               }
+               else
+               {
+                  extractPdcchCfg(dlBwp->pdcch_Config->choice.setup, &macSrvCellCfg->initDlBwp.pdcchCfg,\
+                         &storedSrvCellCfg->initDlBwp.pdcchCfg);
+               }
+            }
+            else
+            {
+               extractPdcchCfg(dlBwp->pdcch_Config->choice.setup, &macSrvCellCfg->initDlBwp.pdcchCfg, NULL);
+            }
          }
       }
       if(dlBwp->pdsch_Config)

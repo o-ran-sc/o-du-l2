@@ -700,8 +700,7 @@ void fillSchSib1Cfg(uint8_t mu, uint8_t bandwidth, uint8_t numSlots, SchSib1Cfg 
    uint8_t mValue = 0;
    uint8_t firstSymbol = 0; /* need to calculate using formula mentioned in 38.213 */
    uint8_t slotIndex = 0;
-   /* TODO : This should be filled through freqDomRscAllocType0() */
-   uint8_t FreqDomainResource[6] = {15, 0, 0, 0, 0, 0};
+   uint8_t FreqDomainResource[FREQ_DOM_RSRC_SIZE] = {0};
    uint16_t tbSize = 0;
    uint8_t ssbIdx = 0;
 
@@ -732,9 +731,6 @@ void fillSchSib1Cfg(uint8_t mu, uint8_t bandwidth, uint8_t numSlots, SchSib1Cfg 
    slotIndex = (int)((oValue*pow(2, mu)) + floor(ssbIdx*mValue))%numSlots;
    sib1SchCfg->n0 = slotIndex;
 
-   /* calculate the PRBs */
-   //freqDomRscAllocType0(((offsetPointA-offset)/6), (numRbs/6), FreqDomainResource);
-
    /* fill BWP */
    switch(bandwidth)
    {
@@ -760,7 +756,11 @@ void fillSchSib1Cfg(uint8_t mu, uint8_t bandwidth, uint8_t numSlots, SchSib1Cfg 
    pdcch->coresetCfg.coreSetSize = numRbs;
    pdcch->coresetCfg.startSymbolIndex = firstSymbol;
    pdcch->coresetCfg.durationSymbols = numSymbols;
-   memcpy(pdcch->coresetCfg.freqDomainResource,FreqDomainResource,6);
+   
+   /* Fill Bitmap for PRBs in coreset */
+   fillCoresetFeqDomAllocMap(((offsetPointA-offset)/6), (numRbs/6), FreqDomainResource);
+   covertFreqDomRsrcMapToIAPIFormat(FreqDomainResource, pdcch->coresetCfg.freqDomainResource);
+
    pdcch->coresetCfg.cceRegMappingType = 1; /* coreset0 is always interleaved */
    pdcch->coresetCfg.regBundleSize = 6;    /* spec-38.211 sec 7.3.2.2 */
    pdcch->coresetCfg.interleaverSize = 2;  /* spec-38.211 sec 7.3.2.2 */

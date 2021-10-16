@@ -476,9 +476,10 @@ uint8_t schFillRar(SchCellCb *cell, SlotTimingInfo rarTime, uint16_t ueIdx, RarA
    uint8_t firstSymbol = 0;
    uint8_t numSymbols = 0;
    uint8_t offset = 0;
-   uint8_t FreqDomainResource[6] = {0};
+   uint8_t FreqDomainResource[FREQ_DOM_RSRC_SIZE] = {0};
    uint16_t tbSize = 0;
    uint8_t mcs = 4;  /* MCS fixed to 4 */
+   uint8_t dmrsStartSymbol, startSymbol, numSymbol ;
 
    SchBwpDlCfg *initialBwp = &cell->cellCfg.schInitialDlBwp;
    PdcchCfg *pdcch = &rarAlloc->rarPdcchCfg;
@@ -503,9 +504,6 @@ uint8_t schFillRar(SchCellCb *cell, SlotTimingInfo rarTime, uint16_t ueIdx, RarA
 	 mask = mask>>1;
    }
 
-   /* calculate the PRBs */
-   freqDomRscAllocType0(((cell->cellCfg.ssbSchCfg.ssbOffsetPointA - offset)/6), (numRbs/6), FreqDomainResource);
-
    /* fill BWP */
    bwp->freqAlloc.numPrb   = initialBwp->bwp.freqAlloc.numPrb;
    bwp->freqAlloc.startPrb = initialBwp->bwp.freqAlloc.startPrb;
@@ -515,7 +513,11 @@ uint8_t schFillRar(SchCellCb *cell, SlotTimingInfo rarTime, uint16_t ueIdx, RarA
    /* fill the PDCCH PDU */
    pdcch->coresetCfg.startSymbolIndex = firstSymbol;
    pdcch->coresetCfg.durationSymbols = numSymbols;
-   memcpy(pdcch->coresetCfg.freqDomainResource, FreqDomainResource, FREQ_DOM_RSRC_SIZE);
+
+   /* calculate the PRBs */
+   fillCoresetFeqDomAllocMap(((cell->cellCfg.ssbSchCfg.ssbOffsetPointA - offset)/6), (numRbs/6), FreqDomainResource);
+   covertFreqDomRsrcMapToIAPIFormat(FreqDomainResource, pdcch->coresetCfg.freqDomainResource);
+
    pdcch->coresetCfg.cceRegMappingType = 1; /* coreset0 is always interleaved */
    pdcch->coresetCfg.regBundleSize = 6;    /* spec-38.211 sec 7.3.2.2 */
    pdcch->coresetCfg.interleaverSize = 2;  /* spec-38.211 sec 7.3.2.2 */
@@ -577,8 +579,21 @@ uint8_t schFillRar(SchCellCb *cell, SlotTimingInfo rarTime, uint16_t ueIdx, RarA
    pdsch->pdschFreqAlloc.freqAlloc.numPrb = \
       schCalcNumPrb(tbSize, mcs, initialBwp->pdschCommon.timeDomRsrcAllocList[k0Index].lengthSymbol);
 
+   /* Find total symbols occupied including DMRS */
+   dmrsStartSymbol = findDmrsStartSymbol(pdsch->dmrs.dlDmrsSymbPos);
+   if(dmrsStartSymbol == MAX_SYMB_PER_SLOT)
+   {
+      startSymbol = pdsch->pdschTimeAlloc.timeAlloc.startSymb;
+      numSymbol = pdsch->pdschTimeAlloc.timeAlloc.numSymb;
+   }
+   else
+   {
+      startSymbol = dmrsStartSymbol;
+      numSymbol = pdsch->dmrs.nrOfDmrsSymbols + pdsch->pdschTimeAlloc.timeAlloc.numSymb;
+   }
+
    /* Allocate the number of PRBs required for RAR PDSCH */
-   if((allocatePrbDl(cell, rarTime, pdsch->pdschTimeAlloc.timeAlloc.startSymb, pdsch->pdschTimeAlloc.timeAlloc.numSymb,\
+   if((allocatePrbDl(cell, rarTime, startSymbol, numSymbol,\
       &pdsch->pdschFreqAlloc.freqAlloc.startPrb, pdsch->pdschFreqAlloc.freqAlloc.numPrb)) != ROK)
    {
       DU_LOG("\nERROR  --> SCH : allocatePrbDl() failed for RAR");
