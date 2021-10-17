@@ -746,8 +746,8 @@ uint16_t schAllocPucchResource(SchCellCb *cell, uint16_t crnti, uint16_t slot)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t schDlRsrcAllocDlMsg(SchCellCb *cell, SlotTimingInfo slotTime, uint16_t crnti,
-      uint32_t *accumalatedSize, DlMsgAlloc *dlMsgAlloc)
+uint8_t schDlRsrcAllocDlMsg(SchCellCb *cell, SlotTimingInfo slotTime, uint16_t crnti,\
+                     uint32_t *accumalatedSize, DlMsgAlloc *dlMsgAlloc, uint16_t startPRB)
 {
    uint8_t ueIdx;
    uint16_t tbSize = 0;
@@ -837,13 +837,13 @@ uint8_t schDlRsrcAllocDlMsg(SchCellCb *cell, SlotTimingInfo slotTime, uint16_t c
 
    pdsch->pdschFreqAlloc.vrbPrbMapping = 0; /* non-interleaved */
    pdsch->pdschFreqAlloc.resourceAllocType = 1; /* RAT type-1 RIV format */
-   pdsch->pdschFreqAlloc.freqAlloc.startPrb = MAX_NUM_RB;
+   pdsch->pdschFreqAlloc.freqAlloc.startPrb = startPRB; /*Start PRB will be already known*/
    pdsch->pdschFreqAlloc.freqAlloc.numPrb = schCalcNumPrb(tbSize, ueCb.ueCfg.dlModInfo.mcsIndex, \
-		   pdschCfg.timeDomRsrcAllociList[0].symbolLength);
+         pdschCfg.timeDomRsrcAllociList[0].symbolLength);
 
    /* Allocate the number of PRBs required for DL PDSCH */
    if((allocatePrbDl(cell, slotTime, pdsch->pdschTimeAlloc.timeAlloc.startSymb, pdsch->pdschTimeAlloc.timeAlloc.numSymb,\
-      &pdsch->pdschFreqAlloc.freqAlloc.startPrb, pdsch->pdschFreqAlloc.freqAlloc.numPrb)) != ROK)
+               &pdsch->pdschFreqAlloc.freqAlloc.startPrb, pdsch->pdschFreqAlloc.freqAlloc.numPrb)) != ROK)
    {
       DU_LOG("\nERROR  --> SCH : allocatePrbDl() failed for DL MSG");
       return RFAILED;
@@ -1346,6 +1346,156 @@ SchK2TimingInfoTbl *msg3K2InfoTbl, SchK2TimingInfoTbl *k2InfoTbl)
    }
 }
 
+/**************************************************************************
+ *
+ * @brief Allocate the PRB using RRM policy
+ *
+ * @details
+ *
+ *    Function : prbAllocUsingRRMPolicy
+ *
+ *    Functionality:
+ *      For LC associated with Dedicated S-NSSAI, Allocate the PRB from RESERVED pool
+ *      For other Default LC, from the remaining Shared PRB pool
+ *
+ * @params[in] I/P > lcLinkList pointer (LcInfo list)
+ *             I/P > DedicatedPRB (Flag to indicate that RESERVED PRB to use 
+ *             I/P & O/P > Shared PRB 
+ *             I/P  > Reserved PRB count
+ *
+ * @return void
+ *
+ * ***********************************************************************/
+void prbAllocUsingRRMPolicy(CmLListCp *lcLL, bool dedicatedPRB, uint16_t *sharedPRB, uint16_t *reservedPRB)
+{
+   CmLList *node = NULLP;
+   LcList *lcList = NULLP;
+   uint16_t remReservedPRB = *reservedPRB;
+
+   node = lcLL->first;
+
+   if(!lcLL->count && *reservedPRB != 0 && dedicatedPRB == TRUE)/*No Dedicated LC is available*/
+   {
+      DU_LOG("\nERROR  --> SCH : Since reservedPRB are Resetted when Last Dedicated LC is deleted\
+            Thus some failure lead to here. Again resetting the reservedPRB");
+      *reservedPRB = 0;
+      return;
+   }
+   while(node)
+   {
+      lcList = (LcList *)node->node;
+      if(dedicatedPRB) /*Reserved/Dedicated PRB to use*/
+      {
+         /*Allocation of RESERVED for Dedicated LC(s)*/
+         if(lcList->reqPRB <=  remReservedPRB)/*Reserved PRB are enough*/
+         {
+            lcList->allocPRB = lcList->reqPRB; 
+            lcList->reqPRB = 0;                /*This LC is fully allocated*/
+
+            cmLListAdd2Tail(lcLL, cmLListDelFrm(lcLL, node)); /*Move this node to Last*/
+            remReservedPRB -= lcList->allocPRB; /*Calculate the Remaining reserved PRB*/
+            DU_LOG("\nINFO  --> SCH : LcID:%d fully allocated using ReservedPRB, \
+                  allocPRB:%d, remReservedPRB:%d",lcList->lcId, lcList->allocPRB, remReservedPRB);
+            node = node->next;
+            continue;        /*next LC*/
+         }
+         else
+         {
+            lcList->allocPRB = remReservedPRB; 
+            lcList->reqPRB -= lcList->allocPRB;
+            remReservedPRB = 0;                /*All the RESERVED PRBs are used*/  
+            dedicatedPRB = FALSE;              /*To enable the Shared PRB allocation further*/
+         }
+         DU_LOG("\nINFO  --> SCH : LcID:%d partially allocated with ReservedPRB, allocPRB:%d, reqPRB left:%d",\
+                       lcList-> lcId, lcList->allocPRB, lcList->reqPRB);
+         /*No need to move to next Node*/
+      }
+
+      /*Shared PRB allocation*/
+      if(lcList->reqPRB <= *sharedPRB)/*SharedPRBs are enough*/
+      {
+         lcList->allocPRB = lcList->reqPRB;
+         *sharedPRB -= lcList->allocPRB;  /*Calculating the remaining SharedPRB*/
+         lcList->reqPRB = 0;              /*This signifies all the reqPRB are allocated for this LC*/
+
+         cmLListAdd2Tail(lcLL, cmLListDelFrm(lcLL, node)); /*Move this node to last*/
+         DU_LOG("\nINFO  --> SCH : LcID:%d fully allocated using SharedPRB, \
+               allocPRB:%d, sharedPRB:%d",lcList->lcId, lcList->allocPRB, *sharedPRB);
+         node = node->next;
+         continue;
+      }
+      else /*Entire Shared PRBs to use for this LC*/
+      {
+         lcList->allocPRB = *sharedPRB;
+         lcList->reqPRB -= lcList->allocPRB; 
+         *sharedPRB = 0;      /*All Shared PRBs are used*/
+         DU_LOG("\nINFO  --> SCH : LcID:%d partially allocated with SharedPRB, allocPRB:%d, reqPRB left:%d",\
+               lcList->lcId, lcList->allocPRB, lcList->reqPRB);
+         cmLListAdd2Tail(lcLL, cmLListDelFrm(lcLL, node)); /*Move this LC to Last even though it is partially allocated*/
+         return;
+      }   
+   }
+   return;
+}
+
+/**************************************************************************
+ *
+ * @brief Calculate BO Size on the basis of AllocPRB count for a LCID
+ *
+ * @details
+ *
+ *    Function : calculateAllocBOSize
+ *
+ *    Functionality:
+ *      For a particular LC, calculate the BOSize/Scheduled Bytes 
+ *      based on number of allocated PRB for that LCID
+ *
+ * @params[in] I/P > lcLinkList pointer (LcInfo list)
+ *             I/P > LCID
+ *             I/P > MCS Idx
+ *             I/P > NumSymbols (PDSCH Symbols)
+ *
+ * @return ALLocated BO/Schedules Bytes
+ *
+ * ***********************************************************************/
+uint32_t calculateAllocBOSize( CmLListCp *lcLL, uint8_t lcId, uint16_t mcsIdx, uint8_t numSymbols)
+{
+   LcList    *lcNode = NULLP;
+   uint32_t allocBOSize = 0;
+   uint16_t tbSize = 0;
+
+   lcNode = searchOrCreateLcList(lcLL, lcId);
+
+   if(lcNode == NULLP)
+   {
+
+      DU_LOG("\nERROR  --> SCH : LC is not present");
+      return 0;
+   }
+
+   if(lcNode->allocPRB)
+   {
+      if(lcNode->reqPRB == 0)/*This LC has been fully allocated*/
+      {
+         allocBOSize = lcNode->payloadSize;		
+      }
+      else /*It has been partially allocated*/
+      {
+         tbSize = schCalcTbSizeFromNPrb(lcNode->allocPRB, mcsIdx, numSymbols);
+
+         allocBOSize = tbSize/8; //In bytes
+      }
+   }
+   else
+   {
+      return 0;
+   }
+
+   DU_LOG("\nINFO  --> SCH : LcID:%d Req PayloadSize:%d, AllocBOSize:%d",\
+         lcId, lcNode->payloadSize, allocBOSize);
+   lcNode->payloadSize -= allocBOSize; /*Only remaining payloadSize is stored in LC List*/
+   return (allocBOSize);
+}
 /**********************************************************************
   End of file
  **********************************************************************/

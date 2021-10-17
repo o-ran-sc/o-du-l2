@@ -181,6 +181,7 @@ typedef struct schLcCtxt
    uint32_t bo;
    uint16_t   pduSessionId; /*Pdu Session Id*/
    Snssai  *snssai;      /*S-NSSAI assoc with LCID*/
+   bool isDedicated;     /*Flag containing Dedicated S-NSSAI or not*/
 }SchDlLcCtxt;
 
 typedef struct schDlCb
@@ -200,6 +201,7 @@ typedef struct schUlLcCtxt
    uint8_t bsd;        // bucketSizeDuration
    uint16_t   pduSessionId; /*Pdu Session Id*/
    Snssai  *snssai;      /*S-NSSAI assoc with LCID*/
+   bool isDedicated;     /*Flag containing Dedicated S-NSSAI or not*/
 }SchUlLcCtxt;
 
 typedef struct schUlCb
@@ -223,6 +225,36 @@ typedef struct schUeCfgCb
    SchModulationInfo  ulModInfo;
 }SchUeCfgCb;
 
+/*Following structures to keep record and estimations of PRB allocated for each
+ * LC taking into consideration the RRM policies*/
+typedef struct lclist
+{
+   uint8_t lcId;
+   uint8_t reqPRB;     /*PRB count which is yet to be allocated*/
+   uint8_t allocPRB;   /*PRB count which is allocated based on RRM policy/FreePRB*/
+   uint32_t payloadSize;/*Payload Size to be allocated*/
+}LcList;
+
+typedef struct dedicatedLCInfo
+{
+   CmLListCp dedLcList; 	    /*Linklist of LC assoc with RRMPolicyMemberList*/
+   uint16_t	 rsvdDedicatedPRB; /*Number of PRB reserved for this Dedicated S-NSSAI*/
+}DedicatedLCInfo;
+
+typedef struct schLcPrbEstimate
+{
+   /* TODO: For Multiple RRMPolicies, Make DedicatedLcInfo as array/Double Pointer 
+    * and have separate DedLCInfo for each RRMPolcyMemberList*/
+   /* Dedicated LC List will be allocated, if any available*/
+   DedicatedLCInfo *dedLcInfo;	/*Contain LCInfo per RRMPolicy*/
+
+   CmLListCp defLcList; /*Linklist of LC assoc with Default S-NSSAI(s)*/
+
+   /* SharedPRB number can be used by any LC.
+    * Need to calculate in every Slot based on PRB availability*/
+   uint16_t sharedNumPrb;  
+}SchLcPrbEstimate;
+
 /**
  * @brief
  * UE control block
@@ -238,6 +270,8 @@ typedef struct schUeCb
    BsrInfo    bsrInfo[MAX_NUM_LOGICAL_CHANNEL_GROUPS];
    SchUlCb    ulInfo;
    SchDlCb    dlInfo;
+   SchLcPrbEstimate dlLcPrbEst; /*DL PRB Alloc Estimate among different LC*/
+   SchLcPrbEstimate ulLcPrbEst; /*UL PRB Alloc Estimate among different LC*/
 }SchUeCb;
 
 /**
@@ -324,17 +358,22 @@ void schProcessRaReq(SlotTimingInfo currTime, SchCellCb *cellCb);
 uint8_t schFillRar(SchCellCb *cell, SlotTimingInfo rarTime, uint16_t ueIdx, RarAlloc *rarAlloc, uint8_t k0Index);
 uint8_t schDlRsrcAllocMsg4(SchCellCb *cell, SlotTimingInfo slotTime, DlMsgAlloc *msg4Alloc);
 uint8_t schDlRsrcAllocDlMsg(SchCellCb *cell, SlotTimingInfo slotTime, uint16_t crnti,
-   uint32_t *accumalatedSize, DlMsgAlloc *dlMsgAlloc);
+   uint32_t *accumalatedSize, DlMsgAlloc *dlMsgAlloc, uint16_t startPRB);
 uint16_t schAccumalateLcBoSize(SchCellCb *cell, uint16_t ueIdx);
+uint8_t allocatePrbDl(SchCellCb *cell, SlotTimingInfo slotTime, uint8_t startSymbol, uint8_t symbolLength, \
+   uint16_t *startPrb, uint16_t numPrb);
+uint16_t bestFreeBlockSearchDl(SchCellCb *cell, SlotTimingInfo slotTime,uint16_t *startPrb);
 
 /* UL scheduling related function declarations */
 uint8_t schUlResAlloc(SchCellCb *cell, Inst schInst);
 uint16_t schAllocPucchResource(SchCellCb *cell, uint16_t crnti, uint16_t slot);
 uint8_t schFillUlDci(SchUeCb *ueCb, SchPuschInfo puschInfo, DciInfo *dciInfo);
 uint8_t schFillPuschAlloc(SchUeCb *ueCb, uint16_t pdcchSlot, uint32_t dataVol, SchPuschInfo *puschInfo);
-uint8_t allocatePrbDl(SchCellCb *cell, SlotTimingInfo slotTime, uint8_t startSymbol, uint8_t symbolLength, \
-   uint16_t *startPrb, uint16_t numPrb);
 
+/*Generic Functions*/
+LcList* searchOrCreateLcList(CmLListCp *lcLL, uint8_t lcId);
+void prbAllocUsingRRMPolicy(CmLListCp *lcLL, bool dedicatedPRB, uint16_t *sharedPRB, uint16_t *reservedPRB);
+uint32_t calculateAllocBOSize( CmLListCp *lcLL, uint8_t lcId, uint16_t mcsIdx, uint8_t numSymbols);
 /**********************************************************************
   End of file
  **********************************************************************/

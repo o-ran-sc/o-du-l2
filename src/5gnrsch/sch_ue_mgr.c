@@ -246,6 +246,60 @@ void updateSchDlCb(uint8_t delIdx, SchDlCb *dlInfo)
    }
 }
 
+
+/*******************************************************************
+ *
+ * @brief Function to update/allocate dedLC Info
+ *
+ * @details
+ *
+ *    Function : updateDedLcInfo
+ *
+ *    Functionality: Function to fill DLDedLcInfo
+ *
+ * @params[arg] snssai pointer,
+ *              SchRrmPolicy pointer,
+ *              SchLcPrbEstimate pointer , It will be filled
+ *
+ * @return ROK      >> This LC is part of RRM MemberList.
+ *         RFAILED  >> FATAL Error
+ *         ROKIGNORE >> This LC is not part of this RRM MemberList 
+ *
+ * ****************************************************************/
+
+uint8_t updateDedLcInfo(Snssai *snssai, SchRrmPolicy *rrmPolicy, SchLcPrbEstimate *lcPrbEst)
+{
+    if(memcmp(snssai, &(rrmPolicy->memberList.snssai), sizeof(Snssai)))
+    {
+		   if(lcPrbEst->dedLcInfo == NULLP)
+		   {
+              SCH_ALLOC(lcPrbEst->dedLcInfo, sizeof(DedicatedLCInfo));
+		    	  if(lcPrbEst->dedLcInfo)
+			     {
+                  lcPrbEst->dedLcInfo->rsvdDedicatedPRB = \
+				  	        (rrmPolicy->policyDedicatedRatio)*(MAX_NUM_RB);
+			     }
+			     else
+			     {
+				     return RFAILED;
+			     }
+		   }
+		   else 
+		   {
+		      /*Updating latest RrmPolicy*/
+		      lcPrbEst->dedLcInfo->rsvdDedicatedPRB = \
+				  	   (rrmPolicy->policyDedicatedRatio)*(MAX_NUM_RB);
+		   }
+	 }
+	 /*else case: This LcCtxt  is either a Default LC or this LC is part of someother RRM_MemberList*/
+	 else
+	 {
+	     DU_LOG("\nINFO  -->  SCH : This SNSSAI is not a part of this RRMPolicy");
+        return ROKIGNORE; /*returning IGNORE to avoid the setting of isDedicated flag in LCContext*/
+	 }
+	 return ROK;	 
+}
+
 /*******************************************************************
  *
  * @brief Function to fill SchUeCb
@@ -267,6 +321,8 @@ uint8_t fillSchUeCb(SchUeCb *ueCb, SchUeCfg *ueCfg)
    uint8_t   lcIdx, ueLcIdx;
    SchPdschCfgCmn pdschCfg;
    SchPucchDlDataToUlAck *dlDataToUlAck;
+   CmLListCp *lcLL = NULLP;
+   uint8_t retDL = RFAILED, retUL = RFAILED;
 
    ueCb->ueCfg.cellId = ueCfg->cellId;
    ueCb->ueCfg.crnti = ueCfg->crnti;
@@ -319,6 +375,30 @@ uint8_t fillSchUeCb(SchUeCb *ueCb, SchUeCfg *ueCfg)
          ueCb->ulInfo.numUlLc++;
          fillSchDlLcCtxt(&ueCb->dlInfo.dlLcCtxt[ueCb->dlInfo.numDlLc], &ueCfg->schLcCfg[lcIdx]);
          ueCb->dlInfo.numDlLc++;
+
+         /*Checking whether this LC belong to Dedicated S-NSSAI 
+          * and Create the Dedicated LC List & Update the Reserve PRB number*/
+         retDL = updateDedLcInfo(ueCb->dlInfo.dlLcCtxt[ueCb->dlInfo.numDlLc].snssai,  \
+                                   ueCb->cellCb->cellCfg.rrmPolicy, &(ueCb->dlLcPrbEst));
+
+         retUL =  updateDedLcInfo(ueCb->ulInfo.ulLcCtxt[ueCb->ulInfo.numUlLc].snssai,  \
+                                   ueCb->cellCb->cellCfg.rrmPolicy, &(ueCb->ulLcPrbEst));
+
+         if(retUL == RFAILED  || retDL == RFAILED)/*FATAL error*/
+         {
+            DU_LOG("\nERROR  -->  SCH : Memory Allocation Failed for DedLCInfo");
+            return RFAILED;
+         }
+         /*If ROK then mark the isDedicated Flag as TRUE for this LC*/
+         if(retUL == ROK)/**/
+         {
+            ueCb->ulInfo.ulLcCtxt[ueCb->ulInfo.numUlLc].isDedicated = TRUE;
+         }
+         if(retDL == ROK)
+         {
+            ueCb->dlInfo.dlLcCtxt[ueCb->dlInfo.numDlLc].isDedicated = TRUE;
+         }
+
       }
       else
       {
@@ -329,12 +409,41 @@ uint8_t fillSchUeCb(SchUeCb *ueCb, SchUeCfg *ueCfg)
                if(ueCfg->schLcCfg[lcIdx].configType == CONFIG_MOD)
                {
                   fillSchUlLcCtxt(&ueCb->ulInfo.ulLcCtxt[ueLcIdx], &ueCfg->schLcCfg[lcIdx]);
+                  /*Updating the RRM reserved pool PRB count*/
+                  retUL =  updateDedLcInfo(ueCb->ulInfo.ulLcCtxt[ueCb->ulInfo.numUlLc].snssai,  \
+                                            ueCb->cellCb->cellCfg.rrmPolicy, &(ueCb->ulLcPrbEst));
+                  if(retUL == RFAILED)
+                  {
+                     DU_LOG("\nERROR  -->  SCH : Memory Allocation Failed for DedLCInfo");
+                     return RFAILED;
+                  }
+                  /*In CONFIG_MOD case also, a UE can be associated with S-NSSAI for the first time*/
+                  if(retUL == ROK)
+                  {
+                     ueCb->ulInfo.ulLcCtxt[ueCb->ulInfo.numUlLc].isDedicated = TRUE;
+                  }
                   break;
                }
                /*BUG: ueCfg using lcIdx (Looping around numLCs in ueCfg whereas
                 * ueLcIdx Loops around numUlLc in SCH UL DB*/
                if(ueCfg->schLcCfg[lcIdx].configType == CONFIG_DEL)
                {
+                  /*Delete the LC node from the UL LC List*/
+                  if(ueCb->ulInfo.ulLcCtxt[ueLcIdx].isDedicated)
+                  {
+                     lcLL = &(ueCb->ulLcPrbEst.dedLcInfo->dedLcList);
+                     if(lcLL->count == 1)/*IF Last Node in DedicateLCList to be deleted*/
+                     {
+                        /*Resetting the reservedPRB
+                         *so that Default LC can use all PRBs without any restrictions*/
+                        ueCb->ulLcPrbEst.dedLcInfo->rsvdDedicatedPRB = 0;
+                     }
+                  }
+                  else
+                  {
+                     lcLL = &(ueCb->ulLcPrbEst.defLcList);
+                  }
+                  deleteLcNode(lcLL, ueCfg->schLcCfg[lcIdx].lcId);
                   memset(&ueCb->ulInfo.ulLcCtxt[ueLcIdx], 0, sizeof(SchUlLcCtxt));
                   ueCb->ulInfo.numUlLc--;
                   updateSchUlCb(ueLcIdx, &ueCb->ulInfo); //moving arr elements one idx ahead
@@ -351,10 +460,38 @@ uint8_t fillSchUeCb(SchUeCb *ueCb, SchUeCfg *ueCfg)
                if(ueCfg->schLcCfg[lcIdx].configType == CONFIG_MOD)
                {
                   fillSchDlLcCtxt(&ueCb->dlInfo.dlLcCtxt[ueLcIdx], &ueCfg->schLcCfg[lcIdx]);
+                  /*Updating the RRM policy*/
+                  retDL = updateDedLcInfo(ueCb->dlInfo.dlLcCtxt[ueCb->dlInfo.numDlLc].snssai,  \
+                                            ueCb->cellCb->cellCfg.rrmPolicy, &(ueCb->dlLcPrbEst));
+                  if(retDL == RFAILED)
+                  {
+                     DU_LOG("\nERROR  -->  SCH : Memory Allocation Failed for DedLCInfo");
+                     return RFAILED;
+                  }
+                  if(retDL == ROK)
+                  {
+                     ueCb->dlInfo.dlLcCtxt[ueCb->dlInfo.numDlLc].isDedicated = TRUE;
+                  }
                   break;
                }
                if(ueCfg->schLcCfg[lcIdx].configType == CONFIG_DEL)
                {
+                  /*Delete the LC node from the DL LC List*/
+                  if(ueCb->dlInfo.dlLcCtxt[ueLcIdx].isDedicated)
+                  {
+                     lcLL = &(ueCb->dlLcPrbEst.dedLcInfo->dedLcList);
+                     if(lcLL->count == 1)/*Last Node in DedicateLCList to be deleted*/
+                     {
+                        /*Resetting the reservedPRB
+                         *so that Default LC can use all PRBs without any restrictions*/
+                        ueCb->dlLcPrbEst.dedLcInfo->rsvdDedicatedPRB = 0;
+                     }
+                  }
+                  else
+                  {
+                     lcLL = &(ueCb->dlLcPrbEst.defLcList);
+                  }
+                  deleteLcNode(lcLL, ueCfg->schLcCfg[lcIdx].lcId);
                   memset(&ueCb->dlInfo.dlLcCtxt[ueLcIdx], 0, sizeof(SchDlLcCtxt));
                   ueCb->dlInfo.numDlLc--;
                   updateSchDlCb(ueLcIdx, &ueCb->dlInfo); //moving arr elements one idx ahead
@@ -857,6 +994,7 @@ void deleteSchUeCb(SchUeCb *ueCb)
    uint8_t timeDomRsrcIdx = 0, ueLcIdx = 0;
    SchPucchCfg *pucchCfg = NULLP;
    SchPdschConfig *pdschCfg = NULLP;
+   CmLListCp *lcLL  = NULLP;
 
    if(ueCb)
    {
@@ -901,6 +1039,23 @@ void deleteSchUeCb(SchUeCb *ueCb)
       {
          SCH_FREE(ueCb->dlInfo.dlLcCtxt[ueLcIdx].snssai, sizeof(Snssai));
       }
+
+      /*Clearing out Dedicated LC list*/
+      lcLL = &(ueCb->dlLcPrbEst.dedLcInfo->dedLcList);
+      deleteLcLL(lcLL);
+      SCH_FREE(ueCb->dlLcPrbEst.dedLcInfo, sizeof(DedicatedLCInfo));
+
+      lcLL = &(ueCb->ulLcPrbEst.dedLcInfo->dedLcList);
+      deleteLcLL(lcLL);
+      SCH_FREE(ueCb->ulLcPrbEst.dedLcInfo, sizeof(DedicatedLCInfo));
+
+      /*Deleteing the Default LC list*/
+      lcLL = &(ueCb->dlLcPrbEst.defLcList);
+      deleteLcLL(lcLL);
+
+      lcLL = &(ueCb->ulLcPrbEst.defLcList);
+      deleteLcLL(lcLL);
+
       memset(ueCb, 0, sizeof(SchUeCb));
    }
 }
@@ -922,55 +1077,55 @@ void deleteSchUeCb(SchUeCb *ueCb)
 * ****************************************************************/
 uint8_t MacSchUeDeleteReq(Pst *pst, SchUeDelete  *ueDelete)
 {
-    uint8_t idx=0, ueIdx=0, ret=ROK;
-    ErrorCause result;
-    SchCellCb    *cellCb = NULLP;
-    Inst         inst = pst->dstInst - 1;
-   
+   uint8_t idx=0, ueIdx=0, ret=ROK;
+   ErrorCause result;
+   SchCellCb    *cellCb = NULLP;
+   Inst         inst = pst->dstInst - 1;
+
 #ifdef CALL_FLOW_DEBUG_LOG
-    DU_LOG("\nCall Flow: ENTMAC -> ENTSCH : EVENT_UE_DELETE_REQ_TO_SCH\n");
+   DU_LOG("\nCall Flow: ENTMAC -> ENTSCH : EVENT_UE_DELETE_REQ_TO_SCH\n");
 #endif
 
-    if(!ueDelete)
-    {
-       DU_LOG("\nERROR  -->  SCH : MacSchUeDeleteReq(): Ue Delete request failed");
-       ret = RFAILED;
-    }
-    DU_LOG("\nDEBUG  -->  SCH : Ue Delete request received for crnti[%d]", ueDelete->crnti);
-    
-    cellCb = schCb[inst].cells[idx];
+   if(!ueDelete)
+   {
+      DU_LOG("\nERROR  -->  SCH : MacSchUeDeleteReq(): Ue Delete request failed");
+      ret = RFAILED;
+   }
+   DU_LOG("\nDEBUG  -->  SCH : Ue Delete request received for crnti[%d]", ueDelete->crnti);
 
-    if(cellCb->cellId != ueDelete->cellId)
-    {
-       DU_LOG("\nERROR  -->  SCH : MacSchUeDeleteReq(): cell Id is not available");
-       result =  INVALID_CELLID;
-    }
-    else
-    {
-       GET_UE_IDX(ueDelete->crnti, ueIdx);
-       if(( cellCb->ueCb[ueIdx-1].crnti == ueDelete->crnti) && ( cellCb->ueCb[ueIdx-1].state == SCH_UE_STATE_ACTIVE))
-       {
-          deleteSchUeCb(&cellCb->ueCb[ueIdx-1]);
-          cellCb->numActvUe--;
-          result = NOT_APPLICABLE;
-       }
-       else
-       {
-          DU_LOG("\nERROR  -->  SCH : MacSchUeDeleteReq(): SchUeCb not found");
-          result =  INVALID_UEIDX;
-       }
-    }
-    
-    if(result == NOT_APPLICABLE)
-    {
-       SchSendUeDeleteRspToMac(inst, ueDelete, RSP_OK, result);
-    }
-    else
-    {
-       SchSendUeDeleteRspToMac(inst, ueDelete, RSP_NOK, result);
-       ret = RFAILED;
-    }
-    return ret;
+   cellCb = schCb[inst].cells[idx];
+
+   if(cellCb->cellId != ueDelete->cellId)
+   {
+      DU_LOG("\nERROR  -->  SCH : MacSchUeDeleteReq(): cell Id is not available");
+      result =  INVALID_CELLID;
+   }
+   else
+   {
+      GET_UE_IDX(ueDelete->crnti, ueIdx);
+      if(( cellCb->ueCb[ueIdx-1].crnti == ueDelete->crnti) && ( cellCb->ueCb[ueIdx-1].state == SCH_UE_STATE_ACTIVE))
+      {
+         deleteSchUeCb(&cellCb->ueCb[ueIdx-1]);
+         cellCb->numActvUe--;
+         result = NOT_APPLICABLE;
+      }
+      else
+      {
+         DU_LOG("\nERROR  -->  SCH : MacSchUeDeleteReq(): SchUeCb not found");
+         result =  INVALID_UEIDX;
+      }
+   }
+
+   if(result == NOT_APPLICABLE)
+   {
+      SchSendUeDeleteRspToMac(inst, ueDelete, RSP_OK, result);
+   }
+   else
+   {
+      SchSendUeDeleteRspToMac(inst, ueDelete, RSP_NOK, result);
+      ret = RFAILED;
+   }
+   return ret;
 }
 
 /*******************************************************************
