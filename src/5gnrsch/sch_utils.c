@@ -1160,7 +1160,7 @@ void schInitUlSlot(SchUlSlotInfo *schUlSlotInfo)
       freeBlock->numFreePrb = MAX_NUM_RB;
       freeBlock->startPrb = 0;
       freeBlock->endPrb = MAX_NUM_RB-1;
-      addNodeToLList(&schUlSlotInfo->prbAlloc.freePrbBlockList, freeBlock, NULL);
+      addNodeToLList(&schUlSlotInfo->prbAlloc.freePrbBlockList, freeBlock, NULLP); //VS: Ask Harshita ?
    }
 
    schUlSlotInfo->puschCurrentPrb = PUSCH_START_RB;
@@ -1205,7 +1205,7 @@ void schInitDlSlot(SchDlSlotInfo *schDlSlotInfo)
       freeBlock->numFreePrb = MAX_NUM_RB;
       freeBlock->startPrb = 0;
       freeBlock->endPrb = MAX_NUM_RB-1;
-      addNodeToLList(&schDlSlotInfo->prbAlloc.freePrbBlockList, freeBlock, NULL);
+      addNodeToLList(&schDlSlotInfo->prbAlloc.freePrbBlockList, freeBlock, NULLP); //VS: bug Ask Harshita
    }
 }
 
@@ -1289,6 +1289,442 @@ bool fillPrbBitmap(uint64_t *prbBitMap, uint16_t startPrb, uint16_t numPrb)
    }
    
    return ROK;
+}
+
+/*******************************************************************************
+ *
+ * @brief Try to find Best Free Block with Max Num PRB 
+ *
+ * @details
+ *
+ *    Function : bestFreeBlockSearch
+ *
+ *    Functionality:
+ *     Finds the FreeBlock with MaxNum of FREE PRB considering SSB/SIB1 ocassions.
+ *
+ * @params[in] I/P > prbAlloc table (FreeBlock list)
+ *             I/P > Slot timing Info
+ *             O/P > Start PRB
+ *       
+ *
+ * @return Max Number of Free PRB 
+ *         If 0, then no Suitable Free Block
+ *
+ * ********************************************************************************/
+
+uint16_t bestFreeBlockSearch(SchCellCb *cell, SlotTimingInfo slotTime,uint16_t *startPrb)
+{
+   uint16_t       broadcastPrbStart=0, broadcastPrbEnd=0, maxFreePRB = 0;
+   PduTxOccsaion  ssbOccasion=0, sib1Occasion=0;
+   FreePrbBlock   *freePrbBlock = NULLP;
+   CmLList        *freePrbNode = NULLP;
+
+   SchDlSlotInfo  *schDlSlotInfo = cell->schDlSlotInfo[slotTime.slot];
+   SchPrbAlloc    *prbAlloc = &schDlSlotInfo->prbAlloc;
+
+   ssbOccasion = schCheckSsbOcc(cell, slotTime);
+   sib1Occasion = schCheckSib1Occ(cell, slotTime);
+
+   if(ssbOccasion && sib1Occasion)
+   {
+      broadcastPrbStart = cell->cellCfg.ssbSchCfg.ssbOffsetPointA; 
+      broadcastPrbEnd = broadcastPrbStart + SCH_SSB_NUM_PRB + cell->cellCfg.sib1SchCfg.sib1PdschCfg.pdschFreqAlloc.freqAlloc.numPrb -1;
+   }
+   else if(ssbOccasion)
+   {
+      broadcastPrbStart = cell->cellCfg.ssbSchCfg.ssbOffsetPointA;
+      broadcastPrbEnd = broadcastPrbStart + SCH_SSB_NUM_PRB -1;
+   }
+   else if(sib1Occasion)
+   {
+      broadcastPrbStart = cell->cellCfg.sib1SchCfg.sib1PdschCfg.pdschFreqAlloc.freqAlloc.startPrb;
+      broadcastPrbEnd = broadcastPrbStart + cell->cellCfg.sib1SchCfg.sib1PdschCfg.pdschFreqAlloc.freqAlloc.numPrb -1;
+   }
+
+
+   freePrbNode = prbAlloc->freePrbBlockList.first; 
+   *startPrb = 0; /*Initialize the StartPRB to zero*/
+   while(freePrbNode)
+   {
+      freePrbBlock = (FreePrbBlock *)freePrbNode->node;
+
+      /*For block with same numFreeBlocks, choose the one with HighestPRB range
+       *Since FreeBLockList are arranged in Descending order of PRB range thus Skipping this block*/
+      if(maxFreePRB >= freePrbBlock->numFreePrb) 
+      {
+         //skip this block
+         freePrbNode = freePrbNode->next;
+         continue;
+      }
+
+      /* If broadcast message is scheduled in this slot, then check if its PRBs belong to the current free block.
+       * Since SSB/SIB1 PRB location is fixed, these PRBs cannot be allocated to other message in same slot */
+      if((ssbOccasion || sib1Occasion) && 
+            ((broadcastPrbStart >= freePrbBlock->startPrb) && (broadcastPrbStart <= freePrbBlock->endPrb)) && \
+            ((broadcastPrbEnd >= freePrbBlock->startPrb) && (broadcastPrbEnd <= freePrbBlock->endPrb)))
+      {
+
+         /* Implmentation is done such that highest-numbered free-RB is Checked first
+            and freePRB in this block is greater than Max till now */
+         if((freePrbBlock->endPrb > broadcastPrbEnd) && ((freePrbBlock->endPrb - broadcastPrbEnd) > maxFreePRB))
+         {
+            /* If sufficient free PRBs are available above broadcast message*/
+            *startPrb = broadcastPrbEnd + 1;
+            maxFreePRB = (freePrbBlock->endPrb - broadcastPrbEnd);		 
+         }
+         /*Also check the other freeBlock (i.e. Above the broadcast message) for MAX FREE PRB*/
+         if((broadcastPrbStart > freePrbBlock->startPrb) && ((broadcastPrbStart - freePrbBlock->startPrb) > maxFreePRB))
+         {
+            /* If free PRBs are available below broadcast message*/
+            *startPrb = freePrbBlock->startPrb;
+            maxFreePRB = (broadcastPrbStart - freePrbBlock->startPrb);
+         }
+      }
+      else  //Best Block
+      {
+         if(maxFreePRB < freePrbBlock->numFreePrb)
+         {
+            *startPrb = freePrbBlock->startPrb;
+            maxFreePRB = freePrbBlock->numFreePrb;
+         }
+
+      }
+      freePrbNode = freePrbNode->next;
+   }  
+   return(maxFreePRB);
+}
+
+/**************************************************************************
+ *
+ * @brief Search LCID in LCLL 
+ *
+ * @details
+ *
+ *    Function : searchOrCreateLcList
+ *
+ *    Functionality:
+ *     Search LCID in LCLL or if not found, create a node for this LCID
+ *
+ * @params[in] I/P > lcLinkList pointer (LcInfo list)
+ *             I/P > lcId
+ *       
+ *
+ * @return lcList > Pointer to the Node for that LcList
+ *         If NULLP, FATAL FAILURE
+ *
+ * ***********************************************************************/
+LClist* searchOrCreateLcList(CmLListCp *lcLL, uint8_t lcId)
+{
+   CmLList  *newNode = NULLP, *node = NULLP;
+   LcList *lcList = NULLP;
+
+   node = lcLL->first;
+
+   /*Traversing the LC LinkList*/
+   while(node)
+   {
+      lcList = (LClist *)node->node;
+      if(lcList->lcId == lcId)
+      { 
+         DU_LOG("\nINFO  --> SCH : LcID:%d found in LL",lcId);
+         return lcList;  
+      }
+      node = node->next;
+   }//end of while
+
+   /*Need to add a new node for this LC*/
+
+   /*List is empty; Initialize the LL ControlPointer*/
+   if(lcLL->first || lcLL->count == 0)
+   {
+      cmLListInit(lcLL);
+   }
+
+   /*Allocate the List*/
+   SCH_ALLOC(lcList, sizeof(LcList));
+   if(lcList)
+   {
+      lcList->lcId = lcId;
+      lcList->reqPRB = 0;
+      lcList->allocPRB = 0;
+   }
+   else
+   {
+      DU_LOG("\nERROR  --> SCH : Allocation of List failed,lcId:%d",lcId);
+      return NULLP;
+   }
+
+   if(addNodeToLList(lcLL, lcList, NULLP) == RFAILED)
+   {
+      DU_LOG("\nERROR  --> SCH : failed to Add Node,lcId:%d",lcId);
+      SCH_FREE(lcList, sizeof(LcList));
+      return NULLP;
+   }
+   DU_LOG("\nINFO  --> SCH : Added new Node in List for lcId:%d",lcId);
+   return lcList;
+}
+
+/**************************************************************************
+ *
+ * @brief Update ReqPRB for a partiular LCID in LC Linklist 
+ *
+ * @details
+ *
+ *    Function : updateLcListReqPRB
+ *
+ *    Functionality:
+ *     Update ReqPRB for a partiular LCID in LC Linklist 
+ *
+ * @params[in] I/P > lcLinkList pointer (LcInfo list)
+ *             I/P > lcId
+ *             I/P > reqPRB
+ *             I/P > payloadSize
+ *
+ * @return ROK/RFAILED
+ *
+ * ***********************************************************************/
+uint8_t updateLcListReqPRB(CmLListCp *lcLL, uint8_t lcId, uint16_t reqPRB, uint32_t payloadSize)
+{
+   LClist    *lcNode = NULLP;
+
+   lcNode = searchOrCreateLcList(lcLL, lcId);
+
+   if(lcNode == NULLP)
+   {
+      DU_LOG("\nERROR  --> SCH : LC is neither present nor able to create in List lcId:%d",lcId);
+      return RFAILED;
+   }
+   lcNode->reqPRB += reqPRB;
+   lcNode->payloadSize += payloadSize;
+   lcNode->allocPRB = 0; /*Re-Initializing the AllocPRB*/
+   DU_LOG("\nINFO  --> SCH : LCID:%d, [reqPRB, payLoadSize]:[%d,%d]",\
+         lcId, lcNode->reqPRB, lcNode->payloadSize);
+   return ROK;
+}
+
+/**************************************************************************
+ *
+ * @brief Delete the LCID's Node from LL 
+ *
+ * @details
+ *
+ *    Function : deleteLcNode
+ *
+ *    Functionality:
+ *     Delete the LCID's Node from LL 
+ *
+ * @params[in] I/P > lcLinkList pointer (LcInfo list)
+ *             I/P > lcId
+ *
+ * @return ROK/RFAILED
+ *
+ * ***********************************************************************/
+uint8_t deleteLcNode(CmLListCp *lcLL, uint8_t lcId)
+{
+   CmLList   *node = NULLP;
+   LcList    *lcList = NULLP;
+
+   node = lcLL->first;
+   while(node)
+   {
+      lcList = (LClist *)node->node;
+      if(lcList->lcId == lcId)
+      { 
+         DU_LOG("\nINFO  --> SCH : LcID:%d found in LL",lcId);
+         deleteNodeFromLList(lcLL, node);
+         SCH_FREE(lcList, sizeof(LcList));
+         return ROK;
+      }
+      node = node->next;
+   }//end of while
+
+   DU_LOG("\nINFO  --> SCH : LcID:%d not found in LL",lcId);
+   return RFAILED;
+}
+
+/**************************************************************************
+ *
+ * @brief Delete entire LC Linklist 
+ *
+ * @details
+ *
+ *    Function : deleteLcLL
+ *
+ *    Functionality:
+ *      Delete entire LC Linklist 
+ *
+ * @params[in] I/P > lcLinkList pointer (LcInfo list)
+ *
+ * @return void
+ *
+ * ***********************************************************************/
+void deleteLcLL(CmLListCp *lcLL)
+{
+   CmLList *node = NULLP, *next = NULLP;
+   lcList *lcList = NULLP;
+
+   if(lcLL->count)
+   {
+      node = lcLL->first;
+   }
+   while(node)
+   {
+      next = node->next;
+      lcList = (LClist *)node->node;
+      if(deleteNodeFromLList(lcLL, node) == ROK)
+         SCH_FREE(lcList, sizeof(LClist));
+      node = next;
+   }
+}
+
+/**************************************************************************
+ *
+ * @brief Allocate the PRB using RRM policy
+ *
+ * @details
+ *
+ *    Function : prbAllocUsingRRMPolicy
+ *
+ *    Functionality:
+ *      For LC associated with Dedicated S-NSSAI, Allocate the PRB from RESERVED pool
+ *      For other Default LC, from the remaining Shared PRB pool
+ *
+ * @params[in] I/P > lcLinkList pointer (LcInfo list)
+ *             I/P > DedicatedPRB (Flag to indicate that RESERVED PRB to use 
+ *             I/P & O/P > Shared PRB 
+ *             I/P  > Reserved PRB count
+ *
+ * @return void
+ *
+ * ***********************************************************************/
+void prbAllocUsingRRMPolicy(CmLListCp *lcLL, bool dedicatedPRB, uint16_t *sharedPRB, uint16_t reservedPRB)
+{
+   CmLList *node = NULLP;
+   lcList *lcList = NULLP;
+   uint16_t remReservedPRB = reservedPRB;
+
+   node = lcLL->first;
+
+   if(!lcLL->count && *reservedPRB != 0 && dedicatedPRB == TRUE)/*No Dedicated LC is available*/
+   {
+      DU_LOG("\nERROR  --> SCH : Since reservedPRB are Resetted when Last Dedicated LC is deleted\
+            Thus some failure lead to here. Again resetting the reservedPRB");
+      *reservedPRB = 0;
+      return;
+   }
+   while(node)
+   {
+      lcList = (LClist *)node->node;
+      if(dedicatedPRB) /*Reserved/Dedicated PRB to use*/
+      {
+         /*Allocation of RESERVED for Dedicated LC(s)*/
+         if(lcList->reqPRB <=  remReservedPRB)/*Reserved PRB are enough*/
+         {
+            lcList->allocPRB = lcList->reqPRB; 
+            lcList->reqPRB = 0;                /*This LC is fully allocated*/
+
+            cmLListAdd2Tail(lcLL, cmLListDelFrm(lcLL, node)); /*Move this node to Last*/
+            remReservedPRB -= lcList->allocPRB; /*Calculate the Remaining reserved PRB*/
+            DU_LOG("\nINFO  --> SCH : LcID:%d fully allocated using ReservedPRB, \
+                  allocPRB:%d, remReservedPRB:%d",lcId, lcList->allocPRB, remReservedPRB);
+            node = node->next;
+            continue;        /*next LC*/
+         }
+         else
+         {
+            lcList->allocPRB = remReservedPRB; 
+            lcList->reqPRB -= lcList->allocPRB;
+            remReservedPRB = 0;                /*All the RESERVED PRBs are used*/  
+            dedicatedPRB = FALSE;              /*To enable the Shared PRB allocation further*/
+         }
+         DU_LOG("\nINFO  --> SCH : LcID:%d partially allocated with ReservedPRB, allocPRB:%d, reqPRB left:%d",\
+               lcId, lcList->allocPRB, lcList->reqPRB);
+         /*No need to move to next Node*/
+      }
+
+      /*Shared PRB allocation*/
+      if(lcList->reqPRB <= *sharedPRB)/*SharedPRBs are enough*/
+      {
+         lcList->allocPRB = lcList->reqPRB;
+         *sharedPRB -= lcList->allocPRB;  /*Calculating the remaining SharedPRB*/
+         lcList->reqPRB = 0;              /*This signifies all the reqPRB are allocated for this LC*/
+
+         cmLListAdd2Tail(LcLL, cmLListDelFrm(lcLL, node)); /*Move this node to last*/
+         DU_LOG("\nINFO  --> SCH : LcID:%d fully allocated using SharedPRB, \
+               allocPRB:%d, sharedPRB:%d",lcId, lcList->allocPRB, *sharedPRB);
+         node = node->next;
+         continue;
+      }
+      else /*Entire Shared PRBs to use for this LC*/
+      {
+         lcList->allocPRB = *sharedPRB;
+         lcList->reqPRB -= lcList->allocPRB; 
+         *sharedPRB = 0;      /*All Shared PRBs are used*/
+         DU_LOG("\nINFO  --> SCH : LcID:%d partially allocated with SharedPRB, allocPRB:%d, reqPRB left:%d",\
+               lcId, lcList->allocPRB, lcList->reqPRB);
+         /*Query: SHld i move this node to Last?*/ /*TODO*/
+         return;
+      }   
+   }
+   return;
+}
+
+/**************************************************************************
+ *
+ * @brief Calculate BO Size on the basis of AllocPRB count for a LCID
+ *
+ * @details
+ *
+ *    Function : calculateAllocBOSize
+ *
+ *    Functionality:
+ *      For a particular LC, calculate the BOSize/Scheduled Bytes 
+ *      based on number of allocated PRB for that LCID
+ *
+ * @params[in] I/P > lcLinkList pointer (LcInfo list)
+ *             I/P > LCID
+ *             I/P > MCS Idx
+ *             I/P > NumSymbols (PDSCH Symbols)
+ *
+ * @return ALLocated BO/Schedules Bytes
+ *
+ * ***********************************************************************/
+uint32_t calculateAllocBOSize( CmLListCp *lcLL, uint8_t lcId, uint16_t mcsIdx, uint8_t numSymbols)
+{
+   LClist    *lcNode = NULLP;
+   uint32_t allocBOSize = 0;
+
+   lcNode = searchOrCreateLcList(lcLL, lcId);
+
+   if(lcNode == NULLP)
+   {
+
+      DU_LOG("\nERROR  --> SCH : LC is not present");
+      return 0;
+   }
+
+   if(lcNode->allocPRB)
+   {
+      if(lcNode->reqPRB == 0)/*This LC has been fully allocated*/
+      {
+         allocBOSize = lcNode->payloadSize;		
+      }
+      else /*It has been partially allocated*/
+      {
+         tbsSize = schCalcTbSizeFromNPrb(lcNode->allocPRB, mcsIdx, numSymbols);
+
+         allocBOSize = tbSize/8; //In bytes
+      }
+   }
+   else
+   {
+      return 0;
+   }
+
+   DU_LOG("\nINFO  --> SCH : LcID:%d Req PayloadSize:%d, AllocBOSize:%d",\
+         lcId, lcNode->payloadSize, allocBOSize);
+   lcNode->payloadSize -= allocBOSize; /*Only remaining payloadSize is stored in LC List*/
+   return (allocBOSize);
 }
 
 #ifdef NR_TDD

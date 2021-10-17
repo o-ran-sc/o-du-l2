@@ -122,6 +122,16 @@ CmLList* isPrbAvailable(CmLListCp *freePrbBlockList, uint16_t startPrb, uint16_t
 void removeAllocatedPrbFromFreePrbList(CmLListCp *freePrbBlockList, CmLList *node, \
    uint16_t startPrb, uint16_t numPrb);
 
+
+uint16_t bestFreeBlockSearch(SchCellCb *cell, SlotTimingInfo slotTime,uint16_t *startPrb);
+LClist* searchOrCreateLcList(CmLListCp *lcLL, uint8_t lcId);
+uint8_t updateLcListReqPRB(CmLListCp *lcLL, uint8_t lcId, uint16_t reqPRB, uint32_t payloadSize);
+uint8_t deleteLcNode(CmLListCp *lcLL, uint8_t lcId);
+void deleteLcLL(CmLListCp *lcLL);
+void prbAllocUsingRRMPolicy(CmLListCp *lcLL, bool dedicatedPRB, \
+                               uint16_t *sharedPRB, uint16_t reservedPRB);
+uint32_t calculateAllocBOSize( CmLListCp *lcLL, uint8_t lcId, uint16_t mcsIdx, uint8_t numSymbols)
+
 /**********************************************************************
   End of file
  **********************************************************************/

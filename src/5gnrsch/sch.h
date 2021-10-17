@@ -181,6 +181,7 @@ typedef struct schLcCtxt
    uint32_t bo;
    uint16_t   pduSessionId; /*Pdu Session Id*/
    Snssai  *snssai;      /*S-NSSAI assoc with LCID*/
+   bool isDedicated;     /*Flag containing Dedicated S-NSSAI or not*/
 }SchDlLcCtxt;
 
 typedef struct schDlCb
@@ -200,6 +201,7 @@ typedef struct schUlLcCtxt
    uint8_t bsd;        // bucketSizeDuration
    uint16_t   pduSessionId; /*Pdu Session Id*/
    Snssai  *snssai;      /*S-NSSAI assoc with LCID*/
+   bool isDedicated;     /*Flag containing Dedicated S-NSSAI or not*/
 }SchUlLcCtxt;
 
 typedef struct schUlCb
@@ -223,6 +225,36 @@ typedef struct schUeCfgCb
    SchModulationInfo  ulModInfo;
 }SchUeCfgCb;
 
+/*Following structures to keep record and estimations of PRB allocated for each
+ * LC taking into consideration the RRM policies*/
+typedef struct lclist
+{
+   uint8_t lcId;
+   uint8_t reqPRB;     /*PRB count which is yet to be allocated*/
+   uint8_t allocPRB;   /*PRB count which is allocated based on RRM policy/FreePRB*/
+   uint32_t payloadSize;/*Payload Size to be allocated*/
+}LClist;
+
+typedef struct dedicatedLCInfo
+{
+   CmLListCp dedLcList; 	    /*Linklist of LC assoc with RRMPolicyMemberList*/
+   uint8_t	 rsvdDedicatedPRB; /*Number of PRB reserved for this Dedicated S-NSSAI*/
+}DedicatedLCInfo;
+
+typedef struct schLcPrbEstimate
+{
+   /* TODO: For Multiple RRMPolicies, Make DedicatedLcInfo as array/Double Pointer 
+    * and have separate DedLCInfo for each RRMPolcyMemberList*/
+   /* Dedicated LC List will be allocated, if any available*/
+   DedicatedLCInfo *dedLcInfo;	/*Contain LCInfo per RRMPolicy*/
+
+   CmLListCp defLcList; /*Linklist of LC assoc with Default S-NSSAI(s)*/
+
+   /* SharedPRB number can be used by any LC.
+    * Need to calculate in every Slot based on PRB availability*/
+   uint8_t sharedNumPrb;  
+}SchLcPrbEstimate;
+
 /**
  * @brief
  * UE control block
@@ -238,6 +270,8 @@ typedef struct schUeCb
    BsrInfo    bsrInfo[MAX_NUM_LOGICAL_CHANNEL_GROUPS];
    SchUlCb    ulInfo;
    SchDlCb    dlInfo;
+   SchLcPrbEstimate dlLcPrbEst; /*DL PRB Alloc Estimate among different LC*/
+   SchLcPrbEstimate ulLcPrbEst; /*UL PRB Alloc Estimate among different LC*/
 }SchUeCb;
 
 /**
