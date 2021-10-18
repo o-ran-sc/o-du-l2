@@ -323,7 +323,6 @@ static S16 rlcCfgFillUlRbCb(RlcCb *gCb,RlcUlRbCb *rbCb,RlcUlUeCb *ueCb,RlcEntCfg
       {
          rbCb->lch.lChId  = entCfg->lCh[0].lChId;
          rbCb->lch.lChType = entCfg->lCh[0].type;
-
          rbCb->dir = entCfg->dir;
 
          rbCb->m.umUl.snLen = entCfg->m.umInfo.ul.snLen;
@@ -376,6 +375,20 @@ static S16 rlcCfgFillUlRbCb(RlcCb *gCb,RlcUlRbCb *rbCb,RlcUlUeCb *ueCb,RlcEntCfg
          return RFAILED;
       }
    }
+   
+   if(entCfg->snssai)
+   {
+      if(!rbCb->snssai)
+      {
+         RLC_ALLOC(gCb, rbCb->snssai, sizeof(Snssai));
+         if(rbCb->snssai == NULLP)
+         {
+            DU_LOG("\nERROR  -->  RLC_UL : rlcCfgFillUlRbCb(): Failed to allocate memory for snssai ");
+            return RFAILED;
+         }
+      }
+      memcpy(rbCb->snssai, entCfg->snssai, sizeof(Snssai));
+   }
    rbCb->mode = entCfg->entMode;
    
    return ROK;
@@ -405,7 +418,6 @@ static S16 rlcCfgUpdateUlRb(RlcCb *gCb,RlcUlRbCb *rbCb,void *ptr,RlcEntCfgInfo *
          rbCb->dir = entCfg->dir;
          rbCb->lch.lChId = entCfg->lCh[0].lChId;
          rbCb->lch.lChType = entCfg->lCh[0].type;
-
          cellCb->lCh[rbCb->lch.lChId - 1].ulRbCb = rbCb;
          break;
       }
@@ -430,6 +442,21 @@ static S16 rlcCfgUpdateUlRb(RlcCb *gCb,RlcUlRbCb *rbCb,void *ptr,RlcEntCfgInfo *
          break;
       }
    }
+   
+   if(entCfg->snssai)
+   {
+      if(!rbCb->snssai)
+      {
+         RLC_ALLOC(gCb, rbCb->snssai, sizeof(Snssai));
+         if(rbCb->snssai == NULLP)
+         {
+            DU_LOG("\nERROR  -->  RLC_UL : rlcCfgUpdateUlRb(): Failed to allocate memory for snssai ");
+            return RFAILED;
+         }
+      }
+      memcpy(rbCb->snssai,entCfg->snssai,sizeof(Snssai));
+   }
+   
    return (CKW_CFG_REAS_NONE);
 } 
 

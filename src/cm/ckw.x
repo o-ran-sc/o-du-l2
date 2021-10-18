@@ -111,20 +111,21 @@ typedef union rlcTmInfo
 typedef struct rlcEntCfgInfo
 {
    uint8_t                   cfgType;             /*!< Type of Configuration - 
-                                             ADD/MODIFY/DELETE/RE-ESTABLISH/
-                                             DELTEUE */
+                                                  ADD/MODIFY/DELETE/RE-ESTABLISH/
+                                                  DELTEUE */
    uint8_t                   rbId;                /* RB ID. The allowed
-                                                Values are [0..255] */
+                                                  Values are [0..255] */
    uint8_t                   rbType;              /* Type of the RB - can be SRB or DRB */
    uint8_t                   qci;                 /*!< qCI value Associated with that RB */
-   CkwLChInfo           lCh[CM_LTE_MAX_LOGCH_PER_RB];  /*!< Logical channel
+   Snssai                    *snssai;              /* Snssai Associated with logical channel */
+   CkwLChInfo                lCh[CM_LTE_MAX_LOGCH_PER_RB];  /*!< Logical channel
                                                         information
                                                 In case of AM mode: 
                                                 idx = 0 implies DL and
                                                 idx = 1 implies UL
                                                 In case of TM/UM idx 0 is only
                                                 applicable */
-   CmLteRlcMode         entMode;             /*!< Entity mode: AM, UM or TM */
+   CmLteRlcMode              entMode;             /*!< Entity mode: AM, UM or TM */
    uint8_t                   dir;                 /*!< Direction: It can be either
                                                UL / DL for TM mode 
                                                UL / DL or BOTH for UM mode 
@@ -148,21 +149,19 @@ typedef struct rlcEntCfgInfo
    Configuration Information from RRC to RLC */
 typedef struct rlcCfgInfo
 {
-   uint32_t                  transId;             /*!< Transaction Id */
+   uint32_t             transId;             /*!< Transaction Id */
    CmLteRnti            ueId;                /*!< UE ID */
    CmLteCellId          cellId;              /*!< Cell ID */
-   uint8_t                   numEnt;              /*!< Number of entities to
-                                               configure */
-   RlcEntCfgInfo        entCfg[CKW_MAX_ENT_CFG];  /*!< Array of Entities to be
-                                              configure */
+   uint8_t              numEnt;              /*!< Number of entities to configure */
+   RlcEntCfgInfo        entCfg[CKW_MAX_ENT_CFG];  /*!< Array of Entities to be configure */
 }RlcCfgInfo;
 
 /** @brief
    Entity Configuration Confirmation Information */
 typedef struct rlcEntCfgCfmInfo
 {
-   uint8_t                   rbId;                /*!< rb ID */
-   uint8_t                   rbType;              /*!< RB type - can be SRB or DRB */
+   uint8_t              rbId;                /*!< rb ID */
+   uint8_t              rbType;              /*!< RB type - can be SRB or DRB */
    CmStatus             status;              /*!< Status of the confirmation */
 }RlcEntCfgCfmInfo;
 

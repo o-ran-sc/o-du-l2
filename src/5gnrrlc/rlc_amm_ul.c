@@ -1881,6 +1881,7 @@ Void rlcAmmFreeUlRbCb(RlcCb       *gCb,RlcUlRbCb   *rbCb)
       rlcStopTmr(gCb,(PTR)rbCb, EVENT_RLC_AMUL_STA_PROH_TMR);
    }
 
+   RLC_FREE(gCb,rbCb->snssai, sizeof (Snssai));
 
    /* on the first loop winSz is always greater than zero
     while( ( curSn < windSz ) hence changing to do while */

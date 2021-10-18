@@ -943,6 +943,7 @@ RlcUlRbCb   *rbCb
       curSn++;
    }while ( curSn < RLC_RCV_BUF_BIN_SIZE);
 
+   RLC_FREE(gCb,rbCb->snssai, sizeof (Snssai));
    RLC_FREE(gCb,rbCb->m.umUl.recBufLst, (RLC_RCV_BUF_BIN_SIZE * sizeof(CmLListCp)));
    rbCb->m.umUl.recBufLst = NULLP;
 
