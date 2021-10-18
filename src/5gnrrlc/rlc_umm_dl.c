@@ -623,6 +623,7 @@ Void rlcUmmFreeDlRbCb(RlcCb *gCb,RlcDlRbCb *rbCb)
 {
 
    /* cat the SDU queue to the to be freed list */
+   RLC_FREE (gCb,rbCb->snssai, sizeof (Snssai));
    cmLListCatLList(&(gCb->u.dlCb->toBeFreed.sduLst),&(rbCb->m.umDl.sduQ));
    rlcUtlRaiseDlCleanupEvent(gCb);
 

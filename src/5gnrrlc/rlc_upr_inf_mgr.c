@@ -244,6 +244,7 @@ Pst          *pst,
 RlcCfgInfo   *cfg
 )
 {
+   uint8_t cfgIdx = 0;
    RlcCb        *tRlcCb;
    RlcUlCfgTmpData   *cfgTmpData;
 
@@ -252,6 +253,10 @@ RlcCfgInfo   *cfg
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if (pst->dstInst >= MAX_RLC_INSTANCES)
    {
+      for(cfgIdx=0; cfgIdx<cfg->numEnt; cfgIdx++)
+      {
+         RLC_PST_FREE(pst->region, pst->pool, cfg->entCfg[cfgIdx].snssai, sizeof(Snssai)); 
+      }
       RLC_PST_FREE(pst->region, pst->pool, cfg, sizeof(RlcCfgInfo));
       return RFAILED;
    }
@@ -262,6 +267,10 @@ RlcCfgInfo   *cfg
 
    if (cfgTmpData == NULLP)
    {
+      for(cfgIdx=0; cfgIdx<cfg->numEnt; cfgIdx++)
+      {
+         RLC_PST_FREE(pst->region, pst->pool, cfg->entCfg[cfgIdx].snssai, sizeof(Snssai)); 
+      }
       RLC_PST_FREE(pst->region, pst->pool, cfg, sizeof(RlcCfgInfo));
       return RFAILED;
    }
@@ -276,6 +285,10 @@ RlcCfgInfo   *cfg
    if (rlcDbmAddUlTransaction(tRlcCb, cfgTmpData) != ROK)
    {
       DU_LOG("\nERROR  -->  RLC_UL : Addition to UL transId Lst Failed");
+      for(cfgIdx=0; cfgIdx<cfg->numEnt; cfgIdx++)
+      {
+         RLC_PST_FREE(pst->region, pst->pool, cfg->entCfg[cfgIdx].snssai, sizeof(Snssai)); 
+      }
       RLC_PST_FREE(pst->region, pst->pool, cfg, sizeof(RlcCfgInfo));
       
       return RFAILED;

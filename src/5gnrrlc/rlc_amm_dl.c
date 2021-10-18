@@ -2984,6 +2984,8 @@ RlcSn          sn
  */
 Void rlcAmmFreeDlRbCb(RlcCb  *gCb,RlcDlRbCb  *rbCb)
 {
+   RLC_FREE (gCb,rbCb->snssai, sizeof (Snssai));
+   
    /* stop the re-transmission timer */
    if(TRUE == rlcChkTmr(gCb,(PTR)rbCb,EVENT_RLC_AMDL_POLL_RETX_TMR))
    {
