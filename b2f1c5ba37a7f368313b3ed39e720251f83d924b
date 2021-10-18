@@ -16,6 +16,98 @@
       "message": "Worked on \nextracting/storing snssai information on RlcUeCfg which we will share to Rlc layer.\nModified Rlc-DL structure and Rlc-UL structure and stored snssai information into the structures. \n",
       "revId": "b2f1c5ba37a7f368313b3ed39e720251f83d924b",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c6fb8a40_31901afc",
+        "filename": "src/5gnrrlc/rlc_cfg_dl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 332,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-10-18T21:37:12Z",
+      "side": 1,
+      "message": "Have you tested that this snssai is getting cleared when Deletion happens",
+      "range": {
+        "startLine": 332,
+        "startChar": 21,
+        "endLine": 332,
+        "endChar": 22
+      },
+      "revId": "b2f1c5ba37a7f368313b3ed39e720251f83d924b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2c5719c7_a74a6c0b",
+        "filename": "src/5gnrrlc/rlc_cfg_ul.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 430,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-10-18T21:37:12Z",
+      "side": 1,
+      "message": "Have you tested that this snssai is getting cleared when Deletion happens In every mode",
+      "range": {
+        "startLine": 430,
+        "startChar": 15,
+        "endLine": 430,
+        "endChar": 21
+      },
+      "revId": "b2f1c5ba37a7f368313b3ed39e720251f83d924b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e4626978_77f1b537",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 10041,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-10-18T21:37:12Z",
+      "side": 1,
+      "message": "Since this is a SRB processing, why SnSSAI is being extracted?\nJust want to understand do we have any scenario?",
+      "range": {
+        "startLine": 10041,
+        "startChar": 9,
+        "endLine": 10041,
+        "endChar": 28
+      },
+      "revId": "b2f1c5ba37a7f368313b3ed39e720251f83d924b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "74b3362d_f1a9d3c6",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1595,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-10-18T21:37:12Z",
+      "side": 1,
+      "message": "I dont understand the snssai stored in DB and Old S-NSSAI.. whats the difference?.. Can it have different value?",
+      "range": {
+        "startLine": 1595,
+        "startChar": 54,
+        "endLine": 1595,
+        "endChar": 55
+      },
+      "revId": "b2f1c5ba37a7f368313b3ed39e720251f83d924b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
   ]
 }
