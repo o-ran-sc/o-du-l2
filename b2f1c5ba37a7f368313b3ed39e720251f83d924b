@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7d8eaf1a_e015fb65",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-10-18T05:31:30Z",
+      "side": 1,
+      "message": "Worked on \nextracting/storing snssai information on RlcUeCfg which we will share to Rlc layer.\nModified Rlc-DL structure and Rlc-UL structure and stored snssai information into the structures. \n",
+      "revId": "b2f1c5ba37a7f368313b3ed39e720251f83d924b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
