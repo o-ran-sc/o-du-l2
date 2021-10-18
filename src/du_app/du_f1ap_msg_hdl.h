@@ -54,6 +54,7 @@ uint8_t BuildAndSendUeContextReleaseReq(uint16_t cellId, uint8_t ueIdx);
 uint8_t BuildAndSendUeContextReleaseComplete(uint16_t cellId, uint32_t  gnbCuUeF1apId, uint32_t  gnbDuUeF1apId);
 uint8_t duSendCellDeletReq(uint16_t cellId); 
 uint8_t duProcUeContextReleaseCommand(DuUeCb *duUeCb);
+uint8_t fetchLcId(uint8_t drbId);
 /**********************************************************************
          End of file
 **********************************************************************/

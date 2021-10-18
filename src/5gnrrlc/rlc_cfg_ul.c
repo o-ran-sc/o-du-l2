@@ -317,13 +317,14 @@ static S16 rlcCfgFillUlRbCb(RlcCb *gCb,RlcUlRbCb *rbCb,RlcUlUeCb *ueCb,RlcEntCfg
          rbCb->lch.lChId  = entCfg->lCh[0].lChId;
          rbCb->lch.lChType = entCfg->lCh[0].type;
          rbCb->dir = entCfg->dir;
+         rbCb->snssai = entCfg->snssai;
          break;
       }
       case RLC_MODE_UM:
       {
          rbCb->lch.lChId  = entCfg->lCh[0].lChId;
          rbCb->lch.lChType = entCfg->lCh[0].type;
-
+         rbCb->snssai = entCfg->snssai;
          rbCb->dir = entCfg->dir;
 
          rbCb->m.umUl.snLen = entCfg->m.umInfo.ul.snLen;
@@ -344,6 +345,7 @@ static S16 rlcCfgFillUlRbCb(RlcCb *gCb,RlcUlRbCb *rbCb,RlcUlUeCb *ueCb,RlcEntCfg
          rbCb->lch.lChId  = entCfg->lCh[1].lChId;
          rbCb->lch.lChType = entCfg->lCh[1].type;
          rbCb->dir = RLC_DIR_BOTH;
+         rbCb->snssai = entCfg->snssai;
 
          rbCb->m.amUl.staProhTmrInt = entCfg->m.amInfo.ul.staProhTmr;
          rbCb->m.amUl.reAsmblTmrInt = entCfg->m.amInfo.ul.reAsmblTmr;
@@ -405,7 +407,7 @@ static S16 rlcCfgUpdateUlRb(RlcCb *gCb,RlcUlRbCb *rbCb,void *ptr,RlcEntCfgInfo *
          rbCb->dir = entCfg->dir;
          rbCb->lch.lChId = entCfg->lCh[0].lChId;
          rbCb->lch.lChType = entCfg->lCh[0].type;
-
+         rbCb->snssai = entCfg->snssai;
          cellCb->lCh[rbCb->lch.lChId - 1].ulRbCb = rbCb;
          break;
       }
@@ -425,6 +427,7 @@ static S16 rlcCfgUpdateUlRb(RlcCb *gCb,RlcUlRbCb *rbCb,void *ptr,RlcEntCfgInfo *
          /* Up Link */
          rbCb->lch.lChId = entCfg->lCh[1].lChId;
          rbCb->lch.lChType = entCfg->lCh[1].type;
+         rbCb->snssai = entCfg->snssai;
          rbCb->m.amUl.staProhTmrInt = entCfg->m.amInfo.ul.staProhTmr;
          rbCb->m.amUl.reAsmblTmrInt = entCfg->m.amInfo.ul.reAsmblTmr;
          break;

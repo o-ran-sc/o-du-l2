@@ -1290,7 +1290,8 @@ uint8_t fillMacUeCfg(uint16_t cellId, uint8_t ueIdx, uint16_t crnti, \
                      (ueCfgDb->macLcCfg[dbIdx].configType == CONFIG_MOD))
                {
                   ueCfgDb->macLcCfg[dbIdx].configType = CONFIG_MOD;
-                  ret = fillMacLcCfgToAddMod(&macUeCfg->lcCfgList[dbIdx], &ueCfgDb->macLcCfg[dbIdx], &duMacDb->lcCfgList[lcIdx], FALSE);
+                  ret = fillMacLcCfgToAddMod(&macUeCfg->lcCfgList[dbIdx], &ueCfgDb->macLcCfg[dbIdx],\
+                  &duMacDb->lcCfgList[lcIdx], FALSE);
                }
             }
             else
@@ -1577,6 +1578,51 @@ uint8_t sendUeReCfgReqToRlc(RlcUeCfg *rlcUeCfg)
 
 /******************************************************************
  *
+ * @brief Fills Snssai information
+ *
+ * @details
+ *
+ *    Function : fillSnssaiInfo
+ *
+ *    Functionality: Fills Snssai information
+ *
+ *  @params[in]    LcCfg *snssaiTobeSend, LcCfg *snssaiDb, LcCfg *oldSnssai,
+ *  Bool toUpdateg
+ *  @return ROK     - success
+ *          RFAILED - failure
+ * 
+ *****************************************************************/
+uint8_t fillSnssaiInfo(Snssai *snssaiTobeSend, Snssai *snssaiDb, Snssai *oldSnssai, Bool toUpdate)
+{
+   if(!toUpdate)
+   {
+      if(snssaiDb)
+         snssaiTobeSend = snssaiDb;
+      else if(oldSnssai)
+         snssaiTobeSend = oldSnssai;
+      else
+         snssaiTobeSend = NULL;
+   }
+   else
+   {
+      if(snssaiDb)
+      {
+         if(oldSnssai)
+            DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, oldSnssai, sizeof(Snssai));
+
+         DU_ALLOC_SHRABL_BUF(oldSnssai, sizeof(Snssai));
+         if(oldSnssai == NULL)
+         {
+            DU_LOG("\nERROR  -->  DU APP : Memory Alloc Failed at fillSnssaiInfo()");
+            return RFAILED;
+         }
+         memcpy(oldSnssai, snssaiDb, sizeof(Snssai));
+      }
+   }
+   return ROK;
+}
+/******************************************************************
+ *
  * @brief Fills RlcBearerCfg structure
  *
  * @details
@@ -1604,7 +1650,7 @@ uint8_t fillRlcUeCfg(uint16_t cellId, uint8_t ueIdx,\
       if(ret == ROK)
          rlcUeCfg->numLcs++;
       else
-	 memset(rlcUeCfg, 0, sizeof(RlcUeCfg));
+         memset(rlcUeCfg, 0, sizeof(RlcUeCfg));
    }
    else
    {
@@ -1636,6 +1682,8 @@ uint8_t fillRlcUeCfg(uint16_t cellId, uint8_t ueIdx,\
                   /* MOD */ 
                   ueCfgDb->rlcLcCfg[dbIdx].configType = CONFIG_MOD; /* update Db for MOD type */
                   memcpy(&rlcUeCfg->rlcLcCfg[dbIdx], &ueCfgDb->rlcLcCfg[dbIdx], sizeof(RlcBearerCfg));
+                  fillSnssaiInfo(rlcUeCfg->rlcLcCfg[dbIdx].snssai, ueCfgDb->rlcLcCfg[dbIdx].snssai,\
+                  duRlcDb->rlcLcCfg[lcIdx].snssai,false);
                }
             }
             else
@@ -1645,6 +1693,7 @@ uint8_t fillRlcUeCfg(uint16_t cellId, uint8_t ueIdx,\
          {
             /* ADD/ DEL Config Type */
             memcpy(&rlcUeCfg->rlcLcCfg[dbIdx], &ueCfgDb->rlcLcCfg[dbIdx], sizeof(RlcBearerCfg));
+            fillSnssaiInfo(rlcUeCfg->rlcLcCfg[dbIdx].snssai, ueCfgDb->rlcLcCfg[dbIdx].snssai, NULL, false);
          }
          rlcUeCfg->numLcs++;
       }
@@ -1878,71 +1927,72 @@ uint8_t fillRlcCfgToAddMod(RlcBearerCfg *lcCfg, RlcBearerCfg *f1UeDbLcCfg)
    lcCfg->lcId       = f1UeDbLcCfg->lcId;
    lcCfg->lcType     = f1UeDbLcCfg->lcType;
    lcCfg->rlcMode    = f1UeDbLcCfg->rlcMode;
+   
    switch(lcCfg->rlcMode)
    {
       case RLC_AM :
-      {
-         if(!lcCfg->u.amCfg)
-	 {
-            DU_ALLOC_SHRABL_BUF(lcCfg->u.amCfg, sizeof(AmBearerCfg));
+         {
             if(!lcCfg->u.amCfg)
-	       return RFAILED;
-	 }
-         /* DL AM */
-         lcCfg->u.amCfg->dlAmCfg.snLenDl     = f1UeDbLcCfg->u.amCfg->dlAmCfg.snLenDl;    
-         lcCfg->u.amCfg->dlAmCfg.pollRetxTmr = f1UeDbLcCfg->u.amCfg->dlAmCfg.pollRetxTmr;
-         lcCfg->u.amCfg->dlAmCfg.pollPdu     = f1UeDbLcCfg->u.amCfg->dlAmCfg.pollPdu;
-         lcCfg->u.amCfg->dlAmCfg.pollByte    = f1UeDbLcCfg->u.amCfg->dlAmCfg.pollByte;   
-         lcCfg->u.amCfg->dlAmCfg.maxRetxTh   = f1UeDbLcCfg->u.amCfg->dlAmCfg.maxRetxTh;   
- 
-         /* UL AM */
-         lcCfg->u.amCfg->ulAmCfg.snLenUl     = f1UeDbLcCfg->u.amCfg->ulAmCfg.snLenUl;
-         lcCfg->u.amCfg->ulAmCfg.reAssemTmr  = f1UeDbLcCfg->u.amCfg->ulAmCfg.reAssemTmr; 
-         lcCfg->u.amCfg->ulAmCfg.statProhTmr = f1UeDbLcCfg->u.amCfg->ulAmCfg.statProhTmr;
-	 break;
-      }
-      case RLC_UM_BI_DIRECTIONAL :
-      {
-         if(!lcCfg->u.umBiDirCfg)
-	 {
-            DU_ALLOC_SHRABL_BUF(lcCfg->u.umBiDirCfg, sizeof(UmBiDirBearerCfg));
-	    if(!lcCfg->u.umBiDirCfg)
-	        return RFAILED;
-         }
-         /* UL UM BI DIR INFO */
-         lcCfg->u.umBiDirCfg->ulUmCfg.snLenUlUm  = f1UeDbLcCfg->u.umBiDirCfg->ulUmCfg.snLenUlUm;  
-         lcCfg->u.umBiDirCfg->ulUmCfg.reAssemTmr = f1UeDbLcCfg->u.umBiDirCfg->ulUmCfg.reAssemTmr;
-         /* DL UM BI DIR INFO */
-         lcCfg->u.umBiDirCfg->dlUmCfg.snLenDlUm  = f1UeDbLcCfg->u.umBiDirCfg->dlUmCfg.snLenDlUm;
-         break;
-      }
-      case RLC_UM_UNI_DIRECTIONAL_UL :
-      {
-         if(!lcCfg->u.umUniDirUlCfg)
-	 {
-            DU_ALLOC_SHRABL_BUF(lcCfg->u.umUniDirUlCfg, sizeof(UmUniDirUlBearerCfg));
-	    if(!lcCfg->u.umUniDirUlCfg)
-	       return RFAILED;
-	 }
-         lcCfg->u.umUniDirUlCfg->ulUmCfg.snLenUlUm  = f1UeDbLcCfg->u.umUniDirUlCfg->ulUmCfg.snLenUlUm;  
-         lcCfg->u.umUniDirUlCfg->ulUmCfg.reAssemTmr = f1UeDbLcCfg->u.umUniDirUlCfg->ulUmCfg.reAssemTmr;
-         break;
+            {
+               DU_ALLOC_SHRABL_BUF(lcCfg->u.amCfg, sizeof(AmBearerCfg));
+               if(!lcCfg->u.amCfg)
+                  return RFAILED;
+            }
+            /* DL AM */
+            lcCfg->u.amCfg->dlAmCfg.snLenDl     = f1UeDbLcCfg->u.amCfg->dlAmCfg.snLenDl;    
+            lcCfg->u.amCfg->dlAmCfg.pollRetxTmr = f1UeDbLcCfg->u.amCfg->dlAmCfg.pollRetxTmr;
+            lcCfg->u.amCfg->dlAmCfg.pollPdu     = f1UeDbLcCfg->u.amCfg->dlAmCfg.pollPdu;
+            lcCfg->u.amCfg->dlAmCfg.pollByte    = f1UeDbLcCfg->u.amCfg->dlAmCfg.pollByte;   
+            lcCfg->u.amCfg->dlAmCfg.maxRetxTh   = f1UeDbLcCfg->u.amCfg->dlAmCfg.maxRetxTh;   
 
-      }
-      case RLC_UM_UNI_DIRECTIONAL_DL :
-      {
-         if(!lcCfg->u.umUniDirDlCfg)
-	 {
-            DU_ALLOC_SHRABL_BUF(lcCfg->u.umUniDirDlCfg, sizeof(UmUniDirDlBearerCfg));
-	    if(!lcCfg->u.umUniDirDlCfg)
-	       return RFAILED;
+            /* UL AM */
+            lcCfg->u.amCfg->ulAmCfg.snLenUl     = f1UeDbLcCfg->u.amCfg->ulAmCfg.snLenUl;
+            lcCfg->u.amCfg->ulAmCfg.reAssemTmr  = f1UeDbLcCfg->u.amCfg->ulAmCfg.reAssemTmr; 
+            lcCfg->u.amCfg->ulAmCfg.statProhTmr = f1UeDbLcCfg->u.amCfg->ulAmCfg.statProhTmr;
+            break;
          }
-         lcCfg->u.umUniDirDlCfg->dlUmCfg.snLenDlUm  = f1UeDbLcCfg->u.umUniDirDlCfg->dlUmCfg.snLenDlUm;
-         break;
-      }
+      case RLC_UM_BI_DIRECTIONAL :
+         {
+            if(!lcCfg->u.umBiDirCfg)
+            {
+               DU_ALLOC_SHRABL_BUF(lcCfg->u.umBiDirCfg, sizeof(UmBiDirBearerCfg));
+               if(!lcCfg->u.umBiDirCfg)
+                  return RFAILED;
+            }
+            /* UL UM BI DIR INFO */
+            lcCfg->u.umBiDirCfg->ulUmCfg.snLenUlUm  = f1UeDbLcCfg->u.umBiDirCfg->ulUmCfg.snLenUlUm;  
+            lcCfg->u.umBiDirCfg->ulUmCfg.reAssemTmr = f1UeDbLcCfg->u.umBiDirCfg->ulUmCfg.reAssemTmr;
+            /* DL UM BI DIR INFO */
+            lcCfg->u.umBiDirCfg->dlUmCfg.snLenDlUm  = f1UeDbLcCfg->u.umBiDirCfg->dlUmCfg.snLenDlUm;
+            break;
+         }
+      case RLC_UM_UNI_DIRECTIONAL_UL :
+         {
+            if(!lcCfg->u.umUniDirUlCfg)
+            {
+               DU_ALLOC_SHRABL_BUF(lcCfg->u.umUniDirUlCfg, sizeof(UmUniDirUlBearerCfg));
+               if(!lcCfg->u.umUniDirUlCfg)
+                  return RFAILED;
+            }
+            lcCfg->u.umUniDirUlCfg->ulUmCfg.snLenUlUm  = f1UeDbLcCfg->u.umUniDirUlCfg->ulUmCfg.snLenUlUm;  
+            lcCfg->u.umUniDirUlCfg->ulUmCfg.reAssemTmr = f1UeDbLcCfg->u.umUniDirUlCfg->ulUmCfg.reAssemTmr;
+            break;
+
+         }
+      case RLC_UM_UNI_DIRECTIONAL_DL :
+         {
+            if(!lcCfg->u.umUniDirDlCfg)
+            {
+               DU_ALLOC_SHRABL_BUF(lcCfg->u.umUniDirDlCfg, sizeof(UmUniDirDlBearerCfg));
+               if(!lcCfg->u.umUniDirDlCfg)
+                  return RFAILED;
+            }
+            lcCfg->u.umUniDirDlCfg->dlUmCfg.snLenDlUm  = f1UeDbLcCfg->u.umUniDirDlCfg->dlUmCfg.snLenDlUm;
+            break;
+         }
       default:
          DU_LOG("\nERROR  -->  DU_APP: Invalid Rlc Mode %d at fillRlcCfgToAddMod()", lcCfg->rlcMode);
-	 return RFAILED;
+         return RFAILED;
    }
    return ROK;
 }
@@ -1973,40 +2023,51 @@ uint8_t duUpdateRlcLcCfg(RlcUeCfg *rlcUeCfg, F1UeContextSetupDb *f1UeDb)
       numLcs = rlcUeCfg->numLcs;
       for(lcIdx = 0; lcIdx < numLcs; lcIdx++)
       {
-	 if(f1UeDb->duUeCfg.rlcLcCfg[dbIdx].lcId == rlcUeCfg->rlcLcCfg[lcIdx].lcId)
-	 {
-	    if(f1UeDb->duUeCfg.rlcLcCfg[dbIdx].configType == CONFIG_MOD)
-	    {
-	       ret = fillRlcCfgToAddMod(&rlcUeCfg->rlcLcCfg[lcIdx], &f1UeDb->duUeCfg.rlcLcCfg[dbIdx]);
-	    }
-	    else if(f1UeDb->duUeCfg.rlcLcCfg[dbIdx].configType == CONFIG_DEL)
-	    {
-	       /* Free memory at matched lcIdx index */
-	       freeRlcLcCfg(&rlcUeCfg->rlcLcCfg[lcIdx]);
-	       rlcUeCfg->numLcs--;
-	       for(lcDelIdx = lcIdx; lcDelIdx < rlcUeCfg->numLcs; lcDelIdx++)
-	       {
-	          ret = fillRlcCfgToAddMod(&rlcUeCfg->rlcLcCfg[lcDelIdx], &rlcUeCfg->rlcLcCfg[lcDelIdx+1]);
-		  freeRlcLcCfg(&rlcUeCfg->rlcLcCfg[lcDelIdx+1]);
-		  if(ret == RFAILED)
-		  {
+         if(f1UeDb->duUeCfg.rlcLcCfg[dbIdx].lcId == rlcUeCfg->rlcLcCfg[lcIdx].lcId)
+         {
+            if(f1UeDb->duUeCfg.rlcLcCfg[dbIdx].configType == CONFIG_MOD)
+            {
+               ret = fillRlcCfgToAddMod(&rlcUeCfg->rlcLcCfg[lcIdx], &f1UeDb->duUeCfg.rlcLcCfg[dbIdx]);
+               if(ret == RFAILED)
+               {
+                  DU_LOG("\nERROR  -->  DU APP : Failed to modify LC at Idx %d in duUpdateRlcCfg()", lcDelIdx);
+                  break;
+               }
+               fillSnssaiInfo(NULL, f1UeDb->duUeCfg.rlcLcCfg[dbIdx].snssai, rlcUeCfg->rlcLcCfg[lcIdx].snssai, true);
+            }
+            else if(f1UeDb->duUeCfg.rlcLcCfg[dbIdx].configType == CONFIG_DEL)
+            {
+               /* Free memory at matched lcIdx index */
+               freeRlcLcCfg(&rlcUeCfg->rlcLcCfg[lcIdx]);
+               rlcUeCfg->numLcs--;
+               for(lcDelIdx = lcIdx; lcDelIdx < rlcUeCfg->numLcs; lcDelIdx++)
+               {
+                  ret = fillRlcCfgToAddMod(&rlcUeCfg->rlcLcCfg[lcDelIdx], &rlcUeCfg->rlcLcCfg[lcDelIdx+1]);
+                  fillSnssaiInfo(NULL, rlcUeCfg->rlcLcCfg[lcDelIdx+1].snssai, rlcUeCfg->rlcLcCfg[lcDelIdx].snssai,\
+                  true);
+                  freeRlcLcCfg(&rlcUeCfg->rlcLcCfg[lcDelIdx+1]);
+                  if(ret == RFAILED)
+                  {
                      DU_LOG("\nERROR  -->  DU APP : Failed to delete LC at Idx %d in duUpdateRlcCfg()", lcDelIdx);
-		     break;
-		  }
-	       }
-	    }
-	 }
+                     break;
+                  }
+               }
+            }
+         }
       }
       if(f1UeDb->duUeCfg.rlcLcCfg[dbIdx].configType == CONFIG_ADD)
       {
-	 ret = fillRlcCfgToAddMod(&rlcUeCfg->rlcLcCfg[lcIdx], &f1UeDb->duUeCfg.rlcLcCfg[dbIdx]);
-	 if(ret == ROK)
-	    rlcUeCfg->numLcs++;
+         ret = fillRlcCfgToAddMod(&rlcUeCfg->rlcLcCfg[lcIdx], &f1UeDb->duUeCfg.rlcLcCfg[dbIdx]);
+         if(ret == ROK)
+         {    
+            fillSnssaiInfo(NULL, f1UeDb->duUeCfg.rlcLcCfg[dbIdx].snssai, rlcUeCfg->rlcLcCfg[ rlcUeCfg->numLcs].snssai,\
+                  true);
+            rlcUeCfg->numLcs++;
+         }
       }
    }
    return ret;
 }
-
 
 /*******************************************************************
  *

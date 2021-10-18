@@ -329,6 +329,7 @@ static S16 rlcCfgFillDlRbCb(RlcCb *gCb,RlcDlRbCb *rbCb,RlcDlUeCb *ueCb,RlcEntCfg
          rbCb->lch.lChId  = entCfg->lCh[0].lChId;
          rbCb->lch.lChType = entCfg->lCh[0].type;
          rbCb->dir = entCfg->dir;
+         rbCb->snssai = entCfg->snssai;
          break;
       }
 
@@ -337,6 +338,7 @@ static S16 rlcCfgFillDlRbCb(RlcCb *gCb,RlcDlRbCb *rbCb,RlcDlUeCb *ueCb,RlcEntCfg
          rbCb->lch.lChId  = entCfg->lCh[0].lChId;
          rbCb->lch.lChType = entCfg->lCh[0].type;
          rbCb->dir = entCfg->dir;
+         rbCb->snssai = entCfg->snssai;
 
 	 /* Spec 38.322 Section 7.1 
 	  * All UM state variables can take values from 0 to 63 for 6 bit SN or 
@@ -362,9 +364,10 @@ static S16 rlcCfgFillDlRbCb(RlcCb *gCb,RlcDlRbCb *rbCb,RlcDlUeCb *ueCb,RlcEntCfg
          rbCb->lch.lChId  = entCfg->lCh[0].lChId;
          rbCb->lch.lChType = entCfg->lCh[0].type;
          rbCb->dir = RLC_DIR_BOTH;
+         rbCb->snssai = entCfg->snssai;
 
          rbCb->m.amDl.pollPdu = entCfg->m.amInfo.dl.pollPdu;
-	 rbCb->m.amDl.pollByte = entCfg->m.amInfo.dl.pollByte;
+	      rbCb->m.amDl.pollByte = entCfg->m.amInfo.dl.pollByte;
          rbCb->m.amDl.maxRetx = entCfg->m.amInfo.dl.maxRetx;
          rbCb->m.amDl.pollRetxTmrInt = entCfg->m.amInfo.dl.pollRetxTmr;
          rbCb->m.amDl.snLen = entCfg->m.amInfo.dl.snLen;
@@ -448,7 +451,7 @@ RlcEntCfgInfo   *entCfg
          rbCb->dir = entCfg->dir;
          rbCb->lch.lChId = entCfg->lCh[0].lChId;
          rbCb->lch.lChType = entCfg->lCh[0].type;
-
+         rbCb->snssai =  entCfg->snssai;
          cellCb->lCh[rbCb->lch.lChId - 1].dlRbCb = rbCb;
          break;
       }
@@ -467,6 +470,7 @@ RlcEntCfgInfo   *entCfg
          rbCb->lch.lChId = entCfg->lCh[0].lChId;
          rbCb->lch.lChType = entCfg->lCh[0].type;
          rbCb->dir = entCfg->dir;
+         rbCb->snssai =  entCfg->snssai;
          break;
       }
 
@@ -484,6 +488,7 @@ RlcEntCfgInfo   *entCfg
          rbCb->m.amDl.pollPdu = entCfg->m.amInfo.dl.pollPdu;
          rbCb->m.amDl.pollByte = entCfg->m.amInfo.dl.pollByte;
          rbCb->m.amDl.maxRetx = entCfg->m.amInfo.dl.maxRetx;
+         rbCb->snssai =  entCfg->snssai;
          
          break;
       }

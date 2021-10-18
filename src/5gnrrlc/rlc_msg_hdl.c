@@ -145,7 +145,7 @@ void fillEntModeAndDir(uint8_t *entMode, uint8_t *direction, RlcMode rlcMode)
  * @return void
  *
  * ****************************************************************/
-void fillLcCfg(RlcEntCfgInfo *rlcUeCfg, RlcBearerCfg *duRlcUeCfg, uint8_t cfgType)
+void fillLcCfg(RlcEntCfgInfo *rlcUeCfg, RlcBearerCfg *duRlcUeCfg, uint8_t cfgType, Snssai *snssai)
 {
    uint8_t lChRbIdx = 0;
 
@@ -153,6 +153,10 @@ void fillLcCfg(RlcEntCfgInfo *rlcUeCfg, RlcBearerCfg *duRlcUeCfg, uint8_t cfgTyp
    rlcUeCfg->rbType                = duRlcUeCfg->rbType;   // SRB or DRB
    rlcUeCfg->lCh[lChRbIdx].lChId   = duRlcUeCfg->lcId;   
    rlcUeCfg->lCh[lChRbIdx].type    = duRlcUeCfg->lcType;
+   if(snssai)
+   {
+      memcpy(&rlcUeCfg->snssai, snssai, sizeof(Snssai));
+   }
    fillEntModeAndDir(&rlcUeCfg->entMode, &rlcUeCfg->dir, duRlcUeCfg->rlcMode);
    rlcUeCfg->cfgType               = cfgType;
    switch(rlcUeCfg->entMode)
@@ -220,7 +224,8 @@ void fillRlcCfg(RlcCfgInfo *rlcUeCfg, RlcUeCfg *ueCfg)
 
    for(lcIdx = 0; lcIdx < rlcUeCfg->numEnt; lcIdx++)
    {
-      fillLcCfg(&rlcUeCfg->entCfg[lcIdx], &ueCfg->rlcLcCfg[lcIdx], ueCfg->rlcLcCfg[lcIdx].configType);
+      fillLcCfg(&rlcUeCfg->entCfg[lcIdx], &ueCfg->rlcLcCfg[lcIdx], ueCfg->rlcLcCfg[lcIdx].configType,\
+      ueCfg->rlcLcCfg[lcIdx].snssai);
    }
 }
 
