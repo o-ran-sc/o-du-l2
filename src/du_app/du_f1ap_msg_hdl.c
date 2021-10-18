@@ -6330,6 +6330,7 @@ void freeRlcLcCfg(RlcBearerCfg *lcCfg)
          DU_LOG("\nERROR  -->  DU_APP: Invalid Rlc Mode %d at freeRlcLcCfg()", lcCfg->rlcMode);
          break;
    }
+   DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, lcCfg->snssai, sizeof(Snssai));
 }
 
 /*******************************************************************
@@ -7416,8 +7417,6 @@ void procRlcLcCfg(uint8_t rbId, uint8_t lcId, uint8_t rbType, uint8_t rlcMode,\
    }
 }
 
-
-
 /*******************************************************************
  *
  * @brief Fills DrbQos Info received by CU
@@ -7549,6 +7548,52 @@ uint8_t extractUpTnlInfo(uint8_t drbId, uint8_t configType,\
 }
 /*******************************************************************
 *
+* @brief Function to extract Snssai Cfg Info from CU
+*
+* @details
+*
+*    Function : extractDrbSnssaiCfg
+*
+*    Functionality: Function to extract Drb Snssai Cfg Info from CU
+*
+* @params[in] DRB_Information_t *drbInfo, Snssai  *snssai
+* @return ROK/RFAILED
+*
+* ****************************************************************/
+
+uint8_t extractDrbSnssaiCfg(SNSSAI_t *RecvSnssai, Snssai *storedSnssai, Snssai **snssaiToBeShared)
+{
+   if(!(*snssaiToBeShared))
+   {
+      DU_ALLOC_SHRABL_BUF((*snssaiToBeShared), sizeof(Snssai));
+      if(snssaiToBeShared == NULLP)
+      {
+         DU_LOG("\nERROR  -->  DUAPP : extractDrbSnssaiCfg(): Memory failed at allocating for SNSSAI ");
+         return RFAILED;
+      }
+   }
+   if(RecvSnssai)
+   {
+      memcpy(&(*snssaiToBeShared)->sst, RecvSnssai->sST.buf, RecvSnssai->sST.size);
+      if(RecvSnssai->sD)
+      {
+         memcpy((*snssaiToBeShared)->sd, RecvSnssai->sD->buf,  RecvSnssai->sD->size);
+      }
+      else
+      {
+         DU_LOG("\nERROR  -->  DUAPP : extractDrbSnssaiCfg(): Received Null pointer of Snssai->SD");
+         return RFAILED;
+      }
+   }
+   if(storedSnssai)
+   {
+      memcpy((*snssaiToBeShared), storedSnssai, sizeof(Snssai));
+   }
+   return ROK;
+}
+
+/*******************************************************************
+*
 * @brief Function to extract Drb Qos Cfg Info from CU
 *
 * @details
@@ -7579,21 +7624,10 @@ uint8_t extractDrbQosCfg(DRB_Information_t *drbInfo, LcCfg *macLcToAdd )
       extractQosInfo(macLcToAdd->drbQos, &drbInfo->dRB_QoS);
       macLcToAdd->dlLcCfg.lcp = macLcToAdd->drbQos->ngRanRetPri.priorityLevel;
    }
-   if(!macLcToAdd->snssai)
+   if(extractDrbSnssaiCfg(&drbInfo->sNSSAI, NULLP, &macLcToAdd->snssai) != ROK)
    {
-      DU_ALLOC_SHRABL_BUF(macLcToAdd->snssai, sizeof(Snssai));
-      if(macLcToAdd->snssai == NULLP)
-      {
-         DU_LOG("\nERROR  -->  DUAPP : Memory failed at allocating SNSSAI at extractDrbQosCfg()");
-         return RFAILED;
-      }
-   }
-   memcpy(&macLcToAdd->snssai->sst, drbInfo->sNSSAI.sST.buf, \
-         drbInfo->sNSSAI.sST.size);
-   if(drbInfo->sNSSAI.sD)
-   {
-      memcpy(macLcToAdd->snssai->sd, drbInfo->sNSSAI.sD->buf, \
-            drbInfo->sNSSAI.sD->size);
+      DU_LOG("\nERROR  -->  DUAPP: Unable to extract Snssai information  at extractDrbQosCfg()");
+      return RFAILED;
    }
    return ROK;
 }
@@ -9984,19 +10018,18 @@ CellGroupConfigRrc_t *extractCellGrpInfo(ProtocolExtensionContainer_4624P16_t *p
  * ****************************************************************/
 uint8_t procSrbListToSetup(SRBs_ToBeSetup_Item_t * srbItem, LcCfg *macLcToAdd, RlcBearerCfg *rlcLcToAdd)
 {
-   uint8_t ret = ROK;
 
    /* Filling RLC INFO */
    procRlcLcCfg(srbItem->sRBID, srbItem->sRBID, RB_TYPE_SRB, RLC_AM, CONFIG_ADD, NULL, rlcLcToAdd);
 
    /* Filling MAC INFO */
-   ret = procMacLcCfg(srbItem->sRBID, RB_TYPE_SRB, CONFIG_ADD, NULL,NULL, NULL, NULL, macLcToAdd, NULL);
-   if(ret == RFAILED)
+   if(procMacLcCfg(srbItem->sRBID, RB_TYPE_SRB, CONFIG_ADD, NULL,NULL, NULL, NULL, macLcToAdd, NULL)  != ROK)
    { 
       DU_LOG("\nERROR  -->  F1AP : Failed at MAC LC Cfg in procSrbListToSetup()");
-      return ret;
+      return RFAILED;
    }
-   return ret;
+
+   return ROK;
 }
 
 
@@ -10112,6 +10145,14 @@ DRBs_ToBeSetupMod_Item_t *drbSetupModItem, DRBs_ToBeModified_Item_t *drbModItem,
       if(procMacLcCfg(lcId, RB_TYPE_DRB, CONFIG_MOD, NULL, NULL, drbModItem, NULL, macLcToAdd, upTnlInfo) != ROK)
       {
          DU_LOG("\nERROR  --> F1AP : Failed at RLC LC Cfg in procDrbListToSetupMod()");
+         return RFAILED;
+      }
+   }
+   if(macLcToAdd->snssai && drbModItem == NULLP)
+   {
+      if(extractDrbSnssaiCfg(NULLP, macLcToAdd->snssai, &rlcLcToAdd->snssai) != ROK)
+      {
+         DU_LOG("\nERROR  -->  DUAPP: Unable to extract Snssai information at extractRlcCfgToAddMod()");
          return RFAILED;
       }
    }
