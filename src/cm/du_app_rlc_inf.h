@@ -182,6 +182,7 @@ typedef struct rlcBearerCfg
    uint8_t      rbType;
    uint8_t      lcId;
    uint8_t      lcType;
+   Snssai       *snssai; 
    RlcMode      rlcMode;
    union
    {

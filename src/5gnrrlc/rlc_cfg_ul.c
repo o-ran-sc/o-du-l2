@@ -317,13 +317,32 @@ static S16 rlcCfgFillUlRbCb(RlcCb *gCb,RlcUlRbCb *rbCb,RlcUlUeCb *ueCb,RlcEntCfg
          rbCb->lch.lChId  = entCfg->lCh[0].lChId;
          rbCb->lch.lChType = entCfg->lCh[0].type;
          rbCb->dir = entCfg->dir;
+         if(entCfg->snssai)
+         {
+            RLC_ALLOC(gCb, rbCb->snssai, sizeof(Snssai));
+            if(rbCb->snssai == NULLP)
+            {
+               DU_LOG("\nERROR  -->  RLC_UL : rlcCfgFillUlRbCb(): Failed to allocate memory for snssai ");
+               return RFAILED;
+            }
+            memcpy(rbCb->snssai, entCfg->snssai, sizeof(Snssai));
+         }
          break;
       }
       case RLC_MODE_UM:
       {
          rbCb->lch.lChId  = entCfg->lCh[0].lChId;
          rbCb->lch.lChType = entCfg->lCh[0].type;
-
+         if(entCfg->snssai)
+         {
+            RLC_ALLOC(gCb, rbCb->snssai, sizeof(Snssai));
+            if(rbCb->snssai == NULLP)
+            {
+               DU_LOG("\nERROR  -->  RLC_UL : rlcCfgFillUlRbCb(): Failed to allocate memory for snssai ");
+               return RFAILED;
+            }
+            memcpy(rbCb->snssai, entCfg->snssai, sizeof(Snssai));
+         }
          rbCb->dir = entCfg->dir;
 
          rbCb->m.umUl.snLen = entCfg->m.umInfo.ul.snLen;
@@ -344,6 +363,16 @@ static S16 rlcCfgFillUlRbCb(RlcCb *gCb,RlcUlRbCb *rbCb,RlcUlUeCb *ueCb,RlcEntCfg
          rbCb->lch.lChId  = entCfg->lCh[1].lChId;
          rbCb->lch.lChType = entCfg->lCh[1].type;
          rbCb->dir = RLC_DIR_BOTH;
+         if(entCfg->snssai)
+         {
+            RLC_ALLOC(gCb, rbCb->snssai, sizeof(Snssai));
+            if(rbCb->snssai == NULLP)
+            {
+               DU_LOG("\nERROR  -->  RLC_UL : rlcCfgFillUlRbCb(): Failed to allocate memory for snssai ");
+               return RFAILED;
+            }
+            memcpy(rbCb->snssai, entCfg->snssai, sizeof(Snssai));
+         }
 
          rbCb->m.amUl.staProhTmrInt = entCfg->m.amInfo.ul.staProhTmr;
          rbCb->m.amUl.reAsmblTmrInt = entCfg->m.amInfo.ul.reAsmblTmr;
@@ -405,13 +434,24 @@ static S16 rlcCfgUpdateUlRb(RlcCb *gCb,RlcUlRbCb *rbCb,void *ptr,RlcEntCfgInfo *
          rbCb->dir = entCfg->dir;
          rbCb->lch.lChId = entCfg->lCh[0].lChId;
          rbCb->lch.lChType = entCfg->lCh[0].type;
-
+         RLC_FREE(gCb, cellCb->lCh[rbCb->lch.lChId - 1].ulRbCb->snssai, sizeof(Snssai));
+         if(entCfg->snssai)
+         {
+            RLC_ALLOC(gCb, rbCb->snssai, sizeof(Snssai));
+            if(rbCb->snssai == NULLP)
+            {
+               DU_LOG("\nERROR  -->  RLC_UL : rlcCfgUpdateUlRb(): Failed to allocate memory for snssai ");
+               return RFAILED;
+            }
+            memcpy(rbCb->snssai,entCfg->snssai,sizeof(Snssai));
+         }
          cellCb->lCh[rbCb->lch.lChId - 1].ulRbCb = rbCb;
          break;
       }
       case RLC_MODE_UM:
       {
          RlcUlUeCb *ueCb = (RlcUlUeCb *)ptr;
+         RLC_FREE(gCb, ueCb->lCh[rbCb->lch.lChId - 1].ulRbCb->snssai, sizeof(Snssai));
          ueCb->lCh[rbCb->lch.lChId - 1].ulRbCb = NULLP;
          rlcCfgFillUlRbCb(gCb,rbCb, ueCb, entCfg);
          break;
@@ -420,11 +460,22 @@ static S16 rlcCfgUpdateUlRb(RlcCb *gCb,RlcUlRbCb *rbCb,void *ptr,RlcEntCfgInfo *
       {
          RlcUlUeCb *ueCb = (RlcUlUeCb *)ptr;
 
+         RLC_FREE(gCb, ueCb->lCh[rbCb->lch.lChId - 1].ulRbCb->snssai, sizeof(Snssai));
          ueCb->lCh[rbCb->lch.lChId - 1].ulRbCb = NULLP;
          ueCb->lCh[entCfg->lCh[1].lChId - 1].ulRbCb = rbCb;
          /* Up Link */
          rbCb->lch.lChId = entCfg->lCh[1].lChId;
          rbCb->lch.lChType = entCfg->lCh[1].type;
+         if(entCfg->snssai)
+         {
+            RLC_ALLOC(gCb, rbCb->snssai, sizeof(Snssai));
+            if(rbCb->snssai == NULLP)
+            {
+               DU_LOG("\nERROR  -->  RLC_UL : rlcCfgUpdateUlRb(): Failed to allocate memory for snssai ");
+               return RFAILED;
+            }
+            memcpy(rbCb->snssai,entCfg->snssai,sizeof(Snssai));
+         }
          rbCb->m.amUl.staProhTmrInt = entCfg->m.amInfo.ul.staProhTmr;
          rbCb->m.amUl.reAsmblTmrInt = entCfg->m.amInfo.ul.reAsmblTmr;
          break;

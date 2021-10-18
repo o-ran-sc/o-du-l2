@@ -308,7 +308,8 @@ uint8_t     numRbCb
             rlcAmmFreeUlRbCb(gCb,rbCbLst[idx]);
          }
      
-         RLC_FREE (gCb,rbCbLst[idx], sizeof (RlcUlRbCb));
+         RLC_FREE(gCb,rbCbLst[idx]->snssai, sizeof (Snssai));
+         RLC_FREE(gCb,rbCbLst[idx], sizeof (RlcUlRbCb));
       }
    }
 

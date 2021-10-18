@@ -329,6 +329,16 @@ static S16 rlcCfgFillDlRbCb(RlcCb *gCb,RlcDlRbCb *rbCb,RlcDlUeCb *ueCb,RlcEntCfg
          rbCb->lch.lChId  = entCfg->lCh[0].lChId;
          rbCb->lch.lChType = entCfg->lCh[0].type;
          rbCb->dir = entCfg->dir;
+         if(entCfg->snssai)
+         {
+            RLC_ALLOC(gCb, rbCb->snssai, sizeof(Snssai));
+            if(rbCb->snssai == NULLP)
+            {
+               DU_LOG("\nERROR  --> RLC_DL : rlcCfgFillDlRbCb(): Failed to allocate memory");
+               return RFAILED;
+            }
+            memcpy(rbCb->snssai, entCfg->snssai, sizeof(Snssai));
+         }
          break;
       }
 
@@ -337,6 +347,16 @@ static S16 rlcCfgFillDlRbCb(RlcCb *gCb,RlcDlRbCb *rbCb,RlcDlUeCb *ueCb,RlcEntCfg
          rbCb->lch.lChId  = entCfg->lCh[0].lChId;
          rbCb->lch.lChType = entCfg->lCh[0].type;
          rbCb->dir = entCfg->dir;
+         if(entCfg->snssai)
+         {
+            RLC_ALLOC(gCb, rbCb->snssai, sizeof(Snssai));
+            if(rbCb->snssai == NULLP)
+            {
+               DU_LOG("\nERROR  --> RLC_DL : rlcCfgFillDlRbCb(): Failed to allocate memory");
+               return RFAILED;
+            }
+            memcpy(rbCb->snssai, entCfg->snssai, sizeof(Snssai));
+         }
 
 	 /* Spec 38.322 Section 7.1 
 	  * All UM state variables can take values from 0 to 63 for 6 bit SN or 
@@ -362,9 +382,19 @@ static S16 rlcCfgFillDlRbCb(RlcCb *gCb,RlcDlRbCb *rbCb,RlcDlUeCb *ueCb,RlcEntCfg
          rbCb->lch.lChId  = entCfg->lCh[0].lChId;
          rbCb->lch.lChType = entCfg->lCh[0].type;
          rbCb->dir = RLC_DIR_BOTH;
+         if(entCfg->snssai)
+         {
+            RLC_ALLOC(gCb, rbCb->snssai, sizeof(Snssai));
+            if(rbCb->snssai == NULLP)
+            {
+               DU_LOG("\nERROR  --> RLC_DL : rlcCfgFillDlRbCb(): Failed to allocate memory");
+               return RFAILED;
+            }
+            memcpy(rbCb->snssai, entCfg->snssai, sizeof(Snssai));
+         }
 
          rbCb->m.amDl.pollPdu = entCfg->m.amInfo.dl.pollPdu;
-	 rbCb->m.amDl.pollByte = entCfg->m.amInfo.dl.pollByte;
+	      rbCb->m.amDl.pollByte = entCfg->m.amInfo.dl.pollByte;
          rbCb->m.amDl.maxRetx = entCfg->m.amInfo.dl.maxRetx;
          rbCb->m.amDl.pollRetxTmrInt = entCfg->m.amInfo.dl.pollRetxTmr;
          rbCb->m.amDl.snLen = entCfg->m.amInfo.dl.snLen;
@@ -448,7 +478,17 @@ RlcEntCfgInfo   *entCfg
          rbCb->dir = entCfg->dir;
          rbCb->lch.lChId = entCfg->lCh[0].lChId;
          rbCb->lch.lChType = entCfg->lCh[0].type;
-
+         RLC_FREE(gCb, cellCb->lCh[rbCb->lch.lChId - 1].dlRbCb->snssai, sizeof(Snssai));
+         if(entCfg->snssai)
+         {
+            RLC_ALLOC(gCb, rbCb->snssai, sizeof(Snssai));
+            if(rbCb->snssai == NULLP)
+            {
+               DU_LOG("\nERROR  --> RLC_DL : rlcCfgFillDlRbCb(): Failed to allocate memory");
+               return RFAILED;
+            }
+            memcpy(rbCb->snssai,entCfg->snssai,sizeof(Snssai));
+         }
          cellCb->lCh[rbCb->lch.lChId - 1].dlRbCb = rbCb;
          break;
       }
@@ -461,12 +501,24 @@ RlcEntCfgInfo   *entCfg
          {
             return (CKW_CFG_REAS_LCHTYPE_MIS);
          }
+         
+         RLC_FREE(gCb, ueCb->lCh[rbCb->lch.lChId - 1].dlRbCb->snssai, sizeof(Snssai));
          ueCb->lCh[rbCb->lch.lChId - 1].dlRbCb = NULLP;
          ueCb->lCh[entCfg->lCh[0].lChId - 1].dlRbCb = rbCb;
 
          rbCb->lch.lChId = entCfg->lCh[0].lChId;
          rbCb->lch.lChType = entCfg->lCh[0].type;
          rbCb->dir = entCfg->dir;
+         if(entCfg->snssai)
+         {
+            RLC_ALLOC(gCb, rbCb->snssai, sizeof(Snssai));
+            if(rbCb->snssai == NULLP)
+            {
+               DU_LOG("\nERROR  --> RLC_DL : rlcCfgFillDlRbCb(): Failed to allocate memory");
+               return RFAILED;
+            }
+            memcpy(rbCb->snssai,entCfg->snssai,sizeof(Snssai));
+         }
          break;
       }
 
@@ -474,6 +526,7 @@ RlcEntCfgInfo   *entCfg
       {
          RlcDlUeCb *ueCb = (RlcDlUeCb *)ptr;
 
+         RLC_FREE(gCb, ueCb->lCh[rbCb->lch.lChId - 1].dlRbCb->snssai, sizeof(Snssai));
          ueCb->lCh[rbCb->lch.lChId - 1].dlRbCb = NULLP;
          ueCb->lCh[entCfg->lCh[1].lChId - 1].dlRbCb = rbCb;
          
@@ -484,6 +537,16 @@ RlcEntCfgInfo   *entCfg
          rbCb->m.amDl.pollPdu = entCfg->m.amInfo.dl.pollPdu;
          rbCb->m.amDl.pollByte = entCfg->m.amInfo.dl.pollByte;
          rbCb->m.amDl.maxRetx = entCfg->m.amInfo.dl.maxRetx;
+         if(entCfg->snssai)
+         {
+            RLC_ALLOC(gCb, rbCb->snssai, sizeof(Snssai));
+            if(rbCb->snssai == NULLP)
+            {
+               DU_LOG("\nERROR  --> RLC_DL : rlcCfgFillDlRbCb(): Failed to allocate memory");
+               return RFAILED;
+            }
+            memcpy(rbCb->snssai,entCfg->snssai,sizeof(Snssai));
+         }
          
          break;
       }
@@ -1085,6 +1148,7 @@ RlcEntCfgCfmInfo   *entCfm
       /* Assign NULLP to dlRbCb/ulRbCb.
        * Delete Hashlist allocated for it if any */
       cellCb->lCh[rlcRbCb->lch.lChId - 1].dlRbCb = NULLP;
+      RLC_FREE(gCb,rlcRbCb->snssai, sizeof(RlcDlRbCb)); 
       RLC_FREE(gCb,rlcRbCb, sizeof(RlcDlRbCb));   /*Vartika: Mem leak fix */  
    }
     /* Get ueCb and delete rbCb from it */

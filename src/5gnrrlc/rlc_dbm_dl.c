@@ -329,7 +329,7 @@ Void rlcDbmDelAllDlRb(RlcCb *gCb,RlcDlRbCb **rbCbLst,uint8_t numRbCb)
          if( RLC_MODE_UM == rbCbLst[idx]->mode)
          {
             rlcUmmFreeDlRbCb(gCb,rbCbLst[idx]);
-
+            RLC_FREE (gCb,rbCbLst[idx]->snssai, sizeof (Snssai));
             RLC_FREE (gCb,rbCbLst[idx], sizeof (RlcDlRbCb));       
          }
          else if( RLC_MODE_AM == rbCbLst[idx]->mode)
@@ -340,6 +340,7 @@ Void rlcDbmDelAllDlRb(RlcCb *gCb,RlcDlRbCb **rbCbLst,uint8_t numRbCb)
          else if(RLC_MODE_TM == rbCbLst[idx]->mode)
          {
             cmLListCatLList(&(gCb->u.dlCb->toBeFreed.sduLst),&(rbCbLst[idx]->m.tm.sduQ));
+            RLC_FREE (gCb,rbCbLst[idx]->snssai, sizeof (Snssai));
             RLC_FREE (gCb,rbCbLst[idx], sizeof (RlcDlRbCb));       
          }
 
