@@ -1,0 +1,136 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5c8d7cab_583c5afd",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-10-19T16:13:28Z",
+      "side": 1,
+      "message": "always check pointers before accessing them. it will avoid seg fault.",
+      "range": {
+        "startLine": 72,
+        "startChar": 86,
+        "endLine": 72,
+        "endChar": 99
+      },
+      "revId": "09515339e694e49e506236f6b24a9389930c196f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3075bedb_220e079b",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-10-19T16:13:28Z",
+      "side": 1,
+      "message": "check both pointer before accessing.",
+      "revId": "09515339e694e49e506236f6b24a9389930c196f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4e3a2ecd_228cfea2",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 616,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-10-19T16:13:28Z",
+      "side": 1,
+      "message": "use macro MAX_SYMB_PER_SLOT",
+      "range": {
+        "startLine": 616,
+        "startChar": 34,
+        "endLine": 616,
+        "endChar": 36
+      },
+      "revId": "09515339e694e49e506236f6b24a9389930c196f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "92286e5e_817e90cd",
+        "filename": "src/5gnrsch/sch_rach.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 499,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-10-19T16:13:28Z",
+      "side": 1,
+      "message": "Use macro NUM_SYMBOLS_PER_SLOT",
+      "range": {
+        "startLine": 499,
+        "startChar": 36,
+        "endLine": 499,
+        "endChar": 37
+      },
+      "revId": "09515339e694e49e506236f6b24a9389930c196f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9ea42c17_838dedfe",
+        "filename": "src/cm/common_def.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-10-19T16:13:28Z",
+      "side": 1,
+      "message": "Do we fill coreset information with respect to time Domain as well or it is specific for Feq Domain only?\nIs this function applicable for both Freq domain and time domain?",
+      "range": {
+        "startLine": 36,
+        "startChar": 5,
+        "endLine": 36,
+        "endChar": 30
+      },
+      "revId": "09515339e694e49e506236f6b24a9389930c196f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f547ad98_2f8decb6",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 8196,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-10-19T16:13:28Z",
+      "side": 1,
+      "message": "Does not required to change anything in the free function with respect to these changes?",
+      "range": {
+        "startLine": 8196,
+        "startChar": 107,
+        "endLine": 8196,
+        "endChar": 111
+      },
+      "revId": "09515339e694e49e506236f6b24a9389930c196f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
