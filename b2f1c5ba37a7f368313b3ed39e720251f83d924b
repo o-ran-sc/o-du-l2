@@ -41,6 +41,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "056870d3_e9ea3427",
+        "filename": "src/5gnrrlc/rlc_cfg_dl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 332,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-10-19T10:35:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c6fb8a40_31901afc",
+      "range": {
+        "startLine": 332,
+        "startChar": 21,
+        "endLine": 332,
+        "endChar": 22
+      },
+      "revId": "b2f1c5ba37a7f368313b3ed39e720251f83d924b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2c5719c7_a74a6c0b",
@@ -54,6 +78,30 @@
       "writtenOn": "2021-10-18T21:37:12Z",
       "side": 1,
       "message": "Have you tested that this snssai is getting cleared when Deletion happens In every mode",
+      "range": {
+        "startLine": 430,
+        "startChar": 15,
+        "endLine": 430,
+        "endChar": 21
+      },
+      "revId": "b2f1c5ba37a7f368313b3ed39e720251f83d924b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5fb3f2a7_e48c094b",
+        "filename": "src/5gnrrlc/rlc_cfg_ul.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 430,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-10-19T10:35:03Z",
+      "side": 1,
+      "message": "yes.",
+      "parentUuid": "2c5719c7_a74a6c0b",
       "range": {
         "startLine": 430,
         "startChar": 15,
@@ -89,6 +137,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1b025862_18e2a1bf",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 10041,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-10-19T10:35:03Z",
+      "side": 1,
+      "message": "Yes correct,this scenario we dont required these changes.",
+      "parentUuid": "e4626978_77f1b537",
+      "range": {
+        "startLine": 10041,
+        "startChar": 9,
+        "endLine": 10041,
+        "endChar": 28
+      },
+      "revId": "b2f1c5ba37a7f368313b3ed39e720251f83d924b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "74b3362d_f1a9d3c6",
         "filename": "src/du_app/du_ue_mgr.c",
         "patchSetId": 1
@@ -100,6 +172,30 @@
       "writtenOn": "2021-10-18T21:37:12Z",
       "side": 1,
       "message": "I dont understand the snssai stored in DB and Old S-NSSAI.. whats the difference?.. Can it have different value?",
+      "range": {
+        "startLine": 1595,
+        "startChar": 54,
+        "endLine": 1595,
+        "endChar": 55
+      },
+      "revId": "b2f1c5ba37a7f368313b3ed39e720251f83d924b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0c4b3593_c5e459b1",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1595,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-10-19T10:35:03Z",
+      "side": 1,
+      "message": "yes they may have different values. Db stands here for the information which is present in DuCb, where as oldSnssai is refers to the information which is present F1UeContextDb which we will create during procF1UeContextSetup.\nSince these one function is used for two purpose fillRlcUeCfg and duUpdateRlcLcCfg.",
+      "parentUuid": "74b3362d_f1a9d3c6",
       "range": {
         "startLine": 1595,
         "startChar": 54,
