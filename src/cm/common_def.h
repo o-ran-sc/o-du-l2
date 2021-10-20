@@ -96,6 +96,11 @@
 /* PRB allocation as per 38.101, Section 5.3.2 */
 #define TOTAL_PRB_20MHZ_MU0 106
 #define TOTAL_PRB_100MHZ_MU1 273
+#ifdef NR_TDD
+#define MAX_NUM_RB TOTAL_PRB_100MHZ_MU1  /* value for numerology 1, 100 MHz */
+#else
+#define MAX_NUM_RB TOTAL_PRB_20MHZ_MU0 /* value for numerology 0, 20 MHz */
+#endif
 
 #define ODU_THROUGHPUT_PRINT_TIME_INTERVAL  5 /* in milliseconds */
 
@@ -280,6 +285,7 @@ uint64_t gDlDataRcvdCnt;   /* Number of DL data received at EGTP */
 void freqDomRscAllocType0(uint16_t startPrb, uint16_t prbSize, uint8_t *freqDomain);
 void oduCpyFixBufToMsg(uint8_t *fixBuf, Buffer *mBuf, uint16_t len);
 uint8_t buildPlmnId(Plmn plmn, uint8_t *buf);
+uint16_t fetchScsValue(uint8_t scsEnumValue);
 
 uint8_t SGetSBufNewForDebug(char *file, char *func, char *line, Region region, Pool pool, Data **ptr, Size size);
 uint8_t SPutSBufNewForDebug(char *file, char *func, char *line, Region region, Pool pool, Data *ptr, Size size);

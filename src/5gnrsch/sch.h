@@ -25,11 +25,6 @@
 #define SCH_MU3_NUM_SLOTS 40 
 #define SCH_MU4_NUM_SLOTS 50 
 #define SCH_MAX_SFN 1024
-#ifdef NR_TDD
-#define MAX_NUM_RB 275 /* value for numerology 1, 100 MHz */
-#else
-#define MAX_NUM_RB 106 /* value for numerology 0, 20 MHz */
-#endif
 #define SCH_MIB_TRANS 8  /* MIB transmission as per 38.331 is every 80 ms */
 #define SCH_SIB1_TRANS 16 /* SIB1 transmission as per 38.331 is every 160 ms */
 #define SCH_NUM_SC_PRB 12 /* number of SCs in a PRB */
@@ -155,12 +150,12 @@ typedef struct schRaCb
  */
 typedef struct schUlSlotInfo
 {
-   SchPrbAlloc  prbAlloc; /*!< PRB allocated/available per symbol */
-   uint8_t      puschCurrentPrb;                /* Current PRB for PUSCH allocation */
-   bool         puschPres;                      /*!< PUSCH presence field */
-   SchPuschInfo *schPuschInfo;                  /*!< PUSCH info */
-   bool         pucchPres;                      /*!< PUCCH presence field */
-   SchPucchInfo schPucchInfo;                   /*!< PUCCH info */
+   SchPrbAlloc  prbAlloc;                 /*!< PRB allocated/available per symbol */
+   uint8_t      puschCurrentPrb;          /*!< Current PRB for PUSCH allocation */
+   bool         puschPres;                /*!< PUSCH presence field */
+   SchPuschInfo *schPuschInfo;            /*!< PUSCH info */
+   bool         pucchPres;                /*!< PUCCH presence field */
+   SchPucchInfo schPucchInfo;             /*!< PUCCH info */
 }SchUlSlotInfo;
 
 /**
@@ -326,13 +321,18 @@ uint8_t schDlRsrcAllocMsg4(SchCellCb *cell, SlotTimingInfo slotTime, DlMsgAlloc 
 uint8_t schDlRsrcAllocDlMsg(SchCellCb *cell, SlotTimingInfo slotTime, uint16_t crnti,
    uint32_t *accumalatedSize, DlMsgAlloc *dlMsgAlloc);
 uint16_t schAccumalateLcBoSize(SchCellCb *cell, uint16_t ueIdx);
+uint8_t allocatePrbDl(SchCellCb *cell, SlotTimingInfo slotTime, uint8_t startSymbol, uint8_t symbolLength, \
+   uint16_t *startPrb, uint16_t numPrb);
 
 /* UL scheduling related function declarations */
 uint8_t schUlResAlloc(SchCellCb *cell, Inst schInst);
+bool schCheckPrachOcc(SchCellCb *cell, SlotTimingInfo prachOccasionTimingInfo);
+uint8_t schCalcPrachNumRb(SchCellCb *cell);
+void schPrachResAlloc(SchCellCb *cell, UlSchedInfo *ulSchedInfo, SlotTimingInfo prachOccasionTimingInfo);
 uint16_t schAllocPucchResource(SchCellCb *cell, uint16_t crnti, uint16_t slot);
 uint8_t schFillUlDci(SchUeCb *ueCb, SchPuschInfo puschInfo, DciInfo *dciInfo);
-uint8_t schFillPuschAlloc(SchUeCb *ueCb, uint16_t pdcchSlot, uint32_t dataVol, SchPuschInfo *puschInfo);
-uint8_t allocatePrbDl(SchCellCb *cell, SlotTimingInfo slotTime, uint8_t startSymbol, uint8_t symbolLength, \
+uint8_t schFillPuschAlloc(SchUeCb *ueCb, SlotTimingInfo pdcchSlotTime, uint32_t dataVol, SchPuschInfo *puschInfo);
+uint8_t allocatePrbUl(SchCellCb *cell, SlotTimingInfo slotTime, uint8_t startSymbol, uint8_t symbolLength, \
    uint16_t *startPrb, uint16_t numPrb);
 
 /**********************************************************************

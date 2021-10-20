@@ -897,7 +897,7 @@ CmLList* isPrbAvailable(CmLListCp *freePrbBlockList, uint16_t startPrb, uint16_t
  **/
 void removeAllocatedPrbFromFreePrbList(CmLListCp *freePrbBlockList, CmLList *node, uint16_t startPrb, uint16_t numPrb)
 {
-   uint8_t       endPrb;
+   uint16_t      endPrb;
    FreePrbBlock  *newBlock = NULLP;
    FreePrbBlock  *freeBlock = (FreePrbBlock *)node->node;
 
