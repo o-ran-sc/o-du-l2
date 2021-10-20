@@ -155,11 +155,7 @@ uint8_t readMacCfg()
 
    /* DL carrier configuration */
    duCfgParam.macCellCfg.dlCarrCfg.pres = TRUE;
-#ifdef NR_TDD
-   duCfgParam.macCellCfg.dlCarrCfg.bw = BANDWIDTH_100MHZ;
-#else
-   duCfgParam.macCellCfg.dlCarrCfg.bw = BANDWIDTH_20MHZ;
-#endif
+   duCfgParam.macCellCfg.dlCarrCfg.bw = NR_BANDWIDTH;
    duCfgParam.macCellCfg.dlCarrCfg.freq = NR_DL_ARFCN;
    duCfgParam.macCellCfg.dlCarrCfg.k0[0] = 1;
    duCfgParam.macCellCfg.dlCarrCfg.k0[1] = 1;
@@ -175,11 +171,7 @@ uint8_t readMacCfg()
 
    /* UL Carrier configuration */
    duCfgParam.macCellCfg.ulCarrCfg.pres = TRUE;
-#ifdef NR_TDD
-   duCfgParam.macCellCfg.dlCarrCfg.bw = BANDWIDTH_100MHZ;
-#else
-   duCfgParam.macCellCfg.ulCarrCfg.bw = BANDWIDTH_20MHZ;
-#endif
+   duCfgParam.macCellCfg.dlCarrCfg.bw = NR_BANDWIDTH;
    duCfgParam.macCellCfg.ulCarrCfg.freq = NR_UL_ARFCN;
    duCfgParam.macCellCfg.ulCarrCfg.k0[0] = 1;
    duCfgParam.macCellCfg.ulCarrCfg.k0[1] = 1;
@@ -198,11 +190,7 @@ uint8_t readMacCfg()
    /* SSB configuration */
    duCfgParam.macCellCfg.ssbCfg.ssbPbchPwr = SSB_PBCH_PWR;
    duCfgParam.macCellCfg.ssbCfg.bchPayloadFlag = BCH_PAYLOAD;
-#ifdef NR_TDD
-   duCfgParam.macCellCfg.ssbCfg.scsCmn = SCS_30KHZ;
-#else
-   duCfgParam.macCellCfg.ssbCfg.scsCmn = SCS_15KHZ;
-#endif
+   duCfgParam.macCellCfg.ssbCfg.scsCmn = NR_SCS;
    duCfgParam.macCellCfg.ssbCfg.ssbOffsetPointA = OFFSET_TO_POINT_A;
    duCfgParam.macCellCfg.ssbCfg.betaPss = BETA_PSS;
    duCfgParam.macCellCfg.ssbCfg.ssbPeriod = SSB_PRDCTY_MS_20;
@@ -225,7 +213,7 @@ uint8_t readMacCfg()
    duCfgParam.macCellCfg.prachCfg.pres = TRUE;
    duCfgParam.macCellCfg.prachCfg.prachCfgIdx = PRACH_CONFIG_IDX;
    duCfgParam.macCellCfg.prachCfg.prachSeqLen = PRACH_SEQ_LEN;
-   duCfgParam.macCellCfg.prachCfg.prachSubcSpacing = PRACH_SUBCARRIER_SPACING;
+   duCfgParam.macCellCfg.prachCfg.prachSubcSpacing = fetchScsValue(PRACH_SUBCARRIER_SPACING);
    duCfgParam.macCellCfg.prachCfg.prachRstSetCfg = PRACH_RESTRICTED_SET_CFG;
    duCfgParam.macCellCfg.prachCfg.msg1Fdm = NUM_PRACH_FDM;
    duCfgParam.macCellCfg.prachCfg.msg1FreqStart = PRACH_FREQ_START;
@@ -277,11 +265,7 @@ uint8_t readMacCfg()
    /* fill Intial DL BWP */
    duCfgParam.macCellCfg.initialDlBwp.bwp.firstPrb = 0;
    duCfgParam.macCellCfg.initialDlBwp.bwp.numPrb = TOTAL_PRB_20MHZ_MU0; /* configured to total BW */
-#ifdef NR_TDD
-   duCfgParam.macCellCfg.initialDlBwp.bwp.scs = SCS_30KHZ; /* numerology is 1, 30Khz */
-#else
-   duCfgParam.macCellCfg.initialDlBwp.bwp.scs = SCS_15KHZ; /* numerology is 0, 15Khz */
-#endif
+   duCfgParam.macCellCfg.initialDlBwp.bwp.scs = NR_SCS;
    duCfgParam.macCellCfg.initialDlBwp.bwp.cyclicPrefix = NORMAL_CYCLIC_PREFIX;
    duCfgParam.macCellCfg.initialDlBwp.pdcchCommon.commonSearchSpace.searchSpaceId = SEARCHSPACE_1_INDEX;
    duCfgParam.macCellCfg.initialDlBwp.pdcchCommon.commonSearchSpace.coresetId = CORESET_0_INDEX;
@@ -326,11 +310,7 @@ uint8_t readMacCfg()
    /* fill Intial UL BWP */
    duCfgParam.macCellCfg.initialUlBwp.bwp.firstPrb = 0;
    duCfgParam.macCellCfg.initialUlBwp.bwp.numPrb = TOTAL_PRB_20MHZ_MU0; /* configured to total BW */
-#ifdef NR_TDD
-   duCfgParam.macCellCfg.initialUlBwp.bwp.scs = SCS_30KHZ; /* numerology is 1, 30Khz */
-#else
-   duCfgParam.macCellCfg.initialUlBwp.bwp.scs = SCS_15KHZ; /* numerology is 0, 15Khz */
-#endif
+   duCfgParam.macCellCfg.initialUlBwp.bwp.scs = NR_SCS;
    duCfgParam.macCellCfg.initialUlBwp.bwp.cyclicPrefix = NORMAL_CYCLIC_PREFIX;
    duCfgParam.macCellCfg.initialUlBwp.puschCommon.numTimeDomRsrcAlloc = 2;
    duCfgParam.macCellCfg.initialUlBwp.puschCommon.timeDomRsrcAllocList[0].k2 = PUSCH_K2_CFG1;
@@ -491,13 +471,8 @@ uint8_t fillServCellCfgCommSib(SrvCellCfgCommSib *srvCellCfgComm)
    srvCellCfgComm->dlCfg.freqBandInd = NR_FREQ_BAND; 
    srvCellCfgComm->dlCfg.offsetToPointA = OFFSET_TO_POINT_A;
    srvCellCfgComm->dlCfg.dlScsCarrier.scsOffset = SSB_SUBCARRIER_OFFSET;
-#ifdef NR_TDD
-   srvCellCfgComm->dlCfg.dlScsCarrier.scs = SCS_30KHZ;
-   srvCellCfgComm->dlCfg.dlScsCarrier.scsBw = BANDWIDTH_100MHZ;
-#else
-   srvCellCfgComm->dlCfg.dlScsCarrier.scs = SCS_15KHZ;
-   srvCellCfgComm->dlCfg.dlScsCarrier.scsBw = BANDWIDTH_20MHZ;
-#endif
+   srvCellCfgComm->dlCfg.dlScsCarrier.scs = NR_SCS;
+   srvCellCfgComm->dlCfg.dlScsCarrier.scsBw = NR_BANDWIDTH;
    srvCellCfgComm->dlCfg.locAndBw = FREQ_LOC_BW;
 
    /* Configuring PDCCH Config Common For SIB1 */
@@ -553,13 +528,8 @@ uint8_t fillServCellCfgCommSib(SrvCellCfgCommSib *srvCellCfgComm)
 
    /* Configuring UL Config Common */
    srvCellCfgComm->ulCfg.ulScsCarrier.scsOffset = SSB_SUBCARRIER_OFFSET;
-#ifdef NR_TDD
-   srvCellCfgComm->ulCfg.ulScsCarrier.scs = SCS_30KHZ;
-   srvCellCfgComm->ulCfg.ulScsCarrier.scsBw = BANDWIDTH_100MHZ;
-#else
-   srvCellCfgComm->ulCfg.ulScsCarrier.scs = SCS_15KHZ;
-   srvCellCfgComm->ulCfg.ulScsCarrier.scsBw = BANDWIDTH_20MHZ;
-#endif
+   srvCellCfgComm->ulCfg.ulScsCarrier.scs = NR_SCS;
+   srvCellCfgComm->ulCfg.ulScsCarrier.scsBw = NR_BANDWIDTH;
    srvCellCfgComm->ulCfg.pMax = UL_P_MAX;
    srvCellCfgComm->ulCfg.locAndBw = FREQ_LOC_BW;
    srvCellCfgComm->ulCfg.timeAlignTimerComm = TimeAlignmentTimer_infinity;

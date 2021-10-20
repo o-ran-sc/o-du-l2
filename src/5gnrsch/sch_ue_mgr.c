@@ -510,32 +510,30 @@ uint8_t MacSchAddUeConfigReq(Pst *pst, SchUeCfg *ueCfg)
 *         RFAILED - failure
 *
 * ****************************************************************/
-uint8_t schFillPuschAlloc(SchUeCb *ueCb, uint16_t pdcchSlot, uint32_t dataVol, SchPuschInfo *puschInfo)
+uint8_t schFillPuschAlloc(SchUeCb *ueCb, SlotTimingInfo pdcchSlotTime, uint32_t dataVol, SchPuschInfo *puschInfo)
 {
-  uint16_t puschSlot      = 0;
   uint16_t startRb        = 0;
   uint8_t  numRb          = 0;
   uint16_t tbSize         = 0;
   uint8_t  buffer         = 5;
-  uint8_t  idx            = 0;
+  uint8_t k2=0, startSymb=0 , symbLen=11;
   SchCellCb *cellCb       = ueCb->cellCb;
   SchUlSlotInfo *schUlSlotInfo = NULLP;
-  uint8_t k2=0, startSymb=0 , symbLen=11;
+  SlotTimingInfo puschTime;
   
+  /* TODO : Scheduler to decide on which slot PUSCH is to be scheduled based on K2 Index table */
   if(ueCb->ueCfg.spCellCfgPres == true)
   {
      k2 = ueCb->ueCfg.spCellCfg.servCellCfg.initUlBwp.puschCfg.timeDomRsrcAllocList[0].k2;
      startSymb = ueCb->ueCfg.spCellCfg.servCellCfg.initUlBwp.puschCfg.timeDomRsrcAllocList[0].startSymbol;
      symbLen = ueCb->ueCfg.spCellCfg.servCellCfg.initUlBwp.puschCfg.timeDomRsrcAllocList[0].symbolLength;
   }
-  puschSlot = (pdcchSlot + k2) % cellCb->numSlots;
+  ADD_DELTA_TO_TIME(pdcchSlotTime, puschTime, k2);
 
-  startRb = cellCb->schUlSlotInfo[puschSlot]->puschCurrentPrb;
+  startRb = MAX_NUM_RB;
   tbSize  = schCalcTbSize(dataVol + buffer); /*  2 bytes header + some buffer */
   numRb   = schCalcNumPrb(tbSize, ueCb->ueCfg.ulModInfo.mcsIndex, symbLen);
-  /* increment PUSCH PRB */
-
-  cellCb->schUlSlotInfo[puschSlot]->puschCurrentPrb += numRb;
+  allocatePrbUl(cellCb, puschTime, startSymb, symbLen, &startRb, numRb);
 
   puschInfo->crnti             = ueCb->crnti; 
   puschInfo->harqProcId        = SCH_HARQ_PROC_ID;
@@ -554,14 +552,7 @@ uint8_t schFillPuschAlloc(SchUeCb *ueCb, uint16_t pdcchSlot, uint32_t dataVol, S
   puschInfo->nrOfDmrsSymbols   = NUM_DMRS_SYMBOLS;
   puschInfo->dmrsAddPos        = DMRS_ADDITIONAL_POS;
 
-  /* Update pusch in cell */
-  for(idx=startSymb; idx<symbLen; idx++)
-  {
-     //cellCb->schUlSlotInfo[puschSlot]->assignedPrb[idx] = startRb + numRb;
-  }
-
-  schUlSlotInfo = cellCb->schUlSlotInfo[puschSlot];
-
+  schUlSlotInfo = cellCb->schUlSlotInfo[puschTime.slot];
   SCH_ALLOC(schUlSlotInfo->schPuschInfo, sizeof(SchPuschInfo));
   if(!schUlSlotInfo->schPuschInfo)
   {

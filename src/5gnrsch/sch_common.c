@@ -44,8 +44,6 @@ File:     sch_common.c
 #include "sch_utils.h"
 
 SchCb schCb[SCH_MAX_INST];
-uint16_t prachCfgIdxTable[MAX_PRACH_CONFIG_IDX][8];
-uint16_t numRbForPrachTable[MAX_RACH_NUM_RB_IDX][5];
 uint8_t pucchResourceSet[MAX_PUCCH_RES_SET_IDX][4];
 uint8_t puschDeltaTable[MAX_MU_PUSCH];
 
@@ -165,105 +163,6 @@ int sendUlSchInfoToMac(UlSchedInfo *ulSchedInfo, Inst inst)
 
    return(*schMacUlSchInfoOpts[pst.selector])(&pst, ulSchedInfo);
 }
-/**
- * @brief resource allocation for PRACH
- *
- * @details
- *
- *     Function : schPrachResAlloc
- *     
- *     This function handles PRACH allocation
- *     
- *  @param[in]  SchCellCb *cell, cell cb
- *  @param[in]  UlSchedInfo *ulSchedInfo, UL scheduling info
- *  @return  void
- **/
-void schPrachResAlloc(SchCellCb *cell, UlSchedInfo *ulSchedInfo, SlotTimingInfo prachOccasionTimingInfo)
-{
-   uint8_t  puschScs;
-   uint8_t  numPrachRb = 0;
-   uint8_t  numRa = 0;
-   uint8_t  freqStart = 0;
-   uint8_t  prachCfgIdx = 0;
-   uint8_t  prachFormat = 0;
-   uint8_t  x = 0;
-   uint8_t  y = 0;
-   uint16_t prachSubframe = 0;
-   uint8_t  prachStartSymbol = 0;
-   uint8_t  prachOcas = 0;
-   uint8_t  dataType = 0;
-   uint8_t  idx = 0;
-   uint8_t  subFrame = 0;
-   SchUlSlotInfo *schUlSlotInfo = NULLP;
-
-   puschScs      = cell->cellCfg.schInitialUlBwp.bwp.scs;
-   schUlSlotInfo = cell->schUlSlotInfo[prachOccasionTimingInfo.slot];
-   prachCfgIdx   = cell->cellCfg.schRachCfg.prachCfgIdx;
-
-   /* derive the prachCfgIdx table paramters */
-   x                = prachCfgIdxTable[prachCfgIdx][1];
-   y                = prachCfgIdxTable[prachCfgIdx][2];
-   prachSubframe    = prachCfgIdxTable[prachCfgIdx][3];
-
-   if((prachOccasionTimingInfo.sfn%x) == y)
-   {
-#ifdef NR_TDD
-      subFrame = prachOccasionTimingInfo.slot/2;
-#else
-      subFrame = prachOccasionTimingInfo.slot;
-#endif
-      /* check for subFrame number */
-      if ((1 << subFrame) & prachSubframe)
-      {
-         /* prach ocassion present in this subframe */
-#ifdef NR_TDD
-         if(UL_SLOT != schGetSlotSymbFrmt(prachOccasionTimingInfo.slot%cell->numSlotsInPeriodicity,\
-         cell->slotFrmtBitMap))
-         {
-            DU_LOG("\nERROR  --> SCH : PrachCfgIdx %d doesn't support UL slot", prachCfgIdx);
-         }
-         else
-#endif
-         {
-            prachFormat      = prachCfgIdxTable[prachCfgIdx][0];
-            prachStartSymbol = prachCfgIdxTable[prachCfgIdx][4];
-            prachOcas        = prachCfgIdxTable[prachCfgIdx][6];
-
-            /* freq domain resource determination for RACH*/
-            freqStart = cell->cellCfg.schRachCfg.msg1FreqStart;
-            /* numRa determined as 𝑛 belonging {0,1,.., M − 1}, 
-             * where M is given by msg1Fdm */
-            numRa = (cell->cellCfg.schRachCfg.msg1Fdm - 1);
-            for(idx=0; idx<MAX_RACH_NUM_RB_IDX; idx++)
-            {
-               if(numRbForPrachTable[idx][0] == cell->cellCfg.schRachCfg.rootSeqLen)
-               {
-                  if(numRbForPrachTable[idx][1] == cell->cellCfg.schRachCfg.prachSubcSpacing)
-                  {
-                     if(numRbForPrachTable[idx][2] == puschScs)
-                     {
-                        break;
-                     }
-                  }
-               }
-            }
-            numPrachRb = numRbForPrachTable[idx][3];
-            dataType |= SCH_DATATYPE_PRACH;
-            /* Considering first slot in the frame for PRACH */
-            idx = 0;
-            //schUlSlotInfo->assignedPrb[idx] = freqStart+numPrachRb;
-         }
-         ulSchedInfo->dataType = dataType;
-         /* prach info */
-         ulSchedInfo->prachSchInfo.numPrachOcas   = prachOcas;
-         ulSchedInfo->prachSchInfo.prachFormat    = prachFormat;
-         ulSchedInfo->prachSchInfo.numRa          = numRa;
-         ulSchedInfo->prachSchInfo.prachStartSymb = prachStartSymbol;
-         DU_LOG("\nINFO  --> SCH : RACH occassion set for slot %d", prachOccasionTimingInfo.slot);
-      }
-   }
-}
-
 
 /**
  * @brief Function to fill Pucch Format 0
@@ -709,17 +608,17 @@ uint16_t schAllocPucchResource(SchCellCb *cell, uint16_t crnti, uint16_t slot)
    if(cell->ueCb[ueIdx].ueCfg.spCellCfg.servCellCfg.initUlBwp.pucchCfgPres)
    {
       schPucchCfg = &(cell->ueCb[ueIdx].ueCfg.spCellCfg.servCellCfg.initUlBwp.pucchCfg);
-     if(schPucchCfg->dlDataToUlAck)
-     {
-        for(dlToUlAckIdx = 0; dlToUlAckIdx < schPucchCfg->dlDataToUlAck->dlDataToUlAckListCount; dlToUlAckIdx++)
-	{
-           //For now considering only the first value in the list
-           k1 = schPucchCfg->dlDataToUlAck->dlDataToUlAckList[dlToUlAckIdx];
-	   break;
-	}
-     }
+      if(schPucchCfg->dlDataToUlAck)
+      {
+         for(dlToUlAckIdx = 0; dlToUlAckIdx < schPucchCfg->dlDataToUlAck->dlDataToUlAckListCount; dlToUlAckIdx++)
+         {
+            //For now considering only the first value in the list
+            k1 = schPucchCfg->dlDataToUlAck->dlDataToUlAckList[dlToUlAckIdx];
+            break;
+         }
+      }
    }
-   
+
    pucchSlot = (slot + k1)  % cell->numSlots;
    schUlSlotInfo = cell->schUlSlotInfo[pucchSlot];
    memset(&schUlSlotInfo->schPucchInfo, 0, sizeof(SchPucchInfo));
