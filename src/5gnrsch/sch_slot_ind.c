@@ -451,11 +451,13 @@ uint8_t schProcessSlotInd(SlotTimingInfo *slotInd, Inst schInst)
             return RFAILED;
          }
          memset(dciInfo,0,sizeof(DciInfo));
+
          /* update the SFN and SLOT */
          memcpy(&dlSchedInfo.schSlotValue.ulDciTime, slotInd, sizeof(SlotTimingInfo));
-         slot = dlSchedInfo.schSlotValue.ulDciTime.slot;
+
          /* Update PUSCH allocation */
-         schFillPuschAlloc(ueCb, slot, totDataReq, &schPuschInfo);
+         schFillPuschAlloc(ueCb, dlSchedInfo.schSlotValue.ulDciTime, totDataReq, &schPuschInfo);
+
          /* Fill DCI for UL grant */
          schFillUlDci(ueCb, schPuschInfo, dciInfo);
          memcpy(&dciInfo->slotIndInfo, &dlSchedInfo.schSlotValue.ulDciTime, sizeof(SlotTimingInfo));

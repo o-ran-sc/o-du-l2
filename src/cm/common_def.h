@@ -96,6 +96,11 @@
 /* PRB allocation as per 38.101, Section 5.3.2 */
 #define TOTAL_PRB_20MHZ_MU0 106
 #define TOTAL_PRB_100MHZ_MU1 273
+#ifdef NR_TDD
+#define MAX_NUM_RB TOTAL_PRB_100MHZ_MU1  /* value for numerology 1, 100 MHz */
+#else
+#define MAX_NUM_RB TOTAL_PRB_20MHZ_MU0 /* value for numerology 0, 20 MHz */
+#endif
 
 #define ODU_THROUGHPUT_PRINT_TIME_INTERVAL  5 /* in milliseconds */
 

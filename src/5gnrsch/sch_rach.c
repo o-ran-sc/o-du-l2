@@ -43,7 +43,145 @@
 #include "sch_utils.h"
 
 SchCb schCb[SCH_MAX_INST];
+uint16_t prachCfgIdxTable[MAX_PRACH_CONFIG_IDX][8];
+uint16_t numRbForPrachTable[MAX_RACH_NUM_RB_IDX][5];
 uint8_t puschDeltaTable[MAX_MU_PUSCH];
+
+/**
+ * @brief Checks if PRACH can be scheduled in current slot
+ *
+ * @details
+ *
+ *     Function : schCheckPrachOcc
+ *
+ *     This function checks if PRACH can be scheduled in 
+ *     current slot
+ *
+ *  @param[in]  Cell Cb
+ *              Slot timing
+ *  @return  TRUE
+ *           FALSE
+ **/
+bool schCheckPrachOcc(SchCellCb *cell, SlotTimingInfo prachOccasionTimingInfo)
+{
+   uint8_t  prachCfgIdx = 0;
+   uint8_t  x = 0;
+   uint8_t  y = 0;
+   uint8_t  subFrame = 0;
+   uint16_t prachSubframe = 0;
+
+   prachCfgIdx      = cell->cellCfg.schRachCfg.prachCfgIdx;
+
+   /* derive the prachCfgIdx table paramters */
+   x                = prachCfgIdxTable[prachCfgIdx][1];
+   y                = prachCfgIdxTable[prachCfgIdx][2];
+   prachSubframe    = prachCfgIdxTable[prachCfgIdx][3];
+
+   if((prachOccasionTimingInfo.sfn%x) == y)
+   {
+      subFrame = prachOccasionTimingInfo.slot/pow(2, cell->cellCfg.numerology);
+
+      /* check for subFrame number */
+      if ((1 << subFrame) & prachSubframe)
+      {
+         /* prach ocassion present in this subframe */
+#ifdef NR_TDD
+         if(UL_SLOT != schGetSlotSymbFrmt(prachOccasionTimingInfo.slot % cell->numSlotsInPeriodicity,\
+         cell->slotFrmtBitMap))
+         {
+            DU_LOG("\nERROR  --> SCH : PrachCfgIdx %d doesn't support UL slot", prachCfgIdx);
+            return FALSE;
+         }
+#endif
+         return TRUE;
+      }
+   }
+   return FALSE;
+}
+
+/**
+ * @brief Calculate number of PRBs to be allocated for PRACH 
+ *
+ * @details
+ *
+ *     Function : schCalcPrachNumRb
+ *
+ *     Calculate number of PRBs to be allocated for PRACH
+ *
+ *  @param[in]  SchCellCb *cell, cell cb
+ *  @return  Number of PRBs
+ **/
+uint8_t schCalcPrachNumRb(SchCellCb *cell)
+{
+   uint8_t idx = 0;
+   uint16_t puschScs = fetchScsValue(cell->cellCfg.schInitialUlBwp.bwp.scs);
+
+   for(idx=0; idx < MAX_RACH_NUM_RB_IDX; idx++)
+   {
+      if((numRbForPrachTable[idx][0] == cell->cellCfg.schRachCfg.rootSeqLen) &&
+            (numRbForPrachTable[idx][1] == cell->cellCfg.schRachCfg.prachSubcSpacing) &&
+            (numRbForPrachTable[idx][2] == puschScs))
+      {
+         return numRbForPrachTable[idx][3];
+      }
+   }
+   return 0;
+}
+
+/**
+ * @brief resource allocation for PRACH
+ *
+ * @details
+ *
+ *     Function : schPrachResAlloc
+ *
+ *     This function handles PRACH allocation
+ *
+ *  @param[in]  SchCellCb *cell, cell cb
+ *  @param[in]  UlSchedInfo *ulSchedInfo, UL scheduling info
+ *  @return  void
+ **/
+void schPrachResAlloc(SchCellCb *cell, UlSchedInfo *ulSchedInfo, SlotTimingInfo prachOccasionTimingInfo)
+{
+   uint8_t  numPrachRb = 0;
+   uint8_t  numRa = 0;
+   uint8_t  prachCfgIdx = 0;
+   uint8_t  prachFormat = 0;
+   uint8_t  prachStartSymbol = 0;
+   uint8_t  prachDuration = 0;
+   uint8_t  prachOcas = 0;
+   uint8_t  dataType = 0;
+   uint16_t freqStart = 0;
+
+   /* If this slot is not a PRACH occassion, return */
+   if(!schCheckPrachOcc(cell, prachOccasionTimingInfo))
+      return;
+
+   prachCfgIdx      = cell->cellCfg.schRachCfg.prachCfgIdx;
+   prachFormat      = prachCfgIdxTable[prachCfgIdx][0];
+   prachStartSymbol = prachCfgIdxTable[prachCfgIdx][4];
+   prachOcas        = prachCfgIdxTable[prachCfgIdx][6];
+   prachDuration    = prachCfgIdxTable[prachCfgIdx][7];
+
+   /* numRa determined as 𝑛 belonging {0,1,.., M − 1},
+    * where M is given by msg1Fdm */
+   numRa = (cell->cellCfg.schRachCfg.msg1Fdm - 1);
+
+   /* freq domain resource determination for RACH*/
+   freqStart = cell->cellCfg.schRachCfg.msg1FreqStart;
+   numPrachRb = schCalcPrachNumRb(cell);
+   /* Allocate PRACH resources from the UL resource bitmap */
+   allocatePrbUl(cell, prachOccasionTimingInfo, prachStartSymbol, prachDuration, &freqStart, numPrachRb);
+
+   /* prach info */
+   dataType |= SCH_DATATYPE_PRACH;
+   ulSchedInfo->dataType = dataType;
+   ulSchedInfo->prachSchInfo.numPrachOcas   = prachOcas;
+   ulSchedInfo->prachSchInfo.prachFormat    = prachFormat;
+   ulSchedInfo->prachSchInfo.numRa          = numRa;
+   ulSchedInfo->prachSchInfo.prachStartSymb = prachStartSymbol;
+   DU_LOG("\nINFO  --> SCH : RACH occassion set for slot %d", prachOccasionTimingInfo.slot);
+}
 
 /**
  * @brief calculate ra-rnti function. 
@@ -105,16 +243,15 @@ void createSchRaCb(uint16_t tcrnti, Inst schInst)
  *  @param[out]  msg3NumRb
  *  @return  void
  **/
-SchPuschInfo* schAllocMsg3Pusch(Inst schInst, uint16_t crnti, uint8_t k2Index, uint16_t msg3Slot)
+SchPuschInfo* schAllocMsg3Pusch(Inst schInst, uint16_t crnti, uint8_t k2Index, SlotTimingInfo msg3SlotTime)
 {
    SchCellCb      *cell          = NULLP;
    SchUlSlotInfo  *schUlSlotInfo = NULLP;
+   uint8_t    mcs            = 4;
    uint8_t    startSymb     = 0;
    uint8_t    symbLen       = 0; 
-   uint8_t    startRb       = 0;
-   uint8_t    numRb         = 0;
-   uint8_t    idx           = 0;
-   uint8_t    mcs            = 4;
+   uint16_t   startRb       = 0;
+   uint16_t   numRb         = 0;
    uint16_t   tbSize         = 0;
 
    cell = schCb[schInst].cells[schInst];
@@ -124,33 +261,29 @@ SchPuschInfo* schAllocMsg3Pusch(Inst schInst, uint16_t crnti, uint8_t k2Index, u
       return NULLP;
    }
 
+   /* Allocate time-domain and frequency-domain resource for MSG3 PUSCH */
    startSymb = cell->cellCfg.schInitialUlBwp.puschCommon.timeDomRsrcAllocList[k2Index].startSymbol;
    symbLen = cell->cellCfg.schInitialUlBwp.puschCommon.timeDomRsrcAllocList[k2Index].symbolLength;
 
-   startRb = cell->schUlSlotInfo[msg3Slot]->puschCurrentPrb;
-   tbSize = schCalcTbSize(8); /* 6 bytes msg3  and 2 bytes header */
-   numRb = schCalcNumPrb(tbSize, mcs, NUM_PDSCH_SYMBOL);
+   startRb = MAX_NUM_RB;
+   tbSize = schCalcTbSize(8); /* 6 bytes msg3 and 2 bytes header */
+   numRb = schCalcNumPrb(tbSize, mcs, symbLen);
+   numRb++; /* allocating 1 extra RB for now */
+   allocatePrbUl(cell, msg3SlotTime, startSymb, symbLen, &startRb, numRb);
 
-   /* allocating 1 extra RB for now */
-   numRb++;
-   /* increment PUSCH PRB */
-   cell->schUlSlotInfo[msg3Slot]->puschCurrentPrb += numRb;
-
-   for(idx=startSymb; idx<symbLen; idx++)
-   {
-      //cell->schUlSlotInfo[msg3Slot]->assignedPrb[idx] = startRb + numRb;
-   }
-   schUlSlotInfo = cell->schUlSlotInfo[msg3Slot];
-
+   /* Fill PUSCH scheduling details in Slot structure */
+   schUlSlotInfo = cell->schUlSlotInfo[msg3SlotTime.slot];
    SCH_ALLOC(schUlSlotInfo->schPuschInfo, sizeof(SchPuschInfo));
    if(!schUlSlotInfo->schPuschInfo)
    {
       DU_LOG("\nERROR  -->  SCH :  Memory allocation failed in schAllocMsg3Pusch");
       return NULLP;
    }
+
    tbSize = 0;  /* since nPrb has been incremented, recalculating tbSize */
    tbSize = schCalcTbSizeFromNPrb(numRb, mcs, NUM_PDSCH_SYMBOL);
    tbSize = tbSize / 8 ; /*bits to byte conversion*/
+
    schUlSlotInfo->schPuschInfo->crnti             = crnti;
    schUlSlotInfo->schPuschInfo->harqProcId        = SCH_HARQ_PROC_ID;
    schUlSlotInfo->schPuschInfo->resAllocType      = SCH_ALLOC_TYPE_1;
@@ -163,7 +296,7 @@ SchPuschInfo* schAllocMsg3Pusch(Inst schInst, uint16_t crnti, uint8_t k2Index, u
    schUlSlotInfo->schPuschInfo->tbInfo.mcsTable   = SCH_MCS_TABLE_QAM_64;
    schUlSlotInfo->schPuschInfo->tbInfo.ndi        = NEW_TRANSMISSION; /* new transmission */
    schUlSlotInfo->schPuschInfo->tbInfo.rv	        = 0;
-   schUlSlotInfo->schPuschInfo->tbInfo.tbSize     = tbSize; /*Considering 2 PRBs */
+   schUlSlotInfo->schPuschInfo->tbInfo.tbSize     = tbSize;
    schUlSlotInfo->schPuschInfo->dmrsMappingType   = DMRS_MAP_TYPE_A;  /* Setting Type-A */
    schUlSlotInfo->schPuschInfo->nrOfDmrsSymbols   = NUM_DMRS_SYMBOLS;
    schUlSlotInfo->schPuschInfo->dmrsAddPos        = DMRS_ADDITIONAL_POS;
@@ -226,8 +359,8 @@ void schProcessRaReq(SlotTimingInfo currTime, SchCellCb *cell)
 #ifdef NR_TDD
    uint8_t   totalCfgSlot = 0;
 #endif
-   uint16_t             dciSlot = 0, rarSlot = 0, msg3Slot = 0;
-   SlotTimingInfo       dciTime, rarTime;
+   uint16_t             dciSlot = 0, rarSlot = 0;
+   SlotTimingInfo       dciTime, rarTime, msg3Time;
    RarAlloc             *dciSlotAlloc = NULLP;    /* Stores info for transmission of PDCCH for RAR */
    RarAlloc             *rarSlotAlloc = NULLP;    /* Stores info for transmission of RAR PDSCH */
    SchPuschInfo         *msg3PuschInfo = NULLP;   /* Stores MSG3 PUSCH scheduling information */
@@ -287,9 +420,9 @@ void schProcessRaReq(SlotTimingInfo currTime, SchCellCb *cell)
                   k2 = k2 + msg3Delta;
                   if(k2 >= msg3MinSchTime)
                   {
-                     msg3Slot = (rarSlot + k2) % cell->numSlots;
+                     ADD_DELTA_TO_TIME(rarTime, msg3Time, k2);
 #ifdef NR_TDD
-                     if(schGetSlotSymbFrmt(msg3Slot % totalCfgSlot, cell->slotFrmtBitMap) == DL_SLOT)
+                     if(schGetSlotSymbFrmt(msg3Time.slot % totalCfgSlot, cell->slotFrmtBitMap) == DL_SLOT)
                         continue;
 #endif
                      k2Found = true;
@@ -334,7 +467,7 @@ void schProcessRaReq(SlotTimingInfo currTime, SchCellCb *cell)
          }
 
          /* Allocate resources for msg3 */
-         msg3PuschInfo = schAllocMsg3Pusch(cell->instIdx, cell->raReq[ueIdx]->rachInd->crnti, k2Index, msg3Slot);
+         msg3PuschInfo = schAllocMsg3Pusch(cell->instIdx, cell->raReq[ueIdx]->rachInd->crnti, k2Index, msg3Time);
          if(msg3PuschInfo)
          {
             /* Fill RAR info */

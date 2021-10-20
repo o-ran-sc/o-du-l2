@@ -141,6 +141,40 @@ uint8_t buildPlmnId(Plmn plmn, uint8_t *buf)
 }
 
 /*******************************************************************
+ *
+ * @brief Function to map Sub carrier spacing enum value to value in kHz
+ *
+ * @details
+ *
+ *    Function : fetchScsValue
+ *
+ *    Functionality:
+ *       Function to map Sub carrier spacing enum value to value in kHz
+ *
+ * @params[in] sub-carrier spacing enum value
+ * @return sub-carrier spacing value in kHz
+ *
+ * ****************************************************************/
+uint16_t fetchScsValue(uint8_t prachScsEnumValue)
+{
+   switch(prachScsEnumValue)
+   {
+      case SCS_15KHZ:
+         return 15;
+      case SCS_30KHZ:
+         return 30;
+      case SCS_60KHZ:
+         return 60;
+      case SCS_120KHZ:
+         return 120;
+      case SCS_240KHZ:
+         return 240;
+      default:
+         return 15;
+   }
+}
+
+/*******************************************************************
 *
 * @brief  SGetSBuf with debug logs
 *
