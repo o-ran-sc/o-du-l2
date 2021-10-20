@@ -857,6 +857,7 @@ typedef struct lcSchInfo
 {
    uint8_t   lcId;
    uint32_t  schBytes; /* Number of scheduled bytes */
+   bool      isDedicated; /*Flag to indicate that the LC belong to Dedicated S-NSSAI*/
 }LcSchInfo;
 
 typedef struct dlMsgAlloc
