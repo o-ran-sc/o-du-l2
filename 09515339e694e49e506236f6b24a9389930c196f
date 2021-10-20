@@ -3,6 +3,52 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "14abc34b_ffed5329",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 761,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-10-20T10:47:04Z",
+      "side": 1,
+      "message": "same as sch_rach.c comment",
+      "range": {
+        "startLine": 761,
+        "startChar": 68,
+        "endLine": 761,
+        "endChar": 86
+      },
+      "revId": "09515339e694e49e506236f6b24a9389930c196f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dd69c3b8_8d58080d",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 761,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-10-20T10:47:04Z",
+      "side": 1,
+      "message": "Same as sch_rach.c comment",
+      "range": {
+        "startLine": 761,
+        "startChar": 3,
+        "endLine": 761,
+        "endChar": 28
+      },
+      "revId": "09515339e694e49e506236f6b24a9389930c196f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5c8d7cab_583c5afd",
         "filename": "src/5gnrsch/sch_common.c",
         "patchSetId": 2
@@ -43,6 +89,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a8d30f58_6a95ec9b",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 598,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-10-20T10:47:04Z",
+      "side": 1,
+      "message": "Can we initialize?",
+      "range": {
+        "startLine": 598,
+        "startChar": 41,
+        "endLine": 598,
+        "endChar": 51
+      },
+      "revId": "09515339e694e49e506236f6b24a9389930c196f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "4e3a2ecd_228cfea2",
         "filename": "src/5gnrsch/sch_common.c",
         "patchSetId": 2
@@ -59,6 +128,75 @@
         "startChar": 34,
         "endLine": 616,
         "endChar": 36
+      },
+      "revId": "09515339e694e49e506236f6b24a9389930c196f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1ab80b45_b3bb740e",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 635,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-10-20T10:47:04Z",
+      "side": 1,
+      "message": "Same as sch_rach.c comment",
+      "range": {
+        "startLine": 635,
+        "startChar": 86,
+        "endLine": 635,
+        "endChar": 87
+      },
+      "revId": "09515339e694e49e506236f6b24a9389930c196f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e48bfd25_a8ebecdb",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 811,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-10-20T10:47:04Z",
+      "side": 1,
+      "message": "For coreset1, since we are extracting FreqDomainResource from cRSetToAddModList, Can we also store the IAPI format to avoid multiple calculations if the result is going to be same everytime?",
+      "range": {
+        "startLine": 811,
+        "startChar": 3,
+        "endLine": 811,
+        "endChar": 35
+      },
+      "revId": "09515339e694e49e506236f6b24a9389930c196f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "12e0633e_d6ead7a4",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 877,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-10-20T10:47:04Z",
+      "side": 1,
+      "message": "Just a doubt, it means that there can be posibility that all the symbols are occupied by DMRS. In that case, where will the psdch actual data will go? How will that work.\n\nIn this case, do we need to inform sch that the data is not getting transmitted in this slot?",
+      "range": {
+        "startLine": 877,
+        "startChar": 25,
+        "endLine": 877,
+        "endChar": 42
       },
       "revId": "09515339e694e49e506236f6b24a9389930c196f",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
@@ -89,6 +227,52 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "66d68b21_667ef023",
+        "filename": "src/5gnrsch/sch_rach.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 518,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-10-20T10:47:04Z",
+      "side": 1,
+      "message": "Since for Coreset0 right now the calculation is same , Can we make it a common calculation and save the bitmap as Default, Similar to coreset1",
+      "range": {
+        "startLine": 518,
+        "startChar": 3,
+        "endLine": 518,
+        "endChar": 28
+      },
+      "revId": "09515339e694e49e506236f6b24a9389930c196f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8c345718_eb9abcf4",
+        "filename": "src/5gnrsch/sch_rach.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 519,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-10-20T10:47:04Z",
+      "side": 1,
+      "message": "Since this will also be same everytime, can we move it to default ?",
+      "range": {
+        "startLine": 519,
+        "startChar": 3,
+        "endLine": 519,
+        "endChar": 35
+      },
+      "revId": "09515339e694e49e506236f6b24a9389930c196f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "9ea42c17_838dedfe",
         "filename": "src/cm/common_def.c",
         "patchSetId": 2
@@ -105,6 +289,75 @@
         "startChar": 5,
         "endLine": 36,
         "endChar": 30
+      },
+      "revId": "09515339e694e49e506236f6b24a9389930c196f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ec8967cf_fc2cc5ea",
+        "filename": "src/cm/common_def.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-10-20T10:47:04Z",
+      "side": 1,
+      "message": "One suggestion, it will be good if the algorithm is explained with some example for future reference, using some use case",
+      "range": {
+        "startLine": 53,
+        "startChar": 85,
+        "endLine": 53,
+        "endChar": 100
+      },
+      "revId": "09515339e694e49e506236f6b24a9389930c196f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6d15bd72_4f32e540",
+        "filename": "src/cm/common_def.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-10-20T10:47:04Z",
+      "side": 1,
+      "message": "pls add comment to explain this number",
+      "range": {
+        "startLine": 65,
+        "startChar": 24,
+        "endLine": 65,
+        "endChar": 25
+      },
+      "revId": "09515339e694e49e506236f6b24a9389930c196f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "787260a3_37a9b69c",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 8090,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-10-20T10:47:04Z",
+      "side": 1,
+      "message": "I didnt find the usage of this storedPdcch Cfg but it is getting passed in this function?",
+      "range": {
+        "startLine": 8090,
+        "startChar": 88,
+        "endLine": 8090,
+        "endChar": 102
       },
       "revId": "09515339e694e49e506236f6b24a9389930c196f",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
