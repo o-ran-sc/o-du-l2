@@ -746,11 +746,10 @@ uint16_t schAllocPucchResource(SchCellCb *cell, uint16_t crnti, uint16_t slot)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t schDlRsrcAllocDlMsg(SchCellCb *cell, SlotTimingInfo slotTime, uint16_t crnti,
-      uint32_t *accumalatedSize, DlMsgAlloc *dlMsgAlloc)
+uint8_t schDlRsrcAllocDlMsg(SchCellCb *cell, SlotTimingInfo slotTime, uint16_t crnti,\
+                     uint32_t accumalatedSize, DlMsgAlloc *dlMsgAlloc, uint16_t startPRB)
 {
    uint8_t ueIdx;
-   uint16_t tbSize = 0;
    PdcchCfg *pdcch = NULLP;
    PdschCfg *pdsch = NULLP;
    BwpCfg *bwp = NULLP;
@@ -813,10 +812,11 @@ uint8_t schDlRsrcAllocDlMsg(SchCellCb *cell, SlotTimingInfo slotTime, uint16_t c
       pdsch->codeword[cwCount].mcsIndex = ueCb.ueCfg.dlModInfo.mcsIndex;
       pdsch->codeword[cwCount].mcsTable = ueCb.ueCfg.dlModInfo.mcsTable;
       pdsch->codeword[cwCount].rvIndex = 0;
-      tbSize = schCalcTbSize(*accumalatedSize + TX_PAYLOAD_HDR_LEN);
-      if(tbSize < *accumalatedSize)
-         *accumalatedSize = tbSize - TX_PAYLOAD_HDR_LEN;
-      pdsch->codeword[cwCount].tbSize = tbSize;
+
+      /*Removing the inclusion of TX_PAYLOAD_HDR_LEN as it has been
+       * taken care during individual LC BO calculation*/
+      accumalatedSize +=TX_PAYLOAD_HDR_LEN;
+      pdsch->codeword[cwCount].tbSize = accumalatedSize;
    }
    pdsch->dataScramblingId = cell->cellCfg.phyCellId;
    pdsch->numLayers = 1;
@@ -837,13 +837,13 @@ uint8_t schDlRsrcAllocDlMsg(SchCellCb *cell, SlotTimingInfo slotTime, uint16_t c
 
    pdsch->pdschFreqAlloc.vrbPrbMapping = 0; /* non-interleaved */
    pdsch->pdschFreqAlloc.resourceAllocType = 1; /* RAT type-1 RIV format */
-   pdsch->pdschFreqAlloc.freqAlloc.startPrb = MAX_NUM_RB;
-   pdsch->pdschFreqAlloc.freqAlloc.numPrb = schCalcNumPrb(tbSize, ueCb.ueCfg.dlModInfo.mcsIndex, \
-		   pdschCfg.timeDomRsrcAllociList[0].symbolLength);
+   pdsch->pdschFreqAlloc.freqAlloc.startPrb = startPRB; /*Start PRB will be already known*/
+   pdsch->pdschFreqAlloc.freqAlloc.numPrb = schCalcNumPrb( accumalatedSize, ueCb.ueCfg.dlModInfo.mcsIndex, \
+         pdschCfg.timeDomRsrcAllociList[0].symbolLength);
 
    /* Allocate the number of PRBs required for DL PDSCH */
    if((allocatePrbDl(cell, slotTime, pdsch->pdschTimeAlloc.timeAlloc.startSymb, pdsch->pdschTimeAlloc.timeAlloc.numSymb,\
-      &pdsch->pdschFreqAlloc.freqAlloc.startPrb, pdsch->pdschFreqAlloc.freqAlloc.numPrb)) != ROK)
+               &pdsch->pdschFreqAlloc.freqAlloc.startPrb, pdsch->pdschFreqAlloc.freqAlloc.numPrb)) != ROK)
    {
       DU_LOG("\nERROR  --> SCH : allocatePrbDl() failed for DL MSG");
       return RFAILED;
@@ -1346,6 +1346,406 @@ SchK2TimingInfoTbl *msg3K2InfoTbl, SchK2TimingInfoTbl *k2InfoTbl)
    }
 }
 
+/*******************************************************************************************
+ *
+ * @brief Allocate the PRB using RRM policy
+ *
+ * @details
+ *
+ *    Function : prbAllocUsingRRMPolicy
+ *
+ *    Functionality:
+ *      [Step1]: Traverse each Node in the LC list
+ *      [Step2]: Check whether the LC has ZERO requirement then clean this LC
+ *      [Step3]: Calcualte the maxPRB for this LC.
+ *              a. For Dedicated LC, maxPRB = sum of remainingReservedPRB and
+ *              sharedPRB
+ *              b. For Default, just SharedPRB count
+ *      [Step4]: If the LC is the First one to be allocated for this UE then add
+ *      TX_PAYLODN_LEN to reqBO 
+ *      [Step5]: Calculate the estimate PRB and estimate BO to be allocated
+ *               based on reqBO and maxPRB left.
+ *      [Step6]: Based on calculated PRB, Update Reserved PRB and Shared PRB counts
+ *      [Step7]: Deduce the reqBO based on allocBO and move the LC node to last.
+ *      [Step8]: Continue the next loop from List->head
+ *
+ *      [Loop Exit]:
+ *        [Exit1]: If all the LCs are allocated in list
+ *        [Exit2]: If PRBs are exhausted
+ *
+ * @params[in] I/P > lcLinkList pointer (LcInfo list)
+ *             I/P > DedicatedPRB (Flag to indicate that RESERVED PRB to use 
+ *             I/P > mcsIdx and PDSCH symbols count 
+ *             I/P & O/P > Shared PRB , reserved PRB Count
+ *             I/P & O/P > Total TBS size accumulated
+ *             I/P & O/P > isTxPayloadLenAdded : Decision flag to add the TX_PAYLOAD_HDR_LEN
+ *
+ * @return void
+ *
+ * *******************************************************************************************/
+void prbAllocUsingRRMPolicy(CmLListCp *lcLL, bool dedicatedPRB, uint16_t mcsIdx,uint8_t numSymbols,\
+                              uint16_t *sharedPRB, uint16_t *reservedPRB, bool *isTxPayloadLenAdded)
+{
+   CmLList *node = NULLP;
+   LcList *lcList = NULLP;
+   uint16_t remReservedPRB = 0, estPrb = 0, maxPRB = 0;
+   
+   node = lcLL->first;
+
+   /*Only for Dedicated LcList, Valid value will be assigned to remReservedPRB
+    * For Other LcList, remReservedPRB = 0*/
+   if(reservedPRB != NULLP && dedicatedPRB == TRUE)
+   {
+      remReservedPRB = *reservedPRB;
+   }
+
+   /*[Step1]*/
+   while(node)
+   {
+      /*For Debugging purpose*/
+      printLcLL(lcLL);
+
+      lcList = (LcList *)node->node;
+
+      /* [Step2]: Below condition will hit in rare case as it has been taken care during the cleaning 
+       * process of LCID which was fully allocated. Check is just for safety purpose*/
+      if(lcList->reqBO == 0 && lcList->allocBO == 0)
+      {
+         DU_LOG("\nERROR --> SCH: LCID:%d has no requirement, clearing this node",\
+               lcList->lcId);
+         deleteNodeFromLList(lcLL, node);
+         SCH_FREE(lcList, sizeof(LcList));
+         node = lcLL->first; 
+         continue;
+      }
+
+      /*[Exit1]: All LCs are allocated(allocBO = 0 for fully unallocated LC)*/
+      if(lcList->allocBO != 0)
+      {
+         DU_LOG("\nWARNING --> SCH: All LC are allocated [SharedPRB:%d]",*sharedPRB);
+         return;
+      }
+      
+      /*[Exit2]: If PRBs are exhausted*/
+      if(dedicatedPRB)
+      {
+         /*Loop Exit: All resources exhausted*/
+         if(remReservedPRB == 0 && *sharedPRB == 0)
+         {
+            DU_LOG("\nWARNING --> SCH: Dedicated resources exhausted for LC:%d",lcList->lcId);
+            return;
+         }
+      }
+      else
+      {
+         /*Loop Exit: All resources exhausted*/
+         if(*sharedPRB == 0)
+         {
+            DU_LOG("\nWARNING --> SCH: Default resources exhausted for LC:%d",lcList->lcId);
+            return;
+         }
+      }
+
+      /*[Step3]*/
+      maxPRB = remReservedPRB + *sharedPRB;
+
+      /*[Step4]*/
+      if(!(*isTxPayloadLenAdded))
+      {
+         DU_LOG("\nINFO --> SCH: LC:%d is the First node to be allocated which includes TX_PAYLOAD_HDR_LEN",\
+               lcList->lcId);
+         *isTxPayloadLenAdded = TRUE;
+         lcList->allocBO = calculateEstimateTBSize((lcList->reqBO + TX_PAYLOAD_HDR_LEN),\
+               mcsIdx, numSymbols, maxPRB, &estPrb);
+         lcList->allocBO -=TX_PAYLOAD_HDR_LEN;
+      }
+      else
+      {
+         /*[Step4]*/
+         lcList->allocBO = calculateEstimateTBSize(lcList->reqBO,\
+               mcsIdx, numSymbols, maxPRB, &estPrb);
+      }
+
+      /*[Step6]:Re-adjust the reservedPRB pool count and *SharedPRB Count based on
+       * estimated PRB allocated*/
+      if((dedicatedPRB == TRUE) && (estPrb <= remReservedPRB))
+      {
+         remReservedPRB = remReservedPRB - estPrb;
+      }
+      else   /*LC requirement need PRB share from SharedPRB*/
+      {
+         if(*sharedPRB <=  (estPrb - remReservedPRB))
+         {
+            DU_LOG("\nINFO --> SCH: SharedPRB is less");
+            *sharedPRB = 0;
+         }
+         else
+         {
+            *sharedPRB = *sharedPRB - (estPrb - remReservedPRB);
+         }
+         remReservedPRB = 0;
+      }
+
+      /*[Step7]*/
+      lcList->reqBO -= lcList->allocBO;  /*Update the reqBO with remaining bytes unallocated*/
+      lcList->allocPRB = estPrb;
+      cmLListAdd2Tail(lcLL, cmLListDelFrm(lcLL, node));
+
+      /*[Step8]:Next loop: First LC to be picked from the list
+       * because Allocated Nodes are moved to the last*/
+      node = lcLL->first; 
+
+   }
+   return;
+}
+
+/*******************************************************************************************
+ *
+ * @brief Check the Previous pending LC from the LC List and fill it in
+ * dlMsgAlloc
+ *
+ * @details
+ *
+ *    Function : checkPendingLCinList 
+ *
+ *    Functionality:
+ *      Before travesing the new BO, check the pending LC with unallocated BO and add it in
+ *      dlMsgAlloc for this slot
+ *
+ * @params[in] I/P > lcLinkList pointer (LcInfo list)
+ *             I/P > isDedList (Flag to indicate that DedicatedList) 
+ *             I/P & O/P > dlMsgAlloc(Pending LC to be added in this context) 
+ *
+ * @return void
+ *
+ * *******************************************************************************************/
+void checkPendingLcInList(CmLListCp *lcLL, bool isDedList, DlMsgAlloc *dlMsgAlloc)
+{
+   CmLList *node = NULLP, *next = NULLP;
+   LcList *lcList = NULLP;
+
+   if(lcLL->count)
+   {
+      node = lcLL->first;
+   }
+   else
+   {
+      /*lcLL is empty*/
+      return;
+   }
+
+   /*Traverse List*/
+   while(node)
+   {
+      lcList = (LcList *)node->node;
+      if(lcList)
+      {
+         DU_LOG("\nINFO  --> SCH : LcID:%d, isDed:%d [reqBO, allocBO, allocPRB]:[%d,%d,%d]",\
+               lcList->lcId, isDedList, lcList->reqBO, lcList->allocBO, lcList->allocPRB);
+
+         /*If the LC has zero requirement, remove it from List*/
+         if(lcList->reqBO == 0)
+         {
+            next = node->next;
+            DU_LOG("\n Pending Req BO is NIL for this LCID:%d, removing it from the list",lcList->lcId);
+            deleteNodeFromLList(lcLL, node);
+            SCH_FREE(lcList, sizeof(LcList));
+            node = next; 
+            continue;
+         }
+         else
+         {
+            /*Add this LC to dlMsgAlloc so that if this LC gets allocated, BO
+             * report for allocation can be sent to MAC*/
+            dlMsgAlloc->lcSchInfo[dlMsgAlloc->numLc].lcId = lcList->lcId;
+            dlMsgAlloc->lcSchInfo[dlMsgAlloc->numLc].isDedicated = isDedList;
+
+            DU_LOG("\nINFO --> SCH: Added previous Pending LCID:%d, with reqBO:%d in dlMsgAlloc LcIdx:%d",\
+                  lcList->lcId,lcList->reqBO, dlMsgAlloc->numLc);
+
+            /*Re-initialize the allocBO and allocPRB*/
+            lcList->allocBO = 0;
+            lcList->allocPRB = 0;
+            dlMsgAlloc->numLc++;
+         }
+      }
+      node = node->next;
+   }/*End of while*/
+   return;
+}
+
+/*******************************************************************************************
+ *
+ * @brief Check the Allocated BO for each LC in the list and 
+ *        update the exact Grant/SchBytes for each LC in dlMsgAlloc
+ *
+ * @details
+ *
+ *    Function : calculateTotalAllocatedBO 
+ *
+ *    Functionality:
+ *      1. dlMsgAlloc is traveresed for each LC, 
+ *      2. Check the assigned BO for that LC from list
+ *      3. If allocBO = 0, then delete the LC fromdlMsgAlloc Array
+ *      4. Else Update the schBytes in dlMsgAlloc as allocBO and add the same to
+ *      the Accumulated BO size
+ *      5. If the LC has been fully allocated remove the LC from the list
+ *
+ * @params[in] lcLinkList pointer (LcInfo list)
+ *        [in] isDedList (Flag to indicate that DedicatedList) 
+ *    [in/out] dlMsgAlloc(Pending LC to be added in this context) 
+ *
+ * @return Accumulated Allocated BO size
+ *
+ * *******************************************************************************************/
+uint32_t calculateTotalAllocatedBO(SchUeCb *ueCb, DlMsgAlloc *dlMsgAlloc)
+{
+   uint8_t lcIdx = 0, lcIdx2 = 0;
+   uint32_t accumalatedBOSize = 0;
+   CmLListCp *lcLL = NULLP;
+   LcList *lcList = NULLP;
+ 
+   if(!dlMsgAlloc->numLc)
+   {
+      DU_LOG("\nERROR --> SCH : No LC in present");
+      return (accumalatedBOSize);
+   }
+   for(lcIdx = 0; lcIdx < dlMsgAlloc->numLc; lcIdx ++)
+   {
+      if( dlMsgAlloc->lcSchInfo[lcIdx].isDedicated == TRUE)
+      {
+         lcLL = &(ueCb->dlLcPrbEst.dedLcInfo->dedLcList);
+      }
+      else
+      {
+         lcLL = &(ueCb->dlLcPrbEst.defLcList);
+      }
+
+      lcList = searchOrCreateLcList(lcLL, dlMsgAlloc->lcSchInfo[lcIdx].lcId, SEARCH);
+
+      /*The LC is found in the list and has some alloc to be reported*/
+      if(lcList && lcList->allocBO)
+      {
+         dlMsgAlloc->lcSchInfo[lcIdx].schBytes = lcList->allocBO;
+
+         /*Calculate the Total Payload/BO size allocated*/
+         accumalatedBOSize += dlMsgAlloc->lcSchInfo[lcIdx].schBytes; 
+      }
+      else/*Either lcid is not found or ZERO allocation for this LCID*/
+      {
+         DU_LOG("WARNING --> SCH: lcid:%d is not allocated or not present in list",\
+                       dlMsgAlloc->lcSchInfo[lcIdx].lcId);
+         /*Removing this LCID from dlMsgAlloc i.e. THis LCID BO report will
+          * not be sent to MAC*/
+         memset(&(dlMsgAlloc->lcSchInfo[lcIdx]), 0, sizeof(LcSchInfo));
+         dlMsgAlloc->numLc--;
+         /*This Logic will remove the lcID from dlMsgAlloc whose allocation is Zero*/
+         for(lcIdx2 = lcIdx; lcIdx2 < dlMsgAlloc->numLc; lcIdx2++)
+         {
+            memcpy(&(dlMsgAlloc->lcSchInfo[lcIdx2]),&(dlMsgAlloc->lcSchInfo[lcIdx2+1]), sizeof(LcSchInfo));
+            memset(&(dlMsgAlloc->lcSchInfo[lcIdx2+1]), 0, sizeof(LcSchInfo));
+         }
+      }
+      
+      /*The LC has been fully allocated, clean it*/
+      if(lcList && lcList->reqBO == 0)
+      {
+         deleteLcNode(lcLL, dlMsgAlloc->lcSchInfo[lcIdx].lcId);
+      }
+   }
+   return (accumalatedBOSize);
+}
+
+/*******************************************************************************************
+ *
+ * @brief Check whether Scheduling of Next slot for Ded DL msg is required or
+ *        not and then Schedule it accordingly
+ *
+ * @details
+ *
+ *    Function : checkScheduleNextSlot 
+ *
+ *    Functionality:
+ *      1. Check the Default and Dedicated LC list for any LC with unallocated
+ *      BO
+ *      2. if any Pending LC found then schedule the next slot
+ *      3. Allocate schDlSlotInfo for the next slot and update the parameter
+ *      4. Also set the Cell's BoBitMap for that ueIdx
+ *
+ * @params[in] SchCellCb pointer
+ *        [in] crnti (of the UE for which scheduling to be checked) 
+ *    [in/out] tempBoBitMap
+ *
+ * @return ROK/RFAILED 
+ *
+ * *******************************************************************************************/
+uint8_t checkScheduleNextSlot(SchCellCb *cell,uint16_t crnti, uint32_t *tempBoBitMap)
+{
+   SchUeCb *ueCb = NULLP;
+   bool scheduleNextSlot = FALSE;
+   uint8_t ueIdx = 0;
+   uint16_t slot = 0;
+   SchDlSlotInfo *schDlSlotInfo = NULLP;
+
+#ifdef NR_TDD
+   uint16_t slotIdx = 0;
+#endif
+     GET_UE_IDX(crnti, ueIdx);
+     ueCb = &cell->ueCb[ueIdx-1];
+     if((ueCb->dlLcPrbEst.defLcList.count) ||
+           ((ueCb->dlLcPrbEst.dedLcInfo != NULLP) && (ueCb->dlLcPrbEst.dedLcInfo->dedLcList.count)))
+     {
+           scheduleNextSlot = TRUE;
+      }
+
+    if(!scheduleNextSlot)
+    {
+       DU_LOG("\nINFO --> SCH: No LC are pending thus no scheduling required!");/*to remove*/
+       return ROK;
+    }
+
+      slot = (cell->slotInfo.slot + SCHED_DELTA + PHY_DELTA_DL + BO_DELTA) % cell->numSlots;
+#ifdef NR_TDD
+   while(schGetSlotSymbFrmt(cell->slotFrmtBitMap, slot) != DL_SLOT)
+   {
+      slot = (slot + 1)%cell->numSlots;
+      slotIdx++;
+      if(slotIdx==cell->numSlots)
+      {
+         DU_LOG("\nERROR  -->  SCH : No DL Slot available");
+         return RFAILED;
+      }
+   }
+#endif
+     DU_LOG("\nINFO --> SCH: Slot scheduled :%d",slot); 
+
+   schDlSlotInfo = cell->schDlSlotInfo[slot];
+
+   if(schDlSlotInfo == NULLP)
+   {
+      DU_LOG("\nERROR  -->  SCH : MacSchDlRlcBoInfo(): schDlSlotInfo does not exists");
+      return RFAILED;
+   }
+   SCH_ALLOC(schDlSlotInfo->dlMsgInfo, sizeof(DlMsgInfo));
+   if(schDlSlotInfo->dlMsgInfo == NULLP)
+   {
+      DU_LOG("\nERROR  -->  SCH : Memory allocation failed for dlMsgInfo");
+      schDlSlotInfo = NULL;
+      return RFAILED;
+   }
+
+   schDlSlotInfo->dlMsgInfo->crnti = crnti;
+   schDlSlotInfo->dlMsgInfo->ndi = 1;
+   schDlSlotInfo->dlMsgInfo->harqProcNum = 0;
+   schDlSlotInfo->dlMsgInfo->dlAssignIdx = 0;
+   schDlSlotInfo->dlMsgInfo->pucchTpc = 0;
+   schDlSlotInfo->dlMsgInfo->pucchResInd = 0;
+   schDlSlotInfo->dlMsgInfo->harqFeedbackInd = 0;
+   schDlSlotInfo->dlMsgInfo->dciFormatId = 1;
+   SET_ONE_BIT(ueIdx, *tempBoBitMap);
+ 
+   return ROK;
+}
 /**********************************************************************
   End of file
  **********************************************************************/

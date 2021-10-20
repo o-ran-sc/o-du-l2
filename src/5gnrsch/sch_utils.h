@@ -33,6 +33,7 @@
 #define TOTAL_TBSIZE_VALUES    93
 #define DEFAULT_UL_ACK_LIST_COUNT 8 /* Max number of pusch time domain uplink allocation */
 #define MASK_BIT64_ON 0xFFFFFFFFFFFFFFFF
+#define MIN_PRB 1
 
 #define SET_BITS_MSB(_startBit, _numBits, _byte) \
 {                                                \
@@ -121,6 +122,14 @@ bool fillPrbBitmap(uint64_t *prbBitmap, uint16_t startPrb, uint16_t numPrb);
 CmLList* isPrbAvailable(CmLListCp *freePrbBlockList, uint16_t startPrb, uint16_t numPrb);
 void removeAllocatedPrbFromFreePrbList(CmLListCp *freePrbBlockList, CmLList *node, \
    uint16_t startPrb, uint16_t numPrb);
+
+
+uint8_t updateLcListReqPRB(CmLListCp *lcLL, uint8_t lcId, uint32_t payloadSize);
+uint8_t deleteLcNode(CmLListCp *lcLL, uint8_t lcId);
+void deleteLcLL(CmLListCp *lcLL);
+void printLcLL(CmLListCp *lcLL);
+uint32_t calculateEstimateTBSize(uint32_t reqBO, uint16_t mcsIdx,uint8_t numSymbols,\
+                                   uint16_t maxPRB, uint16_t *estPrb);
 
 /**********************************************************************
   End of file
