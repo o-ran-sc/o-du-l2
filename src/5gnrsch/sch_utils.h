@@ -122,6 +122,11 @@ CmLList* isPrbAvailable(CmLListCp *freePrbBlockList, uint16_t startPrb, uint16_t
 void removeAllocatedPrbFromFreePrbList(CmLListCp *freePrbBlockList, CmLList *node, \
    uint16_t startPrb, uint16_t numPrb);
 
+
+uint8_t updateLcListReqPRB(CmLListCp *lcLL, uint8_t lcId, uint32_t payloadSize);
+uint8_t deleteLcNode(CmLListCp *lcLL, uint8_t lcId);
+void deleteLcLL(CmLListCp *lcLL);
+
 /**********************************************************************
   End of file
  **********************************************************************/

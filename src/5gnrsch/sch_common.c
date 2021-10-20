@@ -43,6 +43,8 @@ File:     sch_common.c
 #include "sch.h"
 #include "sch_utils.h"
 
+#define MIN_PRB 1
+
 SchCb schCb[SCH_MAX_INST];
 uint16_t prachCfgIdxTable[MAX_PRACH_CONFIG_IDX][8];
 uint16_t numRbForPrachTable[MAX_RACH_NUM_RB_IDX][5];
@@ -746,11 +748,10 @@ uint16_t schAllocPucchResource(SchCellCb *cell, uint16_t crnti, uint16_t slot)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t schDlRsrcAllocDlMsg(SchCellCb *cell, SlotTimingInfo slotTime, uint16_t crnti,
-      uint32_t *accumalatedSize, DlMsgAlloc *dlMsgAlloc)
+uint8_t schDlRsrcAllocDlMsg(SchCellCb *cell, SlotTimingInfo slotTime, uint16_t crnti,\
+                     uint32_t accumalatedSize, DlMsgAlloc *dlMsgAlloc, uint16_t startPRB)
 {
    uint8_t ueIdx;
-   uint16_t tbSize = 0;
    PdcchCfg *pdcch = NULLP;
    PdschCfg *pdsch = NULLP;
    BwpCfg *bwp = NULLP;
@@ -813,10 +814,10 @@ uint8_t schDlRsrcAllocDlMsg(SchCellCb *cell, SlotTimingInfo slotTime, uint16_t c
       pdsch->codeword[cwCount].mcsIndex = ueCb.ueCfg.dlModInfo.mcsIndex;
       pdsch->codeword[cwCount].mcsTable = ueCb.ueCfg.dlModInfo.mcsTable;
       pdsch->codeword[cwCount].rvIndex = 0;
-      tbSize = schCalcTbSize(*accumalatedSize + TX_PAYLOAD_HDR_LEN);
-      if(tbSize < *accumalatedSize)
-         *accumalatedSize = tbSize - TX_PAYLOAD_HDR_LEN;
-      pdsch->codeword[cwCount].tbSize = tbSize;
+
+      /*Removing the inclusion of TX_PAYLOAD_HDR_LEN as it has been
+       * taken care during individual LC BO calculation*/
+      pdsch->codeword[cwCount].tbSize = accumalatedSize;
    }
    pdsch->dataScramblingId = cell->cellCfg.phyCellId;
    pdsch->numLayers = 1;
@@ -837,13 +838,15 @@ uint8_t schDlRsrcAllocDlMsg(SchCellCb *cell, SlotTimingInfo slotTime, uint16_t c
 
    pdsch->pdschFreqAlloc.vrbPrbMapping = 0; /* non-interleaved */
    pdsch->pdschFreqAlloc.resourceAllocType = 1; /* RAT type-1 RIV format */
-   pdsch->pdschFreqAlloc.freqAlloc.startPrb = MAX_NUM_RB;
-   pdsch->pdschFreqAlloc.freqAlloc.numPrb = schCalcNumPrb(tbSize, ueCb.ueCfg.dlModInfo.mcsIndex, \
-		   pdschCfg.timeDomRsrcAllociList[0].symbolLength);
+   pdsch->pdschFreqAlloc.freqAlloc.startPrb = startPRB; /*Start PRB will be already known*/
+   pdsch->pdschFreqAlloc.freqAlloc.numPrb = schCalcNumPrb(accumalatedSize, ueCb.ueCfg.dlModInfo.mcsIndex, \
+         pdschCfg.timeDomRsrcAllociList[0].symbolLength);
 
+   /*Below print to be removed*/
+   DU_LOG("\nVS tbsSize:%d, numPrb:%d",accumalatedSize, pdsch->pdschFreqAlloc.freqAlloc.numPrb);
    /* Allocate the number of PRBs required for DL PDSCH */
    if((allocatePrbDl(cell, slotTime, pdsch->pdschTimeAlloc.timeAlloc.startSymb, pdsch->pdschTimeAlloc.timeAlloc.numSymb,\
-      &pdsch->pdschFreqAlloc.freqAlloc.startPrb, pdsch->pdschFreqAlloc.freqAlloc.numPrb)) != ROK)
+               &pdsch->pdschFreqAlloc.freqAlloc.startPrb, pdsch->pdschFreqAlloc.freqAlloc.numPrb)) != ROK)
    {
       DU_LOG("\nERROR  --> SCH : allocatePrbDl() failed for DL MSG");
       return RFAILED;
@@ -1346,6 +1349,178 @@ SchK2TimingInfoTbl *msg3K2InfoTbl, SchK2TimingInfoTbl *k2InfoTbl)
    }
 }
 
+
+
+/****************************************************************************
+ *
+ * @brief Calculate the Estimated TBS Size based on Spec 38.421 , Sec 5.3.1.2
+ *
+ * @details
+ *
+ *    Function : calculateEstimateTBSize
+ *
+ *    Functionality:
+ *       TBS Size calculation requires numPRB. Since it is exactPRB is unknown thus 
+ *       will give the PRB value(from 0 to maxRB) one by one and 
+ *       try to find the TBS size closest to reqBO
+ *
+ * @params[in] I/P > reqBO, mcsIdx, num PDSCH symbols, 
+ *             I/P > maxRB: Maximum PRB count to reach for calculating the TBS
+ *             O/P > estPrb : Suitable PRB count for reaching the correct TBS
+ *       
+ *
+ * @return TBS Size > Size which will can be allocated for this LC
+ *        
+ *
+ *************************************************************************/
+uint32_t calculateEstimateTBSize(uint32_t reqBO, uint16_t mcsIdx,uint8_t numSymbols,\
+                                   uint16_t maxPRB, uint16_t *estPrb)
+{
+   uint32_t tbs = 0;
+
+   *estPrb = MIN_PRB;
+   /*Loop Exit: Either estPRB reaches the maxRB or TBS is found greater than equal to reqBO*/
+   do
+   {
+      tbs = schCalcTbSizeFromNPrb(*estPrb, mcsIdx, numSymbols);
+      tbs = tbs >> 3;
+      *estPrb += 1;
+   }while((tbs < reqBO) && (*estPrb <= maxPRB));
+
+   /*When TBS size calculated becomes greater than reqBO then reqBO will be considered*/
+   tbs = MIN_VAL(tbs,reqBO);
+   return (tbs);
+}
+
+
+/*******************************************************************************************
+ *
+ * @brief Allocate the PRB using RRM policy
+ *
+ * @details
+ *
+ *    Function : prbAllocUsingRRMPolicy
+ *
+ *    Functionality:
+ *      For LC associated with Dedicated S-NSSAI, Allocate the PRB from RESERVED pool
+ *      For other Default LC, from the remaining Shared PRB pool
+ *
+ * @params[in] I/P > lcLinkList pointer (LcInfo list)
+ *             I/P > DedicatedPRB (Flag to indicate that RESERVED PRB to use 
+ *             I/P > mcsIdx and PDSCH symbols count 
+ *             I/P & O/P > Shared PRB , reserved PRB Count
+ *             I/P & O/P > Total TBS size accumulated
+ *             I/P & O/P > isTxPayloadLenAdded : Decision flag to add the TX_PAYLOAD_HDR_LEN
+ *
+ * @return void
+ *
+ * *******************************************************************************************/
+void prbAllocUsingRRMPolicy(CmLListCp *lcLL, bool dedicatedPRB, uint16_t mcsIdx,uint8_t numSymbols,\
+                              uint16_t *sharedPRB, uint16_t *reservedPRB, uint32_t *accumulatedTBS, bool *isTxPayloadLenAdded)
+{
+   CmLList *node = NULLP;
+   LcList *lcList = NULLP;
+   uint16_t remReservedPRB = 0, estPrb = 0, maxPRB = 0;
+
+   node = lcLL->first;
+
+   if(reservedPRB != NULLP)
+   {
+      remReservedPRB = *reservedPRB;
+      if(!lcLL->count && *reservedPRB != 0 && dedicatedPRB == TRUE)/*No Dedicated LC is available*/
+      {
+         DU_LOG("\nERROR  --> SCH : Since reservedPRB are Resetted when Last Dedicated LC is deleted.");
+         DU_LOG("Thus some failure lead to here. Again resetting the reservedPRB");
+         *reservedPRB = 0;
+         return;
+      }
+   }
+
+   while(node)
+   {
+      lcList = (LcList *)node->node;
+
+      /* Below condition will hit in rare case as it has been taken care during the cleaning 
+       * process of LCID which was fully allocated. Check is just for safety purpose*/
+      if(lcList->reqBO == 0 && lcList->allocBO == 0)
+      {
+         deleteNodeFromLList(lcLL, node);
+         SCH_FREE(lcList, sizeof(LcList));
+         node = lcLL->first; 
+         continue;
+      }
+
+      /*Loop Exit: All LCs are allocated(allocBO = 0 for fully unallocated LC)*/
+      if(lcList->allocBO != 0)
+      {
+         DU_LOG("\nWARNING --> SCH: All LC are allocated [SharedPRB:%d]",*sharedPRB);
+         return;
+      }
+
+      /*Allocation of Dedicated LC*/
+      if(dedicatedPRB)
+      {
+         /*Loop Exit: All resources exhausted*/
+         if(remReservedPRB == 0 && *sharedPRB == 0)
+         {
+            DU_LOG("\nWARNING --> SCH: All resources exhausted for LC:%d",lcList->lcId);
+            return;
+         }
+         /*First LC in Dedicated LC list, thus added the TX_PAYLOAD_HDR_LEN to the Required BO*/
+         if(!(*isTxPayloadLenAdded))
+         {
+            lcList->reqBO += TX_PAYLOAD_HDR_LEN;
+            DU_LOG("\nINFO --> SCH: LC:%d is the First node to be allocated which includes TX_PAYLOAD_HDR_LEN",\
+                  lcList->lcId);
+            *isTxPayloadLenAdded = TRUE;
+         }
+
+         /*maxPRB for Dedicated S-NSSAI will be sum of Reserved POOL and Shared PRB pool*/
+         maxPRB = remReservedPRB + *sharedPRB;
+
+         lcList->allocBO  = calculateEstimateTBSize(lcList->reqBO, mcsIdx, numSymbols, maxPRB, &estPrb);
+         if(estPrb <= remReservedPRB) /*LC requirement can be catered by Reserved Dedicated PRB pool itself*/
+         {
+            remReservedPRB = remReservedPRB - estPrb;
+         }
+         else   /*LC requirement need PRB share from SharedPRB*/
+         {
+            *sharedPRB = *sharedPRB - (estPrb - remReservedPRB);
+            remReservedPRB = 0;
+         }
+
+      }
+      else
+      {
+         if(*sharedPRB == 0)
+         {
+            DU_LOG("\nWARNING --> SCH: All resources exhausted for LC:%d",lcList->lcId);
+            return;
+         }
+         /*Either Dedicated LC List is absent or NO LC scheduled from Dedicated LC list
+          * Thus, added the TX_PAYLOAD_HDR_LEN to the first LC node of the list*/
+         if(!(*isTxPayloadLenAdded))
+         {
+            DU_LOG("\nINFO --> SCH: LC:%d is the First node which includes TX_PAYLOAD_HDR_LEN",lcList->lcId);
+            lcList->reqBO += TX_PAYLOAD_HDR_LEN;
+            *isTxPayloadLenAdded = TRUE;
+         }
+         maxPRB = *sharedPRB;
+         lcList->allocBO = calculateEstimateTBSize(lcList->reqBO, mcsIdx, numSymbols, maxPRB, &estPrb );
+
+         *sharedPRB = *sharedPRB - estPrb;	 
+      }
+      *accumulatedTBS += lcList->allocBO;
+      lcList->reqBO -= lcList->allocBO;  /*Update the reqBO with remaining bytes unallocated*/
+      lcList->allocPRB = estPrb;
+      cmLListAdd2Tail(lcLL, cmLListDelFrm(lcLL, node));
+
+      /*Next loop: First LC to be picked from the list because Allocated Nodes are moved to the last*/
+      node = lcLL->first; 
+
+   }
+   return;
+}
 /**********************************************************************
   End of file
  **********************************************************************/

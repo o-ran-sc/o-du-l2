@@ -187,6 +187,8 @@
   _isCrntiValid = ((_crnti >= ODU_START_CRNTI && _crnti <= ODU_END_CRNTI ) ? 1 : 0); \
 }
 
+#define MIN_VAL(x, y) ((x) <= (y) ? (x) : (y))
+
 typedef enum
 {
    UE_CFG_INACTIVE,
