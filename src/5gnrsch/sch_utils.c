@@ -1291,6 +1291,238 @@ bool fillPrbBitmap(uint64_t *prbBitMap, uint16_t startPrb, uint16_t numPrb)
    return ROK;
 }
 
+
+/**************************************************************************
+ *
+ * @brief Search LCID in LCLL 
+ *
+ * @details
+ *
+ *    Function : searchOrCreateLcList
+ *
+ *    Functionality:
+ *     Search LCID in LCLL or if not found, create a node for this LCID
+ *
+ * @params[in] I/P > lcLinkList pointer (LcInfo list)
+ *             I/P > lcId
+ *       
+ *
+ * @return lcList > Pointer to the Node for that LcList
+ *         If NULLP, FATAL FAILURE
+ *
+ * ***********************************************************************/
+LcList* searchOrCreateLcList(CmLListCp *lcLL, uint8_t lcId, ActionTypeLcLL action)
+{
+   CmLList  *node = NULLP;
+   LcList *lcList = NULLP;
+
+   node = lcLL->first;
+
+   /*Traversing the LC LinkList*/
+   while(node)
+   {
+      lcList = (LcList *)node->node;
+      if(lcList->lcId == lcId)
+      { 
+         DU_LOG("\nINFO  --> SCH : LcID:%d found in LL",lcId);
+         break;
+      }
+      node = node->next;
+   }//end of while
+
+   switch(action)
+   {
+      case SEARCH:
+         return lcList;
+
+      case CREATE:
+         {
+            if(node != NULLP)
+               return lcList;
+
+            /*Need to add a new node for this LC*/
+
+            /*List is empty; Initialize the LL ControlPointer*/
+            if(lcLL->count == 0)
+            {
+               DU_LOG("\nINFO --> SCH: First LC:%d to add in this List",lcId);
+               cmLListInit(lcLL);
+            }
+
+            lcList = NULLP;
+            /*Allocate the List*/
+            SCH_ALLOC(lcList, sizeof(LcList));
+            if(lcList)
+            {
+               lcList->lcId = lcId;
+               lcList->reqBO = 0;
+               lcList->allocBO = 0;
+               lcList->allocPRB = 0;
+            }
+            else
+            {
+               DU_LOG("\nERROR  --> SCH : Allocation of List failed,lcId:%d",lcId);
+               return NULLP;
+            }
+
+            if(addNodeToLList(lcLL, lcList, NULLP) == RFAILED)
+            {
+               DU_LOG("\nERROR  --> SCH : failed to Add Node,lcId:%d",lcId);
+               SCH_FREE(lcList, sizeof(LcList));
+               return NULLP;
+            }
+            DU_LOG("\nINFO  --> SCH : Added new Node in List for lcId:%d\n",lcId);
+             printLcLL(lcLL);
+            return lcList;
+         }
+      default:
+         {
+            DU_LOG("\nERROR --> SCH: Action type wrong: %d",action);
+            break;
+         }
+   }
+   return lcList;
+}
+
+/**************************************************************************
+ *
+ * @brief Update ReqPRB for a partiular LCID in LC Linklist 
+ *
+ * @details
+ *
+ *    Function : updateLcListReqPRB
+ *
+ *    Functionality:
+ *     Update ReqPRB for a partiular LCID in LC Linklist 
+ *
+ * @params[in] I/P > lcLinkList pointer (LcInfo list)
+ *             I/P > lcId
+ *             I/P > reqPRB
+ *             I/P > payloadSize
+ *
+ * @return ROK/RFAILED
+ *
+ * ***********************************************************************/
+uint8_t updateLcListReqPRB(CmLListCp *lcLL, uint8_t lcId, uint32_t payloadSize)
+{
+   LcList    *lcNode = NULLP;
+
+   lcNode = searchOrCreateLcList(lcLL, lcId, CREATE);
+
+   if(lcNode == NULLP)
+   {
+      DU_LOG("\nERROR  --> SCH : LC is neither present nor able to create in List lcId:%d",lcId);
+      return RFAILED;
+   }
+   lcNode->reqBO += payloadSize;
+   lcNode->allocBO = 0; 
+   lcNode->allocPRB = 0; /*Re-Initializing the AllocPRB*/
+   DU_LOG("\nINFO  --> SCH : LCID:%d, reqBO:%d",\
+         lcId, lcNode->reqBO);
+   return ROK;
+}
+
+/**************************************************************************
+ *
+ * @brief Delete the LCID's Node from LL 
+ *
+ * @details
+ *
+ *    Function : deleteLcNode
+ *
+ *    Functionality:
+ *     Delete the LCID's Node from LL 
+ *
+ * @params[in] I/P > lcLinkList pointer (LcInfo list)
+ *             I/P > lcId
+ *
+ * @return ROK/RFAILED
+ *
+ * ***********************************************************************/
+uint8_t deleteLcNode(CmLListCp *lcLL, uint8_t lcId)
+{
+   CmLList   *node = NULLP;
+   LcList    *lcList = NULLP;
+
+   node = lcLL->first;
+   while(node)
+   {
+      lcList = (LcList *)node->node;
+      if(lcList->lcId == lcId)
+      { 
+         DU_LOG("\nINFO  --> SCH : LcID:%d found in LL. Thus deleting",lcId);
+         deleteNodeFromLList(lcLL, node);
+         SCH_FREE(lcList, sizeof(LcList));
+         return ROK;
+      }
+      node = node->next;
+   }//end of while
+
+   DU_LOG("\nINFO  --> SCH : LcID:%d not found in LL",lcId);
+   return RFAILED;
+}
+
+/**************************************************************************
+ *
+ * @brief Delete entire LC Linklist 
+ *
+ * @details
+ *
+ *    Function : deleteLcLL
+ *
+ *    Functionality:
+ *      Delete entire LC Linklist 
+ *
+ * @params[in] I/P > lcLinkList pointer (LcInfo list)
+ *
+ * @return void
+ *
+ * ***********************************************************************/
+void deleteLcLL(CmLListCp *lcLL)
+{
+   CmLList *node = NULLP, *next = NULLP;
+   LcList *lcList = NULLP;
+
+   if(lcLL->count)
+   {
+      node = lcLL->first;
+   }
+   while(node)
+   {
+      next = node->next;
+      lcList = (LcList *)node->node;
+      if(deleteNodeFromLList(lcLL, node) == ROK)
+         SCH_FREE(lcList, sizeof(LcList));
+      node = next;
+   }
+}
+
+void printLcLL(CmLListCp *lcLL)
+{
+   CmLList *node = NULLP;
+   LcList *lcList = NULLP;
+
+   if(lcLL->count)
+   {
+      node = lcLL->first;
+   }
+   else
+   {
+         DU_LOG("\nINFO  --> SCH : List is empty");
+   }
+   while(node)
+   {
+      lcList = (LcList *)node->node;
+      if(lcList)
+      {
+         DU_LOG("\nINFO  --> SCH : LcID:%d, [reqBO, allocBO, allocPRB]:[%d,%d,%d]",\
+               lcList->lcId,lcList->reqBO, lcList->allocBO, lcList->allocPRB);
+      }
+
+      node = node->next;
+   }
+}
+
 #ifdef NR_TDD
 
 /**
