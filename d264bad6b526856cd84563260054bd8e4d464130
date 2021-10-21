@@ -18,6 +18,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "23d650b4_abfa06df",
+        "filename": "src/5gnrrlc/rlc_cfg_dl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 394,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-10-21T17:56:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dc8898a8_81952092",
+      "revId": "d264bad6b526856cd84563260054bd8e4d464130",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c2854b1d_766fb624",
@@ -31,6 +49,24 @@
       "writtenOn": "2021-10-21T15:57:21Z",
       "side": 1,
       "message": "instead of freeing and reallocating, you can check if its already allocated, just memcpy else allocate and then copy",
+      "revId": "d264bad6b526856cd84563260054bd8e4d464130",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "64ddc60d_e61ef2de",
+        "filename": "src/5gnrrlc/rlc_cfg_dl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 491,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-10-21T17:56:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c2854b1d_766fb624",
       "revId": "d264bad6b526856cd84563260054bd8e4d464130",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -52,6 +88,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d682ec85_0052989f",
+        "filename": "src/5gnrrlc/rlc_cfg_dl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 554,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-10-21T17:56:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4c8b3c09_f0ecffde",
+      "revId": "d264bad6b526856cd84563260054bd8e4d464130",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0acb5bc7_578d603d",
@@ -65,6 +119,24 @@
       "writtenOn": "2021-10-21T15:57:21Z",
       "side": 1,
       "message": "sizeOf(Snssai)",
+      "revId": "d264bad6b526856cd84563260054bd8e4d464130",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3c3a1966_f868ecd4",
+        "filename": "src/5gnrrlc/rlc_cfg_dl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1151,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-10-21T17:56:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0acb5bc7_578d603d",
       "revId": "d264bad6b526856cd84563260054bd8e4d464130",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -86,6 +158,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d86399fc_00fbdc96",
+        "filename": "src/5gnrrlc/rlc_cfg_dl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1156,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-10-21T17:56:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fc600f46_19537959",
+      "revId": "d264bad6b526856cd84563260054bd8e4d464130",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5aad4af1_8c832666",
@@ -99,6 +189,24 @@
       "writtenOn": "2021-10-21T15:57:21Z",
       "side": 1,
       "message": "Add the above code snippet just once outside the switch",
+      "revId": "d264bad6b526856cd84563260054bd8e4d464130",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9240767a_13ec67b9",
+        "filename": "src/5gnrrlc/rlc_cfg_ul.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 409,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-10-21T17:56:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5aad4af1_8c832666",
       "revId": "d264bad6b526856cd84563260054bd8e4d464130",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -120,6 +228,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3129e767_628ba38a",
+        "filename": "src/5gnrrlc/rlc_cfg_ul.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 478,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-10-21T17:56:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7bf696bb_08cbbd57",
+      "revId": "d264bad6b526856cd84563260054bd8e4d464130",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8e0ce6a1_edbd279f",
@@ -133,6 +259,24 @@
       "writtenOn": "2021-10-21T15:57:21Z",
       "side": 1,
       "message": "Add the above code snippet just once outside the switch",
+      "revId": "d264bad6b526856cd84563260054bd8e4d464130",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bc3794b8_781e8a2b",
+        "filename": "src/5gnrrlc/rlc_cfg_ul.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 484,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-10-21T17:56:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8e0ce6a1_edbd279f",
       "revId": "d264bad6b526856cd84563260054bd8e4d464130",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -154,6 +298,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a28777ac_f67fb530",
+        "filename": "src/5gnrrlc/rlc_dbm_dl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 331,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-10-21T17:56:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c8f5c510_3104afaf",
+      "revId": "d264bad6b526856cd84563260054bd8e4d464130",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "90fe3648_f996d425",
@@ -171,6 +333,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8e6a2ff1_8fba5923",
+        "filename": "src/5gnrrlc/rlc_dbm_dl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 337,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-10-21T17:56:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "90fe3648_f996d425",
+      "revId": "d264bad6b526856cd84563260054bd8e4d464130",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7c14aa50_4b9579ad",
@@ -184,6 +364,24 @@
       "writtenOn": "2021-10-21T15:57:21Z",
       "side": 1,
       "message": "move free snssai in rlcUmmFreeUlRbCb and rlcAmmFreeUlRbCb so that snssai gets free whenever these functions are called to free rbCb",
+      "revId": "d264bad6b526856cd84563260054bd8e4d464130",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "05a1eeae_2999680c",
+        "filename": "src/5gnrrlc/rlc_dbm_ul.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 311,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-10-21T17:56:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7c14aa50_4b9579ad",
       "revId": "d264bad6b526856cd84563260054bd8e4d464130",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -207,6 +405,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "df9fa887_e5293da8",
+        "filename": "src/5gnrrlc/rlc_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 316,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-10-21T17:56:05Z",
+      "side": 1,
+      "message": "yes this is only for failure case. \nIf there is any failure occured during fillRlcCfg like memory allocation. so it will send -ve response to du.",
+      "parentUuid": "7d927002_f94471d5",
+      "revId": "d264bad6b526856cd84563260054bd8e4d464130",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d6072fbd_f33e27aa",
         "filename": "src/5gnrrlc/rlc_msg_hdl.c",
         "patchSetId": 3
@@ -218,6 +434,24 @@
       "writtenOn": "2021-10-21T15:57:21Z",
       "side": 1,
       "message": "move this in else part",
+      "revId": "d264bad6b526856cd84563260054bd8e4d464130",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c0719e8c_ddae860e",
+        "filename": "src/5gnrrlc/rlc_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 730,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-10-21T17:56:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d6072fbd_f33e27aa",
       "revId": "d264bad6b526856cd84563260054bd8e4d464130",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -235,6 +469,24 @@
       "writtenOn": "2021-10-21T15:57:21Z",
       "side": 1,
       "message": "how is this code useful?",
+      "revId": "d264bad6b526856cd84563260054bd8e4d464130",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5a8cad9a_9b612917",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 10145,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-10-21T17:56:05Z",
+      "side": 1,
+      "message": "This part of code is used for getting rlc mode. because in Ue Context Modification - the IE DRBs_ToBeModified_Item_t will not have information about rlc mode [as per 15.3 spec], so here I have tried to fetch the rlc mode information with the help LcId.",
+      "parentUuid": "f2f55ae5_c63ffecb",
       "revId": "d264bad6b526856cd84563260054bd8e4d464130",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
