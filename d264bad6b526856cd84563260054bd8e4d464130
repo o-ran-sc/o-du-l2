@@ -1,0 +1,242 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dc8898a8_81952092",
+        "filename": "src/5gnrrlc/rlc_cfg_dl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 394,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-10-21T15:57:21Z",
+      "side": 1,
+      "message": "instead of writing same code snippet for all 3 modes, add it outside the switch case only once",
+      "revId": "d264bad6b526856cd84563260054bd8e4d464130",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c2854b1d_766fb624",
+        "filename": "src/5gnrrlc/rlc_cfg_dl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 491,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-10-21T15:57:21Z",
+      "side": 1,
+      "message": "instead of freeing and reallocating, you can check if its already allocated, just memcpy else allocate and then copy",
+      "revId": "d264bad6b526856cd84563260054bd8e4d464130",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4c8b3c09_f0ecffde",
+        "filename": "src/5gnrrlc/rlc_cfg_dl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 554,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-10-21T15:57:21Z",
+      "side": 1,
+      "message": "instead of writing same code snippet for all 3 modes, add it outside the switch case only once",
+      "revId": "d264bad6b526856cd84563260054bd8e4d464130",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0acb5bc7_578d603d",
+        "filename": "src/5gnrrlc/rlc_cfg_dl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1151,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-10-21T15:57:21Z",
+      "side": 1,
+      "message": "sizeOf(Snssai)",
+      "revId": "d264bad6b526856cd84563260054bd8e4d464130",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fc600f46_19537959",
+        "filename": "src/5gnrrlc/rlc_cfg_dl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1156,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-10-21T15:57:21Z",
+      "side": 1,
+      "message": "free Snssai for else case too",
+      "revId": "d264bad6b526856cd84563260054bd8e4d464130",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5aad4af1_8c832666",
+        "filename": "src/5gnrrlc/rlc_cfg_ul.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 409,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-10-21T15:57:21Z",
+      "side": 1,
+      "message": "Add the above code snippet just once outside the switch",
+      "revId": "d264bad6b526856cd84563260054bd8e4d464130",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7bf696bb_08cbbd57",
+        "filename": "src/5gnrrlc/rlc_cfg_ul.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 478,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-10-21T15:57:21Z",
+      "side": 1,
+      "message": "instead of freeing and reallocating, you can check if its already allocated, just memcpy else allocate and then copy",
+      "revId": "d264bad6b526856cd84563260054bd8e4d464130",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8e0ce6a1_edbd279f",
+        "filename": "src/5gnrrlc/rlc_cfg_ul.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 484,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-10-21T15:57:21Z",
+      "side": 1,
+      "message": "Add the above code snippet just once outside the switch",
+      "revId": "d264bad6b526856cd84563260054bd8e4d464130",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c8f5c510_3104afaf",
+        "filename": "src/5gnrrlc/rlc_dbm_dl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 331,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-10-21T15:57:21Z",
+      "side": 1,
+      "message": "move free inside rlcUmmFreeDlRbCb",
+      "revId": "d264bad6b526856cd84563260054bd8e4d464130",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "90fe3648_f996d425",
+        "filename": "src/5gnrrlc/rlc_dbm_dl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 337,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-10-21T15:57:21Z",
+      "side": 1,
+      "message": "free Snssai inside rlcAmmFreeDlRbCb() as well",
+      "revId": "d264bad6b526856cd84563260054bd8e4d464130",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7c14aa50_4b9579ad",
+        "filename": "src/5gnrrlc/rlc_dbm_ul.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 311,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-10-21T15:57:21Z",
+      "side": 1,
+      "message": "move free snssai in rlcUmmFreeUlRbCb and rlcAmmFreeUlRbCb so that snssai gets free whenever these functions are called to free rbCb",
+      "revId": "d264bad6b526856cd84563260054bd8e4d464130",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7d927002_f94471d5",
+        "filename": "src/5gnrrlc/rlc_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 316,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-10-21T15:57:21Z",
+      "side": 1,
+      "message": "cfgCfm can have positive and negative result. fillRlcCfgCfmInfo() always fills NOK. Is this correct?",
+      "revId": "d264bad6b526856cd84563260054bd8e4d464130",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d6072fbd_f33e27aa",
+        "filename": "src/5gnrrlc/rlc_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 730,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-10-21T15:57:21Z",
+      "side": 1,
+      "message": "move this in else part",
+      "revId": "d264bad6b526856cd84563260054bd8e4d464130",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f2f55ae5_c63ffecb",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 10145,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-10-21T15:57:21Z",
+      "side": 1,
+      "message": "how is this code useful?",
+      "revId": "d264bad6b526856cd84563260054bd8e4d464130",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
