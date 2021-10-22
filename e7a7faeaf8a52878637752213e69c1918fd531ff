@@ -1,0 +1,222 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b3810082_bbb2853b",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 954,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-10-22T13:20:19Z",
+      "side": 1,
+      "message": "Unable to understand this step comparing ulInfo.ulLcCtxt and modifying  dlInfo.dlLcCtxt",
+      "revId": "e7a7faeaf8a52878637752213e69c1918fd531ff",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d713ce40_481ea3d2",
+        "filename": "src/5gnrsch/sch.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-10-22T13:20:19Z",
+      "side": 1,
+      "message": "no need to add \u003d0, it will default starts with 0",
+      "range": {
+        "startLine": 102,
+        "startChar": 3,
+        "endLine": 102,
+        "endChar": 9
+      },
+      "revId": "e7a7faeaf8a52878637752213e69c1918fd531ff",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "39e1d203_3234d2b0",
+        "filename": "src/5gnrsch/sch_slot_ind.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 225,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-10-22T13:20:19Z",
+      "side": 1,
+      "message": "check  pointer before using.",
+      "range": {
+        "startLine": 225,
+        "startChar": 9,
+        "endLine": 225,
+        "endChar": 13
+      },
+      "revId": "e7a7faeaf8a52878637752213e69c1918fd531ff",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a19738e0_9cf35c20",
+        "filename": "src/5gnrsch/sch_slot_ind.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 247,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-10-22T13:20:19Z",
+      "side": 1,
+      "message": "I think timeDomRsrcAllociList 2-3 indexes. so why only 0th index is selected. Any specific reason?",
+      "range": {
+        "startLine": 247,
+        "startChar": 30,
+        "endLine": 247,
+        "endChar": 51
+      },
+      "revId": "e7a7faeaf8a52878637752213e69c1918fd531ff",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1d91c2f4_5eb49a3d",
+        "filename": "src/5gnrsch/sch_ue_mgr.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 266,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-10-22T13:20:19Z",
+      "side": 1,
+      "message": "check this is needed or not.",
+      "range": {
+        "startLine": 266,
+        "startChar": 35,
+        "endLine": 266,
+        "endChar": 38
+      },
+      "revId": "e7a7faeaf8a52878637752213e69c1918fd531ff",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "134977bd_d2e46ee8",
+        "filename": "src/5gnrsch/sch_ue_mgr.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 300,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-10-22T13:20:19Z",
+      "side": 1,
+      "message": "at caller fillSchUeCb, just checking this function returning ROK or RFAILED.\nNo use of ROKIGNORE, so ROKIGNORE can be replaced with RFAILED. Please Check once",
+      "range": {
+        "startLine": 300,
+        "startChar": 13,
+        "endLine": 300,
+        "endChar": 22
+      },
+      "revId": "e7a7faeaf8a52878637752213e69c1918fd531ff",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "65de2497_f87aeb94",
+        "filename": "src/5gnrsch/sch_ue_mgr.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 327,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-10-22T13:20:19Z",
+      "side": 1,
+      "message": "initialize both with ROK",
+      "range": {
+        "startLine": 327,
+        "startChar": 19,
+        "endLine": 327,
+        "endChar": 28
+      },
+      "revId": "e7a7faeaf8a52878637752213e69c1918fd531ff",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "116d8cb2_350cf09b",
+        "filename": "src/5gnrsch/sch_utils.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 1314,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-10-22T13:20:19Z",
+      "side": 1,
+      "message": "check the available functions in cm_llist.c. and try to reuse them.\nu can check these function once addToReservedF1apPduList and searchFromReservedF1apPduList for reference.",
+      "range": {
+        "startLine": 1314,
+        "startChar": 8,
+        "endLine": 1314,
+        "endChar": 28
+      },
+      "revId": "e7a7faeaf8a52878637752213e69c1918fd531ff",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "94b1f694_6edce2a4",
+        "filename": "src/5gnrsch/sch_utils.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 1490,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-10-22T13:20:19Z",
+      "side": 1,
+      "message": "in cm/cm_llist.c we have cmLListDelFrm.\ncan we try to use this.",
+      "revId": "e7a7faeaf8a52878637752213e69c1918fd531ff",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7f19af3e_6a8f1d30",
+        "filename": "src/cm/common_def.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 190,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-10-22T13:20:19Z",
+      "side": 1,
+      "message": "I think we have already macros for calcualting MIN.",
+      "range": {
+        "startLine": 190,
+        "startChar": 8,
+        "endLine": 190,
+        "endChar": 15
+      },
+      "revId": "e7a7faeaf8a52878637752213e69c1918fd531ff",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
