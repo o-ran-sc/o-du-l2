@@ -1016,22 +1016,23 @@ static Bool rlcUtlFreeDlAmRbMemory(RlcCb *gCb,RlcDlRbCb *rbCb,uint32_t *toBeFree
       if (txBuf && txBuf->pduLst.first)
       {
          while(txBuf->pduLst.first)
-	 {
-	    RlcDlPduInfo *pduInfo = (RlcDlPduInfo *)(txBuf->pduLst.first->node);
-	    ODU_PUT_MSG_BUF(pduInfo->pdu);
-	    /* Delete node from the txBuf Pdu lst */
-	    cmLListDelFrm(&txBuf->pduLst, txBuf->pduLst.first);
-	    RLC_FREE(gCb, pduInfo, sizeof(RlcDlPduInfo));
-	 }
+         {
+            RlcDlPduInfo *pduInfo = (RlcDlPduInfo *)(txBuf->pduLst.first->node);
+            ODU_PUT_MSG_BUF(pduInfo->pdu);
+            /* Delete node from the txBuf Pdu lst */
+            cmLListDelFrm(&txBuf->pduLst, txBuf->pduLst.first);
+            RLC_FREE(gCb, pduInfo, sizeof(RlcDlPduInfo));
+         }
          rlcUtlDelTxBuf(RLC_AMDL.txBufLst, txBuf, gCb);
          if(gCb->u.dlCb->shutdownReceived == 0)
          {   
             (*toBeFreed)--;
-	 }
+         }
       }
       RLC_AMDL.txNextAck = (RLC_AMDL.txNextAck + 1) & RLC_AMDL.snModMask;
       MODAMT(RLC_AMDL.txNext, mTxNext, RLC_AMDL.txNextAck,RLC_AMDL.snModMask);
    }
+   RLC_FREE(gCb, rbCb->snssai, sizeof(Snssai));
    if(*toBeFreed == 0)
    {
       return (TRUE);

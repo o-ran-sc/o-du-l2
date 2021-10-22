@@ -193,6 +193,7 @@ SuId            suId,
 RlcCfgCfmInfo   *cfmInfo  
 )
 {
+   uint8_t cfgIdx=0;
    RlcCb             *tRlcCb;
    RlcCfgCfmInfo    *cfgCfm;
    RlcUlCfgTmpData   *cfgTmpData;
@@ -284,7 +285,11 @@ RlcCfgCfmInfo   *cfmInfo
    RLC_FREE_SHRABL_BUF(pst->region, pst->pool, cfmInfo, sizeof(RlcCfgCfmInfo));
 
    /* free the cfgInfo that came from LM */
-   RLC_PST_FREE(pst->region, pst->pool, cfgTmpData->cfgInfo, sizeof(RlcCfgInfo));
+   for(cfgIdx=0; cfgIdx<cfgTmpData->cfgInfo->numEnt; cfgIdx++)
+   {
+      RLC_FREE(tRlcCb, cfgTmpData->cfgInfo->entCfg[cfgIdx].snssai, sizeof(Snssai)); 
+   }
+   RLC_FREE(tRlcCb, cfgTmpData->cfgInfo, sizeof(RlcCfgInfo));
    RLC_FREE(tRlcCb,cfgTmpData,sizeof(RlcUlCfgTmpData));
    
    return ROK;

@@ -265,18 +265,19 @@ typedef struct _rlcUlRbCb
 #ifdef LTE_L2_MEAS
    RlcL2MeasRbCb    rbL2Cb;              /**< RB measurement L2 Cb */
    RlcUlUeCb        *ueCb;              /*!< Pointer to UeCb  */
-   uint8_t              qci;                 /**< qci of the RB */
+   uint8_t          qci;                 /**< qci of the RB */
    RlcL2MeasIpThruput l2MeasIpThruput;   /**< Holds related parameter for
                                              DL/Ul ip throughput>*/
 #endif /* LTE_L2_MEAS */
    CmLteRlcId     rlcId;      /**< RLC Identifier */
-   RlcLchInfo      lch;        /**< Logical Channel Info */
+   RlcLchInfo     lch;        /**< Logical Channel Info */
+   Snssai         *snssai;    /**< Snssai Info */
    CmLteRlcMode   mode;       /**< Entity Mode */
-   uint8_t             dir;        /**< Direction for UL/DL */
+   uint8_t        dir;        /**< Direction for UL/DL */
    Inst           inst;       /**< Tapa where Rb created Instance id */
    SpId           k1wuSapId;   /**< KWU sap Id, to get the KwuSapCb */
    SpId           udxSapId;   /**< KWU sap Id, to get the KwuSapCb */
-   uint32_t            transId;    /**< Transaction Id for RLC */
+   uint32_t       transId;    /**< Transaction Id for RLC */
    union          
    {
       RlcUmUl   umUl;   /**< UM  mode Ul elements */

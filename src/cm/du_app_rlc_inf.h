@@ -117,8 +117,8 @@ typedef enum
 
 typedef enum
 {
-   RLC_DU_APP_RSP_NOK,
-   RLC_DU_APP_RSP_OK
+   RLC_DU_APP_RSP_OK = 1,
+   RLC_DU_APP_RSP_NOK
 }RlcRsp;
 
 typedef struct ulAmCfg
@@ -182,6 +182,7 @@ typedef struct rlcBearerCfg
    uint8_t      rbType;
    uint8_t      lcId;
    uint8_t      lcType;
+   Snssai       *snssai; 
    RlcMode      rlcMode;
    union
    {

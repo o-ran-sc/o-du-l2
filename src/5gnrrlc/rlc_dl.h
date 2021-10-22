@@ -543,6 +543,7 @@ typedef struct _rlcDlRbCb
    /* Discard new changes ends */
    CmLteRlcId     rlcId;           /*!< RLC Identifier */
    RlcLchInfo     lch;             /*!< Logical Channel Info  */
+   Snssai         *snssai;
    CmLteRlcMode   mode;            /*!< Entity Mode */
    uint8_t        dir;             /*!< Direction for UL/DL */
    Inst           inst;            /*!< Tapa Instance where rb created */

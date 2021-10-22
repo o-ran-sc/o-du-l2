@@ -364,7 +364,7 @@ static S16 rlcCfgFillDlRbCb(RlcCb *gCb,RlcDlRbCb *rbCb,RlcDlUeCb *ueCb,RlcEntCfg
          rbCb->dir = RLC_DIR_BOTH;
 
          rbCb->m.amDl.pollPdu = entCfg->m.amInfo.dl.pollPdu;
-	 rbCb->m.amDl.pollByte = entCfg->m.amInfo.dl.pollByte;
+	      rbCb->m.amDl.pollByte = entCfg->m.amInfo.dl.pollByte;
          rbCb->m.amDl.maxRetx = entCfg->m.amInfo.dl.maxRetx;
          rbCb->m.amDl.pollRetxTmrInt = entCfg->m.amInfo.dl.pollRetxTmr;
          rbCb->m.amDl.snLen = entCfg->m.amInfo.dl.snLen;
@@ -400,6 +400,17 @@ static S16 rlcCfgFillDlRbCb(RlcCb *gCb,RlcDlRbCb *rbCb,RlcDlUeCb *ueCb,RlcEntCfg
                   rbCb->rlcId.cellId);
          return RFAILED;
       }
+   }
+
+   if(entCfg->snssai)
+   {
+      RLC_ALLOC(gCb, rbCb->snssai, sizeof(Snssai));
+      if(rbCb->snssai == NULLP)
+      {
+         DU_LOG("\nERROR  --> RLC_DL : rlcCfgFillDlRbCb(): Failed to allocate memory");
+         return RFAILED;
+      }
+      memcpy(rbCb->snssai, entCfg->snssai, sizeof(Snssai));
    }
    rbCb->mode = entCfg->entMode;
    rbCb->discTmrInt = entCfg->discardTmr;
@@ -448,7 +459,6 @@ RlcEntCfgInfo   *entCfg
          rbCb->dir = entCfg->dir;
          rbCb->lch.lChId = entCfg->lCh[0].lChId;
          rbCb->lch.lChType = entCfg->lCh[0].type;
-
          cellCb->lCh[rbCb->lch.lChId - 1].dlRbCb = rbCb;
          break;
       }
@@ -461,6 +471,7 @@ RlcEntCfgInfo   *entCfg
          {
             return (CKW_CFG_REAS_LCHTYPE_MIS);
          }
+         
          ueCb->lCh[rbCb->lch.lChId - 1].dlRbCb = NULLP;
          ueCb->lCh[entCfg->lCh[0].lChId - 1].dlRbCb = rbCb;
 
@@ -489,6 +500,19 @@ RlcEntCfgInfo   *entCfg
       }
    }
 
+   if(entCfg->snssai)
+   {
+      if(!rbCb->snssai)
+      {
+         RLC_ALLOC(gCb, rbCb->snssai, sizeof(Snssai));
+         if(rbCb->snssai == NULLP)
+         {
+            DU_LOG("\nERROR  --> RLC_DL : rlcCfgFillDlRbCb(): Failed to allocate memory");
+            return RFAILED;
+         }
+      }
+      memcpy(rbCb->snssai,entCfg->snssai,sizeof(Snssai));
+   }
 /* AGHOSH */
    rbCb->discTmrInt = entCfg->discardTmr;
 /* AGHOSH */
@@ -1085,6 +1109,7 @@ RlcEntCfgCfmInfo   *entCfm
       /* Assign NULLP to dlRbCb/ulRbCb.
        * Delete Hashlist allocated for it if any */
       cellCb->lCh[rlcRbCb->lch.lChId - 1].dlRbCb = NULLP;
+      RLC_FREE(gCb,rlcRbCb->snssai, sizeof(Snssai)); 
       RLC_FREE(gCb,rlcRbCb, sizeof(RlcDlRbCb));   /*Vartika: Mem leak fix */  
    }
     /* Get ueCb and delete rbCb from it */
@@ -1128,7 +1153,6 @@ RlcEntCfgCfmInfo   *entCfm
                   entCfg->rbId);
          return (ret);
       }
-
       ueCb->lCh[rlcRbCb->lch.lChId - 1].dlRbCb = NULLP;
 
 #ifdef LTE_L2_MEAS
