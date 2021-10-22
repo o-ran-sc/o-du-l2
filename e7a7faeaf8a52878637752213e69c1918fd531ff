@@ -18,6 +18,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6055fc51_0565a232",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 954,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-10-22T19:28:56Z",
+      "side": 1,
+      "message": "Thanks for pointing",
+      "parentUuid": "b3810082_bbb2853b",
+      "revId": "e7a7faeaf8a52878637752213e69c1918fd531ff",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d713ce40_481ea3d2",
@@ -41,6 +59,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ab7c437a_05612a41",
+        "filename": "src/5gnrsch/sch.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-10-22T19:28:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d713ce40_481ea3d2",
+      "range": {
+        "startLine": 102,
+        "startChar": 3,
+        "endLine": 102,
+        "endChar": 9
+      },
+      "revId": "e7a7faeaf8a52878637752213e69c1918fd531ff",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "39e1d203_3234d2b0",
@@ -54,6 +96,30 @@
       "writtenOn": "2021-10-22T13:20:19Z",
       "side": 1,
       "message": "check  pointer before using.",
+      "range": {
+        "startLine": 225,
+        "startChar": 9,
+        "endLine": 225,
+        "endChar": 13
+      },
+      "revId": "e7a7faeaf8a52878637752213e69c1918fd531ff",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0b65bdd2_747f69b6",
+        "filename": "src/5gnrsch/sch_slot_ind.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 225,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-10-22T19:28:56Z",
+      "side": 1,
+      "message": "There\u0027s a check in parent function \"schProcessSlotInd\". I think it will be redundant to include a check here",
+      "parentUuid": "39e1d203_3234d2b0",
       "range": {
         "startLine": 225,
         "startChar": 9,
@@ -112,6 +178,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1c0374ae_1fed1809",
+        "filename": "src/5gnrsch/sch_ue_mgr.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 266,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-10-22T19:28:56Z",
+      "side": 1,
+      "message": "Actually this function is called for every LC. Actually from this function, we get to know whether LC is dedicated or not.\nRFAILED: \u003e\u003e Only during fatal error like Memory issues,\nROK : \u003e\u003e Only When LC is dedicated so that isDedicated flag can be marked as TRUE\nRIGNORE: When LC is not Dedicated so that at fillSchUeCb isDedicated flag is not marked as UeCb",
+      "parentUuid": "1d91c2f4_5eb49a3d",
+      "range": {
+        "startLine": 266,
+        "startChar": 35,
+        "endLine": 266,
+        "endChar": 38
+      },
+      "revId": "e7a7faeaf8a52878637752213e69c1918fd531ff",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "134977bd_d2e46ee8",
         "filename": "src/5gnrsch/sch_ue_mgr.c",
         "patchSetId": 6
@@ -123,6 +213,30 @@
       "writtenOn": "2021-10-22T13:20:19Z",
       "side": 1,
       "message": "at caller fillSchUeCb, just checking this function returning ROK or RFAILED.\nNo use of ROKIGNORE, so ROKIGNORE can be replaced with RFAILED. Please Check once",
+      "range": {
+        "startLine": 300,
+        "startChar": 13,
+        "endLine": 300,
+        "endChar": 22
+      },
+      "revId": "e7a7faeaf8a52878637752213e69c1918fd531ff",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3e764874_be35cb71",
+        "filename": "src/5gnrsch/sch_ue_mgr.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 300,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-10-22T19:28:56Z",
+      "side": 1,
+      "message": "RIGNORE: When LC is not Dedicated , at fillSchUeCb isDedicated flag is not marked in LC context of this LCID in UeCb. This is the significance of this return type",
+      "parentUuid": "134977bd_d2e46ee8",
       "range": {
         "startLine": 300,
         "startChar": 13,
@@ -158,6 +272,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "766ec123_12698886",
+        "filename": "src/5gnrsch/sch_ue_mgr.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 327,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-10-22T19:28:56Z",
+      "side": 1,
+      "message": "It is initialized as ROKIGNORE because ROK has a special significance as it means that LC is a Dedicated one. Initalizing it may introduce the risk of marking isDedicated flag for LC which is not Dedicated",
+      "parentUuid": "65de2497_f87aeb94",
+      "range": {
+        "startLine": 327,
+        "startChar": 19,
+        "endLine": 327,
+        "endChar": 28
+      },
+      "revId": "e7a7faeaf8a52878637752213e69c1918fd531ff",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "116d8cb2_350cf09b",
         "filename": "src/5gnrsch/sch_utils.c",
         "patchSetId": 6
@@ -169,6 +307,30 @@
       "writtenOn": "2021-10-22T13:20:19Z",
       "side": 1,
       "message": "check the available functions in cm_llist.c. and try to reuse them.\nu can check these function once addToReservedF1apPduList and searchFromReservedF1apPduList for reference.",
+      "range": {
+        "startLine": 1314,
+        "startChar": 8,
+        "endLine": 1314,
+        "endChar": 28
+      },
+      "revId": "e7a7faeaf8a52878637752213e69c1918fd531ff",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6308a0a0_59e7c88c",
+        "filename": "src/5gnrsch/sch_utils.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 1314,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-10-22T19:28:56Z",
+      "side": 1,
+      "message": "This function is collaboration of Search and Create for a LinkList. I have reused addNodeToLList for adding of new node. We can discuss it once",
+      "parentUuid": "116d8cb2_350cf09b",
       "range": {
         "startLine": 1314,
         "startChar": 8,
@@ -198,6 +360,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9ea5c66f_5b3d8fc8",
+        "filename": "src/5gnrsch/sch_utils.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 1490,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-10-22T19:28:56Z",
+      "side": 1,
+      "message": "I have reused this function deleteNodeFromLList, which inturn uses cmLListDelFrm",
+      "parentUuid": "94b1f694_6edce2a4",
+      "revId": "e7a7faeaf8a52878637752213e69c1918fd531ff",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7f19af3e_6a8f1d30",
         "filename": "src/cm/common_def.h",
         "patchSetId": 6
@@ -209,6 +389,30 @@
       "writtenOn": "2021-10-22T13:20:19Z",
       "side": 1,
       "message": "I think we have already macros for calcualting MIN.",
+      "range": {
+        "startLine": 190,
+        "startChar": 8,
+        "endLine": 190,
+        "endChar": 15
+      },
+      "revId": "e7a7faeaf8a52878637752213e69c1918fd531ff",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6eeffd9b_e43635a0",
+        "filename": "src/cm/common_def.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 190,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-10-22T19:28:56Z",
+      "side": 1,
+      "message": "Actually I searched for this I didnt find any common function for MIN",
+      "parentUuid": "7f19af3e_6a8f1d30",
       "range": {
         "startLine": 190,
         "startChar": 8,
