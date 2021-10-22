@@ -1,0 +1,106 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9da3c582_d345afa8",
+        "filename": "src/5gnrrlc/rlc_amm_dl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 2988,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-10-22T07:03:43Z",
+      "side": 1,
+      "message": "it seems rbCb is not being freed in this function. Here it is just being added to a list \"gCb-\u003eu.dlCb-\u003etoBeFreed.sduLst\"\nPlease check where is rbCb fetched from this list and freed. Snssai should be freed at that place",
+      "revId": "43c9bb6b7577a6a0ad7c05b5d7c2788e1157c5b7",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "514b34ba_b00275a3",
+        "filename": "src/5gnrrlc/rlc_cfg_dl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1156,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-10-22T07:03:43Z",
+      "side": 1,
+      "message": "remove this",
+      "revId": "43c9bb6b7577a6a0ad7c05b5d7c2788e1157c5b7",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "20d883a0_1e235145",
+        "filename": "src/5gnrrlc/rlc_dl_ul_inf_ul.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 290,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-10-22T07:03:43Z",
+      "side": 1,
+      "message": "use RLC_FREE",
+      "revId": "43c9bb6b7577a6a0ad7c05b5d7c2788e1157c5b7",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "541121be_57971ab6",
+        "filename": "src/5gnrrlc/rlc_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 261,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-10-22T07:03:43Z",
+      "side": 1,
+      "message": "rename to make it more readable that this function is to fill negative response",
+      "revId": "43c9bb6b7577a6a0ad7c05b5d7c2788e1157c5b7",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dc45bc7c_5e78ba79",
+        "filename": "src/5gnrrlc/rlc_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 273,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-10-22T07:03:43Z",
+      "side": 1,
+      "message": "use new macros for the new code \nRLC_DU_APP_RSP_NOK\n\nAlso, fix the values of \"RlcRsp;\" to match with CKW_CFG_CFM_*",
+      "revId": "43c9bb6b7577a6a0ad7c05b5d7c2788e1157c5b7",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e200664e_59d407f5",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 10145,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-10-22T07:03:43Z",
+      "side": 1,
+      "message": "move this code inside \"else if(drbModItem !\u003d NULLP)\" case",
+      "revId": "43c9bb6b7577a6a0ad7c05b5d7c2788e1157c5b7",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
