@@ -3,6 +3,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f1513b4d_646da4a8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-10-25T08:14:17Z",
+      "side": 1,
+      "message": "Comment from Online code review from Harshita",
+      "revId": "e7a7faeaf8a52878637752213e69c1918fd531ff",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b3810082_bbb2853b",
         "filename": "src/5gnrsch/sch.c",
         "patchSetId": 6
@@ -85,6 +102,52 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "78cd8e87_1b5dda68",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 750,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-10-25T08:14:17Z",
+      "side": 1,
+      "message": "Rename it to TBS Size",
+      "range": {
+        "startLine": 750,
+        "startChar": 30,
+        "endLine": 750,
+        "endChar": 45
+      },
+      "revId": "e7a7faeaf8a52878637752213e69c1918fd531ff",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e4a245da_192b6339",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 1613,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-10-25T08:14:17Z",
+      "side": 1,
+      "message": "create new index for dlMsgAlloc heere",
+      "range": {
+        "startLine": 1613,
+        "startChar": 26,
+        "endLine": 1613,
+        "endChar": 36
+      },
+      "revId": "e7a7faeaf8a52878637752213e69c1918fd531ff",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "39e1d203_3234d2b0",
         "filename": "src/5gnrsch/sch_slot_ind.c",
         "patchSetId": 6
@@ -132,6 +195,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f9180775_dcd67be0",
+        "filename": "src/5gnrsch/sch_slot_ind.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 237,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-10-25T08:14:17Z",
+      "side": 1,
+      "message": "Recheck this logic of scheduling next slot for pending LC",
+      "range": {
+        "startLine": 237,
+        "startChar": 30,
+        "endLine": 237,
+        "endChar": 42
+      },
+      "revId": "e7a7faeaf8a52878637752213e69c1918fd531ff",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a19738e0_9cf35c20",
         "filename": "src/5gnrsch/sch_slot_ind.c",
         "patchSetId": 6
@@ -148,6 +234,75 @@
         "startChar": 30,
         "endLine": 247,
         "endChar": 51
+      },
+      "revId": "e7a7faeaf8a52878637752213e69c1918fd531ff",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a4499020_8bdff8f8",
+        "filename": "src/5gnrsch/sch_slot_ind.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 259,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-10-25T08:14:17Z",
+      "side": 1,
+      "message": "Recheck as discussed",
+      "range": {
+        "startLine": 259,
+        "startChar": 6,
+        "endLine": 259,
+        "endChar": 26
+      },
+      "revId": "e7a7faeaf8a52878637752213e69c1918fd531ff",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d0acb0c7_ea680775",
+        "filename": "src/5gnrsch/sch_slot_ind.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 286,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-10-25T08:14:17Z",
+      "side": 1,
+      "message": "remove this dlMsg alloc from here",
+      "range": {
+        "startLine": 286,
+        "startChar": 15,
+        "endLine": 286,
+        "endChar": 25
+      },
+      "revId": "e7a7faeaf8a52878637752213e69c1918fd531ff",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4c93750d_54d76f9c",
+        "filename": "src/5gnrsch/sch_slot_ind.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 333,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-10-25T08:14:17Z",
+      "side": 1,
+      "message": "Whether we need to send ZEro BO or not?",
+      "range": {
+        "startLine": 333,
+        "startChar": 18,
+        "endLine": 333,
+        "endChar": 28
       },
       "revId": "e7a7faeaf8a52878637752213e69c1918fd531ff",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
@@ -296,6 +451,75 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d396917b_6fadf6a3",
+        "filename": "src/5gnrsch/sch_ue_mgr.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 400,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-10-25T08:14:17Z",
+      "side": 1,
+      "message": "Pass the address of isDedicated to the funtion updateDedLcInfo",
+      "range": {
+        "startLine": 400,
+        "startChar": 56,
+        "endLine": 400,
+        "endChar": 67
+      },
+      "revId": "e7a7faeaf8a52878637752213e69c1918fd531ff",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "68298dda_0f94fd1e",
+        "filename": "src/5gnrsch/sch_ue_mgr.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 433,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-10-25T08:14:17Z",
+      "side": 1,
+      "message": "pass it as address",
+      "range": {
+        "startLine": 433,
+        "startChar": 52,
+        "endLine": 433,
+        "endChar": 64
+      },
+      "revId": "e7a7faeaf8a52878637752213e69c1918fd531ff",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "00d6cdd5_a4ea4757",
+        "filename": "src/5gnrsch/sch_ue_mgr.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 449,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-10-25T08:14:17Z",
+      "side": 1,
+      "message": "dedLcInfo can be deallocated here if last node",
+      "range": {
+        "startLine": 449,
+        "startChar": 41,
+        "endLine": 449,
+        "endChar": 50
+      },
+      "revId": "e7a7faeaf8a52878637752213e69c1918fd531ff",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "116d8cb2_350cf09b",
         "filename": "src/5gnrsch/sch_utils.c",
         "patchSetId": 6
@@ -336,6 +560,75 @@
         "startChar": 8,
         "endLine": 1314,
         "endChar": 28
+      },
+      "revId": "e7a7faeaf8a52878637752213e69c1918fd531ff",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "10c6e631_4969d0a9",
+        "filename": "src/5gnrsch/sch_utils.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 1317,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-10-25T08:14:17Z",
+      "side": 1,
+      "message": "Rename it to LcInfo",
+      "range": {
+        "startLine": 1317,
+        "startChar": 3,
+        "endLine": 1317,
+        "endChar": 9
+      },
+      "revId": "e7a7faeaf8a52878637752213e69c1918fd531ff",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a5232042_a5940758",
+        "filename": "src/5gnrsch/sch_utils.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 1317,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-10-25T08:14:17Z",
+      "side": 1,
+      "message": "lcList \u003e lcNode",
+      "range": {
+        "startLine": 1317,
+        "startChar": 11,
+        "endLine": 1317,
+        "endChar": 17
+      },
+      "revId": "e7a7faeaf8a52878637752213e69c1918fd531ff",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a462cf5e_eb4d84d4",
+        "filename": "src/5gnrsch/sch_utils.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 1450,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-10-25T08:14:17Z",
+      "side": 1,
+      "message": "merge it into search function",
+      "range": {
+        "startLine": 1450,
+        "startChar": 8,
+        "endLine": 1450,
+        "endChar": 20
       },
       "revId": "e7a7faeaf8a52878637752213e69c1918fd531ff",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
