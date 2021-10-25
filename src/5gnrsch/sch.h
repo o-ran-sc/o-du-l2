@@ -34,7 +34,6 @@
 #define SCH_SIB1_TRANS 16 /* SIB1 transmission as per 38.331 is every 160 ms */
 #define SCH_NUM_SC_PRB 12 /* number of SCs in a PRB */
 #define SCH_MAX_SSB_BEAM 8 /* since we are supporting only SCS=15KHz and 30KHz */
-#define SCH_SYMBOL_PER_SLOT 14
 #define SCH_SSB_NUM_SYMB 4
 #define SCH_SSB_NUM_PRB 21 /* One extra PRB as buffer */
 #define SCHED_DELTA 1
@@ -126,7 +125,7 @@ typedef struct freePrbBlock
 typedef struct schPrbAlloc
 {
    CmLListCp freePrbBlockList;           /*!< List of continuous blocks for available PRB */
-   uint64_t  prbBitMap[SCH_SYMBOL_PER_SLOT][PRB_BITMAP_MAX_IDX];  /*!< BitMap to store the allocated PRBs */
+   uint64_t  prbBitMap[ MAX_SYMB_PER_SLOT][PRB_BITMAP_MAX_IDX];  /*!< BitMap to store the allocated PRBs */
 }SchPrbAlloc;
 
 /**

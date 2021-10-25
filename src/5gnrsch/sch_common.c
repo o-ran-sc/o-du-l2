@@ -77,10 +77,21 @@ uint8_t schBroadcastSsbAlloc(SchCellCb *cell, SlotTimingInfo slotTime, DlBrdcstA
    SchDlSlotInfo *schDlSlotInfo;
    SsbInfo ssbInfo;
 
+   if(cell == NULL)
+   {
+      DU_LOG("\nERROR  -->  SCH: schBroadcastSsbAlloc() : Cell is NULL");
+      return RFAILED;
+   }
+
+   if(dlBrdcstAlloc == NULL)
+   {
+      DU_LOG("\nERROR  -->  SCH: schBroadcastSsbAlloc() : dlBrdcstAlloc is NULL");
+      return RFAILED;
+   }
+
    schDlSlotInfo = cell->schDlSlotInfo[slotTime.slot];
    ssbStartPrb = cell->cellCfg.ssbSchCfg.ssbOffsetPointA; //+Kssb
-   ssbStartSymb = cell->ssbStartSymbArr[dlBrdcstAlloc->ssbIdxSupported-1]; /*since we are
-                                                                             supporting only 1 ssb beam */
+   ssbStartSymb = cell->ssbStartSymbArr[dlBrdcstAlloc->ssbIdxSupported-1]; /*since we are supporting only 1 ssb beam */
 
    /* Assign interface structure */
    for(idx=0; idx<dlBrdcstAlloc->ssbIdxSupported; idx++)
@@ -121,11 +132,47 @@ uint8_t schBroadcastSsbAlloc(SchCellCb *cell, SlotTimingInfo slotTime, DlBrdcstA
  **/
 uint8_t schBroadcastSib1Alloc(SchCellCb *cell, SlotTimingInfo slotTime, DlBrdcstAlloc *dlBrdcstAlloc)
 {
-   FreqDomainAlloc freqAlloc = cell->cellCfg.sib1SchCfg.sib1PdschCfg.pdschFreqAlloc.freqAlloc;
-   TimeDomainAlloc timeAlloc = cell->cellCfg.sib1SchCfg.sib1PdschCfg.pdschTimeAlloc.timeAlloc;
-   SchDlSlotInfo *schDlSlotInfo = cell->schDlSlotInfo[slotTime.slot];
+   uint8_t dmrsStartSymbol, startSymbol, numSymbol ;
+   DmrsInfo dmrs;
+   FreqDomainAlloc freqAlloc;
+   TimeDomainAlloc timeAlloc;
+   SchDlSlotInfo *schDlSlotInfo = NULLP;
 
-   if((allocatePrbDl(cell, slotTime, timeAlloc.startSymb, timeAlloc.numSymb, &freqAlloc.startPrb, freqAlloc.numPrb)) != ROK)
+   if(cell == NULL)
+   {
+      DU_LOG("\nERROR  -->  SCH: schBroadcastSsbAlloc() : Cell is NULL");
+      return RFAILED;
+   }
+
+   if(dlBrdcstAlloc == NULL)
+   {
+      DU_LOG("\nERROR  -->  SCH: schBroadcastSsbAlloc() : dlBrdcstAlloc is NULL");
+      return RFAILED;
+   }
+
+   dmrs = cell->cellCfg.sib1SchCfg.sib1PdschCfg.dmrs;
+   freqAlloc = cell->cellCfg.sib1SchCfg.sib1PdschCfg.pdschFreqAlloc.freqAlloc;
+   timeAlloc = cell->cellCfg.sib1SchCfg.sib1PdschCfg.pdschTimeAlloc.timeAlloc;
+   schDlSlotInfo = cell->schDlSlotInfo[slotTime.slot];
+
+   /* Find total symbols used including DMRS */
+   /* If there are no DRMS symbols, findDmrsStartSymbol() returns MAX_SYMB_PER_SLOT,
+    * in that case only PDSCH symbols are marked as occupied */
+   dmrsStartSymbol = findDmrsStartSymbol(dmrs.dlDmrsSymbPos);   
+   if(dmrsStartSymbol == MAX_SYMB_PER_SLOT)
+   {
+      startSymbol = timeAlloc.startSymb;
+      numSymbol = timeAlloc.numSymb;
+   }
+   /* If DMRS symbol is found, mark DMRS and PDSCH symbols as occupied */
+   else
+   {
+      startSymbol = dmrsStartSymbol;
+      numSymbol = dmrs.nrOfDmrsSymbols + timeAlloc.numSymb;
+   }
+
+   /* Allocate PRB */
+   if((allocatePrbDl(cell, slotTime, startSymbol, numSymbol, &freqAlloc.startPrb, freqAlloc.numPrb)) != ROK)
    {
        DU_LOG("\nERROR  -->  SCH: PRB allocation failed for SIB1 in SFN:Slot [%d : %d]", slotTime.sfn, slotTime.slot);
        return RFAILED;
@@ -572,41 +619,48 @@ uint8_t schUlResAlloc(SchCellCb *cell, Inst schInst)
 uint8_t schDlRsrcAllocMsg4(SchCellCb *cell, SlotTimingInfo slotTime, DlMsgAlloc *msg4Alloc)
 {
    uint8_t coreset0Idx = 0;
-   uint8_t numRbs = 0;
    uint8_t firstSymbol = 0;
    uint8_t numSymbols = 0;
-   uint8_t offset = 0;
-   uint8_t offsetPointA;
-   uint8_t FreqDomainResource[6] = {0};
-   uint16_t tbSize = 0;
    uint8_t mcs = 4;                         /* MCS fixed to 4 */
-   SchBwpDlCfg *initialBwp;
+   uint8_t dmrsStartSymbol = 0, startSymbol = 0, numSymbol = 0;
+   uint16_t tbSize = 0;
+   uint16_t numRbs;
+   SchBwpDlCfg *initialBwp = NULLP;
+   PdcchCfg *pdcch = NULLP;
+   PdschCfg *pdsch = NULLP;
+   BwpCfg *bwp = NULLP;
 
-   PdcchCfg *pdcch = &msg4Alloc->dlMsgPdcchCfg;
-   PdschCfg *pdsch = &msg4Alloc->dlMsgPdschCfg;
-   BwpCfg *bwp = &msg4Alloc->bwp;
+   if(cell == NULL)
+   {
+      DU_LOG("\nERROR  -->  SCH: schDlRsrcAllocMsg4() : Cell is NULL");
+      return RFAILED;
+   }
 
+   if(msg4Alloc == NULL)
+   {
+      DU_LOG("\nERROR  -->  SCH: schDlRsrcAllocMsg4() :  msg4Alloc is NULL");
+      return RFAILED;
+   }
+
+   pdcch = &msg4Alloc->dlMsgPdcchCfg;
+   pdsch = &msg4Alloc->dlMsgPdschCfg;
+   bwp = &msg4Alloc->bwp;
    initialBwp   = &cell->cellCfg.schInitialDlBwp;
-   offsetPointA = cell->cellCfg.ssbSchCfg.ssbOffsetPointA;
    coreset0Idx  = initialBwp->pdcchCommon.commonSearchSpace.coresetId;
 
    /* derive the sib1 coreset0 params from table 13-1 spec 38.213 */
-   numRbs        = coresetIdxTable[coreset0Idx][1];
-   numSymbols    = coresetIdxTable[coreset0Idx][2];
-   offset        = coresetIdxTable[coreset0Idx][3];
+   numRbs     = coresetIdxTable[coreset0Idx][1];
+   numSymbols = coresetIdxTable[coreset0Idx][2];
 
    /* calculate time domain parameters */
    uint16_t mask = 0x2000;
-   for(firstSymbol=0; firstSymbol<14;firstSymbol++)
+   for(firstSymbol=0; firstSymbol<MAX_SYMB_PER_SLOT; firstSymbol++)
    {
       if(initialBwp->pdcchCommon.commonSearchSpace.monitoringSymbol & mask)
 	 break;
       else
 	 mask = mask>>1;
    }
-
-   /* calculate the PRBs */
-   freqDomRscAllocType0(((offsetPointA-offset)/6), (numRbs/6), FreqDomainResource);
 
    /* fill BWP */
    bwp->freqAlloc.numPrb   = initialBwp->bwp.freqAlloc.numPrb;
@@ -617,7 +671,9 @@ uint8_t schDlRsrcAllocMsg4(SchCellCb *cell, SlotTimingInfo slotTime, DlMsgAlloc 
    /* fill the PDCCH PDU */
    pdcch->coresetCfg.startSymbolIndex = firstSymbol;
    pdcch->coresetCfg.durationSymbols = numSymbols;
-   memcpy(pdcch->coresetCfg.freqDomainResource,FreqDomainResource,6);
+   memcpy(pdcch->coresetCfg.freqDomainResource, \
+      cell->cellCfg.schInitialDlBwp.pdcchCommon.commonSearchSpace.freqDomainRsrc, FREQ_DOM_RSRC_SIZE);
+
    pdcch->coresetCfg.cceRegMappingType = 1; /* coreset0 is always interleaved */
    pdcch->coresetCfg.regBundleSize = 6;    /* spec-38.211 sec 7.3.2.2 */
    pdcch->coresetCfg.interleaverSize = 2;  /* spec-38.211 sec 7.3.2.2 */
@@ -677,8 +733,24 @@ uint8_t schDlRsrcAllocMsg4(SchCellCb *cell, SlotTimingInfo slotTime, DlMsgAlloc 
    pdsch->pdschFreqAlloc.freqAlloc.numPrb = schCalcNumPrb(tbSize, mcs, NUM_PDSCH_SYMBOL);
    pdsch->pdschFreqAlloc.vrbPrbMapping = 0; /* non-interleaved */
 
+   /* Find total symbols occupied including DMRS */
+   dmrsStartSymbol = findDmrsStartSymbol(pdsch->dmrs.dlDmrsSymbPos);
+   /* If there are no DRMS symbols, findDmrsStartSymbol() returns MAX_SYMB_PER_SLOT,
+    * in that case only PDSCH symbols are marked as occupied */
+   if(dmrsStartSymbol == MAX_SYMB_PER_SLOT)
+   {
+      startSymbol = pdsch->pdschTimeAlloc.timeAlloc.startSymb;
+      numSymbol = pdsch->pdschTimeAlloc.timeAlloc.numSymb;
+   }
+   /* If DMRS symbol is found, mark DMRS and PDSCH symbols as occupied */
+   else
+   {
+      startSymbol = dmrsStartSymbol;
+      numSymbol = pdsch->dmrs.nrOfDmrsSymbols + pdsch->pdschTimeAlloc.timeAlloc.numSymb;
+   }
+
    /* Allocate the number of PRBs required for RAR PDSCH */
-   if((allocatePrbDl(cell, slotTime, pdsch->pdschTimeAlloc.timeAlloc.startSymb, pdsch->pdschTimeAlloc.timeAlloc.numSymb,\
+   if((allocatePrbDl(cell, slotTime, startSymbol, numSymbol,\
       &pdsch->pdschFreqAlloc.freqAlloc.startPrb, pdsch->pdschFreqAlloc.freqAlloc.numPrb)) != ROK)
    {
       DU_LOG("\nERROR  --> SCH : Resource allocation failed for MSG4");
@@ -757,6 +829,7 @@ uint8_t schDlRsrcAllocDlMsg(SchCellCb *cell, SlotTimingInfo slotTime, uint16_t c
    SchUeCb ueCb;
    SchControlRsrcSet coreset1;
    SchPdschConfig pdschCfg;
+   uint8_t dmrsStartSymbol, startSymbol, numSymbol;
 
    pdcch = &dlMsgAlloc->dlMsgPdcchCfg;
    pdsch = &dlMsgAlloc->dlMsgPdschCfg;
@@ -841,8 +914,24 @@ uint8_t schDlRsrcAllocDlMsg(SchCellCb *cell, SlotTimingInfo slotTime, uint16_t c
    pdsch->pdschFreqAlloc.freqAlloc.numPrb = schCalcNumPrb(tbSize, ueCb.ueCfg.dlModInfo.mcsIndex, \
 		   pdschCfg.timeDomRsrcAllociList[0].symbolLength);
 
+   /* Find total symbols occupied including DMRS */
+   dmrsStartSymbol = findDmrsStartSymbol(pdsch->dmrs.dlDmrsSymbPos);
+   /* If there are no DRMS symbols, findDmrsStartSymbol() returns MAX_SYMB_PER_SLOT,
+    * in that case only PDSCH symbols are marked as occupied */
+   if(dmrsStartSymbol == MAX_SYMB_PER_SLOT)
+   {
+      startSymbol = pdsch->pdschTimeAlloc.timeAlloc.startSymb;
+      numSymbol = pdsch->pdschTimeAlloc.timeAlloc.numSymb;
+   }
+   /* If DMRS symbol is found, mark DMRS and PDSCH symbols as occupied */
+   else
+   {
+      startSymbol = dmrsStartSymbol;
+      numSymbol = pdsch->dmrs.nrOfDmrsSymbols + pdsch->pdschTimeAlloc.timeAlloc.numSymb;
+   }
+
    /* Allocate the number of PRBs required for DL PDSCH */
-   if((allocatePrbDl(cell, slotTime, pdsch->pdschTimeAlloc.timeAlloc.startSymb, pdsch->pdschTimeAlloc.timeAlloc.numSymb,\
+   if((allocatePrbDl(cell, slotTime, startSymbol, numSymbol,\
       &pdsch->pdschFreqAlloc.freqAlloc.startPrb, pdsch->pdschFreqAlloc.freqAlloc.numPrb)) != ROK)
    {
       DU_LOG("\nERROR  --> SCH : allocatePrbDl() failed for DL MSG");
@@ -1112,7 +1201,7 @@ SchPdschConfig pdschDedCfg, uint8_t ulAckListCount, uint8_t *UlAckTbl)
                   }   
                   if(slotCfg == FLEXI_SLOT)
                   {
-                     for(checkSymbol = 0; checkSymbol<SCH_SYMBOL_PER_SLOT;checkSymbol++)
+                     for(checkSymbol = 0; checkSymbol< MAX_SYMB_PER_SLOT;checkSymbol++)
                      {
                         if(cell->cellCfg.tddCfg.slotCfg[tmpSlot][checkSymbol] == UL_SLOT)
                         {

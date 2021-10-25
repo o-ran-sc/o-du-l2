@@ -471,40 +471,33 @@ uint8_t schProcessRachInd(RachIndInfo *rachInd, Inst schInst)
  **/
 uint8_t schFillRar(SchCellCb *cell, SlotTimingInfo rarTime, uint16_t ueIdx, RarAlloc *rarAlloc, uint8_t k0Index)
 {
-   uint8_t coreset0Idx = 0;
-   uint8_t numRbs = 0;
-   uint8_t firstSymbol = 0;
-   uint8_t numSymbols = 0;
-   uint8_t offset = 0;
-   uint8_t FreqDomainResource[6] = {0};
+   uint8_t  coreset0Idx = 0;
+   uint8_t  firstSymbol = 0, numSymbols = 0;
+   uint8_t  mcs = 4;  /* MCS fixed to 4 */
+   uint8_t  dmrsStartSymbol, startSymbol, numSymbol ;
+   uint16_t numRbs = 0;
    uint16_t tbSize = 0;
-   uint8_t mcs = 4;  /* MCS fixed to 4 */
 
    SchBwpDlCfg *initialBwp = &cell->cellCfg.schInitialDlBwp;
    PdcchCfg *pdcch = &rarAlloc->rarPdcchCfg;
    PdschCfg *pdsch = &rarAlloc->rarPdschCfg;
    BwpCfg *bwp = &rarAlloc->bwp;
 
-   coreset0Idx     = initialBwp->pdcchCommon.commonSearchSpace.coresetId;
-
    /* derive the sib1 coreset0 params from table 13-1 spec 38.213 */
-   numRbs        = coresetIdxTable[coreset0Idx][1];
-   numSymbols    = coresetIdxTable[coreset0Idx][2];
-   offset        = coresetIdxTable[coreset0Idx][3];
+   coreset0Idx     = initialBwp->pdcchCommon.commonSearchSpace.coresetId;
+   numRbs     = coresetIdxTable[coreset0Idx][1]; 
+   numSymbols = coresetIdxTable[coreset0Idx][2];
 
    /* calculate time domain parameters */
    // note: since slot value is made sl1, RAR can be sent at all slots
    uint16_t mask = 0x2000;
-   for(firstSymbol=0; firstSymbol<14;firstSymbol++)
+   for(firstSymbol=0; firstSymbol<MAX_SYMB_PER_SLOT; firstSymbol++)
    {
       if(initialBwp->pdcchCommon.commonSearchSpace.monitoringSymbol & mask)
 	 break;
       else
 	 mask = mask>>1;
    }
-
-   /* calculate the PRBs */
-   freqDomRscAllocType0(((cell->cellCfg.ssbSchCfg.ssbOffsetPointA - offset)/6), (numRbs/6), FreqDomainResource);
 
    /* fill BWP */
    bwp->freqAlloc.numPrb   = initialBwp->bwp.freqAlloc.numPrb;
@@ -515,11 +508,14 @@ uint8_t schFillRar(SchCellCb *cell, SlotTimingInfo rarTime, uint16_t ueIdx, RarA
    /* fill the PDCCH PDU */
    pdcch->coresetCfg.startSymbolIndex = firstSymbol;
    pdcch->coresetCfg.durationSymbols = numSymbols;
-   memcpy(pdcch->coresetCfg.freqDomainResource, FreqDomainResource, FREQ_DOM_RSRC_SIZE);
+   memcpy(pdcch->coresetCfg.freqDomainResource, \
+      cell->cellCfg.schInitialDlBwp.pdcchCommon.commonSearchSpace.freqDomainRsrc, FREQ_DOM_RSRC_SIZE);
+
    pdcch->coresetCfg.cceRegMappingType = 1; /* coreset0 is always interleaved */
    pdcch->coresetCfg.regBundleSize = 6;    /* spec-38.211 sec 7.3.2.2 */
    pdcch->coresetCfg.interleaverSize = 2;  /* spec-38.211 sec 7.3.2.2 */
    pdcch->coresetCfg.coreSetType = 0;
+   pdcch->coresetCfg.coreSetSize = numRbs;
    pdcch->coresetCfg.shiftIndex = cell->cellCfg.phyCellId;
    pdcch->coresetCfg.precoderGranularity = 0; /* sameAsRegBundle */
    pdcch->numDlDci = 1;
@@ -577,8 +573,24 @@ uint8_t schFillRar(SchCellCb *cell, SlotTimingInfo rarTime, uint16_t ueIdx, RarA
    pdsch->pdschFreqAlloc.freqAlloc.numPrb = \
       schCalcNumPrb(tbSize, mcs, initialBwp->pdschCommon.timeDomRsrcAllocList[k0Index].lengthSymbol);
 
+   /* Find total symbols occupied including DMRS */
+   dmrsStartSymbol = findDmrsStartSymbol(pdsch->dmrs.dlDmrsSymbPos);
+   /* If there are no DRMS symbols, findDmrsStartSymbol() returns MAX_SYMB_PER_SLOT, 
+    * in that case only PDSCH symbols are marked as occupied */
+   if(dmrsStartSymbol == MAX_SYMB_PER_SLOT)
+   {
+      startSymbol = pdsch->pdschTimeAlloc.timeAlloc.startSymb;
+      numSymbol = pdsch->pdschTimeAlloc.timeAlloc.numSymb;
+   }
+   /* If DMRS symbol is found, mark DMRS and PDSCH symbols as occupied */
+   else
+   {
+      startSymbol = dmrsStartSymbol;
+      numSymbol = pdsch->dmrs.nrOfDmrsSymbols + pdsch->pdschTimeAlloc.timeAlloc.numSymb;
+   }
+
    /* Allocate the number of PRBs required for RAR PDSCH */
-   if((allocatePrbDl(cell, rarTime, pdsch->pdschTimeAlloc.timeAlloc.startSymb, pdsch->pdschTimeAlloc.timeAlloc.numSymb,\
+   if((allocatePrbDl(cell, rarTime, startSymbol, numSymbol,\
       &pdsch->pdschFreqAlloc.freqAlloc.startPrb, pdsch->pdschFreqAlloc.freqAlloc.numPrb)) != ROK)
    {
       DU_LOG("\nERROR  --> SCH : allocatePrbDl() failed for RAR");
