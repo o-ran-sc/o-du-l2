@@ -927,7 +927,7 @@ uint8_t MacSchDlRlcBoInfo(Pst *pst, DlRlcBoInfo *dlBoInfo)
 {
    uint8_t  lcId = 0;
    uint16_t ueIdx = 0;
-   uint16_t slot;
+   uint16_t slot = 0;
 #ifdef NR_TDD
    uint16_t slotIdx = 0;
 #endif
@@ -957,7 +957,15 @@ uint8_t MacSchDlRlcBoInfo(Pst *pst, DlRlcBoInfo *dlBoInfo)
          (lcId >= MIN_DRB_LCID && lcId <= MAX_DRB_LCID))
    {
       SET_ONE_BIT(ueIdx, cell->boIndBitMap);
-      ueCb->dlInfo.dlLcCtxt[lcId].bo = dlBoInfo->dataVolume;
+      if(ueCb->dlInfo.dlLcCtxt[lcId].lcId == lcId)
+      {
+         ueCb->dlInfo.dlLcCtxt[lcId].bo = dlBoInfo->dataVolume;
+      }
+      else
+      {
+         DU_LOG("ERROR --> SCH: LCID:%d is not configured in SCH Cb",lcId);
+         return RFAILED;
+      }
    }
    else if(lcId != SRB0_LCID)
    {
@@ -978,6 +986,7 @@ uint8_t MacSchDlRlcBoInfo(Pst *pst, DlRlcBoInfo *dlBoInfo)
       }
    }
 #endif
+   DU_LOG("\nINFO --> SCH : VS slot:%d, lcId:%d, bo:%d",slot, lcId, dlBoInfo->dataVolume);
 
    schDlSlotInfo = cell->schDlSlotInfo[slot];
 
@@ -993,7 +1002,7 @@ uint8_t MacSchDlRlcBoInfo(Pst *pst, DlRlcBoInfo *dlBoInfo)
       schDlSlotInfo = NULL;
       return RFAILED;
    }
-   
+
    schDlSlotInfo->dlMsgInfo->crnti = dlBoInfo->crnti;
    schDlSlotInfo->dlMsgInfo->ndi = 1;
    schDlSlotInfo->dlMsgInfo->harqProcNum = 0;
@@ -1355,6 +1364,109 @@ uint8_t allocatePrbUl(SchCellCb *cell, SlotTimingInfo slotTime, \
    return ROK;
 }
  
+/*******************************************************************************
+ *
+ * @brief Try to find Best Free Block with Max Num PRB 
+ *
+ * @details
+ *
+ *    Function : searchLargestFreeBlockDL
+ *
+ *    Functionality:
+ *     Finds the FreeBlock with MaxNum of FREE PRB considering SSB/SIB1 ocassions.
+ *
+ * @params[in] I/P > prbAlloc table (FreeBlock list)
+ *             I/P > Slot timing Info
+ *             O/P > Start PRB
+ *       
+ *
+ * @return Max Number of Free PRB 
+ *         If 0, then no Suitable Free Block
+ *
+ * ********************************************************************************/
+
+uint16_t searchLargestFreeBlockDL(SchCellCb *cell, SlotTimingInfo slotTime,uint16_t *startPrb)
+{
+   uint16_t       broadcastPrbStart=0, broadcastPrbEnd=0, maxFreePRB = 0;
+   PduTxOccsaion  ssbOccasion=0, sib1Occasion=0;
+   FreePrbBlock   *freePrbBlock = NULLP;
+   CmLList        *freePrbNode = NULLP;
+
+   SchDlSlotInfo  *schDlSlotInfo = cell->schDlSlotInfo[slotTime.slot];
+   SchPrbAlloc    *prbAlloc = &schDlSlotInfo->prbAlloc;
+
+   ssbOccasion = schCheckSsbOcc(cell, slotTime);
+   sib1Occasion = schCheckSib1Occ(cell, slotTime);
+
+   if(ssbOccasion && sib1Occasion)
+   {
+      broadcastPrbStart = cell->cellCfg.ssbSchCfg.ssbOffsetPointA; 
+      broadcastPrbEnd = broadcastPrbStart + SCH_SSB_NUM_PRB + cell->cellCfg.sib1SchCfg.sib1PdschCfg.pdschFreqAlloc.freqAlloc.numPrb -1;
+   }
+   else if(ssbOccasion)
+   {
+      broadcastPrbStart = cell->cellCfg.ssbSchCfg.ssbOffsetPointA;
+      broadcastPrbEnd = broadcastPrbStart + SCH_SSB_NUM_PRB -1;
+   }
+   else if(sib1Occasion)
+   {
+      broadcastPrbStart = cell->cellCfg.sib1SchCfg.sib1PdschCfg.pdschFreqAlloc.freqAlloc.startPrb;
+      broadcastPrbEnd = broadcastPrbStart + cell->cellCfg.sib1SchCfg.sib1PdschCfg.pdschFreqAlloc.freqAlloc.numPrb -1;
+   }
+
+
+   freePrbNode = prbAlloc->freePrbBlockList.first; 
+   *startPrb = 0; /*Initialize the StartPRB to zero*/
+   while(freePrbNode)
+   {
+      freePrbBlock = (FreePrbBlock *)freePrbNode->node;
+
+      /*For block with same numFreeBlocks, choose the one with HighestPRB range
+       *Since FreeBLockList are arranged in Descending order of PRB range thus Skipping this block*/
+      if(maxFreePRB >= freePrbBlock->numFreePrb) 
+      {
+         //skip this block
+         freePrbNode = freePrbNode->next;
+         continue;
+      }
+
+      /* If broadcast message is scheduled in this slot, then check if its PRBs belong to the current free block.
+       * Since SSB/SIB1 PRB location is fixed, these PRBs cannot be allocated to other message in same slot */
+      if((ssbOccasion || sib1Occasion) && 
+            ((broadcastPrbStart >= freePrbBlock->startPrb) && (broadcastPrbStart <= freePrbBlock->endPrb)) && \
+            ((broadcastPrbEnd >= freePrbBlock->startPrb) && (broadcastPrbEnd <= freePrbBlock->endPrb)))
+      {
+
+         /* Implmentation is done such that highest-numbered free-RB is Checked first
+            and freePRB in this block is greater than Max till now */
+         if((freePrbBlock->endPrb > broadcastPrbEnd) && ((freePrbBlock->endPrb - broadcastPrbEnd) > maxFreePRB))
+         {
+            /* If sufficient free PRBs are available above broadcast message*/
+            *startPrb = broadcastPrbEnd + 1;
+            maxFreePRB = (freePrbBlock->endPrb - broadcastPrbEnd);		 
+         }
+         /*Also check the other freeBlock (i.e. Above the broadcast message) for MAX FREE PRB*/
+         if((broadcastPrbStart > freePrbBlock->startPrb) && ((broadcastPrbStart - freePrbBlock->startPrb) > maxFreePRB))
+         {
+            /* If free PRBs are available below broadcast message*/
+            *startPrb = freePrbBlock->startPrb;
+            maxFreePRB = (broadcastPrbStart - freePrbBlock->startPrb);
+         }
+      }
+      else  //Best Block
+      {
+         if(maxFreePRB < freePrbBlock->numFreePrb)
+         {
+            *startPrb = freePrbBlock->startPrb;
+            maxFreePRB = freePrbBlock->numFreePrb;
+         }
+
+      }
+      freePrbNode = freePrbNode->next;
+   }  
+   return(maxFreePRB);
+}
+
 /**********************************************************************
   End of file
  **********************************************************************/

@@ -172,79 +172,51 @@ void fillSchUlLcCtxt(SchUlLcCtxt *ueCbLcCfg, SchLcCfg *lcCfg)
 
 /*******************************************************************
  *
- * @brief Function to update Sch Ul Lc Cb
+ * @brief Function to update/allocate dedLC Info
  *
  * @details
  *
- *    Function : updateSchUlCb
+ *    Function : updateDedLcInfo
  *
- *    Functionality: Function to update SCH Ul Lc Cb
+ *    Functionality: Function to fill DLDedLcInfo
  *
- * @returns void
+ * @params[arg] snssai pointer,
+ *              SchRrmPolicy pointer,
+ *              SchLcPrbEstimate pointer , It will be filled
+ *              isDedicated pointer,(Address of isDedicated flag in LC Context)
  *
- * ****************************************************************/
-
-void updateSchUlCb(uint8_t delIdx, SchUlCb *ulInfo)
-{
-   uint8_t lcIdx = 0;
-
-   for(lcIdx = delIdx; lcIdx < ulInfo->numUlLc; lcIdx++)
-   {
-      memcpy(&ulInfo->ulLcCtxt[lcIdx], &ulInfo->ulLcCtxt[lcIdx+1], sizeof(SchUlLcCtxt));
-      memset(&ulInfo->ulLcCtxt[lcIdx+1], 0, sizeof(SchUlLcCtxt));
-   }
-   /*Leakage of Last Index*/
-   /*Last index of ulLcCtxt(before deletion) should be void*/
-   if(ulInfo->ulLcCtxt[ulInfo->numUlLc].snssai != NULLP)
-   {
-      DU_LOG("ERROR  --> SCH: updateSchUlCb Last index:%d (Before Deletion) memory is leaking",\
-            ulInfo->numUlLc);
-      SCH_FREE(ulInfo->ulLcCtxt[ulInfo->numUlLc].snssai, sizeof(Snssai));
-   }
-   else
-   {
-      DU_LOG("INFO  --> SCH: updateSchUlCb Last index:%d (before deletion) memory is freed successfully",\
-            ulInfo->numUlLc);
-
-   }
-}
-
-/*******************************************************************
- *
- * @brief Function to update SCH Dl Lc Cb
- *
- * @details
- *
- *    Function : updateSchDlCb
- *
- *    Functionality: Function to update SCH DL Lc Cb
- *
- * @returns void
+ * @return ROK      >> This LC is part of RRM MemberList.
+ *         RFAILED  >> FATAL Error
+ *         ROKIGNORE >> This LC is not part of this RRM MemberList 
  *
  * ****************************************************************/
 
-void updateSchDlCb(uint8_t delIdx, SchDlCb *dlInfo)
+uint8_t updateDedLcInfo(Snssai *snssai, SchRrmPolicy *rrmPolicy, SchLcPrbEstimate *lcPrbEst,\
+                         bool *isDedicated)
 {
-   uint8_t lcIdx = 0;
-
-   for(lcIdx = delIdx; lcIdx < dlInfo->numDlLc; lcIdx++)
+   if(memcmp(snssai, &(rrmPolicy->memberList.snssai), sizeof(Snssai)))
    {
-      memcpy(&dlInfo->dlLcCtxt[lcIdx], &dlInfo->dlLcCtxt[lcIdx+1], sizeof(SchDlLcCtxt));
-      memset(&dlInfo->dlLcCtxt[lcIdx+1], 0, sizeof(SchDlLcCtxt));
+      if(lcPrbEst->dedLcInfo == NULLP)
+      {
+         SCH_ALLOC(lcPrbEst->dedLcInfo, sizeof(DedicatedLCInfo));
+         if(lcPrbEst->dedLcInfo == NULLP)
+         {
+            DU_LOG("\nINFO  -->  SCH : Memory Allocation Failed");
+            return RFAILED;
+         }
+      }
+      /*Updating latest RrmPolicy*/
+      lcPrbEst->dedLcInfo->rsvdDedicatedPRB = \
+                                              (uint16_t)(((rrmPolicy->policyDedicatedRatio)*(MAX_NUM_RB))/100);
+      *isDedicated = TRUE;
+      DU_LOG("\nINFO  -->  SCH : Updated RRM policy, reservedPOOL:%d",lcPrbEst->dedLcInfo->rsvdDedicatedPRB);
    }
-   /*Leakage of Last Index*/
-   /*Last index of ulLcCtxt(before deletion) should be void*/
-   if(dlInfo->dlLcCtxt[dlInfo->numDlLc].snssai != NULLP)
-   {
-      DU_LOG("ERROR  --> SCH: updateSchDlCb Last index:%d (before deletion) memory is leaking: Delete the S-NSSAI memory",\
-            dlInfo->numDlLc);
-      SCH_FREE(dlInfo->dlLcCtxt[dlInfo->numDlLc].snssai, sizeof(Snssai));
-   }
+   /*else case: This LcCtxt  is either a Default LC or this LC is part of someother RRM_MemberList*/
    else
    {
-      DU_LOG("INFO  --> SCH: updateSchDlCb Last index:%d (before deletion) memory is freed successfully",\
-            dlInfo->numDlLc);
+      DU_LOG("\nINFO  -->  SCH : This SNSSAI is not a part of this RRMPolicy");
    }
+   return ROK;	 
 }
 
 /*******************************************************************
@@ -269,6 +241,9 @@ uint8_t fillSchUeCb(SchUeCb *ueCb, SchUeCfg *ueCfg)
    uint8_t   freqDomainResource[FREQ_DOM_RSRC_SIZE] = {0};
    SchPdschCfgCmn pdschCfg;
    SchPucchDlDataToUlAck *dlDataToUlAck;
+   CmLListCp *lcLL = NULLP;
+   uint8_t retDL = ROK, retUL = ROK;
+   bool isLcIdValid = FALSE;
 
    ueCb->ueCfg.cellId = ueCfg->cellId;
    ueCb->ueCfg.crnti = ueCfg->crnti;
@@ -289,7 +264,7 @@ uint8_t fillSchUeCb(SchUeCb *ueCb, SchUeCfg *ueCfg)
       memcpy(&ueCb->ueCfg.spCellCfg , &ueCfg->spCellCfg, sizeof(SchSpCellCfg));
 
       covertFreqDomRsrcMapToIAPIFormat(ueCb->ueCfg.spCellCfg.servCellCfg.initDlBwp.pdcchCfg.cRSetToAddModList[0].freqDomainRsrc,\
-         freqDomainResource);
+            freqDomainResource);
       memset(ueCb->ueCfg.spCellCfg.servCellCfg.initDlBwp.pdcchCfg.cRSetToAddModList[0].freqDomainRsrc, 0, FREQ_DOM_RSRC_SIZE);
       memcpy(ueCb->ueCfg.spCellCfg.servCellCfg.initDlBwp.pdcchCfg.cRSetToAddModList[0].freqDomainRsrc, freqDomainResource, FREQ_DOM_RSRC_SIZE);
 
@@ -321,55 +296,130 @@ uint8_t fillSchUeCb(SchUeCb *ueCb, SchUeCfg *ueCfg)
    //Updating SchUlCb and SchDlCb DB in SchUeCb
    for(lcIdx = 0; lcIdx < ueCfg->numLcs; lcIdx++)
    {
+      isLcIdValid = FALSE; /*Re-Initializing*/
+
+      ueLcIdx = ueCfg->schLcCfg[lcIdx].lcId;
+      CHECK_LCID(ueLcIdx, isLcIdValid);
+      if(isLcIdValid == FALSE)
+      {
+         DU_LOG("ERROR --> SCH: LCID:%d is not Valid",ueLcIdx);
+         continue;
+      }
       if(ueCfg->schLcCfg[lcIdx].configType == CONFIG_ADD)
       {
-         fillSchUlLcCtxt(&ueCb->ulInfo.ulLcCtxt[ueCb->ulInfo.numUlLc], &ueCfg->schLcCfg[lcIdx]);
-         ueCb->ulInfo.numUlLc++;
-         fillSchDlLcCtxt(&ueCb->dlInfo.dlLcCtxt[ueCb->dlInfo.numDlLc], &ueCfg->schLcCfg[lcIdx]);
-         ueCb->dlInfo.numDlLc++;
+         fillSchUlLcCtxt(&ueCb->ulInfo.ulLcCtxt[ueLcIdx], &ueCfg->schLcCfg[lcIdx]);
+         fillSchDlLcCtxt(&ueCb->dlInfo.dlLcCtxt[ueLcIdx], &ueCfg->schLcCfg[lcIdx]);
+
+         /*Checking whether this LC belong to Dedicated S-NSSAI 
+          * and Create the Dedicated LC List & Update the Reserve PRB number*/
+         if(ueCb->dlInfo.dlLcCtxt[ueLcIdx].snssai != NULLP)
+         {
+            retDL = updateDedLcInfo(ueCb->dlInfo.dlLcCtxt[ueLcIdx].snssai,  \
+                  ueCb->cellCb->cellCfg.rrmPolicy, &(ueCb->dlLcPrbEst),\
+                  &(ueCb->dlInfo.dlLcCtxt[ueLcIdx].isDedicated));
+         }
+         if(ueCb->ulInfo.ulLcCtxt[ueLcIdx].snssai != NULLP)
+         {
+            retUL =  updateDedLcInfo(ueCb->ulInfo.ulLcCtxt[ueLcIdx].snssai,  \
+                  ueCb->cellCb->cellCfg.rrmPolicy, &(ueCb->ulLcPrbEst),\
+                  &(ueCb->ulInfo.ulLcCtxt[ueLcIdx].isDedicated));
+         }
+
+         if(retUL == RFAILED  || retDL == RFAILED)/*FATAL error*/
+         {
+            DU_LOG("\nERROR  -->  SCH : Failure in updateDedLcInfo");
+            return RFAILED;
+         }
       }
       else
       {
-         for(ueLcIdx = 0; ueLcIdx < ueCb->ulInfo.numUlLc; ueLcIdx++) //searching for Lc to be Mod
+         if(ueCb->ulInfo.ulLcCtxt[ueLcIdx].lcId == ueCfg->schLcCfg[lcIdx].lcId)
          {
-            if(ueCb->ulInfo.ulLcCtxt[ueLcIdx].lcId == ueCfg->schLcCfg[lcIdx].lcId)
+            if(ueCfg->schLcCfg[lcIdx].configType == CONFIG_MOD)
             {
-               if(ueCfg->schLcCfg[lcIdx].configType == CONFIG_MOD)
+               fillSchUlLcCtxt(&ueCb->ulInfo.ulLcCtxt[ueLcIdx], &ueCfg->schLcCfg[lcIdx]);
+               /*Updating the RRM reserved pool PRB count*/
+               if(ueCb->ulInfo.ulLcCtxt[ueLcIdx].snssai != NULLP)
                {
-                  fillSchUlLcCtxt(&ueCb->ulInfo.ulLcCtxt[ueLcIdx], &ueCfg->schLcCfg[lcIdx]);
-                  break;
+                  retUL =  updateDedLcInfo(ueCb->ulInfo.ulLcCtxt[ueLcIdx].snssai,  \
+                        ueCb->cellCb->cellCfg.rrmPolicy, &(ueCb->ulLcPrbEst),\
+                        &(ueCb->ulInfo.ulLcCtxt[ueLcIdx].isDedicated));
                }
-               /*BUG: ueCfg using lcIdx (Looping around numLCs in ueCfg whereas
-                * ueLcIdx Loops around numUlLc in SCH UL DB*/
-               if(ueCfg->schLcCfg[lcIdx].configType == CONFIG_DEL)
+               if(retUL == RFAILED)
                {
-                  memset(&ueCb->ulInfo.ulLcCtxt[ueLcIdx], 0, sizeof(SchUlLcCtxt));
-                  ueCb->ulInfo.numUlLc--;
-                  updateSchUlCb(ueLcIdx, &ueCb->ulInfo); //moving arr elements one idx ahead
-
-                  break;
+                  DU_LOG("\nERROR  -->  SCH : Failed in updating Ded Lc info");
+                  return RFAILED;
                }
             }
-         }/*End of inner for loop */
-
-         for(ueLcIdx = 0; ueLcIdx < ueCb->dlInfo.numDlLc; ueLcIdx++) //searching for Lc to be Mod
-         {
-            if(ueCb->dlInfo.dlLcCtxt[ueLcIdx].lcId == ueCfg->schLcCfg[lcIdx].lcId)
+            if(ueCfg->schLcCfg[lcIdx].configType == CONFIG_DEL)
             {
-               if(ueCfg->schLcCfg[lcIdx].configType == CONFIG_MOD)
+               /*Delete the LC node from the UL LC List*/
+               if(ueCb->ulInfo.ulLcCtxt[ueLcIdx].isDedicated)
                {
-                  fillSchDlLcCtxt(&ueCb->dlInfo.dlLcCtxt[ueLcIdx], &ueCfg->schLcCfg[lcIdx]);
-                  break;
+                  if(ueCb->ulLcPrbEst.dedLcInfo != NULLP)
+                  {
+                     lcLL = &(ueCb->ulLcPrbEst.dedLcInfo->dedLcList);
+                     handleLcLList(lcLL, ueCfg->schLcCfg[lcIdx].lcId, DELETE);
+                     if(lcLL->count == 0)/*IF No Node in DedicateLCList to be deleted*/
+                     {
+                        /*Free the Dedicated LC Info structure*/
+                        SCH_FREE(ueCb->ulLcPrbEst.dedLcInfo, sizeof(DedicatedLCInfo));
+                     }
+                  }
                }
-               if(ueCfg->schLcCfg[lcIdx].configType == CONFIG_DEL)
+               else/*Default LC list*/
                {
-                  memset(&ueCb->dlInfo.dlLcCtxt[ueLcIdx], 0, sizeof(SchDlLcCtxt));
-                  ueCb->dlInfo.numDlLc--;
-                  updateSchDlCb(ueLcIdx, &ueCb->dlInfo); //moving arr elements one idx ahead
-                  break;
+                  lcLL = &(ueCb->ulLcPrbEst.defLcList);
+                  handleLcLList(lcLL, ueCfg->schLcCfg[lcIdx].lcId, DELETE);
+               }
+               SCH_FREE(ueCb->ulInfo.ulLcCtxt[ueLcIdx].snssai, sizeof(Snssai));
+               memset(&ueCb->ulInfo.ulLcCtxt[ueLcIdx], 0, sizeof(SchUlLcCtxt));
+            }
+         }/*End of UL LC Ctxt*/
+
+         if(ueCb->dlInfo.dlLcCtxt[ueLcIdx].lcId == ueCfg->schLcCfg[lcIdx].lcId)
+         {
+            if(ueCfg->schLcCfg[lcIdx].configType == CONFIG_MOD)
+            {
+               fillSchDlLcCtxt(&ueCb->dlInfo.dlLcCtxt[ueLcIdx], &ueCfg->schLcCfg[lcIdx]);
+               /*Updating the RRM policy*/
+               if(ueCb->dlInfo.dlLcCtxt[ueLcIdx].snssai != NULLP)
+               {
+                  retDL = updateDedLcInfo(ueCb->dlInfo.dlLcCtxt[ueLcIdx].snssai,  \
+                        ueCb->cellCb->cellCfg.rrmPolicy, &(ueCb->dlLcPrbEst), \
+                        &(ueCb->dlInfo.dlLcCtxt[ueLcIdx].isDedicated));
+               }
+               if(retDL == RFAILED)
+               {
+                  DU_LOG("\nERROR  -->  SCH : Failed in updating Ded Lc info");
+                  return RFAILED;
                }
             }
-         }/*End of inner for loop */
+            if(ueCfg->schLcCfg[lcIdx].configType == CONFIG_DEL)
+            {
+               /*Delete the LC node from the DL LC List*/
+               if(ueCb->dlInfo.dlLcCtxt[ueLcIdx].isDedicated)
+               {
+                  if(ueCb->dlLcPrbEst.dedLcInfo != NULLP)
+                  {
+                     lcLL = &(ueCb->dlLcPrbEst.dedLcInfo->dedLcList);
+                     handleLcLList(lcLL, ueCfg->schLcCfg[lcIdx].lcId, DELETE);
+                     if(lcLL->count == 0)/*Last Node in DedicateLCList to be deleted*/
+                     {
+                        /*Free the Dedicated LC Info structure*/
+                        SCH_FREE(ueCb->dlLcPrbEst.dedLcInfo, sizeof(DedicatedLCInfo));
+                     }
+                  }
+               }
+               else
+               {
+                  lcLL = &(ueCb->dlLcPrbEst.defLcList);
+                  handleLcLList(lcLL, ueCfg->schLcCfg[lcIdx].lcId, DELETE);
+               }
+               SCH_FREE(ueCb->dlInfo.dlLcCtxt[ueLcIdx].snssai, sizeof(Snssai));
+               memset(&ueCb->dlInfo.dlLcCtxt[ueLcIdx], 0, sizeof(SchDlLcCtxt));
+            }
+         }/*End of DL LC ctxt*/
       }
 
       SCH_FREE(ueCfg->schLcCfg[lcIdx].drbQos, sizeof(SchDrbQosInfo));
@@ -856,6 +906,7 @@ void deleteSchUeCb(SchUeCb *ueCb)
    uint8_t timeDomRsrcIdx = 0, ueLcIdx = 0;
    SchPucchCfg *pucchCfg = NULLP;
    SchPdschConfig *pdschCfg = NULLP;
+   CmLListCp *lcLL  = NULLP;
 
    if(ueCb)
    {
@@ -892,14 +943,32 @@ void deleteSchUeCb(SchUeCb *ueCb)
          deleteSchPdschServCellCfg(&ueCb->ueCfg.spCellCfg.servCellCfg.pdschServCellCfg);
       }
       /*Need to Free the memory allocated for S-NSSAI*/
-      for(ueLcIdx = 0; ueLcIdx < ueCb->ulInfo.numUlLc; ueLcIdx++)
+      for(ueLcIdx = 0; ueLcIdx < MAX_NUM_LC; ueLcIdx++)
       {
          SCH_FREE(ueCb->ulInfo.ulLcCtxt[ueLcIdx].snssai, sizeof(Snssai));
-      }
-      for(ueLcIdx = 0; ueLcIdx < ueCb->dlInfo.numDlLc; ueLcIdx++)
-      {
          SCH_FREE(ueCb->dlInfo.dlLcCtxt[ueLcIdx].snssai, sizeof(Snssai));
       }
+
+      /*Clearing out Dedicated LC list*/
+      if(ueCb->dlLcPrbEst.dedLcInfo != NULLP)
+      {
+         lcLL = &(ueCb->dlLcPrbEst.dedLcInfo->dedLcList);
+         deleteLcLL(lcLL);
+         SCH_FREE(ueCb->dlLcPrbEst.dedLcInfo, sizeof(DedicatedLCInfo));
+      }
+      if(ueCb->ulLcPrbEst.dedLcInfo != NULLP)
+      {
+         lcLL = &(ueCb->ulLcPrbEst.dedLcInfo->dedLcList);
+         deleteLcLL(lcLL);
+         SCH_FREE(ueCb->ulLcPrbEst.dedLcInfo, sizeof(DedicatedLCInfo));
+      }
+      /*Deleteing the Default LC list*/
+      lcLL = &(ueCb->dlLcPrbEst.defLcList);
+      deleteLcLL(lcLL);
+
+      lcLL = &(ueCb->ulLcPrbEst.defLcList);
+      deleteLcLL(lcLL);
+
       memset(ueCb, 0, sizeof(SchUeCb));
    }
 }

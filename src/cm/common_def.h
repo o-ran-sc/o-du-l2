@@ -59,7 +59,7 @@
 #define MAX_NUM_MU   4
 #define MAX_NUM_UE   2
 #define MAX_NUM_UE_PER_TTI 1
-#define MAX_NUM_LC   32   /*Spec 38.331: Sec 6.4: maxLC-ID Keyword*/
+#define MAX_NUM_LC   MAX_DRB_LCID + 1   /*Spec 38.331: Sec 6.4: maxLC-ID Keyword*/
 #define MAX_NUM_SRB  3    /* Max. no of Srbs */
 #define MAX_NUM_DRB  29   /* spec 38.331, maxDRB */
 
@@ -193,6 +193,11 @@
 #define CHECK_CRNTI(_crnti, _isCrntiValid)                                         \
 {                                                                   \
   _isCrntiValid = ((_crnti >= ODU_START_CRNTI && _crnti <= ODU_END_CRNTI ) ? 1 : 0); \
+}
+
+#define CHECK_LCID(_lcId, _isLcidValid)      \
+{\
+   _isLcidValid = ((_lcId >= SRB0_LCID && _lcId <= MAX_DRB_LCID) ? 1 : 0);\
 }
 
 typedef enum
