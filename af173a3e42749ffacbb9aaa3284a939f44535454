@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "66c3b35b_f90ed5ec",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1269,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-10-26T08:09:05Z",
+      "side": 1,
+      "message": "Just for readability purpose, Is it possible to have a separate function for this while loop for finding Suitable free block \u003e which can be commonly used for UL and DL?",
+      "range": {
+        "startLine": 1268,
+        "startChar": 6,
+        "endLine": 1269,
+        "endChar": 7
+      },
+      "revId": "af173a3e42749ffacbb9aaa3284a939f44535454",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "747fafdf_22b93cc8",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1281,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-10-26T08:09:05Z",
+      "side": 1,
+      "message": "change the comment",
+      "range": {
+        "startLine": 1281,
+        "startChar": 62,
+        "endLine": 1281,
+        "endChar": 71
+      },
+      "revId": "af173a3e42749ffacbb9aaa3284a939f44535454",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "31072dc0_9b26dbbc",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1290,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-10-26T08:09:05Z",
+      "side": 1,
+      "message": "change the comment",
+      "range": {
+        "startLine": 1290,
+        "startChar": 51,
+        "endLine": 1290,
+        "endChar": 61
+      },
+      "revId": "af173a3e42749ffacbb9aaa3284a939f44535454",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4573c645_c5c39c00",
+        "filename": "src/5gnrsch/sch_ue_mgr.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 519,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-10-26T08:09:05Z",
+      "side": 1,
+      "message": "It will be better if MACRO can be used or explanation of this number",
+      "range": {
+        "startLine": 519,
+        "startChar": 30,
+        "endLine": 519,
+        "endChar": 37
+      },
+      "revId": "af173a3e42749ffacbb9aaa3284a939f44535454",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
