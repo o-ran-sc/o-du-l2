@@ -1319,6 +1319,294 @@ bool fillPrbBitmap(uint64_t *prbBitMap, uint16_t startPrb, uint16_t numPrb)
    return ROK;
 }
 
+
+/**************************************************************************
+ *
+ * @brief Update the LCID Node in LCLL as per ActionType
+ *
+ * @details
+ *
+ *    Function : handleLcLList
+ *
+ *    Functionality:
+ *     Search LCID in LCLL or if not found, create,Delete, or return
+ *     node for this LCID
+ *
+ * @params[in] I/P > lcLinkList pointer (LcInfo list)
+ *             I/P > lcId
+ *             I/P > ActionType (Create,Delete or Just search) 
+ *
+ * @return lcNode > Pointer to the Node for that LcInfo
+ *         If NULLP, FATAL FAILURE
+ *
+ * ***********************************************************************/
+LcInfo* handleLcLList(CmLListCp *lcLL, uint8_t lcId, ActionTypeLcLL action)
+{
+   CmLList  *node = NULLP;
+   LcInfo *lcNode = NULLP;
+   bool found = FALSE;
+
+   if(lcLL == NULLP)
+   {
+      DU_LOG("\nERROR -->SCH: LcList doesnt exist");
+      return NULLP;
+   }
+   node = lcLL->first;
+
+   /*Traversing the LC LinkList*/
+   while(node)
+   {
+      lcNode = (LcInfo *)node->node;
+      if(lcNode->lcId == lcId)
+      { 
+         DU_LOG("\nINFO  --> SCH : LcID:%d found in LL",lcId);
+         found = TRUE;
+         break;
+      }
+      node = node->next;
+   }//end of while
+
+   switch(action)
+   {
+      case SEARCH:
+         {
+            if(!found)
+            {
+               lcNode = NULLP;
+            }
+            return lcNode;
+         }
+
+      case CREATE:
+         {
+            if(node != NULLP)
+               return lcNode;
+
+            /*Need to add a new node for this LC*/
+
+            /*List is empty; Initialize the LL ControlPointer*/
+            if(lcLL->count == 0)
+            {
+               DU_LOG("\nINFO --> SCH: First LC:%d to add in this List",lcId);
+               cmLListInit(lcLL);
+            }
+
+            lcNode = NULLP;
+            /*Allocate the List*/
+            SCH_ALLOC(lcNode, sizeof(LcInfo));
+            if(lcNode)
+            {
+               lcNode->lcId = lcId;
+               lcNode->reqBO = 0;
+               lcNode->allocBO = 0;
+               lcNode->allocPRB = 0;
+            }
+            else
+            {
+               DU_LOG("\nERROR  --> SCH : Allocation of List failed,lcId:%d",lcId);
+               return NULLP;
+            }
+
+            if(addNodeToLList(lcLL, lcNode, NULLP) == RFAILED)
+            {
+               DU_LOG("\nERROR  --> SCH : failed to Add Node,lcId:%d",lcId);
+               SCH_FREE(lcNode, sizeof(LcInfo));
+               return NULLP;
+            }
+            DU_LOG("\nINFO  --> SCH : Added new Node in List for lcId:%d\n",lcId);
+            return lcNode;
+         }
+
+      case DELETE:
+         {
+            if(!found ||  lcNode == NULLP)
+            {
+               DU_LOG("\nERROR --> SCH: LCID: %d not found; thus Deletion unsuccessful",lcId);
+            }
+            else
+            {
+               if(deleteNodeFromLList(lcLL, node) == ROK)
+                  SCH_FREE(lcNode, sizeof(LcInfo));
+
+               DU_LOG("\nINFO --> SCH: LCID: %d Deleted successfully",lcId);
+            }
+            return NULLP; 
+         }
+      default:
+         {
+            DU_LOG("\nERROR --> SCH: Action type wrong: %d",action);
+            break;
+         }
+   }
+   return lcNode;
+}
+
+/**************************************************************************
+ *
+ * @brief Update ReqPRB for a partiular LCID in LC Linklist 
+ *
+ * @details
+ *
+ *    Function : updateLcListReqPRB
+ *
+ *    Functionality:
+ *     Update ReqPRB for a partiular LCID in LC Linklist 
+ *
+ * @params[in] I/P > lcLinkList pointer (LcInfo list)
+ *             I/P > lcId
+ *             I/P > reqPRB
+ *             I/P > payloadSize
+ *
+ * @return ROK/RFAILED
+ *
+ * ***********************************************************************/
+uint8_t updateLcListReqPRB(CmLListCp *lcLL, uint8_t lcId, uint32_t payloadSize)
+{
+   LcInfo    *lcNode = NULLP;
+
+   lcNode = handleLcLList(lcLL, lcId, CREATE);
+
+   if(lcNode == NULLP)
+   {
+      DU_LOG("\nERROR  --> SCH : LC is neither present nor able to create in List lcId:%d",lcId);
+      return RFAILED;
+   }
+   lcNode->reqBO = payloadSize;
+   lcNode->allocBO = 0; 
+   lcNode->allocPRB = 0; /*Re-Initializing the AllocPRB*/
+   DU_LOG("\nINFO  --> SCH : LCID:%d, reqBO:%d", lcId, lcNode->reqBO);
+   return ROK;
+}
+
+/**************************************************************************
+ *
+ * @brief Delete entire LC Linklist 
+ *
+ * @details
+ *
+ *    Function : deleteLcLL
+ *
+ *    Functionality:
+ *      Delete entire LC Linklist 
+ *
+ * @params[in] lcLinkList pointer (LcInfo list)
+ *
+ * @return void
+ *
+ * ***********************************************************************/
+void deleteLcLL(CmLListCp *lcLL)
+{
+   CmLList *node = NULLP, *next = NULLP;
+   LcInfo *lcNode = NULLP;
+
+   if(lcLL == NULLP)
+   {
+      DU_LOG("\nINFO --> SCH: LcList doesnt exist");
+      return;
+   }
+   node = lcLL->first;
+
+   while(node)
+   {
+      next = node->next;
+      lcNode = (LcInfo *)node->node;
+      if(deleteNodeFromLList(lcLL, node) == ROK)
+         SCH_FREE(lcNode, sizeof(LcInfo));
+      node = next;
+   }
+}
+
+/****************************************************************************
+ *
+ * @brief Calculate the Estimated TBS Size based on Spec 38.421 , Sec 5.3.1.2
+ *
+ * @details
+ *
+ *    Function : calculateEstimateTBSize
+ *
+ *    Functionality:
+ *       TBS Size calculation requires numPRB. Since exactPRB for reqBO is unknown thus 
+ *       will give the PRB value(from 0 to maxRB) one by one and 
+ *       try to find the TBS size closest to reqBO
+ *
+ * @params[in] I/P > reqBO, mcsIdx, num PDSCH symbols, 
+ *             I/P > maxRB: Maximum PRB count to reach for calculating the TBS
+ *             O/P > estPrb : Suitable PRB count for reaching the correct TBS
+ *       
+ *
+ * @return TBS Size > Size which will can be allocated for this LC
+ *        
+ *
+ *************************************************************************/
+uint32_t calculateEstimateTBSize(uint32_t reqBO, uint16_t mcsIdx,uint8_t numSymbols,\
+                                   uint16_t maxPRB, uint16_t *estPrb)
+{
+   uint32_t tbs = 0, effecBO = 0;
+
+   *estPrb = MIN_PRB;
+   /*Loop Exit: Either estPRB reaches the maxRB or TBS is found greater than equal to reqBO*/
+   do
+   {
+      tbs = schCalcTbSizeFromNPrb(*estPrb, mcsIdx, numSymbols);
+
+      /*TBS size calculated in above function is in Bits. 
+       * So to convert it into Bytes , we right shift by 3. 
+       * Eg: tbs=128 bits(1000 0000) ; Right Shift by 3: Tbs = 0001 0000(16 bytes)*/
+      tbs = tbs >> 3;
+      *estPrb += 1;
+   }while((tbs < reqBO) && (*estPrb < maxPRB));
+
+   /*Effective BO is the Grant which can be provided for this LC.
+    * Here,it is decided based on whether we can fully cater its requirment (reqBO) 
+    * or has to provide lesser grant due to resource limitation.
+    * Thus effective BO/Grant for this LC will be min of TBS calculated and reqBO*/
+   effecBO = MIN(tbs,reqBO);
+   return (effecBO);
+}
+/*Below function for printing will be used in future so disabling it for now*/
+#if 0
+/****************************************************************************
+ *
+ * @brief Print the LC in list for debugging purpose 
+ *
+ * @details
+ *
+ *    Function : printLcLL
+ *
+ *    Functionality:
+ *            For debugging purpose, for printing the LC in the order and
+ *            parameters
+ *
+ * @params[in] LcList pointer 
+ *       
+ * @return void 
+ *        
+ *************************************************************************/
+void printLcLL(CmLListCp *lcLL)
+{
+   CmLList *node = NULLP;
+   LcInfo *lcNode = NULLP;
+
+   if(lcLL == NULLP)
+   {
+      DU_LOG("\nINFO -->SCH: LcList doesnt exist");
+      return;
+   }
+   node = lcLL->first;
+   while(node)
+   {
+      lcNode = (LcInfo *)node->node;
+      if(lcNode)
+      {
+         DU_LOG("\nINFO  --> SCH : LcID:%d, [reqBO, allocBO, allocPRB]:[%d,%d,%d]",\
+               lcNode->lcId,lcNode->reqBO, lcNode->allocBO, lcNode->allocPRB);
+      }
+
+      node = node->next;
+   }
+}
+#endif
+
 #ifdef NR_TDD
 
 /**

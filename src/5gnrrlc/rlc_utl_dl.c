@@ -230,14 +230,16 @@ uint8_t rlcSendDedLcDlData(Pst *post, SpId spId, RguDDatReqInfo *datReqInfo)
    uint16_t         pduLen;               /* PDU length */
    uint16_t         copyLen;              /* Number of bytes copied */
    uint8_t          lcId = 0;
+   RlcBoStatus      *boStatus = NULLP;      /* Buffer occupancy status information */
+   uint8_t          ret = ROK;
 
    RLC_ALLOC_SHRABL_BUF(RLC_MEM_REGION_DL, RLC_POOL,
-                       dlData, sizeof(RlcData));
+         dlData, sizeof(RlcData));
    if(dlData == NULLP)
    {
       DU_LOG("\nERROR  -->  RLC_DL : rlcSendDedLcDlData: Memory allocation failed for dl data");
       RLC_FREE_SHRABL_BUF(RLC_MEM_REGION_DL, RLC_POOL,
-          datReqInfo, sizeof(RguDDatReqInfo));
+            datReqInfo, sizeof(RguDDatReqInfo));
       return RFAILED;
    }
    memset(dlData, 0, sizeof(RlcData));
@@ -267,31 +269,31 @@ uint8_t rlcSendDedLcDlData(Pst *post, SpId spId, RguDDatReqInfo *datReqInfo)
                dlData->pduInfo[dlData->numPdu].lcId = datPerLch.lcId;
 
                /* Copy Message to fixed buffer to send */
-	       ODU_GET_MSG_LEN(datPerLch.pdu.mBuf[pduIdx], (MsgLen *)&pduLen);
-	       RLC_ALLOC_SHRABL_BUF(RLC_MEM_REGION_DL, RLC_POOL,
-	          dlData->pduInfo[dlData->numPdu].pduBuf, pduLen);
+               ODU_GET_MSG_LEN(datPerLch.pdu.mBuf[pduIdx], (MsgLen *)&pduLen);
+               RLC_ALLOC_SHRABL_BUF(RLC_MEM_REGION_DL, RLC_POOL,
+                     dlData->pduInfo[dlData->numPdu].pduBuf, pduLen);
 
-	       if (dlData->pduInfo[dlData->numPdu].pduBuf == NULLP )
-	       {
-	          DU_LOG("\nERROR  -->  RLC_DL : rlcSendDedLcDlData: Memory allocation failed");
-		  for(pduIdx = 0; pduIdx < dlData->numPdu; pduIdx++)
-		  {
-		     RLC_FREE_SHRABL_BUF(pst.region, pst.pool, dlData->pduInfo[pduIdx].pduBuf,\
-		       dlData->pduInfo[pduIdx].pduLen);
-		  }
-		  RLC_FREE_SHRABL_BUF(RLC_MEM_REGION_DL, RLC_POOL,
-		     dlData, sizeof(RlcData));
-		  RLC_FREE_SHRABL_BUF(RLC_MEM_REGION_DL, RLC_POOL,
-		     datReqInfo, sizeof(RguDDatReqInfo));
-		  return RFAILED;
-	       }
+               if (dlData->pduInfo[dlData->numPdu].pduBuf == NULLP )
+               {
+                  DU_LOG("\nERROR  -->  RLC_DL : rlcSendDedLcDlData: Memory allocation failed");
+                  for(pduIdx = 0; pduIdx < dlData->numPdu; pduIdx++)
+                  {
+                     RLC_FREE_SHRABL_BUF(RLC_MEM_REGION_DL, RLC_POOL, dlData->pduInfo[pduIdx].pduBuf,\
+                           dlData->pduInfo[pduIdx].pduLen);
+                  }
+                  RLC_FREE_SHRABL_BUF(RLC_MEM_REGION_DL, RLC_POOL,
+                        dlData, sizeof(RlcData));
+                  RLC_FREE_SHRABL_BUF(post->region, post->pool,
+                        datReqInfo, sizeof(RguDDatReqInfo));
+                  return RFAILED;
+               }
 
                ODU_COPY_MSG_TO_FIX_BUF(datPerLch.pdu.mBuf[pduIdx], 0, pduLen, \
-	          dlData->pduInfo[dlData->numPdu].pduBuf, (MsgLen *)&copyLen);
-	       dlData->pduInfo[dlData->numPdu].pduLen = pduLen;
+                     dlData->pduInfo[dlData->numPdu].pduBuf, (MsgLen *)&copyLen);
+               dlData->pduInfo[dlData->numPdu].pduLen = pduLen;
 
                /* Free message */
-	       ODU_PUT_MSG_BUF(datPerLch.pdu.mBuf[pduIdx]);
+               ODU_PUT_MSG_BUF(datPerLch.pdu.mBuf[pduIdx]);
 
                dlData->numPdu++;
             }/* For per PDU */
@@ -304,6 +306,42 @@ uint8_t rlcSendDedLcDlData(Pst *post, SpId spId, RguDDatReqInfo *datReqInfo)
          }/* For Data per Lch */
       }/* For Data per Tb */
 
+      /*No Data to send for this UE, Only send the BO REQUEST to SCH  */
+      if(dlData->numPdu == 0)
+      {
+         for(lchIdx = 0; lchIdx < dlData->numLc; lchIdx++)
+         {
+            RLC_ALLOC_SHRABL_BUF(RLC_MEM_REGION_DL, RLC_POOL, \
+                  boStatus, sizeof(RlcBoStatus));
+            if(boStatus == NULLP)
+            {
+               DU_LOG("\nERROR  -->  RLC_DL : rlcSendDedLcDlData: Memory allocation failed for boStatus");
+               ret = RFAILED;
+               break;
+            }
+            boStatus->cellId = dlData->cellId;
+            GET_UE_IDX(dlData->rnti, boStatus->ueIdx);
+            boStatus->commCh = FALSE; 
+            boStatus->lcId = dlData->boStatus[lchIdx].lcId;
+            boStatus->bo = dlData->boStatus[lchIdx].bo;
+
+            FILL_PST_RLC_TO_MAC(pst, RLC_DL_INST, EVENT_BO_STATUS_TO_MAC);
+            /* Send Status Response to MAC layer */
+            if(RlcSendBoStatusToMac(&pst, boStatus) != ROK)
+            {
+               DU_LOG("\nERROR  -->  RLC_DL : rlcSendDedLcDlData: Failed to send BO status");
+               RLC_FREE_SHRABL_BUF(pst.region, pst.pool, boStatus, sizeof(RlcBoStatus));
+               ret = RFAILED;
+               break;
+            }
+            DU_LOG("\nINFO  -->  RLC_DL : rlcSendDedLcDlData: BO Status sent successfully for LCID:%d,BO:%d",\
+                  boStatus->lcId, boStatus->bo);
+         }
+         RLC_FREE_SHRABL_BUF(RLC_MEM_REGION_DL, RLC_POOL, dlData, sizeof(RlcData));
+         RLC_FREE_SHRABL_BUF(post->region, post->pool, datReqInfo, sizeof(RguDDatReqInfo));
+         return (ret);
+      }
+
       RLC_ALLOC_SHRABL_BUF(RLC_MEM_REGION_DL, RLC_POOL, dlRrcMsgRsp, sizeof(RlcDlRrcMsgRsp));
       if(dlRrcMsgRsp == NULLP)
       {
@@ -311,11 +349,11 @@ uint8_t rlcSendDedLcDlData(Pst *post, SpId spId, RguDDatReqInfo *datReqInfo)
          for(pduIdx = 0; pduIdx < dlData->numPdu; pduIdx++)
          {
             RLC_FREE_SHRABL_BUF(pst.region, pst.pool, dlData->pduInfo[pduIdx].pduBuf,\
-               dlData->pduInfo[pduIdx].pduLen);
+                  dlData->pduInfo[pduIdx].pduLen);
          }
          RLC_FREE_SHRABL_BUF(pst.region, pst.pool, dlData, sizeof(RlcData));
          RLC_FREE_SHRABL_BUF(RLC_MEM_REGION_DL, RLC_POOL,
-             datReqInfo, sizeof(RguDDatReqInfo));
+               datReqInfo, sizeof(RguDDatReqInfo));
          return RFAILED;
       }
       dlRrcMsgRsp->cellId = dlData->cellId;
@@ -330,10 +368,10 @@ uint8_t rlcSendDedLcDlData(Pst *post, SpId spId, RguDDatReqInfo *datReqInfo)
          for(pduIdx = 0; pduIdx < dlData->numPdu; pduIdx++)
          {
             RLC_FREE_SHRABL_BUF(pst.region, pst.pool, dlData->pduInfo[pduIdx].pduBuf,\
-               dlData->pduInfo[pduIdx].pduLen);
+                  dlData->pduInfo[pduIdx].pduLen);
          }
          RLC_FREE_SHRABL_BUF(pst.region, pst.pool, dlData, sizeof(RlcData));
-         RLC_FREE_SHRABL_BUF(RLC_MEM_REGION_DL, RLC_POOL, datReqInfo, sizeof(RguDDatReqInfo));
+         RLC_FREE_SHRABL_BUF(post->region, post->pool, datReqInfo, sizeof(RguDDatReqInfo));
          RLC_FREE_SHRABL_BUF(pst.region, pst.pool, dlRrcMsgRsp, sizeof(RlcDlRrcMsgRsp));
          return RFAILED;
       }
@@ -353,7 +391,7 @@ uint8_t rlcSendDedLcDlData(Pst *post, SpId spId, RguDDatReqInfo *datReqInfo)
       }
    } /* For Data per UE */
    RLC_FREE_SHRABL_BUF(RLC_MEM_REGION_DL, RLC_POOL, datReqInfo, sizeof(RguDDatReqInfo));
-   
+
    return ROK;
 }/* End of rlcSendDedLcDlData */
 
@@ -389,31 +427,32 @@ uint8_t rlcUtlSendToMac(RlcCb *gCb, SuId suId, KwDStaIndInfo *staIndInfo)
    RguDDatReqInfo   *datReqInfo;   /* Data Request Information */
    RlcRguSapCb      *rguSap;       /* MAC SAP CB */
    uint32_t         totNumPdu;     /* Total number of PDUS */
+   MsgLen           len = 0;
    RguStaIndTb      *staIndTb = NULLP;
    RguDatReqTb      *datReqTb = NULLP;
    RguDStaIndPerUe  *staInd = NULLP;
 #ifdef LTE_L2_MEAS   
    uint32_t   grantPerLch[RGU_MAX_LC] = {0};
 #endif
-/* kw005.201 added support for L2 Measurement */
+   /* kw005.201 added support for L2 Measurement */
 #ifdef LTE_L2_MEAS_LOSS_DELAY
    uint8_t        snIdx1;
    uint8_t        snIdx2;
 #endif /* LTE_L2_MEAS */
    uint32_t  idx, ueDataIdx = 0;
 
-//Debug
+   //Debug
    uint32_t staIndSz=0,datIndSz = 0;
 
    datReqInfo = NULLP;
    RLC_ALLOC_SHRABL_BUF(RLC_MEM_REGION_DL, RLC_POOL,
-                       datReqInfo,sizeof(RguDDatReqInfo));
+         datReqInfo,sizeof(RguDDatReqInfo));
 #if (ERRCLASS & ERRCLS_ADD_RES)
-      if ( datReqInfo == NULLP )
-      {
-         DU_LOG("\nERROR  -->  RLC_DL : rlcUtlSendToMac: Memory allocation failed");
-         return RFAILED;
-      }
+   if ( datReqInfo == NULLP )
+   {
+      DU_LOG("\nERROR  -->  RLC_DL : rlcUtlSendToMac: Memory allocation failed");
+      return RFAILED;
+   }
 #endif /* ERRCLASS & ERRCLS_ADD_RES */
    for(idx = 0; idx < staIndInfo->nmbOfUeGrantPerTti; idx++)
    {
@@ -424,11 +463,11 @@ uint8_t rlcUtlSendToMac(RlcCb *gCb, SuId suId, KwDStaIndInfo *staIndInfo)
       {
          /* Fetch UeCb failed */
          DU_LOG("\nERROR  -->  RLC_DL : rlcUtlSendToMac: UeId[%u]:ueCb not found",
-            staInd->rnti);
+               staInd->rnti);
          /* If ueCb is not found for current rnti then continue to look for next rnti*/
          continue; 
       }
-      
+
       /* kw002.201 Removed the allocation of RlcDatReq */
       /* kw004.201 Used SSI function to initialize the variable */
       memset(&datReq, 0, sizeof(RlcDatReq) ); 
@@ -445,7 +484,7 @@ uint8_t rlcUtlSendToMac(RlcCb *gCb, SuId suId, KwDStaIndInfo *staIndInfo)
 #ifdef LTE_L2_MEAS
             /*Calculate the total grant size from MAC */
             if((staIndTb->lchStaInd[count].lcId >= RGU_MAX_LC) 
-                || (staIndTb->lchStaInd[count].lcId == 0))
+                  || (staIndTb->lchStaInd[count].lcId == 0))
             {
                /* TODO : Need to figure out why this is happening */
                break;
@@ -480,23 +519,9 @@ uint8_t rlcUtlSendToMac(RlcCb *gCb, SuId suId, KwDStaIndInfo *staIndInfo)
 #ifdef LTE_L2_MEAS            
                grantPerLch[staIndTb->lchStaInd[count].lcId] = datReq.totMacGrant;
 #endif
-               if ( 0 == datReq.pduInfo.numPdu )
-               {
-                  continue;
-               }
-               totNumPdu += datReq.pduInfo.numPdu;
-               memcpy(&(datReqTb->lchData[count].pdu),
-                  &(datReq.pduInfo),sizeof(KwPduInfo));
-
-               for (;numPdu < datReqTb->lchData[count].pdu.numPdu ; numPdu ++)
-               {
-                  MsgLen len = 0;
-                  ODU_GET_MSG_LEN(datReqTb->lchData[count].pdu.mBuf[numPdu],&len);
-                  datIndSz += len; 
-               }
                datReqTb->lchData[count].setMaxUlPrio = FALSE;
                if (RLC_AM_IS_POLL_BIT_SET(RLC_AMDL) && 
-                   (RLC_AMDL.sduQ.count > 1))
+                     (RLC_AMDL.sduQ.count > 1))
                { 
                   /* Poll bit is set indicate to MAC*/
                   datReqTb->lchData[count].setMaxUlPrio = TRUE;
@@ -505,7 +530,7 @@ uint8_t rlcUtlSendToMac(RlcCb *gCb, SuId suId, KwDStaIndInfo *staIndInfo)
 
 #ifdef CCPU_OPT
                datReqTb->lchData[count].boReport.estRlcHdrSz = 
-	          datReq.boRep.estHdrSz;
+                  datReq.boRep.estHdrSz;
                datReqTb->lchData[count].boReport.staPduPrsnt = 
                   datReq.boRep.staPduPrsnt;
 #endif /* CCPU_OPT */
@@ -525,6 +550,23 @@ uint8_t rlcUtlSendToMac(RlcCb *gCb, SuId suId, KwDStaIndInfo *staIndInfo)
                }
 #endif
 
+               datReqTb->lchData[count].boReport.oldestSduArrTime = 
+                  datReq.boRep.oldestSduArrTime;
+               if ( 0 == datReq.pduInfo.numPdu )
+               {
+                  /* kw004.201 Used SSI function to initialize the variable */
+                  memset(&datReq, 0, sizeof(RlcDatReq) ); 
+                  continue;
+               }
+               totNumPdu += datReq.pduInfo.numPdu;
+               memcpy(&(datReqTb->lchData[count].pdu),
+                     &(datReq.pduInfo),sizeof(KwPduInfo));
+
+               for (;numPdu < datReqTb->lchData[count].pdu.numPdu ; numPdu ++)
+               {
+                  ODU_GET_MSG_LEN(datReqTb->lchData[count].pdu.mBuf[numPdu],&len);
+                  datIndSz += len; 
+               }
                /* kw005.201 added support for L2 Measurement */
 #ifdef LTE_L2_MEAS_LOSS_DELAY
                datReqTb->rguSnInfo->lchMap[count].lChId =
@@ -547,8 +589,6 @@ uint8_t rlcUtlSendToMac(RlcCb *gCb, SuId suId, KwDStaIndInfo *staIndInfo)
                   tbSnMap->prevNumSn = tbSnMap->numSn;
                }
 #endif
-               datReqTb->lchData[count].boReport.oldestSduArrTime = 
-                                             datReq.boRep.oldestSduArrTime;
                /* kw004.201 Used SSI function to initialize the variable */
                memset(&datReq, 0, sizeof(RlcDatReq) ); 
             }
@@ -564,12 +604,7 @@ uint8_t rlcUtlSendToMac(RlcCb *gCb, SuId suId, KwDStaIndInfo *staIndInfo)
          }
 #endif
          datReqTb->nmbLch = staIndTb->nmbLch;
-         /*adding the check to make sure that lcId is not sent as 0
-          * when no data is there in datReq */
-         if ( 0 == totNumPdu )
-         {
-            datReqTb->lchData[0].lcId = staIndTb->lchStaInd[0].lcId;
-         }
+
          /* kw005.201 added support for L2 Measurement */
 #ifdef LTE_L2_MEAS_LOSS_DELAY
          if(tbSnMap->numSn == 0)
