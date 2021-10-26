@@ -37,7 +37,6 @@
 #define SEARCHSPACE_4_INDEX   4
 #define SS_MONITORING_SLOT_SL1   0 /* all slots */
 #define SS_MONITORING_SYMBOL     0x2000; /* symbol-0, set 14th bit */
-#define SIB1_MCS  4
 
 /* Macro for Ue Context */
 #define MAX_NUM_SR_CFG_PER_CELL_GRP 8   /* Max number of scheduling request config per cell group */
