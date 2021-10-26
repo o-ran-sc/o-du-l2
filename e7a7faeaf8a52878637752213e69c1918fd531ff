@@ -123,6 +123,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c25ce975_fd1f32a0",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 750,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-10-26T12:45:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "78cd8e87_1b5dda68",
+      "range": {
+        "startLine": 750,
+        "startChar": 30,
+        "endLine": 750,
+        "endChar": 45
+      },
+      "revId": "e7a7faeaf8a52878637752213e69c1918fd531ff",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e4a245da_192b6339",
@@ -136,6 +160,30 @@
       "writtenOn": "2021-10-25T08:14:17Z",
       "side": 1,
       "message": "create new index for dlMsgAlloc heere",
+      "range": {
+        "startLine": 1613,
+        "startChar": 26,
+        "endLine": 1613,
+        "endChar": 36
+      },
+      "revId": "e7a7faeaf8a52878637752213e69c1918fd531ff",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3144d4e9_8f8d5bb9",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 1613,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-10-26T12:45:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e4a245da_192b6339",
       "range": {
         "startLine": 1613,
         "startChar": 26,
@@ -216,6 +264,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "55544e0b_02aad335",
+        "filename": "src/5gnrsch/sch_slot_ind.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 237,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-10-26T12:45:58Z",
+      "side": 1,
+      "message": "Removed this logic altogether as RLC will take care of resending BO",
+      "parentUuid": "f9180775_dcd67be0",
+      "range": {
+        "startLine": 237,
+        "startChar": 30,
+        "endLine": 237,
+        "endChar": 42
+      },
+      "revId": "e7a7faeaf8a52878637752213e69c1918fd531ff",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a19738e0_9cf35c20",
@@ -229,6 +301,30 @@
       "writtenOn": "2021-10-22T13:20:19Z",
       "side": 1,
       "message": "I think timeDomRsrcAllociList 2-3 indexes. so why only 0th index is selected. Any specific reason?",
+      "range": {
+        "startLine": 247,
+        "startChar": 30,
+        "endLine": 247,
+        "endChar": 51
+      },
+      "revId": "e7a7faeaf8a52878637752213e69c1918fd531ff",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a295a851_c59e0463",
+        "filename": "src/5gnrsch/sch_slot_ind.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 247,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-10-26T12:45:58Z",
+      "side": 1,
+      "message": "As discussed, K0Index will be used instead of 0th Index of timeDomRsrcAllociList.",
+      "parentUuid": "a19738e0_9cf35c20",
       "range": {
         "startLine": 247,
         "startChar": 30,
@@ -262,6 +358,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ac51e504_a5abbcdc",
+        "filename": "src/5gnrsch/sch_slot_ind.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 259,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-10-26T12:45:58Z",
+      "side": 1,
+      "message": "Removed this logic altogether as RLC will take care of resending BO",
+      "parentUuid": "a4499020_8bdff8f8",
+      "range": {
+        "startLine": 259,
+        "startChar": 6,
+        "endLine": 259,
+        "endChar": 26
+      },
+      "revId": "e7a7faeaf8a52878637752213e69c1918fd531ff",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d0acb0c7_ea680775",
@@ -285,6 +405,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5674d2f9_1643a19d",
+        "filename": "src/5gnrsch/sch_slot_ind.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 286,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-10-26T12:45:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d0acb0c7_ea680775",
+      "range": {
+        "startLine": 286,
+        "startChar": 15,
+        "endLine": 286,
+        "endChar": 25
+      },
+      "revId": "e7a7faeaf8a52878637752213e69c1918fd531ff",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4c93750d_54d76f9c",
@@ -298,6 +442,30 @@
       "writtenOn": "2021-10-25T08:14:17Z",
       "side": 1,
       "message": "Whether we need to send ZEro BO or not?",
+      "range": {
+        "startLine": 333,
+        "startChar": 18,
+        "endLine": 333,
+        "endChar": 28
+      },
+      "revId": "e7a7faeaf8a52878637752213e69c1918fd531ff",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e2aef609_b1fe9ff6",
+        "filename": "src/5gnrsch/sch_slot_ind.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 333,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-10-26T12:45:58Z",
+      "side": 1,
+      "message": "We need to send ZERO BO as RLC will take care of resending BO",
+      "parentUuid": "4c93750d_54d76f9c",
       "range": {
         "startLine": 333,
         "startChar": 18,
@@ -355,6 +523,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "92300850_3122a719",
+        "filename": "src/5gnrsch/sch_ue_mgr.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 266,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-10-26T12:45:58Z",
+      "side": 1,
+      "message": "ROKIGNORE removed",
+      "parentUuid": "1c0374ae_1fed1809",
+      "range": {
+        "startLine": 266,
+        "startChar": 35,
+        "endLine": 266,
+        "endChar": 38
+      },
+      "revId": "e7a7faeaf8a52878637752213e69c1918fd531ff",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "134977bd_d2e46ee8",
@@ -392,6 +584,30 @@
       "side": 1,
       "message": "RIGNORE: When LC is not Dedicated , at fillSchUeCb isDedicated flag is not marked in LC context of this LCID in UeCb. This is the significance of this return type",
       "parentUuid": "134977bd_d2e46ee8",
+      "range": {
+        "startLine": 300,
+        "startChar": 13,
+        "endLine": 300,
+        "endChar": 22
+      },
+      "revId": "e7a7faeaf8a52878637752213e69c1918fd531ff",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ce48679a_e5a939c9",
+        "filename": "src/5gnrsch/sch_ue_mgr.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 300,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-10-26T12:45:58Z",
+      "side": 1,
+      "message": "Removed RIGNORE return",
+      "parentUuid": "3e764874_be35cb71",
       "range": {
         "startLine": 300,
         "startChar": 13,
@@ -449,6 +665,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c05819c1_7e8ac728",
+        "filename": "src/5gnrsch/sch_ue_mgr.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 327,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-10-26T12:45:58Z",
+      "side": 1,
+      "message": "removed RIGNORE",
+      "parentUuid": "766ec123_12698886",
+      "range": {
+        "startLine": 327,
+        "startChar": 19,
+        "endLine": 327,
+        "endChar": 28
+      },
+      "revId": "e7a7faeaf8a52878637752213e69c1918fd531ff",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d396917b_6fadf6a3",
@@ -462,6 +702,30 @@
       "writtenOn": "2021-10-25T08:14:17Z",
       "side": 1,
       "message": "Pass the address of isDedicated to the funtion updateDedLcInfo",
+      "range": {
+        "startLine": 400,
+        "startChar": 56,
+        "endLine": 400,
+        "endChar": 67
+      },
+      "revId": "e7a7faeaf8a52878637752213e69c1918fd531ff",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6de35f34_6fddf9fe",
+        "filename": "src/5gnrsch/sch_ue_mgr.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 400,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-10-26T12:45:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d396917b_6fadf6a3",
       "range": {
         "startLine": 400,
         "startChar": 56,
@@ -495,6 +759,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "43611267_a618ca15",
+        "filename": "src/5gnrsch/sch_ue_mgr.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 433,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-10-26T12:45:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "68298dda_0f94fd1e",
+      "range": {
+        "startLine": 433,
+        "startChar": 52,
+        "endLine": 433,
+        "endChar": 64
+      },
+      "revId": "e7a7faeaf8a52878637752213e69c1918fd531ff",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "00d6cdd5_a4ea4757",
@@ -508,6 +796,30 @@
       "writtenOn": "2021-10-25T08:14:17Z",
       "side": 1,
       "message": "dedLcInfo can be deallocated here if last node",
+      "range": {
+        "startLine": 449,
+        "startChar": 41,
+        "endLine": 449,
+        "endChar": 50
+      },
+      "revId": "e7a7faeaf8a52878637752213e69c1918fd531ff",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "02f7f6f8_eccdf2c6",
+        "filename": "src/5gnrsch/sch_ue_mgr.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 449,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-10-26T12:45:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "00d6cdd5_a4ea4757",
       "range": {
         "startLine": 449,
         "startChar": 41,
@@ -565,6 +877,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "29d41134_43735092",
+        "filename": "src/5gnrsch/sch_utils.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 1314,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-10-26T12:45:58Z",
+      "side": 1,
+      "message": "No search function in cm_llist.c. Thus created this as separate functions",
+      "parentUuid": "6308a0a0_59e7c88c",
+      "range": {
+        "startLine": 1314,
+        "startChar": 8,
+        "endLine": 1314,
+        "endChar": 28
+      },
+      "revId": "e7a7faeaf8a52878637752213e69c1918fd531ff",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "10c6e631_4969d0a9",
@@ -611,6 +947,54 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2a5444c5_5981ef5a",
+        "filename": "src/5gnrsch/sch_utils.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 1317,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-10-26T12:45:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a5232042_a5940758",
+      "range": {
+        "startLine": 1317,
+        "startChar": 11,
+        "endLine": 1317,
+        "endChar": 17
+      },
+      "revId": "e7a7faeaf8a52878637752213e69c1918fd531ff",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5e9ccc54_fe1739d5",
+        "filename": "src/5gnrsch/sch_utils.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 1317,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-10-26T12:45:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "10c6e631_4969d0a9",
+      "range": {
+        "startLine": 1317,
+        "startChar": 3,
+        "endLine": 1317,
+        "endChar": 9
+      },
+      "revId": "e7a7faeaf8a52878637752213e69c1918fd531ff",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a462cf5e_eb4d84d4",
@@ -624,6 +1008,30 @@
       "writtenOn": "2021-10-25T08:14:17Z",
       "side": 1,
       "message": "merge it into search function",
+      "range": {
+        "startLine": 1450,
+        "startChar": 8,
+        "endLine": 1450,
+        "endChar": 20
+      },
+      "revId": "e7a7faeaf8a52878637752213e69c1918fd531ff",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ce5244f8_1003b537",
+        "filename": "src/5gnrsch/sch_utils.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 1450,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-10-26T12:45:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a462cf5e_eb4d84d4",
       "range": {
         "startLine": 1450,
         "startChar": 8,
@@ -669,6 +1077,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "acb830d2_50e4f9be",
+        "filename": "src/5gnrsch/sch_utils.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 1490,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-10-26T12:45:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9ea5c66f_5b3d8fc8",
+      "revId": "e7a7faeaf8a52878637752213e69c1918fd531ff",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7f19af3e_6a8f1d30",
@@ -706,6 +1132,30 @@
       "side": 1,
       "message": "Actually I searched for this I didnt find any common function for MIN",
       "parentUuid": "7f19af3e_6a8f1d30",
+      "range": {
+        "startLine": 190,
+        "startChar": 8,
+        "endLine": 190,
+        "endChar": 15
+      },
+      "revId": "e7a7faeaf8a52878637752213e69c1918fd531ff",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3f01eef2_cf189a7c",
+        "filename": "src/cm/common_def.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 190,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-10-26T12:45:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6eeffd9b_e43635a0",
       "range": {
         "startLine": 190,
         "startChar": 8,
