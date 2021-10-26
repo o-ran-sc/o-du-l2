@@ -48,8 +48,8 @@
 #include "sch.h"
 #include "sch_utils.h"
 
-SchCb schCb[SCH_MAX_INST];
 void SchFillCfmPst(Pst *reqPst,Pst *cfmPst,RgMngmt *cfm);
+
 /* local defines */
 SchCellCfgCfmFunc SchCellCfgCfmOpts[] = 
 {
@@ -1208,7 +1208,7 @@ uint8_t allocatePrbDl(SchCellCb *cell, SlotTimingInfo slotTime, \
       freePrbNode = isPrbAvailable(&prbAlloc->freePrbBlockList, *startPrb, numPrb);
       if(!freePrbNode)
       {
-         DU_LOG("\nERROR  -->  SCH: Requested PRB unavailable");
+         DU_LOG("\nERROR  -->  SCH: Requested DL PRB unavailable");
          return RFAILED;
       }
    }
@@ -1218,7 +1218,7 @@ uint8_t allocatePrbDl(SchCellCb *cell, SlotTimingInfo slotTime, \
    {
       if(fillPrbBitmap(prbAlloc->prbBitMap[symbol], *startPrb, numPrb) != ROK)
       {
-         DU_LOG("\nERROR  -->  SCH: fillPrbBitmap() failed for symbol [%d] ", symbol);
+         DU_LOG("\nERROR  -->  SCH: fillPrbBitmap() failed for symbol [%d] in DL", symbol);
          return RFAILED;
       }
    }
@@ -1229,6 +1229,133 @@ uint8_t allocatePrbDl(SchCellCb *cell, SlotTimingInfo slotTime, \
    return ROK;
 }
 
+/*******************************************************************
+ *
+ * @brief Allocates requested PRBs for UL
+ *
+ * @details
+ *
+ *    Function : allocatePrbUl
+ *
+ *    Functionality:
+ *      Allocates requested PRBs in UL
+ *      Keeps track of allocated PRB (using bitmap) and remaining PRBs
+ *
+ * @params[in] prbAlloc table
+ *             Start symbol
+ *             Number of symbols
+ *             Start PRB
+ *             Number of PRBs
+ *
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t allocatePrbUl(SchCellCb *cell, SlotTimingInfo slotTime, \
+   uint8_t startSymbol, uint8_t symbolLength, uint16_t *startPrb, uint16_t numPrb)
+{
+   uint8_t        symbol = 0;
+   uint16_t       prachStartPrb, prachNumPrb, prachEndPrb;
+   bool           isPrachOccasion;
+   FreePrbBlock   *freePrbBlock = NULLP;
+   CmLList        *freePrbNode = NULLP;
+   SchPrbAlloc    *prbAlloc = &cell->schUlSlotInfo[slotTime.slot]->prbAlloc;
+
+   /* If startPrb is set to MAX_NUM_RB, it means startPrb is not known currently.
+    *     * Search for an appropriate location in PRB grid and allocate requested
+    *     resources */
+   if(*startPrb == MAX_NUM_RB)
+   {
+      /* Check if PRACH is also scheduled in this slot */
+      isPrachOccasion = schCheckPrachOcc(cell, slotTime);
+      if(isPrachOccasion)
+      {
+         prachStartPrb =  cell->cellCfg.schRachCfg.msg1FreqStart;
+         prachNumPrb = schCalcPrachNumRb(cell);
+         prachEndPrb = prachStartPrb + prachNumPrb -1;
+      }
+
+      /* Iterate through all free PRB blocks */
+      freePrbNode = prbAlloc->freePrbBlockList.first; 
+      while(freePrbNode)
+      {
+         freePrbBlock = (FreePrbBlock *)freePrbNode->node; 
+
+         /* If PRACH is scheduled in this slot, then check if its PRBs belong to the current free block.
+          * PRBs required for PRACH cannot be allocated to any other message */
+         if((isPrachOccasion) &&
+            ((prachStartPrb >= freePrbBlock->startPrb) && (prachStartPrb <= freePrbBlock->endPrb)) &&
+            ((prachEndPrb >= freePrbBlock->startPrb) && (prachEndPrb <= freePrbBlock->endPrb)))
+         {
+            /* Implmentation is done such that highest-numbered free-RB is allocated first */ 
+            if((freePrbBlock->endPrb > prachEndPrb) && ((freePrbBlock->endPrb - prachEndPrb) >= numPrb))
+            {
+               /* If sufficient free PRBs are available above PRACH message then,
+                * endPrb = freePrbBlock->endPrb
+                * startPrb = endPrb - numPrb +1;
+                */
+               *startPrb = freePrbBlock->endPrb - numPrb +1;
+               break;
+            }
+            else if((prachStartPrb > freePrbBlock->startPrb) && ((prachStartPrb - freePrbBlock->startPrb) >= numPrb))
+            {
+               /* If free PRBs are available below PRACH message then,
+                * endPrb = prachStartPrb - 1
+                * startPrb = endPrb - numPrb +1
+                */
+               *startPrb = prachStartPrb - numPrb; 
+               break;
+            }
+            else
+            {
+               freePrbNode = freePrbNode->next;
+               continue;
+            } 
+         }
+         else
+         {
+            /* Check if requested number of PRBs can be allocated from currect block */
+            if(freePrbBlock->numFreePrb < numPrb)
+            {
+               freePrbNode = freePrbNode->next;
+               continue;
+            }
+            *startPrb = freePrbBlock->endPrb - numPrb +1;
+            break;
+         }
+      }
+
+      /* If no free block can be used to allocated requested number of RBs */
+      if(*startPrb == MAX_NUM_RB)
+         return RFAILED;
+   }
+   else
+   {
+      /* If startPrb is known already, check if requested PRBs are available for allocation */
+      freePrbNode = isPrbAvailable(&prbAlloc->freePrbBlockList, *startPrb, numPrb);
+      if(!freePrbNode)
+      {
+         DU_LOG("\nERROR  -->  SCH: Requested UL PRB unavailable");
+         return RFAILED;
+      }
+   }
+
+   /* Update bitmap to allocate PRBs */
+   for(symbol=startSymbol; symbol < (startSymbol+symbolLength); symbol++)
+   {
+      if(fillPrbBitmap(prbAlloc->prbBitMap[symbol], *startPrb, numPrb) != ROK)
+      {
+         DU_LOG("\nERROR  -->  SCH: fillPrbBitmap() failed for symbol [%d] in UL", symbol);
+         return RFAILED;
+      }
+   }
+
+   /* Update the remaining number for free PRBs */
+   removeAllocatedPrbFromFreePrbList(&prbAlloc->freePrbBlockList, freePrbNode, *startPrb, numPrb);
+
+   return ROK;
+}
+ 
 /**********************************************************************
   End of file
  **********************************************************************/

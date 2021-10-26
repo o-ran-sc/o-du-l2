@@ -994,11 +994,11 @@ void fillDefaultMacCellGrpInfo(MacUeCfg *macUeCfg)
 void fillDefaultModulation(MacUeCfg *ueCfg)
 {
    ueCfg->dlModInfo.modOrder = MOD_ORDER_QPSK;
-   ueCfg->dlModInfo.mcsIndex = SIB1_MCS;
+   ueCfg->dlModInfo.mcsIndex = DEFAULT_MCS;
    ueCfg->dlModInfo.mcsTable = MCS_TABLE_QAM64; /* Spec 38.214-Table 5.1.3.1-1 */
 
    ueCfg->ulModInfo.modOrder = MOD_ORDER_QPSK;
-   ueCfg->ulModInfo.mcsIndex = SIB1_MCS;
+   ueCfg->ulModInfo.mcsIndex = DEFAULT_MCS;
    ueCfg->ulModInfo.mcsTable = MCS_TABLE_QAM64; /* Spec 38.214-Table 5.1.3.1-1 */
 }
 

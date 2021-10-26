@@ -58,7 +58,6 @@ void fillCoresetFeqDomAllocMap(uint16_t startPrbGrp, uint16_t numPrbGrp, uint8_t
    while(numPrbGrp)
    {
       mask = 1;
-      printf("startPrbGrp [%d] numPrbGrp [%d] diff [%d]\n",startPrbGrp, numPrbGrp,  (prbGrpStartBit - startPrbGrp));
       mask = mask << (prbGrpStartBit - startPrbGrp);
       freqAllocBitMap = freqAllocBitMap | mask;
       startPrbGrp++;
@@ -148,6 +147,40 @@ uint8_t buildPlmnId(Plmn plmn, uint8_t *buf)
       buf[2] = ((plmn.mnc[2] << 4) | (plmn.mnc[1]));
    }
    return ROK;
+}
+
+/*******************************************************************
+ *
+ * @brief Function to map Sub carrier spacing enum value to value in kHz
+ *
+ * @details
+ *
+ *    Function : fetchScsValue
+ *
+ *    Functionality:
+ *       Function to map Sub carrier spacing enum value to value in kHz
+ *
+ * @params[in] sub-carrier spacing enum value
+ * @return sub-carrier spacing value in kHz
+ *
+ * ****************************************************************/
+uint16_t fetchScsValue(uint8_t scsEnumValue)
+{
+   switch(scsEnumValue)
+   {
+      case SCS_15KHZ:
+         return 15;
+      case SCS_30KHZ:
+         return 30;
+      case SCS_60KHZ:
+         return 60;
+      case SCS_120KHZ:
+         return 120;
+      case SCS_240KHZ:
+         return 240;
+      default:
+         return 15;
+   }
 }
 
 /*******************************************************************

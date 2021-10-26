@@ -48,12 +48,16 @@
 #define NR_DL_ARFCN 623400
 #define NR_UL_ARFCN 623400
 #define NR_FREQ_BAND 78
+#define NR_SCS SCS_30KHZ
+#define NR_BANDWIDTH BANDWIDTH_100MHZ
 #else
 #define DUPLEX_MODE DUP_MODE_FDD
 #define NR_NUMEROLOGY 0
 #define NR_DL_ARFCN 428000
 #define NR_UL_ARFCN 390000
 #define NR_FREQ_BAND 1
+#define NR_SCS SCS_15KHZ
+#define NR_BANDWIDTH BANDWIDTH_20MHZ
 #endif
 
 #define DU_TAC 1
@@ -68,8 +72,6 @@
 /* Spec 38.104 Table 5.4.2.3-1:Applicable NR-ARFCN per operating band in FR1 */
 #define SUL_ARFCN 100
 #define SUL_BAND 2
-
-
 
 #define TIME_CFG 0
 #define CARRIER_IDX 1
@@ -99,9 +101,10 @@
 
 /* MACRO defines for PRACH Configuration */
 #define PRACH_CONFIG_IDX   88
-#define PRACH_FREQ_START   0
+#define PRACH_MAX_PRB  24  /* As per (spec 38.211-Table 6.3.3.2-1), max allocated PRBs can go upto 24 */
+#define PRACH_FREQ_START  (MAX_NUM_RB - PRACH_MAX_PRB) /* In order to allocate PRACH from end of the resource grid */
 #define PRACH_SEQ_LEN SHORT_SEQUENCE
-#define PRACH_SUBCARRIER_SPACING 0
+#define PRACH_SUBCARRIER_SPACING NR_SCS
 #define PRACH_RESTRICTED_SET_CFG 0
 #define NUM_PRACH_FDM 1
 #define ROOT_SEQ_IDX 0
@@ -172,7 +175,7 @@
 
 /* Macro define for PUCCH Configuration */
 #define PUCCH_RSRC_COMMON  0
-#define PUCCH_GROUP_HOPPING 2 /* disable */
+#define PUCCH_GROUP_HOPPING 0 /* Neither sequence hopping nor group hopping */
 #define PUCCH_P0_NOMINAL   -74
 
 /* MACRO defines for TDD DL-UL Configuration */
