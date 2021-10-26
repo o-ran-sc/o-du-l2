@@ -24,6 +24,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3e4b784d_f1891fb3",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1269,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-10-26T11:16:17Z",
+      "side": 1,
+      "message": "we cannot have a common function for Ul and DL because in DL, SSB and SIB1 occasions are checked for but in UL, PRACH occasion is searched.",
+      "parentUuid": "66c3b35b_f90ed5ec",
+      "range": {
+        "startLine": 1268,
+        "startChar": 6,
+        "endLine": 1269,
+        "endChar": 7
+      },
+      "revId": "af173a3e42749ffacbb9aaa3284a939f44535454",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "747fafdf_22b93cc8",
@@ -37,6 +61,30 @@
       "writtenOn": "2021-10-26T08:09:05Z",
       "side": 1,
       "message": "change the comment",
+      "range": {
+        "startLine": 1281,
+        "startChar": 62,
+        "endLine": 1281,
+        "endChar": 71
+      },
+      "revId": "af173a3e42749ffacbb9aaa3284a939f44535454",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "421bc9b2_fd34398d",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1281,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-10-26T11:16:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "747fafdf_22b93cc8",
       "range": {
         "startLine": 1281,
         "startChar": 62,
@@ -70,6 +118,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3e34eb29_f2a5da11",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1290,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-10-26T11:16:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "31072dc0_9b26dbbc",
+      "range": {
+        "startLine": 1290,
+        "startChar": 51,
+        "endLine": 1290,
+        "endChar": 61
+      },
+      "revId": "af173a3e42749ffacbb9aaa3284a939f44535454",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "316d4562_c6609bae",
@@ -83,6 +155,30 @@
       "writtenOn": "2021-10-26T08:59:28Z",
       "side": 1,
       "message": "we have SchCb schCb[SCH_MAX_INST] in 5gnrsch/sch.h so do we need to add in each SCH file",
+      "range": {
+        "startLine": 46,
+        "startChar": 12,
+        "endLine": 46,
+        "endChar": 24
+      },
+      "revId": "af173a3e42749ffacbb9aaa3284a939f44535454",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ae7c0815_5f65ada7",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-10-26T11:16:17Z",
+      "side": 1,
+      "message": "Not needed in each file",
+      "parentUuid": "316d4562_c6609bae",
       "range": {
         "startLine": 46,
         "startChar": 12,
@@ -116,6 +212,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1b566248_0f5e8110",
+        "filename": "src/5gnrsch/sch_rach.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-10-26T11:16:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "02c20391_6f09ce76",
+      "range": {
+        "startLine": 45,
+        "startChar": 12,
+        "endLine": 45,
+        "endChar": 24
+      },
+      "revId": "af173a3e42749ffacbb9aaa3284a939f44535454",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9c67c6d6_02a73c23",
@@ -129,6 +249,30 @@
       "writtenOn": "2021-10-26T08:59:28Z",
       "side": 1,
       "message": "and this also can be moved in .h",
+      "range": {
+        "startLine": 46,
+        "startChar": 9,
+        "endLine": 46,
+        "endChar": 25
+      },
+      "revId": "af173a3e42749ffacbb9aaa3284a939f44535454",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b9dafa12_7d6effdf",
+        "filename": "src/5gnrsch/sch_rach.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-10-26T11:16:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9c67c6d6_02a73c23",
       "range": {
         "startLine": 46,
         "startChar": 9,
@@ -162,6 +306,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "24aa974d_af101078",
+        "filename": "src/5gnrsch/sch_rach.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-10-26T11:16:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a488585_014da656",
+      "range": {
+        "startLine": 119,
+        "startChar": 7,
+        "endLine": 119,
+        "endChar": 10
+      },
+      "revId": "af173a3e42749ffacbb9aaa3284a939f44535454",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7d2c63e4_f21fb233",
@@ -175,6 +343,30 @@
       "writtenOn": "2021-10-26T08:54:53Z",
       "side": 1,
       "message": "at many places we are using mcs \u003d 4, can we use this SIB1_MCS",
+      "range": {
+        "startLine": 250,
+        "startChar": 17,
+        "endLine": 250,
+        "endChar": 29
+      },
+      "revId": "af173a3e42749ffacbb9aaa3284a939f44535454",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2b44a198_d9b64f92",
+        "filename": "src/5gnrsch/sch_rach.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 250,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-10-26T11:16:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7d2c63e4_f21fb233",
       "range": {
         "startLine": 250,
         "startChar": 17,
@@ -208,6 +400,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d8a17fb2_940f215c",
+        "filename": "src/5gnrsch/sch_ue_mgr.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 519,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-10-26T11:16:17Z",
+      "side": 1,
+      "message": "This number is actually not used at all. We fetch symbLen in line #529.\nHence, initiating this values to 0",
+      "parentUuid": "4573c645_c5c39c00",
+      "range": {
+        "startLine": 519,
+        "startChar": 30,
+        "endLine": 519,
+        "endChar": 37
+      },
+      "revId": "af173a3e42749ffacbb9aaa3284a939f44535454",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "58f3e1e3_a83df414",
@@ -221,6 +437,30 @@
       "writtenOn": "2021-10-26T08:54:53Z",
       "side": 1,
       "message": "do we required this default case?",
+      "range": {
+        "startLine": 173,
+        "startChar": 16,
+        "endLine": 173,
+        "endChar": 18
+      },
+      "revId": "af173a3e42749ffacbb9aaa3284a939f44535454",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "eddcb75b_1fc69a91",
+        "filename": "src/cm/common_def.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 173,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-10-26T11:16:17Z",
+      "side": 1,
+      "message": "We should always have default case in switch statement, just in case any corner scenario hits",
+      "parentUuid": "58f3e1e3_a83df414",
       "range": {
         "startLine": 173,
         "startChar": 16,
