@@ -33,6 +33,7 @@
 #define TOTAL_TBSIZE_VALUES    93
 #define DEFAULT_UL_ACK_LIST_COUNT 8 /* Max number of pusch time domain uplink allocation */
 #define MASK_BIT64_ON 0xFFFFFFFFFFFFFFFF
+#define MIN_PRB 1
 
 #define SET_BITS_MSB(_startBit, _numBits, _byte) \
 {                                                \
@@ -128,6 +129,11 @@ void removeAllocatedPrbFromFreePrbList(CmLListCp *freePrbBlockList, CmLList *nod
 uint8_t findDmrsStartSymbol(uint16_t dlDmrsSymbBitMap);
 void covertFreqDomRsrcMapToIAPIFormat(uint8_t *sourceBitMap, uint8_t *destBitMap);
 
+uint8_t updateLcListReqPRB(CmLListCp *lcLL, uint8_t lcId, uint32_t payloadSize);
+uint32_t calculateEstimateTBSize(uint32_t reqBO, uint16_t mcsIdx,uint8_t numSymbols,\
+                                   uint16_t maxPRB, uint16_t *estPrb);
+void deleteLcLL(CmLListCp *lcLL);
+void printLcLL(CmLListCp *lcLL);
 /**********************************************************************
   End of file
  **********************************************************************/
