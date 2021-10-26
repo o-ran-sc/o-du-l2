@@ -72,6 +72,75 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "316d4562_c6609bae",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-10-26T08:59:28Z",
+      "side": 1,
+      "message": "we have SchCb schCb[SCH_MAX_INST] in 5gnrsch/sch.h so do we need to add in each SCH file",
+      "range": {
+        "startLine": 46,
+        "startChar": 12,
+        "endLine": 46,
+        "endChar": 24
+      },
+      "revId": "af173a3e42749ffacbb9aaa3284a939f44535454",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "02c20391_6f09ce76",
+        "filename": "src/5gnrsch/sch_rach.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-10-26T08:59:28Z",
+      "side": 1,
+      "message": "can we remove this",
+      "range": {
+        "startLine": 45,
+        "startChar": 12,
+        "endLine": 45,
+        "endChar": 24
+      },
+      "revId": "af173a3e42749ffacbb9aaa3284a939f44535454",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9c67c6d6_02a73c23",
+        "filename": "src/5gnrsch/sch_rach.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-10-26T08:59:28Z",
+      "side": 1,
+      "message": "and this also can be moved in .h",
+      "range": {
+        "startLine": 46,
+        "startChar": 9,
+        "endLine": 46,
+        "endChar": 25
+      },
+      "revId": "af173a3e42749ffacbb9aaa3284a939f44535454",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1a488585_014da656",
         "filename": "src/5gnrsch/sch_rach.c",
         "patchSetId": 3
