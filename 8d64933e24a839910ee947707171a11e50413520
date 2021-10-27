@@ -1,0 +1,401 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a85f6fd5_1b6d9b86",
+        "filename": "src/5gnrrlc/rlc_utl_dl.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 617,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-10-27T06:49:01Z",
+      "side": 1,
+      "message": "can we remove this altogether from the code?",
+      "revId": "8d64933e24a839910ee947707171a11e50413520",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ef45851a_cfefd9b3",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 929,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-10-27T06:49:01Z",
+      "side": 1,
+      "message": "ueLcIdx can be uint8_t variable. 8-bits should be sufficient since there can be no more than 32 LCs",
+      "revId": "8d64933e24a839910ee947707171a11e50413520",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7b2e57a8_5027a541",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 969,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-10-27T06:49:01Z",
+      "side": 1,
+      "message": "Can we make sure that when LC is configured, it is stored at LcId/LcId-1 (whichever is correct) index.\n\nThis is how we store UE. If we do the same for LC, we will save quite a lot of time by avoiding linear search every time we want to fetch an LC context",
+      "revId": "8d64933e24a839910ee947707171a11e50413520",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7a085a7b_11dce35e",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 996,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-10-27T06:49:01Z",
+      "side": 1,
+      "message": "1. Do we need this print in long run?\n2. What does VS stand for?",
+      "revId": "8d64933e24a839910ee947707171a11e50413520",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a01a841b_ce1c8981",
+        "filename": "src/5gnrsch/sch.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 247,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-10-27T06:49:01Z",
+      "side": 1,
+      "message": "indentation",
+      "revId": "8d64933e24a839910ee947707171a11e50413520",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0c566095_b627d94e",
+        "filename": "src/5gnrsch/sch.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 279,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-10-27T06:49:01Z",
+      "side": 1,
+      "message": "Since PRB estimate will be done per UE per slot, should we move this structure within SchDlSlotInfo? Lets think on it.",
+      "revId": "8d64933e24a839910ee947707171a11e50413520",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "120874f6_644137b0",
+        "filename": "src/5gnrsch/sch.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 370,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-10-27T06:49:01Z",
+      "side": 1,
+      "message": "rename function to searchLargestFreeBlockDL()",
+      "revId": "8d64933e24a839910ee947707171a11e50413520",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "df5d466c_432faef2",
+        "filename": "src/5gnrsch/sch.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 379,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-10-27T06:49:01Z",
+      "side": 1,
+      "message": "Since we use camel case, rename this function to modifyOrSearchLcList",
+      "revId": "8d64933e24a839910ee947707171a11e50413520",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cd3376a8_7d9c25c9",
+        "filename": "src/5gnrsch/sch.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 383,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-10-27T06:49:01Z",
+      "side": 1,
+      "message": "keep updateGrantSizeForBoRpt() function declaration along with DL scheduling function declarations",
+      "revId": "8d64933e24a839910ee947707171a11e50413520",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "db3b000a_c7325e7e",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 891,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-10-27T06:49:01Z",
+      "side": 1,
+      "message": "you can remove the above comment now",
+      "revId": "8d64933e24a839910ee947707171a11e50413520",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "53259747_d2681535",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 1475,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-10-27T06:49:01Z",
+      "side": 1,
+      "message": "rename to isDedicatedPrb",
+      "range": {
+        "startLine": 1475,
+        "startChar": 50,
+        "endLine": 1475,
+        "endChar": 62
+      },
+      "revId": "8d64933e24a839910ee947707171a11e50413520",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "69d92f6e_e14b3580",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 1495,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-10-27T06:49:01Z",
+      "side": 1,
+      "message": "If you want to keep this for future use, you can just comment it out before merging this gerrit",
+      "revId": "8d64933e24a839910ee947707171a11e50413520",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6ec8a1ea_10b83a81",
+        "filename": "src/5gnrsch/sch_slot_ind.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 278,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-10-27T06:49:01Z",
+      "side": 1,
+      "message": "fix print",
+      "revId": "8d64933e24a839910ee947707171a11e50413520",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2bd8d550_625b7ffe",
+        "filename": "src/5gnrsch/sch_slot_ind.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 314,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-10-27T06:49:01Z",
+      "side": 1,
+      "message": "remove the above code and club with below if",
+      "revId": "8d64933e24a839910ee947707171a11e50413520",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "da18ba96_f14ed304",
+        "filename": "src/5gnrsch/sch_ue_mgr.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 298,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-10-27T06:49:01Z",
+      "side": 1,
+      "message": "line 281-284 and 294-297 is same, optimize to avoid repeated code",
+      "revId": "8d64933e24a839910ee947707171a11e50413520",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5d942a3e_4ec63f4c",
+        "filename": "src/5gnrsch/sch_ue_mgr.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 304,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-10-27T06:49:01Z",
+      "side": 1,
+      "message": "we do not need this else case at all\nDirectly return ROK",
+      "revId": "8d64933e24a839910ee947707171a11e50413520",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "67f4c953_be7534bc",
+        "filename": "src/5gnrsch/sch_ue_mgr.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 444,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-10-27T06:49:01Z",
+      "side": 1,
+      "message": "check if (ueCb-\u003eulLcPrbEst.dedLcInfo ! \u003d NULL) before accessing dedLcList",
+      "revId": "8d64933e24a839910ee947707171a11e50413520",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "be06eaaa_9916b92a",
+        "filename": "src/5gnrsch/sch_ue_mgr.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 482,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-10-27T06:49:01Z",
+      "side": 1,
+      "message": "cause of failure i.e. \"Memory allocation failure\" should be printed within updateDedLcInfo() before it return RFAILED.\nHere it should just print \"Failed in updating Lc info\"\n\nSame change in all above case",
+      "revId": "8d64933e24a839910ee947707171a11e50413520",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bb87e6cf_79f956da",
+        "filename": "src/5gnrsch/sch_ue_mgr.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 492,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-10-27T06:49:01Z",
+      "side": 1,
+      "message": "check if (ueCb-\u003edlLcPrbEst.dedLcInfo ! \u003d NULL) before accessing dedLcList",
+      "revId": "8d64933e24a839910ee947707171a11e50413520",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "40ef1783_e79b9f65",
+        "filename": "src/5gnrsch/sch_utils.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 1343,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-10-27T06:49:01Z",
+      "side": 1,
+      "message": "since this function supports searching, creating and deleting i.e all actions, we can all it updateLcLList() or handleLcLList()",
+      "revId": "8d64933e24a839910ee947707171a11e50413520",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8b4832d6_3355d2a1",
+        "filename": "src/5gnrsch/sch_utils.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 1502,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-10-27T06:49:01Z",
+      "side": 1,
+      "message": "no need to check for count. If count is 0 then node will be set to NULL above and the below for loop will not executed.\n\nSo, the check for count can be removed",
+      "revId": "8d64933e24a839910ee947707171a11e50413520",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0a714fd4_70f72a11",
+        "filename": "src/5gnrsch/sch_utils.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 1550,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-10-27T06:49:01Z",
+      "side": 1,
+      "message": "let say tbs is less than reqBo but the above while loop exits because *estPrb has now become greater than maxPrb. \n\nIn this case, before returning from this function, *estPrb should be set maxPrb",
+      "revId": "8d64933e24a839910ee947707171a11e50413520",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "19b7e94e_f47ed23b",
+        "filename": "src/5gnrsch/sch_utils.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 131,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-10-27T06:49:01Z",
+      "side": 1,
+      "message": "keep PRB related functions together\nand LL related functions together",
+      "revId": "8d64933e24a839910ee947707171a11e50413520",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
