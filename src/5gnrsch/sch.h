@@ -134,8 +134,10 @@ typedef struct schDlSlotInfo
    uint8_t      ssbIdxSupported;          /*!< Max SSB index */
    SsbInfo      ssbInfo[MAX_SSB_IDX];     /*!< SSB info */
    bool         sib1Pres;                 /*!< Flag to determine if SIB1 is present in this slot */
-   RarAlloc     *rarAlloc;                /*!< RAR allocation */
-   DlMsgInfo    *dlMsgInfo;               /*!< DL dedicated Msg info */
+   uint8_t      pdcchUe;                  /*!< UE for which PDCCH is scheduled in this slot */
+   uint8_t      pdschUe;                  /*!< UE for which PDSCH is scheduled in this slot */
+   RarAlloc     *rarAlloc[MAX_NUM_UE];    /*!< RAR allocation per UE*/
+   DlMsgInfo    *dlMsgInfo;               /*!< DL dedicated Msg info per UE */
 }SchDlSlotInfo;
 
 typedef struct schRaCb
@@ -155,6 +157,8 @@ typedef struct schUlSlotInfo
    SchPuschInfo *schPuschInfo;            /*!< PUSCH info */
    bool         pucchPres;                /*!< PUCCH presence field */
    SchPucchInfo schPucchInfo;             /*!< PUCCH info */
+   uint8_t      pucchUe;
+   uint8_t      puschUe;
 }SchUlSlotInfo;
 
 /**
@@ -269,6 +273,7 @@ typedef struct schCellCb
    uint32_t      actvUeBitMap;                      /*!<Bit map to find active UEs */
    uint32_t      boIndBitMap;                       /*!<Bit map to indicate UEs that have recevied BO */
    SchUeCb       ueCb[MAX_NUM_UE];                  /*!<Pointer to UE contexts of this cell */
+   CmLListCp     ueToBeScheduled;                   /*!<Linked list to store UEs pending to be scheduled, */
 #ifdef NR_TDD
    uint8_t       numSlotsInPeriodicity;             /*!< number of slots in configured periodicity and SCS */
    uint32_t      slotFrmtBitMap;                    /*!< 2 bits must be read together to determine D/U/S slots. 00-D, 01-U, 10-S */
@@ -304,6 +309,7 @@ void BuildK2InfoTable(SchCellCb *cell, SchPuschTimeDomRsrcAlloc timeDomRsrcAlloc
    uint16_t puschSymTblSize, SchK2TimingInfoTbl *msg3K2InfoTbl, SchK2TimingInfoTbl *k2InfoTbl);
 uint8_t SchSendCfgCfm(Pst *pst, RgMngmt *cfm);
 SchUeCb* schGetUeCb(SchCellCb *cellCb, uint16_t crnti);
+uint8_t addUeToBeScheduled(SchCellCb *cell, uint8_t ueIdx);
 
 /* Incoming message handler function declarations */
 uint8_t schProcessSlotInd(SlotTimingInfo *slotInd, Inst inst);
@@ -314,7 +320,7 @@ PduTxOccsaion schCheckSsbOcc(SchCellCb *cell, SlotTimingInfo slotTime);
 PduTxOccsaion schCheckSib1Occ(SchCellCb *cell, SlotTimingInfo slotTime);
 uint8_t schBroadcastSsbAlloc(SchCellCb *cell, SlotTimingInfo slotTime, DlBrdcstAlloc *dlBrdcstAlloc);
 uint8_t schBroadcastSib1Alloc(SchCellCb *cell, SlotTimingInfo slotTime, DlBrdcstAlloc *dlBrdcstAlloc);
-void schProcessRaReq(SlotTimingInfo currTime, SchCellCb *cellCb);
+bool schProcessRaReq(SchCellCb *cellCb, SlotTimingInfo currTime, uint8_t ueIdx);
 uint8_t schFillRar(SchCellCb *cell, SlotTimingInfo rarTime, uint16_t ueIdx, RarAlloc *rarAlloc, uint8_t k0Index);
 uint8_t schDlRsrcAllocMsg4(SchCellCb *cell, SlotTimingInfo slotTime, DlMsgAlloc *msg4Alloc);
 uint8_t schDlRsrcAllocDlMsg(SchCellCb *cell, SlotTimingInfo slotTime, uint16_t crnti,

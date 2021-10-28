@@ -944,7 +944,7 @@ typedef struct dlSchedInfo
 
    /* Allocation for RAR message */
    //uint8_t isRarPres;
-   RarAlloc *rarAlloc;
+   RarAlloc *rarAlloc[MAX_NUM_UE];
 
    /* Allocation from MSG4 */
    //Msg4Alloc *msg4Alloc;
