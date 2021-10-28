@@ -1,0 +1,106 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4bb90744_982babf6",
+        "filename": "src/5gnrrlc/rlc_utl_dl.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 318,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-10-28T06:14:42Z",
+      "side": 1,
+      "message": "free dlData and datReqInfo for failure case as well",
+      "revId": "4af5f85d6a4d06ec67831465c3e94c03189f4168",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b5d81e34_43342c17",
+        "filename": "src/5gnrrlc/rlc_utl_dl.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 334,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-10-28T06:14:42Z",
+      "side": 1,
+      "message": "same as above",
+      "revId": "4af5f85d6a4d06ec67831465c3e94c03189f4168",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "01374f25_e73b742e",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 926,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-10-28T06:14:42Z",
+      "side": 1,
+      "message": "In AAD spec, API \"9.2.2.2.14 DL RLC Buffer Status Information\" supports sending on multiple LC BO from MAC to SCH.\nBut as of now in our code, BO is sent for only one LC at a time from MAC to SCH. Can we change it to comply to spec? This is avoid multiple API calls",
+      "revId": "4af5f85d6a4d06ec67831465c3e94c03189f4168",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "941191ed_1c344ab9",
+        "filename": "src/5gnrsch/sch_utils.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 1479,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-10-28T06:14:42Z",
+      "side": 1,
+      "message": "we can have max 120 characters in a line. Up to that no need for line break",
+      "revId": "4af5f85d6a4d06ec67831465c3e94c03189f4168",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "03b1ed78_5f26c37b",
+        "filename": "src/5gnrsch/sch_utils.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 1553,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-10-28T06:14:42Z",
+      "side": 1,
+      "message": "add comment to explain this line",
+      "revId": "4af5f85d6a4d06ec67831465c3e94c03189f4168",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0f53c44c_6d7288ba",
+        "filename": "src/5gnrsch/sch_utils.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 1558,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-10-28T06:14:42Z",
+      "side": 1,
+      "message": "As you mentioned in our previous discussion, reqBO can be any random no. whereas tbs is a specific number that we get either from table or calculations.\nBut in above line if tbs \u003e reqBo, then tbs will be set to reqBo which will be incorrect!",
+      "revId": "4af5f85d6a4d06ec67831465c3e94c03189f4168",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
