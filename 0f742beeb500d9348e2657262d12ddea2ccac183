@@ -22,6 +22,30 @@
       },
       "revId": "0f742beeb500d9348e2657262d12ddea2ccac183",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c782c189_c3b6dce6",
+        "filename": "src/5gnrsch/sch.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 201,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-10-28T07:44:05Z",
+      "side": 0,
+      "message": "As discussed, as we have one to one mapping for LCID and LCIdx of LcCtxt thus we dont need numUlLC(because it was deciding the LCIdx value before).\nOne to One mapping is done to save the traversing of LcCtxt for everyLCID whenever COnfig change or BO Status comes",
+      "parentUuid": "790b1315_d0d48c06",
+      "range": {
+        "startLine": 201,
+        "startChar": 15,
+        "endLine": 201,
+        "endChar": 22
+      },
+      "revId": "0f742beeb500d9348e2657262d12ddea2ccac183",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
   ]
 }

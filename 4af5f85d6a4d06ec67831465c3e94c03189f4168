@@ -24,6 +24,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9716d66f_feff232f",
+        "filename": "src/5gnrrlc/rlc_utl_dl.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 314,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-10-28T07:44:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4024a8f3_7377c909",
+      "range": {
+        "startLine": 314,
+        "startChar": 33,
+        "endLine": 314,
+        "endChar": 50
+      },
+      "revId": "4af5f85d6a4d06ec67831465c3e94c03189f4168",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4bb90744_982babf6",
@@ -37,6 +61,24 @@
       "writtenOn": "2021-10-28T06:14:42Z",
       "side": 1,
       "message": "free dlData and datReqInfo for failure case as well",
+      "revId": "4af5f85d6a4d06ec67831465c3e94c03189f4168",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "48eb2b5b_8425efff",
+        "filename": "src/5gnrrlc/rlc_utl_dl.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 318,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-10-28T07:44:05Z",
+      "side": 1,
+      "message": "It is getting done as it will break the for loop and reach line No 340 \u0026 341 and the freeing of dlData and datReqInfo exist before returning",
+      "parentUuid": "4bb90744_982babf6",
       "revId": "4af5f85d6a4d06ec67831465c3e94c03189f4168",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -58,6 +100,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "90cf95ad_ec12ec40",
+        "filename": "src/5gnrrlc/rlc_utl_dl.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 334,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-10-28T07:44:05Z",
+      "side": 1,
+      "message": "same as above",
+      "parentUuid": "b5d81e34_43342c17",
+      "revId": "4af5f85d6a4d06ec67831465c3e94c03189f4168",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bfc4d84c_3c32d59d",
@@ -71,6 +131,30 @@
       "writtenOn": "2021-10-28T06:40:01Z",
       "side": 1,
       "message": "same as above.",
+      "range": {
+        "startLine": 341,
+        "startChar": 9,
+        "endLine": 341,
+        "endChar": 28
+      },
+      "revId": "4af5f85d6a4d06ec67831465c3e94c03189f4168",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "57e3299b_fe0790f0",
+        "filename": "src/5gnrrlc/rlc_utl_dl.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 341,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-10-28T07:44:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bfc4d84c_3c32d59d",
       "range": {
         "startLine": 341,
         "startChar": 9,
@@ -104,6 +188,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d318e74d_d09b5977",
+        "filename": "src/5gnrrlc/rlc_utl_dl.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 374,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-10-28T07:44:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cd4d9674_eb235cfe",
+      "range": {
+        "startLine": 374,
+        "startChar": 9,
+        "endLine": 374,
+        "endChar": 28
+      },
+      "revId": "4af5f85d6a4d06ec67831465c3e94c03189f4168",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "dcd667b7_7b428206",
@@ -117,6 +225,30 @@
       "writtenOn": "2021-10-28T06:40:01Z",
       "side": 1,
       "message": "local variable must be declared at the beginning of the function.",
+      "range": {
+        "startLine": 566,
+        "startChar": 18,
+        "endLine": 566,
+        "endChar": 24
+      },
+      "revId": "4af5f85d6a4d06ec67831465c3e94c03189f4168",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "68aa74b0_f7ec2232",
+        "filename": "src/5gnrrlc/rlc_utl_dl.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 566,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-10-28T07:44:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dcd667b7_7b428206",
       "range": {
         "startLine": 566,
         "startChar": 18,
@@ -144,6 +276,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b0fe7d7e_9c50b57c",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 926,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-10-28T07:44:05Z",
+      "side": 1,
+      "message": "Sure. Will take a note for this for future scope. Since Spec is mentioning about  two ways of implementation. i.e  BO status per UE or BO status Per LC. We can discuss with team once for the 1st implementation later and decide which can be better suitable",
+      "parentUuid": "01374f25_e73b742e",
+      "revId": "4af5f85d6a4d06ec67831465c3e94c03189f4168",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "48c24b85_82ff235d",
@@ -157,6 +307,24 @@
       "writtenOn": "2021-10-28T06:40:01Z",
       "side": 1,
       "message": "Since comments are added at all places, lets add a comment here as well.",
+      "revId": "4af5f85d6a4d06ec67831465c3e94c03189f4168",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "767cacf0_d373a3ac",
+        "filename": "src/5gnrsch/sch.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 230,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-10-28T07:44:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "48c24b85_82ff235d",
       "revId": "4af5f85d6a4d06ec67831465c3e94c03189f4168",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -178,6 +346,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9df540fd_3db13526",
+        "filename": "src/5gnrsch/sch_utils.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 1479,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-10-28T07:44:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "941191ed_1c344ab9",
+      "revId": "4af5f85d6a4d06ec67831465c3e94c03189f4168",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "03b1ed78_5f26c37b",
@@ -195,6 +381,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8360867c_5aaf1a3e",
+        "filename": "src/5gnrsch/sch_utils.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 1553,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-10-28T07:44:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "03b1ed78_5f26c37b",
+      "revId": "4af5f85d6a4d06ec67831465c3e94c03189f4168",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0f53c44c_6d7288ba",
@@ -208,6 +412,24 @@
       "writtenOn": "2021-10-28T06:14:42Z",
       "side": 1,
       "message": "As you mentioned in our previous discussion, reqBO can be any random no. whereas tbs is a specific number that we get either from table or calculations.\nBut in above line if tbs \u003e reqBo, then tbs will be set to reqBo which will be incorrect!",
+      "revId": "4af5f85d6a4d06ec67831465c3e94c03189f4168",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c292c326_7b52478a",
+        "filename": "src/5gnrsch/sch_utils.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 1558,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-10-28T07:44:05Z",
+      "side": 1,
+      "message": "TBS is actually Grant/Size to be provided to this LC. Since we are calculating TBS size based on estimated PRB so thus TBS size will not match the requirement in many case. \n\nWith the estimated PRB, if TBS is not able to cater the Requirement (tbs\u003creqBO) then that LC cant be granted the Size which it asked for. Thus GrantSize \u003d TBS.\n\nHowever, we found a estPRB which is able to cater either equal to or more than what is required i.e. (tbs \u003e reqBO) then we cant assign Grant Size as TBS size instead it should be what LC has requested for.\n\nI have referred  \"rgSCHRsrcDlAlloc1CwTxRb\" from FLEX RAN code for this logic.\n\nMay be I will rename the return variable as effecBO/GrantSize to avoid confusion",
+      "parentUuid": "0f53c44c_6d7288ba",
       "revId": "4af5f85d6a4d06ec67831465c3e94c03189f4168",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
