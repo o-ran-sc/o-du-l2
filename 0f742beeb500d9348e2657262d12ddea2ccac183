@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "790b1315_d0d48c06",
+        "filename": "src/5gnrsch/sch.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 201,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-10-28T06:40:01Z",
+      "side": 0,
+      "message": "may I know why this parameter is not required now.",
+      "range": {
+        "startLine": 201,
+        "startChar": 15,
+        "endLine": 201,
+        "endChar": 22
+      },
+      "revId": "0f742beeb500d9348e2657262d12ddea2ccac183",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}

@@ -3,6 +3,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "4024a8f3_7377c909",
+        "filename": "src/5gnrrlc/rlc_utl_dl.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 314,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-10-28T06:40:01Z",
+      "side": 1,
+      "message": "cant we use pst.region and pst.pool?",
+      "range": {
+        "startLine": 314,
+        "startChar": 33,
+        "endLine": 314,
+        "endChar": 50
+      },
+      "revId": "4af5f85d6a4d06ec67831465c3e94c03189f4168",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "4bb90744_982babf6",
         "filename": "src/5gnrrlc/rlc_utl_dl.c",
         "patchSetId": 9
@@ -37,6 +60,75 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "bfc4d84c_3c32d59d",
+        "filename": "src/5gnrrlc/rlc_utl_dl.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 341,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-10-28T06:40:01Z",
+      "side": 1,
+      "message": "same as above.",
+      "range": {
+        "startLine": 341,
+        "startChar": 9,
+        "endLine": 341,
+        "endChar": 28
+      },
+      "revId": "4af5f85d6a4d06ec67831465c3e94c03189f4168",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cd4d9674_eb235cfe",
+        "filename": "src/5gnrrlc/rlc_utl_dl.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 374,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-10-28T06:40:01Z",
+      "side": 1,
+      "message": "same as above.",
+      "range": {
+        "startLine": 374,
+        "startChar": 9,
+        "endLine": 374,
+        "endChar": 28
+      },
+      "revId": "4af5f85d6a4d06ec67831465c3e94c03189f4168",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dcd667b7_7b428206",
+        "filename": "src/5gnrrlc/rlc_utl_dl.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 566,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-10-28T06:40:01Z",
+      "side": 1,
+      "message": "local variable must be declared at the beginning of the function.",
+      "range": {
+        "startLine": 566,
+        "startChar": 18,
+        "endLine": 566,
+        "endChar": 24
+      },
+      "revId": "4af5f85d6a4d06ec67831465c3e94c03189f4168",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "01374f25_e73b742e",
         "filename": "src/5gnrsch/sch.c",
         "patchSetId": 9
@@ -48,6 +140,23 @@
       "writtenOn": "2021-10-28T06:14:42Z",
       "side": 1,
       "message": "In AAD spec, API \"9.2.2.2.14 DL RLC Buffer Status Information\" supports sending on multiple LC BO from MAC to SCH.\nBut as of now in our code, BO is sent for only one LC at a time from MAC to SCH. Can we change it to comply to spec? This is avoid multiple API calls",
+      "revId": "4af5f85d6a4d06ec67831465c3e94c03189f4168",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "48c24b85_82ff235d",
+        "filename": "src/5gnrsch/sch.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 230,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-10-28T06:40:01Z",
+      "side": 1,
+      "message": "Since comments are added at all places, lets add a comment here as well.",
       "revId": "4af5f85d6a4d06ec67831465c3e94c03189f4168",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
