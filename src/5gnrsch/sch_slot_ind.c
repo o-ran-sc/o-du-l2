@@ -245,8 +245,8 @@ uint8_t schFillBoGrantDlSchedInfo(SchCellCb *cell, DlSchedInfo *dlSchedInfo, DlM
        * pdschCfg.timeDomRsrcAllociList*/
       pdschSymbols = pdschCfg.timeDomRsrcAllociList[0].symbolLength;
       /* Dl ded Msg info is copied, this was earlier filled in macSchDlRlcBoInfo */
-      memcpy(&dlMsgAlloc->dlMsgInfo, cell->schDlSlotInfo[slot]->dlMsgInfo, \
-            sizeof(DlMsgInfo));
+      memcpy(&dlMsgAlloc->dlMsgInfo, &cell->schDlSlotInfo[slot]->dlMsgAlloc->dlMsgInfo, \
+	    sizeof(DlMsgInfo));
 
       /*Re-Initalization per UE*/
       /* scheduled LC data fill */
@@ -406,7 +406,7 @@ uint8_t schProcessSlotInd(SlotTimingInfo *slotInd, Inst schInst)
    uint16_t slot;
    DlSchedInfo dlSchedInfo;
    DlBrdcstAlloc *dlBrdcstAlloc = NULLP;
-   DlMsgAlloc  *msg4Alloc = NULLP;
+   //DlMsgAlloc  *msg4Alloc = NULLP;
    DlMsgAlloc *dlMsgAlloc = NULLP;
    SchCellCb  *cell = NULLP;
 
@@ -474,13 +474,18 @@ uint8_t schProcessSlotInd(SlotTimingInfo *slotInd, Inst schInst)
       dlSchedInfo.rarAlloc = cell->schDlSlotInfo[slot]->rarAlloc;
       cell->schDlSlotInfo[slot]->rarAlloc = NULLP;
    }
+   
+   schProcessMsg4Req(*slotInd, cell);
 
    /* Check for MSG4 */
-   if((cell->schDlSlotInfo[dlSchedInfo.schSlotValue.dlMsgTime.slot]->dlMsgInfo != NULLP) &&
-      (cell->schDlSlotInfo[dlSchedInfo.schSlotValue.dlMsgTime.slot]->dlMsgInfo->isMsg4Pdu))
+   if((cell->schDlSlotInfo[dlSchedInfo.schSlotValue.dlMsgTime.slot]->dlMsgAlloc != NULLP) &&
+      (cell->schDlSlotInfo[dlSchedInfo.schSlotValue.dlMsgTime.slot]->dlMsgAlloc->dlMsgInfo.isMsg4Pdu))
    {
       slot = dlSchedInfo.schSlotValue.dlMsgTime.slot;
 
+      dlSchedInfo.dlMsgAlloc = cell->schDlSlotInfo[slot]->dlMsgAlloc;
+      cell->schDlSlotInfo[slot]->dlMsgAlloc = NULLP;
+#if 0
       SCH_ALLOC(msg4Alloc, sizeof(DlMsgAlloc));
       if(!msg4Alloc)
       {
@@ -490,24 +495,24 @@ uint8_t schProcessSlotInd(SlotTimingInfo *slotInd, Inst schInst)
 
       dlSchedInfo.dlMsgAlloc = msg4Alloc;
 
+#if 0
       /* Msg4 info is copied, this was earlier filled in macSchDlRlcBoInfo */
-      memcpy(&msg4Alloc->dlMsgInfo, cell->schDlSlotInfo[slot]->dlMsgInfo, \
+      memcpy(&msg4Alloc->dlMsgInfo, &cell->schDlSlotInfo[slot]->dlMsgAlloc->dlMsgInfo, \
 	    sizeof(DlMsgInfo));
-
       /* pdcch and pdsch data is filled */
       if((schDlRsrcAllocMsg4(cell, dlSchedInfo.schSlotValue.dlMsgTime, msg4Alloc)) != ROK)
       {
          DU_LOG("\nERROR  -->  SCH : MSG4 scheduling failed");
          SCH_FREE(msg4Alloc, sizeof(DlMsgAlloc));
          dlSchedInfo.dlMsgAlloc = NULLP;
-         SCH_FREE(cell->schDlSlotInfo[dlSchedInfo.schSlotValue.dlMsgTime.slot]->dlMsgInfo, sizeof(DlMsgInfo));
+         SCH_FREE(cell->schDlSlotInfo[dlSchedInfo.schSlotValue.dlMsgTime.slot]->dlMsgAlloc, sizeof(DlMsgAlloc));
          return RFAILED;
       }
-
+#endif
       /* PUCCH resource */
       schAllocPucchResource(cell, msg4Alloc->dlMsgInfo.crnti, dlSchedInfo.schSlotValue.dlMsgTime.slot);
-
-      SCH_FREE(cell->schDlSlotInfo[dlSchedInfo.schSlotValue.dlMsgTime.slot]->dlMsgInfo, sizeof(DlMsgInfo));
+      SCH_FREE(cell->schDlSlotInfo[dlSchedInfo.schSlotValue.dlMsgTime.slot]->dlMsgAlloc, sizeof(DlMsgAlloc));
+#endif
    }
 
    /* Check if UL grant must be sent in this slot for a SR/BSR that had been received */
@@ -557,18 +562,18 @@ uint8_t schProcessSlotInd(SlotTimingInfo *slotInd, Inst schInst)
    }
 
    /* Check for pending BO grant for LC */
-   if((cell->schDlSlotInfo[dlSchedInfo.schSlotValue.dlMsgTime.slot]->dlMsgInfo != NULLP) &&
-      (!cell->schDlSlotInfo[dlSchedInfo.schSlotValue.dlMsgTime.slot]->dlMsgInfo->isMsg4Pdu))
+   if((cell->schDlSlotInfo[dlSchedInfo.schSlotValue.dlMsgTime.slot]->dlMsgAlloc != NULLP) &&
+      (!cell->schDlSlotInfo[dlSchedInfo.schSlotValue.dlMsgTime.slot]->dlMsgAlloc->dlMsgInfo.isMsg4Pdu))
    {
       if((schFillBoGrantDlSchedInfo(cell, &dlSchedInfo, dlMsgAlloc)) != ROK)
       {
          DU_LOG("\nERROR  -->  SCH : DL MSG scheduling failed");
-         SCH_FREE(cell->schDlSlotInfo[dlSchedInfo.schSlotValue.dlMsgTime.slot]->dlMsgInfo, sizeof(DlMsgInfo));
+         SCH_FREE(cell->schDlSlotInfo[dlSchedInfo.schSlotValue.dlMsgTime.slot]->dlMsgAlloc, sizeof(DlMsgAlloc));
          return RFAILED;
       }
 
       /* Free the dl ded msg info allocated in macSchDlRlcBoInfo */
-      SCH_FREE(cell->schDlSlotInfo[dlSchedInfo.schSlotValue.dlMsgTime.slot]->dlMsgInfo, sizeof(DlMsgInfo));
+      SCH_FREE(cell->schDlSlotInfo[dlSchedInfo.schSlotValue.dlMsgTime.slot]->dlMsgAlloc, sizeof(DlMsgAlloc));
    }
 
    /* Send msg to MAC */

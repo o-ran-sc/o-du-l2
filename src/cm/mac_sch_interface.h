@@ -868,6 +868,8 @@ typedef struct dlMsgAlloc
    BwpCfg     bwp;
    PdcchCfg   dlMsgPdcchCfg;
    PdschCfg   dlMsgPdschCfg;
+   DlPduType  pduPres;
+   uint8_t    pdschSlot;
    DlMsgInfo  dlMsgInfo;
 }DlMsgAlloc;
 

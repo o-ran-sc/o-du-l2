@@ -221,6 +221,7 @@ void createSchRaCb(uint16_t tcrnti, Inst schInst)
 
    GET_UE_IDX(tcrnti, ueIdx);
    schCb[schInst].cells[schInst]->raCb[ueIdx -1].tcrnti = tcrnti;
+   schCb[schInst].cells[schInst]->raCb[ueIdx -1].msg4recvd = FALSE;
 }
 
 /**
