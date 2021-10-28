@@ -511,7 +511,7 @@ uint8_t schUlResAlloc(SchCellCb *cell, Inst schInst)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t schDlRsrcAllocMsg4(SchCellCb *cell, SlotTimingInfo slotTime, DlMsgAlloc *msg4Alloc)
+uint8_t schDlRsrcAllocMsg4(SchCellCb *cell, SlotTimingInfo msg4Time, uint8_t ueIdx, DlMsgAlloc *msg4Alloc, uint8_t k0Idx)
 {
    uint8_t coreset0Idx = 0;
    uint8_t firstSymbol = 0;
@@ -537,12 +537,14 @@ uint8_t schDlRsrcAllocMsg4(SchCellCb *cell, SlotTimingInfo slotTime, DlMsgAlloc 
       return RFAILED;
    }
 
+   initialBwp   = &cell->cellCfg.schInitialDlBwp;
    pdcch = &msg4Alloc->dlMsgPdcchCfg;
    pdsch = &msg4Alloc->dlMsgPdschCfg;
    bwp = &msg4Alloc->bwp;
-   initialBwp   = &cell->cellCfg.schInitialDlBwp;
    coreset0Idx  = initialBwp->pdcchCommon.commonSearchSpace.coresetId;
 
+   msg4Alloc->dlMsgInfo = cell->raCb[ueIdx].dlMsgInfo;
+   msg4Alloc->dlMsgInfo.isMsg4Pdu = true;
    /* derive the sib1 coreset0 params from table 13-1 spec 38.213 */
    numRbs     = coresetIdxTable[coreset0Idx][1];
    numSymbols = coresetIdxTable[coreset0Idx][2];
@@ -577,7 +579,7 @@ uint8_t schDlRsrcAllocMsg4(SchCellCb *cell, SlotTimingInfo slotTime, DlMsgAlloc 
    pdcch->coresetCfg.shiftIndex = cell->cellCfg.phyCellId;
    pdcch->coresetCfg.precoderGranularity = 0; /* sameAsRegBundle */
    pdcch->numDlDci = 1;
-   pdcch->dci.rnti = cell->schDlSlotInfo[slotTime.slot]->dlMsgInfo->crnti;
+   pdcch->dci.rnti = cell->raCb[ueIdx].tcrnti;
    pdcch->dci.scramblingId = cell->cellCfg.phyCellId;
    pdcch->dci.scramblingRnti = 0;
    pdcch->dci.cceIndex = 4; /* considering SIB1 is sent at cce 0-1-2-3 */
@@ -589,11 +591,12 @@ uint8_t schDlRsrcAllocMsg4(SchCellCb *cell, SlotTimingInfo slotTime, DlMsgAlloc 
    pdcch->dci.beamPdcchInfo.prg[0].beamIdx[0] = 0;
    pdcch->dci.txPdcchPower.powerValue = 0;
    pdcch->dci.txPdcchPower.powerControlOffsetSS = 0;
+   pdcch->dci.pdschCfg = pdsch;
 
    /* fill the PDSCH PDU */
    uint8_t cwCount = 0;
    pdsch->pduBitmap = 0; /* PTRS and CBG params are excluded */
-   pdsch->rnti = cell->schDlSlotInfo[slotTime.slot]->dlMsgInfo->crnti;
+   pdsch->rnti = cell->raCb[ueIdx].tcrnti;
    pdsch->pduIndex = 0;
    pdsch->numCodewords = 1;
    for(cwCount = 0; cwCount < pdsch->numCodewords; cwCount++)
@@ -620,12 +623,13 @@ uint8_t schDlRsrcAllocMsg4(SchCellCb *cell, SlotTimingInfo slotTime, DlMsgAlloc 
    pdsch->dmrs.nrOfDmrsSymbols  = NUM_DMRS_SYMBOLS;
    pdsch->dmrs.dmrsAddPos       = DMRS_ADDITIONAL_POS;
 
-   pdsch->pdschTimeAlloc.timeAlloc.startSymb = 3; /* spec-38.214, Table 5.1.2.1-1 */
-   pdsch->pdschTimeAlloc.timeAlloc.numSymb = NUM_PDSCH_SYMBOL;
+   pdsch->pdschTimeAlloc.timeAlloc.startSymb =initialBwp->pdschCommon.timeDomRsrcAllocList[k0Idx].startSymbol; 
+   pdsch->pdschTimeAlloc.timeAlloc.numSymb = initialBwp->pdschCommon.timeDomRsrcAllocList[k0Idx].lengthSymbol;
 
    pdsch->pdschFreqAlloc.resourceAllocType = 1; /* RAT type-1 RIV format */
    pdsch->pdschFreqAlloc.freqAlloc.startPrb = MAX_NUM_RB;
-   pdsch->pdschFreqAlloc.freqAlloc.numPrb = schCalcNumPrb(tbSize, mcs, NUM_PDSCH_SYMBOL);
+   pdsch->pdschFreqAlloc.freqAlloc.numPrb = schCalcNumPrb(tbSize, mcs, \
+   initialBwp->pdschCommon.timeDomRsrcAllocList[k0Idx].lengthSymbol);
    pdsch->pdschFreqAlloc.vrbPrbMapping = 0; /* non-interleaved */
 
    /* Find total symbols occupied including DMRS */
@@ -645,7 +649,7 @@ uint8_t schDlRsrcAllocMsg4(SchCellCb *cell, SlotTimingInfo slotTime, DlMsgAlloc 
    }
 
    /* Allocate the number of PRBs required for RAR PDSCH */
-   if((allocatePrbDl(cell, slotTime, startSymbol, numSymbol,\
+   if((allocatePrbDl(cell, msg4Time, startSymbol, numSymbol,\
       &pdsch->pdschFreqAlloc.freqAlloc.startPrb, pdsch->pdschFreqAlloc.freqAlloc.numPrb)) != ROK)
    {
       DU_LOG("\nERROR  --> SCH : Resource allocation failed for MSG4");
@@ -660,34 +664,15 @@ uint8_t schDlRsrcAllocMsg4(SchCellCb *cell, SlotTimingInfo slotTime, DlMsgAlloc 
    pdsch->txPdschPower.powerControlOffset = 0;
    pdsch->txPdschPower.powerControlOffsetSS = 0;
 
-   pdcch->dci.pdschCfg = pdsch;
-
    return ROK;
 }
  
-uint16_t schAllocPucchResource(SchCellCb *cell, uint16_t crnti, uint16_t slot)
+uint16_t schAllocPucchResource(SchCellCb *cell, SlotTimingInfo pucchTime, uint16_t crnti)
 {
-   uint8_t k1 = SCH_DEFAULT_K1, ueIdx = 0, dlToUlAckIdx;
    uint16_t pucchSlot = 0;
    SchUlSlotInfo  *schUlSlotInfo = NULLP;
-   SchPucchCfg    *schPucchCfg = NULLP;
-
-   GET_UE_IDX(crnti, ueIdx);
-   if(cell->ueCb[ueIdx].ueCfg.spCellCfg.servCellCfg.initUlBwp.pucchCfgPres)
-   {
-      schPucchCfg = &(cell->ueCb[ueIdx].ueCfg.spCellCfg.servCellCfg.initUlBwp.pucchCfg);
-      if(schPucchCfg->dlDataToUlAck)
-      {
-         for(dlToUlAckIdx = 0; dlToUlAckIdx < schPucchCfg->dlDataToUlAck->dlDataToUlAckListCount; dlToUlAckIdx++)
-         {
-            //For now considering only the first value in the list
-            k1 = schPucchCfg->dlDataToUlAck->dlDataToUlAckList[dlToUlAckIdx];
-            break;
-         }
-      }
-   }
    
-   pucchSlot = (slot + k1)  % cell->numSlots;
+   pucchSlot = pucchTime.slot;
    schUlSlotInfo = cell->schUlSlotInfo[pucchSlot];
    memset(&schUlSlotInfo->schPucchInfo, 0, sizeof(SchPucchInfo));
 
@@ -1560,6 +1545,149 @@ void updateGrantSizeForBoRpt(CmLListCp *lcLL, DlMsgAlloc *dlMsgAlloc, uint32_t *
    return;
 }
 
+/*******************************************************************
+ *
+ * @brief sch Process pending Msg4 Req
+ *
+ * @details
+ *
+ *    Function : schProcessMsg4Req
+ *
+ *    Functionality:
+ *       sch Process pending Msg4 Req
+ *
+ * @params[in] SchCellCb *cell,  SlotTimingInfo currTime 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ *******************************************************************/
+
+uint8_t schProcessMsg4Req(SchCellCb *cell, SlotTimingInfo currTime)
+{
+   bool k1Found = FALSE;  
+   uint16_t pdcchSlot = 0, pdschSlot = 0;
+   uint8_t ueIdx = 0, numK0 = 0, k0TblIdx = 0, k0Index = 0, k0Val = 0;
+   uint8_t k1TblIdx = 0, k1Index = 0, k1Val = 0, numK1 = 0;
+   SchK0K1TimingInfoTbl *k0K1InfoTbl;
+   SlotTimingInfo pdcchTime, pdschTime, pucchTime;
+   DlMsgAlloc *dciSlotAlloc = NULLP;    /* Stores info for transmission of PDCCH for Msg4 */
+   DlMsgAlloc  *msg4SlotAlloc = NULLP;   /* Stores info for transmission of PDSCH for Msg4 */
+
+   if(cell == NULL)
+   {
+      DU_LOG("\nERROR  -->  SCH: schDlRsrcAllocMsg4() : Cell is NULL");
+      return RFAILED;
+   }
+
+   while(ueIdx < MAX_NUM_UE)
+   {
+      if(cell->raCb[ueIdx].msg4recvd == FALSE)
+      {
+         ueIdx++;
+         continue;
+      }
+
+      ADD_DELTA_TO_TIME(currTime, pdcchTime, PHY_DELTA_DL + SCHED_DELTA);
+      pdcchSlot = pdcchTime.slot;
+#ifdef NR_TDD
+      if(schGetSlotSymbFrmt(pdcchSlot, cell->slotFrmtBitMap) != DL_SLOT)
+      {
+         continue;
+      }
+#endif
+      k0K1InfoTbl = &cell->cellCfg.schInitialDlBwp.k0K1InfoTbl;
+      numK0 = k0K1InfoTbl->k0k1TimingInfo[pdcchSlot].numK0;
+      for(k0TblIdx = 0; k0TblIdx < numK0; k0TblIdx++)
+      {
+         k0Index = k0K1InfoTbl->k0k1TimingInfo[pdcchSlot].k0Indexes[k0TblIdx].k0Index;
+         k0Val = cell->cellCfg.schInitialDlBwp.pdschCommon.timeDomRsrcAllocList[k0Index].k0;
+
+         ADD_DELTA_TO_TIME(pdcchTime, pdschTime, k0Val);
+         pdschSlot = pdschTime.slot;
+#ifdef NR_TDD
+         if(schGetSlotSymbFrmt(pdschSlot, cell->slotFrmtBitMap) != DL_SLOT)
+         {
+            continue;
+         }
+#endif
+         numK1 = k0K1InfoTbl->k0k1TimingInfo[pdcchSlot].k0Indexes[k0TblIdx].k1TimingInfo.numK1;
+         for(k1TblIdx = 0; k1TblIdx < numK1; k1TblIdx++)
+         {
+            k1Index = k0K1InfoTbl->k0k1TimingInfo[pdcchSlot].k0Indexes[k0TblIdx].k1TimingInfo.k1Indexes[k1TblIdx];
+            k1Val = defaultUlAckTbl[k1Index];
+
+            ADD_DELTA_TO_TIME(pdschTime, pucchTime, k1Val);
+#ifdef NR_TDD
+            if(schGetSlotSymbFrmt(pucchTime.slot, cell->slotFrmtBitMap) == DL_SLOT)
+            {
+               continue;
+            }
+#endif
+            k1Found = true;
+            break;
+         }
+         if(k1Found)
+            break;
+      }
+
+      /* If K0-K1 combination not found, no scheduling happens */
+      if(!k1Found)
+      {
+         ueIdx++;
+         continue;
+      }
+      
+      SCH_ALLOC(dciSlotAlloc, sizeof(DlMsgAlloc));
+      if(dciSlotAlloc == NULLP)
+      {
+         DU_LOG("\nERROR  -->  SCH : Memory Allocation failed for dciSlotAlloc");
+         return RFAILED;
+      }
+      cell->schDlSlotInfo[pdcchSlot]->dlMsgAlloc = dciSlotAlloc;
+
+      /* Fill PDCCH and PDSCH scheduling information for Msg4 */
+      if((schDlRsrcAllocMsg4(cell, pdschTime, ueIdx, dciSlotAlloc, k0Index)) != ROK)
+      {
+         DU_LOG("\nERROR  -->  SCH: Scheduling of Msg4 failed in slot [%d]", pdschSlot);
+         SCH_FREE(dciSlotAlloc, sizeof(DlMsgAlloc));
+         cell->schDlSlotInfo[pdcchSlot]->dlMsgAlloc = NULLP;
+         return RFAILED;
+      }
+      /* Check if both DCI and RAR are sent in the same slot.
+      * If not, allocate memory RAR PDSCH slot to store RAR info
+      */
+      if(pdcchSlot == pdschSlot)
+         dciSlotAlloc->pduPres = BOTH;
+      else
+      {
+         /* Allocate memory to schedule rarSlot to send RAR, pointer will be checked at schProcessSlotInd() */
+         SCH_ALLOC(msg4SlotAlloc, sizeof(DlMsgAlloc));
+         if(msg4SlotAlloc == NULLP)
+         {
+            DU_LOG("\nERROR  -->  SCH : Memory Allocation failed for msg4SlotAlloc");
+            SCH_FREE(dciSlotAlloc, sizeof(DlMsgAlloc));
+            cell->schDlSlotInfo[pdcchSlot]->rarAlloc = NULLP;
+            return RFAILED;
+         }
+         cell->schDlSlotInfo[pdcchSlot]->dlMsgAlloc = msg4SlotAlloc;
+
+         /* Copy all RAR info */
+         memcpy(msg4SlotAlloc, dciSlotAlloc, sizeof(DlMsgAlloc));
+         msg4SlotAlloc->dlMsgPdcchCfg.dci.pdschCfg = &msg4SlotAlloc->dlMsgPdschCfg;
+
+         /* Assign correct PDU types in corresponding slots */
+         msg4SlotAlloc->pduPres = PDSCH_PDU;
+         dciSlotAlloc->pduPres = PDCCH_PDU;
+         dciSlotAlloc->pdschSlot = pdschSlot;
+      }
+
+      /* PUCCH resource */
+      schAllocPucchResource(cell, pucchTime, cell->raCb[ueIdx].tcrnti);
+      cell->raCb[ueIdx].msg4recvd = FALSE;
+      ueIdx++;
+   }
+   return ROK;
+}
 /**********************************************************************
   End of file
  **********************************************************************/

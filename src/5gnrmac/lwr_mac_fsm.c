@@ -3108,7 +3108,11 @@ uint8_t calcDlTtiReqPduCount(DlSchedInfo *dlInfo)
    if(dlInfo->dlMsgAlloc != NULLP)
    {
       /* PDCCH and PDSCH PDU is filled */
-      count += 2;
+      if(dlInfo->dlMsgAlloc->pduPres == BOTH)
+         count += 2;
+      else
+         count += 1;
+
    }
    return count;
 }
@@ -3142,7 +3146,8 @@ uint8_t calcTxDataReqPduCount(DlSchedInfo *dlInfo)
    }
    if(dlInfo->dlMsgAlloc != NULLP)
    {
-      count++;
+      if(dlInfo->dlMsgAlloc->pduPres == BOTH || dlInfo->dlMsgAlloc->pduPres == PDSCH_PDU)
+         count++;
    }
    return count;
 }
@@ -3484,31 +3489,38 @@ uint16_t fillDlTtiReq(SlotTimingInfo currTimingInfo)
                if(currDlSlot->dlInfo.dlMsgAlloc->dlMsgInfo.dlMsgPdu != NULLP)
                {
                   /* Filling Msg4 param */
-                  DU_LOG("\033[1;32m");
-                  if(currDlSlot->dlInfo.dlMsgAlloc->dlMsgInfo.isMsg4Pdu)
+                  if((currDlSlot->dlInfo.dlMsgAlloc->pduPres == BOTH) || \
+                  (currDlSlot->dlInfo.dlMsgAlloc->pduPres == PDCCH_PDU))
                   {
-                     rntiType = TC_RNTI_TYPE;
-                     fillPdcchPdu(&dlTtiReq->pdus[numPduEncoded], \
-                           &currDlSlot->dlInfo, rntiType, CORESET_TYPE0);
-                     DU_LOG("\nDEBUG  -->  LWR_MAC: MSG4 sent...");
-                  }
-                  else
-                  { 
-                     /* Filling other DL msg params */
-                     rntiType = C_RNTI_TYPE;
-                     fillPdcchPdu(&dlTtiReq->pdus[numPduEncoded], \
-                           &currDlSlot->dlInfo, rntiType, CORESET_TYPE1);
-                     DU_LOG("\nDEBUG  -->  LWR_MAC: DL MSG sent...");
-                  }
-                  DU_LOG("\033[0m");
+                     DU_LOG("\033[1;32m");
+                     if(currDlSlot->dlInfo.dlMsgAlloc->dlMsgInfo.isMsg4Pdu)
+                     {
+                        rntiType = TC_RNTI_TYPE;
+                        fillPdcchPdu(&dlTtiReq->pdus[numPduEncoded], \
+                              &currDlSlot->dlInfo, rntiType, CORESET_TYPE0);
+                        DU_LOG("\nDEBUG  -->  LWR_MAC: MSG4 sent...");
+                     }
+                     else
+                     { 
+                        /* Filling other DL msg params */
+                        rntiType = C_RNTI_TYPE;
+                        fillPdcchPdu(&dlTtiReq->pdus[numPduEncoded], \
+                              &currDlSlot->dlInfo, rntiType, CORESET_TYPE1);
+                        DU_LOG("\nDEBUG  -->  LWR_MAC: DL MSG sent...");
+                     }
+                     DU_LOG("\033[0m");
 
-                  numPduEncoded++;
-                  fillPdschPdu(&dlTtiReq->pdus[numPduEncoded],
-                        &currDlSlot->dlInfo.dlMsgAlloc->dlMsgPdschCfg,
-                        currDlSlot->dlInfo.dlMsgAlloc->bwp,
-                        pduIndex);
-                  numPduEncoded++;
-                  pduIndex++;
+                     numPduEncoded++;
+                  }
+
+                  if((currDlSlot->dlInfo.dlMsgAlloc->pduPres == BOTH) || \
+                        (currDlSlot->dlInfo.dlMsgAlloc->pduPres == PDSCH_PDU))
+                  {
+                     fillPdschPdu(&dlTtiReq->pdus[numPduEncoded],&currDlSlot->dlInfo.dlMsgAlloc->dlMsgPdschCfg,
+                     currDlSlot->dlInfo.dlMsgAlloc->bwp,pduIndex);
+                     numPduEncoded++;
+                     pduIndex++;
+                  }
                }
                else
                {
@@ -3659,10 +3671,9 @@ uint16_t sendTxDataReq(SlotTimingInfo currTimingInfo, DlSchedInfo *dlInfo, p_fap
       if(dlInfo->dlMsgAlloc != NULLP)
       {
          fillDlMsgTxDataReq(txDataReq->pdu_desc, pduIndex, &dlInfo->dlMsgAlloc->dlMsgInfo,\
-	    dlInfo->dlMsgAlloc->dlMsgPdschCfg);
+         dlInfo->dlMsgAlloc->dlMsgPdschCfg);
          pduIndex++;
          txDataReq->num_pdus++;
-
          MAC_FREE(dlInfo->dlMsgAlloc->dlMsgInfo.dlMsgPdu,\
             dlInfo->dlMsgAlloc->dlMsgInfo.dlMsgPduLen);
          dlInfo->dlMsgAlloc->dlMsgInfo.dlMsgPdu = NULLP;

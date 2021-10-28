@@ -1099,18 +1099,40 @@ uint8_t SchSendCellDeleteRspToMac(SchCellDelete  *ueDelete, Inst inst, SchMacRsp
 void deleteSchCellCb(SchCellCb *cellCb)
 {
    uint8_t sliceIdx=0, slotIdx=0;
+   CmLListCp *list;
+   CmLList *node, *next;
+
    if(cellCb->schDlSlotInfo)
    {
       for(slotIdx=0; slotIdx<cellCb->numSlots; slotIdx++)
       {
+         list = &cellCb->schDlSlotInfo[slotIdx]->prbAlloc.freePrbBlockList;
+         node = list->first;
+         while(node)
+         {
+            next = node->next;
+            SCH_FREE(node->node, sizeof(FreePrbBlock));
+            deleteNodeFromLList(list, node);
+            node = next;
+         }
          SCH_FREE(cellCb->schDlSlotInfo[slotIdx], sizeof(SchDlSlotInfo));
       }
       SCH_FREE(cellCb->schDlSlotInfo, cellCb->numSlots *sizeof(SchDlSlotInfo*));
    }
+
    if(cellCb->schUlSlotInfo)
    {
       for(slotIdx=0; slotIdx<cellCb->numSlots; slotIdx++)
       {
+         list = &cellCb->schUlSlotInfo[slotIdx]->prbAlloc.freePrbBlockList;
+         node = list->first;
+         while(node)
+         {
+            next = node->next;
+            SCH_FREE(node->node, sizeof(FreePrbBlock));
+            deleteNodeFromLList(list, node);
+            node = next;
+         }
          SCH_FREE(cellCb->schUlSlotInfo[slotIdx], sizeof(SchUlSlotInfo));  
       }
       SCH_FREE(cellCb->schUlSlotInfo,  cellCb->numSlots * sizeof(SchUlSlotInfo*));

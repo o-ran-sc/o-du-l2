@@ -410,6 +410,7 @@ typedef enum
 
 typedef enum
 {
+   NONE,
    PDCCH_PDU,
    PDSCH_PDU,
    BOTH
@@ -868,6 +869,8 @@ typedef struct dlMsgAlloc
    BwpCfg     bwp;
    PdcchCfg   dlMsgPdcchCfg;
    PdschCfg   dlMsgPdschCfg;
+   DlPduType  pduPres;
+   uint8_t    pdschSlot;
    DlMsgInfo  dlMsgInfo;
 }DlMsgAlloc;
 
