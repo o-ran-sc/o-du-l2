@@ -254,10 +254,11 @@ uint8_t schFillBoGrantDlSchedInfo(SchCellCb *cell, DlSchedInfo *dlSchedInfo, DlM
       if (!dlMsgAlloc->numLc)
       {
          DU_LOG("\nDEBUG  -->  SCH : No pending BO for any LC id\n");
+         UNSET_ONE_BIT(ueIdx, cell->boIndBitMap);
          /* Free the dl ded msg info allocated in macSchDlRlcBoInfo */
          SCH_FREE(dlMsgAlloc, sizeof(DlMsgAlloc));
          dlSchedInfo->dlMsgAlloc = NULLP;
-         return ROK;
+         continue;
       }
 
       /* pdcch and pdsch data is filled */
@@ -309,13 +310,15 @@ uint8_t schFillBoGrantDlSchedInfo(SchCellCb *cell, DlSchedInfo *dlSchedInfo, DlM
  * ****************************************************************/
 uint8_t schProcessSlotInd(SlotTimingInfo *slotInd, Inst schInst)
 {
-   uint8_t  ueIdx, lcgIdx, ret = ROK;
-   uint16_t slot;
-   DlSchedInfo dlSchedInfo;
+   uint8_t   ueId, ueIdx, lcgIdx, ret = ROK;
+   uint16_t  slot;
+   bool      isRarScheduled = false;
+   CmLList       *pendingUeNode;
+   DlSchedInfo   dlSchedInfo;
    DlBrdcstAlloc *dlBrdcstAlloc = NULLP;
-   DlMsgAlloc  *msg4Alloc = NULLP;
-   DlMsgAlloc *dlMsgAlloc = NULLP;
-   SchCellCb  *cell = NULLP;
+   DlMsgAlloc    *msg4Alloc = NULLP;
+   DlMsgAlloc    *dlMsgAlloc = NULLP;
+   SchCellCb     *cell = NULLP;
 
    memset(&dlSchedInfo,0,sizeof(DlSchedInfo));
    dlSchedInfo.dlMsgAlloc = NULLP;
@@ -371,15 +374,32 @@ uint8_t schProcessSlotInd(SlotTimingInfo *slotInd, Inst schInst)
       }
    }
 
-   /* Check for Pending RA Requests */
-   schProcessRaReq(*slotInd, cell);
+   pendingUeNode = cell->ueToBeScheduled.first;
+   if(pendingUeNode)
+   {
+      ueId = *(uint8_t *)(pendingUeNode->node);
+
+      /* Check for Pending RA Requests */
+      if(cell->raReq[ueId-1] != NULLP)
+      {
+         isRarScheduled = schProcessRaReq(cell, *slotInd, ueId);
+         if(isRarScheduled)
+         {
+            SCH_FREE(pendingUeNode->node, sizeof(uint8_t));
+            deleteNodeFromLList(&cell->ueToBeScheduled, pendingUeNode);
+         }
+      }
+   }
 
    /* Check for RAR */
-   if(cell->schDlSlotInfo[dlSchedInfo.schSlotValue.rarTime.slot]->rarAlloc != NULLP)
+   for(ueIdx=0; ueIdx<MAX_NUM_UE; ueIdx++)
    {
-      slot = dlSchedInfo.schSlotValue.rarTime.slot;
-      dlSchedInfo.rarAlloc = cell->schDlSlotInfo[slot]->rarAlloc;
-      cell->schDlSlotInfo[slot]->rarAlloc = NULLP;
+      if(cell->schDlSlotInfo[dlSchedInfo.schSlotValue.rarTime.slot]->rarAlloc[ueIdx] != NULLP)
+      {
+         slot = dlSchedInfo.schSlotValue.rarTime.slot;
+         dlSchedInfo.rarAlloc[ueIdx] = cell->schDlSlotInfo[slot]->rarAlloc[ueIdx];
+         cell->schDlSlotInfo[slot]->rarAlloc[ueIdx] = NULLP;
+      }
    }
 
    /* Check for MSG4 */

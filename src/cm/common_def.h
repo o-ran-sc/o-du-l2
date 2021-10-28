@@ -57,7 +57,7 @@
 /* MAX values */
 #define MAX_NUM_CELL 1
 #define MAX_NUM_MU   4
-#define MAX_NUM_UE   2
+#define MAX_NUM_UE   3
 #define MAX_NUM_UE_PER_TTI 1
 #define MAX_NUM_LC   32   /*Spec 38.331: Sec 6.4: maxLC-ID Keyword*/
 #define MAX_NUM_SRB  3    /* Max. no of Srbs */

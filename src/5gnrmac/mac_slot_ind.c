@@ -74,14 +74,16 @@ uint8_t MacProcDlAlloc(Pst *pst, DlSchedInfo *dlSchedInfo)
                                             &currDlSlot->dlInfo.brdcstAlloc.sib1Alloc.sib1PdschCfg;
       }
 
-      if(dlSchedInfo->rarAlloc != NULLP)
+      for(ueIdx=0; ueIdx<MAX_NUM_UE; ueIdx++)
       {
-         currDlSlot = &macCb.macCell[cellIdx]->\
-                      dlSlot[dlSchedInfo->schSlotValue.rarTime.slot];
-         currDlSlot->dlInfo.rarAlloc = dlSchedInfo->rarAlloc;
+         if(dlSchedInfo->rarAlloc[ueIdx] != NULLP)
+         {
+            currDlSlot = &macCb.macCell[cellIdx]->dlSlot[dlSchedInfo->schSlotValue.rarTime.slot];
+            currDlSlot->dlInfo.rarAlloc[ueIdx] = dlSchedInfo->rarAlloc[ueIdx];
 
-         /* MUXing of RAR */
-         fillRarPdu(&currDlSlot->dlInfo.rarAlloc->rarInfo);
+            /* MUXing of RAR */
+            fillRarPdu(&currDlSlot->dlInfo.rarAlloc[ueIdx]->rarInfo);
+         }
       }
 
       if(dlSchedInfo->dlMsgAlloc != NULLP)
