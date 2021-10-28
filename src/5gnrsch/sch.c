@@ -994,26 +994,28 @@ uint8_t MacSchDlRlcBoInfo(Pst *pst, DlRlcBoInfo *dlBoInfo)
       DU_LOG("\nERROR  -->  SCH : MacSchDlRlcBoInfo(): schDlSlotInfo does not exists");
       return RFAILED;
    }
-   SCH_ALLOC(schDlSlotInfo->dlMsgInfo, sizeof(DlMsgInfo));
-   if(schDlSlotInfo->dlMsgInfo == NULLP)
+   SCH_ALLOC(schDlSlotInfo->dlMsgAlloc, sizeof(DlMsgAlloc));
+   if(schDlSlotInfo->dlMsgAlloc == NULLP)
    {
       DU_LOG("\nERROR  -->  SCH : Memory allocation failed for dlMsgInfo");
       schDlSlotInfo = NULL;
       return RFAILED;
    }
-
-   schDlSlotInfo->dlMsgInfo->crnti = dlBoInfo->crnti;
-   schDlSlotInfo->dlMsgInfo->ndi = 1;
-   schDlSlotInfo->dlMsgInfo->harqProcNum = 0;
-   schDlSlotInfo->dlMsgInfo->dlAssignIdx = 0;
-   schDlSlotInfo->dlMsgInfo->pucchTpc = 0;
-   schDlSlotInfo->dlMsgInfo->pucchResInd = 0;
-   schDlSlotInfo->dlMsgInfo->harqFeedbackInd = 0;
-   schDlSlotInfo->dlMsgInfo->dciFormatId = 1;
+   
+   schDlSlotInfo->dlMsgAlloc->dlMsgInfo.crnti = dlBoInfo->crnti;
+   schDlSlotInfo->dlMsgAlloc->dlMsgInfo.ndi = 1;
+   schDlSlotInfo->dlMsgAlloc->dlMsgInfo.harqProcNum = 0;
+   schDlSlotInfo->dlMsgAlloc->dlMsgInfo.dlAssignIdx = 0;
+   schDlSlotInfo->dlMsgAlloc->dlMsgInfo.pucchTpc = 0;
+   schDlSlotInfo->dlMsgAlloc->dlMsgInfo.pucchResInd = 0;
+   schDlSlotInfo->dlMsgAlloc->dlMsgInfo.harqFeedbackInd = 0;
+   schDlSlotInfo->dlMsgAlloc->dlMsgInfo.dciFormatId = 1;
    if(lcId == SRB0_LCID)
    {
-      schDlSlotInfo->dlMsgInfo->isMsg4Pdu = true;
-      schDlSlotInfo->dlMsgInfo->dlMsgPduLen = dlBoInfo->dataVolume;
+      cell->raCb[ueIdx -1].msg4recvd = true;
+      schDlSlotInfo->dlMsgAlloc->dlMsgInfo.isMsg4Pdu = true;
+      schDlSlotInfo->dlMsgAlloc->dlMsgInfo.dlMsgPduLen = dlBoInfo->dataVolume;
+      cell->raCb[ueIdx -1].dlMsgInfo =  schDlSlotInfo->dlMsgAlloc->dlMsgInfo;
    }
    return ROK;
 }

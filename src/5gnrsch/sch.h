@@ -141,12 +141,15 @@ typedef struct schDlSlotInfo
    SsbInfo      ssbInfo[MAX_SSB_IDX];     /*!< SSB info */
    bool         sib1Pres;                 /*!< Flag to determine if SIB1 is present in this slot */
    RarAlloc     *rarAlloc;                /*!< RAR allocation */
-   DlMsgInfo    *dlMsgInfo;               /*!< DL dedicated Msg info */
+   DlMsgAlloc   *dlMsgAlloc;               /*!< Dl msg allocation */
+   //DlMsgInfo    *dlMsgInfo;               /*!< DL dedicated Msg info */
 }SchDlSlotInfo;
 
 typedef struct schRaCb
 {
-   uint16_t tcrnti;
+   bool      msg4recvd;
+   DlMsgInfo dlMsgInfo;
+   uint16_t  tcrnti;
 }SchRaCb;
 
 /**
@@ -353,10 +356,11 @@ PduTxOccsaion schCheckSib1Occ(SchCellCb *cell, SlotTimingInfo slotTime);
 uint8_t schBroadcastSsbAlloc(SchCellCb *cell, SlotTimingInfo slotTime, DlBrdcstAlloc *dlBrdcstAlloc);
 uint8_t schBroadcastSib1Alloc(SchCellCb *cell, SlotTimingInfo slotTime, DlBrdcstAlloc *dlBrdcstAlloc);
 void schProcessRaReq(SlotTimingInfo currTime, SchCellCb *cellCb);
+uint8_t schProcessMsg4Req(SlotTimingInfo currTime, SchCellCb *cell);
 uint8_t schFillRar(SchCellCb *cell, SlotTimingInfo rarTime, uint16_t ueIdx, RarAlloc *rarAlloc, uint8_t k0Index);
-uint8_t schDlRsrcAllocMsg4(SchCellCb *cell, SlotTimingInfo slotTime, DlMsgAlloc *msg4Alloc);
 uint8_t schDlRsrcAllocDlMsg(SchCellCb *cell, SlotTimingInfo slotTime, uint16_t crnti,\
    uint32_t tbSize, DlMsgAlloc *dlMsgAlloc, uint16_t startPRB);
+uint8_t schDlRsrcAllocMsg4(SchCellCb *cell, SlotTimingInfo msg4Time, uint8_t ueIdx, DlMsgAlloc *msg4Alloc, uint8_t k0Idx);
 uint16_t schAccumalateLcBoSize(SchCellCb *cell, uint16_t ueIdx);
 uint8_t allocatePrbDl(SchCellCb *cell, SlotTimingInfo slotTime, uint8_t startSymbol, uint8_t symbolLength, \
    uint16_t *startPrb, uint16_t numPrb);
