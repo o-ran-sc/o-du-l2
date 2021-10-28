@@ -344,10 +344,10 @@ RaRspWindowStatus isInRaRspWindow(SchRaReq *raReq, SlotTimingInfo frameToCheck, 
  *  @param[in]  Current timing of the cell
  *  @return  ROK
  **/
-void schProcessRaReq(SlotTimingInfo currTime, SchCellCb *cell)
+bool schProcessRaReq(SchCellCb *cell, SlotTimingInfo currTime, uint8_t ueId)
 {
    bool      k2Found = false;
-   uint8_t   ueIdx = 0, k0TblIdx = 0, k2TblIdx = 0;
+   uint8_t   k0TblIdx = 0, k2TblIdx = 0;
    uint8_t   k0Index = 0, k2Index = 0;
    uint8_t   k0 = 0, k2 = 0;
    uint8_t   puschMu = 0;
@@ -364,162 +364,168 @@ void schProcessRaReq(SlotTimingInfo currTime, SchCellCb *cell)
    SchK2TimingInfoTbl   *msg3K2InfoTbl=NULLP;
    RaRspWindowStatus    windowStatus=0;
 
-   while(ueIdx < MAX_NUM_UE)
+#ifdef NR_TDD
+   totalCfgSlot = calculateSlotPatternLength(cell->cellCfg.ssbSchCfg.scsCommon, cell->cellCfg.tddCfg.tddPeriod);
+#endif
+   k0K1InfoTbl = &cell->cellCfg.schInitialDlBwp.k0K1InfoTbl;
+   msg3K2InfoTbl = &cell->cellCfg.schInitialUlBwp.msg3K2InfoTbl;
+   puschMu = cell->cellCfg.numerology;
+   msg3Delta = puschDeltaTable[puschMu];
+   msg3MinSchTime = minMsg3SchTime[cell->cellCfg.numerology];
+
+   /* Calculating time frame to send DCI for RAR */
+   ADD_DELTA_TO_TIME(currTime, dciTime, PHY_DELTA_DL + SCHED_DELTA);
+   dciSlot = dciTime.slot;
+#ifdef NR_TDD
+   /* Consider this slot for sending DCI, only if it is a DL slot */
+   if(schGetSlotSymbFrmt(dciSlot, cell->slotFrmtBitMap) == DL_SLOT)
+#endif
    {
-      if(cell->raReq[ueIdx] == NULLP)
+      /* If PDCCH is already scheduled on this slot, cannot schedule PDSCH for another UE here. */
+      if(cell->schDlSlotInfo[dciSlot]->pdcchUe != 0)
+         return false;
+
+      /* Check if this slot is within RA response window */
+      windowStatus = isInRaRspWindow(cell->raReq[ueId-1], dciTime, cell->numSlots);
+      if(windowStatus == WITHIN_WINDOW)
       {
-         ueIdx++;
-         continue;
-      }
-
-#ifdef NR_TDD
-      totalCfgSlot = calculateSlotPatternLength(cell->cellCfg.ssbSchCfg.scsCommon, cell->cellCfg.tddCfg.tddPeriod);
-#endif
-      k0K1InfoTbl = &cell->cellCfg.schInitialDlBwp.k0K1InfoTbl;
-      msg3K2InfoTbl = &cell->cellCfg.schInitialUlBwp.msg3K2InfoTbl;
-      puschMu = cell->cellCfg.numerology;
-      msg3Delta = puschDeltaTable[puschMu];
-      msg3MinSchTime = minMsg3SchTime[cell->cellCfg.numerology];
-
-      /* Calculating time frame to send DCI for RAR */
-      ADD_DELTA_TO_TIME(currTime, dciTime, PHY_DELTA_DL + SCHED_DELTA);
-      dciSlot = dciTime.slot;
-#ifdef NR_TDD
-      /* Consider this slot for sending DCI, only if it is a DL slot */
-      if(schGetSlotSymbFrmt(dciSlot, cell->slotFrmtBitMap) == DL_SLOT)
-#endif
-      {
-         
-         /* Check if this slot is within RA response window */
-         windowStatus = isInRaRspWindow(cell->raReq[ueIdx], dciTime, cell->numSlots);
-         if(windowStatus == WITHIN_WINDOW)
-         {
-            /* For all k0 values, search for a suitable k2 value to schedule MSG3.
-             * RAR DCI, RAR PDSCH and MSG3 is scheduled only if one such k0-k2 combination
-             * is found. Else no scheduling happens. 
-             */
-            for(k0TblIdx = 0; k0TblIdx < k0K1InfoTbl->k0k1TimingInfo[dciSlot].numK0; k0TblIdx++)
-            {
-               k0Index = k0K1InfoTbl->k0k1TimingInfo[dciSlot].k0Indexes[k0TblIdx].k0Index;
-               k0 = cell->cellCfg.schInitialDlBwp.pdschCommon.timeDomRsrcAllocList[k0Index].k0;
-
-               /* Calculating time frame to send RAR PDSCH */
-               ADD_DELTA_TO_TIME(dciTime, rarTime, k0);
-               rarSlot = rarTime.slot;
-
-               for(k2TblIdx = 0; k2TblIdx < msg3K2InfoTbl->k2TimingInfo[rarSlot].numK2; k2TblIdx++)
-               {
-                  k2Index = msg3K2InfoTbl->k2TimingInfo[rarSlot].k2Indexes[k2TblIdx];
-                  k2 = cell->cellCfg.schInitialUlBwp.puschCommon.timeDomRsrcAllocList[k2Index].k2;
-
-                  /* Delta is added to the slot allocation for msg3 based on 38.214 section 6.1.2.1 */
-                  k2 = k2 + msg3Delta;
-                  if(k2 >= msg3MinSchTime)
-                  {
-                     ADD_DELTA_TO_TIME(rarTime, msg3Time, k2);
-#ifdef NR_TDD
-                     if(schGetSlotSymbFrmt(msg3Time.slot % totalCfgSlot, cell->slotFrmtBitMap) == DL_SLOT)
-                        continue;
-#endif
-                     k2Found = true;
-                     break;
-                  }
-               }
-               if(k2Found)
-                  break;
-            }
-         }
-         else if(windowStatus == WINDOW_EXPIRED)
-         {
-            SCH_FREE(cell->raReq[ueIdx]->rachInd, sizeof(RachIndInfo));
-            SCH_FREE(cell->raReq[ueIdx], sizeof(SchRaReq));
-            ueIdx++;
-            continue;
-         }
-
-         /* If K0-K2 combination not found, no scheduling happens */
-         if(!k2Found)
-         {
-            ueIdx++;
-            continue;
-         }
-
-         /* Allocate memory for RAR PDCCH slot, pointer will be checked at schProcessSlotInd() */
-         SCH_ALLOC(dciSlotAlloc, sizeof(RarAlloc));
-         if(dciSlotAlloc == NULLP)
-         {
-            DU_LOG("\nERROR  -->  SCH : Memory Allocation failed for dciSlotAlloc");
-            return;
-         }
-         cell->schDlSlotInfo[dciSlot]->rarAlloc = dciSlotAlloc;
-
-         /* Fill PDCCH and PDSCH scheduling information for RAR */
-         if((schFillRar(cell, rarTime, ueIdx, dciSlotAlloc, k0Index)) != ROK)
-         {
-            DU_LOG("\nERROR  -->  SCH: Scheduling of RAR failed in slot [%d]", rarSlot);
-            SCH_FREE(dciSlotAlloc, sizeof(RarAlloc));
-            cell->schDlSlotInfo[dciSlot]->rarAlloc = NULLP;
-            return;
-         }
-
-         /* Allocate resources for msg3 */
-         msg3PuschInfo = schAllocMsg3Pusch(cell->instIdx, cell->raReq[ueIdx]->rachInd->crnti, k2Index, msg3Time);
-         if(msg3PuschInfo)
-         {
-            /* Fill RAR info */
-            dciSlotAlloc->rarInfo.raRnti = cell->raReq[ueIdx]->raRnti;
-            dciSlotAlloc->rarInfo.tcrnti = cell->raReq[ueIdx]->rachInd->crnti;
-            dciSlotAlloc->rarInfo.RAPID = cell->raReq[ueIdx]->rachInd->preambleIdx;
-            dciSlotAlloc->rarInfo.ta = cell->raReq[ueIdx]->rachInd->timingAdv;
-            dciSlotAlloc->rarInfo.ulGrant.bwpSize = cell->cellCfg.schInitialUlBwp.bwp.freqAlloc.numPrb;
-            /* Spec 38.213, section 8.2, 0 : MSG3 PUSCH will be transmitted without frequency hopping */
-            dciSlotAlloc->rarInfo.ulGrant.freqHopFlag = 0;
-            dciSlotAlloc->rarInfo.ulGrant.msg3FreqAlloc.startPrb = msg3PuschInfo->fdAlloc.startPrb;
-            dciSlotAlloc->rarInfo.ulGrant.msg3FreqAlloc.numPrb = msg3PuschInfo->fdAlloc.numPrb;
-            dciSlotAlloc->rarInfo.ulGrant.k2Index = k2Index;
-            dciSlotAlloc->rarInfo.ulGrant.mcs = msg3PuschInfo->tbInfo.mcs;
-            dciSlotAlloc->rarInfo.ulGrant.tpc = 3;  /* TODO : Check appropriate value to be filled */
-            /* Spec 38.213, section 8.2 : In a contention based random access
-             * procedure, the CSI request field is reserved. */
-            dciSlotAlloc->rarInfo.ulGrant.csiReq = 0;
-         }
-
-         /* Check if both DCI and RAR are sent in the same slot.
-          * If not, allocate memory RAR PDSCH slot to store RAR info
+         /* For all k0 values, search for a suitable k2 value to schedule MSG3.
+          * RAR DCI, RAR PDSCH and MSG3 is scheduled only if one such k0-k2 combination
+          * is found. Else no scheduling happens. 
           */
-         if(dciSlot == rarSlot)
-            dciSlotAlloc->pduPres = BOTH;
-         else
+         for(k0TblIdx = 0; k0TblIdx < k0K1InfoTbl->k0k1TimingInfo[dciSlot].numK0; k0TblIdx++)
          {
-            /* Allocate memory to schedule rarSlot to send RAR, pointer will be checked at schProcessSlotInd() */
-            SCH_ALLOC(rarSlotAlloc, sizeof(RarAlloc));
-            if(rarSlotAlloc == NULLP)
+            k0Index = k0K1InfoTbl->k0k1TimingInfo[dciSlot].k0Indexes[k0TblIdx].k0Index;
+            k0 = cell->cellCfg.schInitialDlBwp.pdschCommon.timeDomRsrcAllocList[k0Index].k0;
+
+            /* Calculating time frame to send RAR PDSCH */
+            ADD_DELTA_TO_TIME(dciTime, rarTime, k0);
+            rarSlot = rarTime.slot;
+            
+            /* If PDSCH is already scheduled on this slot, cannot schedule PDSCH for another UE here. */
+            if(cell->schDlSlotInfo[rarSlot]->pdschUe != 0)
+               continue;
+
+            for(k2TblIdx = 0; k2TblIdx < msg3K2InfoTbl->k2TimingInfo[rarSlot].numK2; k2TblIdx++)
             {
-               DU_LOG("\nERROR  -->  SCH : Memory Allocation failed for rarSlotAlloc");
-               SCH_FREE(dciSlotAlloc, sizeof(RarAlloc));
-               cell->schDlSlotInfo[dciSlot]->rarAlloc = NULLP;
-               return;
+               k2Index = msg3K2InfoTbl->k2TimingInfo[rarSlot].k2Indexes[k2TblIdx];
+               k2 = cell->cellCfg.schInitialUlBwp.puschCommon.timeDomRsrcAllocList[k2Index].k2;
+
+               /* Delta is added to the slot allocation for msg3 based on 38.214 section 6.1.2.1 */
+               k2 = k2 + msg3Delta;
+               if(k2 >= msg3MinSchTime)
+               {
+                  ADD_DELTA_TO_TIME(rarTime, msg3Time, k2);
+#ifdef NR_TDD
+                  if(schGetSlotSymbFrmt(msg3Time.slot % totalCfgSlot, cell->slotFrmtBitMap) == DL_SLOT)
+                     continue;
+#endif
+                  /* If PUSCH is already scheduled on this slot, another PUSCH
+                   * pdu cannot be scheduled here */
+                  if(cell->schUlSlotInfo[msg3Time.slot]->puschUe != 0)
+                     continue;
+
+                  k2Found = true;
+                  break;
+               }
             }
-            cell->schDlSlotInfo[rarSlot]->rarAlloc = rarSlotAlloc;
-
-            /* Copy all RAR info */
-            memcpy(rarSlotAlloc, dciSlotAlloc, sizeof(RarAlloc));
-            rarSlotAlloc->rarPdcchCfg.dci.pdschCfg = &rarSlotAlloc->rarPdschCfg;
-
-            /* Assign correct PDU types in corresponding slots */
-            rarSlotAlloc->pduPres = PDSCH_PDU;
-            dciSlotAlloc->pduPres = PDCCH_PDU;
-            dciSlotAlloc->pdschSlot = rarSlot;  
+            if(k2Found)
+               break;
          }
-
-         /* Create raCb at SCH */
-         createSchRaCb(cell->raReq[ueIdx]->rachInd->crnti, cell->instIdx);
-
-         SCH_FREE(cell->raReq[ueIdx]->rachInd, sizeof(RachIndInfo));
-         SCH_FREE(cell->raReq[ueIdx], sizeof(SchRaReq));
       }
-      ueIdx++;
-   } /* End of while(ueIdx < MAX_NUM_UE) */
+      else if(windowStatus == WINDOW_EXPIRED)
+      {
+         SCH_FREE(cell->raReq[ueId-1]->rachInd, sizeof(RachIndInfo));
+         SCH_FREE(cell->raReq[ueId-1], sizeof(SchRaReq));
+         return false;
+      }
+
+      /* If K0-K2 combination not found, no scheduling happens */
+      if(!k2Found)
+         return false;
+
+      /* Allocate memory for RAR PDCCH slot, pointer will be checked at schProcessSlotInd() */
+      SCH_ALLOC(dciSlotAlloc, sizeof(RarAlloc));
+      if(dciSlotAlloc == NULLP)
+      {
+         DU_LOG("\nERROR  -->  SCH : Memory Allocation failed for dciSlotAlloc");
+         return false;
+      }
+      cell->schDlSlotInfo[dciSlot]->rarAlloc[ueId-1] = dciSlotAlloc;
+
+      /* Fill PDCCH and PDSCH scheduling information for RAR */
+      if((schFillRar(cell, rarTime, ueId, dciSlotAlloc, k0Index)) != ROK)
+      {
+         DU_LOG("\nERROR  -->  SCH: Scheduling of RAR failed in slot [%d]", rarSlot);
+         SCH_FREE(dciSlotAlloc, sizeof(RarAlloc));
+         cell->schDlSlotInfo[dciSlot]->rarAlloc[ueId-1] = NULLP;
+         return false;
+      }
+
+      /* Allocate resources for msg3 */
+      msg3PuschInfo = schAllocMsg3Pusch(cell->instIdx, cell->raReq[ueId-1]->rachInd->crnti, k2Index, msg3Time);
+      if(msg3PuschInfo)
+      {
+         /* Fill RAR info */
+         dciSlotAlloc->rarInfo.raRnti = cell->raReq[ueId-1]->raRnti;
+         dciSlotAlloc->rarInfo.tcrnti = cell->raReq[ueId-1]->rachInd->crnti;
+         dciSlotAlloc->rarInfo.RAPID = cell->raReq[ueId-1]->rachInd->preambleIdx;
+         dciSlotAlloc->rarInfo.ta = cell->raReq[ueId-1]->rachInd->timingAdv;
+         dciSlotAlloc->rarInfo.ulGrant.bwpSize = cell->cellCfg.schInitialUlBwp.bwp.freqAlloc.numPrb;
+         /* Spec 38.213, section 8.2, 0 : MSG3 PUSCH will be transmitted without frequency hopping */
+         dciSlotAlloc->rarInfo.ulGrant.freqHopFlag = 0;
+         dciSlotAlloc->rarInfo.ulGrant.msg3FreqAlloc.startPrb = msg3PuschInfo->fdAlloc.startPrb;
+         dciSlotAlloc->rarInfo.ulGrant.msg3FreqAlloc.numPrb = msg3PuschInfo->fdAlloc.numPrb;
+         dciSlotAlloc->rarInfo.ulGrant.k2Index = k2Index;
+         dciSlotAlloc->rarInfo.ulGrant.mcs = msg3PuschInfo->tbInfo.mcs;
+         dciSlotAlloc->rarInfo.ulGrant.tpc = 3;  /* TODO : Check appropriate value to be filled */
+         /* Spec 38.213, section 8.2 : In a contention based random access
+          * procedure, the CSI request field is reserved. */
+         dciSlotAlloc->rarInfo.ulGrant.csiReq = 0;
+      }
+
+      /* Check if both DCI and RAR are sent in the same slot.
+       * If not, allocate memory RAR PDSCH slot to store RAR info
+       */
+      if(dciSlot == rarSlot)
+         dciSlotAlloc->pduPres = BOTH;
+      else
+      {
+         /* Allocate memory to schedule rarSlot to send RAR, pointer will be checked at schProcessSlotInd() */
+         SCH_ALLOC(rarSlotAlloc, sizeof(RarAlloc));
+         if(rarSlotAlloc == NULLP)
+         {
+            DU_LOG("\nERROR  -->  SCH : Memory Allocation failed for rarSlotAlloc");
+            SCH_FREE(dciSlotAlloc, sizeof(RarAlloc));
+            cell->schDlSlotInfo[dciSlot]->rarAlloc[ueId-1] = NULLP;
+            return false;
+         }
+         cell->schDlSlotInfo[rarSlot]->rarAlloc[ueId-1] = rarSlotAlloc;
+
+         /* Copy all RAR info */
+         memcpy(rarSlotAlloc, dciSlotAlloc, sizeof(RarAlloc));
+         rarSlotAlloc->rarPdcchCfg.dci.pdschCfg = &rarSlotAlloc->rarPdschCfg;
+
+         /* Assign correct PDU types in corresponding slots */
+         rarSlotAlloc->pduPres = PDSCH_PDU;
+         dciSlotAlloc->pduPres = PDCCH_PDU;
+         dciSlotAlloc->pdschSlot = rarSlot;  
+      }
+
+      cell->schDlSlotInfo[dciSlot]->pdcchUe = ueId;
+      cell->schDlSlotInfo[rarSlot]->pdschUe = ueId;
+      cell->schUlSlotInfo[msg3Time.slot]->puschUe = ueId;
+
+      /* Create raCb at SCH */
+      createSchRaCb(cell->raReq[ueId-1]->rachInd->crnti, cell->instIdx);
+
+      /* Remove RachInd from pending RA request list */
+      SCH_FREE(cell->raReq[ueId-1]->rachInd, sizeof(RachIndInfo));
+      SCH_FREE(cell->raReq[ueId-1], sizeof(SchRaReq));
+      
+      return true;
+   }
+   return false;
 }
 
 /**
@@ -577,8 +583,10 @@ uint8_t schProcessRachInd(RachIndInfo *rachInd, Inst schInst)
    
    /* Adding window size to window start time to get window end time */
    ADD_DELTA_TO_TIME(raReq->winStartTime, raReq->winEndTime, winNumSlots);
-
    cell->raReq[ueIdx -1] = raReq;
+
+   /* Adding UE Id to list of pending UEs to be scheduled */
+   addUeToBeScheduled(cell, ueIdx);
 
    return ROK;
 }
@@ -598,7 +606,7 @@ uint8_t schProcessRachInd(RachIndInfo *rachInd, Inst schInst)
  *  @param[in]  offset to pointA to determine freq alloc
  *  @return  ROK
  **/
-uint8_t schFillRar(SchCellCb *cell, SlotTimingInfo rarTime, uint16_t ueIdx, RarAlloc *rarAlloc, uint8_t k0Index)
+uint8_t schFillRar(SchCellCb *cell, SlotTimingInfo rarTime, uint16_t ueId, RarAlloc *rarAlloc, uint8_t k0Index)
 {
    uint8_t  coreset0Idx = 0;
    uint8_t  firstSymbol = 0, numSymbols = 0;
@@ -648,7 +656,7 @@ uint8_t schFillRar(SchCellCb *cell, SlotTimingInfo rarTime, uint16_t ueIdx, RarA
    pdcch->coresetCfg.shiftIndex = cell->cellCfg.phyCellId;
    pdcch->coresetCfg.precoderGranularity = 0; /* sameAsRegBundle */
    pdcch->numDlDci = 1;
-   pdcch->dci.rnti = cell->raReq[ueIdx]->raRnti; /* RA-RNTI */
+   pdcch->dci.rnti = cell->raReq[ueId-1]->raRnti; /* RA-RNTI */
    pdcch->dci.scramblingId = cell->cellCfg.phyCellId;
    pdcch->dci.scramblingRnti = 0;
    pdcch->dci.cceIndex = 4; /* considering SIB1 is sent at cce 0-1-2-3 */
@@ -665,7 +673,7 @@ uint8_t schFillRar(SchCellCb *cell, SlotTimingInfo rarTime, uint16_t ueIdx, RarA
    /* fill the PDSCH PDU */
    uint8_t cwCount = 0;
    pdsch->pduBitmap = 0; /* PTRS and CBG params are excluded */
-   pdsch->rnti = cell->raReq[ueIdx]->raRnti; /* RA-RNTI */
+   pdsch->rnti = cell->raReq[ueId-1]->raRnti; /* RA-RNTI */
    pdsch->pduIndex = 0;
    pdsch->numCodewords = 1;
    for(cwCount = 0; cwCount < pdsch->numCodewords; cwCount++)
