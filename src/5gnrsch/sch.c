@@ -664,6 +664,7 @@ uint8_t schInitCellCb(Inst inst, SchCellCfg *schCellCfg)
    cell->firstSsbTransmitted = false;
    cell->firstSib1Transmitted = false;
    fillSsbStartSymb(cell);
+   cmLListInit(&cell->ueToBeScheduled);
    schCb[inst].cells[inst] = cell;
 
    DU_LOG("\nINFO  -->  SCH : Cell init completed for cellId:%d", cell->cellId);
@@ -940,7 +941,7 @@ uint8_t MacSchDlRlcBoInfo(Pst *pst, DlRlcBoInfo *dlBoInfo)
    DU_LOG("\nCall Flow: ENTMAC -> ENTSCH : EVENT_DL_RLC_BO_INFO_TO_SCH\n");
 #endif
 
-   DU_LOG("\nDEBUG  -->  SCH : Received RLC BO Status indication");
+   DU_LOG("\nDEBUG  -->  SCH : Received RLC BO Status indication LCId [%d] BO [%d]", dlBoInfo->lcId, dlBoInfo->dataVolume);
    cell = schCb[inst].cells[inst];
 
    if(cell == NULLP)
@@ -1360,6 +1361,58 @@ uint8_t allocatePrbUl(SchCellCb *cell, SlotTimingInfo slotTime, \
    /* Update the remaining number for free PRBs */
    removeAllocatedPrbFromFreePrbList(&prbAlloc->freePrbBlockList, freePrbNode, *startPrb, numPrb);
 
+   return ROK;
+}
+
+/*******************************************************************
+ *
+ * @brief Add UE to ueToBeScheduled List
+ *
+ * @details
+ *
+ *    Function : addUeToBeScheduled
+ *
+ *    Functionality:
+ *      Search if UE entry present in the list
+ *      If yes, return.
+ *      If no, add UE to the list
+ *
+ * @params[in] Cell control block
+ *             Ue Idx to be added
+ *
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t addUeToBeScheduled(SchCellCb *cell, uint8_t ueIdxToAdd)
+{
+   uint8_t *ueIdx;
+   CmLList *node;
+
+   /* Search if UE entry is already present in ueToBeScheduled list.
+    * If yes, another entry for same UE not needed. Hence, return */
+   node = cell->ueToBeScheduled.first;
+   while(node)
+   {
+      ueIdx = (uint8_t *)node->node;
+      if(*ueIdx == ueIdxToAdd)
+         return ROK;
+      node = node->next;
+   }
+
+   /* If UE entry not present already, add UE to the end of ueToBeScheduled list */
+   SCH_ALLOC(ueIdx, sizeof(uint8_t));
+   if(!ueIdx)
+   {
+      DU_LOG("\nERROR  -->  SCH : Memory allocation failure in addUeToBeScheduled");
+      return RFAILED;
+   }
+   *ueIdx = ueIdxToAdd;
+   if(addNodeToLList(&cell->ueToBeScheduled, ueIdx, NULLP) != ROK)
+   {
+      DU_LOG("\nERROR  --> SCH : Failed to add UeIdx to cell->ueToBeScheduled list");
+      return RFAILED;
+   }
    return ROK;
 }
  
