@@ -946,11 +946,7 @@ typedef struct dlSchedInfo
    DlBrdcstAlloc brdcstAlloc;
 
    /* Allocation for RAR message */
-   //uint8_t isRarPres;
-   RarAlloc *rarAlloc;
-
-   /* Allocation from MSG4 */
-   //Msg4Alloc *msg4Alloc;
+   RarAlloc *rarAlloc[MAX_NUM_UE];
 
    /* UL grant in response to BSR */
    DciInfo    *ulGrant;

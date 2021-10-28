@@ -1683,7 +1683,7 @@ uint8_t schProcessMsg4Req(SchCellCb *cell, SlotTimingInfo currTime)
          {
             DU_LOG("\nERROR  -->  SCH : Memory Allocation failed for msg4SlotAlloc");
             SCH_FREE(dciSlotAlloc, sizeof(DlMsgAlloc));
-            cell->schDlSlotInfo[pdcchSlot]->rarAlloc = NULLP;
+            cell->schDlSlotInfo[pdcchSlot]->dlMsgAlloc = NULLP;
             return RFAILED;
          }
          cell->schDlSlotInfo[pdschSlot]->dlMsgAlloc = msg4SlotAlloc;

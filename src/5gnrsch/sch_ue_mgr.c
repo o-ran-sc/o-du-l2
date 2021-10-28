@@ -990,10 +990,11 @@ void deleteSchUeCb(SchUeCb *ueCb)
 * ****************************************************************/
 uint8_t MacSchUeDeleteReq(Pst *pst, SchUeDelete  *ueDelete)
 {
-    uint8_t idx=0, ueIdx=0, ret=ROK;
-    ErrorCause result;
+    uint8_t      idx=0, ueId=0, ueIdToDel=0, ret=ROK;
+    ErrorCause   result;
     SchCellCb    *cellCb = NULLP;
     Inst         inst = pst->dstInst - 1;
+    CmLList      *node = NULL, *next = NULL;
    
 #ifdef CALL_FLOW_DEBUG_LOG
     DU_LOG("\nCall Flow: ENTMAC -> ENTSCH : EVENT_UE_DELETE_REQ_TO_SCH\n");
@@ -1015,10 +1016,25 @@ uint8_t MacSchUeDeleteReq(Pst *pst, SchUeDelete  *ueDelete)
     }
     else
     {
-       GET_UE_IDX(ueDelete->crnti, ueIdx);
-       if(( cellCb->ueCb[ueIdx-1].crnti == ueDelete->crnti) && ( cellCb->ueCb[ueIdx-1].state == SCH_UE_STATE_ACTIVE))
+       GET_UE_IDX(ueDelete->crnti, ueId);
+       if(( cellCb->ueCb[ueId-1].crnti == ueDelete->crnti) && ( cellCb->ueCb[ueId-1].state == SCH_UE_STATE_ACTIVE))
        {
-          deleteSchUeCb(&cellCb->ueCb[ueIdx-1]);
+          deleteSchUeCb(&cellCb->ueCb[ueId-1]);
+
+          /* Remove UE from ueToBeScheduled list */
+          node = cellCb->ueToBeScheduled.first;
+          while(node)
+          {
+             next = node->next;
+             ueId = *(uint8_t *)node->node;
+             if(ueId == ueIdToDel)
+             {
+                SCH_FREE(node->node, sizeof(uint8_t));
+                cmLListDelFrm(&cellCb->ueToBeScheduled, node);
+                break;
+             }
+             node = next;
+          }
           cellCb->numActvUe--;
           result = NOT_APPLICABLE;
        }
@@ -1099,8 +1115,8 @@ uint8_t SchSendCellDeleteRspToMac(SchCellDelete  *ueDelete, Inst inst, SchMacRsp
 void deleteSchCellCb(SchCellCb *cellCb)
 {
    uint8_t sliceIdx=0, slotIdx=0;
-   CmLListCp *list;
-   CmLList *node, *next;
+   CmLListCp *list=NULL;
+   CmLList *node=NULL, *next=NULL;
 
    if(cellCb->schDlSlotInfo)
    {
@@ -1147,6 +1163,17 @@ void deleteSchCellCb(SchCellCb *cellCb)
       SCH_FREE(cellCb->cellCfg.snssai, cellCb->cellCfg.numSliceSupport*sizeof(Snssai*));
    }
    SCH_FREE(cellCb->cellCfg.rrmPolicy, sizeof(SchRrmPolicy));
+
+   /* Remove all UE from ueToBeScheduled list and deallocate */
+   node = cellCb->ueToBeScheduled.first;
+   while(node)
+   {
+      next = node->next;
+      SCH_FREE(node->node, sizeof(uint8_t));
+      cmLListDelFrm(&cellCb->ueToBeScheduled, node);
+      node = next;
+   }
+
    memset(cellCb, 0, sizeof(SchCellCb));
 
 }

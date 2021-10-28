@@ -1042,23 +1042,30 @@ S16 l1HdlUlTtiReq(uint16_t msgLen, void *msg)
       numPdus--;
    }
 
+   /* Send RACH Ind to L2 for first UE */
    if(ueDb.ueCb[UE_IDX_0].rachIndSent == false && ulTtiReq->sfn == 16 && ulTtiReq->slot == 6)
    {
       ueDb.ueCb[UE_IDX_0].rachIndSent = true;
       l1BuildAndSendRachInd(ulTtiReq->slot, ulTtiReq->sfn);
       ueDb.numActvUe++;
    }
-
-   //Following can be enabled to test with a second UE
 #if 0
+   /* Send RACH Ind to L2 for second UE */
    if(ueDb.ueCb[UE_IDX_1].rachIndSent == false && ulTtiReq->sfn == 304 && ulTtiReq->slot == 0)
    {
       ueDb.ueCb[UE_IDX_1].rachIndSent = true;
       l1BuildAndSendRachInd(ulTtiReq->slot, ulTtiReq->sfn);
       ueDb.numActvUe++;
    }
-#endif
 
+   /* Send RACH Ind to L2 for third UE */
+   if(ueDb.ueCb[UE_IDX_2].rachIndSent == false && ulTtiReq->sfn == 526 && ulTtiReq->slot == 0)
+   {
+      ueDb.ueCb[UE_IDX_2].rachIndSent = true;
+      l1BuildAndSendRachInd(ulTtiReq->slot, ulTtiReq->sfn);
+      ueDb.numActvUe++;
+   }
+#endif   
    MAC_FREE(msg, msgLen);
 #endif
    return ROK;

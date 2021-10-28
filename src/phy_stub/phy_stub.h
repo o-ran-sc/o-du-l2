@@ -30,6 +30,7 @@
 /*UE Ids for RACH IND*/
 #define UE_IDX_0     0
 #define UE_IDX_1     1
+#define UE_IDX_2     2
 
 bool     slotIndicationStarted;
 uint16_t sfnValue;
