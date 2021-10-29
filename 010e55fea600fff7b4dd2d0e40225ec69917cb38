@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "68d6c6d2_257a164d",
+        "filename": "src/du_app/du_mgr_main.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 398,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-10-29T05:15:54Z",
+      "side": 1,
+      "message": "I will remove these changes in next patch.",
+      "revId": "010e55fea600fff7b4dd2d0e40225ec69917cb38",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
