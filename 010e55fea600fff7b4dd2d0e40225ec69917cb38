@@ -24,6 +24,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f51d4d3c_fdf621e8",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 3516,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-10-29T13:44:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "81b3b186_9a823e6c",
+      "range": {
+        "startLine": 3516,
+        "startChar": 67,
+        "endLine": 3516,
+        "endChar": 76
+      },
+      "revId": "010e55fea600fff7b4dd2d0e40225ec69917cb38",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7395c339_7b1407df",
@@ -37,6 +61,24 @@
       "writtenOn": "2021-10-29T05:30:46Z",
       "side": 1,
       "message": "add this condition in calcTxDataReqPduCount() while calculating the number of PDU.\nDont check the condition here.\nI have fixed the same for RAR",
+      "revId": "010e55fea600fff7b4dd2d0e40225ec69917cb38",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3f584a8c_2b4ef9dc",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 3678,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-10-29T13:44:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7395c339_7b1407df",
       "revId": "010e55fea600fff7b4dd2d0e40225ec69917cb38",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -92,6 +134,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ea55bab5_d637fd96",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1017,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-10-29T13:44:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ca053e7d_ff89fbea",
+      "revId": "010e55fea600fff7b4dd2d0e40225ec69917cb38",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c98d9f5f_ae00520b",
@@ -105,6 +165,24 @@
       "writtenOn": "2021-10-29T05:30:46Z",
       "side": 1,
       "message": "remove commented line",
+      "revId": "010e55fea600fff7b4dd2d0e40225ec69917cb38",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8677aa73_6ade8170",
+        "filename": "src/5gnrsch/sch.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-10-29T13:44:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c98d9f5f_ae00520b",
       "revId": "010e55fea600fff7b4dd2d0e40225ec69917cb38",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -126,6 +204,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b3108629_1b19cae1",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1667,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-10-29T13:44:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6495dfe6_361beac0",
+      "revId": "010e55fea600fff7b4dd2d0e40225ec69917cb38",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "04ba3943_5a9c4a66",
@@ -143,6 +239,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ab9c2f3a_0888b931",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1677,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-10-29T13:44:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "04ba3943_5a9c4a66",
+      "revId": "010e55fea600fff7b4dd2d0e40225ec69917cb38",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3639412b_2632018e",
@@ -156,6 +270,24 @@
       "writtenOn": "2021-10-29T05:30:46Z",
       "side": 1,
       "message": "pass pucchTime rather than just slot. This will be required later when PUCCH PRB allocation will be worked upon",
+      "revId": "010e55fea600fff7b4dd2d0e40225ec69917cb38",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f97302e6_f51a159b",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1708,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-10-29T13:44:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3639412b_2632018e",
       "revId": "010e55fea600fff7b4dd2d0e40225ec69917cb38",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -190,6 +322,24 @@
       "writtenOn": "2021-10-29T05:30:46Z",
       "side": 1,
       "message": "put cell first and then *slotInd.\nI have fixed the same for schProcessRaReq as well in my latest gerrit",
+      "revId": "010e55fea600fff7b4dd2d0e40225ec69917cb38",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "31b75f1c_4b8fcf69",
+        "filename": "src/5gnrsch/sch_slot_ind.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 477,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-10-29T13:44:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fa1485ea_b318ebe2",
       "revId": "010e55fea600fff7b4dd2d0e40225ec69917cb38",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
