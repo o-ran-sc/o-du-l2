@@ -100,6 +100,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0f2040ee_ac2801fe",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 988,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-10-29T13:49:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "564e59a2_aa4bb43c",
+      "revId": "010e55fea600fff7b4dd2d0e40225ec69917cb38",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "924b6910_d6ff954e",
@@ -113,6 +131,24 @@
       "writtenOn": "2021-10-29T05:30:46Z",
       "side": 1,
       "message": "all of the above code should be filled only after you have found the slot on which the msg4 has to be scheduled.\nHere in this function no scheduling is being done",
+      "revId": "010e55fea600fff7b4dd2d0e40225ec69917cb38",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a9f7c3d6_089cadc0",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1012,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-10-29T13:49:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "924b6910_d6ff954e",
       "revId": "010e55fea600fff7b4dd2d0e40225ec69917cb38",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -305,6 +341,24 @@
       "writtenOn": "2021-10-29T05:30:46Z",
       "side": 1,
       "message": "check in MAC when is raCb to be deleted, clear the raCb at the same event in SCH as well",
+      "revId": "010e55fea600fff7b4dd2d0e40225ec69917cb38",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "86070b1d_aca1860b",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1709,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-10-29T13:49:06Z",
+      "side": 1,
+      "message": "This I\u0027ll check.",
+      "parentUuid": "2f4a0f60_dd53e99b",
       "revId": "010e55fea600fff7b4dd2d0e40225ec69917cb38",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
