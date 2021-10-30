@@ -118,6 +118,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "30364616_ef4e40bd",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 3504,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-10-30T10:31:05Z",
+      "side": 1,
+      "message": "\u003e yes. Since MSG4 and DL ded msg specific changes are yet to be done, passing MAX_NUM_UE as of now.\n\u003e It is not being used fillPdcchPdu() for msg4/dedmsg. This will be taken up next",
+      "parentUuid": "dffb18d9_f84449c9",
+      "revId": "f42afe1b6eccf0aeb5c6c32bd4b92510c1c4fa97",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d38a272d_a5e0393c",
