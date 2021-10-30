@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "49765828_cde58183",
+        "filename": "src/du_app/du_mgr_main.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 398,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-10-30T12:41:04Z",
+      "side": 1,
+      "message": "remove this.",
+      "revId": "de9e46bf7e8597939df33db8526e004a02f8f688",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
