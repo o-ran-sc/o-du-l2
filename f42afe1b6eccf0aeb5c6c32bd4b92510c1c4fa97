@@ -41,6 +41,48 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8c6432d0_9f15ca36",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 3448,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-10-30T10:07:43Z",
+      "side": 1,
+      "message": "Since SIB1 is not UE specific, we do not need UEId.\nHence passing MAX_NUM_UE itself.",
+      "parentUuid": "c0546f06_b984737d",
+      "revId": "f42afe1b6eccf0aeb5c6c32bd4b92510c1c4fa97",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7ac4f64a_56f2c4de",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 3448,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-10-30T10:07:43Z",
+      "side": 1,
+      "message": "Valid uint8_t values of ueIdx is 0 to (MAX_NUM_UE-1)\nThe very first invalid value is MAX_NUM_UE itself. Hence passing this value.\nAnyway, in case of SIB1, ueIdx values is not used at all in fillPdcchPdu()",
+      "parentUuid": "8e4a82ca_220064e7",
+      "range": {
+        "startLine": 3448,
+        "startChar": 52,
+        "endLine": 3448,
+        "endChar": 62
+      },
+      "revId": "f42afe1b6eccf0aeb5c6c32bd4b92510c1c4fa97",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1957e809_fb377fe7",
@@ -54,6 +96,24 @@
       "writtenOn": "2021-10-29T17:04:44Z",
       "side": 1,
       "message": "why we are sending max num of UE? \nlike we have done for RAR , are you going to same here as well?",
+      "revId": "f42afe1b6eccf0aeb5c6c32bd4b92510c1c4fa97",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dffb18d9_f84449c9",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 3504,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-10-30T10:07:43Z",
+      "side": 1,
+      "message": "yes. Since MSG4 and DL ded msg specific changes are yet to be done, passing MAX_NUM_UE as of now.\nAnyway, it is not being used fillPdcchPdu() for msg4/dedmsg. This will be taken up next",
+      "parentUuid": "1957e809_fb377fe7",
       "revId": "f42afe1b6eccf0aeb5c6c32bd4b92510c1c4fa97",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -104,6 +164,54 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "65a0b99b_07e9f60e",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1404,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-10-30T10:07:43Z",
+      "side": 1,
+      "message": "Yes, this allocation is removed in 3 cases:\n1. When there is no pending msg for this UE to be scheduled.\n2. When a UE is deleted\n3. When cell is deleted\n\nChange for 1st case is done as of now considering only RAR. Will enhance it for other cases as and when they are handled.\nChange #2 and #3 are handled now in respective delete UE and delete Cell functions",
+      "parentUuid": "1125bf5a_3caf5d46",
+      "range": {
+        "startLine": 1404,
+        "startChar": 3,
+        "endLine": 1404,
+        "endChar": 12
+      },
+      "revId": "f42afe1b6eccf0aeb5c6c32bd4b92510c1c4fa97",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d3a0dc04_8b845902",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1404,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-10-30T10:07:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d38a272d_a5e0393c",
+      "range": {
+        "startLine": 1404,
+        "startChar": 13,
+        "endLine": 1404,
+        "endChar": 18
+      },
+      "revId": "f42afe1b6eccf0aeb5c6c32bd4b92510c1c4fa97",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c2a2b926_2ef0d82b",
@@ -117,6 +225,30 @@
       "writtenOn": "2021-10-30T04:36:06Z",
       "side": 1,
       "message": "Add the comment for this variable",
+      "range": {
+        "startLine": 166,
+        "startChar": 16,
+        "endLine": 166,
+        "endChar": 23
+      },
+      "revId": "f42afe1b6eccf0aeb5c6c32bd4b92510c1c4fa97",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a5ea458e_814ba09d",
+        "filename": "src/5gnrsch/sch.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 166,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-10-30T10:07:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c2a2b926_2ef0d82b",
       "range": {
         "startLine": 166,
         "startChar": 16,
@@ -150,6 +282,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2a2405fc_2f35a5d8",
+        "filename": "src/5gnrsch/sch.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 167,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-10-30T10:07:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9be669ad_44fc0e1a",
+      "range": {
+        "startLine": 167,
+        "startChar": 16,
+        "endLine": 167,
+        "endChar": 23
+      },
+      "revId": "f42afe1b6eccf0aeb5c6c32bd4b92510c1c4fa97",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4621fc07_3c0ae8c4",
@@ -163,6 +319,30 @@
       "writtenOn": "2021-10-30T04:36:06Z",
       "side": 1,
       "message": "Just a doubt, a UE can be scheduled for many things at a time .. If we just talk abt UL and DL.. Same UE may be scheduled for UL but not for DL. If this is the case how this LL can differentiate between these two UEs?\n\nIs maintaining UE to be scheduled list for every msg common (i.e. in Cell\u0027s context) will work? Am I missing anything?",
+      "range": {
+        "startLine": 314,
+        "startChar": 17,
+        "endLine": 314,
+        "endChar": 32
+      },
+      "revId": "f42afe1b6eccf0aeb5c6c32bd4b92510c1c4fa97",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1c32a295_f0aa905b",
+        "filename": "src/5gnrsch/sch.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 314,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-10-30T10:07:43Z",
+      "side": 1,
+      "message": "As discussed in DSM recently, this linked list is used to decide PDCCH PDU for which UE is to be sent in this slot. Its respective PDSCH/PUSCH/PUCCH can be scheduled any slot (current/future slot) as per k0-k1-k2 values. \n\nIt is made sure that if a PDSCH/PUSCH/PUSCH for any UE is already scheduled in a slot, the same PDU for any other UE doesn\u0027t get scheduled in the same slot.",
+      "parentUuid": "4621fc07_3c0ae8c4",
       "range": {
         "startLine": 314,
         "startChar": 17,
@@ -196,6 +376,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "02e5d0bc_e8254ff8",
+        "filename": "src/5gnrsch/sch.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 350,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-10-30T10:07:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "494627c3_ab22d51e",
+      "range": {
+        "startLine": 350,
+        "startChar": 52,
+        "endLine": 350,
+        "endChar": 57
+      },
+      "revId": "f42afe1b6eccf0aeb5c6c32bd4b92510c1c4fa97",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "67e3e67f_4de756b8",
@@ -209,6 +413,30 @@
       "writtenOn": "2021-10-30T04:36:06Z",
       "side": 1,
       "message": "change this to UEID as well",
+      "range": {
+        "startLine": 361,
+        "startChar": 73,
+        "endLine": 361,
+        "endChar": 78
+      },
+      "revId": "f42afe1b6eccf0aeb5c6c32bd4b92510c1c4fa97",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4cb8f616_7ae6e6a9",
+        "filename": "src/5gnrsch/sch.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 361,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-10-30T10:07:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "67e3e67f_4de756b8",
       "range": {
         "startLine": 361,
         "startChar": 73,
@@ -242,6 +470,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "82cb8532_3b7d553d",
+        "filename": "src/5gnrsch/sch_rach.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 367,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-10-30T10:07:43Z",
+      "side": 1,
+      "message": "yes it is required below when calling schGetSlotSymbFrmt()",
+      "parentUuid": "a55db2b1_db77aaf3",
+      "range": {
+        "startLine": 367,
+        "startChar": 3,
+        "endLine": 367,
+        "endChar": 15
+      },
+      "revId": "f42afe1b6eccf0aeb5c6c32bd4b92510c1c4fa97",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2942c7c5_16467e28",
@@ -255,6 +507,30 @@
       "writtenOn": "2021-10-30T04:36:06Z",
       "side": 1,
       "message": "1. Can there be a case where same UE has been scheduled for this slot. In that case, dont we need to return Rar scheduled as TRUE?? I mean dont we need to remove that UE from the Linklist\n\n2. I guess in real -time scenario, gNB can receive multiple Rach_req for same UE. In that case, the latest req will be entertained or any previous req will be processed? In any case, one of rach req can be discarded.",
+      "range": {
+        "startLine": 384,
+        "startChar": 39,
+        "endLine": 384,
+        "endChar": 46
+      },
+      "revId": "f42afe1b6eccf0aeb5c6c32bd4b92510c1c4fa97",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "656e9562_22fcdf3e",
+        "filename": "src/5gnrsch/sch_rach.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 384,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-10-30T10:07:43Z",
+      "side": 1,
+      "message": "1. If the UE is already scheduled, that does not necessarily mean that RAR is scheduled already. UE should only be removed from LL if there is no pending RACH requests to be scheduled.\n\n2. As of now we haven\u0027t taken into consideration this scenarios where multiple RACH indication is triggered from same UE. This would require changes in phy stub,MAC and SCH for testing.",
+      "parentUuid": "2942c7c5_16467e28",
       "range": {
         "startLine": 384,
         "startChar": 39,
@@ -288,6 +564,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a6c759c7_bce47e88",
+        "filename": "src/5gnrsch/sch_rach.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 405,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-10-30T10:07:43Z",
+      "side": 1,
+      "message": "same as above",
+      "parentUuid": "d120200f_1f4854c6",
+      "range": {
+        "startLine": 405,
+        "startChar": 45,
+        "endLine": 405,
+        "endChar": 53
+      },
+      "revId": "f42afe1b6eccf0aeb5c6c32bd4b92510c1c4fa97",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7161f8fd_a3760f37",
@@ -301,6 +601,30 @@
       "writtenOn": "2021-10-30T04:36:06Z",
       "side": 1,
       "message": "same as above",
+      "range": {
+        "startLine": 424,
+        "startChar": 57,
+        "endLine": 424,
+        "endChar": 65
+      },
+      "revId": "f42afe1b6eccf0aeb5c6c32bd4b92510c1c4fa97",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5ebaeb70_eed3cd8f",
+        "filename": "src/5gnrsch/sch_rach.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 424,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-10-30T10:07:43Z",
+      "side": 1,
+      "message": "same as above",
+      "parentUuid": "7161f8fd_a3760f37",
       "range": {
         "startLine": 424,
         "startChar": 57,
@@ -334,6 +658,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "55ee8eed_21edbe3c",
+        "filename": "src/5gnrsch/sch_rach.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 456,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-10-30T10:07:43Z",
+      "side": 1,
+      "message": "Let not remove any one because RAR and MSG4 handling may differ in future.\nThey should be handled separately",
+      "parentUuid": "65a3cbf6_e990d590",
+      "range": {
+        "startLine": 456,
+        "startChar": 10,
+        "endLine": 456,
+        "endChar": 20
+      },
+      "revId": "f42afe1b6eccf0aeb5c6c32bd4b92510c1c4fa97",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "215d8d1b_9b7345f5",
@@ -347,6 +695,30 @@
       "writtenOn": "2021-10-30T04:36:06Z",
       "side": 1,
       "message": "Dont we need to check if we have this UE id in the list already?",
+      "range": {
+        "startLine": 588,
+        "startChar": 3,
+        "endLine": 588,
+        "endChar": 21
+      },
+      "revId": "f42afe1b6eccf0aeb5c6c32bd4b92510c1c4fa97",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0aea4dae_b056135a",
+        "filename": "src/5gnrsch/sch_rach.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 588,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-10-30T10:07:43Z",
+      "side": 1,
+      "message": "This is being checked within addUeToBeScheduled() before adding new node in the list.",
+      "parentUuid": "215d8d1b_9b7345f5",
       "range": {
         "startLine": 588,
         "startChar": 3,
@@ -380,6 +752,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9a1dbf6d_32343965",
+        "filename": "src/5gnrsch/sch_slot_ind.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 491,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-10-30T10:07:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3b315e9a_ac4d46a3",
+      "range": {
+        "startLine": 491,
+        "startChar": 12,
+        "endLine": 491,
+        "endChar": 25
+      },
+      "revId": "f42afe1b6eccf0aeb5c6c32bd4b92510c1c4fa97",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "767d75b4_6c905e99",
@@ -393,6 +789,30 @@
       "writtenOn": "2021-10-30T04:36:06Z",
       "side": 1,
       "message": "we should dealloc new UE scheduled list also",
+      "range": {
+        "startLine": 1099,
+        "startChar": 5,
+        "endLine": 1099,
+        "endChar": 20
+      },
+      "revId": "f42afe1b6eccf0aeb5c6c32bd4b92510c1c4fa97",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6a4407d0_191d6537",
+        "filename": "src/5gnrsch/sch_ue_mgr.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1099,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-10-30T10:07:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "767d75b4_6c905e99",
       "range": {
         "startLine": 1099,
         "startChar": 5,
@@ -426,6 +846,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "885a3df5_340acb8a",
+        "filename": "src/5gnrsch/sch_ue_mgr.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1103,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-10-30T10:07:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "34df24d2_d1fa3d07",
+      "range": {
+        "startLine": 1103,
+        "startChar": 12,
+        "endLine": 1103,
+        "endChar": 16
+      },
+      "revId": "f42afe1b6eccf0aeb5c6c32bd4b92510c1c4fa97",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a18fbc88_17bf9b49",
@@ -439,6 +883,30 @@
       "writtenOn": "2021-10-29T17:04:44Z",
       "side": 1,
       "message": "lets test these part once again using memory tool.",
+      "range": {
+        "startLine": 1110,
+        "startChar": 22,
+        "endLine": 1110,
+        "endChar": 27
+      },
+      "revId": "f42afe1b6eccf0aeb5c6c32bd4b92510c1c4fa97",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "682ac5de_dd2998e1",
+        "filename": "src/5gnrsch/sch_ue_mgr.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1110,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-10-30T10:07:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a18fbc88_17bf9b49",
       "range": {
         "startLine": 1110,
         "startChar": 22,
@@ -472,6 +940,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b33cd716_a3c8ad38",
+        "filename": "src/cm/mac_sch_interface.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 950,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-10-30T10:07:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1f0d44e7_cc2cb6c7",
+      "range": {
+        "startLine": 950,
+        "startChar": 25,
+        "endLine": 950,
+        "endChar": 26
+      },
+      "revId": "f42afe1b6eccf0aeb5c6c32bd4b92510c1c4fa97",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "90dd78fd_f487d684",
@@ -485,6 +977,30 @@
       "writtenOn": "2021-10-29T17:04:44Z",
       "side": 1,
       "message": "revert these before submission",
+      "range": {
+        "startLine": 398,
+        "startChar": 30,
+        "endLine": 398,
+        "endChar": 41
+      },
+      "revId": "f42afe1b6eccf0aeb5c6c32bd4b92510c1c4fa97",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cdfe430e_34bcf6f1",
+        "filename": "src/du_app/du_mgr_main.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 398,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-10-30T10:07:43Z",
+      "side": 1,
+      "message": "Yes",
+      "parentUuid": "90dd78fd_f487d684",
       "range": {
         "startLine": 398,
         "startChar": 30,
@@ -518,6 +1034,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c248729c_563a393c",
+        "filename": "src/phy_stub/phy_stub_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1046,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-10-30T10:07:43Z",
+      "side": 1,
+      "message": "Let me do this as part of next gerrit",
+      "parentUuid": "b3bd144a_9202f944",
+      "range": {
+        "startLine": 1046,
+        "startChar": 26,
+        "endLine": 1046,
+        "endChar": 37
+      },
+      "revId": "f42afe1b6eccf0aeb5c6c32bd4b92510c1c4fa97",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "061a7865_67ca8ef9",
@@ -531,6 +1071,30 @@
       "writtenOn": "2021-10-30T04:36:06Z",
       "side": 1,
       "message": "what is the logic for taking these sfn and slot.. If you can explain as comment",
+      "range": {
+        "startLine": 1062,
+        "startChar": 67,
+        "endLine": 1062,
+        "endChar": 71
+      },
+      "revId": "f42afe1b6eccf0aeb5c6c32bd4b92510c1c4fa97",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2dd24e71_feb5b974",
+        "filename": "src/phy_stub/phy_stub_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1062,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-10-30T10:07:43Z",
+      "side": 1,
+      "message": "We have considered triggering RACH indication for next UE only after the first UE is completely attached. As per logs, first UE got attached before SFN 304. Hence triggered RACH ind at (304,0) for UE 2. Similary once UE 3 is attached, triggered RACH ind for UE 2 at SFN 526.\n\nIdeally UE will trigger RACH indication based on (sfn,slot) calculated using PRACH config index. I can try to do the same in next gerrit if time permits",
+      "parentUuid": "061a7865_67ca8ef9",
       "range": {
         "startLine": 1062,
         "startChar": 67,
