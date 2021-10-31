@@ -24,6 +24,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a711576f_30e93195",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 968,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-10-31T08:08:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0231d36b_b3d075e0",
+      "range": {
+        "startLine": 968,
+        "startChar": 6,
+        "endLine": 968,
+        "endChar": 11
+      },
+      "revId": "de9e46bf7e8597939df33db8526e004a02f8f688",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "38675404_9e2e18b7",
@@ -37,6 +61,30 @@
       "writtenOn": "2021-10-30T19:13:06Z",
       "side": 1,
       "message": "You can remove this if check. if CHECK_LCID is put is at the start of if part",
+      "range": {
+        "startLine": 979,
+        "startChar": 13,
+        "endLine": 979,
+        "endChar": 18
+      },
+      "revId": "de9e46bf7e8597939df33db8526e004a02f8f688",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "340b634c_50a54a07",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 979,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-10-31T08:08:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "38675404_9e2e18b7",
       "range": {
         "startLine": 979,
         "startChar": 13,
@@ -70,6 +118,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "005fd7cf_116ce1f5",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 992,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-10-31T08:08:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3b3d6a0a_e97be18e",
+      "range": {
+        "startLine": 992,
+        "startChar": 6,
+        "endLine": 992,
+        "endChar": 11
+      },
+      "revId": "de9e46bf7e8597939df33db8526e004a02f8f688",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "49765828_cde58183",
@@ -87,6 +159,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "75232b81_add28c2b",
+        "filename": "src/du_app/du_mgr_main.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 398,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-10-31T08:08:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "49765828_cde58183",
+      "revId": "de9e46bf7e8597939df33db8526e004a02f8f688",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "29ec641c_c29f186e",
@@ -100,6 +190,30 @@
       "writtenOn": "2021-10-30T19:13:06Z",
       "side": 1,
       "message": "Understood the sfn and slot values.. If we are not able to calculate sfn,slot based on prach Config index due to time issue then pls add the comments you explained for these numbers here. So that it can useful for future reference. Thanks!",
+      "range": {
+        "startLine": 1062,
+        "startChar": 10,
+        "endLine": 1062,
+        "endChar": 11
+      },
+      "revId": "de9e46bf7e8597939df33db8526e004a02f8f688",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8681d776_fd32b338",
+        "filename": "src/phy_stub/phy_stub_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1062,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-10-31T08:08:35Z",
+      "side": 1,
+      "message": "Sure Sangeeta. Thanks",
+      "parentUuid": "29ec641c_c29f186e",
       "range": {
         "startLine": 1062,
         "startChar": 10,
