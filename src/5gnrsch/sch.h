@@ -225,6 +225,12 @@ typedef struct schUeCfgCb
    SchModulationInfo  ulModInfo;
 }SchUeCfgCb;
 
+typedef struct schBoInd 
+{
+   uint32_t  boIndBitMap;      /*!<Bit map to indicate UEs that have recevied BO */
+   DlMsgInfo dlMsgInfo;        /*!<Dl message information */
+}SchBoInd;
+
 /*Following structures to keep record and estimations of PRB allocated for each
  * LC taking into consideration the RRM policies*/
 typedef struct lcInfo
@@ -307,7 +313,7 @@ typedef struct schCellCb
    SchRaCb       raCb[MAX_NUM_UE];                  /*!< RA Cb */
    uint16_t      numActvUe;                         /*!<Number of active UEs */
    uint32_t      actvUeBitMap;                      /*!<Bit map to find active UEs */
-   uint32_t      boIndBitMap;                       /*!<Bit map to indicate UEs that have recevied BO */
+   SchBoInd      boIndication;                      /*!<UEs that have recevied BO */
    SchUeCb       ueCb[MAX_NUM_UE];                  /*!<Pointer to UE contexts of this cell */
 #ifdef NR_TDD
    uint8_t       numSlotsInPeriodicity;             /*!< number of slots in configured periodicity and SCS */

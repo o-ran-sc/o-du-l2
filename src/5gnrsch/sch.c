@@ -892,7 +892,7 @@ uint8_t SchHdlCellCfgReq(Pst *pst, SchCellCfg *schCellCfg)
    &cellCb->cellCfg.schInitialUlBwp.k2InfoTbl);
    /* Initializing global variables */
    cellCb->actvUeBitMap = 0;
-   cellCb->boIndBitMap = 0;
+   cellCb->boIndication.boIndBitMap = 0;
 
    /* Fill and send Cell config confirm */
    memset(&rspPst, 0, sizeof(Pst));
@@ -927,14 +927,12 @@ uint8_t MacSchDlRlcBoInfo(Pst *pst, DlRlcBoInfo *dlBoInfo)
 {
    uint8_t  lcId = 0;
    uint16_t ueIdx = 0;
-   uint16_t slot = 0;
 #ifdef NR_TDD
    uint16_t slotIdx = 0;
 #endif
    DlMsgInfo dlMsgInfo;
    SchUeCb *ueCb = NULLP;
    SchCellCb *cell = NULLP;
-   SchDlSlotInfo *schDlSlotInfo = NULLP;
    Inst  inst = pst->dstInst-SCH_INST_START;
 
 #ifdef CALL_FLOW_DEBUG_LOG
@@ -977,7 +975,7 @@ uint8_t MacSchDlRlcBoInfo(Pst *pst, DlRlcBoInfo *dlBoInfo)
       if(lcId == SRB1_LCID || lcId == SRB2_LCID || lcId == SRB3_LCID || \
             (lcId >= MIN_DRB_LCID && lcId <= MAX_DRB_LCID))
       {
-         SET_ONE_BIT(ueIdx, cell->boIndBitMap);
+         SET_ONE_BIT(ueIdx, cell->boIndication.boIndBitMap);
          if(ueCb->dlInfo.dlLcCtxt[lcId].lcId == lcId)
          {
             ueCb->dlInfo.dlLcCtxt[lcId].bo = dlBoInfo->dataVolume;
@@ -994,36 +992,7 @@ uint8_t MacSchDlRlcBoInfo(Pst *pst, DlRlcBoInfo *dlBoInfo)
          return RFAILED;
       }
 
-      slot = (cell->slotInfo.slot + SCHED_DELTA + PHY_DELTA_DL + BO_DELTA) % cell->numSlots;
-#ifdef NR_TDD
-      while(schGetSlotSymbFrmt(cell->slotFrmtBitMap, slot) != DL_SLOT)
-      {
-         slot = (slot + 1)%cell->numSlots;
-         slotIdx++;
-         if(slotIdx==cell->numSlots)
-         {
-            DU_LOG("\nERROR  -->  SCH : No DL Slot available");
-            return RFAILED;
-         }
-      }
-#endif
-
-      schDlSlotInfo = cell->schDlSlotInfo[slot];
-      if(schDlSlotInfo == NULLP)
-      {
-         DU_LOG("\nERROR  -->  SCH : MacSchDlRlcBoInfo(): schDlSlotInfo does not exists");
-         return RFAILED;
-      }
-
-      SCH_ALLOC(schDlSlotInfo->dlMsgAlloc, sizeof(DlMsgAlloc));
-      if(schDlSlotInfo->dlMsgAlloc == NULLP)
-      {
-         DU_LOG("\nERROR  -->  SCH : Memory allocation failed for dlMsgInfo");
-         schDlSlotInfo = NULL;
-         return RFAILED;
-      }
-
-      schDlSlotInfo->dlMsgAlloc->dlMsgInfo = dlMsgInfo;
+      cell->boIndication.dlMsgInfo = dlMsgInfo;
    }
    return ROK;
 }
