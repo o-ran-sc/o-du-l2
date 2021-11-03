@@ -102,50 +102,6 @@ DuRlcUeDeleteReq packRlcUeDeleteReqOpts[] =
    packDuRlcUeDeleteReq        /* Light weight-loose coupling */
 };
 
-
-/******************************************************************
- *
- * @brief Function to fetch lcId based on DRB Id
- *
- * @details
- *
- *    Function : fetchLcId
- *
- *    @params[in] drbId
- *
- *    Functionality: Function to fetch lcId based on DRB Id
- *
- * Returns: lcId - SUCCESS
- *          RFAILED - FAILURE
- *****************************************************************/
-
-uint8_t fetchLcId(uint8_t drbId)
-{
-   uint8_t cellIdx = 0, ueIdx = 0, lcIdx = 0, numLcs = 0, lcId = 0;
-
-   for(cellIdx = 0; cellIdx < MAX_NUM_CELL; cellIdx++)
-   {
-      for(ueIdx = 0; ueIdx < MAX_NUM_UE; ueIdx++)
-      {
-         if(duCb.actvCellLst[cellIdx] != NULLP)
-         {
-            numLcs = duCb.actvCellLst[cellIdx]->ueCb[ueIdx].rlcUeCfg.numLcs;
-            for(lcIdx = 0; lcIdx < numLcs; lcIdx++)
-            {
-               if(duCb.actvCellLst[cellIdx]->ueCb[ueIdx].rlcUeCfg.rlcLcCfg[lcIdx].rbId == drbId && \
-                  duCb.actvCellLst[cellIdx]->ueCb[ueIdx].rlcUeCfg.rlcLcCfg[lcIdx].rbType == RB_TYPE_DRB)
-               {
-                  lcId = duCb.actvCellLst[cellIdx]->ueCb[ueIdx].rlcUeCfg.rlcLcCfg[lcIdx].lcId;
-                  return lcId;
-               }
-            }
-         }
-      }
-   }
-   DU_LOG("\nERROR   -->  DU_APP: fetchLcId() failed for drbId %d", drbId);
-   return RFAILED;
-}
-
 /******************************************************************
  *
  * @brief Function to return Drb LcId
