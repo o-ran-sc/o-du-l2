@@ -1775,13 +1775,14 @@ uint8_t DuProcRlcUlUserDataTrans(Pst *pst, RlcUlUserDatInfo *ulUserData)
    /* Fetch EGTP tunnel info */
    for(rbIdx = 0; rbIdx < duCb.numDrb; rbIdx++)
    {
-      if((duCb.upTnlCfg[rbIdx] != NULLP) && (duCb.upTnlCfg[rbIdx]->drbId == ulUserData->rbId))
+      if((duCb.upTnlCfg[rbIdx] != NULLP) && (duCb.upTnlCfg[rbIdx]->ueIdx == ulUserData->ueIdx) && \
+         (duCb.upTnlCfg[rbIdx]->drbId == ulUserData->rbId))
       {
-	 if(duCb.upTnlCfg[rbIdx]->tnlCfg1)
-	 {
+         if(duCb.upTnlCfg[rbIdx]->tnlCfg1)
+         {
             egtpMsg.msgHdr.teId = duCb.upTnlCfg[rbIdx]->tnlCfg1->teId; /*As we are supporting only 1 tunnel per DRB*/
-	    break;
-	 }
+            break;
+         }
       }
    }
 

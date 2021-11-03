@@ -102,50 +102,6 @@ DuRlcUeDeleteReq packRlcUeDeleteReqOpts[] =
    packDuRlcUeDeleteReq        /* Light weight-loose coupling */
 };
 
-
-/******************************************************************
- *
- * @brief Function to fetch lcId based on DRB Id
- *
- * @details
- *
- *    Function : fetchLcId
- *
- *    @params[in] drbId
- *
- *    Functionality: Function to fetch lcId based on DRB Id
- *
- * Returns: lcId - SUCCESS
- *          RFAILED - FAILURE
- *****************************************************************/
-
-uint8_t fetchLcId(uint8_t drbId)
-{
-   uint8_t cellIdx = 0, ueIdx = 0, lcIdx = 0, numLcs = 0, lcId = 0;
-
-   for(cellIdx = 0; cellIdx < MAX_NUM_CELL; cellIdx++)
-   {
-      for(ueIdx = 0; ueIdx < MAX_NUM_UE; ueIdx++)
-      {
-         if(duCb.actvCellLst[cellIdx] != NULLP)
-         {
-            numLcs = duCb.actvCellLst[cellIdx]->ueCb[ueIdx].rlcUeCfg.numLcs;
-            for(lcIdx = 0; lcIdx < numLcs; lcIdx++)
-            {
-               if(duCb.actvCellLst[cellIdx]->ueCb[ueIdx].rlcUeCfg.rlcLcCfg[lcIdx].rbId == drbId && \
-                  duCb.actvCellLst[cellIdx]->ueCb[ueIdx].rlcUeCfg.rlcLcCfg[lcIdx].rbType == RB_TYPE_DRB)
-               {
-                  lcId = duCb.actvCellLst[cellIdx]->ueCb[ueIdx].rlcUeCfg.rlcLcCfg[lcIdx].lcId;
-                  return lcId;
-               }
-            }
-         }
-      }
-   }
-   DU_LOG("\nERROR   -->  DU_APP: fetchLcId() failed for drbId %d", drbId);
-   return RFAILED;
-}
-
 /******************************************************************
  *
  * @brief Function to return Drb LcId
@@ -210,13 +166,13 @@ uint8_t fillDlUserDataInfo(uint32_t teId, RlcDlUserDataInfo *dlDataMsgInfo)
    {
       if(duCb.upTnlCfg[drbIdx] && (duCb.upTnlCfg[drbIdx]->tnlCfg1 != NULLP))
       {
-        if(duCb.upTnlCfg[drbIdx]->tnlCfg1->teId == teId)
-	{
-	   dlDataMsgInfo->cellId = duCb.upTnlCfg[drbIdx]->cellId;
-	   dlDataMsgInfo->ueIdx = duCb.upTnlCfg[drbIdx]->ueIdx;
-           dlDataMsgInfo->rbId = duCb.upTnlCfg[drbIdx]->drbId;
-	   return ROK;
-	}
+         if(duCb.upTnlCfg[drbIdx]->tnlCfg1->teId == teId)
+         {
+            dlDataMsgInfo->cellId = duCb.upTnlCfg[drbIdx]->cellId;
+            dlDataMsgInfo->ueIdx = duCb.upTnlCfg[drbIdx]->ueIdx;
+            dlDataMsgInfo->rbId = duCb.upTnlCfg[drbIdx]->drbId;
+            return ROK;
+         }
       }
    }
    return RFAILED;
@@ -2232,29 +2188,31 @@ uint8_t duUpdateTunnelCfgDb(uint8_t ueIdx, uint8_t cellId, DuUeCfg *duUeCfg)
       duUeCfg->upTnlInfo[drbIdx].ueIdx = ueIdx;
       for(duCbDrbIdx = 0; duCbDrbIdx < duCb.numDrb; duCbDrbIdx++)
       {
-	 if(duCb.upTnlCfg[duCbDrbIdx]->drbId == duUeCfg->upTnlInfo[drbIdx].drbId)
-	 {
-	    drbFound = true; /* existing DRB */
-	    if(duProcEgtpTunnelCfg(duCbDrbIdx, duCb.upTnlCfg[duCbDrbIdx], &duUeCfg->upTnlInfo[drbIdx]) != ROK)
-	    {
-	       DU_LOG("\nERROR  -> DU_APP : duUpdateTunnelCfgDb: Failed to modify tunnel req for Drb id[%d]",
-	       duUeCfg->upTnlInfo[drbIdx].drbId);
-	       ret = RFAILED;
-	    }
-	    break;
-	 }
-	 else
-	    drbFound = false;
+         if((duCb.upTnlCfg[duCbDrbIdx]->ueIdx == duUeCfg->upTnlInfo[drbIdx].ueIdx) && \
+            (duCb.upTnlCfg[duCbDrbIdx]->drbId == duUeCfg->upTnlInfo[drbIdx].drbId))
+         {
+            drbFound = true; /* existing DRB */
+            if(duProcEgtpTunnelCfg(duCbDrbIdx, duCb.upTnlCfg[duCbDrbIdx], &duUeCfg->upTnlInfo[drbIdx]) != ROK)
+            {
+               DU_LOG("\nERROR  -> DU_APP : duUpdateTunnelCfgDb: Failed to modify tunnel req for Drb id[%d]",
+                     duUeCfg->upTnlInfo[drbIdx].drbId);
+               ret = RFAILED;
+            }
+            break;
+         }
+         else
+            drbFound = false;
       }
+
       if(!drbFound && ret == ROK)/* new DRB to Add */
       {
-	 if(duProcEgtpTunnelCfg(NULLP, NULLP, &duUeCfg->upTnlInfo[drbIdx]) != ROK)
-	 {
+         if(duProcEgtpTunnelCfg(NULLP, NULLP, &duUeCfg->upTnlInfo[drbIdx]) != ROK)
+         {
             DU_LOG("\nERROR  -> DU_APP : duUpdateTunnelCfgDb: Failed to add tunnel req for Drb id[%d]",
-	    duUeCfg->upTnlInfo[drbIdx].drbId);
-	    ret = RFAILED;
-	    break;
-	 }
+                  duUeCfg->upTnlInfo[drbIdx].drbId);
+            ret = RFAILED;
+            break;
+         }
       }
       else
          break;

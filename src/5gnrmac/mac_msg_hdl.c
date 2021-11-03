@@ -209,6 +209,7 @@ uint8_t MacProcRlcDlData(Pst* pstInfo, RlcData *dlData)
    uint8_t   ueId  = 0;
    uint8_t   lcIdx = 0;
    uint8_t   *txPdu = NULLP;
+   uint8_t   pdschSlot = 0;
    uint16_t  cellIdx = 0, txPduLen = 0;
    MacDlData macDlData;
    MacDlSlot *currDlSlot = NULLP;
@@ -240,17 +241,25 @@ uint8_t MacProcRlcDlData(Pst* pstInfo, RlcData *dlData)
    currDlSlot = &macCb.macCell[cellIdx]->dlSlot[dlData->slotInfo.slot];
    if(currDlSlot->dlInfo.dlMsgAlloc[ueId-1])
    {
-      txPduLen = currDlSlot->dlInfo.dlMsgAlloc[ueId-1]->dlMsgPdschCfg.codeword[0].tbSize - TX_PAYLOAD_HDR_LEN;
-      MAC_ALLOC(txPdu, txPduLen);
-      if(!txPdu)
+      if(currDlSlot->dlInfo.dlMsgAlloc[ueId-1]->pduPres == PDCCH_PDU)
       {
-         DU_LOG("\nERROR  -->  MAC : Memory allocation failed in MacProcRlcDlData");
-         return RFAILED;
+         pdschSlot = currDlSlot->dlInfo.dlMsgAlloc[ueId-1]->pdschSlot;
+         currDlSlot = &macCb.macCell[cellIdx]->dlSlot[pdschSlot];
       }
-      macMuxPdu(&macDlData, NULLP, txPdu, txPduLen);
+      if(currDlSlot->dlInfo.dlMsgAlloc[ueId-1])
+      {
+         txPduLen = currDlSlot->dlInfo.dlMsgAlloc[ueId-1]->dlMsgPdschCfg.codeword[0].tbSize - TX_PAYLOAD_HDR_LEN;
+         MAC_ALLOC(txPdu, txPduLen);
+         if(!txPdu)
+         {
+            DU_LOG("\nERROR  -->  MAC : Memory allocation failed in MacProcRlcDlData");
+            return RFAILED;
+         }
+         macMuxPdu(&macDlData, NULLP, txPdu, txPduLen);
 
-      currDlSlot->dlInfo.dlMsgAlloc[ueId-1]->dlMsgInfo.dlMsgPduLen = txPduLen;
-      currDlSlot->dlInfo.dlMsgAlloc[ueId-1]->dlMsgInfo.dlMsgPdu = txPdu;
+         currDlSlot->dlInfo.dlMsgAlloc[ueId-1]->dlMsgInfo.dlMsgPduLen = txPduLen;
+         currDlSlot->dlInfo.dlMsgAlloc[ueId-1]->dlMsgInfo.dlMsgPdu = txPdu;
+      }
    }
 
    for(lcIdx = 0; lcIdx < dlData->numLc; lcIdx++)
@@ -362,7 +371,7 @@ uint8_t MacProcRlcBoStatus(Pst* pst, RlcBoStatus* boStatus)
    GET_CRNTI(dlBoInfo.crnti, boStatus->ueIdx);
    dlBoInfo.lcId = boStatus->lcId;
    dlBoInfo.dataVolume = boStatus->bo;
-
+   
    sendDlRlcBoInfoToSch(&dlBoInfo); 
 
    if(pst->selector == ODU_SELECTOR_LWLC)
