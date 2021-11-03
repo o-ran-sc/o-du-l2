@@ -209,6 +209,8 @@ uint8_t MacProcRlcDlData(Pst* pstInfo, RlcData *dlData)
    uint8_t   ueId  = 0;
    uint8_t   lcIdx = 0;
    uint8_t   *txPdu = NULLP;
+   uint8_t   pdschSlot = 0;
+   uint8_t   schInfoIdx = 0 ;
    uint16_t  cellIdx = 0, txPduLen = 0;
    MacDlData macDlData;
    MacDlSlot *currDlSlot = NULLP;
@@ -240,7 +242,15 @@ uint8_t MacProcRlcDlData(Pst* pstInfo, RlcData *dlData)
    currDlSlot = &macCb.macCell[cellIdx]->dlSlot[dlData->slotInfo.slot];
    if(currDlSlot->dlInfo.dlMsgAlloc[ueId-1])
    {
-      txPduLen = currDlSlot->dlInfo.dlMsgAlloc[ueId-1]->dlMsgPdschCfg.codeword[0].tbSize - TX_PAYLOAD_HDR_LEN;
+      for(schInfoIdx=0; schInfoIdx<currDlSlot->dlInfo.dlMsgAlloc[ueId-1]->numSchedInfo; schInfoIdx++)
+      {
+         if((currDlSlot->dlInfo.dlMsgAlloc[ueId-1]->dlMsgSchedInfo[schInfoIdx].pduPres == PDSCH_PDU) ||
+               (currDlSlot->dlInfo.dlMsgAlloc[ueId-1]->dlMsgSchedInfo[schInfoIdx].pduPres == BOTH))
+            break;
+      }
+
+      txPduLen = currDlSlot->dlInfo.dlMsgAlloc[ueId-1]->dlMsgSchedInfo[schInfoIdx].dlMsgPdschCfg.codeword[0].tbSize\
+                 - TX_PAYLOAD_HDR_LEN;
       MAC_ALLOC(txPdu, txPduLen);
       if(!txPdu)
       {
@@ -249,8 +259,8 @@ uint8_t MacProcRlcDlData(Pst* pstInfo, RlcData *dlData)
       }
       macMuxPdu(&macDlData, NULLP, txPdu, txPduLen);
 
-      currDlSlot->dlInfo.dlMsgAlloc[ueId-1]->dlMsgInfo.dlMsgPduLen = txPduLen;
-      currDlSlot->dlInfo.dlMsgAlloc[ueId-1]->dlMsgInfo.dlMsgPdu = txPdu;
+      currDlSlot->dlInfo.dlMsgAlloc[ueId-1]->dlMsgSchedInfo[schInfoIdx].dlMsgInfo.dlMsgPduLen = txPduLen;
+      currDlSlot->dlInfo.dlMsgAlloc[ueId-1]->dlMsgSchedInfo[schInfoIdx].dlMsgInfo.dlMsgPdu = txPdu;
    }
 
    for(lcIdx = 0; lcIdx < dlData->numLc; lcIdx++)
@@ -362,7 +372,7 @@ uint8_t MacProcRlcBoStatus(Pst* pst, RlcBoStatus* boStatus)
    GET_CRNTI(dlBoInfo.crnti, boStatus->ueIdx);
    dlBoInfo.lcId = boStatus->lcId;
    dlBoInfo.dataVolume = boStatus->bo;
-
+   
    sendDlRlcBoInfoToSch(&dlBoInfo); 
 
    if(pst->selector == ODU_SELECTOR_LWLC)
@@ -388,10 +398,10 @@ uint8_t MacProcRlcBoStatus(Pst* pst, RlcBoStatus* boStatus)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t sendSchedRptToRlc(DlSchedInfo dlInfo, SlotTimingInfo slotInfo)
+uint8_t sendSchedRptToRlc(DlSchedInfo dlInfo, SlotTimingInfo slotInfo, uint8_t ueIdx, uint8_t schInfoIdx)
 {
    Pst      pst;
-   uint8_t  lcIdx, ueIdx;
+   uint8_t  lcIdx;
    RlcSchedResultRpt  *schedRpt = NULLP;
    
    MAC_ALLOC_SHRABL_BUF(schedRpt, sizeof(RlcSchedResultRpt));
@@ -406,19 +416,15 @@ uint8_t sendSchedRptToRlc(DlSchedInfo dlInfo, SlotTimingInfo slotInfo)
    schedRpt->slotInfo.sfn = slotInfo.sfn;
    schedRpt->slotInfo.slot = slotInfo.slot;
 
-   for(ueIdx=0; ueIdx<MAX_NUM_UE; ueIdx++)
+   if(dlInfo.dlMsgAlloc[ueIdx])
    {
-      if(dlInfo.dlMsgAlloc[ueIdx])
+      schedRpt->rnti = dlInfo.dlMsgAlloc[ueIdx]->crnti;
+      schedRpt->numLc = dlInfo.dlMsgAlloc[ueIdx]->dlMsgSchedInfo[schInfoIdx].numLc;
+      for(lcIdx = 0; lcIdx < schedRpt->numLc; lcIdx++)
       {
-         schedRpt->rnti = dlInfo.dlMsgAlloc[ueIdx]->crnti;
-         schedRpt->numLc = dlInfo.dlMsgAlloc[ueIdx]->numLc;
-         for(lcIdx = 0; lcIdx < schedRpt->numLc; lcIdx++)
-         {
-            schedRpt->lcSch[lcIdx].lcId = dlInfo.dlMsgAlloc[ueIdx]->lcSchInfo[lcIdx].lcId;
-            schedRpt->lcSch[lcIdx].bufSize = dlInfo.dlMsgAlloc[ueIdx]->lcSchInfo[lcIdx].schBytes;
-            schedRpt->lcSch[lcIdx].commCh = false;
-         }
-         break;
+         schedRpt->lcSch[lcIdx].lcId = dlInfo.dlMsgAlloc[ueIdx]->dlMsgSchedInfo[schInfoIdx].lcSchInfo[lcIdx].lcId;
+         schedRpt->lcSch[lcIdx].bufSize = dlInfo.dlMsgAlloc[ueIdx]->dlMsgSchedInfo[schInfoIdx].lcSchInfo[lcIdx].schBytes;
+         schedRpt->lcSch[lcIdx].commCh = false;
       }
    }
 

@@ -54,6 +54,7 @@ MacSchSlotIndFunc macSchSlotIndOpts[] =
  **/
 uint8_t MacProcDlAlloc(Pst *pst, DlSchedInfo *dlSchedInfo)
 {
+   uint8_t   schInfoIdx = 0;
    uint8_t   ueIdx;
    uint16_t  cellIdx;
    MacDlSlot *currDlSlot = NULLP;
@@ -93,18 +94,23 @@ uint8_t MacProcDlAlloc(Pst *pst, DlSchedInfo *dlSchedInfo)
             currDlSlot->dlInfo.cellId = dlSchedInfo->cellId;
 
             /* Check if the downlink pdu is msg4 */
-            if(dlSchedInfo->dlMsgAlloc[ueIdx]->dlMsgInfo.isMsg4Pdu)
+            for(schInfoIdx=0; schInfoIdx < dlSchedInfo->dlMsgAlloc[ueIdx]->numSchedInfo; schInfoIdx++)
             {
-               GET_UE_IDX(dlSchedInfo->dlMsgAlloc[ueIdx]->dlMsgInfo.crnti, ueIdx);
-               ueIdx = ueIdx -1;
-               macCb.macCell[cellIdx]->macRaCb[ueIdx].msg4TbSize = \
-                  dlSchedInfo->dlMsgAlloc[ueIdx]->dlMsgPdschCfg.codeword[0].tbSize;
-            }
-            else
-            {
-               memcpy(&currDlSlot->dlInfo.schSlotValue, &dlSchedInfo->schSlotValue, sizeof(SchSlotValue));
-               /* Send LC schedule result to RLC */
-               sendSchedRptToRlc(currDlSlot->dlInfo, dlSchedInfo->schSlotValue.dlMsgTime);
+               if(dlSchedInfo->dlMsgAlloc[ueIdx]->dlMsgSchedInfo[schInfoIdx].dlMsgInfo.isMsg4Pdu)
+               {
+                  GET_UE_IDX(dlSchedInfo->dlMsgAlloc[ueIdx]->dlMsgSchedInfo[schInfoIdx].dlMsgInfo.crnti, ueIdx);
+                  ueIdx = ueIdx -1;
+                  macCb.macCell[cellIdx]->macRaCb[ueIdx].msg4TbSize = \
+                     dlSchedInfo->dlMsgAlloc[ueIdx]->dlMsgSchedInfo[schInfoIdx].dlMsgPdschCfg.codeword[0].tbSize;
+               }
+               else
+               {
+                  memcpy(&currDlSlot->dlInfo.schSlotValue, &dlSchedInfo->schSlotValue, sizeof(SchSlotValue));
+                  /* Send LC schedule result to RLC */
+                  if((dlSchedInfo->dlMsgAlloc[ueIdx]->dlMsgSchedInfo[schInfoIdx].pduPres == PDSCH_PDU) ||
+                        (dlSchedInfo->dlMsgAlloc[ueIdx]->dlMsgSchedInfo[schInfoIdx].pduPres == BOTH))
+                     sendSchedRptToRlc(currDlSlot->dlInfo, dlSchedInfo->schSlotValue.dlMsgTime, ueIdx, schInfoIdx);
+               }
             }
          }
       }
@@ -130,7 +136,7 @@ uint8_t MacProcDlAlloc(Pst *pst, DlSchedInfo *dlSchedInfo)
  *  @param[in]  DlMsgAlloc  *msg4Alloc
  *  @return  void
  **/
-void fillMsg4Pdu(uint16_t cellId, DlMsgAlloc *msg4Alloc)
+void fillMsg4Pdu(uint16_t cellId, DlMsgSchInfo *msg4SchInfo)
 {
    uint8_t   ueIdx;
    uint16_t  cellIdx;
@@ -143,7 +149,7 @@ void fillMsg4Pdu(uint16_t cellId, DlMsgAlloc *msg4Alloc)
    memset(&msg4DlData, 0, sizeof(MacDlData));
    memset(&macCeData, 0, sizeof(MacCeInfo));
 
-   GET_UE_IDX(msg4Alloc->dlMsgInfo.crnti, ueIdx);
+   GET_UE_IDX(msg4SchInfo->dlMsgInfo.crnti, ueIdx);
    ueIdx = ueIdx -1;
 
    if(macCb.macCell[cellIdx] == NULLP)
@@ -183,12 +189,12 @@ void fillMsg4Pdu(uint16_t cellId, DlMsgAlloc *msg4Alloc)
    /* storing msg4 Pdu in macDlSlot */
    if(macCb.macCell[cellIdx]->macRaCb[ueIdx].msg4TxPdu)
    {
-      msg4Alloc->dlMsgInfo.dlMsgPduLen = msg4TxPduLen;
-      MAC_ALLOC(msg4Alloc->dlMsgInfo.dlMsgPdu, msg4Alloc->dlMsgInfo.dlMsgPduLen);
-      if(msg4Alloc->dlMsgInfo.dlMsgPdu != NULLP)
+      msg4SchInfo->dlMsgInfo.dlMsgPduLen = msg4TxPduLen;
+      MAC_ALLOC(msg4SchInfo->dlMsgInfo.dlMsgPdu, msg4SchInfo->dlMsgInfo.dlMsgPduLen);
+      if(msg4SchInfo->dlMsgInfo.dlMsgPdu != NULLP)
       {
-         memcpy(msg4Alloc->dlMsgInfo.dlMsgPdu, macCb.macCell[cellIdx]->macRaCb[ueIdx].msg4TxPdu, \
-               msg4Alloc->dlMsgInfo.dlMsgPduLen);
+         memcpy(msg4SchInfo->dlMsgInfo.dlMsgPdu, macCb.macCell[cellIdx]->macRaCb[ueIdx].msg4TxPdu, \
+               msg4SchInfo->dlMsgInfo.dlMsgPduLen);
       }
    }
    else
@@ -213,6 +219,7 @@ void fillMsg4Pdu(uint16_t cellId, DlMsgAlloc *msg4Alloc)
 void buildAndSendMuxPdu(SlotTimingInfo currTimingInfo)
 {
    uint8_t   ueIdx;
+   uint8_t   schInfoIdx;
    uint16_t  cellIdx;
    MacDlSlot *currDlSlot = NULLP;
    SlotTimingInfo muxTimingInfo;
@@ -227,9 +234,14 @@ void buildAndSendMuxPdu(SlotTimingInfo currTimingInfo)
    {
       if(currDlSlot->dlInfo.dlMsgAlloc[ueIdx])
       {
-         if(currDlSlot->dlInfo.dlMsgAlloc[ueIdx]->dlMsgInfo.isMsg4Pdu)
+         for(schInfoIdx=0; schInfoIdx<currDlSlot->dlInfo.dlMsgAlloc[ueIdx]->numSchedInfo; schInfoIdx++)
          {
-            fillMsg4Pdu(currTimingInfo.cellId, currDlSlot->dlInfo.dlMsgAlloc[ueIdx]);
+            if((currDlSlot->dlInfo.dlMsgAlloc[ueIdx]->dlMsgSchedInfo[schInfoIdx].dlMsgInfo.isMsg4Pdu) &&
+                  ((currDlSlot->dlInfo.dlMsgAlloc[ueIdx]->dlMsgSchedInfo[schInfoIdx].pduPres == PDSCH_PDU) ||
+                   (currDlSlot->dlInfo.dlMsgAlloc[ueIdx]->dlMsgSchedInfo[schInfoIdx].pduPres == BOTH)))
+            {
+               fillMsg4Pdu(currTimingInfo.cellId, &currDlSlot->dlInfo.dlMsgAlloc[ueIdx]->dlMsgSchedInfo[schInfoIdx]);
+            }
          }
       }
    }

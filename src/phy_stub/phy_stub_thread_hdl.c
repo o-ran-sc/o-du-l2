@@ -55,10 +55,16 @@ void GenerateTicks()
    float     milisec = 1;          /* 1ms */
 #endif
    struct timespec req = {0};
+   uint8_t ratio = 2;
 
    slotIndicationStarted = true;
    req.tv_sec = 0;
-   req.tv_nsec = milisec * 1000000L;
+
+   /* Currently the code takes longer that one slot indication to execute.
+    * Hence, multiplying slot time interval by 2 in order to give enough time 
+    * for L2 to complete one slot processing.
+    * The ratio must be removed once code optimization is complete */
+   req.tv_nsec = milisec * 1000000L * ratio;
 
    DU_LOG("\nPHY_STUB : GenerateTicks : Starting to generate slot indications");
 
