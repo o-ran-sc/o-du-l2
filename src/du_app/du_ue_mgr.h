@@ -33,7 +33,6 @@ void deleteRlcUeCfg(RlcUeCfg *ueCfg);
 void freeF1UeDb(F1UeContextSetupDb *f1UeDb);
 uint8_t sendUeDeleteReqToMac(uint16_t cellId, uint8_t ueId, uint16_t crnti);
 uint8_t sendUeDeleteReqToRlc(uint16_t cellId, uint8_t ueId);
-uint8_t fetchLcId(uint8_t drbId);
 #endif
 
 /**********************************************************************
