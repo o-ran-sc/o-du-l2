@@ -928,15 +928,9 @@ uint8_t MacSchDlRlcBoInfo(Pst *pst, DlRlcBoInfo *dlBoInfo)
 {
    uint8_t  lcId = 0;
    uint16_t ueId = 0;
-   uint16_t slot = 0;
-#ifdef NR_TDD
-   uint16_t slotIdx = 0;
-#endif
    bool isLcIdValid = false;
-   DlMsgInfo dlMsgInfo;
    SchUeCb *ueCb = NULLP;
    SchCellCb *cell = NULLP;
-   SchDlSlotInfo *schDlSlotInfo = NULLP;
    Inst  inst = pst->dstInst-SCH_INST_START;
    CmLListCp *lcLL = NULLP;
 
@@ -982,24 +976,11 @@ uint8_t MacSchDlRlcBoInfo(Pst *pst, DlRlcBoInfo *dlBoInfo)
       return ROK;
    }
 
-   memset(&dlMsgInfo, 0, sizeof(DlMsgInfo));
-   dlMsgInfo.crnti = dlBoInfo->crnti;
-   dlMsgInfo.ndi = 1;
-   dlMsgInfo.harqProcNum = 0;
-   dlMsgInfo.dlAssignIdx = 0;
-   dlMsgInfo.pucchTpc = 0;
-   dlMsgInfo.pucchResInd = 0;
-   dlMsgInfo.harqFeedbackInd = 0;
-   dlMsgInfo.dciFormatId = 1;
-
    if(lcId == SRB0_LCID)
    {
       cell->raCb[ueId -1].msg4recvd = true;
-      dlMsgInfo.dlMsgPduLen = dlBoInfo->dataVolume;
-      cell->raCb[ueId -1].dlMsgInfo = dlMsgInfo;
+      cell->raCb[ueId -1].dlMsgPduLen = dlBoInfo->dataVolume;
       
-      /* Adding UE Id to list of pending UEs to be scheduled */
-      addUeToBeScheduled(cell, ueId);
    }
    else
    {
@@ -1015,38 +996,10 @@ uint8_t MacSchDlRlcBoInfo(Pst *pst, DlRlcBoInfo *dlBoInfo)
          DU_LOG("ERROR --> SCH: LCID:%d is not configured in SCH Cb",lcId);
          return RFAILED;
       }
-
-      slot = (cell->slotInfo.slot + SCHED_DELTA + PHY_DELTA_DL + BO_DELTA) % cell->numSlots;
-#ifdef NR_TDD
-      while(schGetSlotSymbFrmt(cell->slotFrmtBitMap, slot) != DL_SLOT)
-      {
-         slot = (slot + 1)%cell->numSlots;
-         slotIdx++;
-         if(slotIdx==cell->numSlots)
-         {
-            DU_LOG("\nERROR  -->  SCH : No DL Slot available");
-            return RFAILED;
-         }
-      }
-#endif
-
-      schDlSlotInfo = cell->schDlSlotInfo[slot];
-      if(schDlSlotInfo == NULLP)
-      {
-         DU_LOG("\nERROR  -->  SCH : MacSchDlRlcBoInfo(): schDlSlotInfo does not exists");
-         return RFAILED;
-      }
-
-      SCH_ALLOC(schDlSlotInfo->dlMsgAlloc[ueId-1], sizeof(DlMsgAlloc));
-      if(schDlSlotInfo->dlMsgAlloc[ueId-1] == NULLP)
-      {
-         DU_LOG("\nERROR  -->  SCH : Memory allocation failed for dlMsgInfo");
-         schDlSlotInfo = NULL;
-         return RFAILED;
-      }
-
-      schDlSlotInfo->dlMsgAlloc[ueId-1]->dlMsgInfo = dlMsgInfo;
    }
+   
+   /* Adding UE Id to list of pending UEs to be scheduled */
+   addUeToBeScheduled(cell, ueId);
    return ROK;
 }
 

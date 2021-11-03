@@ -104,7 +104,8 @@ uint8_t MacProcDlAlloc(Pst *pst, DlSchedInfo *dlSchedInfo)
             {
                memcpy(&currDlSlot->dlInfo.schSlotValue, &dlSchedInfo->schSlotValue, sizeof(SchSlotValue));
                /* Send LC schedule result to RLC */
-               sendSchedRptToRlc(currDlSlot->dlInfo, dlSchedInfo->schSlotValue.dlMsgTime);
+               if(dlSchedInfo->dlMsgAlloc[ueIdx]->pduPres == PDSCH_PDU)
+                  sendSchedRptToRlc(currDlSlot->dlInfo, dlSchedInfo->schSlotValue.dlMsgTime);
             }
          }
       }
@@ -227,7 +228,8 @@ void buildAndSendMuxPdu(SlotTimingInfo currTimingInfo)
    {
       if(currDlSlot->dlInfo.dlMsgAlloc[ueIdx])
       {
-         if(currDlSlot->dlInfo.dlMsgAlloc[ueIdx]->dlMsgInfo.isMsg4Pdu)
+         if((currDlSlot->dlInfo.dlMsgAlloc[ueIdx]->dlMsgInfo.isMsg4Pdu) &&
+            (currDlSlot->dlInfo.dlMsgAlloc[ueIdx]->pduPres == PDSCH_PDU))
          {
             fillMsg4Pdu(currTimingInfo.cellId, currDlSlot->dlInfo.dlMsgAlloc[ueIdx]);
          }
