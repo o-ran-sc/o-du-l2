@@ -1042,6 +1042,8 @@ S16 l1HdlUlTtiReq(uint16_t msgLen, void *msg)
       numPdus--;
    }
 
+   /* TODO: [SFN:SLOT] at which RACH Indication is sent should be calculated
+    * based on PRACH cfg index */
    /* Send RACH Ind to L2 for first UE */
    if(ueDb.ueCb[UE_IDX_0].rachIndSent == false && ulTtiReq->sfn == 16 && ulTtiReq->slot == 6)
    {
@@ -1049,7 +1051,7 @@ S16 l1HdlUlTtiReq(uint16_t msgLen, void *msg)
       l1BuildAndSendRachInd(ulTtiReq->slot, ulTtiReq->sfn);
       ueDb.numActvUe++;
    }
-#if 0
+//#if 0
    /* Send RACH Ind to L2 for second UE */
    if(ueDb.ueCb[UE_IDX_1].rachIndSent == false && ulTtiReq->sfn == 304 && ulTtiReq->slot == 0)
    {
@@ -1065,7 +1067,7 @@ S16 l1HdlUlTtiReq(uint16_t msgLen, void *msg)
       l1BuildAndSendRachInd(ulTtiReq->slot, ulTtiReq->sfn);
       ueDb.numActvUe++;
    }
-#endif   
+//#endif   
    MAC_FREE(msg, msgLen);
 #endif
    return ROK;

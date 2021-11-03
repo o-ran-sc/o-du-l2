@@ -927,7 +927,7 @@ uint8_t SchHdlCellCfgReq(Pst *pst, SchCellCfg *schCellCfg)
 uint8_t MacSchDlRlcBoInfo(Pst *pst, DlRlcBoInfo *dlBoInfo)
 {
    uint8_t  lcId = 0;
-   uint16_t ueIdx = 0;
+   uint16_t ueId = 0;
    uint16_t slot = 0;
 #ifdef NR_TDD
    uint16_t slotIdx = 0;
@@ -952,8 +952,8 @@ uint8_t MacSchDlRlcBoInfo(Pst *pst, DlRlcBoInfo *dlBoInfo)
       return RFAILED;
    }
 
-   GET_UE_IDX(dlBoInfo->crnti, ueIdx);
-   ueCb = &cell->ueCb[ueIdx-1];
+   GET_UE_IDX(dlBoInfo->crnti, ueId);
+   ueCb = &cell->ueCb[ueId-1];
    lcId  = dlBoInfo->lcId;
    CHECK_LCID(lcId, isLcIdValid);
    if(isLcIdValid == FALSE)
@@ -974,15 +974,18 @@ uint8_t MacSchDlRlcBoInfo(Pst *pst, DlRlcBoInfo *dlBoInfo)
    
    if(lcId == SRB0_LCID)
    {
-      cell->raCb[ueIdx -1].msg4recvd = true;
+      cell->raCb[ueId -1].msg4recvd = true;
       dlMsgInfo.dlMsgPduLen = dlBoInfo->dataVolume;
-      cell->raCb[ueIdx -1].dlMsgInfo = dlMsgInfo;
+      cell->raCb[ueId -1].dlMsgInfo = dlMsgInfo;
+      
+      /* Adding UE Id to list of pending UEs to be scheduled */
+      addUeToBeScheduled(cell, ueId);
    }
    else
    {
       /* TODO : These part of changes will be corrected during DL scheduling as
        * per K0 - K1 -K2 */
-      SET_ONE_BIT(ueIdx, cell->boIndBitMap);
+      SET_ONE_BIT(ueId, cell->boIndBitMap);
       if(ueCb->dlInfo.dlLcCtxt[lcId].lcId == lcId)
       {
          ueCb->dlInfo.dlLcCtxt[lcId].bo = dlBoInfo->dataVolume;
@@ -1014,15 +1017,15 @@ uint8_t MacSchDlRlcBoInfo(Pst *pst, DlRlcBoInfo *dlBoInfo)
          return RFAILED;
       }
 
-      SCH_ALLOC(schDlSlotInfo->dlMsgAlloc, sizeof(DlMsgAlloc));
-      if(schDlSlotInfo->dlMsgAlloc == NULLP)
+      SCH_ALLOC(schDlSlotInfo->dlMsgAlloc[ueId-1], sizeof(DlMsgAlloc));
+      if(schDlSlotInfo->dlMsgAlloc[ueId-1] == NULLP)
       {
          DU_LOG("\nERROR  -->  SCH : Memory allocation failed for dlMsgInfo");
          schDlSlotInfo = NULL;
          return RFAILED;
       }
 
-      schDlSlotInfo->dlMsgAlloc->dlMsgInfo = dlMsgInfo;
+      schDlSlotInfo->dlMsgAlloc[ueId-1]->dlMsgInfo = dlMsgInfo;
    }
    return ROK;
 }
