@@ -2670,7 +2670,6 @@ void fillRarDlDciPdu(fapi_dl_dci_t *dlDciPtr, PdcchCfg *rarPdcchInfo)
 
       /* TODO: Fill values of coreset0Size, rbStart and rbLen */
       coreset0Size= rarPdcchInfo->coresetCfg.coreSetSize;
-      rbStart = 0;              /* For SIB1 */
       rbStart = rarPdcchInfo->dci.pdschCfg->pdschFreqAlloc.freqAlloc.startPrb;
       rbLen = rarPdcchInfo->dci.pdschCfg->pdschFreqAlloc.freqAlloc.numPrb;
 
@@ -2946,10 +2945,10 @@ uint8_t fillPdcchPdu(fapi_dl_tti_req_pdu_t *dlTtiReqPdu, DlSchedInfo *dlInfo, \
       }
       else if(rntiType == TC_RNTI_TYPE || rntiType == C_RNTI_TYPE)
       {
-         pdcchInfo = &dlInfo->dlMsgAlloc->dlMsgPdcchCfg;
-         bwp = &dlInfo->dlMsgAlloc->bwp;
+         pdcchInfo = &dlInfo->dlMsgAlloc[ueIdx]->dlMsgPdcchCfg;
+         bwp = &dlInfo->dlMsgAlloc[ueIdx]->bwp;
          fillDlMsgDlDciPdu(dlTtiReqPdu->pdu.pdcch_pdu.dlDci, pdcchInfo,\
-               &dlInfo->dlMsgAlloc->dlMsgInfo);
+               &dlInfo->dlMsgAlloc[ueIdx]->dlMsgInfo);
       }
       else
       {
@@ -3105,16 +3104,16 @@ uint8_t calcDlTtiReqPduCount(DlSchedInfo *dlInfo)
          else
             count += 1;
       }
-   }
 
-   if(dlInfo->dlMsgAlloc != NULLP)
-   {
-      /* PDCCH and PDSCH PDU is filled */
-      if(dlInfo->dlMsgAlloc->pduPres == BOTH)
-         count += 2;
-      else
-         count += 1;
+      if(dlInfo->dlMsgAlloc[ueIdx] != NULLP)
+      {
+         /* PDCCH and PDSCH PDU is filled */
+         if(dlInfo->dlMsgAlloc[ueIdx]->pduPres == BOTH)
+            count += 2;
+         else
+            count += 1;
 
+      }
    }
    return count;
 }
@@ -3146,17 +3145,18 @@ uint8_t calcTxDataReqPduCount(DlSchedInfo *dlInfo)
    for(ueIdx=0; ueIdx<MAX_NUM_UE; ueIdx++)
    {
       if((dlInfo->rarAlloc[ueIdx] != NULLP) && \
-         ((dlInfo->rarAlloc[ueIdx]->pduPres == BOTH) || (dlInfo->rarAlloc[ueIdx]->pduPres == PDSCH_PDU)))
+            ((dlInfo->rarAlloc[ueIdx]->pduPres == BOTH) || (dlInfo->rarAlloc[ueIdx]->pduPres == PDSCH_PDU)))
          count++;
-   }
 
-   if(dlInfo->dlMsgAlloc != NULLP)
-   {
-      if(dlInfo->dlMsgAlloc->pduPres == BOTH || dlInfo->dlMsgAlloc->pduPres == PDSCH_PDU)
-         count++;
+      if(dlInfo->dlMsgAlloc[ueIdx] != NULLP)
+      {
+         if(dlInfo->dlMsgAlloc[ueIdx]->pduPres == BOTH || dlInfo->dlMsgAlloc[ueIdx]->pduPres == PDSCH_PDU)
+            count++;
+      }
    }
    return count;
 }
+
 /***********************************************************************
  *
  * @brief fills the SIB1 TX-DATA request message
@@ -3492,55 +3492,57 @@ uint16_t fillDlTtiReq(SlotTimingInfo currTimingInfo)
                      DU_LOG("\033[0m");
                   }
                }
-            }
-            if(currDlSlot->dlInfo.dlMsgAlloc != NULLP)
-            {
-               if(currDlSlot->dlInfo.dlMsgAlloc->dlMsgInfo.dlMsgPdu != NULLP)
-               {
-                  /* Filling Msg4 param */
-                  if((currDlSlot->dlInfo.dlMsgAlloc->pduPres == BOTH) || \
-                  (currDlSlot->dlInfo.dlMsgAlloc->pduPres == PDCCH_PDU))
-                  {
-                     if(currDlSlot->dlInfo.dlMsgAlloc->dlMsgInfo.isMsg4Pdu)
-                     {
-                        rntiType = TC_RNTI_TYPE;
-                        fillPdcchPdu(&dlTtiReq->pdus[numPduEncoded], \
-                              &currDlSlot->dlInfo, rntiType, CORESET_TYPE0, MAX_NUM_UE);
-                     }
-                     else
-                     { 
-                        /* Filling other DL msg params */
-                        rntiType = C_RNTI_TYPE;
-                        fillPdcchPdu(&dlTtiReq->pdus[numPduEncoded], \
-                              &currDlSlot->dlInfo, rntiType, CORESET_TYPE1, MAX_NUM_UE);
-                     }
-                     numPduEncoded++;
-                  }
 
-                  if((currDlSlot->dlInfo.dlMsgAlloc->pduPres == BOTH) || \
-                        (currDlSlot->dlInfo.dlMsgAlloc->pduPres == PDSCH_PDU))
-                  {
-                     fillPdschPdu(&dlTtiReq->pdus[numPduEncoded],&currDlSlot->dlInfo.dlMsgAlloc->dlMsgPdschCfg,
-                     currDlSlot->dlInfo.dlMsgAlloc->bwp,pduIndex);
-                     numPduEncoded++;
-                     pduIndex++;
-                     DU_LOG("\033[1;32m");
-                     if(currDlSlot->dlInfo.dlMsgAlloc->dlMsgInfo.isMsg4Pdu)
-                     {
-                        DU_LOG("\nDEBUG  -->  LWR_MAC: MSG4 sent...");
-                     }
-                     else
-                     {
-                        DU_LOG("\nDEBUG  -->  LWR_MAC: DL MSG sent...");
-                     }
-                     DU_LOG("\033[0m");
-                  }
-                 
-               }
-               else
+               if(currDlSlot->dlInfo.dlMsgAlloc[ueIdx] != NULLP)
                {
-                  MAC_FREE(currDlSlot->dlInfo.dlMsgAlloc, sizeof(DlMsgAlloc));
-                  currDlSlot->dlInfo.dlMsgAlloc = NULLP;
+                  if(currDlSlot->dlInfo.dlMsgAlloc[ueIdx]->dlMsgInfo.dlMsgPdu != NULLP)
+                  {
+                     /* Filling Msg4 param */
+                     if((currDlSlot->dlInfo.dlMsgAlloc[ueIdx]->pduPres == BOTH) || \
+                           (currDlSlot->dlInfo.dlMsgAlloc[ueIdx]->pduPres == PDCCH_PDU))
+                     {
+                        if(currDlSlot->dlInfo.dlMsgAlloc[ueIdx]->dlMsgInfo.isMsg4Pdu)
+                        {
+                           rntiType = TC_RNTI_TYPE;
+                           fillPdcchPdu(&dlTtiReq->pdus[numPduEncoded], \
+                                 &currDlSlot->dlInfo, rntiType, CORESET_TYPE0, ueIdx);
+                        }
+                        else
+                        { 
+                           /* Filling other DL msg params */
+                           rntiType = C_RNTI_TYPE;
+                           fillPdcchPdu(&dlTtiReq->pdus[numPduEncoded], \
+                                 &currDlSlot->dlInfo, rntiType, CORESET_TYPE1, ueIdx);
+                        }
+                        numPduEncoded++;
+                     }
+
+                     if((currDlSlot->dlInfo.dlMsgAlloc[ueIdx]->pduPres == BOTH) || \
+                           (currDlSlot->dlInfo.dlMsgAlloc[ueIdx]->pduPres == PDSCH_PDU))
+                     {
+                        fillPdschPdu(&dlTtiReq->pdus[numPduEncoded], &currDlSlot->dlInfo.dlMsgAlloc[ueIdx]->dlMsgPdschCfg,
+                              currDlSlot->dlInfo.dlMsgAlloc[ueIdx]->bwp, pduIndex);
+                        numPduEncoded++;
+                        pduIndex++;
+
+                        DU_LOG("\033[1;32m");
+                        if(currDlSlot->dlInfo.dlMsgAlloc[ueIdx]->dlMsgInfo.isMsg4Pdu)
+                        {
+                           DU_LOG("\nDEBUG  -->  LWR_MAC: MSG4 sent...");
+                        }
+                        else
+                        {
+                           DU_LOG("\nDEBUG  -->  LWR_MAC: DL MSG sent...");
+                        }
+                        DU_LOG("\033[0m");
+                     }
+
+                  }
+                  else
+                  {
+                     MAC_FREE(currDlSlot->dlInfo.dlMsgAlloc[ueIdx], sizeof(DlMsgAlloc));
+                     currDlSlot->dlInfo.dlMsgAlloc[ueIdx] = NULLP;
+                  }
                }
             }
 
@@ -3685,18 +3687,17 @@ uint16_t sendTxDataReq(SlotTimingInfo currTimingInfo, DlSchedInfo *dlInfo, p_fap
             }
             MAC_FREE(dlInfo->rarAlloc[ueIdx],sizeof(RarAlloc));
          }
-      }
 
-      if(dlInfo->dlMsgAlloc != NULLP)
-      {
-         fillDlMsgTxDataReq(txDataReq->pdu_desc, pduIndex, &dlInfo->dlMsgAlloc->dlMsgInfo,\
-         dlInfo->dlMsgAlloc->dlMsgPdschCfg);
-         pduIndex++;
-         txDataReq->num_pdus++;
-         MAC_FREE(dlInfo->dlMsgAlloc->dlMsgInfo.dlMsgPdu,\
-               dlInfo->dlMsgAlloc->dlMsgInfo.dlMsgPduLen);
-         dlInfo->dlMsgAlloc->dlMsgInfo.dlMsgPdu = NULLP;
-         MAC_FREE(dlInfo->dlMsgAlloc, sizeof(DlMsgAlloc));
+         if(dlInfo->dlMsgAlloc[ueIdx] != NULLP)
+         {
+            fillDlMsgTxDataReq(txDataReq->pdu_desc, pduIndex, &dlInfo->dlMsgAlloc[ueIdx]->dlMsgInfo, \
+               dlInfo->dlMsgAlloc[ueIdx]->dlMsgPdschCfg);
+            pduIndex++;
+            txDataReq->num_pdus++;
+            MAC_FREE(dlInfo->dlMsgAlloc[ueIdx]->dlMsgInfo.dlMsgPdu, dlInfo->dlMsgAlloc[ueIdx]->dlMsgInfo.dlMsgPduLen);
+            dlInfo->dlMsgAlloc[ueIdx]->dlMsgInfo.dlMsgPdu = NULLP;
+            MAC_FREE(dlInfo->dlMsgAlloc[ueIdx], sizeof(DlMsgAlloc));
+         }
       }
 
       /* Fill message header */

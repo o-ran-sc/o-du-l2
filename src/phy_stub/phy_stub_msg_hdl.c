@@ -1042,6 +1042,8 @@ S16 l1HdlUlTtiReq(uint16_t msgLen, void *msg)
       numPdus--;
    }
 
+   /* TODO: [SFN:SLOT] at which RACH Indication is sent should be calculated
+    * based on PRACH cfg index */
    /* Send RACH Ind to L2 for first UE */
    if(ueDb.ueCb[UE_IDX_0].rachIndSent == false && ulTtiReq->sfn == 16 && ulTtiReq->slot == 6)
    {

@@ -952,7 +952,7 @@ typedef struct dlSchedInfo
    DciInfo    *ulGrant;
 
    /* Allocation from dedicated DL msg */
-   DlMsgAlloc *dlMsgAlloc;
+   DlMsgAlloc *dlMsgAlloc[MAX_NUM_UE];
 
 }DlSchedInfo;
 

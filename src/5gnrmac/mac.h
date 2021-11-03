@@ -131,6 +131,7 @@ typedef struct macDlInfo
 
 typedef struct macDlData
 {
+   uint8_t  ueId;
    uint16_t numPdu;
    MacDlInfo  pduInfo[MAX_MAC_DL_PDU];
 }MacDlData;

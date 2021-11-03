@@ -206,6 +206,7 @@ uint8_t fapiMacRxDataInd(Pst *pst, RxDataInd *rxDataInd)
 uint8_t MacProcRlcDlData(Pst* pstInfo, RlcData *dlData)
 {
    uint8_t   pduIdx = 0;
+   uint8_t   ueId  = 0;
    uint8_t   lcIdx = 0;
    uint8_t   *txPdu = NULLP;
    uint16_t  cellIdx = 0, txPduLen = 0;
@@ -216,7 +217,11 @@ uint8_t MacProcRlcDlData(Pst* pstInfo, RlcData *dlData)
    memset(&macDlData , 0, sizeof(MacDlData));
    DU_LOG("\nDEBUG  -->  MAC: Received DL data for sfn=%d slot=%d numPdu= %d", \
       dlData->slotInfo.sfn, dlData->slotInfo.slot, dlData->numPdu);
+
+   GET_UE_IDX(dlData->rnti, ueId);   
+
    /* Copy the pdus to be muxed into mac Dl data */
+   macDlData.ueId = ueId;
    macDlData.numPdu = dlData->numPdu;
    for(pduIdx = 0;  pduIdx < dlData->numPdu; pduIdx++)
    {
@@ -233,9 +238,9 @@ uint8_t MacProcRlcDlData(Pst* pstInfo, RlcData *dlData)
       return RFAILED;
    }
    currDlSlot = &macCb.macCell[cellIdx]->dlSlot[dlData->slotInfo.slot];
-   if(currDlSlot->dlInfo.dlMsgAlloc)
+   if(currDlSlot->dlInfo.dlMsgAlloc[ueId-1])
    {
-      txPduLen = currDlSlot->dlInfo.dlMsgAlloc->dlMsgPdschCfg.codeword[0].tbSize - TX_PAYLOAD_HDR_LEN;
+      txPduLen = currDlSlot->dlInfo.dlMsgAlloc[ueId-1]->dlMsgPdschCfg.codeword[0].tbSize - TX_PAYLOAD_HDR_LEN;
       MAC_ALLOC(txPdu, txPduLen);
       if(!txPdu)
       {
@@ -244,8 +249,8 @@ uint8_t MacProcRlcDlData(Pst* pstInfo, RlcData *dlData)
       }
       macMuxPdu(&macDlData, NULLP, txPdu, txPduLen);
 
-      currDlSlot->dlInfo.dlMsgAlloc->dlMsgInfo.dlMsgPduLen = txPduLen;
-      currDlSlot->dlInfo.dlMsgAlloc->dlMsgInfo.dlMsgPdu = txPdu;
+      currDlSlot->dlInfo.dlMsgAlloc[ueId-1]->dlMsgInfo.dlMsgPduLen = txPduLen;
+      currDlSlot->dlInfo.dlMsgAlloc[ueId-1]->dlMsgInfo.dlMsgPdu = txPdu;
    }
 
    for(lcIdx = 0; lcIdx < dlData->numLc; lcIdx++)
@@ -386,7 +391,7 @@ uint8_t MacProcRlcBoStatus(Pst* pst, RlcBoStatus* boStatus)
 uint8_t sendSchedRptToRlc(DlSchedInfo dlInfo, SlotTimingInfo slotInfo)
 {
    Pst      pst;
-   uint8_t  lcIdx;
+   uint8_t  lcIdx, ueIdx;
    RlcSchedResultRpt  *schedRpt = NULLP;
    
    MAC_ALLOC_SHRABL_BUF(schedRpt, sizeof(RlcSchedResultRpt));
@@ -398,16 +403,23 @@ uint8_t sendSchedRptToRlc(DlSchedInfo dlInfo, SlotTimingInfo slotInfo)
 
    DU_LOG("\nDEBUG  -->  MAC: Send scheduled result report for sfn %d slot %d", slotInfo.sfn, slotInfo.slot);
    schedRpt->cellId = dlInfo.cellId;
-   schedRpt->rnti = dlInfo.dlMsgAlloc->crnti;
-   schedRpt->numLc = dlInfo.dlMsgAlloc->numLc;
    schedRpt->slotInfo.sfn = slotInfo.sfn;
    schedRpt->slotInfo.slot = slotInfo.slot;
 
-   for(lcIdx = 0; lcIdx < schedRpt->numLc; lcIdx++)
+   for(ueIdx=0; ueIdx<MAX_NUM_UE; ueIdx++)
    {
-      schedRpt->lcSch[lcIdx].lcId = dlInfo.dlMsgAlloc->lcSchInfo[lcIdx].lcId;
-      schedRpt->lcSch[lcIdx].bufSize = dlInfo.dlMsgAlloc->lcSchInfo[lcIdx].schBytes;
-      schedRpt->lcSch[lcIdx].commCh = false;
+      if(dlInfo.dlMsgAlloc[ueIdx])
+      {
+         schedRpt->rnti = dlInfo.dlMsgAlloc[ueIdx]->crnti;
+         schedRpt->numLc = dlInfo.dlMsgAlloc[ueIdx]->numLc;
+         for(lcIdx = 0; lcIdx < schedRpt->numLc; lcIdx++)
+         {
+            schedRpt->lcSch[lcIdx].lcId = dlInfo.dlMsgAlloc[ueIdx]->lcSchInfo[lcIdx].lcId;
+            schedRpt->lcSch[lcIdx].bufSize = dlInfo.dlMsgAlloc[ueIdx]->lcSchInfo[lcIdx].schBytes;
+            schedRpt->lcSch[lcIdx].commCh = false;
+         }
+         break;
+      }
    }
 
    /* Fill Pst */
