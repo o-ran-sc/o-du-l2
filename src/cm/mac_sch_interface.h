@@ -861,9 +861,8 @@ typedef struct lcSchInfo
    uint32_t  schBytes; /* Number of scheduled bytes */
 }LcSchInfo;
 
-typedef struct dlMsgAlloc
+typedef struct dlMsgSchedInfo
 {
-   uint16_t   crnti;
    uint8_t    numLc;
    LcSchInfo  lcSchInfo[MAX_NUM_LC]; /* Scheduled LC info */
    BwpCfg     bwp;
@@ -872,6 +871,13 @@ typedef struct dlMsgAlloc
    DlPduType  pduPres;
    uint8_t    pdschSlot;
    DlMsgInfo  dlMsgInfo;
+}DlMsgSchInfo;
+
+typedef struct dlMsgAlloc
+{
+   uint16_t     crnti;
+   uint8_t      numSchedInfo;
+   DlMsgSchInfo dlMsgSchedInfo[2];
 }DlMsgAlloc;
 
 typedef struct schSlotValue
@@ -1205,6 +1211,7 @@ typedef struct schInitalDlBwp
    SchPdcchConfig   pdcchCfg;
    bool             pdschCfgPres;
    SchPdschConfig   pdschCfg;
+   bool             k0K1TblPrsnt;
    SchK0K1TimingInfoTbl k0K1InfoTbl;
 }SchInitalDlBwp;
 

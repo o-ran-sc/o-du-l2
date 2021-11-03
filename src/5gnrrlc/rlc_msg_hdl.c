@@ -39,7 +39,7 @@
 #include "rlc_mac_inf.h"
 #include "du_app_rlc_inf.h"
 #include "rlc_upr_inf_api.h"
-
+#include "rlc_mgr.h"
 /*******************************************************************
  *
  * @brief Fills RLC UL UE Cfg Rsp from RlcCRsp 
@@ -314,7 +314,7 @@ uint8_t RlcProcUeCreateReq(Pst *pst, RlcUeCfg *ueCfg)
          DU_LOG("\nERROR  -->  RLC: Failed to fill configuration at RlcProcUeCreateReq()");
          FILL_PST_RLC_TO_DUAPP(rspPst, RLC_UL_INST, EVENT_RLC_UE_CREATE_RSP);
          fillRlcCfgFailureRsp(&cfgRsp, ueCfg);
-         SendRlcUeCfgRspToDu(&rspPst, cfgRsp);
+         SendRlcUeCfgRspToDu(&rspPst, &cfgRsp);
 
       }
       else
@@ -724,7 +724,8 @@ uint8_t RlcProcUeReconfigReq(Pst *pst, RlcUeCfg *ueCfg)
       {
          DU_LOG("\nERROR  -->  RLC: Failed to fill configuration at RlcProcUeReconfigReq()");
          FILL_PST_RLC_TO_DUAPP(rspPst, RLC_UL_INST, EVENT_RLC_UE_RECONFIG_RSP);
-         fillRlcCfgFailureRsp(&cfgRsp, ueCfg);
+         memset(cfgRsp, 0, sizeof(RlcCfgCfmInfo));
+         fillRlcCfgFailureRsp(cfgRsp, ueCfg);
          SendRlcUeCfgRspToDu(&rspPst, cfgRsp);
       }
       else
