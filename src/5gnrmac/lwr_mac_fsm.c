@@ -3678,13 +3678,10 @@ uint16_t sendTxDataReq(SlotTimingInfo currTimingInfo, DlSchedInfo *dlInfo, p_fap
       {
          if(dlInfo->rarAlloc[ueIdx] != NULLP)
          {
-            if((dlInfo->rarAlloc[ueIdx]->pduPres == BOTH) || (dlInfo->rarAlloc[ueIdx]->pduPres == PDSCH_PDU))
-            {
-               fillRarTxDataReq(txDataReq->pdu_desc, pduIndex, &dlInfo->rarAlloc[ueIdx]->rarInfo,\
-                     dlInfo->rarAlloc[ueIdx]->rarPdschCfg);
-               pduIndex++;
-               txDataReq->num_pdus++;
-            }
+            fillRarTxDataReq(txDataReq->pdu_desc, pduIndex, &dlInfo->rarAlloc[ueIdx]->rarInfo,\
+                  dlInfo->rarAlloc[ueIdx]->rarPdschCfg);
+            pduIndex++;
+            txDataReq->num_pdus++;
             MAC_FREE(dlInfo->rarAlloc[ueIdx],sizeof(RarAlloc));
          }
 
