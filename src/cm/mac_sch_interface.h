@@ -1205,6 +1205,7 @@ typedef struct schInitalDlBwp
    SchPdcchConfig   pdcchCfg;
    bool             pdschCfgPres;
    SchPdschConfig   pdschCfg;
+   bool             k0K1TblPrsnt;
    SchK0K1TimingInfoTbl k0K1InfoTbl;
 }SchInitalDlBwp;
 
