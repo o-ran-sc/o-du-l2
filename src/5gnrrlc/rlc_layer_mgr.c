@@ -173,10 +173,12 @@ static S16 rlcLmmGenCfg(RlcCb  *gCb,RlcGenCfg *cfg)
    rlcTqCp->nxtEnt = 0;
 
    gCb->rlcThpt.inst = gCb->init.inst;
-   gCb->rlcThpt.thptTmr.tmrEvnt = TMR_NONE;
-   gCb->rlcThpt.numActvUe = 0;
-   memset(gCb->rlcThpt.thptPerUe, 0, MAX_NUM_UE * sizeof(RlcThptPerUe));
+   gCb->rlcThpt.ueTputInfo.ueThptTmr.tmrEvnt = TMR_NONE;
+   gCb->rlcThpt.ueTputInfo.numActvUe = 0;
+   memset(gCb->rlcThpt.ueTputInfo.thptPerUe, 0, MAX_NUM_UE * sizeof(RlcThptPerUe));
 
+   gCb->rlcThpt.snssaiTputInfo.snssaiThptTmr.tmrEvnt = TMR_NONE;
+   
    if(gCb->genCfg.rlcMode == LKW_RLC_MODE_DL)
    {
       RLC_ALLOC(gCb,gCb->u.dlCb, sizeof (RlcDlCb));
@@ -394,13 +396,20 @@ static S16 rlcLmmGenCfg(RlcCb  *gCb,RlcGenCfg *cfg)
    if(gCb->genCfg.rlcMode == LKW_RLC_MODE_DL)
    {
       /* Starting timer to print throughput */
-      if((rlcChkTmr(gCb, (PTR)(&gCb->rlcThpt), EVENT_RLC_THROUGHPUT_TMR)) == FALSE)
+      if((rlcChkTmr(gCb, (PTR)(&gCb->rlcThpt), EVENT_RLC_UE_THROUGHPUT_TMR)) == FALSE)
       {
-         DU_LOG("\nINFO   --> RLC_DL : Starting Throughput timer");
-         rlcStartTmr(gCb, (PTR)(&gCb->rlcThpt), EVENT_RLC_THROUGHPUT_TMR);
+         DU_LOG("\nINFO   --> RLC_DL : Starting UE Throughput timer");
+         rlcStartTmr(gCb, (PTR)(&gCb->rlcThpt), EVENT_RLC_UE_THROUGHPUT_TMR);
+      }
+      /* Starting timer to print throughput */
+      if((rlcChkTmr(gCb, (PTR)(&gCb->rlcThpt), EVENT_RLC_SNSSAI_THROUGHPUT_TMR)) == FALSE)
+      {
+         DU_LOG("\nINFO   --> RLC_DL : Starting SNSSAI Throughput timer");
+         rlcStartTmr(gCb, (PTR)(&gCb->rlcThpt), EVENT_RLC_SNSSAI_THROUGHPUT_TMR);
       }
    }
 
+   
    return (LCM_REASON_NOT_APPL);
 } 
 
@@ -1616,6 +1625,7 @@ static S16 rlcLmmShutdown(RlcCb *gCb)
       rlcDbmUlShutdown(gCb);
    }
 
+   rlcDelTputSnssaiList(gCb);
    rlcLmmCleanGblRsrcs(gCb);
 
    RLC_MEM_SET (&(gCb->genSts), 0, sizeof (RlcGenSts));
