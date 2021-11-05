@@ -194,7 +194,7 @@ void fillSchUlLcCtxt(SchUlLcCtxt *ueCbLcCfg, SchLcCfg *lcCfg)
 uint8_t updateDedLcInfo(Snssai *snssai, SchRrmPolicy *rrmPolicy, SchLcPrbEstimate *lcPrbEst,\
                          bool *isDedicated)
 {
-   if(memcmp(snssai, &(rrmPolicy->memberList.snssai), sizeof(Snssai)))
+   if(memcmp(snssai, &(rrmPolicy->memberList.snssai), sizeof(Snssai)) == 0)
    {
       if(lcPrbEst->dedLcInfo == NULLP)
       {

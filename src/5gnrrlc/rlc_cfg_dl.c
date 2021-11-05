@@ -315,91 +315,90 @@ static S16 rlcAddToDlL2Meas(RlcCb *gCb, RlcDlRbCb *rlcRbCb,uint8_t cellId,uint8_
  */
 static S16 rlcCfgFillDlRbCb(RlcCb *gCb,RlcDlRbCb *rbCb,RlcDlUeCb *ueCb,RlcEntCfgInfo *entCfg)
 {
-
    DU_LOG("\nDEBUG  -->  RLC_DL : rlcCfgFillRbCb(ueId(%d),cellId(%d) rbType(%d))",
-                rbCb->rlcId.ueId,
-                rbCb->rlcId.cellId, 
-                entCfg->rbType);
+         rbCb->rlcId.ueId,
+         rbCb->rlcId.cellId, 
+         entCfg->rbType);
 
    /* Initialize according to entMode */
    switch (entCfg->entMode)
    {
       case RLC_MODE_TM:
-      {
-         rbCb->lch.lChId  = entCfg->lCh[0].lChId;
-         rbCb->lch.lChType = entCfg->lCh[0].type;
-         rbCb->dir = entCfg->dir;
-         break;
-      }
+         {
+            rbCb->lch.lChId  = entCfg->lCh[0].lChId;
+            rbCb->lch.lChType = entCfg->lCh[0].type;
+            rbCb->dir = entCfg->dir;
+            break;
+         }
 
       case RLC_MODE_UM:
-      {
-         rbCb->lch.lChId  = entCfg->lCh[0].lChId;
-         rbCb->lch.lChType = entCfg->lCh[0].type;
-         rbCb->dir = entCfg->dir;
+         {
+            rbCb->lch.lChId  = entCfg->lCh[0].lChId;
+            rbCb->lch.lChType = entCfg->lCh[0].type;
+            rbCb->dir = entCfg->dir;
 
-	 /* Spec 38.322 Section 7.1 
-	  * All UM state variables can take values from 0 to 63 for 6 bit SN or 
-	  * from 0 to 4095 for 12 bit SN. All arithmetic operations on UM state 
-	  * variables are affected by the UM modulus 
-	  * (i.e. final value = [value from arithmetic operation] modulo 64
-	  * for 6 bit SN and 4096 for 12 bit SN)
-	  */
-         rbCb->m.umDl.snLen = entCfg->m.umInfo.dl.snLen;
-         if (entCfg->m.umInfo.dl.snLen == RLC_UM_CFG_6BIT_SN_LEN)
-            rbCb->m.umDl.modBitMask = 0x3f;
-         else
-            rbCb->m.umDl.modBitMask = 0xfff;
+            /* Spec 38.322 Section 7.1 
+             * All UM state variables can take values from 0 to 63 for 6 bit SN or 
+             * from 0 to 4095 for 12 bit SN. All arithmetic operations on UM state 
+             * variables are affected by the UM modulus 
+             * (i.e. final value = [value from arithmetic operation] modulo 64
+             * for 6 bit SN and 4096 for 12 bit SN)
+             */
+            rbCb->m.umDl.snLen = entCfg->m.umInfo.dl.snLen;
+            if (entCfg->m.umInfo.dl.snLen == RLC_UM_CFG_6BIT_SN_LEN)
+               rbCb->m.umDl.modBitMask = 0x3f;
+            else
+               rbCb->m.umDl.modBitMask = 0xfff;
 
-         ueCb->lCh[rbCb->lch.lChId - 1].dlRbCb = rbCb;
+            ueCb->lCh[rbCb->lch.lChId - 1].dlRbCb = rbCb;
 
-         break;
-      }
+            break;
+         }
       case RLC_MODE_AM:
-      {
-         /* Down Link Information 
-          * indx = 0 as Down Link   */
-         rbCb->lch.lChId  = entCfg->lCh[0].lChId;
-         rbCb->lch.lChType = entCfg->lCh[0].type;
-         rbCb->dir = RLC_DIR_BOTH;
-
-         rbCb->m.amDl.pollPdu = entCfg->m.amInfo.dl.pollPdu;
-	      rbCb->m.amDl.pollByte = entCfg->m.amInfo.dl.pollByte;
-         rbCb->m.amDl.maxRetx = entCfg->m.amInfo.dl.maxRetx;
-         rbCb->m.amDl.pollRetxTmrInt = entCfg->m.amInfo.dl.pollRetxTmr;
-         rbCb->m.amDl.snLen = entCfg->m.amInfo.dl.snLen;
-         
-         if(RLC_AM_CFG_12BIT_SN_LEN == rbCb->m.amDl.snLen)
          {
-            rbCb->m.amDl.snModMask = (1 << RLC_SN_LEN_12BITS) - 1; /* 5GNR */
-         }
-         else 
-         {
-            rbCb->m.amDl.snModMask = (1 << RLC_SN_LEN_18BITS) - 1; /* 5GNR */
-         }
+            /* Down Link Information 
+             * indx = 0 as Down Link   */
+            rbCb->lch.lChId  = entCfg->lCh[0].lChId;
+            rbCb->lch.lChType = entCfg->lCh[0].type;
+            rbCb->dir = RLC_DIR_BOTH;
 
-         cmInitTimers(&(rbCb->m.amDl.pollRetxTmr), 1);
-         ueCb->lCh[rbCb->lch.lChId - 1].dlRbCb = rbCb;
-       
+            rbCb->m.amDl.pollPdu = entCfg->m.amInfo.dl.pollPdu;
+            rbCb->m.amDl.pollByte = entCfg->m.amInfo.dl.pollByte;
+            rbCb->m.amDl.maxRetx = entCfg->m.amInfo.dl.maxRetx;
+            rbCb->m.amDl.pollRetxTmrInt = entCfg->m.amInfo.dl.pollRetxTmr;
+            rbCb->m.amDl.snLen = entCfg->m.amInfo.dl.snLen;
+
+            if(RLC_AM_CFG_12BIT_SN_LEN == rbCb->m.amDl.snLen)
+            {
+               rbCb->m.amDl.snModMask = (1 << RLC_SN_LEN_12BITS) - 1; /* 5GNR */
+            }
+            else 
+            {
+               rbCb->m.amDl.snModMask = (1 << RLC_SN_LEN_18BITS) - 1; /* 5GNR */
+            }
+
+            cmInitTimers(&(rbCb->m.amDl.pollRetxTmr), 1);
+            ueCb->lCh[rbCb->lch.lChId - 1].dlRbCb = rbCb;
+
 #ifndef LTE_TDD 
-             uint32_t hashIndex;
-              RLC_ALLOC(gCb,
-                    rbCb->m.amDl.txBufLst,
-                    (RLC_TX_BUF_BIN_SIZE * sizeof(CmLListCp)));
-              for(hashIndex = 0; hashIndex < RLC_TX_BUF_BIN_SIZE; hashIndex++)
-              {
-                  cmLListInit(&(rbCb->m.amDl.txBufLst[hashIndex]));
-              }
+            uint32_t hashIndex;
+            RLC_ALLOC(gCb,
+                  rbCb->m.amDl.txBufLst,
+                  (RLC_TX_BUF_BIN_SIZE * sizeof(CmLListCp)));
+            for(hashIndex = 0; hashIndex < RLC_TX_BUF_BIN_SIZE; hashIndex++)
+            {
+               cmLListInit(&(rbCb->m.amDl.txBufLst[hashIndex]));
+            }
 #endif
-         break;
-      }
+            break;
+         }
       default:
-      {
-         DU_LOG("\nERROR  -->  RLC_DL : Invalid RB Mode ueId(%d),cellId(%d)",
+         {
+            DU_LOG("\nERROR  -->  RLC_DL : Invalid RB Mode ueId(%d),cellId(%d)",
                   rbCb->rlcId.ueId,
                   rbCb->rlcId.cellId);
-         return RFAILED;
-      }
+            return RFAILED;
+         }
    }
 
    if(entCfg->snssai)
@@ -411,6 +410,12 @@ static S16 rlcCfgFillDlRbCb(RlcCb *gCb,RlcDlRbCb *rbCb,RlcDlUeCb *ueCb,RlcEntCfg
          return RFAILED;
       }
       memcpy(rbCb->snssai, entCfg->snssai, sizeof(Snssai));
+
+      /*Create the entry of this SNSSAI if not exist in Snssai Tput list*/
+      if(rlcHandleSnssaiTputlist(gCb, rbCb->snssai, CREATE) == NULLP)
+      {
+         DU_LOG("\nERROR  --> RLC_DL : rlcCfgFillDlRbCb(): SNSSAI insertion in Tput list failed");
+      }
    }
    rbCb->mode = entCfg->entMode;
    rbCb->discTmrInt = entCfg->discardTmr;
@@ -565,24 +570,24 @@ RlcEntCfgCfmInfo   *entCfm
    uint8_t       reason;          /* Rb Identifier */
 
    DU_LOG("\nDEBUG  -->  RLC_DL : rlcCfgAddRb(cellId(%d),UEID:%d cfgType(%d))",
-                cellId, 
-                ueId,
-                entCfg->cfgType);
+         cellId, 
+         ueId,
+         entCfg->cfgType);
 
    if (cellId == 0)
    {
       /* Fill entCfm structure */
       RLC_CFG_FILL_CFG_CFM(entCfm, entCfg->rbId, entCfg->rbType, CKW_CFG_CFM_NOK,
-                          CKW_CFG_REAS_CELL_UNKWN);
+            CKW_CFG_REAS_CELL_UNKWN);
       DU_LOG("\nERROR  -->  RLC_DL : Add DLRb,CellId is 0 for UEID:%d",
-               ueId);
+            ueId);
       return RFAILED;
    }
    if ((entCfg->rguSapId >= gCb->genCfg.maxRguSaps) || (entCfg->rguSapId < 0))
    {
-         RLCDBGP_ERROR(gCb, "rlcCfgAddDlRb(ueId(%u), cellId(%u), Invalid rguSapId (%d)\n",
-               ueId, cellId, entCfg->rguSapId);
-         return RFAILED; 
+      RLCDBGP_ERROR(gCb, "rlcCfgAddDlRb(ueId(%u), cellId(%u), Invalid rguSapId (%d)\n",
+            ueId, cellId, entCfg->rguSapId);
+      return RFAILED; 
    }
 
 
@@ -593,19 +598,19 @@ RlcEntCfgCfmInfo   *entCfm
       {
          /* Fill entCfm structure */
          RLC_CFG_FILL_CFG_CFM(entCfm, entCfg->rbId, entCfg->rbType, 
-                             CKW_CFG_CFM_NOK,
-                             CKW_CFG_REAS_RB_UNKWN);
+               CKW_CFG_CFM_NOK,
+               CKW_CFG_REAS_RB_UNKWN);
          DU_LOG("\nERROR  -->  RLC_DL : Invalid RbId ,Max is [%d] CELLID:%d UEID:%d",
-                  RLC_MAX_RB_PER_CELL,
-                  cellId,
-                  ueId);
+               RLC_MAX_RB_PER_CELL,
+               cellId,
+               ueId);
          return RFAILED;
       }
 
       if (((entCfg->lCh[0].type == CM_LTE_LCH_BCCH) || 
-           (entCfg->lCh[0].type == CM_LTE_LCH_PCCH) ||
-           (entCfg->lCh[0].type == CM_LTE_LCH_CCCH)) &&
-          (entCfg->entMode == RLC_MODE_TM))
+               (entCfg->lCh[0].type == CM_LTE_LCH_PCCH) ||
+               (entCfg->lCh[0].type == CM_LTE_LCH_CCCH)) &&
+            (entCfg->entMode == RLC_MODE_TM))
       {
          /* Cell CB present */
          rlcDbmFetchDlCellCb(gCb, cellId, &cellCb);
@@ -616,11 +621,11 @@ RlcEntCfgCfmInfo   *entCfm
             {
                /* Fill entCfm structure */
                RLC_CFG_FILL_CFG_CFM(entCfm, entCfg->rbId, entCfg->rbType, 
-                                   CKW_CFG_CFM_NOK,
-                                   CKW_CFG_REAS_RB_PRSNT);
+                     CKW_CFG_CFM_NOK,
+                     CKW_CFG_REAS_RB_PRSNT);
                DU_LOG("\nERROR  -->  RLC_DL : RbId [%d] already exists UEID:%d",
-                        entCfg->rbId,
-                        ueId);
+                     entCfg->rbId,
+                     ueId);
                return RFAILED;
             }
          }
@@ -631,11 +636,11 @@ RlcEntCfgCfmInfo   *entCfm
             {
                /* Fill entCfm structure */
                RLC_CFG_FILL_CFG_CFM(entCfm, entCfg->rbId, entCfg->rbType, 
-                                   CKW_CFG_CFM_NOK,
-                                   CKW_CFG_REAS_CELL_CREAT_FAIL);
+                     CKW_CFG_CFM_NOK,
+                     CKW_CFG_REAS_CELL_CREAT_FAIL);
                DU_LOG("\nERROR  -->  RLC_DL : cellCb Creation failed RBID:%d UEID:%d",
-                        entCfg->rbId,
-                        ueId);
+                     entCfg->rbId,
+                     ueId);
                return RFAILED;
             }
          }
@@ -644,9 +649,9 @@ RlcEntCfgCfmInfo   *entCfm
          if(entCfg->lCh[0].lChId <= 0)
          {
             DU_LOG("\nERROR  -->  RLC_DL : Invalid LcId CELLID:%d UEID:%d RBID:%d",
-                     cellId,
-                     ueId,
-                     entCfg->rbId);
+                  cellId,
+                  ueId,
+                  entCfg->rbId);
             /* Fill entCfm structure */                               
             RLC_CFG_FILL_CFG_CFM(entCfm, entCfg->rbId, entCfg->rbType, 
                   CKW_CFG_CFM_NOK, CKW_CFG_REAS_INVALID_LCHID);           
@@ -658,11 +663,11 @@ RlcEntCfgCfmInfo   *entCfm
          if (!rlcRbCb)
          {
             DU_LOG("\nERROR  -->  RLC_DL : Memory allocation failed for rbId:%d CELLID:%d",
-                     entCfg->rbId,
-                     ueId);
+                  entCfg->rbId,
+                  ueId);
             /* Fill entCfm structure */                           
             RLC_CFG_FILL_CFG_CFM(entCfm, entCfg->rbId, entCfg->rbType,
-                                CKW_CFG_CFM_NOK, CKW_CFG_REAS_RB_CREAT_FAIL); 
+                  CKW_CFG_CFM_NOK, CKW_CFG_REAS_RB_CREAT_FAIL); 
             return RFAILED; 
          }
          rlcRbCb->rlcId.rbId = entCfg->rbId;
@@ -673,10 +678,10 @@ RlcEntCfgCfmInfo   *entCfm
       else
       {
          reason= (entCfg->entMode != RLC_MODE_TM)? CKW_CFG_REAS_RB_MODE_MIS:
-                                                      CKW_CFG_REAS_LCHTYPE_MIS;
+            CKW_CFG_REAS_LCHTYPE_MIS;
          /* Fill entCfm structure */
          RLC_CFG_FILL_CFG_CFM(entCfm, entCfg->rbId, entCfg->rbType, 
-                             CKW_CFG_CFM_NOK, reason);
+               CKW_CFG_CFM_NOK, reason);
          return RFAILED;
       }
    }
@@ -688,16 +693,16 @@ RlcEntCfgCfmInfo   *entCfm
          RLC_CFG_FILL_CFG_CFM(entCfm, entCfg->rbId, entCfg->rbType, CKW_CFG_CFM_NOK,
                CKW_CFG_REAS_RB_UNKWN);
          DU_LOG("\nERROR  -->  RLC_DL : Invalid RbId for RbType[%d] UEID:%d", 
-                  entCfg->rbType,
-                  ueId);
+               entCfg->rbType,
+               ueId);
          return RFAILED;
       }
       if ((((entCfg->lCh[0].type == CM_LTE_LCH_DCCH) && 
-            (entCfg->entMode != RLC_MODE_UM) && 
-            (CM_LTE_SRB == entCfg->rbType)) ||
-           ((entCfg->lCh[0].type == CM_LTE_LCH_DTCH) && 
-            (CM_LTE_DRB == entCfg->rbType))) &&
-          (entCfg->entMode != RLC_MODE_TM))
+                  (entCfg->entMode != RLC_MODE_UM) && 
+                  (CM_LTE_SRB == entCfg->rbType)) ||
+               ((entCfg->lCh[0].type == CM_LTE_LCH_DTCH) && 
+                (CM_LTE_DRB == entCfg->rbType))) &&
+            (entCfg->entMode != RLC_MODE_TM))
       {
          /* UE CB present */
          if ( rlcDbmFetchDlUeCb(gCb,ueId, cellId, &ueCb) == ROK)
@@ -711,8 +716,8 @@ RlcEntCfgCfmInfo   *entCfm
                RLC_CFG_FILL_CFG_CFM(entCfm, entCfg->rbId, entCfg->rbType, CKW_CFG_CFM_NOK,
                      CKW_CFG_REAS_RB_PRSNT);
                DU_LOG("\nERROR  -->  RLC_DL : CellId[%u]:rbId [%d] already exists",
-                        cellId,
-                        entCfg->rbId);
+                     cellId,
+                     entCfg->rbId);
                return RFAILED;
             }
          }
@@ -725,20 +730,20 @@ RlcEntCfgCfmInfo   *entCfm
                RLC_CFG_FILL_CFG_CFM(entCfm, entCfg->rbId, entCfg->rbType, CKW_CFG_CFM_NOK,
                      CKW_CFG_REAS_UE_CREAT_FAIL);
                DU_LOG("\nERROR  -->  RLC_DL : UeId [%u]:ueCb Creation Failed RBID:%d",
-                        ueId,
-                        entCfg->rbId);
+                     ueId,
+                     entCfg->rbId);
                return RFAILED;
             }
             /* Start throughput calculation for this UE */
-            gCb->rlcThpt.thptPerUe[ueId -1].ueId  = ueId;
-            gCb->rlcThpt.thptPerUe[ueId -1].dataVol = 0;
-            gCb->rlcThpt.numActvUe++;
+            gCb->rlcThpt.ueTputInfo.thptPerUe[ueId -1].ueId  = ueId;
+            gCb->rlcThpt.ueTputInfo.thptPerUe[ueId -1].dataVol = 0;
+            gCb->rlcThpt.ueTputInfo.numActvUe++;
          }
 
          /* Validate LChId for UM and AM modes */
          if ((entCfg->lCh[0].lChId <= 0) ||
-             ((entCfg->entMode == RLC_MODE_AM)&&
-               (entCfg->lCh[1].lChId <= 0)))
+               ((entCfg->entMode == RLC_MODE_AM)&&
+                (entCfg->lCh[1].lChId <= 0)))
          {
             /* Fill entCfm structure */                               
             RLC_CFG_FILL_CFG_CFM(entCfm, entCfg->rbId, entCfg->rbType, 
@@ -752,10 +757,10 @@ RlcEntCfgCfmInfo   *entCfm
          {
             /* Fill entCfm structure */                           
             RLC_CFG_FILL_CFG_CFM(entCfm, entCfg->rbId, entCfg->rbType,CKW_CFG_CFM_NOK,
-                                    CKW_CFG_REAS_RB_CREAT_FAIL); 
+                  CKW_CFG_REAS_RB_CREAT_FAIL); 
             DU_LOG("\nERROR  -->  RLC_DL : Memory allocation failed RBID:%d CELLID:%d",
-                     entCfg->rbId,
-                     cellId);
+                  entCfg->rbId,
+                  cellId);
             return RFAILED; 
          }
 
@@ -765,7 +770,7 @@ RlcEntCfgCfmInfo   *entCfm
             ueCb->srbCb[entCfg->rbId] = rlcRbCb;
          else
             ueCb->drbCb[entCfg->rbId] = rlcRbCb;
-         
+
          RLC_LMM_RB_STS_INC(gCb);
 
       }
@@ -801,13 +806,13 @@ RlcEntCfgCfmInfo   *entCfm
    {
       /* Fill entCfm structure */
       RLC_CFG_FILL_CFG_CFM(entCfm, entCfg->rbId, entCfg->rbType, CKW_CFG_CFM_NOK,
-               CKW_CFG_REAS_RB_CREAT_FAIL);
+            CKW_CFG_REAS_RB_CREAT_FAIL);
 
       /* Delete RB CB created */
       RLC_FREE(gCb,rlcRbCb, sizeof(RlcDlRbCb));
       DU_LOG("\nERROR  -->  RLC_DL : Filling of RbCb failed UEID:%d CELLID:%d",
-               ueId,
-               cellId);
+            ueId,
+            cellId);
       return RFAILED;
    }
    rlcRbCb->qci = entCfg->qci;

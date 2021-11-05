@@ -938,6 +938,7 @@ uint8_t MacSchDlRlcBoInfo(Pst *pst, DlRlcBoInfo *dlBoInfo)
    SchCellCb *cell = NULLP;
    SchDlSlotInfo *schDlSlotInfo = NULLP;
    Inst  inst = pst->dstInst-SCH_INST_START;
+   CmLListCp *lcLL = NULLP;
 
 #ifdef CALL_FLOW_DEBUG_LOG
    DU_LOG("\nCall Flow: ENTMAC -> ENTSCH : EVENT_DL_RLC_BO_INFO_TO_SCH\n");
@@ -962,6 +963,25 @@ uint8_t MacSchDlRlcBoInfo(Pst *pst, DlRlcBoInfo *dlBoInfo)
       return RFAILED;
    }
 
+   /*Expected when theres a case of Retransmission Failure or Resetablishment
+    *By Zero BO, the RLC is informing that previous data can be cleared out
+    *Thus clearing out the LC from the Lc priority list*/
+   if(dlBoInfo->dataVolume == 0)
+   {
+      /*Check the LC is Dedicated or default and accordingly LCList will
+       * be used*/
+      if(ueCb->dlInfo.dlLcCtxt[lcId].isDedicated)
+      {
+         lcLL = &(ueCb->dlLcPrbEst.dedLcInfo->dedLcList);
+      }
+      else
+      {
+         lcLL = &(ueCb->dlLcPrbEst.defLcList);
+      }
+      handleLcLList(lcLL, lcId, DELETE);
+      return ROK;
+   }
+
    memset(&dlMsgInfo, 0, sizeof(DlMsgInfo));
    dlMsgInfo.crnti = dlBoInfo->crnti;
    dlMsgInfo.ndi = 1;
@@ -971,7 +991,7 @@ uint8_t MacSchDlRlcBoInfo(Pst *pst, DlRlcBoInfo *dlBoInfo)
    dlMsgInfo.pucchResInd = 0;
    dlMsgInfo.harqFeedbackInd = 0;
    dlMsgInfo.dciFormatId = 1;
-   
+
    if(lcId == SRB0_LCID)
    {
       cell->raCb[ueId -1].msg4recvd = true;
