@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ef30a806_43589991",
+        "filename": "src/5gnrsch/sch_slot_ind.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 206,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-11-05T12:13:25Z",
+      "side": 1,
+      "message": "seems to me like a common function. Can we move this to sch_common.c.\nWe can discuss with Harshita also once",
+      "range": {
+        "startLine": 206,
+        "startChar": 5,
+        "endLine": 206,
+        "endChar": 23
+      },
+      "revId": "65d799ece476eb88f65ff2e7d9f55baac3fe3dc4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6b565801_dde6b77a",
+        "filename": "src/5gnrsch/sch_slot_ind.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 316,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-11-05T12:13:25Z",
+      "side": 1,
+      "message": "why have we changed the return type..?? Wont ROK or RFAILURE work here?",
+      "range": {
+        "startLine": 316,
+        "startChar": 0,
+        "endLine": 316,
+        "endChar": 5
+      },
+      "revId": "65d799ece476eb88f65ff2e7d9f55baac3fe3dc4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}

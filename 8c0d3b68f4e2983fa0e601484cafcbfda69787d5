@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dbe3e146_e63e9248",
+        "filename": "src/5gnrsch/sch.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-11-05T12:13:25Z",
+      "side": 0,
+      "message": "Before we were using isMsg4Pdu from DlMsgInfo only.. just want to understand  do we need same kind of indication twice?",
+      "range": {
+        "startLine": 151,
+        "startChar": 13,
+        "endLine": 151,
+        "endChar": 22
+      },
+      "revId": "8c0d3b68f4e2983fa0e601484cafcbfda69787d5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
