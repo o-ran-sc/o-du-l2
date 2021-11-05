@@ -16,6 +16,24 @@
       "message": "remove comment",
       "revId": "459b4fb127b5fbb9745161331c26a4581428311a",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ef2b7020_fc7837eb",
+        "filename": "src/5gnrrlc/rlc_utils.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 1724,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-11-05T11:57:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f3d2ea3b_29aaa8c6",
+      "revId": "459b4fb127b5fbb9745161331c26a4581428311a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
   ]
 }
