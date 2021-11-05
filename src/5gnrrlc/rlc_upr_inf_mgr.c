@@ -815,6 +815,220 @@ KwuDiscSduInfo   *discSdu
    return ROK;
 } 
 
+
+/**
+ * @brief 
+ *    Handler for Creating, Searching or Deleting SnssnaiTput List. 
+ *
+ * @details
+ *    This function is called whenever a new LC is configured with a snssai.
+ *    This function is called to search for Snssai Node during RLC SDU formation
+ *
+ * @param[in] gCb            RlcCb 
+ * @param[in] snssai         Snssai to be handled 
+ * @param[in] Action         Type of action to be handled(Create,Search,Delete)
+ *
+ * @return  RlcTptPerSnssai
+ *    -# Snssai Node
+ *   
+ */
+RlcTptPerSnssai* rlcHandleSnssaiTputlist(RlcCb *gCb, Snssai *snssai, RlcSnssaiActionType action)
+{
+   CmLListCp *snssaiList = NULLP;
+   CmLList  *node = NULLP;
+   RlcTptPerSnssai *snssaiNode = NULLP;
+   bool found = FALSE;
+
+   snssaiList = gCb->rlcThpt.snssaiTputInfo.tputPerSnssaiList;
+   if(snssaiList == NULLP)
+   {
+      if(action == CREATE)
+      {
+         RLC_ALLOC(gCb, gCb->rlcThpt.snssaiTputInfo.tputPerSnssaiList, sizeof(CmLListCp));
+         snssaiList =  gCb->rlcThpt.snssaiTputInfo.tputPerSnssaiList;
+         cmLListInit(snssaiList);
+         DU_LOG("\nINFO --> RLC: First SNSSAI to add in this List");
+      }
+      else
+      {
+         DU_LOG("\nERROR --> RLC: SNSSAI list doesnt exist!");
+         return NULLP;
+      }
+   }
+
+   node = snssaiList->first;
+
+   /*Traversing the LC LinkList*/
+   while(node)
+   {
+      snssaiNode = (RlcTptPerSnssai *)node->node;
+      if(memcmp(snssaiNode->snssai, snssai, sizeof(Snssai)) == 0)
+      { 
+         DU_LOG("\nINFO  --> RLC : SNSSAI found in LL");
+         found = TRUE;
+         break;
+      }
+      node = node->next;
+   }//end of while
+
+   switch(action)
+   {
+      case SEARCH:
+         {
+            if(!found)
+            {
+               snssaiNode = NULLP;
+            }
+            return (snssaiNode);
+         }
+
+      case CREATE:
+         {
+            if(found)
+               return (snssaiNode);
+
+            snssaiNode = NULLP;
+            /*Allocate the List*/
+            RLC_ALLOC(gCb, snssaiNode, sizeof(RlcTptPerSnssai));
+            if(snssaiNode)
+            {
+               RLC_ALLOC(gCb, snssaiNode->snssai, sizeof(Snssai));
+               if(snssaiNode->snssai == NULLP)
+               {
+                 DU_LOG("\nERROR  --> RLC : Allocation of SNSSAI node failed");
+                 return NULLP;
+               }
+               memcpy(snssaiNode->snssai,snssai,sizeof(Snssai));
+               snssaiNode->dataVol = 0;
+            }
+            else
+            {
+               DU_LOG("\nERROR  --> RLC : Allocation of SNSSAI node failed");
+               return NULLP;
+            }
+
+            node = NULLP;
+            RLC_ALLOC(gCb, node, sizeof(CmLList));
+            if(node)
+            {
+               node->node = (PTR)snssaiNode;
+               cmLListAdd2Tail(snssaiList, node);
+            }
+            else
+            {
+               DU_LOG("\nERROR  --> RLC : Allocation of SNSSAI node failed");
+               return NULLP;
+            }
+            DU_LOG("\nINFO  --> RLC : SNSSAI node added successfully");
+            return (snssaiNode);
+         }
+
+      case DELETE:
+         {
+            if(found && node)
+            {
+               node = cmLListDelFrm(snssaiList, node);
+               RLC_FREE(gCb, node, sizeof(CmLList));
+               RLC_FREE(gCb, snssaiNode, sizeof(RlcTptPerSnssai));
+               DU_LOG("\nINFO  --> RLC : SNSSAI node found and deletion performed");
+
+               if(snssaiList->count == 0)
+               {
+                  RLC_FREE(gCb, snssaiList, sizeof(CmLListCp));
+                  DU_LOG("\nINFO  --> RLC : This SNSSAI was last in the list thus freeing the list also");
+               }
+            }
+            else
+            {
+               DU_LOG("\nERROR  --> RLC : SNSSAI node not found in List thus no deletion performed");
+            }
+            return NULLP;
+         }
+   }
+   return (snssaiNode);
+}
+
+/**
+ * @brief 
+ *    Handler for Deleting SnssnaiTput List. 
+ *
+ * @details
+ *    This function is called during Shutdown to remove all the snssai entries
+ *    and deallocate the SNSSAI tput list as well
+ *
+ * @param[in] gCb            RlcCb 
+ *
+ * @return void 
+ *   
+ */
+void rlcDelTputSnssaiList(RlcCb *gCb)
+{
+   CmLListCp *snssaiList = NULLP;
+   CmLList  *node = NULLP, *next = NULLP;
+   RlcTptPerSnssai *snssaiNode = NULLP;
+
+   snssaiList = gCb->rlcThpt.snssaiTputInfo.tputPerSnssaiList;
+   if(snssaiList == NULLP)
+   {
+      DU_LOG("\nERROR --> RLC: SnssaiList not exist");
+      return;
+   }
+   node = snssaiList->first;
+
+   /*Traversing the LC LinkList*/
+   while(node)
+   {
+      snssaiNode = (RlcTptPerSnssai *)node->node;
+      next = node->next;
+      node = cmLListDelFrm(snssaiList, node);
+      RLC_FREE(gCb, node, sizeof(CmLList));
+      RLC_FREE(gCb, snssaiNode, sizeof(RlcTptPerSnssai));
+      node = next;
+   }
+   if(snssaiList->count == 0)
+   {
+      RLC_FREE(gCb, snssaiList, sizeof(CmLListCp));
+      DU_LOG("\nINFO  --> RLC : This SNSSAI was last in the list thus freeing the list also");
+   }
+}
+
+/**
+ * @brief 
+ *    Handler for calculating the Tput for each SNSSAI in Tput list after expiry. 
+ *
+ * @details
+ *    This function is called whenever SNSSAI Tput timer expires and calculate
+ *    Tput for each Snssai in list
+ *
+ * @param[in] SnssaiList     A list of Snssai
+ *
+ * @return void 
+ *   
+ */
+void rlcCalculateTputPerSnssai(CmLListCp *snssaiList)
+{
+   CmLList  *node = NULLP;
+   RlcTptPerSnssai *snssaiNode = NULLP;
+   double long tpt = 0;
+
+   node = snssaiList->first;
+   if(node == NULLP)
+   {
+      DU_LOG("\n No SNSSAI in list");
+      return;
+   }
+   /*Traversing the LC LinkList*/
+   while(node)
+   {
+      snssaiNode = (RlcTptPerSnssai *)node->node;
+      tpt =  (double)(snssaiNode->dataVol * 8)/(double)ODU_SNSSAI_THROUGHPUT_PRINT_TIME_INTERVAL;
+      DU_LOG("\nSNSSAI(sst:%d,sd [%d,%d, %d]), DL Tpt : %.2Lf", snssaiNode->snssai->sst, snssaiNode->snssai->sd[0], \
+            snssaiNode->snssai->sd[1],snssaiNode->snssai->sd[2] , tpt);
+      snssaiNode->dataVol = 0;
+      node = node->next;
+   }
+   return;
+}
 /********************************************************************30**
          End of file
 **********************************************************************/

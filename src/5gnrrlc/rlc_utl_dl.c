@@ -443,6 +443,7 @@ uint8_t rlcUtlSendToMac(RlcCb *gCb, SuId suId, KwDStaIndInfo *staIndInfo)
 
    //Debug
    uint32_t staIndSz=0,datIndSz = 0;
+   RlcTptPerSnssai *snssaiTputNode = NULLP;
 
    datReqInfo = NULLP;
    RLC_ALLOC_SHRABL_BUF(RLC_MEM_REGION_DL, RLC_POOL,
@@ -479,6 +480,7 @@ uint8_t rlcUtlSendToMac(RlcCb *gCb, SuId suId, KwDStaIndInfo *staIndInfo)
 #ifdef LTE_L2_MEAS
          ueCb->tbIdx = (ueCb->tbIdx+1) % RLC_MAX_TB_PER_UE;
 #endif   
+         snssaiTputNode = NULLP;     
          for (count = 0;count < staIndTb->nmbLch; count++)
          {
 #ifdef LTE_L2_MEAS
@@ -499,8 +501,20 @@ uint8_t rlcUtlSendToMac(RlcCb *gCb, SuId suId, KwDStaIndInfo *staIndInfo)
             if (rbCb && (!rlcDlUtlIsReestInProgress(rbCb)))
             { 
                /* Cosider buffer size for throughput calculation */
-               if(gCb->rlcThpt.thptPerUe[ueId-1].ueId == ueId)
-                  gCb->rlcThpt.thptPerUe[ueId-1].dataVol += staIndTb->lchStaInd[count].totBufSize;
+               if(gCb->rlcThpt.ueTputInfo.thptPerUe[ueId-1].ueId == ueId)
+                  gCb->rlcThpt.ueTputInfo.thptPerUe[ueId-1].dataVol += staIndTb->lchStaInd[count].totBufSize;
+
+               if(rbCb->snssai)
+               {
+                  snssaiTputNode = rlcHandleSnssaiTputlist(gCb, rbCb->snssai, SEARCH);
+                  if(snssaiTputNode != NULLP)
+                  {
+                     snssaiTputNode->dataVol += staIndTb->lchStaInd[count].totBufSize;
+                     DU_LOG("\nINFO -->SCH: SNSSAI List Grant:%d, lcId:%d, total :%d",\
+                           staIndTb->lchStaInd[count].totBufSize, staIndTb->lchStaInd[count].lcId,\
+                           snssaiTputNode->dataVol);
+                  }
+               }
 
                staIndSz += staIndTb->lchStaInd[count].totBufSize;
                datReq.pduSz = staIndTb->lchStaInd[count].totBufSize;
