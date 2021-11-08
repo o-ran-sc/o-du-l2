@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4aecf4d1_66648c27",
+        "filename": "src/5gnrmac/mac_slot_ind.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-11-08T13:59:00Z",
+      "side": 1,
+      "message": "(dlSchedInfo-\u003edlMsgAlloc[ueIdx]-\u003epduPres \u003d\u003d BOTH)  this condition is not required?",
+      "range": {
+        "startLine": 107,
+        "startChar": 61,
+        "endLine": 107,
+        "endChar": 70
+      },
+      "revId": "2090925897d10d469b3e65d3184b4a7e6416304f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1e09666e_618aa4ed",
+        "filename": "src/5gnrsch/sch_slot_ind.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 223,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-11-08T13:59:00Z",
+      "side": 1,
+      "message": "comments needs to be add in this function",
+      "revId": "2090925897d10d469b3e65d3184b4a7e6416304f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1598fb42_ad25f7be",
+        "filename": "src/du_app/du_mgr_main.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 398,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-11-08T13:59:00Z",
+      "side": 1,
+      "message": "remove these",
+      "revId": "2090925897d10d469b3e65d3184b4a7e6416304f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
