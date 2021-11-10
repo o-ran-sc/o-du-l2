@@ -209,7 +209,6 @@ uint8_t MacProcRlcDlData(Pst* pstInfo, RlcData *dlData)
    uint8_t   ueId  = 0;
    uint8_t   lcIdx = 0;
    uint8_t   *txPdu = NULLP;
-   uint8_t   pdschSlot = 0;
    uint8_t   schInfoIdx = 0 ;
    uint16_t  cellIdx = 0, txPduLen = 0;
    MacDlData macDlData;

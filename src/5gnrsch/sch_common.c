@@ -1717,6 +1717,131 @@ bool schProcessMsg4Req(SchCellCb *cell, SlotTimingInfo currTime, uint8_t ueId)
    cell->raCb[ueId-1].msg4recvd = FALSE;
    return true;
 }
+
+/*******************************************************************
+ *
+ * @brief sch Process pending Sr or Bsr Req
+ *
+ * @details
+ *
+ *    Function : schProcessSrOrBsrReq
+ *
+ *    Functionality:
+ *       sch Process pending Sr or Bsr Req
+ *
+ * @params[in] SchCellCb *cell,  SlotTimingInfo currTime 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ *******************************************************************/
+bool schProcessSrOrBsrReq(SchCellCb *cell, SlotTimingInfo currTime, uint8_t ueId)
+{
+   bool k2Found = FALSE;
+   uint8_t lcgIdx = 0;
+   uint8_t startSymb = 0, symbLen = 0;
+   uint8_t k2TblIdx = 0, k2Index = 0, k2Val = 0;
+   uint32_t totDataReq = 0; /* in bytes */
+   SchUeCb *ueCb;
+   SchPuschInfo *puschInfo;
+   DciInfo  *dciInfo = NULLP;
+   SchK2TimingInfoTbl *k2InfoTbl=NULLP;
+   SlotTimingInfo dciTime, puschTime;
+
+   if(cell == NULL)
+   {
+      DU_LOG("\nERROR  -->  SCH: schDlRsrcAllocMsg4() : Cell is NULL");
+      return false;
+   }
+   
+   ueCb = &cell->ueCb[ueId-1];
+
+   /* check for SR */
+   if(ueCb->srRcvd)
+   {
+      totDataReq = UL_GRANT_SIZE; /*fixing so that all control msgs can be handled in SR */
+   }
+   /* check for BSR */
+   for(lcgIdx=0; lcgIdx<MAX_NUM_LOGICAL_CHANNEL_GROUPS; lcgIdx++)
+   {
+      totDataReq+= ueCb->bsrInfo[lcgIdx].dataVol;
+   }
+   
+   if(totDataReq > 0)
+   {
+      /* Calculating time frame to send DCI for SR */
+      ADD_DELTA_TO_TIME(currTime, dciTime, PHY_DELTA_UL + SCHED_DELTA);
+#ifdef NR_TDD
+      if(schGetSlotSymbFrmt(dciTime.slot, cell->slotFrmtBitMap) == DL_SLOT)
+#endif
+      {     
+         if(ueCb->ueCfg.spCellCfg.servCellCfg.initUlBwp.k2TblPrsnt)
+            k2InfoTbl = &ueCb->ueCfg.spCellCfg.servCellCfg.initUlBwp.k2InfoTbl;
+         else
+            k2InfoTbl =  &cell->cellCfg.schInitialUlBwp.k2InfoTbl;
+
+         for(k2TblIdx = 0; k2TblIdx < k2InfoTbl->k2TimingInfo[dciTime.slot].numK2; k2TblIdx++)
+         {
+            k2Index = k2InfoTbl->k2TimingInfo[dciTime.slot].k2Indexes[k2TblIdx];
+
+            if(!ueCb->ueCfg.spCellCfg.servCellCfg.initUlBwp.k2TblPrsnt)
+            {
+               k2Val = cell->cellCfg.schInitialUlBwp.puschCommon.timeDomRsrcAllocList[k2Index].k2;
+               startSymb = cell->cellCfg.schInitialUlBwp.puschCommon.timeDomRsrcAllocList[k2Index].startSymbol;
+               symbLen = cell->cellCfg.schInitialUlBwp.puschCommon.timeDomRsrcAllocList[k2Index].symbolLength;
+            }
+            else
+            {
+               k2Val = ueCb->ueCfg.spCellCfg.servCellCfg.initUlBwp.puschCfg.timeDomRsrcAllocList[k2Index].k2;
+               startSymb =  ueCb->ueCfg.spCellCfg.servCellCfg.initUlBwp.puschCfg.timeDomRsrcAllocList[k2Index].startSymbol;
+               symbLen =  ueCb->ueCfg.spCellCfg.servCellCfg.initUlBwp.puschCfg.timeDomRsrcAllocList[k2Index].symbolLength;
+            }
+
+            /* Calculating time frame to send PUSCH for SR */
+            ADD_DELTA_TO_TIME(dciTime, puschTime, k2Val);
+#ifdef NR_TDD
+            if(schGetSlotSymbFrmt(puschTime.slot, cell->slotFrmtBitMap) == DL_SLOT)
+               continue;
+#endif
+            k2Found = true;
+            break;
+         }
+      }
+
+      if(k2Found == true)
+      {
+         SCH_ALLOC(dciInfo, sizeof(DciInfo));
+         if(!dciInfo)
+         {
+            DU_LOG("\nERROR  -->  SCH : Memory Allocation failed for dciInfo alloc");
+            return false;
+         }
+         cell->schDlSlotInfo[dciTime.slot]->ulGrant = dciInfo;
+         memset(dciInfo,0,sizeof(DciInfo));
+
+         /* Update PUSCH allocation */
+         if(schFillPuschAlloc(ueCb, puschTime, totDataReq, k2Val, startSymb, symbLen) == ROK)
+         {
+            if(cell->schUlSlotInfo[puschTime.slot]->schPuschInfo)
+            {
+               puschInfo = cell->schUlSlotInfo[puschTime.slot]->schPuschInfo;
+               if(puschInfo != NULLP)
+               {
+                  /* Fill DCI for UL grant */
+                  schFillUlDci(ueCb, puschInfo, dciInfo);
+                  memcpy(&dciInfo->slotIndInfo, &dciTime, sizeof(SlotTimingInfo));
+                  ueCb->srRcvd = false;
+                  for(lcgIdx=0; lcgIdx<MAX_NUM_LOGICAL_CHANNEL_GROUPS; lcgIdx++)
+                  {
+                     ueCb->bsrInfo[lcgIdx].dataVol = 0;
+                  }
+                  return true;
+               }
+            }
+         }
+      }
+   }
+   return false;
+}
 /**********************************************************************
   End of file
  **********************************************************************/

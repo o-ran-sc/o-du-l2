@@ -1025,7 +1025,7 @@ uint8_t MacSchBsr(Pst *pst, UlBufferStatusRptInd *bsrInd)
    Inst           schInst       = pst->dstInst-SCH_INST_START;
    SchCellCb      *cellCb       = NULLP;
    SchUeCb        *ueCb         = NULLP;
-   uint8_t        lcgIdx;
+   uint8_t        lcgIdx = 0;
 
 #ifdef CALL_FLOW_DEBUG_LOG
    DU_LOG("\nCall Flow: ENTMAC -> ENTSCH : EVENT_SHORT_BSR\n");
@@ -1035,12 +1035,16 @@ uint8_t MacSchBsr(Pst *pst, UlBufferStatusRptInd *bsrInd)
    cellCb = schCb[schInst].cells[schInst];
    ueCb = schGetUeCb(cellCb, bsrInd->crnti);
 
+   ueCb->bsrRcvd = true;
    /* store dataVolume per lcg in uecb */
    for(lcgIdx = 0; lcgIdx < bsrInd->numLcg; lcgIdx++)
    {
       ueCb->bsrInfo[lcgIdx].priority = 1; //TODO: determining LCG priority?
       ueCb->bsrInfo[lcgIdx].dataVol = bsrInd->dataVolInfo[lcgIdx].dataVol;
    }
+   
+   /* Adding UE Id to list of pending UEs to be scheduled */
+   addUeToBeScheduled(cellCb, ueCb->ueIdx);
    return ROK;
 }
 
@@ -1080,6 +1084,8 @@ uint8_t MacSchSrUciInd(Pst *pst, SrUciIndInfo *uciInd)
    {
       ueCb->srRcvd = true;
    }
+   /* Adding UE Id to list of pending UEs to be scheduled */
+   addUeToBeScheduled(cellCb, ueCb->ueIdx);
    return ROK;
 }
 

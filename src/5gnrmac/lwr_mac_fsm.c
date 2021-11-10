@@ -3607,7 +3607,7 @@ uint16_t fillDlTtiReq(SlotTimingInfo currTimingInfo)
             macCb.macCell[cellIdx]->state = CELL_STOP_IN_PROGRESS;
          }
          LwrMacSendToL1(headerElem);
-         memset(currDlSlot, 0, sizeof(MacDlSlot));
+         //memset(currDlSlot, 0, sizeof(MacDlSlot));
          return ROK;
       }
       else
@@ -4344,7 +4344,6 @@ uint16_t fillUlDciReq(SlotTimingInfo currTimingInfo, p_fapi_api_queue_elem_t pre
                numPduEncoded++;
 	       /* free UL GRANT at SCH */
 	       MAC_FREE(currDlSlot->dlInfo.ulGrant, sizeof(DciInfo));
-	       currDlSlot->dlInfo.ulGrant = NULLP;
             }
 #ifdef ODU_SLOT_IND_DEBUG_LOG
 	       DU_LOG("\nDEBUG  -->  LWR_MAC: Sending UL DCI Request");

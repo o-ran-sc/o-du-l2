@@ -112,6 +112,7 @@ void schCalcSlotValues(SlotTimingInfo slotInd, SchSlotValue *schSlotValue)
    ADD_DELTA_TO_TIME(slotInd, schSlotValue->broadcastTime, PHY_DELTA_DL + SCHED_DELTA);
    ADD_DELTA_TO_TIME(slotInd, schSlotValue->rarTime, PHY_DELTA_DL + SCHED_DELTA);
    ADD_DELTA_TO_TIME(slotInd, schSlotValue->dlMsgTime, PHY_DELTA_DL + SCHED_DELTA);
+   ADD_DELTA_TO_TIME(slotInd, schSlotValue->ulDciTime, PHY_DELTA_UL + SCHED_DELTA);
 }
 
 /*******************************************************************
@@ -590,7 +591,7 @@ bool schFillBoGrantDlSchedInfo(SchCellCb *cell, SlotTimingInfo currTime, uint8_t
  * ****************************************************************/
 uint8_t schProcessSlotInd(SlotTimingInfo *slotInd, Inst schInst)
 {
-   uint8_t   ueId, ueIdx, lcgIdx, ret = ROK;
+   uint8_t   ueId, ueIdx, ret = ROK;
    uint16_t  slot;
    bool      isRarPending = false, isRarScheduled = false;
    bool      isMsg4Pending = false, isMsg4Scheduled = false;
@@ -672,7 +673,7 @@ uint8_t schProcessSlotInd(SlotTimingInfo *slotInd, Inst schInst)
          isMsg4Pending = true;
          isMsg4Scheduled = schProcessMsg4Req(cell, *slotInd, ueId);
       }
-
+      
       if(isRarPending || isMsg4Pending)
       {
          /* If RAR or MSG is successfully scheduled then
@@ -698,6 +699,15 @@ uint8_t schProcessSlotInd(SlotTimingInfo *slotInd, Inst schInst)
              deleteNodeFromLList(&cell->ueToBeScheduled, pendingUeNode);
           }
       }
+      
+      if(cell->ueCb[ueId-1].srRcvd || cell->ueCb[ueId-1].bsrRcvd)
+      {
+          if(schProcessSrOrBsrReq(cell, *slotInd, ueId) == true)
+          {
+             SCH_FREE(pendingUeNode->node, sizeof(uint8_t));
+             deleteNodeFromLList(&cell->ueToBeScheduled, pendingUeNode);
+          }
+      }
    }
 
    /* Check if any PDU is scheduled at this slot for any UE */
@@ -711,7 +721,7 @@ uint8_t schProcessSlotInd(SlotTimingInfo *slotInd, Inst schInst)
          dlSchedInfo.rarAlloc[ueIdx] = cell->schDlSlotInfo[slot]->rarAlloc[ueIdx];
          cell->schDlSlotInfo[slot]->rarAlloc[ueIdx] = NULLP;
       }
-   
+
       /* If DL-Msg PDCCH/PDSCH is scheduled for a UE at this slot, fill 
        * specific interface structure to send to MAC */
       if(cell->schDlSlotInfo[dlSchedInfo.schSlotValue.dlMsgTime.slot]->dlMsgAlloc[ueIdx] != NULLP)
@@ -721,51 +731,11 @@ uint8_t schProcessSlotInd(SlotTimingInfo *slotInd, Inst schInst)
          cell->schDlSlotInfo[slot]->dlMsgAlloc[ueIdx] = NULLP;
       }
 
-   }
-
-   /* Check if UL grant must be sent in this slot for a SR/BSR that had been received */
-   for(ueIdx=0; ueIdx<cell->numActvUe; ueIdx++)
-   {
-      uint32_t totDataReq = 0; /* in bytes */
-      DciInfo  *dciInfo = NULLP;
-      SchUeCb *ueCb = NULLP;
-   
-      ueCb = &cell->ueCb[ueIdx];
-      /* check for SR */
-      if(ueCb->srRcvd)
+      if(cell->schDlSlotInfo[dlSchedInfo.schSlotValue.ulDciTime.slot]->ulGrant != NULLP)
       {
-         totDataReq = UL_GRANT_SIZE; /*fixing so that all control msgs can be handled in SR */
-         ueCb->srRcvd = false;
-      }
-      /* check for BSR */
-      for(lcgIdx=0; lcgIdx<MAX_NUM_LOGICAL_CHANNEL_GROUPS; lcgIdx++)
-      {
-        totDataReq+= ueCb->bsrInfo[lcgIdx].dataVol;
-        ueCb->bsrInfo[lcgIdx].dataVol = 0;
-      }
-      if(totDataReq > 0) /* UL grant must be provided for this UE in this slot */
-      {
-         SchPuschInfo schPuschInfo;
-         memset(&schPuschInfo, 0, sizeof(SchPuschInfo));
-
-         SCH_ALLOC(dciInfo, sizeof(DciInfo));
-         if(!dciInfo)
-         {
-            DU_LOG("\nERROR  -->  SCH : Memory Allocation failed for dciInfo alloc");
-            return RFAILED;
-         }
-         memset(dciInfo,0,sizeof(DciInfo));
-
-         /* update the SFN and SLOT */
-         memcpy(&dlSchedInfo.schSlotValue.ulDciTime, slotInd, sizeof(SlotTimingInfo));
-
-         /* Update PUSCH allocation */
-         schFillPuschAlloc(ueCb, dlSchedInfo.schSlotValue.ulDciTime, totDataReq, &schPuschInfo);
-
-         /* Fill DCI for UL grant */
-         schFillUlDci(ueCb, schPuschInfo, dciInfo);
-         memcpy(&dciInfo->slotIndInfo, &dlSchedInfo.schSlotValue.ulDciTime, sizeof(SlotTimingInfo));
-         dlSchedInfo.ulGrant = dciInfo;
+         slot = dlSchedInfo.schSlotValue.ulDciTime.slot;
+         dlSchedInfo.ulGrant = cell->schDlSlotInfo[slot]->ulGrant;
+         cell->schDlSlotInfo[slot]->ulGrant = NULLP;
       }
    }
 
