@@ -1417,6 +1417,7 @@ typedef struct schInitialUlBwp
    SchPucchCfg   pucchCfg;
    bool          puschCfgPres;
    SchPuschCfg   puschCfg;
+   bool          k2TblPrsnt;
    SchK2TimingInfoTbl k2InfoTbl;
 }SchInitialUlBwp;
 

@@ -143,6 +143,7 @@ typedef struct schDlSlotInfo
    uint8_t      pdcchUe;                  /*!< UE for which PDCCH is scheduled in this slot */
    uint8_t      pdschUe;                  /*!< UE for which PDSCH is scheduled in this slot */
    RarAlloc     *rarAlloc[MAX_NUM_UE];    /*!< RAR allocation per UE*/
+   DciInfo      *ulGrant;
    DlMsgAlloc   *dlMsgAlloc[MAX_NUM_UE];  /*!< Dl msg allocation per UE*/
 }SchDlSlotInfo;
 
@@ -378,10 +379,11 @@ bool schCheckPrachOcc(SchCellCb *cell, SlotTimingInfo prachOccasionTimingInfo);
 uint8_t schCalcPrachNumRb(SchCellCb *cell);
 void schPrachResAlloc(SchCellCb *cell, UlSchedInfo *ulSchedInfo, SlotTimingInfo prachOccasionTimingInfo);
 uint16_t schAllocPucchResource(SchCellCb *cell, SlotTimingInfo pucchTime, uint16_t crnti);
-uint8_t schFillUlDci(SchUeCb *ueCb, SchPuschInfo puschInfo, DciInfo *dciInfo);
-uint8_t schFillPuschAlloc(SchUeCb *ueCb, SlotTimingInfo pdcchSlotTime, uint32_t dataVol, SchPuschInfo *puschInfo);
+uint8_t schFillUlDci(SchUeCb *ueCb, SchPuschInfo *puschInfo, DciInfo *dciInfo);
+SchPuschInfo* schFillPuschAlloc(SchUeCb *ueCb, SlotTimingInfo puschTime, uint32_t dataVol, uint8_t k2, uint8_t startSymb, uint8_t symbLen);
 uint8_t allocatePrbUl(SchCellCb *cell, SlotTimingInfo slotTime, uint8_t startSymbol, uint8_t symbolLength, \
    uint16_t *startPrb, uint16_t numPrb);
+bool schProcessSrOrBsrReq(SchCellCb *cell, SlotTimingInfo currTime);
 
 /*Generic Functions*/
 LcInfo* handleLcLList(CmLListCp *lcLL, uint8_t lcId, ActionTypeLcLL action);
