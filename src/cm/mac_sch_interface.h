@@ -35,6 +35,7 @@
 #define EVENT_UE_DELETE_RSP_TO_MAC   16
 #define EVENT_CELL_DELETE_REQ_TO_SCH   17
 #define EVENT_CELL_DELETE_RSP_TO_MAC   18
+#define EVENT_LONG_BSR              19
 
 
 /*macros*/

@@ -1305,7 +1305,7 @@ void setMibPdu(uint8_t *mibPdu, uint32_t *val, uint16_t sfn)
 {
    *mibPdu |= (((uint8_t)(sfn << 2)) & MIB_SFN_BITMASK);
    *val = (mibPdu[0] << 24 | mibPdu[1] << 16 | mibPdu[2] << 8);
-   DU_LOG("\nDEBUG  -->  LWR_MAC: MIB PDU %x", *val);
+   //DU_LOG("\nDEBUG  -->  LWR_MAC: MIB PDU %x", *val);
 }
 
 /*******************************************************************
@@ -3435,9 +3435,11 @@ uint16_t fillDlTtiReq(SlotTimingInfo currTimingInfo)
                         numPduEncoded++;
                      }
                   }
+                  #if 0
                   DU_LOG("\033[1;31m");
                   DU_LOG("\nDEBUG  -->  LWR_MAC: MIB sent..");
                   DU_LOG("\033[0m");
+                  #endif
                }
 
                if(currDlSlot->dlInfo.brdcstAlloc.sib1Trans)
@@ -3457,10 +3459,11 @@ uint16_t fillDlTtiReq(SlotTimingInfo currTimingInfo)
                      pduIndex++;
                      numPduEncoded++;
                   }
-
+                  #if 0
                   DU_LOG("\033[1;34m");
                   DU_LOG("\nDEBUG  -->  LWR_MAC: SIB1 sent...");
                   DU_LOG("\033[0m");
+                  #endif
                }
             }
             
@@ -3701,7 +3704,7 @@ uint16_t sendTxDataReq(SlotTimingInfo currTimingInfo, DlSchedInfo *dlInfo, p_fap
       }
 
       /* Fill message header */
-      DU_LOG("\nDEBUG  -->  LWR_MAC: Sending TX DATA Request");
+      //DU_LOG("\nDEBUG  -->  LWR_MAC: Sending TX DATA Request");
       prevElem->p_next = txDataElem;
    }
 #endif

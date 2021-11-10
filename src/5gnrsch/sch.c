@@ -1085,8 +1085,8 @@ uint8_t MacSchBsr(Pst *pst, UlBufferStatusRptInd *bsrInd)
    /* store dataVolume per lcg in uecb */
    for(lcgIdx = 0; lcgIdx < bsrInd->numLcg; lcgIdx++)
    {
-      ueCb->bsrInfo[lcgIdx].priority = 1; //TODO: determining LCG priority?
-      ueCb->bsrInfo[lcgIdx].dataVol = bsrInd->dataVolInfo[lcgIdx].dataVol;
+      ueCb->bsrInfo[bsrInd->dataVolInfo[lcgIdx].lcgId].priority = 1; //TODO: determining LCG priority?
+      ueCb->bsrInfo[bsrInd->dataVolInfo[lcgIdx].lcgId].dataVol = bsrInd->dataVolInfo[lcgIdx].dataVol;
    }
    return ROK;
 }

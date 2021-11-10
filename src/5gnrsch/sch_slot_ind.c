@@ -581,10 +581,16 @@ uint8_t schProcessSlotInd(SlotTimingInfo *slotInd, Inst schInst)
       for(lcgIdx=0; lcgIdx<MAX_NUM_LOGICAL_CHANNEL_GROUPS; lcgIdx++)
       {
         totDataReq+= ueCb->bsrInfo[lcgIdx].dataVol;
+        if(ueCb->bsrInfo[lcgIdx].dataVol > 0)
+        {
+           DU_LOG("\n VS: lcgIdx:%d, ueIdx:%d,datavol:%d, total:%d",\
+                       lcgIdx,ueIdx,ueCb->bsrInfo[lcgIdx].dataVol,totDataReq);
+        }
         ueCb->bsrInfo[lcgIdx].dataVol = 0;
       }
       if(totDataReq > 0) /* UL grant must be provided for this UE in this slot */
       {
+     DU_LOG("\nVS: totDataReq :%d",totDataReq);
          SchPuschInfo schPuschInfo;
          memset(&schPuschInfo, 0, sizeof(SchPuschInfo));
 

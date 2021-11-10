@@ -258,6 +258,8 @@ uint8_t macProcShortBsr(uint16_t cellId, uint16_t crnti, uint8_t lcgId, uint32_t
 uint8_t macProcUlData(uint16_t cellId, uint16_t rnti, SlotTimingInfo slotInfo, \
    uint8_t lcId, uint16_t pduLen, uint8_t *pdu);
 uint8_t sendSchedRptToRlc(DlSchedInfo dlInfo, SlotTimingInfo slotInfo);
+uint8_t macProcLongBsr(uint16_t cellId, uint16_t crnti,uint8_t numLcg,\
+                         DataVolInfo dataVolInfo[MAX_NUM_LOGICAL_CHANNEL_GROUPS]);
 #endif
 /**********************************************************************
   End of file
