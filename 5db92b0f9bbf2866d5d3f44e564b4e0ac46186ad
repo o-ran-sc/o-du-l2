@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b88c7c3c_67755cae",
+        "filename": "src/5gnrmac/mac_msg_hdl.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 244,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-11-10T05:21:36Z",
+      "side": 1,
+      "message": "both check is not required here?",
+      "range": {
+        "startLine": 244,
+        "startChar": 57,
+        "endLine": 244,
+        "endChar": 58
+      },
+      "revId": "5db92b0f9bbf2866d5d3f44e564b4e0ac46186ad",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
