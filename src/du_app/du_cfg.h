@@ -162,8 +162,8 @@
 
 /* MACRO Define for PUSCH Configuration */
 #define MAX_UL_ALLOC 16
-#define PUSCH_K2_CFG1  3
-#define PUSCH_K2_CFG2  4
+#define PUSCH_K2_CFG1  4
+#define PUSCH_K2_CFG2  5
 #define PUSCH_START_SYMBOL  3
 #define PUSCH_LENGTH_SYMBOL 11
 

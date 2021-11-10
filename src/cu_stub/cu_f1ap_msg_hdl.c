@@ -120,8 +120,8 @@
 #define PDSCH_MAPPING_TYPE_B 1
 
 /* MACRO Define for PUSCH Configuration */
-#define PUSCH_K2_CFG1  3
-#define PUSCH_K2_CFG2  4
+#define PUSCH_K2_CFG1  1
+#define PUSCH_K2_CFG2  2
 
 #define PUSCH_MSG3_DELTA_PREAMBLE 0
 #define PUSCH_P0_NOMINAL_WITH_GRANT -70

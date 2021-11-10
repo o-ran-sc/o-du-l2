@@ -3569,7 +3569,7 @@ uint16_t fillDlTtiReq(SlotTimingInfo currTimingInfo)
             msgHeader->num_msg++;
 
             /* Intel L1 expects UL_DCI.request following DL_TTI.request */
-            fillUlDciReq(currTimingInfo, dlTtiElem->p_next);
+            fillUlDciReq(dlTtiReqTimingInfo, dlTtiElem->p_next);
             msgHeader->num_msg++;
 
             /* send Tx-DATA req message */
@@ -3593,7 +3593,7 @@ uint16_t fillDlTtiReq(SlotTimingInfo currTimingInfo)
             msgHeader->num_msg++;
 
             /* Intel L1 expects UL_DCI.request following DL_TTI.request */
-            fillUlDciReq(currTimingInfo, dlTtiElem->p_next);
+            fillUlDciReq(dlTtiReqTimingInfo, dlTtiElem->p_next);
             msgHeader->num_msg++;
 
             prevElem = dlTtiElem->p_next->p_next;
@@ -4344,7 +4344,6 @@ uint16_t fillUlDciReq(SlotTimingInfo currTimingInfo, p_fapi_api_queue_elem_t pre
                numPduEncoded++;
 	       /* free UL GRANT at SCH */
 	       MAC_FREE(currDlSlot->dlInfo.ulGrant, sizeof(DciInfo));
-	       currDlSlot->dlInfo.ulGrant = NULLP;
             }
 #ifdef ODU_SLOT_IND_DEBUG_LOG
 	       DU_LOG("\nDEBUG  -->  LWR_MAC: Sending UL DCI Request");
