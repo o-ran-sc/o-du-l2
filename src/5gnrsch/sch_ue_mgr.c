@@ -281,6 +281,7 @@ uint8_t fillSchUeCb(SchUeCb *ueCb, SchUeCfg *ueCfg)
             BuildK2InfoTable(ueCb->cellCb, ueCfg->spCellCfg.servCellCfg.initUlBwp.puschCfg.timeDomRsrcAllocList,\
                   ueCfg->spCellCfg.servCellCfg.initUlBwp.puschCfg.numTimeDomRsrcAlloc,\
                   NULLP, &ueCb->ueCfg.spCellCfg.servCellCfg.initUlBwp.k2InfoTbl);
+                  ueCb->ueCfg.spCellCfg.servCellCfg.initUlBwp.k2TblPrsnt = true;
          }
       }
    }
@@ -546,6 +547,7 @@ uint8_t MacSchAddUeConfigReq(Pst *pst, SchUeCfg *ueCfg)
       SET_ONE_BIT(ueCb->ueIdx, cellCb->actvUeBitMap);
       ueCb->cellCb = cellCb;
       ueCb->srRcvd = false;
+      ueCb->bsrRcvd = false;
       for(lcIdx=0; lcIdx<MAX_NUM_LOGICAL_CHANNEL_GROUPS; lcIdx++)
          ueCb->bsrInfo[lcIdx].dataVol = 0;
 
@@ -569,47 +571,37 @@ uint8_t MacSchAddUeConfigReq(Pst *pst, SchUeCfg *ueCfg)
 *         RFAILED - failure
 *
 * ****************************************************************/
-uint8_t schFillPuschAlloc(SchUeCb *ueCb, SlotTimingInfo pdcchSlotTime, uint32_t dataVol, SchPuschInfo *puschInfo)
+uint8_t schFillPuschAlloc(SchUeCb *ueCb, SlotTimingInfo puschTime, uint32_t dataVol, uint8_t k2, uint8_t startSymb, uint8_t symbLen)
 {
   uint16_t startRb        = 0;
   uint8_t  numRb          = 0;
   uint16_t tbSize         = 0;
   uint8_t  buffer         = 5;
-  uint8_t k2=0, startSymb=0 , symbLen=0;
   SchCellCb *cellCb       = ueCb->cellCb;
   SchUlSlotInfo *schUlSlotInfo = NULLP;
-  SlotTimingInfo puschTime;
+  SchPuschInfo puschInfo;
   
-  /* TODO : Scheduler to decide on which slot PUSCH is to be scheduled based on K2 Index table */
-  if(ueCb->ueCfg.spCellCfgPres == true)
-  {
-     k2 = ueCb->ueCfg.spCellCfg.servCellCfg.initUlBwp.puschCfg.timeDomRsrcAllocList[0].k2;
-     startSymb = ueCb->ueCfg.spCellCfg.servCellCfg.initUlBwp.puschCfg.timeDomRsrcAllocList[0].startSymbol;
-     symbLen = ueCb->ueCfg.spCellCfg.servCellCfg.initUlBwp.puschCfg.timeDomRsrcAllocList[0].symbolLength;
-  }
-  ADD_DELTA_TO_TIME(pdcchSlotTime, puschTime, k2);
-
   startRb = MAX_NUM_RB;
   tbSize  = schCalcTbSize(dataVol + buffer); /*  2 bytes header + some buffer */
   numRb   = schCalcNumPrb(tbSize, ueCb->ueCfg.ulModInfo.mcsIndex, symbLen);
   allocatePrbUl(cellCb, puschTime, startSymb, symbLen, &startRb, numRb);
 
-  puschInfo->crnti             = ueCb->crnti; 
-  puschInfo->harqProcId        = SCH_HARQ_PROC_ID;
-  puschInfo->resAllocType      = SCH_ALLOC_TYPE_1;
-  puschInfo->fdAlloc.startPrb  = startRb;
-  puschInfo->fdAlloc.numPrb    = numRb;
-  puschInfo->tdAlloc.startSymb = startSymb;
-  puschInfo->tdAlloc.numSymb   = symbLen;
-  puschInfo->tbInfo.qamOrder   = ueCb->ueCfg.ulModInfo.modOrder;
-  puschInfo->tbInfo.mcs        = ueCb->ueCfg.ulModInfo.mcsIndex;
-  puschInfo->tbInfo.mcsTable   = ueCb->ueCfg.ulModInfo.mcsTable;
-  puschInfo->tbInfo.ndi        = 1; /* new transmission */
-  puschInfo->tbInfo.rv         = 0;
-  puschInfo->tbInfo.tbSize     = tbSize;
-  puschInfo->dmrsMappingType   = DMRS_MAP_TYPE_A;  /* Setting Type-A */
-  puschInfo->nrOfDmrsSymbols   = NUM_DMRS_SYMBOLS;
-  puschInfo->dmrsAddPos        = DMRS_ADDITIONAL_POS;
+  puschInfo.crnti             = ueCb->crnti; 
+  puschInfo.harqProcId        = SCH_HARQ_PROC_ID;
+  puschInfo.resAllocType      = SCH_ALLOC_TYPE_1;
+  puschInfo.fdAlloc.startPrb  = startRb;
+  puschInfo.fdAlloc.numPrb    = numRb;
+  puschInfo.tdAlloc.startSymb = startSymb;
+  puschInfo.tdAlloc.numSymb   = symbLen;
+  puschInfo.tbInfo.qamOrder   = ueCb->ueCfg.ulModInfo.modOrder;
+  puschInfo.tbInfo.mcs        = ueCb->ueCfg.ulModInfo.mcsIndex;
+  puschInfo.tbInfo.mcsTable   = ueCb->ueCfg.ulModInfo.mcsTable;
+  puschInfo.tbInfo.ndi        = 1; /* new transmission */
+  puschInfo.tbInfo.rv         = 0;
+  puschInfo.tbInfo.tbSize     = tbSize;
+  puschInfo.dmrsMappingType   = DMRS_MAP_TYPE_A;  /* Setting Type-A */
+  puschInfo.nrOfDmrsSymbols   = NUM_DMRS_SYMBOLS;
+  puschInfo.dmrsAddPos        = DMRS_ADDITIONAL_POS;
 
   schUlSlotInfo = cellCb->schUlSlotInfo[puschTime.slot];
   SCH_ALLOC(schUlSlotInfo->schPuschInfo, sizeof(SchPuschInfo));
@@ -618,7 +610,7 @@ uint8_t schFillPuschAlloc(SchUeCb *ueCb, SlotTimingInfo pdcchSlotTime, uint32_t 
      DU_LOG("\nERROR  -->  SCH: Memory allocation failed in schAllocMsg3Pusch");
      return RFAILED;
   }
-  memcpy(schUlSlotInfo->schPuschInfo, puschInfo, sizeof(SchPuschInfo));
+  memcpy(schUlSlotInfo->schPuschInfo, &puschInfo, sizeof(SchPuschInfo));
 
   return ROK;
 }
@@ -638,7 +630,7 @@ uint8_t schFillPuschAlloc(SchUeCb *ueCb, SlotTimingInfo pdcchSlotTime, uint32_t 
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t schFillUlDci(SchUeCb *ueCb, SchPuschInfo puschInfo, DciInfo *dciInfo)
+uint8_t schFillUlDci(SchUeCb *ueCb, SchPuschInfo *puschInfo, DciInfo *dciInfo)
 {
    SchCellCb         *cellCb  = ueCb->cellCb;
    SchControlRsrcSet coreset1 ;
@@ -655,8 +647,8 @@ uint8_t schFillUlDci(SchUeCb *ueCb, SchPuschInfo puschInfo, DciInfo *dciInfo)
    /* fill bwp cfg */
    dciInfo->bwpCfg.subcarrierSpacing  = cellCb->cellCfg.sib1SchCfg.bwp.subcarrierSpacing;
    dciInfo->bwpCfg.cyclicPrefix       = cellCb->cellCfg.sib1SchCfg.bwp.cyclicPrefix;
-   dciInfo->bwpCfg.freqAlloc.startPrb = 0;
-   dciInfo->bwpCfg.freqAlloc.numPrb   = MAX_NUM_RB; /* whole of BW */
+   dciInfo->bwpCfg.freqAlloc.startPrb = cellCb->cellCfg.schInitialDlBwp.bwp.freqAlloc.startPrb;
+   dciInfo->bwpCfg.freqAlloc.numPrb   = cellCb->cellCfg.schInitialDlBwp.bwp.freqAlloc.numPrb; 
 
    /*fill coreset cfg */
    //Considering number of RBs in coreset1 is same as coreset0
@@ -678,18 +670,18 @@ uint8_t schFillUlDci(SchUeCb *ueCb, SchPuschInfo puschInfo, DciInfo *dciInfo)
    dciInfo->formatType = FORMAT0_0;
    
    /* fill UL grant */
-   dciInfo->format.format0_0.resourceAllocType   = puschInfo.resAllocType;
-   dciInfo->format.format0_0.freqAlloc.startPrb  = puschInfo.fdAlloc.startPrb;
-   dciInfo->format.format0_0.freqAlloc.numPrb    = puschInfo.fdAlloc.numPrb;
-   dciInfo->format.format0_0.timeAlloc.startSymb = puschInfo.tdAlloc.startSymb;
-   dciInfo->format.format0_0.timeAlloc.numSymb   = puschInfo.tdAlloc.numSymb;
+   dciInfo->format.format0_0.resourceAllocType   = puschInfo->resAllocType;
+   dciInfo->format.format0_0.freqAlloc.startPrb  = puschInfo->fdAlloc.startPrb;
+   dciInfo->format.format0_0.freqAlloc.numPrb    = puschInfo->fdAlloc.numPrb;
+   dciInfo->format.format0_0.timeAlloc.startSymb = puschInfo->tdAlloc.startSymb;
+   dciInfo->format.format0_0.timeAlloc.numSymb   = puschInfo->tdAlloc.numSymb;
    dciInfo->format.format0_0.rowIndex            = 0; /* row Index */
-   dciInfo->format.format0_0.mcs                 = puschInfo.tbInfo.mcs;
-   dciInfo->format.format0_0.harqProcId          = puschInfo.harqProcId;
+   dciInfo->format.format0_0.mcs                 = puschInfo->tbInfo.mcs;
+   dciInfo->format.format0_0.harqProcId          = puschInfo->harqProcId;
    dciInfo->format.format0_0.puschHopFlag        = FALSE; /* disabled */
    dciInfo->format.format0_0.freqHopFlag         = FALSE; /* disabled */
-   dciInfo->format.format0_0.ndi                 = puschInfo.tbInfo.ndi; /* new transmission */
-   dciInfo->format.format0_0.rv                  = puschInfo.tbInfo.rv;
+   dciInfo->format.format0_0.ndi                 = puschInfo->tbInfo.ndi; /* new transmission */
+   dciInfo->format.format0_0.rv                  = puschInfo->tbInfo.rv;
    dciInfo->format.format0_0.tpcCmd              = 0; //Sphoorthi TODO: check
    dciInfo->format.format0_0.sUlCfgd             = FALSE; /* SUL not configured */
    
@@ -706,7 +698,7 @@ uint8_t schFillUlDci(SchUeCb *ueCb, SchPuschInfo puschInfo, DciInfo *dciInfo)
    dciInfo->dciInfo.beamPdcchInfo.prg[0].beamIdx[0]   = 0;
    dciInfo->dciInfo.txPdcchPower.powerValue           = 0;
    dciInfo->dciInfo.txPdcchPower.powerControlOffsetSS = 0;
-   dciInfo->dciInfo.pdschCfg                          = NULLP; /* No DL data being sent */
+   dciInfo->dciInfo.pdschCfg                          = NULL; /* No DL data being sent */
 
    return ROK;
 }
@@ -765,6 +757,7 @@ uint8_t MacSchModUeConfigReq(Pst *pst, SchUeCfg *ueCfg)
       {
          ueCb->cellCb = cellCb;
          ueCb->srRcvd = false;
+         ueCb->bsrRcvd = false;
          for(lcIdx=0; lcIdx<MAX_NUM_LOGICAL_CHANNEL_GROUPS; lcIdx++)
             ueCb->bsrInfo[lcIdx].dataVol = 0;
 
