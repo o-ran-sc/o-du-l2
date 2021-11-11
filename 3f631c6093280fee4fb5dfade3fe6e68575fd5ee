@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "194a1f37_519a3253",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 3610,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-11-11T09:47:15Z",
+      "side": 1,
+      "message": "why removed this memset?\nAfter every slot processing is complete, the dlSlot structure should be reset",
+      "revId": "3f631c6093280fee4fb5dfade3fe6e68575fd5ee",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2292f6f2_ff81c09d",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1764,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-11-11T09:47:15Z",
+      "side": 1,
+      "message": "first check if bsrRecvd \u003d\u003d true",
+      "revId": "3f631c6093280fee4fb5dfade3fe6e68575fd5ee",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "18733b35_6d90f740",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1835,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-11-11T09:47:15Z",
+      "side": 1,
+      "message": "mark bsrRcvd \u003d false too",
+      "revId": "3f631c6093280fee4fb5dfade3fe6e68575fd5ee",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
