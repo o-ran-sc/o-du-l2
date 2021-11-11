@@ -1,0 +1,147 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "628e320d_dce00b90",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 2949,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-11-11T05:35:17Z",
+      "side": 1,
+      "message": "we are sending -1 index as well. this is not causing any issue?",
+      "range": {
+        "startLine": 2949,
+        "startChar": 58,
+        "endLine": 2949,
+        "endChar": 73
+      },
+      "revId": "d7bb52860d9f6d48ef920b7112dde98ac1a2faf6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fe812f6c_96be297e",
+        "filename": "src/5gnrmac/mac_msg_hdl.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 427,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-11-11T05:35:17Z",
+      "side": 1,
+      "message": "Are we storing the lcId information in RlcSchedResultRpt as expected?\nif dlInfo.dlMsgAlloc[ueIdx]-\u003edlMsgSchedInfo[schInfoIdx].numLc \u003d\u003d 3\nand [lcid \u003d 1, lcid \u003d2 , lcid \u003d 4]\nso as per loop we will store information at index 0,1,2. \n\nbut as per my knowledge in our code, if we have lcid \u003d 1 we store information at index 1, if we have lcid \u003d 4 we store information at index 4.",
+      "revId": "d7bb52860d9f6d48ef920b7112dde98ac1a2faf6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "06097cfe_b51a104e",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 528,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-11-11T05:35:17Z",
+      "side": 1,
+      "message": "initialize this as NULL.",
+      "revId": "d7bb52860d9f6d48ef920b7112dde98ac1a2faf6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c32a09d0_fd95179d",
+        "filename": "src/5gnrsch/sch_slot_ind.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 217,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-11-11T05:35:17Z",
+      "side": 1,
+      "message": "add comments.",
+      "range": {
+        "startLine": 217,
+        "startChar": 13,
+        "endLine": 217,
+        "endChar": 18
+      },
+      "revId": "d7bb52860d9f6d48ef920b7112dde98ac1a2faf6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1e931b0b_d17a2bd3",
+        "filename": "src/5gnrsch/sch_slot_ind.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 340,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-11-11T05:35:17Z",
+      "side": 1,
+      "message": "add comment.",
+      "range": {
+        "startLine": 340,
+        "startChar": 13,
+        "endLine": 340,
+        "endChar": 18
+      },
+      "revId": "d7bb52860d9f6d48ef920b7112dde98ac1a2faf6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "af9b9039_1a7474d7",
+        "filename": "src/5gnrsch/sch_slot_ind.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 440,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-11-11T05:35:17Z",
+      "side": 1,
+      "message": "replace WARNING.",
+      "range": {
+        "startLine": 440,
+        "startChar": 18,
+        "endLine": 440,
+        "endChar": 26
+      },
+      "revId": "d7bb52860d9f6d48ef920b7112dde98ac1a2faf6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0f416032_547ba0a8",
+        "filename": "src/du_app/du_mgr_main.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 398,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-11-11T05:35:17Z",
+      "side": 1,
+      "message": "remove these before merging",
+      "revId": "d7bb52860d9f6d48ef920b7112dde98ac1a2faf6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
