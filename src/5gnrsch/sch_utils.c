@@ -1564,7 +1564,7 @@ uint32_t calculateEstimateTBSize(uint32_t reqBO, uint16_t mcsIdx,uint8_t numSymb
    return (effecBO);
 }
 /*Below function for printing will be used in future so disabling it for now*/
-#if 0
+#if 1
 /****************************************************************************
  *
  * @brief Print the LC in list for debugging purpose 

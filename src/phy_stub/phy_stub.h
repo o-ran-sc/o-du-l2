@@ -36,6 +36,13 @@ bool     slotIndicationStarted;
 uint16_t sfnValue;
 uint16_t slotValue;
 
+
+typedef struct lcgBufferSize
+{
+   uint8_t lcgId;
+   uint8_t bsIdx;
+}LcgBufferSize;
+
 /* UE specific information */
 typedef struct ueCb
 {

@@ -25,6 +25,7 @@
 #include "fapi_vendor_extension.h"
 #endif
 #include "phy_stub.h"
+#include "mac_sch_interface.h"
 
 uint8_t l1SendUlUserData();
 uint8_t l1SendStatusPdu();
@@ -143,7 +144,8 @@ void l1HdlSlotIndicaion(bool stopSlotInd)
 void *l1ConsoleHandler(void *args)
 {
    char ch;
-   uint8_t drbIdx = 0;
+   uint8_t drbIdx = 0, lcgIdx = 0;
+   LcgBufferSize lcgBS[MAX_NUM_LOGICAL_CHANNEL_GROUPS];
 
    while(true)
    {
@@ -156,12 +158,47 @@ void *l1ConsoleHandler(void *args)
             DU_LOG("\nDEBUG  --> PHY STUB: Sending UL User Data[DrbId:%d]",drbIdx);
             l1SendUlUserData(drbIdx);
          }
+         DU_LOG("\n");
+         continue;
       }
       else if((ch = getchar()) == 'c')
       {
          /* Send Control PDU from PHY stub to DU */
-          DU_LOG("\nDEBUG  --> PHY STUB: Sending Status PDU");
-	       l1SendStatusPdu();
+         DU_LOG("\nDEBUG  --> PHY STUB: Sending Status PDU");
+         l1SendStatusPdu();
+         DU_LOG("\n");
+         continue;
+      }
+      else if((ch = getchar()) == 'b')
+      {
+         memset(lcgBS, 0, (MAX_NUM_LOGICAL_CHANNEL_GROUPS * sizeof(LcgBufferSize)));
+         /* Send Control PDU from PHY stub to DU */
+         DU_LOG("\nDEBUG  --> PHY STUB: Enter BSR type[Long ->l],[Short -> s]\n");
+         if((ch = getchar()) == 'e')
+         {
+            printf("\nVS:11");
+            for(lcgIdx = 0; lcgIdx < NUM_DRB_TO_PUMP_DATA; lcgIdx++)
+            {
+               lcgBS[lcgIdx].lcgId = MIN_DRB_LCID + lcgIdx;
+               lcgBS[lcgIdx].bsIdx = lcgIdx + 1;
+            }
+            l1BuildAndSendBSR(LONG_BSR, lcgBS);
+            DU_LOG("\n");
+            continue;
+         }
+         else if((ch = getchar()) == 's')
+         {
+            lcgIdx = 0;
+
+            lcgBS[lcgIdx].lcgId = MIN_DRB_LCID + lcgIdx;
+            lcgBS[lcgIdx].bsIdx = lcgIdx + 1;
+            l1BuildAndSendBSR(SHORT_BSR, lcgBS);
+            DU_LOG("\n");
+            continue;
+
+         }
+         DU_LOG("\n");
+         continue;
       }
       DU_LOG("\n");
       continue;

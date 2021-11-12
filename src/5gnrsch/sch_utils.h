@@ -133,7 +133,7 @@ uint8_t updateLcListReqPRB(CmLListCp *lcLL, uint8_t lcId, uint32_t payloadSize);
 uint32_t calculateEstimateTBSize(uint32_t reqBO, uint16_t mcsIdx,uint8_t numSymbols,\
                                    uint16_t maxPRB, uint16_t *estPrb);
 void deleteLcLL(CmLListCp *lcLL);
-#if 0
+#if 1
 /*Will be enabled for debugging*/
 void printLcLL(CmLListCp *lcLL);
 #endif

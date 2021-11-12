@@ -35,6 +35,7 @@
 #define EVENT_UE_DELETE_RSP_TO_MAC   16
 #define EVENT_CELL_DELETE_REQ_TO_SCH   17
 #define EVENT_CELL_DELETE_RSP_TO_MAC   18
+#define EVENT_LONG_BSR              19
 
 
 /*macros*/
@@ -87,6 +88,7 @@
 
 #define RAR_PAYLOAD_SIZE 10             /* As per spec 38.321, sections 6.1.5 and 6.2.3, RAR PDU is 8 bytes long and 2 bytes of padding */
 #define TX_PAYLOAD_HDR_LEN 32           /* Intel L1 requires adding a 32 byte header to transmitted payload */
+#define UL_TX_BUFFER_SIZE 5           /* Intel L1 requires adding a 32 byte header to transmitted payload */
 
 #define MAX_NUM_CONFIG_SLOTS 160  /*Max number of slots as per the numerology*/
 #define MAX_NUM_K0_IDX 16 /* Max number of pdsch time domain downlink allocation */

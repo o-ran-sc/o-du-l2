@@ -66,7 +66,7 @@ uint8_t unpackRxData(uint16_t cellId, SlotTimingInfo slotInfo, RxDataIndPdu *rxD
    while(pduLen > 0)
    {
       /* MSB in 1st octet is Reserved bit. Hence not decoding it. 
-	 2nd MSB in 1st octet is R/F bit depending upon type of payload */
+         2nd MSB in 1st octet is R/F bit depending upon type of payload */
       fBit = (1 << 7) & rxDataPdu[idx];
 
       /* LC id is the 6 LSB in 1st octet */
@@ -74,145 +74,191 @@ uint8_t unpackRxData(uint16_t cellId, SlotTimingInfo slotInfo, RxDataIndPdu *rxD
 
       switch(lcId)
       {
-	 case MAC_LCID_CCCH :
-	    {
-	       pduLen--;
+         case MAC_LCID_CCCH :
+            {
+               pduLen--;
 
-	       /* for UL CCCH,fixed length of MAC SDU */
-	       length = 6;
+               /* for UL CCCH,fixed length of MAC SDU */
+               length = 6;
 
-	       /*  Allocating sharable memory to send ul ccch msg to du app*/
-	       MAC_ALLOC_SHRABL_BUF(pdu, length);
-	       if(!pdu)
-	       {
-		  DU_LOG("\nERROR  -->  MAC : UL CCCH PDU memory allocation failed");
-		  return RFAILED;
-	       }  
-	       idx++;
-	       memcpy(pdu, &rxDataPdu[idx], length);
-	       pduLen -= length;
-	       idx = idx + length;
-
-	       /* store msg3 pdu in macRaCb for CRI value */
-	       memcpy(macCb.macCell[cellIdx]->macRaCb[ueIdx].msg3Pdu, pdu, length);
-
-	       /* Send UL-CCCH Indication to DU APP */
-	       ret = macProcUlCcchInd(macCb.macCell[cellIdx]->cellId, rxDataIndPdu->rnti, length, pdu);
-	       break;
-	    }
-
-	 case MAC_LCID_MIN ... MAC_LCID_MAX :
-	    {
-	       DU_LOG("\nINFO   -->  MAC : PDU received for LC ID %d", lcId);
-	       pduLen--;
-	       idx++;
-
-	       length = rxDataPdu[idx];
-	       if(fBit)
-	       {
-	          pduLen--;
-		  idx++;
-		  length = (length << 8) & rxDataPdu[idx];
-	       }
-
-	       /*  Copying the payload to send to RLC */
-	       MAC_ALLOC_SHRABL_BUF(pdu, length);
-	       if(!pdu)
-	       {
-		  DU_LOG("\nERROR  -->  MAC : Memory allocation failed while demuxing Rx Data PDU");
-		  return RFAILED;
-	       }
-	       pduLen--;
+               /*  Allocating sharable memory to send ul ccch msg to du app*/
+               MAC_ALLOC_SHRABL_BUF(pdu, length);
+               if(!pdu)
+               {
+                  DU_LOG("\nERROR  -->  MAC : UL CCCH PDU memory allocation failed");
+                  return RFAILED;
+               }  
                idx++;
-	       memcpy(pdu, &rxDataPdu[idx], length);
-	       pduLen -= length;
-	       idx = idx + length;
+               memcpy(pdu, &rxDataPdu[idx], length);
+               pduLen -= length;
+               idx = idx + length;
 
-	       /* Delete RA cb once RRC setup complete received */
-	       if(macCb.macCell[cellIdx]->macRaCb[ueIdx].crnti == rxDataIndPdu->rnti)
-	       {
-	          MAC_FREE(macCb.macCell[cellIdx]->macRaCb[ueIdx].msg4Pdu, \
-		          macCb.macCell[cellIdx]->macRaCb[ueIdx].msg4PduLen);
-             MAC_FREE(macCb.macCell[cellIdx]->macRaCb[ueIdx].msg4TxPdu, \
-                      macCb.macCell[cellIdx]->macRaCb[ueIdx].msg4TbSize - TX_PAYLOAD_HDR_LEN);
-	          memset(&macCb.macCell[cellIdx]->macRaCb[ueIdx], 0, sizeof(MacRaCbInfo));
-	       }
+               /* store msg3 pdu in macRaCb for CRI value */
+               memcpy(macCb.macCell[cellIdx]->macRaCb[ueIdx].msg3Pdu, pdu, length);
 
-	       /* Send UL Data to RLC */
-	       ret = macProcUlData(cellId, rxDataIndPdu->rnti, slotInfo, lcId, length, pdu);
+               /* Send UL-CCCH Indication to DU APP */
+               ret = macProcUlCcchInd(macCb.macCell[cellIdx]->cellId, rxDataIndPdu->rnti, length, pdu);
+               break;
+            }
 
-	       break;
-	    }
-	 case MAC_LCID_RESERVED_MIN ... MAC_LCID_RESERVED_MAX :
-	    break;
+         case MAC_LCID_MIN ... MAC_LCID_MAX :
+            {
+               DU_LOG("\nINFO   -->  MAC : PDU received for LC ID %d", lcId);
+               pduLen--;
+               idx++;
 
-	 case MAC_LCID_CCCH_48BIT :
-	    break;
+               length = rxDataPdu[idx];
+               if(fBit)
+               {
+                  pduLen--;
+                  idx++;
+                  length = (length << 8) & rxDataPdu[idx];
+               }
 
-	 case MAC_LCID_BIT_RATE_QUERY :
-	    break;
+               /*  Copying the payload to send to RLC */
+               MAC_ALLOC_SHRABL_BUF(pdu, length);
+               if(!pdu)
+               {
+                  DU_LOG("\nERROR  -->  MAC : Memory allocation failed while demuxing Rx Data PDU");
+                  return RFAILED;
+               }
+               pduLen--;
+               idx++;
+               memcpy(pdu, &rxDataPdu[idx], length);
+               pduLen -= length;
+               idx = idx + length;
 
-	 case MAC_LCID_MULT_PHR_FOUR_OCT :
-	    break;
+               /* Delete RA cb once RRC setup complete received */
+               if(macCb.macCell[cellIdx]->macRaCb[ueIdx].crnti == rxDataIndPdu->rnti)
+               {
+                  MAC_FREE(macCb.macCell[cellIdx]->macRaCb[ueIdx].msg4Pdu, \
+                        macCb.macCell[cellIdx]->macRaCb[ueIdx].msg4PduLen);
+                  MAC_FREE(macCb.macCell[cellIdx]->macRaCb[ueIdx].msg4TxPdu, \
+                        macCb.macCell[cellIdx]->macRaCb[ueIdx].msg4TbSize - TX_PAYLOAD_HDR_LEN);
+                  memset(&macCb.macCell[cellIdx]->macRaCb[ueIdx], 0, sizeof(MacRaCbInfo));
+               }
 
-	 case MAC_LCID_CFG_GRANT_CFM :
-	    break;
+               /* Send UL Data to RLC */
+               ret = macProcUlData(cellId, rxDataIndPdu->rnti, slotInfo, lcId, length, pdu);
 
-	 case MAC_LCID_MULT_PHR_ONE_OCT:
-	    break;
+               break;
+            }
+         case MAC_LCID_RESERVED_MIN ... MAC_LCID_RESERVED_MAX :
+            break;
 
-	 case MAC_LCID_SINGLE_PHR :
-	    break;
+         case MAC_LCID_CCCH_48BIT :
+            break;
 
-	 case MAC_LCID_CRNTI :
-	    break;
+         case MAC_LCID_BIT_RATE_QUERY :
+            break;
 
-	 case MAC_LCID_SHORT_TRUNC_BSR :
-	    break;
+         case MAC_LCID_MULT_PHR_FOUR_OCT :
+            break;
 
-	 case MAC_LCID_LONG_TRUNC_BSR :
-	    break;
+         case MAC_LCID_CFG_GRANT_CFM :
+            break;
 
-	 case MAC_LCID_SHORT_BSR :
-	    {
-	       uint8_t  lcgId         = 0;
-	       uint8_t  bufferSizeIdx = 0;
-	       uint8_t  crnti         = 0;
-	       uint32_t bufferSize    = 0;
+         case MAC_LCID_MULT_PHR_ONE_OCT:
+            break;
 
-	       pduLen--;
+         case MAC_LCID_SINGLE_PHR :
+            break;
 
-	       idx++;
-	       crnti = rxDataIndPdu->rnti;
-	       /* 5 LSB bits in pdu represent buffer size */
-	       bufferSizeIdx = (~((~0) << 5)) & rxDataPdu[idx];
-	       /* first 3 MSB bits in pdu represent LCGID */
-	       lcgId = (rxDataPdu[idx]) >> 5;
-	       /* determine actual number of bytes requested */
-	       bufferSize = shortBsrBytesTable[bufferSizeIdx];
-	       ret = macProcShortBsr(macCb.macCell[cellIdx]->cellId, crnti, lcgId, bufferSize);
-	       pduLen--;
-	       idx++;
-	
-	       break;
-	    }
+         case MAC_LCID_CRNTI :
+            break;
 
-	 case MAC_LCID_LONG_BSR :
-	    break;
+         case MAC_LCID_SHORT_TRUNC_BSR :
+            break;
 
-	 case MAC_LCID_PADDING :
-	    break;
-	 
-	 default:
-	    {
-	       DU_LOG("\nERROR  -->  MAC : Invalid LC Id %d", lcId);
-	       return RFAILED;
-	    }
+         case MAC_LCID_LONG_TRUNC_BSR :
+            break;
+
+         case MAC_LCID_SHORT_BSR :
+            {
+               uint8_t  lcgId         = 0;
+               uint8_t  bufferSizeIdx = 0;
+               uint8_t  crnti         = 0;
+               uint32_t bufferSize    = 0;
+
+               pduLen--;
+
+               idx++;
+               crnti = rxDataIndPdu->rnti;
+               /* 5 LSB bits in pdu represent buffer size */
+               bufferSizeIdx = (~((~0) << 5)) & rxDataPdu[idx];
+               /* first 3 MSB bits in pdu represent LCGID */
+               lcgId = (rxDataPdu[idx]) >> 5;
+               /* determine actual number of bytes requested */
+               bufferSize = shortBsrBytesTable[bufferSizeIdx];
+               ret = macProcShortBsr(macCb.macCell[cellIdx]->cellId, crnti, lcgId, bufferSize);
+               pduLen--;
+               idx++;
+
+               break;
+            }
+
+         case MAC_LCID_LONG_BSR :
+            {
+              DataVolInfo dataVolInfo[MAX_NUM_LOGICAL_CHANNEL_GROUPS];
+               memset(dataVolInfo, 0,MAX_NUM_LOGICAL_CHANNEL_GROUPS * sizeof(DataVolInfo));
+               uint8_t  lcgIdx        = 0;
+               uint8_t  crnti         = 0;
+               uint8_t  numLcg        = 0;
+               uint8_t  lcgIdxPos     = 0;
+               pduLen--;
+
+               idx++;
+               crnti = rxDataIndPdu->rnti;
+
+               lcgIdxPos = idx;
+               idx++;
+               DU_LOG("\nVS lcgIdxPos:%d,rxDataPdu[lcgIdxPos].lcgId:%d",lcgIdxPos,rxDataPdu[lcgIdxPos]);
+               for(lcgIdx = 0; lcgIdx < MAX_NUM_LOGICAL_CHANNEL_GROUPS; lcgIdx++)
+               {
+                  if(rxDataPdu[lcgIdxPos]  & (1 << lcgIdx))
+                  {
+                     if(rxDataPdu[idx] > 0 && rxDataPdu[idx] < MAX_LONG_BSR_TABLE_ENTRIES)
+                     {
+                          dataVolInfo[numLcg].dataVol = longBsrBytesTable[rxDataPdu[idx]];
+                          dataVolInfo[numLcg].lcgId = lcgIdx;
+                          numLcg++;
+
+                          DU_LOG("\nVS: idx:%d, numLcg:%d,rxDataPdu[idx]:%d,lcgIdx:%d",\
+                                          idx,numLcg,rxDataPdu[idx],lcgIdx);
+                     }
+                     else
+                     {
+                       DU_LOG("\nERROR  --> MAC: Invalid BsrIdx:%d rcvd for lcgIdx:%d",lcgIdx,rxDataPdu[idx]);
+                     }
+                     /*next byte in PDU*/
+                     idx++;
+                  }
+                  else
+                  {
+                     DU_LOG("\nDEBUG  --> MAC: lcgIdx:%d has 0 bsrIdx",lcgIdx);
+                  }
+               }
+
+               ret = macProcLongBsr(macCb.macCell[cellIdx]->cellId, crnti, numLcg, dataVolInfo);
+               pduLen--;
+               idx++;
+
+               break;
+            }
+
+         case MAC_LCID_PADDING :
+            break;
+
+         default:
+            {
+               DU_LOG("\nERROR  -->  MAC : Invalid LC Id %d", lcId);
+               return RFAILED;
+            }
       } /* End of switch */
 
       if(lcId == MAC_LCID_PADDING)
       {
-	 break;
+         break;
       }
    } /* End of While */
 

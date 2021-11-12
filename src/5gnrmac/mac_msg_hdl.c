@@ -657,6 +657,45 @@ uint8_t macProcShortBsr(uint16_t cellId, uint16_t crnti, uint8_t lcgId, uint32_t
 
 /*******************************************************************
  *
+ * @brief Processes received short BSR
+ *
+ * @details
+ *
+ *    Function : macProcShortBsr
+ *
+ *    Functionality:
+ *        MAC sends Short BSR to SCH
+ *
+ * @params[in] cell ID
+ *             crnti
+ *             lcg ID
+ *             buffer size
+ *
+ *
+ * ****************************************************************/
+uint8_t macProcLongBsr(uint16_t cellId, uint16_t crnti,uint8_t numLcg,\
+                         DataVolInfo dataVolInfo[MAX_NUM_LOGICAL_CHANNEL_GROUPS])
+{
+   Pst                  pst;
+   UlBufferStatusRptInd bsrInd;
+   uint8_t lcgIdx = 0;
+
+   memset(&pst, 0, sizeof(Pst));
+   memset(&bsrInd, 0, sizeof(UlBufferStatusRptInd));
+
+   bsrInd.cellId                 = cellId;
+   bsrInd.crnti                  = crnti;
+   bsrInd.bsrType                = LONG_BSR;
+   bsrInd.numLcg                 = numLcg; 
+
+    for(lcgIdx = 0; lcgIdx < numLcg; lcgIdx++)
+      memcpy(&(bsrInd.dataVolInfo[lcgIdx]), &(dataVolInfo[lcgIdx]), sizeof(DataVolInfo));
+
+   FILL_PST_MAC_TO_SCH(pst, EVENT_LONG_BSR);
+   return(*macSchBsrOpts[pst.selector])(&pst, &bsrInd);
+}
+/*******************************************************************
+ *
  * @brief Builds and send SR UCI Indication to SCH
  *
  * @details
