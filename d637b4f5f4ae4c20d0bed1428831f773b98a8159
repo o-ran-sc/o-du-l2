@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "20d4d6e9_94b7ad17",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-11-12T08:57:45Z",
+      "side": 1,
+      "message": "Patch 1: LONG BSR changes",
+      "revId": "d637b4f5f4ae4c20d0bed1428831f773b98a8159",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
