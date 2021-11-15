@@ -1024,7 +1024,7 @@ uint8_t MacSchUeDeleteReq(Pst *pst, SchUeDelete  *ueDelete)
        if(( cellCb->ueCb[ueId-1].crnti == ueDelete->crnti) && ( cellCb->ueCb[ueId-1].state == SCH_UE_STATE_ACTIVE))
        {
           deleteSchUeCb(&cellCb->ueCb[ueId-1]);
-
+          ueIdToDel  = ueId;
           /* Remove UE from ueToBeScheduled list */
           node = cellCb->ueToBeScheduled.first;
           while(node)
@@ -1034,7 +1034,7 @@ uint8_t MacSchUeDeleteReq(Pst *pst, SchUeDelete  *ueDelete)
              if(ueId == ueIdToDel)
              {
                 SCH_FREE(node->node, sizeof(uint8_t));
-                cmLListDelFrm(&cellCb->ueToBeScheduled, node);
+                deleteNodeFromLList(&cellCb->ueToBeScheduled, node);
                 break;
              }
              node = next;
@@ -1175,6 +1175,7 @@ void deleteSchCellCb(SchCellCb *cellCb)
       next = node->next;
       SCH_FREE(node->node, sizeof(uint8_t));
       cmLListDelFrm(&cellCb->ueToBeScheduled, node);
+      SCH_FREE(node, sizeof(CmLList));
       node = next;
    }
 

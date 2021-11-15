@@ -889,8 +889,6 @@ uint8_t egtpSendMsg(Buffer *mBuf)
       return RFAILED;
    }
 
-   DU_LOG("\nDEBUG   -->  EGTP : Message Sent");
-
    return ROK;
 }
 
@@ -936,6 +934,7 @@ uint8_t egtpRecvMsg()
          //ODU_PRINT_MSG(recvBuf, 0 ,0);
          egtpHdlRecvData(recvBuf);
          gDlDataRcvdCnt++;
+         
       }
    }
    

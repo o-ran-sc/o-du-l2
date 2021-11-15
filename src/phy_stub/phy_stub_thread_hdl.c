@@ -144,6 +144,10 @@ void *l1ConsoleHandler(void *args)
    char ch, ch1;
    uint8_t drbIdx = 0, lcgIdx = 0, ueIdx = 0;
    LcgBufferSize lcgBS[MAX_NUM_LOGICAL_CHANNEL_GROUPS];
+   /* The below variable is taken for sending specific number of UL Packets  
+    * For sendind 4500 Ul packets for three UEs the calculation of
+    * [counter * NUM_DRB_TO_PUMP_DATA * MAX_NUM_UE * NUM_UL_PACKETS] must be equal to 4500 */
+   uint32_t counter=500; 
 
    while(true)
    {
@@ -151,11 +155,21 @@ void *l1ConsoleHandler(void *args)
       ch = getchar();
       if(ch == 'd')
       {
-         /* Start Pumping data from PHY stub to DU */
-         for(drbIdx = 0; drbIdx < NUM_DRB_TO_PUMP_DATA; drbIdx++) //Number of DRB times the loop will run
+         while(counter)
          {
-            DU_LOG("\nDEBUG  --> PHY STUB: Sending UL User Data[DrbId:%d]",drbIdx);
-            l1SendUlUserData(drbIdx);
+            /* Start Pumping data from PHY stub to DU */
+            for(drbIdx = 0; drbIdx < NUM_DRB_TO_PUMP_DATA; drbIdx++) //Number of DRB times the loop will run
+            {
+               for(ueIdx=0; ueIdx<MAX_NUM_UE; ueIdx++)
+               {
+                  DU_LOG("\nDEBUG  --> PHY STUB: Sending UL User Data[DrbId:%d] for UEId %d\n",drbIdx,ueIdx);
+                  l1SendUlUserData(drbIdx,ueIdx);
+                  /* TODO :- sleep(1) will be removed once we will be able to
+                   * send continuous data packet */
+                  sleep(1);
+               }
+            }
+            counter--;
          }
       }
       else if(ch =='c')

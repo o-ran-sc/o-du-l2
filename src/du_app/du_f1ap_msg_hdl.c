@@ -11328,6 +11328,10 @@ uint8_t BuildAndSendUeCtxtRsp(uint8_t cellId, uint8_t ueIdx)
       case UE_CTXT_MOD:
          {
             BuildAndSendUeContextModRsp(cellId, ueIdx);
+            if(ueIdx == 3)
+            {
+               // BuildAndSendDUConfigUpdate(SERV_CELL_TO_DELETE);
+            }
             break;
          }
       default:
@@ -12194,7 +12198,7 @@ void freeAperDecodeGnbDuAck(GNBDUConfigurationUpdateAcknowledge_t *gnbDuAck)
 uint8_t duProcGnbDuCfgUpdAckMsg(uint8_t transId)
 {
    uint8_t  ieIdx=0, arrIdx=0,ret=ROK;
-   uint8_t  ueId =0 , ueIdx =0;
+   uint8_t  ueId =0 , ueIdx =0, totalActiveUe = 0;
    uint16_t cellId =0, cellIdx =0, crnti=0;
    CmLList *f1apPduNode = NULLP;
    ReservedF1apPduInfo *f1apPduInfo =NULLP;
@@ -12246,28 +12250,38 @@ uint8_t duProcGnbDuCfgUpdAckMsg(uint8_t transId)
                            ret = duSendCellDeletReq(cellId);
                            if(ret == RFAILED)
                            {
-                              DU_LOG("ERROR  --> DU_APP : duProcGnbDuCfgUpdAckMsg(): Failed to send cell delete\
+                              DU_LOG("\nERROR  --> DU_APP : duProcGnbDuCfgUpdAckMsg(): Failed to send cell delete\
                               request for cellId[%d]", cellId);
                            }
                         }
                         else
                         {
-                           for(ueIdx = 0; ueIdx < duCb.actvCellLst[cellIdx]->numActvUes; ueIdx++)
+                           totalActiveUe = duCb.actvCellLst[cellIdx]->numActvUes;
+                           while(totalActiveUe)
                            {
+                              if(duCb.actvCellLst[cellIdx]->ueCb[ueIdx].ueState != UE_ACTIVE)
+                              {
+                                 ueIdx++;
+                                 continue;
+                              }
+
                               crnti = duCb.actvCellLst[cellIdx]->ueCb[ueIdx].crnti;
                               GET_UE_IDX(crnti,ueId);
+                              /* Sending Ue Context release request only for maximum supporting UEs */
                               ret = BuildAndSendUeContextReleaseReq(cellId, ueId);
                               if(ret == RFAILED)
                               {
-                                 DU_LOG("ERROR  --> DU_APP : duProcGnbDuCfgUpdAckMsg(): Failed to build and send UE delete\
+                                 DU_LOG("\nERROR  --> DU_APP : duProcGnbDuCfgUpdAckMsg(): Failed to build and send UE delete\
                                  request for cellId[%d]", cellId);
                               }
+                              ueIdx++;
+                              totalActiveUe--;
                            }
                         }
                      }
                      else
                      {
-                        DU_LOG("ERROR  --> DU_APP : duProcGnbDuCfgUpdAckMsg(): CellId [%d] not found", cellId);
+                        DU_LOG("\nERROR  --> DU_APP : duProcGnbDuCfgUpdAckMsg(): CellId [%d] not found", cellId);
                         ret = RFAILED;
                      }
                      break;
@@ -13478,7 +13492,7 @@ uint8_t BuildAndSendUeContextReleaseComplete(uint16_t cellId, uint32_t gnbCuUeF1
       break;
    }while(true);
    
-   if(ret == ROK)
+   if(ret == ROK && (duCb.actvCellLst[cellId-1]->numActvUes == 0))
    {
       duCb.actvCellLst[cellId-1]->cellStatus = DELETION_IN_PROGRESS;
       ret = duSendCellDeletReq(cellId);
@@ -13603,7 +13617,7 @@ uint8_t procF1UeContextReleaseCommand(F1AP_PDU_t *f1apMsg)
                   {
                      for(cellIdx = 0; cellIdx < duCb.numActvCells; cellIdx++)
                      {
-                        for(ueIdx = 0; ueIdx < duCb.actvCellLst[cellIdx]->numActvUes; ueIdx++)
+                        for(ueIdx = 0; ueIdx < MAX_NUM_UE; ueIdx++)
                         {
                            if((duCb.actvCellLst[cellIdx]->ueCb[ueIdx].gnbDuUeF1apId == gnbDuUeF1apId)&&\
                                  (duCb.actvCellLst[cellIdx]->ueCb[ueIdx].gnbCuUeF1apId == gnbCuUeF1apId))
@@ -13652,7 +13666,7 @@ uint8_t procF1UeContextReleaseCommand(F1AP_PDU_t *f1apMsg)
                      }
                      if(!ueIdxFound)
                      {
-                        DU_LOG("\nERROR  -->  F1AP: DuUeCb is not found at procF1UeContextSetupReq()");
+                        DU_LOG("\nERROR  -->  F1AP: DuUeCb is not found at procF1UeContextReleaseCommand()");
                         ret = RFAILED;
                      }
 

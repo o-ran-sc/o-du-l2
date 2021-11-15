@@ -1326,7 +1326,7 @@ S16 l1HdlUlDciReq(uint16_t msgLen, void *msg)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t l1SendUlUserData(uint8_t drbId)
+uint8_t l1SendUlUserData(uint8_t drbId, uint8_t ueIdx)
 {
    uint8_t cnt = 0;
    fapi_rx_data_indication_t *rxDataInd;
@@ -1352,8 +1352,8 @@ uint8_t l1SendUlUserData(uint8_t drbId)
 
    /* TODO : Fill pduInfo using PUSCH PDU. Currently hardcoding */
    pduInfo = &rxDataInd->pdus[idx];
-   pduInfo->handle = 100;
-   pduInfo->rnti = 100;
+   pduInfo->handle = ueIdx + ODU_START_CRNTI;
+   pduInfo->rnti = ueIdx + ODU_START_CRNTI;
    pduInfo->harqId = 1;
    /* Since user data size = 50bytes and 2 bytes of MAC header and 3 byte of RLC header, 
     * setting tbsize = 56 from Table 5.1.3.2-1 spec 38.214 */
