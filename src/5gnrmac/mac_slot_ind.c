@@ -199,7 +199,7 @@ void fillMsg4Pdu(uint16_t cellId, DlMsgSchInfo *msg4SchInfo)
    }
    else
    {
-      DU_LOG("\nERROR  -->  MAC: Failed at macMuxPdu()");
+      DU_LOG("\nERROR  -->  MAC: Failed at fillMsg4Pdu()");
    }
 }
 

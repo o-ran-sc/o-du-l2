@@ -89,7 +89,7 @@ void procPhyMessages(uint16_t msgType, uint32_t msgSize, void *msg);
 void l1StartConsoleHandler();
 void l1HdlSlotIndicaion(bool);
 void GenerateTicks();
-uint8_t l1SendUlUserData(uint8_t drbId);
+uint8_t l1SendUlUserData(uint8_t drbId, uint8_t ueIdx);
 uint8_t l1SendStatusPdu();
 uint16_t l1BuildAndSendSlotIndication();
 uint16_t l1BuildAndSendStopInd();

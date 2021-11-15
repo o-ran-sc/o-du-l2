@@ -40,12 +40,12 @@ extern "C" {
 #endif /* __cplusplus */
 /*MCELL changes*/
 #ifdef LTE_PAL_ENB
-#define L2_STATS_MAX_CELLS 5
+#define L2_STATS_MAX_CELLS 1
 #else
-#define L2_STATS_MAX_CELLS 5
+#define L2_STATS_MAX_CELLS 1
 #endif
 #ifndef XEON_SPECIFIC_CHANGES   
-#define L2_STATS_MAX_UES   300
+#define L2_STATS_MAX_UES   10
 #define L2_STATS_MAX_RNTIS 500
 #else
 #define L2_STATS_MAX_UES   TENB_MAX_UE_SUPPORTED /* ANOOP changed */

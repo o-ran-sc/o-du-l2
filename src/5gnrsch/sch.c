@@ -1095,6 +1095,12 @@ uint8_t MacSchSrUciInd(Pst *pst, SrUciIndInfo *uciInd)
    DU_LOG("\nDEBUG  -->  SCH : Received SR");
 
    ueCb = schGetUeCb(cellCb, uciInd->crnti);
+   
+   if(ueCb->state == SCH_UE_STATE_INACTIVE)
+   {
+      DU_LOG("\nERROR  -->  SCH : Crnti %d is inactive", uciInd->crnti);
+      return ROK;  
+   }
 
    if(uciInd->numSrBits)
    {
@@ -1275,8 +1281,15 @@ uint8_t allocatePrbUl(SchCellCb *cell, SlotTimingInfo slotTime, \
    bool           isPrachOccasion;
    FreePrbBlock   *freePrbBlock = NULLP;
    CmLList        *freePrbNode = NULLP;
-   SchPrbAlloc    *prbAlloc = &cell->schUlSlotInfo[slotTime.slot]->prbAlloc;
+   SchPrbAlloc    *prbAlloc = NULLP;
 
+   if(cell == NULLP)
+   {
+      DU_LOG("\nERROR  --> SCH : allocatePrbUl(): Received cellCb is null");
+      return RFAILED;
+   }
+   
+   prbAlloc =   &cell->schUlSlotInfo[slotTime.slot]->prbAlloc;
    /* If startPrb is set to MAX_NUM_RB, it means startPrb is not known currently.
     * Search for an appropriate location in PRB grid and allocate requested resources */
    if(*startPrb == MAX_NUM_RB)

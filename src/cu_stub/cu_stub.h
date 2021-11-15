@@ -50,7 +50,6 @@
    SPutSBuf(CU_APP_MEM_REG, CU_POOL,                         \
          (Data *)_datPtr, _size);
 
-
 typedef struct ipAddr
 {
  Bool      ipV4Pres;
