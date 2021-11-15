@@ -96,6 +96,13 @@ typedef enum
    CREATE,
    DELETE
 }ActionTypeLcLL;
+
+typedef enum
+{
+   DIR_UL,
+   DIR_DL
+}Direction;
+
 /**
  * @brief
  * Structure holding LTE MAC's General Configuration information.
@@ -372,8 +379,6 @@ uint8_t pdschStartSymbol, uint8_t pdschNumSymbols);
 uint16_t schAccumalateLcBoSize(SchCellCb *cell, uint16_t ueIdx);
 uint8_t allocatePrbDl(SchCellCb *cell, SlotTimingInfo slotTime, uint8_t startSymbol, uint8_t symbolLength, \
    uint16_t *startPrb, uint16_t numPrb);
-uint16_t searchLargestFreeBlockDL(SchCellCb *cell, SlotTimingInfo slotTime,uint16_t *startPrb);
-void updateGrantSizeForBoRpt(CmLListCp *lcLL, DlMsgAlloc *dlMsgAlloc, uint32_t *accumalatedBOSize);
 void fillDlMsgInfo(DlMsgInfo *dlMsgInfo, uint8_t crnti);
 bool findValidK0K1Value(SchCellCb *cell, SlotTimingInfo currTime, uint8_t ueId, bool dedMsg, uint8_t *pdschStartSymbol,\
 uint8_t *pdschSymblLen, SlotTimingInfo *pdcchTime,  SlotTimingInfo *pdschTime, SlotTimingInfo *pucchTime);
@@ -385,15 +390,21 @@ uint8_t schCalcPrachNumRb(SchCellCb *cell);
 void schPrachResAlloc(SchCellCb *cell, UlSchedInfo *ulSchedInfo, SlotTimingInfo prachOccasionTimingInfo);
 uint16_t schAllocPucchResource(SchCellCb *cell, SlotTimingInfo pucchTime, uint16_t crnti);
 uint8_t schFillUlDci(SchUeCb *ueCb, SchPuschInfo *puschInfo, DciInfo *dciInfo);
-uint8_t schFillPuschAlloc(SchUeCb *ueCb, SlotTimingInfo puschTime, uint32_t dataVol, uint8_t k2, uint8_t startSymb, uint8_t symbLen);
+uint8_t schFillPuschAlloc(SchUeCb *ueCb, SlotTimingInfo puschTime, uint32_t tbsSize, \
+                           uint8_t startSymb, uint8_t symbLen, uint16_t startPrb);
 uint8_t allocatePrbUl(SchCellCb *cell, SlotTimingInfo slotTime, uint8_t startSymbol, uint8_t symbolLength, \
    uint16_t *startPrb, uint16_t numPrb);
 bool schProcessSrOrBsrReq(SchCellCb *cell, SlotTimingInfo currTime, uint8_t ueId);
+bool schCalculateUlTbs(SchUeCb *ueCb, SlotTimingInfo puschTime, uint8_t symbLen,\
+                             uint16_t *startPrb, uint32_t *totTBS);
 
 /*Generic Functions*/
+void updateGrantSizeForBoRpt(CmLListCp *lcLL, DlMsgAlloc *dlMsgAlloc, BsrInfo *bsrInfo, uint32_t *accumalatedBOSize);
+uint16_t searchLargestFreeBlock(SchCellCb *cell, SlotTimingInfo slotTime,uint16_t *startPrb, Direction dir);
 LcInfo* handleLcLList(CmLListCp *lcLL, uint8_t lcId, ActionTypeLcLL action);
 void prbAllocUsingRRMPolicy(CmLListCp *lcLL, bool dedicatedPRB, uint16_t mcsIdx,uint8_t numSymbols,\
-                             uint16_t *sharedPRB, uint16_t *reservedPRB, bool *isTxPayloadLenAdded);
+                      uint16_t *sharedPRB, uint16_t *reservedPRB, bool *isTxPayloadLenAdded, bool *srRcvd);
+void updateBsrAndLcList(CmLListCp *lcLL, BsrInfo *bsrInfo, uint8_t status);
 
 /**********************************************************************
   End of file

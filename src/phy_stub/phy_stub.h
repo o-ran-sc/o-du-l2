@@ -36,6 +36,13 @@ bool     slotIndicationStarted;
 uint16_t sfnValue;
 uint16_t slotValue;
 
+/*Mapping between LCG ID and BSR Idx*/
+typedef struct lcgBufferSize
+{
+   uint8_t lcgId;
+   uint8_t bsIdx;
+}LcgBufferSize;
+
 /* UE specific information */
 typedef struct ueCb
 {
@@ -80,6 +87,10 @@ void procPhyMessages(uint16_t msgType, uint32_t msgSize, void *msg);
 void l1StartConsoleHandler();
 void l1HdlSlotIndicaion(bool);
 void GenerateTicks();
+uint8_t l1SendUlUserData(uint8_t drbId);
+uint8_t l1SendStatusPdu();
+uint16_t l1BuildAndSendSlotIndication();
+uint16_t l1BuildAndSendStopInd();
 
 /**********************************************************************
          End of file

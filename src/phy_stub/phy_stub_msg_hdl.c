@@ -1586,6 +1586,150 @@ void l1ProcessFapiRequest(uint8_t msgType, uint32_t msgLen, void *msg)
 #endif
    }
 }
+
+#ifdef INTEL_FAPI
+/*******************************************************************
+ *
+ * @brief Builds and Send the BSR message to MAC
+ *
+ * @details
+ *
+ *    Function : l1BuildAndSendBSR
+ *
+ *   Functionality:
+ *          -Send the BSR Message to MAC
+ *
+ * @params[in]  BSR type 
+ *              array of LCGID and BSIdx
+ * @return void
+ *
+ *****************************************************************/
+uint16_t l1BuildAndSendBSR(uint16_t crnti, BsrType bsrType,\
+             LcgBufferSize lcgBsIdx[MAX_NUM_LOGICAL_CHANNEL_GROUPS])
+{
+   fapi_rx_data_indication_t *rxDataInd;
+   fapi_pdu_ind_info_t       *pduInfo;
+   uint8_t  *pdu = NULLP;
+   uint16_t byteIdx = 0;
+   uint32_t msgLen = 0;
+   uint8_t pduIdx = 0, lcgIdx = 0, lcgIdxPos = 0;
+
+   MAC_ALLOC(rxDataInd, sizeof(fapi_rx_data_indication_t));
+   if(!rxDataInd)
+   {
+      DU_LOG("\nERROR  -->  PHY_STUB: Memory allocation failed for Rx Data Indication");
+      return RFAILED;
+   }
+   memset(rxDataInd, 0, sizeof(fapi_rx_data_indication_t));
+
+   msgLen = sizeof(fapi_rx_data_indication_t) - sizeof(fapi_msg_t);
+   rxDataInd->sfn = 0;
+   rxDataInd->slot = 0;
+   rxDataInd->numPdus = 1;
+
+   pduInfo = &rxDataInd->pdus[pduIdx];
+   pduInfo->handle = 100;
+   pduInfo->rnti = crnti;
+   pduInfo->harqId = 1;
+
+   /* Since status pdu size = 3bytes and 2 bytes of MAC header,
+    * setting tbsize = 24 from Table 5.1.3.2-1 spec 38.214 */
+   pduInfo->pdu_length = 24;
+   pduInfo->ul_cqi = 0;
+   pduInfo->timingAdvance = 0;
+   pduInfo->rssi = 0;
+
+   /* Filling pdu with random values for testing */
+   pduInfo->pduData = NULL;
+   MAC_ALLOC(pduInfo->pduData, pduInfo->pdu_length);
+   if(!pduInfo->pduData)
+   {
+      DU_LOG("\nERROR  -->  PHY_STUB: Memory allocation failed for Rx Data Pdu");
+      MAC_FREE(rxDataInd, sizeof(fapi_rx_data_indication_t));
+      return RFAILED;
+   }
+
+   /* Filling PDU */
+   pdu = (uint8_t *)pduInfo->pduData;
+
+   switch(bsrType)
+   {
+      case SHORT_BSR:
+         {
+            DU_LOG("\nDEBUG  -->  PHY_STUB: Forming SHORT BSR PDU ");
+
+            /* For Short BSR
+             * MAC subheader format is R/R/LcId (1Byte)
+             * LCId is 61
+             * From 38.321 section 6.1.1
+             */
+            pdu[byteIdx++] = 61;    // LCID
+            pdu[byteIdx++] = (lcgBsIdx[0].lcgId << 5) | lcgBsIdx[0].bsIdx;
+            break;
+         }
+
+      case LONG_BSR:
+         {
+            DU_LOG("\nDEBUG  -->  PHY_STUB: Forming LONG BSR PDU ");
+
+            /* For Long BSR
+             * MAC subheader format is R/R/LcId (1Byte)
+             * LCId is 62
+             * From 38.321 section 6.1.1
+             */
+            pdu[byteIdx++] = 62;    // LCID
+
+            /*Octet where lcgId bitmap will be present*/
+            lcgIdxPos = byteIdx;
+            byteIdx++;
+            for(lcgIdx = 0; lcgIdx < MAX_NUM_LOGICAL_CHANNEL_GROUPS; lcgIdx++)
+            {
+               if(lcgBsIdx[lcgIdx].bsIdx > 0)
+               {
+                  pdu[lcgIdxPos] |= 1 << lcgBsIdx[lcgIdx].lcgId;
+                  pdu[byteIdx++] = lcgBsIdx[lcgIdx].bsIdx;
+               }
+            }
+
+            break;
+         }
+
+      default:
+         {
+            DU_LOG("\nERROR  -->  PHY_STUB: Incorrect BSR type:%d!", bsrType);
+            if(pduInfo->pdu_length)
+               MAC_FREE(pduInfo->pduData, pduInfo->pdu_length);
+            MAC_FREE(rxDataInd, sizeof(fapi_rx_data_indication_t));
+            return RFAILED;
+         }
+   }
+   /* Filling MAC SDU for Padding bytes*/
+   if(byteIdx < pduInfo->pdu_length)
+   {
+      /* For Padding
+       * MAC subheader format is R/R/LCId (1byte)
+       * LCId is 63 for padding
+       * From 38.321 section 6.1.1
+       */
+      pdu[byteIdx++] = 63;
+
+      for(; byteIdx < pduInfo->pdu_length; byteIdx++)
+         pdu[byteIdx] = 0;
+   }
+   msgLen += pduInfo->pdu_length;
+   fillMsgHeader(&rxDataInd->header, FAPI_RX_DATA_INDICATION, msgLen);
+
+   /* Sending Rx data indication to MAC */
+   DU_LOG("\nINFO   -->  PHY STUB: Sending Rx data Indication to MAC");
+   procPhyMessages(rxDataInd->header.msg_id, sizeof(fapi_rx_data_indication_t), (void *)rxDataInd);
+
+   if(pduInfo->pdu_length)
+      MAC_FREE(pduInfo->pduData, pduInfo->pdu_length);
+   MAC_FREE(rxDataInd, sizeof(fapi_rx_data_indication_t));
+   return ROK;
+}
+#endif
+
 /**********************************************************************
   End of file
  **********************************************************************/
