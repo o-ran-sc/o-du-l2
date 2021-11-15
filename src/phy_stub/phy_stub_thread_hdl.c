@@ -25,11 +25,10 @@
 #include "fapi_vendor_extension.h"
 #endif
 #include "phy_stub.h"
+#include "mac_sch_interface.h"
 
-uint8_t l1SendUlUserData();
-uint8_t l1SendStatusPdu();
-uint16_t l1BuildAndSendSlotIndication();
-uint16_t l1BuildAndSendStopInd();
+extern uint16_t l1BuildAndSendBSR(uint8_t ueIdx, BsrType bsrType,\
+             LcgBufferSize lcgBsIdx[MAX_NUM_LOGICAL_CHANNEL_GROUPS]);
 pthread_t thread = 0;
 
 /*******************************************************************
@@ -142,13 +141,15 @@ void l1HdlSlotIndicaion(bool stopSlotInd)
  * ****************************************************************/
 void *l1ConsoleHandler(void *args)
 {
-   char ch;
-   uint8_t drbIdx = 0;
+   char ch, ch1;
+   uint8_t drbIdx = 0, lcgIdx = 0, ueIdx = 0;
+   LcgBufferSize lcgBS[MAX_NUM_LOGICAL_CHANNEL_GROUPS];
 
    while(true)
    {
       /* Send UL user data to DU when user enters 'd' on console */
-      if((ch = getchar()) == 'd')
+      ch = getchar();
+      if(ch == 'd')
       {
          /* Start Pumping data from PHY stub to DU */
          for(drbIdx = 0; drbIdx < NUM_DRB_TO_PUMP_DATA; drbIdx++) //Number of DRB times the loop will run
@@ -157,11 +158,37 @@ void *l1ConsoleHandler(void *args)
             l1SendUlUserData(drbIdx);
          }
       }
-      else if((ch = getchar()) == 'c')
+      else if(ch =='c')
       {
          /* Send Control PDU from PHY stub to DU */
-          DU_LOG("\nDEBUG  --> PHY STUB: Sending Status PDU");
-	       l1SendStatusPdu();
+         DU_LOG("\nDEBUG  --> PHY STUB: Sending Status PDU");
+         l1SendStatusPdu();
+      }
+      else if(ch == 'b')
+      {
+         memset(lcgBS, 0, (MAX_NUM_LOGICAL_CHANNEL_GROUPS * sizeof(LcgBufferSize)));
+         /* Send Control PDU from PHY stub to DU */
+         ch1 = getchar();
+         for(ueIdx = 0; ueIdx < MAX_NUM_UE; ueIdx++)
+         {
+            if(ch1 == 'l')
+            {
+               for(lcgIdx = 0; lcgIdx < NUM_DRB_TO_PUMP_DATA; lcgIdx++)
+               {
+                  lcgBS[lcgIdx].lcgId = MIN_DRB_LCID + lcgIdx;
+                  lcgBS[lcgIdx].bsIdx = lcgIdx + 1;
+               }
+               l1BuildAndSendBSR(ueIdx, LONG_BSR, lcgBS);
+            }
+            else if(ch1 == 's')
+            {
+               lcgIdx = 0;
+
+               lcgBS[lcgIdx].lcgId = MIN_DRB_LCID + lcgIdx;
+               lcgBS[lcgIdx].bsIdx = lcgIdx + 1;
+               l1BuildAndSendBSR(ueIdx, SHORT_BSR, lcgBS);
+            }
+         }
       }
       DU_LOG("\n");
       continue;

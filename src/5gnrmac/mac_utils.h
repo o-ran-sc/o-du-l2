@@ -19,6 +19,7 @@
 /* Contains common utility definitions to be used at MAC */
 
 #define MAX_SHORT_BSR_TABLE_ENTRIES 32
+#define MAX_LONG_BSR_TABLE_ENTRIES  256
 #define MAC_MEM_REGION   4
 #define MAC_POOL         1
 
@@ -146,6 +147,7 @@
 /* Function declaration */
 uint16_t getNewCrnti(uint8_t *crntiMap);
 uint32_t shortBsrBytesTable[MAX_SHORT_BSR_TABLE_ENTRIES];
+uint32_t longBsrBytesTable[MAX_LONG_BSR_TABLE_ENTRIES];
 /**********************************************************************
          End of file
 **********************************************************************/

@@ -36,6 +36,15 @@ bool     slotIndicationStarted;
 uint16_t sfnValue;
 uint16_t slotValue;
 
+/*Mapping between LCG ID and BSR Idx*/
+typedef struct lcgBufferSize
+{
+   uint8_t lcgId;   /*LCG ID for which BSR will be requested*/
+   /*BufferStatus Index. This is as per Spec 38.321, BSR will be reported as Index 
+    * Refer table Table 6.1.3.1-1:Short_BSR and Table 6.1.3.1-2:Long_BSR*/
+   uint8_t bsIdx;
+}LcgBufferSize;
+
 /* UE specific information */
 typedef struct ueCb
 {
@@ -80,6 +89,10 @@ void procPhyMessages(uint16_t msgType, uint32_t msgSize, void *msg);
 void l1StartConsoleHandler();
 void l1HdlSlotIndicaion(bool);
 void GenerateTicks();
+uint8_t l1SendUlUserData(uint8_t drbId);
+uint8_t l1SendStatusPdu();
+uint16_t l1BuildAndSendSlotIndication();
+uint16_t l1BuildAndSendStopInd();
 
 /**********************************************************************
          End of file

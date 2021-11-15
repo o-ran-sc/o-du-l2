@@ -1813,7 +1813,7 @@ uint8_t procInitULRRCMsg(F1AP_PDU_t *f1apMsg)
    uint8_t idx, rrcMsgType, gnbDuUeF1apId;
    uint8_t ret =ROK;
    InitialULRRCMessageTransfer_t *initULRRCMsg = NULLP;
-   DU_LOG("\nINFO -->  F1AP : filling the required values in DB in procInitULRRCMsg");
+   DU_LOG("\nINFO   -->  F1AP : filling the required values in DB in procInitULRRCMsg");
 
    initULRRCMsg = &f1apMsg->choice.initiatingMessage->value.choice.InitialULRRCMessageTransfer;
 

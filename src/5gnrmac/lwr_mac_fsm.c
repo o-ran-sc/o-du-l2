@@ -3463,7 +3463,6 @@ uint16_t fillDlTtiReq(SlotTimingInfo currTimingInfo)
                      pduIndex++;
                      numPduEncoded++;
                   }
-
                   DU_LOG("\033[1;34m");
                   DU_LOG("\nDEBUG  -->  LWR_MAC: SIB1 sent...");
                   DU_LOG("\033[0m");
@@ -3705,7 +3704,7 @@ uint16_t sendTxDataReq(SlotTimingInfo currTimingInfo, DlSchedInfo *dlInfo, p_fap
             for(schInfoIdx=0; schInfoIdx < dlInfo->dlMsgAlloc[ueIdx]->numSchedInfo; schInfoIdx++)
             {
                if((dlInfo->dlMsgAlloc[ueIdx]->dlMsgSchedInfo[schInfoIdx].pduPres == BOTH) || \
-                  (dlInfo->dlMsgAlloc[ueIdx]->dlMsgSchedInfo[schInfoIdx].pduPres == PDSCH_PDU))
+                     (dlInfo->dlMsgAlloc[ueIdx]->dlMsgSchedInfo[schInfoIdx].pduPres == PDSCH_PDU))
                {
                   fillDlMsgTxDataReq(txDataReq->pdu_desc, pduIndex, \
                         &dlInfo->dlMsgAlloc[ueIdx]->dlMsgSchedInfo[schInfoIdx].dlMsgInfo, \
