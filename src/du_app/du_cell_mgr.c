@@ -356,13 +356,6 @@ uint8_t duSendCellDeletReq(uint16_t cellId)
       return RFAILED;  
    }
 
-   if(duCb.actvCellLst[cellIdx]->numActvUes)
-   {
-      DU_LOG("\nERROR  -->  DU APP : duSendCellDeletReq(): Active UEs still present in cellId[%d].\
-      Failed to delete cell", cellId);
-      return RFAILED;
-   }
-
    if(duBuildAndSendMacCellStop(cellId) == RFAILED)
    {
       DU_LOG("\nERROR  -->  DU APP : duSendCellDeletReq(): Failed to build and send cell stop request to MAC for\

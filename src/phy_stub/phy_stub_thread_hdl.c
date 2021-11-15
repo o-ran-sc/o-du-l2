@@ -142,19 +142,31 @@ void l1HdlSlotIndicaion(bool stopSlotInd)
  * ****************************************************************/
 void *l1ConsoleHandler(void *args)
 {
-   char ch;
+   char ch = 'd';
    uint8_t drbIdx = 0;
+   uint8_t rntiId = 0;
+   /* The below variable is taken for sending specific number of UL Packets  
+    * For sendind 1800 Ul packets for three UEs the calculation of
+    * [counter * NUM_DRB_TO_PUMP_DATA * MAX_NUM_UE * NUM_UL_PACKETS] must be equal to 1800 */
+   uint32_t counter=200; 
 
    while(true)
    {
       /* Send UL user data to DU when user enters 'd' on console */
       if((ch = getchar()) == 'd')
       {
-         /* Start Pumping data from PHY stub to DU */
-         for(drbIdx = 0; drbIdx < NUM_DRB_TO_PUMP_DATA; drbIdx++) //Number of DRB times the loop will run
+         while(counter)
          {
-            DU_LOG("\nDEBUG  --> PHY STUB: Sending UL User Data[DrbId:%d]",drbIdx);
-            l1SendUlUserData(drbIdx);
+            /* Start Pumping data from PHY stub to DU */
+            for(drbIdx = 0; drbIdx < NUM_DRB_TO_PUMP_DATA; drbIdx++) //Number of DRB times the loop will run
+            {
+               for(rntiId=0;rntiId<MAX_NUM_UE;rntiId++)
+               {
+                  DU_LOG("\nDEBUG  --> PHY STUB: Sending UL User Data[DrbId:%d] for UEId %d\n",drbIdx,rntiId);
+                  l1SendUlUserData(drbIdx,rntiId);
+               }
+            }
+            counter--;
          }
       }
       else if((ch = getchar()) == 'c')

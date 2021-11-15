@@ -870,6 +870,7 @@ uint8_t egtpEncodeHdr(uint8_t *preEncodedHdr, EgtpMsgHdr *preDefHdr, uint8_t *hd
  * ****************************************************************/
 uint8_t egtpSendMsg(Buffer *mBuf)
 {
+   static uint32_t duCount = 0; /* This is variable for sending specific number of data packet */
    uint8_t        ret;
    uint16_t       txLen;
    CmInetMemInfo  info;
@@ -888,8 +889,15 @@ uint8_t egtpSendMsg(Buffer *mBuf)
       DU_LOG("\nERROR  -->  EGTP : Failed sending the message");
       return RFAILED;
    }
-
-   DU_LOG("\nDEBUG   -->  EGTP : Message Sent");
+   
+   /* 1800 is taken as a reference that all the packets are sent sucessfully  
+    * once we have sent all successful packets we can enable cell down use
+    * case for complete testing */
+   if(duCount == 1800)
+   {
+      BuildAndSendDUConfigUpdate(SERV_CELL_TO_DELETE);
+   }
+   duCount++;
 
    return ROK;
 }
@@ -936,6 +944,15 @@ uint8_t egtpRecvMsg()
          //ODU_PRINT_MSG(recvBuf, 0 ,0);
          egtpHdlRecvData(recvBuf);
          gDlDataRcvdCnt++;
+         
+         /* 1800 is taken as a reference that all the packets are received sucessfully  
+          * once we have received all successful packets we can enable cell down use
+          * case for complete testing */
+         if(gDlDataRcvdCnt == 1800)
+         {
+            BuildAndSendDUConfigUpdate(SERV_CELL_TO_DELETE);
+            break;
+         }
       }
    }
    

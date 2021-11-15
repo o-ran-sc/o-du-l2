@@ -243,6 +243,11 @@ void *cuConsoleHandler(void *args)
    uint8_t ret = ROK;
    uint8_t cnt = 0;
 
+   /* This variable is taken for sending specific number of downlink data packet 
+    * Example - for sending 1800 packets for 3 UE calculate 
+    * totalNumOfTestFlow * NUM_TUNNEL_TO_PUMP_DATA * NUM_DL_PACKETS [200*9*1] */
+   int32_t totalNumOfTestFlow = 200; 
+
    while(true) 
    {
       /* Send DL user data to CU when user enters 'd' on console */
@@ -275,20 +280,25 @@ void *cuConsoleHandler(void *args)
             cnt++;
          }
 #else
-         for(teId = 1; teId <= NUM_TUNNEL_TO_PUMP_DATA; teId++)
+         while(totalNumOfTestFlow)
          {
-            DU_LOG("\nDEBUG  -->  EGTP: Sending DL User Data(teId:%d)\n",teId);
-            cnt =0;
-            while(cnt < NUM_DL_PACKETS)
+            for(teId = 1; teId <= NUM_TUNNEL_TO_PUMP_DATA; teId++)
             {
-               ret =  cuEgtpDatReq(teId);      
-               if(ret != ROK)
+               DU_LOG("\nDEBUG  -->  EGTP: Sending DL User Data(teId:%d)\n",teId);
+               cnt =0;
+               while(cnt < NUM_DL_PACKETS)
                {
-                  DU_LOG("\nERROR --> EGTP: Issue with teid=%d\n",teId);
-                  break;
+                  ret =  cuEgtpDatReq(teId);      
+                  if(ret != ROK)
+                  {
+                     DU_LOG("\nERROR --> EGTP: Issue with teid=%d\n",teId);
+                     break;
+                  }
+                  //sleep(1);
+                  cnt++;
                }
-               cnt++;
             }
+            totalNumOfTestFlow--;
          }
 #endif
          continue;
