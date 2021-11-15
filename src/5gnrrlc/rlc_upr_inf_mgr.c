@@ -847,7 +847,7 @@ RlcTptPerSnssai* rlcHandleSnssaiTputlist(RlcCb *gCb, Snssai *snssai, RlcSnssaiAc
          RLC_ALLOC(gCb, gCb->rlcThpt.snssaiTputInfo.tputPerSnssaiList, sizeof(CmLListCp));
          snssaiList =  gCb->rlcThpt.snssaiTputInfo.tputPerSnssaiList;
          cmLListInit(snssaiList);
-         DU_LOG("\nINFO --> RLC: First SNSSAI to add in this List");
+         DU_LOG("\nINFO  --> RLC: First SNSSAI to add in this List");
       }
       else
       {
@@ -864,7 +864,7 @@ RlcTptPerSnssai* rlcHandleSnssaiTputlist(RlcCb *gCb, Snssai *snssai, RlcSnssaiAc
       snssaiNode = (RlcTptPerSnssai *)node->node;
       if(memcmp(snssaiNode->snssai, snssai, sizeof(Snssai)) == 0)
       { 
-         DU_LOG("\nINFO  --> RLC : SNSSAI found in LL");
+         DU_LOG("\nDEBUG  --> RLC : SNSSAI found in LL");
          found = TRUE;
          break;
       }
@@ -919,7 +919,7 @@ RlcTptPerSnssai* rlcHandleSnssaiTputlist(RlcCb *gCb, Snssai *snssai, RlcSnssaiAc
                DU_LOG("\nERROR  --> RLC : Allocation of SNSSAI node failed");
                return NULLP;
             }
-            DU_LOG("\nINFO  --> RLC : SNSSAI node added successfully");
+            DU_LOG("\nDEBUG  --> RLC : SNSSAI node added successfully");
             return (snssaiNode);
          }
 
@@ -930,12 +930,12 @@ RlcTptPerSnssai* rlcHandleSnssaiTputlist(RlcCb *gCb, Snssai *snssai, RlcSnssaiAc
                node = cmLListDelFrm(snssaiList, node);
                RLC_FREE(gCb, node, sizeof(CmLList));
                RLC_FREE(gCb, snssaiNode, sizeof(RlcTptPerSnssai));
-               DU_LOG("\nINFO  --> RLC : SNSSAI node found and deletion performed");
+               DU_LOG("\nDEBUG  --> RLC : SNSSAI node found and deletion performed");
 
                if(snssaiList->count == 0)
                {
                   RLC_FREE(gCb, snssaiList, sizeof(CmLListCp));
-                  DU_LOG("\nINFO  --> RLC : This SNSSAI was last in the list thus freeing the list also");
+                  DU_LOG("\nINFO   --> RLC : This SNSSAI was last in the list thus freeing the list also");
                }
             }
             else
@@ -988,7 +988,7 @@ void rlcDelTputSnssaiList(RlcCb *gCb)
    if(snssaiList->count == 0)
    {
       RLC_FREE(gCb, snssaiList, sizeof(CmLListCp));
-      DU_LOG("\nINFO  --> RLC : This SNSSAI was last in the list thus freeing the list also");
+      DU_LOG("\nINFO   --> RLC : This SNSSAI was last in the list thus freeing the list also");
    }
 }
 

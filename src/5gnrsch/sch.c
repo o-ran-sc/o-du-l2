@@ -167,7 +167,7 @@ uint8_t SchInstCfg(RgCfg *cfg, Inst  dInst)
               
    /* Set Config done in TskInit */
    schCb[inst].schInit.cfgDone = TRUE;
-   DU_LOG("\nINFO  -->  SCH : Scheduler gen config done");
+   DU_LOG("\nINFO   -->  SCH : Scheduler gen config done");
 
    return ret;
 }
@@ -208,7 +208,7 @@ uint8_t SchProcGenCfgReq(Pst *pst, RgMngmt *cfg)
 	    "pst->dstInst=%d SCH_INST_START=%d", pst->dstInst,SCH_INST_START); 
       return ROK;
    }
-   DU_LOG("\nINFO -->  SCH : Received scheduler gen config");
+   DU_LOG("\nINFO   -->  SCH : Received scheduler gen config");
    /* Fill the post structure for sending the confirmation */
    memset(&cfmPst, 0 , sizeof(Pst));
    SchFillCfmPst(pst, &cfmPst, cfg);
@@ -1032,15 +1032,31 @@ uint8_t MacSchBsr(Pst *pst, UlBufferStatusRptInd *bsrInd)
 #endif
 
    DU_LOG("\nDEBUG  -->  SCH : Received BSR");
+   if(bsrInd == NULLP)
+   {
+      DU_LOG("\nERROR  -->  SCH : BSR Ind is empty");
+      return RFAILED;
+   }
    cellCb = schCb[schInst].cells[schInst];
+   if(cellCb == NULLP)
+   {
+      DU_LOG("\nERROR  -->  SCH : CellCb is empty");
+      return RFAILED;
+   }
    ueCb = schGetUeCb(cellCb, bsrInd->crnti);
+
+   if(ueCb == NULLP)
+   {
+      DU_LOG("\nERROR  -->  SCH : UeCB is empty");
+      return RFAILED;
+   }
 
    ueCb->bsrRcvd = true;
    /* store dataVolume per lcg in uecb */
    for(lcgIdx = 0; lcgIdx < bsrInd->numLcg; lcgIdx++)
    {
-      ueCb->bsrInfo[lcgIdx].priority = 1; //TODO: determining LCG priority?
-      ueCb->bsrInfo[lcgIdx].dataVol = bsrInd->dataVolInfo[lcgIdx].dataVol;
+      ueCb->bsrInfo[bsrInd->dataVolInfo[lcgIdx].lcgId].priority = 1; //TODO: determining LCG priority?
+      ueCb->bsrInfo[bsrInd->dataVolInfo[lcgIdx].lcgId].dataVol = bsrInd->dataVolInfo[lcgIdx].dataVol;
    }
    
    /* Adding UE Id to list of pending UEs to be scheduled */
@@ -1413,7 +1429,7 @@ uint8_t addUeToBeScheduled(SchCellCb *cell, uint8_t ueIdToAdd)
  *
  * @details
  *
- *    Function : searchLargestFreeBlockDL
+ *    Function : searchLargestFreeBlock
  *
  *    Functionality:
  *     Finds the FreeBlock with MaxNum of FREE PRB considering SSB/SIB1 ocassions.
@@ -1421,6 +1437,7 @@ uint8_t addUeToBeScheduled(SchCellCb *cell, uint8_t ueIdToAdd)
  * @params[in] I/P > prbAlloc table (FreeBlock list)
  *             I/P > Slot timing Info
  *             O/P > Start PRB
+ *             I/P > Direction (UL/DL)
  *       
  *
  * @return Max Number of Free PRB 
@@ -1428,38 +1445,70 @@ uint8_t addUeToBeScheduled(SchCellCb *cell, uint8_t ueIdToAdd)
  *
  * ********************************************************************************/
 
-uint16_t searchLargestFreeBlockDL(SchCellCb *cell, SlotTimingInfo slotTime,uint16_t *startPrb)
+uint16_t searchLargestFreeBlock(SchCellCb *cell, SlotTimingInfo slotTime,uint16_t *startPrb, Direction dir)
 {
-   uint16_t       broadcastPrbStart=0, broadcastPrbEnd=0, maxFreePRB = 0;
-   PduTxOccsaion  ssbOccasion=0, sib1Occasion=0;
+   uint16_t       reservedPrbStart=0, reservedPrbEnd=0, maxFreePRB = 0;
    FreePrbBlock   *freePrbBlock = NULLP;
    CmLList        *freePrbNode = NULLP;
+   SchPrbAlloc    *prbAlloc = NULLP;
+   bool           checkOccasion = FALSE;
 
-   SchDlSlotInfo  *schDlSlotInfo = cell->schDlSlotInfo[slotTime.slot];
-   SchPrbAlloc    *prbAlloc = &schDlSlotInfo->prbAlloc;
+   *startPrb = 0; /*Initialize the StartPRB to zero*/
 
-   ssbOccasion = schCheckSsbOcc(cell, slotTime);
-   sib1Occasion = schCheckSib1Occ(cell, slotTime);
-
-   if(ssbOccasion && sib1Occasion)
+   /*Based on Direction, Reserved Messsages will differi.e.
+    * DL >> SSB and SIB1 ocassions wheres for UL, PRACH ocassions to be checked
+    * and reserved before allocation for dedicated DL/UL msg*/
+   if(dir == DIR_DL)
    {
-      broadcastPrbStart = cell->cellCfg.ssbSchCfg.ssbOffsetPointA; 
-      broadcastPrbEnd = broadcastPrbStart + SCH_SSB_NUM_PRB + cell->cellCfg.sib1SchCfg.sib1PdschCfg.pdschFreqAlloc.freqAlloc.numPrb -1;
-   }
-   else if(ssbOccasion)
-   {
-      broadcastPrbStart = cell->cellCfg.ssbSchCfg.ssbOffsetPointA;
-      broadcastPrbEnd = broadcastPrbStart + SCH_SSB_NUM_PRB -1;
-   }
-   else if(sib1Occasion)
-   {
-      broadcastPrbStart = cell->cellCfg.sib1SchCfg.sib1PdschCfg.pdschFreqAlloc.freqAlloc.startPrb;
-      broadcastPrbEnd = broadcastPrbStart + cell->cellCfg.sib1SchCfg.sib1PdschCfg.pdschFreqAlloc.freqAlloc.numPrb -1;
-   }
+      SchDlSlotInfo  *schDlSlotInfo = cell->schDlSlotInfo[slotTime.slot];
+      PduTxOccsaion  ssbOccasion=0, sib1Occasion=0;
 
+      prbAlloc = &schDlSlotInfo->prbAlloc;
+
+      ssbOccasion = schCheckSsbOcc(cell, slotTime);
+      sib1Occasion = schCheckSib1Occ(cell, slotTime);
+
+      checkOccasion = TRUE;
+      if(ssbOccasion && sib1Occasion)
+      {
+         reservedPrbStart = cell->cellCfg.ssbSchCfg.ssbOffsetPointA; 
+         reservedPrbEnd = reservedPrbStart + SCH_SSB_NUM_PRB + \
+                          cell->cellCfg.sib1SchCfg.sib1PdschCfg.pdschFreqAlloc.freqAlloc.numPrb -1;
+      }
+      else if(ssbOccasion)
+      {
+         reservedPrbStart = cell->cellCfg.ssbSchCfg.ssbOffsetPointA;
+         reservedPrbEnd = reservedPrbStart + SCH_SSB_NUM_PRB -1;
+      }
+      else if(sib1Occasion)
+      {
+         reservedPrbStart = cell->cellCfg.sib1SchCfg.sib1PdschCfg.pdschFreqAlloc.freqAlloc.startPrb;
+         reservedPrbEnd = reservedPrbStart + cell->cellCfg.sib1SchCfg.sib1PdschCfg.pdschFreqAlloc.freqAlloc.numPrb -1;
+      }
+      else
+      {
+         checkOccasion = FALSE;  
+      }
+   }
+   else if(dir == DIR_UL)
+   {
+      prbAlloc = &cell->schUlSlotInfo[slotTime.slot]->prbAlloc;
+
+      /* Check if PRACH is also scheduled in this slot */
+      checkOccasion = schCheckPrachOcc(cell, slotTime);
+      if(checkOccasion)
+      {
+         reservedPrbStart =  cell->cellCfg.schRachCfg.msg1FreqStart;
+         reservedPrbEnd = reservedPrbStart + (schCalcPrachNumRb(cell)) -1;
+      }
+   }
+   else
+   {
+      DU_LOG("\nERROR --> SCH: Invalid Direction!");
+      return (maxFreePRB);
+   }
 
    freePrbNode = prbAlloc->freePrbBlockList.first; 
-   *startPrb = 0; /*Initialize the StartPRB to zero*/
    while(freePrbNode)
    {
       freePrbBlock = (FreePrbBlock *)freePrbNode->node;
@@ -1473,27 +1522,27 @@ uint16_t searchLargestFreeBlockDL(SchCellCb *cell, SlotTimingInfo slotTime,uint1
          continue;
       }
 
-      /* If broadcast message is scheduled in this slot, then check if its PRBs belong to the current free block.
+      /* If Broadcast/Prach message is scheduled in this slot, then check if its PRBs belong to the current free block.
        * Since SSB/SIB1 PRB location is fixed, these PRBs cannot be allocated to other message in same slot */
-      if((ssbOccasion || sib1Occasion) && 
-            ((broadcastPrbStart >= freePrbBlock->startPrb) && (broadcastPrbStart <= freePrbBlock->endPrb)) && \
-            ((broadcastPrbEnd >= freePrbBlock->startPrb) && (broadcastPrbEnd <= freePrbBlock->endPrb)))
+      if(checkOccasion && 
+            ((reservedPrbStart >= freePrbBlock->startPrb) && (reservedPrbStart <= freePrbBlock->endPrb)) && \
+            ((reservedPrbEnd >= freePrbBlock->startPrb) && (reservedPrbEnd <= freePrbBlock->endPrb)))
       {
 
          /* Implmentation is done such that highest-numbered free-RB is Checked first
             and freePRB in this block is greater than Max till now */
-         if((freePrbBlock->endPrb > broadcastPrbEnd) && ((freePrbBlock->endPrb - broadcastPrbEnd) > maxFreePRB))
+         if((freePrbBlock->endPrb > reservedPrbEnd) && ((freePrbBlock->endPrb - reservedPrbEnd) > maxFreePRB))
          {
-            /* If sufficient free PRBs are available above broadcast message*/
-            *startPrb = broadcastPrbEnd + 1;
-            maxFreePRB = (freePrbBlock->endPrb - broadcastPrbEnd);		 
+            /* If sufficient free PRBs are available above reserved message*/
+            *startPrb = reservedPrbEnd + 1;
+            maxFreePRB = (freePrbBlock->endPrb - reservedPrbEnd);		 
          }
-         /*Also check the other freeBlock (i.e. Above the broadcast message) for MAX FREE PRB*/
-         if((broadcastPrbStart > freePrbBlock->startPrb) && ((broadcastPrbStart - freePrbBlock->startPrb) > maxFreePRB))
+         /*Also check the other freeBlock (i.e. Above the reserved message) for MAX FREE PRB*/
+         if((reservedPrbStart > freePrbBlock->startPrb) && ((reservedPrbStart - freePrbBlock->startPrb) > maxFreePRB))
          {
-            /* If free PRBs are available below broadcast message*/
+            /* If free PRBs are available below reserved message*/
             *startPrb = freePrbBlock->startPrb;
-            maxFreePRB = (broadcastPrbStart - freePrbBlock->startPrb);
+            maxFreePRB = (reservedPrbStart - freePrbBlock->startPrb);
          }
       }
       else  //Best Block
@@ -1509,7 +1558,6 @@ uint16_t searchLargestFreeBlockDL(SchCellCb *cell, SlotTimingInfo slotTime,uint1
    }  
    return(maxFreePRB);
 }
-
 /**********************************************************************
   End of file
  **********************************************************************/

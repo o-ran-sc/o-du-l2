@@ -104,8 +104,8 @@
 #define MAX_NUM_RB TOTAL_PRB_20MHZ_MU0 /* value for numerology 0, 20 MHz */
 #endif
 
-#define ODU_UE_THROUGHPUT_PRINT_TIME_INTERVAL      5     /* in milliseconds */
-#define ODU_SNSSAI_THROUGHPUT_PRINT_TIME_INTERVAL  60000 /* in milliseconds */
+#define ODU_UE_THROUGHPUT_PRINT_TIME_INTERVAL      600000     /* in milliseconds */
+#define ODU_SNSSAI_THROUGHPUT_PRINT_TIME_INTERVAL  600000 /* in milliseconds */
 
 /* Defining macros for common utility functions */
 #define ODU_GET_MSG_BUF SGetMsg
