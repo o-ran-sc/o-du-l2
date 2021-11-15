@@ -571,25 +571,35 @@ uint8_t MacSchAddUeConfigReq(Pst *pst, SchUeCfg *ueCfg)
 *         RFAILED - failure
 *
 * ****************************************************************/
-uint8_t schFillPuschAlloc(SchUeCb *ueCb, SlotTimingInfo puschTime, uint32_t dataVol, uint8_t k2, uint8_t startSymb, uint8_t symbLen)
+uint8_t schFillPuschAlloc(SchUeCb *ueCb, SlotTimingInfo puschTime, uint32_t tbSize, 
+                            uint8_t startSymb, uint8_t symbLen, uint16_t startPrb)
 {
-  uint16_t startRb        = 0;
   uint8_t  numRb          = 0;
-  uint16_t tbSize         = 0;
-  uint8_t  buffer         = 5;
-  SchCellCb *cellCb       = ueCb->cellCb;
+  SchCellCb *cellCb       = NULLP;
   SchUlSlotInfo *schUlSlotInfo = NULLP;
   SchPuschInfo puschInfo;
   
-  startRb = MAX_NUM_RB;
-  tbSize  = schCalcTbSize(dataVol + buffer); /*  2 bytes header + some buffer */
+  if(ueCb == NULLP)
+  {
+    DU_LOG("\nERROR --> SCH: UE CB is empty");
+    return RFAILED;
+  }
+
+  cellCb = ueCb->cellCb;
+  if(cellCb == NULLP)
+  {
+    DU_LOG("\nERROR --> SCH: CELL CB is empty");
+    return RFAILED;
+  }
+
+  tbSize  +=  UL_TX_BUFFER_SIZE; /*  2 bytes header + some buffer */
   numRb   = schCalcNumPrb(tbSize, ueCb->ueCfg.ulModInfo.mcsIndex, symbLen);
-  allocatePrbUl(cellCb, puschTime, startSymb, symbLen, &startRb, numRb);
+  allocatePrbUl(cellCb, puschTime, startSymb, symbLen, &startPrb, numRb);
 
   puschInfo.crnti             = ueCb->crnti; 
   puschInfo.harqProcId        = SCH_HARQ_PROC_ID;
   puschInfo.resAllocType      = SCH_ALLOC_TYPE_1;
-  puschInfo.fdAlloc.startPrb  = startRb;
+  puschInfo.fdAlloc.startPrb  = startPrb;
   puschInfo.fdAlloc.numPrb    = numRb;
   puschInfo.tdAlloc.startSymb = startSymb;
   puschInfo.tdAlloc.numSymb   = symbLen;
