@@ -870,6 +870,7 @@ uint8_t egtpEncodeHdr(uint8_t *preEncodedHdr, EgtpMsgHdr *preDefHdr, uint8_t *hd
  * ****************************************************************/
 uint8_t egtpSendMsg(Buffer *mBuf)
 {
+   static uint8_t duCount = 0;
    uint8_t        ret;
    uint16_t       txLen;
    CmInetMemInfo  info;
@@ -889,7 +890,13 @@ uint8_t egtpSendMsg(Buffer *mBuf)
       return RFAILED;
    }
 
-   DU_LOG("\nDEBUG   -->  EGTP : Message Sent");
+   DU_LOG("\nPBORLA : DEBUG   -->  EGTP : Message Sent for count %d", duCount);
+   
+   if(duCount == 9000)
+   {
+      BuildAndSendDUConfigUpdate(SERV_CELL_TO_DELETE);
+   }
+   duCount++;
 
    return ROK;
 }
@@ -936,6 +943,12 @@ uint8_t egtpRecvMsg()
          //ODU_PRINT_MSG(recvBuf, 0 ,0);
          egtpHdlRecvData(recvBuf);
          gDlDataRcvdCnt++;
+         if(gDlDataRcvdCnt == 18)
+         {
+            sleep(1);
+            BuildAndSendDUConfigUpdate(SERV_CELL_TO_DELETE);
+            break;
+         }
       }
    }
    

@@ -242,6 +242,7 @@ void *cuConsoleHandler(void *args)
    uint8_t teId = 0;
    uint8_t ret = ROK;
    uint8_t cnt = 0;
+   int32_t totalNumOfTestFlow = 2;
 
    while(true) 
    {
@@ -275,20 +276,25 @@ void *cuConsoleHandler(void *args)
             cnt++;
          }
 #else
-         for(teId = 1; teId <= NUM_TUNNEL_TO_PUMP_DATA; teId++)
+         while(totalNumOfTestFlow)
          {
-            DU_LOG("\nDEBUG  -->  EGTP: Sending DL User Data(teId:%d)\n",teId);
-            cnt =0;
-            while(cnt < NUM_DL_PACKETS)
+            for(teId = 1; teId <= NUM_TUNNEL_TO_PUMP_DATA; teId++)
             {
-               ret =  cuEgtpDatReq(teId);      
-               if(ret != ROK)
+               DU_LOG("\nDEBUG  -->  EGTP: Sending DL User Data(teId:%d)\n",teId);
+               cnt =0;
+               while(cnt < NUM_DL_PACKETS)
                {
-                  DU_LOG("\nERROR --> EGTP: Issue with teid=%d\n",teId);
-                  break;
+                  ret =  cuEgtpDatReq(teId);      
+                  sleep(1);
+                  if(ret != ROK)
+                  {
+                     DU_LOG("\nERROR --> EGTP: Issue with teid=%d\n",teId);
+                     break;
+                  }
+                  cnt++;
                }
-               cnt++;
             }
+            totalNumOfTestFlow--;
          }
 #endif
          continue;

@@ -577,10 +577,23 @@ uint8_t schFillPuschAlloc(SchUeCb *ueCb, SlotTimingInfo puschTime, uint32_t data
   uint8_t  numRb          = 0;
   uint16_t tbSize         = 0;
   uint8_t  buffer         = 5;
-  SchCellCb *cellCb       = ueCb->cellCb;
+  SchCellCb *cellCb       = NULLP;
   SchUlSlotInfo *schUlSlotInfo = NULLP;
   SchPuschInfo puschInfo;
   
+  if(ueCb == NULLP)
+  {
+     DU_LOG("\nERROR  --> SCH : schFillPuschAlloc(): UeCb is Null");
+     return RFAILED;
+  }
+  
+  cellCb       = ueCb->cellCb;
+  if(cellCb == NULLP)
+  {
+     DU_LOG("\nERROR  --> SCH : schFillPuschAlloc(): CellCb is Null");
+     return RFAILED;
+  }
+
   startRb = MAX_NUM_RB;
   tbSize  = schCalcTbSize(dataVol + buffer); /*  2 bytes header + some buffer */
   numRb   = schCalcNumPrb(tbSize, ueCb->ueCfg.ulModInfo.mcsIndex, symbLen);
@@ -1014,7 +1027,7 @@ uint8_t MacSchUeDeleteReq(Pst *pst, SchUeDelete  *ueDelete)
        if(( cellCb->ueCb[ueId-1].crnti == ueDelete->crnti) && ( cellCb->ueCb[ueId-1].state == SCH_UE_STATE_ACTIVE))
        {
           deleteSchUeCb(&cellCb->ueCb[ueId-1]);
-
+          ueIdToDel  = ueId;
           /* Remove UE from ueToBeScheduled list */
           node = cellCb->ueToBeScheduled.first;
           while(node)
@@ -1024,7 +1037,7 @@ uint8_t MacSchUeDeleteReq(Pst *pst, SchUeDelete  *ueDelete)
              if(ueId == ueIdToDel)
              {
                 SCH_FREE(node->node, sizeof(uint8_t));
-                cmLListDelFrm(&cellCb->ueToBeScheduled, node);
+                deleteNodeFromLList(&cellCb->ueToBeScheduled, node);
                 break;
              }
              node = next;
@@ -1165,6 +1178,7 @@ void deleteSchCellCb(SchCellCb *cellCb)
       next = node->next;
       SCH_FREE(node->node, sizeof(uint8_t));
       cmLListDelFrm(&cellCb->ueToBeScheduled, node);
+      SCH_FREE(node, sizeof(CmLList));
       node = next;
    }
 

@@ -389,6 +389,11 @@ uint8_t rlcSendDedLcDlData(Pst *post, SpId spId, RguDDatReqInfo *datReqInfo)
             return RFAILED;
          }
       }
+      else
+      {
+         RLC_FREE_SHRABL_BUF(pst.region, pst.pool, dlRrcMsgRsp, sizeof(RlcDlRrcMsgRsp));
+      }
+
    } /* For Data per UE */
    RLC_FREE_SHRABL_BUF(RLC_MEM_REGION_DL, RLC_POOL, datReqInfo, sizeof(RguDDatReqInfo));
 

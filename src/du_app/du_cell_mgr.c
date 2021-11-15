@@ -355,13 +355,14 @@ uint8_t duSendCellDeletReq(uint16_t cellId)
       Expected CellStatus is DELETION_IN_PROGRESS",duCb.actvCellLst[cellIdx]->cellStatus, cellId);
       return RFAILED;  
    }
-
+#if 0
    if(duCb.actvCellLst[cellIdx]->numActvUes)
    {
       DU_LOG("\nERROR  -->  DU APP : duSendCellDeletReq(): Active UEs still present in cellId[%d].\
       Failed to delete cell", cellId);
       return RFAILED;
    }
+#endif
 
    if(duBuildAndSendMacCellStop(cellId) == RFAILED)
    {

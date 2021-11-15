@@ -33,13 +33,22 @@
 #define MAX_TEID 10 /*[Spec 29.281]: Max limit is not mentioned but as per GTP-U Header Format, TEID occupies 4 octets */
 /* allocate and zero out a static buffer */
 
+#define DU_MEM_LOG(_macro, _file, _line, _func, _size, _datPtr)\
+{\
+   printf("\n%s=== %s +%d, %s, %d, %p\n",           \
+         _macro, _file, _line, _func, _size, _datPtr); \
+}
+
 #define CU_ALLOC(_datPtr, _size)                             \
 {                                                            \
    S16 _ret;                                                 \
    _ret = SGetSBuf(CU_APP_MEM_REG, CU_POOL,                  \
                      (Data **)&_datPtr, _size);              \
    if(_ret == ROK)                                           \
+   {\
+      DU_MEM_LOG("CU_ALLOC", __FILE__, __LINE__, __FUNCTION__, _size, _datPtr);\
       memset(_datPtr, 0, _size);                      \
+   }\
    else                                                      \
       _datPtr = NULLP;                                       \
 }
@@ -47,9 +56,11 @@
 /* free a static buffer */
 #define CU_FREE(_datPtr, _size)                              \
    if(_datPtr)                                               \
+   {\
+   DU_MEM_LOG("CU_FREE", __FILE__, __LINE__, __FUNCTION__, _size, _datPtr);\
    SPutSBuf(CU_APP_MEM_REG, CU_POOL,                         \
-         (Data *)_datPtr, _size);
-
+         (Data *)_datPtr, _size);\
+   }\
 
 typedef struct ipAddr
 {
