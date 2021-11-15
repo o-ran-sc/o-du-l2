@@ -1248,7 +1248,7 @@ uint8_t duSendEgtpDatInd(Buffer *mBuf)
    egtpMsg.msgHdr.extHdr.pdcpNmb.pres = FALSE;
    egtpMsg.msgHdr.teId = 1;
    egtpMsg.msg = mBuf;
-
+   
    egtpHdlDatInd(egtpMsg);
 
    return ROK;

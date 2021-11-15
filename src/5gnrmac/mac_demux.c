@@ -71,7 +71,8 @@ uint8_t unpackRxData(uint16_t cellId, SlotTimingInfo slotInfo, RxDataIndPdu *rxD
 
       /* LC id is the 6 LSB in 1st octet */
       lcId = (~((~0) << 6)) & rxDataPdu[idx];
-
+      pdu = NULLP;
+      
       switch(lcId)
       {
 	 case MAC_LCID_CCCH :
@@ -80,7 +81,6 @@ uint8_t unpackRxData(uint16_t cellId, SlotTimingInfo slotInfo, RxDataIndPdu *rxD
 
 	       /* for UL CCCH,fixed length of MAC SDU */
 	       length = 6;
-
 	       /*  Allocating sharable memory to send ul ccch msg to du app*/
 	       MAC_ALLOC_SHRABL_BUF(pdu, length);
 	       if(!pdu)

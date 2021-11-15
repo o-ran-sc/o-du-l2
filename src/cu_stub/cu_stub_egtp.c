@@ -497,8 +497,9 @@ S16 cuEgtpEncodeHdr(uint8_t *preEncodedHdr, EgtpMsgHdr *preDefHdr, uint8_t *hdrI
 S16 cuEgtpHdlRecvMsg(Buffer *mBuf)
 {
    /*Decoding of EGTP message header */
+   
    cuEgtpDecodeHdr(mBuf);
-
+   
    /* Start Pumping data from CU to DU */
    //return (cuEgtpDatReq());
 
