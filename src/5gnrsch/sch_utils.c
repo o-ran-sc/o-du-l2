@@ -1348,7 +1348,7 @@ LcInfo* handleLcLList(CmLListCp *lcLL, uint8_t lcId, ActionTypeLcLL action)
 
    if(lcLL == NULLP)
    {
-      DU_LOG("\nERROR -->SCH: LcList doesnt exist");
+      DU_LOG("\nERROR  -->  SCH: LcList doesnt exist");
       return NULLP;
    }
    node = lcLL->first;
@@ -1359,7 +1359,6 @@ LcInfo* handleLcLList(CmLListCp *lcLL, uint8_t lcId, ActionTypeLcLL action)
       lcNode = (LcInfo *)node->node;
       if(lcNode->lcId == lcId)
       { 
-         DU_LOG("\nINFO  --> SCH : LcID:%d found in LL",lcId);
          found = TRUE;
          break;
       }
@@ -1387,7 +1386,6 @@ LcInfo* handleLcLList(CmLListCp *lcLL, uint8_t lcId, ActionTypeLcLL action)
             /*List is empty; Initialize the LL ControlPointer*/
             if(lcLL->count == 0)
             {
-               DU_LOG("\nINFO --> SCH: First LC:%d to add in this List",lcId);
                cmLListInit(lcLL);
             }
 
@@ -1403,17 +1401,16 @@ LcInfo* handleLcLList(CmLListCp *lcLL, uint8_t lcId, ActionTypeLcLL action)
             }
             else
             {
-               DU_LOG("\nERROR  --> SCH : Allocation of List failed,lcId:%d",lcId);
+               DU_LOG("\nERROR  -->  SCH : Allocation of List failed,lcId:%d",lcId);
                return NULLP;
             }
 
             if(addNodeToLList(lcLL, lcNode, NULLP) == RFAILED)
             {
-               DU_LOG("\nERROR  --> SCH : failed to Add Node,lcId:%d",lcId);
+               DU_LOG("\nERROR  -->  SCH : failed to Add Node,lcId:%d",lcId);
                SCH_FREE(lcNode, sizeof(LcInfo));
                return NULLP;
             }
-            DU_LOG("\nINFO  --> SCH : Added new Node in List for lcId:%d\n",lcId);
             return lcNode;
          }
 
@@ -1421,20 +1418,20 @@ LcInfo* handleLcLList(CmLListCp *lcLL, uint8_t lcId, ActionTypeLcLL action)
          {
             if(!found ||  lcNode == NULLP)
             {
-               DU_LOG("\nERROR --> SCH: LCID: %d not found; thus Deletion unsuccessful",lcId);
+               DU_LOG("\nERROR  -->  SCH: LCID%d not found; thus Deletion unsuccessful",lcId);
             }
             else
             {
                if(deleteNodeFromLList(lcLL, node) == ROK)
                   SCH_FREE(lcNode, sizeof(LcInfo));
 
-               DU_LOG("\nINFO --> SCH: LCID: %d Deleted successfully",lcId);
+               DU_LOG("\nDEBUG  -->  SCH: LCID%d Deleted successfully",lcId);
             }
             return NULLP; 
          }
       default:
          {
-            DU_LOG("\nERROR --> SCH: Action type wrong: %d",action);
+            DU_LOG("\nERROR  -->  SCH: Action type wrong: %d",action);
             break;
          }
    }
@@ -1468,13 +1465,12 @@ uint8_t updateLcListReqPRB(CmLListCp *lcLL, uint8_t lcId, uint32_t payloadSize)
 
    if(lcNode == NULLP)
    {
-      DU_LOG("\nERROR  --> SCH : LC is neither present nor able to create in List lcId:%d",lcId);
+      DU_LOG("\nERROR  -->  SCH : LC is neither present nor able to create in List lcId:%d",lcId);
       return RFAILED;
    }
    lcNode->reqBO = payloadSize;
    lcNode->allocBO = 0; 
    lcNode->allocPRB = 0; /*Re-Initializing the AllocPRB*/
-   DU_LOG("\nINFO  --> SCH : LCID:%d, reqBO:%d", lcId, lcNode->reqBO);
    return ROK;
 }
 
@@ -1501,7 +1497,7 @@ void deleteLcLL(CmLListCp *lcLL)
 
    if(lcLL == NULLP)
    {
-      DU_LOG("\nINFO --> SCH: LcList doesnt exist");
+      DU_LOG("\nERROR  -->  SCH: LcList doesnt exist");
       return;
    }
    node = lcLL->first;
@@ -1589,7 +1585,7 @@ void printLcLL(CmLListCp *lcLL)
 
    if(lcLL == NULLP)
    {
-      DU_LOG("\nINFO -->SCH: LcList doesnt exist");
+      DU_LOG("\nINFO   -->  SCH: LcList doesnt exist");
       return;
    }
    node = lcLL->first;
@@ -1598,7 +1594,7 @@ void printLcLL(CmLListCp *lcLL)
       lcNode = (LcInfo *)node->node;
       if(lcNode)
       {
-         DU_LOG("\nINFO  --> SCH : LcID:%d, [reqBO, allocBO, allocPRB]:[%d,%d,%d]",\
+         DU_LOG("\nINFO   -->  SCH : LcID:%d, [reqBO, allocBO, allocPRB]:[%d,%d,%d]",\
                lcNode->lcId,lcNode->reqBO, lcNode->allocBO, lcNode->allocPRB);
       }
 

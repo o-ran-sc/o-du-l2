@@ -405,14 +405,9 @@ bool schFillBoGrantDlSchedInfo(SchCellCb *cell, SlotTimingInfo currTime, uint8_t
 
 
    if ((ueCb->dlLcPrbEst.defLcList.count == 0) && \
-         ((ueCb->dlLcPrbEst.dedLcInfo != NULL) && (ueCb->dlLcPrbEst.dedLcInfo->dedLcList.count == 0)))
+         ((ueCb->dlLcPrbEst.dedLcInfo == NULL) || (ueCb->dlLcPrbEst.dedLcInfo->dedLcList.count == 0)))
    {
       DU_LOG("\nDEBUG  -->  SCH : No pending BO for any LC id\n");
-      if(*(uint8_t *)cell->ueToBeScheduled.first->node == ueId)
-      {
-         SCH_FREE(cell->ueToBeScheduled.first->node, sizeof(uint8_t));
-         deleteNodeFromLList(&cell->ueToBeScheduled, cell->ueToBeScheduled.first);
-      }
       UNSET_ONE_BIT(ueId, cell->boIndBitMap);
 
       /* Free the dl ded msg info allocated in macSchDlRlcBoInfo */
@@ -423,11 +418,13 @@ bool schFillBoGrantDlSchedInfo(SchCellCb *cell, SlotTimingInfo currTime, uint8_t
       }
       else
          memset(&dciSlotAlloc->dlMsgSchedInfo[dciSlotAlloc->numSchedInfo], 0, sizeof(DlMsgSchInfo));
-      return false;
+
+      /*TRUE because this UE has nothing to be scheduled*/
+      return true;
    }
 
    /*[Step3]: Calculate Best FREE BLOCK with MAX PRB count*/
-   maxFreePRB = searchLargestFreeBlockDL(cell, pdschTime, &startPrb);
+   maxFreePRB = searchLargestFreeBlock(cell, pdschTime, &startPrb, DIR_DL);
 
    /*[Step4]: Estimation of PRB and BO which can be allocated to each LC in
     * the list based on RRM policy*/
@@ -441,12 +438,12 @@ bool schFillBoGrantDlSchedInfo(SchCellCb *cell, SlotTimingInfo currTime, uint8_t
             || ((maxFreePRB <  ueCb->dlLcPrbEst.dedLcInfo->rsvdDedicatedPRB)))
       { 
          ueCb->dlLcPrbEst.sharedNumPrb = maxFreePRB;
-         DU_LOG("\nWARNING  --> SCH : Only Default Slice is scheduled, sharedPRB Count:%d",\
+         DU_LOG("\nDEBUG  --> SCH : DL Only Default Slice is scheduled, sharedPRB Count:%d",\
                ueCb->dlLcPrbEst.sharedNumPrb);
 
          /*PRB Alloc for Default LCs*/
          prbAllocUsingRRMPolicy(&(ueCb->dlLcPrbEst.defLcList), FALSE, mcsIdx, pdschNumSymbols,\
-               &(ueCb->dlLcPrbEst.sharedNumPrb), NULLP, &isTxPayloadLenAdded);
+               &(ueCb->dlLcPrbEst.sharedNumPrb), NULLP, &isTxPayloadLenAdded, NULLP);
       }
       else
       {
@@ -454,20 +451,20 @@ bool schFillBoGrantDlSchedInfo(SchCellCb *cell, SlotTimingInfo currTime, uint8_t
 
          /*PRB Alloc for Dedicated LCs*/
          prbAllocUsingRRMPolicy(&(ueCb->dlLcPrbEst.dedLcInfo->dedLcList), TRUE, mcsIdx, pdschNumSymbols,\
-               &(ueCb->dlLcPrbEst.sharedNumPrb), &(ueCb->dlLcPrbEst.dedLcInfo->rsvdDedicatedPRB), &isTxPayloadLenAdded);
+               &(ueCb->dlLcPrbEst.sharedNumPrb), &(ueCb->dlLcPrbEst.dedLcInfo->rsvdDedicatedPRB), &isTxPayloadLenAdded, NULLP);
 
          /*PRB Alloc for Default LCs*/
          prbAllocUsingRRMPolicy(&(ueCb->dlLcPrbEst.defLcList), FALSE, mcsIdx, pdschNumSymbols, \
-               &(ueCb->dlLcPrbEst.sharedNumPrb), &(ueCb->dlLcPrbEst.dedLcInfo->rsvdDedicatedPRB), &isTxPayloadLenAdded);
+               &(ueCb->dlLcPrbEst.sharedNumPrb), &(ueCb->dlLcPrbEst.dedLcInfo->rsvdDedicatedPRB), &isTxPayloadLenAdded, NULLP);
       }
    }
 
    /*[Step5]:Traverse each LCID in LcList to calculate the exact Scheduled Bytes
     * using allocated BO per LC and Update dlMsgAlloc(BO report for MAC*/ 
    if(ueCb->dlLcPrbEst.dedLcInfo != NULLP)
-      updateGrantSizeForBoRpt(&(ueCb->dlLcPrbEst.dedLcInfo->dedLcList), dciSlotAlloc, &(accumalatedSize));
+      updateGrantSizeForBoRpt(&(ueCb->dlLcPrbEst.dedLcInfo->dedLcList), dciSlotAlloc, NULLP, &(accumalatedSize));
 
-   updateGrantSizeForBoRpt(&(ueCb->dlLcPrbEst.defLcList), dciSlotAlloc, &(accumalatedSize));
+   updateGrantSizeForBoRpt(&(ueCb->dlLcPrbEst.defLcList), dciSlotAlloc, NULLP, &(accumalatedSize));
 
    /*Below case will hit if NO LC(s) are allocated due to resource crunch*/
    if (!accumalatedSize)
