@@ -97,24 +97,24 @@ Void PrintRLCStats(Void)
    RlcCb* dlInst = rlcCb[1]; 
    RlcCb* ulInst = rlcCb[0]; 
 
-   DU_LOG("\nINFO  -->  RLC_DL : RLC Stats: PDUs Sent = (%ld), PdusRext = (%ld), TimeOut = (%ld), SduDiscarded = (%ld)",
+   DU_LOG("\nINFO   -->  RLC_DL : RLC Stats: PDUs Sent = (%ld), PdusRext = (%ld), TimeOut = (%ld), SduDiscarded = (%ld)",
                      dlInst->genSts.pdusSent,
                      dlInst->genSts.pdusRetx,
                      dlInst->genSts.protTimeOut,
                      dlInst->genSts.numSduDisc);
-   DU_LOG("\nINFO  -->  RLC_DL : RLC Stats: PDUs Rcvd = (%ld), unexpPdus = (%ld), errorPdus = (%ld)",
+   DU_LOG("\nINFO   -->  RLC_DL : RLC Stats: PDUs Rcvd = (%ld), unexpPdus = (%ld), errorPdus = (%ld)",
                      ulInst->genSts.pdusRecv,
                      ulInst->genSts.unexpPdusRecv,
                      ulInst->genSts.errorPdusRecv);
-   DU_LOG("\nINFO  -->  RLC_DL : RLC Stats: AMDL: "
+   DU_LOG("\nINFO   -->  RLC_DL : RLC Stats: AMDL: "
                      "StaPduSent:%lu NacksInStaPdu:%lu BytesUnused:%lu PollTimerExpires SRB:%lu ",
                      gRlcStats.amRlcStats.numDLStaPduSent, gRlcStats.amRlcStats.numDLNacksInStaPdu, 
                      gRlcStats.amRlcStats.numDLBytesUnused, gRlcStats.amRlcStats.numDLPollTimerExpiresSrb);
-   DU_LOG("\nINFO  -->  RLC_DL : RLC Stats: AMDL: "
+   DU_LOG("\nINFO   -->  RLC_DL : RLC Stats: AMDL: "
                      "DRB:%lu MaxRetx:%lu RetransPdus:%lu", 
                      gRlcStats.amRlcStats.numDLPollTimerExpiresDrb, gRlcStats.amRlcStats.numDLMaxRetx, 
                      gRlcStats.amRlcStats.numDLRetransPdus);
-   DU_LOG("\nINFO  -->  RLC_DL : RLC Stats: AMUL: "
+   DU_LOG("\nINFO   -->  RLC_DL : RLC Stats: AMUL: "
                      " PdusDiscarded:%lu ReAsmblTimerExpires:%lu StaPduRcvd:%lu NackInStaPduRcvd:%lu ", 
                      gRlcStats.amRlcStats.numULPdusDiscarded, gRlcStats.amRlcStats.numULReAsmblTimerExpires, 
                      gRlcStats.amRlcStats.numULStaPduRcvd, gRlcStats.amRlcStats.numULNackInStaPduRcvd);
@@ -143,24 +143,24 @@ Void PrintRLCStats(Void)
    RlcCb* ulInst = rlcCb[0]; 
 
    DU_LOG ("\n ================================ RLC STATS ===========================\n");
-   DU_LOG("\nINFO  -->  RLC_DL : RLC Stats: PDUs Sent = (%d), PdusRext = (%d), TimeOut = (%d), SduDiscarded = (%d)",
+   DU_LOG("\nINFO   -->  RLC_DL : RLC Stats: PDUs Sent = (%d), PdusRext = (%d), TimeOut = (%d), SduDiscarded = (%d)",
                      dlInst->genSts.pdusSent,
                      dlInst->genSts.pdusRetx,
                      dlInst->genSts.protTimeOut,
                      dlInst->genSts.numSduDisc);
-   DU_LOG("\nINFO  -->  RLC_DL : RLC Stats: PDUs Rcvd = (%d), unexpPdus = (%d), errorPdus = (%d)",
+   DU_LOG("\nINFO   -->  RLC_DL : RLC Stats: PDUs Rcvd = (%d), unexpPdus = (%d), errorPdus = (%d)",
                      ulInst->genSts.pdusRecv,
                      ulInst->genSts.unexpPdusRecv,
                      ulInst->genSts.errorPdusRecv);
-   DU_LOG("\nINFO  -->  RLC_DL : RLC Stats: AMDL: "
+   DU_LOG("\nINFO   -->  RLC_DL : RLC Stats: AMDL: "
                      "StaPduSent:%u NacksInStaPdu:%u BytesUnused:%u PollTimerExpires SRB:%u ",
                      gRlcStats.amRlcStats.numDLStaPduSent, gRlcStats.amRlcStats.numDLNacksInStaPdu, 
                      gRlcStats.amRlcStats.numDLBytesUnused, gRlcStats.amRlcStats.numDLPollTimerExpiresSrb);
-   DU_LOG("\nINFO  -->  RLC_DL : RLC Stats: AMDL: "
+   DU_LOG("\nINFO   -->  RLC_DL : RLC Stats: AMDL: "
                      "DRB:%u MaxRetx:%u RetransPdus:%u", 
                      gRlcStats.amRlcStats.numDLPollTimerExpiresDrb, gRlcStats.amRlcStats.numDLMaxRetx, 
                      gRlcStats.amRlcStats.numDLRetransPdus);
-   DU_LOG("\nINFO  -->  RLC_DL : RLC Stats: AMUL: "
+   DU_LOG("\nINFO   -->  RLC_DL : RLC Stats: AMUL: "
                      " PdusDiscarded:%u ReAsmblTimerExpires:%u StaPduRcvd:%u NackInStaPduRcvd:%u ", 
                      gRlcStats.amRlcStats.numULPdusDiscarded, gRlcStats.amRlcStats.numULReAsmblTimerExpires, 
                      gRlcStats.amRlcStats.numULStaPduRcvd, gRlcStats.amRlcStats.numULNackInStaPduRcvd);
@@ -334,7 +334,7 @@ uint8_t rlcSendDedLcDlData(Pst *post, SpId spId, RguDDatReqInfo *datReqInfo)
                ret = RFAILED;
                break;
             }
-            DU_LOG("\nINFO  -->  RLC_DL : rlcSendDedLcDlData: BO Status sent successfully for LCID:%d,BO:%d",\
+            DU_LOG("\nDEBUG  -->  RLC_DL : rlcSendDedLcDlData: BO Status sent successfully for LCID:%d,BO:%d",\
                   boStatus->lcId, boStatus->bo);
          }
          RLC_FREE_SHRABL_BUF(RLC_MEM_REGION_DL, RLC_POOL, dlData, sizeof(RlcData));
@@ -510,7 +510,7 @@ uint8_t rlcUtlSendToMac(RlcCb *gCb, SuId suId, KwDStaIndInfo *staIndInfo)
                   if(snssaiTputNode != NULLP)
                   {
                      snssaiTputNode->dataVol += staIndTb->lchStaInd[count].totBufSize;
-                     DU_LOG("\nINFO -->SCH: SNSSAI List Grant:%d, lcId:%d, total :%d",\
+                     DU_LOG("\nINFO   -->SCH: SNSSAI List Grant:%d, lcId:%d, total :%d",\
                            staIndTb->lchStaInd[count].totBufSize, staIndTb->lchStaInd[count].lcId,\
                            snssaiTputNode->dataVol);
                   }

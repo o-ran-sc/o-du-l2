@@ -481,13 +481,13 @@ uint8_t RlcProcUlData(Pst *pst, RlcData *ulData)
       if(ulData->pduInfo[idx].commCh)
       {
          RLC_SHRABL_STATIC_BUF_ALLOC(RLC_MEM_REGION_UL, RLC_POOL, cLchUlDat, \
-	    sizeof(RguCDatIndInfo));
-	 if(!cLchUlDat)
-	 {
-	    DU_LOG("\nERROR  -->  RLC : Memory allocation failed at RlcProcUlData");
-	    ret = RFAILED;
-	    break;
-	 }
+               sizeof(RguCDatIndInfo));
+         if(!cLchUlDat)
+         {
+            DU_LOG("\nERROR  -->  RLC : Memory allocation failed at RlcProcUlData");
+            ret = RFAILED;
+            break;
+         }
          memset(cLchUlDat, 0, sizeof(RguCDatIndInfo));
 
          cLchUlDat->cellId = ulData->cellId;
@@ -498,13 +498,13 @@ uint8_t RlcProcUlData(Pst *pst, RlcData *ulData)
          if(ODU_GET_MSG_BUF(RLC_MEM_REGION_UL, RLC_POOL, &cLchUlDat->pdu) != ROK)
          {
             DU_LOG("\nERROR  -->  RLC : Memory allocation failed at RlcProcUlData");
-	    RLC_SHRABL_STATIC_BUF_FREE(RLC_MEM_REGION_UL, RLC_POOL, cLchUlDat, \
-	       sizeof(RguCDatIndInfo));
+            RLC_SHRABL_STATIC_BUF_FREE(RLC_MEM_REGION_UL, RLC_POOL, cLchUlDat, \
+                  sizeof(RguCDatIndInfo));
             ret = RFAILED;
-	    break;
+            break;
          }
          oduCpyFixBufToMsg(ulData->pduInfo[idx].pduBuf, cLchUlDat->pdu, \
-	    ulData->pduInfo[idx].pduLen);
+               ulData->pduInfo[idx].pduLen);
 
          rlcProcCommLcUlData(pst, 0, cLchUlDat);
       }
@@ -513,34 +513,34 @@ uint8_t RlcProcUlData(Pst *pst, RlcData *ulData)
          if(!dLchPduPres)
          {
             RLC_SHRABL_STATIC_BUF_ALLOC(RLC_MEM_REGION_UL, RLC_POOL, dLchUlDat, \
-	       sizeof(RguDDatIndInfo));
-	    if(!dLchUlDat)
-	    {
-	       DU_LOG("\nERROR  -->  RLC : Memory allocation failed at RlcMacProcUlData");
-	       ret = RFAILED;
-	       break;
-	    }
+                  sizeof(RguDDatIndInfo));
+            if(!dLchUlDat)
+            {
+               DU_LOG("\nERROR  -->  RLC : Memory allocation failed at RlcMacProcUlData");
+               ret = RFAILED;
+               break;
+            }
             dLchPduPres = TRUE;
          }
 
-	 /* Copy fixed buffer to message */
-	 lcId = ulData->pduInfo[idx].lcId;
-	 if(ODU_GET_MSG_BUF(RLC_MEM_REGION_UL, RLC_POOL, \
-		  &dLchData[lcId].pdu.mBuf[dLchData[lcId].pdu.numPdu]) != ROK)
-	 {
-	    DU_LOG("\nERROR  -->  RLC : Memory allocation failed at RlcMacProcUlData");
-	    for(pduIdx=0; pduIdx < dLchData[lcId].pdu.numPdu; pduIdx++)
-	    {
-	       ODU_PUT_MSG_BUF(dLchData[lcId].pdu.mBuf[dLchData[lcId].pdu.numPdu]);
-	    }
-	    RLC_SHRABL_STATIC_BUF_FREE(RLC_MEM_REGION_UL, RLC_POOL, dLchUlDat, \
-	       sizeof(RguDDatIndInfo));
-	    ret = RFAILED;
-	    break;
-	 }
-	 oduCpyFixBufToMsg(ulData->pduInfo[idx].pduBuf, \
-	       dLchData[lcId].pdu.mBuf[dLchData[lcId].pdu.numPdu],\
-	       ulData->pduInfo[idx].pduLen);
+         /* Copy fixed buffer to message */
+         lcId = ulData->pduInfo[idx].lcId;
+         if(ODU_GET_MSG_BUF(RLC_MEM_REGION_UL, RLC_POOL, \
+                  &dLchData[lcId].pdu.mBuf[dLchData[lcId].pdu.numPdu]) != ROK)
+         {
+            DU_LOG("\nERROR  -->  RLC : Memory allocation failed at RlcMacProcUlData");
+            for(pduIdx=0; pduIdx < dLchData[lcId].pdu.numPdu; pduIdx++)
+            {
+               ODU_PUT_MSG_BUF(dLchData[lcId].pdu.mBuf[dLchData[lcId].pdu.numPdu]);
+            }
+            RLC_SHRABL_STATIC_BUF_FREE(RLC_MEM_REGION_UL, RLC_POOL, dLchUlDat, \
+                  sizeof(RguDDatIndInfo));
+            ret = RFAILED;
+            break;
+         }
+         oduCpyFixBufToMsg(ulData->pduInfo[idx].pduBuf, \
+               dLchData[lcId].pdu.mBuf[dLchData[lcId].pdu.numPdu],\
+               ulData->pduInfo[idx].pduLen);
 
          dLchData[lcId].pdu.numPdu++;
       }
@@ -552,26 +552,26 @@ uint8_t RlcProcUlData(Pst *pst, RlcData *ulData)
    {
       if(dLchPduPres)
       {
-	 dLchUlDat->cellId = ulData->cellId;
-	 GET_UE_IDX(ulData->rnti, dLchUlDat->rnti);
+         dLchUlDat->cellId = ulData->cellId;
+         GET_UE_IDX(ulData->rnti, dLchUlDat->rnti);
 
-	 for(idx = 0; idx < MAX_NUM_LC; idx++)
-	 {
-	    if(dLchData[idx].pdu.numPdu)
-	    {
-	       memcpy(&dLchUlDat->lchData[numDLch], &dLchData[idx], sizeof(RguLchDatInd));
-	       numDLch++;
-	    }
-	 }
-	 dLchUlDat->numLch = numDLch;
-	 rlcProcDedLcUlData(pst, 0, dLchUlDat);
+         for(idx = 0; idx < MAX_NUM_LC; idx++)
+         {
+            if(dLchData[idx].pdu.numPdu)
+            {
+               memcpy(&dLchUlDat->lchData[numDLch], &dLchData[idx], sizeof(RguLchDatInd));
+               numDLch++;
+            }
+         }
+         dLchUlDat->numLch = numDLch;
+         rlcProcDedLcUlData(pst, 0, dLchUlDat);
       }
    }
 
    for(pduIdx = 0; pduIdx < ulData->numPdu; pduIdx++)
    {
       RLC_FREE_SHRABL_BUF(pst->region, pst->pool, ulData->pduInfo[pduIdx].pduBuf, \
-         ulData->pduInfo[pduIdx].pduLen);
+            ulData->pduInfo[pduIdx].pduLen);
    }
    RLC_FREE_SHRABL_BUF(pst->region, pst->pool, ulData, sizeof(RlcData));
    return ROK;
