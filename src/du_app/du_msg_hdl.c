@@ -1238,6 +1238,7 @@ uint8_t duHdlEgtpTnlMgmtCfm(EgtpTnlEvt tnlEvtCfm)
  * ****************************************************************/
 uint8_t duSendEgtpDatInd(Buffer *mBuf)
 {
+   static uint32_t yc = 0;
    EgtpMsg  egtpMsg;
 
    /* Fill EGTP header */
@@ -1248,7 +1249,8 @@ uint8_t duSendEgtpDatInd(Buffer *mBuf)
    egtpMsg.msgHdr.extHdr.pdcpNmb.pres = FALSE;
    egtpMsg.msgHdr.teId = 1;
    egtpMsg.msg = mBuf;
-
+   
+   DU_LOG("\nPBORLA count yc %d", yc++);
    egtpHdlDatInd(egtpMsg);
 
    return ROK;
@@ -1759,11 +1761,12 @@ uint8_t DuProcRlcRrcDeliveryReport(Pst *pst, RrcDeliveryReport *rrcDeliveryRepor
  * ****************************************************************/
 uint8_t DuProcRlcUlUserDataTrans(Pst *pst, RlcUlUserDatInfo *ulUserData)
 {
+   uint32_t xcount = 0;
    uint8_t  rbIdx;
    EgtpMsg  egtpMsg;
    Buffer   *mBuf;
 
-   DU_LOG("\nDEBUG  -->  DU APP : Received UL user data");
+   DU_LOG("\nDEBUG  -->  DU APP : Received UL user data for count [%d]",xcount++);
 
    /* Fill EGTP header */
    egtpMsg.msgHdr.msgType = EGTPU_MSG_GPDU;

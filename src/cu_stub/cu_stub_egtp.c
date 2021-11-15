@@ -496,9 +496,11 @@ S16 cuEgtpEncodeHdr(uint8_t *preEncodedHdr, EgtpMsgHdr *preDefHdr, uint8_t *hdrI
 
 S16 cuEgtpHdlRecvMsg(Buffer *mBuf)
 {
+   static uint32_t countp = 1;
    /*Decoding of EGTP message header */
+   DU_LOG("\nPBORLA EGTP msg received %d",countp);
    cuEgtpDecodeHdr(mBuf);
-
+   countp++;
    /* Start Pumping data from CU to DU */
    //return (cuEgtpDatReq());
 

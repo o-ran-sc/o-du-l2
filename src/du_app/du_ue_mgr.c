@@ -3261,12 +3261,13 @@ uint8_t duProcUeContextReleaseCommand(DuUeCb *duUeCb)
    
    cellId = duCb.actvCellLst[duUeCb->f1UeDb->cellIdx]->cellId;
    crnti = duUeCb->crnti;
+   GET_UE_IDX(crnti, ueIdx);
    /* Send DL RRC msg for RRC release */
    if(duUeCb->f1UeDb->dlRrcMsg)
    {
       if(duUeCb->f1UeDb->dlRrcMsg->rrcMsgPdu != NULLP)
       {
-         ret = duBuildAndSendDlRrcMsgToRlc(cellId, duCb.actvCellLst[duUeCb->f1UeDb->cellIdx]->ueCb[ueIdx].rlcUeCfg,\
+         ret = duBuildAndSendDlRrcMsgToRlc(cellId, duCb.actvCellLst[duUeCb->f1UeDb->cellIdx]->ueCb[ueIdx-1].rlcUeCfg,\
                duUeCb->f1UeDb->dlRrcMsg);
          if(ret == RFAILED)
          {

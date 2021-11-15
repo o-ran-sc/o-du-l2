@@ -645,6 +645,7 @@ uint16_t l1BuildAndSendRachInd(uint16_t slot, uint16_t sfn)
  * ****************************************************************/
 uint16_t l1BuildAndSendSlotIndication()
 {
+   static uint8_t xp = 0;
    Pst pst;
    Buffer *mBuf;
 
@@ -694,6 +695,12 @@ uint16_t l1BuildAndSendSlotIndication()
       }
       CMCHKPK(oduPackPointer, (PTR)slotIndMsg, mBuf);
       ODU_POST_TASK(&pst, mBuf);
+      if(sfnValue == 750 && (xp == 0))
+      {
+          DU_LOG("\nPBORLA --> PHY_STUB : ");
+          dataPump();
+          xp++;
+      }
    }
 #endif
    return ROK;
@@ -1051,7 +1058,6 @@ S16 l1HdlUlTtiReq(uint16_t msgLen, void *msg)
       l1BuildAndSendRachInd(ulTtiReq->slot, ulTtiReq->sfn);
       ueDb.numActvUe++;
    }
-#if 0
    /* Send RACH Ind to L2 for second UE */
    if(ueDb.ueCb[UE_IDX_1].rachIndSent == false && ulTtiReq->sfn == 304 && ulTtiReq->slot == 0)
    {
@@ -1067,7 +1073,6 @@ S16 l1HdlUlTtiReq(uint16_t msgLen, void *msg)
       l1BuildAndSendRachInd(ulTtiReq->slot, ulTtiReq->sfn);
       ueDb.numActvUe++;
    }
-#endif   
    MAC_FREE(msg, msgLen);
 #endif
    return ROK;
@@ -1328,7 +1333,7 @@ S16 l1HdlUlDciReq(uint16_t msgLen, void *msg)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t l1SendUlUserData(uint8_t drbId)
+uint8_t l1SendUlUserData(uint8_t drbId, uint8_t rntiId)
 {
    uint8_t cnt = 0;
    fapi_rx_data_indication_t *rxDataInd;
@@ -1354,8 +1359,8 @@ uint8_t l1SendUlUserData(uint8_t drbId)
 
    /* TODO : Fill pduInfo using PUSCH PDU. Currently hardcoding */
    pduInfo = &rxDataInd->pdus[idx];
-   pduInfo->handle = 100;
-   pduInfo->rnti = 100;
+   pduInfo->handle = 100 + rntiId;
+   pduInfo->rnti = 100 + rntiId;
    pduInfo->harqId = 1;
    /* Since user data size = 50bytes and 2 bytes of MAC header and 3 byte of RLC header, 
     * setting tbsize = 56 from Table 5.1.3.2-1 spec 38.214 */

@@ -142,19 +142,30 @@ void l1HdlSlotIndicaion(bool stopSlotInd)
  * ****************************************************************/
 void *l1ConsoleHandler(void *args)
 {
-   char ch;
+   char ch = 'd';
    uint8_t drbIdx = 0;
+   uint8_t rntiId = 0;
+   uint32_t counter=1;
 
    while(true)
    {
       /* Send UL user data to DU when user enters 'd' on console */
       if((ch = getchar()) == 'd')
       {
-         /* Start Pumping data from PHY stub to DU */
-         for(drbIdx = 0; drbIdx < NUM_DRB_TO_PUMP_DATA; drbIdx++) //Number of DRB times the loop will run
+         while(counter<=9000)
          {
-            DU_LOG("\nDEBUG  --> PHY STUB: Sending UL User Data[DrbId:%d]",drbIdx);
-            l1SendUlUserData(drbIdx);
+            /* Start Pumping data from PHY stub to DU */
+            for(drbIdx = 0; drbIdx < NUM_DRB_TO_PUMP_DATA; drbIdx++) //Number of DRB times the loop will run
+            {
+               for(rntiId=0;rntiId<MAX_NUM_UE;rntiId++)
+               {
+                  DU_LOG("\nDEBUG  --> PHY STUB: Sending UL User Data[DrbId:%d] for UEid %d, pkt count %d\n",\
+                  drbIdx,rntiId,counter);
+                  l1SendUlUserData(drbIdx,rntiId);
+                  counter++;
+               }
+               sleep(1);
+            }
          }
       }
       else if((ch = getchar()) == 'c')
@@ -203,6 +214,38 @@ void l1StartConsoleHandler()
 
 }
 
+void dataPump()
+{
+   uint8_t drbIdx = 0;
+   uint8_t rntiId = 0;
+   uint32_t counter=1;
+
+   while(true)
+   {
+      /* Send UL user data to DU when user enters 'd' on console */
+      while(counter<=9)
+      {
+         /* Start Pumping data from PHY stub to DU */
+         for(drbIdx = 0; drbIdx < NUM_DRB_TO_PUMP_DATA; drbIdx++) //Number of DRB times the loop will run
+         {
+            for(rntiId=0;rntiId<MAX_NUM_UE;rntiId++)
+            {
+               DU_LOG("\nDEBUG  --> PHY STUB: Sending UL User Data[DrbId:%d] for UEid %d, pkt count %d\n",\
+                     drbIdx,rntiId,counter);
+               if(counter <=9)
+                  l1SendUlUserData(drbIdx,rntiId);
+               else
+                  break;
+               counter++;
+            }
+            sleep(1);
+         }
+      }
+      DU_LOG("\n");
+      break;
+   }
+
+}
 /**********************************************************************
          End of file
 **********************************************************************/

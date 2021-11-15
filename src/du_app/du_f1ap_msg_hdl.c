@@ -11328,6 +11328,12 @@ uint8_t BuildAndSendUeCtxtRsp(uint8_t cellId, uint8_t ueIdx)
       case UE_CTXT_MOD:
          {
             BuildAndSendUeContextModRsp(cellId, ueIdx);
+            if(ueIdx == 3)
+            {
+               sleep(1);
+            }
+               //BuildAndSendDUConfigUpdate(SERV_CELL_TO_DELETE);
+
             break;
          }
       default:
@@ -12252,16 +12258,20 @@ uint8_t duProcGnbDuCfgUpdAckMsg(uint8_t transId)
                         }
                         else
                         {
-                           for(ueIdx = 0; ueIdx < duCb.actvCellLst[cellIdx]->numActvUes; ueIdx++)
+                           while(duCb.actvCellLst[cellIdx]->numActvUes)
                            {
                               crnti = duCb.actvCellLst[cellIdx]->ueCb[ueIdx].crnti;
                               GET_UE_IDX(crnti,ueId);
+                              if(ueIdx >= 3)
+                                 break;
                               ret = BuildAndSendUeContextReleaseReq(cellId, ueId);
                               if(ret == RFAILED)
                               {
                                  DU_LOG("ERROR  --> DU_APP : duProcGnbDuCfgUpdAckMsg(): Failed to build and send UE delete\
                                  request for cellId[%d]", cellId);
                               }
+                              sleep(1);
+                              ueIdx++;
                            }
                         }
                      }
@@ -13478,7 +13488,7 @@ uint8_t BuildAndSendUeContextReleaseComplete(uint16_t cellId, uint32_t gnbCuUeF1
       break;
    }while(true);
    
-   if(ret == ROK)
+   if(ret == ROK && (duCb.actvCellLst[cellId-1]->numActvUes == 0))
    {
       duCb.actvCellLst[cellId-1]->cellStatus = DELETION_IN_PROGRESS;
       ret = duSendCellDeletReq(cellId);
@@ -13652,7 +13662,7 @@ uint8_t procF1UeContextReleaseCommand(F1AP_PDU_t *f1apMsg)
                      }
                      if(!ueIdxFound)
                      {
-                        DU_LOG("\nERROR  -->  F1AP: DuUeCb is not found at procF1UeContextSetupReq()");
+                        DU_LOG("\nERROR  -->  F1AP: DuUeCb is not found at procF1UeContextReleaseCommand()");
                         ret = RFAILED;
                      }
 

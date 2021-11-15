@@ -200,8 +200,11 @@ uint8_t SGetSBufNewForDebug(char *file, char *func, char *line, Region region, P
    if(SGetSBuf(region, pool, ptr, size) == ROK)
    {
 #ifdef ODU_MEMORY_DEBUG_LOG
-      printf("\nCM_ALLOC=== SGetSBufNewForDebug %s +%d, %s, %d, %p\n",\
+      if (strncmp(func,"cmInetRecvMsg",sizeof("cmInetRecvMsg")))
+      {
+         printf("\nCM_ALLOC=== SGetSBufNewForDebug %s +%d, %s, %d, %p\n",\
          file, line, func, size, *ptr);
+      }
 #endif
       return ROK;
    }
@@ -230,8 +233,11 @@ uint8_t SPutSBufNewForDebug(char *file, char *func, char *line, Region region, P
    if(SPutSBuf(region, pool, ptr, size) == ROK)
    {
 #ifdef ODU_MEMORY_DEBUG_LOG
-      printf("\nCM_FREE=== SPutSBufNewForDebug %s +%d, %s, %d, %p\n",\
+      if (strncmp(func,"cmInetRecvMsg",sizeof("cmInetRecvMsg")))
+      {
+         printf("\nCM_FREE=== SPutSBufNewForDebug %s +%d, %s, %d, %p\n",\
          file, line, func, size, ptr);
+      }
 #endif
       return ROK;
    }

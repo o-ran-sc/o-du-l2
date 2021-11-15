@@ -1259,8 +1259,15 @@ uint8_t allocatePrbUl(SchCellCb *cell, SlotTimingInfo slotTime, \
    bool           isPrachOccasion;
    FreePrbBlock   *freePrbBlock = NULLP;
    CmLList        *freePrbNode = NULLP;
-   SchPrbAlloc    *prbAlloc = &cell->schUlSlotInfo[slotTime.slot]->prbAlloc;
+   SchPrbAlloc    *prbAlloc = NULLP;
 
+   if(cell == NULLP)
+   {
+      DU_LOG("\nERROR  --> SCH : allocatePrbUl():  Cell doesnot exist");
+      return RFAILED;
+   }
+   
+   prbAlloc =   &cell->schUlSlotInfo[slotTime.slot]->prbAlloc;
    /* If startPrb is set to MAX_NUM_RB, it means startPrb is not known currently.
     * Search for an appropriate location in PRB grid and allocate requested resources */
    if(*startPrb == MAX_NUM_RB)
