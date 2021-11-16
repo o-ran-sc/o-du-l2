@@ -1,0 +1,234 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a5706c9f_ac6438e1",
+        "filename": "src/cu_stub/cu_stub.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 245,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-11-16T17:54:07Z",
+      "side": 1,
+      "message": "what is the purpose of this",
+      "range": {
+        "startLine": 245,
+        "startChar": 11,
+        "endLine": 245,
+        "endChar": 30
+      },
+      "revId": "ad4ce8498055c48fa368b113e4f9ea86118b0e0b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6d5ddbee_a97812bd",
+        "filename": "src/cu_stub/cu_stub.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 285,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-11-16T17:54:07Z",
+      "side": 1,
+      "message": "from this we can control how many packets to pump? why we need outer while loop of\"totalNumOfTestFlow\"",
+      "range": {
+        "startLine": 285,
+        "startChar": 27,
+        "endLine": 285,
+        "endChar": 41
+      },
+      "revId": "ad4ce8498055c48fa368b113e4f9ea86118b0e0b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1f72480e_30b7ba71",
+        "filename": "src/cu_stub/cu_stub_egtp.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-11-16T17:54:07Z",
+      "side": 1,
+      "message": "Do we need to checkin this?? .. we dont create 9 tunnels as per current trigger.. I think we can reverse these to previous values?",
+      "range": {
+        "startLine": 50,
+        "startChar": 32,
+        "endLine": 50,
+        "endChar": 33
+      },
+      "revId": "ad4ce8498055c48fa368b113e4f9ea86118b0e0b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "36670d19_fbe0b376",
+        "filename": "src/du_app/du_cell_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 358,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-11-16T17:54:07Z",
+      "side": 1,
+      "message": "why below code is commented?",
+      "range": {
+        "startLine": 358,
+        "startChar": 4,
+        "endLine": 358,
+        "endChar": 5
+      },
+      "revId": "ad4ce8498055c48fa368b113e4f9ea86118b0e0b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "11d44c78_7ec981f6",
+        "filename": "src/du_app/du_egtp.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 893,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-11-16T17:54:07Z",
+      "side": 1,
+      "message": "change the comments",
+      "range": {
+        "startLine": 893,
+        "startChar": 12,
+        "endLine": 893,
+        "endChar": 20
+      },
+      "revId": "ad4ce8498055c48fa368b113e4f9ea86118b0e0b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e5882180_1e23614a",
+        "filename": "src/du_app/du_egtp.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 895,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-11-16T17:54:07Z",
+      "side": 1,
+      "message": "Do we require to merge these changes?",
+      "range": {
+        "startLine": 895,
+        "startChar": 6,
+        "endLine": 895,
+        "endChar": 14
+      },
+      "revId": "ad4ce8498055c48fa368b113e4f9ea86118b0e0b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "80205c19_1c57f9c6",
+        "filename": "src/du_app/du_egtp.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 946,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-11-16T17:54:07Z",
+      "side": 1,
+      "message": "same as above",
+      "range": {
+        "startLine": 946,
+        "startChar": 12,
+        "endLine": 946,
+        "endChar": 27
+      },
+      "revId": "ad4ce8498055c48fa368b113e4f9ea86118b0e0b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c9f00299_ba8c1a05",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 11331,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-11-16T17:54:07Z",
+      "side": 1,
+      "message": "why this check?",
+      "range": {
+        "startLine": 11331,
+        "startChar": 15,
+        "endLine": 11331,
+        "endChar": 21
+      },
+      "revId": "ad4ce8498055c48fa368b113e4f9ea86118b0e0b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b3e83772_4c480e41",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 12262,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-11-16T17:54:07Z",
+      "side": 1,
+      "message": "I dont think we can do changes for testing purpose in duapp files.. like this where we hardcode for some scenario??.. We can discuss this tomorrow",
+      "range": {
+        "startLine": 12262,
+        "startChar": 33,
+        "endLine": 12262,
+        "endChar": 38
+      },
+      "revId": "ad4ce8498055c48fa368b113e4f9ea86118b0e0b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c28ca617_2eeae99b",
+        "filename": "src/phy_stub/phy_stub_thread_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 155,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-11-16T17:54:07Z",
+      "side": 1,
+      "message": "why it is required? If only for some testing purpose i think we can comment it and enable when required.. we can also discuss this",
+      "range": {
+        "startLine": 155,
+        "startChar": 15,
+        "endLine": 155,
+        "endChar": 22
+      },
+      "revId": "ad4ce8498055c48fa368b113e4f9ea86118b0e0b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
