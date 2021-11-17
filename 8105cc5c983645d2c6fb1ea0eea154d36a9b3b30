@@ -1,0 +1,451 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cd2eafab_9447fc82",
+        "filename": "src/5gnrmac/mac_demux.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-11-17T09:13:13Z",
+      "side": 1,
+      "message": "While testing for MULTI-UE and continuous data pumping, I encountered many segmentation faults because of no null checks for pointers in the function definition. so please make sure to add in the beginning before accessing them.",
+      "range": {
+        "startLine": 47,
+        "startChar": 77,
+        "endLine": 47,
+        "endChar": 89
+      },
+      "revId": "8105cc5c983645d2c6fb1ea0eea154d36a9b3b30",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dd1c492c_4d8eb49f",
+        "filename": "src/5gnrmac/mac_demux.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-11-17T09:13:13Z",
+      "side": 1,
+      "message": "this function gives seg fault while pumping continuous data, \nplease add this line before MAC_ALLOC_SHRABL_BUF.\npdu \u003d NULL;",
+      "range": {
+        "startLine": 84,
+        "startChar": 19,
+        "endLine": 84,
+        "endChar": 29
+      },
+      "revId": "8105cc5c983645d2c6fb1ea0eea154d36a9b3b30",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "04a03ed7_8aa30cb6",
+        "filename": "src/5gnrmac/mac_demux.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-11-17T09:13:13Z",
+      "side": 1,
+      "message": "please add a check for macCell[cellTdx] in the beginning.",
+      "range": {
+        "startLine": 132,
+        "startChar": 18,
+        "endLine": 132,
+        "endChar": 40
+      },
+      "revId": "8105cc5c983645d2c6fb1ea0eea154d36a9b3b30",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d370ff17_7da767c6",
+        "filename": "src/5gnrmac/mac_demux.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 210,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-11-17T09:13:13Z",
+      "side": 1,
+      "message": "rather than using idx use some other appropriate name.",
+      "range": {
+        "startLine": 210,
+        "startChar": 15,
+        "endLine": 210,
+        "endChar": 18
+      },
+      "revId": "8105cc5c983645d2c6fb1ea0eea154d36a9b3b30",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5cd56424_af41a93e",
+        "filename": "src/5gnrmac/mac_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 673,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-11-17T09:13:13Z",
+      "side": 1,
+      "message": "Add this as well.\n@return ROK     - success\n*         RFAILED - failure",
+      "revId": "8105cc5c983645d2c6fb1ea0eea154d36a9b3b30",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8939b23c_7ec2be75",
+        "filename": "src/5gnrmac/mac_utils.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-11-17T09:13:13Z",
+      "side": 1,
+      "message": "can u please add refernce for short bsr as well.",
+      "revId": "8105cc5c983645d2c6fb1ea0eea154d36a9b3b30",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fc82d177_f6f7f420",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1023,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-11-17T09:13:13Z",
+      "side": 1,
+      "message": "add check.",
+      "range": {
+        "startLine": 1023,
+        "startChar": 28,
+        "endLine": 1023,
+        "endChar": 48
+      },
+      "revId": "8105cc5c983645d2c6fb1ea0eea154d36a9b3b30",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a3a305ea_c7048af0",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1492,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-11-17T09:13:13Z",
+      "side": 1,
+      "message": "use ROK/RFAILED",
+      "range": {
+        "startLine": 1492,
+        "startChar": 15,
+        "endLine": 1492,
+        "endChar": 16
+      },
+      "revId": "8105cc5c983645d2c6fb1ea0eea154d36a9b3b30",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d5a2fd0b_11382965",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1744,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-11-17T09:13:13Z",
+      "side": 1,
+      "message": "fill it completely.",
+      "revId": "8105cc5c983645d2c6fb1ea0eea154d36a9b3b30",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "36b2471a_a021cad1",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1756,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-11-17T09:13:13Z",
+      "side": 1,
+      "message": "change schCalculateUlTBS -\u003eschCalculateUlTbs",
+      "range": {
+        "startLine": 1756,
+        "startChar": 9,
+        "endLine": 1756,
+        "endChar": 26
+      },
+      "revId": "8105cc5c983645d2c6fb1ea0eea154d36a9b3b30",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8f67385e_547701b0",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1789,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-11-17T09:13:13Z",
+      "side": 1,
+      "message": "return 0?",
+      "range": {
+        "startLine": 1789,
+        "startChar": 18,
+        "endLine": 1789,
+        "endChar": 19
+      },
+      "revId": "8105cc5c983645d2c6fb1ea0eea154d36a9b3b30",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3d687e48_1dc0054b",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1957,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-11-17T09:13:13Z",
+      "side": 1,
+      "message": "{\nif(ueCb-\u003eulLcPrbEst.dedLcInfo !\u003d NULLP)\n updateBsrAndLcList(\u0026(ueCb-\u003eulLcPrbEst.dedLcInfo-\u003ededLcList), ueCb-\u003ebsrInfo, RFAILED);\n\n updateBsrAndLcList(\u0026(ueCb-\u003eulLcPrbEst.defLcList), ueCb-\u003ebsrInfo, RFAILED);\n            return .\n}\nRather than writing 3 time the same thing Cannot we writing these lines of code only once and then return.",
+      "range": {
+        "startLine": 1957,
+        "startChar": 19,
+        "endLine": 1957,
+        "endChar": 24
+      },
+      "revId": "8105cc5c983645d2c6fb1ea0eea154d36a9b3b30",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "67eb9bcc_314c20a8",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2011,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-11-17T09:13:13Z",
+      "side": 1,
+      "message": "we need return [line 2019 and line 2029] in this function better to changes the return type from void to uint8_t.",
+      "range": {
+        "startLine": 2011,
+        "startChar": 4,
+        "endLine": 2011,
+        "endChar": 5
+      },
+      "revId": "8105cc5c983645d2c6fb1ea0eea154d36a9b3b30",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6514ffaf_cfac87e2",
+        "filename": "src/5gnrsch/sch_slot_ind.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 444,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-11-17T09:13:13Z",
+      "side": 1,
+      "message": "replace warning and check in other files as well.",
+      "range": {
+        "startLine": 444,
+        "startChar": 18,
+        "endLine": 444,
+        "endChar": 26
+      },
+      "revId": "8105cc5c983645d2c6fb1ea0eea154d36a9b3b30",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ad429183_49223e69",
+        "filename": "src/5gnrsch/sch_ue_mgr.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 578,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-11-17T09:13:13Z",
+      "side": 1,
+      "message": "this function also gives segfault so please add checks in this file as well. give a null check for ueCb and then cellCb \u003d ueCb-\u003ecellCb, cellCb also",
+      "range": {
+        "startLine": 578,
+        "startChar": 28,
+        "endLine": 578,
+        "endChar": 32
+      },
+      "revId": "8105cc5c983645d2c6fb1ea0eea154d36a9b3b30",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cf7946a0_d5c17b8a",
+        "filename": "src/du_app/du_mgr_main.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 398,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-11-17T09:13:13Z",
+      "side": 1,
+      "message": "remove these before submission.",
+      "range": {
+        "startLine": 398,
+        "startChar": 5,
+        "endLine": 398,
+        "endChar": 28
+      },
+      "revId": "8105cc5c983645d2c6fb1ea0eea154d36a9b3b30",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "20044081_75b0e3a8",
+        "filename": "src/phy_stub/phy_stub_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 445,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-11-17T09:13:13Z",
+      "side": 1,
+      "message": "we are filling MSG_TYPE_SHORT_BSR here in this function as well and at l1BuildAndSendBSR as well, why?",
+      "revId": "8105cc5c983645d2c6fb1ea0eea154d36a9b3b30",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8ddc3166_e6aa432d",
+        "filename": "src/phy_stub/phy_stub_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1607,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-11-17T09:13:13Z",
+      "side": 1,
+      "message": "How do we know that this function sends the BSR for which UE/CRNTI?\nSo for that pass rnti as well, fill that pduInfo-\u003ernti and pduInfo-\u003ehandle.",
+      "range": {
+        "startLine": 1607,
+        "startChar": 9,
+        "endLine": 1607,
+        "endChar": 26
+      },
+      "revId": "8105cc5c983645d2c6fb1ea0eea154d36a9b3b30",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3ecbc856_fe87e613",
+        "filename": "src/phy_stub/phy_stub_thread_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-11-17T09:13:13Z",
+      "side": 1,
+      "message": "move all function declaration into .h file.",
+      "revId": "8105cc5c983645d2c6fb1ea0eea154d36a9b3b30",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e2a1d2c4_7ef29e1c",
+        "filename": "src/phy_stub/phy_stub_thread_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 144,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-11-17T09:13:13Z",
+      "side": 1,
+      "message": "Request - check if any new warnings have been added because of this gerrit.",
+      "range": {
+        "startLine": 144,
+        "startChar": 6,
+        "endLine": 144,
+        "endChar": 22
+      },
+      "revId": "8105cc5c983645d2c6fb1ea0eea154d36a9b3b30",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0b62adb5_ab29e831",
+        "filename": "src/phy_stub/phy_stub_thread_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 192,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-11-17T09:13:13Z",
+      "side": 1,
+      "message": "pass rnti as well.",
+      "revId": "8105cc5c983645d2c6fb1ea0eea154d36a9b3b30",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
