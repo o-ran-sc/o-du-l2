@@ -1731,7 +1731,8 @@ typedef struct rlcTptPerSnssai
 typedef struct rlcSnssaiTputInfo
 {
    CmTimer       snssaiThptTmr;                   /* Throughput Timer */
-   CmLListCp     *tputPerSnssaiList; 
+   CmLListCp     *dlTputPerSnssaiList; 
+   CmLListCp     *ulTputPerSnssaiList;
 }RlcSnssaiTputInfo;
 
 typedef struct rlcUeTputInfo
@@ -1807,7 +1808,7 @@ uint8_t  rlcUeDeleteTmrExpiry(PTR cb);
 
 void rlcSnssaiThptTmrExpiry(PTR cb);
 RlcTptPerSnssai* rlcHandleSnssaiTputlist(RlcCb *gCb, Snssai *snssai,\
-                                  RlcSnssaiActionType action);
+                                  RlcSnssaiActionType action, DIrection dir);
 void rlcCalculateTputPerSnssai(CmLListCp *snssaiList);
 void rlcDelTputSnssaiList(RlcCb *gCb);
 

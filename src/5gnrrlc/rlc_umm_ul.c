@@ -512,7 +512,7 @@ void rlcUmmProcessPdus(RlcCb *gCb, RlcUlRbCb *rbCb, KwPduInfo *pduInfo)
 
    /* pduCount should be the min of RGU_MAX_PDU and pduInfo->numPdu */
    pduCount = (pduInfo->numPdu < RGU_MAX_PDU)? pduInfo->numPdu : RGU_MAX_PDU;
-   
+
    vrUh   = &(rbCb->m.umUl.vrUh);
    vrUr   = &(rbCb->m.umUl.vrUr);
    vrUx   = &(rbCb->m.umUl.vrUx);
@@ -538,16 +538,16 @@ void rlcUmmProcessPdus(RlcCb *gCb, RlcUlRbCb *rbCb, KwPduInfo *pduInfo)
 #ifndef RGL_SPECIFIC_CHANGES
 #ifndef TENB_ACC
 #ifndef LTE_PAL_ENB
-    /* Changed the condition to TRUE from ROK  */
+      /* Changed the condition to TRUE from ROK  */
 #ifndef XEON_SPECIFIC_CHANGES    
-     if(isMemThreshReached(rlcCb[0]->init.region) == TRUE)
-     {
-        uint32_t rlculdrop;
-        rlculdrop++;
-        ODU_PUT_MSG_BUF(pdu);
-        count++;
-        continue;
-     }
+      if(isMemThreshReached(rlcCb[0]->init.region) == TRUE)
+      {
+         uint32_t rlculdrop;
+         rlculdrop++;
+         ODU_PUT_MSG_BUF(pdu);
+         count++;
+         continue;
+      }
 #endif     
 #endif
 #endif
@@ -556,7 +556,7 @@ void rlcUmmProcessPdus(RlcCb *gCb, RlcUlRbCb *rbCb, KwPduInfo *pduInfo)
       if (rlcUmmExtractHdr(gCb, rbCb, pdu, &umHdr))  
       {
          DU_LOG("\nERROR  --> RLC_UL: rlcUmmProcessPdus: Header Extraction Failed UEID:%d CELLID:%d",\
-             rbCb->rlcId.ueId, rbCb->rlcId.cellId);
+               rbCb->rlcId.ueId, rbCb->rlcId.cellId);
          ODU_PUT_MSG_BUF(pdu);
          count++;
          gCb->genSts.errorPdusRecv++;
@@ -567,9 +567,9 @@ void rlcUmmProcessPdus(RlcCb *gCb, RlcUlRbCb *rbCb, KwPduInfo *pduInfo)
       if(umHdr.si == 0)
       {
          rlcUtlSendUlDataToDu(gCb, rbCb, pdu);
-	 ODU_PUT_MSG_BUF(pdu);
-	 count++;
-	 continue;
+         ODU_PUT_MSG_BUF(pdu);
+         count++;
+         continue;
       }
 
       curSn = umHdr.sn;
@@ -582,7 +582,7 @@ void rlcUmmProcessPdus(RlcCb *gCb, RlcUlRbCb *rbCb, KwPduInfo *pduInfo)
       {
          /* PDU needs to be discarded */
          DU_LOG("\nINFO  -->  RLC_UL: rlcUmmProcessPdus: Received an unexpected pdu with sn %d \
-	    UEID:%d CELLID:%d", curSn, rbCb->rlcId.ueId, rbCb->rlcId.cellId);
+               UEID:%d CELLID:%d", curSn, rbCb->rlcId.ueId, rbCb->rlcId.cellId);
 
          ODU_PUT_MSG_BUF(pdu);
          count++;
@@ -594,6 +594,18 @@ void rlcUmmProcessPdus(RlcCb *gCb, RlcUlRbCb *rbCb, KwPduInfo *pduInfo)
       rlcUtlCalUlIpThrPut(gCb,rbCb, pdu, ttiCnt);
 #endif 
 
+      if(rbCb->snssai)
+      {
+         MsgLen        rlcSduSz = 0;  /*Holds length of Rlc Sdu*/
+         snssaiTputNode = rlcHandleSnssaiTputlist(gCb, rbCb->snssai, SEARCH, DIR_UL);
+         if(snssaiTputNode != NULLP)
+         {
+            SFndLenMsg(pdu, &rlcSduSz);
+            snssaiTputNode->dataVol += (uint64_t)rlcSduSz;
+            DU_LOG("\nINFO  -->  SCH: SNSSAI List PduLen:%d, lcId:%d, total :%d",\
+                  rlcSduSz, rbCb->lch.lChId, snssaiTputNode->dataVol);
+         }
+      }
       ODU_GET_MSG_LEN(pdu, &pduSz);
       /* Place sdu segment into recption buffer */
       if(rlcUmmAddRcvdSeg(gCb, rbCb, &umHdr, pdu, pduSz) == TRUE)      
@@ -602,9 +614,9 @@ void rlcUmmProcessPdus(RlcCb *gCb, RlcUlRbCb *rbCb, KwPduInfo *pduInfo)
          if (recBuf == NULLP)
          {
             DU_LOG("\nERROR  -->  RLC_UL: rlcUmmProcessPdus: recBuf is NULLP UEID:%d CELLID:%d", \
-               rbCb->rlcId.ueId, rbCb->rlcId.cellId);
-	    ODU_PUT_MSG_BUF(pdu);
-	    count++;
+                  rbCb->rlcId.ueId, rbCb->rlcId.cellId);
+            ODU_PUT_MSG_BUF(pdu);
+            count++;
             continue;
          }
 
@@ -613,7 +625,7 @@ void rlcUmmProcessPdus(RlcCb *gCb, RlcUlRbCb *rbCb, KwPduInfo *pduInfo)
          {
             rlcUmmReAssembleSdus(gCb, rbCb, recBuf);
             DU_LOG("\nDEBUG  -->  RLC_UL: rlcUmmProcessPdus: Assembled the Sdus for  sn = %d UEID:%d CELLID:%d",\
-               umHdr.sn, rbCb->rlcId.ueId, rbCb->rlcId.cellId);
+                  umHdr.sn, rbCb->rlcId.ueId, rbCb->rlcId.cellId);
 
             /* if curSn is same as the RX_NEXT_Reassembly */
             if (seqNum == ur)
@@ -627,9 +639,9 @@ void rlcUmmProcessPdus(RlcCb *gCb, RlcUlRbCb *rbCb, KwPduInfo *pduInfo)
          else if (!rlcUmmCheckSnInReassemblyWindow(curSn,&RLC_UMUL))
          {  
             DU_LOG("\nDEBUG  -->  RLC_UL: rlcUmmProcessPdus: curent sn is outSide the re-Assembly window. \
-               sn = %d UEID:%d CELLID:%d", umHdr.sn, rbCb->rlcId.ueId, rbCb->rlcId.cellId);
+                  sn = %d UEID:%d CELLID:%d", umHdr.sn, rbCb->rlcId.ueId, rbCb->rlcId.cellId);
 
-	    /* update RX_NEXT_Highest */
+            /* update RX_NEXT_Highest */
             *vrUh  = (curSn + 1) & RLC_UMUL.modBitMask;
 
             /* Discard all pdus outside the modified re-assembly window */
@@ -640,10 +652,10 @@ void rlcUmmProcessPdus(RlcCb *gCb, RlcUlRbCb *rbCb, KwPduInfo *pduInfo)
                RlcSn packetCount;
 
                /* Set RX_NEXT_Reassembly to next SN >= (RX_NEXT_Highest - windowSize) that has not been reassembled yet */
-	       *vrUr = (*vrUh - RLC_UMUL.umWinSz) &  RLC_UMUL.modBitMask;
-	       lowerEdge = *vrUr;
+               *vrUr = (*vrUh - RLC_UMUL.umWinSz) &  RLC_UMUL.modBitMask;
+               lowerEdge = *vrUr;
                packetCount = (lowerEdge - sn) & RLC_UMUL.modBitMask;
-            
+
                while (packetCount)
                {
                   recBuf = rlcUtlGetUmRecBuf(RLC_UMUL.recBufLst, sn);
@@ -655,57 +667,57 @@ void rlcUmmProcessPdus(RlcCb *gCb, RlcUlRbCb *rbCb, KwPduInfo *pduInfo)
                   sn = (sn + 1) & RLC_UMUL.modBitMask;
                   packetCount--;
                }
-	       recBuf = rlcUtlGetUmRecBuf(RLC_UMUL.recBufLst, *vrUr);
-	       if (recBuf != NULLP && recBuf->allSegRcvd)
-	       {
-	          /* set rxNextReassembly to next SN > current rxNextReassembly which is not received */
-	          RlcSn nextRxNextReassembly = (*vrUr + 1) & RLC_UMUL.modBitMask;
-	          rlcUmmFindRxNextReassembly(gCb ,&RLC_UMUL, nextRxNextReassembly);
-	       }
+               recBuf = rlcUtlGetUmRecBuf(RLC_UMUL.recBufLst, *vrUr);
+               if (recBuf != NULLP && recBuf->allSegRcvd)
+               {
+                  /* set rxNextReassembly to next SN > current rxNextReassembly which is not received */
+                  RlcSn nextRxNextReassembly = (*vrUr + 1) & RLC_UMUL.modBitMask;
+                  rlcUmmFindRxNextReassembly(gCb ,&RLC_UMUL, nextRxNextReassembly);
+               }
             }
          }
 
-	 tmrRunning = rlcChkTmr(gCb,(PTR)rbCb, EVENT_RLC_UMUL_REASSEMBLE_TMR);
+         tmrRunning = rlcChkTmr(gCb,(PTR)rbCb, EVENT_RLC_UMUL_REASSEMBLE_TMR);
          tRxNextReassembly = RLC_UM_GET_VALUE(*vrUr ,RLC_UMUL);
          tRxNextReassemblyNxt = (*vrUr + 1) & rbCb->m.umUl.modBitMask;
          tRxNextHighest = RLC_UM_GET_VALUE(*vrUh, RLC_UMUL);
          tRxNextReassemblyNxt = RLC_UM_GET_VALUE(tRxNextReassemblyNxt ,RLC_UMUL);
 
-	 /* If reassemby timer is running */
-	 if (tmrRunning) 
-	 {
-	    RlcSn  tRxTimerTigger = RLC_UM_GET_VALUE(*vrUx, RLC_UMUL);
-	    uint8_t ret = rlcUmmCheckSnInReassemblyWindow(*vrUx, &RLC_UMUL);
-	    recBuf = rlcUtlGetUmRecBuf(RLC_UMUL.recBufLst,*vrUr);
+         /* If reassemby timer is running */
+         if (tmrRunning) 
+         {
+            RlcSn  tRxTimerTigger = RLC_UM_GET_VALUE(*vrUx, RLC_UMUL);
+            uint8_t ret = rlcUmmCheckSnInReassemblyWindow(*vrUx, &RLC_UMUL);
+            recBuf = rlcUtlGetUmRecBuf(RLC_UMUL.recBufLst,*vrUr);
 
             if ((tRxTimerTigger <= tRxNextReassembly) || ((!ret) && (tRxTimerTigger != tRxNextHighest)) ||
-                (tRxNextHighest ==  tRxNextReassemblyNxt && recBuf && recBuf->noMissingSeg))
+                  (tRxNextHighest ==  tRxNextReassemblyNxt && recBuf && recBuf->noMissingSeg))
             {
                rlcStopTmr(gCb,(PTR)rbCb, EVENT_RLC_UMUL_REASSEMBLE_TMR);             
                tmrRunning = FALSE;
                DU_LOG("\nINFO  --> RLC_UL: rlcUmmProcessPdus: Stopped ReAssembly Timer rxTimerTigger = %d \
-                  rxNextReassembly = %d rxNextHighest = %d ", tRxTimerTigger, tRxNextReassembly, tRxNextHighest);
+                     rxNextReassembly = %d rxNextHighest = %d ", tRxTimerTigger, tRxNextReassembly, tRxNextHighest);
             }
-	 }
+         }
 
-	 /* If Reassembly timer is not running */
-	 if (!tmrRunning)
-	 {
+         /* If Reassembly timer is not running */
+         if (!tmrRunning)
+         {
             recBuf = rlcUtlGetUmRecBuf(RLC_UMUL.recBufLst, curSn);
             if ((tRxNextHighest > tRxNextReassemblyNxt) || ((tRxNextHighest == tRxNextReassemblyNxt)
-                 && (recBuf && (!recBuf->noMissingSeg))))
+                     && (recBuf && (!recBuf->noMissingSeg))))
             {
-                DU_LOG("\nDEBUG  -->  RLC_UL: rlcUmmProcessPdus: Start ReAssembly Timer tRxNextReassemblyNxt = %d \
-                   tRxNextHighest %d", tRxNextReassemblyNxt, tRxNextHighest);
-                rlcStartTmr(gCb, (PTR)rbCb, EVENT_RLC_UMUL_REASSEMBLE_TMR); 
-                *vrUx = *vrUh;
+               DU_LOG("\nDEBUG  -->  RLC_UL: rlcUmmProcessPdus: Start ReAssembly Timer tRxNextReassemblyNxt = %d \
+                     tRxNextHighest %d", tRxNextReassemblyNxt, tRxNextHighest);
+               rlcStartTmr(gCb, (PTR)rbCb, EVENT_RLC_UMUL_REASSEMBLE_TMR); 
+               *vrUx = *vrUh;
             }
-	 }
+         }
       }
       else
       {
          DU_LOG("\nERROR  -->  RLC_UL: rlcUmmProcessPdus:Failed to assemble the PDU for SN  = %d UEID:%d CELLID:%d",\
-            umHdr.sn, rbCb->rlcId.ueId, rbCb->rlcId.cellId);
+               umHdr.sn, rbCb->rlcId.ueId, rbCb->rlcId.cellId);
 
       }
       count++;

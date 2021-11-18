@@ -506,7 +506,7 @@ uint8_t rlcUtlSendToMac(RlcCb *gCb, SuId suId, KwDStaIndInfo *staIndInfo)
 
                if(rbCb->snssai)
                {
-                  snssaiTputNode = rlcHandleSnssaiTputlist(gCb, rbCb->snssai, SEARCH);
+                  snssaiTputNode = rlcHandleSnssaiTputlist(gCb, rbCb->snssai, SEARCH, DIR_DL);
                   if(snssaiTputNode != NULLP)
                   {
                      snssaiTputNode->dataVol += staIndTb->lchStaInd[count].totBufSize;

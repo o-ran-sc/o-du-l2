@@ -597,11 +597,18 @@ void rlcSnssaiThptTmrExpiry(PTR cb)
    }
 
    DU_LOG("\n==================================================================");
-   if(rlcThptCb->snssaiTputInfo.tputPerSnssaiList != NULLP)
+   if(rlcThptCb->snssaiTputInfo.dlTputPerSnssaiList != NULLP)
    {
       DU_LOG("\n===================== DL Throughput Per SNSSAI ==============================");
   
-      rlcCalculateTputPerSnssai(rlcThptCb->snssaiTputInfo.tputPerSnssaiList);
+      rlcCalculateTputPerSnssai(rlcThptCb->snssaiTputInfo.dlTputPerSnssaiList);
+      DU_LOG("\n==================================================================");
+   }
+   if(rlcThptCb->snssaiTputInfo.ulTputPerSnssaiList != NULLP)
+   {
+      DU_LOG("\n===================== UL Throughput Per SNSSAI ==============================");
+  
+      rlcCalculateTputPerSnssai(rlcThptCb->snssaiTputInfo.ulTputPerSnssaiList);
       DU_LOG("\n==================================================================");
    }
    /* Restart timer */

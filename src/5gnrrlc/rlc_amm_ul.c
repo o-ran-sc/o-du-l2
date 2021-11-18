@@ -607,6 +607,18 @@ void rlcAmmProcessPdus(RlcCb *gCb, RlcUlRbCb *rbCb, KwPduInfo *pduInfo)
          rlcUtlCalUlIpThrPut(gCb, rbCb, pdu, ttiCnt);
 #endif /* LTE_L2_MEAS */
 
+      if(rbCb->snssai)
+      {
+         MsgLen        rlcSduSz = 0;  /*Holds length of Rlc Sdu*/
+         snssaiTputNode = rlcHandleSnssaiTputlist(gCb, rbCb->snssai, SEARCH, DIR_UL);
+         if(snssaiTputNode != NULLP)
+         {
+            SFndLenMsg(pdu, &rlcSduSz);
+            snssaiTputNode->dataVol += (uint64_t)rlcSduSz;
+            DU_LOG("\nINFO   -->  SCH: SNSSAI List PduLen:%d, lcId:%d, total :%d",\
+                  rlcSduSz, rbCb->lch.lChId, snssaiTputNode->dataVol);
+         }
+      }
          /* Update rxNextHighestRcvd */
          MODAMR(sn, mSn, amUl->rxNext, amUl->snModMask);
          MODAMR(amUl->rxNextHighestRcvd, mrxNextHighestRcvd, amUl->rxNext, amUl->snModMask);
