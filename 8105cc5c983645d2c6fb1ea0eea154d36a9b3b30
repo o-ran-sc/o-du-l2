@@ -529,6 +529,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4a6a9cf7_e31ade0d",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1957,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-11-18T12:30:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "817c5a07_04e943a5",
+      "range": {
+        "startLine": 1957,
+        "startChar": 19,
+        "endLine": 1957,
+        "endChar": 24
+      },
+      "revId": "8105cc5c983645d2c6fb1ea0eea154d36a9b3b30",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "67eb9bcc_314c20a8",
@@ -566,6 +590,30 @@
       "side": 1,
       "message": "I didnt understand this. We can discuss this",
       "parentUuid": "67eb9bcc_314c20a8",
+      "range": {
+        "startLine": 2011,
+        "startChar": 4,
+        "endLine": 2011,
+        "endChar": 5
+      },
+      "revId": "8105cc5c983645d2c6fb1ea0eea154d36a9b3b30",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c264c97d_c305240c",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2011,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-11-18T12:30:15Z",
+      "side": 1,
+      "message": "Oh ok.. Understood your comment..\nSo actually we dont have to handle the return for this function.. the condition @[line 2019 and line 2029] can be positive scenario and thus it is expected that some scenario these conditions hit and it doesnt need to be handled in parent function",
+      "parentUuid": "207b3ae7_48e2b494",
       "range": {
         "startLine": 2011,
         "startChar": 4,
