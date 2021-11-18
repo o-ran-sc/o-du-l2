@@ -1,0 +1,208 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2100fecf_d806f0f8",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 3728,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-11-18T11:10:36Z",
+      "side": 1,
+      "message": "Any specific reason for commenting all above prints?",
+      "revId": "0df615b7375de565703a5eda7bdaced081e386fc",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2b4f2257_9bab0da8",
+        "filename": "src/5gnrmac/mac_demux.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-11-18T11:10:36Z",
+      "side": 1,
+      "message": "set pdu\u003dNULL at the beginning of the iteration instead of each switch case",
+      "revId": "0df615b7375de565703a5eda7bdaced081e386fc",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "364d80c3_27e8febb",
+        "filename": "src/5gnrmac/mac_demux.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 228,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-11-18T11:10:36Z",
+      "side": 1,
+      "message": "pduLen-- should happen as many times rxPduIdx increases",
+      "revId": "0df615b7375de565703a5eda7bdaced081e386fc",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d9e9d5aa_06884f1e",
+        "filename": "src/5gnrmac/mac_demux.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 244,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-11-18T11:10:36Z",
+      "side": 1,
+      "message": "same as above",
+      "revId": "0df615b7375de565703a5eda7bdaced081e386fc",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c68dcdcb_d21bde3c",
+        "filename": "src/5gnrmac/mac_demux.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 249,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-11-18T11:10:36Z",
+      "side": 1,
+      "message": "pduLen-- wont be needed here once added at line 244",
+      "revId": "0df615b7375de565703a5eda7bdaced081e386fc",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "081f3bbf_aa45f528",
+        "filename": "src/5gnrmac/mac_utils.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-11-18T11:10:36Z",
+      "side": 1,
+      "message": "move comment to next line",
+      "revId": "0df615b7375de565703a5eda7bdaced081e386fc",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d503343c_4a3fc7c8",
+        "filename": "src/5gnrmac/mac_utils.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-11-18T11:10:36Z",
+      "side": 1,
+      "message": "keep similar type of macros together",
+      "revId": "0df615b7375de565703a5eda7bdaced081e386fc",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b74c69d3_0efb235d",
+        "filename": "src/5gnrsch/sch_utils.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1362,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-11-18T11:10:36Z",
+      "side": 1,
+      "message": "same as below comment",
+      "revId": "0df615b7375de565703a5eda7bdaced081e386fc",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8192e864_63c5bb8e",
+        "filename": "src/5gnrsch/sch_utils.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1415,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-11-18T11:10:36Z",
+      "side": 1,
+      "message": "This will add quite a lot of prints when data is pumped. Do we really need this?",
+      "revId": "0df615b7375de565703a5eda7bdaced081e386fc",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1403d4c5_a5dcfadc",
+        "filename": "src/cm/common_def.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-11-18T11:10:36Z",
+      "side": 1,
+      "message": "Is this change approved by Manasi?",
+      "revId": "0df615b7375de565703a5eda7bdaced081e386fc",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0902915a_8c98b7d9",
+        "filename": "src/cm/mac_sch_interface.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-11-18T11:10:36Z",
+      "side": 1,
+      "message": "is this comment valid for this macro?",
+      "revId": "0df615b7375de565703a5eda7bdaced081e386fc",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "28c85484_889c1a12",
+        "filename": "src/phy_stub/phy_stub_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1631,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-11-18T11:10:36Z",
+      "side": 1,
+      "message": "we fill the value of handle same as crnti",
+      "revId": "0df615b7375de565703a5eda7bdaced081e386fc",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
