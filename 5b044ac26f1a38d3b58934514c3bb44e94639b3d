@@ -24,6 +24,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "010e68c8_e28c599c",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 1829,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-11-19T12:29:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b8298a42_0062e2fe",
+      "range": {
+        "startLine": 1829,
+        "startChar": 18,
+        "endLine": 1829,
+        "endChar": 26
+      },
+      "revId": "5b044ac26f1a38d3b58934514c3bb44e94639b3d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cff3aadc_018eadbf",
@@ -37,6 +61,30 @@
       "writtenOn": "2021-11-19T12:08:54Z",
       "side": 1,
       "message": "remove before submission",
+      "range": {
+        "startLine": 416,
+        "startChar": 5,
+        "endLine": 416,
+        "endChar": 28
+      },
+      "revId": "5b044ac26f1a38d3b58934514c3bb44e94639b3d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cc2e3310_2db3d08b",
+        "filename": "src/du_app/du_mgr_main.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 416,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-11-19T12:29:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cff3aadc_018eadbf",
       "range": {
         "startLine": 416,
         "startChar": 5,
