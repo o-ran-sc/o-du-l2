@@ -70,6 +70,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "10f30273_7aff29fa",
+        "filename": "src/cu_stub/cu_stub_egtp.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-11-19T11:10:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1f72480e_30b7ba71",
+      "range": {
+        "startLine": 50,
+        "startChar": 32,
+        "endLine": 50,
+        "endChar": 33
+      },
+      "revId": "ad4ce8498055c48fa368b113e4f9ea86118b0e0b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "36670d19_fbe0b376",
@@ -93,6 +117,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e036d25a_5b920586",
+        "filename": "src/du_app/du_cell_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 358,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-11-19T11:10:19Z",
+      "side": 1,
+      "message": "we do not require this check anyone more.\nthis function will get trigger only if there is no active ue in active cell list",
+      "parentUuid": "36670d19_fbe0b376",
+      "range": {
+        "startLine": 358,
+        "startChar": 4,
+        "endLine": 358,
+        "endChar": 5
+      },
+      "revId": "ad4ce8498055c48fa368b113e4f9ea86118b0e0b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "11d44c78_7ec981f6",
@@ -106,6 +154,30 @@
       "writtenOn": "2021-11-16T17:54:07Z",
       "side": 1,
       "message": "change the comments",
+      "range": {
+        "startLine": 893,
+        "startChar": 12,
+        "endLine": 893,
+        "endChar": 20
+      },
+      "revId": "ad4ce8498055c48fa368b113e4f9ea86118b0e0b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8e486f42_cabfb1f8",
+        "filename": "src/du_app/du_egtp.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 893,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-11-19T11:10:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "11d44c78_7ec981f6",
       "range": {
         "startLine": 893,
         "startChar": 12,
@@ -185,6 +257,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "532de1a5_d2913db7",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 11331,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-11-19T11:10:19Z",
+      "side": 1,
+      "message": "not required now",
+      "parentUuid": "c9f00299_ba8c1a05",
+      "range": {
+        "startLine": 11331,
+        "startChar": 15,
+        "endLine": 11331,
+        "endChar": 21
+      },
+      "revId": "ad4ce8498055c48fa368b113e4f9ea86118b0e0b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b3e83772_4c480e41",
@@ -208,6 +304,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "54bbd7e4_228cd3e7",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 12262,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-11-19T11:10:19Z",
+      "side": 1,
+      "message": "presently we are supporting 3 UES so I have added this check to send BuildAndSendUeContextReleaseReq for only 3 UEs.",
+      "parentUuid": "b3e83772_4c480e41",
+      "range": {
+        "startLine": 12262,
+        "startChar": 33,
+        "endLine": 12262,
+        "endChar": 38
+      },
+      "revId": "ad4ce8498055c48fa368b113e4f9ea86118b0e0b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c28ca617_2eeae99b",
@@ -221,6 +341,30 @@
       "writtenOn": "2021-11-16T17:54:07Z",
       "side": 1,
       "message": "why it is required? If only for some testing purpose i think we can comment it and enable when required.. we can also discuss this",
+      "range": {
+        "startLine": 155,
+        "startChar": 15,
+        "endLine": 155,
+        "endChar": 22
+      },
+      "revId": "ad4ce8498055c48fa368b113e4f9ea86118b0e0b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5b8bbce0_122594f4",
+        "filename": "src/phy_stub/phy_stub_thread_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 155,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-11-19T11:10:19Z",
+      "side": 1,
+      "message": "this is for testing purpose",
+      "parentUuid": "c28ca617_2eeae99b",
       "range": {
         "startLine": 155,
         "startChar": 15,

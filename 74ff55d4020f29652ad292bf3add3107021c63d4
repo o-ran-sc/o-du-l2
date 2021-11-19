@@ -16,6 +16,24 @@
       "message": "why is this removed?",
       "revId": "74ff55d4020f29652ad292bf3add3107021c63d4",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9fe7adea_d68ffd7e",
+        "filename": "src/du_app/du_cell_mgr.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 365,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-11-19T11:10:19Z",
+      "side": 0,
+      "message": "this is not required now, this function gets trigger only when there is no active ue",
+      "parentUuid": "d2eccf67_a11e04c0",
+      "revId": "74ff55d4020f29652ad292bf3add3107021c63d4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
   ]
 }
