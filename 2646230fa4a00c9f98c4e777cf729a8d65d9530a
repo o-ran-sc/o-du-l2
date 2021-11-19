@@ -24,6 +24,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "efafce5a_0a576643",
+        "filename": "src/phy_stub/phy_stub_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1355,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-11-19T13:59:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "676edfd2_5ba1c761",
+      "range": {
+        "startLine": 1355,
+        "startChar": 21,
+        "endLine": 1355,
+        "endChar": 25
+      },
+      "revId": "2646230fa4a00c9f98c4e777cf729a8d65d9530a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "987d9d17_2abd6f8d",
@@ -37,6 +61,30 @@
       "writtenOn": "2021-11-19T13:20:23Z",
       "side": 1,
       "message": "rename it to ueIdx.. this is not rnti..(RNTI starts from 100)",
+      "range": {
+        "startLine": 163,
+        "startChar": 19,
+        "endLine": 163,
+        "endChar": 25
+      },
+      "revId": "2646230fa4a00c9f98c4e777cf729a8d65d9530a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c108447c_da5c7cb5",
+        "filename": "src/phy_stub/phy_stub_thread_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-11-19T13:59:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "987d9d17_2abd6f8d",
       "range": {
         "startLine": 163,
         "startChar": 19,
