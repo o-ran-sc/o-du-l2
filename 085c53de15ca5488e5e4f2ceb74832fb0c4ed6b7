@@ -1,0 +1,225 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c4a0ad0e_160ad212",
+        "filename": "src/5gnrmac/mac_demux.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-11-19T08:16:26Z",
+      "side": 1,
+      "message": "same fix is part of Sangeeta\u0027s gerrit too.\nPlease move this line to line #74 so that pdu is set to NULL for each iteration",
+      "revId": "085c53de15ca5488e5e4f2ceb74832fb0c4ed6b7",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5c1b69c8_8da68962",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1266,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-11-19T08:16:26Z",
+      "side": 1,
+      "message": "say here that \"Received cellCb is null\"",
+      "revId": "085c53de15ca5488e5e4f2ceb74832fb0c4ed6b7",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "621b1fe9_0ff86301",
+        "filename": "src/5gnrsch/sch_rach.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 153,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-11-19T08:16:26Z",
+      "side": 1,
+      "message": "say \"Received cell cb is null\"",
+      "revId": "085c53de15ca5488e5e4f2ceb74832fb0c4ed6b7",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "112ad69f_92380326",
+        "filename": "src/cu_stub/cu_stub.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 248,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-11-19T08:16:26Z",
+      "side": 1,
+      "message": "Explanation is not clear enough",
+      "revId": "085c53de15ca5488e5e4f2ceb74832fb0c4ed6b7",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "74cdbb96_90ec2106",
+        "filename": "src/cu_stub/cu_stub.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 249,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-11-19T08:16:26Z",
+      "side": 1,
+      "message": "Since we have successfully tested upto 9k packets, In code we should at least make changes to pump around 5k packets.",
+      "revId": "085c53de15ca5488e5e4f2ceb74832fb0c4ed6b7",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6623dcd3_7be393a9",
+        "filename": "src/cu_stub/cu_stub.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 297,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-11-19T08:16:26Z",
+      "side": 1,
+      "message": "since the packet processing is successful with sleep(1) only, lets keep this uncommented.\nBut add a comment here that this should be removed later to test continuous data processing",
+      "revId": "085c53de15ca5488e5e4f2ceb74832fb0c4ed6b7",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d15dc7c3_f62d8730",
+        "filename": "src/du_app/du_egtp.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 900,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-11-19T08:16:26Z",
+      "side": 1,
+      "message": "This part of code was added only for our testing purpose. Remove it before merging",
+      "revId": "085c53de15ca5488e5e4f2ceb74832fb0c4ed6b7",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6a87bdd1_086e4158",
+        "filename": "src/du_app/du_egtp.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 955,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-11-19T08:16:26Z",
+      "side": 1,
+      "message": "same as above",
+      "revId": "085c53de15ca5488e5e4f2ceb74832fb0c4ed6b7",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "48672500_fdbe0903",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 12255,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-11-19T08:16:26Z",
+      "side": 1,
+      "message": "are we reducing this value anywhere within this loop?\nIf not then why not use the condition at line 12260 as condition for this while",
+      "revId": "085c53de15ca5488e5e4f2ceb74832fb0c4ed6b7",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "276d8bdb_48e3a83d",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 12263,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-11-19T08:16:26Z",
+      "side": 1,
+      "message": "this condition should be checked before using ueIdx at line 12257",
+      "revId": "085c53de15ca5488e5e4f2ceb74832fb0c4ed6b7",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c94e4e1d_ad55cbf2",
+        "filename": "src/du_app/du_mgr_main.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 440,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-11-19T08:16:26Z",
+      "side": 1,
+      "message": "uncomment before merging",
+      "revId": "085c53de15ca5488e5e4f2ceb74832fb0c4ed6b7",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5b54865e_4b0624f4",
+        "filename": "src/phy_stub/phy_stub_thread_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-11-19T08:16:26Z",
+      "side": 1,
+      "message": "sine upto 9000 packets are tested succuessfully, lets change the code here to be able to pump ~5000 packets",
+      "revId": "085c53de15ca5488e5e4f2ceb74832fb0c4ed6b7",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9a83727b_850b0708",
+        "filename": "src/phy_stub/phy_stub_thread_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 167,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-11-19T08:16:26Z",
+      "side": 1,
+      "message": "add sleep(1) alongwith a comment that it shall be removed later",
+      "revId": "085c53de15ca5488e5e4f2ceb74832fb0c4ed6b7",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
