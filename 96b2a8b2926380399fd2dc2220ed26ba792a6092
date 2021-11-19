@@ -18,6 +18,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d7dae507_a6b8f6bc",
+        "filename": "src/5gnrsch/sch_rach.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 178,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-11-19T10:01:13Z",
+      "side": 1,
+      "message": "Commented this for testing purpose so will uncomment this",
+      "parentUuid": "03e97f40_8d2f268e",
+      "revId": "96b2a8b2926380399fd2dc2220ed26ba792a6092",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "000935b6_8cd50d78",
@@ -31,6 +49,24 @@
       "writtenOn": "2021-11-19T09:07:50Z",
       "side": 1,
       "message": "Make sure that the code is working for multiple UE as well.\nAs of now I see that crnti \u003d 100 always.",
+      "revId": "96b2a8b2926380399fd2dc2220ed26ba792a6092",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cef13472_8ccc1516",
+        "filename": "src/phy_stub/phy_stub_thread_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 188,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-11-19T10:01:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "000935b6_8cd50d78",
       "revId": "96b2a8b2926380399fd2dc2220ed26ba792a6092",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
