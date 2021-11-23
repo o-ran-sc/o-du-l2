@@ -147,12 +147,22 @@ int UnixSocketServer::readMessage(int fd)
       switch(msgHdr->action)
       {
          case RAISE_ALARM: 
+
                      if(AlarmManager::instance().raiseAlarm(alrm))
                      {
                         O1_LOG("\nO1 UnixSocketServer : "
                                "Alarm raised for alarm Id %s",
                                 alrmRec->alarmId);
+
+                        // triggering VES notification for the risen Alarm
+
+                        VesEventHandler vesEvtHdr;
+                        if(vesEvtHdr.prepare(VesEventType::FAULT_NOTIFICATION, &alrm)) {
+                           vesEvtHdr.send();
+                        }
+
                      }
+
                      else
                      {
                         O1_LOG("\nO1 UnixSocketServer : "
@@ -160,12 +170,19 @@ int UnixSocketServer::readMessage(int fd)
                                 alrmRec->alarmId);
                      }
                      break;  
+                     
          case CLEAR_ALARM: 
                      if(AlarmManager::instance().clearAlarm(alrm))
                      {
                         O1_LOG("\nO1 UnixSocketServer : "
                                "Alarm cleared for alarm Id %s",
                                 alrmRec->alarmId);
+
+                        // triggering VES notification for the cleared Alarm
+                        VesEventHandler vesEvtHdr;
+                        if(vesEvtHdr.prepare(VesEventType::FAULT_NOTIFICATION, &alrm)) {
+                           vesEvtHdr.send();
+                        }
                      }
                      else
                      {

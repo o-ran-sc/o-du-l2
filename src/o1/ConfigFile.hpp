@@ -1,6 +1,6 @@
 /*******************************************************************************
 ################################################################################
-#   Copyright (c) [2020] [HCL Technologies Ltd.]                               #
+#   Copyright (c) [2020-2021] [HCL Technologies Ltd.]                          #
 #                                                                              #
 #   Licensed under the Apache License, Version 2.0 (the "License");            #
 #   you may not use this file except in compliance with the License.           #
@@ -14,49 +14,26 @@
 #   See the License for the specific language governing permissions and        #
 #   limitations under the License.                                             #
 ################################################################################
-*******************************************************************************/
+********************************************************************************/
+/* This is a super class for all config files */
 
-/* This file contains AlarmManager singleton class responsible for 
-   storing and managing alarms. 
-*/ 
+#ifndef __CONFIG_FILE_HPP__
+#define __CONFIG_FILE_HPP__
 
-#ifndef __ALARM_MANAGER_HPP__
-#define __ALARM_MANAGER_HPP__
+#include <string>
 
-#include <map>
-#include "Alarm.hpp"
-#include "Singleton.hpp"
+using std::string;
 
-#include "PnfRegistrationThread.hpp"
-#include "VesUtils.hpp"
-#include "VesEventHandler.hpp"
-
-using std::map;
-
-
-class AlarmManager : public Singleton<AlarmManager>
-{
-
-   friend Singleton<AlarmManager>;
-
-   private:
-   map<uint16_t,Alarm> mAlarmList; 	    
-
-   protected:
-   AlarmManager();    
-   ~AlarmManager();
-
-   public:
-   bool raiseAlarm(const Alarm& alarm);
-   bool clearAlarm(const uint16_t& alarmId);
-   bool clearAlarm(const Alarm& alarm );
-   const map<uint16_t, Alarm>& getAlarmList()const;
-
+class ConfigFile {
+public: 
+    ConfigFile(string filepath) : mFilepath(filepath) {}
+    ~ConfigFile() {}
+    virtual bool loadConfigFile() = 0;
+protected:
+    string mFilepath;
 };
-
-
 #endif
 
 /**********************************************************************
-         End of file
-**********************************************************************/
+  End of file
+ **********************************************************************/

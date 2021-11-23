@@ -49,6 +49,9 @@ class JsonHelper
       static char *printUnformatted(cJSON * node);
       static char *print(cJSON * node);
       static const char *getError();
+      static cJSON* createArray();
+      static cJSON_bool addJsonNodeToArray(cJSON * array, cJSON* node);
+
 
 };
 

@@ -1,6 +1,6 @@
 /*******************************************************************************
 ################################################################################
-#   Copyright (c) [2020] [HCL Technologies Ltd.]                               #
+#   Copyright (c) [2020-2021] [HCL Technologies Ltd.]                          #
 #                                                                              #
 #   Licensed under the Apache License, Version 2.0 (the "License");            #
 #   you may not use this file except in compliance with the License.           #
@@ -16,47 +16,34 @@
 ################################################################################
 *******************************************************************************/
 
-/* This file contains AlarmManager singleton class responsible for 
-   storing and managing alarms. 
-*/ 
+/* This file defines the SliceMetrics which holds the Network Slice Metrics */ 
 
-#ifndef __ALARM_MANAGER_HPP__
-#define __ALARM_MANAGER_HPP__
+#ifndef __SLICE_METRICS_HPP__
+#define __SLICE_METRICS_HPP__
 
-#include <map>
-#include "Alarm.hpp"
-#include "Singleton.hpp"
+#include <string>
+#include <vector>
+#include "Message.hpp"
+#include "PmInterface.h"
 
-#include "PnfRegistrationThread.hpp"
-#include "VesUtils.hpp"
-#include "VesEventHandler.hpp"
+using namespace std;
 
-using std::map;
+class SliceMetrics : public Message {
+   
+public:
+    SliceMetrics();
+    ~SliceMetrics();
 
+    const vector<SliceMetricRecord>& getSliceMetrics() const;
+    void addMetric(SliceMetricRecord& sliceMetricRecord);
 
-class AlarmManager : public Singleton<AlarmManager>
-{
-
-   friend Singleton<AlarmManager>;
-
-   private:
-   map<uint16_t,Alarm> mAlarmList; 	    
-
-   protected:
-   AlarmManager();    
-   ~AlarmManager();
-
-   public:
-   bool raiseAlarm(const Alarm& alarm);
-   bool clearAlarm(const uint16_t& alarmId);
-   bool clearAlarm(const Alarm& alarm );
-   const map<uint16_t, Alarm>& getAlarmList()const;
+private: 
+    vector<SliceMetricRecord> mSliceList;
 
 };
-
 
 #endif
 
 /**********************************************************************
-         End of file
+End of file
 **********************************************************************/

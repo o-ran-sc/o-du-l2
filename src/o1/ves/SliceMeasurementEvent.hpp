@@ -1,6 +1,6 @@
 /*******************************************************************************
 ################################################################################
-#   Copyright (c) [2020] [HCL Technologies Ltd.]                               #
+#   Copyright (c) [2020-2021] [HCL Technologies Ltd.]                          #
 #                                                                              #
 #   Licensed under the Apache License, Version 2.0 (the "License");            #
 #   you may not use this file except in compliance with the License.           #
@@ -16,45 +16,32 @@
 ################################################################################
 *******************************************************************************/
 
-/* This file contains AlarmManager singleton class responsible for 
-   storing and managing alarms. 
-*/ 
 
-#ifndef __ALARM_MANAGER_HPP__
-#define __ALARM_MANAGER_HPP__
+/* This file contains SliceMeasurementEvent class for  preparing the
+   Slice Measurement VES Event*/
 
-#include <map>
-#include "Alarm.hpp"
-#include "Singleton.hpp"
+#ifndef __SLICE_MEASUREMENT_EVENT_HPP__
+#define __SLICE_MEASUREMENT_EVENT_HPP__
 
-#include "PnfRegistrationThread.hpp"
+#include <iostream>
+#include <string>
 #include "VesUtils.hpp"
-#include "VesEventHandler.hpp"
+#include "PerfMeasurementEvent.hpp"
+#include <cjson/cJSON.h>
+#include "SliceMetrics.hpp"
 
-using std::map;
+using namespace std;
 
 
-class AlarmManager : public Singleton<AlarmManager>
+class SliceMeasurementEvent : public PerfMeasurementEvent
 {
+public:
+    SliceMeasurementEvent();
+    ~SliceMeasurementEvent();
 
-   friend Singleton<AlarmManager>;
-
-   private:
-   map<uint16_t,Alarm> mAlarmList; 	    
-
-   protected:
-   AlarmManager();    
-   ~AlarmManager();
-
-   public:
-   bool raiseAlarm(const Alarm& alarm);
-   bool clearAlarm(const uint16_t& alarmId);
-   bool clearAlarm(const Alarm& alarm );
-   const map<uint16_t, Alarm>& getAlarmList()const;
-
+private:
+    bool prepareEventFields(const Message* msg = NULL);
 };
-
-
 #endif
 
 /**********************************************************************

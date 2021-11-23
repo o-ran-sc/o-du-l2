@@ -1,6 +1,6 @@
 /*******************************************************************************
 ################################################################################
-#   Copyright (c) [2020] [HCL Technologies Ltd.]                               #
+#   Copyright (c) [2020-2021] [HCL Technologies Ltd.]                          #
 #                                                                              #
 #   Licensed under the Apache License, Version 2.0 (the "License");            #
 #   you may not use this file except in compliance with the License.           #
@@ -15,48 +15,46 @@
 #   limitations under the License.                                             #
 ################################################################################
 *******************************************************************************/
+/* This class defines functions to read Netconf Config file */
 
-/* This file contains AlarmManager singleton class responsible for 
-   storing and managing alarms. 
-*/ 
+#ifndef __NETCONF_CONFIG_FILE_HPP__
+#define __NETCONF_CONFIG_FILE_HPP__
 
-#ifndef __ALARM_MANAGER_HPP__
-#define __ALARM_MANAGER_HPP__
-
-#include <map>
-#include "Alarm.hpp"
-#include "Singleton.hpp"
-
-#include "PnfRegistrationThread.hpp"
-#include "VesUtils.hpp"
-#include "VesEventHandler.hpp"
-
-using std::map;
+#include "ConfigFile.hpp"
+#include <string>
 
 
-class AlarmManager : public Singleton<AlarmManager>
-{
+using std::string;
 
-   friend Singleton<AlarmManager>;
+class NetconfConfigFile : public ConfigFile {
+public:  
+    //constructor & Destructor
+    NetconfConfigFile(string filepath);
+    ~NetconfConfigFile();
 
-   private:
-   map<uint16_t,Alarm> mAlarmList; 	    
+    //member functions
+    bool loadConfigFile() override;
 
-   protected:
-   AlarmManager();    
-   ~AlarmManager();
 
-   public:
-   bool raiseAlarm(const Alarm& alarm);
-   bool clearAlarm(const uint16_t& alarmId);
-   bool clearAlarm(const Alarm& alarm );
-   const map<uint16_t, Alarm>& getAlarmList()const;
-
+    //Getters
+    string getNetconfMacAddr() const;
+    string getNetconfIpv4() const;
+    string getNetconfIpv6() const;
+    string getNetconfPort() const;
+    string getNetconfUsername() const;
+    string getNetconfPassword() const;
+    
+private: 
+    //member variables
+    string mNetconfMacAddr;
+    string mNetconfIpv4;
+    string mNetconfIpv6;
+    string mNetconfPort;
+    string mNetconfUsername;
+    string mNetconfPassword;
 };
-
-
 #endif
 
 /**********************************************************************
-         End of file
-**********************************************************************/
+  End of file
+ **********************************************************************/

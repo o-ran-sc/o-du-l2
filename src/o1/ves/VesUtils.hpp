@@ -26,13 +26,14 @@
 
 //config file path
 #define NETCONF_CONFIG "config/netconfConfig.json"
-#define VES_CONFIG "config/vesConfig.json"
+#define OAM_VES_CONFIG "config/oamVesConfig.json"
+#define SMO_VES_CONFIG "config/smoVesConfig.json"
 
 //Common Header Macros
 
 //Event Type
 #define EVENT_TYPE_5G "EventType5G"
-#define EVENT_TYPE_ORAN_COMPONENET "O_RAN_COMPONENT"
+#define EVENT_TYPE_ORAN_COMPONENT "O_RAN_COMPONENT"
 #define EVENT_TYPE_CONTROLLER "Controller"
 
 //Priority
@@ -50,11 +51,10 @@
 
 //version
 #define VERSION_4_0_1 "4.0.1"
+#define VERSION_4_1 "4.1"
 
 //Ves Event Listener Version
 #define VES_EVENT_LISTENER_7_2_1 "7.2.1"
-
-
 
 //PNF Registration Macros
 #define PNF_REGISTRATION_VERSION_2_1 "2.1"
@@ -76,16 +76,29 @@
 #define BETWEEN_ATTEMPTS_TIMEOUT_2000 "2000"
 #define KEEPALIVE_DELAY_120 "120"
 
+// PM_SLICE Macros
+#define PM_EVENT_ID "_1634181300_PM1min"
+#define PM_REPORTING_ENTITY "ORAN-DEV"
+#define EVENT_TYPE_ORAN_COMPONENT_PM "O_RAN_COMPONENT_PM1min"
+
 enum class VesEventType
 { 
    PNF_REGISTRATION,
    FAULT_NOTIFICATION,
    PM_NOTIFICATION,
-   HEARTBEAT
+   HEARTBEAT,
+   PM_SLICE
+};
+
+enum class MessageType
+{
+   ALARM,
+   PERF_DATA,
 };
 
 
 #endif
+
 /**********************************************************************
   End of file
  **********************************************************************/

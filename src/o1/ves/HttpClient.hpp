@@ -47,7 +47,7 @@ class HttpClient
       HttpClient(){}
       ~HttpClient(){}
 
-      HttpClient(string ip, string port, string username, string password);
+      HttpClient(string url, string username=0, string password=0);
       bool send(const char *send_data);
 
    private:
@@ -57,13 +57,11 @@ class HttpClient
       bool sendHttpRequest(struct curl_slist *header, CURL *curl);
       bool setCurlOptions(CURL *curl);
       bool setUserPassword(CURL *curl);
-      bool createUrl(CURL *curl);
 
       //member variable
-      string mServerIp;
-      string mServerPort;
       string mServerUsername;
       string mServerPassword;
+      string mUrl;
 };
 
 #endif

@@ -1,6 +1,6 @@
 /*******************************************************************************
 ################################################################################
-#   Copyright (c) [2020] [HCL Technologies Ltd.]                               #
+#   Copyright (c) [2020-2021] [HCL Technologies Ltd.]                          #
 #                                                                              #
 #   Licensed under the Apache License, Version 2.0 (the "License");            #
 #   you may not use this file except in compliance with the License.           #
@@ -16,46 +16,51 @@
 ################################################################################
 *******************************************************************************/
 
-/* This file contains AlarmManager singleton class responsible for 
-   storing and managing alarms. 
-*/ 
+/* This file contains the C interface for ODU to access the Performance 
+   Management functions */
 
-#ifndef __ALARM_MANAGER_HPP__
-#define __ALARM_MANAGER_HPP__
-
-#include <map>
-#include "Alarm.hpp"
-#include "Singleton.hpp"
-
-#include "PnfRegistrationThread.hpp"
-#include "VesUtils.hpp"
+#include "PmInterface.h"
 #include "VesEventHandler.hpp"
-
-using std::map;
-
-
-class AlarmManager : public Singleton<AlarmManager>
-{
-
-   friend Singleton<AlarmManager>;
-
-   private:
-   map<uint16_t,Alarm> mAlarmList; 	    
-
-   protected:
-   AlarmManager();    
-   ~AlarmManager();
-
-   public:
-   bool raiseAlarm(const Alarm& alarm);
-   bool clearAlarm(const uint16_t& alarmId);
-   bool clearAlarm(const Alarm& alarm );
-   const map<uint16_t, Alarm>& getAlarmList()const;
-
-};
+#include "SliceMetrics.hpp"
+#include <unistd.h>
+#include "GlobalDefs.hpp"
 
 
-#endif
+/*******************************************************************
+ *
+ * @brief Send the Slice metrics to SMO as a VES message
+ *
+ * @details
+ *
+ *    Function : sendSliceMetric
+ *
+ *    Functionality:
+ *      - Takes the Slice metrics list and sends it to SMO
+ *
+ *
+ * @params[in] pointer to SliceMetricList
+ * @return O1::SUCCESS - success
+ *         O1::FAILURE - failure
+ ******************************************************************/
+int sendSliceMetric(SliceMetricList* sliceMetricList) {
+
+   O1_LOG("\n PmInterfce : Call received from the the du_app code !!");
+
+   SliceMetrics metrics;
+ 
+   for(int i = 0; i < sliceMetricList->nRecords; i++)
+      metrics.addMetric(sliceMetricList->sliceRecord[i]); 
+
+   VesEventHandler vesEventHandler;
+   if (!vesEventHandler.prepare(VesEventType::PM_SLICE, &metrics))
+      return O1::FAILURE;
+   
+   O1_LOG("\n PmInterface : Sending slice PM Data");
+   if ( !vesEventHandler.send() )
+      return O1::FAILURE;
+
+   return O1::SUCCESS;
+}
 
 /**********************************************************************
          End of file
