@@ -39,6 +39,7 @@ extern "C" {
 #endif /* __cplusplus */
 
 #include "du_log.h"
+#include "du_app_rlc_inf.h"
  
 
 #define EKWxxx 1
@@ -1725,13 +1726,15 @@ typedef struct rlcTptPerSnssai
 {
    Snssai   *snssai;
    uint64_t dataVol;
+   double long tpt;
 }RlcTptPerSnssai;
 
 
 typedef struct rlcSnssaiTputInfo
 {
    CmTimer       snssaiThptTmr;                   /* Throughput Timer */
-   CmLListCp     *tputPerSnssaiList; 
+   CmLListCp     *dlTputPerSnssaiList; 
+   CmLListCp     *ulTputPerSnssaiList;
 }RlcSnssaiTputInfo;
 
 typedef struct rlcUeTputInfo
@@ -1786,6 +1789,8 @@ typedef struct rlcCb
 
 RlcCb *rlcCb[MAX_RLC_INSTANCES];   /*!< RLC global control block */
 
+SliceMetricList *sliceStats;   /*Slice metric */
+CmLListCp *arrTputPerSnssai[2];
 /****************************************************************************
  *                      Declarations
  ***************************************************************************/
@@ -1807,9 +1812,12 @@ uint8_t  rlcUeDeleteTmrExpiry(PTR cb);
 
 void rlcSnssaiThptTmrExpiry(PTR cb);
 RlcTptPerSnssai* rlcHandleSnssaiTputlist(RlcCb *gCb, Snssai *snssai,\
-                                  RlcSnssaiActionType action);
-void rlcCalculateTputPerSnssai(CmLListCp *snssaiList);
-void rlcDelTputSnssaiList(RlcCb *gCb);
+                                  RlcSnssaiActionType action, Direction dir);
+uint8_t rlcCalculateTputPerSnssai(CmLListCp *snssaiList, Direction dir);
+void rlcDelTputSnssaiList(RlcCb *gCb, Direction dir);
+uint8_t BuildSliceReportToDu(uint8_t snssaiCnt);
+bool rlcFindSliceEntry(uint32_t snssaiVal, uint8_t *snssaiIdx,\
+                      SliceMetricList *sliceStats);
 
 #ifdef LTE_L2_MEAS
 Void rlcLmmSendAlarm ARGS (( RlcCb *gCb,

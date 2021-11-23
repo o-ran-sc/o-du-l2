@@ -201,7 +201,7 @@ uint8_t updateDedLcInfo(Snssai *snssai, SchRrmPolicy *rrmPolicy, SchLcPrbEstimat
          SCH_ALLOC(lcPrbEst->dedLcInfo, sizeof(DedicatedLCInfo));
          if(lcPrbEst->dedLcInfo == NULLP)
          {
-            DU_LOG("\nINFO  -->  SCH : Memory Allocation Failed");
+            DU_LOG("\nERROR  -->  SCH : Memory Allocation Failed");
             return RFAILED;
          }
       }
@@ -212,10 +212,6 @@ uint8_t updateDedLcInfo(Snssai *snssai, SchRrmPolicy *rrmPolicy, SchLcPrbEstimat
       DU_LOG("\nINFO  -->  SCH : Updated RRM policy, reservedPOOL:%d",lcPrbEst->dedLcInfo->rsvdDedicatedPRB);
    }
    /*else case: This LcCtxt  is either a Default LC or this LC is part of someother RRM_MemberList*/
-   else
-   {
-      DU_LOG("\nINFO  -->  SCH : This SNSSAI is not a part of this RRMPolicy");
-   }
    return ROK;	 
 }
 

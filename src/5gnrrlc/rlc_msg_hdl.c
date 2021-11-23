@@ -912,6 +912,64 @@ uint8_t RlcProcUeDeleteReq(Pst *pst, RlcUeDelete *ueDelete)
    return ret;
 }
 
+uint8_t BuildSliceReportToDu(uint8_t snssaiCnt)
+{
+   CmLList  *node = NULLP;
+   RlcTptPerSnssai *snssaiNode = NULLP;
+   Direction dir = DIR_UL;
+   Pst             pst;
+   SliceMetricList *sliceStats = NULLP;   /*Slice metric */
+   uint32_t snssaiVal = 0;
+   uint8_t snssaiIdx = 0;
+
+   if(snssaiCnt == 0)
+   {
+      DU_LOG("\nERROR  -->  RLC: No SNSSAI to send the SLice PM");
+      return RFAILED;
+   }
+
+   RLC_ALLOC_SHRABL_BUF(RLC_MEM_REGION_UL, RLC_POOL, sliceStats, sizeof(SliceMetricList));
+   RLC_ALLOC_SHRABL_BUF(RLC_MEM_REGION_UL, RLC_POOL, sliceStats->sliceRecord, snssaiCnt * (sizeof(SliceMetricRecord *)));
+
+   while(dir < DIR_BOTH)
+   {
+      node = arrTputPerSnssai[dir]->first;
+      if(node == NULLP)
+      {
+         DU_LOG("\nERROR  -->  RLC: No SNSSAI in list");
+         RLC_SHRABL_STATIC_BUF_FREE(RLC_MEM_REGION_UL, RLC_POOL, sliceStats, sizeof(SliceMetricList));
+         return RFAILED;
+      }
+
+      while(node)
+      {
+         snssaiVal = 0;
+         snssaiIdx = 0;
+         snssaiNode = (RlcTptPerSnssai *)node->node;
+
+         memcpy(&snssaiVal, snssaiNode->snssai, sizeof(Snssai));
+
+         if(rlcFindSliceEntry(snssaiVal, &snssaiIdx, sliceStats) == FALSE)
+         {
+            RLC_ALLOC_SHRABL_BUF(RLC_MEM_REGION_UL, RLC_POOL, sliceStats->sliceRecord[snssaiIdx], sizeof(SliceMetricRecord));
+            sliceStats->sliceRecord[snssaiIdx]->networkSliceIdentifier = snssaiVal;
+            sliceStats->numSlice++;
+         }
+         if(dir == DIR_UL)
+         {
+            sliceStats->sliceRecord[snssaiIdx]->ThpUl = snssaiNode->tpt;
+         }
+         else
+         {
+            sliceStats->sliceRecord[snssaiIdx]->ThpDl = snssaiNode->tpt;
+         }
+         node = node->next;
+      }
+      dir++;
+   }
+//   FILL_PST_RLC_TO_DUAPP(pst, RLC_UL_INST, EVENT_RLC_SNSSAI_PM);
+   return ROK;
+}
 /**********************************************************************
          End of file
 **********************************************************************/

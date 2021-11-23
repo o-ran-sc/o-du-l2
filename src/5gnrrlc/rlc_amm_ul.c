@@ -494,26 +494,25 @@ void rlcAmmProcessPdus(RlcCb *gCb, RlcUlRbCb *rbCb, KwPduInfo *pduInfo)
    RlcSn      mSn;
    uint8_t    fByte;
    bool      discFlg;
-#ifdef LTE_L2_MEAS_RLC
-   MsgLen              rlcSduSz;  /*Holds length of Rlc Sdu*/
-#endif /* LTE_L2_MEAS */
+   RlcTptPerSnssai *snssaiTputNode = NULLP;
+   MsgLen     pduSz = 0;  /*Holds length of Rlc Sdu*/
 
    amUl = &RLC_AMUL;
 
    numPduToProcess = RLC_MIN(pduInfo->numPdu, RGU_MAX_PDU);
    DU_LOG("\nDEBUG  -->  RLC_UL : rlcAmmProcessPdus: numPdu[%d],numPduToProcess[%d] UEID:%d CELLID:%d",
-            numPdu, numPduToProcess, rbCb->rlcId.ueId, rbCb->rlcId.cellId);
+         numPdu, numPduToProcess, rbCb->rlcId.ueId, rbCb->rlcId.cellId);
 
    while (numPdu < numPduToProcess)
    {
       discFlg = FALSE;
       pdu = pduInfo->mBuf[numPdu++];
-
+      snssaiTputNode = NULLP;
       if (! pdu)
       {
 
          DU_LOG("\nERROR  -->  RLC_UL : rlcAmmProcessPdus: Null Pdu UEID:%d CELLID:%d",
-            rbCb->rlcId.ueId, rbCb->rlcId.cellId);
+               rbCb->rlcId.ueId, rbCb->rlcId.cellId);
          gCb->genSts.errorPdusRecv++;
          break;
       }
@@ -533,7 +532,7 @@ void rlcAmmProcessPdus(RlcCb *gCb, RlcUlRbCb *rbCb, KwPduInfo *pduInfo)
       if (rlcAmmExtractHdr(gCb, rbCb, pdu, &amHdr, &fByte) != ROK)
       {
          DU_LOG("\nERROR  -->  RLC_UL : rlcAmmProcessPdus: Header Extraction Failed UEID:%d CELLID:%d",
-            rbCb->rlcId.ueId, rbCb->rlcId.cellId);
+               rbCb->rlcId.ueId, rbCb->rlcId.cellId);
          ODU_PUT_MSG_BUF(pdu);
          gCb->genSts.errorPdusRecv++;
          continue;
@@ -548,8 +547,8 @@ void rlcAmmProcessPdus(RlcCb *gCb, RlcUlRbCb *rbCb, KwPduInfo *pduInfo)
       if((amHdr.si == RLC_SI_LAST_SEG) && (!amHdr.so))
       {
          DU_LOG("\nERROR  -->  RLC_UL : rlcAmmProcessPdus: Dropping PDU because SO can't be zero\
-	    for last segment sn:%u UEID:%d CELLID:%d", amHdr.sn, rbCb->rlcId.ueId,
-            rbCb->rlcId.cellId);
+               for last segment sn:%u UEID:%d CELLID:%d", amHdr.sn, rbCb->rlcId.ueId,
+               rbCb->rlcId.cellId);
          ODU_PUT_MSG_BUF(pdu);
          continue;
       }
@@ -558,13 +557,13 @@ void rlcAmmProcessPdus(RlcCb *gCb, RlcUlRbCb *rbCb, KwPduInfo *pduInfo)
 #ifndef TENB_ACC
 #ifndef TENB_T2K3K_SPECIFIC_CHANGES
 #ifndef LTE_PAL_ENB
-    /* Changed the condition to TRUE from ROK  */
+      /* Changed the condition to TRUE from ROK  */
       if(isMemThreshReached(rlcCb[0]->init.region) == TRUE)
       {
          uint32_t rlculdrop;
-	 rlculdrop++;
-	 ODU_PUT_MSG_BUF(pdu);
-	 continue;
+         rlculdrop++;
+         ODU_PUT_MSG_BUF(pdu);
+         continue;
       }
 #endif
 #else
@@ -607,6 +606,17 @@ void rlcAmmProcessPdus(RlcCb *gCb, RlcUlRbCb *rbCb, KwPduInfo *pduInfo)
          rlcUtlCalUlIpThrPut(gCb, rbCb, pdu, ttiCnt);
 #endif /* LTE_L2_MEAS */
 
+         if(rbCb->snssai)
+         {
+            snssaiTputNode = rlcHandleSnssaiTputlist(gCb, rbCb->snssai, SEARCH, DIR_UL);
+            if(snssaiTputNode != NULLP)
+            {
+               ODU_GET_MSG_LEN(pdu, &pduSz);
+               snssaiTputNode->dataVol += (uint64_t)pduSz;
+               DU_LOG("\nINFO   -->  RLC_UL: SNSSAI AMM_UL List PduLen:%d, lcId:%d, total :%d",\
+                     pduSz, rbCb->lch.lChId, snssaiTputNode->dataVol);
+            }
+         }
          /* Update rxNextHighestRcvd */
          MODAMR(sn, mSn, amUl->rxNext, amUl->snModMask);
          MODAMR(amUl->rxNextHighestRcvd, mrxNextHighestRcvd, amUl->rxNext, amUl->snModMask);
@@ -615,19 +625,19 @@ void rlcAmmProcessPdus(RlcCb *gCb, RlcUlRbCb *rbCb, KwPduInfo *pduInfo)
             amUl->rxNextHighestRcvd = ((sn + 1) & (amUl->snModMask)); 
 
             DU_LOG("\nDEBUG  -->  RLC_UL : rlcAmmProcessPdus: Updated rxNextHighestRcvd = %d UEID:%d CELLID:%d",
-               amUl->rxNextHighestRcvd, rbCb->rlcId.ueId, rbCb->rlcId.cellId);
+                  amUl->rxNextHighestRcvd, rbCb->rlcId.ueId, rbCb->rlcId.cellId);
          }
-         
+
          recBuf = rlcUtlGetRecBuf(amUl->recBufLst, sn);
          if ((NULLP != recBuf) && ( recBuf->allRcvd))
          {
             /* deliver the reassembled RLC SDU to upper layer, 
- 	       But not removed from the table */
+               But not removed from the table */
             rlcAmmUlReassembleSdus(gCb, rbCb, recBuf);
             recBuf->isDelvUpperLayer = TRUE;
 
             MODAMR(amUl->vrMr, tVrMr, amUl->rxNext, amUl->snModMask);
-            
+
             /* Update rxHighestStatus */
             if (sn == amUl->rxHighestStatus)
             {
@@ -666,12 +676,12 @@ void rlcAmmProcessPdus(RlcCb *gCb, RlcUlRbCb *rbCb, KwPduInfo *pduInfo)
                while (mSn <= tVrMr)
                {
                   if ((NULLP != recBuf) && (recBuf->allRcvd) &&
-	              (TRUE == recBuf->isDelvUpperLayer))
-		  {
-	             /* RecBuf should remove from table 
-			since PDU is already sent to upper layer */
- 		      recBuf->isDelvUpperLayer = FALSE;
-                      rlcUtlDelRecBuf(amUl->recBufLst, recBuf, gCb);
+                        (TRUE == recBuf->isDelvUpperLayer))
+                  {
+                     /* RecBuf should remove from table 
+                        since PDU is already sent to upper layer */
+                     recBuf->isDelvUpperLayer = FALSE;
+                     rlcUtlDelRecBuf(amUl->recBufLst, recBuf, gCb);
                   }
                   else
                   {
@@ -693,13 +703,13 @@ void rlcAmmProcessPdus(RlcCb *gCb, RlcUlRbCb *rbCb, KwPduInfo *pduInfo)
             Bool snInWin = RLC_AM_CHK_SN_WITHIN_RECV_WINDOW(amUl->rxNextStatusTrig, amUl);
             /* spec 38.322v15.3.0 - 5.2.3.2.3 */
             if((amUl->rxNextStatusTrig == amUl->rxNext) || ( (!snInWin) &&
-                                             (amUl->rxNextStatusTrig != amUl->vrMr) )||
-	       (amUl->rxNextStatusTrig == amUl->rxNext && recBuf &&recBuf->noMissingSeg))
+                     (amUl->rxNextStatusTrig != amUl->vrMr) )||
+                  (amUl->rxNextStatusTrig == amUl->rxNext && recBuf &&recBuf->noMissingSeg))
             {
                rlcStopTmr(gCb,(PTR)rbCb, EVENT_RLC_AMUL_REASSEMBLE_TMR);
                tmrRunning = FALSE;
                DU_LOG("\nINFO  --> RLC_UL: rlcAmmProcessPdus: Stopped ReAssembly Timer rxNextStatusTigger = %d"
-	         "rxNextReassembly = %d", amUl->rxNextStatusTrig, amUl->rxNext);
+                     "rxNextReassembly = %d", amUl->rxNextStatusTrig, amUl->rxNext);
             }
          }
 
@@ -707,14 +717,14 @@ void rlcAmmProcessPdus(RlcCb *gCb, RlcUlRbCb *rbCb, KwPduInfo *pduInfo)
          {
             /* spec 38.322v15.3.0 - 5.2.3.2.3 */
             if((amUl->rxNextHighestRcvd > amUl->rxNext) || ((amUl->rxNextHighestRcvd == amUl->rxNext) &&
-	       (recBuf && (!recBuf->noMissingSeg))))
+                     (recBuf && (!recBuf->noMissingSeg))))
             {
                rlcStartTmr(gCb,(PTR)rbCb, EVENT_RLC_AMUL_REASSEMBLE_TMR);
                amUl->rxNextStatusTrig = amUl->rxNextHighestRcvd;
 
                DU_LOG("\nDEBUG  -->  RLC_UL : rlcAmmProcessPdus: Updated rxNextStatusTrig = %d" 
-	          "UEID:%d CELLID:%d", amUl->rxNextStatusTrig, rbCb->rlcId.ueId,
-                  rbCb->rlcId.cellId);
+                     "UEID:%d CELLID:%d", amUl->rxNextStatusTrig, rbCb->rlcId.ueId,
+                     rbCb->rlcId.cellId);
             }
          }
       }

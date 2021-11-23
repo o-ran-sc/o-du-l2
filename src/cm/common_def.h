@@ -254,6 +254,15 @@ typedef enum
    CELL_DOWN
 }OduCellStatus;
 
+
+typedef enum
+{
+   DIR_NONE,
+   DIR_UL,
+   DIR_DL,
+   DIR_BOTH
+}Direction;
+
 typedef struct slotTimingInfo
 {
    uint16_t cellId;

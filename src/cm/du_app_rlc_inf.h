@@ -273,6 +273,20 @@ typedef struct rrcDeliveryStatus
    uint16_t  triggeringMessage;
 }RrcDeliveryStatus;
 
+/*Pm Metric for NW Slicing from RLC to DUAPP*/
+typedef struct sliceMetricRecord
+{
+  uint32_t networkSliceIdentifier;
+  double long ThpDl;
+  double long ThpUl;
+}SliceMetricRecord;
+
+typedef struct sliceMetricList
+{
+   uint8_t numSlice;
+   SliceMetricRecord **sliceRecord;
+}SliceMetricList;
+
 typedef struct rrcDeliveryReportInfo
 {
    uint16_t  cellId;
