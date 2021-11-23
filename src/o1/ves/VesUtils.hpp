@@ -81,11 +81,19 @@ enum class VesEventType
    PNF_REGISTRATION,
    FAULT_NOTIFICATION,
    PM_NOTIFICATION,
-   HEARTBEAT
+   HEARTBEAT,
+   PM_SLICE
+};
+
+enum class MessageType
+{
+   ALARM,
+   PERF_DATA,
 };
 
 
 #endif
+
 /**********************************************************************
   End of file
  **********************************************************************/

@@ -16,59 +16,48 @@
 ################################################################################
 *******************************************************************************/
 
-/* This file contains macros and functions to support the preparation of pnf
-   Registration VES Event*/
+/* This file contains the C interface for ODU to access the Performance 
+   Management functions */
+
+#include "PmInterface.h"
+#include "VesEventHandler.hpp"
+#include "SliceMetrics.hpp"
+#include <unistd.h>
+#include "GlobalDefs.hpp"
 
 
-#ifndef __PNF_REGISTRATION_HPP__
-#define __PNF_REGISTRATION_HPP__
+/*******************************************************************
+ *
+ * @brief Send the Slice metrics to SMO as a VES message
+ *
+ * @details
+ *
+ *    Function : sendSliceMetric
+ *
+ *    Functionality:
+ *      - Takes the Slice metrics list and sends it to SMO
+ *
+ *
+ * @params[in] pointer to SliceMetricList
+ * @return O1::SUCCESS - success
+ *         O1::FAILURE - failure
+ ******************************************************************/
+int sendSliceMetric(SliceMetricList* sliceMetricList) {
 
-#include <iostream>
-#include <string>
-#include <cjson/cJSON.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include "VesUtils.hpp"
-#include "VesEvent.hpp"
+   O1_LOG("\n Call received from the the du_app code !!");
 
-#define MAX_TIME_STR 11
+   SliceMetrics metrics;
+ 
+   for(int i = 0; i < SLICE_COUNT; i++)
+      metrics.addMetric(sliceMetricList->sliceRecord[i]); 
 
-using namespace std;
+   VesEventHandler vesEventHandler;
+   if (!vesEventHandler.prepare(VesEventType::PM_SLICE, &metrics))
+      return O1::FAILURE;
 
-class PnfRegistration : public VesEvent
-{
+   return O1::SUCCESS;
+}
 
-   public:
-      /* Default constructor/Destructor */
-      PnfRegistration();
-      ~PnfRegistration();
-
-   protected:
-      bool prepareEventFields();
-
-   private:
-      bool prepareAdditionalFields(cJSON *addFields);
-      string getCurrentDate();
-      string getNetconfMacAddr();
-      string getNetconfV4ServerIP();
-      string getNetconfV6ServerIP();
-      string getNetconfPort();
-      string getUsername();
-      string getPassword();
-      string getSerialNumber();
-      string getUnitFamily();
-      bool readConfigFile();
-
-      //member variables
-      string mNetconfMacAddr;
-      string mNetconfIpv4;
-      string mNetconfIpv6;
-      string mNetconfPort;
-      string mNetconfUsername;
-      string mNetconfPassword;
-};
-
-#endif
 /**********************************************************************
-  End of file
- **********************************************************************/
+         End of file
+**********************************************************************/

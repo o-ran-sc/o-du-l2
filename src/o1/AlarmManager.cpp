@@ -47,9 +47,12 @@ AlarmManager::~AlarmManager()
 **********************************************************************/
 bool AlarmManager::raiseAlarm(const Alarm& alarm)
 {
+
    pair<map<uint16_t,Alarm>::iterator,bool> ret;
    ret = mAlarmList.insert(pair<uint16_t,Alarm>(alarm.getAlarmId(),alarm));
    return ret.second;
+
+   
 }
 
 

@@ -1,6 +1,6 @@
 /*******************************************************************************
 ################################################################################
-#   Copyright (c) [2020] [HCL Technologies Ltd.]                               #
+#   Copyright (c) [2020-2021] [HCL Technologies Ltd.]                          #
 #                                                                              #
 #   Licensed under the Apache License, Version 2.0 (the "License");            #
 #   you may not use this file except in compliance with the License.           #
@@ -16,47 +16,60 @@
 ################################################################################
 *******************************************************************************/
 
-/* This file contains AlarmManager singleton class responsible for 
-   storing and managing alarms. 
-*/ 
+/* This file contains macros and functions to support the preparation of pnf
+   Registration VES Event*/
 
-#ifndef __ALARM_MANAGER_HPP__
-#define __ALARM_MANAGER_HPP__
 
-#include <map>
-#include "Alarm.hpp"
-#include "Singleton.hpp"
+#ifndef __PNF_REGISTRATION_EVENT_HPP__
+#define __PNF_REGISTRATION_EVENT_HPP__
 
-#include "PnfRegistrationThread.hpp"
+#include <iostream>
+#include <string>
+#include <cjson/cJSON.h>
+#include <stdlib.h>
+#include <stdio.h>
 #include "VesUtils.hpp"
-#include "VesEventHandler.hpp"
+#include "VesEvent.hpp"
+#include "Message.hpp"
 
-using std::map;
+#define MAX_TIME_STR 11
 
+using namespace std;
 
-class AlarmManager : public Singleton<AlarmManager>
+class PnfRegistrationEvent : public VesEvent
 {
 
-   friend Singleton<AlarmManager>;
-
-   private:
-   map<uint16_t,Alarm> mAlarmList; 	    
+   public:
+      /* Default constructor/Destructor */
+      PnfRegistrationEvent();
+      ~PnfRegistrationEvent();
 
    protected:
-   AlarmManager();    
-   ~AlarmManager();
+      bool prepareEventFields(const Message* msg = NULL);
 
-   public:
-   bool raiseAlarm(const Alarm& alarm);
-   bool clearAlarm(const uint16_t& alarmId);
-   bool clearAlarm(const Alarm& alarm );
-   const map<uint16_t, Alarm>& getAlarmList()const;
+   private:
+      bool prepareAdditionalFields(cJSON *addFields);
+      string getCurrentDate();
+      string getNetconfMacAddr();
+      string getNetconfV4ServerIP();
+      string getNetconfV6ServerIP();
+      string getNetconfPort();
+      string getUsername();
+      string getPassword();
+      string getSerialNumber();
+      string getUnitFamily();
+      bool readConfigFile();
 
+      //member variables
+      string mNetconfMacAddr;
+      string mNetconfIpv4;
+      string mNetconfIpv6;
+      string mNetconfPort;
+      string mNetconfUsername;
+      string mNetconfPassword;
 };
 
-
 #endif
-
 /**********************************************************************
-         End of file
-**********************************************************************/
+  End of file
+ **********************************************************************/
