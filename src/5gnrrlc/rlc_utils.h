@@ -1731,7 +1731,8 @@ typedef struct rlcTptPerSnssai
 typedef struct rlcSnssaiTputInfo
 {
    CmTimer       snssaiThptTmr;                   /* Throughput Timer */
-   CmLListCp     *tputPerSnssaiList; 
+   CmLListCp     *dlTputPerSnssaiList; 
+   CmLListCp     *ulTputPerSnssaiList;
 }RlcSnssaiTputInfo;
 
 typedef struct rlcUeTputInfo
@@ -1807,9 +1808,9 @@ uint8_t  rlcUeDeleteTmrExpiry(PTR cb);
 
 void rlcSnssaiThptTmrExpiry(PTR cb);
 RlcTptPerSnssai* rlcHandleSnssaiTputlist(RlcCb *gCb, Snssai *snssai,\
-                                  RlcSnssaiActionType action);
-void rlcCalculateTputPerSnssai(CmLListCp *snssaiList);
-void rlcDelTputSnssaiList(RlcCb *gCb);
+                                  RlcSnssaiActionType action, Direction dir);
+void rlcCalculateTputPerSnssai(CmLListCp *snssaiList, Direction dir);
+void rlcDelTputSnssaiList(RlcCb *gCb, Direction dir);
 
 #ifdef LTE_L2_MEAS
 Void rlcLmmSendAlarm ARGS (( RlcCb *gCb,

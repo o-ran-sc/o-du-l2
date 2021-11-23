@@ -401,13 +401,13 @@ static S16 rlcLmmGenCfg(RlcCb  *gCb,RlcGenCfg *cfg)
          DU_LOG("\nINFO   --> RLC_DL : Starting UE Throughput timer");
          rlcStartTmr(gCb, (PTR)(&gCb->rlcThpt), EVENT_RLC_UE_THROUGHPUT_TMR);
       }
+   }
       /* Starting timer to print throughput */
       if((rlcChkTmr(gCb, (PTR)(&gCb->rlcThpt), EVENT_RLC_SNSSAI_THROUGHPUT_TMR)) == FALSE)
       {
          DU_LOG("\nINFO   --> RLC_DL : Starting SNSSAI Throughput timer");
          rlcStartTmr(gCb, (PTR)(&gCb->rlcThpt), EVENT_RLC_SNSSAI_THROUGHPUT_TMR);
       }
-   }
 
    
    return (LCM_REASON_NOT_APPL);
@@ -1615,17 +1615,18 @@ static S16 rlcLmmShutdown(RlcCb *gCb)
          }
       }
    }
-   
+
    if(gCb->genCfg.rlcMode == LKW_RLC_MODE_DL)
    {
       rlcDbmDlShutdown(gCb); 
+      rlcDelTputSnssaiList(gCb, DIR_DL);
    }
    else
    {
       rlcDbmUlShutdown(gCb);
+      rlcDelTputSnssaiList(gCb, DIR_UL);
    }
 
-   rlcDelTputSnssaiList(gCb);
    rlcLmmCleanGblRsrcs(gCb);
 
    RLC_MEM_SET (&(gCb->genSts), 0, sizeof (RlcGenSts));

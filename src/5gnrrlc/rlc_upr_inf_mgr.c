@@ -832,28 +832,59 @@ KwuDiscSduInfo   *discSdu
  *    -# Snssai Node
  *   
  */
-RlcTptPerSnssai* rlcHandleSnssaiTputlist(RlcCb *gCb, Snssai *snssai, RlcSnssaiActionType action)
+RlcTptPerSnssai* rlcHandleSnssaiTputlist(RlcCb *gCb, Snssai *snssai, RlcSnssaiActionType action, Direction dir)
 {
    CmLListCp *snssaiList = NULLP;
    CmLList  *node = NULLP;
    RlcTptPerSnssai *snssaiNode = NULLP;
    bool found = FALSE;
 
-   snssaiList = gCb->rlcThpt.snssaiTputInfo.tputPerSnssaiList;
-   if(snssaiList == NULLP)
+   if(dir == DIR_DL)
    {
+      snssaiList = gCb->rlcThpt.snssaiTputInfo.dlTputPerSnssaiList;
       if(action == CREATE)
       {
-         RLC_ALLOC(gCb, gCb->rlcThpt.snssaiTputInfo.tputPerSnssaiList, sizeof(CmLListCp));
-         snssaiList =  gCb->rlcThpt.snssaiTputInfo.tputPerSnssaiList;
-         cmLListInit(snssaiList);
-         DU_LOG("\nINFO  --> RLC: First SNSSAI to add in this List");
+         if(snssaiList == NULLP)
+         {
+            RLC_ALLOC(gCb, gCb->rlcThpt.snssaiTputInfo.dlTputPerSnssaiList, sizeof(CmLListCp));
+            snssaiList = gCb->rlcThpt.snssaiTputInfo.dlTputPerSnssaiList;
+            cmLListInit(snssaiList);
+         }
       }
       else
       {
-         DU_LOG("\nERROR --> RLC: SNSSAI list doesnt exist!");
-         return NULLP;
+         if(snssaiList == NULLP)
+         {
+            DU_LOG("\nERROR --> RLC: SNSSAI DL list doesnt exist!");
+            return NULLP;
+         }
       }
+   }
+   else if(dir == DIR_UL)
+   {
+      snssaiList = gCb->rlcThpt.snssaiTputInfo.ulTputPerSnssaiList;
+      if(action == CREATE)
+      {
+         if(snssaiList == NULLP)
+         {
+            RLC_ALLOC(gCb, gCb->rlcThpt.snssaiTputInfo.ulTputPerSnssaiList, sizeof(CmLListCp));
+            snssaiList = gCb->rlcThpt.snssaiTputInfo.ulTputPerSnssaiList;
+            cmLListInit(snssaiList);
+         }
+      }
+      else
+      {
+         if(snssaiList == NULLP)
+         {
+            DU_LOG("\nERROR --> RLC: SNSSAI UL list doesnt exist!");
+            return NULLP;
+         }
+      }
+   }
+   else
+   {
+      DU_LOG("\nERROR  -->  RLC : Direction:%d is invalid", dir);
+      return NULLP;
    }
 
    node = snssaiList->first;
@@ -961,16 +992,27 @@ RlcTptPerSnssai* rlcHandleSnssaiTputlist(RlcCb *gCb, Snssai *snssai, RlcSnssaiAc
  * @return void 
  *   
  */
-void rlcDelTputSnssaiList(RlcCb *gCb)
+void rlcDelTputSnssaiList(RlcCb *gCb, Direction dir)
 {
    CmLListCp *snssaiList = NULLP;
    CmLList  *node = NULLP, *next = NULLP;
    RlcTptPerSnssai *snssaiNode = NULLP;
-
-   snssaiList = gCb->rlcThpt.snssaiTputInfo.tputPerSnssaiList;
+   if(dir == DIR_DL)
+   {
+      snssaiList = gCb->rlcThpt.snssaiTputInfo.dlTputPerSnssaiList;
+   }
+   else if(dir == DIR_UL)
+   {
+      snssaiList = gCb->rlcThpt.snssaiTputInfo.ulTputPerSnssaiList;
+   }
+   else
+   {
+      DU_LOG("\nERROR  -->  Invalid direction:%d",dir);
+      return;
+   }
    if(snssaiList == NULLP)
    {
-      DU_LOG("\nERROR --> RLC: SnssaiList not exist");
+      DU_LOG("\nERROR -->  RLC: SnssaiList not exist");
       return;
    }
    node = snssaiList->first;
@@ -988,8 +1030,9 @@ void rlcDelTputSnssaiList(RlcCb *gCb)
    if(snssaiList->count == 0)
    {
       RLC_FREE(gCb, snssaiList, sizeof(CmLListCp));
-      DU_LOG("\nINFO   --> RLC : This SNSSAI was last in the list thus freeing the list also");
+      DU_LOG("\nDEBUG   -->  RLC : This SNSSAI was last in the list thus freeing the list also");
    }
+   return;
 }
 
 /**
@@ -1005,7 +1048,7 @@ void rlcDelTputSnssaiList(RlcCb *gCb)
  * @return void 
  *   
  */
-void rlcCalculateTputPerSnssai(CmLListCp *snssaiList)
+void rlcCalculateTputPerSnssai(CmLListCp *snssaiList, Direction dir)
 {
    CmLList  *node = NULLP;
    RlcTptPerSnssai *snssaiNode = NULLP;
@@ -1021,9 +1064,19 @@ void rlcCalculateTputPerSnssai(CmLListCp *snssaiList)
    while(node)
    {
       snssaiNode = (RlcTptPerSnssai *)node->node;
-      tpt =  (double)(snssaiNode->dataVol * 8)/(double)ODU_SNSSAI_THROUGHPUT_PRINT_TIME_INTERVAL;
-      DU_LOG("\nSNSSAI(sst:%d,sd [%d,%d, %d]), DL Tpt : %.2Lf", snssaiNode->snssai->sst, snssaiNode->snssai->sd[0], \
-            snssaiNode->snssai->sd[1],snssaiNode->snssai->sd[2] , tpt);
+      tpt =  (double)(snssaiNode->dataVol * 8)/(double)(ODU_SNSSAI_THROUGHPUT_PRINT_TIME_INTERVAL * 0.001);
+
+      if(dir == DIR_DL)
+      {
+         DU_LOG("\nDEBUG  -->  RLC_DL: SNSSAI(sst:%d,sd [%d,%d, %d]), DL Tpt : %.5Lf", snssaiNode->snssai->sst,\
+               snssaiNode->snssai->sd[0], snssaiNode->snssai->sd[1],snssaiNode->snssai->sd[2] , tpt);
+      }
+      if(dir == DIR_UL)
+      {
+         DU_LOG("\nDEBUG  -->  RLC_UL: SNSSAI(sst:%d,sd [%d,%d, %d]), UL Tpt : %.5Lf", snssaiNode->snssai->sst,\
+               snssaiNode->snssai->sd[0], snssaiNode->snssai->sd[1],snssaiNode->snssai->sd[2] , tpt);
+      }
+
       snssaiNode->dataVol = 0;
       node = node->next;
    }

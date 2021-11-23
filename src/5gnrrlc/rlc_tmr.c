@@ -595,14 +595,14 @@ void rlcSnssaiThptTmrExpiry(PTR cb)
       rlcStartTmr(RLC_GET_RLCCB(rlcThptCb->inst), (PTR)(rlcThptCb), EVENT_RLC_SNSSAI_THROUGHPUT_TMR);
       return;
    }
-
-   DU_LOG("\n==================================================================");
-   if(rlcThptCb->snssaiTputInfo.tputPerSnssaiList != NULLP)
+    
+   if(rlcThptCb->snssaiTputInfo.dlTputPerSnssaiList != NULLP)
    {
-      DU_LOG("\n===================== DL Throughput Per SNSSAI ==============================");
-  
-      rlcCalculateTputPerSnssai(rlcThptCb->snssaiTputInfo.tputPerSnssaiList);
-      DU_LOG("\n==================================================================");
+      rlcCalculateTputPerSnssai(rlcThptCb->snssaiTputInfo.dlTputPerSnssaiList, DIR_DL);
+   }
+   if(rlcThptCb->snssaiTputInfo.ulTputPerSnssaiList != NULLP)
+   {
+      rlcCalculateTputPerSnssai(rlcThptCb->snssaiTputInfo.ulTputPerSnssaiList, DIR_UL);
    }
    /* Restart timer */
    rlcStartTmr(RLC_GET_RLCCB(rlcThptCb->inst), (PTR)rlcThptCb, EVENT_RLC_SNSSAI_THROUGHPUT_TMR);
