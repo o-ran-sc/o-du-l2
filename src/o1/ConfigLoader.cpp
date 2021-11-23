@@ -1,6 +1,6 @@
 /*******************************************************************************
 ################################################################################
-#   Copyright (c) [2020] [HCL Technologies Ltd.]                               #
+#   Copyright (c) [2020-2021] [HCL Technologies Ltd.]                          #
 #                                                                              #
 #   Licensed under the Apache License, Version 2.0 (the "License");            #
 #   you may not use this file except in compliance with the License.           #
@@ -15,48 +15,41 @@
 #   limitations under the License.                                             #
 ################################################################################
 *******************************************************************************/
+/* This is a singleton class to load and store all configuration parameters */
 
-/* This file contains AlarmManager singleton class responsible for 
-   storing and managing alarms. 
-*/ 
+#include "ConfigLoader.hpp"
 
-#ifndef __ALARM_MANAGER_HPP__
-#define __ALARM_MANAGER_HPP__
-
-#include <map>
-#include "Alarm.hpp"
-#include "Singleton.hpp"
-
-#include "PnfRegistrationThread.hpp"
-#include "VesUtils.hpp"
-#include "VesEventHandler.hpp"
-
-using std::map;
-
-
-class AlarmManager : public Singleton<AlarmManager>
+/* Constructor */
+ConfigLoader::ConfigLoader() 
+    : mNetconfConfig(NETCONF_CONFIG), 
+    mOamConfig(OAM_VES_CONFIG),
+    mSmoConfig(SMO_VES_CONFIG)
 {
-
-   friend Singleton<AlarmManager>;
-
-   private:
-   map<uint16_t,Alarm> mAlarmList; 	    
-
-   protected:
-   AlarmManager();    
-   ~AlarmManager();
-
-   public:
-   bool raiseAlarm(const Alarm& alarm);
-   bool clearAlarm(const uint16_t& alarmId);
-   bool clearAlarm(const Alarm& alarm );
-   const map<uint16_t, Alarm>& getAlarmList()const;
-
 };
+/* Default Destructor */
+ConfigLoader::~ConfigLoader()
+{
+}
+ 
+bool ConfigLoader::loadConfigurations() {
+    return mOamConfig.loadConfigFile() 
+            &&
+            mSmoConfig.loadConfigFile()
+            &&
+            mNetconfConfig.loadConfigFile();
+}
 
-
-#endif
+//Getters
+const VesConfigFile& ConfigLoader::getOamConfigFile() const{
+    return mOamConfig;
+}
+const VesConfigFile& ConfigLoader::getSmoConfigFile() const{
+    return mSmoConfig;
+}
+const NetconfConfigFile& ConfigLoader::getNetconfConfigFile() const{
+    return mNetconfConfig;
+}
 
 /**********************************************************************
-         End of file
-**********************************************************************/
+  End of file
+ **********************************************************************/

@@ -85,6 +85,9 @@ int static check_O1_module_status(void){
 int start_O1_module(void)
 {
 
+   if( !ConfigLoader::instance().loadConfigurations() )
+      return O1::FAILURE;
+
    if(O1App::instance().start() == false){
       O1_LOG("\nO1 O1Interface : Failed to start");
       return O1::FAILURE;
