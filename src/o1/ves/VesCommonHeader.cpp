@@ -103,6 +103,9 @@ string VesCommonHeader::getEventTypeToStr()
       case VesEventType::PM_NOTIFICATION:
          str = "pmNotification";
          break;
+      case VesEventType::PM_SLICE:
+         str = "pmMeasurement";
+         break;
       case VesEventType::HEARTBEAT:
          str = "heartbeat";
          break;
@@ -143,6 +146,12 @@ string VesCommonHeader::getEventId()
       case VesEventType::HEARTBEAT:
          evntId = getEventTypeToStr() + "_" + getCurrentTime();
          break;
+      case VesEventType::PM_SLICE:
+         evntId = getSourceName() + "_" + MODEL_NUMBER_007_DEV;
+	 break;
+      case VesEventType::FAULT_NOTIFICATION:
+         evntId = getSourceName() + "_" + MODEL_NUMBER_007_DEV;
+	 break;
       default:
          O1_LOG("\nO1 VesCommonHeader : this VES msg Type support in getEventId is \
 not available");
@@ -183,6 +192,12 @@ string VesCommonHeader::getEventType()
       case VesEventType::HEARTBEAT:
          evntType = EVENT_TYPE_ORAN_COMPONENET;
          break;
+      case VesEventType::PM_SLICE:
+         evntType = EVENT_TYPE_5G;
+         break;
+      case VesEventType::FAULT_NOTIFICATION:
+         evntType = EVENT_TYPE_5G;
+	 break;
       default:
          O1_LOG("\nO1 VesCommonHeader : this VES msg Type support in getEvenType is \
 not available");
@@ -222,6 +237,12 @@ string VesCommonHeader::getPriority()
       case VesEventType::HEARTBEAT:
          evntId = PRIORITY_LOW;
          break;
+      case VesEventType::PM_SLICE:
+         evntId = PRIORITY_LOW ;
+         break;
+      case VesEventType::FAULT_NOTIFICATION:
+         evntId = PRIORITY_LOW ;
+	 break;
       default:
          O1_LOG("\nO1 VesCommonHeader : This VES msg Type support in getPriority is \
 not available");
@@ -262,6 +283,12 @@ string VesCommonHeader::getEventName()
       case VesEventType::HEARTBEAT:
          evntName = getEventTypeToStr() + "_" + EVENT_TYPE_ORAN_COMPONENET;
          break;
+      case VesEventType::PM_SLICE:
+         evntName = getEventTypeToStr() + "_" + EVENT_TYPE_5G;
+         break;
+      case VesEventType::FAULT_NOTIFICATION:
+         evntName = getEventTypeToStr() + "_" + EVENT_TYPE_5G;
+	 break;
       default:
          O1_LOG("\nO1 VesCommonHeader : This VES msg Type support in getEventName is \
 not available");
@@ -297,6 +324,12 @@ string VesCommonHeader::getReportingEntityName()
       case VesEventType::PNF_REGISTRATION:
          evntName = getSourceName();
          break;
+      case VesEventType::PM_SLICE:
+         evntName = getSourceName();
+         break;
+      case VesEventType::FAULT_NOTIFICATION:
+         evntName = getSourceName();
+	 break;
       default:
          O1_LOG("\nO1 VesCommonHeader : This VES msg Type support in \
 getReportingEntityName is not available");
@@ -393,6 +426,8 @@ uint64_t VesCommonHeader::getEpochTime()
  * @return time-date     - success
  *
  * ****************************************************************/
+
+// This method is generating an error (Segmentation fault)
 
 string VesCommonHeader::getCurrentTime()
 {

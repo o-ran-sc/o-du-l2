@@ -16,59 +16,43 @@
 ################################################################################
 *******************************************************************************/
 
-/* This file contains macros and functions to support the preparation of pnf
-   Registration VES Event*/
+/* This file contains the C interface for ODU to access the Performance 
+   Management functions */
 
+#ifndef __PM_INTERFACE_H__
+#define __PM_INTERFACE_H__
 
-#ifndef __PNF_REGISTRATION_HPP__
-#define __PNF_REGISTRATION_HPP__
+#include <stdint.h>
 
-#include <iostream>
-#include <string>
-#include <cjson/cJSON.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include "VesUtils.hpp"
-#include "VesEvent.hpp"
-
-#define MAX_TIME_STR 11
-
-using namespace std;
-
-class PnfRegistration : public VesEvent
+#ifdef __cplusplus
+extern "C"
 {
+#endif
 
-   public:
-      /* Default constructor/Destructor */
-      PnfRegistration();
-      ~PnfRegistration();
 
-   protected:
-      bool prepareEventFields();
+#define SLICE_COUNT 2
 
-   private:
-      bool prepareAdditionalFields(cJSON *addFields);
-      string getCurrentDate();
-      string getNetconfMacAddr();
-      string getNetconfV4ServerIP();
-      string getNetconfV6ServerIP();
-      string getNetconfPort();
-      string getUsername();
-      string getPassword();
-      string getSerialNumber();
-      string getUnitFamily();
-      bool readConfigFile();
 
-      //member variables
-      string mNetconfMacAddr;
-      string mNetconfIpv4;
-      string mNetconfIpv6;
-      string mNetconfPort;
-      string mNetconfUsername;
-      string mNetconfPassword;
-};
+typedef struct {
+   uint32_t networkSliceIdentifier;
+   uint16_t DRB_UEThpDl_SNSSAI;
+   uint16_t DRB_UEThpUl_SNSSAI;
+}SliceMetricRecord;
+
+typedef struct {
+   SliceMetricRecord sliceRecord[SLICE_COUNT];
+}SliceMetricList;
+
+
+int sendSliceMetric(SliceMetricList* sliceMetricList);
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif
+
 /**********************************************************************
-  End of file
- **********************************************************************/
+         End of file
+**********************************************************************/

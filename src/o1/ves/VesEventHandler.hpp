@@ -34,7 +34,7 @@ class VesEventHandler
       /* Default constructor/Destructor*/
       VesEventHandler();
       ~VesEventHandler();
-      bool prepare(VesEventType evtType);
+      bool prepare(VesEventType evtType, const Message* msg = NULL);
       bool send();
 
    private:

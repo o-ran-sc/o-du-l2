@@ -1,6 +1,6 @@
 /*******************************************************************************
 ################################################################################
-#   Copyright (c) [2020] [HCL Technologies Ltd.]                               #
+#   Copyright (c) [2020-2021] [HCL Technologies Ltd.]                          #
 #                                                                              #
 #   Licensed under the Apache License, Version 2.0 (the "License");            #
 #   you may not use this file except in compliance with the License.           #
@@ -16,46 +16,22 @@
 ################################################################################
 *******************************************************************************/
 
-/* This file contains AlarmManager singleton class responsible for 
-   storing and managing alarms. 
-*/ 
-
-#ifndef __ALARM_MANAGER_HPP__
-#define __ALARM_MANAGER_HPP__
-
-#include <map>
-#include "Alarm.hpp"
-#include "Singleton.hpp"
-
-#include "PnfRegistrationThread.hpp"
-#include "VesUtils.hpp"
-#include "VesEventHandler.hpp"
-
-using std::map;
+/* This file contains base class for Performance Measurement VES Event*/
 
 
-class AlarmManager : public Singleton<AlarmManager>
+#include "PerfMeasurementEvent.hpp"
+
+/* Constructor */
+PerfMeasurementEvent::PerfMeasurementEvent(VesEventType eventType)
+                :VesEvent(eventType)
 {
 
-   friend Singleton<AlarmManager>;
-
-   private:
-   map<uint16_t,Alarm> mAlarmList; 	    
-
-   protected:
-   AlarmManager();    
-   ~AlarmManager();
-
-   public:
-   bool raiseAlarm(const Alarm& alarm);
-   bool clearAlarm(const uint16_t& alarmId);
-   bool clearAlarm(const Alarm& alarm );
-   const map<uint16_t, Alarm>& getAlarmList()const;
-
-};
-
-
-#endif
+}
+/* Default Destructor*/
+PerfMeasurementEvent::~PerfMeasurementEvent()
+{
+    
+}
 
 /**********************************************************************
          End of file
