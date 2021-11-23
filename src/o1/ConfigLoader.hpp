@@ -1,6 +1,6 @@
 /*******************************************************************************
 ################################################################################
-#   Copyright (c) [2020] [HCL Technologies Ltd.]                               #
+#   Copyright (c) [2020-2021] [HCL Technologies Ltd.]                          #
 #                                                                              #
 #   Licensed under the Apache License, Version 2.0 (the "License");            #
 #   you may not use this file except in compliance with the License.           #
@@ -15,48 +15,40 @@
 #   limitations under the License.                                             #
 ################################################################################
 *******************************************************************************/
+/* This is a singleton class to load and store all configuration parameters */
 
-/* This file contains AlarmManager singleton class responsible for 
-   storing and managing alarms. 
-*/ 
+#ifndef __CONFIG_LOADER_HPP__
+#define __CONFIG_LOADER_HPP__
 
-#ifndef __ALARM_MANAGER_HPP__
-#define __ALARM_MANAGER_HPP__
-
-#include <map>
-#include "Alarm.hpp"
+#include <string>
+#include "VesConfigFile.hpp"
+#include "NetconfConfigFile.hpp"
+#include "VesUtils.hpp"
 #include "Singleton.hpp"
 
-#include "PnfRegistrationThread.hpp"
-#include "VesUtils.hpp"
-#include "VesEventHandler.hpp"
+using std::string;
 
-using std::map;
+class ConfigLoader : public Singleton<ConfigLoader> {
+private: 
+    ConfigLoader();
+    ~ConfigLoader();
 
+    VesConfigFile mOamConfig;
+    VesConfigFile mSmoConfig;
+    NetconfConfigFile mNetconfConfig;
 
-class AlarmManager : public Singleton<AlarmManager>
-{
+public:
+    friend Singleton<ConfigLoader>;
 
-   friend Singleton<AlarmManager>;
+    const VesConfigFile& getOamConfigFile()const;
+    const VesConfigFile& getSmoConfigFile()const;
+    const NetconfConfigFile& getNetconfConfigFile()const;
 
-   private:
-   map<uint16_t,Alarm> mAlarmList; 	    
-
-   protected:
-   AlarmManager();    
-   ~AlarmManager();
-
-   public:
-   bool raiseAlarm(const Alarm& alarm);
-   bool clearAlarm(const uint16_t& alarmId);
-   bool clearAlarm(const Alarm& alarm );
-   const map<uint16_t, Alarm>& getAlarmList()const;
-
+    bool loadConfigurations();
 };
-
 
 #endif
 
 /**********************************************************************
-         End of file
-**********************************************************************/
+  End of file
+ **********************************************************************/

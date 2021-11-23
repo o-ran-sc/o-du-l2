@@ -15,128 +15,106 @@
 #   limitations under the License.                                             #
 ################################################################################
 *******************************************************************************/
+/* This is a singleton class to load and store all configuration parameters */
 
-/* This file contains functions to support the preparation of Common Header part
-   of VES Event*/
+#include "ConfigLoader.hpp"
 
-
-#include "VesEventHandler.hpp"
-#include "PnfRegistrationEvent.hpp"
-#include "SliceMeasurementEvent.hpp"
-#include "Message.hpp"
-
-/*******************************************************************
- *
- * @brief Constructor
- *
- * @details
- *
- *    Function : VesEventHandler
- *
- *    Functionality:
- *      - Constructor intialization
- *
- * @params[in] NULL
- * @return None
- ******************************************************************/
-VesEventHandler::VesEventHandler() : mVesEvent(NULL)
+/* Constructor */
+ConfigLoader::ConfigLoader() 
+    : mNetconfConfig(NETCONF_CONFIG), 
+    mOamConfig(OAM_VES_CONFIG),
+    mSmoConfig(SMO_VES_CONFIG)
 {
-
-}
-
-/*******************************************************************
- *
- * @brief Destructor
- *
- * @details
- *
- *    Function : ~VesEventHandler
- *
- *    Functionality:
- *      - Destructor
- *
- * @params[in] None
- * @return None
- ******************************************************************/
-VesEventHandler::~VesEventHandler()
+};
+/* Default Destructor */
+ConfigLoader::~ConfigLoader()
 {
-   if( mVesEvent != NULL )
-      delete mVesEvent;
 }
-
+ 
 /*******************************************************************
  *
- * @brief Prepare VES Message
+ * @brief Load all configuration files 
  *
  * @details
  *
- *    Function : prepare
+ *    Function : loadConfigurations
  *
  *    Functionality:
- *      - prepare VES event
+ *      - Loads all the configuration files
+ *
  *
  * @params[in] void
- * @return true     - success
- *         false    - failure
- *
- * ****************************************************************/
-
-bool VesEventHandler::prepare(VesEventType evtType, const Message* msg)
-{
-   //check event type and call funtions accordingly
-   bool ret = true;
-   switch(evtType)
-   {
-      case VesEventType::PNF_REGISTRATION:
-      {
-         O1_LOG("\nO1 VesEventHandler : Preparing PNF registration");
-         mVesEvent = new PnfRegistrationEvent();
-         break;
-      }
-      case VesEventType::PM_SLICE:
-      {
-         mVesEvent = new SliceMeasurementEvent;
-         O1_LOG("\nO1 VesEventHandler : Preparing VES PM Slice");
-         break;
-      }
-
-      default:
-         O1_LOG("\nO1 VesEventHandler : VES message type does not exist ");
-         ret = false;
-         break;
-   }
-   if(!mVesEvent->prepare(msg)) {
-      O1_LOG("\nO1 VesEventHandler : Failed to prepare VES message");
-      ret = false;
-   }
-   return ret;
+ * @return true  - success
+ *         false - failure
+ ******************************************************************/
+bool ConfigLoader::loadConfigurations() {
+    return mOamConfig.loadConfigFile() 
+            &&
+            mSmoConfig.loadConfigFile()
+            &&
+            mNetconfConfig.loadConfigFile();
 }
 
 /*******************************************************************
  *
- * @brief Send Ves Message
+ * @brief Get OAM Ves collector configuration 
  *
  * @details
  *
- *    Function : send
+ *    Function : getOamConfigFile
  *
  *    Functionality:
- *      - Send VES event to SMO
+ *      -  Returns the OAM config object
+ *
  *
  * @params[in] void
- * @return true     - success
- *         false    - failure
- *
- * ****************************************************************/
-
-bool VesEventHandler::send()
-{
-   if (!mVesEvent->send()) {
-      O1_LOG("\nO1 VesEventHandler : Failed to send VES event");
-      return false;
-   }
-   return true;
+ * @return const reference to VesConfigFile
+ *         
+ ******************************************************************/
+const VesConfigFile& ConfigLoader::getOamConfigFile() const{
+    return mOamConfig;
 }
+
+/*******************************************************************
+ *
+ * @brief Get SMO Ves collector configuration
+ *
+ * @details
+ *
+ *    Function : getsmoConfigFile
+ *
+ *    Functionality:
+ *      -  Returns the Smo config object
+ *
+ *
+ * @params[in] void
+ * @return const reference to VesConfigFile
+ *         
+ ******************************************************************/
+const VesConfigFile& ConfigLoader::getSmoConfigFile() const{
+    return mSmoConfig;
+}
+
+/*******************************************************************
+ *
+ * @brief Get Netconf server configuration
+ *
+ * @details
+ *
+ *    Function : getNetconfConfigFile
+ *
+ *    Functionality:
+ *      -  Returns the Netconf config object
+ *
+ *
+ * @params[in] void
+ * @return const reference to NetconfConfigFile
+ *         
+ ******************************************************************/
+const NetconfConfigFile& ConfigLoader::getNetconfConfigFile() const{
+    return mNetconfConfig;
+}
+
 /**********************************************************************
   End of file
  **********************************************************************/
