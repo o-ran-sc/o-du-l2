@@ -20,8 +20,8 @@
    Registration VES Event*/
 
 
-#ifndef __PNF_REGISTRATION_HPP__
-#define __PNF_REGISTRATION_HPP__
+#ifndef __PNF_REGISTRATION_EVENT_HPP__
+#define __PNF_REGISTRATION_EVENT_HPP__
 
 #include <iostream>
 #include <string>
@@ -30,21 +30,22 @@
 #include <stdio.h>
 #include "VesUtils.hpp"
 #include "VesEvent.hpp"
+#include "Message.hpp"
 
 #define MAX_TIME_STR 11
 
 using namespace std;
 
-class PnfRegistration : public VesEvent
+class PnfRegistrationEvent : public VesEvent
 {
 
    public:
       /* Default constructor/Destructor */
-      PnfRegistration();
-      ~PnfRegistration();
+      PnfRegistrationEvent();
+      ~PnfRegistrationEvent();
 
    protected:
-      bool prepareEventFields();
+      bool prepareEventFields(const Message* msg = NULL);
 
    private:
       bool prepareAdditionalFields(cJSON *addFields);
@@ -57,7 +58,7 @@ class PnfRegistration : public VesEvent
       string getPassword();
       string getSerialNumber();
       string getUnitFamily();
-      bool readConfigFile();
+      void getNetconfConfig();
 
       //member variables
       string mNetconfMacAddr;

@@ -21,7 +21,9 @@
 
 
 #include "VesEventHandler.hpp"
-#include "PnfRegistration.hpp"
+#include "PnfRegistrationEvent.hpp"
+#include "SliceMeasurementEvent.hpp"
+#include "Message.hpp"
 
 /*******************************************************************
  *
@@ -79,33 +81,31 @@ VesEventHandler::~VesEventHandler()
  *
  * ****************************************************************/
 
-bool VesEventHandler::prepare(VesEventType evtType)
+bool VesEventHandler::prepare(VesEventType evtType, const Message* msg)
 {
    //check event type and call funtions accordingly
    bool ret = true;
    switch(evtType)
    {
       case VesEventType::PNF_REGISTRATION:
-         {
-            O1_LOG("\nO1 VesEventHandler : Preparing PNF registration");
-            mVesEvent = new PnfRegistration;
-            break;
-         }
-      case VesEventType::FAULT_NOTIFICATION:
-         O1_LOG("\nO1 VesEventHandler : Preparing VES fault notification");
+      {
+         O1_LOG("\nO1 VesEventHandler : Preparing PNF registration");
+         mVesEvent = new PnfRegistrationEvent();
          break;
-      case VesEventType::PM_NOTIFICATION:
-         O1_LOG("\nO1 VesEventHandler : Preparing VES pm notification");
+      }
+      case VesEventType::PM_SLICE:
+      {
+         mVesEvent = new SliceMeasurementEvent;
+         O1_LOG("\nO1 VesEventHandler : Preparing VES PM Slice");
          break;
-      case VesEventType::HEARTBEAT:
-         O1_LOG("\nO1 VesEventHandler : Preparing VES heartbeat");
-         break;
+      }
+
       default:
-         O1_LOG("\nO1 VesEventHandler : VES msg Type is not available");
+         O1_LOG("\nO1 VesEventHandler : VES message type does not exist ");
          ret = false;
          break;
    }
-   if(!mVesEvent->prepare()) {
+   if(!mVesEvent->prepare(msg)) {
       O1_LOG("\nO1 VesEventHandler : Failed to prepare VES message");
       ret = false;
    }
