@@ -832,28 +832,59 @@ KwuDiscSduInfo   *discSdu
  *    -# Snssai Node
  *   
  */
-RlcTptPerSnssai* rlcHandleSnssaiTputlist(RlcCb *gCb, Snssai *snssai, RlcSnssaiActionType action)
+RlcTptPerSnssai* rlcHandleSnssaiTputlist(RlcCb *gCb, Snssai *snssai, RlcSnssaiActionType action, Direction dir)
 {
    CmLListCp *snssaiList = NULLP;
    CmLList  *node = NULLP;
    RlcTptPerSnssai *snssaiNode = NULLP;
    bool found = FALSE;
 
-   snssaiList = gCb->rlcThpt.snssaiTputInfo.tputPerSnssaiList;
-   if(snssaiList == NULLP)
+   if(dir == DIR_DL)
    {
+      snssaiList = gCb->rlcThpt.snssaiTputInfo.dlTputPerSnssaiList;
       if(action == CREATE)
       {
-         RLC_ALLOC(gCb, gCb->rlcThpt.snssaiTputInfo.tputPerSnssaiList, sizeof(CmLListCp));
-         snssaiList =  gCb->rlcThpt.snssaiTputInfo.tputPerSnssaiList;
-         cmLListInit(snssaiList);
-         DU_LOG("\nINFO  --> RLC: First SNSSAI to add in this List");
+         if(snssaiList == NULLP)
+         {
+            RLC_ALLOC(gCb, gCb->rlcThpt.snssaiTputInfo.dlTputPerSnssaiList, sizeof(CmLListCp));
+            snssaiList = gCb->rlcThpt.snssaiTputInfo.dlTputPerSnssaiList;
+            cmLListInit(snssaiList);
+         }
       }
       else
       {
-         DU_LOG("\nERROR --> RLC: SNSSAI list doesnt exist!");
-         return NULLP;
+         if(snssaiList == NULLP)
+         {
+            DU_LOG("\nERROR --> RLC: SNSSAI DL list doesnt exist!");
+            return NULLP;
+         }
       }
+   }
+   else if(dir == DIR_UL)
+   {
+      snssaiList = gCb->rlcThpt.snssaiTputInfo.ulTputPerSnssaiList;
+      if(action == CREATE)
+      {
+         if(snssaiList == NULLP)
+         {
+            RLC_ALLOC(gCb, gCb->rlcThpt.snssaiTputInfo.ulTputPerSnssaiList, sizeof(CmLListCp));
+            snssaiList = gCb->rlcThpt.snssaiTputInfo.ulTputPerSnssaiList;
+            cmLListInit(snssaiList);
+         }
+      }
+      else
+      {
+         if(snssaiList == NULLP)
+         {
+            DU_LOG("\nERROR --> RLC: SNSSAI UL list doesnt exist!");
+            return NULLP;
+         }
+      }
+   }
+   else
+   {
+      DU_LOG("\nERROR  -->  RLC : Direction:%d is invalid", dir);
+      return NULLP;
    }
 
    node = snssaiList->first;
@@ -966,29 +997,45 @@ void rlcDelTputSnssaiList(RlcCb *gCb)
    CmLListCp *snssaiList = NULLP;
    CmLList  *node = NULLP, *next = NULLP;
    RlcTptPerSnssai *snssaiNode = NULLP;
+   Direction dir = DIR_NONE;
 
-   snssaiList = gCb->rlcThpt.snssaiTputInfo.tputPerSnssaiList;
-   if(snssaiList == NULLP)
+   for(dir = DIR_UL; dir<DIR_NONE; dir++)
    {
-      DU_LOG("\nERROR --> RLC: SnssaiList not exist");
-      return;
-   }
-   node = snssaiList->first;
+      if(dir == DIR_DL)
+      {
+         snssaiList = gCb->rlcThpt.snssaiTputInfo.dlTputPerSnssaiList;
+      }
+      else if(dir == DIR_UL)
+      {
+         snssaiList = gCb->rlcThpt.snssaiTputInfo.ulTputPerSnssaiList;
+      }
+      else
+      {
+         DU_LOG("\nERROR  -->  Invalid direction:%d",dir);
+         continue;
+      }
+      if(snssaiList == NULLP)
+      {
+         DU_LOG("\nERROR -->  RLC: SnssaiList not exist");
+         continue;
+      }
+      node = snssaiList->first;
 
-   /*Traversing the LC LinkList*/
-   while(node)
-   {
-      snssaiNode = (RlcTptPerSnssai *)node->node;
-      next = node->next;
-      node = cmLListDelFrm(snssaiList, node);
-      RLC_FREE(gCb, node, sizeof(CmLList));
-      RLC_FREE(gCb, snssaiNode, sizeof(RlcTptPerSnssai));
-      node = next;
-   }
-   if(snssaiList->count == 0)
-   {
-      RLC_FREE(gCb, snssaiList, sizeof(CmLListCp));
-      DU_LOG("\nINFO   --> RLC : This SNSSAI was last in the list thus freeing the list also");
+      /*Traversing the LC LinkList*/
+      while(node)
+      {
+         snssaiNode = (RlcTptPerSnssai *)node->node;
+         next = node->next;
+         node = cmLListDelFrm(snssaiList, node);
+         RLC_FREE(gCb, node, sizeof(CmLList));
+         RLC_FREE(gCb, snssaiNode, sizeof(RlcTptPerSnssai));
+         node = next;
+      }
+      if(snssaiList->count == 0)
+      {
+         RLC_FREE(gCb, snssaiList, sizeof(CmLListCp));
+         DU_LOG("\nDEBUG   -->  RLC : This SNSSAI was last in the list thus freeing the list also");
+      }
    }
 }
 
@@ -1021,8 +1068,8 @@ void rlcCalculateTputPerSnssai(CmLListCp *snssaiList)
    while(node)
    {
       snssaiNode = (RlcTptPerSnssai *)node->node;
-      tpt =  (double)(snssaiNode->dataVol * 8)/(double)ODU_SNSSAI_THROUGHPUT_PRINT_TIME_INTERVAL;
-      DU_LOG("\nSNSSAI(sst:%d,sd [%d,%d, %d]), DL Tpt : %.2Lf", snssaiNode->snssai->sst, snssaiNode->snssai->sd[0], \
+      tpt =  (double)(snssaiNode->dataVol * 8)/(double)(ODU_SNSSAI_THROUGHPUT_PRINT_TIME_INTERVAL * 0.001);
+      DU_LOG("\nSNSSAI(sst:%d,sd [%d,%d, %d]), Tpt : %.5Lf", snssaiNode->snssai->sst, snssaiNode->snssai->sd[0], \
             snssaiNode->snssai->sd[1],snssaiNode->snssai->sd[2] , tpt);
       snssaiNode->dataVol = 0;
       node = node->next;
