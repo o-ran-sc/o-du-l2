@@ -27,7 +27,7 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include "sysrepo-cpp/Session.hpp"
-#include "ConfigInterface.h"
+#include "CmInterface.h"
 #include "GlobalDefs.hpp"
 #include "Singleton.hpp"
 #include "NrCellInfo.hpp"
