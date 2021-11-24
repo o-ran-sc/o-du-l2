@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4caa7077_24e1b851",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000484
+      },
+      "writtenOn": "2021-11-24T09:22:39Z",
+      "side": 1,
+      "message": "Hi,\n\nWe have made the changes for Cell and Network slicing in o1 module.\nPlease review and share your comments.\n\nRegards,\nHariom",
+      "revId": "f97d63bff90352444af7d7253fdded335623fabc",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
