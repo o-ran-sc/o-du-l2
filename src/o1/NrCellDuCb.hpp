@@ -1,6 +1,6 @@
 /*******************************************************************************
 ################################################################################
-#   Copyright (c) [2020] [HCL Technologies Ltd.]                               #
+#   Copyright (c) [2020-2021] [HCL Technologies Ltd.]                          #
 #                                                                              #
 #   Licensed under the Apache License, Version 2.0 (the "License");            #
 #   you may not use this file except in compliance with the License.           #
@@ -16,59 +16,43 @@
 ################################################################################
 *******************************************************************************/
 
-/* This file contains C interface for ODU and stubs to get startup
-   configuration
-*/
+/* This file contains NrCellDu get and update handler . It handles
+   get and change callback for NrCellDu yang module  */
 
-#ifndef __CONFIG_INTERFACE_H__
-#define __CONFIG_INTERFACE_H__
+#ifndef __NR_CELL_DU_HPP__
+#define __NR_CELL_DU_HPP__
 
-#include <stdint.h>
-#include <CommonMessages.h>
+#include <string.h>
+#include <stdlib.h>
+#include "sysrepo-cpp/Session.hpp"
+#include "AlarmManager.hpp"
+#include "GlobalDefs.hpp"
+#include "CmInterface.h"
+#include "NetconfUtils.hpp"
 
-#define IPV4_LEN 16
-#define PORT_LEN 10
-
-#ifdef __cplusplus
-extern "C"
+class NrCellDuCb: public sysrepo::Callback
 {
-#endif
+   public:
+      int oper_get_items(sysrepo::S_Session session,\
+                         const char *module_name,\
+                         const char *path,\
+                         const char *request_xpath,\
+                         uint32_t request_id,\
+                         libyang::S_Data_Node &parent,\
+                         void *private_data);
 
-typedef struct
-{
-   char DU_IPV4_Addr[IPV4_LEN];
-   char CU_IPV4_Addr[IPV4_LEN];
-   char RIC_IPV4_Addr[IPV4_LEN];
-   uint16_t CU_Port;
-   uint16_t DU_Port;
-   uint16_t RIC_Port;
-}StartupConfig;
+      int module_change(sysrepo::S_Session sess, \
+                         const char *module_name, \
+                         const char *xpath, \
+                         sr_event_t event, \
+                         uint32_t request_id, \
+                         void *private_data); //override
+   private:
+      bool configureCell();
+      void updateParamas(string parent, string leaf, string val);
+      AdminState administrativeStateToEnum(string val);
 
-typedef enum {
-   INACTIVE,
-   ACTIVE,
-   IDLE
-}CellState;
-
-typedef enum {
-   DISABLED,
-   ENABLED
-}OpState;
-
-
-uint8_t getStartupConfig(StartupConfig *cfg);
-uint8_t getStartupConfigForStub(StartupConfig *cfg);
-bool setCellOpState(uint16_t cellId, OpState opState, \
-                             CellState cellState);
-
-#ifndef ODU_TEST_STUB
-//Defined in odu high
-bool bringCellUp(uint16_t cellId);
-bool bringCellDown(uint16_t cellId);
-#endif //ODU_TEST_STUB
-#ifdef __cplusplus
-}
-#endif
+};
 
 #endif
 
