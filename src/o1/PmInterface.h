@@ -28,17 +28,22 @@
 extern "C"
 {
 #endif
+typedef struct
+{
+  uint32_t sd:24;
+  uint8_t sst;
+}SliceId;
 
 
 typedef struct {
-   uint32_t networkSliceIdentifier;
+   SliceId networkSliceIdentifier;
    double DRB_UEThpDl_SNSSAI;
    double DRB_UEThpUl_SNSSAI;
 }SliceMetricRecord;
 
 typedef struct {
-   SliceMetricRecord *sliceRecord;
    uint8_t nRecords;
+   SliceMetricRecord *sliceRecord;
 }SliceMetricList;
 
 

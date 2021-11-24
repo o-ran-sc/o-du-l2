@@ -28,7 +28,7 @@
 #include <map>
 #include "sysrepo-cpp/Session.hpp"
 #include "Singleton.hpp"
-#include "ConfigInterface.h"
+#include "CmInterface.h"
 #include "GlobalDefs.hpp"
 
 #define IP_ADDRESS "interface-address" 
