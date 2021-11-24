@@ -16,35 +16,42 @@
 ################################################################################
 *******************************************************************************/
 
-/* This file contains List of the Cell and it's parameters values for CLA 
-   use case*/
+/* This file contains RRM Policy get and  update handler . It handles
+   get and change callback for rrmpolicy yang module  */
 
-#ifndef __NR_CELL_LIST_HPP__
-#define __NR_CELL_LIST_HPP__
+
+#ifndef __RRM_POLICY_CB_HPP__
+#define __RRM_POLICY_CB_HPP__
 
 #include <string.h>
 #include <stdlib.h>
 #include <stdint.h>
-#include <map>
 #include "sysrepo-cpp/Session.hpp"
 #include "CmInterface.h"
 #include "GlobalDefs.hpp"
 #include "Singleton.hpp"
-#include "NrCellInfo.hpp"
+#include "NetconfUtils.hpp"
 
-class NrCellList : public Singleton<NrCellList>
+class RrmPolicyCb : public sysrepo::Callback
 {
    public:
-      friend Singleton<NrCellList>;
-      typedef std::map<uint16_t, NrCellInfo> CellOpStateMap;
-
-      bool setCellOpState(uint16_t cellId, OpState opState, \
-                          CellState cellState);
-      const std::map<uint16_t, NrCellInfo> & getCellOpStateList();
-
+      int oper_get_items(sysrepo::S_Session session,\
+                         const char *module_name,\
+                         const char *path,\
+                         const char *request_xpath,\
+                         uint32_t request_id,\
+                         libyang::S_Data_Node &parent,\
+                         void *private_data); //override
+      int module_change(sysrepo::S_Session sess, \
+                         const char *module_name, \
+                         const char *xpath, \
+                         sr_event_t event, \
+                         uint32_t request_id, \
+                         void *private_data); //override
 
    private:
-      std::map<uint16_t, NrCellInfo> mCellOpStateMap;
+      bool updateParams(string &parent, string &leaf, string &val);
+      RrmResourceType resourceTypeToEnum(string &val);
 };
 
 #endif

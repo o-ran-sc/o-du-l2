@@ -39,9 +39,17 @@ using std::string;
 #define CELL_STATE_MODULE_PATH "/o-ran-sc-du-hello-world:network-function"
 #define IETF_NACM_MODULE_NAME "ietf-netconf-acm"
 #define IETF_NACM_MODULE_PATH "/ietf-netconf-acm:nacm"
+#define MANAGED_ELEMENT_MODULE_NAME "_3gpp-common-managed-element"
+#define MANAGED_ELEMENT_MODULE_PATH "/_3gpp-common-managed-element:ManagedElement"
+#define GNB_DU_FUNTION_MODULE_NAME "_3gpp-nr-nrm-gnbdufunction"
+#define NR_CELL_DU_MODULE_NAME "_3gpp-nr-nrm-nrcelldu"
+#define RRMPOLICY_MODULE_NAME "_3gpp-nr-nrm-rrmpolicy"
+#define RRMPOLICY_MODULE_PATH "/_3gpp-nr-nrm-rrmpolicy:RRMPolicyRatio"
 #define MAX_ALARM_ID_LEN 10
 
-class O1 
+#define ROK 0
+
+class O1
 {
    public:
    static const int   SUCCESS;

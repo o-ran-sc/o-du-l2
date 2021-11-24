@@ -42,12 +42,8 @@
 #ifdef O1_ENABLE
 
 #include "AlarmInterface.h"
-#include "ConfigInterface.h"
-
-/*TODO: Uncomment when PM O1 gerrit gets ready*/
-#if 0
+#include "CmInterface.h"
 #include "PmInterface.h"
-#endif
 
 #endif 
 
@@ -1933,6 +1929,7 @@ uint8_t DuProcMacSliceCfgRsp(Pst *pst,  MacSliceCfgRsp *cfgRsp)
         duFreeSliceCfgRsp(pst, cfgRsp);
     }
     duFreeTempSliceCfg();
+    return ROK;
 }
 
 /*******************************************************************
@@ -2172,14 +2169,11 @@ uint8_t DuProcRlcSliceMetrics(Pst *pst, SlicePmList *sliceStats)
        DU_LOG("\nINFO   -->  DU_APP: SliceIndx:%d, DlTput %.5lf, UlTput:%.5lf", sliceStats->sliceRecord[sliceRecord].networkSliceIdentifier,\
                         sliceStats->sliceRecord[sliceRecord].ThpDl, sliceStats->sliceRecord[sliceRecord].ThpUl);
     }
-/*TODO: Uncomment when PM O1 gerrit gets ready*/
-#if 0
 #ifdef O1_ENABLE
     if(sliceStats)
     {
-       sendSliceMetric(sliceStats);
+       sendSliceMetric((SliceMetricList*) sliceStats);
     }
-#endif
 #endif
 
    DU_FREE_SHRABL_BUF(pst->region, pst->pool,sliceStats->sliceRecord, (sliceStats->numSlice) * (sizeof(SlicePm)));
