@@ -1,6 +1,6 @@
 /*******************************************************************************
 ################################################################################
-#   Copyright (c) [2020] [HCL Technologies Ltd.]                               #
+#   Copyright (c) [2020-2021] [HCL Technologies Ltd.]                          #
 #                                                                              #
 #   Licensed under the Apache License, Version 2.0 (the "License");            #
 #   you may not use this file except in compliance with the License.           #
@@ -16,59 +16,26 @@
 ################################################################################
 *******************************************************************************/
 
-/* This file contains C interface for ODU and stubs to get startup
-   configuration
-*/
+/* This file contains generic netconf utility function which can be used by any
+ * class*/
 
-#ifndef __CONFIG_INTERFACE_H__
-#define __CONFIG_INTERFACE_H__
 
+#ifndef __NETCONF_UTILS_HPP__
+#define __NETCONF_UTILS_HPP__
+
+#include <string.h>
+#include <stdlib.h>
 #include <stdint.h>
-#include <CommonMessages.h>
+#include "GlobalDefs.hpp"
+#include "sysrepo-cpp/Session.hpp"
 
-#define IPV4_LEN 16
-#define PORT_LEN 10
-
-#ifdef __cplusplus
-extern "C"
+class NetconfUtils
 {
-#endif
-
-typedef struct
-{
-   char DU_IPV4_Addr[IPV4_LEN];
-   char CU_IPV4_Addr[IPV4_LEN];
-   char RIC_IPV4_Addr[IPV4_LEN];
-   uint16_t CU_Port;
-   uint16_t DU_Port;
-   uint16_t RIC_Port;
-}StartupConfig;
-
-typedef enum {
-   INACTIVE,
-   ACTIVE,
-   IDLE
-}CellState;
-
-typedef enum {
-   DISABLED,
-   ENABLED
-}OpState;
-
-
-uint8_t getStartupConfig(StartupConfig *cfg);
-uint8_t getStartupConfigForStub(StartupConfig *cfg);
-bool setCellOpState(uint16_t cellId, OpState opState, \
-                             CellState cellState);
-
-#ifndef ODU_TEST_STUB
-//Defined in odu high
-bool bringCellUp(uint16_t cellId);
-bool bringCellDown(uint16_t cellId);
-#endif //ODU_TEST_STUB
-#ifdef __cplusplus
-}
-#endif
+   public:
+      static void printChange(sysrepo::S_Change change);
+      static const char *evToStr(sr_event_t ev);
+      static void getLeafInfo(string xpath,string &parent, string &leaf );
+};
 
 #endif
 

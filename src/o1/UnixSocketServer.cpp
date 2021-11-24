@@ -24,7 +24,7 @@
 #include "UnixSocketServer.hpp"
 #include "Alarm.hpp"
 #include "AlarmManager.hpp"
-#include "ConfigInterface.h"
+#include "CmInterface.h"
 #include "GlobalDefs.hpp"
 #include <iostream>
 #include <cstdio>

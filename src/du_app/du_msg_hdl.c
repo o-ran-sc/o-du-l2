@@ -42,7 +42,7 @@
 #ifdef O1_ENABLE
 
 #include "AlarmInterface.h"
-#include "ConfigInterface.h"
+#include "CmInterface.h"
 
 /*TODO: Uncomment when PM O1 gerrit gets ready*/
 #if 0

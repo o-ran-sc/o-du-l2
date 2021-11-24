@@ -33,8 +33,7 @@
 #ifdef O1_ENABLE
 
 #include "O1Interface.h"
-#include "ConfigInterface.h"
-
+#include "CmInterface.h"
 #endif
 
 uint8_t rlcUlActvTsk (Pst *, Buffer *);
@@ -52,6 +51,10 @@ uint8_t phyStubActvInit(Ent, Inst, Region, Reason);
 
 /* Global variable */
 DuCfgParams duCfgParam;
+
+#ifdef O1_ENABLE
+extern NRCellDU cellParams;
+#endif
 
 /*******************************************************************
  *
@@ -132,6 +135,50 @@ uint8_t updateRrmPolicy(RrmPolicy rrmPolicy[], uint8_t policyNum, \
        }
     }
 }
+uint8_t setRrmPolicy(RrmPolicyList rrmPolicy[], uint8_t policyNum)
+{
+   DU_LOG("\nINFO   -->  DU_APP : DU APP RRM number of policy %d,", \
+	  policyNum);
+   for(uint8_t i=0; i<policyNum ; i++)
+   {
+      DU_LOG("\nINFO   -->  DU_APP : DU APP  id = %s",rrmPolicy[i].id);
+      DU_LOG("\nINFO   -->  DU_APP : DU APP  resourceType = %d", \
+		rrmPolicy[i].resourceType);
+      DU_LOG("\nINFO   -->  DU_APP : DU APP  rRMPolicyMaxRatio = %d", \
+		rrmPolicy[i].rRMPolicyMaxRatio);
+      DU_LOG("\nINFO   -->  DU_APP : DU APP  rRMPolicyMinRatio = %d", \
+		rrmPolicy[i].rRMPolicyMinRatio);
+      DU_LOG("\nINFO   -->  DU_APP : DU APP  rRMPolicyDedicatedRatio = %d", \
+		rrmPolicy[i].rRMPolicyDedicatedRatio);
+      DU_LOG("\nINFO   -->  DU_APP : DU APP  rRMMemberNum = %d", \
+		rrmPolicy[i].rRMMemberNum);
+      for(uint8_t j=0; j<rrmPolicy[i].rRMMemberNum ; j++)
+      {
+         DU_LOG("\nINFO   -->  DU_APP : DU APP  mcc = %c%c%c", \
+                 rrmPolicy[i].rRMPolicyMemberList[j].mcc[0], \
+		 rrmPolicy[i].rRMPolicyMemberList[j].mcc[1], \
+		 rrmPolicy[i].rRMPolicyMemberList[j].mcc[2]);
+         DU_LOG("\nINFO   -->  DU_APP : DU APP  mnc = %c%c%c", \
+		   rrmPolicy[i].rRMPolicyMemberList[j].mnc[0], \
+		   rrmPolicy[i].rRMPolicyMemberList[j].mnc[1], \
+		   rrmPolicy[i].rRMPolicyMemberList[j].mnc[2]);
+
+         DU_LOG("\nINFO   -->  DU_APP : DU APP  sd = %c%c%c%c%c%c", \
+	           rrmPolicy[i].rRMPolicyMemberList[j].sd[0], \
+		   rrmPolicy[i].rRMPolicyMemberList[j].sd[1], \
+		   rrmPolicy[i].rRMPolicyMemberList[j].sd[2], \
+		   rrmPolicy[i].rRMPolicyMemberList[j].sd[3], \
+		   rrmPolicy[i].rRMPolicyMemberList[j].sd[4], \
+		   rrmPolicy[i].rRMPolicyMemberList[j].sd[5]);
+
+         DU_LOG("\nINFO   -->  DU_APP : DU APP  sst = %d\n", \
+		   rrmPolicy[i].rRMPolicyMemberList[j].sst);
+      }
+
+   }
+
+   return ROK;
+}
 
 /*******************************************************************
  *
@@ -157,6 +204,79 @@ bool bringCellUp(uint16_t cellId)
    return true;
 }
 
+/*******************************************************************
+ *
+ * @brief configure cell parameters
+ *
+ * @details
+ *
+ *    Function : configurecell
+ *
+ *    Functionality:
+ *       - configure cell parameters
+ *
+ * @params[in] Cell Id
+ * @return true     - success
+ *         false    - failure
+ *
+ * ****************************************************************/
+
+uint8_t setCellParam()
+{
+   //Read all the configs from smo edit-config into cellParams
+   DU_LOG("\nO1 configurecell du_app enterd");
+   DU_LOG("\nDU_APP configurecell cellLocalId value:%d",cellParams.cellLocalId);
+   DU_LOG("\nDU_APP configurecell operationalState value:%d", \
+             cellParams.operationalState);
+   DU_LOG("\nDU_APP configurecell administrativeState value:%d", \
+             cellParams.administrativeState);
+   DU_LOG("\nDU_APP configurecell cellState value:%d",cellParams.cellState);
+   DU_LOG("\nDU_APP configurecell nRPCI value:%d",cellParams.nRPCI);
+   DU_LOG("\nDU_APP configurecell nRTAC value:%d",cellParams.nRTAC);
+   DU_LOG("\nDU_APP configurecell arfcnDL value:%d",cellParams.arfcnDL);
+   DU_LOG("\nDU_APP configurecell arfcnUL value:%d",cellParams.arfcnUL);
+   DU_LOG("\nDU_APP configurecell arfcnSUL value:%d",cellParams.arfcnSUL);
+   DU_LOG("\nDU_APP configurecell ssbFrequency value:%d",cellParams.ssbFrequency);
+   DU_LOG("\nDU_APP configurecell ssbPeriodicity value:%d", \
+             cellParams.ssbPeriodicity);
+   DU_LOG("\nDU_APP configurecell ssbSubCarrierSpacing value:%d", \
+             cellParams.ssbSubCarrierSpacing);
+   DU_LOG("\nDU_APP configurecell ssbOffset value:%d",cellParams.ssbOffset);
+   DU_LOG("\nDU_APP configurecell ssbDuration value:%d",cellParams.ssbDuration);
+   DU_LOG("\nDU_APP configurecell bSChannelBwUL value:%d", \
+	     cellParams.bSChannelBwUL);
+   DU_LOG("\nDU_APP configurecell bSChannelBwDL value:%d", \
+	     cellParams.bSChannelBwDL);
+   DU_LOG("\nDU_APP configurecell bSChannelBwSUL value:%d", \
+	     cellParams.bSChannelBwSUL);
+   for (int i=0 ; i<MAX_PLMN; i++)
+   {
+       DU_LOG("\nINFO   -->  DU_APP : DU APP  mcc = %c%c%c", \
+                 cellParams.plmnList[i].mcc[0], \
+		 cellParams.plmnList[i].mcc[1], \
+		 cellParams.plmnList[i].mcc[2]);
+         DU_LOG("\nINFO   -->  DU_APP : DU APP  mnc = %c%c%c", \
+		   cellParams.plmnList[i].mnc[0], \
+		   cellParams.plmnList[i].mnc[1], \
+		   cellParams.plmnList[i].mnc[2]);
+
+         DU_LOG("\nINFO   -->  DU_APP : DU APP  sd = %c%c%c%c%c%c", \
+	           cellParams.plmnList[i].sd[0], \
+		   cellParams.plmnList[i].sd[1], \
+		   cellParams.plmnList[i].sd[2], \
+		   cellParams.plmnList[i].sd[3], \
+		   cellParams.plmnList[i].sd[4], \
+		   cellParams.plmnList[i].sd[5]);
+
+         DU_LOG("\nINFO   -->  DU_APP : DU APP  sst = %d\n", \
+		   cellParams.plmnList[i].sst);
+
+   }
+
+   //duReadCfg();
+   //TBD: integration with ODU stack
+   return ROK;
+}
 /*******************************************************************
  *
  * @brief Bring the cell Down
