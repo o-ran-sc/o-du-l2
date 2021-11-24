@@ -25,6 +25,8 @@
 #include "SessionHandler.hpp"
 #include "InitConfig.hpp"
 #include "NrCellCb.hpp"
+#include "NrCellDuCb.hpp"
+#include "RrmPolicyCb.hpp"
 
 using namespace std;
 /* Default constructor */
@@ -35,7 +37,7 @@ SessionHandler::SessionHandler()
 
 /* Destructor */
 SessionHandler::~SessionHandler()
-{  
+{
 }
 
 /********************************************************************** 
@@ -163,6 +165,17 @@ bool SessionHandler::subscribeModule(sysrepo::S_Subscribe subscrb)
                                      nrCellCb);
    subscrb->module_change_subscribe(CELL_STATE_MODULE_NAME, nrCellCb);
 
+   sysrepo::S_Callback nrCellDuCb(new NrCellDuCb());
+   subscrb->oper_get_items_subscribe(MANAGED_ELEMENT_MODULE_NAME, \
+                                     MANAGED_ELEMENT_MODULE_PATH, \
+                                     nrCellDuCb);
+   subscrb->module_change_subscribe(MANAGED_ELEMENT_MODULE_NAME, nrCellDuCb);
+
+   sysrepo::S_Callback rrmPolicyCb(new RrmPolicyCb());
+   subscrb->oper_get_items_subscribe(RRMPOLICY_MODULE_NAME, \
+                                     RRMPOLICY_MODULE_PATH, \
+                                     rrmPolicyCb);
+   subscrb->module_change_subscribe(RRMPOLICY_MODULE_NAME, rrmPolicyCb);
 
    return true;
 }

@@ -24,7 +24,7 @@
 #include "O1App.hpp"
 #include "GlobalDefs.hpp"
 #include "SessionHandler.hpp"
-#include "ConfigInterface.h"
+#include "CmInterface.h"
 #include <unistd.h>
 
 #include "VesUtils.hpp"

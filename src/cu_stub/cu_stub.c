@@ -24,7 +24,7 @@
 #include "du_log.h"
 
 #ifdef O1_ENABLE
-#include "ConfigInterface.h"
+#include "CmInterface.h"
 #endif
 
 #define CU_ID 1
