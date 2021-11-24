@@ -87,6 +87,9 @@ bool SliceMeasurementEvent::prepareEventFields(const Message* msg)
         for (size_t i{0}; i < sliceList.size(); i++)            
         {
             cJSON *Slice = JsonHelper::createNode();
+           char networkId[12];
+           sprintf(networkId,"%d%x\n", sliceList[i].networkSliceIdentifier.sst,sliceList[i].networkSliceIdentifier.sd);
+            //O1_LOG("sliceList[i].networkSliceIdentifier  %s",networkId);
             if(Slice == 0)
             {
                 ret = false;
@@ -111,7 +114,7 @@ bool SliceMeasurementEvent::prepareEventFields(const Message* msg)
             }
             else if (JsonHelper::addNodeToObject(Slice, \
                                                 "networkSliceIdentifier", \
-                                                sliceList[i].networkSliceIdentifier) == 0)
+                                                 networkId) == 0)
             {
                 ret = false;
             }

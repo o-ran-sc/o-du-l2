@@ -16,35 +16,25 @@
 ################################################################################
 *******************************************************************************/
 
-/* This file contains List of the Cell and it's parameters values for CLA 
-   use case*/
+/* This file contains generic netconf utility function which can be used by any
+ * class*/
 
-#ifndef __NR_CELL_LIST_HPP__
-#define __NR_CELL_LIST_HPP__
+
+#ifndef __NETCONF_UTILS_HPP__
+#define __NETCONF_UTILS_HPP__
 
 #include <string.h>
 #include <stdlib.h>
 #include <stdint.h>
-#include <map>
-#include "sysrepo-cpp/Session.hpp"
-#include "CmInterface.h"
 #include "GlobalDefs.hpp"
-#include "Singleton.hpp"
-#include "NrCellInfo.hpp"
+#include "sysrepo-cpp/Session.hpp"
 
-class NrCellList : public Singleton<NrCellList>
+class NetconfUtils
 {
    public:
-      friend Singleton<NrCellList>;
-      typedef std::map<uint16_t, NrCellInfo> CellOpStateMap;
-
-      bool setCellOpState(uint16_t cellId, OpState opState, \
-                          CellState cellState);
-      const std::map<uint16_t, NrCellInfo> & getCellOpStateList();
-
-
-   private:
-      std::map<uint16_t, NrCellInfo> mCellOpStateMap;
+      static void printChange(sysrepo::S_Change change);
+      static const char *evToStr(sr_event_t ev);
+      static void getLeafInfo(string xpath,string &parent, string &leaf );
 };
 
 #endif

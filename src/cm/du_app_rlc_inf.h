@@ -274,10 +274,16 @@ typedef struct rrcDeliveryStatus
    uint16_t  triggeringMessage;
 }RrcDeliveryStatus;
 
+typedef struct
+{
+  uint32_t sd:24;
+  uint8_t sst;
+}SliceIdentifier;
+
 /*Pm Metric for NW Slicing from RLC to DUAPP*/
 typedef struct slicePm
 {
-  uint32_t networkSliceIdentifier;
+  SliceIdentifier networkSliceIdentifier;
   double ThpDl;
   double ThpUl;
 }SlicePm;

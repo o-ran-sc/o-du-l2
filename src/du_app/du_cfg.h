@@ -19,6 +19,10 @@
 #ifndef __DU_CONFIG_H_
 #define __DU_CONFIG_H__
 
+#ifdef O1_ENABLE
+#include "CmInterface.h"
+#endif
+
 /* MACROS */
 #define DU_INST 0
 #define DU_ID 1
@@ -1267,7 +1271,10 @@ uint8_t readClCfg();
 uint8_t readCfg();
 uint8_t duReadCfg(); 
 uint16_t calcSliv(uint8_t startSymbol, uint8_t lengthSymbol);
-uint8_t cpyRrmPolicyInDuCfgParams(RrmPolicy rrmPolicy[], uint8_t policyNum, uint8_t memberList, CopyOfRecvdSliceCfg *tempSliceCfg);
+
+#ifdef O1_ENABLE
+uint8_t cpyRrmPolicyInDuCfgParams(RrmPolicyList rrmPolicy[], uint8_t policyNum, CopyOfRecvdSliceCfg *tempSliceCfg);
+#endif
 
 #endif /* __DU_CONFIG_H__ */
 
