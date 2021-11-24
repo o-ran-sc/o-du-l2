@@ -53,7 +53,7 @@
 #include "BWP-UplinkCommon.h"
 
 #ifdef O1_ENABLE
-#include "ConfigInterface.h"
+#include "CmInterface.h"
 extern StartupConfig g_cfg;
 #endif
 

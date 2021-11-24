@@ -36,7 +36,7 @@
 
 #ifdef O1_ENABLE
 #include "AlarmInterface.h"
-#include "ConfigInterface.h"
+#include "CmInterface.h"
 #endif
 
 DuMacDlCcchInd packMacDlCcchIndOpts[] =
