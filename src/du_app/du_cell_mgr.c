@@ -173,8 +173,8 @@ uint8_t duGetCellCb(uint16_t cellId, DuCellCb **cellCb)
  * ****************************************************************/
 uint8_t duHandleCellUpInd(Pst *pst, OduCellId *cellId)
 {
-   DuCellCb *cellCb = NULLP;
-
+   DuCellCb *cellCb = NULLP; 
+   
    if(cellId->cellId <=0 || cellId->cellId > MAX_NUM_CELL)
    {
       DU_LOG("\nERROR  -->  DU APP : Invalid Cell Id %d in duHandleCellUpInd()", cellId->cellId);
@@ -189,7 +189,9 @@ uint8_t duHandleCellUpInd(Pst *pst, OduCellId *cellId)
       DU_LOG("\nINFO   -->  DU APP : 5G-NR Cell %d is UP", cellId->cellId);
       cellCb->cellStatus = ACTIVATED;
       gCellStatus = CELL_UP;
-
+     
+      if(duCfgParam.tempSliceCfg.rrmPolicy)
+           BuildAndSendSliceConfigInfo(duCfgParam.tempSliceCfg.rrmPolicy, duCfgParam.tempSliceCfg.totalRrmPolicy, duCfgParam.tempSliceCfg.totalSliceCfgReqRecvd);
 #ifdef O1_ENABLE
       DU_LOG("\nINFO   -->  DU APP : Raise cell UP alarm for cell id=%d", cellId->cellId);
       raiseCellAlrm(CELL_UP_ALARM_ID, cellId->cellId);

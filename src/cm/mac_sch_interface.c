@@ -458,6 +458,96 @@ uint8_t packSchCellDeleteRsp(Pst *pst, SchCellDeleteRsp  *schCellDeleteRsp)
    return ROK;
 }
 
+/*******************************************************************
+ *
+ * @brief Pack and Send Slice Cfg request from MAC to SCH
+ *
+ * @details
+ *
+ *    Function : packMacSchSliceCfgReq 
+ *
+ *    Functionality:
+ *       Pack and Send Slice Cfg request from MAC to SCH
+ *
+ * @params[in] Pst *pst, SchSliceCfgReq *cfgReq 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t packMacSchSliceCfgReq(Pst *pst, SchSliceCfgReq *cfgReq)
+{
+   if((pst->selector == ODU_SELECTOR_LC) || (pst->selector == ODU_SELECTOR_LWLC))
+   {
+      /* TODO */
+   }
+   else
+   {
+      return RFAILED;
+   }
+   return ROK;
+}
+
+/**
+ * @brief function to pack slice cfg rsp from SCH to MAC
+ *
+ * @details
+ *
+ *     Function : packSchSliceCfgRsp 
+ *     
+ *     
+ *  @param[in]  Pst *pst, SchSliceCfgRsp *cfgRsp
+ *  @return  S16 - ROK
+ **/
+uint8_t packSchSliceCfgRsp(Pst *pst, SchSliceCfgRsp *cfgRsp)
+{
+   return ROK;
+}
+
+/*******************************************************************
+ *
+ * @brief Pack and Send Slice ReCfg request from MAC to SCH
+ *
+ * @details
+ *
+ *    Function : packMacSchSliceReCfgReq 
+ *
+ *    Functionality:
+ *       Pack and Send Slice ReCfg request from MAC to SCH
+ *
+ * @params[in] Pst *pst, SchSliceCfgReq *cfgReq 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t packMacSchSliceReCfgReq(Pst *pst, SchSliceCfgReq *cfgReq)
+{
+   if((pst->selector == ODU_SELECTOR_LC) || (pst->selector == ODU_SELECTOR_LWLC))
+   {
+      /* TODO */
+   }
+   else
+   {
+      return RFAILED;
+   }
+   return ROK;
+}
+
+/**
+ * @brief function to pack slice cfg rsp from SCH to MAC
+ *
+ * @details
+ *
+ *     Function : packSchSliceReCfgRsp 
+ *     
+ *     
+ *  @param[in]  Pst *pst, SchSliceCfgRsp *cfgRsp
+ *  @return  S16 - ROK
+ **/
+uint8_t packSchSliceReCfgRsp(Pst *pst, SchSliceCfgRsp *cfgRsp)
+{
+   return ROK;
+}
+
 /**********************************************************************
   End of file
  **********************************************************************/

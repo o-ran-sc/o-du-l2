@@ -273,6 +273,16 @@ void callFlowduActvTsk(Pst *pst)
                      strcpy(message,"EVENT_MAC_CELL_DELETE_RSP");
                      break;
                   }
+               case EVENT_MAC_SLICE_CFG_RSP:
+                  {
+                     strcpy(message,"EVENT_MAC_SLICE_CFG_RSP");
+                     break;
+                  }
+               case EVENT_MAC_SLICE_RECFG_RSP:
+                  {
+                     strcpy(message,"EVENT_MAC_SLICE_RECFG_RSP");
+                     break;
+                  }
                default:
                   {
                      strcpy(message,"Invalid Event");
@@ -523,6 +533,16 @@ uint8_t duActvTsk(Pst *pst, Buffer *mBuf)
                case EVENT_MAC_CELL_DELETE_RSP:
                   {
                      ret = unpackDuMacCellDeleteRsp(DuProcMacCellDeleteRsp, pst, mBuf);
+                     break;
+                  }
+               case EVENT_MAC_SLICE_CFG_RSP:
+                  {
+                     ret = unpackDuMacSliceCfgRsp(DuProcMacSliceCfgRsp, pst, mBuf);
+                     break;
+                  }
+               case EVENT_MAC_SLICE_RECFG_RSP:
+                  {
+                     ret = unpackDuMacSliceReCfgRsp(DuProcMacSliceReCfgRsp, pst, mBuf);
                      break;
                   }
                default:
