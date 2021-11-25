@@ -229,15 +229,23 @@ struct macCellCb
    SlotTimingInfo currTime;
 };
 
+typedef struct macSliceCfg
+{
+   MacSliceRrmPolicy slicePolicy;
+}MacSliceCfg;
+
 typedef struct macCb
 {
-   Inst       macInst;
-   ProcId     procId;
-   uint8_t    tmrRes;                    /*!< Timer resolution */
-   CmTqCp     tmrTqCp;                   /*!< Timer Task Queue Cntrl Point */
-   CmTqType   tmrTq[MAC_TQ_SIZE];        /*!< Timer Task Queue */
-   CmTimer    tmrBlk[MAX_NUM_TIMER];     /*!< Timer Block */
-   MacCellCb  *macCell[MAX_NUM_CELL];
+   Inst        macInst;
+   ProcId      procId;
+   uint8_t     tmrRes;                    /*!< Timer resolution */
+   CmTqCp      tmrTqCp;                   /*!< Timer Task Queue Cntrl Point */
+   CmTqType    tmrTq[MAC_TQ_SIZE];        /*!< Timer Task Queue */
+   CmTimer     tmrBlk[MAX_NUM_TIMER];     /*!< Timer Block */
+   MacCellCb   *macCell[MAX_NUM_CELL];
+   uint8_t     totalSliceConfigured;
+   MacSliceCfg **listOfConfiguredSlice;
+   MacSliceCfgReq tempSliceCfgReq;
 }MacCb;
 
 /* global variable */
