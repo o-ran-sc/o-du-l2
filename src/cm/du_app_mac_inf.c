@@ -1204,6 +1204,300 @@ uint8_t unpackDuMacCellDeleteRsp(MacDuCellDeleteRspFunc func, Pst *pst, Buffer *
    return RFAILED;
 }
 
+/*******************************************************************
+ *
+ * @brief Pack and send Slice Cfg request from MAC to DU APP
+ *
+ * @details
+ *
+ *    Function : packDuMacSliceCfgReq
+ *
+ *    Functionality:
+ *       Pack and send Slice Cfg request from MAC to DU APP
+ *
+ * @params[in] Pst *pst, MacSliceCfgReq *sliceCfgReq
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+
+uint8_t packDuMacSliceCfgReq(Pst *pst, MacSliceCfgReq *sliceCfgReq)
+{
+   Buffer *mBuf = NULLP;
+
+   if(pst->selector == ODU_SELECTOR_LWLC)
+   {
+      if (ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf) != ROK)
+      {
+         DU_LOG("\nERROR  --> MAC : Memory allocation failed in packDuMacSliceCfgReq");
+         return RFAILED;
+      }
+      CMCHKPK(oduPackPointer,(PTR)sliceCfgReq, mBuf);
+   }
+   else
+   {
+      DU_LOG("\nERROR  -->  MAC: Only LWLC supported in packDuMacSliceCfgReq");
+      return RFAILED;
+   }
+
+   return ODU_POST_TASK(pst,mBuf);
+
+}
+/*******************************************************************
+*
+* @brief Unpacks Slice Cfg request received from DU APP
+*
+* @details
+*
+*    Function : unpackMacSliceCfgReq 
+*
+*    Functionality:
+*         Unpacks Slice Cfg Request received from DU APP
+*
+* @params[in] Pointer to Handler
+*             Post structure pointer
+*             Message Buffer
+* @return ROK     - success
+*         RFAILED - failure
+*
+* ****************************************************************/
+uint8_t unpackMacSliceCfgReq(DuMacSliceCfgReq func, Pst *pst, Buffer *mBuf)
+{
+    if(pst->selector == ODU_SELECTOR_LWLC)
+    {
+       MacSliceCfgReq *sliceCfgReq;
+       /* unpack the address of the structure */
+       CMCHKUNPK(oduUnpackPointer, (PTR *)&sliceCfgReq, mBuf);
+       ODU_PUT_MSG_BUF(mBuf);
+       return (*func)(pst, sliceCfgReq);
+    }
+    else
+    {
+       /* Nothing to do for other selectors */
+       DU_LOG("\nERROR  -->  DU APP : Only LWLC supported for Slice Cfg Request ");
+       ODU_PUT_MSG_BUF(mBuf);
+    }
+
+    return RFAILED;
+}
+
+/*******************************************************************
+ *
+ * @brief Pack and send Slice config response from MAC to DU APP
+ *
+ * @details
+ *
+ *    Function : packDuMacSliceCfgRsp
+ *
+ *    Functionality:
+ *       Pack and send Slice config response from MAC to DU APP
+ *
+ * @params[in] 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t packDuMacSliceCfgRsp(Pst *pst, MacSliceCfgRsp *cfgRsp)
+{
+   Buffer *mBuf = NULLP;
+
+   if(pst->selector == ODU_SELECTOR_LWLC)
+   {
+      if (ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf) != ROK)
+      {
+         DU_LOG("\nERROR  --> MAC : Memory allocation failed at packDuMacSliceCfgRsp");
+         return RFAILED;
+      }
+      /* pack the address of the structure */
+      CMCHKPK(oduPackPointer,(PTR)cfgRsp, mBuf);
+   }
+   else
+   {
+      DU_LOG("\nERROR  -->  MAC: Only LWLC supported for packDuMacSliceCfgRsp");
+      return RFAILED;
+   }
+
+   return ODU_POST_TASK(pst,mBuf);
+}
+
+/*******************************************************************
+ *
+ * @brief Unpack Slice Config Response from MAC to DU APP
+ *
+ * @details
+ *
+ *    Function :unpackDuMacSliceCfgRsp 
+ *
+ *    Functionality: Unpack Slice Config Response from MAC to DU APP
+ *
+ * @params[in] 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t unpackDuMacSliceCfgRsp(MacDuSliceCfgRspFunc func, Pst *pst, Buffer *mBuf)
+{
+   if(pst->selector == ODU_SELECTOR_LWLC)
+   {
+      MacSliceCfgRsp *cfgRsp = NULLP;
+
+      /* unpack the address of the structure */
+      CMCHKUNPK(oduUnpackPointer, (PTR *)&cfgRsp, mBuf);
+      ODU_PUT_MSG_BUF(mBuf);
+      return (*func)(pst, cfgRsp);
+   }
+
+   ODU_PUT_MSG_BUF(mBuf);
+   return RFAILED;
+}
+
+
+/*******************************************************************
+ *
+ * @brief Pack and send Slice ReCfg request from MAC to DU APP
+ *
+ * @details
+ *
+ *    Function : packDuMacSliceRecfgReq
+ *
+ *    Functionality:
+ *       Pack and send Slice ReCfg request from MAC to DU APP
+ *
+ * @params[in] Pst *pst, MacSliceCfgReq *sliceReCfgReq
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+
+uint8_t packDuMacSliceRecfgReq(Pst *pst, MacSliceCfgReq *sliceReCfgReq)
+{
+   Buffer *mBuf = NULLP;
+
+   if(pst->selector == ODU_SELECTOR_LWLC)
+   {
+      if (ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf) != ROK)
+      {
+         DU_LOG("\nERROR  --> MAC : Memory allocation failed in packDuMacSliceRecfgReq");
+         return RFAILED;
+      }
+      CMCHKPK(oduPackPointer,(PTR)sliceReCfgReq, mBuf);
+   }
+   else
+   {
+      DU_LOG("\nERROR  -->  MAC: Only LWLC supported in packDuMacSliceRecfgReq");
+      return RFAILED;
+   }
+
+   return ODU_POST_TASK(pst,mBuf);
+
+}
+/*******************************************************************
+*
+* @brief Unpacks Slice ReCfg request received from DU APP
+*
+* @details
+*
+*    Function : unpackMacSliceCfgReq 
+*
+*    Functionality:
+*         Unpacks Slice ReCfg Request received from DU APP
+*
+* @params[in] Pointer to Handler
+*             Post structure pointer
+*             Message Buffer
+* @return ROK     - success
+*         RFAILED - failure
+*
+* ****************************************************************/
+uint8_t unpackMacSliceReCfgReq(DuMacSliceRecfgReq func, Pst *pst, Buffer *mBuf)
+{
+    if(pst->selector == ODU_SELECTOR_LWLC)
+    {
+       MacSliceCfgReq *sliceReCfgReq;
+       /* unpack the address of the structure */
+       CMCHKUNPK(oduUnpackPointer, (PTR *)&sliceReCfgReq, mBuf);
+       ODU_PUT_MSG_BUF(mBuf);
+       return (*func)(pst, sliceReCfgReq);
+    }
+    else
+    {
+       /* Nothing to do for other selectors */
+       DU_LOG("\nERROR  -->  DU APP : Only LWLC supported for Slice ReCfg Request ");
+       ODU_PUT_MSG_BUF(mBuf);
+    }
+
+    return RFAILED;
+}
+
+/*******************************************************************
+ *
+ * @brief Pack and send Slice config response from MAC to DU APP
+ *
+ * @details
+ *
+ *    Function : packDuMacSliceReCfgRsp
+ *
+ *    Functionality:
+ *       Pack and send Slice config response from MAC to DU APP
+ *
+ * @params[in] 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t packDuMacSliceReCfgRsp(Pst *pst, MacSliceCfgRsp *cfgRsp)
+{
+   Buffer *mBuf = NULLP;
+
+   if(pst->selector == ODU_SELECTOR_LWLC)
+   {
+      if (ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf) != ROK)
+      {
+         DU_LOG("\nERROR  --> MAC : Memory allocation failed at packDuMacSliceReCfgRsp");
+         return RFAILED;
+      }
+      /* pack the address of the structure */
+      CMCHKPK(oduPackPointer,(PTR)cfgRsp, mBuf);
+   }
+   else
+   {
+      DU_LOG("\nERROR  -->  MAC: Only LWLC supported for packDuMacSliceReCfgRsp");
+      return RFAILED;
+   }
+
+   return ODU_POST_TASK(pst,mBuf);
+}
+
+/*******************************************************************
+ *
+ * @brief Unpack Slice ReConfig Response from MAC to DU APP
+ *
+ * @details
+ *
+ *    Function :unpackDuMacSliceReCfgRsp 
+ *
+ *    Functionality: Unpack Slice ReConfig Response from MAC to DU APP
+ *
+ * @params[in] 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t unpackDuMacSliceReCfgRsp(MacDuSliceReCfgRspFunc func, Pst *pst, Buffer *mBuf)
+{
+   if(pst->selector == ODU_SELECTOR_LWLC)
+   {
+      MacSliceCfgRsp *cfgRsp = NULLP;
+
+      /* unpack the address of the structure */
+      CMCHKUNPK(oduUnpackPointer, (PTR *)&cfgRsp, mBuf);
+      ODU_PUT_MSG_BUF(mBuf);
+      return (*func)(pst, cfgRsp);
+   }
+
+   ODU_PUT_MSG_BUF(mBuf);
+   return RFAILED;
+}
 /**********************************************************************
   End of file
  **********************************************************************/

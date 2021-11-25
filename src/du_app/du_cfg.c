@@ -335,13 +335,15 @@ uint8_t readMacCfg()
    duCfgParam.macCellCfg.initialUlBwp.pucchCommon.pucchResourceCommon = PUCCH_RSRC_COMMON;
    duCfgParam.macCellCfg.initialUlBwp.pucchCommon.pucchGroupHopping = PUCCH_GROUP_HOPPING;
    
-   /* SNSSAI And RRM policy Configuration */
+   /* Plmn And SNSSAI Configuration */
+   memset(&duCfgParam.macCellCfg.plmnInfoList.plmn, &duCfgParam.srvdCellLst[0].duCellInfo.cellInfo.srvdPlmn[0].plmn,\
+   sizeof(Plmn));
    taiSliceSuppLst = &duCfgParam.srvdCellLst[0].duCellInfo.cellInfo.srvdPlmn[0].taiSliceSuppLst;
-   duCfgParam.macCellCfg.numSupportedSlice = taiSliceSuppLst->numSupportedSlices;
+   duCfgParam.macCellCfg.plmnInfoList.numSupportedSlice = taiSliceSuppLst->numSupportedSlices;
    if(taiSliceSuppLst->snssai)
    {
-      DU_ALLOC_SHRABL_BUF(duCfgParam.macCellCfg.snssai, (duCfgParam.macCellCfg.numSupportedSlice) * sizeof(Snssai*));
-      if(duCfgParam.macCellCfg.snssai == NULLP)
+      DU_ALLOC_SHRABL_BUF(duCfgParam.macCellCfg.plmnInfoList.snssai, (duCfgParam.macCellCfg.plmnInfoList.numSupportedSlice) * sizeof(Snssai*));
+      if(duCfgParam.macCellCfg.plmnInfoList.snssai == NULLP)
       {
          DU_LOG("\nERROR  --> DU_APP: Memory allocation failed at readMacCfg");
          return RFAILED;
@@ -351,13 +353,13 @@ uint8_t readMacCfg()
    {
       if(taiSliceSuppLst->snssai[sliceIdx] != NULLP)
       {
-         DU_ALLOC_SHRABL_BUF(duCfgParam.macCellCfg.snssai[sliceIdx], sizeof(Snssai));
-         if(duCfgParam.macCellCfg.snssai[sliceIdx] == NULLP)
+         DU_ALLOC_SHRABL_BUF(duCfgParam.macCellCfg.plmnInfoList.snssai[sliceIdx], sizeof(Snssai));
+         if(duCfgParam.macCellCfg.plmnInfoList.snssai[sliceIdx] == NULLP)
          {
             DU_LOG("\nERROR  --> DU_APP: Memory allocation failed at readMacCfg");
             return RFAILED;
          }
-         memcpy(duCfgParam.macCellCfg.snssai[sliceIdx], taiSliceSuppLst->snssai[sliceIdx], sizeof(Snssai));
+         memcpy(duCfgParam.macCellCfg.plmnInfoList.snssai[sliceIdx], taiSliceSuppLst->snssai[sliceIdx], sizeof(Snssai));
       }
    }
    
@@ -371,7 +373,7 @@ uint8_t readMacCfg()
    /* TODO Check the exact data type of resource type once will receive the
     * information from O1 interface */
    duCfgParam.macCellCfg.rrmPolicy->rsrcType = RSRC_PRB;
-   memcpy(&duCfgParam.macCellCfg.rrmPolicy->memberList.snssai, duCfgParam.macCellCfg.snssai[DEDICATED_SLICE_INDEX],\
+   memcpy(&duCfgParam.macCellCfg.rrmPolicy->memberList.snssai, duCfgParam.macCellCfg.plmnInfoList.snssai[DEDICATED_SLICE_INDEX],\
    sizeof(Snssai));
    duCfgParam.macCellCfg.rrmPolicy->policyMaxRatio = MAX_RATIO;
    duCfgParam.macCellCfg.rrmPolicy->policyMinRatio = MIN_RATIO;

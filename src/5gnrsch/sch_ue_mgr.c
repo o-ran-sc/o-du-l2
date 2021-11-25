@@ -1158,13 +1158,13 @@ void deleteSchCellCb(SchCellCb *cellCb)
       SCH_FREE(cellCb->schUlSlotInfo,  cellCb->numSlots * sizeof(SchUlSlotInfo*));
    }
 
-   if(cellCb->cellCfg.snssai)
+   if(cellCb->cellCfg.plmnInfoList.snssai)
    {
-      for(sliceIdx=0; sliceIdx<cellCb->cellCfg.numSliceSupport; sliceIdx++)
+      for(sliceIdx=0; sliceIdx<cellCb->cellCfg.plmnInfoList.numSliceSupport; sliceIdx++)
       {
-         SCH_FREE(cellCb->cellCfg.snssai[sliceIdx], sizeof(Snssai));
+         SCH_FREE(cellCb->cellCfg.plmnInfoList.snssai[sliceIdx], sizeof(Snssai));
       }
-      SCH_FREE(cellCb->cellCfg.snssai, cellCb->cellCfg.numSliceSupport*sizeof(Snssai*));
+      SCH_FREE(cellCb->cellCfg.plmnInfoList.snssai, cellCb->cellCfg.plmnInfoList.numSliceSupport*sizeof(Snssai*));
    }
    SCH_FREE(cellCb->cellCfg.rrmPolicy, sizeof(SchRrmPolicy));
 

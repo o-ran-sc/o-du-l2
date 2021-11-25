@@ -200,6 +200,14 @@ typedef struct reservedF1apPduInfo
    void *f1apMsg;              /* msg structure */
 }ReservedF1apPduInfo;
 
+typedef struct duSliceCfg
+{
+    Snssai  snssai;
+    uint8_t maxRatio;
+    uint8_t minRatio;
+    uint8_t dedicatedRatio;
+}DuSliceCfg;
+
 /* DU APP DB */
 typedef struct duCb
 {
@@ -216,6 +224,8 @@ typedef struct duCb
    uint8_t       numDrb;                    /* current number of DRbs*/
    UpTnlCfg*     upTnlCfg[MAX_NUM_DRB];     /* tunnel info for every Drb */
    CmLListCp     reservedF1apPduList;       /*storing F1AP pdu infomation and transId */
+   uint8_t       numOfSliceConfigured;      /* total number of configured slice */
+   DuSliceCfg    **listOfConfiguredSlice;   /* slice cofiguration list */
 }DuCb;
 
 

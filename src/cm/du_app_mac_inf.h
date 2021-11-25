@@ -75,6 +75,10 @@
 #define EVENT_MAC_UE_DELETE_RSP      213
 #define EVENT_MAC_CELL_DELETE_REQ    214
 #define EVENT_MAC_CELL_DELETE_RSP    215
+#define EVENT_MAC_SLICE_CFG_REQ      216
+#define EVENT_MAC_SLICE_CFG_RSP      217
+#define EVENT_MAC_SLICE_RECFG_REQ    218
+#define EVENT_MAC_SLICE_RECFG_RSP    219
 
 #define BSR_PERIODIC_TIMER_SF_10 10
 #define BSR_RETX_TIMER_SF_320 320
@@ -675,6 +679,13 @@ typedef struct rrmPolicy
    uint8_t          policyDedicatedRatio;
 }RrmPolicy;
 
+typedef struct plmnInfoList
+{
+   Plmn           plmn;
+   uint8_t        numSupportedSlice; /* Total slice supporting */
+   Snssai         **snssai;         /* List of supporting snssai*/
+}PlmnInfoList;
+
 typedef struct macCellCfg
 {
    uint16_t       cellId;           /* Cell Id */
@@ -695,8 +706,7 @@ typedef struct macCellCfg
    BwpDlConfig    initialDlBwp;     /* Initial DL BWP */
    BwpUlConfig    initialUlBwp;     /* Initial UL BWP */
    uint8_t        dmrsTypeAPos;     /* DMRS Type A position */
-   uint8_t        numSupportedSlice; /* Total slice supporting */
-   Snssai         **snssai;         /* List of supporting snssai*/
+   PlmnInfoList   plmnInfoList;     /* Consits of PlmnId and Snssai list */
    RrmPolicy      *rrmPolicy;       /* RRM policy details */ 
 }MacCellCfg;
 
@@ -1298,6 +1308,37 @@ typedef struct macCellDeleteRsp
    CellDeleteStatus result;
 }MacCellDeleteRsp;
 
+typedef struct macSliceRsp
+{
+   Snssai  snssai;
+   MacRsp  rsp;
+}MacSliceRsp;
+
+typedef struct rrmPolicyRatio
+{
+   uint8_t policyMaxRatio;
+   uint8_t policyMinRatio;
+   uint8_t policyDedicatedRatio;
+}RrmPolicyRatio;
+
+typedef struct macSliceRrmPolicy
+{
+   Snssai  snssai;
+   RrmPolicyRatio *rrmPolicyRatio;
+}MacSliceRrmPolicy;
+
+typedef struct macSliceCfgReq
+{
+   uint8_t  numOfConfiguredSlice;
+   MacSliceRrmPolicy **listOfSliceCfg;
+}MacSliceCfgReq;
+
+typedef struct macSliceCfgRsp
+{
+   uint8_t  numSliceCfgRsp;
+   MacSliceRsp  **listOfSliceCfgRsp;
+}MacSliceCfgRsp;
+
 /* Functions for slot Ind from MAC to DU APP*/
 typedef uint8_t (*DuMacCellUpInd) ARGS((
 	 Pst       *pst,
@@ -1380,6 +1421,27 @@ typedef uint8_t (*MacDuCellDeleteRspFunc) ARGS((
      Pst            *pst,
      MacCellDeleteRsp *cellDeleteRsp));
 
+/* Slice Cfg Request from DU APP to MAC*/
+typedef uint8_t (*DuMacSliceCfgReq) ARGS((
+     Pst           *pst,
+     MacSliceCfgReq *CfgReq));
+
+/* Slice Cfg Response from MAC to DU APP */
+typedef uint8_t (*MacDuSliceCfgRspFunc) ARGS((
+	 Pst           *pst, 
+	 MacSliceCfgRsp   *cfgRsp));
+
+/* Slice ReReCfg Request from DU APP to MAC*/
+typedef uint8_t (*DuMacSliceRecfgReq) ARGS((
+     Pst           *pst,
+     MacSliceCfgReq *CfgReq));
+
+/* Slice ReReCfg Response from MAC to DU APP */
+typedef uint8_t (*MacDuSliceReCfgRspFunc) ARGS((
+        Pst           *pst,
+        MacSliceCfgRsp   *cfgRsp));
+
+
 uint8_t packMacCellUpInd(Pst *pst, OduCellId *cellId);
 uint8_t unpackMacCellUpInd(DuMacCellUpInd func, Pst *pst, Buffer *mBuf);
 uint8_t duHandleCellUpInd(Pst *pst, OduCellId *cellId);
@@ -1426,6 +1488,18 @@ uint8_t unpackMacCellDeleteReq(DuMacCellDeleteReq func, Pst *pst, Buffer *mBuf);
 uint8_t packDuMacCellDeleteRsp(Pst *pst, MacCellDeleteRsp *cellDeleteRsp);
 uint8_t DuProcMacCellDeleteRsp(Pst *pst, MacCellDeleteRsp *cellDeleteRsp);
 uint8_t unpackDuMacCellDeleteRsp(MacDuCellDeleteRspFunc func, Pst *pst, Buffer *mBuf);
+uint8_t packDuMacSliceCfgReq(Pst *pst, MacSliceCfgReq *sliceCfgReq);
+uint8_t MacProcSliceCfgReq(Pst *pst, MacSliceCfgReq *sliceCfgReq);
+uint8_t unpackMacSliceCfgReq(DuMacSliceCfgReq func, Pst *pst, Buffer *mBuf);
+uint8_t DuProcMacSliceCfgRsp(Pst *pst,  MacSliceCfgRsp *cfgRsp);
+uint8_t packDuMacSliceCfgRsp(Pst *pst, MacSliceCfgRsp *cfgRsp);
+uint8_t unpackDuMacSliceCfgRsp(MacDuSliceCfgRspFunc func, Pst *pst, Buffer *mBuf);
+uint8_t packDuMacSliceRecfgReq(Pst *pst, MacSliceCfgReq *sliceReCfgReq);
+uint8_t MacProcSliceReCfgReq(Pst *pst, MacSliceCfgReq *sliceReCfgReq);
+uint8_t unpackMacSliceReCfgReq(DuMacSliceRecfgReq func, Pst *pst, Buffer *mBuf);
+uint8_t DuProcMacSliceReCfgRsp(Pst *pst,  MacSliceCfgRsp *cfgRsp);
+uint8_t packDuMacSliceReCfgRsp(Pst *pst, MacSliceCfgRsp *cfgRsp);
+uint8_t unpackDuMacSliceReCfgRsp(MacDuSliceReCfgRspFunc func, Pst *pst, Buffer *mBuf);
 
 #endif
 

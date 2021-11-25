@@ -69,6 +69,21 @@ MacSchSrUciIndFunc macSchSrUciIndOpts[]=
    packMacSchSrUciInd
 };
 
+/* Function pointer for sending Slice cfg  ind from MAC to SCH */
+MacSchSliceCfgReqFunc macSchSliceCfgReqOpts[]=
+{
+   packMacSchSliceCfgReq,
+   MacSchSliceCfgReq,
+   packMacSchSliceCfgReq
+};
+
+/* Function pointer for sending Slice cfg  ind from MAC to SCH */
+MacSchSliceReCfgReqFunc macSchSliceReCfgReqOpts[]=
+{
+   packMacSchSliceReCfgReq,
+   MacSchSliceReCfgReq,
+   packMacSchSliceReCfgReq
+};
 /*******************************************************************
  *
  * @brief Sends DL BO Info to SCH
@@ -798,6 +813,154 @@ uint8_t FapiMacUciInd(Pst *pst, UciInd *macUciInd)
    return ret;
 }
 
+/*******************************************************************
+ *
+ * @brief Processes Slice Cfg Request info in shared structre
+ * 
+ * @details
+ *
+ *    Function : MacProcSliceCfgReq 
+ *
+ *    Functionality:
+ *        Slice Cfg Request info in shared structre
+ *
+ * @params[in] Post Structure Pointer
+ *             MacSliceCfgReq *sliceCfgReq;
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ **********************************************************************/
+ uint8_t fillSliceCfgInfo(SchSliceCfgReq *schSliceCfgReq, MacSliceCfgReq *sliceCfgReq)
+ {
+    uint8_t cfgIdx = 0;
+    if(sliceCfgReq->listOfSliceCfg)
+    {
+       MAC_ALLOC(schSliceCfgReq->listOfConfirguration, sliceCfgReq->numOfConfiguredSlice*sizeof(SchRrmPolicyOfSlice*));
+       if(schSliceCfgReq->listOfConfirguration)
+       {
+          DU_LOG("\nERROR  -->  MAC : Memory allocation failed in fillSliceCfgInfo");
+          return RFAILED;
+       }
+       for(cfgIdx = 0; cfgIdx<sliceCfgReq->numOfConfiguredSlice; cfgIdx++)
+       {
+          MAC_ALLOC(schSliceCfgReq->listOfConfirguration[cfgIdx], sizeof(SchRrmPolicyOfSlice));
+          if(schSliceCfgReq->listOfConfirguration[cfgIdx] == NULLP)
+          {
+             DU_LOG("\nERROR  -->  MAC : Memory allocation failed in fillSliceCfgInfo");
+             return RFAILED;
+          }
+
+          memcpy(&schSliceCfgReq->listOfConfirguration[cfgIdx]->snssai, &sliceCfgReq->listOfSliceCfg[cfgIdx]->snssai, sizeof(Snssai));
+          if(sliceCfgReq->listOfSliceCfg[cfgIdx]->rrmPolicyRatio)
+          {
+             MAC_ALLOC(schSliceCfgReq->listOfConfirguration[cfgIdx]->rrmPolicyRatioInfo, sizeof(SchRrmPolicyRatio));
+             if(schSliceCfgReq->listOfConfirguration[cfgIdx]->rrmPolicyRatioInfo == NULLP)
+             {
+                DU_LOG("\nERROR  -->  MAC : Memory allocation failed in fillSliceCfgInfo");
+                return RFAILED;
+             }
+             schSliceCfgReq->listOfConfirguration[cfgIdx]->rrmPolicyRatioInfo->policyMaxRatio = sliceCfgReq->listOfSliceCfg[cfgIdx]->rrmPolicyRatio->policyMaxRatio;
+             schSliceCfgReq->listOfConfirguration[cfgIdx]->rrmPolicyRatioInfo->policyMinRatio = sliceCfgReq->listOfSliceCfg[cfgIdx]->rrmPolicyRatio->policyMinRatio;
+             schSliceCfgReq->listOfConfirguration[cfgIdx]->rrmPolicyRatioInfo->policyDedicatedRatio = sliceCfgReq->listOfSliceCfg[cfgIdx]->rrmPolicyRatio->policyDedicatedRatio;
+          }
+          schSliceCfgReq->numOfConfiguredSlice++;
+       }
+       memcpy(&macCb.copyOfSliceCfgReq, sliceCfgReq, sizeof(MacSliceCfgReq));
+    }
+    return ROK;
+ }
+/*******************************************************************
+ *
+ * @brief Processes Slice Cfg Request recived from DU
+ *
+ * @details
+ *
+ *    Function : MacProcSliceCfgReq 
+ *
+ *    Functionality:
+ *       Processes Processes Slice Cfg Request recived from DU
+ *
+ * @params[in] Post Structure Pointer
+ *             MacSliceCfgReq *sliceCfgReq;
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ **********************************************************************/
+uint8_t MacProcSliceCfgReq(Pst *pst, MacSliceCfgReq *sliceCfgReq)
+{
+   Pst schPst;
+   SchSliceCfgReq *schSliceCfgReq;
+
+   DU_LOG("\nINFO  -->  MAC : Received Slice Cfg request from DU APP");
+   if(sliceCfgReq)
+   {
+      MAC_ALLOC(schSliceCfgReq, sizeof(SchSliceCfgReq));
+      if(schSliceCfgReq == NULLP)
+      {
+         DU_LOG("\nERROR -->  MAC : Memory allocation failed in MacProcSliceCfgReq");
+         return RFAILED;
+      }
+      else
+      {
+         if(fillSliceCfgInfo(schSliceCfgReq, sliceCfgReq) != ROK)
+         {
+            FILL_PST_MAC_TO_SCH(schPst, EVENT_SLICE_CFG_REQ_TO_SCH);
+            return(*macSchSliceCfgReqOpts[schPst.selector])(&schPst, schSliceCfgReq);
+         }
+      }
+   }
+   else
+   {
+      DU_LOG("\nINFO  -->  MAC : Received MacSliceCfgReq is NULL");
+   }
+   return ROK;
+}
+
+/*******************************************************************
+ *
+ * @brief Processes Slice ReCfg Request recived from DU
+ *
+ * @details
+ *
+ *    Function : MacProcSliceReCfgReq 
+ *
+ *    Functionality:
+ *       Processes Processes Slice ReCfg Request recived from DU
+ *
+ * @params[in] Post Structure Pointer
+ *             MacSliceCfgReq *sliceReCfgReq;
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ **********************************************************************/
+uint8_t MacProcSliceReCfgReq(Pst *pst, MacSliceCfgReq *sliceReCfgReq)
+{
+   Pst schPst;
+   SchSliceCfgReq *schSliceReCfgReq;
+
+   DU_LOG("\nINFO  -->  MAC : Received Slice ReCfg request from DU APP");
+   if(sliceReCfgReq)
+   {
+      MAC_ALLOC(schSliceReCfgReq, sizeof(SchSliceCfgReq));
+      if(schSliceReCfgReq == NULLP)
+      {
+         return RFAILED;
+      }
+      else
+      {
+         if(fillSliceCfgInfo(schSliceReCfgReq, sliceReCfgReq) != ROK)
+         {
+            FILL_PST_MAC_TO_SCH(schPst, EVENT_SLICE_RECFG_REQ_TO_SCH);
+            return(*macSchSliceReCfgReqOpts[schPst.selector])(&schPst, schSliceReCfgReq);
+         }
+      }
+   }
+   else
+   {
+      DU_LOG("\nINFO  -->  MAC : Received MacSliceCfgReq is NULL");
+   }
+   return ROK;
+}
 
 /**********************************************************************
   End of file

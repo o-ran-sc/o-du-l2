@@ -1220,6 +1220,12 @@ typedef struct sib1Params
    SrvCellCfgCommSib     srvCellCfgCommSib;
 }Sib1Params;
 
+typedef struct copyOfRecvdSliceCfg
+{
+   RrmPolicy          *rrmPolicy;
+   uint8_t            totalSliceCfg;
+}CopyOfRecvdSliceCfg;
+
 typedef struct duCfgParams
 {
    SctpParams         sctpParams;                  /* SCTP Params */
@@ -1233,6 +1239,7 @@ typedef struct duCfgParams
    MacCellCfg	       macCellCfg;	              /* MAC cell configuration */
    MibParams          mibParams;                  /* MIB Params */
    Sib1Params         sib1Params;                 /* SIB1 Params */
+   CopyOfRecvdSliceCfg copyOfSliceCfg;
 }DuCfgParams;
 
 /*function declarations */
