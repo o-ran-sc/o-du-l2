@@ -57,7 +57,6 @@
 extern StartupConfig g_cfg;
 #endif
 
-DuCfgParams duCfgParam;
 char encBuf[ENC_BUF_MAX_LEN];
 
 
@@ -335,13 +334,15 @@ uint8_t readMacCfg()
    duCfgParam.macCellCfg.initialUlBwp.pucchCommon.pucchResourceCommon = PUCCH_RSRC_COMMON;
    duCfgParam.macCellCfg.initialUlBwp.pucchCommon.pucchGroupHopping = PUCCH_GROUP_HOPPING;
    
-   /* SNSSAI And RRM policy Configuration */
+   /* Plmn And SNSSAI Configuration */
+   memset(&duCfgParam.macCellCfg.plmnInfoList.plmn, &duCfgParam.srvdCellLst[0].duCellInfo.cellInfo.srvdPlmn[0].plmn,\
+   sizeof(Plmn));
    taiSliceSuppLst = &duCfgParam.srvdCellLst[0].duCellInfo.cellInfo.srvdPlmn[0].taiSliceSuppLst;
-   duCfgParam.macCellCfg.numSupportedSlice = taiSliceSuppLst->numSupportedSlices;
+   duCfgParam.macCellCfg.plmnInfoList.numSupportedSlice = taiSliceSuppLst->numSupportedSlices;
    if(taiSliceSuppLst->snssai)
    {
-      DU_ALLOC_SHRABL_BUF(duCfgParam.macCellCfg.snssai, (duCfgParam.macCellCfg.numSupportedSlice) * sizeof(Snssai*));
-      if(duCfgParam.macCellCfg.snssai == NULLP)
+      DU_ALLOC_SHRABL_BUF(duCfgParam.macCellCfg.plmnInfoList.snssai, (duCfgParam.macCellCfg.plmnInfoList.numSupportedSlice) * sizeof(Snssai*));
+      if(duCfgParam.macCellCfg.plmnInfoList.snssai == NULLP)
       {
          DU_LOG("\nERROR  --> DU_APP: Memory allocation failed at readMacCfg");
          return RFAILED;
@@ -351,32 +352,15 @@ uint8_t readMacCfg()
    {
       if(taiSliceSuppLst->snssai[sliceIdx] != NULLP)
       {
-         DU_ALLOC_SHRABL_BUF(duCfgParam.macCellCfg.snssai[sliceIdx], sizeof(Snssai));
-         if(duCfgParam.macCellCfg.snssai[sliceIdx] == NULLP)
+         DU_ALLOC_SHRABL_BUF(duCfgParam.macCellCfg.plmnInfoList.snssai[sliceIdx], sizeof(Snssai));
+         if(duCfgParam.macCellCfg.plmnInfoList.snssai[sliceIdx] == NULLP)
          {
             DU_LOG("\nERROR  --> DU_APP: Memory allocation failed at readMacCfg");
             return RFAILED;
          }
-         memcpy(duCfgParam.macCellCfg.snssai[sliceIdx], taiSliceSuppLst->snssai[sliceIdx], sizeof(Snssai));
+         memcpy(duCfgParam.macCellCfg.plmnInfoList.snssai[sliceIdx], taiSliceSuppLst->snssai[sliceIdx], sizeof(Snssai));
       }
    }
-   
-   DU_ALLOC_SHRABL_BUF(duCfgParam.macCellCfg.rrmPolicy, sizeof(RrmPolicy));
-   if(duCfgParam.macCellCfg.rrmPolicy == NULLP)
-   {
-      DU_LOG("\nERROR  --> DU_APP: Memory allocation failed at readMacCfg");
-      return RFAILED;
-   }
-   memset(duCfgParam.macCellCfg.rrmPolicy, 0, sizeof(RrmPolicy));
-   /* TODO Check the exact data type of resource type once will receive the
-    * information from O1 interface */
-   duCfgParam.macCellCfg.rrmPolicy->rsrcType = RSRC_PRB;
-   memcpy(&duCfgParam.macCellCfg.rrmPolicy->memberList.snssai, duCfgParam.macCellCfg.snssai[DEDICATED_SLICE_INDEX],\
-   sizeof(Snssai));
-   duCfgParam.macCellCfg.rrmPolicy->policyMaxRatio = MAX_RATIO;
-   duCfgParam.macCellCfg.rrmPolicy->policyMinRatio = MIN_RATIO;
-   duCfgParam.macCellCfg.rrmPolicy->policyDedicatedRatio = DEDICATED_RATIO;
-
    return ROK;
 }
 
@@ -922,6 +906,79 @@ uint8_t readCfg()
    return ROK;
 }
 
+/*******************************************************************
+ *
+ * @brief Copy Slice Cfg in temp structre in duCfgParams 
+ *
+ * @details
+ *
+ *    Function : cpyRrmPolicyInDuCfgParams
+ *
+ *    Functionality:
+ *      - Copy Slice Cfg in temp structre in duCfgParams 
+ *
+ * @params[in] RrmPolicy rrmPolicy[], uint8_t policyNum, uint8_t memberList
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t cpyRrmPolicyInDuCfgParams(RrmPolicy rrmPolicy[], uint8_t policyNum, uint8_t memberList, CopyOfRecvdSliceCfg *tempSliceCfg)
+{
+   uint8_t policyIdx = 0, memberListIdx = 0, count = 0;
+
+   if(policyNum)
+   {
+      tempSliceCfg->totalRrmPolicy = policyNum;
+      DU_ALLOC(tempSliceCfg->rrmPolicy, tempSliceCfg->totalRrmPolicy * sizeof(RrmPolicy*));
+      if(tempSliceCfg->rrmPolicy == NULLP)
+      {
+         DU_LOG("\nERROR  --> DU APP : Memory allocation failed in cpyRrmPolicyInDuCfgParams");
+         return RFAILED;
+      }
+
+      for(policyIdx = 0; policyIdx<tempSliceCfg->totalRrmPolicy; policyIdx++)
+      {
+         DU_ALLOC(tempSliceCfg->rrmPolicy[policyIdx],  sizeof(RrmPolicy));
+         if(tempSliceCfg->rrmPolicy[policyIdx] == NULLP)
+         {
+            DU_LOG("\nERROR  --> DU APP : Memory allocation failed in cpyRrmPolicyInDuCfgParams");
+            return RFAILED;
+         }
+         
+         if(memberList)
+         {
+            tempSliceCfg->rrmPolicy[policyIdx]->numMemberList = rrmPolicy[policyIdx].numMemberList;  
+            DU_ALLOC(tempSliceCfg->rrmPolicy[policyIdx]->memberList, tempSliceCfg->rrmPolicy[policyIdx]->numMemberList * sizeof(PolicyMemberList*))
+            if(tempSliceCfg->rrmPolicy[policyIdx]->memberList == NULLP)
+            {
+               DU_LOG("\nERROR  --> DU APP : Memory allocation failed in cpyRrmPolicyInDuCfgParams");
+               return RFAILED;
+            }
+
+            for(memberListIdx = 0; memberListIdx<tempSliceCfg->rrmPolicy[policyIdx]->numMemberList; memberListIdx++)
+            {
+               DU_ALLOC(tempSliceCfg->rrmPolicy[policyIdx]->memberList[memberListIdx], sizeof(PolicyMemberList))
+               if(tempSliceCfg->rrmPolicy[policyIdx]->memberList[memberListIdx] == NULLP)
+               {
+                  DU_LOG("\nERROR  --> DU APP : Memory allocation failed in cpyRrmPolicyInDuCfgParams");
+                  return RFAILED;
+               }
+               memcpy(&tempSliceCfg->rrmPolicy[policyIdx]->memberList[memberListIdx]->snssai, &rrmPolicy[policyIdx].memberList[memberListIdx]->snssai, sizeof(Snssai));
+               memcpy(&tempSliceCfg->rrmPolicy[policyIdx]->memberList[memberListIdx]->plmn, &rrmPolicy[policyIdx].memberList[memberListIdx]->plmn, sizeof(Plmn));
+               count++;
+            }
+         }
+         
+         tempSliceCfg->rrmPolicy[policyIdx]->rsrcType  = RSRC_PRB;
+         tempSliceCfg->rrmPolicy[policyIdx]->policyMaxRatio = rrmPolicy[policyIdx].policyMaxRatio;
+         tempSliceCfg->rrmPolicy[policyIdx]->policyMinRatio = rrmPolicy[policyIdx].policyMinRatio;
+         tempSliceCfg->rrmPolicy[policyIdx]->policyDedicatedRatio = rrmPolicy[policyIdx].policyDedicatedRatio;
+
+      }
+      tempSliceCfg->totalSliceCount = count;
+   }
+   return ROK;
+}
 /*******************************************************************
  *
  * @brief Reads config and posts message to du_app on completion

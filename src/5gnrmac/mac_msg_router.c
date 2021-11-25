@@ -137,6 +137,16 @@ Buffer  *mBuf                       /* message buffer       */
        unpackMacCellDeleteReq(MacProcCellDeleteReq, pst, mBuf);
        break;
     }
+    case EVENT_MAC_SLICE_CFG_REQ:
+    {
+       unpackMacSliceCfgReq(MacProcSliceCfgReq, pst, mBuf);
+       break;
+    }
+    case EVENT_MAC_SLICE_RECFG_REQ:
+    {
+       unpackMacSliceCfgReq(MacProcSliceReCfgReq, pst, mBuf);
+       break;
+    }
     default:
          RG_FREE_MSG(mBuf);
          break;
@@ -458,6 +468,12 @@ void callFlowRgActvTsk(Pst *pst)
                   break;
                case EVENT_MAC_CELL_DELETE_REQ:
                   strcpy(message,"EVENT_MAC_CELL_DELETE_REQ");
+                  break;
+               case EVENT_MAC_SLICE_CFG_REQ:
+                  strcpy(message,"EVENT_MAC_SLICE_CFG_REQ");
+                  break;
+               case EVENT_MAC_SLICE_RECFG_REQ:
+                  strcpy(message,"EVENT_MAC_SLICE_CFG_REQ");
                   break;
                default:
                   strcpy(message,"Invalid Event");

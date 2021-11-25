@@ -24,6 +24,8 @@ uint8_t duBuildAndSendMacCellCfg(uint16_t cellId);
 uint8_t duProcCellsToBeActivated(uint8_t *plmnStr, uint16_t nci, uint16_t nRPci);
 void duProcF1SetupRsp();
 uint8_t duGetCellCb(uint16_t cellId, DuCellCb **cellCb);
+uint8_t BuildAndSendSliceConfigReq(RrmPolicy *rrmPolicy[], uint8_t totalRrrmPolicy, uint8_t totalSliceCfgReq);
+uint8_t BuildAndSendSliceReCfgReq(RrmPolicy *rrmPolicy[], uint8_t totalRrmPolicy, uint8_t totalSliceReCfg);
 #endif
 /**********************************************************************
   End of file

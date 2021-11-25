@@ -59,6 +59,13 @@
 
 typedef enum
 {
+   SLICE_INFO_NOT_AVAILABLE,
+   SLICE_CONFIGURED,
+   SLICE_RECONFIGURED
+}SliceCfgState;
+
+typedef enum
+{
    CELL_OUT_OF_SERVICE,
    ACTIVATION_IN_PROGRESS,
    ACTIVATED,
@@ -216,6 +223,7 @@ typedef struct duCb
    uint8_t       numDrb;                    /* current number of DRbs*/
    UpTnlCfg*     upTnlCfg[MAX_NUM_DRB];     /* tunnel info for every Drb */
    CmLListCp     reservedF1apPduList;       /*storing F1AP pdu infomation and transId */
+   SliceCfgState sliceState;
 }DuCb;
 
 

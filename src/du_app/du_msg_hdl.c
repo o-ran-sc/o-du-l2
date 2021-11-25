@@ -85,6 +85,20 @@ DuMacCellStop packMacCellStopOpts[] =
    packMacCellStop    /* Light weight-loose coupling */
 };
 
+DuMacSliceCfgReq packMacSliceCfgReqOpts[] =
+{
+   packDuMacSliceCfgReq,       /* Loose coupling */
+   MacProcSliceCfgReq,         /* TIght coupling */
+   packDuMacSliceCfgReq        /* Light weight-loose coupling */
+};
+
+
+DuMacSliceRecfgReq packMacSliceReCfgReqOpts[] =
+{
+   packDuMacSliceRecfgReq,       /* Loose coupling */
+   MacProcSliceReCfgReq,         /* TIght coupling */
+   packDuMacSliceRecfgReq        /* Light weight-loose coupling */
+};
 /**************************************************************************
  * @brief Function to fill configs required by RLC
  *
@@ -1803,6 +1817,321 @@ uint8_t DuProcRlcUlUserDataTrans(Pst *pst, RlcUlUserDatInfo *ulUserData)
    return ROK;
 }
 
+/*******************************************************************
+ *
+ * @brief Free tempSLiceCfg stored in duCfgParams
+ *
+ * @details
+ *
+ *    Function :  duFreeTempSliceCfg
+ *
+ *    Functionality: Free tempSLiceCfg stored in duCfgParams 
+ *
+ * @params[in] Post structure, 
+ *             
+ * @return Void
+ *
+ * ****************************************************************/
+
+void duFreeTempSliceCfg()
+{
+    uint8_t policyIdx = 0, memberListTdx =0;
+    CopyOfRecvdSliceCfg *tempSliceCfg = &duCfgParam.tempSliceCfg;
+    
+    if(tempSliceCfg->totalRrmPolicy)
+    {
+       for(policyIdx = 0; policyIdx<tempSliceCfg->totalRrmPolicy; policyIdx++)
+       {
+          if(tempSliceCfg->rrmPolicy[policyIdx]->numMemberList)
+          {
+             for(memberListTdx = 0; memberListTdx<tempSliceCfg->rrmPolicy[policyIdx]->numMemberList; memberListTdx++)
+             {
+                 DU_FREE(tempSliceCfg->rrmPolicy[policyIdx]->memberList[memberListTdx], sizeof(PolicyMemberList));
+             }
+             DU_FREE(tempSliceCfg->rrmPolicy[policyIdx]->memberList, (tempSliceCfg->rrmPolicy[policyIdx]->numMemberList) * sizeof(PolicyMemberList*));
+          }
+          DU_FREE(tempSliceCfg->rrmPolicy[policyIdx], sizeof(RrmPolicy));
+       }
+       DU_FREE(tempSliceCfg->rrmPolicy, tempSliceCfg->totalRrmPolicy* sizeof(RrmPolicy*));
+    }
+    memset(tempSliceCfg, 0, sizeof(CopyOfRecvdSliceCfg));
+}
+
+/*******************************************************************
+ *
+ * @brief  free the slice cfg rsp
+ *
+ * @details
+ *
+ *    Function : duFreeSliceCfgRsp 
+ *
+ *    Functionality: free the slice cfg rsp 
+ *
+ * @params[in] Post structure, MacSliceCfgRsp  *cfgRsp
+ *             
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ **********************************************************************/
+void duFreeSliceCfgRsp(Pst *pst,  MacSliceCfgRsp *cfgRsp) 
+{
+   uint8_t cfgIdx;
+
+   if(cfgRsp)
+   {
+      if(cfgRsp->numSliceCfgRsp)
+      {
+         for(cfgIdx = 0; cfgIdx<cfgRsp->numSliceCfgRsp; cfgIdx++)
+         {
+            DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, cfgRsp->listOfSliceCfgRsp[cfgIdx], sizeof(MacSliceRsp)); 
+         }
+         DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, cfgRsp->listOfSliceCfgRsp, cfgRsp->numSliceCfgRsp * sizeof(MacSliceRsp*)); 
+      }
+      DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, cfgRsp, sizeof(MacSliceCfgRsp)); 
+   }
+   return ROK;
+}
+
+/*******************************************************************
+ *
+ * @brief process the slice cfg rsp received from MAC
+ *
+ * @details
+ *
+ *    Function : DuProcMacSliceCfgRsp
+ *
+ *    Functionality: process the slice cfg rsp received from MAC
+ *
+ * @params[in] Post structure, MacSliceCfgRsp  *cfgRsp
+ *             
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ **********************************************************************/
+uint8_t DuProcMacSliceCfgRsp(Pst *pst,  MacSliceCfgRsp *cfgRsp)
+{
+    uint8_t cfgIdx = 0;
+    
+    if(cfgRsp)
+    {
+        if(cfgRsp->listOfSliceCfgRsp)
+        {
+            for(cfgIdx = 0; cfgIdx<cfgRsp->numSliceCfgRsp; cfgIdx++)
+            {
+                if(cfgRsp->listOfSliceCfgRsp[cfgIdx]->rsp ==  MAC_DU_APP_RSP_OK)
+                {
+                    duCb.sliceState = SLICE_CONFIGURED;
+                }
+            }
+            DU_LOG("\nINFO  -->  DU_APP : Slice Configuration is done sucessfully ");
+        }
+        duFreeSliceCfgRsp(pst, cfgRsp);
+    }
+    duFreeTempSliceCfg();
+}
+
+/*******************************************************************
+ *
+ * @brief Fill the slice configration and rrm policy ratio 
+ *    information received form O1
+ *
+ * @details
+ *
+ *    Function : fillSliceCfgReCfgInfo 
+ *
+ *    Functionality: Fill the slice configration and recfg info 
+ *
+ * @params[in] Post structure
+ *             
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+
+uint8_t fillSliceCfgReCfgInfo(MacSliceCfgReq *sliceCfgReq, RrmPolicy *rrmPolicy[], uint8_t totalRrmPolicy, uint8_t totalSliceCount)
+{
+   uint8_t sliceIdx = 0, cfgIdx = 0, memberListIdx = 0;
+   
+   if(totalRrmPolicy)
+   {
+      DU_ALLOC_SHRABL_BUF(sliceCfgReq->listOfSliceCfg, totalSliceCount*sizeof(MacSliceRrmPolicy*)); 
+      if(sliceCfgReq->listOfSliceCfg == NULLP)
+      {
+         DU_LOG("\nERROR  -->  DU_APP : Memory allocation failed in fillSliceCfgReCfgInfo");
+         return RFAILED;
+      }
+
+      for(sliceIdx = 0; sliceIdx<totalRrmPolicy; sliceIdx++)
+      {
+         for(memberListIdx = 0; memberListIdx<rrmPolicy[sliceIdx]->numMemberList; memberListIdx++)
+         {
+            DU_ALLOC_SHRABL_BUF(sliceCfgReq->listOfSliceCfg[cfgIdx], sizeof(MacSliceRrmPolicy));
+            if(sliceCfgReq->listOfSliceCfg[cfgIdx] == NULLP)
+            { 
+               DU_LOG("\nERROR  -->  DU_APP : Memory allocation failed in fillSliceCfgReCfgInfo");
+               return RFAILED;
+            }
+
+
+            memcpy(&sliceCfgReq->listOfSliceCfg[cfgIdx]->snssai, &rrmPolicy[sliceIdx]->memberList[memberListIdx]->snssai, sizeof(Snssai));
+
+            DU_ALLOC_SHRABL_BUF(sliceCfgReq->listOfSliceCfg[cfgIdx]->rrmPolicyRatio, sizeof(RrmPolicyRatio));
+            if(sliceCfgReq->listOfSliceCfg[cfgIdx]->rrmPolicyRatio == NULLP)
+            { 
+               DU_LOG("\nERROR  -->  DU_APP : Memory allocation failed in fillSliceCfgReCfgInfo");
+               return RFAILED;
+            }
+
+            sliceCfgReq->listOfSliceCfg[cfgIdx]->rrmPolicyRatio->policyMaxRatio = rrmPolicy[sliceIdx]->policyMaxRatio;
+            sliceCfgReq->listOfSliceCfg[cfgIdx]->rrmPolicyRatio->policyMinRatio = rrmPolicy[sliceIdx]->policyMinRatio;
+            sliceCfgReq->listOfSliceCfg[cfgIdx]->rrmPolicyRatio->policyDedicatedRatio = rrmPolicy[sliceIdx]->policyDedicatedRatio; 
+            sliceCfgReq->numOfConfiguredSlice++;
+            cfgIdx++;
+         }
+      }
+   }
+   return ROK;
+}
+
+/*******************************************************************
+ *
+ * @brief Fill the slice configration and rrm policy related
+ *    information received form O1
+ *
+ * @details
+ *
+ *    Function : BuildAndSendSliceConfigReq 
+ *
+ *    Functionality: Fill the slice configration and rrm policy related 
+ *
+ * @params[in] RrmPolicy *rrmPolicy[], uint8_t totalRrmPolicy, uint8_t
+ * totalSliceCnt 
+ *             
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t BuildAndSendSliceConfigReq(RrmPolicy *rrmPolicy[], uint8_t totalRrmPolicy, uint8_t totalSliceCnt)
+{
+   Pst pst;
+   MacSliceCfgReq *sliceCfgReq;
+
+   DU_ALLOC_SHRABL_BUF(sliceCfgReq, sizeof(MacSliceCfgReq));
+   if(sliceCfgReq == NULLP)
+   {
+      DU_LOG("\nERROR  -->  DU_APP : Memory allocation failed in BuildAndSendSliceConfigReq");
+      return RFAILED;
+   }
+   else
+   {
+      if(fillSliceCfgReCfgInfo(sliceCfgReq, rrmPolicy, totalRrmPolicy, totalSliceCnt) != ROK)
+      {   
+         DU_LOG("\nERROR  -->  DU_APP : Failed to fill slice Configuration info in MacSliceCfgReq");
+         return RFAILED;
+      }
+      FILL_PST_DUAPP_TO_MAC(pst, EVENT_MAC_SLICE_CFG_REQ);
+
+      DU_LOG("\nDEBUG  -->  DU_APP : Sending Slice Cfg Request to MAC ");
+      if((*packMacSliceCfgReqOpts[pst.selector])(&pst, sliceCfgReq) == RFAILED)
+      {
+         DU_LOG("\nERROR  -->  DU_APP : Failed to send Slice Cfg Req to MAC");
+         DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, sliceCfgReq, sizeof(MacSliceCfgReq));
+      }
+   }
+   return ROK;  
+}
+
+
+/*******************************************************************
+ *
+ * @brief Fill the slice configration and rrm policy related
+ *    information received form O1
+ *
+ * @details
+ *
+ *    Function : BuildAndSendSliceReCfgReq 
+ *
+ *    Functionality: Fill the slice configration and rrm policy related 
+ *
+ * @params[in] RrmPolicy rrmPolicy[], uint8_t totalSliceCount 
+ *             
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t BuildAndSendSliceReCfgReq(RrmPolicy *rrmPolicy[], uint8_t totalRrmPolicy, uint8_t totalSliceCount)
+{
+   Pst pst;
+   MacSliceCfgReq *sliceReCfgReq = NULLP;
+   
+   DU_LOG("\nINFO  --> DU_APP : Slice ReConfiguration Request received");
+
+   DU_ALLOC_SHRABL_BUF(sliceReCfgReq, sizeof(MacSliceCfgReq));
+   if(sliceReCfgReq == NULLP)
+   {
+      DU_LOG("\nERROR  -->  DU_APP : Memory allocation failed to BuildAndSendSliceReCfgReq");
+      return RFAILED;
+   }
+   else
+   {
+      if(fillSliceCfgReCfgInfo(sliceReCfgReq, rrmPolicy, totalRrmPolicy, totalSliceCount) != ROK)
+      {
+         DU_LOG("\nERROR  -->  DU_APP: Failed to fill slice cfg request info");
+         return RFAILED;
+      }
+      FILL_PST_DUAPP_TO_MAC(pst, EVENT_MAC_SLICE_RECFG_REQ);
+
+      DU_LOG("\nDEBUG  -->  DU_APP: Sending Slice ReCfg Request to MAC ");
+      if( (*packMacSliceReCfgReqOpts[pst.selector])(&pst, sliceReCfgReq) == RFAILED)
+      {
+         DU_LOG("\nERROR  -->  DU_APP: Failed to send Slice ReCfg Req to MAC");
+         DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, sliceReCfgReq, sizeof(MacSliceCfgReq));
+      }
+   }
+   return ROK;  
+}
+/*******************************************************************
+ *
+ * @brief process the slice ReCfg rsp received from MAC
+ *
+ * @details
+ *
+ *    Function : DuProcMacSliceReCfgRsp
+ *
+ *    Functionality: process the slice ReCfg rsp received from MAC
+ *
+ * @params[in] Post structure, MacSliceCfgRsp  *ReCfgRsp
+ *             
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ **********************************************************************/
+uint8_t DuProcMacSliceReCfgRsp(Pst *pst,  MacSliceCfgRsp *reCfgRsp)
+{
+   uint8_t cfgIdx = 0, sliceIdx =0;
+   
+   if(reCfgRsp)
+   {
+      if(reCfgRsp->listOfSliceCfgRsp)
+      {
+         for(cfgIdx = 0; cfgIdx < reCfgRsp->numSliceCfgRsp; cfgIdx++)
+         {
+            if(reCfgRsp->listOfSliceCfgRsp[cfgIdx]->rsp == MAC_DU_APP_RSP_OK)
+            {
+               duCb.sliceState = SLICE_RECONFIGURED; 
+            }
+            else
+            {
+               DU_LOG("\nERROR  -->  DU_APP : Slice not available");
+            }
+         }
+         DU_LOG("\nINFO  --> DU_APP : Slice ReCOnfiguration response received");
+      }
+      duFreeSliceCfgRsp(pst, reCfgRsp);
+   }
+   duFreeTempSliceCfg();
+   return ROK;
+}
 /**********************************************************************
   End of file
  **********************************************************************/

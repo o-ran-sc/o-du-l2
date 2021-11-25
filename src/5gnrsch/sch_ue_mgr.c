@@ -191,30 +191,42 @@ void fillSchUlLcCtxt(SchUlLcCtxt *ueCbLcCfg, SchLcCfg *lcCfg)
  *
  * ****************************************************************/
 
-uint8_t updateDedLcInfo(Snssai *snssai, SchRrmPolicy *rrmPolicy, SchLcPrbEstimate *lcPrbEst,\
+uint8_t updateDedLcInfo(Snssai *snssai, SchLcPrbEstimate *lcPrbEst,\
                          bool *isDedicated)
 {
-   if(memcmp(snssai, &(rrmPolicy->memberList.snssai), sizeof(Snssai)) == 0)
+   uint8_t sliceCfgIdx =0;
+   SchSliceCfg sliceCfg = schCb[0].sliceCfg;
+
+   if(sliceCfg.numOfSliceConfigured)
    {
-      if(lcPrbEst->dedLcInfo == NULLP)
+      for(sliceCfgIdx = 0; sliceCfgIdx<sliceCfg.numOfSliceConfigured; sliceCfgIdx++)
       {
-         SCH_ALLOC(lcPrbEst->dedLcInfo, sizeof(DedicatedLCInfo));
-         if(lcPrbEst->dedLcInfo == NULLP)
+         if(memcmp(snssai, &(sliceCfg.listOfConfirguration[sliceCfgIdx]->snssai), sizeof(Snssai)) == 0)
          {
-            DU_LOG("\nINFO  -->  SCH : Memory Allocation Failed");
-            return RFAILED;
+            if(lcPrbEst->dedLcInfo == NULLP)
+            {
+               SCH_ALLOC(lcPrbEst->dedLcInfo, sizeof(DedicatedLCInfo));
+               if(lcPrbEst->dedLcInfo == NULLP)
+               {
+                  DU_LOG("\nINFO  -->  SCH : Memory Allocation Failed");
+                  return RFAILED;
+               }
+            }
+            if(sliceCfg.listOfConfirguration[sliceCfgIdx]->rrmPolicyRatioInfo)
+            {
+               /*Updating latest RrmPolicy*/
+               lcPrbEst->dedLcInfo->rsvdDedicatedPRB = \
+               (uint16_t)(((sliceCfg.listOfConfirguration[sliceCfgIdx]->rrmPolicyRatioInfo->policyDedicatedRatio)*(MAX_NUM_RB))/100);
+               *isDedicated = TRUE;
+               DU_LOG("\nINFO  -->  SCH : Updated RRM policy, reservedPOOL:%d",lcPrbEst->dedLcInfo->rsvdDedicatedPRB);
+            }
          }
       }
-      /*Updating latest RrmPolicy*/
-      lcPrbEst->dedLcInfo->rsvdDedicatedPRB = \
-                                              (uint16_t)(((rrmPolicy->policyDedicatedRatio)*(MAX_NUM_RB))/100);
-      *isDedicated = TRUE;
-      DU_LOG("\nINFO  -->  SCH : Updated RRM policy, reservedPOOL:%d",lcPrbEst->dedLcInfo->rsvdDedicatedPRB);
-   }
-   /*else case: This LcCtxt  is either a Default LC or this LC is part of someother RRM_MemberList*/
-   else
-   {
-      DU_LOG("\nINFO  -->  SCH : This SNSSAI is not a part of this RRMPolicy");
+      /*case: This LcCtxt  is either a Default LC or this LC is part of someother RRM_MemberList*/
+      if(*isDedicated != TRUE) 
+      {
+         DU_LOG("\nINFO  -->  SCH : This SNSSAI is not a part of this RRMPolicy");
+      }
    }
    return ROK;	 
 }
@@ -316,14 +328,12 @@ uint8_t fillSchUeCb(SchUeCb *ueCb, SchUeCfg *ueCfg)
           * and Create the Dedicated LC List & Update the Reserve PRB number*/
          if(ueCb->dlInfo.dlLcCtxt[ueLcIdx].snssai != NULLP)
          {
-            retDL = updateDedLcInfo(ueCb->dlInfo.dlLcCtxt[ueLcIdx].snssai,  \
-                  ueCb->cellCb->cellCfg.rrmPolicy, &(ueCb->dlLcPrbEst),\
+            retDL = updateDedLcInfo(ueCb->dlInfo.dlLcCtxt[ueLcIdx].snssai, &(ueCb->dlLcPrbEst),\
                   &(ueCb->dlInfo.dlLcCtxt[ueLcIdx].isDedicated));
          }
          if(ueCb->ulInfo.ulLcCtxt[ueLcIdx].snssai != NULLP)
          {
-            retUL =  updateDedLcInfo(ueCb->ulInfo.ulLcCtxt[ueLcIdx].snssai,  \
-                  ueCb->cellCb->cellCfg.rrmPolicy, &(ueCb->ulLcPrbEst),\
+            retUL =  updateDedLcInfo(ueCb->ulInfo.ulLcCtxt[ueLcIdx].snssai, &(ueCb->ulLcPrbEst),\
                   &(ueCb->ulInfo.ulLcCtxt[ueLcIdx].isDedicated));
          }
 
@@ -343,8 +353,7 @@ uint8_t fillSchUeCb(SchUeCb *ueCb, SchUeCfg *ueCfg)
                /*Updating the RRM reserved pool PRB count*/
                if(ueCb->ulInfo.ulLcCtxt[ueLcIdx].snssai != NULLP)
                {
-                  retUL =  updateDedLcInfo(ueCb->ulInfo.ulLcCtxt[ueLcIdx].snssai,  \
-                        ueCb->cellCb->cellCfg.rrmPolicy, &(ueCb->ulLcPrbEst),\
+                  retUL =  updateDedLcInfo(ueCb->ulInfo.ulLcCtxt[ueLcIdx].snssai, &(ueCb->ulLcPrbEst),\
                         &(ueCb->ulInfo.ulLcCtxt[ueLcIdx].isDedicated));
                }
                if(retUL == RFAILED)
@@ -387,8 +396,7 @@ uint8_t fillSchUeCb(SchUeCb *ueCb, SchUeCfg *ueCfg)
                /*Updating the RRM policy*/
                if(ueCb->dlInfo.dlLcCtxt[ueLcIdx].snssai != NULLP)
                {
-                  retDL = updateDedLcInfo(ueCb->dlInfo.dlLcCtxt[ueLcIdx].snssai,  \
-                        ueCb->cellCb->cellCfg.rrmPolicy, &(ueCb->dlLcPrbEst), \
+                  retDL = updateDedLcInfo(ueCb->dlInfo.dlLcCtxt[ueLcIdx].snssai, &(ueCb->dlLcPrbEst), \
                         &(ueCb->dlInfo.dlLcCtxt[ueLcIdx].isDedicated));
                }
                if(retDL == RFAILED)
@@ -1158,15 +1166,14 @@ void deleteSchCellCb(SchCellCb *cellCb)
       SCH_FREE(cellCb->schUlSlotInfo,  cellCb->numSlots * sizeof(SchUlSlotInfo*));
    }
 
-   if(cellCb->cellCfg.snssai)
+   if(cellCb->cellCfg.plmnInfoList.snssai)
    {
-      for(sliceIdx=0; sliceIdx<cellCb->cellCfg.numSliceSupport; sliceIdx++)
+      for(sliceIdx=0; sliceIdx<cellCb->cellCfg.plmnInfoList.numSliceSupport; sliceIdx++)
       {
-         SCH_FREE(cellCb->cellCfg.snssai[sliceIdx], sizeof(Snssai));
+         SCH_FREE(cellCb->cellCfg.plmnInfoList.snssai[sliceIdx], sizeof(Snssai));
       }
-      SCH_FREE(cellCb->cellCfg.snssai, cellCb->cellCfg.numSliceSupport*sizeof(Snssai*));
+      SCH_FREE(cellCb->cellCfg.plmnInfoList.snssai, cellCb->cellCfg.plmnInfoList.numSliceSupport*sizeof(Snssai*));
    }
-   SCH_FREE(cellCb->cellCfg.rrmPolicy, sizeof(SchRrmPolicy));
 
    /* Remove all UE from ueToBeScheduled list and deallocate */
    node = cellCb->ueToBeScheduled.first;
