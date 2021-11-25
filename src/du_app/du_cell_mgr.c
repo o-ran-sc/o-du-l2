@@ -173,7 +173,17 @@ uint8_t duGetCellCb(uint16_t cellId, DuCellCb **cellCb)
  * ****************************************************************/
 uint8_t duHandleCellUpInd(Pst *pst, OduCellId *cellId)
 {
-   DuCellCb *cellCb = NULLP;
+   DuCellCb *cellCb = NULLP; 
+   RrmPolicy rrmPolicy[1];
+   rrmPolicy->rsrcType = RSRC_PRB; 
+   memset(&rrmPolicy->memberList.plmn, 0, sizeof(Plmn)); 
+   rrmPolicy->memberList.snssai.sst = 1;
+   rrmPolicy->memberList.snssai.sd[0] = 2;
+   rrmPolicy->memberList.snssai.sd[1] = 3;
+   rrmPolicy->memberList.snssai.sd[2] = 4;
+   rrmPolicy->policyMinRatio = 30;
+   rrmPolicy->policyMaxRatio = 20;
+   rrmPolicy->policyDedicatedRatio = 10;
 
    if(cellId->cellId <=0 || cellId->cellId > MAX_NUM_CELL)
    {
@@ -189,7 +199,7 @@ uint8_t duHandleCellUpInd(Pst *pst, OduCellId *cellId)
       DU_LOG("\nINFO   -->  DU APP : 5G-NR Cell %d is UP", cellId->cellId);
       cellCb->cellStatus = ACTIVATED;
       gCellStatus = CELL_UP;
-
+      BuildAndSendSliceConfigInfo(rrmPolicy, 1);
 #ifdef O1_ENABLE
       DU_LOG("\nINFO   -->  DU APP : Raise cell UP alarm for cell id=%d", cellId->cellId);
       raiseCellAlrm(CELL_UP_ALARM_ID, cellId->cellId);
