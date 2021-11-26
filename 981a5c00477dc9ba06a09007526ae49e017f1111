@@ -106,6 +106,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7bddd100_14856062",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1666,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-11-26T12:10:22Z",
+      "side": 1,
+      "message": "Actually memcmp \u003d\u003d 0 means they are equal else they are not.\n\nfollowing are the return values of memcmp :\nif Return value \u003c 0 then it indicates str1 is less than str2.\n\nif Return value \u003e 0 then it indicates str2 is less than str1.\n\nif Return value \u003d 0 then it indicates str1 is equal to str2",
+      "range": {
+        "startLine": 1666,
+        "startChar": 18,
+        "endLine": 1666,
+        "endChar": 24
+      },
+      "revId": "981a5c00477dc9ba06a09007526ae49e017f1111",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "250ae9d2_d2e4189b",
         "filename": "src/cm/du_app_mac_inf.h",
         "patchSetId": 2
