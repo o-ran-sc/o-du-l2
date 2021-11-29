@@ -24,6 +24,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "244228b6_83b12ae2",
+        "filename": "src/5gnrmac/mac_cfg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 371,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-11-29T19:58:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2115da1b_0a320739",
+      "range": {
+        "startLine": 371,
+        "startChar": 18,
+        "endLine": 371,
+        "endChar": 27
+      },
+      "revId": "981a5c00477dc9ba06a09007526ae49e017f1111",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "85c76d2e_072b9d43",
@@ -37,6 +61,30 @@
       "writtenOn": "2021-11-26T09:29:29Z",
       "side": 1,
       "message": "Free macCb.copyOfSliceCfgReq;",
+      "range": {
+        "startLine": 759,
+        "startChar": 3,
+        "endLine": 759,
+        "endChar": 4
+      },
+      "revId": "981a5c00477dc9ba06a09007526ae49e017f1111",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cb1c4929_1fdb9dea",
+        "filename": "src/5gnrmac/mac_cfg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 759,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-11-29T19:58:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "85c76d2e_072b9d43",
       "range": {
         "startLine": 759,
         "startChar": 3,
@@ -70,6 +118,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3753e441_e9403b02",
+        "filename": "src/5gnrmac/mac_cfg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 914,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-11-29T19:58:18Z",
+      "side": 1,
+      "message": "added in parent function",
+      "parentUuid": "465d0c92_1f585de9",
+      "range": {
+        "startLine": 914,
+        "startChar": 0,
+        "endLine": 914,
+        "endChar": 4
+      },
+      "revId": "981a5c00477dc9ba06a09007526ae49e017f1111",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "af2951ad_93261296",
@@ -83,6 +155,24 @@
       "writtenOn": "2021-11-26T09:29:29Z",
       "side": 1,
       "message": "Free SliceCfgReq",
+      "revId": "981a5c00477dc9ba06a09007526ae49e017f1111",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1b7aea28_fec6c338",
+        "filename": "src/5gnrmac/mac_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 911,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-11-29T19:58:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "af2951ad_93261296",
       "revId": "981a5c00477dc9ba06a09007526ae49e017f1111",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -104,6 +194,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4e9b566b_75272190",
+        "filename": "src/5gnrmac/mac_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 957,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-11-29T19:58:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1e2bf6ab_b3fe8051",
+      "revId": "981a5c00477dc9ba06a09007526ae49e017f1111",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7bddd100_14856062",
@@ -117,6 +225,54 @@
       "writtenOn": "2021-11-26T12:10:22Z",
       "side": 1,
       "message": "Actually memcmp \u003d\u003d 0 means they are equal else they are not.\n\nfollowing are the return values of memcmp :\nif Return value \u003c 0 then it indicates str1 is less than str2.\n\nif Return value \u003e 0 then it indicates str2 is less than str1.\n\nif Return value \u003d 0 then it indicates str1 is equal to str2",
+      "range": {
+        "startLine": 1666,
+        "startChar": 18,
+        "endLine": 1666,
+        "endChar": 24
+      },
+      "revId": "981a5c00477dc9ba06a09007526ae49e017f1111",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "321052d9_f1806ab5",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1666,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-11-29T19:58:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7bddd100_14856062",
+      "range": {
+        "startLine": 1666,
+        "startChar": 18,
+        "endLine": 1666,
+        "endChar": 24
+      },
+      "revId": "981a5c00477dc9ba06a09007526ae49e017f1111",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c02339a4_b99019f7",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1666,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-11-29T19:58:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7bddd100_14856062",
       "range": {
         "startLine": 1666,
         "startChar": 18,
@@ -150,6 +306,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7e1e5f23_a832410a",
+        "filename": "src/cm/du_app_mac_inf.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 676,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-11-29T19:58:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "250ae9d2_d2e4189b",
+      "range": {
+        "startLine": 676,
+        "startChar": 20,
+        "endLine": 676,
+        "endChar": 30
+      },
+      "revId": "981a5c00477dc9ba06a09007526ae49e017f1111",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "09952793_bdf2b9cf",
@@ -173,6 +353,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6583d38e_04fae9d2",
+        "filename": "src/cm/du_app_mac_inf.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 1314,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-11-29T19:58:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "09952793_bdf2b9cf",
+      "range": {
+        "startLine": 1314,
+        "startChar": 3,
+        "endLine": 1314,
+        "endChar": 11
+      },
+      "revId": "981a5c00477dc9ba06a09007526ae49e017f1111",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b960a171_31a5abc1",
@@ -186,6 +390,30 @@
       "writtenOn": "2021-11-26T09:29:29Z",
       "side": 1,
       "message": "transfer this to ReadCfg and save it in DuCfgParam-\u003etmpSliceCfg",
+      "range": {
+        "startLine": 182,
+        "startChar": 14,
+        "endLine": 182,
+        "endChar": 24
+      },
+      "revId": "981a5c00477dc9ba06a09007526ae49e017f1111",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9acb40b5_b166ae50",
+        "filename": "src/du_app/du_cell_mgr.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 182,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-11-29T19:58:18Z",
+      "side": 1,
+      "message": "Sure.",
+      "parentUuid": "b960a171_31a5abc1",
       "range": {
         "startLine": 182,
         "startChar": 14,
@@ -242,6 +470,54 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "49a1237c_58ce55d3",
+        "filename": "src/du_app/du_cell_mgr.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 202,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-11-29T19:58:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f428cbdf_bb1eb945",
+      "range": {
+        "startLine": 202,
+        "startChar": 6,
+        "endLine": 202,
+        "endChar": 33
+      },
+      "revId": "981a5c00477dc9ba06a09007526ae49e017f1111",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ae1c4f85_7c9e4aad",
+        "filename": "src/du_app/du_cell_mgr.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 202,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-11-29T19:58:18Z",
+      "side": 1,
+      "message": "Okay.",
+      "parentUuid": "cefce2d5_3997771f",
+      "range": {
+        "startLine": 202,
+        "startChar": 34,
+        "endLine": 202,
+        "endChar": 43
+      },
+      "revId": "981a5c00477dc9ba06a09007526ae49e017f1111",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "11bc5eb1_fcda8afe",
@@ -267,6 +543,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "759c2415_28d73c7f",
+        "filename": "src/du_app/du_cfg.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 346,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-11-29T19:58:18Z",
+      "side": 1,
+      "message": "we have to save info in the macCellCfg structure. macCellCfg info we will pass on to mac and sch during cell cfg.\nsrvdCellLst is used for f1 setup and gnb-du f1ap msg which gets called before cell cfg.",
+      "parentUuid": "11bc5eb1_fcda8afe",
+      "range": {
+        "startLine": 346,
+        "startChar": 31,
+        "endLine": 346,
+        "endChar": 43
+      },
+      "revId": "981a5c00477dc9ba06a09007526ae49e017f1111",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8837387e_333fbe16",
         "filename": "src/du_app/du_cfg.c",
         "patchSetId": 2
@@ -278,6 +578,30 @@
       "writtenOn": "2021-11-26T09:29:29Z",
       "side": 1,
       "message": "remove rrm policy",
+      "range": {
+        "startLine": 376,
+        "startChar": 22,
+        "endLine": 376,
+        "endChar": 32
+      },
+      "revId": "981a5c00477dc9ba06a09007526ae49e017f1111",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "be7f5bfc_7962448d",
+        "filename": "src/du_app/du_cfg.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 376,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-11-29T19:58:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8837387e_333fbe16",
       "range": {
         "startLine": 376,
         "startChar": 22,
@@ -313,6 +637,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7959030c_626057a0",
+        "filename": "src/du_app/du_cfg.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 761,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-11-29T19:58:18Z",
+      "side": 1,
+      "message": "these configurations we need store other that maccellCfg \nbecz these we will send in f1setup req and gnb-du cfg update mss and these two calls before cell cfg.\nIf required once cell cfg is complete we can remove these.",
+      "parentUuid": "ba84dce9_5750a5a7",
+      "range": {
+        "startLine": 761,
+        "startChar": 47,
+        "endLine": 761,
+        "endChar": 69
+      },
+      "revId": "981a5c00477dc9ba06a09007526ae49e017f1111",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "162029bc_8845a4b9",
         "filename": "src/du_app/du_cfg.h",
         "patchSetId": 2
@@ -324,6 +672,30 @@
       "writtenOn": "2021-11-26T09:29:29Z",
       "side": 1,
       "message": "Change the name to temp",
+      "range": {
+        "startLine": 1242,
+        "startChar": 24,
+        "endLine": 1242,
+        "endChar": 27
+      },
+      "revId": "981a5c00477dc9ba06a09007526ae49e017f1111",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0264428c_98e45865",
+        "filename": "src/du_app/du_cfg.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 1242,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-11-29T19:58:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "162029bc_8845a4b9",
       "range": {
         "startLine": 1242,
         "startChar": 24,
@@ -357,6 +729,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "52b8c1c7_9b2cbcf8",
+        "filename": "src/du_app/du_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1867,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-11-29T19:58:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bcfde8ee_d65c42d6",
+      "range": {
+        "startLine": 1867,
+        "startChar": 19,
+        "endLine": 1867,
+        "endChar": 39
+      },
+      "revId": "981a5c00477dc9ba06a09007526ae49e017f1111",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5fc6f6bb_3b83813f",
@@ -370,6 +766,30 @@
       "writtenOn": "2021-11-26T09:29:29Z",
       "side": 1,
       "message": "remove it from here. because it will be done during readCfg/when we receive from O1",
+      "range": {
+        "startLine": 1869,
+        "startChar": 2,
+        "endLine": 1870,
+        "endChar": 51
+      },
+      "revId": "981a5c00477dc9ba06a09007526ae49e017f1111",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "78849c2a_cd353330",
+        "filename": "src/du_app/du_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1870,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-11-29T19:58:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5fc6f6bb_3b83813f",
       "range": {
         "startLine": 1869,
         "startChar": 2,
@@ -403,6 +823,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b7c0081c_824cd15b",
+        "filename": "src/du_app/du_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1964,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-11-29T19:58:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0e124bf4_c940665e",
+      "range": {
+        "startLine": 1964,
+        "startChar": 95,
+        "endLine": 1964,
+        "endChar": 104
+      },
+      "revId": "981a5c00477dc9ba06a09007526ae49e017f1111",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f1232d7a_82fcc289",
@@ -416,6 +860,30 @@
       "writtenOn": "2021-11-26T09:29:29Z",
       "side": 1,
       "message": "Change it to RE_CFG",
+      "range": {
+        "startLine": 2048,
+        "startChar": 39,
+        "endLine": 2048,
+        "endChar": 52
+      },
+      "revId": "981a5c00477dc9ba06a09007526ae49e017f1111",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "84c2a029_00ba411c",
+        "filename": "src/du_app/du_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2048,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-11-29T19:58:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f1232d7a_82fcc289",
       "range": {
         "startLine": 2048,
         "startChar": 39,
@@ -449,6 +917,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "83dc3aa7_4e890386",
+        "filename": "src/du_app/du_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2095,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-11-29T19:58:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e684462b_0b430018",
+      "range": {
+        "startLine": 2095,
+        "startChar": 0,
+        "endLine": 2095,
+        "endChar": 10
+      },
+      "revId": "981a5c00477dc9ba06a09007526ae49e017f1111",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ed791ac5_c56611f1",
@@ -462,6 +954,24 @@
       "writtenOn": "2021-11-26T09:29:29Z",
       "side": 1,
       "message": "Also add dealloc part of DuCfgParam-\u003ecopySliceCfg",
+      "revId": "981a5c00477dc9ba06a09007526ae49e017f1111",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "451493f0_32cbb404",
+        "filename": "src/du_app/du_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2097,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-11-29T19:58:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ed791ac5_c56611f1",
       "revId": "981a5c00477dc9ba06a09007526ae49e017f1111",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
