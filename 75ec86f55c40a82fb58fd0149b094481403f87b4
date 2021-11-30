@@ -37,6 +37,75 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "53727e33_dd55e00d",
+        "filename": "src/o1/CmInterface.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-11-30T12:29:02Z",
+      "side": 1,
+      "message": "Some of these macros are already defined in du .h files, can\u0027t we reuse them.",
+      "range": {
+        "startLine": 42,
+        "startChar": 8,
+        "endLine": 42,
+        "endChar": 15
+      },
+      "revId": "75ec86f55c40a82fb58fd0149b094481403f87b4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "21a2564e_40ed8605",
+        "filename": "src/o1/CmInterface.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-11-30T12:29:02Z",
+      "side": 1,
+      "message": "I think it should be 3.",
+      "range": {
+        "startLine": 43,
+        "startChar": 15,
+        "endLine": 43,
+        "endChar": 16
+      },
+      "revId": "75ec86f55c40a82fb58fd0149b094481403f87b4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "584e2877_46c461de",
+        "filename": "src/o1/CmInterface.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-11-30T12:29:02Z",
+      "side": 1,
+      "message": "are we processing for 2 PLMN info?\nAs per my knowledge duApp supporting only one PLMN info now.",
+      "range": {
+        "startLine": 46,
+        "startChar": 8,
+        "endLine": 46,
+        "endChar": 16
+      },
+      "revId": "75ec86f55c40a82fb58fd0149b094481403f87b4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7c2599da_490997bb",
         "filename": "src/o1/CmInterface.h",
         "patchSetId": 4
@@ -53,6 +122,98 @@
         "startChar": 3,
         "endLine": 69,
         "endChar": 7
+      },
+      "revId": "75ec86f55c40a82fb58fd0149b094481403f87b4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "57e72164_233a417c",
+        "filename": "src/o1/CmInterface.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-11-30T12:29:02Z",
+      "side": 1,
+      "message": "typedef struct rrmPolicy\n{ \n   ResourceType     rsrcType;\n   uint8_t          numMemberList;\n   PolicyMemberList **memberList;\n   uint8_t          policyMaxRatio;\n   uint8_t          policyMinRatio;\n   uint8_t          policyDedicatedRatio;\n}RrmPolicy;\n\nTo avoid hardcoding we have used structure in this manner.",
+      "range": {
+        "startLine": 86,
+        "startChar": 43,
+        "endLine": 86,
+        "endChar": 58
+      },
+      "revId": "75ec86f55c40a82fb58fd0149b094481403f87b4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "284708bc_2a364116",
+        "filename": "src/o1/CmInterface.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-11-30T12:29:02Z",
+      "side": 1,
+      "message": "in cm/common_def.h -\u003e we already have structure for plmn and snssai.\ncan we use those structures?",
+      "range": {
+        "startLine": 116,
+        "startChar": 11,
+        "endLine": 116,
+        "endChar": 14
+      },
+      "revId": "75ec86f55c40a82fb58fd0149b094481403f87b4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7e88a046_39bc656d",
+        "filename": "src/o1/CmInterface.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-11-30T12:29:02Z",
+      "side": 1,
+      "message": "same as above. \nAs per 38.473 SNSSAI ::\u003d SEQUENCE {\n  sST OCTET STRING (SIZE(1)),\n  sD OCTET STRING (SIZE(3)) OPTIONAL ,\n}",
+      "range": {
+        "startLine": 118,
+        "startChar": 3,
+        "endLine": 118,
+        "endChar": 7
+      },
+      "revId": "75ec86f55c40a82fb58fd0149b094481403f87b4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1a083fb8_5a8704e6",
+        "filename": "src/o1/CmInterface.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-11-30T12:29:02Z",
+      "side": 1,
+      "message": "If we can add the member list to the RrmPolicyList structure then there is no need to pass the third parameter as an argument.",
+      "range": {
+        "startLine": 164,
+        "startChar": 15,
+        "endLine": 164,
+        "endChar": 25
       },
       "revId": "75ec86f55c40a82fb58fd0149b094481403f87b4",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
