@@ -41,6 +41,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "41af700a_93389e9f",
+        "filename": "src/du_app/du_mgr_main.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1000484
+      },
+      "writtenOn": "2021-11-30T09:10:12Z",
+      "side": 1,
+      "message": "Done.",
+      "parentUuid": "931ed09c_5c51b0ca",
+      "range": {
+        "startLine": 56,
+        "startChar": 9,
+        "endLine": 56,
+        "endChar": 22
+      },
+      "revId": "34366c0f4a8a85ddd92837221f1f95bfef77172f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f6ea2aa6_1349d131",
@@ -54,6 +78,30 @@
       "writtenOn": "2021-11-25T13:09:42Z",
       "side": 1,
       "message": "Can we move this to CMInterface.cpp?\nDoes this needs to be a pointer to the global variable?",
+      "range": {
+        "startLine": 182,
+        "startChar": 21,
+        "endLine": 182,
+        "endChar": 29
+      },
+      "revId": "34366c0f4a8a85ddd92837221f1f95bfef77172f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3aa092a6_c4c42ecc",
+        "filename": "src/du_app/du_mgr_main.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 182,
+      "author": {
+        "id": 1000484
+      },
+      "writtenOn": "2021-11-30T09:10:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f6ea2aa6_1349d131",
       "range": {
         "startLine": 182,
         "startChar": 21,
