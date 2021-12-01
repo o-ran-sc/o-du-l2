@@ -37,6 +37,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "cfdc3683_16f65df3",
+        "filename": "src/o1/PmInterface.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1000482
+      },
+      "writtenOn": "2021-12-01T16:13:52Z",
+      "side": 1,
+      "message": "\"measurementFields\": {\n         \"measurementFieldsVersion\": \"4.0\",\n         \"networkSliceArray\": [\n            {\n               \"DRB.UEThDl.SNSSAI\": 300,\n               \"DRB.UEThUl.SNSSAI\": 400,\n               \"networkSliceIdentifier\": \"SD0001\"\n            },\n            {\n               \"DRB.UEThDl.SNSSAI\": 150,\n               \"DRB.UEThUl.SNSSAI\": 250,\n               \"networkSliceIdentifier\": \"SD0002\"\n            },\n            {\n               \"DRB.UEThDl.SNSSAI\": 350,\n               \"DRB.UEThUl.SNSSAI\": 450,\n               \"networkSliceIdentifier\": \"SD0003\"\n            }\n         ],\n         \"measurementInterval\": 60\n      }\n\nThese structures are used to represent the VES counters as per the above format shared by Santanu. DU will fill these structures with PM counters.",
+      "parentUuid": "9c83953c_c7858a8d",
+      "revId": "e9a149218aa93ba5553d3c401487614c72768e7d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d5706743_95f45510",
         "filename": "src/o1/SliceMetrics.cpp",
         "patchSetId": 2
