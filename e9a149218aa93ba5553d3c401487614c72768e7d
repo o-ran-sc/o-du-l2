@@ -20,6 +20,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9c83953c_c7858a8d",
+        "filename": "src/o1/PmInterface.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1000382
+      },
+      "writtenOn": "2021-12-01T15:59:24Z",
+      "side": 1,
+      "message": "I am not clear on the entire purpose of this structure, and specially the definition of networkSliceIdentifier. How is this different from S-NSSAI?",
+      "revId": "e9a149218aa93ba5553d3c401487614c72768e7d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d5706743_95f45510",
         "filename": "src/o1/SliceMetrics.cpp",
         "patchSetId": 2
