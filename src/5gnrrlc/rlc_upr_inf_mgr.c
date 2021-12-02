@@ -832,28 +832,59 @@ KwuDiscSduInfo   *discSdu
  *    -# Snssai Node
  *   
  */
-RlcTptPerSnssai* rlcHandleSnssaiTputlist(RlcCb *gCb, Snssai *snssai, RlcSnssaiActionType action)
+RlcTptPerSnssai* rlcHandleSnssaiTputlist(RlcCb *gCb, Snssai *snssai, RlcSnssaiActionType action, Direction dir)
 {
    CmLListCp *snssaiList = NULLP;
    CmLList  *node = NULLP;
    RlcTptPerSnssai *snssaiNode = NULLP;
    bool found = FALSE;
 
-   snssaiList = gCb->rlcThpt.snssaiTputInfo.tputPerSnssaiList;
-   if(snssaiList == NULLP)
+   if(dir == DIR_DL)
    {
+      snssaiList = gCb->rlcThpt.snssaiTputInfo.dlTputPerSnssaiList;
       if(action == CREATE)
       {
-         RLC_ALLOC(gCb, gCb->rlcThpt.snssaiTputInfo.tputPerSnssaiList, sizeof(CmLListCp));
-         snssaiList =  gCb->rlcThpt.snssaiTputInfo.tputPerSnssaiList;
-         cmLListInit(snssaiList);
-         DU_LOG("\nINFO  --> RLC: First SNSSAI to add in this List");
+         if(snssaiList == NULLP)
+         {
+            RLC_ALLOC(gCb, gCb->rlcThpt.snssaiTputInfo.dlTputPerSnssaiList, sizeof(CmLListCp));
+            snssaiList = gCb->rlcThpt.snssaiTputInfo.dlTputPerSnssaiList;
+            cmLListInit(snssaiList);
+         }
       }
       else
       {
-         DU_LOG("\nERROR --> RLC: SNSSAI list doesnt exist!");
-         return NULLP;
+         if(snssaiList == NULLP)
+         {
+            DU_LOG("\nERROR --> RLC: SNSSAI DL list doesnt exist!");
+            return NULLP;
+         }
       }
+   }
+   else if(dir == DIR_UL)
+   {
+      snssaiList = gCb->rlcThpt.snssaiTputInfo.ulTputPerSnssaiList;
+      if(action == CREATE)
+      {
+         if(snssaiList == NULLP)
+         {
+            RLC_ALLOC(gCb, gCb->rlcThpt.snssaiTputInfo.ulTputPerSnssaiList, sizeof(CmLListCp));
+            snssaiList = gCb->rlcThpt.snssaiTputInfo.ulTputPerSnssaiList;
+            cmLListInit(snssaiList);
+         }
+      }
+      else
+      {
+         if(snssaiList == NULLP)
+         {
+            DU_LOG("\nERROR --> RLC: SNSSAI UL list doesnt exist!");
+            return NULLP;
+         }
+      }
+   }
+   else
+   {
+      DU_LOG("\nERROR  -->  RLC : Direction:%d is invalid", dir);
+      return NULLP;
    }
 
    node = snssaiList->first;
@@ -958,20 +989,31 @@ RlcTptPerSnssai* rlcHandleSnssaiTputlist(RlcCb *gCb, Snssai *snssai, RlcSnssaiAc
  *
  * @param[in] gCb            RlcCb 
  *
- * @return void 
+ * @return uint_8 (ROK/RFAILED)
  *   
  */
-void rlcDelTputSnssaiList(RlcCb *gCb)
+uint8_t rlcDelTputSnssaiList(RlcCb *gCb, Direction dir)
 {
    CmLListCp *snssaiList = NULLP;
    CmLList  *node = NULLP, *next = NULLP;
    RlcTptPerSnssai *snssaiNode = NULLP;
-
-   snssaiList = gCb->rlcThpt.snssaiTputInfo.tputPerSnssaiList;
+   if(dir == DIR_DL)
+   {
+      snssaiList = gCb->rlcThpt.snssaiTputInfo.dlTputPerSnssaiList;
+   }
+   else if(dir == DIR_UL)
+   {
+      snssaiList = gCb->rlcThpt.snssaiTputInfo.ulTputPerSnssaiList;
+   }
+   else
+   {
+      DU_LOG("\nERROR  -->  RLC: Invalid direction:%d",dir);
+      return RFAILED;
+   }
    if(snssaiList == NULLP)
    {
-      DU_LOG("\nERROR --> RLC: SnssaiList not exist");
-      return;
+      DU_LOG("\nERROR -->  RLC: SnssaiList not exist");
+      return RFAILED;
    }
    node = snssaiList->first;
 
@@ -988,8 +1030,9 @@ void rlcDelTputSnssaiList(RlcCb *gCb)
    if(snssaiList->count == 0)
    {
       RLC_FREE(gCb, snssaiList, sizeof(CmLListCp));
-      DU_LOG("\nINFO   --> RLC : This SNSSAI was last in the list thus freeing the list also");
+      DU_LOG("\nDEBUG   -->  RLC : This SNSSAI was last in the list thus freeing the list also");
    }
+   return ROK;
 }
 
 /**
@@ -1005,30 +1048,79 @@ void rlcDelTputSnssaiList(RlcCb *gCb)
  * @return void 
  *   
  */
-void rlcCalculateTputPerSnssai(CmLListCp *snssaiList)
+uint8_t rlcCalculateTputPerSnssai(CmLListCp *snssaiList, Direction dir)
 {
    CmLList  *node = NULLP;
    RlcTptPerSnssai *snssaiNode = NULLP;
-   double long tpt = 0;
+   uint8_t snssaiCnt = 0;
 
    node = snssaiList->first;
    if(node == NULLP)
    {
       DU_LOG("\n No SNSSAI in list");
-      return;
+      return(snssaiCnt);
    }
    /*Traversing the LC LinkList*/
    while(node)
    {
       snssaiNode = (RlcTptPerSnssai *)node->node;
-      tpt =  (double)(snssaiNode->dataVol * 8)/(double)ODU_SNSSAI_THROUGHPUT_PRINT_TIME_INTERVAL;
-      DU_LOG("\nSNSSAI(sst:%d,sd [%d,%d, %d]), DL Tpt : %.2Lf", snssaiNode->snssai->sst, snssaiNode->snssai->sd[0], \
-            snssaiNode->snssai->sd[1],snssaiNode->snssai->sd[2] , tpt);
+      snssaiNode->tpt =  (double)(snssaiNode->dataVol * 8)/(double)(ODU_SNSSAI_THROUGHPUT_PRINT_TIME_INTERVAL * 0.001);
+     
+      if(dir == DIR_DL)
+      {
+         DU_LOG("\nDEBUG  -->  RLC_DL: SNSSAI(sst:%d,sd [%d,%d, %d]), DL Tpt : %.5lf", snssaiNode->snssai->sst,\
+               snssaiNode->snssai->sd[0], snssaiNode->snssai->sd[1],snssaiNode->snssai->sd[2] , snssaiNode->tpt);
+      }
+      if(dir == DIR_UL)
+      {
+         DU_LOG("\nDEBUG  -->  RLC_UL: SNSSAI(sst:%d,sd [%d,%d, %d]), UL Tpt : %.5lf", snssaiNode->snssai->sst,\
+               snssaiNode->snssai->sd[0], snssaiNode->snssai->sd[1],snssaiNode->snssai->sd[2] , snssaiNode->tpt);
+      }
+
       snssaiNode->dataVol = 0;
       node = node->next;
+      snssaiCnt++;
    }
-   return;
+   return(snssaiCnt);
 }
+
+/**
+ * @brief 
+ *    Handler for searching the Slice Entry in Slice Metrics structure
+ *
+ * @details
+ *    This func finds the slice entry in the SliceMetric record structure and
+ *    return the index of the slice sot hat Tput entries can be done
+ *
+ * @param[in] snssaiVal : Snssai Val to be searched
+ *            *snssaiIdx : O/P : Index of the Slice in Slice Metrics record
+ *            sliceStats : Pointer of Slice metrics record list
+ *
+ * @return bool: True: If slice found in the record
+ *               False: If Slice not found; thus parent function will create the
+ *               recpord of this snssai
+ *   
+ */
+bool rlcFindSliceEntry(uint32_t snssaiVal, uint8_t *snssaiIdx, SlicePmList *sliceStats)
+{
+   uint8_t cntSlices = sliceStats->numSlice;
+
+   for(*snssaiIdx = 0;(*snssaiIdx) < cntSlices; (*snssaiIdx)++)
+   {
+      if((sliceStats->sliceRecord[*snssaiIdx] != NULLP) && 
+            (snssaiVal == sliceStats->sliceRecord[*snssaiIdx]->networkSliceIdentifier))
+      {
+         return TRUE;
+      }
+      else if(sliceStats->sliceRecord[*snssaiIdx] == NULLP)
+      {
+         return FALSE;
+      }
+   }
+   DU_LOG("\nERROR  -->  RLC: Total no of Slice exhausted!");
+   return FALSE;
+}
+
 /********************************************************************30**
          End of file
 **********************************************************************/

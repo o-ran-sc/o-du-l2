@@ -85,6 +85,8 @@
 /* private function declarations */
 static Void rlcBndTmrExpiry(PTR cb);
 
+uint8_t snssaiTputBitmap = DIR_NONE; /*Bit map to keep record of reception of DL and UL Snssai Tput expiry*/
+
 /**
  * @brief Handler to start timer
  *       
@@ -585,9 +587,10 @@ void rlcUeThptTmrExpiry(PTR cb)
  */
 void rlcSnssaiThptTmrExpiry(PTR cb)
 {
-   long double tpt;
    RlcThpt *rlcThptCb = (RlcThpt*)cb; 
    
+   static uint8_t snssaiCntDl = 0, snssaiCntUl = 0;
+
    /* If cell is not up, throughput details cannot be printed */
    if(gCellStatus != CELL_UP)
    {
@@ -595,14 +598,24 @@ void rlcSnssaiThptTmrExpiry(PTR cb)
       rlcStartTmr(RLC_GET_RLCCB(rlcThptCb->inst), (PTR)(rlcThptCb), EVENT_RLC_SNSSAI_THROUGHPUT_TMR);
       return;
    }
-
-   DU_LOG("\n==================================================================");
-   if(rlcThptCb->snssaiTputInfo.tputPerSnssaiList != NULLP)
+   
+   if(rlcThptCb->snssaiTputInfo.dlTputPerSnssaiList != NULLP)
    {
-      DU_LOG("\n===================== DL Throughput Per SNSSAI ==============================");
-  
-      rlcCalculateTputPerSnssai(rlcThptCb->snssaiTputInfo.tputPerSnssaiList);
-      DU_LOG("\n==================================================================");
+      snssaiCntDl = rlcCalculateTputPerSnssai(rlcThptCb->snssaiTputInfo.dlTputPerSnssaiList, DIR_DL);
+      snssaiTputBitmap |= DIR_DL;
+      arrTputPerSnssai[DIR_DL] = rlcThptCb->snssaiTputInfo.dlTputPerSnssaiList;
+   }
+   if(rlcThptCb->snssaiTputInfo.ulTputPerSnssaiList != NULLP)
+   {
+      snssaiCntUl = rlcCalculateTputPerSnssai(rlcThptCb->snssaiTputInfo.ulTputPerSnssaiList, DIR_UL);
+      snssaiTputBitmap |= DIR_UL;
+      arrTputPerSnssai[DIR_UL] = rlcThptCb->snssaiTputInfo.ulTputPerSnssaiList;
+   }
+   if(snssaiTputBitmap == DIR_BOTH)
+   {
+      //call the function
+      BuildSliceReportToDu(MAX(snssaiCntUl, snssaiCntDl));
+      snssaiTputBitmap = DIR_NONE;
    }
    /* Restart timer */
    rlcStartTmr(RLC_GET_RLCCB(rlcThptCb->inst), (PTR)rlcThptCb, EVENT_RLC_SNSSAI_THROUGHPUT_TMR);

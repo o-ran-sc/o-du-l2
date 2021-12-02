@@ -151,7 +151,7 @@ void schPrachResAlloc(SchCellCb *cell, UlSchedInfo *ulSchedInfo, SlotTimingInfo 
    if(cell == NULLP)
    {
       DU_LOG("\nERROR  --> SCH : schPrachResAlloc(): Received cellCb is null");
-      return RFAILED;
+      return;
    }
 
    /* If this slot is not a PRACH occassion, return */
