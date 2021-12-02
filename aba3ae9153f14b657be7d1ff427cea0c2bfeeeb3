@@ -33,6 +33,24 @@
       "message": "Thanks for addressing my comments. I will Santanu provide comments on the VES event generation part of the code.",
       "revId": "aba3ae9153f14b657be7d1ff427cea0c2bfeeeb3",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b756344a_0ac855b1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000482
+      },
+      "writtenOn": "2021-12-02T04:31:35Z",
+      "side": 1,
+      "message": "Thanks Mahesh. Following was the format shared by Santanu which we are referring. If required we can adjust these\n\n{\n    \"event\": {\n        \"commonEventHeader\": {\n            \"domain\": \"measurement\",\n            \"eventId\": \"_1634181300_PM15min\",\n            \"eventName\": \"measurement_O_RAN_COMPONENT_PM15min\",\n            \"eventType\": \"O_RAN_COMPONENT_PM15min\",\n            \"internalHeaderFields\": {\n                \"intervalEndTime\": \"Thu, 14 Oct 2021 03:15:00 +0000\",\n                \"intervalStartTime\": \"Thu, 14 Oct 2021 03:00:00 +0000\"\n            },\n            \"lastEpochMicrosec\": 1634181300000000,\n            \"priority\": \"Low\",\n            \"reportingEntityId\": \"\",\n            \"reportingEntityName\": \"ORAN-DEV\",\n            \"sequence\": 0,\n            \"sourceId\": \"\",\n            \"sourceName\": \"\",\n            \"startEpochMicrosec\": 1634180400000000,\n            \"version\": \"4.1\",\n            \"vesEventListenerVersion\": \"7.2.1\"\n        },\n        \"measurementFields\": {\n            \"measurementFieldsVersion\": \"4.0\",\n            \"measurementInterval\": 60,\n             \"networkSliceArray\": [\n                {\n                    \"DRB.UEThpDl.SNSSAI\": 300,\n                    \"DRB.UEThpUl.SNSSAI\": 400,\n                    \"networkSliceIdentifier\": \"SD0001\"\n                },\n                {\n                    \"DRB.UEThpDl.SNSSAI\": 150,\n                    \"DRB.UEThpUl.SNSSAI\": 250,\n                    \"networkSliceIdentifier\": \"SD0002\"\n                },\n                \n            ],\n            \n        }\n    }\n}",
+      "parentUuid": "bbc57c05_db9dc5f0",
+      "revId": "aba3ae9153f14b657be7d1ff427cea0c2bfeeeb3",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
   ]
 }
