@@ -912,6 +912,127 @@ uint8_t RlcProcUeDeleteReq(Pst *pst, RlcUeDelete *ueDelete)
    return ret;
 }
 
+/*******************************************************************
+*
+* @brief Send the Slice Metrics to  DU APP
+*
+* @details
+*
+*    Function : sendSlicePmToDu
+*
+*    Functionality:
+*      Handles the sending of Slice Metrics to  DU APP
+*
+* @params[in] Post structure pointer
+*             SlicePmList *sliceStats pointer
+*
+* @return ROK     - success
+*         RFAILED - failure
+*
+* ****************************************************************/
+uint8_t sendSlicePmToDu(SlicePmList *sliceStats)
+{
+   Pst pst;  
+   
+   FILL_PST_RLC_TO_DUAPP(pst, RLC_UL_INST, EVENT_RLC_SLICE_PM_TO_DU);
+
+   if(!sliceStats)
+   {
+      DU_LOG("\nERROR  -->  RLC: sendSlicePmToDu(): Memory allocation failed ");
+      return RFAILED;
+   }
+   else
+   {
+      if(rlcSendSlicePmToDu(&pst, sliceStats) == ROK)
+      {
+         DU_LOG("\nDEBUG  -->  RLC: Slice PM send successfully");
+      }
+      else
+      {
+         DU_LOG("\nERROR  -->  RLC: sendSlicePmToDu():Failed to send Slice PM to DU");
+         RLC_FREE_SHRABL_BUF(pst.region, pst.pool, sliceStats, sizeof(SlicePmList));
+         return RFAILED;
+      }
+   }
+   return ROK;
+}
+
+
+/*******************************************************************
+*
+* @brief Builds the Slice Performance Metrics structure to be sent to DU
+*
+* @details
+*
+*    Function : BuildSliceReportToDu
+*
+*    Functionality:
+*      Builds the Slice Performance Metrics structure to be sent to DU
+*
+* @params[in] uint8_t snssaiCnt
+*             
+* @return ROK     - success
+*         RFAILED - failure
+*
+* ****************************************************************/
+uint8_t BuildSliceReportToDu(uint8_t snssaiCnt)
+{
+   CmLList  *node = NULLP;
+   RlcTptPerSnssai *snssaiNode = NULLP;
+   Direction dir = DIR_UL;
+   SlicePmList *sliceStats = NULLP;   /*Slice metric */
+   uint32_t snssaiVal = 0;
+   uint8_t snssaiIdx = 0;
+
+   if(snssaiCnt == 0)
+   {
+      DU_LOG("\nERROR  -->  RLC: No SNSSAI to send the SLice PM");
+      return RFAILED;
+   }
+
+   RLC_ALLOC_SHRABL_BUF(RLC_MEM_REGION_UL, RLC_POOL, sliceStats, sizeof(SlicePm));
+   RLC_ALLOC_SHRABL_BUF(RLC_MEM_REGION_UL, RLC_POOL, sliceStats->sliceRecord, snssaiCnt * (sizeof(SlicePm *)));
+
+   while(dir < DIR_BOTH)
+   {
+      node = arrTputPerSnssai[dir]->first;
+      if(node == NULLP)
+      {
+         DU_LOG("\nERROR  -->  RLC: No SNSSAI in list");
+         RLC_SHRABL_STATIC_BUF_FREE(RLC_MEM_REGION_UL, RLC_POOL, sliceStats, sizeof(SlicePmList));
+         return RFAILED;
+      }
+
+      while(node)
+      {
+         snssaiVal = 0;
+         snssaiIdx = 0;
+         snssaiNode = (RlcTptPerSnssai *)node->node;
+
+         memcpy(&snssaiVal, snssaiNode->snssai, sizeof(Snssai));
+
+         if(rlcFindSliceEntry(snssaiVal, &snssaiIdx, sliceStats) == FALSE)
+         {
+            RLC_ALLOC_SHRABL_BUF(RLC_MEM_REGION_UL, RLC_POOL, sliceStats->sliceRecord[snssaiIdx], sizeof(SlicePm));
+            sliceStats->sliceRecord[snssaiIdx]->networkSliceIdentifier = snssaiVal;
+            sliceStats->numSlice++;
+         }
+         if(dir == DIR_UL)
+         {
+            sliceStats->sliceRecord[snssaiIdx]->ThpUl = snssaiNode->tpt;
+         }
+         else
+         {
+            sliceStats->sliceRecord[snssaiIdx]->ThpDl = snssaiNode->tpt;
+         }
+         node = node->next;
+      }
+      dir++;
+   }
+
+   sendSlicePmToDu(sliceStats);
+   return ROK;
+}
 /**********************************************************************
          End of file
 **********************************************************************/

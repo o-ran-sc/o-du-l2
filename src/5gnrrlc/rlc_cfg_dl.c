@@ -412,7 +412,7 @@ static S16 rlcCfgFillDlRbCb(RlcCb *gCb,RlcDlRbCb *rbCb,RlcDlUeCb *ueCb,RlcEntCfg
       memcpy(rbCb->snssai, entCfg->snssai, sizeof(Snssai));
 
       /*Create the entry of this SNSSAI if not exist in Snssai Tput list*/
-      if(rlcHandleSnssaiTputlist(gCb, rbCb->snssai, CREATE) == NULLP)
+      if(rlcHandleSnssaiTputlist(gCb, rbCb->snssai, CREATE, DIR_DL) == NULLP)
       {
          DU_LOG("\nERROR  --> RLC_DL : rlcCfgFillDlRbCb(): SNSSAI insertion in Tput list failed");
       }

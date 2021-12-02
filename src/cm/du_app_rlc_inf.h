@@ -33,6 +33,7 @@
 #define EVENT_UL_USER_DATA_TRANS_TO_DU 219
 #define EVENT_RLC_UE_DELETE_REQ 220
 #define EVENT_RLC_UE_DELETE_RSP 221
+#define EVENT_RLC_SLICE_PM_TO_DU 222
 
 #define RB_ID_SRB 0
 #define RB_ID_DRB 1
@@ -273,6 +274,20 @@ typedef struct rrcDeliveryStatus
    uint16_t  triggeringMessage;
 }RrcDeliveryStatus;
 
+/*Pm Metric for NW Slicing from RLC to DUAPP*/
+typedef struct slicePm
+{
+  uint32_t networkSliceIdentifier;
+  double ThpDl;
+  double ThpUl;
+}SlicePm;
+
+typedef struct slicePmList
+{
+   uint8_t numSlice;
+   SlicePm **sliceRecord;
+}SlicePmList;
+
 typedef struct rrcDeliveryReportInfo
 {
    uint16_t  cellId;
@@ -347,6 +362,11 @@ typedef uint8_t (*DuRlcDlUserDataToRlcFunc) ARGS((
    Pst           *pst,
    RlcDlUserDataInfo *dlDataMsg));
 
+/* Slice Metrics from RLC to DU APP */
+typedef uint8_t (*RlcSlicePmToDuFunc) ARGS((
+   Pst           *pst,
+   SlicePmList *sliceStats));
+
 /* Pack/Unpack function declarations */
 uint8_t packDuRlcUeCreateReq(Pst *pst, RlcUeCfg *ueCfg);
 uint8_t unpackRlcUeCreateReq(DuRlcUeCreateReq func, Pst *pst, Buffer *mBuf);
@@ -370,6 +390,8 @@ uint8_t packDuRlcUeDeleteReq(Pst *pst, RlcUeDelete *ueDelete);
 uint8_t unpackRlcUeDeleteReq(DuRlcUeDeleteReq func, Pst *pst, Buffer *mBuf);
 uint8_t packRlcDuUeDeleteRsp(Pst *pst, RlcUeDeleteRsp *ueDeleteRsp);
 uint8_t unpackRlcUeDeleteRsp(RlcDuUeDeleteRsp func, Pst *pst, Buffer *mBuf);
+uint8_t packRlcDuSlicePm(Pst *pst, SlicePmList *sliceStats);
+uint8_t unpackRlcSlicePm(RlcSlicePmToDuFunc func, Pst *pst, Buffer *mBuf);
 
 /* Event Handler function declarations */
 uint8_t RlcProcUeCreateReq(Pst *pst, RlcUeCfg *ueCfg);
@@ -383,6 +405,7 @@ uint8_t DuProcRlcUlUserDataTrans(Pst *pst, RlcUlUserDatInfo *ulUserData);
 uint8_t RlcProcDlUserDataTransfer(Pst *pst, RlcDlUserDataInfo *dlDataMsgInfo);
 uint8_t RlcProcUeDeleteReq(Pst *pst, RlcUeDelete *ueDelete);
 uint8_t DuProcRlcUeDeleteRsp(Pst *pst, RlcUeDeleteRsp *delRsp);
+uint8_t DuProcRlcSliceMetrics(Pst *pst, SlicePmList *sliceStats);
 #endif /* RLC_INF_H */
 
 /**********************************************************************
