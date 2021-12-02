@@ -175,6 +175,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "afdaa2d4_c337b131",
+        "filename": "src/o1/CmInterface.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 1000484
+      },
+      "writtenOn": "2021-12-02T13:24:48Z",
+      "side": 1,
+      "message": "common_def.h has some global variables defined in it, when we are including this in CmInterface.cpp then we are unnecessarily instantiating those global variable which is not being used in libo1.a library. Can we move these relevant structures in separate .h file, this way we can avoid unnecessary inclusions as well as global variable in the O1 library?",
+      "parentUuid": "284708bc_2a364116",
+      "range": {
+        "startLine": 116,
+        "startChar": 11,
+        "endLine": 116,
+        "endChar": 14
+      },
+      "revId": "75ec86f55c40a82fb58fd0149b094481403f87b4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7e88a046_39bc656d",
         "filename": "src/o1/CmInterface.h",
         "patchSetId": 4
