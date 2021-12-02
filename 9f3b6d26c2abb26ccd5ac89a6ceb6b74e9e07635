@@ -1,0 +1,141 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "222992e1_58b00188",
+        "filename": "src/5gnrrlc/rlc_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 993,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-12-02T14:50:42Z",
+      "side": 1,
+      "message": "add check",
+      "revId": "9f3b6d26c2abb26ccd5ac89a6ceb6b74e9e07635",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "009f2985_f1d3949e",
+        "filename": "src/5gnrrlc/rlc_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 994,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-12-02T14:50:42Z",
+      "side": 1,
+      "message": "same as above",
+      "range": {
+        "startLine": 994,
+        "startChar": 98,
+        "endLine": 994,
+        "endChar": 105
+      },
+      "revId": "9f3b6d26c2abb26ccd5ac89a6ceb6b74e9e07635",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "541bf430_c06d7344",
+        "filename": "src/5gnrrlc/rlc_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1014,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-12-02T14:50:42Z",
+      "side": 1,
+      "message": "this function is present in rlc_upr_inf_mgr.c file. can u please move it here in this file?",
+      "range": {
+        "startLine": 1014,
+        "startChar": 12,
+        "endLine": 1014,
+        "endChar": 29
+      },
+      "revId": "9f3b6d26c2abb26ccd5ac89a6ceb6b74e9e07635",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f547abe2_22d4ff66",
+        "filename": "src/5gnrrlc/rlc_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1016,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-12-02T14:50:42Z",
+      "side": 1,
+      "message": "add here as well",
+      "revId": "9f3b6d26c2abb26ccd5ac89a6ceb6b74e9e07635",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d411c5a0_54960952",
+        "filename": "src/5gnrrlc/rlc_tmr.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-12-02T14:50:42Z",
+      "side": 1,
+      "message": "Instead of creating snssaiTputBitmap as a global variable, we can\u0027t add it to rlcCb.\nWe should avoid adding global variable",
+      "revId": "9f3b6d26c2abb26ccd5ac89a6ceb6b74e9e07635",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "00c04e56_ba51ecfe",
+        "filename": "src/du_app/du_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 2156,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-12-02T14:50:42Z",
+      "side": 1,
+      "message": "move it after 2157",
+      "range": {
+        "startLine": 2156,
+        "startChar": 32,
+        "endLine": 2156,
+        "endChar": 33
+      },
+      "revId": "9f3b6d26c2abb26ccd5ac89a6ceb6b74e9e07635",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8f8ba768_65e25eb9",
+        "filename": "src/phy_stub/phy_stub_thread_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-12-02T14:50:42Z",
+      "side": 1,
+      "message": "revert",
+      "revId": "9f3b6d26c2abb26ccd5ac89a6ceb6b74e9e07635",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
