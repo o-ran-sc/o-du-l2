@@ -388,6 +388,12 @@ static S16 rlcCfgFillUlRbCb(RlcCb *gCb,RlcUlRbCb *rbCb,RlcUlUeCb *ueCb,RlcEntCfg
          }
       }
       memcpy(rbCb->snssai, entCfg->snssai, sizeof(Snssai));
+
+      /*Create the entry of this SNSSAI if not exist in Snssai Tput list*/
+      if(rlcHandleSnssaiTputlist(gCb, rbCb->snssai, CREATE, DIR_UL) == NULLP)
+      {
+         DU_LOG("\nERROR  --> RLC_UL : rlcCfgFillUlRbCb(): SNSSAI insertion in Tput list failed");
+      }
    }
    rbCb->mode = entCfg->entMode;
    
