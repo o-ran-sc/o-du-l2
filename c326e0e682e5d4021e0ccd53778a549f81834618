@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b503eba5_ee636385",
+        "filename": "src/5gnrrlc/rlc_amm_ul.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 616,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-12-02T13:32:03Z",
+      "side": 1,
+      "message": "It is not an error",
+      "parentUuid": "2a335804_312070bf",
+      "revId": "c326e0e682e5d4021e0ccd53778a549f81834618",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "225a508f_51f38e09",
         "filename": "src/5gnrrlc/rlc_cfg_ul.c",
         "patchSetId": 3
@@ -54,6 +72,30 @@
       "writtenOn": "2021-11-26T16:06:06Z",
       "side": 1,
       "message": "RLC_UL and ERROR.",
+      "range": {
+        "startLine": 577,
+        "startChar": 33,
+        "endLine": 577,
+        "endChar": 36
+      },
+      "revId": "c326e0e682e5d4021e0ccd53778a549f81834618",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5b88e8ef_8ffb38cc",
+        "filename": "src/5gnrrlc/rlc_umm_ul.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 577,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-12-02T13:32:03Z",
+      "side": 1,
+      "message": "It is not an error msg",
+      "parentUuid": "68f717d7_65fee004",
       "range": {
         "startLine": 577,
         "startChar": 33,
