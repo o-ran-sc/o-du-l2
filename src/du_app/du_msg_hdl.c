@@ -43,7 +43,7 @@
 
 #include "AlarmInterface.h"
 #include "ConfigInterface.h"
-
+#include "PmInterface.h"
 #endif 
 
 uint8_t rlcDlCfg = 0;
@@ -2132,6 +2132,58 @@ uint8_t DuProcMacSliceReCfgRsp(Pst *pst,  MacSliceCfgRsp *reCfgRsp)
    duFreeTempSliceCfg();
    return ROK;
 }
+
+/*******************************************************************
+*
+* @brief Handles received Slice Metrics from RLC and forward it to O1 
+*
+* @details
+*
+*    Function : DuProcRlcSliceMetrics
+*
+*    Functionality:
+*      Handles received Slice Metrics from RLC and forward it to O1
+*
+* @params[in] Post structure pointer
+*              SlicePmList *sliceStats
+*
+* @return ROK     - success
+*         RFAILED - failure
+*
+* ****************************************************************/
+uint8_t DuProcRlcSliceMetrics(Pst *pst, SlicePmList *sliceStats)
+{
+    DU_LOG("\nDEBUG  -->  DU APP : Received Slice Metrics");
+    uint8_t sliceRecord = 0;
+
+    if(sliceStats == NULLP)
+    {
+       DU_LOG("\nERROR  -->  DU APP : Empty Metrics");
+       return RFAILED;
+    }
+    
+    for(sliceRecord = 0; sliceRecord < sliceStats->numSlice; sliceRecord++)
+    {
+       DU_LOG("\nINFO   -->  DU_APP: SliceIndx:%d, DlTput %.5lf, UlTput:%.5lf", sliceStats->sliceRecord[sliceRecord]->networkSliceIdentifier,\
+                        sliceStats->sliceRecord[sliceRecord]->ThpDl, sliceStats->sliceRecord[sliceRecord]->ThpUl);
+    }
+#ifdef O1_ENABLE
+    if(sliceStats)
+    {
+       sendSliceMetric(sliceStats);
+    }
+#endif
+
+    for(sliceRecord = 0; sliceRecord < sliceStats->numSlice; sliceRecord++)
+    {
+       DU_FREE_SHRABL_BUF(pst->region, pst->pool, sliceStats->sliceRecord[sliceRecord], sizeof(SlicePm));  
+    }
+   DU_FREE_SHRABL_BUF(pst->region, pst->pool,sliceStats->sliceRecord, (sliceStats->numSlice) * (sizeof(SlicePm *)));
+   DU_FREE_SHRABL_BUF(pst->region, pst->pool,sliceStats, sizeof(SlicePmList));
+
+   return ROK;
+}
+
 /**********************************************************************
   End of file
  **********************************************************************/

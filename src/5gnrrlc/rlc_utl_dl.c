@@ -511,11 +511,11 @@ uint8_t rlcUtlSendToMac(RlcCb *gCb, SuId suId, KwDStaIndInfo *staIndInfo)
 
                if(rbCb->snssai)
                {
-                  snssaiTputNode = rlcHandleSnssaiTputlist(gCb, rbCb->snssai, SEARCH);
+                  snssaiTputNode = rlcHandleSnssaiTputlist(gCb, rbCb->snssai, SEARCH, DIR_DL);
                   if(snssaiTputNode != NULLP)
                   {
                      snssaiTputNode->dataVol += staIndTb->lchStaInd[count].totBufSize;
-                     DU_LOG("\nINFO   -->SCH: SNSSAI List Grant:%d, lcId:%d, total :%d",\
+                     DU_LOG("\nINFO   -->SCH: SNSSAI List Grant:%d, lcId:%d, total :%ld",\
                            staIndTb->lchStaInd[count].totBufSize, staIndTb->lchStaInd[count].lcId,\
                            snssaiTputNode->dataVol);
                   }

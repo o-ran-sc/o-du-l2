@@ -461,6 +461,11 @@ uint8_t duActvTsk(Pst *pst, Buffer *mBuf)
                      ret = unpackRlcUlUserDataToDu(DuProcRlcUlUserDataTrans, pst, mBuf);
                      break;
                   }
+               case EVENT_RLC_SLICE_PM_TO_DU:
+                  {
+                     ret = unpackRlcSlicePm(DuProcRlcSliceMetrics, pst, mBuf);
+                     break;
+                  }
                default:
                   {
                      DU_LOG("\nERROR  -->  DU_APP : Invalid event %d received at duActvTsk from ENTRLC", \

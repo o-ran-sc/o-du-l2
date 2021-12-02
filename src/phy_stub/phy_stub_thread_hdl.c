@@ -147,7 +147,7 @@ void *l1ConsoleHandler(void *args)
    /* The below variable is taken for sending specific number of UL Packets  
     * For sendind 4500 Ul packets for three UEs the calculation of
     * [counter * NUM_DRB_TO_PUMP_DATA * MAX_NUM_UE * NUM_UL_PACKETS] must be equal to 4500 */
-   uint32_t counter=500; 
+   uint32_t counter=5; 
 
    while(true)
    {

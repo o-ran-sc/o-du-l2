@@ -56,6 +56,12 @@ RlcDuUeDeleteRsp rlcUeDeleteRspOpts[] =
    packRlcDuUeDeleteRsp     /* 2 - LWLC loosely coupled */
 };
 
+RlcSlicePmToDuFunc rlcSlicePmOpts[] =
+{
+   packRlcDuSlicePm,          /* 0 - loosely coupled */
+   DuProcRlcSliceMetrics,     /* 1 - tightly coupled */
+   packRlcDuSlicePm           /* 2 - LWLC loosely coupled */
+};
 /*******************************************************************
  *
  * @brief Sends UL RRC Message Info to DU APP
@@ -160,6 +166,26 @@ uint8_t rlcSendUeDeleteRspToDu(Pst *pst, RlcUeDeleteRsp *ueDeleteRsp)
     return (*rlcUeDeleteRspOpts[pst->selector])(pst, ueDeleteRsp);
 }
 
+/*******************************************************************
+ *
+ * @brief Sends Slice Performance Metrics to DU APP
+ *
+ * @details
+ *
+ *    Function : rlcSendSlicePmToDu 
+ *
+ *    Functionality:  Sends Performace Metrics per slice together to DU APP
+ *
+ * @params[in] Pst *pst, SlicePmList *sliceStats 
+ *             
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t rlcSendSlicePmToDu(Pst *pst, SlicePmList *sliceStats)
+{
+    return (*rlcSlicePmOpts[pst->selector])(pst, sliceStats);
+}
 /**********************************************************************
          End of file
 **********************************************************************/

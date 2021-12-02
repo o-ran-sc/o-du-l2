@@ -97,12 +97,6 @@ typedef enum
    DELETE
 }ActionTypeLcLL;
 
-typedef enum
-{
-   DIR_UL,
-   DIR_DL
-}Direction;
-
 /**
  * @brief
  * Structure holding LTE MAC's General Configuration information.
