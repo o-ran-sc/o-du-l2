@@ -68,6 +68,75 @@
       "message": "Hi All,\n\nPlease let me know if there are any more comments remaining(specially on the VES format). We need to merge the code soon.\n\nRegards,\nVidhu",
       "revId": "aba3ae9153f14b657be7d1ff427cea0c2bfeeeb3",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "86410860_49034124",
+        "filename": "src/o1/ves/SliceMeasurementEvent.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1001000
+      },
+      "writtenOn": "2021-12-03T09:04:37Z",
+      "side": 1,
+      "message": "extra white space",
+      "range": {
+        "startLine": 30,
+        "startChar": 45,
+        "endLine": 30,
+        "endChar": 47
+      },
+      "revId": "aba3ae9153f14b657be7d1ff427cea0c2bfeeeb3",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "03818f8d_c95136ce",
+        "filename": "src/o1/ves/SliceMeasurementEvent.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1001000
+      },
+      "writtenOn": "2021-12-03T09:04:37Z",
+      "side": 1,
+      "message": "Extra white space",
+      "range": {
+        "startLine": 60,
+        "startChar": 0,
+        "endLine": 60,
+        "endChar": 4
+      },
+      "revId": "aba3ae9153f14b657be7d1ff427cea0c2bfeeeb3",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "88c92ff1_25ad70be",
+        "filename": "src/o1/ves/SliceMeasurementEvent.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 1001000
+      },
+      "writtenOn": "2021-12-03T09:04:37Z",
+      "side": 1,
+      "message": "extra white space",
+      "range": {
+        "startLine": 87,
+        "startChar": 52,
+        "endLine": 87,
+        "endChar": 64
+      },
+      "revId": "aba3ae9153f14b657be7d1ff427cea0c2bfeeeb3",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
   ]
 }
