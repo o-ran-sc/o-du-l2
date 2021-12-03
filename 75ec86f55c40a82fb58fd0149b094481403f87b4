@@ -150,6 +150,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "effa848a_98f1ba29",
+        "filename": "src/o1/CmInterface.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 1000484
+      },
+      "writtenOn": "2021-12-03T14:55:05Z",
+      "side": 1,
+      "message": "Parameters of the PolicyMemberList will come one by one so identifying the length of the PolicyMemberList is not possible from starting. This is a candidate for linked list so we can address it later.",
+      "parentUuid": "57e72164_233a417c",
+      "range": {
+        "startLine": 86,
+        "startChar": 43,
+        "endLine": 86,
+        "endChar": 58
+      },
+      "revId": "75ec86f55c40a82fb58fd0149b094481403f87b4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "284708bc_2a364116",
