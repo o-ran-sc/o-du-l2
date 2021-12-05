@@ -24,9 +24,9 @@
 #include "HttpClient.hpp"
 
 /* Overloaded constructor */
-HttpClient::HttpClient(string ip, string port, string username, \
-                       string password): mServerIp(ip), mServerPort(port), \
-                       mServerUsername(username), mServerPassword(password)
+HttpClient::HttpClient(string url, string username, string password):
+                       mUrl(url), mServerUsername(username),
+                       mServerPassword(password)
 {
 
 }
@@ -96,23 +96,21 @@ bool HttpClient::prepareHttpHeader(struct curl_slist *header, CURL *curl)
 
    header = curl_slist_append(header, "Content-Type: application/json");
    if(!header) {
-       O1_LOG("\nO1 HttpClient : curl_slist_append failed");
-       curl_easy_cleanup(curl);
-       return false;
+      O1_LOG("\nO1 HttpClient : curl_slist_append failed");
+      curl_easy_cleanup(curl);
+      return false;
    }
 
-    header = curl_slist_append(header, "Accept: application/json");
-    if(!header) {
-        O1_LOG("\nO1 HttpClient : curl_slist_append failed");
-        curl_easy_cleanup(curl);
-        return false;
-    }
-    curl_easy_setopt(curl, CURLOPT_HTTPHEADER, header);
-    if(!createUrl(curl))
-    {
-        O1_LOG("\nO1 HttpClient : could not create URL");
-        return false;
-    }
+   header = curl_slist_append(header, "Accept: application/json");
+   if(!header) {
+      O1_LOG("\nO1 HttpClient : curl_slist_append failed");
+      curl_easy_cleanup(curl);
+      return false;
+   }
+   curl_easy_setopt(curl, CURLOPT_HTTPHEADER, header);
+   
+   curl_easy_setopt(curl, CURLOPT_URL, mUrl.c_str());
+   
    return true;
 }
 
@@ -155,41 +153,6 @@ bool HttpClient::setUserPassword(CURL *curl)
    return true;
 }
 
-/*******************************************************************
- *
- * @brief creates and set URL into the curl header
- *
- * @details
- *
- *    Function : createUrl
- *
- *    Functionality:
- *      - creates URL string and set into the curl
- *
- *
- * @params[in] pointer to curl
- * @return true  : success
- *         false : failure
- ******************************************************************/
-
-
-bool HttpClient::createUrl(CURL *curl)
-{
-   //make the url format -- https://10.0.2.132:8443/eventListener/v7
-
-   std::ostringstream oss;
-   if((mServerIp.c_str()) && (mServerPort.c_str())) {
-      oss <<"https://"<<mServerIp<<":"<<mServerPort<<"/eventListener/v7";
-      string url = oss.str();
-      O1_LOG("\nO1 HttpClient : URL=%s", url.c_str());
-      curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
-      return true;
-   }
-   else
-   {
-      return false;
-   }
-}
 
 /*******************************************************************
  *

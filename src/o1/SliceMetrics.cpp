@@ -1,6 +1,6 @@
 /*******************************************************************************
 ################################################################################
-#   Copyright (c) [2020] [HCL Technologies Ltd.]                               #
+#   Copyright (c) [2020-2021] [HCL Technologies Ltd.]                          #
 #                                                                              #
 #   Licensed under the Apache License, Version 2.0 (the "License");            #
 #   you may not use this file except in compliance with the License.           #
@@ -16,46 +16,59 @@
 ################################################################################
 *******************************************************************************/
 
-/* This file contains AlarmManager singleton class responsible for 
-   storing and managing alarms. 
-*/ 
+/* This file defines the SliceMetrics which holds the Network Slice Metrics */ 
 
-#ifndef __ALARM_MANAGER_HPP__
-#define __ALARM_MANAGER_HPP__
+#include "SliceMetrics.hpp"
 
-#include <map>
-#include "Alarm.hpp"
-#include "Singleton.hpp"
+/* Default Constructor */
+SliceMetrics::SliceMetrics() {
 
-#include "PnfRegistrationThread.hpp"
-#include "VesUtils.hpp"
-#include "VesEventHandler.hpp"
+}
 
-using std::map;
+/* Default Destructor */
+SliceMetrics::~SliceMetrics() {
 
+}
 
-class AlarmManager : public Singleton<AlarmManager>
-{
+/*******************************************************************
+ *
+ * @brief Add the slice metric record to the list 
+ *
+ * @details
+ *
+ *    Function : addMetric
+ *
+ *    Functionality:
+ *      - Adds slice metric record to the list
+ *
+ *
+ * @params[in] SliceMetricRecord
+ * @return void
+ ******************************************************************/
+void SliceMetrics::addMetric(SliceMetricRecord& sliceMetricRecord) {
 
-   friend Singleton<AlarmManager>;
+   mSliceList.push_back(sliceMetricRecord);
 
-   private:
-   map<uint16_t,Alarm> mAlarmList; 	    
+}
 
-   protected:
-   AlarmManager();    
-   ~AlarmManager();
-
-   public:
-   bool raiseAlarm(const Alarm& alarm);
-   bool clearAlarm(const uint16_t& alarmId);
-   bool clearAlarm(const Alarm& alarm );
-   const map<uint16_t, Alarm>& getAlarmList()const;
-
-};
-
-
-#endif
+/*******************************************************************
+ *
+ * @brief Returns the slice metric list
+ *
+ * @details
+ *
+ *    Function : getSliceMetrics
+ *
+ *    Functionality:
+ *      - Returns the slice metric vector list 
+ *
+ *
+ * @params[in] void
+ * @return const reference to vector<SliceMetricRecord>
+ ******************************************************************/
+const vector<SliceMetricRecord>& SliceMetrics::getSliceMetrics() const {
+   return mSliceList;
+}
 
 /**********************************************************************
          End of file

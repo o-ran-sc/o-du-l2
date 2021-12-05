@@ -295,6 +295,18 @@ cJSON* JsonHelper::read(const char * fileName)
    return json;
 }
 
+cJSON* JsonHelper::createArray() 
+{
+   return cJSON_CreateArray();
+}
+
+cJSON_bool JsonHelper::addJsonNodeToArray(cJSON * array, cJSON* node)
+{
+   return cJSON_AddItemToArray(array, node);
+}
+
+
+
 /**********************************************************************
   End of file
  **********************************************************************/

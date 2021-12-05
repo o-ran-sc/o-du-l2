@@ -30,6 +30,8 @@
 
 static uint16_t seqNo = 0;
 
+#define MAX_TIME_STR 35
+
 /*******************************************************************
  *
  * @brief provide next sequence number of VES event
@@ -103,6 +105,9 @@ string VesCommonHeader::getEventTypeToStr()
       case VesEventType::PM_NOTIFICATION:
          str = "pmNotification";
          break;
+      case VesEventType::PM_SLICE:
+         str = "measurement";
+         break;
       case VesEventType::HEARTBEAT:
          str = "heartbeat";
          break;
@@ -134,6 +139,9 @@ string VesCommonHeader::getEventId()
 {
   /*Currently PNF_REGISTRATION only supported. This function must be updated
     in later releases*/
+   std::ostringstream oss;
+   oss << mLastEpochTime;
+   string stringEpochTime = oss.str().substr(0, 10);
    string evntId = "";
    switch(mEventType)
    {
@@ -141,15 +149,20 @@ string VesCommonHeader::getEventId()
          evntId = getSourceName() + "_" + MODEL_NUMBER_007_DEV;
          break;
       case VesEventType::HEARTBEAT:
-         evntId = getEventTypeToStr() + "_" + getCurrentTime();
+         evntId = getEventTypeToStr() + "_" + formatTime(getCurrentTime());
          break;
+      case VesEventType::PM_SLICE:
+         evntId = "_" + stringEpochTime + "_" + "PM1min";
+     break;
+      case VesEventType::FAULT_NOTIFICATION:
+         evntId = getSourceName() + "_" + MODEL_NUMBER_007_DEV;
+     break;
       default:
          O1_LOG("\nO1 VesCommonHeader : this VES msg Type support in getEventId is \
 not available");
          break;
    }
    return evntId;
-
 }
 
 /*******************************************************************
@@ -181,8 +194,14 @@ string VesCommonHeader::getEventType()
          evntType = EVENT_TYPE_5G;
          break;
       case VesEventType::HEARTBEAT:
-         evntType = EVENT_TYPE_ORAN_COMPONENET;
+         evntType = EVENT_TYPE_ORAN_COMPONENT;
          break;
+      case VesEventType::PM_SLICE:
+         evntType = EVENT_TYPE_ORAN_COMPONENT_PM;
+         break;
+      case VesEventType::FAULT_NOTIFICATION:
+         evntType = EVENT_TYPE_5G;
+	 break;
       default:
          O1_LOG("\nO1 VesCommonHeader : this VES msg Type support in getEvenType is \
 not available");
@@ -222,6 +241,12 @@ string VesCommonHeader::getPriority()
       case VesEventType::HEARTBEAT:
          evntId = PRIORITY_LOW;
          break;
+      case VesEventType::PM_SLICE:
+         evntId = PRIORITY_LOW ;
+         break;
+      case VesEventType::FAULT_NOTIFICATION:
+         evntId = PRIORITY_LOW ;
+	 break;
       default:
          O1_LOG("\nO1 VesCommonHeader : This VES msg Type support in getPriority is \
 not available");
@@ -260,11 +285,17 @@ string VesCommonHeader::getEventName()
          evntName = getEventTypeToStr() + "_" + EVENT_TYPE_5G;
          break;
       case VesEventType::HEARTBEAT:
-         evntName = getEventTypeToStr() + "_" + EVENT_TYPE_ORAN_COMPONENET;
+         evntName = getEventTypeToStr() + "_" + EVENT_TYPE_ORAN_COMPONENT;
          break;
+      case VesEventType::PM_SLICE:
+         evntName = getEventTypeToStr() + "_" + EVENT_TYPE_ORAN_COMPONENT_PM;
+         break;
+      case VesEventType::FAULT_NOTIFICATION:
+         evntName = getEventTypeToStr() + "_" + EVENT_TYPE_5G;
+	 break;
       default:
          O1_LOG("\nO1 VesCommonHeader : This VES msg Type support in getEventName is \
-not available");
+         not available");
          break;
    }
    return evntName;
@@ -288,8 +319,8 @@ not available");
 
 string VesCommonHeader::getReportingEntityName()
 {
-  /*Currently PNF_REGISTRATION only supported. This function must be updated
-    in later releases*/
+  /*Currently PNF_REGISTRATION and PM_SLICE are only supported. 
+   This function must be updated in later releases*/
 
    string evntName = "";
    switch(mEventType)
@@ -297,9 +328,15 @@ string VesCommonHeader::getReportingEntityName()
       case VesEventType::PNF_REGISTRATION:
          evntName = getSourceName();
          break;
+      case VesEventType::PM_SLICE:
+         evntName = PM_REPORTING_ENTITY;
+         break;
+      case VesEventType::FAULT_NOTIFICATION:
+         evntName = getSourceName();
+	 break;
       default:
          O1_LOG("\nO1 VesCommonHeader : This VES msg Type support in \
-getReportingEntityName is not available");
+         getReportingEntityName is not available");
          break;
    }
    return evntName;
@@ -323,8 +360,6 @@ getReportingEntityName is not available");
 
 string VesCommonHeader::getSourceName()
 {
-  /*Currently PNF_REGISTRATION only supported. This function need to be updated
-    in later releases*/
    return ODU_HIGH;
 }
 
@@ -347,8 +382,6 @@ string VesCommonHeader::getSourceName()
 
 string VesCommonHeader::getNamingCode()
 {
-  /*Currently PNF_REGISTRATION only supported. This function need to be updated
-    in later releases*/
    return NAMING_CODE_ODU;
 }
 
@@ -380,28 +413,50 @@ uint64_t VesCommonHeader::getEpochTime()
 
 /*******************************************************************
  *
- * @brief get current date-time
+ * @brief get current time
  *
  * @details
  *
  *    Function : getCurrentTime
  *
  *    Functionality:
- *      - get current date-time
+ *      - get current time
  *
  * @params[in] void
- * @return time-date     - success
+ * @return time     - success
  *
  * ****************************************************************/
 
-string VesCommonHeader::getCurrentTime()
+time_t VesCommonHeader::getCurrentTime()
 {
-   time_t t = time(0);
+   time_t t;
+   time(&t);
+   return t;
+}
+
+/*******************************************************************
+ *
+ * @brief formats the current time like: 
+ *           "Thu, 14 Oct 2021 03:15:00 +0000"
+ *
+ * @details
+ *
+ *    Function : formatTime
+ *
+ *    Functionality:
+ *      - formats current time
+ *
+ * @params[in] void
+ * @return formatted time - success
+ *
+ * ****************************************************************/
+
+std::string VesCommonHeader::formatTime(time_t t) {
    std::ostringstream oss;
-   char *dateStr;
-   strftime(dateStr, MAX_TIME_STR, "%F", localtime(&t));
-    oss << dateStr;
-    return oss.str();
+   char dateStr[MAX_TIME_STR];
+   strftime(dateStr, sizeof(dateStr), "%a, %d %b %Y %T %z", gmtime(&t));
+   oss << dateStr;
+   return oss.str();
 }
 
 /*******************************************************************
@@ -431,8 +486,14 @@ bool VesCommonHeader::prepare(cJSON *commonHeader, \
    mEventType = type;
    seqNo=0;
    nextSequenceNo(); //update the sequence number for next message
+   //local utility variables:
+   time_t intervalStartTime = getCurrentTime();
+   time_t intervalEndTime = intervalStartTime+60; /*adding 1 min to system time*/
+   uint64_t startEpochTime = getEpochTime();
+   mLastEpochTime = startEpochTime+60*100000; /*adding 1 min to epoch time*/
+
    if(JsonHelper::addNodeToObject(commonHeader, "domain", \
-       getEventTypeToStr().c_str()) == 0) {
+                                  getEventTypeToStr().c_str()) == 0) {
       ret=false;
    }
    else if ( JsonHelper::addNodeToObject(commonHeader, "eventId", \
@@ -450,7 +511,47 @@ bool VesCommonHeader::prepare(cJSON *commonHeader, \
    {
       ret = false;
    }
-   else if(JsonHelper::addNodeToObject(commonHeader, "sequence", \
+
+   if (mEventType == VesEventType::PM_SLICE)
+   {
+      cJSON *internalHeaderFields = JsonHelper::createNode();
+      if(internalHeaderFields == 0)
+      {
+         ret = false;
+      }
+      else if(JsonHelper::addJsonNodeToObject(commonHeader, "internalHeaderFields", \
+                                          internalHeaderFields) == 0)
+      {
+         ret = false;
+      }
+      else if(JsonHelper::addNodeToObject(internalHeaderFields, "intervalEndTime", \
+                                          formatTime(intervalEndTime).c_str()) == 0)
+      {
+         ret = false;
+      }
+      else if(JsonHelper::addNodeToObject(internalHeaderFields, "intervalStartTime", \
+                                          formatTime(intervalStartTime).c_str()) == 0)
+      {
+         ret = false;
+      }
+      else if(JsonHelper::addNodeToObject(commonHeader, "nfcNamingCode", \
+                                       "") == 0)
+      {
+         ret = false;
+      }
+      else if(JsonHelper::addNodeToObject(commonHeader, "stndDefinedNamespace", \
+                                      "") == 0)
+      {
+         ret = false;
+      }
+   }
+   
+   if (mEventType == VesEventType::PNF_REGISTRATION)
+   {
+
+   }
+
+   if(JsonHelper::addNodeToObject(commonHeader, "sequence", \
                                        getSequenceNo()) == 0)
    {
       ret = false;
@@ -470,7 +571,7 @@ bool VesCommonHeader::prepare(cJSON *commonHeader, \
    {
       ret = false;
    }
-  else if(JsonHelper::addNodeToObject(commonHeader, "sourceId", \
+   else if(JsonHelper::addNodeToObject(commonHeader, "sourceId", \
                                       "") == 0)
    {
       ret = false;
@@ -480,18 +581,19 @@ bool VesCommonHeader::prepare(cJSON *commonHeader, \
    {
       ret = false;
    }
-  else if(JsonHelper::addNodeToObject(commonHeader, "startEpochMicrosec", \
-                                      (double) getEpochTime()) == 0)
+   else if(JsonHelper::addNodeToObject(commonHeader, "startEpochMicrosec", \
+                                      (double)startEpochTime) == 0)
    {
       ret = false;
    }
    else if(JsonHelper::addNodeToObject(commonHeader, "lastEpochMicrosec", \
-                                       (double) getEpochTime()) == 0)
+                                       (double)mLastEpochTime) == 0)
    {
       ret = false;
    }
    else if(JsonHelper::addNodeToObject(commonHeader, "nfNamingCode", \
-                                       getNamingCode().c_str()) == 0)
+                                       (type==VesEventType::PNF_REGISTRATION) ? \
+                                       getNamingCode().c_str() : "") == 0)
    {
       ret = false;
    }
@@ -500,17 +602,30 @@ bool VesCommonHeader::prepare(cJSON *commonHeader, \
    {
       ret = false;
    }
-  else if(JsonHelper::addNodeToObject(commonHeader, "timeZoneOffset", \
+   else if(JsonHelper::addNodeToObject(commonHeader, "timeZoneOffset", \
                                       TIME_ZONE_00_00) == 0)
    {
       ret = false;
    }
-   else if(JsonHelper::addNodeToObject(commonHeader, "version", \
-                                       VERSION_4_0_1) == 0)
+
+   if (mEventType == VesEventType::PM_SLICE)
    {
-      ret = false;
+      if(JsonHelper::addNodeToObject(commonHeader, "version", \
+                                          VERSION_4_1) == 0)
+      {
+         ret = false;
+      }
    }
-   else if(JsonHelper::addNodeToObject(commonHeader, "vesEventListenerVersion", \
+   else 
+   {
+      if(JsonHelper::addNodeToObject(commonHeader, "version", \
+                                          VERSION_4_0_1) == 0)
+      {
+         ret = false;
+      }
+   }
+
+   if(JsonHelper::addNodeToObject(commonHeader, "vesEventListenerVersion", \
                                        VES_EVENT_LISTENER_7_2_1) == 0)
    {
       ret = false;
@@ -520,7 +635,6 @@ bool VesCommonHeader::prepare(cJSON *commonHeader, \
       O1_LOG("\nO1 VesCommonHeader : VES common Header prepared");
    }
    return ret;
-
 }
 
 /**********************************************************************

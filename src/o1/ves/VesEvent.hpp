@@ -30,6 +30,8 @@
 #include "VesUtils.hpp"
 #include "VesCommonHeader.hpp"
 #include "HttpClient.hpp"
+#include "Message.hpp"
+#include "ConfigLoader.hpp"
 
 using namespace std;
 
@@ -37,23 +39,28 @@ class VesEvent{
 
    public:
       VesEvent();
-      ~VesEvent();
-      bool prepare();
+      VesEvent(VesEventType);
+      virtual ~VesEvent();
+      bool prepare(const Message* msg = NULL);
       bool send();
 
    protected:
-      virtual bool prepareEventFields() = 0;
+      virtual bool prepareEventFields(const Message* msg = NULL) = 0;
+      virtual void getConfig();
+      virtual void createUrl();
       VesEventType mVesEventType;
       cJSON* mVesEventFields;
-
-   private:
-      bool readConfigFile();
-      char * mSendData;
-      HttpClient *mHttpClient;
-      string mVesServerIp;
+  	   string mVesServerIp;
       string mVesServerPort;
       string mVesServerUsername;
       string mVesServerPassword;
+      string mVesUrl;
+	  
+   private:
+      string getEventFieldName();
+      char * mSendData;
+      HttpClient *mHttpClient;
+      
 };
 
 #endif

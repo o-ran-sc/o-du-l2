@@ -24,13 +24,13 @@
 #include <string>
 #include <string.h>
 #include "AlarmMessages.h"
+#include "Message.hpp"
 
 using std::string; 
 
 
-class Alarm
+class Alarm : public Message
 {
-
    private:
    EventType mEventType;
    string mObjectClassObjectInstance;
@@ -46,8 +46,8 @@ class Alarm
    string mSpecificProblem;
 
    public:
-   Alarm(){};
-   ~Alarm(){};
+   Alarm() {}
+   ~Alarm(){}
    /* Getter functions */
    inline const EventType& getEventType()const 
    { 

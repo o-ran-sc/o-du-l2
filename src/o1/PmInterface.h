@@ -1,6 +1,6 @@
 /*******************************************************************************
 ################################################################################
-#   Copyright (c) [2020] [HCL Technologies Ltd.]                               #
+#   Copyright (c) [2020-2021] [HCL Technologies Ltd.]                          #
 #                                                                              #
 #   Licensed under the Apache License, Version 2.0 (the "License");            #
 #   you may not use this file except in compliance with the License.           #
@@ -16,44 +16,38 @@
 ################################################################################
 *******************************************************************************/
 
-/* This file contains AlarmManager singleton class responsible for 
-   storing and managing alarms. 
-*/ 
+/* This file contains the C interface for ODU to access the Performance 
+   Management functions */
 
-#ifndef __ALARM_MANAGER_HPP__
-#define __ALARM_MANAGER_HPP__
+#ifndef __PM_INTERFACE_H__
+#define __PM_INTERFACE_H__
 
-#include <map>
-#include "Alarm.hpp"
-#include "Singleton.hpp"
+#include <stdint.h>
 
-#include "PnfRegistrationThread.hpp"
-#include "VesUtils.hpp"
-#include "VesEventHandler.hpp"
-
-using std::map;
-
-
-class AlarmManager : public Singleton<AlarmManager>
+#ifdef __cplusplus
+extern "C"
 {
+#endif
 
-   friend Singleton<AlarmManager>;
 
-   private:
-   map<uint16_t,Alarm> mAlarmList; 	    
+typedef struct {
+   uint32_t networkSliceIdentifier;
+   double DRB_UEThpDl_SNSSAI;
+   double DRB_UEThpUl_SNSSAI;
+}SliceMetricRecord;
 
-   protected:
-   AlarmManager();    
-   ~AlarmManager();
+typedef struct {
+   SliceMetricRecord *sliceRecord;
+   uint8_t nRecords;
+}SliceMetricList;
 
-   public:
-   bool raiseAlarm(const Alarm& alarm);
-   bool clearAlarm(const uint16_t& alarmId);
-   bool clearAlarm(const Alarm& alarm );
-   const map<uint16_t, Alarm>& getAlarmList()const;
 
-};
+int sendSliceMetric(SliceMetricList* sliceMetricList);
 
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif
 

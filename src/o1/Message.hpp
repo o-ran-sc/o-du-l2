@@ -1,6 +1,6 @@
 /*******************************************************************************
 ################################################################################
-#   Copyright (c) [2020] [HCL Technologies Ltd.]                               #
+#   Copyright (c) [2020-2021] [HCL Technologies Ltd.]                          #
 #                                                                              #
 #   Licensed under the Apache License, Version 2.0 (the "License");            #
 #   you may not use this file except in compliance with the License.           #
@@ -16,44 +16,26 @@
 ################################################################################
 *******************************************************************************/
 
-/* This file contains AlarmManager singleton class responsible for 
-   storing and managing alarms. 
-*/ 
+/* This file contains Message base class for generic messages  */
 
-#ifndef __ALARM_MANAGER_HPP__
-#define __ALARM_MANAGER_HPP__
+#ifndef __MESSAGE_HPP__
+#define __MESSAGE_HPP__
 
-#include <map>
-#include "Alarm.hpp"
-#include "Singleton.hpp"
-
-#include "PnfRegistrationThread.hpp"
 #include "VesUtils.hpp"
-#include "VesEventHandler.hpp"
-
-using std::map;
 
 
-class AlarmManager : public Singleton<AlarmManager>
-{
+class Message {
 
-   friend Singleton<AlarmManager>;
+public:
 
-   private:
-   map<uint16_t,Alarm> mAlarmList; 	    
-
-   protected:
-   AlarmManager();    
-   ~AlarmManager();
-
-   public:
-   bool raiseAlarm(const Alarm& alarm);
-   bool clearAlarm(const uint16_t& alarmId);
-   bool clearAlarm(const Alarm& alarm );
-   const map<uint16_t, Alarm>& getAlarmList()const;
+    Message() {};
+    virtual ~Message() {};
+    
+protected:
+    MessageType mMsgType;
+    virtual MessageType getMessageType() { return mMsgType; }
 
 };
-
 
 #endif
 

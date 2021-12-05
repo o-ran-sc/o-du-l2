@@ -32,7 +32,6 @@
 #include <stdio.h>
 #include "VesUtils.hpp"
 
-#define MAX_TIME_STR 11
 using namespace std;
 
 class VesCommonHeader{
@@ -56,7 +55,9 @@ class VesCommonHeader{
       string getSourceName();
       string getNamingCode();
       uint64_t getEpochTime();
-      string getCurrentTime();
+      time_t getCurrentTime();
+	   string formatTime(time_t);
+      uint64_t mLastEpochTime;
 
       VesEventType mEventType;
 };
