@@ -93,6 +93,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "32021262_9bee0929",
+        "filename": "src/o1/ves/SliceMeasurementEvent.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1000482
+      },
+      "writtenOn": "2021-12-05T08:22:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "86410860_49034124",
+      "range": {
+        "startLine": 30,
+        "startChar": 45,
+        "endLine": 30,
+        "endChar": 47
+      },
+      "revId": "aba3ae9153f14b657be7d1ff427cea0c2bfeeeb3",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "03818f8d_c95136ce",
@@ -116,6 +140,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "01fc6158_1f70a0a6",
+        "filename": "src/o1/ves/SliceMeasurementEvent.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1000482
+      },
+      "writtenOn": "2021-12-05T08:22:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "03818f8d_c95136ce",
+      "range": {
+        "startLine": 60,
+        "startChar": 0,
+        "endLine": 60,
+        "endChar": 4
+      },
+      "revId": "aba3ae9153f14b657be7d1ff427cea0c2bfeeeb3",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "88c92ff1_25ad70be",
@@ -129,6 +177,30 @@
       "writtenOn": "2021-12-03T09:04:37Z",
       "side": 1,
       "message": "extra white space",
+      "range": {
+        "startLine": 87,
+        "startChar": 52,
+        "endLine": 87,
+        "endChar": 64
+      },
+      "revId": "aba3ae9153f14b657be7d1ff427cea0c2bfeeeb3",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d4cbf2cd_c88f592c",
+        "filename": "src/o1/ves/SliceMeasurementEvent.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 1000482
+      },
+      "writtenOn": "2021-12-05T08:22:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "88c92ff1_25ad70be",
       "range": {
         "startLine": 87,
         "startChar": 52,
