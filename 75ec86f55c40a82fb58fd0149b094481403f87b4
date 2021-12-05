@@ -58,6 +58,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5ec70027_dcbe0b29",
+        "filename": "src/o1/CmInterface.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1000484
+      },
+      "writtenOn": "2021-12-05T16:28:22Z",
+      "side": 1,
+      "message": "Done. As we can not include odu .h files because of the global variable so we have to delcare it here.",
+      "parentUuid": "53727e33_dd55e00d",
+      "range": {
+        "startLine": 42,
+        "startChar": 8,
+        "endLine": 42,
+        "endChar": 15
+      },
+      "revId": "75ec86f55c40a82fb58fd0149b094481403f87b4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "21a2564e_40ed8605",
@@ -71,6 +95,30 @@
       "writtenOn": "2021-11-30T12:29:02Z",
       "side": 1,
       "message": "I think it should be 3.",
+      "range": {
+        "startLine": 43,
+        "startChar": 15,
+        "endLine": 43,
+        "endChar": 16
+      },
+      "revId": "75ec86f55c40a82fb58fd0149b094481403f87b4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6728a82f_dc0d3047",
+        "filename": "src/o1/CmInterface.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1000484
+      },
+      "writtenOn": "2021-12-05T16:28:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "21a2564e_40ed8605",
       "range": {
         "startLine": 43,
         "startChar": 15,
@@ -104,6 +152,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3bb657bb_82df6cca",
+        "filename": "src/o1/CmInterface.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1000484
+      },
+      "writtenOn": "2021-12-05T16:28:22Z",
+      "side": 1,
+      "message": "Done.",
+      "parentUuid": "584e2877_46c461de",
+      "range": {
+        "startLine": 46,
+        "startChar": 8,
+        "endLine": 46,
+        "endChar": 16
+      },
+      "revId": "75ec86f55c40a82fb58fd0149b094481403f87b4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7c2599da_490997bb",
@@ -117,6 +189,30 @@
       "writtenOn": "2021-11-30T11:07:51Z",
       "side": 1,
       "message": "I think It should also be uint8_t.",
+      "range": {
+        "startLine": 69,
+        "startChar": 3,
+        "endLine": 69,
+        "endChar": 7
+      },
+      "revId": "75ec86f55c40a82fb58fd0149b094481403f87b4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fac4a965_f4ce389a",
+        "filename": "src/o1/CmInterface.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1000484
+      },
+      "writtenOn": "2021-12-05T16:28:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7c2599da_490997bb",
       "range": {
         "startLine": 69,
         "startChar": 3,
@@ -245,6 +341,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "29aa3411_b6165def",
+        "filename": "src/o1/CmInterface.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 1000484
+      },
+      "writtenOn": "2021-12-05T16:28:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a5c94ba1_6215ac52",
+      "range": {
+        "startLine": 116,
+        "startChar": 11,
+        "endLine": 116,
+        "endChar": 14
+      },
+      "revId": "75ec86f55c40a82fb58fd0149b094481403f87b4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7e88a046_39bc656d",
@@ -258,6 +378,30 @@
       "writtenOn": "2021-11-30T12:29:02Z",
       "side": 1,
       "message": "same as above. \nAs per 38.473 SNSSAI ::\u003d SEQUENCE {\n  sST OCTET STRING (SIZE(1)),\n  sD OCTET STRING (SIZE(3)) OPTIONAL ,\n}",
+      "range": {
+        "startLine": 118,
+        "startChar": 3,
+        "endLine": 118,
+        "endChar": 7
+      },
+      "revId": "75ec86f55c40a82fb58fd0149b094481403f87b4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7494dac5_127619d9",
+        "filename": "src/o1/CmInterface.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 1000484
+      },
+      "writtenOn": "2021-12-05T16:28:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7e88a046_39bc656d",
       "range": {
         "startLine": 118,
         "startChar": 3,
@@ -291,6 +435,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "00978512_69b0c087",
+        "filename": "src/o1/CmInterface.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 1000484
+      },
+      "writtenOn": "2021-12-05T16:28:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a083fb8_5a8704e6",
+      "range": {
+        "startLine": 164,
+        "startChar": 15,
+        "endLine": 164,
+        "endChar": 25
+      },
+      "revId": "75ec86f55c40a82fb58fd0149b094481403f87b4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d9c899ef_f3f1b2c2",
@@ -304,6 +472,24 @@
       "writtenOn": "2021-11-30T11:07:51Z",
       "side": 1,
       "message": "better to add failure comment here",
+      "revId": "75ec86f55c40a82fb58fd0149b094481403f87b4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0b123964_d332d8c9",
+        "filename": "src/o1/NrCellDuCb.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 308,
+      "author": {
+        "id": 1000484
+      },
+      "writtenOn": "2021-12-05T16:28:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d9c899ef_f3f1b2c2",
       "revId": "75ec86f55c40a82fb58fd0149b094481403f87b4",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
