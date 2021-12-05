@@ -77,6 +77,20 @@ MacDuSliceReCfgRspFunc macDuSliceReCfgRspOpts[] =
    packDuMacSliceReCfgRsp   /* packing for light weight loosly coupled */
 };
 
+MacSchSliceCfgReqFunc macSchSliceCfgReqOpts[]=
+{
+   packMacSchSliceCfgReq,
+   MacSchSliceCfgReq,
+   packMacSchSliceCfgReq
+};
+
+MacSchSliceReCfgReqFunc macSchSliceReCfgReqOpts[]=
+{
+   packMacSchSliceReCfgReq,
+   MacSchSliceReCfgReq,
+   packMacSchSliceReCfgReq
+};
+
 /**
  * @brief Layer Manager  Configuration request handler for Scheduler
  *
@@ -943,6 +957,162 @@ uint8_t MacProcSchSliceReCfgRsp(Pst *pst, SchSliceCfgRsp *schSliceRecfgRsp)
       freeSchSliceCfgRsp(schSliceRecfgRsp);
    }
    return ROK;
+}
+
+/*******************************************************************
+ *
+ * @brief fill Slice Cfg Request info in shared structre
+ *
+ * @details
+ *
+ *    Function : fillSliceCfgInfo
+ *
+ *    Functionality:
+ *       fill Slice Cfg Request info in shared structre
+ *
+ * @params[in] SchSliceCfgReq *schSliceCfgReq
+ *             MacSliceCfgReq *macSliceCfgReq;
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ **********************************************************************/
+ uint8_t fillSliceCfgInfo(SchSliceCfgReq *schSliceCfgReq, MacSliceCfgReq *macSliceCfgReq)
+ {
+    uint8_t cfgIdx = 0;
+
+    if(macSliceCfgReq->listOfSliceCfg)
+    {
+       schSliceCfgReq->numOfConfiguredSlice =  macSliceCfgReq->numOfConfiguredSlice;
+       MAC_ALLOC(schSliceCfgReq->listOfConfirguration, schSliceCfgReq->numOfConfiguredSlice *sizeof(SchRrmPolicyOfSlice*));
+       if(schSliceCfgReq->listOfConfirguration == NULLP)
+       {
+          DU_LOG("\nERROR  -->  MAC : Memory allocation failed in fillSliceCfgInfo");
+          return RFAILED;
+       }
+       for(cfgIdx = 0; cfgIdx<schSliceCfgReq->numOfConfiguredSlice; cfgIdx++)
+       {
+          MAC_ALLOC(schSliceCfgReq->listOfConfirguration[cfgIdx], sizeof(SchRrmPolicyOfSlice));
+          if(schSliceCfgReq->listOfConfirguration[cfgIdx] == NULLP)
+          {
+             DU_LOG("\nERROR  -->  MAC : Memory allocation failed in fillSliceCfgInfo");
+             return RFAILED;
+          }
+
+          memcpy(&schSliceCfgReq->listOfConfirguration[cfgIdx]->snssai, &macSliceCfgReq->listOfSliceCfg[cfgIdx]->snssai, sizeof(Snssai));
+
+          if(macSliceCfgReq->listOfSliceCfg[cfgIdx]->rrmPolicyRatio)
+          {
+             MAC_ALLOC(schSliceCfgReq->listOfConfirguration[cfgIdx]->rrmPolicyRatioInfo, sizeof(SchRrmPolicyRatio));
+             if(schSliceCfgReq->listOfConfirguration[cfgIdx]->rrmPolicyRatioInfo == NULLP)
+             {
+                DU_LOG("\nERROR  -->  MAC : Memory allocation failed in fillSliceCfgInfo");
+                return RFAILED;
+             }
+             schSliceCfgReq->listOfConfirguration[cfgIdx]->rrmPolicyRatioInfo->policyMaxRatio = macSliceCfgReq->listOfSliceCfg[cfgIdx]->rrmPolicyRatio->policyMaxRatio;
+             schSliceCfgReq->listOfConfirguration[cfgIdx]->rrmPolicyRatioInfo->policyMinRatio = macSliceCfgReq->listOfSliceCfg[cfgIdx]->rrmPolicyRatio->policyMinRatio;
+             schSliceCfgReq->listOfConfirguration[cfgIdx]->rrmPolicyRatioInfo->policyDedicatedRatio = macSliceCfgReq->listOfSliceCfg[cfgIdx]->rrmPolicyRatio->policyDedicatedRatio;
+          }
+       }
+    }
+    return ROK;
+ }
+/*******************************************************************
+ *
+ * @brief Processes Slice Cfg Request recived from DU
+ *
+ * @details
+ *
+ *    Function : MacProcSliceCfgReq
+ *
+ *    Functionality:
+ *       Processes Processes Slice Cfg Request recived from DU
+ *
+ * @params[in] Post Structure Pointer
+ *             MacSliceCfgReq *macSliceCfgReq;
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ **********************************************************************/
+uint8_t MacProcSliceCfgReq(Pst *pst, MacSliceCfgReq *macSliceCfgReq)
+{
+   uint8_t ret = ROK;
+   Pst schPst;
+   SchSliceCfgReq *schSliceCfgReq;
+
+   DU_LOG("\nINFO  -->  MAC : Received Slice Cfg request from DU APP");
+   if(macSliceCfgReq)
+   {
+      MAC_ALLOC(schSliceCfgReq, sizeof(SchSliceCfgReq));
+      if(schSliceCfgReq == NULLP)
+      {
+         DU_LOG("\nERROR -->  MAC : Memory allocation failed in MacProcSliceCfgReq");
+         ret = RFAILED;
+      }
+      else
+      {
+         if(fillSliceCfgInfo(schSliceCfgReq, macSliceCfgReq) == ROK)
+         {
+            FILL_PST_MAC_TO_SCH(schPst, EVENT_SLICE_CFG_REQ_TO_SCH);
+            ret = (*macSchSliceCfgReqOpts[schPst.selector])(&schPst, schSliceCfgReq);
+         }
+      }
+      freeMacSliceCfgReq(macSliceCfgReq, pst);
+   }
+   else
+   {
+      DU_LOG("\nINFO  -->  MAC : Received MacSliceCfgReq is NULL");
+   }
+   return ret;
+}
+
+/*******************************************************************
+ *
+ * @brief Processes Slice ReCfg Request recived from DU
+ *
+ * @details
+ *
+ *    Function : MacProcSliceReCfgReq
+ *
+ *    Functionality:
+ *       Processes Processes Slice ReCfg Request recived from DU
+ *
+ * @params[in] Post Structure Pointer
+ *             MacSliceCfgReq *macSliceReCfgReq;
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ **********************************************************************/
+uint8_t MacProcSliceReCfgReq(Pst *pst, MacSliceCfgReq *macSliceReCfgReq)
+{
+   uint8_t ret = ROK;
+   Pst schPst;
+   SchSliceCfgReq *schSliceReCfgReq;
+
+   DU_LOG("\nINFO  -->  MAC : Received Slice ReCfg request from DU APP");
+   if(macSliceReCfgReq)
+   {
+      MAC_ALLOC(schSliceReCfgReq, sizeof(SchSliceCfgReq));
+      if(schSliceReCfgReq == NULLP)
+      {
+         DU_LOG("\nERROR -->  MAC : Memory allocation failed in MacProcSliceReCfgReq");
+         ret = RFAILED;
+      }
+      else
+      {
+         if(fillSliceCfgInfo(schSliceReCfgReq, macSliceReCfgReq) == ROK)
+         {
+            FILL_PST_MAC_TO_SCH(schPst, EVENT_SLICE_RECFG_REQ_TO_SCH);
+            ret = (*macSchSliceReCfgReqOpts[schPst.selector])(&schPst, schSliceReCfgReq);
+         }
+
+      }
+      freeMacSliceCfgReq(macSliceReCfgReq, pst);
+   }
+   else
+   {
+      DU_LOG("\nINFO  -->  MAC : Received MacSliceCfgReq is NULL");
+   }
+   return ret;
 }
 /**********************************************************************
   End of file

@@ -43,11 +43,7 @@
 
 #include "AlarmInterface.h"
 #include "ConfigInterface.h"
-
-/*TODO: Uncomment when PM O1 gerrit gets ready*/
-#if 0
 #include "PmInterface.h"
-#endif
 
 #endif 
 
@@ -1894,7 +1890,6 @@ void duFreeSliceCfgRsp(Pst *pst,  MacSliceCfgRsp *cfgRsp)
       }
       DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, cfgRsp, sizeof(MacSliceCfgRsp)); 
    }
-   return ROK;
 }
 
 /*******************************************************************
@@ -1933,6 +1928,7 @@ uint8_t DuProcMacSliceCfgRsp(Pst *pst,  MacSliceCfgRsp *cfgRsp)
         duFreeSliceCfgRsp(pst, cfgRsp);
     }
     duFreeTempSliceCfg();
+    return ROK;
 }
 
 /*******************************************************************
@@ -2113,7 +2109,7 @@ uint8_t BuildAndSendSliceReCfgReq(RrmPolicy *rrmPolicy[], uint8_t totalRrmPolicy
  **********************************************************************/
 uint8_t DuProcMacSliceReCfgRsp(Pst *pst,  MacSliceCfgRsp *reCfgRsp)
 {
-   uint8_t cfgIdx = 0, sliceIdx =0;
+   uint8_t cfgIdx = 0;
    
    if(reCfgRsp)
    {
@@ -2172,14 +2168,11 @@ uint8_t DuProcRlcSliceMetrics(Pst *pst, SlicePmList *sliceStats)
        DU_LOG("\nINFO   -->  DU_APP: SliceIndx:%d, DlTput %.5lf, UlTput:%.5lf", sliceStats->sliceRecord[sliceRecord].networkSliceIdentifier,\
                         sliceStats->sliceRecord[sliceRecord].ThpDl, sliceStats->sliceRecord[sliceRecord].ThpUl);
     }
-/*TODO: Uncomment when PM O1 gerrit gets ready*/
-#if 0
 #ifdef O1_ENABLE
     if(sliceStats)
     {
        sendSliceMetric(sliceStats);
     }
-#endif
 #endif
 
    DU_FREE_SHRABL_BUF(pst->region, pst->pool,sliceStats->sliceRecord, (sliceStats->numSlice) * (sizeof(SlicePm)));

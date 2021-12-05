@@ -906,6 +906,7 @@ uint8_t readCfg()
    return ROK;
 }
 
+#ifdef O1_ENABLE
 /*******************************************************************
  *
  * @brief Copy Slice Cfg in temp structre in duCfgParams 
@@ -922,7 +923,7 @@ uint8_t readCfg()
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t cpyRrmPolicyInDuCfgParams(RrmPolicy rrmPolicy[], uint8_t policyNum, uint8_t memberList, CopyOfRecvdSliceCfg *tempSliceCfg)
+uint8_t cpyRrmPolicyInDuCfgParams(RrmPolicyList rrmPolicy[], uint8_t policyNum, CopyOfRecvdSliceCfg *tempSliceCfg)
 {
    uint8_t policyIdx = 0, memberListIdx = 0, count = 0;
 
@@ -945,9 +946,9 @@ uint8_t cpyRrmPolicyInDuCfgParams(RrmPolicy rrmPolicy[], uint8_t policyNum, uint
             return RFAILED;
          }
          
-         if(memberList)
+         if(rrmPolicy[policyIdx].rRMMemberNum)
          {
-            tempSliceCfg->rrmPolicy[policyIdx]->numMemberList = rrmPolicy[policyIdx].numMemberList;  
+            tempSliceCfg->rrmPolicy[policyIdx]->numMemberList = rrmPolicy[policyIdx].rRMMemberNum;  
             DU_ALLOC(tempSliceCfg->rrmPolicy[policyIdx]->memberList, tempSliceCfg->rrmPolicy[policyIdx]->numMemberList * sizeof(PolicyMemberList*))
             if(tempSliceCfg->rrmPolicy[policyIdx]->memberList == NULLP)
             {
@@ -963,22 +964,25 @@ uint8_t cpyRrmPolicyInDuCfgParams(RrmPolicy rrmPolicy[], uint8_t policyNum, uint
                   DU_LOG("\nERROR  --> DU APP : Memory allocation failed in cpyRrmPolicyInDuCfgParams");
                   return RFAILED;
                }
-               memcpy(&tempSliceCfg->rrmPolicy[policyIdx]->memberList[memberListIdx]->snssai, &rrmPolicy[policyIdx].memberList[memberListIdx]->snssai, sizeof(Snssai));
-               memcpy(&tempSliceCfg->rrmPolicy[policyIdx]->memberList[memberListIdx]->plmn, &rrmPolicy[policyIdx].memberList[memberListIdx]->plmn, sizeof(Plmn));
+               memcpy(&tempSliceCfg->rrmPolicy[policyIdx]->memberList[memberListIdx]->snssai.sd, &rrmPolicy[policyIdx].rRMPolicyMemberList[memberListIdx].sd, 3 * sizeof(uint8_t));
+               memcpy(&tempSliceCfg->rrmPolicy[policyIdx]->memberList[memberListIdx]->snssai.sst, &rrmPolicy[policyIdx].rRMPolicyMemberList[memberListIdx].sst, sizeof(uint8_t));
+               memcpy(&tempSliceCfg->rrmPolicy[policyIdx]->memberList[memberListIdx]->plmn.mcc, &rrmPolicy[policyIdx].rRMPolicyMemberList[memberListIdx].mcc, 3 * sizeof(uint8_t));
+               memcpy(&tempSliceCfg->rrmPolicy[policyIdx]->memberList[memberListIdx]->plmn.mnc, &rrmPolicy[policyIdx].rRMPolicyMemberList[memberListIdx].mnc, 3 * sizeof(uint8_t));
                count++;
             }
          }
          
-         tempSliceCfg->rrmPolicy[policyIdx]->rsrcType  = RSRC_PRB;
-         tempSliceCfg->rrmPolicy[policyIdx]->policyMaxRatio = rrmPolicy[policyIdx].policyMaxRatio;
-         tempSliceCfg->rrmPolicy[policyIdx]->policyMinRatio = rrmPolicy[policyIdx].policyMinRatio;
-         tempSliceCfg->rrmPolicy[policyIdx]->policyDedicatedRatio = rrmPolicy[policyIdx].policyDedicatedRatio;
+         tempSliceCfg->rrmPolicy[policyIdx]->rsrcType  = rrmPolicy[policyIdx].resourceType;
+         tempSliceCfg->rrmPolicy[policyIdx]->policyMaxRatio = rrmPolicy[policyIdx].rRMPolicyMaxRatio;
+         tempSliceCfg->rrmPolicy[policyIdx]->policyMinRatio = rrmPolicy[policyIdx].rRMPolicyMinRatio;
+         tempSliceCfg->rrmPolicy[policyIdx]->policyDedicatedRatio = rrmPolicy[policyIdx].rRMPolicyDedicatedRatio;
 
       }
       tempSliceCfg->totalSliceCount = count;
    }
    return ROK;
 }
+#endif
 /*******************************************************************
  *
  * @brief Reads config and posts message to du_app on completion

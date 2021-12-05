@@ -107,8 +107,7 @@ uint8_t duAppInit(SSTskId sysTskId)
  *         false    - failure
  *
  * ****************************************************************/
-uint8_t updateRrmPolicy(RrmPolicy rrmPolicy[], uint8_t policyNum, \
-           uint8_t memberList)
+uint8_t updateRrmPolicy(RrmPolicyList rrmPolicy[], uint8_t policyNum, uint8_t memberList)
 {
     DuCellCb *cellCb = NULLP;
 
