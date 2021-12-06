@@ -6,7 +6,7 @@
 API-Docs
 **********
 
-This is the API-docs for D relase o-du/l2.
+This is the API-docs for E relase o-du/l2.
 
 .. contents::
    :depth: 3
@@ -16,7 +16,7 @@ This is the API-docs for D relase o-du/l2.
 Introduction
 -----------------
 This document lists the APIs implemented between various modules of ODU-High and their functionality.
-These are in line with ORAN-WG8.AAD-v3.00.00, hereafter referred to as AAD Spec.
+These are in line with ORAN-WG8.AAD-v4.00.00, hereafter referred to as AAD Spec.
 
 API Functions
 -------------
@@ -68,7 +68,13 @@ API Functions
 
       i. Cell Delete Request :  MAC receives UE delete request and forwards the request to SCH as per Section 9.2.2.2.2
          of the AAD spec.
+
+      j. Slice Configuration Request : MAC receives Slice Configuration request and forwards the request to SCH as per Section
+      9.2.3.2.3 of the AAD Spec
 	 
+      k. Slice Reconfiguration Request : MAC receives Slice Reconfiguration request and forwards the request to SCH as per 
+      Section 9.2.3.2.4 of the AAD Spec
+
    B. Scheduler to MAC
 
       a. Cell Configuration Response - Response to cell configuration request from MAC, as per Section 9.2.2.3.1 of the
@@ -94,7 +100,12 @@ API Functions
 
       h. UE Delete Response - Response to UE delete request from MAC, as per Section 9.2.2.3.4
 
-      i. Cell Delete Response - Response to Cell delete response from MAC, as per Section 9.2.2.3.2
+      i. Cell Delete Response - Response to Cell delete request from MAC, as per Section 9.2.2.3.2
+
+      j. Slice Configuration Response : Response to Slice Configuration request from MAC, as per Section 9.2.3.3.3 of the AAD Spec
+	 
+      k. Slice Reconfiguration Response : Response to Slice Reconfiguration request from MAC, as per Section 9.2.3.3.4 of the AAD Spec
+
 
 3. DU APP - MAC Interface
 
@@ -115,6 +126,7 @@ API Functions
       e. Cell Stop - Commands MAC to stop cell at L1, as per Section 9.2.3.2 of the AAD spec.
 
       f. UE Delete Request - Deletes UE information at MAC as per Section 9.2.3.7  of the AAD Spec.
+      
 
    B. MAC to DU APP
 
@@ -126,7 +138,7 @@ API Functions
       c. UL-CCCH Indication - Sends the UL CCCH Message received from UE to DU APP as per Section 9.2.3.15 of AAD Spec.
 
       d. UE Delete Response - Response to UE Delete Request from DU Manager as per Section 9.2.3.8 of the AAD Spec.
-
+      
 4. DU APP - RLC Interface
 
    - AAD Spec : section 9.2.4
@@ -157,6 +169,16 @@ API Functions
 
       e. UE Delete Response - Response to UE Delete Request from DU APP, as per section 9.2.4.6
 
+5. O1 - DUAPP Interface
+
+   - AAD Spec: Section 9.2.1
+
+   A. O1 to DU APP
+
+      a. Cell Configuration - Sends Basic Cell Configurations to DUAPP as per Section 9.2.1.1
+      
+      b. Slice Configuration - Sends Slice Configurations to DUAPP as per Section 9.2.1.2
+
 Additional APIs
 ----------------
 
@@ -164,25 +186,42 @@ Additional APIs
 
    A. DU APP to MAC
      
-      a. Cell Configuration Request - Configures cell information at MAC
+      a. Cell Configuration Request - Configures cell information at MAC.
 
-      b. Cell Delete Request - Deletes cell information at MAC
+      b. Cell Delete Request - Deletes cell information at MAC.
+      
+      c. Slice Configuration Request : Triggers Slice Configuration request once received from O1 towards MAC.
+	 
+      d. Slice Reconfiguration Request : Triggers Slice Reconfiguration request once received from O1 towards MAC. 
 
    B. MAC to DU APP
 
       a. Cell Configuration Response - Response to Cell Configuration Request from DU APP
 
       b. Cell Delete Response - Response to Cell Delet request from DU APP
+      
+      c. Slice Configuration Respone :  Response to Slice Configuration request from DU Manager.
+	 
+      d. Slice Reconfiguration Request : Response to Slice Reconfiguration request from DU Manager.
 
 2. DU APP - RLC Interface
 
    A. RLC to DU APP
 
-      c. DL RRC Message Response - Informs DU APP if a DL RRC Message was successfuly processed at RLC and sent to MAC.
+      a. DL RRC Message Response - Informs DU APP if a DL RRC Message was successfuly processed at RLC and sent to MAC.
+
+      b. Slice Performance Metrics - Sends PM to DUAPP every 60sec for every Slice configured.
+
 
 3. DU APP - O1 Interface
 
    a. Bring cell up - Informs DU to bring a specific cell up
+
    b. Bring cell down - Informs DU to bring specific cell up
+
    c. Set the cell operational state - Sets the cell state to ACTIVE/INACTIVE
-   d. Raise a cell alarm - Raise an alarm when the cell is ACTIVE/INACTIV
+
+   d. Raise a cell alarm - Raise an alarm when the cell is ACTIVE/INACTIVE
+
+   e. Slice PM - DUAPP sends PM for all Slices in 60sec duration.
+
