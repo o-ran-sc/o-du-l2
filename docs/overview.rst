@@ -379,6 +379,34 @@ As seen in the Figure 7,
 
 - The callback function fetches the alarm list from Alarm Manager and sends it back to the client (SMO/OAM) via  Netconf interface. 
 
+
+Network Slicing procedure
+--------------------------
+
+This section describes the Network Slicing feature within O-DU High.
+
+
+.. figure:: Network_Slicing.png 
+  :width: 869
+  :alt: Network Slicing flow
+
+  Figure 8 -  Network Slicing flow
+
+As seen in the Figure 8,
+
+- Once the Cell is UP, Slice Configuration received from O1 to O-DU is processed. DUAPP forwards the Slice Configuration Request towards MAC which is further forwarded to Scheduler.
+
+- Scheduler stores the Slice Configuration in DB and sends the Slice Configuration Response for each Slice to MAC and further towards DUAPP.
+
+- Slice Configuration Procedure completes. Periodically, RLC will calculate the Slice Performance Metrics(UL and DL Throughput) for slices configured during UE Context Setup/Modification procedure.
+
+- Every 60sec, the Consolidated Slice Metrics is sent from RLC to DUAPP. This is further forwarded towards SMO.
+
+- SMO analysis these Metrics and on need basis, may Optimize the Slice Configuration(RRM Policies) for required Slice. This is received at MAC and Scheduler as Slice Reconfiguration Request from DUAPP.
+
+- Scheduler updates the existing Slice Configuration in its DB and sends back the Slice Reconfiguration Response to MAC and DUAPP.
+
+
 OSC Testcases Supported
 =========================
 
