@@ -39,6 +39,22 @@ Version history
 Summary
 -------
 
+E
+^^^^^^^^
+This release contains the following:
+
+  - Network Slicing Feature:
+
+    Implemented 3gpp functionality for slicing support in the ODU.
+
+    Close loop demonstration of RAN slicing SLA assurance in the O-RAN architecture
+       
+         - Scheduler supports reserving and allocation of PRB pool for as per RRM policy.
+
+         - Measures the Slice performance and periodically reports the slice performance statistics to O1.
+
+         - Adjusting/Improving Slice performance via Slice Reconfiguration with optimized resource quota from SMO.
+
 D
 ^^^^^^^^
 This release contains the following:
@@ -407,6 +423,8 @@ System Limitations
 
 - Netconf TLS connection is not supported
 
+- Current code supports two Network Slices, One Default and other one Dedicated Slice.
+
 Known Issues
 ^^^^^^^^^^^^^
 
@@ -462,3 +480,6 @@ References
 
 11. 5G PHY FAPI Specification v1.0.5
 
+12. 3GPP TS 28.541 Specfication V16.6
+
+13. ORAN-WG8.AAD.0-v05.00.00
