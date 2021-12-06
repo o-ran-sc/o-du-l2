@@ -20,6 +20,10 @@ Version history
 | **Date**           | **Ver.**           | **Author**         | **Comment**        |
 |                    |                    |                    |                    |
 +--------------------+--------------------+--------------------+--------------------+
+|                    | 5.0.0              | Radisys,           | E Release          |
+|                    |                    | HCL Technologies   |                    |
+|                    |                    | Ltd.               |                    |
++--------------------+--------------------+--------------------+--------------------+
 | 2021-09-06         | 4.0.0              | Radisys,           | D Release          |
 |                    |                    | HCL Technologies   |                    |
 |                    |                    | Ltd.               |                    |
@@ -39,6 +43,25 @@ Version history
 Summary
 -------
 
+E
+^^^^^^^
+This release contains the following:
+
+ - Support for multiple bearers per UE
+
+ - Support for multiple UEs per cell. Maximum 3 UEs supported in this release.
+
+ - Enhancement of scheduler for round robin scheduling of UEs
+ 
+ - Enhancement of scheduler to allocate grid resources to UL/DL channels based on slice(RRM Policies), UE and logical channel configurations
+
+ - Support for Network slicing
+      
+      - Measures the Slice performance and periodically reports the slice performance statistics to O1.
+      - Adjusting/Improving Slice performance via Slice Reconfiguration with optimized resource quota from SMO.
+ 
+ - O1 Module [To Be Updated]
+
 D
 ^^^^^^^^
 This release contains the following:
@@ -52,23 +75,18 @@ This release contains the following:
  - O-DU low – O-DU high pairwise testing in Radio mode (Broadcast message successfully received at O-DU Low).
 
  - O1 Module
-      Re-structure O1 module to run as a thread in ODU-High.
-
-      CM Support - IP and Port configuration for DU, CU stub and RIC stub via Netconf interface.
-
-      VES PNF Registration.
-
-      Support for Closed Loop Automation use-case.
+      
+      - Re-structure O1 module to run as a thread in ODU-High.
+      - CM Support - IP and Port configuration for DU, CU stub and RIC stub via Netconf interface.
+      - VES PNF Registration.
+      - Support for Closed Loop Automation use-case.
 
  - Maintenance release includes :
-
-      Memory handling optimization and fixes.
-
-      Improvement in logging.
-
-      K0, K1 and K2 configuration.
       
-      Fixes in proccessing of RACH Indication and RAR.
+      - Memory handling optimization and fixes.
+      - Improvement in logging.
+      - K0, K1 and K2 configuration.
+      - Fixes in proccessing of RACH Indication and RAR.
 
 Cherry
 ^^^^^^^^
@@ -131,6 +149,26 @@ This release contains the following:
 
 Release Data
 ------------
+
+E
+^^^^^^ 
++--------------------------------------+--------------------------------------+
+| **Project**                          | ODUHIGH                              |
+|                                      |                                      |
++--------------------------------------+--------------------------------------+
+| **Repo/commit-ID**                   |                                      |
+|                                      |                                      |
+|                                      |                                      |
++--------------------------------------+--------------------------------------+
+| **Release designation**              | E Release                            |
+|                                      |                                      |
++--------------------------------------+--------------------------------------+
+| **Release date**                     | 2021-                                |
+|                                      |                                      |
++--------------------------------------+--------------------------------------+
+| **Purpose of the delivery**          | E Release                            |
+|                                      |                                      |
++--------------------------------------+--------------------------------------+
 
 D
 ^^^^^^ 
@@ -221,6 +259,29 @@ Feature Additions
 ------------------
 
 **JIRA BACK-LOG:**
+
+E
+^^^^^^
+
++-----------------------------------------------+-----------------------------------------------+
+| **JIRA REFERENCE**                            | **SLOGAN**                                    |
+|                                               |                                               |
++-----------------------------------------------+-----------------------------------------------+
+| https://jira.o-ran-sc.org/browse/ODUHIGH-351  | Support for Multi bearers                     | 
+|                                               |                                               |
++-----------------------------------------------+-----------------------------------------------+
+| https://jira.o-ran-sc.org/browse/ODUHIGH-352  | Support for Multi UE                          |
+|                                               |                                               |
++-----------------------------------------------+-----------------------------------------------+
+| https://jira.o-ran-sc.org/browse/ODUHIGH-363  | Network Slicing support                       |
+|                                               |                                               |
++-----------------------------------------------+-----------------------------------------------+
+| https://jira.o-ran-sc.org/browse/ODUHIGH-340  | Resource allocation in time domain changes to |
+|                                               | meet flexible k0, k1 and k2 values            |
++-----------------------------------------------+-----------------------------------------------+
+| https://jira.o-ran-sc.org/browse/ODUHIGH-361  | Support for cell configuration over O1        |
+|                                               | interface                                     |
++-----------------------------------------------+-----------------------------------------------+
 
 D
 ^^^^^^^
@@ -376,17 +437,14 @@ System Limitations
 ^^^^^^^^^^^^^^^^^^
 - Current code contains support only for below configuration:
 
-   [TDD] [Mu1] [100MHz]
+   - [TDD] [Mu1] [100MHz]
+   - [FDD] [Mu0] [ 20MHz]
+   - Freuency Range = FR 1
+   - DL/UL Modulation = QPSK
 
-   [FDD] [Mu0] [ 20MHz]
+- Current code is locally tested to support upto three UEs.
 
-   Freuency Range = FR 1
-
-   DL/UL Modulation = QPSK
-
-   single UE.
-
-- This release implements a basic scheduler with fixed scheduling for single UE.
+- NR-MAC supports Round Robin scheduling currently.
 
 - Cell broadcast is for SSB and SIB1 only.
 
@@ -401,11 +459,13 @@ System Limitations
 
 - On the F1-U interface, UE, RB and tunnel configurations are static.
 
-- System runs on preconfigured values due to absence of CM support on O1 interface.
+- Cell configuration is supported by CM on O1 interface. All other configuration are static.
 
 - O-DU High has not been integrated with O-CU.(Using Radisys commercial CU as a test fixture)
 
 - Netconf TLS connection is not supported
+
+- Current code supports two Network Slices, One Default and other one Dedicated Slice.
 
 Known Issues
 ^^^^^^^^^^^^^
@@ -416,9 +476,8 @@ Known Issues
 
 - Frequency domain allocation in DCI is a bit map where:
 
-     As per spec : the most significant bit corresponds to the group of lowest frequency.
-
-     As per L1 : the least significant bit corresponds to the lowest frequency group.
+     - As per spec : the most significant bit corresponds to the group of lowest frequency.
+     - As per L1 : the least significant bit corresponds to the lowest frequency group.
 
 - Only Resource allocation type 1 (i.e RB allocation using Start RB and Number of RBs) is supported for PDSCH.
 
@@ -440,7 +499,7 @@ O-DU High uses FAPI interface files provided by Intel and therefore, not complet
 
 References
 ----------
-1. ORAN-WG8.AAD.0-v02.05.00
+1. ORAN-WG8.AAD.0-v05.00.00
 
 2. ORAN WG3.E2AP v01.00
 
@@ -462,3 +521,4 @@ References
 
 11. 5G PHY FAPI Specification v1.0.5
 
+12. 3GPP TS 28.541 Specfication V16.6
