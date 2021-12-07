@@ -438,7 +438,7 @@ uint8_t commonInit()
       DU_LOG("\nERROR  -->  DU_APP : System Task creation for DU APP failed");
       return RFAILED;
    }
-   //ODU_SET_THREAD_AFFINITY(&du_app_stsk, SS_AFFINITY_MODE_EXCL, 16, 0);
+   ODU_SET_THREAD_AFFINITY(&du_app_stsk, SS_AFFINITY_MODE_EXCL, 16, 0);
 
    /* system task for EGTP */
    if(ODU_CREATE_TASK(PRIOR0, &egtp_stsk) != ROK)
@@ -446,7 +446,7 @@ uint8_t commonInit()
       DU_LOG("\nERROR  -->  DU_APP : System Task creation for EGTP failed");
       return RFAILED;
    }
-   //ODU_SET_THREAD_AFFINITY(&egtp_stsk, SS_AFFINITY_MODE_EXCL, 17, 0);
+   ODU_SET_THREAD_AFFINITY(&egtp_stsk, SS_AFFINITY_MODE_EXCL, 17, 0);
 
    /* system task for RLC_DL and MAC */
    if(ODU_CREATE_TASK(PRIOR0, &rlc_mac_cl_stsk) != ROK)
@@ -456,7 +456,7 @@ uint8_t commonInit()
    }
    pthread_attr_init(&attr);
    pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
-   //ODU_SET_THREAD_AFFINITY(&rlc_mac_cl_stsk, SS_AFFINITY_MODE_EXCL, 18, 0);
+   ODU_SET_THREAD_AFFINITY(&rlc_mac_cl_stsk, SS_AFFINITY_MODE_EXCL, 18, 0);
 
    /* system task for RLC UL */
    if(ODU_CREATE_TASK(PRIOR1, &rlc_ul_stsk) != ROK)
@@ -464,7 +464,7 @@ uint8_t commonInit()
       DU_LOG("\nERROR  -->  DU_APP : System Task creation for RLC UL failed");
       return RFAILED;
    }
-   //ODU_SET_THREAD_AFFINITY(&rlc_ul_stsk, SS_AFFINITY_MODE_EXCL, 19, 0);
+   ODU_SET_THREAD_AFFINITY(&rlc_ul_stsk, SS_AFFINITY_MODE_EXCL, 19, 0);
 
    /* system task for SCTP receiver thread */
    if(ODU_CREATE_TASK(PRIOR0, &sctp_stsk) != ROK)
@@ -472,7 +472,7 @@ uint8_t commonInit()
       DU_LOG("\nERROR  -->  DU_APP : System Task creation for SCTP failed");
       return RFAILED;
    }
-   //ODU_SET_THREAD_AFFINITY(&sctp_stsk, SS_AFFINITY_MODE_EXCL, 20, 0);
+   ODU_SET_THREAD_AFFINITY(&sctp_stsk, SS_AFFINITY_MODE_EXCL, 20, 0);
 
    /* system task for lower-mac receiver thread */
    if(ODU_CREATE_TASK(PRIOR0, &lwr_mac_stsk) != ROK)
@@ -480,7 +480,7 @@ uint8_t commonInit()
       DU_LOG("\nERROR  -->  DU_APP : System Task creation for Lower MAC failed");
       return RFAILED;
    }
-   //ODU_SET_THREAD_AFFINITY(&lwr_mac_stsk, SS_AFFINITY_MODE_EXCL, 21, 0);
+   ODU_SET_THREAD_AFFINITY(&lwr_mac_stsk, SS_AFFINITY_MODE_EXCL, 21, 0);
 
 #ifndef INTEL_WLS_MEM
    /* system task for phy stub's slot indication generator thread */
