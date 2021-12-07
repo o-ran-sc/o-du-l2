@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6bddaa49_5bcc7adc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000484
+      },
+      "writtenOn": "2021-12-07T15:48:03Z",
+      "side": 1,
+      "message": "Added new patch with ODU high and O1 integration related changes.",
+      "revId": "cf2eba6deaf70e9b83779d6fdaabfb2f63c5afee",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
