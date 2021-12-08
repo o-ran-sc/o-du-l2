@@ -241,6 +241,10 @@ This section describes the cell-up procedure within O-DU High.
 
 
 As seen in the Figure 4,
+- If O1 interface is enabled, SMO sends cell configuration to DU APP. DU APP stores the configurations in its local database.
+
+- If O1 interface is disabled, DU APP module uses static configuration.
+
 - The DU APP module of O-DU High sends F1 Setup Request to O-CU. This message contains a list of cells that the O-DU High has been configured with.
 
 - The O-CU responds with F1 Setup Response. This message contains a list of cells which must be activated.
@@ -261,7 +265,7 @@ As seen in the Figure 4,
   The frequency of these slot indications is determined by the numerology(Mu) supported.
   5G NR MAC forwards these slot indications to the 5G NR SCH and DU APP modules.
 
-- When the first slot indication reaches the DU APP, cell is marked as up.
+- When the first slot indication reaches the DU APP, cell is marked as up. If O1 is enabled, DU APP triggers an alarm to SMO to indicate the CELL is UP.
 
 - The 5G NR SCH, keeps tracking the SSB and SIB1 ocassions on receiving regular slot indications. 
   On detecting the relevant ocassion, 5G NR SCH schedules SSB/SIB1 and forwards the DL Scheduling Information to 5G NR MAC.

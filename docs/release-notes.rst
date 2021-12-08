@@ -20,6 +20,10 @@ Version history
 | **Date**           | **Ver.**           | **Author**         | **Comment**        |
 |                    |                    |                    |                    |
 +--------------------+--------------------+--------------------+--------------------+
+|                    | 5.0.0              | Radisys,           | E Release          |
+|                    |                    | HCL Technologies   |                    |
+|                    |                    | Ltd.               |                    |
++--------------------+--------------------+--------------------+--------------------+
 | 2021-09-06         | 4.0.0              | Radisys,           | D Release          |
 |                    |                    | HCL Technologies   |                    |
 |                    |                    | Ltd.               |                    |
@@ -38,6 +42,22 @@ Version history
 
 Summary
 -------
+
+E
+^^^^^^^
+This release contains the following:
+
+ - Support for multiple bearers per UE
+
+ - Support for multiple UEs per cell
+
+ - Support for default and dedicated network slicing
+ 
+ - Enhancement of scheduler for round robin scheduling of UEs
+
+ - Enhancement of scheduler to allocate grid resources to UL/DL channels based on slice, UE and logical channel configurations
+
+ - O1 Module [To Be Updated]
 
 D
 ^^^^^^^^
@@ -132,6 +152,26 @@ This release contains the following:
 Release Data
 ------------
 
+E
+^^^^^^ 
++--------------------------------------+--------------------------------------+
+| **Project**                          | ODUHIGH                              |
+|                                      |                                      |
++--------------------------------------+--------------------------------------+
+| **Repo/commit-ID**                   |                                      |
+|                                      |                                      |
+|                                      |                                      |
++--------------------------------------+--------------------------------------+
+| **Release designation**              | E Release                            |
+|                                      |                                      |
++--------------------------------------+--------------------------------------+
+| **Release date**                     | 2021-                                |
+|                                      |                                      |
++--------------------------------------+--------------------------------------+
+| **Purpose of the delivery**          | E Release                            |
+|                                      |                                      |
++--------------------------------------+--------------------------------------+
+
 D
 ^^^^^^ 
 +--------------------------------------+--------------------------------------+
@@ -221,6 +261,29 @@ Feature Additions
 ------------------
 
 **JIRA BACK-LOG:**
+
+E
+^^^^^^
+
++-----------------------------------------------+-----------------------------------------------+
+| **JIRA REFERENCE**                            | **SLOGAN**                                    |
+|                                               |                                               |
++-----------------------------------------------+-----------------------------------------------+
+| https://jira.o-ran-sc.org/browse/ODUHIGH-351  | Support for Multi bearers                     | 
+|                                               |                                               |
++-----------------------------------------------+-----------------------------------------------+
+| https://jira.o-ran-sc.org/browse/ODUHIGH-352  | Support for Multi UE                          |
+|                                               |                                               |
++-----------------------------------------------+-----------------------------------------------+
+| https://jira.o-ran-sc.org/browse/ODUHIGH-363  | Network Slicing support                       |
+|                                               |                                               |
++-----------------------------------------------+-----------------------------------------------+
+| https://jira.o-ran-sc.org/browse/ODUHIGH-340  | Resource allocation in time domain changes to |
+|                                               | meet flexible k0, k1 and k2 values            |
++-----------------------------------------------+-----------------------------------------------+
+| https://jira.o-ran-sc.org/browse/ODUHIGH-361  | Support for cell configuration over O1        |
+|                                               | interface                                     |
++-----------------------------------------------+-----------------------------------------------+
 
 D
 ^^^^^^^
@@ -384,9 +447,9 @@ System Limitations
 
    DL/UL Modulation = QPSK
 
-   single UE.
+- Current code is locally tested to support upto three UEs.
 
-- This release implements a basic scheduler with fixed scheduling for single UE.
+- This release implements a round robin scheduler for UE.
 
 - Cell broadcast is for SSB and SIB1 only.
 
@@ -401,7 +464,7 @@ System Limitations
 
 - On the F1-U interface, UE, RB and tunnel configurations are static.
 
-- System runs on preconfigured values due to absence of CM support on O1 interface.
+- Only cell configuration is supported by CM on O1 interface.
 
 - O-DU High has not been integrated with O-CU.(Using Radisys commercial CU as a test fixture)
 
