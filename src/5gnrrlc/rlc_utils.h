@@ -1815,7 +1815,7 @@ RlcTptPerSnssai* rlcHandleSnssaiTputlist(RlcCb *gCb, Snssai *snssai,\
 uint8_t rlcCalculateTputPerSnssai(CmLListCp *snssaiList, Direction dir);
 uint8_t rlcDelTputSnssaiList(RlcCb *gCb, Direction dir);
 uint8_t BuildSliceReportToDu(uint8_t snssaiCnt);
-bool rlcFindSliceEntry(uint32_t snssaiVal, uint8_t *snssaiIdx,\
+bool rlcFindSliceEntry(SliceIdentifier snssaiVal, uint8_t *snssaiIdx,\
                       SlicePmList *sliceStats);
 
 #ifdef LTE_L2_MEAS

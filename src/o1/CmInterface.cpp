@@ -20,7 +20,7 @@
    configuration
 */
 
-#include "ConfigInterface.h"
+#include "CmInterface.h"
 #include "GlobalDefs.hpp"
 #include "UnixSocketClient.hpp"
 #include "SessionHandler.hpp"
@@ -136,7 +136,7 @@ uint8_t getStartupConfigForStub(StartupConfig *cfg)
 
 bool setCellOpState(uint16_t cellId, OpState opState, CellState cellState)
 {
-   O1_LOG("\nO1  ConfigInterface: Setting cellId = %d, opState=%d, \
+   O1_LOG("\nO1  CmInterface: Setting cellId = %d, opState=%d, \
 cellState=%d", cellId, opState, cellState);
    return NrCellList::instance().setCellOpState(cellId, opState, \
                                                       cellState);

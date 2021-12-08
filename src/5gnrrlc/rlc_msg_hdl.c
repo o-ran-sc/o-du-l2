@@ -974,18 +974,18 @@ uint8_t sendSlicePmToDu(SlicePmList *sliceStats)
  *               recpord of this snssai
  *   
  */
-bool rlcFindSliceEntry(uint32_t snssaiVal, uint8_t *snssaiIdx, SlicePmList *sliceStats)
+bool rlcFindSliceEntry(SliceIdentifier snssaiVal, uint8_t *snssaiIdx, SlicePmList *sliceStats)
 {
    uint8_t cntSlices = sliceStats->numSlice;
 
    for(*snssaiIdx = 0;(*snssaiIdx) < cntSlices; (*snssaiIdx)++)
    {
-      if(snssaiVal == sliceStats->sliceRecord[*snssaiIdx].networkSliceIdentifier)
+      if((snssaiVal.sst == sliceStats->sliceRecord[*snssaiIdx].networkSliceIdentifier.sst)&&
+            (snssaiVal.sd == sliceStats->sliceRecord[*snssaiIdx].networkSliceIdentifier.sd))
       {
          return TRUE;
       }
    }
-   DU_LOG("\nERROR  -->  RLC: Total no of Slice exhausted!");
    return FALSE;
 }
 
@@ -1013,7 +1013,7 @@ uint8_t BuildSliceReportToDu(uint8_t snssaiCnt)
    RlcTptPerSnssai *snssaiNode = NULLP;
    Direction dir = DIR_UL;
    SlicePmList *sliceStats = NULLP;   /*Slice metric */
-   uint32_t snssaiVal = 0;
+   SliceIdentifier snssaiVal ;
    uint8_t snssaiIdx = 0;
 
    if(snssaiCnt == 0)
@@ -1049,12 +1049,11 @@ uint8_t BuildSliceReportToDu(uint8_t snssaiCnt)
 
       while(node)
       {
-         snssaiVal = 0;
          snssaiIdx = 0;
          snssaiNode = (RlcTptPerSnssai *)node->node;
 
-         memcpy(&snssaiVal, snssaiNode->snssai, sizeof(Snssai));
-
+         snssaiVal.sst = snssaiNode->snssai->sst;
+         snssaiVal.sd = snssaiNode->snssai->sd[2]+snssaiNode->snssai->sd[1]*10+snssaiNode->snssai->sd[0]*100;
          if(rlcFindSliceEntry(snssaiVal, &snssaiIdx, sliceStats) == FALSE)
          {
             sliceStats->sliceRecord[snssaiIdx].networkSliceIdentifier = snssaiVal;
