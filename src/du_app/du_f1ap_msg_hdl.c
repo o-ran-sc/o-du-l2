@@ -847,7 +847,7 @@ uint8_t BuildDLNRInfo(NRFreqInfo_t *dlnrfreq)
 S16 BuildNrCellId(BIT_STRING_t *nrcell)
 {
    memset(nrcell->buf, 0, nrcell->size);
-   nrcell->buf[4]   = 16; 
+   nrcell->buf[4]   = duCfgParam.sib1Params.cellIdentity; 
    nrcell->bits_unused = 4;
    return ROK;
 }
@@ -2327,7 +2327,7 @@ uint8_t fillServedCellInfo(Served_Cell_Information_t *srvCellInfo)
    {
       srvCellInfo->nRCGI.nRCellIdentity.buf[tmp] = 0;
    }
-   srvCellInfo->nRCGI.nRCellIdentity.buf[4] = 16;
+   srvCellInfo->nRCGI.nRCellIdentity.buf[4] = duCfgParam.sib1Params.cellIdentity;
    srvCellInfo->nRCGI.nRCellIdentity.bits_unused =4;
 
    /*nRPCI*/
@@ -2425,7 +2425,7 @@ uint8_t fillServCellToModItem(Served_Cells_To_Modify_Item_t *modifyItem)
    {
       modifyItem->oldNRCGI.nRCellIdentity.buf[ieIdx] = 0;
    }
-   modifyItem->oldNRCGI.nRCellIdentity.buf[4] = 16;
+   modifyItem->oldNRCGI.nRCellIdentity.buf[4] = duCfgParam.sib1Params.cellIdentity;
    modifyItem->oldNRCGI.nRCellIdentity.bits_unused = 4;
 
    if(fillServedCellInfo(&modifyItem->served_Cell_Information))
@@ -2534,7 +2534,7 @@ uint8_t fillCellToDeleteItem(struct Served_Cells_To_Delete_ItemIEs *deleteItemIe
    {
       deleteItem->oldNRCGI.nRCellIdentity.buf[arrIdx] = 0;
    }
-   deleteItem->oldNRCGI.nRCellIdentity.buf[4] = 16;
+   deleteItem->oldNRCGI.nRCellIdentity.buf[4] = duCfgParam.sib1Params.cellIdentity;
    deleteItem->oldNRCGI.nRCellIdentity.bits_unused = 4;
    return ROK;
 } 

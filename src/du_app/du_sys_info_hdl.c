@@ -337,8 +337,9 @@ uint8_t BuildCellIdentity(CellIdentity_t  *cellIdentity)
    {   
       DU_LOG("\nERROR  -->  DU APP: CellIdentity memory allocation failure");
       return RFAILED;
-   }   
-   *cellIdentity->buf = duCfgParam.sib1Params.cellIdentity;
+   }
+   memset(cellIdentity->buf, 0,  cellIdentity->size);
+   cellIdentity->buf[4] = duCfgParam.sib1Params.cellIdentity;
 
    return ROK;
 }

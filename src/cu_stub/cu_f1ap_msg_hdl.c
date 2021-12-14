@@ -279,7 +279,7 @@ S16 BuildNrCellId(BIT_STRING_t *nrcell)
  *         RFAILED - failure
  *
  * ****************************************************************/
-S16 BuildAndSendF1SetupRsp()
+S16 BuildAndSendF1SetupRsp(BIT_STRING_t *nrcellId)
 {
    uint8_t    idx,ieIdx;
    uint8_t    elementCnt,cellCnt;
@@ -497,7 +497,7 @@ S16 BuildAndSendF1SetupRsp()
       CU_FREE(f1apMsg, sizeof(F1AP_PDU_t));
       return RFAILED;
    }
-   BuildNrCellId(&(cellToActivate->list.array[0]->value.choice.Cells_to_be_Activated_List_Item.nRCGI.nRCellIdentity));
+   memcpy(&cellToActivate->list.array[0]->value.choice.Cells_to_be_Activated_List_Item.nRCGI.nRCellIdentity, nrcellId, sizeof(BIT_STRING_t)); 
    /* RRC Version */
    idx++;
    f1SetupRsp->protocolIEs.list.array[idx]->id = \
@@ -8670,6 +8670,7 @@ uint8_t procUeContextModificationResponse(F1AP_PDU_t *f1apMsg)
 void procF1SetupReq(F1AP_PDU_t *f1apMsg)
 {
    uint8_t ieIdx = 0, plmnidx=0, ret=ROK;
+   BIT_STRING_t nrcellIdentity;
    F1SetupRequest_t *f1SetupReq = NULLP;
    GNB_DU_Served_Cells_Item_t *srvCellItem = NULLP; 
    GNB_DU_Served_Cells_List_t *duServedCell = NULLP;
@@ -8694,6 +8695,7 @@ void procF1SetupReq(F1AP_PDU_t *f1apMsg)
                            {
                               srvCellItem =  &duServedCell->list.array[plmnidx]->value.choice.GNB_DU_Served_Cells_Item;
                               ret = procServedCellPlmnList(&srvCellItem->served_Cell_Information.servedPLMNs);
+                              memcpy(&nrcellIdentity, &srvCellItem->served_Cell_Information.nRCGI.nRCellIdentity, sizeof(BIT_STRING_t));
                            }
                         }
                      }
@@ -8704,7 +8706,7 @@ void procF1SetupReq(F1AP_PDU_t *f1apMsg)
    }
    if(ret == ROK)
    {
-      BuildAndSendF1SetupRsp();
+      BuildAndSendF1SetupRsp(&nrcellIdentity);
    }
    else
    {

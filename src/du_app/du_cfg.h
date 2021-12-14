@@ -238,7 +238,7 @@
 #define SPARE 0
 #define SSB_SC_OFFSET 0
 #define DU_RANAC 1
-#define CELL_IDENTITY 32
+#define CELL_IDENTITY 16
 
 /* Macro definitions for DUtoCuRrcContainer */
 #define CELL_GRP_ID 1
