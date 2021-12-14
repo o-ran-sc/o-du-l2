@@ -58,6 +58,7 @@ PS: If O1 interface is enabled, IPs should match those configured in "startup_co
       - ./odu
 
 PS: CU stub and RIC stub must be run (in no particular sequence) before ODU. 
+    In case O1 is enabled and SMO is not available follow section E below.
 
 II. Execution - Using Docker Images
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -241,3 +242,15 @@ Here are the steps as executed in the terminal
      |  </odu>
 
 The XML output is a list of active alarms in the O-DU High system.
+
+E. Push cell and slice configuration over O1 using netopeer-cli
+---------------------------------------------------------------
+
+When O-DU High is run with O1 enabled it waits for cell configuration to be pushed by SMO. In case the SMO is not available then these configurations can be pushed via netopeer-cli as follows.
+
+   1. Follow step D.1 and D.2.
+   2. update cellConfig.xml and rrmPolicy.xml.
+
+      | $cd <O-DU High Directory>/l2/build/config
+      | $edit-config --target candidate --config=cellConfig.xml
+      | $edit-config --target candidate --config=rrmPolicy.xml

@@ -39,6 +39,14 @@ Version history
 Summary
 -------
 
+E
+^^^^^^^^
+This release contains the following:
+
+ - Support for cell confiiguration over O1 interface.
+ - Support for RRM policy confiiguration over O1 interface.
+ - Support VES PM data stream for sending slice metrics parameters to SMO.
+
 D
 ^^^^^^^^
 This release contains the following:
@@ -221,6 +229,20 @@ Feature Additions
 ------------------
 
 **JIRA BACK-LOG:**
+
+E
+^^^^^^^
+
++-----------------------------------------------+-----------------------------------------------+
+| **JIRA REFERENCE**                            | **SLOGAN**                                    |
+|                                               |                                               |
++-----------------------------------------------+-----------------------------------------------+
+| https://jira.o-ran-sc.org/browse/ODUHIGH-383  | Cell and Network slicing configuration over O1|
+|                                               |                                               |
++-----------------------------------------------+-----------------------------------------------+
+| https://jira.o-ran-sc.org/browse/ODUHIGH-384  | VES PM data for slicing use case              |
+|                                               |                                               |
++-----------------------------------------------+-----------------------------------------------+
 
 D
 ^^^^^^^
@@ -407,6 +429,8 @@ System Limitations
 
 - Netconf TLS connection is not supported
 
+- We have to manually download the 3GPP yang models and install.
+
 Known Issues
 ^^^^^^^^^^^^^
 
@@ -462,3 +486,6 @@ References
 
 11. 5G PHY FAPI Specification v1.0.5
 
+12. O-RAN WG1.O1-Interface v04.00
+
+13. O-RAN WG1.OAM-Architecture v04.00
