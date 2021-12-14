@@ -140,19 +140,62 @@ Setting up Netconf server (Only if O1 interface enabled)
 
     - Navigate to config folder and update the desired initial configuration
 
-   - Ubuntu :
-       | cd <O-DU High Directory>/l2/build/config
+      | cd <O-DU High Directory>/l2/build/config
 
       | Open the startup_config.xml and edit the desired IP and Port for CU, DU and RIC.
       | Open the nacm_config.xml and edit the desired user name to provide the access to that user.
       | Open the netconf_server_ipv6.xml and edit the desired netconf server configuration.
-      | Open the vesConfig.json and edit the details of VES collector.
+      | Open the oamVesConfig.json and edit the details of OAM VES collector.
+      | Open the smoVesConfig.json and edit the details of SMO VES collector.
       | Open the netconfConfig.json and edit the details of Netopeer server.
       | Install the yang modules and load initial configuration.
 
    - Ubuntu :
-       | cd <O-DU High Directory>/l2/build/scripts
-       | sudo ./load_yang.sh
+      | $cd <O-DU High Directory>/l2/build/scripts
+      | $sudo ./load_yang.sh
+
+      | Install additional 3GPP yang models.
+
+      | $cd <O-DU High Directory>/l2/build/yang
+
+      | Download following 3GPP REL17 YANG models
+      | https://forge.3gpp.org/rep/sa5/MnS/tree/Rel17-draft/yang-models
+
+      | _3gpp-common-top.yang
+      | _3gpp-5g-common-yang-types.yang
+      | _3gpp-common-yang-types.yang
+      | _3gpp-common-managed-element.yang
+      | _3gpp-common-measurements.yang
+      | _3gpp-common-subscription-control.yang
+      | _3gpp-common-fm.yang
+      | _3gpp-common-trace.yang
+      | _3gpp-common-managed-function.yang
+      | _3gpp-nr-nrm-gnbdufunction.yang
+      | _3gpp-nr-nrm-nrcelldu.yang
+      | _3gpp-nr-nrm-rrmpolicy.yang
+
+      | Note :There are some corrections required in _3gpp-common-trace.yang and _3gpp-common-trace.yang yang model. Please follow these steps.
+
+   - Ubuntu :
+      | sed -i -e 's/"IMMEDIATE_MDT"/"IMMEDIATE_MDT_ONLY"/g' _3gpp-common-trace.yang
+      | sed -i -e 's/"TRACE"/"TRACE_ONLY"/g' _3gpp-common-trace.yang
+
+      | Install all the downloaded yang models.
+
+   - Ubuntu :
+       | cd <O-DU High Directory>/l2/build/yang
+       | sysrepoctl -i      _3gpp-common-top.yang
+       | sysrepoctl -i      _3gpp-5g-common-yang-types.yang
+       | sysrepoctl -i      _3gpp-common-yang-types.yang
+       | sysrepoctl -i      _3gpp-common-managed-element.yang
+       | sysrepoctl -i      _3gpp-common-measurements.yang
+       | sysrepoctl -i      _3gpp-common-subscription-control.yang
+       | sysrepoctl -i      _3gpp-common-fm.yang
+       | sysrepoctl -i      _3gpp-common-trace.yang
+       | sysrepoctl -i      _3gpp-common-managed-function.yang
+       | sysrepoctl -i      _3gpp-nr-nrm-gnbdufunction.yang
+       | sysrepoctl -i      _3gpp-nr-nrm-nrcelldu.yang
+       | sysrepoctl -i      _3gpp-nr-nrm-rrmpolicy.yang
 
 - Start Netopeer2-server:
 
