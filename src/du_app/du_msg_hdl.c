@@ -362,22 +362,23 @@ uint8_t duProcCfgComplete()
          memset(cell, 0, sizeof(DuCellCb));
          cell->cellId = ++cellId;
          memset(&cell->cellInfo.nrEcgi.plmn, 0, sizeof(Plmn));
-         cell->cellInfo.nrEcgi.plmn.mcc[0] = PLMN_MCC0;
-         cell->cellInfo.nrEcgi.plmn.mcc[1] = PLMN_MCC1;
-         cell->cellInfo.nrEcgi.plmn.mcc[2] = PLMN_MCC2;
-         cell->cellInfo.nrEcgi.plmn.mnc[0] = PLMN_MNC0;
-         cell->cellInfo.nrEcgi.plmn.mnc[1] = PLMN_MNC1;
+         cell->cellInfo.nrEcgi.plmn.mcc[0] = duCfgParam.srvdCellLst[0].duCellInfo.cellInfo.srvdPlmn[0].plmn.mcc[0];
+         cell->cellInfo.nrEcgi.plmn.mcc[1] = duCfgParam.srvdCellLst[0].duCellInfo.cellInfo.srvdPlmn[0].plmn.mcc[1];
+         cell->cellInfo.nrEcgi.plmn.mcc[2] = duCfgParam.srvdCellLst[0].duCellInfo.cellInfo.srvdPlmn[0].plmn.mcc[2];
+         cell->cellInfo.nrEcgi.plmn.mnc[0] = duCfgParam.srvdCellLst[0].duCellInfo.cellInfo.srvdPlmn[0].plmn.mnc[0];
+         cell->cellInfo.nrEcgi.plmn.mnc[1] = duCfgParam.srvdCellLst[0].duCellInfo.cellInfo.srvdPlmn[0].plmn.mnc[1];
          cell->cellInfo.nrEcgi.cellId = cell->cellId;
-         cell->cellInfo.nrPci = NR_PCI; 
-         cell->cellInfo.fiveGsTac = DU_TAC;
+         cell->cellInfo.nrPci = duCfgParam.srvdCellLst[0].duCellInfo.cellInfo.nrPci; 
+         cell->cellInfo.fiveGsTac = duCfgParam.srvdCellLst[0].duCellInfo.tac;
          memset(&cell->cellInfo.plmn[idx1], 0, sizeof(Plmn));
          for(idx1=0; idx1<MAX_PLMN; idx1++)
          {
-            cell->cellInfo.plmn[idx1].mcc[0] = PLMN_MCC0;
-            cell->cellInfo.plmn[idx1].mcc[1] = PLMN_MCC1;
-            cell->cellInfo.plmn[idx1].mcc[2] = PLMN_MCC2;
-            cell->cellInfo.plmn[idx1].mnc[0] = PLMN_MNC0;
-            cell->cellInfo.plmn[idx1].mnc[1] = PLMN_MNC1;
+            cell->cellInfo.plmn[idx1].mcc[0] = duCfgParam.srvdCellLst[0].duCellInfo.cellInfo.srvdPlmn[0].plmn.mcc[0];
+            cell->cellInfo.plmn[idx1].mcc[1] = duCfgParam.srvdCellLst[0].duCellInfo.cellInfo.srvdPlmn[0].plmn.mcc[1];
+            cell->cellInfo.plmn[idx1].mcc[2] = duCfgParam.srvdCellLst[0].duCellInfo.cellInfo.srvdPlmn[0].plmn.mcc[2];
+            cell->cellInfo.plmn[idx1].mnc[0] = duCfgParam.srvdCellLst[0].duCellInfo.cellInfo.srvdPlmn[0].plmn.mnc[0];
+            cell->cellInfo.plmn[idx1].mnc[1] = duCfgParam.srvdCellLst[0].duCellInfo.cellInfo.srvdPlmn[0].plmn.mnc[1];
+            cell->cellInfo.plmn[idx1].mnc[2] = duCfgParam.srvdCellLst[0].duCellInfo.cellInfo.srvdPlmn[0].plmn.mnc[2];
          }
          cell->cellInfo.maxUe = duCfgParam.maxUe;
          cell->cellStatus = CELL_OUT_OF_SERVICE;
