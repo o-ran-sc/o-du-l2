@@ -20,18 +20,30 @@
 CURRENT_DIR=$PWD
 ROOT_DIR=$CURRENT_DIR/../../
 
+if [ -d "$ROOT_DIR/bin/odu/config" ]
+then
+       CONFIG_PATH=$ROOT_DIR/bin/odu/config/
+       echo "CONFIG_PATH = $CONFIG_PATH"
+else
+       CONFIG_PATH=$ROOT_DIR/build/config/
+       echo "CONFIG_PATH = $CONFIG_PATH"
+fi
+       echo "CONFIG_PATH = $CONFIG_PATH"
+
 #load yand models
 echo "### loading yang model ###"
 sysrepoctl -i $ROOT_DIR/build/yang/o-ran-sc-odu-alarm-v1.yang
 sysrepoctl -i $ROOT_DIR/build/yang/o-ran-sc-du-hello-world.yang
 sysrepoctl -i $ROOT_DIR/build/yang/o-ran-sc-odu-interface-v1.yang
+
 echo "### loading yang model Done###"
 
 #load initial configuration
 echo "### loading initial configuration ###"
-sysrepocfg --import=$ROOT_DIR/bin/odu/config/startup_config.xml -v 3 --datastore running --module  o-ran-sc-odu-interface-v1
-sysrepocfg --import=$ROOT_DIR/bin/odu/config/nacm_config.xml -v 3 --datastore running --module  ietf-netconf-acm
-sysrepocfg --import=$ROOT_DIR/bin/odu/config/netconf_server_ipv6.xml -v 3 --datastore running --module  ietf-netconf-server
+
+sysrepocfg --import=$CONFIG_PATH/startup_config.xml -v 3 --datastore running --module  o-ran-sc-odu-interface-v1
+sysrepocfg --import=$CONFIG_PATH/nacm_config.xml -v 3 --datastore running --module  ietf-netconf-acm
+sysrepocfg --import=$CONFIG_PATH/netconf_server_ipv6.xml -v 3 --datastore running --module  ietf-netconf-server
 echo "### loading initial configuration done ###"
 
 ################################################################################

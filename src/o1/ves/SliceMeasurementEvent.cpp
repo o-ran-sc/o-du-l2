@@ -24,7 +24,7 @@
 #include "PmInterface.h"
 
 #define MEASUREMENT_INTERVAL 60
-#define MEASUREMENT_FIELDS_VERSION 4.0
+#define MEASUREMENT_FIELDS_VERSION "4.0"
 
 /* Constructor*/
 SliceMeasurementEvent::SliceMeasurementEvent() 
@@ -87,9 +87,8 @@ bool SliceMeasurementEvent::prepareEventFields(const Message* msg)
         for (size_t i{0}; i < sliceList.size(); i++)            
         {
             cJSON *Slice = JsonHelper::createNode();
-           char networkId[12];
-           sprintf(networkId,"%d%x\n", sliceList[i].networkSliceIdentifier.sst,sliceList[i].networkSliceIdentifier.sd);
-            //O1_LOG("sliceList[i].networkSliceIdentifier  %s",networkId);
+            char networkSliceId[7] = {0};
+            sprintf(networkSliceId,"%06X", sliceList[i].networkSliceIdentifier.sd);
             if(Slice == 0)
             {
                 ret = false;
@@ -114,7 +113,7 @@ bool SliceMeasurementEvent::prepareEventFields(const Message* msg)
             }
             else if (JsonHelper::addNodeToObject(Slice, \
                                                 "networkSliceIdentifier", \
-                                                 networkId) == 0)
+                                                 networkSliceId) == 0)
             {
                 ret = false;
             }
