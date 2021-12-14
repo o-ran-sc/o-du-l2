@@ -1,3 +1,4 @@
+
 /*******************************************************************************
 ################################################################################
 #   Copyright (c) [2020-2021] [HCL Technologies Ltd.]                          #
@@ -226,20 +227,23 @@ void NrCellDuCb::updateParams(string &parent, string &leaf, string &val)
          {
             memset(cellParams.plmnList[memberNum].mcc, \
 	           '\0', MCC_LEN);
-            cellParams.plmnList[memberNum].mcc[0] = stoi(val.substr(0,1).c_str(),0,10);
-            cellParams.plmnList[memberNum].mcc[1] = stoi(val.substr(1,1).c_str(),0,10);
-            cellParams.plmnList[memberNum].mcc[2] = stoi(val.substr(2,1).c_str(),0,10);
-            O1_LOG("\nO1 NrCellDuCb : cellParams.plmnList[%d].mcc[2]  = %c",
+            cellParams.plmnList[memberNum].mcc[0] = std::stoi(val.substr(0,1).c_str(),0,10);
+            cellParams.plmnList[memberNum].mcc[1] = std::stoi(val.substr(1,1).c_str(),0,10);
+            cellParams.plmnList[memberNum].mcc[2] = std::stoi(val.substr(2,1).c_str(),0,10);
+            O1_LOG("\nO1 NrCellDuCb : cellParams.plmnList[%d].mcc[2]  = %d",
 	           memberNum, cellParams.plmnList[memberNum].mcc[2]);
          }
 	 else if(leaf == "mnc")
          {
 	    memset(cellParams.plmnList[memberNum].mnc, \
 	           '\0', MNC_LEN);
-            cellParams.plmnList[memberNum].mnc[0] = stoi(val.substr(0,1).c_str(),0,10);
-            cellParams.plmnList[memberNum].mnc[1] = stoi(val.substr(1,1).c_str(),0,10);
-            cellParams.plmnList[memberNum].mnc[2] = stoi(val.substr(2,1).c_str(),0,10);
-            O1_LOG("\nO1 NrCellDuCb : cellParams.plmnList[%d].mnc[1]  = %c",
+            cellParams.plmnList[memberNum].mnc[0] = std::stoi(val.substr(0,1).c_str(),0,10);
+            cellParams.plmnList[memberNum].mnc[1] = std::stoi(val.substr(1,1).c_str(),0,10);
+            if(strlen(val.c_str())>2)
+            {
+               cellParams.plmnList[memberNum].mnc[2] = std::stoi(val.substr(2,1).c_str(),0,10);
+            }
+            O1_LOG("\nO1 NrCellDuCb : cellParams.plmnList[%d].mnc[1]  = %d",
 	           memberNum, cellParams.plmnList[memberNum].mnc[1]);
          }
          else if(leaf == "sst")
@@ -255,11 +259,11 @@ void NrCellDuCb::updateParams(string &parent, string &leaf, string &val)
 	           '\0', SD_LEN);
 
             cellParams.plmnList[memberNum].sd[0] = \
-                    stoi(val.substr(0,2).c_str(),0,16);
+                    std::stoi(val.substr(0,2).c_str(),0,16);
             cellParams.plmnList[memberNum].sd[1] = \
-                    stoi(val.substr(2,2).c_str(),0,16);
+                    std::stoi(val.substr(2,2).c_str(),0,16);
             cellParams.plmnList[memberNum].sd[2] = \
-                    stoi(val.substr(4,2).c_str(),0,16);
+                    std::stoi(val.substr(4,2).c_str(),0,16);
             O1_LOG("\nO1 NrCellDuCb : cellParams.plmnList[%d].sd[2]  = %d",
                     memberNum, cellParams.plmnList[memberNum].sd[SD_LEN-1]);
          }
@@ -387,6 +391,7 @@ changed val=%s", change->new_val()->val_to_string().c_str());
    }
    catch( const std::exception& e ) {
       O1_LOG("\nO1 rannetworkCb exception : %s\n", e.what());
+      return SR_ERR_INTERNAL;
    }
 
    return SR_ERR_OK;

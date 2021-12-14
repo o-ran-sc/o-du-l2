@@ -74,7 +74,8 @@ void PerfMeasurementEvent::getConfig()
  ******************************************************************/
 void PerfMeasurementEvent::createUrl()
 {
-   mVesUrl = "http://" + mVesServerIp + ":" + mVesServerPort + "/eventListener/v7/events";
+   mVesUrl = "https://" + mVesServerIp + ":" + mVesServerPort + "/eventListener/v7";
+   O1_LOG("\nURL=%s", mVesUrl.c_str());
 }
 
 /**********************************************************************
