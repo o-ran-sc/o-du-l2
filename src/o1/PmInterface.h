@@ -32,11 +32,11 @@ typedef struct
 {
   uint32_t sd:24;
   uint8_t sst;
-}SliceId;
+}SNSSAI;
 
 
 typedef struct {
-   SliceId networkSliceIdentifier;
+   SNSSAI networkSliceIdentifier;
    double DRB_UEThpDl_SNSSAI;
    double DRB_UEThpUl_SNSSAI;
 }SliceMetricRecord;

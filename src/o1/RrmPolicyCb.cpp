@@ -181,10 +181,8 @@ bool RrmPolicyCb::updateParams(string &parent, string &leafNode, string &val)
             rrmPolicy[policyNum].rRMPolicyMemberList[memberNum].mcc[0] = std::stoi(val.substr(0,1).c_str(),0,10);
             rrmPolicy[policyNum].rRMPolicyMemberList[memberNum].mcc[1] = std::stoi(val.substr(1,1).c_str(),0,10);
             rrmPolicy[policyNum].rRMPolicyMemberList[memberNum].mcc[2] = std::stoi(val.substr(2,1).c_str(),0,10);
-            //strncpy((char *)rrmPolicy[policyNum].rRMPolicyMemberList[memberNum].mcc, \
-			    val.c_str(), MCC_LEN);
             O1_LOG("\nO1 RrmPolicyCb::updateParams rrmPolicy[%d]."
-	           "rRMPolicyMemberList[%d].mcc[2] = %c", policyNum, memberNum, \
+	           "rRMPolicyMemberList[%d].mcc[2] = %d", policyNum, memberNum, \
 		   rrmPolicy[policyNum].rRMPolicyMemberList[memberNum].mcc[2]);
          }
 	 else if(leafNode == "mnc")
@@ -193,11 +191,12 @@ bool RrmPolicyCb::updateParams(string &parent, string &leafNode, string &val)
 	           '\0', MNC_LEN);
             rrmPolicy[policyNum].rRMPolicyMemberList[memberNum].mnc[0] = std::stoi(val.substr(0,1).c_str(),0,10);
             rrmPolicy[policyNum].rRMPolicyMemberList[memberNum].mnc[1] = std::stoi(val.substr(1,1).c_str(),0,10);
-            rrmPolicy[policyNum].rRMPolicyMemberList[memberNum].mnc[2] = std::stoi(val.substr(2,1).c_str(),0,10);
-	    //strncpy((char *) rrmPolicy[policyNum].rRMPolicyMemberList[memberNum].mnc, \
-	            val.c_str(), MNC_LEN);
-            O1_LOG("\nO1 RrmPolicyCb::updateParams rrmPolicy[%d]."
-		      "rRMPolicyMemberList[%d].mnc[1] = %c", policyNum, memberNum, \
+            if(strlen(val.c_str())>2)
+            {
+               rrmPolicy[policyNum].rRMPolicyMemberList[memberNum].mnc[2] = std::stoi(val.substr(2,1).c_str(),0,10);
+            }
+           O1_LOG("\nO1 RrmPolicyCb::updateParams rrmPolicy[%d]."
+                     "rRMPolicyMemberList[%d].mnc[1] = %d", policyNum, memberNum, \
 		      rrmPolicy[policyNum].rRMPolicyMemberList[memberNum].mnc[1]);
          }
          else if(leafNode == "sst")
@@ -302,6 +301,7 @@ changed val=%s", change->new_val()->val_to_string().c_str());
    }
    catch( const std::exception& e ) {
       O1_LOG("\nO1 RrmPolicyCb exception : %s\n", e.what());
+      return SR_ERR_INTERNAL;
    }
    return SR_ERR_OK;
 }
