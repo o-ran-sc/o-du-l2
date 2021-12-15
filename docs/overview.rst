@@ -241,6 +241,10 @@ This section describes the cell-up procedure within O-DU High.
 
 
 As seen in the Figure 4,
+- If O1 interface is enabled, SMO sends cell configuration to DU APP. DU APP stores the configurations in its local database.
+
+- If O1 interface is disabled, DU APP module uses static configuration.
+
 - The DU APP module of O-DU High sends F1 Setup Request to O-CU. This message contains a list of cells that the O-DU High has been configured with.
 
 - The O-CU responds with F1 Setup Response. This message contains a list of cells which must be activated.
@@ -261,7 +265,7 @@ As seen in the Figure 4,
   The frequency of these slot indications is determined by the numerology(Mu) supported.
   5G NR MAC forwards these slot indications to the 5G NR SCH and DU APP modules.
 
-- When the first slot indication reaches the DU APP, cell is marked as up.
+- When the first slot indication reaches the DU APP, cell is marked as up. If O1 is enabled, DU APP triggers an alarm to SMO to indicate the CELL is UP.
 
 - The 5G NR SCH, keeps tracking the SSB and SIB1 ocassions on receiving regular slot indications. 
   On detecting the relevant ocassion, 5G NR SCH schedules SSB/SIB1 and forwards the DL Scheduling Information to 5G NR MAC.
@@ -348,11 +352,11 @@ This section describes the closed loop automation procedure within O-DU High.
    
 4. DU APP then sends UE delete request to MAC and RLC. Once a confirmation is received from both MAC and RLC, DU APP deletes UE from its own database as well.
 
-4. Once all UEs are released, O-DU High sends STOP.Request to L1. L1 responds with stop indication.
+5. Once all UEs are released, O-DU High sends STOP.Request to L1. L1 responds with stop indication.
 
-5. Once cell has stopped, DU APP sends cell delete request to MAC. On receiving confimation from MAC, DU APP deletes cell information from its own database as well and sends UE Context Release Complete.
+6. Once cell has stopped, DU APP sends cell delete request to MAC. On receiving confimation from MAC, DU APP deletes cell information from its own database as well and sends UE Context Release Complete.
 
-6. On receiving cell bring up command from SMO, the complete Cell bring up and UE attach procedure will be repeated (as explained in above sections)
+7. On receiving cell bring up command from SMO, the complete Cell bring up and UE attach procedure will be repeated (as explained in above sections)
 
 
 O1 Netconf get-alarm list procedure
@@ -378,6 +382,34 @@ As seen in the Figure 7,
 - Whenever SMO/OAM requires the current alarm list, it sends a Netconf get request. The request is received by the Netopeer Server and a callback method, registered with the Session Handler, is invoked.
 
 - The callback function fetches the alarm list from Alarm Manager and sends it back to the client (SMO/OAM) via  Netconf interface. 
+
+
+Network Slicing procedure
+--------------------------
+
+This section describes the Network Slicing feature within O-DU High.
+
+
+.. figure:: Network_Slicing.png 
+  :width: 869
+  :alt: Network Slicing flow
+
+  Figure 8 -  Network Slicing flow
+
+As seen in the Figure 8,
+
+- Once the Cell is UP, Slice Configuration received from O1 to O-DU is processed. DU APP forwards the Slice Configuration Request towards MAC which is further forwarded to Scheduler.
+
+- Scheduler stores the Slice Configuration in DB and sends the Slice Configuration Response for each Slice to MAC and further towards DU APP. Slice Configuration Procedure completes.
+
+- Once a UE attaches and PDU session is established then RLC will periodically calculate the Slice Performance Metrics(UL and DL Throughput) for slices configured during UE Context Setup/Modification procedure.
+
+- RLC sends the Consolidated Slice Metrics to DU APP at every 60 sec duration. This is further forwarded towards SMO/Non-RT RIC.
+
+- SMO/Non-RT RIC analyses these metrics and may optimize the slice configuration(RRM Policies) for dedicated slice. This is received at MAC and Scheduler as Slice Reconfiguration Request from DU APP.
+
+- Scheduler updates the received Slice Configuration in its DB and sends back the Slice Reconfiguration Response to MAC and further MAC forwards it to DU APP. Scheduler applies the optimized RRM policies for the dedicated slice.
+
 
 OSC Testcases Supported
 =========================

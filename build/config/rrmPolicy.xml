@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RRMPolicyRatio xmlns="urn:3gpp:sa5:_3gpp-nr-nrm-rrmpolicy">
+  <id>rrm-1</id>
+  <attributes>
+    <resourceType>PRB_UL</resourceType>
+    <rRMPolicyMemberList>
+	<mcc>901</mcc>
+	<mnc>44</mnc>
+	<sd>000002</sd>
+	<sst>1</sst>
+    </rRMPolicyMemberList>
+    <rRMPolicyMaxRatio>90</rRMPolicyMaxRatio>
+    <rRMPolicyMinRatio>40</rRMPolicyMinRatio>
+    <rRMPolicyDedicatedRatio>40</rRMPolicyDedicatedRatio>
+  </attributes>
+</RRMPolicyRatio> 
