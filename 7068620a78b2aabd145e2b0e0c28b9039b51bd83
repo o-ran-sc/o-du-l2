@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a55548ad_fb6e72d2",
+        "filename": "docs/installation-guide.rst",
+        "patchSetId": 3
+      },
+      "lineNbr": 183,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-12-15T05:52:21Z",
+      "side": 1,
+      "message": "Will this line come under Ubuntu or is it a separate pointer?\nCan you please once confirm the alignment of this file?",
+      "range": {
+        "startLine": 183,
+        "startChar": 35,
+        "endLine": 183,
+        "endChar": 40
+      },
+      "revId": "7068620a78b2aabd145e2b0e0c28b9039b51bd83",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6258b91f_9d792872",
+        "filename": "docs/user-guide.rst",
+        "patchSetId": 3
+      },
+      "lineNbr": 253,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-12-15T05:52:21Z",
+      "side": 1,
+      "message": "The three commands is not coming in separate lines. Can you please check the alignment",
+      "range": {
+        "startLine": 253,
+        "startChar": 16,
+        "endLine": 253,
+        "endChar": 21
+      },
+      "revId": "7068620a78b2aabd145e2b0e0c28b9039b51bd83",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
