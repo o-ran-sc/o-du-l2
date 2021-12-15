@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f878b976_b9b68640",
+        "filename": "docs/api-docs.rst",
+        "patchSetId": 7
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-12-15T09:37:10Z",
+      "side": 1,
+      "message": "Note: DU APP module consist functionality related to F1 Handler and O1 Handler",
+      "revId": "c7450e0f6a8acad1ee2682f1625d6295c14efe3d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ab296348_e7454c72",
+        "filename": "docs/api-docs.rst",
+        "patchSetId": 7
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-12-15T09:37:10Z",
+      "side": 1,
+      "message": "change it to SMO-OAM - DU APP",
+      "range": {
+        "startLine": 163,
+        "startChar": 9,
+        "endLine": 163,
+        "endChar": 15
+      },
+      "revId": "c7450e0f6a8acad1ee2682f1625d6295c14efe3d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "14baca2e_0a6e3a0f",
+        "filename": "docs/api-docs.rst",
+        "patchSetId": 7
+      },
+      "lineNbr": 167,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-12-15T09:37:10Z",
+      "side": 1,
+      "message": "SMO-OAM to DU APP",
+      "range": {
+        "startLine": 167,
+        "startChar": 9,
+        "endLine": 167,
+        "endChar": 12
+      },
+      "revId": "c7450e0f6a8acad1ee2682f1625d6295c14efe3d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d0308e88_67575d9b",
+        "filename": "docs/api-docs.rst",
+        "patchSetId": 7
+      },
+      "lineNbr": 207,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-12-15T09:37:10Z",
+      "side": 1,
+      "message": "DU APP - SMO Interface",
+      "range": {
+        "startLine": 207,
+        "startChar": 3,
+        "endLine": 207,
+        "endChar": 24
+      },
+      "revId": "c7450e0f6a8acad1ee2682f1625d6295c14efe3d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}

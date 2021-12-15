@@ -1,0 +1,159 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "44711060_d994b23b",
+        "filename": "docs/overview.rst",
+        "patchSetId": 8
+      },
+      "lineNbr": 405,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-12-15T09:37:10Z",
+      "side": 1,
+      "message": "change it to UE attach and PDU session established",
+      "range": {
+        "startLine": 405,
+        "startChar": 2,
+        "endLine": 405,
+        "endChar": 41
+      },
+      "revId": "373e648132c93b86755c25189d8f0e9e72cab5f9",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5d4102a0_d60e05e9",
+        "filename": "docs/overview.rst",
+        "patchSetId": 8
+      },
+      "lineNbr": 409,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-12-15T09:37:10Z",
+      "side": 1,
+      "message": "Dedicated slice",
+      "range": {
+        "startLine": 409,
+        "startChar": 103,
+        "endLine": 409,
+        "endChar": 112
+      },
+      "revId": "373e648132c93b86755c25189d8f0e9e72cab5f9",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1ad00277_3303f3ee",
+        "filename": "docs/overview.rst",
+        "patchSetId": 8
+      },
+      "lineNbr": 409,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-12-15T09:37:10Z",
+      "side": 1,
+      "message": "remove",
+      "range": {
+        "startLine": 409,
+        "startChar": 32,
+        "endLine": 409,
+        "endChar": 49
+      },
+      "revId": "373e648132c93b86755c25189d8f0e9e72cab5f9",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8392d097_59cf4f46",
+        "filename": "docs/overview.rst",
+        "patchSetId": 8
+      },
+      "lineNbr": 409,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-12-15T09:37:10Z",
+      "side": 1,
+      "message": "SMO/Non-RT RIC",
+      "range": {
+        "startLine": 409,
+        "startChar": 2,
+        "endLine": 409,
+        "endChar": 6
+      },
+      "revId": "373e648132c93b86755c25189d8f0e9e72cab5f9",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b34d2e8d_3da29120",
+        "filename": "docs/overview.rst",
+        "patchSetId": 8
+      },
+      "lineNbr": 411,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-12-15T09:37:10Z",
+      "side": 1,
+      "message": "received.",
+      "range": {
+        "startLine": 411,
+        "startChar": 24,
+        "endLine": 411,
+        "endChar": 33
+      },
+      "revId": "373e648132c93b86755c25189d8f0e9e72cab5f9",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9ddd2051_ea92cfd0",
+        "filename": "docs/overview.rst",
+        "patchSetId": 8
+      },
+      "lineNbr": 413,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-12-15T09:37:10Z",
+      "side": 1,
+      "message": "Scheduler applies the optimized RRM policies for the dedicated slice",
+      "revId": "373e648132c93b86755c25189d8f0e9e72cab5f9",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "00c89f7e_f1840984",
+        "filename": "docs/release-notes.rst",
+        "patchSetId": 8
+      },
+      "lineNbr": 466,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-12-15T09:37:10Z",
+      "side": 1,
+      "message": "configurations",
+      "range": {
+        "startLine": 466,
+        "startChar": 67,
+        "endLine": 466,
+        "endChar": 81
+      },
+      "revId": "373e648132c93b86755c25189d8f0e9e72cab5f9",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
