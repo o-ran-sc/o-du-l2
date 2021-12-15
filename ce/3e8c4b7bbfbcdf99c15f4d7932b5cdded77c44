@@ -1,0 +1,10 @@
+Verified+1: ORAN Jobbuilder <releng+oran-jobbuilder@linuxfoundation.org>
+Verified+1: Harshita Lal <harshita.lal@radisys.com>
+Code-Review+1: Sangeeta Vaidhyanathan <svaidhya@radisys.com>
+Code-Review+2: Harshita Lal <harshita.lal@radisys.com>
+Code-Review+2: Ankit Barve <anbarve@radisys.com>
+Submitted-by: Ankit Barve <anbarve@radisys.com>
+Submitted-at: Wed, 15 Dec 2021 09:45:49 +0000
+Reviewed-on: https://gerrit.o-ran-sc.org/r/c/o-du/l2/+/7250
+Project: o-du/l2
+Branch: refs/heads/master
