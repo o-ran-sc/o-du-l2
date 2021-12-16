@@ -74,6 +74,10 @@
 #include "SRS-ResourceSet.h"
 #include "SRS-Config.h"
 #include "PUCCH-Config.h"
+#include "PUCCH-ResourceSet.h"
+#include "PUCCH-Resource.h"
+#include "PUCCH-format1.h"
+#include "PUCCH-FormatConfig.h"
 #include "BWP-UplinkDedicated.h"
 #include "PUSCH-ServingCellConfig.h"
 #include "UplinkConfig.h"
@@ -3825,7 +3829,63 @@ uint8_t BuildBWPUlDedPuschCfg(PUSCH_Config_t *puschCfg)
 uint8_t BuildBWPUlDedPucchCfg(PUCCH_Config_t *pucchCfg)
 {
    uint8_t arrIdx, elementCnt;
+   uint8_t rsrcIdx, rsrcSetIdx;
+   PUCCH_ResourceSet_t *rsrcSet = NULLP;
+   PUCCH_Resource_t *rsrc = NULLP;
 
+   //RESOURCE SET
+   elementCnt = 1;
+   CU_ALLOC(pucchCfg->resourceSetToAddModList, sizeof(struct PUCCH_Config__resourceSetToAddModList));
+   pucchCfg->resourceSetToAddModList->list.count = elementCnt;
+   pucchCfg->resourceSetToAddModList->list.size = elementCnt * sizeof(PUCCH_ResourceSet_t *);
+   CU_ALLOC(pucchCfg->resourceSetToAddModList->list.array, pucchCfg->resourceSetToAddModList->list.size);
+   for(rsrcSetIdx=0; rsrcSetIdx < pucchCfg->resourceSetToAddModList->list.count; rsrcSetIdx++)
+   {
+      CU_ALLOC(pucchCfg->resourceSetToAddModList->list.array[rsrcSetIdx], sizeof(PUCCH_ResourceSet_t));
+   }
+   rsrcSetIdx = 0;
+   rsrcSet = pucchCfg->resourceSetToAddModList->list.array[rsrcSetIdx];
+   rsrcSet->pucch_ResourceSetId = 1;
+   elementCnt = 1;
+   rsrcSet->resourceList.list.count = elementCnt;
+   rsrcSet->resourceList.list.size = elementCnt * sizeof(PUCCH_ResourceId_t *);
+   CU_ALLOC(rsrcSet->resourceList.list.array, rsrcSet->resourceList.list.size);
+   for(rsrcIdx=0; rsrcIdx < rsrcSet->resourceList.list.count; rsrcIdx++)
+   {
+      CU_ALLOC(rsrcSet->resourceList.list.array[rsrcIdx], sizeof(PUCCH_ResourceId_t));
+   }
+   rsrcIdx = 0;
+   *(rsrcSet->resourceList.list.array[rsrcIdx]) = 1;
+
+   //RESOURCE
+   elementCnt = 1;
+   CU_ALLOC(pucchCfg->resourceToAddModList, sizeof(struct PUCCH_Config__resourceToAddModList));
+   pucchCfg->resourceToAddModList->list.count = elementCnt;
+   pucchCfg->resourceToAddModList->list.size = elementCnt * sizeof(PUCCH_Resource_t *);
+   CU_ALLOC(pucchCfg->resourceToAddModList->list.array, pucchCfg->resourceToAddModList->list.size);
+   for(rsrcIdx=0; rsrcIdx < pucchCfg->resourceToAddModList->list.count; rsrcIdx++)
+   {
+      CU_ALLOC(pucchCfg->resourceToAddModList->list.array[rsrcIdx], sizeof(PUCCH_Resource_t));
+   }
+   rsrcIdx = 0;
+   rsrc = pucchCfg->resourceToAddModList->list.array[rsrcIdx];
+   rsrc->pucch_ResourceId = 1;
+   rsrc->startingPRB = 0;
+   rsrc->format.present = PUCCH_Resource__format_PR_format1; 
+   CU_ALLOC(rsrc->format.choice.format1, sizeof(PUCCH_format1_t));
+   rsrc->format.choice.format1->initialCyclicShift = 0;
+   rsrc->format.choice.format1->nrofSymbols = 4;
+   rsrc->format.choice.format1->startingSymbolIndex = 0;
+   rsrc->format.choice.format1->timeDomainOCC = 0;
+
+   //PUCCH Format 1
+   CU_ALLOC(pucchCfg->format1, sizeof(struct PUCCH_Config__format1));
+   pucchCfg->format1->present = PUCCH_Config__format1_PR_setup;
+   CU_ALLOC(pucchCfg->format1->choice.setup, sizeof(PUCCH_FormatConfig_t));
+   CU_ALLOC(pucchCfg->format1->choice.setup->nrofSlots, sizeof(long));
+   *(pucchCfg->format1->choice.setup->nrofSlots) = PUCCH_FormatConfig__nrofSlots_n4;
+
+   //DL DATA TO UL ACK
    CU_ALLOC(pucchCfg->dl_DataToUL_ACK, sizeof(struct PUCCH_Config__dl_DataToUL_ACK));
    if(pucchCfg->dl_DataToUL_ACK == NULLP)
    {
