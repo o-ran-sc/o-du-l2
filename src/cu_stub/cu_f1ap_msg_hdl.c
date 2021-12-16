@@ -8430,7 +8430,7 @@ uint8_t procGnbDuUpdate(F1AP_PDU_t *f1apMsg)
       DU_LOG("ERROR  -->  F1AP : Failed to build and send DUUpdateAck");  
       return RFAILED;
    }
-
+#if 0
    if(cellToBeDelete == false)
    {
       DU_LOG("\nINFO  -->  F1AP : Sending F1 reset request");
@@ -8440,7 +8440,8 @@ uint8_t procGnbDuUpdate(F1AP_PDU_t *f1apMsg)
          return RFAILED;
       }
    }
-   else
+#endif
+   if(cellToBeDelete == true) 
    {
       for(ueIdx = 0; ueIdx < MAX_NUM_UE; ueIdx++)
       {

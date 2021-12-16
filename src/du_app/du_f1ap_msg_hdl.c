@@ -101,6 +101,7 @@
 #include "DLUPTNLInformation-ToBeSetup-Item.h"
 #include "UPTransportLayerInformation.h"
 #include "GTPTunnel.h"
+#include "SupportedSULFreqBandItem.h"
 
 #ifdef O1_ENABLE
 #include "CmInterface.h"
@@ -929,6 +930,78 @@ uint8_t BuildFiveGSTac(Served_Cell_Information_t *servcell)
    servcell->fiveGS_TAC->buf[2] = duCfgParam.srvdCellLst[0].duCellInfo.tac;
    return ROK;  
 }
+
+/*******************************************************************
+ *
+ * @brief fill nr frequency information
+ *
+ * @details
+ *
+ *    Function : fillNrFreqInfoForTdd 
+ *
+ *    Functionality: fill nr frequency information
+ *
+ * @params[in] NRFreqInfo_t freqInfo
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t fillNrFreqInfoForTdd(NRFreqInfo_t *freqInfo)
+{
+   uint8_t elementCnt = 1, freqBandListIdx = 0, supportedBandIdx = 0;
+
+   freqInfo->nRARFCN = duCfgParam.srvdCellLst[0].duCellInfo.f1Mode.mode.tdd.nrFreqInfo.nrArfcn; 
+
+   freqInfo->freqBandListNr.list.count = elementCnt; 
+   freqInfo->freqBandListNr.list.size = freqInfo->freqBandListNr.list.count  * sizeof(FreqBandNrItem_t *);
+   DU_ALLOC(freqInfo->freqBandListNr.list.array, freqInfo->freqBandListNr.list.size );
+   if(!freqInfo->freqBandListNr.list.array)
+   {
+      DU_LOG("\nERROR  --> DU APP : Memory allocation failed at fillNrFreqInfoForTdd");
+      return RFAILED;
+   }
+
+   for(freqBandListIdx = 0; freqBandListIdx<freqInfo->freqBandListNr.list.count; freqBandListIdx++)
+   {
+      DU_ALLOC(freqInfo->freqBandListNr.list.array[freqBandListIdx],  sizeof(FreqBandNrItem_t ));
+      if(!freqInfo->freqBandListNr.list.array[freqBandListIdx])
+      {
+         DU_LOG("\nERROR  --> DU APP : Memory allocation failed at fillNrFreqInfoForTdd");
+         return RFAILED;
+      }
+
+      freqInfo->freqBandListNr.list.array[freqBandListIdx]->freqBandIndicatorNr = duCfgParam.srvdCellLst[0].duCellInfo.\
+                                                                                  f1Mode.mode.tdd.nrFreqInfo.freqBand[0].nrFreqBand;
+      freqInfo->freqBandListNr.list.array[freqBandListIdx]->supportedSULBandList.list.count = elementCnt;
+      freqInfo->freqBandListNr.list.array[freqBandListIdx]->supportedSULBandList.list.size = freqInfo->freqBandListNr.list.array[freqBandListIdx]->\
+                                                                                             supportedSULBandList.list.count * sizeof(SupportedSULFreqBandItem_t*);
+
+      DU_ALLOC(freqInfo->freqBandListNr.list.array[freqBandListIdx]->supportedSULBandList.list.array,\
+            freqInfo->freqBandListNr.list.array[freqBandListIdx]->supportedSULBandList.list.size);
+      if(!freqInfo->freqBandListNr.list.array[freqBandListIdx]->supportedSULBandList.list.array)
+      {
+         DU_LOG("\nERROR  --> DU APP : Memory allocation failed at fillNrFreqInfoForTdd");
+         return RFAILED;
+      }
+
+      for(supportedBandIdx = 0; supportedBandIdx<freqInfo->freqBandListNr.list.array[freqBandListIdx]->supportedSULBandList.list.count; supportedBandIdx++)
+      {
+         DU_ALLOC(freqInfo->freqBandListNr.list.array[freqBandListIdx]->supportedSULBandList.list.array[supportedBandIdx],\
+               sizeof(SupportedSULFreqBandItem_t));
+         if(!freqInfo->freqBandListNr.list.array[freqBandListIdx]->supportedSULBandList.list.array[supportedBandIdx])
+         {
+            DU_LOG("\nERROR  --> DU APP : Memory allocation failed at fillNrFreqInfoForTdd");
+            return RFAILED;
+         }
+
+         freqInfo->freqBandListNr.list.array[freqBandListIdx]->supportedSULBandList.list.array[supportedBandIdx]->freqBandIndicatorNr =\
+                                                                                                                                       duCfgParam.srvdCellLst[0].duCellInfo.f1Mode.mode.tdd.nrFreqInfo.freqBand[0].sulBand[0];
+      }
+   }
+
+   return ROK;
+}
+
 /*******************************************************************
  *
  * @brief Builds NR Mode 
@@ -948,38 +1021,65 @@ uint8_t BuildNrMode(NR_Mode_Info_t *mode)
 {
    uint8_t BuildDLNRInforet=0;
    uint8_t BuildULNRInforet=0; 
-   /* FDD Mode */
+   
+#ifdef NR_TDD
+   mode->present = NR_Mode_Info_PR_tDD;
+#else
    mode->present = NR_Mode_Info_PR_fDD;
+#endif   
+   
    if(mode->present == NR_Mode_Info_PR_fDD)
    {
       DU_ALLOC(mode->choice.fDD,sizeof(FDD_Info_t));
       if(mode->choice.fDD == NULLP)
       {
-	 return RFAILED;
+         DU_LOG("\nERROR  --> Memory allocation failed in BuildNrMode");
+         return RFAILED;
       }
       BuildULNRInforet = BuildULNRInfo(&mode->choice.fDD->uL_NRFreqInfo);
       if(BuildULNRInforet != ROK)
       {
-	 return RFAILED;    
+         DU_LOG("\nERROR  --> failed to build UlNrFreqInfo");
+         return RFAILED;    
       }
       BuildDLNRInforet = BuildDLNRInfo(&mode->choice.fDD->dL_NRFreqInfo);
       if(BuildDLNRInforet != ROK)
       {
-	 return RFAILED;
+         DU_LOG("\nERROR  --> failed to build DlNrFreqInfo");
+         return RFAILED;
       }
+      mode->choice.fDD->uL_Transmission_Bandwidth.nRSCS = \
+                                                          duCfgParam.srvdCellLst[0].duCellInfo.\
+                                                          f1Mode.mode.fdd.ulTxBw.nrScs;
+      mode->choice.fDD->uL_Transmission_Bandwidth.nRNRB = \
+                                                          duCfgParam.srvdCellLst[0].duCellInfo.\
+                                                          f1Mode.mode.fdd.ulTxBw.nrb;
+      mode->choice.fDD->dL_Transmission_Bandwidth.nRSCS = \
+                                                          duCfgParam.srvdCellLst[0].duCellInfo.\
+                                                          f1Mode.mode.fdd.dlTxBw.nrScs;
+      mode->choice.fDD->dL_Transmission_Bandwidth.nRNRB = \
+                                                          duCfgParam.srvdCellLst[0].duCellInfo.\
+                                                          f1Mode.mode.fdd.dlTxBw.nrb;
    }
-   mode->choice.fDD->uL_Transmission_Bandwidth.nRSCS = \
-						       duCfgParam.srvdCellLst[0].duCellInfo.\
-						       f1Mode.mode.fdd.ulTxBw.nrScs;
-   mode->choice.fDD->uL_Transmission_Bandwidth.nRNRB = \
-						       duCfgParam.srvdCellLst[0].duCellInfo.\
-						       f1Mode.mode.fdd.ulTxBw.nrb;
-   mode->choice.fDD->dL_Transmission_Bandwidth.nRSCS = \
-						       duCfgParam.srvdCellLst[0].duCellInfo.\
-						       f1Mode.mode.fdd.dlTxBw.nrScs;
-   mode->choice.fDD->dL_Transmission_Bandwidth.nRNRB = \
-						       duCfgParam.srvdCellLst[0].duCellInfo.\
-						       f1Mode.mode.fdd.dlTxBw.nrb;
+   else if(mode->present == NR_Mode_Info_PR_tDD) 
+   {
+      DU_ALLOC(mode->choice.tDD,sizeof(TDD_Info_t));
+      if(mode->choice.tDD == NULLP)
+      {
+         DU_LOG("\nERROR  --> Memory allocation failed in BuildNrMode");
+         return RFAILED;
+      }
+
+      if(fillNrFreqInfoForTdd(&mode->choice.tDD->nRFreqInfo) != ROK)
+      {
+         DU_LOG("\nERROR  --> failed to fill NrFreqInfo for TDD");
+         return RFAILED;
+      }
+
+      mode->choice.tDD->transmission_Bandwidth.nRSCS = duCfgParam.srvdCellLst[0].duCellInfo.f1Mode.mode.tdd.nrFreqInfo.sulInfo.sulTxBw.nrScs; 
+      mode->choice.tDD->transmission_Bandwidth.nRNRB = duCfgParam.srvdCellLst[0].duCellInfo.f1Mode.mode.tdd.nrFreqInfo.sulInfo.sulTxBw.nrb; 
+   }
+
    return ROK;
 }
 /*******************************************************************
@@ -1443,6 +1543,50 @@ void FreeRrcVer(RRC_Version_t *rrcVer)
       DU_FREE(rrcVer->latest_RRC_Version.buf,rrcVer->latest_RRC_Version.size);
    }
 }
+
+/*******************************************************************
+ *
+ * @brief Deallocating memory of TDD NrFreqInfo 
+ *
+ * @details
+ *
+ *    Function : freeTddNrFreqInfo 
+ *
+ *    Functionality: freeTddNrFreqInfo 
+ *
+ * @params[in]  F1AP_PDU_t *f1apDuCfg
+ *
+ * @return ROK     - void
+ *
+ * ****************************************************************/
+void freeTddNrFreqInfo(NRFreqInfo_t *freqInfo)
+{
+   uint8_t freqBandListIdx = 0, supportedBandIdx = 0;
+
+   if(freqInfo->freqBandListNr.list.array)
+   {
+      for(freqBandListIdx = 0; freqBandListIdx<freqInfo->freqBandListNr.list.count; freqBandListIdx++)
+      {
+         if(freqInfo->freqBandListNr.list.array[freqBandListIdx])
+         {
+            if(freqInfo->freqBandListNr.list.array[freqBandListIdx]->supportedSULBandList.list.array)
+            {
+               for(supportedBandIdx = 0; supportedBandIdx<freqInfo->freqBandListNr.list.array[freqBandListIdx]->supportedSULBandList.list.count; supportedBandIdx++)
+               {
+                  DU_FREE(freqInfo->freqBandListNr.list.array[freqBandListIdx]->supportedSULBandList.list.array[supportedBandIdx],\
+                        sizeof(SupportedSULFreqBandItem_t));
+               }
+               DU_FREE(freqInfo->freqBandListNr.list.array[freqBandListIdx]->supportedSULBandList.list.array,\
+                     freqInfo->freqBandListNr.list.array[freqBandListIdx]->supportedSULBandList.list.size);
+
+            }
+            DU_FREE(freqInfo->freqBandListNr.list.array[freqBandListIdx],  sizeof(FreqBandNrItem_t ));
+         }
+      }
+      DU_FREE(freqInfo->freqBandListNr.list.array, freqInfo->freqBandListNr.list.size );
+   }
+}
+
 /*******************************************************************
  *
  * @brief  deallocating the memory of function BuildAndSendF1SetupReq()
@@ -1563,6 +1707,12 @@ void FreeServedCellList( GNB_DU_Served_Cells_List_t *duServedCell)
                      freqBandListNr.list.array,sizeof(FreqBandNrItem_t *));
             }
             DU_FREE(srvCellItem->served_Cell_Information.nR_Mode_Info.choice.fDD, sizeof(FDD_Info_t));
+         }
+         
+         if(srvCellItem->served_Cell_Information.nR_Mode_Info.choice.tDD != NULLP)
+         {
+            freeTddNrFreqInfo(&srvCellItem->served_Cell_Information.nR_Mode_Info.choice.tDD->nRFreqInfo);
+            DU_FREE(srvCellItem->served_Cell_Information.nR_Mode_Info.choice.tDD, sizeof(TDD_Info_t));
          }
 
          DU_FREE(srvCellItem->served_Cell_Information.measurementTimingConfiguration.buf,\
@@ -1951,7 +2101,12 @@ void freeCellsToModifyItem(Served_Cells_To_Modify_Item_t *modifyItem)
       }
       DU_FREE(modifyItem->served_Cell_Information.nR_Mode_Info.choice.fDD,sizeof(FDD_Info_t));
    }
-
+   
+   if(modifyItem->served_Cell_Information.nR_Mode_Info.choice.tDD)
+   {
+      freeTddNrFreqInfo(&modifyItem->served_Cell_Information.nR_Mode_Info.choice.tDD->nRFreqInfo);
+      DU_FREE(modifyItem->served_Cell_Information.nR_Mode_Info.choice.tDD, sizeof(TDD_Info_t));
+   }
    DU_FREE(modifyItem->served_Cell_Information.measurementTimingConfiguration.buf,\
       modifyItem->served_Cell_Information.measurementTimingConfiguration.size);
 }
@@ -2311,6 +2466,7 @@ uint8_t fillServedCellInfo(Served_Cell_Information_t *srvCellInfo)
 	 srvCellInfo->nRCGI.pLMN_Identity.size);
    if(srvCellInfo->nRCGI.pLMN_Identity.buf == NULLP)
    {
+      DU_LOG("\nERROR  --> Memory allocation failed in fillServedCellInfo");
       return RFAILED;
    }
    buildPlmnId(duCfgParam.srvdCellLst[0].duCellInfo.cellInfo.nrCgi.plmn,\
@@ -2319,11 +2475,11 @@ uint8_t fillServedCellInfo(Served_Cell_Information_t *srvCellInfo)
    DU_ALLOC(srvCellInfo->nRCGI.nRCellIdentity.buf,\
 	 srvCellInfo->nRCGI.nRCellIdentity.size);
    if(srvCellInfo->nRCGI.nRCellIdentity.buf == NULLP)
-   {
+   {   
+      DU_LOG("\nERROR  --> Memory allocation failed in fillServedCellInfo");
       return RFAILED;
    }
-   for (tmp = 0 ; tmp < srvCellInfo->\
-	 nRCGI.nRCellIdentity.size-1 ; tmp++)
+   for (tmp = 0 ; tmp < srvCellInfo->nRCGI.nRCellIdentity.size-1 ; tmp++)
    {
       srvCellInfo->nRCGI.nRCellIdentity.buf[tmp] = 0;
    }
@@ -2341,33 +2497,58 @@ uint8_t fillServedCellInfo(Served_Cell_Information_t *srvCellInfo)
 	 srvCellInfo->servedPLMNs.list.size);
    if(srvCellInfo->servedPLMNs.list.array == NULLP)
    {
+      DU_LOG("\nERROR  --> Memory allocation failed in fillServedCellInfo");
       return RFAILED;
    }
    for(ieIdx=0; ieIdx < ieListCnt; ieIdx++)
    {
       DU_ALLOC(srvCellInfo->servedPLMNs.list.array[ieIdx],\
-	    sizeof(ServedPLMNs_Item_t));
+            sizeof(ServedPLMNs_Item_t));
       if(srvCellInfo->servedPLMNs.list.array[ieIdx]== NULLP)
       {
-	 return RFAILED;
+         DU_LOG("\nERROR  --> Memory allocation failed in fillServedCellInfo");
+         return RFAILED;
       }
    }
    if(fillServedPlmns(&srvCellInfo->servedPLMNs))
    {
+      DU_LOG("\nERROR  --> failed to Served Plmn info");
       return RFAILED;
    }
 
+#ifndef NR_TDD
    /*nR Mode Info with FDD*/
    srvCellInfo->nR_Mode_Info.present = NR_Mode_Info_PR_fDD;
    DU_ALLOC(srvCellInfo->nR_Mode_Info.choice.fDD,\
          sizeof(FDD_Info_t));
    if(srvCellInfo->nR_Mode_Info.choice.fDD == NULLP)
    {
+      DU_LOG("\nERROR  --> Memory allocation failed in fillServedCellInfo");
       return RFAILED;
    }
    if(fillNrFddInfo(&srvCellInfo->nR_Mode_Info))
+   {
+       DU_LOG("\nERROR  --> failed to fill the NrFreqInfo for FDD");
       return RFAILED;
+   }
+#else
+   srvCellInfo->nR_Mode_Info.present = NR_Mode_Info_PR_tDD;   
+   DU_ALLOC(srvCellInfo->nR_Mode_Info.choice.tDD, sizeof(TDD_Info_t));
+   if(srvCellInfo->nR_Mode_Info.choice.tDD == NULLP)
+   {
+      DU_LOG("\nERROR  --> Memory allocation failed in fillServedCellInfo");
+      return RFAILED;
+   }
+   if(fillNrFreqInfoForTdd(&srvCellInfo->nR_Mode_Info.choice.tDD->nRFreqInfo) != ROK)
+   {
+      DU_LOG("\nERROR  --> failed to fill the NrFreqInfo for TDD");
+      return RFAILED;
+   }
 
+   srvCellInfo->nR_Mode_Info.choice.tDD->transmission_Bandwidth.nRSCS = duCfgParam.srvdCellLst[0].duCellInfo.f1Mode.mode.tdd.nrFreqInfo.sulInfo.sulTxBw.nrScs;
+   srvCellInfo->nR_Mode_Info.choice.tDD->transmission_Bandwidth.nRNRB = duCfgParam.srvdCellLst[0].duCellInfo.f1Mode.mode.tdd.nrFreqInfo.sulInfo.sulTxBw.nrb;
+
+#endif
    /*Measurement timing Config*/
    srvCellInfo->measurementTimingConfiguration.size = sizeof(uint8_t);
    DU_ALLOC(srvCellInfo->measurementTimingConfiguration.\
