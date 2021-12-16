@@ -109,7 +109,7 @@ bool schCheckPrachOcc(SchCellCb *cell, SlotTimingInfo prachOccasionTimingInfo)
 uint8_t schCalcPrachNumRb(SchCellCb *cell)
 {
    uint8_t tableIdx = 0;
-   uint16_t puschScs = fetchScsValue(cell->cellCfg.schInitialUlBwp.bwp.scs);
+   uint16_t puschScs = convertScsEnumValToScsVal(cell->cellCfg.schInitialUlBwp.bwp.scs);
 
    for(tableIdx=0; tableIdx < MAX_RACH_NUM_RB_IDX; tableIdx++)
    {
