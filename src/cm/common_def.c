@@ -155,7 +155,7 @@ uint8_t buildPlmnId(Plmn plmn, uint8_t *buf)
  *
  * @details
  *
- *    Function : fetchScsValue
+ *    Function : convertScsEnumValToScsVal
  *
  *    Functionality:
  *       Function to map Sub carrier spacing enum value to value in kHz
@@ -164,7 +164,7 @@ uint8_t buildPlmnId(Plmn plmn, uint8_t *buf)
  * @return sub-carrier spacing value in kHz
  *
  * ****************************************************************/
-uint16_t fetchScsValue(uint8_t scsEnumValue)
+uint16_t convertScsEnumValToScsVal(uint8_t scsEnumValue)
 {
    switch(scsEnumValue)
    {
@@ -177,6 +177,47 @@ uint16_t fetchScsValue(uint8_t scsEnumValue)
       default:
          return 15;
    }
+}
+
+/*******************************************************************
+ * @brief convert scs periodicity value into the enum value received from O1 
+ *
+ * @details
+ *
+ *    Function : convertScsValToScsEnum
+ *
+ *    Functionality:
+ *       - convert scs periodicity value 
+ *
+ * @params[in] uint32_t num
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+
+uint8_t convertScsValToScsEnum(uint32_t num)
+{
+   switch(num)
+   {
+      case 5:
+      case 15:
+         return SCS_15KHZ;
+
+      case 10:
+      case 30:
+         return SCS_30KHZ;
+
+      case 20:
+      case 60:
+         return SCS_60KHZ;
+
+      case 120:
+         return SCS_120KHZ;
+      
+      case 240:
+         return SCS_240KHZ;
+   }
+   return ROK;
 }
 
 /*******************************************************************

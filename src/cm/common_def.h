@@ -309,7 +309,7 @@ uint64_t gDlDataRcvdCnt;   /* Number of DL data received at EGTP */
 void fillCoresetFeqDomAllocMap(uint16_t startPrb, uint16_t prbSize, uint8_t *freqDomain);
 void oduCpyFixBufToMsg(uint8_t *fixBuf, Buffer *mBuf, uint16_t len);
 uint8_t buildPlmnId(Plmn plmn, uint8_t *buf);
-uint16_t fetchScsValue(uint8_t scsEnumValue);
+uint16_t convertScsEnumValToScsVal(uint8_t scsEnumValue);
 
 uint8_t SGetSBufNewForDebug(char *file, char *func, char *line, Region region, Pool pool, Data **ptr, Size size);
 uint8_t SPutSBufNewForDebug(char *file, char *func, char *line, Region region, Pool pool, Data *ptr, Size size);
