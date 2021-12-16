@@ -1890,7 +1890,7 @@ uint8_t BuildNrcgi(NRCGI_t *nrcgi)
    uint8_t ret;
    uint8_t unused_bits = 4;
    uint8_t byteSize = 5;
-   uint8_t val = 1;
+   uint8_t val = 16;
    /* Allocate Buffer Memory */
    nrcgi->pLMN_Identity.size = 3 * sizeof(uint8_t);
    CU_ALLOC(nrcgi->pLMN_Identity.buf, nrcgi->pLMN_Identity.size);
@@ -1910,16 +1910,7 @@ uint8_t BuildNrcgi(NRCGI_t *nrcgi)
    {
       return RFAILED;
    }
-#if 0
-   ret = fillBitString(&nrcgi->nRCellIdentity, unused, byteSize, val);
-   if(ret != ROK)
-   {
-      return RFAILED;
-   }
-#endif
-   memset(nrcgi->nRCellIdentity.buf, 0, nrcgi->nRCellIdentity.size);
-   nrcgi->nRCellIdentity.buf[0] |= val;
-   nrcgi->nRCellIdentity.bits_unused = unused_bits;
+   fillBitString(&nrcgi->nRCellIdentity, unused_bits, byteSize, val);
 
    return ROK;
 }
@@ -8430,6 +8421,9 @@ uint8_t procGnbDuUpdate(F1AP_PDU_t *f1apMsg)
       DU_LOG("ERROR  -->  F1AP : Failed to build and send DUUpdateAck");  
       return RFAILED;
    }
+#if 0
+   /* We don't require F1 Reset message in Cell Up and Broadcast Procedure flow, So that's why
+    * commented this trigger for now */
 
    if(cellToBeDelete == false)
    {
@@ -8440,7 +8434,8 @@ uint8_t procGnbDuUpdate(F1AP_PDU_t *f1apMsg)
          return RFAILED;
       }
    }
-   else
+#endif
+   if(cellToBeDelete == true) 
    {
       for(ueIdx = 0; ueIdx < MAX_NUM_UE; ueIdx++)
       {
