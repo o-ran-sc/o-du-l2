@@ -1,0 +1,197 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "776456ff_42d2c20d",
+        "filename": "src/du_app/du_cfg.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 848,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-12-17T08:32:19Z",
+      "side": 1,
+      "message": "1. keep all fdd related parameters together. Some are before tdd and some are after tdd structure is filled.\n2. Also,when filling tdd/fdd it should be like below :\n#ifdef NR_TDD\n   // Fill TDD params\n#else\n   // Fill FDD params\n#endif",
+      "revId": "56527e0b6d89cde28228a8a41213072fc8e48af8",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3971679d_2d7ed911",
+        "filename": "src/du_app/du_cfg.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-12-17T08:32:19Z",
+      "side": 1,
+      "message": "can we re-use macro NR_UL_ARFCN itself",
+      "revId": "56527e0b6d89cde28228a8a41213072fc8e48af8",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "47e918c3_7cb97d91",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1042,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-12-17T08:32:19Z",
+      "side": 1,
+      "message": "Always start any log print with a capital letter. Similar error seen at many places.",
+      "revId": "56527e0b6d89cde28228a8a41213072fc8e48af8",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b5f6ff87_212c6969",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1048,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-12-17T08:32:19Z",
+      "side": 1,
+      "message": "same as above",
+      "revId": "56527e0b6d89cde28228a8a41213072fc8e48af8",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8bd6bb57_6d477595",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1080,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-12-17T08:32:19Z",
+      "side": 1,
+      "message": "same comments as given at the end of this file",
+      "revId": "56527e0b6d89cde28228a8a41213072fc8e48af8",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "09081a01_6c4cd9e9",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2497,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-12-17T08:32:19Z",
+      "side": 1,
+      "message": "put in single line",
+      "revId": "56527e0b6d89cde28228a8a41213072fc8e48af8",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9367196f_09fe37df",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2506,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-12-17T08:32:19Z",
+      "side": 1,
+      "message": "put in single line",
+      "revId": "56527e0b6d89cde28228a8a41213072fc8e48af8",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f1817c42_2f3ebfac",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2515,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-12-17T08:32:19Z",
+      "side": 1,
+      "message": "Failed to fill served PLMN info",
+      "range": {
+        "startLine": 2515,
+        "startChar": 27,
+        "endLine": 2515,
+        "endChar": 33
+      },
+      "revId": "56527e0b6d89cde28228a8a41213072fc8e48af8",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "354d7e6c_7ccce514",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2529,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-12-17T08:32:19Z",
+      "side": 1,
+      "message": "Pass \"\u0026srvCellInfo-\u003enR_Mode_Info.choice.fDD\" into fillNrFddInfo()",
+      "revId": "56527e0b6d89cde28228a8a41213072fc8e48af8",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3f3bf70c_b28c8953",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2531,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-12-17T08:32:19Z",
+      "side": 1,
+      "message": "fillNrFddInfo fills information other than frequency too, hence just write error msg like:\n\"Failed to fill NR FDD information\"",
+      "revId": "56527e0b6d89cde28228a8a41213072fc8e48af8",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b7045b75_8ba76777",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2549,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-12-17T08:32:19Z",
+      "side": 1,
+      "message": "1. Pass \"srvCellInfo-\u003enR_Mode_Info.choice.tDD\" into fillNrFreqInfoForTdd() and fill above 2 lines inside fillNrFreqInfoForTdd() itself\n\n2. Rename fillNrFreqInfoForTdd to fillNrTddInfo() [same as how it is done for FDD]\n\n3. After above 2 comments is addressed, fillNrTddInfo() : this function will no longer be used only for filling frequency related info. Hence, fix the log in #2544 as done for FDD",
+      "revId": "56527e0b6d89cde28228a8a41213072fc8e48af8",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
