@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2f0d68ce_fcce1f2f",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 3855,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-12-17T07:53:53Z",
+      "side": 1,
+      "message": "the free part doesn\u0027t require for this?",
+      "range": {
+        "startLine": 3855,
+        "startChar": 6,
+        "endLine": 3855,
+        "endChar": 14
+      },
+      "revId": "e31297f3283e79999360f05ba8bb6a1270cf84d4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "016899fd_dc6317bb",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 4381,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-12-17T07:53:53Z",
+      "side": 1,
+      "message": "Free part for this function.",
+      "range": {
+        "startLine": 4381,
+        "startChar": 6,
+        "endLine": 4381,
+        "endChar": 14
+      },
+      "revId": "e31297f3283e79999360f05ba8bb6a1270cf84d4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
