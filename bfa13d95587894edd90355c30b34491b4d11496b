@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e1df9792_8b6226d9",
+        "filename": "src/du_app/du_cfg.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 181,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-12-17T13:05:05Z",
+      "side": 1,
+      "message": "ulcarrcfg and O1_ENABLE",
+      "range": {
+        "startLine": 181,
+        "startChar": 25,
+        "endLine": 181,
+        "endChar": 33
+      },
+      "revId": "bfa13d95587894edd90355c30b34491b4d11496b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "31a5b3e1_fb2496ea",
+        "filename": "src/du_app/du_cfg.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 714,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-12-17T13:05:05Z",
+      "side": 1,
+      "message": "check the difference of sib1 cell id and maccellcfg cell id.",
+      "range": {
+        "startLine": 714,
+        "startChar": 23,
+        "endLine": 714,
+        "endChar": 36
+      },
+      "revId": "bfa13d95587894edd90355c30b34491b4d11496b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
