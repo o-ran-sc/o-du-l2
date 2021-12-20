@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "834a2037_54a53bfa",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 8433,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-12-20T13:51:39Z",
+      "side": 1,
+      "message": "add comment explaining the reason for removing this trigger",
+      "revId": "9e0b84f1e6f38ec2782361f95414c6add46005bb",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "56c8cd63_fd091072",
+        "filename": "src/du_app/du_cfg.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 834,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-12-20T13:51:39Z",
+      "side": 1,
+      "message": "#else",
+      "revId": "9e0b84f1e6f38ec2782361f95414c6add46005bb",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "60283c25_2ee21feb",
+        "filename": "src/du_app/du_cfg.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 856,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-12-20T13:51:39Z",
+      "side": 1,
+      "message": "Are the above 2 params FDD specific? If not, move it out of #ifdef NR_TDD.. #endif",
+      "revId": "9e0b84f1e6f38ec2782361f95414c6add46005bb",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c3424014_91950214",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2502,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-12-20T13:51:39Z",
+      "side": 1,
+      "message": "Fill this bit string using fillBitString()",
+      "revId": "9e0b84f1e6f38ec2782361f95414c6add46005bb",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
