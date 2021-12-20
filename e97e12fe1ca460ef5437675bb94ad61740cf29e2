@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d31f1fb6_b4381696",
+        "filename": "src/cu_stub/cu_stub_egtp.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-12-20T14:02:05Z",
+      "side": 1,
+      "message": "NUM_UL_PACKETS  are we not going to change these variable values at PHY stub?",
+      "revId": "e97e12fe1ca460ef5437675bb94ad61740cf29e2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
