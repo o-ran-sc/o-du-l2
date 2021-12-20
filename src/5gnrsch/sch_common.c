@@ -415,6 +415,7 @@ uint16_t fillPucchResourceInfo(SchPucchInfo *schPucchInfo, Inst inst, SlotTiming
    uint16_t startPrb;
 
    GET_UE_IDX(schPucchInfo->rnti, ueIdx);
+   ueIdx--;
    if(cell->ueCb[ueIdx].ueCfg.spCellCfg.servCellCfg.initUlBwp.pucchCfgPres)
    {
       /* fill pucch dedicated cfg */

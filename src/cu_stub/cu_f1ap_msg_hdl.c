@@ -74,6 +74,10 @@
 #include "SRS-ResourceSet.h"
 #include "SRS-Config.h"
 #include "PUCCH-Config.h"
+#include "PUCCH-ResourceSet.h"
+#include "PUCCH-Resource.h"
+#include "PUCCH-format1.h"
+#include "PUCCH-FormatConfig.h"
 #include "BWP-UplinkDedicated.h"
 #include "PUSCH-ServingCellConfig.h"
 #include "UplinkConfig.h"
@@ -3825,7 +3829,63 @@ uint8_t BuildBWPUlDedPuschCfg(PUSCH_Config_t *puschCfg)
 uint8_t BuildBWPUlDedPucchCfg(PUCCH_Config_t *pucchCfg)
 {
    uint8_t arrIdx, elementCnt;
+   uint8_t rsrcIdx, rsrcSetIdx;
+   PUCCH_ResourceSet_t *rsrcSet = NULLP;
+   PUCCH_Resource_t *rsrc = NULLP;
 
+   //RESOURCE SET
+   elementCnt = 1;
+   CU_ALLOC(pucchCfg->resourceSetToAddModList, sizeof(struct PUCCH_Config__resourceSetToAddModList));
+   pucchCfg->resourceSetToAddModList->list.count = elementCnt;
+   pucchCfg->resourceSetToAddModList->list.size = elementCnt * sizeof(PUCCH_ResourceSet_t *);
+   CU_ALLOC(pucchCfg->resourceSetToAddModList->list.array, pucchCfg->resourceSetToAddModList->list.size);
+   for(rsrcSetIdx=0; rsrcSetIdx < pucchCfg->resourceSetToAddModList->list.count; rsrcSetIdx++)
+   {
+      CU_ALLOC(pucchCfg->resourceSetToAddModList->list.array[rsrcSetIdx], sizeof(PUCCH_ResourceSet_t));
+   }
+   rsrcSetIdx = 0;
+   rsrcSet = pucchCfg->resourceSetToAddModList->list.array[rsrcSetIdx];
+   rsrcSet->pucch_ResourceSetId = 1;
+   elementCnt = 1;
+   rsrcSet->resourceList.list.count = elementCnt;
+   rsrcSet->resourceList.list.size = elementCnt * sizeof(PUCCH_ResourceId_t *);
+   CU_ALLOC(rsrcSet->resourceList.list.array, rsrcSet->resourceList.list.size);
+   for(rsrcIdx=0; rsrcIdx < rsrcSet->resourceList.list.count; rsrcIdx++)
+   {
+      CU_ALLOC(rsrcSet->resourceList.list.array[rsrcIdx], sizeof(PUCCH_ResourceId_t));
+   }
+   rsrcIdx = 0;
+   *(rsrcSet->resourceList.list.array[rsrcIdx]) = 1;
+
+   //RESOURCE
+   elementCnt = 1;
+   CU_ALLOC(pucchCfg->resourceToAddModList, sizeof(struct PUCCH_Config__resourceToAddModList));
+   pucchCfg->resourceToAddModList->list.count = elementCnt;
+   pucchCfg->resourceToAddModList->list.size = elementCnt * sizeof(PUCCH_Resource_t *);
+   CU_ALLOC(pucchCfg->resourceToAddModList->list.array, pucchCfg->resourceToAddModList->list.size);
+   for(rsrcIdx=0; rsrcIdx < pucchCfg->resourceToAddModList->list.count; rsrcIdx++)
+   {
+      CU_ALLOC(pucchCfg->resourceToAddModList->list.array[rsrcIdx], sizeof(PUCCH_Resource_t));
+   }
+   rsrcIdx = 0;
+   rsrc = pucchCfg->resourceToAddModList->list.array[rsrcIdx];
+   rsrc->pucch_ResourceId = 1;
+   rsrc->startingPRB = 0;
+   rsrc->format.present = PUCCH_Resource__format_PR_format1; 
+   CU_ALLOC(rsrc->format.choice.format1, sizeof(PUCCH_format1_t));
+   rsrc->format.choice.format1->initialCyclicShift = 0;
+   rsrc->format.choice.format1->nrofSymbols = 4;
+   rsrc->format.choice.format1->startingSymbolIndex = 0;
+   rsrc->format.choice.format1->timeDomainOCC = 0;
+
+   //PUCCH Format 1
+   CU_ALLOC(pucchCfg->format1, sizeof(struct PUCCH_Config__format1));
+   pucchCfg->format1->present = PUCCH_Config__format1_PR_setup;
+   CU_ALLOC(pucchCfg->format1->choice.setup, sizeof(PUCCH_FormatConfig_t));
+   CU_ALLOC(pucchCfg->format1->choice.setup->nrofSlots, sizeof(long));
+   *(pucchCfg->format1->choice.setup->nrofSlots) = PUCCH_FormatConfig__nrofSlots_n4;
+
+   //DL DATA TO UL ACK
    CU_ALLOC(pucchCfg->dl_DataToUL_ACK, sizeof(struct PUCCH_Config__dl_DataToUL_ACK));
    if(pucchCfg->dl_DataToUL_ACK == NULLP)
    {
@@ -5017,6 +5077,105 @@ void FreePuschTimeDomAllocList(PUSCH_Config_t *puschCfg)
    }
 
 }
+
+/*******************************************************************
+ *
+ * @brief Frees memory allocated for Dedicated PUCCH config
+ *
+ * @details
+ *
+ *    Function : FreeBWPUlDedPucchCfg
+ *
+ *    Functionality: Deallocating memory of Dedicated PUCCH cfg
+ *
+ * @params[in] BWP_UplinkDedicated__pucch_Config *ulBwpPucchCfg
+ *
+ * @return void
+ *
+ * ****************************************************************/
+void FreeBWPUlDedPucchCfg(struct BWP_UplinkDedicated__pucch_Config *ulBwpPucchCfg)
+{  
+   uint8_t arrIdx, rsrcIdx, rsrcSetIdx;
+   PUCCH_Config_t *pucchCfg = NULLP;
+   PUCCH_ResourceSet_t *rsrcSet = NULLP;
+   PUCCH_Resource_t *rsrc = NULLP;
+
+   if(ulBwpPucchCfg)
+   {
+      if(ulBwpPucchCfg->choice.setup)
+      {
+         pucchCfg = ulBwpPucchCfg->choice.setup;
+
+         //Free resource set list
+         if(pucchCfg->resourceSetToAddModList)
+         {
+            if(pucchCfg->resourceSetToAddModList->list.array)
+            {
+               for(rsrcSetIdx=0; rsrcSetIdx < pucchCfg->resourceSetToAddModList->list.count; rsrcSetIdx++)
+               {
+                  rsrcSet = pucchCfg->resourceSetToAddModList->list.array[rsrcSetIdx];
+                  if(rsrcSet->resourceList.list.array)
+                  {
+                     for(rsrcIdx=0; rsrcIdx < rsrcSet->resourceList.list.count; rsrcIdx++)
+                     {
+                        CU_FREE(rsrcSet->resourceList.list.array[rsrcIdx], sizeof(PUCCH_ResourceId_t));
+                     }
+                     CU_FREE(rsrcSet->resourceList.list.array, rsrcSet->resourceList.list.size);
+                  }
+                  CU_FREE(pucchCfg->resourceSetToAddModList->list.array[rsrcSetIdx], sizeof(PUCCH_ResourceSet_t));
+               }
+               CU_FREE(pucchCfg->resourceSetToAddModList->list.array, pucchCfg->resourceSetToAddModList->list.size);
+            }
+            CU_FREE(pucchCfg->resourceSetToAddModList, sizeof(struct PUCCH_Config__resourceSetToAddModList));
+         }
+
+         //Free resource list
+         if(pucchCfg->resourceToAddModList)
+         {
+            if(pucchCfg->resourceToAddModList->list.array)
+            {
+               for(rsrcIdx=0; rsrcIdx < pucchCfg->resourceToAddModList->list.count; rsrcIdx++)
+               {
+                  rsrc = pucchCfg->resourceToAddModList->list.array[rsrcIdx];
+                  CU_FREE(rsrc->format.choice.format1, sizeof(PUCCH_format1_t));
+                  CU_FREE(pucchCfg->resourceToAddModList->list.array[rsrcIdx], sizeof(PUCCH_Resource_t));
+               }
+               CU_FREE(pucchCfg->resourceToAddModList->list.array, pucchCfg->resourceToAddModList->list.size);
+            }
+            CU_FREE(pucchCfg->resourceToAddModList, sizeof(struct PUCCH_Config__resourceToAddModList));
+         }
+         
+         //PUCCH Format 1
+         if(pucchCfg->format1)
+         {
+            if(pucchCfg->format1->choice.setup)
+            {
+               CU_FREE(pucchCfg->format1->choice.setup->nrofSlots, sizeof(long));
+               CU_FREE(pucchCfg->format1->choice.setup, sizeof(PUCCH_FormatConfig_t));
+            }
+            CU_FREE(pucchCfg->format1, sizeof(struct PUCCH_Config__format1));
+         }
+
+         //DL DATA TO UL ACK
+         if(pucchCfg->dl_DataToUL_ACK)
+         {
+            if(pucchCfg->dl_DataToUL_ACK->list.array)
+            {
+               for(arrIdx = 0; arrIdx <  pucchCfg->dl_DataToUL_ACK->list.count; arrIdx++)
+               {
+                  CU_FREE(pucchCfg->dl_DataToUL_ACK->list.array[arrIdx], sizeof(long));
+               }
+               CU_FREE(pucchCfg->dl_DataToUL_ACK->list.array, pucchCfg->dl_DataToUL_ACK->list.size);
+            }
+            CU_FREE(pucchCfg->dl_DataToUL_ACK, sizeof(struct PUCCH_Config__dl_DataToUL_ACK));
+         }
+
+         CU_FREE(ulBwpPucchCfg->choice.setup, sizeof(PUCCH_Config_t));
+      }
+      CU_FREE(ulBwpPucchCfg, sizeof(struct BWP_UplinkDedicated__pucch_Config));
+   }
+}
+
 /*******************************************************************
  *
  * @brief Frees memory allocated for InitialUlBWP
@@ -5042,114 +5201,116 @@ void FreeInitialUlBWP(BWP_UplinkDedicated_t *ulBwp)
    struct SRS_ResourceSet__srs_ResourceIdList *rsrcIdList = NULLP;
    struct SRS_Config__srs_ResourceToAddModList *resourceList = NULLP;
 
+   FreeBWPUlDedPucchCfg(ulBwp->pucch_Config);
+
    if(ulBwp->pusch_Config)
    {
       if(ulBwp->pusch_Config->choice.setup)
       {
-	 puschCfg=ulBwp->pusch_Config->choice.setup;
-	 if(puschCfg->dataScramblingIdentityPUSCH)
-	 {
-	    if(puschCfg->dmrs_UplinkForPUSCH_MappingTypeA)
-	    {
-	       FreePuschTimeDomAllocList(puschCfg);
-	       dmrsUlCfg=puschCfg->dmrs_UplinkForPUSCH_MappingTypeA;
-	       if(dmrsUlCfg->choice.setup)
-	       {
-		  if(dmrsUlCfg->choice.setup->dmrs_AdditionalPosition)
-		  {
-		     if(dmrsUlCfg->choice.setup->transformPrecodingDisabled)
-		     {
-			CU_FREE(dmrsUlCfg->choice.setup->transformPrecodingDisabled->scramblingID0,\
-			      sizeof(long));
-			CU_FREE(dmrsUlCfg->choice.setup->transformPrecodingDisabled,
-			      sizeof(struct DMRS_UplinkConfig__transformPrecodingDisabled));
-		     }
-		     CU_FREE(dmrsUlCfg->choice.setup->dmrs_AdditionalPosition,
-			   sizeof(long));
-		  }
-		  CU_FREE(dmrsUlCfg->choice.setup,sizeof(DMRS_UplinkConfig_t));
-	       }
-	       CU_FREE(puschCfg->dmrs_UplinkForPUSCH_MappingTypeA, \
-		     sizeof(struct PUSCH_Config__dmrs_UplinkForPUSCH_MappingTypeA));
-	    }
-	    CU_FREE(puschCfg->dataScramblingIdentityPUSCH, sizeof(long));
-	 }
-	 CU_FREE(ulBwp->pusch_Config->choice.setup, sizeof(PUSCH_Config_t));
+         puschCfg=ulBwp->pusch_Config->choice.setup;
+         if(puschCfg->dataScramblingIdentityPUSCH)
+         {
+            if(puschCfg->dmrs_UplinkForPUSCH_MappingTypeA)
+            {
+               FreePuschTimeDomAllocList(puschCfg);
+               dmrsUlCfg=puschCfg->dmrs_UplinkForPUSCH_MappingTypeA;
+               if(dmrsUlCfg->choice.setup)
+               {
+                  if(dmrsUlCfg->choice.setup->dmrs_AdditionalPosition)
+                  {
+                     if(dmrsUlCfg->choice.setup->transformPrecodingDisabled)
+                     {
+                        CU_FREE(dmrsUlCfg->choice.setup->transformPrecodingDisabled->scramblingID0,\
+                              sizeof(long));
+                        CU_FREE(dmrsUlCfg->choice.setup->transformPrecodingDisabled,
+                              sizeof(struct DMRS_UplinkConfig__transformPrecodingDisabled));
+                     }
+                     CU_FREE(dmrsUlCfg->choice.setup->dmrs_AdditionalPosition,
+                           sizeof(long));
+                  }
+                  CU_FREE(dmrsUlCfg->choice.setup,sizeof(DMRS_UplinkConfig_t));
+               }
+               CU_FREE(puschCfg->dmrs_UplinkForPUSCH_MappingTypeA, \
+                     sizeof(struct PUSCH_Config__dmrs_UplinkForPUSCH_MappingTypeA));
+            }
+            CU_FREE(puschCfg->dataScramblingIdentityPUSCH, sizeof(long));
+         }
+         CU_FREE(ulBwp->pusch_Config->choice.setup, sizeof(PUSCH_Config_t));
       }
       CU_FREE(ulBwp->pusch_Config, sizeof(struct BWP_UplinkDedicated__pusch_Config));
 
       /* Free SRS-Config */
       if(ulBwp->srs_Config)
       {
-	 if(ulBwp->srs_Config->choice.setup)
-	 {
-	    srsCfg = ulBwp->srs_Config->choice.setup;
+         if(ulBwp->srs_Config->choice.setup)
+         {
+            srsCfg = ulBwp->srs_Config->choice.setup;
 
-	    /* Free Resource Set to add/mod list */
-	    if(srsCfg->srs_ResourceSetToAddModList)
-	    {
-	       rsrcSetList = srsCfg->srs_ResourceSetToAddModList;
-	       if(rsrcSetList->list.array)
-	       {
-		  rSetIdx = 0;
+            /* Free Resource Set to add/mod list */
+            if(srsCfg->srs_ResourceSetToAddModList)
+            {
+               rsrcSetList = srsCfg->srs_ResourceSetToAddModList;
+               if(rsrcSetList->list.array)
+               {
+                  rSetIdx = 0;
 
-		  /* Free SRS resource Id list in this SRS resource set */
-		  if(rsrcSetList->list.array[rSetIdx]->srs_ResourceIdList)
-		  {
-		     rsrcIdList = rsrcSetList->list.array[rSetIdx]->srs_ResourceIdList;
+                  /* Free SRS resource Id list in this SRS resource set */
+                  if(rsrcSetList->list.array[rSetIdx]->srs_ResourceIdList)
+                  {
+                     rsrcIdList = rsrcSetList->list.array[rSetIdx]->srs_ResourceIdList;
 
-		     if(rsrcIdList->list.array)
-		     {
-			for(rsrcIdx = 0; rsrcIdx < rsrcIdList->list.count; rsrcIdx++)
-			{
-			   CU_FREE(rsrcIdList->list.array[rsrcIdx], sizeof(SRS_ResourceId_t));
-			}
-			CU_FREE(rsrcIdList->list.array, rsrcIdList->list.size);
-		     }
-		     CU_FREE(rsrcSetList->list.array[rSetIdx]->srs_ResourceIdList,\
-			   sizeof(struct SRS_ResourceSet__srs_ResourceIdList));
-		  }
+                     if(rsrcIdList->list.array)
+                     {
+                        for(rsrcIdx = 0; rsrcIdx < rsrcIdList->list.count; rsrcIdx++)
+                        {
+                           CU_FREE(rsrcIdList->list.array[rsrcIdx], sizeof(SRS_ResourceId_t));
+                        }
+                        CU_FREE(rsrcIdList->list.array, rsrcIdList->list.size);
+                     }
+                     CU_FREE(rsrcSetList->list.array[rSetIdx]->srs_ResourceIdList,\
+                           sizeof(struct SRS_ResourceSet__srs_ResourceIdList));
+                  }
 
-		  /* Free resource type info for this SRS resource set */
-		  CU_FREE(rsrcSetList->list.array[rSetIdx]->resourceType.choice.aperiodic, \
-			sizeof(struct SRS_ResourceSet__resourceType__aperiodic));
+                  /* Free resource type info for this SRS resource set */
+                  CU_FREE(rsrcSetList->list.array[rSetIdx]->resourceType.choice.aperiodic, \
+                        sizeof(struct SRS_ResourceSet__resourceType__aperiodic));
 
-		  /* Free memory for each resource set */
-		  for(rSetIdx = 0; rSetIdx < rsrcSetList->list.count; rSetIdx++)
-		  {
-		     CU_FREE(rsrcSetList->list.array[rSetIdx], sizeof(SRS_ResourceSet_t));
-		  }
-		  CU_FREE(rsrcSetList->list.array, rsrcSetList->list.size); 
-	       }
-	       CU_FREE(srsCfg->srs_ResourceSetToAddModList, \
-		     sizeof(struct SRS_Config__srs_ResourceSetToAddModList));
-	    }
+                  /* Free memory for each resource set */
+                  for(rSetIdx = 0; rSetIdx < rsrcSetList->list.count; rSetIdx++)
+                  {
+                     CU_FREE(rsrcSetList->list.array[rSetIdx], sizeof(SRS_ResourceSet_t));
+                  }
+                  CU_FREE(rsrcSetList->list.array, rsrcSetList->list.size); 
+               }
+               CU_FREE(srsCfg->srs_ResourceSetToAddModList, \
+                     sizeof(struct SRS_Config__srs_ResourceSetToAddModList));
+            }
 
-	    /* Free resource to add/modd list */
-	    if(srsCfg->srs_ResourceToAddModList)
-	    {
-	       resourceList = srsCfg->srs_ResourceToAddModList;
-	       if(resourceList->list.array)
-	       {
-		  rsrcIdx = 0;
-		  CU_FREE(resourceList->list.array[rsrcIdx]->transmissionComb.choice.n2,\
-			sizeof(struct SRS_Resource__transmissionComb__n2));
-		  CU_FREE(resourceList->list.array[rsrcIdx]->resourceType.choice.aperiodic,\
-			sizeof(struct SRS_Resource__resourceType__aperiodic));
+            /* Free resource to add/modd list */
+            if(srsCfg->srs_ResourceToAddModList)
+            {
+               resourceList = srsCfg->srs_ResourceToAddModList;
+               if(resourceList->list.array)
+               {
+                  rsrcIdx = 0;
+                  CU_FREE(resourceList->list.array[rsrcIdx]->transmissionComb.choice.n2,\
+                        sizeof(struct SRS_Resource__transmissionComb__n2));
+                  CU_FREE(resourceList->list.array[rsrcIdx]->resourceType.choice.aperiodic,\
+                        sizeof(struct SRS_Resource__resourceType__aperiodic));
 
-		  for(rsrcIdx = 0; rsrcIdx < resourceList->list.count; rsrcIdx++)
-		  {
-		     CU_FREE(resourceList->list.array[rsrcIdx], sizeof(SRS_Resource_t));
-		  }
-		  CU_FREE(resourceList->list.array, resourceList->list.size);
-	       }
-	       CU_FREE(srsCfg->srs_ResourceToAddModList, \
-		     sizeof(struct SRS_Config__srs_ResourceToAddModList));
-	    }
+                  for(rsrcIdx = 0; rsrcIdx < resourceList->list.count; rsrcIdx++)
+                  {
+                     CU_FREE(resourceList->list.array[rsrcIdx], sizeof(SRS_Resource_t));
+                  }
+                  CU_FREE(resourceList->list.array, resourceList->list.size);
+               }
+               CU_FREE(srsCfg->srs_ResourceToAddModList, \
+                     sizeof(struct SRS_Config__srs_ResourceToAddModList));
+            }
 
-	    CU_FREE(ulBwp->srs_Config->choice.setup, sizeof(SRS_Config_t));
-	 }
-	 CU_FREE(ulBwp->srs_Config, sizeof(struct BWP_UplinkDedicated__srs_Config));
+            CU_FREE(ulBwp->srs_Config->choice.setup, sizeof(SRS_Config_t));
+         }
+         CU_FREE(ulBwp->srs_Config, sizeof(struct BWP_UplinkDedicated__srs_Config));
       }
    }
 }	
