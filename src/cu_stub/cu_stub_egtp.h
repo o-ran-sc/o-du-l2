@@ -47,7 +47,7 @@
 #define EGTP_MASK_BIT7                   0x40
 #define EGTP_MASK_BIT8                   0x80
 
-#define NUM_TUNNEL_TO_PUMP_DATA 9
+#define NUM_TUNNEL_TO_PUMP_DATA MAX_TEID
 #define NUM_DL_PACKETS 1
 
 uint8_t         sockType;
