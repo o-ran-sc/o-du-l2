@@ -55,8 +55,8 @@ MacSchSlotIndFunc macSchSlotIndOpts[] =
 uint8_t MacProcDlAlloc(Pst *pst, DlSchedInfo *dlSchedInfo)
 {
    uint8_t   schInfoIdx = 0;
-   uint8_t   ueIdx;
-   uint16_t  cellIdx;
+   uint8_t   ueId = 0, ueIdx = 0;
+   uint16_t  cellIdx = 0;
    MacDlSlot *currDlSlot = NULLP;
 
 #ifdef CALL_FLOW_DEBUG_LOG
@@ -98,8 +98,8 @@ uint8_t MacProcDlAlloc(Pst *pst, DlSchedInfo *dlSchedInfo)
             {
                if(dlSchedInfo->dlMsgAlloc[ueIdx]->dlMsgSchedInfo[schInfoIdx].dlMsgInfo.isMsg4Pdu)
                {
-                  GET_UE_IDX(dlSchedInfo->dlMsgAlloc[ueIdx]->dlMsgSchedInfo[schInfoIdx].dlMsgInfo.crnti, ueIdx);
-                  ueIdx = ueIdx -1;
+                  GET_UE_ID(dlSchedInfo->dlMsgAlloc[ueIdx]->dlMsgSchedInfo[schInfoIdx].dlMsgInfo.crnti, ueId);
+                  ueIdx = ueId -1;
                   macCb.macCell[cellIdx]->macRaCb[ueIdx].msg4TbSize = \
                      dlSchedInfo->dlMsgAlloc[ueIdx]->dlMsgSchedInfo[schInfoIdx].dlMsgPdschCfg.codeword[0].tbSize;
                }
@@ -138,7 +138,7 @@ uint8_t MacProcDlAlloc(Pst *pst, DlSchedInfo *dlSchedInfo)
  **/
 void fillMsg4Pdu(uint16_t cellId, DlMsgSchInfo *msg4SchInfo)
 {
-   uint8_t   ueIdx;
+   uint8_t   ueId = 0, ueIdx = 0;
    uint16_t  cellIdx;
    uint16_t  msg4TxPduLen;
    MacDlData msg4DlData;
@@ -149,8 +149,8 @@ void fillMsg4Pdu(uint16_t cellId, DlMsgSchInfo *msg4SchInfo)
    memset(&msg4DlData, 0, sizeof(MacDlData));
    memset(&macCeData, 0, sizeof(MacCeInfo));
 
-   GET_UE_IDX(msg4SchInfo->dlMsgInfo.crnti, ueIdx);
-   ueIdx = ueIdx -1;
+   GET_UE_ID(msg4SchInfo->dlMsgInfo.crnti, ueId);
+   ueIdx = ueId -1;
 
    if(macCb.macCell[cellIdx] == NULLP)
    {
