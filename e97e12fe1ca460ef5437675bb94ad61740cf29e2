@@ -24,6 +24,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3e4f813c_640517aa",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 417,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-12-21T07:38:48Z",
+      "side": 1,
+      "message": "Let me take it up in a separate gerrit",
+      "parentUuid": "1314a381_360f0994",
+      "range": {
+        "startLine": 417,
+        "startChar": 3,
+        "endLine": 417,
+        "endChar": 13
+      },
+      "revId": "e97e12fe1ca460ef5437675bb94ad61740cf29e2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6fc063ed_12b7c436",
@@ -37,6 +61,30 @@
       "writtenOn": "2021-12-21T06:15:47Z",
       "side": 1,
       "message": "why dont we move the line from 3846 to 3858 inside the above for loop.. later if we need to increase the resourceSet it will be applicable for that also?",
+      "range": {
+        "startLine": 3846,
+        "startChar": 3,
+        "endLine": 3846,
+        "endChar": 14
+      },
+      "revId": "e97e12fe1ca460ef5437675bb94ad61740cf29e2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8557f9b5_3d3f45d7",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 3846,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-12-21T07:38:48Z",
+      "side": 1,
+      "message": "If we move these lines within above loop, all resource sets will then be filled up with same pucch_ResourceSetId and same resourceList. We would like to have different values for each resourceSet. Hence filling it outside.\n\nWe have followed the same convention for any list filled in any F1AP message.",
+      "parentUuid": "6fc063ed_12b7c436",
       "range": {
         "startLine": 3846,
         "startChar": 3,
@@ -70,6 +118,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5fe80500_d2766285",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 3870,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-12-21T07:38:48Z",
+      "side": 1,
+      "message": "same as above",
+      "parentUuid": "9ded3424_29882332",
+      "range": {
+        "startLine": 3870,
+        "startChar": 3,
+        "endLine": 3870,
+        "endChar": 11
+      },
+      "revId": "e97e12fe1ca460ef5437675bb94ad61740cf29e2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d31f1fb6_b4381696",
@@ -83,6 +155,24 @@
       "writtenOn": "2021-12-20T14:02:05Z",
       "side": 1,
       "message": "NUM_UL_PACKETS  are we not going to change these variable values at PHY stub?",
+      "revId": "e97e12fe1ca460ef5437675bb94ad61740cf29e2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "088c93a5_c0fb1d9a",
+        "filename": "src/cu_stub/cu_stub_egtp.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-12-21T07:38:48Z",
+      "side": 1,
+      "message": "UL testing is in progress. Will change the same in a later gerrit if needed.",
+      "parentUuid": "d31f1fb6_b4381696",
       "revId": "e97e12fe1ca460ef5437675bb94ad61740cf29e2",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
