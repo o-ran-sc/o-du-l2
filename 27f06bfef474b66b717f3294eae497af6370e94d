@@ -1,0 +1,84 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a1f0eee5_b3fd8645",
+        "filename": "src/5gnrmac/mac_demux.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-12-21T13:21:31Z",
+      "side": 1,
+      "message": "can\u0027t we take here ueId in place of ueIdx.\nand then do something like this ueIdx \u003d ueId-1;",
+      "revId": "27f06bfef474b66b717f3294eae497af6370e94d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ae702208_95bb5668",
+        "filename": "src/5gnrmac/mac_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 561,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-12-21T13:21:31Z",
+      "side": 1,
+      "message": "same comment",
+      "range": {
+        "startLine": 561,
+        "startChar": 16,
+        "endLine": 561,
+        "endChar": 24
+      },
+      "revId": "27f06bfef474b66b717f3294eae497af6370e94d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2418bd2b_4743e45b",
+        "filename": "src/5gnrmac/mac_mux.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 239,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-12-21T13:21:31Z",
+      "side": 1,
+      "message": "same comment",
+      "revId": "27f06bfef474b66b717f3294eae497af6370e94d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8f1915fc_dc0d9d9f",
+        "filename": "src/5gnrmac/mac_slot_ind.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-12-21T13:21:31Z",
+      "side": 1,
+      "message": "here as well same comment",
+      "range": {
+        "startLine": 152,
+        "startChar": 36,
+        "endLine": 152,
+        "endChar": 41
+      },
+      "revId": "27f06bfef474b66b717f3294eae497af6370e94d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
