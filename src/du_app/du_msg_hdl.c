@@ -1776,7 +1776,7 @@ uint8_t DuProcRlcRrcDeliveryReport(Pst *pst, RrcDeliveryReport *rrcDeliveryRepor
  * ****************************************************************/
 uint8_t DuProcRlcUlUserDataTrans(Pst *pst, RlcUlUserDatInfo *ulUserData)
 {
-   uint8_t  rbIdx;
+   uint8_t  teIdx = 0;
    EgtpMsg  egtpMsg;
    Buffer   *mBuf;
 
@@ -1790,14 +1790,15 @@ uint8_t DuProcRlcUlUserDataTrans(Pst *pst, RlcUlUserDatInfo *ulUserData)
    egtpMsg.msgHdr.extHdr.pdcpNmb.pres = FALSE;
 
    /* Fetch EGTP tunnel info */
-   for(rbIdx = 0; rbIdx < duCb.numDrb; rbIdx++)
+   for(teIdx = 0; teIdx < duCb.numTeId; teIdx++)
    {
-      if((duCb.upTnlCfg[rbIdx] != NULLP) && (duCb.upTnlCfg[rbIdx]->ueIdx == ulUserData->ueIdx) && \
-         (duCb.upTnlCfg[rbIdx]->drbId == ulUserData->rbId))
+      /*TODO: If multiple Cell Support is enables then CellId also needs to be validated alongwith ueId and DrbId*/
+      if((duCb.upTnlCfg[teIdx] != NULLP) && (duCb.upTnlCfg[teIdx]->ueIdx == ulUserData->ueIdx) && \
+         (duCb.upTnlCfg[teIdx]->drbId == ulUserData->rbId))
       {
-         if(duCb.upTnlCfg[rbIdx]->tnlCfg1)
+         if(duCb.upTnlCfg[teIdx]->tnlCfg1)
          {
-            egtpMsg.msgHdr.teId = duCb.upTnlCfg[rbIdx]->tnlCfg1->teId; /*As we are supporting only 1 tunnel per DRB*/
+            egtpMsg.msgHdr.teId = duCb.upTnlCfg[teIdx]->tnlCfg1->teId; /*As we are supporting only 1 tunnel per DRB*/
             break;
          }
       }
