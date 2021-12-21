@@ -144,9 +144,15 @@
 #define MAX_TDD_PERIODICITY_SLOTS 160 
 #endif
 
+/* TODO : Delete GET_UE_IDX once replaced with GET_UE_ID at all places */
 #define GET_UE_IDX( _crnti,_ueIdx)         \
 {                                          \
    _ueIdx = _crnti - ODU_START_CRNTI + 1;  \
+}
+
+#define GET_UE_ID( _crnti,_ueId)           \
+{                                          \
+   _ueId = _crnti - ODU_START_CRNTI + 1;  \
 }
 
 #define GET_CRNTI( _crnti,_ueIdx)          \

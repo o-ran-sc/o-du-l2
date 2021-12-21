@@ -98,7 +98,7 @@ uint8_t MacProcDlAlloc(Pst *pst, DlSchedInfo *dlSchedInfo)
             {
                if(dlSchedInfo->dlMsgAlloc[ueIdx]->dlMsgSchedInfo[schInfoIdx].dlMsgInfo.isMsg4Pdu)
                {
-                  GET_UE_IDX(dlSchedInfo->dlMsgAlloc[ueIdx]->dlMsgSchedInfo[schInfoIdx].dlMsgInfo.crnti, ueIdx);
+                  GET_UE_ID(dlSchedInfo->dlMsgAlloc[ueIdx]->dlMsgSchedInfo[schInfoIdx].dlMsgInfo.crnti, ueIdx);
                   ueIdx = ueIdx -1;
                   macCb.macCell[cellIdx]->macRaCb[ueIdx].msg4TbSize = \
                      dlSchedInfo->dlMsgAlloc[ueIdx]->dlMsgSchedInfo[schInfoIdx].dlMsgPdschCfg.codeword[0].tbSize;
@@ -149,7 +149,7 @@ void fillMsg4Pdu(uint16_t cellId, DlMsgSchInfo *msg4SchInfo)
    memset(&msg4DlData, 0, sizeof(MacDlData));
    memset(&macCeData, 0, sizeof(MacCeInfo));
 
-   GET_UE_IDX(msg4SchInfo->dlMsgInfo.crnti, ueIdx);
+   GET_UE_ID(msg4SchInfo->dlMsgInfo.crnti, ueIdx);
    ueIdx = ueIdx -1;
 
    if(macCb.macCell[cellIdx] == NULLP)

@@ -2615,7 +2615,7 @@ uint8_t MacSendUeDeleteRsp(uint16_t cellId, uint16_t crnti, UeDeleteStatus resul
 
    /* Filling UE delete response */
    deleteRsp->cellId = cellId;
-   GET_UE_IDX(crnti,deleteRsp->ueId);
+   GET_UE_ID(crnti, deleteRsp->ueId);
    deleteRsp->result = result;
 
    /* Fill Post structure and send UE delete response*/
@@ -2697,7 +2697,7 @@ void deletePucchResourcesCfg(PucchResrcCfg *resrcCfg)
 
 uint8_t MacProcSchUeDeleteRsp(Pst *pst, SchUeDeleteRsp *schUeDelRsp)
 {
-   uint8_t ueIdx =0, isCrntiValid = 0;
+   uint8_t ueId =0, isCrntiValid = 0;
    uint16_t cellIdx=0;
    uint8_t ret = RFAILED;
    UeDeleteStatus result;
@@ -2723,23 +2723,23 @@ uint8_t MacProcSchUeDeleteRsp(Pst *pst, SchUeDeleteRsp *schUeDelRsp)
             }
             else
             {
-               GET_UE_IDX(schUeDelRsp->crnti, ueIdx);
-               if(macCb.macCell[cellIdx]->ueCb[ueIdx -1].crnti == schUeDelRsp->crnti)
+               GET_UE_ID(schUeDelRsp->crnti, ueId);
+               if(macCb.macCell[cellIdx]->ueCb[ueId -1].crnti == schUeDelRsp->crnti)
                {
 
                   /*Commenting as S-NSSAI and PDU session will be stored in MAC DB in future scope*/
 #if 0
                   /*Looping around LCs to free S-NSSAI memory*/
-                  for(lcIdx = 0; lcIdx < (macCb.macCell[cellIdx]->ueCb[ueIdx -1].ulInfo.numUlLc); lcIdx++)
+                  for(lcIdx = 0; lcIdx < (macCb.macCell[cellIdx]->ueCb[ueId -1].ulInfo.numUlLc); lcIdx++)
                   {
-                     MAC_FREE(macCb.macCell[cellIdx]->ueCb[ueIdx -1].ulInfo.lcCb[lcIdx].snssai, sizeof(Snssai));
+                     MAC_FREE(macCb.macCell[cellIdx]->ueCb[ueId -1].ulInfo.lcCb[lcIdx].snssai, sizeof(Snssai));
                   }
-                  for(lcIdx = 0; lcIdx < (macCb.macCell[cellIdx]->ueCb[ueIdx -1].dlInfo.numDlLc); lcIdx++)
+                  for(lcIdx = 0; lcIdx < (macCb.macCell[cellIdx]->ueCb[ueId -1].dlInfo.numDlLc); lcIdx++)
                   {
-                     MAC_FREE(macCb.macCell[cellIdx]->ueCb[ueIdx -1].dlInfo.lcCb[lcIdx].snssai, sizeof(Snssai));
+                     MAC_FREE(macCb.macCell[cellIdx]->ueCb[ueId -1].dlInfo.lcCb[lcIdx].snssai, sizeof(Snssai));
                   }
 #endif
-                  memset(&macCb.macCell[cellIdx]->ueCb[ueIdx -1], 0, sizeof(MacUeCb));
+                  memset(&macCb.macCell[cellIdx]->ueCb[ueId -1], 0, sizeof(MacUeCb));
                   macCb.macCell[cellIdx]->numActvUe--;
                   result = SUCCESS;
                   ret = ROK;

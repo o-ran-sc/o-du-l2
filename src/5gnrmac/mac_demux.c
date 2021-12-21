@@ -72,7 +72,7 @@ uint8_t unpackRxData(uint16_t cellId, SlotTimingInfo slotInfo, RxDataIndPdu *rxD
    }
    pduLen = rxDataIndPdu->pduLength;
    rxDataPdu = rxDataIndPdu->pduData;
-   GET_UE_IDX(rxDataIndPdu->rnti, ueIdx);
+   GET_UE_ID(rxDataIndPdu->rnti, ueIdx);
    ueIdx = ueIdx -1;
 
    while(pduLen > 0)

@@ -236,7 +236,7 @@ void createMacRaCb(RachIndInfo *rachIndInfo)
    if(crnti == -1)
       return;
 
-   GET_UE_IDX(crnti, ueIdx);
+   GET_UE_ID(crnti, ueIdx);
    ueIdx = ueIdx -1;
 
    /* store in rach ind structure */
