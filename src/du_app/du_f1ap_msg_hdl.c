@@ -4355,7 +4355,124 @@ uint8_t BuildBWPUlDedPuschCfg(PUSCH_Config_t *puschCfg)
 uint8_t BuildBWPUlDedPucchCfg(PUCCH_Config_t *pucchCfg)
 {
    uint8_t arrIdx, elementCnt;
+   uint8_t rsrcIdx, rsrcSetIdx;
+   PUCCH_ResourceSet_t *rsrcSet = NULLP;
+   PUCCH_Resource_t *rsrc = NULLP;
 
+   //RESOURCE SET
+   elementCnt = 1;
+   DU_ALLOC(pucchCfg->resourceSetToAddModList, sizeof(struct PUCCH_Config__resourceSetToAddModList));
+   if(pucchCfg->resourceSetToAddModList == NULL)
+   {
+      DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in BuildBWPUlDedPucchCfg");
+      return RFAILED;
+   }
+
+   pucchCfg->resourceSetToAddModList->list.count = elementCnt;
+   pucchCfg->resourceSetToAddModList->list.size = elementCnt * sizeof(PUCCH_ResourceSet_t *);
+   DU_ALLOC(pucchCfg->resourceSetToAddModList->list.array, pucchCfg->resourceSetToAddModList->list.size);
+   if(pucchCfg->resourceSetToAddModList->list.array == NULLP)
+   {
+      DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in BuildBWPUlDedPucchCfg");
+      return RFAILED;
+   }
+   for(rsrcSetIdx=0; rsrcSetIdx < pucchCfg->resourceSetToAddModList->list.count; rsrcSetIdx++)
+   {
+      DU_ALLOC(pucchCfg->resourceSetToAddModList->list.array[rsrcSetIdx], sizeof(PUCCH_ResourceSet_t));
+      if(pucchCfg->resourceSetToAddModList->list.array[rsrcSetIdx] == NULLP)
+      {
+         DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in BuildBWPUlDedPucchCfg");
+         return RFAILED;
+      }
+   }
+   rsrcSetIdx = 0;
+   rsrcSet = pucchCfg->resourceSetToAddModList->list.array[rsrcSetIdx];
+   rsrcSet->pucch_ResourceSetId = 1;
+   elementCnt = 1;
+   rsrcSet->resourceList.list.count = elementCnt;
+   rsrcSet->resourceList.list.size = elementCnt * sizeof(PUCCH_ResourceId_t *);
+   DU_ALLOC(rsrcSet->resourceList.list.array, rsrcSet->resourceList.list.size);
+   if(rsrcSet->resourceList.list.array == NULLP)
+   {
+      DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in BuildBWPUlDedPucchCfg");
+      return RFAILED;
+   }
+   for(rsrcIdx=0; rsrcIdx < rsrcSet->resourceList.list.count; rsrcIdx++)
+   {
+      DU_ALLOC(rsrcSet->resourceList.list.array[rsrcIdx], sizeof(PUCCH_ResourceId_t));
+      if(rsrcSet->resourceList.list.array[rsrcIdx] == NULLP)
+      {
+         DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in BuildBWPUlDedPucchCfg");
+         return RFAILED;
+      }
+   }
+   rsrcIdx = 0;
+   *(rsrcSet->resourceList.list.array[rsrcIdx]) = 1;
+
+   //RESOURCE
+   elementCnt = 1;
+   DU_ALLOC(pucchCfg->resourceToAddModList, sizeof(struct PUCCH_Config__resourceToAddModList));
+   if(pucchCfg->resourceToAddModList == NULLP)
+   {
+      DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in BuildBWPUlDedPucchCfg");
+      return RFAILED;
+   }
+   pucchCfg->resourceToAddModList->list.count = elementCnt;
+   pucchCfg->resourceToAddModList->list.size = elementCnt * sizeof(PUCCH_Resource_t *);
+   DU_ALLOC(pucchCfg->resourceToAddModList->list.array, pucchCfg->resourceToAddModList->list.size);
+   if(pucchCfg->resourceToAddModList->list.array == NULLP)
+   {
+      DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in BuildBWPUlDedPucchCfg");
+      return RFAILED;
+   }
+   for(rsrcIdx=0; rsrcIdx < pucchCfg->resourceToAddModList->list.count; rsrcIdx++)
+   {
+      DU_ALLOC(pucchCfg->resourceToAddModList->list.array[rsrcIdx], sizeof(PUCCH_Resource_t));
+      if(pucchCfg->resourceToAddModList->list.array[rsrcIdx] == NULLP)
+      {
+         DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in BuildBWPUlDedPucchCfg");
+         return RFAILED;
+      }
+   }
+   rsrcIdx = 0;
+   rsrc = pucchCfg->resourceToAddModList->list.array[rsrcIdx];
+   rsrc->pucch_ResourceId = 1;
+   rsrc->startingPRB = 0;
+   rsrc->format.present = PUCCH_Resource__format_PR_format1; 
+   DU_ALLOC(rsrc->format.choice.format1, sizeof(PUCCH_format1_t));
+   if(rsrc->format.choice.format1 == NULLP)
+   {
+      DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in BuildBWPUlDedPucchCfg");
+      return RFAILED;
+   }
+   rsrc->format.choice.format1->initialCyclicShift = 0;
+   rsrc->format.choice.format1->nrofSymbols = 4;
+   rsrc->format.choice.format1->startingSymbolIndex = 0;
+   rsrc->format.choice.format1->timeDomainOCC = 0;
+
+   //PUCCH Format 1
+   DU_ALLOC(pucchCfg->format1, sizeof(struct PUCCH_Config__format1));
+   if(pucchCfg->format1 == NULLP)
+   {
+      DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in BuildBWPUlDedPucchCfg");
+      return RFAILED;
+   }
+   pucchCfg->format1->present = PUCCH_Config__format1_PR_setup;
+   DU_ALLOC(pucchCfg->format1->choice.setup, sizeof(PUCCH_FormatConfig_t));
+   if(pucchCfg->format1->choice.setup == NULLP)
+   {
+      DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in BuildBWPUlDedPucchCfg");
+      return RFAILED;
+   }
+   DU_ALLOC(pucchCfg->format1->choice.setup->nrofSlots, sizeof(long));
+   if(pucchCfg->format1->choice.setup->nrofSlots == NULLP)
+   {
+      DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in BuildBWPUlDedPucchCfg");
+      return RFAILED;
+   }
+   *(pucchCfg->format1->choice.setup->nrofSlots) = PUCCH_FormatConfig__nrofSlots_n4;
+
+   //DL DATA TO UL ACK
    DU_ALLOC(pucchCfg->dl_DataToUL_ACK, sizeof(struct PUCCH_Config__dl_DataToUL_ACK));
    if(pucchCfg->dl_DataToUL_ACK == NULLP)
    {
@@ -5357,6 +5474,105 @@ void FreePuschTimeDomAllocList(PUSCH_Config_t *puschCfg)
    }
 
 }
+
+/*******************************************************************
+ *
+ * @brief Frees memory allocated for Dedicated PUCCH config
+ *
+ * @details
+ *
+ *    Function : FreeBWPUlDedPucchCfg
+ *
+ *    Functionality: Deallocating memory of Dedicated PUCCH cfg
+ *
+ * @params[in] BWP_UplinkDedicated__pucch_Config *ulBwpPucchCfg
+ *
+ * @return void
+ *
+ * ****************************************************************/
+void FreeBWPUlDedPucchCfg(struct BWP_UplinkDedicated__pucch_Config *ulBwpPucchCfg)
+{
+   uint8_t k1Idx, rsrcIdx, rsrcSetIdx;
+   PUCCH_Config_t *pucchCfg = NULLP;
+   PUCCH_ResourceSet_t *rsrcSet = NULLP;
+   PUCCH_Resource_t *rsrc = NULLP;
+
+   if(ulBwpPucchCfg)
+   {
+      if(ulBwpPucchCfg->choice.setup)
+      {
+         pucchCfg = ulBwpPucchCfg->choice.setup;
+
+         //Free resource set list
+         if(pucchCfg->resourceSetToAddModList)
+         {
+            if(pucchCfg->resourceSetToAddModList->list.array)
+            {
+               for(rsrcSetIdx=0; rsrcSetIdx < pucchCfg->resourceSetToAddModList->list.count; rsrcSetIdx++)
+               {
+                  rsrcSet = pucchCfg->resourceSetToAddModList->list.array[rsrcSetIdx];
+                  if(rsrcSet->resourceList.list.array)
+                  {
+                     for(rsrcIdx=0; rsrcIdx < rsrcSet->resourceList.list.count; rsrcIdx++)
+                     {
+                        DU_FREE(rsrcSet->resourceList.list.array[rsrcIdx], sizeof(PUCCH_ResourceId_t));
+                     }
+                     DU_FREE(rsrcSet->resourceList.list.array, rsrcSet->resourceList.list.size);
+                  }
+                  DU_FREE(pucchCfg->resourceSetToAddModList->list.array[rsrcSetIdx], sizeof(PUCCH_ResourceSet_t));
+               }
+               DU_FREE(pucchCfg->resourceSetToAddModList->list.array, pucchCfg->resourceSetToAddModList->list.size);
+            }
+            DU_FREE(pucchCfg->resourceSetToAddModList, sizeof(struct PUCCH_Config__resourceSetToAddModList));
+         }
+
+         //Free resource list
+         if(pucchCfg->resourceToAddModList)
+         {
+            if(pucchCfg->resourceToAddModList->list.array)
+            {
+               for(rsrcIdx=0; rsrcIdx < pucchCfg->resourceToAddModList->list.count; rsrcIdx++)
+               {
+                  rsrc = pucchCfg->resourceToAddModList->list.array[rsrcIdx];
+                  DU_FREE(rsrc->format.choice.format1, sizeof(PUCCH_format1_t));
+                  DU_FREE(pucchCfg->resourceToAddModList->list.array[rsrcIdx], sizeof(PUCCH_Resource_t));
+               }
+               DU_FREE(pucchCfg->resourceToAddModList->list.array, pucchCfg->resourceToAddModList->list.size);
+            }
+            DU_FREE(pucchCfg->resourceToAddModList, sizeof(struct PUCCH_Config__resourceToAddModList));
+         }
+
+         //PUCCH Format 1
+         if(pucchCfg->format1)
+         {
+            if(pucchCfg->format1->choice.setup)
+            {
+               DU_FREE(pucchCfg->format1->choice.setup->nrofSlots, sizeof(long));
+               DU_FREE(pucchCfg->format1->choice.setup, sizeof(PUCCH_FormatConfig_t));
+            }
+            DU_FREE(pucchCfg->format1, sizeof(struct PUCCH_Config__format1));
+         }
+         
+         //DL DATA TO UL ACK
+         if(pucchCfg->dl_DataToUL_ACK)
+         {
+            if(pucchCfg->dl_DataToUL_ACK->list.array)
+            {
+               for(k1Idx = 0; k1Idx <  pucchCfg->dl_DataToUL_ACK->list.count; k1Idx++)
+               {
+                  DU_FREE(pucchCfg->dl_DataToUL_ACK->list.array[k1Idx], sizeof(long));
+               }
+               DU_FREE(pucchCfg->dl_DataToUL_ACK->list.array, pucchCfg->dl_DataToUL_ACK->list.size);
+            }
+            DU_FREE(pucchCfg->dl_DataToUL_ACK, sizeof(struct PUCCH_Config__dl_DataToUL_ACK));
+         }
+
+         DU_FREE(ulBwpPucchCfg->choice.setup, sizeof(PUCCH_Config_t));
+      }
+      DU_FREE(ulBwpPucchCfg, sizeof(struct BWP_UplinkDedicated__pucch_Config));
+   }
+}
+
 /*******************************************************************
  *
  * @brief Frees memory allocated for InitialUlBWP
@@ -5374,36 +5590,15 @@ void FreePuschTimeDomAllocList(PUSCH_Config_t *puschCfg)
  * ****************************************************************/
 void FreeInitialUlBWP(BWP_UplinkDedicated_t *ulBwp)
 {
-   uint8_t  rSetIdx, rsrcIdx, k1Idx;
+   uint8_t  rSetIdx, rsrcIdx;
    SRS_Config_t   *srsCfg = NULLP;
    PUSCH_Config_t *puschCfg = NULLP;
-   PUCCH_Config_t *pucchCfg = NULLP;
    struct PUSCH_Config__dmrs_UplinkForPUSCH_MappingTypeA *dmrsUlCfg = NULLP;
    struct SRS_Config__srs_ResourceSetToAddModList *rsrcSetList = NULLP;
    struct SRS_ResourceSet__srs_ResourceIdList *rsrcIdList = NULLP;
    struct SRS_Config__srs_ResourceToAddModList *resourceList = NULLP;
 
-   if(ulBwp->pucch_Config)
-   {
-      if(ulBwp->pucch_Config->choice.setup)
-      {
-          pucchCfg = ulBwp->pucch_Config->choice.setup;
-          if(pucchCfg->dl_DataToUL_ACK)
-          {
-             if(pucchCfg->dl_DataToUL_ACK->list.array)
-             {
-                for(k1Idx = 0; k1Idx < pucchCfg->dl_DataToUL_ACK->list.count; k1Idx++)
-                {
-                   DU_FREE(pucchCfg->dl_DataToUL_ACK->list.array[k1Idx], sizeof(long));
-                }
-                DU_FREE(pucchCfg->dl_DataToUL_ACK->list.array, pucchCfg->dl_DataToUL_ACK->list.size);
-             }
-             DU_FREE(pucchCfg->dl_DataToUL_ACK, sizeof(struct PUCCH_Config__dl_DataToUL_ACK));
-          }
-          DU_FREE(ulBwp->pucch_Config->choice.setup, sizeof(PUCCH_Config_t));
-      }
-      DU_FREE(ulBwp->pucch_Config, sizeof(struct BWP_UplinkDedicated__pucch_Config));
-   }
+   FreeBWPUlDedPucchCfg(ulBwp->pucch_Config);
 
    if(ulBwp->pusch_Config)
    {
@@ -8700,8 +8895,16 @@ void extractResrcSetToAddModList(PucchResrcSetCfg *macRsrcSetList, struct PUCCH_
          macRsrcSetList->resrcSetToAddModList[arrIdx].resrcList[rsrcListIdx] =\
             *cuRsrcSetList->list.array[arrIdx]->resourceList.list.array[rsrcListIdx];
       }
-      macRsrcSetList->resrcSetToAddModList[arrIdx].maxPayLoadSize =\
-         *cuRsrcSetList->list.array[arrIdx]->maxPayloadMinus1;
+
+      if(cuRsrcSetList->list.array[arrIdx]->maxPayloadMinus1)
+      {
+         macRsrcSetList->resrcSetToAddModList[arrIdx].maxPayLoadSize =\
+            *cuRsrcSetList->list.array[arrIdx]->maxPayloadMinus1;
+      }
+      else
+      {
+         macRsrcSetList->resrcSetToAddModList[arrIdx].maxPayLoadSize = 0;
+      }
    }
 }/* End of extractResrcSetToAddModList */
 
