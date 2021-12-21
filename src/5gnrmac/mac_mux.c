@@ -226,7 +226,7 @@ void fillRarPdu(RarInfo *rarInfo)
  * ****************************************************************/
 void createMacRaCb(RachIndInfo *rachIndInfo)
 {
-   uint8_t  ueIdx = 0;
+   uint8_t  ueId = 0, ueIdx = 0;
    uint16_t crnti = 0;
    uint16_t cellIdx = 0;
 
@@ -236,8 +236,8 @@ void createMacRaCb(RachIndInfo *rachIndInfo)
    if(crnti == -1)
       return;
 
-   GET_UE_IDX(crnti, ueIdx);
-   ueIdx = ueIdx -1;
+   GET_UE_ID(crnti, ueId);
+   ueIdx = ueId -1;
 
    /* store in rach ind structure */
    rachIndInfo->crnti  = crnti;
