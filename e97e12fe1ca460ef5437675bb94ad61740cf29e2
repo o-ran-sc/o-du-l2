@@ -3,6 +3,75 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1314a381_360f0994",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 417,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-12-21T06:15:47Z",
+      "side": 1,
+      "message": "Can we change the nomenclature of the MACRO to GET_UEID instead of UEIDX?\nIn future we may repeat the mistake of directly using it as UEIdx",
+      "range": {
+        "startLine": 417,
+        "startChar": 3,
+        "endLine": 417,
+        "endChar": 13
+      },
+      "revId": "e97e12fe1ca460ef5437675bb94ad61740cf29e2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6fc063ed_12b7c436",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 3846,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-12-21T06:15:47Z",
+      "side": 1,
+      "message": "why dont we move the line from 3846 to 3858 inside the above for loop.. later if we need to increase the resourceSet it will be applicable for that also?",
+      "range": {
+        "startLine": 3846,
+        "startChar": 3,
+        "endLine": 3846,
+        "endChar": 14
+      },
+      "revId": "e97e12fe1ca460ef5437675bb94ad61740cf29e2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9ded3424_29882332",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 3870,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-12-21T06:15:47Z",
+      "side": 1,
+      "message": "above comments for line no: 3870 to 3879",
+      "range": {
+        "startLine": 3870,
+        "startChar": 3,
+        "endLine": 3870,
+        "endChar": 11
+      },
+      "revId": "e97e12fe1ca460ef5437675bb94ad61740cf29e2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d31f1fb6_b4381696",
         "filename": "src/cu_stub/cu_stub_egtp.h",
         "patchSetId": 1
