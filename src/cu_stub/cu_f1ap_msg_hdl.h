@@ -54,8 +54,10 @@
 #define DRB2 2
 #define DRB3 3
 #define QCI  9
-#define MAX_DRB_SET_UE_CONTEXT_SETUP_REQ 2
-#define MAX_DRB_SET_UE_CONTEXT_MOD_REQ 1
+#define MAX_DRB_SET_UE_CONTEXT_SETUP_REQ 27
+#define MAX_DRB_SET_UE_CONTEXT_MOD_REQ 2
+#define MAX_DRB_MODIFIED_UE_MOD_REQ 2  /*Currently CU trigger Modification of 2DRBs*/
+#define DRB_MOD MAX_DRB_SET_UE_CONTEXT_SETUP_REQ+1 /*The DRB ID: which will be added using Modification Procedure*/
 
 #define CU_UE_F1AP_ID 0
 #define DU_UE_F1AP_ID 1

@@ -7357,7 +7357,7 @@ uint8_t deleteEgtpTunnel(uint8_t *buf)
 *         RFAILED - failure
 *
 * ****************************************************************/
-uint8_t BuildUlTnlInfoforSetupMod(uint8_t ueId, ULUPTNLInformation_ToBeSetup_List_t *ulInfo, uint8_t actionType)
+uint8_t BuildUlTnlInfoforSetupMod(uint8_t ueId, uint8_t drbId, ULUPTNLInformation_ToBeSetup_List_t *ulInfo, uint8_t actionType)
 {
    uint8_t arrIdx;
    uint8_t ulCnt;
@@ -7436,8 +7436,14 @@ uint8_t BuildUlTnlInfoforSetupMod(uint8_t ueId, ULUPTNLInformation_ToBeSetup_Lis
       gTP_TEID.buf[2] = 0;
    if(actionType == ProtocolIE_ID_id_DRBs_ToBeModified_Item)
    {
+
      /*TODO: DRB context to be stored in CU STUB so that tunnel Id can be easily
       * fetched based on the Drb Id */
+
+      ulInfo->list.array[arrIdx]->uLUPTNLInformation.choice.gTPTunnel->gTP_TEID.buf[3]=\
+                                                        (MAX_NUM_DRB *(ueId  - 1)) + drbId;
+
+     #if 0
      if(ueId == 1)
      {
         /* Tunnel Id for DRB 2 of UE 1 is 2. Hence passing the same TeId */
@@ -7453,6 +7459,7 @@ uint8_t BuildUlTnlInfoforSetupMod(uint8_t ueId, ULUPTNLInformation_ToBeSetup_Lis
         /* Tunnel Id for DRB 2 of UE 3 is 8. Hence passing the same TeId */
         ulInfo->list.array[arrIdx]->uLUPTNLInformation.choice.gTPTunnel->gTP_TEID.buf[3] = 8;
      }
+     #endif
 
    }
    else
@@ -7569,7 +7576,7 @@ uint8_t FillDrbItemToSetupMod(uint8_t ueId, uint8_t arrIdx, DRBs_ToBeSetupMod_It
    uint8_t ret = ROK;
 
    /*Drb Id */
-   drbItem->dRBID = arrIdx + DRB3;
+   drbItem->dRBID = arrIdx + DRB_MOD;
    
    /*qoSInformation*/
    drbItem->qoSInformation.present = QoSInformation_PR_choice_extension;
@@ -7643,7 +7650,7 @@ uint8_t FillDrbItemToSetupMod(uint8_t ueId, uint8_t arrIdx, DRBs_ToBeSetupMod_It
    }
    
    /*ULUPTNLInformation To Be Setup List*/
-   ret = BuildUlTnlInfoforSetupMod(ueId, &drbItem->uLUPTNLInformation_ToBeSetup_List, \
+   ret = BuildUlTnlInfoforSetupMod(ueId,  drbItem->dRBID, &drbItem->uLUPTNLInformation_ToBeSetup_List, \
       ProtocolIE_ID_id_DRBs_ToBeSetupMod_Item);
    if(ret != ROK)
    {
@@ -7765,15 +7772,14 @@ uint8_t BuildDrbToBeSetupList(uint8_t ueId, DRBs_ToBeSetupMod_List_t *drbSet)
       if(drbSet->list.array[arrIdx] == NULLP)
       {
          DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in BuildDrbToBeSetupList for array idx [%d]", arrIdx);
-	 return  RFAILED;
+         return  RFAILED;
       }
-   }
 
-   arrIdx = 0;
-   ret = FillDrbItemList(ueId, arrIdx, (DRBs_ToBeSetupMod_ItemIEs_t *)drbSet->list.array[arrIdx]);
-   if(ret != ROK)
-   {
-      DU_LOG("\nERROR  -->  F1AP : FillDrbItemList failed");
+      ret = FillDrbItemList(ueId, arrIdx, (DRBs_ToBeSetupMod_ItemIEs_t *)drbSet->list.array[arrIdx]);
+      if(ret != ROK)
+      {
+         DU_LOG("\nERROR  -->  F1AP : FillDrbItemList failed");
+      }
    }
 
    return ret;
@@ -7796,12 +7802,12 @@ uint8_t BuildDrbToBeSetupList(uint8_t ueId, DRBs_ToBeSetupMod_List_t *drbSet)
 *
 * ****************************************************************/
 
-uint8_t FillDrbToBeModItem(uint8_t ueId, DRBs_ToBeModified_Item_t *drbItem)
+uint8_t FillDrbToBeModItem(uint8_t ueId, uint8_t arrIdx, DRBs_ToBeModified_Item_t *drbItem)
 {
    uint8_t ret = ROK;
 
    /*Drb Id */
-   drbItem->dRBID = DRB2;
+   drbItem->dRBID = DRB2+arrIdx;
 
    /*qoSInformation*/
    drbItem->qoSInformation = NULLP;
@@ -7880,7 +7886,7 @@ uint8_t FillDrbToBeModItem(uint8_t ueId, DRBs_ToBeModified_Item_t *drbItem)
    }/* End of QoS */
 
    /*ULUPTNLInformation To Be Setup List*/
-   ret = BuildUlTnlInfoforSetupMod(ueId, &drbItem->uLUPTNLInformation_ToBeSetup_List,\
+   ret = BuildUlTnlInfoforSetupMod(ueId, drbItem->dRBID, &drbItem->uLUPTNLInformation_ToBeSetup_List,\
             ProtocolIE_ID_id_DRBs_ToBeModified_Item);
    if(ret != ROK)
    {
@@ -7907,12 +7913,12 @@ uint8_t FillDrbToBeModItem(uint8_t ueId, DRBs_ToBeModified_Item_t *drbItem)
 *
 * ****************************************************************/
 
-uint8_t FillDrbToBeModItemList(uint8_t ueId, struct DRBs_ToBeModified_ItemIEs *drbItemIe)
+uint8_t FillDrbToBeModItemList(uint8_t ueId, uint8_t arrIdx, struct DRBs_ToBeModified_ItemIEs *drbItemIe)
 {
    drbItemIe->id = ProtocolIE_ID_id_DRBs_ToBeModified_Item;
    drbItemIe->criticality = Criticality_reject;
    drbItemIe->value.present = DRBs_ToBeModified_ItemIEs__value_PR_DRBs_ToBeModified_Item;
-   if(FillDrbToBeModItem(ueId, &(drbItemIe->value.choice.DRBs_ToBeModified_Item)) != ROK)
+   if(FillDrbToBeModItem(ueId, arrIdx, &(drbItemIe->value.choice.DRBs_ToBeModified_Item)) != ROK)
    {
       DU_LOG("\nERROR  -->  F1AP : FillDrbToBeModItem failed"); 
       return RFAILED;
@@ -7944,7 +7950,7 @@ uint8_t BuildDrbToBeModifiedList(uint8_t ueId, DRBs_ToBeModified_List_t *drbSet)
    uint8_t arrIdx =0;
    uint8_t drbCnt =0;
 
-   drbCnt = 1;
+   drbCnt = MAX_DRB_MODIFIED_UE_MOD_REQ;
    drbSet->list.count = drbCnt;
    drbSet->list.size = drbCnt * sizeof(DRBs_ToBeModified_ItemIEs_t *);
    CU_ALLOC(drbSet->list.array, drbSet->list.size);
@@ -7959,15 +7965,14 @@ uint8_t BuildDrbToBeModifiedList(uint8_t ueId, DRBs_ToBeModified_List_t *drbSet)
       if(drbSet->list.array[arrIdx] == NULLP)
       {
          DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in BuildDrbToBeSetupList");
-	 return  RFAILED;
+         return  RFAILED;
       }
-   }
 
-   arrIdx=0;
-   ret = FillDrbToBeModItemList(ueId, (DRBs_ToBeModified_ItemIEs_t *)drbSet->list.array[arrIdx]);
-   if(ret != ROK)
-   {
-      DU_LOG("\nERROR  -->  F1AP : FillDrbToBeModItemList failed");
+      ret = FillDrbToBeModItemList(ueId, arrIdx, (DRBs_ToBeModified_ItemIEs_t *)drbSet->list.array[arrIdx]);
+      if(ret != ROK)
+      {
+         DU_LOG("\nERROR  -->  F1AP : FillDrbToBeModItemList failed");
+      }
    }
 
    return ret;

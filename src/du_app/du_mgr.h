@@ -134,6 +134,7 @@ typedef struct duUeCfg
    AmbrCfg *ambrCfg;
    uint8_t numDrb;
    UpTnlCfg upTnlInfo[MAX_NUM_DRB];  /* User plane TNL Info*/
+   uint8_t numDrbSetupMod;        /*No. of DRB Added during Modification*/
    MacUeCfg copyOfmacUeCfg;
 }DuUeCfg;
 
@@ -220,8 +221,8 @@ typedef struct duCb
    DuCellCb*     actvCellLst[MAX_NUM_CELL]; /* List of cells activated/to be activated of type DuCellCb */
    uint32_t      numUe;                     /* current number of UEs */
    UeCcchCtxt    ueCcchCtxt[MAX_NUM_UE];    /* mapping of gnbDuUeF1apId to CRNTI required for CCCH processing*/
-   uint8_t       numDrb;                    /* current number of DRbs*/
-   UpTnlCfg*     upTnlCfg[MAX_NUM_DRB];     /* tunnel info for every Drb */
+   uint8_t       numTeId;                    /* current number of TEIDs configured in the system*/
+   UpTnlCfg*     upTnlCfg[MAX_TEID];     /* tunnel info for every Drb */
    CmLListCp     reservedF1apPduList;       /*storing F1AP pdu infomation and transId */
    SliceCfgState sliceState;
 }DuCb;

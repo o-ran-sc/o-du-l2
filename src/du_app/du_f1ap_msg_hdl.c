@@ -10465,7 +10465,7 @@ DRBs_ToBeSetupMod_Item_t *drbSetupModItem, DRBs_ToBeModified_Item_t *drbModItem,
 uint8_t extractDrbListToSetupMod(DRBs_ToBeSetup_List_t *drbCfg, DRBs_ToBeSetupMod_List_t *drbSetupModCfg,\
  DRBs_ToBeModified_List_t *drbModCfg, uint8_t drbCount, DuUeCfg *ueCfgDb, uint32_t *drbBitMap, RlcUeCfg *rlcUeCfg)
 {
-   uint8_t ret, drbIdx, lcId = 0;
+   uint8_t ret, drbIdx = 0, lcId = 0;
    DRBs_ToBeSetup_Item_t *drbItem = NULLP;
    DRBs_ToBeSetupMod_ItemIEs_t *drbSetupModItem = NULLP;
    DRBs_ToBeModified_ItemIEs_t *drbModItem = NULLP;
@@ -10540,6 +10540,7 @@ uint8_t extractDrbListToSetupMod(DRBs_ToBeSetup_List_t *drbCfg, DRBs_ToBeSetupMo
                   DU_LOG("\nERROR  --> F1AP : Failed at extractDrbListToSetupMod() for DrbSetupMod List");
                   break;
                }
+               ueCfgDb->numDrbSetupMod++;
             }
          }
          ueCfgDb->numRlcLcs++;
@@ -12723,7 +12724,7 @@ uint8_t BuildDrbSetupModList(DRBs_SetupMod_List_t *drbSet , DuUeCfg *ueCfg)
    uint8_t drbCnt =0;
    struct DRBs_SetupMod_ItemIEs *drbItemIe;
 
-   drbCnt = 1;
+   drbCnt = ueCfg->numDrbSetupMod;
    drbSet->list.count = drbCnt;
    drbSet->list.size = drbCnt * sizeof(DRBs_SetupMod_ItemIEs_t *);
    DU_ALLOC(drbSet->list.array, drbSet->list.size);
@@ -13314,7 +13315,7 @@ uint8_t procF1UeContextModificationReq(F1AP_PDU_t *f1apMsg)
                            {
                               drbModifiedCfg = &ueContextModifyReq->protocolIEs.list.array[ieIdx]->value.\
                               choice.DRBs_ToBeModified_List;
-                              if(extractDrbListToSetupMod(NULL, NULL, drbModifiedCfg, drbSetupModCfg->list.count,\
+                              if(extractDrbListToSetupMod(NULL, NULL, drbModifiedCfg, drbModifiedCfg->list.count,\
                                  &duUeCb->f1UeDb->duUeCfg, &duUeCb->drbBitMap, &duUeCb->rlcUeCfg))
                               {
                                  DU_LOG("\nERROR  -->  DU APP : Failed at extractDrbListToSetupMod() for DrbModifiedList");
