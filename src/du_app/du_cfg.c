@@ -635,9 +635,10 @@ uint8_t readCfg()
    Sib1Params sib1;
    F1TaiSliceSuppLst *taiSliceSuppLst;
 
-   /* TODO Added these below variable for local testing, once we will receive the
-    * configuration from O1 we can remove these variable */
+#ifndef O1_ENABLE
+   /* Note: Added these below variable for local testing*/
    Snssai snssai[NUM_OF_SUPPORTED_SLICE] = {{1,{2,3,4}},{5,{6,7,8}}};
+#endif
 
 #ifdef O1_ENABLE
    if( getStartupConfig(&g_cfg) != ROK )
