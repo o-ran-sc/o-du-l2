@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "453d7f47_feaac2f1",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 8425,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-12-21T08:46:37Z",
+      "side": 1,
+      "message": "what do you mean by our call flow? which call flow is this? Never add ambiguous sentences.",
+      "revId": "aa6331aca5a76a01a0aa3ab0aca946b3077b70de",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "059157b9_aefc9dc4",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 2714,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-12-21T08:46:37Z",
+      "side": 1,
+      "message": "Please make sure that this gives the correct bit string. The bit string should be same as what got generated from the old code",
+      "revId": "aa6331aca5a76a01a0aa3ab0aca946b3077b70de",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
