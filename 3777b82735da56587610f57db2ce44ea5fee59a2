@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a03d1534_f0602403",
+        "filename": "src/du_app/du_mgr_main.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 569,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-12-22T13:33:36Z",
+      "side": 1,
+      "message": "Uncomment these lines.",
+      "range": {
+        "startLine": 569,
+        "startChar": 5,
+        "endLine": 569,
+        "endChar": 28
+      },
+      "revId": "3777b82735da56587610f57db2ce44ea5fee59a2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
