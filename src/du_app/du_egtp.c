@@ -31,6 +31,7 @@
 
 /* Global variable declaration */
 EgtpGlobalCb egtpCb;
+uint64_t numDataSent;
 
 /**************************************************************************
  * @brief Task Initiation callback function. 
@@ -59,6 +60,7 @@ uint8_t egtpActvInit(Ent entity, Inst inst, Region region, Reason reason)
   memset (&egtpCb, 0, sizeof(EgtpGlobalCb));
   protType = CM_INET_PROTO_UDP;
   gDlDataRcvdCnt = 0;
+  numDataSent = 0;
 
   return ROK;
 }
@@ -887,6 +889,11 @@ uint8_t egtpSendMsg(Buffer *mBuf)
    {
       DU_LOG("\nERROR  -->  EGTP : Failed sending the message");
       return RFAILED;
+   }
+   else
+   {
+      DU_LOG("\nDEBUG -->  EGTP : Sent UL Message [%ld]", numDataSent+1);
+      numDataSent++;
    }
 
    return ROK;

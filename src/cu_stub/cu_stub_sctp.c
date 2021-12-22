@@ -404,6 +404,7 @@ S16 sctpSockPoll()
    CmInetAddr    egtpFromAddr;
    CmInetMemInfo memInfo;
    sctpSockPollParams f1PollParams;
+   uint64_t      numMsgRcvd = 0;
 
    memset(&f1PollParams, 0, sizeof(sctpSockPollParams));
     
@@ -438,8 +439,9 @@ S16 sctpSockPoll()
       ret = cmInetRecvMsg(&(egtpCb.recvTptSrvr.sockFd), &egtpFromAddr, &memInfo, &egtpBuf, &egtpBufLen, CM_INET_NO_FLAG);
       if(ret == ROK && egtpBuf != NULLP)
       {
-         DU_LOG("\nINFO  -->  EGTP : Received message \n");
-         ODU_PRINT_MSG(egtpBuf, 0 ,0);
+         DU_LOG("\nINFO  -->  EGTP : Received UL Message [%ld]\n", numMsgRcvd+1);
+         numMsgRcvd++;
+         //ODU_PRINT_MSG(egtpBuf, 0 ,0);
          cuEgtpHdlRecvMsg(egtpBuf);
 
       }
