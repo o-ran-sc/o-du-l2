@@ -24,6 +24,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8b4dda1c_63afe95e",
+        "filename": "src/cu_stub/cu_stub_sctp.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 444,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-12-22T13:56:05Z",
+      "side": 1,
+      "message": "I feel that this print is an unnecessary overhead leading to a lot of console prints when data is pumped continuously. I have not removed it altogether so that it can be enabled for debugging purposes.",
+      "parentUuid": "964731a7_42d6f342",
+      "range": {
+        "startLine": 444,
+        "startChar": 25,
+        "endLine": 444,
+        "endChar": 32
+      },
+      "revId": "c835c58aefd6da0df7b3b2ab179321679d53a6d4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bcc2d851_494b5b22",
@@ -47,6 +71,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1514baa9_666f4ad5",
+        "filename": "src/du_app/du_egtp.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-12-22T13:56:05Z",
+      "side": 1,
+      "message": "egtpCb is also declared du_egtp.h file. Hence removing duplicate declaration from here",
+      "parentUuid": "bcc2d851_494b5b22",
+      "range": {
+        "startLine": 33,
+        "startChar": 13,
+        "endLine": 33,
+        "endChar": 19
+      },
+      "revId": "c835c58aefd6da0df7b3b2ab179321679d53a6d4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "622c2170_b4f10216",
@@ -60,6 +108,24 @@
       "writtenOn": "2021-12-22T13:38:32Z",
       "side": 1,
       "message": "can we try to avoid adding any new global variable?",
+      "revId": "c835c58aefd6da0df7b3b2ab179321679d53a6d4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "17627f94_8dde7946",
+        "filename": "src/du_app/du_egtp.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-12-22T13:56:05Z",
+      "side": 1,
+      "message": "Changed this to a static variable inside the function it is being used in",
+      "parentUuid": "622c2170_b4f10216",
       "revId": "c835c58aefd6da0df7b3b2ab179321679d53a6d4",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
