@@ -291,13 +291,12 @@
 
 /*VALID Tunnel ID*/
 #define MIN_TEID 1   /*[Spec 29.281,Sec 5.1]: All Zero TEIDs are never assigned for setting up GTP-U Tunnel*/
-#define MAX_TEID 10 /*[Spec 29.281]: Max limit is not mentioned but as per GTP-U Header Format, TEID occupies 4 octets */
+#define MAX_TEID MAX_NUM_DRB * MAX_NUM_UE  /*[Spec 29.281]: Max limit is not mentioned but as per GTP-U Header Format, TEID occupies 4 octets */
 
 /* Slice Ratio */
 #define MAX_RATIO        30
 #define MIN_RATIO        20
 #define DEDICATED_RATIO  10
-#define DEDICATED_SLICE_INDEX   1 
 #define NUM_OF_SUPPORTED_SLICE  2
 
 typedef enum
