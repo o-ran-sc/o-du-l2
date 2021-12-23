@@ -22,6 +22,30 @@
       },
       "revId": "d62d6a2c96903363a6d7a2f1b23658bfef3590c9",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "588e4d07_cab02b1a",
+        "filename": "src/cu_stub/cu_stub_egtp.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 619,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-12-23T08:38:47Z",
+      "side": 1,
+      "message": "please ignore",
+      "parentUuid": "31121ab5_1d0fb473",
+      "range": {
+        "startLine": 619,
+        "startChar": 3,
+        "endLine": 619,
+        "endChar": 10
+      },
+      "revId": "d62d6a2c96903363a6d7a2f1b23658bfef3590c9",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
   ]
 }
