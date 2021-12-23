@@ -72,6 +72,7 @@ typedef struct egtpGlobalCb
    EgtpTptSrvr  recvTptSrvr;     /* Transport server for receiving UDP msg */
    EgtpDstCb    dstCb;           /* Destination endpoint */
 }EgtpGlobalCb;
+
 EgtpGlobalCb egtpCb;   /* EGTP global control block */
 
 uint8_t duHdlEgtpDlData(EgtpMsg  *egtpMsg);

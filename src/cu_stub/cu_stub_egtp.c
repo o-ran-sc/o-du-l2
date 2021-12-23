@@ -616,6 +616,8 @@ S16 cuEgtpDecodeHdr(Buffer *mBuf)
    DU_LOG("\nDEBUG  -->  EGTP : Message Buffer after decoding header [TEID:%d]",egtpMsg.msgHdr.teId);
    ODU_PRINT_MSG(mBuf, 0, 0);
 
+   SPutMsg(mBuf);
+
    return ROK;
      
 } /* End of cuEgtpDecodeHdr */
