@@ -160,17 +160,18 @@ uint8_t getDrbLcId(uint32_t *drbBitMap)
 
 uint8_t fillDlUserDataInfo(uint32_t teId, RlcDlUserDataInfo *dlDataMsgInfo)
 {
-   uint8_t drbIdx;
+   uint8_t teIdx = 0;
 
-   for(drbIdx = 0; drbIdx < duCb.numDrb; drbIdx++)
+   /*Traversing the duCb to find the CellId, UeId, LCID corresponding to TEID*/
+   for(teIdx = 0; teIdx < duCb.numTeId; teIdx++)
    {
-      if(duCb.upTnlCfg[drbIdx] && (duCb.upTnlCfg[drbIdx]->tnlCfg1 != NULLP))
+      if(duCb.upTnlCfg[teIdx] && (duCb.upTnlCfg[teIdx]->tnlCfg1 != NULLP))
       {
-         if(duCb.upTnlCfg[drbIdx]->tnlCfg1->teId == teId)
+         if(duCb.upTnlCfg[teIdx]->tnlCfg1->teId == teId)
          {
-            dlDataMsgInfo->cellId = duCb.upTnlCfg[drbIdx]->cellId;
-            dlDataMsgInfo->ueIdx = duCb.upTnlCfg[drbIdx]->ueIdx;
-            dlDataMsgInfo->rbId = duCb.upTnlCfg[drbIdx]->drbId;
+            dlDataMsgInfo->cellId = duCb.upTnlCfg[teIdx]->cellId;
+            dlDataMsgInfo->ueIdx = duCb.upTnlCfg[teIdx]->ueIdx;
+            dlDataMsgInfo->rbId = duCb.upTnlCfg[teIdx]->drbId;
             return ROK;
          }
       }
@@ -268,7 +269,6 @@ uint8_t duHdlEgtpDlData(EgtpMsg  *egtpMsg)
    if(duBuildAndSendDlUserDataToRlc(msgLen, egtpMsg) != ROK)
    {
       DU_LOG("\nERROR  -->  DU_APP : Failed to build DL USer Data in duHdlEgtpDlData()");
-      DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, egtpMsg->msg, msgLen);
       return RFAILED;
    }
    return ROK;
@@ -2114,9 +2114,9 @@ uint8_t duProcEgtpTunnelCfg(uint8_t ueCbIdx, UpTnlCfg *duTnlCfg, UpTnlCfg *f1Tnl
    {
       if(duSendEgtpTnlMgmtReq(EGTP_TNL_MGMT_ADD, NULLP, f1TnlCfg->tnlCfg1) == ROK)
       {
-         if(fillTnlCfgToAddMod(&duCb.upTnlCfg[duCb.numDrb], f1TnlCfg) == ROK)
+         if(fillTnlCfgToAddMod(&duCb.upTnlCfg[duCb.numTeId], f1TnlCfg) == ROK)
          {
-            duCb.numDrb++;
+            duCb.numTeId++;
             ret = ROK;
          }
       }      
@@ -2136,8 +2136,8 @@ uint8_t duProcEgtpTunnelCfg(uint8_t ueCbIdx, UpTnlCfg *duTnlCfg, UpTnlCfg *f1Tnl
       if(duSendEgtpTnlMgmtReq(EGTP_TNL_MGMT_DEL, duTnlCfg->tnlCfg1->teId, f1TnlCfg->tnlCfg1) == ROK)
       {	   
          /* Free memory at drbIdx */
-         duCb.numDrb--;
-         for(delIdx = ueCbIdx; delIdx < duCb.numDrb; delIdx++)
+         duCb.numTeId--;
+         for(delIdx = ueCbIdx; delIdx < duCb.numTeId; delIdx++)
          {
             /* moving all elements one index ahead */
             ret = fillTnlCfgToAddMod(&duCb.upTnlCfg[delIdx], duCb.upTnlCfg[delIdx+1]);
@@ -2177,7 +2177,7 @@ uint8_t duProcEgtpTunnelCfg(uint8_t ueCbIdx, UpTnlCfg *duTnlCfg, UpTnlCfg *f1Tnl
 
 uint8_t duUpdateTunnelCfgDb(uint8_t ueIdx, uint8_t cellId, DuUeCfg *duUeCfg)
 {
-   uint8_t ret = ROK, drbIdx, duCbDrbIdx;
+   uint8_t ret = ROK, drbIdx, teIdx;
    bool drbFound = false;
 
    /*If Add/Mod tunnels request for that DRB is successful in EGTP */
@@ -2186,13 +2186,13 @@ uint8_t duUpdateTunnelCfgDb(uint8_t ueIdx, uint8_t cellId, DuUeCfg *duUeCfg)
    {
       duUeCfg->upTnlInfo[drbIdx].cellId = cellId;
       duUeCfg->upTnlInfo[drbIdx].ueIdx = ueIdx;
-      for(duCbDrbIdx = 0; duCbDrbIdx < duCb.numDrb; duCbDrbIdx++)
+      for(teIdx = 0; teIdx < duCb.numTeId; teIdx++)
       {
-         if((duCb.upTnlCfg[duCbDrbIdx]->ueIdx == duUeCfg->upTnlInfo[drbIdx].ueIdx) && \
-            (duCb.upTnlCfg[duCbDrbIdx]->drbId == duUeCfg->upTnlInfo[drbIdx].drbId))
+         if((duCb.upTnlCfg[teIdx]->ueIdx == duUeCfg->upTnlInfo[drbIdx].ueIdx) && \
+            (duCb.upTnlCfg[teIdx]->drbId == duUeCfg->upTnlInfo[drbIdx].drbId))
          {
             drbFound = true; /* existing DRB */
-            if(duProcEgtpTunnelCfg(duCbDrbIdx, duCb.upTnlCfg[duCbDrbIdx], &duUeCfg->upTnlInfo[drbIdx]) != ROK)
+            if(duProcEgtpTunnelCfg(teIdx, duCb.upTnlCfg[teIdx], &duUeCfg->upTnlInfo[drbIdx]) != ROK)
             {
                DU_LOG("\nERROR  -> DU_APP : duUpdateTunnelCfgDb: Failed to modify tunnel req for Drb id[%d]",
                      duUeCfg->upTnlInfo[drbIdx].drbId);
@@ -2889,7 +2889,7 @@ uint8_t  deleteUeCfg(uint16_t cellIdx, uint8_t ueIdx)
          {
             freeF1UeDb(ueCb->f1UeDb);
          }
-         for(tnlIdx = 0; tnlIdx < duCb.numDrb; )
+         for(tnlIdx = 0; tnlIdx < duCb.numTeId; )
          {
             if(duCb.upTnlCfg[tnlIdx]->ueIdx == ueIdx)
             {

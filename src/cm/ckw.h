@@ -44,7 +44,7 @@ extern "C" {
 
 /* CKW Interface defines */
 /* TODO: To verify if CKW_MAX_ENT_CFG represents LC or LCGs */
-#define CKW_MAX_ENT_CFG       11    /*!< Maximum number of entities to configure */
+#define CKW_MAX_ENT_CFG       32    /*!< Maximum number of entities to configure */
 /* ckw_h_001.main_3 added support for L2 Measurement */   
 #ifdef LTE_L2_MEAS
 #define CKW_MAX_QCI           10
