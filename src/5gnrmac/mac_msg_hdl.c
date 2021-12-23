@@ -234,7 +234,7 @@ uint8_t MacProcRlcDlData(Pst* pstInfo, RlcData *dlData)
    DU_LOG("\nDEBUG  -->  MAC: Received DL data for sfn=%d slot=%d numPdu= %d", \
       dlData->slotInfo.sfn, dlData->slotInfo.slot, dlData->numPdu);
 
-   GET_UE_IDX(dlData->rnti, ueId);   
+   GET_UE_ID(dlData->rnti, ueId);   
 
    /* Copy the pdus to be muxed into mac Dl data */
    macDlData.ueId = ueId;
@@ -538,7 +538,7 @@ uint8_t MacProcCellStop(Pst *pst, OduCellId  *cellId)
  * ****************************************************************/
 uint8_t MacProcDlCcchInd(Pst *pst, DlCcchIndInfo *dlCcchIndInfo)
 {
-   uint8_t      ueIdx = 0;
+   uint8_t      ueId = 0, ueIdx = 0;
    uint16_t     cellIdx;
    uint16_t     idx;
    DlRlcBoInfo  dlBoInfo;
@@ -558,8 +558,8 @@ uint8_t MacProcDlCcchInd(Pst *pst, DlCcchIndInfo *dlCcchIndInfo)
       dlBoInfo.dataVolume = (dlCcchIndInfo->dlCcchMsgLen + 3) + (MAX_CRI_SIZE + 1);
 
       /* storing Msg4 Pdu in raCb */
-      GET_UE_IDX(dlBoInfo.crnti, ueIdx);
-      ueIdx = ueIdx -1;
+      GET_UE_ID(dlBoInfo.crnti, ueId);
+      ueIdx = ueId -1;
       if(macCb.macCell[cellIdx]->macRaCb[ueIdx].crnti == dlCcchIndInfo->crnti)
       {
 	 macCb.macCell[cellIdx]->macRaCb[ueIdx].msg4PduLen = dlCcchIndInfo->dlCcchMsgLen;

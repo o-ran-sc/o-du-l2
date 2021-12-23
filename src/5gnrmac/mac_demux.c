@@ -46,10 +46,11 @@
  * ****************************************************************/
 uint8_t unpackRxData(uint16_t cellId, SlotTimingInfo slotInfo, RxDataIndPdu *rxDataIndPdu)
 {
+   uint8_t   ueId = 0;        /* UE Identity */
    uint8_t   ueIdx = 0;       /* Iterator for UE list */
    uint8_t   lcId = 0;        /* LC ID of a sub pdu */
    uint8_t   fBit = 0;        /* Value of F Bit in MAC sub-header */
-   uint8_t   rxPduIdx = 0;         /* Iterator for received PDU */
+   uint8_t   rxPduIdx = 0;    /* Iterator for received PDU */
    uint16_t  length = 0;      /* Length of payload in a sub-PDU */ 
    uint8_t   *pdu = NULLP;    /* Payload in sub-PDU */
    uint16_t  pduLen = 0;      /* Length of undecoded PDU */
@@ -72,8 +73,8 @@ uint8_t unpackRxData(uint16_t cellId, SlotTimingInfo slotInfo, RxDataIndPdu *rxD
    }
    pduLen = rxDataIndPdu->pduLength;
    rxDataPdu = rxDataIndPdu->pduData;
-   GET_UE_IDX(rxDataIndPdu->rnti, ueIdx);
-   ueIdx = ueIdx -1;
+   GET_UE_ID(rxDataIndPdu->rnti, ueId);
+   ueIdx = ueId -1;
 
    while(pduLen > 0)
    {
