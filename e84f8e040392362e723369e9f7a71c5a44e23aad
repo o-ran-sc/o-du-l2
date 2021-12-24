@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e6dead23_d5f5b7f7",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 7445,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-12-24T08:18:04Z",
+      "side": 1,
+      "message": "move comment above the code i.e. at line 7441",
+      "revId": "e84f8e040392362e723369e9f7a71c5a44e23aad",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
