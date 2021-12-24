@@ -1,0 +1,106 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "36cb1034_8d8679b1",
+        "filename": "src/du_app/du_cfg.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-12-24T11:09:32Z",
+      "side": 1,
+      "message": "1. There is a function fetchScsValue() defined in common_def.c to convert enum to actual value of SCS. Please refer to that function.\n2. Move convertScsOffSet also to common_def.c \n3. Rename both function to differentiate that which converts enum to value and vice -versa",
+      "revId": "72186c508ce61abff1478bdd0d52aef76908ab4a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fa074d78_a7ef5e4d",
+        "filename": "src/du_app/du_cfg.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 175,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-12-24T11:09:32Z",
+      "side": 1,
+      "message": "Instead of creating 2 different functions, can we not have just one common function having cases for all SCS and use this common function",
+      "revId": "72186c508ce61abff1478bdd0d52aef76908ab4a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ca19a540_421c452d",
+        "filename": "src/du_app/du_cfg.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1003,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-12-24T11:09:32Z",
+      "side": 1,
+      "message": "any pending task should be marked with \"TODO\" in comments",
+      "revId": "72186c508ce61abff1478bdd0d52aef76908ab4a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "22b7ac0e_3c78556a",
+        "filename": "src/du_app/du_cfg.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1008,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-12-24T11:09:32Z",
+      "side": 1,
+      "message": "any pending task should be marked with \"TODO\" in comments",
+      "revId": "72186c508ce61abff1478bdd0d52aef76908ab4a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "84cfce57_7f26b611",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1724,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-12-24T11:09:32Z",
+      "side": 1,
+      "message": "Move code into freeFddNrFreqInfo",
+      "revId": "72186c508ce61abff1478bdd0d52aef76908ab4a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "417d735c_79ab12d3",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 2128,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-12-24T11:09:32Z",
+      "side": 1,
+      "message": "same as above",
+      "revId": "72186c508ce61abff1478bdd0d52aef76908ab4a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
