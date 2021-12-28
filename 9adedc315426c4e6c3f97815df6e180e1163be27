@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bde2ae7a_a23c5111",
+        "filename": "src/cm/common_def.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 220,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-12-28T09:00:59Z",
+      "side": 1,
+      "message": "RFAILED \u003d 1 which is equal to  SCS_30KHZ,..how the caller will understand this difference?",
+      "range": {
+        "startLine": 220,
+        "startChar": 16,
+        "endLine": 220,
+        "endChar": 23
+      },
+      "revId": "9adedc315426c4e6c3f97815df6e180e1163be27",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fa30c8dc_6a180c84",
+        "filename": "src/cm/common_def.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 264,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-12-28T09:00:59Z",
+      "side": 1,
+      "message": "same as above; RFAILED \u003d SCS_10MS ?",
+      "range": {
+        "startLine": 264,
+        "startChar": 16,
+        "endLine": 264,
+        "endChar": 23
+      },
+      "revId": "9adedc315426c4e6c3f97815df6e180e1163be27",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
