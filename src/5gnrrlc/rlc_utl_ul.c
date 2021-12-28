@@ -232,7 +232,7 @@ uint8_t rlcUtlSendUlDataToDu(RlcCb *gCb, RlcUlRbCb *rbCb, Buffer *sdu)
       if (ulRrcMsgInfo)
       {
 	      ulRrcMsgInfo->cellId = rbCb->rlcId.cellId;
-	      ulRrcMsgInfo->ueIdx = rbCb->rlcId.ueId;
+	      ulRrcMsgInfo->ueId = rbCb->rlcId.ueId;
 	      ulRrcMsgInfo->lcId = rbCb->lch.lChId;
 	      ODU_GET_MSG_LEN(sdu, (MsgLen *)&msgLen);
 	      RLC_ALLOC_SHRABL_BUF(RLC_MEM_REGION_UL, RLC_POOL,
@@ -267,7 +267,7 @@ uint8_t rlcUtlSendUlDataToDu(RlcCb *gCb, RlcUlRbCb *rbCb, Buffer *sdu)
       if (ulUserDatInfo)
       {
          ulUserDatInfo->cellId = rbCb->rlcId.cellId;
-	      ulUserDatInfo->ueIdx = rbCb->rlcId.ueId;
+	      ulUserDatInfo->ueId = rbCb->rlcId.ueId;
          ulUserDatInfo->rbId = rbCb->rlcId.rbId;
 	      ODU_GET_MSG_LEN(sdu, (MsgLen *)&msgLen);
 	      RLC_ALLOC_SHRABL_BUF(RLC_MEM_REGION_UL, RLC_POOL, ulUserDatInfo->userData, msgLen);

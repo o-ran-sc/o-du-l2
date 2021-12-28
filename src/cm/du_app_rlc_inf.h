@@ -197,7 +197,7 @@ typedef struct rlcBearerCfg
 typedef struct rlcUeCfg
 {
    uint16_t     cellId;
-   uint8_t      ueIdx;
+   uint8_t      ueId;
    uint8_t      numLcs;
    RlcBearerCfg rlcLcCfg[MAX_NUM_LC];
    UeCfgState rlcUeCfgState; /* InActive / Completed */
@@ -206,7 +206,7 @@ typedef struct rlcUeCfg
 typedef struct rlcUeCfgRsp
 {
    uint16_t       cellId;
-   uint16_t       ueIdx;
+   uint16_t       ueId;
    RlcRsp         result;
    FailureReason  reason;
 }RlcUeCfgRsp;
@@ -228,7 +228,7 @@ typedef struct rlcUeDeleteRsp
 typedef struct ulRrcMsgInfo
 {
    uint16_t   cellId;       /* Cell Id */
-   uint16_t   ueIdx;        /* UE Index */
+   uint16_t   ueId;         /* UE Id */
    uint8_t    lcId;         /* Logical channel Id */
    uint16_t   msgLen;       /* RRC message length (in bytes) */
    uint8_t    *rrcMsg;      /* RRC Message (UL-DCCH Message) */
@@ -238,7 +238,7 @@ typedef struct ulRrcMsgInfo
 typedef struct ulUserDatInfo
 {
    uint16_t   cellId;       /* Cell Id */
-   uint16_t   ueIdx;        /* UE Index */
+   uint16_t   ueId;         /* UE Id */
    uint8_t    rbId;
    uint16_t   msgLen;       /* User data length (in bytes) */
    uint8_t    *userData;    /* User data (UL-DTCH Message) */
@@ -248,7 +248,7 @@ typedef struct ulUserDatInfo
 typedef struct dlRrcMsgInfo
 {
    uint16_t   cellId;         /* Cell Id */
-   uint16_t   ueIdx;          /* UE index */
+   uint16_t   ueId;           /* UE Id */
    uint8_t    rbType;         /* Radio Bearer Type */
    uint8_t    rbId;           /* Radio Bearer Id */
    uint8_t    lcType;         /* Logical channel type */
@@ -297,7 +297,7 @@ typedef struct slicePmList
 typedef struct rrcDeliveryReportInfo
 {
    uint16_t  cellId;
-   uint16_t  ueIdx;
+   uint16_t  ueId;
    uint8_t   srbId;
    RrcDeliveryStatus  rrcDeliveryStatus;
 }RrcDeliveryReport;
@@ -306,7 +306,7 @@ typedef struct rrcDeliveryReportInfo
 typedef struct dlDataMsgInfo
 {
    uint16_t   cellId;         /* Cell Id */
-   uint16_t   ueIdx;          /* UE index */
+   uint16_t   ueId;           /* UE Id */
    uint8_t    rbId;           /* Radio Bearer Id */
    uint16_t   msgLen;         /* Message length */
    Buffer     *dlMsg;         /* DL Data */

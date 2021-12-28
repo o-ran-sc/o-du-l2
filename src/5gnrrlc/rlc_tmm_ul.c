@@ -247,7 +247,7 @@ void rlcTmmRcvFrmMac(RlcCb *gCb, RlcUlRbCb *rbCb, Buffer *pdu)
    if (ulRrcMsgInfo)
    {
       ulRrcMsgInfo->cellId = rbCb->rlcId.cellId;
-      ulRrcMsgInfo->ueIdx = rbCb->rlcId.ueId;
+      ulRrcMsgInfo->ueId = rbCb->rlcId.ueId;
       ulRrcMsgInfo->lcId = rbCb->lch.lChId;
       RLC_ALLOC_SHRABL_BUF(RLC_MEM_REGION_UL, RLC_POOL,
          ulRrcMsgInfo->rrcMsg, msgLen);

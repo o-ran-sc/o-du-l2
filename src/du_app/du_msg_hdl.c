@@ -1712,13 +1712,12 @@ uint8_t DuProcRlcUlRrcMsgTrans(Pst *pst, RlcUlRrcMsgInfo *ulRrcMsgInfo)
   
    if(duGetCellCb(ulRrcMsgInfo->cellId, &cellCb) != ROK)
       return RFAILED;
-   if(ulRrcMsgInfo->ueIdx > 0)
+   if(ulRrcMsgInfo->ueId > 0)
    {
-   ueCb = cellCb->ueCb[ulRrcMsgInfo->ueIdx -1];
+   ueCb = cellCb->ueCb[ulRrcMsgInfo->ueId -1];
 
 
-   BuildAndSendULRRCMessageTransfer(ueCb, ulRrcMsgInfo->lcId, ulRrcMsgInfo->msgLen, \
-      ulRrcMsgInfo->rrcMsg);
+   BuildAndSendULRRCMessageTransfer(ueCb, ulRrcMsgInfo->lcId, ulRrcMsgInfo->msgLen, ulRrcMsgInfo->rrcMsg);
 
    DU_FREE_SHRABL_BUF(pst->region, pst->pool, ulRrcMsgInfo->rrcMsg, ulRrcMsgInfo->msgLen);
    DU_FREE_SHRABL_BUF(pst->region, pst->pool, ulRrcMsgInfo, sizeof(RlcUlRrcMsgInfo));
@@ -1751,7 +1750,7 @@ uint8_t DuProcRlcRrcDeliveryReport(Pst *pst, RrcDeliveryReport *rrcDeliveryRepor
    if(duGetCellCb(rrcDeliveryReport->cellId, &cellCb) != ROK)
       return RFAILED;
    
-   ueCb = cellCb->ueCb[rrcDeliveryReport->ueIdx -1];
+   ueCb = cellCb->ueCb[rrcDeliveryReport->ueId -1];
    ret = BuildAndSendRrcDeliveryReport(ueCb.gnbCuUeF1apId, ueCb.gnbDuUeF1apId,rrcDeliveryReport);
 
    DU_FREE_SHRABL_BUF(pst->region, pst->pool, rrcDeliveryReport, sizeof(RrcDeliveryReport));
@@ -1793,7 +1792,7 @@ uint8_t DuProcRlcUlUserDataTrans(Pst *pst, RlcUlUserDatInfo *ulUserData)
    for(teIdx = 0; teIdx < duCb.numTeId; teIdx++)
    {
       /*TODO: If multiple Cell Support is enables then CellId also needs to be validated alongwith ueId and DrbId*/
-      if((duCb.upTnlCfg[teIdx] != NULLP) && (duCb.upTnlCfg[teIdx]->ueIdx == ulUserData->ueIdx) && \
+      if((duCb.upTnlCfg[teIdx] != NULLP) && (duCb.upTnlCfg[teIdx]->ueIdx == ulUserData->ueId) && \
          (duCb.upTnlCfg[teIdx]->drbId == ulUserData->rbId))
       {
          if(duCb.upTnlCfg[teIdx]->tnlCfg1)

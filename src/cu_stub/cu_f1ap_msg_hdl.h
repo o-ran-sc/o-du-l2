@@ -60,7 +60,7 @@
 #define DRB_ID_TO_ADD_MOD MAX_DRB_SET_UE_CONTEXT_SETUP_REQ+1 /*The DRB ID: which will be added using Modification Procedure*/
 
 /*Total num of DRBs added using UE COntext Setup and Modification procedures*/
-#define MAX_NUM_DRB_ADDED_PER_UE MAX_DRB_SET_UE_CONTEXT_SETUP_REQ + MAX_DRB_SET_UE_CONTEXT_MOD_REQ
+#define MAX_NUM_DRB_ADDED_PER_UE (MAX_DRB_SET_UE_CONTEXT_SETUP_REQ + MAX_DRB_SET_UE_CONTEXT_MOD_REQ)
 
 #define CU_UE_F1AP_ID 0
 #define DU_UE_F1AP_ID 1
