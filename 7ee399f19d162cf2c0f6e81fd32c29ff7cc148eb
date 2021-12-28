@@ -50,6 +50,52 @@
       "message": "same as above",
       "revId": "7ee399f19d162cf2c0f6e81fd32c29ff7cc148eb",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "05521129_a7f43bc6",
+        "filename": "src/cm/common_def.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 218,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-12-28T07:08:00Z",
+      "side": 1,
+      "message": "add a default case: there u shld handle other unexpected numVal",
+      "range": {
+        "startLine": 218,
+        "startChar": 16,
+        "endLine": 218,
+        "endChar": 26
+      },
+      "revId": "7ee399f19d162cf2c0f6e81fd32c29ff7cc148eb",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "52f54282_47c6ab82",
+        "filename": "src/cm/common_def.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 220,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2021-12-28T07:08:00Z",
+      "side": 1,
+      "message": "ROK will not be correct return value right? because as per definition this function shld return the SCS enum",
+      "range": {
+        "startLine": 220,
+        "startChar": 10,
+        "endLine": 220,
+        "endChar": 13
+      },
+      "revId": "7ee399f19d162cf2c0f6e81fd32c29ff7cc148eb",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
   ]
 }
