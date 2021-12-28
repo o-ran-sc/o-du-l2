@@ -18,6 +18,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9fd553ff_f1ea1640",
+        "filename": "src/du_app/du_cfg.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-12-28T05:57:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "36cb1034_8d8679b1",
+      "revId": "72186c508ce61abff1478bdd0d52aef76908ab4a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fa074d78_a7ef5e4d",
@@ -31,6 +49,24 @@
       "writtenOn": "2021-12-24T11:09:32Z",
       "side": 1,
       "message": "Instead of creating 2 different functions, can we not have just one common function having cases for all SCS and use this common function",
+      "revId": "72186c508ce61abff1478bdd0d52aef76908ab4a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "71b35411_f34feade",
+        "filename": "src/du_app/du_cfg.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 175,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-12-28T05:57:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fa074d78_a7ef5e4d",
       "revId": "72186c508ce61abff1478bdd0d52aef76908ab4a",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -52,6 +88,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fcea704c_47bb2021",
+        "filename": "src/du_app/du_cfg.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1003,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-12-28T05:57:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ca19a540_421c452d",
+      "revId": "72186c508ce61abff1478bdd0d52aef76908ab4a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "22b7ac0e_3c78556a",
@@ -65,6 +119,24 @@
       "writtenOn": "2021-12-24T11:09:32Z",
       "side": 1,
       "message": "any pending task should be marked with \"TODO\" in comments",
+      "revId": "72186c508ce61abff1478bdd0d52aef76908ab4a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "37b953db_8c3292f8",
+        "filename": "src/du_app/du_cfg.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1008,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-12-28T05:57:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "22b7ac0e_3c78556a",
       "revId": "72186c508ce61abff1478bdd0d52aef76908ab4a",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -86,6 +158,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9957ac01_5cfef994",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1724,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-12-28T05:57:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "84cfce57_7f26b611",
+      "revId": "72186c508ce61abff1478bdd0d52aef76908ab4a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "417d735c_79ab12d3",
@@ -99,6 +189,24 @@
       "writtenOn": "2021-12-24T11:09:32Z",
       "side": 1,
       "message": "same as above",
+      "revId": "72186c508ce61abff1478bdd0d52aef76908ab4a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f0aa9b52_b598ad83",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 2128,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-12-28T05:57:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "417d735c_79ab12d3",
       "revId": "72186c508ce61abff1478bdd0d52aef76908ab4a",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
