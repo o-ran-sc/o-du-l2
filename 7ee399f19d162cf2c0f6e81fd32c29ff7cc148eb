@@ -18,6 +18,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d3d731f4_c363c25d",
+        "filename": "src/cm/common_def.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 205,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-12-28T08:51:49Z",
+      "side": 1,
+      "message": "created new enum for scs periodicity",
+      "parentUuid": "d1eb6d87_d52aab18",
+      "revId": "7ee399f19d162cf2c0f6e81fd32c29ff7cc148eb",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f5d0dd8e_2a5716f5",
@@ -35,6 +53,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4e9b8979_4fabddad",
+        "filename": "src/cm/common_def.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 208,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-12-28T08:51:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f5d0dd8e_2a5716f5",
+      "revId": "7ee399f19d162cf2c0f6e81fd32c29ff7cc148eb",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7912140d_beb5899e",
@@ -48,6 +84,24 @@
       "writtenOn": "2021-12-28T07:05:10Z",
       "side": 1,
       "message": "same as above",
+      "revId": "7ee399f19d162cf2c0f6e81fd32c29ff7cc148eb",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "165d6972_32b22b03",
+        "filename": "src/cm/common_def.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 212,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-12-28T08:51:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7912140d_beb5899e",
       "revId": "7ee399f19d162cf2c0f6e81fd32c29ff7cc148eb",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -75,6 +129,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2eeb72ef_cffd1991",
+        "filename": "src/cm/common_def.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 218,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-12-28T08:51:49Z",
+      "side": 1,
+      "message": "added",
+      "parentUuid": "05521129_a7f43bc6",
+      "range": {
+        "startLine": 218,
+        "startChar": 16,
+        "endLine": 218,
+        "endChar": 26
+      },
+      "revId": "7ee399f19d162cf2c0f6e81fd32c29ff7cc148eb",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "52f54282_47c6ab82",
@@ -88,6 +166,30 @@
       "writtenOn": "2021-12-28T07:08:00Z",
       "side": 1,
       "message": "ROK will not be correct return value right? because as per definition this function shld return the SCS enum",
+      "range": {
+        "startLine": 220,
+        "startChar": 10,
+        "endLine": 220,
+        "endChar": 13
+      },
+      "revId": "7ee399f19d162cf2c0f6e81fd32c29ff7cc148eb",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3021d83f_4ea34ae7",
+        "filename": "src/cm/common_def.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 220,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-12-28T08:51:49Z",
+      "side": 1,
+      "message": "Rok does Not required so removed",
+      "parentUuid": "52f54282_47c6ab82",
       "range": {
         "startLine": 220,
         "startChar": 10,
