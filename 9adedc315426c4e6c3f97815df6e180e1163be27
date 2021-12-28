@@ -24,6 +24,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5bb3430a_26f1bf0c",
+        "filename": "src/cm/common_def.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 220,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-12-28T09:22:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bde2ae7a_a23c5111",
+      "range": {
+        "startLine": 220,
+        "startChar": 16,
+        "endLine": 220,
+        "endChar": 23
+      },
+      "revId": "9adedc315426c4e6c3f97815df6e180e1163be27",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fa30c8dc_6a180c84",
@@ -37,6 +61,30 @@
       "writtenOn": "2021-12-28T09:00:59Z",
       "side": 1,
       "message": "same as above; RFAILED \u003d SCS_10MS ?",
+      "range": {
+        "startLine": 264,
+        "startChar": 16,
+        "endLine": 264,
+        "endChar": 23
+      },
+      "revId": "9adedc315426c4e6c3f97815df6e180e1163be27",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "da1be6d2_bcb4623e",
+        "filename": "src/cm/common_def.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 264,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-12-28T09:22:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fa30c8dc_6a180c84",
       "range": {
         "startLine": 264,
         "startChar": 16,
