@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "99c02628_60211c34",
+        "filename": "src/5gnrmac/mac_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2348,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-12-29T11:11:11Z",
+      "side": 1,
+      "message": "are we not going to change this.",
+      "range": {
+        "startLine": 2348,
+        "startChar": 11,
+        "endLine": 2348,
+        "endChar": 16
+      },
+      "revId": "f27b7e83366beb014dd32e1eb6d22d8901501eeb",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "38002c65_fd2d29c9",
+        "filename": "src/5gnrmac/mac_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2388,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-12-29T11:11:11Z",
+      "side": 1,
+      "message": "same as above",
+      "revId": "f27b7e83366beb014dd32e1eb6d22d8901501eeb",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "17020b3d_c1c5564d",
+        "filename": "src/cm/mac_sch_interface.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 1571,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-12-29T11:11:11Z",
+      "side": 1,
+      "message": "what is exact type of ueId, is it uint8_t or uint16_t?\nSome places we are using it as uint8_t and other places at uint16_t",
+      "range": {
+        "startLine": 1571,
+        "startChar": 3,
+        "endLine": 1571,
+        "endChar": 11
+      },
+      "revId": "f27b7e83366beb014dd32e1eb6d22d8901501eeb",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
