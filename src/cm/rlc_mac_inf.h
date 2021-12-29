@@ -34,7 +34,7 @@
 typedef struct rlcBoStatus
 {
    uint16_t   cellId;     /*!< CELL ID */
-   uint16_t   ueIdx;      /*!< UE ID */
+   uint16_t   ueId;       /*!< UE ID */
    bool       commCh;     /*!< Common or Dedicated Channel */
    uint8_t    lcId;       /*!< Logical channel ID */
    uint32_t   bo;         /*!< Buffer occupancy reported by RLC */

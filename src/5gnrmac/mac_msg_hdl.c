@@ -283,7 +283,7 @@ uint8_t MacProcRlcDlData(Pst* pstInfo, RlcData *dlData)
       {
          memset(&dlBoInfo, 0, sizeof(DlRlcBoInfo));
          dlBoInfo.cellId = dlData->boStatus[lcIdx].cellId;
-         GET_CRNTI(dlBoInfo.crnti, dlData->boStatus[lcIdx].ueIdx);
+         GET_CRNTI(dlBoInfo.crnti, dlData->boStatus[lcIdx].ueId);
          dlBoInfo.lcId = dlData->boStatus[lcIdx].lcId;
          dlBoInfo.dataVolume = dlData->boStatus[lcIdx].bo;
          sendDlRlcBoInfoToSch(&dlBoInfo);
@@ -383,7 +383,7 @@ uint8_t MacProcRlcBoStatus(Pst* pst, RlcBoStatus* boStatus)
    DlRlcBoInfo  dlBoInfo;
 
    dlBoInfo.cellId = boStatus->cellId;
-   GET_CRNTI(dlBoInfo.crnti, boStatus->ueIdx);
+   GET_CRNTI(dlBoInfo.crnti, boStatus->ueId);
    dlBoInfo.lcId = boStatus->lcId;
    dlBoInfo.dataVolume = boStatus->bo;
    

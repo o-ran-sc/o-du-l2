@@ -413,7 +413,7 @@ static void rlcTmmSendBoSta(RlcCb *gCb, RlcDlRbCb *rbCb, MsgLen bo, RlcDatReqInf
    }
 
    boStatus->cellId = rbCb->rlcId.cellId;
-   boStatus->ueIdx = rbCb->rlcId.ueId;
+   boStatus->ueId = rbCb->rlcId.ueId;
    boStatus->commCh = TRUE;
    boStatus->lcId = rbCb->lch.lChId;
    boStatus->bo = bo;

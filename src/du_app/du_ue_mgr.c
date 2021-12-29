@@ -170,7 +170,7 @@ uint8_t fillDlUserDataInfo(uint32_t teId, RlcDlUserDataInfo *dlDataMsgInfo)
          if(duCb.upTnlCfg[teIdx]->tnlCfg1->teId == teId)
          {
             dlDataMsgInfo->cellId = duCb.upTnlCfg[teIdx]->cellId;
-            dlDataMsgInfo->ueIdx = duCb.upTnlCfg[teIdx]->ueIdx;
+            dlDataMsgInfo->ueId = duCb.upTnlCfg[teIdx]->ueIdx;
             dlDataMsgInfo->rbId = duCb.upTnlCfg[teIdx]->drbId;
             return ROK;
          }
@@ -386,7 +386,7 @@ uint8_t duBuildAndSendDlRrcMsgToRlc(uint16_t cellId, RlcUeCfg ueCfg, F1DlRrcMsg 
    
    /* Filling up the RRC msg info */
    dlRrcMsgInfo->cellId = cellId;
-   dlRrcMsgInfo->ueIdx = ueCfg.ueIdx;
+   dlRrcMsgInfo->ueId = ueCfg.ueId;
    for(lcIdx = 0; lcIdx <= MAX_NUM_LC; lcIdx++)
    {
       if(ueCfg.rlcLcCfg[lcIdx].lcId == f1DlRrcMsg->srbId)
@@ -1601,7 +1601,7 @@ uint8_t fillRlcUeCfg(uint16_t cellId, uint8_t ueIdx,\
    {
       /* Initial RB being Added */ 
       rlcUeCfg->cellId       = cellId;
-      rlcUeCfg->ueIdx        = ueIdx;
+      rlcUeCfg->ueId         = ueIdx;
       ret = fillRlcSrb1LcCfg(&rlcUeCfg->rlcLcCfg[0]);
       if(ret == ROK)
          rlcUeCfg->numLcs++;
@@ -1616,7 +1616,7 @@ uint8_t fillRlcUeCfg(uint16_t cellId, uint8_t ueIdx,\
       duRlcDb->rlcUeCfgState = UE_CFG_INPROGRESS;
       /*Filling RlcUeCfg */
       rlcUeCfg->cellId       = cellId;
-      rlcUeCfg->ueIdx        = ueIdx;
+      rlcUeCfg->ueId         = ueIdx;
       for(dbIdx = 0; (dbIdx < ueCfgDb->numRlcLcs && ret == ROK); dbIdx++)
       {
          ret = fillDefaultRlcModeCfg(ueCfgDb->rlcLcCfg[dbIdx].rlcMode, &ueCfgDb->rlcLcCfg[dbIdx]);
@@ -2253,7 +2253,7 @@ uint8_t duUpdateDuUeCbCfg(uint8_t ueIdx, uint8_t cellId)
 
       /*Filling RLC Ue Cfg */
       ueCb->rlcUeCfg.cellId = cellId;
-      ueCb->rlcUeCfg.ueIdx  = ueIdx;
+      ueCb->rlcUeCfg.ueId   = ueIdx;
       ret = duUpdateRlcLcCfg(&ueCb->rlcUeCfg, ueCb->f1UeDb);
       if(ret == ROK)
       {
@@ -2428,25 +2428,25 @@ uint8_t DuProcRlcUeCfgRsp(Pst *pst, RlcUeCfgRsp *cfgRsp)
       {
          if(pst->event == EVENT_RLC_UE_CREATE_RSP)
          {
-            DU_LOG("\nINFO   -->  DU_APP: RLC UE Create Response : SUCCESS [UE IDX:%d]", cfgRsp->ueIdx);
-            duCb.actvCellLst[cfgRsp->cellId -1]->ueCb[cfgRsp->ueIdx -1].\
+            DU_LOG("\nINFO   -->  DU_APP: RLC UE Create Response : SUCCESS [UE IDX:%d]", cfgRsp->ueId);
+            duCb.actvCellLst[cfgRsp->cellId -1]->ueCb[cfgRsp->ueId -1].\
                rlcUeCfg.rlcUeCfgState = UE_CREATE_COMPLETE;
          }
          else if(pst->event == EVENT_RLC_UE_RECONFIG_RSP)
          {
-            DU_LOG("\nINFO   -->  DU_APP: RLC UE Reconfig Response : SUCCESS [UE IDX:%d]", cfgRsp->ueIdx);
-            duCb.actvCellLst[cfgRsp->cellId -1]->ueCb[cfgRsp->ueIdx -1].\
+            DU_LOG("\nINFO   -->  DU_APP: RLC UE Reconfig Response : SUCCESS [UE IDX:%d]", cfgRsp->ueId);
+            duCb.actvCellLst[cfgRsp->cellId -1]->ueCb[cfgRsp->ueId -1].\
                rlcUeCfg.rlcUeCfgState = UE_RECFG_COMPLETE;
-            if((ret = duUpdateDuUeCbCfg(cfgRsp->ueIdx, cfgRsp->cellId)) == ROK)
+            if((ret = duUpdateDuUeCbCfg(cfgRsp->ueId, cfgRsp->cellId)) == ROK)
             {
-               BuildAndSendUeCtxtRsp(cfgRsp->cellId, cfgRsp->ueIdx);
+               BuildAndSendUeCtxtRsp(cfgRsp->cellId, cfgRsp->ueId);
             }   
          }
       }
       else
       {
          DU_LOG("\nERROR  -->  DU_APP: RLC UE CFG Response for EVENT[%d] : FAILED [UE IDX : %d, REASON :%d]",\
-               pst->event, cfgRsp->ueIdx, cfgRsp->reason);
+               pst->event, cfgRsp->ueId, cfgRsp->reason);
          if((pst->event == EVENT_RLC_UE_RECONFIG_RSP))
          {
             //TODO: update failure case in ue Context setup Response

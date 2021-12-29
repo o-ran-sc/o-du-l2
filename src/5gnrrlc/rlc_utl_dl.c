@@ -298,7 +298,7 @@ uint8_t rlcSendDedLcDlData(Pst *post, SpId spId, RguDDatReqInfo *datReqInfo)
                dlData->numPdu++;
             }/* For per PDU */
             dlData->boStatus[dlData->numLc].cellId = datReqInfo->cellId;
-            GET_UE_IDX(datPerUe.rnti, dlData->boStatus[dlData->numLc].ueIdx);
+            GET_UE_ID(datPerUe.rnti, dlData->boStatus[dlData->numLc].ueId);
             dlData->boStatus[dlData->numLc].commCh = false;
             dlData->boStatus[dlData->numLc].lcId = datPerLch.lcId;
             dlData->boStatus[dlData->numLc].bo = datPerLch.boReport.bo + datPerLch.boReport.estRlcHdrSz;
@@ -320,7 +320,7 @@ uint8_t rlcSendDedLcDlData(Pst *post, SpId spId, RguDDatReqInfo *datReqInfo)
                break;
             }
             boStatus->cellId = dlData->cellId;
-            GET_UE_IDX(dlData->rnti, boStatus->ueIdx);
+            GET_UE_ID(dlData->rnti, boStatus->ueId);
             boStatus->commCh = FALSE; 
             boStatus->lcId = dlData->boStatus[lchIdx].lcId;
             boStatus->bo = dlData->boStatus[lchIdx].bo;
@@ -464,8 +464,8 @@ uint8_t rlcUtlSendToMac(RlcCb *gCb, SuId suId, KwDStaIndInfo *staIndInfo)
    {
       staInd = &staIndInfo->staInd[idx];
       /* Fetch Ue control block */
-      GET_UE_IDX(staInd->rnti, ueId);
-      if(ROK != rlcDbmFetchDlUeCb(gCb, ueId, staIndInfo->cellId,&ueCb))
+      GET_UE_ID(staInd->rnti, ueId);
+      if(ROK != rlcDbmFetchDlUeCb(gCb, ueId, staIndInfo->cellId, &ueCb))
       {
          /* Fetch UeCb failed */
          DU_LOG("\nERROR  -->  RLC_DL : rlcUtlSendToMac: UeId[%u]:ueCb not found",
@@ -704,7 +704,7 @@ uint8_t rlcUtlSendDedLcBoStatus(RlcCb *gCb, RlcDlRbCb *rbCb, int32_t bo, \
       boStatus, sizeof(RlcBoStatus));
 
    boStatus->cellId = rbCb->rlcId.cellId;
-   boStatus->ueIdx = rbCb->rlcId.ueId;
+   boStatus->ueId = rbCb->rlcId.ueId;
    boStatus->commCh = FALSE; 
    boStatus->lcId = rbCb->lch.lChId;
    boStatus->bo = bo + estHdrSz;

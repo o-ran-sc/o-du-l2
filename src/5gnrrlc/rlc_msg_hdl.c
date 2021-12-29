@@ -64,7 +64,7 @@ uint8_t fillRlcUeCfgRsp(RlcUeCfgRsp *rlcCfgRsp, RlcCfgCfmInfo *rlcCRsp)
    uint8_t ret = ROK;
  
    rlcCfgRsp->cellId = rlcCRsp->cellId;
-   rlcCfgRsp->ueIdx  = rlcCRsp->ueId;
+   rlcCfgRsp->ueId   = rlcCRsp->ueId;
    for(idx = 0; idx < rlcCRsp->numEnt; idx++)
    {
       if(rlcCRsp->entCfgCfm[idx].status.status == CKW_CFG_CFM_OK)
@@ -226,7 +226,7 @@ uint8_t fillRlcCfg(RlcCb *gCb, RlcCfgInfo *rlcUeCfg, RlcUeCfg *ueCfg)
 {
    uint8_t lcIdx;
    
-   rlcUeCfg->ueId    = ueCfg->ueIdx;
+   rlcUeCfg->ueId    = ueCfg->ueId;
    rlcUeCfg->cellId  = ueCfg->cellId;
    rlcUeCfg->numEnt  = ueCfg->numLcs;
    rlcUeCfg->transId = getTransId();
@@ -262,7 +262,7 @@ void fillRlcCfgFailureRsp(RlcCfgCfmInfo *cfgRsp, RlcUeCfg *ueCfg)
 {
    uint8_t cfgIdx =0;
 
-   cfgRsp->ueId = ueCfg->ueIdx;
+   cfgRsp->ueId = ueCfg->ueId;
    cfgRsp->cellId = ueCfg->cellId;
    cfgRsp->numEnt = ueCfg->numLcs;
    for(cfgIdx =0; cfgIdx<ueCfg->numLcs; cfgIdx++)
@@ -353,7 +353,7 @@ uint8_t BuildAndSendRrcDeliveryReportToDu( RlcDlRrcMsgInfo *dlRrcMsgInfo )
     if(rrcDelivery)
     {
        rrcDelivery->cellId = dlRrcMsgInfo->cellId;
-       rrcDelivery->ueIdx  = dlRrcMsgInfo->ueIdx;
+       rrcDelivery->ueId  = dlRrcMsgInfo->ueId;
        rrcDelivery->srbId  = dlRrcMsgInfo->lcId ;
        rrcDelivery->rrcDeliveryStatus.deliveryStatus    = PDCP_SN;
        rrcDelivery->rrcDeliveryStatus.triggeringMessage = PDCP_SN;
@@ -402,7 +402,7 @@ uint8_t RlcProcDlRrcMsgTransfer(Pst *pst, RlcDlRrcMsgInfo *dlRrcMsgInfo)
 
    datReqInfo->rlcId.rbType = dlRrcMsgInfo->rbType;
    datReqInfo->rlcId.rbId = dlRrcMsgInfo->rbId;
-   datReqInfo->rlcId.ueId = dlRrcMsgInfo->ueIdx;
+   datReqInfo->rlcId.ueId = dlRrcMsgInfo->ueId;
    datReqInfo->rlcId.cellId = dlRrcMsgInfo->cellId;
    datReqInfo->lcType = dlRrcMsgInfo->lcType;
    datReqInfo->sduId = ++(rlcCb[pst->dstInst]->dlSduId);
@@ -491,7 +491,7 @@ uint8_t RlcProcUlData(Pst *pst, RlcData *ulData)
          memset(cLchUlDat, 0, sizeof(RguCDatIndInfo));
 
          cLchUlDat->cellId = ulData->cellId;
-         GET_UE_IDX(ulData->rnti, cLchUlDat->rnti);
+         GET_UE_ID(ulData->rnti, cLchUlDat->rnti);
          cLchUlDat->lcId   = ulData->pduInfo[idx].lcId;
 
          /* Copy fixed buffer to message */
@@ -553,7 +553,7 @@ uint8_t RlcProcUlData(Pst *pst, RlcData *ulData)
       if(dLchPduPres)
       {
          dLchUlDat->cellId = ulData->cellId;
-         GET_UE_IDX(ulData->rnti, dLchUlDat->rnti);
+         GET_UE_ID(ulData->rnti, dLchUlDat->rnti);
 
          for(idx = 0; idx < MAX_NUM_LC; idx++)
          {
@@ -707,7 +707,7 @@ uint8_t RlcProcUeReconfigReq(Pst *pst, RlcUeCfg *ueCfg)
    RlcCfgCfmInfo *cfgRsp; 
    Pst rspPst;
 
-   DU_LOG("\nDEBUG  -->  RLC: UE reconfig request received. CellID[%d] UEIDX[%d]",ueCfg->cellId, ueCfg->ueIdx);
+   DU_LOG("\nDEBUG  -->  RLC: UE reconfig request received. CellID[%d] UEIDX[%d]",ueCfg->cellId, ueCfg->ueId);
 
    rlcUeCb = RLC_GET_RLCCB(pst->dstInst);
    RLC_ALLOC(rlcUeCb, rlcUeCfg, sizeof(RlcCfgInfo));
@@ -777,7 +777,7 @@ uint8_t RlcProcDlUserDataTransfer(Pst *pst, RlcDlUserDataInfo *dlDataMsgInfo)
 
    datReqInfo->rlcId.rbType = RB_TYPE_DRB;
    datReqInfo->rlcId.rbId   = dlDataMsgInfo->rbId;
-   datReqInfo->rlcId.ueId   = dlDataMsgInfo->ueIdx;
+   datReqInfo->rlcId.ueId   = dlDataMsgInfo->ueId;
    datReqInfo->rlcId.cellId = dlDataMsgInfo->cellId;
    datReqInfo->lcType       = LCH_DTCH;
    datReqInfo->sduId        = ++(rlcCb[pst->dstInst]->dlSduId);
@@ -804,7 +804,7 @@ uint8_t RlcProcDlUserDataTransfer(Pst *pst, RlcDlUserDataInfo *dlDataMsgInfo)
  *    Functionality:
  *      sending UE delete response to DU 
  *
- * @params[in] uint8_t cellId, uint8_t ueIdx, UeDeleteResult result 
+ * @params[in] uint8_t cellId, uint8_t ueId, UeDeleteResult result 
  *
  * @return ROK     - success
  *         RFAILED - failure
