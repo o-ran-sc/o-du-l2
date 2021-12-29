@@ -11141,7 +11141,7 @@ uint8_t procF1UeContextSetupReq(F1AP_PDU_t *f1apMsg)
    if(ret == RFAILED)
    {
       /*TODO : Negative case*/
-      // BuildAndSendUeContextSetupRsp(cellId,ueIdx);
+      // BuildAndSendUeContextSetupRsp(cellId,ueId);
       DU_LOG("\nERROR  -->  F1AP: Failed to process UE CNTXT SETUP REQ at procF1UeContextSetupReq()"); 
    }
    else
@@ -11499,13 +11499,13 @@ uint8_t fillDrbSetupList(DRBs_Setup_List_t *drbSetupList, DuUeCfg *ueCfg)
  *    Functionality: Constructs the UE Setup Response and sends
  *                   it to the DU through SCTP.
  *
- * @params[in] uint8_t cellId,uint8_t ueIdx
+ * @params[in] uint8_t cellId,uint8_t ueId
  *
  * @return ROK     - success
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t BuildAndSendUeContextSetupRsp(uint8_t cellId,uint8_t ueIdx)
+uint8_t BuildAndSendUeContextSetupRsp(uint8_t cellId,uint8_t ueId)
 {
    uint8_t   idx, ret, cellIdx, elementCnt;
    uint32_t  gnbCuUeF1apId;   /* gNB-CU UE F1AP Id */
@@ -11516,7 +11516,7 @@ uint8_t BuildAndSendUeContextSetupRsp(uint8_t cellId,uint8_t ueIdx)
    CellGroupConfigRrc_t     *cellGrpCfg = NULLP;
    DuUeCb                   *ueCb = NULLP;
 
-   DU_LOG("\n INFO   -->  F1AP : Building UE Context Setup Response for cellId %d, ueIdx %d\n", cellId, ueIdx);
+   DU_LOG("\n INFO   -->  F1AP : Building UE Context Setup Response for cellId %d, ueId %d\n", cellId, ueId);
 
    while(true)
    {
@@ -11574,9 +11574,9 @@ uint8_t BuildAndSendUeContextSetupRsp(uint8_t cellId,uint8_t ueIdx)
       }
       /* Fetching Ue Cb Info*/
       GET_CELL_IDX(cellId, cellIdx);
-      gnbDuUeF1apId = duCb.actvCellLst[cellIdx]->ueCb[ueIdx-1].gnbDuUeF1apId;
-      gnbCuUeF1apId = duCb.actvCellLst[cellIdx]->ueCb[ueIdx-1].gnbCuUeF1apId;
-      ueCb = &duCb.actvCellLst[cellIdx]->ueCb[ueIdx-1];
+      gnbDuUeF1apId = duCb.actvCellLst[cellIdx]->ueCb[ueId-1].gnbDuUeF1apId;
+      gnbCuUeF1apId = duCb.actvCellLst[cellIdx]->ueCb[ueId-1].gnbCuUeF1apId;
+      ueCb = &duCb.actvCellLst[cellIdx]->ueCb[ueId-1];
 
       idx = 0;
       /*GNB CU UE F1AP ID*/
@@ -11700,23 +11700,23 @@ uint8_t BuildAndSendUeContextSetupRsp(uint8_t cellId,uint8_t ueIdx)
 *         failure = RFAILED
 *
 * ****************************************************************/
-uint8_t BuildAndSendUeCtxtRsp(uint8_t cellId, uint8_t ueIdx)
+uint8_t BuildAndSendUeCtxtRsp(uint8_t cellId, uint8_t ueId)
 {
    uint8_t cellIdx = 0, actionType = 0; 
 
    GET_CELL_IDX(cellId, cellIdx);
-   actionType = duCb.actvCellLst[cellIdx]->ueCb[ueIdx-1].f1UeDb->actionType;
+   actionType = duCb.actvCellLst[cellIdx]->ueCb[ueId-1].f1UeDb->actionType;
 
    switch(actionType)
    {
       case UE_CTXT_SETUP:
          {
-            BuildAndSendUeContextSetupRsp(cellId,ueIdx);
+            BuildAndSendUeContextSetupRsp(cellId,ueId);
             break;
          }
       case UE_CTXT_MOD:
          {
-            BuildAndSendUeContextModRsp(cellId, ueIdx);
+            BuildAndSendUeContextModRsp(cellId, ueId);
             break;
          }
       default:
@@ -12651,7 +12651,7 @@ uint8_t duProcGnbDuCfgUpdAckMsg(uint8_t transId)
                               }
 
                               crnti = duCb.actvCellLst[cellIdx]->ueCb[ueIdx].crnti;
-                              GET_UE_IDX(crnti,ueId);
+                              GET_UE_ID(crnti,ueId);
                               /* Sending Ue Context release request only for maximum supporting UEs */
                               ret = BuildAndSendUeContextReleaseReq(cellId, ueId);
                               if(ret == RFAILED)
@@ -13036,12 +13036,12 @@ void FreeUeContextModResp(F1AP_PDU_t *f1apMsg)
 *    Functionality:
 *         - Creating the ue context modifcation response 
 *
-* @params[in] uint8_t cellId,uint8_t ueIdx
+* @params[in] uint8_t cellId,uint8_t ueId
 * @return ROK     - success
 *         RFAILED - failure
 *
 * ****************************************************************/
-uint8_t BuildAndSendUeContextModRsp(uint8_t cellId,uint8_t ueIdx)
+uint8_t BuildAndSendUeContextModRsp(uint8_t cellId,uint8_t ueId)
 {
    uint8_t   ieIdx = 0;
    uint8_t   cellIdx =0;
@@ -13103,9 +13103,9 @@ uint8_t BuildAndSendUeContextModRsp(uint8_t cellId,uint8_t ueIdx)
 
       /* Fetching Ue Cb Info*/
       GET_CELL_IDX(cellId, cellIdx);
-      gnbDuUeF1apId = duCb.actvCellLst[cellIdx]->ueCb[ueIdx-1].gnbDuUeF1apId;
-      gnbCuUeF1apId = duCb.actvCellLst[cellIdx]->ueCb[ueIdx-1].gnbCuUeF1apId;
-      ueCb = &duCb.actvCellLst[cellIdx]->ueCb[ueIdx-1];
+      gnbDuUeF1apId = duCb.actvCellLst[cellIdx]->ueCb[ueId-1].gnbDuUeF1apId;
+      gnbCuUeF1apId = duCb.actvCellLst[cellIdx]->ueCb[ueId-1].gnbCuUeF1apId;
+      ueCb = &duCb.actvCellLst[cellIdx]->ueCb[ueId-1];
 
       ieIdx=0;
       ueContextModifyRes->protocolIEs.list.array[ieIdx]->id = ProtocolIE_ID_id_gNB_CU_UE_F1AP_ID;
@@ -13583,7 +13583,7 @@ void FreeUeContextReleaseReq(F1AP_PDU_t *f1apMsg)
 *         RFAILED - failure
 *
 * *************************************************************/
-uint8_t BuildAndSendUeContextReleaseReq(uint16_t cellId, uint8_t ueIdx)
+uint8_t BuildAndSendUeContextReleaseReq(uint16_t cellId, uint8_t ueId)
 {
    bool memAllocFail = false;
    uint8_t ieIdx =0;
@@ -13657,14 +13657,14 @@ uint8_t BuildAndSendUeContextReleaseReq(uint16_t cellId, uint8_t ueIdx)
       }
       else
       {
-         GET_CRNTI(crnti, ueIdx);
-         if(duCb.actvCellLst[cellIdx]->ueCb[ueIdx-1].crnti != crnti)
+         GET_CRNTI(crnti, ueId);
+         if(duCb.actvCellLst[cellIdx]->ueCb[ueId-1].crnti != crnti)
          {
             DU_LOG("\nERROR  -->  F1AP : BuildAndSendUeContextReleaseReq(): crnti[%d] does not exist", crnti);
             break;
          }
-         gnbDuUeF1apId = duCb.actvCellLst[cellIdx]->ueCb[ueIdx-1].gnbDuUeF1apId;
-         gnbCuUeF1apId = duCb.actvCellLst[cellIdx]->ueCb[ueIdx-1].gnbCuUeF1apId;
+         gnbDuUeF1apId = duCb.actvCellLst[cellIdx]->ueCb[ueId-1].gnbDuUeF1apId;
+         gnbCuUeF1apId = duCb.actvCellLst[cellIdx]->ueCb[ueId-1].gnbCuUeF1apId;
       }
 
       ieIdx=0; 

@@ -1985,7 +1985,7 @@ uint8_t fillMacUeCb(MacUeCb *ueCb, MacUeCfg *ueCfg, uint8_t cellIdx)
 {
    uint8_t ret = ROK;
 
-   ueCb->ueIdx = ueCfg->ueIdx;
+   ueCb->ueIdx = ueCfg->ueId;
    ueCb->crnti = ueCfg->crnti;
    ueCb->cellCb = macCb.macCell[cellIdx];
    if(ueCfg->spCellCfgPres)
@@ -2099,7 +2099,7 @@ uint8_t createUeCb(uint8_t cellIdx, MacUeCb *ueCb, MacUeCfg *ueCfg)
 {
    uint8_t ret =ROK;
 
-   if((ueCb->ueIdx == ueCfg->ueIdx) && (ueCb->crnti == ueCfg->crnti)\
+   if((ueCb->ueIdx == ueCfg->ueId) && (ueCb->crnti == ueCfg->crnti)\
       &&(ueCb->state == UE_STATE_ACTIVE))
    {
       DU_LOG("\nERROR  -->  MAC : CRNTI %d already configured ", ueCfg->crnti);
@@ -2144,7 +2144,7 @@ uint8_t modifyUeCb(uint8_t cellIdx, MacUeCb *ueCb, MacUeCfg *ueCfg)
 {
    uint8_t ret = ROK;
 
-   if((ueCb->ueIdx == ueCfg->ueIdx) && (ueCb->crnti == ueCfg->crnti)\
+   if((ueCb->ueIdx == ueCfg->ueId) && (ueCb->crnti == ueCfg->crnti)\
       &&(ueCb->state == UE_STATE_ACTIVE))
    {
       DU_LOG("\nINFO  -->  MAC : Modifying Ue config Req for CRNTI %d ", ueCfg->crnti);
@@ -2204,7 +2204,7 @@ uint8_t procMacUeCfgData(Pst *pst, MacUeCfg *ueCfg)
    }
 
    /* Check if UE already configured */
-   ueCb = &macCb.macCell[cellIdx]->ueCb[ueCfg->ueIdx -1];
+   ueCb = &macCb.macCell[cellIdx]->ueCb[ueCfg->ueId -1];
    switch(pst->event)
    {
       case EVENT_UE_CONFIG_RSP_TO_MAC:
@@ -2253,7 +2253,7 @@ uint8_t copyToTmpData(MacUeCfg *ueCfg)
    }
    memcpy(tmpData, ueCfg, sizeof(MacUeCfg));
    GET_CELL_IDX(ueCfg->cellId, cellIdx);
-   macCb.macCell[cellIdx]->ueCfgTmpData[ueCfg->ueIdx-1] = tmpData;
+   macCb.macCell[cellIdx]->ueCfgTmpData[ueCfg->ueId-1] = tmpData;
    return ROK;
 }
 
@@ -2345,7 +2345,7 @@ uint8_t MacSendUeCreateRsp(MacRsp result, SchUeCfgRsp *schCfgRsp)
    /* Filling UE Config response */
    memset(cfgRsp, 0, sizeof(MacUeCfgRsp));
    cfgRsp->cellId = schCfgRsp->cellId;
-   cfgRsp->ueIdx = schCfgRsp->ueId;
+   cfgRsp->ueId = schCfgRsp->ueId;
    cfgRsp->result = result;
 
    /* Fill Post structure and send UE Create response*/
@@ -2385,7 +2385,7 @@ uint8_t MacSendUeReconfigRsp(MacRsp result, SchUeCfgRsp *schCfgRsp)
    /* Filling UE Config response */
    memset(cfgRsp, 0, sizeof(MacUeCfgRsp));
    cfgRsp->cellId = schCfgRsp->cellId;
-   cfgRsp->ueIdx = schCfgRsp->ueId;
+   cfgRsp->ueId = schCfgRsp->ueId;
    cfgRsp->result = result;
 
    /* Fill Post structure and send UE Create response*/

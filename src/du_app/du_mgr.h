@@ -117,7 +117,7 @@ typedef struct upTnlCfg
 {
    ConfigType configType;
    uint8_t cellId;
-   uint8_t ueIdx;
+   uint8_t ueId;
    uint8_t drbId;
    GtpTnlCfg *tnlCfg1; /* Tunnel 1 */
    GtpTnlCfg *tnlCfg2; /* Tunnel 2 */

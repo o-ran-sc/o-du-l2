@@ -1792,7 +1792,7 @@ uint8_t DuProcRlcUlUserDataTrans(Pst *pst, RlcUlUserDatInfo *ulUserData)
    for(teIdx = 0; teIdx < duCb.numTeId; teIdx++)
    {
       /*TODO: If multiple Cell Support is enables then CellId also needs to be validated alongwith ueId and DrbId*/
-      if((duCb.upTnlCfg[teIdx] != NULLP) && (duCb.upTnlCfg[teIdx]->ueIdx == ulUserData->ueId) && \
+      if((duCb.upTnlCfg[teIdx] != NULLP) && (duCb.upTnlCfg[teIdx]->ueId == ulUserData->ueId) && \
          (duCb.upTnlCfg[teIdx]->drbId == ulUserData->rbId))
       {
          if(duCb.upTnlCfg[teIdx]->tnlCfg1)
