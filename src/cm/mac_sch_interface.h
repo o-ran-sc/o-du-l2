@@ -1568,7 +1568,7 @@ typedef struct schUeCfg
 
 typedef struct schUeCfgRsp
 {
-   uint16_t   ueIdx;
+   uint16_t   ueId;
    uint16_t   cellId;
    uint16_t   crnti;
    SchMacRsp  rsp;

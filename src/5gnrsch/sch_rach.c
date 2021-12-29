@@ -223,11 +223,11 @@ uint16_t calculateRaRnti(uint8_t symbolIdx, uint8_t slotIdx, uint8_t freqIdx)
  **/
 void createSchRaCb(uint16_t tcrnti, Inst schInst)
 {
-   uint8_t ueIdx = 0;
+   uint8_t ueId = 0;
 
-   GET_UE_IDX(tcrnti, ueIdx);
-   schCb[schInst].cells[schInst]->raCb[ueIdx -1].tcrnti = tcrnti;
-   schCb[schInst].cells[schInst]->raCb[ueIdx -1].msg4recvd = FALSE;
+   GET_UE_ID(tcrnti, ueId);
+   schCb[schInst].cells[schInst]->raCb[ueId -1].tcrnti = tcrnti;
+   schCb[schInst].cells[schInst]->raCb[ueId -1].msg4recvd = FALSE;
 }
 
 /**
@@ -553,7 +553,7 @@ uint8_t schProcessRachInd(RachIndInfo *rachInd, Inst schInst)
    SchRaReq  *raReq = NULLP;
    float    slotDuration;
    uint8_t  winNumSlots;
-   uint8_t  ueIdx;
+   uint8_t  ueId;
 
    if(cell == NULLP)
    {
@@ -562,8 +562,8 @@ uint8_t schProcessRachInd(RachIndInfo *rachInd, Inst schInst)
    }
 
    /* Storing RA request in cellCb */
-   GET_UE_IDX(rachInd->crnti, ueIdx);
-   if(ueIdx <= 0)
+   GET_UE_ID(rachInd->crnti, ueId);
+   if(ueId <= 0)
    {
       DU_LOG("\nERROR  -->  SCH: Invalid CRNTI [%d]", rachInd->crnti);
       return RFAILED;
@@ -589,10 +589,10 @@ uint8_t schProcessRachInd(RachIndInfo *rachInd, Inst schInst)
    
    /* Adding window size to window start time to get window end time */
    ADD_DELTA_TO_TIME(raReq->winStartTime, raReq->winEndTime, winNumSlots);
-   cell->raReq[ueIdx -1] = raReq;
+   cell->raReq[ueId -1] = raReq;
 
    /* Adding UE Id to list of pending UEs to be scheduled */
-   addUeToBeScheduled(cell, ueIdx);
+   addUeToBeScheduled(cell, ueId);
 
    return ROK;
 }

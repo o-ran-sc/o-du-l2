@@ -1143,9 +1143,9 @@ uint16_t schCalcTbSizeFromNPrb(uint16_t numPrb, uint16_t mcs, uint8_t numSymbols
  **/
 SchUeCb* schGetUeCb(SchCellCb *cellCb, uint16_t crnti)
 {
-   uint16_t ueIdx;
-   GET_UE_IDX(crnti, ueIdx);
-   return &(cellCb->ueCb[ueIdx -1]);
+   uint16_t ueId;
+   GET_UE_ID(crnti, ueId);
+   return &(cellCb->ueCb[ueId -1]);
 }
 
 /**

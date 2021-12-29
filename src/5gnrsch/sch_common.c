@@ -408,14 +408,14 @@ uint8_t fillUlSchedPucchDedicatedCfg(SchCellCb *cell, SchPucchCfg *pucchDedCfg,\
 
 uint16_t fillPucchResourceInfo(SchPucchInfo *schPucchInfo, Inst inst, SlotTimingInfo slotInfo)
 {
-   uint8_t ret = ROK, ueIdx = 0, pucchIdx = 0;
+   uint8_t ret = ROK, ueId = 0, ueIdx = 0, pucchIdx = 0;
    SchCellCb  *cell = schCb[inst].cells[inst];
    SchPucchCfgCmn *pucchCfg = NULLP;
    SchBwpParams *ulBwp = NULLP;
    uint16_t startPrb;
 
-   GET_UE_IDX(schPucchInfo->rnti, ueIdx);
-   ueIdx--;
+   GET_UE_ID(schPucchInfo->rnti, ueId);
+   ueIdx = ueId -1;
    if(cell->ueCb[ueIdx].ueCfg.spCellCfg.servCellCfg.initUlBwp.pucchCfgPres)
    {
       /* fill pucch dedicated cfg */
@@ -751,7 +751,7 @@ uint16_t schAllocPucchResource(SchCellCb *cell, SlotTimingInfo pucchTime, uint16
 uint8_t schDlRsrcAllocDlMsg(SchCellCb *cell, SlotTimingInfo slotTime, uint16_t crnti,
                 uint32_t tbSize, DlMsgAlloc *dlMsgAlloc, uint16_t startPRB, uint8_t pdschStartSymbol, uint8_t pdschNumSymbols)
 {
-   uint8_t ueIdx;
+   uint8_t ueId=0;
    PdcchCfg *pdcch = NULLP;
    PdschCfg *pdsch = NULLP;
    BwpCfg *bwp = NULLP;
@@ -764,8 +764,8 @@ uint8_t schDlRsrcAllocDlMsg(SchCellCb *cell, SlotTimingInfo slotTime, uint16_t c
    pdsch = &dlMsgAlloc->dlMsgSchedInfo[dlMsgAlloc->numSchedInfo].dlMsgPdschCfg;
    bwp = &dlMsgAlloc->dlMsgSchedInfo[dlMsgAlloc->numSchedInfo].bwp;
 
-   GET_UE_IDX(crnti, ueIdx);
-   ueCb  = cell->ueCb[ueIdx-1];
+   GET_UE_ID(crnti, ueId);
+   ueCb  = cell->ueCb[ueId-1];
    coreset1 = ueCb.ueCfg.spCellCfg.servCellCfg.initDlBwp.pdcchCfg.cRSetToAddModList[0];
    pdschCfg = ueCb.ueCfg.spCellCfg.servCellCfg.initDlBwp.pdschCfg;
 

@@ -2345,7 +2345,7 @@ uint8_t MacSendUeCreateRsp(MacRsp result, SchUeCfgRsp *schCfgRsp)
    /* Filling UE Config response */
    memset(cfgRsp, 0, sizeof(MacUeCfgRsp));
    cfgRsp->cellId = schCfgRsp->cellId;
-   cfgRsp->ueIdx = schCfgRsp->ueIdx;
+   cfgRsp->ueIdx = schCfgRsp->ueId;
    cfgRsp->result = result;
 
    /* Fill Post structure and send UE Create response*/
@@ -2385,7 +2385,7 @@ uint8_t MacSendUeReconfigRsp(MacRsp result, SchUeCfgRsp *schCfgRsp)
    /* Filling UE Config response */
    memset(cfgRsp, 0, sizeof(MacUeCfgRsp));
    cfgRsp->cellId = schCfgRsp->cellId;
-   cfgRsp->ueIdx = schCfgRsp->ueIdx;
+   cfgRsp->ueIdx = schCfgRsp->ueId;
    cfgRsp->result = result;
 
    /* Fill Post structure and send UE Create response*/
@@ -2467,7 +2467,7 @@ uint8_t MacProcSchUeCfgRsp(Pst *pst, SchUeCfgRsp *schCfgRsp)
 #endif
    
    GET_CELL_IDX(schCfgRsp->cellId, cellIdx);
-   ueCfg = getMacUeCfg(cellIdx, schCfgRsp->ueIdx);
+   ueCfg = getMacUeCfg(cellIdx, schCfgRsp->ueId);
    if(ueCfg == NULLP)
    {
       DU_LOG("\nERROR  -->  MAC : Failed to find the Mac Ue Cfg for event [%d] in MacProcSchUeCfgRsp()", pst->event);

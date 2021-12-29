@@ -73,7 +73,7 @@ void SchSendUeCfgRspToMac(uint16_t event, SchUeCfg *ueCfg, Inst inst,\
 
    cfgRsp->cellId = ueCfg->cellId;
    cfgRsp->crnti = ueCfg->crnti;
-   GET_UE_IDX(ueCfg->crnti, cfgRsp->ueIdx);
+   GET_UE_ID(ueCfg->crnti, cfgRsp->ueId);
    cfgRsp->rsp = result;   
 
    /* Filling response post */
@@ -504,7 +504,7 @@ SchCellCb *getSchCellCb(uint16_t srcEvent, Inst inst, SchUeCfg *ueCfg)
  * ****************************************************************/
 uint8_t MacSchAddUeConfigReq(Pst *pst, SchUeCfg *ueCfg)
 {
-   uint8_t ueIdx, lcIdx, ret = ROK;
+   uint8_t ueId, lcIdx, ret = ROK;
    SchCellCb    *cellCb = NULLP;
    SchUeCb      *ueCb = NULLP;
    SchUeCfgRsp  cfgRsp;
@@ -524,15 +524,15 @@ uint8_t MacSchAddUeConfigReq(Pst *pst, SchUeCfg *ueCfg)
    cellCb = getSchCellCb(pst->event, inst, ueCfg);
 
    /* Search if UE already configured */
-   GET_UE_IDX(ueCfg->crnti, ueIdx);
-   ueCb = &cellCb->ueCb[ueIdx -1];
+   GET_UE_ID(ueCfg->crnti, ueId);
+   ueCb = &cellCb->ueCb[ueId -1];
    if(ueCb)
    {
       if((ueCb->crnti == ueCfg->crnti) && (ueCb->state == SCH_UE_STATE_ACTIVE))
       {
-	 DU_LOG("\nDEBUG  -->  SCH : CRNTI %d already configured ", ueCfg->crnti);
-	 SchSendUeCfgRspToMac(pst->event, ueCfg, inst, RSP_OK, &cfgRsp);
-	 return ROK;
+         DU_LOG("\nDEBUG  -->  SCH : CRNTI %d already configured ", ueCfg->crnti);
+         SchSendUeCfgRspToMac(pst->event, ueCfg, inst, RSP_OK, &cfgRsp);
+         return ROK;
       }
    }
    else
@@ -544,15 +544,14 @@ uint8_t MacSchAddUeConfigReq(Pst *pst, SchUeCfg *ueCfg)
 
    /* Fill received Ue Configuration in UeCb */
    memset(ueCb, 0, sizeof(SchUeCb));
-   GET_UE_IDX(ueCfg->crnti, ueIdx);
-   ueCb->ueIdx = ueIdx;
+   ueCb->ueId = ueId;
    ueCb->crnti = ueCfg->crnti;
    ueCb->state = SCH_UE_STATE_ACTIVE;
    ret = fillSchUeCb(ueCb, ueCfg);
    if(ret == ROK)
    {
       cellCb->numActvUe++;
-      SET_ONE_BIT(ueCb->ueIdx, cellCb->actvUeBitMap);
+      SET_ONE_BIT(ueCb->ueId, cellCb->actvUeBitMap);
       ueCb->cellCb = cellCb;
       ueCb->srRcvd = false;
       ueCb->bsrRcvd = false;
@@ -738,7 +737,7 @@ uint8_t schFillUlDci(SchUeCb *ueCb, SchPuschInfo *puschInfo, DciInfo *dciInfo)
  * ****************************************************************/
 uint8_t MacSchModUeConfigReq(Pst *pst, SchUeCfg *ueCfg)
 {
-   uint8_t ueIdx, lcIdx, ret = ROK;
+   uint8_t ueId, lcIdx, ret = ROK;
    SchCellCb    *cellCb = NULLP;
    SchUeCb      *ueCb = NULLP;
    SchUeCfgRsp  cfgRsp;
@@ -758,8 +757,8 @@ uint8_t MacSchModUeConfigReq(Pst *pst, SchUeCfg *ueCfg)
    cellCb = getSchCellCb(pst->event, inst, ueCfg);
 
    /* Search if UE already configured */
-   GET_UE_IDX(ueCfg->crnti, ueIdx);
-   ueCb = &cellCb->ueCb[ueIdx -1];
+   GET_UE_ID(ueCfg->crnti, ueId);
+   ueCb = &cellCb->ueCb[ueId -1];
    
    if(!ueCb)
    {
@@ -1028,7 +1027,7 @@ uint8_t MacSchUeDeleteReq(Pst *pst, SchUeDelete  *ueDelete)
     }
     else
     {
-       GET_UE_IDX(ueDelete->crnti, ueId);
+       GET_UE_ID(ueDelete->crnti, ueId);
        if(( cellCb->ueCb[ueId-1].crnti == ueDelete->crnti) && ( cellCb->ueCb[ueId-1].state == SCH_UE_STATE_ACTIVE))
        {
           deleteSchUeCb(&cellCb->ueCb[ueId-1]);

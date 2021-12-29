@@ -267,7 +267,7 @@ typedef struct schLcPrbEstimate
  */
 typedef struct schUeCb
 {
-   uint16_t   ueIdx;
+   uint16_t   ueId;
    uint16_t   crnti;
    SchUeCfgCb ueCfg;
    SchUeState state;
@@ -373,12 +373,11 @@ uint8_t schBroadcastSsbAlloc(SchCellCb *cell, SlotTimingInfo slotTime, DlBrdcstA
 uint8_t schBroadcastSib1Alloc(SchCellCb *cell, SlotTimingInfo slotTime, DlBrdcstAlloc *dlBrdcstAlloc);
 bool schProcessRaReq(SchCellCb *cellCb, SlotTimingInfo currTime, uint8_t ueId);
 bool schProcessMsg4Req(SchCellCb *cell, SlotTimingInfo currTime, uint8_t ueId);
-uint8_t schFillRar(SchCellCb *cell, SlotTimingInfo rarTime, uint16_t ueIdx, RarAlloc *rarAlloc, uint8_t k0Index);
+uint8_t schFillRar(SchCellCb *cell, SlotTimingInfo rarTime, uint16_t ueId, RarAlloc *rarAlloc, uint8_t k0Index);
 uint8_t schDlRsrcAllocDlMsg(SchCellCb *cell, SlotTimingInfo slotTime, uint16_t crnti,
 uint32_t tbSize, DlMsgAlloc *dlMsgAlloc, uint16_t startPRB, uint8_t pdschStartSymbol, uint8_t pdschNumSymbols);
 uint8_t schDlRsrcAllocMsg4(SchCellCb *cell, SlotTimingInfo msg4Time, uint8_t ueId, DlMsgAlloc *msg4Alloc,\
 uint8_t pdschStartSymbol, uint8_t pdschNumSymbols);
-uint16_t schAccumalateLcBoSize(SchCellCb *cell, uint16_t ueIdx);
 uint8_t allocatePrbDl(SchCellCb *cell, SlotTimingInfo slotTime, uint8_t startSymbol, uint8_t symbolLength, \
    uint16_t *startPrb, uint16_t numPrb);
 void fillDlMsgInfo(DlMsgInfo *dlMsgInfo, uint8_t crnti);

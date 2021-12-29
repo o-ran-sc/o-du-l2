@@ -960,7 +960,7 @@ uint8_t MacSchDlRlcBoInfo(Pst *pst, DlRlcBoInfo *dlBoInfo)
       return RFAILED;
    }
 
-   GET_UE_IDX(dlBoInfo->crnti, ueId);
+   GET_UE_ID(dlBoInfo->crnti, ueId);
    ueCb = &cell->ueCb[ueId-1];
    lcId  = dlBoInfo->lcId;
    CHECK_LCID(lcId, isLcIdValid);
@@ -1073,7 +1073,7 @@ uint8_t MacSchBsr(Pst *pst, UlBufferStatusRptInd *bsrInd)
    }
    
    /* Adding UE Id to list of pending UEs to be scheduled */
-   addUeToBeScheduled(cellCb, ueCb->ueIdx);
+   addUeToBeScheduled(cellCb, ueCb->ueId);
    return ROK;
 }
 
@@ -1120,7 +1120,7 @@ uint8_t MacSchSrUciInd(Pst *pst, SrUciIndInfo *uciInd)
       ueCb->srRcvd = true;
       
       /* Adding UE Id to list of pending UEs to be scheduled */
-      addUeToBeScheduled(cellCb, ueCb->ueIdx);
+      addUeToBeScheduled(cellCb, ueCb->ueId);
    }
    return ROK;
 }
