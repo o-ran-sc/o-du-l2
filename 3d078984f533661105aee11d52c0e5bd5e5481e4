@@ -3,6 +3,46 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "389bc1e1_7b6468fb",
+        "filename": "src/du_app/du_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1716,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-12-29T05:26:06Z",
+      "side": 1,
+      "message": "indentation",
+      "revId": "3d078984f533661105aee11d52c0e5bd5e5481e4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6db06e08_7e0a1d15",
+        "filename": "src/du_app/du_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1795,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-12-29T05:26:06Z",
+      "side": 1,
+      "message": "ueIdx ? are we not going to change this",
+      "range": {
+        "startLine": 1795,
+        "startChar": 67,
+        "endLine": 1795,
+        "endChar": 72
+      },
+      "revId": "3d078984f533661105aee11d52c0e5bd5e5481e4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "420dcf39_7ee39109",
         "filename": "src/du_app/du_ue_mgr.c",
         "patchSetId": 1
@@ -20,6 +60,23 @@
         "endLine": 173,
         "endChar": 61
       },
+      "revId": "3d078984f533661105aee11d52c0e5bd5e5481e4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "31d18185_b3534159",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1604,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2021-12-29T05:26:06Z",
+      "side": 1,
+      "message": "are  we assigning rlcUeCfg-\u003eueId  \u003d\u003d 1 or  rlcUeCfg-\u003eueId  \u003d 0?\nIf  rlcUeCfg-\u003eueId  \u003d\u003d 1 then please use UeId",
       "revId": "3d078984f533661105aee11d52c0e5bd5e5481e4",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
