@@ -41,6 +41,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bb002943_53de79eb",
+        "filename": "src/du_app/du_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1795,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-12-29T05:30:41Z",
+      "side": 1,
+      "message": "Same reason as mentioned in du_ue_mgr.c",
+      "parentUuid": "6db06e08_7e0a1d15",
+      "range": {
+        "startLine": 1795,
+        "startChar": 67,
+        "endLine": 1795,
+        "endChar": 72
+      },
+      "revId": "3d078984f533661105aee11d52c0e5bd5e5481e4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "420dcf39_7ee39109",
@@ -54,6 +78,30 @@
       "writtenOn": "2021-12-28T15:08:36Z",
       "side": 1,
       "message": "Can we change this name to ueId",
+      "range": {
+        "startLine": 173,
+        "startChar": 56,
+        "endLine": 173,
+        "endChar": 61
+      },
+      "revId": "3d078984f533661105aee11d52c0e5bd5e5481e4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "48f546bd_e2578fb8",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 173,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-12-29T05:30:41Z",
+      "side": 1,
+      "message": "There are many places in DU APP where still I need to change ueIdx to ueId. But I will be taking that up in new gerrit which will focus only on DU APP changes.\nThis gerrit is focused on fixing RLC and RLC related interface strutures only.\nHence I havent changed these as of now.",
+      "parentUuid": "420dcf39_7ee39109",
       "range": {
         "startLine": 173,
         "startChar": 56,
@@ -81,6 +129,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9a4e3219_137c5eab",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1604,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-12-29T05:30:41Z",
+      "side": 1,
+      "message": "same reason as above",
+      "parentUuid": "31d18185_b3534159",
+      "revId": "3d078984f533661105aee11d52c0e5bd5e5481e4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9b93312c_e5ce0100",
@@ -104,6 +170,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2a18bf91_69554e5a",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1686,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-12-29T05:30:41Z",
+      "side": 1,
+      "message": "Same as above",
+      "parentUuid": "9b93312c_e5ce0100",
+      "range": {
+        "startLine": 1686,
+        "startChar": 2,
+        "endLine": 1686,
+        "endChar": 12
+      },
+      "revId": "3d078984f533661105aee11d52c0e5bd5e5481e4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ea383203_237f27ff",
@@ -117,6 +207,30 @@
       "writtenOn": "2021-12-28T15:08:36Z",
       "side": 1,
       "message": "here also and also in the function flow",
+      "range": {
+        "startLine": 1705,
+        "startChar": 66,
+        "endLine": 1705,
+        "endChar": 71
+      },
+      "revId": "3d078984f533661105aee11d52c0e5bd5e5481e4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9a695241_a3180b1d",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1705,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2021-12-29T05:30:41Z",
+      "side": 1,
+      "message": "Same as above",
+      "parentUuid": "ea383203_237f27ff",
       "range": {
         "startLine": 1705,
         "startChar": 66,
