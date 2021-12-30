@@ -1443,7 +1443,7 @@ uint8_t addUeToBeScheduled(SchCellCb *cell, uint8_t ueIdToAdd)
    *ueId = ueIdToAdd;
    if(addNodeToLList(&cell->ueToBeScheduled, ueId, NULLP) != ROK)
    {
-      DU_LOG("\nERROR  --> SCH : Failed to add UeIdx to cell->ueToBeScheduled list");
+      DU_LOG("\nERROR  --> SCH : Failed to add ueId [%d] to cell->ueToBeScheduled list", *ueId);
       return RFAILED;
    }
    return ROK;

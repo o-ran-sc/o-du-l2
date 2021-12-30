@@ -1052,7 +1052,7 @@ uint8_t MacSchUeDeleteReq(Pst *pst, SchUeDelete  *ueDelete)
        else
        {
           DU_LOG("\nERROR  -->  SCH : MacSchUeDeleteReq(): SchUeCb not found");
-          result =  INVALID_UEIDX;
+          result =  INVALID_UEID;
        }
     }
     

@@ -204,7 +204,7 @@ typedef struct ueDlCb
 /* UE Cb */
 typedef struct macUeCb
 {
-   uint16_t     ueIdx;    /* UE Idx assigned by DU APP */
+   uint16_t     ueId;     /* UE Id assigned by DU APP */
    uint16_t     crnti;    /* UE CRNTI */
    MacCellCb    *cellCb;  /* Pointer to cellCb to whihc this UE belongs */
    UeState      state;    /* Is UE active ? */

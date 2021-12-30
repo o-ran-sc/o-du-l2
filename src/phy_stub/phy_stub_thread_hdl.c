@@ -162,7 +162,7 @@ void *l1ConsoleHandler(void *args)
             {
                for(drbIdx = 0; drbIdx < NUM_DRB_TO_PUMP_DATA; drbIdx++) //Number of DRB times the loop will run
                {
-                  DU_LOG("\nDEBUG  --> PHY STUB: Sending UL User Data[DrbId:%d] for UEId %d\n",drbIdx,ueIdx);
+                  DU_LOG("\nDEBUG  --> PHY STUB: Sending UL User Data[DrbId:%d] for UEIdx %d\n",drbIdx,ueIdx);
                   l1SendUlUserData(drbIdx,ueIdx);
                   /* TODO :- sleep(1) will be removed once we will be able to
                    * send continuous data packet */

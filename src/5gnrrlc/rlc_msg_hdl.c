@@ -707,7 +707,7 @@ uint8_t RlcProcUeReconfigReq(Pst *pst, RlcUeCfg *ueCfg)
    RlcCfgCfmInfo *cfgRsp; 
    Pst rspPst;
 
-   DU_LOG("\nDEBUG  -->  RLC: UE reconfig request received. CellID[%d] UEIDX[%d]",ueCfg->cellId, ueCfg->ueId);
+   DU_LOG("\nDEBUG  -->  RLC: UE reconfig request received. CellID[%d] UEID[%d]",ueCfg->cellId, ueCfg->ueId);
 
    rlcUeCb = RLC_GET_RLCCB(pst->dstInst);
    RLC_ALLOC(rlcUeCb, rlcUeCfg, sizeof(RlcCfgInfo));

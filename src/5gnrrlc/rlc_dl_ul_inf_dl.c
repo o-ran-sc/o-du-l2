@@ -347,7 +347,7 @@ RlcCfgInfo   *cfg
                }
                else
                {
-                  DU_LOG("\nDEBUG  -->  RLC_DL: UE information is deleted for UEIdx[%d] and CellId[%d]",\
+                  DU_LOG("\nDEBUG  -->  RLC_DL: UE information is deleted for UEId[%d] and CellId[%d]",\
                   cfg->ueId, cfg->cellId);
                }
                break;

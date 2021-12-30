@@ -1985,7 +1985,7 @@ uint8_t fillMacUeCb(MacUeCb *ueCb, MacUeCfg *ueCfg, uint8_t cellIdx)
 {
    uint8_t ret = ROK;
 
-   ueCb->ueIdx = ueCfg->ueId;
+   ueCb->ueId = ueCfg->ueId;
    ueCb->crnti = ueCfg->crnti;
    ueCb->cellCb = macCb.macCell[cellIdx];
    if(ueCfg->spCellCfgPres)
@@ -2099,7 +2099,7 @@ uint8_t createUeCb(uint8_t cellIdx, MacUeCb *ueCb, MacUeCfg *ueCfg)
 {
    uint8_t ret =ROK;
 
-   if((ueCb->ueIdx == ueCfg->ueId) && (ueCb->crnti == ueCfg->crnti)\
+   if((ueCb->ueId == ueCfg->ueId) && (ueCb->crnti == ueCfg->crnti)\
       &&(ueCb->state == UE_STATE_ACTIVE))
    {
       DU_LOG("\nERROR  -->  MAC : CRNTI %d already configured ", ueCfg->crnti);
@@ -2144,7 +2144,7 @@ uint8_t modifyUeCb(uint8_t cellIdx, MacUeCb *ueCb, MacUeCfg *ueCfg)
 {
    uint8_t ret = ROK;
 
-   if((ueCb->ueIdx == ueCfg->ueId) && (ueCb->crnti == ueCfg->crnti)\
+   if((ueCb->ueId == ueCfg->ueId) && (ueCb->crnti == ueCfg->crnti)\
       &&(ueCb->state == UE_STATE_ACTIVE))
    {
       DU_LOG("\nINFO  -->  MAC : Modifying Ue config Req for CRNTI %d ", ueCfg->crnti);
@@ -2405,19 +2405,19 @@ uint8_t MacSendUeReconfigRsp(MacRsp result, SchUeCfgRsp *schCfgRsp)
  *    Functionality:
  *      Function to return Mac Ue Cfg pointer
  *
- * @params[in] cellIdx, ueIdx
+ * @params[in] cellIdx, ueId
  *
  * @return MacUeCfg pointer - success
  *         NULLP - failure
  *
  * ****************************************************************/
 
-MacUeCfg *getMacUeCfg(uint16_t cellIdx, uint8_t ueIdx)
+MacUeCfg *getMacUeCfg(uint16_t cellIdx, uint8_t ueId)
 {
    MacUeCfg *ueCfg = NULLP;
    if(macCb.macCell[cellIdx])
    {
-      ueCfg = macCb.macCell[cellIdx]->ueCfgTmpData[ueIdx-1];
+      ueCfg = macCb.macCell[cellIdx]->ueCfgTmpData[ueId-1];
    }
    else
    {
@@ -2719,7 +2719,7 @@ uint8_t MacProcSchUeDeleteRsp(Pst *pst, SchUeDeleteRsp *schUeDelRsp)
             {
                /*C-RNTI value is out of Acceptable range*/
                DU_LOG("\nERROR  -->  MAC : MacProcSchUeDeleteRsp(): Invalid crnti[%d] ",schUeDelRsp->crnti);
-               result = UEIDX_INVALID;
+               result = UEID_INVALID;
             }
             else
             {
@@ -2747,7 +2747,7 @@ uint8_t MacProcSchUeDeleteRsp(Pst *pst, SchUeDeleteRsp *schUeDelRsp)
                else
                {
                   DU_LOG("\nERROR  -->  MAC : MacProcSchUeDeleteRsp(): crnti[%d] does not exist ",schUeDelRsp->crnti);
-                  result = UEIDX_INVALID;
+                  result = UEID_INVALID;
                }
             }
          }
@@ -2759,7 +2759,7 @@ uint8_t MacProcSchUeDeleteRsp(Pst *pst, SchUeDeleteRsp *schUeDelRsp)
       }
       else
       {
-         result = (schUeDelRsp->cause == INVALID_CELLID) ? CELLID_INVALID : UEIDX_INVALID;
+         result = (schUeDelRsp->cause == INVALID_CELLID) ? CELLID_INVALID : UEID_INVALID;
       }
       if(MacSendUeDeleteRsp(schUeDelRsp->cellId, schUeDelRsp->crnti, result) != ROK)
       {
@@ -2857,12 +2857,12 @@ uint8_t MacProcUeDeleteReq(Pst *pst, MacUeDelete *ueDelete)
          else
          {
             DU_LOG("\nERROR  -->  MAC : MacProcUeDeleteReq(): CRNTI is not matched");
-            result = UEIDX_INVALID;
+            result = UEID_INVALID;
          }
       }
       else
       {
-         DU_LOG("\nERROR  -->  MAC : MacProcUeDeleteReq(): Failed to find the MacUeCb of UeIdx = %d",ueDelete->ueId);
+         DU_LOG("\nERROR  -->  MAC : MacProcUeDeleteReq(): Failed to find the MacUeCb of UeId = %d",ueDelete->ueId);
          result = CELLID_INVALID;
       }
 

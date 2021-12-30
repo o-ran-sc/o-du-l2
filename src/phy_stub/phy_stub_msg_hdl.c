@@ -349,7 +349,7 @@ uint16_t l1BuildAndSendRxDataInd(uint16_t slot, uint16_t sfn, fapi_ul_pusch_pdu_
    uint32_t msgLen = 0;
    MsgType type = 0;
 
-   GET_UE_IDX(puschPdu.rnti, ueId);
+   GET_UE_ID(puschPdu.rnti, ueId);
    if(!ueDb.ueCb[ueId-1].msg3Sent)
    {
       ueDb.ueCb[ueId-1].ueId = ueId;

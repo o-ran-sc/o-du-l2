@@ -100,7 +100,7 @@ typedef enum
 {
    SUCCESS,
    CELLID_INVALID,
-   UEIDX_INVALID
+   UEID_INVALID
 }UeDeleteStatus;
 
 typedef enum

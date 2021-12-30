@@ -166,7 +166,7 @@ typedef enum
 {
    NOT_APPLICABLE,
    INVALID_CELLID,
-   INVALID_UEIDX
+   INVALID_UEID
 }ErrorCause;
 
 typedef enum

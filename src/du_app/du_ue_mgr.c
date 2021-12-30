@@ -2353,7 +2353,7 @@ uint8_t DuProcMacUeCfgRsp(Pst *pst, MacUeCfgRsp *cfgRsp)
  *     Processes UE create Req to RLC UL
  * 
  *  @params[in]  cellId,
- *               ueIdx,
+ *               ueId,
  *               Pointer to RlcUeCfg
  *  @return ROK     - success
  *          RFAILED - failure
