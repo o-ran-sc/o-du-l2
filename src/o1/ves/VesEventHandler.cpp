@@ -105,6 +105,7 @@ bool VesEventHandler::prepare(VesEventType evtType, const Message* msg)
          ret = false;
          break;
    }
+   mVesEvent->init();
    if(!mVesEvent->prepare(msg)) {
       O1_LOG("\nO1 VesEventHandler : Failed to prepare VES message");
       ret = false;

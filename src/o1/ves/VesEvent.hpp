@@ -41,6 +41,7 @@ class VesEvent{
       VesEvent();
       VesEvent(VesEventType);
       virtual ~VesEvent();
+      void init();
       bool prepare(const Message* msg = NULL);
       bool send();
 

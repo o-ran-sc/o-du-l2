@@ -28,9 +28,6 @@
 VesEvent::VesEvent(VesEventType eventType) 
                : mVesEventType(eventType) {
 
-   getConfig();
-   createUrl();
-   mHttpClient = new HttpClient(mVesUrl, mVesServerUsername, mVesServerPassword);
           
 }; 
 
@@ -43,6 +40,33 @@ VesEvent::~VesEvent()
       delete mHttpClient;
    }
    free(mSendData);
+}
+
+
+/*******************************************************************
+ *
+ * @brief Initialize the Ves Event
+ *
+ * @details
+ *
+ *    Function : init
+ *
+ *    Functionality:
+ *      - Intialize the Ves event with configuration
+ *        Sets the URL
+ *        Instantiates the http client
+ *
+ * @params[in] IN   - void
+ * @return void
+ *
+ * ****************************************************************/
+
+void VesEvent::init(){
+
+   getConfig();
+   createUrl();
+   mHttpClient = new HttpClient(mVesUrl, mVesServerUsername, mVesServerPassword);
+
 }
 
 /*******************************************************************
@@ -129,6 +153,23 @@ bool VesEvent::prepare(const Message* msg)
    }
    return true;
 }
+
+/*******************************************************************
+ *
+ * @brief Send the Ves event over Http
+ *
+ * @details
+ *
+ *    Function : send
+ *
+ *    Functionality:
+ *      - Sends the Ves event over http
+ *
+ * @params[in] IN   - void
+ * @return true     - success
+ *         false    - failure
+ *
+ * ****************************************************************/
 
 bool VesEvent::send()
 {
@@ -219,6 +260,9 @@ void VesEvent::createUrl()
 {
    mVesUrl = "https://" + mVesServerIp + ":" + mVesServerPort + "/eventListener/v7";
 }
+
+
+
 /**********************************************************************
   End of file
  **********************************************************************/

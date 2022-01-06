@@ -189,20 +189,20 @@ Setting up Netconf server (Only if O1 interface enabled)
    - Install all the downloaded yang models.
 
        - Ubuntu :
-       
+
        | cd <O-DU High Directory>/l2/build/yang
-       | sysrepoctl -i      _3gpp-common-top.yang
-       | sysrepoctl -i      _3gpp-5g-common-yang-types.yang
        | sysrepoctl -i      _3gpp-common-yang-types.yang
-       | sysrepoctl -i      _3gpp-common-managed-element.yang
+       | sysrepoctl -i      _3gpp-common-top.yang
        | sysrepoctl -i      _3gpp-common-measurements.yang
-       | sysrepoctl -i      _3gpp-common-subscription-control.yang
-       | sysrepoctl -i      _3gpp-common-fm.yang
        | sysrepoctl -i      _3gpp-common-trace.yang
        | sysrepoctl -i      _3gpp-common-managed-function.yang
+       | sysrepoctl -i      _3gpp-common-subscription-control.yang
+       | sysrepoctl -i      _3gpp-common-fm.yang
+       | sysrepoctl -i      _3gpp-common-managed-element.yang
+       | sysrepoctl -i      _3gpp-5g-common-yang-types.yang
+       | sysrepoctl -i      _3gpp-nr-nrm-rrmpolicy.yang
        | sysrepoctl -i      _3gpp-nr-nrm-gnbdufunction.yang
        | sysrepoctl -i      _3gpp-nr-nrm-nrcelldu.yang
-       | sysrepoctl -i      _3gpp-nr-nrm-rrmpolicy.yang
 
 - Start Netopeer2-server:
 
