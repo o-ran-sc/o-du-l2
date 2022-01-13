@@ -9,6 +9,13 @@
 extern "C" {
 #endif
 
+#define maxProtocolIEs (65535)
+#define maxnoofErrors (256)
+#define maxofE2nodeComponents (1024)
+#define maxofRANfunctionID (256)
+#define maxofRICactionID (16)
+#define maxofTNLA (32)
+#define maxofRICrequestID (4294967295)
 #define maxSIB (32)
 #define maxNrofPhysicalResourceBlocks (275)
 #define maxNrofPhysicalResourceBlocks_1 (274)
