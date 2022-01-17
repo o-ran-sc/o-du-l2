@@ -1,0 +1,124 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "83525c89_8fe77fa3",
+        "filename": "src/cu_stub/cu_stub.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-01-17T12:52:54Z",
+      "side": 1,
+      "message": "can you please move these sctp related strcutre in cu_stub_sctp.h file",
+      "revId": "76367567bd8acbbda2797a3e856d0bd9b8b0a46b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2679900e_9da84d18",
+        "filename": "src/cu_stub/cu_stub_sctp.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 540,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-01-17T12:52:54Z",
+      "side": 1,
+      "message": "why only 0th index is used?",
+      "range": {
+        "startLine": 540,
+        "startChar": 86,
+        "endLine": 540,
+        "endChar": 92
+      },
+      "revId": "76367567bd8acbbda2797a3e856d0bd9b8b0a46b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0f2a7f95_27326b7f",
+        "filename": "src/ric_stub/ric_stub_sctp.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-01-17T12:52:54Z",
+      "side": 1,
+      "message": "give space.",
+      "revId": "76367567bd8acbbda2797a3e856d0bd9b8b0a46b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "27d7c993_e96b092e",
+        "filename": "src/ric_stub/ric_stub_sctp.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 411,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-01-17T12:52:54Z",
+      "side": 1,
+      "message": "give one line space.",
+      "revId": "76367567bd8acbbda2797a3e856d0bd9b8b0a46b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "75f14aa5_784fb9c4",
+        "filename": "src/ric_stub/ric_stub_sctp.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 472,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-01-17T12:52:54Z",
+      "side": 1,
+      "message": "why we have used 0th index only?",
+      "range": {
+        "startLine": 472,
+        "startChar": 27,
+        "endLine": 472,
+        "endChar": 28
+      },
+      "revId": "76367567bd8acbbda2797a3e856d0bd9b8b0a46b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2d33504e_1035e178",
+        "filename": "src/ric_stub/ric_stub_sctp.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-01-17T12:52:54Z",
+      "side": 1,
+      "message": "move this RicSctpParams structure into this file. This will help in understanding all SCTP-related structures.",
+      "range": {
+        "startLine": 57,
+        "startChar": 3,
+        "endLine": 57,
+        "endChar": 16
+      },
+      "revId": "76367567bd8acbbda2797a3e856d0bd9b8b0a46b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
