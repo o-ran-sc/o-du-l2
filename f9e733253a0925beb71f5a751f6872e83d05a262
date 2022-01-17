@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "141112e9_c51aa6a0",
+        "filename": "src/codec_utils/E2AP/BIT_STRING.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-01-17T11:40:18Z",
+      "side": 1,
+      "message": "This should already be present in common folder. Please check",
+      "revId": "f9e733253a0925beb71f5a751f6872e83d05a262",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0a9dd36b_58ad32b8",
+        "filename": "src/codec_utils/E2AP/asn_constant.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-01-17T11:40:18Z",
+      "side": 1,
+      "message": "This file should already be present in common folder. Please check",
+      "revId": "f9e733253a0925beb71f5a751f6872e83d05a262",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
