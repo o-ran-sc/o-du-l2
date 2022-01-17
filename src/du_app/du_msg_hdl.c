@@ -979,17 +979,23 @@ uint8_t duSctpNtfyHdl(Buffer *mBuf, CmInetSctpNotification *ntfy)
 {
    if(f1Params.assocId == ntfy->u.assocChange.assocId)
    {
+      printf("\nSCTP association setup successful at F1 interface");
+#if 0
       if(BuildAndSendF1SetupReq() != ROK)
       {
 	 return RFAILED;
       }
+#endif
    }
    else if(ricParams.assocId == ntfy->u.assocChange.assocId)
    {
+      printf("\nSCTP association setup successful at E2 interface");
+#if 0
       if(BuildAndSendE2SetupReq() != ROK)
       {
 	 return RFAILED;
       }
+#endif
    }
    else
    {
