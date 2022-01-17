@@ -21,13 +21,6 @@
 #ifndef __CU_STUB_EGTP_H__
 #define __CU_STUB_EGTP_H__
 
-#include "cu_stub.h"
-#include "cm_inet.h"
-#include "cm_tpt.h"
- 
-#include "cm_inet.x"
-#include "cm_tpt.x"
-
 #define EGTP_DFLT_PORT 2152
 #define EGTP_TNL_MGMT_ADD 1
 #define EGTP_TNL_MGMT_MOD 2
@@ -46,6 +39,10 @@
 #define EGTP_MASK_BIT6                   0x20
 #define EGTP_MASK_BIT7                   0x40
 #define EGTP_MASK_BIT8                   0x80
+
+/*VALID Tunnel ID*/
+#define MIN_TEID 1   /*[Spec 29.281,Sec 5.1]: All Zero TEIDs are never assigned for setting up GTP-U Tunnel*/
+#define MAX_TEID MAX_NUM_DRB * MAX_NUM_UE /*[Spec 29.281]: Max limit is not mentioned but as per GTP-U Header Format, TEID occupies 4 octets */
 
 #define NUM_TUNNEL_TO_PUMP_DATA 9
 #define NUM_DL_PACKETS 1
@@ -120,6 +117,17 @@ typedef struct egtpDstCb
    uint32_t      numTunn;        /* Number of tunnels */
    CmHashListCp  teIdLst;        /* Tunnel Id list for this destination */
 }EgtpDstCb;
+
+typedef struct egtpParams
+{
+   SctpIpAddr  localIp;
+   uint16_t    localPort;
+   SctpIpAddr  destIp;
+   uint16_t    destPort;
+   uint32_t    currTunnelId;
+   uint32_t    minTunnelId;
+   uint32_t    maxTunnelId;
+}EgtpParams;
 
 typedef struct egtpGlobalCb
 {

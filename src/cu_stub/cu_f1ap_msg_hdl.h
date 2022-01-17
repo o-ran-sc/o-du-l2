@@ -17,26 +17,6 @@
 *******************************************************************************/
 
 /* This file contains all F1AP message handler related functionality */
-#include <stdbool.h>
-#include <string.h>
-#include<ProtocolIE-Field.h>
-#include "ProtocolExtensionField.h"
-#include "F1AP-PDU.h"
-#include "Cells-to-be-Activated-List.h"
-#include "DL-CCCH-Message.h"
-#include "SRB-ToAddModList.h"
-#include "SRB-ToAddMod.h"
-#include "RRCSetup-IEs.h"
-#include "RRCSetup.h"
-#include "DL-DCCH-Message.h"
-#include "RRCReconfiguration-IEs.h"
-#include "RRCReconfiguration.h"
-#include "DRB-ToAddModList.h"
-#include "DRB-ToAddMod.h"
-#include "SDAP-Config.h"
-#include "du_log.h"
-#include "cu_stub.h"
-
 #define ENCODE_FAIL -1
 #define TRANS_ID 1
 #define RRC_SIZE 1

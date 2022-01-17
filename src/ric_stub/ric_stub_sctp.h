@@ -20,13 +20,13 @@
 
 #ifndef __RIC_SCTP_H__
 #define __RIC_SCTP_H__
+
 #define MAX_RETRY 5
+#define MAX_IPV6_LEN 16
+#define MAX_DU_SUPPORTED 1 
 
 /* Global variable declaration */
 uint8_t   socket_type;      /* Socket type */
-bool      nonblocking;      /* Blocking/Non-blocking socket */
-bool      connUp;           /* Is connection up */
-int       assocId;          /* Assoc Id of connected assoc */
   
 typedef struct
 {
@@ -52,16 +52,50 @@ typedef struct
    CmInetNetAddrLst      destAddrLst;      /* DU Ip address */
    CmInetNetAddrLst      localAddrLst;
    CmInetNetAddr         destIpNetAddr;    /* DU Ip address */ 
-}CuSctpDestCb;
+   Bool                  connUp;
+}RicSctpDestCb;
 
-S16 sctpActvInit();
-S16 sctpSend(Buffer *mBuf);
-S16 sctpCfgReq();
-S16 sctpStartReq();
-S16 sctpSetSockOpts(CmInetFd *sock_Fd);
-S16 sctpAccept(CmInetFd *lstnSock_Fd, CmInetAddr *peerAddr, CmInetFd *sock_Fd);
-S16 sctpSockPoll();
-S16 processPolling(sctpSockPollParams *pollParams, CmInetFd *sockFd, uint32_t *timeoutPtr, CmInetMemInfo *memInfo);
+typedef struct ipAddr
+{
+ bool ipV4Pres;
+ uint32_t  ipV4Addr;
+ bool ipV6Pres;
+ uint8_t   ipV6Addr[MAX_IPV6_LEN];
+}SctpIpAddr;
+
+typedef struct sctpAssocInfo
+{
+   SctpIpAddr  duIpAddr;
+   uint16_t    duPort;
+   SctpIpAddr  ricIpAddr;
+   uint16_t    ricPort;
+}SctpAssocInfo;
+
+typedef struct ricSctpParams
+{
+   uint8_t        numDu;
+   SctpAssocInfo  sctpAssoc[MAX_DU_SUPPORTED];
+}RicSctpParams;
+
+typedef struct sctpGlobalCb
+{
+   RicSctpParams sctpCfg;
+   uint8_t      numDu;
+   RicSctpDestCb destCb[MAX_DU_SUPPORTED]; 
+}SctpGlobalCb;
+
+SctpGlobalCb sctpCb;
+
+uint8_t sctpActvInit();
+uint8_t sctpSend(Buffer *mBuf);
+uint8_t sctpCfgReq();
+uint8_t sctpStartReq();
+uint8_t sctpSetSockOpts(CmInetFd *sock_Fd);
+uint8_t sctpAccept(RicSctpDestCb *destCb);
+uint8_t sctpSockPoll();
+uint8_t processPolling(sctpSockPollParams *pollParams, RicSctpDestCb *destCb, uint32_t *timeoutPtr, CmInetMemInfo *memInfo);
+uint8_t fillAddrLst(CmInetNetAddrLst *addrLstPtr, SctpIpAddr *ipAddr);
+uint8_t fillDestNetAddr(CmInetNetAddr *destAddrPtr, SctpIpAddr *dstIpPtr);
 
 #endif
 

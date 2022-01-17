@@ -19,18 +19,38 @@
 #ifndef __CU_MGR_MAIN_H__
 #define __CU_MGR_MAIN_H__
 
-#define MAX_IPV6_LEN 16
+#define CU_ID 1
+#define CU_NAME "ORAN_OAM_CU"
+
+#define DU_IP_V6_ADDR "0000:0000:0000:0000:0000:0000:0000:0001"
+#define CU_IP_V6_ADDR "0000:0000:0000:0000:0000:0000:0000:0011"
+
+#ifndef O1_ENABLE
+#define DU_IP_V4_ADDR (char*[]){"192.168.130.81", "192.168.130.83"}
+#define DU_SCTP_PORT (int[]){38472, 38473}
+
+#define CU_IP_V4_ADDR "192.168.130.82"
+#define CU_SCTP_PORT_TO_DU (int[]){38472, 38473}
+#endif
+
+#define DU_EGTP_PORT 39001
+#define CU_EGTP_PORT 39002
+#define RRC_VER 0
+#define EXT_RRC_VER 5
+#define PLMN_MCC0 3
+#define PLMN_MCC1 1
+#define PLMN_MCC2 1
+#define PLMN_MNC0 4
+#define PLMN_MNC1 8
+#define PLMN_MNC2 0
+
 #define CU_DU_NAME_LEN_MAX 30      /* Max length of CU/DU name string */
 
 #define CU_APP_MEM_REG 1
 #define CU_POOL 1
-#define MAX_DU_PORT 2
-#define DU_PORT 38472
+
 #define MAX_NUM_OF_SLICE 1024 /* As per the spec 38.473, maxnoofSliceItems = 1024*/
 
-/*VALID Tunnel ID*/
-#define MIN_TEID 1   /*[Spec 29.281,Sec 5.1]: All Zero TEIDs are never assigned for setting up GTP-U Tunnel*/
-#define MAX_TEID MAX_NUM_DRB * MAX_NUM_UE /*[Spec 29.281]: Max limit is not mentioned but as per GTP-U Header Format, TEID occupies 4 octets */
 /* allocate and zero out a static buffer */
 
 #define CU_ALLOC(_datPtr, _size)                             \
@@ -50,38 +70,11 @@
    SPutSBuf(CU_APP_MEM_REG, CU_POOL,                         \
          (Data *)_datPtr, _size);
 
-typedef struct ipAddr
-{
- Bool      ipV4Pres;
- uint32_t  ipV4Addr;
- Bool      ipV6Pres;
- uint8_t   ipV6Addr[MAX_IPV6_LEN];
-}SctpIpAddr;
-
 typedef struct RrcVersion
 {
   uint8_t    rrcVer;     /* Latest RRC Version */
   uint32_t   extRrcVer;  /* Latest RRC version extended */
 }RrcVersion;
-
-typedef struct egtpParams
-{
-   SctpIpAddr  localIp;
-   uint16_t    localPort;
-   SctpIpAddr  destIp;
-   uint16_t    destPort;
-   uint32_t    currTunnelId;
-   uint32_t    minTunnelId;
-   uint32_t    maxTunnelId;
-}EgtpParams;
-
-typedef struct CuSctpParams
-{
-   SctpIpAddr  duIpAddr;
-   uint16_t    duPort;
-   SctpIpAddr  cuIpAddr;
-   uint16_t    cuPort;
-}CuSctpParams;
 
 typedef struct cuCfgParams
 {
