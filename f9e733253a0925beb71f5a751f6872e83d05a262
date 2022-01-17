@@ -18,6 +18,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8147b3b3_5c254e33",
+        "filename": "src/codec_utils/E2AP/BIT_STRING.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-01-17T12:01:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "141112e9_c51aa6a0",
+      "revId": "f9e733253a0925beb71f5a751f6872e83d05a262",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0a9dd36b_58ad32b8",
@@ -31,6 +49,24 @@
       "writtenOn": "2022-01-17T11:40:18Z",
       "side": 1,
       "message": "This file should already be present in common folder. Please check",
+      "revId": "f9e733253a0925beb71f5a751f6872e83d05a262",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ce4c1bc9_45e4b4b2",
+        "filename": "src/codec_utils/E2AP/asn_constant.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-01-17T12:01:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0a9dd36b_58ad32b8",
       "revId": "f9e733253a0925beb71f5a751f6872e83d05a262",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
