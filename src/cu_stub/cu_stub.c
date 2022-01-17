@@ -27,31 +27,6 @@
 #include "CmInterface.h"
 #endif
 
-#define CU_ID 1
-#define CU_NAME "ORAN_OAM_CU"
-
-#define DU_IP_V6_ADDR "0000:0000:0000:0000:0000:0000:0000:0001"
-#define CU_IP_V6_ADDR "0000:0000:0000:0000:0000:0000:0000:0011"
-
-#ifndef O1_ENABLE
-
-#define DU_IP_V4_ADDR "192.168.130.81"
-#define CU_IP_V4_ADDR "192.168.130.82"
-#define DU_PORT 38472
-#define CU_PORT 38472 
-
-#endif
-
-#define DU_EGTP_PORT 39001
-#define CU_EGTP_PORT 39002
-#define RRC_VER 0
-#define EXT_RRC_VER 5
-#define PLMN_MCC0 3
-#define PLMN_MCC1 1
-#define PLMN_MCC2 1
-#define PLMN_MNC0 4
-#define PLMN_MNC1 8
-#define PLMN_MNC2 0
 
 #ifdef O1_ENABLE
 
@@ -160,9 +135,13 @@ uint8_t tst()
 
 void readCuCfg()
 {
+   uint8_t  *numDu;
    uint32_t ipv4_du, ipv4_cu;
 
    DU_LOG("\nDEBUG  -->  CU_STUB : Reading CU configurations");
+
+   cuCfgParams.cuId = CU_ID;
+   strcpy(cuCfgParams.cuName, CU_NAME);
 
 #ifdef O1_ENABLE
    if( getStartupConfigForStub(&g_cfg) != ROK )
@@ -178,22 +157,27 @@ void readCuCfg()
    cuCfgParams.sctpParams.duPort = g_cfg.DU_Port;
    cuCfgParams.sctpParams.cuPort = g_cfg.CU_Port;
 #else
-   cmInetAddr((S8*)DU_IP_V4_ADDR, &ipv4_du);
-   cmInetAddr((S8*)CU_IP_V4_ADDR, &ipv4_cu);
-   cuCfgParams.sctpParams.duPort = DU_PORT;
-   cuCfgParams.sctpParams.cuPort = CU_PORT;
-#endif
-    
-   cuCfgParams.cuId = CU_ID;
-   strcpy(cuCfgParams.cuName, CU_NAME);
- 
-   /* DU IP Address and Port*/
-   cuCfgParams.sctpParams.duIpAddr.ipV4Addr = ipv4_du;
-   cuCfgParams.sctpParams.duIpAddr.ipV6Pres = false;
+   cuCfgParams.sctpParams.numDu = 0;
+   numDu = &cuCfgParams.sctpParams.numDu;
+   while(*numDu < MAX_DU_SUPPORTED)
+   {
+      /* DU IP Address and Port*/
+      memset(&ipv4_du, 0, sizeof(uint32_t));
+      cmInetAddr((S8*)DU_IP_V4_ADDR[*numDu], &ipv4_du);
+      cuCfgParams.sctpParams.sctpAssoc[*numDu].duIpAddr.ipV4Addr = ipv4_du;
+      cuCfgParams.sctpParams.sctpAssoc[*numDu].duIpAddr.ipV6Pres = false;
+      cuCfgParams.sctpParams.sctpAssoc[*numDu].duPort = DU_SCTP_PORT[*numDu];
 
-   /* CU IP Address and Port*/
-   cuCfgParams.sctpParams.cuIpAddr.ipV4Addr = ipv4_cu;
-   cuCfgParams.sctpParams.cuIpAddr.ipV6Pres = false;
+      /* CU IP Address and Port*/
+      memset(&ipv4_du, 0, sizeof(uint32_t));
+      cmInetAddr((S8*)CU_IP_V4_ADDR, &ipv4_cu);
+      cuCfgParams.sctpParams.sctpAssoc[*numDu].cuIpAddr.ipV4Addr = ipv4_cu;
+      cuCfgParams.sctpParams.sctpAssoc[*numDu].cuIpAddr.ipV6Pres = false;
+      cuCfgParams.sctpParams.sctpAssoc[*numDu].cuPort = CU_SCTP_PORT_TO_DU[*numDu];
+      (*numDu)++;
+   }
+
+#endif
 
    /*PLMN*/
    cuCfgParams.plmn.mcc[0] = PLMN_MCC0;

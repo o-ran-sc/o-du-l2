@@ -26,30 +26,6 @@
 #include "CmInterface.h"
 #endif
 
-#define RIC_ID 1
-#define RIC_NAME "ORAN_OAM_RIC"
-
-#define DU_IP_V6_ADDR "0000:0000:0000:0000:0000:0000:0000:0001"
-#define RIC_IP_V6_ADDR "0000:0000:0000:0000:0000:0000:0000:0011"
-
-#ifndef O1_ENABLE
-
-#define DU_IP_V4_ADDR "192.168.130.81"
-#define RIC_IP_V4_ADDR "192.168.130.80"
-#define DU_PORT 36421
-#define RIC_PORT 36421
-
-#endif
-
-#define RRC_VER 0
-#define EXT_RRC_VER 5
-#define PLMN_MCC0 3
-#define PLMN_MCC1 1
-#define PLMN_MCC2 1
-#define PLMN_MNC0 4
-#define PLMN_MNC1 8
-#define PLMN_MNC2 0
-
 #ifdef O1_ENABLE
 extern StartupConfig g_cfg;
 #endif
@@ -130,10 +106,13 @@ uint8_t tst()
 
 void readRicCfg()
 {
+   uint8_t *numDu;
    uint32_t ipv4_du, ipv4_ric;
 
    DU_LOG("\nINFO  --> RIC : Reading RIC configurations");
 
+   ricCfgParams.ricId = RIC_ID;
+   strcpy(ricCfgParams.ricName, RIC_NAME);
 #ifdef O1_ENABLE
    if( getStartupConfigForStub(&g_cfg) != ROK )
    {
@@ -148,23 +127,26 @@ void readRicCfg()
    ricCfgParams.sctpParams.duPort = g_cfg.RIC_Port;
    ricCfgParams.sctpParams.ricPort = g_cfg.RIC_Port;
 #else
-   cmInetAddr((S8*)DU_IP_V4_ADDR, &ipv4_du);
-   cmInetAddr((S8*)RIC_IP_V4_ADDR, &ipv4_ric);
+   ricCfgParams.sctpParams.numDu = 0;
+   numDu = &ricCfgParams.sctpParams.numDu;
+   while(*numDu < MAX_DU_SUPPORTED)
+   {   
+      /* DU IP Address and Port*/
+      memset(&ipv4_du, 0, sizeof(uint32_t));
+      cmInetAddr((S8*)DU_IP_V4_ADDR[*numDu], &ipv4_du);
+      ricCfgParams.sctpParams.sctpAssoc[*numDu].duIpAddr.ipV4Addr = ipv4_du;
+      ricCfgParams.sctpParams.sctpAssoc[*numDu].duIpAddr.ipV6Pres = false;
+      ricCfgParams.sctpParams.sctpAssoc[*numDu].duPort = DU_SCTP_PORT[*numDu];
 
-   ricCfgParams.sctpParams.duPort = DU_PORT;
-   ricCfgParams.sctpParams.ricPort = RIC_PORT;
+      /* RIC IP Address and Port*/
+      memset(&ipv4_du, 0, sizeof(uint32_t));
+      cmInetAddr((S8*)RIC_IP_V4_ADDR, &ipv4_ric);
+      ricCfgParams.sctpParams.sctpAssoc[*numDu].ricIpAddr.ipV4Addr = ipv4_ric;
+      ricCfgParams.sctpParams.sctpAssoc[*numDu].ricIpAddr.ipV6Pres = false;
+      ricCfgParams.sctpParams.sctpAssoc[*numDu].ricPort = RIC_SCTP_PORT_TO_DU[*numDu];
+      (*numDu)++;
+   }   
 #endif
-    
-   ricCfgParams.ricId = RIC_ID;
-   strcpy(ricCfgParams.ricName, RIC_NAME);
- 
-   /* DU IP Address and Port*/
-   ricCfgParams.sctpParams.duIpAddr.ipV4Addr = ipv4_du;
-   ricCfgParams.sctpParams.duIpAddr.ipV6Pres = false;
-
-   /* RIC IP Address and Port*/
-   ricCfgParams.sctpParams.ricIpAddr.ipV4Addr = ipv4_ric;
-   ricCfgParams.sctpParams.ricIpAddr.ipV6Pres = false;
 
    /*PLMN*/
    ricCfgParams.plmn.mcc[0] = PLMN_MCC0;
