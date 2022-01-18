@@ -1,0 +1,78 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ca1fd2cb_b5695e0b",
+        "filename": "src/cu_stub/cu_stub_egtp.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-01-18T10:11:15Z",
+      "side": 1,
+      "message": "remove this space",
+      "revId": "724a67fc118b91214979778d7fc20889d63051cf",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ad563120_17059347",
+        "filename": "src/cu_stub/cu_stub_egtp.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-01-18T10:11:15Z",
+      "side": 1,
+      "message": "can u please move this in .h file",
+      "revId": "724a67fc118b91214979778d7fc20889d63051cf",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e641ec55_2d3baaef",
+        "filename": "src/cu_stub/cu_stub_sctp.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-01-18T10:11:15Z",
+      "side": 1,
+      "message": "remove space.",
+      "revId": "724a67fc118b91214979778d7fc20889d63051cf",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9367bf23_96401f8e",
+        "filename": "src/du_app/du_mgr_main.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 551,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-01-18T10:11:15Z",
+      "side": 1,
+      "message": "revert these changes",
+      "range": {
+        "startLine": 551,
+        "startChar": 30,
+        "endLine": 551,
+        "endChar": 41
+      },
+      "revId": "724a67fc118b91214979778d7fc20889d63051cf",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
