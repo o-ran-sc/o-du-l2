@@ -19,7 +19,29 @@
 #ifndef __RIC_MGR_MAIN_H__
 #define __RIC_MGR_MAIN_H__
 
-#define MAX_IPV6_LEN 16
+#define RIC_ID 1
+#define RIC_NAME "ORAN_OAM_RIC"
+
+#define DU_IP_V6_ADDR "0000:0000:0000:0000:0000:0000:0000:0001"
+#define RIC_IP_V6_ADDR "0000:0000:0000:0000:0000:0000:0000:0011"
+
+#ifndef O1_ENABLE
+#define DU_IP_V4_ADDR (char*[]){"192.168.130.81", "192.168.130.83"}
+#define DU_SCTP_PORT (int[]){36421, 36422}
+
+#define RIC_IP_V4_ADDR "192.168.130.80"
+#define RIC_SCTP_PORT_TO_DU (int[]){36421, 36422}
+#endif
+
+#define RRC_VER 0
+#define EXT_RRC_VER 5
+#define PLMN_MCC0 3
+#define PLMN_MCC1 1
+#define PLMN_MCC2 1
+#define PLMN_MNC0 4
+#define PLMN_MNC1 8
+#define PLMN_MNC2 0
+
 #define RIC_DU_NAME_LEN_MAX 30      /* Max length of RIC/DU name string */
 
 #define RIC_APP_MEM_REG 1
@@ -41,22 +63,6 @@
 #define RIC_FREE(_datPtr, _size)                                 \
    SPutSBuf(RIC_APP_MEM_REG, RIC_POOL,                         \
          (Data *)_datPtr, _size);
-
-typedef struct ipAddr
-{
- bool ipV4Pres;
- uint32_t  ipV4Addr;
- bool ipV6Pres;
- uint8_t   ipV6Addr[MAX_IPV6_LEN];
-}SctpIpAddr;
-
-typedef struct RicSctpParams
-{
-   SctpIpAddr  duIpAddr;
-   uint16_t         duPort;
-   SctpIpAddr  ricIpAddr;
-   uint16_t         ricPort;
-}RicSctpParams;
 
 typedef struct ricCfgParams
 {

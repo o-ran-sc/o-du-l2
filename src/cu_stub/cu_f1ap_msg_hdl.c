@@ -19,13 +19,14 @@
 /* This file contains F1AP message handler functions */
 #include "common_def.h"
 #include "OCTET_STRING.h"
+#include "cu_stub_sctp.h"
+#include "cu_stub_egtp.h"
+#include "cu_f1ap_msg_hdl.h"
+#include "cu_stub.h"
+
 #include "BIT_STRING.h"
 #include "odu_common_codec.h"
-#include "cu_stub_sctp.h"
-#include "cu_f1ap_msg_hdl.h"
-#include "legtp.h"
-/*header files needed for Ue Context Setup */
-#include<ProtocolIE-Field.h>
+#include "ProtocolIE-Field.h"
 #include "ProtocolExtensionField.h"
 #include "ProtocolIE-SingleContainer.h"
 #include "F1AP-PDU.h"
@@ -92,6 +93,18 @@
 #include "UPTransportLayerInformation.h"
 #include "GTPTunnel.h"
 #include "QoSInformation.h"
+#include "Cells-to-be-Activated-List.h"
+#include "DL-CCCH-Message.h"
+#include "SRB-ToAddModList.h"
+#include "SRB-ToAddMod.h"
+#include "RRCSetup-IEs.h"
+#include "RRCSetup.h"
+#include "DL-DCCH-Message.h"
+#include "RRCReconfiguration-IEs.h"
+#include "RRCReconfiguration.h"
+#include "DRB-ToAddModList.h"
+#include "DRB-ToAddMod.h"
+#include "SDAP-Config.h"
 
 /* MACRO for CUtoDURRCInformation */
 #define CELL_GRP_ID 1

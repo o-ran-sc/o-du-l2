@@ -30,7 +30,6 @@
 #define CRNTI           17017
 #define CELL_INDEX      0
 
-
 /* allocate and zero out a static buffer */
 #define RIC_ALLOC(_datPtr, _size)                                \
 {                                                               \
