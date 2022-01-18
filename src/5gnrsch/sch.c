@@ -337,22 +337,12 @@ uint8_t MacSchRachInd(Pst *pst, RachIndInfo *rachInd)
  * ****************************************************************/
 uint8_t MacSchCrcInd(Pst *pst, CrcIndInfo *crcInd)
 {
+   Inst  inst = pst->dstInst-SCH_INST_START;
 #ifdef CALL_FLOW_DEBUG_LOG
    DU_LOG("\nCall Flow: ENTMAC -> ENTSCH : EVENT_CRC_IND_TO_SCH\n");
 #endif
 
-   switch(crcInd->crcInd[0])
-   {
-      case CRC_FAILED:
-	 DU_LOG("\nDEBUG  -->  SCH : Received CRC indication. CRC Status [FAILURE]");
-	 break;
-      case CRC_PASSED:
-	 DU_LOG("\nDEBUG  -->  SCH : Received CRC indication. CRC Status [PASS]");
-	 break;
-      default:
-	 DU_LOG("\nDEBUG  -->  SCH : Invalid CRC state %d", crcInd->crcInd[0]);
-	 return RFAILED;
-   }
+   schProcessCrcInd(crcInd, inst);
    return ROK;
 }
 

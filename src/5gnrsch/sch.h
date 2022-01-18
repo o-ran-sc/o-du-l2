@@ -15,6 +15,8 @@
 #   limitations under the License.                                             #
 ################################################################################
  *******************************************************************************/
+#include "sch_harq.x"
+#include "rg_sch_clist.x"
 
 /* macros */
 #define SCH_INST_START 1
@@ -76,6 +78,14 @@ typedef enum
    SCH_UE_STATE_INACTIVE,
    SCH_UE_STATE_ACTIVE
 }SchUeState;
+
+typedef enum
+{
+   SCH_RA_STATE_MSG2_HANDLE,
+   SCH_RA_STATE_MSG3_PENDING,
+   SCH_RA_STATE_MSG4_PENDING,
+   SCH_RA_STATE_MSG4_DONE  
+}SchRaState;
 
 typedef enum
 {
@@ -153,6 +163,8 @@ typedef struct schRaCb
    bool      msg4recvd;
    uint16_t  tcrnti;
    uint16_t  dlMsgPduLen;
+   SchUlHqProcCb msg3HqProc;
+   SchRaState raState;
 }SchRaCb;
 
 /**
@@ -279,6 +291,9 @@ typedef struct schUeCb
    SchDlCb    dlInfo;
    SchLcPrbEstimate dlLcPrbEst; /*DL PRB Alloc Estimate among different LC*/
    SchLcPrbEstimate ulLcPrbEst; /*UL PRB Alloc Estimate among different LC*/
+   SchUlHqEnt ulHqEnt;
+   SchDlHqEnt dlHqEnt;
+   CmLList    *node;
 }SchUeCb;
 
 /**
@@ -331,6 +346,38 @@ typedef struct schSliceCfg
    SchRrmPolicyOfSlice **listOfConfirguration;
 }SchSliceCfg;
 
+
+/**
+ *  *\ enum DlPriQueueId
+ *   @brief DL Priority Queue Type*/
+typedef enum dlPriQueueId
+{
+   DL_HQ_RETX_QUEUE, /*!< Index to Harq Retransmission Queue*/
+   DL_MSG4_QUEUE,    /*!< Index to MSG4 priority Queue */
+   DL_CCCH_QUEUE,    /*!< Index to CCCH priority Queue */
+   DL_CE_QUEUE,    /*!< Index to CE priority Queue */
+   DL_SRB_QUEUE,   /*!< Index to SRB priority Queue*/
+   DL_GBR_QUEUE,   /*!< Index to GBR priority Queue*/
+   DL_NGBR_QUEUE,   /*!< Index to NGBR priority Queue*/
+   DL_MAX_PRIO_QUEUE       /*!< Max Queue*/
+}DlPriQueueId;
+
+/**
+ *  *\ enum ulPriQueueId
+ *   @brief UL Priority Queue Type*/
+typedef enum UlPriQueueId
+{
+   UL_MSG3_RETX_QUEUE, /*!< Index to MSG3 RETX Queue*/
+   UL_HQ_RETX_QUEUE, /*!< Index to Harq Retransmission Queue*/
+   UL_MSG3_QUEUE,    /*!< Index to MSG3 priority Queue */
+   UL_SR_QUEUE,    /*!< Index to SR priority Queue */
+   UL_SRB_QUEUE,   /*!< Index to SRB priority Queue*/
+   UL_GBR_QUEUE,   /*!< Index to GBR priority Queue*/
+   UL_NGBR_QUEUE,   /*!< Index to NGBR priority Queue*/
+   UL_MAX_PRIO_QUEUE       /*!< Max Queue*/
+}UlPriQueueId;
+
+
 /**
  * @brief
  * Control block for sch
@@ -343,6 +390,8 @@ typedef struct schCb
    CmTqType      tmrTq[SCH_TQ_SIZE];    /*!< Timer Task Queue */
    SchCellCb     *cells[MAX_NUM_CELL];  /* Array to store cellCb ptr */ 
    SchSliceCfg   sliceCfg;
+   CmLListCp     dlPrioLst[DL_MAX_PRIO_QUEUE];
+   CmLListCp     ulPrioLst[UL_MAX_PRIO_QUEUE];
 }SchCb;
 
 /* Declaration for scheduler control blocks */
@@ -365,6 +414,7 @@ uint8_t addUeToBeScheduled(SchCellCb *cell, uint8_t ueId);
 /* Incoming message handler function declarations */
 uint8_t schProcessSlotInd(SlotTimingInfo *slotInd, Inst inst);
 uint8_t schProcessRachInd(RachIndInfo *rachInd, Inst schInst);
+uint8_t schProcessCrcInd(CrcIndInfo *crcInd, Inst schInst);
 
 /* DL scheduling related function declarations */
 PduTxOccsaion schCheckSsbOcc(SchCellCb *cell, SlotTimingInfo slotTime);
