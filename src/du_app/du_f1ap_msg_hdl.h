@@ -18,7 +18,6 @@
 
 /* This file contains all F1AP message handler related functionality */
 
-#define TRANS_ID 1
 #define RRC_SIZE 1
 #define SUL_BAND_COUNT 0
 #define UL_SRBID        1
@@ -54,6 +53,7 @@ uint8_t BuildAndSendUeContextReleaseReq(uint16_t cellId, uint8_t ueId);
 uint8_t BuildAndSendUeContextReleaseComplete(uint16_t cellId, uint32_t  gnbCuUeF1apId, uint32_t  gnbDuUeF1apId);
 uint8_t duSendCellDeletReq(uint16_t cellId); 
 uint8_t duProcUeContextReleaseCommand(DuUeCb *duUeCb);
+uint8_t BuildAndSendE2SetupReq();
 /**********************************************************************
          End of file
 **********************************************************************/

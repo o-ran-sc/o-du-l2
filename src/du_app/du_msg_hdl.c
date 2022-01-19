@@ -981,15 +981,17 @@ uint8_t duSctpNtfyHdl(Buffer *mBuf, CmInetSctpNotification *ntfy)
    {
       if(BuildAndSendF1SetupReq() != ROK)
       {
-	 return RFAILED;
+         return RFAILED;
       }
    }
    else if(ricParams.assocId == ntfy->u.assocChange.assocId)
    {
+#if 0
       if(BuildAndSendE2SetupReq() != ROK)
       {
-	 return RFAILED;
+         return RFAILED;
       }
+#endif
    }
    else
    {

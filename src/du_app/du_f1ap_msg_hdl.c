@@ -1997,24 +1997,32 @@ uint8_t BuildAndSendF1SetupReq()
       /* Encode results */
       if(encRetVal.encoded == ENCODE_FAIL)
       {
-	 DU_LOG("\nERROR  -->  F1AP : Could not encode F1SetupRequest structure (at %s)\n",\
-	       encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
-	 break;
+         DU_LOG("\nERROR  -->  F1AP : Could not encode F1SetupRequest structure (at %s)\n",\
+               encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
+         break;
       }
       else
       {
-	 DU_LOG("\nDEBUG   -->  F1AP : Created APER encoded buffer for F1SetupRequest\n");
-	 for(ieIdx=0; ieIdx< encBufSize; ieIdx++)
-	 {
-	    printf("%x",encBuf[ieIdx]);
-	 }
+         DU_LOG("\nDEBUG   -->  F1AP : Created APER encoded buffer for F1SetupRequest\n");
+         for(ieIdx=0; ieIdx< encBufSize; ieIdx++)
+         {
+            printf("%x",encBuf[ieIdx]);
+         }
+         f1SetupReqAndRspMsg.f1MsgReqEncodingSize = encBufSize;
+         DU_ALLOC(f1SetupReqAndRspMsg.f1MsgReqEncoding, encBufSize);
+         if(f1SetupReqAndRspMsg.f1MsgReqEncoding == NULLP)
+         {
+             DU_LOG("\nERROR  -->  F1AP : Memory allocation failed to store the encoding of f1setup req");
+             return RFAILED;
+         }
+         memcpy(f1SetupReqAndRspMsg.f1MsgReqEncoding, &encBuf, f1SetupReqAndRspMsg.f1MsgReqEncodingSize);
       }
 
       /* Sending msg */
       if(sendF1APMsg() != ROK)
       {
-	 DU_LOG("\nERROR  -->  F1AP : Sending F1 Setup request failed");
-	 break;
+         DU_LOG("\nERROR  -->  F1AP : Sending F1 Setup request failed");
+         break;
       }
 
       ret=ROK;
@@ -14128,7 +14136,6 @@ void F1APMsgHdlr(Buffer *mBuf)
    memset(f1apMsg, 0, sizeof(F1AP_PDU_t));
 
    rval = aper_decode(0, &asn_DEF_F1AP_PDU, (void **)&f1apMsg, recvBuf, recvBufLen, 0, 0);
-   DU_FREE(recvBuf, (Size)recvBufLen);
 
    if(rval.code == RC_FAIL || rval.code == RC_WMORE)
    {
@@ -14153,6 +14160,19 @@ void F1APMsgHdlr(Buffer *mBuf)
                   {				
 #ifndef ODU_TEST_STUB
                      procF1SetupRsp(f1apMsg);
+                     f1SetupReqAndRspMsg.f1MsgRspEncodingSize = recvBufLen;
+                     DU_ALLOC(f1SetupReqAndRspMsg.f1MsgRspEncoding, encBufSize);
+                     if(f1SetupReqAndRspMsg.f1MsgReqEncoding == NULLP)
+                     {
+                        DU_LOG("\nERROR  -->  F1AP : Memory allocation failed to store the buf of F1setup response");
+                        return RFAILED;
+                     }
+                     memcpy(f1SetupReqAndRspMsg.f1MsgRspEncoding, recvBuf, recvBufLen);
+                     if(BuildAndSendE2SetupReq() != ROK)
+                     {
+                        DU_LOG("\nERROR  -->  F1AP : Failed to build and send E2 setup request ");
+                        return RFAILED;
+                     }
 #endif
                      break;
                   }
@@ -14221,7 +14241,8 @@ void F1APMsgHdlr(Buffer *mBuf)
          free(f1apMsg);
 
    }/* End of switch(f1apMsg->present) */
-
+   
+   DU_FREE(recvBuf, (Size)recvBufLen);
 } /* End of F1APMsgHdlr */
 
 /**********************************************************************
