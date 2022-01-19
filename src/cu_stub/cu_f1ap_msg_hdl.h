@@ -72,7 +72,7 @@ typedef struct ueInfo
 
 UeCb ueCb[MAX_NUM_UE];
 
-void F1APMsgHdlr(Buffer *mBuf);
+void F1APMsgHdlr(uint32_t *destDuId, Buffer *mBuf);
 uint8_t BuildAndSendUeContextModificationReq(uint8_t ueId);
 uint8_t BuildAndSendUeContextReleaseCommand(uint8_t cuUeF1apId, uint8_t duUeF1apId);
 uint8_t BuildAndSendF1ResetReq();

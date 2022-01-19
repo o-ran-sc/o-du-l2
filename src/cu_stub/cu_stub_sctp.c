@@ -55,7 +55,7 @@ uint8_t sctpActvInit()
 {
    DU_LOG("\n\nDEBUG  -->  SCTP : Initializing");
    memset(&sctpCb, 0, sizeof(SctpGlobalCb));
-   sctpCb.sctpCfg = cuCfgParams.sctpParams;
+   sctpCb.sctpCfg = cuCb.cuCfgParams.sctpParams;
    return ROK;
 }
 
@@ -506,7 +506,7 @@ uint8_t processPolling(sctpSockPollParams *pollParams, CuSctpDestCb *destCb, uin
          }
          else if(destCb->connUp & (pollParams->port == destCb->destPort))
          {  
-            F1APMsgHdlr(pollParams->mBuf);
+            F1APMsgHdlr(&destCb->duId, pollParams->mBuf);
             ODU_PUT_MSG_BUF(pollParams->mBuf);
          }
          else
@@ -534,9 +534,9 @@ uint8_t processPolling(sctpSockPollParams *pollParams, CuSctpDestCb *destCb, uin
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t sctpSend(Buffer *mBuf)
+uint8_t sctpSend(uint32_t duId, Buffer *mBuf)
 {
-   uint8_t          ret = ROK;
+   uint8_t          ret = ROK, destIdx = 0;
    MsgLen           len = 0;          /* number of actually sent octets */
    CmInetMemInfo    memInfo;                        
   
@@ -544,16 +544,23 @@ uint8_t sctpSend(Buffer *mBuf)
    memInfo.region = CU_APP_MEM_REG;               
    memInfo.pool   = CU_POOL;
 
-   ret = cmInetSctpSendMsg(&sctpCb.destCb[0].sockFd, &sctpCb.destCb[0].destIpNetAddr, sctpCb.destCb[0].destPort, &memInfo,\
-      mBuf, &len, 0, FALSE, 0, 0/*SCT_PROTID_NONE*/, RWOULDBLOCK);
-
-   if(ret != ROK && ret != RWOULDBLOCK)
+   for(destIdx=0; destIdx < sctpCb.numDu; destIdx++)
    {
-      DU_LOG("\nERROR  -->  SCTP : Send message failed");
-      return RFAILED;
-   }
+      if(sctpCb.destCb[destIdx].duId == duId)
+      {
+         ret = cmInetSctpSendMsg(&sctpCb.destCb[destIdx].sockFd, &sctpCb.destCb[destIdx].destIpNetAddr, \
+                  sctpCb.destCb[destIdx].destPort, &memInfo, mBuf, &len, 0, FALSE, 0, 0/*SCT_PROTID_NONE*/, RWOULDBLOCK);
 
-   return ROK;
+         if(ret != ROK && ret != RWOULDBLOCK)
+         {
+            DU_LOG("\nERROR  -->  SCTP : Send message failed");
+            return RFAILED;
+         }
+         return ROK;
+      }
+   }
+   DU_LOG("\nERROR  -->  SCTP : DU ID [%d] not found in SCTP DestCb list. Failed to send message", duId);
+   return RFAILED;
 } /* End of sctpSend */
 
 /**********************************************************************

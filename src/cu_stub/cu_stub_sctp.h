@@ -43,6 +43,7 @@ typedef struct
 
 typedef struct
 {
+   uint32_t         duId;
    uint16_t         destPort;         /* DU PORTS */
    uint16_t         srcPort;
    Bool             bReadFdSet;
@@ -88,7 +89,7 @@ SctpGlobalCb sctpCb;
 
 uint8_t sctpActvInit();
 uint8_t sctpStartReq();
-uint8_t sctpSend(Buffer *mBuf);
+uint8_t sctpSend(uint32_t duId, Buffer *mBuf);
 uint8_t sctpCfgReq();
 
 uint8_t fillAddrLst(CmInetNetAddrLst *addrLstPtr, SctpIpAddr *ipAddr);
