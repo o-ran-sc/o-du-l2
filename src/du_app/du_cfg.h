@@ -64,6 +64,7 @@
 #define NR_BANDWIDTH BANDWIDTH_20MHZ
 #endif
 
+#define TRANS_ID 1
 #define DU_TAC 1
 #define PLMN_MCC0 3
 #define PLMN_MCC1 1

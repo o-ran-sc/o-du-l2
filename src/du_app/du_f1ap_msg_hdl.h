@@ -18,7 +18,6 @@
 
 /* This file contains all F1AP message handler related functionality */
 
-#define TRANS_ID 1
 #define RRC_SIZE 1
 #define SUL_BAND_COUNT 0
 #define UL_SRBID        1

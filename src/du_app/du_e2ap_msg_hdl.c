@@ -34,7 +34,7 @@
 #include "E2AP-PDU.h"
 #include "du_e2ap_msg_hdl.h"
 #include "odu_common_codec.h"
-
+#include "E2nodeComponentInterfaceF1.h"
 /* Global variable */
 DuCfgParams duCfgParam;
 /*******************************************************************
@@ -95,6 +95,125 @@ uint8_t BuildGlobalgNBId(GlobalE2node_gNB_ID_t *gNbId)
 
 /*******************************************************************
  *
+ * @brief Builds E2 node config addition list 
+ *
+ * @details
+ *
+ *    Function : buildE2NodeConfigAddList
+ *
+ *    Functionality: Building E2 node config addition list
+ *
+ * @params[in] E2nodeComponentConfigAddition_List_t *e2NodeAddList 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ ******************************************************************/
+
+uint8_t buildE2NodeConfigAddList(E2nodeComponentConfigAddition_List_t *e2NodeAddList)
+{
+   uint8_t arrIdx = 0;
+   uint8_t f1MsgReqEncodingSize = 226, f1MsgResEncodingSize=82;
+   uint8_t f1MsgReqEncoding[] = {0x00, 0x01, 0x00, 0x80, 0xdd, 0x00, 0x00, 0x05, 0x00, 0x4e, 0x00, 0x02, 0x00, 0x01, 0x00, 0x2a,\
+   0x00, 0x02, 0x00, 0x01, 0x00, 0x2d, 0x40, 0x0d, 0x05, 0x00, 0x4f, 0x52, 0x41, 0x4e, 0x5f, 0x4f,\
+   0x41, 0x4d, 0x5f, 0x44, 0x55, 0x00, 0x2c, 0x00, 0x80, 0xaa, 0x00, 0x00, 0x00, 0x2b, 0x00, 0x80,\
+   0xa3, 0x48, 0x00, 0x13, 0xf1, 0x84, 0x00, 0x00, 0x00, 0x00, 0x10, 0x00, 0x01, 0x00, 0x00, 0x01,\
+   0x08, 0x13, 0xf1, 0x84, 0x00, 0x00, 0x00, 0x83, 0x40, 0x0c, 0x00, 0x01, 0x40, 0x20, 0x02, 0x03,\
+   0x04, 0x40, 0xa0, 0x06, 0x07, 0x08, 0x01, 0x00, 0x05, 0xf3, 0x70, 0x00, 0x00, 0x00, 0x00, 0x40,\
+   0x06, 0x87, 0xe0, 0x00, 0x00, 0x00, 0x00, 0x47, 0x08, 0xe0, 0x01, 0x00, 0x00, 0x03, 0x00, 0x00,\
+   0x0c, 0x62, 0x70, 0x00, 0x30, 0x8c, 0x46, 0x90, 0x00, 0x01, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00,\
+   0x00, 0x1a, 0x40, 0x00, 0x04, 0x05, 0x02, 0x42, 0x00, 0x00, 0x00, 0x18, 0x00, 0x00, 0x00, 0x00,\
+   0x00, 0x13, 0x60, 0x70, 0xcb, 0x15, 0xd8, 0x01, 0xb8, 0x20, 0x10, 0x00, 0x78, 0x88, 0x40, 0x10,\
+   0x41, 0xa3, 0x01, 0x0a, 0x0a, 0x13, 0x30, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x13, 0xd5, 0xc0,\
+   0x70, 0xcb, 0x16, 0xa0, 0x58, 0x00, 0x00, 0x52, 0x40, 0x80, 0xa6, 0x7c, 0xc7, 0x9f, 0x80, 0x00,\
+   0x04, 0xe3, 0x11, 0x0a, 0x2a, 0x11, 0x84, 0xa8, 0x00, 0x80, 0xec, 0x04, 0x16, 0x00, 0x07, 0xc0,\
+   0x00, 0x02, 0x17, 0x80, 0x00, 0xab, 0x00, 0x0a, 0x80, 0x00, 0x00, 0x00, 0xc7, 0x00, 0x03, 0x0f,\
+   0x05, 0x00};               
+
+   uint8_t f1MsgResEncoding[] = {0x40, 0x01, 0x00, 0x4e, 0x00, 0x00, 0x04, 0x00, 0x4e, 0x00, 0x02, 0x00, 0x01, 0x00, 0x52, 0x40,\
+   0x20, 0x0e, 0x80, 0x4f, 0x52, 0x41, 0x4e, 0x5f, 0x4f, 0x41, 0x4d, 0x5f, 0x43, 0x55, 0x00, 0x00,\
+   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,\
+   0x00, 0x00, 0x03, 0x00, 0x0f, 0x00, 0x00, 0x00, 0x04, 0x40, 0x09, 0x00, 0x13, 0xf1, 0x84, 0x00,\
+   0x00, 0x00, 0x00, 0x10, 0x00, 0xaa, 0x00, 0x0a, 0x80, 0x00, 0x00, 0x00, 0xc7, 0x00, 0x03, 0x00,\
+   0x05, 0x0f};
+
+   E2nodeComponentConfigAddition_ItemIEs_t *e2NodeAddItem;
+
+   e2NodeAddList->list.count = 1;
+   e2NodeAddList->list.size = e2NodeAddList->list.count * sizeof(E2nodeComponentConfigAddition_ItemIEs_t *);
+   DU_ALLOC(e2NodeAddList->list.array, e2NodeAddList->list.size);
+   if(e2NodeAddList->list.array == NULLP)
+   {
+       DU_LOG("\nERROR  --> E2AP: Memory allocation failed for buildE2NodeConfigAddList %d",__LINE__);
+       return RFAILED;
+   }
+
+   for(arrIdx = 0; arrIdx< e2NodeAddList->list.count; arrIdx++)
+   {
+      DU_ALLOC(e2NodeAddList->list.array[arrIdx], sizeof(E2nodeComponentConfigAddition_ItemIEs_t));
+      if(e2NodeAddList->list.array[arrIdx] == NULLP)
+      {
+         DU_LOG("\nERROR  --> E2AP: Memory allocation failed for buildE2NodeConfigAddList %d",__LINE__);
+         return RFAILED;
+      }
+   }
+   e2NodeAddItem = (E2nodeComponentConfigAddition_ItemIEs_t *) e2NodeAddList->list.array[0];
+   e2NodeAddItem->id = ProtocolIE_IDE2_id_E2nodeComponentConfigAddition_Item;
+   e2NodeAddItem->criticality = CriticalityE2_reject;
+   e2NodeAddItem->value.present = E2nodeComponentConfigAddition_ItemIEs__value_PR_E2nodeComponentConfigAddition_Item;
+   e2NodeAddItem->value.choice.E2nodeComponentConfigAddition_Item.e2nodeComponentInterfaceType = E2nodeComponentInterfaceType_f1;
+
+   /* E2 Node Component Request Part */
+   e2NodeAddItem->value.choice.E2nodeComponentConfigAddition_Item.e2nodeComponentConfiguration.e2nodeComponentRequestPart.size = f1MsgReqEncodingSize;
+   DU_ALLOC(e2NodeAddItem->value.choice.E2nodeComponentConfigAddition_Item.e2nodeComponentConfiguration.e2nodeComponentRequestPart.buf,\
+   e2NodeAddItem->value.choice.E2nodeComponentConfigAddition_Item.e2nodeComponentConfiguration.e2nodeComponentRequestPart.size);
+   if(e2NodeAddItem->value.choice.E2nodeComponentConfigAddition_Item.e2nodeComponentConfiguration.e2nodeComponentRequestPart.buf == NULLP)
+   {
+         DU_LOG("\nERROR  --> E2AP: Memory allocation failed for buildE2NodeConfigAddList %d",__LINE__);
+      return 0;
+   }
+
+   memcpy(e2NodeAddItem->value.choice.E2nodeComponentConfigAddition_Item.e2nodeComponentConfiguration.e2nodeComponentRequestPart.buf,\
+   &f1MsgReqEncoding, e2NodeAddItem->value.choice.E2nodeComponentConfigAddition_Item.e2nodeComponentConfiguration.\
+   e2nodeComponentRequestPart.size);
+  
+   /* E2 Node Component Response Part */
+   e2NodeAddItem->value.choice.E2nodeComponentConfigAddition_Item.e2nodeComponentConfiguration.e2nodeComponentResponsePart.size = f1MsgResEncodingSize; 
+   DU_ALLOC(e2NodeAddItem->value.choice.E2nodeComponentConfigAddition_Item.e2nodeComponentConfiguration.e2nodeComponentResponsePart.buf, \
+   e2NodeAddItem->value.choice.E2nodeComponentConfigAddition_Item.e2nodeComponentConfiguration.e2nodeComponentResponsePart.size);
+   if(e2NodeAddItem->value.choice.E2nodeComponentConfigAddition_Item.e2nodeComponentConfiguration.e2nodeComponentResponsePart.buf == NULLP)
+   {
+         DU_LOG("\nERROR  --> E2AP: Memory allocation failed for buildE2NodeConfigAddList %d",__LINE__);
+      return 0;
+   }
+   memcpy(e2NodeAddItem->value.choice.E2nodeComponentConfigAddition_Item.e2nodeComponentConfiguration.e2nodeComponentResponsePart.buf, \
+   &f1MsgResEncoding, e2NodeAddItem->value.choice.E2nodeComponentConfigAddition_Item.e2nodeComponentConfiguration.\
+   e2nodeComponentResponsePart.size);
+
+   /* >E2 Node Component ID */
+   e2NodeAddItem->value.choice.E2nodeComponentConfigAddition_Item.e2nodeComponentID.present = E2nodeComponentID_PR_e2nodeComponentInterfaceTypeF1;
+   DU_ALLOC(e2NodeAddItem->value.choice.E2nodeComponentConfigAddition_Item.e2nodeComponentID.choice.e2nodeComponentInterfaceTypeF1,\
+   sizeof(E2nodeComponentInterfaceF1_t));
+   if(e2NodeAddItem->value.choice.E2nodeComponentConfigAddition_Item.e2nodeComponentID.choice.e2nodeComponentInterfaceTypeF1 == NULLP)
+   {
+       DU_LOG("\nERROR  --> E2AP: Memory allocation failed for buildE2NodeConfigAddList %d",__LINE__);
+       return RFAILED;
+   }
+   e2NodeAddItem->value.choice.E2nodeComponentConfigAddition_Item.e2nodeComponentID.choice.e2nodeComponentInterfaceTypeF1->gNB_DU_ID.size = sizeof(uint8_t);
+   DU_ALLOC(e2NodeAddItem->value.choice.E2nodeComponentConfigAddition_Item.e2nodeComponentID.choice.e2nodeComponentInterfaceTypeF1->gNB_DU_ID.buf,\
+   e2NodeAddItem->value.choice.E2nodeComponentConfigAddition_Item.e2nodeComponentID.choice.e2nodeComponentInterfaceTypeF1->gNB_DU_ID.size);
+
+   if(e2NodeAddItem->value.choice.E2nodeComponentConfigAddition_Item.e2nodeComponentID.choice.e2nodeComponentInterfaceTypeF1->gNB_DU_ID.buf == NULLP)
+   {
+      DU_LOG("\nERROR  -->list.  E2AP: Memory allocation failed for buildE2NodeConfigAddList %d",__LINE__);
+      return RFAILED;
+   }
+   e2NodeAddItem->value.choice.E2nodeComponentConfigAddition_Item.e2nodeComponentID.choice.e2nodeComponentInterfaceTypeF1->gNB_DU_ID.buf[0]  = duCfgParam.duId;
+   return 0;
+
+}
+
+/*******************************************************************
+ *
  * @brief Fills the initiating IE for E2 Setup Request
  *
  * @details
@@ -114,75 +233,81 @@ uint8_t BuildGlobalgNBId(GlobalE2node_gNB_ID_t *gNbId)
 uint8_t fillE2SetupReq(E2setupRequest_t **e2SetupReq, uint8_t *idx)
 {
    uint8_t elementCnt = 0;
-   uint8_t idx2 = 0;
+   uint8_t arrIdx = 0;
    uint8_t ret = ROK;
 
    if(*e2SetupReq != NULLP)
    {
-      elementCnt = 1;
+      elementCnt = 3;
       (*e2SetupReq)->protocolIEs.list.count = elementCnt;
-      (*e2SetupReq)->protocolIEs.list.size = \
-					     elementCnt * sizeof(E2setupRequestIEs_t);
+      (*e2SetupReq)->protocolIEs.list.size = elementCnt * sizeof(E2setupRequestIEs_t);
 
       /* Initialize the E2Setup members */
       DU_ALLOC((*e2SetupReq)->protocolIEs.list.array, \
-	    (*e2SetupReq)->protocolIEs.list.size);
+            (*e2SetupReq)->protocolIEs.list.size);
       if((*e2SetupReq)->protocolIEs.list.array == NULLP)
       {
-	 DU_LOG("\nERROR  -->  E2AP : Memory allocation failed for array elements");
-	 ret = RFAILED;
+         DU_LOG("\nERROR  -->  E2AP : Memory allocation failed for array elements");
+         return RFAILED;
+      }
+      for(*idx = 0; *idx < elementCnt; (*idx)++)
+      {
+         DU_ALLOC((*e2SetupReq)->protocolIEs.list.array[*idx],\
+               sizeof(E2setupRequestIEs_t));
+         if((*e2SetupReq)->protocolIEs.list.array[*idx] == NULLP)
+         {
+            DU_LOG("\nERROR  -->  E2AP : Memory allocation failed for arrayidx [%d]", *idx);
+            return RFAILED;
+         }
+      }
+      arrIdx = 0;
+
+      /* TransactionID */
+      (*e2SetupReq)->protocolIEs.list.array[arrIdx]->id = ProtocolIE_IDE2_id_TransactionID;
+      (*e2SetupReq)->protocolIEs.list.array[arrIdx]->criticality = CriticalityE2_reject;
+      (*e2SetupReq)->protocolIEs.list.array[arrIdx]->value.present = E2setupRequestIEs__value_PR_TransactionID;
+      (*e2SetupReq)->protocolIEs.list.array[arrIdx]->value.choice.TransactionID = TRANS_ID;
+
+      arrIdx++;
+      /* GlobalE2node_gNB_ID */
+      (*e2SetupReq)->protocolIEs.list.array[arrIdx]->id = ProtocolIE_IDE2_id_GlobalE2node_ID;
+      (*e2SetupReq)->protocolIEs.list.array[arrIdx]->criticality = CriticalityE2_reject;
+      (*e2SetupReq)->protocolIEs.list.array[arrIdx]->value.present = E2setupRequestIEs__value_PR_GlobalE2node_ID;
+      (*e2SetupReq)->protocolIEs.list.array[arrIdx]->value.choice.GlobalE2node_ID.present = GlobalE2node_ID_PR_gNB;
+
+      DU_ALLOC((*e2SetupReq)->protocolIEs.list.array[arrIdx]->value.choice.\
+            GlobalE2node_ID.choice.gNB, sizeof(GlobalE2node_gNB_ID_t));
+      if((*e2SetupReq)->protocolIEs.list.array[arrIdx]->value.choice.\
+            GlobalE2node_ID.choice.gNB == NULLP)
+      {
+         DU_LOG("\nERROR  -->  E2AP : Memory allocation failed for gNbId");
+         return  RFAILED;
       }
       else
       {
-	 for(*idx = 0; *idx < elementCnt; (*idx)++)
-	 {
-	    DU_ALLOC((*e2SetupReq)->protocolIEs.list.array[*idx],\
-		  sizeof(E2setupRequestIEs_t));
-	    if((*e2SetupReq)->protocolIEs.list.array[*idx] == NULLP)
-	    {
-	       DU_LOG("\nERROR  -->  E2AP : Memory allocation failed for arrayidx [%d]", *idx);
-	       ret = RFAILED;
-	    }
-	    else
-	    {
-	       /* GlobalE2node_gNB_ID */
-	       (*e2SetupReq)->protocolIEs.list.array[idx2]->id = \
-								 ProtocolIE_IDE2_id_GlobalE2node_ID;
-	       (*e2SetupReq)->protocolIEs.list.array[idx2]->criticality = \
-									  CriticalityE2_reject;
-	       (*e2SetupReq)->protocolIEs.list.array[idx2]->value.present =\
-									   E2setupRequestIEs__value_PR_GlobalE2node_ID;
-	       (*e2SetupReq)->protocolIEs.list.array[idx2]->value.choice.\
-		  GlobalE2node_ID.present = GlobalE2node_ID_PR_gNB;
-
-	       DU_ALLOC((*e2SetupReq)->protocolIEs.list.array[idx2]->value.choice.\
-		     GlobalE2node_ID.choice.gNB, sizeof(GlobalE2node_gNB_ID_t));
-	       if((*e2SetupReq)->protocolIEs.list.array[idx2]->value.choice.\
-		     GlobalE2node_ID.choice.gNB == NULLP)
-	       {
-		  DU_LOG("\nERROR  -->  E2AP : Memory allocation failed for gNbId");
-		  ret = RFAILED;
-	       }
-	       else
-	       {
-		  ret = BuildGlobalgNBId((*e2SetupReq)->protocolIEs.list.array[idx2]->value.\
-			choice.GlobalE2node_ID.choice.gNB);
-		  if(ret != ROK)
-		  {
-		     ret = RFAILED;
-		  }
-	       }
-
-	    }
-	 }
+         ret = BuildGlobalgNBId((*e2SetupReq)->protocolIEs.list.array[arrIdx]->value.\
+               choice.GlobalE2node_ID.choice.gNB);
+         if(ret != ROK)
+         {
+             DU_LOG("\nERROR  -->  E2AP : Failed to build Global Gnb Id");
+             return RFAILED;
+         }
       }
+      
+      arrIdx++;
+      /* E2 Node Component Configuration Addition List */
+      (*e2SetupReq)->protocolIEs.list.array[arrIdx]->id = ProtocolIE_IDE2_id_E2nodeComponentConfigAddition;
+      (*e2SetupReq)->protocolIEs.list.array[arrIdx]->criticality = CriticalityE2_reject;
+      (*e2SetupReq)->protocolIEs.list.array[arrIdx]->value.present = E2setupRequestIEs__value_PR_E2nodeComponentConfigAddition_List;
+      buildE2NodeConfigAddList(&((*e2SetupReq)->protocolIEs.list.array[arrIdx]->value.choice.E2nodeComponentConfigAddition_List));
+
    }
    else
    {
-      ret = RFAILED;
       DU_LOG("\nERROR  -->  E2AP : received e2SetupReq is NULL");
+      return RFAILED;
    }
-   return ret;
+   return ROK;
 }
 
 /*******************************************************************
@@ -214,16 +339,16 @@ uint8_t BuildAndSendE2SetupReq()
       DU_ALLOC(e2apMsg, sizeof(E2AP_PDU_t));
       if(e2apMsg == NULLP)
       {
-	 DU_LOG("\nERROR  -->  E2AP : Memory allocation for E2AP-PDU failed");
-	 break;
+         DU_LOG("\nERROR  -->  E2AP : Memory allocation for E2AP-PDU failed");
+         break;
       }
       e2apMsg->present = E2AP_PDU_PR_initiatingMessage;
       DU_ALLOC(e2apMsg->choice.initiatingMessage, sizeof(InitiatingMessageE2_t));
       if(e2apMsg->choice.initiatingMessage == NULLP)
       {
-	 DU_LOG("\nERROR  -->  E2AP : Memory allocation for E2AP-PDU failed");
-	 DU_FREE(e2apMsg, sizeof(E2AP_PDU_t));
-	 return RFAILED;
+         DU_LOG("\nERROR  -->  E2AP : Memory allocation for E2AP-PDU failed");
+         DU_FREE(e2apMsg, sizeof(E2AP_PDU_t));
+         return RFAILED;
       }
       e2apMsg->choice.initiatingMessage->criticality = CriticalityE2_reject;
       e2apMsg->choice.initiatingMessage->procedureCode = ProcedureCodeE2_id_E2setup;
@@ -233,8 +358,8 @@ uint8_t BuildAndSendE2SetupReq()
       ret = fillE2SetupReq(&e2SetupReq, &idx);
       if(ret != ROK)
       {
-	 DU_LOG("\nERROR  -->  E2AP : fillE2SetupReq() failed");
-	 break;
+         DU_LOG("\nERROR  -->  E2AP : fillE2SetupReq() failed");
+         break;
       }
       /* Prints the Msg formed */
       xer_fprint(stdout, &asn_DEF_E2AP_PDU, e2apMsg);
@@ -242,30 +367,30 @@ uint8_t BuildAndSendE2SetupReq()
       memset(encBuf, 0, ENC_BUF_MAX_LEN);
       encBufSize = 0;
       encRetVal = aper_encode(&asn_DEF_E2AP_PDU, 0, e2apMsg, PrepFinalEncBuf,\
-	    encBuf);
+            encBuf);
       if(encRetVal.encoded == ENCODE_FAIL)
       {
-	 DU_LOG("\nERROR  -->  E2AP : Could not encode E2SetupRequest structure (at %s)\n",\
-	       encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
-	 break;
+         DU_LOG("\nERROR  -->  E2AP : Could not encode E2SetupRequest structure (at %s)\n",\
+               encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
+         break;
       }
       else
       {
-	 DU_LOG("\nDEBUG   -->  E2AP : Created APER encoded buffer for E2SetupRequest\n");
-	 for(int i=0; i< encBufSize; i++)
-	 {
-	    printf("%x",encBuf[i]);
-	 }
+         DU_LOG("\nDEBUG   -->  E2AP : Created APER encoded buffer for E2SetupRequest\n");
+         for(int i=0; i< encBufSize; i++)
+         {
+            printf("%x",encBuf[i]);
+         }
       }
       if(SendE2APMsg(DU_APP_MEM_REGION, DU_POOL) != ROK)
       {
-	 DU_LOG("\nERROR  -->  E2AP : Sending E2 Setup request failed");
+         DU_LOG("\nERROR  -->  E2AP : Sending E2 Setup request failed");
       }
 
       break;
    }while(true);
 
-   deAllocateE2SetupReqMsg(e2apMsg, e2SetupReq, idx);
+   deAllocateE2SetupReqMsg(e2apMsg);
    return ret;
 }/* End of BuildAndSendE2SetupReq */
 
@@ -280,69 +405,108 @@ uint8_t BuildAndSendE2SetupReq()
  *    Functionality: De-Allocating E2 Setup request Message
  *
  * @params[in] E2AP_PDU_t *e2apMsg
- *             E2setupRequest_t *e2SetupReq
- * @return ROK     - success
- *         RFAILED - failure
+ 
+ * @return void
  *
  * ****************************************************************/
 
-uint8_t deAllocateE2SetupReqMsg(E2AP_PDU_t *e2apMsg, \
-      E2setupRequest_t *e2SetupReq, uint8_t idx)
+void deAllocateE2SetupReqMsg(E2AP_PDU_t *e2apMsg)
 {
-   uint8_t idx2;
-   uint8_t ret = ROK;
+   uint8_t arrIdx = 0;
+   uint8_t e2NodeAddListIdx =0;
+   E2setupRequest_t *e2SetupReq;
+   E2nodeComponentConfigAddition_List_t *e2NodeAddList;
+   E2nodeComponentConfigAddition_ItemIEs_t *e2NodeAddItem;
+
    /* De-allocating Memory */
    if(e2apMsg != NULLP)
    {
       if(e2apMsg->choice.initiatingMessage != NULLP)
       {
-	 if(e2SetupReq->protocolIEs.list.array != NULLP)
-	 {
-	    for(idx2 = 0; idx2 < idx; idx2++)
-	    {
-	       if(e2SetupReq->protocolIEs.list.array[idx2] != NULLP)
-	       {
-		  switch(e2SetupReq->protocolIEs.list.array[idx2]->id)
-		  {
-		     case ProtocolIE_IDE2_id_GlobalE2node_ID:
-			{
-			   if(e2SetupReq->protocolIEs.list.array[idx2]->\
-				 value.choice.GlobalE2node_ID.choice.gNB != NULLP)
-			   {
-			      GlobalE2node_gNB_ID_t *gNbId = NULLP;
-			      gNbId = e2SetupReq->protocolIEs.list.array[idx2]->\
-				      value.choice.GlobalE2node_ID.choice.gNB;
-			      if(gNbId->global_gNB_ID.plmn_id.buf != NULLP)
-			      {
-				 if(gNbId->global_gNB_ID.gnb_id.choice.gnb_ID.buf != NULLP)
-				 {
-				    DU_FREE(gNbId->global_gNB_ID.gnb_id.choice.gnb_ID.buf,\
-					  gNbId->global_gNB_ID.gnb_id.choice.gnb_ID.size);
-				 }
-				 DU_FREE(gNbId->global_gNB_ID.plmn_id.buf,\
-				       gNbId->global_gNB_ID.plmn_id.size);
-			      }
-			      DU_FREE(e2SetupReq->protocolIEs.list.array[idx2]->value.\
-				    choice.GlobalE2node_ID.choice.gNB, sizeof(GlobalE2node_gNB_ID_t));
-			   }
-			   DU_FREE(e2SetupReq->protocolIEs.list.array[idx2],\
-				 sizeof(E2setupRequestIEs_t));
-			   break;
-			}
-		     default:
-			DU_LOG("\nERROR  --> E2AP: Invalid event at e2SetupRequet %ld ",\
-			      (e2SetupReq->protocolIEs.list.array[idx2]->id));
-			break;
-		  }
-	       }
-	    }
-	    DU_FREE(e2SetupReq->protocolIEs.list.array, e2SetupReq->protocolIEs.list.size);
-	 }
-	 DU_FREE(e2apMsg->choice.initiatingMessage, sizeof(InitiatingMessageE2_t));
+         e2SetupReq = &e2apMsg->choice.initiatingMessage->value.choice.E2setupRequest; 
+         if(e2SetupReq->protocolIEs.list.array != NULLP)
+         {
+            for(arrIdx = 0; arrIdx < e2SetupReq->protocolIEs.list.count; arrIdx++)
+            {
+               if(e2SetupReq->protocolIEs.list.array[arrIdx] != NULLP)
+               {
+                  switch(e2SetupReq->protocolIEs.list.array[arrIdx]->id)
+                  {
+                     case ProtocolIE_IDE2_id_TransactionID:
+                          break;
+                     case ProtocolIE_IDE2_id_GlobalE2node_ID:
+                        {
+                           if(e2SetupReq->protocolIEs.list.array[arrIdx]->\
+                                 value.choice.GlobalE2node_ID.choice.gNB != NULLP)
+                           {
+                              GlobalE2node_gNB_ID_t *gNbId = NULLP;
+                              gNbId = e2SetupReq->protocolIEs.list.array[arrIdx]->\
+                                      value.choice.GlobalE2node_ID.choice.gNB;
+                              if(gNbId->global_gNB_ID.plmn_id.buf != NULLP)
+                              {
+                                 if(gNbId->global_gNB_ID.gnb_id.choice.gnb_ID.buf != NULLP)
+                                 {
+                                    DU_FREE(gNbId->global_gNB_ID.gnb_id.choice.gnb_ID.buf,\
+                                          gNbId->global_gNB_ID.gnb_id.choice.gnb_ID.size);
+                                 }
+                                 DU_FREE(gNbId->global_gNB_ID.plmn_id.buf,\
+                                       gNbId->global_gNB_ID.plmn_id.size);
+                              }
+                              DU_FREE(e2SetupReq->protocolIEs.list.array[arrIdx]->value.\
+                                    choice.GlobalE2node_ID.choice.gNB, sizeof(GlobalE2node_gNB_ID_t));
+                           }
+                           break;
+                        }
+                     case ProtocolIE_IDE2_id_E2nodeComponentConfigAddition:
+                     {
+                         e2NodeAddList = &e2SetupReq->protocolIEs.list.array[arrIdx]->value.choice.E2nodeComponentConfigAddition_List;
+                         if(e2NodeAddList->list.array)
+                         {
+                             for(e2NodeAddListIdx = 0; e2NodeAddListIdx< e2NodeAddList->list.count; e2NodeAddListIdx++)
+                             {
+                                e2NodeAddItem = (E2nodeComponentConfigAddition_ItemIEs_t *) e2NodeAddList->list.array[e2NodeAddListIdx];
+                                if(e2NodeAddItem->value.choice.E2nodeComponentConfigAddition_Item.e2nodeComponentConfiguration.e2nodeComponentRequestPart.buf)
+                                {
+                                   DU_FREE(e2NodeAddItem->value.choice.E2nodeComponentConfigAddition_Item.e2nodeComponentConfiguration.e2nodeComponentRequestPart.buf,\
+                                   e2NodeAddItem->value.choice.E2nodeComponentConfigAddition_Item.e2nodeComponentConfiguration.e2nodeComponentRequestPart.size);
+                                }
+                                
+                                if(e2NodeAddItem->value.choice.E2nodeComponentConfigAddition_Item.e2nodeComponentConfiguration.e2nodeComponentResponsePart.buf)
+                                {
+                                   DU_FREE(e2NodeAddItem->value.choice.E2nodeComponentConfigAddition_Item.e2nodeComponentConfiguration.\
+                                   e2nodeComponentResponsePart.buf, \
+                                   e2NodeAddItem->value.choice.E2nodeComponentConfigAddition_Item.e2nodeComponentConfiguration.e2nodeComponentResponsePart.size);
+                                }
+
+                                if(e2NodeAddItem->value.choice.E2nodeComponentConfigAddition_Item.e2nodeComponentID.choice.e2nodeComponentInterfaceTypeF1)
+                                {
+                                    DU_FREE(e2NodeAddItem->value.choice.E2nodeComponentConfigAddition_Item.e2nodeComponentID.choice.\
+                                    e2nodeComponentInterfaceTypeF1->gNB_DU_ID.buf,\   
+                                    e2NodeAddItem->value.choice.E2nodeComponentConfigAddition_Item.e2nodeComponentID.choice.\
+                                    e2nodeComponentInterfaceTypeF1->gNB_DU_ID.size);
+                                    DU_FREE(e2NodeAddItem->value.choice.E2nodeComponentConfigAddition_Item.e2nodeComponentID.choice.e2nodeComponentInterfaceTypeF1,\
+                                    sizeof(E2nodeComponentInterfaceF1_t));
+                                }
+                                DU_FREE(e2NodeAddList->list.array[e2NodeAddListIdx], sizeof(E2nodeComponentConfigAddition_ItemIEs_t));
+                             }
+                             DU_FREE(e2NodeAddList->list.array, e2NodeAddList->list.size);
+                         }
+                         break;
+                     }
+                     default:
+                        DU_LOG("\nERROR  --> E2AP: Invalid event at e2SetupRequet %ld ",\
+                              (e2SetupReq->protocolIEs.list.array[arrIdx]->id));
+                        break;
+                  }
+                  DU_FREE(e2SetupReq->protocolIEs.list.array[arrIdx], sizeof(E2setupRequestIEs_t));
+               }
+            }
+            DU_FREE(e2SetupReq->protocolIEs.list.array, e2SetupReq->protocolIEs.list.size);
+         }
+         DU_FREE(e2apMsg->choice.initiatingMessage, sizeof(InitiatingMessageE2_t));
       }
       DU_FREE(e2apMsg, sizeof(E2AP_PDU_t));
    }
-   return ret;  
 }
 /*******************************************************************
  *
@@ -729,44 +893,68 @@ uint8_t BuildAndSendRicSubscriptionRsp()
  * ****************************************************************/
 uint8_t procE2SetupRsp(E2AP_PDU_t *e2apMsg)
 {
-   uint8_t idx; 
+   uint8_t arrIdx, E2nodeConfigAdditionAckListIdx; 
    uint32_t recvBufLen;             
    E2setupResponse_t *e2SetRspMsg;
+   E2nodeComponentConfigAdditionAck_ItemIEs_t *e2NodeAddAckItem;
+   E2nodeComponentConfigAdditionAck_List_t *E2nodeConfigAdditionAckList;
 
    DU_LOG("\nINFO   -->  E2AP : E2 Setup Response received"); 
    duCb.e2Status = TRUE; //Set E2 status as true
    e2SetRspMsg = &e2apMsg->choice.successfulOutcome->value.choice.E2setupResponse;
 
-   for(idx=0; idx<e2SetRspMsg->protocolIEs.list.count; idx++)
+   for(arrIdx=0; arrIdx<e2SetRspMsg->protocolIEs.list.count; arrIdx++)
    {
-      switch(e2SetRspMsg->protocolIEs.list.array[idx]->id)
+      switch(e2SetRspMsg->protocolIEs.list.array[arrIdx]->id)
       {
-	 case ProtocolIE_IDE2_id_GlobalRIC_ID:
-	    {
-	       /* To store the Ric Id Params */
-	       recvBufLen = sizeof(e2SetRspMsg->protocolIEs.list.array[idx]->value\
-		     .choice.GlobalRIC_ID.pLMN_Identity.size);
-	       e2apMsgDb.plmn = NULLP;
-	       DU_ALLOC(e2apMsgDb.plmn, recvBufLen);
-	       if(e2apMsgDb.plmn)
-	       {
-		  memcpy(e2apMsgDb.plmn, e2SetRspMsg->protocolIEs.list.array[idx]\
-			->value.choice.GlobalRIC_ID.pLMN_Identity.buf, recvBufLen);
-		  free(e2SetRspMsg->protocolIEs.list.array[idx]->value.choice.\
-			GlobalRIC_ID.pLMN_Identity.buf);
-	       }
-	       bitStringToInt(&e2SetRspMsg->protocolIEs.list.array[idx]->value.choice.GlobalRIC_ID.ric_ID, &e2apMsgDb.ricId);
-	       free(e2SetRspMsg->protocolIEs.list.array[idx]->value.choice.\
-		     GlobalRIC_ID.ric_ID.buf);
-	       /*TODO : e2apMsgDb.plmn memory to be deallocated after the usage */
-	       break;
-	    }
-	 default:
-	    DU_LOG("\nERROR  -->  E2AP : Invalid IE received in E2SetupRsp:%ld",
-		  e2SetRspMsg->protocolIEs.list.array[idx]->id);
-	    break;
+         case ProtocolIE_IDE2_id_TransactionID:
+            break;
+
+         case ProtocolIE_IDE2_id_GlobalRIC_ID:
+            {
+               /* To store the Ric Id Params */
+               recvBufLen = sizeof(e2SetRspMsg->protocolIEs.list.array[arrIdx]->value\
+                     .choice.GlobalRIC_ID.pLMN_Identity.size);
+               e2apMsgDb.plmn = NULLP;
+               DU_ALLOC(e2apMsgDb.plmn, recvBufLen);
+               if(e2apMsgDb.plmn)
+               {
+                  memcpy(e2apMsgDb.plmn, e2SetRspMsg->protocolIEs.list.array[arrIdx]\
+                        ->value.choice.GlobalRIC_ID.pLMN_Identity.buf, recvBufLen);
+                  free(e2SetRspMsg->protocolIEs.list.array[arrIdx]->value.choice.\
+                        GlobalRIC_ID.pLMN_Identity.buf);
+               }
+               bitStringToInt(&e2SetRspMsg->protocolIEs.list.array[arrIdx]->value.choice.GlobalRIC_ID.ric_ID, &e2apMsgDb.ricId);
+               free(e2SetRspMsg->protocolIEs.list.array[arrIdx]->value.choice.\
+                     GlobalRIC_ID.ric_ID.buf);
+               /*TODO : e2apMsgDb.plmn memory to be deallocated after the usage */
+               break;
+            }
+         case ProtocolIE_IDE2_id_E2nodeComponentConfigAdditionAck:
+         {
+            E2nodeConfigAdditionAckList = &e2SetRspMsg->protocolIEs.list.array[arrIdx]->value.choice.E2nodeComponentConfigAdditionAck_List; 
+            if(E2nodeConfigAdditionAckList->list.array )
+            {
+               for(E2nodeConfigAdditionAckListIdx = 0; E2nodeConfigAdditionAckListIdx< E2nodeConfigAdditionAckList->list.count; E2nodeConfigAdditionAckListIdx++)
+               {
+                  if(E2nodeConfigAdditionAckList->list.array[E2nodeConfigAdditionAckListIdx])
+                  {
+                     e2NodeAddAckItem = (E2nodeComponentConfigAdditionAck_ItemIEs_t*) E2nodeConfigAdditionAckList->list.array[0];
+                     free(e2NodeAddAckItem->value.choice.E2nodeComponentConfigAdditionAck_Item.e2nodeComponentID.choice.e2nodeComponentInterfaceTypeF1);
+                     free(e2NodeAddAckItem->value.choice.E2nodeComponentConfigAdditionAck_Item.e2nodeComponentID.choice.e2nodeComponentInterfaceTypeF1->gNB_DU_ID.buf);
+                     free(E2nodeConfigAdditionAckList->list.array[E2nodeConfigAdditionAckListIdx]);
+                  }
+               }
+               free(E2nodeConfigAdditionAckList->list.array);
+            }
+            break;
+         }
+         default:
+            DU_LOG("\nERROR  -->  E2AP : Invalid IE received in E2SetupRsp:%ld",
+                  e2SetRspMsg->protocolIEs.list.array[arrIdx]->id);
+            break;
       }
-      free(e2SetRspMsg->protocolIEs.list.array[idx]);
+      free(e2SetRspMsg->protocolIEs.list.array[arrIdx]);
    }
    free(e2SetRspMsg->protocolIEs.list.array);
    return ROK;
