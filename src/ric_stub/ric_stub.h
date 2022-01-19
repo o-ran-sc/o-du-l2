@@ -66,10 +66,11 @@
 
 typedef struct ricCfgParams
 {
-   uint32_t             ricId;
+   uint32_t        ricId;
    char            ricName[RIC_DU_NAME_LEN_MAX];
    RicSctpParams   sctpParams;
    Plmn            plmn;
+   Bool            ricSubsStatus;
 }RicCfgParams;
 RicCfgParams ricCfgParams; //global variable to hold all configs
 

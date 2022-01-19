@@ -50,9 +50,10 @@
 
 
 
+
 void E2APMsgHdlr(Buffer *mBuf);
-S16 BuildAndSendE2SetupReq();
-S16 SendE2APMsg(Region , Pool );
+uint8_t BuildAndSendE2SetupRsp(uint8_t duId);
+uint8_t SendE2APMsg(Region , Pool );
 
 /**********************************************************************
          End of file

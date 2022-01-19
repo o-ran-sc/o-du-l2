@@ -64,6 +64,7 @@
 #define NR_BANDWIDTH BANDWIDTH_20MHZ
 #endif
 
+#define TRANS_ID 1
 #define DU_TAC 1
 #define PLMN_MCC0 3
 #define PLMN_MCC1 1
@@ -1261,6 +1262,14 @@ typedef struct duCfgParams
    Sib1Params         sib1Params;                 /* SIB1 Params */
    CopyOfRecvdSliceCfg tempSliceCfg;
 }DuCfgParams;
+
+typedef struct f1SetupMsg
+{
+   uint8_t f1MsgReqBufSize;
+   char    *f1MsgReqBuf; 
+   uint8_t f1MsgRspBufSize;
+   char    *f1MsgRspBuf;
+}F1SetupMsg;
 
 DuCfgParams duCfgParam;
 

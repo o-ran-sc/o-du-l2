@@ -18,7 +18,6 @@
 
 /* This file contains all E2AP message handler related functionality */
 
-#include "E2setupRequest.h"
 #define ENCODE_FAIL -1
 
 uint8_t sctpSend(Buffer *mBuf, uint8_t itfType);
@@ -39,7 +38,6 @@ E2apMsgDb e2apMsgDb;
 uint8_t BuildAndSendE2SetupReq();
 uint8_t SendE2APMsg(Region , Pool );
 void E2APMsgHdlr(Buffer *mBuf);
-uint8_t deAllocateE2SetupReqMsg(E2AP_PDU_t *e2apMsg, E2setupRequest_t *e2SetupReq, uint8_t idx);
 /**********************************************************************
   End of file
  **********************************************************************/
