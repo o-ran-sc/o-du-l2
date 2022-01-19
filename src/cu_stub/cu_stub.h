@@ -84,10 +84,26 @@ typedef struct cuCfgParams
    Plmn             plmn;
    EgtpParams       egtpParams;
    RrcVersion       rrcVersion;
-   uint8_t          numSnssaiSupported;
-   Snssai           *snssaiList[MAX_NUM_OF_SLICE];
 }CuCfgParams;
-CuCfgParams cuCfgParams; //global variable to hold all configs
+
+typedef struct duDb
+{
+   uint32_t duId;
+   char     duName[CU_DU_NAME_LEN_MAX];
+   //Cell Info
+   //UE Info within each Cell
+}DuDb;
+
+typedef struct cuGlobalCb
+{
+   CuCfgParams cuCfgParams;
+   uint8_t     numSnssaiSupported;
+   Snssai      *snssaiList[MAX_NUM_OF_SLICE];
+   uint8_t     numDu;
+   DuDb        duInfo[MAX_DU_SUPPORTED];
+}CuGlobalCb;
+
+CuGlobalCb cuCb;
 
 void readCuCfg();
 void cuAppInmsgHdlr(Buffer *mBuf);

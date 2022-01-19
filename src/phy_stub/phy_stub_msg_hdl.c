@@ -1041,7 +1041,7 @@ S16 l1HdlUlTtiReq(uint16_t msgLen, void *msg)
       }
       numPdus--;
    }
-
+#if 0
    /* TODO: [SFN:SLOT] at which RACH Indication is sent should be calculated
     * based on PRACH cfg index */
    /* Send RACH Ind to L2 for first UE */
@@ -1066,6 +1066,7 @@ S16 l1HdlUlTtiReq(uint16_t msgLen, void *msg)
       l1BuildAndSendRachInd(ulTtiReq->slot, ulTtiReq->sfn);
       ueDb.numActvUe++;
    }
+#endif
    MAC_FREE(msg, msgLen);
 #endif
    return ROK;

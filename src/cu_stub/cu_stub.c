@@ -139,8 +139,8 @@ void readCuCfg()
 
    DU_LOG("\nDEBUG  -->  CU_STUB : Reading CU configurations");
 
-   cuCfgParams.cuId = CU_ID;
-   strcpy(cuCfgParams.cuName, CU_NAME);
+   cuCb.cuCfgParams.cuId = CU_ID;
+   strcpy(cuCb.cuCfgParams.cuName, CU_NAME);
 
 #ifdef O1_ENABLE
    if( getStartupConfigForStub(&g_cfg) != ROK )
@@ -153,54 +153,54 @@ void readCuCfg()
    cmInetAddr((S8*)g_cfg.DU_IPV4_Addr, &ipv4_du);
    cmInetAddr((S8*)g_cfg.CU_IPV4_Addr, &ipv4_cu);
 
-   cuCfgParams.sctpParams.duPort = g_cfg.DU_Port;
-   cuCfgParams.sctpParams.cuPort = g_cfg.CU_Port;
+   cuCb.cuCfgParams.sctpParams.duPort = g_cfg.DU_Port;
+   cuCb.cuCfgParams.sctpParams.cuPort = g_cfg.CU_Port;
 #else
-   cuCfgParams.sctpParams.numDu = 0;
-   numDu = &cuCfgParams.sctpParams.numDu;
+   cuCb.cuCfgParams.sctpParams.numDu = 0;
+   numDu = &cuCb.cuCfgParams.sctpParams.numDu;
    while(*numDu < MAX_DU_SUPPORTED)
    {
       /* DU IP Address and Port*/
       memset(&ipv4_du, 0, sizeof(uint32_t));
       cmInetAddr((S8*)DU_IP_V4_ADDR[*numDu], &ipv4_du);
-      cuCfgParams.sctpParams.sctpAssoc[*numDu].duIpAddr.ipV4Addr = ipv4_du;
-      cuCfgParams.sctpParams.sctpAssoc[*numDu].duIpAddr.ipV6Pres = false;
-      cuCfgParams.sctpParams.sctpAssoc[*numDu].duPort = DU_SCTP_PORT[*numDu];
+      cuCb.cuCfgParams.sctpParams.sctpAssoc[*numDu].duIpAddr.ipV4Addr = ipv4_du;
+      cuCb.cuCfgParams.sctpParams.sctpAssoc[*numDu].duIpAddr.ipV6Pres = false;
+      cuCb.cuCfgParams.sctpParams.sctpAssoc[*numDu].duPort = DU_SCTP_PORT[*numDu];
 
       /* CU IP Address and Port*/
       memset(&ipv4_du, 0, sizeof(uint32_t));
       cmInetAddr((S8*)CU_IP_V4_ADDR, &ipv4_cu);
-      cuCfgParams.sctpParams.sctpAssoc[*numDu].cuIpAddr.ipV4Addr = ipv4_cu;
-      cuCfgParams.sctpParams.sctpAssoc[*numDu].cuIpAddr.ipV6Pres = false;
-      cuCfgParams.sctpParams.sctpAssoc[*numDu].cuPort = CU_SCTP_PORT_TO_DU[*numDu];
+      cuCb.cuCfgParams.sctpParams.sctpAssoc[*numDu].cuIpAddr.ipV4Addr = ipv4_cu;
+      cuCb.cuCfgParams.sctpParams.sctpAssoc[*numDu].cuIpAddr.ipV6Pres = false;
+      cuCb.cuCfgParams.sctpParams.sctpAssoc[*numDu].cuPort = CU_SCTP_PORT_TO_DU[*numDu];
       (*numDu)++;
    }
 
 #endif
 
    /*PLMN*/
-   cuCfgParams.plmn.mcc[0] = PLMN_MCC0;
-   cuCfgParams.plmn.mcc[1] = PLMN_MCC1;
-   cuCfgParams.plmn.mcc[2] = PLMN_MCC2;
-   cuCfgParams.plmn.mnc[0] = PLMN_MNC0;
-   cuCfgParams.plmn.mnc[1] = PLMN_MNC1;
-   cuCfgParams.plmn.mnc[2] = PLMN_MNC2;
+   cuCb.cuCfgParams.plmn.mcc[0] = PLMN_MCC0;
+   cuCb.cuCfgParams.plmn.mcc[1] = PLMN_MCC1;
+   cuCb.cuCfgParams.plmn.mcc[2] = PLMN_MCC2;
+   cuCb.cuCfgParams.plmn.mnc[0] = PLMN_MNC0;
+   cuCb.cuCfgParams.plmn.mnc[1] = PLMN_MNC1;
+   cuCb.cuCfgParams.plmn.mnc[2] = PLMN_MNC2;
 
    /*RRC Version*/
-   cuCfgParams.rrcVersion.rrcVer = RRC_VER;
-   cuCfgParams.rrcVersion.extRrcVer = EXT_RRC_VER;
+   cuCb.cuCfgParams.rrcVersion.rrcVer = RRC_VER;
+   cuCb.cuCfgParams.rrcVersion.extRrcVer = EXT_RRC_VER;
 
 
    /* EGTP Parameters */
-   cuCfgParams.egtpParams.localIp.ipV4Pres = TRUE;
-   cuCfgParams.egtpParams.localIp.ipV4Addr = ipv4_cu;
-   cuCfgParams.egtpParams.localPort = CU_EGTP_PORT;
-   cuCfgParams.egtpParams.destIp.ipV4Pres = TRUE;
-   cuCfgParams.egtpParams.destIp.ipV4Addr = ipv4_du;
-   cuCfgParams.egtpParams.destPort = DU_EGTP_PORT;
-   cuCfgParams.egtpParams.minTunnelId = MIN_TEID;
-   cuCfgParams.egtpParams.currTunnelId = cuCfgParams.egtpParams.minTunnelId;
-   cuCfgParams.egtpParams.maxTunnelId = MAX_TEID;
+   cuCb.cuCfgParams.egtpParams.localIp.ipV4Pres = TRUE;
+   cuCb.cuCfgParams.egtpParams.localIp.ipV4Addr = ipv4_cu;
+   cuCb.cuCfgParams.egtpParams.localPort = CU_EGTP_PORT;
+   cuCb.cuCfgParams.egtpParams.destIp.ipV4Pres = TRUE;
+   cuCb.cuCfgParams.egtpParams.destIp.ipV4Addr = ipv4_du;
+   cuCb.cuCfgParams.egtpParams.destPort = DU_EGTP_PORT;
+   cuCb.cuCfgParams.egtpParams.minTunnelId = MIN_TEID;
+   cuCb.cuCfgParams.egtpParams.currTunnelId = cuCb.cuCfgParams.egtpParams.minTunnelId;
+   cuCb.cuCfgParams.egtpParams.maxTunnelId = MAX_TEID;
 
 } /* End of readCuCfg */
 
