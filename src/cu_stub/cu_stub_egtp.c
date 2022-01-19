@@ -120,7 +120,7 @@ S16 cuEgtpCfgReq()
 {
    uint8_t ret;
 
-   memcpy(&egtpCb.egtpCfg, &cuCfgParams.egtpParams, sizeof(EgtpParams));
+   memcpy(&egtpCb.egtpCfg, &cuCb.cuCfgParams.egtpParams, sizeof(EgtpParams));
 
    egtpCb.recvTptSrvr.addr.address = CM_INET_NTOH_UINT32(egtpCb.egtpCfg.localIp.ipV4Addr);
    egtpCb.recvTptSrvr.addr.port = EGTP_DFLT_PORT;

@@ -14152,7 +14152,7 @@ void F1APMsgHdlr(Buffer *mBuf)
                case SuccessfulOutcome__value_PR_F1SetupResponse:
                   {				
 #ifndef ODU_TEST_STUB
-                     procF1SetupRsp(f1apMsg);
+                     //procF1SetupRsp(f1apMsg);
 #endif
                      break;
                   }
