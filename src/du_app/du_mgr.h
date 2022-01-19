@@ -225,6 +225,7 @@ typedef struct duCb
    UpTnlCfg*     upTnlCfg[MAX_TEID];     /* tunnel info for every Drb */
    CmLListCp     reservedF1apPduList;       /*storing F1AP pdu infomation and transId */
    SliceCfgState sliceState;
+   F1SetupMsg    f1SetupReqAndRspMsg;
 }DuCb;
 
 
