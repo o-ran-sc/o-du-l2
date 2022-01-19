@@ -34,7 +34,7 @@
 #include "E2AP-PDU.h"
 #include "du_e2ap_msg_hdl.h"
 #include "odu_common_codec.h"
-
+#include "E2nodeComponentInterfaceF1.h"
 /* Global variable */
 DuCfgParams duCfgParam;
 /*******************************************************************
@@ -114,75 +114,73 @@ uint8_t BuildGlobalgNBId(GlobalE2node_gNB_ID_t *gNbId)
 uint8_t fillE2SetupReq(E2setupRequest_t **e2SetupReq, uint8_t *idx)
 {
    uint8_t elementCnt = 0;
-   uint8_t idx2 = 0;
+   uint8_t arrIdx = 0;
    uint8_t ret = ROK;
 
    if(*e2SetupReq != NULLP)
    {
-      elementCnt = 1;
+      elementCnt = 2;
       (*e2SetupReq)->protocolIEs.list.count = elementCnt;
-      (*e2SetupReq)->protocolIEs.list.size = \
-					     elementCnt * sizeof(E2setupRequestIEs_t);
+      (*e2SetupReq)->protocolIEs.list.size = elementCnt * sizeof(E2setupRequestIEs_t);
 
       /* Initialize the E2Setup members */
       DU_ALLOC((*e2SetupReq)->protocolIEs.list.array, \
-	    (*e2SetupReq)->protocolIEs.list.size);
+            (*e2SetupReq)->protocolIEs.list.size);
       if((*e2SetupReq)->protocolIEs.list.array == NULLP)
       {
-	 DU_LOG("\nERROR  -->  E2AP : Memory allocation failed for array elements");
-	 ret = RFAILED;
+         DU_LOG("\nERROR  -->  E2AP : Memory allocation failed for array elements");
+         return RFAILED;
+      }
+      for(*idx = 0; *idx < elementCnt; (*idx)++)
+      {
+         DU_ALLOC((*e2SetupReq)->protocolIEs.list.array[*idx],\
+               sizeof(E2setupRequestIEs_t));
+         if((*e2SetupReq)->protocolIEs.list.array[*idx] == NULLP)
+         {
+            DU_LOG("\nERROR  -->  E2AP : Memory allocation failed for arrayidx [%d]", *idx);
+            return RFAILED;
+         }
+      }
+      arrIdx = 0;
+
+      /* TransactionID */
+      (*e2SetupReq)->protocolIEs.list.array[arrIdx]->id = ProtocolIE_IDE2_id_TransactionID;
+      (*e2SetupReq)->protocolIEs.list.array[arrIdx]->criticality = CriticalityE2_reject;
+      (*e2SetupReq)->protocolIEs.list.array[arrIdx]->value.present = E2setupRequestIEs__value_PR_TransactionID;
+      (*e2SetupReq)->protocolIEs.list.array[arrIdx]->value.choice.TransactionID = TRANS_ID;
+
+      arrIdx++;
+      /* GlobalE2node_gNB_ID */
+      (*e2SetupReq)->protocolIEs.list.array[arrIdx]->id = ProtocolIE_IDE2_id_GlobalE2node_ID;
+      (*e2SetupReq)->protocolIEs.list.array[arrIdx]->criticality = CriticalityE2_reject;
+      (*e2SetupReq)->protocolIEs.list.array[arrIdx]->value.present = E2setupRequestIEs__value_PR_GlobalE2node_ID;
+      (*e2SetupReq)->protocolIEs.list.array[arrIdx]->value.choice.GlobalE2node_ID.present = GlobalE2node_ID_PR_gNB;
+
+      DU_ALLOC((*e2SetupReq)->protocolIEs.list.array[arrIdx]->value.choice.\
+            GlobalE2node_ID.choice.gNB, sizeof(GlobalE2node_gNB_ID_t));
+      if((*e2SetupReq)->protocolIEs.list.array[arrIdx]->value.choice.\
+            GlobalE2node_ID.choice.gNB == NULLP)
+      {
+         DU_LOG("\nERROR  -->  E2AP : Memory allocation failed for gNbId");
+         return  RFAILED;
       }
       else
       {
-	 for(*idx = 0; *idx < elementCnt; (*idx)++)
-	 {
-	    DU_ALLOC((*e2SetupReq)->protocolIEs.list.array[*idx],\
-		  sizeof(E2setupRequestIEs_t));
-	    if((*e2SetupReq)->protocolIEs.list.array[*idx] == NULLP)
-	    {
-	       DU_LOG("\nERROR  -->  E2AP : Memory allocation failed for arrayidx [%d]", *idx);
-	       ret = RFAILED;
-	    }
-	    else
-	    {
-	       /* GlobalE2node_gNB_ID */
-	       (*e2SetupReq)->protocolIEs.list.array[idx2]->id = \
-								 ProtocolIE_IDE2_id_GlobalE2node_ID;
-	       (*e2SetupReq)->protocolIEs.list.array[idx2]->criticality = \
-									  CriticalityE2_reject;
-	       (*e2SetupReq)->protocolIEs.list.array[idx2]->value.present =\
-									   E2setupRequestIEs__value_PR_GlobalE2node_ID;
-	       (*e2SetupReq)->protocolIEs.list.array[idx2]->value.choice.\
-		  GlobalE2node_ID.present = GlobalE2node_ID_PR_gNB;
-
-	       DU_ALLOC((*e2SetupReq)->protocolIEs.list.array[idx2]->value.choice.\
-		     GlobalE2node_ID.choice.gNB, sizeof(GlobalE2node_gNB_ID_t));
-	       if((*e2SetupReq)->protocolIEs.list.array[idx2]->value.choice.\
-		     GlobalE2node_ID.choice.gNB == NULLP)
-	       {
-		  DU_LOG("\nERROR  -->  E2AP : Memory allocation failed for gNbId");
-		  ret = RFAILED;
-	       }
-	       else
-	       {
-		  ret = BuildGlobalgNBId((*e2SetupReq)->protocolIEs.list.array[idx2]->value.\
-			choice.GlobalE2node_ID.choice.gNB);
-		  if(ret != ROK)
-		  {
-		     ret = RFAILED;
-		  }
-	       }
-
-	    }
-	 }
+         ret = BuildGlobalgNBId((*e2SetupReq)->protocolIEs.list.array[arrIdx]->value.\
+               choice.GlobalE2node_ID.choice.gNB);
+         if(ret != ROK)
+         {
+             return RFAILED;
+         }
       }
+
    }
    else
    {
-      ret = RFAILED;
       DU_LOG("\nERROR  -->  E2AP : received e2SetupReq is NULL");
+      return RFAILED;
    }
-   return ret;
+   return ROK;
 }
 
 /*******************************************************************
@@ -214,16 +212,16 @@ uint8_t BuildAndSendE2SetupReq()
       DU_ALLOC(e2apMsg, sizeof(E2AP_PDU_t));
       if(e2apMsg == NULLP)
       {
-	 DU_LOG("\nERROR  -->  E2AP : Memory allocation for E2AP-PDU failed");
-	 break;
+         DU_LOG("\nERROR  -->  E2AP : Memory allocation for E2AP-PDU failed");
+         break;
       }
       e2apMsg->present = E2AP_PDU_PR_initiatingMessage;
       DU_ALLOC(e2apMsg->choice.initiatingMessage, sizeof(InitiatingMessageE2_t));
       if(e2apMsg->choice.initiatingMessage == NULLP)
       {
-	 DU_LOG("\nERROR  -->  E2AP : Memory allocation for E2AP-PDU failed");
-	 DU_FREE(e2apMsg, sizeof(E2AP_PDU_t));
-	 return RFAILED;
+         DU_LOG("\nERROR  -->  E2AP : Memory allocation for E2AP-PDU failed");
+         DU_FREE(e2apMsg, sizeof(E2AP_PDU_t));
+         return RFAILED;
       }
       e2apMsg->choice.initiatingMessage->criticality = CriticalityE2_reject;
       e2apMsg->choice.initiatingMessage->procedureCode = ProcedureCodeE2_id_E2setup;
@@ -233,8 +231,8 @@ uint8_t BuildAndSendE2SetupReq()
       ret = fillE2SetupReq(&e2SetupReq, &idx);
       if(ret != ROK)
       {
-	 DU_LOG("\nERROR  -->  E2AP : fillE2SetupReq() failed");
-	 break;
+         DU_LOG("\nERROR  -->  E2AP : fillE2SetupReq() failed");
+         break;
       }
       /* Prints the Msg formed */
       xer_fprint(stdout, &asn_DEF_E2AP_PDU, e2apMsg);
@@ -242,24 +240,24 @@ uint8_t BuildAndSendE2SetupReq()
       memset(encBuf, 0, ENC_BUF_MAX_LEN);
       encBufSize = 0;
       encRetVal = aper_encode(&asn_DEF_E2AP_PDU, 0, e2apMsg, PrepFinalEncBuf,\
-	    encBuf);
+            encBuf);
       if(encRetVal.encoded == ENCODE_FAIL)
       {
-	 DU_LOG("\nERROR  -->  E2AP : Could not encode E2SetupRequest structure (at %s)\n",\
-	       encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
-	 break;
+         DU_LOG("\nERROR  -->  E2AP : Could not encode E2SetupRequest structure (at %s)\n",\
+               encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
+         break;
       }
       else
       {
-	 DU_LOG("\nDEBUG   -->  E2AP : Created APER encoded buffer for E2SetupRequest\n");
-	 for(int i=0; i< encBufSize; i++)
-	 {
-	    printf("%x",encBuf[i]);
-	 }
+         DU_LOG("\nDEBUG   -->  E2AP : Created APER encoded buffer for E2SetupRequest\n");
+         for(int i=0; i< encBufSize; i++)
+         {
+            printf("%x",encBuf[i]);
+         }
       }
       if(SendE2APMsg(DU_APP_MEM_REGION, DU_POOL) != ROK)
       {
-	 DU_LOG("\nERROR  -->  E2AP : Sending E2 Setup request failed");
+         DU_LOG("\nERROR  -->  E2AP : Sending E2 Setup request failed");
       }
 
       break;
@@ -296,49 +294,50 @@ uint8_t deAllocateE2SetupReqMsg(E2AP_PDU_t *e2apMsg, \
    {
       if(e2apMsg->choice.initiatingMessage != NULLP)
       {
-	 if(e2SetupReq->protocolIEs.list.array != NULLP)
-	 {
-	    for(idx2 = 0; idx2 < idx; idx2++)
-	    {
-	       if(e2SetupReq->protocolIEs.list.array[idx2] != NULLP)
-	       {
-		  switch(e2SetupReq->protocolIEs.list.array[idx2]->id)
-		  {
-		     case ProtocolIE_IDE2_id_GlobalE2node_ID:
-			{
-			   if(e2SetupReq->protocolIEs.list.array[idx2]->\
-				 value.choice.GlobalE2node_ID.choice.gNB != NULLP)
-			   {
-			      GlobalE2node_gNB_ID_t *gNbId = NULLP;
-			      gNbId = e2SetupReq->protocolIEs.list.array[idx2]->\
-				      value.choice.GlobalE2node_ID.choice.gNB;
-			      if(gNbId->global_gNB_ID.plmn_id.buf != NULLP)
-			      {
-				 if(gNbId->global_gNB_ID.gnb_id.choice.gnb_ID.buf != NULLP)
-				 {
-				    DU_FREE(gNbId->global_gNB_ID.gnb_id.choice.gnb_ID.buf,\
-					  gNbId->global_gNB_ID.gnb_id.choice.gnb_ID.size);
-				 }
-				 DU_FREE(gNbId->global_gNB_ID.plmn_id.buf,\
-				       gNbId->global_gNB_ID.plmn_id.size);
-			      }
-			      DU_FREE(e2SetupReq->protocolIEs.list.array[idx2]->value.\
-				    choice.GlobalE2node_ID.choice.gNB, sizeof(GlobalE2node_gNB_ID_t));
-			   }
-			   DU_FREE(e2SetupReq->protocolIEs.list.array[idx2],\
-				 sizeof(E2setupRequestIEs_t));
-			   break;
-			}
-		     default:
-			DU_LOG("\nERROR  --> E2AP: Invalid event at e2SetupRequet %ld ",\
-			      (e2SetupReq->protocolIEs.list.array[idx2]->id));
-			break;
-		  }
-	       }
-	    }
-	    DU_FREE(e2SetupReq->protocolIEs.list.array, e2SetupReq->protocolIEs.list.size);
-	 }
-	 DU_FREE(e2apMsg->choice.initiatingMessage, sizeof(InitiatingMessageE2_t));
+         if(e2SetupReq->protocolIEs.list.array != NULLP)
+         {
+            for(idx2 = 0; idx2 < idx; idx2++)
+            {
+               if(e2SetupReq->protocolIEs.list.array[idx2] != NULLP)
+               {
+                  switch(e2SetupReq->protocolIEs.list.array[idx2]->id)
+                  {
+                     case ProtocolIE_IDE2_id_TransactionID:
+
+                     case ProtocolIE_IDE2_id_GlobalE2node_ID:
+                        {
+                           if(e2SetupReq->protocolIEs.list.array[idx2]->\
+                                 value.choice.GlobalE2node_ID.choice.gNB != NULLP)
+                           {
+                              GlobalE2node_gNB_ID_t *gNbId = NULLP;
+                              gNbId = e2SetupReq->protocolIEs.list.array[idx2]->\
+                                      value.choice.GlobalE2node_ID.choice.gNB;
+                              if(gNbId->global_gNB_ID.plmn_id.buf != NULLP)
+                              {
+                                 if(gNbId->global_gNB_ID.gnb_id.choice.gnb_ID.buf != NULLP)
+                                 {
+                                    DU_FREE(gNbId->global_gNB_ID.gnb_id.choice.gnb_ID.buf,\
+                                          gNbId->global_gNB_ID.gnb_id.choice.gnb_ID.size);
+                                 }
+                                 DU_FREE(gNbId->global_gNB_ID.plmn_id.buf,\
+                                       gNbId->global_gNB_ID.plmn_id.size);
+                              }
+                              DU_FREE(e2SetupReq->protocolIEs.list.array[idx2]->value.\
+                                    choice.GlobalE2node_ID.choice.gNB, sizeof(GlobalE2node_gNB_ID_t));
+                           }
+                           break;
+                        }
+                     default:
+                        DU_LOG("\nERROR  --> E2AP: Invalid event at e2SetupRequet %ld ",\
+                              (e2SetupReq->protocolIEs.list.array[idx2]->id));
+                        break;
+                  }
+                  DU_FREE(e2SetupReq->protocolIEs.list.array[idx2], sizeof(E2setupRequestIEs_t));
+               }
+            }
+            DU_FREE(e2SetupReq->protocolIEs.list.array, e2SetupReq->protocolIEs.list.size);
+         }
+         DU_FREE(e2apMsg->choice.initiatingMessage, sizeof(InitiatingMessageE2_t));
       }
       DU_FREE(e2apMsg, sizeof(E2AP_PDU_t));
    }

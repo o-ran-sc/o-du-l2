@@ -120,6 +120,44 @@ S16 BuildGlobalRicId(GlobalRIC_ID_t *ricId)
 
 /*******************************************************************
  *
+ * @brief deallocate the memory allocated in E2SetupResponse
+ *
+ * @details
+ *
+ *    Function : FreeE2SetupRsp 
+ *
+ *    Functionality: deallocate the memory allocated in E2SetupResponse 
+ *
+ * @params[in] E2AP_PDU_t *e2apMsg
+ *
+ * @return void
+ * ****************************************************************/
+void FreeE2SetupRsp(E2AP_PDU_t *e2apMsg)
+{
+   uint8_t arrIdx = 0;
+   E2setupResponse_t  *e2SetupRsp;
+
+   if(e2apMsg)
+   {
+      if(e2apMsg->choice.successfulOutcome)
+      {
+         e2SetupRsp = &e2apMsg->choice.successfulOutcome->value.choice.E2setupResponse;
+         if(e2SetupRsp->protocolIEs.list.array)
+         {
+            for(arrIdx=0; arrIdx<e2SetupRsp->protocolIEs.list.count; arrIdx++)
+            {
+               RIC_ALLOC(e2SetupRsp->protocolIEs.list.array[arrIdx], sizeof(E2setupResponseIEs_t)); 
+            }
+            RIC_ALLOC(e2SetupRsp->protocolIEs.list.array, e2SetupRsp->protocolIEs.list.size);
+         }
+         RIC_FREE(e2apMsg->choice.successfulOutcome, sizeof(SuccessfulOutcomeE2_t));
+      }
+      RIC_FREE(e2apMsg, sizeof(E2AP_PDU_t));
+   }
+}
+
+/*******************************************************************
+ *
  * @brief Builds and sends the E2SetupResponse
  *
  * @details
@@ -143,96 +181,104 @@ S16 BuildAndSendE2SetupRsp()
    asn_enc_rval_t     encRetVal; 
    uint8_t            idx;
    uint8_t            elementCnt;
-
+   bool  memAllocFailed = false;
  
    DU_LOG("\nINFO   -->  E2AP : Building E2 Setup Response\n");
-
-   RIC_ALLOC(e2apMsg, sizeof(E2AP_PDU_t)); 
-   if(e2apMsg == NULLP)
+   while(true)
    {
-      DU_LOG("\nERROR  -->  E2AP : Memory allocation for E2AP-PDU failed");
-      return RFAILED;
+      RIC_ALLOC(e2apMsg, sizeof(E2AP_PDU_t)); 
+      if(e2apMsg == NULLP)
+      {
+         DU_LOG("\nERROR  -->  E2AP : Memory allocation for E2AP-PDU failed");
+         break;
+      }
+      e2apMsg->present =  E2AP_PDU_PR_successfulOutcome;
+      RIC_ALLOC(e2apMsg->choice.successfulOutcome, sizeof(SuccessfulOutcomeE2_t));
+      if(e2apMsg->choice.successfulOutcome == NULLP)
+      {
+         DU_LOG("\nERROR  -->  E2AP : Memory allocation for E2AP-PDU failed");
+         break;  
+      }
+
+      e2apMsg->choice.successfulOutcome->procedureCode = ProcedureCodeE2_id_E2setup;
+      e2apMsg->choice.successfulOutcome->criticality = CriticalityE2_reject;
+      e2apMsg->choice.successfulOutcome->value.present = \
+                                                         SuccessfulOutcomeE2__value_PR_E2setupResponse;
+      e2SetupRsp = &e2apMsg->choice.successfulOutcome->value.choice.E2setupResponse;
+
+      elementCnt = 2;
+      e2SetupRsp->protocolIEs.list.count = elementCnt;
+      e2SetupRsp->protocolIEs.list.size  = elementCnt * sizeof(E2setupResponseIEs_t);
+
+      RIC_ALLOC(e2SetupRsp->protocolIEs.list.array, e2SetupRsp->protocolIEs.list.size);
+      if(e2SetupRsp->protocolIEs.list.array == NULLP)
+      {
+         DU_LOG("\nERROR  -->  E2AP : Memory allocation for E2ResponseIEs failed");
+         break;  
+      }
+
+      for(idx=0; idx<elementCnt; idx++)
+      {
+         RIC_ALLOC(e2SetupRsp->protocolIEs.list.array[idx], sizeof(E2setupResponseIEs_t)); 
+         if(e2SetupRsp->protocolIEs.list.array[idx] == NULLP)
+         { 
+            DU_LOG("\nERROR  -->  E2AP : Memory allocation for E2ResponseIEs failed");
+            memAllocFailed = true;
+            break;
+         }    
+      }
+      
+      if(memAllocFailed == true)
+      {
+          DU_LOG("\nERROR  -->  E2AP : Memory allocation for E2ResponseIEs failed");    
+          break;
+      }
+      /* Trans Id */
+      idx = 0;
+      e2SetupRsp->protocolIEs.list.array[idx]->id = ProtocolIE_IDE2_id_TransactionID;
+      e2SetupRsp->protocolIEs.list.array[idx]->criticality = CriticalityE2_reject;
+      e2SetupRsp->protocolIEs.list.array[idx]->value.present = E2setupResponseIEs__value_PR_TransactionID; 
+      e2SetupRsp->protocolIEs.list.array[idx]->value.choice.TransactionID  = TRANS_ID;
+
+      /* Global RIC ID */
+      idx++;
+      e2SetupRsp->protocolIEs.list.array[idx]->id = ProtocolIE_IDE2_id_GlobalRIC_ID;
+      e2SetupRsp->protocolIEs.list.array[idx]->criticality = CriticalityE2_reject;
+      e2SetupRsp->protocolIEs.list.array[idx]->value.present = \
+                                                               E2setupResponseIEs__value_PR_GlobalRIC_ID;
+
+      BuildGlobalRicId(&(e2SetupRsp->protocolIEs.list.array[idx]->value.choice.GlobalRIC_ID));
+
+      xer_fprint(stdout, &asn_DEF_E2AP_PDU, e2apMsg);
+      memset(encBuf, 0, ENC_BUF_MAX_LEN);
+      encBufSize = 0;
+      encRetVal = aper_encode(&asn_DEF_E2AP_PDU, 0, e2apMsg, PrepFinalEncBuf, encBuf);
+
+      /* Check encode results */
+      if(encRetVal.encoded == ENCODE_FAIL)
+      {
+         DU_LOG("\nERROR  -->  E2AP : Could not encode E2SetupResponse structure (at %s)\n",\
+               encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
+         break;   
+      } 
+      else 
+      {
+         DU_LOG("\nDEBUG  -->  E2AP : Created APER encoded buffer for E2SetupResponse\n");
+         for(int i=0; i< encBufSize; i++)
+         {
+            DU_LOG("%x",encBuf[i]);
+         } 
+      }
+
+      if(SendE2APMsg(RIC_APP_MEM_REG, RIC_POOL) != ROK)
+      {
+         DU_LOG("\nERROR  -->  E2AP : Sending E2 Setup Response failed");      
+         break;   
+      }
+      break;
    }
-   e2apMsg->present =  E2AP_PDU_PR_successfulOutcome;
-   RIC_ALLOC(e2apMsg->choice.successfulOutcome, sizeof(SuccessfulOutcomeE2_t));
-   if(e2apMsg->choice.successfulOutcome == NULLP)
-   {
-      DU_LOG("\nERROR  -->  E2AP : Memory allocation for E2AP-PDU failed");
-      RIC_FREE(e2apMsg, sizeof(E2AP_PDU_t));
-      return RFAILED;  
-   }
 
-   e2apMsg->choice.successfulOutcome->procedureCode = ProcedureCodeE2_id_E2setup;
-   e2apMsg->choice.successfulOutcome->criticality = CriticalityE2_reject;
-   e2apMsg->choice.successfulOutcome->value.present = \
-         SuccessfulOutcomeE2__value_PR_E2setupResponse;
-   e2SetupRsp = &e2apMsg->choice.successfulOutcome->value.choice.E2setupResponse;
-
-   elementCnt = 1;
-   e2SetupRsp->protocolIEs.list.count = elementCnt;
-   e2SetupRsp->protocolIEs.list.size  = elementCnt * sizeof(E2setupResponseIEs_t);
-
-   RIC_ALLOC(e2SetupRsp->protocolIEs.list.array, \
-              e2SetupRsp->protocolIEs.list.size);
-   if(e2SetupRsp->protocolIEs.list.array == NULLP)
-   {
-      DU_LOG("\nERROR  -->  E2AP : Memory allocation for E2ResponseIEs failed");
-      RIC_FREE(e2apMsg->choice.successfulOutcome, sizeof(SuccessfulOutcomeE2_t));
-      RIC_FREE(e2apMsg, sizeof(E2AP_PDU_t));
-      return RFAILED;
-   }
-
-   for(idx=0; idx<elementCnt; idx++)
-   {
-      RIC_ALLOC(e2SetupRsp->protocolIEs.list.array[idx], \
-            sizeof(E2setupResponseIEs_t)); 
-      if(e2SetupRsp->protocolIEs.list.array[idx] == NULLP)
-      {  
-         RIC_FREE(e2SetupRsp->protocolIEs.list.array,\
-                   e2SetupRsp->protocolIEs.list.size);
-         RIC_FREE(e2apMsg->choice.successfulOutcome, \
-               sizeof(SuccessfulOutcomeE2_t));
-         RIC_FREE(e2apMsg, sizeof(E2AP_PDU_t));
-         return RFAILED;
-      }    
-   }
-   /* Global RIC ID */
-   idx = 0;
-   e2SetupRsp->protocolIEs.list.array[idx]->id = ProtocolIE_IDE2_id_GlobalRIC_ID;
-   e2SetupRsp->protocolIEs.list.array[idx]->criticality = CriticalityE2_reject;
-   e2SetupRsp->protocolIEs.list.array[idx]->value.present = \
-                                     E2setupResponseIEs__value_PR_GlobalRIC_ID;
-
-   BuildGlobalRicId(&(e2SetupRsp->protocolIEs.list.array[idx]->value.choice.GlobalRIC_ID));
-
-   xer_fprint(stdout, &asn_DEF_E2AP_PDU, e2apMsg);
-   memset(encBuf, 0, ENC_BUF_MAX_LEN);
-   encBufSize = 0;
-   encRetVal = aper_encode(&asn_DEF_E2AP_PDU, 0, e2apMsg, PrepFinalEncBuf, encBuf);
-
-   /* Check encode results */
-   if(encRetVal.encoded == ENCODE_FAIL)
-   {
-	   DU_LOG("\nERROR  -->  E2AP : Could not encode E2SetupResponse structure (at %s)\n",\
-			   encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
-	   return RFAILED;   
-   } 
-   else 
-   {
-	   DU_LOG("\nDEBUG  -->  E2AP : Created APER encoded buffer for E2SetupResponse\n");
-	   for(int i=0; i< encBufSize; i++)
-	   {
-		   DU_LOG("%x",encBuf[i]);
-	   } 
-   }
-
-
-   if(SendE2APMsg(RIC_APP_MEM_REG, RIC_POOL) != ROK)
-   {
-      DU_LOG("\nERROR  -->  E2AP : Sending E2 Setup Response failed");      
-      return RFAILED;
-   }
-
+   FreeE2SetupRsp(e2apMsg);
    return ROK;
 }
 

@@ -29,9 +29,9 @@
 
 #ifndef O1_ENABLE
 
-#define DU_IP_V4_ADDR "192.168.130.81"
-#define CU_IP_V4_ADDR "192.168.130.82"
-#define RIC_IP_V4_ADDR "192.168.130.80"
+#define DU_IP_V4_ADDR "192.168.130.71"
+#define CU_IP_V4_ADDR "192.168.130.72"
+#define RIC_IP_V4_ADDR "192.168.130.73"
 #define DU_PORT 38472
 #define CU_PORT 38472
 #define RIC_PORT 36421
@@ -64,6 +64,7 @@
 #define NR_BANDWIDTH BANDWIDTH_20MHZ
 #endif
 
+#define TRANS_ID 1
 #define DU_TAC 1
 #define PLMN_MCC0 3
 #define PLMN_MCC1 1
