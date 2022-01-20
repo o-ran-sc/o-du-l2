@@ -887,7 +887,10 @@ uint8_t SchHdlCellCfgReq(Pst *pst, SchCellCfg *schCellCfg)
    fillSchSib1Cfg(schCellCfg->numerology, schCellCfg->bandwidth, cellCb->numSlots,
 	 &(schCellCfg->sib1SchCfg), schCellCfg->phyCellId,
 	 schCellCfg->ssbSchCfg.ssbOffsetPointA);
+   
+   
    memcpy(&cellCb->cellCfg, schCellCfg, sizeof(SchCellCfg));
+   schProcPagingCfg(cellCb);
 
    /* Fill coreset frequencyDomainResource bitmap */
    coreset0Idx = cellCb->cellCfg.schInitialDlBwp.pdcchCommon.commonSearchSpace.coresetId;
