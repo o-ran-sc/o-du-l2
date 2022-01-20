@@ -1288,6 +1288,102 @@ uint8_t BuildBcchConfig(BCCH_Config_t *bcchCfg)
 
 /*******************************************************************
  *
+ * @brief fills First PDCCH monioring Paging occasions 
+ *
+ * @details
+ *
+ *    Function : fillFirstPdcchMonitoringOcc
+ *
+ *    Functionality:
+ *        Fills PDCCH Monitoring PO in PCCH configuration
+ *
+ * @params[in] 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t fillFirstPdcchMonitoringOcc(struct PCCH_Config__firstPDCCH_MonitoringOccasionOfPO *firstPO,\
+                                      PcchCfg *srcPcchCfg)
+{
+   uint8_t numPO = 0, poIdx = 0;
+
+   firstPO->present = srcPcchCfg->firstPDCCHMontioringType;
+
+   GET_NUM_PAGING_OCC(srcPcchCfg->numPagingOcc, numPO);
+   if(srcPcchCfg->numPagingOcc == 0)
+   {
+      DU_LOG("\nINFO   -->  DU APP : Paging Occasions is ZERO, no need to fill further");
+      return ROK;
+   }
+
+   /*Note: Valid values for each number of PO is from Spec 36.331: PCCH-COnfig*/
+   switch(firstPO->present)
+   {
+      case PCCH_Config__firstPDCCH_MonitoringOccasionOfPO_PR_NOTHING:
+         {
+            break;
+         }
+      case PCCH_Config__firstPDCCH_MonitoringOccasionOfPO_PR_sCS15KHZoneT:
+         {
+            DU_ALLOC(firstPO->choice.sCS15KHZoneT, \
+                  sizeof(struct PCCH_Config__firstPDCCH_MonitoringOccasionOfPO__sCS15KHZoneT));
+
+            if(firstPO->choice.sCS15KHZoneT == NULLP)
+            {
+               DU_LOG("\nERROR  -->  DU APP : FirstPdcchMonitoringPO Memory allocation failure");
+               return RFAILED;
+            }
+            firstPO->choice.sCS15KHZoneT->list.count = numPO;
+            firstPO->choice.sCS15KHZoneT->list.size = numPO * sizeof(long);
+
+            for(poIdx = 0; poIdx < numPO; poIdx++)
+            {
+               if(srcPcchCfg->firstPDCCHMontioringInfo[poIdx] > 139)
+               {
+                  DU_LOG("\nERROR  -->  DU APP : Invalid Paging Ocassion value for 15kHz");
+                  return RFAILED;
+               }
+               firstPO->choice.sCS15KHZoneT->list.array[poIdx] = srcPcchCfg->firstPDCCHMontioringInfo[poIdx];
+            }
+            break;
+         }
+      case PCCH_Config__firstPDCCH_MonitoringOccasionOfPO_PR_sCS30KHZoneT_SCS15KHZhalfT:
+         {
+            DU_ALLOC(firstPO->choice.sCS30KHZoneT_SCS15KHZhalfT, \
+                  sizeof(struct PCCH_Config__firstPDCCH_MonitoringOccasionOfPO__sCS30KHZoneT_SCS15KHZhalfT));
+
+            if(firstPO->choice.sCS30KHZoneT_SCS15KHZhalfT == NULLP)
+            {
+               DU_LOG("\nERROR  -->  DU APP : FirstPdcchMonitoringPO Memory allocation failure");
+               return RFAILED;
+            }
+            firstPO->choice.sCS30KHZoneT_SCS15KHZhalfT->list.count = numPO;
+            firstPO->choice.sCS30KHZoneT_SCS15KHZhalfT->list.size = numPO * sizeof(long);
+
+            for(poIdx = 0; poIdx < numPO; poIdx++)
+            {
+               if(srcPcchCfg->firstPDCCHMontioringInfo[poIdx] > 279)
+               {
+                  DU_LOG("\nERROR  -->  DU APP : Invalid Paging Ocassion value for 30kHz or 15kHz HAlFT");
+                  return RFAILED;
+               }
+               firstPO->choice.sCS30KHZoneT_SCS15KHZhalfT->list.array[poIdx] = srcPcchCfg->firstPDCCHMontioringInfo[poIdx];
+            }
+            break;
+         }
+         //TODO for other cases
+      default:
+         {
+            DU_LOG("\nERROR  -->  DU APP : Invalid firstPDCCH-MonitoringOccasionOfPO");
+            return RFAILED;
+
+            break;
+         }
+   }
+   return ROK;
+}
+/*******************************************************************
+ *
  * @brief Builds PCCH configuration 
  *
  * @details
@@ -1309,47 +1405,84 @@ uint8_t BuildPcchConfig(PCCH_Config_t *pcchCfg)
    duPcchCfg = duCfgParam.sib1Params.srvCellCfgCommSib.dlCfg.pcchCfg;
 
    pcchCfg->defaultPagingCycle = duPcchCfg.dfltPagingCycle;
-   pcchCfg->nAndPagingFrameOffset.present =  duPcchCfg.nAndPagingFrmOffPresent;
+   pcchCfg->nAndPagingFrameOffset.present =  duPcchCfg.nAndPagingFrmOffsetType;
    switch(pcchCfg->nAndPagingFrameOffset.present)
    {
+      /**Note: PagingFrame Offset Value differs for each Paging Duration
+       *(oneT, halfT,...). The Range of Offset given in Spec 38.331,Pcch-Config*/
       case PCCH_Config__nAndPagingFrameOffset_PR_NOTHING:
-      {
-         //TODO
-         break;
-      }
+         {
+            //TODO          
+            break;
+         }
       case PCCH_Config__nAndPagingFrameOffset_PR_oneT:
-      {
-         //TODO
-	 break;
-      }
+         {
+            pcchCfg->nAndPagingFrameOffset.choice.oneT = NULLD;
+            break;
+         }
       case PCCH_Config__nAndPagingFrameOffset_PR_halfT:
-      {
-	 //TODO
-	 break;
-      }
+         {
+            if(duPcchCfg.pageFrameOffset > 1)
+            {
+               DU_LOG("\nERROR  -->  DU APP : Invalid PagingFrameOffset for HALF_T");
+               return RFAILED;
+            }
+            pcchCfg->nAndPagingFrameOffset.choice.halfT = duPcchCfg.pageFrameOffset;
+            break;
+         }
       case PCCH_Config__nAndPagingFrameOffset_PR_quarterT:
-      {
-	 //TODO
-	 break;
-      }
+         {
+            if(duPcchCfg.pageFrameOffset > 3)
+            {
+               DU_LOG("\nERROR  -->  DU APP : Invalid PagingFrameOffset for QUARTER_T");
+               return RFAILED;
+            }
+            pcchCfg->nAndPagingFrameOffset.choice.quarterT = duPcchCfg.pageFrameOffset;
+            break;
+         }
       case PCCH_Config__nAndPagingFrameOffset_PR_oneEighthT:
-      {
-	 //TODO
-	 break;
-      }
+         {
+            if(duPcchCfg.pageFrameOffset > 7)
+            {
+               DU_LOG("\nERROR  -->  DU APP : Invalid PagingFrameOffset for ONE_EIGHTH_T");
+               return RFAILED;
+            }
+            pcchCfg->nAndPagingFrameOffset.choice.oneEighthT = duPcchCfg.pageFrameOffset;
+            break;
+         }
       case PCCH_Config__nAndPagingFrameOffset_PR_oneSixteenthT:
-      {
-	 //TODO
-	 break;
-      }
+         {
+            if(duPcchCfg.pageFrameOffset > 15)
+            {
+               DU_LOG("\nERROR  -->  DU APP : Invalid PagingFrameOffset for ONE_SIXTEENTH_T");
+               return RFAILED;
+            }
+            pcchCfg->nAndPagingFrameOffset.choice.oneEighthT = duPcchCfg.pageFrameOffset;
+            break;
+         }
       default:
-      {
-	 DU_LOG("\nERROR  -->  DU APP : Invalid nAndPagingFrameOffset configuration");
-	 return RFAILED;
-      }
+         {
+            DU_LOG("\nERROR  -->  DU APP : Invalid nAndPagingFrameOffset configuration");
+            return RFAILED;
+         }
    }
    pcchCfg->ns = duPcchCfg.numPagingOcc;
 
+   DU_ALLOC(pcchCfg->firstPDCCH_MonitoringOccasionOfPO, \
+         sizeof(struct PCCH_Config__firstPDCCH_MonitoringOccasionOfPO));
+
+   if(pcchCfg->firstPDCCH_MonitoringOccasionOfPO == NULLP)
+   {
+      DU_LOG("\nERROR  -->  DU APP : BuildPcchConfig >> Memory Allocation fails");
+      return RFAILED;
+   }
+
+   if(fillFirstPdcchMonitoringOcc(pcchCfg->firstPDCCH_MonitoringOccasionOfPO, &duPcchCfg) == RFAILED)
+   {
+      DU_LOG("\nERROR  -->  DU APP : BuildPcchConfig >> Filling of Paging Occ failed");
+      return RFAILED;
+
+   }
    return ROK;
 }/* BuildPcchConfig */
 

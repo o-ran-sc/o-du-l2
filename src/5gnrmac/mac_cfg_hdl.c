@@ -270,6 +270,13 @@ uint8_t MacSchCellCfgReq(Pst *pst, MacCellCfg *macCellCfg)
    schCellCfg.sib1SchCfg.coresetZeroIndex = macCellCfg->sib1Cfg.coresetZeroIndex;
    schCellCfg.sib1SchCfg.searchSpaceZeroIndex = macCellCfg->sib1Cfg.searchSpaceZeroIndex;
    schCellCfg.sib1SchCfg.sib1Mcs = macCellCfg->sib1Cfg.sib1Mcs;
+   schCellCfg.sib1SchCfg.pageCfg.numPO  =  macCellCfg->sib1Cfg.pageCfg.numPO;
+   schCellCfg.sib1SchCfg.pageCfg.poPresent = macCellCfg->sib1Cfg.pageCfg.poPresent;
+
+   if(schCellCfg.sib1SchCfg.pageCfg.poPresent)
+   {
+      memcpy(schCellCfg.sib1SchCfg.pageCfg.pagingOcc, macCellCfg->sib1Cfg.pageCfg.pagingOcc, MAX_PO_PER_PF);
+   }
 
    /* fill RACH config params */
    schCellCfg.schRachCfg.prachCfgIdx = macCellCfg->prachCfg.prachCfgIdx;

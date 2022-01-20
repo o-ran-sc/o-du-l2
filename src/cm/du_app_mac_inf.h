@@ -570,6 +570,13 @@ typedef struct prachCfg
    uint8_t       raRspWindow;         /* RA Response Window */
 }PrachCfg;
 
+typedef struct pageCfg
+{
+  uint8_t  numPO;    /*Derived from Ns*/
+  bool     poPresent; /*Whether FirstPDCCH-MonitoringPO is present or not*/
+  uint16_t pagingOcc[MAX_PO_PER_PF]; /*FirstPDCCH-Monitoring Paging Occasion*/
+}PageCfg;
+
 typedef struct sib1CellCfg
 {
    uint8_t  *sib1Pdu;
@@ -578,6 +585,7 @@ typedef struct sib1CellCfg
    uint8_t coresetZeroIndex;     /* derived from 4 LSB of pdcchSib1 present in MIB */
    uint8_t searchSpaceZeroIndex; /* derived from 4 MSB of pdcchSib1 present in MIB */
    uint16_t sib1Mcs;
+   PageCfg  pagingCfg;
 } Sib1CellCfg; 
 
 typedef struct bwpParams

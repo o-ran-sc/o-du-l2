@@ -293,6 +293,31 @@ typedef struct schRaReq
    SlotTimingInfo  winEndTime;
 }SchRaReq;
 
+typedef struct schPageInfo
+{
+  uint8_t        pf;       /*Value of Paging Frame received from DUAPP*/
+  uint8_t        i_s;      /*Value of Paging Occ Index received from DUAPP*/
+  SlotTimingInfo TxTime;   /*Start Paging window*/
+  uint8_t        crntSsbIdx; /*Counts the slot till totalSSB is receached*/
+  uint8_t        mcs;
+  uint8_t        nPRB;
+  uint16_t       msgLen;
+  uint8_t        *pagePdu;   
+}SchPageInfo;
+
+typedef struct schPagingOcc
+{
+  uint8_t frameOffset;
+  uint8_t pagingOccSlot;
+}SchPagingOcc;
+
+typedef struct schPageCb
+{
+   CmLListCp    pageReqInfoRecord[MAX_SFN];   /*List of Page Records received which are stored per sfn*/
+   SchPagingOcc pagMonOcc[MAX_PO_PER_PF]; /*Paging Occasion Slot/FrameOffset are stored*/ 
+   SchPageInfo  currPageInfo;   /*Page Req which are currently processed */
+}SchPageCb;
+
 /**
  * @brief
  * Cell Control block per cell.
@@ -317,6 +342,7 @@ typedef struct schCellCb
    uint32_t      boIndBitMap;                       /*!<Bit map to indicate UEs that have recevied BO */
    SchUeCb       ueCb[MAX_NUM_UE];                  /*!<Pointer to UE contexts of this cell */
    CmLListCp     ueToBeScheduled;                   /*!<Linked list to store UEs pending to be scheduled, */
+   SchPageCb     pageCb;                            /*!<Page Record at Schedular*/
 #ifdef NR_TDD
    uint8_t       numSlotsInPeriodicity;             /*!< number of slots in configured periodicity and SCS */
    uint32_t      slotFrmtBitMap;                    /*!< 2 bits must be read together to determine D/U/S slots. 00-D, 01-U, 10-S */

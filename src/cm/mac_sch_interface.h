@@ -592,10 +592,11 @@ typedef struct
    uint16_t sib1Mcs;
 
    /* parameters derived in scheduler */
-   uint8_t n0;
-   BwpCfg bwp;
-   PdcchCfg sib1PdcchCfg;
-   PdschCfg sib1PdschCfg;
+   uint8_t   n0;
+   BwpCfg    bwp;
+   PdcchCfg  sib1PdcchCfg;
+   PdschCfg  sib1PdschCfg;
+   PageCfg   pageCfg;         /*Config of Paging*/
 }SchSib1Cfg;
 
 typedef struct schRachCfg
@@ -760,7 +761,7 @@ typedef struct schCellCfg
    SchPlmnInfoList plmnInfoList;     /* Consits of PlmnId and Snssai list */
 #ifdef NR_TDD
    TDDCfg         tddCfg;           /* TDD Cfg */ 
-#endif   
+#endif  
 }SchCellCfg;
 
 typedef struct schCellCfgCfm

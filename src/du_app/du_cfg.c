@@ -214,7 +214,7 @@ uint8_t readMacCfg()
    duCfgParam.macCellCfg.ssbCfg.ssbScOffset = SSB_SUBCARRIER_OFFSET;
 #endif
    duCfgParam.macCellCfg.ssbCfg.ssbMask[0] = 1; /* only one SSB is transmitted */
-   duCfgParam.macCellCfg.ssbCfg.ssbMask[1] = 0;
+   //duCfgParam.macCellCfg.ssbCfg.ssbMask[1] = 0;
    if(BuildMibPdu() != ROK)
    {
       DU_LOG("\nERROR  -->  Failed to build MIB PDU");
@@ -278,7 +278,20 @@ uint8_t readMacCfg()
    duCfgParam.macCellCfg.sib1Cfg.coresetZeroIndex = CORESET_0_INDEX;
    duCfgParam.macCellCfg.sib1Cfg.searchSpaceZeroIndex = SEARCHSPACE_0_INDEX;
    duCfgParam.macCellCfg.sib1Cfg.sib1Mcs = DEFAULT_MCS;
-
+  
+   GET_NUM_PAGING_OCC(duCfgParam.sib1Params.srvCellCfgCommSib.dlCfg.pcchCfg.numPagingOcc,
+                           duCfgParam.macCellCfg.sib1Cfg.pagingCfg.numPO);
+   if(duCfgParam.sib1Params.srvCellCfgCommSib.dlCfg.pcchCfg.firstPDCCHMontioringType != \
+             PCCH_Config__firstPDCCH_MonitoringOccasionOfPO_PR_NOTHING)
+   {
+      duCfgParam.macCellCfg.sib1Cfg.pagingCfg.poPresent = TRUE;
+      memcpy(duCfgParam.macCellCfg.sib1Cfg.pagingCfg.pagingOcc, 
+              duCfgParam.sib1Params.srvCellCfgCommSib.dlCfg.pcchCfg.firstPDCCHMontioringInfo,MAX_PO_PER_PF);
+   }
+   else
+   {
+      duCfgParam.macCellCfg.sib1Cfg.pagingCfg.poPresent = FALSE;
+   }
 
    /* fill Intial DL BWP */
    duCfgParam.macCellCfg.initialDlBwp.bwp.firstPrb = 0;
@@ -530,9 +543,11 @@ uint8_t fillServCellCfgCommSib(SrvCellCfgCommSib *srvCellCfgComm)
 
    /* Configuring PCCH Config for SIB1 */
    pcchCfg.dfltPagingCycle = PagingCycle_rf256;
-   pcchCfg.nAndPagingFrmOffPresent = PCCH_Config__nAndPagingFrameOffset_PR_oneT;
-   pcchCfg.numPagingOcc = PCCH_Config__ns_four;
-   srvCellCfgComm->dlCfg.pcchCfg = pcchCfg;
+   pcchCfg.nAndPagingFrmOffsetType = PCCH_Config__nAndPagingFrameOffset_PR_oneT;
+   pcchCfg.pageFrameOffset = 0;
+   pcchCfg.numPagingOcc = PCCH_Config__ns_one;
+   pcchCfg.firstPDCCHMontioringType = PCCH_Config__firstPDCCH_MonitoringOccasionOfPO_PR_sCS30KHZoneT_SCS15KHZhalfT;
+   pcchCfg.firstPDCCHMontioringInfo[0] = 42;
 
 
    /* Configuring UL Config Common */
@@ -646,7 +661,7 @@ uint8_t readCfg()
    }
    cmInetAddr((S8*)g_cfg.DU_IPV4_Addr, &ipv4_du);
    cmInetAddr((S8*)g_cfg.CU_IPV4_Addr, &ipv4_cu);
-   cmInetAddr((S8*)g_cfg.RIC_IPV4_Addr, &ipv4_ric);
+   rc/du_app/du_cfg.cmInetAddr((S8*)g_cfg.RIC_IPV4_Addr, &ipv4_ric);
 
    duCfgParam.sctpParams.cuPort = g_cfg.CU_Port;
    duCfgParam.sctpParams.ricPort = g_cfg.RIC_Port;

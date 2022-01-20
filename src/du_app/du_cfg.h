@@ -299,6 +299,22 @@
 #define DEDICATED_RATIO  10
 #define NUM_OF_SUPPORTED_SLICE  2
 
+/*Spec 38.331 Sec 6.4: Maximum number of paging occasion per paging frame*/
+#define MAX_PO_PER_PF 4
+#define GET_PAGING_CYCLE(enmValue, T) {               \
+        if (enmValue == 0) T = 32;                           \
+       else if (enmValue == 1) T = 64;                       \
+       else if (enmValue == 2) T = 128;                      \
+       else if (enmValue == 3) T = 256;                      \
+       else T = 0;                                         \
+}
+
+#define GET_NUM_PAGING_OCC(enmValue, PO) {               \
+        if (enmValue == 0) PO = 4;                            \
+       else if (enmValue == 1) PO = 2;                       \
+       else if (enmValue == 2) PO = 1;                      \
+       else PO = 0;                                         \
+}
 typedef enum
 {
    GNBDU,
@@ -1107,10 +1123,12 @@ typedef struct bcchCfg
 
 typedef struct pcchCfg
 {
-   long   dfltPagingCycle;      /* Default paging cycle */
-   long   nAndPagingFrmOffPresent;
-   long   nAndPagingFrmOff;     /* n and Paging Frame offset */
-   long   numPagingOcc;         /* Number of paging occassions in paging frame */
+   uint8_t  dfltPagingCycle;          /* Default paging cycle */
+   uint8_t  nAndPagingFrmOffsetType;  /*Number of PagingFrames in PagingCycle defined in terms of T.*/
+   uint8_t  pageFrameOffset;          /* Paging Frame offset */
+   uint8_t  numPagingOcc;             /* Number of paging occassions in paging frame */
+   uint8_t  firstPDCCHMontioringType; /* First PDCCH Monitoring Paging Occasion Presence Type*/
+   uint16_t firstPDCCHMontioringInfo[MAX_PO_PER_PF]; /*Indicates the first PDCCH monitoring occasion of each PO of the PF*/
 }PcchCfg;
 
 typedef struct scsSpecCarrier
