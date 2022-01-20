@@ -449,6 +449,10 @@ typedef struct
    SchSSBPeriod   ssbPeriod;        /* SSB Periodicity in msec */
    uint8_t     ssbSubcOffset;    /* Subcarrier Offset(Kssb) */
    uint32_t    nSSBMask[SCH_SSB_MASK_SIZE];      /* Bitmap for actually transmitted SSB. */
+   
+   /*Ref:Spec 38.331 "ssb-PositionsInBurst", Value 0 in Bitmap => corresponding SS/PBCH block is not transmitted
+    *value 1 => corresponding SS/PBCH block is transmitted*/
+   uint8_t     totNumSsb;       /*S = Total Number of Actual SSB transmitted*/
 }SchSsbCfg;
 
 typedef struct bwpCfg
@@ -582,6 +586,13 @@ typedef struct pdcchCfg
 } PdcchCfg;
 /* end of SIB1 PDCCH structures */
 
+typedef struct pageCfg
+{
+   uint8_t  numPO;                    /*Derived from Ns*/
+   bool     poPresent;                /*FirstPDCCH-MonitoringPO is present or not*/
+   uint16_t pagingOcc[MAX_PO_PER_PF]; /*FirstPDCCH-Monitoring Paging Occasion*/
+}PageCfg;
+
 typedef struct
 {
    /* parameters recieved from DU-APP */
@@ -592,10 +603,11 @@ typedef struct
    uint16_t sib1Mcs;
 
    /* parameters derived in scheduler */
-   uint8_t n0;
-   BwpCfg bwp;
-   PdcchCfg sib1PdcchCfg;
-   PdschCfg sib1PdschCfg;
+   uint8_t   n0;
+   BwpCfg    bwp;
+   PdcchCfg  sib1PdcchCfg;
+   PdschCfg  sib1PdschCfg;
+   PageCfg   pageCfg;         /*Config of Paging*/
 }SchSib1Cfg;
 
 typedef struct schRachCfg
@@ -760,7 +772,7 @@ typedef struct schCellCfg
    SchPlmnInfoList plmnInfoList;     /* Consits of PlmnId and Snssai list */
 #ifdef NR_TDD
    TDDCfg         tddCfg;           /* TDD Cfg */ 
-#endif   
+#endif  
 }SchCellCfg;
 
 typedef struct schCellCfgCfm

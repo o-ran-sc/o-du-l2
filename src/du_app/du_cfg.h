@@ -1107,10 +1107,12 @@ typedef struct bcchCfg
 
 typedef struct pcchCfg
 {
-   long   dfltPagingCycle;      /* Default paging cycle */
-   long   nAndPagingFrmOffPresent;
-   long   nAndPagingFrmOff;     /* n and Paging Frame offset */
-   long   numPagingOcc;         /* Number of paging occassions in paging frame */
+   uint8_t  dfltPagingCycle;                        /* Default paging cycle */
+   uint8_t  nAndPagingFrmOffsetType;                /*Number of PagingFrames in PagingCycle defined in terms of T.*/
+   uint8_t  pageFrameOffset;                        /* Paging Frame offset */
+   uint8_t  ns;                                     /* Number of paging occassions in paging frame */
+   uint8_t  firstPDCCHMontioringType;               /* First PDCCH Monitoring Paging Occasion Presence Type*/
+   uint16_t firstPDCCHMontioringInfo[MAX_PO_PER_PF];/*Indicates the first PDCCH monitoring occasion of each PO of the PF*/
 }PcchCfg;
 
 typedef struct scsSpecCarrier

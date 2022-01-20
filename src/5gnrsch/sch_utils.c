@@ -1757,7 +1757,6 @@ void covertFreqDomRsrcMapToIAPIFormat(uint8_t *sourceBitMap, uint8_t *destBitMap
       numBitsToShift += 8;
    }
 }
-
 /**********************************************************************
          End of file
 **********************************************************************/
