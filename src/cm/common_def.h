@@ -107,6 +107,9 @@
 #define ODU_UE_THROUGHPUT_PRINT_TIME_INTERVAL      5     /* in milliseconds */
 #define ODU_SNSSAI_THROUGHPUT_PRINT_TIME_INTERVAL  60000 /* in milliseconds */
 
+/*Spec 38.331 Sec 6.4: Maximum number of paging occasion per paging frame*/
+#define MAX_PO_PER_PF 4
+
 /* Defining macros for common utility functions */
 #define ODU_GET_MSG_BUF SGetMsg
 #define ODU_PUT_MSG_BUF SPutMsg
@@ -201,6 +204,20 @@
    _isLcidValid = ((_lcId >= SRB0_LCID && _lcId <= MAX_DRB_LCID) ? 1 : 0);\
 }
 
+#define GET_PAGING_CYCLE(enmValue, T) {               \
+        if (enmValue == 0) T = 32;                           \
+       else if (enmValue == 1) T = 64;                       \
+       else if (enmValue == 2) T = 128;                      \
+       else if (enmValue == 3) T = 256;                      \
+       else T = 0;                                         \
+}
+
+#define GET_NUM_PAGING_OCC(enmValue, PO) {               \
+        if (enmValue == 0) PO = 4;                            \
+       else if (enmValue == 1) PO = 2;                       \
+       else if (enmValue == 2) PO = 1;                      \
+       else PO = 0;                                         \
+}
 typedef enum
 {
    UE_CFG_INACTIVE,
@@ -321,6 +338,7 @@ uint8_t SGetStaticBufNewForDebug(char *file, char *func, char *line, \
 Region region, Pool pool, Data **ptr, Size size, uint8_t memType);
 uint8_t SPutStaticBufNewForDebug(char *file, char *func, char *line, \
 Region region, Pool pool, Data *ptr, Size size, uint8_t memType);
+uint8_t countSetBits(uint32_t num);
 
 #endif
 

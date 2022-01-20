@@ -1758,6 +1758,117 @@ void covertFreqDomRsrcMapToIAPIFormat(uint8_t *sourceBitMap, uint8_t *destBitMap
    }
 }
 
+/****************************************************************************
+ *
+ * @brief Stores the Paging Configuration from DU APP in CellCb 
+ *
+ * @details
+ *
+ *    Function : schProcPagingParam
+ *
+ *    Functionality:
+ *          Process the Paging Configuration when FirstPDCCHMonitoring for
+ *          Paging Ocassion is not present.
+ *
+ *          As per 38.304 Sec 7.1,
+ *          "When firstPDCCH-MonitoringOccasionOfPO is present, the
+ *          starting PDCCH monitoring occasion number of (i_s + 1)th PO is the
+ *          (i_s + 1)th value of the firstPDCCHMonitoringOccasionOfPO
+ *          parameter; otherwise, it is equal to i_s * S."
+ *          "S = number of actual transmitted SSBs determined according 
+ *              to ssb-PositionsInBurst in SIB1"
+ *
+ * @params[in] SchCellCb *cell 
+ *       
+ * @return void 
+ *        
+ *************************************************************************/
+void schProcPagingCfg(SchCellCb *cell)
+{
+   PageCfg *pageCfgRcvd = NULL;
+   uint8_t i_sIdx = 0;
+
+   pageCfgRcvd = &(cell->cellCfg.sib1SchCfg.pageCfg);
+
+   if(pageCfgRcvd->poPresent == TRUE)
+   {
+      /*Fetching first Pdcch Monitoring Occasion for SFN (i_s + 1)th*/
+      for(i_sIdx = 0; i_sIdx < pageCfgRcvd->numPO; i_sIdx++)
+      {
+         cell->pageCb.pagMonOcc[i_sIdx].pagingOccSlot = pageCfgRcvd->pagingOcc[i_sIdx] / MAX_SYMB_PER_SLOT ;
+         if ((pageCfgRcvd->pagingOcc[i_sIdx] % MAX_SYMB_PER_SLOT) != 0 )
+         {
+            cell->pageCb.pagMonOcc[i_sIdx].pagingOccSlot++;
+         }
+
+         cell->pageCb.pagMonOcc[i_sIdx].frameOffset = 0;
+
+      }
+   }
+   else
+   {
+      schCfgPdcchMonOccOfPO(cell);                  
+   }
+}
+
+/****************************************************************************
+ *
+ * @brief Calculate PO if not present in Configuration 
+ *
+ * @details
+ *
+ *    Function : schCfgPdcchMonOccOfPO
+ *
+ *    Functionality: In this function, PO are calculated i_s * S because
+ *    FirstPDCCHMonitoring_ForPO is not present.
+ *
+ * @params[in] SchCellCb *cellCb
+ *       
+ * @return void 
+ *        
+ *************************************************************************/
+void schCfgPdcchMonOccOfPO(SchCellCb *cell)
+{
+   uint8_t         cnt = 0, incr = 1, i_sIdx = 0, frameOffSet = 0;
+   uint8_t         nsValue = cell->cellCfg.sib1SchCfg.pageCfg.numPO;
+   uint8_t         totalNumSsb = cell->cellCfg.ssbSchCfg.totNumSsb;
+   SlotTimingInfo  tmpTimingInfo, pdcchTime; 
+
+   /*Starting with First Sfn and slot*/
+   tmpTimingInfo.sfn = 0;
+   tmpTimingInfo.slot = 0;
+
+   pdcchTime = tmpTimingInfo;
+
+   while(i_sIdx < nsValue)
+   {
+      /*Increment frame Offset if PO falls on next SFN*/
+      if(pdcchTime.sfn != tmpTimingInfo.sfn)
+      {
+         frameOffSet++;
+      }
+      pdcchTime = tmpTimingInfo;
+      schIncrSlot(&(tmpTimingInfo), incr, cell->numSlots);
+
+      if (i_sIdx == 0)
+      {
+         cell->pageCb.pagMonOcc[i_sIdx].pagingOccSlot = pdcchTime.slot;
+         cell->pageCb.pagMonOcc[i_sIdx].frameOffset = frameOffSet;
+         i_sIdx++;
+      }
+      else
+      {
+         cnt++;
+         if((cnt == totalNumSsb) && (i_sIdx < MAX_PO_PER_PF)) 
+         {
+            cell->pageCb.pagMonOcc[i_sIdx].pagingOccSlot = pdcchTime.slot;
+            cell->pageCb.pagMonOcc[i_sIdx].frameOffset = frameOffSet;
+            cnt = 0;
+            i_sIdx++;
+         }
+      }
+   }
+}
 /**********************************************************************
          End of file
 **********************************************************************/
