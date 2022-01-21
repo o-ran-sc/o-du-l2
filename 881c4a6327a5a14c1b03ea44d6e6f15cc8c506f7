@@ -1,0 +1,506 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2963ccd5_c4b0ba32",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-01-21T07:45:49Z",
+      "side": 1,
+      "message": "Add back the blank line here after all #include",
+      "revId": "881c4a6327a5a14c1b03ea44d6e6f15cc8c506f7",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ff636532_f65fbb74",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-01-21T07:45:49Z",
+      "side": 1,
+      "message": "Instead of this can we not call BuildF1SetupReq function? It will ensure that if we make any changes in F1 setup request msg, this will also get updated",
+      "revId": "881c4a6327a5a14c1b03ea44d6e6f15cc8c506f7",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "937702a3_ef8bdbff",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-01-21T07:45:49Z",
+      "side": 1,
+      "message": "Always use \"Rsp\" to refer to response, do not use \"Res\". \"Res\" we generally use to refer to \n\"Result\"",
+      "range": {
+        "startLine": 132,
+        "startChar": 11,
+        "endLine": 132,
+        "endChar": 27
+      },
+      "revId": "881c4a6327a5a14c1b03ea44d6e6f15cc8c506f7",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e34e7a26_2070859c",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-01-21T07:45:49Z",
+      "side": 1,
+      "message": "same as above",
+      "revId": "881c4a6327a5a14c1b03ea44d6e6f15cc8c506f7",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "340d7ad9_c39c7bfc",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 159,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-01-21T07:45:49Z",
+      "side": 1,
+      "message": "set arrIdx\u003d0 before this line, and use that everywhere",
+      "range": {
+        "startLine": 159,
+        "startChar": 89,
+        "endLine": 159,
+        "endChar": 90
+      },
+      "revId": "881c4a6327a5a14c1b03ea44d6e6f15cc8c506f7",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ca90fa2b_ff9ac4aa",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 166,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-01-21T07:45:49Z",
+      "side": 1,
+      "message": "Code looks clumsy here due to big length of each line.\nAssign address of \"e2NodeAddItem-\u003evalue.choice.E2nodeComponentConfigAddition_Item.e2nodeComponentConfiguration\" to a local pointer variable and use it",
+      "range": {
+        "startLine": 166,
+        "startChar": 3,
+        "endLine": 166,
+        "endChar": 94
+      },
+      "revId": "881c4a6327a5a14c1b03ea44d6e6f15cc8c506f7",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1d1cc198_c0765933",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 193,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-01-21T07:45:49Z",
+      "side": 1,
+      "message": "same as above",
+      "revId": "881c4a6327a5a14c1b03ea44d6e6f15cc8c506f7",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8bcdb6b0_ea0d1990",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 211,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-01-21T07:45:49Z",
+      "side": 1,
+      "message": "return 0?",
+      "revId": "881c4a6327a5a14c1b03ea44d6e6f15cc8c506f7",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bb9a55ba_de8869a0",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 243,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-01-21T07:45:49Z",
+      "side": 1,
+      "message": "sizeof(E2setupRequestIEs_t *)",
+      "range": {
+        "startLine": 243,
+        "startChar": 65,
+        "endLine": 243,
+        "endChar": 84
+      },
+      "revId": "881c4a6327a5a14c1b03ea44d6e6f15cc8c506f7",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e07c01bf_d716d3c0",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 302,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-01-21T07:45:49Z",
+      "side": 1,
+      "message": "rename to BuildE2NodeConfigAddList",
+      "range": {
+        "startLine": 302,
+        "startChar": 6,
+        "endLine": 302,
+        "endChar": 30
+      },
+      "revId": "881c4a6327a5a14c1b03ea44d6e6f15cc8c506f7",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "050dcff1_776f09d2",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 303,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-01-21T07:45:49Z",
+      "side": 1,
+      "message": "return RFAILED from here if buildE2NodeConfigAddList returns failure",
+      "revId": "881c4a6327a5a14c1b03ea44d6e6f15cc8c506f7",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2e46d45b_82083d99",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 447,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-01-21T07:45:49Z",
+      "side": 1,
+      "message": "since DU_FREE already has a null check. This NULL check can be removed",
+      "revId": "881c4a6327a5a14c1b03ea44d6e6f15cc8c506f7",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0586df56_67ff0376",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 468,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-01-21T07:45:49Z",
+      "side": 1,
+      "message": "Duplicate null check",
+      "revId": "881c4a6327a5a14c1b03ea44d6e6f15cc8c506f7",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c94f0103_6a43aa4f",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 474,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-01-21T07:45:49Z",
+      "side": 1,
+      "message": "Duplicate null check",
+      "revId": "881c4a6327a5a14c1b03ea44d6e6f15cc8c506f7",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d4a15980_534a86a2",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 896,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-01-21T07:45:49Z",
+      "side": 1,
+      "message": "As per our convention, we do not start variable name with capital letter",
+      "range": {
+        "startLine": 896,
+        "startChar": 19,
+        "endLine": 896,
+        "endChar": 49
+      },
+      "revId": "881c4a6327a5a14c1b03ea44d6e6f15cc8c506f7",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1a35226a_3c7ee798",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 900,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-01-21T07:45:49Z",
+      "side": 1,
+      "message": "same as above",
+      "range": {
+        "startLine": 900,
+        "startChar": 44,
+        "endLine": 900,
+        "endChar": 71
+      },
+      "revId": "881c4a6327a5a14c1b03ea44d6e6f15cc8c506f7",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a34b1e19_2c3c5b6b",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 932,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-01-21T07:45:49Z",
+      "side": 1,
+      "message": "add a line break after this",
+      "revId": "881c4a6327a5a14c1b03ea44d6e6f15cc8c506f7",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fb67ec25_561d1957",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 960,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-01-21T07:45:49Z",
+      "side": 1,
+      "message": "Let this function be used only for extracting the required info from the E2AP msg. \nLets call another function from end of this function. This new function should do all the freeing of memory",
+      "revId": "881c4a6327a5a14c1b03ea44d6e6f15cc8c506f7",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "915d2e93_acfc423e",
+        "filename": "src/du_app/du_e2ap_msg_hdl.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-01-21T07:45:49Z",
+      "side": 1,
+      "message": "call this FreeE2SetupReq . This is the convention we followed in F1AP",
+      "revId": "881c4a6327a5a14c1b03ea44d6e6f15cc8c506f7",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3164e184_8cd65d52",
+        "filename": "src/ric_stub/ric_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-01-21T07:45:49Z",
+      "side": 1,
+      "message": "move to header file",
+      "revId": "881c4a6327a5a14c1b03ea44d6e6f15cc8c506f7",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3947f65e_d51fefaf",
+        "filename": "src/ric_stub/ric_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-01-21T07:45:49Z",
+      "side": 1,
+      "message": "RIC_FREE",
+      "revId": "881c4a6327a5a14c1b03ea44d6e6f15cc8c506f7",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4688ce0d_5bc77251",
+        "filename": "src/ric_stub/ric_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-01-21T07:45:49Z",
+      "side": 1,
+      "message": "RIC_FREE",
+      "range": {
+        "startLine": 152,
+        "startChar": 12,
+        "endLine": 152,
+        "endChar": 21
+      },
+      "revId": "881c4a6327a5a14c1b03ea44d6e6f15cc8c506f7",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "236a98f9_f99cd406",
+        "filename": "src/ric_stub/ric_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 176,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-01-21T07:45:49Z",
+      "side": 1,
+      "message": "variable names should not start with capital letter",
+      "range": {
+        "startLine": 176,
+        "startChar": 87,
+        "endLine": 176,
+        "endChar": 114
+      },
+      "revId": "881c4a6327a5a14c1b03ea44d6e6f15cc8c506f7",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0362838a_3d630468",
+        "filename": "src/ric_stub/ric_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 223,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-01-21T07:45:49Z",
+      "side": 1,
+      "message": "can we extract the DU_ID received in E2 setup request and send the same here?",
+      "revId": "881c4a6327a5a14c1b03ea44d6e6f15cc8c506f7",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a986c3b4_749257f8",
+        "filename": "src/ric_stub/ric_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 321,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-01-21T07:45:49Z",
+      "side": 1,
+      "message": "check if this function returns RFAILED in any scenario.\nIf yes, then break from here",
+      "revId": "881c4a6327a5a14c1b03ea44d6e6f15cc8c506f7",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e8d5ddcb_df09ae49",
+        "filename": "src/ric_stub/ric_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 329,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-01-21T07:45:49Z",
+      "side": 1,
+      "message": "same as above",
+      "range": {
+        "startLine": 329,
+        "startChar": 6,
+        "endLine": 329,
+        "endChar": 43
+      },
+      "revId": "881c4a6327a5a14c1b03ea44d6e6f15cc8c506f7",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
