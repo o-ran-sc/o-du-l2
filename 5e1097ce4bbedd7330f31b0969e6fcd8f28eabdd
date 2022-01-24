@@ -3,6 +3,114 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6e8651c8_b3c93220",
+        "filename": "src/du_app/du_cfg.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 1269,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-01-24T11:11:59Z",
+      "side": 1,
+      "message": "Call this f1MsgReqBuf",
+      "revId": "5e1097ce4bbedd7330f31b0969e6fcd8f28eabdd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2e532de4_66549472",
+        "filename": "src/du_app/du_cfg.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 1271,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-01-24T11:11:59Z",
+      "side": 1,
+      "message": "f1MsgRspBuf",
+      "range": {
+        "startLine": 1271,
+        "startChar": 12,
+        "endLine": 1271,
+        "endChar": 28
+      },
+      "revId": "5e1097ce4bbedd7330f31b0969e6fcd8f28eabdd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "376e623f_707fe7df",
+        "filename": "src/du_app/du_cfg.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 1274,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-01-24T11:11:59Z",
+      "side": 1,
+      "message": "avoid making global parameter",
+      "revId": "5e1097ce4bbedd7330f31b0969e6fcd8f28eabdd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "79731509_9fa933f6",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 982,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-01-24T11:11:59Z",
+      "side": 1,
+      "message": "no action needed here?",
+      "revId": "5e1097ce4bbedd7330f31b0969e6fcd8f28eabdd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fa75bfbf_b12468e7",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2011,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-01-24T11:11:59Z",
+      "side": 1,
+      "message": "add line break before this line",
+      "revId": "5e1097ce4bbedd7330f31b0969e6fcd8f28eabdd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5e2f7747_90c99776",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 14175,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-01-24T11:11:59Z",
+      "side": 1,
+      "message": "move this part of code inside procF1SetupRsp",
+      "revId": "5e1097ce4bbedd7330f31b0969e6fcd8f28eabdd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "62e4c768_0b82c6d4",
         "filename": "src/du_app/du_msg_hdl.c",
         "patchSetId": 3
@@ -14,6 +122,47 @@
       "writtenOn": "2022-01-21T10:38:17Z",
       "side": 1,
       "message": "can i remove this part of code , since i have added the trigger at some other point?",
+      "revId": "5e1097ce4bbedd7330f31b0969e6fcd8f28eabdd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a870b0d2_2d182517",
+        "filename": "src/du_app/du_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 992,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-01-24T11:11:59Z",
+      "side": 1,
+      "message": "yes",
+      "parentUuid": "62e4c768_0b82c6d4",
+      "revId": "5e1097ce4bbedd7330f31b0969e6fcd8f28eabdd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cfba810a_07055ae4",
+        "filename": "src/ric_stub/ric_e2ap_msg_hdl.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-01-24T11:11:59Z",
+      "side": 1,
+      "message": "Is there a global Cb for ric stub?\nIf yes, can we add this param in this global structure",
+      "range": {
+        "startLine": 53,
+        "startChar": 5,
+        "endLine": 53,
+        "endChar": 18
+      },
       "revId": "5e1097ce4bbedd7330f31b0969e6fcd8f28eabdd",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
