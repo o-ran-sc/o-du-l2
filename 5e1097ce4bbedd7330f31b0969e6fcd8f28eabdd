@@ -18,6 +18,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9f6b9ec7_1105c263",
+        "filename": "src/du_app/du_cfg.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 1269,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-01-27T06:58:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6e8651c8_b3c93220",
+      "revId": "5e1097ce4bbedd7330f31b0969e6fcd8f28eabdd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2e532de4_66549472",
@@ -31,6 +49,30 @@
       "writtenOn": "2022-01-24T11:11:59Z",
       "side": 1,
       "message": "f1MsgRspBuf",
+      "range": {
+        "startLine": 1271,
+        "startChar": 12,
+        "endLine": 1271,
+        "endChar": 28
+      },
+      "revId": "5e1097ce4bbedd7330f31b0969e6fcd8f28eabdd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a863391e_42d3f07a",
+        "filename": "src/du_app/du_cfg.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 1271,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-01-27T06:58:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2e532de4_66549472",
       "range": {
         "startLine": 1271,
         "startChar": 12,
@@ -58,6 +100,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "80ca5b82_861e968e",
+        "filename": "src/du_app/du_cfg.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 1274,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-01-27T06:58:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "376e623f_707fe7df",
+      "revId": "5e1097ce4bbedd7330f31b0969e6fcd8f28eabdd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "79731509_9fa933f6",
@@ -71,6 +131,24 @@
       "writtenOn": "2022-01-24T11:11:59Z",
       "side": 1,
       "message": "no action needed here?",
+      "revId": "5e1097ce4bbedd7330f31b0969e6fcd8f28eabdd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "89cc22fa_083059c0",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 982,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-01-27T06:58:56Z",
+      "side": 1,
+      "message": "Right now I have not added any action here becz we are not using that information at any place, once I will get the appropriate place to use it, will add it here.\nlike ProtocolIE_IDE2_id_GlobalRIC_ID in this case we are storing plmn information but we are not at all using that information nor freeing that memory.",
+      "parentUuid": "79731509_9fa933f6",
       "revId": "5e1097ce4bbedd7330f31b0969e6fcd8f28eabdd",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -92,6 +170,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4b52804a_bfc69229",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2011,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-01-27T06:58:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fa75bfbf_b12468e7",
+      "revId": "5e1097ce4bbedd7330f31b0969e6fcd8f28eabdd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5e2f7747_90c99776",
@@ -105,6 +201,24 @@
       "writtenOn": "2022-01-24T11:11:59Z",
       "side": 1,
       "message": "move this part of code inside procF1SetupRsp",
+      "revId": "5e1097ce4bbedd7330f31b0969e6fcd8f28eabdd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9a3b3a7d_1872c925",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 14175,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-01-27T06:58:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5e2f7747_90c99776",
       "revId": "5e1097ce4bbedd7330f31b0969e6fcd8f28eabdd",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -144,6 +258,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d6471c9e_e82c64ea",
+        "filename": "src/du_app/du_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 992,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-01-27T06:58:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a870b0d2_2d182517",
+      "revId": "5e1097ce4bbedd7330f31b0969e6fcd8f28eabdd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cfba810a_07055ae4",
@@ -157,6 +289,30 @@
       "writtenOn": "2022-01-24T11:11:59Z",
       "side": 1,
       "message": "Is there a global Cb for ric stub?\nIf yes, can we add this param in this global structure",
+      "range": {
+        "startLine": 53,
+        "startChar": 5,
+        "endLine": 53,
+        "endChar": 18
+      },
+      "revId": "5e1097ce4bbedd7330f31b0969e6fcd8f28eabdd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fc15d051_e02731e1",
+        "filename": "src/ric_stub/ric_e2ap_msg_hdl.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-01-27T06:58:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cfba810a_07055ae4",
       "range": {
         "startLine": 53,
         "startChar": 5,
