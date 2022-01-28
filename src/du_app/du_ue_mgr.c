@@ -527,7 +527,7 @@ int32_t genGnbDuUeF1apId(uint8_t cellId)
     GET_CELL_IDX(cellId, cellIdx);
     if(duCb.actvCellLst[cellIdx])
     {
-       return  ++duCb.actvCellLst[cellIdx]->gnbDuUeF1apIdGenerator;
+       return  ++duCb.gnbDuUeF1apIdGenerator;
     }
     else
     {

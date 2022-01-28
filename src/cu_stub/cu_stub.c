@@ -20,6 +20,8 @@
 #include "common_def.h"
 #include "cu_stub_sctp.h"
 #include "cu_stub_egtp.h"
+#include "OCTET_STRING.h"
+#include "cu_f1ap_msg_hdl.h"
 #include "cu_stub.h"
 
 #ifdef O1_ENABLE
@@ -28,11 +30,62 @@
 
 
 #ifdef O1_ENABLE
-
 extern StartupConfig g_cfg;
-
 #endif
 
+/*******************************************************************
+ *
+ * @brief Fetches pointer to DU Database
+ *
+ * @details
+ *
+ *    Function : getDuDb
+ *
+ *    Functionality:
+ *      Searches and returns pointer to DU structure based on DU Id
+ *
+ * @params[in] DU Id
+ * @return Pointer to DU Db
+ *
+ ******************************************************************/
+DuDb* getDuDb(uint32_t duId)
+{
+   uint8_t duIdx;
+   for(duIdx=0; duIdx < cuCb.numDu; duIdx++)
+   {
+      if(cuCb.duInfo[duIdx].duId == duId)
+         return (&cuCb.duInfo[duIdx]);
+   }
+   return NULLP;
+}
+
+/*******************************************************************
+ *
+ * @brief Fetches pointer to Cell Cb
+ *
+ * @details
+ *
+ *    Function : getCellCb
+ *
+ *    Functionality:
+ *       Searches for a cell within a DU based on NR cell Id
+ *       Returns pointer to this cell Cb structure
+ *
+ * @params[in] Pointer to DU Db
+ *             NR Cell ID
+ * @return Pointer to cell Cb
+ *
+ ******************************************************************/
+CuCellCb* getCellCb(DuDb *duDb, uint32_t cellId)
+{
+   uint8_t cellIdx;
+   for(cellIdx=0; cellIdx < duDb->numCells; cellIdx++)
+   {
+      if(duDb->cellCb[cellIdx].nrCellId == cellId)
+         return &(duDb->cellCb[cellIdx]);
+   }
+   return NULLP;
+}
 
 /*******************************************************************
  *
