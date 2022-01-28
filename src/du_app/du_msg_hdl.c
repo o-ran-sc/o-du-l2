@@ -58,7 +58,6 @@ DuCfgParams duCfgParam;
 uint8_t packRlcConfigReq(Pst *pst, RlcMngmt *cfg);
 uint8_t cmPkLkwCntrlReq(Pst *pst, RlcMngmt *cfg);
 uint8_t cmPkLrgCfgReq(Pst *pst, RgMngmt *cfg);
-uint8_t BuildAndSendE2SetupReq();
 uint8_t egtpHdlDatInd(EgtpMsg egtpMsg);
 uint8_t BuildAndSendDUConfigUpdate();
 uint16_t getTransId();
@@ -384,7 +383,6 @@ uint8_t duProcCfgComplete()
          cell->cellInfo.maxUe = duCfgParam.maxUe;
          cell->cellStatus = CELL_OUT_OF_SERVICE;
          gCellStatus = CELL_DOWN;
-         cell->gnbDuUeF1apIdGenerator = 0;
          duCb.cfgCellLst[duCb.numCfgCells] = cell;
          duCb.numCfgCells++;
       }

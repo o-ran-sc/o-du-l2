@@ -86,12 +86,32 @@ typedef struct cuCfgParams
    RrcVersion       rrcVersion;
 }CuCfgParams;
 
+typedef struct cuCellCb CuCellCb;
+
+typedef struct cuUeCb
+{
+   CuCellCb  *cellCb;
+   uint32_t  crnti;
+   uint8_t   gnbDuUeF1apId;
+   uint8_t   gnbCuUeF1apId;
+   F1apMsgDb f1apMsgDb;
+}CuUeCb;
+
+struct cuCellCb
+{
+   uint32_t nrCellId;
+   uint8_t  numUe;
+   CuUeCb   *ueCb[MAX_NUM_UE];
+};
+
 typedef struct duDb
 {
    uint32_t duId;
    char     duName[CU_DU_NAME_LEN_MAX];
-   //Cell Info
-   //UE Info within each Cell
+   uint8_t  numCells;
+   CuCellCb cellCb[MAX_NUM_CELL];  
+   uint8_t  numUe;
+   CuUeCb   ueCb[MAX_NUM_CELL * MAX_NUM_UE];
 }DuDb;
 
 typedef struct cuGlobalCb
@@ -101,6 +121,7 @@ typedef struct cuGlobalCb
    Snssai      *snssaiList[MAX_NUM_OF_SLICE];
    uint8_t     numDu;
    DuDb        duInfo[MAX_DU_SUPPORTED];
+   uint32_t    gnbCuUeF1apIdGenerator;   /* Generating CU UE F1AP ID */
 }CuGlobalCb;
 
 CuGlobalCb cuCb;
