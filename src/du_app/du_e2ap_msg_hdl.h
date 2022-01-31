@@ -38,6 +38,7 @@ E2apMsgDb e2apMsgDb;
 uint8_t BuildAndSendE2SetupReq();
 uint8_t SendE2APMsg(Region , Pool );
 void E2APMsgHdlr(Buffer *mBuf);
+uint8_t BuildAndSendE2NodeConfigUpdate();
 /**********************************************************************
   End of file
  **********************************************************************/
