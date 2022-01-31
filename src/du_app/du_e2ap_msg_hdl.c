@@ -991,6 +991,7 @@ uint8_t procE2SetupRsp(E2AP_PDU_t *e2apMsg)
       }
    }
    freeAperDecodingOfE2SetupRsp(e2SetRspMsg);
+   BuildAndSendE2NodeConfigUpdate();
    return ROK;
 }
 
@@ -1437,6 +1438,158 @@ uint8_t SendE2APMsg(Region region, Pool pool)
 
 /*******************************************************************
  *
+ * @brief Deallocate the memory allocated for E2nodeConfigurationUpdate msg 
+ *
+ * @details
+ *
+ *    Function : FreeE2NodeConfigUpdate 
+ *
+ *    Functionality:
+ *       - freeing the memory allocated for E2nodeConfigurationUpdate
+ *
+ * @params[in] E2AP_PDU_t *e2apMsg 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+void FreeE2NodeConfigUpdate(E2AP_PDU_t *e2apMsg)
+{
+   uint8_t arrIdx =0;
+   E2nodeConfigurationUpdate_t *e2NodeConfigUpdate;
+
+   if(e2apMsg != NULLP)
+   {
+      if(e2apMsg->choice.initiatingMessage != NULLP)
+      {
+         e2NodeConfigUpdate = &e2apMsg->choice.initiatingMessage->value.choice.E2nodeConfigurationUpdate;
+         if(e2NodeConfigUpdate->protocolIEs.list.array != NULLP)
+         {
+            for(arrIdx = 0; arrIdx < e2NodeConfigUpdate->protocolIEs.list.count; arrIdx++)
+            {
+               DU_FREE(e2NodeConfigUpdate->protocolIEs.list.array[arrIdx], sizeof(E2nodeConfigurationUpdate_t));
+            }
+            DU_FREE(e2NodeConfigUpdate->protocolIEs.list.array, e2NodeConfigUpdate->protocolIEs.list.size);
+         }
+         DU_FREE(e2apMsg->choice.initiatingMessage, sizeof(InitiatingMessageE2_t));
+      }
+      DU_FREE(e2apMsg, sizeof(E2AP_PDU_t));
+   }
+}
+
+/*******************************************************************
+ *
+ * @brief Buld and send the E2 node config update msg 
+ *
+ * @details
+ *
+ *    Function : BuildAndSendE2NodeConfigUpdate
+ *
+ *    Functionality:
+ *         - Buld and send the E2 node config update msg
+ *
+ * @params[in] 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+
+uint8_t BuildAndSendE2NodeConfigUpdate()
+{
+   uint8_t arrIdx = 0,elementCnt = 1;
+   uint8_t ret = ROK;
+   E2AP_PDU_t        *e2apMsg = NULLP;
+   E2nodeConfigurationUpdate_t *e2NodeConfigUpdate = NULLP;
+   asn_enc_rval_t     encRetVal;       /* Encoder return value */
+
+   DU_LOG("\nINFO   -->  E2AP : Building E2 Node config update\n");
+   do
+   {
+      DU_ALLOC(e2apMsg, sizeof(E2AP_PDU_t));
+      if(e2apMsg == NULLP)
+      {
+         DU_LOG("\nERROR  -->  E2AP : Memory allocation for E2AP-PDU failed");
+         break;
+      }
+      e2apMsg->present = E2AP_PDU_PR_initiatingMessage;
+      DU_ALLOC(e2apMsg->choice.initiatingMessage, sizeof(InitiatingMessageE2_t));
+      if(e2apMsg->choice.initiatingMessage == NULLP)
+      {
+         DU_LOG("\nERROR  -->  E2AP : Memory allocation for E2AP-PDU failed");
+         DU_FREE(e2apMsg, sizeof(E2AP_PDU_t));
+         return RFAILED;
+      }
+      e2apMsg->choice.initiatingMessage->criticality = CriticalityE2_reject;
+      e2apMsg->choice.initiatingMessage->procedureCode = ProcedureCodeE2_id_E2nodeConfigurationUpdate;
+      e2apMsg->choice.initiatingMessage->value.present = \
+      InitiatingMessageE2__value_PR_E2nodeConfigurationUpdate;
+      e2NodeConfigUpdate = &e2apMsg->choice.initiatingMessage->value.choice.E2nodeConfigurationUpdate;
+
+      e2NodeConfigUpdate->protocolIEs.list.count = elementCnt;
+      e2NodeConfigUpdate->protocolIEs.list.size  = elementCnt * sizeof(E2nodeConfigurationUpdate_IEs_t*);
+      /* Initialize the Ric Indication members */
+      DU_ALLOC(e2NodeConfigUpdate->protocolIEs.list.array, \
+            e2NodeConfigUpdate->protocolIEs.list.size);
+      if(e2NodeConfigUpdate->protocolIEs.list.array == NULLP)
+      {
+         DU_LOG("\nERROR  -->  E2AP : Memory allocation for e2NodeConfigUpdate failed");
+         break;
+      }
+      
+      for(arrIdx =0; arrIdx<elementCnt; arrIdx++)
+      {
+         DU_ALLOC(e2NodeConfigUpdate->protocolIEs.list.array[arrIdx], sizeof(E2nodeConfigurationUpdate_IEs_t));
+         if(e2NodeConfigUpdate->protocolIEs.list.array[arrIdx] == NULLP)
+         {
+            
+            DU_LOG("\nERROR  -->  E2AP : Memory allocation for e2NodeConfigUpdate failed");
+            break;
+         }
+      }
+
+      arrIdx = 0;
+      /* TransactionID */
+      e2NodeConfigUpdate->protocolIEs.list.array[arrIdx]->id = ProtocolIE_IDE2_id_TransactionID;
+      e2NodeConfigUpdate->protocolIEs.list.array[arrIdx]->criticality = CriticalityE2_reject;
+      e2NodeConfigUpdate->protocolIEs.list.array[arrIdx]->value.present = E2nodeConfigurationUpdate_IEs__value_PR_TransactionID;
+      e2NodeConfigUpdate->protocolIEs.list.array[arrIdx]->value.choice.TransactionID = TRANS_ID;
+
+
+      /* Prints the Msg formed */
+      xer_fprint(stdout, &asn_DEF_E2AP_PDU, e2apMsg);
+
+      memset(encBuf, 0, ENC_BUF_MAX_LEN);
+      encBufSize = 0;
+      encRetVal = aper_encode(&asn_DEF_E2AP_PDU, 0, e2apMsg, PrepFinalEncBuf,\
+            encBuf);
+      if(encRetVal.encoded == ENCODE_FAIL)
+      {
+         DU_LOG("\nERROR  -->  E2AP : Could not encode E2nodeConfigurationUpdate structure (at %s)\n",\
+               encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
+         break;
+      }
+      else
+      {
+         DU_LOG("\nDEBUG   -->  E2AP : Created APER encoded buffer for E2nodeConfigurationUpdate\n");
+         for(int i=0; i< encBufSize; i++)
+         {
+            printf("%x",encBuf[i]);
+         }
+      }
+      if(SendE2APMsg(DU_APP_MEM_REGION, DU_POOL) != ROK)
+      {
+         DU_LOG("\nERROR  -->  E2AP : Sending E2 node config update failed");
+         return RFAILED;
+      }
+
+      break;
+   }while(true);
+   
+   FreeE2NodeConfigUpdate(e2apMsg);
+   return ret;
+}
+
+/*******************************************************************
+ *
  * @brief Handles received E2AP message and sends back response  
  *
  * @details
@@ -1504,50 +1657,55 @@ void E2APMsgHdlr(Buffer *mBuf)
    switch(e2apMsg->present)
    {
       case E2AP_PDU_PR_successfulOutcome:
-	 {
-	    switch(e2apMsg->choice.successfulOutcome->value.present)
-	    {
-	       case SuccessfulOutcomeE2__value_PR_E2setupResponse:
-		  {
-		     if(!duCb.e2Status)
-		     {
-			DU_LOG("\nDEBUG   -->  E2AP : Store E2 setup response Params");
-			procE2SetupRsp(e2apMsg);
-		     }
-		     break;
-		  }
-	       default:
-		  {
-		     DU_LOG("\nERROR  -->  E2AP : Invalid type of E2AP_PDU_PR_successfulOutcome  [%d]",\
-		     e2apMsg->choice.successfulOutcome->value.present);
-		     return;
-		  }
-	    }/* End of switch(successfulOutcome) */
-	    free(e2apMsg->choice.successfulOutcome);
-	    break;
-	 }
+         {
+            switch(e2apMsg->choice.successfulOutcome->value.present)
+            {
+               case SuccessfulOutcomeE2__value_PR_E2setupResponse:
+                  {
+                     if(!duCb.e2Status)
+                     {
+                        DU_LOG("\nDEBUG   -->  E2AP : Store E2 setup response Params");
+                        procE2SetupRsp(e2apMsg);
+                     }
+                     break;
+                  }
+               case SuccessfulOutcomeE2__value_PR_E2nodeConfigurationUpdateAcknowledge:
+                  {
+                     DU_LOG("\nDEBUG   -->  E2AP : E2 node Config update ack message recevied");
+                     break;
+                  }
+               default:
+                  {
+                     DU_LOG("\nERROR  -->  E2AP : Invalid type of E2AP_PDU_PR_successfulOutcome  [%d]",\
+                           e2apMsg->choice.successfulOutcome->value.present);
+                     return;
+                  }
+            }/* End of switch(successfulOutcome) */
+            free(e2apMsg->choice.successfulOutcome);
+            break;
+         }
       case E2AP_PDU_PR_initiatingMessage:
-	 {
-	    switch(e2apMsg->choice.initiatingMessage->value.present)
-	    {
-	       case InitiatingMessageE2__value_PR_RICsubscriptionRequest: 
-		  {
-		     if(procRicSubsReq(e2apMsg) == ROK)
-		     {
-			BuildAndSendRicIndication();
-		     }
-		     break;
-		  }
-	       default:
-		  {
-		     DU_LOG("\nERROR  -->  E2AP : Invalid type of E2AP_PDU_PR_initiatingMessage [%d]",\
-		     e2apMsg->choice.initiatingMessage->value.present);
-		     return;
-		  }
-	    }/* End of switch(initiatingMessage) */
-	    free(e2apMsg->choice.initiatingMessage);
-	    break;
-	 }
+         {
+            switch(e2apMsg->choice.initiatingMessage->value.present)
+            {
+               case InitiatingMessageE2__value_PR_RICsubscriptionRequest: 
+                  {
+                     if(procRicSubsReq(e2apMsg) == ROK)
+                     {
+                        BuildAndSendRicIndication();
+                     }
+                     break;
+                  }
+               default:
+                  {
+                     DU_LOG("\nERROR  -->  E2AP : Invalid type of E2AP_PDU_PR_initiatingMessage [%d]",\
+                           e2apMsg->choice.initiatingMessage->value.present);
+                     return;
+                  }
+            }/* End of switch(initiatingMessage) */
+            free(e2apMsg->choice.initiatingMessage);
+            break;
+         }
       default:
 	 {
 	    DU_LOG("\nERROR  -->  E2AP : Invalid type of e2apMsg->present [%d]",e2apMsg->present);
