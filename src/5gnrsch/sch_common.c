@@ -2098,7 +2098,41 @@ void updateBsrAndLcList(CmLListCp *lcLL, BsrInfo *bsrInfo, uint8_t status)
       }
       node = next;
    }
-}     
+}
+
+/********************************************************************************
+ *
+ * @brief Increment the Slot by a input factor
+ *
+ * @details
+ *
+ *    Function : schIncrSlot
+ *
+ *    Functionality:
+ *       Increment the slot by a input factor till num of Slots configured in a
+ *       Radio Frame. If it exceeds, move to next sfn.
+ *
+ * @params[in/out] SlotTimingInfo timingInfo
+ *        [in]     uint8_t incr [Increment factor]
+ *        [in]     numSlotsPerRF [Number of Slots configured per RF as per
+ *                                numerology]
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ *******************************************************************/
+void schIncrSlot(SlotTimingInfo *timingInfo, uint8_t incr, uint16_t numSlotsPerRF)
+{
+   timingInfo->slot += incr;
+   if(timingInfo->slot >= numSlotsPerRF)
+   {
+      timingInfo->sfn += timingInfo->slot/numSlotsPerRF;
+      timingInfo->slot %= numSlotsPerRF;
+      if(timingInfo->sfn >  MAX_SFN)
+      {
+         timingInfo->sfn %= MAX_SFN;
+      }
+   }
+}
 /**********************************************************************
   End of file
  **********************************************************************/

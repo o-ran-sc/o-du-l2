@@ -388,6 +388,34 @@ Region region, Pool pool, Data *ptr, Size size, uint8_t memType)
    else
       return RFAILED;
 }
+
+
+/*******************************************************************
+*
+* @brief  countSetBits in an integer
+*
+* @details
+*
+*    Function : countSetBits 
+*
+*    Functionality: countSetBits in unsigned integer
+*
+* @params[in] uint32_t number/Bitmask
+*
+* @return [out] uint8_t count of Set Bits
+*
+* ****************************************************************/
+uint8_t countSetBits(uint32_t num)
+{
+   uint8_t count = 0;
+
+   while(num)
+   {
+      count += num & 1;
+      num >>= 1;
+   }
+   return(count);
+}
 /**********************************************************************
          End of file
 **********************************************************************/
