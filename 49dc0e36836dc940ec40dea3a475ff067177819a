@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3c5001dd_80eab64d",
+        "filename": "src/5gnrsch/sch.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 316,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-02-01T12:01:36Z",
+      "side": 1,
+      "message": "i think these structure currPageInfo, pageReqInfoRecord are not used in gerrit. am i correct?",
+      "range": {
+        "startLine": 316,
+        "startChar": 16,
+        "endLine": 316,
+        "endChar": 33
+      },
+      "revId": "49dc0e36836dc940ec40dea3a475ff067177819a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "20956dd0_a444166f",
+        "filename": "src/du_app/du_cfg.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 550,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-02-01T12:01:36Z",
+      "side": 1,
+      "message": "why we are using 44 here, can u please specify?",
+      "range": {
+        "startLine": 550,
+        "startChar": 41,
+        "endLine": 550,
+        "endChar": 43
+      },
+      "revId": "49dc0e36836dc940ec40dea3a475ff067177819a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fea01fd4_7e852bac",
+        "filename": "src/du_app/du_sys_info_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1337,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-02-01T12:01:36Z",
+      "side": 1,
+      "message": "this needs to sizeof(long) rather than (long *)",
+      "range": {
+        "startLine": 1337,
+        "startChar": 73,
+        "endLine": 1337,
+        "endChar": 74
+      },
+      "revId": "49dc0e36836dc940ec40dea3a475ff067177819a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "663a2251_e8528917",
+        "filename": "src/du_app/du_sys_info_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1379,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-02-01T12:01:36Z",
+      "side": 1,
+      "message": "here as well",
+      "revId": "49dc0e36836dc940ec40dea3a475ff067177819a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
