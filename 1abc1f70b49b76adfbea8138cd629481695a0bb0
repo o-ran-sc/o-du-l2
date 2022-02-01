@@ -1,0 +1,312 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "36c4767a_64b8e677",
+        "filename": "src/5gnrsch/sch_utils.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1871,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-02-01T10:24:04Z",
+      "side": 1,
+      "message": "utils files store functions that are to be used at multiple places in the layer.\nWe can keep the above functions in sch.c.",
+      "revId": "1abc1f70b49b76adfbea8138cd629481695a0bb0",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "66d59c8f_39bdf132",
+        "filename": "src/cm/du_app_mac_inf.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 577,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-02-01T10:24:04Z",
+      "side": 1,
+      "message": "align all comments as done for other structures",
+      "revId": "1abc1f70b49b76adfbea8138cd629481695a0bb0",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dc78854f_d785e4f3",
+        "filename": "src/cm/mac_sch_interface.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 593,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-02-01T10:24:04Z",
+      "side": 1,
+      "message": "align all comments as done for other structures.",
+      "range": {
+        "startLine": 593,
+        "startChar": 40,
+        "endLine": 593,
+        "endChar": 50
+      },
+      "revId": "1abc1f70b49b76adfbea8138cd629481695a0bb0",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ce1194fd_bfd85f2a",
+        "filename": "src/du_app/du_cfg.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 217,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-02-01T10:24:04Z",
+      "side": 1,
+      "message": "can we remove the commented line altogether?",
+      "revId": "1abc1f70b49b76adfbea8138cd629481695a0bb0",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6511d005_96c98d42",
+        "filename": "src/du_app/du_cfg.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 1116,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-02-01T10:24:04Z",
+      "side": 1,
+      "message": "Align all comments like done for other structures. It helps improve readability of code.",
+      "revId": "1abc1f70b49b76adfbea8138cd629481695a0bb0",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e30e744f_0ec718d1",
+        "filename": "src/du_app/du_sys_info_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1291,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-02-01T10:24:04Z",
+      "side": 1,
+      "message": "monitoring",
+      "range": {
+        "startLine": 1291,
+        "startChar": 28,
+        "endLine": 1291,
+        "endChar": 38
+      },
+      "revId": "1abc1f70b49b76adfbea8138cd629481695a0bb0",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "16e69bc5_e52c1653",
+        "filename": "src/du_app/du_sys_info_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1344,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-02-01T10:24:04Z",
+      "side": 1,
+      "message": "Indentation",
+      "range": {
+        "startLine": 1340,
+        "startChar": 0,
+        "endLine": 1344,
+        "endChar": 11
+      },
+      "revId": "1abc1f70b49b76adfbea8138cd629481695a0bb0",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4f75dda3_3eda0f3f",
+        "filename": "src/du_app/du_sys_info_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1350,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-02-01T10:24:04Z",
+      "side": 1,
+      "message": "Add spec reference",
+      "revId": "1abc1f70b49b76adfbea8138cd629481695a0bb0",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d121b538_e91239b2",
+        "filename": "src/du_app/du_sys_info_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1355,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-02-01T10:24:04Z",
+      "side": 1,
+      "message": "sizeof(long)",
+      "range": {
+        "startLine": 1355,
+        "startChar": 73,
+        "endLine": 1355,
+        "endChar": 79
+      },
+      "revId": "1abc1f70b49b76adfbea8138cd629481695a0bb0",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "626dd473_2b81aa42",
+        "filename": "src/du_app/du_sys_info_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1389,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-02-01T10:24:04Z",
+      "side": 1,
+      "message": "Indentation",
+      "range": {
+        "startLine": 1384,
+        "startChar": 0,
+        "endLine": 1389,
+        "endChar": 0
+      },
+      "revId": "1abc1f70b49b76adfbea8138cd629481695a0bb0",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9dfcc945_bdea1adf",
+        "filename": "src/du_app/du_sys_info_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1392,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-02-01T10:24:04Z",
+      "side": 1,
+      "message": "Add spec reference",
+      "revId": "1abc1f70b49b76adfbea8138cd629481695a0bb0",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a4c1c74c_f2b6bbde",
+        "filename": "src/du_app/du_sys_info_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1460,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-02-01T10:24:04Z",
+      "side": 1,
+      "message": "Add spec reference",
+      "revId": "1abc1f70b49b76adfbea8138cd629481695a0bb0",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6a672a43_349754e9",
+        "filename": "src/du_app/du_sys_info_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1470,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-02-01T10:24:04Z",
+      "side": 1,
+      "message": "same as above",
+      "revId": "1abc1f70b49b76adfbea8138cd629481695a0bb0",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "abd0dccc_5a16bb72",
+        "filename": "src/du_app/du_sys_info_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1480,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-02-01T10:24:04Z",
+      "side": 1,
+      "message": "same as above",
+      "revId": "1abc1f70b49b76adfbea8138cd629481695a0bb0",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "81e8dbee_75a63d77",
+        "filename": "src/du_app/du_sys_info_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1490,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-02-01T10:24:04Z",
+      "side": 1,
+      "message": "same as above",
+      "revId": "1abc1f70b49b76adfbea8138cd629481695a0bb0",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a7b84335_bebb1911",
+        "filename": "src/du_app/du_sys_info_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1495,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-02-01T10:24:04Z",
+      "side": 1,
+      "message": "should be oneSixteenthT I guess. Please check.",
+      "range": {
+        "startLine": 1495,
+        "startChar": 50,
+        "endLine": 1495,
+        "endChar": 61
+      },
+      "revId": "1abc1f70b49b76adfbea8138cd629481695a0bb0",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
