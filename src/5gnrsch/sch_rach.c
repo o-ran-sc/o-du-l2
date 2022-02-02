@@ -228,6 +228,7 @@ void createSchRaCb(uint16_t tcrnti, Inst schInst)
    GET_UE_ID(tcrnti, ueId);
    schCb[schInst].cells[schInst]->raCb[ueId -1].tcrnti = tcrnti;
    schCb[schInst].cells[schInst]->raCb[ueId -1].msg4recvd = FALSE;
+   schCb[schInst].cells[schInst]->raCb[ueId -1].raState = SCH_RA_STATE_MSG3_PENDING;
 }
 
 /**

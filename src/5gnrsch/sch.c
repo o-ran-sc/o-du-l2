@@ -337,22 +337,12 @@ uint8_t MacSchRachInd(Pst *pst, RachIndInfo *rachInd)
  * ****************************************************************/
 uint8_t MacSchCrcInd(Pst *pst, CrcIndInfo *crcInd)
 {
+   Inst  inst = pst->dstInst-SCH_INST_START;
 #ifdef CALL_FLOW_DEBUG_LOG
    DU_LOG("\nCall Flow: ENTMAC -> ENTSCH : EVENT_CRC_IND_TO_SCH\n");
 #endif
 
-   switch(crcInd->crcInd[0])
-   {
-      case CRC_FAILED:
-	 DU_LOG("\nDEBUG  -->  SCH : Received CRC indication. CRC Status [FAILURE]");
-	 break;
-      case CRC_PASSED:
-	 DU_LOG("\nDEBUG  -->  SCH : Received CRC indication. CRC Status [PASS]");
-	 break;
-      default:
-	 DU_LOG("\nDEBUG  -->  SCH : Invalid CRC state %d", crcInd->crcInd[0]);
-	 return RFAILED;
-   }
+   schProcessCrcInd(crcInd, inst);
    return ROK;
 }
 
@@ -1124,6 +1114,50 @@ uint8_t MacSchSrUciInd(Pst *pst, SrUciIndInfo *uciInd)
       
       /* Adding UE Id to list of pending UEs to be scheduled */
       addUeToBeScheduled(cellCb, ueCb->ueId);
+   }
+   return ROK;
+}
+
+/*******************************************************************
+ *
+ * @brief Processes HARQ UCI indication from MAC 
+ *
+ * @details
+ *
+ *    Function : MacSchHarqUciInd
+ *
+ *    Functionality:
+ *      Processes HARQ UCI indication from MAC
+ *
+ * @params[in] Post structure
+ *             UCI Indication
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t MacSchHarqUciInd(Pst *pst, HarqUciIndInfo *uciInd)
+{
+   Inst  inst = pst->dstInst-SCH_INST_START;
+   uint16_t harqCounter;
+   SchUeCb   *ueCb; 
+   SchCellCb *cellCb = schCb[inst].cells[inst];
+
+#ifdef CALL_FLOW_DEBUG_LOG
+   DU_LOG("\nCall Flow: ENTMAC -> ENTSCH : EVENT_UCI_IND_TO_SCH\n");
+#endif
+
+   DU_LOG("\nDEBUG  -->  SCH : Received HARQ");
+
+   ueCb = schGetUeCb(cellCb, uciInd->crnti);
+   
+   if(ueCb->state == SCH_UE_STATE_INACTIVE)
+   {
+      DU_LOG("\nERROR  -->  SCH : Crnti %d is inactive", uciInd->crnti);
+      return ROK;  
+   }
+
+   for( harqCounter = 0; harqCounter< uciInd->numHarq; harqCounter++)
+   {
    }
    return ROK;
 }
