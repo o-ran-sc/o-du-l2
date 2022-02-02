@@ -15,6 +15,7 @@
 #   limitations under the License.                                             #
 ################################################################################
  *******************************************************************************/
+#include "rg_sch_clist.x"
 
 /* macros */
 #define SCH_INST_START 1
@@ -59,8 +60,24 @@
 #define PRB_BITMAP_IDX_LEN 64
 #define PRB_BITMAP_MAX_IDX ((MAX_NUM_RB + PRB_BITMAP_IDX_LEN-1) / PRB_BITMAP_IDX_LEN)
 
+
+#define SCH_MAX_NUM_UL_HQ_PROC 16
+#define SCH_MAX_NUM_DL_HQ_PROC 16
+#define SCH_MAX_NUM_MSG3_TX 1
+#define SCH_MAX_NUM_DL_HQ_TX 3
+#define SCH_MAX_NUM_UL_HQ_TX 3
+#define SCH_MAX_NUM_MSG4_TX 1
+
+typedef struct schUlHqTbCb SchUlHqTbCb;
+
+typedef struct schUlHqProcCb   SchUlHqProcCb;
+typedef struct schDlHqProcCb   SchDlHqProcCb;
+typedef struct schUlHqEnt SchUlHqEnt;
+typedef struct schDlHqEnt SchDlHqEnt;
+
 typedef struct schCellCb SchCellCb;
 typedef struct schUeCb SchUeCb;
+typedef struct schRaReq SchRaReq;
 
 typedef enum
 {
@@ -76,6 +93,14 @@ typedef enum
    SCH_UE_STATE_INACTIVE,
    SCH_UE_STATE_ACTIVE
 }SchUeState;
+
+typedef enum
+{
+   SCH_RA_STATE_MSG2_HANDLE,
+   SCH_RA_STATE_MSG3_PENDING,
+   SCH_RA_STATE_MSG4_PENDING,
+   SCH_RA_STATE_MSG4_DONE  
+}SchRaState;
 
 typedef enum
 {
@@ -96,6 +121,86 @@ typedef enum
    CREATE,
    DELETE
 }ActionTypeLcLL;
+
+typedef enum
+{
+   TB_ACKED,
+   TB_NACKED,
+   TB_WAITING
+}SchHqTbState;
+
+struct schUlHqTbCb
+{
+   uint32_t               tbSzReq;
+   uint32_t               tbSzAllc;
+   uint8_t                ndi;
+   uint8_t                rv;
+   uint8_t                rvIdx;
+   uint8_t                iMcs;
+   uint8_t                iMcsInDci;
+   uint8_t                numLyrs;
+   uint8_t                txCntr;
+   SchHqTbState           state;
+   uint8_t                cntrRetxAllocFail;
+   uint8_t                statsBitmap;
+};
+
+struct schDlHqTbCb
+{
+   uint8_t                tbIdx;
+   Bool                   isEnabled;
+   uint32_t               tbSzReq;
+   uint8_t                txCntr;
+   uint8_t                ndi;
+   uint8_t                rv;
+   uint8_t                rvIdx;
+   uint8_t                iMcs;
+   uint8_t                iMcsInDci;
+   uint8_t                numLyrs;
+   SchHqTbState           state;
+   uint8_t                isAckNackDtx;
+   uint8_t                cntrRetxAllocFail;
+   //InfUeTbInfo          tbCompInfo;
+   uint8_t                statsBitmap;
+};
+
+struct schUlHqProcCb
+{
+   uint8_t           procId;       /*!< HARQ Process ID */
+   SchUlHqEnt        *hqEnt;
+   uint8_t           maxHqTxPerHqP;
+   SchUlHqTbCb       tbInfo;
+   CmLList           ulHqEntLnk;
+   uint8_t           strtSymbl;
+   uint8_t           numSymbl;
+};
+struct schDlHqProcCb
+{
+   uint8_t           procId;       /*!< HARQ Process ID */
+   SchDlHqEnt        *hqEnt;
+   uint8_t           maxHqTxPerHqP;
+   CmLList           dlHqEntLnk;
+};
+struct schUlHqEnt
+{
+   struct schCellCb      *cell;     /*!< Contains the pointer to cell*/
+   SchUeCb        *ue;       /*!< Contains the pointer to ue*/
+   CmLListCp      free;      /*!< List of free HARQ processes */
+   CmLListCp      inUse;     /*!< List of in-use HARQ processes */
+   uint8_t        maxHqTx;   /*!< Maximum number of harq re-transmissions */
+   uint8_t        numHqPrcs; /*!< Number of HARQ Processes */
+   SchUlHqProcCb  procs[SCH_MAX_NUM_UL_HQ_PROC]; /*!< Uplink harq process info */
+};
+struct schDlHqEnt
+{
+   struct schCellCb      *cell;     /*!< Contains the pointer to cell */
+   SchUeCb        *ue;       /*!< Contains the pointer to UE */
+   CmLListCp      free;      /*!< List of free HARQ processes */
+   CmLListCp      inUse;     /*!< List of in-use HARQ processes */
+   uint8_t        maxHqTx;   /*!< Maximum number of harq transmissions */
+   uint8_t        numHqPrcs; /*!< Number of HARQ Processes */
+   SchDlHqProcCb  procs[SCH_MAX_NUM_DL_HQ_PROC];/*!< Downlink harq processes */
+};
 
 /**
  * @brief
@@ -150,9 +255,14 @@ typedef struct schDlSlotInfo
 
 typedef struct schRaCb
 {
+   uint8_t   ueId;
    bool      msg4recvd;
    uint16_t  tcrnti;
    uint16_t  dlMsgPduLen;
+   SchUlHqProcCb msg3HqProc;
+   SchRaState raState;
+   SchCellCb *cell;
+   SchRaReq  *raReq;
 }SchRaCb;
 
 /**
@@ -279,6 +389,9 @@ typedef struct schUeCb
    SchDlCb    dlInfo;
    SchLcPrbEstimate dlLcPrbEst; /*DL PRB Alloc Estimate among different LC*/
    SchLcPrbEstimate ulLcPrbEst; /*UL PRB Alloc Estimate among different LC*/
+   SchUlHqEnt ulHqEnt;
+   SchDlHqEnt dlHqEnt;
+   CmLList    *node;
 }SchUeCb;
 
 /**
@@ -357,6 +470,38 @@ typedef struct schSliceCfg
    SchRrmPolicyOfSlice **listOfConfirguration;
 }SchSliceCfg;
 
+
+/**
+ *  *\ enum DlPriQueueId
+ *   @brief DL Priority Queue Type*/
+typedef enum schDlPriQueueId
+{
+   SCH_DL_HQ_RETX_QUEUE, /*!< Index to Harq Retransmission Queue*/
+   SCH_DL_MSG4_QUEUE,    /*!< Index to MSG4 priority Queue */
+   SCH_DL_CCCH_QUEUE,    /*!< Index to CCCH priority Queue */
+   SCH_DL_CE_QUEUE,    /*!< Index to CE priority Queue */
+   SCH_DL_SRB_QUEUE,   /*!< Index to SRB priority Queue*/
+   SCH_DL_GBR_QUEUE,   /*!< Index to GBR priority Queue*/
+   SCH_DL_NGBR_QUEUE,   /*!< Index to NGBR priority Queue*/
+   SCH_DL_MAX_PRIO_QUEUE       /*!< Max Queue*/
+}SchDlPriQueueId;
+
+/**
+ *  *\ enum ulPriQueueId
+ *   @brief UL Priority Queue Type*/
+typedef enum schUlPriQueueId
+{
+   SCH_UL_MSG3_RETX_QUEUE, /*!< Index to MSG3 RETX Queue*/
+   SCH_UL_HQ_RETX_QUEUE, /*!< Index to Harq Retransmission Queue*/
+   SCH_UL_MSG3_QUEUE,    /*!< Index to MSG3 priority Queue */
+   SCH_UL_SR_QUEUE,    /*!< Index to SR priority Queue */
+   SCH_UL_SRB_QUEUE,   /*!< Index to SRB priority Queue*/
+   SCH_UL_GBR_QUEUE,   /*!< Index to GBR priority Queue*/
+   SCH_UL_NGBR_QUEUE,   /*!< Index to NGBR priority Queue*/
+   SCH_UL_MAX_PRIO_QUEUE       /*!< Max Queue*/
+}SchUlPriQueueId;
+
+
 /**
  * @brief
  * Control block for sch
@@ -369,6 +514,8 @@ typedef struct schCb
    CmTqType      tmrTq[SCH_TQ_SIZE];    /*!< Timer Task Queue */
    SchCellCb     *cells[MAX_NUM_CELL];  /* Array to store cellCb ptr */ 
    SchSliceCfg   sliceCfg;
+   CmLListCp     dlPrioLst[SCH_DL_MAX_PRIO_QUEUE];
+   CmLListCp     ulPrioLst[SCH_UL_MAX_PRIO_QUEUE];
 }SchCb;
 
 /* Declaration for scheduler control blocks */
@@ -391,6 +538,7 @@ uint8_t addUeToBeScheduled(SchCellCb *cell, uint8_t ueId);
 /* Incoming message handler function declarations */
 uint8_t schProcessSlotInd(SlotTimingInfo *slotInd, Inst inst);
 uint8_t schProcessRachInd(RachIndInfo *rachInd, Inst schInst);
+uint8_t schProcessCrcInd(CrcIndInfo *crcInd, Inst schInst);
 
 /* DL scheduling related function declarations */
 PduTxOccsaion schCheckSsbOcc(SchCellCb *cell, SlotTimingInfo slotTime);
@@ -409,7 +557,7 @@ uint8_t allocatePrbDl(SchCellCb *cell, SlotTimingInfo slotTime, uint8_t startSym
 void fillDlMsgInfo(DlMsgInfo *dlMsgInfo, uint8_t crnti);
 bool findValidK0K1Value(SchCellCb *cell, SlotTimingInfo currTime, uint8_t ueId, bool dedMsg, uint8_t *pdschStartSymbol,\
 uint8_t *pdschSymblLen, SlotTimingInfo *pdcchTime,  SlotTimingInfo *pdschTime, SlotTimingInfo *pucchTime);
-
+RaRspWindowStatus isInRaRspWindow(SchRaReq *raReq, SlotTimingInfo frameToCheck, uint16_t numSlotsPerSystemFrame);
 /* UL scheduling related function declarations */
 uint8_t schUlResAlloc(SchCellCb *cell, Inst schInst);
 bool schCheckPrachOcc(SchCellCb *cell, SlotTimingInfo prachOccasionTimingInfo);
@@ -433,9 +581,16 @@ void prbAllocUsingRRMPolicy(CmLListCp *lcLL, bool dedicatedPRB, uint16_t mcsIdx,
                       uint16_t *sharedPRB, uint16_t *reservedPRB, bool *isTxPayloadLenAdded, bool *srRcvd);
 void updateBsrAndLcList(CmLListCp *lcLL, BsrInfo *bsrInfo, uint8_t status);
 
-/*Paging Functions*/
-void schProcPagingCfg(SchCellCb *cell);
-void schCfgPdcchMonOccOfPO(SchCellCb *cell);
+
+/*DL HARQ Functions*/
+void schDlHqEntInit(SchCellCb *cellCb, SchUeCb *ueCb);
+/*UL HARQ Functions*/
+void schUlHqEntInit(SchCellCb *cellCb, SchUeCb *ueCb);
+
+/* Round Robbin Scheduler funtions*/
+uint8_t schMsg3RetxScheduling(CmLListCp *list);
+uint8_t schFillUlDciForMsg3Retx(SchRaCb *raCb, SchPuschInfo *puschInfo, DciInfo *dciInfo);
+bool schGetMsg3K2(SchCellCb *cell, SchUlHqProcCb* msg3HqProc, uint16_t dlTime, SlotTimingInfo *msg3Time, bool isRetx);
 /**********************************************************************
   End of file
  **********************************************************************/

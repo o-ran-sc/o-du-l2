@@ -632,6 +632,81 @@ uint8_t schFillPuschAlloc(SchUeCb *ueCb, SlotTimingInfo puschTime, uint32_t tbSi
   return ROK;
 }
 
+uint8_t schFillUlDciForMsg3Retx(SchRaCb *raCb, SchPuschInfo *puschInfo, DciInfo *dciInfo)
+{
+   SchCellCb         *cellCb  = raCb->cell;
+//   uint8_t  coreset0Idx = 0;
+   /*uint8_t numSymbol;
+   uint16_t numRbs = 0;*/
+   //SchBwpDlCfg *initialBwp = &cellCb->cellCfg.schInitialDlBwp;
+   /* derive the sib1 coreset0 params from table 13-1 spec 38.213 */
+   //coreset0Idx = initialBwp->pdcchCommon.commonSearchSpace.coresetId;
+   //numRbs     = coresetIdxTable[coreset0Idx][1]; 
+   //numSymbol = coresetIdxTable[coreset0Idx][2];
+
+   dciInfo->cellId = cellCb->cellId;
+   dciInfo->crnti  = raCb->tcrnti;
+
+   /* fill bwp cfg */
+   dciInfo->bwpCfg.subcarrierSpacing  = cellCb->cellCfg.sib1SchCfg.bwp.subcarrierSpacing;
+   dciInfo->bwpCfg.cyclicPrefix       = cellCb->cellCfg.sib1SchCfg.bwp.cyclicPrefix;
+   dciInfo->bwpCfg.freqAlloc.startPrb = cellCb->cellCfg.schInitialDlBwp.bwp.freqAlloc.startPrb;
+   dciInfo->bwpCfg.freqAlloc.numPrb   = cellCb->cellCfg.schInitialDlBwp.bwp.freqAlloc.numPrb; 
+
+   /*fill coreset cfg */
+   //Considering number of RBs in coreset1 is same as coreset0
+   dciInfo->coresetCfg.coreSetSize      = coresetIdxTable[0][1];
+   //Considering coreset1 also starts from same symbol as coreset0
+   dciInfo->coresetCfg.startSymbolIndex = searchSpaceIdxTable[0][3];
+   dciInfo->coresetCfg.durationSymbols  = coresetIdxTable[0][2];
+   memcpy(dciInfo->coresetCfg.freqDomainResource, cellCb->cellCfg.schInitialDlBwp.pdcchCommon.commonSearchSpace.freqDomainRsrc, FREQ_DOM_RSRC_SIZE);
+   
+   dciInfo->coresetCfg.cceRegMappingType   = 1; /* coreset0 is always interleaved */
+   dciInfo->coresetCfg.regBundleSize       = 6; /* spec-38.211 sec 7.3.2.2 */
+   dciInfo->coresetCfg.interleaverSize     = 2; /* spec-38.211 sec 7.3.2.2 */
+   dciInfo->coresetCfg.coreSetType         = 0;
+   dciInfo->coresetCfg.coreSetSize         = coresetIdxTable[0][1];
+   dciInfo->coresetCfg.shiftIndex          = cellCb->cellCfg.phyCellId;
+   dciInfo->coresetCfg.precoderGranularity = 0;
+   dciInfo->coresetCfg.cceIndex            = 0; /* 0-3 for UL and 4-7 for DL */
+   dciInfo->coresetCfg.aggregationLevel    = 4; /* same as for sib1 */
+   
+   dciInfo->formatType = FORMAT0_0;
+   
+   /* fill UL grant */
+   dciInfo->format.format0_0.resourceAllocType   = puschInfo->resAllocType;
+   dciInfo->format.format0_0.freqAlloc.startPrb  = puschInfo->fdAlloc.startPrb;
+   dciInfo->format.format0_0.freqAlloc.numPrb    = puschInfo->fdAlloc.numPrb;
+   dciInfo->format.format0_0.timeAlloc.startSymb = puschInfo->tdAlloc.startSymb;
+   dciInfo->format.format0_0.timeAlloc.numSymb   = puschInfo->tdAlloc.numSymb;
+   dciInfo->format.format0_0.rowIndex            = 0; /* row Index */
+   dciInfo->format.format0_0.mcs                 = puschInfo->tbInfo.mcs;
+   dciInfo->format.format0_0.harqProcId          = puschInfo->harqProcId;
+   dciInfo->format.format0_0.puschHopFlag        = FALSE; /* disabled */
+   dciInfo->format.format0_0.freqHopFlag         = FALSE; /* disabled */
+   dciInfo->format.format0_0.ndi                 = puschInfo->tbInfo.ndi; /* new transmission */
+   dciInfo->format.format0_0.rv                  = puschInfo->tbInfo.rv;
+   dciInfo->format.format0_0.tpcCmd              = 0; //Sphoorthi TODO: check
+   dciInfo->format.format0_0.sUlCfgd             = FALSE; /* SUL not configured */
+   
+   /* Fill DCI Structure */
+   dciInfo->dciInfo.rnti                              = raCb->tcrnti;
+   dciInfo->dciInfo.scramblingId                      = cellCb->cellCfg.phyCellId;
+   dciInfo->dciInfo.scramblingRnti                    = 0;
+   dciInfo->dciInfo.cceIndex                          = 0; /* 0-3 for UL and 4-7 for DL */
+   dciInfo->dciInfo.aggregLevel                       = 4;
+   dciInfo->dciInfo.beamPdcchInfo.numPrgs             = 1;
+   dciInfo->dciInfo.beamPdcchInfo.prgSize             = 1;
+   dciInfo->dciInfo.beamPdcchInfo.digBfInterfaces     = 0;
+   dciInfo->dciInfo.beamPdcchInfo.prg[0].pmIdx        = 0;
+   dciInfo->dciInfo.beamPdcchInfo.prg[0].beamIdx[0]   = 0;
+   dciInfo->dciInfo.txPdcchPower.powerValue           = 0;
+   dciInfo->dciInfo.txPdcchPower.powerControlOffsetSS = 0;
+   dciInfo->dciInfo.pdschCfg                          = NULL; /* No DL data being sent */
+
+   return ROK;
+}
+
 /*******************************************************************
  *
  * @brief Fills DCI for UL grant

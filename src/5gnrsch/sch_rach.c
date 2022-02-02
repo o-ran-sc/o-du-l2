@@ -228,6 +228,7 @@ void createSchRaCb(uint16_t tcrnti, Inst schInst)
    GET_UE_ID(tcrnti, ueId);
    schCb[schInst].cells[schInst]->raCb[ueId -1].tcrnti = tcrnti;
    schCb[schInst].cells[schInst]->raCb[ueId -1].msg4recvd = FALSE;
+   schCb[schInst].cells[schInst]->raCb[ueId -1].raState = SCH_RA_STATE_MSG3_PENDING;
 }
 
 /**
@@ -353,11 +354,9 @@ RaRspWindowStatus isInRaRspWindow(SchRaReq *raReq, SlotTimingInfo frameToCheck, 
 bool schProcessRaReq(SchCellCb *cell, SlotTimingInfo currTime, uint8_t ueId)
 {
    bool      k2Found = false;
-   uint8_t   k0TblIdx = 0, k2TblIdx = 0;
+   uint8_t   k0TblIdx = 0;
    uint8_t   k0Index = 0, k2Index = 0;
-   uint8_t   k0 = 0, k2 = 0;
-   uint8_t   puschMu = 0;
-   uint8_t   msg3Delta = 0, msg3MinSchTime = 0;
+   uint8_t   k0 = 0;
 #ifdef NR_TDD
    uint8_t   totalCfgSlot = 0;
 #endif
@@ -367,17 +366,12 @@ bool schProcessRaReq(SchCellCb *cell, SlotTimingInfo currTime, uint8_t ueId)
    RarAlloc             *rarSlotAlloc = NULLP;    /* Stores info for transmission of RAR PDSCH */
    SchPuschInfo         *msg3PuschInfo = NULLP;   /* Stores MSG3 PUSCH scheduling information */
    SchK0K1TimingInfoTbl *k0K1InfoTbl=NULLP;    
-   SchK2TimingInfoTbl   *msg3K2InfoTbl=NULLP;
    RaRspWindowStatus    windowStatus=0;
 
 #ifdef NR_TDD
    totalCfgSlot = calculateSlotPatternLength(cell->cellCfg.ssbSchCfg.scsCommon, cell->cellCfg.tddCfg.tddPeriod);
 #endif
    k0K1InfoTbl = &cell->cellCfg.schInitialDlBwp.k0K1InfoTbl;
-   msg3K2InfoTbl = &cell->cellCfg.schInitialUlBwp.msg3K2InfoTbl;
-   puschMu = cell->cellCfg.numerology;
-   msg3Delta = puschDeltaTable[puschMu];
-   msg3MinSchTime = minMsg3SchTime[cell->cellCfg.numerology];
 
    /* Calculating time frame to send DCI for RAR */
    ADD_DELTA_TO_TIME(currTime, dciTime, PHY_DELTA_DL + SCHED_DELTA);
@@ -412,6 +406,8 @@ bool schProcessRaReq(SchCellCb *cell, SlotTimingInfo currTime, uint8_t ueId)
             if(cell->schDlSlotInfo[rarSlot]->pdschUe != 0)
                continue;
 
+            k2Found = schGetMsg3K2(cell,NULLP, dciTime.slot,  &msg3Time, TRUE);
+#if 0
             for(k2TblIdx = 0; k2TblIdx < msg3K2InfoTbl->k2TimingInfo[rarSlot].numK2; k2TblIdx++)
             {
                k2Index = msg3K2InfoTbl->k2TimingInfo[rarSlot].k2Indexes[k2TblIdx];
@@ -437,6 +433,7 @@ bool schProcessRaReq(SchCellCb *cell, SlotTimingInfo currTime, uint8_t ueId)
             }
             if(k2Found)
                break;
+#endif
          }
       }
       else if(windowStatus == WINDOW_EXPIRED)
