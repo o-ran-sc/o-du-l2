@@ -61,6 +61,7 @@
 #define MAX_NUMBER_OF_CRC_IND_BITS 1
 #define MAX_NUMBER_OF_UCI_IND_BITS 1
 #define MAX_SR_BITS_IN_BYTES       1
+#define MAX_HARQ_BITS_IN_BYTES       1
 #define MAX_NUM_LOGICAL_CHANNEL_GROUPS 8
 /* can we have a common numslot numscs between mac sch */
 #ifdef NR_TDD
@@ -1637,6 +1638,15 @@ typedef struct srUciIndInfo
    uint8_t     srPayload[MAX_SR_BITS_IN_BYTES];
 }SrUciIndInfo;
 
+typedef struct harqUciIndInfo
+{
+   uint16_t    cellId;
+   uint16_t    crnti;
+   SlotTimingInfo slotInd;
+   uint8_t     numHarq;
+   uint8_t     harqPayload[MAX_HARQ_BITS_IN_BYTES];
+}HarqUciIndInfo;
+
 typedef struct schRrmPolicyRatio
 {
    uint8_t policyMaxRatio;
@@ -1719,6 +1729,10 @@ typedef uint8_t (*MacSchBsrFunc)       ARGS((
    UlBufferStatusRptInd *bsrInd
 ));
 
+typedef uint8_t (*MacSchHarqUciIndFunc) ARGS(( 
+	 Pst         *pst,         /* Post structure */
+	 HarqUciIndInfo  *uciInd));    /* UCI IND Info */
+
 typedef uint8_t (*MacSchSrUciIndFunc) ARGS(( 
 	 Pst         *pst,         /* Post structure */
 	 SrUciIndInfo  *uciInd));    /* UCI IND Info */
@@ -1792,6 +1806,8 @@ uint8_t unpackMacSchSlotInd(MacSchSlotIndFunc func, Pst *pst, Buffer  *mBuf);
 uint8_t packMacSchBsr(Pst *pst, UlBufferStatusRptInd *bsrInd);
 uint8_t MacSchBsr(Pst *pst, UlBufferStatusRptInd *bsrInd);
 uint8_t packMacSchSrUciInd(Pst *pst, SrUciIndInfo *uciInd);
+uint8_t packMacSchHarqUciInd(Pst *pst, HarqUciIndInfo *uciInd);
+uint8_t MacSchHarqUciInd(Pst *pst, HarqUciIndInfo *uciInd);
 uint8_t MacSchSrUciInd(Pst *pst, SrUciIndInfo *uciInd);
 uint8_t packMacSchModUeConfigReq(Pst *pst, SchUeCfg *ueCfgToSch);
 uint8_t MacSchModUeConfigReq(Pst *pst, SchUeCfg *ueCfgToSch);
