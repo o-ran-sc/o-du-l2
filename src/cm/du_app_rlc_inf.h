@@ -38,9 +38,6 @@
 #define RB_ID_SRB 0
 #define RB_ID_DRB 1
 
-#define RB_TYPE_SRB 0        /* Signalling Radio Bearer */
-#define RB_TYPE_DRB 1        /* Data Radio Bearer */
-
 /* RLC Direction Config */
 #define RLC_CFG_DIR_UL        1     /*!< Uplink direction */
 #define RLC_CFG_DIR_DL        2     /*!< Downlink direction */
@@ -53,6 +50,12 @@
 #define LCH_CCCH      3      /*!< CCCH Logical Channel */
 #define LCH_DTCH      4      /*!< DTCH Logical Channel */
 #define LCH_DCCH      5      /*!< DCCH Logical Channel */
+
+typedef enum
+{
+   RB_TYPE_SRB,      /* Signalling Radio Bearer */
+   RB_TYPE_DRB       /* Data Radio Bearer */
+}RlcRbType;  
 
 typedef enum
 {
@@ -180,7 +183,7 @@ typedef struct rlcBearerCfg
 {
    ConfigType   configType;
    uint8_t      rbId;
-   uint8_t      rbType;
+   RlcRbType    rbType;
    uint8_t      lcId;
    uint8_t      lcType;
    Snssai       *snssai; 
@@ -249,7 +252,7 @@ typedef struct dlRrcMsgInfo
 {
    uint16_t   cellId;         /* Cell Id */
    uint16_t   ueId;           /* UE Id */
-   uint8_t    rbType;         /* Radio Bearer Type */
+   RlcRbType  rbType;         /* Radio Bearer Type */
    uint8_t    rbId;           /* Radio Bearer Id */
    uint8_t    lcType;         /* Logical channel type */
    uint8_t    lcId;           /* Logical channel Id */
