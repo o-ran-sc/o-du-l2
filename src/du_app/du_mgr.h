@@ -84,6 +84,7 @@ typedef enum
    UE_CTXT_UNKNOWN,
    UE_CTXT_SETUP,
    UE_CTXT_MOD,
+   UE_CTXT_CFG_QUERY,
    UE_CTXT_RELEASE
 }UeCtxtActionType;
 
@@ -221,8 +222,8 @@ typedef struct duCb
    uint32_t      gnbDuUeF1apIdGenerator;    /* Generating Du Ue F1ap Id */
    uint32_t      numUe;                     /* current number of UEs */
    UeCcchCtxt    ueCcchCtxt[MAX_NUM_UE];    /* mapping of gnbDuUeF1apId to CRNTI required for CCCH processing*/
-   uint8_t       numTeId;                    /* current number of TEIDs configured in the system*/
-   UpTnlCfg*     upTnlCfg[MAX_TEID];     /* tunnel info for every Drb */
+   uint8_t       numTeId;                   /* current number of TEIDs configured in the system*/
+   UpTnlCfg*     upTnlCfg[MAX_TEID];        /* tunnel info for every Drb */
    CmLListCp     reservedF1apPduList;       /*storing F1AP pdu infomation and transId */
    SliceCfgState sliceState;
    F1SetupMsg    f1SetupReqAndRspMsg;
