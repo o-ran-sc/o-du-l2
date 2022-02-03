@@ -13544,6 +13544,11 @@ uint8_t procF1UeContextModificationReq(F1AP_PDU_t *f1apMsg)
                }
                break;
             }
+         case ProtocolIE_ID_id_GNB_DUConfigurationQuery:
+            {
+               DU_LOG("\nINFO  -->  DU APP : Received GNB DU Configuration Query in UE Context Modification Request from CU");
+               return ROK;
+            }
       }
    }
    if(ret != RFAILED)

@@ -257,6 +257,17 @@ void readCuCfg()
 
 } /* End of readCuCfg */
 
+void initiateIntraDuHandover(uint32_t sourceDuId, uint32_t targetDuId, uint32_t ueId)
+{
+    DuDb *duDb = getDuDb(sourceDuId);
+    CuUeCb *ueCb = &duDb->ueCb[ueId-1];
+
+    ueCb->state = HANDOVER_IN_PROGRESS;
+    DU_LOG("\nINFO  --> CU_STUB: Inter-DU Handover Started for ueId [%d] from DU ID [%d] to DU ID [%d]", \
+       ueId, sourceDuId, targetDuId);
+    BuildAndSendUeContextModificationReq(sourceDuId, ueCb, QUERY_CONFIG);
+}
+
 /*******************************************************************
  *
  * @brief Handles Console input
@@ -289,8 +300,9 @@ void *cuConsoleHandler(void *args)
 
    while(true) 
    {
+      ch = getchar();
       /* Send DL user data to CU when user enters 'd' on console */
-      if((ch = getchar()) == 'd')
+      if(ch == 'd')
       {
 
       /* Change #if 0 to #if 1 to take input from user */
@@ -344,6 +356,23 @@ void *cuConsoleHandler(void *args)
 #endif
          continue;
       } 
+
+      /* Start Handover procedure towards DU when 'h' is received from console input */
+      else if(ch == 'h')
+      {
+         uint32_t sourceDuId, targetDuId, ueId;
+         DuDb *duDb;
+         CuUeCb *ueCb;
+
+         DU_LOG("\nEnter Source DU ID for Inter-DU Handover");
+         scanf("%d", &sourceDuId);
+         DU_LOG("\nEnter Target DU ID for Inter-DU Handover");
+         scanf("%d", &targetDuId);
+         DU_LOG("\nEnter DU UE F1AP ID to be handed over");
+         scanf("%d", &ueId);
+
+         initiateIntraDuHandover(sourceDuId, targetDuId, ueId);
+      }
    }
 }
 /**********************************************************************
