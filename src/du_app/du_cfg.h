@@ -242,7 +242,7 @@
 #define CELL_IDENTITY 16
 
 /* Macro definitions for DUtoCuRrcContainer */
-#define CELL_GRP_ID 1
+#define CELL_GRP_ID 0
 #define SCH_REQ_ID  0
 #define SR_PROHIBIT_TMR 5
 #define SR_TRANS_MAX 2
@@ -255,7 +255,7 @@
 #define PHR_PROHIBHIT_TMR 0
 #define PHR_PWR_FACTOR_CHANGE 3
 #define PHR_MODE_OTHER_CG 0
-#define SN_FIELD_LEN 0
+#define SN_FIELD_LEN 1
 #define T_POLL_RETRANSMIT 8       /* Enum for 45ms */ 
 #define T_POLL_RETRANSMIT_VAL 45  /* Value in ms */
 #define POLL_PDU 0                /* Enum for 4 pdus */

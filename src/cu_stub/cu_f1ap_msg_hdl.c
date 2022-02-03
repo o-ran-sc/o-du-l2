@@ -139,6 +139,7 @@
 /* MACRO Define for PUSCH Configuration */
 #define PUSCH_K2_CFG1  1
 #define PUSCH_K2_CFG2  2
+#define PUSCH_START_SYMBOL 3
 
 #define PUSCH_MSG3_DELTA_PREAMBLE 0
 #define PUSCH_P0_NOMINAL_WITH_GRANT -70
@@ -1827,25 +1828,28 @@ uint8_t setDlRRCMsgType(CuUeCb *ueCb)
    switch(ueCb->f1apMsgDb.dlRrcMsgCount)
    {
       case RRC_SETUP:
-	 rrcMsgType = RRC_SETUP;
-	 break;
+         rrcMsgType = RRC_SETUP;
+         break;
       case REGISTRATION_ACCEPT:
-	 rrcMsgType = REGISTRATION_ACCEPT;
-	 break;
+         rrcMsgType = REGISTRATION_ACCEPT;
+         break;
       case UE_CONTEXT_SETUP_REQ:
-	 rrcMsgType = UE_CONTEXT_SETUP_REQ;
-	 break;
+         rrcMsgType = UE_CONTEXT_SETUP_REQ;
+         break;
       case SECURITY_MODE_COMPLETE:
-	 rrcMsgType = SECURITY_MODE_COMPLETE;
-	 break;
+         rrcMsgType = SECURITY_MODE_COMPLETE;
+         break;
       case RRC_RECONFIG:
-	 rrcMsgType = RRC_RECONFIG;
-	 break;
+         rrcMsgType = RRC_RECONFIG;
+         break;
+      case RRC_RECONFIG_COMPLETE:
+         rrcMsgType = RRC_RECONFIG_COMPLETE;
+         break;
       case UE_CONTEXT_MOD_REQ:
-	 rrcMsgType = UE_CONTEXT_MOD_REQ;
-	 break;
+         rrcMsgType = UE_CONTEXT_MOD_REQ;
+         break;
       default:
-	 break;
+         break;
    }
    return rrcMsgType;   
 }
@@ -1908,6 +1912,7 @@ uint8_t procInitULRRCMsg(uint32_t duId, F1AP_PDU_t *f1apMsg)
                ueCb->crnti = crnti;
                ueCb->gnbDuUeF1apId = gnbDuUeF1apId;
                ueCb->gnbCuUeF1apId = ++cuCb.gnbCuUeF1apIdGenerator;
+               ueCb->state = ATTACH_IN_PROGRESS;
                (duDb->numUe)++;
 
                cellCb->ueCb[cellCb->numUe] = ueCb;
@@ -4055,8 +4060,7 @@ uint8_t BuildSrsRsrcAddModList(struct SRS_Config__srs_ResourceToAddModList *reso
    resourceList->list.array[rsrcIdx]->transmissionComb.choice.n2->cyclicShift_n2\
       = SRS_CYCLIC_SHIFT_N2;
 
-   resourceList->list.array[rsrcIdx]->resourceMapping.startPosition = \
-								      0;
+   resourceList->list.array[rsrcIdx]->resourceMapping.startPosition = PUSCH_START_SYMBOL;
    resourceList->list.array[rsrcIdx]->resourceMapping.nrofSymbols =  \
 								     SRS_Resource__resourceMapping__nrofSymbols_n1;
    resourceList->list.array[rsrcIdx]->resourceMapping.repetitionFactor = \
@@ -7164,10 +7168,16 @@ uint8_t procUlRrcMsg(uint32_t duId, F1AP_PDU_t *f1apMsg)
             BuildAndSendDLRRCMessageTransfer(duId, ueCb, srbId, rrcMsgType);
          }
       }
-      if(rrcMsgType == UE_CONTEXT_MOD_REQ)
+      if(rrcMsgType == RRC_RECONFIG_COMPLETE)
       {
-         DU_LOG("\nINFO  -->  F1AP: Sending UE Context Modification Request");
-         BuildAndSendUeContextModificationReq(duId, ueCb);
+         ueCb->state = ACTIVE;
+         ueCb->f1apMsgDb.dlRrcMsgCount++;
+         rrcMsgType = setDlRRCMsgType(ueCb);
+         if(rrcMsgType == UE_CONTEXT_MOD_REQ)
+         {
+            DU_LOG("\nINFO  -->  F1AP: Sending UE Context Modification Request");
+            BuildAndSendUeContextModificationReq(duId, ueCb, MODIFY_UE);
+         }
       }
    }
    return ret;
@@ -8222,7 +8232,7 @@ void FreeUeContextModicationRequest(F1AP_PDU_t *f1apMsg)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t BuildAndSendUeContextModificationReq(uint32_t duId, void *cuUeCb)
+uint8_t BuildAndSendUeContextModificationReq(uint32_t duId, void *cuUeCb, UeCtxtModAction action)
 {
    uint8_t    ieIdx = 0;
    uint8_t    elementCnt = 0;
@@ -8257,7 +8267,10 @@ uint8_t BuildAndSendUeContextModificationReq(uint32_t duId, void *cuUeCb)
 
       ueContextModifyReq =&f1apMsg->choice.initiatingMessage->value.choice.UEContextModificationRequest;
 
-      elementCnt = 4;
+      if(action == MODIFY_UE)
+         elementCnt = 4;
+      else if(action == QUERY_CONFIG)
+         elementCnt = 3;
       ueContextModifyReq->protocolIEs.list.count = elementCnt;
       ueContextModifyReq->protocolIEs.list.size = elementCnt*sizeof(UEContextModificationRequest_t *);
 
@@ -8279,7 +8292,6 @@ uint8_t BuildAndSendUeContextModificationReq(uint32_t duId, void *cuUeCb)
          }
       }
 
-
       ieIdx=0;
       ueContextModifyReq->protocolIEs.list.array[ieIdx]->id = ProtocolIE_ID_id_gNB_CU_UE_F1AP_ID;
       ueContextModifyReq->protocolIEs.list.array[ieIdx]->criticality = Criticality_reject;
@@ -8294,30 +8306,43 @@ uint8_t BuildAndSendUeContextModificationReq(uint32_t duId, void *cuUeCb)
                                                                        UEContextModificationRequestIEs__value_PR_GNB_DU_UE_F1AP_ID;
       ueContextModifyReq->protocolIEs.list.array[ieIdx]->value.choice.GNB_DU_UE_F1AP_ID = ueCb->gnbDuUeF1apId;
 
-      /* DRB to be setup list */
-      ieIdx++;
-      ueContextModifyReq->protocolIEs.list.array[ieIdx]->id = ProtocolIE_ID_id_DRBs_ToBeSetupMod_List;
-      ueContextModifyReq->protocolIEs.list.array[ieIdx]->criticality = Criticality_reject;
-      ueContextModifyReq->protocolIEs.list.array[ieIdx]->value.present =\
-                                                                        UEContextModificationRequestIEs__value_PR_DRBs_ToBeSetupMod_List;
-      ret = BuildDrbToBeSetupList(ueCb->gnbCuUeF1apId, &(ueContextModifyReq->protocolIEs.list.array[ieIdx]->\
-               value.choice.DRBs_ToBeSetupMod_List));
-
-      /* DRB to be modified list */
-      ieIdx++;
-      ueContextModifyReq->protocolIEs.list.array[ieIdx]->id = ProtocolIE_ID_id_DRBs_ToBeModified_List;
-      ueContextModifyReq->protocolIEs.list.array[ieIdx]->criticality = Criticality_reject;
-      ueContextModifyReq->protocolIEs.list.array[ieIdx]->value.present =\
-                                                                        UEContextModificationRequestIEs__value_PR_DRBs_ToBeModified_List;
-      ret = BuildDrbToBeModifiedList(ueCb->gnbCuUeF1apId, &(ueContextModifyReq->protocolIEs.list.array[ieIdx]->\
-               value.choice.DRBs_ToBeModified_List));
-
-      /* TODO: DRB to be release list */
-
-      if(ret != ROK)
+      if(action == MODIFY_UE)
       {
-         break;
+         /* DRB to be setup list */
+         ieIdx++;
+         ueContextModifyReq->protocolIEs.list.array[ieIdx]->id = ProtocolIE_ID_id_DRBs_ToBeSetupMod_List;
+         ueContextModifyReq->protocolIEs.list.array[ieIdx]->criticality = Criticality_reject;
+         ueContextModifyReq->protocolIEs.list.array[ieIdx]->value.present =\
+                                                                           UEContextModificationRequestIEs__value_PR_DRBs_ToBeSetupMod_List;
+         ret = BuildDrbToBeSetupList(ueCb->gnbCuUeF1apId, &(ueContextModifyReq->protocolIEs.list.array[ieIdx]->\
+                  value.choice.DRBs_ToBeSetupMod_List));
+
+         /* DRB to be modified list */
+         ieIdx++;
+         ueContextModifyReq->protocolIEs.list.array[ieIdx]->id = ProtocolIE_ID_id_DRBs_ToBeModified_List;
+         ueContextModifyReq->protocolIEs.list.array[ieIdx]->criticality = Criticality_reject;
+         ueContextModifyReq->protocolIEs.list.array[ieIdx]->value.present =\
+                                                                           UEContextModificationRequestIEs__value_PR_DRBs_ToBeModified_List;
+         ret = BuildDrbToBeModifiedList(ueCb->gnbCuUeF1apId, &(ueContextModifyReq->protocolIEs.list.array[ieIdx]->\
+                  value.choice.DRBs_ToBeModified_List));
+
+         /* TODO: DRB to be release list */
+
+         if(ret != ROK)
+         {
+            break;
+         }
       }
+      else if(action == QUERY_CONFIG)
+      {
+         ieIdx++;
+         ueContextModifyReq->protocolIEs.list.array[ieIdx]->id = ProtocolIE_ID_id_GNB_DUConfigurationQuery;
+         ueContextModifyReq->protocolIEs.list.array[ieIdx]->criticality = Criticality_reject;
+         ueContextModifyReq->protocolIEs.list.array[ieIdx]->value.present = \
+            UEContextModificationRequestIEs__value_PR_GNB_DUConfigurationQuery;
+         ueContextModifyReq->protocolIEs.list.array[ieIdx]->value.choice.GNB_DUConfigurationQuery = GNB_DUConfigurationQuery_true;
+      }
+
       xer_fprint(stdout, &asn_DEF_F1AP_PDU, f1apMsg);
 
       /* Encode the F1SetupRequest type as APER */
@@ -8876,6 +8901,7 @@ uint8_t procUeContextModificationResponse(F1AP_PDU_t *f1apMsg)
              }
       }
    }
+   
    return ROK;
 }
 
