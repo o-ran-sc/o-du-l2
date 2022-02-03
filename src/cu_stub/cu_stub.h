@@ -70,6 +70,14 @@
    SPutSBuf(CU_APP_MEM_REG, CU_POOL,                         \
          (Data *)_datPtr, _size);
 
+typedef enum
+{
+   ATTACH_IN_PROGRESS,
+   ACTIVE,
+   HANDOVER_IN_PROGRESS,
+   IDLE
+}UeState;
+
 typedef struct RrcVersion
 {
   uint8_t    rrcVer;     /* Latest RRC Version */
@@ -95,6 +103,7 @@ typedef struct cuUeCb
    uint8_t   gnbDuUeF1apId;
    uint8_t   gnbCuUeF1apId;
    F1apMsgDb f1apMsgDb;
+   UeState   state;
 }CuUeCb;
 
 struct cuCellCb
