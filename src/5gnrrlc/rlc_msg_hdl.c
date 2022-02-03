@@ -184,14 +184,14 @@ uint8_t fillLcCfg(RlcCb *gCb, RlcEntCfgInfo *rlcUeCfg, RlcBearerCfg *duRlcUeCfg)
             rlcUeCfg->lCh[lChRbIdx].type     = duRlcUeCfg->lcType;
             rlcUeCfg->m.amInfo.ul.snLen      = duRlcUeCfg->u.amCfg->ulAmCfg.snLenUl; 
             rlcUeCfg->m.amInfo.ul.staProhTmr = duRlcUeCfg->u.amCfg->ulAmCfg.statProhTmr;
-            rlcUeCfg->m.amInfo.ul.reAsmblTmr   = duRlcUeCfg->u.amCfg->ulAmCfg.reAssemTmr * RLC_REASSEMBLY_TMR_BASE;
+            rlcUeCfg->m.amInfo.ul.reAsmblTmr   = duRlcUeCfg->u.amCfg->ulAmCfg.reAssemTmr;
             break;
          }
       case RLC_MODE_UM:
          {
             /* UL UM CONFIG */
             rlcUeCfg->m.umInfo.ul.snLen      = duRlcUeCfg->u.umBiDirCfg->ulUmCfg.snLenUlUm; 
-            rlcUeCfg->m.umInfo.ul.reAsmblTmr = duRlcUeCfg->u.umBiDirCfg->ulUmCfg.reAssemTmr * RLC_REASSEMBLY_TMR_BASE;
+            rlcUeCfg->m.umInfo.ul.reAsmblTmr = duRlcUeCfg->u.umBiDirCfg->ulUmCfg.reAssemTmr;
 
             /* DL UM CONFIG */
             rlcUeCfg->m.umInfo.dl.snLen = duRlcUeCfg->u.umBiDirCfg->dlUmCfg.snLenDlUm; 

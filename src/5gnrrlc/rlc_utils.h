@@ -1116,7 +1116,6 @@ do                                               \
 #define RLC_DL_INST   1
 
 #define PDCP_SN 1
-#define RLC_REASSEMBLY_TMR_BASE   5   /* Used to calculate timer value from enum values */
 
 /* Fill Pst structure for sending msg from RLC to DUAPP */
 #define FILL_PST_RLC_TO_DUAPP(_pst, _srcInst, _event) \
