@@ -983,8 +983,8 @@ typedef struct pucchResrcCfg
 
 typedef struct pucchFormatCfg
 {
-   uint8_t interSlotFreqHop;
-   uint8_t addDmrs;
+   bool interSlotFreqHop;
+   bool addDmrs;
    uint8_t maxCodeRate;
    uint8_t numSlots;
    bool    pi2BPSK;

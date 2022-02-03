@@ -1887,7 +1887,6 @@ void duFreeSliceCfgRsp(Pst *pst,  MacSliceCfgRsp *cfgRsp)
       }
       DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, cfgRsp, sizeof(MacSliceCfgRsp)); 
    }
-   return ROK;
 }
 
 /*******************************************************************
@@ -2107,8 +2106,8 @@ uint8_t BuildAndSendSliceReCfgReq(RrmPolicy *rrmPolicy[], uint8_t totalRrmPolicy
  **********************************************************************/
 uint8_t DuProcMacSliceReCfgRsp(Pst *pst,  MacSliceCfgRsp *reCfgRsp)
 {
-   uint8_t cfgIdx = 0, sliceIdx =0;
-   
+   uint8_t cfgIdx = 0;
+
    if(reCfgRsp)
    {
       if(reCfgRsp->listOfSliceCfgRsp)

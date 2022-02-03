@@ -47,15 +47,27 @@
 #define SP_CELL_ID     2
 #define SERV_CELL_IDX 3
 #define CU_TO_DU_RRC_INF 4
-
-#define RRC_SETUP 1
-#define REGISTRATION_ACCEPT 2
-#define UE_CONTEXT_SETUP_REQ 3
-#define UE_CONTEXT_SETUP_RSP 4
-#define SECURITY_MODE_COMPLETE 5
-#define RRC_RECONFIG 6
-#define UE_CONTEXT_MOD_REQ 7
 #define NUM_QOS_EXT 1
+
+typedef enum
+{
+   RRC_SETUP=1,
+   REGISTRATION_ACCEPT,
+   UE_CONTEXT_SETUP_REQ,
+   UE_CONTEXT_SETUP_RSP,
+   SECURITY_MODE_COMPLETE,
+   RRC_RECONFIG,
+   RRC_RECONFIG_COMPLETE,
+   UE_CONTEXT_MOD_REQ
+}RrcMsgType;
+
+/* Defines action to be performed via UE Context Modification request */
+typedef enum
+{
+   MODIFY_UE,        /* Modify UE configuration at DU */
+   QUERY_CONFIG,     /* Query DU for its configurations */
+   STOP_DATA_TX      /* Stop data transmission from DU to a particular UE */
+}UeCtxtModAction;
 
 typedef struct f1apDb
 {
@@ -64,7 +76,7 @@ typedef struct f1apDb
 }F1apMsgDb;
   
 void F1APMsgHdlr(uint32_t *destDuId, Buffer *mBuf);
-uint8_t BuildAndSendUeContextModificationReq(uint32_t duId, void *ueCb);
+uint8_t BuildAndSendUeContextModificationReq(uint32_t duId, void *ueCb, UeCtxtModAction action);
 uint8_t BuildAndSendUeContextReleaseCommand(uint32_t duId, uint8_t cuUeF1apId, uint8_t duUeF1apId);
 uint8_t BuildAndSendF1ResetReq();
 /**********************************************************************

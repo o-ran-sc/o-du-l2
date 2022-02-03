@@ -2783,19 +2783,30 @@ uint8_t duProcUeContextModReq(DuUeCb *ueCb)
             }
          }
       }
-      else
+      else if(ueCb->f1UeDb->actionType == UE_CTXT_MOD)
       {
          ret = duBuildAndSendUeContextModReq(cellId, ueCb->crnti, &ueCb->f1UeDb->duUeCfg);
          if(ret == RFAILED)
          {
             DU_LOG("\nERROR  -->  DU APP : Failed to build ue context setup Req in duProcUeContextModReq()");
+            return RFAILED;
+         }
+      }
+      else if(ueCb->f1UeDb->actionType == UE_CTXT_CFG_QUERY)
+      {
+         if((BuildAndSendUeContextModRsp(ueCb) != ROK))
+         {
+            DU_LOG("\nERROR  -->  DU APP : Failed to build UE Context modification response");
+            return RFAILED;
          }
       }
    }
    else
    {
       //TODO: To send the failure cause in UeContextModRsp
+      
       DU_LOG("ERROR  -->  DU APP : Failed to process UE CNTXT MOD REQ at duProcUeContextModReq()");
+      return RFAILED;
    }
    return ROK;
 }
