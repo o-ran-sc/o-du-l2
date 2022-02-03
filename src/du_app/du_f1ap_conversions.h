@@ -1,0 +1,16 @@
+RLC_BearerConfig__servedRadioBearer_PR covertRbTypeFromIntEnumToRrcEnum(RlcRbType rbType);
+RLC_Config_PR covertRlcModeFromIntEnumToRrcEnum(RlcMode mode);
+SN_FieldLengthAM_t covertAmSnLenFromIntEnumToRrcEnum(SnLenAm snLen);
+SN_FieldLengthUM_t covertUmSnLenFromIntEnumToRrcEnum(SnLenUm snLen);
+T_PollRetransmit_t covertPollRetxTmrValueToEnum(uint16_t pollRetxTmr);
+uint16_t covertPollRetxTmrEnumToValue(uint8_t pollRetxTmrCfg);
+PollPDU_t covertPollPduValueToEnum(int16_t pollPdu);
+int32_t covertPollPduEnumToValue(uint8_t pollPduCfg);
+PollByte_t covertPollByteValueToEnum(int32_t pollByte);
+int32_t covertPollByteEnumToValue(uint16_t pollBytesCfg);
+uint8_t covertMaxRetxValueToEnum(uint8_t maxRetx);
+uint8_t covertMaxRetxEnumToValue(uint8_t maxRetxCfg);
+T_Reassembly_t convertReasmblTmrValueToEnum(int8_t reasmblTmr);
+int8_t convertReasmblTmrEnumToValue(uint8_t reAsmblTmrCfg);
+T_StatusProhibit_t convertProhibitTmrValueToEnum(int16_t prohibitTmr);
+PUCCH_Resource__format_PR covertPucchFormatIntEnumToRrcEnum(uint8_t pucchFormat);

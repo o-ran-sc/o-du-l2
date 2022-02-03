@@ -47,7 +47,7 @@ void duFillModulationDetails(MacUeCfg *ueCfg, MacUeCfg *oldUeCfg, void *ueCap);
 int8_t getReAsmblTmr(uint8_t reAsmblTmrCfg);
 int16_t getStatProhTmr(uint8_t statProhTmrCfg);
 uint8_t duProcUeContextModReq(DuUeCb *ueCb);
-uint8_t BuildAndSendUeContextModRsp(uint8_t cellId,uint8_t ueId);
+uint8_t BuildAndSendUeContextModRsp(DuUeCb *ueCb);
 uint8_t duBuildAndSendUeContextModReq(uint16_t cellId, uint16_t crnti, DuUeCfg *duUeCfg);
 uint8_t BuildAndSendUeContextReleaseReq(uint16_t cellId, uint8_t ueId);
 uint8_t BuildAndSendUeContextReleaseComplete(uint16_t cellId, uint32_t  gnbCuUeF1apId, uint32_t  gnbDuUeF1apId);
