@@ -204,10 +204,16 @@ void readCuCfg()
    }
    
    cmInetAddr((S8*)g_cfg.DU_IPV4_Addr, &ipv4_du);
+   cuCb.cuCfgParams.sctpParams.sctpAssoc[0].duIpAddr.ipV4Addr = ipv4_du;
+   cuCb.cuCfgParams.sctpParams.sctpAssoc[0].duIpAddr.ipV6Pres = false;
+   
    cmInetAddr((S8*)g_cfg.CU_IPV4_Addr, &ipv4_cu);
-
-   cuCb.cuCfgParams.sctpParams.duPort = g_cfg.DU_Port;
-   cuCb.cuCfgParams.sctpParams.cuPort = g_cfg.CU_Port;
+   cuCb.cuCfgParams.sctpParams.sctpAssoc[0].cuIpAddr.ipV4Addr = ipv4_cu;
+   cuCb.cuCfgParams.sctpParams.sctpAssoc[0].cuIpAddr.ipV6Pres = false;
+   
+   cuCb.cuCfgParams.sctpParams.sctpAssoc[0].duPort = g_cfg.DU_Port;
+   cuCb.cuCfgParams.sctpParams.sctpAssoc[0].cuPort = g_cfg.CU_Port; 
+   cuCb.cuCfgParams.sctpParams.numDu = 1;
 #else
    cuCb.cuCfgParams.sctpParams.numDu = 0;
    numDu = &cuCb.cuCfgParams.sctpParams.numDu;
