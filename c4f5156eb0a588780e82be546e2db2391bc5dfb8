@@ -1,0 +1,159 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8355458e_b5d1db38",
+        "filename": "src/cu_stub/cu_stub.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 281,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-02-17T17:27:55Z",
+      "side": 1,
+      "message": "add null check before using any pointer",
+      "range": {
+        "startLine": 281,
+        "startChar": 24,
+        "endLine": 281,
+        "endChar": 25
+      },
+      "revId": "c4f5156eb0a588780e82be546e2db2391bc5dfb8",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e6c41ec5_88dbd29c",
+        "filename": "src/cu_stub/cu_stub.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 283,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-02-17T17:27:55Z",
+      "side": 1,
+      "message": "same as above",
+      "range": {
+        "startLine": 283,
+        "startChar": 9,
+        "endLine": 283,
+        "endChar": 10
+      },
+      "revId": "c4f5156eb0a588780e82be546e2db2391bc5dfb8",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bc7e51f4_b124cd11",
+        "filename": "src/cu_stub/cu_stub.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 382,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-02-17T17:27:55Z",
+      "side": 1,
+      "message": "we are using these two variables",
+      "range": {
+        "startLine": 382,
+        "startChar": 19,
+        "endLine": 382,
+        "endChar": 20
+      },
+      "revId": "c4f5156eb0a588780e82be546e2db2391bc5dfb8",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8d3ea4fe_c9232f6d",
+        "filename": "src/cu_stub/cu_stub.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-02-17T17:27:55Z",
+      "side": 1,
+      "message": "are we not going to add inactive status, \nplease add inactive state as well this will be helpful in other scenario",
+      "range": {
+        "startLine": 78,
+        "startChar": 1,
+        "endLine": 78,
+        "endChar": 8
+      },
+      "revId": "c4f5156eb0a588780e82be546e2db2391bc5dfb8",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1f0f6aca_5832750b",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 13956,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-02-17T17:27:55Z",
+      "side": 1,
+      "message": "remove",
+      "range": {
+        "startLine": 13956,
+        "startChar": 13,
+        "endLine": 13956,
+        "endChar": 14
+      },
+      "revId": "c4f5156eb0a588780e82be546e2db2391bc5dfb8",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8826b64d_404661c8",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 14003,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-02-17T17:27:55Z",
+      "side": 1,
+      "message": "If memory allocation fails here, add another break out of this loop.",
+      "range": {
+        "startLine": 14003,
+        "startChar": 12,
+        "endLine": 14003,
+        "endChar": 17
+      },
+      "revId": "c4f5156eb0a588780e82be546e2db2391bc5dfb8",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a3599938_8ef63568",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 14114,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-02-17T17:27:55Z",
+      "side": 1,
+      "message": "free part needs to be added for BuildSrbSetupModList",
+      "revId": "c4f5156eb0a588780e82be546e2db2391bc5dfb8",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
