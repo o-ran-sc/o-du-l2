@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "48c0ab5a_329544d1",
+        "filename": "src/phy_stub/phy_stub_msg_hdl.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 1054,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-02-18T13:51:13Z",
+      "side": 1,
+      "message": "not going to revert this change?",
+      "revId": "d43106e9959db218ce4a4c278f73405d6d70579f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
