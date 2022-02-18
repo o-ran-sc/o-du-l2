@@ -122,9 +122,17 @@ void readRicCfg()
 
    cmInetAddr((S8*)g_cfg.DU_IPV4_Addr,  &ipv4_du);
    cmInetAddr((S8*)g_cfg.RIC_IPV4_Addr, &ipv4_ric);
+   
+   ricCfgParams.sctpParams.sctpAssoc[0].duIpAddr.ipV4Addr = ipv4_du;
+   ricCfgParams.sctpParams.sctpAssoc[0].duIpAddr.ipV6Pres = false;
+   ricCfgParams.sctpParams.sctpAssoc[0].duPort = g_cfg.DU_Port;
 
-   ricCfgParams.sctpParams.duPort = g_cfg.RIC_Port;
-   ricCfgParams.sctpParams.ricPort = g_cfg.RIC_Port;
+   ricCfgParams.sctpParams.sctpAssoc[0].ricIpAddr.ipV4Addr = ipv4_ric;
+   ricCfgParams.sctpParams.sctpAssoc[0].ricIpAddr.ipV6Pres = false;
+   ricCfgParams.sctpParams.sctpAssoc[0].ricPort = g_cfg.RIC_Port;
+
+   ricCfgParams.sctpParams.numDu = 1;
+
 #else
    ricCfgParams.sctpParams.numDu = 0;
    numDu = &ricCfgParams.sctpParams.numDu;
