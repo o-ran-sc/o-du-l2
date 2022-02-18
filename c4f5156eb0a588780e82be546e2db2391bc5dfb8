@@ -24,6 +24,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "dfdf07cb_a5121f51",
+        "filename": "src/cu_stub/cu_stub.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 281,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-02-18T13:05:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8355458e_b5d1db38",
+      "range": {
+        "startLine": 281,
+        "startChar": 24,
+        "endLine": 281,
+        "endChar": 25
+      },
+      "revId": "c4f5156eb0a588780e82be546e2db2391bc5dfb8",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e6c41ec5_88dbd29c",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-02-17T17:27:55Z",
       "side": 1,
       "message": "same as above",
+      "range": {
+        "startLine": 283,
+        "startChar": 9,
+        "endLine": 283,
+        "endChar": 10
+      },
+      "revId": "c4f5156eb0a588780e82be546e2db2391bc5dfb8",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0ab17ff5_423dffb4",
+        "filename": "src/cu_stub/cu_stub.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 283,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-02-18T13:05:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e6c41ec5_88dbd29c",
       "range": {
         "startLine": 283,
         "startChar": 9,
@@ -70,6 +118,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "49a44f97_9587bc7e",
+        "filename": "src/cu_stub/cu_stub.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 382,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-02-18T13:05:39Z",
+      "side": 1,
+      "message": "Removed",
+      "parentUuid": "bc7e51f4_b124cd11",
+      "range": {
+        "startLine": 382,
+        "startChar": 19,
+        "endLine": 382,
+        "endChar": 20
+      },
+      "revId": "c4f5156eb0a588780e82be546e2db2391bc5dfb8",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8d3ea4fe_c9232f6d",
@@ -83,6 +155,30 @@
       "writtenOn": "2022-02-17T17:27:55Z",
       "side": 1,
       "message": "are we not going to add inactive status, \nplease add inactive state as well this will be helpful in other scenario",
+      "range": {
+        "startLine": 78,
+        "startChar": 1,
+        "endLine": 78,
+        "endChar": 8
+      },
+      "revId": "c4f5156eb0a588780e82be546e2db2391bc5dfb8",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a16c8cea_ee193f00",
+        "filename": "src/cu_stub/cu_stub.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-02-18T13:05:39Z",
+      "side": 1,
+      "message": "Added IDLE as one of the UE states",
+      "parentUuid": "8d3ea4fe_c9232f6d",
       "range": {
         "startLine": 78,
         "startChar": 1,
@@ -116,6 +212,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "229443d1_212f4018",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 13956,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-02-18T13:05:39Z",
+      "side": 1,
+      "message": "This print was just for debugging purpose. Removed the above if(){...} altogether",
+      "parentUuid": "1f0f6aca_5832750b",
+      "range": {
+        "startLine": 13956,
+        "startChar": 13,
+        "endLine": 13956,
+        "endChar": 14
+      },
+      "revId": "c4f5156eb0a588780e82be546e2db2391bc5dfb8",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8826b64d_404661c8",
@@ -139,6 +259,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2d61bf3a_56425d43",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 14003,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-02-18T13:05:39Z",
+      "side": 1,
+      "message": "Break does not work on if conditions. Hence this break itself will break out of for loop.",
+      "parentUuid": "8826b64d_404661c8",
+      "range": {
+        "startLine": 14003,
+        "startChar": 12,
+        "endLine": 14003,
+        "endChar": 17
+      },
+      "revId": "c4f5156eb0a588780e82be546e2db2391bc5dfb8",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a3599938_8ef63568",
@@ -152,6 +296,24 @@
       "writtenOn": "2022-02-17T17:27:55Z",
       "side": 1,
       "message": "free part needs to be added for BuildSrbSetupModList",
+      "revId": "c4f5156eb0a588780e82be546e2db2391bc5dfb8",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0d442a66_0f0a7aa0",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 14114,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-02-18T13:05:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a3599938_8ef63568",
       "revId": "c4f5156eb0a588780e82be546e2db2391bc5dfb8",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
