@@ -79,6 +79,7 @@
 #define EVENT_MAC_SLICE_CFG_RSP      217
 #define EVENT_MAC_SLICE_RECFG_REQ    218
 #define EVENT_MAC_SLICE_RECFG_RSP    219
+#define EVENT_MAC_SLOT_IND           220
 
 #define BSR_PERIODIC_TIMER_SF_10 10
 #define BSR_RETX_TIMER_SF_320 320
@@ -1342,6 +1343,11 @@ typedef uint8_t (*DuMacCellUpInd) ARGS((
 	 Pst       *pst,
 	 OduCellId *cellId ));
 
+/* Functions for slot Ind from MAC to DU APP*/
+typedef uint8_t (*DuMacSlotInd) ARGS((
+	 Pst       *pst,
+	 SlotTimingInfo *slotIndInfo));
+
 /* Functions for stop Ind from MAC to DU APP*/
 typedef uint8_t (*DuMacStopInd) ARGS((
 	 Pst        *pst,
@@ -1498,6 +1504,9 @@ uint8_t unpackMacSliceReCfgReq(DuMacSliceRecfgReq func, Pst *pst, Buffer *mBuf);
 uint8_t DuProcMacSliceReCfgRsp(Pst *pst,  MacSliceCfgRsp *cfgRsp);
 uint8_t packDuMacSliceReCfgRsp(Pst *pst, MacSliceCfgRsp *cfgRsp);
 uint8_t unpackDuMacSliceReCfgRsp(MacDuSliceReCfgRspFunc func, Pst *pst, Buffer *mBuf);
+uint8_t duHandleSlotInd(Pst *pst, SlotTimingInfo *slotIndInfo);
+uint8_t packMacSlotInd(Pst *pst, SlotTimingInfo *slotIndInfo);
+uint8_t unpackDuMacSlotInd(DuMacSlotInd func, Pst *pst, Buffer *mBuf);
 
 #endif
 
