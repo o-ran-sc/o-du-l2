@@ -400,6 +400,28 @@ void *cuConsoleHandler(void *args)
 
          initiateInterDuHandover(sourceDuId, targetDuId, ueId);
       }
+      /* Start Idle mode paging when 'p' is received from console input */
+      else if(ch == 'p')
+      {
+         uint8_t ueIdx =0, duId =1;
+         DuDb  *duDb;
+         
+         duDb = getDuDb(duId);
+         if(duDb!= NULLP)
+         {
+            for(ueIdx =0; ueIdx<duDb->numUe; ueIdx++)
+            {
+               if(duDb->ueCb[ueIdx].state != ACTIVE)  
+               {
+                  if(BuildAndSendPagingMsg(duId, ueIdx+1)!=ROK)
+                  {
+                     DU_LOG("\nERROR --> EGTP: Failed to build and send paging message for ueId[%d]\n", ueIdx+1);   
+                     return RFAILED;
+                  }
+               }
+            }
+         }
+      }
    }
 }
 /**********************************************************************

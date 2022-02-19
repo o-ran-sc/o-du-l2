@@ -105,6 +105,8 @@
 #include "DRB-ToAddModList.h"
 #include "DRB-ToAddMod.h"
 #include "SDAP-Config.h"
+#include "CNUEPagingIdentity.h"
+#include "PagingCell-Item.h"
 
 /* MACRO for CUtoDURRCInformation */
 #define CELL_GRP_ID 1
@@ -1912,7 +1914,7 @@ uint8_t procInitULRRCMsg(uint32_t duId, F1AP_PDU_t *f1apMsg)
                ueCb->crnti = crnti;
                ueCb->gnbDuUeF1apId = gnbDuUeF1apId;
                ueCb->gnbCuUeF1apId = ++cuCb.gnbCuUeF1apIdGenerator;
-               ueCb->state = ATTACH_IN_PROGRESS;
+               //ueCb->state = ATTACH_IN_PROGRESS;
                (duDb->numUe)++;
 
                cellCb->ueCb[cellCb->numUe] = ueCb;
@@ -9011,6 +9013,350 @@ void procF1SetupReq(uint32_t *destDuId, F1AP_PDU_t *f1apMsg)
    {
        DU_LOG("\nERROR  --> CU_STUB: procF1SetupReq(): Failed to process F1 setup request");
    }
+}
+
+/*******************************************************************
+ *
+ * @brief Builds the Paging cell list 
+ *
+ * @details
+ *
+ *    Function : BuildPagingCellList
+ *
+ *    Functionality: Build the paging cell list 
+ *
+ * @params[in] PagingCell_list_t  *pagingCelllist,  
+ *
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t BuildPagingCellList(PagingCell_list_t  *pagingCelllist,  CuCellCb *cellCb)
+{
+   uint8_t cellIdx =0;
+   PagingCell_ItemIEs_t *pagingCellItemIes; 
+   PagingCell_Item_t *pagingCellItem;
+
+   pagingCelllist->list.count = 1;
+   pagingCelllist->list.size = sizeof(PagingCell_ItemIEs_t*);
+   CU_ALLOC(pagingCelllist->list.array, pagingCelllist->list.size);
+   if(pagingCelllist->list.array == NULLP)
+   {
+      DU_LOG("\nERROR  -->  F1AP : BuildAndSendPagingMsg(): Memory allocation failed ");
+      return RFAILED;
+   }
+
+   for(cellIdx = 0; cellIdx < pagingCelllist->list.count; cellIdx++)
+   {
+      CU_ALLOC(pagingCelllist->list.array[cellIdx], sizeof(PagingCell_ItemIEs_t));
+      if(pagingCelllist->list.array[cellIdx] == NULLP)
+      {
+         DU_LOG("\nERROR  -->  F1AP : BuildAndSendPagingMsg(): Memory allocation failed ");
+         return RFAILED;
+      }
+   }
+   
+   cellIdx = 0;
+   pagingCellItemIes = (PagingCell_ItemIEs_t *)pagingCelllist->list.array[cellIdx];
+   pagingCellItemIes->id =  ProtocolIE_ID_id_PagingCell_Item;
+   pagingCellItemIes->criticality = Criticality_ignore;
+   pagingCellItemIes->value.present = PagingCell_ItemIEs__value_PR_PagingCell_Item; 
+   pagingCellItem = &pagingCellItemIes->value.choice.PagingCell_Item;
+   
+   /* Fill NrCgi Information */
+   BuildNrcgi(&pagingCellItem->nRCGI, cellCb->nrCellId);
+   
+   return ROK;
+}
+
+/*******************************************************************
+ *
+ * @brief Deallocation of memory allocated in paging msg
+ *
+ * @details
+ *
+ *    Function :FreePagingMsg 
+ *
+ *    Functionality: Deallocation of memory allocated in paging msg
+ *
+ * @params[in] F1AP_PDU_t *f1apMsg
+ *
+ * @return void 
+ *
+ * ****************************************************************/
+void FreePagingMsg(F1AP_PDU_t *f1apMsg)
+{
+   uint8_t ieIdx, cellIdx;
+   Paging_t   *paging;
+   PagingCell_ItemIEs_t *pagingCellItemIes;
+   PagingCell_Item_t *pagingCellItem;
+   PagingCell_list_t  *pagingCelllist;
+
+   if(f1apMsg)
+   {
+      if(f1apMsg->choice.initiatingMessage)
+      {
+         paging = &f1apMsg->choice.initiatingMessage->value.choice.Paging;
+         if(paging->protocolIEs.list.array)
+         {
+            for(ieIdx=0 ; ieIdx<paging->protocolIEs.list.count; ieIdx++)
+            {
+               if(paging->protocolIEs.list.array[ieIdx])
+               {
+                  switch(paging->protocolIEs.list.array[ieIdx]->id)
+                  {
+                     case ProtocolIE_ID_id_UEIdentityIndexValue:
+                     {
+                        CU_FREE(paging->protocolIEs.list.array[ieIdx]->value.choice.UEIdentityIndexValue.choice.indexLength10.buf,\
+                        paging->protocolIEs.list.array[ieIdx]->value.choice.UEIdentityIndexValue.choice.indexLength10.size);
+                        break;
+                     }
+                     
+                     case ProtocolIE_ID_id_PagingIdentity:
+                     {
+                        if(paging->protocolIEs.list.array[ieIdx]->value.choice.PagingIdentity.present == PagingIdentity_PR_cNUEPagingIdentity)
+                        {
+                           if(paging->protocolIEs.list.array[ieIdx]->value.choice.PagingIdentity.choice.cNUEPagingIdentity)
+                           {  
+                              if(paging->protocolIEs.list.array[ieIdx]->value.choice.PagingIdentity.choice.cNUEPagingIdentity->present == CNUEPagingIdentity_PR_fiveG_S_TMSI)
+                              {
+                                 CU_FREE(paging->protocolIEs.list.array[ieIdx]->value.choice.PagingIdentity.choice.cNUEPagingIdentity->choice.fiveG_S_TMSI.buf,\
+                                 paging->protocolIEs.list.array[ieIdx]->value.choice.PagingIdentity.choice.cNUEPagingIdentity->choice.fiveG_S_TMSI.size);
+                              }
+                                CU_FREE(paging->protocolIEs.list.array[ieIdx]->value.choice.PagingIdentity.choice.cNUEPagingIdentity,\
+                                sizeof(struct CNUEPagingIdentity));
+                           }
+                        }
+                        break;
+                     }
+                     
+                     case ProtocolIE_ID_id_PagingCell_List:
+                     {
+                        pagingCelllist = &paging->protocolIEs.list.array[ieIdx]->value.choice.PagingCell_list;
+                        if(pagingCelllist->list.array)
+                        {
+                           for(cellIdx = 0; cellIdx < pagingCelllist->list.count; cellIdx++)
+                           {
+                              if(pagingCelllist->list.array[cellIdx])
+                              {
+                                  pagingCellItemIes = (PagingCell_ItemIEs_t *)pagingCelllist->list.array[cellIdx];
+                                  if(pagingCellItemIes->id == ProtocolIE_ID_id_PagingCell_Item)
+                                  {
+                                     pagingCellItem = &pagingCellItemIes->value.choice.PagingCell_Item;
+                                     CU_FREE(pagingCellItem->nRCGI.pLMN_Identity.buf, pagingCellItem->nRCGI.pLMN_Identity.size);
+                                     CU_FREE(pagingCellItem->nRCGI.nRCellIdentity.buf, pagingCellItem->nRCGI.nRCellIdentity.size);
+                                  }
+                                  CU_FREE(pagingCelllist->list.array[cellIdx], sizeof(PagingCell_ItemIEs_t));
+                              }
+                           }
+                           CU_FREE(pagingCelllist->list.array, pagingCelllist->list.size);
+                        }
+                        break;
+                     }
+                  }
+                  CU_FREE(paging->protocolIEs.list.array[ieIdx], sizeof(Paging_t));
+               }
+            }
+            CU_FREE(paging->protocolIEs.list.array, paging->protocolIEs.list.size);
+         }
+         CU_FREE(f1apMsg->choice.initiatingMessage, sizeof(InitiatingMessage_t));
+      }
+      CU_FREE(f1apMsg, sizeof(F1AP_PDU_t));
+   }
+}
+/*******************************************************************
+ *
+ * @brief Builds and sends the paging message if UE is in idle mode
+ *
+ * @details
+ *
+ *    Function : BuildAndSendPagingMsg
+ *
+ *    Functionality: Builds and sends the paging message
+ *
+ * @params[in] uint32_t duId, uint8_t ueId
+ *
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t BuildAndSendPagingMsg(uint32_t duId, uint8_t ueId)
+{
+   bool       memAllocFailed = false;
+   uint8_t    ieIdx = 0, elementCnt = 0, val = 0, cellIdx=0, ret = RFAILED;
+   uint8_t    unusedByteInUeId = 6, unusedByteInTmsi = 0;
+   uint8_t    totalBitInUeId = 2, totalBitInTmsi = 6;
+   F1AP_PDU_t *f1apMsg = NULLP;
+   Paging_t   *paging = NULLP;
+   DuDb       *duDb;
+   asn_enc_rval_t         encRetVal;
+   
+   DU_LOG("\nINFO  -->  F1AP : Building PAGING Message command\n");
+
+   while(true)
+   {
+      CU_ALLOC(f1apMsg, sizeof(F1AP_PDU_t));
+      if(f1apMsg == NULLP)
+      {
+         DU_LOG("\nERROR  -->  F1AP : BuildAndSendPagingMsg(): Memory allocation for F1AP-PDU");
+         break;
+      }
+
+      f1apMsg->present =  F1AP_PDU_PR_initiatingMessage;
+
+      CU_ALLOC(f1apMsg->choice.initiatingMessage, sizeof(InitiatingMessage_t));
+      if(f1apMsg->choice.initiatingMessage == NULLP)
+      {
+         DU_LOG("\nERROR  -->  F1AP : BuildAndSendPagingMsg(): Memory allocation for F1AP-PDU failed ");
+         break;
+      }
+      f1apMsg->choice.initiatingMessage->procedureCode = ProcedureCode_id_Paging;
+      f1apMsg->choice.initiatingMessage->criticality = Criticality_reject;
+      f1apMsg->choice.initiatingMessage->value.present = InitiatingMessage__value_PR_Paging;
+
+      paging = &f1apMsg->choice.initiatingMessage->value.choice.Paging;
+
+      elementCnt = 5;
+      paging->protocolIEs.list.count = elementCnt;
+      paging->protocolIEs.list.size = elementCnt * sizeof(Paging_t*);
+
+      /* Initialize the Paging Message members */
+      CU_ALLOC(paging->protocolIEs.list.array, paging->protocolIEs.list.size);
+      if(paging->protocolIEs.list.array == NULLP)
+      {
+         DU_LOG("\nERROR  -->  F1AP : BuildAndSendPagingMsg():Memory allocation failed");
+         break;
+      }
+
+      for(ieIdx=0 ; ieIdx<elementCnt; ieIdx++)
+      {
+         CU_ALLOC(paging->protocolIEs.list.array[ieIdx], sizeof(Paging_t));
+         if(paging->protocolIEs.list.array[ieIdx] == NULLP)
+         {
+            DU_LOG("\nERROR  -->  F1AP : BuildAndSendPagingMsg(): Memory allocation failed ");
+            memAllocFailed = true;  
+            break;
+         }
+      }
+      
+      if(memAllocFailed == true)
+      {
+         break;
+      }
+      
+      /* UE Identity Index Value */
+      ieIdx=0;
+      paging->protocolIEs.list.array[ieIdx]->id = ProtocolIE_ID_id_UEIdentityIndexValue;
+      paging->protocolIEs.list.array[ieIdx]->criticality = Criticality_reject;
+      paging->protocolIEs.list.array[ieIdx]->value.present = PagingIEs__value_PR_UEIdentityIndexValue;
+      paging->protocolIEs.list.array[ieIdx]->value.choice.UEIdentityIndexValue.present = UEIdentityIndexValue_PR_indexLength10;
+      paging->protocolIEs.list.array[ieIdx]->value.choice.UEIdentityIndexValue.choice.indexLength10.size = totalBitInUeId*sizeof(uint8_t);
+      CU_ALLOC(paging->protocolIEs.list.array[ieIdx]->value.choice.UEIdentityIndexValue.choice.indexLength10.buf,\
+      paging->protocolIEs.list.array[ieIdx]->value.choice.UEIdentityIndexValue.choice.indexLength10.size);
+      if(paging->protocolIEs.list.array[ieIdx]->value.choice.UEIdentityIndexValue.choice.indexLength10.buf == NULLP)
+      {
+         DU_LOG("\nERROR  -->  F1AP : BuildAndSendPagingMsg(): Memory allocation failed ");
+         break;
+      }
+      paging->protocolIEs.list.array[ieIdx]->value.choice.UEIdentityIndexValue.choice.indexLength10.bits_unused = unusedByteInUeId;
+      val = ueId << unusedByteInUeId;
+      fillBitString(&paging->protocolIEs.list.array[ieIdx]->value.choice.UEIdentityIndexValue.choice.indexLength10, unusedByteInUeId, totalBitInUeId, val); 
+     
+      /* Paging Identity */
+      ieIdx++;
+      paging->protocolIEs.list.array[ieIdx]->id = ProtocolIE_ID_id_PagingIdentity;
+      paging->protocolIEs.list.array[ieIdx]->criticality = Criticality_reject;
+      paging->protocolIEs.list.array[ieIdx]->value.present = PagingIEs__value_PR_PagingIdentity;
+      paging->protocolIEs.list.array[ieIdx]->value.choice.PagingIdentity.present = \
+                                                     PagingIdentity_PR_cNUEPagingIdentity;
+      CU_ALLOC(paging->protocolIEs.list.array[ieIdx]->value.choice.PagingIdentity.choice.cNUEPagingIdentity, \
+                                                     sizeof(struct CNUEPagingIdentity));
+      if(!paging->protocolIEs.list.array[ieIdx]->value.choice.PagingIdentity.choice.cNUEPagingIdentity)
+      {
+         DU_LOG("\nERROR  -->  F1AP : BuildAndSendPagingMsg(): Memory allocation failed ");
+         break;
+      }
+
+      paging->protocolIEs.list.array[ieIdx]->value.choice.PagingIdentity.choice.cNUEPagingIdentity->present = \
+                                                      CNUEPagingIdentity_PR_fiveG_S_TMSI;
+
+      paging->protocolIEs.list.array[ieIdx]->value.choice.PagingIdentity.choice.cNUEPagingIdentity->choice.fiveG_S_TMSI.size = totalBitInTmsi*sizeof(uint8_t);
+      CU_ALLOC(paging->protocolIEs.list.array[ieIdx]->value.choice.PagingIdentity.choice.cNUEPagingIdentity->choice.fiveG_S_TMSI.buf,\
+      paging->protocolIEs.list.array[ieIdx]->value.choice.PagingIdentity.choice.cNUEPagingIdentity->choice.fiveG_S_TMSI.size);
+      if(!paging->protocolIEs.list.array[ieIdx]->value.choice.PagingIdentity.choice.cNUEPagingIdentity->choice.fiveG_S_TMSI.buf)
+      {
+         DU_LOG("\nERROR  -->  F1AP : BuildAndSendPagingMsg(): Memory allocation failed ");
+         break;
+      }
+      
+      paging->protocolIEs.list.array[ieIdx]->value.choice.PagingIdentity.choice.cNUEPagingIdentity->choice.fiveG_S_TMSI.bits_unused = unusedByteInTmsi;
+      val = ueId << unusedByteInTmsi;
+      fillBitString(&paging->protocolIEs.list.array[ieIdx]->value.choice.PagingIdentity.choice.cNUEPagingIdentity->choice.fiveG_S_TMSI\
+      , unusedByteInTmsi, totalBitInTmsi, val);
+
+      /* Paging Drx */
+      ieIdx++;
+      paging->protocolIEs.list.array[ieIdx]->id = ProtocolIE_ID_id_PagingDRX;
+      paging->protocolIEs.list.array[ieIdx]->criticality = Criticality_ignore;
+      paging->protocolIEs.list.array[ieIdx]->value.present = PagingIEs__value_PR_PagingDRX;
+      paging->protocolIEs.list.array[ieIdx]->value.choice.PagingDRX = PagingDRX_v32;
+     
+      /* Paging Priority */
+      ieIdx++;
+      paging->protocolIEs.list.array[ieIdx]->id = ProtocolIE_ID_id_PagingPriority;
+      paging->protocolIEs.list.array[ieIdx]->criticality = Criticality_ignore;
+      paging->protocolIEs.list.array[ieIdx]->value.present = PagingIEs__value_PR_PagingPriority;
+      paging->protocolIEs.list.array[ieIdx]->value.choice.PagingPriority = PagingPriority_priolevel2;
+      
+      /* Paging Cell List */
+      ieIdx++;
+      paging->protocolIEs.list.array[ieIdx]->id = ProtocolIE_ID_id_PagingCell_List;
+      paging->protocolIEs.list.array[ieIdx]->criticality = Criticality_ignore;
+      paging->protocolIEs.list.array[ieIdx]->value.present = PagingIEs__value_PR_PagingCell_list;
+      duDb = getDuDb(duId);
+      if(BuildPagingCellList(&paging->protocolIEs.list.array[ieIdx]->value.choice.PagingCell_list, &duDb->cellCb) != ROK)
+      {
+         DU_LOG("\nERROR  -->  F1AP : BuildAndSendPagingMsg(): Failed to build Paging cell list "); 
+         break;
+      }
+      
+      xer_fprint(stdout, &asn_DEF_F1AP_PDU, f1apMsg);
+
+      /* Encode the UE Context Release Command type as APER */
+      memset(encBuf, 0, ENC_BUF_MAX_LEN);
+      encBufSize = 0;
+      encRetVal = aper_encode(&asn_DEF_F1AP_PDU, 0, f1apMsg, PrepFinalEncBuf,\
+            encBuf);
+
+      /* Encode results */
+      if(encRetVal.encoded == ENCODE_FAIL)
+      {
+         DU_LOG("\nERROR  -->  F1AP : Could not encode Release Command structure (at %s)\n",\
+               encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
+         break;
+      }
+      else
+      {
+         DU_LOG("\nDEBUG  -->  F1AP : Created APER encoded buffer for Paging\n");
+         for(ieIdx=0; ieIdx< encBufSize; ieIdx++)
+         {
+            DU_LOG("%x",encBuf[ieIdx]);
+         }
+      }
+
+      if(SendF1APMsg(CU_APP_MEM_REG, CU_POOL, duId) != ROK)
+      {
+         DU_LOG("\nERROR  -->  F1AP : Sending Ue context Release Command failed");
+         break;
+      }
+      
+      ret = ROK;
+      break;
+
+   }
+
+   FreePagingMsg(f1apMsg); 
+   return ret;
 }
 
 /*******************************************************************
