@@ -30,6 +30,14 @@ DuMacCellUpInd packMacCellUpIndOpts[] =
    duHandleCellUpInd,
    packMacCellUpInd
 };
+
+DuMacSlotInd packMacSlotIndOpts[] = 
+{
+   packMacSlotInd,
+   duHandleSlotInd,
+   packMacSlotInd
+};
+
 /* Funtion pointer options for stop indication */
 DuMacStopInd packMacStopIndOpts[] =
 {
@@ -86,6 +94,27 @@ uint8_t MacDuAppCellUpInd(Pst *pst, OduCellId *cellId)
    return (*packMacCellUpIndOpts[pst->selector])(pst, cellId);
 }
 
+/*******************************************************************
+ *
+ * @brief Send slot indication to DU APP
+ *
+ * @details
+ *
+ *    Function : MacDuAppSlotInd
+ *
+ *    Functionality:
+ *       send slot indication to DU APP
+ *
+ * @params[in]  Post structure pointer
+ *              Cell UP info
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t MacDuAppSlotInd(Pst *pst, SlotTimingInfo *slotIndInfo)
+{
+   return (*packMacSlotIndOpts[pst->selector])(pst, slotIndInfo);
+}
 /*******************************************************************
  *
  * @brief Send stop indication to MAC

@@ -169,6 +169,25 @@ typedef struct duUeCb
    RlcUeCfg rlcUeCfg;        /* Rlc Ue Cfg */
 }DuUeCb;
 
+typedef struct pagingMsg
+{
+   uint64_t  sTmsi;           /* S-TMSI */
+   uint32_t  ueId;            /* GNB DU local UE Identifier */
+   bool      pagingDrxpres;   /* flag to indicate paging drx present or not */
+   uint8_t   pagingDrx;  /* UE specific paging drx */
+   uint8_t   pagPriority;    /* Paging priority */
+   uint16_t  pf;              /* paging frame */
+   uint16_t  pf_offset;       /* paging offset */
+   uint8_t   i_s;             /* Index points to PO from the sub-frame pattern */
+   uint16_t  T;               /* T is DRX cycle of the UE */
+}PagingMsg;
+
+typedef struct  slotInfo
+{
+    uint16_t sfn;
+    uint16_t slot;
+}SlotInfo;
+
 typedef struct duCellCb
 {
    uint16_t       cellId;                 /* Internal cell Id */
@@ -178,6 +197,8 @@ typedef struct duCellCb
    CellStatus     cellStatus;             /* Cell status */
    uint32_t       numActvUes;             /* Total Active UEs */
    DuUeCb         ueCb[MAX_NUM_UE];       /* UE CONTEXT */
+   SlotInfo       currSlotInfo;
+   PagingMsg      tmpPagingInfoOfUe;      /* UE paging information */
 }DuCellCb;
 
 typedef struct duLSapCb

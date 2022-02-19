@@ -1498,6 +1498,76 @@ uint8_t unpackDuMacSliceReCfgRsp(MacDuSliceReCfgRspFunc func, Pst *pst, Buffer *
    ODU_PUT_MSG_BUF(mBuf);
    return RFAILED;
 }
+
+/*******************************************************************
+ *
+ * @brief Pack and send Slot ind from MAC to DU APP
+ *
+ * @details
+ *
+ *    Function : packDuMacSliceReCfgRsp
+ *
+ *    Functionality:
+ *       Pack and send Slot ind from MAC to DU APP
+ *
+ * @params[in] Pst *pst, SlotTimingInfo *slotIndInfo 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t packMacSlotInd(Pst *pst, SlotTimingInfo *slotIndInfo)
+{
+   Buffer *mBuf = NULLP;
+
+   if(pst->selector == ODU_SELECTOR_LWLC)
+   {
+      if (ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf) != ROK)
+      {
+         DU_LOG("\nERROR  --> MAC : Memory allocation failed at packMacSlotInd");
+         return RFAILED;
+      }
+      /* pack the address of the structure */
+      CMCHKPK(oduPackPointer,(PTR)slotIndInfo, mBuf);
+   }
+   else
+   {
+      DU_LOG("\nERROR  -->  MAC: Only LWLC supported for packMacSlotInd");
+      return RFAILED;
+   }
+
+   return ODU_POST_TASK(pst,mBuf);
+}
+
+/*******************************************************************
+ *
+ * @brief Unpack Slot indication from MAC to DU APP
+ *
+ * @details
+ *
+ *    Function :unpackDuMacSlotInd 
+ *
+ *    Functionality: Unpack Slot Indication from MAC to DU APP
+ *
+ * @params[in] DuMacSlotInd func, Pst *pst, Buffer *mBuf 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t unpackDuMacSlotInd(DuMacSlotInd func, Pst *pst, Buffer *mBuf)
+{
+   if(pst->selector == ODU_SELECTOR_LWLC)
+   {
+      SlotTimingInfo *slotIndInfo;
+      
+      /* unpack the address of the structure */
+      CMCHKUNPK(oduUnpackPointer, (PTR *)&slotIndInfo, mBuf);
+      ODU_PUT_MSG_BUF(mBuf);
+      return (*func)(pst, slotIndInfo);
+   }
+
+   ODU_PUT_MSG_BUF(mBuf);
+   return RFAILED;
+}
 /**********************************************************************
   End of file
  **********************************************************************/

@@ -511,6 +511,11 @@ uint8_t duActvTsk(Pst *pst, Buffer *mBuf)
                      ret = unpackMacCellUpInd(duHandleCellUpInd, pst, mBuf);
                      break;
                   }
+               case EVENT_MAC_SLOT_IND:
+                  {
+                     ret = unpackDuMacSlotInd(duHandleSlotInd, pst, mBuf);
+                     break;
+                  }
                case EVENT_MAC_STOP_IND:
                   {
                      ret = unpackMacStopInd(duHandleStopInd, pst, mBuf);

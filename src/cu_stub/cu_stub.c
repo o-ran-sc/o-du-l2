@@ -400,6 +400,26 @@ void *cuConsoleHandler(void *args)
 
          initiateInterDuHandover(sourceDuId, targetDuId, ueId);
       }
+      /* Start Idle mode paging when 'p' is received from console input */
+      else if(ch == 'p')
+      {
+         uint8_t ueIdx =0, duId =1;
+         DuDb  *duDb;
+         
+         DU_LOG("\nPBORLA --> PAging");
+         duDb = getDuDb(duId);
+         if(duDb!= NULLP)
+         {
+            DU_LOG("\nPBORLA --> PAging %d",duDb->numUe);
+            for(ueIdx =0; ueIdx<duDb->numUe; ueIdx++)
+            {
+               if(duDb->ueCb[ueIdx].state != ACTIVE)  
+               {
+                  BuildAndSendPagingMsg(duId, ueIdx+1);
+               }
+            }
+         }
+      }
    }
 }
 /**********************************************************************
