@@ -50,6 +50,7 @@
 #define CU_POOL 1
 
 #define MAX_NUM_OF_SLICE 1024 /* As per the spec 38.473, maxnoofSliceItems = 1024*/
+#define MAX_QOS_FLOWS 64
 
 /* allocate and zero out a static buffer */
 
@@ -94,6 +95,54 @@ typedef struct cuCfgParams
    RrcVersion       rrcVersion;
 }CuCfgParams;
 
+typedef struct handoverInfo
+{
+   uint32_t sourceDuId;
+   uint32_t targetDuId;
+}HandoverInfo;
+
+typedef struct srbInfo
+{
+   uint8_t srbId;
+   uint8_t lcId;
+}SrbInfo;
+
+typedef struct qosInfo
+{
+   uint8_t nonDynFiveQI;
+   uint16_t avgWindow;
+   uint16_t maxBurstDataVol;
+   uint8_t priorityLevel;
+   uint8_t preemptionCapability;
+   uint8_t preemptionVulnerability;
+   uint8_t pduSessionId;
+}QosInfo;
+
+typedef struct flowsMapped
+{
+   uint8_t qosFlowId;
+   QosInfo qos;
+}FlowsMapped;
+
+typedef struct TnlInfo
+{
+   uint8_t address[4];
+   uint8_t teId[4];
+}TnlInfo;
+
+typedef struct drbInfo
+{
+   uint8_t drbId;
+   uint8_t lcId;
+   QosInfo qos;
+   Snssai *snssai;
+   uint8_t numFlowMap;
+   FlowsMapped flowMapList[MAX_QOS_FLOWS];
+   TnlInfo ulUpTnlInfo;
+   TnlInfo dlUpTnlInfo;
+   uint8_t rlcMode;
+}DrbInfo;
+
 typedef struct cuCellCb CuCellCb;
 
 typedef struct cuUeCb
@@ -102,8 +151,13 @@ typedef struct cuUeCb
    uint32_t  crnti;
    uint8_t   gnbDuUeF1apId;
    uint8_t   gnbCuUeF1apId;
+   uint8_t   numSrb;
+   SrbInfo   srbList[MAX_NUM_SRB];
+   uint8_t   numDrb;
+   DrbInfo   drbList[MAX_NUM_DRB];
    F1apMsgDb f1apMsgDb;
    UeState   state;
+   HandoverInfo hoInfo;
 }CuUeCb;
 
 struct cuCellCb

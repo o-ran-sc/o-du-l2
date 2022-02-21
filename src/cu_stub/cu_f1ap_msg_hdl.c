@@ -35,6 +35,7 @@
 #include "UE-CapabilityRAT-Container.h"
 #include "UE-CapabilityRAT-ContainerList.h"
 #include "UE-CapabilityRAT-ContainerListRRC.h"
+#include "HandoverPreparationInformation-IEs.h"
 #include "SupportedBandwidth.h"
 #include "FeatureSetUplinkPerCC.h"
 #include "FeatureSetDownlinkPerCC.h"
@@ -2075,12 +2076,15 @@ uint8_t BuildSplCellList(CuUeCb *ueCb, SCell_ToBeSetup_List_t *spCellLst)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t BuildSRBSetup(SRBs_ToBeSetup_List_t *srbSet)
+uint8_t BuildSRBSetup(CuUeCb *ueCb, SRBs_ToBeSetup_List_t *srbSet)
 {
    uint8_t idx;
    uint8_t srbCnt;
 
-   srbCnt = 1;
+   if(ueCb->state == HANDOVER_IN_PROGRESS)
+      srbCnt = ueCb->numSrb;
+   else
+      srbCnt = 1;
    srbSet->list.count = srbCnt;
    srbSet->list.size = srbCnt*sizeof(SRBs_ToBeSetup_ItemIEs_t *);
    CU_ALLOC(srbSet->list.array,srbSet->list.size);
@@ -2094,15 +2098,30 @@ uint8_t BuildSRBSetup(SRBs_ToBeSetup_List_t *srbSet)
       CU_ALLOC(srbSet->list.array[idx],sizeof(SRBs_ToBeSetup_ItemIEs_t));
       if(srbSet->list.array[idx] == NULLP)
       {
-	 return RFAILED;
+         return RFAILED;
       }
    }
 
-   idx = 0;
-   srbSet->list.array[idx]->id = ProtocolIE_ID_id_SRBs_ToBeSetup_Item;
-   srbSet->list.array[idx]->criticality = Criticality_ignore;
-   srbSet->list.array[idx]->value.present = SRBs_ToBeSetup_ItemIEs__value_PR_SRBs_ToBeSetup_Item;
-   srbSet->list.array[idx]->value.choice.SRBs_ToBeSetup_Item.sRBID = 2;
+   if(ueCb->state != HANDOVER_IN_PROGRESS)
+   {
+      idx = 0;
+      srbSet->list.array[idx]->id = ProtocolIE_ID_id_SRBs_ToBeSetup_Item;
+      srbSet->list.array[idx]->criticality = Criticality_ignore;
+      srbSet->list.array[idx]->value.present = SRBs_ToBeSetup_ItemIEs__value_PR_SRBs_ToBeSetup_Item;
+      srbSet->list.array[idx]->value.choice.SRBs_ToBeSetup_Item.sRBID = 2;
+      ueCb->srbList[ueCb->numSrb].srbId = srbSet->list.array[idx]->value.choice.SRBs_ToBeSetup_Item.sRBID;
+      ueCb->numSrb++;
+   }
+   else
+   {
+      for(idx=0; idx<srbCnt; idx++)
+      {
+         srbSet->list.array[idx]->id = ProtocolIE_ID_id_SRBs_ToBeSetup_Item;
+         srbSet->list.array[idx]->criticality = Criticality_ignore;
+         srbSet->list.array[idx]->value.present = SRBs_ToBeSetup_ItemIEs__value_PR_SRBs_ToBeSetup_Item;
+         srbSet->list.array[idx]->value.choice.SRBs_ToBeSetup_Item.sRBID = ueCb->srbList[idx].srbId; 
+      }
+   }
    return ROK;
 }/* End of BuildSRBSetup*/
 
@@ -2123,8 +2142,7 @@ uint8_t BuildSRBSetup(SRBs_ToBeSetup_List_t *srbSet)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t BuildQOSInfo(QoSFlowLevelQoSParameters_t *drbQos, uint8_t actionType, \
-                        int16_t pduSessionID)
+uint8_t BuildQOSInfo(QosInfo *qosInfo, QoSFlowLevelQoSParameters_t *drbQos, uint8_t actionType, int16_t pduSessionID, bool hoInProgress)
 {
    uint8_t elementCnt = 0, qosCntIdx = 0;
    ProtocolExtensionContainer_4624P74_t *qosIeExt = NULLP;
@@ -2136,84 +2154,111 @@ uint8_t BuildQOSInfo(QoSFlowLevelQoSParameters_t *drbQos, uint8_t actionType, \
    {
       return RFAILED;
    }
-   /*FiveQI*/
-   if(actionType == ProtocolIE_ID_id_DRBs_ToBeModified_Item)
-      drbQos->qoS_Characteristics.choice.non_Dynamic_5QI->fiveQI = FIVE_QI_VALUE8;
+   
+   if(hoInProgress)
+      drbQos->qoS_Characteristics.choice.non_Dynamic_5QI->fiveQI = qosInfo->nonDynFiveQI ;
    else
-      drbQos->qoS_Characteristics.choice.non_Dynamic_5QI->fiveQI = FIVE_QI_VALUE9;
+   {
+      /*FiveQI*/
+      if(actionType == ProtocolIE_ID_id_DRBs_ToBeModified_Item)
+         drbQos->qoS_Characteristics.choice.non_Dynamic_5QI->fiveQI = FIVE_QI_VALUE8;
+      else
+         drbQos->qoS_Characteristics.choice.non_Dynamic_5QI->fiveQI = FIVE_QI_VALUE9;
 
-   /*AveragingWindow*/
-   CU_ALLOC(drbQos->qoS_Characteristics.choice.non_Dynamic_5QI->averagingWindow,\
-         sizeof(AveragingWindow_t));
-   if(drbQos->qoS_Characteristics.choice.non_Dynamic_5QI->averagingWindow == \
-         NULLP)
-   {
-      return RFAILED;
+      qosInfo->nonDynFiveQI = drbQos->qoS_Characteristics.choice.non_Dynamic_5QI->fiveQI;
    }
-   *(drbQos->qoS_Characteristics.choice.non_Dynamic_5QI->averagingWindow) = 0;
-   /*MaxDataBurstVolume*/
-   CU_ALLOC(drbQos->qoS_Characteristics.choice.non_Dynamic_5QI->maxDataBurstVolume,\
-         sizeof(MaxDataBurstVolume_t));
-   if(drbQos->qoS_Characteristics.choice.non_Dynamic_5QI->maxDataBurstVolume == \
-         NULLP)
+
+   if(!hoInProgress)
    {
-      return RFAILED;
+      /*AveragingWindow*/
+      CU_ALLOC(drbQos->qoS_Characteristics.choice.non_Dynamic_5QI->averagingWindow, sizeof(AveragingWindow_t));
+      if(drbQos->qoS_Characteristics.choice.non_Dynamic_5QI->averagingWindow == NULLP)
+      {
+         return RFAILED;
+      }
+      *(drbQos->qoS_Characteristics.choice.non_Dynamic_5QI->averagingWindow) = 0;
+      qosInfo->avgWindow = *(drbQos->qoS_Characteristics.choice.non_Dynamic_5QI->averagingWindow);
+
+      /*MaxDataBurstVolume*/
+      CU_ALLOC(drbQos->qoS_Characteristics.choice.non_Dynamic_5QI->maxDataBurstVolume, sizeof(MaxDataBurstVolume_t));
+      if(drbQos->qoS_Characteristics.choice.non_Dynamic_5QI->maxDataBurstVolume == NULLP)
+      {
+         return RFAILED;
+      }
+      *(drbQos->qoS_Characteristics.choice.non_Dynamic_5QI->maxDataBurstVolume) = 0;
+      qosInfo->maxBurstDataVol = *(drbQos->qoS_Characteristics.choice.non_Dynamic_5QI->maxDataBurstVolume);
    }
-   *(drbQos->qoS_Characteristics.choice.non_Dynamic_5QI->maxDataBurstVolume) = 0;
 
    /*nRGRAN Allocation Retention Priority*/
-   drbQos->nGRANallocationRetentionPriority.priorityLevel = PriorityLevel_lowest;
-   drbQos->nGRANallocationRetentionPriority.pre_emptionCapability = Pre_emptionCapability_may_trigger_pre_emption;
-   drbQos->nGRANallocationRetentionPriority.pre_emptionVulnerability = Pre_emptionVulnerability_not_pre_emptable;
-
-   /*If PDU Session ID is INVALID thus not to be included in Qos IE, skip the PDU Session IE */
-   if(pduSessionID <= INVALID_PDU_SESSION_ID)
+   if(hoInProgress)
    {
-      DU_LOG("\nINFO  --> F1AP : Invalid PDU_SESSION_ID");
-      return ROK;
-   }
-
-   CU_ALLOC(drbQos->iE_Extensions, sizeof(ProtocolExtensionContainer_4624P74_t));
-   qosIeExt = (ProtocolExtensionContainer_4624P74_t *)drbQos->iE_Extensions;
-
-   if(qosIeExt)
-   {
-      elementCnt = NUM_QOS_EXT;
-      qosIeExt->list.count = elementCnt;
-      qosIeExt->list.size = elementCnt * sizeof(QoSFlowLevelQoSParameters_ExtIEs_t *);
-
-      /*Initialize QoSFlowLevelQoSParameters_ExtIEs_t*/
-      CU_ALLOC(qosIeExt->list.array, qosIeExt->list.size);
-
-      if(qosIeExt->list.array == NULLP)
-      {
-         DU_LOG("\nERROR  -->	F1AP : Memory allocation for QoSFlowLevelQoSParameters_ExtIEs_t failed");
-         return  RFAILED;
-      }
-
-      for(qosCntIdx=0; qosCntIdx < elementCnt; qosCntIdx++)
-      {
-         CU_ALLOC(qosIeExt->list.array[qosCntIdx], sizeof(QoSFlowLevelQoSParameters_ExtIEs_t));
-         if(qosIeExt->list.array[qosCntIdx] == NULLP)
-         {
-            DU_LOG("\nERROR  -->	F1AP : Memory allocation for QoSFlowLevelQoSParameters_ExtIEs_t array failed");
-            return  RFAILED;
-         }
-         /*Filling QoSFlowLevelQoSParameters_ExtIEs_t*/
-         qosIeExt->list.array[qosCntIdx]->id = ProtocolIE_ID_id_PDUSessionID;
-         /*Below Criticality mentioned in Spec38.473, 15.4.1 and later*/
-         qosIeExt->list.array[qosCntIdx]->criticality = Criticality_ignore; 
-         qosIeExt->list.array[qosCntIdx]->extensionValue.present = \
-                                                                   QoSFlowLevelQoSParameters_ExtIEs__extensionValue_PR_PDUSessionID;
-         qosIeExt->list.array[qosCntIdx]->extensionValue.choice.PDUSessionID = (PDUSessionID_t)pduSessionID;
-      }
+      drbQos->nGRANallocationRetentionPriority.priorityLevel = qosInfo->priorityLevel;
+      drbQos->nGRANallocationRetentionPriority.pre_emptionCapability = qosInfo->preemptionCapability;
+      drbQos->nGRANallocationRetentionPriority.pre_emptionVulnerability = qosInfo->preemptionVulnerability;
    }
    else
    {
-      DU_LOG("\nERROR  -->	F1AP : Memory allocation for QosIE_extension failed");
-      return RFAILED;
+      drbQos->nGRANallocationRetentionPriority.priorityLevel = PriorityLevel_lowest;
+      drbQos->nGRANallocationRetentionPriority.pre_emptionCapability = Pre_emptionCapability_may_trigger_pre_emption;
+      drbQos->nGRANallocationRetentionPriority.pre_emptionVulnerability = Pre_emptionVulnerability_not_pre_emptable;
+
+      qosInfo->priorityLevel = PriorityLevel_lowest;
+      qosInfo->preemptionCapability = Pre_emptionCapability_may_trigger_pre_emption;
+      qosInfo->preemptionVulnerability = Pre_emptionVulnerability_not_pre_emptable;
    }
 
+   /* PDU session ID */
+   if(!hoInProgress)
+   {
+      /*If PDU Session ID is INVALID thus not to be included in Qos IE, skip the PDU Session IE */
+      if(pduSessionID <= INVALID_PDU_SESSION_ID)
+      {
+         DU_LOG("\nINFO  --> F1AP : Invalid PDU_SESSION_ID");
+         return ROK;
+      }
+
+      CU_ALLOC(drbQos->iE_Extensions, sizeof(ProtocolExtensionContainer_4624P74_t));
+      qosIeExt = (ProtocolExtensionContainer_4624P74_t *)drbQos->iE_Extensions;
+
+      if(qosIeExt)
+      {
+         elementCnt = NUM_QOS_EXT;
+         qosIeExt->list.count = elementCnt;
+         qosIeExt->list.size = elementCnt * sizeof(QoSFlowLevelQoSParameters_ExtIEs_t *);
+
+         /*Initialize QoSFlowLevelQoSParameters_ExtIEs_t*/
+         CU_ALLOC(qosIeExt->list.array, qosIeExt->list.size);
+
+         if(qosIeExt->list.array == NULLP)
+         {
+            DU_LOG("\nERROR  -->	F1AP : Memory allocation for QoSFlowLevelQoSParameters_ExtIEs_t failed");
+            return  RFAILED;
+         }
+
+         for(qosCntIdx=0; qosCntIdx < elementCnt; qosCntIdx++)
+         {
+            CU_ALLOC(qosIeExt->list.array[qosCntIdx], sizeof(QoSFlowLevelQoSParameters_ExtIEs_t));
+            if(qosIeExt->list.array[qosCntIdx] == NULLP)
+            {
+               DU_LOG("\nERROR  -->	F1AP : Memory allocation for QoSFlowLevelQoSParameters_ExtIEs_t array failed");
+               return  RFAILED;
+            }
+            /*Filling QoSFlowLevelQoSParameters_ExtIEs_t*/
+            qosIeExt->list.array[qosCntIdx]->id = ProtocolIE_ID_id_PDUSessionID;
+            /*Below Criticality mentioned in Spec38.473, 15.4.1 and later*/
+            qosIeExt->list.array[qosCntIdx]->criticality = Criticality_ignore; 
+            qosIeExt->list.array[qosCntIdx]->extensionValue.present = \
+                                                                      QoSFlowLevelQoSParameters_ExtIEs__extensionValue_PR_PDUSessionID;
+            qosIeExt->list.array[qosCntIdx]->extensionValue.choice.PDUSessionID = (PDUSessionID_t)pduSessionID;
+            qosInfo->pduSessionId = pduSessionID;
+         }
+      }
+      else
+      {
+         DU_LOG("\nERROR  -->	F1AP : Memory allocation for QosIE_extension failed");
+         return RFAILED;
+      }
+   }
    return ROK;
 }/*End of BuildQOSInfo*/
 
@@ -2234,30 +2279,40 @@ uint8_t BuildQOSInfo(QoSFlowLevelQoSParameters_t *drbQos, uint8_t actionType, \
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t BuildSNSSAI(SNSSAI_t *snssai, Snssai *snssaiToCopy)
+uint8_t BuildSNSSAI(DrbInfo *drbInfo, SNSSAI_t *snssai, Snssai *snssaiToCopy, bool hoInProgress)
 {
    /*SNSSAI*/
    /*ssT*/
    snssai->sST.size = sizeof(uint8_t);
-   CU_ALLOC(snssai->sST.buf,snssai->sST.size);
+   CU_ALLOC(snssai->sST.buf, snssai->sST.size);
    if(snssai->sST.buf == NULLP)
    {
       return RFAILED;
    }
-   memcpy(snssai->sST.buf, &snssaiToCopy->sst, snssai->sST.size);
+   if(!hoInProgress)
+      memcpy(snssai->sST.buf, &snssaiToCopy->sst, snssai->sST.size);
+   else
+      memcpy(snssai->sST.buf, &drbInfo->snssai->sst, snssai->sST.size);
+
    /*sD*/
-   CU_ALLOC(snssai->sD,sizeof(OCTET_STRING_t));
+   CU_ALLOC(snssai->sD, sizeof(OCTET_STRING_t));
    if(snssai->sD == NULLP)
    {
       return RFAILED;
    }
-   snssai->sD->size = 3*sizeof(uint8_t);
-   CU_ALLOC(snssai->sD->buf,snssai->sD->size);
+   snssai->sD->size = 3 * sizeof(uint8_t);
+   CU_ALLOC(snssai->sD->buf, snssai->sD->size);
    if(snssai->sD->buf == NULLP)
    {
       return RFAILED;
    }
-   memcpy(snssai->sD->buf, snssaiToCopy->sd, snssai->sD->size);
+   if(!hoInProgress)
+      memcpy(snssai->sD->buf, snssaiToCopy->sd, snssai->sD->size);
+   else
+      memcpy(snssai->sD->buf, drbInfo->snssai->sd, snssai->sD->size);
+
+   if(!hoInProgress)
+      drbInfo->snssai = snssaiToCopy;
    return ROK;
 }/*End of BuildSNSSAI*/
 
@@ -2277,11 +2332,15 @@ uint8_t BuildSNSSAI(SNSSAI_t *snssai, Snssai *snssaiToCopy)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t BuildFlowsMap(Flows_Mapped_To_DRB_List_t *flowMap , uint8_t actionType)
+uint8_t BuildFlowsMap(DrbInfo *drbInfo, Flows_Mapped_To_DRB_List_t *flowMap , uint8_t actionType, bool hoInProgress)
 {
-   uint8_t  ret = ROK, idx = 0, flowCnt = 0;
+   uint8_t  ret = ROK, idx = 0, flowCnt = 0, flowIdx = 0;
+   FlowsMapped *qosFlow;
 
-   flowCnt = 1;
+   if(!hoInProgress)
+      flowCnt = 1;
+   else
+      flowCnt = drbInfo->numFlowMap;
    flowMap->list.count = flowCnt;
    flowMap->list.size = flowCnt * sizeof(Flows_Mapped_To_DRB_Item_t *);
    CU_ALLOC(flowMap->list.array,flowMap->list.size);
@@ -2298,15 +2357,43 @@ uint8_t BuildFlowsMap(Flows_Mapped_To_DRB_List_t *flowMap , uint8_t actionType)
          DU_LOG("\nERROR  -->  F1AP : Memory allocation failed for arrayIdx[%d] in BuildFlowsMap()", idx);
          return RFAILED;
       }
-   }
-   idx = 0;
-   flowMap->list.array[idx]->qoSFlowIdentifier = 0;
-   ret = BuildQOSInfo(&flowMap->list.array[idx]->qoSFlowLevelQoSParameters,\
-         actionType, INVALID_PDU_SESSION_ID);
-   if(ret != ROK)
-   {
-      DU_LOG("\nERROR  -->  F1AP : Failed to Build QOS Info in BuildFlowsMap()");
-      return RFAILED;
+      
+      if(!hoInProgress)
+      {
+         flowMap->list.array[idx]->qoSFlowIdentifier = 0;
+         if(actionType == ProtocolIE_ID_id_DRBs_ToBeModified_Item)
+         {
+            for(flowIdx =0; flowIdx < drbInfo->numFlowMap; flowIdx++)
+            {
+               if(drbInfo->flowMapList[flowIdx].qosFlowId == flowMap->list.array[idx]->qoSFlowIdentifier)
+               {
+                  qosFlow = &drbInfo->flowMapList[flowIdx];
+                  break;
+               }
+            }
+         }
+         else
+         {
+            qosFlow = &drbInfo->flowMapList[drbInfo->numFlowMap];
+            qosFlow->qosFlowId = flowMap->list.array[idx]->qoSFlowIdentifier;
+         }
+      }
+      else
+      {
+         qosFlow = &drbInfo->flowMapList[idx];
+         flowMap->list.array[idx]->qoSFlowIdentifier = qosFlow->qosFlowId;
+      }
+
+      ret = BuildQOSInfo(&qosFlow->qos, &flowMap->list.array[idx]->qoSFlowLevelQoSParameters,\
+            actionType, INVALID_PDU_SESSION_ID, hoInProgress);
+      if(ret != ROK)
+      {
+         DU_LOG("\nERROR  -->  F1AP : Failed to Build QOS Info in BuildFlowsMap()");
+         return RFAILED;
+      }
+
+      if((!hoInProgress) && (actionType != ProtocolIE_ID_id_DRBs_ToBeModified_Item))
+         drbInfo->numFlowMap++;
    }
    return ROK;
 }/*End of BuildFlowsMap*/
@@ -2327,10 +2414,11 @@ uint8_t BuildFlowsMap(Flows_Mapped_To_DRB_List_t *flowMap , uint8_t actionType)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t BuildULTnlInfo(ULUPTNLInformation_ToBeSetup_List_t *ulInfo)
+uint8_t BuildULTnlInfo(TnlInfo *ulUpTnlInfo, ULUPTNLInformation_ToBeSetup_List_t *ulInfo, bool hoInProgress)
 {
    uint8_t idx;
    uint8_t ulCnt;
+
    ulCnt = 1;
    ulInfo->list.count = ulCnt;
    ulInfo->list.size = ulCnt * sizeof(ULUPTNLInformation_ToBeSetup_Item_t *);
@@ -2350,59 +2438,75 @@ uint8_t BuildULTnlInfo(ULUPTNLInformation_ToBeSetup_List_t *ulInfo)
       }
    }
    idx = 0;
-   ulInfo->list.array[idx]->uLUPTNLInformation.present = \
-							 UPTransportLayerInformation_PR_gTPTunnel;
+   ulInfo->list.array[idx]->uLUPTNLInformation.present = UPTransportLayerInformation_PR_gTPTunnel;
    /*GTP TUNNEL*/
-   CU_ALLOC(ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel,\
-	 sizeof(GTPTunnel_t));
+   CU_ALLOC(ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel, sizeof(GTPTunnel_t));
    if(ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel == NULLP)
    {
       DU_LOG("\nERROR  -->  F1AP : Memory allocation failed for gTPTunnel in BuildULTnlInfo()");
       return RFAILED;
    }
-   ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->\
-      transportLayerAddress.size	= 4*sizeof(uint8_t);
-   CU_ALLOC(ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->\
-	 transportLayerAddress.buf,ulInfo->list.array[idx]->\
-	 uLUPTNLInformation.choice.gTPTunnel->transportLayerAddress.size);
-   if(ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->\
-	 transportLayerAddress.buf == NULLP)
+   ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->transportLayerAddress.size	= 4*sizeof(uint8_t);
+   CU_ALLOC(ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->transportLayerAddress.buf, \
+      ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->transportLayerAddress.size);
+   if(ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->transportLayerAddress.buf == NULLP)
    {
       DU_LOG("\nERROR  -->  F1AP : Memory allocation failed for gtp tunnel arrayIdx[%d] in BuildULTnlInfo()", idx);
       return RFAILED;
    }
-   /* NOTE: Below IP address must be changed if running on different IP configuration */
-   ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->\
-      transportLayerAddress.buf[0] = 192;
-   ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->\
-      transportLayerAddress.buf[1] = 168;
-   ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->\
-      transportLayerAddress.buf[2] = 130;
-   ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->\
-      transportLayerAddress.buf[3] = 82;
-   ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->\
-      transportLayerAddress.bits_unused = 0;
+
+   if(!hoInProgress)
+   {
+      /* NOTE: Below IP address must be changed if running on different IP configuration */
+      ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->transportLayerAddress.buf[0] = 192;
+      ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->transportLayerAddress.buf[1] = 168;
+      ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->transportLayerAddress.buf[2] = 130;
+      ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->transportLayerAddress.buf[3] = 82;
+      ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->transportLayerAddress.bits_unused = 0;
+
+      ulUpTnlInfo->address[0] = ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->transportLayerAddress.buf[0];
+      ulUpTnlInfo->address[1] = ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->transportLayerAddress.buf[1];
+      ulUpTnlInfo->address[2] = ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->transportLayerAddress.buf[2];
+      ulUpTnlInfo->address[3] = ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->transportLayerAddress.buf[3];
+   }
+   else
+   {
+      ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->transportLayerAddress.buf[0] = ulUpTnlInfo->address[0];
+      ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->transportLayerAddress.buf[0] = ulUpTnlInfo->address[1];
+      ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->transportLayerAddress.buf[0] = ulUpTnlInfo->address[2];
+      ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->transportLayerAddress.buf[0] = ulUpTnlInfo->address[3];
+      ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->transportLayerAddress.bits_unused = 0;
+   }
+
    /*GTP TEID*/
-   ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->gTP_TEID.size\
-      = 4 * sizeof(uint8_t);
-   CU_ALLOC(ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->\
-	 gTP_TEID.buf,ulInfo->list.array[idx]->uLUPTNLInformation.choice.\
-	 gTPTunnel->gTP_TEID.size);
-   if(ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->gTP_TEID.buf\
-	 == NULLP)
+   ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->gTP_TEID.size = 4 * sizeof(uint8_t);
+   CU_ALLOC(ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->gTP_TEID.buf, \
+      ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->gTP_TEID.size);
+   if(ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->gTP_TEID.buf == NULLP)
    {
       DU_LOG("\nERROR  -->  F1AP : Memory allocation failed for gtp tunnel buffer in BuildULTnlInfo()");
       return RFAILED;
    }
-   ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->\
-     gTP_TEID.buf[0] = 0;
-   ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->\
-      gTP_TEID.buf[1] = 0;
-   ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->\
-      gTP_TEID.buf[2] = 0;
-   ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->\
-      gTP_TEID.buf[3] = cuCb.cuCfgParams.egtpParams.currTunnelId++;
+   
+   if(!hoInProgress)
+   {
+      ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->gTP_TEID.buf[0] = 0;
+      ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->gTP_TEID.buf[1] = 0;
+      ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->gTP_TEID.buf[2] = 0;
+      ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->gTP_TEID.buf[3] = cuCb.cuCfgParams.egtpParams.currTunnelId++;
 
+      ulUpTnlInfo->teId[0] = ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->gTP_TEID.buf[0];
+      ulUpTnlInfo->teId[1] = ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->gTP_TEID.buf[1];
+      ulUpTnlInfo->teId[2] = ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->gTP_TEID.buf[2];
+      ulUpTnlInfo->teId[3] = ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->gTP_TEID.buf[3];
+   }
+   else
+   {
+      ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->gTP_TEID.buf[0] = ulUpTnlInfo->teId[0];
+      ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->gTP_TEID.buf[0] = ulUpTnlInfo->teId[1];
+      ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->gTP_TEID.buf[0] = ulUpTnlInfo->teId[2];
+      ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->gTP_TEID.buf[0] = ulUpTnlInfo->teId[3];
+   }
    return ROK;
 }/*End of BuildULTnlInfo*/
 
@@ -2422,14 +2526,18 @@ uint8_t BuildULTnlInfo(ULUPTNLInformation_ToBeSetup_List_t *ulInfo)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t BuildDRBSetup(DRBs_ToBeSetup_List_t *drbSet)
+uint8_t BuildDRBSetup(CuUeCb *ueCb, DRBs_ToBeSetup_List_t *drbSet)
 {
    uint8_t BuildQOSInforet = 0,BuildSNSSAIret = 0, idx = 0;
    uint8_t BuildFlowsMapret =0, BuildULTnlInforet =0, drbCnt = 0;
    DRBs_ToBeSetup_Item_t *drbSetItem;
    
-   drbCnt = MAX_DRB_SET_UE_CONTEXT_SETUP_REQ;
+   if(ueCb->state == HANDOVER_IN_PROGRESS)
+      drbCnt = ueCb->numDrb;
+   else
+      drbCnt = MAX_DRB_SET_UE_CONTEXT_SETUP_REQ;
    drbSet->list.count = drbCnt;
+
    drbSet->list.size = drbCnt*sizeof(DRBs_ToBeSetup_ItemIEs_t *);
    CU_ALLOC(drbSet->list.array,drbSet->list.size);
    if(drbSet->list.array == NULLP)
@@ -2437,22 +2545,29 @@ uint8_t BuildDRBSetup(DRBs_ToBeSetup_List_t *drbSet)
       DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in BuildDRBSetup");
       return RFAILED;
    }
+
    for(idx=0; idx<drbCnt; idx++)
    {
       CU_ALLOC(drbSet->list.array[idx],sizeof(DRBs_ToBeSetup_ItemIEs_t));
       if(drbSet->list.array[idx] == NULLP)
       {
          DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in BuildDRBSetup for arry idx [%d]", idx);
-	      return RFAILED;
+         return RFAILED;
       }
 
       drbSet->list.array[idx]->id = ProtocolIE_ID_id_DRBs_ToBeSetup_Item;
       drbSet->list.array[idx]->criticality = Criticality_ignore;
-      drbSet->list.array[idx]->value.present = \
-	   				    DRBs_ToBeSetup_ItemIEs__value_PR_DRBs_ToBeSetup_Item;
+      drbSet->list.array[idx]->value.present = DRBs_ToBeSetup_ItemIEs__value_PR_DRBs_ToBeSetup_Item;
       drbSetItem = &drbSet->list.array[idx]->value.choice.DRBs_ToBeSetup_Item;
       /*dRBID*/
-      drbSetItem->dRBID = idx + 1;
+      if(ueCb->state != HANDOVER_IN_PROGRESS)
+      {
+         drbSetItem->dRBID = idx + 1;
+         ueCb->drbList[ueCb->numDrb].drbId = drbSetItem->dRBID;
+      }
+      else
+         drbSetItem->dRBID = ueCb->drbList[idx].drbId;
+
       /*qoSInformation*/
       drbSetItem->qoSInformation.present = QoSInformation_PR_choice_extension;
       CU_ALLOC(drbSetItem->qoSInformation.choice.choice_extension,sizeof(QoSInformation_ExtIEs_t));
@@ -2461,47 +2576,91 @@ uint8_t BuildDRBSetup(DRBs_ToBeSetup_List_t *drbSet)
          DU_LOG("\nERROR  -->  F1AP : Memory allocation failed for QOS choice extension in BuildDRBSetup");
          return RFAILED;
       }
-      drbSetItem->qoSInformation.choice.choice_extension->id = \
-		   					    ProtocolIE_ID_id_DRB_Information;
-      drbSetItem->qoSInformation.choice.choice_extension->criticality = \
-		  						     Criticality_ignore;
-      drbSetItem->qoSInformation.choice.choice_extension->value.present = \
-								       QoSInformation_ExtIEs__value_PR_DRB_Information;
-      BuildQOSInforet =  BuildQOSInfo(&drbSetItem->qoSInformation.choice.\
-	                      choice_extension->value.choice.DRB_Information.dRB_QoS,\
-                         ProtocolIE_ID_id_DRBs_ToBeSetup_Item, PDU_SESSION_ID_1);
+      drbSetItem->qoSInformation.choice.choice_extension->id = ProtocolIE_ID_id_DRB_Information;
+      drbSetItem->qoSInformation.choice.choice_extension->criticality = Criticality_ignore;
+      drbSetItem->qoSInformation.choice.choice_extension->value.present = QoSInformation_ExtIEs__value_PR_DRB_Information;
+      if(ueCb->state != HANDOVER_IN_PROGRESS)
+         BuildQOSInforet =  BuildQOSInfo(&ueCb->drbList[ueCb->numDrb].qos, &drbSetItem->qoSInformation.choice.\
+               choice_extension->value.choice.DRB_Information.dRB_QoS, ProtocolIE_ID_id_DRBs_ToBeSetup_Item, PDU_SESSION_ID_1, FALSE);
+      else
+         BuildQOSInforet =  BuildQOSInfo(&ueCb->drbList[idx].qos, &drbSetItem->qoSInformation.choice.\
+               choice_extension->value.choice.DRB_Information.dRB_QoS, ProtocolIE_ID_id_DRBs_ToBeSetup_Item, PDU_SESSION_ID_1, TRUE);
       if(BuildQOSInforet != ROK)
       {
          DU_LOG("\nERROR  -->  F1AP : Failed to build QOS Info in BuildDRBSetup");
          return RFAILED;
       }
+
       /*SNSSAI*/
-      BuildSNSSAIret = BuildSNSSAI(&drbSetItem->qoSInformation.choice.\
-	                       choice_extension->value.choice.DRB_Information.sNSSAI, cuCb.snssaiList[0]);
+      if(ueCb->state != HANDOVER_IN_PROGRESS)
+         BuildSNSSAIret = BuildSNSSAI(&ueCb->drbList[ueCb->numDrb], &drbSetItem->qoSInformation.choice.\
+               choice_extension->value.choice.DRB_Information.sNSSAI, cuCb.snssaiList[0], FALSE);
+      else
+         BuildSNSSAIret = BuildSNSSAI(&ueCb->drbList[idx], &drbSetItem->qoSInformation.choice.\
+               choice_extension->value.choice.DRB_Information.sNSSAI, cuCb.snssaiList[0], TRUE);
       if(BuildSNSSAIret != ROK)
       {
          DU_LOG("\nERROR  -->  F1AP : Failed to build SNSSAI Info in BuildDRBSetup");
          return RFAILED;
       }
+
       /*Flows mapped to DRB List*/
-      BuildFlowsMapret = BuildFlowsMap(&drbSetItem->qoSInformation.choice.\
-	           choice_extension->value.choice.DRB_Information.flows_Mapped_To_DRB_List,\
-              ProtocolIE_ID_id_DRBs_ToBeSetup_Item);
+      if(ueCb->state != HANDOVER_IN_PROGRESS)
+         BuildFlowsMapret = BuildFlowsMap(&ueCb->drbList[ueCb->numDrb], &drbSetItem->qoSInformation.choice.choice_extension->\
+               value.choice.DRB_Information.flows_Mapped_To_DRB_List, ProtocolIE_ID_id_DRBs_ToBeSetup_Item, FALSE);
+      else
+         BuildFlowsMapret = BuildFlowsMap(&ueCb->drbList[idx], &drbSetItem->qoSInformation.choice.choice_extension->\
+               value.choice.DRB_Information.flows_Mapped_To_DRB_List, ProtocolIE_ID_id_DRBs_ToBeSetup_Item, TRUE);
       if(BuildFlowsMapret != ROK)
       {
          DU_LOG("\nERROR  -->  F1AP : Failed to build Flow Map Info in BuildDRBSetup");
          return RFAILED;
       }
+
       /*ULUPTNLInformation To Be Setup List*/
-      BuildULTnlInforet = BuildULTnlInfo(&drbSetItem->uLUPTNLInformation_ToBeSetup_List);
+      if(ueCb->state != HANDOVER_IN_PROGRESS)
+         BuildULTnlInforet = BuildULTnlInfo(&ueCb->drbList[ueCb->numDrb].ulUpTnlInfo, &drbSetItem->uLUPTNLInformation_ToBeSetup_List,\
+               FALSE);
+      else
+         BuildULTnlInforet = BuildULTnlInfo(&ueCb->drbList[idx].ulUpTnlInfo, &drbSetItem->uLUPTNLInformation_ToBeSetup_List,\
+               TRUE);
       if(BuildULTnlInforet != ROK)
       {
          DU_LOG("\nERROR  -->  F1AP : Failed to build tunnel Info in BuildDRBSetup");
          return RFAILED;
       }
+
       /*RLCMode*/
-      drbSetItem->rLCMode = RLCMode_rlc_um_bidirectional;
-  }
+      if(ueCb->state != HANDOVER_IN_PROGRESS)
+      {
+         drbSetItem->rLCMode = RLCMode_rlc_um_bidirectional;
+         ueCb->drbList[ueCb->numDrb].rlcMode = drbSetItem->rLCMode;
+      }
+      else
+         drbSetItem->rLCMode = ueCb->drbList[idx].rlcMode;
+
+#if 0
+      /* DL PDCP SN Length */
+      if(ueCb->state == HANDOVER_IN_PROGRESS)
+      {
+         DRBs_ToBeSetup_ItemExtIEs_t *extIe = NULLP;
+         DU_ALLOC(extIe, sizeof(DRBs_ToBeSetup_ItemExtIEs_t));
+         if(!extIe)
+         {
+         DU_LOG("\nERROR  -->  F1AP : Failed to allocated memory to extension IE ");
+         return RFAILED;
+         }
+         extIe->id = // TODO : find protocol extension id to be filled here
+         extIe->criticality = Criticality_ignore;
+         extIe->extensionValue.present = DRBs_ToBeSetup_ItemExtIEs__extensionValue_PR_PDCPSNLength;
+         extIe->extensionValue..choice.PDCPSNLength = PDCPSNLength_twelve_bits;
+         drbSetItem->iE_Extensions = extIe;
+      }
+#endif
+
+      if(ueCb->state != HANDOVER_IN_PROGRESS)
+         ueCb->numDrb++;
+   }
    return ROK;
 }/* End of BuildDRBSetup*/
 
@@ -6189,6 +6348,26 @@ void freeUeCapRatContList(UE_CapabilityRAT_ContainerListRRC_t *ueCapablityList)
 
 /*******************************************************************
  *
+ * @brief Free Handover preparation information
+ *
+ * @details
+ *
+ *    Function : freeHOPreparationInfo
+ *
+ *    Functionality: Free Handover preparation information
+ *
+ * @params[in] 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+void freeHOPreparationInfo(HandoverPreparationInformation_IEs_t *hoPrepInfoIe)
+{
+   freeUeCapRatContList(&hoPrepInfoIe->ue_CapabilityRAT_List);
+}
+
+/*******************************************************************
+ *
  * @brief Fill feature sets
  *
  * @details
@@ -6454,26 +6633,24 @@ uint8_t fillUeCapRatCont(OCTET_STRING_t *ueCapRatContBuf)
  *    Functionality: Fill UE Capability RAT container list
  
  *
- * @params[in] UE capability RAT container list buffer
+ * @params[in] UE capability RAT container list
  * @return ROK     - success
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t fillUeCapRatContList(UE_CapabilityRAT_ContainerList_t *ueCapablityListBuf)
+uint8_t fillUeCapRatContList(UE_CapabilityRAT_ContainerListRRC_t  *ueCapablityList)
 {
     uint8_t          ret = RFAILED;
     uint8_t          idx, elementCnt;
-    asn_enc_rval_t   encRetVal;
-    UE_CapabilityRAT_ContainerListRRC_t  ueCapablityList;
 
     while(true)
     {
        elementCnt = 1;
-       ueCapablityList.list.count = elementCnt;
-       ueCapablityList.list.size = elementCnt * sizeof(UE_CapabilityRAT_Container_t *);
+       ueCapablityList->list.count = elementCnt;
+       ueCapablityList->list.size = elementCnt * sizeof(UE_CapabilityRAT_Container_t *);
 
-       CU_ALLOC(ueCapablityList.list.array, ueCapablityList.list.size);
-       if(!ueCapablityList.list.array)
+       CU_ALLOC(ueCapablityList->list.array, ueCapablityList->list.size);
+       if(!ueCapablityList->list.array)
        {
           DU_LOG("\nERROR  -->  Memory allocation failed in fillUeCapRatContList");
           ret = RFAILED;
@@ -6482,8 +6659,8 @@ uint8_t fillUeCapRatContList(UE_CapabilityRAT_ContainerList_t *ueCapablityListBu
 
        for(idx=0; idx<elementCnt; idx++)
        {
-          CU_ALLOC(ueCapablityList.list.array[idx], sizeof(UE_CapabilityRAT_Container_t));
-          if(ueCapablityList.list.array[idx] == NULLP)
+          CU_ALLOC(ueCapablityList->list.array[idx], sizeof(UE_CapabilityRAT_Container_t));
+          if(ueCapablityList->list.array[idx] == NULLP)
           {
              DU_LOG("\nERROR  -->  Memory allocation failed in fillUeCapRatContList");
              ret = RFAILED;
@@ -6491,45 +6668,160 @@ uint8_t fillUeCapRatContList(UE_CapabilityRAT_ContainerList_t *ueCapablityListBu
           }
        }
        idx = 0;
-       ueCapablityList.list.array[idx]->rat_Type = RAT_Type_nr;
-       ret = fillUeCapRatCont(&ueCapablityList.list.array[idx]->ue_CapabilityRAT_Container);
-
-       /* encode UE Capability RAT Container List into duToCuRrcContainer */
-       xer_fprint(stdout, &asn_DEF_UE_CapabilityRAT_ContainerListRRC, &ueCapablityList);
-       cmMemset((uint8_t *)encBuf, 0, ENC_BUF_MAX_LEN);
-       encBufSize = 0;
-       encRetVal = aper_encode(&asn_DEF_UE_CapabilityRAT_ContainerListRRC, 0, \
-             &ueCapablityList, PrepFinalEncBuf, encBuf);
-
-       /* Encode results */
-       if(encRetVal.encoded == ENCODE_FAIL)
+       ueCapablityList->list.array[idx]->rat_Type = RAT_Type_nr;
+       if(fillUeCapRatCont(&ueCapablityList->list.array[idx]->ue_CapabilityRAT_Container) != ROK)
        {
-          DU_LOG( "\nERROR  -->  F1AP : Could not encode UE Capability RAT Container (at %s)\n",\
-                encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
+          DU_LOG("\nERROR  -->  F1AP : Failed to fill UE capability RAT Conatiner");
+          ret = RFAILED;
           break;
        }
-       else
-       {
-          DU_LOG("\nDEBUG  -->  F1AP : Created APER encodedbuffer for UE Capability RAT Container\n");
-          for(int i=0; i< encBufSize; i++)
-          {
-             DU_LOG("%x",encBuf[i]);
-          }
-       }
 
-       ueCapablityListBuf->size = encBufSize;
-       CU_ALLOC(ueCapablityListBuf->buf, ueCapablityListBuf->size);
-       if(!ueCapablityListBuf->buf)
-       {
-          DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in fillUeCapabilityContainer");
-          break;
-       }
-       memcpy(ueCapablityListBuf->buf, encBuf, ueCapablityListBuf->size);
        ret = ROK;
        break;
     }
-    freeUeCapRatContList(&ueCapablityList);
-    return ROK;
+    return ret;
+}
+
+/*******************************************************************
+ *
+ * @brief Fill UE Capability RAT container list octet string
+ *
+ * @details
+ *
+ *    Function : fillUeCapRatContListBuf
+ *
+ *    Functionality: Fill UE Capability RAT container list octet string
+ 
+ *
+ * @params[in] UE capability RAT container list buffer
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t fillUeCapRatContListBuf(UE_CapabilityRAT_ContainerList_t *ueCapablityListBuf)
+{
+   uint8_t          ret = RFAILED;
+   asn_enc_rval_t   encRetVal;
+   UE_CapabilityRAT_ContainerListRRC_t  ueCapablityList;
+
+   while(true)
+   {
+      ret = fillUeCapRatContList(&ueCapablityList);
+      if(ret != ROK)
+      {
+         DU_LOG( "\nERROR  -->  F1AP : Failed to fill UE Capability RAT container list");
+         break;
+      }
+
+      /* encode UE Capability RAT Container List into duToCuRrcContainer */
+      xer_fprint(stdout, &asn_DEF_UE_CapabilityRAT_ContainerListRRC, &ueCapablityList);
+      cmMemset((uint8_t *)encBuf, 0, ENC_BUF_MAX_LEN);
+      encBufSize = 0;
+      encRetVal = aper_encode(&asn_DEF_UE_CapabilityRAT_ContainerListRRC, 0, \
+            &ueCapablityList, PrepFinalEncBuf, encBuf);
+
+      /* Encode results */
+      if(encRetVal.encoded == ENCODE_FAIL)
+      {
+         DU_LOG( "\nERROR  -->  F1AP : Could not encode UE Capability RAT Container (at %s)\n",\
+               encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
+         break;
+      }
+      else
+      {
+         DU_LOG("\nDEBUG  -->  F1AP : Created APER encodedbuffer for UE Capability RAT Container\n");
+         for(int i=0; i< encBufSize; i++)
+         {
+            DU_LOG("%x",encBuf[i]);
+         }
+      }
+
+      ueCapablityListBuf->size = encBufSize;
+      CU_ALLOC(ueCapablityListBuf->buf, ueCapablityListBuf->size);
+      if(!ueCapablityListBuf->buf)
+      {
+         DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in fillUeCapabilityContainer");
+         break;
+      }
+      memcpy(ueCapablityListBuf->buf, encBuf, ueCapablityListBuf->size);
+      ret = ROK;
+      break;
+   }
+   freeUeCapRatContList(&ueCapablityList);
+   return ret;
+}
+
+/*******************************************************************
+ *
+ * @brief Fill HO preparation information Octet string
+ *
+ * @details
+ *
+ *    Function : fillHOPreparationInfo
+ *
+ *    Functionality: Fill HO preparation information Octet string
+ 
+ *
+ * @params[in] HandoverPreparationInformation_t buffer
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t fillHOPreparationInfo(HandoverPreparationInformation_t *hoPrepInfo)
+{
+   uint8_t          ret = RFAILED;
+   asn_enc_rval_t   encRetVal;
+   HandoverPreparationInformation_IEs_t hoPrepInfoIe;
+
+   while(true)
+   {
+      ret = fillUeCapRatContList(&hoPrepInfoIe.ue_CapabilityRAT_List);
+      if(ret != ROK)
+      {
+         DU_LOG( "\nERROR  -->  F1AP : Failed to fill UE Capability RAT container list");
+         break;
+      }
+      hoPrepInfoIe.sourceConfig = NULLP;
+      hoPrepInfoIe.rrm_Config = NULLP;
+      hoPrepInfoIe.as_Context = NULLP;
+      hoPrepInfoIe.nonCriticalExtension = NULLP;
+
+      /* encode UE Capability RAT Container List into duToCuRrcContainer */
+      xer_fprint(stdout, &asn_DEF_HandoverPreparationInformation_IEs, &hoPrepInfoIe);
+      cmMemset((uint8_t *)encBuf, 0, ENC_BUF_MAX_LEN);
+      encBufSize = 0;
+      encRetVal = aper_encode(&asn_DEF_HandoverPreparationInformation, 0, \
+            &hoPrepInfoIe, PrepFinalEncBuf, encBuf);
+
+      /* Encode results */
+      if(encRetVal.encoded == ENCODE_FAIL)
+      {
+         DU_LOG( "\nERROR  -->  F1AP : Could not encode UE Capability RAT Container (at %s)\n",\
+               encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
+         break;
+      }
+      else
+      {
+         DU_LOG("\nDEBUG  -->  F1AP : Created APER encodedbuffer for UE Capability RAT Container\n");
+         for(int i=0; i< encBufSize; i++)
+         {
+            DU_LOG("%x",encBuf[i]);
+         }
+      }
+
+      hoPrepInfo->size = encBufSize;
+      CU_ALLOC(hoPrepInfo->buf, hoPrepInfo->size);
+      if(!hoPrepInfo->buf)
+      {
+         DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in fillUeCapabilityContainer");
+         break;
+      }
+      memcpy(hoPrepInfo->buf, encBuf, hoPrepInfo->size);
+      ret = ROK;
+      break;
+   }
+   freeHOPreparationInfo(&hoPrepInfoIe);
+   return ret;
 }
 
 /*******************************************************************
@@ -6549,20 +6841,27 @@ uint8_t fillUeCapRatContList(UE_CapabilityRAT_ContainerList_t *ueCapablityListBu
  *
  ******************************************************************/
 
-uint8_t fillCuToDuContainer(CUtoDURRCInformation_t *rrcMsg)
+uint8_t fillCuToDuContainer(CuUeCb *ueCb, CUtoDURRCInformation_t *rrcMsg)
 {
    uint8_t elementCnt = 0;
    uint8_t ret = ROK;
    uint8_t idx, idx2, rrcBufLen;
 
+   /* UE Capabulity RAT Container List */
    CU_ALLOC(rrcMsg->uE_CapabilityRAT_ContainerList, sizeof(UE_CapabilityRAT_ContainerList_t));
    if(!rrcMsg->uE_CapabilityRAT_ContainerList)
    {
       DU_LOG("\nERROR  -->  F1AP : Memory allocation for CUtoDURRCInformation_ExtIEs failed");
       return RFAILED;
    }
-   ret = fillUeCapRatContList(rrcMsg->uE_CapabilityRAT_ContainerList);
+   ret = fillUeCapRatContListBuf(rrcMsg->uE_CapabilityRAT_ContainerList);
 
+   if(ueCb->state == HANDOVER_IN_PROGRESS)
+   {
+      /* TODO : Fill Measurement Gap configuration */
+   }
+
+   /* IE extensions */
    CU_ALLOC(rrcMsg->iE_Extensions, sizeof(ProtocolExtensionContainer_4624P16_t));
    if(rrcMsg->iE_Extensions)
    {
@@ -6588,13 +6887,27 @@ uint8_t fillCuToDuContainer(CUtoDURRCInformation_t *rrcMsg)
             ret = RFAILED;
          }
       }
+
       idx = 0;
-      /* Filling CellGroupConfig_t IE */
-      rrcMsg->iE_Extensions->list.array[idx]->id = ProtocolIE_ID_id_CellGroupConfig;
-      rrcMsg->iE_Extensions->list.array[idx]->criticality = Criticality_ignore; 
-      rrcMsg->iE_Extensions->list.array[idx]->extensionValue.present  =\
-                                                                       CUtoDURRCInformation_ExtIEs__extensionValue_PR_CellGroupConfig;
-      ret = fillCellGrpCfg(&rrcMsg->iE_Extensions->list.array[idx]->extensionValue.choice.CellGroupConfig);
+
+      if(ueCb->state != HANDOVER_IN_PROGRESS)
+      {
+         /* Cell Group Configuration */
+         rrcMsg->iE_Extensions->list.array[idx]->id = ProtocolIE_ID_id_CellGroupConfig;
+         rrcMsg->iE_Extensions->list.array[idx]->criticality = Criticality_ignore; 
+         rrcMsg->iE_Extensions->list.array[idx]->extensionValue.present  =\
+                                                                          CUtoDURRCInformation_ExtIEs__extensionValue_PR_CellGroupConfig;
+         ret = fillCellGrpCfg(&rrcMsg->iE_Extensions->list.array[idx]->extensionValue.choice.CellGroupConfig);
+      }
+      else
+      {
+         /* Handover Preparation Information */
+         rrcMsg->iE_Extensions->list.array[idx]->id = ProtocolIE_ID_id_HandoverPreparationInformation; 
+         rrcMsg->iE_Extensions->list.array[idx]->criticality = Criticality_ignore;
+         rrcMsg->iE_Extensions->list.array[idx]->extensionValue.present  = \
+            CUtoDURRCInformation_ExtIEs__extensionValue_PR_HandoverPreparationInformation;
+         ret = fillHOPreparationInfo(&rrcMsg->iE_Extensions->list.array[idx]->extensionValue.choice.HandoverPreparationInformation);
+      }
    }
    return ret;
 }
@@ -6682,18 +6995,17 @@ void FreeCuToDuInfo(CUtoDURRCInformation_t *rrcMsg)
  * ****************************************************************/
 uint8_t BuildAndSendUeContextSetupReq(uint32_t duId, CuUeCb *ueCb, uint16_t rrcContLen, uint8_t *rrcContainer)
 {
-   uint8_t   Nrcgiret;
-   uint8_t   SplCellListret;
-   uint8_t   SrbSetupret;
+   uint8_t   Nrcgiret, SplCellListret, SrbSetupret;
+   uint8_t   ret= RFAILED, ret1;
    uint8_t   elementCnt;
-   uint8_t   idx, bufLen;
-   uint8_t   idx1;
+   uint8_t   idx, idx1, bufLen;
+   uint32_t  spCellId;
+   DuDb      *targetDuDb = NULLP;
    F1AP_PDU_t      	*f1apMsg = NULLP;
    UEContextSetupRequest_t *ueSetReq = NULLP;
    asn_enc_rval_t encRetVal;        /* Encoder return value */
    memset(&encRetVal, 0, sizeof(asn_enc_rval_t));
-   uint8_t ret= RFAILED;
-   uint8_t ret1;
+
    while(true)
    {
       DU_LOG("\nINFO  -->  F1AP : Building UE Context Setup Request\n");
@@ -6719,7 +7031,10 @@ uint8_t BuildAndSendUeContextSetupReq(uint32_t duId, CuUeCb *ueCb, uint16_t rrcC
 
       ueSetReq = &f1apMsg->choice.initiatingMessage->value.choice.UEContextSetupRequest;
 
-      elementCnt = 12;
+      if(ueCb->state == HANDOVER_IN_PROGRESS)
+         elementCnt = 7;
+      else
+         elementCnt = 12;
       ueSetReq->protocolIEs.list.count = elementCnt;
       ueSetReq->protocolIEs.list.size = elementCnt * sizeof(UEContextSetupRequestIEs_t *);
 
@@ -6749,19 +7064,32 @@ uint8_t BuildAndSendUeContextSetupReq(uint32_t duId, CuUeCb *ueCb, uint16_t rrcC
       ueSetReq->protocolIEs.list.array[idx]->value.present = UEContextSetupRequestIEs__value_PR_GNB_CU_UE_F1AP_ID;
       ueSetReq->protocolIEs.list.array[idx]->value.choice.GNB_CU_UE_F1AP_ID = ueCb->gnbCuUeF1apId;
 
-      /*GNB DU UE F1AP ID*/
-      idx++;
-      ueSetReq->protocolIEs.list.array[idx]->id	= ProtocolIE_ID_id_gNB_DU_UE_F1AP_ID;
-      ueSetReq->protocolIEs.list.array[idx]->criticality	= 	Criticality_ignore;
-      ueSetReq->protocolIEs.list.array[idx]->value.present = UEContextSetupRequestIEs__value_PR_GNB_DU_UE_F1AP_ID;
-      ueSetReq->protocolIEs.list.array[idx]->value.choice.GNB_DU_UE_F1AP_ID = ueCb->gnbDuUeF1apId;
+      if(ueCb->state != HANDOVER_IN_PROGRESS)
+      {
+         /*GNB DU UE F1AP ID*/
+         idx++;
+         ueSetReq->protocolIEs.list.array[idx]->id	= ProtocolIE_ID_id_gNB_DU_UE_F1AP_ID;
+         ueSetReq->protocolIEs.list.array[idx]->criticality	= 	Criticality_ignore;
+         ueSetReq->protocolIEs.list.array[idx]->value.present = UEContextSetupRequestIEs__value_PR_GNB_DU_UE_F1AP_ID;
+         ueSetReq->protocolIEs.list.array[idx]->value.choice.GNB_DU_UE_F1AP_ID = ueCb->gnbDuUeF1apId;
+      }
 
       /*Special Cell ID*/
       idx++;
       ueSetReq->protocolIEs.list.array[idx]->id	= ProtocolIE_ID_id_SpCell_ID;
       ueSetReq->protocolIEs.list.array[idx]->criticality	= 	Criticality_reject;
       ueSetReq->protocolIEs.list.array[idx]->value.present = UEContextSetupRequestIEs__value_PR_NRCGI;
-      Nrcgiret = BuildNrcgi(&ueSetReq->protocolIEs.list.array[idx]->value.choice.NRCGI, ueCb->cellCb->nrCellId);
+      if(ueCb->state == HANDOVER_IN_PROGRESS)
+      {
+         /* Spec 38.473 Sec 9.2.2.1 : For handover case, this IE shall be considered as target cell. */
+         targetDuDb = getDuDb(ueCb->hoInfo.targetDuId);
+         /* Since we are supporting only one cell per DU, accessing 0th index to
+          * get target cell info */
+         spCellId = targetDuDb->cellCb[0].nrCellId;
+      }
+      else
+         spCellId = ueCb->cellCb->nrCellId;
+      Nrcgiret = BuildNrcgi(&ueSetReq->protocolIEs.list.array[idx]->value.choice.NRCGI, spCellId);
       if(Nrcgiret != ROK)
       {
          break;
@@ -6774,32 +7102,38 @@ uint8_t BuildAndSendUeContextSetupReq(uint32_t duId, CuUeCb *ueCb, uint16_t rrcC
       ueSetReq->protocolIEs.list.array[idx]->value.present = UEContextSetupRequestIEs__value_PR_ServCellIndex;
       ueSetReq->protocolIEs.list.array[idx]->value.choice.ServCellIndex = CELL_INDEX;
 
-      /*CellULConfigured*/
-      idx++;
-      ueSetReq->protocolIEs.list.array[idx]->id	= ProtocolIE_ID_id_SpCellULConfigured;
-      ueSetReq->protocolIEs.list.array[idx]->criticality	= 	Criticality_ignore;
-      ueSetReq->protocolIEs.list.array[idx]->value.present = UEContextSetupRequestIEs__value_PR_CellULConfigured;
-      ueSetReq->protocolIEs.list.array[idx]->value.choice.CellULConfigured = CellULConfigured_none;
+      if(ueCb->state != HANDOVER_IN_PROGRESS)
+      {
+         /*CellULConfigured*/
+         idx++;
+         ueSetReq->protocolIEs.list.array[idx]->id	= ProtocolIE_ID_id_SpCellULConfigured;
+         ueSetReq->protocolIEs.list.array[idx]->criticality	= 	Criticality_ignore;
+         ueSetReq->protocolIEs.list.array[idx]->value.present = UEContextSetupRequestIEs__value_PR_CellULConfigured;
+         ueSetReq->protocolIEs.list.array[idx]->value.choice.CellULConfigured = CellULConfigured_none;
+      }
 
       /*CUtoDURRCContainer*/
       idx++;
       ueSetReq->protocolIEs.list.array[idx]->id	= ProtocolIE_ID_id_CUtoDURRCInformation;
       ueSetReq->protocolIEs.list.array[idx]->criticality	= 	Criticality_reject;
       ueSetReq->protocolIEs.list.array[idx]->value.present = UEContextSetupRequestIEs__value_PR_CUtoDURRCInformation;
-      if(fillCuToDuContainer(&ueSetReq->protocolIEs.list.array[idx]->value.choice.CUtoDURRCInformation))
+      if(fillCuToDuContainer(ueCb, &ueSetReq->protocolIEs.list.array[idx]->value.choice.CUtoDURRCInformation))
       {
          break;
       }
 
-      /*Special Cells to be SetupList*/
-      idx++;
-      ueSetReq->protocolIEs.list.array[idx]->id	= ProtocolIE_ID_id_SCell_ToBeSetup_List;
-      ueSetReq->protocolIEs.list.array[idx]->criticality	= 	Criticality_ignore;
-      ueSetReq->protocolIEs.list.array[idx]->value.present = UEContextSetupRequestIEs__value_PR_SCell_ToBeSetup_List;
-      SplCellListret = BuildSplCellList(ueCb, &ueSetReq->protocolIEs.list.array[idx]->value.choice.SCell_ToBeSetup_List);
-      if(SplCellListret != ROK)
-      {  
-         break;
+      if(ueCb->state != HANDOVER_IN_PROGRESS)
+      {
+         /*Special Cells to be SetupList*/
+         idx++;
+         ueSetReq->protocolIEs.list.array[idx]->id	= ProtocolIE_ID_id_SCell_ToBeSetup_List;
+         ueSetReq->protocolIEs.list.array[idx]->criticality	= 	Criticality_ignore;
+         ueSetReq->protocolIEs.list.array[idx]->value.present = UEContextSetupRequestIEs__value_PR_SCell_ToBeSetup_List;
+         SplCellListret = BuildSplCellList(ueCb, &ueSetReq->protocolIEs.list.array[idx]->value.choice.SCell_ToBeSetup_List);
+         if(SplCellListret != ROK)
+         {  
+            break;
+         }
       }
 
       /*SRBs To Be Setup List*/
@@ -6807,7 +7141,7 @@ uint8_t BuildAndSendUeContextSetupReq(uint32_t duId, CuUeCb *ueCb, uint16_t rrcC
       ueSetReq->protocolIEs.list.array[idx]->id	= ProtocolIE_ID_id_SRBs_ToBeSetup_List;
       ueSetReq->protocolIEs.list.array[idx]->criticality	= 	Criticality_reject;
       ueSetReq->protocolIEs.list.array[idx]->value.present = UEContextSetupRequestIEs__value_PR_SRBs_ToBeSetup_List;
-      SrbSetupret = BuildSRBSetup(&ueSetReq->protocolIEs.list.array[idx]->value.choice.SRBs_ToBeSetup_List);
+      SrbSetupret = BuildSRBSetup(ueCb, &ueSetReq->protocolIEs.list.array[idx]->value.choice.SRBs_ToBeSetup_List);
       if(SrbSetupret != ROK)
       {        
          break;
@@ -6818,38 +7152,42 @@ uint8_t BuildAndSendUeContextSetupReq(uint32_t duId, CuUeCb *ueCb, uint16_t rrcC
       ueSetReq->protocolIEs.list.array[idx]->id	= ProtocolIE_ID_id_DRBs_ToBeSetup_List;
       ueSetReq->protocolIEs.list.array[idx]->criticality	= 	Criticality_reject;
       ueSetReq->protocolIEs.list.array[idx]->value.present = UEContextSetupRequestIEs__value_PR_DRBs_ToBeSetup_List;
-      ret1 = BuildDRBSetup(&ueSetReq->protocolIEs.list.array[idx]->value.choice.DRBs_ToBeSetup_List);
+      ret1 = BuildDRBSetup(ueCb, &ueSetReq->protocolIEs.list.array[idx]->value.choice.DRBs_ToBeSetup_List);
       if(ret1 != ROK)
       {	
          break;
       }
-      /* RRC Container for security mode */
-      idx++;
-      ueSetReq->protocolIEs.list.array[idx]->id = ProtocolIE_ID_id_RRCContainer;
-      ueSetReq->protocolIEs.list.array[idx]->criticality = Criticality_reject;
-      ueSetReq->protocolIEs.list.array[idx]->value.present = UEContextSetupRequestIEs__value_PR_RRCContainer;
 
-      char secModeBuf[9]={0x00, 0x02, 0x22, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00};
-      bufLen =9;
-      ueSetReq->protocolIEs.list.array[idx]->value.choice.RRCContainer.size = bufLen;
-      CU_ALLOC(ueSetReq->protocolIEs.list.array[idx]->value.choice.RRCContainer.buf,
-            ueSetReq->protocolIEs.list.array[idx]->value.choice.RRCContainer.size);
-      if(!ueSetReq->protocolIEs.list.array[idx]->value.choice.RRCContainer.buf)
+      if(ueCb->state != HANDOVER_IN_PROGRESS)
       {
-         DU_LOG("\nERROR  -->  F1AP : Memory allocation for BuildAndSendUeContextSetupReq failed");
-         break;
+         /* RRC Container for security mode */
+         idx++;
+         ueSetReq->protocolIEs.list.array[idx]->id = ProtocolIE_ID_id_RRCContainer;
+         ueSetReq->protocolIEs.list.array[idx]->criticality = Criticality_reject;
+         ueSetReq->protocolIEs.list.array[idx]->value.present = UEContextSetupRequestIEs__value_PR_RRCContainer;
+
+         char secModeBuf[9]={0x00, 0x02, 0x22, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00};
+         bufLen =9;
+         ueSetReq->protocolIEs.list.array[idx]->value.choice.RRCContainer.size = bufLen;
+         CU_ALLOC(ueSetReq->protocolIEs.list.array[idx]->value.choice.RRCContainer.buf,
+               ueSetReq->protocolIEs.list.array[idx]->value.choice.RRCContainer.size);
+         if(!ueSetReq->protocolIEs.list.array[idx]->value.choice.RRCContainer.buf)
+         {
+            DU_LOG("\nERROR  -->  F1AP : Memory allocation for BuildAndSendUeContextSetupReq failed");
+            break;
+         }
+         memset(ueSetReq->protocolIEs.list.array[idx]->value.choice.RRCContainer.buf, 0, bufLen);
+         memcpy(ueSetReq->protocolIEs.list.array[idx]->value.choice.RRCContainer.buf, secModeBuf, bufLen);
+
+         /* RRC delivery status request */
+         idx++;
+         ueSetReq->protocolIEs.list.array[idx]->id = ProtocolIE_ID_id_RRCDeliveryStatusRequest;
+         ueSetReq->protocolIEs.list.array[idx]->criticality = Criticality_ignore;
+         ueSetReq->protocolIEs.list.array[idx]->value.present = UEContextSetupRequestIEs__value_PR_RRCDeliveryStatusRequest;
+         ueSetReq->protocolIEs.list.array[idx]->value.choice.RRCDeliveryStatusRequest = RRCDeliveryStatusRequest_true;
       }
-      memset(ueSetReq->protocolIEs.list.array[idx]->value.choice.RRCContainer.buf, 0, bufLen);
-      memcpy(ueSetReq->protocolIEs.list.array[idx]->value.choice.RRCContainer.buf, secModeBuf, bufLen);
 
-      /* RRC delivery status request */
-      idx++;
-      ueSetReq->protocolIEs.list.array[idx]->id = ProtocolIE_ID_id_RRCDeliveryStatusRequest;
-      ueSetReq->protocolIEs.list.array[idx]->criticality = Criticality_ignore;
-      ueSetReq->protocolIEs.list.array[idx]->value.present = UEContextSetupRequestIEs__value_PR_RRCDeliveryStatusRequest;
-      ueSetReq->protocolIEs.list.array[idx]->value.choice.RRCDeliveryStatusRequest = RRCDeliveryStatusRequest_true;
-
-      /* Bit Rate hardcoded as in reference logs */
+      /* GNB-DU UE Aggregate Maximum Bit Rate hardcoded as in reference logs */
       idx++;
       ueSetReq->protocolIEs.list.array[idx]->id = ProtocolIE_ID_id_GNB_DU_UE_AMBR_UL;
       ueSetReq->protocolIEs.list.array[idx]->criticality = Criticality_ignore;
@@ -7067,7 +7405,6 @@ uint8_t procUeContextSetupResponse(uint32_t duId, F1AP_PDU_t *f1apMsg)
                 /* Adding Tunnels for successful DRB */
                 procDrbSetupList(&ueCtxtSetupRsp->protocolIEs.list.array[idx]->value.choice.DRBs_Setup_List);
                 break; 
-
              }
       }
    }
@@ -7149,6 +7486,10 @@ uint8_t procUlRrcMsg(uint32_t duId, F1AP_PDU_t *f1apMsg)
       rrcMsgType = setDlRRCMsgType(ueCb);
       if(rrcMsgType == REGISTRATION_ACCEPT)
       {
+         /* Add SRB 1 to ueCb SRB list */
+         ueCb->srbList[ueCb->numSrb].srbId = srbId;
+         ueCb->numSrb++;
+
          DU_LOG("\nINFO  -->  F1AP: Sending DL RRC MSG for RRC Registration Accept"); 
          ret = BuildAndSendDLRRCMessageTransfer(duId, ueCb, srbId, rrcMsgType);
       }
@@ -7429,7 +7770,7 @@ uint8_t deleteEgtpTunnel(uint8_t *buf)
 *         RFAILED - failure
 *
 * ****************************************************************/
-uint8_t BuildUlTnlInfoforSetupMod(uint8_t ueId, uint8_t drbId, ULUPTNLInformation_ToBeSetup_List_t *ulInfo, uint8_t actionType)
+uint8_t BuildUlTnlInfoforSetupMod(uint8_t ueId, uint8_t drbId, TnlInfo *ulTnlInfo, ULUPTNLInformation_ToBeSetup_List_t *ulInfo, uint8_t actionType)
 {
    uint8_t arrIdx;
    uint8_t ulCnt;
@@ -7487,6 +7828,11 @@ uint8_t BuildUlTnlInfoforSetupMod(uint8_t ueId, uint8_t drbId, ULUPTNLInformatio
       transportLayerAddress.buf[3] = 82;
    ulInfo->list.array[arrIdx]->uLUPTNLInformation.choice.gTPTunnel->\
       transportLayerAddress.bits_unused = 0;
+
+   ulTnlInfo->address[0] = ulInfo->list.array[arrIdx]->uLUPTNLInformation.choice.gTPTunnel->transportLayerAddress.buf[0];
+   ulTnlInfo->address[1] = ulInfo->list.array[arrIdx]->uLUPTNLInformation.choice.gTPTunnel->transportLayerAddress.buf[1];
+   ulTnlInfo->address[2] = ulInfo->list.array[arrIdx]->uLUPTNLInformation.choice.gTPTunnel->transportLayerAddress.buf[2];
+   ulTnlInfo->address[3] = ulInfo->list.array[arrIdx]->uLUPTNLInformation.choice.gTPTunnel->transportLayerAddress.buf[3];
    
    /*GTP TEID*/
    ulInfo->list.array[arrIdx]->uLUPTNLInformation.choice.gTPTunnel->gTP_TEID.size\
@@ -7520,6 +7866,11 @@ uint8_t BuildUlTnlInfoforSetupMod(uint8_t ueId, uint8_t drbId, ULUPTNLInformatio
       ulInfo->list.array[arrIdx]->uLUPTNLInformation.choice.gTPTunnel->\
         gTP_TEID.buf[3] = cuCb.cuCfgParams.egtpParams.currTunnelId++;
    }
+
+   ulTnlInfo->teId[0] = ulInfo->list.array[arrIdx]->uLUPTNLInformation.choice.gTPTunnel->gTP_TEID.buf[0];
+   ulTnlInfo->teId[1] = ulInfo->list.array[arrIdx]->uLUPTNLInformation.choice.gTPTunnel->gTP_TEID.buf[1];
+   ulTnlInfo->teId[2] = ulInfo->list.array[arrIdx]->uLUPTNLInformation.choice.gTPTunnel->gTP_TEID.buf[2];
+   ulTnlInfo->teId[3] = ulInfo->list.array[arrIdx]->uLUPTNLInformation.choice.gTPTunnel->gTP_TEID.buf[3];
    return ROK;
 }/*End of BuildULTnlInfo*/
 
@@ -7624,12 +7975,13 @@ void FreeDrbItem(DRBs_ToBeSetupMod_Item_t *drbItem)
 *
 * ****************************************************************/
 
-uint8_t FillDrbItemToSetupMod(uint8_t ueId, uint8_t arrIdx, DRBs_ToBeSetupMod_Item_t *drbItem)
+uint8_t FillDrbItemToSetupMod(CuUeCb *ueCb, uint8_t arrIdx, DRBs_ToBeSetupMod_Item_t *drbItem)
 {
    uint8_t ret = ROK;
 
    /*Drb Id */
    drbItem->dRBID = arrIdx + DRB_ID_TO_ADD_MOD;
+   ueCb->drbList[ueCb->numDrb].drbId = drbItem->dRBID;
    
    /*qoSInformation*/
    drbItem->qoSInformation.present = QoSInformation_PR_choice_extension;
@@ -7673,8 +8025,8 @@ uint8_t FillDrbItemToSetupMod(uint8_t ueId, uint8_t arrIdx, DRBs_ToBeSetupMod_It
 	 drbItem->qoSInformation.choice.choice_extension->id = ProtocolIE_ID_id_DRB_Information;
 	 drbItem->qoSInformation.choice.choice_extension->criticality = Criticality_ignore;
 	 drbItem->qoSInformation.choice.choice_extension->value.present = QoSInformation_ExtIEs__value_PR_DRB_Information;
-	 ret =  BuildQOSInfo(&drbItem->qoSInformation.choice.choice_extension->value.choice.DRB_Information.dRB_QoS,\
-           ProtocolIE_ID_id_DRBs_ToBeSetupMod_Item, PDU_SESSION_ID_2);
+	 ret =  BuildQOSInfo(&ueCb->drbList[ueCb->numDrb].qos, &drbItem->qoSInformation.choice.choice_extension->value.choice.DRB_Information.dRB_QoS,\
+           ProtocolIE_ID_id_DRBs_ToBeSetupMod_Item, PDU_SESSION_ID_2, FALSE);
 	 if(ret != ROK)
 	 {
 	    DU_LOG("\nERROR  -->  F1AP : BuildQOSInfo failed");
@@ -7682,8 +8034,8 @@ uint8_t FillDrbItemToSetupMod(uint8_t ueId, uint8_t arrIdx, DRBs_ToBeSetupMod_It
 	 }
 	 
 	 /*SNSSAI*/
-	 ret = BuildSNSSAI(&drbItem->qoSInformation.choice.\
-	       choice_extension->value.choice.DRB_Information.sNSSAI, cuCb.snssaiList[1]);
+	 ret = BuildSNSSAI(&ueCb->drbList[ueCb->numDrb], &drbItem->qoSInformation.choice.\
+	       choice_extension->value.choice.DRB_Information.sNSSAI, cuCb.snssaiList[1], FALSE);
 	 if(ret != ROK)
 	 {
 	    DU_LOG("\nERROR  -->  F1AP : BuildSNSSAI failed");
@@ -7691,9 +8043,9 @@ uint8_t FillDrbItemToSetupMod(uint8_t ueId, uint8_t arrIdx, DRBs_ToBeSetupMod_It
 	 }
 	 
 	 /*Flows mapped to DRB List*/
-         ret = BuildFlowsMap(&drbItem->qoSInformation.choice.\
+         ret = BuildFlowsMap(&ueCb->drbList[ueCb->numDrb], &drbItem->qoSInformation.choice.\
 	       choice_extension->value.choice.DRB_Information.flows_Mapped_To_DRB_List,\ 
-          ProtocolIE_ID_id_DRBs_ToBeSetupMod_Item);
+          ProtocolIE_ID_id_DRBs_ToBeSetupMod_Item, FALSE);
 	 if(ret != ROK)
 	 {
 	    DU_LOG("\nERROR  -->  F1AP : BuildFlowsMap failed");
@@ -7703,8 +8055,8 @@ uint8_t FillDrbItemToSetupMod(uint8_t ueId, uint8_t arrIdx, DRBs_ToBeSetupMod_It
    }
    
    /*ULUPTNLInformation To Be Setup List*/
-   ret = BuildUlTnlInfoforSetupMod(ueId, drbItem->dRBID, &drbItem->uLUPTNLInformation_ToBeSetup_List, \
-      ProtocolIE_ID_id_DRBs_ToBeSetupMod_Item);
+   ret = BuildUlTnlInfoforSetupMod(ueCb->gnbCuUeF1apId, drbItem->dRBID, &ueCb->drbList[ueCb->numDrb].ulUpTnlInfo, \
+      &drbItem->uLUPTNLInformation_ToBeSetup_List, ProtocolIE_ID_id_DRBs_ToBeSetupMod_Item);
    if(ret != ROK)
    {
       DU_LOG("\nERROR  -->  F1AP : BuildUlTnlInfoforSetupMod failed");
@@ -7713,6 +8065,9 @@ uint8_t FillDrbItemToSetupMod(uint8_t ueId, uint8_t arrIdx, DRBs_ToBeSetupMod_It
 
    /*RLCMode*/
    drbItem->rLCMode = RLCMode_rlc_um_bidirectional;
+   ueCb->drbList[ueCb->numDrb].rlcMode = drbItem->rLCMode;
+
+   ueCb->numDrb++;
    return ROK;
 }
 
@@ -7733,13 +8088,13 @@ uint8_t FillDrbItemToSetupMod(uint8_t ueId, uint8_t arrIdx, DRBs_ToBeSetupMod_It
 *
 * ****************************************************************/
 
-uint8_t FillDrbItemList(uint8_t ueId, uint8_t arrIdx, struct DRBs_ToBeSetupMod_ItemIEs *drbItemIe)
+uint8_t FillDrbItemList(CuUeCb *ueCb, uint8_t arrIdx, struct DRBs_ToBeSetupMod_ItemIEs *drbItemIe)
 {
    drbItemIe->id = ProtocolIE_ID_id_DRBs_ToBeSetupMod_Item;
    drbItemIe->criticality = Criticality_reject;
    drbItemIe->value.present = DRBs_ToBeSetupMod_ItemIEs__value_PR_DRBs_ToBeSetupMod_Item;
 
-   if(FillDrbItemToSetupMod(ueId, arrIdx, (&(drbItemIe->value.choice.DRBs_ToBeSetupMod_Item))) != ROK)
+   if(FillDrbItemToSetupMod(ueCb, arrIdx, (&(drbItemIe->value.choice.DRBs_ToBeSetupMod_Item))) != ROK)
    {
       DU_LOG("\nERROR  -->  F1AP : FillDrbItemToSetupMod failed"); 
       return RFAILED;
@@ -7803,7 +8158,7 @@ void FreeDrbToBeSetupModList(DRBs_ToBeSetupMod_List_t *drbSet)
 *
 * ****************************************************************/
 
-uint8_t BuildDrbToBeSetupList(uint8_t ueId, DRBs_ToBeSetupMod_List_t *drbSet)
+uint8_t BuildDrbToBeSetupList(CuUeCb *ueCb, DRBs_ToBeSetupMod_List_t *drbSet)
 {
    uint8_t ret = ROK;
    uint8_t arrIdx =0;
@@ -7828,7 +8183,7 @@ uint8_t BuildDrbToBeSetupList(uint8_t ueId, DRBs_ToBeSetupMod_List_t *drbSet)
          return  RFAILED;
       }
 
-      ret = FillDrbItemList(ueId, arrIdx, (DRBs_ToBeSetupMod_ItemIEs_t *)drbSet->list.array[arrIdx]);
+      ret = FillDrbItemList(ueCb, arrIdx, (DRBs_ToBeSetupMod_ItemIEs_t *)drbSet->list.array[arrIdx]);
       if(ret != ROK)
       {
          DU_LOG("\nERROR  -->  F1AP : FillDrbItemList failed");
@@ -7855,12 +8210,24 @@ uint8_t BuildDrbToBeSetupList(uint8_t ueId, DRBs_ToBeSetupMod_List_t *drbSet)
 *
 * ****************************************************************/
 
-uint8_t FillDrbToBeModItem(uint8_t ueId, uint8_t arrIdx, DRBs_ToBeModified_Item_t *drbItem)
+uint8_t FillDrbToBeModItem(CuUeCb *ueCb, uint8_t arrIdx, DRBs_ToBeModified_Item_t *drbItem)
 {
    uint8_t ret = ROK;
+   uint drbIdx=0;
+   DrbInfo *drbToBeMod;
 
    /*Drb Id */
    drbItem->dRBID = DRB2 + arrIdx;
+
+   /* Search for DRB ID in CU databse */
+   for(drbIdx = 0; drbIdx < ueCb->numDrb; drbIdx++)
+   {
+      if(ueCb->drbList[drbIdx].drbId == drbItem->dRBID)
+      {
+         drbToBeMod = &ueCb->drbList[drbIdx];
+         break;
+      }
+   }
 
    /*qoSInformation*/
    drbItem->qoSInformation = NULLP;
@@ -7908,8 +8275,8 @@ uint8_t FillDrbToBeModItem(uint8_t ueId, uint8_t arrIdx, DRBs_ToBeModified_Item_
                drbItem->qoSInformation->choice.choice_extension->id = ProtocolIE_ID_id_DRB_Information;
                drbItem->qoSInformation->choice.choice_extension->criticality = Criticality_ignore;
                drbItem->qoSInformation->choice.choice_extension->value.present = QoSInformation_ExtIEs__value_PR_DRB_Information;
-               ret =  BuildQOSInfo(&drbItem->qoSInformation->choice.choice_extension->value.choice.DRB_Information.dRB_QoS,\
-                     ProtocolIE_ID_id_DRBs_ToBeModified_Item, INVALID_PDU_SESSION_ID);
+               ret =  BuildQOSInfo(&drbToBeMod->qos, &drbItem->qoSInformation->choice.choice_extension->value.choice.DRB_Information.dRB_QoS,\
+                     ProtocolIE_ID_id_DRBs_ToBeModified_Item, INVALID_PDU_SESSION_ID, FALSE);
                if(ret != ROK)
                {
                   DU_LOG("\nERROR  -->  F1AP : BuildQOSInfo failed");
@@ -7917,8 +8284,8 @@ uint8_t FillDrbToBeModItem(uint8_t ueId, uint8_t arrIdx, DRBs_ToBeModified_Item_
                }
 
                /*SNSSAI*/
-               ret = BuildSNSSAI(&drbItem->qoSInformation->choice.\
-                     choice_extension->value.choice.DRB_Information.sNSSAI, cuCb.snssaiList[0]);
+               ret = BuildSNSSAI(drbToBeMod, &drbItem->qoSInformation->choice.\
+                     choice_extension->value.choice.DRB_Information.sNSSAI, cuCb.snssaiList[0], FALSE);
                if(ret != ROK)
                {
                   DU_LOG("\nERROR  -->  F1AP : BuildSNSSAI failed");
@@ -7926,9 +8293,9 @@ uint8_t FillDrbToBeModItem(uint8_t ueId, uint8_t arrIdx, DRBs_ToBeModified_Item_
                }
 
                /*Flows mapped to DRB List*/
-               ret = BuildFlowsMap(&drbItem->qoSInformation->choice.\
+               ret = BuildFlowsMap(drbToBeMod, &drbItem->qoSInformation->choice.\
                      choice_extension->value.choice.DRB_Information.flows_Mapped_To_DRB_List,\
-                     ProtocolIE_ID_id_DRBs_ToBeModified_Item);
+                     ProtocolIE_ID_id_DRBs_ToBeModified_Item, FALSE);
                if(ret != ROK)
                {
                   DU_LOG("\nERROR  -->  F1AP : BuildFlowsMap failed");
@@ -7939,7 +8306,7 @@ uint8_t FillDrbToBeModItem(uint8_t ueId, uint8_t arrIdx, DRBs_ToBeModified_Item_
    }/* End of QoS */
 
    /*ULUPTNLInformation To Be Setup List*/
-   ret = BuildUlTnlInfoforSetupMod(ueId, drbItem->dRBID, &drbItem->uLUPTNLInformation_ToBeSetup_List,\
+   ret = BuildUlTnlInfoforSetupMod(ueCb->gnbCuUeF1apId, drbItem->dRBID, &drbToBeMod->ulUpTnlInfo, &drbItem->uLUPTNLInformation_ToBeSetup_List,\
             ProtocolIE_ID_id_DRBs_ToBeModified_Item);
    if(ret != ROK)
    {
@@ -7966,12 +8333,12 @@ uint8_t FillDrbToBeModItem(uint8_t ueId, uint8_t arrIdx, DRBs_ToBeModified_Item_
 *
 * ****************************************************************/
 
-uint8_t FillDrbToBeModItemList(uint8_t ueId, uint8_t arrIdx, struct DRBs_ToBeModified_ItemIEs *drbItemIe)
+uint8_t FillDrbToBeModItemList(CuUeCb *ueCb, uint8_t arrIdx, struct DRBs_ToBeModified_ItemIEs *drbItemIe)
 {
    drbItemIe->id = ProtocolIE_ID_id_DRBs_ToBeModified_Item;
    drbItemIe->criticality = Criticality_reject;
    drbItemIe->value.present = DRBs_ToBeModified_ItemIEs__value_PR_DRBs_ToBeModified_Item;
-   if(FillDrbToBeModItem(ueId, arrIdx, &(drbItemIe->value.choice.DRBs_ToBeModified_Item)) != ROK)
+   if(FillDrbToBeModItem(ueCb, arrIdx, &(drbItemIe->value.choice.DRBs_ToBeModified_Item)) != ROK)
    {
       DU_LOG("\nERROR  -->  F1AP : FillDrbToBeModItem failed"); 
       return RFAILED;
@@ -7997,7 +8364,7 @@ uint8_t FillDrbToBeModItemList(uint8_t ueId, uint8_t arrIdx, struct DRBs_ToBeMod
 *
 * ****************************************************************/
 
-uint8_t BuildDrbToBeModifiedList(uint8_t ueId, DRBs_ToBeModified_List_t *drbSet)
+uint8_t BuildDrbToBeModifiedList(CuUeCb *ueCb, DRBs_ToBeModified_List_t *drbSet)
 {
    uint8_t ret = ROK;
    uint8_t arrIdx =0;
@@ -8021,7 +8388,7 @@ uint8_t BuildDrbToBeModifiedList(uint8_t ueId, DRBs_ToBeModified_List_t *drbSet)
          return  RFAILED;
       }
 
-      ret = FillDrbToBeModItemList(ueId, arrIdx, (DRBs_ToBeModified_ItemIEs_t *)drbSet->list.array[arrIdx]);
+      ret = FillDrbToBeModItemList(ueCb, arrIdx, (DRBs_ToBeModified_ItemIEs_t *)drbSet->list.array[arrIdx]);
       if(ret != ROK)
       {
          DU_LOG("\nERROR  -->  F1AP : FillDrbToBeModItemList failed");
@@ -8314,7 +8681,7 @@ uint8_t BuildAndSendUeContextModificationReq(uint32_t duId, void *cuUeCb, UeCtxt
          ueContextModifyReq->protocolIEs.list.array[ieIdx]->criticality = Criticality_reject;
          ueContextModifyReq->protocolIEs.list.array[ieIdx]->value.present =\
                                                                            UEContextModificationRequestIEs__value_PR_DRBs_ToBeSetupMod_List;
-         ret = BuildDrbToBeSetupList(ueCb->gnbCuUeF1apId, &(ueContextModifyReq->protocolIEs.list.array[ieIdx]->\
+         ret = BuildDrbToBeSetupList(ueCb, &(ueContextModifyReq->protocolIEs.list.array[ieIdx]->\
                   value.choice.DRBs_ToBeSetupMod_List));
 
          /* DRB to be modified list */
@@ -8323,7 +8690,7 @@ uint8_t BuildAndSendUeContextModificationReq(uint32_t duId, void *cuUeCb, UeCtxt
          ueContextModifyReq->protocolIEs.list.array[ieIdx]->criticality = Criticality_reject;
          ueContextModifyReq->protocolIEs.list.array[ieIdx]->value.present =\
                                                                            UEContextModificationRequestIEs__value_PR_DRBs_ToBeModified_List;
-         ret = BuildDrbToBeModifiedList(ueCb->gnbCuUeF1apId, &(ueContextModifyReq->protocolIEs.list.array[ieIdx]->\
+         ret = BuildDrbToBeModifiedList(ueCb, &(ueContextModifyReq->protocolIEs.list.array[ieIdx]->\
                   value.choice.DRBs_ToBeModified_List));
 
          /* TODO: DRB to be release list */
@@ -8897,8 +9264,7 @@ uint8_t procUeContextModificationResponse(uint32_t duId, F1AP_PDU_t *f1apMsg)
                 ueCb = &duDb->ueCb[duUeF1apId-1];
                 if(ueCb->state == HANDOVER_IN_PROGRESS)
                 {
-                   /* TODO : Next procedure i.e. UE context setup request to
-                    * target DU should be triggerred here */
+                   BuildAndSendUeContextSetupReq(ueCb->hoInfo.targetDuId, ueCb, 0, NULLP);
                    return ROK;
                 }
                 break;
