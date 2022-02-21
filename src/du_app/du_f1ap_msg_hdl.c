@@ -11230,23 +11230,22 @@ void duFillModulationDetails(MacUeCfg *ueCfg, MacUeCfg *oldUeCfg, void *ueCap)
 
 /*******************************************************************
  *
- * @brief Function to extract cellGrp Info present in cutoDu cont
+ * @brief Function to extract info from CU to DU RRC container extension
  *
  * @details
  *
- *    Function : extractCellGrpInfo
+ *    Function : extractCuToDuRrcInfoExt
  *
- *    Functionality: Function to extract cellGrp Info present
- *                   in cutoDu cont
+ *    Functionality: Function to extract info from CU to DU RRC container
+ *    extension
  *
  * @params[in] ProtocolExtensionContainer_4624P16_t pointer
  *
- * @return CellGroupConfigRrc_t *
+ * @return ROK
+ *         RFAILED
  *
  * ****************************************************************/
-
-CellGroupConfigRrc_t *extractCellGrpInfo(ProtocolExtensionContainer_4624P16_t *protocolIeExtn,\
-      DuUeCfg *ueCfgDb)
+uint8_t extractCuToDuRrcInfoExt(ProtocolExtensionContainer_4624P16_t *protocolIeExtn, DuUeCfg *ueCfgDb)
 {
    uint8_t idx2 =0;
    uint16_t id =0;
@@ -11261,37 +11260,45 @@ CellGroupConfigRrc_t *extractCellGrpInfo(ProtocolExtensionContainer_4624P16_t *p
       for(idx2 = 0; idx2 < protocolIeExtn->list.count; idx2++)
       {
          extIeInfo = ((CUtoDURRCInformation_ExtIEs_t *)(protocolIeExtn->list.array[idx2]));
-	 id = extIeInfo->id;
+         id = extIeInfo->id;
          switch(id)
          {
             case ProtocolIE_ID_id_CellGroupConfig:
-            {
-	       recvBufLen = extIeInfo->extensionValue.choice.CellGroupConfig.size;
-	       /* decoding the CellGroup Buf received */
-	       DU_ALLOC(cellGrpCfg, sizeof(CellGroupConfigRrc_t));
-	       if(cellGrpCfg)
-	       {
-                  memset(cellGrpCfg, 0, sizeof(CellGroupConfigRrc_t));
-                  rval = aper_decode(0, &asn_DEF_CellGroupConfigRrc, (void **)&cellGrpCfg,
-	             extIeInfo->extensionValue.choice.CellGroupConfig.buf, recvBufLen, 0, 0);
-                  if(rval.code == RC_FAIL || rval.code == RC_WMORE)
+               {
+                  recvBufLen = extIeInfo->extensionValue.choice.CellGroupConfig.size;
+                  /* decoding the CellGroup Buf received */
+                  DU_ALLOC(cellGrpCfg, sizeof(CellGroupConfigRrc_t));
+                  if(cellGrpCfg)
                   {
-                     DU_LOG("\nERROR  -->  F1AP : ASN decode failed at decodeCellGrpCfg()");
-                     return NULLP;
+                     memset(cellGrpCfg, 0, sizeof(CellGroupConfigRrc_t));
+                     rval = aper_decode(0, &asn_DEF_CellGroupConfigRrc, (void **)&cellGrpCfg,
+                           extIeInfo->extensionValue.choice.CellGroupConfig.buf, recvBufLen, 0, 0);
+                     if(rval.code == RC_FAIL || rval.code == RC_WMORE)
+                     {
+                        DU_LOG("\nERROR  -->  F1AP : ASN decode failed at decodeCellGrpCfg()");
+                        return RFAILED;
+                     }
+                     xer_fprint(stdout, &asn_DEF_CellGroupConfigRrc, cellGrpCfg);
+                     if(extractRlcCfgToAddMod(cellGrpCfg->rlc_BearerToAddModList, ueCfgDb))
+                        return NULLP;
+                     ueCfgDb->cellGrpCfg = cellGrpCfg;
                   }
-                  xer_fprint(stdout, &asn_DEF_CellGroupConfigRrc, cellGrpCfg);
-		  if(extractRlcCfgToAddMod(cellGrpCfg->rlc_BearerToAddModList, ueCfgDb))
-		     return NULLP;
-	       }
-	       break;
-            }
+                  break;
+               }
+
+            case ProtocolIE_ID_id_HandoverPreparationInformation:
+               {
+                  DU_LOG("\nHLAL Received HANDOVER PREPARATION INFO in UE CONTEXT SETUP REQUEST");
+                  return RFAILED;
+               }
+
             default:
                DU_LOG("\nERROR  -->  F1AP : Invalid IE received CUtoDURRCInformation:%d at decodeCellGrpCfg()", id);
-      	       break;
+               break;
          }
       }
    }
-   return cellGrpCfg;
+   return ROK;
 }
 
 /*******************************************************************
@@ -11875,13 +11882,13 @@ uint8_t procF1UeContextSetupReq(F1AP_PDU_t *f1apMsg)
                   extractUeCapability(ueSetReq->protocolIEs.list.array[ieIdx]->value.choice.CUtoDURRCInformation.\
                   uE_CapabilityRAT_ContainerList, duUeCb);
                }
+
                if(ueSetReq->protocolIEs.list.array[ieIdx]->value.choice.CUtoDURRCInformation.iE_Extensions)
                {
-                  duUeCb->f1UeDb->duUeCfg.cellGrpCfg = extractCellGrpInfo(ueSetReq->protocolIEs.list.array[ieIdx]->\
-                        value.choice.CUtoDURRCInformation.iE_Extensions, &duUeCb->f1UeDb->duUeCfg);
-                  if(!duUeCb->f1UeDb->duUeCfg.cellGrpCfg)
+                  if(extractCuToDuRrcInfoExt(ueSetReq->protocolIEs.list.array[ieIdx]->\
+                        value.choice.CUtoDURRCInformation.iE_Extensions, &duUeCb->f1UeDb->duUeCfg) != ROK)
                   {
-                     DU_LOG("\nERROR  -->  F1AP: Failed to extract cell Grp Info");
+                     DU_LOG("\nERROR  -->  F1AP: Failed to extract CU to DU RRC information extension IE");
                      //TODO: Update the failure cause in ue context Setup Response
                      ret = RFAILED;
                   }

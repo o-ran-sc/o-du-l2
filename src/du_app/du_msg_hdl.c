@@ -346,6 +346,7 @@ uint8_t duProcCfgComplete()
    uint8_t         ret = ROK;
    uint16_t        cellId = 0;
    uint16_t        idx;
+
    for(idx=0; idx< DEFAULT_CELLS; idx++)
    {
       DuCellCb *cell = NULLP;
@@ -359,7 +360,8 @@ uint8_t duProcCfgComplete()
       {
          uint8_t idx1=0; 
          memset(cell, 0, sizeof(DuCellCb));
-         cell->cellId = NR_CELL_ID; //++cellId;
+         //cell->cellId = ++cellId;
+         cell->cellId = NR_CELL_ID;
          memset(&cell->cellInfo.nrEcgi.plmn, 0, sizeof(Plmn));
          cell->cellInfo.nrEcgi.plmn.mcc[0] = duCfgParam.srvdCellLst[0].duCellInfo.cellInfo.srvdPlmn[0].plmn.mcc[0];
          cell->cellInfo.nrEcgi.plmn.mcc[1] = duCfgParam.srvdCellLst[0].duCellInfo.cellInfo.srvdPlmn[0].plmn.mcc[1];

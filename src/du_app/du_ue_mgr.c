@@ -471,7 +471,6 @@ uint8_t duProcDlRrcMsg(F1DlRrcMsg *dlRrcMsg)
             DU_LOG("\nERROR  -->  DU APP : cellId [%d] does not exist", cellId);
             ret = RFAILED;
          }
-
          if(duCb.actvCellLst[cellId-1]->numActvUes < MAX_NUM_UE)
          {
             ret = duCreateUeCb(&duCb.ueCcchCtxt[ueIdx], dlRrcMsg->gnbCuUeF1apId);
@@ -503,11 +502,11 @@ uint8_t duProcDlRrcMsg(F1DlRrcMsg *dlRrcMsg)
                break; 
             }
          }
-	 if(ueFound)
-	    break;
+         if(ueFound)
+            break;
       }
       if(!ueFound)
-	 ret = RFAILED;
+         ret = RFAILED;
    }
    return ret;
 }
