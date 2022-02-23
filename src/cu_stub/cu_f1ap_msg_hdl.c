@@ -105,6 +105,12 @@
 #include "DRB-ToAddModList.h"
 #include "DRB-ToAddMod.h"
 #include "SDAP-Config.h"
+#include "SSB-MTC.h"
+#include "MeasTiming.h"
+#include "MeasTimingList.h"
+#include "MeasurementTimingConfigurationRrc.h"
+#include "MeasurementTimingConfigurationRrc-IEs.h"
+
 
 /* MACRO for CUtoDURRCInformation */
 #define CELL_GRP_ID 1
@@ -6531,6 +6537,138 @@ uint8_t fillUeCapRatContList(UE_CapabilityRAT_ContainerList_t *ueCapablityListBu
     freeUeCapRatContList(&ueCapablityList);
     return ROK;
 }
+/*******************************************************************
+ *
+ * @brief Fill Measurement Timing Configuration
+ *
+ * @details
+ *
+ *    Function : fillMeasTimingCfg
+ *
+ *    Functionality: Fill Measurement Timing Configuration
+ *
+ * @params[in] MeasurementTimingConfiguration_IEs_t measTimingCfg
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t fillMeasTimingCfg(MeasurementTimingConfigurationRrc_IEs_t *measTimingCfg)
+{
+   uint8_t elementCnt = 0;
+   uint8_t measCfgIdx = 0;
+   MeasTiming_t *measTiming;
+   SSB_MTC_t *smtc;
+
+   CU_ALLOC(measTimingCfg->measTiming, sizeof(MeasTimingList_t));
+   if(!measTimingCfg->measTiming)
+   {
+      DU_LOG( "\nERROR  -->  F1AP : Failed to allocated memory  for measTiming in fillMeasTimingCfg");
+      return RFAILED;
+   }
+
+   elementCnt = 1;
+   measTimingCfg->measTiming->list.count = elementCnt;
+   measTimingCfg->measTiming->list.size = measTimingCfg->measTiming->list.count * sizeof(MeasTiming_t *);
+   CU_ALLOC(measTimingCfg->measTiming->list.array, measTimingCfg->measTiming->list.size);
+   if(!measTimingCfg->measTiming->list.array)
+   {
+      DU_LOG( "\nERROR  -->  F1AP : Failed to allocated memory for measTiming array in fillMeasTimingCfg");
+      return RFAILED;
+   }
+
+   for(measCfgIdx = 0; measCfgIdx < measTimingCfg->measTiming->list.count; measCfgIdx++)
+   {
+      CU_ALLOC(measTimingCfg->measTiming->list.array[measCfgIdx], sizeof(MeasTiming_t));
+      if(!measTimingCfg->measTiming->list.array[measCfgIdx])
+      {
+         DU_LOG( "\nERROR  -->  F1AP : Failed to allocated memory for measTiming array element in fillMeasTimingCfg");
+         return RFAILED;
+      }
+   }
+
+   measCfgIdx = 0;
+   measTiming = measTimingCfg->measTiming->list.array[measCfgIdx];
+   CU_ALLOC(measTiming->frequencyAndTiming, sizeof(struct MeasTiming__frequencyAndTiming));
+   if(!measTiming->frequencyAndTiming)
+   {
+      DU_LOG( "\nERROR  -->  F1AP : Failed to allocated memory for frequency and timing IE in fillMeasTimingCfg");
+      return RFAILED;
+   }
+
+   measTiming->frequencyAndTiming->carrierFreq =  623800; /* This is a randomly chosen value since ARFCN configured in DU is 623400 */
+   measTiming->frequencyAndTiming->ssbSubcarrierSpacing = SubcarrierSpacing_kHz15;
+
+   smtc = &measTiming->frequencyAndTiming->ssb_MeasurementTimingConfiguration;
+   smtc->periodicityAndOffset.present = SSB_MTC__periodicityAndOffset_PR_sf20;
+   smtc->periodicityAndOffset.choice.sf20 = 0;
+   smtc->duration = SSB_MTC__duration_sf1;
+}
+
+uint8_t fillMeasTimingConfigBuf(MeasConfig_t *measTimingConfigBuf)
+{
+   uint8_t          ret = RFAILED;
+   asn_enc_rval_t   encRetVal;
+   MeasurementTimingConfigurationRrc_t measTimingConfig;
+
+   while(true)
+   {
+      measTimingConfig.criticalExtensions.present = MeasurementTimingConfigurationRrc__criticalExtensions_PR_c1;
+      CU_ALLOC(measTimingConfig.criticalExtensions.choice.c1, sizeof(struct MeasurementTimingConfigurationRrc__criticalExtensions__c1));
+      if(!measTimingConfig.criticalExtensions.choice.c1)
+      {
+         DU_LOG( "\nERROR  -->  F1AP : Failed to allocated memory for measurement configuration extension");
+         return RFAILED;
+      }
+      measTimingConfig.criticalExtensions.choice.c1->present = MeasurementTimingConfigurationRrc__criticalExtensions__c1_PR_measTimingConf;
+
+      CU_ALLOC(measTimingConfig.criticalExtensions.choice.c1->choice.measTimingConf, sizeof(struct MeasurementTimingConfigurationRrc_IEs));
+      if(!measTimingConfig.criticalExtensions.choice.c1->choice.measTimingConf)
+      {
+         DU_LOG( "\nERROR  -->  F1AP : Failed to allocated memory for measurement timing configuration IE");
+         return RFAILED;
+      }
+
+      ret = fillMeasTimingCfg(measTimingConfig.criticalExtensions.choice.c1->choice.measTimingConf);
+      if(ret != ROK)
+      {
+         DU_LOG( "\nERROR  -->  F1AP : Failed to fill measurement timing configuration IE");
+         break;
+      }
+      xer_fprint(stdout, &asn_DEF_MeasurementTimingConfiguration, &measTimingConfig);
+      cmMemset((uint8_t *)encBuf, 0, ENC_BUF_MAX_LEN);
+      encBufSize = 0;
+      encRetVal = aper_encode(&asn_DEF_MeasurementTimingConfiguration, 0, &measTimingConfig, PrepFinalEncBuf, encBuf);
+
+      /* Encode results */
+      if(encRetVal.encoded == ENCODE_FAIL)
+      {
+         DU_LOG( "\nERROR  -->  F1AP : Could not encode Measurement Timing Configuration (at %s)\n",\
+               encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
+         break;
+      }
+      else
+      {
+         DU_LOG("\nDEBUG  -->  F1AP : Created APER encodedbuffer for Measurement timing configuration\n");
+         for(int i=0; i< encBufSize; i++)
+         {
+            DU_LOG("%x",encBuf[i]);
+         }
+      }
+
+      measTimingConfigBuf->size = encBufSize;
+      CU_ALLOC(measTimingConfigBuf->buf, measTimingConfigBuf->size);
+      if(!measTimingConfigBuf->buf)
+      {
+         DU_LOG("\nERROR  -->  F1AP : Memory allocation failed fillMeasTimingConfigBuf");
+         break;
+      }
+      memcpy(measTimingConfigBuf->buf, encBuf, measTimingConfigBuf->size);
+      ret = ROK;
+      break;
+   }
+   //freeMeasuementTimingConfig(&measTimingConfig);
+   return ret;
+}
 
 /*******************************************************************
  *
@@ -6562,7 +6700,12 @@ uint8_t fillCuToDuContainer(CUtoDURRCInformation_t *rrcMsg)
       return RFAILED;
    }
    ret = fillUeCapRatContList(rrcMsg->uE_CapabilityRAT_ContainerList);
-
+    CU_ALLOC(rrcMsg->measConfig, sizeof(MeasConfig_t));
+     if(!rrcMsg->measConfig)
+     {
+        return RFAILED;    
+     }
+      ret = fillMeasTimingConfigBuf(rrcMsg->measConfig);
    CU_ALLOC(rrcMsg->iE_Extensions, sizeof(ProtocolExtensionContainer_4624P16_t));
    if(rrcMsg->iE_Extensions)
    {
