@@ -94,9 +94,12 @@ MacDuSliceReCfgRspFunc macDuSliceReCfgRspOpts[] =
  **/
 uint8_t MacSchGenCfgReq(Pst *pst, RgMngmt *cfg)
 {
+   Pst schPst;
+
    printf("\nReceived Scheduler gen config at MAC");
-   pst->dstInst = DEFAULT_CELLS + 1;
-   SchProcGenCfgReq(pst, cfg);
+   memset(&schPst, 0, sizeof(Pst));
+   FILL_PST_MAC_TO_SCH(schPst, EVENT_SCH_GEN_CFG);
+   SchProcGenCfgReq(&schPst, cfg);
 
    return ROK;
 }

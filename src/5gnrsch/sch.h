@@ -397,7 +397,7 @@ PduTxOccsaion schCheckSsbOcc(SchCellCb *cell, SlotTimingInfo slotTime);
 PduTxOccsaion schCheckSib1Occ(SchCellCb *cell, SlotTimingInfo slotTime);
 uint8_t schBroadcastSsbAlloc(SchCellCb *cell, SlotTimingInfo slotTime, DlBrdcstAlloc *dlBrdcstAlloc);
 uint8_t schBroadcastSib1Alloc(SchCellCb *cell, SlotTimingInfo slotTime, DlBrdcstAlloc *dlBrdcstAlloc);
-bool schProcessRaReq(SchCellCb *cellCb, SlotTimingInfo currTime, uint8_t ueId);
+bool schProcessRaReq(Inst schInst, SchCellCb *cellCb, SlotTimingInfo currTime, uint8_t ueId);
 bool schProcessMsg4Req(SchCellCb *cell, SlotTimingInfo currTime, uint8_t ueId);
 uint8_t schFillRar(SchCellCb *cell, SlotTimingInfo rarTime, uint16_t ueId, RarAlloc *rarAlloc, uint8_t k0Index);
 uint8_t schDlRsrcAllocDlMsg(SchCellCb *cell, SlotTimingInfo slotTime, uint16_t crnti,

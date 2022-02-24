@@ -17,29 +17,30 @@
  *******************************************************************************/
 
 /* events */
-#define EVENT_SCH_CELL_CFG           1
-#define EVENT_SCH_CELL_CFG_CFM       2
-#define EVENT_DL_SCH_INFO            3 
-#define EVENT_UL_SCH_INFO            4 
-#define EVENT_RACH_IND_TO_SCH        5
-#define EVENT_CRC_IND_TO_SCH         6
-#define EVENT_DL_RLC_BO_INFO_TO_SCH  7
-#define EVENT_ADD_UE_CONFIG_REQ_TO_SCH   8
-#define EVENT_UE_CONFIG_RSP_TO_MAC   9
-#define EVENT_SLOT_IND_TO_SCH        10
-#define EVENT_SHORT_BSR              11
-#define EVENT_UCI_IND_TO_SCH         12
-#define EVENT_MODIFY_UE_CONFIG_REQ_TO_SCH 13
-#define EVENT_UE_RECONFIG_RSP_TO_MAC 14
-#define EVENT_UE_DELETE_REQ_TO_SCH   15
-#define EVENT_UE_DELETE_RSP_TO_MAC   16
-#define EVENT_CELL_DELETE_REQ_TO_SCH   17
-#define EVENT_CELL_DELETE_RSP_TO_MAC   18
-#define EVENT_LONG_BSR              19
-#define EVENT_SLICE_CFG_REQ_TO_SCH  20
-#define EVENT_SLICE_CFG_RSP_TO_MAC  21
-#define EVENT_SLICE_RECFG_REQ_TO_SCH  22
-#define EVENT_SLICE_RECFG_RSP_TO_MAC  23
+#define EVENT_SCH_GEN_CFG            1
+#define EVENT_SCH_CELL_CFG           2
+#define EVENT_SCH_CELL_CFG_CFM       3
+#define EVENT_DL_SCH_INFO            4 
+#define EVENT_UL_SCH_INFO            5 
+#define EVENT_RACH_IND_TO_SCH        6
+#define EVENT_CRC_IND_TO_SCH         7
+#define EVENT_DL_RLC_BO_INFO_TO_SCH  8
+#define EVENT_ADD_UE_CONFIG_REQ_TO_SCH   9
+#define EVENT_UE_CONFIG_RSP_TO_MAC   10
+#define EVENT_SLOT_IND_TO_SCH        11
+#define EVENT_SHORT_BSR              12
+#define EVENT_UCI_IND_TO_SCH         13
+#define EVENT_MODIFY_UE_CONFIG_REQ_TO_SCH 14
+#define EVENT_UE_RECONFIG_RSP_TO_MAC 15
+#define EVENT_UE_DELETE_REQ_TO_SCH   16
+#define EVENT_UE_DELETE_RSP_TO_MAC   17
+#define EVENT_CELL_DELETE_REQ_TO_SCH 18
+#define EVENT_CELL_DELETE_RSP_TO_MAC 19
+#define EVENT_LONG_BSR               20
+#define EVENT_SLICE_CFG_REQ_TO_SCH   21
+#define EVENT_SLICE_CFG_RSP_TO_MAC   22
+#define EVENT_SLICE_RECFG_REQ_TO_SCH 23
+#define EVENT_SLICE_RECFG_RSP_TO_MAC 24
 
 /*macros*/
 #define MAX_SSB_IDX 1 /* forcing it as 1 for now. Right value is 64 */
