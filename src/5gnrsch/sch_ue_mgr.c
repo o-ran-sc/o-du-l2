@@ -180,7 +180,8 @@ void fillSchUlLcCtxt(SchUlLcCtxt *ueCbLcCfg, SchLcCfg *lcCfg)
  *
  *    Functionality: Function to fill DLDedLcInfo
  *
- * @params[arg] snssai pointer,
+ * @params[arg] scheduler instance,
+ *              snssai pointer,
  *              SchRrmPolicy pointer,
  *              SchLcPrbEstimate pointer , It will be filled
  *              isDedicated pointer,(Address of isDedicated flag in LC Context)
@@ -191,11 +192,10 @@ void fillSchUlLcCtxt(SchUlLcCtxt *ueCbLcCfg, SchLcCfg *lcCfg)
  *
  * ****************************************************************/
 
-uint8_t updateDedLcInfo(Snssai *snssai, SchLcPrbEstimate *lcPrbEst,\
-                         bool *isDedicated)
+uint8_t updateDedLcInfo(Inst inst, Snssai *snssai, SchLcPrbEstimate *lcPrbEst, bool *isDedicated)
 {
    uint8_t sliceCfgIdx =0;
-   SchSliceCfg sliceCfg = schCb[0].sliceCfg;
+   SchSliceCfg sliceCfg = schCb[inst].sliceCfg;
 
    if(sliceCfg.numOfSliceConfigured)
    {
@@ -241,13 +241,14 @@ uint8_t updateDedLcInfo(Snssai *snssai, SchLcPrbEstimate *lcPrbEst,\
  *
  *    Functionality: Function to fill SchUeCb
  *
- * @params[in] SchUeCb pointer,
+ * @params[in] Scheduler instance,
+ *             SchUeCb pointer,
  *             SchUeCfg pointer
  * @return ROK/RFAILED
  *
  * ****************************************************************/
 
-uint8_t fillSchUeCb(SchUeCb *ueCb, SchUeCfg *ueCfg)
+uint8_t fillSchUeCb(Inst inst, SchUeCb *ueCb, SchUeCfg *ueCfg)
 {
    uint8_t   lcIdx, ueLcIdx;
    uint8_t   freqDomainResource[FREQ_DOM_RSRC_SIZE] = {0};
@@ -328,12 +329,12 @@ uint8_t fillSchUeCb(SchUeCb *ueCb, SchUeCfg *ueCfg)
           * and Create the Dedicated LC List & Update the Reserve PRB number*/
          if(ueCb->dlInfo.dlLcCtxt[ueLcIdx].snssai != NULLP)
          {
-            retDL = updateDedLcInfo(ueCb->dlInfo.dlLcCtxt[ueLcIdx].snssai, &(ueCb->dlLcPrbEst),\
+            retDL = updateDedLcInfo(inst, ueCb->dlInfo.dlLcCtxt[ueLcIdx].snssai, &(ueCb->dlLcPrbEst),\
                   &(ueCb->dlInfo.dlLcCtxt[ueLcIdx].isDedicated));
          }
          if(ueCb->ulInfo.ulLcCtxt[ueLcIdx].snssai != NULLP)
          {
-            retUL =  updateDedLcInfo(ueCb->ulInfo.ulLcCtxt[ueLcIdx].snssai, &(ueCb->ulLcPrbEst),\
+            retUL =  updateDedLcInfo(inst, ueCb->ulInfo.ulLcCtxt[ueLcIdx].snssai, &(ueCb->ulLcPrbEst),\
                   &(ueCb->ulInfo.ulLcCtxt[ueLcIdx].isDedicated));
          }
 
@@ -353,7 +354,7 @@ uint8_t fillSchUeCb(SchUeCb *ueCb, SchUeCfg *ueCfg)
                /*Updating the RRM reserved pool PRB count*/
                if(ueCb->ulInfo.ulLcCtxt[ueLcIdx].snssai != NULLP)
                {
-                  retUL =  updateDedLcInfo(ueCb->ulInfo.ulLcCtxt[ueLcIdx].snssai, &(ueCb->ulLcPrbEst),\
+                  retUL =  updateDedLcInfo(inst, ueCb->ulInfo.ulLcCtxt[ueLcIdx].snssai, &(ueCb->ulLcPrbEst),\
                         &(ueCb->ulInfo.ulLcCtxt[ueLcIdx].isDedicated));
                }
                if(retUL == RFAILED)
@@ -396,7 +397,7 @@ uint8_t fillSchUeCb(SchUeCb *ueCb, SchUeCfg *ueCfg)
                /*Updating the RRM policy*/
                if(ueCb->dlInfo.dlLcCtxt[ueLcIdx].snssai != NULLP)
                {
-                  retDL = updateDedLcInfo(ueCb->dlInfo.dlLcCtxt[ueLcIdx].snssai, &(ueCb->dlLcPrbEst), \
+                  retDL = updateDedLcInfo(inst, ueCb->dlInfo.dlLcCtxt[ueLcIdx].snssai, &(ueCb->dlLcPrbEst), \
                         &(ueCb->dlInfo.dlLcCtxt[ueLcIdx].isDedicated));
                }
                if(retDL == RFAILED)
@@ -508,7 +509,7 @@ uint8_t MacSchAddUeConfigReq(Pst *pst, SchUeCfg *ueCfg)
    SchCellCb    *cellCb = NULLP;
    SchUeCb      *ueCb = NULLP;
    SchUeCfgRsp  cfgRsp;
-   Inst         inst = pst->dstInst - 1;
+   Inst         inst = pst->dstInst - SCH_INST_START;
    memset(&cfgRsp, 0, sizeof(SchUeCfgRsp));
   
 #ifdef CALL_FLOW_DEBUG_LOG
@@ -547,7 +548,7 @@ uint8_t MacSchAddUeConfigReq(Pst *pst, SchUeCfg *ueCfg)
    ueCb->ueId = ueId;
    ueCb->crnti = ueCfg->crnti;
    ueCb->state = SCH_UE_STATE_ACTIVE;
-   ret = fillSchUeCb(ueCb, ueCfg);
+   ret = fillSchUeCb(inst, ueCb, ueCfg);
    if(ret == ROK)
    {
       cellCb->numActvUe++;
@@ -741,7 +742,7 @@ uint8_t MacSchModUeConfigReq(Pst *pst, SchUeCfg *ueCfg)
    SchCellCb    *cellCb = NULLP;
    SchUeCb      *ueCb = NULLP;
    SchUeCfgRsp  cfgRsp;
-   Inst         inst = pst->dstInst - 1;
+   Inst         inst = pst->dstInst - SCH_INST_START;
    memset(&cfgRsp, 0, sizeof(SchUeCfgRsp));
   
 #ifdef CALL_FLOW_DEBUG_LOG
@@ -769,7 +770,7 @@ uint8_t MacSchModUeConfigReq(Pst *pst, SchUeCfg *ueCfg)
    if((ueCb->crnti == ueCfg->crnti) && (ueCb->state == SCH_UE_STATE_ACTIVE))
    {
       /* Found the UeCb to Reconfig */
-      ret = fillSchUeCb(ueCb, ueCfg);
+      ret = fillSchUeCb(inst, ueCb, ueCfg);
       if(ret == ROK)
       {
          ueCb->cellCb = cellCb;
@@ -1004,7 +1005,7 @@ uint8_t MacSchUeDeleteReq(Pst *pst, SchUeDelete  *ueDelete)
     uint8_t      idx=0, ueId=0, ueIdToDel=0, ret=ROK;
     ErrorCause   result;
     SchCellCb    *cellCb = NULLP;
-    Inst         inst = pst->dstInst - 1;
+    Inst         inst = pst->dstInst - SCH_INST_START;
     CmLList      *node = NULL, *next = NULL;
    
 #ifdef CALL_FLOW_DEBUG_LOG
@@ -1208,7 +1209,7 @@ void deleteSchCellCb(SchCellCb *cellCb)
 uint8_t MacSchCellDeleteReq(Pst *pst, SchCellDelete  *cellDelete)
 {
    uint8_t   cellIdx=0, ret = RFAILED;
-   Inst      inst = pst->dstInst - 1;
+   Inst      inst = pst->dstInst - SCH_INST_START;
    SchMacRsp result= RSP_OK;
    
 #ifdef CALL_FLOW_DEBUG_LOG
