@@ -142,9 +142,7 @@ uint8_t SchInstCfg(RgCfg *cfg, Inst  dInst)
       return LCM_REASON_INVALID_MSGTYPE;
    }
    /* Update the Pst structure for LM interface */
-   memcpy(&schCb[inst].schInit.lmPst,
-	 &cfg->s.schInstCfg.genCfg.lmPst,
-	 sizeof(Pst));
+   memcpy(&schCb[inst].schInit.lmPst, &cfg->s.schInstCfg.genCfg.lmPst, sizeof(Pst));
 
    schCb[inst].schInit.inst = inst;
    schCb[inst].schInit.lmPst.srcProcId = schCb[inst].schInit.procId;
@@ -170,8 +168,7 @@ uint8_t SchInstCfg(RgCfg *cfg, Inst  dInst)
 
    /* SS_MT_TMR needs to be enabled as schActvTmr needs instance information */
    /* Timer Registration request to system services */
-   if (ODU_REG_TMR_MT(schCb[inst].schInit.ent, dInst,
-	    (int)schCb[inst].genCfg.tmrRes, schActvTmr) != ROK)
+   if (ODU_REG_TMR_MT(schCb[inst].schInit.ent, dInst, (int)schCb[inst].genCfg.tmrRes, schActvTmr) != ROK)
    {
       DU_LOG("\nERROR  -->  SCH : SchInstCfg(): Failed to "
 	    "register timer.");
@@ -868,7 +865,7 @@ uint8_t SchHdlCellCfgReq(Pst *pst, SchCellCfg *schCellCfg)
    SchCellCb *cellCb;
    SchCellCfgCfm schCellCfgCfm;
    Pst rspPst;
-   Inst inst = pst->dstInst-1; 
+   Inst inst = pst->dstInst - SCH_INST_START; 
    uint8_t coreset0Idx = 0;
    uint8_t numRbs = 0;
    uint8_t offset = 0;
@@ -1818,7 +1815,7 @@ void freeSchSliceCfgReq(SchSliceCfgReq *cfgReq)
 uint8_t MacSchSliceCfgReq(Pst *pst, SchSliceCfgReq *schSliceCfgReq)
 {
    uint8_t count = 0;
-   Inst   inst = pst->dstInst - 1;
+   Inst   inst = pst->dstInst - SCH_INST_START;
    SchSliceCfgRsp sliceCfgRsp;
 
    DU_LOG("\nINFO  -->  SCH : Received Slice Cfg request from MAC");
@@ -1944,7 +1941,7 @@ void SchSendSliceReCfgRspToMac(Inst inst, SchSliceCfgRsp schSliceReCfgRsp)
 uint8_t MacSchSliceReCfgReq(Pst *pst, SchSliceCfgReq *schSliceReCfgReq)
 {
    uint8_t count = 0;
-   Inst   inst = pst->dstInst - 1;
+   Inst   inst = pst->dstInst - SCH_INST_START;
    SchSliceCfgRsp schSliceReCfgRsp;
 
    DU_LOG("\nINFO  -->  SCH : Received Slice ReCfg request from MAC");

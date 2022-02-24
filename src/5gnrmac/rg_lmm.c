@@ -186,7 +186,7 @@ Reason reason          /* reason */
 #endif
 
    /* Initialize Scheduler as well */
-   schActvInit(ENTMAC, (DEFAULT_CELLS + SCH_INST_START), DFLT_REGION, PWR_UP);
+   schActvInit(ENTMAC, SCH_INST_START, DFLT_REGION, PWR_UP);
 
    /* Initialize lower mac */
    lwrMacLayerInit(region, 0);

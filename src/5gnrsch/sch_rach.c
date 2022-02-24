@@ -350,7 +350,7 @@ RaRspWindowStatus isInRaRspWindow(SchRaReq *raReq, SlotTimingInfo frameToCheck, 
  *  @param[in]  Current timing of the cell
  *  @return  ROK
  **/
-bool schProcessRaReq(SchCellCb *cell, SlotTimingInfo currTime, uint8_t ueId)
+bool schProcessRaReq(Inst schInst, SchCellCb *cell, SlotTimingInfo currTime, uint8_t ueId)
 {
    bool      k2Found = false;
    uint8_t   k0TblIdx = 0, k2TblIdx = 0;
@@ -469,7 +469,7 @@ bool schProcessRaReq(SchCellCb *cell, SlotTimingInfo currTime, uint8_t ueId)
       }
 
       /* Allocate resources for msg3 */
-      msg3PuschInfo = schAllocMsg3Pusch(cell->instIdx, cell->raReq[ueId-1]->rachInd->crnti, k2Index, msg3Time);
+      msg3PuschInfo = schAllocMsg3Pusch(schInst, cell->raReq[ueId-1]->rachInd->crnti, k2Index, msg3Time);
       if(msg3PuschInfo)
       {
          /* Fill RAR info */
@@ -523,7 +523,7 @@ bool schProcessRaReq(SchCellCb *cell, SlotTimingInfo currTime, uint8_t ueId)
       cell->schUlSlotInfo[msg3Time.slot]->puschUe = ueId;
 
       /* Create raCb at SCH */
-      createSchRaCb(cell->raReq[ueId-1]->rachInd->crnti, cell->instIdx);
+      createSchRaCb(cell->raReq[ueId-1]->rachInd->crnti, schInst);
 
       /* Remove RachInd from pending RA request list */
       SCH_FREE(cell->raReq[ueId-1]->rachInd, sizeof(RachIndInfo));

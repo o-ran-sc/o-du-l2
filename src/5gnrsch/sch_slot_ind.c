@@ -664,7 +664,7 @@ uint8_t schProcessSlotInd(SlotTimingInfo *slotInd, Inst schInst)
          if(cell->raReq[ueId-1] != NULLP)
          {
             isRarPending = true;
-            isRarScheduled = schProcessRaReq(cell, *slotInd, ueId);
+            isRarScheduled = schProcessRaReq(schInst, cell, *slotInd, ueId);
          }
 
          /* If MSG4 is pending for this UE, schedule PDCCH,PDSCH to send MSG4 and
