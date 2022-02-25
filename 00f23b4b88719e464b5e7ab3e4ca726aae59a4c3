@@ -1,0 +1,84 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dd80a242_eb40e938",
+        "filename": "src/du_app/du_cfg.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-02-25T09:23:58Z",
+      "side": 1,
+      "message": "revert these changes",
+      "revId": "00f23b4b88719e464b5e7ab3e4ca726aae59a4c3",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "35b7334b_d0b5827b",
+        "filename": "src/du_app/du_cfg.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-02-25T09:23:58Z",
+      "side": 1,
+      "message": "this also",
+      "range": {
+        "startLine": 43,
+        "startChar": 8,
+        "endLine": 43,
+        "endChar": 18
+      },
+      "revId": "00f23b4b88719e464b5e7ab3e4ca726aae59a4c3",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f1ac15ef_61e055fd",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 11828,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-02-25T09:23:58Z",
+      "side": 1,
+      "message": "What is the purpose of the servCellIdx variable, as I can\u0027t find it?",
+      "revId": "00f23b4b88719e464b5e7ab3e4ca726aae59a4c3",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6dff4794_bccda0ae",
+        "filename": "src/du_app/du_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 362,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-02-25T09:23:58Z",
+      "side": 1,
+      "message": "revert",
+      "range": {
+        "startLine": 362,
+        "startChar": 24,
+        "endLine": 362,
+        "endChar": 34
+      },
+      "revId": "00f23b4b88719e464b5e7ab3e4ca726aae59a4c3",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
