@@ -359,7 +359,7 @@ uint8_t duProcCfgComplete()
       {
          uint8_t idx1=0; 
          memset(cell, 0, sizeof(DuCellCb));
-         cell->cellId = ++cellId;
+         cell->cellId = NR_CELL_ID; //++cellId;
          memset(&cell->cellInfo.nrEcgi.plmn, 0, sizeof(Plmn));
          cell->cellInfo.nrEcgi.plmn.mcc[0] = duCfgParam.srvdCellLst[0].duCellInfo.cellInfo.srvdPlmn[0].plmn.mcc[0];
          cell->cellInfo.nrEcgi.plmn.mcc[1] = duCfgParam.srvdCellLst[0].duCellInfo.cellInfo.srvdPlmn[0].plmn.mcc[1];
@@ -1450,7 +1450,13 @@ uint8_t duBuildAndSendMacCellCfg(uint16_t cellId)
    }
 
    /* store the address in the duCellCb so that we can free on confirm msg */
-   duCb.actvCellLst[cellId-1]->duMacCellCfg = duMacCellCfg;
+   if(duCb.actvCellLst[cellId-1])
+      duCb.actvCellLst[cellId-1]->duMacCellCfg = duMacCellCfg;
+   else
+   {
+      DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, duMacCellCfg, sizeof(MacCellCfg));
+      return RFAILED;
+   }
 
    /* copy the mac config structure from duCfgParams */
    memcpy(duMacCellCfg,&duCfgParam.macCellCfg,sizeof(MacCellCfg));
@@ -1484,7 +1490,7 @@ uint8_t  duHandleMacCellCfgCfm(Pst *pst, MacCellCfgCfm *macCellCfgCfm)
 
    for(actvCellIdx = 0; actvCellIdx < MAX_NUM_CELL; actvCellIdx++)
    {
-      if(macCellCfgCfm->cellId == duCb.actvCellLst[actvCellIdx]->cellId)
+      if((duCb.actvCellLst[actvCellIdx]) && (macCellCfgCfm->cellId == duCb.actvCellLst[actvCellIdx]->cellId))
       {
          duCb.actvCellLst[actvCellIdx]->duMacCellCfg = NULLP;
       }
@@ -1539,16 +1545,16 @@ uint8_t duBuildAndSendMacCellStart()
       return RFAILED;
    }
 
-   for(uint8_t id = 0; id < duCb.numActvCells; id++) 
+   for(uint8_t id = 0; id < MAX_NUM_CELL; id++) 
    {
       if(duCb.actvCellLst[id])
       {
-	 cellId->cellId = duCb.actvCellLst[id]->cellId;
+         cellId->cellId = duCb.actvCellLst[id]->cellId;
 
-	 /* Fill Pst */
-	 FILL_PST_DUAPP_TO_MAC(pst, EVENT_MAC_CELL_START);
+         /* Fill Pst */
+         FILL_PST_DUAPP_TO_MAC(pst, EVENT_MAC_CELL_START);
 
-	 return (*packMacCellStartOpts[pst.selector])(&pst, cellId);
+         return (*packMacCellStartOpts[pst.selector])(&pst, cellId);
       }
    }
    return ROK;
