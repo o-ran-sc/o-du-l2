@@ -55,7 +55,7 @@
 
 #define RADIO_FRAME_DURATION 10 /* Time duration of a radio frame in ms */
 /* MAX values */
-#define MAX_NUM_CELL 1
+#define MAX_NUM_CELL 2 /* Changed to 2 to support cell Id 2 even if there is only one cell in DU */
 #define MAX_NUM_MU   4
 #define MAX_NUM_UE   3
 #define MAX_NUM_UE_PER_TTI 1

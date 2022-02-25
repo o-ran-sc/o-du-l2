@@ -462,41 +462,47 @@ uint8_t duProcDlRrcMsg(F1DlRrcMsg *dlRrcMsg)
       ret = duBuildAndSendDlCcchInd(&cellId, &crnti, RRC_SETUP, dlRrcMsg->rrcMsgSize, dlRrcMsg->rrcMsgPdu);
       if(ret == RFAILED)
       {
-	 DU_LOG("\nERROR  -->  DU APP : Failed to build DlCcch Ind at procDlRrcMsgTrans()");
+         DU_LOG("\nERROR  -->  DU APP : Failed to build DlCcch Ind at procDlRrcMsgTrans()");
       }
       else
       {
-	 if(duCb.actvCellLst[cellId-1]->numActvUes < MAX_NUM_UE)
-	 {
-	    ret = duCreateUeCb(&duCb.ueCcchCtxt[ueIdx], dlRrcMsg->gnbCuUeF1apId);
-	    if(ret == RFAILED)
-	    {
-	       DU_LOG("\nERROR  -->  DU APP : Failed to createUeCb for cellId [%d] at procDlRrcMsgTrans()", \
-		     duCb.ueCcchCtxt[ueIdx].cellId);
-	    }
-	 }
-	 else
-	 {
-	    DU_LOG("\nERROR   -->  DU_APP: Max Active UEs has reached at procDlRrcMsgTrans()");
-	    ret = RFAILED;
-	 }
+         if(duCb.actvCellLst[cellId-1] == NULLP)
+         {
+            DU_LOG("\nERROR  -->  DU APP : cellId [%d] does not exist", cellId);
+            ret = RFAILED;
+         }
+
+         if(duCb.actvCellLst[cellId-1]->numActvUes < MAX_NUM_UE)
+         {
+            ret = duCreateUeCb(&duCb.ueCcchCtxt[ueIdx], dlRrcMsg->gnbCuUeF1apId);
+            if(ret == RFAILED)
+            {
+               DU_LOG("\nERROR  -->  DU APP : Failed to createUeCb for cellId [%d] at procDlRrcMsgTrans()", \
+                     duCb.ueCcchCtxt[ueIdx].cellId);
+            }
+         }
+         else
+         {
+            DU_LOG("\nERROR   -->  DU_APP: Max Active UEs has reached at procDlRrcMsgTrans()");
+            ret = RFAILED;
+         }
       }
    }
    else
    {
       for(cellIdx = 0; cellIdx < MAX_NUM_CELL; cellIdx++)
       {
-	 for(ueIdx = 0 ; ueIdx < MAX_NUM_UE; ueIdx++)
-	 {
-	    if((dlRrcMsg->gnbCuUeF1apId == duCb.actvCellLst[cellIdx]->ueCb[ueIdx].gnbCuUeF1apId)
-		  && (dlRrcMsg->gnbDuUeF1apId == duCb.actvCellLst[cellIdx]->ueCb[ueIdx].gnbDuUeF1apId))
-	    {
-	       ueFound = true;
-	       ret = duBuildAndSendDlRrcMsgToRlc(duCb.actvCellLst[cellIdx]->cellId, \
-		     duCb.actvCellLst[cellIdx]->ueCb[ueIdx].rlcUeCfg, dlRrcMsg);
-	       break; 
-	    }
-	 }
+         for(ueIdx = 0 ; ueIdx < MAX_NUM_UE; ueIdx++)
+         {
+            if(duCb.actvCellLst[cellIdx] && (dlRrcMsg->gnbCuUeF1apId == duCb.actvCellLst[cellIdx]->ueCb[ueIdx].gnbCuUeF1apId)
+                  && (dlRrcMsg->gnbDuUeF1apId == duCb.actvCellLst[cellIdx]->ueCb[ueIdx].gnbDuUeF1apId))
+            {
+               ueFound = true;
+               ret = duBuildAndSendDlRrcMsgToRlc(duCb.actvCellLst[cellIdx]->cellId, \
+                     duCb.actvCellLst[cellIdx]->ueCb[ueIdx].rlcUeCfg, dlRrcMsg);
+               break; 
+            }
+         }
 	 if(ueFound)
 	    break;
       }
@@ -1201,7 +1207,13 @@ uint8_t fillMacUeCfg(uint16_t cellId, uint8_t ueId, uint16_t crnti, DuUeCfg *ueC
    {
       /* Fetching MacDb from DuUeCb */
       GET_CELL_IDX(cellId, cellIdx);
-      duMacDb = &duCb.actvCellLst[cellIdx]->ueCb[ueId-1].macUeCfg;
+      if(duCb.actvCellLst[cellIdx])
+         duMacDb = &duCb.actvCellLst[cellIdx]->ueCb[ueId-1].macUeCfg;
+      else
+      {
+         DU_LOG("\nERROR  -->  DU APP : Cell Id [%d] does not exist", cellId);
+         return RFAILED;
+      }
       duMacDb->macUeCfgState = UE_CFG_INPROGRESS;
       /* Fetching MaUeCfg List for ADD/MOD/DEL */
       macUeCfg->cellId       = cellId;
@@ -1679,7 +1691,7 @@ uint8_t duCreateUeCb(UeCcchCtxt *ueCcchCtxt, uint32_t gnbCuUeF1apId)
 
    for(cellIdx = 0; cellIdx < MAX_NUM_CELL; cellIdx++)
    {
-      if(ueCcchCtxt->cellId == duCb.actvCellLst[cellIdx]->cellId)
+      if(duCb.actvCellLst[cellIdx] && (ueCcchCtxt->cellId == duCb.actvCellLst[cellIdx]->cellId))
       {
          GET_UE_ID(ueCcchCtxt->crnti, ueId);
          DU_LOG("\nDEBUG   -->  DU_APP: Filling UeCb for ueId [%d]", ueId);
@@ -1796,6 +1808,11 @@ uint8_t duUpdateMacCfg(MacUeCfg *macUeCfg, F1UeContextSetupDb *f1UeDb)
    ret = ROK;
    
    GET_CELL_IDX(macUeCfg->cellId, cellIdx);
+   if(duCb.actvCellLst[cellIdx] == NULLP)
+   {
+      DU_LOG("\nERROR  --> DU APP: CellId[%d] not found", macUeCfg->cellId);
+      return RFAILED;
+   }
    oldMacUeCfg = &duCb.actvCellLst[cellIdx]->ueCb[macUeCfg->ueId-1].macUeCfg;
 
    /*Filling Cell Group Cfg*/
@@ -2244,10 +2261,8 @@ uint8_t duUpdateDuUeCbCfg(uint8_t ueId, uint8_t cellId)
 
    GET_CELL_IDX(cellId, cellIdx);
    
-   if((duCb.actvCellLst[cellIdx]->ueCb[ueId-1].macUeCfg. \
-         macUeCfgState == UE_RECFG_COMPLETE) &&
-      (duCb.actvCellLst[cellIdx]->ueCb[ueId-1].rlcUeCfg. \
-         rlcUeCfgState == UE_RECFG_COMPLETE))
+   if(duCb.actvCellLst[cellIdx] && (duCb.actvCellLst[cellIdx]->ueCb[ueId-1].macUeCfg.macUeCfgState == UE_RECFG_COMPLETE) &&
+      (duCb.actvCellLst[cellIdx]->ueCb[ueId-1].rlcUeCfg.rlcUeCfgState == UE_RECFG_COMPLETE))
    {
       ueCb = &duCb.actvCellLst[cellIdx]->ueCb[ueId-1];
 

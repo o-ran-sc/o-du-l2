@@ -11799,7 +11799,7 @@ void freeAperDecodeF1UeContextSetupReq(UEContextSetupRequest_t   *ueSetReq)
  * ****************************************************************/
 uint8_t procF1UeContextSetupReq(F1AP_PDU_t *f1apMsg)
 {
-   uint8_t  ret=0, ieIdx=0, ueIdx=0, cellIdx=0;
+   uint8_t  ret=0, ieIdx=0, ueIdx=0, cellIdx=0, servCellIdx = 0;
    bool ueCbFound = false;
    uint32_t gnbCuUeF1apId=0, gnbDuUeF1apId=0, bitRateSize=0;
    DuUeCb   *duUeCb = NULL;
@@ -11825,31 +11825,36 @@ uint8_t procF1UeContextSetupReq(F1AP_PDU_t *f1apMsg)
             }
          case ProtocolIE_ID_id_ServCellIndex:
             {
-               cellIdx = ueSetReq->protocolIEs.list.array[ieIdx]->value.choice.ServCellIndex;
-               for(ueIdx = 0; ueIdx < MAX_NUM_UE; ueIdx++)
+               servCellIdx = ueSetReq->protocolIEs.list.array[ieIdx]->value.choice.ServCellIndex;
+               for(cellIdx = 0; cellIdx < MAX_NUM_CELL; cellIdx++)
                {
-                  if((duCb.actvCellLst[cellIdx]->ueCb[ueIdx].gnbDuUeF1apId == gnbDuUeF1apId)&&\
-                        (duCb.actvCellLst[cellIdx]->ueCb[ueIdx].gnbCuUeF1apId == gnbCuUeF1apId))
+                  for(ueIdx = 0; ueIdx < MAX_NUM_UE; ueIdx++)
                   {
-                     ueCbFound = true;
-                     duUeCb = &duCb.actvCellLst[cellIdx]->ueCb[ueIdx];
-                     DU_ALLOC(duUeCb->f1UeDb, sizeof(F1UeContextSetupDb));
-                     if(duUeCb->f1UeDb)
+                     if(duCb.actvCellLst[cellIdx] && (duCb.actvCellLst[cellIdx]->ueCb[ueIdx].gnbDuUeF1apId == gnbDuUeF1apId)&&\
+                           (duCb.actvCellLst[cellIdx]->ueCb[ueIdx].gnbCuUeF1apId == gnbCuUeF1apId))
                      {
-                        memset(duUeCb->f1UeDb, 0, sizeof(F1UeContextSetupDb));
-                        duUeCb->f1UeDb->actionType = UE_CTXT_SETUP;
-                        duUeCb->f1UeDb->cellIdx = cellIdx;
+                        ueCbFound = true;
+                        duUeCb = &duCb.actvCellLst[cellIdx]->ueCb[ueIdx];
+                        DU_ALLOC(duUeCb->f1UeDb, sizeof(F1UeContextSetupDb));
+                        if(duUeCb->f1UeDb)
+                        {
+                           memset(duUeCb->f1UeDb, 0, sizeof(F1UeContextSetupDb));
+                           duUeCb->f1UeDb->actionType = UE_CTXT_SETUP;
+                           duUeCb->f1UeDb->cellIdx = cellIdx;
+                        }
+                        else
+                        {
+                           DU_LOG("\nERROR  -->  F1AP: Memory Alloc Failed at procF1UeContextSetupReq()");
+                           ret = RFAILED;
+                        }
+                        break;
                      }
                      else
-                     {
-                        DU_LOG("\nERROR  -->  F1AP: Memory Alloc Failed at procF1UeContextSetupReq()");
-                        ret = RFAILED;
-                     }
-                     break;
-                  }
-                  else
-                     ueCbFound = false;
+                        ueCbFound = false;
 
+                  }
+                  if(ueCbFound)
+                     break;
                }
                if(!ueCbFound)
                {
@@ -14425,19 +14430,23 @@ uint8_t procF1UeContextModificationReq(F1AP_PDU_t *f1apMsg)
          case ProtocolIE_ID_id_gNB_DU_UE_F1AP_ID:
             {
                gnbDuUeF1apId = ueContextModifyReq->protocolIEs.list.array[ieIdx]->value.choice.GNB_DU_UE_F1AP_ID;
-               for(cellIdx = 0; cellIdx < duCb.numActvCells; cellIdx++)
+               for(cellIdx = 0; cellIdx < MAX_NUM_CELL; cellIdx++)
                {
-                  for(ueIdx = 0; ueIdx < duCb.actvCellLst[cellIdx]->numActvUes; ueIdx++)
+                  if(duCb.actvCellLst[cellIdx])
                   {
-                     if((duCb.actvCellLst[cellIdx]->ueCb[ueIdx].gnbDuUeF1apId == gnbDuUeF1apId)&&\
-                           (duCb.actvCellLst[cellIdx]->ueCb[ueIdx].gnbCuUeF1apId == gnbCuUeF1apId))
+                     for(ueIdx = 0; ueIdx < duCb.actvCellLst[cellIdx]->numActvUes; ueIdx++)
                      {
-                        duUeCb = &duCb.actvCellLst[cellIdx]->ueCb[ueIdx];
-                        if(duUeCb->f1UeDb == NULLP)
+                        if((duCb.actvCellLst[cellIdx]->ueCb[ueIdx].gnbDuUeF1apId == gnbDuUeF1apId)&&\
+                              (duCb.actvCellLst[cellIdx]->ueCb[ueIdx].gnbCuUeF1apId == gnbCuUeF1apId))
                         {
-                           DU_ALLOC(duUeCb->f1UeDb, sizeof(F1UeContextSetupDb));
+                           duUeCb = &duCb.actvCellLst[cellIdx]->ueCb[ueIdx];
+                           if(duUeCb->f1UeDb == NULLP)
+                           {
+                              DU_ALLOC(duUeCb->f1UeDb, sizeof(F1UeContextSetupDb));
+                              duUeCb->f1UeDb->cellIdx = cellIdx;
+                           }
+                           break;
                         }
-                        break;
                      }
                   }
                }
@@ -14853,7 +14862,7 @@ uint8_t BuildAndSendUeContextReleaseComplete(uint16_t cellId, uint32_t gnbCuUeF1
       break;
    }while(true);
    
-   if(ret == ROK && (duCb.actvCellLst[cellId-1]->numActvUes == 0))
+   if(ret == ROK && duCb.actvCellLst[cellId-1] && (duCb.actvCellLst[cellId-1]->numActvUes == 0))
    {
       duCb.actvCellLst[cellId-1]->cellStatus = DELETION_IN_PROGRESS;
       ret = duSendCellDeletReq(cellId);
@@ -14976,11 +14985,11 @@ uint8_t procF1UeContextReleaseCommand(F1AP_PDU_t *f1apMsg)
 
                case ProtocolIE_ID_id_RRCContainer:
                   {
-                     for(cellIdx = 0; cellIdx < duCb.numActvCells; cellIdx++)
+                     for(cellIdx = 0; cellIdx < MAX_NUM_CELL; cellIdx++)
                      {
                         for(ueIdx = 0; ueIdx < MAX_NUM_UE; ueIdx++)
                         {
-                           if((duCb.actvCellLst[cellIdx]->ueCb[ueIdx].gnbDuUeF1apId == gnbDuUeF1apId)&&\
+                           if(duCb.actvCellLst[cellIdx] && (duCb.actvCellLst[cellIdx]->ueCb[ueIdx].gnbDuUeF1apId == gnbDuUeF1apId)&&\
                                  (duCb.actvCellLst[cellIdx]->ueCb[ueIdx].gnbCuUeF1apId == gnbCuUeF1apId))
                            {
                               duUeCb = &duCb.actvCellLst[cellIdx]->ueCb[ueIdx];

@@ -87,13 +87,15 @@ uint8_t duProcCellsToBeActivated(uint8_t *plmnStr, uint16_t nci, uint16_t nRPci)
    cellCb->cellStatus = ACTIVATION_IN_PROGRESS; 
    cellCb->cellInfo.nrPci = nRPci;
 
-   duCb.actvCellLst[duCb.numActvCells++] = cellCb;
+   duCb.actvCellLst[cellCb->cellId -1] = cellCb;
+   duCb.numActvCells++;
 
    if(duBuildAndSendMacCellCfg(cellCb->cellId) != ROK)
    {
       DU_LOG("\nERROR  -->  DU APP : macCellCfg build and send failed");
       /* Delete cell from actvCellList */
-      duCb.actvCellLst[--(duCb.numActvCells)] = NULLP;
+      duCb.actvCellLst[cellCb->cellId -1] = NULLP;
+      --(duCb.numActvCells);
       ret = RFAILED;
    }
    return ret;
@@ -138,11 +140,13 @@ void duProcF1SetupRsp()
 uint8_t duGetCellCb(uint16_t cellId, DuCellCb **cellCb)
 {
    uint8_t cellIdx = 0;
-   for(cellIdx=0; cellIdx<duCb.numActvCells; cellIdx++)
+   for(cellIdx=0; cellIdx < MAX_NUM_CELL; cellIdx++)
    {
-      if(duCb.actvCellLst[cellIdx]->cellId == cellId)
+      if(duCb.actvCellLst[cellIdx] && (duCb.actvCellLst[cellIdx]->cellId == cellId))
+      {
          *cellCb = duCb.actvCellLst[cellIdx];
-	 break;
+	      break;
+      }
    }
 
    if(!*cellCb)
@@ -254,7 +258,7 @@ uint8_t DuProcMacCellDeleteRsp(Pst *pst, MacCellDeleteRsp *deleteRsp)
       {
          GET_CELL_IDX(deleteRsp->cellId, cellIdx);
          DU_LOG("\nINFO   -->  DU APP : MAC CELL Delete Response : SUCCESS [CELL IDX : %d]", deleteRsp->cellId);
-         if(duCb.actvCellLst[cellIdx]->cellId == deleteRsp->cellId)
+         if(duCb.actvCellLst[cellIdx] && (duCb.actvCellLst[cellIdx]->cellId == deleteRsp->cellId))
          {
             memset(duCb.actvCellLst[cellIdx], 0, sizeof(DuCellCb));
             gCellStatus = CELL_DOWN;
