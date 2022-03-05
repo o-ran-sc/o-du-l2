@@ -1873,7 +1873,7 @@ uint8_t setDlRRCMsgType(CuUeCb *ueCb)
 
 uint8_t procInitULRRCMsg(uint32_t duId, F1AP_PDU_t *f1apMsg)
 {
-   uint8_t idx, rrcMsgType, gnbDuUeF1apId;
+   uint8_t idx,cellIdx=0, duIdx=0, rrcMsgType, gnbDuUeF1apId;
    uint8_t ret =ROK;
    uint32_t nrCellId, crnti;
    DuDb     *duDb;
@@ -1882,8 +1882,8 @@ uint8_t procInitULRRCMsg(uint32_t duId, F1AP_PDU_t *f1apMsg)
    InitialULRRCMessageTransfer_t *initULRRCMsg = NULLP;
 
    DU_LOG("\nINFO   -->  F1AP : filling the required values in DB in procInitULRRCMsg");
-
-   duDb = getDuDb(duId);
+   
+   SEARCH_DUDB(duIdx, duId, duDb); 
    initULRRCMsg = &f1apMsg->choice.initiatingMessage->value.choice.InitialULRRCMessageTransfer;
 
    for(idx=0; idx < initULRRCMsg->protocolIEs.list.count; idx++)
@@ -1897,7 +1897,7 @@ uint8_t procInitULRRCMsg(uint32_t duId, F1AP_PDU_t *f1apMsg)
          case ProtocolIE_ID_id_NRCGI:
             nrCellId = initULRRCMsg->protocolIEs.list.array[idx]->value.choice.NRCGI.nRCellIdentity.buf[4] >>
                initULRRCMsg->protocolIEs.list.array[idx]->value.choice.NRCGI.nRCellIdentity.bits_unused;
-            cellCb = getCellCb(duDb, nrCellId);
+            SEARCH_CELLCB(cellIdx, duDb, nrCellId, cellCb);
             if(cellCb == NULLP)
                return RFAILED;
             break;
@@ -7044,12 +7044,12 @@ uint8_t procDrbSetupList(DRBs_Setup_List_t *drbSetupList)
  * ****************************************************************/
 uint8_t procUeContextSetupResponse(uint32_t duId, F1AP_PDU_t *f1apMsg)
 {
-   uint8_t idx, duUeF1apId;
+   uint8_t duIdx=0, idx, duUeF1apId;
    DuDb *duDb;
    CuUeCb *ueCb;
    UEContextSetupResponse_t *ueCtxtSetupRsp = NULLP;
 
-   duDb = getDuDb(duId);
+   SEARCH_DUDB(duIdx, duId, duDb);
    ueCtxtSetupRsp = &f1apMsg->choice.successfulOutcome->value.choice.UEContextSetupResponse;
    
    for(idx=0; idx < ueCtxtSetupRsp->protocolIEs.list.count; idx++)
@@ -7093,7 +7093,7 @@ uint8_t procUeContextSetupResponse(uint32_t duId, F1AP_PDU_t *f1apMsg)
 
 uint8_t procUlRrcMsg(uint32_t duId, F1AP_PDU_t *f1apMsg)
 {
-   uint8_t idx, ret, srbId, rrcMsgType;
+   uint8_t idx, ret, srbId, rrcMsgType, duIdx=0;
    uint8_t cuUeF1apId, duUeF1apId;
    uint8_t *rrcContainer = NULLP;
    uint16_t rrcContLen;
@@ -7102,7 +7102,7 @@ uint8_t procUlRrcMsg(uint32_t duId, F1AP_PDU_t *f1apMsg)
    ULRRCMessageTransfer_t *ulRrcMsg = NULLP;
 
    ret = ROK;
-   duDb = getDuDb(duId);
+   SEARCH_DUDB(duIdx, duId, duDb);
    ulRrcMsg = &f1apMsg->choice.initiatingMessage->value.choice.ULRRCMessageTransfer;
 
    for(idx=0; idx < ulRrcMsg->protocolIEs.list.count; idx++)
@@ -7170,7 +7170,7 @@ uint8_t procUlRrcMsg(uint32_t duId, F1AP_PDU_t *f1apMsg)
       }
       if(rrcMsgType == RRC_RECONFIG_COMPLETE)
       {
-         ueCb->state = ACTIVE;
+         ueCb->state = UE_IS_ACTIVE;
          ueCb->f1apMsgDb.dlRrcMsgCount++;
          rrcMsgType = setDlRRCMsgType(ueCb);
          if(rrcMsgType == UE_CONTEXT_MOD_REQ)
@@ -8879,12 +8879,12 @@ uint8_t procServedCellPlmnList(ServedPLMNs_List_t *srvPlmn)
  * ****************************************************************/
 uint8_t procUeContextModificationResponse(uint32_t duId, F1AP_PDU_t *f1apMsg)
 {
-   uint8_t idx, duUeF1apId;
+   uint8_t idx=0, duIdx=0, duUeF1apId;
    DuDb *duDb;
    CuUeCb *ueCb;
-	UEContextModificationResponse_t *ueCtxtModRsp = NULLP;
+   UEContextModificationResponse_t *ueCtxtModRsp = NULLP;
 
-   duDb = getDuDb(duId);
+   SEARCH_DUDB(duIdx, duId, duDb);
    ueCtxtModRsp = &f1apMsg->choice.successfulOutcome->value.choice.UEContextModificationResponse;
    
    for(idx=0; idx < ueCtxtModRsp->protocolIEs.list.count; idx++)
