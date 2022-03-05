@@ -70,11 +70,34 @@
    SPutSBuf(CU_APP_MEM_REG, CU_POOL,                         \
          (Data *)_datPtr, _size);
 
+#define SEARCH_DUDB(duIdx, duId, duDb){\
+   for(duIdx=0; duIdx < cuCb.numDu; duIdx++)\
+   {\
+      if(cuCb.duInfo[duIdx].duId == duId)\
+      {\
+         duDb =  (&cuCb.duInfo[duIdx]);\
+              break; \
+     }\
+   }\
+}
+
+#define SEARCH_CELLCB(cellIdx, duDb, nrCellId, cellCb){\
+  for(cellIdx=0; cellIdx < duDb->numCells; cellIdx++)\
+   {\
+      if(duDb->cellCb[cellIdx].nrCellId == nrCellId)\
+      {\
+         cellCb = (&(duDb->cellCb[cellIdx]));\
+    break;\
+      }\
+   }\
+}
+
+
 typedef enum
 {
-   IDLE,
+   UE_IDLE,
    ATTACH_IN_PROGRESS,
-   ACTIVE,
+   UE_IS_ACTIVE,
    HANDOVER_IN_PROGRESS
 }UeState;
 

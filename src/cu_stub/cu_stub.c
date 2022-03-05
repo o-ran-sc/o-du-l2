@@ -35,60 +35,6 @@ extern StartupConfig g_cfg;
 
 /*******************************************************************
  *
- * @brief Fetches pointer to DU Database
- *
- * @details
- *
- *    Function : getDuDb
- *
- *    Functionality:
- *      Searches and returns pointer to DU structure based on DU Id
- *
- * @params[in] DU Id
- * @return Pointer to DU Db
- *
- ******************************************************************/
-DuDb* getDuDb(uint32_t duId)
-{
-   uint8_t duIdx;
-   for(duIdx=0; duIdx < cuCb.numDu; duIdx++)
-   {
-      if(cuCb.duInfo[duIdx].duId == duId)
-         return (&cuCb.duInfo[duIdx]);
-   }
-   return NULLP;
-}
-
-/*******************************************************************
- *
- * @brief Fetches pointer to Cell Cb
- *
- * @details
- *
- *    Function : getCellCb
- *
- *    Functionality:
- *       Searches for a cell within a DU based on NR cell Id
- *       Returns pointer to this cell Cb structure
- *
- * @params[in] Pointer to DU Db
- *             NR Cell ID
- * @return Pointer to cell Cb
- *
- ******************************************************************/
-CuCellCb* getCellCb(DuDb *duDb, uint32_t cellId)
-{
-   uint8_t cellIdx;
-   for(cellIdx=0; cellIdx < duDb->numCells; cellIdx++)
-   {
-      if(duDb->cellCb[cellIdx].nrCellId == cellId)
-         return &(duDb->cellCb[cellIdx]);
-   }
-   return NULLP;
-}
-
-/*******************************************************************
- *
  * @brief Handles SCTP notification 
  *
  * @details
@@ -283,10 +229,11 @@ void readCuCfg()
  * ****************************************************************/
 void initiateInterDuHandover(uint32_t sourceDuId, uint32_t targetDuId, uint32_t ueId)
 {
+    uint8_t duIdx = 0, duId = sourceDuId;
     DuDb *duDb = NULLP;
     CuUeCb *ueCb = NULLP;
-
-    duDb = getDuDb(sourceDuId);
+   
+    SEARCH_DUDB(duIdx, duId, duDb); 
     if(duDb)
        ueCb = &duDb->ueCb[ueId-1];
     if(ueCb)
