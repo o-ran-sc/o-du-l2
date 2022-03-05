@@ -70,12 +70,37 @@
    SPutSBuf(CU_APP_MEM_REG, CU_POOL,                         \
          (Data *)_datPtr, _size);
 
+#define SEARCH_DU_DB(_duIdx, _duId, _duDb){\
+   _duDb = NULLP; \
+   for(_duIdx=0; _duIdx < cuCb.numDu; _duIdx++)\
+   {\
+      if(cuCb.duInfo[_duIdx].duId == _duId)\
+      {\
+         _duDb =  (&cuCb.duInfo[_duIdx]);\
+              break; \
+     }\
+   }\
+}
+
+#define SEARCH_CELL_DB(_cellIdx, _duDb, _nrCellId, _cellCb){\
+   _cellCb = NULLP; \
+   for(_cellIdx=0; _cellIdx < _duDb->numCells; _cellIdx++)\
+   {\
+      if(_duDb->cellCb[_cellIdx].nrCellId == _nrCellId)\
+      {\
+         _cellCb = (&(_duDb->cellCb[_cellIdx]));\
+         break;\
+      }\
+   }\
+}
+
+
 typedef enum
 {
-   IDLE,
-   ATTACH_IN_PROGRESS,
-   ACTIVE,
-   HANDOVER_IN_PROGRESS
+   UE_IDLE,
+   UE_ATTACH_IN_PROGRESS,
+   UE_ACTIVE,
+   UE_HANDOVER_IN_PROGRESS
 }UeState;
 
 typedef struct RrcVersion
