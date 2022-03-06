@@ -77,7 +77,7 @@
       if(cuCb.duInfo[_duIdx].duId == _duId)\
       {\
          _duDb =  (&cuCb.duInfo[_duIdx]);\
-              break; \
+         break; \
      }\
    }\
 }

@@ -14948,8 +14948,8 @@ void freeAperDecodeUeContextReleaseCommand(F1AP_PDU_t *f1apMsg)
 uint8_t procF1UeContextReleaseCommand(F1AP_PDU_t *f1apMsg)
 {
    uint8_t  ieIdx=0, ret=ROK, ueIdx=0;
-   uint16_t cellIdx =0;
-   bool ueIdxFound;
+   uint16_t cellIdx =0, cellId = 0, crnti = 0;
+   bool ueIdxFound = false;
    uint32_t gnbCuUeF1apId=0, gnbDuUeF1apId=0;
    DuUeCb   *duUeCb = NULLP;
    UEContextReleaseCommand_t *ueContextReleaseCommand = NULLP;
@@ -14980,11 +14980,6 @@ uint8_t procF1UeContextReleaseCommand(F1AP_PDU_t *f1apMsg)
 
                case ProtocolIE_ID_id_Cause:
                   {
-                     break;
-                  }
-
-               case ProtocolIE_ID_id_RRCContainer:
-                  {
                      for(cellIdx = 0; cellIdx < MAX_NUM_CELL; cellIdx++)
                      {
                         for(ueIdx = 0; ueIdx < MAX_NUM_UE; ueIdx++)
@@ -14992,39 +14987,9 @@ uint8_t procF1UeContextReleaseCommand(F1AP_PDU_t *f1apMsg)
                            if(duCb.actvCellLst[cellIdx] && (duCb.actvCellLst[cellIdx]->ueCb[ueIdx].gnbDuUeF1apId == gnbDuUeF1apId)&&\
                                  (duCb.actvCellLst[cellIdx]->ueCb[ueIdx].gnbCuUeF1apId == gnbCuUeF1apId))
                            {
+                              cellId = duCb.actvCellLst[cellIdx]->cellId;
+                              crnti  = duCb.actvCellLst[cellIdx]->ueCb[ueIdx].crnti;
                               duUeCb = &duCb.actvCellLst[cellIdx]->ueCb[ueIdx];
-                              DU_ALLOC(duUeCb->f1UeDb, sizeof(F1UeContextSetupDb));
-                              if(duUeCb->f1UeDb)
-                              {
-                                 memset(duUeCb->f1UeDb, 0, sizeof(F1UeContextSetupDb));
-                                 duUeCb->f1UeDb->actionType = UE_CTXT_RELEASE;
-                                 duUeCb->f1UeDb->cellIdx = cellIdx;
-                                 /* Filling Dl RRC Msg Info */
-                                 DU_ALLOC_SHRABL_BUF(duUeCb->f1UeDb->dlRrcMsg, sizeof(F1DlRrcMsg));
-                                 if(!duUeCb->f1UeDb->dlRrcMsg)
-                                 {
-                                    DU_LOG("\nERROR  -->  DU APP : procF1UeContextReleaseCommand(): \
-                                    Memory allocation failed ");
-                                    ret = RFAILED;
-                                 }
-                                 else
-                                 {
-                                    duUeCb->f1UeDb->dlRrcMsgPres = true;
-                                    memset(duUeCb->f1UeDb->dlRrcMsg, 0, sizeof(F1DlRrcMsg));
-                                    ret = extractDlRrcMsg(gnbDuUeF1apId, gnbCuUeF1apId, duUeCb->f1UeDb->dlRrcMsg,\
-                                          &ueContextReleaseCommand->protocolIEs.list.array[ieIdx]->\
-                                          value.choice.RRCContainer);
-                                 }
-
-                              }
-                              else
-                              {
-                                 DU_LOG("\nERROR  -->  DU APP : procF1UeContextReleaseCommand(): \
-                                 Memory allocation failed ");
-                                 ret = RFAILED;
-
-                              }
-
                               ueIdxFound = true;
                               break;
                            }
@@ -15034,13 +14999,51 @@ uint8_t procF1UeContextReleaseCommand(F1AP_PDU_t *f1apMsg)
                            break;
                         }
                      }
+                     
                      if(!ueIdxFound)
                      {
-                        DU_LOG("\nERROR  -->  F1AP: DuUeCb is not found at procF1UeContextReleaseCommand()");
+                        DU_LOG("\nERROR  -->  F1AP: procF1UeContextReleaseCommand(): Ue Information is not available");
                         ret = RFAILED;
                      }
+                     break;
+                  }
 
+               case ProtocolIE_ID_id_RRCContainer:
+                  {
+                     if(ueIdxFound == true)  
+                     {
+                        DU_ALLOC(duUeCb->f1UeDb, sizeof(F1UeContextSetupDb));
+                        if(duUeCb->f1UeDb)
+                        {
+                           memset(duUeCb->f1UeDb, 0, sizeof(F1UeContextSetupDb));
+                           duUeCb->f1UeDb->actionType = UE_CTXT_RELEASE;
+                           duUeCb->f1UeDb->cellIdx = cellIdx;
+                           /* Filling Dl RRC Msg Info */
+                           DU_ALLOC_SHRABL_BUF(duUeCb->f1UeDb->dlRrcMsg, sizeof(F1DlRrcMsg));
+                           if(!duUeCb->f1UeDb->dlRrcMsg)
+                           {
+                              DU_LOG("\nERROR  -->  DU APP : procF1UeContextReleaseCommand(): \
+                                    Memory allocation failed ");
+                              ret = RFAILED;
+                           }
+                           else
+                           {
+                              duUeCb->f1UeDb->dlRrcMsgPres = true;
+                              memset(duUeCb->f1UeDb->dlRrcMsg, 0, sizeof(F1DlRrcMsg));
+                              ret = extractDlRrcMsg(gnbDuUeF1apId, gnbCuUeF1apId, duUeCb->f1UeDb->dlRrcMsg,\
+                                    &ueContextReleaseCommand->protocolIEs.list.array[ieIdx]->\
+                                    value.choice.RRCContainer);
+                           }
 
+                        }
+                        else
+                        {
+                           DU_LOG("\nERROR  -->  DU APP : procF1UeContextReleaseCommand(): \
+                                 Memory allocation failed ");
+                           ret = RFAILED;
+
+                        }
+                     }
                      break;
                   }
                default :
@@ -15053,7 +15056,7 @@ uint8_t procF1UeContextReleaseCommand(F1AP_PDU_t *f1apMsg)
    }
    if(ret != RFAILED)
    {
-      duProcUeContextReleaseCommand(duUeCb);
+      duProcUeContextReleaseCommand(cellId, duUeCb);
    }
    freeAperDecodeUeContextReleaseCommand(f1apMsg);
    return ret;
