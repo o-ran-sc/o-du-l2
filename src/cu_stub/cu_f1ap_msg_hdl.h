@@ -64,9 +64,10 @@ typedef enum
 /* Defines action to be performed via UE Context Modification request */
 typedef enum
 {
-   MODIFY_UE,        /* Modify UE configuration at DU */
-   QUERY_CONFIG,     /* Query DU for its configurations */
-   STOP_DATA_TX      /* Stop data transmission from DU to a particular UE */
+   MODIFY_UE,         /* Modify UE configuration at DU */
+   QUERY_CONFIG,      /* Query DU for its configurations */
+   STOP_DATA_TX,      /* Stop data transmission from DU to a particular UE */
+   HANDOVER_IN_PROCESS  /* UE handover is in progress */
 }UeCtxtModAction;
 
 typedef struct f1apDb

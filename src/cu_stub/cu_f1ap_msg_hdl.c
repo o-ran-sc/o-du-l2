@@ -8439,6 +8439,8 @@ uint8_t BuildAndSendUeContextReleaseCommand(uint32_t duId, uint8_t cuUeF1apId, u
 {
    bool       memAllocFailed = false;
    uint8_t    ieIdx = 0,elementCnt = 0, ret = RFAILED, bufLen=0;
+   DuDb *duDb;
+   CuUeCb *ueCb;
    F1AP_PDU_t *f1apMsg = NULLP;
    UEContextReleaseCommand_t *ueContextReleaseCommand = NULLP;
 
@@ -8468,7 +8470,13 @@ uint8_t BuildAndSendUeContextReleaseCommand(uint32_t duId, uint8_t cuUeF1apId, u
 
       ueContextReleaseCommand =&f1apMsg->choice.initiatingMessage->value.choice.UEContextReleaseCommand;
 
-      elementCnt = 4;
+      duDb = getDuDb(duId);
+      ueCb = &duDb->ueCb[duUeF1apId-1];
+      if(ueCb->state == HANDOVER_IN_PROCESS)
+         elementCnt = 3;
+      else
+         elementCnt = 4;
+     
       ueContextReleaseCommand->protocolIEs.list.count = elementCnt;
       ueContextReleaseCommand->protocolIEs.list.size = elementCnt*sizeof(UEContextReleaseCommand_t*);
 
@@ -8495,6 +8503,7 @@ uint8_t BuildAndSendUeContextReleaseCommand(uint32_t duId, uint8_t cuUeF1apId, u
       {
          break;
       }
+
       ieIdx=0;
       ueContextReleaseCommand->protocolIEs.list.array[ieIdx]->id = ProtocolIE_ID_id_gNB_CU_UE_F1AP_ID;
       ueContextReleaseCommand->protocolIEs.list.array[ieIdx]->criticality = Criticality_reject;
@@ -8509,34 +8518,49 @@ uint8_t BuildAndSendUeContextReleaseCommand(uint32_t duId, uint8_t cuUeF1apId, u
       UEContextReleaseCommandIEs__value_PR_GNB_DU_UE_F1AP_ID;
       ueContextReleaseCommand->protocolIEs.list.array[ieIdx]->value.choice.GNB_DU_UE_F1AP_ID =duUeF1apId;
 
-      ieIdx++;
-      ueContextReleaseCommand->protocolIEs.list.array[ieIdx]->id = ProtocolIE_ID_id_Cause;
-      ueContextReleaseCommand->protocolIEs.list.array[ieIdx]->criticality = Criticality_ignore;
-      ueContextReleaseCommand->protocolIEs.list.array[ieIdx]->value.present=\
-      UEContextReleaseCommandIEs__value_PR_Cause;
-      ueContextReleaseCommand->protocolIEs.list.array[ieIdx]->value.choice.Cause.present = Cause_PR_radioNetwork;
-      ueContextReleaseCommand->protocolIEs.list.array[ieIdx]->value.choice.Cause.choice.radioNetwork=\
-      CauseRadioNetwork_normal_release;
-     
-      /* RRC Container for RRC release */
-      ieIdx++;
-      ueContextReleaseCommand->protocolIEs.list.array[ieIdx]->id = ProtocolIE_ID_id_RRCContainer;
-      ueContextReleaseCommand->protocolIEs.list.array[ieIdx]->criticality = Criticality_ignore;
-      ueContextReleaseCommand->protocolIEs.list.array[ieIdx]->value.present = \
-      UEContextReleaseCommandIEs__value_PR_RRCContainer;
-      char secModeBuf[7]={ 0x00, 0x05, 0x13, 0x00, 0x00, 0x00, 0x00};
-      bufLen =7;
-      ueContextReleaseCommand->protocolIEs.list.array[ieIdx]->value.choice.RRCContainer.size = bufLen;
-      CU_ALLOC(ueContextReleaseCommand->protocolIEs.list.array[ieIdx]->value.choice.RRCContainer.buf,
-      ueContextReleaseCommand->protocolIEs.list.array[ieIdx]->value.choice.RRCContainer.size);
-      if(!ueContextReleaseCommand->protocolIEs.list.array[ieIdx]->value.choice.RRCContainer.buf)
+      if(ueCb->state == HANDOVER_IN_PROCESS)
       {
-      DU_LOG("\nERROR  -->  F1AP : Memory allocation for BuildAndSendUeContextReleaseCommand failed");
-      break;
+         /* Cause of UE context release */
+         ieIdx++;
+         ueContextReleaseCommand->protocolIEs.list.array[ieIdx]->id = ProtocolIE_ID_id_Cause;
+         ueContextReleaseCommand->protocolIEs.list.array[ieIdx]->criticality = Criticality_ignore;
+         ueContextReleaseCommand->protocolIEs.list.array[ieIdx]->value.present=\
+                                                                               UEContextReleaseCommandIEs__value_PR_Cause;
+         ueContextReleaseCommand->protocolIEs.list.array[ieIdx]->value.choice.Cause.present = Cause_PR_radioNetwork;
+         ueContextReleaseCommand->protocolIEs.list.array[ieIdx]->value.choice.Cause.choice.radioNetwork=\
+         CauseRadioNetwork_unspecified;;
       }
-      memset(ueContextReleaseCommand->protocolIEs.list.array[ieIdx]->value.choice.RRCContainer.buf, 0, bufLen);
-      memcpy(ueContextReleaseCommand->protocolIEs.list.array[ieIdx]->value.choice.RRCContainer.buf, secModeBuf, bufLen);
-      
+      else
+      {
+         /* Cause of UE context release */
+         ieIdx++;
+         ueContextReleaseCommand->protocolIEs.list.array[ieIdx]->id = ProtocolIE_ID_id_Cause;
+         ueContextReleaseCommand->protocolIEs.list.array[ieIdx]->criticality = Criticality_ignore;
+         ueContextReleaseCommand->protocolIEs.list.array[ieIdx]->value.present=\
+                                                                               UEContextReleaseCommandIEs__value_PR_Cause;
+         ueContextReleaseCommand->protocolIEs.list.array[ieIdx]->value.choice.Cause.present = Cause_PR_radioNetwork;
+         ueContextReleaseCommand->protocolIEs.list.array[ieIdx]->value.choice.Cause.choice.radioNetwork=\
+                                                                                                        CauseRadioNetwork_normal_release;
+
+         /* RRC Container for RRC release */
+         ieIdx++;
+         ueContextReleaseCommand->protocolIEs.list.array[ieIdx]->id = ProtocolIE_ID_id_RRCContainer;
+         ueContextReleaseCommand->protocolIEs.list.array[ieIdx]->criticality = Criticality_ignore;
+         ueContextReleaseCommand->protocolIEs.list.array[ieIdx]->value.present = \
+                                                                                 UEContextReleaseCommandIEs__value_PR_RRCContainer;
+         char secModeBuf[7]={ 0x00, 0x05, 0x13, 0x00, 0x00, 0x00, 0x00};
+         bufLen =7;
+         ueContextReleaseCommand->protocolIEs.list.array[ieIdx]->value.choice.RRCContainer.size = bufLen;
+         CU_ALLOC(ueContextReleaseCommand->protocolIEs.list.array[ieIdx]->value.choice.RRCContainer.buf,
+               ueContextReleaseCommand->protocolIEs.list.array[ieIdx]->value.choice.RRCContainer.size);
+         if(!ueContextReleaseCommand->protocolIEs.list.array[ieIdx]->value.choice.RRCContainer.buf)
+         {
+            DU_LOG("\nERROR  -->  F1AP : Memory allocation for BuildAndSendUeContextReleaseCommand failed");
+            break;
+         }
+         memset(ueContextReleaseCommand->protocolIEs.list.array[ieIdx]->value.choice.RRCContainer.buf, 0, bufLen);
+         memcpy(ueContextReleaseCommand->protocolIEs.list.array[ieIdx]->value.choice.RRCContainer.buf, secModeBuf, bufLen);
+      }
       xer_fprint(stdout, &asn_DEF_F1AP_PDU, f1apMsg);
 
       /* Encode the UE Context Release Command type as APER */
