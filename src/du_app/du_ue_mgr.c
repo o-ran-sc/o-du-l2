@@ -3268,38 +3268,34 @@ void deleteRlcUeCfg(RlcUeCfg *ueCfg)
 *         RFAILED - failure
 *
 * ****************************************************************/
-uint8_t duProcUeContextReleaseCommand(DuUeCb *duUeCb)
+uint8_t duProcUeContextReleaseCommand(uint16_t cellId, uint16_t crnti, DuUeCb *duUeCb)
 {
    uint8_t ret =ROK, ueId=0;
-   uint16_t cellId=0,crnti =0;
-   if(duUeCb == NULLP)
-   {
-      DU_LOG("\nERROR  -->  DU APP : duProcUeContextReleaseCommand() : duUeCb is null");
-      return RFAILED;
-   }
-   if(duUeCb->f1UeDb == NULLP)
-   {
-      DU_LOG("\nERROR  -->  DU APP : duProcUeContextReleaseCommand() : f1UeDb is null");
-      return RFAILED;
-   }
    
-   cellId = duCb.actvCellLst[duUeCb->f1UeDb->cellIdx]->cellId;
-   crnti = duUeCb->crnti;
-   GET_UE_ID(crnti, ueId);
-   
-   /* Send DL RRC msg for RRC release */
-   if(duUeCb->f1UeDb->dlRrcMsg)
+   if(duUeCb != NULLP)
    {
-      if(duUeCb->f1UeDb->dlRrcMsg->rrcMsgPdu != NULLP)
+      if(duUeCb->f1UeDb == NULLP)
       {
-         ret = duBuildAndSendDlRrcMsgToRlc(cellId, duCb.actvCellLst[duUeCb->f1UeDb->cellIdx]->ueCb[ueId-1].rlcUeCfg,\
-               duUeCb->f1UeDb->dlRrcMsg);
-         if(ret == RFAILED)
+         DU_LOG("\nERROR  -->  DU APP : duProcUeContextReleaseCommand() : f1UeDb is null");
+         return RFAILED;
+      }
+
+      GET_UE_ID(crnti, ueId);
+
+      /* Send DL RRC msg for RRC release */
+      if(duUeCb->f1UeDb->dlRrcMsg)
+      {
+         if(duUeCb->f1UeDb->dlRrcMsg->rrcMsgPdu != NULLP)
          {
-            DU_LOG("\nERROR  -->  DU APP : duProcUeContextReleaseCommand() : Failed to send DL RRC msg");
-            DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, duUeCb->f1UeDb->dlRrcMsg->rrcMsgPdu,\
-                  duUeCb->f1UeDb->dlRrcMsg->rrcMsgSize);
-            DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, duUeCb->f1UeDb->dlRrcMsg, sizeof(F1DlRrcMsg));
+            ret = duBuildAndSendDlRrcMsgToRlc(cellId, duCb.actvCellLst[duUeCb->f1UeDb->cellIdx]->ueCb[ueId-1].rlcUeCfg,\
+                  duUeCb->f1UeDb->dlRrcMsg);
+            if(ret == RFAILED)
+            {
+               DU_LOG("\nERROR  -->  DU APP : duProcUeContextReleaseCommand() : Failed to send DL RRC msg");
+               DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, duUeCb->f1UeDb->dlRrcMsg->rrcMsgPdu,\
+                     duUeCb->f1UeDb->dlRrcMsg->rrcMsgSize);
+               DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, duUeCb->f1UeDb->dlRrcMsg, sizeof(F1DlRrcMsg));
+            }
          }
       }
    }
@@ -3311,7 +3307,6 @@ uint8_t duProcUeContextReleaseCommand(DuUeCb *duUeCb)
          DU_LOG("\nERROR  -->  DU APP : duProcUeContextReleaseCommand(): Failed to build and send Ue Delete request");
       }
    }
-
    return ret;
 }
 
