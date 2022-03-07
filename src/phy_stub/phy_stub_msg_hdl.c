@@ -469,7 +469,7 @@ uint16_t l1BuildAndSendRxDataInd(uint16_t slot, uint16_t sfn, fapi_ul_pusch_pdu_
 	    From 38.321 section 6.1.1
 	  */
 	 uint8_t msg5[] = {1, msg5PduLen, 0, 0, 16, 0, 5, 223, 128, 16, 94, \
-	    64, 3, 64, 89, 61, 138, 64, 0, 0, 0, 4, 0, 0, 4, 68, 11, 128, \
+	    64, 3, 64, 68, 252, 97, 0, 0, 0, 0, 4, 0, 0, 4, 68, 11, 128, \
 	       184, 56, 0, 0, 0, 0, 0};
 
 	 msg5PduLen += 2;  /* 2bytes of header */
