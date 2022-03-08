@@ -16,6 +16,24 @@
       "message": "This was also fine. any specific reason for passing cellId and crnti from caller function",
       "revId": "5f2265d1147690ddea19312492150bcad7cf5c1b",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a59eb9ab_aa37a4b5",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 3287,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-03-08T12:57:56Z",
+      "side": 0,
+      "message": "duUeCb-\u003ef1UeDb this pointer will get allocated in ProtocolIE_ID_id_RRCContainer.\nand cellid information is only available at f1UeDb. \nso that\u0027s why need cellId for handover.",
+      "parentUuid": "7776be21_f8f09b93",
+      "revId": "5f2265d1147690ddea19312492150bcad7cf5c1b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
   ]
 }
