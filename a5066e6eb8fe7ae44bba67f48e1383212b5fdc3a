@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bd985f92_2c32b118",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-03-08T11:33:50Z",
+      "side": 1,
+      "message": "remove",
+      "range": {
+        "startLine": 69,
+        "startChar": 15,
+        "endLine": 69,
+        "endChar": 16
+      },
+      "revId": "a5066e6eb8fe7ae44bba67f48e1383212b5fdc3a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3314e8d0_356bb3ce",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 15011,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-03-08T11:33:50Z",
+      "side": 1,
+      "message": "run CLA also and confirm that moving the below changes from above case to this case should not impact either UE deletion from all layers or sending of RRC release msg",
+      "revId": "a5066e6eb8fe7ae44bba67f48e1383212b5fdc3a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}

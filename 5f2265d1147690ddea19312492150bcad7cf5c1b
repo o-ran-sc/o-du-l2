@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7776be21_f8f09b93",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 3287,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-03-08T11:33:50Z",
+      "side": 0,
+      "message": "This was also fine. any specific reason for passing cellId and crnti from caller function",
+      "revId": "5f2265d1147690ddea19312492150bcad7cf5c1b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
