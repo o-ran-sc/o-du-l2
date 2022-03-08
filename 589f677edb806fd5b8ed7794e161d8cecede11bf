@@ -24,6 +24,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ace88868_c09fcb28",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 8666,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-03-08T07:51:07Z",
+      "side": 1,
+      "message": "Sure.",
+      "parentUuid": "93c8f204_6ce360ad",
+      "range": {
+        "startLine": 8666,
+        "startChar": 15,
+        "endLine": 8666,
+        "endChar": 23
+      },
+      "revId": "589f677edb806fd5b8ed7794e161d8cecede11bf",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "686e3b34_94d47195",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-03-08T07:45:10Z",
       "side": 1,
       "message": "reminder : revert before merge",
+      "range": {
+        "startLine": 551,
+        "startChar": 5,
+        "endLine": 551,
+        "endChar": 28
+      },
+      "revId": "589f677edb806fd5b8ed7794e161d8cecede11bf",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "905debf3_97cf018a",
+        "filename": "src/du_app/du_mgr_main.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 551,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-03-08T07:51:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "686e3b34_94d47195",
       "range": {
         "startLine": 551,
         "startChar": 5,
