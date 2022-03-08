@@ -24,6 +24,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "60a1fdc3_f8892161",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 8531,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-03-08T11:11:31Z",
+      "side": 1,
+      "message": "changed",
+      "parentUuid": "78b4fc2e_45eedc19",
+      "range": {
+        "startLine": 8531,
+        "startChar": 9,
+        "endLine": 8531,
+        "endChar": 38
+      },
+      "revId": "2dd61e40fae8f73b7e73cc926f7e3aeddcd4c8aa",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e3b01bd8_ffd778b3",
@@ -41,6 +65,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f1f5bf54_d56da835",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-03-08T11:11:31Z",
+      "side": 1,
+      "message": "removed",
+      "parentUuid": "e3b01bd8_ffd778b3",
+      "revId": "2dd61e40fae8f73b7e73cc926f7e3aeddcd4c8aa",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3f28d621_e2a97174",
@@ -54,6 +96,24 @@
       "writtenOn": "2022-03-07T10:48:33Z",
       "side": 1,
       "message": "Instead of triggering within du itself, trigger UE context release command from CU and check following:\n\na. Encoding of all IEs (as per the excel sheet) is successful at CU (check both in logs and wireshark)\nb. Decoding is successful at DU (check both in logs and wireshark)\nc. Handling of UE context release is correctly happening and at all layers the UE is deleted from its DB. (Check this using GBD)\nd. UE context release response is successful filled (as per excel sheet) and correctly encoded/decode (check both in logs and wireshark)",
+      "revId": "2dd61e40fae8f73b7e73cc926f7e3aeddcd4c8aa",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f0976a30_907c555c",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 12557,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-03-08T11:11:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3f28d621_e2a97174",
       "revId": "2dd61e40fae8f73b7e73cc926f7e3aeddcd4c8aa",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -81,6 +141,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ac4a34a1_67b536b1",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 14984,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-03-08T11:11:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "46f409fb_9092b6d8",
+      "range": {
+        "startLine": 14984,
+        "startChar": 122,
+        "endLine": 14984,
+        "endChar": 154
+      },
+      "revId": "2dd61e40fae8f73b7e73cc926f7e3aeddcd4c8aa",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8d27d65c_4cc025d7",
@@ -94,6 +178,30 @@
       "writtenOn": "2022-03-07T10:48:33Z",
       "side": 1,
       "message": "No need for this check at all. Only the else part is sufficient. \nThere it checks if RRC message is present, it will be send to UE i.e. in case of normal release. \nAnd then UE will be deleted from all layers i.e for both normal and handover related release",
+      "range": {
+        "startLine": 3275,
+        "startChar": 6,
+        "endLine": 3275,
+        "endChar": 26
+      },
+      "revId": "2dd61e40fae8f73b7e73cc926f7e3aeddcd4c8aa",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "63b5aee3_81886217",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 3275,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-03-08T11:11:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8d27d65c_4cc025d7",
       "range": {
         "startLine": 3275,
         "startChar": 6,
