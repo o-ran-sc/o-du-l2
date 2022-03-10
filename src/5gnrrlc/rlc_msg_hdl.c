@@ -65,6 +65,7 @@ uint8_t fillRlcUeCfgRsp(RlcUeCfgRsp *rlcCfgRsp, RlcCfgCfmInfo *rlcCRsp)
  
    rlcCfgRsp->cellId = rlcCRsp->cellId;
    rlcCfgRsp->ueId   = rlcCRsp->ueId;
+   rlcCfgRsp->result = RLC_DU_APP_RSP_OK;
    for(idx = 0; idx < rlcCRsp->numEnt; idx++)
    {
       if(rlcCRsp->entCfgCfm[idx].status.status == CKW_CFG_CFM_OK)

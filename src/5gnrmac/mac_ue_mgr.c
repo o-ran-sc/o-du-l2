@@ -1617,7 +1617,7 @@ uint8_t fillSchUeCfg(Pst *pst, SchUeCfg *schUeCfg, MacUeCfg *ueCfg)
 
    schUeCfg->cellId = ueCfg->cellId;
    schUeCfg->crnti = ueCfg->crnti;
-
+   schUeCfg->dataTransmissionInfo = ueCfg->transmissionAction;
    /* Copy MAC cell group config */
    if(ueCfg->macCellGrpCfgPres == true)
    {

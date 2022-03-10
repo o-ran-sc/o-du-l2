@@ -8171,20 +8171,20 @@ void FreeDrbToBeModifiedList(DRBs_ToBeModified_List_t *drbSet)
 void FreeUeContextModicationRequest(F1AP_PDU_t *f1apMsg)
 {
    uint8_t arrIdx =0 , ieId=0; 
-   UEContextModificationRequest_t *UeContextModifyReq = NULLP;
+   UEContextModificationRequest_t *ueContextModifyReq = NULLP;
 
    if(f1apMsg)
    {
       if(f1apMsg->choice.initiatingMessage)
       {
-         UeContextModifyReq =&f1apMsg->choice.initiatingMessage->value.choice.UEContextModificationRequest;
-         if(UeContextModifyReq->protocolIEs.list.array)
+         ueContextModifyReq =&f1apMsg->choice.initiatingMessage->value.choice.UEContextModificationRequest;
+         if(ueContextModifyReq->protocolIEs.list.array)
          {
-            for( arrIdx = 0 ; arrIdx<UeContextModifyReq->protocolIEs.list.count ; arrIdx++)
+            for( arrIdx = 0 ; arrIdx<ueContextModifyReq->protocolIEs.list.count ; arrIdx++)
             {
-               if(UeContextModifyReq->protocolIEs.list.array[arrIdx])
+               if(ueContextModifyReq->protocolIEs.list.array[arrIdx])
                {
-                  ieId = UeContextModifyReq->protocolIEs.list.array[arrIdx]->id;
+                  ieId = ueContextModifyReq->protocolIEs.list.array[arrIdx]->id;
                   switch(ieId)
                   {
                      case ProtocolIE_ID_id_gNB_CU_UE_F1AP_ID:
@@ -8193,22 +8193,29 @@ void FreeUeContextModicationRequest(F1AP_PDU_t *f1apMsg)
                         break;
                      case ProtocolIE_ID_id_DRBs_ToBeSetupMod_List:
                         {
-                           FreeDrbToBeSetupModList(&UeContextModifyReq->protocolIEs.list.array[arrIdx]->value.\
+                           FreeDrbToBeSetupModList(&ueContextModifyReq->protocolIEs.list.array[arrIdx]->value.\
                                  choice.DRBs_ToBeSetupMod_List);
                            break;
                         }
                      case ProtocolIE_ID_id_DRBs_ToBeModified_List:
                         {
-                           FreeDrbToBeModifiedList(&UeContextModifyReq->protocolIEs.list.array[arrIdx]->value.\
+                           FreeDrbToBeModifiedList(&ueContextModifyReq->protocolIEs.list.array[arrIdx]->value.\
                                  choice.DRBs_ToBeSetupMod_List);
                            break;
                         }
+                    case ProtocolIE_ID_id_TransmissionActionIndicator:
+                        break;
+                    case ProtocolIE_ID_id_RRCContainer:
+                    {
+                        CU_FREE(ueContextModifyReq->protocolIEs.list.array[arrIdx]->value.choice.RRCContainer.buf,\
+                        ueContextModifyReq->protocolIEs.list.array[arrIdx]->value.choice.RRCContainer.size);
+                    }
 
                   }
-                  CU_FREE(UeContextModifyReq->protocolIEs.list.array[arrIdx], sizeof(UEContextModificationRequest_t));
+                  CU_FREE(ueContextModifyReq->protocolIEs.list.array[arrIdx], sizeof(UEContextModificationRequest_t));
                }	  
             }
-            CU_FREE(UeContextModifyReq->protocolIEs.list.array, UeContextModifyReq->protocolIEs.list.size);
+            CU_FREE(ueContextModifyReq->protocolIEs.list.array, ueContextModifyReq->protocolIEs.list.size);
          }
          CU_FREE(f1apMsg->choice.initiatingMessage, sizeof(InitiatingMessage_t));
       }
@@ -8234,7 +8241,35 @@ void FreeUeContextModicationRequest(F1AP_PDU_t *f1apMsg)
  * ****************************************************************/
 uint8_t BuildAndSendUeContextModificationReq(uint32_t duId, void *cuUeCb, UeCtxtModAction action)
 {
-   uint8_t    ieIdx = 0;
+   uint8_t  hexDump[]= {0x00, 0x08, 0x00, 0xaa, 0xb5, 0x04, 0xa5, 0x44, 0xa0, 0x26, 0x80, 0x48, 0x04, 0x81, 0x78, 0xfc,
+   0x14, 0xd0, 0x13, 0xfc, 0x00, 0x00, 0x00, 0x33, 0xe0, 0x12, 0xf1, 0x80, 0x40, 0x00, 0x01, 0x83,
+   0x81, 0x02, 0x07, 0x81, 0x02, 0x04, 0x01, 0xfb, 0xde, 0xf7, 0xbd, 0xe0, 0x00, 0x00, 0x05, 0x88,
+   0x98, 0x01, 0x11, 0xc5, 0x00, 0x00, 0x00, 0x00, 0x00, 0x06, 0x4d, 0xe4, 0x21, 0x39, 0x08, 0x4e,
+   0x42, 0x13, 0x90, 0x84, 0x03, 0x00, 0x80, 0x48, 0x40, 0xac, 0xae, 0x02, 0x58, 0x00, 0x88, 0x05,
+   0x76, 0x42, 0x08, 0x30, 0xf5, 0x00, 0x58, 0x48, 0x88, 0x05, 0x76, 0x42, 0x08, 0x30, 0xf5, 0x00,
+   0x58, 0xe0, 0x3e, 0x84, 0x19, 0xfa, 0xa0, 0x1f, 0x00, 0x40, 0x02, 0x0f, 0x71, 0x80, 0x40, 0xf4,
+   0xb6, 0xee, 0x30, 0x55, 0xa4, 0xf0, 0x20, 0x01, 0x34, 0x9d, 0xe3, 0x00, 0x00, 0x03, 0x10, 0x60,
+   0x44, 0xb3, 0x59, 0xd0, 0x1b, 0x82, 0x01, 0x00, 0x00, 0x08, 0x04, 0x00, 0x83, 0x46, 0x01, 0x44,
+   0x04, 0x4d, 0xa0, 0x26, 0x93, 0xbc, 0x60, 0x00, 0x00, 0x62, 0x1a, 0xb8, 0x11, 0x2c, 0xda, 0x93,
+   0x80, 0x01, 0x9a, 0x95, 0xbd, 0xb1, 0x80, 0x20, 0x04, 0x9d, 0xe2, 0x22, 0xc5, 0x45, 0x8c, 0x8b,
+   0x21, 0x16, 0x4a, 0x2c, 0xa4, 0x59, 0x68, 0xb3, 0x11, 0x4b, 0xd5, 0x40, 0x74, 0xe3, 0x00, 0x85,
+   0x30, 0x03, 0xc0, 0x10, 0x00, 0x80, 0xc0, 0x20, 0x07, 0x00, 0x40, 0xf5, 0x0a, 0x13, 0x93, 0x4e,
+   0x00, 0x06, 0x6a, 0x56, 0xb0, 0x00, 0x08, 0x02, 0x59, 0x01, 0x95, 0x00, 0x01, 0x00, 0xff, 0xff,
+   0xff, 0xff, 0xf9, 0x86, 0xe1, 0x08, 0x40, 0x00, 0x04, 0x02, 0xd8, 0x40, 0x80, 0x05, 0x64, 0x16,
+   0x30, 0x0a, 0x20, 0x22, 0x00, 0x09, 0x18, 0xa9, 0x24, 0xa2, 0x20, 0x00, 0x82, 0x06, 0x10, 0x28,
+   0x60, 0xe2, 0x04, 0x8a, 0x16, 0x30, 0x68, 0xe1, 0xe4, 0x08, 0x93, 0x13, 0x28, 0x54, 0xb1, 0x73,
+   0x06, 0x4c, 0x80, 0x03, 0x80, 0x16, 0x01, 0x0e, 0x01, 0x58, 0x08, 0x38, 0x09, 0x60, 0x30, 0xe0,
+   0x35, 0x81, 0x03, 0x81, 0x16, 0x05, 0x0e, 0x80, 0x58, 0x18, 0x3a, 0x05, 0x60, 0x70, 0xe8, 0x25,
+   0x82, 0x03, 0xa0, 0xd6, 0x09, 0x0e, 0x84, 0x58, 0x28, 0x3c, 0x01, 0x60, 0xb0, 0xf0, 0x15, 0x83,
+   0x03, 0xc0, 0x96, 0x0d, 0x0f, 0x03, 0x58, 0x38, 0x3c, 0x11, 0x60, 0xf0, 0xf8, 0x05, 0x84, 0x03,
+   0xe0, 0x56, 0x11, 0x0f, 0x82, 0x58, 0x48, 0x18, 0x01, 0x61, 0x31, 0x02, 0xe5, 0x85, 0x05, 0xeb,
+   0x96, 0x15, 0x1f, 0x2e, 0x58, 0x58, 0x9a, 0xb9, 0x61, 0x72, 0xe2, 0xe5, 0x86, 0x0d, 0x6b, 0x96,
+   0x19, 0x3d, 0x2e, 0x5c, 0x80, 0x30, 0x25, 0xe4, 0xba, 0x2b, 0x3c, 0x4d, 0xe3, 0xf2, 0x10, 0x84,
+   0x20, 0x04, 0x2a, 0x91, 0x10, 0x2b, 0x24, 0xa0, 0x01, 0x55, 0x12, 0x03, 0x04, 0x23, 0x78, 0x88,
+   0xb1, 0x51, 0x63, 0x22, 0xc7, 0x45, 0x90, 0x8b, 0x25, 0x16, 0x5a, 0x2c, 0xc4, 0x5f, 0xe0, 0x00,
+   0x00, 0x11, 0x50, 0x00, 0x00, 0xed, 0x36, 0x2f, 0xd9};
+
+   uint16_t    ieIdx = 0, len=425;
    uint8_t    elementCnt = 0;
    uint8_t    ret = RFAILED;
    CuUeCb     *ueCb = (CuUeCb *)cuUeCb;
@@ -8243,7 +8278,7 @@ uint8_t BuildAndSendUeContextModificationReq(uint32_t duId, void *cuUeCb, UeCtxt
 
    asn_enc_rval_t         encRetVal;
    DU_LOG("\nINFO  -->  F1AP : Building Ue context modification request\n");
-
+   action = STOP_DATA_TX;
    while(1)
    {
       CU_ALLOC(f1apMsg, sizeof(F1AP_PDU_t));
@@ -8271,6 +8306,9 @@ uint8_t BuildAndSendUeContextModificationReq(uint32_t duId, void *cuUeCb, UeCtxt
          elementCnt = 4;
       else if(action == QUERY_CONFIG)
          elementCnt = 3;
+      else if( action == STOP_DATA_TX)
+         elementCnt = 4;
+
       ueContextModifyReq->protocolIEs.list.count = elementCnt;
       ueContextModifyReq->protocolIEs.list.size = elementCnt*sizeof(UEContextModificationRequest_t *);
 
@@ -8313,7 +8351,7 @@ uint8_t BuildAndSendUeContextModificationReq(uint32_t duId, void *cuUeCb, UeCtxt
          ueContextModifyReq->protocolIEs.list.array[ieIdx]->id = ProtocolIE_ID_id_DRBs_ToBeSetupMod_List;
          ueContextModifyReq->protocolIEs.list.array[ieIdx]->criticality = Criticality_reject;
          ueContextModifyReq->protocolIEs.list.array[ieIdx]->value.present =\
-                                                                           UEContextModificationRequestIEs__value_PR_DRBs_ToBeSetupMod_List;
+         UEContextModificationRequestIEs__value_PR_DRBs_ToBeSetupMod_List;
          ret = BuildDrbToBeSetupList(ueCb->gnbCuUeF1apId, &(ueContextModifyReq->protocolIEs.list.array[ieIdx]->\
                   value.choice.DRBs_ToBeSetupMod_List));
 
@@ -8322,7 +8360,7 @@ uint8_t BuildAndSendUeContextModificationReq(uint32_t duId, void *cuUeCb, UeCtxt
          ueContextModifyReq->protocolIEs.list.array[ieIdx]->id = ProtocolIE_ID_id_DRBs_ToBeModified_List;
          ueContextModifyReq->protocolIEs.list.array[ieIdx]->criticality = Criticality_reject;
          ueContextModifyReq->protocolIEs.list.array[ieIdx]->value.present =\
-                                                                           UEContextModificationRequestIEs__value_PR_DRBs_ToBeModified_List;
+         UEContextModificationRequestIEs__value_PR_DRBs_ToBeModified_List;
          ret = BuildDrbToBeModifiedList(ueCb->gnbCuUeF1apId, &(ueContextModifyReq->protocolIEs.list.array[ieIdx]->\
                   value.choice.DRBs_ToBeModified_List));
 
@@ -8330,6 +8368,7 @@ uint8_t BuildAndSendUeContextModificationReq(uint32_t duId, void *cuUeCb, UeCtxt
 
          if(ret != ROK)
          {
+            DU_LOG("\nERROR  -->  F1AP : BuildAndSendUeContextModificationReq(): Failed to build drb to be modified list");
             break;
          }
       }
@@ -8341,6 +8380,34 @@ uint8_t BuildAndSendUeContextModificationReq(uint32_t duId, void *cuUeCb, UeCtxt
          ueContextModifyReq->protocolIEs.list.array[ieIdx]->value.present = \
             UEContextModificationRequestIEs__value_PR_GNB_DUConfigurationQuery;
          ueContextModifyReq->protocolIEs.list.array[ieIdx]->value.choice.GNB_DUConfigurationQuery = GNB_DUConfigurationQuery_true;
+      }
+      else if(action == STOP_DATA_TX)
+      {
+         ieIdx++;
+         ueContextModifyReq->protocolIEs.list.array[ieIdx]->id = ProtocolIE_ID_id_TransmissionActionIndicator;
+         ueContextModifyReq->protocolIEs.list.array[ieIdx]->criticality = Criticality_reject;
+         ueContextModifyReq->protocolIEs.list.array[ieIdx]->value.present = \
+         UEContextModificationRequestIEs__value_PR_TransmissionActionIndicator;
+         ueContextModifyReq->protocolIEs.list.array[ieIdx]->value.choice.TransmissionActionIndicator = \
+         TransmissionActionIndicator_stop;
+         
+         ieIdx++;
+         ueContextModifyReq->protocolIEs.list.array[ieIdx]->id = ProtocolIE_ID_id_RRCContainer;
+         ueContextModifyReq->protocolIEs.list.array[ieIdx]->criticality = Criticality_reject;
+         ueContextModifyReq->protocolIEs.list.array[ieIdx]->value.present = \
+         UEContextModificationRequestIEs__value_PR_RRCContainer;
+         ueContextModifyReq->protocolIEs.list.array[ieIdx]->value.choice.RRCContainer.size = len;//sizeof(uint8_t);
+         CU_ALLOC(ueContextModifyReq->protocolIEs.list.array[ieIdx]->value.choice.RRCContainer.buf,\
+         ueContextModifyReq->protocolIEs.list.array[ieIdx]->value.choice.RRCContainer.size);
+
+         if(ueContextModifyReq->protocolIEs.list.array[ieIdx]->value.choice.RRCContainer.buf == NULLP)
+         {
+            DU_LOG("\nERROR  -->  F1AP : BuildAndSendUeContextModificationReq(): Memory allocation failed");
+            break;
+         }
+         /* TODO := fill correct information */
+         memcpy(ueContextModifyReq->protocolIEs.list.array[ieIdx]->value.choice.RRCContainer.buf, hexDump,\
+         ueContextModifyReq->protocolIEs.list.array[ieIdx]->value.choice.RRCContainer.size);   
       }
 
       xer_fprint(stdout, &asn_DEF_F1AP_PDU, f1apMsg);

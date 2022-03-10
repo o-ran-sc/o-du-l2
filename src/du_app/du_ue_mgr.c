@@ -1219,6 +1219,7 @@ uint8_t fillMacUeCfg(uint16_t cellId, uint8_t ueId, uint16_t crnti, DuUeCfg *ueC
       macUeCfg->cellId       = cellId;
       macUeCfg->ueId         = ueId;
       macUeCfg->crnti        = crnti;
+      macUeCfg->transmissionAction = ueCfgDb->dataTransmissionAction; 
       ret = procUeReCfgCellInfo(macUeCfg, duMacDb, ueCfgDb->cellGrpCfg);
       if(ret == ROK)
       {

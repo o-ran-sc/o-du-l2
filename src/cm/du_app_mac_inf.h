@@ -503,6 +503,12 @@ typedef enum
    RSRC_RRC_CONNECTED_USERS
 }ResourceType;
 
+typedef enum
+{
+   STOP_TRANSMISSION =1,
+   RESTART_TRANSMISSION
+}DataTransmissionAction;
+
 typedef struct failureCause
 {
    CauseGrp   type;
@@ -1241,6 +1247,7 @@ typedef struct macUeCfg
    uint8_t numLcs;
    LcCfg lcCfgList[MAX_NUM_LC];
    UeCfgState macUeCfgState;    /* InActive / Completed */
+   DataTransmissionAction transmissionAction;
 }MacUeCfg;
 
 typedef struct nrcgi
