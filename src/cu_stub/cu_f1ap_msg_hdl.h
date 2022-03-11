@@ -64,8 +64,9 @@ typedef enum
 /* Defines action to be performed via UE Context Modification request */
 typedef enum
 {
-   MODIFY_UE,         /* Modify UE configuration at DU */
-   QUERY_CONFIG,      /* Query DU for its configurations */
+   MODIFY_UE,        /* Modify UE configuration at DU */
+   RRC_RECONFIG_COMPLETE_IND, /* Indicate to DU that RRC Reconfiguration is complete */
+   QUERY_CONFIG,     /* Query DU for its configurations */
    STOP_DATA_TX      /* Stop data transmission from DU to a particular UE */
 }UeCtxtModAction;
 
@@ -79,6 +80,7 @@ void F1APMsgHdlr(uint32_t *destDuId, Buffer *mBuf);
 uint8_t BuildAndSendUeContextModificationReq(uint32_t duId, void *ueCb, UeCtxtModAction action);
 uint8_t BuildAndSendUeContextReleaseCommand(uint32_t duId, uint8_t cuUeF1apId, uint8_t duUeF1apId);
 uint8_t BuildAndSendF1ResetReq();
+
 /**********************************************************************
          End of file
 **********************************************************************/

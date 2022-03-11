@@ -50,6 +50,7 @@
 #define CU_POOL 1
 
 #define MAX_NUM_OF_SLICE 1024 /* As per the spec 38.473, maxnoofSliceItems = 1024*/
+#define MAX_QOS_FLOWS 64
 
 /* allocate and zero out a static buffer */
 
@@ -119,6 +120,130 @@ typedef struct cuCfgParams
    RrcVersion       rrcVersion;
 }CuCfgParams;
 
+typedef struct handoverInfo
+{
+   uint32_t sourceDuId;
+   uint32_t targetDuId;
+}HandoverInfo;
+
+typedef struct dlAmCfg
+{
+   uint8_t        snLenDl;              /* Sequence Number length in bits. Allowed values are 12 and 18 */
+   int8_t         reAssemTmr;           /* T_reassembling Timer in msec*/
+   int16_t        statProhTmr;          /* T_status_prohibit Timer in msec*/
+}DlAmCfg;
+
+typedef struct ulAmCfg
+{
+   uint8_t      snLenUl;             /* Sequence Number length in bits. Allowed values are 12 and 18 */
+   uint16_t     pollRetxTmr;         /* T_poll_retransmit Timer in msec */
+   int16_t      pollPdu;             /* Used to trigger a poll for every pollPdu.*/
+   int32_t      pollByte;            /* Poll_Byte in bytes. */
+   uint8_t      maxRetxTh;           /* Max_Retx_Threshold */
+}UlAmCfg;
+
+typedef struct amBearerCfg
+{
+   UlAmCfg  ulAmCfg;
+   DlAmCfg  dlAmCfg;
+}AmBearerCfg;
+
+typedef struct ulUmCfg
+{
+   uint8_t        snLenUlUm;             /* Sequence Number length in bits. Allowed values are 6 and 12 */
+}UlUmCfg;
+
+typedef struct dlUmCfg
+{
+   uint8_t        snLenDlUm;             /* Sequence Number length in bits. Allowed values are 6 and 12 */
+   int8_t         reAssemTmr;            /* T_reassembling Timer in msec*/
+}DlUmCfg;
+
+typedef struct umBiDirBearerCfg
+{
+   UlUmCfg  ulUmCfg;
+   DlUmCfg  dlUmCfg;
+}UmBiDirBearerCfg;
+
+typedef struct umUniDirUlBearerCfg
+{
+   UlUmCfg  ulUmCfg;
+}UmUniDirUlBearerCfg;
+
+typedef struct umUniDirDlBearerCfg
+{
+   DlUmCfg  dlUmCfg;
+}UmUniDirDlBearerCfg;
+
+typedef struct rlcLcCfg
+{
+   uint8_t rlcMode;
+   union
+   {   
+      AmBearerCfg         amCfg;
+      UmBiDirBearerCfg    umBiDirCfg;
+      UmUniDirUlBearerCfg umUniDirUlCfg;
+      UmUniDirDlBearerCfg umUniDirDlCfg;
+   }u; 
+}RlcLcCfg;
+
+typedef struct macLcCfg
+{
+   uint8_t priority;
+   uint8_t lcGroup;
+   uint8_t schReqId;
+   uint8_t pbr;        // prioritisedBitRate
+   uint8_t bsd;        // bucketSizeDuration
+}MacLcCfg;
+
+typedef struct srbInfo
+{
+   uint8_t   srbId;
+   uint8_t   lcId;
+   RlcLcCfg  rlcLcCfg;
+   MacLcCfg  macLcCfg;
+   bool      cfgSentToUe;
+}SrbInfo;
+
+typedef struct qosInfo
+{
+   uint8_t nonDynFiveQI;
+   uint16_t avgWindow;
+   uint16_t maxBurstDataVol;
+   uint8_t priorityLevel;
+   uint8_t preemptionCapability;
+   uint8_t preemptionVulnerability;
+   uint8_t pduSessionId;
+}QosInfo;
+
+typedef struct flowsMapped
+{
+   uint8_t qosFlowId;
+   QosInfo qos;
+}FlowsMapped;
+
+typedef struct TnlInfo
+{
+   uint8_t address[4];
+   uint8_t teId[4];
+}TnlInfo;
+
+typedef struct drbInfo
+{
+   uint8_t drbId;
+   uint8_t lcId;
+   QosInfo qos;
+   Snssai *snssai;
+   uint8_t numFlowMap;
+   FlowsMapped flowMapList[MAX_QOS_FLOWS];
+   TnlInfo ulUpTnlInfo;
+   TnlInfo dlUpTnlInfo;
+   uint8_t rlcMode;
+   RlcLcCfg  rlcLcCfg;
+   MacLcCfg  macLcCfg;
+   bool      cfgSentToUe;
+}DrbInfo;
+
 typedef struct cuCellCb CuCellCb;
 
 typedef struct cuUeCb
@@ -127,8 +252,13 @@ typedef struct cuUeCb
    uint32_t  crnti;
    uint8_t   gnbDuUeF1apId;
    uint8_t   gnbCuUeF1apId;
+   uint8_t   numSrb;
+   SrbInfo   srbList[MAX_NUM_SRB];
+   uint8_t   numDrb;
+   DrbInfo   drbList[MAX_NUM_DRB];
    F1apMsgDb f1apMsgDb;
    UeState   state;
+   HandoverInfo hoInfo;
 }CuUeCb;
 
 struct cuCellCb

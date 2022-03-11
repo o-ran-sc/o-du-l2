@@ -35,6 +35,8 @@
 #include "UE-CapabilityRAT-Container.h"
 #include "UE-CapabilityRAT-ContainerList.h"
 #include "UE-CapabilityRAT-ContainerListRRC.h"
+#include "HandoverPreparationInformationRrc-IEs.h"
+#include "HandoverPreparationInformationRrc.h"
 #include "SupportedBandwidth.h"
 #include "FeatureSetUplinkPerCC.h"
 #include "FeatureSetDownlinkPerCC.h"
@@ -105,6 +107,31 @@
 #include "DRB-ToAddModList.h"
 #include "DRB-ToAddMod.h"
 #include "SDAP-Config.h"
+#include "SSB-MTC.h"
+#include "MeasTiming.h"
+#include "MeasTimingList.h"
+#include "MeasurementTimingConfigurationRrc-IEs.h"
+#include "MeasurementTimingConfigurationRrc.h"
+#include "PDCP-Config.h"
+#include "RSRP-Range.h"
+#include "RSRQ-Range.h"
+#include "SINR-Range.h"
+#include "ThresholdNR.h"
+#include "MeasObjectToAddMod.h"
+#include "MeasObjectNR.h"
+#include "MeasObjectToAddModList.h"
+#include "EventTriggerConfig.h"
+#include "ReportConfigNR.h"
+#include "ReportConfigToAddMod.h"
+#include "ReportConfigToAddModList.h"
+#include "MeasIdToAddMod.h"
+#include "MeasIdToAddModList.h"
+#include "FilterCoefficient.h"
+#include "QuantityConfigNR.h"
+#include "QuantityConfig.h"
+#include "MeasConfigRrc.h"
+#include "AS-Config.h"
+#include "RRCReconfiguration-v1530-IEs.h"
 
 /* MACRO for CUtoDURRCInformation */
 #define CELL_GRP_ID 1
@@ -203,6 +230,9 @@
 #define PDU_SESSION_ID_1 1
 #define PDU_SESSION_ID_2 2
 #define INVALID_PDU_SESSION_ID -1
+
+uint8_t fillCellGrpCfg(CuUeCb *ueCb, OCTET_STRING_t *cellGrp, bool updateAllRbCfg);
+uint8_t fillRrcReconfig(CuUeCb *ueCb, RRCReconfiguration_t *rrcReconfig, bool updateAllRbCfg);
 
 /*******************************************************************
  *
@@ -1000,39 +1030,49 @@ uint8_t BuildAndSendF1ResetReq()
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t fillSrbCfg(uint8_t srbId, SRB_ToAddModList_t *bearerCfg)
+uint8_t fillSrbCfg(CuUeCb *ueCb, SRB_ToAddModList_t *bearerCfg)
 {
-   uint8_t elementCnt;
-   uint8_t idx, ieId;
+   uint8_t elementCnt = 0;
+   uint8_t idx, ieId, srbIdx = 0;
+
+   for(srbIdx=0; srbIdx < ueCb->numSrb; srbIdx++)
+   {
+      if(ueCb->srbList[srbIdx].cfgSentToUe == false)
+         elementCnt++;
+   }
+
    if(bearerCfg != NULLP)
    {
-      elementCnt = 1;
       bearerCfg->list.count = elementCnt;
-      bearerCfg->list.size =\
-			    elementCnt * sizeof(SRB_ToAddMod_t *);
+      bearerCfg->list.size = elementCnt * sizeof(SRB_ToAddMod_t *);
       CU_ALLOC(bearerCfg->list.array, bearerCfg->list.size);
       if(bearerCfg->list.array != NULLP)
       {
-	 for(idx = 0; idx < elementCnt; idx++)
-	 {
-	    CU_ALLOC(bearerCfg->list.array[idx], sizeof(SRB_ToAddMod_t));
-	    if(bearerCfg->list.array[idx] == NULLP)
-	    {
-	       for(ieId = 0; ieId < idx; ieId++)
-	       {
-		  CU_FREE(bearerCfg->list.array[ieId], sizeof(SRB_ToAddMod_t));
-	       }
-	       CU_FREE(bearerCfg->list.array, bearerCfg->list.size);
-	       return RFAILED;
-	    }
-	 }
+         for(idx = 0; idx < elementCnt; idx++)
+         {
+            CU_ALLOC(bearerCfg->list.array[idx], sizeof(SRB_ToAddMod_t));
+            if(bearerCfg->list.array[idx] == NULLP)
+            {
+               for(ieId = 0; ieId < idx; ieId++)
+               {
+                  CU_FREE(bearerCfg->list.array[ieId], sizeof(SRB_ToAddMod_t));
+               }
+               CU_FREE(bearerCfg->list.array, bearerCfg->list.size);
+               return RFAILED;
+            }
+         }
       }
       else
       {
-	 return RFAILED;
+         return RFAILED;
       }
+
       idx = 0;
-      bearerCfg->list.array[idx]->srb_Identity = srbId;
+      for(srbIdx=0; srbIdx < ueCb->numSrb; srbIdx++)
+      {
+         if(ueCb->srbList[srbIdx].cfgSentToUe == false)
+            bearerCfg->list.array[idx++]->srb_Identity = ueCb->srbList[srbIdx].srbId;
+      }
    }
    return ROK;
 }
@@ -1098,22 +1138,30 @@ uint8_t fillMasterCellGroup(CuUeCb *ueCb, OCTET_STRING_t *masterCellGroup)
 
 uint8_t fillRRCSetupIE(CuUeCb *ueCb, RRCSetup_IEs_t *rrcSetupIE)
 {
-   uint8_t ret = ROK;
+   uint8_t ret = ROK, srbIdx = 0;
    if(rrcSetupIE)
    {
       CU_ALLOC(rrcSetupIE->radioBearerConfig.srb_ToAddModList, sizeof(SRB_ToAddModList_t));
       if(rrcSetupIE->radioBearerConfig.srb_ToAddModList != NULLP)
       {
-         ret = fillSrbCfg(SRB1, rrcSetupIE->radioBearerConfig.srb_ToAddModList);
+         ret = fillSrbCfg(ueCb, rrcSetupIE->radioBearerConfig.srb_ToAddModList);
       }		
       if(ret == ROK)
       {
-         ret = fillMasterCellGroup(ueCb, &rrcSetupIE->masterCellGroup);
+         ret = fillCellGrpCfg(ueCb, &rrcSetupIE->masterCellGroup, false);
       }
       else
       {
          CU_FREE(rrcSetupIE->radioBearerConfig.srb_ToAddModList, sizeof(SRB_ToAddModList_t));
          ret = RFAILED;
+      }
+      
+      /* If SRB configuration are filled successfully in RRC Setup, mark these
+       * configurartion as sent to UE */
+      for(srbIdx=0; srbIdx < ueCb->numSrb; srbIdx++)
+      {
+         if(ueCb->srbList[srbIdx].cfgSentToUe == false)
+            ueCb->srbList[srbIdx].cfgSentToUe = true;
       }
    }
    return ret;
@@ -1448,10 +1496,10 @@ uint8_t fillRrcReconfigIE(RRCReconfiguration_IEs_t *rrcReconfigMsg)
  *
  * ****************************************************************/
 
-uint8_t fillDlDcchRrcMsg(RRCContainer_t *rrcContainer)
+uint8_t fillDlDcchRrcMsg(CuUeCb *ueCb, RRCContainer_t *rrcContainer)
 {
    uint8_t ret = ROK;
-   uint16_t idx2;
+   uint16_t idx2 = 0, drbIdx = 0, srbIdx = 0;
    DL_DCCH_Message_t dl_DCCH_Msg;
    memset(&dl_DCCH_Msg, 0, sizeof(DL_DCCH_Message_t));
    asn_enc_rval_t        encRetVal;
@@ -1463,76 +1511,69 @@ uint8_t fillDlDcchRrcMsg(RRCContainer_t *rrcContainer)
       CU_ALLOC(dl_DCCH_Msg.message.choice.c1 , sizeof(DL_DCCH_MessageType_t));
       if(dl_DCCH_Msg.message.choice.c1 != NULLP)
       {
-	 dl_DCCH_Msg.message.choice.c1->present = DL_DCCH_MessageType__c1_PR_rrcReconfiguration;
-	 CU_ALLOC(dl_DCCH_Msg.message.choice.c1->choice.rrcReconfiguration, sizeof(RRCReconfiguration_t));
-	 if(dl_DCCH_Msg.message.choice.c1->choice.rrcReconfiguration != NULLP)
-	 {
-	    dl_DCCH_Msg.message.choice.c1->choice.rrcReconfiguration->rrc_TransactionIdentifier = 0;
-	    dl_DCCH_Msg.message.choice.c1->choice.rrcReconfiguration->criticalExtensions.\
-	       present = RRCReconfiguration__criticalExtensions_PR_rrcReconfiguration;
-	    /* Fill RRC Reconfig IE */
-	    CU_ALLOC(dl_DCCH_Msg.message.choice.c1->choice.rrcReconfiguration->\
-		  criticalExtensions.choice.rrcReconfiguration, sizeof(RRCReconfiguration_IEs_t));
-	    if(dl_DCCH_Msg.message.choice.c1->choice.rrcReconfiguration->\
-		  criticalExtensions.choice.rrcReconfiguration != NULLP)
-	    {
-	       ret = fillRrcReconfigIE(dl_DCCH_Msg.message.choice.c1->choice.rrcReconfiguration->\
-		     criticalExtensions.choice.rrcReconfiguration);
+         dl_DCCH_Msg.message.choice.c1->present = DL_DCCH_MessageType__c1_PR_rrcReconfiguration;
+         CU_ALLOC(dl_DCCH_Msg.message.choice.c1->choice.rrcReconfiguration, sizeof(RRCReconfiguration_t));
+         if(dl_DCCH_Msg.message.choice.c1->choice.rrcReconfiguration != NULLP)
+         {
+            DU_LOG("\nDEBUG --> F1AP : Filling DL DCCH RRC Reconfiguration Message ");
+            fillRrcReconfig(ueCb, dl_DCCH_Msg.message.choice.c1->choice.rrcReconfiguration, false);
+            if(ret == ROK)
+            {
+               /* If SRB configuration are filled successfully in RRC Reconfiguration, mark these
+                * configurartion as sent to UE */
+               for(srbIdx=0; srbIdx < ueCb->numSrb; srbIdx++)
+               {     
+                  if(ueCb->srbList[srbIdx].cfgSentToUe == false)
+                     ueCb->srbList[srbIdx].cfgSentToUe = true; 
+               }
+               for(drbIdx=0; drbIdx < ueCb->numDrb; drbIdx++)
+               {
+                  if(ueCb->drbList[drbIdx].cfgSentToUe == false)
+                     ueCb->drbList[drbIdx].cfgSentToUe = true;
+               }
 
-	       if(ret == ROK)
-	       {
-		  /* encode DL-DCCH message into RRC Container */
-		  xer_fprint(stdout, &asn_DEF_DL_DCCH_MessageType, &dl_DCCH_Msg);
-		  memset(encBuf, 0, ENC_BUF_MAX_LEN);
-		  encBufSize = 0;
-		  encRetVal = aper_encode(&asn_DEF_DL_DCCH_MessageType, 0, &dl_DCCH_Msg, PrepFinalEncBuf, encBuf);
-		  /* Encode results */
-		  if(encRetVal.encoded == ENCODE_FAIL)
-		  {
-		     DU_LOG( "\nERROR  -->  F1AP : Could not encode RRCContainer for DL-DCCH Msg (at %s)\n",\
-			   encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
-		     return RFAILED;
-		  }
-		  else
-		  {
-		     DU_LOG("\nDEBUG  -->  F1AP : Created APER encoded buffer for RRCContainer for DL-DCCH Msg\n");
-		     for(int i = 0; i< encBufSize; i++)
-		     {
-			DU_LOG("%x",encBuf[i]);
-		     }
-		     rrcContainer->size = encBufSize;
-		     CU_ALLOC(rrcContainer->buf, rrcContainer->size);
-		     if(rrcContainer->buf != NULLP)
-		     {
-			memset(rrcContainer->buf, 0, encBufSize);
-			for(idx2 = 0; idx2 < encBufSize; idx2++)
-			{
-			   rrcContainer->buf[idx2] =	encBuf[idx2];
-			}
-		     }
-		  }
-	       }
-	       else
-	       {
-		  DU_LOG("\nERROR  -->  F1AP: Failed to fill RrcReconfig IE at fillDlDcchRrcMsg()");
-	       }
-	    }
-	    else
-	    {
-	       DU_LOG("\nERROR  -->  F1AP: Memory Alloc failed for RRC Reconfig at fillDlDcchRrcMsg()");
-	       ret = RFAILED;
-	    }
-	 }
-	 else
-	 {
-	    DU_LOG("\nERROR  -->  F1AP: Memory Alloc failed for RRC Msg at fillDlDcchRrcMsg()");
-	    ret = RFAILED;
-	 }
+               /* encode DL-DCCH message into RRC Container */
+               xer_fprint(stdout, &asn_DEF_DL_DCCH_MessageType, &dl_DCCH_Msg);
+               memset(encBuf, 0, ENC_BUF_MAX_LEN);
+               encBufSize = 0;
+               encRetVal = aper_encode(&asn_DEF_DL_DCCH_MessageType, 0, &dl_DCCH_Msg, PrepFinalEncBuf, encBuf);
+               /* Encode results */
+               if(encRetVal.encoded == ENCODE_FAIL)
+               {
+                  DU_LOG( "\nERROR  -->  F1AP : Could not encode RRCContainer for DL-DCCH Msg (at %s)\n",\
+                        encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
+                  return RFAILED;
+               }
+               else
+               {
+                  DU_LOG("\nDEBUG  -->  F1AP : Created APER encoded buffer for RRCContainer for DL-DCCH Msg\n");
+                  for(int i = 0; i< encBufSize; i++)
+                  {
+                     DU_LOG("%x",encBuf[i]);
+                  }
+                  rrcContainer->size = encBufSize;
+                  CU_ALLOC(rrcContainer->buf, rrcContainer->size);
+                  if(rrcContainer->buf != NULLP)
+                  {
+                     memset(rrcContainer->buf, 0, encBufSize);
+                     for(idx2 = 0; idx2 < encBufSize; idx2++)
+                     {
+                        rrcContainer->buf[idx2] =	encBuf[idx2];
+                     }
+                  }
+               }
+            }
+         }
+         else
+         {
+            DU_LOG("\nERROR  -->  F1AP: Memory Alloc failed for RRC Msg at fillDlDcchRrcMsg()");
+            ret = RFAILED;
+         }
       }
       else
       {
-	 DU_LOG("\nERROR  -->  F1AP: Memory Alloc failed for DL Dcch Msg choice at fillDlDcchRrcMsg()");
-	 ret = RFAILED;
+         DU_LOG("\nERROR  -->  F1AP: Memory Alloc failed for DL Dcch Msg choice at fillDlDcchRrcMsg()");
+         ret = RFAILED;
       }
    }
    else
@@ -1592,34 +1633,10 @@ uint8_t	BuildDLRRCContainer(CuUeCb *ueCb, uint8_t rrcMsgType, RRCContainer_t *rr
    }
    else if(rrcMsgType == RRC_RECONFIG)
    {
-      /*Hardcoded RRC Container from reference logs*/
-      char buf[196]= { 
-         0x00, 0x04, 0x00, 0xaa, 0x80, 0x40, 0x9a, 0x05, 0x20, 0x00, 0x05, 0xeb, 0xc0, 0x51, 0x50, 0x00,
-         0x03, 0x00, 0x03, 0xf7, 0x56, 0xec, 0x7f, 0x08, 0x42, 0x10, 0x80, 0x00, 0x10, 0x21, 0x47, 0x84,
-         0xd1, 0x00, 0x00, 0x00, 0x02, 0x81, 0x5d, 0x10, 0x0a, 0xc2, 0x44, 0x40, 0x2b, 0xb2, 0x07, 0x41,
-         0x87, 0xa8, 0x02, 0xc7, 0x00, 0x88, 0x05, 0x76, 0x40, 0xe8, 0x30, 0xf5, 0x40, 0x4c, 0x00, 0x10,
-         0x02, 0x00, 0xa5, 0x83, 0xe0, 0x60, 0x02, 0x10, 0x72, 0x01, 0x0c, 0xa0, 0xa0, 0xd8, 0x00, 0x00,
-         0x00, 0x01, 0x0f, 0x02, 0x3c, 0x01, 0x80, 0x10, 0x82, 0xb0, 0x40, 0x00, 0x00, 0x02, 0x1e, 0x04,
-         0x78, 0x07, 0x00, 0x21, 0x05, 0x61, 0x00, 0x00, 0x00, 0x04, 0x3c, 0x08, 0xf0, 0x16, 0x00, 0x42,
-         0x0a, 0xc3, 0x00, 0x00, 0x00, 0x08, 0x78, 0x11, 0xe0, 0x3c, 0x00, 0x84, 0x14, 0x00, 0x07, 0xe5,
-         0xc0, 0xa0, 0xd8, 0x42, 0x20, 0x02, 0x80, 0xa0, 0x02, 0x24, 0x47, 0xa0, 0x20, 0x27, 0xa1, 0x22,
-         0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x24, 0x41, 0x20, 0xc0, 0x80, 0x00, 0x20, 0x80,
-         0x00, 0x25, 0x20, 0xa0, 0x38, 0x00, 0x00, 0x00, 0x44, 0xa2, 0x82, 0x69, 0xee, 0x0c, 0xad, 0xca,
-         0x4c, 0x2c, 0x8d, 0x2e, 0x6f, 0x2e, 0x69, 0x2d, 0xce, 0x8c, 0xae, 0x4d, 0xcc, 0xae, 0x80, 0x00,
-         0x00, 0x00, 0x00, 0x00};
-      bufLen =196;
-      rrcContainer->size = bufLen;
-      CU_ALLOC(rrcContainer->buf, rrcContainer->size);
-      if(rrcContainer->buf != NULLP)
-      {
-         memset(rrcContainer->buf, 0, bufLen);
-         memcpy(rrcContainer->buf, buf, bufLen);
-      }
-      else
-      {
-         DU_LOG("\nERROR  -->  F1AP : Memory allocation failure for RRC Container buffer");
-         ret = RFAILED;
-      }
+      DU_LOG("\nDEBUG --> F1AP : Filling DL DCCH RRC Message ");
+      ret = fillDlDcchRrcMsg(ueCb, rrcContainer);
+      if(ret == RFAILED)
+         DU_LOG("\nERROR  -->  F1AP: Failed to fill DL-DCCH Msg for RRC Reconfiguration");
    }
 
    return ret;
@@ -1854,6 +1871,163 @@ uint8_t setDlRRCMsgType(CuUeCb *ueCb)
    return rrcMsgType;   
 }
 
+uint8_t extractCellGroupConfig(CuUeCb *ueCb, CellGroupConfigRrc_t *cellGrpCfg)
+{
+   uint8_t rbIdx, srbIdx, drbIdx;
+   bool    srbFound, drbFound;
+   SrbInfo *srbCfgDb = NULLP;
+   DrbInfo *drbCfgDb = NULLP;
+   RlcLcCfg *rlcLcCfgDb = NULLP;
+   MacLcCfg *macLcCfgDb = NULLP;
+   RLC_BearerConfig_t *rlcCfg = NULLP;
+   RLC_Config_t *rlcLcCfg = NULLP;
+   LogicalChannelConfig_t *macLcCfg = NULLP;
+
+   for(rbIdx = 0; rbIdx < cellGrpCfg->rlc_BearerToAddModList->list.count; rbIdx++)
+   {
+      srbFound = false;
+      drbFound = true;
+
+      rlcCfg = cellGrpCfg->rlc_BearerToAddModList->list.array[rbIdx];
+
+      /* Update SRB configuration in local DB */
+      if(rlcCfg->servedRadioBearer->present == RLC_BearerConfig__servedRadioBearer_PR_srb_Identity)
+      {
+         /* Search if SRB entry is already present in DB */
+         for(srbIdx = 0; srbIdx < ueCb->numSrb; srbIdx++)
+         {
+            if(ueCb->srbList[srbIdx].srbId == rlcCfg->servedRadioBearer->choice.srb_Identity)
+            {
+              srbCfgDb = &ueCb->srbList[srbIdx];
+              srbFound = true; 
+              break;
+            }
+         }
+
+         /* If not, add SRB to UE CB's SRB list */
+         if(!srbFound)
+         {
+            ueCb->srbList[ueCb->numSrb].srbId = rlcCfg->servedRadioBearer->choice.srb_Identity;
+            srbCfgDb = &ueCb->srbList[ueCb->numSrb];
+            ueCb->numSrb++;
+         }
+
+         srbCfgDb->lcId = rlcCfg->logicalChannelIdentity;
+         srbCfgDb->cfgSentToUe = false;
+         rlcLcCfgDb = &srbCfgDb->rlcLcCfg;
+         macLcCfgDb = &srbCfgDb->macLcCfg;
+      }
+
+      /* Update DRB configuration in local DB */
+      if(rlcCfg->servedRadioBearer->present == RLC_BearerConfig__servedRadioBearer_PR_drb_Identity)
+      {     
+         /* Search if SRB entry is already present in DB */
+         for(drbIdx = 0; drbIdx < ueCb->numDrb; drbIdx++)
+         {
+            if(ueCb->drbList[drbIdx].drbId == rlcCfg->servedRadioBearer->choice.drb_Identity)
+            {
+              drbCfgDb = &ueCb->drbList[drbIdx];
+              drbFound = true; 
+              break;
+            }
+         }
+
+         /* If not, add DRB to UE CB's SRB list */
+         if(!drbFound)
+         {
+            ueCb->drbList[ueCb->numDrb].drbId = rlcCfg->servedRadioBearer->choice.drb_Identity;
+            drbCfgDb = &ueCb->drbList[ueCb->numDrb];
+            ueCb->numDrb++;
+         }
+
+         drbCfgDb->lcId = rlcCfg->logicalChannelIdentity;
+         drbCfgDb->cfgSentToUe = false;
+         rlcLcCfgDb = &drbCfgDb->rlcLcCfg;
+         macLcCfgDb = &drbCfgDb->macLcCfg;
+      }
+
+
+      /* Update RLC configuration for this RB */
+      rlcLcCfg = rlcCfg->rlc_Config;
+      rlcLcCfgDb->rlcMode = rlcLcCfg->present;
+      switch(rlcLcCfgDb->rlcMode)
+      {
+         case RLC_Config_PR_am:
+            {
+               rlcLcCfgDb->u.amCfg.ulAmCfg.snLenUl = *(rlcLcCfg->choice.am->ul_AM_RLC.sn_FieldLength);
+               rlcLcCfgDb->u.amCfg.ulAmCfg.pollRetxTmr = rlcLcCfg->choice.am->ul_AM_RLC.t_PollRetransmit ;
+               rlcLcCfgDb->u.amCfg.ulAmCfg.pollPdu = rlcLcCfg->choice.am->ul_AM_RLC.pollPDU ;
+               rlcLcCfgDb->u.amCfg.ulAmCfg.pollByte = rlcLcCfg->choice.am->ul_AM_RLC.pollByte ;
+               rlcLcCfgDb->u.amCfg.ulAmCfg.maxRetxTh = rlcLcCfg->choice.am->ul_AM_RLC.maxRetxThreshold ;
+
+               rlcLcCfgDb->u.amCfg.dlAmCfg.snLenDl = *(rlcLcCfg->choice.am->dl_AM_RLC.sn_FieldLength);
+               rlcLcCfgDb->u.amCfg.dlAmCfg.reAssemTmr = rlcLcCfg->choice.am->dl_AM_RLC.t_Reassembly;
+               rlcLcCfgDb->u.amCfg.dlAmCfg.statProhTmr = rlcLcCfg->choice.am->dl_AM_RLC.t_StatusProhibit;
+               break;
+            }
+
+         case RLC_Config_PR_um_Bi_Directional:
+            {
+               rlcLcCfgDb->u.umBiDirCfg.ulUmCfg.snLenUlUm = *(rlcLcCfg->choice.um_Bi_Directional->ul_UM_RLC.sn_FieldLength);
+
+               rlcLcCfgDb->u.umBiDirCfg.dlUmCfg.snLenDlUm = *(rlcLcCfg->choice.um_Bi_Directional->dl_UM_RLC.sn_FieldLength);
+               rlcLcCfgDb->u.umBiDirCfg.dlUmCfg.reAssemTmr = rlcLcCfg->choice.um_Bi_Directional->dl_UM_RLC.t_Reassembly;
+               break;
+            }
+      }
+
+      /* Update MAC configuration for this LC */
+      macLcCfg = rlcCfg->mac_LogicalChannelConfig;
+      macLcCfgDb->priority = macLcCfg->ul_SpecificParameters->priority ;
+      macLcCfgDb->lcGroup = *(macLcCfg->ul_SpecificParameters->logicalChannelGroup) ;
+      macLcCfgDb->schReqId = *(macLcCfg->ul_SpecificParameters->schedulingRequestID) ;
+      macLcCfgDb->pbr = macLcCfg->ul_SpecificParameters->prioritisedBitRate ;
+      macLcCfgDb->bsd = macLcCfg->ul_SpecificParameters->bucketSizeDuration ;
+   }
+   return ROK;   
+}
+
+/*******************************************************************
+ *
+ * @brief Function to decode DU to CU RRC container
+ *
+ * @details
+ *
+ *    Function : extractDuToCuRrcCont
+ *
+ *    Functionality: Function to decode DU to CU RRC container
+ *
+ * @params[in] UE Cb
+ *             RRC conatiner octect string to be decoded
+ *
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t extractDuToCuRrcCont(CuUeCb *ueCb, OCTET_STRING_t rrcCont)
+{
+   CellGroupConfigRrc_t  cellGrpCfg, *cellGrpCfgMsg = NULLP;
+   asn_dec_rval_t rval; /* Decoder return value */
+
+   /* Decoding DU to CU RRC container octet string to cell group config */
+   cellGrpCfgMsg = &cellGrpCfg;
+   memset(cellGrpCfgMsg, 0, sizeof(CellGroupConfigRrc_t));
+
+   rval = aper_decode(0, &asn_DEF_CellGroupConfigRrc, (void **)&cellGrpCfgMsg, rrcCont.buf, rrcCont.size, 0, 0);
+
+   if(rval.code == RC_FAIL || rval.code == RC_WMORE)
+   {
+      DU_LOG("\nERROR  -->  F1AP : ASN decode failed");
+      return;
+   }
+   printf("\n");
+   xer_fprint(stdout, &asn_DEF_CellGroupConfigRrc, cellGrpCfgMsg);
+
+   extractCellGroupConfig(ueCb, cellGrpCfgMsg);
+  
+   return ROK;
+}
+
 /*******************************************************************
  *
  * @brief Function to build Initial UL RRC Message
@@ -1937,6 +2111,7 @@ uint8_t procInitULRRCMsg(uint32_t duId, F1AP_PDU_t *f1apMsg)
                         initULRRCMsg->protocolIEs.list.array[idx]->value.choice.DUtoCURRCContainer.buf, \
                         ueCb->f1apMsgDb.duToCuContainer.size);
                   }
+                  extractDuToCuRrcCont(ueCb, initULRRCMsg->protocolIEs.list.array[idx]->value.choice.DUtoCURRCContainer);
                }
                else
                {
@@ -2075,12 +2250,15 @@ uint8_t BuildSplCellList(CuUeCb *ueCb, SCell_ToBeSetup_List_t *spCellLst)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t BuildSRBSetup(SRBs_ToBeSetup_List_t *srbSet)
+uint8_t BuildSRBSetup(CuUeCb *ueCb, SRBs_ToBeSetup_List_t *srbSet)
 {
    uint8_t idx;
    uint8_t srbCnt;
 
-   srbCnt = 1;
+   if(ueCb->state == UE_HANDOVER_IN_PROGRESS)
+      srbCnt = ueCb->numSrb;
+   else
+      srbCnt = 1;
    srbSet->list.count = srbCnt;
    srbSet->list.size = srbCnt*sizeof(SRBs_ToBeSetup_ItemIEs_t *);
    CU_ALLOC(srbSet->list.array,srbSet->list.size);
@@ -2094,15 +2272,30 @@ uint8_t BuildSRBSetup(SRBs_ToBeSetup_List_t *srbSet)
       CU_ALLOC(srbSet->list.array[idx],sizeof(SRBs_ToBeSetup_ItemIEs_t));
       if(srbSet->list.array[idx] == NULLP)
       {
-	 return RFAILED;
+         return RFAILED;
       }
    }
 
-   idx = 0;
-   srbSet->list.array[idx]->id = ProtocolIE_ID_id_SRBs_ToBeSetup_Item;
-   srbSet->list.array[idx]->criticality = Criticality_ignore;
-   srbSet->list.array[idx]->value.present = SRBs_ToBeSetup_ItemIEs__value_PR_SRBs_ToBeSetup_Item;
-   srbSet->list.array[idx]->value.choice.SRBs_ToBeSetup_Item.sRBID = 2;
+   if(ueCb->state != UE_HANDOVER_IN_PROGRESS)
+   {
+      idx = 0;
+      srbSet->list.array[idx]->id = ProtocolIE_ID_id_SRBs_ToBeSetup_Item;
+      srbSet->list.array[idx]->criticality = Criticality_ignore;
+      srbSet->list.array[idx]->value.present = SRBs_ToBeSetup_ItemIEs__value_PR_SRBs_ToBeSetup_Item;
+      srbSet->list.array[idx]->value.choice.SRBs_ToBeSetup_Item.sRBID = 2;
+      ueCb->srbList[ueCb->numSrb].srbId = srbSet->list.array[idx]->value.choice.SRBs_ToBeSetup_Item.sRBID;
+      ueCb->numSrb++;
+   }
+   else
+   {
+      for(idx=0; idx<srbCnt; idx++)
+      {
+         srbSet->list.array[idx]->id = ProtocolIE_ID_id_SRBs_ToBeSetup_Item;
+         srbSet->list.array[idx]->criticality = Criticality_ignore;
+         srbSet->list.array[idx]->value.present = SRBs_ToBeSetup_ItemIEs__value_PR_SRBs_ToBeSetup_Item;
+         srbSet->list.array[idx]->value.choice.SRBs_ToBeSetup_Item.sRBID = ueCb->srbList[idx].srbId; 
+      }
+   }
    return ROK;
 }/* End of BuildSRBSetup*/
 
@@ -2123,8 +2316,7 @@ uint8_t BuildSRBSetup(SRBs_ToBeSetup_List_t *srbSet)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t BuildQOSInfo(QoSFlowLevelQoSParameters_t *drbQos, uint8_t actionType, \
-                        int16_t pduSessionID)
+uint8_t BuildQOSInfo(QosInfo *qosInfo, QoSFlowLevelQoSParameters_t *drbQos, uint8_t actionType, int16_t pduSessionID, bool hoInProgress)
 {
    uint8_t elementCnt = 0, qosCntIdx = 0;
    ProtocolExtensionContainer_4624P74_t *qosIeExt = NULLP;
@@ -2136,84 +2328,111 @@ uint8_t BuildQOSInfo(QoSFlowLevelQoSParameters_t *drbQos, uint8_t actionType, \
    {
       return RFAILED;
    }
-   /*FiveQI*/
-   if(actionType == ProtocolIE_ID_id_DRBs_ToBeModified_Item)
-      drbQos->qoS_Characteristics.choice.non_Dynamic_5QI->fiveQI = FIVE_QI_VALUE8;
+   
+   if(hoInProgress)
+      drbQos->qoS_Characteristics.choice.non_Dynamic_5QI->fiveQI = qosInfo->nonDynFiveQI ;
    else
-      drbQos->qoS_Characteristics.choice.non_Dynamic_5QI->fiveQI = FIVE_QI_VALUE9;
+   {
+      /*FiveQI*/
+      if(actionType == ProtocolIE_ID_id_DRBs_ToBeModified_Item)
+         drbQos->qoS_Characteristics.choice.non_Dynamic_5QI->fiveQI = FIVE_QI_VALUE8;
+      else
+         drbQos->qoS_Characteristics.choice.non_Dynamic_5QI->fiveQI = FIVE_QI_VALUE9;
 
-   /*AveragingWindow*/
-   CU_ALLOC(drbQos->qoS_Characteristics.choice.non_Dynamic_5QI->averagingWindow,\
-         sizeof(AveragingWindow_t));
-   if(drbQos->qoS_Characteristics.choice.non_Dynamic_5QI->averagingWindow == \
-         NULLP)
-   {
-      return RFAILED;
+      qosInfo->nonDynFiveQI = drbQos->qoS_Characteristics.choice.non_Dynamic_5QI->fiveQI;
    }
-   *(drbQos->qoS_Characteristics.choice.non_Dynamic_5QI->averagingWindow) = 0;
-   /*MaxDataBurstVolume*/
-   CU_ALLOC(drbQos->qoS_Characteristics.choice.non_Dynamic_5QI->maxDataBurstVolume,\
-         sizeof(MaxDataBurstVolume_t));
-   if(drbQos->qoS_Characteristics.choice.non_Dynamic_5QI->maxDataBurstVolume == \
-         NULLP)
+
+   if(!hoInProgress)
    {
-      return RFAILED;
+      /*AveragingWindow*/
+      CU_ALLOC(drbQos->qoS_Characteristics.choice.non_Dynamic_5QI->averagingWindow, sizeof(AveragingWindow_t));
+      if(drbQos->qoS_Characteristics.choice.non_Dynamic_5QI->averagingWindow == NULLP)
+      {
+         return RFAILED;
+      }
+      *(drbQos->qoS_Characteristics.choice.non_Dynamic_5QI->averagingWindow) = 0;
+      qosInfo->avgWindow = *(drbQos->qoS_Characteristics.choice.non_Dynamic_5QI->averagingWindow);
+
+      /*MaxDataBurstVolume*/
+      CU_ALLOC(drbQos->qoS_Characteristics.choice.non_Dynamic_5QI->maxDataBurstVolume, sizeof(MaxDataBurstVolume_t));
+      if(drbQos->qoS_Characteristics.choice.non_Dynamic_5QI->maxDataBurstVolume == NULLP)
+      {
+         return RFAILED;
+      }
+      *(drbQos->qoS_Characteristics.choice.non_Dynamic_5QI->maxDataBurstVolume) = 0;
+      qosInfo->maxBurstDataVol = *(drbQos->qoS_Characteristics.choice.non_Dynamic_5QI->maxDataBurstVolume);
    }
-   *(drbQos->qoS_Characteristics.choice.non_Dynamic_5QI->maxDataBurstVolume) = 0;
 
    /*nRGRAN Allocation Retention Priority*/
-   drbQos->nGRANallocationRetentionPriority.priorityLevel = PriorityLevel_lowest;
-   drbQos->nGRANallocationRetentionPriority.pre_emptionCapability = Pre_emptionCapability_may_trigger_pre_emption;
-   drbQos->nGRANallocationRetentionPriority.pre_emptionVulnerability = Pre_emptionVulnerability_not_pre_emptable;
-
-   /*If PDU Session ID is INVALID thus not to be included in Qos IE, skip the PDU Session IE */
-   if(pduSessionID <= INVALID_PDU_SESSION_ID)
+   if(hoInProgress)
    {
-      DU_LOG("\nINFO  --> F1AP : Invalid PDU_SESSION_ID");
-      return ROK;
-   }
-
-   CU_ALLOC(drbQos->iE_Extensions, sizeof(ProtocolExtensionContainer_4624P74_t));
-   qosIeExt = (ProtocolExtensionContainer_4624P74_t *)drbQos->iE_Extensions;
-
-   if(qosIeExt)
-   {
-      elementCnt = NUM_QOS_EXT;
-      qosIeExt->list.count = elementCnt;
-      qosIeExt->list.size = elementCnt * sizeof(QoSFlowLevelQoSParameters_ExtIEs_t *);
-
-      /*Initialize QoSFlowLevelQoSParameters_ExtIEs_t*/
-      CU_ALLOC(qosIeExt->list.array, qosIeExt->list.size);
-
-      if(qosIeExt->list.array == NULLP)
-      {
-         DU_LOG("\nERROR  -->	F1AP : Memory allocation for QoSFlowLevelQoSParameters_ExtIEs_t failed");
-         return  RFAILED;
-      }
-
-      for(qosCntIdx=0; qosCntIdx < elementCnt; qosCntIdx++)
-      {
-         CU_ALLOC(qosIeExt->list.array[qosCntIdx], sizeof(QoSFlowLevelQoSParameters_ExtIEs_t));
-         if(qosIeExt->list.array[qosCntIdx] == NULLP)
-         {
-            DU_LOG("\nERROR  -->	F1AP : Memory allocation for QoSFlowLevelQoSParameters_ExtIEs_t array failed");
-            return  RFAILED;
-         }
-         /*Filling QoSFlowLevelQoSParameters_ExtIEs_t*/
-         qosIeExt->list.array[qosCntIdx]->id = ProtocolIE_ID_id_PDUSessionID;
-         /*Below Criticality mentioned in Spec38.473, 15.4.1 and later*/
-         qosIeExt->list.array[qosCntIdx]->criticality = Criticality_ignore; 
-         qosIeExt->list.array[qosCntIdx]->extensionValue.present = \
-                                                                   QoSFlowLevelQoSParameters_ExtIEs__extensionValue_PR_PDUSessionID;
-         qosIeExt->list.array[qosCntIdx]->extensionValue.choice.PDUSessionID = (PDUSessionID_t)pduSessionID;
-      }
+      drbQos->nGRANallocationRetentionPriority.priorityLevel = qosInfo->priorityLevel;
+      drbQos->nGRANallocationRetentionPriority.pre_emptionCapability = qosInfo->preemptionCapability;
+      drbQos->nGRANallocationRetentionPriority.pre_emptionVulnerability = qosInfo->preemptionVulnerability;
    }
    else
    {
-      DU_LOG("\nERROR  -->	F1AP : Memory allocation for QosIE_extension failed");
-      return RFAILED;
+      drbQos->nGRANallocationRetentionPriority.priorityLevel = PriorityLevel_lowest;
+      drbQos->nGRANallocationRetentionPriority.pre_emptionCapability = Pre_emptionCapability_may_trigger_pre_emption;
+      drbQos->nGRANallocationRetentionPriority.pre_emptionVulnerability = Pre_emptionVulnerability_not_pre_emptable;
+
+      qosInfo->priorityLevel = PriorityLevel_lowest;
+      qosInfo->preemptionCapability = Pre_emptionCapability_may_trigger_pre_emption;
+      qosInfo->preemptionVulnerability = Pre_emptionVulnerability_not_pre_emptable;
    }
 
+   /* PDU session ID */
+   if(!hoInProgress)
+   {
+      /*If PDU Session ID is INVALID thus not to be included in Qos IE, skip the PDU Session IE */
+      if(pduSessionID <= INVALID_PDU_SESSION_ID)
+      {
+         DU_LOG("\nINFO  --> F1AP : Invalid PDU_SESSION_ID");
+         return ROK;
+      }
+
+      CU_ALLOC(drbQos->iE_Extensions, sizeof(ProtocolExtensionContainer_4624P74_t));
+      qosIeExt = (ProtocolExtensionContainer_4624P74_t *)drbQos->iE_Extensions;
+
+      if(qosIeExt)
+      {
+         elementCnt = NUM_QOS_EXT;
+         qosIeExt->list.count = elementCnt;
+         qosIeExt->list.size = elementCnt * sizeof(QoSFlowLevelQoSParameters_ExtIEs_t *);
+
+         /*Initialize QoSFlowLevelQoSParameters_ExtIEs_t*/
+         CU_ALLOC(qosIeExt->list.array, qosIeExt->list.size);
+
+         if(qosIeExt->list.array == NULLP)
+         {
+            DU_LOG("\nERROR  -->	F1AP : Memory allocation for QoSFlowLevelQoSParameters_ExtIEs_t failed");
+            return  RFAILED;
+         }
+
+         for(qosCntIdx=0; qosCntIdx < elementCnt; qosCntIdx++)
+         {
+            CU_ALLOC(qosIeExt->list.array[qosCntIdx], sizeof(QoSFlowLevelQoSParameters_ExtIEs_t));
+            if(qosIeExt->list.array[qosCntIdx] == NULLP)
+            {
+               DU_LOG("\nERROR  -->	F1AP : Memory allocation for QoSFlowLevelQoSParameters_ExtIEs_t array failed");
+               return  RFAILED;
+            }
+            /*Filling QoSFlowLevelQoSParameters_ExtIEs_t*/
+            qosIeExt->list.array[qosCntIdx]->id = ProtocolIE_ID_id_PDUSessionID;
+            /*Below Criticality mentioned in Spec38.473, 15.4.1 and later*/
+            qosIeExt->list.array[qosCntIdx]->criticality = Criticality_ignore; 
+            qosIeExt->list.array[qosCntIdx]->extensionValue.present = \
+                                                                      QoSFlowLevelQoSParameters_ExtIEs__extensionValue_PR_PDUSessionID;
+            qosIeExt->list.array[qosCntIdx]->extensionValue.choice.PDUSessionID = (PDUSessionID_t)pduSessionID;
+            qosInfo->pduSessionId = pduSessionID;
+         }
+      }
+      else
+      {
+         DU_LOG("\nERROR  -->	F1AP : Memory allocation for QosIE_extension failed");
+         return RFAILED;
+      }
+   }
    return ROK;
 }/*End of BuildQOSInfo*/
 
@@ -2234,30 +2453,40 @@ uint8_t BuildQOSInfo(QoSFlowLevelQoSParameters_t *drbQos, uint8_t actionType, \
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t BuildSNSSAI(SNSSAI_t *snssai, Snssai *snssaiToCopy)
+uint8_t BuildSNSSAI(DrbInfo *drbInfo, SNSSAI_t *snssai, Snssai *snssaiToCopy, bool hoInProgress)
 {
    /*SNSSAI*/
    /*ssT*/
    snssai->sST.size = sizeof(uint8_t);
-   CU_ALLOC(snssai->sST.buf,snssai->sST.size);
+   CU_ALLOC(snssai->sST.buf, snssai->sST.size);
    if(snssai->sST.buf == NULLP)
    {
       return RFAILED;
    }
-   memcpy(snssai->sST.buf, &snssaiToCopy->sst, snssai->sST.size);
+   if(!hoInProgress)
+      memcpy(snssai->sST.buf, &snssaiToCopy->sst, snssai->sST.size);
+   else
+      memcpy(snssai->sST.buf, &drbInfo->snssai->sst, snssai->sST.size);
+
    /*sD*/
-   CU_ALLOC(snssai->sD,sizeof(OCTET_STRING_t));
+   CU_ALLOC(snssai->sD, sizeof(OCTET_STRING_t));
    if(snssai->sD == NULLP)
    {
       return RFAILED;
    }
-   snssai->sD->size = 3*sizeof(uint8_t);
-   CU_ALLOC(snssai->sD->buf,snssai->sD->size);
+   snssai->sD->size = 3 * sizeof(uint8_t);
+   CU_ALLOC(snssai->sD->buf, snssai->sD->size);
    if(snssai->sD->buf == NULLP)
    {
       return RFAILED;
    }
-   memcpy(snssai->sD->buf, snssaiToCopy->sd, snssai->sD->size);
+   if(!hoInProgress)
+      memcpy(snssai->sD->buf, snssaiToCopy->sd, snssai->sD->size);
+   else
+      memcpy(snssai->sD->buf, drbInfo->snssai->sd, snssai->sD->size);
+
+   if(!hoInProgress)
+      drbInfo->snssai = snssaiToCopy;
    return ROK;
 }/*End of BuildSNSSAI*/
 
@@ -2277,11 +2506,15 @@ uint8_t BuildSNSSAI(SNSSAI_t *snssai, Snssai *snssaiToCopy)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t BuildFlowsMap(Flows_Mapped_To_DRB_List_t *flowMap , uint8_t actionType)
+uint8_t BuildFlowsMap(DrbInfo *drbInfo, Flows_Mapped_To_DRB_List_t *flowMap , uint8_t actionType, bool hoInProgress)
 {
-   uint8_t  ret = ROK, idx = 0, flowCnt = 0;
+   uint8_t  ret = ROK, idx = 0, flowCnt = 0, flowIdx = 0;
+   FlowsMapped *qosFlow;
 
-   flowCnt = 1;
+   if(!hoInProgress)
+      flowCnt = 1;
+   else
+      flowCnt = drbInfo->numFlowMap;
    flowMap->list.count = flowCnt;
    flowMap->list.size = flowCnt * sizeof(Flows_Mapped_To_DRB_Item_t *);
    CU_ALLOC(flowMap->list.array,flowMap->list.size);
@@ -2298,15 +2531,43 @@ uint8_t BuildFlowsMap(Flows_Mapped_To_DRB_List_t *flowMap , uint8_t actionType)
          DU_LOG("\nERROR  -->  F1AP : Memory allocation failed for arrayIdx[%d] in BuildFlowsMap()", idx);
          return RFAILED;
       }
-   }
-   idx = 0;
-   flowMap->list.array[idx]->qoSFlowIdentifier = 0;
-   ret = BuildQOSInfo(&flowMap->list.array[idx]->qoSFlowLevelQoSParameters,\
-         actionType, INVALID_PDU_SESSION_ID);
-   if(ret != ROK)
-   {
-      DU_LOG("\nERROR  -->  F1AP : Failed to Build QOS Info in BuildFlowsMap()");
-      return RFAILED;
+      
+      if(!hoInProgress)
+      {
+         flowMap->list.array[idx]->qoSFlowIdentifier = 0;
+         if(actionType == ProtocolIE_ID_id_DRBs_ToBeModified_Item)
+         {
+            for(flowIdx =0; flowIdx < drbInfo->numFlowMap; flowIdx++)
+            {
+               if(drbInfo->flowMapList[flowIdx].qosFlowId == flowMap->list.array[idx]->qoSFlowIdentifier)
+               {
+                  qosFlow = &drbInfo->flowMapList[flowIdx];
+                  break;
+               }
+            }
+         }
+         else
+         {
+            qosFlow = &drbInfo->flowMapList[drbInfo->numFlowMap];
+            qosFlow->qosFlowId = flowMap->list.array[idx]->qoSFlowIdentifier;
+         }
+      }
+      else
+      {
+         qosFlow = &drbInfo->flowMapList[idx];
+         flowMap->list.array[idx]->qoSFlowIdentifier = qosFlow->qosFlowId;
+      }
+
+      ret = BuildQOSInfo(&qosFlow->qos, &flowMap->list.array[idx]->qoSFlowLevelQoSParameters,\
+            actionType, INVALID_PDU_SESSION_ID, hoInProgress);
+      if(ret != ROK)
+      {
+         DU_LOG("\nERROR  -->  F1AP : Failed to Build QOS Info in BuildFlowsMap()");
+         return RFAILED;
+      }
+
+      if((!hoInProgress) && (actionType != ProtocolIE_ID_id_DRBs_ToBeModified_Item))
+         drbInfo->numFlowMap++;
    }
    return ROK;
 }/*End of BuildFlowsMap*/
@@ -2327,10 +2588,11 @@ uint8_t BuildFlowsMap(Flows_Mapped_To_DRB_List_t *flowMap , uint8_t actionType)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t BuildULTnlInfo(ULUPTNLInformation_ToBeSetup_List_t *ulInfo)
+uint8_t BuildULTnlInfo(TnlInfo *ulUpTnlInfo, ULUPTNLInformation_ToBeSetup_List_t *ulInfo, bool hoInProgress)
 {
    uint8_t idx;
    uint8_t ulCnt;
+
    ulCnt = 1;
    ulInfo->list.count = ulCnt;
    ulInfo->list.size = ulCnt * sizeof(ULUPTNLInformation_ToBeSetup_Item_t *);
@@ -2350,59 +2612,75 @@ uint8_t BuildULTnlInfo(ULUPTNLInformation_ToBeSetup_List_t *ulInfo)
       }
    }
    idx = 0;
-   ulInfo->list.array[idx]->uLUPTNLInformation.present = \
-							 UPTransportLayerInformation_PR_gTPTunnel;
+   ulInfo->list.array[idx]->uLUPTNLInformation.present = UPTransportLayerInformation_PR_gTPTunnel;
    /*GTP TUNNEL*/
-   CU_ALLOC(ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel,\
-	 sizeof(GTPTunnel_t));
+   CU_ALLOC(ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel, sizeof(GTPTunnel_t));
    if(ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel == NULLP)
    {
       DU_LOG("\nERROR  -->  F1AP : Memory allocation failed for gTPTunnel in BuildULTnlInfo()");
       return RFAILED;
    }
-   ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->\
-      transportLayerAddress.size	= 4*sizeof(uint8_t);
-   CU_ALLOC(ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->\
-	 transportLayerAddress.buf,ulInfo->list.array[idx]->\
-	 uLUPTNLInformation.choice.gTPTunnel->transportLayerAddress.size);
-   if(ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->\
-	 transportLayerAddress.buf == NULLP)
+   ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->transportLayerAddress.size	= 4*sizeof(uint8_t);
+   CU_ALLOC(ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->transportLayerAddress.buf, \
+      ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->transportLayerAddress.size);
+   if(ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->transportLayerAddress.buf == NULLP)
    {
       DU_LOG("\nERROR  -->  F1AP : Memory allocation failed for gtp tunnel arrayIdx[%d] in BuildULTnlInfo()", idx);
       return RFAILED;
    }
-   /* NOTE: Below IP address must be changed if running on different IP configuration */
-   ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->\
-      transportLayerAddress.buf[0] = 192;
-   ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->\
-      transportLayerAddress.buf[1] = 168;
-   ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->\
-      transportLayerAddress.buf[2] = 130;
-   ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->\
-      transportLayerAddress.buf[3] = 82;
-   ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->\
-      transportLayerAddress.bits_unused = 0;
+
+   if(!hoInProgress)
+   {
+      /* NOTE: Below IP address must be changed if running on different IP configuration */
+      ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->transportLayerAddress.buf[0] = 192;
+      ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->transportLayerAddress.buf[1] = 168;
+      ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->transportLayerAddress.buf[2] = 130;
+      ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->transportLayerAddress.buf[3] = 82;
+      ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->transportLayerAddress.bits_unused = 0;
+
+      ulUpTnlInfo->address[0] = ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->transportLayerAddress.buf[0];
+      ulUpTnlInfo->address[1] = ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->transportLayerAddress.buf[1];
+      ulUpTnlInfo->address[2] = ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->transportLayerAddress.buf[2];
+      ulUpTnlInfo->address[3] = ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->transportLayerAddress.buf[3];
+   }
+   else
+   {
+      ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->transportLayerAddress.buf[0] = ulUpTnlInfo->address[0];
+      ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->transportLayerAddress.buf[1] = ulUpTnlInfo->address[1];
+      ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->transportLayerAddress.buf[2] = ulUpTnlInfo->address[2];
+      ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->transportLayerAddress.buf[3] = ulUpTnlInfo->address[3];
+      ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->transportLayerAddress.bits_unused = 0;
+   }
+
    /*GTP TEID*/
-   ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->gTP_TEID.size\
-      = 4 * sizeof(uint8_t);
-   CU_ALLOC(ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->\
-	 gTP_TEID.buf,ulInfo->list.array[idx]->uLUPTNLInformation.choice.\
-	 gTPTunnel->gTP_TEID.size);
-   if(ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->gTP_TEID.buf\
-	 == NULLP)
+   ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->gTP_TEID.size = 4 * sizeof(uint8_t);
+   CU_ALLOC(ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->gTP_TEID.buf, \
+      ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->gTP_TEID.size);
+   if(ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->gTP_TEID.buf == NULLP)
    {
       DU_LOG("\nERROR  -->  F1AP : Memory allocation failed for gtp tunnel buffer in BuildULTnlInfo()");
       return RFAILED;
    }
-   ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->\
-     gTP_TEID.buf[0] = 0;
-   ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->\
-      gTP_TEID.buf[1] = 0;
-   ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->\
-      gTP_TEID.buf[2] = 0;
-   ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->\
-      gTP_TEID.buf[3] = cuCb.cuCfgParams.egtpParams.currTunnelId++;
+   
+   if(!hoInProgress)
+   {
+      ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->gTP_TEID.buf[0] = 0;
+      ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->gTP_TEID.buf[1] = 0;
+      ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->gTP_TEID.buf[2] = 0;
+      ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->gTP_TEID.buf[3] = cuCb.cuCfgParams.egtpParams.currTunnelId++;
 
+      ulUpTnlInfo->teId[0] = ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->gTP_TEID.buf[0];
+      ulUpTnlInfo->teId[1] = ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->gTP_TEID.buf[1];
+      ulUpTnlInfo->teId[2] = ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->gTP_TEID.buf[2];
+      ulUpTnlInfo->teId[3] = ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->gTP_TEID.buf[3];
+   }
+   else
+   {
+      ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->gTP_TEID.buf[0] = ulUpTnlInfo->teId[0];
+      ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->gTP_TEID.buf[1] = ulUpTnlInfo->teId[1];
+      ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->gTP_TEID.buf[2] = ulUpTnlInfo->teId[2];
+      ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->gTP_TEID.buf[3] = ulUpTnlInfo->teId[3];
+   }
    return ROK;
 }/*End of BuildULTnlInfo*/
 
@@ -2422,14 +2700,22 @@ uint8_t BuildULTnlInfo(ULUPTNLInformation_ToBeSetup_List_t *ulInfo)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t BuildDRBSetup(DRBs_ToBeSetup_List_t *drbSet)
+uint8_t BuildDRBSetup(CuUeCb *ueCb, DRBs_ToBeSetup_List_t *drbSet)
 {
-   uint8_t BuildQOSInforet = 0,BuildSNSSAIret = 0, idx = 0;
-   uint8_t BuildFlowsMapret =0, BuildULTnlInforet =0, drbCnt = 0;
+   uint8_t idx = 0, extIeIdx = 0;
+   uint8_t elementCnt = 0, drbCnt = 0;
+   uint8_t BuildQOSInforet = 0,BuildSNSSAIret = 0;
+   uint8_t BuildFlowsMapret =0, BuildULTnlInforet =0;
    DRBs_ToBeSetup_Item_t *drbSetItem;
+   ProtocolExtensionContainer_4624P33_t *drbToBeSetupExt;
+   DRBs_ToBeSetup_ItemExtIEs_t *drbToBeSetupExtIe = NULLP;
    
-   drbCnt = MAX_DRB_SET_UE_CONTEXT_SETUP_REQ;
+   if(ueCb->state == UE_HANDOVER_IN_PROGRESS)
+      drbCnt = ueCb->numDrb;
+   else
+      drbCnt = MAX_DRB_SET_UE_CONTEXT_SETUP_REQ;
    drbSet->list.count = drbCnt;
+
    drbSet->list.size = drbCnt*sizeof(DRBs_ToBeSetup_ItemIEs_t *);
    CU_ALLOC(drbSet->list.array,drbSet->list.size);
    if(drbSet->list.array == NULLP)
@@ -2437,22 +2723,29 @@ uint8_t BuildDRBSetup(DRBs_ToBeSetup_List_t *drbSet)
       DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in BuildDRBSetup");
       return RFAILED;
    }
+
    for(idx=0; idx<drbCnt; idx++)
    {
       CU_ALLOC(drbSet->list.array[idx],sizeof(DRBs_ToBeSetup_ItemIEs_t));
       if(drbSet->list.array[idx] == NULLP)
       {
          DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in BuildDRBSetup for arry idx [%d]", idx);
-	      return RFAILED;
+         return RFAILED;
       }
 
       drbSet->list.array[idx]->id = ProtocolIE_ID_id_DRBs_ToBeSetup_Item;
       drbSet->list.array[idx]->criticality = Criticality_ignore;
-      drbSet->list.array[idx]->value.present = \
-	   				    DRBs_ToBeSetup_ItemIEs__value_PR_DRBs_ToBeSetup_Item;
+      drbSet->list.array[idx]->value.present = DRBs_ToBeSetup_ItemIEs__value_PR_DRBs_ToBeSetup_Item;
       drbSetItem = &drbSet->list.array[idx]->value.choice.DRBs_ToBeSetup_Item;
       /*dRBID*/
-      drbSetItem->dRBID = idx + 1;
+      if(ueCb->state != UE_HANDOVER_IN_PROGRESS)
+      {
+         drbSetItem->dRBID = idx + 1;
+         ueCb->drbList[ueCb->numDrb].drbId = drbSetItem->dRBID;
+      }
+      else
+         drbSetItem->dRBID = ueCb->drbList[idx].drbId;
+
       /*qoSInformation*/
       drbSetItem->qoSInformation.present = QoSInformation_PR_choice_extension;
       CU_ALLOC(drbSetItem->qoSInformation.choice.choice_extension,sizeof(QoSInformation_ExtIEs_t));
@@ -2461,47 +2754,113 @@ uint8_t BuildDRBSetup(DRBs_ToBeSetup_List_t *drbSet)
          DU_LOG("\nERROR  -->  F1AP : Memory allocation failed for QOS choice extension in BuildDRBSetup");
          return RFAILED;
       }
-      drbSetItem->qoSInformation.choice.choice_extension->id = \
-		   					    ProtocolIE_ID_id_DRB_Information;
-      drbSetItem->qoSInformation.choice.choice_extension->criticality = \
-		  						     Criticality_ignore;
-      drbSetItem->qoSInformation.choice.choice_extension->value.present = \
-								       QoSInformation_ExtIEs__value_PR_DRB_Information;
-      BuildQOSInforet =  BuildQOSInfo(&drbSetItem->qoSInformation.choice.\
-	                      choice_extension->value.choice.DRB_Information.dRB_QoS,\
-                         ProtocolIE_ID_id_DRBs_ToBeSetup_Item, PDU_SESSION_ID_1);
+      drbSetItem->qoSInformation.choice.choice_extension->id = ProtocolIE_ID_id_DRB_Information;
+      drbSetItem->qoSInformation.choice.choice_extension->criticality = Criticality_ignore;
+      drbSetItem->qoSInformation.choice.choice_extension->value.present = QoSInformation_ExtIEs__value_PR_DRB_Information;
+      if(ueCb->state != UE_HANDOVER_IN_PROGRESS)
+         BuildQOSInforet =  BuildQOSInfo(&ueCb->drbList[ueCb->numDrb].qos, &drbSetItem->qoSInformation.choice.\
+               choice_extension->value.choice.DRB_Information.dRB_QoS, ProtocolIE_ID_id_DRBs_ToBeSetup_Item, PDU_SESSION_ID_1, FALSE);
+      else
+         BuildQOSInforet =  BuildQOSInfo(&ueCb->drbList[idx].qos, &drbSetItem->qoSInformation.choice.\
+               choice_extension->value.choice.DRB_Information.dRB_QoS, ProtocolIE_ID_id_DRBs_ToBeSetup_Item, PDU_SESSION_ID_1, TRUE);
       if(BuildQOSInforet != ROK)
       {
          DU_LOG("\nERROR  -->  F1AP : Failed to build QOS Info in BuildDRBSetup");
          return RFAILED;
       }
+
       /*SNSSAI*/
-      BuildSNSSAIret = BuildSNSSAI(&drbSetItem->qoSInformation.choice.\
-	                       choice_extension->value.choice.DRB_Information.sNSSAI, cuCb.snssaiList[0]);
+      if(ueCb->state != UE_HANDOVER_IN_PROGRESS)
+         BuildSNSSAIret = BuildSNSSAI(&ueCb->drbList[ueCb->numDrb], &drbSetItem->qoSInformation.choice.\
+               choice_extension->value.choice.DRB_Information.sNSSAI, cuCb.snssaiList[0], FALSE);
+      else
+         BuildSNSSAIret = BuildSNSSAI(&ueCb->drbList[idx], &drbSetItem->qoSInformation.choice.\
+               choice_extension->value.choice.DRB_Information.sNSSAI, cuCb.snssaiList[0], TRUE);
       if(BuildSNSSAIret != ROK)
       {
          DU_LOG("\nERROR  -->  F1AP : Failed to build SNSSAI Info in BuildDRBSetup");
          return RFAILED;
       }
+
       /*Flows mapped to DRB List*/
-      BuildFlowsMapret = BuildFlowsMap(&drbSetItem->qoSInformation.choice.\
-	           choice_extension->value.choice.DRB_Information.flows_Mapped_To_DRB_List,\
-              ProtocolIE_ID_id_DRBs_ToBeSetup_Item);
+      if(ueCb->state != UE_HANDOVER_IN_PROGRESS)
+         BuildFlowsMapret = BuildFlowsMap(&ueCb->drbList[ueCb->numDrb], &drbSetItem->qoSInformation.choice.choice_extension->\
+               value.choice.DRB_Information.flows_Mapped_To_DRB_List, ProtocolIE_ID_id_DRBs_ToBeSetup_Item, FALSE);
+      else
+         BuildFlowsMapret = BuildFlowsMap(&ueCb->drbList[idx], &drbSetItem->qoSInformation.choice.choice_extension->\
+               value.choice.DRB_Information.flows_Mapped_To_DRB_List, ProtocolIE_ID_id_DRBs_ToBeSetup_Item, TRUE);
       if(BuildFlowsMapret != ROK)
       {
          DU_LOG("\nERROR  -->  F1AP : Failed to build Flow Map Info in BuildDRBSetup");
          return RFAILED;
       }
+
       /*ULUPTNLInformation To Be Setup List*/
-      BuildULTnlInforet = BuildULTnlInfo(&drbSetItem->uLUPTNLInformation_ToBeSetup_List);
+      if(ueCb->state != UE_HANDOVER_IN_PROGRESS)
+         BuildULTnlInforet = BuildULTnlInfo(&ueCb->drbList[ueCb->numDrb].ulUpTnlInfo, &drbSetItem->uLUPTNLInformation_ToBeSetup_List,\
+               FALSE);
+      else
+         BuildULTnlInforet = BuildULTnlInfo(&ueCb->drbList[idx].ulUpTnlInfo, &drbSetItem->uLUPTNLInformation_ToBeSetup_List,\
+               TRUE);
       if(BuildULTnlInforet != ROK)
       {
          DU_LOG("\nERROR  -->  F1AP : Failed to build tunnel Info in BuildDRBSetup");
          return RFAILED;
       }
+
       /*RLCMode*/
-      drbSetItem->rLCMode = RLCMode_rlc_um_bidirectional;
-  }
+      if(ueCb->state != UE_HANDOVER_IN_PROGRESS)
+      {
+         drbSetItem->rLCMode = RLCMode_rlc_um_bidirectional;
+         ueCb->drbList[ueCb->numDrb].rlcMode = drbSetItem->rLCMode;
+      }
+      else
+         drbSetItem->rLCMode = ueCb->drbList[idx].rlcMode;
+
+      /* DL PDCP SN Length */
+      if(ueCb->state == UE_HANDOVER_IN_PROGRESS)
+      {
+         CU_ALLOC(drbToBeSetupExt, sizeof(ProtocolExtensionContainer_4624P33_t));
+         if(!drbToBeSetupExt)
+         {
+            DU_LOG("\nERROR  -->  F1AP : Failed to allocate memory for extension IE list in BuildDRBSetup");
+            return RFAILED;
+         }
+
+         elementCnt = 1;
+         drbToBeSetupExt->list.count = elementCnt;
+         drbToBeSetupExt->list.size = drbToBeSetupExt->list.count * sizeof(DRBs_ToBeSetup_ItemExtIEs_t *);
+
+         CU_ALLOC(drbToBeSetupExt->list.array, drbToBeSetupExt->list.size);
+         if(!drbToBeSetupExt->list.array)
+         {
+             DU_LOG("\nERROR  -->  F1AP : Failed to allocated memory for extension array in BuildDRBSetup");
+             return RFAILED;
+         }
+
+         for(extIeIdx=0; extIeIdx < drbToBeSetupExt->list.count; extIeIdx++)
+         {
+            CU_ALLOC(drbToBeSetupExt->list.array[extIeIdx], sizeof(DRBs_ToBeSetup_ItemExtIEs_t));
+            if(!drbToBeSetupExt->list.array[extIeIdx])
+            {
+               DU_LOG("\nERROR  -->  F1AP : Failed to allocated memory for extension array element in BuildDRBSetup");
+               return RFAILED;
+            }
+         }
+ 
+         extIeIdx = 0;
+         drbToBeSetupExtIe = drbToBeSetupExt->list.array[extIeIdx];
+
+         drbToBeSetupExtIe->id = ProtocolIE_ID_id_DLPDCPSNLength;
+         drbToBeSetupExtIe->criticality = Criticality_ignore;
+         drbToBeSetupExtIe->extensionValue.present = DRBs_ToBeSetup_ItemExtIEs__extensionValue_PR_PDCPSNLength;
+         drbToBeSetupExtIe->extensionValue.choice.PDCPSNLength = PDCPSNLength_twelve_bits;
+         drbSetItem->iE_Extensions = drbToBeSetupExt;
+      }
+
+      if(ueCb->state != UE_HANDOVER_IN_PROGRESS)
+         ueCb->numDrb++;
+   }
    return ROK;
 }/* End of BuildDRBSetup*/
 
@@ -5578,45 +5937,84 @@ void FreeBWPDlDedPdcchCfg(BWP_DownlinkDedicated_t *dlBwp)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t BuildRlcConfig(struct RLC_Config *rlcConfig)
+uint8_t BuildRlcConfig(RlcLcCfg rlcLcCfgDb, struct RLC_Config *rlcConfig)
 {
+   rlcConfig->present = rlcLcCfgDb.rlcMode;
 
-   rlcConfig->present = RLC_Config_PR_am;
-
-   rlcConfig->choice.am = NULLP;
-   CU_ALLOC(rlcConfig->choice.am, sizeof(struct RLC_Config__am));
-   if(!rlcConfig->choice.am)
+   switch(rlcConfig->present)
    {
-      DU_LOG("\nERROR  -->  F1AP : Memory allocation failure in BuildRlcConfig");
-      return RFAILED;
-   }
+      case RLC_Config_PR_am:
+         {
+            rlcConfig->choice.am = NULLP;
+            CU_ALLOC(rlcConfig->choice.am, sizeof(struct RLC_Config__am));
+            if(!rlcConfig->choice.am)
+            {
+               DU_LOG("\nERROR  -->  F1AP : Memory allocation failure in BuildRlcConfig");
+               return RFAILED;
+            }
 
-   /* UL */
-   rlcConfig->choice.am->ul_AM_RLC.sn_FieldLength = NULLP;
-   CU_ALLOC(rlcConfig->choice.am->ul_AM_RLC.sn_FieldLength, sizeof(SN_FieldLengthAM_t));
-   if(!rlcConfig->choice.am->ul_AM_RLC.sn_FieldLength)
-   {
-      DU_LOG("\nERROR  -->  F1AP : Memory allocation failure in BuildRlcConfig");
-      return RFAILED;
-   }
-   *(rlcConfig->choice.am->ul_AM_RLC.sn_FieldLength) = SN_FIELD_LEN;
-   rlcConfig->choice.am->ul_AM_RLC.t_PollRetransmit  = T_POLL_RETRANSMIT;
-   rlcConfig->choice.am->ul_AM_RLC.pollPDU           = POLL_PDU;
-   rlcConfig->choice.am->ul_AM_RLC.pollByte          = POLL_BYTE;
-   rlcConfig->choice.am->ul_AM_RLC.maxRetxThreshold  = MAX_RETX_THRESHOLD;
+            /* UL */
+            rlcConfig->choice.am->ul_AM_RLC.sn_FieldLength = NULLP;
+            CU_ALLOC(rlcConfig->choice.am->ul_AM_RLC.sn_FieldLength, sizeof(SN_FieldLengthAM_t));
+            if(!rlcConfig->choice.am->ul_AM_RLC.sn_FieldLength)
+            {
+               DU_LOG("\nERROR  -->  F1AP : Memory allocation failure in BuildRlcConfig");
+               return RFAILED;
+            }
+            *(rlcConfig->choice.am->ul_AM_RLC.sn_FieldLength) = rlcLcCfgDb.u.amCfg.ulAmCfg.snLenUl;
+            rlcConfig->choice.am->ul_AM_RLC.t_PollRetransmit  = rlcLcCfgDb.u.amCfg.ulAmCfg.pollRetxTmr;
+            rlcConfig->choice.am->ul_AM_RLC.pollPDU           = rlcLcCfgDb.u.amCfg.ulAmCfg.pollPdu;
+            rlcConfig->choice.am->ul_AM_RLC.pollByte          = rlcLcCfgDb.u.amCfg.ulAmCfg.pollByte;
+            rlcConfig->choice.am->ul_AM_RLC.maxRetxThreshold  = rlcLcCfgDb.u.amCfg.ulAmCfg.maxRetxTh;
 
-   /* DL */
-   rlcConfig->choice.am->dl_AM_RLC.sn_FieldLength = NULLP;
-   CU_ALLOC(rlcConfig->choice.am->dl_AM_RLC.sn_FieldLength, sizeof(SN_FieldLengthAM_t)); 
-   if(!rlcConfig->choice.am->dl_AM_RLC.sn_FieldLength)
-   {
-      DU_LOG("\nERROR  -->  F1AP : Memory allocation failure in BuildRlcConfig");
-      return RFAILED;
-   }
-   *(rlcConfig->choice.am->dl_AM_RLC.sn_FieldLength) = SN_FIELD_LEN;
-   rlcConfig->choice.am->dl_AM_RLC.t_Reassembly      = T_REASSEMBLY;
-   rlcConfig->choice.am->dl_AM_RLC.t_StatusProhibit  = T_STATUS_PROHIBHIT;
+            /* DL */
+            rlcConfig->choice.am->dl_AM_RLC.sn_FieldLength = NULLP;
+            CU_ALLOC(rlcConfig->choice.am->dl_AM_RLC.sn_FieldLength, sizeof(SN_FieldLengthAM_t)); 
+            if(!rlcConfig->choice.am->dl_AM_RLC.sn_FieldLength)
+            {
+               DU_LOG("\nERROR  -->  F1AP : Memory allocation failure in BuildRlcConfig");
+               return RFAILED;
+            }
+            *(rlcConfig->choice.am->dl_AM_RLC.sn_FieldLength) = rlcLcCfgDb.u.amCfg.dlAmCfg.snLenDl;
+            rlcConfig->choice.am->dl_AM_RLC.t_Reassembly      = rlcLcCfgDb.u.amCfg.dlAmCfg.reAssemTmr;
+            rlcConfig->choice.am->dl_AM_RLC.t_StatusProhibit  = rlcLcCfgDb.u.amCfg.dlAmCfg.statProhTmr;
 
+            break;
+         }
+
+      case RLC_Config_PR_um_Bi_Directional:
+         {
+            rlcConfig->choice.um_Bi_Directional = NULLP;
+            CU_ALLOC(rlcConfig->choice.um_Bi_Directional, sizeof(struct RLC_Config__um_Bi_Directional));
+            if(!rlcConfig->choice.um_Bi_Directional)
+            {
+               DU_LOG("\nERROR  -->  F1AP : Memory allocation failure in BuildRlcConfig");
+               return RFAILED;
+            }
+
+            /* UL */
+            rlcConfig->choice.um_Bi_Directional->ul_UM_RLC.sn_FieldLength = NULLP;
+            CU_ALLOC(rlcConfig->choice.um_Bi_Directional->ul_UM_RLC.sn_FieldLength, sizeof(SN_FieldLengthUM_t));
+            if(!rlcConfig->choice.um_Bi_Directional->ul_UM_RLC.sn_FieldLength)
+            {
+               DU_LOG("\nERROR  -->  F1AP : Memory allocation failure in BuildRlcConfig");
+               return RFAILED;
+            }
+            *(rlcConfig->choice.um_Bi_Directional->ul_UM_RLC.sn_FieldLength) = rlcLcCfgDb.u.umBiDirCfg.ulUmCfg.snLenUlUm;
+
+            /* DL */
+            rlcConfig->choice.um_Bi_Directional->dl_UM_RLC.sn_FieldLength = NULLP;
+            CU_ALLOC(rlcConfig->choice.um_Bi_Directional->dl_UM_RLC.sn_FieldLength, sizeof(SN_FieldLengthUM_t));
+            if(!rlcConfig->choice.um_Bi_Directional->dl_UM_RLC.sn_FieldLength)
+            {
+               DU_LOG("\nERROR  -->  F1AP : Memory allocation failure in BuildRlcConfig");
+               return RFAILED;
+            }
+            *(rlcConfig->choice.um_Bi_Directional->dl_UM_RLC.sn_FieldLength) = rlcLcCfgDb.u.umBiDirCfg.dlUmCfg.snLenDlUm;
+            rlcConfig->choice.um_Bi_Directional->dl_UM_RLC.t_Reassembly = rlcLcCfgDb.u.umBiDirCfg.dlUmCfg.reAssemTmr;
+            break;
+         }
+   }
    return ROK;
 }
 
@@ -5636,7 +6034,7 @@ uint8_t BuildRlcConfig(struct RLC_Config *rlcConfig)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t BuildMacLCConfig(struct LogicalChannelConfig *macLcConfig)
+uint8_t BuildMacLCConfig(MacLcCfg macLcCfgDb, struct LogicalChannelConfig *macLcConfig)
 {
 
    macLcConfig->ul_SpecificParameters = NULLP;
@@ -5647,9 +6045,9 @@ uint8_t BuildMacLCConfig(struct LogicalChannelConfig *macLcConfig)
       return RFAILED;
    }
 
-   macLcConfig->ul_SpecificParameters->priority = MAC_LC_PRIORITY;
-   macLcConfig->ul_SpecificParameters->prioritisedBitRate =	PRIORTISIED_BIT_RATE;
-   macLcConfig->ul_SpecificParameters->bucketSizeDuration =	BUCKET_SIZE_DURATION;
+   macLcConfig->ul_SpecificParameters->priority = macLcCfgDb.priority;
+   macLcConfig->ul_SpecificParameters->prioritisedBitRate =	macLcCfgDb.pbr;
+   macLcConfig->ul_SpecificParameters->bucketSizeDuration =	macLcCfgDb.bsd;
    macLcConfig->ul_SpecificParameters->allowedServingCells = NULLP;
    macLcConfig->ul_SpecificParameters->allowedSCS_List = NULLP;
    macLcConfig->ul_SpecificParameters->maxPUSCH_Duration = NULLP;
@@ -5662,7 +6060,7 @@ uint8_t BuildMacLCConfig(struct LogicalChannelConfig *macLcConfig)
       DU_LOG("\nERROR  -->  F1AP : Memory allocation failure in BuildMacLCConfig");
       return RFAILED;
    }
-   *(macLcConfig->ul_SpecificParameters->logicalChannelGroup) = LC_GRP;
+   *(macLcConfig->ul_SpecificParameters->logicalChannelGroup) = macLcCfgDb.lcGroup;
 
    macLcConfig->ul_SpecificParameters->schedulingRequestID = NULLP;
    CU_ALLOC(macLcConfig->ul_SpecificParameters->schedulingRequestID,	sizeof(SchedulingRequestId_t));
@@ -5671,7 +6069,7 @@ uint8_t BuildMacLCConfig(struct LogicalChannelConfig *macLcConfig)
       DU_LOG("\nERROR  -->  F1AP : Memory allocation failure in BuildMacLCConfig");
       return RFAILED;
    }
-   *(macLcConfig->ul_SpecificParameters->schedulingRequestID) = SCH_REQ_ID;
+   *(macLcConfig->ul_SpecificParameters->schedulingRequestID) = macLcCfgDb.schReqId;
 
    macLcConfig->ul_SpecificParameters->logicalChannelSR_Mask = false;
    macLcConfig->ul_SpecificParameters->logicalChannelSR_DelayTimerApplied = false;
@@ -5695,11 +6093,27 @@ uint8_t BuildMacLCConfig(struct LogicalChannelConfig *macLcConfig)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t BuildRlcBearerToAddModList(struct CellGroupConfigRrc__rlc_BearerToAddModList *rlcBearerList)
+uint8_t BuildRlcBearerToAddModList(CuUeCb *ueCb, struct CellGroupConfigRrc__rlc_BearerToAddModList *rlcBearerList, bool updateAllRbCfg)
 {
-   uint8_t                     idx, elementCnt;
+   uint8_t idx, srbIdx = 0, drbIdx = 0, elementCnt=0;
 
-   elementCnt = 1;
+   if(updateAllRbCfg)
+      elementCnt = ueCb->numSrb + ueCb->numDrb;
+   else
+   {
+      for(srbIdx = 0; srbIdx< ueCb->numSrb; srbIdx++)
+      {
+         if(ueCb->srbList[srbIdx].cfgSentToUe == false)
+            elementCnt++;
+      }
+
+      for(drbIdx = 0; drbIdx< ueCb->numDrb; drbIdx++)
+      {
+         if(ueCb->drbList[drbIdx].cfgSentToUe == false)
+            elementCnt++;
+      }
+   }
+
    rlcBearerList->list.count = elementCnt;
    rlcBearerList->list.size  = elementCnt * sizeof(struct RLC_BearerConfig *);
 
@@ -5717,53 +6131,108 @@ uint8_t BuildRlcBearerToAddModList(struct CellGroupConfigRrc__rlc_BearerToAddMod
       CU_ALLOC(rlcBearerList->list.array[idx], sizeof(struct RLC_BearerConfig));
       if(!rlcBearerList->list.array[idx])
       {
-	 DU_LOG("\nERROR  -->  F1AP : Memory allocation failure in BuildRlcBearerToAddModList");
-	 return RFAILED;
+         DU_LOG("\nERROR  -->  F1AP : Memory allocation failure in BuildRlcBearerToAddModList");
+         return RFAILED;
       }
    }
 
    idx = 0;
-   rlcBearerList->list.array[idx]->logicalChannelIdentity = RLC_LCID;
 
-   CU_ALLOC(rlcBearerList->list.array[idx]->servedRadioBearer, sizeof(struct RLC_BearerConfig__servedRadioBearer));
-   if(!rlcBearerList->list.array[idx]->servedRadioBearer)
+   for(srbIdx=0; srbIdx < ueCb->numSrb; srbIdx++)
    {
-      DU_LOG("\nERROR  -->  F1AP : Memory allocation failure in BuildRlcBearerToAddModList");
-      return RFAILED;
+      if(!updateAllRbCfg && ueCb->srbList[srbIdx].cfgSentToUe)
+         continue;
+
+      rlcBearerList->list.array[idx]->logicalChannelIdentity = ueCb->srbList[srbIdx].lcId;
+
+      CU_ALLOC(rlcBearerList->list.array[idx]->servedRadioBearer, sizeof(struct RLC_BearerConfig__servedRadioBearer));
+      if(!rlcBearerList->list.array[idx]->servedRadioBearer)
+      {
+         DU_LOG("\nERROR  -->  F1AP : Memory allocation failure in BuildRlcBearerToAddModList");
+         return RFAILED;
+      }
+
+      rlcBearerList->list.array[idx]->servedRadioBearer->present = RLC_BearerConfig__servedRadioBearer_PR_srb_Identity;
+      rlcBearerList->list.array[idx]->servedRadioBearer->choice.srb_Identity = ueCb->srbList[srbIdx].srbId;
+
+      rlcBearerList->list.array[idx]->reestablishRLC = NULLP;
+      rlcBearerList->list.array[idx]->rlc_Config = NULLP;
+      CU_ALLOC(rlcBearerList->list.array[idx]->rlc_Config, sizeof(struct RLC_Config));
+      if(!rlcBearerList->list.array[idx]->rlc_Config)
+      {
+         DU_LOG("\nERROR  -->  F1AP : Memory allocation failure in BuildRlcBearerToAddModList");
+         return RFAILED;
+      }
+
+      if(BuildRlcConfig(ueCb->srbList[srbIdx].rlcLcCfg, rlcBearerList->list.array[idx]->rlc_Config) != ROK)
+      {
+         DU_LOG("\nERROR  -->  F1AP : BuildRlcConfig failed");
+         return RFAILED;
+      }
+
+      rlcBearerList->list.array[idx]->mac_LogicalChannelConfig = NULLP;
+      CU_ALLOC(rlcBearerList->list.array[idx]->mac_LogicalChannelConfig, sizeof(struct LogicalChannelConfig));
+      if(!rlcBearerList->list.array[idx]->mac_LogicalChannelConfig)
+      {
+         DU_LOG("\nERROR  -->  F1AP : Memory allocation failure in BuildRlcBearerToAddModList");
+         return RFAILED;
+      }
+
+      if(BuildMacLCConfig(ueCb->srbList[srbIdx].macLcCfg, rlcBearerList->list.array[idx]->mac_LogicalChannelConfig) != ROK)
+      {
+         DU_LOG("\nERROR  -->  F1AP : BuildMacLCConfig failed");
+         return RFAILED;
+      }
+      idx++;
    }
 
-   rlcBearerList->list.array[idx]->servedRadioBearer->present = RLC_BearerConfig__servedRadioBearer_PR_srb_Identity;
-   rlcBearerList->list.array[idx]->servedRadioBearer->choice.srb_Identity = SRB_ID_1;
-
-   rlcBearerList->list.array[idx]->reestablishRLC = NULLP;
-   rlcBearerList->list.array[idx]->rlc_Config = NULLP;
-   CU_ALLOC(rlcBearerList->list.array[idx]->rlc_Config, sizeof(struct RLC_Config));
-   if(!rlcBearerList->list.array[idx]->rlc_Config)
+   for(drbIdx=0; drbIdx < ueCb->numDrb; drbIdx++)
    {
-      DU_LOG("\nERROR  -->  F1AP : Memory allocation failure in BuildRlcBearerToAddModList");
-      return RFAILED;
-   }
+      if(!updateAllRbCfg && ueCb->srbList[srbIdx].cfgSentToUe)
+         continue;
 
-   if(BuildRlcConfig(rlcBearerList->list.array[idx]->rlc_Config) != ROK)
-   {
-      DU_LOG("\nERROR  -->  F1AP : BuildRlcConfig failed");
-      return RFAILED;
-   }
+      rlcBearerList->list.array[idx]->logicalChannelIdentity = ueCb->drbList[drbIdx].lcId;
 
-   rlcBearerList->list.array[idx]->mac_LogicalChannelConfig = NULLP;
-   CU_ALLOC(rlcBearerList->list.array[idx]->mac_LogicalChannelConfig, sizeof(struct LogicalChannelConfig));
-   if(!rlcBearerList->list.array[idx]->mac_LogicalChannelConfig)
-   {
-      DU_LOG("\nERROR  -->  F1AP : Memory allocation failure in BuildRlcBearerToAddModList");
-      return RFAILED;
-   }
+      CU_ALLOC(rlcBearerList->list.array[idx]->servedRadioBearer, sizeof(struct RLC_BearerConfig__servedRadioBearer));
+      if(!rlcBearerList->list.array[idx]->servedRadioBearer)
+      {
+         DU_LOG("\nERROR  -->  F1AP : Memory allocation failure in BuildRlcBearerToAddModList");
+         return RFAILED;
+      }
 
-   if(BuildMacLCConfig(rlcBearerList->list.array[idx]->mac_LogicalChannelConfig) != ROK)
-   {
-      DU_LOG("\nERROR  -->  F1AP : BuildMacLCConfig failed");
-      return RFAILED;
-   }
+      rlcBearerList->list.array[idx]->servedRadioBearer->present = RLC_BearerConfig__servedRadioBearer_PR_drb_Identity;
+      rlcBearerList->list.array[idx]->servedRadioBearer->choice.drb_Identity = ueCb->drbList[drbIdx].drbId;
 
+      rlcBearerList->list.array[idx]->reestablishRLC = NULLP;
+      rlcBearerList->list.array[idx]->rlc_Config = NULLP;
+      CU_ALLOC(rlcBearerList->list.array[idx]->rlc_Config, sizeof(struct RLC_Config));
+      if(!rlcBearerList->list.array[idx]->rlc_Config)
+      {
+         DU_LOG("\nERROR  -->  F1AP : Memory allocation failure in BuildRlcBearerToAddModList");
+         return RFAILED;
+      }
+
+      if(BuildRlcConfig(ueCb->drbList[drbIdx].rlcLcCfg, rlcBearerList->list.array[idx]->rlc_Config) != ROK)
+      {
+         DU_LOG("\nERROR  -->  F1AP : BuildRlcConfig failed");
+         return RFAILED;
+      }
+
+      rlcBearerList->list.array[idx]->mac_LogicalChannelConfig = NULLP;
+      CU_ALLOC(rlcBearerList->list.array[idx]->mac_LogicalChannelConfig, sizeof(struct LogicalChannelConfig));
+      if(!rlcBearerList->list.array[idx]->mac_LogicalChannelConfig)
+      {
+         DU_LOG("\nERROR  -->  F1AP : Memory allocation failure in BuildRlcBearerToAddModList");
+         return RFAILED;
+      }
+
+      if(BuildMacLCConfig(ueCb->drbList[drbIdx].macLcCfg, rlcBearerList->list.array[idx]->mac_LogicalChannelConfig) != ROK)
+      {
+         DU_LOG("\nERROR  -->  F1AP : BuildMacLCConfig failed");
+         return RFAILED;
+      }
+      idx++;
+   }
    return ROK;
 }
 
@@ -5983,7 +6452,7 @@ uint8_t FreeMemCellGrpCfg(CellGroupConfigRrc_t *cellGrpCfg)
  *
  ******************************************************************/
 
-uint8_t fillCellGrpCfg(CellGroupConfig_t *cellGrp)
+uint8_t fillCellGrpCfg(CuUeCb *ueCb, OCTET_STRING_t *cellGrp, bool updateAllRbCfg)
 {
    uint8_t               ret = RFAILED;
    CellGroupConfigRrc_t  cellGrpCfg;
@@ -6000,7 +6469,7 @@ uint8_t fillCellGrpCfg(CellGroupConfig_t *cellGrp)
          DU_LOG("\nERROR  -->  F1AP : Memory allocation failure in CellGrpConfig");
          break;
       }
-      if(BuildRlcBearerToAddModList(cellGrpCfg.rlc_BearerToAddModList) != ROK)
+      if(BuildRlcBearerToAddModList(ueCb, cellGrpCfg.rlc_BearerToAddModList, updateAllRbCfg) != ROK)
       {
          DU_LOG("\nERROR  -->  F1AP : fillCellGrpCfg failed");
          break;
@@ -6184,6 +6653,38 @@ void freeUeCapRatContList(UE_CapabilityRAT_ContainerListRRC_t *ueCapablityList)
             CU_FREE(ueCapablityList->list.array[idx], sizeof(UE_CapabilityRAT_Container_t));
       }
       CU_FREE(ueCapablityList->list.array, ueCapablityList->list.size);
+   }
+}
+
+/*******************************************************************
+ *
+ * @brief Free Handover preparation information
+ *
+ * @details
+ *
+ *    Function : freeHOPreparationInfo
+ *
+ *    Functionality: Free Handover preparation information
+ *
+ * @params[in] 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+void freeHOPreparationInfo(HandoverPreparationInformationRrc_t *hoPrep)
+{
+   HandoverPreparationInformationRrc_IEs_t *hoPrepInfoIe;
+
+   if(hoPrep->criticalExtensions.choice.c1)
+   {
+      if(hoPrep->criticalExtensions.choice.c1->choice.handoverPreparationInformation)
+      {
+         hoPrepInfoIe = hoPrep->criticalExtensions.choice.c1->choice.handoverPreparationInformation;
+         freeUeCapRatContList(&hoPrepInfoIe->ue_CapabilityRAT_List);
+         CU_FREE(hoPrep->criticalExtensions.choice.c1->choice.handoverPreparationInformation , \
+               sizeof(HandoverPreparationInformationRrc_IEs_t));
+      }
+      CU_FREE(hoPrep->criticalExtensions.choice.c1, sizeof(struct HandoverPreparationInformationRrc__criticalExtensions__c1));
    }
 }
 
@@ -6454,26 +6955,24 @@ uint8_t fillUeCapRatCont(OCTET_STRING_t *ueCapRatContBuf)
  *    Functionality: Fill UE Capability RAT container list
  
  *
- * @params[in] UE capability RAT container list buffer
+ * @params[in] UE capability RAT container list
  * @return ROK     - success
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t fillUeCapRatContList(UE_CapabilityRAT_ContainerList_t *ueCapablityListBuf)
+uint8_t fillUeCapRatContList(UE_CapabilityRAT_ContainerListRRC_t  *ueCapablityList)
 {
     uint8_t          ret = RFAILED;
     uint8_t          idx, elementCnt;
-    asn_enc_rval_t   encRetVal;
-    UE_CapabilityRAT_ContainerListRRC_t  ueCapablityList;
 
     while(true)
     {
        elementCnt = 1;
-       ueCapablityList.list.count = elementCnt;
-       ueCapablityList.list.size = elementCnt * sizeof(UE_CapabilityRAT_Container_t *);
+       ueCapablityList->list.count = elementCnt;
+       ueCapablityList->list.size = elementCnt * sizeof(UE_CapabilityRAT_Container_t *);
 
-       CU_ALLOC(ueCapablityList.list.array, ueCapablityList.list.size);
-       if(!ueCapablityList.list.array)
+       CU_ALLOC(ueCapablityList->list.array, ueCapablityList->list.size);
+       if(!ueCapablityList->list.array)
        {
           DU_LOG("\nERROR  -->  Memory allocation failed in fillUeCapRatContList");
           ret = RFAILED;
@@ -6482,8 +6981,8 @@ uint8_t fillUeCapRatContList(UE_CapabilityRAT_ContainerList_t *ueCapablityListBu
 
        for(idx=0; idx<elementCnt; idx++)
        {
-          CU_ALLOC(ueCapablityList.list.array[idx], sizeof(UE_CapabilityRAT_Container_t));
-          if(ueCapablityList.list.array[idx] == NULLP)
+          CU_ALLOC(ueCapablityList->list.array[idx], sizeof(UE_CapabilityRAT_Container_t));
+          if(ueCapablityList->list.array[idx] == NULLP)
           {
              DU_LOG("\nERROR  -->  Memory allocation failed in fillUeCapRatContList");
              ret = RFAILED;
@@ -6491,45 +6990,1292 @@ uint8_t fillUeCapRatContList(UE_CapabilityRAT_ContainerList_t *ueCapablityListBu
           }
        }
        idx = 0;
-       ueCapablityList.list.array[idx]->rat_Type = RAT_Type_nr;
-       ret = fillUeCapRatCont(&ueCapablityList.list.array[idx]->ue_CapabilityRAT_Container);
-
-       /* encode UE Capability RAT Container List into duToCuRrcContainer */
-       xer_fprint(stdout, &asn_DEF_UE_CapabilityRAT_ContainerListRRC, &ueCapablityList);
-       cmMemset((uint8_t *)encBuf, 0, ENC_BUF_MAX_LEN);
-       encBufSize = 0;
-       encRetVal = aper_encode(&asn_DEF_UE_CapabilityRAT_ContainerListRRC, 0, \
-             &ueCapablityList, PrepFinalEncBuf, encBuf);
-
-       /* Encode results */
-       if(encRetVal.encoded == ENCODE_FAIL)
+       ueCapablityList->list.array[idx]->rat_Type = RAT_Type_nr;
+       if(fillUeCapRatCont(&ueCapablityList->list.array[idx]->ue_CapabilityRAT_Container) != ROK)
        {
-          DU_LOG( "\nERROR  -->  F1AP : Could not encode UE Capability RAT Container (at %s)\n",\
-                encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
+          DU_LOG("\nERROR  -->  F1AP : Failed to fill UE capability RAT Conatiner");
+          ret = RFAILED;
           break;
        }
-       else
-       {
-          DU_LOG("\nDEBUG  -->  F1AP : Created APER encodedbuffer for UE Capability RAT Container\n");
-          for(int i=0; i< encBufSize; i++)
-          {
-             DU_LOG("%x",encBuf[i]);
-          }
-       }
 
-       ueCapablityListBuf->size = encBufSize;
-       CU_ALLOC(ueCapablityListBuf->buf, ueCapablityListBuf->size);
-       if(!ueCapablityListBuf->buf)
-       {
-          DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in fillUeCapabilityContainer");
-          break;
-       }
-       memcpy(ueCapablityListBuf->buf, encBuf, ueCapablityListBuf->size);
        ret = ROK;
        break;
     }
-    freeUeCapRatContList(&ueCapablityList);
-    return ROK;
+    return ret;
+}
+
+/*******************************************************************
+ *
+ * @brief Fill UE Capability RAT container list octet string
+ *
+ * @details
+ *
+ *    Function : fillUeCapRatContListBuf
+ *
+ *    Functionality: Fill UE Capability RAT container list octet string
+ 
+ *
+ * @params[in] UE capability RAT container list buffer
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t fillUeCapRatContListBuf(UE_CapabilityRAT_ContainerList_t *ueCapablityListBuf)
+{
+   uint8_t          ret = RFAILED;
+   asn_enc_rval_t   encRetVal;
+   UE_CapabilityRAT_ContainerListRRC_t  ueCapablityList;
+
+   while(true)
+   {
+      ret = fillUeCapRatContList(&ueCapablityList);
+      if(ret != ROK)
+      {
+         DU_LOG( "\nERROR  -->  F1AP : Failed to fill UE Capability RAT container list");
+         break;
+      }
+
+      /* encode UE Capability RAT Container List into duToCuRrcContainer */
+      xer_fprint(stdout, &asn_DEF_UE_CapabilityRAT_ContainerListRRC, &ueCapablityList);
+      cmMemset((uint8_t *)encBuf, 0, ENC_BUF_MAX_LEN);
+      encBufSize = 0;
+      encRetVal = aper_encode(&asn_DEF_UE_CapabilityRAT_ContainerListRRC, 0, \
+            &ueCapablityList, PrepFinalEncBuf, encBuf);
+
+      /* Encode results */
+      if(encRetVal.encoded == ENCODE_FAIL)
+      {
+         DU_LOG( "\nERROR  -->  F1AP : Could not encode UE Capability RAT Container (at %s)\n",\
+               encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
+         break;
+      }
+      else
+      {
+         DU_LOG("\nDEBUG  -->  F1AP : Created APER encodedbuffer for UE Capability RAT Container\n");
+         for(int i=0; i< encBufSize; i++)
+         {
+            DU_LOG("%x",encBuf[i]);
+         }
+      }
+
+      ueCapablityListBuf->size = encBufSize;
+      CU_ALLOC(ueCapablityListBuf->buf, ueCapablityListBuf->size);
+      if(!ueCapablityListBuf->buf)
+      {
+         DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in fillUeCapabilityContainer");
+         break;
+      }
+      memcpy(ueCapablityListBuf->buf, encBuf, ueCapablityListBuf->size);
+      ret = ROK;
+      break;
+   }
+   freeUeCapRatContList(&ueCapablityList);
+   return ret;
+}
+
+void freeMeasuementTimingConfig(MeasurementTimingConfigurationRrc_t *measTimingConfig)
+{
+}
+
+/*******************************************************************
+ *
+ * @brief Fill Measurement Timing Configuration
+ *
+ * @details
+ *
+ *    Function : fillMeasTimingCfg
+ *
+ *    Functionality: Fill Measurement Timing Configuration
+ *
+ * @params[in] MeasurementTimingConfiguration_IEs_t measTimingCfg
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t fillMeasTimingCfg(MeasurementTimingConfigurationRrc_IEs_t *measTimingCfg)
+{
+   uint8_t elementCnt = 0;
+   uint8_t measCfgIdx = 0; 
+   MeasTiming_t *measTiming;
+   SSB_MTC_t *smtc;
+
+   CU_ALLOC(measTimingCfg->measTiming, sizeof(MeasTimingList_t));
+   if(!measTimingCfg->measTiming)
+   {
+      DU_LOG( "\nERROR  -->  F1AP : Failed to allocated memory  for measTiming in fillMeasTimingCfg");
+      return RFAILED;
+   }
+
+   elementCnt = 1;
+   measTimingCfg->measTiming->list.count = elementCnt;
+   measTimingCfg->measTiming->list.size = measTimingCfg->measTiming->list.count * sizeof(MeasTiming_t *);
+   CU_ALLOC(measTimingCfg->measTiming->list.array, measTimingCfg->measTiming->list.size);
+   if(!measTimingCfg->measTiming->list.array)
+   {
+      DU_LOG( "\nERROR  -->  F1AP : Failed to allocated memory for measTiming array in fillMeasTimingCfg");
+      return RFAILED;
+   }
+
+   for(measCfgIdx = 0; measCfgIdx < measTimingCfg->measTiming->list.count; measCfgIdx++)
+   {
+      CU_ALLOC(measTimingCfg->measTiming->list.array[measCfgIdx], sizeof(MeasTiming_t));
+      if(!measTimingCfg->measTiming->list.array[measCfgIdx])
+      {
+         DU_LOG( "\nERROR  -->  F1AP : Failed to allocated memory for measTiming array element in fillMeasTimingCfg");
+         return RFAILED;
+      }
+   }
+
+   measCfgIdx = 0;
+   measTiming = measTimingCfg->measTiming->list.array[measCfgIdx];
+   CU_ALLOC(measTiming->frequencyAndTiming, sizeof(struct MeasTiming__frequencyAndTiming));
+   if(!measTiming->frequencyAndTiming)
+   {
+      DU_LOG( "\nERROR  -->  F1AP : Failed to allocated memory for frequency and timing IE in fillMeasTimingCfg");
+      return RFAILED;
+   }
+
+   measTiming->frequencyAndTiming->carrierFreq =  623800; /* This is a randomly chosen value since ARFCN configured in DU is 623400 */
+   measTiming->frequencyAndTiming->ssbSubcarrierSpacing = SubcarrierSpacing_kHz15;
+
+   smtc = &measTiming->frequencyAndTiming->ssb_MeasurementTimingConfiguration;
+   smtc->periodicityAndOffset.present = SSB_MTC__periodicityAndOffset_PR_sf20;
+   smtc->periodicityAndOffset.choice.sf20 = 0;
+   smtc->duration = SSB_MTC__duration_sf1;
+   return ROK;
+}
+
+/*******************************************************************
+ *
+ * @brief Fill Measurement Timing Configuration Octet string
+ *
+ * @details
+ *
+ *    Function : fillMeasConfigBuf
+ *
+ *    Functionality: Fill Measurement Timing Configuration Octet string
+ 
+ *
+ * @params[in] MeasConfig_t *measConfgBuf
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t fillMeasTimingConfigBuf(MeasConfig_t *measTimingConfigBuf)
+{
+   uint8_t          ret = RFAILED;
+   asn_enc_rval_t   encRetVal;
+   MeasurementTimingConfigurationRrc_t measTimingConfig;
+
+   while(true)
+   {
+      measTimingConfig.criticalExtensions.present = MeasurementTimingConfigurationRrc__criticalExtensions_PR_c1;
+      CU_ALLOC(measTimingConfig.criticalExtensions.choice.c1, sizeof(struct MeasurementTimingConfigurationRrc__criticalExtensions__c1));
+      if(!measTimingConfig.criticalExtensions.choice.c1)
+      {
+         DU_LOG( "\nERROR  -->  F1AP : Failed to allocated memory for measurement configuration extension");
+         return RFAILED;
+      } 
+      measTimingConfig.criticalExtensions.choice.c1->present = MeasurementTimingConfigurationRrc__criticalExtensions__c1_PR_measTimingConf;
+
+      CU_ALLOC(measTimingConfig.criticalExtensions.choice.c1->choice.measTimingConf, sizeof(struct MeasurementTimingConfigurationRrc_IEs));
+      if(!measTimingConfig.criticalExtensions.choice.c1->choice.measTimingConf)
+      {
+         DU_LOG( "\nERROR  -->  F1AP : Failed to allocated memory for measurement timing configuration IE");
+         return RFAILED;
+      }
+
+      ret = fillMeasTimingCfg(measTimingConfig.criticalExtensions.choice.c1->choice.measTimingConf);
+      if(ret != ROK)
+      {
+         DU_LOG( "\nERROR  -->  F1AP : Failed to fill measurement timing configuration IE");
+         break;
+      }
+
+      /* Encode measurement timing configuration into octet string */
+      xer_fprint(stdout, &asn_DEF_MeasurementTimingConfigurationRrc, &measTimingConfig);
+      cmMemset((uint8_t *)encBuf, 0, ENC_BUF_MAX_LEN);
+      encBufSize = 0;
+      encRetVal = aper_encode(&asn_DEF_MeasurementTimingConfigurationRrc, 0, &measTimingConfig, PrepFinalEncBuf, encBuf);
+
+      /* Encode results */
+      if(encRetVal.encoded == ENCODE_FAIL)
+      {
+         DU_LOG( "\nERROR  -->  F1AP : Could not encode Measurement Timing Configuration (at %s)\n",\
+               encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
+         break;
+      }
+      else
+      {
+         DU_LOG("\nDEBUG  -->  F1AP : Created APER encodedbuffer for Measurement timing configuration\n");
+         for(int i=0; i< encBufSize; i++)
+         {
+            DU_LOG("%x",encBuf[i]);
+         }
+      }
+
+      measTimingConfigBuf->size = encBufSize;
+      CU_ALLOC(measTimingConfigBuf->buf, measTimingConfigBuf->size);
+      if(!measTimingConfigBuf->buf)
+      {
+         DU_LOG("\nERROR  -->  F1AP : Memory allocation failed fillMeasTimingConfigBuf");
+         break;
+      }
+      memcpy(measTimingConfigBuf->buf, encBuf, measTimingConfigBuf->size);
+      ret = ROK;
+      break;
+   }
+   freeMeasuementTimingConfig(&measTimingConfig);
+   return ret;
+}
+
+/******************************************************************
+ *
+ * @brief Fill SRB To Add Mod list
+ *
+ * @details
+ *
+ *    Function : fillSrbToAddModList
+ *
+ *    Functionality: fill SRB to Add Mod list
+ *
+ * @params[in] UE control block
+ *             SRB to Add/Mod list
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t fillSrbToAddModList(CuUeCb *ueCb, SRB_ToAddModList_t *srbToAddList, bool updateAllRbCfg)
+{
+   uint8_t srbIdx, srbDbIdx;
+
+   if(updateAllRbCfg)
+      srbToAddList->list.count = ueCb->numSrb;
+   else
+   {
+      srbToAddList->list.count = 0;
+      for(srbDbIdx=0; srbDbIdx < ueCb->numSrb; srbDbIdx++)
+      {
+         if(ueCb->srbList[srbDbIdx].cfgSentToUe == false)
+            srbToAddList->list.count++;
+      }
+   }
+   srbToAddList->list.size = srbToAddList->list.count * sizeof(SRB_ToAddMod_t *);
+
+   CU_ALLOC(srbToAddList->list.array, srbToAddList->list.size);
+   if(!srbToAddList->list.array)
+   {
+      DU_LOG("\nERROR  -->  F1AP: Memory allocation failed for SRB to AddMod list array in fillSrbToAddModList");
+      return RFAILED;
+   }
+
+   srbIdx = 0;
+   for(srbDbIdx = 0; srbDbIdx < ueCb->numSrb; srbDbIdx++)
+   {
+      if(!updateAllRbCfg && ueCb->srbList[srbDbIdx].cfgSentToUe)
+         continue;
+
+      CU_ALLOC(srbToAddList->list.array[srbIdx], sizeof(SRB_ToAddMod_t));
+      if(!srbToAddList->list.array[srbIdx])
+      {
+         DU_LOG("\nERROR  -->  F1AP: Memory allocation failed for SRB to AddMod list element in fillSrbToAddModList");
+         return RFAILED;
+      }
+
+      srbToAddList->list.array[srbIdx]->srb_Identity = ueCb->srbList[srbDbIdx].srbId;
+
+      /* Reestablish PDCP */
+      CU_ALLOC(srbToAddList->list.array[srbIdx]->reestablishPDCP, sizeof(long));
+      if(!srbToAddList->list.array[srbIdx]->reestablishPDCP)
+      {
+         DU_LOG("\nERROR  -->  F1AP: Memory allocation failed for reestablish PDCP IE in fillSrbToAddModList");
+         return RFAILED;
+      }
+      *(srbToAddList->list.array[srbIdx]->reestablishPDCP) = SRB_ToAddMod__reestablishPDCP_true;
+
+      /* PDCP configuration */
+      CU_ALLOC(srbToAddList->list.array[srbIdx]->pdcp_Config, sizeof(PDCP_Config_t));
+      if(!srbToAddList->list.array[srbIdx]->pdcp_Config)
+      {
+         DU_LOG("\nERROR  -->  F1AP: Memory allocation failed for PDCP config IE in fillSrbToAddModList");
+         return RFAILED;
+      }
+
+      /* Reordering timer */
+      CU_ALLOC(srbToAddList->list.array[srbIdx]->pdcp_Config->t_Reordering, sizeof(long));
+      if(!srbToAddList->list.array[srbIdx]->pdcp_Config->t_Reordering)
+      {
+         DU_LOG("\nERROR  -->  F1AP: Memory allocation failed for reordering timer in fillSrbToAddModList");
+         return RFAILED;
+      }
+      *(srbToAddList->list.array[srbIdx]->pdcp_Config->t_Reordering) = PDCP_Config__t_Reordering_ms40;
+      
+      srbIdx++;
+   }
+   return ROK;
+}
+
+/******************************************************************
+ *
+ * @brief Fill DRB To Add Mod list
+ *
+ * @details
+ *
+ *    Function : fillDrbToAddModList
+ *
+ *    Functionality: fill DRB to Add Mod list
+ *
+ * @params[in] UE control block
+ *             DRB to Add/Mod list
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t fillDrbToAddModList(CuUeCb *ueCb, DRB_ToAddModList_t *drbToAddList, bool updateAllRbCfg)
+{
+   uint8_t drbIdx, drbDbIdx;
+
+   if(updateAllRbCfg)
+      drbToAddList->list.count = ueCb->numDrb;
+   else
+   {
+      drbToAddList->list.count = 0;
+      for(drbDbIdx=0; drbDbIdx < ueCb->numDrb; drbDbIdx++)
+      {     
+         if(ueCb->drbList[drbDbIdx].cfgSentToUe == false)
+            drbToAddList->list.count++;
+      }     
+   }
+   drbToAddList->list.size = drbToAddList->list.count * sizeof(DRB_ToAddMod_t *);
+
+   CU_ALLOC(drbToAddList->list.array, drbToAddList->list.size);
+   if(!drbToAddList->list.array)
+   {
+      DU_LOG("\nERROR  -->  F1AP: Memory allocation failed for DRB to AddMod list array in fillDrbToAddModList");
+      return RFAILED;
+   }
+
+   drbIdx = 0;
+   for(drbDbIdx=0; drbDbIdx < ueCb->numDrb; drbDbIdx++)
+   {
+      if(!updateAllRbCfg && ueCb->drbList[drbDbIdx].cfgSentToUe)
+         continue;
+
+      CU_ALLOC(drbToAddList->list.array[drbIdx], sizeof(DRB_ToAddMod_t));
+      if(!drbToAddList->list.array[drbIdx])
+      {
+         DU_LOG("\nERROR  -->  F1AP: Memory allocation failed for DRB to AddMod list elements in fillDrbToAddModList");
+         return RFAILED;
+      }
+
+      /* DRB Id */
+      drbToAddList->list.array[drbIdx]->drb_Identity = ueCb->drbList[drbDbIdx].drbId;
+
+      /* PDCP Config */
+      CU_ALLOC(drbToAddList->list.array[drbIdx]->pdcp_Config, sizeof(PDCP_Config_t));
+      if(!drbToAddList->list.array[drbIdx]->pdcp_Config)
+      {
+         DU_LOG("\nERROR  -->  F1AP: Memory allocation failed for PDCP config IE in fillDrbToAddModList");
+         return RFAILED;
+      }
+
+      /* PDCP Config -> DRB */
+      CU_ALLOC(drbToAddList->list.array[drbIdx]->pdcp_Config->drb, sizeof(struct PDCP_Config__drb));
+      if(!drbToAddList->list.array[drbIdx]->pdcp_Config->drb)
+      {
+         DU_LOG("\nERROR  -->  F1AP: Memory allocation failed for PDCP config drb in fillDrbToAddModList");
+         return RFAILED;
+      }
+
+      /* DRB -> Discard Timer */
+      CU_ALLOC(drbToAddList->list.array[drbIdx]->pdcp_Config->drb->discardTimer, sizeof(long));
+      if(!drbToAddList->list.array[drbIdx]->pdcp_Config->drb->discardTimer)
+      {
+         DU_LOG("\nERROR  -->  F1AP: Memory allocation failed for DRB discard timer in fillDrbToAddModList");
+         return RFAILED;
+      }
+      *(drbToAddList->list.array[drbIdx]->pdcp_Config->drb->discardTimer) = PDCP_Config__drb__discardTimer_infinity;
+
+      /* UL PDCP SN length */
+      CU_ALLOC(drbToAddList->list.array[drbIdx]->pdcp_Config->drb->pdcp_SN_SizeUL, sizeof(long));
+      if(!drbToAddList->list.array[drbIdx]->pdcp_Config->drb->pdcp_SN_SizeUL)
+      {
+         DU_LOG("\nERROR  -->  F1AP: Memory allocation failed for UL SN length in fillDrbToAddModList");
+         return RFAILED;
+      }
+      *(drbToAddList->list.array[drbIdx]->pdcp_Config->drb->pdcp_SN_SizeUL) = PDCP_Config__drb__pdcp_SN_SizeUL_len12bits;
+
+      /* DL PDCP SN length */
+      CU_ALLOC(drbToAddList->list.array[drbIdx]->pdcp_Config->drb->pdcp_SN_SizeDL, sizeof(long));
+      if(!drbToAddList->list.array[drbIdx]->pdcp_Config->drb->pdcp_SN_SizeDL)
+      {
+         DU_LOG("\nERROR  -->  F1AP: Memory allocation failed for DL SN length in fillDrbToAddModList");
+         return RFAILED;
+      }
+      *(drbToAddList->list.array[drbIdx]->pdcp_Config->drb->pdcp_SN_SizeDL) = PDCP_Config__drb__pdcp_SN_SizeDL_len12bits;
+
+      /* Header Compression */
+      drbToAddList->list.array[drbIdx]->pdcp_Config->drb->headerCompression.present = PDCP_Config__drb__headerCompression_PR_notUsed;
+       drbToAddList->list.array[drbIdx]->pdcp_Config->drb->headerCompression.choice.notUsed = NULLP;
+
+      /* Reordering timer */
+      CU_ALLOC(drbToAddList->list.array[drbIdx]->pdcp_Config->t_Reordering, sizeof(long));
+      if(!drbToAddList->list.array[drbIdx]->pdcp_Config->t_Reordering)
+      {
+         DU_LOG("\nERROR  -->  F1AP: Memory allocation failed for reordering timer in fillDrbToAddModList");
+         return RFAILED;
+      }
+      *(drbToAddList->list.array[drbIdx]->pdcp_Config->t_Reordering) = PDCP_Config__t_Reordering_ms40;
+
+      drbIdx++;
+   }
+
+   return ROK;
+}
+
+/******************************************************************
+ *
+ * @brief Fill Radio bearer configuration
+ *
+ * @details
+ *
+ *    Function : fillRadioBearerConfig
+ *
+ *    Functionality: Fill Radio bearer configuration
+ *
+ * @params[in] UE control block
+ *             Radio bearer config pointer
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t fillRadioBearerConfig(CuUeCb *ueCb, RadioBearerConfig_t *radioBearerConfig, bool updateAllRbCfg)
+{
+   /* SRB To Add/Mod List */
+   CU_ALLOC(radioBearerConfig->srb_ToAddModList, sizeof(SRB_ToAddModList_t));
+   if(!radioBearerConfig->srb_ToAddModList)
+   {
+      DU_LOG("\nERROR  -->  F1AP: Memory allocation failed for SRB to AddMod List in fillRadioBearerConfig");
+      return RFAILED;
+   }
+   if(fillSrbToAddModList(ueCb, radioBearerConfig->srb_ToAddModList, updateAllRbCfg) != ROK)
+   {
+      return RFAILED;
+   }
+
+   /* DRB To Add/Mod List */
+   CU_ALLOC(radioBearerConfig->drb_ToAddModList, sizeof(DRB_ToAddModList_t));
+   if(!radioBearerConfig->drb_ToAddModList)
+   {
+      DU_LOG("\nERROR  -->  F1AP: Memory allocation failed for DRB to AddMod List in fillRadioBearerConfig");
+      return RFAILED;
+   }
+   if(fillDrbToAddModList(ueCb, radioBearerConfig->drb_ToAddModList, updateAllRbCfg) != ROK)
+   {
+      return RFAILED;
+   }
+
+   return ROK;
+}
+
+/*******************************************************************
+ *
+ * @brief Fill measurement object to add/mod list
+ *
+ * @details
+ *
+ *    Function : fillMeasObjToAddModList
+ *
+ *    Functionality: Fill measurement object to add/mod list
+ *
+ * @params[in] Measurement object to add/mod list
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t fillMeasObjToAddModList(MeasObjectToAddModList_t *measObjList)
+{
+   uint8_t elementCnt, objIdx;
+   MeasObjectNR_t *measObject;
+
+   elementCnt = 1;
+   measObjList->list.count = elementCnt;
+   measObjList->list.size = measObjList->list.count * sizeof(MeasObjectToAddMod_t *);
+
+   CU_ALLOC(measObjList->list.array, measObjList->list.size);
+   if(!measObjList->list.array)
+   {
+      return RFAILED;
+   }
+
+   for(objIdx = 0; objIdx < measObjList->list.size; objIdx++)
+   {
+      CU_ALLOC(measObjList->list.array[objIdx], sizeof(MeasObjectToAddMod_t));
+      if(!measObjList->list.array[objIdx])
+      {
+         return RFAILED;
+      }
+   }
+
+   objIdx = 0;
+   measObjList->list.array[objIdx]->measObjectId = 1;
+   measObjList->list.array[objIdx]->measObject.present = MeasObjectToAddMod__measObject_PR_measObjectNR;
+   CU_ALLOC(measObjList->list.array[objIdx]->measObject.choice.measObjectNR, sizeof(MeasObjectNR_t));
+   if(!measObjList->list.array[objIdx]->measObject.choice.measObjectNR)
+   {
+      return RFAILED;
+   }
+
+   measObject = measObjList->list.array[objIdx]->measObject.choice.measObjectNR;
+
+   /* SSB frequency */
+   CU_ALLOC(measObject->ssbFrequency, sizeof(ARFCN_ValueNR_t));
+   if(!measObject->ssbFrequency)
+   {
+      return RFAILED;
+   }
+   *(measObject->ssbFrequency) = 620736; /* Value picked from reference PCAP logs */
+
+   /* Subcarrier spacing */
+   CU_ALLOC(measObject->ssbSubcarrierSpacing, sizeof(SubcarrierSpacing_t));
+   if(!measObject->ssbSubcarrierSpacing)
+   {
+      return RFAILED;
+   }
+   *(measObject->ssbSubcarrierSpacing) = SubcarrierSpacing_kHz15;
+
+   /* SMTC1 */
+   CU_ALLOC(measObject->smtc1 , sizeof(SSB_MTC_t));
+   if(!measObject->smtc1)
+   {
+      return RFAILED;
+   }
+   measObject->smtc1->duration = SSB_MTC__duration_sf1;
+   measObject->smtc1->periodicityAndOffset.present = SSB_MTC__periodicityAndOffset_PR_sf20;
+   measObject->smtc1->periodicityAndOffset.choice.sf20 = 0;
+
+   /* Absoulute threshold SSB consolidation */
+   CU_ALLOC(measObject->absThreshSS_BlocksConsolidation, sizeof(ThresholdNR_t));
+   if(!measObject->absThreshSS_BlocksConsolidation)
+   {
+      return RFAILED;
+   }
+
+   /* RSRP threshold */
+   CU_ALLOC(measObject->absThreshSS_BlocksConsolidation->thresholdRSRP, sizeof(RSRP_Range_t));
+   if(!measObject->absThreshSS_BlocksConsolidation->thresholdRSRP)
+   {
+      return RFAILED;
+   }
+   *(measObject->absThreshSS_BlocksConsolidation->thresholdRSRP) = 1;
+
+   /* RSRQ threshold */
+   CU_ALLOC(measObject->absThreshSS_BlocksConsolidation->thresholdRSRQ, sizeof(RSRQ_Range_t));
+   if(!measObject->absThreshSS_BlocksConsolidation->thresholdRSRQ)
+   {
+      return RFAILED;
+   }
+   *(measObject->absThreshSS_BlocksConsolidation->thresholdRSRQ) = 1;
+
+   /* SINR threshold */
+   CU_ALLOC(measObject->absThreshSS_BlocksConsolidation->thresholdSINR, sizeof(SINR_Range_t));
+   if(!measObject->absThreshSS_BlocksConsolidation->thresholdSINR)
+   {
+      return RFAILED;
+   }
+   *(measObject->absThreshSS_BlocksConsolidation->thresholdSINR) = 1;
+
+   /* Number of SSBs to average */
+   CU_ALLOC(measObject->nrofSS_BlocksToAverage, sizeof(long));
+   if(!measObject->nrofSS_BlocksToAverage)
+   {
+      return RFAILED;
+   }
+   *(measObject->nrofSS_BlocksToAverage) = 2;
+
+   /* Quantity Config index */
+   measObject->quantityConfigIndex = 1;
+
+   /* Offset MO */
+   /* RSRP offset for SSB */
+   CU_ALLOC(measObject->offsetMO.rsrpOffsetSSB, sizeof(Q_OffsetRange_t));
+   if(!measObject->offsetMO.rsrpOffsetSSB)
+   {
+      return RFAILED;
+   }
+   *(measObject->offsetMO.rsrpOffsetSSB) = Q_OffsetRange_dB0;
+
+   /* RSRQ offset for SSB */
+   CU_ALLOC(measObject->offsetMO.rsrqOffsetSSB, sizeof(Q_OffsetRange_t));
+   if(!measObject->offsetMO.rsrpOffsetSSB)
+   {
+      return RFAILED;
+   }
+   *(measObject->offsetMO.rsrqOffsetSSB) = Q_OffsetRange_dB0;
+
+   /* SINR offset for SSB */
+   CU_ALLOC(measObject->offsetMO.sinrOffsetSSB, sizeof(Q_OffsetRange_t));
+   if(!measObject->offsetMO.sinrOffsetSSB)
+   {
+      return RFAILED;
+   }
+   *(measObject->offsetMO.sinrOffsetSSB) = Q_OffsetRange_dB0;
+
+   return ROK;
+}
+
+/*******************************************************************
+ *
+ * @brief Fill Report configuration to Add/mod list
+ *
+ * @details
+ *
+ *    Function : fillReportCfgToAddModList
+ *
+ *    Functionality: Fill Report configuration to Add/mod list
+ *
+ * @params[in] Report Config To Add/Mod List
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t fillReportCfgToAddModList(ReportConfigToAddModList_t *reportCfgList)
+{
+   uint8_t elementCnt;
+   uint8_t reportCfgIdx;
+   ReportConfigToAddMod_t *reportCfg;
+   ReportConfigNR_t *reportCfgNr;
+   EventTriggerConfig_t *eventTriggCfg;
+
+   elementCnt = 1;
+   reportCfgList->list.count = elementCnt;
+   reportCfgList->list.size = reportCfgList->list.count * sizeof(ReportConfigToAddMod_t *);
+
+   CU_ALLOC(reportCfgList->list.array, reportCfgList->list.size);
+   if(!reportCfgList->list.array)
+   {
+      return RFAILED;
+   }
+
+   for(reportCfgIdx=0; reportCfgIdx < reportCfgList->list.count; reportCfgIdx++)
+   {
+      CU_ALLOC(reportCfgList->list.array[reportCfgIdx], sizeof(ReportConfigToAddMod_t));
+      if(!reportCfgList->list.array[reportCfgIdx])
+      {
+         return RFAILED;
+      }
+   }
+
+   reportCfgIdx = 0;
+   reportCfg = reportCfgList->list.array[reportCfgIdx];
+   reportCfg->reportConfigId = 1;
+   reportCfg->reportConfig.present = ReportConfigToAddMod__reportConfig_PR_reportConfigNR;
+
+   /* Report Configuration for NR */
+   CU_ALLOC(reportCfg->reportConfig.choice.reportConfigNR, sizeof(ReportConfigNR_t));
+   if(!reportCfg->reportConfig.choice.reportConfigNR)
+   {
+      return RFAILED;
+   }
+   reportCfgNr = reportCfg->reportConfig.choice.reportConfigNR;
+
+   /* Report Type */
+   reportCfgNr->reportType.present = ReportConfigNR__reportType_PR_eventTriggered;
+   CU_ALLOC(reportCfgNr->reportType.choice.eventTriggered, sizeof(EventTriggerConfig_t));
+   if(!reportCfgNr->reportType.choice.eventTriggered)
+   {
+      return RFAILED;
+   }
+   eventTriggCfg = reportCfgNr->reportType.choice.eventTriggered;
+
+   /* Event 3 */
+   eventTriggCfg->eventId.present = EventTriggerConfig__eventId_PR_eventA3;
+   CU_ALLOC(eventTriggCfg->eventId.choice.eventA3, sizeof(struct EventTriggerConfig__eventId__eventA3));
+   if(!eventTriggCfg->eventId.choice.eventA3)
+   {
+      return RFAILED;
+   }
+
+   eventTriggCfg->eventId.choice.eventA3->a3_Offset.present = MeasTriggerQuantityOffset_PR_rsrp;
+   eventTriggCfg->eventId.choice.eventA3->a3_Offset.choice.rsrp = 6; /* i.e. 3.0db . From Reference pcap log */
+   eventTriggCfg->eventId.choice.eventA3->reportOnLeave = false;
+   eventTriggCfg->eventId.choice.eventA3->hysteresis = 0;
+   eventTriggCfg->eventId.choice.eventA3->timeToTrigger = TimeToTrigger_ms40;
+   eventTriggCfg->eventId.choice.eventA3->useWhiteCellList = false;
+
+   /* Reference Signal Type */
+   eventTriggCfg->rsType = NR_RS_Type_ssb;
+
+   /* Report Interval */
+   eventTriggCfg->reportInterval = ReportInterval_ms1024;
+
+   /* Report Amount */
+   eventTriggCfg->reportAmount = EventTriggerConfig__reportAmount_r8;
+
+   /* Report Quantity cell */
+   eventTriggCfg->reportQuantityCell.rsrp = true;
+   eventTriggCfg->reportQuantityCell.rsrq = false;
+   eventTriggCfg->reportQuantityCell.sinr = false;
+
+   /* Maximum reported cells */
+   eventTriggCfg->maxReportCells = 3;
+
+   /* Report qunatity RS Indexes */
+   CU_ALLOC(eventTriggCfg->reportQuantityRS_Indexes, sizeof(MeasReportQuantity_t));
+   if(!eventTriggCfg->reportQuantityRS_Indexes)
+   {
+      return RFAILED;
+   }
+   eventTriggCfg->reportQuantityRS_Indexes->rsrp = true;
+   eventTriggCfg->reportQuantityRS_Indexes->rsrq = false;
+   eventTriggCfg->reportQuantityRS_Indexes->sinr = false;
+
+   /* Maximum number of RS indexes to report */
+   CU_ALLOC(eventTriggCfg->maxNrofRS_IndexesToReport, sizeof(long));
+   if(!eventTriggCfg->maxNrofRS_IndexesToReport)
+   {
+      return RFAILED;
+   }
+   *(eventTriggCfg->maxNrofRS_IndexesToReport) = 1;
+
+   /* Include Beam measurement */
+   eventTriggCfg->includeBeamMeasurements = false;
+
+   return ROK;
+}
+
+
+/*******************************************************************
+ *
+ * @brief Fill measurement Id to add/mod list
+ 
+ * @details
+ *
+ *    Function : fillMeasIdToAddModList
+ *
+ *    Functionality: Fill measurement Id to add/mod list
+ *
+ * @params[in] Measurement Id to add/mod list
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t fillMeasIdToAddModList(MeasIdToAddModList_t *measIdList)
+{
+   uint8_t elementCnt;
+   uint8_t measIdIdx;
+
+   elementCnt = 1;
+   measIdList->list.count = elementCnt;
+   measIdList->list.size = measIdList->list.count *sizeof(MeasIdToAddMod_t *);
+
+   CU_ALLOC(measIdList->list.array, measIdList->list.size);
+   if(!measIdList->list.array)
+   {
+      return RFAILED;
+   }
+
+   for(measIdIdx=0; measIdIdx < measIdList->list.count; measIdIdx++)
+   {
+      CU_ALLOC(measIdList->list.array[measIdIdx], sizeof(MeasIdToAddMod_t));
+      if(!measIdList->list.array[measIdIdx])
+      {
+         return RFAILED;
+      }
+
+      measIdIdx=0;
+      measIdList->list.array[measIdIdx]->measId = 1;
+      measIdList->list.array[measIdIdx]->measObjectId = 1;
+      measIdList->list.array[measIdIdx]->reportConfigId = 1;
+   }
+   return ROK;
+}
+
+/*******************************************************************
+ *
+ * @brief Fill s-measurement configuration
+ *
+ * @details
+ *
+ *    Function : fillSMeasConfig
+ *
+ *    Functionality: Fill s-measurement configuration
+ *
+ * @params[in] s-Measurement config
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t fillSMeasConfig(struct MeasConfigRrc__s_MeasureConfig *sMeasCfg)
+{
+   sMeasCfg->present = MeasConfigRrc__s_MeasureConfig_PR_ssb_RSRP;
+   sMeasCfg->choice.ssb_RSRP = 100; /* Value taken from reference PCAP log */
+
+   return ROK;
+}
+
+/*******************************************************************
+ *
+ * @brief Fill quantity config
+ *
+ * @details
+ *
+ *    Function : fillQunatityConfig
+ *
+ *    Functionality: Fill quantity config
+ *
+ * @params[in] Quantity Config
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t fillQuantityConfig(QuantityConfig_t *quantityCfg)
+{
+   uint8_t elementCnt = 0;
+   uint8_t quanCfgIdx = 0;
+   QuantityConfigNR_t *quantityCfgNr;
+
+   CU_ALLOC(quantityCfg->quantityConfigNR_List, sizeof(struct QuantityConfig__quantityConfigNR_List));
+   if(!quantityCfg->quantityConfigNR_List)
+   {
+      return RFAILED;
+   }
+
+   elementCnt = 1;
+   quantityCfg->quantityConfigNR_List->list.count = elementCnt;
+   quantityCfg->quantityConfigNR_List->list.size = elementCnt * sizeof(QuantityConfigNR_t *);
+
+   CU_ALLOC(quantityCfg->quantityConfigNR_List->list.array, quantityCfg->quantityConfigNR_List->list.size);
+   if(!quantityCfg->quantityConfigNR_List->list.array)
+   {
+      return RFAILED;
+   }
+
+   for(quanCfgIdx = 0; quanCfgIdx < quantityCfg->quantityConfigNR_List->list.count; quanCfgIdx++)
+   {
+      CU_ALLOC(quantityCfg->quantityConfigNR_List->list.array[quanCfgIdx], sizeof(QuantityConfigNR_t));
+      if(!quantityCfg->quantityConfigNR_List->list.array[quanCfgIdx])
+      {
+         return RFAILED;
+      }
+   }
+
+   quanCfgIdx = 0;
+   quantityCfgNr = quantityCfg->quantityConfigNR_List->list.array[quanCfgIdx];
+
+   /* Quantity Config of Reference signal */
+   CU_ALLOC(quantityCfgNr->quantityConfigCell.ssb_FilterConfig.filterCoefficientRSRP, sizeof(FilterCoefficient_t));
+   if(!quantityCfgNr->quantityConfigCell.ssb_FilterConfig.filterCoefficientRSRP)
+   {
+      return RFAILED;
+   }
+   *(quantityCfgNr->quantityConfigCell.ssb_FilterConfig.filterCoefficientRSRP) = FilterCoefficient_fc4;
+
+   CU_ALLOC(quantityCfgNr->quantityConfigCell.ssb_FilterConfig.filterCoefficientRSRQ, sizeof(FilterCoefficient_t));
+   if(!quantityCfgNr->quantityConfigCell.ssb_FilterConfig.filterCoefficientRSRQ)
+   {
+      return RFAILED;
+   }
+   *(quantityCfgNr->quantityConfigCell.ssb_FilterConfig.filterCoefficientRSRQ) = FilterCoefficient_fc4;
+
+   CU_ALLOC(quantityCfgNr->quantityConfigCell.ssb_FilterConfig.filterCoefficientRS_SINR, sizeof(FilterCoefficient_t));
+   if(!quantityCfgNr->quantityConfigCell.ssb_FilterConfig.filterCoefficientRS_SINR)
+   {
+      return RFAILED;
+   }
+   *(quantityCfgNr->quantityConfigCell.ssb_FilterConfig.filterCoefficientRS_SINR) = FilterCoefficient_fc4;
+
+   /* Quantity Config RS index */
+   CU_ALLOC(quantityCfgNr->quantityConfigRS_Index, sizeof(QuantityConfigRS_t));
+   if(!quantityCfgNr->quantityConfigRS_Index)
+   {
+      return RFAILED;
+   }
+
+   CU_ALLOC(quantityCfgNr->quantityConfigRS_Index->ssb_FilterConfig.filterCoefficientRSRP, sizeof(FilterCoefficient_t));
+   if(!quantityCfgNr->quantityConfigRS_Index->ssb_FilterConfig.filterCoefficientRSRP)
+   {
+      return RFAILED;
+   }
+   *(quantityCfgNr->quantityConfigRS_Index->ssb_FilterConfig.filterCoefficientRSRP) = FilterCoefficient_fc4;
+
+   CU_ALLOC(quantityCfgNr->quantityConfigRS_Index->ssb_FilterConfig.filterCoefficientRSRQ, sizeof(FilterCoefficient_t));
+   if(!quantityCfgNr->quantityConfigRS_Index->ssb_FilterConfig.filterCoefficientRSRQ)
+   {
+      return RFAILED;
+   }
+   *(quantityCfgNr->quantityConfigRS_Index->ssb_FilterConfig.filterCoefficientRSRQ) = FilterCoefficient_fc4;
+
+   CU_ALLOC(quantityCfgNr->quantityConfigRS_Index->ssb_FilterConfig.filterCoefficientRS_SINR, sizeof(FilterCoefficient_t));
+   if(!quantityCfgNr->quantityConfigRS_Index->ssb_FilterConfig.filterCoefficientRS_SINR)
+   {
+      return RFAILED;
+   }
+   *(quantityCfgNr->quantityConfigRS_Index->ssb_FilterConfig.filterCoefficientRS_SINR) = FilterCoefficient_fc4;
+
+   return ROK;
+}
+
+/*******************************************************************
+ *
+ * @brief Fill measurement configuration
+ *
+ * @details
+ *
+ *    Function : fillMeasConfig
+ *
+ *    Functionality: Fill measurement configuration
+ *
+ * @params[in] Measurement config
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t fillMeasConfig(MeasConfigRrc_t *measConfig)
+{
+   /* Measurement object to add/mod list */
+   CU_ALLOC(measConfig->measObjectToAddModList, sizeof(MeasObjectToAddModList_t));
+   if(!measConfig->measObjectToAddModList)
+   {
+      DU_LOG("\nERROR  -->  F1AP: Memory allocation failed for measurement object list in fillMeasConfig");
+      return RFAILED;
+   }
+   if(fillMeasObjToAddModList(measConfig->measObjectToAddModList) != ROK)
+   {   
+      DU_LOG("\nERROR  -->  F1AP: Failure in fillMeasObjToAddModList");
+      return RFAILED;
+   }
+
+   /* Report Config To add/mod list */
+   CU_ALLOC(measConfig->reportConfigToAddModList, sizeof(ReportConfigToAddModList_t));
+   if(!measConfig->reportConfigToAddModList)
+   {
+      DU_LOG("\nERROR  -->  F1AP: Memory allocation failed for report config list in  fillMeasConfig");
+      return RFAILED;
+   }
+   if(fillReportCfgToAddModList(measConfig->reportConfigToAddModList) != ROK)
+   {
+      DU_LOG("\nERROR  -->  F1AP: Failure in fillReportCfgToAddModList");
+      return RFAILED;
+   }
+
+   /* Measurement Id to add/mod list */
+   CU_ALLOC(measConfig->measIdToAddModList, sizeof(MeasIdToAddModList_t));
+   if(!measConfig->measIdToAddModList)
+   {
+      DU_LOG("\nERROR  -->  F1AP: Memory allocation failed for measuerment id list in  fillMeasConfig");
+      return RFAILED;
+   }
+   if(fillMeasIdToAddModList(measConfig->measIdToAddModList) != ROK)
+   {
+      DU_LOG("\nERROR  -->  F1AP: Failure in fillMeasIdToAddModList");
+      return RFAILED;
+   }
+
+   /* S-Measurement config */
+   CU_ALLOC(measConfig->s_MeasureConfig, sizeof(struct MeasConfigRrc__s_MeasureConfig));
+   if(!measConfig->s_MeasureConfig)
+   {
+      DU_LOG("\nERROR  -->  F1AP: Memory allocation failed for s measuerment config in  fillMeasConfig");
+      return RFAILED;
+   }
+   if(fillSMeasConfig(measConfig->s_MeasureConfig) != ROK)
+   {
+      DU_LOG("\nERROR  -->  F1AP: Failure in fillSMeasConfig");
+      return RFAILED;
+   }
+
+   /* Qunatity Config */
+   CU_ALLOC(measConfig->quantityConfig, sizeof(QuantityConfig_t));
+   if(!measConfig->quantityConfig)
+   {
+      DU_LOG("\nERROR  -->  F1AP: Memory allocation failed for quantity config in  fillMeasConfig");
+      return RFAILED;
+   }
+   if(fillQuantityConfig(measConfig->quantityConfig) != ROK)
+   {
+      DU_LOG("\nERROR  -->  F1AP: Failure in fillQuantityConfig");
+      return RFAILED;
+   }
+
+return ROK;
+}
+
+/*******************************************************************
+ *
+ * @brief Fill RRC reconfiguration non-critical extension IE
+ *
+ * @details
+ *
+ *    Function : fillRrcReconfigNonCriticalExt
+ *
+ *    Functionality: Fill RRC reconfiguration non-critical extension
+ *
+ * @params[in] RRC Reconfig Non-critical extension
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t fillRrcReconfigNonCriticalExt(CuUeCb *ueCb, RRCReconfiguration_v1530_IEs_t *rrcRecfg, bool updateAllRbCfg)
+{
+   CU_ALLOC(rrcRecfg->masterCellGroup, sizeof(OCTET_STRING_t));
+   if(!rrcRecfg->masterCellGroup)
+   {
+      return RFAILED;
+   }
+
+   if(fillCellGrpCfg(ueCb, rrcRecfg->masterCellGroup, updateAllRbCfg) != ROK)
+   {
+      return RFAILED;
+   }
+
+   return ROK;
+}
+
+/*******************************************************************
+ *
+ * @brief Fill RRC reconfiguration structure
+ *
+ * @details
+ *
+ *    Function : fillRrcReconfig
+ *
+ *    Functionality: Fill RRC reconfiguration
+ 
+ *
+ * @params[in] UE Cb
+ *             RRC reconfiguration structure
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t fillRrcReconfig(CuUeCb *ueCb, RRCReconfiguration_t *rrcReconfig, bool updateAllRbCfg)
+{
+   memset(rrcReconfig, 0, sizeof(RRCReconfiguration_t));
+
+   rrcReconfig->rrc_TransactionIdentifier = 1;
+   rrcReconfig->criticalExtensions.present = RRCReconfiguration__criticalExtensions_PR_rrcReconfiguration;
+
+   CU_ALLOC(rrcReconfig->criticalExtensions.choice.rrcReconfiguration, sizeof(RRCReconfiguration_IEs_t)); 
+   if(!rrcReconfig->criticalExtensions.choice.rrcReconfiguration)
+   {
+      DU_LOG("\nERROR  -->  F1AP : Memormy allocation failed for RRC reconfiguration IE in fillRrcReconfig");
+      return RFAILED;
+   }
+
+   /* Radio Bearer Configuration */
+   CU_ALLOC(rrcReconfig->criticalExtensions.choice.rrcReconfiguration->radioBearerConfig, sizeof(RadioBearerConfig_t));
+   if(!rrcReconfig->criticalExtensions.choice.rrcReconfiguration->radioBearerConfig)
+   {
+      DU_LOG("\nERROR  -->  F1AP : Memormy allocation failed for radio bearer config in fillRrcReconfig");
+      return RFAILED;
+   }
+   if(fillRadioBearerConfig(ueCb, rrcReconfig->criticalExtensions.choice.rrcReconfiguration->radioBearerConfig, updateAllRbCfg) != ROK)
+   {
+      DU_LOG("\nERROR  -->  F1AP : Failed to fill radio bearer config in fillRrcReconfig");
+      return RFAILED;
+   }
+
+   /* Measurement Configuration */
+   CU_ALLOC(rrcReconfig->criticalExtensions.choice.rrcReconfiguration->measConfig, sizeof(MeasConfigRrc_t));
+   if(!rrcReconfig->criticalExtensions.choice.rrcReconfiguration->measConfig)
+   {
+      DU_LOG("\nERROR  -->  F1AP : Memormy allocation failed for Measurement config IE in fillRrcReconfig");
+      return RFAILED;
+   }
+   if(fillMeasConfig(rrcReconfig->criticalExtensions.choice.rrcReconfiguration->measConfig) != ROK)
+   {
+      DU_LOG("\nERROR  -->  F1AP : Failed to fill measurement config in fillRrcReconfig");
+      return RFAILED;
+   }
+
+   /* Non Critical extension */
+   CU_ALLOC(rrcReconfig->criticalExtensions.choice.rrcReconfiguration->nonCriticalExtension, sizeof(struct RRCReconfiguration_v1530_IEs));
+   if(!rrcReconfig->criticalExtensions.choice.rrcReconfiguration->nonCriticalExtension)
+   {
+      DU_LOG("\nERROR  -->  F1AP : Memormy allocation failed for non critical extension IE in fillRrcReconfig");
+      return RFAILED;
+   }
+   if(fillRrcReconfigNonCriticalExt(ueCb, rrcReconfig->criticalExtensions.choice.rrcReconfiguration->nonCriticalExtension, updateAllRbCfg) != ROK)
+   {
+      DU_LOG("\nERROR  -->  F1AP : Failed to fill non critical extension in fillRrcReconfig");
+      return RFAILED;
+   }
+   return ROK;
+}
+
+/*******************************************************************
+ *
+ * @brief Fill RRC reconfiguration Octet string
+ *
+ * @details
+ *
+ *    Function : fillRrcReconfigBuf
+ *
+ *    Functionality: Fill RRC reconfiguration octet string
+ 
+ *
+ * @params[in] OCTET_STRING_t buffer
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t fillRrcReconfigBuf(CuUeCb *ueCb, OCTET_STRING_t  *rrcReconfigBuf, bool updateAllRbCfg)
+{
+   uint8_t          ret = RFAILED;
+   asn_enc_rval_t   encRetVal;
+   RRCReconfiguration_t rrcRecfg, *rrcReconfig = NULLP;
+   rrcReconfig = &rrcRecfg;
+
+   while(true)
+   {
+      if(fillRrcReconfig(ueCb, rrcReconfig, updateAllRbCfg) != ROK)
+      {
+         DU_LOG( "\nERROR  -->  F1AP : Failed to fill RRC Reconfiguration in fillRrcReconfigBuf");
+         break; 
+      }
+
+      /* Encode RRC Reconfiguration */
+      xer_fprint(stdout, &asn_DEF_RRCReconfiguration, rrcReconfig);
+      cmMemset((uint8_t *)encBuf, 0, ENC_BUF_MAX_LEN);
+      encBufSize = 0;
+      encRetVal = aper_encode(&asn_DEF_RRCReconfiguration, 0, rrcReconfig, PrepFinalEncBuf, encBuf);
+
+      /* Encode results */
+      if(encRetVal.encoded == ENCODE_FAIL)
+      {     
+         DU_LOG( "\nERROR  -->  F1AP : Could not encode RRC Reconfiguration (at %s)\n",\
+               encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
+         break;
+      }     
+      else  
+      {     
+         DU_LOG("\nDEBUG  -->  F1AP : Created APER encoded buffer for RRC Reconfiguration\n");
+         for(int i=0; i< encBufSize; i++)
+         {
+            DU_LOG("%x",encBuf[i]);
+         }
+      }     
+
+      rrcReconfigBuf->size = encBufSize;
+      CU_ALLOC(rrcReconfigBuf->buf, rrcReconfigBuf->size);
+      if(!rrcReconfigBuf->buf)
+      {     
+         DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in fillUeCapabilityContainer");
+         break;
+      }     
+      memcpy(rrcReconfigBuf->buf, encBuf, rrcReconfigBuf->size);
+      ret = ROK;
+      break;
+   }
+
+   //TODO : freeRrcReconfiguration();
+   return ret;
+}
+
+/*******************************************************************
+ *
+ * @brief Fill HO preparation information Octet string
+ *
+ * @details
+ *
+ *    Function : fillHOPreparationInfoBuf
+ *
+ *    Functionality: Fill HO preparation information Octet string
+ 
+ *
+ * @params[in] HandoverPreparationInformation_t buffer
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t fillHOPreparationInfoBuf(CuUeCb *ueCb, HandoverPreparationInformation_t *hoPrepInfoBuf)
+{
+   uint8_t          ret = RFAILED;
+   asn_enc_rval_t   encRetVal;
+   HandoverPreparationInformationRrc_t hoPrepInfo;
+   HandoverPreparationInformationRrc_IEs_t *hoPrepInfoIe;
+
+   while(true)
+   {
+   
+      hoPrepInfo.criticalExtensions.present = HandoverPreparationInformationRrc__criticalExtensions_PR_c1;
+      CU_ALLOC(hoPrepInfo.criticalExtensions.choice.c1, sizeof(struct HandoverPreparationInformationRrc__criticalExtensions__c1));
+      if(!hoPrepInfo.criticalExtensions.choice.c1)
+      {
+         DU_LOG( "\nERROR  -->  F1AP : Failed to allocate memory for c1 in fillHOPreparationInfo");
+         break;
+      }
+      hoPrepInfo.criticalExtensions.choice.c1->present = \
+         HandoverPreparationInformationRrc__criticalExtensions__c1_PR_handoverPreparationInformation;
+      
+      CU_ALLOC(hoPrepInfo.criticalExtensions.choice.c1->choice.handoverPreparationInformation , \
+         sizeof(HandoverPreparationInformationRrc_IEs_t));
+      if(!hoPrepInfo.criticalExtensions.choice.c1->choice.handoverPreparationInformation)
+      {
+         DU_LOG( "\nERROR  -->  F1AP : Failed to allocate memory for handover preparation information IE in fillHOPreparationInfo");
+         break;
+      }
+      hoPrepInfoIe = hoPrepInfo.criticalExtensions.choice.c1->choice.handoverPreparationInformation;
+   
+      /* Fill UE Capability RAT container list */
+      ret = fillUeCapRatContList(&hoPrepInfoIe->ue_CapabilityRAT_List);
+      if(ret != ROK)
+      {
+         DU_LOG( "\nERROR  -->  F1AP : Failed to fill UE Capability RAT container list");
+         break;
+      }
+
+      /* Fill Source config */
+      hoPrepInfoIe->sourceConfig = NULLP;
+      CU_ALLOC(hoPrepInfoIe->sourceConfig, sizeof(AS_Config_t));
+      if(!hoPrepInfoIe->sourceConfig)
+      {
+         DU_LOG( "\nERROR  -->  F1AP : Failed to allocate memory for source config in fillHOPreparationInfo");
+         return RFAILED;
+      }
+      ret = fillRrcReconfigBuf(ueCb, &hoPrepInfoIe->sourceConfig->rrcReconfiguration, true); 
+
+      hoPrepInfoIe->rrm_Config = NULLP;
+      hoPrepInfoIe->as_Context = NULLP;
+      hoPrepInfoIe->nonCriticalExtension = NULLP;
+
+      /* encode UE Capability RAT Container List into duToCuRrcContainer */
+      xer_fprint(stdout, &asn_DEF_HandoverPreparationInformationRrc, &hoPrepInfo);
+      cmMemset((uint8_t *)encBuf, 0, ENC_BUF_MAX_LEN);
+      encBufSize = 0;
+      encRetVal = aper_encode(&asn_DEF_HandoverPreparationInformationRrc, 0, \
+            &hoPrepInfo, PrepFinalEncBuf, encBuf);
+
+      /* Encode results */
+      if(encRetVal.encoded == ENCODE_FAIL)
+      {
+         DU_LOG( "\nERROR  -->  F1AP : Could not encode UE Capability RAT Container (at %s)\n",\
+               encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
+         break;
+      }
+      else
+      {
+         DU_LOG("\nDEBUG  -->  F1AP : Created APER encodedbuffer for UE Capability RAT Container\n");
+         for(int i=0; i< encBufSize; i++)
+         {
+            DU_LOG("%x",encBuf[i]);
+         }
+      }
+
+      hoPrepInfoBuf->size = encBufSize;
+      CU_ALLOC(hoPrepInfoBuf->buf, hoPrepInfoBuf->size);
+      if(!hoPrepInfoBuf->buf)
+      {
+         DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in fillUeCapabilityContainer");
+         break;
+      }
+      memcpy(hoPrepInfoBuf->buf, encBuf, hoPrepInfoBuf->size);
+      ret = ROK;
+      break;
+   }
+   freeHOPreparationInfo(&hoPrepInfo);
+   return ret;
 }
 
 /*******************************************************************
@@ -6549,52 +8295,75 @@ uint8_t fillUeCapRatContList(UE_CapabilityRAT_ContainerList_t *ueCapablityListBu
  *
  ******************************************************************/
 
-uint8_t fillCuToDuContainer(CUtoDURRCInformation_t *rrcMsg)
+uint8_t fillCuToDuContainer(CuUeCb *ueCb, CUtoDURRCInformation_t *rrcMsg)
 {
    uint8_t elementCnt = 0;
    uint8_t ret = ROK;
    uint8_t idx, idx2, rrcBufLen;
 
+   /* UE Capabulity RAT Container List */
    CU_ALLOC(rrcMsg->uE_CapabilityRAT_ContainerList, sizeof(UE_CapabilityRAT_ContainerList_t));
    if(!rrcMsg->uE_CapabilityRAT_ContainerList)
    {
-      DU_LOG("\nERROR  -->  F1AP : Memory allocation for CUtoDURRCInformation_ExtIEs failed");
+      DU_LOG("\nERROR  -->  F1AP : Memory allocation for UE capability RAT container list failed");
       return RFAILED;
    }
-   ret = fillUeCapRatContList(rrcMsg->uE_CapabilityRAT_ContainerList);
+   ret = fillUeCapRatContListBuf(rrcMsg->uE_CapabilityRAT_ContainerList);
 
-   CU_ALLOC(rrcMsg->iE_Extensions, sizeof(ProtocolExtensionContainer_4624P16_t));
-   if(rrcMsg->iE_Extensions)
+   CU_ALLOC(rrcMsg->measConfig, sizeof(MeasConfig_t));
+   if(!rrcMsg->measConfig)
    {
-      elementCnt = 1;
-      rrcMsg->iE_Extensions->list.count = elementCnt;
-      rrcMsg->iE_Extensions->list.size = elementCnt * sizeof(CUtoDURRCInformation_ExtIEs_t);
+      DU_LOG("\nERROR  -->  F1AP : Memory allocation for measurement configuration failed");
+      return RFAILED;
+   }
+   ret = fillMeasTimingConfigBuf(rrcMsg->measConfig);
 
-      /* Initialize the CUtoDURRCInformation_ExtIEs */
-      CU_ALLOC(rrcMsg->iE_Extensions->list.array, rrcMsg->iE_Extensions->list.size);
-
-      if(rrcMsg->iE_Extensions->list.array == NULLP)
+   if(ueCb->state == UE_HANDOVER_IN_PROGRESS)
+   {
+      /* IE extensions */
+      CU_ALLOC(rrcMsg->iE_Extensions, sizeof(ProtocolExtensionContainer_4624P16_t));
+      if(rrcMsg->iE_Extensions)
       {
-         DU_LOG("\nERROR  -->  F1AP : Memory allocation for CUtoDURRCInformation_ExtIEs failed");
-         ret = RFAILED;
-      }
+         elementCnt = 2;
+         rrcMsg->iE_Extensions->list.count = elementCnt;
+         rrcMsg->iE_Extensions->list.size = elementCnt * sizeof(CUtoDURRCInformation_ExtIEs_t);
 
-      for(idx=0; idx<elementCnt; idx++)
-      {
-         CU_ALLOC(rrcMsg->iE_Extensions->list.array[idx], sizeof(CUtoDURRCInformation_ExtIEs_t));
-         if(rrcMsg->iE_Extensions->list.array[idx] == NULLP)
+         /* Initialize the CUtoDURRCInformation_ExtIEs */
+         CU_ALLOC(rrcMsg->iE_Extensions->list.array, rrcMsg->iE_Extensions->list.size);
+
+         if(rrcMsg->iE_Extensions->list.array == NULLP)
          {
-            DU_LOG("\nERROR  -->  F1AP : Memory allocation for array elements failed");
+            DU_LOG("\nERROR  -->  F1AP : Memory allocation for CUtoDURRCInformation_ExtIEs failed");
             ret = RFAILED;
          }
+
+         for(idx=0; idx<elementCnt; idx++)
+         {
+            CU_ALLOC(rrcMsg->iE_Extensions->list.array[idx], sizeof(CUtoDURRCInformation_ExtIEs_t));
+            if(rrcMsg->iE_Extensions->list.array[idx] == NULLP)
+            {
+               DU_LOG("\nERROR  -->  F1AP : Memory allocation for array elements failed");
+               ret = RFAILED;
+            }
+         }
+
+         idx = 0;
+
+         /* Cell Group Configuration */
+         rrcMsg->iE_Extensions->list.array[idx]->id = ProtocolIE_ID_id_CellGroupConfig;
+         rrcMsg->iE_Extensions->list.array[idx]->criticality = Criticality_ignore; 
+         rrcMsg->iE_Extensions->list.array[idx]->extensionValue.present  =\
+                                                                          CUtoDURRCInformation_ExtIEs__extensionValue_PR_CellGroupConfig;
+         ret = fillCellGrpCfg(ueCb, &rrcMsg->iE_Extensions->list.array[idx]->extensionValue.choice.CellGroupConfig, true);
+
+         /* Handover Preparation Information */
+         idx++;
+         rrcMsg->iE_Extensions->list.array[idx]->id = ProtocolIE_ID_id_HandoverPreparationInformation; 
+         rrcMsg->iE_Extensions->list.array[idx]->criticality = Criticality_ignore;
+         rrcMsg->iE_Extensions->list.array[idx]->extensionValue.present  = \
+                                                                           CUtoDURRCInformation_ExtIEs__extensionValue_PR_HandoverPreparationInformation;
+         ret = fillHOPreparationInfoBuf(ueCb, &rrcMsg->iE_Extensions->list.array[idx]->extensionValue.choice.HandoverPreparationInformation);
       }
-      idx = 0;
-      /* Filling CellGroupConfig_t IE */
-      rrcMsg->iE_Extensions->list.array[idx]->id = ProtocolIE_ID_id_CellGroupConfig;
-      rrcMsg->iE_Extensions->list.array[idx]->criticality = Criticality_ignore; 
-      rrcMsg->iE_Extensions->list.array[idx]->extensionValue.present  =\
-                                                                       CUtoDURRCInformation_ExtIEs__extensionValue_PR_CellGroupConfig;
-      ret = fillCellGrpCfg(&rrcMsg->iE_Extensions->list.array[idx]->extensionValue.choice.CellGroupConfig);
    }
    return ret;
 }
@@ -6682,18 +8451,17 @@ void FreeCuToDuInfo(CUtoDURRCInformation_t *rrcMsg)
  * ****************************************************************/
 uint8_t BuildAndSendUeContextSetupReq(uint32_t duId, CuUeCb *ueCb, uint16_t rrcContLen, uint8_t *rrcContainer)
 {
-   uint8_t   Nrcgiret;
-   uint8_t   SplCellListret;
-   uint8_t   SrbSetupret;
+   uint8_t   Nrcgiret, SplCellListret, SrbSetupret;
+   uint8_t   ret= RFAILED, ret1;
    uint8_t   elementCnt;
-   uint8_t   idx, bufLen;
-   uint8_t   idx1;
+   uint8_t   idx, idx1, bufLen, duIdx;
+   uint32_t  spCellId;
+   DuDb      *targetDuDb = NULLP;
    F1AP_PDU_t      	*f1apMsg = NULLP;
    UEContextSetupRequest_t *ueSetReq = NULLP;
    asn_enc_rval_t encRetVal;        /* Encoder return value */
    memset(&encRetVal, 0, sizeof(asn_enc_rval_t));
-   uint8_t ret= RFAILED;
-   uint8_t ret1;
+
    while(true)
    {
       DU_LOG("\nINFO  -->  F1AP : Building UE Context Setup Request\n");
@@ -6719,7 +8487,10 @@ uint8_t BuildAndSendUeContextSetupReq(uint32_t duId, CuUeCb *ueCb, uint16_t rrcC
 
       ueSetReq = &f1apMsg->choice.initiatingMessage->value.choice.UEContextSetupRequest;
 
-      elementCnt = 12;
+      if(ueCb->state == UE_HANDOVER_IN_PROGRESS)
+         elementCnt = 7;
+      else
+         elementCnt = 12;
       ueSetReq->protocolIEs.list.count = elementCnt;
       ueSetReq->protocolIEs.list.size = elementCnt * sizeof(UEContextSetupRequestIEs_t *);
 
@@ -6749,19 +8520,32 @@ uint8_t BuildAndSendUeContextSetupReq(uint32_t duId, CuUeCb *ueCb, uint16_t rrcC
       ueSetReq->protocolIEs.list.array[idx]->value.present = UEContextSetupRequestIEs__value_PR_GNB_CU_UE_F1AP_ID;
       ueSetReq->protocolIEs.list.array[idx]->value.choice.GNB_CU_UE_F1AP_ID = ueCb->gnbCuUeF1apId;
 
-      /*GNB DU UE F1AP ID*/
-      idx++;
-      ueSetReq->protocolIEs.list.array[idx]->id	= ProtocolIE_ID_id_gNB_DU_UE_F1AP_ID;
-      ueSetReq->protocolIEs.list.array[idx]->criticality	= 	Criticality_ignore;
-      ueSetReq->protocolIEs.list.array[idx]->value.present = UEContextSetupRequestIEs__value_PR_GNB_DU_UE_F1AP_ID;
-      ueSetReq->protocolIEs.list.array[idx]->value.choice.GNB_DU_UE_F1AP_ID = ueCb->gnbDuUeF1apId;
+      if(ueCb->state != UE_HANDOVER_IN_PROGRESS)
+      {
+         /*GNB DU UE F1AP ID*/
+         idx++;
+         ueSetReq->protocolIEs.list.array[idx]->id	= ProtocolIE_ID_id_gNB_DU_UE_F1AP_ID;
+         ueSetReq->protocolIEs.list.array[idx]->criticality	= 	Criticality_ignore;
+         ueSetReq->protocolIEs.list.array[idx]->value.present = UEContextSetupRequestIEs__value_PR_GNB_DU_UE_F1AP_ID;
+         ueSetReq->protocolIEs.list.array[idx]->value.choice.GNB_DU_UE_F1AP_ID = ueCb->gnbDuUeF1apId;
+      }
 
       /*Special Cell ID*/
       idx++;
       ueSetReq->protocolIEs.list.array[idx]->id	= ProtocolIE_ID_id_SpCell_ID;
       ueSetReq->protocolIEs.list.array[idx]->criticality	= 	Criticality_reject;
       ueSetReq->protocolIEs.list.array[idx]->value.present = UEContextSetupRequestIEs__value_PR_NRCGI;
-      Nrcgiret = BuildNrcgi(&ueSetReq->protocolIEs.list.array[idx]->value.choice.NRCGI, ueCb->cellCb->nrCellId);
+      if(ueCb->state == UE_HANDOVER_IN_PROGRESS)
+      {
+         /* Spec 38.473 Sec 9.2.2.1 : For handover case, this IE shall be considered as target cell. */
+         SEARCH_DU_DB(duIdx, ueCb->hoInfo.targetDuId, targetDuDb);
+         /* Since we are supporting only one cell per DU, accessing 0th index to
+          * get target cell info */
+         spCellId = targetDuDb->cellCb[0].nrCellId;
+      }
+      else
+         spCellId = ueCb->cellCb->nrCellId;
+      Nrcgiret = BuildNrcgi(&ueSetReq->protocolIEs.list.array[idx]->value.choice.NRCGI, spCellId);
       if(Nrcgiret != ROK)
       {
          break;
@@ -6774,32 +8558,38 @@ uint8_t BuildAndSendUeContextSetupReq(uint32_t duId, CuUeCb *ueCb, uint16_t rrcC
       ueSetReq->protocolIEs.list.array[idx]->value.present = UEContextSetupRequestIEs__value_PR_ServCellIndex;
       ueSetReq->protocolIEs.list.array[idx]->value.choice.ServCellIndex = CELL_INDEX;
 
-      /*CellULConfigured*/
-      idx++;
-      ueSetReq->protocolIEs.list.array[idx]->id	= ProtocolIE_ID_id_SpCellULConfigured;
-      ueSetReq->protocolIEs.list.array[idx]->criticality	= 	Criticality_ignore;
-      ueSetReq->protocolIEs.list.array[idx]->value.present = UEContextSetupRequestIEs__value_PR_CellULConfigured;
-      ueSetReq->protocolIEs.list.array[idx]->value.choice.CellULConfigured = CellULConfigured_none;
+      if(ueCb->state != UE_HANDOVER_IN_PROGRESS)
+      {
+         /*CellULConfigured*/
+         idx++;
+         ueSetReq->protocolIEs.list.array[idx]->id	= ProtocolIE_ID_id_SpCellULConfigured;
+         ueSetReq->protocolIEs.list.array[idx]->criticality	= 	Criticality_ignore;
+         ueSetReq->protocolIEs.list.array[idx]->value.present = UEContextSetupRequestIEs__value_PR_CellULConfigured;
+         ueSetReq->protocolIEs.list.array[idx]->value.choice.CellULConfigured = CellULConfigured_none;
+      }
 
       /*CUtoDURRCContainer*/
       idx++;
       ueSetReq->protocolIEs.list.array[idx]->id	= ProtocolIE_ID_id_CUtoDURRCInformation;
       ueSetReq->protocolIEs.list.array[idx]->criticality	= 	Criticality_reject;
       ueSetReq->protocolIEs.list.array[idx]->value.present = UEContextSetupRequestIEs__value_PR_CUtoDURRCInformation;
-      if(fillCuToDuContainer(&ueSetReq->protocolIEs.list.array[idx]->value.choice.CUtoDURRCInformation))
+      if(fillCuToDuContainer(ueCb, &ueSetReq->protocolIEs.list.array[idx]->value.choice.CUtoDURRCInformation))
       {
          break;
       }
 
-      /*Special Cells to be SetupList*/
-      idx++;
-      ueSetReq->protocolIEs.list.array[idx]->id	= ProtocolIE_ID_id_SCell_ToBeSetup_List;
-      ueSetReq->protocolIEs.list.array[idx]->criticality	= 	Criticality_ignore;
-      ueSetReq->protocolIEs.list.array[idx]->value.present = UEContextSetupRequestIEs__value_PR_SCell_ToBeSetup_List;
-      SplCellListret = BuildSplCellList(ueCb, &ueSetReq->protocolIEs.list.array[idx]->value.choice.SCell_ToBeSetup_List);
-      if(SplCellListret != ROK)
-      {  
-         break;
+      if(ueCb->state != UE_HANDOVER_IN_PROGRESS)
+      {
+         /*Special Cells to be SetupList*/
+         idx++;
+         ueSetReq->protocolIEs.list.array[idx]->id	= ProtocolIE_ID_id_SCell_ToBeSetup_List;
+         ueSetReq->protocolIEs.list.array[idx]->criticality	= 	Criticality_ignore;
+         ueSetReq->protocolIEs.list.array[idx]->value.present = UEContextSetupRequestIEs__value_PR_SCell_ToBeSetup_List;
+         SplCellListret = BuildSplCellList(ueCb, &ueSetReq->protocolIEs.list.array[idx]->value.choice.SCell_ToBeSetup_List);
+         if(SplCellListret != ROK)
+         {  
+            break;
+         }
       }
 
       /*SRBs To Be Setup List*/
@@ -6807,7 +8597,7 @@ uint8_t BuildAndSendUeContextSetupReq(uint32_t duId, CuUeCb *ueCb, uint16_t rrcC
       ueSetReq->protocolIEs.list.array[idx]->id	= ProtocolIE_ID_id_SRBs_ToBeSetup_List;
       ueSetReq->protocolIEs.list.array[idx]->criticality	= 	Criticality_reject;
       ueSetReq->protocolIEs.list.array[idx]->value.present = UEContextSetupRequestIEs__value_PR_SRBs_ToBeSetup_List;
-      SrbSetupret = BuildSRBSetup(&ueSetReq->protocolIEs.list.array[idx]->value.choice.SRBs_ToBeSetup_List);
+      SrbSetupret = BuildSRBSetup(ueCb, &ueSetReq->protocolIEs.list.array[idx]->value.choice.SRBs_ToBeSetup_List);
       if(SrbSetupret != ROK)
       {        
          break;
@@ -6818,38 +8608,42 @@ uint8_t BuildAndSendUeContextSetupReq(uint32_t duId, CuUeCb *ueCb, uint16_t rrcC
       ueSetReq->protocolIEs.list.array[idx]->id	= ProtocolIE_ID_id_DRBs_ToBeSetup_List;
       ueSetReq->protocolIEs.list.array[idx]->criticality	= 	Criticality_reject;
       ueSetReq->protocolIEs.list.array[idx]->value.present = UEContextSetupRequestIEs__value_PR_DRBs_ToBeSetup_List;
-      ret1 = BuildDRBSetup(&ueSetReq->protocolIEs.list.array[idx]->value.choice.DRBs_ToBeSetup_List);
+      ret1 = BuildDRBSetup(ueCb, &ueSetReq->protocolIEs.list.array[idx]->value.choice.DRBs_ToBeSetup_List);
       if(ret1 != ROK)
       {	
          break;
       }
-      /* RRC Container for security mode */
-      idx++;
-      ueSetReq->protocolIEs.list.array[idx]->id = ProtocolIE_ID_id_RRCContainer;
-      ueSetReq->protocolIEs.list.array[idx]->criticality = Criticality_reject;
-      ueSetReq->protocolIEs.list.array[idx]->value.present = UEContextSetupRequestIEs__value_PR_RRCContainer;
 
-      char secModeBuf[9]={0x00, 0x02, 0x22, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00};
-      bufLen =9;
-      ueSetReq->protocolIEs.list.array[idx]->value.choice.RRCContainer.size = bufLen;
-      CU_ALLOC(ueSetReq->protocolIEs.list.array[idx]->value.choice.RRCContainer.buf,
-            ueSetReq->protocolIEs.list.array[idx]->value.choice.RRCContainer.size);
-      if(!ueSetReq->protocolIEs.list.array[idx]->value.choice.RRCContainer.buf)
+      if(ueCb->state != UE_HANDOVER_IN_PROGRESS)
       {
-         DU_LOG("\nERROR  -->  F1AP : Memory allocation for BuildAndSendUeContextSetupReq failed");
-         break;
+         /* RRC Container for security mode */
+         idx++;
+         ueSetReq->protocolIEs.list.array[idx]->id = ProtocolIE_ID_id_RRCContainer;
+         ueSetReq->protocolIEs.list.array[idx]->criticality = Criticality_reject;
+         ueSetReq->protocolIEs.list.array[idx]->value.present = UEContextSetupRequestIEs__value_PR_RRCContainer;
+
+         char secModeBuf[9]={0x00, 0x02, 0x22, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00};
+         bufLen =9;
+         ueSetReq->protocolIEs.list.array[idx]->value.choice.RRCContainer.size = bufLen;
+         CU_ALLOC(ueSetReq->protocolIEs.list.array[idx]->value.choice.RRCContainer.buf,
+               ueSetReq->protocolIEs.list.array[idx]->value.choice.RRCContainer.size);
+         if(!ueSetReq->protocolIEs.list.array[idx]->value.choice.RRCContainer.buf)
+         {
+            DU_LOG("\nERROR  -->  F1AP : Memory allocation for BuildAndSendUeContextSetupReq failed");
+            break;
+         }
+         memset(ueSetReq->protocolIEs.list.array[idx]->value.choice.RRCContainer.buf, 0, bufLen);
+         memcpy(ueSetReq->protocolIEs.list.array[idx]->value.choice.RRCContainer.buf, secModeBuf, bufLen);
+
+         /* RRC delivery status request */
+         idx++;
+         ueSetReq->protocolIEs.list.array[idx]->id = ProtocolIE_ID_id_RRCDeliveryStatusRequest;
+         ueSetReq->protocolIEs.list.array[idx]->criticality = Criticality_ignore;
+         ueSetReq->protocolIEs.list.array[idx]->value.present = UEContextSetupRequestIEs__value_PR_RRCDeliveryStatusRequest;
+         ueSetReq->protocolIEs.list.array[idx]->value.choice.RRCDeliveryStatusRequest = RRCDeliveryStatusRequest_true;
       }
-      memset(ueSetReq->protocolIEs.list.array[idx]->value.choice.RRCContainer.buf, 0, bufLen);
-      memcpy(ueSetReq->protocolIEs.list.array[idx]->value.choice.RRCContainer.buf, secModeBuf, bufLen);
 
-      /* RRC delivery status request */
-      idx++;
-      ueSetReq->protocolIEs.list.array[idx]->id = ProtocolIE_ID_id_RRCDeliveryStatusRequest;
-      ueSetReq->protocolIEs.list.array[idx]->criticality = Criticality_ignore;
-      ueSetReq->protocolIEs.list.array[idx]->value.present = UEContextSetupRequestIEs__value_PR_RRCDeliveryStatusRequest;
-      ueSetReq->protocolIEs.list.array[idx]->value.choice.RRCDeliveryStatusRequest = RRCDeliveryStatusRequest_true;
-
-      /* Bit Rate hardcoded as in reference logs */
+      /* GNB-DU UE Aggregate Maximum Bit Rate hardcoded as in reference logs */
       idx++;
       ueSetReq->protocolIEs.list.array[idx]->id = ProtocolIE_ID_id_GNB_DU_UE_AMBR_UL;
       ueSetReq->protocolIEs.list.array[idx]->criticality = Criticality_ignore;
@@ -7067,7 +8861,12 @@ uint8_t procUeContextSetupResponse(uint32_t duId, F1AP_PDU_t *f1apMsg)
                 /* Adding Tunnels for successful DRB */
                 procDrbSetupList(&ueCtxtSetupRsp->protocolIEs.list.array[idx]->value.choice.DRBs_Setup_List);
                 break; 
-
+             }
+         case ProtocolIE_ID_id_DUtoCURRCInformation:
+             {
+                DU_LOG("\nINFO  -->  Received Du to Cu RRC Information ");
+                extractDuToCuRrcCont(ueCb, ueCtxtSetupRsp->protocolIEs.list.array[idx]->value.choice.DUtoCURRCInformation.cellGroupConfig);
+                break;
              }
       }
    }
@@ -7176,7 +8975,7 @@ uint8_t procUlRrcMsg(uint32_t duId, F1AP_PDU_t *f1apMsg)
          if(rrcMsgType == UE_CONTEXT_MOD_REQ)
          {
             DU_LOG("\nINFO  -->  F1AP: Sending UE Context Modification Request");
-            BuildAndSendUeContextModificationReq(duId, ueCb, MODIFY_UE);
+            BuildAndSendUeContextModificationReq(duId, ueCb, RRC_RECONFIG_COMPLETE_IND);
          }
       }
    }
@@ -7429,7 +9228,7 @@ uint8_t deleteEgtpTunnel(uint8_t *buf)
 *         RFAILED - failure
 *
 * ****************************************************************/
-uint8_t BuildUlTnlInfoforSetupMod(uint8_t ueId, uint8_t drbId, ULUPTNLInformation_ToBeSetup_List_t *ulInfo, uint8_t actionType)
+uint8_t BuildUlTnlInfoforSetupMod(uint8_t ueId, uint8_t drbId, TnlInfo *ulTnlInfo, ULUPTNLInformation_ToBeSetup_List_t *ulInfo, uint8_t actionType)
 {
    uint8_t arrIdx;
    uint8_t ulCnt;
@@ -7487,6 +9286,11 @@ uint8_t BuildUlTnlInfoforSetupMod(uint8_t ueId, uint8_t drbId, ULUPTNLInformatio
       transportLayerAddress.buf[3] = 82;
    ulInfo->list.array[arrIdx]->uLUPTNLInformation.choice.gTPTunnel->\
       transportLayerAddress.bits_unused = 0;
+
+   ulTnlInfo->address[0] = ulInfo->list.array[arrIdx]->uLUPTNLInformation.choice.gTPTunnel->transportLayerAddress.buf[0];
+   ulTnlInfo->address[1] = ulInfo->list.array[arrIdx]->uLUPTNLInformation.choice.gTPTunnel->transportLayerAddress.buf[1];
+   ulTnlInfo->address[2] = ulInfo->list.array[arrIdx]->uLUPTNLInformation.choice.gTPTunnel->transportLayerAddress.buf[2];
+   ulTnlInfo->address[3] = ulInfo->list.array[arrIdx]->uLUPTNLInformation.choice.gTPTunnel->transportLayerAddress.buf[3];
    
    /*GTP TEID*/
    ulInfo->list.array[arrIdx]->uLUPTNLInformation.choice.gTPTunnel->gTP_TEID.size\
@@ -7520,6 +9324,11 @@ uint8_t BuildUlTnlInfoforSetupMod(uint8_t ueId, uint8_t drbId, ULUPTNLInformatio
       ulInfo->list.array[arrIdx]->uLUPTNLInformation.choice.gTPTunnel->\
         gTP_TEID.buf[3] = cuCb.cuCfgParams.egtpParams.currTunnelId++;
    }
+
+   ulTnlInfo->teId[0] = ulInfo->list.array[arrIdx]->uLUPTNLInformation.choice.gTPTunnel->gTP_TEID.buf[0];
+   ulTnlInfo->teId[1] = ulInfo->list.array[arrIdx]->uLUPTNLInformation.choice.gTPTunnel->gTP_TEID.buf[1];
+   ulTnlInfo->teId[2] = ulInfo->list.array[arrIdx]->uLUPTNLInformation.choice.gTPTunnel->gTP_TEID.buf[2];
+   ulTnlInfo->teId[3] = ulInfo->list.array[arrIdx]->uLUPTNLInformation.choice.gTPTunnel->gTP_TEID.buf[3];
    return ROK;
 }/*End of BuildULTnlInfo*/
 
@@ -7624,12 +9433,13 @@ void FreeDrbItem(DRBs_ToBeSetupMod_Item_t *drbItem)
 *
 * ****************************************************************/
 
-uint8_t FillDrbItemToSetupMod(uint8_t ueId, uint8_t arrIdx, DRBs_ToBeSetupMod_Item_t *drbItem)
+uint8_t FillDrbItemToSetupMod(CuUeCb *ueCb, uint8_t arrIdx, DRBs_ToBeSetupMod_Item_t *drbItem)
 {
    uint8_t ret = ROK;
 
    /*Drb Id */
    drbItem->dRBID = arrIdx + DRB_ID_TO_ADD_MOD;
+   ueCb->drbList[ueCb->numDrb].drbId = drbItem->dRBID;
    
    /*qoSInformation*/
    drbItem->qoSInformation.present = QoSInformation_PR_choice_extension;
@@ -7673,8 +9483,8 @@ uint8_t FillDrbItemToSetupMod(uint8_t ueId, uint8_t arrIdx, DRBs_ToBeSetupMod_It
 	 drbItem->qoSInformation.choice.choice_extension->id = ProtocolIE_ID_id_DRB_Information;
 	 drbItem->qoSInformation.choice.choice_extension->criticality = Criticality_ignore;
 	 drbItem->qoSInformation.choice.choice_extension->value.present = QoSInformation_ExtIEs__value_PR_DRB_Information;
-	 ret =  BuildQOSInfo(&drbItem->qoSInformation.choice.choice_extension->value.choice.DRB_Information.dRB_QoS,\
-           ProtocolIE_ID_id_DRBs_ToBeSetupMod_Item, PDU_SESSION_ID_2);
+	 ret =  BuildQOSInfo(&ueCb->drbList[ueCb->numDrb].qos, &drbItem->qoSInformation.choice.choice_extension->value.choice.DRB_Information.dRB_QoS,\
+           ProtocolIE_ID_id_DRBs_ToBeSetupMod_Item, PDU_SESSION_ID_2, FALSE);
 	 if(ret != ROK)
 	 {
 	    DU_LOG("\nERROR  -->  F1AP : BuildQOSInfo failed");
@@ -7682,8 +9492,8 @@ uint8_t FillDrbItemToSetupMod(uint8_t ueId, uint8_t arrIdx, DRBs_ToBeSetupMod_It
 	 }
 	 
 	 /*SNSSAI*/
-	 ret = BuildSNSSAI(&drbItem->qoSInformation.choice.\
-	       choice_extension->value.choice.DRB_Information.sNSSAI, cuCb.snssaiList[1]);
+	 ret = BuildSNSSAI(&ueCb->drbList[ueCb->numDrb], &drbItem->qoSInformation.choice.\
+	       choice_extension->value.choice.DRB_Information.sNSSAI, cuCb.snssaiList[1], FALSE);
 	 if(ret != ROK)
 	 {
 	    DU_LOG("\nERROR  -->  F1AP : BuildSNSSAI failed");
@@ -7691,9 +9501,9 @@ uint8_t FillDrbItemToSetupMod(uint8_t ueId, uint8_t arrIdx, DRBs_ToBeSetupMod_It
 	 }
 	 
 	 /*Flows mapped to DRB List*/
-         ret = BuildFlowsMap(&drbItem->qoSInformation.choice.\
+         ret = BuildFlowsMap(&ueCb->drbList[ueCb->numDrb], &drbItem->qoSInformation.choice.\
 	       choice_extension->value.choice.DRB_Information.flows_Mapped_To_DRB_List,\ 
-          ProtocolIE_ID_id_DRBs_ToBeSetupMod_Item);
+          ProtocolIE_ID_id_DRBs_ToBeSetupMod_Item, FALSE);
 	 if(ret != ROK)
 	 {
 	    DU_LOG("\nERROR  -->  F1AP : BuildFlowsMap failed");
@@ -7703,8 +9513,8 @@ uint8_t FillDrbItemToSetupMod(uint8_t ueId, uint8_t arrIdx, DRBs_ToBeSetupMod_It
    }
    
    /*ULUPTNLInformation To Be Setup List*/
-   ret = BuildUlTnlInfoforSetupMod(ueId, drbItem->dRBID, &drbItem->uLUPTNLInformation_ToBeSetup_List, \
-      ProtocolIE_ID_id_DRBs_ToBeSetupMod_Item);
+   ret = BuildUlTnlInfoforSetupMod(ueCb->gnbCuUeF1apId, drbItem->dRBID, &ueCb->drbList[ueCb->numDrb].ulUpTnlInfo, \
+      &drbItem->uLUPTNLInformation_ToBeSetup_List, ProtocolIE_ID_id_DRBs_ToBeSetupMod_Item);
    if(ret != ROK)
    {
       DU_LOG("\nERROR  -->  F1AP : BuildUlTnlInfoforSetupMod failed");
@@ -7713,6 +9523,9 @@ uint8_t FillDrbItemToSetupMod(uint8_t ueId, uint8_t arrIdx, DRBs_ToBeSetupMod_It
 
    /*RLCMode*/
    drbItem->rLCMode = RLCMode_rlc_um_bidirectional;
+   ueCb->drbList[ueCb->numDrb].rlcMode = drbItem->rLCMode;
+
+   ueCb->numDrb++;
    return ROK;
 }
 
@@ -7733,13 +9546,13 @@ uint8_t FillDrbItemToSetupMod(uint8_t ueId, uint8_t arrIdx, DRBs_ToBeSetupMod_It
 *
 * ****************************************************************/
 
-uint8_t FillDrbItemList(uint8_t ueId, uint8_t arrIdx, struct DRBs_ToBeSetupMod_ItemIEs *drbItemIe)
+uint8_t FillDrbItemList(CuUeCb *ueCb, uint8_t arrIdx, struct DRBs_ToBeSetupMod_ItemIEs *drbItemIe)
 {
    drbItemIe->id = ProtocolIE_ID_id_DRBs_ToBeSetupMod_Item;
    drbItemIe->criticality = Criticality_reject;
    drbItemIe->value.present = DRBs_ToBeSetupMod_ItemIEs__value_PR_DRBs_ToBeSetupMod_Item;
 
-   if(FillDrbItemToSetupMod(ueId, arrIdx, (&(drbItemIe->value.choice.DRBs_ToBeSetupMod_Item))) != ROK)
+   if(FillDrbItemToSetupMod(ueCb, arrIdx, (&(drbItemIe->value.choice.DRBs_ToBeSetupMod_Item))) != ROK)
    {
       DU_LOG("\nERROR  -->  F1AP : FillDrbItemToSetupMod failed"); 
       return RFAILED;
@@ -7803,7 +9616,7 @@ void FreeDrbToBeSetupModList(DRBs_ToBeSetupMod_List_t *drbSet)
 *
 * ****************************************************************/
 
-uint8_t BuildDrbToBeSetupList(uint8_t ueId, DRBs_ToBeSetupMod_List_t *drbSet)
+uint8_t BuildDrbToBeSetupList(CuUeCb *ueCb, DRBs_ToBeSetupMod_List_t *drbSet)
 {
    uint8_t ret = ROK;
    uint8_t arrIdx =0;
@@ -7828,7 +9641,7 @@ uint8_t BuildDrbToBeSetupList(uint8_t ueId, DRBs_ToBeSetupMod_List_t *drbSet)
          return  RFAILED;
       }
 
-      ret = FillDrbItemList(ueId, arrIdx, (DRBs_ToBeSetupMod_ItemIEs_t *)drbSet->list.array[arrIdx]);
+      ret = FillDrbItemList(ueCb, arrIdx, (DRBs_ToBeSetupMod_ItemIEs_t *)drbSet->list.array[arrIdx]);
       if(ret != ROK)
       {
          DU_LOG("\nERROR  -->  F1AP : FillDrbItemList failed");
@@ -7855,12 +9668,24 @@ uint8_t BuildDrbToBeSetupList(uint8_t ueId, DRBs_ToBeSetupMod_List_t *drbSet)
 *
 * ****************************************************************/
 
-uint8_t FillDrbToBeModItem(uint8_t ueId, uint8_t arrIdx, DRBs_ToBeModified_Item_t *drbItem)
+uint8_t FillDrbToBeModItem(CuUeCb *ueCb, uint8_t arrIdx, DRBs_ToBeModified_Item_t *drbItem)
 {
    uint8_t ret = ROK;
+   uint drbIdx=0;
+   DrbInfo *drbToBeMod;
 
    /*Drb Id */
    drbItem->dRBID = DRB2 + arrIdx;
+
+   /* Search for DRB ID in CU databse */
+   for(drbIdx = 0; drbIdx < ueCb->numDrb; drbIdx++)
+   {
+      if(ueCb->drbList[drbIdx].drbId == drbItem->dRBID)
+      {
+         drbToBeMod = &ueCb->drbList[drbIdx];
+         break;
+      }
+   }
 
    /*qoSInformation*/
    drbItem->qoSInformation = NULLP;
@@ -7908,8 +9733,8 @@ uint8_t FillDrbToBeModItem(uint8_t ueId, uint8_t arrIdx, DRBs_ToBeModified_Item_
                drbItem->qoSInformation->choice.choice_extension->id = ProtocolIE_ID_id_DRB_Information;
                drbItem->qoSInformation->choice.choice_extension->criticality = Criticality_ignore;
                drbItem->qoSInformation->choice.choice_extension->value.present = QoSInformation_ExtIEs__value_PR_DRB_Information;
-               ret =  BuildQOSInfo(&drbItem->qoSInformation->choice.choice_extension->value.choice.DRB_Information.dRB_QoS,\
-                     ProtocolIE_ID_id_DRBs_ToBeModified_Item, INVALID_PDU_SESSION_ID);
+               ret =  BuildQOSInfo(&drbToBeMod->qos, &drbItem->qoSInformation->choice.choice_extension->value.choice.DRB_Information.dRB_QoS,\
+                     ProtocolIE_ID_id_DRBs_ToBeModified_Item, INVALID_PDU_SESSION_ID, FALSE);
                if(ret != ROK)
                {
                   DU_LOG("\nERROR  -->  F1AP : BuildQOSInfo failed");
@@ -7917,8 +9742,8 @@ uint8_t FillDrbToBeModItem(uint8_t ueId, uint8_t arrIdx, DRBs_ToBeModified_Item_
                }
 
                /*SNSSAI*/
-               ret = BuildSNSSAI(&drbItem->qoSInformation->choice.\
-                     choice_extension->value.choice.DRB_Information.sNSSAI, cuCb.snssaiList[0]);
+               ret = BuildSNSSAI(drbToBeMod, &drbItem->qoSInformation->choice.\
+                     choice_extension->value.choice.DRB_Information.sNSSAI, cuCb.snssaiList[0], FALSE);
                if(ret != ROK)
                {
                   DU_LOG("\nERROR  -->  F1AP : BuildSNSSAI failed");
@@ -7926,9 +9751,9 @@ uint8_t FillDrbToBeModItem(uint8_t ueId, uint8_t arrIdx, DRBs_ToBeModified_Item_
                }
 
                /*Flows mapped to DRB List*/
-               ret = BuildFlowsMap(&drbItem->qoSInformation->choice.\
+               ret = BuildFlowsMap(drbToBeMod, &drbItem->qoSInformation->choice.\
                      choice_extension->value.choice.DRB_Information.flows_Mapped_To_DRB_List,\
-                     ProtocolIE_ID_id_DRBs_ToBeModified_Item);
+                     ProtocolIE_ID_id_DRBs_ToBeModified_Item, FALSE);
                if(ret != ROK)
                {
                   DU_LOG("\nERROR  -->  F1AP : BuildFlowsMap failed");
@@ -7939,7 +9764,7 @@ uint8_t FillDrbToBeModItem(uint8_t ueId, uint8_t arrIdx, DRBs_ToBeModified_Item_
    }/* End of QoS */
 
    /*ULUPTNLInformation To Be Setup List*/
-   ret = BuildUlTnlInfoforSetupMod(ueId, drbItem->dRBID, &drbItem->uLUPTNLInformation_ToBeSetup_List,\
+   ret = BuildUlTnlInfoforSetupMod(ueCb->gnbCuUeF1apId, drbItem->dRBID, &drbToBeMod->ulUpTnlInfo, &drbItem->uLUPTNLInformation_ToBeSetup_List,\
             ProtocolIE_ID_id_DRBs_ToBeModified_Item);
    if(ret != ROK)
    {
@@ -7966,12 +9791,12 @@ uint8_t FillDrbToBeModItem(uint8_t ueId, uint8_t arrIdx, DRBs_ToBeModified_Item_
 *
 * ****************************************************************/
 
-uint8_t FillDrbToBeModItemList(uint8_t ueId, uint8_t arrIdx, struct DRBs_ToBeModified_ItemIEs *drbItemIe)
+uint8_t FillDrbToBeModItemList(CuUeCb *ueCb, uint8_t arrIdx, struct DRBs_ToBeModified_ItemIEs *drbItemIe)
 {
    drbItemIe->id = ProtocolIE_ID_id_DRBs_ToBeModified_Item;
    drbItemIe->criticality = Criticality_reject;
    drbItemIe->value.present = DRBs_ToBeModified_ItemIEs__value_PR_DRBs_ToBeModified_Item;
-   if(FillDrbToBeModItem(ueId, arrIdx, &(drbItemIe->value.choice.DRBs_ToBeModified_Item)) != ROK)
+   if(FillDrbToBeModItem(ueCb, arrIdx, &(drbItemIe->value.choice.DRBs_ToBeModified_Item)) != ROK)
    {
       DU_LOG("\nERROR  -->  F1AP : FillDrbToBeModItem failed"); 
       return RFAILED;
@@ -7997,7 +9822,7 @@ uint8_t FillDrbToBeModItemList(uint8_t ueId, uint8_t arrIdx, struct DRBs_ToBeMod
 *
 * ****************************************************************/
 
-uint8_t BuildDrbToBeModifiedList(uint8_t ueId, DRBs_ToBeModified_List_t *drbSet)
+uint8_t BuildDrbToBeModifiedList(CuUeCb *ueCb, DRBs_ToBeModified_List_t *drbSet)
 {
    uint8_t ret = ROK;
    uint8_t arrIdx =0;
@@ -8021,7 +9846,7 @@ uint8_t BuildDrbToBeModifiedList(uint8_t ueId, DRBs_ToBeModified_List_t *drbSet)
          return  RFAILED;
       }
 
-      ret = FillDrbToBeModItemList(ueId, arrIdx, (DRBs_ToBeModified_ItemIEs_t *)drbSet->list.array[arrIdx]);
+      ret = FillDrbToBeModItemList(ueCb, arrIdx, (DRBs_ToBeModified_ItemIEs_t *)drbSet->list.array[arrIdx]);
       if(ret != ROK)
       {
          DU_LOG("\nERROR  -->  F1AP : FillDrbToBeModItemList failed");
@@ -8271,6 +10096,8 @@ uint8_t BuildAndSendUeContextModificationReq(uint32_t duId, void *cuUeCb, UeCtxt
          elementCnt = 4;
       else if(action == QUERY_CONFIG)
          elementCnt = 3;
+      else if(action == RRC_RECONFIG_COMPLETE_IND)
+         elementCnt = 3;
       ueContextModifyReq->protocolIEs.list.count = elementCnt;
       ueContextModifyReq->protocolIEs.list.size = elementCnt*sizeof(UEContextModificationRequest_t *);
 
@@ -8314,7 +10141,7 @@ uint8_t BuildAndSendUeContextModificationReq(uint32_t duId, void *cuUeCb, UeCtxt
          ueContextModifyReq->protocolIEs.list.array[ieIdx]->criticality = Criticality_reject;
          ueContextModifyReq->protocolIEs.list.array[ieIdx]->value.present =\
                                                                            UEContextModificationRequestIEs__value_PR_DRBs_ToBeSetupMod_List;
-         ret = BuildDrbToBeSetupList(ueCb->gnbCuUeF1apId, &(ueContextModifyReq->protocolIEs.list.array[ieIdx]->\
+         ret = BuildDrbToBeSetupList(ueCb, &(ueContextModifyReq->protocolIEs.list.array[ieIdx]->\
                   value.choice.DRBs_ToBeSetupMod_List));
 
          /* DRB to be modified list */
@@ -8323,7 +10150,7 @@ uint8_t BuildAndSendUeContextModificationReq(uint32_t duId, void *cuUeCb, UeCtxt
          ueContextModifyReq->protocolIEs.list.array[ieIdx]->criticality = Criticality_reject;
          ueContextModifyReq->protocolIEs.list.array[ieIdx]->value.present =\
                                                                            UEContextModificationRequestIEs__value_PR_DRBs_ToBeModified_List;
-         ret = BuildDrbToBeModifiedList(ueCb->gnbCuUeF1apId, &(ueContextModifyReq->protocolIEs.list.array[ieIdx]->\
+         ret = BuildDrbToBeModifiedList(ueCb, &(ueContextModifyReq->protocolIEs.list.array[ieIdx]->\
                   value.choice.DRBs_ToBeModified_List));
 
          /* TODO: DRB to be release list */
@@ -8341,6 +10168,16 @@ uint8_t BuildAndSendUeContextModificationReq(uint32_t duId, void *cuUeCb, UeCtxt
          ueContextModifyReq->protocolIEs.list.array[ieIdx]->value.present = \
             UEContextModificationRequestIEs__value_PR_GNB_DUConfigurationQuery;
          ueContextModifyReq->protocolIEs.list.array[ieIdx]->value.choice.GNB_DUConfigurationQuery = GNB_DUConfigurationQuery_true;
+      }
+      else if(action == RRC_RECONFIG_COMPLETE_IND)
+      {
+         ieIdx++;
+         ueContextModifyReq->protocolIEs.list.array[ieIdx]->id = ProtocolIE_ID_id_RRCReconfigurationCompleteIndicator;
+         ueContextModifyReq->protocolIEs.list.array[ieIdx]->criticality = Criticality_reject;
+         ueContextModifyReq->protocolIEs.list.array[ieIdx]->value.present = \
+            UEContextModificationRequestIEs__value_PR_RRCReconfigurationCompleteIndicator;
+         ueContextModifyReq->protocolIEs.list.array[ieIdx]->value.choice.RRCReconfigurationCompleteIndicator = \
+            RRCReconfigurationCompleteIndicator_true;
       }
 
       xer_fprint(stdout, &asn_DEF_F1AP_PDU, f1apMsg);
@@ -8770,6 +10607,49 @@ uint8_t buildSliceList(SliceSupportList_t *sliceSupportList)
 }
 
 /****************************************************************
+ * @brief Function to process Srb Setup Mod List 
+ *
+ * @details
+ *
+ *    Function : procSrbSetupModList
+ *    
+ *    Functionality:
+ *         - Function to process SRB Setup Mod List
+ *
+ * @params[in]
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t procSrbSetupModList(CuUeCb *ueCb, SRBs_SetupMod_List_t *srbSetupList)
+{
+   uint8_t arrIdx = 0, srbIdx;
+   struct SRBs_SetupMod_ItemIEs *srbItemIe = NULLP;
+
+   if(srbSetupList != NULLP)
+   {
+      for(arrIdx = 0; arrIdx < srbSetupList->list.count; arrIdx++)
+      {     
+         srbItemIe = ((struct SRBs_SetupMod_ItemIEs *)srbSetupList->list.array[arrIdx]);
+         if(srbItemIe->value.present == SRBs_SetupMod_ItemIEs__value_PR_SRBs_SetupMod_Item)
+         {
+            for(srbIdx = 0; srbIdx < ueCb->numSrb; srbIdx++)
+            {
+               if(ueCb->srbList[srbIdx].srbId == srbItemIe->value.choice.SRBs_SetupMod_Item.sRBID)
+               {
+                  ueCb->srbList[srbIdx].lcId = srbItemIe->value.choice.SRBs_SetupMod_Item.lCID;
+                  break;
+               }
+            }
+         }
+        
+      }
+   }
+   return ROK;
+}
+
+
+/****************************************************************
  * @brief Function to process Drb Setup Mod List 
  *
  * @details
@@ -8784,9 +10664,9 @@ uint8_t buildSliceList(SliceSupportList_t *sliceSupportList)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t procDrbSetupModList(DRBs_SetupMod_List_t *drbSetupList)
+uint8_t procDrbSetupModList(CuUeCb *ueCb, DRBs_SetupMod_List_t *drbSetupList)
 {
-   uint8_t arrIdx = 0;
+   uint8_t arrIdx = 0, drbIdx;
    uint32_t teId = 0;
    struct DRBs_SetupMod_ItemIEs *drbItemIe = NULLP;
 
@@ -8797,6 +10677,18 @@ uint8_t procDrbSetupModList(DRBs_SetupMod_List_t *drbSetupList)
          drbItemIe = ((struct DRBs_SetupMod_ItemIEs *)drbSetupList->list.array[arrIdx]);
          if(drbItemIe->value.present == DRBs_SetupMod_ItemIEs__value_PR_DRBs_SetupMod_Item)
          {
+            for(drbIdx = 0; drbIdx < ueCb->numDrb; drbIdx++)
+            {
+               if(ueCb->drbList[drbIdx].drbId == drbItemIe->value.choice.DRBs_SetupMod_Item.dRBID)
+               {
+                  if(drbItemIe->value.choice.DRBs_SetupMod_Item.lCID)
+                     ueCb->drbList[drbIdx].lcId = *(drbItemIe->value.choice.DRBs_SetupMod_Item.lCID);
+                  break;
+               }
+            }
+
+            if(ueCb->state != UE_HANDOVER_IN_PROGRESS)
+            {
             /* extracting teId */
             teId  = extractTeId(&drbItemIe->value.choice.DRBs_SetupMod_Item.dLUPTNLInformation_ToBeSetup_List);
             if(teId > 0)
@@ -8808,6 +10700,7 @@ uint8_t procDrbSetupModList(DRBs_SetupMod_List_t *drbSetupList)
             }
             else
                return RFAILED;
+            }
          }
       }
    }
@@ -8906,22 +10799,33 @@ uint8_t procUeContextModificationResponse(uint32_t duId, F1AP_PDU_t *f1apMsg)
              {
                 duUeF1apId = ueCtxtModRsp->protocolIEs.list.array[idx]->value.choice.GNB_DU_UE_F1AP_ID;
                 ueCb = &duDb->ueCb[duUeF1apId-1];
-                if(ueCb->state == UE_HANDOVER_IN_PROGRESS)
-                {
-                   /* TODO : Next procedure i.e. UE context setup request to
-                    * target DU should be triggerred here */
-                   return ROK;
-                }
                 break;
              }
           case ProtocolIE_ID_id_DRBs_SetupMod_List:
              {
                 /* Adding Tunnels for successful DRB */
-                procDrbSetupModList(&ueCtxtModRsp->protocolIEs.list.array[idx]->value.choice.DRBs_SetupMod_List);
+                procDrbSetupModList(ueCb, &ueCtxtModRsp->protocolIEs.list.array[idx]->value.choice.DRBs_SetupMod_List);
                 break; 
 
              }
+          case ProtocolIE_ID_id_SRBs_SetupMod_List:
+             {
+                procSrbSetupModList(ueCb, &ueCtxtModRsp->protocolIEs.list.array[idx]->value.choice.SRBs_SetupMod_List);
+                break;
+             }
+         case ProtocolIE_ID_id_DUtoCURRCInformation:
+             {
+                DU_LOG("\nINFO  -->  Received Du to Cu RRC Information ");
+                extractDuToCuRrcCont(ueCb, ueCtxtModRsp->protocolIEs.list.array[idx]->value.choice.DUtoCURRCInformation.cellGroupConfig);
+                break;
+             }
+
       }
+   }
+   if(ueCb->state == UE_HANDOVER_IN_PROGRESS)
+   {
+      BuildAndSendUeContextSetupReq(ueCb->hoInfo.targetDuId, ueCb, 0, NULLP);
+      return ROK;
    }
    
    return ROK;
