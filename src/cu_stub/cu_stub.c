@@ -237,7 +237,11 @@ void initiateInterDuHandover(uint32_t sourceDuId, uint32_t targetDuId, uint32_t 
     if(duDb)
        ueCb = &duDb->ueCb[ueId-1];
     if(ueCb)
+    {
        ueCb->state = UE_HANDOVER_IN_PROGRESS;
+       ueCb->hoInfo.sourceDuId = sourceDuId;
+       ueCb->hoInfo.targetDuId = targetDuId;
+    }
 
     DU_LOG("\nINFO  --> CU_STUB: Inter-DU Handover Started for ueId [%d] from DU ID [%d] to DU ID [%d]", \
           ueId, sourceDuId, targetDuId);

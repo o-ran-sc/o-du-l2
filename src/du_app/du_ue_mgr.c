@@ -471,7 +471,6 @@ uint8_t duProcDlRrcMsg(F1DlRrcMsg *dlRrcMsg)
             DU_LOG("\nERROR  -->  DU APP : cellId [%d] does not exist", cellId);
             ret = RFAILED;
          }
-
          if(duCb.actvCellLst[cellId-1]->numActvUes < MAX_NUM_UE)
          {
             ret = duCreateUeCb(&duCb.ueCcchCtxt[ueIdx], dlRrcMsg->gnbCuUeF1apId);
@@ -503,11 +502,11 @@ uint8_t duProcDlRrcMsg(F1DlRrcMsg *dlRrcMsg)
                break; 
             }
          }
-	 if(ueFound)
-	    break;
+         if(ueFound)
+            break;
       }
       if(!ueFound)
-	 ret = RFAILED;
+         ret = RFAILED;
    }
    return ret;
 }
@@ -707,13 +706,24 @@ void fillDefaultInitDlBwp(InitialDlBwp *initDlBwp)
       {
 	 initDlBwp->pdschCfg.dmrsDlCfgForPdschMapTypeA.addPos = ADDITIONALPOSITION_POS0;
 	 initDlBwp->pdschCfg.resourceAllocType = RESOURCEALLOCATION_TYPE1;
-	 initDlBwp->pdschCfg.numTimeDomRsrcAlloc = 1;
-	 initDlBwp->pdschCfg.timeDomRsrcAllociList[idx].mappingType = \
-	    MAPPING_TYPEA;
+
+	 initDlBwp->pdschCfg.numTimeDomRsrcAlloc = 2;
+
+    idx = 0; 
+	 initDlBwp->pdschCfg.timeDomRsrcAllociList[idx].mappingType = MAPPING_TYPEA;
 	 initDlBwp->pdschCfg.timeDomRsrcAllociList[idx].startSymbol = PDSCH_START_SYMBOL; 
 	 initDlBwp->pdschCfg.timeDomRsrcAllociList[idx].symbolLength = PDSCH_LENGTH_SYMBOL;
-	 initDlBwp->pdschCfg.timeDomRsrcAllociList[idx].startSymbolAndLength = \
-	    calcSliv(PDSCH_START_SYMBOL, PDSCH_LENGTH_SYMBOL);
+	 initDlBwp->pdschCfg.timeDomRsrcAllociList[idx].startSymbolAndLength = calcSliv(PDSCH_START_SYMBOL, PDSCH_LENGTH_SYMBOL);
+
+    idx++;
+    DU_ALLOC_SHRABL_BUF(initDlBwp->pdschCfg.timeDomRsrcAllociList[idx].k0, sizeof(uint8_t));
+    if(initDlBwp->pdschCfg.timeDomRsrcAllociList[idx].k0)
+       *(initDlBwp->pdschCfg.timeDomRsrcAllociList[idx].k0) = 1;
+    initDlBwp->pdschCfg.timeDomRsrcAllociList[idx].mappingType = MAPPING_TYPEA;
+    initDlBwp->pdschCfg.timeDomRsrcAllociList[idx].startSymbol = PDSCH_START_SYMBOL; 
+    initDlBwp->pdschCfg.timeDomRsrcAllociList[idx].symbolLength = PDSCH_LENGTH_SYMBOL;
+    initDlBwp->pdschCfg.timeDomRsrcAllociList[idx].startSymbolAndLength = calcSliv(PDSCH_START_SYMBOL, PDSCH_LENGTH_SYMBOL);
+
 	 initDlBwp->pdschCfg.rbgSize = RBG_SIZE_CONFIG1;
 	 initDlBwp->pdschCfg.numCodeWordsSchByDci = CODEWORDS_SCHED_BY_DCI_N1;
 	 initDlBwp->pdschCfg.bundlingType = TYPE_STATIC_BUNDLING;
@@ -1498,6 +1508,7 @@ uint8_t fillRlcSrb1LcCfg(RlcBearerCfg *rlcLcCfg)
    rlcLcCfg->rlcMode = RLC_AM;
    rlcLcCfg->configType = CONFIG_ADD;
    ret = fillDefaultRlcModeCfg(rlcLcCfg->rlcMode, rlcLcCfg);
+   rlcLcCfg->isLcAddModRspSent = true;
    return ret;
 }
 
@@ -2807,7 +2818,7 @@ uint8_t duProcUeContextModReq(DuUeCb *ueCb)
             return RFAILED;
          }
       }
-      else if(ueCb->f1UeDb->actionType == UE_CTXT_CFG_QUERY)
+      else if((ueCb->f1UeDb->actionType == UE_CTXT_CFG_QUERY) || (ueCb->f1UeDb->actionType == UE_CTXT_RRC_RECFG_COMPLETE))
       {
          if((BuildAndSendUeContextModRsp(ueCb) != ROK))
          {
