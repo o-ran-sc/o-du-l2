@@ -195,6 +195,7 @@ typedef struct rlcBearerCfg
       UmUniDirUlBearerCfg *umUniDirUlCfg;
       UmUniDirDlBearerCfg *umUniDirDlCfg;
    }u;
+   bool isLcAddModRspSent;
 }RlcBearerCfg;
 
 typedef struct rlcUeCfg

@@ -315,7 +315,7 @@ uint8_t readMacCfg()
    duCfgParam.macCellCfg.initialDlBwp.pdcchCommon.commonSearchSpace.
       candidate.aggLevel16	= 0;
 
-   duCfgParam.macCellCfg.initialDlBwp.pdschCommon.numTimeDomAlloc = 2;
+   duCfgParam.macCellCfg.initialDlBwp.pdschCommon.numTimeDomAlloc = NUM_TIME_DOM_RSRC_ALLOC;
    idx = 0;
    duCfgParam.macCellCfg.initialDlBwp.pdschCommon.timeDomRsrcAllocList[idx].k0 = PDSCH_K0_CFG1;
    duCfgParam.macCellCfg.initialDlBwp.pdschCommon.timeDomRsrcAllocList[idx].mappingType = 

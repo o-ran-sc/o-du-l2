@@ -471,7 +471,6 @@ uint8_t duProcDlRrcMsg(F1DlRrcMsg *dlRrcMsg)
             DU_LOG("\nERROR  -->  DU APP : cellId [%d] does not exist", cellId);
             ret = RFAILED;
          }
-
          if(duCb.actvCellLst[cellId-1]->numActvUes < MAX_NUM_UE)
          {
             ret = duCreateUeCb(&duCb.ueCcchCtxt[ueIdx], dlRrcMsg->gnbCuUeF1apId);
@@ -503,11 +502,14 @@ uint8_t duProcDlRrcMsg(F1DlRrcMsg *dlRrcMsg)
                break; 
             }
          }
-	 if(ueFound)
-	    break;
+         if(ueFound)
+            break;
       }
       if(!ueFound)
-	 ret = RFAILED;
+      {
+         DU_LOG("\nERROR   -->  DU_APP: UE ID [%d] not found", dlRrcMsg->gnbDuUeF1apId);
+         ret = RFAILED;
+      }
    }
    return ret;
 }
@@ -625,15 +627,15 @@ void fillDefaultUlLcCfg(UlLcCfg *ulLcCfg)
  *    Functionality: Fills Initial DL Bandwidth Part
  *
  * @params[in]  InitialDlBwp *initDlBwp
- * @return void
+ * @return ROK - success
+ *         RFAILED - failure
  *
  *****************************************************************/
-void fillDefaultInitDlBwp(InitialDlBwp *initDlBwp)
+uint8_t fillDefaultInitDlBwp(InitialDlBwp *initDlBwp)
 {
    uint8_t idx = 0;
    uint8_t freqDomainResource[FREQ_DOM_RSRC_SIZE] = {0};
    uint8_t coreset0EndPrb, coreset1StartPrb, coreset1NumPrb;
-
 
    if(initDlBwp)
    {
@@ -641,86 +643,84 @@ void fillDefaultInitDlBwp(InitialDlBwp *initDlBwp)
       initDlBwp->pdcchPresent = TRUE;
       if(initDlBwp->pdcchPresent)
       {
-	 initDlBwp->pdcchCfg.numCRsetToAddMod = PDCCH_CTRL_RSRC_SET_ONE_ID;
-	 memset(initDlBwp->pdcchCfg.cRSetToAddModList, 0, MAX_NUM_CRSET);
-	 if(initDlBwp->pdcchCfg.numCRsetToAddMod <= MAX_NUM_CRSET)
-	 {
-	    initDlBwp->pdcchCfg.cRSetToAddModList[idx].cRSetId = \
-	       PDCCH_CTRL_RSRC_SET_ONE_ID;
-	    memset(initDlBwp->pdcchCfg.cRSetToAddModList[idx].freqDomainRsrc, 0,\
-	       FREQ_DOM_RSRC_SIZE); 
-	    coreset0EndPrb = CORESET0_END_PRB;
-	    coreset1StartPrb = coreset0EndPrb +6;
-	    coreset1NumPrb = CORESET1_NUM_PRB;
-	    /* calculate the PRBs */
-	    fillCoresetFeqDomAllocMap(((coreset1StartPrb)/6), (coreset1NumPrb/6), freqDomainResource);
-	    memcpy(initDlBwp->pdcchCfg.cRSetToAddModList[idx].freqDomainRsrc, freqDomainResource,
-	       FREQ_DOM_RSRC_SIZE);
+         initDlBwp->pdcchCfg.numCRsetToAddMod = PDCCH_CTRL_RSRC_SET_ONE_ID;
+         memset(initDlBwp->pdcchCfg.cRSetToAddModList, 0, MAX_NUM_CRSET);
+         if(initDlBwp->pdcchCfg.numCRsetToAddMod <= MAX_NUM_CRSET)
+         {
+            initDlBwp->pdcchCfg.cRSetToAddModList[idx].cRSetId = PDCCH_CTRL_RSRC_SET_ONE_ID;
+            memset(initDlBwp->pdcchCfg.cRSetToAddModList[idx].freqDomainRsrc, 0, FREQ_DOM_RSRC_SIZE); 
+            coreset0EndPrb = CORESET0_END_PRB;
+            coreset1StartPrb = coreset0EndPrb +6;
+            coreset1NumPrb = CORESET1_NUM_PRB;
+            /* calculate the PRBs */
+            fillCoresetFeqDomAllocMap(((coreset1StartPrb)/6), (coreset1NumPrb/6), freqDomainResource);
+            memcpy(initDlBwp->pdcchCfg.cRSetToAddModList[idx].freqDomainRsrc, freqDomainResource, FREQ_DOM_RSRC_SIZE);
 
-	    initDlBwp->pdcchCfg.cRSetToAddModList[idx].duration = \
-	       PDCCH_CTRL_RSRC_SET_ONE_DURATION;
-	    initDlBwp->pdcchCfg.cRSetToAddModList[idx].cceRegMappingType = \
-	       CCE_REG_MAPPINGTYPE_PR_NONINTERLEAVED;
-	    initDlBwp->pdcchCfg.cRSetToAddModList[idx].precoderGranularity = \
-	       ALL_CONTIGUOUS_RBS;
-	    initDlBwp->pdcchCfg.cRSetToAddModList[idx].dmrsScramblingId = \
-	       SCRAMBLING_ID;
-	 }
-	 initDlBwp->pdcchCfg.numCRsetToRel = 0;
-	 /* Filling Serach Space */
-	 initDlBwp->pdcchCfg.numSearchSpcToAddMod = PDCCH_CTRL_RSRC_SET_ONE_ID;
-	 memset(initDlBwp->pdcchCfg.searchSpcToAddModList, 0, MAX_NUM_CRSET);
-	 if(initDlBwp->pdcchCfg.numSearchSpcToAddMod <= MAX_NUM_CRSET)
-	 {
-	    initDlBwp->pdcchCfg.searchSpcToAddModList[idx].searchSpaceId =\
-	       PDCCH_SRCH_SPC_TWO_ID;
-	    initDlBwp->pdcchCfg.searchSpcToAddModList[idx].cRSetId = \
-	       PDCCH_CTRL_RSRC_SET_ONE_ID;
-	    initDlBwp->pdcchCfg.searchSpcToAddModList[idx].\
-	       mSlotPeriodicityAndOffset = SLOTPERIODICITYANDOFFSET_PR_SL1;
-	    memset(initDlBwp->pdcchCfg.searchSpcToAddModList[idx].mSymbolsWithinSlot, 0,\
-	       MONITORING_SYMB_WITHIN_SLOT_SIZE);
-	    initDlBwp->pdcchCfg.searchSpcToAddModList[idx].mSymbolsWithinSlot[idx] =\
-	       PDCCH_SYMBOL_WITHIN_SLOT;
-	    initDlBwp->pdcchCfg.searchSpcToAddModList[idx].numCandidatesAggLevel1 =\
-	       AGGREGATIONLEVEL_N8; 
-	    initDlBwp->pdcchCfg.searchSpcToAddModList[idx].numCandidatesAggLevel2 =\
-	       AGGREGATIONLEVEL_N8; 
-	    initDlBwp->pdcchCfg.searchSpcToAddModList[idx].numCandidatesAggLevel4 =\
-	       AGGREGATIONLEVEL_N4; 
-	    initDlBwp->pdcchCfg.searchSpcToAddModList[idx].numCandidatesAggLevel8 =\
-	       AGGREGATIONLEVEL_N2; 
-	    initDlBwp->pdcchCfg.searchSpcToAddModList[idx].numCandidatesAggLevel16 =\
-	       AGGREGATIONLEVEL_N1;
-	    initDlBwp->pdcchCfg.searchSpcToAddModList[idx].searchSpaceType = \
-	       SEARCHSPACETYPE_PR_UE_SPECIFIC;
-	    initDlBwp->pdcchCfg.searchSpcToAddModList[idx].ueSpecificDciFormat =\
-	       PDCCH_SRCH_SPC_TWO_UE_SPEC_DCI_FORMAT;
+            initDlBwp->pdcchCfg.cRSetToAddModList[idx].duration = PDCCH_CTRL_RSRC_SET_ONE_DURATION;
+            initDlBwp->pdcchCfg.cRSetToAddModList[idx].cceRegMappingType = CCE_REG_MAPPINGTYPE_PR_NONINTERLEAVED;
+            initDlBwp->pdcchCfg.cRSetToAddModList[idx].precoderGranularity = ALL_CONTIGUOUS_RBS;
+            initDlBwp->pdcchCfg.cRSetToAddModList[idx].dmrsScramblingId = SCRAMBLING_ID;
+         }
+         initDlBwp->pdcchCfg.numCRsetToRel = 0;
 
-	    initDlBwp->pdcchCfg.numSearchSpcToRel = 0;
-
-	 }
+         /* Filling Serach Space */
+         initDlBwp->pdcchCfg.numSearchSpcToAddMod = PDCCH_CTRL_RSRC_SET_ONE_ID;
+         memset(initDlBwp->pdcchCfg.searchSpcToAddModList, 0, MAX_NUM_CRSET);
+         if(initDlBwp->pdcchCfg.numSearchSpcToAddMod <= MAX_NUM_CRSET)
+         {
+            initDlBwp->pdcchCfg.searchSpcToAddModList[idx].searchSpaceId = PDCCH_SRCH_SPC_TWO_ID;
+            initDlBwp->pdcchCfg.searchSpcToAddModList[idx].cRSetId = PDCCH_CTRL_RSRC_SET_ONE_ID;
+            initDlBwp->pdcchCfg.searchSpcToAddModList[idx].mSlotPeriodicityAndOffset = SLOTPERIODICITYANDOFFSET_PR_SL1;
+            memset(initDlBwp->pdcchCfg.searchSpcToAddModList[idx].mSymbolsWithinSlot, 0, MONITORING_SYMB_WITHIN_SLOT_SIZE);
+            initDlBwp->pdcchCfg.searchSpcToAddModList[idx].mSymbolsWithinSlot[idx] = PDCCH_SYMBOL_WITHIN_SLOT;
+            initDlBwp->pdcchCfg.searchSpcToAddModList[idx].numCandidatesAggLevel1 = AGGREGATIONLEVEL_N8; 
+            initDlBwp->pdcchCfg.searchSpcToAddModList[idx].numCandidatesAggLevel2 = AGGREGATIONLEVEL_N8; 
+            initDlBwp->pdcchCfg.searchSpcToAddModList[idx].numCandidatesAggLevel4 = AGGREGATIONLEVEL_N4; 
+            initDlBwp->pdcchCfg.searchSpcToAddModList[idx].numCandidatesAggLevel8 = AGGREGATIONLEVEL_N2; 
+            initDlBwp->pdcchCfg.searchSpcToAddModList[idx].numCandidatesAggLevel16 = AGGREGATIONLEVEL_N1;
+            initDlBwp->pdcchCfg.searchSpcToAddModList[idx].searchSpaceType = SEARCHSPACETYPE_PR_UE_SPECIFIC;
+            initDlBwp->pdcchCfg.searchSpcToAddModList[idx].ueSpecificDciFormat = PDCCH_SRCH_SPC_TWO_UE_SPEC_DCI_FORMAT;
+         }
+         initDlBwp->pdcchCfg.numSearchSpcToRel = 0;
       }
+
       /* Filling PDSCH Config */
       initDlBwp->pdschPresent = TRUE;
       if(initDlBwp->pdschPresent)
       {
-	 initDlBwp->pdschCfg.dmrsDlCfgForPdschMapTypeA.addPos = ADDITIONALPOSITION_POS0;
-	 initDlBwp->pdschCfg.resourceAllocType = RESOURCEALLOCATION_TYPE1;
-	 initDlBwp->pdschCfg.numTimeDomRsrcAlloc = 1;
-	 initDlBwp->pdschCfg.timeDomRsrcAllociList[idx].mappingType = \
-	    MAPPING_TYPEA;
-	 initDlBwp->pdschCfg.timeDomRsrcAllociList[idx].startSymbol = PDSCH_START_SYMBOL; 
-	 initDlBwp->pdschCfg.timeDomRsrcAllociList[idx].symbolLength = PDSCH_LENGTH_SYMBOL;
-	 initDlBwp->pdschCfg.timeDomRsrcAllociList[idx].startSymbolAndLength = \
-	    calcSliv(PDSCH_START_SYMBOL, PDSCH_LENGTH_SYMBOL);
-	 initDlBwp->pdschCfg.rbgSize = RBG_SIZE_CONFIG1;
-	 initDlBwp->pdschCfg.numCodeWordsSchByDci = CODEWORDS_SCHED_BY_DCI_N1;
-	 initDlBwp->pdschCfg.bundlingType = TYPE_STATIC_BUNDLING;
-	 initDlBwp->pdschCfg.bundlingInfo.StaticBundling.size = 0;
+         initDlBwp->pdschCfg.dmrsDlCfgForPdschMapTypeA.addPos = ADDITIONALPOSITION_POS0;
+         initDlBwp->pdschCfg.resourceAllocType = RESOURCEALLOCATION_TYPE1;
+
+         initDlBwp->pdschCfg.numTimeDomRsrcAlloc = NUM_TIME_DOM_RSRC_ALLOC;
+
+         idx = 0; 
+         initDlBwp->pdschCfg.timeDomRsrcAllociList[idx].mappingType = MAPPING_TYPEA;
+         initDlBwp->pdschCfg.timeDomRsrcAllociList[idx].startSymbol = PDSCH_START_SYMBOL; 
+         initDlBwp->pdschCfg.timeDomRsrcAllociList[idx].symbolLength = PDSCH_LENGTH_SYMBOL;
+         initDlBwp->pdschCfg.timeDomRsrcAllociList[idx].startSymbolAndLength = calcSliv(PDSCH_START_SYMBOL, PDSCH_LENGTH_SYMBOL);
+
+         idx++;
+         DU_ALLOC_SHRABL_BUF(initDlBwp->pdschCfg.timeDomRsrcAllociList[idx].k0, sizeof(uint8_t));
+         if(initDlBwp->pdschCfg.timeDomRsrcAllociList[idx].k0 == NULLP)
+         {
+            DU_LOG("\nERROR  -->  DUAPP : Failed to allocate memory to K0 in fillDefaultInitDlBwp");
+            return RFAILED;
+         }
+         if(initDlBwp->pdschCfg.timeDomRsrcAllociList[idx].k0)
+            *(initDlBwp->pdschCfg.timeDomRsrcAllociList[idx].k0) = 1;
+         initDlBwp->pdschCfg.timeDomRsrcAllociList[idx].mappingType = MAPPING_TYPEA;
+         initDlBwp->pdschCfg.timeDomRsrcAllociList[idx].startSymbol = PDSCH_START_SYMBOL; 
+         initDlBwp->pdschCfg.timeDomRsrcAllociList[idx].symbolLength = PDSCH_LENGTH_SYMBOL;
+         initDlBwp->pdschCfg.timeDomRsrcAllociList[idx].startSymbolAndLength = calcSliv(PDSCH_START_SYMBOL, PDSCH_LENGTH_SYMBOL);
+
+         initDlBwp->pdschCfg.rbgSize = RBG_SIZE_CONFIG1;
+         initDlBwp->pdschCfg.numCodeWordsSchByDci = CODEWORDS_SCHED_BY_DCI_N1;
+         initDlBwp->pdschCfg.bundlingType = TYPE_STATIC_BUNDLING;
+         initDlBwp->pdschCfg.bundlingInfo.StaticBundling.size = 0;
       }
    }
 
+   return ROK;
 }
 
 /******************************************************************
@@ -793,10 +793,11 @@ void fillDefaultInitUlBwp(InitialUlBwp *initUlBwp)
  *    Functionality: Fills Sp Cell Group Info
  *
  * @params[in]  MacUeCfg *macUeCfg
- * @return void
+ * @return ROK - Success
+ *         RFAILED - Failure
  *
  *****************************************************************/
-void fillDefaultSpCellGrpInfo(MacUeCfg *macUeCfg)
+uint8_t fillDefaultSpCellGrpInfo(MacUeCfg *macUeCfg)
 {
    SpCellCfg *spCell = NULL;
 
@@ -809,7 +810,11 @@ void fillDefaultSpCellGrpInfo(MacUeCfg *macUeCfg)
 
       spCell->servCellIdx = SERV_CELL_IDX;
       /* Filling Initial Dl Bwp */
-      fillDefaultInitDlBwp(&spCell->servCellCfg.initDlBwp);
+      if((fillDefaultInitDlBwp(&spCell->servCellCfg.initDlBwp)) != ROK)
+      {
+         DU_LOG("\nERROR  -->  DUAPP : Failed in fillDefaultInitDlBwp");
+         return RFAILED;
+      }
 
       spCell->servCellCfg.numDlBwpToAdd    = 0; 
       spCell->servCellCfg.firstActvDlBwpId = ACTIVE_DL_BWP_ID;
@@ -819,8 +824,8 @@ void fillDefaultSpCellGrpInfo(MacUeCfg *macUeCfg)
       spCell->servCellCfg.pdschServCellCfg.maxCodeBlkGrpPerTb = NULLP;
       spCell->servCellCfg.pdschServCellCfg.codeBlkGrpFlushInd = NULLP;
       spCell->servCellCfg.pdschServCellCfg.xOverhead = NULLP;
-      spCell->servCellCfg.pdschServCellCfg.numHarqProcForPdsch =\
-         NUM_HARQ_PROC_FOR_PDSCH_N_16;
+      spCell->servCellCfg.pdschServCellCfg.numHarqProcForPdsch = NUM_HARQ_PROC_FOR_PDSCH_N_16;
+
       /* Filling Initial UL Bwp*/
       fillDefaultInitUlBwp(&spCell->servCellCfg.initUlBwp);
       spCell->servCellCfg.numUlBwpToAdd     = 0; 
@@ -829,7 +834,9 @@ void fillDefaultSpCellGrpInfo(MacUeCfg *macUeCfg)
    else
    {
       DU_LOG("\nERROR  -->  DU APP : Memory is NULL for SpCellGrp");
+      return RFAILED;
    }
+   return ROK;
 }
 
 /******************************************************************
@@ -1197,7 +1204,13 @@ uint8_t fillMacUeCfg(uint16_t cellId, uint8_t ueId, uint16_t crnti, DuUeCfg *ueC
 
       fillDefaultMacCellGrpInfo(macUeCfg);
       fillDefaultPhyCellGrpInfo(macUeCfg);
-      fillDefaultSpCellGrpInfo(macUeCfg);
+
+      if((fillDefaultSpCellGrpInfo(macUeCfg)) != ROK)
+      {
+         DU_LOG("\nERROR  --> DUAPP : Failed in fillDefaultSpCellGrpInfo");
+         return RFAILED;
+      }
+
       macUeCfg->ambrCfg = NULLP;
       fillDefaultModulation(macUeCfg);
       fillMacSrb1LcCfg(&macUeCfg->lcCfgList[0]);
@@ -1498,6 +1511,7 @@ uint8_t fillRlcSrb1LcCfg(RlcBearerCfg *rlcLcCfg)
    rlcLcCfg->rlcMode = RLC_AM;
    rlcLcCfg->configType = CONFIG_ADD;
    ret = fillDefaultRlcModeCfg(rlcLcCfg->rlcMode, rlcLcCfg);
+   rlcLcCfg->isLcAddModRspSent = true;
    return ret;
 }
 
@@ -2807,7 +2821,7 @@ uint8_t duProcUeContextModReq(DuUeCb *ueCb)
             return RFAILED;
          }
       }
-      else if(ueCb->f1UeDb->actionType == UE_CTXT_CFG_QUERY)
+      else if((ueCb->f1UeDb->actionType == UE_CTXT_CFG_QUERY) || (ueCb->f1UeDb->actionType == UE_CTXT_RRC_RECFG_COMPLETE))
       {
          if((BuildAndSendUeContextModRsp(ueCb) != ROK))
          {

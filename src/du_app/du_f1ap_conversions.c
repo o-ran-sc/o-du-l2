@@ -1049,6 +1049,104 @@ PUCCH_Resource__format_PR covertPucchFormatIntEnumToRrcEnum(uint8_t pucchFormat)
 
 /************************************************************************
  *
+ * @brief Converts BSR Periodic timer value to its ASN enum value
+ *
+ * @details
+ *
+ *    Function : convertBsrPeriodicTmrValueToEnum
+ *
+ *    Functionality: Converts BSR Periodic timer timer value to its ASN enum value
+ *
+ * @params[in] BSR Periodic timer value
+ * @return BSR Periodic timer ASN enum
+ *
+ * **********************************************************************/
+long convertBsrPeriodicTmrValueToEnum(int16_t periodicTmr)
+{
+   switch(periodicTmr)
+   {
+      case 1:
+         return BSR_Config__periodicBSR_Timer_sf1;
+      case 5:
+         return BSR_Config__periodicBSR_Timer_sf5;
+      case 10:
+         return BSR_Config__periodicBSR_Timer_sf10;
+      case 16:
+         return BSR_Config__periodicBSR_Timer_sf16;
+      case 20:
+         return BSR_Config__periodicBSR_Timer_sf20;
+      case 32:
+         return BSR_Config__periodicBSR_Timer_sf32;
+      case 40:
+         return BSR_Config__periodicBSR_Timer_sf40;
+      case 64:
+         return BSR_Config__periodicBSR_Timer_sf64;
+      case 80:
+         return BSR_Config__periodicBSR_Timer_sf80;
+      case 128:
+         return BSR_Config__periodicBSR_Timer_sf128;
+      case 320:
+         return BSR_Config__periodicBSR_Timer_sf320;
+      case 640:
+         return BSR_Config__periodicBSR_Timer_sf640;
+      case 1280:
+         return BSR_Config__periodicBSR_Timer_sf1280;
+      case 2560:
+         return BSR_Config__periodicBSR_Timer_sf2560;
+      case -1:
+         return BSR_Config__periodicBSR_Timer_infinity;
+      default:
+         return BSR_Config__periodicBSR_Timer_sf10;
+   }
+}
+
+/************************************************************************
+ *
+ * @brief Converts BSR Retransmission timer value to its ASN enum value
+ *
+ * @details
+ *
+ *    Function : convertBsrRetxTmrValueToEnum
+ *
+ *    Functionality: Converts BSR Retransmission timer timer value to its ASN enum value
+ *
+ * @params[in] BSR Retransmission timer value
+ * @return BSR Restransmission timer ASN enum
+ *
+ * **********************************************************************/
+long convertBsrRetxTmrValueToEnum(uint16_t retxTmr)
+{
+   switch(retxTmr)
+   {
+      case 10:
+         return BSR_Config__retxBSR_Timer_sf10;
+      case 20:
+         return BSR_Config__retxBSR_Timer_sf20;
+      case 40:
+         return BSR_Config__retxBSR_Timer_sf40;
+      case 80:
+         return BSR_Config__retxBSR_Timer_sf80;
+      case 160:
+         return BSR_Config__retxBSR_Timer_sf160;
+      case 320:
+         return BSR_Config__retxBSR_Timer_sf320;
+      case 640:
+         return BSR_Config__retxBSR_Timer_sf640;
+      case 1280:
+         return BSR_Config__retxBSR_Timer_sf1280;
+      case 2560:
+         return BSR_Config__retxBSR_Timer_sf2560;
+      case 5120:
+         return BSR_Config__retxBSR_Timer_sf5120;
+      case 10240:
+         return BSR_Config__retxBSR_Timer_sf10240;
+      default:
+         return BSR_Config__retxBSR_Timer_sf320;
+   }
+}
+
+/************************************************************************
+ *
  * @brief Converts LC SR Delay timer value to its ASN enum value
  *
  * @details
