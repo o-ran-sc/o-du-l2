@@ -37,6 +37,8 @@ int8_t convertReasmblTmrEnumToValue(uint8_t reAsmblTmrCfg);
 T_StatusProhibit_t convertProhibitTmrValueToEnum(int16_t prohibitTmr);
 int16_t convertProhibitTmrEnumToValue(T_StatusProhibit_t prohibitTmr);
 PUCCH_Resource__format_PR covertPucchFormatIntEnumToRrcEnum(uint8_t pucchFormat);
+long convertBsrPeriodicTmrValueToEnum(int16_t periodicTmr);
+long convertBsrRetxTmrValueToEnum(uint16_t retxTmr);
 long convertLcSrDelayTmrValueToEnum(uint16_t delayTimer);
 
 /**********************************************************************
