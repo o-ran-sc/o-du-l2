@@ -1,0 +1,318 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8eb89c84_64ab0ec0",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-03-14T08:46:46Z",
+      "side": 1,
+      "message": "can\u0027t we move these macros also in .h files?",
+      "range": {
+        "startLine": 140,
+        "startChar": 8,
+        "endLine": 140,
+        "endChar": 24
+      },
+      "revId": "bab25017e8fc288968117eba82fec56911682644",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "153ed871_aaadf865",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 235,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-03-14T08:46:46Z",
+      "side": 1,
+      "message": "move these to .h file",
+      "revId": "bab25017e8fc288968117eba82fec56911682644",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "996a030c_5a6da66c",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1067,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-03-14T08:46:46Z",
+      "side": 1,
+      "message": "add comment",
+      "range": {
+        "startLine": 1067,
+        "startChar": 16,
+        "endLine": 1067,
+        "endChar": 23
+      },
+      "revId": "bab25017e8fc288968117eba82fec56911682644",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5ed819ed_17a9cc88",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1541,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-03-14T08:46:46Z",
+      "side": 1,
+      "message": "At CU STUB, there are a few warnings.\nLet\u0027s try not to add any more warning. ",
+      "revId": "bab25017e8fc288968117eba82fec56911682644",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5a2535f6_268cadef",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1873,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-03-14T08:46:46Z",
+      "side": 1,
+      "message": "add function descriptor",
+      "revId": "bab25017e8fc288968117eba82fec56911682644",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "21643073_e6313108",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1874,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-03-14T08:46:46Z",
+      "side": 1,
+      "message": "add a check before accessing pointers.",
+      "revId": "bab25017e8fc288968117eba82fec56911682644",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0d1d2b74_bcfd8d6a",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2023,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-03-14T08:46:46Z",
+      "side": 1,
+      "message": "do we need this here?",
+      "range": {
+        "startLine": 2023,
+        "startChar": 3,
+        "endLine": 2023,
+        "endChar": 9
+      },
+      "revId": "bab25017e8fc288968117eba82fec56911682644",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f62a97a9_187f3650",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2274,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-03-14T08:46:46Z",
+      "side": 1,
+      "message": "add comment",
+      "revId": "bab25017e8fc288968117eba82fec56911682644",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fc1cc326_d0442d63",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 7077,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-03-14T08:46:46Z",
+      "side": 1,
+      "message": "please complete this and a function descriptor as well.",
+      "revId": "bab25017e8fc288968117eba82fec56911682644",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "72c17cea_d606eb3d",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 7611,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-03-14T08:46:46Z",
+      "side": 1,
+      "message": "add comments in this function.",
+      "revId": "bab25017e8fc288968117eba82fec56911682644",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ef89becd_3c67f7ed",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 7656,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-03-14T08:46:46Z",
+      "side": 1,
+      "message": "add comments in this function.",
+      "revId": "bab25017e8fc288968117eba82fec56911682644",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1ea9d010_b9ab157a",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 8329,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-03-14T08:46:46Z",
+      "side": 1,
+      "message": "sizeof(CUtoDURRCInformation_ExtIEs_t*)",
+      "range": {
+        "startLine": 8329,
+        "startChar": 57,
+        "endLine": 8329,
+        "endChar": 95
+      },
+      "revId": "bab25017e8fc288968117eba82fec56911682644",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a0f7d22a_268a6ff6",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 10827,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-03-14T08:46:46Z",
+      "side": 1,
+      "message": "needs to modify all free function.",
+      "range": {
+        "startLine": 10827,
+        "startChar": 6,
+        "endLine": 10827,
+        "endChar": 35
+      },
+      "revId": "bab25017e8fc288968117eba82fec56911682644",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2e1ab792_94464b03",
+        "filename": "src/cu_stub/cu_stub.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-03-14T08:46:46Z",
+      "side": 1,
+      "message": "spec reference.",
+      "revId": "bab25017e8fc288968117eba82fec56911682644",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2394e136_9fd439e6",
+        "filename": "src/du_app/du_f1ap_conversions.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1144,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-03-14T08:46:46Z",
+      "side": 1,
+      "message": "i think correct default value is BSR_Config__retxBSR_Timer_sf80",
+      "range": {
+        "startLine": 1144,
+        "startChar": 16,
+        "endLine": 1144,
+        "endChar": 47
+      },
+      "revId": "bab25017e8fc288968117eba82fec56911682644",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "feda9dcc_a7b9f84b",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 14554,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-03-14T08:46:46Z",
+      "side": 1,
+      "message": "need to update aper decode free function for all handover related IES received from CU to DU.",
+      "range": {
+        "startLine": 14554,
+        "startChar": 3,
+        "endLine": 14554,
+        "endChar": 44
+      },
+      "revId": "bab25017e8fc288968117eba82fec56911682644",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
