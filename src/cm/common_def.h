@@ -204,20 +204,6 @@
    _isLcidValid = ((_lcId >= SRB0_LCID && _lcId <= MAX_DRB_LCID) ? 1 : 0);\
 }
 
-#define GET_PAGING_CYCLE(enmValue, T) {               \
-        if (enmValue == 0) T = 32;                           \
-       else if (enmValue == 1) T = 64;                       \
-       else if (enmValue == 2) T = 128;                      \
-       else if (enmValue == 3) T = 256;                      \
-       else T = 0;                                         \
-}
-
-#define GET_NUM_PAGING_OCC(enmValue, PO) {               \
-        if (enmValue == 0) PO = 4;                            \
-       else if (enmValue == 1) PO = 2;                       \
-       else if (enmValue == 2) PO = 1;                      \
-       else PO = 0;                                         \
-}
 typedef enum
 {
    UE_CFG_INACTIVE,

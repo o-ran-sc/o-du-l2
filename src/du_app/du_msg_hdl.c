@@ -344,7 +344,6 @@ uint8_t duBuildRlcUsapCfg(uint8_t elemId, Ent ent, Inst inst)
 uint8_t duProcCfgComplete()
 {
    uint8_t         ret = ROK;
-   uint16_t        cellId = 0;
    uint16_t        idx;
    for(idx=0; idx< DEFAULT_CELLS; idx++)
    {
@@ -2168,8 +2167,9 @@ uint8_t DuProcRlcSliceMetrics(Pst *pst, SlicePmList *sliceStats)
     
     for(sliceRecord = 0; sliceRecord < sliceStats->numSlice; sliceRecord++)
     {
-       DU_LOG("\nINFO   -->  DU_APP: SliceIndx:%d, DlTput %.5lf, UlTput:%.5lf", sliceStats->sliceRecord[sliceRecord].networkSliceIdentifier,\
-                        sliceStats->sliceRecord[sliceRecord].ThpDl, sliceStats->sliceRecord[sliceRecord].ThpUl);
+       DU_LOG("\nINFO   -->  DU_APP: SliceId[SST-SD]:%d-%d, DlTput %.5lf, UlTput:%.5lf", sliceStats->sliceRecord[sliceRecord].networkSliceIdentifier.sst,\
+                        sliceStats->sliceRecord[sliceRecord].networkSliceIdentifier.sd,sliceStats->sliceRecord[sliceRecord].ThpDl,\
+                        sliceStats->sliceRecord[sliceRecord].ThpUl);
     }
 #ifdef O1_ENABLE
     if(sliceStats)

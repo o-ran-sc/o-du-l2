@@ -158,6 +158,52 @@ uint8_t duGetCellCb(uint16_t cellId, DuCellCb **cellCb)
    return ROK;
 }
 
+/*****************************************************************
+* @brief Handles slot indication from MAC
+*
+* @details
+*
+*   Function : duHandleSlotInd
+*
+*   Functionality:
+*       Handles  slot indication from MAC
+* 
+*  @params[in] Post structure pointer
+*              SlotTimingInfo *slotIndInfo
+*  @return ROK     - success
+*          RFAILED - failure
+* 
+* 
+*****************************************************************/
+uint8_t duHandleSlotInd(Pst *pst, SlotTimingInfo *slotIndInfo)
+{
+   uint8_t cellIdx = 0, ret = ROK;
+   DuCellCb *duCellCb;
+
+   if(slotIndInfo)
+   {
+      GET_CELL_IDX(slotIndInfo->cellId, cellIdx);
+      duCellCb = duCb.actvCellLst[cellIdx];
+
+      if(duCellCb)
+      {
+         duCellCb->currSlotInfo.sfn = slotIndInfo->sfn;
+         duCellCb->currSlotInfo.slot = slotIndInfo->slot;
+      }
+      else
+      {
+         DU_LOG("\nERROR  -->  DU APP : CellId[%d] doesnot exist", slotIndInfo->cellId);
+         ret = RFAILED;
+      }
+      DU_FREE_SHRABL_BUF(pst->region, pst->pool, slotIndInfo, sizeof(SlotTimingInfo));
+   }
+   else
+   {
+      DU_LOG("\nERROR  -->  DU APP : Recevied null pointer from MAC");
+      ret = RFAILED;
+   }
+   return(ret);
+}
 /*******************************************************************
  *
  * @brief Handles cell up indication from MAC

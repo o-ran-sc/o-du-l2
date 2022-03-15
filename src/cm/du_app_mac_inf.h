@@ -79,10 +79,28 @@
 #define EVENT_MAC_SLICE_CFG_RSP      217
 #define EVENT_MAC_SLICE_RECFG_REQ    218
 #define EVENT_MAC_SLICE_RECFG_RSP    219
+#define EVENT_MAC_SLOT_IND           220
 
 #define BSR_PERIODIC_TIMER_SF_10 10
 #define BSR_RETX_TIMER_SF_320 320
 #define BSR_SR_DELAY_TMR_2560 2560
+
+#define GET_PAGING_CYCLE(enmValue, T) {               \
+        if (enmValue == 0) T = 32;                           \
+       else if (enmValue == 1) T = 64;                       \
+       else if (enmValue == 2) T = 128;                      \
+       else if (enmValue == 3) T = 256;                      \
+       else T = 0;                                         \
+}
+
+#define GET_NUM_PAGING_OCC(enmValue, PO) {               \
+        if (enmValue == 0) PO = 4;                            \
+       else if (enmValue == 1) PO = 2;                       \
+       else if (enmValue == 2) PO = 1;                      \
+       else PO = 0;                                         \
+}
+
+#define PAGING_SCHED_DELTA  4
 
 typedef enum
 {
@@ -1342,6 +1360,11 @@ typedef uint8_t (*DuMacCellUpInd) ARGS((
 	 Pst       *pst,
 	 OduCellId *cellId ));
 
+/* Functions for slot Ind from MAC to DU APP*/
+typedef uint8_t (*DuMacSlotInd) ARGS((
+	 Pst       *pst,
+	 SlotTimingInfo *slotIndInfo));
+
 /* Functions for stop Ind from MAC to DU APP*/
 typedef uint8_t (*DuMacStopInd) ARGS((
 	 Pst        *pst,
@@ -1498,6 +1521,9 @@ uint8_t unpackMacSliceReCfgReq(DuMacSliceRecfgReq func, Pst *pst, Buffer *mBuf);
 uint8_t DuProcMacSliceReCfgRsp(Pst *pst,  MacSliceCfgRsp *cfgRsp);
 uint8_t packDuMacSliceReCfgRsp(Pst *pst, MacSliceCfgRsp *cfgRsp);
 uint8_t unpackDuMacSliceReCfgRsp(MacDuSliceReCfgRspFunc func, Pst *pst, Buffer *mBuf);
+uint8_t duHandleSlotInd(Pst *pst, SlotTimingInfo *slotIndInfo);
+uint8_t packMacSlotInd(Pst *pst, SlotTimingInfo *slotIndInfo);
+uint8_t unpackDuMacSlotInd(DuMacSlotInd func, Pst *pst, Buffer *mBuf);
 
 #endif
 

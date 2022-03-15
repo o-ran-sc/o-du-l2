@@ -381,7 +381,7 @@ void FreeE2SetupReq(E2AP_PDU_t *e2apMsg)
                                 if(e2NodeAddItem->value.choice.E2nodeComponentConfigAddition_Item.e2nodeComponentID.choice.e2nodeComponentInterfaceTypeF1)
                                 {
                                     DU_FREE(e2NodeAddItem->value.choice.E2nodeComponentConfigAddition_Item.e2nodeComponentID.choice.\
-                                    e2nodeComponentInterfaceTypeF1->gNB_DU_ID.buf,\   
+                                    e2nodeComponentInterfaceTypeF1->gNB_DU_ID.buf,\
                                     e2NodeAddItem->value.choice.E2nodeComponentConfigAddition_Item.e2nodeComponentID.choice.\
                                     e2nodeComponentInterfaceTypeF1->gNB_DU_ID.size);
                                     DU_FREE(e2NodeAddItem->value.choice.E2nodeComponentConfigAddition_Item.e2nodeComponentID.choice.e2nodeComponentInterfaceTypeF1,\

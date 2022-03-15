@@ -11356,30 +11356,30 @@ uint8_t extractSrbListToSetup(SRBs_ToBeSetup_List_t *srbCfg, DuUeCfg *ueCfgDb)
       {
          srbItem = &srbCfg->list.array[srbIdx]->value.choice.SRBs_ToBeSetup_Item;
          if(ueCfgDb->numMacLcs > MAX_NUM_LC)
-	 { 
+         { 
             DU_LOG("\nERROR   -->  F1AP:  MAX LC Reached in MAC");
-	    ret = RFAILED;
-	    break;
-	 }
+            ret = RFAILED;
+            break;
+         }
          if(ueCfgDb->numRlcLcs > MAX_NUM_LC)
-	 {
+         {
             DU_LOG("\nERROR   -->  F1AP:  MAX LC Reached in RLC");
-	    ret = RFAILED;
-	    break;
-	 }
-	 memset(&ueCfgDb->macLcCfg[ueCfgDb->numMacLcs], 0, sizeof(LcCfg));
-	 memset(&ueCfgDb->rlcLcCfg[ueCfgDb->numRlcLcs], 0, sizeof(RlcBearerCfg));
+            ret = RFAILED;
+            break;
+         }
+         memset(&ueCfgDb->macLcCfg[ueCfgDb->numMacLcs], 0, sizeof(LcCfg));
+         memset(&ueCfgDb->rlcLcCfg[ueCfgDb->numRlcLcs], 0, sizeof(RlcBearerCfg));
          ret = procSrbListToSetup(srbItem, &ueCfgDb->macLcCfg[ueCfgDb->numMacLcs],\
-	    &ueCfgDb->rlcLcCfg[ueCfgDb->numRlcLcs]);
-	 ueCfgDb->numRlcLcs++;
-	 ueCfgDb->numMacLcs++;
-         DU_LOG("\nDEBUG --> DUAPP: extractSrbListToSetup: SRBID: %d [RLC,MAC,NumDrb]:[%x,%x,%x]",\
-                            srbItem->sRBID, ueCfgDb->numRlcLcs, ueCfgDb->numMacLcs,  ueCfgDb->numDrb);
-	 if(ret == RFAILED)
-	 {
+               &ueCfgDb->rlcLcCfg[ueCfgDb->numRlcLcs]);
+         ueCfgDb->numRlcLcs++;
+         ueCfgDb->numMacLcs++;
+         DU_LOG("\nDEBUG --> DUAPP: extractSrbListToSetup: SRBID: %ld [RLC,MAC,NumDrb]:[%x,%x,%x]",\
+               srbItem->sRBID, ueCfgDb->numRlcLcs, ueCfgDb->numMacLcs,  ueCfgDb->numDrb);
+         if(ret == RFAILED)
+         {
             DU_LOG("\nERROR  -->  F1AP:  Failed at extractSrbListToSetup()");
-	    break;
-	 }
+            break;
+         }
       }
    }
    else
@@ -14948,7 +14948,7 @@ void freeAperDecodeUeContextReleaseCommand(F1AP_PDU_t *f1apMsg)
 uint8_t procF1UeContextReleaseCommand(F1AP_PDU_t *f1apMsg)
 {
    uint8_t  ieIdx=0, ret=ROK, ueIdx=0;
-   uint16_t cellIdx =0, cellId = 0, crnti = 0;
+   uint16_t cellIdx =0, cellId = 0;
    bool ueIdxFound = false;
    uint32_t gnbCuUeF1apId=0, gnbDuUeF1apId=0;
    DuUeCb   *duUeCb = NULLP;
@@ -14988,7 +14988,6 @@ uint8_t procF1UeContextReleaseCommand(F1AP_PDU_t *f1apMsg)
                                  (duCb.actvCellLst[cellIdx]->ueCb[ueIdx].gnbCuUeF1apId == gnbCuUeF1apId))
                            {
                               cellId = duCb.actvCellLst[cellIdx]->cellId;
-                              crnti  = duCb.actvCellLst[cellIdx]->ueCb[ueIdx].crnti;
                               duUeCb = &duCb.actvCellLst[cellIdx]->ueCb[ueIdx];
                               ueIdxFound = true;
                               break;

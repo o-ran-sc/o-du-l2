@@ -316,6 +316,49 @@ int sendCellUpIndMacToDuApp(uint16_t cellId)
 
 /*******************************************************************
  *
+ * @brief Send slot indication to DU APP
+ *
+ * @details
+ *
+ *    Function : sendSlotIndToDuApp
+ *
+ *    Functionality:
+ *       Send cell up indication to DU APP
+ *
+ * @params[in] Cell Up indication info 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t sendSlotIndToDuApp(SlotTimingInfo *slotInd)
+{
+   Pst pst;
+   uint16_t ret;
+   SlotTimingInfo *slotIndInfo;
+
+   /*  Allocate sharable memory */
+   MAC_ALLOC_SHRABL_BUF(slotIndInfo, sizeof(SlotTimingInfo));
+   if(!slotIndInfo)
+   {
+      DU_LOG("\nERROR  -->  MAC : Memory allocation failed for slot indication");
+      return RFAILED;
+   }
+   memcpy(slotIndInfo, slotInd,sizeof(SlotTimingInfo));
+
+   /* Fill Pst */
+   FILL_PST_MAC_TO_DUAPP(pst, EVENT_MAC_SLOT_IND);
+
+   ret = MacDuAppSlotInd(&pst, slotIndInfo);
+   if(ret != ROK)
+   {
+      DU_LOG("\nERROR  -->  MAC: Failed to send slot up indication to DU APP");
+      MAC_FREE_SHRABL_BUF(MAC_MEM_REGION, MAC_POOL, slotIndInfo, sizeof(SlotTimingInfo));
+   }
+
+   return ret;
+}
+/*******************************************************************
+ *
  * @brief Process slot indication at MAC
  *
  * @details
@@ -411,16 +454,25 @@ uint8_t fapiMacSlotInd(Pst *pst, SlotTimingInfo *slotInd)
    }
 #endif
 
-   /* send slot indication to du app */
+   /*First Slot Ind is for CellUp. Any other Slot, will be notified to DUAPP as
+    * SLOT_IND*/
    if(gSlotCount == 1)   
    {
+      /* send cell up indication to du app */
       ret = sendCellUpIndMacToDuApp(slotInd->cellId);
-      if(ret != ROK)
-      {
-         DU_LOG("\nERROR  -->  MAC :Sending of slot ind msg from MAC to DU APP failed");
-         MAC_FREE_SHRABL_BUF(pst->region, pst->pool, slotInd, sizeof(SlotTimingInfo));
-         return ret;
-      }
+
+   }
+   else
+   {
+      /* send slot indication to du app */
+      ret = sendSlotIndToDuApp(slotInd);
+   }
+   
+   if(ret != ROK)
+   {
+      DU_LOG("\nERROR  -->  MAC :Sending of slot ind msg from MAC to DU APP failed");
+      MAC_FREE_SHRABL_BUF(pst->region, pst->pool, slotInd, sizeof(SlotTimingInfo));
+      return ret;
    }
 
    /*stoping Task*/

@@ -704,7 +704,7 @@ uint8_t RlcProcUeReconfigReq(Pst *pst, RlcUeCfg *ueCfg)
    uint8_t ret = ROK;
    RlcCfgInfo *rlcUeCfg = NULLP; //Seed code Rlc cfg struct
    RlcCb *rlcUeCb = NULLP;
-   RlcCfgCfmInfo *cfgRsp; 
+   RlcCfgCfmInfo cfgRsp; 
    Pst rspPst;
 
    DU_LOG("\nDEBUG  -->  RLC: UE reconfig request received. CellID[%d] UEID[%d]",ueCfg->cellId, ueCfg->ueId);
@@ -724,9 +724,8 @@ uint8_t RlcProcUeReconfigReq(Pst *pst, RlcUeCfg *ueCfg)
       {
          DU_LOG("\nERROR  -->  RLC: Failed to fill configuration at RlcProcUeReconfigReq()");
          FILL_PST_RLC_TO_DUAPP(rspPst, RLC_UL_INST, EVENT_RLC_UE_RECONFIG_RSP);
-         memset(cfgRsp, 0, sizeof(RlcCfgCfmInfo));
-         fillRlcCfgFailureRsp(cfgRsp, ueCfg);
-         SendRlcUeCfgRspToDu(&rspPst, cfgRsp);
+         fillRlcCfgFailureRsp(&cfgRsp, ueCfg);
+         SendRlcUeCfgRspToDu(&rspPst, &cfgRsp);
       }
       else
       {
