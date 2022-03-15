@@ -244,6 +244,11 @@ void callFlowduActvTsk(Pst *pst)
                      strcpy(message,"EVENT_MAC_CELL_UP_IND");
                      break;
                   }
+               case EVENT_MAC_SLOT_IND:
+                  {
+                     strcpy(message,"EVENT_MAC_SLOT_IND");
+                     break;
+                  }
                case EVENT_MAC_STOP_IND:
                   {
                      strcpy(message,"EVENT_MAC_STOP_IND");
@@ -509,6 +514,11 @@ uint8_t duActvTsk(Pst *pst, Buffer *mBuf)
                case EVENT_MAC_CELL_UP_IND:
                   {
                      ret = unpackMacCellUpInd(duHandleCellUpInd, pst, mBuf);
+                     break;
+                  }
+               case EVENT_MAC_SLOT_IND:
+                  {
+                     ret = unpackDuMacSlotInd(duHandleSlotInd, pst, mBuf);
                      break;
                   }
                case EVENT_MAC_STOP_IND:

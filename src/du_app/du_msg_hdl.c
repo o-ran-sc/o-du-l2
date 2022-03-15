@@ -344,7 +344,6 @@ uint8_t duBuildRlcUsapCfg(uint8_t elemId, Ent ent, Inst inst)
 uint8_t duProcCfgComplete()
 {
    uint8_t         ret = ROK;
-   uint16_t        cellId = 0;
    uint16_t        idx;
    for(idx=0; idx< DEFAULT_CELLS; idx++)
    {
