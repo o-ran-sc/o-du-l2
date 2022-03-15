@@ -24,6 +24,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "58e8d529_96d85653",
+        "filename": "src/du_app/du_cell_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 192,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-03-15T11:47:43Z",
+      "side": 1,
+      "message": "will correct it",
+      "parentUuid": "2e0f8413_41f5b32a",
+      "range": {
+        "startLine": 192,
+        "startChar": 27,
+        "endLine": 192,
+        "endChar": 28
+      },
+      "revId": "27bcaf0fb592ac1de10f9239332975b5321f5db6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d0cb5e0d_e4a58425",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-03-15T11:40:12Z",
       "side": 1,
       "message": "I think you can add this strcutre another Gerrit. let\u0027s keep only slot indication related here",
+      "range": {
+        "startLine": 181,
+        "startChar": 16,
+        "endLine": 181,
+        "endChar": 17
+      },
+      "revId": "27bcaf0fb592ac1de10f9239332975b5321f5db6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2cb36dd1_b24f568a",
+        "filename": "src/du_app/du_mgr.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 181,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-03-15T11:47:43Z",
+      "side": 1,
+      "message": "okay will do it",
+      "parentUuid": "d0cb5e0d_e4a58425",
       "range": {
         "startLine": 181,
         "startChar": 16,
