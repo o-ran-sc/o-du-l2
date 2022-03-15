@@ -169,6 +169,12 @@ typedef struct duUeCb
    RlcUeCfg rlcUeCfg;        /* Rlc Ue Cfg */
 }DuUeCb;
 
+typedef struct  slotInfo
+{
+   uint16_t sfn;
+   uint16_t slot;
+}SlotInfo;
+
 typedef struct duCellCb
 {
    uint16_t       cellId;                 /* Internal cell Id */
@@ -178,6 +184,7 @@ typedef struct duCellCb
    CellStatus     cellStatus;             /* Cell status */
    uint32_t       numActvUes;             /* Total Active UEs */
    DuUeCb         ueCb[MAX_NUM_UE];       /* UE CONTEXT */
+   SlotInfo       currSlotInfo;
 }DuCellCb;
 
 typedef struct duLSapCb

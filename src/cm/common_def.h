@@ -218,6 +218,9 @@
        else if (enmValue == 2) PO = 1;                      \
        else PO = 0;                                         \
 }
+
+#define PAGING_SCHED_DELTA  4
+
 typedef enum
 {
    UE_CFG_INACTIVE,

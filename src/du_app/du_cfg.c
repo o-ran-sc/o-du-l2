@@ -366,7 +366,7 @@ uint8_t readMacCfg()
    duCfgParam.macCellCfg.initialUlBwp.pucchCommon.pucchGroupHopping = PUCCH_GROUP_HOPPING;
    
    /* Plmn And SNSSAI Configuration */
-   memset(&duCfgParam.macCellCfg.plmnInfoList.plmn, &duCfgParam.srvdCellLst[0].duCellInfo.cellInfo.srvdPlmn[0].plmn,\
+   memcpy(&duCfgParam.macCellCfg.plmnInfoList.plmn, &duCfgParam.srvdCellLst[0].duCellInfo.cellInfo.srvdPlmn[0].plmn,\
    sizeof(Plmn));
    taiSliceSuppLst = &duCfgParam.srvdCellLst[0].duCellInfo.cellInfo.srvdPlmn[0].taiSliceSuppLst;
    duCfgParam.macCellCfg.plmnInfoList.numSupportedSlice = taiSliceSuppLst->numSupportedSlices;

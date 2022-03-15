@@ -78,7 +78,7 @@ uint8_t sctpActvInit(Ent entity, Inst inst, Region region, Reason reason)
 *
 *  @return  void
 ***************************************************************************/
-uint8_t callFlowSctpActvTsk(Pst *pst)
+void callFlowSctpActvTsk(Pst *pst)
 {
    char sourceTask[50];
    char destTask[50]="ENTSCTP";
