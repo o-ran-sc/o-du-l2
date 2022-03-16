@@ -1,0 +1,176 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "31c40d1c_3fdf9bc0",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-03-16T05:35:13Z",
+      "side": 1,
+      "message": "remove this space.",
+      "revId": "8c449e2dfa2f29e53f1b96e622a2fe2d3228a47b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "be72d874_79527a86",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 7578,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-03-16T05:35:13Z",
+      "side": 1,
+      "message": "Please do the testing once with valgrind as well.",
+      "range": {
+        "startLine": 7578,
+        "startChar": 9,
+        "endLine": 7578,
+        "endChar": 38
+      },
+      "revId": "8c449e2dfa2f29e53f1b96e622a2fe2d3228a47b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d2ea585d_d65e655c",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 8537,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-03-16T05:35:13Z",
+      "side": 1,
+      "message": "fillRrcReconfigBuf",
+      "range": {
+        "startLine": 8537,
+        "startChar": 66,
+        "endLine": 8537,
+        "endChar": 91
+      },
+      "revId": "8c449e2dfa2f29e53f1b96e622a2fe2d3228a47b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "628e032b_f304e63b",
+        "filename": "src/du_app/du_cfg.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-03-16T05:35:13Z",
+      "side": 1,
+      "message": "revert before submission",
+      "revId": "8c449e2dfa2f29e53f1b96e622a2fe2d3228a47b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "29262198_6bf778b0",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 508,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-03-16T05:35:13Z",
+      "side": 1,
+      "message": "add a comment for Ue not found",
+      "range": {
+        "startLine": 508,
+        "startChar": 10,
+        "endLine": 508,
+        "endChar": 17
+      },
+      "revId": "8c449e2dfa2f29e53f1b96e622a2fe2d3228a47b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ccf77b5e_ae333359",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 710,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-03-16T05:35:13Z",
+      "side": 1,
+      "message": "creat a macro for this",
+      "range": {
+        "startLine": 710,
+        "startChar": 45,
+        "endLine": 710,
+        "endChar": 46
+      },
+      "revId": "8c449e2dfa2f29e53f1b96e622a2fe2d3228a47b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d656aee1_32498e85",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1511,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-03-16T05:35:13Z",
+      "side": 1,
+      "message": "we are not handling this Parameter at RLC right now?",
+      "range": {
+        "startLine": 1511,
+        "startChar": 13,
+        "endLine": 1511,
+        "endChar": 30
+      },
+      "revId": "8c449e2dfa2f29e53f1b96e622a2fe2d3228a47b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9eca4305_a0aaa4f0",
+        "filename": "src/ric_stub/ric_stub_sctp.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-03-16T05:35:13Z",
+      "side": 1,
+      "message": "revert.",
+      "range": {
+        "startLine": 27,
+        "startChar": 10,
+        "endLine": 27,
+        "endChar": 26
+      },
+      "revId": "8c449e2dfa2f29e53f1b96e622a2fe2d3228a47b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
