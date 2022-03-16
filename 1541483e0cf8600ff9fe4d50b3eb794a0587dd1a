@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9e50c25d_03058363",
+        "filename": "src/cm/common_def.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 207,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-03-16T08:45:37Z",
+      "side": 1,
+      "message": "i think GET_PAGING_CYCLE, GET_NUM_PAGING_OCC, PAGING_SCHED_DELTA required in DUAPP and SCH, I think we can move this into cm/mac_sch_interface.h or cm/du_app_mac_inf.c or du_app/du_cfg.h files",
+      "revId": "1541483e0cf8600ff9fe4d50b3eb794a0587dd1a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ce4d9fea_a5436aa3",
+        "filename": "src/du_app/du_cell_mgr.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 196,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-03-16T08:45:37Z",
+      "side": 1,
+      "message": "line 198 will never get initiated becz of return RFAILED;\nYou can take a veriable to store ROK/RFAILED; \nthen return at last",
+      "range": {
+        "startLine": 196,
+        "startChar": 15,
+        "endLine": 196,
+        "endChar": 16
+      },
+      "revId": "1541483e0cf8600ff9fe4d50b3eb794a0587dd1a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
