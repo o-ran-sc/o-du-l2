@@ -72,8 +72,8 @@ void SchSendUeCfgRspToMac(uint16_t event, SchUeCfg *ueCfg, Inst inst,\
    Pst rspPst;
 
    cfgRsp->cellId = ueCfg->cellId;
+   cfgRsp->duUeF1apId = ueCfg->duUeF1apId;
    cfgRsp->crnti = ueCfg->crnti;
-   GET_UE_ID(ueCfg->crnti, cfgRsp->ueId);
    cfgRsp->rsp = result;   
 
    /* Filling response post */
@@ -259,6 +259,7 @@ uint8_t fillSchUeCb(Inst inst, SchUeCb *ueCb, SchUeCfg *ueCfg)
    bool isLcIdValid = FALSE;
 
    ueCb->ueCfg.cellId = ueCfg->cellId;
+   ueCb->ueCfg.duUeF1apId = ueCfg->duUeF1apId;
    ueCb->ueCfg.crnti = ueCfg->crnti;
    if(ueCfg->macCellGrpCfgPres == true)
    {
@@ -299,7 +300,6 @@ uint8_t fillSchUeCb(Inst inst, SchUeCb *ueCb, SchUeCfg *ueCfg)
       }
    }
 
-   ueCb->state = SCH_UE_STATE_ACTIVE;
    if(ueCfg->ambrCfg)
    {
       SCH_FREE(ueCb->ueCfg.ambrCfg, sizeof(SchAmbrCfg));
@@ -525,34 +525,38 @@ uint8_t MacSchAddUeConfigReq(Pst *pst, SchUeCfg *ueCfg)
    cellCb = getSchCellCb(pst->event, inst, ueCfg);
 
    /* Search if UE already configured */
-   GET_UE_ID(ueCfg->crnti, ueId);
-   ueCb = &cellCb->ueCb[ueId -1];
-   if(ueCb)
+   if(ueCfg->crnti)
    {
-      if((ueCb->crnti == ueCfg->crnti) && (ueCb->state == SCH_UE_STATE_ACTIVE))
-      {
-         DU_LOG("\nDEBUG  -->  SCH : CRNTI %d already configured ", ueCfg->crnti);
-         SchSendUeCfgRspToMac(pst->event, ueCfg, inst, RSP_OK, &cfgRsp);
-         return ROK;
-      }
+      GET_UE_ID(ueCfg->crnti, ueId);
+      ueCb = &cellCb->ueCb[ueId -1];
    }
    else
+      ueCb = &cellCb->hoUeCb[ueCfg->duUeF1apId - 1];
+
+   if((ueCb->crnti == ueCfg->crnti) && (ueCb->state == SCH_UE_STATE_ACTIVE))
    {
-      DU_LOG("\nERROR  -->  SCH : SchUeCb not found at MacSchAddUeConfigReq() ");
-      SchSendUeCfgRspToMac(pst->event, ueCfg, inst, RSP_NOK, &cfgRsp);
-      return RFAILED;
+      DU_LOG("\nDEBUG  -->  SCH : CRNTI %d already configured ", ueCfg->crnti);
+      SchSendUeCfgRspToMac(pst->event, ueCfg, inst, RSP_OK, &cfgRsp);
+      return ROK;
    }
 
    /* Fill received Ue Configuration in UeCb */
    memset(ueCb, 0, sizeof(SchUeCb));
    ueCb->ueId = ueId;
    ueCb->crnti = ueCfg->crnti;
-   ueCb->state = SCH_UE_STATE_ACTIVE;
+   if(ueCb->crnti)
+      ueCb->state = SCH_UE_STATE_ACTIVE;
+   else
+      ueCb->state = SCH_UE_HANDIN_IN_PROGRESS;
+
    ret = fillSchUeCb(inst, ueCb, ueCfg);
    if(ret == ROK)
    {
-      cellCb->numActvUe++;
-      SET_ONE_BIT(ueCb->ueId, cellCb->actvUeBitMap);
+      if(ueCb->state == SCH_UE_STATE_ACTIVE)
+      {
+         cellCb->numActvUe++;
+         SET_ONE_BIT(ueCb->ueId, cellCb->actvUeBitMap);
+      }
       ueCb->cellCb = cellCb;
       ueCb->srRcvd = false;
       ueCb->bsrRcvd = false;

@@ -80,7 +80,8 @@ typedef enum
 typedef enum
 {
    UE_STATE_INACTIVE,
-   UE_STATE_ACTIVE
+   UE_STATE_ACTIVE,
+   UE_HANDIN_IN_PROGRESS
 }UeState;
 
 typedef enum
@@ -204,7 +205,8 @@ typedef struct ueDlCb
 /* UE Cb */
 typedef struct macUeCb
 {
-   uint16_t     ueId;     /* UE Id assigned by DU APP */
+   uint16_t     ueId;     /* UE Id calculated from CRNTI */
+   uint8_t      duUeF1apId; /* UE ID assigned by DU APP */
    uint16_t     crnti;    /* UE CRNTI */
    MacCellCb    *cellCb;  /* Pointer to cellCb to whihc this UE belongs */
    UeState      state;    /* Is UE active ? */
@@ -224,6 +226,7 @@ struct macCellCb
    MacUlSlot   ulSlot[MAX_SLOTS];
    uint16_t    numActvUe;
    MacUeCfg    *ueCfgTmpData[MAX_NUM_UE];
+   MacUeCb     hoUeCb[MAX_NUM_UE];
    MacUeCb     ueCb[MAX_NUM_UE];
    MacCellCfg  macCellCfg;
    SlotTimingInfo currTime;

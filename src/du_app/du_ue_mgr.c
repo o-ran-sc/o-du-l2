@@ -450,7 +450,7 @@ uint8_t duProcDlRrcMsg(F1DlRrcMsg *dlRrcMsg)
       {
          if(dlRrcMsg->gnbDuUeF1apId == duCb.ueCcchCtxt[ueIdx].gnbDuUeF1apId)
          {
-	    ueCcchCtxtFound = true;
+            ueCcchCtxtFound = true;
             crnti  = duCb.ueCcchCtxt[ueIdx].crnti;
             cellId = duCb.ueCcchCtxt[ueIdx].cellId;
             break;
@@ -1102,25 +1102,28 @@ uint8_t fillAmbr(AmbrCfg **macAmbrCfgToSend, AmbrCfg *ueDbAmbr, AmbrCfg **oldMac
       {
          *macAmbrCfgToSend = ueDbAmbr;
       }
-      else
+      else if(oldMacAmbrCfg)
          *macAmbrCfgToSend = *oldMacAmbrCfg;       
    }
    else
    {
       if(ueDbAmbr)
       {
-         if(*oldMacAmbrCfg)
+         if(oldMacAmbrCfg)
          {
-            DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, *oldMacAmbrCfg, sizeof(AmbrCfg));
+            if(*oldMacAmbrCfg)
+            {
+               DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, *oldMacAmbrCfg, sizeof(AmbrCfg));
+            }
+            DU_ALLOC_SHRABL_BUF(*oldMacAmbrCfg, sizeof(AmbrCfg));
+            if(*oldMacAmbrCfg == NULLP)
+            {
+               DU_LOG("\nERROR  -->  DU APP : Memory Alloc Failed at fillAmbr()");
+               return RFAILED;
+            }
+            memset(*oldMacAmbrCfg, 0, sizeof(AmbrCfg));
+            (*oldMacAmbrCfg)->ulBr = ueDbAmbr->ulBr;
          }
-         DU_ALLOC_SHRABL_BUF(*oldMacAmbrCfg, sizeof(AmbrCfg));
-         if(*oldMacAmbrCfg == NULLP)
-         {
-            DU_LOG("\nERROR  -->  DU APP : Memory Alloc Failed at fillAmbr()");
-            return RFAILED;
-         }
-         memset(*oldMacAmbrCfg, 0, sizeof(AmbrCfg));
-         (*oldMacAmbrCfg)->ulBr = ueDbAmbr->ulBr;
       }
    }
 
@@ -1188,20 +1191,22 @@ uint8_t sendUeReCfgReqToMac(MacUeCfg *macUeCfg)
  * @return ROK/RFAILED
  *
  *****************************************************************/
-uint8_t fillMacUeCfg(uint16_t cellId, uint8_t ueId, uint16_t crnti, DuUeCfg *ueCfgDb, MacUeCfg *macUeCfg)
+uint8_t fillMacUeCfg(uint16_t cellId, uint8_t gnbDuUef1apId, uint16_t crnti, DuUeCfg *ueCfgDb, MacUeCfg *macUeCfg)
 {
-   uint8_t ret, dbIdx, lcIdx, cellIdx;
+   uint8_t ret = ROK, dbIdx = 0, lcIdx = 0, cellIdx = 0;
    bool lcIdFound = false;
    MacUeCfg *duMacDb = NULLP;
 
-   ret =ROK;
+   macUeCfg->cellId       = cellId;
+   if(crnti)
+   {
+      GET_UE_ID(crnti, macUeCfg->ueId);
+      macUeCfg->crnti = crnti;
+   }
+   macUeCfg->duUeF1apId = gnbDuUef1apId;
 
    if(!ueCfgDb)
    {
-      macUeCfg->cellId       = cellId;
-      macUeCfg->ueId         = ueId;
-      macUeCfg->crnti        = crnti;
-
       fillDefaultMacCellGrpInfo(macUeCfg);
       fillDefaultPhyCellGrpInfo(macUeCfg);
 
@@ -1218,38 +1223,58 @@ uint8_t fillMacUeCfg(uint16_t cellId, uint8_t ueId, uint16_t crnti, DuUeCfg *ueC
    }
    else
    {
-      /* Fetching MacDb from DuUeCb */
-      GET_CELL_IDX(cellId, cellIdx);
-      if(duCb.actvCellLst[cellIdx])
-         duMacDb = &duCb.actvCellLst[cellIdx]->ueCb[ueId-1].macUeCfg;
+      /* Fetching MacDb from DuUeCb.
+       * In case of UE hand-in, UE context is created before RRC setup. Hence
+       * crnti is not known yet. Thus, passing crnti=0 to this function.
+       * In such a case actvCellLst doesnt yet have any entry for this UE. So
+       * duMacDb will be NULL.
+       */
+      if(crnti != 0)
+      {
+         GET_CELL_IDX(cellId, cellIdx);
+         if(duCb.actvCellLst[cellIdx])
+            duMacDb = &duCb.actvCellLst[cellIdx]->ueCb[macUeCfg->ueId-1].macUeCfg;
+         else
+         {
+            DU_LOG("\nERROR  -->  DU APP : Cell Id [%d] does not exist", cellId);
+            return RFAILED;
+         }
+         duMacDb->macUeCfgState = UE_CFG_INPROGRESS;
+      }
+
+      if(ueCfgDb->cellGrpCfg)
+      {
+         ret = procUeReCfgCellInfo(macUeCfg, duMacDb, ueCfgDb->cellGrpCfg);
+         if(ret == ROK)
+         {
+            if(macUeCfg->spCellCfgPres == true)
+            {
+               if(macUeCfg->spCellCfg.servCellCfg.initDlBwp.pdschPresent)
+               {
+                  fillStartSymbolAndLen(macUeCfg->spCellCfg.servCellCfg.initDlBwp.pdschCfg.numTimeDomRsrcAlloc,\
+                        &macUeCfg->spCellCfg.servCellCfg.initDlBwp.pdschCfg, NULL);
+               }
+               if(macUeCfg->spCellCfg.servCellCfg.initUlBwp.puschPresent)
+               {
+                  fillStartSymbolAndLen(macUeCfg->spCellCfg.servCellCfg.initUlBwp.puschCfg.numTimeDomRsrcAlloc,\
+                        NULL, &macUeCfg->spCellCfg.servCellCfg.initUlBwp.puschCfg);
+               }
+            }
+
+            if(duMacDb)
+               ret = fillAmbr(&macUeCfg->ambrCfg, ueCfgDb->ambrCfg , &duMacDb->ambrCfg, FALSE);
+            else
+               ret = fillAmbr(&macUeCfg->ambrCfg, ueCfgDb->ambrCfg , NULL, FALSE);
+
+            duFillModulationDetails(macUeCfg, duMacDb, ueCfgDb->ueNrCapability);
+         }
+      }
       else
       {
-         DU_LOG("\nERROR  -->  DU APP : Cell Id [%d] does not exist", cellId);
-         return RFAILED;
-      }
-      duMacDb->macUeCfgState = UE_CFG_INPROGRESS;
-      /* Fetching MaUeCfg List for ADD/MOD/DEL */
-      macUeCfg->cellId       = cellId;
-      macUeCfg->ueId         = ueId;
-      macUeCfg->crnti        = crnti;
-      ret = procUeReCfgCellInfo(macUeCfg, duMacDb, ueCfgDb->cellGrpCfg);
-      if(ret == ROK)
-      {
-         if(macUeCfg->spCellCfgPres == true)
-         {
-            if(macUeCfg->spCellCfg.servCellCfg.initDlBwp.pdschPresent)
-            {
-               fillStartSymbolAndLen(macUeCfg->spCellCfg.servCellCfg.initDlBwp.pdschCfg.numTimeDomRsrcAlloc,\
-                     &macUeCfg->spCellCfg.servCellCfg.initDlBwp.pdschCfg, NULL);
-            }
-            if(macUeCfg->spCellCfg.servCellCfg.initUlBwp.puschPresent)
-            {
-               fillStartSymbolAndLen(macUeCfg->spCellCfg.servCellCfg.initUlBwp.puschCfg.numTimeDomRsrcAlloc,\
-                     NULL, &macUeCfg->spCellCfg.servCellCfg.initUlBwp.puschCfg);
-            }
-         }
-         ret = fillAmbr(&macUeCfg->ambrCfg, ueCfgDb->ambrCfg , &duMacDb->ambrCfg, FALSE);
-         duFillModulationDetails(macUeCfg, duMacDb, ueCfgDb->ueNrCapability);
+         fillDefaultMacCellGrpInfo(macUeCfg);
+         fillDefaultPhyCellGrpInfo(macUeCfg);
+         fillDefaultSpCellGrpInfo(macUeCfg);
+         fillDefaultModulation(macUeCfg);
       }
 
       /* Filling LC Context */
@@ -1261,22 +1286,27 @@ uint8_t fillMacUeCfg(uint16_t cellId, uint8_t ueId, uint16_t crnti, DuUeCfg *ueC
             ueCfgDb->macLcCfg[dbIdx].ulLcCfgPres = true;
             fillDefaultUlLcCfg(&ueCfgDb->macLcCfg[dbIdx].ulLcCfg);
          }
-         for(lcIdx = 0; lcIdx < duMacDb->numLcs; lcIdx++)
+
+         if(duMacDb)
          {
-            if(ueCfgDb->macLcCfg[dbIdx].lcId == duMacDb->lcCfgList[lcIdx].lcId)
+            for(lcIdx = 0; lcIdx < duMacDb->numLcs; lcIdx++)
             {
-               lcIdFound = true;
-               if((ueCfgDb->macLcCfg[dbIdx].configType == CONFIG_UNKNOWN) ||
-                     (ueCfgDb->macLcCfg[dbIdx].configType == CONFIG_MOD))
+               if(ueCfgDb->macLcCfg[dbIdx].lcId == duMacDb->lcCfgList[lcIdx].lcId)
                {
-                  ueCfgDb->macLcCfg[dbIdx].configType = CONFIG_MOD;
-                  ret = fillMacLcCfgToAddMod(&macUeCfg->lcCfgList[dbIdx], &ueCfgDb->macLcCfg[dbIdx],\
-                  &duMacDb->lcCfgList[lcIdx], FALSE);
+                  lcIdFound = true;
+                  if((ueCfgDb->macLcCfg[dbIdx].configType == CONFIG_UNKNOWN) ||
+                        (ueCfgDb->macLcCfg[dbIdx].configType == CONFIG_MOD))
+                  {
+                     ueCfgDb->macLcCfg[dbIdx].configType = CONFIG_MOD;
+                     ret = fillMacLcCfgToAddMod(&macUeCfg->lcCfgList[dbIdx], &ueCfgDb->macLcCfg[dbIdx],\
+                           &duMacDb->lcCfgList[lcIdx], FALSE);
+                  }
                }
+               else
+                  lcIdFound = false;
             }
-            else
-               lcIdFound = false;
          }
+
          if(!lcIdFound)
          {
             /* ADD/DEL CONFIG */
@@ -1720,7 +1750,7 @@ uint8_t duCreateUeCb(UeCcchCtxt *ueCcchCtxt, uint32_t gnbCuUeF1apId)
 
          /* Filling Mac Ue Config */ 
          memset(&duCb.actvCellLst[cellIdx]->ueCb[ueIdx].macUeCfg, 0, sizeof(MacUeCfg));
-         ret = duBuildAndSendUeCreateReqToMac(ueCcchCtxt->cellId, ueId, ueCcchCtxt->crnti,\
+         ret = duBuildAndSendUeCreateReqToMac(ueCcchCtxt->cellId, ueCcchCtxt->gnbDuUeF1apId, ueCcchCtxt->crnti, NULL, 
                &duCb.actvCellLst[cellIdx]->ueCb[ueIdx].macUeCfg);
          if(ret == RFAILED)
             DU_LOG("\nERROR  -->  DU APP : Failed to send UE create request to MAC");
@@ -1753,13 +1783,14 @@ uint8_t duCreateUeCb(UeCcchCtxt *ueCcchCtxt, uint32_t gnbCuUeF1apId)
  * @Params[in]  cellId,
  *              ueId,
  *              crnti,
- *              UE config
+ *              UE config extracted from F1AP msg
+ *              MAC UE config struct to be filled
  * @return ROK     - success
  *         RFAILED - failure
  *
  * ****************************************************************/
 
-uint8_t duBuildAndSendUeCreateReqToMac(uint16_t cellId, uint8_t ueId, uint16_t crnti, MacUeCfg *duMacUeCfg)
+uint8_t duBuildAndSendUeCreateReqToMac(uint16_t cellId, uint8_t gnbDuUeF1apId, uint16_t crnti, DuUeCfg *ueCfgDb, MacUeCfg *duMacUeCfg)
 {
    uint8_t  ret = ROK;
    MacUeCfg *macUeCfg = NULLP;
@@ -1767,12 +1798,13 @@ uint8_t duBuildAndSendUeCreateReqToMac(uint16_t cellId, uint8_t ueId, uint16_t c
    memset(&pst, 0, sizeof(Pst));
 
 
-   ret = fillMacUeCfg(cellId, ueId, crnti, NULL, duMacUeCfg);
+   ret = fillMacUeCfg(cellId, gnbDuUeF1apId, crnti, ueCfgDb, duMacUeCfg);
    if(ret == RFAILED)
    {
       DU_LOG("\nERROR  -->  DU APP : Failed to fill MacUeCfg at duBuildAndSendUeCreateReqToMac()");
       return RFAILED;
    }
+
    /* Fill Pst */
    FILL_PST_DUAPP_TO_MAC(pst, EVENT_MAC_UE_CREATE_REQ);
 
@@ -1788,8 +1820,8 @@ uint8_t duBuildAndSendUeCreateReqToMac(uint16_t cellId, uint8_t ueId, uint16_t c
       ret = (*packMacUeCreateReqOpts[pst.selector])(&pst, macUeCfg);
       if(ret == RFAILED)
       {
-	 DU_LOG("\nERROR  -->  DU_APP : Failure in sending Ue Create Req to MAC at duBuildAndSendUeCreateReqToMac()");
-	 DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, macUeCfg, sizeof(MacUeCfg));
+         DU_LOG("\nERROR  -->  DU_APP : Failure in sending Ue Create Req to MAC at duBuildAndSendUeCreateReqToMac()");
+         DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, macUeCfg, sizeof(MacUeCfg));
       }
    }
    else
@@ -2328,7 +2360,8 @@ uint8_t duUpdateDuUeCbCfg(uint8_t ueId, uint8_t cellId)
  * ****************************************************************/
 uint8_t DuProcMacUeCfgRsp(Pst *pst, MacUeCfgRsp *cfgRsp)
 {
-   uint8_t ret = ROK;
+   uint8_t ret = ROK, ueIdx = 0, ueId = 0;
+   DuUeCb *ueCb = NULLP;
 
    if(cfgRsp)
    {
@@ -2336,23 +2369,55 @@ uint8_t DuProcMacUeCfgRsp(Pst *pst, MacUeCfgRsp *cfgRsp)
       {
          if(pst->event == EVENT_MAC_UE_CREATE_RSP)
          {
-            DU_LOG("\nINFO   -->  DU APP : MAC UE Create Response : SUCCESS [UE IDX : %d]", cfgRsp->ueId);
-            duCb.actvCellLst[cfgRsp->cellId -1]->ueCb[cfgRsp->ueId -1].\
-               macUeCfg.macUeCfgState = UE_CREATE_COMPLETE;
+            DU_LOG("\nINFO   -->  DU APP : MAC UE Create Response : SUCCESS [DU UE F1AP ID : %d]", cfgRsp->duUeF1apId);
+            
+            for(ueIdx = 0; ueIdx < MAX_NUM_UE; ueIdx++)
+            {
+               if(duCb.actvCellLst[cfgRsp->cellId -1]->ueCb[ueIdx].gnbDuUeF1apId == cfgRsp->duUeF1apId)
+               {
+                  ueCb = &duCb.actvCellLst[cfgRsp->cellId -1]->ueCb[ueIdx];
+                  ueCb->macUeCfg.macUeCfgState = UE_CREATE_COMPLETE;
+                  break;
+               }
+            }
+            if(!ueCb)
+            {
+               if(duCb.actvCellLst[cfgRsp->cellId -1]->hoUeCb[cfgRsp->duUeF1apId-1].gnbDuUeF1apId == cfgRsp->duUeF1apId)
+               {
+                  ueCb = &duCb.actvCellLst[cfgRsp->cellId -1]->hoUeCb[cfgRsp->duUeF1apId-1];
+                  ueCb->macUeCfg.macUeCfgState = UE_CREATE_COMPLETE;
+                  //TODO : in next gerrit
+                  //BuildAndSendUeCtxtRsp(cfgRsp->cellId, cfgRsp->ueId);
+               }
+            }
+
          }
          else if(pst->event == EVENT_MAC_UE_RECONFIG_RSP)
          {
-            DU_LOG("\nINFO   -->  DU APP : MAC UE Reconfig Response : SUCCESS [UE IDX : %d]", cfgRsp->ueId);
-            duCb.actvCellLst[cfgRsp->cellId -1]->ueCb[cfgRsp->ueId -1].macUeCfg.macUeCfgState = UE_RECFG_COMPLETE;
-            if((ret = duUpdateDuUeCbCfg(cfgRsp->ueId, cfgRsp->cellId)) == ROK)
+            DU_LOG("\nINFO   -->  DU APP : MAC UE Reconfig Response : SUCCESS [DU UE F1AP ID : %d]", cfgRsp->duUeF1apId);
+            for(ueIdx = 0; ueIdx < MAX_NUM_UE; ueIdx++)
             {
-               BuildAndSendUeCtxtRsp(cfgRsp->cellId, cfgRsp->ueId);
+               if(duCb.actvCellLst[cfgRsp->cellId -1]->ueCb[ueIdx].gnbDuUeF1apId == cfgRsp->duUeF1apId)
+               {
+                  ueCb = &duCb.actvCellLst[cfgRsp->cellId -1]->ueCb[ueIdx];    
+                  ueCb->macUeCfg.macUeCfgState = UE_RECFG_COMPLETE;
+                  break;
+               }
+            } 
+
+            if(ueCb)
+            {
+               GET_UE_ID(ueCb->crnti, ueId);
+               if((ret = duUpdateDuUeCbCfg(ueId, cfgRsp->cellId)) == ROK)
+               {
+                  BuildAndSendUeCtxtRsp(cfgRsp->cellId, ueId);
+               }
             }
          }
       }
       else
       {
-         DU_LOG("\nERROR  -->  DU APP : MAC UE CFG Response for EVENT[%d]: FAILURE [UE IDX : %d]", pst->event, cfgRsp->ueId);
+         DU_LOG("\nERROR  -->  DU APP : MAC UE CFG Response for EVENT[%d]: FAILURE [DU UE F1AP ID : %d]", pst->event, cfgRsp->duUeF1apId);
          if(pst->event == EVENT_MAC_UE_RECONFIG_RSP)
          {
             //TODO: Send the failure case in Ue Context Setup Response
@@ -2550,19 +2615,16 @@ uint8_t duBuildAndSendUeReCfgReqToRlc(uint8_t cellId, uint8_t crnti, DuUeCfg *ue
  *
  * ****************************************************************/
 
-uint8_t duBuildAndSendUeReCfgReqToMac(uint8_t cellId, uint8_t crnti, DuUeCfg *ueCfgDb)
+uint8_t duBuildAndSendUeReCfgReqToMac(uint8_t cellId, uint8_t duUeF1apId, uint8_t crnti, DuUeCfg *ueCfgDb)
 {
-   uint8_t ret, ueId = 0;
+   uint8_t ret = ROK;
    MacUeCfg *macUeCfg = NULLP;
-
-   ret = ROK;
-   GET_UE_ID(crnti, ueId);
 
    DU_ALLOC_SHRABL_BUF(macUeCfg, sizeof(MacUeCfg));
    if(macUeCfg)
    {
       memset(macUeCfg, 0, sizeof(MacUeCfg));
-      ret = fillMacUeCfg(cellId, ueId, crnti, ueCfgDb, macUeCfg);
+      ret = fillMacUeCfg(cellId, duUeF1apId, crnti, ueCfgDb, macUeCfg);
       if(ret == RFAILED)
          DU_LOG("\nERROR  -->  DU APP : Failed to fill Mac Ue Cfg at duBuildAndSendUeReCfgReqToMac()");
       else
@@ -2594,20 +2656,51 @@ uint8_t duBuildAndSendUeReCfgReqToMac(uint8_t cellId, uint8_t crnti, DuUeCfg *ue
  * 
  *****************************************************************/
 
-uint8_t duBuildAndSendUeContextSetupReq(uint16_t cellId, uint16_t crnti, DuUeCfg *duUeCfg)
+uint8_t duBuildAndSendUeContextSetupReq(uint16_t cellId, DuUeCb *ueCb)
 {
    uint8_t ret = ROK;
+   uint16_t crnti; 
+   DuUeCfg *duUeCfg = NULLP;
 
    DU_LOG("\nDEBUG   -->  DU_APP: Processing Ue Context Setup Request for cellId [%d]", cellId);
-   /* Filling RLC Ue Reconfig */ 
-   ret = duBuildAndSendUeReCfgReqToRlc(cellId, crnti, duUeCfg);
-   if(ret == RFAILED)
-      DU_LOG("\nERROR  -->  DU APP : Failed to build ctxt setup req for RLC at duBuildAndSendUeContextSetupReq()");
-   
-   /* Filling MAC Ue Reconfig */
-   ret = duBuildAndSendUeReCfgReqToMac(cellId, crnti, duUeCfg);
-   if(ret == RFAILED)
-      DU_LOG("\nERROR  -->  DU APP : Failed at build ctxt setup req for MAC at duBuildAndSendUeContextSetupReq()");
+
+   if(!ueCb)
+   {
+      DU_LOG("\nERROR  -->  DU APP : UE Cb is NULL");
+      return RFAILED;
+   }
+
+   crnti = ueCb->crnti;
+   duUeCfg = &ueCb->f1UeDb->duUeCfg;
+
+   /* If UE is being handed-in to this DU, UE context setup request will create
+    * new UE context at MAC/SCH and RLC.
+    * If UE is in active state, UE contex setup request will lead to
+    * reconfiguration of UE at MAC/SCH and RLC
+    */
+   if(ueCb->ueState == UE_HANDIN_IN_PROGRESS)
+   {
+      /* Filling MAC UE Config */
+      memset(&ueCb->macUeCfg, 0, sizeof(MacUeCfg));
+
+      /* Since UE attach has not yet happened, ueId and crnti is unknow. Hence
+       * passing 0 */
+      ret = duBuildAndSendUeCreateReqToMac(cellId, ueCb->gnbDuUeF1apId, 0, duUeCfg, &ueCb->macUeCfg);
+      if(ret == RFAILED)
+         DU_LOG("\nERROR  -->  DU APP : Failed to send UE create request to MAC");
+   }
+   else
+   {
+      /* Filling RLC UE Reconfig */ 
+      ret = duBuildAndSendUeReCfgReqToRlc(cellId, crnti, duUeCfg);
+      if(ret == RFAILED)
+         DU_LOG("\nERROR  -->  DU APP : Failed to build ctxt setup req for RLC at duBuildAndSendUeContextSetupReq()");
+
+      /* Filling MAC UE Reconfig */
+      ret = duBuildAndSendUeReCfgReqToMac(cellId, ueCb->gnbDuUeF1apId, crnti, duUeCfg);
+      if(ret == RFAILED)
+         DU_LOG("\nERROR  -->  DU APP : Failed at build ctxt setup req for MAC at duBuildAndSendUeContextSetupReq()");
+   }
 
    return ret;
 }
@@ -2651,14 +2744,14 @@ uint8_t DuProcRlcDlRrcMsgRsp(Pst *pst, RlcDlRrcMsgRsp *dlRrcMsg)
       {
          if(ueCb->f1UeDb->actionType == UE_CTXT_SETUP)
          {
-            ret = duBuildAndSendUeContextSetupReq(cellId, crnti, &ueCb->f1UeDb->duUeCfg);
+            ret = duBuildAndSendUeContextSetupReq(cellId, ueCb);
             if(ret == RFAILED)
                DU_LOG("\nERROR  -->  DU APP : Failed to process UE Context Setup Request in DuProcRlcDlRrcMsgRsp()");
          }
          
          if(ueCb->f1UeDb->actionType == UE_CTXT_MOD)
          {
-            ret = duBuildAndSendUeContextModReq(cellId, crnti, &ueCb->f1UeDb->duUeCfg);
+            ret = duBuildAndSendUeContextModReq(cellId, ueCb->gnbDuUeF1apId, crnti, &ueCb->f1UeDb->duUeCfg);
             if(ret == RFAILED)
                DU_LOG("\nERROR  -->  DU APP : Failed to process UE Context Mod Request in DuProcRlcDlRrcMsgRsp()");
          }
@@ -2702,6 +2795,7 @@ uint8_t duProcUeContextSetupRequest(DuUeCb *ueCb)
    if(ueCb)
    {
       cellId = duCb.actvCellLst[ueCb->f1UeDb->cellIdx]->cellId;
+
       /* Send DL RRC msg for security Mode */
       if(ueCb->f1UeDb->dlRrcMsg)
       {
@@ -2720,7 +2814,7 @@ uint8_t duProcUeContextSetupRequest(DuUeCb *ueCb)
       }
       else if(ueCb->f1UeDb->actionType == UE_CTXT_SETUP)
       {
-         ret = duBuildAndSendUeContextSetupReq(cellId, ueCb->crnti, &ueCb->f1UeDb->duUeCfg);
+         ret = duBuildAndSendUeContextSetupReq(cellId, ueCb);
          if(ret == RFAILED)
          {
             DU_LOG("\nERROR  -->  DU APP : Failed to build ue context setup Req in duProcUeContextSetupRequest()");
@@ -2753,7 +2847,7 @@ uint8_t duProcUeContextSetupRequest(DuUeCb *ueCb)
  * 
  *****************************************************************/
 
-uint8_t duBuildAndSendUeContextModReq(uint16_t cellId, uint16_t crnti, DuUeCfg *duUeCfg)
+uint8_t duBuildAndSendUeContextModReq(uint16_t cellId, uint8_t gnbDuUeF1apId, uint16_t crnti, DuUeCfg *duUeCfg)
 {
    uint8_t ret = ROK;
 
@@ -2764,7 +2858,7 @@ uint8_t duBuildAndSendUeContextModReq(uint16_t cellId, uint16_t crnti, DuUeCfg *
       DU_LOG("\nERROR  -->  DU APP : Failed to build ctxt setup req for RLC at duBuildAndSendUeContextModReq()");
    
    /* Filling MAC Ue Reconfig */
-   ret = duBuildAndSendUeReCfgReqToMac(cellId, crnti, duUeCfg);
+   ret = duBuildAndSendUeReCfgReqToMac(cellId, gnbDuUeF1apId, crnti, duUeCfg);
    if(ret == RFAILED)
       DU_LOG("\nERROR  -->  DU APP : Failed at build ctxt setup req for MAC at duBuildAndSendUeContextModReq()");
 
@@ -2814,7 +2908,7 @@ uint8_t duProcUeContextModReq(DuUeCb *ueCb)
       }
       else if(ueCb->f1UeDb->actionType == UE_CTXT_MOD)
       {
-         ret = duBuildAndSendUeContextModReq(cellId, ueCb->crnti, &ueCb->f1UeDb->duUeCfg);
+         ret = duBuildAndSendUeContextModReq(cellId, ueCb->gnbDuUeF1apId, ueCb->crnti, &ueCb->f1UeDb->duUeCfg);
          if(ret == RFAILED)
          {
             DU_LOG("\nERROR  -->  DU APP : Failed to build ue context setup Req in duProcUeContextModReq()");
