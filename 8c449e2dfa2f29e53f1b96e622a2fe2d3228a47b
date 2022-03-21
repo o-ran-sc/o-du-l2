@@ -18,6 +18,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "41399287_fd5e6f1e",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-03-21T10:06:06Z",
+      "side": 1,
+      "message": "This is introduced intentionally, all above header files are related to codec whereas below header files are internal to our code",
+      "parentUuid": "31c40d1c_3fdf9bc0",
+      "revId": "8c449e2dfa2f29e53f1b96e622a2fe2d3228a47b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "be72d874_79527a86",
@@ -31,6 +49,30 @@
       "writtenOn": "2022-03-16T05:35:13Z",
       "side": 1,
       "message": "Please do the testing once with valgrind as well.",
+      "range": {
+        "startLine": 7578,
+        "startChar": 9,
+        "endLine": 7578,
+        "endChar": 38
+      },
+      "revId": "8c449e2dfa2f29e53f1b96e622a2fe2d3228a47b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1412af5d_d6cf876f",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 7578,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-03-21T10:06:06Z",
+      "side": 1,
+      "message": "With the current work load I am not in favour of spending so much time in free part for Stubs",
+      "parentUuid": "be72d874_79527a86",
       "range": {
         "startLine": 7578,
         "startChar": 9,
@@ -64,6 +106,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4e8dad2e_d08c87d6",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 8537,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-03-21T10:06:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d2ea585d_d65e655c",
+      "range": {
+        "startLine": 8537,
+        "startChar": 66,
+        "endLine": 8537,
+        "endChar": 91
+      },
+      "revId": "8c449e2dfa2f29e53f1b96e622a2fe2d3228a47b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "628e032b_f304e63b",
@@ -81,6 +147,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "912cc078_7f0de2ed",
+        "filename": "src/du_app/du_cfg.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-03-21T10:06:06Z",
+      "side": 1,
+      "message": "will revert in last patch if there are no other comments",
+      "parentUuid": "628e032b_f304e63b",
+      "revId": "8c449e2dfa2f29e53f1b96e622a2fe2d3228a47b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "29262198_6bf778b0",
@@ -94,6 +178,30 @@
       "writtenOn": "2022-03-16T05:35:13Z",
       "side": 1,
       "message": "add a comment for Ue not found",
+      "range": {
+        "startLine": 508,
+        "startChar": 10,
+        "endLine": 508,
+        "endChar": 17
+      },
+      "revId": "8c449e2dfa2f29e53f1b96e622a2fe2d3228a47b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b27b1d12_aedc5511",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 508,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-03-21T10:06:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "29262198_6bf778b0",
       "range": {
         "startLine": 508,
         "startChar": 10,
@@ -127,6 +235,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "250c3816_75bf7cb3",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 710,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-03-21T10:06:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ccf77b5e_ae333359",
+      "range": {
+        "startLine": 710,
+        "startChar": 45,
+        "endLine": 710,
+        "endChar": 46
+      },
+      "revId": "8c449e2dfa2f29e53f1b96e622a2fe2d3228a47b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d656aee1_32498e85",
@@ -150,6 +282,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "00ad6f8e_43f09f85",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1511,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-03-21T10:06:06Z",
+      "side": 1,
+      "message": "As explained this parameter is to just keep a record at du app whether a success response for rb creation/update request has been sent to CU or not.\nThis is not needed at RLC.",
+      "parentUuid": "d656aee1_32498e85",
+      "range": {
+        "startLine": 1511,
+        "startChar": 13,
+        "endLine": 1511,
+        "endChar": 30
+      },
+      "revId": "8c449e2dfa2f29e53f1b96e622a2fe2d3228a47b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9eca4305_a0aaa4f0",
@@ -163,6 +319,30 @@
       "writtenOn": "2022-03-16T05:35:13Z",
       "side": 1,
       "message": "revert.",
+      "range": {
+        "startLine": 27,
+        "startChar": 10,
+        "endLine": 27,
+        "endChar": 26
+      },
+      "revId": "8c449e2dfa2f29e53f1b96e622a2fe2d3228a47b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "febc60c3_da594e63",
+        "filename": "src/ric_stub/ric_stub_sctp.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-03-21T10:06:06Z",
+      "side": 1,
+      "message": "will revert in last patch if there are no other comments",
+      "parentUuid": "9eca4305_a0aaa4f0",
       "range": {
         "startLine": 27,
         "startChar": 10,
