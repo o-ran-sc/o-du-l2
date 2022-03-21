@@ -24,6 +24,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "db0c1055_6f593373",
+        "filename": "src/cm/du_app_mac_inf.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1508,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-03-21T06:11:12Z",
+      "side": 1,
+      "message": "As discussed, will take care in next gerrit",
+      "parentUuid": "135d68b1_241bb15a",
+      "range": {
+        "startLine": 1508,
+        "startChar": 17,
+        "endLine": 1508,
+        "endChar": 39
+      },
+      "revId": "5bca27d3d33c085718de6e894b875c845d7456d2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fe38633b_aee16327",
@@ -37,6 +61,24 @@
       "writtenOn": "2022-03-21T05:40:52Z",
       "side": 1,
       "message": "Is it possible to use switch case in macro definition.\nIf so, we can use switch case in future when there are many cases.",
+      "revId": "5bca27d3d33c085718de6e894b875c845d7456d2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0ec1b393_c82bd09a",
+        "filename": "src/cm/du_app_mac_inf.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-03-21T06:11:12Z",
+      "side": 1,
+      "message": "Sure.. Will take care in next gerrit as discussed",
+      "parentUuid": "fe38633b_aee16327",
       "revId": "5bca27d3d33c085718de6e894b875c845d7456d2",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
