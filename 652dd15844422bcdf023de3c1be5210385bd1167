@@ -135,6 +135,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1fec18b2_53f41b7b",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 633,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-03-21T10:43:58Z",
+      "side": 1,
+      "message": "change return TYPE, this function can return ROK/RFAILED;",
+      "range": {
+        "startLine": 633,
+        "startChar": 0,
+        "endLine": 633,
+        "endChar": 4
+      },
+      "revId": "652dd15844422bcdf023de3c1be5210385bd1167",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8cdc900a_a9b23083",
         "filename": "src/du_app/du_ue_mgr.c",
         "patchSetId": 3
