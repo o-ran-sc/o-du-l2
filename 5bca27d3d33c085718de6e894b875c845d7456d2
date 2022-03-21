@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "135d68b1_241bb15a",
+        "filename": "src/cm/du_app_mac_inf.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1508,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-03-21T05:40:52Z",
+      "side": 1,
+      "message": "incorrect function description",
+      "range": {
+        "startLine": 1508,
+        "startChar": 17,
+        "endLine": 1508,
+        "endChar": 39
+      },
+      "revId": "5bca27d3d33c085718de6e894b875c845d7456d2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fe38633b_aee16327",
+        "filename": "src/cm/du_app_mac_inf.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-03-21T05:40:52Z",
+      "side": 1,
+      "message": "Is it possible to use switch case in macro definition.\nIf so, we can use switch case in future when there are many cases.",
+      "revId": "5bca27d3d33c085718de6e894b875c845d7456d2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
