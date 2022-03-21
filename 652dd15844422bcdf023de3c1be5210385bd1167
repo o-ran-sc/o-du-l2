@@ -1,0 +1,153 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "98296e28_15c0e883",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1822,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-03-21T10:40:43Z",
+      "side": 1,
+      "message": "i think this must be set to false?",
+      "range": {
+        "startLine": 1822,
+        "startChar": 17,
+        "endLine": 1822,
+        "endChar": 21
+      },
+      "revId": "652dd15844422bcdf023de3c1be5210385bd1167",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "49126d97_6b528df8",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1857,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-03-21T10:40:43Z",
+      "side": 1,
+      "message": "DRB",
+      "range": {
+        "startLine": 1857,
+        "startChar": 22,
+        "endLine": 1857,
+        "endChar": 25
+      },
+      "revId": "652dd15844422bcdf023de3c1be5210385bd1167",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ed2a4c6a_e3b59b95",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1954,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-03-21T10:40:43Z",
+      "side": 1,
+      "message": "return RFAILED;",
+      "range": {
+        "startLine": 1954,
+        "startChar": 12,
+        "endLine": 1954,
+        "endChar": 13
+      },
+      "revId": "652dd15844422bcdf023de3c1be5210385bd1167",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1c65e550_07636cae",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1959,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-03-21T10:40:43Z",
+      "side": 1,
+      "message": "this may return RFAILED. add condition.",
+      "revId": "652dd15844422bcdf023de3c1be5210385bd1167",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9eb729bb_771cc346",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2047,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-03-21T10:40:43Z",
+      "side": 1,
+      "message": "check what it returns ROK/RFAILED",
+      "range": {
+        "startLine": 2047,
+        "startChar": 18,
+        "endLine": 2047,
+        "endChar": 38
+      },
+      "revId": "652dd15844422bcdf023de3c1be5210385bd1167",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b71d293c_a4d3a920",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 9241,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-03-21T10:40:43Z",
+      "side": 1,
+      "message": "check what it returns.",
+      "range": {
+        "startLine": 9241,
+        "startChar": 16,
+        "endLine": 9241,
+        "endChar": 36
+      },
+      "revId": "652dd15844422bcdf023de3c1be5210385bd1167",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8cdc900a_a9b23083",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 722,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-03-21T10:40:43Z",
+      "side": 1,
+      "message": "add null check condition.",
+      "revId": "652dd15844422bcdf023de3c1be5210385bd1167",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
