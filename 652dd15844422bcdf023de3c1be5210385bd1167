@@ -24,6 +24,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "32fbe75e_8dba33e5",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1822,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-03-21T11:24:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "98296e28_15c0e883",
+      "range": {
+        "startLine": 1822,
+        "startChar": 17,
+        "endLine": 1822,
+        "endChar": 21
+      },
+      "revId": "652dd15844422bcdf023de3c1be5210385bd1167",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "49126d97_6b528df8",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-03-21T10:40:43Z",
       "side": 1,
       "message": "DRB",
+      "range": {
+        "startLine": 1857,
+        "startChar": 22,
+        "endLine": 1857,
+        "endChar": 25
+      },
+      "revId": "652dd15844422bcdf023de3c1be5210385bd1167",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0d2251e7_07f66fcc",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1857,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-03-21T11:24:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "49126d97_6b528df8",
       "range": {
         "startLine": 1857,
         "startChar": 22,
@@ -70,6 +118,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ca5968af_d680a120",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1954,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-03-21T11:24:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ed2a4c6a_e3b59b95",
+      "range": {
+        "startLine": 1954,
+        "startChar": 12,
+        "endLine": 1954,
+        "endChar": 13
+      },
+      "revId": "652dd15844422bcdf023de3c1be5210385bd1167",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1c65e550_07636cae",
@@ -87,6 +159,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "93b25c24_293fcc5e",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1959,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-03-21T11:24:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1c65e550_07636cae",
+      "revId": "652dd15844422bcdf023de3c1be5210385bd1167",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9eb729bb_771cc346",
@@ -100,6 +190,30 @@
       "writtenOn": "2022-03-21T10:40:43Z",
       "side": 1,
       "message": "check what it returns ROK/RFAILED",
+      "range": {
+        "startLine": 2047,
+        "startChar": 18,
+        "endLine": 2047,
+        "endChar": 38
+      },
+      "revId": "652dd15844422bcdf023de3c1be5210385bd1167",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a792a8e9_b2c7f1a0",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2047,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-03-21T11:24:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9eb729bb_771cc346",
       "range": {
         "startLine": 2047,
         "startChar": 18,
@@ -133,6 +247,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8f824e9e_b4411d64",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 9241,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-03-21T11:24:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b71d293c_a4d3a920",
+      "range": {
+        "startLine": 9241,
+        "startChar": 16,
+        "endLine": 9241,
+        "endChar": 36
+      },
+      "revId": "652dd15844422bcdf023de3c1be5210385bd1167",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1fec18b2_53f41b7b",
@@ -156,6 +294,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9a795cf2_d2982d22",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 633,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-03-21T11:24:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1fec18b2_53f41b7b",
+      "range": {
+        "startLine": 633,
+        "startChar": 0,
+        "endLine": 633,
+        "endChar": 4
+      },
+      "revId": "652dd15844422bcdf023de3c1be5210385bd1167",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8cdc900a_a9b23083",
@@ -169,6 +331,24 @@
       "writtenOn": "2022-03-21T10:40:43Z",
       "side": 1,
       "message": "add null check condition.",
+      "revId": "652dd15844422bcdf023de3c1be5210385bd1167",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6d14b65b_fb8aec72",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 722,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-03-21T11:24:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8cdc900a_a9b23083",
       "revId": "652dd15844422bcdf023de3c1be5210385bd1167",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
