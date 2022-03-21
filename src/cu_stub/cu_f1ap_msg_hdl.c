@@ -8707,7 +8707,7 @@ uint8_t fillCuToDuContainer(CuUeCb *ueCb, CUtoDURRCInformation_t *rrcMsg)
       CU_ALLOC(rrcMsg->iE_Extensions, sizeof(ProtocolExtensionContainer_4624P16_t));
       if(rrcMsg->iE_Extensions)
       {
-         elementCnt = 2;
+         elementCnt = 1;
          rrcMsg->iE_Extensions->list.count = elementCnt;
          rrcMsg->iE_Extensions->list.size = elementCnt * sizeof(CUtoDURRCInformation_ExtIEs_t *);
 
@@ -8731,16 +8731,16 @@ uint8_t fillCuToDuContainer(CuUeCb *ueCb, CUtoDURRCInformation_t *rrcMsg)
          }
 
          idx = 0;
-
+#if 0
          /* Cell Group Configuration */
          rrcMsg->iE_Extensions->list.array[idx]->id = ProtocolIE_ID_id_CellGroupConfig;
          rrcMsg->iE_Extensions->list.array[idx]->criticality = Criticality_ignore; 
          rrcMsg->iE_Extensions->list.array[idx]->extensionValue.present  =\
                                                                           CUtoDURRCInformation_ExtIEs__extensionValue_PR_CellGroupConfig;
          ret = fillCellGrpCfg(ueCb, &rrcMsg->iE_Extensions->list.array[idx]->extensionValue.choice.CellGroupConfig, true);
-
-         /* Handover Preparation Information */
          idx++;
+#endif
+         /* Handover Preparation Information */
          rrcMsg->iE_Extensions->list.array[idx]->id = ProtocolIE_ID_id_HandoverPreparationInformation; 
          rrcMsg->iE_Extensions->list.array[idx]->criticality = Criticality_ignore;
          rrcMsg->iE_Extensions->list.array[idx]->extensionValue.present  = \
