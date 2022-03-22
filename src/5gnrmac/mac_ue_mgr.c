@@ -1617,7 +1617,7 @@ uint8_t fillSchUeCfg(Pst *pst, SchUeCfg *schUeCfg, MacUeCfg *ueCfg)
 
    schUeCfg->cellId = ueCfg->cellId;
    schUeCfg->crnti = ueCfg->crnti;
-
+   schUeCfg->dataTransmissionInfo = ueCfg->transmissionAction;
    /* Copy MAC cell group config */
    if(ueCfg->macCellGrpCfgPres == true)
    {
@@ -2006,6 +2006,7 @@ uint8_t fillMacUeCb(MacUeCb *ueCb, MacUeCfg *ueCfg, uint8_t cellIdx)
    {
       DU_LOG("\nERROR  -->  MAC: Failed while filing MAC LC List at fillMacUeCb()");
    }
+   ueCb->transmissionAction = ueCfg->transmissionAction;
    return ret;
 }
 

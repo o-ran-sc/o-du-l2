@@ -970,6 +970,11 @@ uint8_t MacSchDlRlcBoInfo(Pst *pst, DlRlcBoInfo *dlBoInfo)
       return RFAILED;
    }
 
+   if(ueCb->ueCfg.dataTransmissionAction == STOP_DATA_TRANSMISSION)
+   {
+      DU_LOG("ERROR --> SCH: data transmission cannt proceed");
+      return ROK;
+   }
    /*Expected when theres a case of Retransmission Failure or Resetablishment
     *By Zero BO, the RLC is informing that previous data can be cleared out
     *Thus clearing out the LC from the Lc priority list*/
@@ -997,8 +1002,6 @@ uint8_t MacSchDlRlcBoInfo(Pst *pst, DlRlcBoInfo *dlBoInfo)
    }
    else
    {
-      /* TODO : These part of changes will be corrected during DL scheduling as
-       * per K0 - K1 -K2 */
       SET_ONE_BIT(ueId, cell->boIndBitMap);
       if(ueCb->dlInfo.dlLcCtxt[lcId].lcId == lcId)
       {

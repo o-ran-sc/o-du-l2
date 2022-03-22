@@ -229,6 +229,7 @@ typedef struct schUeCfgCb
    SchAmbrCfg         *ambrCfg;
    SchModulationInfo  dlModInfo;
    SchModulationInfo  ulModInfo;
+   SchDataTransmission dataTransmissionAction;
 }SchUeCfgCb;
 
 /*Following structures to keep record and estimations of PRB allocated for each

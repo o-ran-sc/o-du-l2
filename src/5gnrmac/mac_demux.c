@@ -129,6 +129,12 @@ uint8_t unpackRxData(uint16_t cellId, SlotTimingInfo slotInfo, RxDataIndPdu *rxD
                   length = (length << 8) & rxDataPdu[rxPduIdx];
                }
 
+               if(macCb.macCell[cellIdx]->ueCb[ueIdx].transmissionAction == STOP_TRANSMISSION)
+               {
+                  DU_LOG("\nINFO   -->  MAC : UL Data tansmission is stopped for UeId %d", ueId);
+                  break;
+               }
+
                pdu = NULLP;
                /*  Copying the payload to send to RLC */
                MAC_ALLOC_SHRABL_BUF(pdu, length);
