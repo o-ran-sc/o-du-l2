@@ -1232,6 +1232,11 @@ uint8_t fillMacUeCfg(uint16_t cellId, uint8_t ueId, uint16_t crnti, DuUeCfg *ueC
       macUeCfg->cellId       = cellId;
       macUeCfg->ueId         = ueId;
       macUeCfg->crnti        = crnti;
+      if(ueCfgDb->dataTransmissionAction == STOP_TRANSMISSION)
+      {
+         macUeCfg->transmissionAction = ueCfgDb->dataTransmissionAction; 
+         return ROK;
+      }
       ret = procUeReCfgCellInfo(macUeCfg, duMacDb, ueCfgDb->cellGrpCfg);
       if(ret == ROK)
       {
@@ -1641,6 +1646,12 @@ uint8_t fillRlcUeCfg(uint16_t cellId, uint8_t ueId, DuUeCfg *ueCfgDb, RlcUeCfg *
       /*Filling RlcUeCfg */
       rlcUeCfg->cellId       = cellId;
       rlcUeCfg->ueId         = ueId;
+      if(ueCfgDb->dataTransmissionAction == STOP_TRANSMISSION)
+      {
+         rlcUeCfg->dataTransmissionInfo = ueCfgDb->dataTransmissionAction; 
+         return ROK;
+      }
+
       for(dbIdx = 0; (dbIdx < ueCfgDb->numRlcLcs && ret == ROK); dbIdx++)
       {
          ret = fillDefaultRlcModeCfg(ueCfgDb->rlcLcCfg[dbIdx].rlcMode, &ueCfgDb->rlcLcCfg[dbIdx]);

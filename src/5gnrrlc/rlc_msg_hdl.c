@@ -65,6 +65,7 @@ uint8_t fillRlcUeCfgRsp(RlcUeCfgRsp *rlcCfgRsp, RlcCfgCfmInfo *rlcCRsp)
  
    rlcCfgRsp->cellId = rlcCRsp->cellId;
    rlcCfgRsp->ueId   = rlcCRsp->ueId;
+   rlcCfgRsp->result = RLC_DU_APP_RSP_OK;
    for(idx = 0; idx < rlcCRsp->numEnt; idx++)
    {
       if(rlcCRsp->entCfgCfm[idx].status.status == CKW_CFG_CFM_OK)
@@ -230,6 +231,11 @@ uint8_t fillRlcCfg(RlcCb *gCb, RlcCfgInfo *rlcUeCfg, RlcUeCfg *ueCfg)
    rlcUeCfg->cellId  = ueCfg->cellId;
    rlcUeCfg->numEnt  = ueCfg->numLcs;
    rlcUeCfg->transId = getTransId();
+   
+   if(ueCfg->dataTransmissionInfo == STOP_DATA_TRANSMISSION)
+   {
+      return ROK;
+   }
 
    for(lcIdx = 0; lcIdx < rlcUeCfg->numEnt; lcIdx++)
    {

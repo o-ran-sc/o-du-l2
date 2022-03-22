@@ -138,6 +138,7 @@ typedef struct duUeCfg
    UpTnlCfg upTnlInfo[MAX_NUM_DRB];  /* User plane TNL Info*/
    uint8_t numDrbSetupMod;        /*No. of DRB Added during Modification*/
    MacUeCfg copyOfmacUeCfg;
+   DataTransmissionAction dataTransmissionAction; 
 }DuUeCfg;
 
 typedef struct f1UeContextSetup
