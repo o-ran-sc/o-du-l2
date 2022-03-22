@@ -186,14 +186,26 @@ uint8_t fapiMacCrcInd(Pst *pst, CrcInd *crcInd)
  * ****************************************************************/
 uint8_t fapiMacRxDataInd(Pst *pst, RxDataInd *rxDataInd)
 {
-   uint16_t pduIdx;
+   uint8_t ueId = 0;
+   uint16_t pduIdx, cellIdx = 0;
    DU_LOG("\nDEBUG  -->  MAC : Received Rx Data indication");
    /* TODO : compare the handle received in RxDataInd with handle send in PUSCH
     * PDU, which is stored in raCb */
 
    for(pduIdx = 0; pduIdx < rxDataInd->numPdus; pduIdx++)
    {
-      unpackRxData(rxDataInd->cellId, rxDataInd->timingInfo, &rxDataInd->pdus[pduIdx]);
+     
+      GET_CELL_IDX(rxDataInd->cellId, cellIdx);
+      GET_UE_ID(rxDataInd->pdus[pduIdx].rnti, ueId);
+      
+      if(macCb.macCell[cellIdx] && macCb.macCell[cellIdx]->ueCb[ueId -1].transmissionAction == STOP_TRANSMISSION)
+      {
+         DU_LOG("\nINFO   -->  MAC : UL Data tansmission is stopped for UeId %d", ueId);
+      }
+      else
+      {
+         unpackRxData(rxDataInd->cellId, rxDataInd->timingInfo, &rxDataInd->pdus[pduIdx]);
+      }
       MAC_FREE_SHRABL_BUF(pst->region, pst->pool, rxDataInd->pdus[pduIdx].pduData,\
          rxDataInd->pdus[pduIdx].pduLength);
    }
@@ -771,10 +783,8 @@ uint8_t buildAndSendSrInd(UciInd *macUciInd, uint8_t crnti)
  * ****************************************************************/
 uint8_t FapiMacUciInd(Pst *pst, UciInd *macUciInd)
 {
-   uint8_t     pduIdx = 0;
-   uint8_t     ret = ROK;
-   uint16_t    nPdus;
-   uint16_t    crnti;
+   uint8_t     pduIdx = 0, ueId = 0, ret = ROK;
+   uint16_t    nPdus = 0, crnti = 0, cellIdx = 0;
 
    if(macUciInd)
    {
@@ -789,8 +799,14 @@ uint8_t FapiMacUciInd(Pst *pst, UciInd *macUciInd)
                if(macUciInd->pdus[pduIdx].uci.uciPucchF0F1.srInfo.srIndPres)
                {
                   DU_LOG("\nDEBUG  -->  MAC : Received SR UCI indication");
-		  crnti = macUciInd->pdus[pduIdx].uci.uciPucchF0F1.crnti; 
-		  ret = buildAndSendSrInd(macUciInd, crnti);
+                  crnti = macUciInd->pdus[pduIdx].uci.uciPucchF0F1.crnti; 
+                  GET_CELL_IDX(macUciInd->cellId, cellIdx);
+                  GET_UE_ID(crnti, ueId);
+
+                  if(macCb.macCell[cellIdx] && macCb.macCell[cellIdx]->ueCb[ueId -1].transmissionAction == STOP_TRANSMISSION)
+                     DU_LOG("\nINFO   -->  MAC : UL Data tansmission is stopped for UeId %d", ueId);
+                  else
+                     ret = buildAndSendSrInd(macUciInd, crnti);
                }
                break;
             case UCI_IND_PUCCH_F2F3F4:

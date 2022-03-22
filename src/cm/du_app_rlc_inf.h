@@ -125,6 +125,13 @@ typedef enum
    RLC_DU_APP_RSP_NOK
 }RlcRsp;
 
+typedef enum
+{
+   DATA_TRANSMISSION_ALLOWED,
+   STOP_DATA_TRANSMISSION,
+   RESTART_DATA_TRANSMISSION
+}DataTransmissionInfo;
+
 typedef struct ulAmCfg
 {
    SnLenAm        snLenUl;              /* Sequence Number length in bits. Allowed values are 12 and 18 */
