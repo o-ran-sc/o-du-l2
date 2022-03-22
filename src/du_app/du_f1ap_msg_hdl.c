@@ -13966,6 +13966,13 @@ uint8_t BuildDrbSetupModList(DRBs_SetupMod_List_t *drbSet , DuUeCfg *ueCfg)
    struct DRBs_SetupMod_ItemIEs *drbItemIe;
 
    drbCnt = ueCfg->numDrbSetupMod;
+
+   if(!drbCnt)
+   {
+      DU_LOG("\nINFO  -->  F1AP : BuildDrbToBeSetupModList(): No DRB information to avaialble to add");
+      return ROK;
+   }
+
    drbSet->list.count = drbCnt;
    drbSet->list.size = drbCnt * sizeof(DRBs_SetupMod_ItemIEs_t *);
    DU_ALLOC(drbSet->list.array, drbSet->list.size);
@@ -14162,7 +14169,12 @@ uint8_t BuildAndSendUeContextModRsp(DuUeCb *ueCb)
       ueContextModifyRes =&f1apMsg->choice.successfulOutcome->value.choice.UEContextModificationResponse;
   
       if(ueCb->f1UeDb->actionType == UE_CTXT_MOD)
-         elementCnt = 3;
+      {
+         if(ueCb->f1UeDb->duUeCfg.numDrbSetupMod)
+            elementCnt =3;
+         else
+            elementCnt =2;
+      }
       if(ueCb->f1UeDb->actionType == UE_CTXT_CFG_QUERY)
          elementCnt = 5;
       if(ueCb->f1UeDb->actionType == UE_CTXT_RRC_RECFG_COMPLETE)
@@ -14213,28 +14225,31 @@ uint8_t BuildAndSendUeContextModRsp(DuUeCb *ueCb)
       }
 
       if((ueCb->f1UeDb->actionType == UE_CTXT_CFG_QUERY) || (ueCb->f1UeDb->actionType == UE_CTXT_MOD))
-      {
-         ieIdx++;
-         ueContextModifyRes->protocolIEs.list.array[ieIdx]->id = ProtocolIE_ID_id_DRBs_SetupMod_List;
-         ueContextModifyRes->protocolIEs.list.array[ieIdx]->criticality = Criticality_reject;
-         ueContextModifyRes->protocolIEs.list.array[ieIdx]->value.present =\
-                                                                           UEContextModificationResponseIEs__value_PR_DRBs_SetupMod_List;
-         if(ueCb->f1UeDb->actionType == UE_CTXT_CFG_QUERY)
+      { 
+         if(ueCb->f1UeDb->duUeCfg.numDrbSetupMod)
          {
-            for(tnlIdx = 0; tnlIdx < duCb.numTeId; tnlIdx++)
+            ieIdx++;
+            ueContextModifyRes->protocolIEs.list.array[ieIdx]->id = ProtocolIE_ID_id_DRBs_SetupMod_List;
+            ueContextModifyRes->protocolIEs.list.array[ieIdx]->criticality = Criticality_reject;
+            ueContextModifyRes->protocolIEs.list.array[ieIdx]->value.present =\
+                                                                              UEContextModificationResponseIEs__value_PR_DRBs_SetupMod_List;
+            if(ueCb->f1UeDb->actionType == UE_CTXT_CFG_QUERY)
             {
-               if(duCb.upTnlCfg[tnlIdx]->ueId == ueCb->gnbDuUeF1apId)
+               for(tnlIdx = 0; tnlIdx < duCb.numTeId; tnlIdx++)
                {
-                  memcpy(&ueCb->f1UeDb->duUeCfg.upTnlInfo[ueCb->f1UeDb->duUeCfg.numDrbSetupMod++], duCb.upTnlCfg[tnlIdx], sizeof(UpTnlCfg));
+                  if(duCb.upTnlCfg[tnlIdx]->ueId == ueCb->gnbDuUeF1apId)
+                  {
+                     memcpy(&ueCb->f1UeDb->duUeCfg.upTnlInfo[ueCb->f1UeDb->duUeCfg.numDrbSetupMod++], duCb.upTnlCfg[tnlIdx], sizeof(UpTnlCfg));
+                  }
                }
             }
-         }
-         ret = BuildDrbSetupModList(&(ueContextModifyRes->protocolIEs.list.array[ieIdx]->\
-                  value.choice.DRBs_SetupMod_List) , &ueCb->f1UeDb->duUeCfg);
-         if(ret != ROK)
-         {
-            DU_LOG( "\nERROR  -->  F1AP : Failed to build DRB setupmod List ");
-            break;
+            ret = BuildDrbSetupModList(&(ueContextModifyRes->protocolIEs.list.array[ieIdx]->\
+                     value.choice.DRBs_SetupMod_List) , &ueCb->f1UeDb->duUeCfg);
+            if(ret != ROK)
+            {
+               DU_LOG( "\nERROR  -->  F1AP : Failed to build DRB setupmod List ");
+               break;
+            }
          }
       }
 
@@ -14520,17 +14535,17 @@ void freeAperDecodeDrbToBeSetupModList(DRBs_ToBeSetupMod_List_t *drbSet)
  * @return void
  *
  * ****************************************************************/
-void freeAperDecodeUeContextModificationReqMsg(UEContextModificationRequest_t *UeContextModifyReq )
+void freeAperDecodeUeContextModificationReqMsg(UEContextModificationRequest_t *ueContextModifyReq )
 {
    uint8_t arrIdx, ieId;
 
-   if(UeContextModifyReq->protocolIEs.list.array)
+   if(ueContextModifyReq->protocolIEs.list.array)
    {
-      for( arrIdx = 0 ; arrIdx<UeContextModifyReq->protocolIEs.list.count ; arrIdx++)
+      for( arrIdx = 0 ; arrIdx<ueContextModifyReq->protocolIEs.list.count ; arrIdx++)
       {
-         if(UeContextModifyReq->protocolIEs.list.array[arrIdx])
+         if(ueContextModifyReq->protocolIEs.list.array[arrIdx])
          {
-            ieId = UeContextModifyReq->protocolIEs.list.array[arrIdx]->id;
+            ieId = ueContextModifyReq->protocolIEs.list.array[arrIdx]->id;
             switch(ieId)
             {
                case ProtocolIE_ID_id_gNB_CU_UE_F1AP_ID:
@@ -14539,15 +14554,21 @@ void freeAperDecodeUeContextModificationReqMsg(UEContextModificationRequest_t *U
                   break;
                case ProtocolIE_ID_id_DRBs_ToBeSetupMod_List:
                   {
-                     freeAperDecodeDrbToBeSetupModList(&UeContextModifyReq->protocolIEs.list.array[arrIdx]->\
+                     freeAperDecodeDrbToBeSetupModList(&ueContextModifyReq->protocolIEs.list.array[arrIdx]->\
                            value.choice.DRBs_ToBeSetupMod_List);
                      break;
                   }
+               case ProtocolIE_ID_id_TransmissionActionIndicator:
+                  break;
+               case ProtocolIE_ID_id_RRCContainer:
+                  {
+                     free(ueContextModifyReq->protocolIEs.list.array[arrIdx]->value.choice.RRCContainer.buf);
+                  }
             }
-            free(UeContextModifyReq->protocolIEs.list.array[arrIdx]);
+            free(ueContextModifyReq->protocolIEs.list.array[arrIdx]);
          }
       }
-      free(UeContextModifyReq->protocolIEs.list.array);
+      free(ueContextModifyReq->protocolIEs.list.array);
    }
 }
 /*******************************************************************
@@ -14600,6 +14621,7 @@ uint8_t procF1UeContextModificationReq(F1AP_PDU_t *f1apMsg)
                            {
                               DU_ALLOC(duUeCb->f1UeDb, sizeof(F1UeContextSetupDb));
                               duUeCb->f1UeDb->cellIdx = cellIdx;
+                              duUeCb->f1UeDb->actionType = UE_CTXT_MOD;
                            }
                            break;
                         }
@@ -14613,12 +14635,34 @@ uint8_t procF1UeContextModificationReq(F1AP_PDU_t *f1apMsg)
                }
                break;
             }
+
+         case ProtocolIE_ID_id_RRCContainer:
+            {
+               /* Filling Dl RRC Msg Info */
+               DU_ALLOC_SHRABL_BUF(duUeCb->f1UeDb->dlRrcMsg, sizeof(F1DlRrcMsg));
+               if(!duUeCb->f1UeDb->dlRrcMsg)
+               {
+                  DU_LOG("\nERROR  -->  DU APP : procF1UeContextReleaseCommand(): \
+                        Memory allocation failed ");
+                  ret = RFAILED;
+               }
+               else
+               {
+                  duUeCb->f1UeDb->dlRrcMsgPres = true;
+                  memset(duUeCb->f1UeDb->dlRrcMsg, 0, sizeof(F1DlRrcMsg));
+                  ret = extractDlRrcMsg(gnbDuUeF1apId, gnbCuUeF1apId, duUeCb->f1UeDb->dlRrcMsg,\
+                        &ueContextModifyReq->protocolIEs.list.array[ieIdx]->\
+                        value.choice.RRCContainer);
+               }
+
+               break;
+            }
+
          case ProtocolIE_ID_id_DRBs_ToBeSetupMod_List:
          case ProtocolIE_ID_id_DRBs_ToBeModified_List:
             {
                if(duUeCb->f1UeDb)
                {
-                  duUeCb->f1UeDb->actionType = UE_CTXT_MOD;
                   if(ueContextModifyReq->protocolIEs.list.array[ieIdx]->value.present ==\
                         UEContextModificationRequestIEs__value_PR_DRBs_ToBeSetupMod_List)
                   {
@@ -14669,6 +14713,31 @@ uint8_t procF1UeContextModificationReq(F1AP_PDU_t *f1apMsg)
                }
                break;
             }
+         case ProtocolIE_ID_id_TransmissionActionIndicator:
+            {
+               if(duUeCb->f1UeDb)
+               {
+                  if(ueContextModifyReq->protocolIEs.list.array[ieIdx]->value.choice.TransmissionActionIndicator  == TransmissionActionIndicator_stop)
+                  {
+                     duUeCb->f1UeDb->duUeCfg.dataTransmissionAction = STOP_TRANSMISSION; 
+                  }
+                  else 
+                  {
+                     duUeCb->f1UeDb->duUeCfg.dataTransmissionAction = RESTART_TRANSMISSION; 
+                  }
+               }
+               break;
+            }
+
+         case ProtocolIE_ID_id_RRCDeliveryStatusRequest:
+            {
+               if(duUeCb->f1UeDb->dlRrcMsg->rrcMsgPdu)
+               {
+                  duUeCb->f1UeDb->dlRrcMsg->deliveryStatRpt = true;
+               }
+               break;
+            }
+              
       }
    }
 

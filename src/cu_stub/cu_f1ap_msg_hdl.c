@@ -1179,6 +1179,22 @@ uint8_t fillDlCcchRrcMsg(CuUeCb *ueCb, RRCContainer_t *rrcContainer)
    }
 }
 
+/*******************************************************************
+ *
+ * @brief Fills QOS flow configuration  
+ *
+ * @details
+ *
+ *    Function : fillQosFlowsToAdd
+ *
+ *    Functionality: Fills QOS flow configuration
+ *
+ * @params[in] struct SDAP_Config__mappedQoS_FlowsToAdd *qosFlow 
+ *
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
 uint8_t fillQosFlowsToAdd(struct SDAP_Config__mappedQoS_FlowsToAdd *qosFlow)
 {
    uint8_t idx, ied, elementCnt;
@@ -6063,6 +6079,17 @@ uint8_t BuildRlcBearerToAddModList(CuUeCb *ueCb, struct CellGroupConfigRrc__rlc_
       }
    }
 
+   if(!elementCnt)
+   {
+      DU_LOG("INFO  --> F1AP : No  RLC Bearer available to add or modify");
+      return ROK;
+   }
+   CU_ALLOC(rlcBearerList, sizeof(struct CellGroupConfigRrc__rlc_BearerToAddModList));
+   if(!rlcBearerList)
+   {
+      DU_LOG("\nERROR  -->  F1AP : Memory allocation failure in CellGrpConfig");
+      return RFAILED;
+   }
    rlcBearerList->list.count = elementCnt;
    rlcBearerList->list.size  = elementCnt * sizeof(struct RLC_BearerConfig *);
 
@@ -6137,7 +6164,7 @@ uint8_t BuildRlcBearerToAddModList(CuUeCb *ueCb, struct CellGroupConfigRrc__rlc_
 
    for(drbIdx=0; drbIdx < ueCb->numDrb; drbIdx++)
    {
-      if(!updateAllRbCfg && ueCb->srbList[srbIdx].cfgSentToUe)
+      if(!updateAllRbCfg && ueCb->drbList[drbIdx].cfgSentToUe)
          continue;
 
       rlcBearerList->list.array[idx]->logicalChannelIdentity = ueCb->drbList[drbIdx].lcId;
@@ -6412,12 +6439,7 @@ uint8_t fillCellGrpCfg(CuUeCb *ueCb, OCTET_STRING_t *cellGrp, bool updateAllRbCf
       cellGrpCfg.cellGroupId = CELL_GRP_ID;
 
       cellGrpCfg.rlc_BearerToAddModList = NULLP;
-      CU_ALLOC(cellGrpCfg.rlc_BearerToAddModList, sizeof(struct CellGroupConfigRrc__rlc_BearerToAddModList));
-      if(!cellGrpCfg.rlc_BearerToAddModList)
-      {
-         DU_LOG("\nERROR  -->  F1AP : Memory allocation failure in CellGrpConfig");
-         break;
-      }
+      
       if(BuildRlcBearerToAddModList(ueCb, cellGrpCfg.rlc_BearerToAddModList, updateAllRbCfg) != ROK)
       {
          DU_LOG("\nERROR  -->  F1AP : fillCellGrpCfg failed");
@@ -7610,19 +7632,32 @@ void freeRrcReconfig(RRCReconfiguration_t *rrcReconfig)
  * ****************************************************************/
 uint8_t fillSrbToAddModList(CuUeCb *ueCb, SRB_ToAddModList_t *srbToAddList, bool updateAllRbCfg)
 {
-   uint8_t srbIdx, srbDbIdx;
+   uint8_t srbIdx, srbDbIdx, elementCnt = 0;
 
    if(updateAllRbCfg)
-      srbToAddList->list.count = ueCb->numSrb;
+      elementCnt = ueCb->numSrb;
    else
    {
-      srbToAddList->list.count = 0;
       for(srbDbIdx=0; srbDbIdx < ueCb->numSrb; srbDbIdx++)
       {
          if(ueCb->srbList[srbDbIdx].cfgSentToUe == false)
-            srbToAddList->list.count++;
+            elementCnt++;
       }
    }
+
+   if(!elementCnt)
+   {
+      DU_LOG("INFO  --> F1AP : No SRB available to add or modify");
+      return ROK;
+   }
+
+   CU_ALLOC(srbToAddList, sizeof(SRB_ToAddModList_t));
+   if(!srbToAddList)
+   {
+      DU_LOG("\nERROR  -->  F1AP: Memory allocation failed for SRB to AddMod List in fillRadioBearerConfig");
+      return RFAILED;
+   }
+   srbToAddList->list.count = elementCnt;
    srbToAddList->list.size = srbToAddList->list.count * sizeof(SRB_ToAddMod_t *);
 
    CU_ALLOC(srbToAddList->list.array, srbToAddList->list.size);
@@ -7696,19 +7731,34 @@ uint8_t fillSrbToAddModList(CuUeCb *ueCb, SRB_ToAddModList_t *srbToAddList, bool
  * ****************************************************************/
 uint8_t fillDrbToAddModList(CuUeCb *ueCb, DRB_ToAddModList_t *drbToAddList, bool updateAllRbCfg)
 {
-   uint8_t drbIdx, drbDbIdx;
+   uint8_t drbIdx, drbDbIdx, elementCnt = 0;
 
    if(updateAllRbCfg)
-      drbToAddList->list.count = ueCb->numDrb;
+      elementCnt = ueCb->numDrb;
    else
    {
-      drbToAddList->list.count = 0;
       for(drbDbIdx=0; drbDbIdx < ueCb->numDrb; drbDbIdx++)
       {     
          if(ueCb->drbList[drbDbIdx].cfgSentToUe == false)
-            drbToAddList->list.count++;
+            elementCnt++;
       }     
    }
+
+   if(!elementCnt)
+   {
+      DU_LOG("INFO  --> F1AP : No DRB available to add or modify");
+      return ROK;
+   }
+   
+   /* DRB To Add/Mod List */
+   CU_ALLOC(drbToAddList, sizeof(DRB_ToAddModList_t));
+   if(!drbToAddList)
+   {
+      DU_LOG("\nERROR  -->  F1AP: Memory allocation failed for DRB to AddMod List in fillRadioBearerConfig");
+      return RFAILED;
+   }
+
+   drbToAddList->list.count = elementCnt;
    drbToAddList->list.size = drbToAddList->list.count * sizeof(DRB_ToAddMod_t *);
 
    CU_ALLOC(drbToAddList->list.array, drbToAddList->list.size);
@@ -7815,24 +7865,11 @@ uint8_t fillDrbToAddModList(CuUeCb *ueCb, DRB_ToAddModList_t *drbToAddList, bool
 uint8_t fillRadioBearerConfig(CuUeCb *ueCb, RadioBearerConfig_t *radioBearerConfig, bool updateAllRbCfg)
 {
    /* SRB To Add/Mod List */
-   CU_ALLOC(radioBearerConfig->srb_ToAddModList, sizeof(SRB_ToAddModList_t));
-   if(!radioBearerConfig->srb_ToAddModList)
-   {
-      DU_LOG("\nERROR  -->  F1AP: Memory allocation failed for SRB to AddMod List in fillRadioBearerConfig");
-      return RFAILED;
-   }
    if(fillSrbToAddModList(ueCb, radioBearerConfig->srb_ToAddModList, updateAllRbCfg) != ROK)
    {
       return RFAILED;
    }
 
-   /* DRB To Add/Mod List */
-   CU_ALLOC(radioBearerConfig->drb_ToAddModList, sizeof(DRB_ToAddModList_t));
-   if(!radioBearerConfig->drb_ToAddModList)
-   {
-      DU_LOG("\nERROR  -->  F1AP: Memory allocation failed for DRB to AddMod List in fillRadioBearerConfig");
-      return RFAILED;
-   }
    if(fillDrbToAddModList(ueCb, radioBearerConfig->drb_ToAddModList, updateAllRbCfg) != ROK)
    {
       return RFAILED;
@@ -8618,6 +8655,12 @@ uint8_t fillHOPreparationInfoBuf(CuUeCb *ueCb, HandoverPreparationInformation_t 
          return RFAILED;
       }
       ret = fillRrcReconfigBuf(ueCb, &hoPrepInfoIe->sourceConfig->rrcReconfiguration, true); 
+      
+      if(ret != ROK)
+      {
+         DU_LOG( "\nERROR  -->  F1AP : Failed to fill Rrc reconfiguration buffer");
+         return RFAILED;
+      }
 
       hoPrepInfoIe->rrm_Config = NULLP;
       hoPrepInfoIe->as_Context = NULLP;
@@ -10384,20 +10427,20 @@ void FreeDrbToBeModifiedList(DRBs_ToBeModified_List_t *drbSet)
 void FreeUeContextModicationRequest(F1AP_PDU_t *f1apMsg)
 {
    uint8_t arrIdx =0 , ieId=0; 
-   UEContextModificationRequest_t *UeContextModifyReq = NULLP;
+   UEContextModificationRequest_t *ueContextModifyReq = NULLP;
 
    if(f1apMsg)
    {
       if(f1apMsg->choice.initiatingMessage)
       {
-         UeContextModifyReq =&f1apMsg->choice.initiatingMessage->value.choice.UEContextModificationRequest;
-         if(UeContextModifyReq->protocolIEs.list.array)
+         ueContextModifyReq =&f1apMsg->choice.initiatingMessage->value.choice.UEContextModificationRequest;
+         if(ueContextModifyReq->protocolIEs.list.array)
          {
-            for( arrIdx = 0 ; arrIdx<UeContextModifyReq->protocolIEs.list.count ; arrIdx++)
+            for( arrIdx = 0 ; arrIdx<ueContextModifyReq->protocolIEs.list.count ; arrIdx++)
             {
-               if(UeContextModifyReq->protocolIEs.list.array[arrIdx])
+               if(ueContextModifyReq->protocolIEs.list.array[arrIdx])
                {
-                  ieId = UeContextModifyReq->protocolIEs.list.array[arrIdx]->id;
+                  ieId = ueContextModifyReq->protocolIEs.list.array[arrIdx]->id;
                   switch(ieId)
                   {
                      case ProtocolIE_ID_id_gNB_CU_UE_F1AP_ID:
@@ -10406,22 +10449,29 @@ void FreeUeContextModicationRequest(F1AP_PDU_t *f1apMsg)
                         break;
                      case ProtocolIE_ID_id_DRBs_ToBeSetupMod_List:
                         {
-                           FreeDrbToBeSetupModList(&UeContextModifyReq->protocolIEs.list.array[arrIdx]->value.\
+                           FreeDrbToBeSetupModList(&ueContextModifyReq->protocolIEs.list.array[arrIdx]->value.\
                                  choice.DRBs_ToBeSetupMod_List);
                            break;
                         }
                      case ProtocolIE_ID_id_DRBs_ToBeModified_List:
                         {
-                           FreeDrbToBeModifiedList(&UeContextModifyReq->protocolIEs.list.array[arrIdx]->value.\
-                                 choice.DRBs_ToBeSetupMod_List);
+                           FreeDrbToBeModifiedList(&ueContextModifyReq->protocolIEs.list.array[arrIdx]->value.\
+                                 choice.DRBs_ToBeModified_List);
                            break;
                         }
+                    case ProtocolIE_ID_id_TransmissionActionIndicator:
+                        break;
+                    case ProtocolIE_ID_id_RRCContainer:
+                    {
+                        CU_FREE(ueContextModifyReq->protocolIEs.list.array[arrIdx]->value.choice.RRCContainer.buf,\
+                        ueContextModifyReq->protocolIEs.list.array[arrIdx]->value.choice.RRCContainer.size);
+                    }
 
                   }
-                  CU_FREE(UeContextModifyReq->protocolIEs.list.array[arrIdx], sizeof(UEContextModificationRequest_t));
+                  CU_FREE(ueContextModifyReq->protocolIEs.list.array[arrIdx], sizeof(UEContextModificationRequest_t));
                }	  
             }
-            CU_FREE(UeContextModifyReq->protocolIEs.list.array, UeContextModifyReq->protocolIEs.list.size);
+            CU_FREE(ueContextModifyReq->protocolIEs.list.array, ueContextModifyReq->protocolIEs.list.size);
          }
          CU_FREE(f1apMsg->choice.initiatingMessage, sizeof(InitiatingMessage_t));
       }
@@ -10456,7 +10506,6 @@ uint8_t BuildAndSendUeContextModificationReq(uint32_t duId, void *cuUeCb, UeCtxt
 
    asn_enc_rval_t         encRetVal;
    DU_LOG("\nINFO  -->  F1AP : Building Ue context modification request\n");
-
    while(1)
    {
       CU_ALLOC(f1apMsg, sizeof(F1AP_PDU_t));
@@ -10486,6 +10535,9 @@ uint8_t BuildAndSendUeContextModificationReq(uint32_t duId, void *cuUeCb, UeCtxt
          elementCnt = 3;
       else if(action == RRC_RECONFIG_COMPLETE_IND)
          elementCnt = 3;
+      else if( action == STOP_DATA_TX)
+         elementCnt = 5;
+
       ueContextModifyReq->protocolIEs.list.count = elementCnt;
       ueContextModifyReq->protocolIEs.list.size = elementCnt*sizeof(UEContextModificationRequest_t *);
 
@@ -10545,8 +10597,11 @@ uint8_t BuildAndSendUeContextModificationReq(uint32_t duId, void *cuUeCb, UeCtxt
 
          if(ret != ROK)
          {
+            DU_LOG("\nERROR  -->  F1AP : BuildAndSendUeContextModificationReq(): Failed to build drb to be modified list");
             break;
          }
+
+         /* TODO: fill the RRC reconfiguration information in RRC Contaiiner ie in case of MODIFY_UE  */
       }
       else if(action == QUERY_CONFIG)
       {
@@ -10566,6 +10621,34 @@ uint8_t BuildAndSendUeContextModificationReq(uint32_t duId, void *cuUeCb, UeCtxt
             UEContextModificationRequestIEs__value_PR_RRCReconfigurationCompleteIndicator;
          ueContextModifyReq->protocolIEs.list.array[ieIdx]->value.choice.RRCReconfigurationCompleteIndicator = \
             RRCReconfigurationCompleteIndicator_true;
+      }
+      else if(action == STOP_DATA_TX)
+      {
+         ieIdx++;
+         ueContextModifyReq->protocolIEs.list.array[ieIdx]->id = ProtocolIE_ID_id_TransmissionActionIndicator;
+         ueContextModifyReq->protocolIEs.list.array[ieIdx]->criticality = Criticality_reject;
+         ueContextModifyReq->protocolIEs.list.array[ieIdx]->value.present = \
+         UEContextModificationRequestIEs__value_PR_TransmissionActionIndicator;
+         ueContextModifyReq->protocolIEs.list.array[ieIdx]->value.choice.TransmissionActionIndicator = \
+         TransmissionActionIndicator_stop;
+         
+         ieIdx++;
+         ueContextModifyReq->protocolIEs.list.array[ieIdx]->id = ProtocolIE_ID_id_RRCContainer;
+         ueContextModifyReq->protocolIEs.list.array[ieIdx]->criticality = Criticality_reject;
+         ueContextModifyReq->protocolIEs.list.array[ieIdx]->value.present = \
+         UEContextModificationRequestIEs__value_PR_RRCContainer;
+         if(fillRrcReconfigBuf(ueCb, &ueContextModifyReq->protocolIEs.list.array[ieIdx]->value.choice.RRCContainer, true) != ROK)
+         {
+            DU_LOG( "\nERROR  -->  F1AP : Failed to fill Rrc reconfiguration buffer");
+            return RFAILED;
+         }
+
+         /* RRC delivery status request */
+         ieIdx++;
+         ueContextModifyReq->protocolIEs.list.array[ieIdx]->id = ProtocolIE_ID_id_RRCDeliveryStatusRequest;
+         ueContextModifyReq->protocolIEs.list.array[ieIdx]->criticality = Criticality_ignore;
+         ueContextModifyReq->protocolIEs.list.array[ieIdx]->value.present = UEContextModificationRequestIEs__value_PR_RRCDeliveryStatusRequest;
+         ueContextModifyReq->protocolIEs.list.array[ieIdx]->value.choice.RRCDeliveryStatusRequest = RRCDeliveryStatusRequest_true;
       }
 
       xer_fprint(stdout, &asn_DEF_F1AP_PDU, f1apMsg);

@@ -214,6 +214,7 @@ typedef struct macUeCb
    MacBsrTmrCfg bsrTmrCfg;  /* BSR Timer Info */
    UeUlCb       ulInfo;   /* UE specific UL info */
    UeDlCb       dlInfo;   /* UE specific DL info */
+   DataTransmissionAction transmissionAction;
 }MacUeCb;
 
 struct macCellCb
