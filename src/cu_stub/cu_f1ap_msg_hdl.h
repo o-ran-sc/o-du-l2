@@ -165,7 +165,8 @@ typedef enum
    MODIFY_UE,        /* Modify UE configuration at DU */
    RRC_RECONFIG_COMPLETE_IND, /* Indicate to DU that RRC Reconfiguration is complete */
    QUERY_CONFIG,     /* Query DU for its configurations */
-   STOP_DATA_TX      /* Stop data transmission from DU to a particular UE */
+   STOP_DATA_TX,      /* Stop data transmission from DU to a particular UE */
+   RESTART_DATA_TX   /* Restart data transmission from DU to a particular UE */
 }UeCtxtModAction;
 
 typedef struct f1apDb
