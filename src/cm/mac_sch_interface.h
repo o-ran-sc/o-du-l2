@@ -428,6 +428,13 @@ typedef enum
    BOTH
 }DlPduType;
 
+typedef enum
+{
+   DATA_TRANSMISSION_ALLOWED,
+   STOP_DATA_TRANSMISSION,
+   RESTART_DATA_TRANSMISSION
+}SchDataTransmission;
+
 /*structures*/
 typedef struct timeDomainAlloc
 {
@@ -1578,6 +1585,7 @@ typedef struct schUeCfg
    SchModulationInfo  ulModInfo;
    uint8_t            numLcs;
    SchLcCfg           schLcCfg[MAX_NUM_LC];
+   SchDataTransmission dataTransmissionInfo;
 }SchUeCfg;
 
 typedef struct schUeCfgRsp

@@ -962,6 +962,12 @@ uint8_t MacSchDlRlcBoInfo(Pst *pst, DlRlcBoInfo *dlBoInfo)
 
    GET_UE_ID(dlBoInfo->crnti, ueId);
    ueCb = &cell->ueCb[ueId-1];
+   if(ueCb->ueCfg.dataTransmissionAction == STOP_DATA_TRANSMISSION)
+   {
+      DU_LOG("INFO  --> SCH : DL Data transmission not allowed for UE %d", ueCb->ueCfg.duUeF1apId);
+      return ROK;
+   }
+   
    lcId  = dlBoInfo->lcId;
    CHECK_LCID(lcId, isLcIdValid);
    if(isLcIdValid == FALSE)
@@ -997,8 +1003,6 @@ uint8_t MacSchDlRlcBoInfo(Pst *pst, DlRlcBoInfo *dlBoInfo)
    }
    else
    {
-      /* TODO : These part of changes will be corrected during DL scheduling as
-       * per K0 - K1 -K2 */
       SET_ONE_BIT(ueId, cell->boIndBitMap);
       if(ueCb->dlInfo.dlLcCtxt[lcId].lcId == lcId)
       {
@@ -1114,7 +1118,11 @@ uint8_t MacSchSrUciInd(Pst *pst, SrUciIndInfo *uciInd)
       DU_LOG("\nERROR  -->  SCH : Crnti %d is inactive", uciInd->crnti);
       return ROK;  
    }
-
+   if(ueCb->ueCfg.dataTransmissionAction == STOP_DATA_TRANSMISSION)
+   {
+      DU_LOG("\nINFO --> SCH: UL Data transmission not allowed for UE %d", ueCb->ueCfg.duUeF1apId);
+      return ROK;
+   }
    if(uciInd->numSrBits)
    {
       ueCb->srRcvd = true;
