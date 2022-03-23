@@ -1,0 +1,238 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b31d0dfc_0ffba052",
+        "filename": "src/5gnrmac/mac_demux.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-03-23T17:13:29Z",
+      "side": 1,
+      "message": "why do this after demux? Even demuxing is not needed. You can put this condition at the very point where UL data is received",
+      "range": {
+        "startLine": 132,
+        "startChar": 24,
+        "endLine": 132,
+        "endChar": 31
+      },
+      "revId": "6bcbe2313822261816c00f10e66ae131858e15be",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "79bbfd09_ad729089",
+        "filename": "src/5gnrmac/mac_demux.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-03-23T17:13:29Z",
+      "side": 1,
+      "message": "Also, this condition is only to stop UL data, how are we handling DL data?",
+      "revId": "6bcbe2313822261816c00f10e66ae131858e15be",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2e23c3db_42f27458",
+        "filename": "src/5gnrrlc/rlc_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 237,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-03-23T17:13:29Z",
+      "side": 1,
+      "message": "we are not doing anything with this information in RLC?",
+      "revId": "6bcbe2313822261816c00f10e66ae131858e15be",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7fc5ad9a_33efb3fd",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 977,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-03-23T17:13:29Z",
+      "side": 1,
+      "message": "This handles only DL. How about when UE is requesting for UL grant?",
+      "revId": "6bcbe2313822261816c00f10e66ae131858e15be",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "148e88b8_46b2171b",
+        "filename": "src/cm/du_app_mac_inf.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 526,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-03-23T17:13:29Z",
+      "side": 1,
+      "message": "can we call this as data transmission allowed? which one would be more appropriate? think on it.",
+      "range": {
+        "startLine": 526,
+        "startChar": 3,
+        "endLine": 526,
+        "endChar": 10
+      },
+      "revId": "6bcbe2313822261816c00f10e66ae131858e15be",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3891674e_2506e4f8",
+        "filename": "src/cm/du_app_rlc_inf.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-03-23T17:13:29Z",
+      "side": 1,
+      "message": "can we call this as data transmission allowed? which one would be more appropriate? think on it.",
+      "revId": "6bcbe2313822261816c00f10e66ae131858e15be",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f1a1dbd8_bf73eb77",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 6092,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-03-23T17:13:29Z",
+      "side": 1,
+      "message": "Is the allocation for rlcBearerList removed from the caller of this function?",
+      "revId": "6bcbe2313822261816c00f10e66ae131858e15be",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8ed303e5_c8ed1d8f",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 7650,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-03-23T17:13:29Z",
+      "side": 1,
+      "message": "F1AP",
+      "range": {
+        "startLine": 7650,
+        "startChar": 24,
+        "endLine": 7650,
+        "endChar": 28
+      },
+      "revId": "6bcbe2313822261816c00f10e66ae131858e15be",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "892dcd62_9f1ecd86",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 7749,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-03-23T17:13:29Z",
+      "side": 1,
+      "message": "F1AP",
+      "range": {
+        "startLine": 7749,
+        "startChar": 24,
+        "endLine": 7749,
+        "endChar": 28
+      },
+      "revId": "6bcbe2313822261816c00f10e66ae131858e15be",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1ddd688a_dc9c2f9e",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 10509,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-03-23T17:13:29Z",
+      "side": 1,
+      "message": "remove/comment this with a comment",
+      "revId": "6bcbe2313822261816c00f10e66ae131858e15be",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3bdee022_5c7d118e",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 10603,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-03-23T17:13:29Z",
+      "side": 1,
+      "message": "Add a comment here that if action\u003dMODIFY_UE, in that case RRC reconfiguration also needs to be filled in RRC container IE",
+      "revId": "6bcbe2313822261816c00f10e66ae131858e15be",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5cc76698_de8752f1",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 10639,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-03-23T17:13:29Z",
+      "side": 1,
+      "message": "This should be set to true. This RRC reconfiguration message is sent to UE to inform about the change of DU and all UE related configurations, hence all RB configurations must be updated in this RRC reconfig msg",
+      "range": {
+        "startLine": 10639,
+        "startChar": 116,
+        "endLine": 10639,
+        "endChar": 121
+      },
+      "revId": "6bcbe2313822261816c00f10e66ae131858e15be",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
