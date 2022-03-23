@@ -1,0 +1,84 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7246f1fc_731317c0",
+        "filename": "src/cm/mac_sch_interface.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 1568,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-03-23T17:15:39Z",
+      "side": 1,
+      "message": "In aad spec, 9.2.3.2.5 Add UE Configuration Request doesn\u0027t include duUeF1APId.\nAnd In case of handover we will not receive duUeF1APId from UE Context Setup request.",
+      "revId": "78b8af3127bb06bc0411ed1448622966a9b18531",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bba51f1c_1058b586",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 12005,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-03-23T17:15:39Z",
+      "side": 1,
+      "message": "can we please rename this genGnbDuUeF1apId function to something else.",
+      "revId": "78b8af3127bb06bc0411ed1448622966a9b18531",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "37da047f_e61d5719",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 12006,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-03-23T17:15:39Z",
+      "side": 1,
+      "message": "are we supporting handover for multiple UEs?\nIf not then we can use this HoUeCb in the form of pointer.",
+      "range": {
+        "startLine": 12006,
+        "startChar": 62,
+        "endLine": 12006,
+        "endChar": 75
+      },
+      "revId": "78b8af3127bb06bc0411ed1448622966a9b18531",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b47518f7_5cb2ed38",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2688,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-03-23T17:15:39Z",
+      "side": 1,
+      "message": "gnbDuUeF1apId and crnti both will not be available in case of handover. Am i correct?",
+      "range": {
+        "startLine": 2688,
+        "startChar": 57,
+        "endLine": 2688,
+        "endChar": 70
+      },
+      "revId": "78b8af3127bb06bc0411ed1448622966a9b18531",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
