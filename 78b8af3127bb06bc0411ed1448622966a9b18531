@@ -18,6 +18,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ef13c443_3da84aa7",
+        "filename": "src/cm/mac_sch_interface.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 1568,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-03-23T17:32:35Z",
+      "side": 1,
+      "message": "yes DU UE F1AP ID is not received in UE context setup request. Once this F1AP msg comes to DU, DU checks if this is a handover case. If so, DU UE F1AP ID is assigned by DU and then the same ID is sent to other layers in UE create request",
+      "parentUuid": "7246f1fc_731317c0",
+      "revId": "78b8af3127bb06bc0411ed1448622966a9b18531",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bba51f1c_1058b586",
@@ -58,6 +76,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "27b55b5c_2a8532ea",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 12006,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-03-23T17:32:35Z",
+      "side": 1,
+      "message": "Anything that we code must be robust enough to be used in future as well. There may be a scenario when multiple UE are being handed over to this DU from various other DUs. So the code will support that in future",
+      "parentUuid": "37da047f_e61d5719",
+      "range": {
+        "startLine": 12006,
+        "startChar": 62,
+        "endLine": 12006,
+        "endChar": 75
+      },
+      "revId": "78b8af3127bb06bc0411ed1448622966a9b18531",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b47518f7_5cb2ed38",
@@ -71,6 +113,30 @@
       "writtenOn": "2022-03-23T17:15:39Z",
       "side": 1,
       "message": "gnbDuUeF1apId and crnti both will not be available in case of handover. Am i correct?",
+      "range": {
+        "startLine": 2688,
+        "startChar": 57,
+        "endLine": 2688,
+        "endChar": 70
+      },
+      "revId": "78b8af3127bb06bc0411ed1448622966a9b18531",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a6cf0bdd_8e47356a",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2688,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-03-23T17:32:35Z",
+      "side": 1,
+      "message": "you are correct, but du ue f1ap id will be generated at DU after UE context setup req is received for case. Since CRNTI is not known at this point, we cannot generate and send ue id to MAC/SCH. Hence we are sening du ue f1ap id, so this will be used until CRNTI is assigned to this UE after RACH procedure",
+      "parentUuid": "b47518f7_5cb2ed38",
       "range": {
         "startLine": 2688,
         "startChar": 57,
