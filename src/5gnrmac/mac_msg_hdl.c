@@ -343,10 +343,11 @@ uint8_t lcId, uint16_t pduLen, uint8_t *pdu)
    ulData->slotInfo.cellId = cellId;
 
    /* Filling pdu info */
-   if(lcId == SRB1_LCID || lcId == SRB2_LCID)
-   {
+   if(lcId != SRB0_LCID)
+      ulData->pduInfo[ulData->numPdu].commCh = false;
+   else
       ulData->pduInfo[ulData->numPdu].commCh = true;
-   }
+
    ulData->pduInfo[ulData->numPdu].lcId = lcId;
    ulData->pduInfo[ulData->numPdu].pduBuf = pdu;
    ulData->pduInfo[ulData->numPdu].pduLen = pduLen;
