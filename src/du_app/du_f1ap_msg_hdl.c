@@ -14296,6 +14296,8 @@ uint8_t BuildAndSendUeContextModRsp(DuUeCb *ueCb)
          ret = RFAILED;
          break;
       }
+
+      ret = ROK;
       break;
    }
    FreeUeContextModResp(f1apMsg);

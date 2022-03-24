@@ -58,6 +58,8 @@ typedef struct ueCb
    bool     msgSecurityModeComp;
    bool 	   msgRrcReconfiguration;
    bool 	   msgRegistrationComp;
+   uint8_t  rlcSnForSrb1;           /* Sequence number of PDU at RLC for AM mode */
+   uint8_t  pdcpSn;                 /* Sequence number of PDU at PDCP */
 }UeCb;
 
 /* Database to store information for all UE */
