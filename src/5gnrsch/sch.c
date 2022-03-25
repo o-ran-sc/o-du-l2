@@ -1748,7 +1748,9 @@ uint8_t addSliceCfgInSchDb(SchSliceCfg *storeSliceCfg, SchSliceCfgReq *cfgReq, S
                return RFAILED;
             }
 
-            memcpy(storeSliceCfg->listOfConfirguration[sliceIdx], cfgReq->listOfConfirguration[sliceIdx], sizeof(SchRrmPolicyOfSlice));
+            memcpy(&storeSliceCfg->listOfConfirguration[sliceIdx]->snssai, &cfgReq->listOfConfirguration[sliceIdx]->snssai, sizeof(Snssai));
+            memcpy(storeSliceCfg->listOfConfirguration[sliceIdx]->rrmPolicyRatioInfo, cfgReq->listOfConfirguration[sliceIdx]->rrmPolicyRatioInfo,
+                      sizeof(SchRrmPolicyRatio));
             sliceIdx++;
          }
       }
@@ -1884,7 +1886,8 @@ uint8_t modifySliceCfgInSchDb(SchSliceCfg *storeSliceCfg, SchSliceCfgReq *cfgReq
             {
                if(!memcmp(&storeSliceCfg->listOfConfirguration[sliceIdx]->snssai, &cfgReq->listOfConfirguration[cfgIdx]->snssai, sizeof(Snssai)))
                {
-                  storeSliceCfg->listOfConfirguration[sliceIdx]->rrmPolicyRatioInfo = cfgReq->listOfConfirguration[cfgIdx]->rrmPolicyRatioInfo;
+                  memcpy(storeSliceCfg->listOfConfirguration[sliceIdx]->rrmPolicyRatioInfo, cfgReq->listOfConfirguration[cfgIdx]->rrmPolicyRatioInfo,
+                           sizeof(SchRrmPolicyRatio));
                   break;
                }
             }

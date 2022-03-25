@@ -225,26 +225,6 @@ uint8_t duHandleCellUpInd(Pst *pst, OduCellId *cellId)
 {
    DuCellCb *cellCb = NULLP; 
 
-#ifndef O1_ENABLE
-
-   /*Note: Static Configuration, when O1 is not configuring the RRM policy*/
-   RrmPolicy *rrmPolicy;
-   DU_ALLOC(rrmPolicy, sizeof(RrmPolicy));
-   rrmPolicy->rsrcType = RSRC_PRB;
-   rrmPolicy->numMemberList = 1;
-   DU_ALLOC(rrmPolicy->memberList, sizeof(PolicyMemberList *));
-   DU_ALLOC(rrmPolicy->memberList[0], sizeof(PolicyMemberList));
-   
-   memset(&rrmPolicy->memberList[0]->plmn, 0, sizeof(Plmn)); 
-   rrmPolicy->memberList[0]->snssai.sst = 1;
-   rrmPolicy->memberList[0]->snssai.sd[0] = 2;
-   rrmPolicy->memberList[0]->snssai.sd[1] = 3;
-   rrmPolicy->memberList[0]->snssai.sd[2] = 4;
-   rrmPolicy->policyMinRatio = 30;
-   rrmPolicy->policyMaxRatio = 90;
-   rrmPolicy->policyDedicatedRatio = 10;
-#endif
-
    if(cellId->cellId <=0 || cellId->cellId > MAX_NUM_CELL)
    {
       DU_LOG("\nERROR  -->  DU APP : Invalid Cell Id %d in duHandleCellUpInd()", cellId->cellId);
@@ -260,14 +240,12 @@ uint8_t duHandleCellUpInd(Pst *pst, OduCellId *cellId)
       cellCb->cellStatus = ACTIVATED;
       gCellStatus = CELL_UP;
 
-#ifdef O1_ENABLE
       if(duCfgParam.tempSliceCfg.rrmPolicy)
          BuildAndSendSliceConfigReq(duCfgParam.tempSliceCfg.rrmPolicy, duCfgParam.tempSliceCfg.totalRrmPolicy, duCfgParam.tempSliceCfg.totalSliceCount);
+#ifdef O1_ENABLE
       DU_LOG("\nINFO   -->  DU APP : Raise cell UP alarm for cell id=%d", cellId->cellId);
       raiseCellAlrm(CELL_UP_ALARM_ID, cellId->cellId);
       setCellOpState(cellId->cellId, ENABLED, ACTIVE);
-#else
-      BuildAndSendSliceConfigReq(&rrmPolicy,1, rrmPolicy->numMemberList);
 #endif
 
    }

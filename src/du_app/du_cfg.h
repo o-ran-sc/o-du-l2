@@ -1273,6 +1273,39 @@ typedef struct f1SetupMsg
    char    *f1MsgRspBuf;
 }F1SetupMsg;
 
+
+#ifndef O1_ENABLE
+//RRM POLICY STRUCT
+
+typedef struct rRMPolicyMemberList
+{
+   uint8_t mcc[3];
+   uint8_t mnc[3];
+   uint8_t sd[3];
+   uint8_t sst;
+}RRMPolicyMemberList;
+
+typedef enum
+{
+  PRB,
+  PRB_UL,
+  PRB_DL,
+  RRC,
+  DRB
+}RrmResourceType;
+
+typedef struct rrmPolicyList
+{
+   char id[1];
+   RrmResourceType resourceType;
+   uint8_t rRMMemberNum;
+   RRMPolicyMemberList rRMPolicyMemberList[2];
+   uint8_t rRMPolicyMaxRatio;
+   uint8_t rRMPolicyMinRatio;
+   uint8_t rRMPolicyDedicatedRatio;
+}RrmPolicyList;
+#endif
+
 DuCfgParams duCfgParam;
 
 /*function declarations */
@@ -1281,10 +1314,7 @@ uint8_t readClCfg();
 uint8_t readCfg();
 uint8_t duReadCfg(); 
 uint16_t calcSliv(uint8_t startSymbol, uint8_t lengthSymbol);
-
-#ifdef O1_ENABLE
 uint8_t cpyRrmPolicyInDuCfgParams(RrmPolicyList rrmPolicy[], uint8_t policyNum, CopyOfRecvdSliceCfg *tempSliceCfg);
-#endif
 
 #endif /* __DU_CONFIG_H__ */
 

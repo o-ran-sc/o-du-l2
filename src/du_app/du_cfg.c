@@ -392,6 +392,27 @@ uint8_t readMacCfg()
          memcpy(duCfgParam.macCellCfg.plmnInfoList.snssai[sliceIdx], taiSliceSuppLst->snssai[sliceIdx], sizeof(Snssai));
       }
    }
+
+#ifndef O1_ENABLE
+
+   /*Note: Static Configuration, when O1 is not configuring the RRM policy*/
+   RrmPolicyList rrmPolicy;
+   rrmPolicy.id[0] = 1;
+   rrmPolicy.resourceType = PRB;
+   rrmPolicy.rRMMemberNum = 1;
+   memcpy(rrmPolicy.rRMPolicyMemberList[0].mcc,duCfgParam.macCellCfg.plmnInfoList.plmn.mcc, 3*sizeof(uint8_t));
+   memcpy(rrmPolicy.rRMPolicyMemberList[0].mnc,duCfgParam.macCellCfg.plmnInfoList.plmn.mnc, 3*sizeof(uint8_t));
+   rrmPolicy.rRMPolicyMemberList[0].sst = 1;
+   rrmPolicy.rRMPolicyMemberList[0].sd[0] = 2;
+   rrmPolicy.rRMPolicyMemberList[0].sd[1] = 3;
+   rrmPolicy.rRMPolicyMemberList[0].sd[2] = 4;
+   rrmPolicy.rRMPolicyMaxRatio = 90;
+   rrmPolicy.rRMPolicyMinRatio = 30;
+   rrmPolicy.rRMPolicyDedicatedRatio = 10;
+
+   cpyRrmPolicyInDuCfgParams(&rrmPolicy, 1, &duCfgParam.tempSliceCfg);
+  
+#endif
    return ROK;
 }
 
@@ -1019,7 +1040,6 @@ uint8_t readCfg()
  *         RFAILED - failure
  *
  * ****************************************************************/
-#ifdef O1_ENABLE
 uint8_t cpyRrmPolicyInDuCfgParams(RrmPolicyList rrmPolicy[], uint8_t policyNum, CopyOfRecvdSliceCfg *tempSliceCfg)
 {
    uint8_t policyIdx = 0, memberListIdx = 0, count = 0;
@@ -1079,7 +1099,6 @@ uint8_t cpyRrmPolicyInDuCfgParams(RrmPolicyList rrmPolicy[], uint8_t policyNum, 
    }
    return ROK;
 }
-#endif
 /*******************************************************************
  *
  * @brief Reads config and posts message to du_app on completion
