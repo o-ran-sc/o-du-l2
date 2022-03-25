@@ -16,6 +16,24 @@
       "message": "why is this removed? I had commented this because as per WG5, the list of IEs to be included in UE context setup request for handover does not include cell group config.\nPlease revert",
       "revId": "16c5580481ed94b84e92d0a22874cf476debf17e",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f9dd338d_b0d7993d",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 8734,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-03-25T12:27:42Z",
+      "side": 0,
+      "message": "Done",
+      "parentUuid": "b3743d73_3989522c",
+      "revId": "16c5580481ed94b84e92d0a22874cf476debf17e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
   ]
 }
