@@ -3,6 +3,80 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e1e560e4_f8a09ab7",
+        "filename": "src/5gnrmac/mac_msg_hdl.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 203,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-03-25T11:19:56Z",
+      "side": 1,
+      "message": "UL data transmission not allowed for UE\nprint DU UE F1AP ID instead of ue ID",
+      "revId": "91545a6cb91709cea3b56f4c8ee4c15b0476764a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "712f46c7_b6dc719f",
+        "filename": "src/5gnrmac/mac_msg_hdl.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 808,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-03-25T11:19:56Z",
+      "side": 1,
+      "message": "Move this at scheduler",
+      "revId": "91545a6cb91709cea3b56f4c8ee4c15b0476764a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f8ed5fac_f2d28392",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 975,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-03-25T11:19:56Z",
+      "side": 1,
+      "message": "Data transmission not allowed for ue ID %d\", print du ue f1ap id",
+      "range": {
+        "startLine": 975,
+        "startChar": 47,
+        "endLine": 975,
+        "endChar": 52
+      },
+      "revId": "91545a6cb91709cea3b56f4c8ee4c15b0476764a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "23b4bc31_27123dc4",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 977,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-03-25T11:19:56Z",
+      "side": 1,
+      "message": "check this even before validation of LC",
+      "revId": "91545a6cb91709cea3b56f4c8ee4c15b0476764a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b5a2a651_2fba5b19",
         "filename": "src/cm/du_app_rlc_inf.h",
         "patchSetId": 6
@@ -20,6 +94,40 @@
         "endLine": 130,
         "endChar": 28
       },
+      "revId": "91545a6cb91709cea3b56f4c8ee4c15b0476764a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e0cd8329_8076d5b0",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 10507,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-03-25T11:19:56Z",
+      "side": 1,
+      "message": "make sure to remove before merging",
+      "revId": "91545a6cb91709cea3b56f4c8ee4c15b0476764a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "408cd8b5_36d5e3a6",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 1237,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-03-25T11:19:56Z",
+      "side": 1,
+      "message": "move this code snippet above the comment",
       "revId": "91545a6cb91709cea3b56f4c8ee4c15b0476764a",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
