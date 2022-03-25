@@ -18,6 +18,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4d604dc8_92977f1a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-03-25T08:35:54Z",
+      "side": 1,
+      "message": "NA",
+      "parentUuid": "6dd6c1ae_86c38a60",
+      "revId": "4744b94c784751d9b7418b962e082b5fc0193594",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fb18066e_75852042",
@@ -31,6 +49,30 @@
       "writtenOn": "2022-03-24T12:25:11Z",
       "side": 1,
       "message": "why(lcId !\u003d SRB0_LCID)?\nfor (lcId \u003d\u003d SRB0_LCID) we should set ulData-\u003epduInfo[ulData-\u003enumPdu].commCh \u003d true;",
+      "range": {
+        "startLine": 346,
+        "startChar": 14,
+        "endLine": 346,
+        "endChar": 23
+      },
+      "revId": "4744b94c784751d9b7418b962e082b5fc0193594",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "96dc0ca8_251b676b",
+        "filename": "src/5gnrmac/mac_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 346,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-03-25T08:35:54Z",
+      "side": 1,
+      "message": "Yes the same logical has been applied:\nif (lcId !\u003d SRB 0) then commCh \u003d false\nelse commCh \u003d true",
+      "parentUuid": "fb18066e_75852042",
       "range": {
         "startLine": 346,
         "startChar": 14,
@@ -64,6 +106,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5c35b64c_3faf66e7",
+        "filename": "src/du_app/du_mgr_main.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 551,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-03-25T08:35:54Z",
+      "side": 1,
+      "message": "DONE",
+      "parentUuid": "ffb706a1_427f9999",
+      "range": {
+        "startLine": 551,
+        "startChar": 5,
+        "endLine": 551,
+        "endChar": 28
+      },
+      "revId": "4744b94c784751d9b7418b962e082b5fc0193594",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ff3df9d1_7817d23c",
@@ -77,6 +143,30 @@
       "writtenOn": "2022-03-24T12:20:51Z",
       "side": 1,
       "message": "Can we also describe the bug in short for which we have introduced this fix.? I think it will be useful for future reference.",
+      "range": {
+        "startLine": 476,
+        "startChar": 65,
+        "endLine": 476,
+        "endChar": 77
+      },
+      "revId": "4744b94c784751d9b7418b962e082b5fc0193594",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "20bee3bd_024c4998",
+        "filename": "src/phy_stub/phy_stub_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 476,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-03-25T08:35:54Z",
+      "side": 1,
+      "message": "NA",
+      "parentUuid": "ff3df9d1_7817d23c",
       "range": {
         "startLine": 476,
         "startChar": 65,
@@ -110,6 +200,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "19f98993_50f88666",
+        "filename": "src/phy_stub/phy_stub_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 500,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-03-25T08:35:54Z",
+      "side": 1,
+      "message": "NA",
+      "parentUuid": "d3c109c3_56b96fa6",
+      "range": {
+        "startLine": 500,
+        "startChar": 29,
+        "endLine": 500,
+        "endChar": 35
+      },
+      "revId": "4744b94c784751d9b7418b962e082b5fc0193594",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "acc4f80b_c0831899",
@@ -123,6 +237,30 @@
       "writtenOn": "2022-03-25T06:52:03Z",
       "side": 1,
       "message": "Since this is also rxDataInd, Do we require RLC header here?",
+      "range": {
+        "startLine": 1521,
+        "startChar": 29,
+        "endLine": 1521,
+        "endChar": 35
+      },
+      "revId": "4744b94c784751d9b7418b962e082b5fc0193594",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e100d759_37ea46bd",
+        "filename": "src/phy_stub/phy_stub_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1521,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-03-25T08:35:54Z",
+      "side": 1,
+      "message": "Yes the RLC header bits are part of Status PDU. I have added the description in comments.",
+      "parentUuid": "acc4f80b_c0831899",
       "range": {
         "startLine": 1521,
         "startChar": 29,
