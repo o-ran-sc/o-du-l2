@@ -351,6 +351,20 @@ void *cuConsoleHandler(void *args)
 
          initiateInterDuHandover(sourceDuId, targetDuId, ueId);
       }
+      /* Start Idle mode paging when 'p' is received from console input */
+      else if(ch == 'p')
+      {
+         uint64_t 5gsTmsi = 0;
+
+         DU_LOG("\nEnter 5g-S-TMSI");
+         scanf("%d", &5gsTmsi);
+
+                  if(BuildAndSendPagingMsg(5gsTmsi)!=ROK)
+                  {
+                     DU_LOG("\nERROR --> EGTP: Failed to build and send paging message for 5gsTmsi[%d]\n", );   
+                     return RFAILED;
+                  }
+      }
    }
 }
 /**********************************************************************
