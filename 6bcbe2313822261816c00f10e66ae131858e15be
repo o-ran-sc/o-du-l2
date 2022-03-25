@@ -24,6 +24,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "971c0d13_9526ad50",
+        "filename": "src/5gnrmac/mac_demux.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-03-25T09:26:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b31d0dfc_0ffba052",
+      "range": {
+        "startLine": 132,
+        "startChar": 24,
+        "endLine": 132,
+        "endChar": 31
+      },
+      "revId": "6bcbe2313822261816c00f10e66ae131858e15be",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "79bbfd09_ad729089",
@@ -37,6 +61,24 @@
       "writtenOn": "2022-03-23T17:13:29Z",
       "side": 1,
       "message": "Also, this condition is only to stop UL data, how are we handling DL data?",
+      "revId": "6bcbe2313822261816c00f10e66ae131858e15be",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ebb2b812_3548ac61",
+        "filename": "src/5gnrmac/mac_demux.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-03-25T09:26:27Z",
+      "side": 1,
+      "message": "Yes. MacSchDlRlcBoInfo will handle the stop DL data indication part",
+      "parentUuid": "79bbfd09_ad729089",
       "revId": "6bcbe2313822261816c00f10e66ae131858e15be",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -60,6 +102,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "fe7085f1_a042820d",
+        "filename": "src/5gnrrlc/rlc_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 237,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-03-25T09:26:27Z",
+      "side": 1,
+      "message": "removed from RLC, Not required.",
+      "parentUuid": "2e23c3db_42f27458",
+      "revId": "6bcbe2313822261816c00f10e66ae131858e15be",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7fc5ad9a_33efb3fd",
         "filename": "src/5gnrsch/sch.c",
         "patchSetId": 5
@@ -71,6 +131,24 @@
       "writtenOn": "2022-03-23T17:13:29Z",
       "side": 1,
       "message": "This handles only DL. How about when UE is requesting for UL grant?",
+      "revId": "6bcbe2313822261816c00f10e66ae131858e15be",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ab5c8c51_f6bb2048",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 977,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-03-25T09:26:27Z",
+      "side": 1,
+      "message": "This handles DL. And UL grant part is also modified.",
+      "parentUuid": "7fc5ad9a_33efb3fd",
       "revId": "6bcbe2313822261816c00f10e66ae131858e15be",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -98,6 +176,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e04bca44_9465fb8a",
+        "filename": "src/cm/du_app_mac_inf.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 526,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-03-25T09:26:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "148e88b8_46b2171b",
+      "range": {
+        "startLine": 526,
+        "startChar": 3,
+        "endLine": 526,
+        "endChar": 10
+      },
+      "revId": "6bcbe2313822261816c00f10e66ae131858e15be",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3891674e_2506e4f8",
@@ -111,6 +213,24 @@
       "writtenOn": "2022-03-23T17:13:29Z",
       "side": 1,
       "message": "can we call this as data transmission allowed? which one would be more appropriate? think on it.",
+      "revId": "6bcbe2313822261816c00f10e66ae131858e15be",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2766adca_4b1e5019",
+        "filename": "src/cm/du_app_rlc_inf.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-03-25T09:26:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3891674e_2506e4f8",
       "revId": "6bcbe2313822261816c00f10e66ae131858e15be",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -132,6 +252,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "00bae97a_1f9c5989",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 6092,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-03-25T09:26:27Z",
+      "side": 1,
+      "message": "yes",
+      "parentUuid": "f1a1dbd8_bf73eb77",
+      "revId": "6bcbe2313822261816c00f10e66ae131858e15be",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8ed303e5_c8ed1d8f",
@@ -145,6 +283,30 @@
       "writtenOn": "2022-03-23T17:13:29Z",
       "side": 1,
       "message": "F1AP",
+      "range": {
+        "startLine": 7650,
+        "startChar": 24,
+        "endLine": 7650,
+        "endChar": 28
+      },
+      "revId": "6bcbe2313822261816c00f10e66ae131858e15be",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "433300e0_6c4232c3",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 7650,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-03-25T09:26:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8ed303e5_c8ed1d8f",
       "range": {
         "startLine": 7650,
         "startChar": 24,
@@ -178,6 +340,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c29084ae_758da84a",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 7749,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-03-25T09:26:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "892dcd62_9f1ecd86",
+      "range": {
+        "startLine": 7749,
+        "startChar": 24,
+        "endLine": 7749,
+        "endChar": 28
+      },
+      "revId": "6bcbe2313822261816c00f10e66ae131858e15be",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1ddd688a_dc9c2f9e",
@@ -191,6 +377,24 @@
       "writtenOn": "2022-03-23T17:13:29Z",
       "side": 1,
       "message": "remove/comment this with a comment",
+      "revId": "6bcbe2313822261816c00f10e66ae131858e15be",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ecb8ac18_3745761d",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 10509,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-03-25T09:26:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1ddd688a_dc9c2f9e",
       "revId": "6bcbe2313822261816c00f10e66ae131858e15be",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -212,6 +416,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4a215ca4_2b088bff",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 10603,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-03-25T09:26:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3bdee022_5c7d118e",
+      "revId": "6bcbe2313822261816c00f10e66ae131858e15be",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5cc76698_de8752f1",
@@ -225,6 +447,30 @@
       "writtenOn": "2022-03-23T17:13:29Z",
       "side": 1,
       "message": "This should be set to true. This RRC reconfiguration message is sent to UE to inform about the change of DU and all UE related configurations, hence all RB configurations must be updated in this RRC reconfig msg",
+      "range": {
+        "startLine": 10639,
+        "startChar": 116,
+        "endLine": 10639,
+        "endChar": 121
+      },
+      "revId": "6bcbe2313822261816c00f10e66ae131858e15be",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d7ef3c3e_07c53163",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 10639,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-03-25T09:26:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5cc76698_de8752f1",
       "range": {
         "startLine": 10639,
         "startChar": 116,
