@@ -1505,7 +1505,7 @@ uint8_t unpackDuMacSliceReCfgRsp(MacDuSliceReCfgRspFunc func, Pst *pst, Buffer *
  *
  * @details
  *
- *    Function : packDuMacSliceReCfgRsp
+ *    Function : packMacSlotInd
  *
  *    Functionality:
  *       Pack and send Slot ind from MAC to DU APP

@@ -48,16 +48,25 @@ int PrepFinalEncBuf(const void *buffer, size_t size, void *encodedBuf)
  *
  * ****************************************************************/
 
-uint8_t fillBitString(BIT_STRING_t *id, uint8_t unusedBits, uint8_t byteSize, uint8_t val)
+uint8_t fillBitString(BIT_STRING_t *id, uint8_t unusedBits, uint8_t byteSize, void *val)
 {
-   uint8_t tmp;
+   uint32_t tmp = 0, byteIdx = 0;
+
    if(id->buf == NULLP)
    {
       return RFAILED;
    }
-
+   tmp = *((uint32_t *)val);
    memset(id->buf, 0, byteSize-1);
-   id->buf[byteSize-1]   = val;
+
+   /*Now, seggregate the value into 'byteSize' number of Octets in sequence:
+    * 1. Left Shift the value by 'UnsusedBits'
+    * 2. Pull out a byte of value (Starting from MSB) and put in the 0th Octet
+    * 3. Fill the buffer/String Octet one by one until LSB is reached*/
+   for(byteIdx = 1; byteIdx <= byteSize; byteIdx++)
+   {
+      id->buf[byteIdx - 1]   = ((tmp << unusedBits) & (0xFF << (8 * (byteSize - byteIdx)))) >> (8 * (byteSize - byteIdx));
+   }
    id->bits_unused = unusedBits;
    return ROK;
 }
