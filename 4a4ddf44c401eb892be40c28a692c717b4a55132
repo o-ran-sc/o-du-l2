@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6ce06052_e452afd3",
+        "filename": "src/5gnrmac/mac_msg_hdl.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 201,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-03-26T09:49:32Z",
+      "side": 1,
+      "message": "Here also, all UL transmission stops i.e. BSR and all? Is this expected i.e. As per my understanding it is to stop the data transmission right?",
+      "range": {
+        "startLine": 201,
+        "startChar": 41,
+        "endLine": 201,
+        "endChar": 48
+      },
+      "revId": "4a4ddf44c401eb892be40c28a692c717b4a55132",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7a668743_6aa19a31",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 965,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-03-26T09:49:32Z",
+      "side": 1,
+      "message": "If this flag comes, Do we need to stop Signalling messages also . \n(For eg: SRB0 )?",
+      "range": {
+        "startLine": 965,
+        "startChar": 44,
+        "endLine": 965,
+        "endChar": 66
+      },
+      "revId": "4a4ddf44c401eb892be40c28a692c717b4a55132",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a424b1e3_ffdf9c69",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 967,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-03-26T09:49:32Z",
+      "side": 1,
+      "message": "doesnt this Id used during HO.?. Since in this function we are using ueId extracted from CRNTI so ueID will be useful to identify this log",
+      "range": {
+        "startLine": 967,
+        "startChar": 87,
+        "endLine": 967,
+        "endChar": 97
+      },
+      "revId": "4a4ddf44c401eb892be40c28a692c717b4a55132",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ca388d57_4b8b5e09",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 1123,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-03-26T09:49:32Z",
+      "side": 1,
+      "message": "same as above",
+      "range": {
+        "startLine": 1123,
+        "startChar": 87,
+        "endLine": 1123,
+        "endChar": 97
+      },
+      "revId": "4a4ddf44c401eb892be40c28a692c717b4a55132",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b3ff198e_6494a310",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 10625,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-03-26T09:49:32Z",
+      "side": 1,
+      "message": "since we are only stopping the transmission.. Can we also  introduce the trigger for restart for compeleteness..?",
+      "range": {
+        "startLine": 10625,
+        "startChar": 20,
+        "endLine": 10625,
+        "endChar": 21
+      },
+      "revId": "4a4ddf44c401eb892be40c28a692c717b4a55132",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
