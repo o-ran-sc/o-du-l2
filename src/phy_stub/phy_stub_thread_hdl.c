@@ -158,7 +158,7 @@ void *l1ConsoleHandler(void *args)
          while(counter)
          {
             /* Start Pumping data from PHY stub to DU */
-            for(ueIdx=0; ueIdx < MAX_NUM_UE; ueIdx++)
+            for(ueIdx=0; ueIdx < 1; ueIdx++)
             {
                for(drbIdx = 0; drbIdx < NUM_DRB_TO_PUMP_DATA; drbIdx++) //Number of DRB times the loop will run
                {
