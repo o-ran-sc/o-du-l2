@@ -83,6 +83,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "016dc6d8_8fb7d092",
+        "filename": "src/5gnrmac/mac_demux.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-03-28T05:46:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ebb2b812_3548ac61",
+      "revId": "6bcbe2313822261816c00f10e66ae131858e15be",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2e23c3db_42f27458",
@@ -118,6 +136,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "36dd718f_1c66c1e8",
+        "filename": "src/5gnrrlc/rlc_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 237,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-03-28T05:46:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fe7085f1_a042820d",
+      "revId": "6bcbe2313822261816c00f10e66ae131858e15be",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7fc5ad9a_33efb3fd",
@@ -149,6 +185,24 @@
       "side": 1,
       "message": "This handles DL. And UL grant part is also modified.",
       "parentUuid": "7fc5ad9a_33efb3fd",
+      "revId": "6bcbe2313822261816c00f10e66ae131858e15be",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "59169eb3_14c0a7b2",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 977,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-03-28T05:46:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ab5c8c51_f6bb2048",
       "revId": "6bcbe2313822261816c00f10e66ae131858e15be",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },

@@ -18,6 +18,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f0668b5c_1b1818c9",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 8244,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-03-28T05:46:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "560b687b_70d276c0",
+      "revId": "b400bd273a131d5bc96cbe78079707f9fdd18a0d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "30c5f368_32578735",
@@ -41,6 +59,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "820ef960_6be29014",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 8281,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-03-28T05:46:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "30c5f368_32578735",
+      "range": {
+        "startLine": 8281,
+        "startChar": 12,
+        "endLine": 8281,
+        "endChar": 24
+      },
+      "revId": "b400bd273a131d5bc96cbe78079707f9fdd18a0d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4c65a426_9903d47e",
@@ -54,6 +96,24 @@
       "writtenOn": "2022-03-14T08:55:03Z",
       "side": 1,
       "message": "remove",
+      "revId": "b400bd273a131d5bc96cbe78079707f9fdd18a0d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "794eb82b_cd0d63ea",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 13821,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-03-28T05:46:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4c65a426_9903d47e",
       "revId": "b400bd273a131d5bc96cbe78079707f9fdd18a0d",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -106,6 +166,24 @@
       "writtenOn": "2022-03-14T08:55:03Z",
       "side": 1,
       "message": "don\u0027t fill the information in case of stop transmission at MAC, RLC.",
+      "revId": "b400bd273a131d5bc96cbe78079707f9fdd18a0d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8b1d5ee0_c675bd6c",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1223,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-03-28T05:46:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d30c66b8_97f990d3",
       "revId": "b400bd273a131d5bc96cbe78079707f9fdd18a0d",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
