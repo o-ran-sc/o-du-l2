@@ -44,7 +44,7 @@
 #define MIN_TEID 1   /*[Spec 29.281,Sec 5.1]: All Zero TEIDs are never assigned for setting up GTP-U Tunnel*/
 #define MAX_TEID MAX_NUM_DRB * MAX_NUM_UE /*[Spec 29.281]: Max limit is not mentioned but as per GTP-U Header Format, TEID occupies 4 octets */
 
-#define NUM_TUNNEL_TO_PUMP_DATA 9
+#define NUM_TUNNEL_TO_PUMP_DATA 2
 #define NUM_DL_PACKETS 1
 
 uint8_t         sockType;
@@ -118,7 +118,7 @@ typedef struct egtpDstCb
    CmHashListCp  teIdLst;        /* Tunnel Id list for this destination */
 }EgtpDstCb;
 
-typedef struct egtpParams
+typedef struct egtpAssoc 
 {
    SctpIpAddr  localIp;
    uint16_t    localPort;
@@ -127,13 +127,20 @@ typedef struct egtpParams
    uint32_t    currTunnelId;
    uint32_t    minTunnelId;
    uint32_t    maxTunnelId;
-}EgtpParams;
+}EgtpAssoc;
+
+typedef struct cuEgtpParams
+{
+   uint8_t        numDu;
+   EgtpAssoc      egtpAssoc[MAX_DU_SUPPORTED];
+}CuEgtpParams;
 
 typedef struct egtpGlobalCb
 {
-   EgtpParams   egtpCfg;         /* EGTP configuration */
+   CuEgtpParams egtpCfg;         /* EGTP configuration */
    EgtpTptSrvr  recvTptSrvr;     /* Transport server for receiving UDP msg */
-   EgtpDstCb    dstCb;           /* Destination endpoint */
+   uint8_t      numDu;
+   EgtpDstCb    dstCb[MAX_DU_SUPPORTED];          /* Destination endpoint */
    uint8_t      gCntPdu[MAX_TEID+1]; /* Maintaining PDU count for each bearer */
 }EgtpGlobalCb;
 EgtpGlobalCb egtpCb;   /* EGTP global control block */

@@ -2628,7 +2628,7 @@ uint8_t BuildULTnlInfo(TnlInfo *ulUpTnlInfo, ULUPTNLInformation_ToBeSetup_List_t
       ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->gTP_TEID.buf[0] = 0;
       ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->gTP_TEID.buf[1] = 0;
       ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->gTP_TEID.buf[2] = 0;
-      ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->gTP_TEID.buf[3] = cuCb.cuCfgParams.egtpParams.currTunnelId++;
+      ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->gTP_TEID.buf[3] = cuCb.cuCfgParams.egtpParams.egtpAssoc[0].currTunnelId++;
 
       ulUpTnlInfo->teId[0] = ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->gTP_TEID.buf[0];
       ulUpTnlInfo->teId[1] = ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->gTP_TEID.buf[1];
@@ -9753,7 +9753,7 @@ uint8_t BuildUlTnlInfoforSetupMod(uint8_t ueId, uint8_t drbId, TnlInfo *ulTnlInf
    else
    {
       ulInfo->list.array[arrIdx]->uLUPTNLInformation.choice.gTPTunnel->\
-        gTP_TEID.buf[3] = cuCb.cuCfgParams.egtpParams.currTunnelId++;
+        gTP_TEID.buf[3] = cuCb.cuCfgParams.egtpParams.egtpAssoc[0].currTunnelId++;
    }
 
    ulTnlInfo->teId[0] = ulInfo->list.array[arrIdx]->uLUPTNLInformation.choice.gTPTunnel->gTP_TEID.buf[0];

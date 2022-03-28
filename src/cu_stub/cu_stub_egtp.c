@@ -84,7 +84,8 @@ S16 egtpActvInit()
 uint8_t egtpInitReq()
 {
    uint8_t ret = ROK;
-
+   
+   egtpCb.egtpCfg = cuCb.cuCfgParams.egtpParams;
    ret = cuEgtpCfgReq();
    if(ret != ROK)
    {
@@ -118,29 +119,32 @@ uint8_t egtpInitReq()
  * ***********************************************************************/
 S16 cuEgtpCfgReq()
 {
-   uint8_t ret;
-
-   memcpy(&egtpCb.egtpCfg, &cuCb.cuCfgParams.egtpParams, sizeof(EgtpParams));
-
-   egtpCb.recvTptSrvr.addr.address = CM_INET_NTOH_UINT32(egtpCb.egtpCfg.localIp.ipV4Addr);
-   egtpCb.recvTptSrvr.addr.port = EGTP_DFLT_PORT;
-
-   egtpCb.dstCb.dstIp = CM_INET_NTOH_UINT32(egtpCb.egtpCfg.destIp.ipV4Addr);
-   egtpCb.dstCb.dstPort = egtpCb.egtpCfg.destPort;
-   egtpCb.dstCb.sendTptSrvr.addr.address = CM_INET_NTOH_UINT32(egtpCb.egtpCfg.localIp.ipV4Addr);
-   egtpCb.dstCb.sendTptSrvr.addr.port = egtpCb.egtpCfg.localPort;
-   egtpCb.dstCb.numTunn = 0;
-
-   ret = cmHashListInit(&(egtpCb.dstCb.teIdLst), 1024, sizeof(EgtpTeIdCb), FALSE, CM_HASH_KEYTYPE_UINT32_MOD, CU_APP_MEM_REG, CU_POOL);
-
-   if(ret != ROK)
+   uint8_t ret, destIdx =0;
+   
+   for(destIdx=0; destIdx < egtpCb.egtpCfg.numDu; destIdx++)
    {
-      DU_LOG("\nERROR  -->  EGTP : TeId hash list initialization failed");
-      return RFAILED;
-   }
-   else
-   {
-      DU_LOG("\nINFO  -->  EGTP : Configuration successful");
+      memcpy(&egtpCb.egtpCfg, &cuCb.cuCfgParams.egtpParams, sizeof(CuEgtpParams));
+
+      egtpCb.recvTptSrvr.addr.address = CM_INET_NTOH_UINT32(egtpCb.egtpCfg.egtpAssoc[destIdx].localIp.ipV4Addr);
+      egtpCb.recvTptSrvr.addr.port = EGTP_DFLT_PORT;
+
+      egtpCb.dstCb[destIdx].dstIp = CM_INET_NTOH_UINT32(egtpCb.egtpCfg.egtpAssoc[destIdx].destIp.ipV4Addr);
+      egtpCb.dstCb[destIdx].dstPort = egtpCb.egtpCfg.egtpAssoc[destIdx].destPort;
+      egtpCb.dstCb[destIdx].sendTptSrvr.addr.address = CM_INET_NTOH_UINT32(egtpCb.egtpCfg.egtpAssoc[destIdx].localIp.ipV4Addr);
+      egtpCb.dstCb[destIdx].sendTptSrvr.addr.port = egtpCb.egtpCfg.egtpAssoc[destIdx].localPort;
+      egtpCb.dstCb[destIdx].numTunn = 0;
+
+      ret = cmHashListInit(&(egtpCb.dstCb[destIdx].teIdLst), 1024, sizeof(EgtpTeIdCb), FALSE, CM_HASH_KEYTYPE_UINT32_MOD, CU_APP_MEM_REG, CU_POOL);
+
+      if(ret != ROK)
+      {
+         DU_LOG("\nERROR  -->  EGTP : TeId hash list initialization failed");
+         return RFAILED;
+      }
+      else
+      {
+         DU_LOG("\nINFO  -->  EGTP : Configuration successful");
+      }
    }
 
    return ROK;
@@ -184,13 +188,13 @@ S16 cuEgtpSrvOpenReq(Pst *pst)
       return RFAILED;
    }
 
-   if(ret = (cmInetSocket(sockType, &(egtpCb.dstCb.sendTptSrvr.sockFd), protType)) != ROK)
+   if(ret = (cmInetSocket(sockType, &(egtpCb.dstCb[0].sendTptSrvr.sockFd), protType)) != ROK)
    {  
       DU_LOG("\nERROR  -->  EGTP : Failed to open UDP socket");
       return RFAILED;
    }
       
-   ret = cmInetBind(&(egtpCb.dstCb.sendTptSrvr.sockFd), &(egtpCb.dstCb.sendTptSrvr.addr));
+   ret = cmInetBind(&(egtpCb.dstCb[0].sendTptSrvr.sockFd), &(egtpCb.dstCb[0].sendTptSrvr.addr));
    if(ret != ROK)
    {  
       DU_LOG("\nERROR  -->  EGTP : Failed to bind socket");
@@ -200,7 +204,7 @@ S16 cuEgtpSrvOpenReq(Pst *pst)
    /* TODO: set socket options */
 
    DU_LOG("\nINFO  -->  EGTP : Receiver socket[%d] and Sender socket[%d] open", egtpCb.recvTptSrvr.sockFd.fd,\
-   egtpCb.dstCb.sendTptSrvr.sockFd.fd);
+   egtpCb.dstCb[0].sendTptSrvr.sockFd.fd);
    return ROK;
 } /* cuEgtpSrvOpenReq */
 
@@ -291,14 +295,14 @@ S16 cuEgtpTnlAdd(EgtpTnlEvt tnlEvt)
    teidCb->teId = tnlEvt.lclTeid;
    teidCb->remTeId = tnlEvt.remTeid;
 
-   ret = cmHashListInsert(&(egtpCb.dstCb.teIdLst), (PTR)teidCb, (uint8_t *)&(teidCb->teId), sizeof(uint32_t));
+   ret = cmHashListInsert(&(egtpCb.dstCb[0].teIdLst), (PTR)teidCb, (uint8_t *)&(teidCb->teId), sizeof(uint32_t));
    if(ret != ROK)
    {
       DU_LOG("\nERROR  -->  EGTP : Failed to insert in hash list");
       CU_FREE(teidCb, (Size)sizeof(EgtpTeIdCb));
       return RFAILED;
    }
-   egtpCb.dstCb.numTunn++;
+   egtpCb.dstCb[0].numTunn++;
 
    /* Encoding pre-defined header */
    memset(&preDefHdr, 0, sizeof(EgtpMsgHdr));
@@ -340,7 +344,7 @@ S16 cuEgtpTnlMod(EgtpTnlEvt tnlEvt)
 
    DU_LOG("\nDEBUG  -->  CU_STUB : Tunnel modification : LocalTeid[%d] Remote Teid[%d]", tnlEvt.lclTeid, tnlEvt.remTeid);
 
-   cmHashListFind(&(egtpCb.dstCb.teIdLst), (uint8_t *)&(tnlEvt.teId), sizeof(uint32_t), 0, (PTR *)&teidCb);
+   cmHashListFind(&(egtpCb.dstCb[0].teIdLst), (uint8_t *)&(tnlEvt.teId), sizeof(uint32_t), 0, (PTR *)&teidCb);
    if(teidCb == NULLP)
    {
       DU_LOG("\nDEBUG --> CU_STUBTunnel id not found");
@@ -374,16 +378,16 @@ S16 cuEgtpTnlDel(EgtpTnlEvt tnlEvt)
 
    DU_LOG("\nDEBUG  -->  EGTP : Tunnel deletion : Local Teid[%d] Remote Teid[%d]", tnlEvt.lclTeid, tnlEvt.remTeid);
    
-   cmHashListFind(&(egtpCb.dstCb.teIdLst), (uint8_t *)&(tnlEvt.lclTeid), sizeof(uint32_t), 0, (PTR *)&teidCb);
+   cmHashListFind(&(egtpCb.dstCb[0].teIdLst), (uint8_t *)&(tnlEvt.lclTeid), sizeof(uint32_t), 0, (PTR *)&teidCb);
    if(teidCb == NULLP)
    {
       DU_LOG("\nERROR  -->  EGTP : Tunnel id[%d] not configured", tnlEvt.lclTeid);
       return RFAILED;
    } 
 
-   cmHashListDelete(&(egtpCb.dstCb.teIdLst), (PTR)teidCb);
+   cmHashListDelete(&(egtpCb.dstCb[0].teIdLst), (PTR)teidCb);
    CU_FREE(teidCb, (Size)sizeof(EgtpTeIdCb));
-   egtpCb.dstCb.numTunn--;
+   egtpCb.dstCb[0].numTunn--;
 
    return ROK;
 } /* cuEgtpTnlDel */
@@ -705,8 +709,8 @@ S16 BuildAppMsg(EgtpMsg  *egtpMsg)
    ipv4Hdr.length = CM_IPV4_HDRLEN + mLen;
    ipv4Hdr.hdrVer = 0x45;
    ipv4Hdr.proto = 1;
-   ipv4Hdr.srcAddr = CM_INET_NTOH_UINT32(egtpCb.egtpCfg.localIp.ipV4Addr);
-   ipv4Hdr.destAddr = CM_INET_NTOH_UINT32(egtpCb.egtpCfg.destIp.ipV4Addr);
+   ipv4Hdr.srcAddr = CM_INET_NTOH_UINT32(egtpCb.egtpCfg.egtpAssoc[0].localIp.ipV4Addr);
+   ipv4Hdr.destAddr = CM_INET_NTOH_UINT32(egtpCb.egtpCfg.egtpAssoc[0].destIp.ipV4Addr);
  
    /* Packing IPv4 header into buffer */
    S16          ret, cnt, idx;
@@ -788,7 +792,7 @@ S16 BuildEgtpMsg(EgtpMsg *egtpMsg)
    uint32_t    msgLen;
    EgtpMsgHdr   *msgHdr;
  
-   cmHashListFind(&(egtpCb.dstCb.teIdLst), (uint8_t *)&(egtpMsg->msgHdr.teId), sizeof(uint32_t), 0, (PTR *)&teidCb);
+   cmHashListFind(&(egtpCb.dstCb[0].teIdLst), (uint8_t *)&(egtpMsg->msgHdr.teId), sizeof(uint32_t), 0, (PTR *)&teidCb);
    if(teidCb == NULLP)
    {
       DU_LOG("\nERROR  -->  EGTP : Tunnel id[%d] not configured", egtpMsg->msgHdr.teId);
@@ -861,10 +865,10 @@ S16 cuEgtpSendMsg(Buffer *mBuf)
    info.region = CU_APP_MEM_REG;
    info.pool = CU_POOL;
  
-   dstAddr.port = EGTP_DFLT_PORT;
-   dstAddr.address = egtpCb.dstCb.dstIp;
+   dstAddr.port = egtpCb.dstCb[0].dstPort;
+   dstAddr.address = egtpCb.dstCb[0].dstIp;
  
-   ret = cmInetSendMsg(&(egtpCb.dstCb.sendTptSrvr.sockFd), &dstAddr, &info, mBuf, &txLen, CM_INET_NO_FLAG);
+   ret = cmInetSendMsg(&(egtpCb.dstCb[0].sendTptSrvr.sockFd), &dstAddr, &info, mBuf, &txLen, CM_INET_NO_FLAG);
    if(ret != ROK && ret != RWOULDBLOCK)
    {
       DU_LOG("\nERROR  -->  EGTP : Message send failure");

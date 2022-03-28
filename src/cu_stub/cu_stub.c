@@ -162,6 +162,7 @@ void readCuCfg()
    cuCb.cuCfgParams.sctpParams.numDu = 1;
 #else
    cuCb.cuCfgParams.sctpParams.numDu = 0;
+   cuCb.cuCfgParams.egtpParams.numDu = 0;
    numDu = &cuCb.cuCfgParams.sctpParams.numDu;
    while(*numDu < MAX_DU_SUPPORTED)
    {
@@ -178,7 +179,22 @@ void readCuCfg()
       cuCb.cuCfgParams.sctpParams.sctpAssoc[*numDu].cuIpAddr.ipV4Addr = ipv4_cu;
       cuCb.cuCfgParams.sctpParams.sctpAssoc[*numDu].cuIpAddr.ipV6Pres = false;
       cuCb.cuCfgParams.sctpParams.sctpAssoc[*numDu].cuPort = CU_SCTP_PORT_TO_DU[*numDu];
+
+      /* EGTP Parameters */
+      memset(&ipv4_du, 0, sizeof(uint32_t));
+      cmInetAddr((S8*)DU_IP_V4_ADDR[*numDu], &ipv4_du);
+      cuCb.cuCfgParams.egtpParams.egtpAssoc[*numDu].localIp.ipV4Pres = TRUE;
+      cuCb.cuCfgParams.egtpParams.egtpAssoc[*numDu].localIp.ipV4Addr = ipv4_cu;
+      cuCb.cuCfgParams.egtpParams.egtpAssoc[*numDu].localPort = CU_EGTP_PORT[*numDu];
+      cuCb.cuCfgParams.egtpParams.egtpAssoc[*numDu].destIp.ipV4Pres = TRUE;
+      cuCb.cuCfgParams.egtpParams.egtpAssoc[*numDu].destIp.ipV4Addr = ipv4_du;
+      cuCb.cuCfgParams.egtpParams.egtpAssoc[*numDu].destPort = DU_EGTP_PORT[*numDu];
+      cuCb.cuCfgParams.egtpParams.egtpAssoc[*numDu].minTunnelId = MIN_TEID;
+      cuCb.cuCfgParams.egtpParams.egtpAssoc[*numDu].currTunnelId = cuCb.cuCfgParams.egtpParams.egtpAssoc[*numDu].minTunnelId;
+      cuCb.cuCfgParams.egtpParams.egtpAssoc[*numDu].maxTunnelId = MAX_TEID;
+      
       (*numDu)++;
+      cuCb.cuCfgParams.egtpParams.numDu = *numDu;
    }
 
 #endif
@@ -196,16 +212,6 @@ void readCuCfg()
    cuCb.cuCfgParams.rrcVersion.extRrcVer = EXT_RRC_VER;
 
 
-   /* EGTP Parameters */
-   cuCb.cuCfgParams.egtpParams.localIp.ipV4Pres = TRUE;
-   cuCb.cuCfgParams.egtpParams.localIp.ipV4Addr = ipv4_cu;
-   cuCb.cuCfgParams.egtpParams.localPort = CU_EGTP_PORT;
-   cuCb.cuCfgParams.egtpParams.destIp.ipV4Pres = TRUE;
-   cuCb.cuCfgParams.egtpParams.destIp.ipV4Addr = ipv4_du;
-   cuCb.cuCfgParams.egtpParams.destPort = DU_EGTP_PORT;
-   cuCb.cuCfgParams.egtpParams.minTunnelId = MIN_TEID;
-   cuCb.cuCfgParams.egtpParams.currTunnelId = cuCb.cuCfgParams.egtpParams.minTunnelId;
-   cuCb.cuCfgParams.egtpParams.maxTunnelId = MAX_TEID;
 
 } /* End of readCuCfg */
 
@@ -276,7 +282,7 @@ void *cuConsoleHandler(void *args)
     * NUM_TUNNEL_TO_PUMP_DATA = 9, NUM_DL_PACKETS = 1.
     * totalDataPacket = totalNumOfTestFlow * NUM_TUNNEL_TO_PUMP_DATA * NUM_DL_PACKETS 
     * totalDataPacket = [500*9*1] */
-   int32_t totalNumOfTestFlow = 500; 
+   int32_t totalNumOfTestFlow = 10; 
 
    while(true) 
    {

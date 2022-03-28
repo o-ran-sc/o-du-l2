@@ -29,16 +29,16 @@
 
 #ifndef O1_ENABLE
 
-#define DU_IP_V4_ADDR "192.168.130.81"
-#define CU_IP_V4_ADDR "192.168.130.82"
-#define RIC_IP_V4_ADDR "192.168.130.80"
+#define DU_IP_V4_ADDR "192.168.130.71"
+#define CU_IP_V4_ADDR "192.168.130.72"
+#define RIC_IP_V4_ADDR "192.168.130.73"
 #define DU_PORT 38472
 #define CU_PORT 38472
 #define RIC_PORT 36421
 #endif
 
 #define DU_EGTP_PORT  39001
-#define CU_EGTP_PORT  39002
+#define CU_EGTP_PORT  39003
 #define NR_PCI 1
 #define NR_CELL_ID 1
 
