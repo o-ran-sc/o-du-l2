@@ -285,7 +285,7 @@ uint8_t egtpCfgReq(Pst *pst, EgtpConfig egtpCfg)
    memcpy(&egtpCb.egtpCfg, &egtpCfg, sizeof(EgtpConfig));
 
    egtpCb.recvTptSrvr.addr.address = CM_INET_NTOH_UINT32(egtpCb.egtpCfg.localIp.ipV4Addr);
-   egtpCb.recvTptSrvr.addr.port = EGTP_DFLT_PORT;
+   egtpCb.recvTptSrvr.addr.port = EGTP_RECVR_PORT;
 
    egtpCb.dstCb.dstIp = CM_INET_NTOH_UINT32(egtpCb.egtpCfg.destIp.ipV4Addr);
    egtpCb.dstCb.dstPort = egtpCb.egtpCfg.destPort;
@@ -877,7 +877,7 @@ uint8_t egtpSendMsg(Buffer *mBuf)
    info.region = DU_APP_MEM_REGION;
    info.pool = DU_POOL;
 
-   dstAddr.port = EGTP_DFLT_PORT;
+   dstAddr.port = EGTP_RECVR_PORT;
    dstAddr.address = egtpCb.dstCb.dstIp;
 
    ret = cmInetSendMsg(&(egtpCb.dstCb.sendTptSrvr.sockFd), &dstAddr, &info, \

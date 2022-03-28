@@ -72,7 +72,7 @@ typedef struct sctpAssocInfo
    uint16_t    cuPort;
 }SctpAssocInfo;
 
-typedef struct CuSctpParams
+typedef struct cuSctpParams
 {
    uint8_t        numDu;
    SctpAssocInfo  sctpAssoc[MAX_DU_SUPPORTED];
