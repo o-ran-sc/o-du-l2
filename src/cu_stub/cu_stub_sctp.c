@@ -420,8 +420,6 @@ uint8_t sctpSockPoll()
 
    memset(&f1PollParams, 0, sizeof(sctpSockPollParams));
     
-   egtpFromAddr.port = egtpCb.dstCb.dstPort;
-   egtpFromAddr.address = egtpCb.dstCb.dstIp;
 
    /* All sockets are non-blocking */
    timeout = 0;
@@ -443,15 +441,21 @@ uint8_t sctpSockPoll()
       }
 
       /* Receiving EGTP data */
-      egtpBufLen = -1;
-      ret = cmInetRecvMsg(&(egtpCb.recvTptSrvr.sockFd), &egtpFromAddr, &memInfo, &egtpBuf, &egtpBufLen, CM_INET_NO_FLAG);
-      if(ret == ROK && egtpBuf != NULLP)
+      for(destIdx = 0; destIdx < egtpCb.numDu; destIdx++)
       {
-         DU_LOG("\nINFO  -->  EGTP : Received UL Message [%ld]\n", numMsgRcvd+1);
-         numMsgRcvd++;
-         //ODU_PRINT_MSG(egtpBuf, 0 ,0);
-         cuEgtpHdlRecvMsg(egtpBuf);
+         
+         egtpFromAddr.port = egtpCb.dstCb[destIdx].dstPort;
+         egtpFromAddr.address = egtpCb.dstCb[destIdx].dstIp;
+         egtpBufLen = -1;
+         ret = cmInetRecvMsg(&(egtpCb.recvTptSrvr.sockFd), &egtpFromAddr, &memInfo, &egtpBuf, &egtpBufLen, CM_INET_NO_FLAG);
+         if(ret == ROK && egtpBuf != NULLP)
+         {
+            DU_LOG("\nINFO  -->  EGTP : Received UL Message [%ld] from DUid %d\n", numMsgRcvd+1, egtpCb.dstCb[destIdx].duId);
+            numMsgRcvd++;
+            //ODU_PRINT_MSG(egtpBuf, 0 ,0);
+            cuEgtpHdlRecvMsg(egtpBuf);
 
+         }
       }
    };
    return (ret);

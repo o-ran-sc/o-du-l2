@@ -84,7 +84,8 @@ S16 egtpActvInit()
 uint8_t egtpInitReq()
 {
    uint8_t ret = ROK;
-
+   
+   egtpCb.egtpCfg = cuCb.cuCfgParams.egtpParams;
    ret = cuEgtpCfgReq();
    if(ret != ROK)
    {
@@ -118,30 +119,35 @@ uint8_t egtpInitReq()
  * ***********************************************************************/
 S16 cuEgtpCfgReq()
 {
-   uint8_t ret;
-
-   memcpy(&egtpCb.egtpCfg, &cuCb.cuCfgParams.egtpParams, sizeof(EgtpParams));
-
-   egtpCb.recvTptSrvr.addr.address = CM_INET_NTOH_UINT32(egtpCb.egtpCfg.localIp.ipV4Addr);
-   egtpCb.recvTptSrvr.addr.port = EGTP_DFLT_PORT;
-
-   egtpCb.dstCb.dstIp = CM_INET_NTOH_UINT32(egtpCb.egtpCfg.destIp.ipV4Addr);
-   egtpCb.dstCb.dstPort = egtpCb.egtpCfg.destPort;
-   egtpCb.dstCb.sendTptSrvr.addr.address = CM_INET_NTOH_UINT32(egtpCb.egtpCfg.localIp.ipV4Addr);
-   egtpCb.dstCb.sendTptSrvr.addr.port = egtpCb.egtpCfg.localPort;
-   egtpCb.dstCb.numTunn = 0;
-
-   ret = cmHashListInit(&(egtpCb.dstCb.teIdLst), 1024, sizeof(EgtpTeIdCb), FALSE, CM_HASH_KEYTYPE_UINT32_MOD, CU_APP_MEM_REG, CU_POOL);
-
-   if(ret != ROK)
+   uint8_t ret, destIdx =0;
+   
+   memcpy(&egtpCb.egtpCfg, &cuCb.cuCfgParams.egtpParams, sizeof(CuEgtpParams));
+   
+   for(destIdx=0; destIdx < egtpCb.egtpCfg.numDu; destIdx++)
    {
-      DU_LOG("\nERROR  -->  EGTP : TeId hash list initialization failed");
-      return RFAILED;
+      egtpCb.recvTptSrvr.addr.address = CM_INET_NTOH_UINT32(egtpCb.egtpCfg.egtpAssoc[destIdx].localIp.ipV4Addr);
+      egtpCb.recvTptSrvr.addr.port = EGTP_RECVR_PORT;
+
+      egtpCb.dstCb[destIdx].duId = destIdx+1;
+      egtpCb.dstCb[destIdx].dstIp = CM_INET_NTOH_UINT32(egtpCb.egtpCfg.egtpAssoc[destIdx].destIp.ipV4Addr);
+      egtpCb.dstCb[destIdx].dstPort = egtpCb.egtpCfg.egtpAssoc[destIdx].destPort;
+      egtpCb.dstCb[destIdx].sendTptSrvr.addr.address = CM_INET_NTOH_UINT32(egtpCb.egtpCfg.egtpAssoc[destIdx].localIp.ipV4Addr);
+      egtpCb.dstCb[destIdx].sendTptSrvr.addr.port = egtpCb.egtpCfg.egtpAssoc[destIdx].localPort;
+      egtpCb.dstCb[destIdx].numTunn = 0;
+
+      ret = cmHashListInit(&(egtpCb.dstCb[destIdx].teIdLst), 1024, sizeof(EgtpTeIdCb), FALSE, CM_HASH_KEYTYPE_UINT32_MOD, CU_APP_MEM_REG, CU_POOL);
+
+      if(ret != ROK)
+      {
+         DU_LOG("\nERROR  -->  EGTP : TeId hash list initialization failed");
+         return RFAILED;
+      }
+      else
+      {
+         DU_LOG("\nINFO  -->  EGTP : Configuration successful");
+      }
    }
-   else
-   {
-      DU_LOG("\nINFO  -->  EGTP : Configuration successful");
-   }
+   egtpCb.numDu = egtpCb.egtpCfg.numDu; 
 
    return ROK;
 } /* cuEgtpCfgReq */
@@ -166,10 +172,10 @@ S16 cuEgtpCfgReq()
 S16 cuEgtpSrvOpenReq(Pst *pst)
 {
 
-   uint8_t ret;
+   uint8_t ret, destIdx;
 
    DU_LOG("\nINFO  -->  EGTP : Received open server request");
- 
+
    sockType = CM_INET_DGRAM;
    if((ret = (cmInetSocket(sockType, &(egtpCb.recvTptSrvr.sockFd), protType))) != ROK)
    {
@@ -183,24 +189,27 @@ S16 cuEgtpSrvOpenReq(Pst *pst)
       DU_LOG("\nERROR  -->  EGTP : Failed to bind socket");
       return RFAILED;
    }
+   
+   for(destIdx=0; destIdx < egtpCb.egtpCfg.numDu; destIdx++)
+   {
+      if(ret = (cmInetSocket(sockType, &(egtpCb.dstCb[destIdx].sendTptSrvr.sockFd), protType)) != ROK)
+      {  
+         DU_LOG("\nERROR  -->  EGTP : Failed to open UDP socket");
+         return RFAILED;
+      }
 
-   if(ret = (cmInetSocket(sockType, &(egtpCb.dstCb.sendTptSrvr.sockFd), protType)) != ROK)
-   {  
-      DU_LOG("\nERROR  -->  EGTP : Failed to open UDP socket");
-      return RFAILED;
-   }
-      
-   ret = cmInetBind(&(egtpCb.dstCb.sendTptSrvr.sockFd), &(egtpCb.dstCb.sendTptSrvr.addr));
-   if(ret != ROK)
-   {  
-      DU_LOG("\nERROR  -->  EGTP : Failed to bind socket");
-      return RFAILED;
-   }
-       
-   /* TODO: set socket options */
+      ret = cmInetBind(&(egtpCb.dstCb[destIdx].sendTptSrvr.sockFd), &(egtpCb.dstCb[destIdx].sendTptSrvr.addr));
+      if(ret != ROK)
+      {  
+         DU_LOG("\nERROR  -->  EGTP : Failed to bind socket");
+         return RFAILED;
+      }
 
-   DU_LOG("\nINFO  -->  EGTP : Receiver socket[%d] and Sender socket[%d] open", egtpCb.recvTptSrvr.sockFd.fd,\
-   egtpCb.dstCb.sendTptSrvr.sockFd.fd);
+      /* TODO: set socket options */
+
+      DU_LOG("\nINFO  -->  EGTP : Receiver socket[%d] and Sender socket[%d] open", egtpCb.recvTptSrvr.sockFd.fd,\
+            egtpCb.dstCb[destIdx].sendTptSrvr.sockFd.fd);
+   }
    return ROK;
 } /* cuEgtpSrvOpenReq */
 
@@ -222,7 +231,7 @@ S16 cuEgtpSrvOpenReq(Pst *pst)
  *
  
  * ***************************************************************************/
-S16 cuEgtpTnlMgmtReq(EgtpTnlEvt tnlEvt)
+S16 cuEgtpTnlMgmtReq(uint32_t duId, EgtpTnlEvt tnlEvt)
 {
    S8 ret;
 
@@ -231,17 +240,17 @@ S16 cuEgtpTnlMgmtReq(EgtpTnlEvt tnlEvt)
    {
       case EGTP_TNL_MGMT_ADD:
       {
-         ret = cuEgtpTnlAdd(tnlEvt);
+         ret = cuEgtpTnlAdd(duId, tnlEvt);
          break;
       }
       case EGTP_TNL_MGMT_MOD:
       {
-         ret = cuEgtpTnlMod(tnlEvt);
+         ret = cuEgtpTnlMod(duId, tnlEvt);
          break;
       }
       case EGTP_TNL_MGMT_DEL:
       {
-         ret = cuEgtpTnlDel(tnlEvt);
+         ret = cuEgtpTnlDel(duId, tnlEvt);
          break;
       }
       default:
@@ -269,7 +278,7 @@ S16 cuEgtpTnlMgmtReq(EgtpTnlEvt tnlEvt)
  *         RFAILED - failure
  *
  * ***************************************************************************/
-S16 cuEgtpTnlAdd(EgtpTnlEvt tnlEvt)
+S16 cuEgtpTnlAdd(uint32_t duId, EgtpTnlEvt tnlEvt)
 {
    S16   ret;
    EgtpTeIdCb     *teidCb;
@@ -291,14 +300,14 @@ S16 cuEgtpTnlAdd(EgtpTnlEvt tnlEvt)
    teidCb->teId = tnlEvt.lclTeid;
    teidCb->remTeId = tnlEvt.remTeid;
 
-   ret = cmHashListInsert(&(egtpCb.dstCb.teIdLst), (PTR)teidCb, (uint8_t *)&(teidCb->teId), sizeof(uint32_t));
+   ret = cmHashListInsert(&(egtpCb.dstCb[duId-1].teIdLst), (PTR)teidCb, (uint8_t *)&(teidCb->teId), sizeof(uint32_t));
    if(ret != ROK)
    {
       DU_LOG("\nERROR  -->  EGTP : Failed to insert in hash list");
       CU_FREE(teidCb, (Size)sizeof(EgtpTeIdCb));
       return RFAILED;
    }
-   egtpCb.dstCb.numTunn++;
+   egtpCb.dstCb[duId-1].numTunn++;
 
    /* Encoding pre-defined header */
    memset(&preDefHdr, 0, sizeof(EgtpMsgHdr));
@@ -332,7 +341,7 @@ S16 cuEgtpTnlAdd(EgtpTnlEvt tnlEvt)
  *         RFAILED - failure
  * 
  * ***************************************************************************/
-S16 cuEgtpTnlMod(EgtpTnlEvt tnlEvt)
+S16 cuEgtpTnlMod(uint32_t duId, EgtpTnlEvt tnlEvt)
 {
 #if 0
    S16   ret;
@@ -340,7 +349,7 @@ S16 cuEgtpTnlMod(EgtpTnlEvt tnlEvt)
 
    DU_LOG("\nDEBUG  -->  CU_STUB : Tunnel modification : LocalTeid[%d] Remote Teid[%d]", tnlEvt.lclTeid, tnlEvt.remTeid);
 
-   cmHashListFind(&(egtpCb.dstCb.teIdLst), (uint8_t *)&(tnlEvt.teId), sizeof(uint32_t), 0, (PTR *)&teidCb);
+   cmHashListFind(&(egtpCb.dstCb[duId-1].teIdLst), (uint8_t *)&(tnlEvt.teId), sizeof(uint32_t), 0, (PTR *)&teidCb);
    if(teidCb == NULLP)
    {
       DU_LOG("\nDEBUG --> CU_STUBTunnel id not found");
@@ -368,22 +377,22 @@ S16 cuEgtpTnlMod(EgtpTnlEvt tnlEvt)
  *         RFAILED - failure
  * 
  * ***************************************************************************/
-S16 cuEgtpTnlDel(EgtpTnlEvt tnlEvt)
+S16 cuEgtpTnlDel(uint32_t duId, EgtpTnlEvt tnlEvt)
 {
    EgtpTeIdCb     *teidCb = NULLP;
 
    DU_LOG("\nDEBUG  -->  EGTP : Tunnel deletion : Local Teid[%d] Remote Teid[%d]", tnlEvt.lclTeid, tnlEvt.remTeid);
    
-   cmHashListFind(&(egtpCb.dstCb.teIdLst), (uint8_t *)&(tnlEvt.lclTeid), sizeof(uint32_t), 0, (PTR *)&teidCb);
+   cmHashListFind(&(egtpCb.dstCb[duId-1].teIdLst), (uint8_t *)&(tnlEvt.lclTeid), sizeof(uint32_t), 0, (PTR *)&teidCb);
    if(teidCb == NULLP)
    {
       DU_LOG("\nERROR  -->  EGTP : Tunnel id[%d] not configured", tnlEvt.lclTeid);
       return RFAILED;
    } 
 
-   cmHashListDelete(&(egtpCb.dstCb.teIdLst), (PTR)teidCb);
+   cmHashListDelete(&(egtpCb.dstCb[duId-1].teIdLst), (PTR)teidCb);
    CU_FREE(teidCb, (Size)sizeof(EgtpTeIdCb));
-   egtpCb.dstCb.numTunn--;
+   egtpCb.dstCb[duId-1].numTunn--;
 
    return ROK;
 } /* cuEgtpTnlDel */
@@ -499,6 +508,22 @@ S16 cuEgtpEncodeHdr(uint8_t *preEncodedHdr, EgtpMsgHdr *preDefHdr, uint8_t *hdrI
 
 } /* egtpEncodeHdr */
 
+/*******************************************************************
+ *
+ * @brief This handles the any EGTP received message 
+ *
+ * @details
+ *
+ *    Function : cuEgtpHdlRecvMsg 
+ * 
+ *    Functionality:
+ *       This handles the any EGTP received message
+ *
+ * @params[in]  Message Buffer 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
 S16 cuEgtpHdlRecvMsg(Buffer *mBuf)
 {
    /*Decoding of EGTP message header */
@@ -510,6 +535,22 @@ S16 cuEgtpHdlRecvMsg(Buffer *mBuf)
 
 }
 
+/*******************************************************************
+ *
+ * @brief Decodes message header
+ *
+ * @details
+ *
+ *    Function : cuEgtpDecodeHdr 
+ * 
+ *    Functionality:
+ *       Decodes EGTP message haeder
+ *
+ * @params[in]  Message Buffer 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
 S16 cuEgtpDecodeHdr(Buffer *mBuf)
 {
    EgtpMsg  egtpMsg;
@@ -627,9 +668,28 @@ S16 cuEgtpDecodeHdr(Buffer *mBuf)
      
 } /* End of cuEgtpDecodeHdr */
 
+/*******************************************************************
+ *
+ * @brief This function is responsible to build application message, encode EGTP
+ * header to it and send to DU over tunnel (teId)
+ *
+ * @details
+ *
+ *    Function : cuEgtpDatReq
+ * 
+ *    Functionality:
+ *       function is responsible to build application message, encode EGTP
+ *       header to it and send to DU over tunnel (teId) 
+ *
+ * @params[in]  uint8_t teId
+ *
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
 uint16_t cuEgtpDatReq(uint8_t teId)
 {
-   uint8_t ret = ROK, cnt = 0;
+   uint8_t ret = ROK, cnt = 0, duId =0;
    EgtpMsg  egtpMsg;
 
    egtpMsg.msgHdr.teId = teId;
@@ -639,29 +699,48 @@ uint16_t cuEgtpDatReq(uint8_t teId)
       DU_LOG("\nERROR  -->  EGTP : DRB  not created");
       return RFAILED ;
    }
-   /* Build Application message that is supposed to come from app to egtp */
-   ret = BuildAppMsg(&egtpMsg);
-   if(ret != ROK)
+   for(duId = 1; duId<=egtpCb.numDu; duId++)
    {
-      DU_LOG("\nERROR  -->  EGTP : Failed to build App Msg");
-      return RFAILED;
-   }
+      /* Build Application message that is supposed to come from app to egtp */
+      ret = BuildAppMsg(duId, &egtpMsg);
+      if(ret != ROK)
+      {
+         DU_LOG("\nERROR  -->  EGTP : Failed to build App Msg");
+         return RFAILED;
+      }
 
-   /* Encode EGTP header to build final EGTP message */
-   ret = BuildEgtpMsg(&egtpMsg);
-   if(ret != ROK)
-   {
-      DU_LOG("\nERROR  -->  EGTP : Failed to build EGTP Msg");
-      return RFAILED;
+      /* Encode EGTP header to build final EGTP message */
+      ret = BuildEgtpMsg(duId, &egtpMsg);
+      if(ret != ROK)
+      {
+         DU_LOG("\nERROR  -->  EGTP : Failed to build EGTP Msg");
+         return RFAILED;
+      }
+      cuEgtpSendMsg(duId, egtpMsg.msg);
+      ODU_PUT_MSG_BUF(egtpMsg.msg);
    }
-   cuEgtpSendMsg(egtpMsg.msg);
-   ODU_PUT_MSG_BUF(egtpMsg.msg);
-
    return ROK;
 }
 
 
-S16 BuildAppMsg(EgtpMsg  *egtpMsg)
+/*******************************************************************
+ *
+ * @brief Builds application message to be sent to DU in DL path
+ *
+ * @details
+ *
+ *    Function : BuildAppMsg
+ * 
+ *    Functionality:
+ *      Builds application message to be sent to DU in DL path
+ *
+ * @params[in] uint32_t duId,EGTP message
+ *             
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+S16 BuildAppMsg(uint32_t duId, EgtpMsg  *egtpMsg)
 {
    char data[1215] = "In telecommunications, 5G is the fifth generation technology standard for broadband cellular"
    " networks, which cellular phone companies began deploying worldwide in 2019, and is the planned successor to the 4G "
@@ -705,8 +784,8 @@ S16 BuildAppMsg(EgtpMsg  *egtpMsg)
    ipv4Hdr.length = CM_IPV4_HDRLEN + mLen;
    ipv4Hdr.hdrVer = 0x45;
    ipv4Hdr.proto = 1;
-   ipv4Hdr.srcAddr = CM_INET_NTOH_UINT32(egtpCb.egtpCfg.localIp.ipV4Addr);
-   ipv4Hdr.destAddr = CM_INET_NTOH_UINT32(egtpCb.egtpCfg.destIp.ipV4Addr);
+   ipv4Hdr.srcAddr = CM_INET_NTOH_UINT32(egtpCb.egtpCfg.egtpAssoc[duId-1].localIp.ipV4Addr);
+   ipv4Hdr.destAddr = CM_INET_NTOH_UINT32(egtpCb.egtpCfg.egtpAssoc[duId-1].destIp.ipV4Addr);
  
    /* Packing IPv4 header into buffer */
    S16          ret, cnt, idx;
@@ -780,7 +859,24 @@ S16 BuildAppMsg(EgtpMsg  *egtpMsg)
    return ret;
 }
 
-S16 BuildEgtpMsg(EgtpMsg *egtpMsg)
+/*******************************************************************
+ *
+ * @brief Encodes EGTP header to application message to send to DU
+ *
+ * @details
+ *
+ *    Function : BuildEgtpMsg
+ * 
+ *    Functionality:
+ *        Encodes EGTP header to application message to send to DU
+ *
+ * @params[in] uint32_t duId,EGTP message
+ *             
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+S16 BuildEgtpMsg(uint32_t duId, EgtpMsg *egtpMsg)
 {
    EgtpTeIdCb   *teidCb = NULLP;
    MsgLen tPduSize;
@@ -788,7 +884,7 @@ S16 BuildEgtpMsg(EgtpMsg *egtpMsg)
    uint32_t    msgLen;
    EgtpMsgHdr   *msgHdr;
  
-   cmHashListFind(&(egtpCb.dstCb.teIdLst), (uint8_t *)&(egtpMsg->msgHdr.teId), sizeof(uint32_t), 0, (PTR *)&teidCb);
+   cmHashListFind(&(egtpCb.dstCb[duId-1].teIdLst), (uint8_t *)&(egtpMsg->msgHdr.teId), sizeof(uint32_t), 0, (PTR *)&teidCb);
    if(teidCb == NULLP)
    {
       DU_LOG("\nERROR  -->  EGTP : Tunnel id[%d] not configured", egtpMsg->msgHdr.teId);
@@ -851,7 +947,24 @@ S16 BuildEgtpMsg(EgtpMsg *egtpMsg)
    return ROK;
 }
 
-S16 cuEgtpSendMsg(Buffer *mBuf)
+/*******************************************************************
+ *
+ * @brief Send the egtp message to the destination DU
+ *
+ * @details
+ *
+ *    Function : cuEgtpSendMsg 
+ * 
+ *    Functionality:
+ *       Send the egtp message to the destination DU
+ *
+ * @params[in] uint32_t duId 
+ *             Message Buffer 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+S16 cuEgtpSendMsg(uint32_t duId, Buffer *mBuf)
 {
    S16            ret;
    MsgLen         txLen;
@@ -861,10 +974,10 @@ S16 cuEgtpSendMsg(Buffer *mBuf)
    info.region = CU_APP_MEM_REG;
    info.pool = CU_POOL;
  
-   dstAddr.port = EGTP_DFLT_PORT;
-   dstAddr.address = egtpCb.dstCb.dstIp;
+   dstAddr.port =  EGTP_RECVR_PORT;
+   dstAddr.address = egtpCb.dstCb[duId-1].dstIp;
  
-   ret = cmInetSendMsg(&(egtpCb.dstCb.sendTptSrvr.sockFd), &dstAddr, &info, mBuf, &txLen, CM_INET_NO_FLAG);
+   ret = cmInetSendMsg(&(egtpCb.dstCb[duId-1].sendTptSrvr.sockFd), &dstAddr, &info, mBuf, &txLen, CM_INET_NO_FLAG);
    if(ret != ROK && ret != RWOULDBLOCK)
    {
       DU_LOG("\nERROR  -->  EGTP : Message send failure");
