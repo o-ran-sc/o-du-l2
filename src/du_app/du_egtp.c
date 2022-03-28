@@ -932,6 +932,7 @@ uint8_t egtpRecvMsg()
       bufLen = -1;
       ret = cmInetRecvMsg(&(egtpCb.recvTptSrvr.sockFd), &fromAddr, &memInfo, \
          &recvBuf, (int16_t *)&bufLen, CM_INET_NO_FLAG);
+       //DU_LOG("\nDEBUG  -->  PBORLA[%ld]\n", ret);
       if(ret == ROK && recvBuf != NULLP)
       {  
          DU_LOG("\nDEBUG  -->  EGTP : Received DL Message[%ld]\n", gDlDataRcvdCnt + 1);

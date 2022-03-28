@@ -706,7 +706,17 @@ uint16_t l1BuildAndSendSlotIndication()
 
       memset(&pst, 0, sizeof(Pst));
       FILL_PST_PHY_STUB_TO_LWR_MAC(pst, EVT_PHY_STUB_SLOT_IND);
-
+      if(sfnValue == 250)
+      {
+         for(int drbIdx = 0; drbIdx < 3; drbIdx++) //Number of DRB times the loop will run
+         {
+            DU_LOG("\nPBORLA DEBUG  --> PHY STUB: Sending UL User Data[DrbId:%d] for UEIdx \n",drbIdx);
+            l1SendUlUserData(drbIdx,0);
+            /* TODO :- sleep(1) will be removed once we will be able to
+             * send continuous data packet */
+            sleep(1);
+         }
+      }
       ODU_GET_MSG_BUF(pst.region, pst.pool, &mBuf);
       if(!mBuf)
       {
