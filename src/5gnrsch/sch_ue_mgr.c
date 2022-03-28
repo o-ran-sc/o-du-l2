@@ -261,6 +261,7 @@ uint8_t fillSchUeCb(Inst inst, SchUeCb *ueCb, SchUeCfg *ueCfg)
    ueCb->ueCfg.cellId = ueCfg->cellId;
    ueCb->ueCfg.duUeF1apId = ueCfg->duUeF1apId;
    ueCb->ueCfg.crnti = ueCfg->crnti;
+   ueCb->ueCfg.dataTransmissionAction = ueCfg->dataTransmissionInfo;
    if(ueCfg->macCellGrpCfgPres == true)
    {
       memcpy(&ueCb->ueCfg.macCellGrpCfg , &ueCfg->macCellGrpCfg, sizeof(SchMacCellGrpCfg)); 

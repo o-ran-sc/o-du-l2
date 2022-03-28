@@ -1223,12 +1223,19 @@ uint8_t fillMacUeCfg(uint16_t cellId, uint8_t gnbDuUef1apId, uint16_t crnti, DuU
    }
    else
    {
+      if(ueCfgDb->dataTransmissionAction == STOP_TRANSMISSION)
+      {
+         macUeCfg->transmissionAction = ueCfgDb->dataTransmissionAction; 
+         return ROK;
+      }
+      
       /* Fetching MacDb from DuUeCb.
        * In case of UE hand-in, UE context is created before RRC setup. Hence
        * crnti is not known yet. Thus, passing crnti=0 to this function.
        * In such a case actvCellLst doesnt yet have any entry for this UE. So
        * duMacDb will be NULL.
        */
+      
       if(crnti != 0)
       {
          GET_CELL_IDX(cellId, cellIdx);
@@ -1241,7 +1248,7 @@ uint8_t fillMacUeCfg(uint16_t cellId, uint8_t gnbDuUef1apId, uint16_t crnti, DuU
          }
          duMacDb->macUeCfgState = UE_CFG_INPROGRESS;
       }
-
+      
       if(ueCfgDb->cellGrpCfg)
       {
          ret = procUeReCfgCellInfo(macUeCfg, duMacDb, ueCfgDb->cellGrpCfg);
@@ -1671,6 +1678,7 @@ uint8_t fillRlcUeCfg(uint16_t cellId, uint8_t ueId, DuUeCfg *ueCfgDb, RlcUeCfg *
       /*Filling RlcUeCfg */
       rlcUeCfg->cellId       = cellId;
       rlcUeCfg->ueId         = ueId;
+
       for(dbIdx = 0; (dbIdx < ueCfgDb->numRlcLcs && ret == ROK); dbIdx++)
       {
          ret = fillDefaultRlcModeCfg(ueCfgDb->rlcLcCfg[dbIdx].rlcMode, &ueCfgDb->rlcLcCfg[dbIdx]);
