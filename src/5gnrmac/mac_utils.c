@@ -64,39 +64,6 @@ uint32_t longBsrBytesTable[MAX_LONG_BSR_TABLE_ENTRIES] = {
    /* TODO Last Buffer Size is reserved [Now set as 0]*/
 };
 
-/*******************************************************************
- *
- * @brief Allocates a crnti for new UE 
- *
- * @details
- *
- *    Function : getNewCrnti
- *
- *    Functionality: Allocates a crnti for new UE
- *
- * @params[in] CRNTI bit map
- * @return ROK     - success
- *         RFAILED - failure
- *
- * ****************************************************************/
-uint16_t getNewCrnti(uint8_t *crntiMap)
-{
-   uint8_t bitIdx = 0;  /* bit position */
-   uint8_t mask = 1;    /* bit mask */
-   uint16_t newCrnti;   /* new crnti */
-
-   while(bitIdx < 8)
-   {
-      /* Find the first unset bit in crntiMap and allocate
-       * this as new crnti */
-      if((*crntiMap & (mask << bitIdx)) == 0)
-      {
-         newCrnti = ODU_START_CRNTI + bitIdx;
-	 SET_ONE_BIT(bitIdx, *crntiMap);
-	 return newCrnti;
-      }
-      else
-         bitIdx++;
-   }
-   return -1;
-}
+/**********************************************************************
+  End of file
+ **********************************************************************/

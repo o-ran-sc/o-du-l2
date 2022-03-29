@@ -1471,6 +1471,7 @@ typedef uint8_t (*MacDuSliceReCfgRspFunc) ARGS((
         Pst           *pst,
         MacSliceCfgRsp   *cfgRsp));
 
+uint64_t ueBitMapPerCell[MAX_NUM_CELL]; /* Bit Map to store used/free UE-IDX per Cell */
 
 uint8_t packMacCellUpInd(Pst *pst, OduCellId *cellId);
 uint8_t unpackMacCellUpInd(DuMacCellUpInd func, Pst *pst, Buffer *mBuf);
@@ -1533,7 +1534,7 @@ uint8_t unpackDuMacSliceReCfgRsp(MacDuSliceReCfgRspFunc func, Pst *pst, Buffer *
 uint8_t duHandleSlotInd(Pst *pst, SlotTimingInfo *slotIndInfo);
 uint8_t packMacSlotInd(Pst *pst, SlotTimingInfo *slotIndInfo);
 uint8_t unpackDuMacSlotInd(DuMacSlotInd func, Pst *pst, Buffer *mBuf);
-
+int8_t getFreeBitFromUeBitMap(uint16_t cellId);
 #endif
 
 

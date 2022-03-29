@@ -312,6 +312,7 @@ typedef struct tddCfg
 OduCellStatus gCellStatus;
 uint64_t gSlotCount;
 uint64_t gDlDataRcvdCnt;   /* Number of DL data received at EGTP */
+//uint64_t ueBitMapPerCell[MAX_NUM_CELL]; /* Bit Map to store used/free CRNTI/UE-ID per Cell */
 
 void fillCoresetFeqDomAllocMap(uint16_t startPrb, uint16_t prbSize, uint8_t *freqDomain);
 void oduCpyFixBufToMsg(uint8_t *fixBuf, Buffer *mBuf, uint16_t len);
@@ -325,6 +326,7 @@ Region region, Pool pool, Data **ptr, Size size, uint8_t memType);
 uint8_t SPutStaticBufNewForDebug(char *file, char *func, char *line, \
 Region region, Pool pool, Data *ptr, Size size, uint8_t memType);
 uint8_t countSetBits(uint32_t num);
+//int8_t getFreeBitFromUeBitMap(uint16_t cellId);
 
 #endif
 

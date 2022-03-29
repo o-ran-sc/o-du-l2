@@ -226,18 +226,21 @@ void fillRarPdu(RarInfo *rarInfo)
  * ****************************************************************/
 void createMacRaCb(RachIndInfo *rachIndInfo)
 {
-   uint8_t  ueId = 0, ueIdx = 0;
+   int8_t ueIdx = -1;
    uint16_t crnti = 0;
    uint16_t cellIdx = 0;
 
    GET_CELL_IDX(rachIndInfo->cellId, cellIdx);
    
-   crnti = getNewCrnti(&macCb.macCell[cellIdx]->crntiMap);
-   if(crnti == -1)
+   ueIdx = getFreeBitFromUeBitMap(rachIndInfo->cellId);
+   if(ueIdx == -1)
+   {
+      DU_LOG("\nERROR  -->  MAC : Failed to find free UE Idx in UE bit map of cell Id [%d]", rachIndInfo->cellId);
       return;
+   }
 
-   GET_UE_ID(crnti, ueId);
-   ueIdx = ueId -1;
+   /* Calculate CRNTI from UE Index */
+   GET_CRNTI(crnti, ueIdx+1);
 
    /* store in rach ind structure */
    rachIndInfo->crnti  = crnti;
