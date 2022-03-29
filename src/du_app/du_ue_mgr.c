@@ -565,7 +565,8 @@ uint8_t duProcUlCcchInd(UlCcchIndInfo *ulCcchIndInfo)
    uint8_t ret = ROK;
    int32_t gnbDuUeF1apId = 0;
 
-   gnbDuUeF1apId = genGnbDuUeF1apId(ulCcchIndInfo->cellId);
+   if(ulCcchIndInfo->crnti)
+      GET_UE_ID(ulCcchIndInfo->crnti, gnbDuUeF1apId);
    
    if(gnbDuUeF1apId == -1)
    {
