@@ -11917,7 +11917,8 @@ void freeAperDecodeF1UeContextSetupReq(UEContextSetupRequest_t   *ueSetReq)
  * ****************************************************************/
 uint8_t procF1UeContextSetupReq(F1AP_PDU_t *f1apMsg)
 {
-   uint8_t  ret=0, ieIdx=0, ieExtIdx = 0, ueIdx=0, cellIdx=0, servCellIdx = 0;
+   int8_t ueIdx = -1;
+   uint8_t  ret=0, ieIdx=0, ieExtIdx = 0, cellIdx=0, servCellIdx = 0;
    bool ueCbFound = false, hoInProgress = false;
    uint16_t nrCellId = 0;
    uint32_t gnbCuUeF1apId=0, gnbDuUeF1apId=0, bitRateSize=0;
@@ -12002,8 +12003,16 @@ uint8_t procF1UeContextSetupReq(F1AP_PDU_t *f1apMsg)
                /* If UE context is not present, but UE is in handover */
                if(!ueCbFound && hoInProgress)
                {
-                  gnbDuUeF1apId = genGnbDuUeF1apId(nrCellId);
-                  duUeCb = &duCb.actvCellLst[cellIdx]->hoUeCb[gnbDuUeF1apId -1];
+                  ueIdx = getFreeBitFromUeBitMap(nrCellId);
+                  if(ueIdx != -1)
+                     gnbDuUeF1apId = ueIdx +1;
+                  else
+                  {
+                     DU_LOG("\nERROR  -->  F1AP : No free UE IDX found in UE bit map of cell Id [%d]", nrCellId);
+                     ret = RFAILED;
+                     break;
+                  }
+                  duUeCb = &duCb.actvCellLst[cellIdx]->hoUeCb[ueIdx];
                   duUeCb->f1UeDb = NULL;
                   duUeCb->gnbCuUeF1apId = gnbCuUeF1apId;
                   duUeCb->gnbDuUeF1apId = gnbDuUeF1apId;
