@@ -516,36 +516,6 @@ uint8_t duProcDlRrcMsg(F1DlRrcMsg *dlRrcMsg)
 
 /******************************************************************
  *
- * @brief Generates GNB DU Ue F1AP ID
- *
- * @details
- *
- *    Function : genGnbDuUeF1apId
- *
- *    Functionality: Generates GNB DU Ue F1AP ID
- *
- * @params[in] void
- * @return gnbDuF1apId
- *
- * ****************************************************************/
-int32_t genGnbDuUeF1apId(uint8_t cellId)
-{
-    uint8_t cellIdx =0;
-
-    GET_CELL_IDX(cellId, cellIdx);
-    if(duCb.actvCellLst[cellIdx])
-    {
-       return  ++duCb.gnbDuUeF1apIdGenerator;
-    }
-    else
-    {
-       DU_LOG("ERROR  --> DU_APP : genGnbDuUeF1apId(): CellId[%d] does not exist", cellId);
-    }
-    return -1;
-}
-
-/******************************************************************
- *
  * @brief Processes UL CCCH Ind recvd from MAC
  *
  * @details
@@ -565,14 +535,16 @@ uint8_t duProcUlCcchInd(UlCcchIndInfo *ulCcchIndInfo)
    uint8_t ret = ROK;
    int32_t gnbDuUeF1apId = 0;
 
-   gnbDuUeF1apId = genGnbDuUeF1apId(ulCcchIndInfo->cellId);
-   
-   if(gnbDuUeF1apId == -1)
+   if(ulCcchIndInfo->crnti)
    {
-      DU_LOG("ERROR  --> DU_APP : duProcUlCcchInd(): Received cellId[%d] does not exist", ulCcchIndInfo->cellId);
+      GET_UE_ID(ulCcchIndInfo->crnti, gnbDuUeF1apId);
+   }
+   else
+   {
+      DU_LOG("\nERROR  -->  DU_APP : Received invalid CRNTI [%d] ", ulCcchIndInfo->crnti);
       return RFAILED;
    }
-
+   
    /* Store Ue mapping */
    duCb.ueCcchCtxt[duCb.numUe].gnbDuUeF1apId = (uint32_t)gnbDuUeF1apId;
    duCb.ueCcchCtxt[duCb.numUe].crnti         = ulCcchIndInfo->crnti;
@@ -3012,11 +2984,13 @@ void deleteMacUeCfg(MacUeCfg *ueCfg)
 *         RFAILED - failure
 *
 * ****************************************************************/
-uint8_t  deleteUeCfg(uint16_t cellIdx, uint8_t ueId)
+uint8_t  deleteUeCfg(uint16_t cellId, uint8_t ueId)
 {
    uint8_t tnlIdx = 0;
+   uint16_t cellIdx = 0;
    DuUeCb *ueCb = NULLP;
    
+   GET_CELL_IDX(cellId, cellIdx);
    if(duCb.actvCellLst[cellIdx] != NULLP)
    {
       if((duCb.actvCellLst[cellIdx]->ueCb[ueId-1].macUeCfg.macUeCfgState == UE_DELETE_COMPLETE)\
@@ -3039,6 +3013,7 @@ uint8_t  deleteUeCfg(uint16_t cellIdx, uint8_t ueId)
             else
                tnlIdx++;
          }
+         unsetBitInUeBitMap(cellId, ueId-1);
          duCb.actvCellLst[cellIdx]->numActvUes--;
          memset(ueCb, 0, sizeof(DuUeCb));
       }
@@ -3088,9 +3063,9 @@ uint8_t DuProcMacUeDeleteRsp(Pst *pst, MacUeDeleteRsp *deleteRsp)
          {
             duCb.actvCellLst[cellIdx]->ueCb[deleteRsp->ueId -1].macUeCfg.macUeCfgState = UE_DELETE_COMPLETE;
             ueId = deleteRsp->ueId;
-            gnbCuUeF1apId = duCb.actvCellLst[cellIdx]->ueCb[ueId-1].gnbDuUeF1apId;
-            gnbDuUeF1apId = duCb.actvCellLst[cellIdx]->ueCb[ueId-1].gnbCuUeF1apId;
-            if(deleteUeCfg(cellIdx, ueId) == ROK)
+            gnbCuUeF1apId = duCb.actvCellLst[cellIdx]->ueCb[ueId-1].gnbCuUeF1apId;
+            gnbDuUeF1apId = duCb.actvCellLst[cellIdx]->ueCb[ueId-1].gnbDuUeF1apId;
+            if(deleteUeCfg(deleteRsp->cellId, ueId) == ROK)
             {
                ret = BuildAndSendUeContextReleaseComplete(deleteRsp->cellId, gnbCuUeF1apId, gnbDuUeF1apId);
                if(ret != ROK)
