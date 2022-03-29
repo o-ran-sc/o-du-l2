@@ -24,6 +24,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0c486f39_6292ac22",
+        "filename": "src/5gnrmac/mac_mux.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 230,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-03-29T14:46:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f8e05ab7_3c6056e7",
+      "range": {
+        "startLine": 230,
+        "startChar": 12,
+        "endLine": 230,
+        "endChar": 17
+      },
+      "revId": "fccbd451d475f08906bc3928154391f2cc2f9c50",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a3ac22bd_59500d0e",
@@ -64,6 +88,48 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "88300018_1712d6b4",
+        "filename": "src/cm/common_def.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 315,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-03-29T14:46:57Z",
+      "side": 1,
+      "message": "Moved to du_app_mac_inf.h and .c",
+      "parentUuid": "a3ac22bd_59500d0e",
+      "revId": "fccbd451d475f08906bc3928154391f2cc2f9c50",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d6f802d0_f9578ea0",
+        "filename": "src/cm/common_def.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 315,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-03-29T14:46:57Z",
+      "side": 1,
+      "message": "yes the bit index that we return from getFreeBitFromUeBitMap() is actually ueIdx",
+      "parentUuid": "7bb454c6_7b586504",
+      "range": {
+        "startLine": 315,
+        "startChar": 60,
+        "endLine": 315,
+        "endChar": 64
+      },
+      "revId": "fccbd451d475f08906bc3928154391f2cc2f9c50",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "091d5840_da0c71c0",
@@ -94,6 +160,24 @@
       "writtenOn": "2022-03-29T10:51:49Z",
       "side": 1,
       "message": "please handle else case where CRNTI is absent.. I dont know why in previous code  they didnt use CRNTI to calculate ueId",
+      "revId": "fccbd451d475f08906bc3928154391f2cc2f9c50",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "da7cc60d_ee9a0cf2",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 540,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-03-29T14:46:57Z",
+      "side": 1,
+      "message": "This is the point where the mismatch happened because DU-UE-F1AP-ID was being generated separately instead of calculating from CRNTI.",
+      "parentUuid": "2bc87e93_50c39435",
       "revId": "fccbd451d475f08906bc3928154391f2cc2f9c50",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
