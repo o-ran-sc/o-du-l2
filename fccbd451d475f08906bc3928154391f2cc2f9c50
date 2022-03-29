@@ -3,6 +3,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f8e05ab7_3c6056e7",
+        "filename": "src/5gnrmac/mac_mux.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 230,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-03-29T10:51:49Z",
+      "side": 1,
+      "message": "we can remove this variable as it is not used",
+      "range": {
+        "startLine": 230,
+        "startChar": 12,
+        "endLine": 230,
+        "endChar": 17
+      },
+      "revId": "fccbd451d475f08906bc3928154391f2cc2f9c50",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a3ac22bd_59500d0e",
         "filename": "src/cm/common_def.h",
         "patchSetId": 3
@@ -20,6 +43,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7bb454c6_7b586504",
+        "filename": "src/cm/common_def.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 315,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-03-29T10:51:49Z",
+      "side": 1,
+      "message": "I guess this Bitmap is for UEID. If this is correct then please only mention the same in comment.. please remove CRNTI as it can be misunderstood",
+      "range": {
+        "startLine": 315,
+        "startChar": 60,
+        "endLine": 315,
+        "endChar": 64
+      },
+      "revId": "fccbd451d475f08906bc3928154391f2cc2f9c50",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "091d5840_da0c71c0",
         "filename": "src/du_app/du_mgr_main.c",
         "patchSetId": 3
@@ -31,6 +77,23 @@
       "writtenOn": "2022-03-29T10:11:37Z",
       "side": 1,
       "message": "revert",
+      "revId": "fccbd451d475f08906bc3928154391f2cc2f9c50",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2bc87e93_50c39435",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 540,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-03-29T10:51:49Z",
+      "side": 1,
+      "message": "please handle else case where CRNTI is absent.. I dont know why in previous code  they didnt use CRNTI to calculate ueId",
       "revId": "fccbd451d475f08906bc3928154391f2cc2f9c50",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
