@@ -1568,6 +1568,70 @@ uint8_t unpackDuMacSlotInd(DuMacSlotInd func, Pst *pst, Buffer *mBuf)
    ODU_PUT_MSG_BUF(mBuf);
    return RFAILED;
 }
+
+/*******************************************************************
+ *
+ * @brief Searches for first unset bit in ueBitMap
+ *
+ * @details
+ *
+ *    Function : getFreeBitFromUeBitMap
+ *
+ *    Functionality: Searches for first unset bit in ueBitMap of
+ *       a cell. Search starts from LSB to MSB. Returns index of the
+ *       free bit, considering LSB at index 0 and increasing index
+ *       towards MSB.
+ *
+ * @params[in] Cell Id
+ * @return Index of free bit - success 
+ *         -1 - failure
+ *
+ * ****************************************************************/
+int8_t getFreeBitFromUeBitMap(uint16_t cellId)
+{
+   uint8_t  bitIdx = 0;  /* bit position */
+   uint16_t cellIdx = 0; /* Index to acces ueBitMapPerCell[] */
+   uint64_t mask = 1;    /* bit mask */
+
+   GET_CELL_IDX(cellId, cellIdx);
+   while(bitIdx < 64) 
+   {   
+      /* Find the first unset bit in Bit Map */
+      if((ueBitMapPerCell[cellIdx] & (mask << bitIdx)) == 0)
+      {   
+         SET_ONE_BIT(bitIdx, ueBitMapPerCell[cellIdx]);
+         return bitIdx;
+      }   
+      else
+         bitIdx++;
+   }   
+   return -1; 
+}
+
+/*******************************************************************
+ *
+ * @brief Unset a previously set bit in UeBitMap
+ *
+ * @details
+ *
+ *    Function : unsetBitInUeBitMap
+ *
+ *    Functionality: Searches for bit at given index and unset it.
+ *
+ * @params[in] Cell Id
+ *             Bit Index
+ * @return void 
+ *
+ * ****************************************************************/
+void unsetBitInUeBitMap(uint16_t cellId, uint8_t bitPos)
+{
+    uint16_t cellIdx;
+
+   GET_CELL_IDX(cellId, cellIdx);
+   UNSET_ONE_BIT(bitPos, ueBitMapPerCell[cellIdx]);
+   return;
+}
+
 /**********************************************************************
   End of file
  **********************************************************************/

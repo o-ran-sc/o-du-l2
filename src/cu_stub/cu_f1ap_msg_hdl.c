@@ -11415,6 +11415,71 @@ void procF1SetupReq(uint32_t *destDuId, F1AP_PDU_t *f1apMsg)
    }
 }
 
+/****************************************************************
+*
+* @brief processing of UE Context Release Complete
+*
+* @details
+*
+*    Function : procUeContextReleaseComplete
+*
+*    Functionality:
+*         - processing of UE Context Release Complete
+*
+* @params[in] F1AP_PDU_t *f1apMsg
+* @return ROK     - success
+*         RFAILED - failure
+*
+* ****************************************************************/
+void procUeContextReleaseComplete(uint32_t duId, F1AP_PDU_t *f1apMsg)
+{
+   uint8_t duIdx = 0, ieIdx = 0, ueIdx = 0;
+   uint8_t gnbDuUeF1apId = 0, gnbCuUeF1apId = 0;
+   DuDb *duDb = NULLP;
+   CuUeCb *ueCb = NULLP;
+   UEContextReleaseComplete_t *ueReleaseComplete = NULLP;
+
+   SEARCH_DU_DB(duIdx, duId, duDb);
+   if(!duDb)
+   {
+      DU_LOG("\nERROR  -->  F1AP : No entry found for DU ID [%d]", duId);
+      return;
+   }
+
+   ueReleaseComplete = &f1apMsg->choice.successfulOutcome->value.choice.UEContextReleaseComplete;
+   for(ieIdx=0; ieIdx < ueReleaseComplete->protocolIEs.list.count; ieIdx++)
+   {
+      switch(ueReleaseComplete->protocolIEs.list.array[ieIdx]->id)
+      {
+         case ProtocolIE_ID_id_gNB_CU_UE_F1AP_ID:
+            {
+               gnbCuUeF1apId = ueReleaseComplete->protocolIEs.list.array[ieIdx]->value.choice.GNB_CU_UE_F1AP_ID;
+               break;
+            }
+         case ProtocolIE_ID_id_gNB_DU_UE_F1AP_ID:
+            {
+               gnbDuUeF1apId = ueReleaseComplete->protocolIEs.list.array[ieIdx]->value.choice.GNB_DU_UE_F1AP_ID;
+               ueCb = &duDb->ueCb[gnbDuUeF1apId-1];
+               
+               for(ueIdx = 0; ueIdx < ueCb->cellCb->numUe; ueIdx++)
+               {
+                  if((ueCb->cellCb->ueCb[ueIdx]->gnbCuUeF1apId == gnbCuUeF1apId) &&
+                        (ueCb->cellCb->ueCb[ueIdx]->gnbDuUeF1apId == gnbDuUeF1apId))
+                  {
+                     ueCb->cellCb->ueCb[ueIdx] = NULLP;
+                     ueCb->cellCb->numUe--;
+                     break;
+
+                  }
+               }
+               memset(ueCb, 0, sizeof(CuUeCb));
+               duDb->numUe--;
+               break;
+            }
+      }
+   }
+}
+
 /*******************************************************************
  *
  * @brief Handles received F1AP message and sends back response  
@@ -11565,6 +11630,7 @@ void F1APMsgHdlr(uint32_t *duId, Buffer *mBuf)
                case SuccessfulOutcome__value_PR_UEContextReleaseComplete:
                   {
                       DU_LOG("\nINFO  -->  F1AP : UE Context release complete received");
+                      procUeContextReleaseComplete(*duId, f1apMsg);
                       break;
                   }
                default:

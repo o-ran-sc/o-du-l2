@@ -11917,7 +11917,8 @@ void freeAperDecodeF1UeContextSetupReq(UEContextSetupRequest_t   *ueSetReq)
  * ****************************************************************/
 uint8_t procF1UeContextSetupReq(F1AP_PDU_t *f1apMsg)
 {
-   uint8_t  ret=0, ieIdx=0, ieExtIdx = 0, ueIdx=0, cellIdx=0, servCellIdx = 0;
+   int8_t ueIdx = -1;
+   uint8_t  ret=0, ieIdx=0, ieExtIdx = 0, cellIdx=0, servCellIdx = 0;
    bool ueCbFound = false, hoInProgress = false;
    uint16_t nrCellId = 0;
    uint32_t gnbCuUeF1apId=0, gnbDuUeF1apId=0, bitRateSize=0;
@@ -12002,8 +12003,16 @@ uint8_t procF1UeContextSetupReq(F1AP_PDU_t *f1apMsg)
                /* If UE context is not present, but UE is in handover */
                if(!ueCbFound && hoInProgress)
                {
-                  gnbDuUeF1apId = genGnbDuUeF1apId(nrCellId);
-                  duUeCb = &duCb.actvCellLst[cellIdx]->hoUeCb[gnbDuUeF1apId -1];
+                  ueIdx = getFreeBitFromUeBitMap(nrCellId);
+                  if(ueIdx != -1)
+                     gnbDuUeF1apId = ueIdx +1;
+                  else
+                  {
+                     DU_LOG("\nERROR  -->  F1AP : No free UE IDX found in UE bit map of cell Id [%d]", nrCellId);
+                     ret = RFAILED;
+                     break;
+                  }
+                  duUeCb = &duCb.actvCellLst[cellIdx]->hoUeCb[ueIdx];
                   duUeCb->f1UeDb = NULL;
                   duUeCb->gnbCuUeF1apId = gnbCuUeF1apId;
                   duUeCb->gnbDuUeF1apId = gnbDuUeF1apId;
@@ -13625,16 +13634,20 @@ uint8_t duProcGnbDuCfgUpdAckMsg(uint8_t transId)
                            {
                               cellIdentity = &deleteItem->oldNRCGI.nRCellIdentity;
                               bitStringToInt(cellIdentity, &cellId);
+
+                              GET_CELL_IDX(cellId, cellIdx);
+                              if(duCb.actvCellLst[cellIdx] != NULLP)
+                              {
+                                 duCb.actvCellLst[cellId-1]->cellStatus = DELETION_IN_PROGRESS;
+                              }
                            }
                         }
                      }
 
-                     GET_CELL_IDX(cellId, cellIdx);
                      if(duCb.actvCellLst[cellIdx] != NULLP)
                      {
                         if(duCb.actvCellLst[cellIdx]->numActvUes == 0)
                         {
-                           duCb.actvCellLst[cellId-1]->cellStatus = DELETION_IN_PROGRESS;
                            ret = duSendCellDeletReq(cellId);
                            if(ret == RFAILED)
                            {
@@ -14590,7 +14603,7 @@ void freeAperDecodeUeContextModificationReqMsg(UEContextModificationRequest_t *u
 uint8_t procF1UeContextModificationReq(F1AP_PDU_t *f1apMsg)
 {
    UEContextModificationRequest_t *ueContextModifyReq = NULLP;
-   uint8_t  ret = ROK, ieIdx = 0, cellIdx=0, ueIdx=0;
+   uint8_t  ret = ROK, ieIdx = 0, cellIdx=0;
    DuUeCb   *duUeCb = NULLP;
    DRBs_ToBeSetupMod_List_t *drbSetupModCfg;
    DRBs_ToBeModified_List_t *drbModifiedCfg;
@@ -14613,20 +14626,17 @@ uint8_t procF1UeContextModificationReq(F1AP_PDU_t *f1apMsg)
                {
                   if(duCb.actvCellLst[cellIdx])
                   {
-                     for(ueIdx = 0; ueIdx < duCb.actvCellLst[cellIdx]->numActvUes; ueIdx++)
+                     if((duCb.actvCellLst[cellIdx]->ueCb[gnbDuUeF1apId-1].gnbDuUeF1apId == gnbDuUeF1apId)&&\
+                           (duCb.actvCellLst[cellIdx]->ueCb[gnbDuUeF1apId-1].gnbCuUeF1apId == gnbCuUeF1apId))
                      {
-                        if((duCb.actvCellLst[cellIdx]->ueCb[ueIdx].gnbDuUeF1apId == gnbDuUeF1apId)&&\
-                              (duCb.actvCellLst[cellIdx]->ueCb[ueIdx].gnbCuUeF1apId == gnbCuUeF1apId))
+                        duUeCb = &duCb.actvCellLst[cellIdx]->ueCb[gnbDuUeF1apId-1];
+                        if(duUeCb->f1UeDb == NULLP)
                         {
-                           duUeCb = &duCb.actvCellLst[cellIdx]->ueCb[ueIdx];
-                           if(duUeCb->f1UeDb == NULLP)
-                           {
-                              DU_ALLOC(duUeCb->f1UeDb, sizeof(F1UeContextSetupDb));
-                              duUeCb->f1UeDb->cellIdx = cellIdx;
-                              duUeCb->f1UeDb->actionType = UE_CTXT_MOD;
-                           }
-                           break;
+                           DU_ALLOC(duUeCb->f1UeDb, sizeof(F1UeContextSetupDb));
+                           duUeCb->f1UeDb->cellIdx = cellIdx;
+                           duUeCb->f1UeDb->actionType = UE_CTXT_MOD;
                         }
+                        break;
                      }
                   }
                }
@@ -15100,9 +15110,9 @@ uint8_t BuildAndSendUeContextReleaseComplete(uint16_t cellId, uint32_t gnbCuUeF1
       break;
    }while(true);
    
-   if(ret == ROK && duCb.actvCellLst[cellId-1] && (duCb.actvCellLst[cellId-1]->numActvUes == 0))
+   if((ret == ROK) && (duCb.actvCellLst[cellId-1]) && (duCb.actvCellLst[cellId-1]->cellStatus == DELETION_IN_PROGRESS) 
+         && (duCb.actvCellLst[cellId-1]->numActvUes == 0))
    {
-      duCb.actvCellLst[cellId-1]->cellStatus = DELETION_IN_PROGRESS;
       ret = duSendCellDeletReq(cellId);
       if(ret != ROK)
       {
