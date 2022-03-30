@@ -1169,13 +1169,9 @@ uint8_t fillMacUeCfg(uint16_t cellId, uint8_t gnbDuUef1apId, uint16_t crnti, DuU
    bool lcIdFound = false;
    MacUeCfg *duMacDb = NULLP;
 
-   macUeCfg->cellId       = cellId;
-   if(crnti)
-   {
-      GET_UE_ID(crnti, macUeCfg->ueId);
-      macUeCfg->crnti = crnti;
-   }
-   macUeCfg->duUeF1apId = gnbDuUef1apId;
+   macUeCfg->cellId = cellId;
+   macUeCfg->ueId = gnbDuUef1apId;
+   macUeCfg->crnti = crnti;
 
    if(!ueCfgDb)
    {
@@ -2340,8 +2336,7 @@ uint8_t duUpdateDuUeCbCfg(uint8_t ueId, uint8_t cellId)
  * ****************************************************************/
 uint8_t DuProcMacUeCfgRsp(Pst *pst, MacUeCfgRsp *cfgRsp)
 {
-   uint8_t ret = ROK, ueIdx = 0, ueId = 0;
-   DuUeCb *ueCb = NULLP;
+   uint8_t ret = ROK;
 
    if(cfgRsp)
    {
@@ -2349,55 +2344,33 @@ uint8_t DuProcMacUeCfgRsp(Pst *pst, MacUeCfgRsp *cfgRsp)
       {
          if(pst->event == EVENT_MAC_UE_CREATE_RSP)
          {
-            DU_LOG("\nINFO   -->  DU APP : MAC UE Create Response : SUCCESS [DU UE F1AP ID : %d]", cfgRsp->duUeF1apId);
-            
-            for(ueIdx = 0; ueIdx < MAX_NUM_UE; ueIdx++)
-            {
-               if(duCb.actvCellLst[cfgRsp->cellId -1]->ueCb[ueIdx].gnbDuUeF1apId == cfgRsp->duUeF1apId)
-               {
-                  ueCb = &duCb.actvCellLst[cfgRsp->cellId -1]->ueCb[ueIdx];
-                  ueCb->macUeCfg.macUeCfgState = UE_CREATE_COMPLETE;
-                  break;
-               }
-            }
-            if(!ueCb)
-            {
-               if(duCb.actvCellLst[cfgRsp->cellId -1]->hoUeCb[cfgRsp->duUeF1apId-1].gnbDuUeF1apId == cfgRsp->duUeF1apId)
-               {
-                  ueCb = &duCb.actvCellLst[cfgRsp->cellId -1]->hoUeCb[cfgRsp->duUeF1apId-1];
-                  ueCb->macUeCfg.macUeCfgState = UE_CREATE_COMPLETE;
-                  //TODO : in next gerrit
-                  //BuildAndSendUeCtxtRsp(cfgRsp->cellId, cfgRsp->ueId);
-               }
-            }
+            DU_LOG("\nINFO   -->  DU APP : MAC UE Create Response : SUCCESS [DU UE F1AP ID : %d]", cfgRsp->ueId);
 
+            if(duCb.actvCellLst[cfgRsp->cellId -1] && 
+                  (duCb.actvCellLst[cfgRsp->cellId -1]->ueCb[cfgRsp->ueId -1].gnbDuUeF1apId == cfgRsp->ueId))
+            {
+               duCb.actvCellLst[cfgRsp->cellId -1]->ueCb[cfgRsp->ueId -1].macUeCfg.macUeCfgState = UE_CREATE_COMPLETE;
+
+               /* TODO : IF UE state is HANDIN_IN_PROGRESS, then send UE Context Setup Response */
+            }
          }
          else if(pst->event == EVENT_MAC_UE_RECONFIG_RSP)
          {
-            DU_LOG("\nINFO   -->  DU APP : MAC UE Reconfig Response : SUCCESS [DU UE F1AP ID : %d]", cfgRsp->duUeF1apId);
-            for(ueIdx = 0; ueIdx < MAX_NUM_UE; ueIdx++)
+            DU_LOG("\nINFO   -->  DU APP : MAC UE Reconfig Response : SUCCESS [DU UE F1AP ID : %d]", cfgRsp->ueId);
+            if(duCb.actvCellLst[cfgRsp->cellId -1] && 
+                  (duCb.actvCellLst[cfgRsp->cellId -1]->ueCb[cfgRsp->ueId -1].gnbDuUeF1apId == cfgRsp->ueId))
             {
-               if(duCb.actvCellLst[cfgRsp->cellId -1]->ueCb[ueIdx].gnbDuUeF1apId == cfgRsp->duUeF1apId)
-               {
-                  ueCb = &duCb.actvCellLst[cfgRsp->cellId -1]->ueCb[ueIdx];    
-                  ueCb->macUeCfg.macUeCfgState = UE_RECFG_COMPLETE;
-                  break;
-               }
-            } 
-
-            if(ueCb)
-            {
-               GET_UE_ID(ueCb->crnti, ueId);
-               if((ret = duUpdateDuUeCbCfg(ueId, cfgRsp->cellId)) == ROK)
-               {
-                  BuildAndSendUeCtxtRsp(cfgRsp->cellId, ueId);
+               duCb.actvCellLst[cfgRsp->cellId -1]->ueCb[cfgRsp->ueId -1].macUeCfg.macUeCfgState = UE_RECFG_COMPLETE;
+               if((ret = duUpdateDuUeCbCfg(cfgRsp->ueId, cfgRsp->cellId)) == ROK)
+               {  
+                  BuildAndSendUeCtxtRsp(cfgRsp->cellId, cfgRsp->ueId);
                }
             }
          }
       }
       else
       {
-         DU_LOG("\nERROR  -->  DU APP : MAC UE CFG Response for EVENT[%d]: FAILURE [DU UE F1AP ID : %d]", pst->event, cfgRsp->duUeF1apId);
+         DU_LOG("\nERROR  -->  DU APP : MAC UE CFG Response for EVENT[%d]: FAILURE [DU UE F1AP ID : %d]", pst->event, cfgRsp->ueId);
          if(pst->event == EVENT_MAC_UE_RECONFIG_RSP)
          {
             //TODO: Send the failure case in Ue Context Setup Response

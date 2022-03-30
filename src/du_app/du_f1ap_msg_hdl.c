@@ -12012,7 +12012,7 @@ uint8_t procF1UeContextSetupReq(F1AP_PDU_t *f1apMsg)
                      ret = RFAILED;
                      break;
                   }
-                  duUeCb = &duCb.actvCellLst[cellIdx]->hoUeCb[ueIdx];
+                  duUeCb = &duCb.actvCellLst[cellIdx]->ueCb[ueIdx];
                   duUeCb->f1UeDb = NULL;
                   duUeCb->gnbCuUeF1apId = gnbCuUeF1apId;
                   duUeCb->gnbDuUeF1apId = gnbDuUeF1apId;

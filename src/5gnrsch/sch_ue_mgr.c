@@ -72,7 +72,7 @@ void SchSendUeCfgRspToMac(uint16_t event, SchUeCfg *ueCfg, Inst inst,\
    Pst rspPst;
 
    cfgRsp->cellId = ueCfg->cellId;
-   cfgRsp->duUeF1apId = ueCfg->duUeF1apId;
+   cfgRsp->ueId = ueCfg->ueId;
    cfgRsp->crnti = ueCfg->crnti;
    cfgRsp->rsp = result;   
 
@@ -259,7 +259,7 @@ uint8_t fillSchUeCb(Inst inst, SchUeCb *ueCb, SchUeCfg *ueCfg)
    bool isLcIdValid = FALSE;
 
    ueCb->ueCfg.cellId = ueCfg->cellId;
-   ueCb->ueCfg.duUeF1apId = ueCfg->duUeF1apId;
+   ueCb->ueCfg.ueId = ueCfg->ueId;
    ueCb->ueCfg.crnti = ueCfg->crnti;
    ueCb->ueCfg.dataTransmissionAction = ueCfg->dataTransmissionInfo;
    if(ueCfg->macCellGrpCfgPres == true)
@@ -506,7 +506,7 @@ SchCellCb *getSchCellCb(uint16_t srcEvent, Inst inst, SchUeCfg *ueCfg)
  * ****************************************************************/
 uint8_t MacSchAddUeConfigReq(Pst *pst, SchUeCfg *ueCfg)
 {
-   uint8_t ueId, lcIdx, ret = ROK;
+   uint8_t      lcIdx = 0, ret = ROK;
    SchCellCb    *cellCb = NULLP;
    SchUeCb      *ueCb = NULLP;
    SchUeCfgRsp  cfgRsp;
@@ -526,13 +526,7 @@ uint8_t MacSchAddUeConfigReq(Pst *pst, SchUeCfg *ueCfg)
    cellCb = getSchCellCb(pst->event, inst, ueCfg);
 
    /* Search if UE already configured */
-   if(ueCfg->crnti)
-   {
-      GET_UE_ID(ueCfg->crnti, ueId);
-      ueCb = &cellCb->ueCb[ueId -1];
-   }
-   else
-      ueCb = &cellCb->hoUeCb[ueCfg->duUeF1apId - 1];
+   ueCb = &cellCb->ueCb[ueCfg->ueId - 1];
 
    if((ueCb->crnti == ueCfg->crnti) && (ueCb->state == SCH_UE_STATE_ACTIVE))
    {
@@ -543,7 +537,7 @@ uint8_t MacSchAddUeConfigReq(Pst *pst, SchUeCfg *ueCfg)
 
    /* Fill received Ue Configuration in UeCb */
    memset(ueCb, 0, sizeof(SchUeCb));
-   ueCb->ueId = ueId;
+   ueCb->ueId = ueCfg->ueId;
    ueCb->crnti = ueCfg->crnti;
    if(ueCb->crnti)
       ueCb->state = SCH_UE_STATE_ACTIVE;
