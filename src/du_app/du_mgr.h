@@ -186,9 +186,7 @@ typedef struct duCellCb
    MacCellCfg     *duMacCellCfg;
    CellStatus     cellStatus;             /* Cell status */
    uint32_t       numActvUes;             /* Total Active UEs */
-   DuUeCb         ueCb[MAX_NUM_UE];       /* UE context created after RRC setup */
-   uint32_t       numHoUes;               /* Number of UE handover in progress */
-   DuUeCb         hoUeCb[MAX_NUM_UE];     /* UE context created before RACH for UE being handover to this DU */
+   DuUeCb         ueCb[MAX_NUM_UE];       /* Stores UE context */
    SlotInfo       currSlotInfo;
 }DuCellCb;
 
