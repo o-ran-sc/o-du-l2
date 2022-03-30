@@ -119,6 +119,29 @@
       },
       "revId": "e67bd054fb3d6d136cadd3fe584ab4686ced51e9",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5e788f10_27bdf334",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 11466,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-03-30T08:07:07Z",
+      "side": 1,
+      "message": "I dont understand this.. since we already have ueCb then why are we accessing ueCb from CellCb..",
+      "range": {
+        "startLine": 11466,
+        "startChar": 28,
+        "endLine": 11466,
+        "endChar": 34
+      },
+      "revId": "e67bd054fb3d6d136cadd3fe584ab4686ced51e9",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
   ]
 }
