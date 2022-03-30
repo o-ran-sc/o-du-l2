@@ -1,0 +1,216 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4b3450cf_1f4d0f78",
+        "filename": "src/cu_stub/cu_stub_egtp.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-03-30T13:09:20Z",
+      "side": 1,
+      "message": "move this outside for loop",
+      "revId": "af20b00c61a1c6cb1319b196bef3fd8d3bb20ef5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d7642b3e_9f7ea6b8",
+        "filename": "src/cu_stub/cu_stub_egtp.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 192,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-03-30T13:09:20Z",
+      "side": 1,
+      "message": "move line 178 to 192 outside for loop",
+      "revId": "af20b00c61a1c6cb1319b196bef3fd8d3bb20ef5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e16ebb70_6588dd7e",
+        "filename": "src/cu_stub/cu_stub_egtp.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 351,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-03-30T13:09:20Z",
+      "side": 1,
+      "message": "duId-1",
+      "range": {
+        "startLine": 351,
+        "startChar": 33,
+        "endLine": 351,
+        "endChar": 34
+      },
+      "revId": "af20b00c61a1c6cb1319b196bef3fd8d3bb20ef5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4f454d84_4827f3a4",
+        "filename": "src/cu_stub/cu_stub_egtp.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 638,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-03-30T13:09:20Z",
+      "side": 1,
+      "message": "rename duCount to numDu",
+      "range": {
+        "startLine": 638,
+        "startChar": 30,
+        "endLine": 638,
+        "endChar": 37
+      },
+      "revId": "af20b00c61a1c6cb1319b196bef3fd8d3bb20ef5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "93f22ef7_a2f67a82",
+        "filename": "src/cu_stub/cu_stub_egtp.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 638,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-03-30T13:09:20Z",
+      "side": 1,
+      "message": "Add function descritor",
+      "revId": "af20b00c61a1c6cb1319b196bef3fd8d3bb20ef5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "98f398aa_32d4994d",
+        "filename": "src/cu_stub/cu_stub_egtp.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 793,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-03-30T13:09:20Z",
+      "side": 1,
+      "message": "Add function descriptor",
+      "range": {
+        "startLine": 793,
+        "startChar": 4,
+        "endLine": 793,
+        "endChar": 16
+      },
+      "revId": "af20b00c61a1c6cb1319b196bef3fd8d3bb20ef5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "da970b9c_40f91c88",
+        "filename": "src/cu_stub/cu_stub_egtp.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 874,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-03-30T13:09:20Z",
+      "side": 1,
+      "message": "can we rename this macro to EGTP_RECVR_PORT to make it clear that this port is always used for receiving EGTP message. Also add the spec reference",
+      "range": {
+        "startLine": 874,
+        "startChar": 19,
+        "endLine": 874,
+        "endChar": 33
+      },
+      "revId": "af20b00c61a1c6cb1319b196bef3fd8d3bb20ef5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3469fcde_123b3c12",
+        "filename": "src/cu_stub/cu_stub_egtp.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-03-30T13:09:20Z",
+      "side": 1,
+      "message": "can we pass duId instead of duIdx to maintain consistency and avoid any confusion",
+      "range": {
+        "startLine": 161,
+        "startChar": 27,
+        "endLine": 161,
+        "endChar": 32
+      },
+      "revId": "af20b00c61a1c6cb1319b196bef3fd8d3bb20ef5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "61ec2593_a1d95d66",
+        "filename": "src/du_app/du_egtp.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 935,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-03-30T13:09:20Z",
+      "side": 1,
+      "message": "remove",
+      "range": {
+        "startLine": 935,
+        "startChar": 9,
+        "endLine": 935,
+        "endChar": 15
+      },
+      "revId": "af20b00c61a1c6cb1319b196bef3fd8d3bb20ef5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "03432346_815eba85",
+        "filename": "src/phy_stub/phy_stub_thread_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-03-30T13:09:20Z",
+      "side": 1,
+      "message": "Keep the macro and change macro value for any testing. That would be the right way to test.",
+      "range": {
+        "startLine": 161,
+        "startChar": 33,
+        "endLine": 161,
+        "endChar": 34
+      },
+      "revId": "af20b00c61a1c6cb1319b196bef3fd8d3bb20ef5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
