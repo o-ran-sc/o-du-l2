@@ -964,7 +964,7 @@ uint8_t MacSchDlRlcBoInfo(Pst *pst, DlRlcBoInfo *dlBoInfo)
    ueCb = &cell->ueCb[ueId-1];
    if(ueCb->ueCfg.dataTransmissionAction == STOP_DATA_TRANSMISSION)
    {
-      DU_LOG("INFO  --> SCH : DL Data transmission not allowed for UE %d", ueCb->ueCfg.duUeF1apId);
+      DU_LOG("INFO  --> SCH : DL Data transmission not allowed for UE %d", ueCb->ueCfg.ueId);
       return ROK;
    }
    
@@ -1070,7 +1070,7 @@ uint8_t MacSchBsr(Pst *pst, UlBufferStatusRptInd *bsrInd)
 
    if(ueCb->ueCfg.dataTransmissionAction == STOP_DATA_TRANSMISSION)
    {
-      DU_LOG("\nINFO --> SCH: UL Data transmission not allowed for UE %d", ueCb->ueCfg.duUeF1apId);
+      DU_LOG("\nINFO --> SCH: UL Data transmission not allowed for UE %d", ueCb->ueCfg.ueId);
       return ROK;
    }
    
@@ -1126,7 +1126,7 @@ uint8_t MacSchSrUciInd(Pst *pst, SrUciIndInfo *uciInd)
    }
    if(ueCb->ueCfg.dataTransmissionAction == STOP_DATA_TRANSMISSION)
    {
-      DU_LOG("\nINFO --> SCH: UL Data transmission not allowed for UE %d", ueCb->ueCfg.duUeF1apId);
+      DU_LOG("\nINFO --> SCH: UL Data transmission not allowed for UE %d", ueCb->ueCfg.ueId);
       return ROK;
    }
    if(uciInd->numSrBits)
@@ -1762,7 +1762,11 @@ uint8_t addSliceCfgInSchDb(SchSliceCfg *storeSliceCfg, SchSliceCfgReq *cfgReq, S
                return RFAILED;
             }
 
-            memcpy(storeSliceCfg->listOfConfirguration[sliceIdx], cfgReq->listOfConfirguration[sliceIdx], sizeof(SchRrmPolicyOfSlice));
+            memcpy(&storeSliceCfg->listOfConfirguration[sliceIdx]->snssai, &cfgReq->listOfConfirguration[sliceIdx]->snssai, sizeof(Snssai));
+            /*Bug: Previously memcpy of SliceCfg->listOfConfirguration was performed because of which address of rrmPolicyRatioInfo instead of value.
+             * Thus, While freeing the CfgReq from MAC the rrmPolicyRatioInfo from SCH DB was getting corrupted.*/
+            memcpy(storeSliceCfg->listOfConfirguration[sliceIdx]->rrmPolicyRatioInfo, cfgReq->listOfConfirguration[sliceIdx]->rrmPolicyRatioInfo,
+                      sizeof(SchRrmPolicyRatio));
             sliceIdx++;
          }
       }
@@ -1898,7 +1902,8 @@ uint8_t modifySliceCfgInSchDb(SchSliceCfg *storeSliceCfg, SchSliceCfgReq *cfgReq
             {
                if(!memcmp(&storeSliceCfg->listOfConfirguration[sliceIdx]->snssai, &cfgReq->listOfConfirguration[cfgIdx]->snssai, sizeof(Snssai)))
                {
-                  storeSliceCfg->listOfConfirguration[sliceIdx]->rrmPolicyRatioInfo = cfgReq->listOfConfirguration[cfgIdx]->rrmPolicyRatioInfo;
+                  memcpy(storeSliceCfg->listOfConfirguration[sliceIdx]->rrmPolicyRatioInfo, cfgReq->listOfConfirguration[cfgIdx]->rrmPolicyRatioInfo,
+                           sizeof(SchRrmPolicyRatio));
                   break;
                }
             }

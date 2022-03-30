@@ -1572,7 +1572,7 @@ typedef struct schModulationInfo
 typedef struct schUeCfg
 {
    uint16_t        cellId;
-   uint8_t         duUeF1apId;
+   uint8_t         ueId;
    uint16_t        crnti;
    bool macCellGrpCfgPres;
    SchMacCellGrpCfg   macCellGrpCfg;
@@ -1591,7 +1591,7 @@ typedef struct schUeCfg
 typedef struct schUeCfgRsp
 {
    uint16_t   cellId;
-   uint16_t   duUeF1apId;
+   uint16_t   ueId;
    uint16_t   crnti;
    SchMacRsp  rsp;
    SchFailureCause cause;
