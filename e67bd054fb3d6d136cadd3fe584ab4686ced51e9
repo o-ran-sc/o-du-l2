@@ -18,6 +18,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fbe88da6_41d87aad",
+        "filename": "src/cm/common_def.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 430,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-03-30T08:12:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "06075f78_4b520322",
+      "revId": "e67bd054fb3d6d136cadd3fe584ab4686ced51e9",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b4e566d8_8d590680",
@@ -31,6 +49,30 @@
       "writtenOn": "2022-03-30T07:40:54Z",
       "side": 1,
       "message": "remove",
+      "range": {
+        "startLine": 315,
+        "startChar": 83,
+        "endLine": 315,
+        "endChar": 84
+      },
+      "revId": "e67bd054fb3d6d136cadd3fe584ab4686ced51e9",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7509f0d6_aeaafea0",
+        "filename": "src/cm/common_def.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 315,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-03-30T08:12:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b4e566d8_8d590680",
       "range": {
         "startLine": 315,
         "startChar": 83,
@@ -58,6 +100,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d8540aab_a1568a6e",
+        "filename": "src/cm/common_def.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 329,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-03-30T08:12:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c99fd353_85dff09d",
+      "revId": "e67bd054fb3d6d136cadd3fe584ab4686ced51e9",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "deccb6b1_663ef0f4",
@@ -71,6 +131,30 @@
       "writtenOn": "2022-03-30T07:40:54Z",
       "side": 1,
       "message": "remove no need of return",
+      "range": {
+        "startLine": 1632,
+        "startChar": 9,
+        "endLine": 1632,
+        "endChar": 10
+      },
+      "revId": "e67bd054fb3d6d136cadd3fe584ab4686ced51e9",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e14714b3_a87e1117",
+        "filename": "src/cm/du_app_mac_inf.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1632,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-03-30T08:12:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "deccb6b1_663ef0f4",
       "range": {
         "startLine": 1632,
         "startChar": 9,
@@ -98,6 +182,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "589ead74_6a60b7c2",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 11434,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-03-30T08:12:39Z",
+      "side": 1,
+      "message": "This function is called from F1APMsgHdlr(). F1APMsgHdlr() function does not care for output of the functions it is calling. Hence I have returned void.",
+      "parentUuid": "dc7d9c3f_a343ff67",
+      "revId": "e67bd054fb3d6d136cadd3fe584ab4686ced51e9",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "271cb80c_bd0b8d8b",
@@ -121,6 +223,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4984772b_bb11ecaa",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 11446,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-03-30T08:12:39Z",
+      "side": 1,
+      "message": "This function is called from F1APMsgHdlr(). F1APMsgHdlr() function does not care for output of the functions it is calling. Hence I have returned void.",
+      "parentUuid": "271cb80c_bd0b8d8b",
+      "range": {
+        "startLine": 11446,
+        "startChar": 6,
+        "endLine": 11446,
+        "endChar": 12
+      },
+      "revId": "e67bd054fb3d6d136cadd3fe584ab4686ced51e9",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5e788f10_27bdf334",
@@ -134,6 +260,30 @@
       "writtenOn": "2022-03-30T08:07:07Z",
       "side": 1,
       "message": "I dont understand this.. since we already have ueCb then why are we accessing ueCb from CellCb..",
+      "range": {
+        "startLine": 11466,
+        "startChar": 28,
+        "endLine": 11466,
+        "endChar": 34
+      },
+      "revId": "e67bd054fb3d6d136cadd3fe584ab4686ced51e9",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "31711af3_3d6afe52",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 11466,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-03-30T08:12:39Z",
+      "side": 1,
+      "message": "ueCb is accessed from duDb. A DU can have multiple cells. Pointer to ueCb is also stored within cellCb it belongs to. Since we are deleting this UE, the pointer should be set to NULL in cell Cb. Hence we are just accessing the cellCb-\u003eueCb pointer variable to set it to NULL.",
+      "parentUuid": "5e788f10_27bdf334",
       "range": {
         "startLine": 11466,
         "startChar": 28,
