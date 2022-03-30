@@ -964,7 +964,7 @@ uint8_t MacSchDlRlcBoInfo(Pst *pst, DlRlcBoInfo *dlBoInfo)
    ueCb = &cell->ueCb[ueId-1];
    if(ueCb->ueCfg.dataTransmissionAction == STOP_DATA_TRANSMISSION)
    {
-      DU_LOG("INFO  --> SCH : DL Data transmission not allowed for UE %d", ueCb->ueCfg.duUeF1apId);
+      DU_LOG("INFO  --> SCH : DL Data transmission not allowed for UE %d", ueCb->ueCfg.ueId);
       return ROK;
    }
    
@@ -1070,7 +1070,7 @@ uint8_t MacSchBsr(Pst *pst, UlBufferStatusRptInd *bsrInd)
 
    if(ueCb->ueCfg.dataTransmissionAction == STOP_DATA_TRANSMISSION)
    {
-      DU_LOG("\nINFO --> SCH: UL Data transmission not allowed for UE %d", ueCb->ueCfg.duUeF1apId);
+      DU_LOG("\nINFO --> SCH: UL Data transmission not allowed for UE %d", ueCb->ueCfg.ueId);
       return ROK;
    }
    
@@ -1126,7 +1126,7 @@ uint8_t MacSchSrUciInd(Pst *pst, SrUciIndInfo *uciInd)
    }
    if(ueCb->ueCfg.dataTransmissionAction == STOP_DATA_TRANSMISSION)
    {
-      DU_LOG("\nINFO --> SCH: UL Data transmission not allowed for UE %d", ueCb->ueCfg.duUeF1apId);
+      DU_LOG("\nINFO --> SCH: UL Data transmission not allowed for UE %d", ueCb->ueCfg.ueId);
       return ROK;
    }
    if(uciInd->numSrBits)

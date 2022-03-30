@@ -1253,7 +1253,6 @@ typedef struct macUeCfg
 {
    uint16_t cellId;
    uint8_t  ueId;
-   uint8_t  duUeF1apId;
    uint16_t crnti;
    bool macCellGrpCfgPres;
    MacCellGrpCfg macCellGrpCfg;
@@ -1297,7 +1296,7 @@ typedef struct sCellFailInfo
 typedef struct ueCfgRsp
 {
    uint16_t       cellId;
-   uint16_t       duUeF1apId;
+   uint16_t       ueId;
    MacRsp         result;
    uint8_t        numSRBFailed;   /* valid values : 0 to MAX_NUM_SRB */ 
    SRBFailInfo    *failedSRBlisti;

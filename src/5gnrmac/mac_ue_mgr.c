@@ -1616,7 +1616,7 @@ uint8_t fillSchUeCfg(Pst *pst, SchUeCfg *schUeCfg, MacUeCfg *ueCfg)
    uint8_t ret = ROK;
 
    schUeCfg->cellId = ueCfg->cellId;
-   schUeCfg->duUeF1apId = ueCfg->duUeF1apId;
+   schUeCfg->ueId = ueCfg->ueId;
    schUeCfg->crnti = ueCfg->crnti;
    schUeCfg->dataTransmissionInfo = ueCfg->transmissionAction;
    /* Copy MAC cell group config */
@@ -2214,10 +2214,7 @@ uint8_t procMacUeCfgData(Pst *pst, MacUeCfg *ueCfg)
    }
 
    /* Check if UE already configured */
-   if(ueCfg->crnti)
-      ueCb = &macCb.macCell[cellIdx]->ueCb[ueCfg->ueId -1];
-   else
-      ueCb = &macCb.macCell[cellIdx]->hoUeCb[ueCfg->duUeF1apId -1];
+   ueCb = &macCb.macCell[cellIdx]->ueCb[ueCfg->ueId -1];
 
    switch(pst->event)
    {
@@ -2273,7 +2270,7 @@ uint8_t copyToTmpData(MacUeCfg *ueCfg)
    }
    memcpy(tmpData, ueCfg, sizeof(MacUeCfg));
    GET_CELL_IDX(ueCfg->cellId, cellIdx);
-   macCb.macCell[cellIdx]->ueCfgTmpData[ueCfg->duUeF1apId-1] = tmpData;
+   macCb.macCell[cellIdx]->ueCfgTmpData[ueCfg->ueId-1] = tmpData;
    return ROK;
 }
 
@@ -2365,7 +2362,7 @@ uint8_t MacSendUeCreateRsp(MacRsp result, SchUeCfgRsp *schCfgRsp)
    /* Filling UE Config response */
    memset(cfgRsp, 0, sizeof(MacUeCfgRsp));
    cfgRsp->cellId = schCfgRsp->cellId;
-   cfgRsp->duUeF1apId = schCfgRsp->duUeF1apId;
+   cfgRsp->ueId = schCfgRsp->ueId;
    cfgRsp->result = result;
 
    /* Fill Post structure and send UE Create response*/
@@ -2405,7 +2402,7 @@ uint8_t MacSendUeReconfigRsp(MacRsp result, SchUeCfgRsp *schCfgRsp)
    /* Filling UE Config response */
    memset(cfgRsp, 0, sizeof(MacUeCfgRsp));
    cfgRsp->cellId = schCfgRsp->cellId;
-   cfgRsp->duUeF1apId = schCfgRsp->duUeF1apId;
+   cfgRsp->ueId = schCfgRsp->ueId;
    cfgRsp->result = result;
 
    /* Fill Post structure and send UE Create response*/
@@ -2432,12 +2429,12 @@ uint8_t MacSendUeReconfigRsp(MacRsp result, SchUeCfgRsp *schCfgRsp)
  *
  * ****************************************************************/
 
-MacUeCfg *getMacUeCfg(uint16_t cellIdx, uint8_t duUeF1apId)
+MacUeCfg *getMacUeCfg(uint16_t cellIdx, uint8_t ueId)
 {
    MacUeCfg *ueCfg = NULLP;
    if(macCb.macCell[cellIdx])
    {
-      ueCfg = macCb.macCell[cellIdx]->ueCfgTmpData[duUeF1apId-1];
+      ueCfg = macCb.macCell[cellIdx]->ueCfgTmpData[ueId-1];
    }
    else
    {
@@ -2487,7 +2484,7 @@ uint8_t MacProcSchUeCfgRsp(Pst *pst, SchUeCfgRsp *schCfgRsp)
 #endif
    
    GET_CELL_IDX(schCfgRsp->cellId, cellIdx);
-   ueCfg = getMacUeCfg(cellIdx, schCfgRsp->duUeF1apId);
+   ueCfg = getMacUeCfg(cellIdx, schCfgRsp->ueId);
    if(ueCfg == NULLP)
    {
       DU_LOG("\nERROR  -->  MAC : Failed to find the Mac Ue Cfg for event [%d] in MacProcSchUeCfgRsp()", pst->event);

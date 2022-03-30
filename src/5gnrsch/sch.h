@@ -220,7 +220,7 @@ typedef struct schUlCb
 typedef struct schUeCfgCb
 {
    uint16_t        cellId;
-   uint8_t         duUeF1apId;
+   uint8_t         ueId;
    uint16_t        crnti;
    bool macCellGrpCfgPres;
    SchMacCellGrpCfg   macCellGrpCfg;
@@ -340,7 +340,6 @@ typedef struct schCellCb
    uint8_t       ssbStartSymbArr[SCH_MAX_SSB_BEAM]; /*!<start symbol per SSB beam */
    SchRaReq      *raReq[MAX_NUM_UE];                /*!< Pending RA request */
    SchRaCb       raCb[MAX_NUM_UE];                  /*!< RA Cb */
-   SchUeCb       hoUeCb[MAX_NUM_UE];                /*!<List of UE being handed-in to this DU */
    uint16_t      numActvUe;                         /*!<Number of active UEs */
    uint32_t      actvUeBitMap;                      /*!<Bit map to find active UEs */
    uint32_t      boIndBitMap;                       /*!<Bit map to indicate UEs that have recevied BO */
