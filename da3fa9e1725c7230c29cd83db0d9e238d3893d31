@@ -16,6 +16,24 @@
       "message": "revert and submit",
       "revId": "da3fa9e1725c7230c29cd83db0d9e238d3893d31",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9ad20a7a_4701129c",
+        "filename": "src/du_app/du_mgr_main.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 569,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-03-30T11:33:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d54b55be_6175021a",
+      "revId": "da3fa9e1725c7230c29cd83db0d9e238d3893d31",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
   ]
 }
