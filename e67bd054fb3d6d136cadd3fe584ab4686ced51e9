@@ -1,0 +1,124 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "06075f78_4b520322",
+        "filename": "src/cm/common_def.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 430,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-03-30T07:40:54Z",
+      "side": 1,
+      "message": "remove",
+      "revId": "e67bd054fb3d6d136cadd3fe584ab4686ced51e9",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b4e566d8_8d590680",
+        "filename": "src/cm/common_def.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 315,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-03-30T07:40:54Z",
+      "side": 1,
+      "message": "remove",
+      "range": {
+        "startLine": 315,
+        "startChar": 83,
+        "endLine": 315,
+        "endChar": 84
+      },
+      "revId": "e67bd054fb3d6d136cadd3fe584ab4686ced51e9",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c99fd353_85dff09d",
+        "filename": "src/cm/common_def.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 329,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-03-30T07:40:54Z",
+      "side": 1,
+      "message": "remove",
+      "revId": "e67bd054fb3d6d136cadd3fe584ab4686ced51e9",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "deccb6b1_663ef0f4",
+        "filename": "src/cm/du_app_mac_inf.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1632,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-03-30T07:40:54Z",
+      "side": 1,
+      "message": "remove no need of return",
+      "range": {
+        "startLine": 1632,
+        "startChar": 9,
+        "endLine": 1632,
+        "endChar": 10
+      },
+      "revId": "e67bd054fb3d6d136cadd3fe584ab4686ced51e9",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dc7d9c3f_a343ff67",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 11434,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-03-30T07:40:54Z",
+      "side": 1,
+      "message": "change to uint8_t if you will return RFAILED;",
+      "revId": "e67bd054fb3d6d136cadd3fe584ab4686ced51e9",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "271cb80c_bd0b8d8b",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 11446,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-03-30T07:40:54Z",
+      "side": 1,
+      "message": "i think it should be return RFAILED;",
+      "range": {
+        "startLine": 11446,
+        "startChar": 6,
+        "endLine": 11446,
+        "endChar": 12
+      },
+      "revId": "e67bd054fb3d6d136cadd3fe584ab4686ced51e9",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
