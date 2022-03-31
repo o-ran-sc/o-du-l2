@@ -113,7 +113,7 @@ uint8_t BuildGlobalRicId(GlobalRIC_ID_t *ricId)
       /* fill ric Id */
       ricId->ric_ID.size = byteSize * sizeof(uint8_t);
       RIC_ALLOC(ricId->ric_ID.buf, ricId->ric_ID.size);
-      fillBitString(&ricId->ric_ID, unused, byteSize, val);
+      fillBitString(&ricId->ric_ID, unused, byteSize, &val);
    }
    return ROK;   
 }

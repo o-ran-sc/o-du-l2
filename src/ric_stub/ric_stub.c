@@ -82,6 +82,7 @@ uint8_t tst()
 
    /* Start RIC-SCTP to listen on incoming connection */
    sctpCfgReq();
+   sleep(1);
    sctpStartReq();
 
    return ROK;
