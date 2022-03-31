@@ -57,7 +57,7 @@ uint8_t BuildGlobalgNBId(GlobalE2node_gNB_ID_t *gNbId)
 {
    uint8_t unused = 0;
    uint8_t byteSize = 4;
-   uint8_t val = 1;
+   uint8_t gnbId = 1;
    uint8_t ret = ROK;
 
    /* Allocate Buffer size */
@@ -72,22 +72,22 @@ uint8_t BuildGlobalgNBId(GlobalE2node_gNB_ID_t *gNbId)
    else
    {
       buildPlmnId(duCfgParam.srvdCellLst[0].duCellInfo.cellInfo.nrCgi.plmn, \
-	    gNbId->global_gNB_ID.plmn_id.buf);
+            gNbId->global_gNB_ID.plmn_id.buf);
       /* fill gND Id */
       gNbId->global_gNB_ID.gnb_id.present = GNB_ID_Choice_PR_gnb_ID;
       /* Allocate Buffer size */
       gNbId->global_gNB_ID.gnb_id.choice.gnb_ID.size = byteSize * sizeof(uint8_t);
       gNbId->global_gNB_ID.gnb_id.choice.gnb_ID.buf = NULLP;
       DU_ALLOC(gNbId->global_gNB_ID.gnb_id.choice.gnb_ID.buf, \
-	    gNbId->global_gNB_ID.gnb_id.choice.gnb_ID.size);
+            gNbId->global_gNB_ID.gnb_id.choice.gnb_ID.size);
       if(gNbId->global_gNB_ID.gnb_id.choice.gnb_ID.buf == NULLP)
       {
-	 DU_LOG("\nERROR  -->  E2AP: Memory allocation failed for gnb buffer");
-	 ret = RFAILED;
+         DU_LOG("\nERROR  -->  E2AP: Memory allocation failed for gnb buffer");
+         ret = RFAILED;
       }
       else
       {
-	 fillBitString(&gNbId->global_gNB_ID.gnb_id.choice.gnb_ID, unused, byteSize, val);
+         fillBitString(&gNbId->global_gNB_ID.gnb_id.choice.gnb_ID, unused, byteSize, gnbId);
       }
    }
    return ret;

@@ -285,11 +285,11 @@ void *cuConsoleHandler(void *args)
       if(ch == 'd')
       {
 
-      /* Change #if 0 to #if 1 to take input from user */
+         /* Change #if 0 to #if 1 to take input from user */
 #if 0
          DU_LOG("\n EGTP --> : Enter TEID id(1..10) where DL Data to be sent\n");
          scanf("%d",&teId);
-         
+
          if(teId > MAX_TEID || teId < MIN_TEID)
          {
             DU_LOG("\nERROR  -->  EGTP : TEID(%x) OUT Of Range",teId);
@@ -350,6 +350,23 @@ void *cuConsoleHandler(void *args)
          scanf("%d", &ueId);
 
          initiateInterDuHandover(sourceDuId, targetDuId, ueId);
+      }
+      /* Start Idle mode paging when 'p' is received from console input */
+      else if(ch == 'p')
+      {
+         uint64_t sTmsi = 0;
+         uint8_t duId = 0;
+
+         DU_LOG("\nEnter DU ID on which this UE to be pagged");
+         scanf("%d", &duId);
+         DU_LOG("\nEnter 5g-S-TMSI");
+         scanf("%lu", &sTmsi);
+
+         if(BuildAndSendPagingMsg(sTmsi, duId) != ROK)
+         {
+            DU_LOG("\nERROR --> EGTP: Failed to build and send paging message for 5gsTmsi[%lu]\n", sTmsi);   
+         }
+         continue;
       }
    }
 }

@@ -27,6 +27,7 @@
 #include "du_cfg.h"
 #include "du_mgr.h"
 #include "du_utils.h"
+#include "du_f1ap_conversions.h"
 #include "OCTET_STRING.h"
 #include "BIT_STRING.h"
 #include "odu_common_codec.h"
@@ -278,10 +279,9 @@ uint8_t readMacCfg()
    duCfgParam.macCellCfg.sib1Cfg.searchSpaceZeroIndex = SEARCHSPACE_0_INDEX;
    duCfgParam.macCellCfg.sib1Cfg.sib1Mcs = DEFAULT_MCS;
   
-   GET_NUM_PAGING_OCC(duCfgParam.sib1Params.srvCellCfgCommSib.dlCfg.pcchCfg.ns,
-                           duCfgParam.macCellCfg.sib1Cfg.pagingCfg.numPO);
-   if(duCfgParam.sib1Params.srvCellCfgCommSib.dlCfg.pcchCfg.firstPDCCHMontioringType != \
-             PCCH_Config__firstPDCCH_MonitoringOccasionOfPO_PR_NOTHING)
+   duCfgParam.macCellCfg.sib1Cfg.pagingCfg.numPO = duCfgParam.sib1Params.srvCellCfgCommSib.dlCfg.pcchCfg.ns;
+   if((duCfgParam.sib1Params.srvCellCfgCommSib.dlCfg.pcchCfg.firstPDCCHMontioringType != \
+             PCCH_Config__firstPDCCH_MonitoringOccasionOfPO_PR_NOTHING) && (duCfgParam.macCellCfg.sib1Cfg.pagingCfg.numPO != 0))
    {
       duCfgParam.macCellCfg.sib1Cfg.pagingCfg.poPresent = TRUE;
       memcpy(duCfgParam.macCellCfg.sib1Cfg.pagingCfg.pagingOcc, 
@@ -392,6 +392,27 @@ uint8_t readMacCfg()
          memcpy(duCfgParam.macCellCfg.plmnInfoList.snssai[sliceIdx], taiSliceSuppLst->snssai[sliceIdx], sizeof(Snssai));
       }
    }
+
+#ifndef O1_ENABLE
+
+   /*Note: Static Configuration, when O1 is not configuring the RRM policy*/
+   RrmPolicyList rrmPolicy;
+   rrmPolicy.id[0] = 1;
+   rrmPolicy.resourceType = PRB;
+   rrmPolicy.rRMMemberNum = 1;
+   memcpy(rrmPolicy.rRMPolicyMemberList[0].mcc,duCfgParam.macCellCfg.plmnInfoList.plmn.mcc, 3*sizeof(uint8_t));
+   memcpy(rrmPolicy.rRMPolicyMemberList[0].mnc,duCfgParam.macCellCfg.plmnInfoList.plmn.mnc, 3*sizeof(uint8_t));
+   rrmPolicy.rRMPolicyMemberList[0].sst = 1;
+   rrmPolicy.rRMPolicyMemberList[0].sd[0] = 2;
+   rrmPolicy.rRMPolicyMemberList[0].sd[1] = 3;
+   rrmPolicy.rRMPolicyMemberList[0].sd[2] = 4;
+   rrmPolicy.rRMPolicyMaxRatio = 90;
+   rrmPolicy.rRMPolicyMinRatio = 30;
+   rrmPolicy.rRMPolicyDedicatedRatio = 10;
+
+   cpyRrmPolicyInDuCfgParams(&rrmPolicy, 1, &duCfgParam.tempSliceCfg);
+  
+#endif
    return ROK;
 }
 
@@ -541,10 +562,10 @@ uint8_t fillServCellCfgCommSib(SrvCellCfgCommSib *srvCellCfgComm)
       BCCH_Config__modificationPeriodCoeff_n16;
 
    /* Configuring PCCH Config for SIB1 */
-   pcchCfg.dfltPagingCycle = PagingCycle_rf256;
+   pcchCfg.dfltPagingCycle = convertPagingCycleEnumToValue(PagingCycle_rf256);
    pcchCfg.nAndPagingFrmOffsetType = PCCH_Config__nAndPagingFrameOffset_PR_oneT;
    pcchCfg.pageFrameOffset = 0;
-   pcchCfg.ns = PCCH_Config__ns_one;
+   pcchCfg.ns = convertNsEnumToValue(PCCH_Config__ns_one);
    pcchCfg.firstPDCCHMontioringType = PCCH_Config__firstPDCCH_MonitoringOccasionOfPO_PR_sCS30KHZoneT_SCS15KHZhalfT;
    memset(pcchCfg.firstPDCCHMontioringInfo, 0, sizeof(uint16_t));
    pcchCfg.firstPDCCHMontioringInfo[0] = 44;
@@ -1019,7 +1040,6 @@ uint8_t readCfg()
  *         RFAILED - failure
  *
  * ****************************************************************/
-#ifdef O1_ENABLE
 uint8_t cpyRrmPolicyInDuCfgParams(RrmPolicyList rrmPolicy[], uint8_t policyNum, CopyOfRecvdSliceCfg *tempSliceCfg)
 {
    uint8_t policyIdx = 0, memberListIdx = 0, count = 0;
@@ -1079,7 +1099,6 @@ uint8_t cpyRrmPolicyInDuCfgParams(RrmPolicyList rrmPolicy[], uint8_t policyNum, 
    }
    return ROK;
 }
-#endif
 /*******************************************************************
  *
  * @brief Reads config and posts message to du_app on completion

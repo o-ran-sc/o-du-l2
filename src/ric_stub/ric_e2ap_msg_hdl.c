@@ -104,7 +104,7 @@ uint8_t BuildGlobalRicId(GlobalRIC_ID_t *ricId)
 {
    uint8_t unused = 4;
    uint8_t byteSize = 3;
-   uint8_t val = 16;
+   uint8_t ricVal= 1;
    if(ricId != NULLP)
    {
       ricId->pLMN_Identity.size = byteSize * sizeof(uint8_t);
@@ -113,7 +113,7 @@ uint8_t BuildGlobalRicId(GlobalRIC_ID_t *ricId)
       /* fill ric Id */
       ricId->ric_ID.size = byteSize * sizeof(uint8_t);
       RIC_ALLOC(ricId->ric_ID.buf, ricId->ric_ID.size);
-      fillBitString(&ricId->ric_ID, unused, byteSize, val);
+      fillBitString(&ricId->ric_ID, unused, byteSize, ricVal);
    }
    return ROK;   
 }
