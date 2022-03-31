@@ -18,6 +18,20 @@
 
 /* This file contains definitions of F1AP conversion functions */
 
+#include "RLC-BearerConfig.h"
+#include "RLC-Config.h"
+#include "SN-FieldLengthAM.h"
+#include "SN-FieldLengthUM.h"
+#include "T-PollRetransmit.h"
+#include "PollPDU.h"
+#include "PollByte.h"
+#include "T-Reassembly.h"
+#include "T-StatusProhibit.h"
+#include "PUCCH-Resource.h"
+#include "PagingDRX.h"
+#include "PCCH-Config.h"
+#include "du_app_rlc_inf.h"
+
 RLC_BearerConfig__servedRadioBearer_PR covertRbTypeFromIntEnumToRrcEnum(RlcRbType rbType);
 RLC_Config_PR covertRlcModeFromIntEnumToRrcEnum(RlcMode mode);
 SN_FieldLengthAM_t covertAmSnLenFromIntEnumToRrcEnum(SnLenAm snLen);
@@ -40,6 +54,11 @@ PUCCH_Resource__format_PR covertPucchFormatIntEnumToRrcEnum(uint8_t pucchFormat)
 long convertBsrPeriodicTmrValueToEnum(int16_t periodicTmr);
 long convertBsrRetxTmrValueToEnum(uint16_t retxTmr);
 long convertLcSrDelayTmrValueToEnum(uint16_t delayTimer);
+
+e_PagingDRX convertPagingCycleValueToEnum(uint16_t pagingDrxCycle);
+uint16_t convertPagingCycleEnumToValue(e_PagingDRX pagingDrx);
+uint8_t convertNsEnumToValue(e_PCCH_Config__ns Ns);
+e_PCCH_Config__ns convertNsValueToEnum(uint8_t numPO);
 
 /**********************************************************************
   End of file

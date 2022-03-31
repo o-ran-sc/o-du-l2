@@ -82,6 +82,8 @@ uint8_t tst()
 
    /* Start RIC-SCTP to listen on incoming connection */
    sctpCfgReq();
+   /*Sleep is introduced for GDB to increase the waiting time for RIC Configuration from DUAPP*/
+   sleep(1);
    sctpStartReq();
 
    return ROK;

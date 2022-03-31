@@ -26,6 +26,7 @@ void duProcF1SetupRsp();
 uint8_t duGetCellCb(uint16_t cellId, DuCellCb **cellCb);
 uint8_t BuildAndSendSliceConfigReq(RrmPolicy *rrmPolicy[], uint8_t totalRrrmPolicy, uint8_t totalSliceCfgReq);
 uint8_t BuildAndSendSliceReCfgReq(RrmPolicy *rrmPolicy[], uint8_t totalRrmPolicy, uint8_t totalSliceReCfg);
+uint8_t FillPagingInfoInCellCb(DuCellCb* cellCb, DuPagingMsg *rcvdF1apPagingParam);
 #endif
 /**********************************************************************
   End of file

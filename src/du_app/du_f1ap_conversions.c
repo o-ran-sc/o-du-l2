@@ -34,6 +34,8 @@
 #include "BSR-Config.h"
 #include "PUCCH-Resource.h"
 #include "du_app_rlc_inf.h"
+#include "PagingDRX.h"
+#include "PCCH-Config.h"
 
 /************************************************************************
  *
@@ -1182,6 +1184,134 @@ long convertLcSrDelayTmrValueToEnum(uint16_t delayTimer)
    }
 }
 
+/************************************************************************
+ *
+ * @brief Converts actual values into enum value of Paging DRX cycle
+ *
+ * @details
+ *
+ *    Function : convertPagingCycleValueToEnum
+ *
+ *    Functionality: As per Spec 38.331,
+ *          Converts Actual values into enum value of Paging DRX cycle 
+ *    
+ *
+ * @params[in] Actual value of PagingDRX
+ * @return Enum value of DRX cycle
+ *
+ * **********************************************************************/
+e_PagingDRX convertPagingCycleValueToEnum(uint16_t pagingDrxCycle)
+{
+   switch(pagingDrxCycle)
+   {
+      case 32:
+            return PagingDRX_v32;
+      case 64:
+            return PagingDRX_v64;
+      case 128:
+            return PagingDRX_v128;
+      case 256:
+            return PagingDRX_v256;
+      default:
+            return PagingDRX_v32;
+   }
+}
+
+/************************************************************************
+ *
+ * @brief Converts enum values into actual value of Paging DRX cycle
+ *
+ * @details
+ *
+ *    Function : convertPagingCycleEnumToValue
+ *
+ *    Functionality: As per Spec 38.331,
+ *          Converts enum values into actual value of Paging DRX cycle 
+ *    
+ *
+ * @params[in] Enum value of PagingDRX
+ * @return Actual value of DRX cycle
+ *    Note: Returning the MAX value in case of Incorrect Enum Value as DRX
+ *    cycle is MIN of Various DRX cycle
+ *
+ * **********************************************************************/
+uint16_t convertPagingCycleEnumToValue(e_PagingDRX pagingDrx)
+{
+   switch(pagingDrx)
+   {
+      case PagingDRX_v32:
+            return 32;
+      case PagingDRX_v64:
+            return 64;
+      case PagingDRX_v128:
+            return 128;
+      case PagingDRX_v256:
+            return 256;
+      default:
+            return 256;
+   }
+}
+/************************************************************************
+ *
+ * @brief Converts enum values into actual value of Num of Paging Ocassions
+ *
+ * @details
+ *
+ *    Function : convertPagingOccEnumToValue
+ *
+ *    Functionality: As per Spec 38.331,
+ *          Converts enum values into actual value of Num of Paging Ocassion
+ *    
+ *
+ * @params[in] Enum value of Ns
+ * @return Actual value of Num of Paging Ocassions
+ *
+ * **********************************************************************/
+uint8_t convertNsEnumToValue(e_PCCH_Config__ns Ns)
+{
+   switch(Ns)
+   {
+      case PCCH_Config__ns_four:
+            return 4;
+      case PCCH_Config__ns_two:
+            return 2;
+      case PCCH_Config__ns_one:
+            return 1;
+      default:
+            return 0;
+   }
+}
+
+/************************************************************************
+ *
+ * @brief Converts actual values into enum value of Num of Paging Ocassions
+ *
+ * @details
+ *
+ *    Function : convertNsValueToEnum
+ *
+ *    Functionality: As per Spec 38.331,
+ *          Converts actual values into enum value of Num of Paging Ocassions
+ *    
+ *
+ * @params[in] Actual value of Num of Paging Ocassions
+ * @return  Enum value of Ns
+ *
+ * **********************************************************************/
+e_PCCH_Config__ns convertNsValueToEnum(uint8_t numPO)
+{
+   switch(numPO)
+   {
+      case 1:
+            return PCCH_Config__ns_one;
+      case 2:
+            return PCCH_Config__ns_two;
+      case 4:
+            return PCCH_Config__ns_four;
+      default:
+            return PCCH_Config__ns_one;
+   }
+}
 /**********************************************************************
   End of file
  **********************************************************************/

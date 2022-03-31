@@ -48,16 +48,29 @@ int PrepFinalEncBuf(const void *buffer, size_t size, void *encodedBuf)
  *
  * ****************************************************************/
 
-uint8_t fillBitString(BIT_STRING_t *id, uint8_t unusedBits, uint8_t byteSize, uint8_t val)
+uint8_t fillBitString(BIT_STRING_t *id, uint8_t unusedBits, uint8_t byteSize, uint64_t data)
 {
-   uint8_t tmp;
+   uint64_t tmp = 0;
+   uint8_t byteIdx = 0;
+
    if(id->buf == NULLP)
    {
+      DU_LOG("\nDU_APP : Buffer allocation is empty");
       return RFAILED;
    }
-
-   memset(id->buf, 0, byteSize-1);
-   id->buf[byteSize-1]   = val;
+   memset(id->buf, 0, byteSize);
+   data = data << unusedBits;
+   
+   /*Now, seggregate the value into 'byteSize' number of Octets in sequence:
+    * 1. Pull out a byte of value (Starting from MSB) and put in the 0th Octet
+    * 2. Fill the buffer/String Octet one by one until LSB is reached*/
+   for(byteIdx = 1; byteIdx <= byteSize; byteIdx++)
+   {
+      tmp = (uint64_t)0xFF;
+      tmp = (tmp << (8 * (byteSize - byteIdx)));
+      tmp = (data & tmp) >> (8 * (byteSize - byteIdx));
+      id->buf[byteIdx - 1]  = tmp;
+   }
    id->bits_unused = unusedBits;
    return ROK;
 }
@@ -81,7 +94,7 @@ uint8_t fillBitString(BIT_STRING_t *id, uint8_t unusedBits, uint8_t byteSize, ui
 uint8_t bitStringToInt(BIT_STRING_t *bitString, void *value)
 {
    uint16_t idx;
-   uint32_t *val = NULLP;
+   uint64_t *val = NULLP;
 
    if(bitString->buf == NULL || bitString->size <= 0)
    {
@@ -90,7 +103,7 @@ uint8_t bitStringToInt(BIT_STRING_t *bitString, void *value)
    }
 
    if(value)
-      val = (uint32_t *)value;
+      val = (uint64_t *)value;
    else
       return RFAILED;
 
