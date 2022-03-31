@@ -147,6 +147,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1694aefc_37a90a57",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2349,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-03-31T09:32:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "69c39f93_17c423c0",
+      "revId": "57924c876b01ea4f385b137426ce49c7e8aa0a71",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f648d684_2ebc3c41",
@@ -160,6 +178,24 @@
       "writtenOn": "2022-03-31T09:25:47Z",
       "side": 1,
       "message": "I hope you are checking all the values at each layer with GDB.\nPlease test everything with FDD and TDD mode",
+      "revId": "57924c876b01ea4f385b137426ce49c7e8aa0a71",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "75ce2cdd_20c4ae00",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2366,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-03-31T09:32:11Z",
+      "side": 1,
+      "message": "Yes all layers configurations are as expected with correct values. Also it is tested for both FDD and TDD modes",
+      "parentUuid": "f648d684_2ebc3c41",
       "revId": "57924c876b01ea4f385b137426ce49c7e8aa0a71",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
