@@ -41,6 +41,11 @@ long convertBsrPeriodicTmrValueToEnum(int16_t periodicTmr);
 long convertBsrRetxTmrValueToEnum(uint16_t retxTmr);
 long convertLcSrDelayTmrValueToEnum(uint16_t delayTimer);
 
+e_PagingDRX convertPagingCycleValueToEnum(uint16_t pagingDrxCycle);
+uint16_t convertPagingCycleEnumToValue(e_PagingDRX pagingDrx);
+uint8_t convertNsEnumToValue(e_PCCH_Config__ns pagingOcc);
+e_PCCH_Config__ns convertNsValueToEnum(e_PCCH_Config__ns pagingOcc);
+
 /**********************************************************************
   End of file
  **********************************************************************/

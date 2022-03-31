@@ -113,6 +113,8 @@
 #include "du_sys_info_hdl.h"
 #include "du_e2ap_msg_hdl.h"
 #include "du_f1ap_conversions.h"
+#include "CNUEPagingIdentity.h"
+#include "PCCH-Config.h"
 
 #ifdef O1_ENABLE
 #include "CmInterface.h"
@@ -2037,7 +2039,7 @@ uint8_t fillServedCellInfo(Served_Cell_Information_t *srvCellInfo)
       return RFAILED;
    }
    
-   fillBitString(&srvCellInfo->nRCGI.nRCellIdentity, ODU_VALUE_FOUR, ODU_VALUE_FIVE, duCfgParam.sib1Params.cellIdentity);
+   fillBitString(&srvCellInfo->nRCGI.nRCellIdentity, ODU_VALUE_FOUR, ODU_VALUE_FIVE, &duCfgParam.sib1Params.cellIdentity);
    /*nRPCI*/
    srvCellInfo->nRPCI = duCfgParam.srvdCellLst[0].duCellInfo.cellInfo.nrPci;
 
@@ -2146,7 +2148,7 @@ uint8_t fillServCellToModItem(Served_Cells_To_Modify_Item_t *modifyItem)
    {
       return RFAILED;
    }
-   fillBitString(&modifyItem->oldNRCGI.nRCellIdentity, ODU_VALUE_FOUR, ODU_VALUE_FIVE, duCfgParam.sib1Params.cellIdentity);
+   fillBitString(&modifyItem->oldNRCGI.nRCellIdentity, ODU_VALUE_FOUR, ODU_VALUE_FIVE, &duCfgParam.sib1Params.cellIdentity);
 
    if(fillServedCellInfo(&modifyItem->served_Cell_Information))
       return RFAILED;
@@ -2249,7 +2251,7 @@ uint8_t fillCellToDeleteItem(struct Served_Cells_To_Delete_ItemIEs *deleteItemIe
       DU_LOG("ERROR  --> F1AP: fillCellToDeleteItem(): Failed to allocate the memory");
       return RFAILED;
    }
-   fillBitString(&deleteItem->oldNRCGI.nRCellIdentity, ODU_VALUE_FOUR, ODU_VALUE_FIVE, duCfgParam.sib1Params.cellIdentity);
+   fillBitString(&deleteItem->oldNRCGI.nRCellIdentity, ODU_VALUE_FOUR, ODU_VALUE_FIVE, &duCfgParam.sib1Params.cellIdentity);
    return ROK;
 } 
 /*******************************************************************
@@ -5338,7 +5340,7 @@ uint8_t BuildBWPUlDedPucchCfg(PucchCfg *pucchCfgDb, PUCCH_Config_t *pucchCfg)
    /* Multi CSI */
    if(multiCsiDb && (multiCsiDb->multiCsiResrcListCount != 0))
    {
-      pucchCfg->multi_CSI_PUCCH_ResourceList == NULLP;
+      pucchCfg->multi_CSI_PUCCH_ResourceList = NULLP;
       DU_ALLOC(pucchCfg->multi_CSI_PUCCH_ResourceList, sizeof(struct PUCCH_Config__multi_CSI_PUCCH_ResourceList));
       if(pucchCfg->multi_CSI_PUCCH_ResourceList == NULLP)
       {
@@ -15308,6 +15310,236 @@ uint8_t procF1UeContextReleaseCommand(F1AP_PDU_t *f1apMsg)
    freeAperDecodeUeContextReleaseCommand(f1apMsg);
    return ret;
 }
+
+/**************************************************************
+ *
+ * @brief free the memory allocated by aper decoder for paging
+ *
+ * @details
+ *
+ *    Function : freeAperDecodePagingMsg
+ *
+ *    Functionality:
+ *         - free the memory allocated by aper decoder for
+ *         the paging f1ap msg
+ *
+ * @params[in] Paging_t   *paging
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ ****************************************************************/
+void freeAperDecodePagingMsg(Paging_t   *paging)
+{
+   uint8_t ieIdx, cellIdx;
+   PagingCell_ItemIEs_t *pagingCellItemIes;
+   PagingCell_Item_t *pagingCellItem;
+   PagingCell_list_t  *pagingCelllist;
+
+   if(paging)
+   {
+      if(paging->protocolIEs.list.array)
+      {
+         for(ieIdx=0 ; ieIdx<paging->protocolIEs.list.count; ieIdx++)
+         {
+            if(paging->protocolIEs.list.array[ieIdx])
+            {
+               switch(paging->protocolIEs.list.array[ieIdx]->id)
+               {
+                  case ProtocolIE_ID_id_UEIdentityIndexValue:
+                     {
+                        free(paging->protocolIEs.list.array[ieIdx]->value.choice.UEIdentityIndexValue.choice.indexLength10.buf);
+                        break;
+                     }
+                  case ProtocolIE_ID_id_PagingIdentity:
+                     {
+                        if(paging->protocolIEs.list.array[ieIdx]->value.choice.PagingIdentity.present == PagingIdentity_PR_cNUEPagingIdentity)
+                        {
+                           if(paging->protocolIEs.list.array[ieIdx]->value.choice.PagingIdentity.choice.cNUEPagingIdentity)
+                           {
+                              if(paging->protocolIEs.list.array[ieIdx]->value.choice.PagingIdentity.choice.cNUEPagingIdentity->present == \
+                                    CNUEPagingIdentity_PR_fiveG_S_TMSI)
+                              {
+                                 free(paging->protocolIEs.list.array[ieIdx]->value.choice.PagingIdentity.choice.cNUEPagingIdentity->choice.fiveG_S_TMSI.buf);
+                              }
+                              free(paging->protocolIEs.list.array[ieIdx]->value.choice.PagingIdentity.choice.cNUEPagingIdentity);
+                           }
+                        }
+                        break;
+                     }
+                  case ProtocolIE_ID_id_PagingCell_List:
+                     {
+                        pagingCelllist = &paging->protocolIEs.list.array[ieIdx]->value.choice.PagingCell_list;
+                        if(pagingCelllist->list.array)
+                        {
+                           for(cellIdx = 0; cellIdx < pagingCelllist->list.count; cellIdx++)
+                           {
+                              if(pagingCelllist->list.array[cellIdx])
+                              {
+                                 pagingCellItemIes = (PagingCell_ItemIEs_t *)pagingCelllist->list.array[cellIdx];
+                                 if(pagingCellItemIes->id == ProtocolIE_ID_id_PagingCell_Item)
+                                 {
+                                    pagingCellItem = &pagingCellItemIes->value.choice.PagingCell_Item;
+                                    free(pagingCellItem->nRCGI.pLMN_Identity.buf);
+                                    free(pagingCellItem->nRCGI.nRCellIdentity.buf);
+                                 }
+                                 free(pagingCelllist->list.array[cellIdx]);
+                              }
+                           }
+                           free(pagingCelllist->list.array);
+                        }
+                        break;
+                     }
+               }
+               free(paging->protocolIEs.list.array[ieIdx]);
+            }
+         }
+         free(paging->protocolIEs.list.array);
+
+      }
+   }
+}
+
+/**************************************************************
+ *
+ * @brief processing the paging f1ap msg received from CU 
+ *
+ * @details
+ *
+ *    Function : procPagingMsg
+ *
+ *    Functionality:
+ *         - processing the paging f1ap msg received from CU
+ *
+ * @params[in] F1AP_PDU_t *f1apMsg
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ *
+ ****************************************************************/
+uint8_t procPagingMsg(F1AP_PDU_t *f1apMsg) 
+{
+   uint8_t ieIdx = 0, cellIdx = 0;
+   uint16_t cellId = 0, cellIdx = 0;
+   Paging_t   *paging = NULLP;
+   PagingCell_list_t  *pagingCelllist = NULLP;
+   PagingCell_ItemIEs_t *pagingCellItemIes = NULLP;
+   PagingCell_Item_t *pagingCellItem = NULLP;
+   DuPagingMsg *tmpPagingParam = NULLP;
+
+   DU_LOG("\nINFO  --> DU APP : Processing the Paging Message");
+   paging = &f1apMsg->choice.initiatingMessage->value.choice.Paging;
+   if(paging)
+   {
+      if(paging->protocolIEs.list.array)
+      {
+         DU_ALLOC(tmpPagingParam, sizeof(PagingMsg));
+         if(tmpPagingParam == NULLP)
+         {
+            DU_LOG("\nERROR  --> DU APP : Memory Allocation Failure in procPagingMsg");
+            freeAperDecodePagingMsg(paging);
+            return RFAILED;
+         }
+         for(ieIdx=0 ; ieIdx<paging->protocolIEs.list.count; ieIdx++)
+         {
+            if(paging->protocolIEs.list.array[ieIdx])
+            {
+               switch(paging->protocolIEs.list.array[ieIdx]->id)
+               {
+                  case ProtocolIE_ID_id_UEIdentityIndexValue:
+                     {
+                        bitStringToInt(&paging->protocolIEs.list.array[ieIdx]->value.choice.UEIdentityIndexValue.choice.indexLength10,\
+                                         &tmpPagingParam->ueId);
+                        break;
+                     }
+
+                  case ProtocolIE_ID_id_PagingIdentity:
+                     {
+                        switch(paging->protocolIEs.list.array[ieIdx]->value.choice.PagingIdentity.present)
+                        {
+                           case PagingIdentity_PR_cNUEPagingIdentity: 
+                              {
+                                 if(paging->protocolIEs.list.array[ieIdx]->value.choice.PagingIdentity.choice.cNUEPagingIdentity)  
+                                 {
+                                    bitStringToInt(&paging->protocolIEs.list.array[ieIdx]->value.choice.PagingIdentity.choice.\
+                                          cNUEPagingIdentity->choice.fiveG_S_TMSI, &tmpPagingParam->sTmsi);
+
+                                 }
+                                 break;
+                              }
+                            case PagingIdentity_PR_rANUEPagingIdentity:
+                               {
+                                  /*TODO: This Identifier is specific to RAN Initiated Paging – Connected Mode Paging*/
+                                  break;
+                               }
+                            default:
+                               {
+                                  DU_LOG("ERROR  -->  DU APP: Invalid UE Paging Identity, Skipping this Paging Message:");
+                                  continue;
+                               }
+                        }
+                     }
+
+                  case ProtocolIE_ID_id_PagingDRX:
+                     {
+                        tmpPagingParam->pagingDrxPres = TRUE;
+                        tmpPagingParam->pagingDrx = convertPagingCycleEnumToValue(paging->protocolIEs.list.array[ieIdx]->value.choice.PagingDRX);
+                        break;
+                     }
+
+                  case ProtocolIE_ID_id_PagingPriority:
+                     {
+                        tmpPagingParam->pagPriority = paging->protocolIEs.list.array[ieIdx]->value.choice.PagingPriority;
+                        break;
+                     }
+
+                  case ProtocolIE_ID_id_PagingCell_List:
+                     {
+                        pagingCelllist = &paging->protocolIEs.list.array[ieIdx]->value.choice.PagingCell_list; 
+                        if(pagingCelllist->list.array)
+                        {
+                           for(cellIdx = 0; cellIdx < pagingCelllist->list.count; cellIdx++)
+                           {
+                              if(pagingCelllist->list.array[cellIdx])
+                              {
+                                 pagingCellItemIes = (PagingCell_ItemIEs_t *)pagingCelllist->list.array[cellIdx];
+                                 pagingCellItem = &pagingCellItemIes->value.choice.PagingCell_Item;
+                                 bitStringToInt(&pagingCellItem->nRCGI.nRCellIdentity, &cellId);
+                                 GET_CELL_IDX(cellId, cellIdx);
+                                 if(duCb.actvCellLst[cellIdx])
+                                 {
+                                    /* fill Ue Paging information*/
+                                    if(FillPagingInfoInCellCb(duCb.actvCellLst[cellIdx], tmpPagingParam)!= ROK)
+                                    {
+                                       DU_LOG("\nERROR  --> DU APP : CellCb:%d not present to fill UE Paging Information",cellIdx);
+                                       continue;
+                                    }
+                                 }
+                                 else
+                                 {
+                                    DU_LOG("\nERROR  --> F1AP : CellId:%d Not in Activelist",cellId);
+                                    continue;
+                                 }
+                              }
+                           }
+                        }
+                        break;
+                     }
+                   default:
+                     {
+                         DU_LOG("\nERROR  --> F1AP : Incorrect Paging IE option");
+                         break;
+                     }
+               }
+            }
+         }
+      }
+   }
+   DU_FREE(tmpPagingParam, sizeof(DuPagingMsg));
+   freeAperDecodePagingMsg(paging);
+  
+   return ROK;
+}
+
 /**************************************************************
  *
  * @brief Handles received F1AP message and sends back response  
@@ -15435,6 +15667,11 @@ void F1APMsgHdlr(Buffer *mBuf)
                   {
                       procF1UeContextReleaseCommand(f1apMsg);
                       break;
+                  }
+               case InitiatingMessage__value_PR_Paging:
+                  {
+                     procPagingMsg(f1apMsg);
+                     break;
                   }
                default:
                   {

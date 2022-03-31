@@ -85,21 +85,6 @@
 #define BSR_RETX_TIMER_SF_320 320
 #define BSR_SR_DELAY_TMR_2560 2560
 
-#define GET_PAGING_CYCLE(enmValue, T) {               \
-        if (enmValue == 0) T = 32;                           \
-       else if (enmValue == 1) T = 64;                       \
-       else if (enmValue == 2) T = 128;                      \
-       else if (enmValue == 3) T = 256;                      \
-       else T = 0;                                         \
-}
-
-#define GET_NUM_PAGING_OCC(enmValue, PO) {               \
-        if (enmValue == 0) PO = 4;                            \
-       else if (enmValue == 1) PO = 2;                       \
-       else if (enmValue == 2) PO = 1;                      \
-       else PO = 0;                                         \
-}
-
 #define PAGING_SCHED_DELTA  4
 
 typedef enum

@@ -473,7 +473,7 @@ void callFlowRgActvTsk(Pst *pst)
                   strcpy(message,"EVENT_MAC_SLICE_CFG_REQ");
                   break;
                case EVENT_MAC_SLICE_RECFG_REQ:
-                  strcpy(message,"EVENT_MAC_SLICE_CFG_REQ");
+                  strcpy(message,"EVENT_MAC_SLICE_RECFG_REQ");
                   break;
                default:
                   strcpy(message,"Invalid Event");

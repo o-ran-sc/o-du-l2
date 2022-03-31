@@ -1309,8 +1309,8 @@ uint8_t fillFirstPdcchMonitoringOcc(struct PCCH_Config__firstPDCCH_MonitoringOcc
 
    firstPO->present = srcPcchCfg->firstPDCCHMontioringType;
 
-   GET_NUM_PAGING_OCC(srcPcchCfg->ns, numPO);
-   if(srcPcchCfg->ns == 0)
+   numPO = srcPcchCfg->ns;
+   if(numPO == 0)
    {
       DU_LOG("\nINFO   -->  DU APP : Paging Occasions is ZERO, no need to fill further");
       return ROK;
@@ -1441,7 +1441,7 @@ uint8_t BuildPcchConfig(PCCH_Config_t *pcchCfg)
 
    duPcchCfg = duCfgParam.sib1Params.srvCellCfgCommSib.dlCfg.pcchCfg;
 
-   pcchCfg->defaultPagingCycle = duPcchCfg.dfltPagingCycle;
+   pcchCfg->defaultPagingCycle = convertPagingCycleValueToEnum(duPcchCfg.dfltPagingCycle);
    pcchCfg->nAndPagingFrameOffset.present =  duPcchCfg.nAndPagingFrmOffsetType;
    switch(pcchCfg->nAndPagingFrameOffset.present)
    {
@@ -1507,7 +1507,7 @@ uint8_t BuildPcchConfig(PCCH_Config_t *pcchCfg)
             return RFAILED;
          }
    }
-   pcchCfg->ns = duPcchCfg.ns;
+   pcchCfg->ns = convertNsValueToEnum(duPcchCfg.ns);
 
    DU_ALLOC(pcchCfg->firstPDCCH_MonitoringOccasionOfPO, \
          sizeof(struct PCCH_Config__firstPDCCH_MonitoringOccasionOfPO));

@@ -178,6 +178,24 @@ typedef struct  slotInfo
    uint16_t slot;
 }SlotInfo;
 
+typedef struct pagingMsg
+{
+   /*Note: Paging UEID is extracted from 5gSTMSI as per Spec 38.304, Sec 7.1.
+    *This is not same as DU-UE_F1AP_ID or CU_UE_F1AP_ID*/
+   uint16_t  ueId;              /* UE Identifier from CU*/
+
+   /*TODO: When RAN Inititated Paging will be supported then I-RNTI will be
+    * added as a choice for UE Identity along with S-TMSI*/
+   uint64_t  sTmsi;             /* UE Paging Identity: S-TMSI */
+   bool      pagingDrxPres;     /* flag to indicate paging drx present or not */
+   uint16_t  pagingDrx;         /* UE specific paging drx */
+   uint8_t   pagPriority;       /* Paging priority */
+   uint16_t  pagingFrame;       /* paging frame */
+   uint16_t  pagingFrameOffset; /* paging offset */
+   uint8_t   i_s;               /* Index points to PO from the sub-frame pattern */
+   uint16_t  T;                 /* T is DRX cycle of the UE */
+}DuPagingMsg;
+
 typedef struct duCellCb
 {
    uint16_t       cellId;                 /* Internal cell Id */
@@ -188,6 +206,7 @@ typedef struct duCellCb
    uint32_t       numActvUes;             /* Total Active UEs */
    DuUeCb         ueCb[MAX_NUM_UE];       /* Stores UE context */
    SlotInfo       currSlotInfo;
+   DuPagingMsg    tmpPagingInfoOfUe;      /* UE paging information */
 }DuCellCb;
 
 typedef struct duLSapCb

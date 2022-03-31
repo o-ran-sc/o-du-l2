@@ -179,6 +179,7 @@ void F1APMsgHdlr(uint32_t *destDuId, Buffer *mBuf);
 uint8_t BuildAndSendUeContextModificationReq(uint32_t duId, void *ueCb, UeCtxtModAction action);
 uint8_t BuildAndSendUeContextReleaseCommand(uint32_t duId, uint8_t cuUeF1apId, uint8_t duUeF1apId);
 uint8_t BuildAndSendF1ResetReq();
+uint8_t BuildAndSendPagingMsg(uint64_t gsTmsi, uint8_t duId);
 
 /**********************************************************************
          End of file
