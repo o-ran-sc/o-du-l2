@@ -1,0 +1,141 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b36d75df_5adb8c86",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1767,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-04-01T05:15:50Z",
+      "side": 1,
+      "message": "remove the comment",
+      "range": {
+        "startLine": 1767,
+        "startChar": 39,
+        "endLine": 1767,
+        "endChar": 45
+      },
+      "revId": "bd01bb1806e4bf74beed7331c8acf32d5ec087b8",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6fd609e6_af3c0e7d",
+        "filename": "src/codec_utils/common/odu_common_codec.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-04-01T05:15:50Z",
+      "side": 1,
+      "message": "add a comment",
+      "revId": "bd01bb1806e4bf74beed7331c8acf32d5ec087b8",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "546fb02b_8671c7f6",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 11508,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-04-01T05:15:50Z",
+      "side": 1,
+      "message": "pagingCelllist-\u003elist.size\u003d pagingCelllist-\u003elist.count * sizeof(PagingCell_ItemIEs_t*);",
+      "revId": "bd01bb1806e4bf74beed7331c8acf32d5ec087b8",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0179844e_aa761ce7",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 11657,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-04-01T05:15:50Z",
+      "side": 1,
+      "message": "we cannt use duId \u003d 1 like this way try to fatch from global cb structure.",
+      "range": {
+        "startLine": 11657,
+        "startChar": 29,
+        "endLine": 11657,
+        "endChar": 30
+      },
+      "revId": "bd01bb1806e4bf74beed7331c8acf32d5ec087b8",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "faddf744_b2adf725",
+        "filename": "src/du_app/du_cfg.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 1285,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-04-01T05:15:50Z",
+      "side": 1,
+      "message": "mcc[3], mnc[3] we can use plmn\nsd[3], sst we can use structure snssi.",
+      "revId": "bd01bb1806e4bf74beed7331c8acf32d5ec087b8",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a6e60b67_909bc1b4",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 15423,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-04-01T05:15:50Z",
+      "side": 1,
+      "message": "initialize all variable.",
+      "revId": "bd01bb1806e4bf74beed7331c8acf32d5ec087b8",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a90ee703_4314d8b4",
+        "filename": "src/ric_stub/ric_stub.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-04-01T05:15:50Z",
+      "side": 1,
+      "message": "Are we going to merge this or this is added for testing purpose?",
+      "range": {
+        "startLine": 85,
+        "startChar": 9,
+        "endLine": 85,
+        "endChar": 10
+      },
+      "revId": "bd01bb1806e4bf74beed7331c8acf32d5ec087b8",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
