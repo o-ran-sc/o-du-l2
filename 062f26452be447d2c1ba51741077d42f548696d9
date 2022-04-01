@@ -1,0 +1,165 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8208dc99_aeaf1bcf",
+        "filename": "src/cu_stub/cu_stub_egtp.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 679,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-04-01T12:49:19Z",
+      "side": 1,
+      "message": "The purpose of function description is to understand the function without digging into its code. So please describe EGTP data request: something like:\nThis function is responsible to build application message, encode EGTP header to it and send to DU over tunnel (teId)",
+      "range": {
+        "startLine": 679,
+        "startChar": 35,
+        "endLine": 679,
+        "endChar": 53
+      },
+      "revId": "062f26452be447d2c1ba51741077d42f548696d9",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d715924a_b3a826fc",
+        "filename": "src/cu_stub/cu_stub_egtp.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 699,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-04-01T12:49:19Z",
+      "side": 1,
+      "message": "since you are passing values from 1 to numDu, I am assuming this is duId and not duIdx.\nRename this variable too.",
+      "range": {
+        "startLine": 699,
+        "startChar": 7,
+        "endLine": 699,
+        "endChar": 12
+      },
+      "revId": "062f26452be447d2c1ba51741077d42f548696d9",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e1b83256_fad49140",
+        "filename": "src/cu_stub/cu_stub_egtp.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 732,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-04-01T12:49:19Z",
+      "side": 1,
+      "message": "Say : Builds application message to be sent to DU in DL path",
+      "range": {
+        "startLine": 732,
+        "startChar": 19,
+        "endLine": 732,
+        "endChar": 30
+      },
+      "revId": "062f26452be447d2c1ba51741077d42f548696d9",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3b63e8ef_f735d483",
+        "filename": "src/cu_stub/cu_stub_egtp.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 868,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-04-01T12:49:19Z",
+      "side": 1,
+      "message": "Say : Encodes EGTP header to application message to send to DU",
+      "range": {
+        "startLine": 868,
+        "startChar": 10,
+        "endLine": 868,
+        "endChar": 15
+      },
+      "revId": "062f26452be447d2c1ba51741077d42f548696d9",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "06afd41e_5f1651b2",
+        "filename": "src/cu_stub/cu_stub_egtp.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-04-01T12:49:19Z",
+      "side": 1,
+      "message": "spec reference",
+      "range": {
+        "startLine": 24,
+        "startChar": 24,
+        "endLine": 24,
+        "endChar": 28
+      },
+      "revId": "062f26452be447d2c1ba51741077d42f548696d9",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9a0bac55_b9973197",
+        "filename": "src/cu_stub/cu_stub_egtp.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-04-01T12:49:19Z",
+      "side": 1,
+      "message": "numDu",
+      "range": {
+        "startLine": 158,
+        "startChar": 30,
+        "endLine": 158,
+        "endChar": 37
+      },
+      "revId": "062f26452be447d2c1ba51741077d42f548696d9",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d3437691_a1ecacc5",
+        "filename": "src/du_app/du_egtp.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-04-01T12:49:19Z",
+      "side": 1,
+      "message": "spec reference",
+      "range": {
+        "startLine": 24,
+        "startChar": 8,
+        "endLine": 24,
+        "endChar": 23
+      },
+      "revId": "062f26452be447d2c1ba51741077d42f548696d9",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
