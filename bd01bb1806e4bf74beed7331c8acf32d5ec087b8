@@ -26,6 +26,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "bba0b86e_db1ae240",
+        "filename": "src/cm/du_app_mac_inf.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-04-01T08:18:30Z",
+      "side": 1,
+      "message": "As discussed, both of these can be converted when received at F1AP interface and used later.",
+      "revId": "bd01bb1806e4bf74beed7331c8acf32d5ec087b8",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6fd609e6_af3c0e7d",
         "filename": "src/codec_utils/common/odu_common_codec.c",
         "patchSetId": 5
@@ -37,6 +54,29 @@
       "writtenOn": "2022-04-01T05:15:50Z",
       "side": 1,
       "message": "add a comment",
+      "revId": "bd01bb1806e4bf74beed7331c8acf32d5ec087b8",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4fd40077_be07cf90",
+        "filename": "src/codec_utils/common/odu_common_codec.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-04-01T08:18:30Z",
+      "side": 1,
+      "message": "memset requires the total size of buffer, which I believe is equal to byteSize",
+      "range": {
+        "startLine": 61,
+        "startChar": 22,
+        "endLine": 61,
+        "endChar": 32
+      },
       "revId": "bd01bb1806e4bf74beed7331c8acf32d5ec087b8",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -83,6 +123,145 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0baa8ea4_a5792629",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 11657,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-04-01T08:18:30Z",
+      "side": 1,
+      "message": "I can think of 2 approaches :\na. Ask user to enter duId as done for gsTmsi, and pass the received duId to this function.\nb. Calculate UE ID from GS-TMSI received, search ueId in all DUs configured with this CU. Whichever DU has this UE ID in its ueCb list, that duId can be used.\n\nYou can decide on which approach to take. We can think of any better solution too.",
+      "parentUuid": "0179844e_aa761ce7",
+      "range": {
+        "startLine": 11657,
+        "startChar": 29,
+        "endLine": 11657,
+        "endChar": 30
+      },
+      "revId": "bd01bb1806e4bf74beed7331c8acf32d5ec087b8",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4bee6114_9da458b0",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 11736,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-04-01T08:18:30Z",
+      "side": 1,
+      "message": "bits_unused is being set to unusedBitsInUeId inside fillBitString too. We can remove from here.",
+      "range": {
+        "startLine": 11736,
+        "startChar": 6,
+        "endLine": 11736,
+        "endChar": 130
+      },
+      "revId": "bd01bb1806e4bf74beed7331c8acf32d5ec087b8",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7117bc7f_ea487647",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 11740,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-04-01T08:18:30Z",
+      "side": 1,
+      "message": "Lets do the bit shift operation too inside fillBitString?",
+      "range": {
+        "startLine": 11740,
+        "startChar": 6,
+        "endLine": 11740,
+        "endChar": 9
+      },
+      "revId": "bd01bb1806e4bf74beed7331c8acf32d5ec087b8",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aa9828c0_3c946914",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 11772,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-04-01T08:18:30Z",
+      "side": 1,
+      "message": "same 2 comments as above",
+      "range": {
+        "startLine": 11772,
+        "startChar": 6,
+        "endLine": 11772,
+        "endChar": 19
+      },
+      "revId": "bd01bb1806e4bf74beed7331c8acf32d5ec087b8",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1426c155_8d8d5711",
+        "filename": "src/cu_stub/cu_stub.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 366,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-04-01T08:18:30Z",
+      "side": 1,
+      "message": "Indentation",
+      "range": {
+        "startLine": 366,
+        "startChar": 18,
+        "endLine": 366,
+        "endChar": 19
+      },
+      "revId": "bd01bb1806e4bf74beed7331c8acf32d5ec087b8",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4f8399bd_266da6aa",
+        "filename": "src/du_app/du_cell_mgr.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 460,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-04-01T08:18:30Z",
+      "side": 1,
+      "message": "We have a file \"du_f1ap_conversion.c\". In this file we do all the conversion from F1AP enum to actual values and vice versa. \nI suggest you to do the conversion when configurations/values are received at F1AP, store these actual values in DU database and send them to MAC/SCH. Then no conversion would be required at MAC/SCH.\nThis is how we have handled other enum values too.",
+      "range": {
+        "startLine": 460,
+        "startChar": 9,
+        "endLine": 460,
+        "endChar": 25
+      },
+      "revId": "bd01bb1806e4bf74beed7331c8acf32d5ec087b8",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "faddf744_b2adf725",
         "filename": "src/du_app/du_cfg.h",
         "patchSetId": 5
@@ -117,6 +296,86 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ed00d8d9_f973735b",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 15485,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-04-01T08:18:30Z",
+      "side": 1,
+      "message": "If Paging DRX is used, we should convert ENUM value to actual value i.e tmpPagingParam-\u003epagingDrx \u003d 32.\nCreate the conversion function in du_f1ap_conversion.c",
+      "range": {
+        "startLine": 15485,
+        "startChar": 104,
+        "endLine": 15485,
+        "endChar": 113
+      },
+      "revId": "bd01bb1806e4bf74beed7331c8acf32d5ec087b8",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e41082d2_58ef0e0b",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 15491,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-04-01T08:18:30Z",
+      "side": 1,
+      "message": "Same as above",
+      "revId": "bd01bb1806e4bf74beed7331c8acf32d5ec087b8",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d55ae623_92214d50",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 15507,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-04-01T08:18:30Z",
+      "side": 1,
+      "message": "rename to cellIdx",
+      "range": {
+        "startLine": 15507,
+        "startChar": 54,
+        "endLine": 15507,
+        "endChar": 64
+      },
+      "revId": "bd01bb1806e4bf74beed7331c8acf32d5ec087b8",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "df5fe690_de05110d",
+        "filename": "src/du_app/du_mgr.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 183,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-04-01T08:18:30Z",
+      "side": 1,
+      "message": "can we make a note here that this ueId is extracted from S-TMSI and is not necessarily equal to DU-UE_F1AP_ID or CU_UE_F1AP_ID",
+      "revId": "bd01bb1806e4bf74beed7331c8acf32d5ec087b8",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a90ee703_4314d8b4",
         "filename": "src/ric_stub/ric_stub.c",
         "patchSetId": 5
@@ -133,6 +392,29 @@
         "startChar": 9,
         "endLine": 85,
         "endChar": 10
+      },
+      "revId": "bd01bb1806e4bf74beed7331c8acf32d5ec087b8",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9769a675_3eb2cd5d",
+        "filename": "src/ric_stub/ric_stub.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-04-01T08:18:30Z",
+      "side": 1,
+      "message": "Is this introduced to be able to run ric_stub with GDB. If yes, then lets merge this changes too along with a comment explaining its purpose",
+      "range": {
+        "startLine": 85,
+        "startChar": 3,
+        "endLine": 85,
+        "endChar": 8
       },
       "revId": "bd01bb1806e4bf74beed7331c8acf32d5ec087b8",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
