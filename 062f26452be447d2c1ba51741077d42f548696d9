@@ -24,6 +24,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "00766922_06072699",
+        "filename": "src/cu_stub/cu_stub_egtp.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 679,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-04-04T05:20:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8208dc99_aeaf1bcf",
+      "range": {
+        "startLine": 679,
+        "startChar": 35,
+        "endLine": 679,
+        "endChar": 53
+      },
+      "revId": "062f26452be447d2c1ba51741077d42f548696d9",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d715924a_b3a826fc",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-04-01T12:49:19Z",
       "side": 1,
       "message": "since you are passing values from 1 to numDu, I am assuming this is duId and not duIdx.\nRename this variable too.",
+      "range": {
+        "startLine": 699,
+        "startChar": 7,
+        "endLine": 699,
+        "endChar": 12
+      },
+      "revId": "062f26452be447d2c1ba51741077d42f548696d9",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "02e96bbe_6a2f61d7",
+        "filename": "src/cu_stub/cu_stub_egtp.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 699,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-04-04T05:20:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d715924a_b3a826fc",
       "range": {
         "startLine": 699,
         "startChar": 7,
@@ -70,6 +118,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6c3be332_8ceb317b",
+        "filename": "src/cu_stub/cu_stub_egtp.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 732,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-04-04T05:20:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e1b83256_fad49140",
+      "range": {
+        "startLine": 732,
+        "startChar": 19,
+        "endLine": 732,
+        "endChar": 30
+      },
+      "revId": "062f26452be447d2c1ba51741077d42f548696d9",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3b63e8ef_f735d483",
@@ -83,6 +155,30 @@
       "writtenOn": "2022-04-01T12:49:19Z",
       "side": 1,
       "message": "Say : Encodes EGTP header to application message to send to DU",
+      "range": {
+        "startLine": 868,
+        "startChar": 10,
+        "endLine": 868,
+        "endChar": 15
+      },
+      "revId": "062f26452be447d2c1ba51741077d42f548696d9",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a38ab7fb_4d82c150",
+        "filename": "src/cu_stub/cu_stub_egtp.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 868,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-04-04T05:20:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3b63e8ef_f735d483",
       "range": {
         "startLine": 868,
         "startChar": 10,
@@ -116,6 +212,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0deb12e6_a19f3d15",
+        "filename": "src/cu_stub/cu_stub_egtp.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-04-04T05:20:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "06afd41e_5f1651b2",
+      "range": {
+        "startLine": 24,
+        "startChar": 24,
+        "endLine": 24,
+        "endChar": 28
+      },
+      "revId": "062f26452be447d2c1ba51741077d42f548696d9",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9a0bac55_b9973197",
@@ -139,6 +259,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "530e3615_6ad94d32",
+        "filename": "src/cu_stub/cu_stub_egtp.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-04-04T05:20:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9a0bac55_b9973197",
+      "range": {
+        "startLine": 158,
+        "startChar": 30,
+        "endLine": 158,
+        "endChar": 37
+      },
+      "revId": "062f26452be447d2c1ba51741077d42f548696d9",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d3437691_a1ecacc5",
@@ -152,6 +296,30 @@
       "writtenOn": "2022-04-01T12:49:19Z",
       "side": 1,
       "message": "spec reference",
+      "range": {
+        "startLine": 24,
+        "startChar": 8,
+        "endLine": 24,
+        "endChar": 23
+      },
+      "revId": "062f26452be447d2c1ba51741077d42f548696d9",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7fcbfaf2_51608a59",
+        "filename": "src/du_app/du_egtp.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-04-04T05:20:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d3437691_a1ecacc5",
       "range": {
         "startLine": 24,
         "startChar": 8,
