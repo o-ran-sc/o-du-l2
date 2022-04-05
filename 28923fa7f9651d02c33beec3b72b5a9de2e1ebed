@@ -49,6 +49,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "4ca0e3d4_3b14f08f",
+        "filename": "src/cu_stub/cu_stub.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 197,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-04-05T04:50:07Z",
+      "side": 1,
+      "message": "Can we move the setting of numDU in sctpParams \u0026 egtpParams outside while loop",
+      "range": {
+        "startLine": 197,
+        "startChar": 23,
+        "endLine": 197,
+        "endChar": 33
+      },
+      "revId": "28923fa7f9651d02c33beec3b72b5a9de2e1ebed",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "12f5b1a6_ecdad3a7",
         "filename": "src/cu_stub/cu_stub.c",
         "patchSetId": 6
