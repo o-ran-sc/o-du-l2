@@ -21,7 +21,7 @@
 #ifndef __DU_EGTP_H__
 #define __DU_EGTP_H__
 
-#define EGTP_DFLT_PORT 2152
+#define EGTP_RECVR_PORT 2152 /* As per the spec 29.281, the registered port number for GTP-U is 2152 */
 #define EGTP_MAX_HDR_LEN 40
 #define EGTP_MAX_MSG_RECV 10
 

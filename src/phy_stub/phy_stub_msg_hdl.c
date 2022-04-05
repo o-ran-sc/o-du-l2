@@ -706,7 +706,6 @@ uint16_t l1BuildAndSendSlotIndication()
 
       memset(&pst, 0, sizeof(Pst));
       FILL_PST_PHY_STUB_TO_LWR_MAC(pst, EVT_PHY_STUB_SLOT_IND);
-
       ODU_GET_MSG_BUF(pst.region, pst.pool, &mBuf);
       if(!mBuf)
       {

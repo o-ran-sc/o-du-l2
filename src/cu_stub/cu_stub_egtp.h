@@ -21,7 +21,7 @@
 #ifndef __CU_STUB_EGTP_H__
 #define __CU_STUB_EGTP_H__
 
-#define EGTP_DFLT_PORT 2152
+#define EGTP_RECVR_PORT 2152 /* As per the spec 29.281, the registered port number for GTP-U is 2152 */
 #define EGTP_TNL_MGMT_ADD 1
 #define EGTP_TNL_MGMT_MOD 2
 #define EGTP_TNL_MGMT_DEL 3
@@ -111,6 +111,7 @@ typedef struct EgtpTeIdCb
 
 typedef struct egtpDstCb
 {
+   uint32_t      duId;
    CmInetIpAddr  dstIp;          /* destination IP */
    uint16_t      dstPort;        /* Remote port that sends data */
    EgtpTptSrvr   sendTptSrvr;    /* Transport server for sending UDP msg to */
@@ -118,7 +119,7 @@ typedef struct egtpDstCb
    CmHashListCp  teIdLst;        /* Tunnel Id list for this destination */
 }EgtpDstCb;
 
-typedef struct egtpParams
+typedef struct egtpAssoc 
 {
    SctpIpAddr  localIp;
    uint16_t    localPort;
@@ -127,13 +128,20 @@ typedef struct egtpParams
    uint32_t    currTunnelId;
    uint32_t    minTunnelId;
    uint32_t    maxTunnelId;
-}EgtpParams;
+}EgtpAssoc;
+
+typedef struct cuEgtpParams
+{
+   uint8_t        numDu;
+   EgtpAssoc      egtpAssoc[MAX_DU_SUPPORTED];
+}CuEgtpParams;
 
 typedef struct egtpGlobalCb
 {
-   EgtpParams   egtpCfg;         /* EGTP configuration */
+   CuEgtpParams egtpCfg;         /* EGTP configuration */
    EgtpTptSrvr  recvTptSrvr;     /* Transport server for receiving UDP msg */
-   EgtpDstCb    dstCb;           /* Destination endpoint */
+   uint8_t      numDu;
+   EgtpDstCb    dstCb[MAX_DU_SUPPORTED];          /* Destination endpoint */
    uint8_t      gCntPdu[MAX_TEID+1]; /* Maintaining PDU count for each bearer */
 }EgtpGlobalCb;
 EgtpGlobalCb egtpCb;   /* EGTP global control block */
@@ -141,16 +149,16 @@ EgtpGlobalCb egtpCb;   /* EGTP global control block */
 S16 egtpActvInit();
 S16 cuEgtpCfgReq();
 S16 cuEgtpSrvOpenReq();
-S16 cuEgtpTnlMgmtReq(EgtpTnlEvt tnlEvt);
-S16 cuEgtpTnlAdd(EgtpTnlEvt tnlEvt);
-S16 cuEgtpTnlMod(EgtpTnlEvt tnlEvt);
-S16 cuEgtpTnlDel(EgtpTnlEvt tnlEvt);
+S16 cuEgtpTnlMgmtReq(uint32_t duId,EgtpTnlEvt tnlEvt);
+S16 cuEgtpTnlAdd(uint32_t duId, EgtpTnlEvt tnlEvt);
+S16 cuEgtpTnlMod(uint32_t duId,EgtpTnlEvt tnlEvt);
+S16 cuEgtpTnlDel(uint32_t duId,EgtpTnlEvt tnlEvt);
 S16 cuEgtpEncodeHdr(uint8_t *preEncodedHdr, EgtpMsgHdr *preDefHdr, uint8_t *hdrIdx);
 S16 cuEgtpHdlRecvMsg(Buffer *mBuf);
 uint16_t cuEgtpDatReq(uint8_t teId);
-S16 BuildAppMsg(EgtpMsg  *egtpMsg);
-S16 BuildEgtpMsg(EgtpMsg *egtpMsg);
-S16 cuEgtpSendMsg(Buffer *mBuf);
+S16 BuildAppMsg(uint32_t duId, EgtpMsg  *egtpMsg);
+S16 BuildEgtpMsg(uint32_t duId, EgtpMsg *egtpMsg);
+S16 cuEgtpSendMsg(uint32_t duId, Buffer *mBuf);
 S16 cuEgtpDecodeHdr(Buffer *mBuf);
 
 #endif

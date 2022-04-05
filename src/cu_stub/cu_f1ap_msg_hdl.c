@@ -2550,7 +2550,7 @@ uint8_t BuildFlowsMap(DrbInfo *drbInfo, Flows_Mapped_To_DRB_List_t *flowMap , ui
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t BuildULTnlInfo(TnlInfo *ulUpTnlInfo, ULUPTNLInformation_ToBeSetup_List_t *ulInfo, bool hoInProgress)
+uint8_t BuildULTnlInfo(uint8_t duId, TnlInfo *ulUpTnlInfo, ULUPTNLInformation_ToBeSetup_List_t *ulInfo, bool hoInProgress)
 {
    uint8_t idx;
    uint8_t ulCnt;
@@ -2629,7 +2629,7 @@ uint8_t BuildULTnlInfo(TnlInfo *ulUpTnlInfo, ULUPTNLInformation_ToBeSetup_List_t
       ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->gTP_TEID.buf[0] = 0;
       ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->gTP_TEID.buf[1] = 0;
       ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->gTP_TEID.buf[2] = 0;
-      ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->gTP_TEID.buf[3] = cuCb.cuCfgParams.egtpParams.currTunnelId++;
+      ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->gTP_TEID.buf[3] = cuCb.cuCfgParams.egtpParams.egtpAssoc[duId-1].currTunnelId++;
 
       ulUpTnlInfo->teId[0] = ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->gTP_TEID.buf[0];
       ulUpTnlInfo->teId[1] = ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->gTP_TEID.buf[1];
@@ -2662,7 +2662,7 @@ uint8_t BuildULTnlInfo(TnlInfo *ulUpTnlInfo, ULUPTNLInformation_ToBeSetup_List_t
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t BuildDRBSetup(CuUeCb *ueCb, DRBs_ToBeSetup_List_t *drbSet)
+uint8_t BuildDRBSetup(uint32_t duId, CuUeCb *ueCb, DRBs_ToBeSetup_List_t *drbSet)
 {
    uint8_t idx = 0, extIeIdx = 0;
    uint8_t elementCnt = 0, drbCnt = 0;
@@ -2759,10 +2759,10 @@ uint8_t BuildDRBSetup(CuUeCb *ueCb, DRBs_ToBeSetup_List_t *drbSet)
 
       /*ULUPTNLInformation To Be Setup List*/
       if(ueCb->state != UE_HANDOVER_IN_PROGRESS)
-         BuildULTnlInforet = BuildULTnlInfo(&ueCb->drbList[ueCb->numDrb].ulUpTnlInfo, &drbSetItem->uLUPTNLInformation_ToBeSetup_List,\
+         BuildULTnlInforet = BuildULTnlInfo(duId, &ueCb->drbList[ueCb->numDrb].ulUpTnlInfo, &drbSetItem->uLUPTNLInformation_ToBeSetup_List,\
                FALSE);
       else
-         BuildULTnlInforet = BuildULTnlInfo(&ueCb->drbList[idx].ulUpTnlInfo, &drbSetItem->uLUPTNLInformation_ToBeSetup_List,\
+         BuildULTnlInforet = BuildULTnlInfo(duId, &ueCb->drbList[idx].ulUpTnlInfo, &drbSetItem->uLUPTNLInformation_ToBeSetup_List,\
                TRUE);
       if(BuildULTnlInforet != ROK)
       {
@@ -9035,7 +9035,7 @@ uint8_t BuildAndSendUeContextSetupReq(uint32_t duId, CuUeCb *ueCb, uint16_t rrcC
       ueSetReq->protocolIEs.list.array[idx]->id	= ProtocolIE_ID_id_DRBs_ToBeSetup_List;
       ueSetReq->protocolIEs.list.array[idx]->criticality	= 	Criticality_reject;
       ueSetReq->protocolIEs.list.array[idx]->value.present = UEContextSetupRequestIEs__value_PR_DRBs_ToBeSetup_List;
-      ret1 = BuildDRBSetup(ueCb, &ueSetReq->protocolIEs.list.array[idx]->value.choice.DRBs_ToBeSetup_List);
+      ret1 = BuildDRBSetup(duId, ueCb, &ueSetReq->protocolIEs.list.array[idx]->value.choice.DRBs_ToBeSetup_List);
       if(ret1 != ROK)
       {	
          break;
@@ -9182,7 +9182,7 @@ uint8_t extractTeId(DLUPTNLInformation_ToBeSetup_List_t *dlTnlInfo)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t addDrbTunnels(uint8_t teId)
+uint8_t addDrbTunnels(uint32_t duId, uint8_t teId)
 {
    uint8_t ret = ROK;
    EgtpTnlEvt tnlEvt;
@@ -9195,7 +9195,7 @@ uint8_t addDrbTunnels(uint8_t teId)
    tnlEvt.action = EGTP_TNL_MGMT_ADD;
    tnlEvt.lclTeid = teId;
    tnlEvt.remTeid = teId;
-   ret = cuEgtpTnlMgmtReq(tnlEvt);
+   ret = cuEgtpTnlMgmtReq(duId, tnlEvt);
    if(ret != ROK)
    {
       DU_LOG("\nERROR  -->  EGTP : Tunnel management request failed for teId %x", teId);
@@ -9218,7 +9218,7 @@ uint8_t addDrbTunnels(uint8_t teId)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t procDrbSetupList(DRBs_Setup_List_t *drbSetupList)
+uint8_t procDrbSetupList(uint32_t duId, DRBs_Setup_List_t *drbSetupList)
 {
    uint8_t arrIdx = 0;
    uint32_t teId = 0;
@@ -9235,7 +9235,7 @@ uint8_t procDrbSetupList(DRBs_Setup_List_t *drbSetupList)
             teId  = extractTeId(&drbItemIe->value.choice.DRBs_Setup_Item.dLUPTNLInformation_ToBeSetup_List);
             if(teId > 0)
             {
-              if(addDrbTunnels(teId)== ROK)
+              if(addDrbTunnels(duId, teId)== ROK)
               {
                 DU_LOG("\nDEBUG  --> EGTP: Tunnel Added for TeId %d", teId);
               }
@@ -9286,7 +9286,7 @@ uint8_t procUeContextSetupResponse(uint32_t duId, F1AP_PDU_t *f1apMsg)
           case ProtocolIE_ID_id_DRBs_Setup_List:
              {
                 /* Adding Tunnels for successful DRB */
-                procDrbSetupList(&ueCtxtSetupRsp->protocolIEs.list.array[idx]->value.choice.DRBs_Setup_List);
+                procDrbSetupList(duId, &ueCtxtSetupRsp->protocolIEs.list.array[idx]->value.choice.DRBs_Setup_List);
                 break; 
              }
          case ProtocolIE_ID_id_DUtoCURRCInformation:
@@ -9622,7 +9622,7 @@ void FreeUlTnlInfoforDrb2(ULUPTNLInformation_ToBeSetup_List_t *ulInfo)
 *         RFAILED - failure
 *
 * ****************************************************************/
-uint8_t deleteEgtpTunnel(uint8_t *buf)
+uint8_t deleteEgtpTunnel(uint32_t duId, uint8_t *buf)
 {
    uint32_t teId = 0;
    EgtpTnlEvt tnlEvt;
@@ -9637,7 +9637,7 @@ uint8_t deleteEgtpTunnel(uint8_t *buf)
    tnlEvt.action = EGTP_TNL_MGMT_DEL;
    tnlEvt.lclTeid = teId;
    tnlEvt.remTeid = teId;
-   if((cuEgtpTnlMgmtReq(tnlEvt)) != ROK)
+   if((cuEgtpTnlMgmtReq(duId, tnlEvt)) != ROK)
    {
       DU_LOG("\nERROR  -->  EGTP : Failed to delete tunnel Id %d", teId);
    }
@@ -9660,7 +9660,7 @@ uint8_t deleteEgtpTunnel(uint8_t *buf)
 *         RFAILED - failure
 *
 * ****************************************************************/
-uint8_t BuildUlTnlInfoforSetupMod(uint8_t ueId, uint8_t drbId, TnlInfo *ulTnlInfo, ULUPTNLInformation_ToBeSetup_List_t *ulInfo, uint8_t actionType)
+uint8_t BuildUlTnlInfoforSetupMod(uint32_t duId, uint8_t ueId, uint8_t drbId, TnlInfo *ulTnlInfo, ULUPTNLInformation_ToBeSetup_List_t *ulInfo, uint8_t actionType)
 {
    uint8_t arrIdx;
    uint8_t ulCnt;
@@ -9754,7 +9754,7 @@ uint8_t BuildUlTnlInfoforSetupMod(uint8_t ueId, uint8_t drbId, TnlInfo *ulTnlInf
    else
    {
       ulInfo->list.array[arrIdx]->uLUPTNLInformation.choice.gTPTunnel->\
-        gTP_TEID.buf[3] = cuCb.cuCfgParams.egtpParams.currTunnelId++;
+        gTP_TEID.buf[3] = cuCb.cuCfgParams.egtpParams.egtpAssoc[duId-1].currTunnelId++;
    }
 
    ulTnlInfo->teId[0] = ulInfo->list.array[arrIdx]->uLUPTNLInformation.choice.gTPTunnel->gTP_TEID.buf[0];
@@ -9865,7 +9865,7 @@ void FreeDrbItem(DRBs_ToBeSetupMod_Item_t *drbItem)
 *
 * ****************************************************************/
 
-uint8_t FillDrbItemToSetupMod(CuUeCb *ueCb, uint8_t arrIdx, DRBs_ToBeSetupMod_Item_t *drbItem)
+uint8_t FillDrbItemToSetupMod(uint32_t duId, CuUeCb *ueCb, uint8_t arrIdx, DRBs_ToBeSetupMod_Item_t *drbItem)
 {
    uint8_t ret = ROK;
 
@@ -9945,7 +9945,7 @@ uint8_t FillDrbItemToSetupMod(CuUeCb *ueCb, uint8_t arrIdx, DRBs_ToBeSetupMod_It
    }
    
    /*ULUPTNLInformation To Be Setup List*/
-   ret = BuildUlTnlInfoforSetupMod(ueCb->gnbCuUeF1apId, drbItem->dRBID, &ueCb->drbList[ueCb->numDrb].ulUpTnlInfo, \
+   ret = BuildUlTnlInfoforSetupMod(duId, ueCb->gnbCuUeF1apId, drbItem->dRBID, &ueCb->drbList[ueCb->numDrb].ulUpTnlInfo, \
       &drbItem->uLUPTNLInformation_ToBeSetup_List, ProtocolIE_ID_id_DRBs_ToBeSetupMod_Item);
    if(ret != ROK)
    {
@@ -9978,13 +9978,13 @@ uint8_t FillDrbItemToSetupMod(CuUeCb *ueCb, uint8_t arrIdx, DRBs_ToBeSetupMod_It
 *
 * ****************************************************************/
 
-uint8_t FillDrbItemList(CuUeCb *ueCb, uint8_t arrIdx, struct DRBs_ToBeSetupMod_ItemIEs *drbItemIe)
+uint8_t FillDrbItemList(uint32_t duId, CuUeCb *ueCb, uint8_t arrIdx, struct DRBs_ToBeSetupMod_ItemIEs *drbItemIe)
 {
    drbItemIe->id = ProtocolIE_ID_id_DRBs_ToBeSetupMod_Item;
    drbItemIe->criticality = Criticality_reject;
    drbItemIe->value.present = DRBs_ToBeSetupMod_ItemIEs__value_PR_DRBs_ToBeSetupMod_Item;
 
-   if(FillDrbItemToSetupMod(ueCb, arrIdx, (&(drbItemIe->value.choice.DRBs_ToBeSetupMod_Item))) != ROK)
+   if(FillDrbItemToSetupMod(duId, ueCb, arrIdx, (&(drbItemIe->value.choice.DRBs_ToBeSetupMod_Item))) != ROK)
    {
       DU_LOG("\nERROR  -->  F1AP : FillDrbItemToSetupMod failed"); 
       return RFAILED;
@@ -10048,7 +10048,7 @@ void FreeDrbToBeSetupModList(DRBs_ToBeSetupMod_List_t *drbSet)
 *
 * ****************************************************************/
 
-uint8_t BuildDrbToBeSetupList(CuUeCb *ueCb, DRBs_ToBeSetupMod_List_t *drbSet)
+uint8_t BuildDrbToBeSetupList(uint32_t duId, CuUeCb *ueCb, DRBs_ToBeSetupMod_List_t *drbSet)
 {
    uint8_t ret = ROK;
    uint8_t arrIdx =0;
@@ -10073,7 +10073,7 @@ uint8_t BuildDrbToBeSetupList(CuUeCb *ueCb, DRBs_ToBeSetupMod_List_t *drbSet)
          return  RFAILED;
       }
 
-      ret = FillDrbItemList(ueCb, arrIdx, (DRBs_ToBeSetupMod_ItemIEs_t *)drbSet->list.array[arrIdx]);
+      ret = FillDrbItemList(duId, ueCb, arrIdx, (DRBs_ToBeSetupMod_ItemIEs_t *)drbSet->list.array[arrIdx]);
       if(ret != ROK)
       {
          DU_LOG("\nERROR  -->  F1AP : FillDrbItemList failed");
@@ -10100,7 +10100,7 @@ uint8_t BuildDrbToBeSetupList(CuUeCb *ueCb, DRBs_ToBeSetupMod_List_t *drbSet)
 *
 * ****************************************************************/
 
-uint8_t FillDrbToBeModItem(CuUeCb *ueCb, uint8_t arrIdx, DRBs_ToBeModified_Item_t *drbItem)
+uint8_t FillDrbToBeModItem(uint32_t duId, CuUeCb *ueCb, uint8_t arrIdx, DRBs_ToBeModified_Item_t *drbItem)
 {
    uint8_t ret = ROK;
    uint drbIdx=0;
@@ -10196,7 +10196,7 @@ uint8_t FillDrbToBeModItem(CuUeCb *ueCb, uint8_t arrIdx, DRBs_ToBeModified_Item_
    }/* End of QoS */
 
    /*ULUPTNLInformation To Be Setup List*/
-   ret = BuildUlTnlInfoforSetupMod(ueCb->gnbCuUeF1apId, drbItem->dRBID, &drbToBeMod->ulUpTnlInfo, &drbItem->uLUPTNLInformation_ToBeSetup_List,\
+   ret = BuildUlTnlInfoforSetupMod(duId, ueCb->gnbCuUeF1apId, drbItem->dRBID, &drbToBeMod->ulUpTnlInfo, &drbItem->uLUPTNLInformation_ToBeSetup_List,\
             ProtocolIE_ID_id_DRBs_ToBeModified_Item);
    if(ret != ROK)
    {
@@ -10223,12 +10223,12 @@ uint8_t FillDrbToBeModItem(CuUeCb *ueCb, uint8_t arrIdx, DRBs_ToBeModified_Item_
 *
 * ****************************************************************/
 
-uint8_t FillDrbToBeModItemList(CuUeCb *ueCb, uint8_t arrIdx, struct DRBs_ToBeModified_ItemIEs *drbItemIe)
+uint8_t FillDrbToBeModItemList(uint32_t duId, CuUeCb *ueCb, uint8_t arrIdx, struct DRBs_ToBeModified_ItemIEs *drbItemIe)
 {
    drbItemIe->id = ProtocolIE_ID_id_DRBs_ToBeModified_Item;
    drbItemIe->criticality = Criticality_reject;
    drbItemIe->value.present = DRBs_ToBeModified_ItemIEs__value_PR_DRBs_ToBeModified_Item;
-   if(FillDrbToBeModItem(ueCb, arrIdx, &(drbItemIe->value.choice.DRBs_ToBeModified_Item)) != ROK)
+   if(FillDrbToBeModItem(duId, ueCb, arrIdx, &(drbItemIe->value.choice.DRBs_ToBeModified_Item)) != ROK)
    {
       DU_LOG("\nERROR  -->  F1AP : FillDrbToBeModItem failed"); 
       return RFAILED;
@@ -10254,7 +10254,7 @@ uint8_t FillDrbToBeModItemList(CuUeCb *ueCb, uint8_t arrIdx, struct DRBs_ToBeMod
 *
 * ****************************************************************/
 
-uint8_t BuildDrbToBeModifiedList(CuUeCb *ueCb, DRBs_ToBeModified_List_t *drbSet)
+uint8_t BuildDrbToBeModifiedList(uint32_t duId, CuUeCb *ueCb, DRBs_ToBeModified_List_t *drbSet)
 {
    uint8_t ret = ROK;
    uint8_t arrIdx =0;
@@ -10278,7 +10278,7 @@ uint8_t BuildDrbToBeModifiedList(CuUeCb *ueCb, DRBs_ToBeModified_List_t *drbSet)
          return  RFAILED;
       }
 
-      ret = FillDrbToBeModItemList(ueCb, arrIdx, (DRBs_ToBeModified_ItemIEs_t *)drbSet->list.array[arrIdx]);
+      ret = FillDrbToBeModItemList(duId, ueCb, arrIdx, (DRBs_ToBeModified_ItemIEs_t *)drbSet->list.array[arrIdx]);
       if(ret != ROK)
       {
          DU_LOG("\nERROR  -->  F1AP : FillDrbToBeModItemList failed");
@@ -10582,7 +10582,7 @@ uint8_t BuildAndSendUeContextModificationReq(uint32_t duId, void *cuUeCb, UeCtxt
          ueContextModifyReq->protocolIEs.list.array[ieIdx]->criticality = Criticality_reject;
          ueContextModifyReq->protocolIEs.list.array[ieIdx]->value.present =\
                                                                            UEContextModificationRequestIEs__value_PR_DRBs_ToBeSetupMod_List;
-         ret = BuildDrbToBeSetupList(ueCb, &(ueContextModifyReq->protocolIEs.list.array[ieIdx]->\
+         ret = BuildDrbToBeSetupList(duId, ueCb, &(ueContextModifyReq->protocolIEs.list.array[ieIdx]->\
                   value.choice.DRBs_ToBeSetupMod_List));
 
          /* DRB to be modified list */
@@ -10591,7 +10591,7 @@ uint8_t BuildAndSendUeContextModificationReq(uint32_t duId, void *cuUeCb, UeCtxt
          ueContextModifyReq->protocolIEs.list.array[ieIdx]->criticality = Criticality_reject;
          ueContextModifyReq->protocolIEs.list.array[ieIdx]->value.present =\
                                                                            UEContextModificationRequestIEs__value_PR_DRBs_ToBeModified_List;
-         ret = BuildDrbToBeModifiedList(ueCb, &(ueContextModifyReq->protocolIEs.list.array[ieIdx]->\
+         ret = BuildDrbToBeModifiedList(duId, ueCb, &(ueContextModifyReq->protocolIEs.list.array[ieIdx]->\
                   value.choice.DRBs_ToBeModified_List));
 
          /* TODO: DRB to be release list */
@@ -11147,7 +11147,7 @@ uint8_t procSrbSetupModList(CuUeCb *ueCb, SRBs_SetupMod_List_t *srbSetupList)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t procDrbSetupModList(CuUeCb *ueCb, DRBs_SetupMod_List_t *drbSetupList)
+uint8_t procDrbSetupModList(uint32_t duId, CuUeCb *ueCb, DRBs_SetupMod_List_t *drbSetupList)
 {
    uint8_t arrIdx = 0, drbIdx;
    uint32_t teId = 0;
@@ -11176,7 +11176,7 @@ uint8_t procDrbSetupModList(CuUeCb *ueCb, DRBs_SetupMod_List_t *drbSetupList)
             teId  = extractTeId(&drbItemIe->value.choice.DRBs_SetupMod_Item.dLUPTNLInformation_ToBeSetup_List);
             if(teId > 0)
             {
-              if(addDrbTunnels(teId)== ROK)
+              if(addDrbTunnels(duId, teId)== ROK)
               {
                 DU_LOG("\nDEBUG  --> EGTP: Tunnel Added for TeId %d", teId);
               }
@@ -11287,7 +11287,7 @@ uint8_t procUeContextModificationResponse(uint32_t duId, F1AP_PDU_t *f1apMsg)
           case ProtocolIE_ID_id_DRBs_SetupMod_List:
              {
                 /* Adding Tunnels for successful DRB */
-                procDrbSetupModList(ueCb, &ueCtxtModRsp->protocolIEs.list.array[idx]->value.choice.DRBs_SetupMod_List);
+                procDrbSetupModList(duId, ueCb, &ueCtxtModRsp->protocolIEs.list.array[idx]->value.choice.DRBs_SetupMod_List);
                 break; 
 
              }

@@ -33,8 +33,8 @@
 #define CU_SCTP_PORT_TO_DU (int[]){38472, 38473}
 #endif
 
-#define DU_EGTP_PORT 39001
-#define CU_EGTP_PORT 39002
+#define DU_EGTP_PORT  (int[]){39001, 39002}
+#define CU_EGTP_PORT (int[]){39003, 39004}
 #define RRC_VER 0
 #define EXT_RRC_VER 5
 #define PLMN_MCC0 3
@@ -116,7 +116,7 @@ typedef struct cuCfgParams
    char             cuName[CU_DU_NAME_LEN_MAX];
    CuSctpParams     sctpParams;
    Plmn             plmn;
-   EgtpParams       egtpParams;
+   CuEgtpParams     egtpParams;
    RrcVersion       rrcVersion;
 }CuCfgParams;
 

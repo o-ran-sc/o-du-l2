@@ -38,7 +38,7 @@
 #endif
 
 #define DU_EGTP_PORT  39001
-#define CU_EGTP_PORT  39002
+#define CU_EGTP_PORT  39003
 #define NR_PCI 1
 #define NR_CELL_ID 1
 
