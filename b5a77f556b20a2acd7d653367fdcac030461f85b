@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2e7b1c82_fba88050",
+        "filename": "src/du_app/du_f1ap_conversions.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 1267,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-04-05T05:22:58Z",
+      "side": 1,
+      "message": "Lets return the default value equal to the value we are currently using for our testing",
+      "range": {
+        "startLine": 1267,
+        "startChar": 19,
+        "endLine": 1267,
+        "endChar": 20
+      },
+      "revId": "b5a77f556b20a2acd7d653367fdcac030461f85b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "42c9625d_28242c7c",
+        "filename": "src/du_app/du_f1ap_conversions.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-04-05T05:22:58Z",
+      "side": 1,
+      "message": "It is a convention we follow to not include a header file within another header file.\nHence these files must be included directly into .c file",
+      "revId": "b5a77f556b20a2acd7d653367fdcac030461f85b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
