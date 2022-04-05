@@ -24,6 +24,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c5896de0_099b7db0",
+        "filename": "src/cu_stub/cu_stub.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 166,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-04-05T10:03:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "29529443_d1907397",
+      "range": {
+        "startLine": 166,
+        "startChar": 3,
+        "endLine": 166,
+        "endChar": 8
+      },
+      "revId": "28923fa7f9651d02c33beec3b72b5a9de2e1ebed",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "190cbfab_51eab663",
@@ -70,6 +94,54 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b9aa69c4_06b65d64",
+        "filename": "src/cu_stub/cu_stub.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 197,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-04-05T10:03:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4ca0e3d4_3b14f08f",
+      "range": {
+        "startLine": 197,
+        "startChar": 23,
+        "endLine": 197,
+        "endChar": 33
+      },
+      "revId": "28923fa7f9651d02c33beec3b72b5a9de2e1ebed",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "10ba62e5_e406dbf3",
+        "filename": "src/cu_stub/cu_stub.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 197,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-04-05T10:03:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "190cbfab_51eab663",
+      "range": {
+        "startLine": 197,
+        "startChar": 22,
+        "endLine": 197,
+        "endChar": 23
+      },
+      "revId": "28923fa7f9651d02c33beec3b72b5a9de2e1ebed",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "12f5b1a6_ecdad3a7",
@@ -83,6 +155,30 @@
       "writtenOn": "2022-04-04T15:14:58Z",
       "side": 1,
       "message": "since egtpCb is a global variable, can we not directly use egtpCb.numDu inside cuEgtpDatReq(), instead of passing from here?",
+      "range": {
+        "startLine": 328,
+        "startChar": 25,
+        "endLine": 328,
+        "endChar": 37
+      },
+      "revId": "28923fa7f9651d02c33beec3b72b5a9de2e1ebed",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0aa62ad0_869158dd",
+        "filename": "src/cu_stub/cu_stub.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 328,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-04-05T10:03:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "12f5b1a6_ecdad3a7",
       "range": {
         "startLine": 328,
         "startChar": 25,
@@ -116,6 +212,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c0404180_9d6641c0",
+        "filename": "src/cu_stub/cu_stub_egtp.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 203,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-04-05T10:03:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "89394583_73ae0455",
+      "range": {
+        "startLine": 203,
+        "startChar": 18,
+        "endLine": 203,
+        "endChar": 24
+      },
+      "revId": "28923fa7f9651d02c33beec3b72b5a9de2e1ebed",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1ea91439_f16ab342",
@@ -129,6 +249,30 @@
       "writtenOn": "2022-04-04T15:14:58Z",
       "side": 1,
       "message": "print duId from egtpCb.dstCb[destIdx].duId",
+      "range": {
+        "startLine": 453,
+        "startChar": 97,
+        "endLine": 453,
+        "endChar": 106
+      },
+      "revId": "28923fa7f9651d02c33beec3b72b5a9de2e1ebed",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5a514d52_6d217b40",
+        "filename": "src/cu_stub/cu_stub_sctp.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 453,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-04-05T10:03:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1ea91439_f16ab342",
       "range": {
         "startLine": 453,
         "startChar": 97,
