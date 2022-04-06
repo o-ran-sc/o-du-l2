@@ -95,6 +95,12 @@
    }\
 }
 
+typedef enum
+{
+   CELL_INACTIVE,
+   CELL_ACTIVE,
+   CELL_DELETION_IN_PROGRESS
+}CellStatusInfo;
 
 typedef enum
 {
@@ -266,6 +272,7 @@ struct cuCellCb
    uint32_t nrCellId;
    uint8_t  numUe;
    CuUeCb   *ueCb[MAX_NUM_UE];
+   CellStatusInfo cellStatus;
 };
 
 typedef struct duDb
