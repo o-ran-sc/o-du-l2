@@ -11021,16 +11021,6 @@ uint8_t procGnbDuUpdate(uint32_t duId, F1AP_PDU_t *f1apMsg)
       }
    }
 #endif
-   if(cellToBeDelete == true) 
-   {
-      SEARCH_DU_DB(duIdx, duId, duDb);
-      SEARCH_CELL_DB(cellIdx, duDb, nrCellId, cellCb);
-      for(ueIdx = 0; ueIdx < cellCb->numUe; ueIdx++)
-      {
-         CU_FREE(cellCb->ueCb[ueIdx]->f1apMsgDb.duToCuContainer.buf, cellCb->ueCb[ueIdx]->f1apMsgDb.duToCuContainer.size);
-         memset(cellCb->ueCb[ueIdx], 0, sizeof(CuUeCb));
-      }
-   }
 
    return ROK;
 }
@@ -11460,17 +11450,16 @@ void procUeContextReleaseComplete(uint32_t duId, F1AP_PDU_t *f1apMsg)
             {
                gnbDuUeF1apId = ueReleaseComplete->protocolIEs.list.array[ieIdx]->value.choice.GNB_DU_UE_F1AP_ID;
                ueCb = &duDb->ueCb[gnbDuUeF1apId-1];
-               
-               for(ueIdx = 0; ueIdx < ueCb->cellCb->numUe; ueIdx++)
-               {
-                  if((ueCb->cellCb->ueCb[ueIdx]->gnbCuUeF1apId == gnbCuUeF1apId) &&
-                        (ueCb->cellCb->ueCb[ueIdx]->gnbDuUeF1apId == gnbDuUeF1apId))
-                  {
-                     ueCb->cellCb->ueCb[ueIdx] = NULLP;
-                     ueCb->cellCb->numUe--;
-                     break;
 
-                  }
+               if((ueCb->gnbCuUeF1apId == gnbCuUeF1apId) &&
+                     (ueCb->gnbDuUeF1apId == gnbDuUeF1apId))
+               {
+                  CU_FREE(ueCb->f1apMsgDb.duToCuContainer.buf, ueCb->f1apMsgDb.duToCuContainer.size);
+                  ueCb->cellCb->numUe--;
+                  ueCb->cellCb->ueCb[gnbDuUeF1apId-1] = NULLP;
+                  memset(ueCb, 0, sizeof(CuUeCb));
+                  break;
+
                }
                memset(ueCb, 0, sizeof(CuUeCb));
                duDb->numUe--;
