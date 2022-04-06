@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f8cf5e46_5af197b5",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 11474,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-04-06T10:50:01Z",
+      "side": 1,
+      "message": "delete cellCb from duDb as well.",
+      "revId": "39d052a22e985246bf851926462b4a5af16aa49e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
