@@ -189,13 +189,13 @@ void readCuCfg()
       cuCb.cuCfgParams.egtpParams.egtpAssoc[numDu].destIp.ipV4Pres = TRUE;
       cuCb.cuCfgParams.egtpParams.egtpAssoc[numDu].destIp.ipV4Addr = ipv4_du;
       cuCb.cuCfgParams.egtpParams.egtpAssoc[numDu].destPort = DU_EGTP_PORT[numDu];
-      cuCb.cuCfgParams.egtpParams.egtpAssoc[numDu].minTunnelId = MIN_TEID;
-      cuCb.cuCfgParams.egtpParams.egtpAssoc[numDu].currTunnelId = cuCb.cuCfgParams.egtpParams.egtpAssoc[numDu].minTunnelId;
-      cuCb.cuCfgParams.egtpParams.egtpAssoc[numDu].maxTunnelId = MAX_TEID;
       
       (numDu)++;
    }
 
+   cuCb.cuCfgParams.egtpParams.minTunnelId = MIN_TEID;
+   cuCb.cuCfgParams.egtpParams.currTunnelId = cuCb.cuCfgParams.egtpParams.minTunnelId;
+   cuCb.cuCfgParams.egtpParams.maxTunnelId = MAX_TEID;
    cuCb.cuCfgParams.egtpParams.numDu = numDu;
    cuCb.cuCfgParams.sctpParams.numDu = numDu;
 #endif

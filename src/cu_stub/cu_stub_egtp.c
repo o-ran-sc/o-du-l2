@@ -295,7 +295,6 @@ S16 cuEgtpTnlAdd(uint32_t duId, EgtpTnlEvt tnlEvt)
       return RFAILED;
    }
 
-
    memset(teidCb, 0, sizeof(EgtpTeIdCb));
    teidCb->teId = tnlEvt.lclTeid;
    teidCb->remTeId = tnlEvt.remTeid;

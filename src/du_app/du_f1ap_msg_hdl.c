@@ -12018,6 +12018,7 @@ uint8_t procF1UeContextSetupReq(F1AP_PDU_t *f1apMsg)
                   duUeCb->f1UeDb = NULL;
                   duUeCb->gnbCuUeF1apId = gnbCuUeF1apId;
                   duUeCb->gnbDuUeF1apId = gnbDuUeF1apId;
+                  GET_CRNTI(duUeCb->crnti, duUeCb->gnbDuUeF1apId);
                   duUeCb->ueState = UE_HANDIN_IN_PROGRESS;
                }
 
@@ -12566,7 +12567,7 @@ uint8_t BuildAndSendUeContextSetupRsp(uint8_t cellId,uint8_t ueId)
 
       ueSetRsp =
          &f1apMsg->choice.successfulOutcome->value.choice.UEContextSetupResponse;
-      elementCnt = 4;
+      elementCnt = 5;
       ueSetRsp->protocolIEs.list.count = elementCnt;
       ueSetRsp->protocolIEs.list.size = \
                                         elementCnt * sizeof(UEContextSetupResponse_t *);
@@ -12625,6 +12626,14 @@ uint8_t BuildAndSendUeContextSetupRsp(uint8_t cellId,uint8_t ueId)
       ueSetRsp->protocolIEs.list.array[idx]->value.present =\
                                                             UEContextSetupResponseIEs__value_PR_DUtoCURRCInformation;
       BuildCellGroupConfigRrc(ueCb, &ueSetRsp->protocolIEs.list.array[idx]->value.choice.DUtoCURRCInformation.cellGroupConfig);
+
+      /* CRNTI */
+      idx++;
+      ueSetRsp->protocolIEs.list.array[idx]->id  = ProtocolIE_ID_id_C_RNTI;
+      ueSetRsp->protocolIEs.list.array[idx]->criticality = Criticality_reject;
+      ueSetRsp->protocolIEs.list.array[idx]->value.present = UEContextSetupResponseIEs__value_PR_C_RNTI;
+      ueSetRsp->protocolIEs.list.array[idx]->value.choice.C_RNTI = ueCb->crnti; 
+
 
       /* Drb Setup List */
       idx++;
@@ -14239,32 +14248,29 @@ uint8_t BuildAndSendUeContextModRsp(DuUeCb *ueCb)
          BuildCellGroupConfigRrc(ueCb, &ueContextModifyRes->protocolIEs.list.array[ieIdx]->value.choice.DUtoCURRCInformation.cellGroupConfig);
       }
 
-      if((ueCb->f1UeDb->actionType == UE_CTXT_CFG_QUERY) || (ueCb->f1UeDb->actionType == UE_CTXT_MOD))
+      if((ueCb->f1UeDb->actionType == UE_CTXT_CFG_QUERY) || ((ueCb->f1UeDb->actionType == UE_CTXT_MOD) && (ueCb->f1UeDb->duUeCfg.numDrbSetupMod)))
       { 
-         if(ueCb->f1UeDb->duUeCfg.numDrbSetupMod)
+         ieIdx++;
+         ueContextModifyRes->protocolIEs.list.array[ieIdx]->id = ProtocolIE_ID_id_DRBs_SetupMod_List;
+         ueContextModifyRes->protocolIEs.list.array[ieIdx]->criticality = Criticality_reject;
+         ueContextModifyRes->protocolIEs.list.array[ieIdx]->value.present =\
+                                                                           UEContextModificationResponseIEs__value_PR_DRBs_SetupMod_List;
+         if(ueCb->f1UeDb->actionType == UE_CTXT_CFG_QUERY)
          {
-            ieIdx++;
-            ueContextModifyRes->protocolIEs.list.array[ieIdx]->id = ProtocolIE_ID_id_DRBs_SetupMod_List;
-            ueContextModifyRes->protocolIEs.list.array[ieIdx]->criticality = Criticality_reject;
-            ueContextModifyRes->protocolIEs.list.array[ieIdx]->value.present =\
-                                                                              UEContextModificationResponseIEs__value_PR_DRBs_SetupMod_List;
-            if(ueCb->f1UeDb->actionType == UE_CTXT_CFG_QUERY)
+            for(tnlIdx = 0; tnlIdx < duCb.numTeId; tnlIdx++)
             {
-               for(tnlIdx = 0; tnlIdx < duCb.numTeId; tnlIdx++)
+               if(duCb.upTnlCfg[tnlIdx]->ueId == ueCb->gnbDuUeF1apId)
                {
-                  if(duCb.upTnlCfg[tnlIdx]->ueId == ueCb->gnbDuUeF1apId)
-                  {
-                     memcpy(&ueCb->f1UeDb->duUeCfg.upTnlInfo[ueCb->f1UeDb->duUeCfg.numDrbSetupMod++], duCb.upTnlCfg[tnlIdx], sizeof(UpTnlCfg));
-                  }
+                  memcpy(&ueCb->f1UeDb->duUeCfg.upTnlInfo[ueCb->f1UeDb->duUeCfg.numDrbSetupMod++], duCb.upTnlCfg[tnlIdx], sizeof(UpTnlCfg));
                }
             }
-            ret = BuildDrbSetupModList(&(ueContextModifyRes->protocolIEs.list.array[ieIdx]->\
-                     value.choice.DRBs_SetupMod_List) , &ueCb->f1UeDb->duUeCfg);
-            if(ret != ROK)
-            {
-               DU_LOG( "\nERROR  -->  F1AP : Failed to build DRB setupmod List ");
-               break;
-            }
+         }
+         ret = BuildDrbSetupModList(&(ueContextModifyRes->protocolIEs.list.array[ieIdx]->\
+                  value.choice.DRBs_SetupMod_List) , &ueCb->f1UeDb->duUeCfg);
+         if(ret != ROK)
+         {
+            DU_LOG( "\nERROR  -->  F1AP : Failed to build DRB setupmod List ");
+            break;
          }
       }
 

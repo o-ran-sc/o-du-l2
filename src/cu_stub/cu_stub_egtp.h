@@ -125,13 +125,13 @@ typedef struct egtpAssoc
    uint16_t    localPort;
    SctpIpAddr  destIp;
    uint16_t    destPort;
-   uint32_t    currTunnelId;
-   uint32_t    minTunnelId;
-   uint32_t    maxTunnelId;
 }EgtpAssoc;
 
 typedef struct cuEgtpParams
 {
+   uint32_t       currTunnelId;
+   uint32_t       minTunnelId;
+   uint32_t       maxTunnelId;
    uint8_t        numDu;
    EgtpAssoc      egtpAssoc[MAX_DU_SUPPORTED];
 }CuEgtpParams;
