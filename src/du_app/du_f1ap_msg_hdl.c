@@ -12018,6 +12018,7 @@ uint8_t procF1UeContextSetupReq(F1AP_PDU_t *f1apMsg)
                   duUeCb->f1UeDb = NULL;
                   duUeCb->gnbCuUeF1apId = gnbCuUeF1apId;
                   duUeCb->gnbDuUeF1apId = gnbDuUeF1apId;
+                  GET_CRNTI(duUeCb->crnti, duUeCb->gnbDuUeF1apId);
                   duUeCb->ueState = UE_HANDIN_IN_PROGRESS;
                }
 
@@ -12566,7 +12567,7 @@ uint8_t BuildAndSendUeContextSetupRsp(uint8_t cellId,uint8_t ueId)
 
       ueSetRsp =
          &f1apMsg->choice.successfulOutcome->value.choice.UEContextSetupResponse;
-      elementCnt = 4;
+      elementCnt = 5;
       ueSetRsp->protocolIEs.list.count = elementCnt;
       ueSetRsp->protocolIEs.list.size = \
                                         elementCnt * sizeof(UEContextSetupResponse_t *);
@@ -12625,6 +12626,14 @@ uint8_t BuildAndSendUeContextSetupRsp(uint8_t cellId,uint8_t ueId)
       ueSetRsp->protocolIEs.list.array[idx]->value.present =\
                                                             UEContextSetupResponseIEs__value_PR_DUtoCURRCInformation;
       BuildCellGroupConfigRrc(ueCb, &ueSetRsp->protocolIEs.list.array[idx]->value.choice.DUtoCURRCInformation.cellGroupConfig);
+
+      /* CRNTI */
+      idx++;
+      ueSetRsp->protocolIEs.list.array[idx]->id  = ProtocolIE_ID_id_C_RNTI;
+      ueSetRsp->protocolIEs.list.array[idx]->criticality = Criticality_reject;
+      ueSetRsp->protocolIEs.list.array[idx]->value.present = UEContextSetupResponseIEs__value_PR_C_RNTI;
+      ueSetRsp->protocolIEs.list.array[idx]->value.choice.C_RNTI = ueCb->crnti; 
+
 
       /* Drb Setup List */
       idx++;

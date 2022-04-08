@@ -300,6 +300,7 @@ S16 cuEgtpTnlAdd(uint32_t duId, EgtpTnlEvt tnlEvt)
    teidCb->teId = tnlEvt.lclTeid;
    teidCb->remTeId = tnlEvt.remTeid;
 
+   printf("\n HLAL LCL TE ID [%d] , REM TE ID [%d], DU ID [%d]", teidCb->teId, teidCb->remTeId, duId);
    ret = cmHashListInsert(&(egtpCb.dstCb[duId-1].teIdLst), (PTR)teidCb, (uint8_t *)&(teidCb->teId), sizeof(uint32_t));
    if(ret != ROK)
    {
