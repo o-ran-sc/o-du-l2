@@ -539,19 +539,23 @@ uint8_t MacSchAddUeConfigReq(Pst *pst, SchUeCfg *ueCfg)
    memset(ueCb, 0, sizeof(SchUeCb));
    ueCb->ueId = ueCfg->ueId;
    ueCb->crnti = ueCfg->crnti;
-   if(ueCb->crnti)
-      ueCb->state = SCH_UE_STATE_ACTIVE;
-   else
-      ueCb->state = SCH_UE_HANDIN_IN_PROGRESS;
 
    ret = fillSchUeCb(inst, ueCb, ueCfg);
    if(ret == ROK)
    {
-      if(ueCb->state == SCH_UE_STATE_ACTIVE)
+      /* If UE has initiated RACH and then UE context is created, it means UE is
+       * active now.
+       * Else if UE context is created before RACH, this means that UE is being
+       * handed-in from source DU */
+      if(cellCb->raCb[ueCb->ueId-1].tcrnti == ueCb->crnti)
       {
          cellCb->numActvUe++;
          SET_ONE_BIT(ueCb->ueId, cellCb->actvUeBitMap);
+         ueCb->state = SCH_UE_STATE_ACTIVE;
       }
+      else
+         ueCb->state = SCH_UE_HANDIN_IN_PROGRESS;
+
       ueCb->cellCb = cellCb;
       ueCb->srRcvd = false;
       ueCb->bsrRcvd = false;

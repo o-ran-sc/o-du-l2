@@ -1995,11 +1995,6 @@ uint8_t fillMacUeCb(MacUeCb *ueCb, MacUeCfg *ueCfg, uint8_t cellIdx)
       ueCfg->spCellCfg.servCellCfg.pdschServCellCfg.numHarqProcForPdsch; 
    }
 
-   if(ueCfg->crnti)
-      ueCb->state = UE_STATE_ACTIVE;
-   else
-      ueCb->state = UE_HANDIN_IN_PROGRESS;
-
    /*TODO: To check the bsr value during implementation */
    if(ueCfg->macCellGrpCfgPres)
    {
@@ -2034,15 +2029,15 @@ uint8_t fillMacUeCb(MacUeCb *ueCb, MacUeCfg *ueCfg, uint8_t cellIdx)
 
 uint8_t updateMacRaCb(uint16_t cellIdx, MacUeCb *ueCb)
 {
-   uint8_t ueIdx;
    /* Copy RA Cb */
-   for(ueIdx = 0; ueIdx < MAX_NUM_UE; ueIdx++)
+   if(macCb.macCell[cellIdx]->macRaCb[ueCb->ueId-1].crnti == ueCb->crnti)
    {
-      if(macCb.macCell[cellIdx]->macRaCb[ueIdx].crnti == ueCb->crnti)
-      {
-         ueCb->raCb = &macCb.macCell[cellIdx]->macRaCb[ueIdx];
-         break;
-      }
+      ueCb->raCb = &macCb.macCell[cellIdx]->macRaCb[ueCb->ueId-1];
+   }
+   else
+   {
+      DU_LOG("\nERROR  -->  MAC : No RA CB found for UE ID [%d]", ueCb->ueId);
+      return RFAILED;
    }
    return ROK;
 }
@@ -2123,16 +2118,20 @@ uint8_t createUeCb(uint8_t cellIdx, MacUeCb *ueCb, MacUeCfg *ueCfg)
       }
       else
       {
-         if(ueCb->state == UE_STATE_ACTIVE)
+         /* If UE has not requested for RACH yet, it means UE context is created for a
+          * UE in handover */
+         if(macCb.macCell[cellIdx]->macRaCb[ueCb->ueId-1].crnti == ueCb->crnti)
          {
+            ueCb->state = UE_STATE_ACTIVE;
             macCb.macCell[cellIdx]->numActvUe++;
             updateMacRaCb(cellIdx, ueCb);
          }
+         else
+            ueCb->state = UE_HANDIN_IN_PROGRESS;
+
          return ROK;
       }
-
    }
-
 }
 
 /*******************************************************************

@@ -2629,7 +2629,7 @@ uint8_t BuildULTnlInfo(uint8_t duId, TnlInfo *ulUpTnlInfo, ULUPTNLInformation_To
       ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->gTP_TEID.buf[0] = 0;
       ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->gTP_TEID.buf[1] = 0;
       ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->gTP_TEID.buf[2] = 0;
-      ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->gTP_TEID.buf[3] = cuCb.cuCfgParams.egtpParams.egtpAssoc[duId-1].currTunnelId++;
+      ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->gTP_TEID.buf[3] = cuCb.cuCfgParams.egtpParams.currTunnelId++;
 
       ulUpTnlInfo->teId[0] = ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->gTP_TEID.buf[0];
       ulUpTnlInfo->teId[1] = ulInfo->list.array[idx]->uLUPTNLInformation.choice.gTPTunnel->gTP_TEID.buf[1];
@@ -9265,9 +9265,10 @@ uint8_t procDrbSetupList(uint32_t duId, DRBs_Setup_List_t *drbSetupList)
  * ****************************************************************/
 uint8_t procUeContextSetupResponse(uint32_t duId, F1AP_PDU_t *f1apMsg)
 {
-   uint8_t duIdx=0, idx, duUeF1apId;
-   DuDb *duDb;
-   CuUeCb *ueCb;
+   uint8_t duIdx = 0, idx = 0, ueIdx = 0;
+   uint8_t duUeF1apId = 0, cuUeF1apId = 0;
+   DuDb *duDb = NULLP;
+   CuUeCb *ueCb = NULLP;
    UEContextSetupResponse_t *ueCtxtSetupRsp = NULLP;
 
    SEARCH_DU_DB(duIdx, duId, duDb);
@@ -9277,10 +9278,37 @@ uint8_t procUeContextSetupResponse(uint32_t duId, F1AP_PDU_t *f1apMsg)
    {
       switch(ueCtxtSetupRsp->protocolIEs.list.array[idx]->id)
       {
+          case ProtocolIE_ID_id_gNB_CU_UE_F1AP_ID:
+             {
+               cuUeF1apId = ueCtxtSetupRsp->protocolIEs.list.array[idx]->value.choice.GNB_CU_UE_F1AP_ID;
+               break;
+             }
           case ProtocolIE_ID_id_gNB_DU_UE_F1AP_ID:
              {
                 duUeF1apId = ueCtxtSetupRsp->protocolIEs.list.array[idx]->value.choice.GNB_DU_UE_F1AP_ID;
                 ueCb = &duDb->ueCb[duUeF1apId-1];
+                /* If ue context is not present in du db, then create UE context
+                 * here. This flow is hit in case of UE handover where UE
+                 * context is created before UE performs RACH on target DU */
+                if(ueCb->gnbDuUeF1apId == 0)
+                {
+                   /* Creating UE context in target DU */
+                   memset(ueCb, 0, sizeof(CuUeCb));
+                   ueCb->cellCb = &duDb->cellCb[0];
+                   ueCb->gnbDuUeF1apId = duUeF1apId;
+                   ueCb->gnbCuUeF1apId = cuUeF1apId;
+                   ueCb->state = UE_HANDOVER_IN_PROGRESS;
+                   ueCb->hoInfo.targetDuId = duId; 
+                   (duDb->numUe)++;
+
+                   ueCb->cellCb->ueCb[ueCb->cellCb->numUe] = ueCb;
+                   ueCb->cellCb->numUe++;
+                }
+                break;
+             }
+          case ProtocolIE_ID_id_C_RNTI:
+             {
+                ueCb->crnti = ueCtxtSetupRsp->protocolIEs.list.array[idx]->value.choice.C_RNTI;
                 break;
              }
           case ProtocolIE_ID_id_DRBs_Setup_List:
@@ -9302,7 +9330,50 @@ uint8_t procUeContextSetupResponse(uint32_t duId, F1AP_PDU_t *f1apMsg)
              }
       }
    }
+
    ueCb->f1apMsgDb.dlRrcMsgCount++; /* keeping DL RRC Msg Count */
+
+   /* If the UE is in handover, UE context modification request is to be sent to
+    * source DU once UE context setup response is received from target DU */
+   if(ueCb->state == UE_HANDOVER_IN_PROGRESS)
+   {
+      DuDb *srcDuDb = NULLP;
+      CuUeCb *ueCbInSrcDu = NULLP;
+
+      /* Since Source DU Id and DU UE F1AP ID assigned to UE by source DU is not known here, we
+       * need to find Source DU and UE CB in source DU using CU UE F1AP ID */
+      for(duIdx=0; duIdx < cuCb.numDu; duIdx++)
+      {
+         /* UE context setup response is received from target DU. Search all
+          * DUs to find source DU except this target DU Id.*/
+         if(cuCb.duInfo[duIdx].duId != duId)
+         {
+            for(ueIdx = 0; ueIdx < MAX_NUM_UE; ueIdx++)
+            {
+               /* Check following:
+                * 1. CU UE F1AP ID in srcDU->ueCb should be same as cuUeF1apId
+                * received in UE context setup response since CU UE F1AP ID does not
+                * change for UE in handover.
+                * 2. srcDU->UeCb->uestate should be UE_HANDOVER_IN_PROGRESS
+                */
+               if((cuCb.duInfo[duIdx].ueCb[ueIdx].gnbCuUeF1apId == cuUeF1apId) &&
+                     (cuCb.duInfo[duIdx].ueCb[ueIdx].state == UE_HANDOVER_IN_PROGRESS))
+               {
+                  srcDuDb = &cuCb.duInfo[duIdx];
+                  ueCbInSrcDu = &cuCb.duInfo[duIdx].ueCb[ueIdx];
+
+                  /* Store source DU info in the new UE context created in
+                   * tareget DU */
+                  ueCb->hoInfo.sourceDuId = srcDuDb->duId;
+                  BuildAndSendUeContextModificationReq(srcDuDb->duId, ueCbInSrcDu, STOP_DATA_TX);
+                  break;
+               }
+            }
+         }
+         if(srcDuDb && ueCbInSrcDu)
+            break;
+      }
+   }
    return ROK;
 }
 
@@ -9754,7 +9825,7 @@ uint8_t BuildUlTnlInfoforSetupMod(uint32_t duId, uint8_t ueId, uint8_t drbId, Tn
    else
    {
       ulInfo->list.array[arrIdx]->uLUPTNLInformation.choice.gTPTunnel->\
-        gTP_TEID.buf[3] = cuCb.cuCfgParams.egtpParams.egtpAssoc[duId-1].currTunnelId++;
+        gTP_TEID.buf[3] = cuCb.cuCfgParams.egtpParams.currTunnelId++;
    }
 
    ulTnlInfo->teId[0] = ulInfo->list.array[arrIdx]->uLUPTNLInformation.choice.gTPTunnel->gTP_TEID.buf[0];
@@ -11267,9 +11338,10 @@ uint8_t procServedCellPlmnList(ServedPLMNs_List_t *srvPlmn)
  * ****************************************************************/
 uint8_t procUeContextModificationResponse(uint32_t duId, F1AP_PDU_t *f1apMsg)
 {
-   uint8_t idx=0, duIdx=0, duUeF1apId;
-   DuDb *duDb;
-   CuUeCb *ueCb;
+   uint8_t idx=0, duIdx=0;
+   uint8_t duUeF1apId = 0, cuUeF1apId = 0;
+   DuDb *duDb = NULLP;
+   CuUeCb *ueCb = NULLP;
    UEContextModificationResponse_t *ueCtxtModRsp = NULLP;
 
    SEARCH_DU_DB(duIdx, duId, duDb);
@@ -11279,6 +11351,11 @@ uint8_t procUeContextModificationResponse(uint32_t duId, F1AP_PDU_t *f1apMsg)
    {
       switch(ueCtxtModRsp->protocolIEs.list.array[idx]->id)
       {
+          case ProtocolIE_ID_id_gNB_CU_UE_F1AP_ID:
+             {
+                cuUeF1apId = ueCtxtModRsp->protocolIEs.list.array[idx]->value.choice.GNB_CU_UE_F1AP_ID;
+                break;
+             }
           case ProtocolIE_ID_id_gNB_DU_UE_F1AP_ID:
              {
                 duUeF1apId = ueCtxtModRsp->protocolIEs.list.array[idx]->value.choice.GNB_DU_UE_F1AP_ID;
@@ -11311,10 +11388,37 @@ uint8_t procUeContextModificationResponse(uint32_t duId, F1AP_PDU_t *f1apMsg)
 
       }
    }
+
+   /* If UE is in handover and UE context is not yet created at target DU, then send
+    * UE context setup request to target DU */
    if(ueCb->state == UE_HANDOVER_IN_PROGRESS)
    {
-      BuildAndSendUeContextSetupReq(ueCb->hoInfo.targetDuId, ueCb, 0, NULLP);
-      return ROK;
+      uint8_t ueIdx = 0;
+      DuDb *tgtDuDb = NULLP;
+      CuUeCb *ueCbInTgtDu = NULLP;
+
+      SEARCH_DU_DB(duIdx, ueCb->hoInfo.targetDuId, tgtDuDb);
+      if(tgtDuDb)
+      {
+         /* Since DU UE F1AP ID assigned by target DU to this UE in handover is
+          * not known here, using CU UE F1AP ID to search for UE Cb in target DU
+          * DB */
+         for(ueIdx = 0; ueIdx < MAX_NUM_UE; ueIdx++)
+         {
+            if(tgtDuDb->ueCb[ueIdx].gnbCuUeF1apId == cuUeF1apId)
+            {
+               ueCbInTgtDu = &tgtDuDb->ueCb[ueIdx];
+               break;
+            }
+         }
+
+         /* If UE context is not found in Target DU DU, send UE context setup
+          * request */
+         if(ueCbInTgtDu == NULLP)
+         {
+            BuildAndSendUeContextSetupReq(ueCb->hoInfo.targetDuId, ueCb, 0, NULLP);
+         }
+      }
    }
    
    return ROK;
