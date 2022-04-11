@@ -1,0 +1,199 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4a7b9237_031365c4",
+        "filename": "src/5gnrmac/mac_ue_mgr.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2134,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-04-11T06:23:24Z",
+      "side": 1,
+      "message": "add return ROK;",
+      "revId": "515456d22f6de388991eb4b3c928c08e591d2f6f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "60c49046_108fb9fb",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 9368,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-04-11T06:23:24Z",
+      "side": 1,
+      "message": "here as well.",
+      "range": {
+        "startLine": 9368,
+        "startChar": 18,
+        "endLine": 9368,
+        "endChar": 54
+      },
+      "revId": "515456d22f6de388991eb4b3c928c08e591d2f6f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d36429c6_d246ee3b",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 11418,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-04-11T06:23:24Z",
+      "side": 1,
+      "message": "add a check for return.",
+      "range": {
+        "startLine": 11418,
+        "startChar": 12,
+        "endLine": 11418,
+        "endChar": 41
+      },
+      "revId": "515456d22f6de388991eb4b3c928c08e591d2f6f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "165c4736_c3c6b67f",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 12637,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-04-11T06:23:24Z",
+      "side": 1,
+      "message": "Is this IE going to be filled in every time in the UE context setup response, or is this just a handover add-on?",
+      "range": {
+        "startLine": 12637,
+        "startChar": 0,
+        "endLine": 12637,
+        "endChar": 0
+      },
+      "revId": "515456d22f6de388991eb4b3c928c08e591d2f6f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "67385021_4f38592d",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2304,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-04-11T06:23:24Z",
+      "side": 1,
+      "message": "return RFAILED from else.",
+      "revId": "515456d22f6de388991eb4b3c928c08e591d2f6f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c997cbeb_17cc841f",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2348,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-04-11T06:23:24Z",
+      "side": 1,
+      "message": "add check for success or failure.",
+      "range": {
+        "startLine": 2348,
+        "startChar": 20,
+        "endLine": 2348,
+        "endChar": 41
+      },
+      "revId": "515456d22f6de388991eb4b3c928c08e591d2f6f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5feab8ee_edeed2db",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2365,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-04-11T06:23:24Z",
+      "side": 1,
+      "message": "here as well",
+      "range": {
+        "startLine": 2365,
+        "startChar": 21,
+        "endLine": 2365,
+        "endChar": 42
+      },
+      "revId": "515456d22f6de388991eb4b3c928c08e591d2f6f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "646cf6a8_2f821500",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2485,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-04-11T06:23:24Z",
+      "side": 1,
+      "message": "here and 2499 as well",
+      "range": {
+        "startLine": 2485,
+        "startChar": 18,
+        "endLine": 2485,
+        "endChar": 39
+      },
+      "revId": "515456d22f6de388991eb4b3c928c08e591d2f6f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3feb60f8_0ca97983",
+        "filename": "src/du_app/du_ue_mgr.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-04-11T06:23:24Z",
+      "side": 1,
+      "message": "rename ueId to  duUeF1apId?",
+      "range": {
+        "startLine": 26,
+        "startChar": 64,
+        "endLine": 26,
+        "endChar": 68
+      },
+      "revId": "515456d22f6de388991eb4b3c928c08e591d2f6f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
