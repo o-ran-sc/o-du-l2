@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b67091d8_f504f4eb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-04-12T05:10:57Z",
+      "side": 1,
+      "message": "Took the changes in another gerrit \n\n",
+      "revId": "a7e9bacf288b8003aa7a552239838b9ddb482c65",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c3fb15f4_c5ee43bb",
@@ -14,6 +31,30 @@
       "writtenOn": "2022-03-04T10:35:09Z",
       "side": 1,
       "message": "why?",
+      "range": {
+        "startLine": 463,
+        "startChar": 3,
+        "endLine": 463,
+        "endChar": 7
+      },
+      "revId": "a7e9bacf288b8003aa7a552239838b9ddb482c65",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0458cdbb_d492b040",
+        "filename": "src/5gnrmac/mac_slot_ind.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 463,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-04-12T05:10:57Z",
+      "side": 1,
+      "message": "Comment added",
+      "parentUuid": "c3fb15f4_c5ee43bb",
       "range": {
         "startLine": 463,
         "startChar": 3,
@@ -41,6 +82,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "858cb20a_252a97d4",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1917,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-04-12T05:10:57Z",
+      "side": 1,
+      "message": "removed the comment because for Idle mode Paging, DUAPP shld not have context for UeCB.",
+      "parentUuid": "91e1f853_89549f90",
+      "revId": "a7e9bacf288b8003aa7a552239838b9ddb482c65",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "07404ed6_c88df6c3",
@@ -54,6 +113,30 @@
       "writtenOn": "2022-03-04T10:35:09Z",
       "side": 1,
       "message": "doubt",
+      "range": {
+        "startLine": 1981,
+        "startChar": 8,
+        "endLine": 1981,
+        "endChar": 18
+      },
+      "revId": "a7e9bacf288b8003aa7a552239838b9ddb482c65",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "91140003_5937cf1f",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1981,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-04-12T05:10:57Z",
+      "side": 1,
+      "message": "cleared",
+      "parentUuid": "07404ed6_c88df6c3",
       "range": {
         "startLine": 1981,
         "startChar": 8,
@@ -87,6 +170,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "13d39152_1cb788cf",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 9045,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-04-12T05:10:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bef271a6_37ee671f",
+      "range": {
+        "startLine": 9045,
+        "startChar": 35,
+        "endLine": 9045,
+        "endChar": 56
+      },
+      "revId": "a7e9bacf288b8003aa7a552239838b9ddb482c65",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "57437901_c224656a",
@@ -100,6 +207,30 @@
       "writtenOn": "2022-03-04T10:35:09Z",
       "side": 1,
       "message": "same as above",
+      "range": {
+        "startLine": 9054,
+        "startChar": 38,
+        "endLine": 9054,
+        "endChar": 59
+      },
+      "revId": "a7e9bacf288b8003aa7a552239838b9ddb482c65",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "643bd433_13e6f8a6",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 9054,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-04-12T05:10:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "57437901_c224656a",
       "range": {
         "startLine": 9054,
         "startChar": 38,
@@ -133,6 +264,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "01360e96_bff9830a",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 9188,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-04-12T05:10:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d6de5a88_c247ce96",
+      "range": {
+        "startLine": 9188,
+        "startChar": 14,
+        "endLine": 9188,
+        "endChar": 29
+      },
+      "revId": "a7e9bacf288b8003aa7a552239838b9ddb482c65",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8a0b841d_6847e8ea",
@@ -146,6 +301,30 @@
       "writtenOn": "2022-03-04T10:35:09Z",
       "side": 1,
       "message": "rename to unusedBits",
+      "range": {
+        "startLine": 9263,
+        "startChar": 116,
+        "endLine": 9263,
+        "endChar": 132
+      },
+      "revId": "a7e9bacf288b8003aa7a552239838b9ddb482c65",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "97f9a6a1_75424aee",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 9263,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-04-12T05:10:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8a0b841d_6847e8ea",
       "range": {
         "startLine": 9263,
         "startChar": 116,
@@ -179,6 +358,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6269d979_563dd2b5",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 9293,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-04-12T05:10:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f20141af_1a0981d7",
+      "range": {
+        "startLine": 9293,
+        "startChar": 20,
+        "endLine": 9293,
+        "endChar": 36
+      },
+      "revId": "a7e9bacf288b8003aa7a552239838b9ddb482c65",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ff59a3cc_eaa7394d",
@@ -192,6 +395,30 @@
       "writtenOn": "2022-03-04T10:35:09Z",
       "side": 1,
       "message": "we will pass number of cells",
+      "range": {
+        "startLine": 9317,
+        "startChar": 97,
+        "endLine": 9317,
+        "endChar": 99
+      },
+      "revId": "a7e9bacf288b8003aa7a552239838b9ddb482c65",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "467322e6_8809e588",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 9317,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-04-12T05:10:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ff59a3cc_eaa7394d",
       "range": {
         "startLine": 9317,
         "startChar": 97,
@@ -219,6 +446,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f3dc4e4a_096cccee",
+        "filename": "src/cu_stub/cu_stub.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 406,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-04-12T05:10:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "aa91d637_2311cbc7",
+      "revId": "a7e9bacf288b8003aa7a552239838b9ddb482c65",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0deea7c2_287004d5",
@@ -232,6 +477,24 @@
       "writtenOn": "2022-03-04T10:35:09Z",
       "side": 1,
       "message": "Input the UeID from user and check if UEID has ueCB or not.\nIf UeCB for that ueIdx is present then Dont send paging",
+      "revId": "a7e9bacf288b8003aa7a552239838b9ddb482c65",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "92b30021_8963dc89",
+        "filename": "src/cu_stub/cu_stub.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 409,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-04-12T05:10:57Z",
+      "side": 1,
+      "message": "no need as paging will be sent to any ue",
+      "parentUuid": "0deea7c2_287004d5",
       "revId": "a7e9bacf288b8003aa7a552239838b9ddb482c65",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -259,6 +522,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "091b1991_3ef011f4",
+        "filename": "src/cu_stub/cu_stub.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 414,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-04-12T05:10:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "06b0d37f_8545433f",
+      "range": {
+        "startLine": 414,
+        "startChar": 24,
+        "endLine": 414,
+        "endChar": 28
+      },
+      "revId": "a7e9bacf288b8003aa7a552239838b9ddb482c65",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "58d95b76_d6128246",
@@ -272,6 +559,30 @@
       "writtenOn": "2022-03-04T10:35:09Z",
       "side": 1,
       "message": "shld be in du_cell",
+      "range": {
+        "startLine": 15160,
+        "startChar": 8,
+        "endLine": 15160,
+        "endChar": 30
+      },
+      "revId": "a7e9bacf288b8003aa7a552239838b9ddb482c65",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "17fc459b_7b94956b",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 15160,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-04-12T05:10:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "58d95b76_d6128246",
       "range": {
         "startLine": 15160,
         "startChar": 8,
@@ -318,6 +629,54 @@
       "writtenOn": "2022-03-04T10:35:09Z",
       "side": 1,
       "message": "to be discussed",
+      "range": {
+        "startLine": 15220,
+        "startChar": 21,
+        "endLine": 15220,
+        "endChar": 33
+      },
+      "revId": "a7e9bacf288b8003aa7a552239838b9ddb482c65",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "10ac9d35_c9440fd3",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 15220,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-04-12T05:10:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "134d676a_bf9e41d7",
+      "range": {
+        "startLine": 15220,
+        "startChar": 21,
+        "endLine": 15220,
+        "endChar": 47
+      },
+      "revId": "a7e9bacf288b8003aa7a552239838b9ddb482c65",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f8bb2e8f_53de3f90",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 15220,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-04-12T05:10:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fc146689_d15103e2",
       "range": {
         "startLine": 15220,
         "startChar": 21,
