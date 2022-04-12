@@ -43,6 +43,52 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "07a65b60_0d4fc36d",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 9368,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-04-12T06:18:11Z",
+      "side": 1,
+      "message": "Here we are again sending MODIFICATION_REQ to source DU. Now when Source DU will send back the response to CU wont CU will again check for TargetDU in UECB. I was thinking can we reset the ueCB in source DU.",
+      "range": {
+        "startLine": 9368,
+        "startChar": 18,
+        "endLine": 9368,
+        "endChar": 54
+      },
+      "revId": "515456d22f6de388991eb4b3c928c08e591d2f6f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3bd48fa9_4b4e7f2c",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 11393,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-04-12T06:18:11Z",
+      "side": 1,
+      "message": "I was talking abt this that for 2nd response again the leg will hit. Is it required?",
+      "range": {
+        "startLine": 11393,
+        "startChar": 12,
+        "endLine": 11393,
+        "endChar": 18
+      },
+      "revId": "515456d22f6de388991eb4b3c928c08e591d2f6f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d36429c6_d246ee3b",
         "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
         "patchSetId": 3
@@ -59,6 +105,29 @@
         "startChar": 12,
         "endLine": 11418,
         "endChar": 41
+      },
+      "revId": "515456d22f6de388991eb4b3c928c08e591d2f6f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0fad7a6a_99159ed6",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 12635,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-04-12T06:18:11Z",
+      "side": 1,
+      "message": "why we need to send crnti to CU? I dont see any use in CU_STUB or am i missing something",
+      "range": {
+        "startLine": 12635,
+        "startChar": 72,
+        "endLine": 12635,
+        "endChar": 73
       },
       "revId": "515456d22f6de388991eb4b3c928c08e591d2f6f",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
