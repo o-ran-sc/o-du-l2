@@ -66,6 +66,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2494c633_01c844bd",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 9368,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-04-12T07:07:32Z",
+      "side": 1,
+      "message": "Also Regarding Data transmission,\n1. hope this has been tested(both DL and UL data), if not done.\n2. I can see that UL data has been dropped at f1ap interface. I understand that DL data is sent by CU itself but what about data queued/pending at DUAPP(RLC for eg).?",
+      "range": {
+        "startLine": 9368,
+        "startChar": 83,
+        "endLine": 9368,
+        "endChar": 95
+      },
+      "revId": "515456d22f6de388991eb4b3c928c08e591d2f6f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3bd48fa9_4b4e7f2c",
         "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
         "patchSetId": 3
