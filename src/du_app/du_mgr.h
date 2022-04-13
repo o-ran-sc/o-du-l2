@@ -57,6 +57,7 @@
 #define DU_SET_ZERO(_buf, _size)   \
    memset((_buf), 0, _size);
 
+#define MAX_PAGING_UE_RECORDS 4
 typedef enum
 {
    SLICE_INFO_NOT_AVAILABLE,
@@ -196,6 +197,23 @@ typedef struct pagingMsg
    uint16_t  T;                 /* T is DRX cycle of the UE */
 }DuPagingMsg;
 
+typedef struct duPagUeRecord
+{
+   uint16_t  ueId;              /*UEID calculated from 5gsTMSI as per Spec 38.304*/
+   uint64_t  sTmsi;             /*UE Paging Identity: 5GS-TMSI*/
+   uint8_t   pagPriority;       /* Paging priority */
+}DuPagUeRecord;
+typedef struct duPagInfo
+{
+   uint8_t      i_s;          /*Index of PO*/
+   CmLListCp    pagUeList;    /*List of UEs to be paged in this Paging Frame/Paging Occ*/
+}DuPagUeList;
+typedef struct duPagInfoMap
+{
+   uint16_t    pf;             /* Paging Frame*/
+   CmLListCp   pagInfoList;    /* Master List of Paging Identified by PF and i_s*/
+}DuPagInfoList;
+
 typedef struct duCellCb
 {
    uint16_t       cellId;                 /* Internal cell Id */
@@ -207,6 +225,7 @@ typedef struct duCellCb
    DuUeCb         ueCb[MAX_NUM_UE];       /* Stores UE context */
    SlotInfo       currSlotInfo;
    DuPagingMsg    tmpPagingInfoOfUe;      /* UE paging information */
+   CmHashListCp   pagingInfoMap;          /*Paging Map between PF and PagingInfoList*/
 }DuCellCb;
 
 typedef struct duLSapCb

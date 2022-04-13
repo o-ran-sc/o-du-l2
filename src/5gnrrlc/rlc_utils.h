@@ -1708,13 +1708,6 @@ typedef struct rlcUlCb
 #endif /* LTE_L2_MEAS */
 }RlcUlCb;
 
-typedef enum
-{
-   SEARCH,
-   CREATE,
-   DELETE
-}RlcSnssaiActionType;
-
 typedef struct rlcThptPerUe
 {
    uint16_t ueId;
@@ -1810,7 +1803,7 @@ uint8_t  rlcUeDeleteTmrExpiry(PTR cb);
 
 void rlcSnssaiThptTmrExpiry(PTR cb);
 RlcTptPerSnssai* rlcHandleSnssaiTputlist(RlcCb *gCb, Snssai *snssai,\
-                                  RlcSnssaiActionType action, Direction dir);
+                                ActionTypeLL  action, Direction dir);
 uint8_t rlcCalculateTputPerSnssai(CmLListCp *snssaiList, Direction dir);
 uint8_t rlcDelTputSnssaiList(RlcCb *gCb, Direction dir);
 uint8_t BuildSliceReportToDu(uint8_t snssaiCnt);

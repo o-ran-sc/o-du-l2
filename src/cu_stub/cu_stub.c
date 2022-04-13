@@ -355,10 +355,11 @@ void *cuConsoleHandler(void *args)
       else if(ch == 'p')
       {
          uint64_t sTmsi = 0;
-         uint8_t duId = 0;
+         uint8_t duId = 0, i=0;
 
          DU_LOG("\nEnter DU ID on which this UE to be pagged");
          scanf("%d", &duId);
+         
          DU_LOG("\nEnter 5g-S-TMSI");
          scanf("%lu", &sTmsi);
 

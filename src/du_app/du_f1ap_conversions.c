@@ -1218,7 +1218,7 @@ e_PagingDRX convertPagingCycleValueToEnum(uint16_t pagingDrxCycle)
  * @params[in] Enum value of PagingDRX
  * @return Actual value of DRX cycle
  *    Note: Returning the MAX value in case of Incorrect Enum Value as DRX
- *    cycle is MIN of Various DRX cycle
+ *    cycle is MIN of Various DRX cycles(Mentioned in Spec38.304)
  *
  * **********************************************************************/
 uint16_t convertPagingCycleEnumToValue(e_PagingDRX pagingDrx)
@@ -1264,7 +1264,7 @@ uint8_t convertNsEnumToValue(e_PCCH_Config__ns Ns)
       case PCCH_Config__ns_one:
             return 1;
       default:
-            return 0;
+            return 1;
    }
 }
 

@@ -69,7 +69,6 @@
 #else
 #define MAX_SLOTS 10
 #endif
-#define MAX_SFN   1024
 #define MAX_NUM_SR_CFG_PER_CELL_GRP 8   /* Max number of scheduling request config per cell group */
 #define MAX_NUM_TAGS 4                  /* Max number of timing advance groups */
 #define MAX_NUM_BWP  4                  /* Max number of BWP per serving cell */
