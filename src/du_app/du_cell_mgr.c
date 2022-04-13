@@ -422,13 +422,244 @@ uint8_t duSendCellDeletReq(uint16_t cellId)
 }
 
 /*******************************************************************
- * @brief fill paging information of a UE belongs to a particular cell
+ * @brief Find the PageInfo List from HashMap 
  *
  * @details
  *
- *    Function : FillPagingInfoInCellCb
+ *    Function : findPagingInfoFromMap
  *
- *    Functionality: fill paging information of a UE in DuCellCb
+ *    Functionality: Search for the PageInfoList for a PF from HashMap
+ *
+ * @params[in] uint16_t pf, CmHashListCp *pagingInfoMap
+ *
+ * @return DuPagInfoList 
+ *
+ * ****************************************************************/
+DuPagInfoList* findPagingInfoFromMap(uint16_t pf, CmHashListCp *pagingInfoMap)
+{
+   DuPagInfoList *pagInfoLL = NULLP;
+
+   cmHashListFind(pagingInfoMap, (uint8_t *)&(pf), sizeof(uint16_t), 0, (PTR *)&pagInfoLL);
+   if(pagInfoLL == NULLP)
+   {
+      DU_LOG("ERROR  --> DU APP: PF:%d doesnt exist in Map",pf);
+   }
+   return pagInfoLL;
+}
+
+DuPagUeList* handlePageInfoLL(uint8_t i_s, CmLListCp *pagInfoLL, ActionTypeLL action)
+{
+   CmLList  *node = NULLP;
+   DuPagUeList *pagInfo = NULLP;
+   bool found = FALSE;
+
+   if(pagInfoLL == NULLP)
+   {
+      DU_LOG("\nERROR  -->  DU APP: PagInfo LL is empty");
+      return NULLP;
+   }
+   node = pagInfoLL->first;
+
+   while(node)
+   {
+      pagInfo = (DuPagUeList *)node->node;
+      if(pagInfo->i_s == i_s)
+      {
+         found = TRUE;
+         break;
+      }
+      node = node->next;
+   }
+
+   switch(action)
+   {
+      case SEARCH:
+         {
+            if(!found)
+            {
+               pagInfo = NULLP;
+            }
+            return pagInfo;
+         }
+
+      case CREATE:
+         {
+            if(node != NULLP)
+               return pagInfo;
+
+            /*Need to add a new node for this LC*/
+
+            /*List is empty; Initialize the LL ControlPointer*/
+            if(pagInfoLL->count == 0)
+            {
+               cmLListInit(pagInfoLL);
+            }
+
+            pagInfo = NULLP;
+            /*Allocate the List*/
+            DU_ALLOC(pagInfo, sizeof(DuPagUeList));
+            if(pagInfo)
+            {
+               pagInfo->i_s = i_s;
+            }
+            else
+            {
+               DU_LOG("\nERROR  -->  DU APP : Allocation of List failed,i_s:%d",i_s);
+               return NULLP;
+            }
+
+            if(duAddNodeToLList(pagInfoLL, pagInfo, NULLP) == RFAILED)
+            {
+               DU_LOG("\nERROR  -->  DU APP : failed to Add Node,i_s:%d",i_s);
+               DU_FREE(pagInfo, sizeof(DuPagUeList));
+               return NULLP;
+            }
+            return pagInfo;
+         }
+      case DELETE:
+         {
+            if(!found ||  pagInfo == NULLP)
+            {
+               DU_LOG("\nERROR  -->  DU APP: i_s:%d not found; thus Deletion unsuccessful",i_s);
+            }
+            else
+            {
+               if(duDelNodeFromLList(pagInfoLL, node) == ROK)
+                  DU_FREE(pagInfo, sizeof(DuPagUeList));
+
+               DU_LOG("\nDEBUG  -->  DU APP: i_s:%d Deleted successfully",i_s);
+            }
+            return NULLP;
+         }
+      default:
+         {
+            DU_LOG("\nERROR  -->  DU APP: Incorrect ActionType:%d on PageInfo List",action);
+         }
+   }
+   return NULLP;
+}
+
+
+DuPagUeRecord* handlePageUeLL(DuPagingMsg *pagingParam, CmLListCp *pageUeLL, ActionTypeLL action)
+{
+   CmLList  *node = NULLP;
+   DuPagUeRecord *ueRecord = NULLP;
+   bool found = FALSE;
+
+   if(pageUeLL == NULLP)
+   {
+      DU_LOG("\nERROR  -->  DU APP: UE Page Record LL is empty");
+      return NULLP;
+   }
+   node = pageUeLL->first;
+
+   while(node)
+   {
+      ueRecord = (DuPagUeRecord *)node->node;
+      if(ueRecord && (ueRecord->ueId == pagingParam->ueId && 
+               ueRecord->sTmsi == pagingParam->sTmsi))
+      {
+         found = TRUE;
+         break;
+      }
+      node = node->next;
+   }
+
+   switch(action)
+   {
+      case SEARCH:
+         {
+            if(!found)
+            {
+               ueRecord = NULLP;
+            }
+            return ueRecord;
+         }
+
+      case CREATE:
+         {
+            if(node != NULLP)
+               return ueRecord;
+
+            /*Need to add a new node for this LC*/
+
+            /*List is empty; Initialize the LL ControlPointer*/
+            if(pageUeLL->count == 0)
+            {
+               cmLListInit(pageUeLL);
+            }
+
+            ueRecord = NULLP;
+            /*Allocate the List*/
+            DU_ALLOC(ueRecord, sizeof(DuPagUeRecord));
+            if(ueRecord)
+            {
+               ueRecord->ueId = pagingParam->ueId;
+               ueRecord->sTmsi = pagingParam->sTmsi;
+               ueRecord->pagPriority = pagingParam->pagPriority;
+            }
+            else
+            {
+               DU_LOG("\nERROR  -->  DU APP : Allocation of UE Record failed,ueId:%d",pagingParam->ueId);
+               return NULLP;
+            }
+
+            if(duAddNodeToLList(pageUeLL, ueRecord, NULLP) == RFAILED)
+            {
+               DU_LOG("\nERROR  -->  DU APP : failed to Add Ue Record Node,ueId:%d",pagingParam->ueId);
+               DU_FREE(ueRecord, sizeof(DuPagUeRecord));
+               return NULLP;
+            }
+            return ueRecord;
+         }
+      case DELETE:
+         {
+            if(!found ||  ueRecord == NULLP)
+            {
+               DU_LOG("\nERROR  -->  DU APP: UeId:%d not found; thus Deletion unsuccessful",pagingParam->ueId);
+            }
+            else
+            {
+               if(duDelNodeFromLList(pageUeLL, node) == ROK)
+                  DU_FREE(ueRecord, sizeof(DuPagUeRecord));
+
+               DU_LOG("\nDEBUG  -->  DU APP: UeId:%d Deleted successfully",pagingParam->ueId);
+            }
+            return NULLP;
+         }
+      default:
+         {
+            DU_LOG("\nERROR  -->  DU APP: Incorrect ActionType:%d on UeRecord",action);
+         }
+   }
+   return NULLP;
+}
+
+void printPageList(CmHashListCp *pagingInfoMap)
+{
+   uint8_t ret = ROK;
+   DuPagInfoList *pagInfoLLFromPF = NULLP, *prevPageInfoLL = NULLP;
+
+   do
+   {
+      ret = cmHashListGetNext(pagingInfoMap, (PTR)prevPageInfoLL, (PTR *)&pagInfoLLFromPF);
+      if(ret == ROK)
+      {
+         DU_LOG("List for PF:%d",pagInfoLLFromPF->pf);
+         printPageInfoLL(&(pagInfoLLFromPF->pagInfoList));
+         prevPageInfoLL = pagInfoLLFromPF;
+      }
+   }while(ret == ROK);
+   
+}
+/*******************************************************************
+ * @brief Keeping the record of Paging having a particular SFN and index associated 
+ *
+ * @details
+ *
+ *    Function : insertPagingRecord 
+ *
+ *    Functionality:  Insert record of Paging assoc with particular SFN and index associated 
  *
  * @params[in] DuCellCb* cellCb, uint8_t ueId, 
  *             DuPagingMsg  rcvdF1apPagingParam
@@ -437,7 +668,101 @@ uint8_t duSendCellDeletReq(uint16_t cellId)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t FillPagingInfoInCellCb(DuCellCb* cellCb, DuPagingMsg *rcvdF1apPagingParam)
+uint8_t insertPagingRecord(DuCellCb* cellCb, DuPagingMsg *rcvdF1apPagingParam, uint16_t iterations)
+{
+   uint16_t maxIterations = 0; 
+   DuPagInfoList *pagInfoLLFromPF = NULLP;
+   DuPagUeList  *pageUeLL = NULLP;
+   DuPagUeRecord *ueRecord = NULLP;
+   
+   printPageList(&(cellCb->pagingInfoMap));
+
+   /*MAX Iteration : A UE can be paged at every T frames thus MAX determines
+    *how many Paging Frame(s) can be considered for Paging this UE*/
+   maxIterations = MAX_SFN/rcvdF1apPagingParam->T;
+   if(iterations >= maxIterations)
+   {
+    
+    DU_LOG("ERROR  --> DU APP: MAX Iterations reached for UEID:%d, thus Paging is dropped!", rcvdF1apPagingParam->ueId);
+      return RFAILED;
+   }
+
+   /*[Step1]: Extracting the PF from the HasMap between PF and PagingInfoList*/
+   pagInfoLLFromPF = findPagingInfoFromMap(rcvdF1apPagingParam->pagingFrame, &(cellCb->pagingInfoMap));
+   if(pagInfoLLFromPF != NULLP)
+   {
+      /*[Step2]: Extracting the PageInfo List for the Paging Indices(i_s)*/
+      pageUeLL = handlePageInfoLL(rcvdF1apPagingParam->i_s, &(pagInfoLLFromPF->pagInfoList), CREATE);
+
+      if(pageUeLL != NULLP)
+      {
+         /*[Step3]: Check whether MAX UE Record against this PF and i_s has reached*/
+         if(pageUeLL->pagUeList.count < MAX_PAGING_UE_RECORDS)
+         {
+            /*[Step4]: Insert the Paging Record to the end of the UE record List*/
+            ueRecord = handlePageUeLL(rcvdF1apPagingParam, &(pageUeLL->pagUeList), CREATE);
+
+            if(ueRecord == NULLP)
+            {
+               DU_LOG("ERROR  --> DU APP: Unable to create UE Record in PagingList");
+               return RFAILED;
+            }
+            DU_LOG("DEBUG  --> DU APP: UE Record created successfully in PagingList");
+            return ROK;
+         }
+         else
+         {
+            /*Since MAX Page record has reached for this PF thus calculating and
+             *moving this UE to next Paging Cycle*/
+            DU_LOG("WARNING  --> DU APP: Max Page Record reached for PagingFrame:%d",rcvdF1apPagingParam->pagingFrame);
+            rcvdF1apPagingParam->pagingFrame = ((rcvdF1apPagingParam->pagingFrame + rcvdF1apPagingParam->T) % MAX_SFN);
+            iterations++;
+
+            return insertPagingRecord(cellCb, rcvdF1apPagingParam, iterations);
+         }
+      }
+   }
+   /*Reaching here means that PF has no entry in the PageLists,
+    *Thus creating, Updating and inseritng the Paging Map, List and UE record.*/
+
+   DU_ALLOC(pagInfoLLFromPF, sizeof(DuPagInfoList));
+
+   if(pagInfoLLFromPF == NULLP)
+   {
+      DU_LOG("ERROR  --> DU APP: PageInfo Map allocation failed.");
+      return RFAILED;
+   }
+   pagInfoLLFromPF->pf = rcvdF1apPagingParam->pagingFrame;
+   pageUeLL = handlePageInfoLL(rcvdF1apPagingParam->i_s, &(pagInfoLLFromPF->pagInfoList), CREATE);
+   ueRecord = handlePageUeLL(rcvdF1apPagingParam, &(pageUeLL->pagUeList), CREATE);
+   if(cmHashListInsert(&(cellCb->pagingInfoMap), (PTR)pagInfoLLFromPF, (uint8_t *)&(pagInfoLLFromPF->pf), sizeof(uint16_t)) == RFAILED)
+   {
+      DU_LOG("ERROR  --> DU APP: Hash Map Insertion Failed for PF:%d.",rcvdF1apPagingParam->pagingFrame);
+   }
+
+   printPageList(&(cellCb->pagingInfoMap));
+   return ROK;
+
+   
+}
+/*******************************************************************
+ * @brief Calculate and fill paging information of a UE belongs to a particular cell
+ *
+ * @details
+ *
+ *    Function : calcAndFillPagingInfoInCellCb
+ *
+ *    Functionality: Calculate PO and i_s and 
+ *                   fill paging information of a UE in DuCellCb
+ *
+ * @params[in] DuCellCb* cellCb, uint8_t ueId, 
+ *             DuPagingMsg  rcvdF1apPagingParam
+ *
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t calcAndFillPagingInfoInCellCb(DuCellCb* cellCb, DuPagingMsg *rcvdF1apPagingParam)
 {
    uint8_t ns = 0;
    uint16_t T=0, N=0, pagingFrame = 0, n = 0;
@@ -553,7 +878,7 @@ uint8_t FillPagingInfoInCellCb(DuCellCb* cellCb, DuPagingMsg *rcvdF1apPagingPara
             sfn = newSfn;
          }
       }
-      rcvdF1apPagingParam->pagingFrame =  (sfn % 1024);
+      rcvdF1apPagingParam->pagingFrame =  (sfn % MAX_SFN);
       rcvdF1apPagingParam->i_s = ((uint32_t)(floor(rcvdF1apPagingParam->ueId / N)) % ns);
 
       DU_LOG("\nINFO  --> DU APP : Successfully filled paging parameter in DuCellCb");
@@ -561,13 +886,54 @@ uint8_t FillPagingInfoInCellCb(DuCellCb* cellCb, DuPagingMsg *rcvdF1apPagingPara
    }
    else
    {
-      DU_LOG("\nINFO  --> DU APP : FillPagingInfoInCellCb(): Received null pointer");
+      DU_LOG("\nINFO  --> DU APP : calcAndFillPagingInfoInCellCb(): Received null pointer");
       return RFAILED;
    }
    return ROK;
 }
 
+/*******************************************************************
+ * @brief Paging Processing on a particular cell 
+ *
+ * @details
+ *
+ *    Function : processPagingMsg
+ *
+ *    Functionality: Process Paging on a particular cell 
+ *
+ * @params[in] uint16_t cellId
+ *             DuPagingMsg  rcvdF1apPagingParam
+ *
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t processPagingMsg(uint16_t cellId, DuPagingMsg *rcvdF1apPagingParam)
+{
+   uint16_t cellIdx = 0;
+   uint8_t iteration = 0;
 
+   GET_CELL_IDX(cellId, cellIdx);
+
+   if(duCb.actvCellLst[cellIdx] == NULLP || duCb.actvCellLst[cellIdx]->cellId != cellId)
+   {
+      DU_LOG("\nERROR  -->  DU APP : processPagingMsg(): CellId[%d] is not found", cellId);
+      return RFAILED;
+   }
+   
+   if(calcAndFillPagingInfoInCellCb(duCb.actvCellLst[cellIdx], rcvdF1apPagingParam) != ROK)
+   {
+      DU_LOG("\nERROR  --> DU APP : CellCb:%d not present to fill UE Paging Information",cellId);
+      return RFAILED;
+   }
+   if(insertPagingRecord(duCb.actvCellLst[cellIdx], rcvdF1apPagingParam, iteration) != ROK)
+   {
+      DU_LOG("\nERROR  --> DU APP : Insertion Failed ofUE Paging Information");
+      return RFAILED;
+   }
+   return ROK;
+
+}
 /**********************************************************************
   End of file
  **********************************************************************/
