@@ -63,13 +63,6 @@
 #define MAX_NUMBER_OF_UCI_IND_BITS 1
 #define MAX_SR_BITS_IN_BYTES       1
 #define MAX_NUM_LOGICAL_CHANNEL_GROUPS 8
-/* can we have a common numslot numscs between mac sch */
-#ifdef NR_TDD
-#define MAX_SLOTS 20
-#else
-#define MAX_SLOTS 10
-#endif
-#define MAX_SFN   1024
 #define MAX_NUM_SR_CFG_PER_CELL_GRP 8   /* Max number of scheduling request config per cell group */
 #define MAX_NUM_TAGS 4                  /* Max number of timing advance groups */
 #define MAX_NUM_BWP  4                  /* Max number of BWP per serving cell */

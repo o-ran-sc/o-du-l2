@@ -110,6 +110,14 @@
 /*Spec 38.331 Sec 6.4: Maximum number of paging occasion per paging frame*/
 #define MAX_PO_PER_PF 4
 
+#ifdef NR_TDD
+#define MAX_SLOTS 20
+#else
+#define MAX_SLOTS 10
+#endif
+
+#define MAX_SFN   1024
+
 /* Defining macros for common utility functions */
 #define ODU_GET_MSG_BUF SGetMsg
 #define ODU_PUT_MSG_BUF SPutMsg
@@ -275,6 +283,13 @@ typedef enum
    DIR_DL,
    DIR_BOTH
 }Direction;
+
+typedef enum 
+{
+   SEARCH,
+   CREATE,
+   DELETE
+}ActionTypeLL;
 
 typedef struct slotTimingInfo
 {
