@@ -832,7 +832,7 @@ KwuDiscSduInfo   *discSdu
  *    -# Snssai Node
  *   
  */
-RlcTptPerSnssai* rlcHandleSnssaiTputlist(RlcCb *gCb, Snssai *snssai, RlcSnssaiActionType action, Direction dir)
+RlcTptPerSnssai* rlcHandleSnssaiTputlist(RlcCb *gCb, Snssai *snssai, ActionTypeLL action, Direction dir)
 {
    CmLListCp *snssaiList = NULLP;
    CmLList  *node = NULLP;
