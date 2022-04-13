@@ -18,6 +18,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "91bc1dcd_f8921dd1",
+        "filename": "src/5gnrmac/mac_ue_mgr.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2134,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-04-13T12:38:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4a7b9237_031365c4",
+      "revId": "515456d22f6de388991eb4b3c928c08e591d2f6f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "60c49046_108fb9fb",
@@ -87,6 +105,78 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1699239c_d277b4a4",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 9368,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-04-13T12:38:19Z",
+      "side": 1,
+      "message": "1. When UE context modification response comes again, the target DU is checked to find if UE context is present in target DU. It the context is present, it means UE context setup procedure has already been done and hence it wont be triggered again.\n2. We will be removing UE context from source DU only when UE context release is done at Source DU. Up until then we require the UE context at source DU as well as target DU.",
+      "parentUuid": "07a65b60_0d4fc36d",
+      "range": {
+        "startLine": 9368,
+        "startChar": 18,
+        "endLine": 9368,
+        "endChar": 54
+      },
+      "revId": "515456d22f6de388991eb4b3c928c08e591d2f6f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bbe31e6c_ba2ee8e7",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 9368,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-04-13T12:38:19Z",
+      "side": 1,
+      "message": "Both UL and DL scheduling of DATA has been stopped. It involves changes at MAC/SCH.\nSince DL scheduling has also been stopped, any pending data at DU APP also wont be sent.",
+      "parentUuid": "2494c633_01c844bd",
+      "range": {
+        "startLine": 9368,
+        "startChar": 83,
+        "endLine": 9368,
+        "endChar": 95
+      },
+      "revId": "515456d22f6de388991eb4b3c928c08e591d2f6f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "acf860e1_63010e89",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 9368,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-04-13T12:38:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "60c49046_108fb9fb",
+      "range": {
+        "startLine": 9368,
+        "startChar": 18,
+        "endLine": 9368,
+        "endChar": 54
+      },
+      "revId": "515456d22f6de388991eb4b3c928c08e591d2f6f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3bd48fa9_4b4e7f2c",
@@ -100,6 +190,30 @@
       "writtenOn": "2022-04-12T06:18:11Z",
       "side": 1,
       "message": "I was talking abt this that for 2nd response again the leg will hit. Is it required?",
+      "range": {
+        "startLine": 11393,
+        "startChar": 12,
+        "endLine": 11393,
+        "endChar": 18
+      },
+      "revId": "515456d22f6de388991eb4b3c928c08e591d2f6f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "eef6bac3_b3a25f20",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 11393,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-04-13T12:38:19Z",
+      "side": 1,
+      "message": "As explained above, at line no. 11416, CU checks if UE context is present in target DU or not.\na. If UE context is not present in target DU, it means the UE context setup is pending and hence it will be triggered towards target DU.\nb. If UE context is present in target DU, then no action will be performed.",
+      "parentUuid": "3bd48fa9_4b4e7f2c",
       "range": {
         "startLine": 11393,
         "startChar": 12,
@@ -133,6 +247,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8e36c33d_62e10a03",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 11418,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-04-13T12:38:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d36429c6_d246ee3b",
+      "range": {
+        "startLine": 11418,
+        "startChar": 12,
+        "endLine": 11418,
+        "endChar": 41
+      },
+      "revId": "515456d22f6de388991eb4b3c928c08e591d2f6f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0fad7a6a_99159ed6",
@@ -146,6 +284,30 @@
       "writtenOn": "2022-04-12T06:18:11Z",
       "side": 1,
       "message": "why we need to send crnti to CU? I dont see any use in CU_STUB or am i missing something",
+      "range": {
+        "startLine": 12635,
+        "startChar": 72,
+        "endLine": 12635,
+        "endChar": 73
+      },
+      "revId": "515456d22f6de388991eb4b3c928c08e591d2f6f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9616cb09_269b1ba9",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 12635,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-04-13T12:38:19Z",
+      "side": 1,
+      "message": "CU_STUB is a non-intelligent entity that is local for our testing. We should keep in mind that the actual CU would require these  information for a UE.\nMoreover, WG5 specification provides the list of IEs to be sent in any F1AP message for handover. The list requires sending of CRNTI too.",
+      "parentUuid": "0fad7a6a_99159ed6",
       "range": {
         "startLine": 12635,
         "startChar": 72,
@@ -179,6 +341,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e0923032_49e69bfa",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 12637,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-04-13T12:38:19Z",
+      "side": 1,
+      "message": "This will be filled every time. DU will send CRNTI allocated to any newly attached/handed-over UE here in this F1AP message.",
+      "parentUuid": "165c4736_c3c6b67f",
+      "range": {
+        "startLine": 12637,
+        "startChar": 0,
+        "endLine": 12637,
+        "endChar": 0
+      },
+      "revId": "515456d22f6de388991eb4b3c928c08e591d2f6f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "67385021_4f38592d",
@@ -196,6 +382,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f1e4b982_dfba4d48",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2304,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-04-13T12:38:19Z",
+      "side": 1,
+      "message": "the line below will return the same",
+      "parentUuid": "67385021_4f38592d",
+      "revId": "515456d22f6de388991eb4b3c928c08e591d2f6f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c997cbeb_17cc841f",
@@ -209,6 +413,30 @@
       "writtenOn": "2022-04-11T06:23:24Z",
       "side": 1,
       "message": "add check for success or failure.",
+      "range": {
+        "startLine": 2348,
+        "startChar": 20,
+        "endLine": 2348,
+        "endChar": 41
+      },
+      "revId": "515456d22f6de388991eb4b3c928c08e591d2f6f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "acd21efb_76d725e7",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2348,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-04-13T12:38:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c997cbeb_17cc841f",
       "range": {
         "startLine": 2348,
         "startChar": 20,
@@ -242,6 +470,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b6741b1f_13c3351b",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2365,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-04-13T12:38:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5feab8ee_edeed2db",
+      "range": {
+        "startLine": 2365,
+        "startChar": 21,
+        "endLine": 2365,
+        "endChar": 42
+      },
+      "revId": "515456d22f6de388991eb4b3c928c08e591d2f6f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "646cf6a8_2f821500",
@@ -265,6 +517,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e5c5c3f6_8511b060",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2485,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-04-13T12:38:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "646cf6a8_2f821500",
+      "range": {
+        "startLine": 2485,
+        "startChar": 18,
+        "endLine": 2485,
+        "endChar": 39
+      },
+      "revId": "515456d22f6de388991eb4b3c928c08e591d2f6f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3feb60f8_0ca97983",
@@ -278,6 +554,30 @@
       "writtenOn": "2022-04-11T06:23:24Z",
       "side": 1,
       "message": "rename ueId to  duUeF1apId?",
+      "range": {
+        "startLine": 26,
+        "startChar": 64,
+        "endLine": 26,
+        "endChar": 68
+      },
+      "revId": "515456d22f6de388991eb4b3c928c08e591d2f6f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ed6fb529_da482ff6",
+        "filename": "src/du_app/du_ue_mgr.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-04-13T12:38:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3feb60f8_0ca97983",
       "range": {
         "startLine": 26,
         "startChar": 64,
