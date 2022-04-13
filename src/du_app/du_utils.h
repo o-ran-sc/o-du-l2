@@ -145,6 +145,11 @@
 
 
 void fillStartSymbolAndLen(uint8_t numRsrcAlloc, PdschConfig *pdschCfg, PuschCfg *puschCfg);
+uint8_t duAddNodeToLList(CmLListCp *llist, void *blockToAdd, CmLList *currNode);
+uint8_t duDelNodeFromLList(CmLListCp *llist, CmLList *node);
+void printPageInfoLL(CmLListCp *pageInfoLL);
+void printPageUeRecordLL(CmLListCp *pageUeLL);
+
 /**********************************************************************
          End of file
 **********************************************************************/

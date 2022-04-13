@@ -91,13 +91,6 @@ typedef enum
    WINDOW_EXPIRED
 }RaRspWindowStatus;
 
-typedef enum 
-{
-   SEARCH,
-   CREATE,
-   DELETE
-}ActionTypeLcLL;
-
 /**
  * @brief
  * Structure holding LTE MAC's General Configuration information.
@@ -431,7 +424,7 @@ bool schCalculateUlTbs(SchUeCb *ueCb, SlotTimingInfo puschTime, uint8_t symbLen,
 /*Generic Functions*/
 void updateGrantSizeForBoRpt(CmLListCp *lcLL, DlMsgAlloc *dlMsgAlloc, BsrInfo *bsrInfo, uint32_t *accumalatedBOSize);
 uint16_t searchLargestFreeBlock(SchCellCb *cell, SlotTimingInfo slotTime,uint16_t *startPrb, Direction dir);
-LcInfo* handleLcLList(CmLListCp *lcLL, uint8_t lcId, ActionTypeLcLL action);
+LcInfo* handleLcLList(CmLListCp *lcLL, uint8_t lcId, ActionTypeLL action);
 void prbAllocUsingRRMPolicy(CmLListCp *lcLL, bool dedicatedPRB, uint16_t mcsIdx,uint8_t numSymbols,\
                       uint16_t *sharedPRB, uint16_t *reservedPRB, bool *isTxPayloadLenAdded, bool *srRcvd);
 void updateBsrAndLcList(CmLListCp *lcLL, BsrInfo *bsrInfo, uint8_t status);
