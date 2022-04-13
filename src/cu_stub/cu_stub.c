@@ -359,6 +359,7 @@ void *cuConsoleHandler(void *args)
 
          DU_LOG("\nEnter DU ID on which this UE to be pagged");
          scanf("%d", &duId);
+         
          DU_LOG("\nEnter 5g-S-TMSI");
          scanf("%lu", &sTmsi);
 
