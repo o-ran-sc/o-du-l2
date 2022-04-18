@@ -228,6 +228,7 @@ void createSchRaCb(uint16_t tcrnti, Inst schInst)
    GET_UE_ID(tcrnti, ueId);
    schCb[schInst].cells[schInst]->raCb[ueId -1].tcrnti = tcrnti;
    schCb[schInst].cells[schInst]->raCb[ueId -1].msg4recvd = FALSE;
+   schCb[schInst].cells[schInst]->raCb[ueId -1].raState = SCH_RA_STATE_MSG3_PENDING;
 }
 
 /**
@@ -245,7 +246,7 @@ void createSchRaCb(uint16_t tcrnti, Inst schInst)
  *  @param[out]  msg3NumRb
  *  @return  void
  **/
-SchPuschInfo* schAllocMsg3Pusch(Inst schInst, uint16_t crnti, uint8_t k2Index, SlotTimingInfo msg3SlotTime)
+SchPuschInfo* schAllocMsg3Pusch(Inst schInst, uint16_t crnti, uint8_t k2Index, SlotTimingInfo msg3SlotTime, SchUlHqProcCb* msg3HqProc, bool isRetx)
 {
    SchCellCb      *cell          = NULLP;
    SchUlSlotInfo  *schUlSlotInfo = NULLP;
@@ -469,7 +470,7 @@ bool schProcessRaReq(Inst schInst, SchCellCb *cell, SlotTimingInfo currTime, uin
       }
 
       /* Allocate resources for msg3 */
-      msg3PuschInfo = schAllocMsg3Pusch(schInst, cell->raReq[ueId-1]->rachInd->crnti, k2Index, msg3Time);
+      msg3PuschInfo = schAllocMsg3Pusch(schInst, cell->raReq[ueId-1]->rachInd->crnti, k2Index, msg3Time, &(cell->raCb[ueId-1].msg3HqProc), FALSE);
       if(msg3PuschInfo)
       {
          /* Fill RAR info */
@@ -752,6 +753,10 @@ uint8_t schFillRar(SchCellCb *cell, SlotTimingInfo rarTime, uint16_t ueId, RarAl
    return ROK;
 }
 
+void schMsg4Complete(SchUeCb *ueCb)
+{
+   
+}
 /**********************************************************************
          End of file
 **********************************************************************/

@@ -1762,7 +1762,7 @@ bool schProcessMsg4Req(SchCellCb *cell, SlotTimingInfo currTime, uint8_t ueId)
    cell->schDlSlotInfo[pdcchTime.slot]->pdcchUe = ueId;
    cell->schDlSlotInfo[pdschTime.slot]->pdschUe = ueId;
    cell->schUlSlotInfo[pucchTime.slot]->pucchUe = ueId;
-   cell->raCb[ueId-1].msg4recvd = FALSE;
+//   cell->raCb[ueId-1].msg4recvd = FALSE; update on harq ack reception
    return true;
 }
 

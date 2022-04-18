@@ -598,6 +598,7 @@ uint8_t schProcessSlotInd(SlotTimingInfo *slotInd, Inst schInst)
    DlSchedInfo   dlSchedInfo;
    DlBrdcstAlloc *dlBrdcstAlloc = NULLP;
    SchCellCb     *cell = NULLP;
+   uint8_t       queueId = 0;
 
    memset(&dlSchedInfo, 0, sizeof(DlSchedInfo));
    schCalcSlotValues(*slotInd, &dlSchedInfo.schSlotValue);
@@ -650,7 +651,23 @@ uint8_t schProcessSlotInd(SlotTimingInfo *slotInd, Inst schInst)
             cell->firstSib1Transmitted = true;
       }
    }
+   /*Perform DL Scheduling*/
+   for (queueId = SCH_DL_HQ_RETX_QUEUE; queueId < SCH_DL_MAX_PRIO_QUEUE; queueId++)
+   {
 
+   }
+   /*Perform MSG4 Scheduling*/
+   schMsg4Scheduling(&schCb[schInst].ulPrioLst[SCH_DL_MSG4_QUEUE]);
+
+   /*Perform UL Scheduling*/
+   /*Perform MSG3 retransmisson Scheduling*/
+   schMsg3RetxScheduling(&schCb[schInst].ulPrioLst[SCH_UL_MSG3_RETX_QUEUE]);
+   /*Perform non- MSG3 UL Scheduling*/
+   for (queueId = SCH_UL_HQ_RETX_QUEUE; queueId < SCH_UL_MAX_PRIO_QUEUE; queueId++)
+   {
+      
+   }
+   
    /* Select first UE in the linked list to be scheduled next */
    pendingUeNode = cell->ueToBeScheduled.first;
    if(pendingUeNode)
