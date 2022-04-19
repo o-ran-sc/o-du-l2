@@ -1,6 +1,6 @@
 /*******************************************************************************
 ################################################################################
-#   Copyright (c) [2020-2021] [HCL Technologies Ltd.]                          #
+#   Copyright (c) [2020-2022] [HCL Technologies Ltd.]                          #
 #                                                                              #
 #   Licensed under the Apache License, Version 2.0 (the "License");            #
 #   you may not use this file except in compliance with the License.           #
@@ -16,57 +16,21 @@
 ################################################################################
 *******************************************************************************/
 
-/* This file contains functions to support the preparation of VES common header
-   parameters*/
+#include "Notification.hpp"
 
-#ifndef __VES_COMMON_HEADER_HPP__
-#define __VES_COMMON_HEADER_HPP__
+/* Default constructor*/
+Notification::Notification(VesEventType eventType)
+                :VesEvent(eventType)
+{
 
+}
 
-#include <iostream>
-#include <string>
-#include <cstdint>
-#include <cjson/cJSON.h>
-#include <sys/time.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include "VesUtils.hpp"
+/* Default Destructor*/
+Notification::~Notification()
+{
 
-using namespace std;
+}
 
-class VesCommonHeader{
-
-   public:
-      /* Default constructor/Destructor*/
-      VesCommonHeader(){}
-      ~VesCommonHeader(){}
-
-      bool prepare(cJSON *node, VesEventType type);
-
-   private:
-      double getSequenceNo();
-      double nextSequenceNo();
-      string getEventTypeToStr();
-      string getEventType();
-      string getEventId();
-      string getPriority();
-      string getEventName();
-      string getSourceId();
-      string getReportingEntityId();
-      string getReportingEntityName();
-      string getSourceName();
-      string getNamingCode();
-      string getnfcNamingCode();
-      string getstndDefinedNamespace();
-      double getEpochTime();
-      time_t getCurrentTime();
-	   string formatTime(time_t);
-      double mLastEpochTime;
-
-      VesEventType mEventType;
-};
-
-#endif
 /**********************************************************************
   End of file
  **********************************************************************/

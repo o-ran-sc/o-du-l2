@@ -16,14 +16,12 @@
 ################################################################################
 *******************************************************************************/
 
-/* This file contains UnixSocketServer class that listens for Netconf Alarm 
+/* This file contains UnixSocketServer class that listens for Netconf Alarm
    messages on a Unix socket from ODU. It calls the AlarmManager functions
-   for raising or clearing the alarms based on the actions received 
-*/
+   for raising or clearing the alarms based on the actions received  */
 
 #include "UnixSocketServer.hpp"
 #include "Alarm.hpp"
-#include "AlarmManager.hpp"
 #include "CmInterface.h"
 #include "GlobalDefs.hpp"
 #include <iostream>
@@ -59,11 +57,11 @@ using std::pair;
  ******************************************************************/
 UnixSocketServer::UnixSocketServer(const string& sockPath)
                                    : mSockPath(sockPath),
-                                     mIsRunning(false)
+                                     mIsRunning(false) 
 {
 
-}  
-  
+}
+ 
 /*******************************************************************
  *
  * @brief Destructor
@@ -101,89 +99,18 @@ UnixSocketServer::~UnixSocketServer()
  ******************************************************************/
 int UnixSocketServer::readMessage(int fd)
 {
-   AlarmRecord *alrmRec = NULL;
    char recvBuf[BUFLEN];
-   Alarm alrm;
    bzero(&recvBuf,sizeof(recvBuf));
-   
+
    int nbytes = read (fd, &recvBuf, sizeof(recvBuf));
-   
+
    if (nbytes > 0)
    {
-      MsgHeader *msgHdr = (MsgHeader*)recvBuf;
-
-      O1_LOG("\nO1 UnixSocketServer :\nMsgType %d",msgHdr->msgType);
-      
-      if ( msgHdr->msgType == ALARM ){
-         uint16_t alrmId;
-         alrmRec = (AlarmRecord*) recvBuf;
-         O1_LOG("\nO1 UnixSocketServer :\n"
-                   "Action %d\n"
-                   "Alarm ID %s\n" 
-                   "Severity %d\n" 
-                   "Additional Text %s\n"
-                   "Specific Problem %s\n"
-                   "Additional Info %s\n"
-                   "Alarm Raise Time %s\n",
-                   alrmRec->msgHeader.action,
-                   alrmRec->alarmId,
-                   alrmRec->perceivedSeverity,
-                   alrmRec->additionalText,
-                   alrmRec->specificProblem,
-                   alrmRec->additionalInfo,
-                   alrmRec->alarmRaiseTime
-                );
-      
-         /*Fill the alarm structure */
-         sscanf(alrmRec->alarmId,"%hu",&alrmId);
-         alrm.setAlarmId(alrmId);
-         alrm.setPerceivedSeverity(alrmRec->perceivedSeverity);
-         alrm.setAdditionalText(alrmRec->additionalText);
-         alrm.setEventType(alrmRec->eventType);
-         alrm.setSpecificProblem(alrmRec->specificProblem);
-         alrm.setAdditionalInfo(alrmRec->additionalInfo);
-      }
-
-      switch(msgHdr->action)
-      {
-         case RAISE_ALARM: 
-
-                     if(AlarmManager::instance().raiseAlarm(alrm))
-                     {
-                        O1_LOG("\nO1 UnixSocketServer : "
-                               "Alarm raised for alarm Id %s",
-                                alrmRec->alarmId);
-                     }
-
-                     else
-                     {
-                        O1_LOG("\nO1 UnixSocketServer : "
-                               "Error in raising alarm for alrm Id %s",
-                                alrmRec->alarmId);
-                     }
-                     break;  
-                     
-         case CLEAR_ALARM: 
-                     if(AlarmManager::instance().clearAlarm(alrm))
-                     {
-                        O1_LOG("\nO1 UnixSocketServer : "
-                               "Alarm cleared for alarm Id %s",
-                                alrmRec->alarmId);
-
-                     }
-                     else
-                     {
-                        O1_LOG("\nO1 UnixSocketServer : "
-                               "Error in clearing alarm for alarm Id %s",
-                                alrmRec->alarmId);
-                     }
-                     break;
-         default:    
-                     O1_LOG("\nO1 UnixSocketServer : No action performed"); 
-                     break;
-      }
+      /* sending message to all Unix Socket Server subscribers */
+      createMessage(recvBuf);
 
    }
+
    return nbytes;
 }
 
@@ -204,7 +131,7 @@ int UnixSocketServer::readMessage(int fd)
  *         O1:FAILURE - failure
  ******************************************************************/
 
-int UnixSocketServer::makeSocket() 
+int UnixSocketServer::makeSocket()
 {
    struct sockaddr_un name;
    /* Create the socket. */
@@ -218,13 +145,13 @@ int UnixSocketServer::makeSocket()
    bzero(&name, sizeof(name));
    name.sun_family = AF_UNIX;
 
-   /* Remove the socket file if it already exists */ 
+   /* Remove the socket file if it already exists */
    if ( unlink(mSockPath.c_str()) == 0)
    {
       O1_LOG("\nO1 UnixSocketServer : "
              "Removing the existing socket path %s",
               mSockPath.c_str());
-   }        
+   }
    strcpy(name.sun_path, mSockPath.c_str());
    if (bind (mSock, (struct sockaddr *) &name, sizeof (name)) < 0)
    {
@@ -245,7 +172,7 @@ int UnixSocketServer::makeSocket()
  *    Function : run
  *
  *    Functionality:
- *      -  A Unix server to handle multiple connection 
+ *      -  A Unix server to handle multiple connection
  *         Uses select multiplexing
  *
  * @params[in] void
@@ -309,7 +236,7 @@ bool UnixSocketServer::run()
                       }
                       O1_LOG("\nO1 UnixSocketServer : Connected from client\n");
                       FD_SET (newFd, &active_fd_set);
-                   }      
+                   }
                    else
                    {
                       /* Data arriving on an already-connected socket. */
@@ -319,8 +246,8 @@ bool UnixSocketServer::run()
                          FD_CLR (i, &active_fd_set);
                       }
                    }
-                }    
-             }/* for loop ends */     
+                }
+             }/* for loop ends */
           } /* while(1) ends */
       } /* else ends */
    } /* outer if ends */

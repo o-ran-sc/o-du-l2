@@ -24,12 +24,16 @@
 #include <iostream>
 #include "GlobalDefs.hpp"
 
+#define StdDef 1 
 //config file path
 #define NETCONF_CONFIG "config/netconfConfig.json"
 #define OAM_VES_CONFIG "config/oamVesConfig.json"
 #define SMO_VES_CONFIG "config/smoVesConfig.json"
 
 //Common Header Macros
+#define STND_DEFINED_NAMESPACE "3GPP-FaultSupervision"
+#define COMMON_HEADER_VERSION "4.0.1"
+#define VES_EVENT_LISNERT_VERSION "7.2.1"
 
 //Event Type
 #define EVENT_TYPE_5G "EventType5G"
@@ -42,9 +46,11 @@
 
 //Source Name
 #define ODU_HIGH "ODU-High"
+#define SOURCE_ID "device_id_cc305d54-75b4-431b-adb2-eb6b9e541234"
 
-//Naming Code 
+//Naming Code
 #define NAMING_CODE_ODU "7odu"
+#define NFC_NAMING_CODE "NFC"
 
 //Timezone Offset
 #define TIME_ZONE_00_00 "+00:00"
@@ -81,8 +87,13 @@
 #define PM_REPORTING_ENTITY "ORAN-DEV"
 #define EVENT_TYPE_ORAN_COMPONENT_PM "O_RAN_COMPONENT_PM1min"
 
+//NOTIFICATION Macros
+#define FAULT_EVENTID "Alarm000000001"
+#define FAULT_TYPE "alarm"
+#define FAULT_EVENT_NAME "COMMUNICATIONS_ALARM"
+
 enum class VesEventType
-{ 
+{
    PNF_REGISTRATION,
    FAULT_NOTIFICATION,
    PM_NOTIFICATION,

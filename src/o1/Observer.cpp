@@ -1,6 +1,6 @@
 /*******************************************************************************
 ################################################################################
-#   Copyright (c) [2020-2021] [HCL Technologies Ltd.]                          #
+#   Copyright (c) [2020-2022] [HCL Technologies Ltd.]                          #
 #                                                                              #
 #   Licensed under the Apache License, Version 2.0 (the "License");            #
 #   you may not use this file except in compliance with the License.           #
@@ -16,57 +16,56 @@
 ################################################################################
 *******************************************************************************/
 
-/* This file contains functions to support the preparation of VES common header
-   parameters*/
+#include "Observer.hpp"
+#include "GlobalDefs.hpp"
+#include "Subject.hpp"
 
-#ifndef __VES_COMMON_HEADER_HPP__
-#define __VES_COMMON_HEADER_HPP__
+/* Default Constructor*/
+Observer::Observer()
+{
 
+}
 
-#include <iostream>
-#include <string>
-#include <cstdint>
-#include <cjson/cJSON.h>
-#include <sys/time.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include "VesUtils.hpp"
+/* Default destructor*/
+Observer::~Observer()
+{
 
-using namespace std;
+}
 
-class VesCommonHeader{
-
-   public:
-      /* Default constructor/Destructor*/
-      VesCommonHeader(){}
-      ~VesCommonHeader(){}
-
-      bool prepare(cJSON *node, VesEventType type);
-
-   private:
-      double getSequenceNo();
-      double nextSequenceNo();
-      string getEventTypeToStr();
-      string getEventType();
-      string getEventId();
-      string getPriority();
-      string getEventName();
-      string getSourceId();
-      string getReportingEntityId();
-      string getReportingEntityName();
-      string getSourceName();
-      string getNamingCode();
-      string getnfcNamingCode();
-      string getstndDefinedNamespace();
-      double getEpochTime();
-      time_t getCurrentTime();
-	   string formatTime(time_t);
-      double mLastEpochTime;
-
-      VesEventType mEventType;
-};
-
-#endif
 /**********************************************************************
-  End of file
- **********************************************************************/
+   Description : Getting message from Subject
+   Params[In]  : char*
+   Return      : void
+**********************************************************************/
+
+void Observer::update(char* message) {
+   this->mMessage = message;
+
+}
+
+/********************************************************************** 
+   Description : Subscribe Observer to Subject
+   Params[In]  : Subject
+   Return      : void 
+**********************************************************************/
+
+void Observer::subscribe(Subject *subject)
+{
+   this->mSubject = subject;
+   this->mSubject->registerObserver(this);
+}
+
+/********************************************************************** 
+   Description : Unsubscribe observer from Subject
+   Params[In]  : void
+   Return      : void
+**********************************************************************/
+
+void Observer::unsubscribe() {
+   this->mSubject->unregisterObserver(this);
+}
+
+
+/**********************************************************************
+         End of file
+**********************************************************************/

@@ -73,7 +73,7 @@ O1App::~O1App()
 
 /*******************************************************************
  *
- * @brief Runs the O1 modules as a thread 
+ * @brief Runs the O1 modules as a thread
  *
  * @details
  *
@@ -103,28 +103,29 @@ bool O1App::run()
    {
       if( !sessHdlr.init() )
       {
-         O1_LOG("\nO1 O1App : SessionHandler initialization failed ");         
+         O1_LOG("\nO1 O1App : SessionHandler initialization failed ");
          return false;
       }
    }
-   catch( const std::exception& e ) 
+   catch( const std::exception& e )
    {
       O1_LOG("\nO1 O1App : Exception : %s", e.what());
       return false;
    }
-   
+
    /* Start the Unix Socket Server to listen for alarm messages */
+   AlarmManager::instance().subscribe(&mUxSocketServer);
    if( mUxSocketServer.start() )
-   {  
-      
+   {
+
       if(mUxSocketServer.setAffinity(O1::CPU_CORE))
       {
          O1_LOG("\nO1 O1App : CPU affinity set for UnixSocketServer thread to " );
          mUxSocketServer.printAffinity();
       }
-      
+
       sleep(SLEEP_INTERVAL);
-      if( mUxSocketServer.isRunning() )  
+      if( mUxSocketServer.isRunning() )
       {
          mStartupStatus = true;
          O1_LOG("\nO1 O1App : Unix Socket server started");
