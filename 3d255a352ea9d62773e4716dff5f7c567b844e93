@@ -1,0 +1,267 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "253df08a_caf40c0d",
+        "filename": "src/cm/mac_sch_interface.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-04-19T07:17:39Z",
+      "side": 1,
+      "message": "Lets move MAX_SLOTS too to common_def.h",
+      "revId": "3d255a352ea9d62773e4716dff5f7c567b844e93",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "84e76709_de1be466",
+        "filename": "src/du_app/du_cell_mgr.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-04-19T07:17:39Z",
+      "side": 1,
+      "message": "use MAX_SFN macro",
+      "range": {
+        "startLine": 91,
+        "startChar": 48,
+        "endLine": 91,
+        "endChar": 52
+      },
+      "revId": "3d255a352ea9d62773e4716dff5f7c567b844e93",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "075de8a5_748c8ae8",
+        "filename": "src/du_app/du_cell_mgr.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 456,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-04-19T07:17:39Z",
+      "side": 1,
+      "message": "Add function descriptor",
+      "revId": "3d255a352ea9d62773e4716dff5f7c567b844e93",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bf25d321_68945673",
+        "filename": "src/du_app/du_cell_mgr.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 549,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-04-19T07:17:39Z",
+      "side": 1,
+      "message": "function descriptor needed",
+      "range": {
+        "startLine": 549,
+        "startChar": 15,
+        "endLine": 549,
+        "endChar": 29
+      },
+      "revId": "3d255a352ea9d62773e4716dff5f7c567b844e93",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "72ac1dee_37ef7221",
+        "filename": "src/du_app/du_cell_mgr.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 644,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-04-19T07:17:39Z",
+      "side": 1,
+      "message": "Add function descriptor",
+      "range": {
+        "startLine": 644,
+        "startChar": 5,
+        "endLine": 644,
+        "endChar": 18
+      },
+      "revId": "3d255a352ea9d62773e4716dff5f7c567b844e93",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e3678fb4_24b369cd",
+        "filename": "src/du_app/du_cell_mgr.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 684,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-04-19T07:17:39Z",
+      "side": 1,
+      "message": "comment this before submission",
+      "range": {
+        "startLine": 684,
+        "startChar": 3,
+        "endLine": 684,
+        "endChar": 16
+      },
+      "revId": "3d255a352ea9d62773e4716dff5f7c567b844e93",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "11904bc3_b25b15c3",
+        "filename": "src/du_app/du_cell_mgr.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 748,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-04-19T07:17:39Z",
+      "side": 1,
+      "message": "Lets comment this too before submission.",
+      "range": {
+        "startLine": 748,
+        "startChar": 3,
+        "endLine": 748,
+        "endChar": 16
+      },
+      "revId": "3d255a352ea9d62773e4716dff5f7c567b844e93",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d48387b5_969c24ce",
+        "filename": "src/du_app/du_cell_mgr.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 753,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-04-19T07:17:39Z",
+      "side": 1,
+      "message": "Add line break between 2 functions too.\nApplicable to all functions above",
+      "revId": "3d255a352ea9d62773e4716dff5f7c567b844e93",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cfa4d754_7d888189",
+        "filename": "src/du_app/du_mgr.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-04-19T07:17:39Z",
+      "side": 1,
+      "message": "add a line break below macro definition",
+      "revId": "3d255a352ea9d62773e4716dff5f7c567b844e93",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4e02a261_8ba983b0",
+        "filename": "src/du_app/du_mgr.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 186,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-04-19T07:17:39Z",
+      "side": 1,
+      "message": "Lets rename ueId for better understanding since this is not the same as DU UE F1AP Id/CU UE F1AP ID",
+      "range": {
+        "startLine": 186,
+        "startChar": 13,
+        "endLine": 186,
+        "endChar": 17
+      },
+      "revId": "3d255a352ea9d62773e4716dff5f7c567b844e93",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c2218514_9317cbf4",
+        "filename": "src/du_app/du_mgr.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 202,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-04-19T07:17:39Z",
+      "side": 1,
+      "message": "Lets rename ueId for better understanding since this is not the same as DU UE F1AP Id/CU UE F1AP ID",
+      "range": {
+        "startLine": 202,
+        "startChar": 13,
+        "endLine": 202,
+        "endChar": 17
+      },
+      "revId": "3d255a352ea9d62773e4716dff5f7c567b844e93",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "86a1b991_c8ee363c",
+        "filename": "src/du_app/du_mgr.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 216,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-04-19T07:17:39Z",
+      "side": 1,
+      "message": "Add a line break between each structure for better readability",
+      "revId": "3d255a352ea9d62773e4716dff5f7c567b844e93",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3e82a67d_16eda029",
+        "filename": "src/du_app/du_utils.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 249,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-04-19T07:17:39Z",
+      "side": 1,
+      "message": "#if 1 will keep it enabled.\nTo disable, use #if 0",
+      "revId": "3d255a352ea9d62773e4716dff5f7c567b844e93",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
