@@ -26,11 +26,12 @@
 #include <string>
 #include <pthread.h>
 #include "Thread.hpp"
+#include "Subject.hpp"
 
 using std::string;
 #define BUFLEN 512
 
-class UnixSocketServer : public Thread
+class UnixSocketServer : public Thread , public Subject
 {
 
    private:

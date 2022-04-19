@@ -30,11 +30,12 @@
 #include "PnfRegistrationThread.hpp"
 #include "VesUtils.hpp"
 #include "VesEventHandler.hpp"
+#include "Observer.hpp"
 
 using std::map;
 
-
-class AlarmManager : public Singleton<AlarmManager>
+//Subject *alarm;	
+class AlarmManager : public Singleton<AlarmManager> ,public Observer
 {
 
    friend Singleton<AlarmManager>;
@@ -47,6 +48,10 @@ class AlarmManager : public Singleton<AlarmManager>
    ~AlarmManager();
 
    public:
+   
+   //virtual void unsbuscribe();
+   //virtual void subscribe(Subject *subject);
+   void update(char* recvBuf);
    bool raiseAlarm(const Alarm& alarm);
    bool clearAlarm(const uint16_t& alarmId);
    bool clearAlarm(const Alarm& alarm );

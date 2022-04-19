@@ -16,47 +16,21 @@
 ################################################################################
 *******************************************************************************/
 
-/* This file contains functions to support Json related operation (read/write)*/
+#include "VesNotification.hpp"
 
-#ifndef __JSON_HELPER_HPP__
-#define __JSON_HELPER_HPP__
-
-#include <iostream>
-#include <stdlib.h>
-#include <assert.h>
-#include <cjson/cJSON.h>
-#include <string>
-
-class JsonHelper
+/* Default constructor*/
+VesNotification::VesNotification(VesEventType eventType)
+                :VesEvent(eventType)
 {
 
-   public:
-      /* Default constructor/Destructor */
-      JsonHelper(){}
-      ~JsonHelper(){}
-      static cJSON * createNode();
-      static cJSON* addNodeToObject(cJSON * parent, const char * nodeName, \
-                                  const char* value);
-      static cJSON* addNodeToObject(cJSON * parent, \
-                                  const char * nodeName, double value);
-      static cJSON* addNodeToObject(cJSON * parent, \
-                                  const char * nodeName, bool value);
-      static void deleteNode(cJSON * node);
-      static cJSON_bool addJsonNodeToObject(cJSON * parent, \
-                             const char * nodeName, cJSON * node);
-      static cJSON* read(const char * fileName);
-      static std::string getValue(cJSON *json, const char *node);
-      static cJSON * getNode(cJSON *json, const char *node);
-      static char *printUnformatted(cJSON * node);
-      static char *print(cJSON * node);
-      static const char *getError();
-      static cJSON* createArray();
-      static cJSON_bool addJsonNodeToArray(cJSON * array, cJSON* node);
+}
 
+/* Default Destructor*/
+VesNotification::~VesNotification()
+{
+    
+}
 
-};
-
-#endif
 /**********************************************************************
   End of file
  **********************************************************************/

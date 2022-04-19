@@ -96,6 +96,29 @@ cJSON* JsonHelper::addNodeToObject(cJSON * parent, \
 
 /*******************************************************************
  *
+ * @brief wraps cJSON_AddNumberToObject cJSON library function
+ *
+ * @details
+ *
+ *    Function : addNodeToObject
+ *
+ *    Functionality:
+ *      - wraps cJSON_AddNumberToObject cJSON library function
+ *
+ * @params[in] cJSON * parent, const char * nodeName, bool value
+ * @return pointer to cJSON object     - success
+ *         NULL                        - failure
+ *
+ * ****************************************************************/
+
+cJSON* JsonHelper::addNodeToObject(cJSON * parent, \
+                                          const char * nodeName, bool value)
+{
+   return cJSON_AddBoolToObject(parent, nodeName, (bool) value);
+}
+
+/*******************************************************************
+ *
  * @brief wraps cJSON_AddItemToObject cJSON library function
  *
  * @details
@@ -116,6 +139,7 @@ cJSON_bool JsonHelper::addJsonNodeToObject(cJSON * parent, \
 {
    return cJSON_AddItemToObject(parent, nodeName, node);
 }
+
 
 /*******************************************************************
  *

@@ -25,6 +25,7 @@
 
 using std::pair;
 
+
 /* Default constructor */
 AlarmManager::AlarmManager()
 {
@@ -37,6 +38,111 @@ AlarmManager::~AlarmManager()
 
 }
 
+
+/* overriding */
+/*******************************************************************
+ *
+ * @brief Read the data from the connected client application
+ *
+ * @details
+ *
+ *    Function : update
+ *
+ *    Functionality:
+ *      - Reads the data from the connected client application
+ *
+ *
+ * @params[in] char*
+ * @return void
+ ******************************************************************/
+
+void AlarmManager::update(char* recvBuf)
+{
+   O1_LOG("\nO1 AlarmManager update received");
+   AlarmRecord *alrmRec = NULL;
+   Alarm alrm;
+   MsgHeader *msgHdr = (MsgHeader*)recvBuf;
+   O1_LOG("\nO1 AlarmManager: MsgType %d",msgHdr->msgType);
+
+
+      if ( msgHdr->msgType == ALARM ){
+         uint16_t alrmId;
+         alrmRec = (AlarmRecord*) recvBuf;
+         O1_LOG("\nO1 AlarmManager:Alarm info\n"
+                   "                Action           %d\n"
+                   "                Alarm ID         %s\n" 
+                   "                Severity         %d\n" 
+                   "                Additional Text  %s\n"
+                   "                Specific Problem %s\n"
+                   "                Additional Info  %s\n"
+                   "                Alarm Raise Time %s\n",
+                   alrmRec->msgHeader.action,
+                   alrmRec->alarmId,
+                   alrmRec->perceivedSeverity,
+                   alrmRec->additionalText,
+                   alrmRec->specificProblem,
+                   alrmRec->additionalInfo,
+                   alrmRec->alarmRaiseTime
+                );
+      
+         /*Fill the alarm structure */
+         sscanf(alrmRec->alarmId,"%hu",&alrmId);
+         alrm.setAlarmId(alrmId);
+         alrm.setPerceivedSeverity(alrmRec->perceivedSeverity);
+         alrm.setAdditionalText(alrmRec->additionalText);
+         alrm.setEventType(alrmRec->eventType);
+         alrm.setSpecificProblem(alrmRec->specificProblem);
+         alrm.setAdditionalInfo(alrmRec->additionalInfo);
+      }
+
+      switch(msgHdr->action)
+      {
+         case RAISE_ALARM: 
+
+            if(raiseAlarm(alrm))
+            {
+                VesEventHandler vesEventHandler;
+                if (!vesEventHandler.prepare(VesEventType::VES_NOTIFICATION, &alrm))
+                    return ;//O1::FAILURE;
+
+                O1_LOG("\nO1 AlarmManager : Sending Alarm Data");
+                if ( !vesEventHandler.send() )
+                    return ;//O1::FAILURE;
+
+   	            O1_LOG("\nO1 AlarmManager : "
+                               "Alarm raised for alarm Id %s",
+                                alrmRec->alarmId);
+            }
+
+            else
+            {
+                O1_LOG("\nO1 AlarmManager : "
+                        "Error in raising alarm for alrm Id %s",
+                        alrmRec->alarmId);
+            }
+            break;  
+                     
+         case CLEAR_ALARM: 
+                     if(clearAlarm(alrm))
+                     {
+                        O1_LOG("\nO1 AlarmManager : "
+                               "Alarm cleared for alarm Id %s",
+                                alrmRec->alarmId);
+
+                     }
+                     else
+                     {
+                        O1_LOG("\nO1 AlarmManager : "
+                               "Error in clearing alarm for alarm Id %s",
+                                alrmRec->alarmId);
+                     }
+                     break;
+         default:    
+                     O1_LOG("\nO1 AlarmManager : No action performed"); 
+                     break;
+      }
+
+}
 
 
 /********************************************************************** 
@@ -75,6 +181,7 @@ bool AlarmManager::clearAlarm(const Alarm& alarm)
    }    
    return ret;
 }
+
 
 
 /********************************************************************** 

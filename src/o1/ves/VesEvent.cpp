@@ -65,6 +65,7 @@ void VesEvent::init(){
 
    getConfig();
    createUrl();
+   O1_LOG("O1 log ves url %s",mVesUrl.c_str());
    mHttpClient = new HttpClient(mVesUrl, mVesServerUsername, mVesServerPassword);
 
 }
@@ -201,9 +202,9 @@ string VesEvent::getEventFieldName()
       {
          return "pnfRegistrationFields";
       }
-      case VesEventType::FAULT_NOTIFICATION:
+      case VesEventType::VES_NOTIFICATION:
       {
-         return "faultFields";
+         return "stndDefinedFields";
       }
       case VesEventType::PM_SLICE:
       {

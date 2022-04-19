@@ -99,8 +99,8 @@ string VesCommonHeader::getEventTypeToStr()
       case VesEventType::PNF_REGISTRATION:
          str = "pnfRegistration";
          break;
-      case VesEventType::FAULT_NOTIFICATION:
-         str = "faultNotification";
+      case VesEventType::VES_NOTIFICATION:
+         str = "stndDefined";
          break;
       case VesEventType::PM_NOTIFICATION:
          str = "pmNotification";
@@ -154,8 +154,8 @@ string VesCommonHeader::getEventId()
       case VesEventType::PM_SLICE:
          evntId = "_" + stringEpochTime + "_" + "PM1min";
      break;
-      case VesEventType::FAULT_NOTIFICATION:
-         evntId = getSourceName() + "_" + MODEL_NUMBER_007_DEV;
+      case VesEventType::VES_NOTIFICATION:
+         evntId = FAULT_EVENTID;
      break;
       default:
          O1_LOG("\nO1 VesCommonHeader : this VES msg Type support in getEventId is \
@@ -167,14 +167,14 @@ not available");
 
 /*******************************************************************
  *
- * @brief create Ves Event Type
+ * @brief create Ves Event Type from Ves Event type
  *
  * @details
  *
  *    Function : getEventType
  *
  *    Functionality:
- *      - create Ves Event Type
+ *      - create Ves Event Type from Ves Event type
  *
  * @params[in] IN - void
  * @return value of string     - success
@@ -199,8 +199,8 @@ string VesCommonHeader::getEventType()
       case VesEventType::PM_SLICE:
          evntType = EVENT_TYPE_ORAN_COMPONENT_PM;
          break;
-      case VesEventType::FAULT_NOTIFICATION:
-         evntType = EVENT_TYPE_5G;
+      case VesEventType::VES_NOTIFICATION:
+         evntType = FAULT_TYPE;
 	 break;
       default:
          O1_LOG("\nO1 VesCommonHeader : this VES msg Type support in getEvenType is \
@@ -244,7 +244,7 @@ string VesCommonHeader::getPriority()
       case VesEventType::PM_SLICE:
          evntId = PRIORITY_LOW ;
          break;
-      case VesEventType::FAULT_NOTIFICATION:
+      case VesEventType::VES_NOTIFICATION:
          evntId = PRIORITY_LOW ;
 	 break;
       default:
@@ -290,8 +290,8 @@ string VesCommonHeader::getEventName()
       case VesEventType::PM_SLICE:
          evntName = getEventTypeToStr() + "_" + EVENT_TYPE_ORAN_COMPONENT_PM;
          break;
-      case VesEventType::FAULT_NOTIFICATION:
-         evntName = getEventTypeToStr() + "_" + EVENT_TYPE_5G;
+      case VesEventType::VES_NOTIFICATION:
+         evntName = FAULT_EVENT_NAME;
 	 break;
       default:
          O1_LOG("\nO1 VesCommonHeader : This VES msg Type support in getEventName is \
@@ -307,7 +307,7 @@ string VesCommonHeader::getEventName()
  *
  * @details
  *
- *    Function : getReportingEntityName
+ *    Function : getReportingEntityId
  *
  *    Functionality:
  *      - create Ves Event Name from Ves Event type
@@ -317,11 +317,45 @@ string VesCommonHeader::getEventName()
  *         empty string        - failure
  * ****************************************************************/
 
-string VesCommonHeader::getReportingEntityName()
+string VesCommonHeader::getReportingEntityId()
 {
   /*Currently PNF_REGISTRATION and PM_SLICE are only supported. 
    This function must be updated in later releases*/
 
+   string evntName = "";
+   switch(mEventType)
+   {
+      case VesEventType::PNF_REGISTRATION:
+         evntName = ODU_HIGH;
+         break;
+
+      case VesEventType::VES_NOTIFICATION:
+         evntName = ODU_HIGH;
+	 break;
+      default:
+         break;
+   }
+   return evntName;
+}
+
+/*******************************************************************
+ *
+ * @brief create Reporting Entity Name from Ves Event type
+ *
+ * @details
+ *
+ *    Function : getReportingEntityName
+ *
+ *    Functionality:
+ *      - create Reporting Entity Name from Ves Event type
+ *
+ * @params[in] IN - void
+ * @return value of string     - success
+ *         empty string        - failure
+ * ****************************************************************/
+
+string VesCommonHeader::getReportingEntityName()
+{
    string evntName = "";
    switch(mEventType)
    {
@@ -331,8 +365,8 @@ string VesCommonHeader::getReportingEntityName()
       case VesEventType::PM_SLICE:
          evntName = PM_REPORTING_ENTITY;
          break;
-      case VesEventType::FAULT_NOTIFICATION:
-         evntName = getSourceName();
+      case VesEventType::VES_NOTIFICATION:
+         evntName = ODU_HIGH;
 	 break;
       default:
          O1_LOG("\nO1 VesCommonHeader : This VES msg Type support in \
@@ -344,14 +378,14 @@ string VesCommonHeader::getReportingEntityName()
 
 /*******************************************************************
  *
- * @brief create Ves Event Name from Ves Event type
+ * @brief create Source Name from Ves Event type
  *
  * @details
  *
- *    Function : getReportingEntityName
+ *    Function : getSourceName
  *
  *    Functionality:
- *      - create Ves Event Name from Ves Event type
+ *      - create Source Name from Ves Event type
  *
  * @params[in] IN - void
  * @return value of string     - success
@@ -360,7 +394,78 @@ string VesCommonHeader::getReportingEntityName()
 
 string VesCommonHeader::getSourceName()
 {
-   return ODU_HIGH;
+   string sourceName = "";
+   switch(mEventType)
+   
+   {
+      case VesEventType::PNF_REGISTRATION:
+         sourceName = ODU_HIGH;
+         break;
+      case VesEventType::VES_NOTIFICATION:
+         sourceName = ODU_HIGH;
+	 break;
+      default:
+         break;
+   }
+   return sourceName;
+}
+
+/*******************************************************************
+ *
+ * @brief create Ves Event SourceId from Ves Event type
+ *
+ * @details
+ *
+ *    Function : getSourceId
+ *
+ *    Functionality:
+ *      - create Ves Event SourceId from Ves Event type
+ *
+ * @params[in] IN - void
+ * @return value of string     - success
+ *         empty string        - failure
+ * ****************************************************************/
+string VesCommonHeader::getSourceId()
+{
+   string sourceId = "";
+   switch(mEventType)
+   {
+      case VesEventType::VES_NOTIFICATION:
+         sourceId = SOURCE_ID;
+	 break;
+      default:
+         break;
+   }
+   return sourceId;
+}
+
+/*******************************************************************
+ *
+ * @brief create Ves Event Name from Ves Event type
+ *
+ * @details
+ *
+ *    Function : getnfcNamingCode
+ *
+ *    Functionality: create Ves Event nfc naming code
+ *
+ * @params[in] IN - void
+ * @return value of string     - success
+ *         empty string        - failure
+ * ****************************************************************/
+
+string VesCommonHeader::getnfcNamingCode()
+{
+   string name = "";
+   switch(mEventType)
+   {
+      case VesEventType::VES_NOTIFICATION:
+         name = NFC_NAMING_CODE;
+	 break;
+      default:
+         break;
+   }
+   return name;
 }
 
 /*******************************************************************
@@ -382,7 +487,24 @@ string VesCommonHeader::getSourceName()
 
 string VesCommonHeader::getNamingCode()
 {
-   return NAMING_CODE_ODU;
+
+   string nammingcdoe = "";
+   switch(mEventType)
+   {
+      case VesEventType::PNF_REGISTRATION:
+         nammingcdoe = NAMING_CODE_ODU;
+         break;
+      case VesEventType::PM_SLICE:
+         break;
+      case VesEventType::VES_NOTIFICATION:
+         nammingcdoe = NAMING_CODE_ODU;
+	 break;
+      default:
+         O1_LOG("\nO1 VesCommonHeader : This VES msg Type support in \
+         getReportingEntityName is not available");
+         break;
+   }
+   return nammingcdoe;
 }
 
 
@@ -459,22 +581,54 @@ std::string VesCommonHeader::formatTime(time_t t) {
    return oss.str();
 }
 
+
 /*******************************************************************
  *
- * @brief create Ves Event Name from Ves Event type
+ * @brief create Ves stndDefinedNamespace from Ves Event type
  *
  * @details
  *
- *    Function : getEventName
+ *    Function : getstndDefinedNamespace
+ *
+ *    Functionality: create Ves tndDefinedNamespace
+ *
+ * @params[in] IN - void
+ * @return value of string     - success
+ *         empty string        - failure
+ * ****************************************************************/
+
+string VesCommonHeader::getstndDefinedNamespace()
+{
+   string stndDefinedNamespace="";
+   switch(mEventType)
+   {
+      case VesEventType::VES_NOTIFICATION:
+         stndDefinedNamespace = STND_DEFINED_NAMESPACE;
+	 break;
+      default:
+         break;
+   }
+   return stndDefinedNamespace;
+
+}
+
+/*******************************************************************
+ *
+ * @brief Prepare VES Message
+ *
+ * @details
+ *
+ *    Function : prepare
  *
  *    Functionality:
- *      - create Ves Event Name from Ves Event type
+ *      - prepare VES event
  *
- * @params[in] IN - VesEventType , OUT - Ves Event Name
- * @return ture     - success
+ * @params[in] void
+ * @return true     - success
  *         false    - failure
  *
  * ****************************************************************/
+
 
 bool VesCommonHeader::prepare(cJSON *commonHeader, \
                               VesEventType type)
@@ -534,16 +688,6 @@ bool VesCommonHeader::prepare(cJSON *commonHeader, \
       {
          ret = false;
       }
-      else if(JsonHelper::addNodeToObject(commonHeader, "nfcNamingCode", \
-                                       "") == 0)
-      {
-         ret = false;
-      }
-      else if(JsonHelper::addNodeToObject(commonHeader, "stndDefinedNamespace", \
-                                      "") == 0)
-      {
-         ret = false;
-      }
    }
    
    if (mEventType == VesEventType::PNF_REGISTRATION)
@@ -552,7 +696,7 @@ bool VesCommonHeader::prepare(cJSON *commonHeader, \
    }
 
    if(JsonHelper::addNodeToObject(commonHeader, "sequence", \
-                                       getSequenceNo()) == 0)
+                                       (double)getSequenceNo()) == 0)
    {
       ret = false;
    }
@@ -562,7 +706,7 @@ bool VesCommonHeader::prepare(cJSON *commonHeader, \
       ret = false;
    }
    else if(JsonHelper::addNodeToObject(commonHeader, "reportingEntityId", \
-                                       "") == 0)
+                                       getReportingEntityId().c_str() ) == 0)
    {
       ret = false;
    }
@@ -572,7 +716,7 @@ bool VesCommonHeader::prepare(cJSON *commonHeader, \
       ret = false;
    }
    else if(JsonHelper::addNodeToObject(commonHeader, "sourceId", \
-                                      "") == 0)
+                                      getSourceId().c_str() ) == 0)
    {
       ret = false;
    }
@@ -592,13 +736,17 @@ bool VesCommonHeader::prepare(cJSON *commonHeader, \
       ret = false;
    }
    else if(JsonHelper::addNodeToObject(commonHeader, "nfNamingCode", \
-                                       (type==VesEventType::PNF_REGISTRATION) ? \
-                                       getNamingCode().c_str() : "") == 0)
+                                       getNamingCode().c_str() ) == 0)
    {
       ret = false;
    }
    else if(JsonHelper::addNodeToObject(commonHeader, "nfVendorName", \
-                                       "") == 0)
+                                       "POC") == 0)
+   {
+      ret = false;
+   }
+   else if(JsonHelper::addNodeToObject(commonHeader, "nfcNamingCode", \
+                                       getnfcNamingCode().c_str() ) == 0)
    {
       ret = false;
    }
@@ -619,15 +767,19 @@ bool VesCommonHeader::prepare(cJSON *commonHeader, \
    else 
    {
       if(JsonHelper::addNodeToObject(commonHeader, "version", \
-                                          VERSION_4_0_1) == 0)
+                                          "4.0.1") == 0)
       {
          ret = false;
       }
    }
-
-   if(JsonHelper::addNodeToObject(commonHeader, "vesEventListenerVersion", \
-                                       VES_EVENT_LISTENER_7_2_1) == 0)
+   if(JsonHelper::addNodeToObject(commonHeader, "stndDefinedNamespace", \
+                                       getstndDefinedNamespace().c_str())== 0)            
    {
+      ret = false;
+   }
+   if(JsonHelper::addNodeToObject(commonHeader, "vesEventListenerVersion", \
+                                       "7.2.1") == 0)
+   {	
       ret = false;
    }
    else

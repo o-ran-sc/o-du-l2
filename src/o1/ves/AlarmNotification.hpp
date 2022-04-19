@@ -16,47 +16,56 @@
 ################################################################################
 *******************************************************************************/
 
-/* This file contains functions to support Json related operation (read/write)*/
+#ifndef __ALARM_NOTIFICATION_HPP__
+#define __ALARM_NOTIFICATION_HPP__
 
-#ifndef __JSON_HELPER_HPP__
-#define __JSON_HELPER_HPP__
 
 #include <iostream>
-#include <stdlib.h>
-#include <assert.h>
-#include <cjson/cJSON.h>
-#include <string>
 
-class JsonHelper
+#include "VesEvent.hpp" 
+#include "AlarmMessages.h"
+#include "Alarm.hpp"
+#include "AlarmManager.hpp"
+#include "Message.hpp"
+#include "VesNotification.hpp"
+
+using namespace std;
+
+#define ALARM_NOTIFICATION_SCHEMA "https://forge.3gpp.org/rep/sa5/MnS/blob/SA88-Rel16/OpenAPI/faultMnS.yaml#components/schemas/NotifyNewAlarm"
+#define HREF 1.0
+#define URI "1"
+#define NOTIFICATION_ID 1.0
+#define NOTIFICATION_TYPE "notifyNewAlarm"
+#define PROBABLE_CAUSE 1.0
+#define TRND_INDICATION "MORE_SEVERE"
+#define OBSRVED_MEASUREMENT "new"
+#define OBSERVED_VALUE 123.0
+#define NEW_ATT "new"
+#define ADD_INFO "new"
+#define ALARM_ID "1"
+#define ALRAM_TYPE "COMMUNICATIONS_ALARM"
+#define STND_DEFINED_FEILD_VERSION "1.0"
+
+
+class AlarmNotification : public VesNotification
 {
+    
+    public:
+    // Default Constructor and Destructor
+    AlarmNotification();
+    ~AlarmNotification();
 
-   public:
-      /* Default constructor/Destructor */
-      JsonHelper(){}
-      ~JsonHelper(){}
-      static cJSON * createNode();
-      static cJSON* addNodeToObject(cJSON * parent, const char * nodeName, \
-                                  const char* value);
-      static cJSON* addNodeToObject(cJSON * parent, \
-                                  const char * nodeName, double value);
-      static cJSON* addNodeToObject(cJSON * parent, \
-                                  const char * nodeName, bool value);
-      static void deleteNode(cJSON * node);
-      static cJSON_bool addJsonNodeToObject(cJSON * parent, \
-                             const char * nodeName, cJSON * node);
-      static cJSON* read(const char * fileName);
-      static std::string getValue(cJSON *json, const char *node);
-      static cJSON * getNode(cJSON *json, const char *node);
-      static char *printUnformatted(cJSON * node);
-      static char *print(cJSON * node);
-      static const char *getError();
-      static cJSON* createArray();
-      static cJSON_bool addJsonNodeToArray(cJSON * array, cJSON* node);
+    bool readAlarmParams();
+
+    protected:
+    bool prepareEventFields(const Message* msg = NULL);
 
 
 };
 
-#endif
+
+#endif 
+
 /**********************************************************************
   End of file
  **********************************************************************/
