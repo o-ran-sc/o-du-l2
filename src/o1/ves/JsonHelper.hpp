@@ -39,7 +39,8 @@ class JsonHelper
                                   const char* value);
       static cJSON* addNodeToObject(cJSON * parent, \
                                   const char * nodeName, double value);
-
+      static cJSON* addNodeToObject(cJSON * parent, \
+                                  const char * nodeName, bool value);
       static void deleteNode(cJSON * node);
       static cJSON_bool addJsonNodeToObject(cJSON * parent, \
                              const char * nodeName, cJSON * node);

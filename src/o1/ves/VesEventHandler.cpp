@@ -24,6 +24,7 @@
 #include "PnfRegistrationEvent.hpp"
 #include "SliceMeasurementEvent.hpp"
 #include "Message.hpp"
+#include "AlarmNotification.hpp"
 
 /*******************************************************************
  *
@@ -97,6 +98,12 @@ bool VesEventHandler::prepare(VesEventType evtType, const Message* msg)
       {
          mVesEvent = new SliceMeasurementEvent;
          O1_LOG("\nO1 VesEventHandler : Preparing VES PM Slice");
+         break;
+      }
+      case VesEventType::VES_NOTIFICATION:
+      {
+         O1_LOG("\nO1 VesEventHandler : Preparing VES fault notification");
+         mVesEvent = new AlarmNotification();
          break;
       }
 

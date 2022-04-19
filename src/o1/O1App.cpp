@@ -114,6 +114,7 @@ bool O1App::run()
    }
    
    /* Start the Unix Socket Server to listen for alarm messages */
+   AlarmManager::instance().subscribe(&mUxSocketServer);
    if( mUxSocketServer.start() )
    {  
       

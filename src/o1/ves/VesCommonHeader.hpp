@@ -51,9 +51,13 @@ class VesCommonHeader{
       string getEventId();
       string getPriority();
       string getEventName();
+      string getSourceId();
+      string getReportingEntityId();
       string getReportingEntityName();
       string getSourceName();
       string getNamingCode();
+      string getnfcNamingCode();
+      string getstndDefinedNamespace();
       uint64_t getEpochTime();
       time_t getCurrentTime();
 	   string formatTime(time_t);

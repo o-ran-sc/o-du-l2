@@ -122,7 +122,7 @@ bool SliceMeasurementEvent::prepareEventFields(const Message* msg)
 
     if(JsonHelper::addNodeToObject(measurementFields, \
                                    "measurementInterval", \
-                                    MEASUREMENT_INTERVAL) == 0)
+                                    (double)MEASUREMENT_INTERVAL) == 0)
     {
         ret = false;
     }

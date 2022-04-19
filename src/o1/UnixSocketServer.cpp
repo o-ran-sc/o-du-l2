@@ -18,12 +18,10 @@
 
 /* This file contains UnixSocketServer class that listens for Netconf Alarm 
    messages on a Unix socket from ODU. It calls the AlarmManager functions
-   for raising or clearing the alarms based on the actions received 
-*/
+   for raising or clearing the alarms based on the actions received  */     
 
 #include "UnixSocketServer.hpp"
 #include "Alarm.hpp"
-#include "AlarmManager.hpp"
 #include "CmInterface.h"
 #include "GlobalDefs.hpp"
 #include <iostream>
@@ -38,6 +36,7 @@
 #include <arpa/inet.h>
 #include <sys/un.h>
 #include "InitConfig.hpp"
+		
 
 
 using std::map;
@@ -59,7 +58,7 @@ using std::pair;
  ******************************************************************/
 UnixSocketServer::UnixSocketServer(const string& sockPath)
                                    : mSockPath(sockPath),
-                                     mIsRunning(false)
+                                     mIsRunning(false) 
 {
 
 }  
@@ -101,89 +100,18 @@ UnixSocketServer::~UnixSocketServer()
  ******************************************************************/
 int UnixSocketServer::readMessage(int fd)
 {
-   AlarmRecord *alrmRec = NULL;
    char recvBuf[BUFLEN];
-   Alarm alrm;
    bzero(&recvBuf,sizeof(recvBuf));
    
    int nbytes = read (fd, &recvBuf, sizeof(recvBuf));
-   
+
    if (nbytes > 0)
    {
-      MsgHeader *msgHdr = (MsgHeader*)recvBuf;
-
-      O1_LOG("\nO1 UnixSocketServer :\nMsgType %d",msgHdr->msgType);
-      
-      if ( msgHdr->msgType == ALARM ){
-         uint16_t alrmId;
-         alrmRec = (AlarmRecord*) recvBuf;
-         O1_LOG("\nO1 UnixSocketServer :\n"
-                   "Action %d\n"
-                   "Alarm ID %s\n" 
-                   "Severity %d\n" 
-                   "Additional Text %s\n"
-                   "Specific Problem %s\n"
-                   "Additional Info %s\n"
-                   "Alarm Raise Time %s\n",
-                   alrmRec->msgHeader.action,
-                   alrmRec->alarmId,
-                   alrmRec->perceivedSeverity,
-                   alrmRec->additionalText,
-                   alrmRec->specificProblem,
-                   alrmRec->additionalInfo,
-                   alrmRec->alarmRaiseTime
-                );
-      
-         /*Fill the alarm structure */
-         sscanf(alrmRec->alarmId,"%hu",&alrmId);
-         alrm.setAlarmId(alrmId);
-         alrm.setPerceivedSeverity(alrmRec->perceivedSeverity);
-         alrm.setAdditionalText(alrmRec->additionalText);
-         alrm.setEventType(alrmRec->eventType);
-         alrm.setSpecificProblem(alrmRec->specificProblem);
-         alrm.setAdditionalInfo(alrmRec->additionalInfo);
-      }
-
-      switch(msgHdr->action)
-      {
-         case RAISE_ALARM: 
-
-                     if(AlarmManager::instance().raiseAlarm(alrm))
-                     {
-                        O1_LOG("\nO1 UnixSocketServer : "
-                               "Alarm raised for alarm Id %s",
-                                alrmRec->alarmId);
-                     }
-
-                     else
-                     {
-                        O1_LOG("\nO1 UnixSocketServer : "
-                               "Error in raising alarm for alrm Id %s",
-                                alrmRec->alarmId);
-                     }
-                     break;  
-                     
-         case CLEAR_ALARM: 
-                     if(AlarmManager::instance().clearAlarm(alrm))
-                     {
-                        O1_LOG("\nO1 UnixSocketServer : "
-                               "Alarm cleared for alarm Id %s",
-                                alrmRec->alarmId);
-
-                     }
-                     else
-                     {
-                        O1_LOG("\nO1 UnixSocketServer : "
-                               "Error in clearing alarm for alarm Id %s",
-                                alrmRec->alarmId);
-                     }
-                     break;
-         default:    
-                     O1_LOG("\nO1 UnixSocketServer : No action performed"); 
-                     break;
-      }
+      /* sending message to all Unix Socket Server subscribers */
+      createMessage(recvBuf);
 
    }
+
    return nbytes;
 }
 
