@@ -17,8 +17,14 @@
  *******************************************************************************/
 /* Utility definitions to be used in du app */
 #include "common_def.h"
+#include "lrg.h"
+#include "lrg.x"
+#include "lkw.x"
 #include "du_app_mac_inf.h"
 #include "du_utils.h"
+#include "du_app_rlc_inf.h"
+#include "du_cfg.h"
+#include "du_mgr.h"
 
 /* Spec Ref-38.214-Table 5.1.2.1-1 */
 uint8_t slivCfgIdxTable[MAX_SLIV_CONFIG_IDX][3] = {
@@ -181,6 +187,180 @@ void fillStartSymbolAndLen(uint8_t numRsrcAlloc, PdschConfig *pdschCfg, PuschCfg
    }
 }
 
+/*******************************************************************
+ * @brief Function to add a node to a linked list
+ *
+ * @details
+ *
+ *     Function: duAddNodeToLList
+ *
+ *     This function adds a new node to the linked list
+ *
+ *  @param[in]  Pointer to the list
+ *              Pointer to node to be added
+ *              Pointer to current node
+ *  @return     ROK
+ *              RFAILED
+*******************************************************************/
+uint8_t duAddNodeToLList(CmLListCp *llist, void *blockToAdd, CmLList *currNode)
+{
+   CmLList  *newNode = NULLP;
+
+   DU_ALLOC(newNode, sizeof(CmLList));
+   if(newNode)
+   {
+      newNode->node = (PTR)blockToAdd;
+      
+      if(currNode == NULLP)
+         cmLListAdd2Tail(llist, newNode);
+      else
+      {
+         llist->crnt = currNode;
+         cmLListInsAfterCrnt(llist, newNode);
+      }
+      return ROK;
+   } 
+   return RFAILED;
+}
+
+/*******************************************************************
+ * @brief Function to delete a node from linked list
+ *
+ * @details
+ *
+ *     Function: duDelNodeFromLList
+ *
+ *     This function deletes a node from the linked list
+ *
+ *  @param[in]  Pointer to the list
+ *              Pointer to node to be deleted
+ *  @return     Pointer to the deleted node
+*******************************************************************/
+
+uint8_t duDelNodeFromLList(CmLListCp *llist, CmLList *node)
+{
+   node = cmLListDelFrm(llist, node);
+   DU_FREE(node, sizeof(CmLList));
+
+   return ROK;
+}
+
+/*Below function for printing will be used in future so disabling it for now*/
+#if 0 
+/****************************************************************************
+ *
+ * @brief Print the LC in list for debugging purpose 
+ *
+ * @details
+ *
+ *    Function : printLcLL
+ *
+ *    Functionality:
+ *            For debugging purpose, for printing the LC in the order and
+ *            parameters
+ *
+ * @params[in] LcList pointer 
+ *       
+ * @return void 
+ *        
+ *************************************************************************/
+void printPageInfoLL(CmLListCp *pageInfoLL)
+{
+   CmLList *node = NULLP;
+   DuPagUeList *pageInfoNode = NULLP;
+
+   if(pageInfoLL == NULLP)
+   {
+      DU_LOG("\nINFO   -->  DU APP: PageInfo List doesnt exist");
+      return;
+   }
+   node = pageInfoLL->first;
+   while(node)
+   {
+      pageInfoNode = (DuPagUeList *)node->node;
+      if(pageInfoNode)
+      {
+         DU_LOG("\nINFO   -->  DU APP i_s:%d",pageInfoNode->i_s);
+         printPageUeRecordLL(&(pageInfoNode->pagUeList));
+      }
+
+      node = node->next;
+   }
+}
+
+/****************************************************************************
+ *
+ * @brief Print the Ue Record against Paging Frame for debugging purpose 
+ *
+ * @details
+ *
+ *    Function : printLcLL
+ *
+ *    Functionality:
+ *            For debugging purpose, for printing the UE Record in the order and
+ *            parameters
+ *
+ * @params[in] ueList pointer 
+ *       
+ * @return void 
+ *        
+ *************************************************************************/
+void printPageUeRecordLL(CmLListCp *ueList)
+{
+   CmLList *node = NULLP;
+   DuPagUeRecord *ueRecord = NULLP;
+
+   if(ueList == NULLP)
+   {
+      DU_LOG("\nINFO   -->  DU APP: PageUe List doesnt exist");
+      return;
+   }
+   node = ueList->first;
+   while(node)
+   {
+      ueRecord = (DuPagUeRecord *)node->node;
+      if(ueRecord)
+      {
+         DU_LOG("\nINFO   -->  DU APP ueId:%d, sTmsi:%lu, prio:%d",ueRecord->pagUeId, ueRecord->sTmsi, ueRecord->pagPriority);
+      }
+
+      node = node->next;
+   }
+
+}
+
+/*******************************************************************
+ * @brief Print the Page Info List and UE Records
+ *
+ * @details
+ *
+ *    Function : printPageList
+ *
+ *    Functionality: Print the Page Info List and UE Records
+ *
+ * @params[in] CmHashListCp *pagingInfoMap
+ *
+ * @return void
+ *
+ * ****************************************************************/
+void printPageList(CmHashListCp *pagingInfoMap)
+{
+   uint8_t ret = ROK;
+   DuPagInfoList *pagInfoLLFromPF = NULLP, *prevPageInfoLL = NULLP;
+
+   do
+   {
+      ret = cmHashListGetNext(pagingInfoMap, (PTR)prevPageInfoLL, (PTR *)&pagInfoLLFromPF);
+      if(ret == ROK)
+      {
+         DU_LOG("\nDEBUG  --> DUAPP Page List for PF:%d",pagInfoLLFromPF->pf);
+         printPageInfoLL(&(pagInfoLLFromPF->pagInfoList));
+         prevPageInfoLL = pagInfoLLFromPF;
+      }
+   }while(ret == ROK);
+   
+}
+#endif
 /**********************************************************************
 End of file
 **********************************************************************/

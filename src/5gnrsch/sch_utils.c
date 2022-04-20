@@ -1340,7 +1340,7 @@ bool fillPrbBitmap(uint64_t *prbBitMap, uint16_t startPrb, uint16_t numPrb)
  *         If NULLP, FATAL FAILURE
  *
  * ***********************************************************************/
-LcInfo* handleLcLList(CmLListCp *lcLL, uint8_t lcId, ActionTypeLcLL action)
+LcInfo* handleLcLList(CmLListCp *lcLL, uint8_t lcId, ActionTypeLL action)
 {
    CmLList  *node = NULLP;
    LcInfo *lcNode = NULLP;

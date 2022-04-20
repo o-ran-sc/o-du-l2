@@ -15433,7 +15433,7 @@ void freeAperDecodePagingMsg(Paging_t   *paging)
 uint8_t procPagingMsg(F1AP_PDU_t *f1apMsg) 
 {
    uint8_t ieIdx = 0, cellListIdx = 0;
-   uint16_t cellId = 0, cellIdx = 0;
+   uint16_t cellId = 0;
    Paging_t   *paging = NULLP;
    PagingCell_list_t  *pagingCelllist = NULLP;
    PagingCell_ItemIEs_t *pagingCellItemIes = NULLP;
@@ -15462,7 +15462,7 @@ uint8_t procPagingMsg(F1AP_PDU_t *f1apMsg)
                   case ProtocolIE_ID_id_UEIdentityIndexValue:
                      {
                         bitStringToInt(&paging->protocolIEs.list.array[ieIdx]->value.choice.UEIdentityIndexValue.choice.indexLength10,\
-                                         &tmpPagingParam->ueId);
+                                         &tmpPagingParam->pagUeId);
                         break;
                      }
 
@@ -15518,19 +15518,9 @@ uint8_t procPagingMsg(F1AP_PDU_t *f1apMsg)
                                  pagingCellItemIes = (PagingCell_ItemIEs_t *)pagingCelllist->list.array[cellListIdx];
                                  pagingCellItem = &pagingCellItemIes->value.choice.PagingCell_Item;
                                  bitStringToInt(&pagingCellItem->nRCGI.nRCellIdentity, &cellId);
-                                 GET_CELL_IDX(cellId, cellIdx);
-                                 if(duCb.actvCellLst[cellIdx])
+                                 if(processPagingMsg(cellId, tmpPagingParam) != ROK)
                                  {
-                                    /* fill Ue Paging information*/
-                                    if(FillPagingInfoInCellCb(duCb.actvCellLst[cellIdx], tmpPagingParam)!= ROK)
-                                    {
-                                       DU_LOG("\nERROR  --> DU APP : CellCb:%d not present to fill UE Paging Information",cellIdx);
-                                       continue;
-                                    }
-                                 }
-                                 else
-                                 {
-                                    DU_LOG("\nERROR  --> F1AP : CellId:%d Not in Activelist",cellId);
+                                    DU_LOG("\nERROR  --> DU APP : Paging Processing Failed at CellId:%d",cellId);
                                     continue;
                                  }
                               }
