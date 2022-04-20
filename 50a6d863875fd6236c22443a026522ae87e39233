@@ -18,6 +18,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "922a4940_ff1581f2",
+        "filename": "src/cm/common_def.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-04-20T04:23:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2920d245_e1178489",
+      "revId": "50a6d863875fd6236c22443a026522ae87e39233",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "07003d96_68347437",
@@ -31,6 +49,30 @@
       "writtenOn": "2022-04-19T12:42:12Z",
       "side": 1,
       "message": "can we move this print function as well to utils.c",
+      "range": {
+        "startLine": 678,
+        "startChar": 17,
+        "endLine": 678,
+        "endChar": 30
+      },
+      "revId": "50a6d863875fd6236c22443a026522ae87e39233",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "551d7ebf_93dd8d36",
+        "filename": "src/du_app/du_cell_mgr.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 678,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-04-20T04:23:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "07003d96_68347437",
       "range": {
         "startLine": 678,
         "startChar": 17,
