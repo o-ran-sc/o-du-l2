@@ -20,7 +20,7 @@
 #define __ODU_COMMON_CODEC_H__
 
 /*Buffer length which is used for allocation of encoded F1AP messages at CU*/
-#define ENC_BUF_MAX_LEN 2000
+#define ENC_BUF_MAX_LEN 5000
 #define ENCODE_FAIL -1
 #define TEID_BIT_SIZE 24
 

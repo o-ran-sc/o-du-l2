@@ -1298,6 +1298,146 @@ e_PCCH_Config__ns convertNsValueToEnum(uint8_t numPO)
             return PCCH_Config__ns_one;
    }
 }
+
+/************************************************************************
+ *
+ * @brief Converts actual values into enum value of SSB Periodicity in SIB
+ *
+ * @details
+ *
+ *    Function : convertSsbPeriodicityValueToEnumForSib
+ *
+ *    Functionality: 
+ *          Converts actual values into enum value of SSB Periodicity in SIB
+ *    
+ *
+ * @params[in] Actual value of SSB Periodicity
+ * @return  Enum value of SSB Periodicity
+ *
+ * **********************************************************************/
+e_ServingCellConfigCommonSIB__ssb_PeriodicityServingCell convertSsbPeriodicityValueToEnumForSib(uint16_t ssbPeriodicity)
+{
+   switch(ssbPeriodicity)
+   {
+      case 5:
+         return ServingCellConfigCommonSIB__ssb_PeriodicityServingCell_ms5;
+      case 10:
+         return ServingCellConfigCommonSIB__ssb_PeriodicityServingCell_ms10;
+      case 20:
+         return ServingCellConfigCommonSIB__ssb_PeriodicityServingCell_ms20;
+      case 40:
+         return ServingCellConfigCommonSIB__ssb_PeriodicityServingCell_ms40;
+      case 80:
+         return ServingCellConfigCommonSIB__ssb_PeriodicityServingCell_ms80;
+      case 160:
+         return ServingCellConfigCommonSIB__ssb_PeriodicityServingCell_ms160;
+      default:
+         return ServingCellConfigCommonSIB__ssb_PeriodicityServingCell_ms20;
+   }
+}
+
+/************************************************************************
+ *
+ * @brief Converts actual values into enum value of SSB Periodicity
+ *
+ * @details
+ *
+ *    Function : convertSsbPeriodicityValueToEnum
+ *
+ *    Functionality: 
+ *          Converts actual values into enum value of SSB Periodicity
+ *    
+ *
+ * @params[in] Actual value of SSB Periodicity
+ * @return  Enum value of SSB Periodicity
+ *
+ * **********************************************************************/
+e_ServingCellConfigCommon__ssb_periodicityServingCell convertSsbPeriodicityValueToEnum(uint16_t ssbPeriodicity)
+{
+   switch(ssbPeriodicity)
+   {
+      case 5:
+         return ServingCellConfigCommon__ssb_periodicityServingCell_ms5;
+      case 10:
+         return ServingCellConfigCommon__ssb_periodicityServingCell_ms10;
+      case 20:
+         return ServingCellConfigCommon__ssb_periodicityServingCell_ms20;
+      case 40:
+         return ServingCellConfigCommon__ssb_periodicityServingCell_ms40;
+      case 80:
+         return ServingCellConfigCommon__ssb_periodicityServingCell_ms80;
+      case 160:
+         return ServingCellConfigCommon__ssb_periodicityServingCell_ms160;
+      default:
+         return ServingCellConfigCommon__ssb_periodicityServingCell_ms20;
+   }
+}
+
+/************************************************************************
+ *
+ * @brief Converts actual values into enum value of SSB per RACH occassion
+ *        for CFRA
+ *
+ * @details
+ *
+ *    Function : convertCFRASsbPerRachOccasionValueToEnum
+ *
+ *    Functionality: 
+ *          Converts actual values into enum value of SSB occasion per RACH 
+ *          occassion for CFRA
+ *
+ * @params[in] Actual value of SSB Occasion per RACH
+ * @return  Enum value
+ *
+ * **********************************************************************/
+e_CFRA__occasions__ssb_perRACH_Occasion convertCFRASsbPerRachOccasionValueToEnum(uint8_t ssbOccPerRach)
+{
+   switch(ssbOccPerRach)
+   {
+      case 1:
+         return CFRA__occasions__ssb_perRACH_Occasion_one;
+      case 2:
+         return CFRA__occasions__ssb_perRACH_Occasion_two;
+      case 4:
+         return CFRA__occasions__ssb_perRACH_Occasion_four;
+      case 8:
+         return CFRA__occasions__ssb_perRACH_Occasion_eight;
+      case 16:
+         return CFRA__occasions__ssb_perRACH_Occasion_sixteen;
+      default:
+         return CFRA__occasions__ssb_perRACH_Occasion_one;
+   }
+}
+
+/************************************************************************
+ *
+ * @brief Converts actual values into enum value of DMRS Type A Position
+ *        for CFRA
+ *
+ * @details
+ *
+ *    Function : convertDmrsTypeAPosValueToEnum
+ *
+ *    Functionality: 
+ *          Converts actual values into enum value of DMRS Type A Position
+ *
+ * @params[in] Actual value of DMRS Type A Position
+ * @return  Enum value
+ *
+ * **********************************************************************/
+e_ServingCellConfigCommon__dmrs_TypeA_Position convertDmrsTypeAPosValueToEnum(uint8_t dmrsTypeAPos)
+{
+   switch(dmrsTypeAPos)
+   {
+      case 2:
+         return ServingCellConfigCommon__dmrs_TypeA_Position_pos2;
+      case 3:
+         return ServingCellConfigCommon__dmrs_TypeA_Position_pos3;
+      default:
+         return ServingCellConfigCommon__dmrs_TypeA_Position_pos2;
+   }
+}
+
 /**********************************************************************
   End of file
  **********************************************************************/
