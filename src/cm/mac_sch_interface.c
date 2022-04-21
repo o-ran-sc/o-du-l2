@@ -356,6 +356,66 @@ uint8_t packMacSchModUeConfigReq(Pst *pst, SchUeCfg  *ueCfg)
 }
 
 /*******************************************************************
+ *
+ * @brief Pack and Send RACH resource Request from MAC to SCH
+ *
+ * @details
+ *
+ *    Function : packMacSchRachRsrcReq
+ *
+ *    Functionality:
+ *       Pack and Send RACH resouece Request from MAC to SCH
+ *
+ * @params[in] Post structure
+ *             RACH resource request
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t packMacSchRachRsrcReq(Pst *pst, SchRachRsrcReq *schRachRsrcReq)
+{
+   if((pst->selector == ODU_SELECTOR_LC) || (pst->selector == ODU_SELECTOR_LC))
+   {
+      /* TODO */
+   }
+   else
+   {
+      return RFAILED; 
+   }
+   return ROK;
+}
+
+/*******************************************************************
+ *
+ * @brief Pack and Send RACH resource Response from SCH to MAC
+ *
+ * @details
+ *
+ *    Function : packSchRachRsrcRsp
+ *
+ *    Functionality:
+ *       Pack and Send RACH resource Response from SCH to MAC
+ *
+ * @params[in] Post structure
+ *             RACH resource response
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t packSchRachRsrcRsp(Pst *pst, SchRachRsrcRsp *schRachRsrcRsp)
+{
+   if((pst->selector == ODU_SELECTOR_LC) || (pst->selector == ODU_SELECTOR_LC))
+   {  
+      /* TODO */
+   }
+   else
+   {  
+      return RFAILED;
+   }
+   return ROK;
+}
+
+/*******************************************************************
 *
 * @brief Pack and Send UE Delete Request from MAC to SCH
 *

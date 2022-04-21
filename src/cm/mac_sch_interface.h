@@ -41,6 +41,8 @@
 #define EVENT_SLICE_CFG_RSP_TO_MAC   22
 #define EVENT_SLICE_RECFG_REQ_TO_SCH 23
 #define EVENT_SLICE_RECFG_RSP_TO_MAC 24
+#define EVENT_RACH_RESOURCE_REQUEST_TO_SCH 25
+#define EVENT_RACH_RESOURCE_RESPONSE_TO_MAC 26
 
 /*macros*/
 #define MAX_SSB_IDX 1 /* forcing it as 1 for now. Right value is 64 */
@@ -621,7 +623,9 @@ typedef struct schRachCfg
    uint16_t     rootSeqIdx;        /* Root sequence index */
    uint8_t      numRootSeq;        /* Number of root sequences required for FD */
    uint16_t     k1;                /* Frequency Offset for each FD */
+   uint8_t      totalNumRaPreamble; /* Total number of RA preambles */
    uint8_t      ssbPerRach;        /* SSB per RACH occassion */
+   uint8_t      numCbPreamblePerSsb; /* Number of CB preamble per SSB */
    uint8_t      prachMultCarrBand; /* Presence of Multiple carriers in Band */
    uint8_t      raContResTmr;      /* RA Contention Resoultion Timer */
    uint8_t      rsrpThreshSsb;     /* RSRP Threshold SSB */
@@ -1590,6 +1594,34 @@ typedef struct schUeCfgRsp
    SchFailureCause cause;
 }SchUeCfgRsp;
 
+typedef struct schRachRsrcReq
+{
+   uint16_t cellId;
+   uint16_t crnti;
+   uint8_t  numSsb;
+   uint8_t  ssbIdx[MAX_NUM_SSB];
+}SchRachRsrcReq;
+
+typedef struct schCfraSsbResource
+{
+   uint8_t  ssbIdx;
+   uint8_t  raPreambleIdx;
+}SchCfraSsbResource;
+
+typedef struct schCfraRsrc
+{
+   uint8_t   numSsb;
+   SchCfraSsbResource ssbResource[MAX_NUM_SSB];
+}SchCfraResource;
+
+typedef struct schRachRsrcRsp
+{
+   uint16_t   cellId;
+   uint16_t   crnti;
+   SchMacRsp  result;
+   SchCfraResource  cfraResource;
+}SchRachRsrcRsp;
+
 typedef struct schUeDelete
 {
    uint16_t   cellId;
@@ -1734,6 +1766,14 @@ typedef uint8_t (*SchUeReCfgRspFunc) ARGS((
 	 Pst         *pst,           /* Post structure */
 	 SchUeCfgRsp *cfgRsp));       /* Scheduler UE Cfg response */
 
+typedef uint8_t (*MacSchRachRsrcReqFunc) ARGS((
+    Pst         *pst,                    /* Post structure */
+    SchRachRsrcReq *schRachRsrcReq));    /* RACH resource request to SCH */
+
+typedef uint8_t (*SchRachRsrcRspFunc) ARGS((
+   Pst            *pst,                 /* Post structure */
+   SchRachRsrcRsp *schRachRsrcRsp));    /* RACH resource request to MAC */
+
 typedef uint8_t (*MacSchUeDeleteReqFunc) ARGS((
    Pst         *pst,           /* Post structure */
    SchUeDelete *schUeDel)); /*Scheduler UE Del*/
@@ -1767,6 +1807,7 @@ typedef uint8_t (*SchSliceReCfgRspFunc)    ARGS((
 	 Pst            *pst,            /* Post Structure */                         
 	 SchSliceCfgRsp  *schSliceReCfgRsp /* Cell ReCfg Cfm */
 	 ));
+
 /* function declarations */
 uint8_t packMacSchSlotInd(Pst *pst, SlotTimingInfo *slotInd);
 uint8_t packSchMacDlAlloc(Pst *pst, DlSchedInfo  *dlSchedInfo);
@@ -1800,6 +1841,10 @@ uint8_t packMacSchModUeConfigReq(Pst *pst, SchUeCfg *ueCfgToSch);
 uint8_t MacSchModUeConfigReq(Pst *pst, SchUeCfg *ueCfgToSch);
 uint8_t packSchUeReconfigRsp(Pst *pst, SchUeCfgRsp *cfgRsp);
 uint8_t MacProcSchUeReconfigRsp(Pst *pst, SchUeCfgRsp *cfgRsp);
+uint8_t packMacSchRachRsrcReq(Pst *pst, SchRachRsrcReq *schRachRsrcReq);
+uint8_t MacSchRachRsrcReq(Pst *pst, SchRachRsrcReq *schRachRsrcReq);
+uint8_t packSchRachRsrcRsp(Pst *pst, SchRachRsrcRsp *schRachRsrcRsp);
+uint8_t MacProcSchRachRsrcRsp(Pst *pst, SchRachRsrcRsp *schRachRsrcRsp);
 uint8_t packMacSchUeDeleteReq(Pst *pst,  SchUeDelete *schUeDel);
 uint8_t MacSchUeDeleteReq(Pst *pst, SchUeDelete  *ueDelete);
 uint8_t packSchUeDeleteRsp(Pst *pst, SchUeDeleteRsp  *delRsp);

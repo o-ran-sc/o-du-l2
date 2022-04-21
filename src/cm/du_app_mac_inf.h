@@ -80,6 +80,8 @@
 #define EVENT_MAC_SLICE_RECFG_REQ    218
 #define EVENT_MAC_SLICE_RECFG_RSP    219
 #define EVENT_MAC_SLOT_IND           220
+#define EVENT_MAC_RACH_RESOURCE_REQ  221
+#define EVENT_MAC_RACH_RESOURCE_RSP  222
 
 #define BSR_PERIODIC_TIMER_SF_10 10
 #define BSR_RETX_TIMER_SF_320 320
@@ -572,7 +574,9 @@ typedef struct prachCfg
    uint8_t       msg1Fdm;             /* PRACH FDM (1,2,4,8) */
    uint8_t       rootSeqLen;          /* Root sequence length */
    PrachFdmInfo  fdm[8];              /* FDM info */
+   uint8_t       totalNumRaPreamble;  /* Total number of RA preambles */
    uint8_t       ssbPerRach;          /* SSB per RACH occassion */
+   uint8_t       numCbPreamblePerSsb; /* Number of CB preamble per SSB */
    bool          prachMultCarrBand;   /* Multiple carriers in Band */
    uint8_t       prachRestrictedSet; /* Support for PRACH restricted set */
    uint8_t       raContResTmr;        /* RA Contention Resoultion Timer */
@@ -1291,6 +1295,35 @@ typedef struct ueCfgRsp
    SCellFailInfo  *failedSCellList;
 }MacUeCfgRsp;
 
+typedef struct rachRsrcReq
+{
+   uint16_t cellId;
+   uint16_t ueId;
+   uint8_t  numSsb;
+   uint8_t  ssbIdx[MAX_NUM_SSB];
+}MacRachRsrcReq;
+
+typedef struct macCfraSsbResource
+{
+   uint8_t  ssbIdx;
+   uint8_t  raPreambleIdx;
+}MacCfraSsbResource;
+
+typedef struct macCfraResource
+{
+   uint8_t   numSsb;
+   MacCfraSsbResource ssbResource[MAX_NUM_SSB];
+}MacCfraResource;
+
+typedef struct macRachRsrcRsp
+{
+   uint16_t   cellId;
+   uint16_t   ueId;
+   MacRsp     result;
+   uint16_t   newCrnti;     /* This parameter maps to 3GPP TS 38.331 newUE-Identity */
+   MacCfraResource  cfraResource;
+}MacRachRsrcRsp;
+
 typedef struct ueDelete
 {
     uint16_t cellId;
@@ -1424,6 +1457,16 @@ typedef uint8_t (*DuMacUeReconfigReq) ARGS((
 	 Pst           *pst,
 	 MacUeCfg      *ueCfg ));
 
+/* RACH Resource Request from DU APP to MAC*/
+typedef uint8_t (*DuMacRachRsrcReq) ARGS((
+    Pst            *pst,
+    MacRachRsrcReq *rachRsrcReq));
+
+/* RACH Resource Response from MAC to DU APP*/
+typedef uint8_t (*MacDuRachRsrcRspFunc) ARGS((
+    Pst            *pst,
+    MacRachRsrcRsp *rachRsrcRsp));
+
 /* UE Delete Request from DU APP to MAC*/
 typedef uint8_t (*DuMacUeDeleteReq) ARGS((
      Pst           *pst,
@@ -1500,6 +1543,12 @@ uint8_t DuProcMacUeCfgRsp(Pst *pst, MacUeCfgRsp *cfgRsp);
 uint8_t packDuMacUeReconfigReq(Pst *pst, MacUeCfg *ueCfg);
 uint8_t unpackMacUeReconfigReq(DuMacUeReconfigReq func, Pst *pst, Buffer *mBuf);
 uint8_t MacProcUeReconfigReq(Pst *pst, MacUeCfg *ueCfg);
+uint8_t packDuMacRachRsrcReq(Pst *pst, MacRachRsrcReq *rachRsrcReq);
+uint8_t unpackMacRachRsrcReq(DuMacRachRsrcReq func, Pst *pst, Buffer *mBuf);
+uint8_t MacProcRachRsrcReq(Pst *pst, MacRachRsrcReq *rachRsrcReq);
+uint8_t packDuMacRachRsrcRsp(Pst *pst, MacRachRsrcRsp *rachRsrcRsp);
+uint8_t unpackDuMacRachRsrcRsp(MacDuRachRsrcRspFunc func, Pst *pst, Buffer *mBuf);
+uint8_t DuProcMacRachRsrcRsp(Pst *pst, MacRachRsrcRsp *rachRsrcRsp);
 uint8_t packDuMacUeDeleteReq(Pst *pst, MacUeDelete *ueDelete);
 uint8_t MacProcUeDeleteReq(Pst *pst,  MacUeDelete *ueDelete);
 uint8_t unpackMacUeDeleteReq(DuMacUeDeleteReq func, Pst *pst, Buffer *mBuf);

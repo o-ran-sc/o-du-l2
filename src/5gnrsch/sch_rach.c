@@ -42,6 +42,13 @@
 #include "sch.h"
 #include "sch_utils.h"
 
+SchRachRsrcRspFunc SchRachRsrcRspOpts[] =
+{
+   packSchRachRsrcRsp,      /* LC */
+   MacProcSchRachRsrcRsp,   /* TC */
+   packSchRachRsrcRsp       /* LWLC */
+};
+
 /**
  * @brief Checks if PRACH can be scheduled in current slot
  *
@@ -182,6 +189,153 @@ void schPrachResAlloc(SchCellCb *cell, UlSchedInfo *ulSchedInfo, SlotTimingInfo 
    ulSchedInfo->prachSchInfo.numRa          = numRa;
    ulSchedInfo->prachSchInfo.prachStartSymb = prachStartSymbol;
    DU_LOG("\nINFO  --> SCH : RACH occassion set for slot %d", prachOccasionTimingInfo.slot);
+}
+
+/**
+ * @brief Process RACH resource request for CFRA
+ *
+ * @details
+ *
+ *     Function : MacSchRachRsrcReq
+ *     
+ *     This function processes RACH resorce request 
+ *     from MAC for CFRA. It assigns a dedicated preamble
+ *     to the UE and sends the same in RACH resource
+ *     response
+ *     
+ *  @param[in]  Post structure
+ *  @param[in]  RACH resource request
+ *  @return     ROK
+ *              RFAILED
+ **/
+uint8_t MacSchRachRsrcReq(Pst *pst, SchRachRsrcReq *schRachRsrcReq)
+{
+   uint8_t      ssbIdx = 0, cfraSsbIdx = 0;
+   uint8_t      firstCFPreambleIndex = 0, lastCFPreambleIndex = 0;
+   uint16_t     cellIdx = 0;
+   uint64_t     mask = 0;
+   Pst          rspPst;
+   Inst         inst = pst->dstInst - SCH_INST_START;
+   SchCellCb    *cellCb = NULLP;
+   SchUeCb      *ueCb = NULLP;
+   SchRachRsrcRsp *rachRsrcRsp = NULLP;
+
+   DU_LOG("\nINFO  -->  SCH : Received RACH resource request for Cell ID [%d] CRNTI [%d]", \
+         schRachRsrcReq->cellId, schRachRsrcReq->crnti);
+
+ /* Fill RACH resource response to MAC */
+   SCH_ALLOC(rachRsrcRsp, sizeof(SchRachRsrcRsp));
+   if(!rachRsrcRsp)
+   {   
+      DU_LOG("\nERROR  -->  SCH : Memory allocation failed for RACH resource response");
+      return RFAILED;
+   }   
+   rachRsrcRsp->cellId = schRachRsrcReq->cellId;
+   rachRsrcRsp->crnti = schRachRsrcReq->crnti;
+   rachRsrcRsp->result = RSP_OK;
+
+   /* Fill SCH to MAC Pst structure */
+   memset(&rspPst, 0, sizeof(Pst));
+   FILL_PST_SCH_TO_MAC(rspPst, inst);
+   rspPst.event = EVENT_RACH_RESOURCE_RESPONSE_TO_MAC;
+
+   /* Fetch Cell CB */
+   for(cellIdx = 0; cellIdx < MAX_NUM_CELL; cellIdx++)
+   {
+      if((schCb[inst].cells[cellIdx]) && (schCb[inst].cells[cellIdx]->cellId == schRachRsrcReq->cellId))
+      {
+         cellCb = schCb[inst].cells[cellIdx];
+         break;
+      }
+   }
+   
+   if(cellCb)
+   {
+      /* Fetch UE CB */
+      ueCb = schGetUeCb(cellCb, schRachRsrcReq->crnti);
+      if(ueCb->crnti != schRachRsrcReq->crnti)
+      {
+         DU_LOG("\nERROR  -->  SCH : CRNTI [%d] not found" ,schRachRsrcReq->crnti);
+         rachRsrcRsp->result = RSP_NOK;
+      }
+   }
+   else
+   {
+      DU_LOG("\nERROR  -->  SCH : Cell ID [%d] not found" ,schRachRsrcReq->cellId);
+      rachRsrcRsp->result = RSP_NOK;
+   }
+
+   /* Allocate SSB resource if no failure has occurred until this step */
+   if(rachRsrcRsp->result == RSP_OK)
+   {
+      /* Find first free preamble index from the pool CF preambles 
+       * Preamble index from 0 to (numCbPreamblePerSsb-1) is used for CBRA 
+       * Preamble index from numCbPreamblePerSsb to totalNumOfRAPreamble
+       * is used for CFRA */
+      firstCFPreambleIndex = cellCb->cellCfg.schRachCfg.numCbPreamblePerSsb;
+      lastCFPreambleIndex = cellCb->cellCfg.schRachCfg.totalNumRaPreamble;
+
+      /* Allocate resource for each SSB index requested */
+      for(ssbIdx = 0; ssbIdx < schRachRsrcReq->numSsb; ssbIdx++)
+      {
+         /* Find the first CF Preamble index not dedicated to any UE currently */
+         while(firstCFPreambleIndex <= lastCFPreambleIndex)
+         {
+            mask = 1 << firstCFPreambleIndex;
+            if(cellCb->dedPreambleBitMap & mask)
+            {
+               firstCFPreambleIndex++;
+               continue;
+            }
+            else
+               break;
+         }
+
+         /* If firstCFPreambleIndex > lastCFPreambleIndex, it means all
+          * dedicated preambles are in use currently. In such a case, CBRA
+          * should be initiated. 
+          * If a dedicated preamble is found, use this for CFRA and mark it as
+          * IN-USE in the bitmap.
+          * Considering only CFRA scenario for now. */
+         if(firstCFPreambleIndex <= lastCFPreambleIndex)
+         {
+            ueCb->cfraResource.ssbResource[cfraSsbIdx].ssbIdx = schRachRsrcReq->ssbIdx[ssbIdx]; 
+            ueCb->cfraResource.ssbResource[cfraSsbIdx].raPreambleIdx = firstCFPreambleIndex;
+            SET_ONE_BIT(firstCFPreambleIndex, cellCb->dedPreambleBitMap);
+            cfraSsbIdx++;
+            firstCFPreambleIndex++;
+         }
+         else
+         {
+            DU_LOG("\nINFO : SCH : No dedicated preameble availble to assign to ssbIdx[%d]", schRachRsrcReq->ssbIdx[ssbIdx]);
+            /* Breaking out of for loop since no dedicated preambles are available
+             * for remaining ssbIdx too */
+            break;
+         }
+      } /* End of for */
+
+      ueCb->cfraResource.numSsb = cfraSsbIdx;
+
+      if(ueCb->cfraResource.numSsb == 0)
+      {
+         /* If numSsb is 0, it means no CFRA resource was alloacted for any of the
+          * SSB Idx, hence send a negative response */
+         rachRsrcRsp->result = RSP_NOK;
+      }
+      else
+      {   
+         /* Send ssb resource information to MAC in RACH resource response */
+         rachRsrcRsp->cfraResource.numSsb = ueCb->cfraResource.numSsb;
+         memcpy(rachRsrcRsp->cfraResource.ssbResource, ueCb->cfraResource.ssbResource, \
+            ueCb->cfraResource.numSsb * sizeof(SchCfraSsbResource));
+      }
+   } /* End of if */
+
+   /* Free RACH resource request memory allocated by MAC */
+   SCH_FREE(schRachRsrcReq, sizeof(SchRachRsrcReq));
+
+   /* Send RACH resource response to MAC */
+   return (SchRachRsrcRspOpts[rspPst.selector](&rspPst, rachRsrcRsp));
 }
 
 /**
