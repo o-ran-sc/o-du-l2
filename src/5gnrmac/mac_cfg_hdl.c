@@ -292,9 +292,10 @@ uint8_t MacSchCellCfgReq(Pst *pst, MacCellCfg *macCellCfg)
    schCellCfg.schRachCfg.rootSeqIdx    = macCellCfg->prachCfg.fdm[0].rootSeqIdx;
    schCellCfg.schRachCfg.numRootSeq    = macCellCfg->prachCfg.fdm[0].numRootSeq;
    schCellCfg.schRachCfg.k1            = macCellCfg->prachCfg.fdm[0].k1;
+   schCellCfg.schRachCfg.totalNumRaPreamble = macCellCfg->prachCfg.totalNumRaPreamble;
    schCellCfg.schRachCfg.ssbPerRach    = macCellCfg->prachCfg.ssbPerRach;
-   schCellCfg.schRachCfg.prachMultCarrBand = \
-					     macCellCfg->prachCfg.prachMultCarrBand;
+   schCellCfg.schRachCfg.numCbPreamblePerSsb = macCellCfg->prachCfg.numCbPreamblePerSsb;
+   schCellCfg.schRachCfg.prachMultCarrBand = macCellCfg->prachCfg.prachMultCarrBand;
    schCellCfg.schRachCfg.raContResTmr  = macCellCfg->prachCfg.raContResTmr;
    schCellCfg.schRachCfg.rsrpThreshSsb = macCellCfg->prachCfg.rsrpThreshSsb;
    schCellCfg.schRachCfg.raRspWindow   = macCellCfg->prachCfg.raRspWindow;

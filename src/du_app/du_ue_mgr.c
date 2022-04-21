@@ -81,11 +81,18 @@ DuMacUeReconfigReq packMacUeReconfigReqOpts[] =
    packDuMacUeReconfigReq      /* Light weight-loose coupling */
 };
 
+DuMacRachRsrcReq packMacRachRsrcReqOpts[] = 
+{
+   packDuMacRachRsrcReq,      /* Loose coupling */
+   MacProcRachRsrcReq,        /* Tight coupling */
+   packDuMacRachRsrcReq       /* Light weight-loose coupling */
+};
+
 DuRlcDlUserDataToRlcFunc duSendRlcDlUserDataToRlcOpts[] =
 {
-   packRlcDlUserDataToRlc,        /* Loose coupling */ 
+   packRlcDlUserDataToRlc,     /* Loose coupling */ 
    RlcProcDlUserDataTransfer,  /* Tight coupling */
-   packRlcDlUserDataToRlc         /* Light weight-loose coupling */
+   packRlcDlUserDataToRlc      /* Light weight-loose coupling */
 };
 
 DuMacUeDeleteReq packMacUeDeleteReqOpts[] =
@@ -1803,6 +1810,127 @@ uint8_t duBuildAndSendUeCreateReqToMac(uint16_t cellId, uint8_t gnbDuUeF1apId, D
 
 /*******************************************************************
  *
+ * @brief Build and send RACH Resource request to MAC
+ *
+ * @details
+ *
+ *    Function : duBuildAndSendRachRsrcReqToMac
+ *    Functionality:
+ *        Build and send RACH Resource request to MAC
+ *
+ * @params[in] Cell Id
+ *             UE Id
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t duBuildAndSendRachRsrcReqToMac(uint16_t cellId, uint16_t ueId)
+{
+   uint16_t cellIdx = 0, ssbIdx = 0;
+   Pst pst;
+   MacRachRsrcReq *rachRsrcReq = NULLP;
+
+   GET_CELL_IDX(cellId, cellIdx);
+   if(duCb.actvCellLst[cellIdx] == NULLP)
+   {
+      DU_LOG("\nERROR  -->  DU APP : Cell Id [%d] not found in duBuildAndSendRachRsrcReqToMac()", cellId);
+      return RFAILED;
+   }
+
+   DU_ALLOC_SHRABL_BUF(rachRsrcReq, sizeof(MacRachRsrcReq));
+   if(!rachRsrcReq)
+   {
+      DU_LOG("\nERROR  -->  DU APP : Failed to allocate memory for RACH Resource Request in \
+            duBuildAndSendRachRsrcReqToMac()");
+      return RFAILED;
+   }
+
+   rachRsrcReq->cellId = cellId;
+   rachRsrcReq->ueId = ueId;
+   rachRsrcReq->numSsb = duCfgParam.macCellCfg.prachCfg.ssbPerRach;
+   for(ssbIdx = 0; ssbIdx < rachRsrcReq->numSsb; ssbIdx++)
+   {
+      rachRsrcReq->ssbIdx[ssbIdx] = ssbIdx;
+   }
+
+   /* Fill Pst */
+   FILL_PST_DUAPP_TO_MAC(pst, EVENT_MAC_RACH_RESOURCE_REQ);
+   
+   if(((*packMacRachRsrcReqOpts[pst.selector])(&pst, rachRsrcReq)) != ROK)
+   {
+      DU_LOG("\nERROR  -->  DU_APP : Failure in sending RACH Resource Request to MAC at \
+            duBuildAndSendRachRsrcReqToMac()");
+      DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, rachRsrcReq, sizeof(MacRachRsrcReq));
+      return RFAILED;
+   }
+
+   return ROK;
+}
+
+/*******************************************************************
+ *
+ * @brief Process RACH resource response from MAC
+ *
+ * @details
+ *
+ *    Function : DuProcMacRachRsrcRsp
+ *    Functionality:
+ *        Process RACH resource response from MAC
+ *
+ * @params[in] Post structure
+ *             RACH resource response
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t DuProcMacRachRsrcRsp(Pst *pst, MacRachRsrcRsp *rachRsrcRsp)
+{
+   uint8_t  ret = RFAILED;
+   uint16_t cellIdx = 0;
+   DuCellCb *cellCb = NULLP;
+   DuUeCb   *ueCb = NULLP;
+
+   DU_LOG("\nINFO  -->  DU APP : Received RACH Resource Response from MAC. Cell ID [%d] UE ID [%d]",
+         rachRsrcRsp->cellId, rachRsrcRsp->ueId);
+
+   if(rachRsrcRsp->result == MAC_DU_APP_RSP_OK)
+   {
+      DU_LOG("\nINFO : DU APP : RACH Resource Response from MAC : Result [SUCCESS]");
+
+      /* Fetch Cell Cb */
+      GET_CELL_IDX(rachRsrcRsp->cellId, cellIdx);
+      if(duCb.actvCellLst[cellIdx] && (duCb.actvCellLst[cellIdx]->cellId == rachRsrcRsp->cellId))
+      {
+         cellCb = duCb.actvCellLst[cellIdx];
+
+         /* Fetch UE CB */
+         if(cellCb->ueCb[rachRsrcRsp->ueId-1].gnbDuUeF1apId == rachRsrcRsp->ueId)
+         {
+            ueCb = &cellCb->ueCb[rachRsrcRsp->ueId-1];
+
+            /* Store the assigned CF-RA resources */
+            memcpy(&ueCb->cfraResource, &rachRsrcRsp->cfraResource, sizeof(MacCfraResource));
+
+            /* RACH resources allocated to UE is sent to CU in UE Context Setup Response
+             * along with the result of UE Context setup requested by CU */
+            if((ret = BuildAndSendUeCtxtRsp(rachRsrcRsp->cellId, rachRsrcRsp->ueId)) != ROK)
+               DU_LOG("\nERROR  ->  DU APP : Failure in BuildAndSendUeCtxtRsp()");
+         }
+         else
+            DU_LOG("\nERROR  -->  DU APP : UE ID [%d] not found in DuProcMacRachRsrcRsp", rachRsrcRsp->ueId);
+      }
+      else
+         DU_LOG("\nERROR  -->  DU APP : Cell ID [%d] not found in DuProcMacRachRsrcRsp", rachRsrcRsp->cellId);
+   }
+   else
+      DU_LOG("\nINFO : DU APP : RACH Resource Response from MAC : Result [FAILURE]");
+
+   DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, rachRsrcRsp, sizeof(MacRachRsrcRsp));
+   return ret;
+}
+
+/*******************************************************************
+ *
  * @brief To update DuUeCb Mac Cfg
  *
  * @details
@@ -2339,24 +2467,28 @@ uint8_t DuProcMacUeCfgRsp(Pst *pst, MacUeCfgRsp *cfgRsp)
             {
                duCb.actvCellLst[cellIdx]->ueCb[cfgRsp->ueId -1].macUeCfg.macUeCfgState = UE_CREATE_COMPLETE;
 
-              if((duCb.actvCellLst[cfgRsp->cellId -1]->ueCb[cfgRsp->ueId -1].ueState == UE_HANDIN_IN_PROGRESS) && 
-              (duCb.actvCellLst[cfgRsp->cellId -1]->ueCb[cfgRsp->ueId -1].macUeCfg.macUeCfgState == UE_CREATE_COMPLETE) &&
-              (duCb.actvCellLst[cfgRsp->cellId -1]->ueCb[cfgRsp->ueId -1].rlcUeCfg.rlcUeCfgState == UE_CREATE_COMPLETE))
-              {
-                 if((ret = duUpdateDuUeCbCfg(cfgRsp->ueId, cfgRsp->cellId)) == ROK)
-                 {
-                    if((BuildAndSendUeCtxtRsp(cfgRsp->cellId, cfgRsp->ueId)) != ROK)
-                    {
-                       DU_LOG("\nERROR  ->  DU APP : Failure in BuildAndSendUeCtxtRsp()");
-                       return RFAILED;
-                    }
-                 }
-                 else
-                 {
-                    DU_LOG("\nERROR  ->  DU APP : Failure in updating DU UE CB");
-                    return RFAILED;
-                 }
-              }
+               if((duCb.actvCellLst[cfgRsp->cellId -1]->ueCb[cfgRsp->ueId -1].ueState == UE_HANDIN_IN_PROGRESS) && 
+                     (duCb.actvCellLst[cfgRsp->cellId -1]->ueCb[cfgRsp->ueId -1].macUeCfg.macUeCfgState == UE_CREATE_COMPLETE) &&
+                     (duCb.actvCellLst[cfgRsp->cellId -1]->ueCb[cfgRsp->ueId -1].rlcUeCfg.rlcUeCfgState == UE_CREATE_COMPLETE))
+               {
+                  if((ret = duUpdateDuUeCbCfg(cfgRsp->ueId, cfgRsp->cellId)) == ROK)
+                  {
+                     /* If UE is in handover, RACH resource needs to be requested
+                      * from MAC for CFRA */
+                     if((duBuildAndSendRachRsrcReqToMac(cfgRsp->cellId, cfgRsp->ueId)) != ROK)
+                     {
+                        DU_LOG("\nERROR  --> DU APP : Failed to send RACH Resource Request to MAC");
+                        DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, cfgRsp, sizeof(MacUeCfgRsp));
+                        return RFAILED;
+                     }
+                  }
+                  else
+                  {
+                     DU_LOG("\nERROR  ->  DU APP : Failure in updating DU UE CB");
+                     DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, cfgRsp, sizeof(MacUeCfgRsp));
+                     return RFAILED;
+                  }
+               }
             }
          }
          else if(pst->event == EVENT_MAC_UE_RECONFIG_RSP)
@@ -2374,12 +2506,14 @@ uint8_t DuProcMacUeCfgRsp(Pst *pst, MacUeCfgRsp *cfgRsp)
                      if((BuildAndSendUeCtxtRsp(cfgRsp->cellId, cfgRsp->ueId)) != ROK)
                      {
                         DU_LOG("\nERROR  ->  DU APP : Failure in BuildAndSendUeCtxtRsp()");
+                        DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, cfgRsp, sizeof(MacUeCfgRsp));
                         return RFAILED;
                      }
                   }
                   else
                   {
                      DU_LOG("\nERROR  ->  DU APP : Failure in updating DU UE CB");
+                     DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, cfgRsp, sizeof(MacUeCfgRsp));
                      return RFAILED;
                   }
                }
@@ -2495,20 +2629,25 @@ uint8_t DuProcRlcUeCfgRsp(Pst *pst, RlcUeCfgRsp *cfgRsp)
             duCb.actvCellLst[cfgRsp->cellId -1]->ueCb[cfgRsp->ueId -1].rlcUeCfg.rlcUeCfgState = UE_CREATE_COMPLETE;
 
             if((duCb.actvCellLst[cfgRsp->cellId -1]->ueCb[cfgRsp->ueId -1].ueState == UE_HANDIN_IN_PROGRESS) &&
-            (duCb.actvCellLst[cfgRsp->cellId -1]->ueCb[cfgRsp->ueId -1].macUeCfg.macUeCfgState == UE_CREATE_COMPLETE) &&
-            (duCb.actvCellLst[cfgRsp->cellId -1]->ueCb[cfgRsp->ueId -1].rlcUeCfg.rlcUeCfgState == UE_CREATE_COMPLETE))
+                  (duCb.actvCellLst[cfgRsp->cellId -1]->ueCb[cfgRsp->ueId -1].macUeCfg.macUeCfgState == UE_CREATE_COMPLETE) &&
+                  (duCb.actvCellLst[cfgRsp->cellId -1]->ueCb[cfgRsp->ueId -1].rlcUeCfg.rlcUeCfgState == UE_CREATE_COMPLETE))
             {
                if((ret = duUpdateDuUeCbCfg(cfgRsp->ueId, cfgRsp->cellId)) == ROK)
                {
-                  if((BuildAndSendUeCtxtRsp(cfgRsp->cellId, cfgRsp->ueId)) != ROK)
+                  /* If UE is in handover, RACH resource needs to be requested
+                   * from MAC for CFRA */
+                  if((duBuildAndSendRachRsrcReqToMac(cfgRsp->cellId, cfgRsp->ueId)) != ROK)
                   {
-                     DU_LOG("\nERROR  -->  DU APP : Failure in BuildAndSendUeCtxtRsp");
+                     DU_LOG("\nERROR  --> DU APP : Failed to send RACH Resource Request to MAC");
+                     DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, cfgRsp, sizeof(MacUeCfgRsp));
+                     DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, cfgRsp, sizeof(RlcUeCfgRsp));
                      return RFAILED;
                   }
                }
                else
                {
                   DU_LOG("\nERROR  -->  DU APP : Failure in updating DU UE CB");
+                  DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, cfgRsp, sizeof(RlcUeCfgRsp));
                   return RFAILED;
                }
             }
@@ -2526,12 +2665,14 @@ uint8_t DuProcRlcUeCfgRsp(Pst *pst, RlcUeCfgRsp *cfgRsp)
                   if((BuildAndSendUeCtxtRsp(cfgRsp->cellId, cfgRsp->ueId)) != ROK)
                   {
                      DU_LOG("\nERROR  -->  DU APP : Failure in BuildAndSendUeCtxtRsp");
+                     DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, cfgRsp, sizeof(RlcUeCfgRsp));
                      return RFAILED;
                   }
                }
                else
                {
                   DU_LOG("\nERROR  -->  DU APP : Failure in updating DU UE CB");
+                  DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, cfgRsp, sizeof(RlcUeCfgRsp));
                   return RFAILED;
                }
             }
