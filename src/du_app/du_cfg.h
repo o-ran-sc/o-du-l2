@@ -25,22 +25,21 @@
 
 /* MACROS */
 #define DU_INST 0
-#define DU_ID 1
+#define DU_ID 2
 
 #ifndef O1_ENABLE
-
-#define DU_IP_V4_ADDR "192.168.130.85"
-#define CU_IP_V4_ADDR "192.168.130.86"
-#define RIC_IP_V4_ADDR "192.168.130.87"
-#define DU_PORT 38472
-#define CU_PORT 38472
-#define RIC_PORT 36421
+#define DU_IP_V4_ADDR "192.168.130.73"
+#define CU_IP_V4_ADDR "192.168.130.72"
+#define RIC_IP_V4_ADDR "192.168.130.70"
+#define DU_PORT 38473
+#define CU_PORT 38473
+#define RIC_PORT 36422
 #endif
 
 #define DU_EGTP_PORT  39001
 #define CU_EGTP_PORT  39003
-#define NR_PCI 1
-#define NR_CELL_ID 1
+#define NR_PCI 2
+#define NR_CELL_ID 2
 
 #define DU_NAME "ORAN_OAM_DU"
 #define CELL_TYPE SMALL
@@ -88,12 +87,7 @@
 #define NORMAL_CYCLIC_PREFIX 0
 #define OFFSET_TO_POINT_A 24                     /* PRB Offset to Point A */
 #define BETA_PSS BETA_PSS_0DB  
-#define SSB_PERIODICITY_5MS   5
-#define SSB_PERIODICITY_10MS  10
-#define SSB_PERIODICITY_20MS  20
-#define SSB_PERIODICITY_40MS  40
-#define SSB_PERIODICITY_80MS  80
-#define SSB_PERIODICITY_160MS 160
+#define SSB_PERIODICITY 20
 #define SSB_SUBCARRIER_OFFSET 0               
 #define SSB_MULT_CARRIER_BAND FALSE
 #define MULT_CELL_CARRIER FALSE
@@ -118,6 +112,7 @@
 #define NUM_UNUSED_ROOT_SEQ 0
 #define UNUSED_ROOT_SEQ 1
 #define SSB_PER_RACH 1
+#define CB_PREAMBLE_PER_SSB 8
 #define PRACH_MULT_CARRIER_BAND FALSE
 #define PRACH_PREAMBLE_RCVD_TGT_PWR  -74   
 #define NUM_RA_PREAMBLE  63
@@ -1149,8 +1144,8 @@ typedef struct rachCfgCommon
    long   pwrRampingStep;    /* Power ramping steps for PRACH */
    long   raRspWindow;       /* RA response window */
    long   numRaPreamble;     /* Total num of preamble used in random access */
-   uint8_t ssbPerRachOccPresent;
    long   numSsbPerRachOcc;  /* Numer of SSBs per RACH Occassion */
+   long   numCbPreamblePerSsb; /* Number of Contention-Based preamble per SSB */
    long   contResTimer;      /* Contention resolution timer */
    long   rsrpThreshSsb;
    uint8_t rootSeqIdxPresent;
@@ -1185,6 +1180,7 @@ typedef struct pucchCfgCommon
 
 typedef struct ulCfgCommon
 {
+   long   freqBandInd;  /* Uplink frequency band indicator */
    long   pMax;         /* Max UL transmission power that UE applies */
    long   locAndBw;     /* Frequency location and bandwidth */
    ScsSpecCarrier   ulScsCarrier; /* SCS Specific carrier */
@@ -1206,6 +1202,7 @@ typedef struct tddUlDlCfgCommon
 
 typedef struct srvCellCfgCommSib
 { 
+   long               scs;
    DlCfgCommon        dlCfg;
    UlCfgCommon        ulCfg;
    uint8_t            ssbPosInBurst;

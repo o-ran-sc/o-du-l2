@@ -110,11 +110,21 @@
 #include "UPTransportLayerInformation.h"
 #include "GTPTunnel.h"
 #include "SupportedSULFreqBandItem.h"
-#include "du_sys_info_hdl.h"
 #include "du_e2ap_msg_hdl.h"
 #include "du_f1ap_conversions.h"
 #include "CNUEPagingIdentity.h"
 #include "PCCH-Config.h"
+#include "SCS-SpecificCarrier.h"
+#include "FrequencyInfoDL.h"
+#include "DownlinkConfigCommon.h"
+#include "FrequencyInfoUL.h"
+#include "UplinkConfigCommon.h"
+#include "TDD-UL-DL-ConfigCommon.h"
+#include "RACH-ConfigDedicated.h"
+#include "CFRA-SSB-Resource.h"
+#include "BWP-UplinkCommon.h"
+#include "ReconfigurationWithSync.h"
+#include "du_sys_info_hdl.h"
 
 #ifdef O1_ENABLE
 #include "CmInterface.h"
@@ -6187,6 +6197,688 @@ uint8_t BuildSpCellCfgDed(DuUeCb *ueCb, ServingCellConfig_t *srvCellCfg)
 
    return ROK;
 }
+
+/*******************************************************************
+ *
+ * @brief Fills SCS specific carrier list in DL frequency info
+ *
+ * @details
+ *
+ *    Function : BuildScsSpecificCarrierListDl
+ *
+ *    Functionality: Fills SCS specific carrier list in DL frequency info
+ *
+ * @params[in] Pointer to struct FrequencyInfoDL__scs_SpecificCarrierList
+ *
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t BuildScsSpecificCarrierListDl(struct FrequencyInfoDL__scs_SpecificCarrierList *scsCarrierList)
+{
+   uint8_t elementCnt = 0, listIdx = 0;
+   ScsSpecCarrier duScsSpecCarrier = duCfgParam.sib1Params.srvCellCfgCommSib.dlCfg.dlScsCarrier;
+
+   elementCnt = ODU_VALUE_ONE;
+   scsCarrierList->list.count = elementCnt;
+   scsCarrierList->list.size = elementCnt * sizeof(SCS_SpecificCarrier_t *);
+
+   DU_ALLOC(scsCarrierList->list.array, scsCarrierList->list.size);
+   if(!scsCarrierList->list.array)
+   {
+      DU_LOG("\nERROR  -->  DU APP : Memory allocation failed for scs carrier list array \
+         in BuildScsSpecificCarrierListDl()");
+      return RFAILED;
+   }
+
+   for(listIdx = 0; listIdx < elementCnt; listIdx++)
+   {
+      DU_ALLOC(scsCarrierList->list.array[listIdx], sizeof(SCS_SpecificCarrier_t));
+      if(!scsCarrierList->list.array[listIdx])
+      {    
+         DU_LOG("\nERROR  -->  DU APP : Memory allocation failed for SCS Specific Carrier list array \
+            element in BuildScsSpecificCarrierListDl()");
+         return RFAILED;
+      }    
+   }
+
+   listIdx = 0;
+   scsCarrierList->list.array[listIdx]->offsetToCarrier = duScsSpecCarrier.scsOffset;
+   scsCarrierList->list.array[listIdx]->subcarrierSpacing = duScsSpecCarrier.scs;
+   scsCarrierList->list.array[listIdx]->carrierBandwidth = duScsSpecCarrier.scsBw;
+
+   return ROK;
+}
+
+/*******************************************************************
+ *
+ * @brief Fills DL frequency info in DL config common
+ *
+ * @details
+ *
+ *    Function : BuildFreqInfoDl
+ *
+ *    Functionality: Fills DL frequency info in DL config common
+ *
+ * @params[in] Pointer to DownlinkConfigCommon_t
+ *
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t BuildFreqInfoDl(FrequencyInfoDL_t *frequencyInfoDL)
+{
+   uint8_t freqBandIdx = 0, elementCnt = 0;
+   DlCfgCommon  dlCfg = duCfgParam.sib1Params.srvCellCfgCommSib.dlCfg;
+
+   /* TODO : Fill SSB Absolute Frequency */
+   /*
+      DU_ALLOC(frequencyInfoDL->absoluteFrequencySSB, sizeof(ARFCN_ValueNR_t));
+      if(!frequencyInfoDL->absoluteFrequencySSB)
+      {
+      DU_LOG("\nERROR  -->  DU APP : Memory allocation failed for SSB Absolute Frequency in BuildFreqInfoDl()");
+      return RFAILED;
+      }
+      frequencyInfoDL->absoluteFrequencySSB = ?;
+      */
+
+   /* NR Multi Frequency Band List */
+   elementCnt = ODU_VALUE_ONE;
+   frequencyInfoDL->frequencyBandList.list.count = elementCnt;
+   frequencyInfoDL->frequencyBandList.list.size = elementCnt * sizeof(FreqBandIndicatorNR_t *);
+
+   DU_ALLOC(frequencyInfoDL->frequencyBandList.list.array, frequencyInfoDL->frequencyBandList.list.size);
+   if(!frequencyInfoDL->frequencyBandList.list.array)
+   {
+      DU_LOG("\nERROR  -->  DU APP : Memory allocation failed for Frequency Band List array in BuildFreqInfoDl()");
+      return RFAILED;
+   }
+
+   for(freqBandIdx = 0; freqBandIdx < elementCnt; freqBandIdx++)
+   {
+      DU_ALLOC(frequencyInfoDL->frequencyBandList.list.array[freqBandIdx], sizeof(FreqBandIndicatorNR_t));
+      if(!frequencyInfoDL->frequencyBandList.list.array[freqBandIdx])
+      {
+         DU_LOG("\nERROR  -->  DU APP : Memory allocation failed for frequency band array element in BuildFreqInfoDl()");
+         return RFAILED;
+      }
+   }
+
+   freqBandIdx = 0;
+   *(frequencyInfoDL->frequencyBandList.list.array[freqBandIdx]) = dlCfg.freqBandInd;
+
+   /* TODO : Absolute Frequency to Point A */
+   //frequencyInfoDL->absoluteFrequencyPointA
+
+   /* Subcarrier Spacing specifc carrier List */
+   if((BuildScsSpecificCarrierListDl(&frequencyInfoDL->scs_SpecificCarrierList)) != ROK)
+   {
+      DU_LOG("\nERROR  -->  DU APP : Failed to fill SCS specific carrier list DL in BuildFreqInfoDl()");
+      return RFAILED;
+   }
+
+   return ROK;
+
+}
+
+/*******************************************************************
+ *
+ * @brief Fills DL config common in Serving cell config common
+ *
+ * @details
+ *
+ *    Function : BuildDlConfigCommon
+ *
+ *    Functionality: Fills DL config common in Serving cell config common
+ *
+ * @params[in] Pointer to DownlinkConfigCommon_t
+ *
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t BuildDlConfigCommon(DownlinkConfigCommon_t *dlCfgCommon)
+{
+   /* DL Frequency Info */
+   DU_ALLOC(dlCfgCommon->frequencyInfoDL, sizeof(FrequencyInfoDL_t));
+   if(!dlCfgCommon->frequencyInfoDL)
+   {
+      DU_LOG("\nERROR  --> DU APP : Memory allocation failed for DL frequency info in BuildDlConfigCommon()");
+      return RFAILED;
+   }
+   if((BuildFreqInfoDl(dlCfgCommon->frequencyInfoDL))!= ROK)
+   {
+      DU_LOG("\nERROR  --> DU APP : Failed to fill DL frequency info in BuildDlConfigCommon()");
+      return RFAILED;
+   }
+
+   /* DL BWP config common */
+   DU_ALLOC(dlCfgCommon->initialDownlinkBWP, sizeof(BWP_DownlinkCommon_t));
+   if(!dlCfgCommon->initialDownlinkBWP)
+   {
+      DU_LOG("\nERROR  --> DU APP : Memory allocation failed for DL BWP config common in BuildDlConfigCommon()");
+      return RFAILED;
+   }
+   if((BuildBwpDlCommon(dlCfgCommon->initialDownlinkBWP)) != ROK)
+   {
+      DU_LOG("\nERROR  --> DU APP : Failed to fill DL DWP config common in BuildDlConfigCommon()");
+      return RFAILED;
+   }
+
+   return ROK;
+}
+
+/*******************************************************************
+ *
+ * @brief Fills SCS specific carrier list in UL frequency Info
+ *
+ * @details
+ *
+ *    Function : BuildScsSpecificCarrierListUl
+ *
+ *    Functionality: Fills SCS specific carrier list in UL frequency Info
+ *
+ * @params[in] Pointer to struct FrequencyInfoUL__scs_SpecificCarrierList
+ *
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t BuildScsSpecificCarrierListUl(struct FrequencyInfoUL__scs_SpecificCarrierList *scsCarrierList)
+{
+   uint8_t elementCnt = 0, listIdx = 0; 
+   ScsSpecCarrier   duScsSpecCarrier = duCfgParam.sib1Params.srvCellCfgCommSib.ulCfg.ulScsCarrier;
+
+   elementCnt = ODU_VALUE_ONE;
+   scsCarrierList->list.count = elementCnt;
+   scsCarrierList->list.size = elementCnt * sizeof(SCS_SpecificCarrier_t *);
+
+   DU_ALLOC(scsCarrierList->list.array, scsCarrierList->list.size);
+   if(!scsCarrierList->list.array)
+   {
+      DU_LOG("\nERROR  -->  DU APP : SCS Specific Carrier list memory allocation failed");
+      return RFAILED;
+   }
+
+   for(listIdx = 0; listIdx < scsCarrierList->list.count; listIdx++)
+   {
+      DU_ALLOC(scsCarrierList->list.array[listIdx], sizeof(SCS_SpecificCarrier_t));
+      if(!scsCarrierList->list.array[listIdx])
+      {    
+         DU_LOG("\nERROR  -->  DU APP : SCS Specific Carrier list memory allocation failed");
+         return RFAILED;
+      }    
+   }
+   listIdx = 0; 
+   scsCarrierList->list.array[listIdx]->offsetToCarrier = duScsSpecCarrier.scsOffset;
+   scsCarrierList->list.array[listIdx]->subcarrierSpacing = duScsSpecCarrier.scs;
+   scsCarrierList->list.array[listIdx]->carrierBandwidth = duScsSpecCarrier.scsBw;
+
+   return ROK;
+}
+
+/*******************************************************************
+ *
+ * @brief Fills frequency info in UL config common
+ *
+ * @details
+ *
+ *    Function : BuildFreqInfoUl
+ *
+ *    Functionality: Fills frequency info in UL config common
+ *
+ * @params[in] Pointer to FrequencyInfoUL_t
+ *
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t BuildFreqInfoUl(FrequencyInfoUL_t *frequencyInfoUL)
+{
+   uint8_t elementCnt = 0, listIdx= 0;
+   UlCfgCommon  ulCfg = duCfgParam.sib1Params.srvCellCfgCommSib.ulCfg;
+
+   /* NR Multi Frequency Band List */
+   DU_ALLOC(frequencyInfoUL->frequencyBandList, sizeof(MultiFrequencyBandListNR_t));
+   if(!frequencyInfoUL->frequencyBandList)
+   {
+      DU_LOG("\nERROR  -->  DU APP : Memory allocation failed for frequency band list in BuildFreqInfoUl()");
+      return RFAILED;
+   }
+
+   elementCnt = ODU_VALUE_ONE;
+   frequencyInfoUL->frequencyBandList->list.count = elementCnt;
+   frequencyInfoUL->frequencyBandList->list.size = elementCnt * sizeof(FreqBandIndicatorNR_t *);
+
+   DU_ALLOC(frequencyInfoUL->frequencyBandList->list.array, frequencyInfoUL->frequencyBandList->list.size);
+   if(!frequencyInfoUL->frequencyBandList->list.array)
+   {
+      DU_LOG("\nERROR  -->  DU APP : Memory allocation failed for frequency band array in BuildFreqInfoUl()");
+      return RFAILED;
+   }
+
+   for(listIdx = 0; listIdx < elementCnt; listIdx++)
+   {
+      DU_ALLOC(frequencyInfoUL->frequencyBandList->list.array[listIdx], sizeof(FreqBandIndicatorNR_t));
+      if(!frequencyInfoUL->frequencyBandList->list.array[listIdx])
+      {
+         DU_LOG("\nERROR  -->  DU APP : Memory allocation failed for frequency band array element in BuildFreqInfoUl()");
+         return RFAILED;
+      }
+   }
+
+   listIdx = 0;
+   *(frequencyInfoUL->frequencyBandList->list.array[listIdx]) = ulCfg.freqBandInd;
+
+   /* TODO : Fill Absolute frequency point A */
+   /*
+      DU_ALLOC(frequencyInfoUL->absoluteFrequencyPointA, sizeof(ARFCN_ValueNR_t));
+      if(!frequencyInfoUL->absoluteFrequencyPointA)
+      {
+      DU_LOG("\nERROR  -->  DU APP : Memory allocation failed for absolute frequency point A in BuildFreqInfoUl()");
+      return RFAILED;
+      }
+    *(frequencyInfoUL->absoluteFrequencyPointA) = ?;
+    */
+
+   /* Subcarrier Spacing specifc carrier */
+   if((BuildScsSpecificCarrierListUl(&frequencyInfoUL->scs_SpecificCarrierList)) != ROK) 
+   {
+      DU_LOG("\nERROR  --> DU APP : Failed to fill SCS Specific Carrier list UL in BuildFreqInfoUl()");
+      return RFAILED;
+   }
+
+   /* P-MAX */
+   DU_ALLOC(frequencyInfoUL->p_Max, sizeof(P_Max_t));
+   if(!frequencyInfoUL->p_Max)
+   {
+      DU_LOG("\nERROR  -->  DU APP : UL Frequency Infoo  memory allocation failure");
+      return RFAILED;
+   }
+   *frequencyInfoUL->p_Max = ulCfg.pMax;
+
+   return ROK;
+}
+
+/*******************************************************************
+ *
+ * @brief Fills UL config common in Serving cell config common
+ *
+ * @details
+ *
+ *    Function : BuildUlConfigCommon
+ *
+ *    Functionality: Fills UL config common in Serving cell config common
+ *
+ * @params[in] Pointer to UplinkConfigCommon_t
+ *
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t BuildUlConfigCommon(UplinkConfigCommon_t *ulCfgCommon)
+{
+   /* UL Frequency Info */
+   DU_ALLOC(ulCfgCommon->frequencyInfoUL, sizeof(FrequencyInfoUL_t));
+   if(!ulCfgCommon->frequencyInfoUL)
+   {
+      DU_LOG("\nERROR  -->  DU APP : Memory allocation failed for UL frequency info in BuildUlConfigCommon()");
+      return RFAILED;
+   }
+
+   if((BuildFreqInfoUl(ulCfgCommon->frequencyInfoUL)) != ROK)
+   {
+      DU_LOG("\nERROR  -->  DU APP : Failed to fill frequency info UL in BuildUlConfigCommon()");
+      return RFAILED;
+   }
+
+   /* UL BWP common */
+   DU_ALLOC(ulCfgCommon->initialUplinkBWP, sizeof(BWP_UplinkCommon_t));
+   if(!ulCfgCommon->initialUplinkBWP)
+   {
+      DU_LOG("\nERROR  -->  DU APP : Memory allocation failed for initial UL BWP in BuildUlConfigCommon()");
+      return RFAILED;
+   }
+
+   if((BuildBwpUlCommon(ulCfgCommon->initialUplinkBWP)) != ROK)
+   {
+      DU_LOG("\nERROR  -->  DU APP : Failed to fill BWP UL common in BuildUlConfigCommon()");
+      return RFAILED;
+   }
+
+   /* Time Alignment timer */
+   ulCfgCommon->dummy = duCfgParam.sib1Params.srvCellCfgCommSib.ulCfg.timeAlignTimerComm;
+
+   return ROK;
+}
+
+/*******************************************************************
+ *
+ * @brief Fills SSB position in burst in SP cell config common
+ *
+ * @details
+ *
+ *    Function : BuildSsbPosInBurst
+ *
+ *    Functionality: 
+ *       Fills SSB position in burst in SP cell config common
+ *
+ * @params[in] Pointer to struct ServingCellConfigCommon__ssb_PositionsInBurst
+ *
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t BuildSsbPosInBurst(struct ServingCellConfigCommon__ssb_PositionsInBurst *ssbPosInBurst)
+{
+   uint8_t bitStringSizeInBytes = 0;
+
+   ssbPosInBurst->present = ServingCellConfigCommon__ssb_PositionsInBurst_PR_mediumBitmap;
+
+   /* As per spec 38.331,in the definition of ServingCellConfigCommon */
+   bitStringSizeInBytes = 1;
+   ssbPosInBurst->choice.mediumBitmap.size = bitStringSizeInBytes * sizeof(uint8_t);
+
+   DU_ALLOC(ssbPosInBurst->choice.mediumBitmap.buf, ssbPosInBurst->choice.mediumBitmap.size);
+   if(!ssbPosInBurst->choice.mediumBitmap.buf)
+   {
+      DU_LOG("\nERROR  -->  DU APP : Memory Allocation failed for medium bit map buffer in BuildSsbPosInBurst()");
+      return RFAILED;
+   }
+
+   if((fillBitString(&ssbPosInBurst->choice.mediumBitmap, 0, bitStringSizeInBytes, \
+               duCfgParam.sib1Params.srvCellCfgCommSib.ssbPosInBurst)) != ROK)
+   {
+      DU_LOG("\nERROR  -->  DU APP : Failed to fill medium bit map in BuildSsbPosInBurst()");
+      return RFAILED;
+   }
+
+   return ROK;
+}
+
+/*******************************************************************
+ *
+ * @brief Fills SP cell config common in Reconfig with Sync
+ *
+ * @details
+ *
+ *    Function : BuildSpCellConfigCommon
+ *
+ *    Functionality: Fills SP cell config common in Reconfig with Sync
+ *
+ * @params[in] Pointer to ServingCellConfigCommon_t
+ *
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t BuildSpCellConfigCommon(ServingCellConfigCommon_t *spCellConfigCommon)
+{
+   /* Physical Cell Identity */
+   DU_ALLOC(spCellConfigCommon->physCellId, sizeof(PhysCellId_t));
+   if(!spCellConfigCommon->physCellId)
+   {
+      DU_LOG("\nERROR  -->  DU APP : Failed to allocate memory for physical cell id in BuildSpCellConfigCommon()");
+      return RFAILED;
+   } 
+   *(spCellConfigCommon->physCellId) = NR_PCI;
+
+   /* Downlink Config Common */
+   DU_ALLOC(spCellConfigCommon->downlinkConfigCommon, sizeof(DownlinkConfigCommon_t));
+   if(!spCellConfigCommon->downlinkConfigCommon)
+   {
+      DU_LOG("\nERROR  -->  DU APP : Failed to allocate memory for DL Config Common in BuildSpCellConfigCommon()");
+      return RFAILED;
+   }
+   if((BuildDlConfigCommon(spCellConfigCommon->downlinkConfigCommon)) != ROK)
+   {
+      DU_LOG("\nERROR  -->  DU APP : Failed to fill DL config commin in BuildSpCellConfigCommon()");
+      return RFAILED;
+   }
+
+   /* Uplinlink Config Common */
+   DU_ALLOC(spCellConfigCommon->uplinkConfigCommon, sizeof(UplinkConfigCommon_t));
+   if(!spCellConfigCommon->uplinkConfigCommon)
+   {
+      DU_LOG("\nERROR  -->  DU APP : Failed to allocate memory for UL Config Common in BuildSpCellConfigCommon()");
+      return RFAILED;
+   }
+   if((BuildUlConfigCommon(spCellConfigCommon->uplinkConfigCommon)) != ROK)
+   {
+      DU_LOG("\nERROR  -->  DU APP : Failed to fill UL config commin in BuildSpCellConfigCommon()");
+      return RFAILED;
+   }
+
+   /* Timing Advance offset */
+   DU_ALLOC(spCellConfigCommon->n_TimingAdvanceOffset, sizeof(long));
+   if(!spCellConfigCommon->n_TimingAdvanceOffset)
+   {
+      DU_LOG("\nERROR  -->  DU APP : Failed to allocate memory for Timing Advance Offset in BuildSpCellConfigCommon()");
+      return RFAILED;
+   }
+   *(spCellConfigCommon->n_TimingAdvanceOffset) = ServingCellConfigCommon__n_TimingAdvanceOffset_n0;
+
+   /* SSB Position In Burst */
+   DU_ALLOC(spCellConfigCommon->ssb_PositionsInBurst, sizeof(struct ServingCellConfigCommon__ssb_PositionsInBurst));
+   if(!spCellConfigCommon->ssb_PositionsInBurst)
+   {
+      DU_LOG("\nERROR  -->  DU APP : Failed to allocate memory for SSB Position In Burst in BuildSpCellConfigCommon()");
+      return RFAILED;
+   }
+   if((BuildSsbPosInBurst(spCellConfigCommon->ssb_PositionsInBurst)) != ROK)
+   {
+      DU_LOG("\nERROR  -->  DU APP : Failed to fill SSB Position In Burst in BuildSpCellConfigCommon()");
+      return RFAILED;
+   }
+
+   /* SSB Periodicity in Serving cell */
+   DU_ALLOC(spCellConfigCommon->ssb_periodicityServingCell, sizeof(long));
+   if(!spCellConfigCommon->ssb_periodicityServingCell)
+   {
+      DU_LOG("\nERROR  -->  DU APP : Failed to allocate memory for SSB Periodicity serving cell in \
+         BuildSpCellConfigCommon()");
+      return RFAILED;
+   }
+   *(spCellConfigCommon->ssb_periodicityServingCell) = \
+      convertSsbPeriodicityValueToEnum(duCfgParam.sib1Params.srvCellCfgCommSib.ssbPrdServingCell);
+
+   /* DMRS Type A position */
+   spCellConfigCommon->dmrs_TypeA_Position = convertDmrsTypeAPosValueToEnum(duCfgParam.macCellCfg.dmrsTypeAPos);
+
+   /* SSB subcarrier spacing */
+   DU_ALLOC(spCellConfigCommon->ssbSubcarrierSpacing, sizeof(SubcarrierSpacing_t));
+   if(!spCellConfigCommon->ssbSubcarrierSpacing)
+   {
+      DU_LOG("\nERROR  -->  DU APP : Failed to allocate memory for sub-carrier spacing in BuildSpCellConfigCommon()");
+      return RFAILED;
+   }
+   *(spCellConfigCommon->ssbSubcarrierSpacing) = duCfgParam.sib1Params.srvCellCfgCommSib.scs;
+
+   /* TDD UL-DL configuration common */
+   DU_ALLOC(spCellConfigCommon->tdd_UL_DL_ConfigurationCommon, sizeof(TDD_UL_DL_ConfigCommon_t));
+   if(!spCellConfigCommon->tdd_UL_DL_ConfigurationCommon)
+   {
+      DU_LOG("\nERROR  -->  DU APP : Memory allocation failed for TDD UL-DL config common in BuildSpCellConfigCommon()");
+      return RFAILED;
+   }
+   if((BuildTddUlDlCfgComm(spCellConfigCommon->tdd_UL_DL_ConfigurationCommon)) != ROK)
+   {
+      DU_LOG("\nERROR  -->  DU APP : Failed to fill TDD UL-DL config common in BuildSpCellConfigCommon()");
+      return RFAILED;
+   }
+
+   /* SS PBCH Block Power */
+   spCellConfigCommon->ss_PBCH_BlockPower = duCfgParam.sib1Params.srvCellCfgCommSib.ssPbchBlockPwr;
+
+   return ROK;
+}
+
+/*******************************************************************
+ *
+ * @brief Fills dedicated RACH configuration in Reconfiguration with sync
+ *
+ * @details
+ *
+ *    Function : BuildRecfgWithSync
+ *
+ *    Functionality: 
+ *       Fills dedicated RACH configuration in Reconfiguration with sync
+ *
+ * @params[in] DU UE CB
+ *             Pointer to Rach config dedicated struct
+ *
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t BuildRachConfigDedicated(DuUeCb *ueCb, struct ReconfigurationWithSync__rach_ConfigDedicated *rachCfgDed)
+{
+   uint8_t elementCnt = 0, listIdx = 0;
+   CFRA_t *cfra = NULLP;
+   struct CFRA__resources__ssb *ssbResource = NULLP;
+   RachCfgCommon duRachCfg = duCfgParam.sib1Params.srvCellCfgCommSib.ulCfg.rachCfg;
+
+   rachCfgDed->present = ReconfigurationWithSync__rach_ConfigDedicated_PR_uplink;
+
+   /* Uplink */
+   DU_ALLOC(rachCfgDed->choice.uplink, sizeof(RACH_ConfigDedicated_t));
+   if(!rachCfgDed->choice.uplink)
+   {
+      DU_LOG("\nERROR  -->  DU APP : Memory allocation failed for RACH uplink configuration in BuildRachConfigDedicated()");
+      return RFAILED;
+   }
+
+   /* CFRA : Contention free Random Access */
+   DU_ALLOC(rachCfgDed->choice.uplink->cfra, sizeof(CFRA_t));
+   if(!rachCfgDed->choice.uplink->cfra)
+   {
+      DU_LOG("\nERROR  -->  DU APP : Memory allocation failed for CFRA in BuildRachConfigDedicated()");
+      return RFAILED;
+   }
+   cfra = rachCfgDed->choice.uplink->cfra;
+
+   /* CFRA occassions */
+   DU_ALLOC(cfra->occasions, sizeof(struct CFRA__occasions));
+   if(!cfra->occasions)
+   {
+      DU_LOG("\nERROR  -->  DU APP : Memory allocation failed for CFRA occassion in BuildRachConfigDedicated()");
+      return RFAILED;
+   }
+
+   /* CFRA occassions : RACH generic configuration */
+   cfra->occasions->rach_ConfigGeneric.prach_ConfigurationIndex = duRachCfg.prachCfgIdx;
+   cfra->occasions->rach_ConfigGeneric.msg1_FDM = duRachCfg.msg1Fdm;
+   cfra->occasions->rach_ConfigGeneric.msg1_FrequencyStart = duRachCfg.msg1FreqStart;
+   cfra->occasions->rach_ConfigGeneric.zeroCorrelationZoneConfig = duRachCfg.zeroCorrZoneCfg;
+   cfra->occasions->rach_ConfigGeneric.preambleReceivedTargetPower = duRachCfg.preambleRcvdTgtPwr;
+   cfra->occasions->rach_ConfigGeneric.preambleTransMax = duRachCfg.preambleTransMax;
+   cfra->occasions->rach_ConfigGeneric.powerRampingStep = duRachCfg.pwrRampingStep;
+   cfra->occasions->rach_ConfigGeneric.ra_ResponseWindow = duRachCfg.raRspWindow;
+
+   /* CFRA occassions : SSB per RACH occasion */
+   DU_ALLOC(cfra->occasions->ssb_perRACH_Occasion, sizeof(long));
+   if(!cfra->occasions->ssb_perRACH_Occasion)
+   {
+      DU_LOG("\nERROR  -->  DU APP : Memory allocation failed for SSB per RACH occassion in BuildRachConfigDedicated()");
+      return RFAILED;
+   }
+   *(cfra->occasions->ssb_perRACH_Occasion) = convertCFRASsbPerRachOccasionValueToEnum(duCfgParam.macCellCfg.prachCfg.ssbPerRach);
+
+   /* CFRA resource */
+   cfra->resources.present = CFRA__resources_PR_ssb;
+
+   /* CFRA resource : SSB */
+   DU_ALLOC(cfra->resources.choice.ssb, sizeof(struct CFRA__resources__ssb));
+   if(!cfra->resources.choice.ssb)
+   {
+      DU_LOG("\nERROR  -->  DU APP : Memory allocation failed for CFRA resource - SSB in BuildRachConfigDedicated()");
+      return RFAILED;
+   }
+   ssbResource = cfra->resources.choice.ssb;
+
+   /* CFRA SSB resource list */
+   elementCnt = ueCb->cfraResource.numSsb;
+   ssbResource->ssb_ResourceList.list.count = elementCnt;
+   ssbResource->ssb_ResourceList.list.size = elementCnt * sizeof(CFRA_SSB_Resource_t *);
+
+   DU_ALLOC(ssbResource->ssb_ResourceList.list.array, ssbResource->ssb_ResourceList.list.size);
+   if(!ssbResource->ssb_ResourceList.list.array)
+   {
+      DU_LOG("\nERROR  -->  DU APP : Memory allocation failed for SSB resource list in BuildRachConfigDedicated()");
+      return RFAILED;
+   }
+
+   for(listIdx = 0; listIdx < elementCnt; listIdx++)
+   {
+      DU_ALLOC(ssbResource->ssb_ResourceList.list.array[listIdx], sizeof(CFRA_SSB_Resource_t));
+      if(!ssbResource->ssb_ResourceList.list.array[listIdx])
+      {
+         DU_LOG("\nERROR  -->  DU APP : Memory allocation failed for SSB resource list element in BuildRachConfigDedicated()");  
+         return RFAILED;
+      }
+      ssbResource->ssb_ResourceList.list.array[listIdx]->ssb = ueCb->cfraResource.ssbResource[listIdx].ssbIdx;
+      ssbResource->ssb_ResourceList.list.array[listIdx]->ra_PreambleIndex = ueCb->cfraResource.ssbResource[listIdx].raPreambleIdx;
+   }
+
+   return ROK;
+}
+
+/*******************************************************************
+ *
+ * @brief Fills reconfiguration with sync in SP cell config
+ *
+ * @details
+ *
+ *    Function : BuildRecfgWithSync
+ *
+ *    Functionality: Fills reconfiguration with sync in SP cell config
+ *
+ * @params[in] DU UE CB
+ *             Pointer to ReconfigurationWithSync_t
+ *
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t BuildRecfgWithSync(DuUeCb *ueCb, ReconfigurationWithSync_t *recfgWithSync)
+{
+   /* SP Cell Config Common */  
+   DU_ALLOC(recfgWithSync->spCellConfigCommon, sizeof(ServingCellConfigCommon_t));
+   if(!recfgWithSync->spCellConfigCommon)
+   {
+      DU_LOG("\nERROR  -->  DU APP : Failed to allocate memory for spCellConfigCommon in BuildRecfgWithSync()");
+      return RFAILED;
+   }
+
+   if((BuildSpCellConfigCommon(recfgWithSync->spCellConfigCommon)) != ROK)
+   {
+      DU_LOG("\nERROR  -->  DU APP : Failed to build SpCellConfigCommon in BuildRecfgWithSync()");
+      return RFAILED;
+   }
+
+   /* New UE Identity */
+   recfgWithSync->newUE_Identity = ueCb->crnti;
+
+   /* T304 timer */
+   recfgWithSync->t304 = ReconfigurationWithSync__t304_ms1000;
+
+   /* RACH configuration dedicated */
+   DU_ALLOC(recfgWithSync->rach_ConfigDedicated, sizeof(struct ReconfigurationWithSync__rach_ConfigDedicated));
+   if(!recfgWithSync->rach_ConfigDedicated)
+   {
+      DU_LOG("\nERROR  -->  DU APP : Failed to allocate memory for RACH config dedicated in BuildRecfgWithSync()");
+      return RFAILED;
+   }
+
+   if((BuildRachConfigDedicated(ueCb, recfgWithSync->rach_ConfigDedicated)) != ROK)
+   {
+      DU_LOG("\nERROR  -->  DU APP : Failed to build RACH config dedicated in BuildRecfgWithSync()");
+      return RFAILED;
+   }
+
+   return ROK;
+}
+
 /*******************************************************************
  *
  * @brief Builds Spcell config 
@@ -6219,6 +6911,22 @@ uint8_t BuildSpCellCfg(DuUeCb *ueCb, SpCellConfig_t *spCellCfg)
       *(spCellCfg->servCellIndex) = ueCb->macUeCfg.spCellCfg.servCellIdx;
 
    spCellCfg->reconfigurationWithSync = NULLP;
+   if(ueCb && (ueCb->ueState == UE_HANDIN_IN_PROGRESS))
+   {
+      DU_ALLOC(spCellCfg->reconfigurationWithSync, sizeof(ReconfigurationWithSync_t));
+      if(!spCellCfg->reconfigurationWithSync)
+      {
+         DU_LOG("\nERROR  -->  F1AP : Memory allocation failure in BuildSpCellCfg");
+         return RFAILED;
+      }
+
+      if((BuildRecfgWithSync(ueCb, spCellCfg->reconfigurationWithSync)) != ROK)
+      {
+         DU_LOG("\nERROR  -->  F1AP : Building of reconfiguration with sync failed at BuildSpCellCfg");
+         return RFAILED;
+      }
+   }
+
    spCellCfg->rlf_TimersAndConstants = NULLP;
    spCellCfg->rlmInSyncOutOfSyncThreshold = NULLP;
 
@@ -6933,6 +7641,357 @@ void FreeBWPDlDedPdcchCfg(BWP_DownlinkDedicated_t *dlBwp)
 
 /*******************************************************************
  *
+ * @brief Free SCS specific carrier list in DL frequency info
+ *
+ * @details
+ *
+ *    Function : FreeScsSpecificCarrierListDl
+ *
+ *    Functionality: Free SCS specific carrier list in DL frequency info
+ *
+ * @params[in] Pointer to struct FrequencyInfoDL__scs_SpecificCarrierList
+ *
+ * @return void
+ *
+ * ****************************************************************/
+void FreeScsSpecificCarrierListDl(struct FrequencyInfoDL__scs_SpecificCarrierList *scsCarrierList)
+{
+   uint8_t listIdx = 0;
+
+   if(!scsCarrierList->list.array)
+   {
+      for(listIdx = 0; listIdx < scsCarrierList->list.count; listIdx++)
+      {
+         DU_FREE(scsCarrierList->list.array[listIdx], sizeof(SCS_SpecificCarrier_t));
+      }
+      DU_FREE(scsCarrierList->list.array, scsCarrierList->list.size);
+   }
+}
+
+/*******************************************************************
+ *
+ * @brief Free DL frequency info in DL config common
+ *
+ * @details
+ *
+ *    Function : FreeFreqInfoDl
+ *
+ *    Functionality: Free DL frequency info in DL config common
+ *
+ * @params[in] Pointer to DownlinkConfigCommon_t
+ *
+ * @return void
+ *
+ * ****************************************************************/
+void FreeFreqInfoDl(FrequencyInfoDL_t *frequencyInfoDL)
+{
+   uint8_t freqBandIdx = 0;
+
+   /* SSB Absolute Frequency */
+   DU_FREE(frequencyInfoDL->absoluteFrequencySSB, sizeof(ARFCN_ValueNR_t));
+
+   /* NR Multi Frequency Band List */
+   if(frequencyInfoDL->frequencyBandList.list.array)
+   {
+      for(freqBandIdx = 0; freqBandIdx < frequencyInfoDL->frequencyBandList.list.count; freqBandIdx++)
+      {
+         DU_FREE(frequencyInfoDL->frequencyBandList.list.array[freqBandIdx], sizeof(FreqBandIndicatorNR_t));
+      }
+      DU_FREE(frequencyInfoDL->frequencyBandList.list.array, frequencyInfoDL->frequencyBandList.list.size);
+   }
+
+   /* Subcarrier Spacing specifc carrier List */
+   FreeScsSpecificCarrierListDl(&frequencyInfoDL->scs_SpecificCarrierList);
+}
+
+/*******************************************************************
+ *
+ * @brief Free DL config common in Serving cell config common
+ *
+ * @details
+ *
+ *    Function : FreeDlConfigCommon
+ *
+ *    Functionality: Free DL config common in Serving cell config common
+ *
+ * @params[in] Pointer to DownlinkConfigCommon_t
+ *
+ * @return void
+ *
+ * ****************************************************************/
+void FreeDlConfigCommon(DownlinkConfigCommon_t *dlCfgCommon)
+{
+   /* DL Frequency Info */
+   if(dlCfgCommon->frequencyInfoDL)
+   {
+      FreeFreqInfoDl(dlCfgCommon->frequencyInfoDL);
+      DU_FREE(dlCfgCommon->frequencyInfoDL, sizeof(FrequencyInfoDL_t));
+   }
+
+   /* DL BWP config common */
+   if(dlCfgCommon->initialDownlinkBWP)
+   {
+      FreeBwpDlCommon(dlCfgCommon->initialDownlinkBWP);
+      DU_FREE(dlCfgCommon->initialDownlinkBWP, sizeof(BWP_DownlinkCommon_t));
+   }
+}
+
+/*******************************************************************
+ *
+ * @brief Free SCS specific carrier list in UL frequency Info
+ *
+ * @details
+ *
+ *    Function : FreeScsSpecificCarrierListUl
+ *
+ *    Functionality: Free SCS specific carrier list in UL frequency Info
+ *
+ * @params[in] Pointer to struct FrequencyInfoUL__scs_SpecificCarrierList
+ *
+ * @return void
+ *
+ * ****************************************************************/
+void FreeScsSpecificCarrierListUl(struct FrequencyInfoUL__scs_SpecificCarrierList *scsCarrierList)
+{
+   uint8_t listIdx = 0;
+
+   if(scsCarrierList->list.array)
+   {
+      for(listIdx = 0; listIdx < scsCarrierList->list.count; listIdx++)
+      {
+         DU_FREE(scsCarrierList->list.array[listIdx], sizeof(SCS_SpecificCarrier_t));
+      }
+      DU_FREE(scsCarrierList->list.array, scsCarrierList->list.size);
+   }
+}
+
+/*******************************************************************
+ *
+ * @brief Free frequency info in UL config common
+ *
+ * @details
+ *
+ *    Function : FreeFreqInfoUl
+ *
+ *    Functionality: Free frequency info in UL config common
+ *
+ * @params[in] Pointer to FrequencyInfoUL_t
+ *
+ * @return void
+ *
+ * ****************************************************************/
+void FreeFreqInfoUl(FrequencyInfoUL_t *frequencyInfoUL)
+{
+   uint8_t listIdx= 0;
+
+   /* NR Multi Frequency Band List */
+   if(!frequencyInfoUL->frequencyBandList)
+   {
+      if(frequencyInfoUL->frequencyBandList->list.array)
+      {
+         for(listIdx = 0; listIdx < frequencyInfoUL->frequencyBandList->list.count; listIdx++)
+         {
+            DU_FREE(frequencyInfoUL->frequencyBandList->list.array[listIdx], sizeof(FreqBandIndicatorNR_t));
+         }
+         DU_FREE(frequencyInfoUL->frequencyBandList->list.array, frequencyInfoUL->frequencyBandList->list.size);
+      }
+      DU_FREE(frequencyInfoUL->frequencyBandList, sizeof(MultiFrequencyBandListNR_t));
+   }
+
+   /* Absolute frequency point A */
+   DU_FREE(frequencyInfoUL->absoluteFrequencyPointA, sizeof(ARFCN_ValueNR_t));
+
+   /* Subcarrier Spacing specifc carrier */
+   FreeScsSpecificCarrierListUl(&frequencyInfoUL->scs_SpecificCarrierList);
+
+   /* P-MAX */
+   DU_FREE(frequencyInfoUL->p_Max, sizeof(P_Max_t));
+}
+
+/*******************************************************************
+ *
+ * @brief Free UL config common in Serving cell config common
+ *
+ * @details
+ *
+ *    Function : FreeUlConfigCommon
+ *
+ *    Functionality: Free UL config common in Serving cell config common
+ *
+ * @params[in] Pointer to UplinkConfigCommon_t
+ *
+ * @return void
+ *
+ * ****************************************************************/
+void FreeUlConfigCommon(UplinkConfigCommon_t *ulCfgCommon)
+{
+   /* UL Frequency Info */
+   if(ulCfgCommon->frequencyInfoUL)
+   {
+      FreeFreqInfoUl(ulCfgCommon->frequencyInfoUL);
+      DU_FREE(ulCfgCommon->frequencyInfoUL, sizeof(FrequencyInfoUL_t));
+   }
+
+   /* UL BWP common */
+   if(ulCfgCommon->initialUplinkBWP)
+   {
+      FreeBwpUlCommon(ulCfgCommon->initialUplinkBWP);
+      DU_FREE(ulCfgCommon->initialUplinkBWP, sizeof(BWP_UplinkCommon_t));
+   }
+}
+
+/*******************************************************************
+ *
+ * @brief Free SP cell config common in Reconfig with Sync
+ *
+ * @details
+ *
+ *    Function : FreeSpCellConfigCommon
+ *
+ *    Functionality: Free SP cell config common in Reconfig with Sync
+ *
+ * @params[in] Pointer to ServingCellConfigCommon_t
+ *
+ * @return void
+ *
+ * ****************************************************************/
+void FreeSpCellConfigCommon(ServingCellConfigCommon_t *spCellConfigCommon)
+{
+   /* Free Physical cell identity */
+   DU_FREE(spCellConfigCommon->physCellId, sizeof(PhysCellId_t));
+
+   /* Free Downlink Config common */
+   if(spCellConfigCommon->downlinkConfigCommon)
+   {
+      FreeDlConfigCommon(spCellConfigCommon->downlinkConfigCommon);
+      DU_FREE(spCellConfigCommon->downlinkConfigCommon, sizeof(DownlinkConfigCommon_t));
+   }
+
+   /* Free Uplink Config common */
+   if(spCellConfigCommon->uplinkConfigCommon)
+   {
+      FreeUlConfigCommon(spCellConfigCommon->uplinkConfigCommon);
+      DU_FREE(spCellConfigCommon->uplinkConfigCommon, sizeof(UplinkConfigCommon_t));
+   }
+
+   /* Free Timing Advance offset */
+   DU_FREE(spCellConfigCommon->n_TimingAdvanceOffset, sizeof(long));
+
+   /* Free SSB Position in Burst */
+   if(spCellConfigCommon->ssb_PositionsInBurst)
+   {
+      DU_FREE(spCellConfigCommon->ssb_PositionsInBurst->choice.mediumBitmap.buf, \
+         spCellConfigCommon->ssb_PositionsInBurst->choice.mediumBitmap.size);
+      DU_FREE(spCellConfigCommon->ssb_PositionsInBurst, sizeof(struct ServingCellConfigCommon__ssb_PositionsInBurst));
+   }
+
+   /* Free SSB Periodicity in Serving cell */
+   DU_FREE(spCellConfigCommon->ssb_periodicityServingCell, sizeof(long));
+
+   /* Free SSB subcarrier spacing */
+   DU_FREE(spCellConfigCommon->ssbSubcarrierSpacing, sizeof(SubcarrierSpacing_t));
+
+   /* TDD UL-DL configuration common */
+   DU_FREE(spCellConfigCommon->tdd_UL_DL_ConfigurationCommon, sizeof(TDD_UL_DL_ConfigCommon_t));
+}
+
+/*******************************************************************
+ *
+ * @brief Free dedicated RACH configuration in Reconfiguration with sync
+ *
+ * @details
+ *
+ *    Function : FreeRecfgWithSync
+ *
+ *    Functionality:
+ *       Free dedicated RACH configuration in Reconfiguration with sync
+ *
+ * @params[in] Pinter to Rach config dedicated struct
+ *
+ * @return void
+ *
+ * ****************************************************************/
+void FreeRachConfigDedicated(struct ReconfigurationWithSync__rach_ConfigDedicated *rachCfgDed)
+{
+   uint8_t listIdx = 0;
+   CFRA_t *cfra = NULLP;
+   struct CFRA__resources__ssb *ssbResource = NULLP;
+
+   /* Uplink */
+   if(rachCfgDed->choice.uplink)
+   {
+      /* CFRA : Contention free Random Access */
+      if(rachCfgDed->choice.uplink->cfra)
+      {
+         cfra = rachCfgDed->choice.uplink->cfra;
+
+         /* CFRA occassions */
+         if(cfra->occasions)
+         {
+            /* CFRA occassions : SSB per RACH occasion */
+            DU_FREE(cfra->occasions->ssb_perRACH_Occasion, sizeof(long));
+            DU_FREE(cfra->occasions, sizeof(struct CFRA__occasions));
+         }
+
+         /* CFRA resource */
+         cfra->resources.present = CFRA__resources_PR_ssb;
+
+         /* CFRA resource : SSB */
+         if(cfra->resources.choice.ssb)
+         {
+            ssbResource = cfra->resources.choice.ssb;
+
+            /* CFRA SSB resource list */
+            if(ssbResource->ssb_ResourceList.list.array)
+            {
+               for(listIdx = 0; listIdx < ssbResource->ssb_ResourceList.list.count; listIdx++)
+               {
+                  DU_FREE(ssbResource->ssb_ResourceList.list.array[listIdx], sizeof(CFRA_SSB_Resource_t));
+               }
+               DU_FREE(ssbResource->ssb_ResourceList.list.array, ssbResource->ssb_ResourceList.list.size);
+            }
+            DU_FREE(cfra->resources.choice.ssb, sizeof(struct CFRA__resources__ssb));
+         }
+         DU_FREE(rachCfgDed->choice.uplink->cfra, sizeof(CFRA_t));
+      }
+      DU_FREE(rachCfgDed->choice.uplink, sizeof(RACH_ConfigDedicated_t));
+   }
+}
+
+/*******************************************************************
+ *
+ * @brief Frees reconfiguration with sync in SP cell config
+ *
+ * @details
+ *
+ *    Function : FreeRecfgWithSync
+ *
+ *    Functionality: Fress reconfiguration with sync in SP cell config
+ *
+ * @params[in] Pointer to ReconfigurationWithSync_t
+ *
+ * @return void
+ *
+ * ****************************************************************/
+void FreeRecfgWithSync(ReconfigurationWithSync_t *recfgWithSync)
+{
+   /* Free SP Cell config common */
+   if(recfgWithSync->spCellConfigCommon)
+   {
+      FreeSpCellConfigCommon(recfgWithSync->spCellConfigCommon);
+      DU_FREE(recfgWithSync->spCellConfigCommon, sizeof(ServingCellConfigCommon_t));
+   }
+
+   /* Free Dedicated RACH configuration */
+   if(recfgWithSync->rach_ConfigDedicated)
+   {
+      FreeRachConfigDedicated(recfgWithSync->rach_ConfigDedicated);
+      DU_FREE(recfgWithSync->rach_ConfigDedicated, sizeof(struct ReconfigurationWithSync__rach_ConfigDedicated));
+   }
+}
+
+/*******************************************************************
+ *
  * @brief Frees emmory allocated for DUToCURRCContainer 
  *
  * @details
@@ -7073,61 +8132,74 @@ uint8_t FreeMemDuToCuRrcCont(CellGroupConfigRrc_t *cellGrpCfg)
    spCellCfg = cellGrpCfg->spCellConfig;
    if(spCellCfg)
    {
-      if(spCellCfg->servCellIndex)
+      /* Free serving cell index */
+      DU_FREE(spCellCfg->servCellIndex, sizeof(long));
+
+      /* Free Reconfiguration with sync */
+      if(spCellCfg->reconfigurationWithSync)
       {
-         if(spCellCfg->rlmInSyncOutOfSyncThreshold)
+         FreeRecfgWithSync(spCellCfg->reconfigurationWithSync);
+         DU_FREE(spCellCfg->reconfigurationWithSync, sizeof(ReconfigurationWithSync_t));
+      }
+
+      /* Free rlmInSyncOutOfSyncThreshold */
+      DU_FREE(spCellCfg->rlmInSyncOutOfSyncThreshold, sizeof(long));
+
+      /* Free SP Cell config dedicated */
+      if(spCellCfg->spCellConfigDedicated)
+      {
+         srvCellCfg = spCellCfg->spCellConfigDedicated;
+
+         /* Free TDD UL-DL config dedicated */
+         DU_FREE(srvCellCfg->tdd_UL_DL_ConfigurationDedicated, sizeof(TDD_UL_DL_ConfigDedicated_t));
+
+         /* Free Initial Downlink BWP */
+         if(srvCellCfg->initialDownlinkBWP)
          {
-            if(spCellCfg->spCellConfigDedicated)
+            dlBwp = srvCellCfg->initialDownlinkBWP;
+
+            /* Free DL BWP PDCCH Config */
+            if(dlBwp->pdcch_Config)
             {
-               srvCellCfg = spCellCfg->spCellConfigDedicated;
-               if(srvCellCfg->tdd_UL_DL_ConfigurationDedicated)
-               {
-                  if(srvCellCfg->initialDownlinkBWP)
-                  {
-                     dlBwp = srvCellCfg->initialDownlinkBWP;
-                     if(srvCellCfg->firstActiveDownlinkBWP_Id)
-                     {
-                        if(srvCellCfg->defaultDownlinkBWP_Id)
-                        {
-                           if(srvCellCfg->uplinkConfig)
-                           {
-                              if(srvCellCfg->pdsch_ServingCellConfig)
-                              {
-                                 pdschCfg= srvCellCfg->pdsch_ServingCellConfig;
-                                 if(pdschCfg->choice.setup)
-                                 {
-                                    DU_FREE(pdschCfg->choice.setup->nrofHARQ_ProcessesForPDSCH,sizeof(long));
-                                    DU_FREE(pdschCfg->choice.setup, sizeof( struct PDSCH_ServingCellConfig));
-                                 }
-                                 DU_FREE(srvCellCfg->pdsch_ServingCellConfig, sizeof(struct
-                                          ServingCellConfig__pdsch_ServingCellConfig));
-                              }  
-                              FreeinitialUplinkBWP(srvCellCfg->uplinkConfig);
-                              DU_FREE(srvCellCfg->uplinkConfig, sizeof(UplinkConfig_t));	
-                           }
-                           DU_FREE(srvCellCfg->defaultDownlinkBWP_Id, sizeof(long));
-                        }
-                        DU_FREE(srvCellCfg->firstActiveDownlinkBWP_Id, sizeof(long));
-                     }
-                     if(dlBwp->pdcch_Config)
-                     {
-                        if(dlBwp->pdsch_Config)
-                        {
-                           FreeBWPDlDedPdschCfg(dlBwp);
-                           DU_FREE(dlBwp->pdsch_Config, sizeof(struct BWP_DownlinkDedicated__pdsch_Config));
-                        }
-                        FreeBWPDlDedPdcchCfg(dlBwp);
-                        DU_FREE(dlBwp->pdcch_Config, sizeof(struct BWP_DownlinkDedicated__pdcch_Config));
-                     }
-                     DU_FREE(srvCellCfg->initialDownlinkBWP, sizeof(BWP_DownlinkDedicated_t));
-                  }
-                  DU_FREE(srvCellCfg->tdd_UL_DL_ConfigurationDedicated, sizeof(TDD_UL_DL_ConfigDedicated_t));
-               }
-               DU_FREE(spCellCfg->spCellConfigDedicated, sizeof(ServingCellConfig_t));
+               FreeBWPDlDedPdcchCfg(dlBwp);
+               DU_FREE(dlBwp->pdcch_Config, sizeof(struct BWP_DownlinkDedicated__pdcch_Config));
             }
-            DU_FREE(spCellCfg->rlmInSyncOutOfSyncThreshold, sizeof(long));
+
+            /* Free DL BWP PDSCH config */
+            if(dlBwp->pdsch_Config)
+            {
+               FreeBWPDlDedPdschCfg(dlBwp);
+               DU_FREE(dlBwp->pdsch_Config, sizeof(struct BWP_DownlinkDedicated__pdsch_Config));
+            }
+            DU_FREE(srvCellCfg->initialDownlinkBWP, sizeof(BWP_DownlinkDedicated_t));
          }
-         DU_FREE(spCellCfg->servCellIndex, sizeof(long));
+
+         /* Free First Active Downlink BWP */
+         DU_FREE(srvCellCfg->firstActiveDownlinkBWP_Id, sizeof(long));
+
+         /* Free Default downlink BWP */
+         DU_FREE(srvCellCfg->defaultDownlinkBWP_Id, sizeof(long));
+
+         /* Free Uplink config */
+         if(srvCellCfg->uplinkConfig)
+         {
+            FreeinitialUplinkBWP(srvCellCfg->uplinkConfig);
+            DU_FREE(srvCellCfg->uplinkConfig, sizeof(UplinkConfig_t));	
+         }
+
+         /* Free PDSCH serving cell config */
+         if(srvCellCfg->pdsch_ServingCellConfig)
+         {
+            pdschCfg= srvCellCfg->pdsch_ServingCellConfig;
+            if(pdschCfg->choice.setup)
+            {
+               DU_FREE(pdschCfg->choice.setup->nrofHARQ_ProcessesForPDSCH,sizeof(long));
+               DU_FREE(pdschCfg->choice.setup, sizeof(struct PDSCH_ServingCellConfig));
+            }
+            DU_FREE(srvCellCfg->pdsch_ServingCellConfig, sizeof(struct ServingCellConfig__pdsch_ServingCellConfig));
+         }
+
+         DU_FREE(spCellCfg->spCellConfigDedicated, sizeof(ServingCellConfig_t));
       }
       DU_FREE(spCellCfg,sizeof(SpCellConfig_t));
    }

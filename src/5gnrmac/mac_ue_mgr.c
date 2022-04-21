@@ -2299,6 +2299,13 @@ uint8_t MacProcUeCreateReq(Pst *pst, MacUeCfg *ueCfg)
 
    if(ueCfg)
    {
+      /* If CRNTI = 0, MAC must allot a CRNTI to this UE. This scenario hits in
+       * case of UE in handover */
+      if(ueCfg->crnti == 0)
+      {
+         GET_CRNTI(ueCfg->crnti, ueCfg->ueId);
+      }
+
       /*Storing received ueCfg in ueCfgTmpData */
       ret = copyToTmpData(ueCfg);
       if(ret == ROK)

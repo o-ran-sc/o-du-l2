@@ -561,6 +561,11 @@ uint8_t duActvTsk(Pst *pst, Buffer *mBuf)
                      ret = unpackDuMacSliceReCfgRsp(DuProcMacSliceReCfgRsp, pst, mBuf);
                      break;
                   }
+               case EVENT_MAC_RACH_RESOURCE_RSP:
+                  {
+                     ret = unpackDuMacRachRsrcRsp(DuProcMacRachRsrcRsp, pst, mBuf);
+                     break;
+                  }
                default:
                   {
                      DU_LOG("\nERROR  -->  DU_APP : Invalid event received at duActvTsk from ENTMAC");

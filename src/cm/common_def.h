@@ -62,6 +62,7 @@
 #define MAX_NUM_LC   MAX_DRB_LCID + 1   /*Spec 38.331: Sec 6.4: maxLC-ID Keyword*/
 #define MAX_NUM_SRB  3    /* Max. no of Srbs */
 #define MAX_NUM_DRB  29   /* spec 38.331, maxDRB */
+#define MAX_NUM_SSB  64   /* spec 28.331, maxNrofSSBs */
 
 /* 5G ORAN phy delay */
 #define PHY_DELTA_DL 1

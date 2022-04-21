@@ -28,9 +28,25 @@
 /* Function pointer for sending rach ind from MAC to SCH */
 MacSchRachIndFunc macSchRachIndOpts[]=
 {
-   packMacSchRachInd,
-   MacSchRachInd,
-   packMacSchRachInd
+   packMacSchRachInd,   /* packing for loosely coupled */
+   MacSchRachInd,       /* packing for tightly coupled */ 
+   packMacSchRachInd    /* packing for light weight loosely coupled */
+};
+
+/* Function pointer for sending RACH resource request from MAC to SCH */
+MacSchRachRsrcReqFunc macSchRachRsrcReqOpts[] = 
+{
+   packMacSchRachRsrcReq,   /* packing for loosely coupled */
+   MacSchRachRsrcReq,       /* packing for tightly coupled */
+   packMacSchRachRsrcReq    /* packing for light weight loosely coupled */
+};
+
+/* Function pointer for sending RACH resource response from MAC to DU APP */
+MacDuRachRsrcRspFunc macDuRachRsrcRspOpts[] =
+{
+   packDuMacRachRsrcRsp,   /* packing for loosely coupled */
+   DuProcMacRachRsrcRsp,   /* packing for tightly coupled */
+   packDuMacRachRsrcRsp    /* packing for light weight loosly coupled */
 };
 
 /*******************************************************************
@@ -99,10 +115,8 @@ uint8_t fapiMacRachInd(Pst *pst, RachInd *rachInd)
    rachIndInfo->slotIdx = rachInd->rachPdu[pduIdx].slotIdx;
    rachIndInfo->symbolIdx = rachInd->rachPdu[pduIdx].symbolIdx;
    rachIndInfo->freqIdx = rachInd->rachPdu[pduIdx].freqIdx;
-   rachIndInfo->preambleIdx = \
-      rachInd->rachPdu[pduIdx].preamInfo[preambleIdx].preamIdx;
-   rachIndInfo->timingAdv = \
-      rachInd->rachPdu[pduIdx].preamInfo[preambleIdx].timingAdv;
+   rachIndInfo->preambleIdx = rachInd->rachPdu[pduIdx].preamInfo[preambleIdx].preamIdx;
+   rachIndInfo->timingAdv = rachInd->rachPdu[pduIdx].preamInfo[preambleIdx].timingAdv;
 
    /* Store the value in macRaCb */
    createMacRaCb(rachIndInfo);
@@ -112,6 +126,168 @@ uint8_t fapiMacRachInd(Pst *pst, RachInd *rachInd)
 
    /* Send RACH Indication to SCH */
    return(sendRachIndMacToSch(rachIndInfo));
+}
+
+/*******************************************************************
+ *
+ * @brief Processes RACH Resource request from DU APP
+ *
+ * @details
+ *
+ *    Function : MacProcRachRsrcReq
+ *
+ *    Functionality: Processes RACH resource request from DU APP.
+ *      Fills and sends RACH resource request towards SCH.
+ *
+ * @params[in] Post structure
+ *             RACH resource request
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t MacProcRachRsrcReq(Pst *pst, MacRachRsrcReq *rachRsrcReq)
+{
+   uint8_t   ret = RFAILED;
+   uint16_t  cellIdx = 0;
+   Pst       schPst;
+   MacCellCb *cellCb = NULLP;
+   MacUeCb   *ueCb = NULLP;
+   SchRachRsrcReq *schRachRsrcReq = NULLP;
+
+   DU_LOG("\nINFO  -->  MAC : Recieved RACH Resource Request for Cell ID [%d] UE ID [%d]",\
+         rachRsrcReq->cellId, rachRsrcReq->ueId);
+
+   /* Fetch Cell Cb */
+   GET_CELL_IDX(rachRsrcReq->cellId, cellIdx);
+   if(macCb.macCell[cellIdx] && (macCb.macCell[cellIdx]->cellId == rachRsrcReq->cellId))
+   {
+      cellCb = macCb.macCell[cellIdx];
+
+      /* Fetch UE Cb */
+      if(cellCb->ueCb[rachRsrcReq->ueId-1].ueId == rachRsrcReq->ueId)
+      {
+         ueCb = &cellCb->ueCb[rachRsrcReq->ueId-1];
+         /* Allocate memory to RACH resource request to be sent to SCH */
+         MAC_ALLOC(schRachRsrcReq, sizeof(SchRachRsrcReq));
+         if(schRachRsrcReq)
+         {
+            /* Fill SCH RACH resource request from information received from DU APP to MAC */
+            schRachRsrcReq->cellId = rachRsrcReq->cellId;
+            schRachRsrcReq->crnti = ueCb->crnti;
+            schRachRsrcReq->numSsb = rachRsrcReq->numSsb;
+            memcpy(schRachRsrcReq->ssbIdx, rachRsrcReq->ssbIdx, sizeof(schRachRsrcReq->ssbIdx));
+
+            /* Send RACH resource request from MAC to SCH */
+            FILL_PST_MAC_TO_SCH(schPst, EVENT_RACH_RESOURCE_REQUEST_TO_SCH);
+            ret = (*macSchRachRsrcReqOpts[schPst.selector])(&schPst, schRachRsrcReq);
+         }
+         else
+            DU_LOG("\nERROR  -->  MAC : Memory allocation failed for RACH resource request to SCH");
+      }
+      else
+         DU_LOG("\nERROR  -->  MAC : UE ID [%d] not found", rachRsrcReq->ueId);
+   }
+   else
+      DU_LOG("\nERROR  -->  MAC : Cell ID [%d] not found", rachRsrcReq->cellId);
+
+   /* Free sharable buffer used to send RACH reource request from DU APP to MAC */
+   MAC_FREE_SHRABL_BUF(pst->region, pst->pool, rachRsrcReq, sizeof(MacRachRsrcReq));
+   return ret;
+}
+
+/*******************************************************************
+ *
+ * @brief Processes RACH Resource response from SCH
+ *
+ * @details
+ *
+ *    Function : MacProcSchRachRsrcRsp
+ *
+ *    Functionality: Processes RACH resource response from SCH
+ *      Fills and sends RACH resource response towards DU APP
+ *
+ * @params[in] Post structure
+ *             RACH resource response
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t MacProcSchRachRsrcRsp(Pst *pst, SchRachRsrcRsp *schRachRsrcRsp)
+{
+   uint16_t cellIdx = 0;
+   Pst rspPst;
+   MacRachRsrcRsp *rachRsrcRsp = NULLP;
+   MacCellCb *cellCb = NULLP;
+   MacUeCb   *ueCb = NULLP;
+
+   DU_LOG("\nINFO  -->  MAC : Received RACH resource response from SCH : Cell ID [%d] CRNTI [%d]", \
+         schRachRsrcRsp->cellId, schRachRsrcRsp->crnti);
+
+   /* Fill RACH resource response to send to DU APP */
+   MAC_ALLOC_SHRABL_BUF(rachRsrcRsp, sizeof(MacRachRsrcRsp));
+   if(!rachRsrcRsp)
+   {
+      DU_LOG("\nERROR  -->  MAC : Memory allocation failed for RACH resource response");
+      MAC_FREE(schRachRsrcRsp, sizeof(SchRachRsrcRsp));
+      return RFAILED;
+   }
+   rachRsrcRsp->cellId = schRachRsrcRsp->cellId;
+   GET_UE_ID(schRachRsrcRsp->crnti, rachRsrcRsp->ueId);
+   rachRsrcRsp->result = MAC_DU_APP_RSP_OK;
+
+   /* Fill Pst structure to send RACH resource response from MAC to DU APP */
+   FILL_PST_MAC_TO_DUAPP(rspPst, EVENT_MAC_RACH_RESOURCE_RSP);
+
+   /* If negative response is received from SCH, send it further to DU APP */ 
+   if(schRachRsrcRsp->result == RSP_NOK)
+   {
+      DU_LOG("\nINFO  -->  MAC : RACH Resource response from SCH : Result [FAILURE]");
+      rachRsrcRsp->result = MAC_DU_APP_RSP_NOK;
+   }
+   else
+   {
+      DU_LOG("\nINFO  -->  MAC : RACH Resource response from SCH : Result [SUCCESS]");
+      
+      /* Fetch Cell Cb */
+      GET_CELL_IDX(schRachRsrcRsp->cellId, cellIdx);
+      if(macCb.macCell[cellIdx] && (macCb.macCell[cellIdx]->cellId == schRachRsrcRsp->cellId))
+      {   
+         cellCb = macCb.macCell[cellIdx];
+
+         /* Fetch UE Cb */
+         if(cellCb->ueCb[rachRsrcRsp->ueId-1].crnti == schRachRsrcRsp->crnti)
+            ueCb = &cellCb->ueCb[rachRsrcRsp->ueId-1];
+         else
+         {
+            DU_LOG("\nERROR  -->  MAC : CRNTI [%d] not found", schRachRsrcRsp->crnti);
+            rachRsrcRsp->result = MAC_DU_APP_RSP_NOK;
+         }   
+      }   
+      else
+      {   
+         DU_LOG("\nERROR  -->  MAC : Cell ID [%d] not found", schRachRsrcRsp->cellId);
+         rachRsrcRsp->result = MAC_DU_APP_RSP_NOK;
+      }   
+   }
+
+   /* TODO : Check if ra-preamble index is to be stored in UE CB */
+
+   /* Fill SSB RACH resource info if SCH has sent a positive response and 
+    * processing of SCH RACH resource response at MAC has been successful so far */
+   if(rachRsrcRsp->result == MAC_DU_APP_RSP_OK)
+   {
+      rachRsrcRsp->newCrnti = ueCb->crnti; 
+      rachRsrcRsp->cfraResource.numSsb = schRachRsrcRsp->cfraResource.numSsb;
+      memcpy(rachRsrcRsp->cfraResource.ssbResource, schRachRsrcRsp->cfraResource.ssbResource, \
+         sizeof(rachRsrcRsp->cfraResource.ssbResource));
+   }
+
+   /* Free SCH RACH resource response */
+   MAC_FREE(schRachRsrcRsp, sizeof(SchRachRsrcRsp));
+
+   /* Send RACH resource response to DU APP */
+   FILL_PST_MAC_TO_DUAPP(rspPst, EVENT_MAC_RACH_RESOURCE_RSP);
+   return (*macDuRachRsrcRspOpts[rspPst.selector])(&rspPst, rachRsrcRsp);
 }
 
 /* spec-38.211 Table 6.3.3.1-7 */
