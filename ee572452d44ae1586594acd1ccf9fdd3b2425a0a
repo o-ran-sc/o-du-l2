@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2e29cad7_976d1fbc",
+        "filename": "src/o1/AlarmManager.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 1000482
+      },
+      "writtenOn": "2022-04-21T03:32:55Z",
+      "side": 1,
+      "message": "Remove unnecessary comments",
+      "range": {
+        "startLine": 54,
+        "startChar": 15,
+        "endLine": 54,
+        "endChar": 19
+      },
+      "revId": "ee572452d44ae1586594acd1ccf9fdd3b2425a0a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "996f49d4_fac11557",
+        "filename": "src/o1/ves/AlarmNotification.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1000482
+      },
+      "writtenOn": "2022-04-21T03:32:55Z",
+      "side": 1,
+      "message": "change the name of this class",
+      "range": {
+        "startLine": 50,
+        "startChar": 6,
+        "endLine": 50,
+        "endChar": 23
+      },
+      "revId": "ee572452d44ae1586594acd1ccf9fdd3b2425a0a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fbf182bf_883e72cb",
+        "filename": "src/o1/ves/SliceMeasurementEvent.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 1000482
+      },
+      "writtenOn": "2022-04-21T03:32:55Z",
+      "side": 1,
+      "message": "why do we need this casting?",
+      "range": {
+        "startLine": 125,
+        "startChar": 37,
+        "endLine": 125,
+        "endChar": 43
+      },
+      "revId": "ee572452d44ae1586594acd1ccf9fdd3b2425a0a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a487cd41_f92850fe",
+        "filename": "src/o1/ves/VesNotification.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1000482
+      },
+      "writtenOn": "2022-04-21T03:32:55Z",
+      "side": 1,
+      "message": "Class name to be changed to Notification",
+      "range": {
+        "startLine": 24,
+        "startChar": 6,
+        "endLine": 24,
+        "endChar": 21
+      },
+      "revId": "ee572452d44ae1586594acd1ccf9fdd3b2425a0a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
