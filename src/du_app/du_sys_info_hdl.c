@@ -695,7 +695,7 @@ uint8_t BuildSiSchedInfoList(struct SI_SchedulingInfo__schedulingInfoList *si_Sc
  *
  * @details
  *
- *    Function : BuildScsSpecificCarrierListDl
+ *    Function : BuildScsSpecificCarrierListDlSib
  *
  *    Functionality:
  *       Builds Subcarrier specific carrier list for downlink
@@ -705,7 +705,7 @@ uint8_t BuildSiSchedInfoList(struct SI_SchedulingInfo__schedulingInfoList *si_Sc
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t BuildScsSpecificCarrierListDl( struct FrequencyInfoDL_SIB__scs_SpecificCarrierList *scsCarrierList)
+uint8_t BuildScsSpecificCarrierListDlSib( struct FrequencyInfoDL_SIB__scs_SpecificCarrierList *scsCarrierList)
 {
    uint8_t idx;
    ScsSpecCarrier   duScsSpecCarrier;
@@ -735,7 +735,7 @@ uint8_t BuildScsSpecificCarrierListDl( struct FrequencyInfoDL_SIB__scs_SpecificC
    scsCarrierList->list.array[idx]->carrierBandwidth = duScsSpecCarrier.scsBw;
 
    return ROK;
-} /* End of BuildScsSpecificCarrierListDl */
+} /* End of BuildScsSpecificCarrierListDlSib */
 
 /*******************************************************************
  *
@@ -761,12 +761,12 @@ uint8_t BuildCommonSerachSpaceList( struct PDCCH_ConfigCommon__commonSearchSpace
 
    duPdcchCfg = duCfgParam.sib1Params.srvCellCfgCommSib.dlCfg.pdcchCfg;
 
-   DU_ALLOC(searchSpclist->list.array, searchSpclist->list.size)
-      if(!searchSpclist->list.array)
-      {
-         DU_LOG("\nERROR  -->  DU APP : Common search space list memory alloc failed");
-         return RFAILED;
-      }
+   DU_ALLOC(searchSpclist->list.array, searchSpclist->list.size);
+   if(!searchSpclist->list.array)
+   {
+      DU_LOG("\nERROR  -->  DU APP : Common search space list memory alloc failed");
+      return RFAILED;
+   }
 
    for(idx = 0; idx < searchSpclist->list.count; idx++)
    {
@@ -801,8 +801,8 @@ uint8_t BuildCommonSerachSpaceList( struct PDCCH_ConfigCommon__commonSearchSpace
       DU_LOG("\nERROR  -->  DU APP : Common search space list memory alloc failed");
       return RFAILED;
    }
-   searchSpace->monitoringSlotPeriodicityAndOffset->present = \
-                                                              duPdcchCfg.monitorSlotPrdAndOffPresent;
+   searchSpace->monitoringSlotPeriodicityAndOffset->present = duPdcchCfg.monitorSlotPrdAndOffPresent;
+
    switch(searchSpace->monitoringSlotPeriodicityAndOffset->present)
    {
       case SearchSpace__monitoringSlotPeriodicityAndOffset_PR_sl1:
@@ -888,16 +888,15 @@ uint8_t BuildCommonSerachSpaceList( struct PDCCH_ConfigCommon__commonSearchSpace
    }
 
    /* Monitoring Symbols Within Slot */
-   DU_ALLOC(searchSpace->monitoringSymbolsWithinSlot,\
-         sizeof(BIT_STRING_t));
+   DU_ALLOC(searchSpace->monitoringSymbolsWithinSlot, sizeof(BIT_STRING_t));
    if(!searchSpace->monitoringSymbolsWithinSlot)
    {
       DU_LOG("\nERROR  -->  DU APP : Common search space list memory alloc failed");
       return RFAILED;
    }
-   searchSpace->monitoringSymbolsWithinSlot->size = 2*sizeof(uint8_t);
-   DU_ALLOC(searchSpace->monitoringSymbolsWithinSlot->buf, \
-         searchSpace->monitoringSymbolsWithinSlot->size );
+   searchSpace->monitoringSymbolsWithinSlot->size = 2 * sizeof(uint8_t);
+
+   DU_ALLOC(searchSpace->monitoringSymbolsWithinSlot->buf, searchSpace->monitoringSymbolsWithinSlot->size);
    if(!searchSpace->monitoringSymbolsWithinSlot->buf)
    {  
       DU_LOG("\nERROR  -->  DU APP : Common search space list memory alloc failed");
@@ -908,8 +907,7 @@ uint8_t BuildCommonSerachSpaceList( struct PDCCH_ConfigCommon__commonSearchSpace
    searchSpace->monitoringSymbolsWithinSlot->bits_unused = 2;
 
    /* Number of candidates per aggregation level */
-   DU_ALLOC(searchSpace->nrofCandidates,\
-         sizeof(struct SearchSpace__nrofCandidates));
+   DU_ALLOC(searchSpace->nrofCandidates, sizeof(struct SearchSpace__nrofCandidates));
    if(!searchSpace->nrofCandidates)
    {
       DU_LOG("\nERROR  -->  DU APP : Common search space list memory alloc failed");
@@ -922,8 +920,7 @@ uint8_t BuildCommonSerachSpaceList( struct PDCCH_ConfigCommon__commonSearchSpace
    searchSpace->nrofCandidates->aggregationLevel16 = duPdcchCfg.numCandAggLvl16;
 
    /* Search Space type and  DCI Format */
-   DU_ALLOC(searchSpace->searchSpaceType,\
-         sizeof( struct SearchSpace__searchSpaceType));
+   DU_ALLOC(searchSpace->searchSpaceType, sizeof( struct SearchSpace__searchSpaceType));
    if(!searchSpace->searchSpaceType)
    {
       DU_LOG("\nERROR  -->  DU APP : Common search space list memory alloc failed");
@@ -947,9 +944,8 @@ uint8_t BuildCommonSerachSpaceList( struct PDCCH_ConfigCommon__commonSearchSpace
                return RFAILED;
             }
 
-            DU_ALLOC(searchSpace->searchSpaceType->choice.common->\
-                  dci_Format0_0_AndFormat1_0, sizeof(struct \
-                     SearchSpace__searchSpaceType__common__dci_Format0_0_AndFormat1_0));
+            DU_ALLOC(searchSpace->searchSpaceType->choice.common->dci_Format0_0_AndFormat1_0, \
+               sizeof(struct SearchSpace__searchSpaceType__common__dci_Format0_0_AndFormat1_0));
             if(!searchSpace->searchSpaceType->choice.common->dci_Format0_0_AndFormat1_0)
             {
                DU_LOG("\nERROR  -->  DU APP : Common search space list memory alloc failed");
@@ -1039,8 +1035,7 @@ uint8_t BuildPdcchCfgCommon(struct BWP_DownlinkCommon__pdcch_ConfigCommon *pdcch
             *pdcchSetup->searchSpaceZero = duPdcchCfg.searchSpcZero;
 
             /* Common Search Space List */
-            DU_ALLOC(pdcchSetup->commonSearchSpaceList,\
-                  sizeof(struct PDCCH_ConfigCommon__commonSearchSpaceList));
+            DU_ALLOC(pdcchSetup->commonSearchSpaceList, sizeof(struct PDCCH_ConfigCommon__commonSearchSpaceList));
             if(!pdcchSetup->commonSearchSpaceList)
             {
                DU_LOG("\nERROR  -->  DU APP : PDCCH Config memory alloc failed");
@@ -1052,6 +1047,7 @@ uint8_t BuildPdcchCfgCommon(struct BWP_DownlinkCommon__pdcch_ConfigCommon *pdcch
             ret = BuildCommonSerachSpaceList(pdcchSetup->commonSearchSpaceList);
             if(ret != ROK)
             {
+               DU_LOG("\nERROR  -->  DU APP : Failed to fill common search space list");
                return RFAILED;
             }
             CommonSerachSpaceListret=ROK;
@@ -1065,7 +1061,7 @@ uint8_t BuildPdcchCfgCommon(struct BWP_DownlinkCommon__pdcch_ConfigCommon *pdcch
             }
             *pdcchSetup->searchSpaceSIB1 = duPdcchCfg.searchSpcSib1;
 
-            /* Serach Space for Paging */
+            /* Search Space for Paging */
             DU_ALLOC(pdcchSetup->pagingSearchSpace, sizeof(SearchSpaceId_t));
             if(!pdcchSetup->pagingSearchSpace)
             {
@@ -1146,16 +1142,17 @@ uint8_t BuildPdschCfgCommon(struct BWP_DownlinkCommon__pdsch_ConfigCommon *pdsch
             pdschSetup = pdschCfg->choice.setup; 
 
             /* Time Domain Allocation List */
-            DU_ALLOC(pdschSetup->pdsch_TimeDomainAllocationList, \
-                  sizeof(PDSCH_TimeDomainResourceAllocationList_t));
+            DU_ALLOC(pdschSetup->pdsch_TimeDomainAllocationList, sizeof(PDSCH_TimeDomainResourceAllocationList_t));
             if(!pdschSetup->pdsch_TimeDomainAllocationList)
             {
                DU_LOG("\nERROR  -->  DU APP : PDCCH Config memory alloc failed");
                return RFAILED;
             }
+
             elementCnt = duPdschCfg.numTimeDomRsrcAlloc;
             pdschSetup->pdsch_TimeDomainAllocationList->list.count = elementCnt;
-            pdschSetup->pdsch_TimeDomainAllocationList->list.size =  elementCnt * sizeof(PDSCH_TimeDomainResourceAllocation_t *);
+            pdschSetup->pdsch_TimeDomainAllocationList->list.size =  \
+               elementCnt * sizeof(PDSCH_TimeDomainResourceAllocation_t *);
 
             DU_ALLOC(pdschSetup->pdsch_TimeDomainAllocationList->list.array,\
                   pdschSetup->pdsch_TimeDomainAllocationList->list.size);
@@ -1222,40 +1219,39 @@ uint8_t BuildPdschCfgCommon(struct BWP_DownlinkCommon__pdsch_ConfigCommon *pdsch
  * ****************************************************************/
 uint8_t BuildBwpDlCommon(BWP_DownlinkCommon_t *bwp)
 {
-   uint8_t ret;
-   DlCfgCommon duDlCfg;
+   DlCfgCommon duDlCfg = duCfgParam.sib1Params.srvCellCfgCommSib.dlCfg;
 
-   duDlCfg = duCfgParam.sib1Params.srvCellCfgCommSib.dlCfg;
-
+   /* Generic Parameters */
    bwp->genericParameters.locationAndBandwidth = duDlCfg.locAndBw;
    bwp->genericParameters.subcarrierSpacing = duDlCfg.dlScsCarrier.scs;
 
    /* PDCCH Config Common */
-   DU_ALLOC(bwp->pdcch_ConfigCommon, \
-         sizeof(struct BWP_DownlinkCommon__pdcch_ConfigCommon));
+   DU_ALLOC(bwp->pdcch_ConfigCommon, sizeof(struct BWP_DownlinkCommon__pdcch_ConfigCommon));
    if(!bwp->pdcch_ConfigCommon)
    {
       DU_LOG("\nERROR  -->  DU APP : DL BWP memory allocation failed");
       return RFAILED;
    }
-   ret=BuildPdcchCfgCommon(bwp->pdcch_ConfigCommon);
-   if(ret != ROK)
+   if((BuildPdcchCfgCommon(bwp->pdcch_ConfigCommon)) != ROK)
    {
+      DU_LOG("\nERROR  -->  DU APP : Failed to fill PDCCH config common in BuildBwpDlCommon()");
       return RFAILED;
    }
+
    /* PDSCH Config Common */
-   DU_ALLOC(bwp->pdsch_ConfigCommon, \
-         sizeof(struct BWP_DownlinkCommon__pdsch_ConfigCommon));
+   DU_ALLOC(bwp->pdsch_ConfigCommon, sizeof(struct BWP_DownlinkCommon__pdsch_ConfigCommon));
    if(!bwp->pdsch_ConfigCommon)
    {
       DU_LOG("\nERROR  -->  DU APP : DL BWP memory allocation failed");
       return RFAILED;
    }
-   ret=BuildPdschCfgCommon(bwp->pdsch_ConfigCommon);
-   if(ret != ROK)
+
+   if((BuildPdschCfgCommon(bwp->pdsch_ConfigCommon)) != ROK)
    {
+      DU_LOG("\nERROR  -->  DU APP : Failed to fill PDSCH config common in BuildBwpDlCommon()");
       return RFAILED;
    }
+
    return ROK;
 } /* BuildBwpDlCommon */
 
@@ -1532,7 +1528,7 @@ uint8_t BuildPcchConfig(PCCH_Config_t *pcchCfg)
  *
  * @details
  *
- *    Function : BuildFreqInfoDl
+ *    Function : BuildFreqInfoDlSib
  *
  *    Functionality:
  *     Builds Frequency Info for Downlink
@@ -1543,7 +1539,7 @@ uint8_t BuildPcchConfig(PCCH_Config_t *pcchCfg)
  *
  * ****************************************************************/
 
-uint8_t BuildFreqInfoDl(FrequencyInfoDL_SIB_t *frequencyInfoDL)
+uint8_t BuildFreqInfoDlSib(FrequencyInfoDL_SIB_t *frequencyInfoDL)
 {
    uint8_t ret;
    uint8_t idx;
@@ -1598,7 +1594,7 @@ uint8_t BuildFreqInfoDl(FrequencyInfoDL_SIB_t *frequencyInfoDL)
    frequencyInfoDL->scs_SpecificCarrierList.list.count = elementCnt;
    frequencyInfoDL->scs_SpecificCarrierList.list.size = \
                                                         elementCnt * sizeof(SCS_SpecificCarrier_t *);
-   ret= BuildScsSpecificCarrierListDl(&frequencyInfoDL->scs_SpecificCarrierList);
+   ret= BuildScsSpecificCarrierListDlSib(&frequencyInfoDL->scs_SpecificCarrierList);
 
    if(ret != ROK)
    {
@@ -1628,7 +1624,7 @@ uint8_t BuildDlCfgCommSib(DownlinkConfigCommonSIB_t *dlCfg)
 {
    /* DL frequency info */
    uint8_t ret;
-   ret = BuildFreqInfoDl(&dlCfg->frequencyInfoDL);
+   ret = BuildFreqInfoDlSib(&dlCfg->frequencyInfoDL);
    if(ret != ROK)
    {
       return RFAILED;
@@ -1661,7 +1657,7 @@ uint8_t BuildDlCfgCommSib(DownlinkConfigCommonSIB_t *dlCfg)
  *
  * @details
  *
- *    Function : BuildScsSpecificCarrierListUl
+ *    Function : BuildScsSpecificCarrierListUlSib
  *
  *    Functionality:
  *       Builds SCS specific carrier list for UL
@@ -1672,10 +1668,7 @@ uint8_t BuildDlCfgCommSib(DownlinkConfigCommonSIB_t *dlCfg)
  *
  * ****************************************************************/
 
-   uint8_t BuildScsSpecificCarrierListUl
-(
- struct FrequencyInfoUL_SIB__scs_SpecificCarrierList *scsCarrierList
- )
+uint8_t BuildScsSpecificCarrierListUlSib(struct FrequencyInfoUL_SIB__scs_SpecificCarrierList *scsCarrierList)
 {
    uint8_t idx;
    ScsSpecCarrier   duScsSpecCarrier;
@@ -1704,7 +1697,7 @@ uint8_t BuildDlCfgCommSib(DownlinkConfigCommonSIB_t *dlCfg)
    scsCarrierList->list.array[idx]->carrierBandwidth = duScsSpecCarrier.scsBw;
 
    return ROK;
-} /* End of BuildScsSpecificCarrierListUl */
+} /* End of BuildScsSpecificCarrierListUlSib */
 
 /*******************************************************************
  *
@@ -1712,7 +1705,7 @@ uint8_t BuildDlCfgCommSib(DownlinkConfigCommonSIB_t *dlCfg)
  *
  * @details
  *
- *    Function : BuildFreqInfoUl
+ *    Function : BuildFreqInfoUlSib
  *
  *    Functionality:
  *       Builds frequency infor for UL
@@ -1723,7 +1716,7 @@ uint8_t BuildDlCfgCommSib(DownlinkConfigCommonSIB_t *dlCfg)
  *
  * ****************************************************************/
 
-uint8_t BuildFreqInfoUl(FrequencyInfoUL_SIB_t *frequencyInfoUL)
+uint8_t BuildFreqInfoUlSib(FrequencyInfoUL_SIB_t *frequencyInfoUL)
 {
    uint8_t      elementCnt;
    UlCfgCommon  ulCfg;
@@ -1735,7 +1728,7 @@ uint8_t BuildFreqInfoUl(FrequencyInfoUL_SIB_t *frequencyInfoUL)
    frequencyInfoUL->scs_SpecificCarrierList.list.count = elementCnt;
    frequencyInfoUL->scs_SpecificCarrierList.list.size = \
                                                         elementCnt * sizeof(SCS_SpecificCarrier_t *);
-   ret=BuildScsSpecificCarrierListUl(&frequencyInfoUL->scs_SpecificCarrierList);
+   ret=BuildScsSpecificCarrierListUlSib(&frequencyInfoUL->scs_SpecificCarrierList);
    if(ret != ROK)
    {
       return RFAILED;
@@ -1750,7 +1743,7 @@ uint8_t BuildFreqInfoUl(FrequencyInfoUL_SIB_t *frequencyInfoUL)
    *frequencyInfoUL->p_Max = ulCfg.pMax;
    FreqInfoUlret=ROK;
    return ROK;
-}/* BuildFreqInfoUl */
+}/* BuildFreqInfoUlSib */
 
 /*******************************************************************
  *
@@ -1771,10 +1764,8 @@ uint8_t BuildFreqInfoUl(FrequencyInfoUL_SIB_t *frequencyInfoUL)
 
 uint8_t  BuildRachCfgCommon(struct BWP_UplinkCommon__rach_ConfigCommon *rachCfg)
 {
-   RachCfgCommon    duRachCfg;
-   RACH_ConfigCommon_t  *setup;
-
-   duRachCfg = duCfgParam.sib1Params.srvCellCfgCommSib.ulCfg.rachCfg;
+   RachCfgCommon    duRachCfg = duCfgParam.sib1Params.srvCellCfgCommSib.ulCfg.rachCfg;
+   RACH_ConfigCommon_t  *setup = NULLP;
 
    rachCfg->present = duRachCfg.present;
    switch(rachCfg->present)
@@ -1826,8 +1817,8 @@ uint8_t  BuildRachCfgCommon(struct BWP_UplinkCommon__rach_ConfigCommon *rachCfg)
                DU_LOG("\nERROR  -->  DU APP : Rach Config memory alloc failed");
                return RFAILED;
             }
-            setup->ssb_perRACH_OccasionAndCB_PreamblesPerSSB->present = \
-                                                                        duRachCfg.ssbPerRachOccPresent;
+            setup->ssb_perRACH_OccasionAndCB_PreamblesPerSSB->present = duRachCfg.ssbPerRachOccPresent;
+
             switch(setup->ssb_perRACH_OccasionAndCB_PreamblesPerSSB->present)
             {
                case RACH_ConfigCommon__ssb_perRACH_OccasionAndCB_PreamblesPerSSB_PR_NOTHING:
@@ -1852,8 +1843,7 @@ uint8_t  BuildRachCfgCommon(struct BWP_UplinkCommon__rach_ConfigCommon *rachCfg)
                   }
                case RACH_ConfigCommon__ssb_perRACH_OccasionAndCB_PreamblesPerSSB_PR_one:
                   {
-                     setup->ssb_perRACH_OccasionAndCB_PreamblesPerSSB->choice.one =\
-                                                                                   duRachCfg.numSsbPerRachOcc;
+                     setup->ssb_perRACH_OccasionAndCB_PreamblesPerSSB->choice.one = duRachCfg.numSsbPerRachOcc;
                   }
                case RACH_ConfigCommon__ssb_perRACH_OccasionAndCB_PreamblesPerSSB_PR_two:
                   {
@@ -1877,8 +1867,7 @@ uint8_t  BuildRachCfgCommon(struct BWP_UplinkCommon__rach_ConfigCommon *rachCfg)
                   }
                default:
                   {
-                     DU_LOG("\nERROR  -->  DU APP: Invalid value for \
-                           ssb_PerRach_OccassionAndCB_PreamblesPerSSB");
+                     DU_LOG("\nERROR  -->  DU APP: Invalid value for ssb_PerRach_OccassionAndCB_PreamblesPerSSB");
                      return RFAILED;
                   }
             }
@@ -1963,13 +1952,12 @@ uint8_t  BuildRachCfgCommon(struct BWP_UplinkCommon__rach_ConfigCommon *rachCfg)
 
 uint8_t BuildPuschCfgCommon(struct BWP_UplinkCommon__pusch_ConfigCommon *puschCfg)
 {
-   uint8_t           idx;
-   uint8_t           elementCnt;   
-   PuschCfgCommon    duPuschCfg;
-   PUSCH_ConfigCommon_t *setup;
-   PUSCH_TimeDomainResourceAllocation_t  *timeDomRsrcAllocInfo;
+   uint8_t           idx = 0;
+   uint8_t           elementCnt = 0;   
+   PuschCfgCommon    duPuschCfg = duCfgParam.sib1Params.srvCellCfgCommSib.ulCfg.puschCfg;
+   PUSCH_ConfigCommon_t *setup = NULLP;
+   PUSCH_TimeDomainResourceAllocation_t  *timeDomRsrcAllocInfo = NULLP;
 
-   duPuschCfg = duCfgParam.sib1Params.srvCellCfgCommSib.ulCfg.puschCfg;
 
    puschCfg->present = duPuschCfg.puschCfgPresent;
    switch(puschCfg->present)
@@ -1995,8 +1983,7 @@ uint8_t BuildPuschCfgCommon(struct BWP_UplinkCommon__pusch_ConfigCommon *puschCf
             setup = puschCfg->choice.setup;
 
             /* Time Domain Resource Allocation List */
-            DU_ALLOC(setup->pusch_TimeDomainAllocationList,\
-                  sizeof(PUSCH_TimeDomainResourceAllocationList_t)); 
+            DU_ALLOC(setup->pusch_TimeDomainAllocationList, sizeof(PUSCH_TimeDomainResourceAllocationList_t)); 
             if(!setup->pusch_TimeDomainAllocationList)
             {
                DU_LOG("\nERROR  -->  DU APP : PUSCH Config memory alloc failed");
@@ -2004,11 +1991,9 @@ uint8_t BuildPuschCfgCommon(struct BWP_UplinkCommon__pusch_ConfigCommon *puschCf
             }
             elementCnt = duPuschCfg.numTimeDomRsrcAlloc;
             setup->pusch_TimeDomainAllocationList->list.count = elementCnt;
-            setup->pusch_TimeDomainAllocationList->list.size = \
-                                                               elementCnt * sizeof(PUSCH_TimeDomainResourceAllocation_t *);
+            setup->pusch_TimeDomainAllocationList->list.size = elementCnt * sizeof(PUSCH_TimeDomainResourceAllocation_t *);
 
-            DU_ALLOC(setup->pusch_TimeDomainAllocationList->list.array, \
-                  setup->pusch_TimeDomainAllocationList->list.size);
+            DU_ALLOC(setup->pusch_TimeDomainAllocationList->list.array, setup->pusch_TimeDomainAllocationList->list.size);
             if(!setup->pusch_TimeDomainAllocationList->list.array)
             {
                DU_LOG("\nERROR  -->  DU APP : PUSCH Config memory alloc failed");
@@ -2041,6 +2026,7 @@ uint8_t BuildPuschCfgCommon(struct BWP_UplinkCommon__pusch_ConfigCommon *puschCf
                timeDomRsrcAllocInfo->mappingType = duPuschCfg.timeDomAllocList[idx].mapType;
                timeDomRsrcAllocInfo->startSymbolAndLength = duPuschCfg.timeDomAllocList[idx].sliv;
             }
+
             /* Msg3 Delta Preamble */
             DU_ALLOC(setup->msg3_DeltaPreamble, sizeof(long));
             if(!setup->msg3_DeltaPreamble)
@@ -2050,7 +2036,7 @@ uint8_t BuildPuschCfgCommon(struct BWP_UplinkCommon__pusch_ConfigCommon *puschCf
             }
             *setup->msg3_DeltaPreamble = duPuschCfg.msg3DeltaPreamble;
 
-            /* P0 Nominal with grnat */
+            /* P0 Nominal with grant */
             DU_ALLOC(setup->p0_NominalWithGrant, sizeof(long));
             if(!setup->p0_NominalWithGrant)
             {
@@ -2169,57 +2155,56 @@ uint8_t BuildPucchCfgCommon( struct BWP_UplinkCommon__pucch_ConfigCommon *pucchC
 
 uint8_t BuildBwpUlCommon(BWP_UplinkCommon_t *bwp)
 {
-   uint8_t     ret;
-   UlCfgCommon duUlCfg;
+   UlCfgCommon duUlCfg = duCfgParam.sib1Params.srvCellCfgCommSib.ulCfg;
 
-   duUlCfg = duCfgParam.sib1Params.srvCellCfgCommSib.ulCfg;
-
+   /* Generic Parameters */
    bwp->genericParameters.locationAndBandwidth = duUlCfg.locAndBw;
    bwp->genericParameters.subcarrierSpacing = duUlCfg.ulScsCarrier.scs;
 
    /* RACH Config Common */
-   DU_ALLOC(bwp->rach_ConfigCommon,\
-         sizeof(struct BWP_UplinkCommon__rach_ConfigCommon));
+   DU_ALLOC(bwp->rach_ConfigCommon, sizeof(struct BWP_UplinkCommon__rach_ConfigCommon));
    if(!bwp->rach_ConfigCommon)
    {
       DU_LOG("\nERROR  -->  DU APP : UL BWP memory allocation failed");
       return RFAILED;
    }
-   ret = BuildRachCfgCommon(bwp->rach_ConfigCommon);
-   if(ret != ROK)
+
+   if((BuildRachCfgCommon(bwp->rach_ConfigCommon)) != ROK)
    {
+      DU_LOG("\nERROR  --> DU APP : Failed to fill RACH config common in BuildBwpUlCommon()");
       return RFAILED;
    }
    RachCfgCommonret=ROK;
 
    /* PUSCH Config Common */
-   DU_ALLOC(bwp->pusch_ConfigCommon,\
-         sizeof(struct BWP_UplinkCommon__pusch_ConfigCommon));
+   DU_ALLOC(bwp->pusch_ConfigCommon, sizeof(struct BWP_UplinkCommon__pusch_ConfigCommon));
    if(!bwp->pusch_ConfigCommon)
    {
       DU_LOG("\nERROR  -->  DU APP : UL BWP memory allocation failed");
       return RFAILED;
-   } 
-   ret = BuildPuschCfgCommon(bwp->pusch_ConfigCommon);
-   if(ret != ROK)
+   }
+
+   if((BuildPuschCfgCommon(bwp->pusch_ConfigCommon)) != ROK)
    {
+      DU_LOG("\nERROR  --> DU APP : Failed to fill PUSCH config common in BuildBwpUlCommon()");  
       return RFAILED;
    }
    PuschCfgCommonret = ROK;
 
    /* PUCCH Config Common */
-   DU_ALLOC(bwp->pucch_ConfigCommon,\
-         sizeof(struct BWP_UplinkCommon__pucch_ConfigCommon));
+   DU_ALLOC(bwp->pucch_ConfigCommon, sizeof(struct BWP_UplinkCommon__pucch_ConfigCommon));
    if(!bwp->pucch_ConfigCommon)
    {
       DU_LOG("\nERROR  -->  DU APP : UL BWP memory allocation failed");
       return RFAILED;
-   } 
-   ret = BuildPucchCfgCommon(bwp->pucch_ConfigCommon);
-   if(ret != ROK)
+   }
+
+   if((BuildPucchCfgCommon(bwp->pucch_ConfigCommon)) != ROK)
    {
+      DU_LOG("\nERROR  --> DU APP : Failed to fill PUCCH config common in BuildBwpUlCommon()");
       return RFAILED;
    }
+
    return ROK;
 }/* BuildBwpUlCommon */
 
@@ -2244,7 +2229,7 @@ uint8_t BuildUlCfgCommSib(UplinkConfigCommonSIB_t *ulCfg)
 {
    uint8_t ret;
    /* UL frequency info */
-   ret = BuildFreqInfoUl(&ulCfg->frequencyInfoUL);
+   ret = BuildFreqInfoUlSib(&ulCfg->frequencyInfoUL);
    if(ret != ROK)
    {
       return RFAILED;
@@ -2281,9 +2266,7 @@ uint8_t BuildUlCfgCommSib(UplinkConfigCommonSIB_t *ulCfg)
 
 uint8_t BuildTddUlDlCfgComm(TDD_UL_DL_ConfigCommon_t *tddCfg)
 {
-   TddUlDlCfgCommon duTddCfg;
-
-   duTddCfg = duCfgParam.sib1Params.srvCellCfgCommSib.tddCfg;
+   TddUlDlCfgCommon duTddCfg = duCfgParam.sib1Params.srvCellCfgCommSib.tddCfg;
 
    /* Reference Subcarrier spacing */
    tddCfg->referenceSubcarrierSpacing = duTddCfg.refScs;
@@ -2334,34 +2317,7 @@ uint8_t BuildServCellCfgCommonSib(ServingCellConfigCommonSIB_t *srvCellCfg)
    ssbPosInBurst->buf[0] = duSrvCellCfg.ssbPosInBurst;  
    ssbPosInBurst->bits_unused = 0;
 
-   switch(duSrvCellCfg.ssbPrdServingCell)
-   {
-      case SSB_PERIODICITY_5MS:
-         srvCellCfg->ssb_PeriodicityServingCell = \
-                                                  ServingCellConfigCommonSIB__ssb_PeriodicityServingCell_ms5;
-         break;
-      case SSB_PERIODICITY_10MS:
-         srvCellCfg->ssb_PeriodicityServingCell = \
-                                                  ServingCellConfigCommonSIB__ssb_PeriodicityServingCell_ms10;
-         break;
-      case SSB_PERIODICITY_20MS:
-         srvCellCfg->ssb_PeriodicityServingCell = \
-                                                  ServingCellConfigCommonSIB__ssb_PeriodicityServingCell_ms20;
-         break;
-      case SSB_PERIODICITY_40MS:
-         srvCellCfg->ssb_PeriodicityServingCell = \
-                                                  ServingCellConfigCommonSIB__ssb_PeriodicityServingCell_ms40;
-         break;
-      case SSB_PERIODICITY_80MS:
-         srvCellCfg->ssb_PeriodicityServingCell = \
-                                                  ServingCellConfigCommonSIB__ssb_PeriodicityServingCell_ms80;
-         break;
-      case SSB_PERIODICITY_160MS:
-         srvCellCfg->ssb_PeriodicityServingCell = \
-                                                  ServingCellConfigCommonSIB__ssb_PeriodicityServingCell_ms160;
-         break;
-   }
-
+   srvCellCfg->ssb_PeriodicityServingCell = convertSsbPeriodicityValueToEnumForSib(duSrvCellCfg.ssbPrdServingCell);
    srvCellCfg->ss_PBCH_BlockPower = duSrvCellCfg.ssPbchBlockPwr;
 
    /* Downlink config common */
@@ -2528,7 +2484,7 @@ uint8_t BuildSib1Msg()
  *
  *     Function : FreeFreqInfoDl
  *
- *    Functionality: Freeing memory of BuildFreqInfoDl 
+ *    Functionality: Freeing memory of BuildFreqInfoDlSib 
  *
  * @params[in] : FrequencyInfoDL_SIB_t *frequencyInfoDL
  * @return     :  void

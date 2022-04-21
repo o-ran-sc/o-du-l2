@@ -30,6 +30,9 @@
 #include "PUCCH-Resource.h"
 #include "PagingDRX.h"
 #include "PCCH-Config.h"
+#include "ServingCellConfigCommonSIB.h"
+#include "ServingCellConfigCommon.h"
+#include "CFRA.h"
 #include "du_app_rlc_inf.h"
 
 RLC_BearerConfig__servedRadioBearer_PR covertRbTypeFromIntEnumToRrcEnum(RlcRbType rbType);
@@ -59,6 +62,10 @@ e_PagingDRX convertPagingCycleValueToEnum(uint16_t pagingDrxCycle);
 uint16_t convertPagingCycleEnumToValue(e_PagingDRX pagingDrx);
 uint8_t convertNsEnumToValue(e_PCCH_Config__ns Ns);
 e_PCCH_Config__ns convertNsValueToEnum(uint8_t numPO);
+
+e_ServingCellConfigCommonSIB__ssb_PeriodicityServingCell convertSsbPeriodicityValueToEnumForSib(uint16_t ssbPeriodicity);
+e_ServingCellConfigCommon__ssb_periodicityServingCell convertSsbPeriodicityValueToEnum(uint16_t ssbPeriodicity);
+e_CFRA__occasions__ssb_perRACH_Occasion convertCFRASsbPerRachOccasionValueToEnum(uint8_t ssbOccPerRach);
 
 /**********************************************************************
   End of file
