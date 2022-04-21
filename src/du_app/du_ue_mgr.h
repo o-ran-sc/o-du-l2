@@ -23,7 +23,7 @@
 
 uint8_t duHdlRlcUlData(Pst *pst, KwuDatIndInfo* datInd, Buffer *mBuf);
 uint8_t cmPkRlcDatReq(Pst * pst,RlcDatReqInfo* datReq,Buffer * mBuf);
-uint8_t duBuildAndSendUeCreateReqToMac(uint16_t cellId, uint8_t duUeF1apId, DuUeCfg *ueCfgDb, MacUeCfg *duMacUeCfg);
+uint8_t duBuildAndSendUeCreateReqToMac(uint16_t cellId, uint8_t duUeF1apId, uint16_t crnti, DuUeCfg *ueCfgDb, MacUeCfg *duMacUeCfg);
 uint8_t duBuildAndSendUeCreateReqToRlc(uint16_t cellId, uint8_t duUeF1apId, DuUeCfg *ueCfgDb, RlcUeCfg *duRlcUeCfg);
 uint8_t duCreateUeCb(UeCcchCtxt *ueCcchCtxt, uint32_t gnbCuUeF1apId);
 uint8_t duProcUlCcchInd(UlCcchIndInfo *ulCcchIndInfo);

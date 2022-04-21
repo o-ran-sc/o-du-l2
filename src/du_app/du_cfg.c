@@ -31,7 +31,6 @@
 #include "OCTET_STRING.h"
 #include "BIT_STRING.h"
 #include "odu_common_codec.h"
-#include "du_sys_info_hdl.h"
 #include "MIB.h"
 #include "SearchSpace.h"
 #include "SIB-TypeInfo.h"
@@ -52,6 +51,8 @@
 #include "RACH-ConfigCommon.h"
 #include "BWP-DownlinkCommon.h"
 #include "BWP-UplinkCommon.h"
+#include "TDD-UL-DL-ConfigCommon.h"
+#include "du_sys_info_hdl.h"
 
 #ifdef O1_ENABLE
 #include "CmInterface.h"
@@ -252,7 +253,10 @@ uint8_t readMacCfg()
 	}
 	*(duCfgParam.macCellCfg.prachCfg.fdm[0].unsuedRootSeq) = UNUSED_ROOT_SEQ;
     }
+
+   duCfgParam.macCellCfg.prachCfg.totalNumRaPreamble = NUM_RA_PREAMBLE;
    duCfgParam.macCellCfg.prachCfg.ssbPerRach = SSB_PER_RACH;
+   duCfgParam.macCellCfg.prachCfg.numCbPreamblePerSsb = CB_PREAMBLE_PER_SSB;
    duCfgParam.macCellCfg.prachCfg.prachMultCarrBand = PRACH_MULT_CARRIER_BAND;
    duCfgParam.macCellCfg.prachCfg.raContResTmr = RA_CONT_RES_TIMER;
    duCfgParam.macCellCfg.prachCfg.rsrpThreshSsb = RSRP_THRESHOLD_SSB;
@@ -503,6 +507,12 @@ uint8_t fillServCellCfgCommSib(SrvCellCfgCommSib *srvCellCfgComm)
    PucchCfgCommon   pucchCfg;
    TddUlDlCfgCommon   tddCfg;
 
+#ifdef O1_ENABLE
+   srvCellCfgComm->scs = convertScsValToScsEnum(cellParams.ssbSubCarrierSpacing);
+#else
+   srvCellCfgComm->scs = NR_SCS;
+#endif
+
    /* Configuring DL Config Common for SIB1*/
    srvCellCfgComm->dlCfg.freqBandInd = NR_FREQ_BAND; 
    srvCellCfgComm->dlCfg.offsetToPointA = OFFSET_TO_POINT_A;
@@ -523,9 +533,7 @@ uint8_t fillServCellCfgCommSib(SrvCellCfgCommSib *srvCellCfgComm)
    pdcchCfg.searchSpcZero = SEARCHSPACE_0_INDEX;
    pdcchCfg.searchSpcId = PDCCH_SEARCH_SPACE_ID;
    pdcchCfg.ctrlRsrcSetId = PDCCH_CTRL_RSRC_SET_ID;
-   pdcchCfg.monitorSlotPrdAndOffPresent = \
-      
-      SearchSpace__monitoringSlotPeriodicityAndOffset_PR_sl1;
+   pdcchCfg.monitorSlotPrdAndOffPresent = SearchSpace__monitoringSlotPeriodicityAndOffset_PR_sl1;
    //pdcchCfg.monitorSlotPrdAndOff = \
    SearchSpace__monitoringSlotPeriodicityAndOffset_PR_sl1;
    pdcchCfg.monitorSymbolsInSlot[0] = 128;
@@ -546,20 +554,17 @@ uint8_t fillServCellCfgCommSib(SrvCellCfgCommSib *srvCellCfgComm)
    pdschCfg.present = BWP_DownlinkCommon__pdsch_ConfigCommon_PR_setup;
    pdschCfg.numTimeDomRsrcAlloc = 2;
    pdschCfg.timeDomAlloc[0].k0 = PDSCH_K0_CFG1;
-   pdschCfg.timeDomAlloc[0].mapType = \
-      PDSCH_TimeDomainResourceAllocation__mappingType_typeA;
+   pdschCfg.timeDomAlloc[0].mapType = PDSCH_TimeDomainResourceAllocation__mappingType_typeA;
    pdschCfg.timeDomAlloc[0].sliv = calcSliv(PDSCH_START_SYMBOL,PDSCH_LENGTH_SYMBOL);
 
    pdschCfg.timeDomAlloc[1].k0 = PDSCH_K0_CFG2;
-   pdschCfg.timeDomAlloc[1].mapType = \
-      PDSCH_TimeDomainResourceAllocation__mappingType_typeA;
+   pdschCfg.timeDomAlloc[1].mapType = PDSCH_TimeDomainResourceAllocation__mappingType_typeA;
    pdschCfg.timeDomAlloc[1].sliv = calcSliv(PDSCH_START_SYMBOL,PDSCH_LENGTH_SYMBOL);
 
    srvCellCfgComm->dlCfg.pdschCfg = pdschCfg;
 
    /* Configuring BCCH Config for SIB1 */
-   srvCellCfgComm->dlCfg.bcchCfg.modPrdCoeff = \
-      BCCH_Config__modificationPeriodCoeff_n16;
+   srvCellCfgComm->dlCfg.bcchCfg.modPrdCoeff = BCCH_Config__modificationPeriodCoeff_n16;
 
    /* Configuring PCCH Config for SIB1 */
    pcchCfg.dfltPagingCycle = convertPagingCycleEnumToValue(PagingCycle_rf256);
@@ -583,6 +588,7 @@ uint8_t fillServCellCfgCommSib(SrvCellCfgCommSib *srvCellCfgComm)
    srvCellCfgComm->ulCfg.ulScsCarrier.scs = NR_SCS;
    srvCellCfgComm->ulCfg.ulScsCarrier.scsBw = NR_BANDWIDTH;
 #endif   
+   srvCellCfgComm->ulCfg.freqBandInd = NR_FREQ_BAND;
    srvCellCfgComm->ulCfg.pMax = UL_P_MAX;
    srvCellCfgComm->ulCfg.locAndBw = FREQ_LOC_BW;
    srvCellCfgComm->ulCfg.timeAlignTimerComm = TimeAlignmentTimer_infinity;
@@ -598,9 +604,8 @@ uint8_t fillServCellCfgCommSib(SrvCellCfgCommSib *srvCellCfgComm)
    rachCfg.pwrRampingStep = RACH_ConfigGeneric__powerRampingStep_dB2;
    rachCfg.raRspWindow = RACH_ConfigGeneric__ra_ResponseWindow_sl10;
    rachCfg.numRaPreamble = NUM_RA_PREAMBLE;
-   rachCfg.ssbPerRachOccPresent = \
-      RACH_ConfigCommon__ssb_perRACH_OccasionAndCB_PreamblesPerSSB_PR_one;
-   rachCfg.numSsbPerRachOcc = SSB_PER_RACH;
+   rachCfg.numSsbPerRachOcc = RACH_ConfigCommon__ssb_perRACH_OccasionAndCB_PreamblesPerSSB_PR_one;
+   rachCfg.numCbPreamblePerSsb = CB_PREAMBLE_PER_SSB;
    rachCfg.contResTimer = RACH_ConfigCommon__ra_ContentionResolutionTimer_sf64;
    rachCfg.rsrpThreshSsb = RSRP_THRESHOLD_SSB;
    rachCfg.rootSeqIdxPresent = RACH_ConfigCommon__prach_RootSequenceIndex_PR_l139;
@@ -639,7 +644,7 @@ uint8_t fillServCellCfgCommSib(SrvCellCfgCommSib *srvCellCfgComm)
    srvCellCfgComm->tddCfg = tddCfg;
 
    srvCellCfgComm->ssbPosInBurst = 192;
-   srvCellCfgComm->ssbPrdServingCell = SSB_PERIODICITY_20MS;
+   srvCellCfgComm->ssbPrdServingCell = SSB_PERIODICITY;
    srvCellCfgComm->ssPbchBlockPwr = SSB_PBCH_PWR;
 
    return ROK;
