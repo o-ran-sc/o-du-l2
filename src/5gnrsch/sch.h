@@ -268,6 +268,7 @@ typedef struct schUeCb
    SchUeCfgCb ueCfg;
    SchUeState state;
    SchCellCb  *cellCb;
+   SchCfraResource cfraResource;
    bool       srRcvd;
    bool       bsrRcvd;
    BsrInfo    bsrInfo[MAX_NUM_LOGICAL_CHANNEL_GROUPS];
@@ -330,15 +331,16 @@ typedef struct schCellCb
    SchCellCfg    cellCfg;                           /*!< Cell ocnfiguration */
    bool          firstSsbTransmitted;
    bool          firstSib1Transmitted;
-   uint8_t       ssbStartSymbArr[SCH_MAX_SSB_BEAM]; /*!<start symbol per SSB beam */
+   uint8_t       ssbStartSymbArr[SCH_MAX_SSB_BEAM]; /*!< start symbol per SSB beam */
+   uint64_t      dedPreambleBitMap;                 /*!< Bit map to find used/free preambles index */
    SchRaReq      *raReq[MAX_NUM_UE];                /*!< Pending RA request */
    SchRaCb       raCb[MAX_NUM_UE];                  /*!< RA Cb */
-   uint16_t      numActvUe;                         /*!<Number of active UEs */
-   uint32_t      actvUeBitMap;                      /*!<Bit map to find active UEs */
-   uint32_t      boIndBitMap;                       /*!<Bit map to indicate UEs that have recevied BO */
-   SchUeCb       ueCb[MAX_NUM_UE];                  /*!<Pointer to UE contexts of this cell */
-   CmLListCp     ueToBeScheduled;                   /*!<Linked list to store UEs pending to be scheduled, */
-   SchPageCb     pageCb;        /*!<Page Record at Schedular*/
+   uint16_t      numActvUe;                         /*!< Number of active UEs */
+   uint32_t      actvUeBitMap;                      /*!< Bit map to find active UEs */
+   uint32_t      boIndBitMap;                       /*!< Bit map to indicate UEs that have recevied BO */
+   SchUeCb       ueCb[MAX_NUM_UE];                  /*!< Pointer to UE contexts of this cell */
+   CmLListCp     ueToBeScheduled;                   /*!< Linked list to store UEs pending to be scheduled, */
+   SchPageCb     pageCb;                            /*!< Page Record at Schedular*/
 #ifdef NR_TDD
    uint8_t       numSlotsInPeriodicity;             /*!< number of slots in configured periodicity and SCS */
    uint32_t      slotFrmtBitMap;                    /*!< 2 bits must be read together to determine D/U/S slots. 00-D, 01-U, 10-S */

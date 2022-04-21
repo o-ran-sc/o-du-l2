@@ -1960,6 +1960,9 @@ uint8_t extractDuToCuRrcCont(CuUeCb *ueCb, OCTET_STRING_t rrcCont)
    CellGroupConfigRrc_t  cellGrpCfg, *cellGrpCfgMsg = NULLP;
    asn_dec_rval_t rval; /* Decoder return value */
 
+   /* Copy the received container to UeCb */
+   memcpy(&ueCb->f1apMsgDb.duToCuContainer, &rrcCont, sizeof(OCTET_STRING_t));
+
    /* Decoding DU to CU RRC container octet string to cell group config */
    cellGrpCfgMsg = &cellGrpCfg;
    memset(cellGrpCfgMsg, 0, sizeof(CellGroupConfigRrc_t));
@@ -8442,13 +8445,28 @@ uint8_t fillRrcReconfigNonCriticalExt(CuUeCb *ueCb, RRCReconfiguration_v1530_IEs
    CU_ALLOC(rrcRecfg->masterCellGroup, sizeof(OCTET_STRING_t));
    if(!rrcRecfg->masterCellGroup)
    {
+      DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in fillRrcReconfigNonCriticalExt");
       return RFAILED;
    }
 
-   if(fillCellGrpCfg(ueCb, rrcRecfg->masterCellGroup, updateAllRbCfg) != ROK)
+   //if(ueCb->state == UE_HANDOVER_IN_PROGRESS)
    {
-      return RFAILED;
+      rrcRecfg->masterCellGroup->size = ueCb->f1apMsgDb.duToCuContainer.size;
+      CU_ALLOC(rrcRecfg->masterCellGroup->buf, rrcRecfg->masterCellGroup->size);
+      if(!rrcRecfg->masterCellGroup->buf)
+      {     
+         DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in fillRrcReconfigNonCriticalExt");
+         return RFAILED;
+      }     
+      memcpy(rrcRecfg->masterCellGroup->buf, ueCb->f1apMsgDb.duToCuContainer.buf, rrcRecfg->masterCellGroup->size);
    }
+   #if 0
+   else
+   {
+      if(fillCellGrpCfg(ueCb, rrcRecfg->masterCellGroup, updateAllRbCfg) != ROK)
+         return RFAILED;
+   }
+   #endif
 
    return ROK;
 }
@@ -9270,6 +9288,7 @@ uint8_t procUeContextSetupResponse(uint32_t duId, F1AP_PDU_t *f1apMsg)
    DuDb *duDb = NULLP;
    CuUeCb *ueCb = NULLP;
    UEContextSetupResponse_t *ueCtxtSetupRsp = NULLP;
+   OCTET_STRING_t *duToCuRrcContainer;
 
    SEARCH_DU_DB(duIdx, duId, duDb);
    ueCtxtSetupRsp = &f1apMsg->choice.successfulOutcome->value.choice.UEContextSetupResponse;
@@ -9320,6 +9339,8 @@ uint8_t procUeContextSetupResponse(uint32_t duId, F1AP_PDU_t *f1apMsg)
          case ProtocolIE_ID_id_DUtoCURRCInformation:
              {
                 DU_LOG("\nINFO  -->  Received Du to Cu RRC Information ");
+                duToCuRrcContainer = &ueCtxtSetupRsp->protocolIEs.list.array[idx]->value.choice.\
+                   DUtoCURRCInformation.cellGroupConfig;
                 if((extractDuToCuRrcCont(ueCb, ueCtxtSetupRsp->protocolIEs.list.array[idx]->value.choice.\
                    DUtoCURRCInformation.cellGroupConfig)) != ROK)
                 {
@@ -9365,6 +9386,10 @@ uint8_t procUeContextSetupResponse(uint32_t duId, F1AP_PDU_t *f1apMsg)
                   /* Store source DU info in the new UE context created in
                    * tareget DU */
                   ueCb->hoInfo.sourceDuId = srcDuDb->duId;
+
+                  /* Copy the received container to UeCb */
+                  memcpy(&ueCbInSrcDu->f1apMsgDb.duToCuContainer, duToCuRrcContainer, sizeof(OCTET_STRING_t));
+
                   if(BuildAndSendUeContextModificationReq(srcDuDb->duId, ueCbInSrcDu, STOP_DATA_TX) != ROK)
                   {
                      DU_LOG("\nERROR  ->  F1AP : Failed at BuildAndSendUeContextModificationReq()");
@@ -10718,6 +10743,7 @@ uint8_t BuildAndSendUeContextModificationReq(uint32_t duId, void *cuUeCb, UeCtxt
             ueContextModifyReq->protocolIEs.list.array[ieIdx]->value.choice.TransmissionActionIndicator = \
             TransmissionActionIndicator_restart;
          }
+
          ieIdx++;
          ueContextModifyReq->protocolIEs.list.array[ieIdx]->id = ProtocolIE_ID_id_RRCContainer;
          ueContextModifyReq->protocolIEs.list.array[ieIdx]->criticality = Criticality_reject;
@@ -10753,11 +10779,13 @@ uint8_t BuildAndSendUeContextModificationReq(uint32_t duId, void *cuUeCb, UeCtxt
       }
       else
       {
-         DU_LOG("\nDEBUG  -->  F1AP : Created APER encodedbuffer for ueContextModifyReq\n");
+         DU_LOG("\nDEBUG  -->  F1AP : Created APER encodedbuffer for ueContextModifyReq encBufSize %ld\n", encBufSize);
+         /*
          for(ieIdx=0; ieIdx< encBufSize; ieIdx++)
          {
             DU_LOG("%x",encBuf[ieIdx]);
          }
+         */
       }
 
       /* TODO : Hardcoding DU ID to 1 for messages other than F1 Setup Response. This will be made generic in future gerrit */

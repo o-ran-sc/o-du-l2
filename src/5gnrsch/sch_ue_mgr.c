@@ -554,7 +554,9 @@ uint8_t MacSchAddUeConfigReq(Pst *pst, SchUeCfg *ueCfg)
          ueCb->state = SCH_UE_STATE_ACTIVE;
       }
       else
+      {
          ueCb->state = SCH_UE_HANDIN_IN_PROGRESS;
+      }
 
       ueCb->cellCb = cellCb;
       ueCb->srRcvd = false;

@@ -863,6 +863,7 @@ uint8_t packDuMacUeReconfigReq(Pst *pst, MacUeCfg *ueCfg)
 
    return ODU_POST_TASK(pst,mBuf);
 }
+
 /*******************************************************************
  *
  * @brief Unpacks UE Reconfig Request received from DU APP
@@ -896,6 +897,166 @@ uint8_t unpackMacUeReconfigReq(DuMacUeReconfigReq func, Pst *pst, Buffer *mBuf)
    {
       /* Nothing to do for other selectors */
       DU_LOG("\nERROR  -->  DU APP : Only LWLC supported for UE Create Request ");
+      ODU_PUT_MSG_BUF(mBuf);
+   }
+
+   return RFAILED;
+}
+
+/*******************************************************************
+ *
+ * @brief Packs and Sends RACH Resource request from DUAPP to MAC
+ *
+ * @details
+ *
+ *    Function : packDuMacRachRsrcReq
+ *
+ *    Functionality:
+ *       Packs and Sends RACH Resource request from DU APP to MAC
+ *
+ *
+ * @params[in] Post structure pointer
+ *             MacRachRsrcReq pointer              
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t packDuMacRachRsrcReq(Pst *pst, MacRachRsrcReq *rachRsrcReq)
+{
+   Buffer *mBuf = NULLP;
+
+   if(pst->selector == ODU_SELECTOR_LWLC)
+   {
+      if (ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf) != ROK)
+      {
+         DU_LOG("\nERROR  --> MAC : Memory allocation failed at packDuMacRachRsrcReq,");
+         return RFAILED;
+      }
+      /* pack the address of the structure */
+      CMCHKPK(oduPackPointer, (PTR)rachRsrcReq, mBuf);
+   }
+   else
+   {
+      DU_LOG("\nERROR  -->  MAC: Only LWLC supported for packDuMacRachRsrcReq");
+      return RFAILED;
+   }
+
+   return ODU_POST_TASK(pst,mBuf);
+}
+
+/*******************************************************************
+ *
+ * @brief Unpacks RACH resource Request received from DU APP
+ *
+ * @details
+ *
+ *    Function : unpackMacRachRsrcReq
+ *
+ *    Functionality:
+ *         Unpacks RACH resource Request received from DU APP
+ *
+ * @params[in] Pointer to Handler
+ *             Post structure pointer
+ *             Message Buffer
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t unpackMacRachRsrcReq(DuMacRachRsrcReq func, Pst *pst, Buffer *mBuf)
+{
+   if(pst->selector == ODU_SELECTOR_LWLC)
+   {
+      MacRachRsrcReq *rachRsrcReq;
+
+      /* unpack the address of the structure */
+      CMCHKUNPK(oduUnpackPointer, (PTR *)&rachRsrcReq, mBuf);
+      ODU_PUT_MSG_BUF(mBuf);
+      return (*func)(pst, rachRsrcReq);
+   }
+   else
+   {
+      /* Nothing to do for other selectors */
+      DU_LOG("\nERROR  -->  DU APP : Only LWLC supported for RACH resource Request ");
+      ODU_PUT_MSG_BUF(mBuf);
+   }
+
+   return RFAILED;
+}
+
+/*******************************************************************
+ *
+ * @brief Packs and Sends RACH Resource response from MAC to DU APP
+ *
+ * @details
+ *
+ *    Function : packDuMacRachRsrcRsp
+ *
+ *    Functionality:
+ *       Packs and Sends RACH Resource response from MAC to DU APP
+ *
+ *
+ * @params[in] Post structure pointer
+ *             MacRachRsrcRsp pointer              
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t packDuMacRachRsrcRsp(Pst *pst, MacRachRsrcRsp *rachRsrcRsp)
+{
+   Buffer *mBuf = NULLP;
+
+   if(pst->selector == ODU_SELECTOR_LWLC)
+   {
+      if (ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf) != ROK)
+      {
+         DU_LOG("\nERROR  --> MAC : Memory allocation failed at packDuMacRachRsrcRsp");
+         return RFAILED;
+      }
+      /* pack the address of the structure */
+      CMCHKPK(oduPackPointer, (PTR)rachRsrcRsp, mBuf);
+   }
+   else
+   {
+      DU_LOG("\nERROR  -->  MAC: Only LWLC supported for packDuMacRachRsrcRsp");
+      return RFAILED;
+   }
+
+   return ODU_POST_TASK(pst,mBuf);
+}
+
+/*******************************************************************
+ *
+ * @brief Unpacks RACH resource Response received from MAC
+ *
+ * @details
+ *
+ *    Function : unpackDuMacRachRsrcRsp
+ *
+ *    Functionality:
+ *         Unpacks RACH resource Response received from MAC
+ *
+ * @params[in] Pointer to Handler
+ *             Post structure pointer
+ *             Message Buffer
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t unpackDuMacRachRsrcRsp(MacDuRachRsrcRspFunc func, Pst *pst, Buffer *mBuf)
+{
+   if(pst->selector == ODU_SELECTOR_LWLC)
+   {
+      MacRachRsrcRsp *rachRsrcRsp;
+
+      /* unpack the address of the structure */
+      CMCHKUNPK(oduUnpackPointer, (PTR *)&rachRsrcRsp, mBuf);
+      ODU_PUT_MSG_BUF(mBuf);
+      return (*func)(pst, rachRsrcRsp);
+   }
+   else
+   {
+      /* Nothing to do for other selectors */
+      DU_LOG("\nERROR  -->  DU APP : Only LWLC supported for RACH resource Response ");
       ODU_PUT_MSG_BUF(mBuf);
    }
 

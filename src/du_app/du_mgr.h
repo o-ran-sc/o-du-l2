@@ -170,6 +170,7 @@ typedef struct duUeCb
    uint32_t gnbCuUeF1apId;   /* GNB CU UE F1AP ID */
    uint32_t drbBitMap;       /* Drb Bit Map */
    UeState  ueState;         /* UE Active/ Ue Inactive state */
+   MacCfraResource cfraResource; /* CF-RA resource assigned by MAC/SCH */
    MacUeCfg macUeCfg;        /* Mac Ue Cfg */
    RlcUeCfg rlcUeCfg;        /* Rlc Ue Cfg */
 }DuUeCb;

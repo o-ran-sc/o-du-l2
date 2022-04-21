@@ -108,46 +108,52 @@ Buffer  *mBuf                       /* message buffer       */
          unpackDuMacCellCfg(MacProcCellCfgReq, pst, mBuf);
          break;
       case EVENT_MAC_CELL_START:
-	 /* Process MAC cell start request */
-	 unpackMacCellStart(MacProcCellStart, pst, mBuf);
-	 break;
+         /* Process MAC cell start request */
+         unpackMacCellStart(MacProcCellStart, pst, mBuf);
+         break;
       case EVENT_MAC_CELL_STOP:
-	 /* Process MAC cell stop request */
-	 unpackMacCellStop(MacProcCellStop, pst, mBuf);
-	 break;
+         /* Process MAC cell stop request */
+         unpackMacCellStop(MacProcCellStop, pst, mBuf);
+         break;
       case EVENT_MAC_DL_CCCH_IND:
-	 /* Process DL CCCH Ind */
-	 unpackMacDlCcchInd(MacProcDlCcchInd, pst, mBuf);
-	 break;
+         /* Process DL CCCH Ind */
+         unpackMacDlCcchInd(MacProcDlCcchInd, pst, mBuf);
+         break;
       case EVENT_MAC_UE_CREATE_REQ:
-	 /* Process Ue Create Request */
-	 unpackMacUeCreateReq(MacProcUeCreateReq, pst, mBuf);
-	 break;
+         /* Process Ue Create Request */
+         unpackMacUeCreateReq(MacProcUeCreateReq, pst, mBuf);
+         break;
       case EVENT_MAC_UE_RECONFIG_REQ:
-	 /* Process Ue Reconfig Request */
-	 unpackMacUeReconfigReq(MacProcUeReconfigReq, pst, mBuf);
-	 break;
-    case EVENT_MAC_UE_DELETE_REQ:
-    {
-       unpackMacUeDeleteReq(MacProcUeDeleteReq, pst, mBuf);
-       break;
-    }
-    case EVENT_MAC_CELL_DELETE_REQ:
-    {
-       unpackMacCellDeleteReq(MacProcCellDeleteReq, pst, mBuf);
-       break;
-    }
-    case EVENT_MAC_SLICE_CFG_REQ:
-    {
-       unpackMacSliceCfgReq(MacProcSliceCfgReq, pst, mBuf);
-       break;
-    }
-    case EVENT_MAC_SLICE_RECFG_REQ:
-    {
-       unpackMacSliceCfgReq(MacProcSliceReCfgReq, pst, mBuf);
-       break;
-    }
-    default:
+         /* Process Ue Reconfig Request */
+         unpackMacUeReconfigReq(MacProcUeReconfigReq, pst, mBuf);
+         break;
+      case EVENT_MAC_UE_DELETE_REQ:
+         {
+            unpackMacUeDeleteReq(MacProcUeDeleteReq, pst, mBuf);
+            break;
+         }
+      case EVENT_MAC_CELL_DELETE_REQ:
+         {
+            unpackMacCellDeleteReq(MacProcCellDeleteReq, pst, mBuf);
+            break;
+         }
+      case EVENT_MAC_SLICE_CFG_REQ:
+         {
+            unpackMacSliceCfgReq(MacProcSliceCfgReq, pst, mBuf);
+            break;
+         }
+      case EVENT_MAC_SLICE_RECFG_REQ:
+         {
+            unpackMacSliceCfgReq(MacProcSliceReCfgReq, pst, mBuf);
+            break;
+         }
+      case EVENT_MAC_RACH_RESOURCE_REQ:
+         {
+            unpackMacRachRsrcReq(MacProcRachRsrcReq, pst, mBuf);
+            break;
+         }
+
+      default:
          RG_FREE_MSG(mBuf);
          break;
    }
