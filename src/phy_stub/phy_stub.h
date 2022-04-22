@@ -17,6 +17,9 @@
 *******************************************************************************/
 #include <unistd.h>
 
+#define SOURCE_DU_IP_V4_ADDR      "192.168.130.81"
+#define DESTINATION_DU_IP_V4_ADDR "192.168.130.83"
+
 #ifdef NR_TDD
 #define MAX_SLOT_VALUE   19
 #else
