@@ -245,90 +245,276 @@ uint8_t duDelNodeFromLList(CmLListCp *llist, CmLList *node)
    return ROK;
 }
 
-/*Below function for printing will be used in future so disabling it for now*/
-#if 0 
-/****************************************************************************
- *
- * @brief Print the LC in list for debugging purpose 
+/*******************************************************************
+ * @brief Handle the PageUe List
  *
  * @details
  *
- *    Function : printLcLL
+ *    Function : handlePageUeLL
  *
- *    Functionality:
- *            For debugging purpose, for printing the LC in the order and
- *            parameters
+ *    Functionality: Handling the (SEARCH,CREATE,DELETE) PageUeList
  *
- * @params[in] LcList pointer 
- *       
- * @return void 
- *        
- *************************************************************************/
-void printPageInfoLL(CmLListCp *pageInfoLL)
+ * @params[in] DuPagingMsg *pagingParam, CmLListCp *pageUeLL, ActionTypeLL
+ * action
+ *
+ * @return DuPagUeRecord 
+ *
+ * ****************************************************************/
+DuPagUeRecord* handlePageUeLL(DuPagingMsg *pagingParam, CmLListCp *pageUeLL, ActionTypeLL action)
 {
-   CmLList *node = NULLP;
-   DuPagUeList *pageInfoNode = NULLP;
-
-   if(pageInfoLL == NULLP)
-   {
-      DU_LOG("\nINFO   -->  DU APP: PageInfo List doesnt exist");
-      return;
-   }
-   node = pageInfoLL->first;
-   while(node)
-   {
-      pageInfoNode = (DuPagUeList *)node->node;
-      if(pageInfoNode)
-      {
-         DU_LOG("\nINFO   -->  DU APP i_s:%d",pageInfoNode->i_s);
-         printPageUeRecordLL(&(pageInfoNode->pagUeList));
-      }
-
-      node = node->next;
-   }
-}
-
-/****************************************************************************
- *
- * @brief Print the Ue Record against Paging Frame for debugging purpose 
- *
- * @details
- *
- *    Function : printLcLL
- *
- *    Functionality:
- *            For debugging purpose, for printing the UE Record in the order and
- *            parameters
- *
- * @params[in] ueList pointer 
- *       
- * @return void 
- *        
- *************************************************************************/
-void printPageUeRecordLL(CmLListCp *ueList)
-{
-   CmLList *node = NULLP;
+   CmLList  *node = NULLP;
    DuPagUeRecord *ueRecord = NULLP;
+   bool found = FALSE;
 
-   if(ueList == NULLP)
+   if(pageUeLL == NULLP)
    {
-      DU_LOG("\nINFO   -->  DU APP: PageUe List doesnt exist");
-      return;
+      DU_LOG("\nERROR  -->  DU APP: UE Page Record LL is empty");
+      return NULLP;
    }
-   node = ueList->first;
+   node = pageUeLL->first;
+
    while(node)
    {
       ueRecord = (DuPagUeRecord *)node->node;
-      if(ueRecord)
+      if(action == PRINT)
       {
-         DU_LOG("\nINFO   -->  DU APP ueId:%d, sTmsi:%lu, prio:%d",ueRecord->pagUeId, ueRecord->sTmsi, ueRecord->pagPriority);
+         DU_LOG("\n  INFO   -->  DU APP ueId:%d, sTmsi:%lu, prio:%d",\
+                 ueRecord->pagUeId, ueRecord->sTmsi, ueRecord->pagPriority);
       }
-
+      else if(ueRecord && (ueRecord->pagUeId == pagingParam->pagUeId && 
+               ueRecord->sTmsi == pagingParam->sTmsi))
+      {
+         found = TRUE;
+         break;
+      }
       node = node->next;
    }
 
+   switch(action)
+   {
+      case SEARCH:
+         {
+            if(!found)
+            {
+               ueRecord = NULLP;
+            }
+            return ueRecord;
+         }
+
+      case CREATE:
+         {
+            if(node != NULLP)
+               return ueRecord;
+
+            /*Need to add a new node for this LC*/
+
+            /*List is empty; Initialize the LL ControlPointer*/
+            if(pageUeLL->count == 0)
+            {
+               cmLListInit(pageUeLL);
+            }
+
+            ueRecord = NULLP;
+            /*Allocate the List*/
+            DU_ALLOC(ueRecord, sizeof(DuPagUeRecord));
+            if(ueRecord)
+            {
+               ueRecord->pagUeId = pagingParam->pagUeId;
+               ueRecord->sTmsi = pagingParam->sTmsi;
+               ueRecord->pagPriority = pagingParam->pagPriority;
+               ueRecord->pf = pagingParam->pagingFrame;
+               ueRecord->i_s = pagingParam->i_s;
+            }
+            else
+            {
+               DU_LOG("\nERROR  -->  DU APP : Allocation of UE Record failed,ueId:%d",pagingParam->pagUeId);
+               return NULLP;
+            }
+
+            if(duAddNodeToLList(pageUeLL, ueRecord, NULLP) == RFAILED)
+            {
+               DU_LOG("\nERROR  -->  DU APP : failed to Add Ue Record Node,ueId:%d",pagingParam->pagUeId);
+               DU_FREE(ueRecord, sizeof(DuPagUeRecord));
+               return NULLP;
+            }
+            return ueRecord;
+         }
+      case DELETE:
+         {
+            if(!found ||  ueRecord == NULLP)
+            {
+               DU_LOG("\nERROR  -->  DU APP: UeId:%d not found; thus Deletion unsuccessful",pagingParam->pagUeId);
+            }
+            else
+            {
+               if(duDelNodeFromLList(pageUeLL, node) == ROK)
+                  DU_FREE(ueRecord, sizeof(DuPagUeRecord));
+
+               DU_LOG("\nDEBUG  -->  DU APP: UeId:%d Deleted successfully",pagingParam->pagUeId);
+            }
+            return NULLP;
+         }
+      case PRINT:
+      case TRAVERSE_ALL:
+         {
+            break;
+         }
+      default:
+         {
+            DU_LOG("\nERROR  -->  DU APP: Incorrect ActionType:%d on UeRecord",action);
+         }
+   }
+   return NULLP;
 }
 
+/*******************************************************************
+ * @brief Handle the PageInfo List
+ *
+ * @details
+ *
+ *    Function : handlePageInfoLL
+ *
+ *    Functionality: Handling the (SEARCH,CREATE,DELETE) PageInfoList
+ *
+ * @params[in] uint8_t i_s, CmLListCp *pagInfoLL, ActionTypeLL action
+ *
+ * @return DuPagUeList 
+ *
+ * ****************************************************************/
+DuPagUeList* handlePageInfoLL(uint8_t i_s, CmLListCp *pagInfoLL, ActionTypeLL action)
+{
+   CmLList  *node = NULLP;
+   DuPagUeList *pagInfo = NULLP;
+   bool found = FALSE;
+   
+   if(pagInfoLL == NULLP)
+   {
+      DU_LOG("\nERROR  -->  DU APP: PagInfo LL is empty");
+      return NULLP;
+   }
+   node = pagInfoLL->first;
+
+   while(node)
+   {
+      pagInfo = (DuPagUeList *)node->node;
+      if(action == PRINT)
+      {
+         DU_LOG("\n INFO   -->  DU APP: Paging Index (i_s):%d",pagInfo->i_s);
+         handlePageUeLL(NULLP, &(pagInfo->pagUeList), PRINT);
+      }
+      else if(action == TRAVERSE_ALL)
+      {
+         buildAndSendPagingReqToMac(&(pagInfo->pagUeList));
+      }
+      else if(pagInfo->i_s == i_s)
+      {
+         found = TRUE;
+         break;
+      }
+      node = node->next;
+   }
+
+   switch(action)
+   {
+      case SEARCH:
+         {
+            if(!found)
+            {
+               pagInfo = NULLP;
+            }
+            return pagInfo;
+         }
+
+      case CREATE:
+         {
+            if(node != NULLP)
+               return pagInfo;
+
+            /*Need to add a new node for this LC*/
+
+            /*List is empty; Initialize the LL ControlPointer*/
+            if(pagInfoLL->count == 0)
+            {
+               cmLListInit(pagInfoLL);
+            }
+
+            pagInfo = NULLP;
+            /*Allocate the List*/
+            DU_ALLOC(pagInfo, sizeof(DuPagUeList));
+            if(pagInfo)
+            {
+               pagInfo->i_s = i_s;
+            }
+            else
+            {
+               DU_LOG("\nERROR  -->  DU APP : Allocation of List failed,i_s:%d",i_s);
+               return NULLP;
+            }
+
+            if(duAddNodeToLList(pagInfoLL, pagInfo, NULLP) == RFAILED)
+            {
+               DU_LOG("\nERROR  -->  DU APP : failed to Add Node,i_s:%d",i_s);
+               DU_FREE(pagInfo, sizeof(DuPagUeList));
+               return NULLP;
+            }
+            return pagInfo;
+         }
+      case DELETE:
+         {
+            if(!found ||  pagInfo == NULLP)
+            {
+               DU_LOG("\nERROR  -->  DU APP: i_s:%d not found; thus Deletion unsuccessful",i_s);
+            }
+            else
+            {
+               if(duDelNodeFromLList(pagInfoLL, node) == ROK)
+                  DU_FREE(pagInfo, sizeof(DuPagUeList));
+
+               DU_LOG("\nDEBUG  -->  DU APP: i_s:%d Deleted successfully",i_s);
+            }
+            return NULLP;
+         }
+      case PRINT:
+      case TRAVERSE_ALL:
+         {
+            break;
+         }
+      default:
+         {
+            DU_LOG("\nERROR  -->  DU APP: Incorrect ActionType:%d on PageInfo List",action);
+         }
+   }
+   return NULLP;
+}
+
+/*******************************************************************
+ * @brief Find the PageInfo List from HashMap 
+ *
+ * @details
+ *
+ *    Function : findPagingInfoFromMap
+ *
+ *    Functionality: Search for the PageInfoList for a PF from HashMap
+ *
+ * @params[in] uint16_t pf, CmHashListCp *pagingInfoMap
+ *
+ * @return DuPagInfoList 
+ *
+ * ****************************************************************/
+DuPagInfoList* findPagingInfoFromMap(uint16_t pf, CmHashListCp *pagingInfoMap)
+{
+   DuPagInfoList *pagInfoLL = NULLP;
+
+   cmHashListFind(pagingInfoMap, (uint8_t *)&(pf), sizeof(uint16_t), 0, (PTR *)&pagInfoLL);
+   if(pagInfoLL == NULLP)
+   {
+      DU_LOG("\nDEBUG  --> DU APP: PF:%d doesnt exist in Map",pf);
+   }
+   return pagInfoLL;
+}
+
+/*Below function for printing will be used in future so disabling it for now*/
+#if 1
 /*******************************************************************
  * @brief Print the Page Info List and UE Records
  *
@@ -353,14 +539,15 @@ void printPageList(CmHashListCp *pagingInfoMap)
       ret = cmHashListGetNext(pagingInfoMap, (PTR)prevPageInfoLL, (PTR *)&pagInfoLLFromPF);
       if(ret == ROK)
       {
-         DU_LOG("\nDEBUG  --> DUAPP Page List for PF:%d",pagInfoLLFromPF->pf);
-         printPageInfoLL(&(pagInfoLLFromPF->pagInfoList));
+         DU_LOG("\nDEBUG  --> DUAPP: Page List for PF:%d",pagInfoLLFromPF->pf);
+         handlePageInfoLL(NULLP, &(pagInfoLLFromPF->pagInfoList), PRINT);
          prevPageInfoLL = pagInfoLLFromPF;
       }
    }while(ret == ROK);
    
 }
 #endif
+
 /**********************************************************************
 End of file
 **********************************************************************/

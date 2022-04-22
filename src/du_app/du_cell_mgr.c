@@ -31,6 +31,13 @@
 #include "du_utils.h"
 #include "du_cell_mgr.h"
 #include "PCCH-Config.h"
+#include "PagingUE-Identity.h"
+#include "PagingRecord.h"
+#include "PagingRecordList.h"
+#include "PagingRrc.h"
+#include "PCCH-MessageType.h"
+#include "PCCH-Message.h"
+#include "odu_common_codec.h"
 
 #ifdef O1_ENABLE
 
@@ -166,6 +173,42 @@ uint8_t duGetCellCb(uint16_t cellId, DuCellCb **cellCb)
    return ROK;
 }
 
+/******************************************************************************
+* @brief Process and Handles Paging Message to MAC for a Particular Paging Frame
+*
+* @details
+*
+*   Function : handlePagingReqToMac
+*
+*   Functionality:
+*           Sends Paging Message to SCH for a Particular Paging Frame
+* 
+*  @params[in] DuCellCb *cellCb
+*
+*  @return void 
+* 
+* 
+******************************************************************************/
+void handlePagingReqToMac(DuCellCb *cellCb)
+{
+   uint16_t pf = 0;
+   DuPagInfoList *pagInfoLLFromPF = NULLP;
+
+   /*DUAPP may send PagingReq to MAC for future SFN so that Schedular can 
+    * schedule Paging on the exact occurence of the Slot.*/
+   pf = (cellCb->currSlotInfo.sfn + PAGING_SCHED_DELTA) % MAX_SFN;
+
+   pagInfoLLFromPF = findPagingInfoFromMap(pf, &(cellCb->pagingInfoMap));
+   if(pagInfoLLFromPF == NULLP)
+   {
+      DU_LOG("\nINFO   --> DU APP: No Page is present for PF:%d!", pf);
+      return;
+   }
+   handlePageInfoLL(NULLP, &(pagInfoLLFromPF->pagInfoList), TRAVERSE_ALL);
+
+   return;
+}
+
 /*****************************************************************
 * @brief Handles slot indication from MAC
 *
@@ -186,7 +229,7 @@ uint8_t duGetCellCb(uint16_t cellId, DuCellCb **cellCb)
 uint8_t duHandleSlotInd(Pst *pst, SlotTimingInfo *slotIndInfo)
 {
    uint8_t cellIdx = 0, ret = ROK;
-   DuCellCb *duCellCb;
+   DuCellCb *duCellCb = NULLP;
 
    if(slotIndInfo)
    {
@@ -197,6 +240,7 @@ uint8_t duHandleSlotInd(Pst *pst, SlotTimingInfo *slotIndInfo)
       {
          duCellCb->currSlotInfo.sfn = slotIndInfo->sfn;
          duCellCb->currSlotInfo.slot = slotIndInfo->slot;
+         handlePagingReqToMac(duCellCb);
       }
       else
       {
@@ -428,245 +472,225 @@ uint8_t duSendCellDeletReq(uint16_t cellId)
 }
 
 /*******************************************************************
- * @brief Find the PageInfo List from HashMap 
+ * @brief Free PCCH PDU structure
  *
  * @details
  *
- *    Function : findPagingInfoFromMap
+ *    Function : freePcchPdu
  *
- *    Functionality: Search for the PageInfoList for a PF from HashMap
+ *    Functionality:  Free PCCH PDU structure
  *
- * @params[in] uint16_t pf, CmHashListCp *pagingInfoMap
+ * @params[in] PCCH_Message_t *pcchMsg 
  *
- * @return DuPagInfoList 
- *
- * ****************************************************************/
-DuPagInfoList* findPagingInfoFromMap(uint16_t pf, CmHashListCp *pagingInfoMap)
-{
-   DuPagInfoList *pagInfoLL = NULLP;
-
-   cmHashListFind(pagingInfoMap, (uint8_t *)&(pf), sizeof(uint16_t), 0, (PTR *)&pagInfoLL);
-   if(pagInfoLL == NULLP)
-   {
-      DU_LOG("\nDEBUG  --> DU APP: PF:%d doesnt exist in Map",pf);
-   }
-   return pagInfoLL;
-}
-
-/*******************************************************************
- * @brief Handle the PageInfo List
- *
- * @details
- *
- *    Function : handlePageInfoLL
- *
- *    Functionality: Handling the (SEARCH,CREATE,DELETE) PageInfoList
- *
- * @params[in] uint8_t i_s, CmLListCp *pagInfoLL, ActionTypeLL action
- *
- * @return DuPagUeList 
+ * @return void
  *
  * ****************************************************************/
-DuPagUeList* handlePageInfoLL(uint8_t i_s, CmLListCp *pagInfoLL, ActionTypeLL action)
+void freePcchPdu(PCCH_Message_t *pcchMsg)
 {
-   CmLList  *node = NULLP;
-   DuPagUeList *pagInfo = NULLP;
-   bool found = FALSE;
+   PagingRrc_t *pagingMsg = NULLP;
+   uint8_t recordIdx = 0;
 
-   if(pagInfoLL == NULLP)
+   if(pcchMsg != NULLP)
    {
-      DU_LOG("\nERROR  -->  DU APP: PagInfo LL is empty");
-      return NULLP;
-   }
-   node = pagInfoLL->first;
-
-   while(node)
-   {
-      pagInfo = (DuPagUeList *)node->node;
-      if(pagInfo->i_s == i_s)
+      if(pcchMsg->message.choice.c1  != NULLP)
       {
-         found = TRUE;
-         break;
+         pagingMsg = pcchMsg->message.choice.c1->choice.paging;
+         if(pagingMsg != NULLP)   
+         {
+            if(pagingMsg->pagingRecordList)
+            {
+               if(pagingMsg->pagingRecordList->list.array == NULLP)
+               {
+                  for(recordIdx = 0; recordIdx <  pagingMsg->pagingRecordList->list.count; recordIdx++)
+                  {
+                     if(pagingMsg->pagingRecordList->list.array[recordIdx] != NULLP)
+                     {
+                        if(pagingMsg->pagingRecordList->list.array[recordIdx]->ue_Identity.choice.ng_5G_S_TMSI.buf != NULLP)
+                        {
+                           DU_FREE(pagingMsg->pagingRecordList->list.array[recordIdx]->ue_Identity.choice.ng_5G_S_TMSI.buf,\
+                                 pagingMsg->pagingRecordList->list.array[recordIdx]->ue_Identity.choice.ng_5G_S_TMSI.size);
+                        }
+                        DU_FREE(pagingMsg->pagingRecordList->list.array[recordIdx], sizeof(PagingRecord_t));
+                     }
+                  }
+                  DU_FREE(pagingMsg->pagingRecordList->list.array, pagingMsg->pagingRecordList->list.size);
+               }
+               DU_FREE(pagingMsg->pagingRecordList, sizeof(PagingRecordList_t));
+            }
+            DU_FREE(pcchMsg->message.choice.c1->choice.paging, sizeof(PagingRrc_t));
+         }
+         DU_FREE(pcchMsg->message.choice.c1 , sizeof(PCCH_MessageType_t)); 
       }
-      node = node->next;
+      DU_FREE(pcchMsg , sizeof(PCCH_Message_t));
    }
-
-   switch(action)
-   {
-      case SEARCH:
-         {
-            if(!found)
-            {
-               pagInfo = NULLP;
-            }
-            return pagInfo;
-         }
-
-      case CREATE:
-         {
-            if(node != NULLP)
-               return pagInfo;
-
-            /*Need to add a new node for this LC*/
-
-            /*List is empty; Initialize the LL ControlPointer*/
-            if(pagInfoLL->count == 0)
-            {
-               cmLListInit(pagInfoLL);
-            }
-
-            pagInfo = NULLP;
-            /*Allocate the List*/
-            DU_ALLOC(pagInfo, sizeof(DuPagUeList));
-            if(pagInfo)
-            {
-               pagInfo->i_s = i_s;
-            }
-            else
-            {
-               DU_LOG("\nERROR  -->  DU APP : Allocation of List failed,i_s:%d",i_s);
-               return NULLP;
-            }
-
-            if(duAddNodeToLList(pagInfoLL, pagInfo, NULLP) == RFAILED)
-            {
-               DU_LOG("\nERROR  -->  DU APP : failed to Add Node,i_s:%d",i_s);
-               DU_FREE(pagInfo, sizeof(DuPagUeList));
-               return NULLP;
-            }
-            return pagInfo;
-         }
-      case DELETE:
-         {
-            if(!found ||  pagInfo == NULLP)
-            {
-               DU_LOG("\nERROR  -->  DU APP: i_s:%d not found; thus Deletion unsuccessful",i_s);
-            }
-            else
-            {
-               if(duDelNodeFromLList(pagInfoLL, node) == ROK)
-                  DU_FREE(pagInfo, sizeof(DuPagUeList));
-
-               DU_LOG("\nDEBUG  -->  DU APP: i_s:%d Deleted successfully",i_s);
-            }
-            return NULLP;
-         }
-      default:
-         {
-            DU_LOG("\nERROR  -->  DU APP: Incorrect ActionType:%d on PageInfo List",action);
-         }
-   }
-   return NULLP;
 }
 
 /*******************************************************************
- * @brief Handle the PageUe List
+ * @brief Builds the Paging RRC PDU and forwards it to MAC
  *
  * @details
  *
- *    Function : handlePageUeLL
+ *    Function : buildAndSendPagingReqToMac
  *
- *    Functionality: Handling the (SEARCH,CREATE,DELETE) PageUeList
+ *    Functionality: Builds the Paging RRC PDU[As per Spec 38.331, Annexure A]
+ *                   and forwards it to MAC as Buffer along with PF and i_s
  *
- * @params[in] DuPagingMsg *pagingParam, CmLListCp *pageUeLL, ActionTypeLL
- * action
+ * @params[in] CmLListCp *pageUeLL
  *
- * @return DuPagUeRecord 
+ * @return ROK     - success
+ *         RFAILED - failure
  *
  * ****************************************************************/
-DuPagUeRecord* handlePageUeLL(DuPagingMsg *pagingParam, CmLListCp *pageUeLL, ActionTypeLL action)
+uint8_t buildAndSendPagingReqToMac(CmLListCp *pageUeLL)
 {
-   CmLList  *node = NULLP;
-   DuPagUeRecord *ueRecord = NULLP;
-   bool found = FALSE;
+   CmLList        *node = NULLP;
+   DuPagUeRecord  *ueRecord = NULLP;
+   PCCH_Message_t *pcchMsg = NULLP;
+   asn_enc_rval_t  encRetVal;
+   PagingRrc_t       *pagingMsg = NULLP;
+   MacPageReq     *macPageReq = NULLP;
+   uint8_t         recordIdx = 0, ret = RFAILED;
+   uint16_t        bufIdx = 0;
+   
+   /*As per 38.473 Sec 9.3.1.39,5G-S-TMSI :48 Bits >>  Bytes and 0 UnusedBits */
+   uint8_t    totalByteInTmsi = 6, unusedBitsInTmsi = 0;
 
-   if(pageUeLL == NULLP)
+   if(pageUeLL == NULLP || pageUeLL->count == 0)
    {
       DU_LOG("\nERROR  -->  DU APP: UE Page Record LL is empty");
-      return NULLP;
+      return RFAILED;
    }
-   node = pageUeLL->first;
 
-   while(node)
+   while(true)
    {
-      ueRecord = (DuPagUeRecord *)node->node;
-      if(ueRecord && (ueRecord->pagUeId == pagingParam->pagUeId && 
-               ueRecord->sTmsi == pagingParam->sTmsi))
+      memset(&encRetVal, 0, sizeof(asn_enc_rval_t));
+      DU_ALLOC(pcchMsg , sizeof(PCCH_Message_t));
+      if(pcchMsg == NULLP)
       {
-         found = TRUE;
+         DU_LOG("\nERROR  -->  DU APP: buildAndSendPagingToMac(): Memory Alloction failed!");
          break;
       }
-      node = node->next;
+      pcchMsg->message.present = PCCH_MessageType_PR_c1;
+      DU_ALLOC(pcchMsg->message.choice.c1 , sizeof(PCCH_MessageType_t));
+      if(pcchMsg->message.choice.c1 == NULLP)
+      {
+         DU_LOG("\nERROR  -->  DU APP: buildAndSendPagingToMac(); Memory Alloction failed!");
+         break;
+      }
+      pcchMsg->message.choice.c1->present = PCCH_MessageType__c1_PR_paging;
+      DU_ALLOC(pcchMsg->message.choice.c1->choice.paging, sizeof(PagingRrc_t));
+
+      pagingMsg = pcchMsg->message.choice.c1->choice.paging;
+      if(pagingMsg == NULLP)
+      {
+         DU_LOG("\nERROR  -->  DU APP: buildAndSendPagingToMac(); Memory Alloction failed!");
+         break;
+      }
+      DU_ALLOC(pagingMsg->pagingRecordList, sizeof(PagingRecordList_t));
+      if(pagingMsg->pagingRecordList == NULLP)
+      {
+         DU_LOG("\nERROR  -->  DU APP: buildAndSendPagingToMac(); Memory Alloction failed!");
+         break;
+      }
+
+      pagingMsg->pagingRecordList->list.count = pageUeLL->count;
+
+       /*As per Spec 38.331, maxNrofPageRec : 32 [Maximum number of page records]*/
+      if(pageUeLL->count > MAX_PAGING_UE_RECORDS)
+      {
+         pagingMsg->pagingRecordList->list.count = MAX_PAGING_UE_RECORDS;
+      }
+
+      pagingMsg->pagingRecordList->list.size = pageUeLL->count * (sizeof(PagingRecord_t *));
+      DU_ALLOC(pagingMsg->pagingRecordList->list.array, pagingMsg->pagingRecordList->list.size);
+      if(pagingMsg->pagingRecordList->list.array == NULLP)
+      {
+         DU_LOG("\nERROR  -->  DU APP: buildAndSendPagingToMac(); Memory Alloction failed!");
+         break;
+      }
+      for(recordIdx = 0; recordIdx < pageUeLL->count; recordIdx++)
+      {
+         DU_ALLOC(pagingMsg->pagingRecordList->list.array[recordIdx], sizeof(PagingRecord_t));
+         if(pagingMsg->pagingRecordList->list.array[recordIdx] == NULLP)
+         {
+            DU_LOG("\nERROR  -->  DU APP: buildAndSendPagingToMac(); Memory Alloction failed!");
+            break;
+         }
+      }
+      recordIdx = 0;
+      node = pageUeLL->first;
+      while(node && (recordIdx < MAX_PAGING_UE_RECORDS))
+      {
+         ueRecord = (DuPagUeRecord *)node->node;
+         if(ueRecord)
+         {
+            /*TODO : When Connected Mode Paging will be supported then I_RNTI will be introduced*/
+            pagingMsg->pagingRecordList->list.array[recordIdx]->ue_Identity.present = PagingUE_Identity_PR_ng_5G_S_TMSI;
+            pagingMsg->pagingRecordList->list.array[recordIdx]->ue_Identity.choice.ng_5G_S_TMSI.size = totalByteInTmsi*sizeof(uint8_t);
+            DU_ALLOC(pagingMsg->pagingRecordList->list.array[recordIdx]->ue_Identity.choice.ng_5G_S_TMSI.buf,\
+                  pagingMsg->pagingRecordList->list.array[recordIdx]->ue_Identity.choice.ng_5G_S_TMSI.size);
+            if(pagingMsg->pagingRecordList->list.array[recordIdx]->ue_Identity.choice.ng_5G_S_TMSI.buf == NULLP)
+            {
+               DU_LOG("\nERROR  -->  DU APP: buildAndSendPagingToMac(); Memory Allocation failed!");
+               break;
+            }
+            fillBitString(&pagingMsg->pagingRecordList->list.array[recordIdx]->ue_Identity.choice.ng_5G_S_TMSI,\
+                  unusedBitsInTmsi, totalByteInTmsi, ueRecord->sTmsi);
+            recordIdx++;
+         }
+         node = node->next;
+      }
+      if(node != NULLP && (recordIdx < MAX_PAGING_UE_RECORDS))
+      {
+         /*This leg is hit because Whole UE REcord List was not traversed as
+          * some issue happened thus exiting the main while*/
+         break;
+      }
+      xer_fprint(stdout, &asn_DEF_PCCH_Message, pcchMsg);
+      memset(encBuf, 0, ENC_BUF_MAX_LEN);
+      encBufSize = 0;
+       /* Encode the PCCH RRC PDU as APER */
+      encRetVal = aper_encode(&asn_DEF_PCCH_Message, 0, pcchMsg, PrepFinalEncBuf,\
+            encBuf);
+
+      if(encRetVal.encoded == ENCODE_FAIL)
+      {
+         DU_LOG("\nERROR  -->  F1AP : Could not encode Paging structure (at %s)\n",\
+               encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
+         break;
+      }
+      else
+      {
+         DU_LOG("\nDEBUG  -->  F1AP : Created APER encoded buffer for RRCPDU for PagingMsg \n");
+         
+         DU_ALLOC_SHRABL_BUF(macPageReq, sizeof(MacPageReq));
+         if(macPageReq == NULLP)
+         {
+            DU_LOG("\nERROR  -->  DU APP: buildAndSendPagingToMac(); Memory Alloction failed!");
+            break;
+         }
+         
+         macPageReq->pf = ueRecord->pf;
+         macPageReq->i_s = ueRecord->i_s;
+         macPageReq->pduLen = encBufSize;
+         DU_ALLOC(macPageReq->pagePdu, macPageReq->pduLen);
+         if(macPageReq->pagePdu == NULLP)
+         {
+            DU_LOG("\nERROR  -->  DU APP: buildAndSendPagingToMac(); Memory Alloction failed!");
+            break;
+         }
+         memset(macPageReq->pagePdu, 0, macPageReq->pduLen);
+         for(bufIdx = 0; bufIdx < encBufSize; bufIdx++)
+         {
+            DU_LOG("%x",encBuf[bufIdx]);
+            macPageReq->pagePdu[bufIdx] = encBuf[bufIdx];
+         }
+      }
+      ret = ROK;
+      break;
    }
-
-   switch(action)
-   {
-      case SEARCH:
-         {
-            if(!found)
-            {
-               ueRecord = NULLP;
-            }
-            return ueRecord;
-         }
-
-      case CREATE:
-         {
-            if(node != NULLP)
-               return ueRecord;
-
-            /*Need to add a new node for this LC*/
-
-            /*List is empty; Initialize the LL ControlPointer*/
-            if(pageUeLL->count == 0)
-            {
-               cmLListInit(pageUeLL);
-            }
-
-            ueRecord = NULLP;
-            /*Allocate the List*/
-            DU_ALLOC(ueRecord, sizeof(DuPagUeRecord));
-            if(ueRecord)
-            {
-               ueRecord->pagUeId = pagingParam->pagUeId;
-               ueRecord->sTmsi = pagingParam->sTmsi;
-               ueRecord->pagPriority = pagingParam->pagPriority;
-            }
-            else
-            {
-               DU_LOG("\nERROR  -->  DU APP : Allocation of UE Record failed,ueId:%d",pagingParam->pagUeId);
-               return NULLP;
-            }
-
-            if(duAddNodeToLList(pageUeLL, ueRecord, NULLP) == RFAILED)
-            {
-               DU_LOG("\nERROR  -->  DU APP : failed to Add Ue Record Node,ueId:%d",pagingParam->pagUeId);
-               DU_FREE(ueRecord, sizeof(DuPagUeRecord));
-               return NULLP;
-            }
-            return ueRecord;
-         }
-      case DELETE:
-         {
-            if(!found ||  ueRecord == NULLP)
-            {
-               DU_LOG("\nERROR  -->  DU APP: UeId:%d not found; thus Deletion unsuccessful",pagingParam->pagUeId);
-            }
-            else
-            {
-               if(duDelNodeFromLList(pageUeLL, node) == ROK)
-                  DU_FREE(ueRecord, sizeof(DuPagUeRecord));
-
-               DU_LOG("\nDEBUG  -->  DU APP: UeId:%d Deleted successfully",pagingParam->pagUeId);
-            }
-            return NULLP;
-         }
-      default:
-         {
-            DU_LOG("\nERROR  -->  DU APP: Incorrect ActionType:%d on UeRecord",action);
-         }
-   }
-   return NULLP;
+   freePcchPdu(pcchMsg);
+   return ret;
 }
 
 /*******************************************************************
@@ -692,7 +716,7 @@ uint8_t insertPagingRecord(DuCellCb* cellCb, DuPagingMsg *rcvdF1apPagingParam, u
    DuPagUeList  *pageUeLL = NULLP;
    DuPagUeRecord *ueRecord = NULLP;
 
-   //printPageList(&(cellCb->pagingInfoMap));
+   printPageList(&(cellCb->pagingInfoMap));
 
    /*MAX Iteration : A UE can be paged at every T frames thus MAX determines
     *how many Paging Frame(s) can be considered for Paging this UE*/
@@ -712,7 +736,7 @@ uint8_t insertPagingRecord(DuCellCb* cellCb, DuPagingMsg *rcvdF1apPagingParam, u
 
       if(pageUeLL != NULLP)
       {
-         /*[Step3]: Check whether MAX UE Record against this PF and i_s has reached*/
+         /*[Step3]: Check whether MAX UE Record against this PF and i_s has reached(Spec 38.331, Annexure A)*/
          if(pageUeLL->pagUeList.count < MAX_PAGING_UE_RECORDS)
          {
             /*[Step4]: Insert the Paging Record to the end of the UE record List*/
@@ -756,7 +780,7 @@ uint8_t insertPagingRecord(DuCellCb* cellCb, DuPagingMsg *rcvdF1apPagingParam, u
       DU_LOG("\nERROR  --> DU APP: Hash Map Insertion Failed for PF:%d.",rcvdF1apPagingParam->pagingFrame);
    }
 
-   //printPageList(&(cellCb->pagingInfoMap));
+   printPageList(&(cellCb->pagingInfoMap));
    return ROK;
 
 
@@ -786,7 +810,6 @@ uint8_t calcAndFillPagingInfoInCellCb(DuCellCb* cellCb, DuPagingMsg *rcvdF1apPag
    uint16_t currentSfn = 0, sfn = 0, newSfn = 0;
    PcchCfg   duPcchCfg;
 
-   DU_LOG("\nINFO   --> DU APP : Start filling paging parameters in DuCellCb");
    if(cellCb)
    {
       /* calculate paging frame and paging offset */
@@ -898,7 +921,7 @@ uint8_t calcAndFillPagingInfoInCellCb(DuCellCb* cellCb, DuPagingMsg *rcvdF1apPag
       rcvdF1apPagingParam->pagingFrame =  (sfn % MAX_SFN);
       rcvdF1apPagingParam->i_s = ((uint32_t)(floor(rcvdF1apPagingParam->pagUeId / N)) % ns);
 
-      DU_LOG("\nINFO  --> DU APP : Successfully filled paging parameter in DuCellCb");
+      DU_LOG("\nINFO   --> DU APP : Successfully filled paging parameter in DuCellCb");
       memcpy(&cellCb->tmpPagingInfoOfUe, rcvdF1apPagingParam, sizeof(DuPagingMsg));
    }
    else
