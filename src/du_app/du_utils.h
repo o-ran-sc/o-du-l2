@@ -148,9 +148,10 @@ void fillStartSymbolAndLen(uint8_t numRsrcAlloc, PdschConfig *pdschCfg, PuschCfg
 uint8_t duAddNodeToLList(CmLListCp *llist, void *blockToAdd, CmLList *currNode);
 uint8_t duDelNodeFromLList(CmLListCp *llist, CmLList *node);
 
+DuPagUeRecord* handlePageUeLL(uint16_t pagUeId, uint64_t sTmsi, CmLListCp *pageUeLL, ActionTypeLL action);
+DuPagUeList* handlePageInfoLL(uint16_t pf, uint8_t i_s, CmLListCp *pagInfoLL, ActionTypeLL action);
+DuPagInfoList* findPagingInfoFromMap(uint16_t pf, CmHashListCp *pagingInfoMap);
 #if 0
-void printPageInfoLL(CmLListCp *pageInfoLL);
-void printPageUeRecordLL(CmLListCp *pageUeLL);
 void printPageList(CmHashListCp *pagingInfoMap);
 #endif
 
