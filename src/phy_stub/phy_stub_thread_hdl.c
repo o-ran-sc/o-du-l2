@@ -30,7 +30,8 @@
 extern uint16_t l1BuildAndSendBSR(uint8_t ueIdx, BsrType bsrType,\
              LcgBufferSize lcgBsIdx[MAX_NUM_LOGICAL_CHANNEL_GROUPS]);
 pthread_t thread = 0;
-
+int8_t communicationBtwPhy();
+int inet_pton(int af, const char *sourc, void *dst);
 /*******************************************************************
  *
  * @brief Generates slot indications
@@ -241,7 +242,206 @@ void l1StartConsoleHandler()
       DU_LOG("\nERROR  -->  PHY STUB : Thread creation failed. Cause %d", retVal);
    }
    pthread_attr_destroy(&attr);
+}
 
+/*******************************************************************
+ *
+ * @brief This function handles the server functionalities like 
+ * binding socket, listen and accept
+ *
+ * @details
+ *
+ *    Function : serverPhyConnection
+ *
+ *    Functionality: This function handles the server functionalities like
+ *     binding socket, listen and accept
+ *
+ * @params[in] int server_fd, struct sockaddr_in serverPhy, struct sockaddr_in
+ * clientPhy
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+int8_t serverPhyConnection(int server_fd, struct sockaddr_in serverPhy, struct sockaddr_in clientPhy)
+{
+   int addrlen= sizeof(struct sockaddr_in);
+
+   if (bind(server_fd, (struct sockaddr *)&serverPhy, sizeof(struct sockaddr_in))<0)
+   {
+      perror("\nbind failed");
+      return -1;
+   }
+   if (listen(server_fd, 3) < 0)
+   {
+      perror("\nlisten");
+      return -1;
+   }
+   while(1)
+   {
+      if ((accept(server_fd, (struct sockaddr *)&clientPhy,
+                  (socklen_t*)&addrlen))<0)
+      {
+         DU_LOG("\nServer is waiting");
+         perror("accept");
+      }
+      else
+      {
+         DU_LOG("\nServer Connected");
+         break;
+      }
+   }
+   return ROK;
+}
+
+/*******************************************************************
+ *
+ * @brief this function includes all the functionalities of client side
+ * like binding the cliend side socket and connecting to the server
+ *
+ * @details
+ *
+ *    Function : clientPhyConnection
+ *
+ *    Functionality: this function includes all the functionalities of client
+ *    side like binding the cliend side socket and connecting to the server
+ *
+ * @params[in] 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+int8_t clientPhyConnection(int sock, struct sockaddr_in serverPhy, struct sockaddr_in  destinationPhy)
+{
+   if (bind(sock, (struct sockaddr *)&serverPhy, sizeof(struct sockaddr_in ))<0)
+   {
+      perror("bind failed");
+      return -1;
+   }
+
+   while(1)
+   {
+      if (connect(sock, (struct sockaddr *)&destinationPhy, sizeof(struct sockaddr_in)) < 0)
+      {
+         DU_LOG("\nConnection Failed");
+      }
+      else
+      {
+         DU_LOG("\nfinally connected");
+         break;
+      }
+   }
+   return ROK;
+
+}
+
+/*******************************************************************
+ *
+ * @brief This function build the message which need to send  
+ *
+ * @details
+ *
+ *    Function : sendMsg
+ *
+ *    Functionality: function build the message which need to send 
+ *
+ * @params[in] int sock
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+void sendMsg(int sock)
+{
+   char *msgToDestinationPhy = "PRIYANKA BORLA";
+
+   send(sock , msgToDestinationPhy , strlen(msgToDestinationPhy) , 0 );
+}
+
+/*******************************************************************
+ *
+ * @brief This function reads the recevied information  
+ *
+ * @details
+ *
+ *    Function : readMsg
+ *
+ *    Functionality: This function reads the recevied information 
+ *    and prints at console
+ *
+ * @params[in] int sock
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+void readMsg(int sock)
+{
+   char buffer[1024] = {0};
+
+   if(read( sock , buffer, 1024)>0)
+   {
+      DU_LOG("\n");
+      DU_LOG("%s\n",buffer );
+   }
+}
+
+/*******************************************************************
+ *
+ * @brief this function creates the socket for commincation between source and 
+ * target phy
+ *
+ * @details
+ *
+ *    Function : communicationBtwPhy
+ *
+ *    Functionality: creates the socket for commincation between source and
+ *    target PHY, allocated the ip addresses and sends the request for connection
+ *    establisshement and sends the information to each other
+ *
+ * @params[in] 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+int8_t communicationBtwPhy()
+{
+   int server_fd =0;
+   struct sockaddr_in sourcePhy, destinationPhy;
+
+   if ((server_fd = socket(AF_INET, SOCK_STREAM, 0)) == 0)
+   {
+      perror("socket failed");
+      exit(EXIT_FAILURE);
+   }
+   
+   sourcePhy.sin_family = AF_INET;
+   sourcePhy.sin_port = htons(8080);
+   if(inet_pton(AF_INET, "192.168.130.81", &sourcePhy.sin_addr)<=0)
+   {
+      DU_LOG("Invalid sourcePhy/ Address not supported");
+      return -1;
+   }
+
+   destinationPhy.sin_family = AF_INET;
+   destinationPhy.sin_port = htons(8080);
+   if(inet_pton(AF_INET, "192.168.130.83", &destinationPhy.sin_addr)<=0)
+   {
+      DU_LOG("Invalid address/ Address not supported");
+      return -1;
+   }
+   
+   if(serverPhyConnection(server_fd, sourcePhy, destinationPhy) != ROK)
+   {
+      DU_LOG("\nFailed to connect to the server");
+      return -1;
+   }
+
+   if(clientPhyConnection(server_fd, sourcePhy, destinationPhy) != ROK)
+   {
+      DU_LOG("\nFailed to connect to the server");
+      return -1;
+   }
+
+   DU_LOG("\nConnection established");
+   return ROK;
 }
 
 /**********************************************************************
