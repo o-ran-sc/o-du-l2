@@ -288,7 +288,9 @@ typedef enum
 {
    SEARCH,
    CREATE,
-   DELETE
+   DELETE,
+   PRINT,
+   TRAVERSE_ALL
 }ActionTypeLL;
 
 typedef struct slotTimingInfo
