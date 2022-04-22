@@ -17,6 +17,14 @@
 *******************************************************************************/
 #include <unistd.h>
 
+/* Changes the IP information 
+* At DU1, SOURCE_DU_IPV4_ADDR = 192.168.130.81 and DESTINATION_DU_IPV4_ADDR = 192.168.130.83 
+* At DU2, SOURCE_DU_IPV4_ADDR = 192.168.130.83 and DESTINATION_DU_IPV4_ADDR = 192.168.130.81 */
+#define SOURCE_DU_IPV4_ADDR      "192.168.130.81"
+#define DESTINATION_DU_IPV4_ADDR "192.168.130.83"
+#define NUM_THREADS 2
+
+
 #ifdef NR_TDD
 #define MAX_SLOT_VALUE   19
 #else
@@ -95,6 +103,9 @@ uint8_t l1SendUlUserData(uint8_t drbId, uint8_t ueIdx);
 uint8_t l1SendStatusPdu();
 uint16_t l1BuildAndSendSlotIndication();
 uint16_t l1BuildAndSendStopInd();
+int8_t communicationBtwPhy();
+int inet_pton(int af, const char *sourc, void *dst);
+void *startCommunicationBtwPhy();
 
 /**********************************************************************
          End of file
