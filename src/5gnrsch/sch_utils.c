@@ -1429,6 +1429,11 @@ LcInfo* handleLcLList(CmLListCp *lcLL, uint8_t lcId, ActionTypeLL action)
             }
             return NULLP; 
          }
+      case PRINT:
+      case TRAVERSE_ALL:
+        {
+           break;
+        }
       default:
          {
             DU_LOG("\nERROR  -->  SCH: Action type wrong: %d",action);
