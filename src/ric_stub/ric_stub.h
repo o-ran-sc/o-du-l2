@@ -26,10 +26,10 @@
 #define RIC_IP_V6_ADDR "0000:0000:0000:0000:0000:0000:0000:0011"
 
 #ifndef O1_ENABLE
-#define DU_IP_V4_ADDR (char*[]){"192.168.130.81", "192.168.130.83"}
+#define DU_IP_V4_ADDR (char*[]){"192.168.130.85", "192.168.130.83"}
 #define DU_SCTP_PORT (int[]){36421, 36422}
 
-#define RIC_IP_V4_ADDR "192.168.130.80"
+#define RIC_IP_V4_ADDR "192.168.130.87"
 #define RIC_SCTP_PORT_TO_DU (int[]){36421, 36422}
 #endif
 

@@ -28,6 +28,8 @@
 #include "du_cfg.h"
 #include "du_sctp.h"
 #include "lsctp.h"
+#include "du_app_rlc_inf.h"
+#include "du_mgr.h"
 #include "du_utils.h"
 
 /**************************************************************************

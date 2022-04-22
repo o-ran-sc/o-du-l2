@@ -1348,7 +1348,16 @@ typedef struct macSliceCfgRsp
    MacSliceRsp  **listOfSliceCfgRsp;
 }MacSliceCfgRsp;
 
-/* Functions for slot Ind from MAC to DU APP*/
+typedef struct macPageReq
+{
+   uint16_t  cellId;
+   uint16_t  pf;
+   uint8_t   i_s;
+   uint16_t  pduLen;
+   uint8_t  *pagePdu;
+}MacPageReq;
+
+/* Functions for CellUp Ind from MAC to DU APP*/
 typedef uint8_t (*DuMacCellUpInd) ARGS((
 	 Pst       *pst,
 	 OduCellId *cellId ));
