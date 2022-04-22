@@ -30,7 +30,7 @@
 extern uint16_t l1BuildAndSendBSR(uint8_t ueIdx, BsrType bsrType,\
              LcgBufferSize lcgBsIdx[MAX_NUM_LOGICAL_CHANNEL_GROUPS]);
 pthread_t thread = 0;
-
+int8_t communicationBtwPhy();
 /*******************************************************************
  *
  * @brief Generates slot indications
@@ -241,7 +241,110 @@ void l1StartConsoleHandler()
       DU_LOG("\nERROR  -->  PHY STUB : Thread creation failed. Cause %d", retVal);
    }
    pthread_attr_destroy(&attr);
+   communicationBtwPhy();
+}
 
+void serverPhy(int server_fd, struct sockaddr_in serverPhy, struct sockaddr_in clientPhy)
+{
+   int new_socket, addrlen= sizeof(struct sockaddr_in);
+
+   if (bind(server_fd, (struct sockaddr *)&serverPhy, sizeof(struct sockaddr_in))<0)
+   {
+      perror("bind failed");
+      exit(EXIT_FAILURE);
+   }
+   if (listen(server_fd, 3) < 0)
+   {
+      perror("listen");
+      exit(EXIT_FAILURE);
+   }
+   while(1)
+   {
+      printf("\nServer is waiting");
+      if ((new_socket = accept(server_fd, (struct sockaddr *)&clientPhy,
+                  (socklen_t*)&addrlen))<0)
+      {
+         printf("\nServer is waiting");
+         perror("accept");
+      }
+      else
+      {
+         printf("\nServer Connected");
+         break;
+      }
+   }
+}
+void clientPhyConnection(int sock, struct sockaddr_in serverPhy, struct sockaddr_in  destinationPhy)
+{
+   if (bind(sock, (struct sockaddr *)&serverPhy, sizeof(struct sockaddr_in ))<0)
+   {
+      perror("bind failed");
+      exit(EXIT_FAILURE);
+   }
+
+   while(1)
+   {
+      if (connect(sock, (struct sockaddr *)&destinationPhy, sizeof(struct sockaddr_in)) < 0)
+      {
+         printf("\nPBORLA Connection Failed");
+      }
+      else
+      {
+         printf("\nPBORLA finally connected");
+         break;
+      }
+   }
+
+}
+
+void sendMsg(int sock)
+{
+   char *msgToDestinationPhy = "PRIYANKA BORLA";
+
+   send(sock , msgToDestinationPhy , strlen(msgToDestinationPhy) , 0 );
+}
+
+void readMsg(int sock)
+{
+   char buffer[1024] = {0};
+
+   if(read( sock , buffer, 1024)>0)
+   {
+      printf("\n");
+      printf("%s\n",buffer );
+   }
+}
+
+int8_t communicationBtwPhy()
+{
+   int server_fd =0;
+   struct sockaddr_in sourcePhy, destinationPhy;
+
+   if ((server_fd = socket(AF_INET, SOCK_STREAM, 0)) == 0)
+   {
+      perror("socket failed");
+      exit(EXIT_FAILURE);
+   }
+   
+   sourcePhy.sin_family = AF_INET;
+   sourcePhy.sin_port = htons(8080);
+   if(inet_pton(AF_INET, "192.168.130.81", &sourcePhy.sin_addr)<=0)
+   {
+      printf("Invalid sourcePhy/ Address not supported");
+      return -1;
+   }
+
+   destinationPhy.sin_family = AF_INET;
+   destinationPhy.sin_port = htons(8080);
+   if(inet_pton(AF_INET, "192.168.130.83", &destinationPhy.sin_addr)<=0)
+   {
+      printf("Invalid address/ Address not supported");
+      return -1;
+   }
+   serverPhy(server_fd, sourcePhy, destinationPhy);
+   serverPhy(server_fd, destinationPhy, sourcePhy);
+   printf("\nConnection established");
+   return ROK;
 }
 
 /**********************************************************************
