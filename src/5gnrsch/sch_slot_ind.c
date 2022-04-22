@@ -358,8 +358,10 @@ bool schFillBoGrantDlSchedInfo(SchCellCb *cell, SlotTimingInfo currTime, uint8_t
       memset(dciSlotAlloc, 0, sizeof(DlMsgAlloc));
       dciSlotAlloc->crnti = crnti;
    }
-   dciSlotAlloc = cell->schDlSlotInfo[pdcchTime.slot]->dlMsgAlloc[ueId -1];
-
+   else
+   {
+      dciSlotAlloc = cell->schDlSlotInfo[pdcchTime.slot]->dlMsgAlloc[ueId -1];
+   }
    /* Dl ded Msg info is copied, this was earlier filled in macSchDlRlcBoInfo */
    fillDlMsgInfo(&dciSlotAlloc->dlMsgSchedInfo[dciSlotAlloc->numSchedInfo].dlMsgInfo, dciSlotAlloc->crnti);
 
