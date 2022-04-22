@@ -975,6 +975,16 @@ RlcTptPerSnssai* rlcHandleSnssaiTputlist(RlcCb *gCb, Snssai *snssai, ActionTypeL
             }
             return NULLP;
          }
+       case PRINT:
+       case TRAVERSE_ALL:
+         {
+            break;
+         }
+       default:
+         {
+            DU_LOG("\nERROR  -> RLC: Incorrect ActionType:%d",action);
+            break;
+         }
    }
    return (snssaiNode);
 }

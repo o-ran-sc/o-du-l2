@@ -57,6 +57,7 @@
 #define DU_SET_ZERO(_buf, _size)   \
    memset((_buf), 0, _size);
 
+/*Refer Spec 38.331 Annexure A: maxNrofPageRec : 32 [Maximum number of page records]*/
 #define MAX_PAGING_UE_RECORDS 32
 
 typedef enum
@@ -200,9 +201,8 @@ typedef struct pagingMsg
 
 typedef struct duPagUeRecord
 {
-   uint16_t  pagUeId;              /*UEID calculated from 5gsTMSI as per Spec 38.304*/
-   uint64_t  sTmsi;             /*UE Paging Identity: 5GS-TMSI*/
-   uint8_t   pagPriority;       /* Paging priority */
+   uint16_t  pagUeId;           /*UEID calculated from 5gsTMSI as per Spec 38.304*/
+   uint64_t  sTmsi;             /* UE Paging Identity: S-TMSI */
 }DuPagUeRecord;
 
 typedef struct duPagInfo
@@ -334,6 +334,10 @@ uint8_t duSendEgtpDatInd(Buffer *mBuf);
 uint8_t duHdlSchCfgComplete(Pst *pst, RgMngmt *cfm);
 uint8_t duBuildAndSendMacCellStart();
 uint8_t duBuildAndSendMacCellStop(uint16_t cellId);
+
+DuPagUeRecord* handlePageUeLL(uint16_t pagUeId, uint64_t sTmsi, CmLListCp *pageUeLL, ActionTypeLL action);
+DuPagUeList* handlePageInfoLL(uint16_t pf, uint8_t i_s, CmLListCp *pagInfoLL, ActionTypeLL action);
+DuPagInfoList* findPagingInfoFromMap(uint16_t pf, CmHashListCp *pagingInfoMap);
 #endif
 
 /**********************************************************************
