@@ -41,7 +41,6 @@
 #define CU_EGTP_PORT  39003
 #define NR_PCI 1
 #define NR_CELL_ID 1
-
 #define DU_NAME "ORAN_OAM_DU"
 #define CELL_TYPE SMALL
 
