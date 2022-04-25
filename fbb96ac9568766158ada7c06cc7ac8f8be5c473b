@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9d3a2be4_319c3bf8",
+        "filename": "src/phy_stub/phy_stub_thread_hdl.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 348,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-04-25T11:46:44Z",
+      "side": 1,
+      "message": "Dont we need to put send in while loop... ?",
+      "range": {
+        "startLine": 348,
+        "startChar": 11,
+        "endLine": 348,
+        "endChar": 20
+      },
+      "revId": "fbb96ac9568766158ada7c06cc7ac8f8be5c473b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0decbd5d_f79b03de",
+        "filename": "src/phy_stub/phy_stub_thread_hdl.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 389,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-04-25T11:46:44Z",
+      "side": 1,
+      "message": "Dont we need to put read in while loop... ?",
+      "range": {
+        "startLine": 389,
+        "startChar": 11,
+        "endLine": 389,
+        "endChar": 20
+      },
+      "revId": "fbb96ac9568766158ada7c06cc7ac8f8be5c473b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "36b9f384_355d814b",
+        "filename": "src/phy_stub/phy_stub_thread_hdl.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 416,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-04-25T11:46:44Z",
+      "side": 1,
+      "message": "Name is misleading as when the same function act as Client , this fd is used. May be we can generalize the name",
+      "range": {
+        "startLine": 416,
+        "startChar": 8,
+        "endLine": 416,
+        "endChar": 18
+      },
+      "revId": "fbb96ac9568766158ada7c06cc7ac8f8be5c473b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "edf4778e_5714f69d",
+        "filename": "src/phy_stub/phy_stub_thread_hdl.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 428,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-04-25T11:46:44Z",
+      "side": 1,
+      "message": "Just for my understanding, Are we not  going to take the Configured IP instead of Hardcoding it",
+      "range": {
+        "startLine": 428,
+        "startChar": 26,
+        "endLine": 428,
+        "endChar": 40
+      },
+      "revId": "fbb96ac9568766158ada7c06cc7ac8f8be5c473b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
