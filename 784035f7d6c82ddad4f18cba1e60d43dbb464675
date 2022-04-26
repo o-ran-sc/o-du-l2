@@ -1,0 +1,325 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cd5679bf_9674efa9",
+        "filename": "src/cu_stub/cu_stub_sctp.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-04-26T10:00:45Z",
+      "side": 1,
+      "message": "revert before submission",
+      "range": {
+        "startLine": 26,
+        "startChar": 8,
+        "endLine": 26,
+        "endChar": 24
+      },
+      "revId": "784035f7d6c82ddad4f18cba1e60d43dbb464675",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b83ed94e_78b7f580",
+        "filename": "src/du_app/du_mgr_main.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 559,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-04-26T10:00:45Z",
+      "side": 1,
+      "message": "revert before submission",
+      "revId": "784035f7d6c82ddad4f18cba1e60d43dbb464675",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1ef92ea5_aae77f33",
+        "filename": "src/phy_stub/phy_stub.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-04-26T10:00:45Z",
+      "side": 1,
+      "message": "IPV4 is one word",
+      "range": {
+        "startLine": 21,
+        "startChar": 23,
+        "endLine": 21,
+        "endChar": 28
+      },
+      "revId": "784035f7d6c82ddad4f18cba1e60d43dbb464675",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c6983938_862bc2d3",
+        "filename": "src/phy_stub/phy_stub_thread_hdl.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-04-26T10:00:45Z",
+      "side": 1,
+      "message": "add one line break below",
+      "range": {
+        "startLine": 35,
+        "startChar": 34,
+        "endLine": 35,
+        "endChar": 39
+      },
+      "revId": "784035f7d6c82ddad4f18cba1e60d43dbb464675",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "83da4439_1a32c2d3",
+        "filename": "src/phy_stub/phy_stub_thread_hdl.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 250,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-04-26T10:00:45Z",
+      "side": 1,
+      "message": "call it peer PHY.",
+      "range": {
+        "startLine": 250,
+        "startChar": 58,
+        "endLine": 250,
+        "endChar": 64
+      },
+      "revId": "784035f7d6c82ddad4f18cba1e60d43dbb464675",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ec06a5d0_1072cbcf",
+        "filename": "src/phy_stub/phy_stub_thread_hdl.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 327,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-04-26T10:00:45Z",
+      "side": 1,
+      "message": "We have a fixed format of DU_LOG. Use the same at all places",
+      "range": {
+        "startLine": 327,
+        "startChar": 6,
+        "endLine": 327,
+        "endChar": 12
+      },
+      "revId": "784035f7d6c82ddad4f18cba1e60d43dbb464675",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fdf9d905_65d09d6b",
+        "filename": "src/phy_stub/phy_stub_thread_hdl.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 328,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-04-26T10:00:45Z",
+      "side": 1,
+      "message": "return RFAILED",
+      "range": {
+        "startLine": 328,
+        "startChar": 6,
+        "endLine": 328,
+        "endChar": 12
+      },
+      "revId": "784035f7d6c82ddad4f18cba1e60d43dbb464675",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "da187e2a_658ddeca",
+        "filename": "src/phy_stub/phy_stub_thread_hdl.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 333,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-04-26T10:00:45Z",
+      "side": 1,
+      "message": "return RFAILED",
+      "range": {
+        "startLine": 333,
+        "startChar": 6,
+        "endLine": 333,
+        "endChar": 12
+      },
+      "revId": "784035f7d6c82ddad4f18cba1e60d43dbb464675",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1c8eea3e_dab17c90",
+        "filename": "src/phy_stub/phy_stub_thread_hdl.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 345,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-04-26T10:00:45Z",
+      "side": 1,
+      "message": "Have we also checked sending of a message from client and receiving it at server?",
+      "range": {
+        "startLine": 345,
+        "startChar": 9,
+        "endLine": 345,
+        "endChar": 16
+      },
+      "revId": "784035f7d6c82ddad4f18cba1e60d43dbb464675",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c9aca358_7ba13a75",
+        "filename": "src/phy_stub/phy_stub_thread_hdl.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 374,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-04-26T10:00:45Z",
+      "side": 1,
+      "message": "return RFAILED\nUse either ROK or RFAILED, we do no support \"return -1\"",
+      "range": {
+        "startLine": 374,
+        "startChar": 13,
+        "endLine": 374,
+        "endChar": 14
+      },
+      "revId": "784035f7d6c82ddad4f18cba1e60d43dbb464675",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a5b40427_af7db752",
+        "filename": "src/phy_stub/phy_stub_thread_hdl.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 386,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-04-26T10:00:45Z",
+      "side": 1,
+      "message": "I dont see any new thread created for receiving message from peer. If without new thread, we just start while(1), then PHY will get stuck in this while loop and wont perform any other function parallely",
+      "range": {
+        "startLine": 386,
+        "startChar": 9,
+        "endLine": 386,
+        "endChar": 16
+      },
+      "revId": "784035f7d6c82ddad4f18cba1e60d43dbb464675",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "97736042_1dd1a461",
+        "filename": "src/phy_stub/phy_stub_thread_hdl.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 412,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-04-26T10:00:45Z",
+      "side": 1,
+      "message": "where is this called from?",
+      "revId": "784035f7d6c82ddad4f18cba1e60d43dbb464675",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8df40011_d9cdc0ef",
+        "filename": "src/phy_stub/phy_stub_thread_hdl.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 424,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-04-26T10:00:45Z",
+      "side": 1,
+      "message": "Add this comment where you have defined the 2 IPV4 macros because the change is required in macro value",
+      "revId": "784035f7d6c82ddad4f18cba1e60d43dbb464675",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "60fae341_e253f97d",
+        "filename": "src/phy_stub/phy_stub_thread_hdl.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 453,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-04-26T10:00:45Z",
+      "side": 1,
+      "message": "As per above code, both serverPhyConnection() and clientPhyConnection() will get called for both server phy and client phy. This will cause chaos.\nWe should have a parameter to decide if this PHY is server or client. Based on the parameter, only one of the above functions should get called.",
+      "revId": "784035f7d6c82ddad4f18cba1e60d43dbb464675",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fa4aa2b1_6154ccfc",
+        "filename": "src/ric_stub/ric_stub_sctp.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-04-26T10:00:45Z",
+      "side": 1,
+      "message": "revert before submission",
+      "range": {
+        "startLine": 26,
+        "startChar": 8,
+        "endLine": 26,
+        "endChar": 24
+      },
+      "revId": "784035f7d6c82ddad4f18cba1e60d43dbb464675",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
