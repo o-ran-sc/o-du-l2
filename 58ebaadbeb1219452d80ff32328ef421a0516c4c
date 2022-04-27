@@ -1,0 +1,366 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2c74b761_10e26153",
+        "filename": "src/phy_stub/phy_stub_thread_hdl.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-04-27T11:55:37Z",
+      "side": 1,
+      "message": "add a line break",
+      "revId": "58ebaadbeb1219452d80ff32328ef421a0516c4c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cc1e68b4_8a80e47f",
+        "filename": "src/phy_stub/phy_stub_thread_hdl.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 281,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-04-27T11:55:37Z",
+      "side": 1,
+      "message": "HANDOVER_IN_PROGRESS",
+      "range": {
+        "startLine": 281,
+        "startChar": 19,
+        "endLine": 281,
+        "endChar": 38
+      },
+      "revId": "58ebaadbeb1219452d80ff32328ef421a0516c4c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1feac8a2_31cebfa6",
+        "filename": "src/phy_stub/phy_stub_thread_hdl.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 307,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-04-27T11:55:37Z",
+      "side": 1,
+      "message": "HANDOVER_IN_PROGRESS",
+      "range": {
+        "startLine": 307,
+        "startChar": 32,
+        "endLine": 307,
+        "endChar": 51
+      },
+      "revId": "58ebaadbeb1219452d80ff32328ef421a0516c4c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4db788a2_79ee2a4f",
+        "filename": "src/phy_stub/phy_stub_thread_hdl.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 344,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-04-27T11:55:37Z",
+      "side": 1,
+      "message": "while(true)",
+      "range": {
+        "startLine": 344,
+        "startChar": 9,
+        "endLine": 344,
+        "endChar": 10
+      },
+      "revId": "58ebaadbeb1219452d80ff32328ef421a0516c4c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "02cf1eac_51b84e72",
+        "filename": "src/phy_stub/phy_stub_thread_hdl.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 363,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-04-27T11:55:37Z",
+      "side": 1,
+      "message": "client",
+      "range": {
+        "startLine": 363,
+        "startChar": 20,
+        "endLine": 363,
+        "endChar": 27
+      },
+      "revId": "58ebaadbeb1219452d80ff32328ef421a0516c4c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3b7104b7_a614e4c8",
+        "filename": "src/phy_stub/phy_stub_thread_hdl.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 370,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-04-27T11:55:37Z",
+      "side": 1,
+      "message": "client",
+      "range": {
+        "startLine": 370,
+        "startChar": 28,
+        "endLine": 370,
+        "endChar": 35
+      },
+      "revId": "58ebaadbeb1219452d80ff32328ef421a0516c4c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c0659c46_b8148b7d",
+        "filename": "src/phy_stub/phy_stub_thread_hdl.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 385,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-04-27T11:55:37Z",
+      "side": 1,
+      "message": "while(true)",
+      "range": {
+        "startLine": 385,
+        "startChar": 9,
+        "endLine": 385,
+        "endChar": 10
+      },
+      "revId": "58ebaadbeb1219452d80ff32328ef421a0516c4c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "18d0ea85_ef54ad4e",
+        "filename": "src/phy_stub/phy_stub_thread_hdl.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 419,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-04-27T11:55:37Z",
+      "side": 1,
+      "message": "call this as establishConnectionWithPeerL1",
+      "range": {
+        "startLine": 419,
+        "startChar": 7,
+        "endLine": 419,
+        "endChar": 26
+      },
+      "revId": "58ebaadbeb1219452d80ff32328ef421a0516c4c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e84aaf23_6e997d2a",
+        "filename": "src/phy_stub/phy_stub_thread_hdl.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 430,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-04-27T11:55:37Z",
+      "side": 1,
+      "message": "Use macro for port as well, as done for IP address",
+      "range": {
+        "startLine": 430,
+        "startChar": 30,
+        "endLine": 430,
+        "endChar": 34
+      },
+      "revId": "58ebaadbeb1219452d80ff32328ef421a0516c4c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "049a72eb_09e547b5",
+        "filename": "src/phy_stub/phy_stub_thread_hdl.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 445,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-04-27T11:55:37Z",
+      "side": 1,
+      "message": "We might want to change IP address of server at some point, in that case we would have to change here too.\nI suggest not to use IP address to decide if this is server/client. You can make a configurable parameter and set it to either server/client.\nBased on this parameter value, appropriate function can be called",
+      "range": {
+        "startLine": 445,
+        "startChar": 35,
+        "endLine": 445,
+        "endChar": 49
+      },
+      "revId": "58ebaadbeb1219452d80ff32328ef421a0516c4c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8430e773_1bac92c8",
+        "filename": "src/phy_stub/phy_stub_thread_hdl.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 447,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-04-27T11:55:37Z",
+      "side": 1,
+      "message": "rename to startL1AsServer",
+      "range": {
+        "startLine": 447,
+        "startChar": 9,
+        "endLine": 447,
+        "endChar": 28
+      },
+      "revId": "58ebaadbeb1219452d80ff32328ef421a0516c4c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d07e209c_b163431d",
+        "filename": "src/phy_stub/phy_stub_thread_hdl.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 455,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-04-27T11:55:37Z",
+      "side": 1,
+      "message": "rename to startL1AsClient",
+      "range": {
+        "startLine": 455,
+        "startChar": 9,
+        "endLine": 455,
+        "endChar": 28
+      },
+      "revId": "58ebaadbeb1219452d80ff32328ef421a0516c4c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "feff5495_ee2ffb1b",
+        "filename": "src/phy_stub/phy_stub_thread_hdl.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 463,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-04-27T11:55:37Z",
+      "side": 1,
+      "message": "while(true)",
+      "range": {
+        "startLine": 463,
+        "startChar": 9,
+        "endLine": 463,
+        "endChar": 10
+      },
+      "revId": "58ebaadbeb1219452d80ff32328ef421a0516c4c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c2b4c165_7b639835",
+        "filename": "src/phy_stub/phy_stub_thread_hdl.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 465,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-04-27T11:55:37Z",
+      "side": 1,
+      "message": "Lets call this as receiveMsgFromPeerL1",
+      "range": {
+        "startLine": 465,
+        "startChar": 6,
+        "endLine": 465,
+        "endChar": 13
+      },
+      "revId": "58ebaadbeb1219452d80ff32328ef421a0516c4c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5adf0783_f26500e2",
+        "filename": "src/phy_stub/phy_stub_thread_hdl.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 466,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-04-27T11:55:37Z",
+      "side": 1,
+      "message": "Instead of having a while loop here, I would suggest to have a while loop inside receiveMsgFromPeerL1",
+      "range": {
+        "startLine": 466,
+        "startChar": 3,
+        "endLine": 466,
+        "endChar": 4
+      },
+      "revId": "58ebaadbeb1219452d80ff32328ef421a0516c4c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "72c54ccb_4876d85d",
+        "filename": "src/phy_stub/phy_stub_thread_hdl.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 488,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-04-27T11:55:37Z",
+      "side": 1,
+      "message": "Directly call communicationBtwPhy function itself from pthread\nstartCommunicationBtwPhy is not really doing anything expect calling this one",
+      "range": {
+        "startLine": 488,
+        "startChar": 6,
+        "endLine": 488,
+        "endChar": 25
+      },
+      "revId": "58ebaadbeb1219452d80ff32328ef421a0516c4c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
