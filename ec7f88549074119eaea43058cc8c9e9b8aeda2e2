@@ -1,0 +1,181 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "68344a86_c57904d7",
+        "filename": "src/du_app/du_cell_mgr.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 181,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-04-28T07:12:02Z",
+      "side": 1,
+      "message": "can rename this to something like \"checkPagingFrame\"",
+      "range": {
+        "startLine": 181,
+        "startChar": 15,
+        "endLine": 181,
+        "endChar": 35
+      },
+      "revId": "ec7f88549074119eaea43058cc8c9e9b8aeda2e2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fac9bf32_2b4eace0",
+        "filename": "src/du_app/du_cell_mgr.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 513,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-04-28T07:12:02Z",
+      "side": 1,
+      "message": "This null check is not needed, since it will be checked inside DU_FREE",
+      "range": {
+        "startLine": 513,
+        "startChar": 24,
+        "endLine": 513,
+        "endChar": 26
+      },
+      "revId": "ec7f88549074119eaea43058cc8c9e9b8aeda2e2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1b99d578_a07fa4bd",
+        "filename": "src/du_app/du_cell_mgr.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 562,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-04-28T07:12:02Z",
+      "side": 1,
+      "message": "indentation, keep all parameter names aligned in one line to increase readability and cleanliness of code",
+      "revId": "ec7f88549074119eaea43058cc8c9e9b8aeda2e2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7a4d8f80_6c0dfd0d",
+        "filename": "src/du_app/du_cell_mgr.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 685,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-04-28T07:12:02Z",
+      "side": 1,
+      "message": "since page pdu will be sent to MAC as part of MAC Paging Request, this too should be allocated from sharable buffer",
+      "range": {
+        "startLine": 685,
+        "startChar": 9,
+        "endLine": 685,
+        "endChar": 17
+      },
+      "revId": "ec7f88549074119eaea43058cc8c9e9b8aeda2e2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7e5e37ea_b8422182",
+        "filename": "src/du_app/du_cell_mgr.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 688,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-04-28T07:12:02Z",
+      "side": 1,
+      "message": "All above DU_LOG is printing the exact same message. In case of failure, we wont be able to identify from log that which of the above allocation failed. Lets mention the parameter name too in the log",
+      "revId": "ec7f88549074119eaea43058cc8c9e9b8aeda2e2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cb024037_18f75cd6",
+        "filename": "src/du_app/du_cell_mgr.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 695,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-04-28T07:12:02Z",
+      "side": 1,
+      "message": "lets do a memcpy",
+      "range": {
+        "startLine": 695,
+        "startChar": 12,
+        "endLine": 695,
+        "endChar": 22
+      },
+      "revId": "ec7f88549074119eaea43058cc8c9e9b8aeda2e2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c41954f0_9427838d",
+        "filename": "src/du_app/du_mgr.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 340,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-04-28T07:12:02Z",
+      "side": 1,
+      "message": "Above 3 functions are defined in du_utils.c so its declarations must be added in du_utils.h",
+      "revId": "ec7f88549074119eaea43058cc8c9e9b8aeda2e2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7180e04a_352898b1",
+        "filename": "src/du_app/du_mgr.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 341,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-04-28T07:12:02Z",
+      "side": 1,
+      "message": "Similarly, since buildAndSendPagingReqToMac is defined in du_cell_mgr.c, its declaration should be in du_cell_mgr.h",
+      "revId": "ec7f88549074119eaea43058cc8c9e9b8aeda2e2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b065d374_8c7b619a",
+        "filename": "src/du_app/du_utils.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 405,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-04-28T07:12:02Z",
+      "side": 1,
+      "message": "we use utils.c file to define common utility functions that can be used at various instances.\nHere we have action \u003d traverse_all -\u003e it can be used for traversing through the linked list.\nBut buildAndSendPagingReqToMac is a very specific functionality which I feel should not be a part of utility. Can we call this function directly from handlePagingReqToMac()",
+      "revId": "ec7f88549074119eaea43058cc8c9e9b8aeda2e2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
