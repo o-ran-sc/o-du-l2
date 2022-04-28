@@ -24,6 +24,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b675d8c7_7602bab2",
+        "filename": "src/5gnrmac/mac_rach.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 188,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-04-28T09:27:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a75ebf29_6005c1ba",
+      "range": {
+        "startLine": 188,
+        "startChar": 86,
+        "endLine": 188,
+        "endChar": 87
+      },
+      "revId": "ddc225ae6e8e81a973fe1d310065453218d86ca8",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6948e368_80deddf2",
@@ -37,6 +61,24 @@
       "writtenOn": "2022-04-28T06:57:08Z",
       "side": 1,
       "message": "Sending a negative response is not required in case of a cell is not available?",
+      "revId": "ddc225ae6e8e81a973fe1d310065453218d86ca8",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b6505adc_a6e32241",
+        "filename": "src/5gnrsch/sch_rach.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 238,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-04-28T09:27:22Z",
+      "side": 1,
+      "message": "I have now added the negative response from SCH to MAC and MAC to DU APP",
+      "parentUuid": "6948e368_80deddf2",
       "revId": "ddc225ae6e8e81a973fe1d310065453218d86ca8",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -64,6 +106,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ce443951_e8e59576",
+        "filename": "src/5gnrsch/sch_rach.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 300,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-04-28T09:27:22Z",
+      "side": 1,
+      "message": "Added negative response as explained above",
+      "parentUuid": "a9af1058_d5d61328",
+      "range": {
+        "startLine": 300,
+        "startChar": 25,
+        "endLine": 300,
+        "endChar": 31
+      },
+      "revId": "ddc225ae6e8e81a973fe1d310065453218d86ca8",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9702450b_c6166799",
@@ -77,6 +143,24 @@
       "writtenOn": "2022-04-28T06:57:08Z",
       "side": 1,
       "message": "add a description here as we have added in above scenario.",
+      "revId": "ddc225ae6e8e81a973fe1d310065453218d86ca8",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "664f44a5_f271e282",
+        "filename": "src/cm/du_app_mac_inf.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 1450,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-04-28T09:27:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9702450b_c6166799",
       "revId": "ddc225ae6e8e81a973fe1d310065453218d86ca8",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -98,6 +182,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3e85f9f4_15a333f2",
+        "filename": "src/cm/du_app_mac_inf.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 1454,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-04-28T09:27:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b7e4e2d5_5071ca18",
+      "revId": "ddc225ae6e8e81a973fe1d310065453218d86ca8",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "88a5095a_c75221c2",
@@ -115,6 +217,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "16e1d8b0_2569a07d",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 8445,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-04-28T09:27:22Z",
+      "side": 1,
+      "message": "yes",
+      "parentUuid": "88a5095a_c75221c2",
+      "revId": "ddc225ae6e8e81a973fe1d310065453218d86ca8",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "694a4260_11741823",
@@ -128,6 +248,30 @@
       "writtenOn": "2022-04-28T06:57:08Z",
       "side": 1,
       "message": "Is this line required?",
+      "range": {
+        "startLine": 8452,
+        "startChar": 12,
+        "endLine": 8452,
+        "endChar": 13
+      },
+      "revId": "ddc225ae6e8e81a973fe1d310065453218d86ca8",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b33b2462_437312d0",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 8452,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-04-28T09:27:22Z",
+      "side": 1,
+      "message": "No, removed",
+      "parentUuid": "694a4260_11741823",
       "range": {
         "startLine": 8452,
         "startChar": 12,
@@ -161,6 +305,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e39844e1_909e82bb",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 8463,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-04-28T09:27:22Z",
+      "side": 1,
+      "message": "yes this part of code may be required in future when this IE may be filled explicitly at CU rather than copying from DU To CU RRC container received from DU.\nHence keeping this code for reference, added a comment to explain the reason",
+      "parentUuid": "144570aa_da6f0c2e",
+      "range": {
+        "startLine": 8463,
+        "startChar": 4,
+        "endLine": 8463,
+        "endChar": 6
+      },
+      "revId": "ddc225ae6e8e81a973fe1d310065453218d86ca8",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8929641a_69e3749b",
@@ -174,6 +342,24 @@
       "writtenOn": "2022-04-28T06:57:08Z",
       "side": 1,
       "message": "add a comment.",
+      "revId": "ddc225ae6e8e81a973fe1d310065453218d86ca8",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "106a0707_12fac1bf",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 8467,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-04-28T09:27:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8929641a_69e3749b",
       "revId": "ddc225ae6e8e81a973fe1d310065453218d86ca8",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -195,6 +381,41 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "74c148c7_aa064650",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 10787,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-04-28T09:27:22Z",
+      "side": 1,
+      "message": "This for loop was going into an infinite loop even though encBufSize has a small value.\nHence commented this.",
+      "parentUuid": "165e7bcd_8c225238",
+      "revId": "ddc225ae6e8e81a973fe1d310065453218d86ca8",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "720cf7d4_dd8d9db0",
+        "filename": "src/du_app/du_cfg.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-04-28T09:27:22Z",
+      "side": 1,
+      "message": "all the above changes will be reverted before submission",
+      "revId": "ddc225ae6e8e81a973fe1d310065453218d86ca8",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "561e7acc_2496ea08",
@@ -208,6 +429,30 @@
       "writtenOn": "2022-04-28T06:57:08Z",
       "side": 1,
       "message": "sizeof(SCS_SpecificCarrier_t*)",
+      "range": {
+        "startLine": 6394,
+        "startChar": 51,
+        "endLine": 6394,
+        "endChar": 72
+      },
+      "revId": "ddc225ae6e8e81a973fe1d310065453218d86ca8",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8a2e6120_f66cbb2e",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 6394,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-04-28T09:27:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "561e7acc_2496ea08",
       "range": {
         "startLine": 6394,
         "startChar": 51,
