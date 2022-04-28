@@ -1732,6 +1732,153 @@ uint8_t unpackDuMacSlotInd(DuMacSlotInd func, Pst *pst, Buffer *mBuf)
 
 /*******************************************************************
  *
+ * @brief Pack and send Paging request to MAC
+ *
+ * @details
+ *
+ *    Function : packDuMacPagingReq
+ *
+ *    Functionality:
+ *       Pack and send Paging request to MAC
+ *
+ * @params[in] Post structure
+ *             MacPageReq *pagingReq;
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+
+uint8_t packDuMacPagingReq(Pst *pst, MacPageReq *pagingReq)
+{
+   Buffer *mBuf = NULLP;
+
+   if(pst->selector == ODU_SELECTOR_LWLC)
+   {
+      if (ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf) != ROK)
+      {
+         DU_LOG("\nERROR  --> MAC : packDuMacPagingReq(): Memory allocation failed ");
+         return RFAILED;
+      }
+      CMCHKPK(oduPackPointer,(PTR)pagingReq, mBuf);
+      return ODU_POST_TASK(pst,mBuf);
+   }
+   else
+   {
+      DU_LOG("\nERROR  -->  MAC: packDuMacPagingReq(): Only LWLC supported ");
+   }
+   return RFAILED;
+}
+
+/*******************************************************************
+ *
+ * @brief Unpacks Paging Request received from DU APP
+ *
+ * @details
+ *
+ *    Function : unpackMacPagingReq
+ *
+ *    Functionality:
+ *         Unpacks Paging Request received from DU APP
+ *
+ * @params[in] Pointer to Handler
+ *             Post structure pointer
+ *             Message Buffer
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+
+uint8_t unpackMacPagingReq(DuMacPagingReq func, Pst *pst, Buffer *mBuf)
+{
+   if(pst->selector == ODU_SELECTOR_LWLC)
+   {
+      MacPageReq *pagingReq=NULLP;
+
+      /* unpack the address of the structure */
+      CMCHKUNPK(oduUnpackPointer, (PTR *)&pagingReq, mBuf);
+      ODU_PUT_MSG_BUF(mBuf);
+      return (*func)(pst, pagingReq);
+   }
+   else
+   {
+      /* Nothing to do for other selectors */
+      DU_LOG("\nERROR  -->  DU APP : unpackMacPagingReq(): Only LWLC supported for CELL Delete Request ");
+      ODU_PUT_MSG_BUF(mBuf);
+   }
+
+   return RFAILED;
+}
+/*******************************************************************
+ *
+ * @brief Pack and send Paging response from MAC to DU APP
+ *
+ * @details
+ *
+ *    Function : packDuMacPagingRsp
+ *
+ *    Functionality:
+ *       Pack and send Paging response from MAC to DU APP
+ *
+ * @params[in] Pst *pst, MacPageRsp *pagingRsp
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t packDuMacPagingRsp(Pst *pst, MacPageRsp *pagingRsp)
+{
+   Buffer *mBuf = NULLP;
+
+   if(pst->selector == ODU_SELECTOR_LWLC)
+   {
+      if (ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf) != ROK)
+      {
+         DU_LOG("\nERROR  --> MAC : Memory allocation failed at packDuMacPagingRsp");
+         return RFAILED;
+      }
+      /* pack the address of the structure */
+      CMCHKPK(oduPackPointer,(PTR)pagingRsp, mBuf);
+   }
+   else
+   {
+      DU_LOG("\nERROR  -->  MAC: Only LWLC supported for packDuMacPagingRsp");
+      return RFAILED;
+   }
+
+   return ODU_POST_TASK(pst,mBuf);
+}
+
+/*******************************************************************
+ *
+ * @brief Unpack Paging Response from MAC to DU APP
+ *
+ * @details
+ *
+ *    Function : unpackDuMacPagingRsp 
+ *
+ *    Functionality: Unpack Paging Response from MAC to DU APP
+ *
+ * @params[in] MacDuPagingRspFunc func, Pst *pst, Buffer *mBuf 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t unpackDuMacPagingRsp(MacDuPagingRspFunc func, Pst *pst, Buffer *mBuf)
+{
+   if(pst->selector == ODU_SELECTOR_LWLC)
+   {
+      MacPageRsp *pagingRsp = NULLP;
+
+      /* unpack the address of the structure */
+      CMCHKUNPK(oduUnpackPointer, (PTR *)&pagingRsp, mBuf);
+      ODU_PUT_MSG_BUF(mBuf);
+      return (*func)(pst, pagingRsp);
+   }
+
+   ODU_PUT_MSG_BUF(mBuf);
+   return RFAILED;
+}
+/*******************************************************************
+ *
  * @brief Searches for first unset bit in ueBitMap
  *
  * @details

@@ -77,6 +77,19 @@ MacDuSliceReCfgRspFunc macDuSliceReCfgRspOpts[] =
    packDuMacSliceReCfgRsp   /* packing for light weight loosly coupled */
 };
 
+MacSchPagingReqFunc macSchPagingReqOpts[] = 
+{
+   packMacSchPagingReq,   /* packing for loosely coupled */
+   MacSchPagingReq,       /* packing for tightly coupled */
+   packMacSchPagingReq    /* packing for light weight loosely coupled */
+};
+
+MacDuPagingRspFunc macDuPagingRspOpts[] =
+{
+   packDuMacPagingRsp,   /* packing for loosely coupled */
+   DuProcMacPagingRsp,   /* packing for tightly coupled */
+   packDuMacPagingRsp   /* packing for light weight loosly coupled */
+};
 /**
  * @brief Layer Manager  Configuration request handler for Scheduler
  *
@@ -443,7 +456,7 @@ void MacSendCellCfgCfm(uint16_t cellId, uint8_t response)
  **/
 uint8_t MacProcSchCellCfgCfm(Pst *pst, SchCellCfgCfm *schCellCfgCfm)
 {
-   uint16_t *cellId = NULLP;
+   uint16_t *cellId = NULLP, idx=0;
 
 #ifdef CALL_FLOW_DEBUG_LOG
    DU_LOG("\nCall Flow: ENTSCH -> ENTMAC : EVENT_SCH_CELL_CFG_CFM\n");
@@ -955,6 +968,162 @@ uint8_t MacProcSchSliceReCfgRsp(Pst *pst, SchSliceCfgRsp *schSliceRecfgRsp)
       freeSchSliceCfgRsp(schSliceRecfgRsp);
    }
    return ROK;
+}
+
+/**
+ * @brief process the paging rsp received from SCH 
+ *
+ * @details
+ *
+ *     Function : MacProcSchPagingRsp 
+ *
+ *     This function process the paging rsp received from SCH
+ *
+ *  @param[in]  Pst           *pst
+ *  @param[in]  SchPageRsp *pagingRsp
+ *  @return  int
+ *      -# ROK
+ **/
+uint8_t fillAndSendPagingRspToDu(uint16_t cellId, uint8_t result)
+{
+   Pst rspPst;
+   MacPageRsp *pagingRsp;
+   
+   MAC_ALLOC_SHRABL_BUF(pagingRsp, sizeof(MacPageRsp));
+   if(!pagingRsp)
+   {
+      DU_LOG("\nERROR  --> MAC : fillAndSendPagingRspToDu(): Memeory allocation failed");
+      return RFAILED;
+   }
+   else
+   {
+      pagingRsp->cellId = cellId;
+      if(result == ROK)
+         pagingRsp->result = MAC_DU_APP_RSP_OK;
+      else
+         pagingRsp->result = MAC_DU_APP_RSP_NOK;
+
+      /* Fill Pst structure to send Paging response from MAC to DU APP */
+      FILL_PST_MAC_TO_DUAPP(rspPst, EVENT_MAC_PAGING_RSP);
+      return (*macDuPagingRspOpts[rspPst.selector])(&rspPst, pagingRsp);
+   }
+
+   return ROK;
+}
+/**
+ * @brief process the paging rsp received from SCH 
+ *
+ * @details
+ *
+ *     Function : MacProcSchPagingRsp 
+ *
+ *     This function process the paging rsp received from SCH
+ *
+ *  @param[in]  Pst           *pst
+ *  @param[in]  SchPageRsp *pagingRsp
+ *  @return  int
+ *      -# ROK
+ **/
+uint8_t MacProcSchPagingRsp(Pst *pst, SchPageRsp *pagingRsp)
+{
+   if(pagingRsp)
+   {
+      DU_LOG("\nINFO   --> MAC : Received paging response from SCH");
+      
+      if( pagingRsp->result == RSP_NOK) 
+         fillAndSendPagingRspToDu(pagingRsp->cellId, RFAILED);
+      else
+         fillAndSendPagingRspToDu(pagingRsp->cellId, ROK);
+      
+      MAC_FREE(pagingRsp, sizeof(SchPageRsp));
+   }
+   else
+   {
+      DU_LOG("\nINFO   --> MAC : Received Null pointer from SCH");
+      return RFAILED;
+   }
+   return ROK;
+}
+/**
+ * @brief Mac process the paging req received from DUAPP
+ *
+ * @details
+ *
+ *     Function : MacProPagingReq
+ *
+ *     This function process the paging req received from DUAPP
+ *
+ *  @param[in]  Pst           *pst
+ *  @param[in]  MacPageReq    *pagingReq 
+ *  @return  int
+ *      -# ROK
+ **/
+uint8_t MacProcPagingReq(Pst *pst, MacPageReq *pagingReq)
+{
+   uint8_t ret = RFAILED;
+   uint16_t cellIdx = 0;
+   Pst       schPst;
+   SchPageReq *schPageReq;
+   MacPageRsp  *macPagingReq;
+   DU_LOG("\nINFO  -->  MAC : Recived paging request from DU_APP");
+   
+   if(pagingReq)
+   {
+      GET_CELL_IDX(pagingReq->cellId, cellIdx);
+
+      if(macCb.macCell[cellIdx] == NULLP && macCb.macCell[cellIdx]->cellId != pagingReq->cellId)
+      {
+         DU_LOG("\nERROR  -->  MAC : MacProcPagingReq(): CellId[%d] does not exist", pagingReq->cellId);
+      }
+      else
+      {
+         if((pagingReq->pagePdu == NULLP) && (pagingReq->pduLen < 0))
+         {
+            DU_LOG("\nERROR  -->  MAC : MacProcPagingReq(): Received Paging pdu is null");
+         }
+         else
+         {
+            MAC_ALLOC(schPageReq, sizeof(SchPageReq));
+            if(schPageReq == NULLP)
+            {
+               DU_LOG("\nERROR  -->  MAC : MacProcPagingReq(): Failed to allocate memory");
+            }
+            else
+            {
+               schPageReq->cellId = pagingReq->cellId;
+               schPageReq->pf = pagingReq->pf;
+               schPageReq->i_s = pagingReq->i_s;
+               schPageReq->pduLen = pagingReq->pduLen;
+               
+               MAC_ALLOC(schPageReq->pagePdu, pagingReq->pduLen);
+               if(schPageReq->pagePdu == NULLP)
+               {
+                   DU_LOG("\nERROR  -->  MAC : MacProcPagingReq(): Failed to allocate memory");
+               }
+               else
+               {
+                  memcpy(schPageReq->pagePdu, pagingReq->pagePdu, pagingReq->pduLen);
+                  MAC_FREE_SHRABL_BUF(pst->region, pst->pool, pagingReq->pagePdu, pagingReq->pduLen);
+               }
+               DU_LOG("\nINFO -->  MAC : Sending paging request to SCH");
+               
+               FILL_PST_MAC_TO_SCH(schPst, EVENT_PAGING_REQUEST_TO_SCH);
+               ret = (*macSchPagingReqOpts[schPst.selector])(&schPst, schPageReq);
+            }
+         }
+      }
+      if(ret != ROK)
+      {
+         DU_LOG("\nERROR  -->  MAC : MacProcPagingReq(): Failed to process paging request");
+         fillAndSendPagingRspToDu(pagingReq->cellId, ret);
+      }
+      MAC_FREE_SHRABL_BUF(pst->region, pst->pool, pagingReq, sizeof(MacPageReq));
+   }
+   else
+   {
+      DU_LOG("\nERROR  -->  MAC : MacProcPagingReq(): Received Null pointer");
+   }
+   return ret;
 }
 /**********************************************************************
   End of file

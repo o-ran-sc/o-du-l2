@@ -364,6 +364,19 @@ void *cuConsoleHandler(void *args)
          uint64_t sTmsi = 0;
          uint8_t duId = 0;
 
+         #if 1
+         uint8_t i = 0;
+         for(i=1 ;i < 5; i++)
+         {
+            sTmsi = (123*(i+1)) + (i * 2);
+         
+           if(BuildAndSendPagingMsg(sTmsi, 1) != ROK)
+           {
+              DU_LOG("\nERROR --> EGTP: Failed to build and send paging message for 5gsTmsi[%lu]\n", sTmsi);   
+           }
+         }
+
+         #else if
          DU_LOG("\nEnter DU ID on which this UE to be pagged");
          scanf("%d", &duId);
          DU_LOG("\nEnter 5g-S-TMSI");
@@ -373,6 +386,7 @@ void *cuConsoleHandler(void *args)
          {
             DU_LOG("\nERROR --> EGTP: Failed to build and send paging message for 5gsTmsi[%lu]\n", sTmsi);   
          }
+         #endif
          continue;
       }
    }

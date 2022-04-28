@@ -43,6 +43,8 @@
 #define EVENT_SLICE_RECFG_RSP_TO_MAC 24
 #define EVENT_RACH_RESOURCE_REQUEST_TO_SCH 25
 #define EVENT_RACH_RESOURCE_RESPONSE_TO_MAC 26
+#define EVENT_PAGING_REQUEST_TO_SCH 27
+#define EVENT_PAGING_RESPONSE_TO_MAC 28
 
 /*macros*/
 #define MAX_SSB_IDX 1 /* forcing it as 1 for now. Right value is 64 */
@@ -1704,6 +1706,21 @@ typedef struct schSliceRsp
    SliceRsp   **listOfSliceCfgRsp;
 }SchSliceCfgRsp;
 
+typedef struct schPageReq
+{
+   uint16_t  cellId;
+   uint16_t  pf;
+   uint8_t   i_s;
+   uint16_t  pduLen;
+   uint8_t  *pagePdu;
+}SchPageReq;
+
+typedef struct schPageRsp
+{
+   uint16_t  cellId;
+   SchMacRsp result;
+}SchPageRsp;
+
 /* function pointers */
 typedef uint8_t (*SchCellCfgCfmFunc)    ARGS((
 	 Pst            *pst,           /* Post Structure */                         
@@ -1808,6 +1825,14 @@ typedef uint8_t (*SchSliceReCfgRspFunc)    ARGS((
 	 SchSliceCfgRsp  *schSliceReCfgRsp /* Cell ReCfg Cfm */
 	 ));
 
+typedef uint8_t (*MacSchPagingReqFunc) ARGS((
+   Pst         *pst,           /* Post structure */
+   SchPageReq *schPagingReq)); /* Paging Request */
+
+typedef uint8_t (*SchPagingRspFunc)    ARGS((
+	 Pst            *pst,            /* Post Structure */                         
+	 SchPageRsp *pagingRsp)); /* Paging Rsponse */
+
 /* function declarations */
 uint8_t packMacSchSlotInd(Pst *pst, SlotTimingInfo *slotInd);
 uint8_t packSchMacDlAlloc(Pst *pst, DlSchedInfo  *dlSchedInfo);
@@ -1861,6 +1886,10 @@ uint8_t packMacSchSliceReCfgReq(Pst *pst, SchSliceCfgReq *cfgReq);
 uint8_t MacSchSliceReCfgReq(Pst *pst, SchSliceCfgReq *schSliceCfgReq);
 uint8_t packSchSliceReCfgRsp(Pst *pst, SchSliceCfgRsp *cfgRsp);
 uint8_t MacProcSchSliceReCfgRsp(Pst *pst, SchSliceCfgRsp *sliceReCfgrsp);
+uint8_t packMacSchPagingReq(Pst *pst,  SchPageReq *pageReq);
+uint8_t MacSchPagingReq(Pst *pst,  SchPageReq *pageReq);
+uint8_t packSchPagingRsp(Pst *pst, SchPageRsp *pagingRsp);
+uint8_t MacProcSchPagingRsp(Pst *pst, SchPageRsp *pagingRsp);
 /**********************************************************************
   End of file
  **********************************************************************/

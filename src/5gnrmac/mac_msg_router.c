@@ -169,6 +169,12 @@ Buffer  *mBuf                       /* message buffer       */
             unpackMacRachRsrcReq(MacProcRachRsrcReq, pst, mBuf);
             break;
          }
+      case EVENT_MAC_PAGING_REQ:
+         {
+            /* Process Rach Resource Request */
+            unpackMacPagingReq(MacProcPagingReq, pst, mBuf);
+            break;
+         }
 
       default:
          RG_FREE_MSG(mBuf);

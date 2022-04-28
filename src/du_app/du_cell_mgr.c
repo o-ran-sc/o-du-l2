@@ -29,7 +29,6 @@
 #include "du_cfg.h"
 #include "du_mgr.h"
 #include "du_utils.h"
-#include "du_cell_mgr.h"
 #include "PCCH-Config.h"
 #include "PagingUE-Identity.h"
 #include "PagingRecord.h"
@@ -38,6 +37,7 @@
 #include "PCCH-MessageType.h"
 #include "PCCH-Message.h"
 #include "odu_common_codec.h"
+#include "du_cell_mgr.h"
 
 #ifdef O1_ENABLE
 
@@ -46,13 +46,41 @@
 
 #endif
 
+uint8_t test = 0;
+
 DuMacCellDeleteReq packMacCellDeleteReqOpts[] =
 {
    packDuMacCellDeleteReq,       /* Loose coupling */
    MacProcCellDeleteReq,         /* TIght coupling */
    packDuMacCellDeleteReq        /* Light weight-loose coupling */
 };
+ DuMacPagingReq packMacPagingReqOpts[] =
+{
+   packDuMacPagingReq,       /* Loose coupling */
+   MacProcPagingReq,         /* TIght coupling */
+   packDuMacPagingReq        /* Light weight-loose coupling */
+};
 
+uint8_t DuProcMacPagingRsp(Pst *pst, MacPageRsp *pagingRsp)
+{
+   if(pagingRsp)
+   {
+      DU_LOG("\nINFO  --> DU APP : Received paging response from MAC for cellId[%d]", pagingRsp->cellId);
+      
+      if(pagingRsp->result == MAC_DU_APP_RSP_OK)
+         DU_LOG("\nINFO  -->  DUAPP : Paging response from SCH : Result [SUCCESS]");
+      else
+         DU_LOG("\nINFO  -->  DUAPP : Paging response from SCH : Result [FAILURE]");
+
+       DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, pagingRsp, sizeof(MacPageRsp));
+   }
+   else
+   {
+      DU_LOG("\nERROR  --> DU APP : DuProcMacPagingRsp(): Received null pointer");
+      return RFAILED;
+   }
+   return ROK;
+}
 /*******************************************************************
  *
  * @brief Processes cells to be activated
@@ -223,6 +251,49 @@ uint8_t checkPagingRecord(DuCellCb *cellCb)
    cmHashListDelete(&(cellCb->pagingInfoMap), (PTR)pagInfoLLFromPF);
    return ROK;
 }
+
+/******************************************************************
+ *
+ * @brief Send paging request to MAC
+ *
+ * @details
+ *
+ *    Function : sendPagingReqToMac
+ *
+ *    Functionality: Send paging request to MAC
+ *
+ * @Params[in] MacPageReq *pagingReq
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+
+uint8_t sendPagingReqToMac(MacPageReq *pagingReq)
+{
+   uint8_t ret = ROK;
+   Pst pst;
+
+   /* Fill Pst */
+   FILL_PST_DUAPP_TO_MAC(pst, EVENT_MAC_PAGING_REQ);
+
+   if(pagingReq)
+   {
+      DU_LOG("\nDEBUG   -->  DU_APP: Sending Paging Request to MAC");
+      ret = (*packMacPagingReqOpts[pst.selector])(&pst, pagingReq);
+      if(ret == RFAILED)
+      {
+         DU_LOG("\nERROR  -->  DU APP : sendPagingReqToMac(): Failed to send paging request to MAC");
+         DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, pagingReq, sizeof(MacPageReq));
+      }
+   }
+   else
+   {
+      DU_LOG("\nERROR  -->  DU_APP: sendPagingReqToMac(): Received pagingReq is NULLP");
+      ret = RFAILED;
+   }
+   return ret;
+}
+
 
 /*****************************************************************
 * @brief Handles slot indication from MAC
@@ -686,6 +757,7 @@ uint8_t buildAndSendPagingReqToMac(uint16_t pf, uint8_t i_s, CmLListCp *pageUeLL
             break;
          }
          
+         macPageReq->cellId = 1;
          macPageReq->pf = pf;
          macPageReq->i_s = i_s;
          macPageReq->pduLen = encBufSize;
@@ -696,6 +768,7 @@ uint8_t buildAndSendPagingReqToMac(uint16_t pf, uint8_t i_s, CmLListCp *pageUeLL
             break;
          }
          memcpy(macPageReq->pagePdu, encBuf, macPageReq->pduLen);
+         sendPagingReqToMac(macPageReq);
       }
       ret = ROK;
       break;
@@ -727,8 +800,23 @@ uint8_t insertPagingRecord(DuCellCb* cellCb, DuPagingMsg *rcvdF1apPagingParam, u
    DuPagUeList  *pageUeLL = NULLP;
    DuPagUeRecord *ueRecord = NULLP;
 
-#if 0
+   DU_LOG("\n SANGEETA start list");
    printPageList(&(cellCb->pagingInfoMap));
+
+#if 1 //test
+   if(iterations == 0)
+   {
+      rcvdF1apPagingParam->pagingFrame = 256;
+      rcvdF1apPagingParam->i_s = 0;
+      rcvdF1apPagingParam->pagingFrame += (test % 4);
+      if(test % 2 == 0)
+      {
+         rcvdF1apPagingParam->i_s += (test % 4);
+      }
+      DU_LOG("\nSANGEETA : test:%d, i_s:%d, pf:%d,ueId:%d",test, rcvdF1apPagingParam->i_s,rcvdF1apPagingParam->pagingFrame, rcvdF1apPagingParam->pagUeId);
+      test++;
+   }
+   maxIterations = 2;
 #endif
 
    /*MAX Iteration : A UE can be paged at every T frames thus MAX determines
@@ -795,10 +883,8 @@ uint8_t insertPagingRecord(DuCellCb* cellCb, DuPagingMsg *rcvdF1apPagingParam, u
       DU_LOG("\nERROR  --> DU APP: Hash Map Insertion Failed for PF:%d.",rcvdF1apPagingParam->pagingFrame);
    }
 
-#if 0
+   DU_LOG("\n SANGEETA end list");
    printPageList(&(cellCb->pagingInfoMap));
-#endif
-   
    return ROK;
 
 
