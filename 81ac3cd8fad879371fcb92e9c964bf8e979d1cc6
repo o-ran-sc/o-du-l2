@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "32c2d028_af7d7766",
+        "filename": "src/phy_stub/phy_stub_thread_hdl.c",
+        "patchSetId": 10
+      },
+      "lineNbr": 396,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-04-28T07:20:53Z",
+      "side": 1,
+      "message": "say Client connected to sever",
+      "range": {
+        "startLine": 396,
+        "startChar": 40,
+        "endLine": 396,
+        "endChar": 47
+      },
+      "revId": "81ac3cd8fad879371fcb92e9c964bf8e979d1cc6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "edf43663_f269f3f6",
+        "filename": "src/phy_stub/phy_stub_thread_hdl.c",
+        "patchSetId": 10
+      },
+      "lineNbr": 445,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-04-28T07:20:53Z",
+      "side": 1,
+      "message": "Failed to start server",
+      "revId": "81ac3cd8fad879371fcb92e9c964bf8e979d1cc6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "01274e82_59d9e94a",
+        "filename": "src/phy_stub/phy_stub_thread_hdl.c",
+        "patchSetId": 10
+      },
+      "lineNbr": 453,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-04-28T07:20:53Z",
+      "side": 1,
+      "message": "Failed to start client",
+      "revId": "81ac3cd8fad879371fcb92e9c964bf8e979d1cc6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
