@@ -27,7 +27,7 @@ uint8_t duGetCellCb(uint16_t cellId, DuCellCb **cellCb);
 uint8_t BuildAndSendSliceConfigReq(RrmPolicy *rrmPolicy[], uint8_t totalRrrmPolicy, uint8_t totalSliceCfgReq);
 uint8_t BuildAndSendSliceReCfgReq(RrmPolicy *rrmPolicy[], uint8_t totalRrmPolicy, uint8_t totalSliceReCfg);
 uint8_t processPagingMsg(uint16_t cellId, DuPagingMsg *rcvdF1apPagingParam);
-uint8_t buildAndSendPagingReqToMac(uint16_t pf, uint8_t i_s, CmLListCp *pageUeLL);
+uint8_t buildAndSendPagingReqToMac(uint16_t cellId, uint16_t pf, uint8_t i_s, CmLListCp *pageUeLL);
 #endif
 /**********************************************************************
   End of file

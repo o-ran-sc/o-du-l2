@@ -82,6 +82,8 @@
 #define EVENT_MAC_SLOT_IND           220
 #define EVENT_MAC_RACH_RESOURCE_REQ  221
 #define EVENT_MAC_RACH_RESOURCE_RSP  222
+#define EVENT_MAC_PAGING_REQ         223
+#define EVENT_MAC_PAGING_RSP         224
 
 #define BSR_PERIODIC_TIMER_SF_10 10
 #define BSR_RETX_TIMER_SF_320 320
@@ -1390,6 +1392,12 @@ typedef struct macPageReq
    uint8_t  *pagePdu;
 }MacPageReq;
 
+typedef struct macPageRsp
+{
+   uint16_t  cellId;
+   MacRsp    result;
+}MacPageRsp;
+
 /* Functions for CellUp Ind from MAC to DU APP*/
 typedef uint8_t (*DuMacCellUpInd) ARGS((
 	 Pst       *pst,
@@ -1507,6 +1515,16 @@ typedef uint8_t (*MacDuSliceReCfgRspFunc) ARGS((
         Pst           *pst,
         MacSliceCfgRsp   *cfgRsp));
 
+/* Paging Request from DU APP to MAC*/
+typedef uint8_t (*DuMacPagingReq) ARGS((
+     Pst        *pst,
+     MacPageReq *pagingReq));
+
+/* Paging Response from MAC to DUAPP */
+typedef uint8_t (*MacDuPagingRspFunc) ARGS((
+   Pst           *pst,
+   MacPageRsp    *pagingRsp ));
+
 uint64_t ueBitMapPerCell[MAX_NUM_CELL]; /* Bit Map to store used/free UE-IDX per Cell */
 
 uint8_t packMacCellUpInd(Pst *pst, OduCellId *cellId);
@@ -1576,8 +1594,14 @@ uint8_t unpackDuMacSliceReCfgRsp(MacDuSliceReCfgRspFunc func, Pst *pst, Buffer *
 uint8_t duHandleSlotInd(Pst *pst, SlotTimingInfo *slotIndInfo);
 uint8_t packMacSlotInd(Pst *pst, SlotTimingInfo *slotIndInfo);
 uint8_t unpackDuMacSlotInd(DuMacSlotInd func, Pst *pst, Buffer *mBuf);
+uint8_t packDuMacPagingReq(Pst *pst, MacPageReq *pagingReq);
+uint8_t MacProcPagingReq(Pst *pst, MacPageReq *pagingReq);
+uint8_t unpackMacPagingReq(DuMacPagingReq func, Pst *pst, Buffer *mBuf);
 int8_t getFreeBitFromUeBitMap(uint16_t cellId);
 void unsetBitInUeBitMap(uint16_t cellId, uint8_t bitPos);
+uint8_t packDuMacPagingRsp(Pst *pst, MacPageRsp *pagingRsp);
+uint8_t unpackDuMacPagingRsp(MacDuPagingRspFunc func, Pst *pst, Buffer *mBuf);
+ uint8_t DuProcMacPagingRsp(Pst *pst, MacPageRsp *pagingRsp);
 #endif
 
 

@@ -72,6 +72,13 @@ SchSliceReCfgRspFunc SchSliceReCfgRspOpts[] =
    MacProcSchSliceReCfgRsp,  /* TC */
    packSchSliceReCfgRsp      /* LWLC */
 };
+
+SchPagingRspFunc SchPagingRspOpts[] =
+{
+   packSchPagingRsp,      /* LC */
+   MacProcSchPagingRsp,   /* TC */
+   packSchPagingRsp       /* LWLC */
+};
 /**
  * @brief Task Initiation function. 
  *
@@ -2101,6 +2108,150 @@ void schCfgPdcchMonOccOfPO(SchCellCb *cell)
    }
 }
 
+/****************************************************************************
+ *
+ * @brief Storing the paging information in SCH database 
+ *
+ * @details
+ *
+ *    Function : schAddPagingMsgtoList
+ *
+ *    Functionality: Storing the paging information in SCH database
+ *
+ * @params[in] CmLListCp *storedPageList, CmLList *pageReqInfo
+ *       
+ * @return ROK - sucess
+ *         RFAILED - failure
+ *        
+ *************************************************************************/
+uint8_t schAddPagingMsgtoList(CmLListCp *storedPageList, SchPageInfo *pageReqInfo)
+{
+   CmLList  *firstNodeOfList = NULLP;
+   CmLList  *currentNodeInfo = NULLP;
+   SchPageInfo *tempNode = NULLP;
+   CM_LLIST_FIRST_NODE(storedPageList,firstNodeOfList);
+   
+   SCH_ALLOC(currentNodeInfo, sizeof(CmLList));
+   if(!currentNodeInfo)
+   {  
+      DU_LOG("\nERROR  --> SCH : schAddPagingMsgtoList() : Memory allocation failed");
+      return RFAILED;
+   }
+   
+   currentNodeInfo->node = (PTR)pageReqInfo;
+   while(firstNodeOfList)
+   {
+      tempNode = (SchPageInfo*)(firstNodeOfList->node);
+
+      if ((pageReqInfo->TxTime.slot < tempNode->TxTime.slot))
+      {
+         cmLListInsCrnt(storedPageList, currentNodeInfo);
+         break;
+      }
+      else
+      {
+         CM_LLIST_NEXT_NODE(storedPageList, firstNodeOfList);
+      }
+   } 
+   if(!firstNodeOfList)
+   {
+      cmLListAdd2Tail(storedPageList, currentNodeInfo);
+   }
+   return ROK;
+}
+/****************************************************************************
+ *
+ * @brief Process paging request SCH recevied form MAC 
+ *
+ * @details
+ *
+ *    Function : MacSchPagingReq
+ *
+ *    Functionality: Process paging request SCH recevied form MAC 
+ *
+ * @params[in] Pst *pst,  SchPageReq *pageReq 
+ *       
+ * @return void 
+ *        
+ *************************************************************************/
+uint8_t MacSchPagingReq(Pst *pst,  SchPageReq *pageReq)
+{
+   uint16_t cellIdx = 0;
+   Pst   rspPst;
+   Inst  inst = pst->dstInst - SCH_INST_START;
+   SchCellCb *cellCb = NULLP;
+   SchPageRsp *pagingRsp = NULLP;
+   SchPageInfo pageInfo;
+
+   if(pageReq)
+   {
+      DU_LOG("\nINFO  --> SCH : Received paging request form MAC for cellId[%d]",pageReq->cellId);
+      SCH_ALLOC(pagingRsp, sizeof(SchPageRsp));
+
+      if(!pagingRsp)
+      {
+         DU_LOG("\nERROR  --> SCH : MacSchPagingReq(): Failed to allocate memory");
+         return RFAILED;
+      }
+      pagingRsp->cellId = pageReq->cellId;
+      pagingRsp->result = RSP_OK;
+      
+      /* Fill SCH to MAC Pst structure */
+      memset(&rspPst, 0, sizeof(Pst));
+      FILL_PST_SCH_TO_MAC(rspPst, inst);
+      rspPst.event = EVENT_PAGING_RSP_TO_MAC;
+      
+      /* Fetch Cell CB */
+      for(cellIdx = 0; cellIdx < MAX_NUM_CELL; cellIdx++)
+      {
+         if((schCb[inst].cells[cellIdx]) && (schCb[inst].cells[cellIdx]->cellId == pageReq->cellId))
+         {
+            cellCb = schCb[inst].cells[cellIdx];
+            break;
+         }
+      }
+      if(cellCb)
+      {
+         pageInfo.pf = pageReq->pf; 
+         pageInfo.i_s = pageReq->i_s;
+         pageInfo.TxTime.sfn = (pageReq->pf +  cellCb->pageCb.pagMonOcc[pageReq->i_s].frameOffset) % 1024;
+         pageInfo.TxTime.slot = cellCb->pageCb.pagMonOcc[pageReq->i_s].pagingOccSlot;
+         pageInfo.mcs = DEFAULT_MCS;
+         pageInfo.msgLen =  pageReq->pduLen;
+         SCH_ALLOC(pageInfo.pagePdu, pageInfo.msgLen);
+         if(!pageInfo.pagePdu)
+         {
+            DU_LOG("\nERROR  -. SCH : MacSchPagingReq(): Failed to allocate memory");
+            return RFAILED;
+         }
+         memcpy(pageInfo.pagePdu, pageReq->pagePdu, pageInfo.msgLen);
+         if(schAddPagingMsgtoList(&cellCb->pageCb.pageReqInfoRecord[pageInfo.TxTime.sfn], &pageInfo) != ROK)
+         {
+            pagingRsp->result = RSP_NOK;
+         }
+         else
+         {
+            DU_LOG("\nINFO  -->  SCH : Paging information is stored sucessfully");
+         }
+      }
+      else
+      {
+         DU_LOG("\nERROR  -->  SCH : Cell ID [%d] not found", pageReq->cellId);
+         pagingRsp->result = RSP_NOK;
+      }
+      SCH_FREE(pageReq->pagePdu, pageReq->pduLen);
+      SCH_FREE(pageReq, sizeof(SchPageReq));
+
+      /* Send paging response to MAC */
+      return (SchPagingRspOpts[rspPst.selector](&rspPst, pagingRsp));
+   }
+   else
+   {
+      DU_LOG("\nERROR  --> SCH : MacSchPagingReq(): Received null pointer");
+   }
+   DU_LOG("\nReached here");
+   return ROK;
+}
 /**********************************************************************
   End of file
  **********************************************************************/
