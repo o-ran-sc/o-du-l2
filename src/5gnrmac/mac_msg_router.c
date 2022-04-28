@@ -169,6 +169,12 @@ Buffer  *mBuf                       /* message buffer       */
             unpackMacRachRsrcReq(MacProcRachRsrcReq, pst, mBuf);
             break;
          }
+      case EVENT_MAC_DL_PCCH_IND:
+         {
+            /* Process Paging Request */
+            unpackMacDlPcchInd(MacProcDlPcchInd, pst, mBuf);
+            break;
+         }
 
       default:
          RG_FREE_MSG(mBuf);

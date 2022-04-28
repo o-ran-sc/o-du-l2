@@ -72,6 +72,7 @@ SchSliceReCfgRspFunc SchSliceReCfgRspOpts[] =
    MacProcSchSliceReCfgRsp,  /* TC */
    packSchSliceReCfgRsp      /* LWLC */
 };
+
 /**
  * @brief Task Initiation function. 
  *
@@ -2101,6 +2102,154 @@ void schCfgPdcchMonOccOfPO(SchCellCb *cell)
    }
 }
 
+/****************************************************************************
+ *
+ * @brief Storing the paging information in SCH database 
+ *
+ * @details
+ *
+ *    Function : schAddPagingMsgtoList
+ *
+ *    Functionality: Storing the paging information in SCH database
+ *
+ * @params[in] CmLListCp *storedPageList, CmLList *pageIndInfo
+ *       
+ * @return ROK - sucess
+ *         RFAILED - failure
+ *        
+ *************************************************************************/
+uint8_t schAddPagingMsgtoList(CmLListCp *storedPageList,void * pageIndInfo)
+{
+   CmLList  *firstNodeOfList = NULLP;
+   CmLList  *currentNodeInfo = NULLP;
+   SchPageInfo *tempNode = NULLP, *recvdNode = NULLP;
+   
+   recvdNode = (SchPageInfo*) pageIndInfo;
+   CM_LLIST_FIRST_NODE(storedPageList,firstNodeOfList);
+   
+   SCH_ALLOC(currentNodeInfo, sizeof(CmLList));
+   if(!currentNodeInfo)
+   {  
+      DU_LOG("\nERROR  --> SCH : schAddPagingMsgtoList() : Memory allocation failed");
+      return RFAILED;
+   }
+   
+   currentNodeInfo->node = (PTR)pageIndInfo;
+   while(firstNodeOfList)
+   {
+      tempNode = (SchPageInfo*)(firstNodeOfList->node);
+      if ((recvdNode->TxTime.slot < tempNode->TxTime.slot))
+      {
+         cmLListInsCrnt(storedPageList, currentNodeInfo);
+         break;
+      }
+      else if ((recvdNode->TxTime.slot == tempNode->TxTime.slot))
+      {
+         DU_LOG("\nERROR  --> SCH : schAddPagingMsgtoList() : Slot[%d] is already present in the list", recvdNode->TxTime.slot);
+         return RFAILED;
+      }
+      else
+      {
+         CM_LLIST_NEXT_NODE(storedPageList, firstNodeOfList);
+      }
+   } 
+   
+   if(!firstNodeOfList)
+   {
+      cmLListAdd2Tail(storedPageList, currentNodeInfo);
+   }
+   DU_LOG("\nINFO  -->  SCH : Paging information is stored sucessfully");
+   return ROK;
+}
+
+/****************************************************************************
+ *
+ * @brief Process paging indication at  SCH recevied form MAC 
+ *
+ * @details
+ *
+ *    Function : MacSchPagingInd
+ *
+ *    Functionality: Process paging indication at SCH recevied form MAC 
+ *
+ * @params[in] Pst *pst,  SchPageInd *pageInd 
+ *       
+ * @return void 
+ *        
+ *************************************************************************/
+uint8_t MacSchPagingInd(Pst *pst,  SchPageInd *pageInd)
+{
+   uint8_t ret = RFAILED;
+   uint16_t cellIdx = 0;
+   Inst  inst = pst->dstInst - SCH_INST_START;
+   SchCellCb *cellCb = NULLP;
+   SchPageInfo *pageInfo = NULLP;
+
+   if(pageInd)
+   {
+      DU_LOG("\nINFO  --> SCH : Received paging indication form MAC for cellId[%d]",pageInd->cellId);
+
+      /* Fetch Cell CB */
+      for(cellIdx = 0; cellIdx < MAX_NUM_CELL; cellIdx++)
+      {
+         if((schCb[inst].cells[cellIdx]) && (schCb[inst].cells[cellIdx]->cellId == pageInd->cellId))
+         {
+            cellCb = schCb[inst].cells[cellIdx];
+            break;
+         }
+      }
+      if(cellCb)
+      {
+         if(pageInd->i_s > cellCb->cellCfg.sib1SchCfg.pageCfg.numPO)
+         {
+            DU_LOG("\nERROR --> SCH : MacSchPagingInd(): i_s should not be greater than number of paging occasion");
+         }
+         else
+         {
+            SCH_ALLOC(pageInfo, sizeof(SchPageInfo));
+            if(pageInfo)
+            {
+               pageInfo->pf = pageInd->pf; 
+               pageInfo->i_s = pageInd->i_s;
+               pageInfo->TxTime.cellId = pageInd->cellId;
+               pageInfo->TxTime.sfn = (pageInd->pf +  cellCb->pageCb.pagMonOcc[pageInd->i_s].frameOffset) % MAX_SFN;
+               pageInfo->TxTime.slot = cellCb->pageCb.pagMonOcc[pageInd->i_s].pagingOccSlot;
+               pageInfo->mcs = DEFAULT_MCS;
+               pageInfo->msgLen =  pageInd->pduLen;
+               SCH_ALLOC(pageInfo->pagePdu, pageInfo->msgLen);
+               if(!pageInfo->pagePdu)
+               {
+                  DU_LOG("\nERROR  --> SCH : MacSchPagingInd(): Failed to allocate memory");
+               }
+               else
+               {
+                  memcpy(pageInfo->pagePdu, pageInd->pagePdu, pageInfo->msgLen);
+                  ret = schAddPagingMsgtoList(&cellCb->pageCb.pageIndInfoRecord[pageInfo->TxTime.sfn], pageInfo);
+                  if(ret != ROK)
+                  {
+                     DU_LOG("\nERROR  --> SCH : MacSchPagingInd(): Failed to store paging record");
+                  }
+               }
+            }
+            else
+            {
+               DU_LOG("\nERROR  --> SCH : MacSchPagingInd(): Failed to allocate memory");
+            }
+         }
+      }
+      else
+      {
+         DU_LOG("\nERROR  -->  SCH : Cell ID [%d] not found", pageInd->cellId);
+      }
+      SCH_FREE(pageInd->pagePdu, pageInd->pduLen);
+      SCH_FREE(pageInd, sizeof(SchPageInd));
+   }
+   else
+   {
+      DU_LOG("\nERROR  --> SCH : MacSchPagingInd(): Received null pointer");
+   }
+   return ret;
+}
 /**********************************************************************
   End of file
  **********************************************************************/

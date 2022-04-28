@@ -53,6 +53,13 @@ DuMacCellDeleteReq packMacCellDeleteReqOpts[] =
    packDuMacCellDeleteReq        /* Light weight-loose coupling */
 };
 
+DuMacDlPcchInd packMacDlPcchIndOpts[] =
+{
+   packDuMacDlPcchInd,       /* Loose coupling */
+   MacProcDlPcchInd,         /* TIght coupling */
+   packDuMacDlPcchInd        /* Light weight-loose coupling */
+};
+
 /*******************************************************************
  *
  * @brief Processes cells to be activated
@@ -211,7 +218,7 @@ uint8_t checkPagingRecord(DuCellCb *cellCb)
       pagInfo = handlePageInfoLL(pf, NULLD, &(pagInfoLLFromPF->pagInfoList), TRAVERSE_ALL);
       if(pagInfo != NULLP)
       {
-         if(buildAndSendPagingReqToMac(pf, pagInfo->i_s, &(pagInfo->pagUeList)) != ROK)
+         if(BuildAndSendDlPcchIndToMac(cellCb->cellId, pf, pagInfo->i_s, &(pagInfo->pagUeList)) != ROK)
          {
             DU_LOG("\nERROR  -->  DU APP: Issue in Building Page RRC PDU i_s:%d",pagInfo->i_s);
             return RFAILED; 
@@ -223,6 +230,48 @@ uint8_t checkPagingRecord(DuCellCb *cellCb)
    cmHashListDelete(&(cellCb->pagingInfoMap), (PTR)pagInfoLLFromPF);
    return ROK;
 }
+
+/******************************************************************
+ *
+ * @brief Send pcch indication to MAC
+ *
+ * @details
+ *
+ *    Function : sendDlPcchIndToMac
+ *
+ *    Functionality: Send pcch indication to MAC
+ *
+ * @Params[in] MacPcchInd *pagingReq
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+
+uint8_t sendDlPcchIndToMac(MacPcchInd *pcchInd)
+{
+   uint8_t ret = ROK;
+   Pst pst;
+
+   if(pcchInd)
+   {
+      /* Fill Pst */
+      FILL_PST_DUAPP_TO_MAC(pst, EVENT_MAC_DL_PCCH_IND);
+      
+      DU_LOG("\nDEBUG   -->  DU_APP: Sending DL PCCH indication to MAC for cellId[%d]", pcchInd->cellId);
+      ret = (*packMacDlPcchIndOpts[pst.selector])(&pst, pcchInd);
+      if(ret == RFAILED)
+      {
+         DU_LOG("\nERROR  -->  DU APP : sendDlPcchIndToMac(): Failed to DL PCCH indication to MAC");
+      }
+   }
+   else
+   {
+      DU_LOG("\nERROR  -->  DU_APP: sendDlPcchIndToMac(): Received pcchInd is NULLP");
+      ret = RFAILED;
+   }
+   return ret;
+}
+
 
 /*****************************************************************
 * @brief Handles slot indication from MAC
@@ -538,31 +587,30 @@ void freePcchPdu(PCCH_Message_t *pcchMsg)
 }
 
 /*******************************************************************
- * @brief Builds the Paging RRC PDU and forwards it to MAC
+ * @brief Builds the Pcch RRC PDU and forwards it to MAC
  *
  * @details
  *
- *    Function : buildAndSendPagingReqToMac
+ *    Function : BuildAndSendDlPcchIndToMac
  *
- *    Functionality: Builds the Paging RRC PDU[As per Spec 38.331, Annexure A]
+ *    Functionality: Builds the Pcch RRC PDU[As per Spec 38.331, Annexure A]
  *                   and forwards it to MAC as Buffer along with PF and i_s
  *
- * @params[in] uint16_t pf, uint8_t i_s,CmLListCp *pageUeLL
+ * @params[in] uint16_t cellId, uint16_t pf, uint8_t i_s,CmLListCp *pageUeLL
  *
  * @return ROK     - success
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t buildAndSendPagingReqToMac(uint16_t pf, uint8_t i_s, CmLListCp *pageUeLL)
+uint8_t BuildAndSendDlPcchIndToMac(uint16_t cellId, uint16_t pf, uint8_t i_s, CmLListCp *pageUeLL)
 {
    CmLList        *node = NULLP, *next = NULLP;
    DuPagUeRecord  *ueRecord = NULLP;
    PCCH_Message_t *pcchMsg = NULLP;
-   asn_enc_rval_t  encRetVal;
+   asn_enc_rval_t encRetVal;
    PagingRrc_t    *pagingMsg = NULLP;
-   MacPageReq     *macPageReq = NULLP;
-   uint16_t        bufIdx = 0;
-   uint8_t         recordIdx = 0, ret = RFAILED;
+   MacPcchInd     *macPcchInd = NULLP;
+   uint8_t        recordIdx = 0, ret = RFAILED;
    
    /*As per 38.473 Sec 9.3.1.39,5G-S-TMSI :48 Bits >>  Bytes and 0 UnusedBits */
    uint8_t         totalByteInTmsi = 6, unusedBitsInTmsi = 0;
@@ -677,25 +725,33 @@ uint8_t buildAndSendPagingReqToMac(uint16_t pf, uint8_t i_s, CmLListCp *pageUeLL
       }
       else
       {
-         DU_LOG("\nDEBUG  -->  F1AP : Created APER encoded buffer for RRCPDU for PagingMsg \n");
+         DU_LOG("\nDEBUG  -->  F1AP : Created APER encoded buffer for RRC PDU for Pcch indication \n");
          
-         DU_ALLOC_SHRABL_BUF(macPageReq, sizeof(MacPageReq));
-         if(macPageReq == NULLP)
+         DU_ALLOC_SHRABL_BUF(macPcchInd, sizeof(MacPcchInd));
+         if(macPcchInd == NULLP)
          {
-            DU_LOG("\nERROR  -->  DU APP: buildAndSendPagingToMac(); (macPageReq) Memory Alloction failed!");
+            DU_LOG("\nERROR  -->  DU APP: buildAndSendPagingToMac(); (macPcchInd) Memory Alloction failed!");
             break;
          }
          
-         macPageReq->pf = pf;
-         macPageReq->i_s = i_s;
-         macPageReq->pduLen = encBufSize;
-         DU_ALLOC_SHRABL_BUF(macPageReq->pagePdu, macPageReq->pduLen);
-         if(macPageReq->pagePdu == NULLP)
+         macPcchInd->cellId = cellId;
+         macPcchInd->pf = pf;
+         macPcchInd->i_s = i_s;
+         macPcchInd->pduLen = encBufSize;
+         DU_ALLOC_SHRABL_BUF(macPcchInd->pcchPdu, macPcchInd->pduLen);
+         if(macPcchInd->pcchPdu == NULLP)
          {
             DU_LOG("\nERROR  -->  DU APP: buildAndSendPagingToMac(); (PagePDU) Memory Alloction failed!");
             break;
          }
-         memcpy(macPageReq->pagePdu, encBuf, macPageReq->pduLen);
+         memcpy(macPcchInd->pcchPdu, encBuf, macPcchInd->pduLen);
+         ret = sendDlPcchIndToMac(macPcchInd);
+         if(ret != ROK)
+         {
+            DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, macPcchInd->pcchPdu, macPcchInd->pduLen);
+            DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, macPcchInd, sizeof(MacPcchInd));
+            break;
+         }
       }
       ret = ROK;
       break;
