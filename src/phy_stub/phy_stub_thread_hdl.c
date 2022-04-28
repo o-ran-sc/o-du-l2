@@ -30,6 +30,7 @@
 extern uint16_t l1BuildAndSendBSR(uint8_t ueIdx, BsrType bsrType,\
              LcgBufferSize lcgBsIdx[MAX_NUM_LOGICAL_CHANNEL_GROUPS]);
 pthread_t thread = 0;
+int socket_fd =0;
 
 /*******************************************************************
  *
@@ -83,7 +84,7 @@ void GenerateTicks()
    /* Initialize all global variables */
    sfnValue = 0;
    slotValue = 0;
-   memset(&ueDb, 0, sizeof(UeDb));
+   memset(&phyDb.ueDb, 0, sizeof(UeDb));
 
    /* Send Stop indication to MAC */
    sleep(1);
@@ -226,8 +227,8 @@ void *l1ConsoleHandler(void *args)
  * ****************************************************************/
 void l1StartConsoleHandler()
 {
-   uint8_t retVal;
-   pthread_t conThrdId;
+   uint8_t retVal, threadIdx;
+   pthread_t conThrdId[NUM_THREADS];
    pthread_attr_t attr;
 
    /* Start thread to receive console input */
@@ -235,15 +236,229 @@ void l1StartConsoleHandler()
    pthread_attr_setstacksize(&attr, (size_t)NULLD);
    pthread_attr_setscope(&attr, PTHREAD_SCOPE_SYSTEM);
    pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
-   retVal = pthread_create(&conThrdId, &attr, l1ConsoleHandler, NULLP);
-   if(retVal != 0)
+   for(threadIdx =0 ; threadIdx <NUM_THREADS; threadIdx++)
    {
-      DU_LOG("\nERROR  -->  PHY STUB : Thread creation failed. Cause %d", retVal);
+      if(threadIdx == 0)
+      {
+         retVal = pthread_create(&conThrdId[threadIdx], &attr, l1ConsoleHandler, NULLP);
+      }
+      else
+      {
+         retVal = pthread_create(&conThrdId[threadIdx], &attr, establishConnectionWithPeerL1, NULLP);
+      }
+      
+      if(retVal != 0)
+      {
+         DU_LOG("\nERROR  -->  PHY STUB : Thread creation failed. Cause %d", retVal);
+      }
    }
    pthread_attr_destroy(&attr);
+}
+
+/*******************************************************************
+ *
+ * @brief function reads the recevied information send by peer PHY 
+ *
+ * @details
+ *
+ *    Function : receiveMsgFromPeerL1
+ *
+ *    Functionality: This function reads the recevied information 
+ *    and prints at console
+ *
+ * @params[in] 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+void receiveMsgFromPeerL1()
+{
+   while(true)
+   {
+      char buffer[1024] = {0};
+      
+      if(read(socket_fd, buffer, 1024)>0)
+      {
+         DU_LOG("\n");
+         DU_LOG("%s\n",buffer);
+         if (strncmp("HANDOVER_IN_PROGRESS", buffer, 19) == 0) 
+         {
+            DU_LOG("\nINFO  --> PHY_STUB : Communication completed in between the source and destination PHY\n");
+            //TODO: Trigger for other handover process in target PHY
+         }
+      }
+   }
+}
+
+/*******************************************************************
+ *
+ * @brief function build the message which need to send to target PHY 
+ *
+ * @details
+ *
+ *    Function : sendMsg
+ *
+ *    Functionality: function build the message which need to send 
+ *
+ * @params[in] 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+void sendMsg()
+{
+   char *msgToDestinationPhy = "HANDOVER_IN_PROGRESS";
+
+   send(socket_fd, msgToDestinationPhy , strlen(msgToDestinationPhy) , 0 );
+}
+
+/*******************************************************************
+ *
+ * @brief This function handles the server functionalities like 
+ * binding socket, listen and accept
+ *
+ * @details
+ *
+ *    Function : startL1AsServer
+ *
+ *    Functionality: This function handles the server functionalities like
+ *     binding socket, listen and accept
+ *
+ * @params[in] struct sockaddr_in serverPhy, struct sockaddr_in
+ * clientPhy
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+int8_t startL1AsServer(struct sockaddr_in serverPhy, struct sockaddr_in clientPhy)
+{
+   int addrlen= sizeof(struct sockaddr_in);
+
+   if (bind(socket_fd, (struct sockaddr *)&serverPhy, sizeof(struct sockaddr_in))<0)
+   {
+      DU_LOG("\nERROR  --> PHY_STUB : bind failed");
+      return RFAILED;
+   }
+   if (listen(socket_fd, 3) < 0)
+   {
+      DU_LOG("\nERROR  --> PHY_STUB : listen failed");
+      return RFAILED;
+   }
+   while(true)
+   {
+      if ((socket_fd = accept(socket_fd, (struct sockaddr *)&clientPhy,
+                  (socklen_t*)&addrlen))<0)
+      {
+         DU_LOG("\nINFO  --> PHY_STUB : Server is waiting");
+      }
+      else
+      {
+         DU_LOG("\nINFO  --> PHY_STUB : Server Connected");
+         break;
+      }
+   }
+   return ROK;
+}
+
+/*******************************************************************
+ *
+ * @brief this function includes all the functionalities of client side
+ * like binding the client side socket and connecting to the server
+ *
+ * @details
+ *
+ *    Function : startL1AsClient
+ *
+ *    Functionality: this function includes all the functionalities of client
+ *    side like binding the client side socket and connecting to the server
+ *
+ * @params[in] 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+int8_t startL1AsClient(struct sockaddr_in serverPhy, struct sockaddr_in  destinationPhy)
+{
+   if (bind(socket_fd, (struct sockaddr *)&serverPhy, sizeof(struct sockaddr_in ))<0)
+   {
+      DU_LOG("\nERROR  --> PHY_STUB : bind failed");
+      return RFAILED;
+   }
+
+   while(true)
+   {
+      if (connect(socket_fd, (struct sockaddr *)&destinationPhy, sizeof(struct sockaddr_in)) < 0)
+      {
+         DU_LOG("\nERROR  --> PHY_STUB : Connection Failed");
+      }
+      else
+      {
+         DU_LOG("\nINFO  --> PHY_STUB : Client connected to sever");
+         break;
+      }
+   }
+   return ROK;
 
 }
 
+/*******************************************************************
+ *
+ * @brief this function creates the socket for commincation between source and 
+ * target phy
+ *
+ * @details
+ *
+ *    Function : establishConnectionWithPeerL1
+ *
+ *    Functionality: creates the socket for commincation between source and
+ *    target PHY, allocated the ip addresses and sends the request for connection
+ *    establisshement and sends the information to each other
+ *
+ * @params[in] 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+void *establishConnectionWithPeerL1(void *args)
+{
+   void *ret = NULLP;
+   struct sockaddr_in sourcePhy, destinationPhy;
+
+   if ((socket_fd = socket(AF_INET, SOCK_STREAM, 0)) == 0)
+   {
+      DU_LOG("\nERROR  --> PHY_STUB : socket failed");
+      return ret; 
+   }
+   
+   sourcePhy.sin_family = AF_INET;
+   sourcePhy.sin_port = htons(phyDb.ipCfgInfo.portNumber);
+   sourcePhy.sin_addr.s_addr = phyDb.ipCfgInfo.sourceDu;
+   
+   destinationPhy.sin_family = AF_INET;
+   destinationPhy.sin_port = htons(phyDb.ipCfgInfo.portNumber);
+   destinationPhy.sin_addr.s_addr = phyDb.ipCfgInfo.destinationDu;
+   
+   if(phyDb.isServer)
+   {
+      if(startL1AsServer(sourcePhy, destinationPhy) != ROK)
+      {
+         DU_LOG("\nERROR  --> PHY_STUB : Failed to start server");
+         return ret;
+      }
+   }
+   else
+   {
+      if(startL1AsClient(sourcePhy, destinationPhy) != ROK)
+      {
+         DU_LOG("\nERROR  --> PHY_STUB : Failed to start client");
+         return ret;
+      }
+   }
+
+   DU_LOG("\nINFO  --> PHY_STUB : Connection established");
+   receiveMsgFromPeerL1();
+   return ROK;
+}
 /**********************************************************************
          End of file
 **********************************************************************/

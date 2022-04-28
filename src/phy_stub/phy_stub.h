@@ -17,6 +17,14 @@
 *******************************************************************************/
 #include <unistd.h>
 
+/* Changes the IP information 
+* At DU1, SOURCE_DU_IPV4_ADDR = 192.168.130.81 and DESTINATION_DU_IPV4_ADDR = 192.168.130.83 
+* At DU2, SOURCE_DU_IPV4_ADDR = 192.168.130.83 and DESTINATION_DU_IPV4_ADDR = 192.168.130.81 */
+#define SOURCE_DU_IPV4_ADDR      "192.168.130.81"
+#define DESTINATION_DU_IPV4_ADDR "192.168.130.83"
+#define PORT_NUMBER 8080
+#define NUM_THREADS 1
+
 #ifdef NR_TDD
 #define MAX_SLOT_VALUE   19
 #else
@@ -69,7 +77,21 @@ typedef struct ueDb
    UeCb      ueCb[MAX_NUM_UE];
 }UeDb;
 
-UeDb ueDb;
+typedef struct ipCfg
+{
+   uint32_t sourceDu;
+   uint32_t destinationDu;
+   uint16_t portNumber;
+}IpCfg;
+
+typedef struct phyDb
+{
+   bool   isServer;
+   IpCfg  ipCfgInfo;  
+   UeDb    ueDb;
+}PhyDb;
+
+PhyDb phyDb;
 
 typedef enum
 {
@@ -95,7 +117,8 @@ uint8_t l1SendUlUserData(uint8_t drbId, uint8_t ueIdx);
 uint8_t l1SendStatusPdu();
 uint16_t l1BuildAndSendSlotIndication();
 uint16_t l1BuildAndSendStopInd();
-
+int inet_pton(int af, const char *sourc, void *dst);
+void *establishConnectionWithPeerL1(void *args);
 /**********************************************************************
          End of file
 **********************************************************************/

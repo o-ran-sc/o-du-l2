@@ -245,7 +245,11 @@ void l1HdlParamReq(uint32_t msgLen, void *msg)
 
 void l1HdlConfigReq(uint32_t msgLen, void *msg)
 {
-   memset(&ueDb, 0, sizeof(UeDb));
+   memset(&phyDb.ueDb, 0, sizeof(UeDb));
+   cmInetAddr((char *)SOURCE_DU_IPV4_ADDR, &phyDb.ipCfgInfo.sourceDu);
+   cmInetAddr((char *)DESTINATION_DU_IPV4_ADDR, &phyDb.ipCfgInfo.destinationDu);
+   phyDb.ipCfgInfo.portNumber = PORT_NUMBER;
+   phyDb.isServer = true;
 
 #ifdef INTEL_FAPI
    p_fapi_api_queue_elem_t configReqElem = (p_fapi_api_queue_elem_t)msg;
@@ -350,37 +354,37 @@ uint16_t l1BuildAndSendRxDataInd(uint16_t slot, uint16_t sfn, fapi_ul_pusch_pdu_
    MsgType type = 0;
 
    GET_UE_ID(puschPdu.rnti, ueId);
-   if(!ueDb.ueCb[ueId-1].msg3Sent)
+   if(!phyDb.ueDb.ueCb[ueId-1].msg3Sent)
    {
-      ueDb.ueCb[ueId-1].ueId = ueId;
-      ueDb.ueCb[ueId-1].crnti = puschPdu.rnti;
-      ueDb.ueCb[ueId-1].msg3Sent = true;
+      phyDb.ueDb.ueCb[ueId-1].ueId = ueId;
+      phyDb.ueDb.ueCb[ueId-1].crnti = puschPdu.rnti;
+      phyDb.ueDb.ueCb[ueId-1].msg3Sent = true;
       type = MSG_TYPE_MSG3;
       sleep(2);
    }
-   else if(!ueDb.ueCb[ueId-1].msg5ShortBsrSent)
+   else if(!phyDb.ueDb.ueCb[ueId-1].msg5ShortBsrSent)
    {
-      ueDb.ueCb[ueId-1].msg5ShortBsrSent = true;
+      phyDb.ueDb.ueCb[ueId-1].msg5ShortBsrSent = true;
       type = MSG_TYPE_SHORT_BSR;
    }
-   else if(!ueDb.ueCb[ueId-1].msg5Sent)
+   else if(!phyDb.ueDb.ueCb[ueId-1].msg5Sent)
    {
-      ueDb.ueCb[ueId-1].msg5Sent = true;
+      phyDb.ueDb.ueCb[ueId-1].msg5Sent = true;
       type = MSG_TYPE_MSG5;
    }
-   else if(!ueDb.ueCb[ueId-1].msgRegistrationComp)
+   else if(!phyDb.ueDb.ueCb[ueId-1].msgRegistrationComp)
    {
-      ueDb.ueCb[ueId-1].msgRegistrationComp = true;
+      phyDb.ueDb.ueCb[ueId-1].msgRegistrationComp = true;
       type = MSG_TYPE_REGISTRATION_COMPLETE; 
    }
-   else if(!ueDb.ueCb[ueId-1].msgSecurityModeComp)
+   else if(!phyDb.ueDb.ueCb[ueId-1].msgSecurityModeComp)
    {
-      ueDb.ueCb[ueId-1].msgSecurityModeComp = true;
+      phyDb.ueDb.ueCb[ueId-1].msgSecurityModeComp = true;
       type = MSG_TYPE_SECURITY_MODE_COMPLETE;
    }
-   else if(!ueDb.ueCb[ueId-1].msgRrcReconfiguration)
+   else if(!phyDb.ueDb.ueCb[ueId-1].msgRrcReconfiguration)
    {
-      ueDb.ueCb[ueId-1].msgRrcReconfiguration = true;
+      phyDb.ueDb.ueCb[ueId-1].msgRrcReconfiguration = true;
       type = MSG_TYPE_RRC_RECONFIG_COMPLETE;
    }
    else
@@ -473,7 +477,7 @@ uint16_t l1BuildAndSendRxDataInd(uint16_t slot, uint16_t sfn, fapi_ul_pusch_pdu_
          DU_LOG("\nDEBUG  -->  PHY_STUB: Forming MSG5 PDU");
          uint8_t  msg5PduLen = 33; /* Length of MSG5 */
          msg5PduLen += 2; /* RLC subheader */
-         uint8_t msg5[] = {1, msg5PduLen, 128, ueDb.ueCb[ueId-1].rlcSnForSrb1++, 0, ueDb.ueCb[ueId-1].pdcpSn++, 16, 0, \
+         uint8_t msg5[] = {1, msg5PduLen, 128, phyDb.ueDb.ueCb[ueId-1].rlcSnForSrb1++, 0, phyDb.ueDb.ueCb[ueId-1].pdcpSn++, 16, 0, \
             5, 223, 128, 16, 94, 64, 3, 64, 68, 252, 97, 0, 0, 0, 0, 4, 0, 0, 4, 68, 11, 128, 184, 56, 0, 0, 0, 0, 0};
 
          msg5PduLen += 2;  /* 2 bytes of MAC header */
@@ -497,7 +501,7 @@ uint16_t l1BuildAndSendRxDataInd(uint16_t slot, uint16_t sfn, fapi_ul_pusch_pdu_
          DU_LOG("\nDEBUG  -->  PHY_STUB: Forming SECURITY MODE COMPLETE PDU");
          uint8_t  pduLen = 12; /* Length of PDU */
          pduLen += 2; /* RLC subheader */
-         uint8_t msg[] = {1, pduLen, 128, ueDb.ueCb[ueId-1].rlcSnForSrb1++, 0, ueDb.ueCb[ueId-1].pdcpSn++, 0x2a, 0x40, \
+         uint8_t msg[] = {1, pduLen, 128, phyDb.ueDb.ueCb[ueId-1].rlcSnForSrb1++, 0, phyDb.ueDb.ueCb[ueId-1].pdcpSn++, 0x2a, 0x40, \
             0, 0, 0, 0, 0, 0, 0, 0};
 
          pduLen += 2;  /* 2 bytes of MAC header */
@@ -521,7 +525,7 @@ uint16_t l1BuildAndSendRxDataInd(uint16_t slot, uint16_t sfn, fapi_ul_pusch_pdu_
          DU_LOG("\nDEBUG  -->  PHY_STUB: Forming RRC REGISTRATION COMPLETE PDU");
          uint8_t  pduLen = 12; /* Length of PDU */
          pduLen += 2; /* RLC subheader */
-         uint8_t msg[] = {1, pduLen, 128, ueDb.ueCb[ueId-1].rlcSnForSrb1++, 0, ueDb.ueCb[ueId-1].pdcpSn++, 0x3a, 0x81, \
+         uint8_t msg[] = {1, pduLen, 128, phyDb.ueDb.ueCb[ueId-1].rlcSnForSrb1++, 0, phyDb.ueDb.ueCb[ueId-1].pdcpSn++, 0x3a, 0x81, \
             0xbf, 0, 0x21, 0x80, 0, 0, 0, 0};
 
          pduLen += 2;  /* 2 bytes of MAC header */
@@ -545,7 +549,7 @@ uint16_t l1BuildAndSendRxDataInd(uint16_t slot, uint16_t sfn, fapi_ul_pusch_pdu_
          DU_LOG("\nDEBUG  -->  PHY_STUB: Forming RRC RECONFIGURATION COMPLETE PDU");
          uint8_t  pduLen = 13; /* PDU length */
          pduLen += 2; /* RLC sub header */
-         uint8_t msg[] = {1, pduLen, 128, ueDb.ueCb[ueId-1].rlcSnForSrb1++, 0, ueDb.ueCb[ueId-1].pdcpSn++, 8, 64, 0, 0,\
+         uint8_t msg[] = {1, pduLen, 128, phyDb.ueDb.ueCb[ueId-1].rlcSnForSrb1++, 0, phyDb.ueDb.ueCb[ueId-1].pdcpSn++, 8, 64, 0, 0,\
             0, 0, 0, 0, 0, 0, 0};
 
          pduLen += 2;  /* 2bytes of MAC header */
@@ -1066,27 +1070,27 @@ S16 l1HdlUlTtiReq(uint16_t msgLen, void *msg)
    /* TODO: [SFN:SLOT] at which RACH Indication is sent should be calculated
     * based on PRACH cfg index */
    /* Send RACH Ind to L2 for first UE */
-   if(ueDb.ueCb[UE_IDX_0].rachIndSent == false && ulTtiReq->sfn == 16 && ulTtiReq->slot == 6)
+   if(phyDb.ueDb.ueCb[UE_IDX_0].rachIndSent == false && ulTtiReq->sfn == 16 && ulTtiReq->slot == 6)
    {
-      ueDb.ueCb[UE_IDX_0].rachIndSent = true;
+      phyDb.ueDb.ueCb[UE_IDX_0].rachIndSent = true;
       l1BuildAndSendRachInd(ulTtiReq->slot, ulTtiReq->sfn);
-      ueDb.numActvUe++;
+      phyDb.ueDb.numActvUe++;
    }
 #if 0
    /* Send RACH Ind to L2 for second UE */
-   if(ueDb.ueCb[UE_IDX_1].rachIndSent == false && ulTtiReq->sfn == 304 && ulTtiReq->slot == 0)
+   if(phyDb.ueDb.ueCb[UE_IDX_1].rachIndSent == false && ulTtiReq->sfn == 304 && ulTtiReq->slot == 0)
    {
-      ueDb.ueCb[UE_IDX_1].rachIndSent = true;
+      phyDb.ueDb.ueCb[UE_IDX_1].rachIndSent = true;
       l1BuildAndSendRachInd(ulTtiReq->slot, ulTtiReq->sfn);
-      ueDb.numActvUe++;
+      phyDb.ueDb.numActvUe++;
    }
 
    /* Send RACH Ind to L2 for third UE */
-   if(ueDb.ueCb[UE_IDX_2].rachIndSent == false && ulTtiReq->sfn == 526 && ulTtiReq->slot == 0)
+   if(phyDb.ueDb.ueCb[UE_IDX_2].rachIndSent == false && ulTtiReq->sfn == 526 && ulTtiReq->slot == 0)
    {
-      ueDb.ueCb[UE_IDX_2].rachIndSent = true;
+      phyDb.ueDb.ueCb[UE_IDX_2].rachIndSent = true;
       l1BuildAndSendRachInd(ulTtiReq->slot, ulTtiReq->sfn);
-      ueDb.numActvUe++;
+      phyDb.ueDb.numActvUe++;
    }
 #endif
    MAC_FREE(msg, msgLen);
@@ -1172,7 +1176,7 @@ S16 l1HdlStopReq(uint32_t msgLen, void *msg)
       /* Initialize all global variables */
       sfnValue = 0;
       slotValue = 0;
-      memset(&ueDb, 0, sizeof(UeDb));
+      memset(&phyDb.ueDb, 0, sizeof(UeDb));
 
       DU_LOG("\nINFO   -->  PHY_STUB: Slot Indication is stopped successfully");
       MAC_FREE(msg, msgLen);
