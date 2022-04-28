@@ -126,6 +126,47 @@ uint8_t MacProcDlAlloc(Pst *pst, DlSchedInfo *dlSchedInfo)
 }
 
 /**
+ * @brief process DL Paging allocation from scheduler
+ *
+ * @details
+ *
+ *     Function : MacProcDlPageAlloc 
+ *      
+ *      This function copied dl Pag info in the mac slot info
+ *           
+ *  @param[in]  Pst            *pst
+ *  @param[in]  DL Paging allocation from scheduler
+ *  @return
+ *      -# ROK 
+ *      -# RFAILED 
+ **/
+uint8_t MacProcDlPageAlloc(Pst *pst, DlPageAlloc *dlPageAlloc)
+{
+   uint16_t  cellIdx = 0;
+   MacDlSlot *currDlSlot = NULLP;
+
+#ifdef CALL_FLOW_DEBUG_LOG
+   DU_LOG("\nCall Flow: ENTSCH -> ENTMAC : EVENT_DL_PAGING_ALLOC\n");
+#endif
+   if(dlPageAlloc != NULLP)
+   {
+      GET_CELL_IDX(dlPageAlloc->cellId, cellIdx);
+   
+      currDlSlot = &macCb.macCell[cellIdx]->\
+                      dlSlot[dlPageAlloc->dlPageTime.slot];
+      memcpy(&currDlSlot->pageAllocInfo, &dlPageAlloc, sizeof(DlPageAlloc));
+      currDlSlot->pageAllocInfo.pagePdcchCfg.dci.pdschCfg = \
+                                            &currDlSlot->pageAllocInfo.pagePdschCfg;
+   }
+   else
+   {
+      DU_LOG("\nERROR  --> LWRMAC : DL Paging Allocation is failed!");
+	   return RFAILED;
+   }
+   return ROK;
+}
+
+/**
  * @brief Forming anf filling the MUX Pdu
  * @details
  *
