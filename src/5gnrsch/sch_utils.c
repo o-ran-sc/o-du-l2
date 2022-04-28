@@ -1564,6 +1564,74 @@ uint32_t calculateEstimateTBSize(uint32_t reqBO, uint16_t mcsIdx,uint8_t numSymb
    effecBO = MIN(tbs,reqBO);
    return (effecBO);
 }
+
+
+/*******************************************************************
+*
+* @brief deleting Page Info node from PageInfo List
+*
+* @details
+*
+*    Function : schDeleteFromPageInfoList
+*
+*    Functionality: deleting page Info node from Page Info List
+*
+* @params[in] CmLListCp *list, CmLList *node 
+*
+* @return void 
+*
+* ****************************************************************/
+void schDeleteFromPageInfoList(CmLListCp *list, CmLList *node)
+{
+   SchPageInfo *pageInfo;
+
+   if(node != NULLP)
+   {
+      pageInfo = (SchPageInfo *)node->node;
+      cmLListDelFrm(list, node);
+      SCH_FREE(pageInfo, sizeof(SchPageInfo));
+      SCH_FREE(node, sizeof(CmLList));
+      node = NULLP;
+   }
+}
+
+/*******************************************************************
+*
+* @brief searching for Page at a particular SFN 
+*
+* @details
+*
+*    Function : schPageInfoSearchFromPageList
+*
+*    Functionality: searching for Page at a particular SFN 
+*
+* @params[in] SlotTimingInfo slotInfo, CmLListCp *storedPageList
+*
+* @return pointer to SchPageInfo
+*
+* ****************************************************************/
+CmLList *schPageInfoSearchFromPageList(SlotTimingInfo slotInfo, CmLListCp *storedPageList)
+{
+   CmLList         *node = NULLP;
+   SchPageInfo     *pageInfo = NULLP;
+   
+   if(storedPageList->count)
+   {
+      CM_LLIST_FIRST_NODE(storedPageList, node);
+      while(node)
+      {
+         pageInfo = (SchPageInfo*)node->node;
+         if(pageInfo->pageTxTime.sfn == slotInfo.sfn && 
+		      (pageInfo->pageTxTime.slot == slotInfo.slot))
+         {
+            return node;
+         }
+         node = node->next;
+      }
+   }
+   return NULLP;
+}
+
 /*Below function for printing will be used in future so disabling it for now*/
 #if 0
 /****************************************************************************
