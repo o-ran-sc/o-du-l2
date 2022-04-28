@@ -45,7 +45,12 @@ DuMacCellDeleteReq packMacCellDeleteReqOpts[] =
    MacProcCellDeleteReq,         /* TIght coupling */
    packDuMacCellDeleteReq        /* Light weight-loose coupling */
 };
-
+ DuMacPagingReq packMacPagingReqOpts[] =
+{
+   packDuMacPagingReq,       /* Loose coupling */
+   MacProcPagingReq,         /* TIght coupling */
+   packDuMacPagingReq        /* Light weight-loose coupling */
+};
 /*******************************************************************
  *
  * @brief Processes cells to be activated
@@ -165,6 +170,49 @@ uint8_t duGetCellCb(uint16_t cellId, DuCellCb **cellCb)
 
    return ROK;
 }
+
+/******************************************************************
+ *
+ * @brief Send paging request to MAC
+ *
+ * @details
+ *
+ *    Function : sendPagingReqToMac
+ *
+ *    Functionality: Send paging request to MAC
+ *
+ * @Params[in] MacPageReq *pagingReq
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+
+uint8_t sendPagingReqToMac(MacPageReq *pagingReq)
+{
+   uint8_t ret = ROK;
+   Pst pst;
+
+   /* Fill Pst */
+   FILL_PST_DUAPP_TO_MAC(pst, EVENT_MAC_PAGING_REQ);
+
+   if(pagingReq)
+   {
+      DU_LOG("\nDEBUG   -->  DU_APP: Sending Paging Request to MAC");
+      ret = (*packMacPagingReqOpts[pst.selector])(&pst, pagingReq);
+      if(ret == RFAILED)
+      {
+         DU_LOG("\nERROR  -->  DU APP : sendPagingReqToMac(): Failed to send paging request to MAC");
+         DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, pagingReq, sizeof(MacPageReq));
+      }
+   }
+   else
+   {
+      DU_LOG("\nERROR  -->  DU_APP: sendPagingReqToMac(): Received pagingReq is NULLP");
+      ret = RFAILED;
+   }
+   return ret;
+}
+
 
 /*****************************************************************
 * @brief Handles slot indication from MAC

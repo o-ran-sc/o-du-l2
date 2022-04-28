@@ -955,6 +955,44 @@ uint8_t MacProcSchSliceReCfgRsp(Pst *pst, SchSliceCfgRsp *schSliceRecfgRsp)
    }
    return ROK;
 }
+/**
+ * @brief Mac process the paging req received from DUAPP
+ *
+ * @details
+ *
+ *     Function : MacProPagingReq
+ *
+ *     This function process the paging req received from DUAPP
+ *
+ *  @param[in]  Pst           *pst
+ *  @param[in]  MacPageReq    *pagingReq 
+ *  @return  int
+ *      -# ROK
+ **/
+uint8_t MacProcPagingReq(Pst *pst, MacPageReq *pagingReq)
+{
+   uint8_t ret = RFAILED;
+   uint16_t cellIdx = 0;
+
+   if(pagingReq)
+   {
+      GET_CELL_IDX(pagingReq->cellId, cellIdx);
+
+      if(macCb.macCell[cellIdx] && macCb.macCell[cellIdx]->cellId == pagingReq->cellId)
+      {
+         DU_LOG("\nERROR  -->  MAC : MacProcPagingReq(): CellId[%d] does not exist",pagingReq->cellId);
+      }
+      else
+      {
+         
+      }
+   }
+   else
+   {
+      DU_LOG("\nERROR  -->  MAC : MacProcPagingReq(): Received Null pointer");
+   }
+   return ret;
+}
 /**********************************************************************
   End of file
  **********************************************************************/
