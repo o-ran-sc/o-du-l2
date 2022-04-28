@@ -28,9 +28,9 @@
 #define DU_ID 1
 
 #ifndef O1_ENABLE
-#define DU_IP_V4_ADDR "192.168.130.81"
-#define CU_IP_V4_ADDR "192.168.130.82"
-#define RIC_IP_V4_ADDR "192.168.130.80"
+#define DU_IP_V4_ADDR "192.168.130.85"
+#define CU_IP_V4_ADDR "192.168.130.86"
+#define RIC_IP_V4_ADDR "192.168.130.87"
 #define DU_PORT 38472
 #define CU_PORT 38472
 #define RIC_PORT 36421

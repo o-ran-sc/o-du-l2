@@ -93,6 +93,7 @@ typedef enum
 typedef struct macDlSlot
 {
    DlSchedInfo dlInfo;
+   DlPageAlloc *pageAllocInfo;
 }MacDlSlot;
 
 typedef struct macUlSlot

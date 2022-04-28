@@ -292,14 +292,12 @@ typedef struct schRaReq
 
 typedef struct schPageInfo
 {
-  uint16_t       pf;       /*Value of Paging Frame received from DUAPP*/
-  uint8_t        i_s;      /*Value of Paging Occ Index received from DUAPP*/
-  SlotTimingInfo TxTime;   /*Start Paging window*/
-  uint8_t        crntSsbIdx; /*Counts the slot till totalSSB is receached*/
-  uint8_t        mcs;
-  uint8_t        nPRB;
-  uint16_t       msgLen;
-  uint8_t        *pagePdu;   
+  uint16_t       pf;          /*Value of Paging Frame received from DUAPP*/
+  uint8_t        i_s;         /*Value of Paging Occ Index received from DUAPP*/
+  SlotTimingInfo pageTxTime;  /*Start Paging window*/
+  uint8_t        mcs;         /*MCS index*/
+  uint16_t       msgLen;      /*Pdu length */
+  uint8_t       *pagePdu;     /*RRC Page PDU bit string*/
 }SchPageInfo;
 
 typedef struct schPagingOcc
@@ -310,9 +308,8 @@ typedef struct schPagingOcc
 
 typedef struct schPageCb
 {
-   CmLListCp    pageIndInfoRecord[MAX_SFN];   /*List of Page Records received which are stored per sfn*/
-   SchPagingOcc pagMonOcc[MAX_PO_PER_PF]; /*Paging Occasion Slot/FrameOffset are stored*/ 
-   SchPageInfo  currPageInfo;   /*Page Req which is being currently processed */
+   CmLListCp    pageIndInfoRecord[MAX_SFN]; /*List of Page Records received which are stored per sfn*/
+   SchPagingOcc pagMonOcc[MAX_PO_PER_PF];   /*Paging Occasion Slot/FrameOffset are stored*/ 
 }SchPageCb;
 
 /**
@@ -435,6 +432,8 @@ void updateBsrAndLcList(CmLListCp *lcLL, BsrInfo *bsrInfo, uint8_t status);
 void schProcPagingCfg(SchCellCb *cell);
 void schCfgPdcchMonOccOfPO(SchCellCb *cell);
 void schIncrSlot(SlotTimingInfo *timingInfo, uint8_t incr, uint16_t numSlotsPerRF);
+uint8_t schFillPagePdschCfg(SchCellCb *cell, PdschCfg *pagePdschCfg, SlotTimingInfo slotTime, \
+                             uint16_t tbSize, uint8_t mcs, uint16_t startPrb);
 
 /**********************************************************************
   End of file
