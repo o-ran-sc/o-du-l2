@@ -18,6 +18,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "25c9da9c_ba79deb0",
+        "filename": "src/phy_stub/phy_stub_thread_hdl.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-04-28T05:10:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2c74b761_10e26153",
+      "revId": "58ebaadbeb1219452d80ff32328ef421a0516c4c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cc1e68b4_8a80e47f",
@@ -31,6 +49,30 @@
       "writtenOn": "2022-04-27T11:55:37Z",
       "side": 1,
       "message": "HANDOVER_IN_PROGRESS",
+      "range": {
+        "startLine": 281,
+        "startChar": 19,
+        "endLine": 281,
+        "endChar": 38
+      },
+      "revId": "58ebaadbeb1219452d80ff32328ef421a0516c4c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5bddb842_2fa3e9a4",
+        "filename": "src/phy_stub/phy_stub_thread_hdl.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 281,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-04-28T05:10:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cc1e68b4_8a80e47f",
       "range": {
         "startLine": 281,
         "startChar": 19,
@@ -64,6 +106,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "71b48839_50a33c9c",
+        "filename": "src/phy_stub/phy_stub_thread_hdl.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 307,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-04-28T05:10:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1feac8a2_31cebfa6",
+      "range": {
+        "startLine": 307,
+        "startChar": 32,
+        "endLine": 307,
+        "endChar": 51
+      },
+      "revId": "58ebaadbeb1219452d80ff32328ef421a0516c4c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4db788a2_79ee2a4f",
@@ -77,6 +143,30 @@
       "writtenOn": "2022-04-27T11:55:37Z",
       "side": 1,
       "message": "while(true)",
+      "range": {
+        "startLine": 344,
+        "startChar": 9,
+        "endLine": 344,
+        "endChar": 10
+      },
+      "revId": "58ebaadbeb1219452d80ff32328ef421a0516c4c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9a6bd42f_1e652f11",
+        "filename": "src/phy_stub/phy_stub_thread_hdl.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 344,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-04-28T05:10:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4db788a2_79ee2a4f",
       "range": {
         "startLine": 344,
         "startChar": 9,
@@ -110,6 +200,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f5f137e6_c3e3da54",
+        "filename": "src/phy_stub/phy_stub_thread_hdl.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 363,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-04-28T05:10:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "02cf1eac_51b84e72",
+      "range": {
+        "startLine": 363,
+        "startChar": 20,
+        "endLine": 363,
+        "endChar": 27
+      },
+      "revId": "58ebaadbeb1219452d80ff32328ef421a0516c4c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3b7104b7_a614e4c8",
@@ -123,6 +237,30 @@
       "writtenOn": "2022-04-27T11:55:37Z",
       "side": 1,
       "message": "client",
+      "range": {
+        "startLine": 370,
+        "startChar": 28,
+        "endLine": 370,
+        "endChar": 35
+      },
+      "revId": "58ebaadbeb1219452d80ff32328ef421a0516c4c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "75ac08ad_b4c971af",
+        "filename": "src/phy_stub/phy_stub_thread_hdl.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 370,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-04-28T05:10:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3b7104b7_a614e4c8",
       "range": {
         "startLine": 370,
         "startChar": 28,
@@ -156,6 +294,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6526d0f4_5d5b334a",
+        "filename": "src/phy_stub/phy_stub_thread_hdl.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 385,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-04-28T05:10:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c0659c46_b8148b7d",
+      "range": {
+        "startLine": 385,
+        "startChar": 9,
+        "endLine": 385,
+        "endChar": 10
+      },
+      "revId": "58ebaadbeb1219452d80ff32328ef421a0516c4c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "18d0ea85_ef54ad4e",
@@ -169,6 +331,30 @@
       "writtenOn": "2022-04-27T11:55:37Z",
       "side": 1,
       "message": "call this as establishConnectionWithPeerL1",
+      "range": {
+        "startLine": 419,
+        "startChar": 7,
+        "endLine": 419,
+        "endChar": 26
+      },
+      "revId": "58ebaadbeb1219452d80ff32328ef421a0516c4c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0ee813cf_ab34f0ce",
+        "filename": "src/phy_stub/phy_stub_thread_hdl.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 419,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-04-28T05:10:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "18d0ea85_ef54ad4e",
       "range": {
         "startLine": 419,
         "startChar": 7,
@@ -202,6 +388,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6b6168dc_0fa350b9",
+        "filename": "src/phy_stub/phy_stub_thread_hdl.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 430,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-04-28T05:10:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e84aaf23_6e997d2a",
+      "range": {
+        "startLine": 430,
+        "startChar": 30,
+        "endLine": 430,
+        "endChar": 34
+      },
+      "revId": "58ebaadbeb1219452d80ff32328ef421a0516c4c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "049a72eb_09e547b5",
@@ -215,6 +425,30 @@
       "writtenOn": "2022-04-27T11:55:37Z",
       "side": 1,
       "message": "We might want to change IP address of server at some point, in that case we would have to change here too.\nI suggest not to use IP address to decide if this is server/client. You can make a configurable parameter and set it to either server/client.\nBased on this parameter value, appropriate function can be called",
+      "range": {
+        "startLine": 445,
+        "startChar": 35,
+        "endLine": 445,
+        "endChar": 49
+      },
+      "revId": "58ebaadbeb1219452d80ff32328ef421a0516c4c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6ea5fae2_289cdc57",
+        "filename": "src/phy_stub/phy_stub_thread_hdl.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 445,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-04-28T05:10:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "049a72eb_09e547b5",
       "range": {
         "startLine": 445,
         "startChar": 35,
@@ -248,6 +482,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "eaa81b66_888902ca",
+        "filename": "src/phy_stub/phy_stub_thread_hdl.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 447,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-04-28T05:10:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8430e773_1bac92c8",
+      "range": {
+        "startLine": 447,
+        "startChar": 9,
+        "endLine": 447,
+        "endChar": 28
+      },
+      "revId": "58ebaadbeb1219452d80ff32328ef421a0516c4c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d07e209c_b163431d",
@@ -261,6 +519,30 @@
       "writtenOn": "2022-04-27T11:55:37Z",
       "side": 1,
       "message": "rename to startL1AsClient",
+      "range": {
+        "startLine": 455,
+        "startChar": 9,
+        "endLine": 455,
+        "endChar": 28
+      },
+      "revId": "58ebaadbeb1219452d80ff32328ef421a0516c4c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "53bfe332_06b5b9c5",
+        "filename": "src/phy_stub/phy_stub_thread_hdl.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 455,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-04-28T05:10:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d07e209c_b163431d",
       "range": {
         "startLine": 455,
         "startChar": 9,
@@ -294,6 +576,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "165677e5_a286f46b",
+        "filename": "src/phy_stub/phy_stub_thread_hdl.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 463,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-04-28T05:10:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "feff5495_ee2ffb1b",
+      "range": {
+        "startLine": 463,
+        "startChar": 9,
+        "endLine": 463,
+        "endChar": 10
+      },
+      "revId": "58ebaadbeb1219452d80ff32328ef421a0516c4c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c2b4c165_7b639835",
@@ -307,6 +613,30 @@
       "writtenOn": "2022-04-27T11:55:37Z",
       "side": 1,
       "message": "Lets call this as receiveMsgFromPeerL1",
+      "range": {
+        "startLine": 465,
+        "startChar": 6,
+        "endLine": 465,
+        "endChar": 13
+      },
+      "revId": "58ebaadbeb1219452d80ff32328ef421a0516c4c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a4d23b82_8b5818b2",
+        "filename": "src/phy_stub/phy_stub_thread_hdl.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 465,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-04-28T05:10:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c2b4c165_7b639835",
       "range": {
         "startLine": 465,
         "startChar": 6,
@@ -340,6 +670,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "da4c6a1f_6bbb5e38",
+        "filename": "src/phy_stub/phy_stub_thread_hdl.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 466,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-04-28T05:10:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5adf0783_f26500e2",
+      "range": {
+        "startLine": 466,
+        "startChar": 3,
+        "endLine": 466,
+        "endChar": 4
+      },
+      "revId": "58ebaadbeb1219452d80ff32328ef421a0516c4c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "72c54ccb_4876d85d",
@@ -353,6 +707,30 @@
       "writtenOn": "2022-04-27T11:55:37Z",
       "side": 1,
       "message": "Directly call communicationBtwPhy function itself from pthread\nstartCommunicationBtwPhy is not really doing anything expect calling this one",
+      "range": {
+        "startLine": 488,
+        "startChar": 6,
+        "endLine": 488,
+        "endChar": 25
+      },
+      "revId": "58ebaadbeb1219452d80ff32328ef421a0516c4c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "771517a5_14e40e3e",
+        "filename": "src/phy_stub/phy_stub_thread_hdl.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 488,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-04-28T05:10:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "72c54ccb_4876d85d",
       "range": {
         "startLine": 488,
         "startChar": 6,
