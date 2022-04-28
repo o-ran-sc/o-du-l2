@@ -77,6 +77,13 @@ MacDuSliceReCfgRspFunc macDuSliceReCfgRspOpts[] =
    packDuMacSliceReCfgRsp   /* packing for light weight loosly coupled */
 };
 
+MacSchPagingIndReqFunc macSchPagingIndReqOpts[] = 
+{
+   packMacSchPagingIndReq,   /* packing for loosely coupled */
+   MacSchPagingIndReq,       /* packing for tightly coupled */
+   packMacSchPagingIndReq    /* packing for light weight loosely coupled */
+};
+
 /**
  * @brief Layer Manager  Configuration request handler for Scheduler
  *
@@ -955,6 +962,83 @@ uint8_t MacProcSchSliceReCfgRsp(Pst *pst, SchSliceCfgRsp *schSliceRecfgRsp)
       freeSchSliceCfgRsp(schSliceRecfgRsp);
    }
    return ROK;
+}
+
+/**
+ * @brief Mac process the downlink pcch msg req received from DUAPP
+ *
+ * @details
+ *
+ *     Function : MacProcDlPcchMsgReq 
+ *
+ *     This function process the downlink pcch req received from DUAPP
+ *
+ *  @param[in]  Pst           *pst
+ *  @param[in]  MacPcchMsgReq    *pcchMsgReq 
+ *  @return  int
+ *      -# ROK
+ **/
+uint8_t MacProcDlPcchMsgReq(Pst *pst, MacPcchMsgReq *pcchMsgReq)
+{
+   uint8_t ret = RFAILED;
+   uint16_t cellIdx = 0;
+   Pst       schPst;
+   SchPageReq *schPageReq = NULLP;
+
+   if(pcchMsgReq)
+   {
+      DU_LOG("\nINFO  -->  MAC : Recived pcch request from DU_APP for cellId[%d]", pcchMsgReq->cellId);
+      
+      GET_CELL_IDX(pcchMsgReq->cellId, cellIdx);
+
+      if(macCb.macCell[cellIdx] == NULLP || macCb.macCell[cellIdx]->cellId != pcchMsgReq->cellId)
+      {
+         DU_LOG("\nERROR  -->  MAC : MacProcDlPcchMsgReq(): CellId[%d] does not exist", pcchMsgReq->cellId);
+      }
+      else
+      {
+         if((pcchMsgReq->pcchPdu == NULLP) || (pcchMsgReq->pduLen <= 0))
+         {
+            DU_LOG("\nERROR  -->  MAC : MacProcDlPcchMsgReq(): Received Paging pdu is null");
+         }
+         else
+         {
+            MAC_ALLOC(schPageReq, sizeof(SchPageReq));
+            if(schPageReq == NULLP)
+            {
+               DU_LOG("\nERROR  -->  MAC : MacProcDlPcchMsgReq(): Failed to allocate memory");
+            }
+            else
+            {
+               schPageReq->cellId = pcchMsgReq->cellId;
+               schPageReq->pf = pcchMsgReq->pf;
+               schPageReq->i_s = pcchMsgReq->i_s;
+               schPageReq->pduLen = pcchMsgReq->pduLen;
+               
+               MAC_ALLOC(schPageReq->pagePdu, pcchMsgReq->pduLen);
+               if(schPageReq->pagePdu == NULLP)
+               {
+                   DU_LOG("\nERROR  -->  MAC : MacProcDlPcchMsgReq(): Failed to allocate memory");
+               }
+               else
+               {
+                  memcpy(schPageReq->pagePdu, pcchMsgReq->pcchPdu, pcchMsgReq->pduLen);
+
+                  DU_LOG("\nINFO -->  MAC : Sending paging indication request to SCH");
+                  FILL_PST_MAC_TO_SCH(schPst, EVENT_PAGING_IND_REQ_TO_SCH);
+                  ret = (*macSchPagingIndReqOpts[schPst.selector])(&schPst, schPageReq);
+               }
+            }
+            MAC_FREE_SHRABL_BUF(pst->region, pst->pool, pcchMsgReq->pcchPdu, pcchMsgReq->pduLen);
+         }
+      }
+      MAC_FREE_SHRABL_BUF(pst->region, pst->pool, pcchMsgReq, sizeof(MacPcchMsgReq));
+   }
+   else
+   {
+      DU_LOG("\nERROR  -->  MAC : MacProcDlPcchMsgReq(): Received Null pointer");
+   }
+   return ret;
 }
 /**********************************************************************
   End of file

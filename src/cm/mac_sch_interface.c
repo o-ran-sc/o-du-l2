@@ -608,6 +608,35 @@ uint8_t packSchSliceReCfgRsp(Pst *pst, SchSliceCfgRsp *cfgRsp)
    return ROK;
 }
 
+/*******************************************************************
+ *
+ * @brief Pack and Send paging request from MAC to SCH
+ *
+ * @details
+ *
+ *    Function : packMacSchPagingIndReq
+ *
+ *    Functionality:
+ *       Pack and Send paging request from MAC to SCH
+ *
+ * @params[in] Pst *pst,  SchPageReq *pageReq
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t packMacSchPagingIndReq(Pst *pst,  SchPageReq *pageReq)
+{
+   if((pst->selector == ODU_SELECTOR_LC) || (pst->selector == ODU_SELECTOR_LC))
+   {
+      /* TODO */
+   }
+   else
+   {
+      return RFAILED;
+   }
+   return ROK;
+}
+
 /**********************************************************************
   End of file
  **********************************************************************/

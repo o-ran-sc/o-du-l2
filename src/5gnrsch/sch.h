@@ -292,7 +292,7 @@ typedef struct schRaReq
 
 typedef struct schPageInfo
 {
-  uint8_t        pf;       /*Value of Paging Frame received from DUAPP*/
+  uint16_t       pf;       /*Value of Paging Frame received from DUAPP*/
   uint8_t        i_s;      /*Value of Paging Occ Index received from DUAPP*/
   SlotTimingInfo TxTime;   /*Start Paging window*/
   uint8_t        crntSsbIdx; /*Counts the slot till totalSSB is receached*/

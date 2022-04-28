@@ -1732,6 +1732,85 @@ uint8_t unpackDuMacSlotInd(DuMacSlotInd func, Pst *pst, Buffer *mBuf)
 
 /*******************************************************************
  *
+ * @brief Pack and send Dl Pcch msg request to MAC
+ *
+ * @details
+ *
+ *    Function : packDuMacDlPcchMsgReq
+ *
+ *    Functionality:
+ *       Pack and send Dl Pcch request to MAC
+ *
+ * @params[in] Post structure
+ *             MacPcchMsgReq *pcchMsgReq;
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+
+uint8_t packDuMacDlPcchMsgReq(Pst *pst, MacPcchMsgReq *pcchMsgReq)
+{
+   Buffer *mBuf = NULLP;
+
+   if(pst->selector == ODU_SELECTOR_LWLC)
+   {
+      if (ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf) != ROK)
+      {
+         DU_LOG("\nERROR  --> MAC : packDuMacDlPcchMsgReq(): Memory allocation failed ");
+         return RFAILED;
+      }
+      CMCHKPK(oduPackPointer,(PTR)pcchMsgReq, mBuf);
+      return ODU_POST_TASK(pst,mBuf);
+   }
+   else
+   {
+      DU_LOG("\nERROR  -->  MAC: packDuMacDlPcchMsgReq(): Only LWLC supported ");
+   }
+   return RFAILED;
+}
+
+/*******************************************************************
+ *
+ * @brief Unpacks downlink pcch Msg Request received from DU APP
+ *
+ * @details
+ *
+ *    Function : unpackMacDlPcchMsgReq
+ *
+ *    Functionality:
+ *         Unpacks downlink pcch Request received from DU APP
+ *
+ * @params[in] Pointer to Handler
+ *             Post structure pointer
+ *             Message Buffer
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+
+uint8_t unpackMacDlPcchMsgReq(DuMacDlPcchMsgReq func, Pst *pst, Buffer *mBuf)
+{
+   if(pst->selector == ODU_SELECTOR_LWLC)
+   {
+      MacPcchMsgReq *pcchMsgReq=NULLP;
+
+      /* unpack the address of the structure */
+      CMCHKUNPK(oduUnpackPointer, (PTR *)&pcchMsgReq, mBuf);
+      ODU_PUT_MSG_BUF(mBuf);
+      return (*func)(pst, pcchMsgReq);
+   }
+   else
+   {
+      /* Nothing to do for other selectors */
+      DU_LOG("\nERROR  -->  DU APP : unpackMacDlPcchMsgReq(): Only LWLC supported for CELL Delete Request ");
+      ODU_PUT_MSG_BUF(mBuf);
+   }
+
+   return RFAILED;
+}
+
+/*******************************************************************
+ *
  * @brief Searches for first unset bit in ueBitMap
  *
  * @details
