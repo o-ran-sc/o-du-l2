@@ -1,0 +1,118 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c095d942_0be737a3",
+        "filename": "src/5gnrmac/mac_msg_router.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 131,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-04-29T05:49:24Z",
+      "side": 1,
+      "message": "can u please add comments here as well like we have done above",
+      "revId": "c465d2f12f1ecad49cb6acccf02c7db39b1e22d3",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0e17707d_68a1232c",
+        "filename": "src/5gnrmac/mac_rach.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-04-29T05:49:24Z",
+      "side": 1,
+      "message": "either add comments in above section or remove from here, so that we can have similarity .",
+      "revId": "c465d2f12f1ecad49cb6acccf02c7db39b1e22d3",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5599d8f1_d2bf69b7",
+        "filename": "src/5gnrmac/mac_rach.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 227,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-04-29T05:49:24Z",
+      "side": 1,
+      "message": "I think it should be like \"Recieved RACH resource response from ....\"",
+      "revId": "c465d2f12f1ecad49cb6acccf02c7db39b1e22d3",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d37b6b16_8e1590de",
+        "filename": "src/5gnrmac/mac_rach.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 248,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-04-29T05:49:24Z",
+      "side": 1,
+      "message": "same as above",
+      "revId": "c465d2f12f1ecad49cb6acccf02c7db39b1e22d3",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "39eac1b6_782bf2cb",
+        "filename": "src/cm/du_app_mac_inf.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 1301,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-04-29T05:49:24Z",
+      "side": 1,
+      "message": "what is the correct size of UeId uint8_t or uint16_t?",
+      "range": {
+        "startLine": 1301,
+        "startChar": 3,
+        "endLine": 1301,
+        "endChar": 11
+      },
+      "revId": "c465d2f12f1ecad49cb6acccf02c7db39b1e22d3",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6d5e383d_64eca865",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1827,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-04-29T05:49:24Z",
+      "side": 1,
+      "message": "what is the correct size of UeId uint8_t or uint16_t?\ni think it should of size uint8_t.",
+      "range": {
+        "startLine": 1827,
+        "startChar": 56,
+        "endLine": 1827,
+        "endChar": 64
+      },
+      "revId": "c465d2f12f1ecad49cb6acccf02c7db39b1e22d3",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
