@@ -37,6 +37,69 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9a61ce8d_8fdbfc54",
+        "filename": "src/5gnrmac/mac_rach.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 177,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-04-29T08:27:59Z",
+      "side": 1,
+      "message": "Just for my understanding, For UE which is in HO , MAC will have the created CRNTI in its DB i.e. DUAPP will not have this CRNTI even after UE Creation.?\n\nOnly when this RACH Resource Req procedure is completed , the DUAPP will be able to get CRNTI for this UE. ?\n\nAlso Is this RACH REq and REsponse happening in new DU i.e. target DU correct?",
+      "range": {
+        "startLine": 177,
+        "startChar": 28,
+        "endLine": 177,
+        "endChar": 34
+      },
+      "revId": "c465d2f12f1ecad49cb6acccf02c7db39b1e22d3",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1b9abdeb_d1505fa5",
+        "filename": "src/5gnrmac/mac_rach.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 177,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-04-29T08:27:59Z",
+      "side": 1,
+      "message": "I dont understand why ueID is not sent to SCH here..",
+      "range": {
+        "startLine": 177,
+        "startChar": 36,
+        "endLine": 177,
+        "endChar": 40
+      },
+      "revId": "c465d2f12f1ecad49cb6acccf02c7db39b1e22d3",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "73387f12_d4cc2a13",
+        "filename": "src/5gnrmac/mac_rach.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 180,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-04-29T08:27:59Z",
+      "side": 1,
+      "message": "Can we do memcpy?",
+      "revId": "c465d2f12f1ecad49cb6acccf02c7db39b1e22d3",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5599d8f1_d2bf69b7",
         "filename": "src/5gnrmac/mac_rach.c",
         "patchSetId": 4
@@ -71,6 +134,69 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "051c2714_894d7b54",
+        "filename": "src/5gnrsch/sch_rach.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 255,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-04-29T08:27:59Z",
+      "side": 1,
+      "message": "if ueID wld have been sent from MAC we could have directly fetched ueCB here right? I dont understand why we are sending CRNTI between MAC and SCH",
+      "range": {
+        "startLine": 255,
+        "startChar": 24,
+        "endLine": 255,
+        "endChar": 38
+      },
+      "revId": "c465d2f12f1ecad49cb6acccf02c7db39b1e22d3",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ae051094_8ffb13e8",
+        "filename": "src/5gnrsch/sch_rach.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 310,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-04-29T08:27:59Z",
+      "side": 1,
+      "message": "IS it correct we skip the allocation of SSB resources for SSBIDX whose \" firstCFPreambleIndex \u003e lastCFPreambleIndex\" ?\n\nIF thats so, can we put a log here for that Idx..",
+      "revId": "c465d2f12f1ecad49cb6acccf02c7db39b1e22d3",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "59f5b23f_04468de4",
+        "filename": "src/5gnrsch/sch_rach.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 314,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-04-29T08:27:59Z",
+      "side": 1,
+      "message": "If we are unable to allocate any ssb resource then cfraSSB IDX  \u003d 0, wont we need to send a negative response to DUAPP for this RACH req?",
+      "range": {
+        "startLine": 314,
+        "startChar": 31,
+        "endLine": 314,
+        "endChar": 41
+      },
+      "revId": "c465d2f12f1ecad49cb6acccf02c7db39b1e22d3",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "39eac1b6_782bf2cb",
         "filename": "src/cm/du_app_mac_inf.h",
         "patchSetId": 4
@@ -87,6 +213,52 @@
         "startChar": 3,
         "endLine": 1301,
         "endChar": 11
+      },
+      "revId": "c465d2f12f1ecad49cb6acccf02c7db39b1e22d3",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "30b25ad3_f1c03314",
+        "filename": "src/cm/du_app_mac_inf.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 1323,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-04-29T08:27:59Z",
+      "side": 1,
+      "message": "why newUeId.. Its lil misleading as I thought some other UE ID is assigned.. Can we name it as CRNTI itself?",
+      "range": {
+        "startLine": 1323,
+        "startChar": 14,
+        "endLine": 1323,
+        "endChar": 21
+      },
+      "revId": "c465d2f12f1ecad49cb6acccf02c7db39b1e22d3",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4c685aa9_70d2e847",
+        "filename": "src/du_app/du_mgr_main.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 551,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-04-29T08:27:59Z",
+      "side": 1,
+      "message": "please remove",
+      "range": {
+        "startLine": 551,
+        "startChar": 5,
+        "endLine": 551,
+        "endChar": 28
       },
       "revId": "c465d2f12f1ecad49cb6acccf02c7db39b1e22d3",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
@@ -111,6 +283,23 @@
         "endLine": 1827,
         "endChar": 64
       },
+      "revId": "c465d2f12f1ecad49cb6acccf02c7db39b1e22d3",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "67fe3168_41a551e2",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1913,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-04-29T08:27:59Z",
+      "side": 1,
+      "message": "Why are we not storing CRNTI in ueCB which is received from SCH\u003e?",
       "revId": "c465d2f12f1ecad49cb6acccf02c7db39b1e22d3",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
