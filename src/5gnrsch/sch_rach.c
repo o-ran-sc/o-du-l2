@@ -388,6 +388,7 @@ void createSchRaCb(SchRaReq *raReq, Inst schInst)
          schCb[schInst].cells[schInst]->numActvUe++;
          SET_ONE_BIT(raReq->ueCb->ueId, schCb[schInst].cells[schInst]->actvUeBitMap);
          raReq->ueCb->state = SCH_UE_STATE_ACTIVE;
+         schCb[schInst].cells[schInst]->raCb[ueId -1].raState = SCH_RA_STATE_MSG3_PENDING;
       }
    }
    else
@@ -396,6 +397,7 @@ void createSchRaCb(SchRaReq *raReq, Inst schInst)
       GET_UE_ID(raReq->rachInd->crnti, ueId);
       schCb[schInst].cells[schInst]->raCb[ueId -1].tcrnti = raReq->rachInd->crnti;
       schCb[schInst].cells[schInst]->raCb[ueId -1].msg4recvd = FALSE;
+      schCb[schInst].cells[schInst]->raCb[ueId -1].raState = SCH_RA_STATE_MSG3_PENDING;
    }
 }
 
@@ -414,7 +416,7 @@ void createSchRaCb(SchRaReq *raReq, Inst schInst)
  *  @param[out]  msg3NumRb
  *  @return  void
  **/
-SchPuschInfo* schAllocMsg3Pusch(Inst schInst, uint16_t crnti, uint8_t k2Index, SlotTimingInfo msg3SlotTime)
+SchPuschInfo* schAllocMsg3Pusch(Inst schInst, uint16_t crnti, uint8_t k2Index, SlotTimingInfo msg3SlotTime, SchUlHqProcCb* msg3HqProc, bool isRetx)
 {
    SchCellCb      *cell          = NULLP;
    SchUlSlotInfo  *schUlSlotInfo = NULLP;
@@ -683,12 +685,12 @@ bool schProcessRaReq(Inst schInst, SchCellCb *cell, SlotTimingInfo currTime, uin
       if(cell->raReq[ueId-1]->isCFRA)
       {
          /* Allocate resources for PUCCH */
-         schAllocPucchResource(cell, pucchTime, cell->raReq[ueId-1]->rachInd->crnti);
+         schAllocPucchResource(cell, pucchTime, cell->raReq[ueId-1]->rachInd->crnti,NULLP, FALSE, NULLP);
       }
       else
       {
          /* Allocate resources for msg3 */
-         msg3PuschInfo = schAllocMsg3Pusch(schInst, cell->raReq[ueId-1]->rachInd->crnti, k2Index, msg3Time);
+         msg3PuschInfo = schAllocMsg3Pusch(schInst, cell->raReq[ueId-1]->rachInd->crnti, k2Index, msg3Time, &(cell->raCb[ueId-1].msg3HqProc), FALSE);
          if(msg3PuschInfo)
          {
             dciSlotAlloc->rarInfo.ulGrant.bwpSize = cell->cellCfg.schInitialUlBwp.bwp.freqAlloc.numPrb;
@@ -1056,6 +1058,10 @@ uint8_t MacSchRachRsrcRel(Pst *pst, SchRachRsrcRel *schRachRsrcRel)
    return ret;
 }
 
+void schMsg4Complete(SchUeCb *ueCb)
+{
+   ueCb->cellCb->raCb[ueCb->ueId-1].raState = SCH_RA_STATE_MSG4_DONE;
+}
 /**********************************************************************
          End of file
 **********************************************************************/
