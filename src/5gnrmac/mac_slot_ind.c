@@ -58,6 +58,7 @@ uint8_t MacProcDlAlloc(Pst *pst, DlSchedInfo *dlSchedInfo)
    uint8_t   ueId = 0, ueIdx = 0;
    uint16_t  cellIdx = 0;
    MacDlSlot *currDlSlot = NULLP;
+   DlHarqProcCb *hqP = NULLP;
 
 #ifdef CALL_FLOW_DEBUG_LOG
    DU_LOG("\nCall Flow: ENTSCH -> ENTMAC : EVENT_DL_SCH_INFO\n");
@@ -105,6 +106,16 @@ uint8_t MacProcDlAlloc(Pst *pst, DlSchedInfo *dlSchedInfo)
                }
                else
                {
+                  hqP = &macCb.macCell[cellIdx]->ueCb[ueIdx -1].dlInfo.dlHarqEnt.harqProcCb[dlSchedInfo->dlMsgAlloc[ueIdx]->dlMsgSchedInfo[0].dlMsgInfo.harqProcNum];
+                  if ((hqP->tbInfo[0].isRetx == TRUE)&&(hqP->tbInfo[0].tbSize == 0))
+                  {
+                     continue;
+                  }
+                  if ((hqP->tbInfo[1].isRetx == TRUE)&&(hqP->tbInfo[1].tbSize == 0))
+                  {
+                     continue;
+                  }
+
                   memcpy(&currDlSlot->dlInfo.schSlotValue, &dlSchedInfo->schSlotValue, sizeof(SchSlotValue));
                   /* Send LC schedule result to RLC */
                   if((dlSchedInfo->dlMsgAlloc[ueIdx]->dlMsgSchedInfo[schInfoIdx].pduPres == PDSCH_PDU) ||
