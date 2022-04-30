@@ -285,7 +285,7 @@ void l1HdlConfigReq(uint32_t msgLen, void *msg)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint16_t l1BuildAndSendCrcInd(uint16_t slot, uint16_t sfn)
+uint16_t l1BuildAndSendCrcInd(uint16_t slot, uint16_t sfn, fapi_ul_pusch_pdu_t puschPdu)
 {
 #ifdef INTEL_FAPI
    uint8_t idx = 0;
@@ -304,9 +304,9 @@ uint16_t l1BuildAndSendCrcInd(uint16_t slot, uint16_t sfn)
    crcInd->slot = slot;
    crcInd->numCrcs = 1;
 
-   crcInd->crc[idx].handle = 0;
-   crcInd->crc[idx].rnti = 0;
-   crcInd->crc[idx].harqId = 0;
+   crcInd->crc[idx].handle = puschPdu.handle;
+   crcInd->crc[idx].rnti = puschPdu.rnti;
+   crcInd->crc[idx].harqId = puschPdu.puschData.harqProcessId;
    crcInd->crc[idx].tbCrcStatus = 0;
    crcInd->crc[idx].numCb = 1;
    crcInd->crc[idx].cbCrcStatus[0] = 0;
@@ -317,7 +317,7 @@ uint16_t l1BuildAndSendCrcInd(uint16_t slot, uint16_t sfn)
    fillMsgHeader(&crcInd->header, FAPI_CRC_INDICATION, \
 	 sizeof(fapi_crc_ind_t) - sizeof(fapi_msg_t));
 
-   /* Sending RACH indication to MAC */
+   /* Sending CRC indication to MAC */
    DU_LOG("\nINFO   -->  PHY STUB: Sending CRC Indication to MAC");
    procPhyMessages(crcInd->header.msg_id, sizeof(fapi_crc_ind_t), (void *)crcInd);
    MAC_FREE(crcInd, sizeof(fapi_crc_ind_t));
@@ -1052,6 +1052,7 @@ S16 l1HdlUlTtiReq(uint16_t msgLen, void *msg)
 	 DU_LOG("\nINFO   -->  PHY STUB: PUSCH PDU");
 	 l1BuildAndSendRxDataInd(ulTtiReq->slot, ulTtiReq->sfn, \
 	       ulTtiReq->pdus[numPdus-1].pdu.pusch_pdu); 
+    l1BuildAndSendCrcInd(ulTtiReq->slot, ulTtiReq->sfn,ulTtiReq->pdus[numPdus-1].pdu.pusch_pdu);
       }
       if(ulTtiReq->pdus[numPdus-1].pduType == 2)
       {
