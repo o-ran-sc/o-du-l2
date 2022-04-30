@@ -328,6 +328,36 @@ uint8_t packMacSchSrUciInd(Pst *pst, SrUciIndInfo *uciInd)
 
 /*******************************************************************
  *
+ * @brief Pack and Send HARQ UCI Ind from MAC to SCH
+ *
+ * @details
+ *
+ *    Function : packMacHarqSchUciInd
+ *
+ *    Functionality:
+ *       Pack and Send HARQ UCI Ind from MAC to SCH
+ *
+ * @params[in]
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t packMacSchHarqUciInd(Pst *pst, HarqUciIndInfo *uciInd)
+{
+   if((pst->selector == ODU_SELECTOR_LC) || (pst->selector == ODU_SELECTOR_LWLC))
+   {
+      /* TODO */
+   }
+   else
+   {
+      return RFAILED;
+   }
+   return ROK;
+}
+
+
+/*******************************************************************
+ *
  * @brief Pack and Send Modify UE Config Request from MAC to SCH
  *
  * @details
