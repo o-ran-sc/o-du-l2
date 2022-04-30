@@ -285,10 +285,11 @@ void l1HdlConfigReq(uint32_t msgLen, void *msg)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint16_t l1BuildAndSendCrcInd(uint16_t slot, uint16_t sfn)
+uint16_t l1BuildAndSendCrcInd(uint16_t slot, uint16_t sfn, fapi_ul_pusch_pdu_t puschPdu)
 {
 #ifdef INTEL_FAPI
    uint8_t idx = 0;
+   static uint8_t ind=0;
    fapi_crc_ind_t  *crcInd;
 
    MAC_ALLOC(crcInd, sizeof(fapi_crc_ind_t));
@@ -304,12 +305,16 @@ uint16_t l1BuildAndSendCrcInd(uint16_t slot, uint16_t sfn)
    crcInd->slot = slot;
    crcInd->numCrcs = 1;
 
-   crcInd->crc[idx].handle = 0;
-   crcInd->crc[idx].rnti = 0;
-   crcInd->crc[idx].harqId = 0;
+   crcInd->crc[idx].handle = puschPdu.handle;
+   crcInd->crc[idx].rnti = puschPdu.rnti;
+   crcInd->crc[idx].harqId = puschPdu.puschData.harqProcessId;
    crcInd->crc[idx].tbCrcStatus = 0;
    crcInd->crc[idx].numCb = 1;
+   if (ind%2==0)
    crcInd->crc[idx].cbCrcStatus[0] = 0;
+   else
+   crcInd->crc[idx].cbCrcStatus[0] = 1;
+   ind++;
    crcInd->crc[idx].ul_cqi = 0;
    crcInd->crc[idx].timingAdvance = 0;
    crcInd->crc[idx].rssi = 0;
@@ -317,7 +322,7 @@ uint16_t l1BuildAndSendCrcInd(uint16_t slot, uint16_t sfn)
    fillMsgHeader(&crcInd->header, FAPI_CRC_INDICATION, \
 	 sizeof(fapi_crc_ind_t) - sizeof(fapi_msg_t));
 
-   /* Sending RACH indication to MAC */
+   /* Sending CRC indication to MAC */
    DU_LOG("\nINFO   -->  PHY STUB: Sending CRC Indication to MAC");
    procPhyMessages(crcInd->header.msg_id, sizeof(fapi_crc_ind_t), (void *)crcInd);
    MAC_FREE(crcInd, sizeof(fapi_crc_ind_t));
@@ -890,9 +895,14 @@ S16 l1HdlTxDataReq(uint16_t msgLen, void *msg)
 uint8_t fillPucchF0F1PduInfo(fapi_uci_o_pucch_f0f1_t *pduInfo, fapi_ul_pucch_pdu_t pucchPdu)
 {
    uint8_t idx = 0;
+   static uint8_t ind=0;
 
    pduInfo->handle = pucchPdu.handle;
    pduInfo->pduBitmap = 1;  //hardcoded for SR
+   if (pucchPdu.bitLenHarq)
+   {
+      pduInfo->pduBitmap |= HARQ_PDU_BITMASK;
+   }
    pduInfo->pucchFormat = pucchPdu.formatType;
    pduInfo->ul_cqi = 0;
    pduInfo->rnti = pucchPdu.rnti;
@@ -909,7 +919,15 @@ uint8_t fillPucchF0F1PduInfo(fapi_uci_o_pucch_f0f1_t *pduInfo, fapi_ul_pucch_pdu
       pduInfo->harqInfo.harqConfidenceLevel = CONFDC_LEVEL_GOOD;
       for(idx = 0; idx < pduInfo->harqInfo.numHarq; idx++)
       {
-         pduInfo->harqInfo.harqValue[idx] = HARQ_PASS;
+         if( ind%2==0)
+         {
+            pduInfo->harqInfo.harqValue[idx] = HARQ_PASS;
+         }
+         else
+         {
+            pduInfo->harqInfo.harqValue[idx] = HARQ_FAIL;
+         }
+         ind++;
       }
    }
    return ROK;
@@ -1063,6 +1081,7 @@ S16 l1HdlUlTtiReq(uint16_t msgLen, void *msg)
       {
          DU_LOG("\nINFO   -->  PHY STUB: PUSCH PDU");
          l1BuildAndSendRxDataInd(ulTtiReq->slot, ulTtiReq->sfn, ulTtiReq->pdus[numPdus-1].pdu.pusch_pdu); 
+         l1BuildAndSendCrcInd(ulTtiReq->slot, ulTtiReq->sfn,ulTtiReq->pdus[numPdus-1].pdu.pusch_pdu);
       }
       if(ulTtiReq->pdus[numPdus-1].pduType == 2)
       {

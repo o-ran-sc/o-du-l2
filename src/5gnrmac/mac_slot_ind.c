@@ -58,6 +58,7 @@ uint8_t MacProcDlAlloc(Pst *pst, DlSchedInfo *dlSchedInfo)
    uint8_t   ueId = 0, ueIdx = 0;
    uint16_t  cellIdx = 0;
    MacDlSlot *currDlSlot = NULLP;
+   DlHarqProcCb *hqP = NULLP;
 
 #ifdef CALL_FLOW_DEBUG_LOG
    DU_LOG("\nCall Flow: ENTSCH -> ENTMAC : EVENT_DL_SCH_INFO\n");
@@ -93,6 +94,15 @@ uint8_t MacProcDlAlloc(Pst *pst, DlSchedInfo *dlSchedInfo)
             currDlSlot->dlInfo.dlMsgAlloc[ueIdx] = dlSchedInfo->dlMsgAlloc[ueIdx]; /* copy msg4 alloc pointer in MAC slot info */
             currDlSlot->dlInfo.cellId = dlSchedInfo->cellId;
 
+            hqP = &macCb.macCell[cellIdx]->ueCb[ueIdx -1].dlInfo.dlHarqEnt.harqProcCb[dlSchedInfo->dlMsgAlloc[ueIdx]->dlMsgSchedInfo[0].dlMsgInfo.harqProcNum];
+            if ((hqP->tbInfo[0].isRetx == TRUE)&&(hqP->tbInfo[0].tbSize == 0))
+            {
+               continue;
+            }
+            if ((hqP->tbInfo[1].isRetx == TRUE)&&(hqP->tbInfo[1].tbSize == 0))
+            {
+               continue;
+            }
             /* Check if the downlink pdu is msg4 */
             for(schInfoIdx=0; schInfoIdx < dlSchedInfo->dlMsgAlloc[ueIdx]->numSchedInfo; schInfoIdx++)
             {

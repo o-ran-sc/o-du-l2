@@ -64,7 +64,7 @@ Void     cmLListInsCrnt  ARGS ((CmLListCp *lList, CmLList *node));
 Void     cmLListInsAfterCrnt  ARGS ((CmLListCp *lList, CmLList *node));
 CmLList *cmLListDelFrm   ARGS ((CmLListCp *lList, CmLList *node));
 Void cmLListCatLList ARGS (( CmLListCp *list1, CmLListCp *list2));
-
+Void cmLListDeleteLList ARGS ((CmLListCp *lList));
 #ifdef __cplusplus
 }
 #endif

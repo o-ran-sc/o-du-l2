@@ -3810,7 +3810,7 @@ uint16_t fillDlTtiReq(SlotTimingInfo currTimingInfo)
                            }
                            else
                            {
-                              DU_LOG("\nDEBUG  -->  LWR_MAC: DL MSG sent...");
+                              DU_LOG("\nDEBUG  -->  LWR_MAC: DL MSG sent... %d",currTimingInfo.slot);
                            }
                            DU_LOG("\033[0m");
                         }

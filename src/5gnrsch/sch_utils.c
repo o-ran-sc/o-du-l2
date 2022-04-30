@@ -1465,7 +1465,6 @@ LcInfo* handleLcLList(CmLListCp *lcLL, uint8_t lcId, ActionTypeLL action)
 uint8_t updateLcListReqPRB(CmLListCp *lcLL, uint8_t lcId, uint32_t payloadSize)
 {
    LcInfo    *lcNode = NULLP;
-
    lcNode = handleLcLList(lcLL, lcId, CREATE);
 
    if(lcNode == NULLP)
@@ -1473,8 +1472,9 @@ uint8_t updateLcListReqPRB(CmLListCp *lcLL, uint8_t lcId, uint32_t payloadSize)
       DU_LOG("\nERROR  -->  SCH : LC is neither present nor able to create in List lcId:%d",lcId);
       return RFAILED;
    }
+
    lcNode->reqBO = payloadSize;
-   lcNode->allocBO = 0; 
+   lcNode->allocBO = 0;
    lcNode->allocPRB = 0; /*Re-Initializing the AllocPRB*/
    return ROK;
 }

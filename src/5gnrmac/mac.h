@@ -138,10 +138,19 @@ typedef struct macDlData
    MacDlInfo  pduInfo[MAX_MAC_DL_PDU];
 }MacDlData;
 
+typedef struct macTbInfo
+{
+   uint8_t *tb;
+   bool isRetx;
+   uint16_t tbSize;
+}MacTbInfo;
+
 /* HARQ Process Info */
 typedef struct dlHarqProcCb
 {
    uint8_t   procId;    /* HARQ Process Id */
+   uint8_t numOfTbs;
+   MacTbInfo tbInfo[2];
 }DlHarqProcCb;
 
 /* DL HARQ entity */
