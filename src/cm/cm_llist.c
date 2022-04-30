@@ -370,6 +370,32 @@ CmLListCp *list2               /*-- node to be added --*/
    return;
 } /*-- end of cmLListCatLList --*/
 
+
+/*--
+  *
+  *       Fun:   cmLListDeleteLList
+  *
+  *       Desc:  delete a linked list
+  *
+  *       Ret:   None
+  *
+  *       Notes: None
+  *
+  *       File:  cm_llist.c
+  *
+  --*/
+Void cmLListDeleteLList
+(
+CmLListCp *list              /*-- list control point --*/
+)
+{
+   while(list->count)
+   {
+      cmLListDelFrm(list, list->first);
+   }
+   return;
+}
+
 /**********************************************************************
          End of file
 **********************************************************************/

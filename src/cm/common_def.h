@@ -63,6 +63,8 @@
 #define MAX_NUM_SRB  3    /* Max. no of Srbs */
 #define MAX_NUM_DRB  29   /* spec 38.331, maxDRB */
 #define MAX_NUM_SSB  64   /* spec 28.331, maxNrofSSBs */
+#define MAX_NUM_HARQ_PROC 16 /* spec 38.331, nrofHARQ-ProcessesForPDSCH */
+#define MAX_NUM_TB_PER_UE 2  /* spec 38.331, maxNrofCodeWordsScheduledByDCI */
 
 /* 5G ORAN phy delay */
 #define PHY_DELTA_DL 1

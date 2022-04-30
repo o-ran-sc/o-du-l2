@@ -2059,27 +2059,26 @@ uint8_t updateMacRaCb(uint16_t cellIdx, MacUeCb *ueCb)
 
 void deleteMacRaCb(uint16_t cellIdx, MacUeCb *ueCb)
 {
-   uint8_t ueIdx;
+   uint8_t tbIdx;
+   MacRaCbInfo *raCb = ueCb->raCb;
+   DlHarqProcCb *hqProcCb;
 
-   for(ueIdx = 0; ueIdx < MAX_NUM_UE; ueIdx++)
+   if(raCb && (raCb->crnti == ueCb->crnti))
    {
-      if(macCb.macCell[cellIdx]->macRaCb[ueIdx].crnti == ueCb->crnti)
+      hqProcCb = &raCb->msg4HqInfo;
+      DU_LOG("\nHLAL Released HQ Proc Id [%d] [SFN:SLOT] [%d:%d] NumTb [%d] TbSz1 [%d] Tb1 [%x] TbSz2 [%d] Tb2 [%x]", \
+            hqProcCb->procId, hqProcCb->tbInfo[0].txTime.sfn, hqProcCb->tbInfo[0].txTime.slot, \
+            hqProcCb->numTb, hqProcCb->tbInfo[0].tbSize, hqProcCb->tbInfo[0].tb, \
+            hqProcCb->tbInfo[1].tbSize, hqProcCb->tbInfo[1].tb);
+
+      MAC_FREE(raCb->msg4Pdu, raCb->msg4PduLen);
+      for(tbIdx = 0; tbIdx < raCb->msg4HqInfo.numTb; tbIdx++)
       {
-         if(macCb.macCell[cellIdx]->macRaCb[ueIdx].msg4Pdu)
-	 {
-	   MAC_FREE(macCb.macCell[cellIdx]->macRaCb[ueIdx].msg4Pdu, \
-		     macCb.macCell[cellIdx]->macRaCb[ueIdx].msg4PduLen);
-         }
-	 if(macCb.macCell[cellIdx]->macRaCb[ueIdx].msg4TxPdu)
-	 {
-            MAC_FREE(macCb.macCell[cellIdx]->macRaCb[ueIdx].msg4TxPdu, \
-                      macCb.macCell[cellIdx]->macRaCb[ueIdx].msg4TbSize);
-         }
-	 memset(&macCb.macCell[cellIdx]->macRaCb[ueIdx], 0, sizeof(MacRaCbInfo));
-         break;
+         MAC_FREE(raCb->msg4HqInfo.tbInfo[tbIdx].tb, \
+               raCb->msg4HqInfo.tbInfo[tbIdx].tbSize);
       }
+      memset(raCb, 0, sizeof(MacRaCbInfo));
    }
-	          
 }
 
 /*******************************************************************
@@ -2166,7 +2165,6 @@ uint8_t modifyUeCb(uint8_t cellIdx, MacUeCb *ueCb, MacUeCfg *ueCfg)
       }
       else
       {
-         deleteMacRaCb(cellIdx, ueCb);
          return ROK;
       }
    }

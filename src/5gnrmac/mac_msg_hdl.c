@@ -32,6 +32,7 @@
 #include "lwr_mac_upr_inf.h"
 #include "mac.h"
 #include "mac_utils.h"
+#include "mac_harq_dl.h"
 
 /* This file contains message handling functionality for MAC */
 
@@ -67,6 +68,14 @@ MacSchSrUciIndFunc macSchSrUciIndOpts[]=
    packMacSchSrUciInd,
    MacSchSrUciInd,
    packMacSchSrUciInd
+};
+
+/* Function pointer for sending HARQ Uci ind from MAC to SCH */
+MacSchHarqUciIndFunc macSchHarqUciIndOpts[]=
+{
+   packMacSchHarqUciInd,
+   MacSchHarqUciInd,
+   packMacSchHarqUciInd
 };
 
 /* Function pointer for sending Slice cfg  ind from MAC to SCH */
@@ -194,7 +203,7 @@ uint8_t fapiMacRxDataInd(Pst *pst, RxDataInd *rxDataInd)
 
    for(pduIdx = 0; pduIdx < rxDataInd->numPdus; pduIdx++)
    {
-     
+
       GET_CELL_IDX(rxDataInd->cellId, cellIdx);
       GET_UE_ID(rxDataInd->pdus[pduIdx].rnti, ueId);
       
@@ -287,6 +296,10 @@ uint8_t MacProcRlcDlData(Pst* pstInfo, RlcData *dlData)
 
       currDlSlot->dlInfo.dlMsgAlloc[ueId-1]->dlMsgSchedInfo[schInfoIdx].dlMsgInfo.dlMsgPduLen = txPduLen;
       currDlSlot->dlInfo.dlMsgAlloc[ueId-1]->dlMsgSchedInfo[schInfoIdx].dlMsgInfo.dlMsgPdu = txPdu;
+      /* Add muxed TB to DL HARQ Proc CB. This will be used if retranmission of
+       * TB is requested in future. */
+      updateNewTbInDlHqProcCb(dlData->slotInfo, &macCb.macCell[cellIdx]->ueCb[ueId -1], \
+         currDlSlot->dlInfo.dlMsgAlloc[ueId-1]->dlMsgSchedInfo[schInfoIdx].dlMsgPdschCfg.codeword[0].tbSize, txPdu);
    }
 
    for(lcIdx = 0; lcIdx < dlData->numLc; lcIdx++)
@@ -728,6 +741,51 @@ uint8_t macProcLongBsr(uint16_t cellId, uint16_t crnti,uint8_t numLcg,\
 
 /*******************************************************************
  *
+ * @brief Builds and send HARQ UCI Indication to SCH
+ *
+ * @details
+ *
+ *    Function : buildAndSendHarqInd
+ *
+ *    Functionality:
+ *       Builds and send HARQ UCI Indication to SCH
+ *
+ * @params[in] harqInfo Pointer
+ *             crnti value
+ *             cell Index value
+ *             slot Ind Pointer
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t buildAndSendHarqInd(HarqInfoF0F1 *harqInfo, uint8_t crnti, uint16_t cellIdx, SlotTimingInfo *slotInd)
+{
+   uint16_t harqCounter=0;
+   Pst pst;
+   HarqUciIndInfo   harqUciInd;
+   memset(&pst, 0, sizeof(Pst));
+   memset(&harqUciInd, 0, sizeof(HarqUciIndInfo));
+
+   harqUciInd.cellId       = macCb.macCell[cellIdx]->cellId;
+   harqUciInd.crnti        = crnti;
+   harqUciInd.slotInd.sfn  = slotInd->sfn;
+   harqUciInd.slotInd.slot = slotInd->slot;
+   harqUciInd.numHarq = harqInfo->numHarq;
+   memset(harqUciInd.harqPayload, 0, MAX_SR_BITS_IN_BYTES);
+   for(harqCounter = 0; harqCounter < harqInfo->numHarq; harqCounter++)
+   {
+      harqUciInd.harqPayload[harqCounter] = harqInfo->harqValue[harqCounter];
+   }
+   
+   /* Fill Pst */
+   FILL_PST_MAC_TO_SCH(pst, EVENT_UCI_IND_TO_SCH);
+
+   return(*macSchHarqUciIndOpts[pst.selector])(&pst, &harqUciInd);
+}
+
+
+/*******************************************************************
+ *
  * @brief Builds and send SR UCI Indication to SCH
  *
  * @details
@@ -785,7 +843,7 @@ uint8_t buildAndSendSrInd(UciInd *macUciInd, uint8_t crnti)
 uint8_t FapiMacUciInd(Pst *pst, UciInd *macUciInd)
 {
    uint8_t     pduIdx = 0, ret = ROK;
-   uint16_t    nPdus = 0, crnti = 0;
+   uint16_t    nPdus = 0, crnti = 0, cellIdx = 0;
 
    if(macUciInd)
    {
@@ -797,12 +855,19 @@ uint8_t FapiMacUciInd(Pst *pst, UciInd *macUciInd)
             case UCI_IND_PUSCH:
                break;
             case UCI_IND_PUCCH_F0F1:
+            {
+               {
+                  DU_LOG("\nDEBUG  -->  MAC : Received HARQ UCI Indication\n");
+                  GET_CELL_IDX(macUciInd->cellId, cellIdx);
+                  buildAndSendHarqInd(&macUciInd->pdus[pduIdx].uci.uciPucchF0F1.harqInfo, macUciInd->pdus[pduIdx].uci.uciPucchF0F1.crnti, cellIdx, &macUciInd->slotInd);
+               }
                if(macUciInd->pdus[pduIdx].uci.uciPucchF0F1.srInfo.srIndPres)
                {
                   DU_LOG("\nDEBUG  -->  MAC : Received SR UCI indication");
                   crnti = macUciInd->pdus[pduIdx].uci.uciPucchF0F1.crnti; 
                   ret = buildAndSendSrInd(macUciInd, crnti);
                }
+            }
                break;
             case UCI_IND_PUCCH_F2F3F4:
                break;

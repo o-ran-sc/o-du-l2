@@ -143,16 +143,6 @@ uint8_t unpackRxData(uint16_t cellId, SlotTimingInfo slotInfo, RxDataIndPdu *rxD
                pduLen -= length;
                rxPduIdx = rxPduIdx + length;
 
-               /* Delete RA cb once RRC setup complete received */
-               if(macCb.macCell[cellIdx]->macRaCb[ueIdx].crnti == rxDataIndPdu->rnti)
-               {
-                  MAC_FREE(macCb.macCell[cellIdx]->macRaCb[ueIdx].msg4Pdu, \
-                        macCb.macCell[cellIdx]->macRaCb[ueIdx].msg4PduLen);
-                  MAC_FREE(macCb.macCell[cellIdx]->macRaCb[ueIdx].msg4TxPdu, \
-                        macCb.macCell[cellIdx]->macRaCb[ueIdx].msg4TbSize - TX_PAYLOAD_HDR_LEN);
-                  memset(&macCb.macCell[cellIdx]->macRaCb[ueIdx], 0, sizeof(MacRaCbInfo));
-               }
-
                /* Send UL Data to RLC */
                ret = macProcUlData(cellId, rxDataIndPdu->rnti, slotInfo, lcId, length, pdu);
 
