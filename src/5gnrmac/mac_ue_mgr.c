@@ -2008,6 +2008,7 @@ uint8_t fillMacUeCb(MacUeCb *ueCb, MacUeCfg *ueCfg, uint8_t cellIdx)
       DU_LOG("\nERROR  -->  MAC: Failed while filing MAC LC List at fillMacUeCb()");
    }
    ueCb->transmissionAction = ueCfg->transmissionAction;
+
    return ret;
 }
 
@@ -2059,27 +2060,21 @@ uint8_t updateMacRaCb(uint16_t cellIdx, MacUeCb *ueCb)
 
 void deleteMacRaCb(uint16_t cellIdx, MacUeCb *ueCb)
 {
-   uint8_t ueIdx;
+   uint8_t tbIdx;
+   MacRaCbInfo *raCb = ueCb->raCb;
+   DlHarqProcCb *hqProcCb;
 
-   for(ueIdx = 0; ueIdx < MAX_NUM_UE; ueIdx++)
+   if(raCb && (raCb->crnti == ueCb->crnti))
    {
-      if(macCb.macCell[cellIdx]->macRaCb[ueIdx].crnti == ueCb->crnti)
+      hqProcCb = &raCb->msg4HqInfo;
+      MAC_FREE(raCb->msg4Pdu, raCb->msg4PduLen);
+      for(tbIdx = 0; tbIdx < raCb->msg4HqInfo.numTb; tbIdx++)
       {
-         if(macCb.macCell[cellIdx]->macRaCb[ueIdx].msg4Pdu)
-	 {
-	   MAC_FREE(macCb.macCell[cellIdx]->macRaCb[ueIdx].msg4Pdu, \
-		     macCb.macCell[cellIdx]->macRaCb[ueIdx].msg4PduLen);
-         }
-	 if(macCb.macCell[cellIdx]->macRaCb[ueIdx].msg4TxPdu)
-	 {
-            MAC_FREE(macCb.macCell[cellIdx]->macRaCb[ueIdx].msg4TxPdu, \
-                      macCb.macCell[cellIdx]->macRaCb[ueIdx].msg4TbSize);
-         }
-	 memset(&macCb.macCell[cellIdx]->macRaCb[ueIdx], 0, sizeof(MacRaCbInfo));
-         break;
+         MAC_FREE(raCb->msg4HqInfo.tbInfo[tbIdx].tb, \
+               raCb->msg4HqInfo.tbInfo[tbIdx].tbSize);
       }
+      memset(raCb, 0, sizeof(MacRaCbInfo));
    }
-	          
 }
 
 /*******************************************************************
@@ -2099,7 +2094,8 @@ void deleteMacRaCb(uint16_t cellIdx, MacUeCb *ueCb)
  * ****************************************************************/
 uint8_t createUeCb(uint8_t cellIdx, MacUeCb *ueCb, MacUeCfg *ueCfg)
 {
-   uint8_t ret =ROK;
+   uint8_t ret = ROK;
+   uint8_t hqProcIdx = 0;
 
    if((ueCb->ueId == ueCfg->ueId) && (ueCb->crnti == ueCfg->crnti)\
       &&(ueCb->state == UE_STATE_ACTIVE))
@@ -2118,6 +2114,12 @@ uint8_t createUeCb(uint8_t cellIdx, MacUeCb *ueCb, MacUeCfg *ueCfg)
       }
       else
       {
+         /* Initialize all DL HARQ PROC ID to MAX NUM OF HARQ PROC */
+         for(hqProcIdx = 0; hqProcIdx <  MAX_NUM_HARQ_PROC; hqProcIdx++)
+         {
+            ueCb->dlInfo.dlHarqEnt.harqProcCb[hqProcIdx].procId = MAX_NUM_HARQ_PROC;
+         }
+
          /* If UE has not requested for RACH yet, it means UE context is created for a
           * UE in handover */
          if(macCb.macCell[cellIdx]->macRaCb[ueCb->ueId-1].crnti == ueCb->crnti)
@@ -2166,7 +2168,6 @@ uint8_t modifyUeCb(uint8_t cellIdx, MacUeCb *ueCb, MacUeCfg *ueCfg)
       }
       else
       {
-         deleteMacRaCb(cellIdx, ueCb);
          return ROK;
       }
    }
