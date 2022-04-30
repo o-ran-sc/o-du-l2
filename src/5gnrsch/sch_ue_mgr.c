@@ -192,7 +192,7 @@ void fillSchUlLcCtxt(SchUlLcCtxt *ueCbLcCfg, SchLcCfg *lcCfg)
  *
  * ****************************************************************/
 
-uint8_t updateDedLcInfo(Inst inst, Snssai *snssai, SchLcPrbEstimate *lcPrbEst, bool *isDedicated)
+uint8_t updateDedLcInfo(Inst inst, Snssai *snssai, uint16_t *rsvdDedicatedPRB, bool *isDedicated)
 {
    uint8_t sliceCfgIdx =0;
    SchSliceCfg sliceCfg = schCb[inst].sliceCfg;
@@ -203,22 +203,13 @@ uint8_t updateDedLcInfo(Inst inst, Snssai *snssai, SchLcPrbEstimate *lcPrbEst, b
       {
          if(memcmp(snssai, &(sliceCfg.listOfConfirguration[sliceCfgIdx]->snssai), sizeof(Snssai)) == 0)
          {
-            if(lcPrbEst->dedLcInfo == NULLP)
-            {
-               SCH_ALLOC(lcPrbEst->dedLcInfo, sizeof(DedicatedLCInfo));
-               if(lcPrbEst->dedLcInfo == NULLP)
-               {
-                  DU_LOG("\nINFO  -->  SCH : Memory Allocation Failed");
-                  return RFAILED;
-               }
-            }
             if(sliceCfg.listOfConfirguration[sliceCfgIdx]->rrmPolicyRatioInfo)
             {
                /*Updating latest RrmPolicy*/
-               lcPrbEst->dedLcInfo->rsvdDedicatedPRB = \
+                *rsvdDedicatedPRB = \
                (uint16_t)(((sliceCfg.listOfConfirguration[sliceCfgIdx]->rrmPolicyRatioInfo->policyDedicatedRatio)*(MAX_NUM_RB))/100);
                *isDedicated = TRUE;
-               DU_LOG("\nINFO  -->  SCH : Updated RRM policy, reservedPOOL:%d",lcPrbEst->dedLcInfo->rsvdDedicatedPRB);
+               DU_LOG("\nINFO  -->  SCH : Updated RRM policy, reservedPOOL:%d",*rsvdDedicatedPRB);
             }
          }
       }
@@ -250,11 +241,10 @@ uint8_t updateDedLcInfo(Inst inst, Snssai *snssai, SchLcPrbEstimate *lcPrbEst, b
 
 uint8_t fillSchUeCb(Inst inst, SchUeCb *ueCb, SchUeCfg *ueCfg)
 {
-   uint8_t   lcIdx, ueLcIdx;
+   uint8_t   lcIdx, ueLcIdx, idx;
    uint8_t   freqDomainResource[FREQ_DOM_RSRC_SIZE] = {0};
    SchPdschCfgCmn pdschCfg;
    SchPucchDlDataToUlAck *dlDataToUlAck;
-   CmLListCp *lcLL = NULLP;
    uint8_t retDL = ROK, retUL = ROK;
    bool isLcIdValid = FALSE;
 
@@ -280,7 +270,7 @@ uint8_t fillSchUeCb(Inst inst, SchUeCb *ueCb, SchUeCfg *ueCfg)
       {
          if(ueCb->ueCfg.spCellCfgPres && ueCb->ueCfg.spCellCfg.servCellCfg.initDlBwp.pdschCfgPres == true)
          {
-            for(uint8_t idx = 0; idx < ueCfg->spCellCfg.servCellCfg.initDlBwp.pdschCfg.numTimeDomRsrcAlloc; idx++)
+            for(idx = 0; idx < ueCfg->spCellCfg.servCellCfg.initDlBwp.pdschCfg.numTimeDomRsrcAlloc; idx++)
             {
                if(ueCb->ueCfg.spCellCfg.servCellCfg.initDlBwp.pdschCfg.timeDomRsrcAllociList[idx].k0 && ueCfg->spCellCfg.servCellCfg.initDlBwp.pdschCfg.timeDomRsrcAllociList[idx].k0)
                {
@@ -321,7 +311,6 @@ uint8_t fillSchUeCb(Inst inst, SchUeCb *ueCb, SchUeCfg *ueCfg)
    }
    memcpy(&ueCb->ueCfg.dlModInfo,  &ueCfg->dlModInfo , sizeof(SchModulationInfo));
    memcpy(&ueCb->ueCfg.ulModInfo,  &ueCfg->ulModInfo , sizeof(SchModulationInfo));
-
    //Updating SchUlCb and SchDlCb DB in SchUeCb
    for(lcIdx = 0; lcIdx < ueCfg->numLcs; lcIdx++)
    {
@@ -343,12 +332,12 @@ uint8_t fillSchUeCb(Inst inst, SchUeCb *ueCb, SchUeCfg *ueCfg)
           * and Create the Dedicated LC List & Update the Reserve PRB number*/
          if(ueCb->dlInfo.dlLcCtxt[ueLcIdx].snssai != NULLP)
          {
-            retDL = updateDedLcInfo(inst, ueCb->dlInfo.dlLcCtxt[ueLcIdx].snssai, &(ueCb->dlLcPrbEst),\
+            retDL = updateDedLcInfo(inst, ueCb->dlInfo.dlLcCtxt[ueLcIdx].snssai, &(ueCb->dlInfo.dlLcCtxt[ueLcIdx].rsvdDedicatedPRB),\
                   &(ueCb->dlInfo.dlLcCtxt[ueLcIdx].isDedicated));
          }
          if(ueCb->ulInfo.ulLcCtxt[ueLcIdx].snssai != NULLP)
          {
-            retUL =  updateDedLcInfo(inst, ueCb->ulInfo.ulLcCtxt[ueLcIdx].snssai, &(ueCb->ulLcPrbEst),\
+            retUL =  updateDedLcInfo(inst, ueCb->ulInfo.ulLcCtxt[ueLcIdx].snssai, &(ueCb->ulInfo.ulLcCtxt[ueLcIdx].rsvdDedicatedPRB),\
                   &(ueCb->ulInfo.ulLcCtxt[ueLcIdx].isDedicated));
          }
 
@@ -368,7 +357,7 @@ uint8_t fillSchUeCb(Inst inst, SchUeCb *ueCb, SchUeCfg *ueCfg)
                /*Updating the RRM reserved pool PRB count*/
                if(ueCb->ulInfo.ulLcCtxt[ueLcIdx].snssai != NULLP)
                {
-                  retUL =  updateDedLcInfo(inst, ueCb->ulInfo.ulLcCtxt[ueLcIdx].snssai, &(ueCb->ulLcPrbEst),\
+                  retUL =  updateDedLcInfo(inst, ueCb->ulInfo.ulLcCtxt[ueLcIdx].snssai, &(ueCb->ulInfo.ulLcCtxt[ueLcIdx].rsvdDedicatedPRB),\
                         &(ueCb->ulInfo.ulLcCtxt[ueLcIdx].isDedicated));
                }
                if(retUL == RFAILED)
@@ -382,21 +371,11 @@ uint8_t fillSchUeCb(Inst inst, SchUeCb *ueCb, SchUeCfg *ueCfg)
                /*Delete the LC node from the UL LC List*/
                if(ueCb->ulInfo.ulLcCtxt[ueLcIdx].isDedicated)
                {
-                  if(ueCb->ulLcPrbEst.dedLcInfo != NULLP)
-                  {
-                     lcLL = &(ueCb->ulLcPrbEst.dedLcInfo->dedLcList);
-                     handleLcLList(lcLL, ueCfg->schLcCfg[lcIdx].lcId, DELETE);
-                     if(lcLL->count == 0)/*IF No Node in DedicateLCList to be deleted*/
-                     {
-                        /*Free the Dedicated LC Info structure*/
-                        SCH_FREE(ueCb->ulLcPrbEst.dedLcInfo, sizeof(DedicatedLCInfo));
-                     }
-                  }
+                   /*Remove from HARQ Transmission or retransmission*/
                }
                else/*Default LC list*/
                {
-                  lcLL = &(ueCb->ulLcPrbEst.defLcList);
-                  handleLcLList(lcLL, ueCfg->schLcCfg[lcIdx].lcId, DELETE);
+
                }
                SCH_FREE(ueCb->ulInfo.ulLcCtxt[ueLcIdx].snssai, sizeof(Snssai));
                memset(&ueCb->ulInfo.ulLcCtxt[ueLcIdx], 0, sizeof(SchUlLcCtxt));
@@ -411,7 +390,7 @@ uint8_t fillSchUeCb(Inst inst, SchUeCb *ueCb, SchUeCfg *ueCfg)
                /*Updating the RRM policy*/
                if(ueCb->dlInfo.dlLcCtxt[ueLcIdx].snssai != NULLP)
                {
-                  retDL = updateDedLcInfo(inst, ueCb->dlInfo.dlLcCtxt[ueLcIdx].snssai, &(ueCb->dlLcPrbEst), \
+                  retDL = updateDedLcInfo(inst, ueCb->dlInfo.dlLcCtxt[ueLcIdx].snssai, &(ueCb->dlInfo.dlLcCtxt[ueLcIdx].rsvdDedicatedPRB), \
                         &(ueCb->dlInfo.dlLcCtxt[ueLcIdx].isDedicated));
                }
                if(retDL == RFAILED)
@@ -425,21 +404,10 @@ uint8_t fillSchUeCb(Inst inst, SchUeCb *ueCb, SchUeCfg *ueCfg)
                /*Delete the LC node from the DL LC List*/
                if(ueCb->dlInfo.dlLcCtxt[ueLcIdx].isDedicated)
                {
-                  if(ueCb->dlLcPrbEst.dedLcInfo != NULLP)
-                  {
-                     lcLL = &(ueCb->dlLcPrbEst.dedLcInfo->dedLcList);
-                     handleLcLList(lcLL, ueCfg->schLcCfg[lcIdx].lcId, DELETE);
-                     if(lcLL->count == 0)/*Last Node in DedicateLCList to be deleted*/
-                     {
-                        /*Free the Dedicated LC Info structure*/
-                        SCH_FREE(ueCb->dlLcPrbEst.dedLcInfo, sizeof(DedicatedLCInfo));
-                     }
-                  }
+                  /*Remove from HARQ Transmission or retransmission*/
                }
                else
                {
-                  lcLL = &(ueCb->dlLcPrbEst.defLcList);
-                  handleLcLList(lcLL, ueCfg->schLcCfg[lcIdx].lcId, DELETE);
                }
                SCH_FREE(ueCb->dlInfo.dlLcCtxt[ueLcIdx].snssai, sizeof(Snssai));
                memset(&ueCb->dlInfo.dlLcCtxt[ueLcIdx], 0, sizeof(SchDlLcCtxt));
@@ -519,7 +487,7 @@ SchCellCb *getSchCellCb(uint16_t srcEvent, Inst inst, SchUeCfg *ueCfg)
  * ****************************************************************/
 uint8_t MacSchAddUeConfigReq(Pst *pst, SchUeCfg *ueCfg)
 {
-   uint8_t      lcIdx = 0, ret = ROK;
+   uint8_t      lcIdx = 0, ret = ROK, idx = 0;
    SchCellCb    *cellCb = NULLP;
    SchUeCb      *ueCb = NULLP;
    SchUeCfgRsp  cfgRsp;
@@ -550,10 +518,35 @@ uint8_t MacSchAddUeConfigReq(Pst *pst, SchUeCfg *ueCfg)
 
    /* Fill received Ue Configuration in UeCb */
    memset(ueCb, 0, sizeof(SchUeCb));
+
    ueCb->ueId = ueCfg->ueId;
    ueCb->crnti = ueCfg->crnti;
+   ueCb->cellCb = cellCb;
+   schUlHqEntInit(cellCb, &cellCb->ueCb[ueCfg->ueId-1]);
+   schDlHqEntInit(cellCb, &cellCb->ueCb[ueCfg->ueId-1]);
+   SCH_ALLOC(ueCb->hqDlmap, sizeof(SchHqDlMap*)*(ueCb->cellCb->numSlots));
+   SCH_ALLOC(ueCb->hqUlmap, sizeof(SchHqUlMap*)*(ueCb->cellCb->numSlots));
 
+   if ( (ueCb->hqDlmap == NULLP) || (ueCb->hqUlmap == NULLP) )
+   {
+      DU_LOG("\nINFO  -->  SCH : Memory Allocation Failed");
+      return RFAILED;
+   }
+   for (idx = 0; idx<ueCb->cellCb->numSlots; idx++)
+   {
+      SCH_ALLOC(ueCb->hqDlmap[idx], sizeof(SchHqDlMap));
+      SCH_ALLOC(ueCb->hqUlmap[idx], sizeof(SchHqUlMap));
+      
+      if ( (ueCb->hqDlmap[idx] == NULLP) || (ueCb->hqUlmap[idx] == NULLP) )
+      {
+         DU_LOG("\nINFO  -->  SCH : Memory Allocation Failed");
+         return RFAILED;
+      }
+      cmLListInit(&ueCb->hqDlmap[idx]->hqList);
+      cmLListInit(&ueCb->hqUlmap[idx]->hqList);
+   }
    ret = fillSchUeCb(inst, ueCb, ueCfg);
+
    if(ret == ROK)
    {
       /* If UE has initiated RACH and then UE context is created, it means UE is
@@ -571,7 +564,6 @@ uint8_t MacSchAddUeConfigReq(Pst *pst, SchUeCfg *ueCfg)
          ueCb->state = SCH_UE_HANDIN_IN_PROGRESS;
       }
 
-      ueCb->cellCb = cellCb;
       ueCb->srRcvd = false;
       ueCb->bsrRcvd = false;
       for(lcIdx=0; lcIdx<MAX_NUM_LOGICAL_CHANNEL_GROUPS; lcIdx++)
@@ -592,13 +584,15 @@ uint8_t MacSchAddUeConfigReq(Pst *pst, SchUeCfg *ueCfg)
 *
 *    Functionality: fills PUSCH info
 *
-* @params[in]
+* @params[in] SchUeCb *ueCb, SlotTimingInfo puschTime, uint32_t tbSize
+* @params[in] uint8_t startSymb, uint8_t symbLen, uint16_t startPrb
+* @params[in] bool isRetx, SchUlHqProcCb *hq
 * @return ROK     - success
 *         RFAILED - failure
 *
 * ****************************************************************/
 uint8_t schFillPuschAlloc(SchUeCb *ueCb, SlotTimingInfo puschTime, uint32_t tbSize, 
-                            uint8_t startSymb, uint8_t symbLen, uint16_t startPrb)
+                          uint8_t startSymb, uint8_t symbLen, uint16_t startPrb, bool isRetx, SchUlHqProcCb *hqP)
 {
   uint8_t  numRb          = 0;
   SchCellCb *cellCb       = NULLP;
@@ -622,23 +616,60 @@ uint8_t schFillPuschAlloc(SchUeCb *ueCb, SlotTimingInfo puschTime, uint32_t tbSi
   numRb   = schCalcNumPrb(tbSize, ueCb->ueCfg.ulModInfo.mcsIndex, symbLen);
   allocatePrbUl(cellCb, puschTime, startSymb, symbLen, &startPrb, numRb);
 
-  puschInfo.crnti             = ueCb->crnti; 
-  puschInfo.harqProcId        = SCH_HARQ_PROC_ID;
-  puschInfo.resAllocType      = SCH_ALLOC_TYPE_1;
-  puschInfo.fdAlloc.startPrb  = startPrb;
-  puschInfo.fdAlloc.numPrb    = numRb;
-  puschInfo.tdAlloc.startSymb = startSymb;
-  puschInfo.tdAlloc.numSymb   = symbLen;
-  puschInfo.tbInfo.qamOrder   = ueCb->ueCfg.ulModInfo.modOrder;
-  puschInfo.tbInfo.mcs        = ueCb->ueCfg.ulModInfo.mcsIndex;
-  puschInfo.tbInfo.mcsTable   = ueCb->ueCfg.ulModInfo.mcsTable;
-  puschInfo.tbInfo.ndi        = 1; /* new transmission */
-  puschInfo.tbInfo.rv         = 0;
-  puschInfo.tbInfo.tbSize     = tbSize;
-  puschInfo.dmrsMappingType   = DMRS_MAP_TYPE_A;  /* Setting Type-A */
-  puschInfo.nrOfDmrsSymbols   = NUM_DMRS_SYMBOLS;
-  puschInfo.dmrsAddPos        = DMRS_ADDITIONAL_POS;
-
+   if (isRetx == FALSE)
+   {
+      puschInfo.crnti             = ueCb->crnti;
+      puschInfo.harqProcId        = SCH_HARQ_PROC_ID;
+      puschInfo.resAllocType      = SCH_ALLOC_TYPE_1;
+      puschInfo.fdAlloc.startPrb  = startPrb;
+      puschInfo.fdAlloc.numPrb    = numRb;
+      puschInfo.tdAlloc.startSymb = startSymb;
+      puschInfo.tdAlloc.numSymb   = symbLen;
+      puschInfo.tbInfo.qamOrder   = ueCb->ueCfg.ulModInfo.modOrder;
+      puschInfo.tbInfo.mcs        = ueCb->ueCfg.ulModInfo.mcsIndex;
+      puschInfo.tbInfo.mcsTable   = ueCb->ueCfg.ulModInfo.mcsTable;
+      puschInfo.tbInfo.ndi        = 1; /* new transmission */
+      puschInfo.tbInfo.rv         = 0;
+      puschInfo.tbInfo.tbSize     = tbSize;
+      puschInfo.dmrsMappingType   = DMRS_MAP_TYPE_A;  /* Setting Type-A */
+      puschInfo.nrOfDmrsSymbols   = NUM_DMRS_SYMBOLS;
+      puschInfo.dmrsAddPos        = DMRS_ADDITIONAL_POS;
+      hqP->puschResType = puschInfo.resAllocType;
+      hqP->puschStartPrb = puschInfo.fdAlloc.startPrb;
+      hqP->puschNumPrb = puschInfo.fdAlloc.numPrb;
+      hqP->strtSymbl = puschInfo.tdAlloc.startSymb;
+      hqP->numSymbl = puschInfo.tdAlloc.numSymb;
+      hqP->tbInfo.qamOrder = puschInfo.tbInfo.qamOrder;
+      hqP->tbInfo.iMcs = puschInfo.tbInfo.mcs;
+      hqP->tbInfo.mcsTable = puschInfo.tbInfo.mcsTable;
+      hqP->tbInfo.ndi = puschInfo.tbInfo.ndi;
+      hqP->tbInfo.rv = puschInfo.tbInfo.rv;
+      hqP->tbInfo.rvIdx = 0;
+      hqP->tbInfo.tbSzReq = puschInfo.tbInfo.tbSize;
+      hqP->dmrsMappingType = puschInfo.dmrsMappingType;
+      hqP->nrOfDmrsSymbols = puschInfo.nrOfDmrsSymbols;
+      hqP->dmrsAddPos = puschInfo.dmrsAddPos;
+   }
+   else
+   {
+      puschInfo.crnti             = ueCb->crnti;
+      puschInfo.harqProcId        = hqP->procId;
+      puschInfo.resAllocType      = hqP->puschResType;
+      puschInfo.fdAlloc.startPrb  = hqP->puschStartPrb;
+      puschInfo.fdAlloc.numPrb    = hqP->puschNumPrb;
+      puschInfo.tdAlloc.startSymb = hqP->strtSymbl;
+      puschInfo.tdAlloc.numSymb   = hqP->numSymbl;
+      puschInfo.tbInfo.qamOrder   = hqP->tbInfo.qamOrder;
+      puschInfo.tbInfo.mcs        = hqP->tbInfo.iMcs;
+      puschInfo.tbInfo.mcsTable   = hqP->tbInfo.mcsTable;
+      puschInfo.tbInfo.ndi        = hqP->tbInfo.ndi; /* retransmission */
+      hqP->tbInfo.rvIdx = (hqP->tbInfo.rvIdx +1) & 0x3;
+      puschInfo.tbInfo.rv         = schCmnDlRvTbl[hqP->tbInfo.rvIdx];
+      puschInfo.tbInfo.tbSize     = hqP->tbInfo.tbSzReq;
+      puschInfo.dmrsMappingType   = hqP->dmrsMappingType;  /* Setting Type-A */
+      puschInfo.nrOfDmrsSymbols   = hqP->nrOfDmrsSymbols;
+      puschInfo.dmrsAddPos        = hqP->dmrsAddPos;
+   }
   schUlSlotInfo = cellCb->schUlSlotInfo[puschTime.slot];
   SCH_ALLOC(schUlSlotInfo->schPuschInfo, sizeof(SchPuschInfo));
   if(!schUlSlotInfo->schPuschInfo)
@@ -649,6 +680,110 @@ uint8_t schFillPuschAlloc(SchUeCb *ueCb, SlotTimingInfo puschTime, uint32_t tbSi
   memcpy(schUlSlotInfo->schPuschInfo, &puschInfo, sizeof(SchPuschInfo));
 
   return ROK;
+}
+/*******************************************************************
+*
+* @brief Fills UL DCI information for MSG3 retransmission
+*
+* @details
+*
+*    Function : schFillUlDciForMsg3Retx
+*
+*    Functionality: fills UL DCI information for MSG3 retransmission
+*
+* @params[in]
+* @return ROK     - success
+*         RFAILED - failure
+*
+* ****************************************************************/
+uint8_t schFillUlDciForMsg3Retx(SchRaCb *raCb, SchPuschInfo *puschInfo, DciInfo *dciInfo)
+{
+   SchCellCb         *cellCb  = raCb->cell;
+   dciInfo->cellId = cellCb->cellId;
+   dciInfo->crnti  = raCb->tcrnti;
+   SchUlHqProcCb *msg3HqProc = &raCb->msg3HqProc;
+   if (msg3HqProc == NULLP)
+   {
+      return RFAILED;
+   }
+
+   /* fill bwp cfg */
+   dciInfo->bwpCfg.subcarrierSpacing  = cellCb->cellCfg.sib1SchCfg.bwp.subcarrierSpacing;
+   dciInfo->bwpCfg.cyclicPrefix       = cellCb->cellCfg.sib1SchCfg.bwp.cyclicPrefix;
+   dciInfo->bwpCfg.freqAlloc.startPrb = cellCb->cellCfg.schInitialDlBwp.bwp.freqAlloc.startPrb;
+   dciInfo->bwpCfg.freqAlloc.numPrb   = cellCb->cellCfg.schInitialDlBwp.bwp.freqAlloc.numPrb; 
+
+   /*fill coreset cfg */
+   //Considering number of RBs in coreset1 is same as coreset0
+   dciInfo->coresetCfg.coreSetSize      = coresetIdxTable[0][1];
+   //Considering coreset1 also starts from same symbol as coreset0
+   dciInfo->coresetCfg.startSymbolIndex = searchSpaceIdxTable[0][3];
+   dciInfo->coresetCfg.durationSymbols  = coresetIdxTable[0][2];
+   memcpy(dciInfo->coresetCfg.freqDomainResource, cellCb->cellCfg.schInitialDlBwp.pdcchCommon.commonSearchSpace.freqDomainRsrc, FREQ_DOM_RSRC_SIZE);
+   
+   dciInfo->coresetCfg.cceRegMappingType   = 1; /* coreset0 is always interleaved */
+   dciInfo->coresetCfg.regBundleSize       = 6; /* spec-38.211 sec 7.3.2.2 */
+   dciInfo->coresetCfg.interleaverSize     = 2; /* spec-38.211 sec 7.3.2.2 */
+   dciInfo->coresetCfg.coreSetType         = 0;
+   dciInfo->coresetCfg.coreSetSize         = coresetIdxTable[0][1];
+   dciInfo->coresetCfg.shiftIndex          = cellCb->cellCfg.phyCellId;
+   dciInfo->coresetCfg.precoderGranularity = 0;
+   dciInfo->coresetCfg.cceIndex            = 0; /* 0-3 for UL and 4-7 for DL */
+   dciInfo->coresetCfg.aggregationLevel    = 4; /* same as for sib1 */
+   
+   dciInfo->formatType = FORMAT0_0;
+   msg3HqProc->tbInfo.rvIdx++;
+   msg3HqProc->tbInfo.rv = schCmnDlRvTbl[msg3HqProc->tbInfo.rvIdx & 0x03];
+   /* fill UL grant */
+   dciInfo->format.format0_0.resourceAllocType   = msg3HqProc->puschResType;
+   dciInfo->format.format0_0.freqAlloc.startPrb  = msg3HqProc->puschStartPrb;
+   dciInfo->format.format0_0.freqAlloc.numPrb    = msg3HqProc->puschNumPrb;
+   dciInfo->format.format0_0.timeAlloc.startSymb = msg3HqProc->strtSymbl;
+   dciInfo->format.format0_0.timeAlloc.numSymb   = msg3HqProc->numSymbl;
+   dciInfo->format.format0_0.rowIndex            = 0; /* row Index */
+   dciInfo->format.format0_0.mcs                 = msg3HqProc->tbInfo.iMcs;
+   dciInfo->format.format0_0.harqProcId          = msg3HqProc->procId;
+   dciInfo->format.format0_0.puschHopFlag        = FALSE; /* disabled */
+   dciInfo->format.format0_0.freqHopFlag         = FALSE; /* disabled */
+   dciInfo->format.format0_0.ndi                 = msg3HqProc->tbInfo.ndi; /* new transmission */
+   dciInfo->format.format0_0.rv                  = msg3HqProc->tbInfo.rv;
+   dciInfo->format.format0_0.tpcCmd              = 0; //Sphoorthi TODO: check
+   dciInfo->format.format0_0.sUlCfgd             = FALSE; /* SUL not configured */
+   
+   /* Fill DCI Structure */
+   dciInfo->dciInfo.rnti                              = raCb->tcrnti;
+   dciInfo->dciInfo.scramblingId                      = cellCb->cellCfg.phyCellId;
+   dciInfo->dciInfo.scramblingRnti                    = 0;
+   dciInfo->dciInfo.cceIndex                          = 0; /* 0-3 for UL and 4-7 for DL */
+   dciInfo->dciInfo.aggregLevel                       = 4;
+   dciInfo->dciInfo.beamPdcchInfo.numPrgs             = 1;
+   dciInfo->dciInfo.beamPdcchInfo.prgSize             = 1;
+   dciInfo->dciInfo.beamPdcchInfo.digBfInterfaces     = 0;
+   dciInfo->dciInfo.beamPdcchInfo.prg[0].pmIdx        = 0;
+   dciInfo->dciInfo.beamPdcchInfo.prg[0].beamIdx[0]   = 0;
+   dciInfo->dciInfo.txPdcchPower.powerValue           = 0;
+   dciInfo->dciInfo.txPdcchPower.powerControlOffsetSS = 0;
+   dciInfo->dciInfo.pdschCfg                          = NULL; /* No DL data being sent */
+   msg3HqProc->tbInfo.txCntr++;
+
+  puschInfo->crnti             = raCb->tcrnti;
+  puschInfo->harqProcId        = msg3HqProc->procId;
+  puschInfo->resAllocType      = msg3HqProc->puschResType;
+  puschInfo->fdAlloc.startPrb  = msg3HqProc->puschStartPrb;
+  puschInfo->fdAlloc.numPrb    = msg3HqProc->puschNumPrb;
+  puschInfo->tdAlloc.startSymb = msg3HqProc->strtSymbl;
+  puschInfo->tdAlloc.numSymb   = msg3HqProc->numSymbl;
+  puschInfo->tbInfo.qamOrder   = msg3HqProc->tbInfo.qamOrder;
+  puschInfo->tbInfo.mcs        = msg3HqProc->tbInfo.iMcs;
+  puschInfo->tbInfo.mcsTable   = msg3HqProc->tbInfo.mcsTable;
+  puschInfo->tbInfo.ndi        = msg3HqProc->tbInfo.ndi; /* retransmission */
+  puschInfo->tbInfo.rv         = msg3HqProc->tbInfo.rvIdx;
+  puschInfo->tbInfo.tbSize     = msg3HqProc->tbInfo.tbSzReq;
+  puschInfo->dmrsMappingType   = msg3HqProc->dmrsMappingType;  /* Setting Type-A */
+  puschInfo->nrOfDmrsSymbols   = msg3HqProc->nrOfDmrsSymbols;
+  puschInfo->dmrsAddPos        = msg3HqProc->dmrsAddPos;
+
+   return ROK;
 }
 
 /*******************************************************************
@@ -661,12 +796,13 @@ uint8_t schFillPuschAlloc(SchUeCb *ueCb, SlotTimingInfo puschTime, uint32_t tbSi
  *
  *    Functionality: fills DCI for UL grant in response to BSR
  *
- * @params[in]
+ * @params[in] SchUeCb *ueCb, SchPuschInfo *puschInfo, DciInfo *dciInfo,
+ * @params[in] bool isRetx, SchUlHqProcCb *hqP 
  * @return ROK     - success
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t schFillUlDci(SchUeCb *ueCb, SchPuschInfo *puschInfo, DciInfo *dciInfo)
+uint8_t schFillUlDci(SchUeCb *ueCb, SchPuschInfo *puschInfo, DciInfo *dciInfo, bool isRetx, SchUlHqProcCb *hqP)
 {
    SchCellCb         *cellCb  = ueCb->cellCb;
    SchControlRsrcSet coreset1 ;
@@ -936,7 +1072,6 @@ void deleteSchUeCb(SchUeCb *ueCb)
    uint8_t timeDomRsrcIdx = 0, ueLcIdx = 0;
    SchPucchCfg *pucchCfg = NULLP;
    SchPdschConfig *pdschCfg = NULLP;
-   CmLListCp *lcLL  = NULLP;
 
    if(ueCb)
    {
@@ -978,26 +1113,6 @@ void deleteSchUeCb(SchUeCb *ueCb)
          SCH_FREE(ueCb->ulInfo.ulLcCtxt[ueLcIdx].snssai, sizeof(Snssai));
          SCH_FREE(ueCb->dlInfo.dlLcCtxt[ueLcIdx].snssai, sizeof(Snssai));
       }
-
-      /*Clearing out Dedicated LC list*/
-      if(ueCb->dlLcPrbEst.dedLcInfo != NULLP)
-      {
-         lcLL = &(ueCb->dlLcPrbEst.dedLcInfo->dedLcList);
-         deleteLcLL(lcLL);
-         SCH_FREE(ueCb->dlLcPrbEst.dedLcInfo, sizeof(DedicatedLCInfo));
-      }
-      if(ueCb->ulLcPrbEst.dedLcInfo != NULLP)
-      {
-         lcLL = &(ueCb->ulLcPrbEst.dedLcInfo->dedLcList);
-         deleteLcLL(lcLL);
-         SCH_FREE(ueCb->ulLcPrbEst.dedLcInfo, sizeof(DedicatedLCInfo));
-      }
-      /*Deleteing the Default LC list*/
-      lcLL = &(ueCb->dlLcPrbEst.defLcList);
-      deleteLcLL(lcLL);
-
-      lcLL = &(ueCb->ulLcPrbEst.defLcList);
-      deleteLcLL(lcLL);
 
       memset(ueCb, 0, sizeof(SchUeCb));
    }
@@ -1287,11 +1402,63 @@ uint8_t MacSchCellDeleteReq(Pst *pst, SchCellDelete  *cellDelete)
          DU_LOG("\nERROR  -->  SCH : MacSchCellDeleteReq(): failed to send Cell Delete response");
          ret =  RFAILED;
       }
-
    }
    return ret;   
 }
+/*******************************************************************
+ *
+ * @brief Function updates DL HARQ Feedback
+ *
+ * @details
+ *
+ *    Function : schUpdateHarqFdbk
+ *
+ *    Functionality: Function updates DL HARQ feedback
+ *
+ * @params[in] SchUeCb *ueCb, UE cb struct pointer
+ * @params[in] uint8_t numHarq, number of HARQ processes in feedback 
+ * @params[in] uint8_t *harqPayload, harq feedback payload received
+ * @params[in] SlotTimingInfo *slotInd, slot timing information
+ * @return void
+ *
+ * ****************************************************************/
+void schUpdateHarqFdbk(SchUeCb *ueCb, uint8_t numHarq, uint8_t *harqPayload, SlotTimingInfo *slotInd)
+{
+   SchDlHqProcCb *hqP;
+   SchHqDlMap *hqDlMap;
+   CmLList  *node;
+   uint8_t fdbkPos = 0;
 
+   hqDlMap = ueCb->hqDlmap[slotInd->slot];
+
+   if (ueCb->cellCb->raCb[ueCb->ueId-1].raState == SCH_RA_STATE_MSG2_HANDLE)
+   {
+      return;
+   }
+   if (ueCb->cellCb->raCb[ueCb->ueId-1].raState != SCH_RA_STATE_MSG4_PENDING)
+   {
+      node = hqDlMap->hqList.first;
+      while(node)
+      {
+         hqP = (SchDlHqProcCb*)node->node;
+         node = node->next;
+         cmLListDelFrm(&hqDlMap->hqList, &hqP->ulSlotLnk);
+         /* 
+            Decode harq feedback if needed post FAPI message decoding also or check how to decode this FAPI msg.
+            case 1 semi static harq Ack/Nack codebook //Supported
+            case 2 dynamic harq ACK/NACK codebook //Not supported
+         */
+         schDlHqFeedbackUpdate(hqP, harqPayload[fdbkPos++], HQ_TB_ACKED);//Marking 2nd TB as ACKED for now as only one TB to be used
+      }
+   }
+   else
+   {
+      node = hqDlMap->hqList.first;
+      hqP = (SchDlHqProcCb*)node->node;
+      cmLListDelFrm(&hqDlMap->hqList, &hqP->ulSlotLnk);
+      schMsg4FeedbackUpdate(hqP, harqPayload[fdbkPos++]);
+   }
+}
 /**********************************************************************
   End of file
  **********************************************************************/
