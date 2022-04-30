@@ -453,8 +453,7 @@ uint16_t fillPucchResourceInfo(SchPucchInfo *schPucchInfo, Inst inst, SlotTiming
    }
    /* set HARQ flag to true */
    schPucchInfo->harqFlag = true;
-   schPucchInfo->numHarqBits = 1; /* 1 bit for HARQ */
-
+   schPucchInfo->numHarqBits = 1; /* 1 bit for HARQ */   
    return ROK;
 }
 
@@ -541,7 +540,7 @@ uint8_t schUlResAlloc(SchCellCb *cell, Inst schInst)
  *
  * ****************************************************************/
 uint8_t schDlRsrcAllocMsg4(SchCellCb *cell, SlotTimingInfo msg4Time, uint8_t ueId, DlMsgAlloc *dlMsgAlloc,\
-uint8_t pdschStartSymbol, uint8_t pdschNumSymbols)
+uint8_t pdschStartSymbol, uint8_t pdschNumSymbols, bool isRetx, SchDlHqProcCb *hqP)
 {
    uint8_t coreset0Idx = 0;
    uint8_t firstSymbol = 0;
@@ -575,7 +574,7 @@ uint8_t pdschStartSymbol, uint8_t pdschNumSymbols)
    bwp = &msg4Alloc->bwp;
    coreset0Idx  = initialBwp->pdcchCommon.commonSearchSpace.coresetId;
 
-   fillDlMsgInfo(&msg4Alloc->dlMsgInfo, cell->raCb[ueId-1].tcrnti);
+   fillDlMsgInfo(&msg4Alloc->dlMsgInfo, cell->raCb[ueId-1].tcrnti, isRetx, hqP);
    msg4Alloc->dlMsgInfo.dlMsgPduLen = cell->raCb[ueId-1].dlMsgPduLen;
 
    /* derive the sib1 coreset0 params from table 13-1 spec 38.213 */
@@ -717,7 +716,7 @@ uint8_t pdschStartSymbol, uint8_t pdschNumSymbols)
  *
  *******************************************************************/
 
-uint16_t schAllocPucchResource(SchCellCb *cell, SlotTimingInfo pucchTime, uint16_t crnti)
+uint16_t schAllocPucchResource(SchCellCb *cell, SlotTimingInfo pucchTime, uint16_t crnti, SchUeCb *ueCb, bool isRetx, SchDlHqProcCb *hqP)
 {
    uint16_t pucchSlot = 0;
    SchUlSlotInfo  *schUlSlotInfo = NULLP;
@@ -728,7 +727,7 @@ uint16_t schAllocPucchResource(SchCellCb *cell, SlotTimingInfo pucchTime, uint16
 
    schUlSlotInfo->pucchPres = true;
    schUlSlotInfo->schPucchInfo.rnti = crnti;
-
+   cmLListAdd2Tail(&(ueCb->hqmap[pucchSlot]->hqList), &hqP->ulSlotLnk); 
    return ROK;
 }
 
@@ -749,7 +748,7 @@ uint16_t schAllocPucchResource(SchCellCb *cell, SlotTimingInfo pucchTime, uint16
  *
  * ****************************************************************/
 uint8_t schDlRsrcAllocDlMsg(SchCellCb *cell, SlotTimingInfo slotTime, uint16_t crnti,
-                uint32_t tbSize, DlMsgAlloc *dlMsgAlloc, uint16_t startPRB, uint8_t pdschStartSymbol, uint8_t pdschNumSymbols)
+                uint32_t tbSize, DlMsgAlloc *dlMsgAlloc, uint16_t startPRB, uint8_t pdschStartSymbol, uint8_t pdschNumSymbols, bool isRetx, SchDlHqProcCb *hqP)
 {
    uint8_t ueId=0;
    PdcchCfg *pdcch = NULLP;
@@ -1631,15 +1630,15 @@ void updateGrantSizeForBoRpt(CmLListCp *lcLL, DlMsgAlloc *dlMsgAlloc,\
 * @return void
 *
 *******************************************************************/
-void fillDlMsgInfo(DlMsgInfo *dlMsgInfo, uint8_t crnti)
+void fillDlMsgInfo(DlMsgInfo *dlMsgInfo, uint8_t crnti, bool isRetx, SchDlHqProcCb *hqP)
 {
    dlMsgInfo->crnti = crnti;
-   dlMsgInfo->ndi = 1;
-   dlMsgInfo->harqProcNum = 0;
+   dlMsgInfo->ndi = hqP->tbInfo[0].ndi;
+   dlMsgInfo->harqProcNum = hqP->procId;
    dlMsgInfo->dlAssignIdx = 0;
    dlMsgInfo->pucchTpc = 0;
    dlMsgInfo->pucchResInd = 0;
-   dlMsgInfo->harqFeedbackInd = 0;
+   dlMsgInfo->harqFeedbackInd = hqP->k1;
    dlMsgInfo->dciFormatId = 1;
 }
 
@@ -1666,6 +1665,8 @@ bool schProcessMsg4Req(SchCellCb *cell, SlotTimingInfo currTime, uint8_t ueId)
    SlotTimingInfo pdcchTime, pdschTime, pucchTime;
    DlMsgAlloc *dciSlotAlloc = NULLP;    /* Stores info for transmission of PDCCH for Msg4 */
    DlMsgAlloc  *msg4SlotAlloc = NULLP;   /* Stores info for transmission of PDSCH for Msg4 */
+   bool isRetxMsg4 = FALSE;
+   SchDlHqProcCb *msg4HqProc=NULLP;
 
    if(cell == NULL)
    {
@@ -1674,7 +1675,7 @@ bool schProcessMsg4Req(SchCellCb *cell, SlotTimingInfo currTime, uint8_t ueId)
    }
    
    if(findValidK0K1Value(cell, currTime, ueId, false, &pdschStartSymbol, &pdschNumSymbols, &pdcchTime, &pdschTime,\
-            &pucchTime) != true )
+            &pucchTime, isRetxMsg4, msg4HqProc) != true )
    {
       return false;
    }
@@ -1695,7 +1696,7 @@ bool schProcessMsg4Req(SchCellCb *cell, SlotTimingInfo currTime, uint8_t ueId)
       dciSlotAlloc = cell->schDlSlotInfo[pdcchTime.slot]->dlMsgAlloc[ueId-1];
 
    /* Fill PDCCH and PDSCH scheduling information for Msg4 */
-   if((schDlRsrcAllocMsg4(cell, pdschTime, ueId, dciSlotAlloc, pdschStartSymbol, pdschNumSymbols)) != ROK)
+   if((schDlRsrcAllocMsg4(cell, pdschTime, ueId, dciSlotAlloc, pdschStartSymbol, pdschNumSymbols, isRetxMsg4, msg4HqProc)) != ROK)
    {
       DU_LOG("\nERROR  -->  SCH: Scheduling of Msg4 failed in slot [%d]", pdschTime.slot);
       if(dciSlotAlloc->numSchedInfo == 0)
@@ -1757,12 +1758,12 @@ bool schProcessMsg4Req(SchCellCb *cell, SlotTimingInfo currTime, uint8_t ueId)
    }
 
    /* PUCCH resource */
-   schAllocPucchResource(cell, pucchTime, cell->raCb[ueId-1].tcrnti);
+   schAllocPucchResource(cell, pucchTime, cell->raCb[ueId-1].tcrnti, &cell->ueCb[ueId-1], isRetxMsg4, msg4HqProc);
 
    cell->schDlSlotInfo[pdcchTime.slot]->pdcchUe = ueId;
    cell->schDlSlotInfo[pdschTime.slot]->pdschUe = ueId;
    cell->schUlSlotInfo[pucchTime.slot]->pucchUe = ueId;
-   cell->raCb[ueId-1].msg4recvd = FALSE;
+//   cell->raCb[ueId-1].msg4recvd = FALSE; update on harq ack reception
    return true;
 }
 
@@ -1789,12 +1790,12 @@ bool schProcessMsg4Req(SchCellCb *cell, SlotTimingInfo currTime, uint8_t ueId)
  *
  * ****************************************************************/
 bool schCalculateUlTbs(SchUeCb *ueCb, SlotTimingInfo puschTime, uint8_t symbLen,\
-                          uint16_t *startPrb, uint32_t *totTBS)
+                          uint16_t *startPrb, uint32_t *totTBS, bool isRetx, SchUlHqProcCb *hqP)
 {
    uint16_t mcsIdx = 0;
    CmLListCp *lcLL = NULLP;
    uint16_t lcgIdx = 0, lcId =0, maxFreePRB = 0;
-
+   uint16_t rsvdDedicatedPRB;
    *startPrb = 0;
    *totTBS = 0;
 
@@ -1812,11 +1813,12 @@ bool schCalculateUlTbs(SchUeCb *ueCb, SlotTimingInfo puschTime, uint8_t symbLen,
       lcId = lcgIdx;
       if(ueCb->ulInfo.ulLcCtxt[lcId].isDedicated)
       {
-         lcLL = &(ueCb->ulLcPrbEst.dedLcInfo->dedLcList);
+         lcLL = &(hqP->ulLcPrbEst.dedLcList);
+         rsvdDedicatedPRB = ueCb->ulInfo.ulLcCtxt[lcId].rsvdDedicatedPRB;
       }
       else
       {
-         lcLL = &(ueCb->ulLcPrbEst.defLcList);
+         lcLL = &(hqP->ulLcPrbEst.defLcList);
       }
 
       /*[Step2]: Update the reqPRB and Payloadsize for this LC in the appropriate List*/
@@ -1827,8 +1829,7 @@ bool schCalculateUlTbs(SchUeCb *ueCb, SlotTimingInfo puschTime, uint8_t symbLen,
       }
    }
 
-   if ((ueCb->ulLcPrbEst.defLcList.count == 0) && \
-         ((ueCb->ulLcPrbEst.dedLcInfo == NULL) || (ueCb->ulLcPrbEst.dedLcInfo->dedLcList.count == 0)))
+   if ((hqP->ulLcPrbEst.defLcList.count == 0) && (hqP->ulLcPrbEst.dedLcList.count == 0))
    {
       if(ueCb->srRcvd)
       {
@@ -1851,38 +1852,37 @@ bool schCalculateUlTbs(SchUeCb *ueCb, SlotTimingInfo puschTime, uint8_t symbLen,
    if(maxFreePRB != 0)
    {
       mcsIdx = ueCb->ueCfg.ulModInfo.mcsIndex;
-      if((ueCb->ulLcPrbEst.dedLcInfo == NULLP) 
-            || ((maxFreePRB <  ueCb->ulLcPrbEst.dedLcInfo->rsvdDedicatedPRB)))
+      if((hqP->ulLcPrbEst.dedLcList.count == 0) || ((maxFreePRB < rsvdDedicatedPRB)))
       { 
-         ueCb->ulLcPrbEst.sharedNumPrb = maxFreePRB;
+         hqP->ulLcPrbEst.sharedNumPrb = maxFreePRB;
          DU_LOG("\nDEBUG  -->  SCH : UL Only Default Slice is scheduled, sharedPRB Count:%d",\
-               ueCb->ulLcPrbEst.sharedNumPrb);
+               hqP->ulLcPrbEst.sharedNumPrb);
 
          /*PRB Alloc for Default LCs*/
-         prbAllocUsingRRMPolicy(&(ueCb->ulLcPrbEst.defLcList), FALSE, mcsIdx, symbLen,\
-               &(ueCb->ulLcPrbEst.sharedNumPrb), NULLP, NULLP,&(ueCb->srRcvd));
+         prbAllocUsingRRMPolicy(&(hqP->ulLcPrbEst.defLcList), FALSE, mcsIdx, symbLen,\
+               &(hqP->ulLcPrbEst.sharedNumPrb), NULLP, NULLP,&(ueCb->srRcvd));
       }
       else
       {
-         ueCb->ulLcPrbEst.sharedNumPrb = maxFreePRB - ueCb->ulLcPrbEst.dedLcInfo->rsvdDedicatedPRB;
+         hqP->ulLcPrbEst.sharedNumPrb = maxFreePRB - rsvdDedicatedPRB;
 
          /*PRB Alloc for Dedicated LCs*/
-         prbAllocUsingRRMPolicy(&(ueCb->ulLcPrbEst.dedLcInfo->dedLcList), TRUE, mcsIdx, symbLen,\
-               &(ueCb->ulLcPrbEst.sharedNumPrb), &(ueCb->ulLcPrbEst.dedLcInfo->rsvdDedicatedPRB),\
+         prbAllocUsingRRMPolicy(&(hqP->ulLcPrbEst.dedLcList), TRUE, mcsIdx, symbLen,\
+               &(hqP->ulLcPrbEst.sharedNumPrb), &(rsvdDedicatedPRB),\
                NULLP,&(ueCb->srRcvd));
 
          /*PRB Alloc for Default LCs*/
-         prbAllocUsingRRMPolicy(&(ueCb->ulLcPrbEst.defLcList), FALSE, mcsIdx, symbLen, \
-               &(ueCb->ulLcPrbEst.sharedNumPrb), &(ueCb->ulLcPrbEst.dedLcInfo->rsvdDedicatedPRB),\
+         prbAllocUsingRRMPolicy(&(hqP->ulLcPrbEst.defLcList), FALSE, mcsIdx, symbLen, \
+               &(hqP->ulLcPrbEst.sharedNumPrb), &(rsvdDedicatedPRB),\
                NULLP,&(ueCb->srRcvd));
       }
    }
    /*[Step5]:Traverse each LCID in LcList to calculate the exact Scheduled Bytes
     * using allocated BO per LC and Update dlMsgAlloc(BO report for MAC*/ 
-   if(ueCb->ulLcPrbEst.dedLcInfo != NULLP)
-      updateGrantSizeForBoRpt(&(ueCb->ulLcPrbEst.dedLcInfo->dedLcList), NULLP, ueCb->bsrInfo, totTBS);
+   if(hqP->ulLcPrbEst.dedLcList.count != 0)
+      updateGrantSizeForBoRpt(&(hqP->ulLcPrbEst.dedLcList), NULLP, ueCb->bsrInfo, totTBS);
 
-   updateGrantSizeForBoRpt(&(ueCb->ulLcPrbEst.defLcList), NULLP, ueCb->bsrInfo, totTBS);
+   updateGrantSizeForBoRpt(&(hqP->ulLcPrbEst.defLcList), NULLP, ueCb->bsrInfo, totTBS);
 
    /*Below case will hit if NO LC(s) are allocated due to resource crunch*/
    if (*totTBS == 0)
@@ -1917,7 +1917,7 @@ bool schCalculateUlTbs(SchUeCb *ueCb, SlotTimingInfo puschTime, uint8_t symbLen,
  *         RFAILED - failure
  *
  *******************************************************************/
-bool schProcessSrOrBsrReq(SchCellCb *cell, SlotTimingInfo currTime, uint8_t ueId)
+bool schProcessSrOrBsrReq(SchCellCb *cell, SlotTimingInfo currTime, uint8_t ueId, SchUlHqProcCb* retxHqP)
 {
    bool k2Found = FALSE, ret = FALSE;
    uint8_t startSymb = 0, symbLen = 0;
@@ -1929,7 +1929,9 @@ bool schProcessSrOrBsrReq(SchCellCb *cell, SlotTimingInfo currTime, uint8_t ueId
    DciInfo  *dciInfo = NULLP;
    SchK2TimingInfoTbl *k2InfoTbl=NULLP;
    SlotTimingInfo dciTime, puschTime;
-
+   SchUlHqProcCb *hqP = NULLP;
+   bool isRetx = FALSE;
+   
    if(cell == NULLP)
    {
       DU_LOG("\nERROR  -->  SCH: schDlRsrcAllocMsg4() : Cell is NULL");
@@ -1943,6 +1945,20 @@ bool schProcessSrOrBsrReq(SchCellCb *cell, SlotTimingInfo currTime, uint8_t ueId
       DU_LOG("\nERROR  -->  SCH: schDlRsrcAllocMsg4() : UE is NULL");
       return false;
    }
+
+   if (retxHqP == NULLP)
+   {    
+      if (schUlGetAvlHqProcess(cell, ueCb, &hqP) != ROK)
+      {
+         return RFAILED;
+      }
+   }
+   else
+   {
+      isRetx = TRUE;
+      hqP = retxHqP;
+   }
+   
    /* Calculating time frame to send DCI for SR */
    ADD_DELTA_TO_TIME(currTime, dciTime, PHY_DELTA_DL + SCHED_DELTA);
 #ifdef NR_TDD
@@ -1970,7 +1986,7 @@ bool schProcessSrOrBsrReq(SchCellCb *cell, SlotTimingInfo currTime, uint8_t ueId
             startSymb =  ueCb->ueCfg.spCellCfg.servCellCfg.initUlBwp.puschCfg.timeDomRsrcAllocList[k2Index].startSymbol;
             symbLen =  ueCb->ueCfg.spCellCfg.servCellCfg.initUlBwp.puschCfg.timeDomRsrcAllocList[k2Index].symbolLength;
          }
-
+         /* Check for number of Symbol of PUSCH should be same as original in case of transmisson*/
          /* Calculating time frame to send PUSCH for SR */
          ADD_DELTA_TO_TIME(dciTime, puschTime, k2Val);
 #ifdef NR_TDD
@@ -1988,18 +2004,26 @@ bool schProcessSrOrBsrReq(SchCellCb *cell, SlotTimingInfo currTime, uint8_t ueId
 
    if(k2Found == true)
    {
-      ret = schCalculateUlTbs(ueCb, puschTime, symbLen, &startPrb, &totDataReq);
+      ret = schCalculateUlTbs(ueCb, puschTime, symbLen, &startPrb, &totDataReq, isRetx, hqP);
+
       if(totDataReq > 0 && ret == TRUE)
       {
          SCH_ALLOC(dciInfo, sizeof(DciInfo));
          if(!dciInfo)
          {
             DU_LOG("\nERROR  -->  SCH : Memory Allocation failed for dciInfo alloc");
+            if(isRetx == TRUE)
+            {
 
-            if(ueCb->ulLcPrbEst.dedLcInfo != NULLP)
-               updateBsrAndLcList(&(ueCb->ulLcPrbEst.dedLcInfo->dedLcList), ueCb->bsrInfo, RFAILED);
+            }
+            else
+            {
+               if(hqP->ulLcPrbEst.dedLcList.count != 0)
+                  updateBsrAndLcList(&(hqP->ulLcPrbEst.dedLcList), ueCb->bsrInfo, RFAILED);
 
-            updateBsrAndLcList(&(ueCb->ulLcPrbEst.defLcList), ueCb->bsrInfo, RFAILED);
+               updateBsrAndLcList(&(hqP->ulLcPrbEst.defLcList), ueCb->bsrInfo, RFAILED);
+            }
+            schUlReleaseHqProcess(hqP, FALSE);
             return false;
          }
          cell->schDlSlotInfo[dciTime.slot]->ulGrant = dciInfo;
@@ -2014,25 +2038,38 @@ bool schProcessSrOrBsrReq(SchCellCb *cell, SlotTimingInfo currTime, uint8_t ueId
                if(puschInfo != NULLP)
                {
                   /* Fill DCI for UL grant */
-                  schFillUlDci(ueCb, puschInfo, dciInfo);
+                  schFillUlDci(ueCb, puschInfo, dciInfo, isRetx, hqP);
                   memcpy(&dciInfo->slotIndInfo, &dciTime, sizeof(SlotTimingInfo));
                   ueCb->srRcvd = false;
                   ueCb->bsrRcvd = false;
                   cell->schUlSlotInfo[puschTime.slot]->puschUe = ueId;
-                  if(ueCb->ulLcPrbEst.dedLcInfo != NULLP)
-                     updateBsrAndLcList(&(ueCb->ulLcPrbEst.dedLcInfo->dedLcList), ueCb->bsrInfo, ROK);
+                  if(isRetx == TRUE)
+                  {
+                     if(retxHqP->ulLcPrbEst.dedLcList.count != 0)
+                        updateBsrAndLcList(&(retxHqP->ulLcPrbEst.dedLcList), ueCb->bsrInfo, ROK);
 
-                  updateBsrAndLcList(&(ueCb->ulLcPrbEst.defLcList), ueCb->bsrInfo, ROK);
+                     updateBsrAndLcList(&(retxHqP->ulLcPrbEst.defLcList), ueCb->bsrInfo, ROK);
+                  }
+                  else
+                  {
+                     if(hqP->ulLcPrbEst.dedLcList.count != 0)
+                        updateBsrAndLcList(&(hqP->ulLcPrbEst.dedLcList), ueCb->bsrInfo, ROK);
+
+                     updateBsrAndLcList(&(hqP->ulLcPrbEst.defLcList), ueCb->bsrInfo, ROK);
+                  }
                   return true;
                }
             }
          }
 
-         if(ueCb->ulLcPrbEst.dedLcInfo != NULLP)
-            updateBsrAndLcList(&(ueCb->ulLcPrbEst.dedLcInfo->dedLcList), ueCb->bsrInfo, RFAILED);
-
-         updateBsrAndLcList(&(ueCb->ulLcPrbEst.defLcList), ueCb->bsrInfo, RFAILED);
+         if(retxHqP->ulLcPrbEst.dedLcList.count != 0)
+            updateBsrAndLcList(&(hqP->ulLcPrbEst.dedLcList), ueCb->bsrInfo, RFAILED);
+         updateBsrAndLcList(&(hqP->ulLcPrbEst.defLcList), ueCb->bsrInfo, RFAILED);
       }
+   }
+   else
+   {
+      schUlReleaseHqProcess(hqP, FALSE);
    }
    return (ret);
 }
