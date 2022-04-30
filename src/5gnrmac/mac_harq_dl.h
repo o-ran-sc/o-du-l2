@@ -14,46 +14,13 @@
 #   See the License for the specific language governing permissions and        #
 #   limitations under the License.                                             #
 ################################################################################
-*******************************************************************************/
+ *******************************************************************************/
 
-/* This file contains system logging functionality for DU */
+void addDlHqProcInUe(SlotTimingInfo dlMsgTime, MacUeCb *ueCb, DlMsgSchInfo schedInfo);
+uint8_t updateNewTbInDlHqProcCb(SlotTimingInfo slotInfo, MacUeCb *ueCb, uint32_t tbSize, uint8_t *txPdu);
+uint8_t* fetchTbfromDlHarqProc(SlotTimingInfo slotInfo, MacUeCb *ueCb, uint8_t hqProcId, uint32_t tbSize);
 
-#ifndef __DU_LOGS_H__
-#define __DU_LOGS_H__
-
-#include<syslog.h>
-//Regular text
-#define BLK "\e[0;30m"
-#define RED "\e[0;31m"
-#define GRN "\e[0;32m"
-#define YEL "\e[0;33m"
-#define BLU "\e[0;34m"
-#define MAG "\e[0;35m"
-#define CYN "\e[0;36m"
-#define WHT "\e[0;37m"
-#define RESET "\e[0m"
-/*MACROS*/
-#define DU_LOG(...) ({\
-		})
-#define HQ_LOG(dir,pid,...) ({\
-		if(0==dir){\
-		printf(YEL);\
-		printf(__VA_ARGS__);\
-		printf(RESET);\
-		}\
-		else if (1==dir)\
-		{\
-		printf(BLU);\
-		printf(__VA_ARGS__);\
-		printf(RESET);\
-		}\
-		else\
-		{\
-		printf(WHT);\
-		printf(__VA_ARGS__);\
-		printf(RESET);\
-		}\
-		syslog(LOG_DEBUG,__VA_ARGS__);\
-		})
-#endif
+/**********************************************************************
+  End of file
+ **********************************************************************/
 

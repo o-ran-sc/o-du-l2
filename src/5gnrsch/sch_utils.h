@@ -107,7 +107,7 @@ uint8_t pucchResourceSet[MAX_PUCCH_RES_SET_IDX][4];
 uint8_t puschDeltaTable[MAX_MU_PUSCH];
 uint16_t prachCfgIdxTable[MAX_PRACH_CONFIG_IDX][8];
 uint16_t numRbForPrachTable[MAX_RACH_NUM_RB_IDX][5];
-
+uint8_t schCmnDlRvTbl[4];
 /* Functions declarations : Linked list handler */
 uint8_t addNodeToLList(CmLListCp *llist, void *blockToAdd, CmLList *currNode);
 uint8_t deleteNodeFromLList(CmLListCp *llist, CmLList *node);

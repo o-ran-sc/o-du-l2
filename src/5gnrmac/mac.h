@@ -90,6 +90,21 @@ typedef enum
    MAC_LC_STATE_ACTIVE
 }MacLcState;
 
+typedef struct dlTbInfo
+{
+   SlotTimingInfo  txTime;  
+   uint16_t        tbSize;
+   uint8_t         *tb;
+}DlTbInfo;
+
+/* DL HARQ Process Info */
+typedef struct dlHarqProcCb
+{
+   uint8_t     procId;                 /* HARQ Process Id */
+   uint8_t     numTb;                  /* Number of TB */
+   DlTbInfo    tbInfo[MAX_NUM_TB_PER_UE];  /* TB information */
+}DlHarqProcCb;
+
 typedef struct macDlSlot
 {
    DlSchedInfo dlInfo;
@@ -108,8 +123,7 @@ typedef struct macCbInfo
    uint8_t     msg3Pdu[6];  /* used as CRI value during muxing */
    uint8_t     *msg4Pdu;    /* storing DL-CCCH Ind Pdu */
    uint16_t    msg4PduLen;  /* storing DL-CCCH Ind Pdu Len */
-   uint8_t     *msg4TxPdu;  /* muxed Pdu used for re-transmission */
-   uint16_t    msg4TbSize;  /* size required for msg4TxPdu */
+   DlHarqProcCb msg4HqInfo; /* HARQ process info for msg 4 */
 }MacRaCbInfo;
 
 typedef struct macCe
@@ -137,12 +151,6 @@ typedef struct macDlData
    uint16_t numPdu;
    MacDlInfo  pduInfo[MAX_MAC_DL_PDU];
 }MacDlData;
-
-/* HARQ Process Info */
-typedef struct dlHarqProcCb
-{
-   uint8_t   procId;    /* HARQ Process Id */
-}DlHarqProcCb;
 
 /* DL HARQ entity */
 typedef struct dlHarqEnt

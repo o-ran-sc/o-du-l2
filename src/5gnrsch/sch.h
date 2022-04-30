@@ -59,6 +59,20 @@
 #define PRB_BITMAP_IDX_LEN 64
 #define PRB_BITMAP_MAX_IDX ((MAX_NUM_RB + PRB_BITMAP_IDX_LEN-1) / PRB_BITMAP_IDX_LEN)
 
+#define SCH_MAX_NUM_UL_HQ_PROC 16
+#define SCH_MAX_NUM_DL_HQ_PROC 16
+#define SCH_MAX_NUM_MSG3_TX 2
+#define SCH_MAX_NUM_DL_HQ_TX 3
+#define SCH_MAX_NUM_UL_HQ_TX 3
+#define SCH_MAX_NUM_MSG4_TX 1
+#define HQ_ACK 0
+#define HQ_NACK 1
+#define HQ_DTX 2
+
+typedef struct schDlHqProcCb SchDlHqProcCb;
+typedef struct schUlHqEnt SchUlHqEnt;
+typedef struct schDlHqEnt SchDlHqEnt;
+typedef struct schRaReq SchRaReq;
 typedef struct schCellCb SchCellCb;
 typedef struct schUeCb SchUeCb;
 
@@ -80,6 +94,14 @@ typedef enum
 
 typedef enum
 {
+   SCH_RA_STATE_MSG2_HANDLE,
+   SCH_RA_STATE_MSG3_PENDING,
+   SCH_RA_STATE_MSG4_PENDING,
+   SCH_RA_STATE_MSG4_DONE
+}SchRaState;
+
+typedef enum
+{
    SCH_LC_STATE_INACTIVE,
    SCH_LC_STATE_ACTIVE
 }SchLcState;
@@ -90,6 +112,124 @@ typedef enum
    WITHIN_WINDOW,
    WINDOW_EXPIRED
 }RaRspWindowStatus;
+
+typedef enum
+{
+   HQ_TB_ACKED=0,
+   HQ_TB_NACKED,
+   HQ_TB_WAITING
+}SchHqTbState;
+
+/*Following structures to keep record and estimations of PRB allocated for each
+ * LC taking into consideration the RRM policies*/
+typedef struct lcInfo
+{
+   uint8_t  lcId;     /*LCID for which BO are getting recorded*/
+   uint32_t reqBO;    /*Size of the BO requested/to be allocated for this LC*/
+   uint32_t allocBO;  /*TBS/BO Size which is actually allocated*/
+   uint8_t  allocPRB; /*PRB count which is allocated based on RRM policy/FreePRB*/
+}LcInfo;
+
+typedef struct schLcPrbEstimate
+{
+   /* TODO: For Multiple RRMPolicies, Make DedicatedLcInfo as array/Double Pointer 
+    * and have separate DedLCInfo for each RRMPolcyMemberList*/
+   /* Dedicated LC List will be allocated, if any available*/
+   CmLListCp dedLcList;	/*Contain LCInfo per RRMPolicy*/
+   CmLListCp defLcList; /*Linklist of LC assoc with Default S-NSSAI(s)*/
+   /* SharedPRB number can be used by any LC.
+    * Need to calculate in every Slot based on PRB availability*/
+   uint16_t sharedNumPrb;
+}SchLcPrbEstimate;
+typedef struct schUlHqTbCb
+{
+   uint32_t               tbSzReq;
+   uint32_t               tbSzAllc;
+   uint8_t                ndi;
+   uint8_t                rv;
+   uint8_t                rvIdx;
+   uint8_t                qamOrder;
+   SchMcsTable            mcsTable;
+   uint8_t                iMcs;
+   uint8_t                iMcsInDci;
+   uint8_t                numLyrs;
+   uint8_t                txCntr;
+   SchHqTbState           state;
+   uint8_t                cntrRetxAllocFail;
+   uint8_t                statsBitmap;
+}SchUlHqTbCb;
+
+typedef struct schDlHqTbCb
+{
+   uint8_t                tbIdx;
+   Bool                   isEnabled;
+   uint32_t               tbSzReq;
+   uint8_t                txCntr;
+   uint8_t                ndi;
+   uint8_t                rv;
+   uint8_t                rvIdx;
+   uint8_t                iMcs;
+   uint8_t                iMcsInDci;
+   uint8_t                numLyrs;
+   SchHqTbState           state;
+   uint8_t                isAckNackDtx;
+   uint8_t                cntrRetxAllocFail;
+   //InfUeTbInfo          tbCompInfo;
+   uint8_t                statsBitmap;
+}SchDlHqTbCb;
+
+typedef struct schUlHqProcCb
+{
+   uint8_t           procId;       /*!< HARQ Process ID */
+   SchUlHqEnt        *hqEnt;
+   uint8_t           maxHqTxPerHqP;
+   SchUlHqTbCb       tbInfo;
+   CmLList           ulHqEntLnk;
+   CmLList           ulSlotLnk;
+   uint8_t           strtSymbl;
+   uint8_t           numSymbl;
+   SchLcPrbEstimate  ulLcPrbEst; /*UL PRB Alloc Estimate among different LC*/
+   CmLList           ulHqProcLink;
+   uint8_t           puschResType; /* Resource allocation type */
+   uint16_t          puschStartPrb;
+   uint16_t          puschNumPrb;
+   uint8_t           dmrsMappingType;
+   uint8_t           nrOfDmrsSymbols;
+   uint8_t           dmrsAddPos;
+}SchUlHqProcCb;
+
+struct schDlHqProcCb
+{
+   uint8_t           procId;       /*!< HARQ Process ID */
+   SchDlHqEnt        *hqEnt;
+   uint8_t           maxHqTxPerHqP;
+   CmLList           dlHqEntLnk;
+   CmLList           ulSlotLnk;
+   SchDlHqTbCb       tbInfo[2];
+   uint8_t           k1;
+   SchLcPrbEstimate  dlLcPrbEst; /*DL PRB Alloc Estimate among different LC*/
+   CmLList           dlHqProcLink;
+};
+struct schUlHqEnt
+{
+   struct schCellCb      *cell;     /*!< Contains the pointer to cell*/
+   SchUeCb        *ue;       /*!< Contains the pointer to ue*/
+   CmLListCp      free;      /*!< List of free HARQ processes */
+   CmLListCp      inUse;     /*!< List of in-use HARQ processes */
+   uint8_t        maxHqTx;   /*!< Maximum number of harq re-transmissions */
+   uint8_t        numHqPrcs; /*!< Number of HARQ Processes */
+   SchUlHqProcCb  procs[SCH_MAX_NUM_UL_HQ_PROC]; /*!< Uplink harq process info */
+};
+struct schDlHqEnt
+{
+   struct schCellCb      *cell;     /*!< Contains the pointer to cell */
+   SchUeCb        *ue;       /*!< Contains the pointer to UE */
+   CmLListCp      free;      /*!< List of free HARQ processes */
+   CmLListCp      inUse;     /*!< List of in-use HARQ processes */
+   uint8_t        maxHqTx;   /*!< Maximum number of harq transmissions */
+   uint8_t        numHqPrcs; /*!< Number of HARQ Processes */
+   SchDlHqProcCb  procs[SCH_MAX_NUM_DL_HQ_PROC];/*!< Downlink harq processes */
+};
 
 /**
  * @brief
@@ -144,9 +284,15 @@ typedef struct schDlSlotInfo
 
 typedef struct schRaCb
 {
+   uint8_t   ueId;
    bool      msg4recvd;
    uint16_t  tcrnti;
    uint16_t  dlMsgPduLen;
+   SchUlHqProcCb msg3HqProc;
+   SchUlHqProcCb *retxMsg3HqProc;
+   SchRaState raState;
+   SchCellCb *cell;
+   SchRaReq  *raReq;
 }SchRaCb;
 
 /**
@@ -184,6 +330,7 @@ typedef struct schLcCtxt
    uint16_t   pduSessionId; /*Pdu Session Id*/
    Snssai  *snssai;      /*S-NSSAI assoc with LCID*/
    bool isDedicated;     /*Flag containing Dedicated S-NSSAI or not*/
+   uint16_t rsvdDedicatedPRB;
 }SchDlLcCtxt;
 
 typedef struct schDlCb
@@ -194,7 +341,7 @@ typedef struct schDlCb
 typedef struct schUlLcCtxt
 {
    SchLcState  lcState;
-   uint8_t lcId;       
+   uint8_t lcId;
    uint8_t priority;
    uint8_t lcGroup;
    uint8_t schReqId;
@@ -203,6 +350,7 @@ typedef struct schUlLcCtxt
    uint16_t   pduSessionId; /*Pdu Session Id*/
    Snssai  *snssai;      /*S-NSSAI assoc with LCID*/
    bool isDedicated;     /*Flag containing Dedicated S-NSSAI or not*/
+   uint16_t rsvdDedicatedPRB;
 }SchUlLcCtxt;
 
 typedef struct schUlCb
@@ -227,35 +375,15 @@ typedef struct schUeCfgCb
    SchDataTransmission dataTransmissionAction;
 }SchUeCfgCb;
 
-/*Following structures to keep record and estimations of PRB allocated for each
- * LC taking into consideration the RRM policies*/
-typedef struct lcInfo
+typedef struct schHqDlMap
 {
-   uint8_t  lcId;     /*LCID for which BO are getting recorded*/
-   uint32_t reqBO;    /*Size of the BO requested/to be allocated for this LC*/
-   uint32_t allocBO;  /*TBS/BO Size which is actually allocated*/
-   uint8_t  allocPRB; /*PRB count which is allocated based on RRM policy/FreePRB*/
-}LcInfo;
+   CmLListCp hqList;
+}SchHqDlMap;
 
-typedef struct dedicatedLCInfo
+typedef struct schHqUlMap
 {
-   CmLListCp dedLcList; 	    /*Linklist of LC assoc with RRMPolicyMemberList*/
-   uint16_t	 rsvdDedicatedPRB; /*Number of PRB reserved for this Dedicated S-NSSAI*/
-}DedicatedLCInfo;
-
-typedef struct schLcPrbEstimate
-{
-   /* TODO: For Multiple RRMPolicies, Make DedicatedLcInfo as array/Double Pointer 
-    * and have separate DedLCInfo for each RRMPolcyMemberList*/
-   /* Dedicated LC List will be allocated, if any available*/
-   DedicatedLCInfo *dedLcInfo;	/*Contain LCInfo per RRMPolicy*/
-
-   CmLListCp defLcList; /*Linklist of LC assoc with Default S-NSSAI(s)*/
-
-   /* SharedPRB number can be used by any LC.
-    * Need to calculate in every Slot based on PRB availability*/
-   uint16_t sharedNumPrb;  
-}SchLcPrbEstimate;
+   CmLListCp hqList;
+}SchHqUlMap;
 
 /**
  * @brief
@@ -274,8 +402,15 @@ typedef struct schUeCb
    BsrInfo    bsrInfo[MAX_NUM_LOGICAL_CHANNEL_GROUPS];
    SchUlCb    ulInfo;
    SchDlCb    dlInfo;
-   SchLcPrbEstimate dlLcPrbEst; /*DL PRB Alloc Estimate among different LC*/
-   SchLcPrbEstimate ulLcPrbEst; /*UL PRB Alloc Estimate among different LC*/
+   SchUlHqEnt ulHqEnt;
+   SchDlHqEnt dlHqEnt;
+   SchDlHqProcCb *msg4Proc;
+   SchDlHqProcCb *retxMsg4HqProc;
+   CmLList    *node;
+   SchHqDlMap   **hqDlmap;
+   SchHqUlMap   **hqUlmap;
+   CmLListCp  ulRetxHqList;
+   CmLListCp  dlRetxHqList;
 }SchUeCb;
 
 /**
@@ -364,7 +499,7 @@ typedef struct schCb
    SchGenCb      genCfg;                /*!< General Config info */
    CmTqCp        tmrTqCp;               /*!< Timer Task Queue Cntrl Point */
    CmTqType      tmrTq[SCH_TQ_SIZE];    /*!< Timer Task Queue */
-   SchCellCb     *cells[MAX_NUM_CELL];  /* Array to store cellCb ptr */ 
+   SchCellCb     *cells[MAX_NUM_CELL];  /* Array to store cellCb ptr */
    SchSliceCfg   sliceCfg;
 }SchCb;
 
@@ -388,6 +523,7 @@ uint8_t addUeToBeScheduled(SchCellCb *cell, uint8_t ueId);
 /* Incoming message handler function declarations */
 uint8_t schProcessSlotInd(SlotTimingInfo *slotInd, Inst inst);
 uint8_t schProcessRachInd(RachIndInfo *rachInd, Inst schInst);
+uint8_t schProcessCrcInd(CrcIndInfo *crcInd, Inst schInst);
 
 /* DL scheduling related function declarations */
 PduTxOccsaion schCheckSsbOcc(SchCellCb *cell, SlotTimingInfo slotTime);
@@ -395,32 +531,32 @@ PduTxOccsaion schCheckSib1Occ(SchCellCb *cell, SlotTimingInfo slotTime);
 uint8_t schBroadcastSsbAlloc(SchCellCb *cell, SlotTimingInfo slotTime, DlBrdcstAlloc *dlBrdcstAlloc);
 uint8_t schBroadcastSib1Alloc(SchCellCb *cell, SlotTimingInfo slotTime, DlBrdcstAlloc *dlBrdcstAlloc);
 bool schProcessRaReq(Inst schInst, SchCellCb *cellCb, SlotTimingInfo currTime, uint8_t ueId);
-bool schProcessMsg4Req(SchCellCb *cell, SlotTimingInfo currTime, uint8_t ueId);
+bool schProcessMsg4Req(SchCellCb *cell, SlotTimingInfo currTime, uint8_t ueId,bool isRetxMsg4, SchDlHqProcCb* hqP);
 uint8_t schFillRar(SchCellCb *cell, SlotTimingInfo rarTime, uint16_t ueId, RarAlloc *rarAlloc, uint8_t k0Index);
 uint8_t schDlRsrcAllocDlMsg(SchCellCb *cell, SlotTimingInfo slotTime, uint16_t crnti,
-uint32_t tbSize, DlMsgAlloc *dlMsgAlloc, uint16_t startPRB, uint8_t pdschStartSymbol, uint8_t pdschNumSymbols);
+uint32_t tbSize, DlMsgAlloc *dlMsgAlloc, uint16_t startPRB, uint8_t pdschStartSymbol, uint8_t pdschNumSymbols,bool isRetx, SchDlHqProcCb* hqP);
 uint8_t schDlRsrcAllocMsg4(SchCellCb *cell, SlotTimingInfo msg4Time, uint8_t ueId, DlMsgAlloc *msg4Alloc,\
-uint8_t pdschStartSymbol, uint8_t pdschNumSymbols);
+uint8_t pdschStartSymbol, uint8_t pdschNumSymbols, bool isRetx, SchDlHqProcCb *hqP);
 uint8_t allocatePrbDl(SchCellCb *cell, SlotTimingInfo slotTime, uint8_t startSymbol, uint8_t symbolLength, \
    uint16_t *startPrb, uint16_t numPrb);
-void fillDlMsgInfo(DlMsgInfo *dlMsgInfo, uint8_t crnti);
+void fillDlMsgInfo(DlMsgInfo *dlMsgInfo, uint8_t crnti, bool isRetx, SchDlHqProcCb* hqP);
 bool findValidK0K1Value(SchCellCb *cell, SlotTimingInfo currTime, uint8_t ueId, bool dedMsg, uint8_t *pdschStartSymbol,\
-uint8_t *pdschSymblLen, SlotTimingInfo *pdcchTime,  SlotTimingInfo *pdschTime, SlotTimingInfo *pucchTime);
-
+uint8_t *pdschSymblLen, SlotTimingInfo *pdcchTime,  SlotTimingInfo *pdschTime, SlotTimingInfo *pucchTime, bool isRetx, SchDlHqProcCb *hqP);
+RaRspWindowStatus isInRaRspWindow(SchRaReq *raReq, SlotTimingInfo frameToCheck, uint16_t numSlotsPerSystemFrame);
 /* UL scheduling related function declarations */
 uint8_t schUlResAlloc(SchCellCb *cell, Inst schInst);
 bool schCheckPrachOcc(SchCellCb *cell, SlotTimingInfo prachOccasionTimingInfo);
 uint8_t schCalcPrachNumRb(SchCellCb *cell);
 void schPrachResAlloc(SchCellCb *cell, UlSchedInfo *ulSchedInfo, SlotTimingInfo prachOccasionTimingInfo);
-uint16_t schAllocPucchResource(SchCellCb *cell, SlotTimingInfo pucchTime, uint16_t crnti);
-uint8_t schFillUlDci(SchUeCb *ueCb, SchPuschInfo *puschInfo, DciInfo *dciInfo);
-uint8_t schFillPuschAlloc(SchUeCb *ueCb, SlotTimingInfo puschTime, uint32_t tbsSize, \
-                           uint8_t startSymb, uint8_t symbLen, uint16_t startPrb);
+uint16_t schAllocPucchResource(SchCellCb *cell, SlotTimingInfo pucchTime, uint16_t crnti,SchUeCb *ueCb, bool isRetx, SchDlHqProcCb *hqP);
+uint8_t schFillUlDci(SchUeCb *ueCb, SchPuschInfo *puschInfo, DciInfo *dciInfo, bool isRetx, SchUlHqProcCb *hqP);
+uint8_t schFillPuschAlloc(SchUeCb *ueCb, SlotTimingInfo puschTime, uint32_t tbSize,
+                            uint8_t startSymb, uint8_t symbLen, uint16_t startPrb, bool isRetx, SchUlHqProcCb *hqP);
 uint8_t allocatePrbUl(SchCellCb *cell, SlotTimingInfo slotTime, uint8_t startSymbol, uint8_t symbolLength, \
    uint16_t *startPrb, uint16_t numPrb);
-bool schProcessSrOrBsrReq(SchCellCb *cell, SlotTimingInfo currTime, uint8_t ueId);
+bool schProcessSrOrBsrReq(SchCellCb *cell, SlotTimingInfo currTime, uint8_t ueId, SchUlHqProcCb *hqP);
 bool schCalculateUlTbs(SchUeCb *ueCb, SlotTimingInfo puschTime, uint8_t symbLen,\
-                             uint16_t *startPrb, uint32_t *totTBS);
+                             uint16_t *startPrb, uint32_t *totTBS, bool isRetx, SchUlHqProcCb *hqP);
 
 /*Generic Functions*/
 void updateGrantSizeForBoRpt(CmLListCp *lcLL, DlMsgAlloc *dlMsgAlloc, BsrInfo *bsrInfo, uint32_t *accumalatedBOSize);
@@ -436,7 +572,28 @@ void schCfgPdcchMonOccOfPO(SchCellCb *cell);
 void schIncrSlot(SlotTimingInfo *timingInfo, uint8_t incr, uint16_t numSlotsPerRF);
 uint8_t schFillPagePdschCfg(SchCellCb *cell, PdschCfg *pagePdschCfg, SlotTimingInfo slotTime, \
                              uint16_t tbSize, uint8_t mcs, uint16_t startPrb);
+/*DL HARQ Functions*/
+void schDlHqEntInit(SchCellCb *cellCb, SchUeCb *ueCb);
+void schMsg4FeedbackUpdate(SchDlHqProcCb *hqP, uint8_t fdbk);
+void schDlHqFeedbackUpdate(SchDlHqProcCb *hqP, uint8_t fdbk1, uint8_t fdbk2);
+uint8_t schDlGetAvlHqProcess(SchCellCb *cellCb, SchUeCb *ueCb, SchDlHqProcCb **hqP);
+void schDlReleaseHqProcess(SchDlHqProcCb *hqP);
 
+/*UL HARQ Functions*/
+void schUlHqEntInit(SchCellCb *cellCb, SchUeCb *ueCb);
+uint8_t schMsg3RetxSchedulingForUe(SchRaCb *raCb);
+void schUlHqProcessNack(SchUlHqProcCb *hqP);
+void schUlHqProcessAck(SchUlHqProcCb *hqP);
+uint8_t schUlGetAvlHqProcess(SchCellCb *cellCb, SchUeCb *ueCb, SchUlHqProcCb **hqP);
+void schUlReleaseHqProcess(SchUlHqProcCb *hqP, Bool togNdi);
+
+/* UE Manager HARQ Fun*/
+void schUpdateHarqFdbk(SchUeCb *ueCb, uint8_t numHarq, uint8_t *harqPayload,SlotTimingInfo *slotInd);
+
+/* Round Robbin Scheduler funtions*/
+uint8_t schFillUlDciForMsg3Retx(SchRaCb *raCb, SchPuschInfo *puschInfo, DciInfo *dciInfo);
+bool schGetMsg3K2(SchCellCb *cell, SchUlHqProcCb* msg3HqProc, uint16_t dlTime, SlotTimingInfo *msg3Time, bool isRetx);
+void schMsg4Complete(SchUeCb *ueCb);
 /**********************************************************************
   End of file
  **********************************************************************/

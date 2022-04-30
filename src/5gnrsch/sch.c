@@ -335,22 +335,12 @@ uint8_t MacSchRachInd(Pst *pst, RachIndInfo *rachInd)
  * ****************************************************************/
 uint8_t MacSchCrcInd(Pst *pst, CrcIndInfo *crcInd)
 {
+   Inst  inst = pst->dstInst-SCH_INST_START;
 #ifdef CALL_FLOW_DEBUG_LOG
    DU_LOG("\nCall Flow: ENTMAC -> ENTSCH : EVENT_CRC_IND_TO_SCH\n");
 #endif
 
-   switch(crcInd->crcInd[0])
-   {
-      case CRC_FAILED:
-	 DU_LOG("\nDEBUG  -->  SCH : Received CRC indication. CRC Status [FAILURE]");
-	 break;
-      case CRC_PASSED:
-	 DU_LOG("\nDEBUG  -->  SCH : Received CRC indication. CRC Status [PASS]");
-	 break;
-      default:
-	 DU_LOG("\nDEBUG  -->  SCH : Invalid CRC state %d", crcInd->crcInd[0]);
-	 return RFAILED;
-   }
+   schProcessCrcInd(crcInd, inst);
    return ROK;
 }
 
@@ -909,6 +899,11 @@ uint8_t SchHdlCellCfgReq(Pst *pst, SchCellCfg *schCellCfg)
    cellCb->actvUeBitMap = 0;
    cellCb->boIndBitMap = 0;
 
+   cellCb->cellCfg.schHqCfg.maxDlDataHqTx = SCH_MAX_NUM_DL_HQ_TX;
+   cellCb->cellCfg.schHqCfg.maxMsg4HqTx = SCH_MAX_NUM_MSG4_TX;
+   cellCb->cellCfg.schHqCfg.maxUlDataHqTx = SCH_MAX_NUM_UL_HQ_TX;
+   cellCb->cellCfg.schRachCfg.maxMsg3Tx = SCH_MAX_NUM_MSG3_TX;
+
    /* Fill and send Cell config confirm */
    memset(&rspPst, 0, sizeof(Pst));
    FILL_PST_SCH_TO_MAC(rspPst, pst->dstInst);
@@ -945,8 +940,7 @@ uint8_t MacSchDlRlcBoInfo(Pst *pst, DlRlcBoInfo *dlBoInfo)
    bool isLcIdValid = false;
    SchUeCb *ueCb = NULLP;
    SchCellCb *cell = NULLP;
-   Inst  inst = pst->dstInst-SCH_INST_START;
-   CmLListCp *lcLL = NULLP;
+   Inst  inst = pst->dstInst-SCH_INST_START;   
 
 #ifdef CALL_FLOW_DEBUG_LOG
    DU_LOG("\nCall Flow: ENTMAC -> ENTSCH : EVENT_DL_RLC_BO_INFO_TO_SCH\n");
@@ -982,28 +976,20 @@ uint8_t MacSchDlRlcBoInfo(Pst *pst, DlRlcBoInfo *dlBoInfo)
     *Thus clearing out the LC from the Lc priority list*/
    if(dlBoInfo->dataVolume == 0)
    {
-      /*Check the LC is Dedicated or default and accordingly LCList will
-       * be used*/
-      if(ueCb->dlInfo.dlLcCtxt[lcId].isDedicated)
-      {
-         lcLL = &(ueCb->dlLcPrbEst.dedLcInfo->dedLcList);
-      }
-      else
-      {
-         lcLL = &(ueCb->dlLcPrbEst.defLcList);
-      }
-      handleLcLList(lcLL, lcId, DELETE);
+      /* TODO : Check the LC is Dedicated or default and accordingly LCList
+       * will be used*/
       return ROK;
    }
 
    if(lcId == SRB0_LCID)
    {
       cell->raCb[ueId -1].msg4recvd = true;
-      cell->raCb[ueId -1].dlMsgPduLen = dlBoInfo->dataVolume;
-      
+      cell->raCb[ueId -1].dlMsgPduLen = dlBoInfo->dataVolume;      
    }
    else
    {
+      /* TODO : These part of changes will be corrected during DL scheduling as
+       * per K0 - K1 -K2 */
       SET_ONE_BIT(ueId, cell->boIndBitMap);
       if(ueCb->dlInfo.dlLcCtxt[lcId].lcId == lcId)
       {
@@ -1132,11 +1118,53 @@ uint8_t MacSchSrUciInd(Pst *pst, SrUciIndInfo *uciInd)
    }
    if(uciInd->numSrBits)
    {
-      ueCb->srRcvd = true;
-      
+      ueCb->srRcvd = true;      
       /* Adding UE Id to list of pending UEs to be scheduled */
       addUeToBeScheduled(cellCb, ueCb->ueId);
    }
+   return ROK;
+}
+
+/*******************************************************************
+ *
+ * @brief Processes HARQ UCI indication from MAC 
+ *
+ * @details
+ *
+ *    Function : MacSchHarqUciInd
+ *
+ *    Functionality:
+ *      Processes HARQ UCI indication from MAC
+ *
+ * @params[in] Post structure
+ *             UCI Indication
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t MacSchHarqUciInd(Pst *pst, HarqUciIndInfo *uciInd)
+{
+   Inst  inst = pst->dstInst-SCH_INST_START;
+   //uint16_t harqCounter;
+   SchUeCb   *ueCb;
+   SchCellCb *cellCb = schCb[inst].cells[inst];
+
+#ifdef CALL_FLOW_DEBUG_LOG
+   DU_LOG("\nCall Flow: ENTMAC -> ENTSCH : EVENT_UCI_IND_TO_SCH\n");
+#endif
+
+   DU_LOG("\nDEBUG  -->  SCH : Received HARQ");
+
+   ueCb = schGetUeCb(cellCb, uciInd->crnti);
+
+   if(ueCb->state == SCH_UE_STATE_INACTIVE)
+   {
+      DU_LOG("\nERROR  -->  SCH : Crnti %d is inactive", uciInd->crnti);
+      return ROK;
+   }
+
+   schUpdateHarqFdbk(ueCb, uciInd->numHarq, uciInd->harqPayload, &uciInd->slotInd);
+
    return ROK;
 }
 

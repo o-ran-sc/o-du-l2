@@ -46,7 +46,7 @@
 #define EVENT_RACH_RESOURCE_RELEASE_TO_SCH  27
 #define EVENT_PAGING_IND_TO_SCH      28
 #define EVENT_DL_PAGING_ALLOC        29
-
+#define EVENT_DL_REL_HQ_PROC         30 
 /*macros*/
 #define MAX_SSB_IDX 1 /* forcing it as 1 for now. Right value is 64 */
 #define SCH_SSB_MASK_SIZE   1
@@ -67,6 +67,7 @@
 #define MAX_NUMBER_OF_CRC_IND_BITS 1
 #define MAX_NUMBER_OF_UCI_IND_BITS 1
 #define MAX_SR_BITS_IN_BYTES       1
+#define MAX_HARQ_BITS_IN_BYTES     1
 #define MAX_NUM_LOGICAL_CHANNEL_GROUPS 8
 #define MAX_NUM_SR_CFG_PER_CELL_GRP 8   /* Max number of scheduling request config per cell group */
 #define MAX_NUM_TAGS 4                  /* Max number of timing advance groups */
@@ -633,6 +634,7 @@ typedef struct schRachCfg
    uint8_t      raContResTmr;      /* RA Contention Resoultion Timer */
    uint8_t      rsrpThreshSsb;     /* RSRP Threshold SSB */
    uint8_t      raRspWindow;       /* RA Response Window */
+   uint8_t      maxMsg3Tx;         /* MAximum num of msg3 tx*/
 }SchRachCfg;
 
 typedef struct schBwpParams
@@ -763,6 +765,13 @@ typedef struct schPlmnInfoList
    Snssai         **snssai;         /* List of supporting snssai*/
 }SchPlmnInfoList;
 
+typedef struct schHqCfgParam
+{
+   uint8_t maxDlDataHqTx;
+   uint8_t maxMsg4HqTx;
+   uint8_t maxUlDataHqTx;
+}SchHqCfg;
+
 typedef struct schCellCfg
 {
    uint16_t       cellId;           /* Cell Id */
@@ -778,6 +787,7 @@ typedef struct schCellCfg
    SchBwpDlCfg    schInitialDlBwp;  /* Initial DL BWP */
    SchBwpUlCfg    schInitialUlBwp;  /* Initial UL BWP */
    SchPlmnInfoList plmnInfoList;     /* Consits of PlmnId and Snssai list */
+   SchHqCfg       schHqCfg;
 #ifdef NR_TDD
    TDDCfg         tddCfg;           /* TDD Cfg */ 
 #endif  
@@ -884,6 +894,7 @@ typedef struct lcSchInfo
 
 typedef struct dlMsgSchedInfo
 {
+   bool       isRetx;
    uint8_t    numLc;
    LcSchInfo  lcSchInfo[MAX_NUM_LC]; /* Scheduled LC info */
    BwpCfg     bwp;
@@ -1696,6 +1707,15 @@ typedef struct srUciIndInfo
    uint8_t     srPayload[MAX_SR_BITS_IN_BYTES];
 }SrUciIndInfo;
 
+typedef struct harqUciIndInfo
+{
+   uint16_t    cellId;
+   uint16_t    crnti;
+   SlotTimingInfo slotInd;
+   uint8_t     numHarq;
+   uint8_t     harqPayload[MAX_HARQ_BITS_IN_BYTES];
+}HarqUciIndInfo;
+
 typedef struct schRrmPolicyRatio
 {
    uint8_t policyMaxRatio;
@@ -1736,6 +1756,19 @@ typedef struct schPageInd
    uint16_t  pduLen;
    uint8_t  *pagePdu;
 }SchPageInd;
+
+typedef struct schUeHqInfo
+{
+   uint16_t  crnti;
+   uint8_t   hqProcId;
+}SchUeHqInfo;
+
+typedef struct schRlsHqInfo
+{
+   uint16_t     cellId;
+   uint8_t      numUes;
+   SchUeHqInfo  *ueHqInfo;
+}SchRlsHqInfo;
 
 /* function pointers */
 typedef uint8_t (*SchCellCfgCfmFunc)    ARGS((
@@ -1791,6 +1824,10 @@ typedef uint8_t (*MacSchBsrFunc)       ARGS((
    Pst                  *pst,
    UlBufferStatusRptInd *bsrInd
 ));
+
+typedef uint8_t (*MacSchHarqUciIndFunc) ARGS((
+	 Pst         *pst,         /* Post structure */
+	 HarqUciIndInfo  *uciInd));    /* UCI IND Info */
 
 typedef uint8_t (*MacSchSrUciIndFunc) ARGS(( 
 	 Pst         *pst,         /* Post structure */
@@ -1854,6 +1891,10 @@ typedef uint8_t (*MacSchPagingIndFunc) ARGS((
    Pst         *pst,           /* Post structure */
    SchPageInd *schPagingInd)); /* Paging Indication */
 
+typedef uint8_t (*SchMacDlReleaseHarqFunc) ARGS((
+   Pst         *pst,           /* Post structure */
+   SchRlsHqInfo *rlsHqInfo)); /* Release Harq proc */
+
 /* function declarations */
 uint8_t packMacSchSlotInd(Pst *pst, SlotTimingInfo *slotInd);
 uint8_t packSchMacDlAlloc(Pst *pst, DlSchedInfo  *dlSchedInfo);
@@ -1882,6 +1923,8 @@ uint8_t unpackMacSchSlotInd(MacSchSlotIndFunc func, Pst *pst, Buffer  *mBuf);
 uint8_t packMacSchBsr(Pst *pst, UlBufferStatusRptInd *bsrInd);
 uint8_t MacSchBsr(Pst *pst, UlBufferStatusRptInd *bsrInd);
 uint8_t packMacSchSrUciInd(Pst *pst, SrUciIndInfo *uciInd);
+uint8_t packMacSchHarqUciInd(Pst *pst, HarqUciIndInfo *uciInd);
+uint8_t MacSchHarqUciInd(Pst *pst, HarqUciIndInfo *uciInd);
 uint8_t MacSchSrUciInd(Pst *pst, SrUciIndInfo *uciInd);
 uint8_t packMacSchModUeConfigReq(Pst *pst, SchUeCfg *ueCfgToSch);
 uint8_t MacSchModUeConfigReq(Pst *pst, SchUeCfg *ueCfgToSch);
@@ -1913,6 +1956,8 @@ uint8_t packMacSchPagingInd(Pst *pst,  SchPageInd *pageInd);
 uint8_t MacSchPagingInd(Pst *pst,  SchPageInd *pageInd);
 uint8_t packSchMacDlPageAlloc(Pst *pst, DlPageAlloc *dlPageAlloc);
 uint8_t MacProcDlPageAlloc(Pst *pst, DlPageAlloc *dlPageAlloc);
+uint8_t packSchMacDlReleaseHarq(Pst *pst, SchRlsHqInfo *rlsHqInfo);
+uint8_t MacSchReleaseDlHarqProc(Pst *pst, SchRlsHqInfo *rlsHqInfo);
 /**********************************************************************
   End of file
  **********************************************************************/

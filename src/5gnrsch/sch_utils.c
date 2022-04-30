@@ -773,6 +773,7 @@ uint8_t minMsg3SchTime[MAX_NUM_MU] = {6, 6, 6, 6};
 
 uint8_t defaultUlAckTbl[DEFAULT_UL_ACK_LIST_COUNT]= {1, 2, 3 , 4, 5, 6, 7, 8};
 
+uint8_t schCmnDlRvTbl[4] = {0, 2, 3, 1};
 /**
  * @brief Function to find first DMRS symbol in PDSCH
  *
@@ -1465,7 +1466,6 @@ LcInfo* handleLcLList(CmLListCp *lcLL, uint8_t lcId, ActionTypeLL action)
 uint8_t updateLcListReqPRB(CmLListCp *lcLL, uint8_t lcId, uint32_t payloadSize)
 {
    LcInfo    *lcNode = NULLP;
-
    lcNode = handleLcLList(lcLL, lcId, CREATE);
 
    if(lcNode == NULLP)
@@ -1473,8 +1473,9 @@ uint8_t updateLcListReqPRB(CmLListCp *lcLL, uint8_t lcId, uint32_t payloadSize)
       DU_LOG("\nERROR  -->  SCH : LC is neither present nor able to create in List lcId:%d",lcId);
       return RFAILED;
    }
+
    lcNode->reqBO = payloadSize;
-   lcNode->allocBO = 0; 
+   lcNode->allocBO = 0;
    lcNode->allocPRB = 0; /*Re-Initializing the AllocPRB*/
    return ROK;
 }

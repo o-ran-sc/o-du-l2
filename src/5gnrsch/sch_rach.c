@@ -388,6 +388,7 @@ void createSchRaCb(SchRaReq *raReq, Inst schInst)
          schCb[schInst].cells[schInst]->numActvUe++;
          SET_ONE_BIT(raReq->ueCb->ueId, schCb[schInst].cells[schInst]->actvUeBitMap);
          raReq->ueCb->state = SCH_UE_STATE_ACTIVE;
+         schCb[schInst].cells[schInst]->raCb[ueId -1].raState = SCH_RA_STATE_MSG3_PENDING;
       }
    }
    else
@@ -396,7 +397,9 @@ void createSchRaCb(SchRaReq *raReq, Inst schInst)
       GET_UE_ID(raReq->rachInd->crnti, ueId);
       schCb[schInst].cells[schInst]->raCb[ueId -1].tcrnti = raReq->rachInd->crnti;
       schCb[schInst].cells[schInst]->raCb[ueId -1].msg4recvd = FALSE;
+      schCb[schInst].cells[schInst]->raCb[ueId -1].raState = SCH_RA_STATE_MSG3_PENDING;
    }
+   schCb[schInst].cells[schInst]->raCb[ueId -1].cell = schCb[schInst].cells[schInst];
 }
 
 /**
@@ -414,7 +417,7 @@ void createSchRaCb(SchRaReq *raReq, Inst schInst)
  *  @param[out]  msg3NumRb
  *  @return  void
  **/
-SchPuschInfo* schAllocMsg3Pusch(Inst schInst, uint16_t crnti, uint8_t k2Index, SlotTimingInfo msg3SlotTime)
+SchPuschInfo* schAllocMsg3Pusch(Inst schInst, uint16_t crnti, uint8_t k2Index, SlotTimingInfo msg3SlotTime, SchUlHqProcCb* msg3HqProc, bool isRetx)
 {
    SchCellCb      *cell          = NULLP;
    SchUlSlotInfo  *schUlSlotInfo = NULLP;
@@ -456,7 +459,7 @@ SchPuschInfo* schAllocMsg3Pusch(Inst schInst, uint16_t crnti, uint8_t k2Index, S
    tbSize = tbSize / 8 ; /*bits to byte conversion*/
 
    schUlSlotInfo->schPuschInfo->crnti             = crnti;
-   schUlSlotInfo->schPuschInfo->harqProcId        = SCH_HARQ_PROC_ID;
+   schUlSlotInfo->schPuschInfo->harqProcId        = msg3HqProc->procId;
    schUlSlotInfo->schPuschInfo->resAllocType      = SCH_ALLOC_TYPE_1;
    schUlSlotInfo->schPuschInfo->fdAlloc.startPrb  = startRb;
    schUlSlotInfo->schPuschInfo->fdAlloc.numPrb    = numRb;
@@ -471,7 +474,23 @@ SchPuschInfo* schAllocMsg3Pusch(Inst schInst, uint16_t crnti, uint8_t k2Index, S
    schUlSlotInfo->schPuschInfo->dmrsMappingType   = DMRS_MAP_TYPE_A;  /* Setting Type-A */
    schUlSlotInfo->schPuschInfo->nrOfDmrsSymbols   = NUM_DMRS_SYMBOLS;
    schUlSlotInfo->schPuschInfo->dmrsAddPos        = DMRS_ADDITIONAL_POS;
-
+   if(!isRetx)
+   {
+      msg3HqProc->strtSymbl = startSymb;
+      msg3HqProc->numSymbl = symbLen;
+      msg3HqProc->puschResType = schUlSlotInfo->schPuschInfo->resAllocType;
+      msg3HqProc->puschStartPrb = schUlSlotInfo->schPuschInfo->fdAlloc.startPrb;
+      msg3HqProc->puschNumPrb = schUlSlotInfo->schPuschInfo->fdAlloc.numPrb;
+      msg3HqProc->tbInfo.qamOrder = schUlSlotInfo->schPuschInfo->tbInfo.qamOrder;
+      msg3HqProc->tbInfo.iMcs = schUlSlotInfo->schPuschInfo->tbInfo.mcs;
+      msg3HqProc->tbInfo.mcsTable = schUlSlotInfo->schPuschInfo->tbInfo.mcsTable;
+      msg3HqProc->tbInfo.ndi = schUlSlotInfo->schPuschInfo->tbInfo.ndi;
+      msg3HqProc->tbInfo.rv = schUlSlotInfo->schPuschInfo->tbInfo.rv;
+      msg3HqProc->tbInfo.tbSzReq = schUlSlotInfo->schPuschInfo->tbInfo.tbSize;
+      msg3HqProc->dmrsMappingType = schUlSlotInfo->schPuschInfo->dmrsMappingType;
+      msg3HqProc->nrOfDmrsSymbols = schUlSlotInfo->schPuschInfo->nrOfDmrsSymbols;
+      msg3HqProc->dmrsAddPos = schUlSlotInfo->schPuschInfo->dmrsAddPos;
+   }
    return schUlSlotInfo->schPuschInfo;
 }
 
@@ -539,7 +558,7 @@ bool schProcessRaReq(Inst schInst, SchCellCb *cell, SlotTimingInfo currTime, uin
    SchK0K1TimingInfoTbl *k0K1InfoTbl=NULLP;    
    SchK2TimingInfoTbl   *msg3K2InfoTbl=NULLP;
    RaRspWindowStatus    windowStatus=0;
-
+   HQ_LOG(0,-,"\nANKIT schProcessRaReq ueId[%2d]\n",ueId);
 #ifdef NR_TDD
    totalCfgSlot = calculateSlotPatternLength(cell->cellCfg.ssbSchCfg.scsCommon, cell->cellCfg.tddCfg.tddPeriod);
 #endif
@@ -683,12 +702,12 @@ bool schProcessRaReq(Inst schInst, SchCellCb *cell, SlotTimingInfo currTime, uin
       if(cell->raReq[ueId-1]->isCFRA)
       {
          /* Allocate resources for PUCCH */
-         schAllocPucchResource(cell, pucchTime, cell->raReq[ueId-1]->rachInd->crnti);
+         schAllocPucchResource(cell, pucchTime, cell->raReq[ueId-1]->rachInd->crnti,NULLP, FALSE, NULLP);
       }
       else
       {
          /* Allocate resources for msg3 */
-         msg3PuschInfo = schAllocMsg3Pusch(schInst, cell->raReq[ueId-1]->rachInd->crnti, k2Index, msg3Time);
+         msg3PuschInfo = schAllocMsg3Pusch(schInst, cell->raReq[ueId-1]->rachInd->crnti, k2Index, msg3Time, &(cell->raCb[ueId-1].msg3HqProc), FALSE);
          if(msg3PuschInfo)
          {
             dciSlotAlloc->rarInfo.ulGrant.bwpSize = cell->cellCfg.schInitialUlBwp.bwp.freqAlloc.numPrb;
@@ -1056,6 +1075,12 @@ uint8_t MacSchRachRsrcRel(Pst *pst, SchRachRsrcRel *schRachRsrcRel)
    return ret;
 }
 
+void schMsg4Complete(SchUeCb *ueCb)
+{
+   HQ_LOG(0,ueCb->msg4Proc->procId,"\nANKIT SCH_RA_STATE_MSG4_DONE\n");
+   ueCb->cellCb->raCb[ueCb->ueId-1].raState = SCH_RA_STATE_MSG4_DONE;
+   ueCb->msg4Proc = ueCb->retxMsg4HqProc = NULLP;
+}
 /**********************************************************************
          End of file
 **********************************************************************/

@@ -328,6 +328,36 @@ uint8_t packMacSchSrUciInd(Pst *pst, SrUciIndInfo *uciInd)
 
 /*******************************************************************
  *
+ * @brief Pack and Send HARQ UCI Ind from MAC to SCH
+ *
+ * @details
+ *
+ *    Function : packMacHarqSchUciInd
+ *
+ *    Functionality:
+ *       Pack and Send HARQ UCI Ind from MAC to SCH
+ *
+ * @params[in]
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t packMacSchHarqUciInd(Pst *pst, HarqUciIndInfo *uciInd)
+{
+   if((pst->selector == ODU_SELECTOR_LC) || (pst->selector == ODU_SELECTOR_LWLC))
+   {
+      /* TODO */
+   }
+   else
+   {
+      return RFAILED;
+   }
+   return ROK;
+}
+
+
+/*******************************************************************
+ *
  * @brief Pack and Send Modify UE Config Request from MAC to SCH
  *
  * @details
@@ -685,6 +715,26 @@ uint8_t packSchMacDlPageAlloc(Pst *pst, DlPageAlloc *dlPageAlloc)
 {
    return ROK;
 }
+
+/**
+ * @brief function to pack Harq process release message 
+ *        from SCH to MAC
+ *
+ * @details
+ *
+ *     Function : packSchMacDlReleaseHarq 
+ *     
+ *     
+ *  @param[in]  Pst *pst, the post structure     
+ *  @param[in]  SchRlsHqInfo *rlsHqInfo
+ *  @return  S16
+ *      -# ROK
+ **/
+uint8_t packSchMacDlReleaseHarq(Pst *pst, SchRlsHqInfo *rlsHqInfo)
+{
+   return ROK;
+}
+
 /**********************************************************************
   End of file
  **********************************************************************/
