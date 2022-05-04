@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c181cd84_a86bce97",
+        "filename": "src/5gnrsch/sch_rach.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 329,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-05-04T05:10:01Z",
+      "side": 1,
+      "message": "Dont we need to only copy till Idx \u003d numSsb?",
+      "range": {
+        "startLine": 329,
+        "startChar": 94,
+        "endLine": 329,
+        "endChar": 105
+      },
+      "revId": "91119776afdf47746ea49c6cdf528ca0bec5117b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
