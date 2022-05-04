@@ -22,6 +22,30 @@
       },
       "revId": "91119776afdf47746ea49c6cdf528ca0bec5117b",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "27de59da_c83d0235",
+        "filename": "src/5gnrsch/sch_rach.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 329,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-05-04T07:07:45Z",
+      "side": 1,
+      "message": "changed size to copy upto numSsb",
+      "parentUuid": "c181cd84_a86bce97",
+      "range": {
+        "startLine": 329,
+        "startChar": 94,
+        "endLine": 329,
+        "endChar": 105
+      },
+      "revId": "91119776afdf47746ea49c6cdf528ca0bec5117b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
   ]
 }
