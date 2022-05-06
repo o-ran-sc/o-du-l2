@@ -1,0 +1,182 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "894a2f50_ab086933",
+        "filename": "src/5gnrmac/mac_cfg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 989,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-05-06T10:52:09Z",
+      "side": 1,
+      "message": "pls initialize",
+      "range": {
+        "startLine": 989,
+        "startChar": 15,
+        "endLine": 989,
+        "endChar": 24
+      },
+      "revId": "7a7401fd150a9828745ca6bac28cefbf6633b236",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "59b4f6a4_01d319e2",
+        "filename": "src/5gnrmac/mac_cfg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1065,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-05-06T10:52:09Z",
+      "side": 1,
+      "message": "Initialize pointers to NULL",
+      "range": {
+        "startLine": 1065,
+        "startChar": 15,
+        "endLine": 1065,
+        "endChar": 25
+      },
+      "revId": "7a7401fd150a9828745ca6bac28cefbf6633b236",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "53583589_40c9ac10",
+        "filename": "src/5gnrmac/mac_cfg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1066,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-05-06T10:52:09Z",
+      "side": 1,
+      "message": "Add a line break",
+      "range": {
+        "startLine": 1066,
+        "startChar": 16,
+        "endLine": 1066,
+        "endChar": 28
+      },
+      "revId": "7a7401fd150a9828745ca6bac28cefbf6633b236",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "72fdf720_4f7e7293",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2127,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-05-06T10:52:09Z",
+      "side": 1,
+      "message": "Is this working.. Have u tested with intriducing hack like.\nOne pf multiple i_s. \n1. i_s \u003d3 is inserted and then how and where i_s\u003d2 is inserted...Is it as expected.. It should be in ascending order.\n2. try to check for mulptiple PF and multiple i_s",
+      "range": {
+        "startLine": 2127,
+        "startChar": 8,
+        "endLine": 2127,
+        "endChar": 29
+      },
+      "revId": "7a7401fd150a9828745ca6bac28cefbf6633b236",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f580ed09_c3396480",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2131,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-05-06T10:52:09Z",
+      "side": 1,
+      "message": "add a line break",
+      "range": {
+        "startLine": 2131,
+        "startChar": 27,
+        "endLine": 2131,
+        "endChar": 32
+      },
+      "revId": "7a7401fd150a9828745ca6bac28cefbf6633b236",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fe80e140_74e6ff45",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2212,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-05-06T10:52:09Z",
+      "side": 1,
+      "message": "That Validation function is missing for Incoimg PageParameters in Page req . Like Ns range, SFN range etc",
+      "revId": "7a7401fd150a9828745ca6bac28cefbf6633b236",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1efefdd5_c8d42240",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2224,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-05-06T10:52:09Z",
+      "side": 1,
+      "message": "Didnt free pageReq and pageReq-\u003epagePdu",
+      "range": {
+        "startLine": 2224,
+        "startChar": 32,
+        "endLine": 2224,
+        "endChar": 36
+      },
+      "revId": "7a7401fd150a9828745ca6bac28cefbf6633b236",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e16a1f73_096bc356",
+        "filename": "src/du_app/du_cell_mgr.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 202,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-05-06T10:52:09Z",
+      "side": 1,
+      "message": "dont need this print.. We can print cellID in following two prints",
+      "range": {
+        "startLine": 202,
+        "startChar": 97,
+        "endLine": 202,
+        "endChar": 103
+      },
+      "revId": "7a7401fd150a9828745ca6bac28cefbf6633b236",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
