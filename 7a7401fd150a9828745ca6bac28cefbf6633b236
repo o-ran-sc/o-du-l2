@@ -72,6 +72,149 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "09a1caee_7d4bb445",
+        "filename": "src/5gnrmac/mac_cfg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1067,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-05-06T11:31:59Z",
+      "side": 1,
+      "message": "Print Cell ID",
+      "range": {
+        "startLine": 1067,
+        "startChar": 12,
+        "endLine": 1067,
+        "endChar": 19
+      },
+      "revId": "7a7401fd150a9828745ca6bac28cefbf6633b236",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "16fa68a5_a7481711",
+        "filename": "src/5gnrmac/mac_cfg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1073,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-05-06T11:31:59Z",
+      "side": 1,
+      "message": "Both of above conditions can never be true at the same time. \n\nEither of the below could be true:\n1. macCell[cellIdx] \u003d\u003d NULL\nOR\n2. macCell[CellIdx] !\u003d NULL \u0026\u0026 macCell[cellIdx]-\u003ecellId !\u003d pagingReq-\u003ecellId\n\nFor both of above cases, return failure",
+      "revId": "7a7401fd150a9828745ca6bac28cefbf6633b236",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0582902d_91b5899c",
+        "filename": "src/5gnrmac/mac_cfg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1079,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-05-06T11:31:59Z",
+      "side": 1,
+      "message": "Even if one of the above is true, return failure. Use OR operation instead of AND",
+      "revId": "7a7401fd150a9828745ca6bac28cefbf6633b236",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eb3e0fd8_d7b1daa8",
+        "filename": "src/5gnrmac/mac_cfg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1079,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-05-06T11:31:59Z",
+      "side": 1,
+      "message": "also return failure if pduLen is equal to 0",
+      "range": {
+        "startLine": 1079,
+        "startChar": 64,
+        "endLine": 1079,
+        "endChar": 66
+      },
+      "revId": "7a7401fd150a9828745ca6bac28cefbf6633b236",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aaf3a724_5217ac81",
+        "filename": "src/5gnrmac/mac_cfg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1105,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-05-06T11:31:59Z",
+      "side": 1,
+      "message": "pagingReq-\u003epagePdu is being freed only if it is copied successfully to schPageReq-\u003epagePdu?\nWhat about failure cases, like if allocation for schPageReq fails or allocation for schPageReq-\u003epagePdu fails. In these cases too pagingReq-\u003epagePdu should be freed along with freeing of pagingReq",
+      "range": {
+        "startLine": 1105,
+        "startChar": 18,
+        "endLine": 1105,
+        "endChar": 37
+      },
+      "revId": "7a7401fd150a9828745ca6bac28cefbf6633b236",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "37a1ad08_1bcce70d",
+        "filename": "src/5gnrmac/mac_cfg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1110,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-05-06T11:31:59Z",
+      "side": 1,
+      "message": "Are we sending paging request to scheduler even if condition at line 1098 fails?",
+      "revId": "7a7401fd150a9828745ca6bac28cefbf6633b236",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4714d7c4_db044d96",
+        "filename": "src/5gnrmac/mac_cfg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1117,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-05-06T11:31:59Z",
+      "side": 1,
+      "message": "Is paging response required at all?",
+      "range": {
+        "startLine": 1117,
+        "startChar": 9,
+        "endLine": 1117,
+        "endChar": 33
+      },
+      "revId": "7a7401fd150a9828745ca6bac28cefbf6633b236",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "72fdf720_4f7e7293",
         "filename": "src/5gnrsch/sch.c",
         "patchSetId": 3
@@ -118,6 +261,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "50a6faf8_239576b2",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2161,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-05-06T11:31:59Z",
+      "side": 1,
+      "message": "Add line break between 2 functions",
+      "revId": "7a7401fd150a9828745ca6bac28cefbf6633b236",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "fe80e140_74e6ff45",
         "filename": "src/5gnrsch/sch.c",
         "patchSetId": 3
@@ -158,6 +318,115 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "31ec2062_5ea5f3b2",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2252,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-05-06T11:31:59Z",
+      "side": 1,
+      "message": "remove this log",
+      "range": {
+        "startLine": 2252,
+        "startChar": 21,
+        "endLine": 2252,
+        "endChar": 25
+      },
+      "revId": "7a7401fd150a9828745ca6bac28cefbf6633b236",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "de7f5094_1407af0d",
+        "filename": "src/cm/du_app_mac_inf.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 1599,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-05-06T11:31:59Z",
+      "side": 1,
+      "message": "Rename paging request to DL-PCCH indication as we have DL-CCCH indication too",
+      "range": {
+        "startLine": 1599,
+        "startChar": 8,
+        "endLine": 1599,
+        "endChar": 26
+      },
+      "revId": "7a7401fd150a9828745ca6bac28cefbf6633b236",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "61a44359_6f202f7e",
+        "filename": "src/cm/du_app_mac_inf.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 1604,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-05-06T11:31:59Z",
+      "side": 1,
+      "message": "No Paging response needed",
+      "range": {
+        "startLine": 1604,
+        "startChar": 9,
+        "endLine": 1604,
+        "endChar": 27
+      },
+      "revId": "7a7401fd150a9828745ca6bac28cefbf6633b236",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e128e023_d6e959a7",
+        "filename": "src/cm/mac_sch_interface.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 1890,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-05-06T11:31:59Z",
+      "side": 1,
+      "message": "Lets discuss if this is to be called paging request or paging indication(as in WG8 spec)",
+      "range": {
+        "startLine": 1890,
+        "startChar": 8,
+        "endLine": 1890,
+        "endChar": 23
+      },
+      "revId": "7a7401fd150a9828745ca6bac28cefbf6633b236",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "203753c6_78c74b34",
+        "filename": "src/cm/mac_sch_interface.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 1892,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-05-06T11:31:59Z",
+      "side": 1,
+      "message": "No paging response needed. Please remove",
+      "revId": "7a7401fd150a9828745ca6bac28cefbf6633b236",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e16a1f73_096bc356",
         "filename": "src/du_app/du_cell_mgr.c",
         "patchSetId": 3
@@ -175,6 +444,80 @@
         "endLine": 202,
         "endChar": 103
       },
+      "revId": "7a7401fd150a9828745ca6bac28cefbf6633b236",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "57e52b59_3f98088a",
+        "filename": "src/du_app/du_cell_mgr.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 292,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-05-06T11:31:59Z",
+      "side": 1,
+      "message": "move this too inside following if condition",
+      "revId": "7a7401fd150a9828745ca6bac28cefbf6633b236",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "20c90673_6ec5ee43",
+        "filename": "src/du_app/du_cell_mgr.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 296,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-05-06T11:31:59Z",
+      "side": 1,
+      "message": "print cell Id for which paging request is sent",
+      "revId": "7a7401fd150a9828745ca6bac28cefbf6633b236",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2a5f952a_5f533247",
+        "filename": "src/du_app/du_cell_mgr.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 301,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-05-06T11:31:59Z",
+      "side": 1,
+      "message": "Also free page pdu",
+      "range": {
+        "startLine": 301,
+        "startChar": 9,
+        "endLine": 301,
+        "endChar": 27
+      },
+      "revId": "7a7401fd150a9828745ca6bac28cefbf6633b236",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "46437322_2b1f7d4b",
+        "filename": "src/du_app/du_cell_mgr.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 301,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-05-06T11:31:59Z",
+      "side": 1,
+      "message": "Instead of freeing here, check the return value of this function call at line 786 and free pagingReq there in case of failure",
       "revId": "7a7401fd150a9828745ca6bac28cefbf6633b236",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
