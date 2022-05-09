@@ -75,6 +75,80 @@ uint8_t sendRachIndMacToSch(RachIndInfo *rachInd)
 
 /*******************************************************************
  *
+ * @brief Adds an entry in list of RA Cb and fills RACH ind info
+ *
+ * @details
+ *
+ *    Function : createMacRaCb
+ *
+ *    Functionality:
+ *     Adds an entry in list of RA Cb and fills RACH ind info
+ *
+ * @params[in] Pointer to cellCB,
+ *             Pointer to RACH Indication information
+ * @return ROK - SUCCESS
+ *         RFAILED - FAILURE
+ *
+ * ****************************************************************/
+uint8_t createMacRaCb(MacCellCb *cellCb, RachIndInfo *rachIndInfo)
+{
+   int8_t ueIdx = -1;
+   uint8_t  ssbIdx = 0;
+   uint16_t crnti = 0;
+   MacUeCb  *ueCb = NULLP;
+
+   /* Search if a UE CB is already present to which the incoming preamble index was dedicated */
+   for(ueIdx = 0; ueIdx < MAX_NUM_UE; ueIdx++) 
+   {
+      /* Check if ueCb has a crnti alloted to it. If not, it means this ueIdx
+       * has no UE context stored in it, hence searching for preamble index in
+       * this ueCb is not required */
+      if(cellCb->ueCb[ueIdx].crnti)
+      {
+         for(ssbIdx = 0; ssbIdx < cellCb->ueCb[ueIdx].cfraResource.numSsb; ssbIdx++)
+         {
+            if(cellCb->ueCb[ueIdx].cfraResource.ssbResource[ssbIdx].raPreambleIdx == rachIndInfo->preambleIdx)
+            {
+               ueCb = &cellCb->ueCb[ueIdx];
+               break;
+            }
+         }
+         if(ueCb)
+            break;
+      }
+   }
+
+   if(ueCb)
+   {
+      /* If UE context is already present as in case of handover, fetch CRNTI from
+       * UE CB allocated during UE context creation */
+      crnti = ueCb->crnti;
+   }
+   else
+   {
+      /* If UE context not present, assign CRNTI to this UE */
+      ueIdx = getFreeBitFromUeBitMap(rachIndInfo->cellId);
+      if(ueIdx == -1)
+      {
+         DU_LOG("\nERROR  -->  MAC : Failed to find free UE Idx in UE bit map of cell Id [%d]", rachIndInfo->cellId);
+         return RFAILED;
+      }
+
+      /* Calculate CRNTI from UE Index */
+      GET_CRNTI(crnti, ueIdx+1);
+
+      /* Store in raCb */
+      cellCb->macRaCb[ueIdx].cellId = rachIndInfo->cellId;
+      cellCb->macRaCb[ueIdx].crnti  = crnti;
+   }
+
+   /* Store in Rach Indication message to be sent to SCH */
+   rachIndInfo->crnti  = crnti;
+   return ROK;
+}
+
+/*******************************************************************
+ *
  * @brief Processes RACH indication from PHY
  *
  * @details
@@ -92,14 +166,28 @@ uint8_t sendRachIndMacToSch(RachIndInfo *rachInd)
  * ****************************************************************/ 
 uint8_t fapiMacRachInd(Pst *pst, RachInd *rachInd)
 {
-   uint8_t      pduIdx;
-   uint8_t      preambleIdx;
-   RachIndInfo  *rachIndInfo;
+   uint8_t      ret = ROK;
+   uint8_t      pduIdx = 0;
+   uint8_t      preambleIdx = 0;
+   uint16_t     cellIdx = 0;  
+   RachIndInfo  *rachIndInfo = NULLP;
+   MacCellCb    *cellCb = NULLP;
 
    DU_LOG("\nINFO  -->  MAC : Received RACH indication");
    /* Considering one pdu and one preamble */
    pduIdx = 0;
    preambleIdx = 0;
+
+   /* Validate cell Id */
+   GET_CELL_IDX(rachInd->cellId, cellIdx);
+   if(macCb.macCell[cellIdx] && (macCb.macCell[cellIdx]->cellId == rachInd->cellId))
+         cellCb = macCb.macCell[cellIdx];
+
+   if(!cellCb)
+   {
+      DU_LOG("\nERROR  --> MAC : Invalid Cell ID [%d] received in RACH Indication", rachInd->cellId);
+      return RFAILED;
+   }
 
    MAC_ALLOC(rachIndInfo, sizeof(RachIndInfo));
    if(!rachIndInfo)
@@ -119,13 +207,16 @@ uint8_t fapiMacRachInd(Pst *pst, RachInd *rachInd)
    rachIndInfo->timingAdv = rachInd->rachPdu[pduIdx].preamInfo[preambleIdx].timingAdv;
 
    /* Store the value in macRaCb */
-   createMacRaCb(rachIndInfo);
+   if((ret = createMacRaCb(cellCb, rachIndInfo)) == ROK)
+   {
+      /* Send RACH Indication to SCH */
+      ret = sendRachIndMacToSch(rachIndInfo);
+   }
 
    /* Free sharable buffer used to send RACH Indication from lower MAC to MAC */
    MAC_FREE_SHRABL_BUF(pst->region, pst->pool, rachInd, sizeof(RachInd));
 
-   /* Send RACH Indication to SCH */
-   return(sendRachIndMacToSch(rachIndInfo));
+   return ret;
 }
 
 /*******************************************************************
@@ -270,8 +361,6 @@ uint8_t MacProcSchRachRsrcRsp(Pst *pst, SchRachRsrcRsp *schRachRsrcRsp)
       }   
    }
 
-   /* TODO : Check if ra-preamble index is to be stored in UE CB */
-
    /* Fill SSB RACH resource info if SCH has sent a positive response and 
     * processing of SCH RACH resource response at MAC has been successful so far */
    if(rachRsrcRsp->result == MAC_DU_APP_RSP_OK)
@@ -280,6 +369,9 @@ uint8_t MacProcSchRachRsrcRsp(Pst *pst, SchRachRsrcRsp *schRachRsrcRsp)
       rachRsrcRsp->cfraResource.numSsb = schRachRsrcRsp->cfraResource.numSsb;
       memcpy(rachRsrcRsp->cfraResource.ssbResource, schRachRsrcRsp->cfraResource.ssbResource, \
          rachRsrcRsp->cfraResource.numSsb * sizeof(MacCfraSsbResource));
+
+      /* Copy resources to UE CB in MAC */
+      memcpy(&ueCb->cfraResource, &rachRsrcRsp->cfraResource, sizeof(MacCfraResource));
    }
 
    /* Free SCH RACH resource response */

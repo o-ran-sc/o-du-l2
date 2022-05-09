@@ -208,48 +208,6 @@ void fillRarPdu(RarInfo *rarInfo)
 
 }
 
-/*******************************************************************
- *
- * @brief Database required to form MAC PDU
- *
- * @details
- *
- *    Function : createMacRaCb
- *
- *    Functionality:
- *     stores the required params for muxing
- *
- * @params[in] Pointer to cellId,
- *                        crnti
- * @return void
- *
- * ****************************************************************/
-void createMacRaCb(RachIndInfo *rachIndInfo)
-{
-   int8_t ueIdx = -1;
-   uint16_t crnti = 0;
-   uint16_t cellIdx = 0;
-
-   GET_CELL_IDX(rachIndInfo->cellId, cellIdx);
-   
-   ueIdx = getFreeBitFromUeBitMap(rachIndInfo->cellId);
-   if(ueIdx == -1)
-   {
-      DU_LOG("\nERROR  -->  MAC : Failed to find free UE Idx in UE bit map of cell Id [%d]", rachIndInfo->cellId);
-      return;
-   }
-
-   /* Calculate CRNTI from UE Index */
-   GET_CRNTI(crnti, ueIdx+1);
-
-   /* store in rach ind structure */
-   rachIndInfo->crnti  = crnti;
-
-   /* store in raCb */
-   macCb.macCell[cellIdx]->macRaCb[ueIdx].cellId = rachIndInfo->cellId;
-   macCb.macCell[cellIdx]->macRaCb[ueIdx].crnti  = crnti;
-}
-
 /*************************************************
  * @brief fill RLC DL Data
  *

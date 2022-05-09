@@ -129,6 +129,7 @@
 #include "RRCReconfiguration-v1530-IEs.h"
 #include "CNUEPagingIdentity.h"
 #include "PagingCell-Item.h"
+#include "UL-DCCH-Message.h"
 
 #include "cu_stub_sctp.h"
 #include "cu_stub_egtp.h"
@@ -9464,6 +9465,10 @@ uint8_t procUlRrcMsg(uint32_t duId, F1AP_PDU_t *f1apMsg)
                   return RFAILED;
                }
                memcpy(rrcContainer, ulRrcMsg->protocolIEs.list.array[idx]->value.choice.RRCContainer.buf, rrcContLen);
+
+               if(duDb->ueCb[duUeF1apId-1].state == UE_HANDOVER_IN_PROGRESS)
+                  return;
+
                break;
             }
 
