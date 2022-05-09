@@ -152,6 +152,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "457181af_ae64b155",
+        "filename": "src/5gnrmac/mac_cfg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1097,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-05-09T06:42:58Z",
+      "side": 1,
+      "message": "dont we need to allocate SHarabale buffer?",
+      "range": {
+        "startLine": 1097,
+        "startChar": 15,
+        "endLine": 1097,
+        "endChar": 24
+      },
+      "revId": "7a7401fd150a9828745ca6bac28cefbf6633b236",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "aaf3a724_5217ac81",
         "filename": "src/5gnrmac/mac_cfg_hdl.c",
         "patchSetId": 3
