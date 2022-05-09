@@ -205,6 +205,18 @@ void *l1ConsoleHandler(void *args)
             }
          }
       }
+      else if(ch == 'r')
+      {
+         /* Trigger RACH Indication towards DU */
+         if(phyDb.ueDb.ueCb[phyDb.ueDb.numActvUe].rachIndSent == false)
+         {
+            phyDb.ueDb.ueCb[phyDb.ueDb.numActvUe].rachIndSent = true;
+            phyDb.ueDb.ueCb[phyDb.ueDb.numActvUe].isCFRA = true;
+            l1BuildAndSendRachInd(slotValue, sfnValue, CF_RA_PREAMBLE_IDX);
+            phyDb.ueDb.numActvUe++;
+         }
+
+      }
       DU_LOG("\n");
       continue;
    }

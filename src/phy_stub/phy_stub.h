@@ -35,10 +35,16 @@
 #define SLOT_DELAY       3
 #define NUM_DRB_TO_PUMP_DATA  3
 #define NUM_UL_PACKETS   1
+
 /*UE Ids for RACH IND*/
 #define UE_IDX_0     0
 #define UE_IDX_1     1
 #define UE_IDX_2     2
+
+/* Default RA Preamble index to be used when Rach Indication is triggered from
+ * PHY stub */
+#define CB_RA_PREAMBLE_IDX 3  /* For contention based RA */
+#define CF_RA_PREAMBLE_IDX 8  /* For contention free RA */
 
 bool     slotIndicationStarted;
 uint16_t sfnValue;
@@ -59,13 +65,14 @@ typedef struct ueCb
    uint8_t  ueId;
    uint16_t crnti;
    bool     rachIndSent;
+   bool     isCFRA;
    bool     msg3Sent;
    bool     msg5ShortBsrSent;
    bool     msg5Sent;
    bool     dlDedMsg;
    bool     msgSecurityModeComp;
-   bool 	   msgRrcReconfiguration;
-   bool 	   msgRegistrationComp;
+   bool     msgRrcReconfigComp;
+   bool     msgRegistrationComp;
    uint8_t  rlcSnForSrb1;           /* Sequence number of PDU at RLC for AM mode */
    uint8_t  pdcpSn;                 /* Sequence number of PDU at PDCP */
 }UeCb;
@@ -119,6 +126,8 @@ uint16_t l1BuildAndSendSlotIndication();
 uint16_t l1BuildAndSendStopInd();
 int inet_pton(int af, const char *sourc, void *dst);
 void *establishConnectionWithPeerL1(void *args);
+uint16_t l1BuildAndSendRachInd(uint16_t slot, uint16_t sfn, uint8_t raPreambleIdx);
+
 /**********************************************************************
          End of file
 **********************************************************************/
