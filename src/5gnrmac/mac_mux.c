@@ -224,30 +224,60 @@ void fillRarPdu(RarInfo *rarInfo)
  * @return void
  *
  * ****************************************************************/
-void createMacRaCb(RachIndInfo *rachIndInfo)
+void createMacRaCb(MacCellCb *cellCb, RachIndInfo *rachIndInfo)
 {
    int8_t ueIdx = -1;
+   uint8_t  ssbIdx = 0;
    uint16_t crnti = 0;
-   uint16_t cellIdx = 0;
+   MacUeCb  *ueCb = NULLP;
 
-   GET_CELL_IDX(rachIndInfo->cellId, cellIdx);
-   
-   ueIdx = getFreeBitFromUeBitMap(rachIndInfo->cellId);
-   if(ueIdx == -1)
+   /* Search if a UE CB is already present to which the incoming preamble index was dedicated */
+   for(ueIdx = 0; ueIdx < MAX_NUM_UE; ueIdx++) 
    {
-      DU_LOG("\nERROR  -->  MAC : Failed to find free UE Idx in UE bit map of cell Id [%d]", rachIndInfo->cellId);
-      return;
+      /* Check if ueCb has a crnti alloted to it. If not, it means this ueIdx
+       * has no UE context stored in it, hence searching for preamble index in
+       * this ueCb is not required */
+      if(cellCb->ueCb[ueIdx].crnti)
+      {
+         for(ssbIdx = 0; ssbIdx < cellCb->ueCb[ueIdx].cfraResource.numSsb; ssbIdx++)
+         {
+            if(cellCb->ueCb[ueIdx].cfraResource.ssbResource[ssbIdx].raPreambleIdx == rachIndInfo->preambleIdx)
+            {
+               ueCb = &cellCb->ueCb[ueIdx];
+               break;
+            }
+         }
+         if(ueCb)
+            break;
+      }
    }
 
-   /* Calculate CRNTI from UE Index */
-   GET_CRNTI(crnti, ueIdx+1);
+   if(ueCb)
+   {
+      /* If UE context is already present as in case of handover, fetch CRNTI from
+       * UE CB allocated during UE context creation */
+      crnti = ueCb->crnti;
+   }
+   else
+   {
+      /* If UE context not present, assign CRNTI to this UE */
+      ueIdx = getFreeBitFromUeBitMap(rachIndInfo->cellId);
+      if(ueIdx == -1)
+      {
+         DU_LOG("\nERROR  -->  MAC : Failed to find free UE Idx in UE bit map of cell Id [%d]", rachIndInfo->cellId);
+         return;
+      }
 
-   /* store in rach ind structure */
+      /* Calculate CRNTI from UE Index */
+      GET_CRNTI(crnti, ueIdx+1);
+
+      /* Store in raCb */
+      cellCb->macRaCb[ueIdx].cellId = rachIndInfo->cellId;
+      cellCb->macRaCb[ueIdx].crnti  = crnti;
+   }
+
+   /* Store in Rach Indication message to be sent to SCH */
    rachIndInfo->crnti  = crnti;
-
-   /* store in raCb */
-   macCb.macCell[cellIdx]->macRaCb[ueIdx].cellId = rachIndInfo->cellId;
-   macCb.macCell[cellIdx]->macRaCb[ueIdx].crnti  = crnti;
 }
 
 /*************************************************

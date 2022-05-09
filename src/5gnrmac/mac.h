@@ -205,14 +205,15 @@ typedef struct ueDlCb
 /* UE Cb */
 typedef struct macUeCb
 {
-   uint16_t     ueId;     /* UE Id from DU APP */
-   uint16_t     crnti;    /* UE CRNTI */
-   MacCellCb    *cellCb;  /* Pointer to cellCb to whihc this UE belongs */
-   UeState      state;    /* Is UE active ? */
-   MacRaCbInfo  *raCb;    /* RA info */
-   MacBsrTmrCfg bsrTmrCfg;  /* BSR Timer Info */
-   UeUlCb       ulInfo;   /* UE specific UL info */
-   UeDlCb       dlInfo;   /* UE specific DL info */
+   uint16_t         ueId;           /* UE Id from DU APP */
+   uint16_t         crnti;          /* UE CRNTI */
+   MacCellCb        *cellCb;        /* Pointer to cellCb to whihc this UE belongs */
+   UeState          state;          /* Is UE active ? */
+   MacCfraResource  cfraResource;   /* CF-RA resource */
+   MacRaCbInfo      *raCb;          /* RA info */
+   MacBsrTmrCfg     bsrTmrCfg;      /* BSR Timer Info */
+   UeUlCb           ulInfo;         /* UE specific UL info */
+   UeDlCb           dlInfo;         /* UE specific DL info */
    DataTransmissionAction transmissionAction;
 }MacUeCb;
 
@@ -248,7 +249,7 @@ MacCb macCb;
 /* Function declarations */
 short int macActvTmr(Ent ent,Inst inst);
 void fillRarPdu(RarInfo *rarInfo);
-void createMacRaCb(RachIndInfo *rachIndInfo);
+void createMacRaCb(MacCellCb *cellCb, RachIndInfo *rachIndInfo);
 void fillMsg4DlData(MacDlData *dlData, uint16_t msg4PduLen, uint8_t *msg4Pdu);
 void fillMacCe(MacCeInfo  *macCeData, uint8_t *msg3Pdu);
 void macMuxPdu(MacDlData *dlData, MacCeInfo *macCeData, uint8_t *msg4TxPdu, uint16_t tbSize);

@@ -94,12 +94,25 @@ uint8_t fapiMacRachInd(Pst *pst, RachInd *rachInd)
 {
    uint8_t      pduIdx;
    uint8_t      preambleIdx;
+   uint16_t     cellIdx;  
    RachIndInfo  *rachIndInfo;
+   MacCellCb    *cellCb = NULLP;
 
    DU_LOG("\nINFO  -->  MAC : Received RACH indication");
    /* Considering one pdu and one preamble */
    pduIdx = 0;
    preambleIdx = 0;
+
+   /* Validate cell Id */
+   GET_CELL_IDX(rachInd->cellId, cellIdx);
+   if(macCb.macCell[cellIdx] && (macCb.macCell[cellIdx]->cellId == rachInd->cellId))
+         cellCb = macCb.macCell[cellIdx];
+
+   if(!cellCb)
+   {
+      DU_LOG("\nERROR  --> MAC : Invalid Cell ID [%d] received in RACH Indication", rachInd->cellId);
+      return RFAILED;
+   }
 
    MAC_ALLOC(rachIndInfo, sizeof(RachIndInfo));
    if(!rachIndInfo)
@@ -119,7 +132,7 @@ uint8_t fapiMacRachInd(Pst *pst, RachInd *rachInd)
    rachIndInfo->timingAdv = rachInd->rachPdu[pduIdx].preamInfo[preambleIdx].timingAdv;
 
    /* Store the value in macRaCb */
-   createMacRaCb(rachIndInfo);
+   createMacRaCb(cellCb, rachIndInfo);
 
    /* Free sharable buffer used to send RACH Indication from lower MAC to MAC */
    MAC_FREE_SHRABL_BUF(pst->region, pst->pool, rachInd, sizeof(RachInd));
@@ -270,8 +283,6 @@ uint8_t MacProcSchRachRsrcRsp(Pst *pst, SchRachRsrcRsp *schRachRsrcRsp)
       }   
    }
 
-   /* TODO : Check if ra-preamble index is to be stored in UE CB */
-
    /* Fill SSB RACH resource info if SCH has sent a positive response and 
     * processing of SCH RACH resource response at MAC has been successful so far */
    if(rachRsrcRsp->result == MAC_DU_APP_RSP_OK)
@@ -280,6 +291,9 @@ uint8_t MacProcSchRachRsrcRsp(Pst *pst, SchRachRsrcRsp *schRachRsrcRsp)
       rachRsrcRsp->cfraResource.numSsb = schRachRsrcRsp->cfraResource.numSsb;
       memcpy(rachRsrcRsp->cfraResource.ssbResource, schRachRsrcRsp->cfraResource.ssbResource, \
          rachRsrcRsp->cfraResource.numSsb * sizeof(MacCfraSsbResource));
+
+      /* Copy resources to UE CB in MAC */
+      memcpy(&ueCb->cfraResource, &rachRsrcRsp->cfraResource, sizeof(MacCfraResource));
    }
 
    /* Free SCH RACH resource response */

@@ -129,6 +129,7 @@
 #include "RRCReconfiguration-v1530-IEs.h"
 #include "CNUEPagingIdentity.h"
 #include "PagingCell-Item.h"
+#include "UL-DCCH-Message.h"
 
 #include "cu_stub_sctp.h"
 #include "cu_stub_egtp.h"
@@ -9464,6 +9465,25 @@ uint8_t procUlRrcMsg(uint32_t duId, F1AP_PDU_t *f1apMsg)
                   return RFAILED;
                }
                memcpy(rrcContainer, ulRrcMsg->protocolIEs.list.array[idx]->value.choice.RRCContainer.buf, rrcContLen);
+#if 0
+               /* Decode UL DDCH message from RRC container */
+               UL_DCCH_Message_t *ulDcchMsg = NULLP, ulDcchAsnMsg;
+               asn_dec_rval_t rval;
+
+               ulDcchMsg = &ulDcchAsnMsg;
+               memset(ulDcchMsg, 0, sizeof(UL_DCCH_Message_t));
+               rval = aper_decode(0, &asn_DEF_UL_DCCH_Message, (void **)&ulDcchMsg, (rrcContainer+2), (rrcContLen-2), 0, 0);
+               if(rval.code == RC_FAIL || rval.code == RC_WMORE)
+               {
+                  DU_LOG("\nERROR  -->  F1AP : ASN decoder failed to decode RRC conatine in UL RRC Message Transfer");
+                  return;
+               }
+               printf("\n");
+               xer_fprint(stdout, &asn_DEF_UL_DCCH_Message, ulDcchMsg);
+#endif
+               if(duDb->ueCb[duUeF1apId-1].state == UE_HANDOVER_IN_PROGRESS)
+                  return;
+
                break;
             }
 

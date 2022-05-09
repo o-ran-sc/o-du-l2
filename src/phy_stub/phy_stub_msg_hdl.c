@@ -354,41 +354,53 @@ uint16_t l1BuildAndSendRxDataInd(uint16_t slot, uint16_t sfn, fapi_ul_pusch_pdu_
    MsgType type = 0;
 
    GET_UE_ID(puschPdu.rnti, ueId);
-   if(!phyDb.ueDb.ueCb[ueId-1].msg3Sent)
+   if(phyDb.ueDb.ueCb[ueId-1].isCFRA)
    {
+      /* In CF-RA in case of handover, RRC Reconfiguration Complete is sent
+       * by UE once RAR is received from DU */
       phyDb.ueDb.ueCb[ueId-1].ueId = ueId;
       phyDb.ueDb.ueCb[ueId-1].crnti = puschPdu.rnti;
-      phyDb.ueDb.ueCb[ueId-1].msg3Sent = true;
-      type = MSG_TYPE_MSG3;
-      sleep(2);
-   }
-   else if(!phyDb.ueDb.ueCb[ueId-1].msg5ShortBsrSent)
-   {
-      phyDb.ueDb.ueCb[ueId-1].msg5ShortBsrSent = true;
-      type = MSG_TYPE_SHORT_BSR;
-   }
-   else if(!phyDb.ueDb.ueCb[ueId-1].msg5Sent)
-   {
-      phyDb.ueDb.ueCb[ueId-1].msg5Sent = true;
-      type = MSG_TYPE_MSG5;
-   }
-   else if(!phyDb.ueDb.ueCb[ueId-1].msgRegistrationComp)
-   {
-      phyDb.ueDb.ueCb[ueId-1].msgRegistrationComp = true;
-      type = MSG_TYPE_REGISTRATION_COMPLETE; 
-   }
-   else if(!phyDb.ueDb.ueCb[ueId-1].msgSecurityModeComp)
-   {
-      phyDb.ueDb.ueCb[ueId-1].msgSecurityModeComp = true;
-      type = MSG_TYPE_SECURITY_MODE_COMPLETE;
-   }
-   else if(!phyDb.ueDb.ueCb[ueId-1].msgRrcReconfiguration)
-   {
-      phyDb.ueDb.ueCb[ueId-1].msgRrcReconfiguration = true;
+      phyDb.ueDb.ueCb[ueId-1].msgRrcReconfigComp = true;
       type = MSG_TYPE_RRC_RECONFIG_COMPLETE;
    }
    else
-      return RFAILED;
+   {
+      if(!phyDb.ueDb.ueCb[ueId-1].msg3Sent)
+      {
+         phyDb.ueDb.ueCb[ueId-1].ueId = ueId;
+         phyDb.ueDb.ueCb[ueId-1].crnti = puschPdu.rnti;
+         phyDb.ueDb.ueCb[ueId-1].msg3Sent = true;
+         type = MSG_TYPE_MSG3;
+         sleep(2);
+      }
+      else if(!phyDb.ueDb.ueCb[ueId-1].msg5ShortBsrSent)
+      {
+         phyDb.ueDb.ueCb[ueId-1].msg5ShortBsrSent = true;
+         type = MSG_TYPE_SHORT_BSR;
+      }
+      else if(!phyDb.ueDb.ueCb[ueId-1].msg5Sent)
+      {
+         phyDb.ueDb.ueCb[ueId-1].msg5Sent = true;
+         type = MSG_TYPE_MSG5;
+      }
+      else if(!phyDb.ueDb.ueCb[ueId-1].msgRegistrationComp)
+      {
+         phyDb.ueDb.ueCb[ueId-1].msgRegistrationComp = true;
+         type = MSG_TYPE_REGISTRATION_COMPLETE; 
+      }
+      else if(!phyDb.ueDb.ueCb[ueId-1].msgSecurityModeComp)
+      {
+         phyDb.ueDb.ueCb[ueId-1].msgSecurityModeComp = true;
+         type = MSG_TYPE_SECURITY_MODE_COMPLETE;
+      }
+      else if(!phyDb.ueDb.ueCb[ueId-1].msgRrcReconfigComp)
+      {
+         phyDb.ueDb.ueCb[ueId-1].msgRrcReconfigComp = true;
+         type = MSG_TYPE_RRC_RECONFIG_COMPLETE;
+      }
+      else
+         return RFAILED;
+   }
 
    MAC_ALLOC(rxDataInd, sizeof(fapi_rx_data_indication_t));
    if(!rxDataInd)
@@ -608,7 +620,7 @@ uint16_t l1BuildAndSendRxDataInd(uint16_t slot, uint16_t sfn, fapi_ul_pusch_pdu_
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint16_t l1BuildAndSendRachInd(uint16_t slot, uint16_t sfn)
+uint16_t l1BuildAndSendRachInd(uint16_t slot, uint16_t sfn, uint8_t raPreambleIdx)
 {
 #ifdef INTEL_FAPI
    uint8_t   rachPduIdx = 0; 
@@ -637,7 +649,7 @@ uint16_t l1BuildAndSendRachInd(uint16_t slot, uint16_t sfn)
    rachPdu->avgSnr = 0;
    rachPdu->numPreamble = 1;
 
-   rachPdu->preambleInfo[preamIdx].preambleIndex = 3;
+   rachPdu->preambleInfo[preamIdx].preambleIndex = raPreambleIdx;
    rachPdu->preambleInfo[preamIdx].timingAdvance = 0;
    rachPdu->preambleInfo[preamIdx].preamblePwr = 0;
 
@@ -1045,24 +1057,23 @@ S16 l1HdlUlTtiReq(uint16_t msgLen, void *msg)
    {
       if(ulTtiReq->pdus[numPdus-1].pduType == 0)
       {
-	 DU_LOG("\nINFO   -->  PHY STUB: PRACH PDU");
+         DU_LOG("\nINFO   -->  PHY STUB: PRACH PDU");
       }
       if(ulTtiReq->pdus[numPdus-1].pduType == 1)
       {
-	 DU_LOG("\nINFO   -->  PHY STUB: PUSCH PDU");
-	 l1BuildAndSendRxDataInd(ulTtiReq->slot, ulTtiReq->sfn, \
-	       ulTtiReq->pdus[numPdus-1].pdu.pusch_pdu); 
+         DU_LOG("\nINFO   -->  PHY STUB: PUSCH PDU");
+         l1BuildAndSendRxDataInd(ulTtiReq->slot, ulTtiReq->sfn, ulTtiReq->pdus[numPdus-1].pdu.pusch_pdu); 
       }
       if(ulTtiReq->pdus[numPdus-1].pduType == 2)
       {
-	 DU_LOG("\nINFO   -->  PHY STUB: PUCCH PDU");
+         DU_LOG("\nINFO   -->  PHY STUB: PUCCH PDU");
+
          fapi_ul_tti_req_t ulTtiSlotInd;
-	 memset(&ulTtiSlotInd, 0, sizeof(fapi_ul_tti_req_t));
-	 ulTtiSlotInd.slot = ulTtiReq->slot;
-	 ulTtiSlotInd.sfn  = ulTtiReq->sfn;
+         memset(&ulTtiSlotInd, 0, sizeof(fapi_ul_tti_req_t));
+         ulTtiSlotInd.slot = ulTtiReq->slot;
+         ulTtiSlotInd.sfn  = ulTtiReq->sfn;
          ADD_DELTA_TO_TIME(ulTtiSlotInd, ulTtiSlotInd, SLOT_DELAY);
-	 l1BuildAndSendUciInd(ulTtiSlotInd.slot, ulTtiSlotInd.sfn, \
-	       ulTtiReq->pdus[numPdus-1].pdu.pucch_pdu);
+         l1BuildAndSendUciInd(ulTtiSlotInd.slot, ulTtiSlotInd.sfn, ulTtiReq->pdus[numPdus-1].pdu.pucch_pdu);
       }
       numPdus--;
    }
@@ -1073,7 +1084,8 @@ S16 l1HdlUlTtiReq(uint16_t msgLen, void *msg)
    if(phyDb.ueDb.ueCb[UE_IDX_0].rachIndSent == false && ulTtiReq->sfn == 16 && ulTtiReq->slot == 6)
    {
       phyDb.ueDb.ueCb[UE_IDX_0].rachIndSent = true;
-      l1BuildAndSendRachInd(ulTtiReq->slot, ulTtiReq->sfn);
+      phyDb.ueDb.ueCb[UE_IDX_0].isCFRA = false;
+      l1BuildAndSendRachInd(ulTtiReq->slot, ulTtiReq->sfn, CB_RA_PREAMBLE_IDX);
       phyDb.ueDb.numActvUe++;
    }
 #if 0
@@ -1081,7 +1093,7 @@ S16 l1HdlUlTtiReq(uint16_t msgLen, void *msg)
    if(phyDb.ueDb.ueCb[UE_IDX_1].rachIndSent == false && ulTtiReq->sfn == 304 && ulTtiReq->slot == 0)
    {
       phyDb.ueDb.ueCb[UE_IDX_1].rachIndSent = true;
-      l1BuildAndSendRachInd(ulTtiReq->slot, ulTtiReq->sfn);
+      l1BuildAndSendRachInd(ulTtiReq->slot, ulTtiReq->sfn, CB_RA_PREAMBLE_IDX);
       phyDb.ueDb.numActvUe++;
    }
 
@@ -1089,7 +1101,7 @@ S16 l1HdlUlTtiReq(uint16_t msgLen, void *msg)
    if(phyDb.ueDb.ueCb[UE_IDX_2].rachIndSent == false && ulTtiReq->sfn == 526 && ulTtiReq->slot == 0)
    {
       phyDb.ueDb.ueCb[UE_IDX_2].rachIndSent = true;
-      l1BuildAndSendRachInd(ulTtiReq->slot, ulTtiReq->sfn);
+      l1BuildAndSendRachInd(ulTtiReq->slot, ulTtiReq->sfn, CB_RA_PREAMBLE_IDX);
       phyDb.ueDb.numActvUe++;
    }
 #endif

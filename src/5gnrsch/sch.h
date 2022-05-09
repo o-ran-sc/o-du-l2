@@ -286,6 +286,8 @@ typedef struct schRaReq
 {
    uint32_t        raRnti;
    RachIndInfo     *rachInd;
+   bool            isCFRA;
+   SchUeCb         *ueCb;          /* Filled only if isCFRA = true */
    SlotTimingInfo  winStartTime;
    SlotTimingInfo  winEndTime;
 }SchRaReq;
