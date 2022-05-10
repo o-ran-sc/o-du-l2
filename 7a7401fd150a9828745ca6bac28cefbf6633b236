@@ -24,6 +24,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8d783e79_c14f581c",
+        "filename": "src/5gnrmac/mac_cfg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 989,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-05-10T13:03:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "894a2f50_ab086933",
+      "range": {
+        "startLine": 989,
+        "startChar": 15,
+        "endLine": 989,
+        "endChar": 24
+      },
+      "revId": "7a7401fd150a9828745ca6bac28cefbf6633b236",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "59b4f6a4_01d319e2",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-05-06T10:52:09Z",
       "side": 1,
       "message": "Initialize pointers to NULL",
+      "range": {
+        "startLine": 1065,
+        "startChar": 15,
+        "endLine": 1065,
+        "endChar": 25
+      },
+      "revId": "7a7401fd150a9828745ca6bac28cefbf6633b236",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9dcad131_a133fd6c",
+        "filename": "src/5gnrmac/mac_cfg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1065,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-05-10T13:03:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "59b4f6a4_01d319e2",
       "range": {
         "startLine": 1065,
         "startChar": 15,
@@ -70,6 +118,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "19a4ba77_6b9bd11b",
+        "filename": "src/5gnrmac/mac_cfg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1066,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-05-10T13:03:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "53583589_40c9ac10",
+      "range": {
+        "startLine": 1066,
+        "startChar": 16,
+        "endLine": 1066,
+        "endChar": 28
+      },
+      "revId": "7a7401fd150a9828745ca6bac28cefbf6633b236",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "09a1caee_7d4bb445",
@@ -93,6 +165,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6157e948_a91af1fc",
+        "filename": "src/5gnrmac/mac_cfg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1067,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-05-10T13:03:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "09a1caee_7d4bb445",
+      "range": {
+        "startLine": 1067,
+        "startChar": 12,
+        "endLine": 1067,
+        "endChar": 19
+      },
+      "revId": "7a7401fd150a9828745ca6bac28cefbf6633b236",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "16fa68a5_a7481711",
@@ -106,6 +202,24 @@
       "writtenOn": "2022-05-06T11:31:59Z",
       "side": 1,
       "message": "Both of above conditions can never be true at the same time. \n\nEither of the below could be true:\n1. macCell[cellIdx] \u003d\u003d NULL\nOR\n2. macCell[CellIdx] !\u003d NULL \u0026\u0026 macCell[cellIdx]-\u003ecellId !\u003d pagingReq-\u003ecellId\n\nFor both of above cases, return failure",
+      "revId": "7a7401fd150a9828745ca6bac28cefbf6633b236",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "19d48d20_f4f5fbd8",
+        "filename": "src/5gnrmac/mac_cfg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1073,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-05-10T13:03:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "16fa68a5_a7481711",
       "revId": "7a7401fd150a9828745ca6bac28cefbf6633b236",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -150,6 +264,48 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "06e3366a_69fe31f8",
+        "filename": "src/5gnrmac/mac_cfg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1079,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-05-10T13:03:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0582902d_91b5899c",
+      "revId": "7a7401fd150a9828745ca6bac28cefbf6633b236",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dfc00ef0_8d51a812",
+        "filename": "src/5gnrmac/mac_cfg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1079,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-05-10T13:03:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "eb3e0fd8_d7b1daa8",
+      "range": {
+        "startLine": 1079,
+        "startChar": 64,
+        "endLine": 1079,
+        "endChar": 66
+      },
+      "revId": "7a7401fd150a9828745ca6bac28cefbf6633b236",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "457181af_ae64b155",
@@ -163,6 +319,30 @@
       "writtenOn": "2022-05-09T06:42:58Z",
       "side": 1,
       "message": "dont we need to allocate SHarabale buffer?",
+      "range": {
+        "startLine": 1097,
+        "startChar": 15,
+        "endLine": 1097,
+        "endChar": 24
+      },
+      "revId": "7a7401fd150a9828745ca6bac28cefbf6633b236",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "effe8928_a347df8a",
+        "filename": "src/5gnrmac/mac_cfg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1097,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-05-10T13:03:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "457181af_ae64b155",
       "range": {
         "startLine": 1097,
         "startChar": 15,
@@ -196,6 +376,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9303df40_f3a9f256",
+        "filename": "src/5gnrmac/mac_cfg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1105,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-05-10T13:03:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "aaf3a724_5217ac81",
+      "range": {
+        "startLine": 1105,
+        "startChar": 18,
+        "endLine": 1105,
+        "endChar": 37
+      },
+      "revId": "7a7401fd150a9828745ca6bac28cefbf6633b236",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "37a1ad08_1bcce70d",
@@ -213,6 +417,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b00d3cf9_84812f48",
+        "filename": "src/5gnrmac/mac_cfg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1110,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-05-10T13:03:59Z",
+      "side": 1,
+      "message": "No we will not send",
+      "parentUuid": "37a1ad08_1bcce70d",
+      "revId": "7a7401fd150a9828745ca6bac28cefbf6633b236",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4714d7c4_db044d96",
@@ -226,6 +448,30 @@
       "writtenOn": "2022-05-06T11:31:59Z",
       "side": 1,
       "message": "Is paging response required at all?",
+      "range": {
+        "startLine": 1117,
+        "startChar": 9,
+        "endLine": 1117,
+        "endChar": 33
+      },
+      "revId": "7a7401fd150a9828745ca6bac28cefbf6633b236",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "931f6bdf_4f468009",
+        "filename": "src/5gnrmac/mac_cfg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1117,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-05-10T13:03:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4714d7c4_db044d96",
       "range": {
         "startLine": 1117,
         "startChar": 9,
@@ -259,6 +505,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6caee7b6_6bfdf0fb",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2127,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-05-10T13:03:59Z",
+      "side": 1,
+      "message": "Done. I have checked thoroughly. all the PDU are getting stored in sorted order.",
+      "parentUuid": "72fdf720_4f7e7293",
+      "range": {
+        "startLine": 2127,
+        "startChar": 8,
+        "endLine": 2127,
+        "endChar": 29
+      },
+      "revId": "7a7401fd150a9828745ca6bac28cefbf6633b236",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f580ed09_c3396480",
@@ -272,6 +542,30 @@
       "writtenOn": "2022-05-06T10:52:09Z",
       "side": 1,
       "message": "add a line break",
+      "range": {
+        "startLine": 2131,
+        "startChar": 27,
+        "endLine": 2131,
+        "endChar": 32
+      },
+      "revId": "7a7401fd150a9828745ca6bac28cefbf6633b236",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6515030d_e3d656ff",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2131,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-05-10T13:03:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f580ed09_c3396480",
       "range": {
         "startLine": 2131,
         "startChar": 27,
@@ -299,6 +593,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c205074c_5289d630",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2161,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-05-10T13:03:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "50a6faf8_239576b2",
+      "revId": "7a7401fd150a9828745ca6bac28cefbf6633b236",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fe80e140_74e6ff45",
@@ -316,6 +628,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e2c81714_cc0598d9",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2212,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-05-10T13:03:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fe80e140_74e6ff45",
+      "revId": "7a7401fd150a9828745ca6bac28cefbf6633b236",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1efefdd5_c8d42240",
@@ -329,6 +659,30 @@
       "writtenOn": "2022-05-06T10:52:09Z",
       "side": 1,
       "message": "Didnt free pageReq and pageReq-\u003epagePdu",
+      "range": {
+        "startLine": 2224,
+        "startChar": 32,
+        "endLine": 2224,
+        "endChar": 36
+      },
+      "revId": "7a7401fd150a9828745ca6bac28cefbf6633b236",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4c6e0160_769f4965",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2224,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-05-10T13:03:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1efefdd5_c8d42240",
       "range": {
         "startLine": 2224,
         "startChar": 32,
@@ -362,6 +716,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7f4dd4f7_5dfad901",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2252,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-05-10T13:03:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "31ec2062_5ea5f3b2",
+      "range": {
+        "startLine": 2252,
+        "startChar": 21,
+        "endLine": 2252,
+        "endChar": 25
+      },
+      "revId": "7a7401fd150a9828745ca6bac28cefbf6633b236",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "de7f5094_1407af0d",
@@ -375,6 +753,30 @@
       "writtenOn": "2022-05-06T11:31:59Z",
       "side": 1,
       "message": "Rename paging request to DL-PCCH indication as we have DL-CCCH indication too",
+      "range": {
+        "startLine": 1599,
+        "startChar": 8,
+        "endLine": 1599,
+        "endChar": 26
+      },
+      "revId": "7a7401fd150a9828745ca6bac28cefbf6633b236",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fd177ca3_6602fddd",
+        "filename": "src/cm/du_app_mac_inf.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 1599,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-05-10T13:03:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "de7f5094_1407af0d",
       "range": {
         "startLine": 1599,
         "startChar": 8,
@@ -408,6 +810,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "91fb381c_147005df",
+        "filename": "src/cm/du_app_mac_inf.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 1604,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-05-10T13:03:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "61a44359_6f202f7e",
+      "range": {
+        "startLine": 1604,
+        "startChar": 9,
+        "endLine": 1604,
+        "endChar": 27
+      },
+      "revId": "7a7401fd150a9828745ca6bac28cefbf6633b236",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e128e023_d6e959a7",
@@ -421,6 +847,30 @@
       "writtenOn": "2022-05-06T11:31:59Z",
       "side": 1,
       "message": "Lets discuss if this is to be called paging request or paging indication(as in WG8 spec)",
+      "range": {
+        "startLine": 1890,
+        "startChar": 8,
+        "endLine": 1890,
+        "endChar": 23
+      },
+      "revId": "7a7401fd150a9828745ca6bac28cefbf6633b236",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "595bf1e7_57bdba50",
+        "filename": "src/cm/mac_sch_interface.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 1890,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-05-10T13:03:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e128e023_d6e959a7",
       "range": {
         "startLine": 1890,
         "startChar": 8,
@@ -448,6 +898,42 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "dccdcfa7_1220a62a",
+        "filename": "src/cm/mac_sch_interface.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 1892,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-05-10T13:03:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "203753c6_78c74b34",
+      "revId": "7a7401fd150a9828745ca6bac28cefbf6633b236",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3425f6fd_03992219",
+        "filename": "src/cm/mac_sch_interface.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 1892,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-05-10T13:03:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "203753c6_78c74b34",
+      "revId": "7a7401fd150a9828745ca6bac28cefbf6633b236",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e16a1f73_096bc356",
@@ -461,6 +947,30 @@
       "writtenOn": "2022-05-06T10:52:09Z",
       "side": 1,
       "message": "dont need this print.. We can print cellID in following two prints",
+      "range": {
+        "startLine": 202,
+        "startChar": 97,
+        "endLine": 202,
+        "endChar": 103
+      },
+      "revId": "7a7401fd150a9828745ca6bac28cefbf6633b236",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d1a84342_55c8e942",
+        "filename": "src/du_app/du_cell_mgr.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 202,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-05-10T13:03:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e16a1f73_096bc356",
       "range": {
         "startLine": 202,
         "startChar": 97,
@@ -488,6 +998,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fdb6d9ed_fb40e6c7",
+        "filename": "src/du_app/du_cell_mgr.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 292,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-05-10T13:03:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "57e52b59_3f98088a",
+      "revId": "7a7401fd150a9828745ca6bac28cefbf6633b236",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "20c90673_6ec5ee43",
@@ -501,6 +1029,24 @@
       "writtenOn": "2022-05-06T11:31:59Z",
       "side": 1,
       "message": "print cell Id for which paging request is sent",
+      "revId": "7a7401fd150a9828745ca6bac28cefbf6633b236",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "73683e56_804a673d",
+        "filename": "src/du_app/du_cell_mgr.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 296,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-05-10T13:03:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "20c90673_6ec5ee43",
       "revId": "7a7401fd150a9828745ca6bac28cefbf6633b236",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -541,6 +1087,48 @@
       "writtenOn": "2022-05-06T11:31:59Z",
       "side": 1,
       "message": "Instead of freeing here, check the return value of this function call at line 786 and free pagingReq there in case of failure",
+      "revId": "7a7401fd150a9828745ca6bac28cefbf6633b236",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f36e8b20_4ba964aa",
+        "filename": "src/du_app/du_cell_mgr.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 301,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-05-10T13:03:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "46437322_2b1f7d4b",
+      "revId": "7a7401fd150a9828745ca6bac28cefbf6633b236",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "95498422_6318a72b",
+        "filename": "src/du_app/du_cell_mgr.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 301,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-05-10T13:03:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2a5f952a_5f533247",
+      "range": {
+        "startLine": 301,
+        "startChar": 9,
+        "endLine": 301,
+        "endChar": 27
+      },
       "revId": "7a7401fd150a9828745ca6bac28cefbf6633b236",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
