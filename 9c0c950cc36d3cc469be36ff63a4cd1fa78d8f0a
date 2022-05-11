@@ -18,6 +18,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "287f5ebb_a4e86846",
+        "filename": "src/5gnrmac/mac_cfg_hdl.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 1021,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-05-11T09:36:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e9e83252_7422d5ad",
+      "revId": "9c0c950cc36d3cc469be36ff63a4cd1fa78d8f0a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f7dda6db_b157809e",
@@ -31,6 +49,30 @@
       "writtenOn": "2022-05-11T08:11:55Z",
       "side": 1,
       "message": "Call it either paging indication or paging request. Dont use both terms in same process",
+      "range": {
+        "startLine": 1028,
+        "startChar": 46,
+        "endLine": 1028,
+        "endChar": 73
+      },
+      "revId": "9c0c950cc36d3cc469be36ff63a4cd1fa78d8f0a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "86a828f6_75bb5529",
+        "filename": "src/5gnrmac/mac_cfg_hdl.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 1028,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-05-11T09:36:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f7dda6db_b157809e",
       "range": {
         "startLine": 1028,
         "startChar": 46,
@@ -58,6 +100,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "acbc5b66_1ecf633a",
+        "filename": "src/5gnrmac/mac_cfg_hdl.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 1035,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-05-11T09:36:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "833ca7bf_df291647",
+      "revId": "9c0c950cc36d3cc469be36ff63a4cd1fa78d8f0a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "dcc5fc4f_784ca25e",
@@ -81,6 +141,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "67f6bca2_1025a3f1",
+        "filename": "src/du_app/du_cell_mgr.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 220,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-05-11T09:36:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dcc5fc4f_784ca25e",
+      "range": {
+        "startLine": 220,
+        "startChar": 12,
+        "endLine": 220,
+        "endChar": 38
+      },
+      "revId": "9c0c950cc36d3cc469be36ff63a4cd1fa78d8f0a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "862f1ccb_a4a86650",
@@ -94,6 +178,30 @@
       "writtenOn": "2022-05-11T08:11:55Z",
       "side": 1,
       "message": "rename to DlPcchInd at all places",
+      "range": {
+        "startLine": 249,
+        "startChar": 8,
+        "endLine": 249,
+        "endChar": 29
+      },
+      "revId": "9c0c950cc36d3cc469be36ff63a4cd1fa78d8f0a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a71f4d32_dcaad544",
+        "filename": "src/du_app/du_cell_mgr.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 249,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-05-11T09:36:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "862f1ccb_a4a86650",
       "range": {
         "startLine": 249,
         "startChar": 8,
