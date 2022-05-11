@@ -1,0 +1,107 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e9e83252_7422d5ad",
+        "filename": "src/5gnrmac/mac_cfg_hdl.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 1021,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-05-11T08:11:55Z",
+      "side": 1,
+      "message": "if memory allocation fails for schPageReq-\u003epagePdu, then no paging ind will be sent to sch. So please free schPageReq also here",
+      "revId": "9c0c950cc36d3cc469be36ff63a4cd1fa78d8f0a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f7dda6db_b157809e",
+        "filename": "src/5gnrmac/mac_cfg_hdl.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 1028,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-05-11T08:11:55Z",
+      "side": 1,
+      "message": "Call it either paging indication or paging request. Dont use both terms in same process",
+      "range": {
+        "startLine": 1028,
+        "startChar": 46,
+        "endLine": 1028,
+        "endChar": 73
+      },
+      "revId": "9c0c950cc36d3cc469be36ff63a4cd1fa78d8f0a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "833ca7bf_df291647",
+        "filename": "src/5gnrmac/mac_cfg_hdl.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 1035,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-05-11T08:11:55Z",
+      "side": 1,
+      "message": "In case cell Id is incorrect, pcchMsgReq will be free but pcchMsgReq-\u003epcchPdu will still not be freed",
+      "revId": "9c0c950cc36d3cc469be36ff63a4cd1fa78d8f0a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dcc5fc4f_784ca25e",
+        "filename": "src/du_app/du_cell_mgr.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 220,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-05-11T08:11:55Z",
+      "side": 1,
+      "message": "BuildAndSendDlPcchIndToMac",
+      "range": {
+        "startLine": 220,
+        "startChar": 12,
+        "endLine": 220,
+        "endChar": 38
+      },
+      "revId": "9c0c950cc36d3cc469be36ff63a4cd1fa78d8f0a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "862f1ccb_a4a86650",
+        "filename": "src/du_app/du_cell_mgr.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 249,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-05-11T08:11:55Z",
+      "side": 1,
+      "message": "rename to DlPcchInd at all places",
+      "range": {
+        "startLine": 249,
+        "startChar": 8,
+        "endLine": 249,
+        "endChar": 29
+      },
+      "revId": "9c0c950cc36d3cc469be36ff63a4cd1fa78d8f0a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
