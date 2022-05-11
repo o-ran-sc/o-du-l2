@@ -292,12 +292,13 @@ typedef struct schRaReq
 
 typedef struct schPageInfo
 {
-  uint8_t        pf;       /*Value of Paging Frame received from DUAPP*/
+  uint16_t       pf;       /*Value of Paging Frame received from DUAPP*/
   uint8_t        i_s;      /*Value of Paging Occ Index received from DUAPP*/
-  SlotTimingInfo TxTime;   /*Start Paging window*/
+  SlotTimingInfo pageTxTime;   /*Start Paging window*/
   uint8_t        crntSsbIdx; /*Counts the slot till totalSSB is receached*/
   uint8_t        mcs;
-  uint8_t        nPRB;
+  uint16_t        nPRB;
+  uint32_t       tbsSize;
   uint16_t       msgLen;
   uint8_t        *pagePdu;   
 }SchPageInfo;
@@ -435,6 +436,8 @@ void updateBsrAndLcList(CmLListCp *lcLL, BsrInfo *bsrInfo, uint8_t status);
 void schProcPagingCfg(SchCellCb *cell);
 void schCfgPdcchMonOccOfPO(SchCellCb *cell);
 void schIncrSlot(SlotTimingInfo *timingInfo, uint8_t incr, uint16_t numSlotsPerRF);
+uint8_t schFillPagePdschCfg(SchCellCb *cell, PdschCfg *pagePdschCfg, SlotTimingInfo slotTime, \
+                             uint16_t tbSize, uint8_t mcs, uint16_t startPrb);
 
 /**********************************************************************
   End of file

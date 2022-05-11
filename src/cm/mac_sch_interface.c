@@ -608,6 +608,24 @@ uint8_t packSchSliceReCfgRsp(Pst *pst, SchSliceCfgRsp *cfgRsp)
    return ROK;
 }
 
+/**
+ * @brief function to pack DL Paging allocation message 
+ *        from MAC to SCH
+ *
+ * @details
+ *
+ *     Function : packSchMacDlPageAlloc 
+ *     
+ *     
+ *  @param[in]  Pst *pst, the post structure     
+ *  @param[in]  DlPageAlloc *dlPageAlloc
+ *  @return  S16
+ *      -# ROK
+ **/
+uint8_t packSchMacDlPageAlloc(Pst *pst, DlPageAlloc *dlPageAlloc)
+{
+   return ROK;
+}
 /**********************************************************************
   End of file
  **********************************************************************/
