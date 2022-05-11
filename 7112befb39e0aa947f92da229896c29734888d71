@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c7273fab_9f66ebad",
+        "filename": "src/cm/mac_sch_interface.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 1720,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-05-11T05:06:34Z",
+      "side": 1,
+      "message": "will remove.",
+      "range": {
+        "startLine": 1720,
+        "startChar": 12,
+        "endLine": 1720,
+        "endChar": 13
+      },
+      "revId": "7112befb39e0aa947f92da229896c29734888d71",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d2f83b46_170d00b5",
+        "filename": "src/cm/mac_sch_interface.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 1886,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-05-11T05:06:34Z",
+      "side": 1,
+      "message": "will remove packSchPagingRsp and MacProcSchPagingRsp",
+      "range": {
+        "startLine": 1886,
+        "startChar": 8,
+        "endLine": 1886,
+        "endChar": 24
+      },
+      "revId": "7112befb39e0aa947f92da229896c29734888d71",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
