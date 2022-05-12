@@ -24,6 +24,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "41434b6c_ef956a79",
+        "filename": "src/5gnrmac/mac.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 208,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-05-12T10:34:19Z",
+      "side": 1,
+      "message": "As discussed the same before, we should ideally keep it as uint16_t. cellId, ueId, crnti.. all these parameters have had different datatypes across different layers. Let make it consistent during code refactoring/cleanup phase",
+      "parentUuid": "b691ba58_9933a126",
+      "range": {
+        "startLine": 208,
+        "startChar": 3,
+        "endLine": 208,
+        "endChar": 11
+      },
+      "revId": "0e47eeb745110c83ad50a488184a62d4a53f4c7b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3e69d9a6_17baa4be",
@@ -37,6 +61,24 @@
       "writtenOn": "2022-05-11T07:43:08Z",
       "side": 1,
       "message": "crnti is of type  uint16_t, So dont you think crntiMap should also be of type uint16_t ?",
+      "revId": "0e47eeb745110c83ad50a488184a62d4a53f4c7b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ced2ff1e_8a032b72",
+        "filename": "src/5gnrmac/mac.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 224,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-05-12T10:34:19Z",
+      "side": 1,
+      "message": "correct",
+      "parentUuid": "3e69d9a6_17baa4be",
       "revId": "0e47eeb745110c83ad50a488184a62d4a53f4c7b",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -58,6 +100,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c3d8c12c_e4a924fe",
+        "filename": "src/5gnrmac/mac_mux.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 268,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-05-12T10:34:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e8b97fc9_d5e0af38",
+      "revId": "0e47eeb745110c83ad50a488184a62d4a53f4c7b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ff6528ba_af2a4985",
@@ -71,6 +131,30 @@
       "writtenOn": "2022-05-11T07:43:08Z",
       "side": 1,
       "message": "intialize it to NULLP",
+      "range": {
+        "startLine": 98,
+        "startChar": 17,
+        "endLine": 98,
+        "endChar": 28
+      },
+      "revId": "0e47eeb745110c83ad50a488184a62d4a53f4c7b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3ee631d4_508e9e00",
+        "filename": "src/5gnrmac/mac_rach.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-05-12T10:34:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ff6528ba_af2a4985",
       "range": {
         "startLine": 98,
         "startChar": 17,
@@ -104,6 +188,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5abeecf8_a6ab7d9e",
+        "filename": "src/5gnrsch/sch_rach.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 386,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-05-12T10:34:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1d0ced8e_3bd6cd9a",
+      "range": {
+        "startLine": 386,
+        "startChar": 21,
+        "endLine": 386,
+        "endChar": 22
+      },
+      "revId": "0e47eeb745110c83ad50a488184a62d4a53f4c7b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e4062455_cd5512ed",
@@ -117,6 +225,30 @@
       "writtenOn": "2022-05-11T07:43:08Z",
       "side": 1,
       "message": "lets check whether this function return correctly or not.",
+      "range": {
+        "startLine": 744,
+        "startChar": 6,
+        "endLine": 744,
+        "endChar": 19
+      },
+      "revId": "0e47eeb745110c83ad50a488184a62d4a53f4c7b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b2ffa9eb_77a4f4c9",
+        "filename": "src/5gnrsch/sch_rach.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 744,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-05-12T10:34:19Z",
+      "side": 1,
+      "message": "This is a void function and has no negative flow as of now. Hence we need not check return value.",
+      "parentUuid": "e4062455_cd5512ed",
       "range": {
         "startLine": 744,
         "startChar": 6,
@@ -144,6 +276,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "68779460_9adea403",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 9468,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-05-12T10:34:19Z",
+      "side": 1,
+      "message": "I was trying to decode UL msg i.e PDCP PDU by bypassing the PDCP bits and decoding only UL-DCCH inside PDCP PDU but this code isn\u0027t working yet. Removed it now.",
+      "parentUuid": "4658bae1_6579c30b",
+      "revId": "0e47eeb745110c83ad50a488184a62d4a53f4c7b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "45f448ac_05d460f8",
@@ -157,6 +307,30 @@
       "writtenOn": "2022-05-10T05:58:32Z",
       "side": 1,
       "message": "pls align",
+      "range": {
+        "startLine": 74,
+        "startChar": 9,
+        "endLine": 74,
+        "endChar": 12
+      },
+      "revId": "0e47eeb745110c83ad50a488184a62d4a53f4c7b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9c6d94e5_713a7460",
+        "filename": "src/phy_stub/phy_stub.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-05-12T10:34:19Z",
+      "side": 1,
+      "message": "In vim editor these look aligned correctly but here it is misaligned. So I have tried removing whitespace and adding again. Lets see if it works",
+      "parentUuid": "45f448ac_05d460f8",
       "range": {
         "startLine": 74,
         "startChar": 9,
@@ -190,6 +364,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "17458042_0d77d364",
+        "filename": "src/phy_stub/phy_stub.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-05-12T10:34:19Z",
+      "side": 1,
+      "message": "same as above",
+      "parentUuid": "7d91990c_6a66dfb9",
+      "range": {
+        "startLine": 75,
+        "startChar": 12,
+        "endLine": 75,
+        "endChar": 31
+      },
+      "revId": "0e47eeb745110c83ad50a488184a62d4a53f4c7b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a0f74345_a2b5d97e",
@@ -203,6 +401,30 @@
       "writtenOn": "2022-05-10T05:58:32Z",
       "side": 1,
       "message": "phyDb.ueDb.ueCb[UE_IDX_0].isCFRA \u003d false.. dont we need to add it here although it is not be enabled??",
+      "range": {
+        "startLine": 1095,
+        "startChar": 17,
+        "endLine": 1095,
+        "endChar": 21
+      },
+      "revId": "0e47eeb745110c83ad50a488184a62d4a53f4c7b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "77249185_fe381c9d",
+        "filename": "src/phy_stub/phy_stub_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1095,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-05-12T10:34:19Z",
+      "side": 1,
+      "message": "yes needed here too. Added now.",
+      "parentUuid": "a0f74345_a2b5d97e",
       "range": {
         "startLine": 1095,
         "startChar": 17,
@@ -236,6 +458,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ff96450f_90c4ce7c",
+        "filename": "src/phy_stub/phy_stub_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1104,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-05-12T10:34:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a02d89b2_e53eb7b4",
+      "range": {
+        "startLine": 1104,
+        "startChar": 6,
+        "endLine": 1104,
+        "endChar": 27
+      },
+      "revId": "0e47eeb745110c83ad50a488184a62d4a53f4c7b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5cef939b_c3545a0c",
@@ -249,6 +495,30 @@
       "writtenOn": "2022-05-10T05:58:32Z",
       "side": 1,
       "message": "Is this Rach only applicable for Handover right? because CFRA can be triggered for other scenario too right?",
+      "range": {
+        "startLine": 208,
+        "startChar": 16,
+        "endLine": 208,
+        "endChar": 17
+      },
+      "revId": "0e47eeb745110c83ad50a488184a62d4a53f4c7b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ae5e83a2_ec04e73e",
+        "filename": "src/phy_stub/phy_stub_thread_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 208,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-05-12T10:34:19Z",
+      "side": 1,
+      "message": "This RACH indication trigger with dedicated preamble index can be used for any scenario that requires CFRA. It is not restricted to handover.",
+      "parentUuid": "5cef939b_c3545a0c",
       "range": {
         "startLine": 208,
         "startChar": 16,
