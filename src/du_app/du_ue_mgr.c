@@ -95,6 +95,13 @@ DuRlcDlUserDataToRlcFunc duSendRlcDlUserDataToRlcOpts[] =
    packRlcDlUserDataToRlc      /* Light weight-loose coupling */
 };
 
+DuMacRachRsrcRel packMacRachRsrcRelOpts[] = 
+{
+   packDuMacRachRsrcRel,      /* Loose coupling */
+   MacProcRachRsrcRel,        /* Tight coupling */
+   packDuMacRachRsrcRel       /* Light weight-loose coupling */
+};
+
 DuMacUeDeleteReq packMacUeDeleteReqOpts[] =
 {
    packDuMacUeDeleteReq,       /* Loose coupling */
@@ -3084,25 +3091,50 @@ uint8_t duProcUeContextModReq(DuUeCb *ueCb)
 
 /*******************************************************************
 *
-* @brief Function to delete Pdsch ServCellCfg
+* @brief Build and send dedicated RACH resource release request to MAC
 *
 * @details
 *
-*    Function : deletePdschServCellCfg
+*    Function : duBuildAndSendRachRsrcRelToMac
 *
-*    Functionality: Function to delete Pdsch ServCellCfg
+*    Functionality: Function to Build and send dedicated RACH resource 
+*    release request to MAC
 *
-* @params[in] PdschServCellCfg *pdschServCellCfg
-* @return void
+* @params[in] Cell ID
+*             UE CB
+* @return ROK - Success
+*         RFAILED - Failure
 *
 * ****************************************************************/
-
-void deletePdschServCellCfg(PdschServCellCfg *pdschServCellCfg)
+uint8_t duBuildAndSendRachRsrcRelToMac(uint16_t cellId, DuUeCb *ueCb)
 {
-   DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL,pdschServCellCfg->maxMimoLayers, sizeof(uint8_t));
-   DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL,pdschServCellCfg->maxCodeBlkGrpPerTb, sizeof(MaxCodeBlkGrpPerTB));
-   DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL,pdschServCellCfg->codeBlkGrpFlushInd, sizeof(bool));
-   DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL,pdschServCellCfg->xOverhead, sizeof(PdschXOverhead));
+   Pst pst;
+   MacRachRsrcRel *rachRsrcRel = NULLP;
+
+   DU_ALLOC_SHRABL_BUF(rachRsrcRel, sizeof(MacRachRsrcRel));
+   if(!rachRsrcRel)
+   {
+      DU_LOG("\nERROR  -->  DU APP : Failed to allocate memory for RACH Resource Release in \
+            duBuildAndSendRachRsrcRelToMac()");
+      return RFAILED;
+   }
+
+   rachRsrcRel->cellId = cellId;
+   rachRsrcRel->ueId = ueCb->gnbDuUeF1apId;
+   rachRsrcRel->crnti = ueCb->crnti;
+
+   /* Fill Pst */
+   FILL_PST_DUAPP_TO_MAC(pst, EVENT_MAC_RACH_RESOURCE_REL);
+
+   if(((*packMacRachRsrcRelOpts[pst.selector])(&pst, rachRsrcRel)) != ROK)
+   {
+      DU_LOG("\nERROR  -->  DU_APP : Failure in sending RACH Resource Release to MAC at \
+            duBuildAndSendRachRsrcRelToMac()");
+      DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, rachRsrcRel, sizeof(MacRachRsrcRel));
+      return RFAILED;
+   }
+
+   return ROK;
 }
 
 /*******************************************************************
