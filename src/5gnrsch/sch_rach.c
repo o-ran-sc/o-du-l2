@@ -977,6 +977,85 @@ uint8_t schFillRar(SchCellCb *cell, SlotTimingInfo rarTime, uint16_t ueId, RarAl
    return ROK;
 }
 
+ /* @brief Process RACH resource release after CFRA
+ *
+ * @details
+ *
+ *     Function : MacSchRachRsrcRel
+ *     
+ *     This function processes RACH resorce release
+ *     from MAC after CFRA. It releases the dedicated 
+ *     preamble alloted to the UE
+ *     
+ *  @param[in]  Post structure
+ *  @param[in]  RACH resource release
+ *  @return     ROK
+ *              RFAILED
+ */
+uint8_t MacSchRachRsrcRel(Pst *pst, SchRachRsrcRel *schRachRsrcRel)
+{
+   uint8_t      ret = ROK;
+   uint8_t      ssbIdx = 0, cfraSsbIdx = 0;
+   uint16_t     cellIdx = 0;
+   Inst         inst = pst->dstInst - SCH_INST_START;
+   SchCellCb    *cellCb = NULLP;
+   SchUeCb      *ueCb = NULLP;
+
+   DU_LOG("\nINFO  -->  SCH : Received RACH resource release for Cell ID [%d] CRNTI [%d]", \
+         schRachRsrcRel->cellId, schRachRsrcRel->crnti);
+
+   /* Fetch Cell CB */
+   for(cellIdx = 0; cellIdx < MAX_NUM_CELL; cellIdx++)
+   {
+      if((schCb[inst].cells[cellIdx]) && (schCb[inst].cells[cellIdx]->cellId == schRachRsrcRel->cellId))
+      {
+         cellCb = schCb[inst].cells[cellIdx];
+         break;
+      }
+   }
+   
+   if(cellCb)
+   {
+      /* Fetch UE CB */
+      ueCb = schGetUeCb(cellCb, schRachRsrcRel->crnti);
+      if(ueCb->crnti != schRachRsrcRel->crnti)
+      {
+         DU_LOG("\nERROR  -->  SCH : CRNTI [%d] not found", schRachRsrcRel->crnti);
+         ret = RFAILED;
+      }
+   }
+   else
+   {
+      DU_LOG("\nERROR  -->  SCH : Cell ID [%d] not found", schRachRsrcRel->cellId);
+      ret = RFAILED;
+   }
+
+   /* Free SSB resource if no failure has occurred until this step */
+   if(ret == ROK)
+   {
+      for(ssbIdx = 0; ssbIdx < schRachRsrcRel->cfraResource.numSsb; ssbIdx++)
+      {
+         /* Search each ssbIdx entry in UE Cb */
+         for(cfraSsbIdx = 0; cfraSsbIdx < ueCb->cfraResource.numSsb; cfraSsbIdx++)
+         {
+            if(ueCb->cfraResource.ssbResource[cfraSsbIdx].ssbIdx == schRachRsrcRel->cfraResource.ssbResource[ssbIdx].ssbIdx)
+            {
+               /* If ssbIdx entry is found in UE CB, free dedicated resources
+                * for this ssbIdx */
+               UNSET_ONE_BIT(ueCb->cfraResource.ssbResource[cfraSsbIdx].raPreambleIdx, cellCb->dedPreambleBitMap);
+               memset(&ueCb->cfraResource.ssbResource[cfraSsbIdx], 0, sizeof(SchCfraSsbResource));
+               ueCb->cfraResource.numSsb--;
+               break;
+            }
+         }
+      } /* End of for */
+   } /* End of if */
+
+   /* Free RACH resource release memory allocated by MAC */
+   SCH_FREE(schRachRsrcRel, sizeof(SchRachRsrcRel));
+   return ret;
+}
+
 /**********************************************************************
          End of file
 **********************************************************************/

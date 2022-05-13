@@ -1708,19 +1708,42 @@ uint8_t duHandleUlCcchInd(Pst *pst, UlCcchIndInfo *ulCcchIndInfo)
 uint8_t DuProcRlcUlRrcMsgTrans(Pst *pst, RlcUlRrcMsgInfo *ulRrcMsgInfo)
 {
    DuCellCb *cellCb = NULLP;
-   DuUeCb   ueCb ={0};
+   DuUeCb   *ueCb = NULLP;
   
    if(duGetCellCb(ulRrcMsgInfo->cellId, &cellCb) != ROK)
+   {
+      DU_LOG("\nERROR  -->  DU_APP : DuProcRlcUlRrcMsgTrans() : Cell ID [%d] not found", ulRrcMsgInfo->cellId);
       return RFAILED;
+   }
+
    if(ulRrcMsgInfo->ueId > 0)
    {
-   ueCb = cellCb->ueCb[ulRrcMsgInfo->ueId -1];
+      if(cellCb->ueCb[ulRrcMsgInfo->ueId -1].gnbDuUeF1apId == ulRrcMsgInfo->ueId)
+         ueCb = &cellCb->ueCb[ulRrcMsgInfo->ueId -1];
 
+      if(!ueCb)
+      {
+         DU_LOG("\nERROR  -->  DU_APP : DuProcRlcUlRrcMsgTrans() : UE ID [%d] not found", ulRrcMsgInfo->ueId);
+         return RFAILED;
+      }
 
-   BuildAndSendULRRCMessageTransfer(ueCb, ulRrcMsgInfo->lcId, ulRrcMsgInfo->msgLen, ulRrcMsgInfo->rrcMsg);
+      /* If UL message is received for a UE in handover, it signifies that UE is now
+       * attached to GNB. Hence marking this UE as active and requesting MAC to 
+       * release the dedicated RACH resources */
+      if(ueCb->ueState == UE_HANDIN_IN_PROGRESS)
+      {
+         ueCb->ueState = UE_ACTIVE;
+         cellCb->numActvUes++;
 
-   DU_FREE_SHRABL_BUF(pst->region, pst->pool, ulRrcMsgInfo->rrcMsg, ulRrcMsgInfo->msgLen);
-   DU_FREE_SHRABL_BUF(pst->region, pst->pool, ulRrcMsgInfo, sizeof(RlcUlRrcMsgInfo));
+         /* Release RACH resources */
+         memset(&ueCb->cfraResource, 0, sizeof(MacCfraResource));
+         duBuildAndSendRachRsrcRelToMac(ulRrcMsgInfo->cellId, ueCb);
+      }
+
+      BuildAndSendULRRCMessageTransfer(ueCb, ulRrcMsgInfo->lcId, ulRrcMsgInfo->msgLen, ulRrcMsgInfo->rrcMsg);
+
+      DU_FREE_SHRABL_BUF(pst->region, pst->pool, ulRrcMsgInfo->rrcMsg, ulRrcMsgInfo->msgLen);
+      DU_FREE_SHRABL_BUF(pst->region, pst->pool, ulRrcMsgInfo, sizeof(RlcUlRrcMsgInfo));
    }
    return ROK;
 }

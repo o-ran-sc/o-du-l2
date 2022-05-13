@@ -23,7 +23,8 @@
 
 #define MAX_RETRY 5
 #define MAX_IPV6_LEN 16
-#define MAX_DU_SUPPORTED 1 
+//#define MAX_DU_SUPPORTED 1 
+#define MAX_DU_SUPPORTED 2
 
 /* Global variable declaration */
 uint8_t   socket_type;      /* Socket type */

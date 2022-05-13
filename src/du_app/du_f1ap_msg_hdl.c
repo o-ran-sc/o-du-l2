@@ -2557,7 +2557,7 @@ void FreeULRRCMessageTransfer( F1AP_PDU_t *f1apMsg)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t BuildAndSendULRRCMessageTransfer(DuUeCb  ueCb, uint8_t lcId, \
+uint8_t BuildAndSendULRRCMessageTransfer(DuUeCb  *ueCb, uint8_t lcId, \
       uint16_t msgLen, uint8_t *rrcMsg)
 {
    uint8_t   elementCnt =0;
@@ -2621,7 +2621,7 @@ uint8_t BuildAndSendULRRCMessageTransfer(DuUeCb  ueCb, uint8_t lcId, \
       ulRRCMsg->protocolIEs.list.array[idx1]->criticality = Criticality_reject;
       ulRRCMsg->protocolIEs.list.array[idx1]->value.present = \
 							      ULRRCMessageTransferIEs__value_PR_GNB_CU_UE_F1AP_ID;
-      ulRRCMsg->protocolIEs.list.array[idx1]->value.choice.GNB_CU_UE_F1AP_ID = ueCb.gnbCuUeF1apId;
+      ulRRCMsg->protocolIEs.list.array[idx1]->value.choice.GNB_CU_UE_F1AP_ID = ueCb->gnbCuUeF1apId;
 
       /*GNB DU UE F1AP ID*/
       idx1++;
@@ -2629,7 +2629,7 @@ uint8_t BuildAndSendULRRCMessageTransfer(DuUeCb  ueCb, uint8_t lcId, \
       ulRRCMsg->protocolIEs.list.array[idx1]->criticality = Criticality_reject;
       ulRRCMsg->protocolIEs.list.array[idx1]->value.present = \
 							      ULRRCMessageTransferIEs__value_PR_GNB_DU_UE_F1AP_ID;
-      ulRRCMsg->protocolIEs.list.array[idx1]->value.choice.GNB_DU_UE_F1AP_ID = ueCb.gnbDuUeF1apId;
+      ulRRCMsg->protocolIEs.list.array[idx1]->value.choice.GNB_DU_UE_F1AP_ID = ueCb->gnbDuUeF1apId;
 
       /*SRBID*/
       idx1++;

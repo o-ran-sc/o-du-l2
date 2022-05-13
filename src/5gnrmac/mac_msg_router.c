@@ -169,6 +169,12 @@ Buffer  *mBuf                       /* message buffer       */
             unpackMacRachRsrcReq(MacProcRachRsrcReq, pst, mBuf);
             break;
          }
+      case EVENT_MAC_RACH_RESOURCE_REL:
+         {
+            /* Process Rach Resource Release */
+            unpackMacRachRsrcRel(MacProcRachRsrcRel, pst, mBuf);
+            break;
+         }
       case EVENT_MAC_DL_PCCH_IND:
          {
             /* Process Pcch indication */

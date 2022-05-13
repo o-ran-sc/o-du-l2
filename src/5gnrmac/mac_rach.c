@@ -49,6 +49,14 @@ MacDuRachRsrcRspFunc macDuRachRsrcRspOpts[] =
    packDuMacRachRsrcRsp    /* packing for light weight loosly coupled */
 };
 
+/* Function pointer for sending RACH resource release from MAC to SCH */
+MacSchRachRsrcRelFunc macSchRachRsrcRelOpts[] =
+{
+   packMacSchRachRsrcRel,   /* packing for loosely coupled */
+   MacSchRachRsrcRel,       /* packing for tightly coupled */
+   packMacSchRachRsrcRel    /* packing for light weight loosely coupled */
+};
+
 /*******************************************************************
  *
  * @brief Sends RACH indication to SCH
@@ -380,6 +388,77 @@ uint8_t MacProcSchRachRsrcRsp(Pst *pst, SchRachRsrcRsp *schRachRsrcRsp)
    /* Send RACH resource response to DU APP */
    FILL_PST_MAC_TO_DUAPP(rspPst, EVENT_MAC_RACH_RESOURCE_RSP);
    return (*macDuRachRsrcRspOpts[rspPst.selector])(&rspPst, rachRsrcRsp);
+}
+
+
+/*******************************************************************
+ *
+ * @brief Processes RACH Resource release from DU APP
+ *
+ * @details
+ *
+ *    Function : MacProcRachRsrcRel
+ *
+ *    Functionality: Processes RACH resource release from DU APP.
+ *      Fills and sends RACH resource release towards SCH.
+ *
+ * @params[in] Post structure
+ *             RACH resource release
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t MacProcRachRsrcRel(Pst *pst, MacRachRsrcRel *rachRsrcRel)
+{
+   uint8_t   ret = RFAILED;
+   uint16_t  cellIdx = 0;
+   Pst       schPst;
+   MacCellCb *cellCb = NULLP;
+   MacUeCb   *ueCb = NULLP;
+   SchRachRsrcRel *schRachRsrcRel = NULLP;
+
+   DU_LOG("\nINFO  -->  MAC : Recieved RACH Resource Release for Cell ID [%d] UE ID [%d]",\
+         rachRsrcRel->cellId, rachRsrcRel->ueId);
+
+   /* Fetch Cell Cb */
+   GET_CELL_IDX(rachRsrcRel->cellId, cellIdx);
+   if(macCb.macCell[cellIdx] && (macCb.macCell[cellIdx]->cellId == rachRsrcRel->cellId))
+   {
+      cellCb = macCb.macCell[cellIdx];
+
+      /* Fetch UE Cb */
+      if(cellCb->ueCb[rachRsrcRel->ueId-1].ueId == rachRsrcRel->ueId)
+      {
+         ueCb = &cellCb->ueCb[rachRsrcRel->ueId-1];
+         /* Allocate memory to RACH resource release to be sent to SCH */
+         MAC_ALLOC(schRachRsrcRel, sizeof(SchRachRsrcRel));
+         if(schRachRsrcRel)
+         {
+            /* Fill SCH RACH resource release from information received from DU APP to MAC */
+            memset(schRachRsrcRel, 0, sizeof(SchRachRsrcRel));
+            schRachRsrcRel->cellId = rachRsrcRel->cellId;
+            schRachRsrcRel->crnti = ueCb->crnti;
+            memcpy(&schRachRsrcRel->cfraResource, &ueCb->cfraResource, sizeof(schRachRsrcRel->cfraResource));
+            
+            /* Release RACH resources at MAC */
+            memset(&ueCb->cfraResource, 0, sizeof(MacCfraResource));
+
+            /* Send RACH resource release from MAC to SCH */
+            FILL_PST_MAC_TO_SCH(schPst, EVENT_RACH_RESOURCE_RELEASE_TO_SCH);
+            ret = (*macSchRachRsrcRelOpts[schPst.selector])(&schPst, schRachRsrcRel);
+         }
+         else
+            DU_LOG("\nERROR  -->  MAC : Memory allocation failed for RACH resource release to SCH");
+      }
+      else
+         DU_LOG("\nERROR  -->  MAC : UE ID [%d] not found", rachRsrcRel->ueId);
+   }
+   else
+      DU_LOG("\nERROR  -->  MAC : Cell ID [%d] not found", rachRsrcRel->cellId);
+
+   /* Free sharable buffer used to send RACH reource release from DU APP to MAC */
+   MAC_FREE_SHRABL_BUF(pst->region, pst->pool, rachRsrcRel, sizeof(MacRachRsrcRel));
+   return ret;
 }
 
 /* spec-38.211 Table 6.3.3.1-7 */
