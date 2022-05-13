@@ -416,6 +416,36 @@ uint8_t packSchRachRsrcRsp(Pst *pst, SchRachRsrcRsp *schRachRsrcRsp)
 }
 
 /*******************************************************************
+ *
+ * @brief Pack and Send RACH resource Release from MAC to SCH
+ *
+ * @details
+ *
+ *    Function : packMacSchRachRsrcRel
+ *
+ *    Functionality:
+ *       Pack and Send RACH resouece Release from MAC to SCH
+ *
+ * @params[in] Post structure
+ *             RACH resource release
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t packMacSchRachRsrcRel(Pst *pst, SchRachRsrcRel *schRachRsrcRel)
+{
+   if((pst->selector == ODU_SELECTOR_LC) || (pst->selector == ODU_SELECTOR_LC))
+   {   
+      /* TODO */
+   }   
+   else
+   {   
+      return RFAILED; 
+   }   
+   return ROK;
+}
+
+/*******************************************************************
 *
 * @brief Pack and Send UE Delete Request from MAC to SCH
 *
