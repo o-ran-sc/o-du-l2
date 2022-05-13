@@ -82,7 +82,8 @@
 #define EVENT_MAC_SLOT_IND           220
 #define EVENT_MAC_RACH_RESOURCE_REQ  221
 #define EVENT_MAC_RACH_RESOURCE_RSP  222
-#define EVENT_MAC_DL_PCCH_IND        223
+#define EVENT_MAC_RACH_RESOURCE_REL  223
+#define EVENT_MAC_DL_PCCH_IND        224
 
 #define BSR_PERIODIC_TIMER_SF_10 10
 #define BSR_RETX_TIMER_SF_320 320
@@ -1325,6 +1326,13 @@ typedef struct macRachRsrcRsp
    MacCfraResource  cfraResource;
 }MacRachRsrcRsp;
 
+typedef struct macRachRsrcRel
+{
+   uint16_t cellId;
+   uint16_t ueId;
+   uint16_t crnti;
+}MacRachRsrcRel;
+
 typedef struct ueDelete
 {
     uint16_t cellId;
@@ -1453,20 +1461,25 @@ typedef uint8_t (*MacDuUeCfgRspFunc) ARGS((
 	 Pst           *pst, 
 	 MacUeCfgRsp   *cfgRsp));
 
-/* UE Reconfig Request from DU APP to MAC*/
+/* UE Reconfig Request from DU APP to MAC */
 typedef uint8_t (*DuMacUeReconfigReq) ARGS((
 	 Pst           *pst,
 	 MacUeCfg      *ueCfg ));
 
-/* RACH Resource Request from DU APP to MAC*/
+/* RACH Resource Request from DU APP to MAC */
 typedef uint8_t (*DuMacRachRsrcReq) ARGS((
     Pst            *pst,
     MacRachRsrcReq *rachRsrcReq));
 
-/* RACH Resource Response from MAC to DU APP*/
+/* RACH Resource Response from MAC to DU APP */
 typedef uint8_t (*MacDuRachRsrcRspFunc) ARGS((
     Pst            *pst,
     MacRachRsrcRsp *rachRsrcRsp));
+
+/* RACH Resource Release from DU APP to MAC */
+typedef uint8_t (*DuMacRachRsrcRel) ARGS((
+    Pst            *pst,
+    MacRachRsrcRel *rachRsrcRel));
 
 /* UE Delete Request from DU APP to MAC*/
 typedef uint8_t (*DuMacUeDeleteReq) ARGS((
@@ -1555,6 +1568,9 @@ uint8_t MacProcRachRsrcReq(Pst *pst, MacRachRsrcReq *rachRsrcReq);
 uint8_t packDuMacRachRsrcRsp(Pst *pst, MacRachRsrcRsp *rachRsrcRsp);
 uint8_t unpackDuMacRachRsrcRsp(MacDuRachRsrcRspFunc func, Pst *pst, Buffer *mBuf);
 uint8_t DuProcMacRachRsrcRsp(Pst *pst, MacRachRsrcRsp *rachRsrcRsp);
+uint8_t packDuMacRachRsrcRel(Pst *pst, MacRachRsrcRel *rachRsrcRel);
+uint8_t unpackMacRachRsrcRel(DuMacRachRsrcRel func, Pst *pst, Buffer *mBuf);
+uint8_t MacProcRachRsrcRel(Pst *pst, MacRachRsrcRel *rachRsrcRel);
 uint8_t packDuMacUeDeleteReq(Pst *pst, MacUeDelete *ueDelete);
 uint8_t MacProcUeDeleteReq(Pst *pst,  MacUeDelete *ueDelete);
 uint8_t unpackMacUeDeleteReq(DuMacUeDeleteReq func, Pst *pst, Buffer *mBuf);

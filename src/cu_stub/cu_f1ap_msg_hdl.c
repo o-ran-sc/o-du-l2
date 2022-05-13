@@ -9411,12 +9411,12 @@ uint8_t procUeContextSetupResponse(uint32_t duId, F1AP_PDU_t *f1apMsg)
 
 uint8_t procUlRrcMsg(uint32_t duId, F1AP_PDU_t *f1apMsg)
 {
-   uint8_t idx, ret, srbId, rrcMsgType, duIdx=0;
-   uint8_t cuUeF1apId, duUeF1apId;
-   uint8_t *rrcContainer = NULLP;
-   uint16_t rrcContLen;
-   DuDb     *duDb;
-   CuUeCb   *ueCb;
+   uint8_t  idx = 0, ret = ROK, srbId = 0, rrcMsgType = 0, duIdx=0;
+   uint8_t  *rrcContainer = NULLP;
+   uint16_t rrcContLen = 0;
+   uint32_t cuUeF1apId = 0, duUeF1apId = 0;
+   DuDb     *duDb = NULLP;
+   CuUeCb   *ueCb = NULLP;
    ULRRCMessageTransfer_t *ulRrcMsg = NULLP;
 
    ret = ROK;
@@ -9453,8 +9453,32 @@ uint8_t procUlRrcMsg(uint32_t duId, F1AP_PDU_t *f1apMsg)
                memcpy(rrcContainer, ulRrcMsg->protocolIEs.list.array[idx]->value.choice.RRCContainer.buf, rrcContLen);
 
                if(duDb->ueCb[duUeF1apId-1].state == UE_HANDOVER_IN_PROGRESS)
-                  return;
+               {
+                  uint8_t ueIdx = 0;
+                  uint8_t srcDuId = duDb->ueCb[duUeF1apId-1].hoInfo.sourceDuId;
+                  DuDb *srcDuDb = NULLP;
 
+                  /* In target DU DB, mark UE as active and delete HO info */
+                  duDb->ueCb[duUeF1apId-1].state = UE_ACTIVE;
+                  memset(&duDb->ueCb[duUeF1apId-1].hoInfo, 0, sizeof(HandoverInfo));
+
+                  /* Release UE context in source DU because the UE is now
+                   * attached to target DU */
+                  SEARCH_DU_DB(duIdx, srcDuId, srcDuDb);
+                  for(ueIdx = 0; ueIdx < srcDuDb->numUe; ueIdx++)
+                  {
+                     if(srcDuDb->ueCb[ueIdx].gnbCuUeF1apId == cuUeF1apId)
+                     {
+                        ret = BuildAndSendUeContextReleaseCommand(srcDuId, srcDuDb->ueCb[ueIdx].gnbCuUeF1apId, srcDuDb->ueCb[ueIdx].gnbDuUeF1apId); 
+                        if(ret != ROK)
+                        {
+                           DU_LOG("\nINFO  -->  F1AP: Failed to build and send UE context release command to source DU Id [%d]", srcDuId);
+                        }
+                        break;
+                     }
+                  }
+                  return ret;
+               }
                break;
             }
 

@@ -33,6 +33,7 @@ void freeF1UeDb(F1UeContextSetupDb *f1UeDb);
 uint8_t sendUeDeleteReqToMac(uint16_t cellId, uint8_t ueId, uint16_t crnti);
 uint8_t sendUeDeleteReqToRlc(uint16_t cellId, uint8_t ueId);
 uint8_t duBuildAndSendUeContextModReq(uint16_t cellId, uint8_t duUeF1apId, uint16_t crnti, DuUeCfg *duUeCfg);
+uint8_t duBuildAndSendRachRsrcRelToMac(uint16_t cellId, DuUeCb *ueCb);
 
 #endif
 

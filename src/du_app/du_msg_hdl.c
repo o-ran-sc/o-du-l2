@@ -1707,22 +1707,63 @@ uint8_t duHandleUlCcchInd(Pst *pst, UlCcchIndInfo *ulCcchIndInfo)
  * ****************************************************************/
 uint8_t DuProcRlcUlRrcMsgTrans(Pst *pst, RlcUlRrcMsgInfo *ulRrcMsgInfo)
 {
+   uint8_t  ret = ROK;
    DuCellCb *cellCb = NULLP;
-   DuUeCb   ueCb ={0};
+   DuUeCb   *ueCb = NULLP;
   
-   if(duGetCellCb(ulRrcMsgInfo->cellId, &cellCb) != ROK)
-      return RFAILED;
-   if(ulRrcMsgInfo->ueId > 0)
+   duGetCellCb(ulRrcMsgInfo->cellId, &cellCb);
+   if(cellCb)
    {
-   ueCb = cellCb->ueCb[ulRrcMsgInfo->ueId -1];
+      if(ulRrcMsgInfo->ueId > 0)
+      {
+         if(cellCb->ueCb[ulRrcMsgInfo->ueId -1].gnbDuUeF1apId == ulRrcMsgInfo->ueId)
+            ueCb = &cellCb->ueCb[ulRrcMsgInfo->ueId -1];
 
+         if(ueCb)
+         {
+            /* If UL message is received for a UE in handover, it signifies that UE is now
+             * attached to GNB. Hence marking this UE as active and requesting MAC to 
+             * release the dedicated RACH resources */
+            if(ueCb->ueState == UE_HANDIN_IN_PROGRESS)
+            {
+               ueCb->ueState = UE_ACTIVE;
+               cellCb->numActvUes++;
 
-   BuildAndSendULRRCMessageTransfer(ueCb, ulRrcMsgInfo->lcId, ulRrcMsgInfo->msgLen, ulRrcMsgInfo->rrcMsg);
+               /* Release RACH resources */
+               memset(&ueCb->cfraResource, 0, sizeof(MacCfraResource));
+               if(duBuildAndSendRachRsrcRelToMac(ulRrcMsgInfo->cellId, ueCb) != ROK)
+               {
+                  DU_LOG("\nERROR  -->  DU_APP : DuProcRlcUlRrcMsgTrans() : Failed to send RACH resource release to MAC");
+               }
+            }
+
+            if(BuildAndSendULRRCMessageTransfer(ueCb, ulRrcMsgInfo->lcId, ulRrcMsgInfo->msgLen, ulRrcMsgInfo->rrcMsg) != ROK)
+            {
+               DU_LOG("\nERROR  -->  DU_APP : DuProcRlcUlRrcMsgTrans() : Failed to build and send UL RRC Message Transfer");
+               ret = RFAILED;
+            }
+         }
+         else
+         {
+            DU_LOG("\nERROR  -->  DU_APP : DuProcRlcUlRrcMsgTrans() : UE ID [%d] not found", ulRrcMsgInfo->ueId);
+            return RFAILED;
+         }
+      }
+      else
+      {
+         DU_LOG("\nERROR  -->  DU_APP : DuProcRlcUlRrcMsgTrans() : Invalid UE ID [%d]", ulRrcMsgInfo->ueId);
+         return RFAILED;
+      }
+   }
+   else
+   {
+      DU_LOG("\nERROR  -->  DU_APP : DuProcRlcUlRrcMsgTrans() : Cell ID [%d] not found", ulRrcMsgInfo->cellId);
+      ret = RFAILED;
+   }
 
    DU_FREE_SHRABL_BUF(pst->region, pst->pool, ulRrcMsgInfo->rrcMsg, ulRrcMsgInfo->msgLen);
    DU_FREE_SHRABL_BUF(pst->region, pst->pool, ulRrcMsgInfo, sizeof(RlcUlRrcMsgInfo));
-   }
-   return ROK;
+   return ret;
 }
 
 /*******************************************************************
