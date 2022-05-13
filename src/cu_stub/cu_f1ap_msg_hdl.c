@@ -9404,7 +9404,7 @@ uint8_t procUlRrcMsg(uint32_t duId, F1AP_PDU_t *f1apMsg)
    uint8_t cuUeF1apId, duUeF1apId;
    uint8_t *rrcContainer = NULLP;
    uint16_t rrcContLen;
-   DuDb     *duDb;
+   DuDb     *duDb = NULLP;
    CuUeCb   *ueCb;
    ULRRCMessageTransfer_t *ulRrcMsg = NULLP;
 
@@ -9442,8 +9442,28 @@ uint8_t procUlRrcMsg(uint32_t duId, F1AP_PDU_t *f1apMsg)
                memcpy(rrcContainer, ulRrcMsg->protocolIEs.list.array[idx]->value.choice.RRCContainer.buf, rrcContLen);
 
                if(duDb->ueCb[duUeF1apId-1].state == UE_HANDOVER_IN_PROGRESS)
-                  return;
+               {
+                  uint8_t ueIdx = 0;
+                  uint8_t srcDuId = duDb->ueCb[duUeF1apId-1].hoInfo.sourceDuId;
+                  DuDb *srcDuDb = NULLP;
 
+                  /* In target DU DB, mark UE as active and delete HO info */
+                  duDb->ueCb[duUeF1apId-1].state = UE_ACTIVE;
+                  memset(&duDb->ueCb[duUeF1apId-1].hoInfo, 0, sizeof(HandoverInfo));
+
+                  /* Release UE context in source DU because the UE is now
+                   * attached to target DU */
+                  SEARCH_DU_DB(duIdx, srcDuId, srcDuDb);
+                  for(ueIdx = 0; ueIdx < srcDuDb->numUe; ueIdx++)
+                  {
+                     if(srcDuDb->ueCb[ueIdx].gnbCuUeF1apId == cuUeF1apId)
+                     {
+                        BuildAndSendUeContextReleaseCommand(srcDuId, srcDuDb->ueCb[ueIdx].gnbCuUeF1apId, srcDuDb->ueCb[ueIdx].gnbDuUeF1apId); 
+                        break;
+                     }
+                  }
+                  return;
+               }
                break;
             }
 

@@ -43,7 +43,8 @@
 #define EVENT_SLICE_RECFG_RSP_TO_MAC 24
 #define EVENT_RACH_RESOURCE_REQUEST_TO_SCH 25
 #define EVENT_RACH_RESOURCE_RESPONSE_TO_MAC 26
-#define EVENT_PAGING_IND_TO_SCH 27
+#define EVENT_RACH_RESOURCE_RELEASE_TO_SCH  27
+#define EVENT_PAGING_IND_TO_SCH      28
 
 /*macros*/
 #define MAX_SSB_IDX 1 /* forcing it as 1 for now. Right value is 64 */
@@ -1623,6 +1624,13 @@ typedef struct schRachRsrcRsp
    SchCfraResource  cfraResource;
 }SchRachRsrcRsp;
 
+typedef struct schRachRsrcRel
+{
+   uint16_t   cellId;
+   uint16_t   crnti;
+   SchCfraResource  cfraResource;
+}SchRachRsrcRel;
+
 typedef struct schUeDelete
 {
    uint16_t   cellId;
@@ -1784,6 +1792,10 @@ typedef uint8_t (*SchRachRsrcRspFunc) ARGS((
    Pst            *pst,                 /* Post structure */
    SchRachRsrcRsp *schRachRsrcRsp));    /* RACH resource request to MAC */
 
+typedef uint8_t (*MacSchRachRsrcRelFunc) ARGS((
+   Pst         *pst,                    /* Post structure */
+   SchRachRsrcRel *schRachRsrcRel));    /* RACH resource release to SCH */
+
 typedef uint8_t (*MacSchUeDeleteReqFunc) ARGS((
    Pst         *pst,           /* Post structure */
    SchUeDelete *schUeDel)); /*Scheduler UE Del*/
@@ -1859,6 +1871,8 @@ uint8_t packMacSchRachRsrcReq(Pst *pst, SchRachRsrcReq *schRachRsrcReq);
 uint8_t MacSchRachRsrcReq(Pst *pst, SchRachRsrcReq *schRachRsrcReq);
 uint8_t packSchRachRsrcRsp(Pst *pst, SchRachRsrcRsp *schRachRsrcRsp);
 uint8_t MacProcSchRachRsrcRsp(Pst *pst, SchRachRsrcRsp *schRachRsrcRsp);
+uint8_t packMacSchRachRsrcRel(Pst *pst, SchRachRsrcRel *schRachRsrcRel);
+uint8_t MacSchRachRsrcRel(Pst *pst, SchRachRsrcRel *schRachRsrcRel);
 uint8_t packMacSchUeDeleteReq(Pst *pst,  SchUeDelete *schUeDel);
 uint8_t MacSchUeDeleteReq(Pst *pst, SchUeDelete  *ueDelete);
 uint8_t packSchUeDeleteRsp(Pst *pst, SchUeDeleteRsp  *delRsp);

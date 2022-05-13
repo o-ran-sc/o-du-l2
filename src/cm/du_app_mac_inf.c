@@ -985,6 +985,86 @@ uint8_t unpackMacRachRsrcReq(DuMacRachRsrcReq func, Pst *pst, Buffer *mBuf)
 
 /*******************************************************************
  *
+ * @brief Packs and Sends RACH Resource release from DUAPP to MAC
+ *
+ * @details
+ *
+ *    Function : packDuMacRachRsrcRel
+ *
+ *    Functionality:
+ *       Packs and Sends RACH Resource release from DU APP to MAC
+ *
+ *
+ * @params[in] Post structure pointer
+ *             MacRachRsrcRel pointer              
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t packDuMacRachRsrcRel(Pst *pst, MacRachRsrcRel *rachRsrcRel)
+{
+   Buffer *mBuf = NULLP;
+
+   if(pst->selector == ODU_SELECTOR_LWLC)
+   {
+      if (ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf) != ROK)
+      {
+         DU_LOG("\nERROR  --> MAC : Memory allocation failed at packDuMacRachRsrcRel");
+         return RFAILED;
+      }
+      /* pack the address of the structure */
+      CMCHKPK(oduPackPointer, (PTR)rachRsrcRel, mBuf);
+   }
+   else
+   {
+      DU_LOG("\nERROR  -->  MAC: Only LWLC supported for packDuMacRachRsrcRel");
+      return RFAILED;
+   }
+
+   return ODU_POST_TASK(pst,mBuf);
+}
+
+/*******************************************************************
+ *
+ * @brief Unpacks RACH Resource Release received from DU APP
+ *
+ * @details
+ *
+ *    Function : unpackMacRachRsrcRel
+ *
+ *    Functionality:
+ *         Unpacks RACH Resource Release received from DU APP
+ *
+ * @params[in] Pointer to Handler
+ *             Post structure pointer
+ *             Message Buffer
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t unpackMacRachRsrcRel(DuMacRachRsrcRel func, Pst *pst, Buffer *mBuf)
+{
+   if(pst->selector == ODU_SELECTOR_LWLC)
+   {
+      MacRachRsrcRel *rachRsrcRel;
+
+      /* unpack the address of the structure */
+      CMCHKUNPK(oduUnpackPointer, (PTR *)&rachRsrcRel, mBuf);
+      ODU_PUT_MSG_BUF(mBuf);
+      return (*func)(pst, rachRsrcRel);
+   }
+   else
+   {
+      /* Nothing to do for other selectors */
+      DU_LOG("\nERROR  -->  DU APP : Only LWLC supported for RACH Resource Release ");
+      ODU_PUT_MSG_BUF(mBuf);
+   }
+
+   return RFAILED;
+}
+
+/*******************************************************************
+ *
  * @brief Packs and Sends RACH Resource response from MAC to DU APP
  *
  * @details
