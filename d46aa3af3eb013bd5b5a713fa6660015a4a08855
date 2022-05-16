@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "723aa708_11ec2e1a",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 404,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-05-16T08:28:42Z",
+      "side": 1,
+      "message": "Just one small thing, I hope you checked all places where we are using wrong cell ID assuming that left shift of unused bits to be done before \"fillBitString\"?",
+      "range": {
+        "startLine": 404,
+        "startChar": 16,
+        "endLine": 404,
+        "endChar": 17
+      },
+      "revId": "d46aa3af3eb013bd5b5a713fa6660015a4a08855",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
