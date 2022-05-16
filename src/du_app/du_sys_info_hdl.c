@@ -333,7 +333,6 @@ uint8_t BuildMibMsg()
 uint8_t BuildCellIdentity(CellIdentity_t  *cellIdentity)
 {
    cellIdentity->size = ODU_VALUE_FIVE*sizeof(uint8_t);
-   cellIdentity->bits_unused = ODU_VALUE_FOUR;
 
    DU_ALLOC(cellIdentity->buf, cellIdentity->size);
    if(!cellIdentity->buf)
@@ -341,8 +340,7 @@ uint8_t BuildCellIdentity(CellIdentity_t  *cellIdentity)
       DU_LOG("\nERROR  -->  DU APP: CellIdentity memory allocation failure");
       return RFAILED;
    }
-   memset(cellIdentity->buf, 0,  cellIdentity->size);
-   cellIdentity->buf[4] = duCfgParam.sib1Params.cellIdentity;
+   fillBitString(cellIdentity, ODU_VALUE_FOUR, ODU_VALUE_FIVE, duCfgParam.sib1Params.cellIdentity); 
 
    return ROK;
 }
