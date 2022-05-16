@@ -2158,7 +2158,7 @@ uint8_t schAddPagingIndtoList(CmLListCp *storedPageList,void * pageIndInfo)
    {
       cmLListAdd2Tail(storedPageList, currentNodeInfo);
    }
-   DU_LOG("\nINFO  -->  SCH : Paging information is stored sucessfully");
+   DU_LOG("\nINFO  -->  SCH : Paging information is stored successfully");
    return ROK;
 }
 

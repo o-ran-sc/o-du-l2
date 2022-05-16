@@ -189,31 +189,6 @@ S16 SendF1APMsg(Region region, Pool pool, uint32_t duId)
    return ROK;
 } /* SendF1APMsg */
 
-/*******************************************************************
- *
- * @brief Builds NRCell ID 
- *
- * @details
- *
- *    Function : BuildNrCellId
- *
- *    Functionality: Building the NR Cell ID
- *
- * @params[in] BIT_STRING_t *nrcell
- * @return ROK     - success
- *         RFAILED - failure
- *
- * ****************************************************************/
-
-S16 BuildNrCellId(BIT_STRING_t *nrcell)
-{
-   memset(nrcell->buf, 0, nrcell->size);
-   nrcell->buf[4]   = 16; 
-   nrcell->bits_unused = 4;
-   nrcell->size = 5 * sizeof(uint8_t);
-   return ROK;
-}
-
 /********************************************************************
  *
  * @brief Builds and sends the F1SetupResponse
@@ -2006,9 +1981,10 @@ uint8_t extractDuToCuRrcCont(CuUeCb *ueCb, OCTET_STRING_t rrcCont)
 
 uint8_t procInitULRRCMsg(uint32_t duId, F1AP_PDU_t *f1apMsg)
 {
-   uint8_t idx,cellIdx=0, duIdx=0, rrcMsgType, gnbDuUeF1apId;
+   uint8_t idx = 0, duIdx=0, rrcMsgType=0, gnbDuUeF1apId=0;
    uint8_t ret =ROK;
-   uint32_t nrCellId, crnti;
+   uint16_t cellIdx=0, nrCellId = 0;
+   uint32_t crnti;
    DuDb     *duDb;
    CuCellCb *cellCb;
    CuUeCb   *ueCb;
@@ -2028,8 +2004,7 @@ uint8_t procInitULRRCMsg(uint32_t duId, F1AP_PDU_t *f1apMsg)
             break;
 
          case ProtocolIE_ID_id_NRCGI:
-            nrCellId = initULRRCMsg->protocolIEs.list.array[idx]->value.choice.NRCGI.nRCellIdentity.buf[4] >>
-               initULRRCMsg->protocolIEs.list.array[idx]->value.choice.NRCGI.nRCellIdentity.bits_unused;
+            bitStringToInt(&initULRRCMsg->protocolIEs.list.array[idx]->value.choice.NRCGI.nRCellIdentity, &nrCellId);
             SEARCH_CELL_DB(cellIdx, duDb, nrCellId, cellCb);
             if(cellCb == NULLP)
                return RFAILED;
@@ -11104,8 +11079,7 @@ uint8_t procGnbDuUpdate(uint32_t duId, F1AP_PDU_t *f1apMsg)
                struct Served_Cells_To_Delete_ItemIEs *deleteItemIe = \
                   (struct Served_Cells_To_Delete_ItemIEs *)duCfgUpdate->protocolIEs.list.array[ieIdx]->value.choice.\
                   Served_Cells_To_Delete_List.list.array[0];
-               nrCellId = deleteItemIe->value.choice.Served_Cells_To_Delete_Item.oldNRCGI.nRCellIdentity.buf[4] >>\
-                  deleteItemIe->value.choice.Served_Cells_To_Delete_Item.oldNRCGI.nRCellIdentity.bits_unused;
+               bitStringToInt(&deleteItemIe->value.choice.Served_Cells_To_Delete_Item.oldNRCGI.nRCellIdentity, &nrCellId); 
                cellToBeDelete = true;
                break;
             }
@@ -11536,7 +11510,7 @@ void procF1SetupReq(uint32_t *destDuId, F1AP_PDU_t *f1apMsg)
                               srvCellItem =  &duServedCell->list.array[plmnidx]->value.choice.GNB_DU_Served_Cells_Item;
                               ret = procServedCellPlmnList(&srvCellItem->served_Cell_Information.servedPLMNs);
                               memcpy(&nrcellIdentity, &srvCellItem->served_Cell_Information.nRCGI.nRCellIdentity, sizeof(BIT_STRING_t));
-
+                              /* TODO : Use bitStringToInt */
                               nrCellId = nrcellIdentity.buf[4] >> nrcellIdentity.bits_unused;
                               SEARCH_CELL_DB(cellIdx, duDb, nrCellId, cellCb);
                               if(cellCb == NULLP)
