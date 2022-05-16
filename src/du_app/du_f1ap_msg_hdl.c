@@ -364,30 +364,6 @@ uint8_t BuildDLNRInfo(NRFreqInfo_t *dlnrfreq)
 
 /*******************************************************************
  *
- * @brief Builds NRCell ID 
- *
- * @details
- *
- *    Function : BuildNrCellId
- *
- *    Functionality: Building the NR Cell ID
- *
- * @params[in] BIT_STRING_t *nrcell
- * @return ROK     - success
- *         RFAILED - failure
- *
- * ****************************************************************/
-
-S16 BuildNrCellId(BIT_STRING_t *nrcell)
-{
-   memset(nrcell->buf, 0, nrcell->size);
-   nrcell->buf[4]   = duCfgParam.sib1Params.cellIdentity; 
-   nrcell->bits_unused = 4;
-   return ROK;
-}
-
-/*******************************************************************
- *
  * @brief Builds Nrcgi 
  *
  * @details
@@ -425,7 +401,7 @@ uint8_t BuildNrcgi(NRCGI_t *nrcgi)
    {
       return RFAILED;
    }
-   BuildNrCellId(&nrcgi->nRCellIdentity);
+   fillBitString(&nrcgi->nRCellIdentity, ODU_VALUE_FOUR, ODU_VALUE_FIVE, duCfgParam.sib1Params.cellIdentity);
 
    return ROK;
 }
@@ -8037,11 +8013,46 @@ uint8_t FreeMemDuToCuRrcCont(CellGroupConfigRrc_t *cellGrpCfg)
                macLcConfig = rlcBearerList->list.array[idx]->mac_LogicalChannelConfig;
                if(rlcConfig)
                {
-                  if(rlcConfig->choice.am)
+                  switch(rlcConfig->present)
                   {
-                     DU_FREE(rlcConfig->choice.am->ul_AM_RLC.sn_FieldLength, sizeof(SN_FieldLengthAM_t));
-                     DU_FREE(rlcConfig->choice.am->dl_AM_RLC.sn_FieldLength, sizeof(SN_FieldLengthAM_t)); 
-                     DU_FREE(rlcConfig->choice.am, sizeof(struct RLC_Config__am));
+                     case RLC_Config_PR_am:
+                        {
+                           if(rlcConfig->choice.am)
+                           {
+                              DU_FREE(rlcConfig->choice.am->ul_AM_RLC.sn_FieldLength, sizeof(SN_FieldLengthAM_t));
+                              DU_FREE(rlcConfig->choice.am->dl_AM_RLC.sn_FieldLength, sizeof(SN_FieldLengthAM_t)); 
+                              DU_FREE(rlcConfig->choice.am, sizeof(struct RLC_Config__am));
+                           }
+                           break;
+                        }
+                     case RLC_Config_PR_um_Bi_Directional:
+                        {
+                           if(rlcConfig->choice.um_Bi_Directional)
+                           {
+                              DU_FREE(rlcConfig->choice.um_Bi_Directional->dl_UM_RLC.sn_FieldLength, sizeof(SN_FieldLengthUM_t)); 
+                              DU_FREE(rlcConfig->choice.um_Bi_Directional->ul_UM_RLC.sn_FieldLength, sizeof(SN_FieldLengthUM_t));
+                              DU_FREE(rlcConfig->choice.um_Bi_Directional, sizeof(struct RLC_Config__um_Bi_Directional));
+                           }
+                           break;
+                        }
+                     case RLC_Config_PR_um_Uni_Directional_UL:
+                        {
+                           if(rlcConfig->choice.um_Uni_Directional_UL)
+                           {
+                              DU_FREE(rlcConfig->choice.um_Uni_Directional_UL->ul_UM_RLC.sn_FieldLength, sizeof(SN_FieldLengthUM_t));
+                              DU_FREE(rlcConfig->choice.um_Uni_Directional_UL , sizeof(struct RLC_Config__um_Uni_Directional_UL));
+                           }
+                           break;
+                        }
+                     case RLC_Config_PR_um_Uni_Directional_DL:
+                        {
+                           if(rlcConfig->choice.um_Uni_Directional_DL )
+                           {
+                              DU_FREE(rlcConfig->choice.um_Uni_Directional_DL->dl_UM_RLC.sn_FieldLength, sizeof(SN_FieldLengthUM_t));
+                              DU_FREE(rlcConfig->choice.um_Uni_Directional_DL , sizeof(struct RLC_Config__um_Uni_Directional_DL));
+                           }
+                           break;
+                        }
                   }	
                   DU_FREE(rlcConfig, sizeof(struct RLC_Config));
                }
@@ -8091,6 +8102,7 @@ uint8_t FreeMemDuToCuRrcCont(CellGroupConfigRrc_t *cellGrpCfg)
       }
       if(macCellGrpCfg->bsr_Config)
       {
+         DU_FREE(macCellGrpCfg->bsr_Config->logicalChannelSR_DelayTimer, sizeof(long));
          DU_FREE(macCellGrpCfg->bsr_Config, sizeof(struct BSR_Config));
       }
       tagConfig = macCellGrpCfg->tag_Config;
@@ -15417,7 +15429,9 @@ uint8_t BuildAndSendUeContextModRsp(DuUeCb *ueCb)
       break;
    }
    FreeUeContextModResp(f1apMsg);
-   return ret;
+   DU_LOG("\nPBORLA Cell delete from FreeUeContextModResp");
+   BuildAndSendDUConfigUpdate(SERV_CELL_TO_DELETE);
+return ret;
 }
 /*******************************************************************
  *

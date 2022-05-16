@@ -1925,7 +1925,7 @@ uint8_t DuProcMacSliceCfgRsp(Pst *pst,  MacSliceCfgRsp *cfgRsp)
                     duCb.sliceState = SLICE_CONFIGURED;
                 }
             }
-            DU_LOG("\nINFO  -->  DU_APP : Slice Configuration is done sucessfully ");
+            DU_LOG("\nINFO  -->  DU_APP : Slice Configuration is done successfully ");
         }
         duFreeSliceCfgRsp(pst, cfgRsp);
     }
