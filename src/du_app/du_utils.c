@@ -511,7 +511,7 @@ DuPagInfoList* findPagingInfoFromMap(uint16_t pf, CmHashListCp *pagingInfoMap)
 }
 
 /*Below function for printing will be used in future so disabling it for now*/
-#if 0
+#if 0 
 /*******************************************************************
  * @brief Print the Page Info List and UE Records
  *
