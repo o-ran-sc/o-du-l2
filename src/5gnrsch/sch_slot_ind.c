@@ -49,6 +49,13 @@ SchMacDlAllocFunc schMacDlAllocOpts[] =
    packSchMacDlAlloc
 };
 
+SchMacDlPageAllocFunc schMacDlPageAllocOpts[] =
+{
+   packSchMacDlPageAlloc,
+   MacProcDlPageAlloc,
+   packSchMacDlPageAlloc
+};
+
 /*******************************************************************
  *
  * @brief Handles sending DL broadcast alloc to MAC 
@@ -74,6 +81,34 @@ uint8_t sendDlAllocToMac(DlSchedInfo *dlSchedInfo, Inst inst)
    pst.event = EVENT_DL_SCH_INFO;
 
    return(*schMacDlAllocOpts[pst.selector])(&pst, dlSchedInfo);
+
+}
+
+/*******************************************************************
+ *
+ * @brief Handles sending DL Page alloc to MAC 
+ *
+ * @details
+ *
+ *    Function : sendDlPAgeAllocToMac
+ *
+ *    Functionality:
+ *     Sends DL Page Resource Allocation to MAC from SCH
+ *
+ * @params[in] 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t sendDlPageAllocToMac(DlPageAlloc *dlPageAlloc, Inst inst)
+{
+   Pst pst;
+
+   memset(&pst, 0, sizeof(Pst));
+   FILL_PST_SCH_TO_MAC(pst, inst);
+   pst.event = EVENT_DL_PAGING_ALLOC;
+
+   return(*schMacDlPageAllocOpts[pst.selector])(&pst, dlPageAlloc);
 
 }
 
@@ -573,6 +608,106 @@ bool schFillBoGrantDlSchedInfo(SchCellCb *cell, SlotTimingInfo currTime, uint8_t
 }
 
 /*******************************************************************
+*
+* @brief Process DL Resource allocation for Page
+*
+* @details
+*
+*    Function : schProcDlPageAlloc
+*
+*    Functionality: Process DL Resource allocation for Page
+*
+* @params[in] SchCellCb *cell, SlotTimingInfo currTime, Inst schInst
+*
+* @return pointer to return Value(ROK, RFAILED)
+*
+* ****************************************************************/
+uint8_t schProcDlPageAlloc(SchCellCb *cell, SlotTimingInfo currTime, Inst schInst)
+{
+   DlPageAlloc      dlPageAlloc;
+   CmLList          *pageInfoNode = NULLP;
+   SchPageInfo      *pageInfo = NULLP;
+   SlotTimingInfo   pdschTime;
+   uint32_t         tbSize = 0;
+   uint16_t         startPrb = 0, maxFreePRB = 0, nPRB = 0;
+   uint8_t          ret = RFAILED;
+
+   pageInfoNode = schPageInfoSearchFromPageList(currTime, &(cell->pageCb.pageIndInfoRecord[currTime.sfn]));
+
+   if(pageInfoNode == NULLP)
+   {
+      return ROK;
+   }
+   pageInfo = (SchPageInfo *)pageInfoNode->node;
+   
+   while(true)
+   {
+      dlPageAlloc.cellId = currTime.cellId;
+
+      ADD_DELTA_TO_TIME(currTime, dlPageAlloc.dlPageTime, PHY_DELTA_DL + SCHED_DELTA);
+      dlPageAlloc.shortMsgInd  = FALSE;
+      pdschTime = dlPageAlloc.dlPageTime;
+
+      /*Calculate Best FREE BLOCK with MAX PRB count*/
+      maxFreePRB = searchLargestFreeBlock(cell, pdschTime, &startPrb, DIR_DL);
+
+      if(maxFreePRB != 0)
+      {
+         tbSize = calculateEstimateTBSize(pageInfo->msgLen, pageInfo->mcs, NUM_PDSCH_SYMBOL, maxFreePRB, &nPRB);
+      }
+      else
+      {
+         DU_LOG("\nERROR  --> SCH: Unable to get any free block for Paging at SFN:%d, SLOT:%d",\
+               pdschTime.sfn, pdschTime.slot);
+         break;
+      }
+      /*Fill PDCCH: PDCCH Cfg is same as SIB1 as Paging will be a broadcast message*/
+      memcpy(&dlPageAlloc.pagePdcchCfg, &cell->cellCfg.sib1SchCfg.sib1PdcchCfg, sizeof(PdcchCfg));
+      dlPageAlloc.pagePdcchCfg.dci.rnti = P_RNTI;
+
+      /*Fill BWP*/
+      memcpy(&dlPageAlloc.bwp, &cell->cellCfg.sib1SchCfg.bwp, sizeof(BwpCfg)); 
+
+      /*Fill PDSCH*/
+      if(schFillPagePdschCfg(cell, &dlPageAlloc.pagePdschCfg, pdschTime, tbSize, pageInfo->mcs, startPrb) != ROK)
+      {
+         DU_LOG("\nERROR  --> SCH: Issue in PDSCH Allocation for Paging at SFN:%d, SLOT:%d",\
+               pdschTime.sfn, pdschTime.slot);
+         break;
+      }
+      dlPageAlloc.pagePdcchCfg.dci.pdschCfg = &dlPageAlloc.pagePdschCfg;
+
+      /*Fill Page PDU information*/
+      dlPageAlloc.dlPagePduLen = pageInfo->msgLen;
+
+      SCH_ALLOC(dlPageAlloc.dlPagePdu, sizeof(dlPageAlloc.dlPagePduLen));
+
+      if(dlPageAlloc.dlPagePdu == NULLP)
+      {
+         DU_LOG("\nERROR  --> SCH: Memory Allocation Failed during Page Res allocation");
+         break;
+      }
+      memcpy(dlPageAlloc.dlPagePdu, pageInfo->pagePdu, dlPageAlloc.dlPagePduLen);
+
+      /* Send msg to MAC */
+      if(sendDlPageAllocToMac(&dlPageAlloc, schInst) != ROK)
+      {
+         DU_LOG("\nERROR  -->  SCH : Sending DL Paging allocation from SCH to MAC failed");
+         SCH_FREE(dlPageAlloc.dlPagePdu, sizeof(dlPageAlloc.dlPagePduLen));
+         break;
+      }
+      ret = ROK;
+      break;
+   }
+
+   /*Remove the Page Node*/
+   schDeleteFromPageInfoList(&(cell->pageCb.pageIndInfoRecord[currTime.sfn]), pageInfoNode);
+
+   return(ret);
+
+}
+
+/*******************************************************************
  *
  * @brief Handles slot indication at SCH 
  *
@@ -652,6 +787,9 @@ uint8_t schProcessSlotInd(SlotTimingInfo *slotInd, Inst schInst)
             cell->firstSib1Transmitted = true;
       }
    }
+
+   /*Process Paging Msg*/
+   schProcDlPageAlloc(cell, *slotInd, schInst);
 
    /* Select first UE in the linked list to be scheduled next */
    pendingUeNode = cell->ueToBeScheduled.first;

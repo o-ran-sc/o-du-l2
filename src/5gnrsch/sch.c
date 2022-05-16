@@ -2138,14 +2138,14 @@ uint8_t schAddPagingIndtoList(CmLListCp *storedPageList,void * pageIndInfo)
    while(firstNodeOfList)
    {
       tempNode = (SchPageInfo*)(firstNodeOfList->node);
-      if ((recvdNode->TxTime.slot < tempNode->TxTime.slot))
+      if ((recvdNode->pageTxTime.slot < tempNode->pageTxTime.slot))
       {
          cmLListInsCrnt(storedPageList, currentNodeInfo);
          break;
       }
-      else if ((recvdNode->TxTime.slot == tempNode->TxTime.slot))
+      else if ((recvdNode->pageTxTime.slot == tempNode->pageTxTime.slot))
       {
-         DU_LOG("\nERROR  --> SCH : schAddPagingIndtoList() : Slot[%d] is already present in the list", recvdNode->TxTime.slot);
+         DU_LOG("\nERROR  --> SCH : schAddPagingIndtoList() : Slot[%d] is already present in the list", recvdNode->pageTxTime.slot);
          return RFAILED;
       }
       else
@@ -2187,7 +2187,8 @@ uint8_t MacSchPagingInd(Pst *pst,  SchPageInd *pageInd)
 
    if(pageInd)
    {
-      DU_LOG("\nINFO  --> SCH : Received paging indication form MAC for cellId[%d]",pageInd->cellId);
+      DU_LOG("\nINFO   --> SCH : Received paging indication form MAC for cellId[%d]",\
+                  pageInd->cellId);
 
       /* Fetch Cell CB */
       for(cellIdx = 0; cellIdx < MAX_NUM_CELL; cellIdx++)
@@ -2211,9 +2212,9 @@ uint8_t MacSchPagingInd(Pst *pst,  SchPageInd *pageInd)
             {
                pageInfo->pf = pageInd->pf; 
                pageInfo->i_s = pageInd->i_s;
-               pageInfo->TxTime.cellId = pageInd->cellId;
-               pageInfo->TxTime.sfn = (pageInd->pf +  cellCb->pageCb.pagMonOcc[pageInd->i_s].frameOffset) % MAX_SFN;
-               pageInfo->TxTime.slot = cellCb->pageCb.pagMonOcc[pageInd->i_s].pagingOccSlot;
+               pageInfo->pageTxTime.cellId = pageInd->cellId;
+               pageInfo->pageTxTime.sfn = (pageInd->pf +  cellCb->pageCb.pagMonOcc[pageInd->i_s].frameOffset) % MAX_SFN;
+               pageInfo->pageTxTime.slot = cellCb->pageCb.pagMonOcc[pageInd->i_s].pagingOccSlot;
                pageInfo->mcs = DEFAULT_MCS;
                pageInfo->msgLen =  pageInd->pduLen;
                SCH_ALLOC(pageInfo->pagePdu, pageInfo->msgLen);
@@ -2224,7 +2225,7 @@ uint8_t MacSchPagingInd(Pst *pst,  SchPageInd *pageInd)
                else
                {
                   memcpy(pageInfo->pagePdu, pageInd->pagePdu, pageInfo->msgLen);
-                  ret = schAddPagingIndtoList(&cellCb->pageCb.pageIndInfoRecord[pageInfo->TxTime.sfn], pageInfo);
+                  ret = schAddPagingIndtoList(&cellCb->pageCb.pageIndInfoRecord[pageInfo->pageTxTime.sfn], pageInfo);
                   if(ret != ROK)
                   {
                      DU_LOG("\nERROR  --> SCH : MacSchPagingInd(): Failed to store paging record");
