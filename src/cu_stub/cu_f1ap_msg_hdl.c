@@ -189,31 +189,6 @@ S16 SendF1APMsg(Region region, Pool pool, uint32_t duId)
    return ROK;
 } /* SendF1APMsg */
 
-/*******************************************************************
- *
- * @brief Builds NRCell ID 
- *
- * @details
- *
- *    Function : BuildNrCellId
- *
- *    Functionality: Building the NR Cell ID
- *
- * @params[in] BIT_STRING_t *nrcell
- * @return ROK     - success
- *         RFAILED - failure
- *
- * ****************************************************************/
-
-S16 BuildNrCellId(BIT_STRING_t *nrcell)
-{
-   memset(nrcell->buf, 0, nrcell->size);
-   nrcell->buf[4]   = 16; 
-   nrcell->bits_unused = 4;
-   nrcell->size = 5 * sizeof(uint8_t);
-   return ROK;
-}
-
 /********************************************************************
  *
  * @brief Builds and sends the F1SetupResponse
@@ -11104,8 +11079,7 @@ uint8_t procGnbDuUpdate(uint32_t duId, F1AP_PDU_t *f1apMsg)
                struct Served_Cells_To_Delete_ItemIEs *deleteItemIe = \
                   (struct Served_Cells_To_Delete_ItemIEs *)duCfgUpdate->protocolIEs.list.array[ieIdx]->value.choice.\
                   Served_Cells_To_Delete_List.list.array[0];
-               nrCellId = deleteItemIe->value.choice.Served_Cells_To_Delete_Item.oldNRCGI.nRCellIdentity.buf[4] >>\
-                  deleteItemIe->value.choice.Served_Cells_To_Delete_Item.oldNRCGI.nRCellIdentity.bits_unused;
+               bitStringToInt(&deleteItemIe->value.choice.Served_Cells_To_Delete_Item.oldNRCGI.nRCellIdentity, &nrCellId); 
                cellToBeDelete = true;
                break;
             }
