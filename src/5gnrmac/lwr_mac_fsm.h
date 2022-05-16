@@ -48,7 +48,8 @@ typedef enum{
    SI_RNTI_TYPE,
    RA_RNTI_TYPE,
    TC_RNTI_TYPE,
-   C_RNTI_TYPE
+   C_RNTI_TYPE,
+   P_RNTI_TYPE
 }RntiType;
 
 uint8_t lwr_mac_procInvalidEvt(void *msg);

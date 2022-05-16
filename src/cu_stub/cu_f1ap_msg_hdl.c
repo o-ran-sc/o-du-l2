@@ -11460,7 +11460,8 @@ uint8_t procUeContextModificationResponse(uint32_t duId, F1AP_PDU_t *f1apMsg)
 void procF1SetupReq(uint32_t *destDuId, F1AP_PDU_t *f1apMsg)
 {
    uint8_t ieIdx = 0, plmnidx=0, duIdx = 0, ret=ROK, cellIdx = 0;
-   uint32_t duId = 0, nrCellId = 0;
+   uint32_t duId = 0;
+   uint64_t nrCellId = 0;
    DuDb     *duDb = NULLP;
    CuCellCb *cellCb = NULLP;
    BIT_STRING_t nrcellIdentity;
@@ -11511,8 +11512,7 @@ void procF1SetupReq(uint32_t *destDuId, F1AP_PDU_t *f1apMsg)
                               ret = procServedCellPlmnList(&srvCellItem->served_Cell_Information.servedPLMNs);
                               memcpy(&nrcellIdentity, &srvCellItem->served_Cell_Information.nRCGI.nRCellIdentity, sizeof(BIT_STRING_t));
                               
-                              /* TODO : Use bitStringToInt */
-                              nrCellId = nrcellIdentity.buf[4] >> nrcellIdentity.bits_unused;
+                              bitStringToInt(&nrcellIdentity, &nrCellId);
                               SEARCH_CELL_DB(cellIdx, duDb, nrCellId, cellCb);
                               if(cellCb == NULLP)
                               {

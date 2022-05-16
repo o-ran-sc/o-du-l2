@@ -2133,6 +2133,103 @@ void schIncrSlot(SlotTimingInfo *timingInfo, uint8_t incr, uint16_t numSlotsPerR
       }
    }
 }
+
+/*******************************************************************
+*
+* @brief   Fill PDSCH info in Page Alloc
+*
+* @details
+*
+*    Function : schFillPagePdschCfg 
+*
+*    Functionality: Fill PDSCH info in Page Alloc
+*
+* @params[in] SchCellCb *cell, PdschCfg *pagePdschCfg, SlotTimingInfo slotTime, 
+*             uint16_t tbsSize, uint8_t mcs, uint16_t startPrb
+*
+* @return pointer to return Value(ROK, RFAILED) 
+*
+* ****************************************************************/
+uint8_t schFillPagePdschCfg(SchCellCb *cell, PdschCfg *pagePdschCfg, SlotTimingInfo slotTime, uint16_t tbSize, uint8_t mcs, uint16_t startPrb)
+{
+   uint8_t cwCount = 0;
+   uint8_t dmrsStartSymbol, startSymbol, numSymbol;
+
+   /* fill the PDSCH PDU */
+
+   pagePdschCfg->pduBitmap = 0; /* PTRS and CBG params are excluded */
+   pagePdschCfg->rnti = P_RNTI; /* SI-RNTI */
+   pagePdschCfg->pduIndex = 0;
+   pagePdschCfg->numCodewords = 1;
+   for(cwCount = 0; cwCount < pagePdschCfg->numCodewords; cwCount++)
+   {
+      pagePdschCfg->codeword[cwCount].targetCodeRate = 308;
+      pagePdschCfg->codeword[cwCount].qamModOrder = 2;
+      pagePdschCfg->codeword[cwCount].mcsIndex = mcs;
+      pagePdschCfg->codeword[cwCount].mcsTable = 0; /* notqam256 */
+      pagePdschCfg->codeword[cwCount].rvIndex = 0;
+      tbSize = tbSize + TX_PAYLOAD_HDR_LEN;
+      pagePdschCfg->codeword[cwCount].tbSize = tbSize;
+   }
+   pagePdschCfg->dataScramblingId                   = cell->cellCfg.phyCellId;
+   pagePdschCfg->numLayers                          = 1;
+   pagePdschCfg->transmissionScheme                 = 0;
+   pagePdschCfg->refPoint                           = 0;
+   pagePdschCfg->dmrs.dlDmrsSymbPos                 = 4; /* Bitmap value 00000000000100 i.e. using 3rd symbol for PDSCH DMRS */
+   pagePdschCfg->dmrs.dmrsConfigType                = 0; /* type-1 */
+   pagePdschCfg->dmrs.dlDmrsScramblingId            = cell->cellCfg.phyCellId;
+   pagePdschCfg->dmrs.scid                          = 0;
+   pagePdschCfg->dmrs.numDmrsCdmGrpsNoData          = 1;
+   pagePdschCfg->dmrs.dmrsPorts                     = 0x0001;
+   pagePdschCfg->dmrs.mappingType                   = DMRS_MAP_TYPE_A; /* Type-A */
+   pagePdschCfg->dmrs.nrOfDmrsSymbols               = NUM_DMRS_SYMBOLS;
+   pagePdschCfg->dmrs.dmrsAddPos                    = DMRS_ADDITIONAL_POS;
+
+   pagePdschCfg->pdschFreqAlloc.resourceAllocType   = 1; /* RAT type-1 RIV format */
+   /* the RB numbering starts from coreset0, and PDSCH is always above SSB */
+   pagePdschCfg->pdschFreqAlloc.freqAlloc.startPrb  = startPrb;
+   pagePdschCfg->pdschFreqAlloc.freqAlloc.numPrb    = schCalcNumPrb(tbSize, mcs, NUM_PDSCH_SYMBOL);
+   pagePdschCfg->pdschFreqAlloc.vrbPrbMapping       = 0; /* non-interleaved */
+   pagePdschCfg->pdschTimeAlloc.rowIndex            = 1;
+   /* This is Intel's requirement. PDSCH should start after PDSCH DRMS symbol */
+   pagePdschCfg->pdschTimeAlloc.timeAlloc.startSymb = 3; /* spec-38.214, Table 5.1.2.1-1 */
+   pagePdschCfg->pdschTimeAlloc.timeAlloc.numSymb   = NUM_PDSCH_SYMBOL;
+
+   /* Find total symbols occupied including DMRS */
+   dmrsStartSymbol = findDmrsStartSymbol(pagePdschCfg->dmrs.dlDmrsSymbPos);
+   /* If there are no DRMS symbols, findDmrsStartSymbol() returns MAX_SYMB_PER_SLOT,
+    * in that case only PDSCH symbols are marked as occupied */
+   if(dmrsStartSymbol == MAX_SYMB_PER_SLOT)
+   {
+      startSymbol = pagePdschCfg->pdschTimeAlloc.timeAlloc.startSymb;
+      numSymbol = pagePdschCfg->pdschTimeAlloc.timeAlloc.numSymb;
+   }
+   /* If DMRS symbol is found, mark DMRS and PDSCH symbols as occupied */
+   else
+   {
+      startSymbol = dmrsStartSymbol;
+      numSymbol = pagePdschCfg->dmrs.nrOfDmrsSymbols + pagePdschCfg->pdschTimeAlloc.timeAlloc.numSymb;
+   }
+
+   /* Allocate the number of PRBs required for DL PDSCH */
+   if((allocatePrbDl(cell, slotTime, startSymbol, numSymbol,\
+               &pagePdschCfg->pdschFreqAlloc.freqAlloc.startPrb, pagePdschCfg->pdschFreqAlloc.freqAlloc.numPrb)) != ROK)
+   {
+      DU_LOG("\nERROR  --> SCH : allocatePrbDl() failed for DL MSG");
+      return RFAILED;
+   }
+
+   pagePdschCfg->beamPdschInfo.numPrgs              = 1;
+   pagePdschCfg->beamPdschInfo.prgSize              = 1;
+   pagePdschCfg->beamPdschInfo.digBfInterfaces      = 0;
+   pagePdschCfg->beamPdschInfo.prg[0].pmIdx         = 0;
+   pagePdschCfg->beamPdschInfo.prg[0].beamIdx[0]    = 0;
+   pagePdschCfg->txPdschPower.powerControlOffset    = 0;
+   pagePdschCfg->txPdschPower.powerControlOffsetSS  = 0;
+
+   return ROK;
+}
+
 /**********************************************************************
   End of file
  **********************************************************************/

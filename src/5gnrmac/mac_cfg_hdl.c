@@ -1025,7 +1025,6 @@ uint8_t MacProcDlPcchInd(Pst *pst, MacPcchInd *pcchInd)
                {
                   memcpy(schPageInd->pagePdu, pcchInd->pcchPdu, pcchInd->pduLen);
 
-                  DU_LOG("\nINFO -->  MAC : Sending paging indication to SCH");
                   FILL_PST_MAC_TO_SCH(schPst, EVENT_PAGING_IND_TO_SCH);
                   ret = (*macSchPagingIndOpts[schPst.selector])(&schPst, schPageInd);
                }
