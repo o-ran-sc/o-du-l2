@@ -192,7 +192,7 @@ uint8_t duGetCellCb(uint16_t cellId, DuCellCb **cellCb)
 * 
 *  @params[in] DuCellCb *cellCb
 *
-*  @return void 
+*  @return ROK/RFAILURE (uint8_t return)
 * 
 * 
 ******************************************************************************/
@@ -224,6 +224,10 @@ uint8_t checkPagingRecord(DuCellCb *cellCb)
             return RFAILED; 
          }
          handlePageInfoLL(pf, pagInfo->i_s, &(pagInfoLLFromPF->pagInfoList), DELETE);
+      }
+      if(pagInfoLLFromPF->pagInfoList.first == NULLP)
+      {
+         break;
       }
    }while(pagInfo != NULLP);
    
@@ -257,7 +261,8 @@ uint8_t sendDlPcchIndToMac(MacPcchInd *pcchInd)
       /* Fill Pst */
       FILL_PST_DUAPP_TO_MAC(pst, EVENT_MAC_DL_PCCH_IND);
       
-      DU_LOG("\nDEBUG   -->  DU_APP: Sending DL PCCH indication to MAC for cellId[%d]", pcchInd->cellId);
+      DU_LOG("\nDEBUG   -->  DU_APP: Sending DL PCCH indication to MAC for cellId[%d] at PF[%d]",\
+                         pcchInd->cellId, pcchInd->pf);
       ret = (*packMacDlPcchIndOpts[pst.selector])(&pst, pcchInd);
       if(ret == RFAILED)
       {
@@ -854,7 +859,7 @@ uint8_t insertPagingRecord(DuCellCb* cellCb, DuPagingMsg *rcvdF1apPagingParam, u
 #if 0
    printPageList(&(cellCb->pagingInfoMap));
 #endif
-   
+
    return ROK;
 
 
