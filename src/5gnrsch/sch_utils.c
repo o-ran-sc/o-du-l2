@@ -1539,7 +1539,7 @@ void deleteLcLL(CmLListCp *lcLL)
  *        
  *
  *************************************************************************/
-uint32_t calculateEstimateTBSize(uint32_t reqBO, uint16_t mcsIdx,uint8_t numSymbols,\
+uint32_t calculateEstimateTBSize(uint32_t reqBO, uint16_t mcsIdx, uint8_t numSymbols,\
                                    uint16_t maxPRB, uint16_t *estPrb)
 {
    uint32_t tbs = 0, effecBO = 0;
@@ -1564,6 +1564,76 @@ uint32_t calculateEstimateTBSize(uint32_t reqBO, uint16_t mcsIdx,uint8_t numSymb
    effecBO = MIN(tbs,reqBO);
    return (effecBO);
 }
+
+
+/*******************************************************************
+*
+* @brief deleting Page Info node from PageInfo List
+*
+* @details
+*
+*    Function : schDeleteFromPageInfoList
+*
+*    Functionality: deleting page Info node from Page Info List
+*
+* @params[in] CmLListCp *list, CmLList *node 
+*
+* @return void 
+*
+* ****************************************************************/
+void schDeleteFromPageInfoList(CmLListCp *list, CmLList *node)
+{
+   SchPageInfo *pageInfo;
+
+   if(node != NULLP)
+   {
+      pageInfo = (SchPageInfo *)node->node;
+      if(deleteNodeFromLList(list, node) == ROK)
+         SCH_FREE(pageInfo, sizeof(SchPageInfo));
+   }
+}
+
+/*******************************************************************
+*
+* @brief searching for Page at a particular SFN 
+*
+* @details
+*
+*    Function : schPageInfoSearchFromPageList
+*
+*    Functionality: searching for Page at a particular SFN 
+*
+* @params[in] SlotTimingInfo slotInfo, CmLListCp *storedPageList
+*
+* @return pointer to SchPageInfo
+*
+* ****************************************************************/
+CmLList *schPageInfoSearchFromPageList(SlotTimingInfo slotInfo, CmLListCp *storedPageList)
+{
+   CmLList         *node = NULLP;
+   SchPageInfo     *pageInfo = NULLP;
+
+   if(storedPageList->count)
+   {
+      CM_LLIST_FIRST_NODE(storedPageList, node);
+      while(node)
+      {
+         pageInfo = (SchPageInfo*)node->node;
+         if(pageInfo == NULLP)
+         {
+            DU_LOG("\nERROR  --> SCH: PageInfo empty");
+         }
+         else if(pageInfo->pageTxTime.sfn == slotInfo.sfn && 
+               (pageInfo->pageTxTime.slot == slotInfo.slot))
+         {
+            return node;
+         }
+         node = node->next;
+      }
+   }
+   return NULLP;
+}
+
 /*Below function for printing will be used in future so disabling it for now*/
 #if 0
 /****************************************************************************
