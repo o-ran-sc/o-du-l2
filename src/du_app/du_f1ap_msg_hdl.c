@@ -15429,6 +15429,11 @@ uint8_t BuildAndSendUeContextModRsp(DuUeCb *ueCb)
       break;
    }
    FreeUeContextModResp(f1apMsg);
+   sleep(1);
+   DU_LOG("\nPBORLA Cell delete from FreeUeContextModResp");
+   BuildAndSendDUConfigUpdate(SERV_CELL_TO_DELETE);
+   //BuildAndSendUeContextReleaseReq(1,1);
+
 return ret;
 }
 /*******************************************************************
