@@ -12112,6 +12112,10 @@ void F1APMsgHdlr(uint32_t *duId, Buffer *mBuf)
                   {
                      DU_LOG("\nINFO  -->  F1AP : UE Context Modification Response received");
                      procUeContextModificationResponse(*duId, f1apMsg);
+                     if(BuildAndSendPagingMsg(123, 1) != ROK)
+                     {
+                        DU_LOG("\nERROR --> EGTP: Failed to build and send paging message for 5gsTmsi[123]\n");   
+                     }
                      break;
                   }
                case SuccessfulOutcome__value_PR_UEContextReleaseComplete:

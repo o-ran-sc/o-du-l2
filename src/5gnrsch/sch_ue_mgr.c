@@ -276,6 +276,19 @@ uint8_t fillSchUeCb(Inst inst, SchUeCb *ueCb, SchUeCfg *ueCfg)
 
    if(ueCfg->spCellCfgPres == true)
    {
+      if(ueCfg->spCellCfg.servCellCfg.initDlBwp.pdschCfgPres == true)
+      {
+         if(ueCb->ueCfg.spCellCfgPres && ueCb->ueCfg.spCellCfg.servCellCfg.initDlBwp.pdschCfgPres == true)
+         {
+            for(uint8_t idx = 0; idx < ueCfg->spCellCfg.servCellCfg.initDlBwp.pdschCfg.numTimeDomRsrcAlloc; idx++)
+            {
+               if(ueCb->ueCfg.spCellCfg.servCellCfg.initDlBwp.pdschCfg.timeDomRsrcAllociList[idx].k0 && ueCfg->spCellCfg.servCellCfg.initDlBwp.pdschCfg.timeDomRsrcAllociList[idx].k0)
+               {
+                   SCH_FREE(ueCb->ueCfg.spCellCfg.servCellCfg.initDlBwp.pdschCfg.timeDomRsrcAllociList[idx].k0, sizeof(uint8_t));  
+               }
+            }
+         }
+      }
       memcpy(&ueCb->ueCfg.spCellCfg , &ueCfg->spCellCfg, sizeof(SchSpCellCfg));
 
       covertFreqDomRsrcMapToIAPIFormat(ueCb->ueCfg.spCellCfg.servCellCfg.initDlBwp.pdcchCfg.cRSetToAddModList[0].freqDomainRsrc,\
@@ -1134,6 +1147,7 @@ void deleteSchCellCb(SchCellCb *cellCb)
    uint8_t sliceIdx=0, slotIdx=0;
    CmLListCp *list=NULL;
    CmLList *node=NULL, *next=NULL;
+   SchPageInfo *tempNode = NULLP;
 
    if(cellCb->schDlSlotInfo)
    {
@@ -1178,6 +1192,24 @@ void deleteSchCellCb(SchCellCb *cellCb)
          SCH_FREE(cellCb->cellCfg.plmnInfoList.snssai[sliceIdx], sizeof(Snssai));
       }
       SCH_FREE(cellCb->cellCfg.plmnInfoList.snssai, cellCb->cellCfg.plmnInfoList.numSliceSupport*sizeof(Snssai*));
+   }
+   
+   for(uint16_t idx =0; idx<MAX_SFN; idx++)
+   {
+      list = &cellCb->pageCb.pageIndInfoRecord[idx];
+      node = list->first;
+      while(node)
+      {
+         next = node->next;
+         if(node->node)
+         {
+            tempNode = (SchPageInfo*)(node->node);
+            SCH_FREE(tempNode->pagePdu, tempNode->msgLen);
+            SCH_FREE(node->node,  sizeof(SchPageInfo));
+         }
+         deleteNodeFromLList(list, node);
+         node = next;
+      }
    }
 
    /* Remove all UE from ueToBeScheduled list and deallocate */
