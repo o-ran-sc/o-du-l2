@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4209c7c2_dd26f040",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-05-17T09:47:14Z",
+      "side": 1,
+      "message": "will upload the changes after testing\n",
+      "revId": "20b937313ba7b0ac77d4905df76e74bfa325d191",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "accf85bc_418af99b",
@@ -14,6 +31,30 @@
       "writtenOn": "2022-05-17T08:30:01Z",
       "side": 1,
       "message": "If there is no paging occasion in this SFN-Slot, this is not a failure case. We can return ROK.",
+      "range": {
+        "startLine": 639,
+        "startChar": 13,
+        "endLine": 639,
+        "endChar": 20
+      },
+      "revId": "20b937313ba7b0ac77d4905df76e74bfa325d191",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "14b6fbae_4f40d106",
+        "filename": "src/5gnrsch/sch_slot_ind.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 639,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-05-17T09:47:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "accf85bc_418af99b",
       "range": {
         "startLine": 639,
         "startChar": 13,
@@ -47,6 +88,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7298d1b1_3453d72b",
+        "filename": "src/5gnrsch/sch_slot_ind.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 643,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-05-17T09:47:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a3633c6f_ac06d17b",
+      "range": {
+        "startLine": 643,
+        "startChar": 9,
+        "endLine": 643,
+        "endChar": 10
+      },
+      "revId": "20b937313ba7b0ac77d4905df76e74bfa325d191",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "55f0e23c_c9fd2dc7",
@@ -70,6 +135,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d1d233ea_ce506932",
+        "filename": "src/5gnrsch/sch_slot_ind.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 683,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-05-17T09:47:14Z",
+      "side": 1,
+      "message": "Done .. It is freed once LWR MAC uses it",
+      "parentUuid": "55f0e23c_c9fd2dc7",
+      "range": {
+        "startLine": 683,
+        "startChar": 28,
+        "endLine": 683,
+        "endChar": 37
+      },
+      "revId": "20b937313ba7b0ac77d4905df76e74bfa325d191",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d621cfa8_4efc742f",
@@ -83,6 +172,30 @@
       "writtenOn": "2022-05-17T08:30:01Z",
       "side": 1,
       "message": "In case there is a failure above and loop breaks, in that case also should we delete the page info from list?",
+      "range": {
+        "startLine": 704,
+        "startChar": 3,
+        "endLine": 704,
+        "endChar": 28
+      },
+      "revId": "20b937313ba7b0ac77d4905df76e74bfa325d191",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "694380f7_c70883e7",
+        "filename": "src/5gnrsch/sch_slot_ind.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 704,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-05-17T09:47:14Z",
+      "side": 1,
+      "message": "Since that Occassion has gone now (for either case: PASS or FAILURE) for this PAGING to be sent thus we are deleting from here.",
+      "parentUuid": "d621cfa8_4efc742f",
       "range": {
         "startLine": 704,
         "startChar": 3,
