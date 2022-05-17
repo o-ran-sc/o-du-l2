@@ -15429,7 +15429,7 @@ uint8_t BuildAndSendUeContextModRsp(DuUeCb *ueCb)
       break;
    }
    FreeUeContextModResp(f1apMsg);
-return ret;
+   return ret;
 }
 /*******************************************************************
  *

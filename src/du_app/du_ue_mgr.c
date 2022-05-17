@@ -2465,13 +2465,12 @@ uint8_t DuProcMacUeCfgRsp(Pst *pst, MacUeCfgRsp *cfgRsp)
          {
             DU_LOG("\nINFO   -->  DU APP : MAC UE Create Response : SUCCESS [DU UE F1AP ID : %d]", cfgRsp->ueId);
 
-            if(duCb.actvCellLst[cellIdx] && 
-                  (duCb.actvCellLst[cellIdx]->ueCb[cfgRsp->ueId -1].gnbDuUeF1apId == cfgRsp->ueId))
+            if(duCb.actvCellLst[cellIdx] && (duCb.actvCellLst[cellIdx]->ueCb[cfgRsp->ueId -1].gnbDuUeF1apId == cfgRsp->ueId))
             {
                duCb.actvCellLst[cellIdx]->ueCb[cfgRsp->ueId -1].macUeCfg.macUeCfgState = UE_CREATE_COMPLETE;
 
-               if((duCb.actvCellLst[cfgRsp->cellId -1]->ueCb[cfgRsp->ueId -1].ueState == UE_HANDIN_IN_PROGRESS) && 
-                     (duCb.actvCellLst[cfgRsp->cellId -1]->ueCb[cfgRsp->ueId -1].macUeCfg.macUeCfgState == UE_CREATE_COMPLETE) &&
+              if((duCb.actvCellLst[cfgRsp->cellId -1]->ueCb[cfgRsp->ueId -1].ueState == UE_HANDIN_IN_PROGRESS) && 
+                    (duCb.actvCellLst[cfgRsp->cellId -1]->ueCb[cfgRsp->ueId -1].macUeCfg.macUeCfgState == UE_CREATE_COMPLETE) &&
                      (duCb.actvCellLst[cfgRsp->cellId -1]->ueCb[cfgRsp->ueId -1].rlcUeCfg.rlcUeCfgState == UE_CREATE_COMPLETE))
                {
                   if((ret = duUpdateDuUeCbCfg(cfgRsp->ueId, cfgRsp->cellId)) == ROK)

@@ -228,6 +228,7 @@ uint8_t checkPagingRecord(DuCellCb *cellCb)
    }while(pagInfo != NULLP);
    
    cmHashListDelete(&(cellCb->pagingInfoMap), (PTR)pagInfoLLFromPF);
+   DU_FREE(pagInfoLLFromPF, sizeof(DuPagInfoList));
    return ROK;
 }
 
@@ -390,8 +391,9 @@ uint8_t duHandleCellUpInd(Pst *pst, OduCellId *cellId)
 uint8_t DuProcMacCellDeleteRsp(Pst *pst, MacCellDeleteRsp *deleteRsp)
 {
    uint8_t ret = ROK;
-   uint16_t cellIdx=0;
-   
+   uint16_t cellIdx=0, pfIdx=0;
+   DuPagInfoList *pagInfoLLFromPF=NULLP;
+
    if(deleteRsp)
    {
       if(deleteRsp->result == SUCCESSFUL_RSP)
@@ -400,6 +402,16 @@ uint8_t DuProcMacCellDeleteRsp(Pst *pst, MacCellDeleteRsp *deleteRsp)
          DU_LOG("\nINFO   -->  DU APP : MAC CELL Delete Response : SUCCESS [CELL IDX : %d]", deleteRsp->cellId);
          if(duCb.actvCellLst[cellIdx] && (duCb.actvCellLst[cellIdx]->cellId == deleteRsp->cellId))
          {
+            for(pfIdx =0; pfIdx < MAX_SFN; pfIdx++)
+            {
+               pagInfoLLFromPF = findPagingInfoFromMap(pfIdx, &(duCb.actvCellLst[cellIdx]->pagingInfoMap));
+               if(pagInfoLLFromPF)
+               {   
+                  cmHashListDelete(&(duCb.actvCellLst[cellIdx]->pagingInfoMap), (PTR)pagInfoLLFromPF);
+                  DU_FREE(pagInfoLLFromPF, sizeof(DuPagInfoList));
+               }
+            }
+
             memset(duCb.actvCellLst[cellIdx], 0, sizeof(DuCellCb));
             gCellStatus = CELL_DOWN;
 
@@ -563,7 +575,7 @@ void freePcchPdu(PCCH_Message_t *pcchMsg)
          {
             if(pagingMsg->pagingRecordList)
             {
-               if(pagingMsg->pagingRecordList->list.array == NULLP)
+               if(pagingMsg->pagingRecordList->list.array != NULLP)
                {
                   for(recordIdx = 0; recordIdx <  pagingMsg->pagingRecordList->list.count; recordIdx++)
                   {
