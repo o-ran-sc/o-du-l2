@@ -150,13 +150,11 @@
 typedef enum
 {
    RRC_SETUP=1,
-   REGISTRATION_ACCEPT,
-   UE_CONTEXT_SETUP_REQ,
-   UE_CONTEXT_SETUP_RSP,
+   RRC_SETUP_COMPLETE,
    SECURITY_MODE_COMPLETE,
-   RRC_RECONFIG,
+   REGISTRATION_COMPLETE,
+   UE_CONTEXT_SETUP_RSP,
    RRC_RECONFIG_COMPLETE,
-   UE_CONTEXT_MOD_REQ
 }RrcMsgType;
 
 /* Defines action to be performed via UE Context Modification request */

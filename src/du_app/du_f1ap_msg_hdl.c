@@ -13006,7 +13006,8 @@ uint8_t procF1UeContextSetupReq(F1AP_PDU_t *f1apMsg)
    int8_t ueIdx = -1;
    uint8_t  ret=0, ieIdx=0, ieExtIdx = 0, servCellIdx = 0;
    bool ueCbFound = false, hoInProgress = false;
-   uint16_t nrCellId = 0,  cellIdx=0;
+   uint16_t cellIdx=0;
+   uint64_t nrCellId = 0;
    uint32_t gnbCuUeF1apId=0, gnbDuUeF1apId=0, bitRateSize=0;
    DuUeCb   *duUeCb = NULL;
    UEContextSetupRequest_t   *ueSetReq = NULL;
@@ -13200,13 +13201,16 @@ uint8_t procF1UeContextSetupReq(F1AP_PDU_t *f1apMsg)
 
          case ProtocolIE_ID_id_RRCDeliveryStatusRequest:
             {
-               if(duUeCb->f1UeDb->dlRrcMsg->rrcMsgPdu)
+               if(duUeCb->f1UeDb->dlRrcMsg)
                {
-                  duUeCb->f1UeDb->dlRrcMsg->deliveryStatRpt = true;
-               }
-               else
-               {
-                  DU_LOG("\nERROR  -->  Ignoring delivery report, since rrcContainer is not present");
+                  if(duUeCb->f1UeDb->dlRrcMsg->rrcMsgPdu)
+                  {
+                     duUeCb->f1UeDb->dlRrcMsg->deliveryStatRpt = true;
+                  }
+                  else
+                  {
+                     DU_LOG("\nERROR  -->  Ignoring delivery report, since rrcContainer is not present");
+                  }
                }
                break;
             }
@@ -14434,7 +14438,8 @@ uint8_t BuildAndSendRrcDeliveryReport(uint32_t gnbCuUeF1apId, \
 uint8_t extractCellsToBeActivated(Cells_to_be_Activated_List_t cellsToActivate)
 {
    uint8_t  ret = ROK;
-   uint16_t idx, nci, pci = 0;
+   uint16_t idx, pci = 0;
+   uint64_t nci;
    Cells_to_be_Activated_List_Item_t cell;
 
    for(idx=0; idx<cellsToActivate.list.count; idx++)
@@ -14445,7 +14450,7 @@ uint8_t extractCellsToBeActivated(Cells_to_be_Activated_List_t cellsToActivate)
 
       if(cell.nRPCI)
       {
-	 pci = *cell.nRPCI;
+         pci = *cell.nRPCI;
       }
       ret = duProcCellsToBeActivated(cell.nRCGI.pLMN_Identity.buf, nci, pci);
    }
@@ -14699,7 +14704,8 @@ uint8_t duProcGnbDuCfgUpdAckMsg(uint8_t transId)
 {
    uint8_t  ieIdx=0, arrIdx=0,ret=ROK;
    uint8_t  ueId =0 , ueIdx =0, totalActiveUe = 0;
-   uint16_t cellId =0, cellIdx =0, crnti=0;
+   uint16_t cellIdx =0, crnti=0;
+   uint64_t cellId =0;
    CmLList *f1apPduNode = NULLP;
    ReservedF1apPduInfo *f1apPduInfo =NULLP;
    F1AP_PDU_t *f1apMsgPdu = NULLP;
@@ -16517,7 +16523,7 @@ void freeAperDecodePagingMsg(Paging_t   *paging)
 uint8_t procPagingMsg(F1AP_PDU_t *f1apMsg) 
 {
    uint8_t ieIdx = 0, cellListIdx = 0;
-   uint16_t cellId = 0;
+   uint64_t cellId = 0;
    Paging_t   *paging = NULLP;
    PagingCell_list_t  *pagingCelllist = NULLP;
    PagingCell_ItemIEs_t *pagingCellItemIes = NULLP;

@@ -394,10 +394,11 @@ uint8_t BuildAndSendF1SetupRsp(uint32_t duId, BIT_STRING_t *nrcellId)
    buildPlmnId(cuCb.cuCfgParams.plmn , cellToActivate->list.array[0]->value.choice.\
          Cells_to_be_Activated_List_Item.nRCGI.pLMN_Identity.buf);
    cellToActivate->list.array[0]->value.choice.Cells_to_be_Activated_List_Item.\
-      nRCGI.nRCellIdentity.size = 5;
+      nRCGI.nRCellIdentity.size = 5*sizeof(uint8_t);
    CU_ALLOC(cellToActivate->list.array[0]->value.choice.\
          Cells_to_be_Activated_List_Item.nRCGI.nRCellIdentity.buf,\
-         5*sizeof(uint8_t));
+         cellToActivate->list.array[0]->value.choice.Cells_to_be_Activated_List_Item.\
+	 nRCGI.nRCellIdentity.size);
    if(cellToActivate->list.array[0]->value.choice.\
          Cells_to_be_Activated_List_Item.nRCGI.nRCellIdentity.buf == NULLP)
    {
@@ -1510,9 +1511,28 @@ uint8_t	BuildDLRRCContainer(CuUeCb *ueCb, uint8_t rrcMsgType, RRCContainer_t *rr
       if(ret == RFAILED)
          DU_LOG("\nERROR  -->  F1AP: Failed to fill DL-CCCH Msg at RRC SETUP");
    }
-   else if(rrcMsgType == REGISTRATION_ACCEPT)
+   else if(rrcMsgType == RRC_SETUP_COMPLETE)
+   {
+      DU_LOG("\nINFO --> F1AP : Sending Security mode command");
+      char secModeBuf[9]={0x00, 0x02, 0x22, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00};
+      bufLen =9;
+      rrcContainer->size = bufLen;
+      CU_ALLOC(rrcContainer->buf, rrcContainer->size);
+      if(rrcContainer->buf != NULLP)
+      {
+         memset(rrcContainer->buf, 0, bufLen);
+         memcpy(rrcContainer->buf, secModeBuf, bufLen);
+      }
+      else
+      {
+         DU_LOG("\nERROR  -->  F1AP : Memory allocation failure for RRC Container buffer");
+         ret = RFAILED;
+      }
+   }
+   else if(rrcMsgType == SECURITY_MODE_COMPLETE)
    {
       /*Hardcoded RRC Container from reference logs*/
+      DU_LOG("\nINFO --> F1AP : Sending Registration accept");
       char buf[14] ={0x00, 0x03, 0x2a, 0x80, 0xaf, 0xc0, 0x08, 0x40, 0x20, 0x20, 0x00, 0x00, 0x00, 0x00};
       bufLen =14;
       rrcContainer->size = bufLen;
@@ -1528,9 +1548,9 @@ uint8_t	BuildDLRRCContainer(CuUeCb *ueCb, uint8_t rrcMsgType, RRCContainer_t *rr
          ret = RFAILED;
       }
    }
-   else if(rrcMsgType == RRC_RECONFIG)
+   else if(rrcMsgType == UE_CONTEXT_SETUP_RSP)
    {
-      DU_LOG("\nDEBUG --> F1AP : Filling DL DCCH RRC Message ");
+      DU_LOG("\nINFO --> F1AP : Filling DL DCCH RRC Message for RRC Reconfiguration ");
       ret = fillDlDcchRrcMsg(ueCb, rrcContainer);
       if(ret == RFAILED)
          DU_LOG("\nERROR  -->  F1AP: Failed to fill DL-DCCH Msg for RRC Reconfiguration");
@@ -1744,23 +1764,20 @@ uint8_t setDlRRCMsgType(CuUeCb *ueCb)
       case RRC_SETUP:
          rrcMsgType = RRC_SETUP;
          break;
-      case REGISTRATION_ACCEPT:
-         rrcMsgType = REGISTRATION_ACCEPT;
-         break;
-      case UE_CONTEXT_SETUP_REQ:
-         rrcMsgType = UE_CONTEXT_SETUP_REQ;
+      case RRC_SETUP_COMPLETE:
+         rrcMsgType = RRC_SETUP_COMPLETE;
          break;
       case SECURITY_MODE_COMPLETE:
          rrcMsgType = SECURITY_MODE_COMPLETE;
          break;
-      case RRC_RECONFIG:
-         rrcMsgType = RRC_RECONFIG;
+      case REGISTRATION_COMPLETE:
+         rrcMsgType = REGISTRATION_COMPLETE;
+         break;
+      case UE_CONTEXT_SETUP_RSP:
+         rrcMsgType = UE_CONTEXT_SETUP_RSP;
          break;
       case RRC_RECONFIG_COMPLETE:
          rrcMsgType = RRC_RECONFIG_COMPLETE;
-         break;
-      case UE_CONTEXT_MOD_REQ:
-         rrcMsgType = UE_CONTEXT_MOD_REQ;
          break;
       default:
          break;
@@ -7535,7 +7552,7 @@ void freeSrbToAddModList(SRB_ToAddModList_t *srbToAddList)
  *
  * @details
  *
- *    Function : fillRadioBearerConfig
+ *    Function : freeRadioBearerConfig 
  *
  *    Functionality: Free Radio Bearer config
  *
@@ -7631,12 +7648,6 @@ uint8_t fillSrbToAddModList(CuUeCb *ueCb, SRB_ToAddModList_t *srbToAddList, bool
       return ROK;
    }
 
-   CU_ALLOC(srbToAddList, sizeof(SRB_ToAddModList_t));
-   if(!srbToAddList)
-   {
-      DU_LOG("\nERROR  -->  F1AP: Memory allocation failed for SRB to AddMod List in fillRadioBearerConfig");
-      return RFAILED;
-   }
    srbToAddList->list.count = elementCnt;
    srbToAddList->list.size = srbToAddList->list.count * sizeof(SRB_ToAddMod_t *);
 
@@ -7730,13 +7741,6 @@ uint8_t fillDrbToAddModList(CuUeCb *ueCb, DRB_ToAddModList_t *drbToAddList, bool
       return ROK;
    }
    
-   /* DRB To Add/Mod List */
-   CU_ALLOC(drbToAddList, sizeof(DRB_ToAddModList_t));
-   if(!drbToAddList)
-   {
-      DU_LOG("\nERROR  -->  F1AP: Memory allocation failed for DRB to AddMod List in fillRadioBearerConfig");
-      return RFAILED;
-   }
 
    drbToAddList->list.count = elementCnt;
    drbToAddList->list.size = drbToAddList->list.count * sizeof(DRB_ToAddMod_t *);
@@ -7845,13 +7849,28 @@ uint8_t fillDrbToAddModList(CuUeCb *ueCb, DRB_ToAddModList_t *drbToAddList, bool
 uint8_t fillRadioBearerConfig(CuUeCb *ueCb, RadioBearerConfig_t *radioBearerConfig, bool updateAllRbCfg)
 {
    /* SRB To Add/Mod List */
+   CU_ALLOC(radioBearerConfig->srb_ToAddModList, sizeof(SRB_ToAddModList_t));
+   if(!radioBearerConfig->srb_ToAddModList)
+   {
+      DU_LOG("\nERROR  -->  F1AP: Memory allocation failed for SRB to AddMod List in fillRadioBearerConfig");
+      return RFAILED;
+   }
    if(fillSrbToAddModList(ueCb, radioBearerConfig->srb_ToAddModList, updateAllRbCfg) != ROK)
    {
+      DU_LOG("\nERROR  -->  F1AP: failed to fill SRB to AddMod List");
       return RFAILED;
    }
 
+   /* DRB To Add/Mod List */
+   CU_ALLOC(radioBearerConfig->drb_ToAddModList, sizeof(DRB_ToAddModList_t));
+   if(!radioBearerConfig->drb_ToAddModList)
+   {
+      DU_LOG("\nERROR  -->  F1AP: Memory allocation failed for DRB to AddMod List in fillRadioBearerConfig");
+      return RFAILED;
+    }
    if(fillDrbToAddModList(ueCb, radioBearerConfig->drb_ToAddModList, updateAllRbCfg) != ROK)
    {
+      DU_LOG("\nERROR  -->  F1AP: failed to fill DRB to AddMod List ");
       return RFAILED;
    }
 
@@ -8870,7 +8889,7 @@ void FreeCuToDuInfo(CUtoDURRCInformation_t *rrcMsg)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t BuildAndSendUeContextSetupReq(uint32_t duId, CuUeCb *ueCb, uint16_t rrcContLen, uint8_t *rrcContainer)
+uint8_t BuildAndSendUeContextSetupReq(uint32_t duId, CuUeCb *ueCb)
 {
    uint8_t   Nrcgiret, SplCellListret, SrbSetupret;
    uint8_t   ret= RFAILED, ret1;
@@ -8911,7 +8930,7 @@ uint8_t BuildAndSendUeContextSetupReq(uint32_t duId, CuUeCb *ueCb, uint16_t rrcC
       if(ueCb->state == UE_HANDOVER_IN_PROGRESS)
          elementCnt = 7;
       else
-         elementCnt = 12;
+         elementCnt = 11;
       ueSetReq->protocolIEs.list.count = elementCnt;
       ueSetReq->protocolIEs.list.size = elementCnt * sizeof(UEContextSetupRequestIEs_t *);
 
@@ -9037,25 +9056,6 @@ uint8_t BuildAndSendUeContextSetupReq(uint32_t duId, CuUeCb *ueCb, uint16_t rrcC
 
       if(ueCb->state != UE_HANDOVER_IN_PROGRESS)
       {
-         /* RRC Container for security mode */
-         idx++;
-         ueSetReq->protocolIEs.list.array[idx]->id = ProtocolIE_ID_id_RRCContainer;
-         ueSetReq->protocolIEs.list.array[idx]->criticality = Criticality_reject;
-         ueSetReq->protocolIEs.list.array[idx]->value.present = UEContextSetupRequestIEs__value_PR_RRCContainer;
-
-         char secModeBuf[9]={0x00, 0x02, 0x22, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00};
-         bufLen =9;
-         ueSetReq->protocolIEs.list.array[idx]->value.choice.RRCContainer.size = bufLen;
-         CU_ALLOC(ueSetReq->protocolIEs.list.array[idx]->value.choice.RRCContainer.buf,
-               ueSetReq->protocolIEs.list.array[idx]->value.choice.RRCContainer.size);
-         if(!ueSetReq->protocolIEs.list.array[idx]->value.choice.RRCContainer.buf)
-         {
-            DU_LOG("\nERROR  -->  F1AP : Memory allocation for BuildAndSendUeContextSetupReq failed");
-            break;
-         }
-         memset(ueSetReq->protocolIEs.list.array[idx]->value.choice.RRCContainer.buf, 0, bufLen);
-         memcpy(ueSetReq->protocolIEs.list.array[idx]->value.choice.RRCContainer.buf, secModeBuf, bufLen);
-
          /* RRC delivery status request */
          idx++;
          ueSetReq->protocolIEs.list.array[idx]->id = ProtocolIE_ID_id_RRCDeliveryStatusRequest;
@@ -9259,7 +9259,7 @@ uint8_t procDrbSetupList(uint32_t duId, DRBs_Setup_List_t *drbSetupList)
  * ****************************************************************/
 uint8_t procUeContextSetupResponse(uint32_t duId, F1AP_PDU_t *f1apMsg)
 {
-   uint8_t duIdx = 0, idx = 0, ueIdx = 0;
+   uint8_t duIdx = 0, idx = 0, ueIdx = 0, rrcMsgType=0;
    uint8_t duUeF1apId = 0, cuUeF1apId = 0;
    DuDb *duDb = NULLP;
    CuUeCb *ueCb = NULLP;
@@ -9327,9 +9327,7 @@ uint8_t procUeContextSetupResponse(uint32_t duId, F1AP_PDU_t *f1apMsg)
              }
       }
    }
-
-   ueCb->f1apMsgDb.dlRrcMsgCount++; /* keeping DL RRC Msg Count */
-
+   
    /* If the UE is in handover, UE context modification request is to be sent to
     * source DU once UE context setup response is received from target DU */
    if(ueCb->state == UE_HANDOVER_IN_PROGRESS)
@@ -9379,6 +9377,19 @@ uint8_t procUeContextSetupResponse(uint32_t duId, F1AP_PDU_t *f1apMsg)
             break;
       }
    }
+   else
+   {
+      ueCb->f1apMsgDb.dlRrcMsgCount++;
+      rrcMsgType = setDlRRCMsgType(ueCb);
+
+      DU_LOG("\nINFO  -->  F1AP: Sending DL RRC MSG for RRC reconfiguration");
+      if(BuildAndSendDLRRCMessageTransfer(duId, ueCb, SRB1, rrcMsgType) != ROK)
+      {
+         DU_LOG("\nINFO  -->  F1AP: Failed to build and send DL RRC MSG for RRC reconfiguration");
+         return RFAILED;
+      }
+   }
+
    return ROK;
 }
 
@@ -9458,37 +9469,25 @@ uint8_t procUlRrcMsg(uint32_t duId, F1AP_PDU_t *f1apMsg)
       ueCb = &duDb->ueCb[duUeF1apId-1];
       ueCb->f1apMsgDb.dlRrcMsgCount++;
       rrcMsgType = setDlRRCMsgType(ueCb);
-      if(rrcMsgType == REGISTRATION_ACCEPT)
+      if(rrcMsgType == RRC_SETUP_COMPLETE)
       {
-         DU_LOG("\nINFO  -->  F1AP: Sending DL RRC MSG for RRC Registration Accept"); 
+         DU_LOG("\nINFO  -->  F1AP: Sending DL RRC MSG for Security Mode Command"); 
          ret = BuildAndSendDLRRCMessageTransfer(duId, ueCb, srbId, rrcMsgType);
       }
-      if(rrcMsgType == UE_CONTEXT_SETUP_REQ)
+      else if(rrcMsgType == SECURITY_MODE_COMPLETE)
       {
-         DU_LOG("\nINFO  -->  F1AP: Sending Ue Context Setup Req"); 
-         ret = BuildAndSendUeContextSetupReq(duId, ueCb, rrcContLen, rrcContainer);
+         DU_LOG("\nINFO  -->  F1AP: Sending DL RRC MSG for RRC Registration Accept");
+         BuildAndSendDLRRCMessageTransfer(duId, ueCb, srbId, rrcMsgType);
       }
-      if(rrcMsgType == SECURITY_MODE_COMPLETE)
+      else if(rrcMsgType == REGISTRATION_COMPLETE)
       {
-         /* To trigger the DL RRC Msg for RRC Reconfig */
-         ueCb->f1apMsgDb.dlRrcMsgCount++;
-         rrcMsgType = setDlRRCMsgType(ueCb);
-         if(rrcMsgType == RRC_RECONFIG)
-         {
-            DU_LOG("\nINFO  -->  F1AP: Sending DL RRC MSG for RRC Reconfig");
-            BuildAndSendDLRRCMessageTransfer(duId, ueCb, srbId, rrcMsgType);
-         }
+         DU_LOG("\nINFO  -->  F1AP: Sending Ue Context Setup Request"); 
+         ret = BuildAndSendUeContextSetupReq(duId, ueCb);
       }
-      if(rrcMsgType == RRC_RECONFIG_COMPLETE)
+      else if(rrcMsgType == RRC_RECONFIG_COMPLETE)
       {
-         ueCb->state = UE_ACTIVE;
-         ueCb->f1apMsgDb.dlRrcMsgCount++;
-         rrcMsgType = setDlRRCMsgType(ueCb);
-         if(rrcMsgType == UE_CONTEXT_MOD_REQ)
-         {
-            DU_LOG("\nINFO  -->  F1AP: Sending UE Context Modification Request");
-            BuildAndSendUeContextModificationReq(duId, ueCb, RRC_RECONFIG_COMPLETE_IND);
-         }
+         DU_LOG("\nINFO  -->  F1AP: Sending UE Context Modification Request");
+         BuildAndSendUeContextModificationReq(duId, ueCb, RRC_RECONFIG_COMPLETE_IND);
       }
    }
    return ret;
@@ -11429,7 +11428,7 @@ uint8_t procUeContextModificationResponse(uint32_t duId, F1AP_PDU_t *f1apMsg)
           * request */
          if(ueCbInTgtDu == NULLP)
          {
-            if((BuildAndSendUeContextSetupReq(ueCb->hoInfo.targetDuId, ueCb, 0, NULLP)) != ROK)
+            if((BuildAndSendUeContextSetupReq(ueCb->hoInfo.targetDuId, ueCb)) != ROK)
             {
                DU_LOG("\nERROR  ->  F1AP : Failed at BuildAndSendUeContextSetupReq");
                return RFAILED;
