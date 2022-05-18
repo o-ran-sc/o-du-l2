@@ -383,15 +383,15 @@ uint16_t l1BuildAndSendRxDataInd(uint16_t slot, uint16_t sfn, fapi_ul_pusch_pdu_
          phyDb.ueDb.ueCb[ueId-1].msg5Sent = true;
          type = MSG_TYPE_MSG5;
       }
-      else if(!phyDb.ueDb.ueCb[ueId-1].msgRegistrationComp)
-      {
-         phyDb.ueDb.ueCb[ueId-1].msgRegistrationComp = true;
-         type = MSG_TYPE_REGISTRATION_COMPLETE; 
-      }
       else if(!phyDb.ueDb.ueCb[ueId-1].msgSecurityModeComp)
       {
          phyDb.ueDb.ueCb[ueId-1].msgSecurityModeComp = true;
          type = MSG_TYPE_SECURITY_MODE_COMPLETE;
+      }
+      else if(!phyDb.ueDb.ueCb[ueId-1].msgRegistrationComp)
+      {
+         phyDb.ueDb.ueCb[ueId-1].msgRegistrationComp = true;
+         type = MSG_TYPE_REGISTRATION_COMPLETE; 
       }
       else if(!phyDb.ueDb.ueCb[ueId-1].msgRrcReconfigComp)
       {
