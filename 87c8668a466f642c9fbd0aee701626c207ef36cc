@@ -1,0 +1,136 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8300bc2b_019fe005",
+        "filename": "src/5gnrmac/mac_cfg_hdl.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 1028,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-05-18T04:16:51Z",
+      "side": 1,
+      "message": "this print is not required as we already have a print on receiving of paging ind at SCH",
+      "range": {
+        "startLine": 1028,
+        "startChar": 18,
+        "endLine": 1028,
+        "endChar": 24
+      },
+      "revId": "87c8668a466f642c9fbd0aee701626c207ef36cc",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9ce6736c_f86e6712",
+        "filename": "src/5gnrmac/mac_slot_ind.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 156,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-05-18T04:16:51Z",
+      "side": 1,
+      "message": "keep in one line",
+      "revId": "87c8668a466f642c9fbd0aee701626c207ef36cc",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f94a56c4_a4268a43",
+        "filename": "src/5gnrmac/mac_slot_ind.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-05-18T04:16:51Z",
+      "side": 1,
+      "message": "MAC",
+      "range": {
+        "startLine": 160,
+        "startChar": 30,
+        "endLine": 160,
+        "endChar": 37
+      },
+      "revId": "87c8668a466f642c9fbd0aee701626c207ef36cc",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fa773694_395c4a07",
+        "filename": "src/5gnrmac/mac_slot_ind.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 169,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-05-18T04:16:51Z",
+      "side": 1,
+      "message": "MAC",
+      "range": {
+        "startLine": 169,
+        "startChar": 27,
+        "endLine": 169,
+        "endChar": 34
+      },
+      "revId": "87c8668a466f642c9fbd0aee701626c207ef36cc",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9e76525c_72c58d8c",
+        "filename": "src/5gnrsch/sch_slot_ind.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 687,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-05-18T04:16:51Z",
+      "side": 1,
+      "message": "resource",
+      "range": {
+        "startLine": 687,
+        "startChar": 72,
+        "endLine": 687,
+        "endChar": 76
+      },
+      "revId": "87c8668a466f642c9fbd0aee701626c207ef36cc",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c7f9beb5_0acbd676",
+        "filename": "src/du_app/du_utils.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 514,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-05-18T04:16:51Z",
+      "side": 1,
+      "message": "do we need this for future or can it be removed since this is the last gerrit for paging related changes",
+      "range": {
+        "startLine": 514,
+        "startChar": 0,
+        "endLine": 514,
+        "endChar": 1
+      },
+      "revId": "87c8668a466f642c9fbd0aee701626c207ef36cc",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
