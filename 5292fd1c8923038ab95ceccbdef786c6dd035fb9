@@ -1,0 +1,84 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1c838c58_1d2bf927",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 9477,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-05-18T16:57:17Z",
+      "side": 1,
+      "message": "Make all the conditions here as : if() ... else if() .... else if() ...\nAdd \"else\", so that all ifs are not checked unnecessarily if the correct condition is found.",
+      "range": {
+        "startLine": 9477,
+        "startChar": 6,
+        "endLine": 9477,
+        "endChar": 8
+      },
+      "revId": "5292fd1c8923038ab95ceccbdef786c6dd035fb9",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f2ef5cfe_16e9a5a7",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 9480,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-05-18T16:57:17Z",
+      "side": 1,
+      "message": "alignment",
+      "revId": "5292fd1c8923038ab95ceccbdef786c6dd035fb9",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4d114a2b_354ace12",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 9490,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-05-18T16:57:17Z",
+      "side": 1,
+      "message": "alignment",
+      "revId": "5292fd1c8923038ab95ceccbdef786c6dd035fb9",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2d0f9e84_3ea9113b",
+        "filename": "src/du_app/du_mgr_main.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 551,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-05-18T16:57:17Z",
+      "side": 1,
+      "message": "reminder to revert before submission",
+      "range": {
+        "startLine": 551,
+        "startChar": 5,
+        "endLine": 551,
+        "endChar": 28
+      },
+      "revId": "5292fd1c8923038ab95ceccbdef786c6dd035fb9",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
