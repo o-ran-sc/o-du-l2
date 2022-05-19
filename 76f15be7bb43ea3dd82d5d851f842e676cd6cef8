@@ -24,6 +24,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e25e7dc1_8b65902e",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 9404,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-05-19T11:34:50Z",
+      "side": 1,
+      "message": "It should be uint32_t as per F1AP spec 38.473",
+      "parentUuid": "1ed8dbc1_1bd5b181",
+      "range": {
+        "startLine": 9404,
+        "startChar": 11,
+        "endLine": 9404,
+        "endChar": 21
+      },
+      "revId": "76f15be7bb43ea3dd82d5d851f842e676cd6cef8",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a0d46d66_e702e758",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-05-19T09:37:03Z",
       "side": 1,
       "message": "intialize to null.",
+      "range": {
+        "startLine": 9408,
+        "startChar": 13,
+        "endLine": 9408,
+        "endChar": 17
+      },
+      "revId": "76f15be7bb43ea3dd82d5d851f842e676cd6cef8",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d27de6cf_576c76d7",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 9408,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-05-19T11:34:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a0d46d66_e702e758",
       "range": {
         "startLine": 9408,
         "startChar": 13,
@@ -70,6 +118,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a201d5dc_3c64d23d",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 9447,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-05-19T11:34:50Z",
+      "side": 1,
+      "message": "This is intentionally declared inside as it is required only for handover scenario.\nIt is important to make sure that any declaration should be at the beginning of a block, not necessarily at the beginning of a function.",
+      "parentUuid": "a70976c9_534e04ba",
+      "range": {
+        "startLine": 9447,
+        "startChar": 26,
+        "endLine": 9447,
+        "endChar": 33
+      },
+      "revId": "76f15be7bb43ea3dd82d5d851f842e676cd6cef8",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f508636c_d6f30e2d",
@@ -83,6 +155,30 @@
       "writtenOn": "2022-05-19T09:37:03Z",
       "side": 1,
       "message": "add a check",
+      "range": {
+        "startLine": 9461,
+        "startChar": 24,
+        "endLine": 9461,
+        "endChar": 59
+      },
+      "revId": "76f15be7bb43ea3dd82d5d851f842e676cd6cef8",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a69f3b34_8236815c",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 9461,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-05-19T11:34:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f508636c_d6f30e2d",
       "range": {
         "startLine": 9461,
         "startChar": 24,
@@ -110,6 +206,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c0c51f09_375560ab",
+        "filename": "src/du_app/du_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1719,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-05-19T11:34:50Z",
+      "side": 1,
+      "message": "There wont be any case when ueId\u003d0 unless something really goes wrong in the memory. I think this check was added because we are using index \u003d (ueId - 1) to get ueCb. In case ueId \u003d 0, then index will become -1 or 255, leading to crash.",
+      "parentUuid": "2c12cae1_c7d3b9b2",
+      "revId": "76f15be7bb43ea3dd82d5d851f842e676cd6cef8",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6cd0a753_c67ebee0",
@@ -123,6 +237,24 @@
       "writtenOn": "2022-05-19T09:37:03Z",
       "side": 1,
       "message": "this function may return ROK/RFAILED. so can we have a check for that?",
+      "revId": "76f15be7bb43ea3dd82d5d851f842e676cd6cef8",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9b6ad33b_79245bab",
+        "filename": "src/du_app/du_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1743,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-05-19T11:34:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6cd0a753_c67ebee0",
       "revId": "76f15be7bb43ea3dd82d5d851f842e676cd6cef8",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
