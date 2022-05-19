@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1b8229f4_c09a47c9",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 3824,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-05-19T07:58:59Z",
+      "side": 1,
+      "message": "In case you are addressing any other comments too on this gerrit, please deleted above commented lines as well. Else we can do it later.",
+      "revId": "7bdcbb91e23bbf4e608b16b9a8a9ea19f9d9efcf",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
