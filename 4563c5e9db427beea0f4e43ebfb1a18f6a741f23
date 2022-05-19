@@ -22,6 +22,30 @@
       },
       "revId": "4563c5e9db427beea0f4e43ebfb1a18f6a741f23",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "af87dc10_8c270b47",
+        "filename": "src/cm/du_app_mac_inf.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 1329,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-05-19T12:13:34Z",
+      "side": 1,
+      "message": "We cant use RachRsrcRemove or FreeRachRsrc because the WG8 spec names this API as RACH resource release API",
+      "parentUuid": "e8c65ac2_2fb38a6a",
+      "range": {
+        "startLine": 1329,
+        "startChar": 22,
+        "endLine": 1329,
+        "endChar": 29
+      },
+      "revId": "4563c5e9db427beea0f4e43ebfb1a18f6a741f23",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
   ]
 }
