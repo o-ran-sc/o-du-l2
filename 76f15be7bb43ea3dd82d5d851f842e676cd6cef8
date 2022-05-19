@@ -1,0 +1,130 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1ed8dbc1_1bd5b181",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 9404,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-05-19T09:37:03Z",
+      "side": 1,
+      "message": "cuUeF1apId  needs uint32_t or uint8_t data type?",
+      "range": {
+        "startLine": 9404,
+        "startChar": 11,
+        "endLine": 9404,
+        "endChar": 21
+      },
+      "revId": "76f15be7bb43ea3dd82d5d851f842e676cd6cef8",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a0d46d66_e702e758",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 9408,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-05-19T09:37:03Z",
+      "side": 1,
+      "message": "intialize to null.",
+      "range": {
+        "startLine": 9408,
+        "startChar": 13,
+        "endLine": 9408,
+        "endChar": 17
+      },
+      "revId": "76f15be7bb43ea3dd82d5d851f842e676cd6cef8",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a70976c9_534e04ba",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 9447,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-05-19T09:37:03Z",
+      "side": 1,
+      "message": "Declare these variable in the beginning of this function",
+      "range": {
+        "startLine": 9447,
+        "startChar": 26,
+        "endLine": 9447,
+        "endChar": 33
+      },
+      "revId": "76f15be7bb43ea3dd82d5d851f842e676cd6cef8",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f508636c_d6f30e2d",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 9461,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-05-19T09:37:03Z",
+      "side": 1,
+      "message": "add a check",
+      "range": {
+        "startLine": 9461,
+        "startChar": 24,
+        "endLine": 9461,
+        "endChar": 59
+      },
+      "revId": "76f15be7bb43ea3dd82d5d851f842e676cd6cef8",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2c12cae1_c7d3b9b2",
+        "filename": "src/du_app/du_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1719,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-05-19T09:37:03Z",
+      "side": 1,
+      "message": "is there any scenario that can happen when we can get ueId \u003d\u003d 0. \nIf that can be possible so we can add a comment in else part.",
+      "revId": "76f15be7bb43ea3dd82d5d851f842e676cd6cef8",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6cd0a753_c67ebee0",
+        "filename": "src/du_app/du_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1743,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-05-19T09:37:03Z",
+      "side": 1,
+      "message": "this function may return ROK/RFAILED. so can we have a check for that?",
+      "revId": "76f15be7bb43ea3dd82d5d851f842e676cd6cef8",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
