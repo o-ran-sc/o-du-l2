@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e8c65ac2_2fb38a6a",
+        "filename": "src/cm/du_app_mac_inf.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 1329,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-05-19T12:10:18Z",
+      "side": 1,
+      "message": "Suggestion- in place of RachRsrcRel, cant we use RachRsrcRelease or RachRsrcRemove, FreeRachRsrc  everywhere.",
+      "range": {
+        "startLine": 1329,
+        "startChar": 22,
+        "endLine": 1329,
+        "endChar": 29
+      },
+      "revId": "4563c5e9db427beea0f4e43ebfb1a18f6a741f23",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
