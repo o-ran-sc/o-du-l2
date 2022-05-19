@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "721f858e_59cd3fb3",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 3964,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-05-19T06:51:02Z",
+      "side": 1,
+      "message": "i think the correct size is (DlPageAlloc) \nplease check once.",
+      "range": {
+        "startLine": 3964,
+        "startChar": 47,
+        "endLine": 3964,
+        "endChar": 56
+      },
+      "revId": "9e7da94a26b79d1ba7b86f16eff7dc27a9b3587d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
