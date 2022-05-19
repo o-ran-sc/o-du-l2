@@ -22,6 +22,30 @@
       },
       "revId": "9e7da94a26b79d1ba7b86f16eff7dc27a9b3587d",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "709a36cf_a6d789f6",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 3964,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-05-19T07:41:52Z",
+      "side": 1,
+      "message": "You are right..Thanks",
+      "parentUuid": "721f858e_59cd3fb3",
+      "range": {
+        "startLine": 3964,
+        "startChar": 47,
+        "endLine": 3964,
+        "endChar": 56
+      },
+      "revId": "9e7da94a26b79d1ba7b86f16eff7dc27a9b3587d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
   ]
 }
