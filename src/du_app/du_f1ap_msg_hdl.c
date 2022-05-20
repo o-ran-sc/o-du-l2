@@ -8681,35 +8681,22 @@ void freeRlcLcCfg(RlcBearerCfg *lcCfg)
    {
       case RLC_AM :
          {
-            if(lcCfg->u.amCfg)
-            {
-               DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, lcCfg->u.amCfg, sizeof(AmBearerCfg));
-            }
+            DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, lcCfg->u.amCfg, sizeof(AmBearerCfg));
             break;
          }
       case RLC_UM_BI_DIRECTIONAL :
          {
-            if(lcCfg->u.umBiDirCfg)
-            {
-               DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, lcCfg->u.umBiDirCfg, sizeof(UmBiDirBearerCfg));
-            }
+            DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, lcCfg->u.umBiDirCfg, sizeof(UmBiDirBearerCfg));
             break;
          }
       case RLC_UM_UNI_DIRECTIONAL_UL :
          {
-            if(lcCfg->u.umUniDirUlCfg)
-            {
-               DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, lcCfg->u.umUniDirUlCfg, sizeof(UmUniDirUlBearerCfg));
-            }
+            DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, lcCfg->u.umUniDirUlCfg, sizeof(UmUniDirUlBearerCfg));
             break;
-
          }
       case RLC_UM_UNI_DIRECTIONAL_DL :
          {
-            if(lcCfg->u.umUniDirDlCfg)
-            {
-               DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, lcCfg->u.umUniDirDlCfg, sizeof(UmUniDirDlBearerCfg));
-            }
+            DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, lcCfg->u.umUniDirDlCfg, sizeof(UmUniDirDlBearerCfg));
             break;
          }
       default:
@@ -9265,7 +9252,7 @@ void freeAperDecodeinitialUplinkBWPConfig(UplinkConfig_t *ulCfg)
  * @return void
  *
  * ****************************************************************/
-void freeDuUeCfg(DuUeCfg *ueCfg)
+void freeDuUeCfg(UeCtxtActionType actionType, DuUeCfg *ueCfg)
 {
    uint8_t lcIdx = 0;
    uint8_t arrIdx = 0;
@@ -9294,194 +9281,200 @@ void freeDuUeCfg(DuUeCfg *ueCfg)
 
    if(ueCfg->cellGrpCfg)
    {
-      
       rlcBearerList = cellGrpCfg->rlc_BearerToAddModList;
       if(rlcBearerList)
       {
-	 if(rlcBearerList->list.array)
-	 {
-	    for(arrIdx=0; arrIdx<rlcBearerList->list.count; arrIdx++)
-	    {
-	       if(rlcBearerList->list.array[arrIdx])
-	       {
-		  rlcConfig   = rlcBearerList->list.array[arrIdx]->rlc_Config;
-		  macLcConfig = rlcBearerList->list.array[arrIdx]->mac_LogicalChannelConfig;
-		  
-		  if(rlcBearerList->list.array[arrIdx]->servedRadioBearer)
-		  {
-		     free(rlcBearerList->list.array[arrIdx]->servedRadioBearer);
-		  }
-		  if(rlcConfig)
-		  {
-		     if(rlcConfig->choice.am)
-		     {
-			free(rlcConfig->choice.am->ul_AM_RLC.sn_FieldLength);
-			free(rlcConfig->choice.am->dl_AM_RLC.sn_FieldLength);
-			free(rlcConfig->choice.am);
-		     }
-		     free(rlcBearerList->list.array[arrIdx]->rlc_Config);
-		  }
-		  if(macLcConfig)
-		  {
-		     if(macLcConfig->ul_SpecificParameters)
-		     {
-			free(macLcConfig->ul_SpecificParameters->schedulingRequestID);
-			free(macLcConfig->ul_SpecificParameters->logicalChannelGroup);
-			free(macLcConfig->ul_SpecificParameters);
-		     }
-		     free(rlcBearerList->list.array[arrIdx]->mac_LogicalChannelConfig);
-		  }
-		  free(rlcBearerList->list.array[arrIdx]); 
-	       }
-	    }
-	    free(rlcBearerList->list.array);
-	 }
-	 free(cellGrpCfg->rlc_BearerToAddModList);
+         if(rlcBearerList->list.array)
+         {
+            for(arrIdx=0; arrIdx<rlcBearerList->list.count; arrIdx++)
+            {
+               if(rlcBearerList->list.array[arrIdx])
+               {
+                  rlcConfig   = rlcBearerList->list.array[arrIdx]->rlc_Config;
+                  macLcConfig = rlcBearerList->list.array[arrIdx]->mac_LogicalChannelConfig;
+
+                  if(rlcBearerList->list.array[arrIdx]->servedRadioBearer)
+                  {
+                     free(rlcBearerList->list.array[arrIdx]->servedRadioBearer);
+                  }
+                  if(rlcConfig)
+                  {
+                     if(rlcConfig->choice.am)
+                     {
+                        free(rlcConfig->choice.am->ul_AM_RLC.sn_FieldLength);
+                        free(rlcConfig->choice.am->dl_AM_RLC.sn_FieldLength);
+                        free(rlcConfig->choice.am);
+                     }
+                     free(rlcBearerList->list.array[arrIdx]->rlc_Config);
+                  }
+                  if(macLcConfig)
+                  {
+                     if(macLcConfig->ul_SpecificParameters)
+                     {
+                        free(macLcConfig->ul_SpecificParameters->schedulingRequestID);
+                        free(macLcConfig->ul_SpecificParameters->logicalChannelGroup);
+                        free(macLcConfig->ul_SpecificParameters);
+                     }
+                     free(rlcBearerList->list.array[arrIdx]->mac_LogicalChannelConfig);
+                  }
+                  free(rlcBearerList->list.array[arrIdx]); 
+               }
+            }
+            free(rlcBearerList->list.array);
+         }
+         free(cellGrpCfg->rlc_BearerToAddModList);
       }
 
       macCellGrpCfg = cellGrpCfg->mac_CellGroupConfig;
       if(macCellGrpCfg)
       {
-	 schedulingRequestConfig = macCellGrpCfg->schedulingRequestConfig;
-	 if(schedulingRequestConfig)
-	 {
-	    schReqList = schedulingRequestConfig->schedulingRequestToAddModList;
-	    if(schReqList)
-	    {
-	       if(schReqList->list.array)
-	       {
-		  for(arrIdx=0;arrIdx<schReqList->list.count; arrIdx++)
-		  {
-		     if(schReqList->list.array[arrIdx])
-		     {
-			free(schReqList->list.array[arrIdx]->sr_ProhibitTimer); 
-			free(schReqList->list.array[arrIdx]);
-		     }
-		  }
-		  free(schReqList->list.array);
-	       }
-	       free(schedulingRequestConfig->schedulingRequestToAddModList);
-	    }
-	    free(macCellGrpCfg->schedulingRequestConfig);
-	 }
-	 if(macCellGrpCfg->bsr_Config)
-	 {
-	    free(macCellGrpCfg->bsr_Config);
-	 }
-	 tagConfig = macCellGrpCfg->tag_Config;
-	 if(tagConfig)
-	 {
-	    tagList = tagConfig->tag_ToAddModList;
-	    if(tagList)
-	    {
-	       if(tagList->list.array)
-	       {
-		  for(arrIdx=0; arrIdx<tagList->list.count; arrIdx++)
-		  {
-		     free(tagList->list.array[arrIdx]);
-		  }
-		  free(tagList->list.array);
-	       }
-	       free(tagConfig->tag_ToAddModList);
-	    }
-	    free(tagConfig); 
-	 }
+         schedulingRequestConfig = macCellGrpCfg->schedulingRequestConfig;
+         if(schedulingRequestConfig)
+         {
+            schReqList = schedulingRequestConfig->schedulingRequestToAddModList;
+            if(schReqList)
+            {
+               if(schReqList->list.array)
+               {
+                  for(arrIdx=0;arrIdx<schReqList->list.count; arrIdx++)
+                  {
+                     if(schReqList->list.array[arrIdx])
+                     {
+                        free(schReqList->list.array[arrIdx]->sr_ProhibitTimer); 
+                        free(schReqList->list.array[arrIdx]);
+                     }
+                  }
+                  free(schReqList->list.array);
+               }
+               free(schedulingRequestConfig->schedulingRequestToAddModList);
+            }
+            free(macCellGrpCfg->schedulingRequestConfig);
+         }
+         if(macCellGrpCfg->bsr_Config)
+         {
+            free(macCellGrpCfg->bsr_Config);
+         }
+         tagConfig = macCellGrpCfg->tag_Config;
+         if(tagConfig)
+         {
+            tagList = tagConfig->tag_ToAddModList;
+            if(tagList)
+            {
+               if(tagList->list.array)
+               {
+                  for(arrIdx=0; arrIdx<tagList->list.count; arrIdx++)
+                  {
+                     free(tagList->list.array[arrIdx]);
+                  }
+                  free(tagList->list.array);
+               }
+               free(tagConfig->tag_ToAddModList);
+            }
+            free(tagConfig); 
+         }
 
-	 phrConfig = macCellGrpCfg->phr_Config;
-	 if(phrConfig)
-	 {
-	    free(phrConfig->choice.setup); 
-	    free(phrConfig); 
-	 }
+         phrConfig = macCellGrpCfg->phr_Config;
+         if(phrConfig)
+         {
+            free(phrConfig->choice.setup); 
+            free(phrConfig); 
+         }
 
-	 free(macCellGrpCfg); 
+         free(macCellGrpCfg); 
       }
 
       phyCellGrpCfg = cellGrpCfg->physicalCellGroupConfig;
       if(phyCellGrpCfg)
       {
-	 free(phyCellGrpCfg->p_NR_FR1);
-	 free(phyCellGrpCfg); 
+         free(phyCellGrpCfg->p_NR_FR1);
+         free(phyCellGrpCfg); 
       }
 
       spCellCfg = cellGrpCfg->spCellConfig;
       if(spCellCfg)
       {
-	 if(spCellCfg->servCellIndex)
-	 {
-	    if(spCellCfg->rlmInSyncOutOfSyncThreshold)
-	    {
-	       if(spCellCfg->spCellConfigDedicated)
-	       {
-		  srvCellCfg = spCellCfg->spCellConfigDedicated;
-		  if(srvCellCfg->initialDownlinkBWP)
-		  {
-		     dlBwp = srvCellCfg->initialDownlinkBWP;
-		     if(srvCellCfg->firstActiveDownlinkBWP_Id)
-		     {
-			if(srvCellCfg->defaultDownlinkBWP_Id)
-			{
-			   if(srvCellCfg->uplinkConfig)
-			   {
+         if(spCellCfg->servCellIndex)
+         {
+            if(spCellCfg->rlmInSyncOutOfSyncThreshold)
+            {
+               if(spCellCfg->spCellConfigDedicated)
+               {
+                  srvCellCfg = spCellCfg->spCellConfigDedicated;
+                  if(srvCellCfg->initialDownlinkBWP)
+                  {
+                     dlBwp = srvCellCfg->initialDownlinkBWP;
+                     if(srvCellCfg->firstActiveDownlinkBWP_Id)
+                     {
+                        if(srvCellCfg->defaultDownlinkBWP_Id)
+                        {
+                           if(srvCellCfg->uplinkConfig)
+                           {
 
-			      if(srvCellCfg->pdsch_ServingCellConfig)
-			      {
-				 pdschCfg=
-				    srvCellCfg->pdsch_ServingCellConfig;
-				 if(pdschCfg->choice.setup)
-				 {
+                              if(srvCellCfg->pdsch_ServingCellConfig)
+                              {
+                                 pdschCfg=
+                                    srvCellCfg->pdsch_ServingCellConfig;
+                                 if(pdschCfg->choice.setup)
+                                 {
 
-				    free(pdschCfg->choice.setup->nrofHARQ_ProcessesForPDSCH);
-				    free(pdschCfg->choice.setup);
-				 }
+                                    free(pdschCfg->choice.setup->nrofHARQ_ProcessesForPDSCH);
+                                    free(pdschCfg->choice.setup);
+                                 }
 
-				 free(srvCellCfg->pdsch_ServingCellConfig);
-			      }
+                                 free(srvCellCfg->pdsch_ServingCellConfig);
+                              }
 
-			      freeAperDecodeinitialUplinkBWPConfig(srvCellCfg->uplinkConfig);
-			      free(srvCellCfg->uplinkConfig);
-			   }
-			   free(srvCellCfg->defaultDownlinkBWP_Id);
-			}
+                              freeAperDecodeinitialUplinkBWPConfig(srvCellCfg->uplinkConfig);
+                              free(srvCellCfg->uplinkConfig);
+                           }
+                           free(srvCellCfg->defaultDownlinkBWP_Id);
+                        }
 
-			free(srvCellCfg->firstActiveDownlinkBWP_Id);
-		     }
-		     if(dlBwp->pdcch_Config)
-		     {
-			if(dlBwp->pdsch_Config)
-			{
-			   freeAperDecodeBWPDlDedPdschConfig(dlBwp);
-			   free(dlBwp->pdsch_Config);
-			}
-			freeAperDecodeBWPDlDedPdcchConfig(dlBwp);
-			free(dlBwp->pdcch_Config);
-		     }
-		     free(srvCellCfg->initialDownlinkBWP);
-		  }
+                        free(srvCellCfg->firstActiveDownlinkBWP_Id);
+                     }
+                     if(dlBwp->pdcch_Config)
+                     {
+                        if(dlBwp->pdsch_Config)
+                        {
+                           freeAperDecodeBWPDlDedPdschConfig(dlBwp);
+                           free(dlBwp->pdsch_Config);
+                        }
+                        freeAperDecodeBWPDlDedPdcchConfig(dlBwp);
+                        free(dlBwp->pdcch_Config);
+                     }
+                     free(srvCellCfg->initialDownlinkBWP);
+                  }
 
-		  free(spCellCfg->spCellConfigDedicated);
-	       }
-	       free(spCellCfg->rlmInSyncOutOfSyncThreshold);
-	    }
-	    free(spCellCfg->servCellIndex); 
-	 }
-	 free(spCellCfg);
+                  free(spCellCfg->spCellConfigDedicated);
+               }
+               free(spCellCfg->rlmInSyncOutOfSyncThreshold);
+            }
+            free(spCellCfg->servCellIndex); 
+         }
+         free(spCellCfg);
       }
       DU_FREE(ueCfg->cellGrpCfg, sizeof(CellGroupConfigRrc_t));
       ueCfg->cellGrpCfg = NULLP;
    }
+
    if(ueCfg->ambrCfg)
    {
       DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, ueCfg->ambrCfg, sizeof(AmbrCfg));
    }
-   for(lcIdx = 0; lcIdx < ueCfg->numRlcLcs; lcIdx++)
+
+   if(actionType != UE_CTXT_CFG_QUERY)
    {
-      freeRlcLcCfg(&ueCfg->rlcLcCfg[lcIdx]);
+      for(lcIdx = 0; lcIdx < ueCfg->numRlcLcs; lcIdx++)
+      {
+         freeRlcLcCfg(&ueCfg->rlcLcCfg[lcIdx]);
+      }
    }
+
    for(lcIdx = 0; lcIdx < ueCfg->numMacLcs; lcIdx++)
    {
       freeMacLcCfg(&ueCfg->macLcCfg[lcIdx]);
    }
+
    for(lcIdx = 0; lcIdx < ueCfg->numDrb; lcIdx++)
    {
       DU_FREE(ueCfg->upTnlInfo[lcIdx].tnlCfg1, sizeof(GtpTnlCfg));
@@ -9515,7 +9508,7 @@ void freeF1UeDb(F1UeContextSetupDb *f1UeDb)
       }
       DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, f1UeDb->dlRrcMsg, sizeof(F1DlRrcMsg));
    }
-   freeDuUeCfg(&f1UeDb->duUeCfg);
+   freeDuUeCfg(f1UeDb->actionType, &f1UeDb->duUeCfg);
    memset(f1UeDb, 0, sizeof(F1UeContextSetupDb));
    DU_FREE(f1UeDb, sizeof(F1UeContextSetupDb));
 }
@@ -15265,7 +15258,7 @@ uint8_t BuildAndSendUeContextModRsp(DuUeCb *ueCb)
 
    DU_LOG("\nINFO  -->  F1AP : Building UE context modification response\n");
 
-   while(1)
+   while(true)
    {
       DU_ALLOC(f1apMsg, sizeof(F1AP_PDU_t));
       if(f1apMsg == NULLP)
