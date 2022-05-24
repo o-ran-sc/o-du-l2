@@ -16528,7 +16528,7 @@ uint8_t procPagingMsg(F1AP_PDU_t *f1apMsg)
    PagingCell_Item_t *pagingCellItem = NULLP;
    DuPagingMsg *tmpPagingParam = NULLP;
 
-   DU_LOG("\nINFO  --> DU APP : Processing the Paging Message");
+   DU_LOG("\nINFO   --> DU APP : Processing the Paging Message");
    paging = &f1apMsg->choice.initiatingMessage->value.choice.Paging;
    if(paging)
    {

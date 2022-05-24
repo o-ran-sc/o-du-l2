@@ -43,6 +43,12 @@ Version history
 Summary
 -------
 
+F- release
+^^^^^^^^^^
+This release contains the following:
+
+ - Support for IDLE Mode Paging.
+
 e-release
 ^^^^^^^^^^
 This release contains the following:
@@ -263,6 +269,20 @@ Feature Additions
 ------------------
 
 **JIRA BACK-LOG:**
+
+F-release
+^^^^^^^^^^
+
++-----------------------------------------------+-----------------------------------------------+
+| **JIRA REFERENCE**                            | **SLOGAN**                                    |
+|                                               |                                               |
++-----------------------------------------------+-----------------------------------------------+
+| https://jira.o-ran-sc.org/browse/ODUHIGH-404  | Support for E2AP version 2.0                  | 
+|                                               |                                               |
++-----------------------------------------------+-----------------------------------------------+
+| https://jira.o-ran-sc.org/browse/ODUHIGH-406  | Support for Idle Mode Paging                  | 
+|                                               |                                               |
++-----------------------------------------------+-----------------------------------------------+
 
 e-release
 ^^^^^^^^^^
@@ -510,28 +530,26 @@ References
 ----------
 1. ORAN-WG8.AAD.0-v05.00.00
 
-2. ORAN WG3.E2AP v01.00
+2. ORAN WG3.E2AP v02.00
 
-3. ORAN WG3.E2SM v01.00
+3. 3GPP 38.473-f60 v15.3
 
-4. 3GPP 38.473-f60 v15.3
+4. 3GPP TS 38.211 v15.3
 
-5. 3GPP TS 38.211 v15.3
+5. 3GPP TS 38.212 v15.3
 
-6. 3GPP TS 38.212 v15.3
+6. 3GPP TS 38.213 v15.3
 
-7. 3GPP TS 38.213 v15.3
+7. 3GPP TS 38.214 v15.3
 
-8. 3GPP TS 38.214 v15.3
+8. 3GPP TS 38.321 v15.3
 
-9. 3GPP TS 38.321 v15.3
+9. 3GPP TS 38.331 v15.3
 
-10. 3GPP TS 38.331 v15.3
+10. 5G PHY FAPI Specification v1.0.5
 
-11. 5G PHY FAPI Specification v1.0.5
+11. 3GPP TS 28.541 Specfication V16.6
 
-12. 3GPP TS 28.541 Specfication V16.6
+12. O-RAN WG1.O1-Interface v04.00
 
-13. O-RAN WG1.O1-Interface v04.00
-
-14. O-RAN WG1.OAM-Architecture v04.00
+13. O-RAN WG1.OAM-Architecture v04.00

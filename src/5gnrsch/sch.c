@@ -2158,7 +2158,8 @@ uint8_t schAddPagingIndtoList(CmLListCp *storedPageList,void * pageIndInfo)
    {
       cmLListAdd2Tail(storedPageList, currentNodeInfo);
    }
-   DU_LOG("\nINFO  -->  SCH : Paging information is stored successfully");
+   DU_LOG("\nINFO   -->  SCH : Paging information is stored successfully for PF:%d, Slot:%d",\
+              recvdNode->pageTxTime.sfn, recvdNode->pageTxTime.slot);
    return ROK;
 }
 
@@ -2187,7 +2188,7 @@ uint8_t MacSchPagingInd(Pst *pst,  SchPageInd *pageInd)
 
    if(pageInd)
    {
-      DU_LOG("\nINFO   --> SCH : Received paging indication form MAC for cellId[%d]",\
+      DU_LOG("\nINFO   -->  SCH : Received paging indication from MAC for cellId[%d]",\
                   pageInd->cellId);
 
       /* Fetch Cell CB */
