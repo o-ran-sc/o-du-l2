@@ -43,6 +43,12 @@ Version history
 Summary
 -------
 
+F- release
+^^^^^^^^^^
+This release contains the following:
+
+ - Support for IDLE Mode Paging.
+
 e-release
 ^^^^^^^^^^
 This release contains the following:
@@ -263,6 +269,17 @@ Feature Additions
 ------------------
 
 **JIRA BACK-LOG:**
+
+F-release
+^^^^^^^^^^
+
++-----------------------------------------------+-----------------------------------------------+
+| **JIRA REFERENCE**                            | **SLOGAN**                                    |
+|                                               |                                               |
++-----------------------------------------------+-----------------------------------------------+
+| https://jira.o-ran-sc.org/browse/ODUHIGH-406  | Support for Idle Mode Paging                  | 
+|                                               |                                               |
++-----------------------------------------------+-----------------------------------------------+
 
 e-release
 ^^^^^^^^^^
