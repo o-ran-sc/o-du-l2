@@ -347,8 +347,6 @@ DuPagUeRecord* handlePageUeLL(uint16_t pagUeId, uint64_t sTmsi, CmLListCp *pageU
             {
                if(duDelNodeFromLList(pageUeLL, node) == ROK)
                   DU_FREE(ueRecord, sizeof(DuPagUeRecord));
-
-               DU_LOG("\nDEBUG  -->  DU APP: UeId:%d Deleted successfully",pagUeId);
             }
             return NULLP;
          }
@@ -469,8 +467,6 @@ DuPagUeList* handlePageInfoLL(uint16_t pf, uint8_t i_s, CmLListCp *pagInfoLL, Ac
             {
                if(duDelNodeFromLList(pagInfoLL, node) == ROK)
                   DU_FREE(pagInfo, sizeof(DuPagUeList));
-
-               DU_LOG("\nDEBUG  -->  DU APP: i_s:%d Deleted successfully",i_s);
             }
             return NULLP;
          }

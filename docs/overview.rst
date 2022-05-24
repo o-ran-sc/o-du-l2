@@ -154,6 +154,8 @@ As shown in Figure 3, O-DU High interfaces with the following modules:
 
     - F1 Reset
 
+    - PAGING
+
   - UE Context Management 
 
     - UE Context Setup
@@ -173,11 +175,13 @@ As shown in Figure 3, O-DU High interfaces with the following modules:
     - RRC Delivery Report
 
 - Near RT RIC: O-DU High communicates with Near RT RIC on the E2 interface. The below E2AP messages are
-  implemented, as per ORAN WG3.E2AP v01.00:
+  implemented, as per ORAN WG3.E2AP v02.00:
 
   - Global Procedures
 
     - E2 Setup
+
+    - E2 Node Configuration Update 
 
   - Near RT RIC Functional Procedures
 		
@@ -410,6 +414,31 @@ As seen in the Figure 8,
 
 - Scheduler updates the received Slice Configuration in its DB and sends back the Slice Reconfiguration Response to MAC and further MAC forwards it to DU APP. Scheduler applies the optimized RRM policies for the dedicated slice.
 
+
+Idle Mode Paging procedure
+---------------------------
+
+
+This section describes the Idle Mode Paging procedure within O-DU High.
+
+
+.. figure:: IDLE_mode_Paging.jpg
+  :width: 869
+  :alt: Idle Mode Paging flow
+
+  Figure 9 -  Idle Mode Paging flow
+
+As seen in the Figure 9,
+
+- When a Paging is received from CU and the Cell to be Paged is UP then DU APP will calculate Paging Frame(PF) and i_s(Index of Paging Ocassion/Slot) and groups the Paging of UEs falling on same PF/SFN together and stores in its Cell's Databse.
+
+- When a Slot Indication for SFN is received then DU APP extracts the Paging of all UEs whose PF is ahead by PAGING_DELTA and builds Paging RRC PDU. DU APP sends the same via DL PCCH Indication to MAC.
+
+- MAC forwards to SCH as PAGING INDICATION.
+
+- SCH stores the Page Message in its DB and when the SLOT_INDICATION for that SFN arrives, SCH performs scheduling and resource allocation for PDCCH (alongwith DCI 1_0 format) and PDSCH channels and sends to MAC through DL PAGING ALLOCATION message.
+
+- MAC forwards the PAGE to PHY in TX_Data.Request.
 
 OSC Testcases Supported
 =========================

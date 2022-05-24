@@ -75,6 +75,8 @@ API Functions
       k. Slice Reconfiguration Request : MAC receives Slice Reconfiguration request and forwards the request to SCH as per 
          Section 9.2.3.2.4 of the AAD Spec
 
+      l. Paging Indication : MAC receives Paging Indication and forwards the trigger to SCH as per Section 9.2.3.2.13 of the AAD Spec
+
    B. Scheduler to MAC
 
       a. Cell Configuration Response - Response to cell configuration request from MAC, as per Section 9.2.3.3.1 of the AAD Spec
@@ -103,6 +105,9 @@ API Functions
 	 
       k. Slice Reconfiguration Response : Response to Slice Reconfiguration request from MAC, as per Section 9.2.3.3.4 of the AAD Spec
 
+      l. Downlink Paging Allocation :  Provides DCI and DL data scheduling information for any Paging queued for a given slot 
+         for Paging Channel, as per Section 9.2.3.3.13 of the AAD Spec.
+
 
 3. DU APP - MAC Interface
 
@@ -122,6 +127,8 @@ API Functions
       e. Cell Stop - Commands MAC to stop cell at L1, as per Section 9.2.4.2 of the AAD spec.
 
       f. UE Delete Request - Deletes UE information at MAC as per Section 9.2.4.7  of the AAD Spec.
+
+      g. DL PCCH Indication - Sends DL PCCH Message to MAC for any Paging scheduled on a slot, as per Section 9.2.4.17 of the AAD Spec.
       
 
    B. MAC to DU APP
@@ -196,6 +203,8 @@ Additional APIs
       c. Slice Configuration Respone :  Response to Slice Configuration request from DU Manager.
 	 
       d. Slice Reconfiguration Request : Response to Slice Reconfiguration request from DU Manager.
+
+      e. Slot Indication : Indication about the ongoing SFN and Slot information to DU APP.
 
 2. DU APP - RLC Interface
 
