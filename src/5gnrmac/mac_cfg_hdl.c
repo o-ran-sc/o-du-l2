@@ -987,7 +987,7 @@ uint8_t MacProcDlPcchInd(Pst *pst, MacPcchInd *pcchInd)
 
    if(pcchInd)
    {
-      DU_LOG("\nINFO  -->  MAC : Recived pcch request from DU_APP for cellId[%d]", pcchInd->cellId);
+      DU_LOG("\nINFO   -->  MAC : Received DL PCCH IND from DU_APP for cellId[%d]", pcchInd->cellId);
       
       GET_CELL_IDX(pcchInd->cellId, cellIdx);
 

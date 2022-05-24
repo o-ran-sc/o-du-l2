@@ -212,7 +212,7 @@ uint8_t checkPagingRecord(DuCellCb *cellCb)
       /*No Page is present for pf thus exiting*/
       return ROK;
    }
-
+  
    do
    {
       pagInfo = handlePageInfoLL(pf, NULLD, &(pagInfoLLFromPF->pagInfoList), TRAVERSE_ALL);
@@ -262,8 +262,6 @@ uint8_t sendDlPcchIndToMac(MacPcchInd *pcchInd)
       /* Fill Pst */
       FILL_PST_DUAPP_TO_MAC(pst, EVENT_MAC_DL_PCCH_IND);
       
-      DU_LOG("\nDEBUG   -->  DU_APP: Sending DL PCCH indication to MAC for cellId[%d] at PF[%d]",\
-                         pcchInd->cellId, pcchInd->pf);
       ret = (*packMacDlPcchIndOpts[pst.selector])(&pst, pcchInd);
       if(ret == RFAILED)
       {
@@ -272,7 +270,7 @@ uint8_t sendDlPcchIndToMac(MacPcchInd *pcchInd)
    }
    else
    {
-      DU_LOG("\nERROR  -->  DU_APP: sendDlPcchIndToMac(): Received pcchInd is NULLP");
+      DU_LOG("\nERROR  -->  DU APP: sendDlPcchIndToMac(): Received pcchInd is NULLP");
       ret = RFAILED;
    }
    return ret;
@@ -1012,7 +1010,6 @@ uint8_t calcAndFillPagingInfoInCellCb(DuCellCb* cellCb, DuPagingMsg *rcvdF1apPag
       rcvdF1apPagingParam->pagingFrame =  (sfn % MAX_SFN);
       rcvdF1apPagingParam->i_s = ((uint32_t)(floor(rcvdF1apPagingParam->pagUeId / N)) % ns);
 
-      DU_LOG("\nINFO   --> DU APP : Successfully filled paging parameter in DuCellCb");
       memcpy(&cellCb->tmpPagingInfoOfUe, rcvdF1apPagingParam, sizeof(DuPagingMsg));
    }
    else
