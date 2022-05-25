@@ -70,6 +70,78 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ec6a259e_3431fd40",
+        "filename": "docs/overview.rst",
+        "patchSetId": 3
+      },
+      "lineNbr": 439,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-05-25T06:37:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3c1a998c_ca50e920",
+      "range": {
+        "startLine": 439,
+        "startChar": 95,
+        "endLine": 439,
+        "endChar": 111
+      },
+      "revId": "060a742d62c7ad44e6a41a3e0a0eba7e99d49e69",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8f51f097_294c7e82",
+        "filename": "docs/overview.rst",
+        "patchSetId": 3
+      },
+      "lineNbr": 439,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-05-25T06:37:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "eb0678d9_8e80b961",
+      "range": {
+        "startLine": 439,
+        "startChar": 2,
+        "endLine": 439,
+        "endChar": 16
+      },
+      "revId": "060a742d62c7ad44e6a41a3e0a0eba7e99d49e69",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f988c6de_500def22",
+        "filename": "docs/overview.rst",
+        "patchSetId": 3
+      },
+      "lineNbr": 439,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-05-25T06:37:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d3f43ebe_8e797b21",
+      "range": {
+        "startLine": 439,
+        "startChar": 207,
+        "endLine": 439,
+        "endChar": 212
+      },
+      "revId": "060a742d62c7ad44e6a41a3e0a0eba7e99d49e69",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e52c6379_0411f8ad",
@@ -83,6 +155,30 @@
       "writtenOn": "2022-05-25T05:57:59Z",
       "side": 1,
       "message": "MAC forwards the PAGE PDU to PHY in TX_Data.Request",
+      "range": {
+        "startLine": 441,
+        "startChar": 2,
+        "endLine": 441,
+        "endChar": 50
+      },
+      "revId": "060a742d62c7ad44e6a41a3e0a0eba7e99d49e69",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6ad2a42d_0d7c790b",
+        "filename": "docs/overview.rst",
+        "patchSetId": 3
+      },
+      "lineNbr": 441,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-05-25T06:37:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e52c6379_0411f8ad",
       "range": {
         "startLine": 441,
         "startChar": 2,
@@ -110,6 +206,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0e67798c_5cb1fad1",
+        "filename": "docs/release-notes.rst",
+        "patchSetId": 3
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-05-25T06:37:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6f3a2aec_92299b13",
+      "revId": "060a742d62c7ad44e6a41a3e0a0eba7e99d49e69",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "52bd8841_cc5b4d37",
@@ -123,6 +237,24 @@
       "writtenOn": "2022-05-25T05:57:59Z",
       "side": 1,
       "message": "Since paging is a constant ongoing procedure, this will lead to quite a lot of prints when binary is run for long time. This is a debug print.\nWe should either remove or keep it inside some flag which is disabled by default. Similar to how we have done with slot debug prints.",
+      "revId": "060a742d62c7ad44e6a41a3e0a0eba7e99d49e69",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "69806315_3796f0e6",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2162,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-05-25T06:37:58Z",
+      "side": 1,
+      "message": "Actually paging is not constant ongoing procedure.. this will happen occasionally. This print is important as here we ultimately calculate PF and SLOT.. I will remove some other prints which is not required",
+      "parentUuid": "52bd8841_cc5b4d37",
       "revId": "060a742d62c7ad44e6a41a3e0a0eba7e99d49e69",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -144,6 +276,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2d00a579_e7136665",
+        "filename": "src/du_app/du_cell_mgr.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 216,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-05-25T06:37:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1aed2d2b_156b4b4b",
+      "revId": "060a742d62c7ad44e6a41a3e0a0eba7e99d49e69",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "45307845_646e7e4a",
@@ -157,6 +307,30 @@
       "writtenOn": "2022-05-25T05:57:59Z",
       "side": 1,
       "message": "Same here",
+      "range": {
+        "startLine": 1018,
+        "startChar": 6,
+        "endLine": 1018,
+        "endChar": 12
+      },
+      "revId": "060a742d62c7ad44e6a41a3e0a0eba7e99d49e69",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "27569375_331af617",
+        "filename": "src/du_app/du_cell_mgr.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1018,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-05-25T06:37:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "45307845_646e7e4a",
       "range": {
         "startLine": 1018,
         "startChar": 6,
