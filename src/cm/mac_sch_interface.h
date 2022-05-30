@@ -884,6 +884,7 @@ typedef struct lcSchInfo
 
 typedef struct dlMsgSchedInfo
 {
+   bool       isRetx;
    uint8_t    numLc;
    LcSchInfo  lcSchInfo[MAX_NUM_LC]; /* Scheduled LC info */
    BwpCfg     bwp;
@@ -1736,6 +1737,19 @@ typedef struct schPageInd
    uint16_t  pduLen;
    uint8_t  *pagePdu;
 }SchPageInd;
+
+typedef struct schUeHqInfo
+{
+   uint16_t  crnti;
+   uint8_t   hqProcId;
+}SchUeHqInfo;
+
+typedef struct schRlsHqInfo
+{
+   uint16_t     cellId;
+   uint8_t      numUes;
+   SchUeHqInfo  *ueHqInfo;
+}SchRlsHqInfo;
 
 /* function pointers */
 typedef uint8_t (*SchCellCfgCfmFunc)    ARGS((

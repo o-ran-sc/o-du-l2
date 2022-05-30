@@ -138,10 +138,19 @@ typedef struct macDlData
    MacDlInfo  pduInfo[MAX_MAC_DL_PDU];
 }MacDlData;
 
+typedef struct dlTbInfo
+{
+   SlotTimingInfo  txTime;  
+   uint16_t        tbSize;
+   uint8_t         *tb;
+}DlTbInfo;
+
 /* HARQ Process Info */
 typedef struct dlHarqProcCb
 {
-   uint8_t   procId;    /* HARQ Process Id */
+   uint8_t     procId;                 /* HARQ Process Id */
+   uint8_t     numTb;                  /* Number of TB */
+   DlTbInfo    tbInfo[MAX_NUM_TB_PER_UE];  /* TB information */
 }DlHarqProcCb;
 
 /* DL HARQ entity */

@@ -32,6 +32,7 @@
 #include "lwr_mac_upr_inf.h"
 #include "mac.h"
 #include "mac_utils.h"
+#include "mac_harq_dl.h"
 
 /* This file contains message handling functionality for MAC */
 
@@ -287,6 +288,11 @@ uint8_t MacProcRlcDlData(Pst* pstInfo, RlcData *dlData)
 
       currDlSlot->dlInfo.dlMsgAlloc[ueId-1]->dlMsgSchedInfo[schInfoIdx].dlMsgInfo.dlMsgPduLen = txPduLen;
       currDlSlot->dlInfo.dlMsgAlloc[ueId-1]->dlMsgSchedInfo[schInfoIdx].dlMsgInfo.dlMsgPdu = txPdu;
+
+      /* Add muxed TB to DL HARQ Proc CB. This will be used if retranmission of
+       * TB is requested in future. */
+      updateNewTbInDlHqProcCb(dlData->slotInfo, &macCb.macCell[cellIdx]->ueCb[ueId -1], \
+         currDlSlot->dlInfo.dlMsgAlloc[ueId-1]->dlMsgSchedInfo[schInfoIdx].dlMsgPdschCfg.codeword[0].tbSize, txPdu);
    }
 
    for(lcIdx = 0; lcIdx < dlData->numLc; lcIdx++)
