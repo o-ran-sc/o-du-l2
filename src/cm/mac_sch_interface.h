@@ -884,6 +884,7 @@ typedef struct lcSchInfo
 
 typedef struct dlMsgSchedInfo
 {
+   bool       isRetx;
    uint8_t    numLc;
    LcSchInfo  lcSchInfo[MAX_NUM_LC]; /* Scheduled LC info */
    BwpCfg     bwp;

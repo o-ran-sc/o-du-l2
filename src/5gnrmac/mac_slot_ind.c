@@ -28,6 +28,7 @@
 #include "lwr_mac.h"
 #include "lwr_mac_fsm.h"
 #include "mac_utils.h"
+#include "mac_harq_dl.h"
 
 /* function pointers for packing slot ind from mac to sch */
 MacSchSlotIndFunc macSchSlotIndOpts[] =
@@ -54,9 +55,11 @@ MacSchSlotIndFunc macSchSlotIndOpts[] =
  **/
 uint8_t MacProcDlAlloc(Pst *pst, DlSchedInfo *dlSchedInfo)
 {
-   uint8_t   schInfoIdx = 0;
+   uint8_t   schInfoIdx = 0, cwIdx = 0;
    uint8_t   ueId = 0, ueIdx = 0;
    uint16_t  cellIdx = 0;
+   uint8_t   *retxTb = NULLP, *txPdu = NULLP;
+   uint16_t  txPduLen = 0;
    MacDlSlot *currDlSlot = NULLP;
 
 #ifdef CALL_FLOW_DEBUG_LOG
@@ -106,10 +109,50 @@ uint8_t MacProcDlAlloc(Pst *pst, DlSchedInfo *dlSchedInfo)
                else
                {
                   memcpy(&currDlSlot->dlInfo.schSlotValue, &dlSchedInfo->schSlotValue, sizeof(SchSlotValue));
-                  /* Send LC schedule result to RLC */
-                  if((dlSchedInfo->dlMsgAlloc[ueIdx]->dlMsgSchedInfo[schInfoIdx].pduPres == PDSCH_PDU) ||
-                        (dlSchedInfo->dlMsgAlloc[ueIdx]->dlMsgSchedInfo[schInfoIdx].pduPres == BOTH))
-                     sendSchedRptToRlc(currDlSlot->dlInfo, dlSchedInfo->schSlotValue.dlMsgTime, ueIdx, schInfoIdx);
+                  
+                  if(!dlSchedInfo->dlMsgAlloc[ueIdx]->dlMsgSchedInfo[schInfoIdx].isRetx)
+                  {
+                     /* If new data transmission is scheduled, send schedule results to RLC */
+                     if((dlSchedInfo->dlMsgAlloc[ueIdx]->dlMsgSchedInfo[schInfoIdx].pduPres == PDSCH_PDU) ||
+                           (dlSchedInfo->dlMsgAlloc[ueIdx]->dlMsgSchedInfo[schInfoIdx].pduPres == BOTH))
+                     {
+                        sendSchedRptToRlc(currDlSlot->dlInfo, dlSchedInfo->schSlotValue.dlMsgTime, ueIdx, schInfoIdx);
+
+                        /* Add HARQ Proc to DL HARQ Proc Entity in UE */
+                        addDlHqProcInUe(currDlSlot->dlInfo.schSlotValue.dlMsgTime, &macCb.macCell[cellIdx]->ueCb[ueIdx], \
+                           dlSchedInfo->dlMsgAlloc[ueIdx]->dlMsgSchedInfo[schInfoIdx]);
+                     }
+                  }
+                  else
+                  {
+                     /* For retransmission, fetch PDU to be retransmitted from DL HARQ entity and schedule on corresponding slot */
+                     
+                     /* As of now this loop will run only once for one TB. 
+                      * TODO : update handling of fetched TB appropriately when support for two TB is added 
+                      */
+                     for(cwIdx = 0; \
+                           cwIdx < dlSchedInfo->dlMsgAlloc[ueIdx]->dlMsgSchedInfo[schInfoIdx].dlMsgPdschCfg.numCodewords;\
+                           cwIdx++)
+                     {
+                        /* Fetch TB to be retransmitted */
+                        txPduLen = dlSchedInfo->dlMsgAlloc[ueIdx]->dlMsgSchedInfo[schInfoIdx].dlMsgPdschCfg.codeword[cwIdx].tbSize;
+                        retxTb = fetchTbfromDlHarqProc(currDlSlot->dlInfo.schSlotValue.dlMsgTime, \
+                              &macCb.macCell[cellIdx]->ueCb[ueIdx], \
+                              dlSchedInfo->dlMsgAlloc[ueIdx]->dlMsgSchedInfo[schInfoIdx].dlMsgInfo.harqProcNum, txPduLen);
+
+                        /* Store PDU in corresponding DL slot */
+                        MAC_ALLOC(txPdu, txPduLen);
+                        if(!txPdu)
+                        {
+                           DU_LOG("\nERROR  -->  MAC : Memory allocation failed in MacProcRlcDlData");
+                           return RFAILED;
+                        }   
+                        memcpy(txPdu, retxTb,  txPduLen);
+
+                        currDlSlot->dlInfo.dlMsgAlloc[ueIdx]->dlMsgSchedInfo[schInfoIdx].dlMsgInfo.dlMsgPduLen = txPduLen;
+                        currDlSlot->dlInfo.dlMsgAlloc[ueIdx]->dlMsgSchedInfo[schInfoIdx].dlMsgInfo.dlMsgPdu = txPdu;
+                     }
+                  }
                }
             }
          }
@@ -117,8 +160,7 @@ uint8_t MacProcDlAlloc(Pst *pst, DlSchedInfo *dlSchedInfo)
 
       if(dlSchedInfo->ulGrant != NULLP)
       {
-         currDlSlot = &macCb.macCell[cellIdx]->\
-                      dlSlot[dlSchedInfo->schSlotValue.ulDciTime.slot];
+         currDlSlot = &macCb.macCell[cellIdx]->dlSlot[dlSchedInfo->schSlotValue.ulDciTime.slot];
          currDlSlot->dlInfo.ulGrant = dlSchedInfo->ulGrant;
       }
    }
