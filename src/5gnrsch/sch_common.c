@@ -1633,9 +1633,11 @@ void updateGrantSizeForBoRpt(CmLListCp *lcLL, DlMsgAlloc *dlMsgAlloc,\
 *******************************************************************/
 void fillDlMsgInfo(DlMsgInfo *dlMsgInfo, uint8_t crnti)
 {
+   static uint8_t harProcId = 1;
+
    dlMsgInfo->crnti = crnti;
    dlMsgInfo->ndi = 1;
-   dlMsgInfo->harqProcNum = 0;
+   dlMsgInfo->harqProcNum = harProcId++;
    dlMsgInfo->dlAssignIdx = 0;
    dlMsgInfo->pucchTpc = 0;
    dlMsgInfo->pucchResInd = 0;

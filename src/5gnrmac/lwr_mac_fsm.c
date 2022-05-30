@@ -3622,6 +3622,7 @@ uint16_t fillDlTtiReq(SlotTimingInfo currTimingInfo)
    uint8_t  ueIdx;
    uint16_t cellIdx =0;
    uint16_t pduIndex = 0;
+  static uint8_t dlMsgCnt = 0; //HLAL
 
    SlotTimingInfo dlTtiReqTimingInfo;
    MacDlSlot *currDlSlot = NULLP;
@@ -3845,6 +3846,7 @@ uint16_t fillDlTtiReq(SlotTimingInfo currTimingInfo)
             sendTxDataReq(dlTtiReqTimingInfo, currDlSlot, dlTtiElem->p_next->p_next);
             if(dlTtiElem->p_next->p_next->p_next)
             {
+               dlMsgCnt++; //HLAL
                msgHeader->num_msg++;
                prevElem = dlTtiElem->p_next->p_next->p_next;
             }
@@ -3877,6 +3879,24 @@ uint16_t fillDlTtiReq(SlotTimingInfo currTimingInfo)
          }
          LwrMacSendToL1(headerElem);
          memset(currDlSlot, 0, sizeof(MacDlSlot));
+
+         // HLAL
+         if(dlMsgCnt == 4)
+         {
+            for(uint8_t idx = 1; idx <= dlMsgCnt; idx++)
+            {
+               Pst pst;
+               SchRlsHqInfo *rlsHqInfo;
+               MAC_ALLOC(rlsHqInfo, sizeof(SchRlsHqInfo));
+               rlsHqInfo->cellId = 1;
+               rlsHqInfo->numUes = 1;
+               MAC_ALLOC(rlsHqInfo->ueHqInfo, (rlsHqInfo->numUes * sizeof(SchUeHqInfo)));
+               rlsHqInfo->ueHqInfo[0].crnti = 100;
+               rlsHqInfo->ueHqInfo[0].hqProcId = idx;
+               MacProcSchRlsHqProc(&pst, rlsHqInfo);
+            }
+            dlMsgCnt = 0;
+         }
          return ROK;
       }
       else

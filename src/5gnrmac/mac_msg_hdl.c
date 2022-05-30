@@ -32,6 +32,7 @@
 #include "lwr_mac_upr_inf.h"
 #include "mac.h"
 #include "mac_utils.h"
+#include "mac_harq_dl.h"
 
 /* This file contains message handling functionality for MAC */
 
@@ -268,6 +269,14 @@ uint8_t MacProcRlcDlData(Pst* pstInfo, RlcData *dlData)
    currDlSlot = &macCb.macCell[cellIdx]->dlSlot[dlData->slotInfo.slot];
    if(currDlSlot->dlInfo.dlMsgAlloc[ueId-1])
    {
+      DU_LOG("\nHLAL UE Cb [%p] harqProcId [%d] numTb [%d] [sfn:slot] [%d:%d] tbSize [%d]",\
+            &macCb.macCell[cellIdx]->ueCb[ueId-1],
+            macCb.macCell[cellIdx]->ueCb[ueId-1].dlInfo.dlHarqEnt.harqProcCb[3].procId,
+            macCb.macCell[cellIdx]->ueCb[ueId-1].dlInfo.dlHarqEnt.harqProcCb[3].numTb,
+            macCb.macCell[cellIdx]->ueCb[ueId-1].dlInfo.dlHarqEnt.harqProcCb[3].tbInfo[0].txTime.sfn,
+            macCb.macCell[cellIdx]->ueCb[ueId-1].dlInfo.dlHarqEnt.harqProcCb[3].tbInfo[0].txTime.slot,
+            macCb.macCell[cellIdx]->ueCb[ueId-1].dlInfo.dlHarqEnt.harqProcCb[3].tbInfo[0].tbSize);
+
       for(schInfoIdx=0; schInfoIdx<currDlSlot->dlInfo.dlMsgAlloc[ueId-1]->numSchedInfo; schInfoIdx++)
       {
          if((currDlSlot->dlInfo.dlMsgAlloc[ueId-1]->dlMsgSchedInfo[schInfoIdx].pduPres == PDSCH_PDU) ||
@@ -287,6 +296,27 @@ uint8_t MacProcRlcDlData(Pst* pstInfo, RlcData *dlData)
 
       currDlSlot->dlInfo.dlMsgAlloc[ueId-1]->dlMsgSchedInfo[schInfoIdx].dlMsgInfo.dlMsgPduLen = txPduLen;
       currDlSlot->dlInfo.dlMsgAlloc[ueId-1]->dlMsgSchedInfo[schInfoIdx].dlMsgInfo.dlMsgPdu = txPdu;
+
+      DU_LOG("\nHLAL UE Cb [%p] harqProcId [%d] numTb [%d] [sfn:slot] [%d:%d] tbSize [%d]",\
+            &macCb.macCell[cellIdx]->ueCb[ueId-1],
+            macCb.macCell[cellIdx]->ueCb[ueId-1].dlInfo.dlHarqEnt.harqProcCb[3].procId,
+            macCb.macCell[cellIdx]->ueCb[ueId-1].dlInfo.dlHarqEnt.harqProcCb[3].numTb,
+            macCb.macCell[cellIdx]->ueCb[ueId-1].dlInfo.dlHarqEnt.harqProcCb[3].tbInfo[0].txTime.sfn,
+            macCb.macCell[cellIdx]->ueCb[ueId-1].dlInfo.dlHarqEnt.harqProcCb[3].tbInfo[0].txTime.slot,
+            macCb.macCell[cellIdx]->ueCb[ueId-1].dlInfo.dlHarqEnt.harqProcCb[3].tbInfo[0].tbSize);
+
+      /* Add muxed TB to DL HARQ Proc CB. This will be used if retranmission of
+       * TB is requested in future. */
+      updateNewTbInDlHqProcCb(dlData->slotInfo, &macCb.macCell[cellIdx]->ueCb[ueId -1], \
+         currDlSlot->dlInfo.dlMsgAlloc[ueId-1]->dlMsgSchedInfo[schInfoIdx].dlMsgPdschCfg.codeword[0].tbSize, txPdu);
+
+      DU_LOG("\nHLAL UE Cb [%p] harqProcId [%d] numTb [%d] [sfn:slot] [%d:%d] tbSize [%d]",\
+            &macCb.macCell[cellIdx]->ueCb[ueId-1],
+            macCb.macCell[cellIdx]->ueCb[ueId-1].dlInfo.dlHarqEnt.harqProcCb[3].procId,
+            macCb.macCell[cellIdx]->ueCb[ueId-1].dlInfo.dlHarqEnt.harqProcCb[3].numTb,
+            macCb.macCell[cellIdx]->ueCb[ueId-1].dlInfo.dlHarqEnt.harqProcCb[3].tbInfo[0].txTime.sfn,
+            macCb.macCell[cellIdx]->ueCb[ueId-1].dlInfo.dlHarqEnt.harqProcCb[3].tbInfo[0].txTime.slot,
+            macCb.macCell[cellIdx]->ueCb[ueId-1].dlInfo.dlHarqEnt.harqProcCb[3].tbInfo[0].tbSize);
    }
 
    for(lcIdx = 0; lcIdx < dlData->numLc; lcIdx++)
