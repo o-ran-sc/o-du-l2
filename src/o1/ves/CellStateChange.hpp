@@ -1,6 +1,6 @@
 /*******************************************************************************
 ################################################################################
-#   Copyright (c) [2020-2021] [HCL Technologies Ltd.]                          #
+#   Copyright (c) [2020-2022] [HCL Technologies Ltd.]                          #
 #                                                                              #
 #   Licensed under the Apache License, Version 2.0 (the "License");            #
 #   you may not use this file except in compliance with the License.           #
@@ -16,57 +16,50 @@
 ################################################################################
 *******************************************************************************/
 
-/* This file contains functions to support the preparation of VES common header
-   parameters*/
-
-#ifndef __VES_COMMON_HEADER_HPP__
-#define __VES_COMMON_HEADER_HPP__
+#ifndef __CELL_STATE_CHANGE_HPP__
+#define __CELL_STATE_CHANGE_HPP__
 
 
 #include <iostream>
-#include <string>
-#include <cstdint>
-#include <cjson/cJSON.h>
-#include <sys/time.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include "VesUtils.hpp"
+
+#include "VesEvent.hpp" 
+#include "AlarmMessages.h"
+#include "Alarm.hpp"
+#include "AlarmManager.hpp"
+#include "Message.hpp"
+#include "Notification.hpp"
 
 using namespace std;
 
-class VesCommonHeader{
+//macros
+#define FAULT_FIELDS_VERSION "4.0"
+#define ALARM_CONDITION "CELL Down"
+#define ALARM_INTERFACE_A "Slot-0-CELL-1"
+#define EVENT_SOURCE_TYPE "O_RAN_COMPONENT"
+#define SPECIFIC_PROBLEM "CELL 1 Down"
+#define EVENT_SEVERITY "MAJOR"
+#define VF_STATUS "Active"
+#define EQUIP_TYPE "O-RAN-DU"
+#define VENDOR "Melacon"
+#define MODEL "ODU Device"
 
-   public:
-      /* Default constructor/Destructor*/
-      VesCommonHeader(){}
-      ~VesCommonHeader(){}
+class CellStateChange : public Notification
+{
+    
+    public:
+    CellStateChange();
+    ~CellStateChange();
 
-      bool prepare(cJSON *node, VesEventType type);
+    std::string getISOEventTime();
 
-   private:
-      double getSequenceNo();
-      double nextSequenceNo();
-      string getEventTypeToStr();
-      string getEventType();
-      string getEventId();
-      string getPriority();
-      string getEventName();
-      string getSourceId();
-      string getReportingEntityId();
-      string getReportingEntityName();
-      string getSourceName();
-      string getNamingCode();
-      string getnfcNamingCode();
-      string getstndDefinedNamespace();
-      double getEpochTime();
-      time_t getCurrentTime();
-	   string formatTime(time_t);
-      double mLastEpochTime;
+    protected:
+    bool prepareEventFields(const Message* msg = NULL);
 
-      VesEventType mEventType;
 };
 
-#endif
+
+#endif 
+
 /**********************************************************************
   End of file
  **********************************************************************/

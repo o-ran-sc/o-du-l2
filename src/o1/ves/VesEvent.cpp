@@ -192,7 +192,7 @@ bool VesEvent::send()
  * @return string : Ves Event Name
  ******************************************************************/
 
-string VesEvent::getEventFieldName() 
+string VesEvent::getEventFieldName()
 {
 
    switch(mVesEventType)
@@ -203,7 +203,11 @@ string VesEvent::getEventFieldName()
       }
       case VesEventType::FAULT_NOTIFICATION:
       {
+         #ifdef StdDef
+         return "stndDefinedFields";
+         #else
          return "faultFields";
+         #endif
       }
       case VesEventType::PM_SLICE:
       {

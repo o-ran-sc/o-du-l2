@@ -1,6 +1,6 @@
 /*******************************************************************************
 ################################################################################
-#   Copyright (c) [2020-2021] [HCL Technologies Ltd.]                          #
+#   Copyright (c) [2020-2022] [HCL Technologies Ltd.]                          #
 #                                                                              #
 #   Licensed under the Apache License, Version 2.0 (the "License");            #
 #   you may not use this file except in compliance with the License.           #
@@ -16,57 +16,58 @@
 ################################################################################
 *******************************************************************************/
 
-/* This file contains functions to support the preparation of VES common header
-   parameters*/
-
-#ifndef __VES_COMMON_HEADER_HPP__
-#define __VES_COMMON_HEADER_HPP__
+#ifndef __CELL_STATE_CHANGE_STD_DEF_HPP__
+#define __CELL_STATE_CHANGE_STD_DEF_HPP__
 
 
 #include <iostream>
-#include <string>
-#include <cstdint>
-#include <cjson/cJSON.h>
-#include <sys/time.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include "VesUtils.hpp"
+
+#include "VesEvent.hpp"
+#include "AlarmMessages.h"
+#include "Alarm.hpp"
+#include "AlarmManager.hpp"
+#include "Message.hpp"
+#include "Notification.hpp"
 
 using namespace std;
 
-class VesCommonHeader{
+#define FAULT_SCHEMA "https://forge.3gpp.org/rep/sa5/MnS/blob/SA88-Rel16/OpenAPI/faultMnS.yaml#components/schemas/NotifyNewAlarm"
+#define HREF "1"
+#define URI "1"
+#define NOTIFICATION_ID 1.0
+#define NOTIFICATION_TYPE "notifyNewAlarm"
+#define PROBABLE_CAUSE "real-issue"
+#define TRND_INDICATION "MORE_SEVERE"
+#define OBSRVED_MEASUREMENT "new"
+#define OBSERVED_VALUE 123.2
+#define NEW_ATT "new"
+#define ADD_INFO "new"
+#define ALARM_ID "1"
+#define ALRAM_TYPE "COMMUNICATIONS_ALARM"
+#define STND_DEFINED_FEILD_VERSION "1.0"
+#define PERCEIVED_SEVERITY "INDETERMINATE"
+#define PROPOSED_REPAIR_ACTION "Call the police!"
+#define ADDITIONAL_TEXT "O-RAN Software Community"
 
-   public:
-      /* Default constructor/Destructor*/
-      VesCommonHeader(){}
-      ~VesCommonHeader(){}
 
-      bool prepare(cJSON *node, VesEventType type);
+class CellStateChangeStdDef : public Notification
+{
 
-   private:
-      double getSequenceNo();
-      double nextSequenceNo();
-      string getEventTypeToStr();
-      string getEventType();
-      string getEventId();
-      string getPriority();
-      string getEventName();
-      string getSourceId();
-      string getReportingEntityId();
-      string getReportingEntityName();
-      string getSourceName();
-      string getNamingCode();
-      string getnfcNamingCode();
-      string getstndDefinedNamespace();
-      double getEpochTime();
-      time_t getCurrentTime();
-	   string formatTime(time_t);
-      double mLastEpochTime;
+    public:
+    CellStateChangeStdDef();
+    ~CellStateChangeStdDef();
+    
+    std::string getISOEventTime();
+   
+    protected:
+    bool prepareEventFields(const Message* msg = NULL);
 
-      VesEventType mEventType;
+
 };
 
+
 #endif
+
 /**********************************************************************
   End of file
  **********************************************************************/

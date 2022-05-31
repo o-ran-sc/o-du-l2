@@ -1,6 +1,6 @@
 /*******************************************************************************
 ################################################################################
-#   Copyright (c) [2020] [HCL Technologies Ltd.]                               #
+#   Copyright (c) [2020-2022] [HCL Technologies Ltd.]                          #
 #                                                                              #
 #   Licensed under the Apache License, Version 2.0 (the "License");            #
 #   you may not use this file except in compliance with the License.           #
@@ -30,23 +30,25 @@
 #include "PnfRegistrationThread.hpp"
 #include "VesUtils.hpp"
 #include "VesEventHandler.hpp"
+#include "Observer.hpp"
 
 using std::map;
 
-
-class AlarmManager : public Singleton<AlarmManager>
+class AlarmManager : public Singleton<AlarmManager> ,public Observer
 {
 
    friend Singleton<AlarmManager>;
 
    private:
-   map<uint16_t,Alarm> mAlarmList; 	    
+   map<uint16_t,Alarm> mAlarmList;
 
    protected:
-   AlarmManager();    
+   AlarmManager();
    ~AlarmManager();
 
    public:
+
+   void update(char* recvBuf);
    bool raiseAlarm(const Alarm& alarm);
    bool clearAlarm(const uint16_t& alarmId);
    bool clearAlarm(const Alarm& alarm );

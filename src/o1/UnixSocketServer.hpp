@@ -17,8 +17,8 @@
 *******************************************************************************/
 
 /* This file contains UnixSocketServer class that listens for Netconf Alarm messages
-   on a Unix socket from ODU. It calls the AlarmManager functions for raising 
-   or clearing the alarms based on the actions received  
+   on a Unix socket from ODU. It calls the AlarmManager functions for raising
+   or clearing the alarms based on the actions received
 */
  
 #ifndef __UNIX_SOCKET_SERVER_HPP__
@@ -26,11 +26,12 @@
 #include <string>
 #include <pthread.h>
 #include "Thread.hpp"
+#include "Subject.hpp"
 
 using std::string;
 #define BUFLEN 512
 
-class UnixSocketServer : public Thread
+class UnixSocketServer : public Thread , public Subject
 {
 
    private:
@@ -38,15 +39,15 @@ class UnixSocketServer : public Thread
    string mSockPath;
    int readMessage(int);
    int makeSocket();
-   
+
    protected:
    bool run();
    bool mIsRunning;
 
    public:
-   UnixSocketServer(const string& sockPath);    
+   UnixSocketServer(const string& sockPath);
    ~UnixSocketServer();
-   bool isRunning() const;   
+   bool isRunning() const;
    virtual void cleanUp(void);
 
 };

@@ -23,7 +23,7 @@
 #include "JsonHelper.hpp"
 #include "PmInterface.h"
 
-#define MEASUREMENT_INTERVAL 60
+#define MEASUREMENT_INTERVAL 60.0
 #define MEASUREMENT_FIELDS_VERSION "4.0"
 
 /* Constructor*/

@@ -16,57 +16,33 @@
 ################################################################################
 *******************************************************************************/
 
-/* This file contains functions to support the preparation of VES common header
-   parameters*/
-
-#ifndef __VES_COMMON_HEADER_HPP__
-#define __VES_COMMON_HEADER_HPP__
+#ifndef __SUBJECT_HPP__
+#define __SUBJECT_HPP__
 
 
-#include <iostream>
-#include <string>
-#include <cstdint>
-#include <cjson/cJSON.h>
-#include <sys/time.h>
-#include <stdlib.h>
 #include <stdio.h>
-#include "VesUtils.hpp"
+#include <list>
+#include "Observer.hpp"
 
-using namespace std;
 
-class VesCommonHeader{
-
+class Subject
+{
    public:
-      /* Default constructor/Destructor*/
-      VesCommonHeader(){}
-      ~VesCommonHeader(){}
 
-      bool prepare(cJSON *node, VesEventType type);
+      Subject() ;
+      ~Subject() ;
 
-   private:
-      double getSequenceNo();
-      double nextSequenceNo();
-      string getEventTypeToStr();
-      string getEventType();
-      string getEventId();
-      string getPriority();
-      string getEventName();
-      string getSourceId();
-      string getReportingEntityId();
-      string getReportingEntityName();
-      string getSourceName();
-      string getNamingCode();
-      string getnfcNamingCode();
-      string getstndDefinedNamespace();
-      double getEpochTime();
-      time_t getCurrentTime();
-	   string formatTime(time_t);
-      double mLastEpochTime;
-
-      VesEventType mEventType;
+      virtual void registerObserver(Observer *observer);
+      virtual void unregisterObserver(Observer *observer);
+      virtual void notifyObservers();
+      virtual void createMessage(char* message );
+    protected:
+      std::list<Observer *> mObserversList;
+      char* mMessage;
 };
 
 #endif
+
 /**********************************************************************
-  End of file
- **********************************************************************/
+         End of file
+**********************************************************************/
