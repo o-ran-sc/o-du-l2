@@ -18,6 +18,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d19f37d3_025cb4bf",
+        "filename": "src/o1/AlarmManager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 1000482
+      },
+      "writtenOn": "2022-05-31T10:10:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5e2cc55d_63c9cfd5",
+      "revId": "ee572452d44ae1586594acd1ccf9fdd3b2425a0a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2e29cad7_976d1fbc",
@@ -31,6 +49,30 @@
       "writtenOn": "2022-04-21T03:32:55Z",
       "side": 1,
       "message": "Remove unnecessary comments",
+      "range": {
+        "startLine": 54,
+        "startChar": 15,
+        "endLine": 54,
+        "endChar": 19
+      },
+      "revId": "ee572452d44ae1586594acd1ccf9fdd3b2425a0a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cb16837b_85af8d07",
+        "filename": "src/o1/AlarmManager.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 1000482
+      },
+      "writtenOn": "2022-05-31T10:10:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2e29cad7_976d1fbc",
       "range": {
         "startLine": 54,
         "startChar": 15,
@@ -58,6 +100,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "082ed524_9c9d62f5",
+        "filename": "src/o1/Subject.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1000482
+      },
+      "writtenOn": "2022-05-31T10:10:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "57c8c9a7_3cecb9e5",
+      "revId": "ee572452d44ae1586594acd1ccf9fdd3b2425a0a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "996f49d4_fac11557",
@@ -71,6 +131,30 @@
       "writtenOn": "2022-04-21T03:32:55Z",
       "side": 1,
       "message": "change the name of this class",
+      "range": {
+        "startLine": 50,
+        "startChar": 6,
+        "endLine": 50,
+        "endChar": 23
+      },
+      "revId": "ee572452d44ae1586594acd1ccf9fdd3b2425a0a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "40581720_a6ec89b4",
+        "filename": "src/o1/ves/AlarmNotification.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1000482
+      },
+      "writtenOn": "2022-05-31T10:10:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "996f49d4_fac11557",
       "range": {
         "startLine": 50,
         "startChar": 6,
@@ -104,6 +188,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1a293b8b_55b4d625",
+        "filename": "src/o1/ves/SliceMeasurementEvent.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 1000482
+      },
+      "writtenOn": "2022-05-31T10:10:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fbf182bf_883e72cb",
+      "range": {
+        "startLine": 125,
+        "startChar": 37,
+        "endLine": 125,
+        "endChar": 43
+      },
+      "revId": "ee572452d44ae1586594acd1ccf9fdd3b2425a0a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c7cc9b55_367b3817",
@@ -117,6 +225,24 @@
       "writtenOn": "2022-04-22T06:42:06Z",
       "side": 1,
       "message": "don,t make it double here, because for JSON 1.0 and 1 both are int.",
+      "revId": "ee572452d44ae1586594acd1ccf9fdd3b2425a0a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "33bda7a7_67c2dc5b",
+        "filename": "src/o1/ves/VesCommonHeader.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 699,
+      "author": {
+        "id": 1000482
+      },
+      "writtenOn": "2022-05-31T10:10:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c7cc9b55_367b3817",
       "revId": "ee572452d44ae1586594acd1ccf9fdd3b2425a0a",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -138,6 +264,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "048d9373_28210018",
+        "filename": "src/o1/ves/VesCommonHeader.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 781,
+      "author": {
+        "id": 1000482
+      },
+      "writtenOn": "2022-05-31T10:10:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0f5aa1ea_5d76f0a3",
+      "revId": "ee572452d44ae1586594acd1ccf9fdd3b2425a0a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a487cd41_f92850fe",
@@ -151,6 +295,30 @@
       "writtenOn": "2022-04-21T03:32:55Z",
       "side": 1,
       "message": "Class name to be changed to Notification",
+      "range": {
+        "startLine": 24,
+        "startChar": 6,
+        "endLine": 24,
+        "endChar": 21
+      },
+      "revId": "ee572452d44ae1586594acd1ccf9fdd3b2425a0a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f7866faa_1bad9318",
+        "filename": "src/o1/ves/VesNotification.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1000482
+      },
+      "writtenOn": "2022-05-31T10:10:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a487cd41_f92850fe",
       "range": {
         "startLine": 24,
         "startChar": 6,
