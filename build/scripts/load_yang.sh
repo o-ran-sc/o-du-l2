@@ -1,3 +1,4 @@
+#!/bin/bash
 ################################################################################
 #   Copyright (c) [2020-2021] [HCL Technologies Ltd.]                          #
 #                                                                              #
@@ -14,37 +15,117 @@
 #   limitations under the License.                                             #
 ################################################################################
 # This script is used to install yang module and load initial configuration
-#!/bin/bash
+set -x
 
+#initialize globle variables
 
 CURRENT_DIR=$PWD
 ROOT_DIR=$CURRENT_DIR/../../
+CONFIG_PATH=$ROOT_DIR/bin/odu/config/
 
-if [ -d "$ROOT_DIR/bin/odu/config" ]
-then
-       CONFIG_PATH=$ROOT_DIR/bin/odu/config/
-       echo "CONFIG_PATH = $CONFIG_PATH"
-else
-       CONFIG_PATH=$ROOT_DIR/build/config/
-       echo "CONFIG_PATH = $CONFIG_PATH"
-fi
-       echo "CONFIG_PATH = $CONFIG_PATH"
+#list of 3gpp yang models
+declare -a YANG_MODEL_3GPP=( "_3gpp-common-yang-types.yang"
+                        "_3gpp-common-top.yang"
+                        "_3gpp-common-measurements.yang"
+                        "_3gpp-common-trace.yang"
+                        "_3gpp-common-managed-function.yang"
+                        "_3gpp-common-subscription-control.yang"
+                        "_3gpp-common-fm.yang"
+                        "_3gpp-common-managed-element.yang"
+                        "_3gpp-5g-common-yang-types.yang"
+                        "_3gpp-nr-nrm-rrmpolicy.yang"
+                        "_3gpp-nr-nrm-gnbdufunction.yang"
+                        "_3gpp-nr-nrm-nrcelldu.yang")
+
+
+#list of ORAN yang models
+declare -a YANG_MODEL_ORAN=( "o-ran-sc-odu-alarm-v1.yang"
+                        "o-ran-sc-du-hello-world.yang"
+			"o-ran-sc-odu-interface-v1.yang")
+
+
+#list of config files
+declare -a CONFIGURATION_ARRAY=( "startup_config.xml"
+                                 "nacm_config.xml"
+                                 "netconf_server_ipv6.xml")
+
+#list of modules corresponding to the above config files
+declare -a MODULE_ARRAY=( "o-ran-sc-odu-interface-v1"
+                          "ietf-netconf-acm"
+                          "ietf-netconf-server")
 
 #load yand models
-echo "### loading yang model ###"
-sysrepoctl -i $ROOT_DIR/build/yang/o-ran-sc-odu-alarm-v1.yang
-sysrepoctl -i $ROOT_DIR/build/yang/o-ran-sc-du-hello-world.yang
-sysrepoctl -i $ROOT_DIR/build/yang/o-ran-sc-odu-interface-v1.yang
 
-echo "### loading yang model Done###"
+
+#install 3GPP yang modules
+installYangModules()
+{
+       if [ -f "$ROOT_DIR/build/yang/$1" ]
+       then
+               sysrepoctl -i      $ROOT_DIR/build/yang/$1
+       else
+          if [ "$2" == "3gpp"  ]
+          then
+             wget https://forge.3gpp.org/rep/sa5/MnS/-/raw/Rel17-draft/yang-models/$1 -P $ROOT_DIR/build/yang
+             sysrepoctl -i      $ROOT_DIR/build/yang/$1
+          else
+             echo "ERROR : yang module $ROOT_DIR/build/yang/$1 not available"
+             exit 1
+	  fi
+
+       fi
+       echo "done"
+}
+
+
+#initialize the variable
+init()
+{
+   if [ -d "$ROOT_DIR/bin/odu/config" ]
+   then
+      CONFIG_PATH=$ROOT_DIR/bin/odu/config/
+      echo "CONFIG_PATH = $CONFIG_PATH"
+   else
+      CONFIG_PATH=$ROOT_DIR/build/config/
+      echo "CONFIG_PATH = $CONFIG_PATH"
+   fi
+      echo "CONFIG_PATH = $CONFIG_PATH"
+
+}
+
+#install 3GPP and ORAN yang modules
+installYang()
+{
+   echo "### install yang modules ###"
+   #install 3GPP yang modules
+   for yang in "${YANG_MODEL_3GPP[@]}"
+   do
+      installYangModules $yang "3gpp"
+   done
+
+   #install ORAN yang modules
+   for yang in "${YANG_MODEL_ORAN[@]}"
+   do
+      installYangModules $yang "oran"
+   done
+}
 
 #load initial configuration
-echo "### loading initial configuration ###"
+loadConfig()
+{
+   echo "### load initial configuration ###"
 
-sysrepocfg --import=$CONFIG_PATH/startup_config.xml -v 3 --datastore running --module  o-ran-sc-odu-interface-v1
-sysrepocfg --import=$CONFIG_PATH/nacm_config.xml -v 3 --datastore running --module  ietf-netconf-acm
-sysrepocfg --import=$CONFIG_PATH/netconf_server_ipv6.xml -v 3 --datastore running --module  ietf-netconf-server
-echo "### loading initial configuration done ###"
+   for ((i=0;i<${#CONFIGURATION_ARRAY[@]};i++))
+   do
+      sysrepocfg --import=$CONFIG_PATH/${CONFIGURATION_ARRAY[$i]} -v 3 --datastore running --module  ${MODULE_ARRAY[$i]}
+   done
+
+   echo "### load initial configuration done ###"
+}
+
+init
+installYang
+loadConfig
 
 ################################################################################
 #                              End of file                                     #
