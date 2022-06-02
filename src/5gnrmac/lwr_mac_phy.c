@@ -31,7 +31,7 @@
 #include "lwr_mac_utils.h"
 #include "lwr_mac.h"
 #ifdef INTEL_FAPI
-#include "fapi.h"
+#include "nr5g_fapi_internal.h"
 #include "fapi_vendor_extension.h"
 #endif
 #ifdef INTEL_WLS_MEM

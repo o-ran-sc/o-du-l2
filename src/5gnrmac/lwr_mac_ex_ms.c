@@ -23,7 +23,7 @@
 #include "lwr_mac_fsm.h"
 #include "lwr_mac_phy.h"
 #ifdef INTEL_FAPI
-#include "fapi.h"
+#include "nr5g_fapi_internal.h"
 #include "fapi_vendor_extension.h"
 #endif
 #ifndef INTEL_WLS_MEM
