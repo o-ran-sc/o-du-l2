@@ -3255,7 +3255,7 @@ uint8_t DuProcMacUeDeleteRsp(Pst *pst, MacUeDeleteRsp *deleteRsp)
    
    if(deleteRsp)
    {
-      if(deleteRsp->result == SUCCESS)
+      if(deleteRsp->result == DEL_SUCCESSFUL)
       {
          DU_LOG("\nINFO   -->  DU APP : MAC UE Delete Response : SUCCESS [UE IDX : %d]", deleteRsp->ueId);
          GET_CELL_IDX(deleteRsp->cellId, cellIdx);

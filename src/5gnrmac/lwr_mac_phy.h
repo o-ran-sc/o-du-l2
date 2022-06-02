@@ -63,6 +63,7 @@ typedef struct wlsBlockToFree
 
 CmLListCp wlsBlockToFreeList[WLS_MEM_FREE_PRD];
 
+void addWlsBlockToFree(void *msg, uint32_t msgLen, uint8_t idx);
 void freeWlsBlockList(uint8_t idx);
 void LwrMacEnqueueWlsBlock();
 void LwrMacRecvPhyMsg();
