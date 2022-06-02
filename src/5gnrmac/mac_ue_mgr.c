@@ -2765,7 +2765,7 @@ uint8_t MacProcSchUeDeleteRsp(Pst *pst, SchUeDeleteRsp *schUeDelRsp)
 #endif
                   memset(&macCb.macCell[cellIdx]->ueCb[ueId -1], 0, sizeof(MacUeCb));
                   macCb.macCell[cellIdx]->numActvUe--;
-                  result = SUCCESS;
+                  result = DEL_SUCCESS;
                   ret = ROK;
                }
                else
@@ -2856,7 +2856,7 @@ uint8_t MacProcUeDeleteReq(Pst *pst, MacUeDelete *ueDelete)
 {
    uint8_t ret = ROK;
    uint8_t cellIdx=0;
-   UeDeleteStatus result=SUCCESS;
+   UeDeleteStatus result=DEL_SUCCESS;
    MacUeCb  *ueCb = NULLP;
    MacCellCb *cellCb = NULLP;
 
@@ -2890,7 +2890,7 @@ uint8_t MacProcUeDeleteReq(Pst *pst, MacUeDelete *ueDelete)
          result = CELLID_INVALID;
       }
 
-      if(result != SUCCESS)
+      if(result != DEL_SUCCESS)
       {
          MacSendUeDeleteRsp(ueDelete->cellId, ueDelete->crnti, result);
          MAC_FREE_SHRABL_BUF(pst->region, pst->pool, ueDelete, sizeof(MacUeDelete));

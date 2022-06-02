@@ -28,6 +28,7 @@
 #include "lwr_mac.h"
 #include "lwr_mac_fsm.h"
 #include "mac_utils.h"
+#include "lwr_mac_phy.h"
 
 /* function pointers for packing slot ind from mac to sch */
 MacSchSlotIndFunc macSchSlotIndOpts[] =
