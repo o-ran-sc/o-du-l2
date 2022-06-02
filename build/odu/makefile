@@ -111,35 +111,16 @@ export I_OPTS
 # Add to the linker options the platform specific components
 L_OPTS+=-lnsl -lrt -lm -lpthread -lsctp 
 ifeq ($(PHY), INTEL_L1)
-	L_OPTS+=-L/root/intel/phy/wls_lib/lib -lwls                         \
-        -lhugetlbfs -lnuma -ldl -L/root/intel/dpdk-19.11/x86_64-native-linuxapp-gcc/lib             \
-        -ldpdk -lrte_gso -lrte_pmd_atlantic -lrte_pmd_iavf -lrte_pmd_tap -lrte_acl                  \
-        -lrte_hash -lrte_pmd_avp -lrte_pmd_ice -lrte_pmd_thunderx_nicvf -lrte_bbdev                 \
-        -lrte_ip_frag -lrte_pmd_axgbe -lrte_pmd_ifc -lrte_pmd_vdev_netvsc -lrte_bitratestats        \
-        -lrte_ipsec -lrte_pmd_bbdev_fpga_lte_fec -lrte_pmd_ixgbe -lrte_pmd_vhost                    \
-        -lrte_bpf -lrte_jobstats -lrte_pmd_bbdev_null -lrte_pmd_kni -lrte_pmd_virtio                \
-        -lrte_bus_dpaa -lrte_kni -lrte_pmd_bbdev_turbo_sw -lrte_pmd_lio -lrte_pmd_virtio_crypto     \
-        -lrte_bus_fslmc -lrte_kvargs -lrte_pmd_bnxt -lrte_pmd_memif -lrte_pmd_vmxnet3_uio           \
-        -lrte_bus_ifpga -lrte_latencystats -lrte_pmd_bond -lrte_pmd_netvsc -lrte_port               \
-        -lrte_bus_pci -lrte_lpm -lrte_pmd_caam_jr -lrte_pmd_nfp -lrte_power -lrte_bus_vdev          \
-        -lrte_mbuf -lrte_pmd_crypto_scheduler -lrte_pmd_nitrox -lrte_rawdev -lrte_bus_vmbus         \
-        -lrte_member -lrte_pmd_cxgbe -lrte_pmd_null -lrte_rawdev_dpaa2_cmdif -lrte_cfgfile          \
-        -lrte_mempool -lrte_pmd_dpaa -lrte_pmd_null_crypto -lrte_rawdev_dpaa2_qdma                  \
-        -lrte_cmdline -lrte_mempool_bucket -lrte_pmd_dpaa2 -lrte_pmd_octeontx -lrte_rawdev_ioat     \
-        -lrte_common_cpt -lrte_mempool_dpaa -lrte_pmd_dpaa2_event -lrte_pmd_octeontx2               \
-        -lrte_rawdev_ntb -lrte_common_dpaax -lrte_mempool_dpaa2 -lrte_pmd_dpaa2_sec                 \
-        -lrte_pmd_octeontx2_crypto -lrte_rawdev_octeontx2_dma -lrte_common_octeontx                 \
-        -lrte_mempool_octeontx -lrte_pmd_dpaa_event -lrte_pmd_octeontx2_event -lrte_rawdev_skeleton \
-        -lrte_common_octeontx2 -lrte_mempool_octeontx2 -lrte_pmd_dpaa_sec -lrte_pmd_octeontx_crypto \
-        -lrte_rcu -lrte_compressdev -lrte_mempool_ring -lrte_pmd_dsw_event -lrte_pmd_octeontx_ssovf \
-        -lrte_reorder -lrte_cryptodev -lrte_mempool_stack -lrte_pmd_e1000 -lrte_pmd_octeontx_zip    \
-        -lrte_rib -lrte_distributor -lrte_meter -lrte_pmd_ena -lrte_pmd_opdl_event -lrte_ring       \
-        -lrte_eal -lrte_metrics -lrte_pmd_enetc -lrte_pmd_qat -lrte_sched -lrte_efd -lrte_net       \
-        -lrte_pmd_enic -lrte_pmd_qede -lrte_security -lrte_ethdev -lrte_pci -lrte_pmd_failsafe      \
-        -lrte_pmd_ring -lrte_stack -lrte_eventdev -lrte_pdump -lrte_pmd_fm10k -lrte_pmd_sfc_efx     \
-        -lrte_table -lrte_fib -lrte_pipeline -lrte_pmd_hinic -lrte_pmd_skeleton_event -lrte_timer   \
-        -lrte_flow_classify -lrte_pmd_af_packet -lrte_pmd_hns3 -lrte_pmd_softnic -lrte_vhost        \
-        -lrte_gro -lrte_pmd_ark -lrte_pmd_i40e -lrte_pmd_sw_event
+	L_OPTS+=-L/root/Intel-L1-20.11.1/phy/wls_lib/ -lwls                         \
+        -lhugetlbfs -lnuma -ldl -L/root/Intel-L1-20.11.1/dpdk-20.11.1/build/lib                        \
+        -lrte_gso -lrte_acl -lrte_hash -lrte_bbdev -lrte_ip_frag -lrte_bitratestats -lrte_ipsec        \
+        -lrte_bpf -lrte_jobstats -lrte_telemetry -lrte_kni -lrte_kvargs -lrte_latencystats -lrte_port  \
+        -lrte_lpm -lrte_power -lrte_mbuf -lrte_rawdev -lrte_member -lrte_cfgfile -lrte_mempool         \
+		  -lrte_cmdline -lrte_rcu -lrte_compressdev -lrte_reorder -lrte_cryptodev -lrte_rib              \
+		  -lrte_distributor -lrte_meter  -lrte_ring -lrte_eal -lrte_metrics -lrte_sched -lrte_efd        \
+		  -lrte_net -lrte_security -lrte_ethdev -lrte_pci -lrte_stack -lrte_eventdev -lrte_pdump         \
+		  -lrte_table -lrte_fib -lrte_pipeline -lrte_timer -lrte_flow_classify -lrte_vhost               \
+        -lrte_gro
 endif
 
 ifeq ($(O1_ENABLE),YES)

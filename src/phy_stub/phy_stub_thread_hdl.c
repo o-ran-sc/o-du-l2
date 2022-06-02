@@ -21,7 +21,7 @@
 #include "common_def.h"
 #include "phy_stub_utils.h"
 #ifdef INTEL_FAPI
-#include "fapi.h"
+#include "nr5g_fapi_internal.h"
 #include "fapi_vendor_extension.h"
 #endif
 #include "phy_stub.h"

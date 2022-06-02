@@ -181,7 +181,8 @@ S16 rgBatchProc ARGS((
 char            my_buffer2[4096 * 4] = { 0 };
 char            my_buffer[4096] = { 0 };
 int             my_buffer_idx = 0;
-
+uint64_t        nWlsMacMemorySize = 0;
+uint64_t        nWlsPhyMemorySize = 0;
 
 
 #define sigsegv_print(x, ...)    my_buffer_idx += sprintf(&my_buffer[my_buffer_idx], x "\n", ##__VA_ARGS__)
@@ -891,7 +892,7 @@ S16 smWrReadWlsConfigParams (Void);
 static int SOpenWlsIntf()
 {
    uint8_t i;
-   void *hdl;
+   void *hdl = NULLP;
 #define WLS_DEVICE_NAME "wls0"
 
    char *my_argv[] = {"gnodeb", "-c3", "--proc-type=auto", "--file-prefix", WLS_DEVICE_NAME, "--iova-mode=pa"};
@@ -913,7 +914,16 @@ static int SOpenWlsIntf()
    hdl = WLS_Open(WLS_DEVICE_NAME, 1);
 #endif
 #else
+#ifdef INTEL_L1_V19_10
    hdl = WLS_Open(WLS_DEVICE_NAME, WLS_MASTER_CLIENT, WLS_MEM_SIZE);
+#elif INTEL_L1
+   hdl = WLS_Open(WLS_DEVICE_NAME, WLS_MASTER_CLIENT, &nWlsMacMemorySize, &nWlsPhyMemorySize);
+
+   if(hdl == NULL)
+   {
+      printf("\nERROR: WLS_Open > DEVICE_NAME mismatch. WLS Device Name should be same as 'wls_dev_name' parameter in 'phycfg_xran.xml' file");
+   }
+#endif
 #endif
 
    osCp.wls.intf = hdl;
@@ -1584,6 +1594,8 @@ static S16 SAllocateWlsDynMem()
    osCp.wls.allocAddr = WLS_Alloc(osCp.wls.intf,
 #ifdef INTEL_L1_V19_10
 	 WLS_MEMORY_SIZE);
+#elif INTEL_L1
+    nWlsMacMemorySize+nWlsPhyMemorySize);   
 #else
    (reqdMemSz + (4 * 1024 * 1024)));
 #endif

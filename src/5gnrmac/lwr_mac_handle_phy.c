@@ -20,7 +20,7 @@
 #include "common_def.h"
 #include "lrg.h"
 #ifdef INTEL_FAPI
-#include "fapi.h"
+#include "nr5g_fapi_internal.h"
 #include "fapi_vendor_extension.h"
 #endif
 

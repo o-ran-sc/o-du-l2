@@ -13031,7 +13031,7 @@ uint8_t procF1UeContextSetupReq(F1AP_PDU_t *f1apMsg)
                GET_CELL_IDX(nrCellId, cellIdx);
                if(!duCb.actvCellLst[cellIdx])
                {
-                  DU_LOG("\nERROR  -->  F1AP : Cell Id [%d] not found", nrCellId);
+                  DU_LOG("\nERROR  -->  F1AP : Cell Id [%lu] not found", nrCellId);
                   ret = RFAILED;
                }
                break;
@@ -13086,7 +13086,7 @@ uint8_t procF1UeContextSetupReq(F1AP_PDU_t *f1apMsg)
                      gnbDuUeF1apId = ueIdx +1;
                   else
                   {
-                     DU_LOG("\nERROR  -->  F1AP : No free UE IDX found in UE bit map of cell Id [%d]", nrCellId);
+                     DU_LOG("\nERROR  -->  F1AP : No free UE IDX found in UE bit map of cell Id [%lu]", nrCellId);
                      ret = RFAILED;
                      break;
                   }
@@ -14752,7 +14752,7 @@ uint8_t duProcGnbDuCfgUpdAckMsg(uint8_t transId)
                            if(ret == RFAILED)
                            {
                               DU_LOG("\nERROR  --> DU_APP : duProcGnbDuCfgUpdAckMsg(): Failed to send cell delete\
-                              request for cellId[%d]", cellId);
+                              request for cellId[%lu]", cellId);
                            }
                         }
                         else
@@ -14773,7 +14773,7 @@ uint8_t duProcGnbDuCfgUpdAckMsg(uint8_t transId)
                               if(ret == RFAILED)
                               {
                                  DU_LOG("\nERROR  --> DU_APP : duProcGnbDuCfgUpdAckMsg(): Failed to build and send UE delete\
-                                 request for cellId[%d]", cellId);
+                                 request for cellId[%lu]", cellId);
                               }
                               ueIdx++;
                               totalActiveUe--;
@@ -14782,7 +14782,7 @@ uint8_t duProcGnbDuCfgUpdAckMsg(uint8_t transId)
                      }
                      else
                      {
-                        DU_LOG("\nERROR  --> DU_APP : duProcGnbDuCfgUpdAckMsg(): CellId [%d] not found", cellId);
+                        DU_LOG("\nERROR  --> DU_APP : duProcGnbDuCfgUpdAckMsg(): CellId [%lu] not found", cellId);
                         ret = RFAILED;
                      }
                      break;
@@ -16600,7 +16600,7 @@ uint8_t procPagingMsg(F1AP_PDU_t *f1apMsg)
                                  bitStringToInt(&pagingCellItem->nRCGI.nRCellIdentity, &cellId);
                                  if(processPagingMsg(cellId, tmpPagingParam) != ROK)
                                  {
-                                    DU_LOG("\nERROR  --> DU APP : Paging Processing Failed at CellId:%d",cellId);
+                                    DU_LOG("\nERROR  --> DU APP : Paging Processing Failed at CellId:%lu",cellId);
                                     continue;
                                  }
                               }

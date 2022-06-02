@@ -27,7 +27,7 @@
 #include "mac.h"
 #include "lwr_mac.h"
 #ifdef INTEL_FAPI
-#include "fapi.h"
+#include "nr5g_fapi_internal.h"
 #include "fapi_vendor_extension.h"
 #endif
 #ifdef INTEL_WLS_MEM
@@ -3396,7 +3396,7 @@ uint8_t fillSib1TxDataReq(fapi_tx_pdu_desc_t *pduDesc, uint16_t pduIndex, MacCel
 
 #ifdef INTEL_WLS_MEM
    mtGetWlsHdl(&wlsHdlr);
-   pduDesc[pduIndex].tlvs[0].value = WLS_VA2PA(wlsHdlr, sib1Payload);
+   pduDesc[pduIndex].tlvs[0].value = (uint8_t *)(WLS_VA2PA(wlsHdlr, sib1Payload));
 #else
    pduDesc[pduIndex].tlvs[0].value = sib1Payload;
 #endif
@@ -3458,7 +3458,7 @@ uint8_t fillPageTxDataReq(fapi_tx_pdu_desc_t *pduDesc, uint16_t pduIndex, DlPage
 
 #ifdef INTEL_WLS_MEM
    mtGetWlsHdl(&wlsHdlr);
-   pduDesc[pduIndex].tlvs[0].value = WLS_VA2PA(wlsHdlr, pagePayload);
+   pduDesc[pduIndex].tlvs[0].value = (uint8_t *)(WLS_VA2PA(wlsHdlr, pagePayload));
 #else
    pduDesc[pduIndex].tlvs[0].value = pagePayload;
 #endif
@@ -3518,7 +3518,7 @@ uint8_t fillRarTxDataReq(fapi_tx_pdu_desc_t *pduDesc, uint16_t pduIndex, RarInfo
 
 #ifdef INTEL_WLS_MEM
    mtGetWlsHdl(&wlsHdlr);
-   pduDesc[pduIndex].tlvs[0].value = WLS_VA2PA(wlsHdlr, rarPayload);
+   pduDesc[pduIndex].tlvs[0].value = (uint8_t *)(WLS_VA2PA(wlsHdlr, rarPayload));
 #else
    pduDesc[pduIndex].tlvs[0].value = rarPayload;
 #endif
@@ -3577,7 +3577,7 @@ uint8_t fillDlMsgTxDataReq(fapi_tx_pdu_desc_t *pduDesc, uint16_t pduIndex, DlMsg
 
 #ifdef INTEL_WLS_MEM
    mtGetWlsHdl(&wlsHdlr);
-   pduDesc[pduIndex].tlvs[0].value = WLS_VA2PA(wlsHdlr, dlMsgPayload);
+   pduDesc[pduIndex].tlvs[0].value = (uint8_t *)(WLS_VA2PA(wlsHdlr, dlMsgPayload));
 #else
    pduDesc[pduIndex].tlvs[0].value = dlMsgPayload;
 #endif
