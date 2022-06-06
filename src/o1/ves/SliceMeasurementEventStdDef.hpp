@@ -1,6 +1,6 @@
 /*******************************************************************************
 ################################################################################
-#   Copyright (c) [2020-2022] [HCL Technologies Ltd.]                          #
+#   Copyright (c) [2022] [HCL Technologies Ltd.]                          #
 #                                                                              #
 #   Licensed under the Apache License, Version 2.0 (the "License");            #
 #   you may not use this file except in compliance with the License.           #
@@ -16,58 +16,53 @@
 ################################################################################
 *******************************************************************************/
 
-#ifndef __CELL_STATE_CHANGE_STD_DEF_HPP__
-#define __CELL_STATE_CHANGE_STD_DEF_HPP__
+/* This file contains macros and functions to support the preparation of pnf
+   Registration VES Event*/
 
+
+#ifndef __SLICE_MEASUREMENT_EVENT_STD_DEF_HPP__
+#define __SLICE_MEASUREMENT_EVENT_STD_DEF_HPP__
 
 #include <iostream>
-
-#include "VesEvent.hpp"
-#include "AlarmMessages.h"
-#include "Alarm.hpp"
-#include "AlarmManager.hpp"
-#include "Message.hpp"
-#include "Notification.hpp"
+#include <string>
 #include "VesUtils.hpp"
+#include "JsonHelper.hpp"
+#include "PerfMeasurementEvent.hpp"
+#include <cjson/cJSON.h>
+#include "SliceMetrics.hpp"
+#include "PmInterface.h"
 
 using namespace std;
 
-#define FAULT_SCHEMA "https://forge.3gpp.org/rep/sa5/MnS/blob/SA88-Rel16/OpenAPI/faultMnS.yaml#components/schemas/NotifyNewAlarm"
-#define HREF "1"
-#define URI "1"
-#define NOTIFICATION_ID 1.0
-#define NOTIFICATION_TYPE "notifyNewAlarm"
-#define PROBABLE_CAUSE "real-issue"
-#define TRND_INDICATION "MORE_SEVERE"
-#define OBSRVED_MEASUREMENT "new"
-#define OBSERVED_VALUE 123.2
-#define NEW_ATT "new"
-#define ADD_INFO "new"
-#define ALARM_ID "1"
-#define ALRAM_TYPE "COMMUNICATIONS_ALARM"
-#define PERCEIVED_SEVERITY "INDETERMINATE"
-#define PROPOSED_REPAIR_ACTION "Call the police!"
-#define ADDITIONAL_TEXT "O-RAN Software Community"
+//Macros
+#define SLICE_SCHEMA "https://gerrit.o-ran-sc.org/r/gitweb?p=scp/oam/modeling.git;a=blob_plain;f=data-model/oas3/experimental/o-ran-sc-du-hello-world-pm-streaming-oas3.yaml"
+#define SLICE_ID "pm1_1638984365"
+#define ADMINISTRATIVE_STATE "unlocked"
+#define OPERATIONAL_STATE "enabled"
+#define USER_LABEL "pm-1"
+#define GRANULARITY_PERIOD 5.0
+#define RANDOM_NUM 12345
+#define THROUGHPUT_UNIT "kbit/s"
+#define MEAS_REF "measurement-type-instance-reference"
+#define MEAS_PATH "/o-ran-sc-du-hello-world:network-function/distributed-unit-functions[id='O-DU-1211']/cell[id='cell-1']/supported-measurements[performance-measurement-type='user-equipment-average-throughput-downlink']"
 
 
-class CellStateChangeStdDef : public Notification
+class SliceMeasurementEventStdDef : public PerfMeasurementEvent
 {
 
-    public:
-    CellStateChangeStdDef();
-    ~CellStateChangeStdDef();
-    
-    std::string getISOEventTime();
-   
-    protected:
-    bool prepareEventFields(const Message* msg = NULL);
+   public:
+      /* Default constructor/Destructor */
+      SliceMeasurementEventStdDef();
+      ~SliceMeasurementEventStdDef();
 
+      std::string getISOEventTime();
+
+   protected:
+      bool prepareEventFields(const Message* msg = NULL);
 
 };
 
-
 #endif
-
 /**********************************************************************
   End of file
  **********************************************************************/

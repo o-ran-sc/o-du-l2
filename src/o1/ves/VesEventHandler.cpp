@@ -26,6 +26,7 @@
 #include "Message.hpp"
 #include "CellStateChange.hpp"
 #include "CellStateChangeStdDef.hpp"
+#include "SliceMeasurementEventStdDef.hpp"
 
 /*******************************************************************
  *
@@ -97,8 +98,13 @@ bool VesEventHandler::prepare(VesEventType evtType, const Message* msg)
       }
       case VesEventType::PM_SLICE:
       {
+         #ifdef StdDef
+         mVesEvent = new SliceMeasurementEventStdDef;
+         O1_LOG("\nO1 VesEventHandler : Preparing Standard VES PM Slice");
+         #else
          mVesEvent = new SliceMeasurementEvent;
          O1_LOG("\nO1 VesEventHandler : Preparing VES PM Slice");
+         #endif
          break;
       }
       case VesEventType::FAULT_NOTIFICATION:

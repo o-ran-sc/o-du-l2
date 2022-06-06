@@ -211,7 +211,11 @@ string VesEvent::getEventFieldName()
       }
       case VesEventType::PM_SLICE:
       {
+         #ifdef StdDef
+         return "stndDefinedFields";
+         #else
          return "measurementFields";
+         #endif
       }
       case VesEventType::HEARTBEAT:
       {
