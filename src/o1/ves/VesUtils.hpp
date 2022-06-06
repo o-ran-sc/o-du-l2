@@ -31,7 +31,7 @@
 #define SMO_VES_CONFIG "config/smoVesConfig.json"
 
 //Common Header Macros
-#define STND_DEFINED_NAMESPACE "3GPP-FaultSupervision"
+#define FAULT_STND_DEFINED_NAMESPACE "3GPP-FaultSupervision"
 #define COMMON_HEADER_VERSION "4.0.1"
 #define VES_EVENT_LISNERT_VERSION "7.2.1"
 
@@ -54,10 +54,6 @@
 
 //Timezone Offset
 #define TIME_ZONE_00_00 "+00:00"
-
-//version
-#define VERSION_4_0_1 "4.0.1"
-#define VERSION_4_1 "4.1"
 
 //Ves Event Listener Version
 #define VES_EVENT_LISTENER_7_2_1 "7.2.1"
@@ -84,13 +80,20 @@
 
 // PM_SLICE Macros
 #define PM_EVENT_ID "_1634181300_PM1min"
+#define SLICE_EVENTID "pm1_1638984365"
 #define PM_REPORTING_ENTITY "ORAN-DEV"
 #define EVENT_TYPE_ORAN_COMPONENT_PM "O_RAN_COMPONENT_PM1min"
+#define PM_SLICE_EVENT_TYPE "performanceMeasurementStreaming"
+#define PM_SLICE_EVENT_NAME "stndDefined_performanceMeasurementStreaming"
+#define PM_SLICE_STND_DEFINED_NAMESPACE "o-ran-sc-du-hello-world-pm-streaming-oas3"
 
 //NOTIFICATION Macros
 #define FAULT_EVENTID "Alarm000000001"
 #define FAULT_TYPE "alarm"
 #define FAULT_EVENT_NAME "COMMUNICATIONS_ALARM"
+
+//STND DEFINED Macros
+#define STND_DEFINED_FEILD_VERSION "1.0"
 
 enum class VesEventType
 {

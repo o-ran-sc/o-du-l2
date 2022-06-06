@@ -51,10 +51,17 @@ PerfMeasurementEvent::~PerfMeasurementEvent()
  ******************************************************************/
 void PerfMeasurementEvent::getConfig()
 {
+    #ifdef StdDef
+    mVesServerIp = ConfigLoader::instance().getOamConfigFile().getVesServerIp();
+    mVesServerPort = ConfigLoader::instance().getOamConfigFile().getVesServerPort();
+    mVesServerUsername = ConfigLoader::instance().getOamConfigFile().getVesServerUsername();
+    mVesServerPassword = ConfigLoader::instance().getOamConfigFile().getVesServerPassword();
+    #else
     mVesServerIp = ConfigLoader::instance().getSmoConfigFile().getVesServerIp();
     mVesServerPort = ConfigLoader::instance().getSmoConfigFile().getVesServerPort();
     mVesServerUsername = ConfigLoader::instance().getSmoConfigFile().getVesServerUsername();
     mVesServerPassword = ConfigLoader::instance().getSmoConfigFile().getVesServerPassword();
+    #endif
 }
 
 /*******************************************************************
@@ -74,7 +81,11 @@ void PerfMeasurementEvent::getConfig()
  ******************************************************************/
 void PerfMeasurementEvent::createUrl()
 {
+   #ifdef StdDef
+   mVesUrl = "https://" + mVesServerIp + ":" + mVesServerPort + "/eventListener/v7";
+   #else
    mVesUrl = "https://" + mVesServerIp + ":" + mVesServerPort + "/eventListener/v7/events";
+   #endif
    O1_LOG("\nURL=%s", mVesUrl.c_str());
 }
 

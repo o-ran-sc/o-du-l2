@@ -28,6 +28,7 @@
 #include "AlarmManager.hpp"
 #include "Message.hpp"
 #include "Notification.hpp"
+#include "VesUtils.hpp"
 
 using namespace std;
 
@@ -44,7 +45,6 @@ using namespace std;
 #define ADD_INFO "new"
 #define ALARM_ID "1"
 #define ALRAM_TYPE "COMMUNICATIONS_ALARM"
-#define STND_DEFINED_FEILD_VERSION "1.0"
 #define PERCEIVED_SEVERITY "INDETERMINATE"
 #define PROPOSED_REPAIR_ACTION "Call the police!"
 #define ADDITIONAL_TEXT "O-RAN Software Community"
