@@ -111,7 +111,11 @@ string VesCommonHeader::getEventTypeToStr()
          str = "pmNotification";
          break;
       case VesEventType::PM_SLICE:
+         #ifdef StdDef
+         str = "stndDefined";
+         #else
          str = "measurement";
+         #endif
          break;
       case VesEventType::HEARTBEAT:
          str = "heartbeat";
@@ -157,7 +161,11 @@ string VesCommonHeader::getEventId()
          evntId = getEventTypeToStr() + "_" + formatTime(getCurrentTime());
          break;
       case VesEventType::PM_SLICE:
+         #ifdef StdDef
+         evntId = SLICE_EVENTID;
+         #else
          evntId = "_" + stringEpochTime + "_" + "PM1min";
+         #endif
      break;
       case VesEventType::FAULT_NOTIFICATION:
          #ifdef StdDef
@@ -206,7 +214,11 @@ string VesCommonHeader::getEventType()
          evntType = EVENT_TYPE_ORAN_COMPONENT;
          break;
       case VesEventType::PM_SLICE:
+         #ifdef StdDef
+         evntType = PM_SLICE_EVENT_TYPE;
+         #else
          evntType = EVENT_TYPE_ORAN_COMPONENT_PM;
+         #endif
          break;
       case VesEventType::FAULT_NOTIFICATION:
          evntType = FAULT_TYPE;
@@ -297,7 +309,11 @@ string VesCommonHeader::getEventName()
          evntName = getEventTypeToStr() + "_" + EVENT_TYPE_ORAN_COMPONENT;
          break;
       case VesEventType::PM_SLICE:
+         #ifdef StdDef
+         evntName = PM_SLICE_EVENT_NAME;
+         #else
          evntName = getEventTypeToStr() + "_" + EVENT_TYPE_ORAN_COMPONENT_PM;
+         #endif
          break;
       case VesEventType::FAULT_NOTIFICATION:
          #ifdef StdDef
@@ -341,7 +357,9 @@ string VesCommonHeader::getReportingEntityId()
       case VesEventType::PNF_REGISTRATION:
          evntName = ODU_HIGH;
          break;
-
+      case VesEventType::PM_SLICE:
+         evntName = ODU_HIGH;
+	 break;
       case VesEventType::FAULT_NOTIFICATION:
          evntName = ODU_HIGH;
 	 break;
@@ -414,6 +432,9 @@ string VesCommonHeader::getSourceName()
       case VesEventType::PNF_REGISTRATION:
          sourceName = ODU_HIGH;
          break;
+      case VesEventType::PM_SLICE:
+         sourceName = ODU_HIGH;
+	 break;
       case VesEventType::FAULT_NOTIFICATION:
          sourceName = ODU_HIGH;
 	 break;
@@ -472,6 +493,9 @@ string VesCommonHeader::getnfcNamingCode()
    string name = "";
    switch(mEventType)
    {
+      case VesEventType::PM_SLICE:
+         name = NFC_NAMING_CODE;
+	 break;
       case VesEventType::FAULT_NOTIFICATION:
          name = NFC_NAMING_CODE;
 	 break;
@@ -508,6 +532,7 @@ string VesCommonHeader::getNamingCode()
          nammingcdoe = NAMING_CODE_ODU;
          break;
       case VesEventType::PM_SLICE:
+         nammingcdoe = NAMING_CODE_ODU;
          break;
       case VesEventType::FAULT_NOTIFICATION:
          nammingcdoe = NAMING_CODE_ODU;
@@ -615,8 +640,11 @@ string VesCommonHeader::getstndDefinedNamespace()
    string stndDefinedNamespace="";
    switch(mEventType)
    {
+      case VesEventType::PM_SLICE:
+         stndDefinedNamespace = PM_SLICE_STND_DEFINED_NAMESPACE;
+	 break;
       case VesEventType::FAULT_NOTIFICATION:
-         stndDefinedNamespace = STND_DEFINED_NAMESPACE;
+         stndDefinedNamespace = FAULT_STND_DEFINED_NAMESPACE;
 	 break;
       default:
          break;
@@ -679,6 +707,8 @@ bool VesCommonHeader::prepare(cJSON *commonHeader, \
       ret = false;
    }
 
+   #ifdef StdDef
+   #else
    if (mEventType == VesEventType::PM_SLICE)
    {
       cJSON *internalHeaderFields = JsonHelper::createNode();
@@ -702,11 +732,7 @@ bool VesCommonHeader::prepare(cJSON *commonHeader, \
          ret = false;
       }
    }
-
-   if (mEventType == VesEventType::PNF_REGISTRATION)
-   {
-
-   }
+   #endif
 
    if(JsonHelper::addNodeToObject(commonHeader, "sequence", \
                                        getSequenceNo()) == 0)
@@ -769,28 +795,17 @@ bool VesCommonHeader::prepare(cJSON *commonHeader, \
       ret = false;
    }
 
-   if (mEventType == VesEventType::PM_SLICE)
-   {
-      if(JsonHelper::addNodeToObject(commonHeader, "version", \
-                                          VERSION_4_1) == 0)
-      {
-         ret = false;
-      }
-   }
-   else
-   {
-      if(JsonHelper::addNodeToObject(commonHeader, "version", \
+   else if(JsonHelper::addNodeToObject(commonHeader, "version", \
                                           COMMON_HEADER_VERSION) == 0)
-      {
-         ret = false;
-      }
+   {
+      ret = false;
    }
-   if(JsonHelper::addNodeToObject(commonHeader, "stndDefinedNamespace", \
+   else if(JsonHelper::addNodeToObject(commonHeader, "stndDefinedNamespace", \
                                        getstndDefinedNamespace().c_str())== 0)            
    {
       ret = false;
    }
-   if(JsonHelper::addNodeToObject(commonHeader, "vesEventListenerVersion", \
+   else if(JsonHelper::addNodeToObject(commonHeader, "vesEventListenerVersion", \
                                        VES_EVENT_LISNERT_VERSION) == 0)
    {
       ret = false;

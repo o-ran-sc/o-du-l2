@@ -1,6 +1,6 @@
 /*******************************************************************************
 ################################################################################
-#   Copyright (c) [2020-2022] [HCL Technologies Ltd.]                          #
+#   Copyright (c) [2022] [HCL Technologies Ltd.]                          #
 #                                                                              #
 #   Licensed under the Apache License, Version 2.0 (the "License");            #
 #   you may not use this file except in compliance with the License.           #
@@ -16,50 +16,55 @@
 ################################################################################
 *******************************************************************************/
 
-#ifndef __CELL_STATE_CHANGE_HPP__
-#define __CELL_STATE_CHANGE_HPP__
+/* This file contains macros and functions to support the preparation of pnf
+   Registration VES Event*/
 
+
+#ifndef __SLICE_MEASUREMENT_EVENT_STD_DEF_HPP__
+#define __SLICE_MEASUREMENT_EVENT_STD_DEF_HPP__
 
 #include <iostream>
-
-#include "VesEvent.hpp" 
-#include "AlarmMessages.h"
-#include "Alarm.hpp"
-#include "AlarmManager.hpp"
-#include "Message.hpp"
-#include "Notification.hpp"
+#include <string>
+#include "VesUtils.hpp"
+#include "JsonHelper.hpp"
+#include "PerfMeasurementEvent.hpp"
+#include <cjson/cJSON.h>
+#include "SliceMetrics.hpp"
+#include "PmInterface.h"
 
 using namespace std;
 
-//macros
-#define FAULT_FIELDS_VERSION "4.0"
-#define ALARM_CONDITION "CELL Down"
-#define ALARM_INTERFACE_A "Slot-0-CELL-1"
-#define EVENT_SOURCE_TYPE "O_RAN_COMPONENT"
-#define SPECIFIC_PROBLEM "CELL 1 Down"
-#define EVENT_SEVERITY "MAJOR"
-#define VF_STATUS "Active"
-#define EQUIP_TYPE "O-RAN-DU"
-#define VENDOR "Melacon"
-#define MODEL "ODU Device"
+//Macros
+#define SLICE_SCHEMA "https://gerrit.o-ran-sc.org/r/gitweb?p=scp/oam/modeling.git;a=blob_plain;f=data-model/oas3/experimental/o-ran-sc-du-hello-world-pm-streaming-oas3.yaml"
+#define SLICE_ID "pm1_1638984365"
+#define ADMINISTRATIVE_STATE "unlocked"
+#define OPERATIONAL_STATE "enabled"
+#define USER_LABEL "pm-1"
+#define GRANULARITY_PERIOD 5.0
+#define RANDOM_NUM 12345
+#define THROUGHPUT_UNIT "kbit/s"
+#define MEAS_REF "measurement-type-instance-reference"
 
-class CellStateChange : public Notification
+
+class SliceMeasurementEventStdDef : public PerfMeasurementEvent
 {
-    
-    public:
-    CellStateChange();
-    ~CellStateChange();
 
-    std::string getISOEventTime();
+   public:
+      /* Default constructor/Destructor */
+      SliceMeasurementEventStdDef();
+      ~SliceMeasurementEventStdDef();
 
-    protected:
-    bool prepareEventFields(const Message* msg = NULL);
+      std::string getISOEventTime();
+
+   protected:
+      bool prepareEventFields(const Message* msg = NULL);
+
+   private:
+      string getMeasPath();
 
 };
 
-
-#endif 
-
+#endif
 /**********************************************************************
   End of file
  **********************************************************************/
