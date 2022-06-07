@@ -16,6 +16,23 @@
       "message": "Added tag version of stable release.",
       "revId": "e2417efa29f0d317a3ed1044ee20cc14df32e1d3",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "737790ed_aca04239",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000482
+      },
+      "writtenOn": "2022-06-07T08:22:07Z",
+      "side": 1,
+      "message": "OK",
+      "revId": "e2417efa29f0d317a3ed1044ee20cc14df32e1d3",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
   ]
 }
