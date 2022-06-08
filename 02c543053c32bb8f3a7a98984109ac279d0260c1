@@ -1,0 +1,345 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9afce266_fc6b0e36",
+        "filename": "src/5gnrmac/mac_harq_dl.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 188,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-06-08T09:09:24Z",
+      "side": 1,
+      "message": "Function description required",
+      "revId": "02c543053c32bb8f3a7a98984109ac279d0260c1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cdec9173_0911ec85",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 1148,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-06-08T09:09:24Z",
+      "side": 1,
+      "message": "remove commented line",
+      "revId": "02c543053c32bb8f3a7a98984109ac279d0260c1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a6cb1a5a_c18ad1b6",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 1711,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-06-08T09:09:24Z",
+      "side": 1,
+      "message": "when we release HARQ process, are there any other parameters in ueCb to be freed or reset?",
+      "range": {
+        "startLine": 1711,
+        "startChar": 6,
+        "endLine": 1711,
+        "endChar": 27
+      },
+      "revId": "02c543053c32bb8f3a7a98984109ac279d0260c1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "12e8da72_f435c2bd",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 1722,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-06-08T09:09:24Z",
+      "side": 1,
+      "message": "Also, we should not release the process so that retransmission can be scheduled in future slot",
+      "range": {
+        "startLine": 1722,
+        "startChar": 9,
+        "endLine": 1722,
+        "endChar": 30
+      },
+      "revId": "02c543053c32bb8f3a7a98984109ac279d0260c1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fb1c1426_3b6ed533",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 2057,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-06-08T09:09:24Z",
+      "side": 1,
+      "message": "since above if condition do no have any statement can we directly use if(isRetx !\u003d TRUE)",
+      "revId": "02c543053c32bb8f3a7a98984109ac279d0260c1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4e4af667_fe32f19b",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 2102,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-06-08T09:09:24Z",
+      "side": 1,
+      "message": "lets keep only the required debug prints.",
+      "range": {
+        "startLine": 2102,
+        "startChar": 3,
+        "endLine": 2102,
+        "endChar": 9
+      },
+      "revId": "02c543053c32bb8f3a7a98984109ac279d0260c1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "38db6294_39a6afaa",
+        "filename": "src/5gnrsch/sch_crc.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-06-08T09:09:24Z",
+      "side": 1,
+      "message": "We need to add the following:\n1. File Header\n2. Function descriptors\n3. File footer",
+      "revId": "02c543053c32bb8f3a7a98984109ac279d0260c1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c627bfdf_dd2f6451",
+        "filename": "src/5gnrsch/sch_crc.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-06-08T09:09:24Z",
+      "side": 1,
+      "message": "we need to reverse the RA? These changes would be required at MAC too.",
+      "revId": "02c543053c32bb8f3a7a98984109ac279d0260c1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b9798f83_92f48fb1",
+        "filename": "src/5gnrsch/sch_crc.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-06-08T09:09:24Z",
+      "side": 1,
+      "message": "do we need to free memory of hqList.first-\u003enode begore deleting from list?",
+      "revId": "02c543053c32bb8f3a7a98984109ac279d0260c1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3bdede24_659c32fe",
+        "filename": "src/5gnrsch/sch_harq_dl.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-06-08T09:09:24Z",
+      "side": 1,
+      "message": "We need to add:\n1. File header\n2. Function descriptor for all functions\n3. File footer",
+      "revId": "02c543053c32bb8f3a7a98984109ac279d0260c1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e8fdeb40_baec6218",
+        "filename": "src/5gnrsch/sch_harq_dl.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-06-08T09:09:24Z",
+      "side": 1,
+      "message": "Is this function needed?",
+      "revId": "02c543053c32bb8f3a7a98984109ac279d0260c1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dfcf4a4d_1631cc3d",
+        "filename": "src/5gnrsch/sch_harq_dl.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-06-08T09:09:24Z",
+      "side": 1,
+      "message": "Please remove this function",
+      "revId": "02c543053c32bb8f3a7a98984109ac279d0260c1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a6269f2c_145d57af",
+        "filename": "src/5gnrsch/sch_harq_ul.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-06-08T09:09:24Z",
+      "side": 1,
+      "message": "We need to add\n1. File header\n2. Function descriptor for all functions\n3. File footer",
+      "revId": "02c543053c32bb8f3a7a98984109ac279d0260c1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "da805133_08341214",
+        "filename": "src/5gnrsch/sch_harq_ul.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-06-08T09:09:24Z",
+      "side": 1,
+      "message": "please remove",
+      "revId": "02c543053c32bb8f3a7a98984109ac279d0260c1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8e656f1f_92c72db5",
+        "filename": "src/5gnrsch/sch_rach.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 391,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-06-08T09:09:24Z",
+      "side": 1,
+      "message": "There will never be a MSG3 for CF-RA. We can rename MSG4_DONE to RA_COMPLETE.\nraState can be set to RA Complete when:\n1. MSG4 is acked in case of CBRA and\n2. RAR is sent in case CF-RA",
+      "revId": "02c543053c32bb8f3a7a98984109ac279d0260c1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "371db051_848ed549",
+        "filename": "src/5gnrsch/sch_rach.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 1078,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-06-08T09:09:24Z",
+      "side": 1,
+      "message": "Add function descriptor",
+      "revId": "02c543053c32bb8f3a7a98984109ac279d0260c1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cf708140_4c3d36fb",
+        "filename": "src/5gnrsch/sch_ue_mgr.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 683,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-06-08T09:09:24Z",
+      "side": 1,
+      "message": "function descriptor",
+      "revId": "02c543053c32bb8f3a7a98984109ac279d0260c1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "30dfa132_5f5f5922",
+        "filename": "src/5gnrsch/sch_ue_mgr.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 694,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-06-08T09:09:24Z",
+      "side": 1,
+      "message": "remove commented lines",
+      "revId": "02c543053c32bb8f3a7a98984109ac279d0260c1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3c68506a_764346cb",
+        "filename": "src/5gnrsch/sch_ue_mgr.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 1401,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-06-08T09:09:24Z",
+      "side": 1,
+      "message": "Add function descriptor",
+      "revId": "02c543053c32bb8f3a7a98984109ac279d0260c1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
