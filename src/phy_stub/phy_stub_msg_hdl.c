@@ -285,10 +285,36 @@ void l1HdlConfigReq(uint32_t msgLen, void *msg)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint16_t l1BuildAndSendCrcInd(uint16_t slot, uint16_t sfn)
+uint16_t l1BuildAndSendCrcInd(uint16_t slot, uint16_t sfn, fapi_ul_pusch_pdu_t puschPdu)
 {
+   uint8_t result[]={0,//MSG3
+                     0,//BSR
+                     0,//MSG5 RRC Setup Complete
+                     0,//Security Mode Complete
+                     0,//Registraion Complete
+                     0,//RRC Reconfiguration Complete
+                     0,//UL DATA -1
+                     0,//UL DATA -2
+                     0,//UL DATA -3
+                     0,//UL DATA -4
+                     0,0,0,0,0,
+                     0,0,0,0,0,
+                     0,0,0,0,0,
+                     0,0,0,0,0,
+                     0,0,0,0,0,
+                     0,0,0,0,0,
+                     0,0,0,0,0,
+                     0,0,0,0,0,
+                     0,0,0,0,0,
+                     0,0,0,0,0,
+                     0,0,0,0,0,
+                     0,0,0,0,0,
+                     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+
 #ifdef INTEL_FAPI
    uint8_t idx = 0;
+   static uint8_t ind=0;
+   uint16_t ret = ROK;
    fapi_crc_ind_t  *crcInd;
 
    MAC_ALLOC(crcInd, sizeof(fapi_crc_ind_t));
@@ -304,12 +330,17 @@ uint16_t l1BuildAndSendCrcInd(uint16_t slot, uint16_t sfn)
    crcInd->slot = slot;
    crcInd->numCrcs = 1;
 
-   crcInd->crc[idx].handle = 0;
-   crcInd->crc[idx].rnti = 0;
-   crcInd->crc[idx].harqId = 0;
+   crcInd->crc[idx].handle = puschPdu.handle;
+   crcInd->crc[idx].rnti = puschPdu.rnti;
+   crcInd->crc[idx].harqId = puschPdu.puschData.harqProcessId;
    crcInd->crc[idx].tbCrcStatus = 0;
    crcInd->crc[idx].numCb = 1;
-   crcInd->crc[idx].cbCrcStatus[0] = 0;
+   crcInd->crc[idx].cbCrcStatus[0] = result[ind%50];
+   ret = (0== crcInd->crc[idx].cbCrcStatus[0])?ROK:RFAILED;
+   /*TBD: To use crc ind with random number and percentage */
+   //crcInd->crc[idx].cbCrcStatus[0] = (crcPassPer >= rand()%(100))?0:1;
+   
+   ind++;
    crcInd->crc[idx].ul_cqi = 0;
    crcInd->crc[idx].timingAdvance = 0;
    crcInd->crc[idx].rssi = 0;
@@ -317,12 +348,12 @@ uint16_t l1BuildAndSendCrcInd(uint16_t slot, uint16_t sfn)
    fillMsgHeader(&crcInd->header, FAPI_CRC_INDICATION, \
 	 sizeof(fapi_crc_ind_t) - sizeof(fapi_msg_t));
 
-   /* Sending RACH indication to MAC */
+   /* Sending CRC indication to MAC */
    DU_LOG("\nINFO   -->  PHY STUB: Sending CRC Indication to MAC");
    procPhyMessages(crcInd->header.msg_id, sizeof(fapi_crc_ind_t), (void *)crcInd);
    MAC_FREE(crcInd, sizeof(fapi_crc_ind_t));
 #endif
-   return ROK;
+   return ret;
 } /* l1BuildAndSendCrcInd */
 
 #ifdef INTEL_FAPI
@@ -890,9 +921,35 @@ S16 l1HdlTxDataReq(uint16_t msgLen, void *msg)
 uint8_t fillPucchF0F1PduInfo(fapi_uci_o_pucch_f0f1_t *pduInfo, fapi_ul_pucch_pdu_t pucchPdu)
 {
    uint8_t idx = 0;
+   static uint8_t ind=0;
+   uint8_t result[]={0,//msg4
+                     0,//Security Mode Command
+                     0,//Registration Accept
+                     0,//RRC Reconfiguration
+                     0,//Data 1
+                     0,//Data 2
+                     0,//Data 3
+                     0,//Data 4
+                     0,0,0,0,0,
+                     0,0,0,0,0,
+                     0,0,0,0,0,
+                     0,0,0,0,0,
+                     0,0,0,0,0,
+                     0,0,0,0,0,
+                     0,0,0,0,0,
+                     0,0,0,0,0,
+                     0,0,0,0,0,
+                     0,0,0,0,0,
+                     0,0,0,0,0,
+                     0,0,0,0,0,
+                     0,0,0,0,0,};
 
    pduInfo->handle = pucchPdu.handle;
    pduInfo->pduBitmap = 1;  //hardcoded for SR
+   if (pucchPdu.bitLenHarq)
+   {
+      pduInfo->pduBitmap |= HARQ_PDU_BITMASK;
+   }
    pduInfo->pucchFormat = pucchPdu.formatType;
    pduInfo->ul_cqi = 0;
    pduInfo->rnti = pucchPdu.rnti;
@@ -900,8 +957,11 @@ uint8_t fillPucchF0F1PduInfo(fapi_uci_o_pucch_f0f1_t *pduInfo, fapi_ul_pucch_pdu
    pduInfo->rssi = 0;
    if(pduInfo->pduBitmap & SR_PDU_BITMASK)
    {
-      pduInfo->srInfo.srIndication = SR_DETECTED;
-      pduInfo->srInfo.srConfidenceLevel = CONFDC_LEVEL_GOOD;
+      if (result[ind%50] == 0)
+      {
+         pduInfo->srInfo.srIndication = SR_DETECTED;
+         pduInfo->srInfo.srConfidenceLevel = CONFDC_LEVEL_GOOD;
+      }
    }
    if(pduInfo->pduBitmap & HARQ_PDU_BITMASK)
    {
@@ -909,7 +969,10 @@ uint8_t fillPucchF0F1PduInfo(fapi_uci_o_pucch_f0f1_t *pduInfo, fapi_ul_pucch_pdu
       pduInfo->harqInfo.harqConfidenceLevel = CONFDC_LEVEL_GOOD;
       for(idx = 0; idx < pduInfo->harqInfo.numHarq; idx++)
       {
-         pduInfo->harqInfo.harqValue[idx] = HARQ_PASS;
+         pduInfo->harqInfo.harqValue[idx] = result[ind%50];
+         ind++;
+         /*TBD: To use harq ind with random number and percentage*/
+         //pduInfo->harqInfo.harqValue[idx] = (dlHqPassPer >= rand()%(100))?HARQ_PASS:HARQ_FAIL;
       }
    }
    return ROK;
@@ -1062,7 +1125,10 @@ S16 l1HdlUlTtiReq(uint16_t msgLen, void *msg)
       if(ulTtiReq->pdus[numPdus-1].pduType == 1)
       {
          DU_LOG("\nINFO   -->  PHY STUB: PUSCH PDU");
-         l1BuildAndSendRxDataInd(ulTtiReq->slot, ulTtiReq->sfn, ulTtiReq->pdus[numPdus-1].pdu.pusch_pdu); 
+         if (ROK == l1BuildAndSendCrcInd(ulTtiReq->slot, ulTtiReq->sfn,ulTtiReq->pdus[numPdus-1].pdu.pusch_pdu))
+         {
+            l1BuildAndSendRxDataInd(ulTtiReq->slot, ulTtiReq->sfn, ulTtiReq->pdus[numPdus-1].pdu.pusch_pdu); 
+         }
       }
       if(ulTtiReq->pdus[numPdus-1].pduType == 2)
       {
@@ -1088,6 +1154,7 @@ S16 l1HdlUlTtiReq(uint16_t msgLen, void *msg)
       l1BuildAndSendRachInd(ulTtiReq->slot, ulTtiReq->sfn, CB_RA_PREAMBLE_IDX);
       phyDb.ueDb.numActvUe++;
    }
+   
 #if 0
    /* Send RACH Ind to L2 for second UE */
    if(phyDb.ueDb.ueCb[UE_IDX_1].rachIndSent == false && ulTtiReq->sfn == 304 && ulTtiReq->slot == 0)

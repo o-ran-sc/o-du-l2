@@ -146,8 +146,13 @@ uint8_t createMacRaCb(MacCellCb *cellCb, RachIndInfo *rachIndInfo)
       GET_CRNTI(crnti, ueIdx+1);
 
       /* Store in raCb */
+      memset(&cellCb->macRaCb[ueIdx], 0, sizeof(MacRaCbInfo));
       cellCb->macRaCb[ueIdx].cellId = rachIndInfo->cellId;
       cellCb->macRaCb[ueIdx].crnti  = crnti;
+
+     /* Initialize MSG4 HARQ PROC CB */
+     cellCb->macRaCb[ueIdx].msg4HqInfo.procId = MAX_NUM_HARQ_PROC;
+
    }
 
    /* Store in Rach Indication message to be sent to SCH */
