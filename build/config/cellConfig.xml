@@ -13,14 +13,14 @@
       <priorityLabel>1</priorityLabel>
       <resourceType>PRB_DL</resourceType>
       <rRMPolicyMemberList>
-	<mcc>901</mcc>
-	<mnc>44</mnc>
+	<mcc>311</mcc>
+	<mnc>48</mnc>
 	<sd>000001</sd>
 	<sst>1</sst>
       </rRMPolicyMemberList>
       <rRMPolicyMemberList>
-	<mcc>901</mcc>
-	<mnc>44</mnc>
+	<mcc>311</mcc>
+	<mnc>48</mnc>
 	<sd>000002</sd>
 	<sst>1</sst>
       </rRMPolicyMemberList>
@@ -31,33 +31,33 @@
 	<priorityLabel>1</priorityLabel>
 	<resourceType>PRB_DL</resourceType>
 	<rRMPolicyMemberList>
-	  <mcc>901</mcc>
-	  <mnc>44</mnc>
+	  <mcc>311</mcc>
+	  <mnc>48</mnc>
 	  <sd>000001</sd>
 	  <sst>1</sst>
 	</rRMPolicyMemberList>
 	<rRMPolicyMemberList>
-	  <mcc>901</mcc>
-	  <mnc>44</mnc>
+	  <mcc>311</mcc>
+	  <mnc>48</mnc>
 	  <sd>000002</sd>
 	  <sst>1</sst>
 	</rRMPolicyMemberList>
 	<cellLocalId>1</cellLocalId>
 	<pLMNInfoList>
-	  <mcc>901</mcc>
-	  <mnc>44</mnc>
+	  <mcc>311</mcc>
+	  <mnc>48</mnc>
 	  <sd>000001</sd>
 	  <sst>1</sst>
 	</pLMNInfoList>
 	<pLMNInfoList>
-	  <mcc>901</mcc>
-	  <mnc>44</mnc>
+	  <mcc>311</mcc>
+	  <mnc>48</mnc>
 	  <sd>000002</sd>
 	  <sst>1</sst>
 	</pLMNInfoList>
 	<nRPCI>1</nRPCI>
 	<ssbFrequency>1</ssbFrequency>
-	<ssbPeriodicity>5</ssbPeriodicity>
+	<ssbPeriodicity>20</ssbPeriodicity>
 	<ssbSubCarrierSpacing>15</ssbSubCarrierSpacing>
 	<ssbOffset>0</ssbOffset>
 	<ssbDuration>1</ssbDuration>
