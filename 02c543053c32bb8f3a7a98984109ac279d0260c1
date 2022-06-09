@@ -24,6 +24,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "87cee2a9_7f57f866",
+        "filename": "src/5gnrmac/mac_harq_dl.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-06-09T12:55:01Z",
+      "side": 1,
+      "message": "Initialized to MAX_NUM_OF_HARQ_PROC \u003d 16",
+      "parentUuid": "b28821a2_203a4b7e",
+      "range": {
+        "startLine": 53,
+        "startChar": 16,
+        "endLine": 53,
+        "endChar": 22
+      },
+      "revId": "02c543053c32bb8f3a7a98984109ac279d0260c1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "388ee015_e106dec0",
@@ -37,6 +61,24 @@
       "writtenOn": "2022-06-08T13:42:36Z",
       "side": 1,
       "message": "We should also send Failure in case when we are not able to find any harq process for this case...",
+      "revId": "02c543053c32bb8f3a7a98984109ac279d0260c1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3dd813aa_e593f014",
+        "filename": "src/5gnrmac/mac_harq_dl.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-06-09T12:55:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "388ee015_e106dec0",
       "revId": "02c543053c32bb8f3a7a98984109ac279d0260c1",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -71,6 +113,30 @@
       "writtenOn": "2022-06-08T13:42:36Z",
       "side": 1,
       "message": "unused variable.. only assigned but not used",
+      "range": {
+        "startLine": 258,
+        "startChar": 17,
+        "endLine": 258,
+        "endChar": 25
+      },
+      "revId": "02c543053c32bb8f3a7a98984109ac279d0260c1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4a5126bb_f2380a8b",
+        "filename": "src/5gnrmac/mac_slot_ind.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 258,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-06-09T12:55:01Z",
+      "side": 1,
+      "message": "Instead of using \"macCb.macCell[cellIdx]-\u003emacRaCb[ueIdx].msg4HqInfo\" at all places, now using hqProcCb for cleaner code",
+      "parentUuid": "b2a3a708_795d01ec",
       "range": {
         "startLine": 258,
         "startChar": 17,
@@ -167,6 +233,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bffc94ac_91ee8ad8",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 1711,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-06-09T12:55:01Z",
+      "side": 1,
+      "message": "In case of failure of scheduling, \n1. For new data tx, the newly assigned hqP will be freed in caller function.\n2. For retx, we must not free hqP to allow scheduling of retx in future slot.",
+      "parentUuid": "a6cb1a5a_c18ad1b6",
+      "range": {
+        "startLine": 1711,
+        "startChar": 6,
+        "endLine": 1711,
+        "endChar": 27
+      },
+      "revId": "02c543053c32bb8f3a7a98984109ac279d0260c1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "12e8da72_f435c2bd",
@@ -180,6 +270,30 @@
       "writtenOn": "2022-06-08T09:09:24Z",
       "side": 1,
       "message": "Also, we should not release the process so that retransmission can be scheduled in future slot",
+      "range": {
+        "startLine": 1722,
+        "startChar": 9,
+        "endLine": 1722,
+        "endChar": 30
+      },
+      "revId": "02c543053c32bb8f3a7a98984109ac279d0260c1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0db2dd54_2665662d",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 1722,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-06-09T12:55:01Z",
+      "side": 1,
+      "message": "In the caller of this function, we are already adding the UE to pendingUE list if scheduling fails. So the scheduling will be retried in next slot. Hence the hq process should not be released for retx",
+      "parentUuid": "12e8da72_f435c2bd",
       "range": {
         "startLine": 1722,
         "startChar": 9,
@@ -402,6 +516,24 @@
       "writtenOn": "2022-06-08T09:09:24Z",
       "side": 1,
       "message": "There will never be a MSG3 for CF-RA. We can rename MSG4_DONE to RA_COMPLETE.\nraState can be set to RA Complete when:\n1. MSG4 is acked in case of CBRA and\n2. RAR is sent in case CF-RA",
+      "revId": "02c543053c32bb8f3a7a98984109ac279d0260c1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4e7697df_d3c1bc0b",
+        "filename": "src/5gnrsch/sch_rach.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 391,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-06-09T12:55:01Z",
+      "side": 1,
+      "message": "In case of CFRA, changing RA state to SCH_RA_MSG4_DONE",
+      "parentUuid": "8e656f1f_92c72db5",
       "revId": "02c543053c32bb8f3a7a98984109ac279d0260c1",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
