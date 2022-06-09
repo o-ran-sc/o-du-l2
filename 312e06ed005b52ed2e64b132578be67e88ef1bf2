@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "aee41af9_eae9e3a4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000484
+      },
+      "writtenOn": "2022-06-09T11:54:39Z",
+      "side": 1,
+      "message": "Fix for cell configuration issue.",
+      "revId": "312e06ed005b52ed2e64b132578be67e88ef1bf2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
