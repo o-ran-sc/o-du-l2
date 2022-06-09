@@ -16,6 +16,23 @@
       "message": "Fix for cell configuration issue.",
       "revId": "312e06ed005b52ed2e64b132578be67e88ef1bf2",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "927fd6ca_d3deef0c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000482
+      },
+      "writtenOn": "2022-06-09T13:37:02Z",
+      "side": 1,
+      "message": "Looks fine",
+      "revId": "312e06ed005b52ed2e64b132578be67e88ef1bf2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
   ]
 }
