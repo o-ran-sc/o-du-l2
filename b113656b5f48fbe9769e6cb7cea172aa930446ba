@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d9d16ff0_f01560f1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000484
+      },
+      "writtenOn": "2022-06-10T14:58:34Z",
+      "side": 1,
+      "message": "Made non stnd defined PM as default.",
+      "revId": "b113656b5f48fbe9769e6cb7cea172aa930446ba",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
