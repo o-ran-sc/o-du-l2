@@ -686,9 +686,9 @@ S16 cuEgtpDecodeHdr(Buffer *mBuf)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint16_t cuEgtpDatReq(uint8_t teId)
+uint16_t cuEgtpDatReq(uint32_t duId, uint8_t teId)
 {
-   uint8_t ret = ROK, cnt = 0, duId =0;
+   uint8_t ret = ROK, cnt = 0;
    EgtpMsg  egtpMsg;
 
    egtpMsg.msgHdr.teId = teId;
@@ -698,26 +698,23 @@ uint16_t cuEgtpDatReq(uint8_t teId)
       DU_LOG("\nERROR  -->  EGTP : DRB  not created");
       return RFAILED ;
    }
-   for(duId = 1; duId<=egtpCb.numDu; duId++)
+   /* Build Application message that is supposed to come from app to egtp */
+   ret = BuildAppMsg(duId, &egtpMsg);
+   if(ret != ROK)
    {
-      /* Build Application message that is supposed to come from app to egtp */
-      ret = BuildAppMsg(duId, &egtpMsg);
-      if(ret != ROK)
-      {
-         DU_LOG("\nERROR  -->  EGTP : Failed to build App Msg");
-         return RFAILED;
-      }
-
-      /* Encode EGTP header to build final EGTP message */
-      ret = BuildEgtpMsg(duId, &egtpMsg);
-      if(ret != ROK)
-      {
-         DU_LOG("\nERROR  -->  EGTP : Failed to build EGTP Msg");
-         return RFAILED;
-      }
-      cuEgtpSendMsg(duId, egtpMsg.msg);
-      ODU_PUT_MSG_BUF(egtpMsg.msg);
+      DU_LOG("\nERROR  -->  EGTP : Failed to build App Msg");
+      return RFAILED;
    }
+
+   /* Encode EGTP header to build final EGTP message */
+   ret = BuildEgtpMsg(duId, &egtpMsg);
+   if(ret != ROK)
+   {
+      DU_LOG("\nERROR  -->  EGTP : Failed to build EGTP Msg");
+      return RFAILED;
+   }
+   cuEgtpSendMsg(duId, egtpMsg.msg);
+   ODU_PUT_MSG_BUF(egtpMsg.msg);
    return ROK;
 }
 

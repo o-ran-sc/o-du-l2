@@ -356,12 +356,17 @@ uint16_t l1BuildAndSendRxDataInd(uint16_t slot, uint16_t sfn, fapi_ul_pusch_pdu_
    GET_UE_ID(puschPdu.rnti, ueId);
    if(phyDb.ueDb.ueCb[ueId-1].isCFRA)
    {
-      /* In CF-RA in case of handover, RRC Reconfiguration Complete is sent
-       * by UE once RAR is received from DU */
-      phyDb.ueDb.ueCb[ueId-1].ueId = ueId;
-      phyDb.ueDb.ueCb[ueId-1].crnti = puschPdu.rnti;
-      phyDb.ueDb.ueCb[ueId-1].msgRrcReconfigComp = true;
-      type = MSG_TYPE_RRC_RECONFIG_COMPLETE;
+      if(!phyDb.ueDb.ueCb[ueId-1].msgRrcReconfigComp)
+      {
+         /* In CF-RA in case of handover, RRC Reconfiguration Complete is sent
+          * by UE once RAR is received from DU */
+         phyDb.ueDb.ueCb[ueId-1].ueId = ueId;
+         phyDb.ueDb.ueCb[ueId-1].crnti = puschPdu.rnti;
+         phyDb.ueDb.ueCb[ueId-1].msgRrcReconfigComp = true;
+         type = MSG_TYPE_RRC_RECONFIG_COMPLETE;
+      }
+      else
+         return ROK; 
    }
    else
    {
@@ -399,7 +404,7 @@ uint16_t l1BuildAndSendRxDataInd(uint16_t slot, uint16_t sfn, fapi_ul_pusch_pdu_
          type = MSG_TYPE_RRC_RECONFIG_COMPLETE;
       }
       else
-         return RFAILED;
+         return ROK;
    }
 
    MAC_ALLOC(rxDataInd, sizeof(fapi_rx_data_indication_t));

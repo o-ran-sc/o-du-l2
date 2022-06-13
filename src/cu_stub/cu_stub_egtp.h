@@ -44,7 +44,7 @@
 #define MIN_TEID 1   /*[Spec 29.281,Sec 5.1]: All Zero TEIDs are never assigned for setting up GTP-U Tunnel*/
 #define MAX_TEID MAX_NUM_DRB * MAX_NUM_UE /*[Spec 29.281]: Max limit is not mentioned but as per GTP-U Header Format, TEID occupies 4 octets */
 
-#define NUM_TUNNEL_TO_PUMP_DATA 9
+#define NUM_TUNNEL_TO_PUMP_DATA 4
 #define NUM_DL_PACKETS 1
 
 uint8_t         sockType;
@@ -155,7 +155,7 @@ S16 cuEgtpTnlMod(uint32_t duId,EgtpTnlEvt tnlEvt);
 S16 cuEgtpTnlDel(uint32_t duId,EgtpTnlEvt tnlEvt);
 S16 cuEgtpEncodeHdr(uint8_t *preEncodedHdr, EgtpMsgHdr *preDefHdr, uint8_t *hdrIdx);
 S16 cuEgtpHdlRecvMsg(Buffer *mBuf);
-uint16_t cuEgtpDatReq(uint8_t teId);
+uint16_t cuEgtpDatReq(uint32_t duId, uint8_t teId);
 S16 BuildAppMsg(uint32_t duId, EgtpMsg  *egtpMsg);
 S16 BuildEgtpMsg(uint32_t duId, EgtpMsg *egtpMsg);
 S16 cuEgtpSendMsg(uint32_t duId, Buffer *mBuf);

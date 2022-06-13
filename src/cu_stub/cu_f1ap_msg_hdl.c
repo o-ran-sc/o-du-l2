@@ -2660,6 +2660,7 @@ uint8_t BuildULTnlInfo(uint8_t duId, TnlInfo *ulUpTnlInfo, ULUPTNLInformation_To
  * ****************************************************************/
 uint8_t BuildDRBSetup(uint32_t duId, CuUeCb *ueCb, DRBs_ToBeSetup_List_t *drbSet)
 {
+   uint16_t snssaiIdx=0;
    uint8_t idx = 0, extIeIdx = 0;
    uint8_t elementCnt = 0, drbCnt = 0;
    uint8_t BuildQOSInforet = 0,BuildSNSSAIret = 0;
@@ -2728,12 +2729,13 @@ uint8_t BuildDRBSetup(uint32_t duId, CuUeCb *ueCb, DRBs_ToBeSetup_List_t *drbSet
       }
 
       /*SNSSAI*/
+      snssaiIdx = (idx% cuCb.numSnssaiSupported);
       if(ueCb->state != UE_HANDOVER_IN_PROGRESS)
          BuildSNSSAIret = BuildSNSSAI(&ueCb->drbList[ueCb->numDrb], &drbSetItem->qoSInformation.choice.\
-               choice_extension->value.choice.DRB_Information.sNSSAI, cuCb.snssaiList[0], FALSE);
+               choice_extension->value.choice.DRB_Information.sNSSAI, cuCb.snssaiList[snssaiIdx], FALSE);
       else
          BuildSNSSAIret = BuildSNSSAI(&ueCb->drbList[idx], &drbSetItem->qoSInformation.choice.\
-               choice_extension->value.choice.DRB_Information.sNSSAI, cuCb.snssaiList[0], TRUE);
+               choice_extension->value.choice.DRB_Information.sNSSAI, NULLP, TRUE);
       if(BuildSNSSAIret != ROK)
       {
          DU_LOG("\nERROR  -->  F1AP : Failed to build SNSSAI Info in BuildDRBSetup");
