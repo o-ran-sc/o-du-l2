@@ -6,7 +6,7 @@
 API-Docs
 **********
 
-This is the API-docs for e-release o-du/l2.
+This is the API-docs for F release o-du/l2.
 
 .. contents::
    :depth: 3
@@ -46,42 +46,54 @@ API Functions
    A. MAC to Scheduler
 
       a. Air Interface Time : Sends timing information over air interface in terms of SFN and slo, as per Section
-         9.2.3.1.1 of the AAD Spec
+         9.2.3.1.1 of the AAD Spec.
 
-      b. Cell Configuration Request : MAC provides SCH the cell configuration as per Section 9.2.3.2.1 of the AAD Spec
+      b. Cell Configuration Request : MAC provides SCH the cell configuration as per Section 9.2.3.2.1 of the AAD Spec.
 
-      c. Add UE Configuration Request : MAC provides SCH the configuration/capabilities of a UE as per Section 9.2.3.2.5 of the AAD Spec
+      c. Add UE Configuration Request : MAC provides SCH the configuration/capabilities of a UE as per Section 9.2.3.2.5 of the AAD Spec.
 
       d. Modify UE Reconfiguration Request : MAC provides SCH the re-configuration of UE, also used to
-         add/release/modify existing bearers, as per Section 9.2.3.2.6 of the AAD Spec
+         add/release/modify existing bearers, as per Section 9.2.3.2.6 of the AAD Spec.
 
-      e. RACH Indication : MAC receives the RACH Indication and share the contents with SCH as per Section 9.2.3.2.12 of the AAD Spec
+      e. RACH Indication : MAC receives the RACH Indication and share the contents with SCH as per Section 9.2.3.2.12 of the AAD Spec.
 
       f. DL RLC Buffer Status Information : Reports data volume per LC when it is received at MAC as per Section
-         9.2.3.2.16 of the AAD Spec
+         9.2.3.2.16 of the AAD Spec.
 
       g. UL Buffer Status Report Indication : On reception and decoding of received BSR from the UE, MAC provides SCH
-         buffer status report for UL scheduling, as per Section 9.2.3.2.18 of the AAD Spec
+         buffer status report for UL scheduling, as per Section 9.2.3.2.18 of the AAD Spec.
 
       h. UE Delete Request : MAC receives UE delete request and forwards the request to SCH as per Section 9.2.3.2.7
-         of the AAD spec.
+         of the AAD Spec.
 
       i. Cell Delete Request :  MAC receives UE delete request and forwards the request to SCH as per Section 9.2.3.2.2
-         of the AAD spec.
+         of the AAD Spec.
 
       j. Slice Configuration Request : MAC receives Slice Configuration request and forwards the request to SCH as per Section
-         9.2.3.2.3 of the AAD Spec
+         9.2.3.2.3 of the AAD Spec.
 	 
       k. Slice Reconfiguration Request : MAC receives Slice Reconfiguration request and forwards the request to SCH as per 
-         Section 9.2.3.2.4 of the AAD Spec
+         Section 9.2.3.2.4 of the AAD Spec.
 
-      l. Paging Indication : MAC receives Paging Indication and forwards the trigger to SCH as per Section 9.2.3.2.13 of the AAD Spec
+      l. Paging Indication : MAC receives Paging Indication and forwards the trigger to SCH as per Section 9.2.3.2.13 of the AAD Spec.
+
+      m. RACH Resource Request : MAC receives RACH Resource Request for dedicated RACH resource allocation and forwards to SCH as per 
+         Section 9.2.3.2.14 of the AAD Spec.
+
+      n. RACH Resource Release : MAC receives RACH Resource Release from DU APP and forwards to SCH as per Section 9.2.3.2.15 of the
+         AAD Spec.
+
+      o. DL HARQ Indication : MAC receives UCI Indication and forwards any DL HARQ feedback from UE to SCH as per Sectiion 9.2.3.2.8 
+         of the AAD spec.
+
+      p. UL HARQ CRC Indication : MAC receives CRC Indication from PHY and forwards the decoded results to SCH as per Section 
+         9.2.3.2.9 of the AAD Spec.
 
    B. Scheduler to MAC
 
-      a. Cell Configuration Response - Response to cell configuration request from MAC, as per Section 9.2.3.3.1 of the AAD Spec
+      a. Cell Configuration Response - Response to cell configuration request from MAC, as per Section 9.2.3.3.1 of the AAD Spec.
 
-      b. UE Reconfiguration Response - Response to UE reconfiguration request from MAC, as per Section 9.2.3.3.6 of the AAD Spec
+      b. UE Reconfiguration Response - Response to UE reconfiguration request from MAC, as per Section 9.2.3.3.6 of the AAD Spec.
 
       c. DL Scheduling Information - Provides scheduling information for a given slot for downlink data, as per Section
          9.2.3.3.8 of the AAD spec.
@@ -92,18 +104,18 @@ API Functions
       e. RAR Information - Informs MAC of uplink scheduling and Msg3 scheduling information, as per Section 9.2.3.3.10 of the AAD Spec.
 
       f. Downlink Control Channel Information - Provides DCI scheduling information for a given slot on PDCCH, as per
-         Section 9.2.3.3.11 of the AAD Spec
+         Section 9.2.3.3.11 of the AAD Spec.
 
       g. Downlink Broadcast Allocation - Provides DCI and DL data scheduling information for SIB1 for a given slot for
          Broadcast Channel, as per Section 9.2.3.3.12 of the AAD Spec.
 
-      h. UE Delete Response - Response to UE delete request from MAC, as per Section 9.2.3.3.7
+      h. UE Delete Response - Response to UE delete request from MAC, as per Section 9.2.3.3.7 of the AAD Spec.
 
-      i. Cell Delete Response - Response to Cell delete request from MAC, as per Section 9.2.3.3.2
+      i. Cell Delete Response - Response to Cell delete request from MAC, as per Section 9.2.3.3.2 of the AAD Spec.
 
-      j. Slice Configuration Response : Response to Slice Configuration request from MAC, as per Section 9.2.3.3.3 of the AAD Spec
+      j. Slice Configuration Response : Response to Slice Configuration request from MAC, as per Section 9.2.3.3.3 of the AAD Spec.
 	 
-      k. Slice Reconfiguration Response : Response to Slice Reconfiguration request from MAC, as per Section 9.2.3.3.4 of the AAD Spec
+      k. Slice Reconfiguration Response : Response to Slice Reconfiguration request from MAC, as per Section 9.2.3.3.4 of the AAD Spec.
 
       l. Downlink Paging Allocation :  Provides DCI and DL data scheduling information for any Paging queued for a given slot 
          for Paging Channel, as per Section 9.2.3.3.13 of the AAD Spec.
@@ -129,8 +141,11 @@ API Functions
       f. UE Delete Request - Deletes UE information at MAC as per Section 9.2.4.7  of the AAD Spec.
 
       g. DL PCCH Indication - Sends DL PCCH Message to MAC for any Paging scheduled on a slot, as per Section 9.2.4.17 of the AAD Spec.
-      
 
+      h. RACH Resource Request - Requests for dedicated RACH resources for CF-RA with a UE, as per Section 9.2.4.9 of the AAD Spec.
+
+      i. RACH Resource Release - Releases dedicated RACH resources allocated for a UE for CF-RA, as per Section 9.2.4.11 of the AAD Spec.
+      
    B. MAC to DU APP
 
       a. UE Create Response - Response to UE Create Request from DU Manager as per Section 9.2.4.4 of the AAD Spec.
@@ -141,6 +156,8 @@ API Functions
       c. UL-CCCH Indication - Sends the UL CCCH Message received from UE to DU APP as per Section 9.2.4.15 of AAD Spec.
 
       d. UE Delete Response - Response to UE Delete Request from DU Manager as per Section 9.2.4.8 of the AAD Spec.
+
+      e. RACH Resource Response - Responds with dedicated resources allocated for CF-RA for a UE, as per Section 9.2.4.10 of the AAD Spec.
       
 4. DU APP - RLC Interface
    
@@ -158,16 +175,16 @@ API Functions
 
    B. RLC to DU APP
 
-      a. UE Create Response - Response to UE Create Request from DU APP, as per Section 9.2.5.3
+      a. UE Create Response - Response to UE Create Request from DU APP, as per Section 9.2.5.3 of the AAD Spec.
 
-      b. UE Reconfiguration Response - Response to UE Recofiguration Request from DU APP, as per Section 9.2.5.4
+      b. UE Reconfiguration Response - Response to UE Recofiguration Request from DU APP, as per Section 9.2.5.4 of the AAD Spec.
 
       c. UL RRC Message Tranfer - Delivers RRC Message from UE to CU as per Section 9.2.5.8 of the AAD spec.
 
       d. RRC Message Delivery Report - Informs DU Manager on failed/successful delivery of a DL RRC message to UE, as
          per Section 9.2.5.9 of the AAD Spec.
 
-      e. UE Delete Response - Response to UE Delete Request from DU APP, as per section 9.2.5.6
+      e. UE Delete Response - Response to UE Delete Request from DU APP, as per section 9.2.5.6 of the AAD Spec.
 
 5. SMO-OAM - DU APP
 
@@ -175,9 +192,9 @@ API Functions
 
    A. SMO-OAM to DU APP
 
-      a. Cell Configuration - Sends Basic Cell Configurations to DU APP as per Section 9.2.1.1
+      a. Cell Configuration - Sends Basic Cell Configurations to DU APP as per Section 9.2.1.1 of the AAD Spec.
       
-      b. Slice Configuration - Sends Slice Configurations to DU APP as per Section 9.2.1.2
+      b. Slice Configuration - Sends Slice Configurations to DU APP as per Section 9.2.1.2 of the AAD Spec.
 
 Additional APIs
 ----------------
@@ -227,3 +244,10 @@ Additional APIs
 
    e. Slice PM - DU APP sends PM for all Slices in 60sec duration.
 
+4. MAC - SCH Interface
+
+   A. SCH to MAC
+
+      a. RACH Resource Response : Response to RACH Resource Request for dedicated resource for CF-RA
+
+      b. HARQ Process Release : SCH indicates MAC to release a HARQ process in case a positive acknowledement is received or maximum retransmissions are done already.

@@ -5,8 +5,7 @@
 Release-Notes
 **************
 
-
-This document provides the release notes for D Release of O-DU-L2.
+This document provides the release notes for F Release of O-DU-L2.
 
 .. contents::
    :depth: 3
@@ -19,6 +18,10 @@ Version history
 +--------------------+--------------------+--------------------+--------------------+
 | **Date**           | **Ver.**           | **Author**         | **Comment**        |
 |                    |                    |                    |                    |
++--------------------+--------------------+--------------------+--------------------+
+|2022-06-16          | 6.0.0              | Radisys,           | F release          |
+|                    |                    | HCL Technologies   |                    |
+|                    |                    | Ltd.               |                    |
 +--------------------+--------------------+--------------------+--------------------+
 | 2022-01-14         | 5.0.0              | Radisys,           | e-release          |
 |                    |                    | HCL Technologies   |                    |
@@ -47,8 +50,14 @@ F- release
 ^^^^^^^^^^
 This release contains the following:
 
- - Upgrade to E2AP version 2.0.
- - Support for IDLE Mode Paging.
+ - HARQ framework support and scheduler enhancement to prioritize retransmission
+
+ - Upgrade to E2AP version 2.0
+
+ - Support for IDLE Mode Paging
+
+ - Mobility mode Support (Intra-CU handover)
+
 
  - O1 Module
 
@@ -165,6 +174,25 @@ This release contains the following:
 
 Release Data
 ------------
+F release
+^^^^^^^^^^
++--------------------------------------+--------------------------------------+
+| **Project**                          | ODUHIGH                              |
+|                                      |                                      |   
++--------------------------------------+--------------------------------------+
+| **Repo/commit-ID**                   |o-du/l2/                              |
+|                                      |I2eeed74163fe985e6421ea563c5170f8cf81 |
+|                                      |7e6d                                  |
++--------------------------------------+--------------------------------------+
+| **Release designation**              | F release                            |
+|                                      |                                      |   
++--------------------------------------+--------------------------------------+
+| **Release date**                     |2022-06-16                            |
+|                                      |                                      |   
++--------------------------------------+--------------------------------------+
+| **Purpose of the delivery**          | F release                            |
+|                                      |                                      |   
++--------------------------------------+--------------------------------------+
 
 e-release
 ^^^^^^^^^^ 
@@ -283,7 +311,13 @@ F-release
 | **JIRA REFERENCE**                            | **SLOGAN**                                    |
 |                                               |                                               |
 +-----------------------------------------------+-----------------------------------------------+
+| https://jira.o-ran-sc.org/browse/ODUHIGH-402  | Support for HARQ and scheduler enhancement to |
+|                                               | prioritize retransmission                     |
++-----------------------------------------------+-----------------------------------------------+
 | https://jira.o-ran-sc.org/browse/ODUHIGH-404  | Support for E2AP version 2.0                  | 
+|                                               |                                               |
++-----------------------------------------------+-----------------------------------------------+
+| https://jira.o-ran-sc.org/browse/ODUHIGH-405  | Support for Inter-DU Handover                 | 
 |                                               |                                               |
 +-----------------------------------------------+-----------------------------------------------+
 | https://jira.o-ran-sc.org/browse/ODUHIGH-406  | Support for Idle Mode Paging                  | 
@@ -539,26 +573,28 @@ References
 ----------
 1. ORAN-WG8.AAD.0-v05.00.00
 
-2. ORAN WG3.E2AP v02.00
+2. O-RAN.WG5.C.1-v05.00
 
-3. 3GPP 38.473-f60 v15.3
+3. ORAN WG3.E2AP v02.00
 
-4. 3GPP TS 38.211 v15.3
+4. 3GPP 38.473-f60 v15.3
 
-5. 3GPP TS 38.212 v15.3
+5. 3GPP TS 38.211 v15.3
 
-6. 3GPP TS 38.213 v15.3
+6. 3GPP TS 38.212 v15.3
 
-7. 3GPP TS 38.214 v15.3
+7. 3GPP TS 38.213 v15.3
 
-8. 3GPP TS 38.321 v15.3
+8. 3GPP TS 38.214 v15.3
 
-9. 3GPP TS 38.331 v15.3
+9. 3GPP TS 38.321 v15.3
 
-10. 5G PHY FAPI Specification v1.0.5
+10. 3GPP TS 38.331 v15.3
 
-11. 3GPP TS 28.541 Specfication V16.6
+11. 5G PHY FAPI Specification v1.0.5
 
-12. O-RAN WG1.O1-Interface v04.00
+12. 3GPP TS 28.541 Specfication V16.6
 
-13. O-RAN WG1.OAM-Architecture v04.00
+13. O-RAN WG1.O1-Interface v04.00
+
+14. O-RAN WG1.OAM-Architecture v04.00
