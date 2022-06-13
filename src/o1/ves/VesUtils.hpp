@@ -24,7 +24,7 @@
 #include <iostream>
 #include "GlobalDefs.hpp"
 
-//#define StdDef 1 
+//#define StdDef
 //config file path
 #define NETCONF_CONFIG "config/netconfConfig.json"
 #define OAM_VES_CONFIG "config/oamVesConfig.json"

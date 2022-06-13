@@ -60,48 +60,13 @@ C. Pre-requisite for O1 Interface (Required only if run with O1 interface enable
    $cd l2/build/scripts
    $sudo ./load_yang.sh
 
-   h. Install additional 3GPP yang models.
-
-      Download following 3GPP REL17 YANG models
-      https://forge.3gpp.org/rep/sa5/MnS/tree/Rel17-draft/yang-models
-
-   $cd l2/build/yang
-
-   _3gpp-common-top.yang
-   _3gpp-5g-common-yang-types.yang
-   _3gpp-common-yang-types.yang
-   _3gpp-common-managed-element.yang
-   _3gpp-common-measurements.yang
-   _3gpp-common-subscription-control.yang
-   _3gpp-common-fm.yang
-   _3gpp-common-trace.yang
-   _3gpp-common-managed-function.yang
-   _3gpp-nr-nrm-gnbdufunction.yang
-   _3gpp-nr-nrm-nrcelldu.yang
-   _3gpp-nr-nrm-rrmpolicy.yang
-
-   Note :There are some corrections required in _3gpp-common-trace.yang and _3gpp-common-trace.yang yang model. Please follow these steps.
-
-   $cd l2/build/yang
-   $sed -i -e 's/"IMMEDIATE_MDT"/"IMMEDIATE_MDT_ONLY"/g' _3gpp-common-trace.yang
-   $sed -i -e 's/"TRACE"/"TRACE_ONLY"/g' _3gpp-common-trace.yang
-
-   Install all the downloaded yang models.
-
-   $cd l2/build/yang
-   $sysrepoctl -i      _3gpp-common-yang-types.yang
-   $sysrepoctl -i      _3gpp-common-top.yang
-   $sysrepoctl -i      _3gpp-common-measurements.yang
-   $sysrepoctl -i      _3gpp-common-trace.yang
-   $sysrepoctl -i      _3gpp-common-managed-function.yang
-   $sysrepoctl -i      _3gpp-common-subscription-control.yang
-   $sysrepoctl -i      _3gpp-common-fm.yang
-   $sysrepoctl -i      _3gpp-common-managed-element.yang
-   $sysrepoctl -i      _3gpp-5g-common-yang-types.yang
-   $sysrepoctl -i      _3gpp-nr-nrm-rrmpolicy.yang
-   $sysrepoctl -i      _3gpp-nr-nrm-gnbdufunction.yang
-   $sysrepoctl -i      _3gpp-nr-nrm-nrcelldu.yang
-
+   h. To enable Standard Defined VES format:
+      
+      cd l2/src/o1/ves
+      
+      Enable the Macro "StdDef" in file VesUtils.h
+      
+      #define StdDef
 
 3. Start Netopeer2-server:
    $cd l2/build/scripts

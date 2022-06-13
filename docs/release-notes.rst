@@ -50,6 +50,11 @@ This release contains the following:
  - Upgrade to E2AP version 2.0.
  - Support for IDLE Mode Paging.
 
+ - O1 Module
+
+      - Alarm notification for cell down. 
+      - Added support for standard defined VES format in alarm notification and PM messages.
+
 e-release
 ^^^^^^^^^^
 This release contains the following:
@@ -282,6 +287,9 @@ F-release
 |                                               |                                               |
 +-----------------------------------------------+-----------------------------------------------+
 | https://jira.o-ran-sc.org/browse/ODUHIGH-406  | Support for Idle Mode Paging                  | 
+|                                               |                                               |
++-----------------------------------------------+-----------------------------------------------+
+| https://jira.o-ran-sc.org/browse/ODUHIGH-429  | O1 Enhancements                               | 
 |                                               |                                               |
 +-----------------------------------------------+-----------------------------------------------+
 

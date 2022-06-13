@@ -159,50 +159,12 @@ Setting up Netconf server (Only if O1 interface enabled)
       | $cd <O-DU High Directory>/l2/build/scripts
       | $sudo ./load_yang.sh
 
-    - Install additional 3GPP YANG models.
-
-      | $cd <O-DU High Directory>/l2/build/yang
-
-      | Download following 3GPP REL17 YANG models
-      | https://forge.3gpp.org/rep/sa5/MnS/tree/Rel17-draft/yang-models
-
-      | _3gpp-common-top.yang
-      | _3gpp-5g-common-yang-types.yang
-      | _3gpp-common-yang-types.yang
-      | _3gpp-common-managed-element.yang
-      | _3gpp-common-measurements.yang
-      | _3gpp-common-subscription-control.yang
-      | _3gpp-common-fm.yang
-      | _3gpp-common-trace.yang
-      | _3gpp-common-managed-function.yang
-      | _3gpp-nr-nrm-gnbdufunction.yang
-      | _3gpp-nr-nrm-nrcelldu.yang
-      | _3gpp-nr-nrm-rrmpolicy.yang
-
-      | Note : There are some corrections required in _3gpp-common-trace.yang and _3gpp-common-trace.yang yang model. Please follow these steps.
-
-      - Ubuntu :
+    - To enable Standard Defined VES format:      
       
-      | sed -i -e 's/"IMMEDIATE_MDT"/"IMMEDIATE_MDT_ONLY"/g' _3gpp-common-trace.yang
-      | sed -i -e 's/"TRACE"/"TRACE_ONLY"/g' _3gpp-common-trace.yang
-
-   - Install all the downloaded yang models.
-
-       - Ubuntu :
-
-       | cd <O-DU High Directory>/l2/build/yang
-       | sysrepoctl -i      _3gpp-common-yang-types.yang
-       | sysrepoctl -i      _3gpp-common-top.yang
-       | sysrepoctl -i      _3gpp-common-measurements.yang
-       | sysrepoctl -i      _3gpp-common-trace.yang
-       | sysrepoctl -i      _3gpp-common-managed-function.yang
-       | sysrepoctl -i      _3gpp-common-subscription-control.yang
-       | sysrepoctl -i      _3gpp-common-fm.yang
-       | sysrepoctl -i      _3gpp-common-managed-element.yang
-       | sysrepoctl -i      _3gpp-5g-common-yang-types.yang
-       | sysrepoctl -i      _3gpp-nr-nrm-rrmpolicy.yang
-       | sysrepoctl -i      _3gpp-nr-nrm-gnbdufunction.yang
-       | sysrepoctl -i      _3gpp-nr-nrm-nrcelldu.yang
+      | cd l2/src/o1/ves
+            
+      | Enable the Macro "StdDef" in file VesUtils.h      
+      | #define StdDef
 
 - Start Netopeer2-server:
 
