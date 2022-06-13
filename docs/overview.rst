@@ -430,7 +430,7 @@ This section describes the Idle Mode Paging procedure within O-DU High.
 
 As seen in the Figure 9,
 
-- When a Paging is received from CU and the Cell to be Paged is UP then DU APP will calculate Paging Frame(PF) and i_s(Index of Paging Ocassion/Slot) and groups the Paging of UEs falling on same PF/SFN together and stores in its Cell's Databse.
+- When a Paging is received from O-CU and the Cell to be Paged is UP then DU APP will calculate Paging Frame(PF) and i_s(Index of Paging Ocassion/Slot) and groups the Paging of UEs falling on same PF/SFN together and stores in its Cell's Databse.
 
 - When a Slot Indication for SFN is received then DU APP extracts the Paging of all UEs whose PF is ahead by PAGING_DELTA and builds Paging RRC PDU. DU APP sends the same via DL PCCH Indication to MAC.
 
@@ -439,6 +439,52 @@ As seen in the Figure 9,
 - SCH stores the Page Message in its DB and when the SLOT_INDICATION for that SFN arrives, SCH performs scheduling and resource allocation for PDCCH (alongwith DCI 1_0 format) and PDSCH channels and sends to MAC through DL PAGING ALLOCATION message.
 
 - MAC forwards the PAGE to PHY in TX_Data.Request.
+
+Inter-DU Handover within O-CU
+------------------------------
+
+This section describes the handling of inter-DU handover of a UE within O-DU High.
+
+.. figure:: Inter_DU_Handover_Within_OCU.png
+   :width: 600
+   :alt: Inter-DU Handover withing O-CU
+ 
+   Figure 9 -  Inter_DU Handover call flow
+
+Assumption: UE is RRC connected with DU and PDU data session is active.
+
+- The UE sends Measurement Report message to the source O-DU. This message is sent from O-DU to O-CU in the UL RRC MESSAGE TRANSFER message over F1AP interface.
+
+- Based on UE Measurement Report, O-CU makes a handover decision to another cell belonging to the target O-DU.
+
+- The O-CU sends a UE CONTEXT MODIFICATION REQUEST message to source O-DU to query the latest configuration.
+
+- The DU APP in source O-DU responds with a UE CONTEXT MODIFICATION RESPONSE message that includes latest full configuration information.
+
+- The O-CU sends a UE CONTEXT SETUP REQUEST message to the target O-DU to create an UE context and setup one or more data bearers. The UE CONTEXT SETUP REQUEST message includes Hand-overPreparationInformation. At target O-DU, DU APP sends UE Create Request to MAC and RLC layers to create the UE context with radio resources and receives UE Create Response from the respective protocol layers.
+
+- The target O-DU responds with a UE CONTEXT SETUP RESPONSE message if the target O-DU can admit resources for the handover.
+
+- The O-CU sends a UE CONTEXT MODIFICATION REQUEST message to the source O-DU, which includes RRCReconfiguration message towards the UE. The O-CU also indicates the source O-DU to stop the data transmission for the UE.
+
+- The source O-DU forwards the received RRCReconfiguration message to the UE and then sends the UE Reconfiguration Request to MAC/Scheduler and RLC layer and get the UE Reconfiguration Response from the respective protocol layers.
+
+- The source O-DU responds to the O-CU with UE CONTEXT MODIFICATION RESPONSE message.
+
+- UE triggers Random Access procedure at the target O-DU. This is a contention free random access if UE was informed about its dedicated RACH resources in RRC Reconfiguration message.
+
+- Once Random Access procedure with target O-DU is complete, the UE responds to the target O-DU with a RRCReconfigurationComplete message.
+
+- The target O-DU sends UL RRC MESSAGE TRANSFER message to O-CU to convey the received RRCReconfigurationComplete message.
+
+- The downlink and uplink data packets are sent to/from the UE through the target O-DU.
+
+- The O-CU sends UE CONTEXT RELEASE COMMAND message to the source O-DU.
+
+- The source O-DU sends UE DELETE REQUEST to MAC/RLC layers to release the UE context and receives UE DELETE RESPONSE message.
+
+- The source O-DU responds to O-CU with UE CONTEXT RELEASE COMPLETE message.
+
 
 OSC Testcases Supported
 =========================
