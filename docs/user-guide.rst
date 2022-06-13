@@ -4,7 +4,7 @@
 User Guide
 ***********
 
-This is the user guide for e-release of O-DU/l2.
+This is the user guide for F release of O-DU/l2.
 Follow installation-guide to get all the dependencies ready.
 
 .. contents::
@@ -66,17 +66,17 @@ II. Execution - Using Docker Images
 The call flow between O-DU High and CU Stub can be achieved by executing docker containers.
 
 - Pull the last built docker images:
-    -	docker pull nexus3.o-ran-sc.org:10004/o-ran-sc/o-du-l2:5.0.3
-    -	docker pull nexus3.o-ran-sc.org:10004/o-ran-sc/o-du-l2-cu-stub:5.0.3
+    -	docker pull nexus3.o-ran-sc.org:10004/o-ran-sc/o-du-l2:6.0.1
+    -	docker pull nexus3.o-ran-sc.org:10004/o-ran-sc/o-du-l2-cu-stub:6.0.1
 
 - Run CU Stub docker:
     - docker run -it --privileged --net=host --entrypoint bash
-      nexus3.o-ran-sc.org:10004/o-ran-sc/o-du-l2-cu-stub:5.0.3   
+      nexus3.o-ran-sc.org:10004/o-ran-sc/o-du-l2-cu-stub:6.0.1   
     - ./cu_stub
 
 - Run ODU docker:
     - docker run -it --privileged --net=host --entrypoint bash
-      nexus3.o-ran-sc.org:10004/o-ran-sc/o-du-l2:5.0.3   
+      nexus3.o-ran-sc.org:10004/o-ran-sc/o-du-l2:6.0.1   
     - ./odu
 
 
