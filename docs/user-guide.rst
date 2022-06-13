@@ -4,7 +4,7 @@
 User Guide
 ***********
 
-This is the user guide for e-release of O-DU/l2.
+This is the user guide for F release of O-DU/l2.
 Follow installation-guide to get all the dependencies ready.
 
 .. contents::
