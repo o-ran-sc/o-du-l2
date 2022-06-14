@@ -772,7 +772,8 @@ uint8_t schProcessSlotInd(SlotTimingInfo *slotInd, Inst schInst)
    SchCellCb      *cell = NULLP;
    CmLList        *node;
    uint8_t*       ueNode;
-   SchDlHqProcCb  *hqP = NULLP, *ulHqP = NULLP;
+   SchDlHqProcCb  *hqP = NULLP;
+   SchUlHqProcCb *ulHqP = NULLP;
 
    memset(&dlSchedInfo, 0, sizeof(DlSchedInfo));
    schCalcSlotValues(*slotInd, &dlSchedInfo.schSlotValue);

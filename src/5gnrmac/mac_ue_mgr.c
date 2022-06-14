@@ -2071,7 +2071,7 @@ void deleteMacRaCb(uint16_t cellIdx, MacUeCb *ueCb)
       for(tbIdx = 0; tbIdx < raCb->msg4HqInfo.numTb; tbIdx++)
       {
          MAC_FREE(raCb->msg4HqInfo.tbInfo[tbIdx].tb, \
-               raCb->msg4HqInfo.tbInfo[tbIdx].tbSize);
+               raCb->msg4HqInfo.tbInfo[tbIdx].tbSize - TX_PAYLOAD_HDR_LEN);
       }
       memset(raCb, 0, sizeof(MacRaCbInfo));
    }
@@ -2708,10 +2708,10 @@ void deletePucchResourcesCfg(PucchResrcCfg *resrcCfg)
 *
 * @details
 *
-*    Function : MacProcSchUeCfgRsp
+*    Function : MacProcSchUeDeleteRsp 
 *
 *    Functionality:
-*      Processes UE create delete from scheduler
+*      Processes UE delete from scheduler
 *
 * @params[in] Pst : Post structure
 *             schUeDelRsp : Scheduler UE delete respons
@@ -2722,10 +2722,11 @@ void deletePucchResourcesCfg(PucchResrcCfg *resrcCfg)
 
 uint8_t MacProcSchUeDeleteRsp(Pst *pst, SchUeDeleteRsp *schUeDelRsp)
 {
-   uint8_t ueId =0, isCrntiValid = 0;
+   uint8_t ueId =0, isCrntiValid = 0, tbIdx =0, idx=0;
    uint16_t cellIdx=0;
    uint8_t ret = RFAILED;
    UeDeleteStatus result;
+   DlHarqEnt  *dlHarqEnt;
 
 #ifdef CALL_FLOW_DEBUG_LOG
    DU_LOG("\nCall Flow: ENTSCH -> ENTMAC : EVENT_UE_DELETE_RSP_TO_MAC\n");
@@ -2764,6 +2765,18 @@ uint8_t MacProcSchUeDeleteRsp(Pst *pst, SchUeDeleteRsp *schUeDelRsp)
                      MAC_FREE(macCb.macCell[cellIdx]->ueCb[ueId -1].dlInfo.lcCb[lcIdx].snssai, sizeof(Snssai));
                   }
 #endif
+                  dlHarqEnt = &macCb.macCell[cellIdx]->ueCb[ueId -1].dlInfo.dlHarqEnt;
+                  for(idx =0 ; idx<MAX_NUM_HARQ_PROC; idx++)
+                  {
+                     tbIdx = 0;
+                     while(dlHarqEnt->harqProcCb[idx].numTb)
+                     {
+
+                        MAC_FREE(dlHarqEnt->harqProcCb[idx].tbInfo[tbIdx].tb, dlHarqEnt->harqProcCb[idx].tbInfo[tbIdx].tbSize);
+                        dlHarqEnt->harqProcCb[idx].numTb--;
+                        tbIdx++;
+                     }
+                  }
                   memset(&macCb.macCell[cellIdx]->ueCb[ueId -1], 0, sizeof(MacUeCb));
                   macCb.macCell[cellIdx]->numActvUe--;
                   result = SUCCESS;
