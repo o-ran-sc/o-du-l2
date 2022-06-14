@@ -290,6 +290,7 @@ void fillMsg4Pdu(uint16_t cellId, DlMsgSchInfo *msg4SchInfo)
          {
             memset(hqProcCb->tbInfo[0].tb, 0, msg4TxPduLen);
             macMuxPdu(&msg4DlData, &macCeData, hqProcCb->tbInfo[0].tb, msg4TxPduLen);
+            hqProcCb->tbInfo[0].tbSize  = msg4TxPduLen;
          }
          else
          {
