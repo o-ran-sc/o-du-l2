@@ -18,6 +18,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "38dd501d_d6f45abb",
+        "filename": "docs/Inter_DU_Handover_Within_OCU.png",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-06-15T08:53:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "11c7e4de_c8b4f0e2",
+      "revId": "6f8606467c8710fd6ee7215e6273fa09e7da4b4c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6f92305f_4975c2c5",
@@ -35,6 +53,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bc68fb3a_5e9f11e9",
+        "filename": "docs/api-docs.rst",
+        "patchSetId": 2
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-06-15T08:53:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6f92305f_4975c2c5",
+      "revId": "6f8606467c8710fd6ee7215e6273fa09e7da4b4c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3515624f_ec511441",
@@ -48,6 +84,30 @@
       "writtenOn": "2022-06-14T06:39:15Z",
       "side": 1,
       "message": "we are using CU or O-CU?\nin this section, we have used both. Please check.",
+      "range": {
+        "startLine": 482,
+        "startChar": 6,
+        "endLine": 482,
+        "endChar": 8
+      },
+      "revId": "6f8606467c8710fd6ee7215e6273fa09e7da4b4c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a42f4ae8_a0b81110",
+        "filename": "docs/overview.rst",
+        "patchSetId": 2
+      },
+      "lineNbr": 482,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-06-15T08:53:42Z",
+      "side": 1,
+      "message": "Using O-CU at all places now.",
+      "parentUuid": "3515624f_ec511441",
       "range": {
         "startLine": 482,
         "startChar": 6,
