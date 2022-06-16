@@ -62,6 +62,48 @@ std::string CellStateChange::getISOEventTime() {
 
 /*******************************************************************
  *
+ * @brief Returns Event Severity String
+ *
+ * @details
+ *
+ *    Function :getEventSeverity
+ *
+ *    Functionality:
+ *      - Returns Event Severity String
+ *
+ * @params[in] IN - int severity 
+ * @return value of string     - success
+ *         empty string        - failure
+ *
+ * ****************************************************************/
+
+std::string CellStateChange::getEventSeverity(int severity) {
+   string str;
+   switch(severity)
+   {
+      case 3:
+	 str = "CRITICAL";
+	 break;
+      case 4:
+         str = "MAJOR";
+         break;
+      case 5:
+         str = "MINOR";
+         break;
+      case 6:
+         str = "WARNING";
+         break;
+      default:
+         str = "MAJOR";
+         break;
+   }
+   return str;
+
+
+}
+
+/*******************************************************************
+ *
  * @brief prepare CellStateChange Fields
  *
  * @details
@@ -78,8 +120,8 @@ std::string CellStateChange::getISOEventTime() {
  * ****************************************************************/
 
 bool CellStateChange::prepareEventFields(const Message* msg) {
-   const Alarm* alrm = dynamic_cast<const Alarm*> (msg);
-   if(!alrm) {
+   const Alarm* alarm = dynamic_cast<const Alarm*> (msg);
+   if(!alarm) {
       O1_LOG("\nO1 CellStateChange : Casting failed in prepareEventFields");
       return false;
    }
@@ -91,22 +133,22 @@ bool CellStateChange::prepareEventFields(const Message* msg) {
    if(JsonHelper::addNodeToObject(faultFields, "faultFieldsVersion", FAULT_FIELDS_VERSION) == 0) {
       ret = false;
    }
-   if(JsonHelper::addNodeToObject(faultFields, "alarmCondition", ALARM_CONDITION) == 0) {
+   if(JsonHelper::addNodeToObject(faultFields, "alarmCondition", alarm->getAdditionalInfo().c_str()) == 0) {
       ret = false;
    }
    if(JsonHelper::addNodeToObject(faultFields, "alarmInterfaceA", ALARM_INTERFACE_A) == 0) {
       ret = false;
    }
-   if(JsonHelper::addNodeToObject(faultFields, "eventSourceType", EVENT_SOURCE_TYPE) == 0) {
+   if(JsonHelper::addNodeToObject(faultFields, "eventSourceType", ODU_HIGH) == 0) {
       ret = false;
    }
-   if(JsonHelper::addNodeToObject(faultFields, "specificProblem", SPECIFIC_PROBLEM) == 0) {
+   if(JsonHelper::addNodeToObject(faultFields, "specificProblem", alarm->getAdditionalText().c_str()) == 0) {
       ret = false;
    }
-   if(JsonHelper::addNodeToObject(faultFields, "eventSeverity", EVENT_SEVERITY) == 0) {
+   if(JsonHelper::addNodeToObject(faultFields, "eventSeverity", getEventSeverity(alarm->getPerceivedSeverity()).c_str()) == 0) {
       ret = false;
    }   
-   if(JsonHelper::addNodeToObject(faultFields, "vfStatus", VF_STATUS) == 0) {
+   if(JsonHelper::addNodeToObject(faultFields, "vfStatus", alarm->getSpecificProblem().c_str()) == 0) {
       ret = false;
    }
    

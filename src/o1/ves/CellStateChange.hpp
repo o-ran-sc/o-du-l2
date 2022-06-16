@@ -33,12 +33,7 @@ using namespace std;
 
 //macros
 #define FAULT_FIELDS_VERSION "4.0"
-#define ALARM_CONDITION "CELL Down"
 #define ALARM_INTERFACE_A "Slot-0-CELL-1"
-#define EVENT_SOURCE_TYPE "O_RAN_COMPONENT"
-#define SPECIFIC_PROBLEM "CELL 1 Down"
-#define EVENT_SEVERITY "MAJOR"
-#define VF_STATUS "Active"
 #define EQUIP_TYPE "O-RAN-DU"
 #define VENDOR "Melacon"
 #define MODEL "ODU Device"
@@ -51,6 +46,7 @@ class CellStateChange : public Notification
     ~CellStateChange();
 
     std::string getISOEventTime();
+    std::string getEventSeverity(int severity);
 
     protected:
     bool prepareEventFields(const Message* msg = NULL);

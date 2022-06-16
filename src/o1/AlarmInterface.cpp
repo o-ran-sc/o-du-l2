@@ -126,8 +126,8 @@ uint8_t raiseCellAlrm(uint16_t alrmId, uint16_t cellId)
   {
     /* Fill cell up parameters */
     snprintf (alrm.additionalText, sizeof(alrm.additionalText), \
-             "cell id  [%d] is up",cellId);
-    strcpy(alrm.additionalInfo , "cell UP");
+             "CELL %d UP",cellId);
+    strcpy(alrm.additionalInfo , "CELL UP");
     strcpy(alrm.specificProblem, "Active");
     strcpy(alrm.alarmRaiseTime, buff);
   }
@@ -137,8 +137,8 @@ uint8_t raiseCellAlrm(uint16_t alrmId, uint16_t cellId)
     clearCellAlrm(CELL_UP_ALARM_ID);
     /* Fill the cell down parameters */
     snprintf (alrm.additionalText, sizeof(alrm.additionalText), \
-              "cell [%d] is down",cellId);
-    strcpy(alrm.additionalInfo , "cell down");
+              "CELL %d DOWN",cellId);
+    strcpy(alrm.additionalInfo , "CELL DOWN");
     strcpy(alrm.specificProblem, "Active");
     strcpy(alrm.alarmRaiseTime, buff);
   }
