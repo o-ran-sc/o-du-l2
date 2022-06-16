@@ -1069,12 +1069,39 @@ void deleteSchPdschServCellCfg(SchPdschServCellCfg *pdschServCellCfg)
 * ****************************************************************/
 void deleteSchUeCb(SchUeCb *ueCb) 
 {
-   uint8_t timeDomRsrcIdx = 0, ueLcIdx = 0;
+   uint8_t timeDomRsrcIdx = 0, ueLcIdx = 0, idx =0;
    SchPucchCfg *pucchCfg = NULLP;
    SchPdschConfig *pdschCfg = NULLP;
+   CmLList *node = NULLP, *next = NULLP;
 
    if(ueCb)
    {
+      if(ueCb->hqDlmap)
+      {
+         for (idx = 0; idx<ueCb->cellCb->numSlots; idx++)
+         {
+            if(ueCb->hqDlmap[idx])
+            {
+               cmLListDeleteLList(&ueCb->hqDlmap[idx]->hqList);
+               SCH_FREE(ueCb->hqDlmap[idx], sizeof(SchHqDlMap));
+            }
+         }
+         SCH_FREE(ueCb->hqDlmap, sizeof(SchHqDlMap*)*(ueCb->cellCb->numSlots));
+      }
+
+      if(ueCb->hqUlmap)
+      {
+         for (idx = 0; idx<ueCb->cellCb->numSlots; idx++)
+         {
+            if(ueCb->hqUlmap[idx])
+            {
+               cmLListDeleteLList(&ueCb->hqUlmap[idx]->hqList);
+               SCH_FREE(ueCb->hqUlmap[idx], sizeof(SchHqUlMap));
+            }
+         }
+         SCH_FREE(ueCb->hqUlmap, sizeof(SchHqUlMap*)*(ueCb->cellCb->numSlots));
+      }
+
       SCH_FREE(ueCb->ueCfg.ambrCfg, sizeof(SchAmbrCfg));
       if(ueCb->ueCfg.spCellCfgPres)
       {
