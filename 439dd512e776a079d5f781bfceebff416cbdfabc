@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d6bc0bab_94b26227",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000484
+      },
+      "writtenOn": "2022-06-16T06:08:39Z",
+      "side": 1,
+      "message": "fix of VES Fault \"specific problem\" field value is not correct.",
+      "revId": "439dd512e776a079d5f781bfceebff416cbdfabc",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
