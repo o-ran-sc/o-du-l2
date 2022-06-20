@@ -279,14 +279,6 @@ void *cuConsoleHandler(void *args)
    uint8_t cnt = 0;
    EgtpTeIdCb *teidCb = NULLP;
 
-   /* This variable is taken for sending specific number of downlink data packet. 
-    * Presently the code is supporting total 4500 data packets trasfer for 3 UEs only with sleep(1).
-    * If you wants to pump data for 3 UE change the following macro values
-    * NUM_TUNNEL_TO_PUMP_DATA = 9, NUM_DL_PACKETS = 1.
-    * totalDataPacket = totalNumOfTestFlow * NUM_TUNNEL_TO_PUMP_DATA * NUM_DL_PACKETS 
-    * totalDataPacket = [500*9*1] */
-   int32_t totalNumOfTestFlow = 2; 
-
    while(true) 
    {
       ch = getchar();
@@ -321,17 +313,26 @@ void *cuConsoleHandler(void *args)
          }
 #else
 
+         /* This variable is taken for sending specific number of downlink data packet. 
+          * Presently the code is supporting total 4500 data packets trasfer for 3 UEs only with sleep(1).
+          * If you wants to pump data for 3 UE change the following macro values
+          * NUM_TUNNEL_TO_PUMP_DATA = 9, NUM_DL_PACKETS = 1.
+          * totalDataPacket = totalNumOfTestFlow * NUM_TUNNEL_TO_PUMP_DATA * NUM_DL_PACKETS 
+          * totalDataPacket = [500*9*1] */
+         int32_t totalNumOfTestFlow = 2; 
+
          while(totalNumOfTestFlow)
          {
             for(duId = 1; duId<=MAX_DU_SUPPORTED; duId++)
             {
                for(teId = 1; teId <= NUM_TUNNEL_TO_PUMP_DATA; teId++)
                {
-                  DU_LOG("\nDEBUG  -->  EGTP: Sending DL User Data(duId %d, teId:%d)\n", duId, teId);
+                  teidCb = NULLP;
                   cmHashListFind(&(egtpCb.dstCb[duId-1].teIdLst), (uint8_t *)&(teId), sizeof(uint32_t), 0, (PTR *)&teidCb);
                   if(teidCb)
                   {
                      cnt =0;
+                     DU_LOG("\nDEBUG  -->  EGTP: Sending DL User Data(duId %d, teId:%d)\n", duId, teId);
                      while(cnt < NUM_DL_PACKETS)
                      {
                         ret =  cuEgtpDatReq(duId, teId);      
@@ -345,6 +346,10 @@ void *cuConsoleHandler(void *args)
                         sleep(1);
                         cnt++;
                      }
+                  }
+                  else
+                  {
+                     DU_LOG("\nDEBUG  -->  EGTP: TunnelId Not Found for (duId %d, teId:%d)\n", duId, teId);
                   }
                }
             }

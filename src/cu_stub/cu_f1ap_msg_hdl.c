@@ -8741,7 +8741,7 @@ uint8_t fillCuToDuContainer(CuUeCb *ueCb, CUtoDURRCInformation_t *rrcMsg)
 {
    uint8_t elementCnt = 0;
    uint8_t ret = ROK;
-   uint8_t idx, idx2, rrcBufLen;
+   uint8_t idx;
 
    /* UE Capabulity RAT Container List */
    CU_ALLOC(rrcMsg->uE_CapabilityRAT_ContainerList, sizeof(UE_CapabilityRAT_ContainerList_t));
@@ -9214,9 +9214,9 @@ uint8_t addDrbTunnels(uint32_t duId, uint8_t teId)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t procDrbSetupList(uint32_t duId, DRBs_Setup_List_t *drbSetupList)
+uint8_t procDrbSetupList(uint32_t duId, CuUeCb *ueCb, DRBs_Setup_List_t *drbSetupList)
 {
-   uint8_t arrIdx = 0;
+   uint8_t arrIdx = 0, drbIdx = 0;
    uint32_t teId = 0;
    DRBs_Setup_ItemIEs_t *drbItemIe = NULLP;
 
@@ -9231,10 +9231,21 @@ uint8_t procDrbSetupList(uint32_t duId, DRBs_Setup_List_t *drbSetupList)
             teId  = extractTeId(&drbItemIe->value.choice.DRBs_Setup_Item.dLUPTNLInformation_ToBeSetup_List);
             if(teId > 0)
             {
-              if(addDrbTunnels(duId, teId)== ROK)
-              {
-                DU_LOG("\nDEBUG  --> EGTP: Tunnel Added for TeId %d", teId);
-              }
+               if(addDrbTunnels(duId, teId)== ROK)
+               {
+                  DU_LOG("\nDEBUG  --> EGTP: Tunnel Added for TeId %d", teId);
+               }
+               /* As per Spec 38.473, in UE COntext Response, Tunnel information
+                * are sent to CU for setting up of Tunnels in DL direction.
+                * Search for DRB ID in CU databse */
+               for(drbIdx = 0; drbIdx < ueCb->numDrb; drbIdx++)
+               {
+                  if(ueCb->drbList[drbIdx].drbId == drbItemIe->value.choice.DRBs_Setup_Item.dRBID)
+                  {
+                     fillTeIdString(3, teId, ueCb->drbList[drbIdx].dlUpTnlInfo.teId);
+                     break;
+                  }
+               }
             }
             else
                return RFAILED;
@@ -9311,7 +9322,7 @@ uint8_t procUeContextSetupResponse(uint32_t duId, F1AP_PDU_t *f1apMsg)
           case ProtocolIE_ID_id_DRBs_Setup_List:
              {
                 /* Adding Tunnels for successful DRB */
-                procDrbSetupList(duId, &ueCtxtSetupRsp->protocolIEs.list.array[idx]->value.choice.DRBs_Setup_List);
+                procDrbSetupList(duId, ueCb, &ueCtxtSetupRsp->protocolIEs.list.array[idx]->value.choice.DRBs_Setup_List);
                 break; 
              }
          case ProtocolIE_ID_id_DUtoCURRCInformation:
@@ -11583,7 +11594,7 @@ void procF1SetupReq(uint32_t *destDuId, F1AP_PDU_t *f1apMsg)
 * ****************************************************************/
 void procUeContextReleaseComplete(uint32_t duId, F1AP_PDU_t *f1apMsg)
 {
-   uint8_t duIdx = 0, ieIdx = 0, ueIdx = 0;
+   uint8_t duIdx = 0, ieIdx = 0, ueIdx = 0, drbIdx = 0;
    uint8_t gnbDuUeF1apId = 0, gnbCuUeF1apId = 0;
    DuDb *duDb = NULLP;
    CuUeCb *ueCb = NULLP;
@@ -11617,6 +11628,10 @@ void procUeContextReleaseComplete(uint32_t duId, F1AP_PDU_t *f1apMsg)
                      if((ueCb->cellCb->ueCb[ueIdx]->gnbCuUeF1apId == gnbCuUeF1apId) &&
                            (ueCb->cellCb->ueCb[ueIdx]->gnbDuUeF1apId == gnbDuUeF1apId))
                      {
+                        for(drbIdx = 0; drbIdx < ueCb->numDrb; drbIdx++)
+                        {
+                           deleteEgtpTunnel(duId, ueCb->drbList[drbIdx].dlUpTnlInfo.teId);
+                        }
                         ueCb->cellCb->ueCb[ueIdx] = NULLP;
                         ueCb->cellCb->numUe--;
                         if((ueCb->cellCb->numUe == 0) && (ueCb->cellCb->cellStatus == CELL_DELETION_IN_PROGRESS))
