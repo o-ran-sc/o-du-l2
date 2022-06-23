@@ -713,16 +713,6 @@ S16 RgMiLrgStsReq ARGS((Pst *pst, RgMngmt *sts));
   */
 S16 RgMiLrgStsCfm ARGS((Pst *pst, RgMngmt *cfm));
 
- /** @brief This primitive carries the Status request 
-  * sent from the layer manager to MAC.
-  * @details This primitive is used by the layer manager to request
-  * status from the MAC layer.
-  * @param pst Pointer to the post structure.
-  * @param cfm pointer to RgMngmt 
-  * @return ROK/RFAILED
-  */
-S16 RgMiLrgStaReq ARGS((Pst *pst, RgMngmt *sta));
-
  /** @brief This primitive carries the Confirmation for a Status Request
   * sent from the layer manager to MAC.
   * @details This primitive is used by MAC to send a response for the status
@@ -1046,19 +1036,6 @@ S16 cmPkLrgStsCfm ARGS((
 Statistics Confirm from MAC to LM. */
 S16 cmUnpkLrgStsCfm ARGS((
    LrgStsCfm            func,
-   Pst *                pst,
-   Buffer               *mBuf
-));
-/** @brief This API is used to send a 
-Status Request from LM to MAC. */
-S16 cmPkLrgStaReq ARGS((
-   Pst *                pst,
-   RgMngmt *            sta
-));
-/** @brief This API is used to send a 
-Status Request from LM to MAC. */
-S16 cmUnpkLrgStaReq ARGS((
-   LrgStaReq            func,
    Pst *                pst,
    Buffer               *mBuf
 ));

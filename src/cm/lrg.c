@@ -505,125 +505,6 @@ RgMngmt * cfm
 
 /**
 * @brief This API is used to send a 
-Statistics Confirm from MAC to LM.
-*
-* @details
-*
-*     Function: cmUnpkLrgStsCfm
-*
-*  @param[in]   Pst *  pst
-*  @param[in]   RgMngmt *  cfm
-*  @return   S16
-*      -# ROK
-**/
-S16 cmUnpkLrgStsCfm
-(
-LrgStsCfm func,
-Pst *pst,
-Buffer *mBuf
-)
-{
-   RgMngmt cfm;
-   
-
-   if (cmUnpkRgMngmt(pst, &cfm, EVTLRGSTSCFM, mBuf) != ROK) {
-      SPutMsg(mBuf);
-#if (ERRCLASS & ERRCLS_ADD_RES)
-      SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
-            __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
-            (ErrVal)ELRG018, (ErrVal)0, "Packing failed");
-#endif
-      return RFAILED;
-   }
-   SPutMsg(mBuf);
-   return ((*func)(pst, &cfm));
-}
-
-
-/**
-* @brief This API is used to send a 
-Status Request from LM to MAC.
-*
-* @details
-*
-*     Function: cmPkLrgStaReq
-*
-*  @param[in]   Pst *  pst
-*  @param[in]   RgMngmt *  sta
-*  @return   S16
-*      -# ROK
-**/
-S16 cmPkLrgStaReq
-(
-Pst * pst,
-RgMngmt * sta
-)
-{
-   Buffer *mBuf = NULLP;
-
-   if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) {
-#if (ERRCLASS & ERRCLS_ADD_RES)
-      SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
-         __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
-         (ErrVal)ELRG019, (ErrVal)0, "Packing failed");
-#endif
-      return RFAILED;
-   }
-   if (cmPkRgMngmt(pst, sta, EVTLRGSSTAREQ, mBuf) != ROK) {
-#if (ERRCLASS & ERRCLS_ADD_RES)
-      SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
-            __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
-            (ErrVal)ELRG020, (ErrVal)0, "Packing failed");
-#endif
-      SPutMsg(mBuf);
-      return RFAILED;
-   }
-   
-   pst->event = (Event) EVTLRGSSTAREQ;
-   return (SPstTsk(pst,mBuf));
-}
-
-
-/**
-* @brief This API is used to send a 
-Status Request from LM to MAC.
-*
-* @details
-*
-*     Function: cmUnpkLrgStaReq
-*
-*  @param[in]   Pst *  pst
-*  @param[in]   RgMngmt *  sta
-*  @return   S16
-*      -# ROK
-**/
-S16 cmUnpkLrgStaReq
-(
-LrgStaReq func,
-Pst *pst,
-Buffer *mBuf
-)
-{
-   RgMngmt sta;
-   
-   
-   memset(&sta, 0, sizeof(RgMngmt));
-   if (cmUnpkRgMngmt(pst, &sta, EVTLRGSSTAREQ, mBuf) != ROK) {
-#if (ERRCLASS & ERRCLS_ADD_RES)
-      SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
-            __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
-            (ErrVal)ELRG021, (ErrVal)0, "Packing failed");
-#endif
-      SPutMsg(mBuf);
-      return RFAILED;
-   }
-   SPutMsg(mBuf);
-   return ((*func)(pst, &sta));
-}
-
-
-/**
-* @brief This API is used to send a 
 Status Confirm from MAC to LM.
 *
 * @details
@@ -2969,7 +2850,6 @@ Buffer *mBuf
          case EVTLRGSCHSTAIND:
             CMCHKPK(cmPkRgUsta, &param->t.usta, mBuf);
             break;
-         case EVTLRGSSTAREQ:
          case  EVTLRGSSTACFM:
             /*ccpu00118255 - ADD - eventType param */
 #ifdef LRG_V1
@@ -3046,7 +2926,6 @@ Buffer *mBuf
 	 if(cmUnpkRgSts(&param->t.sts, param->hdr.elmId.elmnt, mBuf) != ROK)
 	    return RFAILED;
 	 break;
-      case EVTLRGSSTAREQ:
       case  EVTLRGSSTACFM:
 	 if(cmUnpkRgSsta(pst, &param->t.ssta, param->hdr.elmId.elmnt, mBuf) != ROK)
 	    return RFAILED;
