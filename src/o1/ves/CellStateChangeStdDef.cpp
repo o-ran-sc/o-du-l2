@@ -62,6 +62,53 @@ std::string CellStateChangeStdDef::getISOEventTime() {
 
 /*******************************************************************
  *
+ * @brief Returns Event Severity String
+ *
+ * @details
+ *
+ *    Function :getEventSeverity
+ *
+ *    Functionality:
+ *      - Returns Event Severity String
+ *
+ * @params[in] IN - int severity
+ * @return value of string     - success
+ *         empty string        - failure
+ *
+ * ****************************************************************/
+
+
+std::string CellStateChangeStdDef::getEventSeverity(int severity) {
+   string str;
+   switch(severity)
+   {
+      case 3:
+         str = "CRITICAL";
+         break;
+      case 4:
+         str = "MAJOR";
+         break;
+      case 5:
+         str = "MINOR";
+         break;
+      case 6:
+         str = "WARNING";
+         break;
+      case 7:
+         str = "INDETERMINATE";
+         break;
+      case 8:
+         str = "CLEARED";
+         break;
+      default:
+         O1_LOG("\nO1 CellStateChangeStdDef: severity was not mentioned");
+         break;
+   }
+   return str;
+}
+
+/*******************************************************************
+ *
  * @brief prepare CellStateChangeStdDef Fields
  *
  * @details
@@ -78,8 +125,8 @@ std::string CellStateChangeStdDef::getISOEventTime() {
  * ****************************************************************/
 
 bool CellStateChangeStdDef::prepareEventFields(const Message* msg) {
-   const Alarm* alrm = dynamic_cast<const Alarm*> (msg);
-   if(!alrm) {
+   const Alarm* alarm = dynamic_cast<const Alarm*> (msg);
+   if(!alarm) {
       O1_LOG("\nO1 CellStateChangeStdDef : Casting failed in prepareEventFields");
       return false;
    }
@@ -122,13 +169,13 @@ bool CellStateChangeStdDef::prepareEventFields(const Message* msg) {
    else if(JsonHelper::addNodeToObject(data, "probableCause", PROBABLE_CAUSE) == 0) {
       ret = false;
    }
-   else if(JsonHelper::addNodeToObject(data, "perceivedSeverity",PERCEIVED_SEVERITY) == 0) {
+   else if(JsonHelper::addNodeToObject(data, "perceivedSeverity", getEventSeverity(alarm->getPerceivedSeverity()).c_str()) == 0) {
       ret = false;
    }
    else if(JsonHelper::addNodeToObject(data, "rootCauseIndicator", (bool)false ) == 0) {
       ret = false;
    }
-   else if(JsonHelper::addNodeToObject(data, "specificProblem", "") == 0) {
+   else if(JsonHelper::addNodeToObject(data, "specificProblem", alarm->getAdditionalInfo().c_str()) == 0) {
       ret = false;
    }
 
@@ -187,7 +234,7 @@ bool CellStateChangeStdDef::prepareEventFields(const Message* msg) {
    else if(JsonHelper::addNodeToObject(data, "proposedRepairActions", PROPOSED_REPAIR_ACTION) == 0) {
       ret = false;
    }
-   else if(JsonHelper::addNodeToObject(data, "additionalText", ADDITIONAL_TEXT) == 0) {
+   else if(JsonHelper::addNodeToObject(data, "additionalText", alarm->getAdditionalText().c_str())== 0) {
       ret = false;
    }
 
@@ -200,10 +247,10 @@ bool CellStateChangeStdDef::prepareEventFields(const Message* msg) {
                                        additionalInformation ) == 0) {
       ret = false;
    }
-   else if(JsonHelper::addNodeToObject( additionalInformation, "addInfo", ADD_INFO) == 0) {
+   else if(JsonHelper::addNodeToObject( additionalInformation, "addInfo", alarm->getAdditionalInfo().c_str()) == 0) {
       ret = false;
    }
-   else if(JsonHelper::addNodeToObject(data , "alarmId", ALARM_ID) == 0) {
+   else if(JsonHelper::addNodeToObject(data , "alarmId", to_string(alarm->getAlarmId()).c_str()) == 0) {
       ret = false;
    }
    else if(JsonHelper::addNodeToObject(data , "alarmType",ALRAM_TYPE ) == 0) {
