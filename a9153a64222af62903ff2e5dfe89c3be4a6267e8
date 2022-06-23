@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2992929c_5e67ecc3",
+        "filename": "src/5gnrmac/mac_slot_ind.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-06-23T06:05:41Z",
+      "side": 1,
+      "message": "freeWlsBlockList() has function definition in this lwr_mac_phy.h file..To resolve the warning I added this",
+      "parentUuid": "413cb977_10b86cae",
+      "range": {
+        "startLine": 32,
+        "startChar": 10,
+        "endLine": 32,
+        "endChar": 21
+      },
+      "revId": "a9153a64222af62903ff2e5dfe89c3be4a6267e8",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "097fd715_26581ba3",
         "filename": "src/cm/du_app_mac_inf.h",
         "patchSetId": 2
@@ -37,6 +61,24 @@
       "writtenOn": "2022-06-23T06:00:09Z",
       "side": 1,
       "message": "can we rename this as DEL_SUCCESSFUL",
+      "revId": "a9153a64222af62903ff2e5dfe89c3be4a6267e8",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5018aeb2_5b4bd7d5",
+        "filename": "src/cm/du_app_mac_inf.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-06-23T06:05:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "097fd715_26581ba3",
       "revId": "a9153a64222af62903ff2e5dfe89c3be4a6267e8",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
