@@ -22,6 +22,23 @@
       },
       "revId": "a9153a64222af62903ff2e5dfe89c3be4a6267e8",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "097fd715_26581ba3",
+        "filename": "src/cm/du_app_mac_inf.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-06-23T06:00:09Z",
+      "side": 1,
+      "message": "can we rename this as DEL_SUCCESSFUL",
+      "revId": "a9153a64222af62903ff2e5dfe89c3be4a6267e8",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
   ]
 }
