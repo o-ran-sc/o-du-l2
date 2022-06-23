@@ -713,26 +713,6 @@ S16 RgMiLrgStsReq ARGS((Pst *pst, RgMngmt *sts));
   */
 S16 RgMiLrgStsCfm ARGS((Pst *pst, RgMngmt *cfm));
 
- /** @brief This primitive carries the Status request 
-  * sent from the layer manager to MAC.
-  * @details This primitive is used by the layer manager to request
-  * status from the MAC layer.
-  * @param pst Pointer to the post structure.
-  * @param cfm pointer to RgMngmt 
-  * @return ROK/RFAILED
-  */
-S16 RgMiLrgStaReq ARGS((Pst *pst, RgMngmt *sta));
-
- /** @brief This primitive carries the Confirmation for a Status Request
-  * sent from the layer manager to MAC.
-  * @details This primitive is used by MAC to send a response for the status
-  * Request sent by the layer manager.
-  * @param pst Pointer to the post structure.
-  * @param cfm pointer to RgMngmt 
-  * @return ROK/RFAILED
-  */
-S16 RgMiLrgStaCfm ARGS((Pst *pst, RgMngmt *cfm));
-
  /** @brief This primitive carries the Unsolicited status indications from MAC
   * to the layer manager i.e. Alarms.
   * @details This primitive is used by MAC to inform Layer manager about some
@@ -871,7 +851,6 @@ S16 SmMiLrgSchCfgCfm ARGS((Pst *pst, RgMngmt *cfm));
 S16 SmMiLrgStsReq ARGS((Pst *pst, RgMngmt *sts));
 S16 SmMiLrgStsCfm ARGS((Pst *pst, RgMngmt *cfm));
 S16 SmMiLrgStaReq ARGS((Pst *pst, RgMngmt *sta));
-S16 SmMiLrgStaCfm ARGS((Pst *pst, RgMngmt *cfm));
 S16 SmMiLrgStaInd ARGS((Pst *pst, RgMngmt *usta));
 S16 SmMiLrgCntrlReq ARGS((Pst *pst, RgMngmt *cntrl));
 S16 SmMiLrgSchStaInd ARGS((Pst *pst, RgMngmt *usta));
@@ -1046,32 +1025,6 @@ S16 cmPkLrgStsCfm ARGS((
 Statistics Confirm from MAC to LM. */
 S16 cmUnpkLrgStsCfm ARGS((
    LrgStsCfm            func,
-   Pst *                pst,
-   Buffer               *mBuf
-));
-/** @brief This API is used to send a 
-Status Request from LM to MAC. */
-S16 cmPkLrgStaReq ARGS((
-   Pst *                pst,
-   RgMngmt *            sta
-));
-/** @brief This API is used to send a 
-Status Request from LM to MAC. */
-S16 cmUnpkLrgStaReq ARGS((
-   LrgStaReq            func,
-   Pst *                pst,
-   Buffer               *mBuf
-));
-/** @brief This API is used to send a 
-Status Confirm from MAC to LM. */
-S16 cmPkLrgStaCfm ARGS((
-   Pst *                pst,
-   RgMngmt *            cfm
-));
-/** @brief This API is used to send a 
-Status Confirm from MAC to LM. */
-S16 cmUnpkLrgStaCfm ARGS((
-   LrgStaCfm            func,
    Pst *                pst,
    Buffer               *mBuf
 ));
@@ -1281,29 +1234,6 @@ S16 cmUnpkRgSts ARGS((
    Buffer               *mBuf
 ));
 /* lrg_x_001.main_3 - MODIFY -  Modified the below function to hold the event type */
-#ifdef LRG_V1
-S16 cmPkRgSsta ARGS((
-   Pst                  *pst,
-   RgSsta               *param,
-   S16                  elmnt,
-   /*ccpu00118255 - ADD - eventType param */
-   uint8_t                   eventType,
-   Buffer               *mBuf
-));
-#else /*LRG_V1 not defined */
-S16 cmPkRgSsta ARGS((
-   Pst                  *pst,
-   RgSsta               *param,
-   S16                  elmnt,
-   Buffer               *mBuf
-));
-#endif /* LRG_V1 endif */
-S16 cmUnpkRgSsta ARGS((
-   Pst                  *pst,
-   RgSsta               *param,
-   S16                  elmnt,
-   Buffer               *mBuf
-));
 S16 cmPkRgUstaDgn ARGS((
    RgUstaDgn            *param,
    Buffer               *mBuf

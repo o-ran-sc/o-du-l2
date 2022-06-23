@@ -37,17 +37,13 @@ using namespace std;
 #define URI "1"
 #define NOTIFICATION_ID 1.0
 #define NOTIFICATION_TYPE "notifyNewAlarm"
-#define PROBABLE_CAUSE "real-issue"
+#define PROBABLE_CAUSE "device-issue"
 #define TRND_INDICATION "MORE_SEVERE"
 #define OBSRVED_MEASUREMENT "new"
 #define OBSERVED_VALUE 123.2
 #define NEW_ATT "new"
-#define ADD_INFO "new"
-#define ALARM_ID "1"
 #define ALRAM_TYPE "COMMUNICATIONS_ALARM"
-#define PERCEIVED_SEVERITY "INDETERMINATE"
-#define PROPOSED_REPAIR_ACTION "Call the police!"
-#define ADDITIONAL_TEXT "O-RAN Software Community"
+#define PROPOSED_REPAIR_ACTION "Config change"
 
 
 class CellStateChangeStdDef : public Notification
@@ -58,6 +54,7 @@ class CellStateChangeStdDef : public Notification
     ~CellStateChangeStdDef();
     
     std::string getISOEventTime();
+    std::string getEventSeverity(int severity);;
    
     protected:
     bool prepareEventFields(const Message* msg = NULL);

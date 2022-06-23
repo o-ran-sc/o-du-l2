@@ -504,18 +504,18 @@ RgMngmt * cfm
 
 
 /**
-* @brief This API is used to send a 
-Statistics Confirm from MAC to LM.
-*
-* @details
-*
-*     Function: cmUnpkLrgStsCfm
-*
-*  @param[in]   Pst *  pst
-*  @param[in]   RgMngmt *  cfm
-*  @return   S16
-*      -# ROK
-**/
+ * * @brief This API is used to send a 
+ * Statistics Confirm from MAC to LM.
+ * *
+ * * @details
+ * *
+ * *     Function: cmUnpkLrgStsCfm
+ * *
+ * *  @param[in]   Pst *  pst
+ * *  @param[in]   RgMngmt *  cfm
+ * *  @return   S16
+ * *      -# ROK
+ * **/
 S16 cmUnpkLrgStsCfm
 (
 LrgStsCfm func,
@@ -524,7 +524,7 @@ Buffer *mBuf
 )
 {
    RgMngmt cfm;
-   
+
 
    if (cmUnpkRgMngmt(pst, &cfm, EVTLRGSTSCFM, mBuf) != ROK) {
       SPutMsg(mBuf);
@@ -533,170 +533,6 @@ Buffer *mBuf
             __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
             (ErrVal)ELRG018, (ErrVal)0, "Packing failed");
 #endif
-      return RFAILED;
-   }
-   SPutMsg(mBuf);
-   return ((*func)(pst, &cfm));
-}
-
-
-/**
-* @brief This API is used to send a 
-Status Request from LM to MAC.
-*
-* @details
-*
-*     Function: cmPkLrgStaReq
-*
-*  @param[in]   Pst *  pst
-*  @param[in]   RgMngmt *  sta
-*  @return   S16
-*      -# ROK
-**/
-S16 cmPkLrgStaReq
-(
-Pst * pst,
-RgMngmt * sta
-)
-{
-   Buffer *mBuf = NULLP;
-
-   if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) {
-#if (ERRCLASS & ERRCLS_ADD_RES)
-      SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
-         __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
-         (ErrVal)ELRG019, (ErrVal)0, "Packing failed");
-#endif
-      return RFAILED;
-   }
-   if (cmPkRgMngmt(pst, sta, EVTLRGSSTAREQ, mBuf) != ROK) {
-#if (ERRCLASS & ERRCLS_ADD_RES)
-      SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
-            __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
-            (ErrVal)ELRG020, (ErrVal)0, "Packing failed");
-#endif
-      SPutMsg(mBuf);
-      return RFAILED;
-   }
-   
-   pst->event = (Event) EVTLRGSSTAREQ;
-   return (SPstTsk(pst,mBuf));
-}
-
-
-/**
-* @brief This API is used to send a 
-Status Request from LM to MAC.
-*
-* @details
-*
-*     Function: cmUnpkLrgStaReq
-*
-*  @param[in]   Pst *  pst
-*  @param[in]   RgMngmt *  sta
-*  @return   S16
-*      -# ROK
-**/
-S16 cmUnpkLrgStaReq
-(
-LrgStaReq func,
-Pst *pst,
-Buffer *mBuf
-)
-{
-   RgMngmt sta;
-   
-   
-   memset(&sta, 0, sizeof(RgMngmt));
-   if (cmUnpkRgMngmt(pst, &sta, EVTLRGSSTAREQ, mBuf) != ROK) {
-#if (ERRCLASS & ERRCLS_ADD_RES)
-      SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
-            __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
-            (ErrVal)ELRG021, (ErrVal)0, "Packing failed");
-#endif
-      SPutMsg(mBuf);
-      return RFAILED;
-   }
-   SPutMsg(mBuf);
-   return ((*func)(pst, &sta));
-}
-
-
-/**
-* @brief This API is used to send a 
-Status Confirm from MAC to LM.
-*
-* @details
-*
-*     Function: cmPkLrgStaCfm
-*
-*  @param[in]   Pst *  pst
-*  @param[in]   RgMngmt *  cfm
-*  @return   S16
-*      -# ROK
-**/
-S16 cmPkLrgStaCfm
-(
-Pst * pst,
-RgMngmt * cfm
-)
-{
-   Buffer *mBuf = NULLP;
-
-   if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) {
-#if (ERRCLASS & ERRCLS_ADD_RES)
-      SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
-         __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
-         (ErrVal)ELRG022, (ErrVal)0, "Packing failed");
-#endif
-      return RFAILED;
-   }
-   if (cmPkRgMngmt(pst, cfm, EVTLRGSSTACFM, mBuf) != ROK) {
-#if (ERRCLASS & ERRCLS_ADD_RES)
-      SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
-            __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
-            (ErrVal)ELRG023, (ErrVal)0, "Packing failed");
-#endif
-      SPutMsg(mBuf);
-      return RFAILED;
-   }
-   
-   pst->event = (Event) EVTLRGSSTACFM;
-   return (SPstTsk(pst,mBuf));
-}
-
-
-/**
-* @brief This API is used to send a 
-Status Confirm from MAC to LM.
-*
-* @details
-*
-*     Function: cmUnpkLrgStaCfm
-*
-*  @param[in]   Pst *  pst
-*  @param[in]   RgMngmt *  cfm
-*  @return   S16
-*      -# ROK
-**/
-S16 cmUnpkLrgStaCfm
-(
-LrgStaCfm func,
-Pst *pst,
-Buffer *mBuf
-)
-{
-   RgMngmt cfm;
-   
-  
-   memset(&cfm, 0, sizeof(RgMngmt));
-   if (cmUnpkRgMngmt(pst, &cfm, EVTLRGSSTACFM, mBuf) != ROK) {
-#if (ERRCLASS & ERRCLS_ADD_RES)
-      SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
-            __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
-            (ErrVal)ELRG024, (ErrVal)0, "Packing failed");
-#endif
-      SPutMsg(mBuf);
       return RFAILED;
    }
    SPutMsg(mBuf);
@@ -2277,149 +2113,6 @@ Buffer *mBuf
    return ROK;
 }
 
-
-
-/***********************************************************
-*
-*     Func : cmPkRgSsta
-*
-*
-*     Desc :   This structure holds MAC's Solicited Status information.
-*
-*
-*     Ret  : S16
-*
-*     Notes:
-*
-*     File  : 
-*
-**********************************************************/
-S16 cmPkRgSsta
-(
-Pst *pst,
-RgSsta *param,
-S16 elmnt,
-#ifdef LRG_V1
-uint8_t eventType,
-#endif
-Buffer *mBuf
-)
-{
-
-      switch(elmnt) {
-         case STTFUSAP:
-            CMCHKPK(cmPkRgSapSta, &param->s.tfuSapSta, mBuf);
-            break;
-         case STRGRSAP:
-            CMCHKPK(cmPkRgSapSta, &param->s.rgrSapSta, mBuf);
-            break;
-         case STCRGSAP:
-            CMCHKPK(cmPkRgSapSta, &param->s.crgSapSta, mBuf);
-            break;
-         case STRGUSAP:
-            CMCHKPK(cmPkRgSapSta, &param->s.rguSapSta, mBuf);
-            break;
-            /*ccpu00118255 - ADD - Check for eventType before Pack */
-         case STGEN:
-#ifdef LRG_V1 
-            if (eventType == EVTLRGSSTACFM)
-            {
-               CMCHKPK(cmPkSystemId, &param->s.sysId, mBuf);
-               if (param->s.sysId.ptNmb != NULLP)
-               {
-                  SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, 
-                        (Data *)param->s.sysId.ptNmb, LRG_MAX_PT_NUM_SIZE);
-               }
-            }
-#else /*LRG_V1 not defined */
-            if (param->s.sysId.ptNmb != NULLP)
-            {
-                 CMCHKPK(cmPkSystemId, &param->s.sysId, mBuf);
-                 SPutSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data *)param->s.sysId.ptNmb, LRG_MAX_PT_NUM_SIZE);
-            }
-
-#endif /*end of LRG_V1 */
-            break;
-         default :
-            break;
-      }
-   CMCHKPK(oduUnpackUInt8, param->sapInst, mBuf);
-   CMCHKPK(cmPkDateTime, &param->dt, mBuf);
-   return ROK;
-}
-
-
-
-/***********************************************************
-*
-*     Func : cmUnpkRgSsta
-*
-*
-*     Desc :   This structure holds MAC's Solicited Status information.
-*
-*
-*     Ret  : S16
-*
-*     Notes:
-*
-*     File  : 
-*
-**********************************************************/
-S16 cmUnpkRgSsta
-(
-Pst    *pst,
-RgSsta *param,
-S16 elmnt,
-Buffer *mBuf
-)
-{
-
-
-   CMCHKUNPK(cmUnpkDateTime, &param->dt, mBuf);
-   CMCHKUNPK(oduPackUInt8, &param->sapInst, mBuf);
-      switch(elmnt) {
-         case STGEN:
-            /*ccpu00118255 - ADD - Check for eventType before Unpack */
-            if (pst->event == EVTLRGSSTACFM)
-            {
-               /* After Merging */
-               if((SGetSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,pst->region, pst->pool, (Data **)&param->s.sysId.ptNmb,
-                           LRG_MAX_PT_NUM_SIZE)) != ROK){
-#if (ERRCLASS & ERRCLS_ADD_RES)
-                  SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
-                        __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
-                        (ErrVal)ELRG048, (ErrVal)0, "Packing failed");
-#endif
-                  SPutMsg(mBuf);
-                  return RFAILED;
-               }
-               /* KWORK_FIX: Moved the memset under the NULL check */
-               if (param->s.sysId.ptNmb != NULLP)
-               {
-                  memset(param->s.sysId.ptNmb, 0, LRG_MAX_PT_NUM_SIZE);
-                  CMCHKUNPK(cmUnpkSystemId, &param->s.sysId, mBuf);
-               }
-            }
-            break;
-         case STRGUSAP:
-            CMCHKUNPK(cmUnpkRgSapSta, &param->s.rguSapSta, mBuf);
-            break;
-         case STCRGSAP:
-            CMCHKUNPK(cmUnpkRgSapSta, &param->s.crgSapSta, mBuf);
-            break;
-         case STRGRSAP:
-            CMCHKUNPK(cmUnpkRgSapSta, &param->s.rgrSapSta, mBuf);
-            break;
-         case STTFUSAP:
-            CMCHKUNPK(cmUnpkRgSapSta, &param->s.tfuSapSta, mBuf);
-            break;
-         default :
-            break;
-      }
-   return ROK;
-}
-
-
 
 /***********************************************************
 *
@@ -2969,18 +2662,6 @@ Buffer *mBuf
          case EVTLRGSCHSTAIND:
             CMCHKPK(cmPkRgUsta, &param->t.usta, mBuf);
             break;
-         case EVTLRGSSTAREQ:
-         case  EVTLRGSSTACFM:
-            /*ccpu00118255 - ADD - eventType param */
-#ifdef LRG_V1
-            if(cmPkRgSsta(pst, &param->t.ssta, param->hdr.elmId.elmnt,
-                     eventType, mBuf) != ROK)
-               return RFAILED;
-#else /* LRG_V1 is not defined */
-            if(cmPkRgSsta(pst, &param->t.ssta, param->hdr.elmId.elmnt, mBuf) != ROK)
-               return RFAILED;
-#endif /* end of LRG_V1*/            
-            break;
          case EVTLRGSTSREQ:
          case  EVTLRGSTSCFM:
             if(cmPkRgSts(&param->t.sts, param->hdr.elmId.elmnt, mBuf)!= ROK)
@@ -3044,11 +2725,6 @@ Buffer *mBuf
       case EVTLRGSTSREQ:
       case  EVTLRGSTSCFM:
 	 if(cmUnpkRgSts(&param->t.sts, param->hdr.elmId.elmnt, mBuf) != ROK)
-	    return RFAILED;
-	 break;
-      case EVTLRGSSTAREQ:
-      case  EVTLRGSSTACFM:
-	 if(cmUnpkRgSsta(pst, &param->t.ssta, param->hdr.elmId.elmnt, mBuf) != ROK)
 	    return RFAILED;
 	 break;
       case EVTLRGUSTAIND:

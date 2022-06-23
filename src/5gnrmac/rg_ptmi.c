@@ -57,7 +57,6 @@ extern "C" {
 S16 PtMiLrgCfgCfm ARGS((Pst *pst, RgMngmt *cfm));
 S16 PtMiLrgSchCfgCfm ARGS((Pst *pst, RgMngmt *cfm));
 S16 PtMiLrgStsCfm ARGS((Pst *pst, RgMngmt *cfm));
-S16 PtMiLrgStaCfm ARGS((Pst *pst, RgMngmt *cfm));
 S16 PtMiLrgStaInd ARGS((Pst *pst, RgMngmt *usta));
 S16 PtMiLrgSchStaInd ARGS((Pst *pst, RgMngmt *usta));
 S16 PtMiLrgCntrlCfm ARGS((Pst *pst, RgMngmt *cfm));
@@ -132,22 +131,6 @@ static const LrgStsCfm RgMiLrgStsCfmMt[RG_MAX_LRG_USR] =
    PtMiLrgStsCfm,                  /* 1 - Tightly coupled SM  */
 #endif
 };
-
-/** @brief Status Confirm primitive Matrix */
-static const LrgStaCfm RgMiLrgStaCfmMt[RG_MAX_LRG_USR] =
-{
-#ifdef LCRGMILRG
-   cmPkLrgStaCfm,                  /* 0 - loosely coupled */
-#else
-   PtMiLrgStaCfm,                  /* 0 - loosely coupled */
-#endif
-#ifdef SM 
-   SmMiLrgStaCfm,                  /* 1 - Tightly coupled SM */
-#else
-   PtMiLrgStaCfm,                  /* 1 - Tightly coupled SM  */
-#endif
-};
-
 
 /** @brief Status Indication primitive Matrix */
 static const LrgStaInd RgMiLrgStaIndMt[RG_MAX_LRG_USR] =
@@ -353,37 +336,6 @@ RgMngmt  *cfm     /* statistics confirm structure  */
    return ROK;
    
 }/*-- RgMiLrgStsCfm --*/
-
-
-/**
- * @brief Layer Manager Status confirm handler. 
- *
- * @details
- *
- *     Function : RgMiLrgStaCfm
- *     
- *     This function handles the status
- *     confirm invoked by MAC to Layer Manager.
- *     -# Based on the pst->selector value it invokes one of the
- *        functions cmPkLrgStaCfm() or SmMiLrgStaCfm().
- *     
- *  @param[in]  Pst *pst, the post structure     
- *  @param[in]  RgMngmt *cfm, the status confirm structure
- *  @return  S16
- *      -# ROK
- **/
-S16 RgMiLrgStaCfm
-(
-Pst      *pst,    /* post structure  */
-RgMngmt  *cfm     /* status confirm structure  */
-)
-{
-   
-   (*RgMiLrgStaCfmMt[pst->selector])(pst,cfm);
-
-   return ROK;
-   
-}/*-- RgMiLrgStaCfm --*/
 
 
 /**
@@ -678,36 +630,6 @@ RgMngmt *cfm            /* Statistics Confirm */
 
    return ROK;
 }/* end of PtMiLrgStsCfm */
-
-
-
-/**
- * @brief Portable Function definition for Layer Manager Status 
- *         confirm handler. 
- *
- * @details
- *
- *     Function : PtMiLrgStaCfm 
- *     
- *     This function handles the status 
- *     confirm invoked by MAC to Layer Manager.
- *     Users of MAC who intend to provide a glue logic 
- *     for portability of status Confirm are expected 
- *     to fill in the code in this function definition.
- *     
- *  @param[in]  Pst *pst, the post structure     
- *  @param[in]  RgMngmt *cfm, the status confirm structure
- *  @return  S16
- *      -# ROK
- **/
-S16 PtMiLrgStaCfm
-(
-Pst *pst,               /* post structure */
-RgMngmt *cfm            /* Status Confirm */
-)
-{
-   return ROK;
-}/* end of PtMiLrgStaCfm */
 
 
 
