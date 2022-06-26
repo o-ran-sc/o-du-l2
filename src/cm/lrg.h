@@ -33,12 +33,8 @@
 
 #define EVTLRGCFGREQ    0      /* Config Request */
 #define EVTLRGCFGCFM    1      /* Config Confirm */
-#define EVTLRGCNTRLREQ  2      /* Control Request */
-#define EVTLRGCNTRLCFM  3      /* Control Confirm */
 #define EVTLRGSTSREQ    44      /* Statistics Request */
 #define EVTLRGSTSCFM    5      /* Statistics Confirm */
-#define EVTLRGSSTAREQ   6      /* Solicited Status Request */
-#define EVTLRGSSTACFM   7      /* Solicited Status Confirm */
 #define EVTLRGUSTAIND   8      /* Unsolicite Status Indication */
 #define EVTLRGTRCIND    9      /* Trace Indication */
 #define EVTMACSCHGENCFGREQ 10     /* Scheduler Configuration */

@@ -750,7 +750,6 @@ S16 rgLMMStaInd ARGS((Inst inst,uint16_t category, uint16_t event, uint16_t caus
 Void rgLMMTrcInd ARGS((Inst inst,Buffer *srcMbuf, uint8_t event));
 /* LIM uses this to forward the BndCfm to LMM. This function invokes a
  * Control Confirmation to the LM. */
-S16 rgLMMBndCfm ARGS((Pst *pst, SuId suId, uint8_t status));
 S16 rgActvTmr ARGS((Ent ent, Inst inst ));
 S16 rgActvInit ARGS((Ent entity, Inst inst, Region 
        region, Reason reason));
@@ -809,12 +808,6 @@ S16 rgSchMacCellRegReq ARGS((Pst* pst,RgInfCellReg* regReq));
 S16 rgCFGCrgUeReset ARGS((RgCellCb *cell,RgUeCb *ue,CrgRst *reset,
          RgErrInfo *errInfo));
 
-/* 
- * APIs exposed by COM module
- */
-S16 rgCOMCfgReq ARGS((Inst inst,CrgCfgTransId transId, CrgCfgReqInfo
-         *cfgReqInfo));
-
 /* APIs Exposed by UIM */
 S16 rgUIMRguBndCfm ARGS ((Inst inst,SuId suId, uint8_t status));
 S16 rgUIMSndDedStaInd ARGS ((Inst inst,RgUpSapCb *rguDlSap,RgRguDedStaInd  *staInd));
@@ -844,10 +837,6 @@ S16 rgUIMCrgCfgCfm ARGS ((Inst inst,CrgCfgTransId transId,uint8_t status));
 /* 
  * APIs exposed by ROM module
  */
-S16 rgROMDedDatReq ARGS((Inst inst,RgRguDedDatReq *datReq));
-S16 rgROMCmnDatReq ARGS((Inst inst,RgRguCmnDatReq *datReq));
-S16 rgROMDedStaRsp ARGS((Inst inst,RgRguDedStaRsp *staRsp));
-S16 rgROMCmnStaRsp ARGS((Inst inst,RgRguCmnStaRsp *staRsp));
 #ifdef LTE_L2_MEAS
 
 S16 rgROML2MUlThrpMeasReq ARGS((Inst inst,RgRguL2MUlThrpMeasReq *measReq));
@@ -981,12 +970,7 @@ S16 rgSchMacRlsHqReq ARGS((Pst *pst, RgInfRlsHqInfo *rlshqUeInfo));
 /* 
  * APIs exposed by MUX module
  */
-#ifndef L2_OPTMZ
-S16 rgMUXBldPdu ARGS((Inst inst, RgBldPduInfo *bldPdu, Buffer **txPdu, 
-         RgErrInfo *err));
-#else
-S16 rgMUXBldPdu ARGS((Inst inst, RgBldPduInfo *bldPdu, RgTfuDatReqTbInfo *tb, 
-         RgErrInfo *err));
+#ifdef L2_OPTMZ
 Bool RgUtlIsTbMuxed ARGS((TfuDatReqTbInfo *tb));
 #endif
 S16 rgMUXBldRarPdu ARGS((RgCellCb *cell, RgInfRaRntiInfo *alloc,
