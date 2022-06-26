@@ -250,23 +250,11 @@
 #define RGR_CFG_CFM_TX_COMPLETE  0x01  /*!< Negative confirmation: configuration failed */
 
 /* Event corresponding to each primitive at this interface */
-#define EVTRGRBNDREQ    1     /*!< Bind Request */
-#define EVTRGRBNDCFM    2     /*!< Bind Confirm */
-#define EVTRGRUBNDREQ   3     /*!< Unbind Request */
 #define EVTMACSCHCFGCFM    5     /*!< Configuration Confirm */
 /* rgr_h_001.main_2: Added TTI indication from MAC to RGR user */
 /** @name RGR_RRM_TICK */
 /** @{ */
 #define EVTRGRTTIIND   6     /*!< TTI Tick to RRM */
-/** @} */
-/* rgr_h_001.main_3-ADD-Added for SI Enhancement. */
-/** @name RGR_SI_SCH */
-/** @{ */
-#ifdef RGR_SI_SCH
-#define EVTRGRSICFGREQ 7     /*!< SI Configuration Request */
-#define EVTRGRSICFGCFM 8     /*!< SI Configuration Confirm */
-#endif /*RGR_SI_SCH*/
-/** @} */
 /*rgr_h_001.main_8 ADD added changes for CQI Management*/
 /** @name RGR_CQI_REPT */
 /** @{ */
@@ -278,18 +266,10 @@
 /** @} */
 #define EVTRGRUESTAIND 10       /*!< RGR UE Status Indication */
 
-#ifdef RGR_SI_SCH
-#define EVTRGRWARNINGSICFGREQ 11    /*!< Warning SI Configuration Request */
-#define EVTRGRWARNINGSISTOPREQ 12   /*!< Warning SI Stop Request */
-#define EVTRGRWARNINGSICFGCFM 13     /*!< Warning SI Configuration Confirm */
-#endif /*RGR_SI_SCH*/
-/** @} */
-
 /** @{ */
 /* LTE_ADV_FLAG_REMOVED_START */
 #define EVTRGRLOADINFIND 14  /*!< LOAD INF Indication (SCTP -> SCH -> APP) (Received at X2AP)*/
 
-#define EVTRGRLOADINFREQ 15  /*!< LOAD INF Request (APP -> MAC -> SCTP) (To Remote X2AP) */
 /* LTE_ADV_FLAG_REMOVED_END */
 /** @} */
 /* Activation time limit in terms of number of frames */

@@ -750,70 +750,10 @@ S16 rgLMMStaInd ARGS((Inst inst,uint16_t category, uint16_t event, uint16_t caus
 Void rgLMMTrcInd ARGS((Inst inst,Buffer *srcMbuf, uint8_t event));
 /* LIM uses this to forward the BndCfm to LMM. This function invokes a
  * Control Confirmation to the LM. */
-S16 rgLMMBndCfm ARGS((Pst *pst, SuId suId, uint8_t status));
 S16 rgActvTmr ARGS((Ent ent, Inst inst ));
 S16 rgActvInit ARGS((Ent entity, Inst inst, Region 
        region, Reason reason));
 S16 rgActvTsk ARGS((Pst *pst, Buffer *mBuf));
-
-/* 
- * APIs exposed by CFG module
- */
-S16 rgCFGVldtCrgCellCfg ARGS((Inst inst,CrgCellCfg *cellCfg, RgErrInfo *errInfo));
-S16 rgCFGVldtCrgUeCfg ARGS((Inst inst,CrgUeCfg  *ueCfg, RgCellCb  **cell, RgErrInfo
-      *errInfo));
-S16 rgCFGVldtCrgLcCfg ARGS((Inst inst,CrgLchCfg *lcCfg, RgCellCb **cell, RgUeCb
-      **ue, RgErrInfo  *errInfo));
-S16 rgCFGVldtCrgCellRecfg ARGS((Inst inst,CrgCellRecfg *cellRecfg, RgCellCb **cell,
-      RgErrInfo *errInfo));
-S16 rgCFGVldtCrgUeRecfg ARGS((Inst inst,CrgUeRecfg *ueRecfg, RgCellCb **cell,
-      RgUeCb **ue, RgErrInfo *errInfo));
-S16 rgCFGVldtCrgLcRecfg ARGS((Inst inst,CrgLchRecfg *lcRecfg, RgCellCb **cell,
-      RgUeCb **ue, RgUlLcCb **ulLc, RgErrInfo *errInfo));
-S16 rgCFGVldtCrgUeReset ARGS ((Inst inst,CrgRst *reset,RgCellCb **cell,RgUeCb **ue,
-         RgErrInfo   *errInfo));
-
-S16 rgCFGCrgCellCfg ARGS((Inst inst,CrgCellCfg *cellCfg, RgErrInfo *errInfo));
-S16 rgCFGCrgUeCfg ARGS((Inst inst,RgCellCb  *cell, CrgUeCfg  *ueCfg, RgErrInfo
-      *errInfo));
-
-#ifdef LTE_ADV
-S16 rgFillAndAddSCellCfg ARGS((Inst inst, RgCellCb  *cell, 
-         CrgUeRecfg *ueRecfg, CrgCfgTransId transId, Bool *isCfmRqrd));
-S16 rgDelUeFrmAllSCell ARGS(( RgCellCb       *cell, RgUeCb         *ue));
-S16 rgUtlVltdAddSCellCfg ARGS ((RgPrgUeSCellCfgInfo *ueSCellCb,
-                                       RgCellCb    *cell,
-                                       Inst        inst
-                                     ));
-S16 rgCfgAddUeSCellCfg ARGS ((Inst        dstMacInst,
-                                    RgPrgUeSCellCfgInfo *ueSCellCb,
-                                    RgCellCb    *cell
-                                  ));
-#endif /* LTE_ADV */
-
-S16 rgCFGCrgLcCfg ARGS((Inst inst,RgCellCb *cell, RgUeCb *ue, CrgLchCfg
-      *lcCfg, RgErrInfo *errInfo,Bool *isCfmRqrd,CrgCfgTransId   transId));
-S16 rgCFGCrgCellRecfg ARGS((Inst inst,RgCellCb *cell, CrgCellRecfg *cellRecfg,
-      RgErrInfo *errInfo));
-S16 rgCFGCrgUeRecfg ARGS((Inst inst,RgCellCb *cell, RgUeCb *ue, CrgUeRecfg
-      *ueRecfg, RgErrInfo *errInfo));
-S16 rgCFGCrgLcRecfg ARGS((Inst inst,RgCellCb *cell, RgUeCb *ue, RgUlLcCb
-      *ulLc, CrgLchRecfg *lcRecfg, RgErrInfo *errInfo, Bool *isCfmRqrd));
-S16 rgCFGCrgCellDel ARGS((Inst inst,CrgDel *cellDelInfo, RgErrInfo *errInfo));
-S16 rgCFGCrgUeDel ARGS((Inst inst,CrgDel *ueDelInfo, RgErrInfo *errInfo));
-S16 rgCFGCrgLcDel ARGS((Inst inst,CrgDel *lcDelInfo, RgErrInfo
-         *errInfo,Bool *isCfmRqrd,CrgCfgTransId transId));
-Void rgCFGFreeCellCb ARGS((RgCellCb *cell));
-Void rgCFGFreeInactvCellCb ARGS((RgCellCb *cell));
-S16 rgSchMacCellRegReq ARGS((Pst* pst,RgInfCellReg* regReq));
-S16 rgCFGCrgUeReset ARGS((RgCellCb *cell,RgUeCb *ue,CrgRst *reset,
-         RgErrInfo *errInfo));
-
-/* 
- * APIs exposed by COM module
- */
-S16 rgCOMCfgReq ARGS((Inst inst,CrgCfgTransId transId, CrgCfgReqInfo
-         *cfgReqInfo));
 
 /* APIs Exposed by UIM */
 S16 rgUIMRguBndCfm ARGS ((Inst inst,SuId suId, uint8_t status));
@@ -844,10 +784,6 @@ S16 rgUIMCrgCfgCfm ARGS ((Inst inst,CrgCfgTransId transId,uint8_t status));
 /* 
  * APIs exposed by ROM module
  */
-S16 rgROMDedDatReq ARGS((Inst inst,RgRguDedDatReq *datReq));
-S16 rgROMCmnDatReq ARGS((Inst inst,RgRguCmnDatReq *datReq));
-S16 rgROMDedStaRsp ARGS((Inst inst,RgRguDedStaRsp *staRsp));
-S16 rgROMCmnStaRsp ARGS((Inst inst,RgRguCmnStaRsp *staRsp));
 #ifdef LTE_L2_MEAS
 
 S16 rgROML2MUlThrpMeasReq ARGS((Inst inst,RgRguL2MUlThrpMeasReq *measReq));
@@ -981,12 +917,7 @@ S16 rgSchMacRlsHqReq ARGS((Pst *pst, RgInfRlsHqInfo *rlshqUeInfo));
 /* 
  * APIs exposed by MUX module
  */
-#ifndef L2_OPTMZ
-S16 rgMUXBldPdu ARGS((Inst inst, RgBldPduInfo *bldPdu, Buffer **txPdu, 
-         RgErrInfo *err));
-#else
-S16 rgMUXBldPdu ARGS((Inst inst, RgBldPduInfo *bldPdu, RgTfuDatReqTbInfo *tb, 
-         RgErrInfo *err));
+#ifdef L2_OPTMZ
 Bool RgUtlIsTbMuxed ARGS((TfuDatReqTbInfo *tb));
 #endif
 S16 rgMUXBldRarPdu ARGS((RgCellCb *cell, RgInfRaRntiInfo *alloc,
@@ -996,19 +927,10 @@ S16 rgMUXBldRarPdu ARGS((RgCellCb *cell, RgInfRaRntiInfo *alloc,
  * Utility APIs
  */
 S16  rgAllocSBuf     ARGS((Inst inst,Data **pData, Size size));
-S16  rgGetMsg        ARGS((Inst inst,Buffer **mBuf));
 /*ccpu00117052 - MOD  Passing double pointer for proper NULLP
                       assignment */
 Void rgFreeSBuf      ARGS((Inst inst,Data **data, Size size));
 Void rgFillDgnParams ARGS((Inst inst,RgUstaDgn *dgn,uint8_t dgnType));
-Void rgUpdtRguDedSts ARGS((Inst inst,RgUpSapCb *rguSap,uint8_t stsType, RgRguDedDatReq *datReq));
-Void rgUpdtRguCmnSts ARGS((Inst inst,RgUpSapCb *rguSap,uint8_t stsType));
-Void rgUpdtCellCnt   ARGS((Inst inst,uint8_t updtType));
-Void rgUpdtUeCnt     ARGS((Inst inst,uint8_t updtType));
-Void rgGetPstToInst ARGS((Pst *pst,Inst srcInst, Inst dstInst));
-S16 rgAllocEventMem ARGS((Inst inst,Ptr *memPtr,Size memSize));
-S16 rgGetEventMem ARGS((Inst inst,Ptr *ptr,Size len,Ptr memCp));
-S16 rgAllocShrablSBuf ARGS((Inst inst,Data **pData, Size size));
 Void rgPrintfSubFrameInfo ARGS((RgDlSf *dlSf));
 Void printMacCellInfo ARGS((Void));
 Void rgFreeSharableSBuf ARGS((Inst inst,Data **data, Size size)); 

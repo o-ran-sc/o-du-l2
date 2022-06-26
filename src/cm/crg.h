@@ -35,13 +35,6 @@
   @brief Defines for CRG interface.
   */
 
-/* Config/Reconfig/Delete MACROs */
-#define CRG_CONFIG   1     /*!< Macro for action type Configuration */
-#define CRG_RECONFIG 2     /*!< Macro for action type Re-Configuration */
-#define CRG_DELETE   3     /*!< Macro for action type Delete */
-#define CRG_RESET    4     /*!< Macro for action type Reset. Applicable
-                            *   only for UE. */
-
 /* Cell/Ue/Logical channel MACROs */
 /* crg_h_001.main_6: Removed transport channel types from CRG. */
 #define CRG_CELL_CFG 1     /*!< Macro for Cell Configuration type*/
@@ -72,8 +65,7 @@
 #define EVTCRGBNDREQ   1     /*!< Macro for Bind Request */
 #define EVTCRGBNDCFM   2     /*!< Macro for Bind Confirm */
 #define EVTCRGUBNDREQ  3     /*!< Macro for Un-Bind Request */
-#define EVTCRGCFGREQ   4     /*!< Macro for Configuration Request */
-#define EVTCRGCFGCFM   5     /*!< Macro for Configuration Confirm */
+#define EVTCRGCFGCFM   4     /*!< Macro for Configuration Confirm */
 
 /* Activation time limit in terms of number of frames */
 #define CRG_ACTV_WIN_SIZE 20 /*!< Macro for Size of activation time window

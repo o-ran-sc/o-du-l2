@@ -55,6 +55,7 @@ uint8_t lwrMacActvInit(Ent entity, Inst inst, Region region, Reason reason)
    return ROK;
 }
 
+#ifdef CALL_FLOW_DEBUG_LOG
 /**************************************************************************
 * @brief function prints src, dest, msg info about all the msgs received 
 *
@@ -133,6 +134,8 @@ void callFlowlwrMacActvTsk(Pst *pst)
    }
    DU_LOG("\nCall Flow: %s -> %s : %s\n", sourceTask, destTask, message);
 }
+#endif
+
 /**************************************************************************
  * @brief Task Activation callback function. 
  *
