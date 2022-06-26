@@ -1072,7 +1072,6 @@ void deleteSchUeCb(SchUeCb *ueCb)
    uint8_t timeDomRsrcIdx = 0, ueLcIdx = 0, idx =0;
    SchPucchCfg *pucchCfg = NULLP;
    SchPdschConfig *pdschCfg = NULLP;
-   CmLList *node = NULLP, *next = NULLP;
 
    if(ueCb)
    {

@@ -63,6 +63,7 @@ uint8_t egtpActvInit(Ent entity, Inst inst, Region region, Reason reason)
   return ROK;
 }
 
+#ifdef CALL_FLOW_DEBUG_LOG
 /**************************************************************************
 * @brief Function prints the src dest and msg reached to egtp.
 *
@@ -159,6 +160,7 @@ void callFlowEgtpActvTsk(Pst *pst)
    }
    DU_LOG("\nCall Flow: %s -> %s : %s\n", sourceTask, destTask, message);
 }
+#endif
 
 /**************************************************************************
  * @brief Task Activation callback function. 

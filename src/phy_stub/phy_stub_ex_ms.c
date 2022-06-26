@@ -49,6 +49,7 @@ uint8_t phyStubActvInit(Ent ent, Inst inst, Region reg, Reason reason)
    return ROK;
 }
 
+#ifdef CALL_FLOW_DEBUG_LOG   
 /**************************************************************************
 * @brief Function prints the src dest and msg reached to egtp.
 *
@@ -93,6 +94,8 @@ void  callFlowPhyStubActvTsk(Pst *pst)
    }
    DU_LOG("\nCall Flow: %s -> %s : %s\n", sourceTask, destTask, message);
 }
+#endif
+
 /*******************************************************************
 *
 * @brief Receives messages for Phy stub slot indication generator task

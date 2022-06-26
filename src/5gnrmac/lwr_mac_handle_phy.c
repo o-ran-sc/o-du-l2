@@ -477,6 +477,7 @@ uint8_t procUciInd(fapi_uci_indication_t  *fapiUciInd)
 }
 #endif /* FAPI */
 
+#ifdef CALL_FLOW_DEBUG_LOG 
 /*******************************************************************
  * @brief Function prints src, dest, msg infor about all the msgs that
  received.
@@ -534,6 +535,8 @@ void callFlowFromPhyToLwrMac(uint16_t msgId)
    }
    DU_LOG("\nCall Flow: PHY -> ENTLWRMAC : %s\n",message);
 }
+#endif
+
 /*******************************************************************
  *
  * @brief Processes message from PHY

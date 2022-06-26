@@ -188,6 +188,7 @@ Reason reason               /* reason */
    return ROK;
 } /* kwActvInit */
 
+#ifdef CALL_FLOW_DEBUG_LOG
 /*
 *
 * @brief
@@ -368,6 +369,8 @@ void callFlowRlcDlActvTsk(Pst *pst)
     }
    DU_LOG("\nCall Flow: %s -> %s : %s\n", sourceTask, destTask, message);
 }
+#endif
+
 
 /**
  *

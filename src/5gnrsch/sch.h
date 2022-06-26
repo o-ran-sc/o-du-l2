@@ -507,6 +507,7 @@ SchCb schCb[SCH_MAX_INST];
 
 /* function declarations */
 short int schActvTmr(Ent ent,Inst inst);
+void SchFillCfmPst(Pst *reqPst,Pst *cfmPst,RgMngmt *cfm);
 
 /* Configuration related function declarations */
 void schInitUlSlot(SchUlSlotInfo *schUlSlotInfo);

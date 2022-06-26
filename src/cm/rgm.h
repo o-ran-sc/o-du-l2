@@ -47,9 +47,6 @@ extern "C" {
 
 /* Event corresponding to each primitive at this interface */
 #define EVTRGMBASEEVT      0     /*!< Bind Request */
-#define EVTRGMBNDREQ       1     /*!< Bind Request */
-#define EVTRGMUBNDREQ      2     /*!< Un-Bind Request */
-#define EVTRGMBNDCFM       3     /*!< Bind Confirm */
 #define EVTRGMCFGPRBRPRT   4     /*!< PRB Report Configuration */
 #define EVTRGMPRBRPRTIND   5     /*!< PRB report Indication */
 #define EVTRGMTRANSMODEIND 6     /*!< Trans Mode Chg Indication */

@@ -11842,6 +11842,11 @@ uint8_t BuildAndSendPagingMsg(uint64_t gsTmsi, uint8_t duId)
       DU_LOG("\nERROR  -->  F1AP : BuildAndSendPagingMsg(): DuDb is empty");
       return ret; 
    }
+   if(duDb->numCells == 0)
+   {
+      DU_LOG("\nERROR  -->  F1AP : BuildAndSendPagingMsg(): No CELL is UP!");
+      return ret; 
+   }
 
    while(true)
    {
