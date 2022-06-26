@@ -4627,14 +4627,6 @@ RgrCellCntrlCmdCfg *param,
 Buffer *mBuf
 ));
 
-#ifdef RLC_MAC_DAT_REQ_RBUF
-S16 rgDlDatReqBatchProc ARGS((
-Void));
-#endif
-#ifdef RLC_MAC_STA_RSP_RBUF
-S16 rgDlStaRspBatchProc ARGS((
-Void));
-#endif
 #ifdef __cplusplus
 }
 #endif

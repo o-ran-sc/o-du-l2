@@ -57,7 +57,6 @@ extern "C" {
 S16 PtMiLrgCfgCfm ARGS((Pst *pst, RgMngmt *cfm));
 S16 PtMiLrgSchCfgCfm ARGS((Pst *pst, RgMngmt *cfm));
 S16 PtMiLrgStsCfm ARGS((Pst *pst, RgMngmt *cfm));
-S16 PtMiLrgStaCfm ARGS((Pst *pst, RgMngmt *cfm));
 S16 PtMiLrgStaInd ARGS((Pst *pst, RgMngmt *usta));
 S16 PtMiLrgSchStaInd ARGS((Pst *pst, RgMngmt *usta));
 S16 PtMiLrgCntrlCfm ARGS((Pst *pst, RgMngmt *cfm));
@@ -133,22 +132,6 @@ static const LrgStsCfm RgMiLrgStsCfmMt[RG_MAX_LRG_USR] =
 #endif
 };
 
-/** @brief Status Confirm primitive Matrix */
-static const LrgStaCfm RgMiLrgStaCfmMt[RG_MAX_LRG_USR] =
-{
-#ifdef LCRGMILRG
-   cmPkLrgStaCfm,                  /* 0 - loosely coupled */
-#else
-   PtMiLrgStaCfm,                  /* 0 - loosely coupled */
-#endif
-#ifdef SM 
-   SmMiLrgStaCfm,                  /* 1 - Tightly coupled SM */
-#else
-   PtMiLrgStaCfm,                  /* 1 - Tightly coupled SM  */
-#endif
-};
-
-
 /** @brief Status Indication primitive Matrix */
 static const LrgStaInd RgMiLrgStaIndMt[RG_MAX_LRG_USR] =
 {
@@ -176,22 +159,6 @@ static const LrgSchStaInd RgMiLrgSchStaIndMt[RG_MAX_LRG_USR] =
    SmMiLrgSchStaInd,                  /* 1 - Tightly coupled SM */
 #else
    PtMiLrgSchStaInd,                  /* 1 - Tightly coupled SM  */
-#endif
-};
-
-
-/** @brief Control Confirm primitive Matrix */
-static const LrgCntrlCfm RgMiLrgCntrlCfmMt[RG_MAX_LRG_USR] =
-{
-#ifdef LCRGMILRG
-   cmPkLrgCntrlCfm,                  /* 0 - loosely coupled */
-#else
-   PtMiLrgCntrlCfm,                  /* 0 - loosely coupled */
-#endif
-#ifdef SM 
-   SmMiLrgCntrlCfm,                  /* 1 - Tightly coupled SM */
-#else
-   PtMiLrgCntrlCfm,                  /* 1 - Tightly coupled SM  */
 #endif
 };
 
@@ -355,67 +322,6 @@ RgMngmt  *cfm     /* statistics confirm structure  */
 }/*-- RgMiLrgStsCfm --*/
 
 
-/**
- * @brief Layer Manager Status confirm handler. 
- *
- * @details
- *
- *     Function : RgMiLrgStaCfm
- *     
- *     This function handles the status
- *     confirm invoked by MAC to Layer Manager.
- *     -# Based on the pst->selector value it invokes one of the
- *        functions cmPkLrgStaCfm() or SmMiLrgStaCfm().
- *     
- *  @param[in]  Pst *pst, the post structure     
- *  @param[in]  RgMngmt *cfm, the status confirm structure
- *  @return  S16
- *      -# ROK
- **/
-S16 RgMiLrgStaCfm
-(
-Pst      *pst,    /* post structure  */
-RgMngmt  *cfm     /* status confirm structure  */
-)
-{
-   
-   (*RgMiLrgStaCfmMt[pst->selector])(pst,cfm);
-
-   return ROK;
-   
-}/*-- RgMiLrgStaCfm --*/
-
-
-/**
- * @brief Layer Manager Control confirm handler. 
- *
- * @details
- *
- *     Function : RgMiLrgCntrlCfm
- *     
- *     This function handles the control
- *     confirm invoked by MAC to Layer Manager.
- *     -# Based on the pst->selector value it invokes one of the
- *        functions cmPkLrgCntrlCfm() or SmMiLrgCntrlCfm().
- *     
- *  @param[in]  Pst *pst, the post structure     
- *  @param[in]  RgMngmt *cfm, the control confirm structure
- *  @return  S16
- *      -# ROK
- **/
-S16 RgMiLrgCntrlCfm
-(
-Pst      *pst,    /* post structure  */
-RgMngmt  *cfm     /* control confirm structure  */
-)
-{
-   
-   (*RgMiLrgCntrlCfmMt[pst->selector])(pst,cfm);
-
-   return ROK;
-   
-}/*-- RgMiLrgCntrlCfm --*/
-
 /**
  * @brief Layer Manager scheduler Control confirm handler. 
  *
@@ -678,36 +584,6 @@ RgMngmt *cfm            /* Statistics Confirm */
 
    return ROK;
 }/* end of PtMiLrgStsCfm */
-
-
-
-/**
- * @brief Portable Function definition for Layer Manager Status 
- *         confirm handler. 
- *
- * @details
- *
- *     Function : PtMiLrgStaCfm 
- *     
- *     This function handles the status 
- *     confirm invoked by MAC to Layer Manager.
- *     Users of MAC who intend to provide a glue logic 
- *     for portability of status Confirm are expected 
- *     to fill in the code in this function definition.
- *     
- *  @param[in]  Pst *pst, the post structure     
- *  @param[in]  RgMngmt *cfm, the status confirm structure
- *  @return  S16
- *      -# ROK
- **/
-S16 PtMiLrgStaCfm
-(
-Pst *pst,               /* post structure */
-RgMngmt *cfm            /* Status Confirm */
-)
-{
-   return ROK;
-}/* end of PtMiLrgStaCfm */
 
 
 
