@@ -750,7 +750,6 @@ S16 rgLMMStaInd ARGS((Inst inst,uint16_t category, uint16_t event, uint16_t caus
 Void rgLMMTrcInd ARGS((Inst inst,Buffer *srcMbuf, uint8_t event));
 /* LIM uses this to forward the BndCfm to LMM. This function invokes a
  * Control Confirmation to the LM. */
-S16 rgLMMBndCfm ARGS((Pst *pst, SuId suId, uint8_t status));
 S16 rgActvTmr ARGS((Ent ent, Inst inst ));
 S16 rgActvInit ARGS((Ent entity, Inst inst, Region 
        region, Reason reason));
