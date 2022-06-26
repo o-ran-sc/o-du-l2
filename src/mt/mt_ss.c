@@ -164,18 +164,6 @@
 #include <hugetlbfs.h>
 #endif
 
-#if defined(SPLIT_RLC_DL_TASK) && defined(RLC_MAC_STA_RSP_RBUF)
-S16 rgBatchProc (Void);
-#endif
-#ifdef RLC_MAC_DAT_REQ_RBUF
-S16 rgDlDatReqBatchProc ARGS(( 
-         Void));
-#endif
-#if defined(SPLIT_RLC_DL_TASK) && defined(RLC_MAC_STA_RSP_RBUF)
-S16 rgBatchProc ARGS((
-    Void));
-#endif  
-
 #ifdef  TENB_T2K3K_SPECIFIC_CHANGES
 /* general purpose debug zone  */
 char            my_buffer2[4096 * 4] = { 0 };
@@ -4655,9 +4643,6 @@ Void YsPhyRecvMsg();
 #endif
       /* get a message from the demand queue */
       /* RT Processing */
-#ifdef RLC_MAC_DAT_REQ_RBUF
-      rgDlDatReqBatchProc();
-#endif
 
       ret = mtTskHdlMsg(sTsk); 
       if (ret != ROK)
@@ -4665,9 +4650,6 @@ Void YsPhyRecvMsg();
 	 /* exit the for loop here */
 	 break;
       }
-#if defined(SPLIT_RLC_DL_TASK) && defined(RLC_MAC_STA_RSP_RBUF)
-      rgBatchProc();
-#endif  
    }
 
    return (NULLP);

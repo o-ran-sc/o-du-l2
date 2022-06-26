@@ -104,6 +104,7 @@ uint8_t duActvInit(Ent entity, Inst inst, Region region, Reason reason)
 
 }
 
+#ifdef CALL_FLOW_DEBUG_LOG   
 /**************************************************************************
 * @brief Function prints the src dest and msg reached to egtp.
 *
@@ -222,11 +223,6 @@ void callFlowduActvTsk(Pst *pst)
                case EVTLRGCFGCFM:
                   {
                      strcpy(message,"EVTLRGCFGCFM");
-                     break;
-                  }
-               case EVTLRGCNTRLCFM:
-                  {
-                     strcpy(message,"EVTLRGCNTRLCFM");
                      break;
                   }
                case EVTMACSCHGENCFGCFM:
@@ -363,6 +359,8 @@ void callFlowduActvTsk(Pst *pst)
    }
    DU_LOG("\nCall Flow: %s -> %s : %s\n", sourceTask, destTask, message);
 }
+#endif
+
 /**************************************************************************
  * @brief Task Activation callback function. 
  *
@@ -495,10 +493,6 @@ uint8_t duActvTsk(Pst *pst, Buffer *mBuf)
                case EVTLRGCFGCFM:
                   {
                      ret = cmUnpkLrgCfgCfm(duHdlMacCfgComplete, pst, mBuf);
-                     break;
-                  }
-               case EVTLRGCNTRLCFM:
-                  {
                      break;
                   }
                case EVTMACSCHGENCFGCFM:
