@@ -224,11 +224,6 @@ void callFlowduActvTsk(Pst *pst)
                      strcpy(message,"EVTLRGCFGCFM");
                      break;
                   }
-               case EVTLRGCNTRLCFM:
-                  {
-                     strcpy(message,"EVTLRGCNTRLCFM");
-                     break;
-                  }
                case EVTMACSCHGENCFGCFM:
                   {
                      strcpy(message,"EVTMACSCHGENCFGCFM");
@@ -495,10 +490,6 @@ uint8_t duActvTsk(Pst *pst, Buffer *mBuf)
                case EVTLRGCFGCFM:
                   {
                      ret = cmUnpkLrgCfgCfm(duHdlMacCfgComplete, pst, mBuf);
-                     break;
-                  }
-               case EVTLRGCNTRLCFM:
-                  {
                      break;
                   }
                case EVTMACSCHGENCFGCFM:

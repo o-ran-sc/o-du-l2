@@ -90,14 +90,6 @@ Buffer  *mBuf                       /* message buffer       */
          /* Process a config. request */
          cmUnpkLrgSchCfgReq(MacSchGenCfgReq, pst, mBuf);
          break;
-      case EVTLRGCNTRLREQ:
-         /* Process a control request */
-         cmUnpkLrgCntrlReq(RgMiLrgCntrlReq, pst, mBuf);
-         break;
-      case EVTLRGSSTAREQ:
-         /* Process a status request  */
-         cmUnpkLrgStaReq(RgMiLrgStaReq, pst, mBuf);
-         break;
       case EVTLRGSTSREQ:
          /* Process a statistics request */
          cmUnpkLrgStsReq(RgMiLrgStsReq, pst, mBuf);
@@ -469,15 +461,6 @@ void callFlowRgActvTsk(Pst *pst)
                   break;
                case EVTMACSCHGENCFGREQ:
                   strcpy(message,"EVTMACSCHGENCFGREQ");
-                  break;
-               case EVTLRGCNTRLREQ:
-                  strcpy(message,"EVTLRGCNTRLREQ");
-                  break;
-               case EVTLRGSSTAREQ:
-                  strcpy(message,"EVTLRGSSTAREQ");
-                  break;
-               case EVTLRGSTSREQ:
-                  strcpy(message,"EVTLRGSTSREQ");
                   break;
 #endif /* LCRGMILRG */
                case EVENT_MAC_CELL_CONFIG_REQ:
