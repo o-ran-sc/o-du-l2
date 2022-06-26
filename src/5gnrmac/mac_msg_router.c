@@ -90,14 +90,6 @@ Buffer  *mBuf                       /* message buffer       */
          /* Process a config. request */
          cmUnpkLrgSchCfgReq(MacSchGenCfgReq, pst, mBuf);
          break;
-      case EVTLRGCNTRLREQ:
-         /* Process a control request */
-         cmUnpkLrgCntrlReq(RgMiLrgCntrlReq, pst, mBuf);
-         break;
-      case EVTLRGSSTAREQ:
-         /* Process a status request  */
-         cmUnpkLrgStaReq(RgMiLrgStaReq, pst, mBuf);
-         break;
       case EVTLRGSTSREQ:
          /* Process a statistics request */
          cmUnpkLrgStsReq(RgMiLrgStsReq, pst, mBuf);
@@ -217,9 +209,6 @@ Buffer  *mBuf                       /* message buffer       */
          break;
       case EVTCRGUBNDREQ:
          cmUnpkCrgUbndReq(RgUiCrgUbndReq, pst, mBuf);
-         break;
-      case EVTCRGCFGREQ:
-         cmUnpkCrgCfgReq(RgUiCrgCfgReq, pst, mBuf);
          break;
 #endif            
       default:
@@ -362,17 +351,6 @@ Buffer  *mBuf                       /* message buffer       */
       case EVTINFRLSRNTIREQ:
          cmUnpkSchMacRlsRntiReq(RgSchMacRlsRntiReq, pst, mBuf);
          break;
-#ifdef LTEMAC_SPS
-      case EVTINFSPSLCREG:
-         cmUnpkSchMacSpsLcRegReq(RgSchMacSpsLcRegReq, pst, mBuf);
-         break;
-      case EVTINFSPSLCDEREG:
-         cmUnpkSchMacSpsLcDeregReq(RgSchMacSpsLcDeregReq, pst, mBuf);
-         break;
-      case EVTINFSPSRESET:
-         cmUnpkSchMacUlSpsResetReq(RgSchMacUlSpsResetReq, pst, mBuf);
-         break;
-#endif /* LTEMAC_SPS */
 #ifdef LTE_L2_MEAS
       case EVTINFL2MEASREQ:
          cmUnpkSchMacL2MeasReq(RgSchMacL2MeasReq, pst, mBuf);
@@ -384,10 +362,7 @@ Buffer  *mBuf                       /* message buffer       */
          cmUnpkSchMacL2MeasStopReq(RgSchMacL2MeasStopReq, pst , mBuf);
          break;
 #endif/* LTE_L2_MEAS */
-      case EVTINFLCGREG:
-         cmUnpkSchMacLcgRegReq(RgSchMacLcgRegReq, pst, mBuf);
-         break;
-#endif            
+#endif /* LCRG */
 #if defined(LTE_ADV) && defined(LCPRG)
       case EVTPRGUESCELLCFGREQ:
       {
@@ -436,6 +411,7 @@ Buffer  *mBuf                       /* message buffer       */
    }
 }
 
+#ifdef CALL_FLOW_DEBUG_LOG
 /**
 * @brief Function prints src, dest, msg infor about all the msgs that received.
 *
@@ -469,15 +445,6 @@ void callFlowRgActvTsk(Pst *pst)
                   break;
                case EVTMACSCHGENCFGREQ:
                   strcpy(message,"EVTMACSCHGENCFGREQ");
-                  break;
-               case EVTLRGCNTRLREQ:
-                  strcpy(message,"EVTLRGCNTRLREQ");
-                  break;
-               case EVTLRGSSTAREQ:
-                  strcpy(message,"EVTLRGSSTAREQ");
-                  break;
-               case EVTLRGSTSREQ:
-                  strcpy(message,"EVTLRGSTSREQ");
                   break;
 #endif /* LCRGMILRG */
                case EVENT_MAC_CELL_CONFIG_REQ:
@@ -593,20 +560,6 @@ void callFlowRgActvTsk(Pst *pst)
                case EVTINFRLSRNTIREQ:
                   strcpy(message,"EVTINFRLSRNTIREQ");
                   break;
-#ifdef LTEMAC_SPS
-               case EVTINFSPSLCREG:
-                  strcpy(message,"EVTINFSPSLCREG");
-                  break;
-               case EVTINFSPSLCDEREG:
-                  strcpy(message,"EVTINFSPSLCDEREG");
-                  break;
-               case EVTINFSPSRESET:
-                  strcpy(message,"EVTINFSPSRESET");
-                  break;
-#endif /* LTEMAC_SPS */
-               case EVTINFLCGREG:
-                  strcpy(message,"EVTINFLCGREG");
-                  break;
 #endif            
 #if defined(LTE_ADV) && defined(LCPRG)
                case EVTPRGUESCELLCFGREQ:
@@ -653,9 +606,8 @@ void callFlowRgActvTsk(Pst *pst)
    }
    DU_LOG("\nCall Flow: %s -> %s : %s\n", sourceTask, destTask, message);
 }
+#endif
 
-
-/**********************************************************************
 
 /**
  * @brief Task Activation callback function. 

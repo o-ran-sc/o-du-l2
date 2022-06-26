@@ -149,16 +149,10 @@ S16 PtUiRgrBndCfm ARGS((Pst* pst, SuId suId, uint8_t status));
 S16 PtUiRgrCfgCfm ARGS((Pst* pst, SuId suId, RgrCfgTransId transId, uint8_t status));
 S16 PtUiRgrTtiInd ARGS((Pst* pst, SuId suId, RgrTtiIndInfo *ttiInd));
 /* Added for SI Enhancement*/
-#ifdef RGR_SI_SCH
-S16 PtUiRgrSiCfgCfm ARGS((Pst* pst, SuId suId, RgrCfgTransId transId, uint8_t status));
-S16 PtUiRgrWarningSiCfgCfm ARGS((Pst* pst, SuId suId, 
-                                RgrCfgTransId transId, uint8_t siId, uint8_t status));
-#endif/*RGR_SI_SCH*/
 #endif /*--#ifdef PTRGUIRGR--*/
 
 #ifdef PTRGUIRGM
 S16 PtUiRgmPrbRprtInd ARGS((Pst* pst, SuId suId, RgmPrbRprtInd *prbRprtInd));
-S16 PtUiRgmBndCfm ARGS((Pst* pst, SuId suId, uint8_t status));
 S16 PtUiRgmTransModeInd  ARGS((Pst* pst, SuId suId, RgmTransModeInd *transModeInd));
 #endif
 S16 RgUiRgmSendPrbRprtInd ARGS((Pst* pst, SuId suId, RgmPrbRprtInd *prbRprtInd));
@@ -181,40 +175,6 @@ static const RgrTtiInd RgUiRgrTtiIndMt[RG_MAX_RGR_USR] =
 #endif
 };
 
-
-/** @brief Confirmation from MAC to RRM for the bind/Unbind 
- * request for the interface saps */
-static const RgrBndCfm RgUiRgrBndCfmMt[RG_MAX_RGR_USR] =
-{
-#ifdef LCRGUIRGR
-   cmPkRgrBndCfm,
-#else
-   PtUiRgrBndCfm,
-#endif
-#ifdef NX
-   NxLiRgrBndCfm,
-#else
-   PtUiRgrBndCfm,
-#endif
-};
-
-/** @brief Confirmation from MAC to RRM for the bind/Unbind 
- * request for the interface saps  via RGM interface*/
-static const RgmBndCfm RgUiRgmBndCfmMt[RG_MAX_RGM_USR] =
-{
-#ifdef RGM_LC
-   cmPkRgmBndCfm,
-#else
-   PtUiRgmBndCfm,
-#endif
-#ifdef RM
-   RmLiRgmBndCfm, /*To be added by RRM*/
-#else
-   PtUiRgmBndCfm,
-#endif
-};
-
-
 /** @brief Configuration Confirm from MAC to RRM */
 static const RgrCfgCfm RgUiRgrCfgCfmMt[RG_MAX_RGR_USR] =
 {
@@ -229,39 +189,6 @@ static const RgrCfgCfm RgUiRgrCfgCfmMt[RG_MAX_RGR_USR] =
 };
 
 /* Added for SI Enhancement*/
-#ifdef RGR_SI_SCH
-/** @brief SI Configuration Confirm from MAC to RRM */
-static const RgrSiCfgCfm RgUiRgrSiCfgCfmMt[RG_MAX_RGR_USR] =
-{
-#ifdef LCRGUIRGR
-   cmPkRgrSiCfgCfm,
-#else
-   PtUiRgrSiCfgCfm,
-#endif
-#ifdef NX
-   NxLiRgrSiCfgCfm,
-#else
-   PtUiRgrSiCfgCfm,
-#endif
-};
-
-
-/** @brief Warning SI Configuration Confirm from MAC to RRM */
-static const RgrWarningSiCfgCfm RgUiRgrWarningSiCfgCfmMt[RG_MAX_RGR_USR] =
-{
-#ifdef LCRGUIRGR
-   cmPkRgrWarningSiCfgCfm,
-#else
-   PtUiRgrWarningSiCfgCfm,
-#endif
-#ifdef NX
-   NxLiRgrWarningSiCfgCfm,
-#else
-   PtUiRgrWarningSiCfgCfm,
-#endif
-};
-
-#endif/*RGR_SI_SCH */
 /** @brief Confirmation from MAC to RRC for the bind/Unbind 
  * request for the interface saps */
 static const CrgBndCfm RgUiCrgBndCfmMt[RG_MAX_CRG_USR] =
@@ -533,49 +460,6 @@ static const RguFlowCntrlIndInfo RgUiRguFlowCntrlIndMt[RG_MAX_RGU_USR] =
 #endif /* __cplusplus */
 
 #ifdef RG
-
-/**
-* @brief Confirmation from MAC to RRM for the bind/Unbind 
- * request for the interface saps
-*
-* @details
-*
-*     Function : RgUiRgrBndCfm
-*
-*  @param[in]   Pst*  pst
-*  @param[in]   SuId  suId
-*  @param[in]   uint8_t  status
-*  @return   S16
-*      -# ROK
-**/
-S16 RgUiRgrBndCfm(Pst* pst,SuId suId,uint8_t status)
-{
-
-   return ((*RgUiRgrBndCfmMt[pst->selector])(pst, suId, status));
-
-}
-/**
-* @brief Confirmation from MAC to RRM for the bind/Unbind 
- * request for the interface saps via RGM interface
-*
-* @details
-*
-*     Function : RgUiRgmBndCfm
-*
-*  @param[in]   Pst*  pst
-*  @param[in]   SuId  suId
-*  @param[in]   uint8_t  status
-*  @return   S16
-*      -# ROK
-**/
-S16 RgUiRgmBndCfm(Pst* pst,SuId suId,uint8_t status)
-{
-
-   return ((*RgUiRgmBndCfmMt[pst->selector])(pst, suId, status));
-
-}
-
-
 
 /* Added for sending TTI tick to RRM */
 
@@ -811,50 +695,6 @@ S16 RgUiRguFlowCntrlInd(Pst* pst,SuId suId,RguFlowCntrlInd *flowCntrlInd)
   return ((*RgUiRguFlowCntrlIndMt[pst->selector])(pst, suId, flowCntrlInd));
 }
 /* Added for SI Enhancement*/
-#ifdef RGR_SI_SCH
-/**
-* @brief SI Configuration Confirm from MAC to RRM
-*
-* @details
-*
-*     Function : RgUiRgrSiCfgCfm
-*
-*  @param[in]   Pst*  pst
-*  @param[in]   SuId  suId
-*  @param[in]   RgrCfgTransId  transId
-*  @param[in]   uint8_t  status
-*  @return   S16
-*      -# ROK
-**/
-S16 RgUiRgrSiCfgCfm(Pst* pst,SuId suId,RgrCfgTransId transId,uint8_t status)
-{
-
-   return ((*RgUiRgrSiCfgCfmMt[pst->selector])(pst, suId, transId, status));
-
-}
-
-/**
-* @brief Warning SI Configuration Confirm from MAC to RRM
-*
-* @details
-*
-*     Function : RgUiRgrWarningSiCfgCfm
-*
-*  @param[in]   Pst*  pst
-*  @param[in]   SuId  suId
-*  @param[in]   RgrCfgTransId  transId
-*  @param[in]   uint8_t   siId
-*  @param[in]   uint8_t  status
-*  @return   S16
-*      -# ROK
-**/
-S16 RgUiRgrWarningSiCfgCfm(Pst* pst,SuId suId,RgrCfgTransId transId,uint8_t siId,uint8_t status)
-{
-   return ((*RgUiRgrWarningSiCfgCfmMt[pst->selector])
-         (pst, suId, transId, siId, status));
-}
-
-#endif/*RGR_SI_SCH*/
 
 
 /* ccpu00117452 - MOD - Changed macro name from
@@ -1227,60 +1067,6 @@ S16 PtUiRgrCfgCfm(Pst* pst,SuId suId,RgrCfgTransId transId,uint8_t status)
 }
 
 /* Added for SI Enhancement*/
-#ifdef RGR_SI_SCH
-/**
-* @brief SI Configuration Confirm from MAC to RRM
-*
-* @details
-*
-*     Function : PtUiRgrSiCfgCfm
-*
-*  @param[in]   Pst*  pst
-*  @param[in]   SuId  suId
-*  @param[in]   RgrCfgTransId  transId
-*  @param[in]   uint8_t  status
-*  @return   S16
-*      -# ROK
-**/
-S16 PtUiRgrSiCfgCfm(Pst* pst,SuId suId,RgrCfgTransId transId,uint8_t status)
-{
-
-   UNUSED(pst);
-   UNUSED(suId);
-   UNUSED(transId);
-   UNUSED(status);
-
-   return ROK;
-
-}
-
-/**
-* @brief Warning SI Configuration Confirm from MAC to RRM
-*
-* @details
-*
-*     Function : PtUiRgrWarningSiCfgCfm
-*
-*  @param[in]   Pst*  pst
-*  @param[in]   SuId  suId
-*  @param[in]   RgrCfgTransId  transId
-*  @param[in]   uint8_t siId
-*  @param[in]   uint8_t  status
-*  @return   S16
-*      -# ROK
-**/
-S16 PtUiRgrWarningSiCfgCfm(Pst* pst,SuId suId,RgrCfgTransId transId,uint8_t siId,uint8_t status)
-{
-   UNUSED(pst);
-   UNUSED(suId);
-   UNUSED(transId);
-   UNUSED(siId);
-   UNUSED(status);
-
-   return ROK;
-}
-#endif/* RGR_SI_SCH */
-
 
 /* ccpu00117452 - MOD - Changed macro name from
    RGR_RRM_DLPWR_CNTRL to RGR_CQI_REPT */
@@ -1362,30 +1148,6 @@ S16 PtUiRgrUeStaInd(Pst* pst,SuId suId,RgrUeStaIndInfo  *ueStaInd)
 
 
 #ifdef PTRGUIRGM
-/**
-* @brief Confirmation from MAC to RRM for the bind/Unbind 
- * request for the interface saps via RGM interface
-*
-* @details
-*
-*     Function : PtUiRgmBndCfm
-*
-*  @param[in]   Pst*  pst
-*  @param[in]   SuId  suId
-*  @param[in]   uint8_t  status
-*  @return   S16
-*      -# ROK
-**/
-S16 PtUiRgmBndCfm(Pst* pst,SuId suId,uint8_t status)
-{
-
-   UNUSED(pst);
-   UNUSED(suId);
-   UNUSED(status);
-
-   return ROK;
-
-}
 
 /**
 * @brief Average PRB indication from MAC to RRM
@@ -1506,134 +1268,7 @@ static S16 RgUiRguDDatIndRbuf(RguDDatIndInfo  *datInd)
   return (ret);
 }
 #endif
-#ifdef RLC_MAC_DAT_REQ_RBUF
-S16 rgDlDatReqBatchProc
-(
-Void
-)
-{
-/* Read from Ring Buffer and process PDCP packets */
 
-   uint8_t rngBufDeqIndx = 0;
-   static Pst rgDDatRbfuPst ={1,1,ENTMAC,0,ENTRLC,1,PRIOR0,RTESPEC,EVTRGUDDATREQ,0,0,2,0};
-   static Pst rgCDatRbfuPst ={1,1,ENTMAC,0,ENTRLC,1,PRIOR0,RTESPEC,EVTRGUCDATREQ,0,0,2,0};
-   Void *elmIndx = NULLP;
-   RguInfoRingElem *datReqRing=NULLP;
-   elmIndx = SRngGetRIndx(SS_RNG_BUF_DLRLC_TO_DLMAC_DAT_REQ);
-   while(NULLP != elmIndx)
-   {
-      datReqRing= (RguInfoRingElem *)elmIndx;
-      SsRngInfoTbl[SS_RNG_BUF_DLRLC_TO_DLMAC_DAT_REQ].nPktProc++;//Number of pkt processed in tti
-      if(datReqRing->msg)
-      {
-         if(datReqRing->event == EVTRGUDDATREQ)
-         {
-         RgUiRguDDatReq(&rgDDatRbfuPst, datReqRing->spId, (RguDDatReqInfo *) datReqRing->msg);
-         }
-         else
-         { 
-          //  printf("CSHP:*** Received CDatReq in MAC Ring  \n");
-         RgUiRguCDatReq(&rgCDatRbfuPst, datReqRing->spId, (RguCDatReqInfo *) datReqRing->msg); 
-         }
-      }
-      else
-      {
-	      printf(" Buf Pinter is NULL RBUF Read(%ld) write (%ld) \n",SsRngInfoTbl[SS_RNG_BUF_DLRLC_TO_DLMAC_DAT_REQ].r_addr->read,
-              SsRngInfoTbl[SS_RNG_BUF_DLRLC_TO_DLMAC_DAT_REQ].r_addr->write);
-	      /* Due to the cache issue we are verifying the mbuf pointer again and sending it to rlc if avilable*/
-              if(datReqRing->msg)
-	      {
-		      if(datReqRing->event == EVTRGUDDATREQ)
-			      RgUiRguDDatReq(&rgDDatRbfuPst, datReqRing->spId, (RguDDatReqInfo *) datReqRing->msg);
-		      else 
-			      RgUiRguCDatReq(&rgCDatRbfuPst, datReqRing->spId, (RguCDatReqInfo *) datReqRing->msg); 
-	      }else 
-	      {
-		      printf(" still Buf Pinter is NULL RBUF Read(%ld) write (%ld) \n",SsRngInfoTbl[SS_RNG_BUF_DLRLC_TO_DLMAC_DAT_REQ].r_addr->read,
-		      SsRngInfoTbl[SS_RNG_BUF_DLRLC_TO_DLMAC_DAT_REQ].r_addr->write);
-	      } 
-      }
-      datReqRing->msg=NULLP;
-      SRngIncrRIndx(SS_RNG_BUF_DLRLC_TO_DLMAC_DAT_REQ);
-      datReqRing->event=0; 
-      elmIndx = NULLP;
-      datReqRing= NULLP;
-      rngBufDeqIndx++;
-
-      if(rngBufDeqIndx >= SS_RNG_MAX_DLRLC_TO_DLMAC_DAT_REQ_DQ_CNT)
-        break;
-
-      if((elmIndx = SRngGetRIndx(SS_RNG_BUF_DLRLC_TO_DLMAC_DAT_REQ)) == NULLP)
-      break;
-   }
- 
-   return ROK;
-}
-#endif 
-
-#ifdef RLC_MAC_STA_RSP_RBUF
-S16 rgDlStaRspBatchProc(Void)
-{
-/* Read from Ring Buffer and process PDCP packets */
-
-   uint8_t rngBufDeqIndx = 0;
-   static Pst rgDStaRbfuPst ={1,1,ENTMAC,0,ENTRLC,1,PRIOR0,RTESPEC,EVTRGUDSTARSP,0,0,2,0};
-   static Pst rgCStaRbfuPst ={1,1,ENTMAC,0,ENTRLC,1,PRIOR0,RTESPEC,EVTRGUCSTARSP,0,0,2,0};
-   Void *elmIndx = NULLP;
-   RguInfoRingElem *staRspRing=NULLP;
-
-   elmIndx = SRngGetRIndx(SS_RNG_BUF_DLRLC_TO_DLMAC);
-   while(NULLP != elmIndx)
-   {
-      staRspRing= (RguInfoRingElem *)elmIndx;
-      SsRngInfoTbl[SS_RNG_BUF_DLRLC_TO_DLMAC].nPktProc++;//Number of pkt processed in tti
-      
-      if(staRspRing->msg!= NULLP)
-      {
-         if( staRspRing->event == EVTRGUDSTARSP)
-         {
-         RgUiRguDStaRsp(&rgDStaRbfuPst, staRspRing->spId, (RguDStaRspInfo *) staRspRing->msg);
-         }
-         else
-         {
-         RgUiRguCStaRsp(&rgCStaRbfuPst, staRspRing->spId, (RguCStaRspInfo *) staRspRing->msg);
-         } 
-      }
-      else
-      {
-	      printf(" Buf Pinter is NULL RBUF Read(%ld) write (%ld) \n",SsRngInfoTbl[SS_RNG_BUF_DLRLC_TO_DLMAC].r_addr->read,
-			      SsRngInfoTbl[SS_RNG_BUF_DLRLC_TO_DLMAC].r_addr->write);
-	      /* Due to the cache issue we are verifying the mbuf pointer again and sending it to rlc if avilable*/
-              if(staRspRing->msg!= NULLP)
-	      {
-		      if( staRspRing->event == EVTRGUDSTARSP)
-			      RgUiRguDStaRsp(&rgDStaRbfuPst, staRspRing->spId, (RguDStaRspInfo *) staRspRing->msg);
-		      else  
-			      RgUiRguCStaRsp(&rgCStaRbfuPst, staRspRing->spId, (RguCStaRspInfo *) staRspRing->msg);
-	      }else 
-	      {
-		      printf(" still Buf Pinter is NULL RBUF Read(%ld) write (%ld) \n",SsRngInfoTbl[SS_RNG_BUF_DLRLC_TO_DLMAC].r_addr->read,
-				      SsRngInfoTbl[SS_RNG_BUF_DLRLC_TO_DLMAC].r_addr->write);
-	      } 
-      }
-      staRspRing->msg=NULLP;
-      SRngIncrRIndx(SS_RNG_BUF_DLRLC_TO_DLMAC);
-      staRspRing->event =0;    
-      elmIndx = NULLP;
-      staRspRing= NULLP;
-
-      rngBufDeqIndx++;
-
-      if(rngBufDeqIndx >= SS_RNG_MAX_DLRLC_TO_DLMAC_STA_RSP_DQ_CNT)
-        break;
-
-      if((elmIndx = SRngGetRIndx(SS_RNG_BUF_DLRLC_TO_DLMAC)) == NULLP)
-      break;
-   }
- 
-   return ROK;
-}
-#endif 
 #ifdef LTE_L2_MEAS
 #ifdef MAC_RLC_HARQ_STA_RBUF
 S16 RgUiRguHqStaIndRbuf (Pst* pst,SuId suId,RguHarqStatusInd *harqStatusInd)

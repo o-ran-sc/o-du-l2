@@ -48,7 +48,6 @@
 #include "sch.h"
 #include "sch_utils.h"
 
-void SchFillCfmPst(Pst *reqPst,Pst *cfmPst,RgMngmt *cfm);
 
 /* local defines */
 SchCellCfgCfmFunc SchCellCfgCfmOpts[] = 
@@ -2277,6 +2276,49 @@ uint8_t MacSchPagingInd(Pst *pst,  SchPageInd *pageInd)
    }
    return ret;
 }
+
+
+/***********************************************************
+ *
+ *     Func : SchFillCfmPst 
+ *        
+ *
+ *     Desc : Fills the Confirmation Post Structure cfmPst using the reqPst 
+ *            and the cfm->hdr.response.
+ *            
+ *
+ *     Ret  : Void
+ *
+ *     Notes: 
+ *
+ *     File : rg_sch_lmm.c 
+ *
+ **********************************************************/
+Void SchFillCfmPst
+(
+Pst           *reqPst,
+Pst           *cfmPst,
+RgMngmt       *cfm
+)
+{
+   Inst inst;
+
+   inst = (reqPst->dstInst - SCH_INST_START);
+
+   cfmPst->srcEnt    = ENTMAC;
+   cfmPst->srcInst   = (Inst) 1;
+   cfmPst->srcProcId = schCb[inst].schInit.procId;
+   cfmPst->dstEnt    = ENTMAC;
+   cfmPst->dstInst   = (Inst) 0;
+   cfmPst->dstProcId = reqPst->srcProcId;
+
+   cfmPst->selector  = cfm->hdr.response.selector;
+   cfmPst->region    = cfm->hdr.response.mem.region;
+   cfmPst->pool      = cfm->hdr.response.mem.pool;
+
+   return;
+}
+
 /**********************************************************************
   End of file
  **********************************************************************/

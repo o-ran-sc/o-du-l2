@@ -514,22 +514,6 @@ S16 RgUiRguUbndReq ARGS((Pst* pst,SpId spId,Reason reason));
  * @return ROK/RFAILED
 */
 S16 RgUiRguBndCfm ARGS((Pst* pst,SuId suId,uint8_t status));
-/** @brief Data Request from RLC to MAC for forwarding SDUs on common
- * channel for transmission 
- * @param pst Pointer to the post structure.
- * @param spId SAP ID of the service provider.
- * @param datReq Data request for common channels (BCCH, PCCH and CCCH).
- * @return ROK/RFAILED
-*/
-S16 RgUiRguCDatReq ARGS((Pst* pst,SpId spId,RguCDatReqInfo *datReq));
-/** @brief Data Request from RLC to MAC for forwarding SDUs on 
- * dedicated channel for transmission 
- * @param pst Pointer to the post structure.
- * @param spId SAP ID of the service provider.
- * @param datReq Data request for dedicated channels (DCCH and DTCH).
- * @return ROK/RFAILED
-*/
-S16 RgUiRguDDatReq ARGS((Pst* pst,SpId spId,RguDDatReqInfo  *datReq));
 
 /** @brief Data Indication from MAC to RLC to 
  * forward the data received for common channels
@@ -547,22 +531,6 @@ S16 RgUiRguCDatInd ARGS((Pst* pst,SuId suId,RguCDatIndInfo  *datInd));
  * @return ROK/RFAILED
 */
 S16 RgUiRguDDatInd ARGS((Pst* pst,SuId suId,RguDDatIndInfo  *datInd));
-/** @brief Status Response from RLC to MAC to 
- * inform the BO report for common channels
- * @param pst Pointer to the post structure.
- * @param spId SAP ID of the service provider.
- * @param staRsp Status response for common channels (BCCH, PCCH and CCCH).
- * @return ROK/RFAILED
-*/
-S16 RgUiRguCStaRsp ARGS((Pst* pst,SpId spId,RguCStaRspInfo  *staRsp));
-/** @brief Status Response from RLC to MAC to 
- * inform the BO report for dedicated channels
- * @param pst Pointer to the post structure.
- * @param spId SAP ID of the service provider.
- * @param staRsp Status response for dedicated channels (DCCH and DTCH).
- * @return ROK/RFAILED
-*/
-S16 RgUiRguDStaRsp ARGS((Pst* pst,SpId spId,RguDStaRspInfo  *staRsp));
 
 /** @brief Status Indication from MAC to RLC  
  * as a response to the staRsp primitive from RLC.
