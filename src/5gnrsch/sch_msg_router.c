@@ -162,10 +162,6 @@ Buffer  *mBuf                       /* message buffer       */
                /* Process a config. request */
                cmUnpkLrgSchCfgReq(SchProcGenCfgReq, pst, mBuf);
                break;
-            case EVTLRGSCHCNTRLREQ:
-               /* Process a control request */
-               cmUnpkLrgSchCntrlReq(RgMiLrgSchCntrlReq, pst, mBuf);
-               break;
             case EVTLRGSCHSTAIND:
                /* Process a control request */
                cmUnpkLrgSchStaInd(RgMiLrgSchStaInd, pst, mBuf);
@@ -185,39 +181,6 @@ Buffer  *mBuf                       /* message buffer       */
                break;
 #endif
 #endif /* LCRGMILRG */
-            default:
-               RGSCH_FREE_MSG(mBuf);
-               break;
-         }
-         break;
-     case ENTNX:
-         switch(pst->event)
-         {
-#ifdef LCRGUIRGR
-            case EVTRGRBNDREQ:
-               cmUnpkRgrBndReq(RgUiRgrBndReq, pst, mBuf);
-               break;
-            case EVTRGRUBNDREQ:
-               cmUnpkRgrUbndReq(RgUiRgrUbndReq, pst, mBuf);
-               break;
-#ifdef RGR_SI_SCH
-            case EVTRGRSICFGREQ:
-               cmUnpkRgrSiCfgReq(RgUiRgrSiCfgReq, pst, mBuf);
-               break;
-            case EVTRGRWARNINGSICFGREQ:
-               cmUnpkRgrWarningSiCfgReq(RgUiRgrWarningSiCfgReq, pst, mBuf);
-               break;
-
-            case EVTRGRWARNINGSISTOPREQ:
-               cmUnpkRgrWarningSiStopReq(RgUiRgrWarningSiStopReq, pst, mBuf);
-               break;
-#endif/*RGR_SI_SCH */
-               /* LTE_ADV_FLAG_REMOVED_START */
-            case EVTRGRLOADINFREQ:
-               cmUnpkRgrLoadInfReq(RgUiRgrLoadInfReq, pst, mBuf);
-               break;
-               /* LTE_ADV_FLAG_REMOVED_END */
-#endif            
             default:
                RGSCH_FREE_MSG(mBuf);
                break;
@@ -252,23 +215,6 @@ Buffer  *mBuf                       /* message buffer       */
 #endif            
             case EVENT_SLOT_IND_TO_SCH:
                unpackMacSchSlotInd(MacSchSlotInd, pst, mBuf);
-               break;
-            default:
-               RGSCH_FREE_MSG(mBuf);
-               break;
-         }
-         break;
-      case ENTRM: /* When RRM sends msg to scheduler */
-         switch(pst->event)
-         {
-            case EVTRGMBNDREQ:
-               cmUnpkRgmBndReq(RgUiRgmBndReq, pst, mBuf); 
-               break;
-            case EVTRGMUBNDREQ:
-               cmUnpkRgmUbndReq(RgUiRgmUbndReq, pst, mBuf); 
-               break;
-            case EVTRGMCFGPRBRPRT:
-               cmUnpkRgmCfgPrbRprt(RgUiRgmCfgPrbRprt, pst, mBuf);
                break;
             default:
                RGSCH_FREE_MSG(mBuf);
