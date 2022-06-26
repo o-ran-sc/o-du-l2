@@ -162,10 +162,6 @@ Buffer  *mBuf                       /* message buffer       */
                /* Process a config. request */
                cmUnpkLrgSchCfgReq(SchProcGenCfgReq, pst, mBuf);
                break;
-            case EVTLRGSCHCNTRLREQ:
-               /* Process a control request */
-               cmUnpkLrgSchCntrlReq(RgMiLrgSchCntrlReq, pst, mBuf);
-               break;
             case EVTLRGSCHSTAIND:
                /* Process a control request */
                cmUnpkLrgSchStaInd(RgMiLrgSchStaInd, pst, mBuf);

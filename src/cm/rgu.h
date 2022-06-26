@@ -65,13 +65,10 @@ extern "C" {
 #define EVTRGUBNDREQ   1     /*!< Bind Request */
 #define EVTRGUUBNDREQ  2     /*!< Un-Bind Request */
 #define EVTRGUBNDCFM   3     /*!< Bind Confirm */
-#define EVTRGUCDATREQ  4     /*!< Common Channel Data Request */
 #define EVTRGUCDATIND  5     /*!< Common Channel Data Indication */
-#define EVTRGUDDATREQ  6     /*!< Dedicated Channel Data Request */
 #define EVTRGUDDATIND  7     /*!< Dedicated Channel Data Indication */
 #define EVTRGUCSTARSP  8     /*!< Common Channel status response */
 #define EVTRGUCSTAIND  9     /*!< Common Channel status Indication */
-#define EVTRGUDSTARSP  10    /*!< Dedicated Channel status response */
 #define EVTRGUDSTAIND  11    /*!< Dedicated Channel status Indication */
    /*rgu_h_001.main_5 - ADD - L2M Support */
 #ifdef LTE_L2_MEAS
