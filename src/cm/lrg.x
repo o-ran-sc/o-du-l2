@@ -608,12 +608,6 @@ typedef S16 (*LrgStsCfm)     ARGS((
         RgMngmt    *sts                /* Management Structure */
      ));
 
-typedef S16 (*LrgTrcInd)     ARGS((
-        Pst        *pst,               /* Post Structure */
-        RgMngmt    *trc,               /* Management Structure */
-        Buffer     *mBuf               /* Message Buffer */
-     ));
-
 /* lrg_x_001.main_3 - ADD - Data structures for LTE_L2_MEAS */
 #ifdef LTE_L2_MEAS
 typedef S16 (*LrgSchL2MeasCfm)     ARGS((
@@ -713,26 +707,6 @@ S16 RgMiLrgStsReq ARGS((Pst *pst, RgMngmt *sts));
   */
 S16 RgMiLrgStsCfm ARGS((Pst *pst, RgMngmt *cfm));
 
- /** @brief This primitive carries the Status request 
-  * sent from the layer manager to MAC.
-  * @details This primitive is used by the layer manager to request
-  * status from the MAC layer.
-  * @param pst Pointer to the post structure.
-  * @param cfm pointer to RgMngmt 
-  * @return ROK/RFAILED
-  */
-S16 RgMiLrgStaReq ARGS((Pst *pst, RgMngmt *sta));
-
- /** @brief This primitive carries the Confirmation for a Status Request
-  * sent from the layer manager to MAC.
-  * @details This primitive is used by MAC to send a response for the status
-  * Request sent by the layer manager.
-  * @param pst Pointer to the post structure.
-  * @param cfm pointer to RgMngmt 
-  * @return ROK/RFAILED
-  */
-S16 RgMiLrgStaCfm ARGS((Pst *pst, RgMngmt *cfm));
-
  /** @brief This primitive carries the Unsolicited status indications from MAC
   * to the layer manager i.e. Alarms.
   * @details This primitive is used by MAC to inform Layer manager about some
@@ -752,58 +726,6 @@ S16 RgMiLrgStaInd ARGS((Pst *pst, RgMngmt *usta));
   */
 S16 RgMiLrgSchStaInd ARGS((Pst *pst, RgMngmt *usta));
 
- /** @brief This primitive carries the control request sent from the layer
-  * manager to MAC layer.
-  * @details This primitive is sent from the layer manager to control the MAC
-  * layer. The following entities could be controlled using this primitive.
-  * -# Debug printing
-  * -# TRACE functionality
-  * -# Binding of lower SAPs
-  * @param pst Pointer to the post structure.
-  * @param cfm pointer to RgMngmt 
-  * @return ROK/RFAILED
-  */
-S16 RgMiLrgCntrlReq ARGS((Pst *pst, RgMngmt *cntrl));
- /** @brief This primitive carries the Confirmation for a Control Request
-  * sent from the layer manager to MAC.
-  * @details This primitive is used by MAC to inform Layer manager about the
-  * status of a Control Request.
-  * @param pst Pointer to the post structure.
-  * @param cfm pointer to RgMngmt 
-  * @return ROK/RFAILED
-  */
-S16 RgMiLrgCntrlCfm ARGS(( Pst *pst, RgMngmt *cfm));
- /** @brief This primitive carries the control request sent from the layer
-  * manager to MAC layer.
-  * @details This primitive is sent from the layer manager to control the MAC
-  * layer. The following entities could be controlled using this primitive.
-  * -# Debug printing
-  * -# TRACE functionality
-  * -# Binding of lower SAPs
-  * @param pst Pointer to the post structure.
-  * @param cfm pointer to RgMngmt 
-  * @return ROK/RFAILED
-  */
-S16 RgMiLrgSchCntrlReq ARGS((Pst *pst, RgMngmt *cntrl));
- /** @brief This primitive carries the Confirmation for a Control Request
-  * sent from the layer manager to MAC.
-  * @details This primitive is used by MAC to inform Layer manager about the
-  * status of a Control Request.
-  * @param pst Pointer to the post structure.
-  * @param cfm pointer to RgMngmt 
-  * @return ROK/RFAILED
-  */
-S16 RgMiLrgSchCntrlCfm ARGS(( Pst *pst, RgMngmt *cfm));
- /** @brief This primitive carries the a copy of the received buffer from MAC to
-  * the layer manager. This is called the Tracing functionality of the layer.
-  * @details This primitive is used by MAC to send a copy of the received buffer
-  * to the layer manager, if Tracing is enabled via a control request. 
-  * @param pst Pointer to the post structure.
-  * @param trc pointer to RgMngmt 
-  * @param mBuf pointer to Buffer contains the portion of the received message. 
-  * @return ROK/RFAILED
-  */
-S16 RgMiLrgTrcInd ARGS((Pst *pst, RgMngmt *trc, Buffer *mBuf));
 #ifdef LTE_L2_MEAS
  /** @brief This primitive is to enable L2 (layer 2) measurements at the MAC
   * layer.
@@ -871,14 +793,11 @@ S16 SmMiLrgSchCfgCfm ARGS((Pst *pst, RgMngmt *cfm));
 S16 SmMiLrgStsReq ARGS((Pst *pst, RgMngmt *sts));
 S16 SmMiLrgStsCfm ARGS((Pst *pst, RgMngmt *cfm));
 S16 SmMiLrgStaReq ARGS((Pst *pst, RgMngmt *sta));
-S16 SmMiLrgStaCfm ARGS((Pst *pst, RgMngmt *cfm));
 S16 SmMiLrgStaInd ARGS((Pst *pst, RgMngmt *usta));
 S16 SmMiLrgCntrlReq ARGS((Pst *pst, RgMngmt *cntrl));
 S16 SmMiLrgSchStaInd ARGS((Pst *pst, RgMngmt *usta));
 S16 SmMiLrgCntrlCfm ARGS(( Pst *pst, RgMngmt *cfm));
 S16 SmMiLrgSchCntrlReq ARGS((Pst *pst, RgMngmt *cntrl));
-S16 SmMiLrgSchCntrlCfm ARGS(( Pst *pst, RgMngmt *cfm));
-S16 SmMiLrgTrcInd ARGS((Pst *pst, RgMngmt *trc, Buffer *mBuf));
 /* lrg_x_001.main_3 - ADD -  Added the following functions for LTE_L2_MEAS */
 #ifdef LTE_L2_MEAS
 S16 SmMiLrgSchL2MeasStartReq ARGS((Pst *pst, LrgSchMeasReqInfo *schL2MeasReq));
@@ -1050,32 +969,6 @@ S16 cmUnpkLrgStsCfm ARGS((
    Buffer               *mBuf
 ));
 /** @brief This API is used to send a 
-Status Request from LM to MAC. */
-S16 cmPkLrgStaReq ARGS((
-   Pst *                pst,
-   RgMngmt *            sta
-));
-/** @brief This API is used to send a 
-Status Request from LM to MAC. */
-S16 cmUnpkLrgStaReq ARGS((
-   LrgStaReq            func,
-   Pst *                pst,
-   Buffer               *mBuf
-));
-/** @brief This API is used to send a 
-Status Confirm from MAC to LM. */
-S16 cmPkLrgStaCfm ARGS((
-   Pst *                pst,
-   RgMngmt *            cfm
-));
-/** @brief This API is used to send a 
-Status Confirm from MAC to LM. */
-S16 cmUnpkLrgStaCfm ARGS((
-   LrgStaCfm            func,
-   Pst *                pst,
-   Buffer               *mBuf
-));
-/** @brief This API is used to send a 
 Status Indication from MAC to LM. */
 S16 cmPkLrgStaInd ARGS((
    Pst *                pst,
@@ -1098,72 +991,6 @@ S16 cmPkLrgSchStaInd ARGS((
 Status Indication from SCH to LM. */
 S16 cmUnpkLrgSchStaInd ARGS((
    LrgSchStaInd         func,
-   Pst *                pst,
-   Buffer               *mBuf
-));
-/** @brief This API is used to send a 
-Control Request from LM to MAC. */
-S16 cmPkLrgCntrlReq ARGS((
-   Pst *                pst,
-   RgMngmt *            cntrl
-));
-/** @brief This API is used to send a 
-Control Request from LM to MAC. */
-S16 cmUnpkLrgCntrlReq ARGS((
-   LrgCntrlReq          func,
-   Pst *                pst,
-   Buffer               *mBuf
-));
-/** @brief This API is used to send a 
-Control Request from LM to SCH. */
-S16 cmPkLrgSchCntrlReq ARGS((
-   Pst *                pst,
-   RgMngmt *            cntrl
-));
-/** @brief This API is used to send a 
-Control Request from LM to SCH. */
-S16 cmUnpkLrgSchCntrlReq ARGS((
-   LrgSchCntrlReq       func,
-   Pst *                pst,
-   Buffer               *mBuf
-));
-/** @brief This API is used to send a 
-Control Confirm from MAC to LM.*/
-S16 cmPkLrgCntrlCfm ARGS((
-   Pst *                pst,
-   RgMngmt *            cfm
-));
-/** @brief This API is used to send a 
-Control Confirm from MAC to LM. */
-S16 cmUnpkLrgCntrlCfm ARGS((
-   LrgCntrlCfm          func,
-   Pst *                pst,
-   Buffer               *mBuf
-));
-/** @brief This API is used to send a 
-Control Confirm from SCH to LM. */
-S16 cmPkLrgSchCntrlCfm ARGS((
-   Pst *                pst,
-   RgMngmt *            cntrl
-));
-/** @brief This API is used to send a 
-Control Confirm from SCH to LM. */
-S16 cmUnpkLrgSchCntrlCfm ARGS((
-   LrgSchCntrlCfm       func,
-   Pst *                pst,
-   Buffer               *mBuf
-));
-/** @brief This API is used to send a 
-Trace Indication from MAC to LM. */
-S16 cmPkLrgTrcInd ARGS((
-   Pst *                pst,
-   RgMngmt *            trc,
-   Buffer *             trcBuf
-));
-/** @brief This API is used to send a 
-Trace Indication from MAC to LM. */
-S16 cmUnpkLrgTrcInd ARGS((
-   LrgTrcInd            func,
    Pst *                pst,
    Buffer               *mBuf
 ));
@@ -1281,29 +1108,6 @@ S16 cmUnpkRgSts ARGS((
    Buffer               *mBuf
 ));
 /* lrg_x_001.main_3 - MODIFY -  Modified the below function to hold the event type */
-#ifdef LRG_V1
-S16 cmPkRgSsta ARGS((
-   Pst                  *pst,
-   RgSsta               *param,
-   S16                  elmnt,
-   /*ccpu00118255 - ADD - eventType param */
-   uint8_t                   eventType,
-   Buffer               *mBuf
-));
-#else /*LRG_V1 not defined */
-S16 cmPkRgSsta ARGS((
-   Pst                  *pst,
-   RgSsta               *param,
-   S16                  elmnt,
-   Buffer               *mBuf
-));
-#endif /* LRG_V1 endif */
-S16 cmUnpkRgSsta ARGS((
-   Pst                  *pst,
-   RgSsta               *param,
-   S16                  elmnt,
-   Buffer               *mBuf
-));
 S16 cmPkRgUstaDgn ARGS((
    RgUstaDgn            *param,
    Buffer               *mBuf
@@ -1320,40 +1124,6 @@ S16 cmUnpkRgUsta ARGS((
    RgUsta               *param,
    Buffer               *mBuf
 ));
-S16 cmPkRgTrc ARGS((
-   RgTrc                *param,
-   Buffer               *mBuf
-));
-S16 cmUnpkRgTrc ARGS((
-   RgTrc                *param,
-   Buffer               *mBuf
-));
-S16 cmPkRgDbgCntrl ARGS((
-   RgDbgCntrl           *param,
-   Buffer               *mBuf
-));
-S16 cmUnpkRgDbgCntrl ARGS((
-   RgDbgCntrl           *param,
-   Buffer               *mBuf
-));
-S16 cmPkRgSapCntrl ARGS((
-   RgSapCntrl           *param,
-   Buffer               *mBuf
-));
-S16 cmUnpkRgSapCntrl ARGS((
-   RgSapCntrl           *param,
-   Buffer               *mBuf
-));
-S16 cmPkRgCntrl ARGS((
-   RgCntrl              *param,
-   S16                  elmnt,
-   Buffer               *mBuf
-));
-S16 cmUnpkRgCntrl ARGS((
-   RgCntrl              *param,
-   S16                  elmnt,
-   Buffer               *mBuf
-));
 S16 cmPkRgMngmt ARGS((
    Pst *pst,
    RgMngmt *param,
@@ -1367,17 +1137,6 @@ S16 cmUnpkRgMngmt ARGS((
    Buffer *mBuf
 ));
 
-#ifdef PHY_ERROR_LOGING
-S16 cmPkRgSchUlAllocCntrl ARGS((
-   RgSchUlAllocCntrl *param,
-   Buffer *mBuf
-));
-
-S16 cmUnpkRgSchUlAllocCntrl ARGS((
-   RgSchUlAllocCntrl *param,
-   Buffer *mBuf
-));
-#endif
 /* lrg_x_001.main_4 ccpu00117036 - C++ support */
 #ifdef __cplusplus
 }

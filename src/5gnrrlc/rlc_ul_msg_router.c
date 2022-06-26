@@ -167,6 +167,7 @@ Reason reason               /* reason */
    return ROK;
 } /* rlcUlActvInit */
 
+#ifdef CALL_FLOW_DEBUG_LOG
 /*
 * @brief
 *
@@ -320,7 +321,7 @@ void callFlowRlcUlActvTsk(Pst *pst)
     DU_LOG("\nCall Flow: %s -> %s : %s\n", sourceTask, destTask, message);
 
 } 
-
+#endif
 
   
 

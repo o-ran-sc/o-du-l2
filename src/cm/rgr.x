@@ -2626,44 +2626,6 @@ typedef struct rgrTtiIndInfo
 } RgrTtiIndInfo;
 /** @} */
 
-/* rgr_x_001.main_5-ADD-Added for SI Enhancement. */
-/** @name RGR_SI_SCH */
-/** @{ */
-#ifdef RGR_SI_SCH
-/** @brief This structure contains parameters used for specifying SI 
- *  configuration to MAC-Scheduler by RRM as a part of primitive
- *  RgUiRgrSiCfgReq.
- */
-typedef struct rgrSiCfgReqInfo
-{
-   CmLteCellId    cellId;  /*! Cell Id */
-   RgrSiCfgType   cfgType; /*! MIB/SIB1/SI */
-   uint8_t             siId; /*! SI ID, if cfgType is SI. 
-                             SI ID starts from 1  */
-   Buffer         *pdu; /*! PDU, one of MIB/SIB1/SI */
-}RgrSiCfgReqInfo;
-
-/** @brief This structure contains parameters used for specifying SI
- *  configuration to MAC-Scheduler by RRM as a part of primitive
- *  RgUiRgrWarningSiCfgReq.
- */
-typedef struct rgrWarningSiCfgReqInfo
-{
-   uint8_t             emtcEnable; /*! indicates EMTC enabled or not */
-   CmLteCellId    cellId;  /*! Cell Id */
-   uint8_t             siId; /*! SI ID */
-   CmLListCp      siPduLst; /*! list of PDUs,each corresponding to one segment*/
-}RgrWarningSiCfgReqInfo;
-
-typedef struct rgrSegmentInfo
-{
-   CmLList     cmasSegPduLstLnk;
-   Buffer*     pdu;
-}RgrSegmentInfo;
-
-
-#endif /*RGR_SI_SCH*/
-
 #define RGR_UESTA_MAC_CRNTI_CE_RECVD   0x01
 #define RGR_UESTA_MAC_CRNTI_CE_RECVD_IN_SPS_ACTIVE   0x02
 /**
@@ -2674,21 +2636,6 @@ typedef struct rgrUeStaIndInfo
    CmLteRnti         crnti;        /*!< UE identifier UE ID: CRNTI */
    uint8_t                status;       /*!< Status */
 }RgrUeStaIndInfo;
-/** @} */
-
-/** @{ */
-/* LTE_ADV_FLAG_REMOVED_START */
-/** @brief This structure contains parameters used for specifying Load Inf 
- *  i.e RNTP, ABS etc configuration to MAC-Scheduler by RRM as a part of primitive
- *  RgUiRgrLoadInfReq.
- */
-typedef struct rgrLoadInfReqInfo
-{
-   CmLteCellId    cellId;             /*! Cell Id */
-   uint8_t             rgrCcPHighStartRb;  /*! Start RB for power high cell centre user */
-   uint8_t             rgrCcPHighEndRb;    /*! End RB for power high cell centre use */
-}RgrLoadInfReqInfo;
-/* LTE_ADV_FLAG_REMOVED_END */
 /** @} */
 
 /* 
@@ -2799,116 +2746,6 @@ typedef S16 (*RgrCfgCfm) ARGS((
    uint8_t                   status));
 /* rgr_x_001.main_5-ADD-Added for SI Enhancement. */
 
-/** @name RGR_SI_SCH */
-/** @{ */
-#ifdef RGR_SI_SCH
-/** @brief SI Configuration Request primitive for SI configuration
- *  
- * @details This API is used to configure the System Information from RRM to a MAC scheduler.
- * 
- * @param[in] pst      Pointer to the Post Structure.
- * @param[in] spId     SAP Id of the Service Provider.
- * @param[in] transId  Transaction Id for the transaction between RRM and MAC.
- * @param[in] siCfgReq Parameters for the configuration.
- * @return ROK/RFAILED
- */
-typedef S16 (*RgrSiCfgReq) ARGS((
-   Pst               *pst,
-   SpId              spId,
-   RgrCfgTransId     transId,
-   RgrSiCfgReqInfo   *siCfgReq));
-
-/** @brief SI Configuration Confirm Primitive for configuring Cell/UE/LC  
- *
- * @details This API confirms the SI configuration confirm in the status indication.  
- * 
- * @param[in] pst     Pointer to a post structure.
- * @param[in] suId    SAP Id of the Service User.
- * @param[in] transId Transaction Id between the MAC and The RRM.
- * @param[in] status  Confirmation status information from the MAC to the user.
- * @return ROK/RFAILED.
- */
-typedef S16 (*RgrSiCfgCfm) ARGS((
-   Pst*                 pst,
-   SuId                 suId,
-   RgrCfgTransId        transId,
-   uint8_t                   status));
-
-/** @brief SI Configuration Request primitive for warning SI configuration
- *  
- *  @details This API is used to configure the System Info (SIB10,SIB11,SIB12) 
- *           from RRM to a MAC scheduler.
- *    
- *  @param[in] pst      Pointer to the Post Structure.
- *  @param[in] spId     SAP Id of the Service Provider.
- *  @param[in] transId Transaction Id between the MAC and The RRM.
- *  @param[in] WarningsiCfgReq Parameters for the configuration.
- *  @return ROK/RFAILED
- */
-typedef S16 (*RgrWarningSiCfgReq) ARGS((
-   Pst                     *pst,
-   SpId                    spId,
-   RgrCfgTransId           transId,
-   RgrWarningSiCfgReqInfo  *warningSiCfgReq));
-
-
-/** @brief Warning SI Configuration Confirm Primitive    
- *
- * @details This API confirms the Warning SI configuration confirm in the
- *           status indication.  
- * 
- * @param[in] pst     Pointer to a post structure.
- * @param[in] suId    SAP Id of the Service User.
- * @param[in] transId Transaction Id between the MAC and The RRM.
- * @param[in] siId   SI ID
- * @param[in] status  Confirmation status information from the MAC to the user.
- * @return ROK/RFAILED.
- */
-typedef S16 (*RgrWarningSiCfgCfm) ARGS((
-   Pst*                 pst,
-   SuId                 suId,
-   RgrCfgTransId        transId,
-   uint8_t                   siId,
-   uint8_t                   status));
-
-/** @brief SI Configuration stop Request primitive for warning SI configuration
- *
- *  @details Used to stop the System Information(SIB10, SIB11, SIB12) from RRM 
- *           to a MAC schedule
- *
- *  @param[in] pst      Pointer to the Post Structure.
- *  @param[in] spId     SAP Id of the Service Provider.
- *  @param[in] siId     siId to be stopped.
- *  @return ROK/RFAILED
- */ 
-typedef S16 (*RgrWarningSiStopReq) ARGS((
-   Pst               *pst,
-   SpId              spId,
-   RgrCfgTransId     transId,
-   uint8_t                siId ));
-
-#endif /*RGR_SI_SCH*/
-
-/** @{ */
-/* LTE_ADV_FLAG_REMOVED_START */
-/** @brief LOAD INF Configuration Request primitive for RNTP, ABS etc Configuration
- *  
- * @details This API is used to configure the LOAD INF parameters from RRM to a MAC scheduler.
- * 
- * @param[in] pst        Pointer to the Post Structure.
- * @param[in] spId       SAP Id of the Service Provider.
- * @param[in] transId    Transaction Id for the transaction between RRM and MAC.
- * @param[in] loadInfReq Parameters for the configuration.
- * @return ROK/RFAILED
- */
-typedef S16 (*RgrLoadInfReq) ARGS((
-         Pst                 *pst,
-         SpId                spId,
-         RgrCfgTransId       transId,
-         RgrLoadInfReqInfo   *loadInfReq));
-/* LTE_ADV_FLAG_REMOVED_END */
-/** @} */
-
 /* rgr_x_001.main_11 ccpu00117452 - MOD - Changed macro name from
    RGR_RRM_DLPWR_CNTRL to RGR_CQI_REPT */
 #ifdef RGR_CQI_REPT
@@ -2931,22 +2768,6 @@ typedef S16 (*RgrUeStaInd) ARGS((
    RgrUeStaIndInfo        *staInd));
 #ifdef RG
 
-/** @brief Request from RRM to MAC to bind the interface SAPs. 
- * 
- * @details This API is invoked by RRM towards MAC to bind RGR SAP. 
- * This API validates the Pst, spId, suId and sends the bind confirm to
- * RRM.
- *
- *@param[in] pst   Pointer to a post structure.
- *@param[in] suId  SAP Id of the Service User.
- *@param[in] spId  SAP Id of the Service Provider.
- *@return  ROK/RFAILED
-*/
-S16 RgUiRgrBndReq ARGS((
-   Pst*                 pst,
-   SuId                 suId,
-   SpId                 spId
-));
 /* rgr_x_001.main_3: Added TTI indication from MAC to RGR user */
 /** @name RGR_RRM_TICK */
 /** @{ */
@@ -3183,37 +3004,6 @@ Buffer *mBuf
 ));
 #endif /* LTE_ADV */
 #ifdef RG
-/** @brief Confirmation from MAC to RRM for the bind request. 
-*
-* @details Confirmation from MAC to RRM for the bind
-* request for the interface saps. This function indicates it through the status To the User.
-*
-*  @param[in] pst     Pointer to a post structure.
-*  @param[in] suId    SAP Id of the Service User.
-*  @param[in] status  Confirmation status for the RGR User.
-*  @return ROK/RFAILED  
-*/
-S16 RgUiRgrBndCfm ARGS((
-   Pst*                 pst,
-   SuId                 suId,
-   uint8_t                   status
-));
-
-/** @brief Request from RRM to MAC to unbind the interface SAPs. 
- *
- * @details This API is invoked by RRM towards MAC to unbind RGR SAP. 
- * This API validates the Pst, spId, suId and sends the unbdind confirm to
- * 
- * @param[in] pst    Pointer To a post structure.
- * @param[in] spId   Service provider SAP Id.
- * @param[in] reason Cause for the Unbinding.
- * @return ROK/RFAILED.
- */
-S16 RgUiRgrUbndReq ARGS((
-   Pst*                 pst,
-   SpId                 spId,
-   Reason               reason
-));
 
 /** @brief Configuration Confirm from MAC to RRM.  
  *
@@ -3230,129 +3020,6 @@ S16 RgUiRgrCfgCfm ARGS((
    RgrCfgTransId        transId,
    uint8_t                   status
 ));
-/* rgr_x_001.main_5-ADD-Added for SI Enhancement. */
-/** @name RGR_SI_SCH */
-/** @{ */
-#ifdef RGR_SI_SCH
-/** @brief SI Configuration Request primitive used for SI configuration
- *  from RRM to MAC-Scheduler.
- *
- * @details  This primitive specifies the PDU
- *  (MIB/SIB1/SIs) and the associated parameters in the structure
- *  RgrSiCfgReqInfo.
- * 
- * @param[in] pst      Pointer to a post Structure.
- * @param[in] spId     SAP Id of the Service provider.
- * @param[in] transId  RRM to MAC transaction Id.
- * @param[in] siCfgReq Parameters used for specifying SI.
- * @return ROK/RFAILED 
- */
-S16 RgUiRgrSiCfgReq ARGS((
-   Pst           *pst,
-   SpId          spId,
-   RgrCfgTransId transId,
-   RgrSiCfgReqInfo   *siCfgReq
-));
-
-/** @brief SI Configuration Confirm from MAC to RRM.
- *
- * @details This primitive is used to confirm the SI configuration to RRM from MAC. 
- * 
- * @param[in] pst     Pointer to a post structure
- * @param[in] suId    Service User SAP Id
- * @param[in] transId Transaction id between RRM and MAC
- * @param[in] status  Confirmation status .
- * @return ROK/RFAILED
- */
-S16 RgUiRgrSiCfgCfm ARGS((
-   Pst*                 pst,
-   SuId                 suId,
-   RgrCfgTransId        transId,
-   uint8_t                   status
-));
-
-/** @brief SI Configuration Confirm from MAC to RRM.
- *
- * @details This primitive is used to confirm the SI configuration to RRM 
- *          from MAC. 
- * 
- * @param[in] pst     Pointer to a post structure
- * @param[in] suId    Service User SAP Id
- * @param[in] transId Transaction id between RRM and MAC
- * @param[in] status  Confirmation status .
- * @return ROK/RFAILED
- */
-S16 RgUiRgrWarningSiCfgReq ARGS((
-   Pst                    *pst,
-   SpId                   spId,
-   RgrCfgTransId          transId,
-   RgrWarningSiCfgReqInfo *WarningSiCfgReqInfo
-));
-
-
-/** @brief Warning SI Configuration Confirm from MAC to RRM.
- *
- * @details This primitive is used to confirm the Warning SI configuration 
- *          to RRM from MAC. 
- * 
- * @param[in] pst     Pointer to a post structure
- * @param[in] suId    Service User SAP Id
- * @param[in] transId Transaction id between RRM and MAC
- * @param[in] siId    SI ID.
- * @param[in] status  Confirmation status .
- * @return ROK/RFAILED
- */
-S16 RgUiRgrWarningSiCfgCfm ARGS((
-   Pst*              pst,
-   SuId              suId,
-   RgrCfgTransId     transId,
-   uint8_t                siId,
-   uint8_t                status
-));
-
-/** @brief SI Configuration Confirm from MAC to RRM.
- *
- * @details This primitive is used to confirm the SI configuration to RRM
- *          from MAC. 
- * 
- * @param[in] pst     Pointer to a post structure
- * @param[in] spId    Service Provider SAP Id
- * @param[in] siId    SI Index
- * @return ROK/RFAILED
- */
-S16 RgUiRgrWarningSiStopReq ARGS((
-   Pst           *pst,
-   SpId          spId,
-   RgrCfgTransId transId,
-   uint8_t            siId
-));
-
-#endif /*RGR_SI_SCH*/
-/** @} */
-
-/** @{ */
-/* LTE_ADV_FLAG_REMOVED_START */
-/** @brief LOAD INF Configuration Request primitive used for RNTP, ABS configuration
- *  from RRM to MAC-Scheduler.
- *
- * @details  This primitive specifies the startRb and endRb of CC sub-band for which
- *  we have to increase power at schedular
- *
- *
- * @param[in] pst        Pointer to a post Structure.
- * @param[in] spId       SAP Id of the Service provider.
- * @param[in] transId    RRM to MAC transaction Id.
- * @param[in] loadInfReq Parameters used for specifying LOAD INF.
- * @return ROK/RFAILED
- */
-S16 RgUiRgrLoadInfReq ARGS((
-   Pst                 *pst,
-   SpId                spId,
-   RgrCfgTransId       transId,
-   RgrLoadInfReqInfo   *loadInfReq
-));
-/* LTE_ADV_FLAG_REMOVED_END */
-/** @} */
 
 /** @name RGR_CQI_REPT */
 /** @{ */
@@ -3503,150 +3170,6 @@ S16 NxLiRgrCfgCfm ARGS((
    RgrCfgTransId        transId,
    uint8_t                   status
 ));
-/* rgr_x_001.main_5-ADD-Added for SI Enhancement. */
-/** @name RGR_SI_SCH */
-/* @{ */
-#ifdef RGR_SI_SCH
-
-/** @brief SI Configuration confirm from MAC to RRM 
-*
-* @details  This primitive confirms the SI configuration to the RRM.
-* 
-* @param[in]  Pst*      pst        A pointer to post structure.
-* @param[in]  SuId      suId       Service User SAP Id.
-* @param[in]  RgrCfgTransId transId RRM to MAC transaction Id
-* @param[in]  uint8_t        status      An information on confirmation status.
-* @return S16
-*/
-S16 NxLiRgrSiCfgCfm ARGS((
-   Pst*                 pst,
-   SuId                 suId,
-   RgrCfgTransId        transId,
-   uint8_t                   status
-));
-
-
-/* PH04_CMAS */
-S16 NxLiRgrWrngSiCfgCfm ARGS((
-Pst*                 pst,
-SuId                 suId,
-RgrCfgTransId        transId,
-uint8_t                   siId,
-uint8_t                   status
-));
-
-
-
-S16 NxLiRgrStopWrngSiCfgCfm ARGS((
-   Pst*                 pst,
-   SuId                 suId,
-   RgrCfgTransId        transId,
-   uint8_t                   status
-));
-
-/* PH04_CMAS : end */
-
- 
-/** @brief Warning SI Configuration confirm from MAC to RRM 
-*
-* @details  This primitive confirms the Warning SI configuration to the RRM.
-* 
-* @param[in]  Pst*      pst        A pointer to post structure.
-* @param[in]  SuId      suId       Service User SAP Id.
-* @param[in]  uint8_t        siId       SI Index
-* @param[in]  RgrCfgTransId transId RRM to MAC transaction Id
-* @param[in]  uint8_t        status      An information on confirmation status.
-* @return S16
-*/
-S16 NxLiRgrWarningSiCfgCfm ARGS((
-   Pst*                 pst,
-   SuId                 suId,
-   RgrCfgTransId        transId,
-   uint8_t                   siId,
-   uint8_t                   status
-));
-
-/** @brief SI Configuration request from RRM to MAC for 
- * configuring SI 
- *
- * @details  This primitive is used for the configuration of the SI information in the MAC scheduler.
- *
- * @param[in] Pst*             pst      A pointer to post structure.
- * @param[in] SpId             spId     Service Provider SAP Id.
- * @param[in] RgrCfgTransId    transId, RRM to MAC transaction Id
- * @param[in] RgrSiCfgReqInfo* cfgReqInfo Parameters corresponding to the SI Configuration .
- * @return S16
- */
-S16 NxLiRgrSiCfgReq ARGS((
-   Pst*                 pst,
-   SpId                 spId,
-   RgrCfgTransId        transId,
-   RgrSiCfgReqInfo * cfgReqInfo
-));
-
- 
-/** @brief Warning SI Configuration request from RRM to MAC for 
- * configuring SI 
- *
- * @details  This primitive is used for the configuration of the SI 
- *           information in the MAC scheduler.
- *
- * @param[in] Pst*             pst      A pointer to post structure.
- * @param[in] SpId             spId     Service Provider SAP Id.
- * @param[in] RgrCfgTransId    transId, RRM to MAC transaction Id
- * @param[in] RgrWarningSiCfgReqInfo  *warningSiCfgReq SI Configuration
- * @return S16
- */
-S16 NxLiRgrWarningSiCfgReq ARGS((
-   Pst*                       pst,
-   SpId                      spId,
-   RgrCfgTransId             transId,
-   RgrWarningSiCfgReqInfo  *warningSiCfgReq
-)); 
-
-  
-/** @brief Warning SI Stop request from RRM to MAC for 
- * configuring SI 
- *
- * @details  This primitive is used to stop the SI for a 
- *           perticular siId.
- *
- * @param[in] Pst*             pst      A pointer to post structure.
- * @param[in] SpId             spId     Service Provider SAP Id.
- * @param[in] uint8_t               siId     SI Index
- */
-S16 NxLiRgrWarningSiStopReq ARGS((
-   Pst*                       pst,
-   SpId                       spId,
-   RgrCfgTransId              transId,
-   uint8_t                         siId
-)); 
- 
-#endif/*RGR_SI_SCH */
-/** @} */
-
-/** @{ */
-/* LTE_ADV_FLAG_REMOVED_START */
-/** @brief LOAD INF Configuration request from RRM to MAC for
- *         configuring rntp, abs etc
- *
- * @details  This primitive is used for the configuration of the LOAD INF parameters
- *           in the MAC scheduler.
- *
- * @param[in] Pst*               pst        A pointer to post structure.
- * @param[in] SpId               spId       Service Provider SAP Id.
- * @param[in] RgrCfgTransId      transId,   RRM to MAC transaction Id
- * @param[in] RgrLoadInfReqInfo* loadInfReq Parameters corresponding to the LOAD INF Config.
- * @return S16
- */
-S16 NxLiRgrLoadInfReq ARGS((
-   Pst*                 pst,
-   SpId                 spId,
-   RgrCfgTransId        transId,
-   RgrLoadInfReqInfo*   loadInfReq
-));
-/* LTE_ADV_FLAG_REMOVED_END */
-/** @} */
 
 /** @name RGR_CQI_REPT */
 /** @{ */
@@ -3690,18 +3213,6 @@ S16 NxLiRgrLoadInfInd ARGS((
 
 #endif
 #if defined(LCRGR)
-/** @brief Request from RRM to MAC to bind the interface SAPs */
-S16 cmPkRgrBndReq ARGS((
-   Pst*                 pst,
-   SuId                 suId,
-   SpId                 spId
-));
-/** @brief Request from RRM to MAC to bind the interface SAPs */
-S16 cmUnpkRgrBndReq ARGS((
-   RgrBndReq            func,
-   Pst*                 pst,
-   Buffer               *mBuf
-));
 /* rgr_x_001.main_3: Added TTI indication from MAC to RGR user */
 /** @name RGR_RRM_TICK */
 /** @{ */
@@ -3725,30 +3236,6 @@ S16 cmUnpkRgrTtiIndInfo ARGS((
          Buffer        *mBuf
          ));
 /** @} */
-S16 cmPkRgrBndCfm ARGS((
-   Pst*                 pst,
-   SuId                 suId,
-   uint8_t                   status
-));
-
-S16 cmUnpkRgrBndCfm ARGS((
-   RgrBndCfm            func,
-   Pst*                 pst,
-   Buffer               *mBuf
-));
-
-S16 cmPkRgrUbndReq ARGS((
-   Pst*                 pst,
-   SpId                 spId,
-   Reason               reason
-));
-
-S16 cmUnpkRgrUbndReq ARGS((
-   RgrUbndReq           func,
-   Pst*                 pst,
-   Buffer               *mBuf
-));
-
 S16 cmPkRgrCfgReq ARGS((
    Pst*                 pst,
    RgrCfgTransId        transId,
@@ -3936,128 +3423,6 @@ S16 cmUnpkRgrDlfsCfg ARGS((
    Buffer               *mBuf
 ));
 
-/* rgr_x_001.main_5-ADD-Added for SI Enhancement. */
-/** @name RGR_SI_SCH */
-/** @{ */
-#ifdef RGR_SI_SCH
-S16 cmPkRgrWarningSiCfgReq ARGS((
-   Pst*                     pst,
-   SpId                     spId,
-   RgrCfgTransId            transId,
-   RgrWarningSiCfgReqInfo   *warningSiCfgReqInfo
-));
-
-S16 cmUnpkRgrWarningSiCfgReq ARGS((
-   RgrWarningSiCfgReq  func,
-   Pst                 *pst,
-   Buffer              *mBuf
-));
-
-S16 cmPkRgrWarningSiCfgReqInfo ARGS((
-   Pst                    *pst,
-   RgrWarningSiCfgReqInfo *param,
-   Buffer                 *mBuf
-));
-
-S16 cmUnpkRgrWarningSiCfgReqInfo ARGS((
-   Pst                    *pst,
-   RgrWarningSiCfgReqInfo *param,
-   Buffer                 *mBuf
-));
-
-S16 cmPkRgrWarningSiStopReq ARGS((
-   Pst                 *pst,
-   SpId                spId,
-   RgrCfgTransId       transId,
-   uint8_t                  siId
-));
-
-S16 cmUnpkRgrWarningSiStopReq ARGS((
-   RgrWarningSiStopReq func,
-   Pst                 *pst,
-   Buffer              *mBuf
-));
-
-
-S16 cmPkRgrWarningSiCfgCfm ARGS((
-   Pst*                 pst,
-   SuId                 suId,
-   RgrCfgTransId        transId,
-   uint8_t                   siId,
-   uint8_t                   status
-));
-
-S16 cmUnpkRgrWarningSiCfgCfm ARGS((
-   RgrWarningSiCfgCfm          func,
-   Pst*                 pst,
-   Buffer               *mBuf
-));
-
-
-S16 cmPkRgrSiCfgReq ARGS((
-   Pst*                 pst,
-   SpId                 spId,
-   RgrCfgTransId        transId,
-   RgrSiCfgReqInfo *    cfgReqInfo
-));
-
-S16 cmUnpkRgrSiCfgReq ARGS((
-   RgrSiCfgReq            func,
-   Pst*                 pst,
-   Buffer               *mBuf
-));
-
-S16 cmPkRgrSiCfgReqInfo ARGS((
-   RgrSiCfgReqInfo        *param,
-   Buffer               *mBuf
-));
-
-S16 cmUnpkRgrSiCfgReqInfo ARGS((
-   RgrSiCfgReqInfo        *param,
-   Buffer               *mBuf
-));
-
-S16 cmPkRgrSiCfgCfm ARGS((
-   Pst*                 pst,
-   SuId                 suId,
-   RgrCfgTransId        transId,
-   uint8_t                   status
-));
-
-S16 cmUnpkRgrSiCfgCfm ARGS((
-   RgrSiCfgCfm            func,
-   Pst*                 pst,
-   Buffer               *mBuf
-));
-#endif /*RGR_SI_SCH*/
-/** @} */
-
-/** @{ */
-/* LTE_ADV_FLAG_REMOVED_START */
-S16 cmPkRgrLoadInfReq ARGS((
-   Pst*                 pst,
-   SpId                 spId,
-   RgrCfgTransId        transId,
-   RgrLoadInfReqInfo *  loadInfReq
-));
-
-S16 cmUnpkRgrLoadInfReq ARGS((
-   RgrLoadInfReq        func,
-   Pst*                 pst,
-   Buffer               *mBuf
-));
-
-S16 cmPkRgrLoadInfReqInfo ARGS((
-   RgrLoadInfReqInfo    *param,
-   Buffer               *mBuf
-));
-
-S16 cmUnpkRgrLoadInfReqInfo ARGS((
-   RgrLoadInfReqInfo    *param,
-   Buffer               *mBuf
-));
-/* LTE_ADV_FLAG_REMOVED_END */
-/** @} */
 
 /** @name LTE_TDD */
 /** @{ */
@@ -4627,14 +3992,6 @@ RgrCellCntrlCmdCfg *param,
 Buffer *mBuf
 ));
 
-#ifdef RLC_MAC_DAT_REQ_RBUF
-S16 rgDlDatReqBatchProc ARGS((
-Void));
-#endif
-#ifdef RLC_MAC_STA_RSP_RBUF
-S16 rgDlStaRspBatchProc ARGS((
-Void));
-#endif
 #ifdef __cplusplus
 }
 #endif

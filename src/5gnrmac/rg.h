@@ -652,8 +652,6 @@ toFill.slot = (RG_NUM_SUB_FRAMES_5G + crntTime.slot - (dcr)) % (RG_NUM_SUB_FRAME
 /* Value used to set nDmrs in uplink grant if nDmrs is not applicable */
 #define RG_INVALID_NDMRS  10
 
-#define RG_SEND_TRC_IND(_inst,_mBuf, _event) rgLMMTrcInd(_inst,_mBuf, _event)
-
 /* Note: Any changes to these enums should reflect to */
 /** @details Enums for special argument
  *

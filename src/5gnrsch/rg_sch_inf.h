@@ -63,10 +63,7 @@
 #define EVTINFSFRECPIND           7
 /* Added support for SPS*/
 #ifdef LTEMAC_SPS
-#define EVTINFSPSLCREG               8
-#define EVTINFSPSLCDEREG             9
 #define EVTINFSPSRELIND              10
-#define EVTINFSPSRESET               18
 #endif /* LTEMAC_SPS */
 
 #ifdef LTE_L2_MEAS
@@ -79,8 +76,6 @@
 #endif
 /*Fix: Inform UE delete to scheduler*/
 #define EVTINFUEDELIND               13
-
-#define EVTINFLCGREG                 17
 
 #ifdef LTE_ADV
 #define EVTINFHQENTRESET             19

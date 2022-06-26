@@ -206,20 +206,6 @@ typedef struct crgLchCfg
 } CrgLchCfg;
 
 /** 
-  @brief Basic configuration information for MAC. */
-typedef struct crgCfg
-{
-   uint8_t cfgType;               /*!< Indicates configuration type */
-   union crgCfgU  
-   {
-      CrgCellCfg  cellCfg;   /*!< Cell configuration */
-      CrgUeCfg    ueCfg;     /*!< UE configuration */ 
-      CrgLchCfg   lchCfg;    /*!< Logical channel configuration */
-   } u;                      /*!< Union of Cell/UE/Lch configuration */
-} CrgCfg;
-
-
-/** 
   @brief Activation time information. */
 typedef struct crgActvTime
 {
@@ -321,19 +307,6 @@ typedef struct crgRst
    CmLteCellId cellId; /*!< Cell ID */
    CmLteRnti   crnti;  /*!< UE ID: CRNTI tobe RESET */
 } CrgRst;
-/** 
-  @brief Config/Reconfig/Delete information for MAC. */
-typedef struct crgCfgReqInfo 
-{
-   uint8_t  action;               /*!< Determines cfg/recfg/del/reset */
-   union cfgReqInfoU
-   {
-      CrgCfg   cfgInfo;      /*!< Configuration related infomation */
-      CrgRecfg recfgInfo;    /*!< Reconfiguration related information */
-      CrgDel   delInfo;      /*!< Deletion related information */
-      CrgRst   rstInfo;      /*!< Reset related information */
-   } u;                      /*!< Union of config/re-config/delete information */
-} CrgCfgReqInfo;
 
 /* 
    Function Prototypes 
@@ -354,13 +327,6 @@ typedef S16 (*CrgUbndReq) ARGS((
    Pst*                 pst,
    SpId                 spId,
    Reason               reason));
-/** @brief Configuration Request from RRC to MAC for 
- * configuring Cell/Ue/Lch. */
-typedef S16 (*CrgCfgReq) ARGS((
-   Pst*                 pst,
-   SpId                 spId,
-   CrgCfgTransId        transId,
-   CrgCfgReqInfo  *     cfgReqInfo));
 /** @brief Configuration Confirm from MAC to RRC. */
 typedef S16 (*CrgCfgCfm) ARGS((
    Pst*                 pst,
@@ -386,14 +352,6 @@ S16 RgUiCrgUbndReq ARGS((
    Pst*                 pst,
    SpId                 spId,
    Reason               reason
-));
-/** @brief Configuration Request from RRC to MAC for 
- * configuring Cell/Ue/Lch. */
-S16 RgUiCrgCfgReq ARGS((
-   Pst*                 pst,
-   SpId                 spId,
-   CrgCfgTransId        transId,
-   CrgCfgReqInfo  *     cfgReqInfo
 ));
 /** @brief Configuration Confirm from MAC to RRC. */
 S16 RgUiCrgCfgCfm ARGS((
@@ -422,14 +380,6 @@ S16 NhLiCrgUbndReq ARGS((
    Pst*                 pst,
    SpId                 spId,
    Reason               reason
-));
-/** @brief Configuration Request from RRC to MAC for 
- * configuring Cell/Ue/Lch. */
-S16 NhLiCrgCfgReq ARGS((
-   Pst*                 pst,
-   SpId                 spId,
-   CrgCfgTransId        transId,
-   CrgCfgReqInfo  *     cfgReqInfo
 ));
 /** @brief Configuration Confirm from MAC to RRC. */
 S16 NhLiCrgCfgCfm ARGS((
@@ -479,21 +429,6 @@ S16 cmUnpkCrgUbndReq ARGS((
    Pst*                 pst,
    Buffer               *mBuf
 ));
-/** @brief Configuration Request from RRC to MAC for 
- * configuring Cell/Ue/Lch. */
-S16 cmPkCrgCfgReq ARGS((
-   Pst*                 pst,
-   SpId                 spId,
-   CrgCfgTransId        transId,
-   CrgCfgReqInfo  *     cfgReqInfo
-));
-/** @brief Configuration Request from RRC to MAC for 
- * configuring Cell/Ue/Lch. */
-S16 cmUnpkCrgCfgReq ARGS((
-   CrgCfgReq            func,
-   Pst*                 pst,
-   Buffer               *mBuf
-));
 /** @brief Configuration Confirm from MAC to RRC. */
 S16 cmPkCrgCfgCfm ARGS((
    Pst*                 pst,
@@ -531,28 +466,12 @@ S16 cmUnpkCrgRachCfg ARGS((
    CrgRachCfg           *param,
    Buffer               *mBuf
 ));
-S16 cmPkCrgCellCfg ARGS((
-   CrgCellCfg           *param,
-   Buffer               *mBuf
-));
-S16 cmUnpkCrgCellCfg ARGS((
-   CrgCellCfg           *param,
-   Buffer               *mBuf
-));
 S16 cmPkCrgUeUlHqCfg ARGS((
    CrgUeUlHqCfg         *param,
    Buffer               *mBuf
 ));
 S16 cmUnpkCrgUeUlHqCfg ARGS((
    CrgUeUlHqCfg         *param,
-   Buffer               *mBuf
-));
-S16 cmPkCrgUeCfg ARGS((
-   CrgUeCfg             *param,
-   Buffer               *mBuf
-));
-S16 cmUnpkCrgUeCfg ARGS((
-   CrgUeCfg             *param,
    Buffer               *mBuf
 ));
 
@@ -568,100 +487,12 @@ Buffer *mBuf
 ));
 #endif /* LTE_ADV */
 
-S16 cmPkCrgDlLchCfg ARGS((
-   CrgDlLchCfg          *param,
-   Buffer               *mBuf
-));
-S16 cmUnpkCrgDlLchCfg ARGS((
-   CrgDlLchCfg          *param,
-   Buffer               *mBuf
-));
-S16 cmPkCrgUlLchCfg ARGS((
-   CrgUlLchCfg          *param,
-   Buffer               *mBuf
-));
-S16 cmUnpkCrgUlLchCfg ARGS((
-   CrgUlLchCfg          *param,
-   Buffer               *mBuf
-));
-S16 cmPkCrgLchCfg ARGS((
-   CrgLchCfg            *param,
-   Buffer               *mBuf
-));
-S16 cmUnpkCrgLchCfg ARGS((
-   CrgLchCfg            *param,
-   Buffer               *mBuf
-));
-S16 cmPkCrgCfg ARGS((
-   CrgCfg               *param,
-   Buffer               *mBuf
-));
-S16 cmUnpkCrgCfg ARGS((
-   CrgCfg               *param,
-   Buffer               *mBuf
-));
 S16 cmPkCrgActvTime ARGS((
    CrgActvTime          *param,
    Buffer               *mBuf
 ));
 S16 cmUnpkCrgActvTime ARGS((
    CrgActvTime          *param,
-   Buffer               *mBuf
-));
-S16 cmPkCrgCellRecfg ARGS((
-   CrgCellRecfg         *param,
-   Buffer               *mBuf
-));
-S16 cmUnpkCrgCellRecfg ARGS((
-   CrgCellRecfg         *param,
-   Buffer               *mBuf
-));
-S16 cmPkCrgUeRecfg ARGS((
-   CrgUeRecfg           *param,
-   Buffer               *mBuf
-));
-S16 cmUnpkCrgUeRecfg ARGS((
-   CrgUeRecfg           *param,
-   Buffer               *mBuf
-));
-S16 cmPkCrgLchRecfg ARGS((
-   CrgLchRecfg          *param,
-   Buffer               *mBuf
-));
-S16 cmUnpkCrgLchRecfg ARGS((
-   CrgLchRecfg          *param,
-   Buffer               *mBuf
-));
-S16 cmPkCrgRecfg ARGS((
-   CrgRecfg             *param,
-   Buffer               *mBuf
-));
-S16 cmUnpkCrgRecfg ARGS((
-   CrgRecfg             *param,
-   Buffer               *mBuf
-));
-S16 cmPkCrgDel ARGS((
-   CrgDel               *param,
-   Buffer               *mBuf
-));
-S16 cmUnpkCrgDel ARGS((
-   CrgDel               *param,
-   Buffer               *mBuf
-));
-S16 cmPkCrgRst ARGS((
-   CrgRst               *param,
-   Buffer               *mBuf
-));
-S16 cmUnpkCrgRst ARGS((
-   CrgRst               *param,
-   Buffer               *mBuf
-));
-S16 cmPkCrgCfgReqInfo ARGS((
-   CrgCfgReqInfo        *param,
-   Buffer               *mBuf
-));
-S16 cmUnpkCrgCfgReqInfo ARGS((
-   CrgCfgReqInfo        *param,
    Buffer               *mBuf
 ));
 #endif
@@ -685,21 +516,6 @@ S16 DmUiCrgUbndReq ARGS((
    Pst*                 pst,
    SpId                 spId,
    Reason               reason
-));
-/** @brief Configuration Request from RRC to MAC for 
- * configuring Cell/Ue/Lch. */
-S16 DmUiCrgCfgReq ARGS((
-   Pst*                 pst,
-   SpId                 spId,
-   CrgCfgTransId        transId,
-   CrgCfgReqInfo  *     cfgReqInfo
-));
-/** @brief Configuration Confirm from MAC to RRC. */
-S16 DmUiCrgCfgCfm ARGS((
-   Pst*                 pst,
-   SuId                 suId,
-   CrgCfgTransId        transId,
-   uint8_t                   status
 ));
 #endif
 
