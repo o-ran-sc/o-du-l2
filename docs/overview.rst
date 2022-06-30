@@ -6,7 +6,7 @@ O-DU High Overview
 *********************
 
 O-DU High Architecture
-======================
+-----------------------
 
 O-DU implements the functional blocks of L2 layer of a 5G NR protocol stack in SA(StandAlone) mode.
 These layers primarily include NR MAC, NR Scheduler and NR RLC layers.
@@ -20,7 +20,7 @@ O-DU modules are developed as shown in the below diagram.
   Figure 1 - O-DU High Architecture Diagram
 
 O-DU High Thread Architecture
--------------------------------
+==============================
 
 As shown in Figure 1, there are multiple entities within O-DU High. Modules sharing a
 given color belong to one thread. O-DU architecture can be defined at a thread
@@ -43,7 +43,7 @@ level as follows:
 - Thread 8: O1
 
 O-DU High Modules
---------------------------
+=================
 
 DU APP 
 ^^^^^^^^^^^^^^^^^^
@@ -97,7 +97,7 @@ Functions of the 5G NR MAC module are as follows:
 
 
 O-DU Utility and Common Functions
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 These modules contain platform specific files and support O-DU High functionality and message exchanges.
 
 
@@ -128,8 +128,7 @@ O1 architecture has following components:
 
 
 O-DU-High Interfaces
-======================
-
+--------------------
 
 This section describes the other modules that O-DU High interfaces with, as shown in below diagram.
 
@@ -229,11 +228,11 @@ As shown in Figure 3, O-DU High interfaces with the following modules:
 
 
 O-DU High functionality
-========================
+-----------------------
 
 
 Cell Up and Broadcast Procedure
---------------------------------
+================================
 
 This section describes the cell-up procedure within O-DU High.
 
@@ -279,7 +278,7 @@ As seen in the Figure 4,
 
 
 UE Related Procedure
------------------------
+====================
 
 
 The O-DU High supports 
@@ -337,7 +336,7 @@ Figure 5 below depicts the above call flow, inclusive of all interfaces:
   - RRC Release
 
 Closed Loop Automation Procedure
------------------------------------
+================================
 
 This section describes the closed loop automation procedure within O-DU High.
 
@@ -364,7 +363,7 @@ This section describes the closed loop automation procedure within O-DU High.
 
 
 O1 Netconf get-alarm list procedure
------------------------------------
+===================================
 
 This section describes the *Health Status Retrieval* scenario of O-DU High health-check. It enables a northbound client(SMO) to retrieve the health of the O-DU High based on the last self-check performed. The alarm-list is provided as the response to the request via O1 Netconf interface.
 
@@ -389,7 +388,7 @@ As seen in the Figure 7,
 
 
 Network Slicing procedure
---------------------------
+=========================
 
 This section describes the Network Slicing feature within O-DU High.
 
@@ -416,8 +415,7 @@ As seen in the Figure 8,
 
 
 Idle Mode Paging procedure
----------------------------
-
+===========================
 
 This section describes the Idle Mode Paging procedure within O-DU High.
 
@@ -441,7 +439,7 @@ As seen in the Figure 9,
 - MAC forwards the PAGE to PHY in TX_Data.Request.
 
 Inter-DU Handover within O-CU
-------------------------------
+=============================
 
 This section describes the handling of inter-DU handover of a UE within O-DU High.
 
@@ -487,7 +485,7 @@ Assumption: UE is RRC connected with DU and PDU data session is active.
 
 
 OSC Testcases Supported
-=========================
+-----------------------
 
 The O-DU High partially supports below use-cases:
 
