@@ -357,7 +357,7 @@ the following APIs for communication.
 
 1. **WLS_Open**
 
-   *void\* WLS_Open(const char \*ifacename, unsigned int mode, unsigned long long nWlsMemorySize)*
+   *void\* WLS_Open(const char \*ifacename, unsigned int mode, uint64_t \*nWlsMacMemorySize, uint64_t \*nWlsPhyMemorySize)*
 
       a. Description
 
@@ -368,6 +368,8 @@ the following APIs for communication.
 
          - ifacename - pointer to string with device driver name (/dev/wls)
          - mode      - mode of operation (Master or Slave). Here, O-DU High acts as MASTER.
+         - nWlsMacMemorySize - returns the value of WLS MAC memory Size as O-DU High acts as MASTER
+         - nWlsPhyMemorySize - returns the value of WLS PHY memory Size as O-DU High acts as MASTER
 
       c. Returns pointer handle to WLS interface for future use by WLS functions
 

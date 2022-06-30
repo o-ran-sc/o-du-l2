@@ -1,15 +1,8 @@
 .. This work is licensed under a Creative Commons Attribution 4.0 International License.
 .. http://creativecommons.org/licenses/by/4.0
 
-.. contents::
-   :depth: 3
-   :local:
-
 O-DU High Installation Guide
 *****************************
-
-Abstract
-========
 
 This document describes how to install O-DU High, it's dependencies and required system resources.
 
@@ -17,8 +10,9 @@ This document describes how to install O-DU High, it's dependencies and required
    :depth: 3
    :local:
 
-Version history
 
+Version history
+---------------
 
 +--------------------+--------------------+--------------------+--------------------+
 | **Date**           | **Ver.**           | **Author**         | **Comment**        |
@@ -45,7 +39,7 @@ Version history
 
 
 Introduction
-============
+------------
 
 This document describes the hardware and software requirements along with guidelines on how to install O-DU High.
 
@@ -53,13 +47,13 @@ The audience of this document is assumed to have good knowledge in RAN concepts 
 
 
 Preface
-=======
+-------
 
 O-DU High images can be built using the source code or corresponding docker images can be downloaded.
 
 
 Hardware requirements
-=====================
+---------------------
 
 Following minimum hardware requirements must be met for installation of O-DU High
 
@@ -84,12 +78,12 @@ Following minimum hardware requirements must be met for installation of O-DU Hig
 
 
 Software installation and deployment
-==========================================
+-------------------------------------
 
 This section describes the installation of the O-DU High on the reference hardware.
 
 Libraries
-----------
+=========
 
 Following libraries are required to compile and execute O-DU High:
 
@@ -112,7 +106,7 @@ Following libraries are required to compile and execute O-DU High:
 
 
 Cloning code
---------------
+============
 
 - Create a folder to clone the O-DU High code into. The folder is hereafter referred to as <O-DU High Directory>.
 
@@ -122,8 +116,8 @@ Cloning code
 
 
 Setting up Netconf server (Only if O1 interface enabled)
---------------------------------------------------------
- 
+========================================================
+
   Following steps are required to compile and run ODU with O1 interface enabled.
 
 - Create a new netconf user
@@ -178,7 +172,7 @@ Setting up Netconf server (Only if O1 interface enabled)
 
 
 Compilation
-------------
+===========
 
 - Build O-DU High:
 
@@ -226,7 +220,7 @@ Compilation
 
 
 Compilation with O1 interface enabled
---------------------------------------
+=====================================
 
 - Build O-DU High:
 
