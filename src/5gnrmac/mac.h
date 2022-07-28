@@ -31,12 +31,13 @@
 #define SI_RNTI 0xFFFF
 #define P_RNTI 0xFFFE
 
-#define MAC_LCID_CCCH              0
+#define MAC_LCID_DL_CCCH           0
+#define MAC_LCID_UL_CCCH_64BIT     0
 #define MAC_LCID_MIN               1
 #define MAC_LCID_MAX               32
 #define MAC_LCID_RESERVED_MIN      33
 #define MAC_LCID_RESERVED_MAX      51
-#define MAC_LCID_CCCH_48BIT        52
+#define MAC_LCID_UL_CCCH_48BIT     52
 #define MAC_LCID_BIT_RATE_QUERY    53
 #define MAC_LCID_MULT_PHR_FOUR_OCT 54
 #define MAC_LCID_CFG_GRANT_CFM     55

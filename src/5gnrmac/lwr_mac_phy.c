@@ -40,6 +40,7 @@
 
 uint8_t rgClHndlCfgReq ARGS((void *msg));
 void l1ProcessFapiRequest ARGS((uint8_t msgType, uint32_t msgLen, void *msg));
+void fapiClProcessFapiMsg(void *msg);
 
 #ifdef INTEL_WLS_MEM
 
@@ -221,30 +222,30 @@ void LwrMacRecvPhyMsg()
    {
       while(true)
       {
-	 numMsgToGet = WLS_Wait(wlsHdlr);
-	 if(numMsgToGet == 0)
-	 {
-	    continue;
-	 }
+         numMsgToGet = WLS_Wait(wlsHdlr);
+         if(numMsgToGet == 0)
+         {
+            continue;
+         }
 
-	 while(numMsgToGet--)
-	 {
-	    currElem = NULLP;
-	    l1Msg = (uint64_t)NULLP;
-	    l1MsgPtr = NULLP;
-	    l1Msg = WLS_Get(wlsHdlr, &msgSize, &msgType, &flag);
-	    if(l1Msg)
-	    {
-	       l1MsgPtr = WLS_PA2VA(wlsHdlr, l1Msg); 
-	       currElem = (p_fapi_api_queue_elem_t) l1MsgPtr;
-	       if(currElem->msg_type != FAPI_VENDOR_MSG_HEADER_IND)
-	       {
-		  procPhyMessages(currElem->msg_type, 0, (void *)(currElem + 1));
-	       }
-	       WLS_MEM_FREE(currElem, LWR_MAC_WLS_BUF_SIZE);
-	    }
-	 }
-	 LwrMacEnqueueWlsBlock();
+         while(numMsgToGet--)
+         {
+            currElem = NULLP;
+            l1Msg = (uint64_t)NULLP;
+            l1MsgPtr = NULLP;
+            l1Msg = WLS_Get(wlsHdlr, &msgSize, &msgType, &flag);
+            if(l1Msg)
+            {
+               l1MsgPtr = WLS_PA2VA(wlsHdlr, l1Msg); 
+               currElem = (p_fapi_api_queue_elem_t) l1MsgPtr;
+               if(currElem->msg_type != FAPI_VENDOR_MSG_HEADER_IND)
+               {
+                  procPhyMessages(currElem->msg_type, 0, (void *)(currElem + 1));
+               }
+               WLS_MEM_FREE(currElem, LWR_MAC_WLS_BUF_SIZE);
+            }
+         }
+         LwrMacEnqueueWlsBlock();
       }
    }
 #endif
@@ -327,48 +328,48 @@ uint8_t LwrMacSendToL1(void *msg)
       addWlsBlockToFree(currMsg, msgLen, (lwrMacCb.phySlotIndCntr-1));
       if(currMsg->p_next == NULLP)
       {
-	 DU_LOG("\nERROR  -->  LWR MAC : There cannot be only one block to send");
-	 return RFAILED;
+         DU_LOG("\nERROR  -->  LWR MAC : There cannot be only one block to send");
+         return RFAILED;
       }
 
       /* Sending first block */
       ret = WLS_Put(wlsHdlr, WLS_VA2PA(wlsHdlr, currMsg), msgLen, currMsg->msg_type, WLS_SG_FIRST);
       if(ret != 0)
       {
-	 DU_LOG("\nERROR  -->  LWR MAC : Failure in sending message to PHY");
-	 return RFAILED;
+         DU_LOG("\nERROR  -->  LWR MAC : Failure in sending message to PHY");
+         return RFAILED;
       }
       currMsg = currMsg->p_next;
 
       while(currMsg)
       {
-	 /* Sending the next msg */
-	 msgLen = currMsg->msg_len + sizeof(fapi_api_queue_elem_t);
-	 addWlsBlockToFree(currMsg, msgLen, (lwrMacCb.phySlotIndCntr-1));
-	 if(currMsg->p_next != NULLP)
-	 {
-	    ret = WLS_Put(wlsHdlr, WLS_VA2PA(wlsHdlr, currMsg), msgLen, currMsg->msg_type, WLS_SG_NEXT);
-	    if(ret != 0)
-	    {
-	       DU_LOG("\nERROR  -->  LWR MAC : Failure in sending message to PHY");
-	       return RFAILED;
-	    }
-	    currMsg = currMsg->p_next;
-	 }
-	 else
-	 {
-	    /* Sending last msg */
-	    ret = WLS_Put(wlsHdlr, WLS_VA2PA(wlsHdlr, currMsg), msgLen, currMsg->msg_type, WLS_SG_LAST);
-	    if(ret != 0)
-	    {
-	       DU_LOG("\nERROR  -->  LWR MAC : Failure in sending message to PHY");
-	       return RFAILED;
-	    }
-	    currMsg = NULLP;
-	 }
+         /* Sending the next msg */
+         msgLen = currMsg->msg_len + sizeof(fapi_api_queue_elem_t);
+         addWlsBlockToFree(currMsg, msgLen, (lwrMacCb.phySlotIndCntr-1));
+         if(currMsg->p_next != NULLP)
+         {
+            ret = WLS_Put(wlsHdlr, WLS_VA2PA(wlsHdlr, currMsg), msgLen, currMsg->msg_type, WLS_SG_NEXT);
+            if(ret != 0)
+            {
+               DU_LOG("\nERROR  -->  LWR MAC : Failure in sending message to PHY");
+               return RFAILED;
+            }
+            currMsg = currMsg->p_next;
+         }
+         else
+         {
+            /* Sending last msg */
+            ret = WLS_Put(wlsHdlr, WLS_VA2PA(wlsHdlr, currMsg), msgLen, currMsg->msg_type, WLS_SG_LAST);
+            if(ret != 0)
+            {
+               DU_LOG("\nERROR  -->  LWR MAC : Failure in sending message to PHY");
+               return RFAILED;
+            }
+            currMsg = NULLP;
+         }
       }
    }
-#else
+#elif !defined(UE_SIM_TEST)
    p_fapi_api_queue_elem_t nextMsg = NULLP;
 
    /* FAPI header and vendor specific msgs are freed here. Only 
@@ -379,16 +380,18 @@ uint8_t LwrMacSendToL1(void *msg)
       nextMsg = currMsg->p_next;
       msgLen = currMsg->msg_len + sizeof(fapi_api_queue_elem_t);
       if((currMsg->msg_type != FAPI_VENDOR_MSG_HEADER_IND) && \
-	    (currMsg->msg_type != FAPI_VENDOR_MESSAGE))
+            (currMsg->msg_type != FAPI_VENDOR_MESSAGE))
       {
-	 l1ProcessFapiRequest(currMsg->msg_type, msgLen, currMsg);
+         l1ProcessFapiRequest(currMsg->msg_type, msgLen, currMsg);
       }
       else
       {
-	 LWR_MAC_FREE(currMsg, msgLen);   
+         LWR_MAC_FREE(currMsg, msgLen);   
       }
       currMsg = nextMsg;
    }
+#else
+   fapiClProcessMac2UeSimFapiMsg(msg);   
 #endif
 #endif
    return ret;

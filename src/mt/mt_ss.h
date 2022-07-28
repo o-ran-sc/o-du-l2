@@ -64,7 +64,11 @@
 #endif
 #else 
 #ifndef INTEL_WLS_MEM
+#ifdef UE_SIM_TEST
+#define SS_MAX_STSKS                    9
+#else
 #define SS_MAX_STSKS                    8
+#endif
 #else
 #define SS_MAX_STSKS                    7 
 #endif

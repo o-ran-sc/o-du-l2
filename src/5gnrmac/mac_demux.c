@@ -88,32 +88,8 @@ uint8_t unpackRxData(uint16_t cellId, SlotTimingInfo slotInfo, RxDataIndPdu *rxD
       pdu = NULLP;
       switch(lcId)
       {
-         case MAC_LCID_CCCH :
-            {
-               pduLen--;
-
-               /* for UL CCCH,fixed length of MAC SDU */
-               length = 6;
-              
-               /*  Allocating sharable memory to send ul ccch msg to du app*/
-               MAC_ALLOC_SHRABL_BUF(pdu, length);
-               if(!pdu)
-               {
-                  DU_LOG("\nERROR  -->  MAC : UL CCCH PDU memory allocation failed");
-                  return RFAILED;
-               }  
-               rxPduIdx++;
-               memcpy(pdu, &rxDataPdu[rxPduIdx], length);
-               pduLen -= length;
-               rxPduIdx = rxPduIdx + length;
-
-               /* store msg3 pdu in macRaCb for CRI value */
-               memcpy(macCb.macCell[cellIdx]->macRaCb[ueIdx].msg3Pdu, pdu, length);
-
-               /* Send UL-CCCH Indication to DU APP */
-               ret = macProcUlCcchInd(macCb.macCell[cellIdx]->cellId, rxDataIndPdu->rnti, length, pdu);
-               break;
-            }
+         case MAC_LCID_UL_CCCH_64BIT :
+            break;
 
          case MAC_LCID_MIN ... MAC_LCID_MAX :
             {
@@ -151,8 +127,32 @@ uint8_t unpackRxData(uint16_t cellId, SlotTimingInfo slotInfo, RxDataIndPdu *rxD
          case MAC_LCID_RESERVED_MIN ... MAC_LCID_RESERVED_MAX :
             break;
 
-         case MAC_LCID_CCCH_48BIT :
-            break;
+         case MAC_LCID_UL_CCCH_48BIT :
+            {
+               pduLen--;
+
+               /* for UL CCCH,fixed length of MAC SDU */
+               length = 6;
+              
+               /*  Allocating sharable memory to send ul ccch msg to du app*/
+               MAC_ALLOC_SHRABL_BUF(pdu, length);
+               if(!pdu)
+               {
+                  DU_LOG("\nERROR  -->  MAC : UL CCCH PDU memory allocation failed");
+                  return RFAILED;
+               }  
+               rxPduIdx++;
+               memcpy(pdu, &rxDataPdu[rxPduIdx], length);
+               pduLen -= length;
+               rxPduIdx = rxPduIdx + length;
+
+               /* store msg3 pdu in macRaCb for CRI value */
+               memcpy(macCb.macCell[cellIdx]->macRaCb[ueIdx].msg3Pdu, pdu, length);
+
+               /* Send UL-CCCH Indication to DU APP */
+               ret = macProcUlCcchInd(macCb.macCell[cellIdx]->cellId, rxDataIndPdu->rnti, length, pdu);
+               break;
+            }
 
          case MAC_LCID_BIT_RATE_QUERY :
             break;

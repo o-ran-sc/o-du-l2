@@ -1370,6 +1370,10 @@
 
 #define ENTPX       0xe2             /* LTE PDCP Data User */
 
+#ifdef UE_SIM_TEST
+#define ENTFAPICL   0xe3             /* FAPI Convergence Layer */
+#endif
+
 #ifdef SS_FAP
 /* ssi_h_001.main_128: Entity for FAP is added */
 /*ssi_h_001.main_145-FAP specific aditions*/

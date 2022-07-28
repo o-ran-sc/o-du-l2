@@ -29,6 +29,9 @@
 #ifndef INTEL_WLS_MEM
 #include "lwr_mac_phy_stub_inf.h"
 #endif
+#ifdef UE_SIM_TEST
+#include "lwr_mac_fapi_cl_inf.h"
+#endif
 
 /**************************************************************************
  * @brief Task Initiation callback function. 
@@ -221,6 +224,43 @@ uint8_t lwrMacActvTsk(Pst *pst, Buffer *mBuf)
                     MAC_FREE_SHRABL_BUF(pst->region, pst->pool, stopIndMsg, sizeof(fapi_stop_ind_t));
                     break;
                  }
+               default:
+                  {
+                     DU_LOG("\nERROR  -->  LWR_MAC: Invalid event %d received from PHY STUB", pst->event);
+                  }
+            }
+            break;
+         }
+#endif
+
+#ifdef UE_SIM_TEST
+      case ENTFAPICL:
+         {
+            switch(pst->event)
+            {
+               case EVT_FAPI_CL_SLOT_IND:
+                  {
+                     fapi_slot_ind_t *slotIndMsg;
+
+                     CMCHKUNPK(oduUnpackPointer, (PTR *)&slotIndMsg, mBuf);
+                     ODU_PUT_MSG_BUF(mBuf);
+
+                     procPhyMessages(slotIndMsg->header.msg_id, sizeof(fapi_slot_ind_t), (void*)slotIndMsg);
+                     MAC_FREE_SHRABL_BUF(pst->region, pst->pool, slotIndMsg, sizeof(fapi_slot_ind_t));
+                     break;
+                  }
+
+               case EVT_FAPI_CL_STOP_IND:
+                 {
+                    fapi_stop_ind_t *stopIndMsg;
+                    CMCHKUNPK(oduUnpackPointer, (PTR *)&stopIndMsg, mBuf);
+                    ODU_PUT_MSG_BUF(mBuf);
+
+                    procPhyMessages(stopIndMsg->header.msg_id, sizeof(fapi_stop_ind_t), (void*)stopIndMsg);
+                    MAC_FREE_SHRABL_BUF(pst->region, pst->pool, stopIndMsg, sizeof(fapi_stop_ind_t));
+                    break;
+                 }
+
                default:
                   {
                      DU_LOG("\nERROR  -->  LWR_MAC: Invalid event %d received from PHY STUB", pst->event);
