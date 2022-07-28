@@ -79,6 +79,7 @@ PLTFRM_FLAGS= -UMSPD -DODU -DINTEL_FAPI #-DCALL_FLOW_DEBUG_LOG -DODU_MEMORY_DEBU
 ifeq ($(MODE),TDD)
    PLTFRM_FLAGS += -DNR_TDD
 endif
+
 ifeq ($(CA_ENABLE),YES)
    PLTFRM_FLAGS += -DCA_ENABLE=YES
 endif
@@ -86,11 +87,16 @@ endif
 ifeq ($(NODE),TEST_STUB)
 	PLTFRM_FLAGS+=-DODU_TEST_STUB
 endif
+
 ifeq ($(PHY), INTEL_L1)
 	PLTFRM_FLAGS+=-DSS_USE_WLS_MEM -DINTEL_WLS_MEM -DDEBUG_MODE -DINTEL_L1_V20_03_ONWARDS
 ifeq ($(PHY_MODE),TIMER)
 	PLTFRM_FLAGS+=-DINTEL_TIMER_MODE
 endif
+endif
+
+ifeq ($(PHY), UE_SIM)
+   PLTFRM_FLAGS+=-DUE_SIM_TEST
 endif
 
 ifeq ($(O1_ENABLE),YES)
@@ -194,10 +200,15 @@ du:
 		$(Q)$(MAKE) -j -f $(COM_BUILD_DIR)/mac.mak OBJ_DIR=$(OBJ_ROOT)/odu LIB_DIR=$(LIB_ROOT)/odu LOG_DIR=$(LOG_ROOT)/odu CC='$(CC1)'
 		$(Q)$(MAKE) -j -f $(COM_BUILD_DIR)/sch.mak OBJ_DIR=$(OBJ_ROOT)/odu LIB_DIR=$(LIB_ROOT)/odu LOG_DIR=$(LOG_ROOT)/odu CC='$(CC1)'
 		$(Q)$(MAKE) -j -f $(COM_BUILD_DIR)/mt.mak OBJ_DIR=$(OBJ_ROOT)/odu LIB_DIR=$(LIB_ROOT)/odu LOG_DIR=$(LOG_ROOT)/odu CC='$(CC1)'
-		
+
+ifneq ($(PHY), UE_SIM)
 ifneq ($(PHY), INTEL_L1)
 		$(Q)$(MAKE) -j -f $(COM_BUILD_DIR)/phy_stub.mak OBJ_DIR=$(OBJ_ROOT)/odu LIB_DIR=$(LIB_ROOT)/odu LOG_DIR=$(LOG_ROOT)/odu CC='$(CC1)'
 endif
+else
+		$(Q)$(MAKE) -j -f $(COM_BUILD_DIR)/fapi_cl.mak OBJ_DIR=$(OBJ_ROOT)/odu LIB_DIR=$(LIB_ROOT)/odu LOG_DIR=$(LOG_ROOT)/odu CC='$(CC1)'
+endif
+
 ifeq ($(O1_ENABLE),YES)
 		$(Q)$(MAKE) -j -f $(COM_BUILD_DIR)/o1.mak OBJ_DIR=$(OBJ_ROOT)/odu LIB_DIR=$(LIB_ROOT)/odu LOG_DIR=$(LOG_ROOT)/odu CC='$(CCPP1)'
 		$(Q)$(MAKE) -j -f $(COM_BUILD_DIR)/ves.mak OBJ_DIR=$(OBJ_ROOT)/odu LIB_DIR=$(LIB_ROOT)/odu LOG_DIR=$(LOG_ROOT)/odu CC='$(CCPP1)'
@@ -219,9 +230,14 @@ clean_odu:
 		$(Q)$(MAKE) -j -f $(COM_BUILD_DIR)/sch.mak clean OBJ_DIR=$(OBJ_ROOT)/odu LIB_DIR=$(LIB_ROOT)/odu LOG_DIR=$(LOG_ROOT)/odu CC='$(CC1)'
 		$(Q)$(MAKE) -j -f $(COM_BUILD_DIR)/mt.mak clean OBJ_DIR=$(OBJ_ROOT)/odu LIB_DIR=$(LIB_ROOT)/odu LOG_DIR=$(LOG_ROOT)/odu CC='$(CC1)'
 		
+ifneq ($(PHY), UE_SIM)
 ifneq ($(PHY), INTEL_L1)
 		$(Q)$(MAKE) -j -f $(COM_BUILD_DIR)/phy_stub.mak clean OBJ_DIR=$(OBJ_ROOT)/odu LIB_DIR=$(LIB_ROOT)/odu LOG_DIR=$(LOG_ROOT)/odu CC='$(CC1)'
 endif
+else
+		$(Q)$(MAKE) -j -f $(COM_BUILD_DIR)/fapi_cl.mak clean OBJ_DIR=$(OBJ_ROOT)/odu LIB_DIR=$(LIB_ROOT)/odu LOG_DIR=$(LOG_ROOT)/odu CC='$(CC1)'
+endif
+
 ifeq ($(O1_ENABLE),YES)
 		$(Q)$(MAKE) -j -f $(COM_BUILD_DIR)/o1.mak clean OBJ_DIR=$(OBJ_ROOT)/odu LIB_DIR=$(LIB_ROOT)/odu LOG_DIR=$(LOG_ROOT)/odu CC='$(CCPP1)'
 		$(Q)$(MAKE) -j -f $(COM_BUILD_DIR)/ves.mak clean OBJ_DIR=$(OBJ_ROOT)/odu LIB_DIR=$(LIB_ROOT)/odu LOG_DIR=$(LOG_ROOT)/odu CC='$(CCPP1)'

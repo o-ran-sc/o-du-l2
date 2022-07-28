@@ -133,6 +133,7 @@ void callFlowlwrMacActvTsk(Pst *pst)
    }
    DU_LOG("\nCall Flow: %s -> %s : %s\n", sourceTask, destTask, message);
 }
+
 /**************************************************************************
  * @brief Task Activation callback function. 
  *

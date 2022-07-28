@@ -44,7 +44,7 @@ uint8_t rgActvTsk (Pst *, Buffer *);
 uint8_t rgActvInit (Ent, Inst, Region, Reason);
 uint8_t lwrMacActvTsk(Pst *, Buffer *);
 uint8_t lwrMacActvInit(Ent, Inst, Region, Reason);
-#ifndef INTEL_WLS_MEM
+#if (!defined(INTEL_WLS_MEM) && !defined(UE_SIM_TEST))
 uint8_t phyStubActvTsk(Pst *, Buffer *);
 uint8_t phyStubActvInit(Ent, Inst, Region, Reason);
 #endif
@@ -478,7 +478,7 @@ uint8_t lwrMacInit(SSTskId sysTskId)
    return ROK;
 }
 
-#ifndef INTEL_WLS_MEM
+#if (!defined(INTEL_WLS_MEM) && !defined(UE_SIM_TEST))
 /*******************************************************************
  *
  * @brief Initializes Phy stub slot indication generator task
@@ -592,7 +592,7 @@ uint8_t commonInit()
    }
    ODU_SET_THREAD_AFFINITY(&lwr_mac_stsk, SS_AFFINITY_MODE_EXCL, 21, 0);
 
-#ifndef INTEL_WLS_MEM
+#if (!defined(INTEL_WLS_MEM) && !defined(UE_SIM_TEST))
    /* system task for phy stub's slot indication generator thread */
    if(ODU_CREATE_TASK(PRIOR0, &phy_stub_slot_ind_stsk) != ROK)
    {
@@ -639,7 +639,7 @@ uint8_t commonInit()
       return RFAILED;
    }
 
-#ifndef INTEL_WLS_MEM
+#if (!defined(INTEL_WLS_MEM) && !defined(UE_SIM_TEST))
    if(phyStubInit(phy_stub_slot_ind_stsk) != ROK)
    {
       DU_LOG("\nERROR  -->  DU_APP : PHY stub slot indication Tapa Task initialization failed");

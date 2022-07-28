@@ -126,6 +126,7 @@
 #define ODU_PUT_MSG_BUF SPutMsg
 #define ODU_ADD_PRE_MSG_MULT SAddPreMsgMult
 #define ODU_ADD_PRE_MSG_MULT_IN_ORDER SAddPreMsgMultInOrder
+#define ODU_ADD_POST_MSG SAddPstMsg
 #define ODU_ADD_POST_MSG_MULT SAddPstMsgMult
 #define ODU_START_TASK SStartTask
 #define ODU_STOP_TASK SStopTask

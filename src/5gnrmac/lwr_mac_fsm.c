@@ -2239,25 +2239,25 @@ uint8_t lwr_mac_procConfigRspEvt(void *msg)
    configRsp = (fapi_config_resp_t *)msg;
 
    DU_LOG("\nINFO  -->  LWR_MAC: Received EVENT[%d] at STATE[%d]", lwrMacCb.event, \
-	 lwrMacCb.phyState);
+         lwrMacCb.phyState);
 
    if(configRsp != NULL)
    {
       if(configRsp->error_code == MSG_OK)
       {
-	 DU_LOG("\nDEBUG  -->  LWR_MAC: PHY has moved to Configured state \n");
-	 lwrMacCb.phyState = PHY_STATE_CONFIGURED;
-	 lwrMacCb.cellCb[0].state = PHY_STATE_CONFIGURED;
-	 /* TODO : 
-	  * Store config response into an intermediate struture and send to MAC
-	  * Support LC and LWLC for sending config rsp to MAC 
-	  */
-	 fapiMacConfigRsp(lwrMacCb.cellCb[0].cellId);
+         DU_LOG("\nDEBUG  -->  LWR_MAC: PHY has moved to Configured state \n");
+         lwrMacCb.phyState = PHY_STATE_CONFIGURED;
+         lwrMacCb.cellCb[0].state = PHY_STATE_CONFIGURED;
+         /* TODO : 
+          * Store config response into an intermediate struture and send to MAC
+          * Support LC and LWLC for sending config rsp to MAC 
+          */
+         fapiMacConfigRsp(lwrMacCb.cellCb[0].cellId);
       }
       else
       {
-	 DU_LOG("\nERROR  -->  LWR_MAC: Invalid error code %d", configRsp->error_code);
-	 return RFAILED;
+         DU_LOG("\nERROR  -->  LWR_MAC: Invalid error code %d", configRsp->error_code);
+         return RFAILED;
       }
    }
    else

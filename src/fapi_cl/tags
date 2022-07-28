@@ -1,0 +1,1552 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+DCI_PAYLOAD_BYTE_LEN	fapi_interface_ue_sim.h	339;"	d
+FAPI_BCH_PAYLOAD_FLAG_TAG	fapi_interface_ue_sim.h	153;"	d
+FAPI_BCH_PAYLOAD_TAG	fapi_interface_ue_sim.h	155;"	d
+FAPI_BEAM_IDX	fapi_interface_ue_sim.h	228;"	d
+FAPI_BEAM_ID_TAG	fapi_interface_ue_sim.h	187;"	d
+FAPI_BETA_PSS_TAG	fapi_interface_ue_sim.h	182;"	d
+FAPI_CAPABILITY_VALIDITY_TAG	fapi_interface_ue_sim.h	281;"	d
+FAPI_CARRIER_CONFIGURATION_TAG	fapi_interface_ue_sim.h	128;"	d
+FAPI_CCE_MAPPING_TYPE_TAG	fapi_interface_ue_sim.h	71;"	d
+FAPI_CONFIG_REQUEST	fapi_interface_ue_sim.h	32;"	d
+FAPI_CONFIG_RESPONSE	fapi_interface_ue_sim.h	33;"	d
+FAPI_CORESET_OUTSIDE_FIRST_3_OFDM_SYMS_OF_SLOT_TAG	fapi_interface_ue_sim.h	72;"	d
+FAPI_CRC_INDICATION	fapi_interface_ue_sim.h	48;"	d
+FAPI_CSI_RS_RATE_MATCH_TAG	fapi_interface_ue_sim.h	271;"	d
+FAPI_CYCLIC_PREFIX_TAG	fapi_interface_ue_sim.h	65;"	d
+FAPI_DFE_PROFILE_TAG	fapi_interface_ue_sim.h	285;"	d
+FAPI_DFTS_OFDM_SUPPORT_TAG	fapi_interface_ue_sim.h	111;"	d
+FAPI_DIG_BEAM_WEIGHT_IM	fapi_interface_ue_sim.h	230;"	d
+FAPI_DIG_BEAM_WEIGHT_RE	fapi_interface_ue_sim.h	229;"	d
+FAPI_DL_BANDWIDTH_TAG	fapi_interface_ue_sim.h	130;"	d
+FAPI_DL_FREQUENCY_TAG	fapi_interface_ue_sim.h	131;"	d
+FAPI_DL_GRIDSIZE_TAG	fapi_interface_ue_sim.h	133;"	d
+FAPI_DL_K0_TAG	fapi_interface_ue_sim.h	132;"	d
+FAPI_DL_NODE_SYNC	fapi_interface_ue_sim.h	54;"	d
+FAPI_DL_TTI_REQUEST	fapi_interface_ue_sim.h	42;"	d
+FAPI_DL_TTI_TIMING_OFFSET_TAG	fapi_interface_ue_sim.h	289;"	d
+FAPI_ERROR_INDICATION	fapi_interface_ue_sim.h	40;"	d
+FAPI_FRAME_DUPLEX_TYPE_TAG	fapi_interface_ue_sim.h	144;"	d
+FAPI_FREQUENCY_SHIFT_7P5_KHZ_TAG	fapi_interface_ue_sim.h	140;"	d
+FAPI_INDICATION_INSTANCES_PER_SLOT_TAG	fapi_interface_ue_sim.h	125;"	d
+FAPI_K1_TAG	fapi_interface_ue_sim.h	168;"	d
+FAPI_LTE_CRS_RATE_MATCH_PATTERN_TAG	fapi_interface_ue_sim.h	211;"	d
+FAPI_MAXNUMPDUS_INDL_TTI_TAG	fapi_interface_ue_sim.h	258;"	d
+FAPI_MAXNUMPDUS_INUL_DCI_TAG	fapi_interface_ue_sim.h	260;"	d
+FAPI_MAXNUMPDUS_INUL_TTI_TAG	fapi_interface_ue_sim.h	259;"	d
+FAPI_MAXNUM_PRACH_CONFIGURATIONS_TAG	fapi_interface_ue_sim.h	278;"	d
+FAPI_MAXNUM_UlBWPIDS_TAG	fapi_interface_ue_sim.h	264;"	d
+FAPI_MAX_FREQ_DOMAIN_RES	fapi_interface_ue_sim.h	253;"	d
+FAPI_MAX_MU_MIMO_USERS_DL_TAG	fapi_interface_ue_sim.h	91;"	d
+FAPI_MAX_MU_MIMO_USERS_UL_TAG	fapi_interface_ue_sim.h	110;"	d
+FAPI_MAX_NUMBER_MIMO_LAYERS_CB_PUSCH_TAG	fapi_interface_ue_sim.h	274;"	d
+FAPI_MAX_NUMBER_MIMO_LAYERS_NON_CB_PUSCH_TAG	fapi_interface_ue_sim.h	108;"	d
+FAPI_MAX_NUMBER_MIMO_LAYERS_PDSCH_TAG	fapi_interface_ue_sim.h	89;"	d
+FAPI_MAX_NUM_CW	fapi_interface_ue_sim.h	252;"	d
+FAPI_MAX_NUM_UCIMAPS_TAG	fapi_interface_ue_sim.h	280;"	d
+FAPI_MAX_PDCCHS_PER_SLOT_TAG	fapi_interface_ue_sim.h	76;"	d
+FAPI_MAX_PDSCHS_TBS_PER_SLOT_TAG	fapi_interface_ue_sim.h	88;"	d
+FAPI_MAX_PDUSCHS_TBS_PER_SLOT_TAG	fapi_interface_ue_sim.h	107;"	d
+FAPI_MAX_PRACH_FD_OCCASIONS_IN_A_SLOT_TAG	fapi_interface_ue_sim.h	117;"	d
+FAPI_MAX_PUCCHS_PER_SLOT_TAG	fapi_interface_ue_sim.h	79;"	d
+FAPI_MIB_TAG	fapi_interface_ue_sim.h	185;"	d
+FAPI_MORE_THAN_ONE_INDICATION_PER_SLOT_TAG	fapi_interface_ue_sim.h	286;"	d
+FAPI_MORE_THAN_ONE_REQUEST_PER_SLOT_TAG	fapi_interface_ue_sim.h	287;"	d
+FAPI_MSG_BCH_MISSING	fapi_interface_ue_sim.h	242;"	d
+FAPI_MSG_INVALID_CONFIG	fapi_interface_ue_sim.h	239;"	d
+FAPI_MSG_INVALID_SFN	fapi_interface_ue_sim.h	243;"	d
+FAPI_MSG_INVALID_STATE	fapi_interface_ue_sim.h	238;"	d
+FAPI_MSG_OK	fapi_interface_ue_sim.h	237;"	d
+FAPI_MSG_SFN_OUT_OF_SYNC	fapi_interface_ue_sim.h	240;"	d
+FAPI_MSG_SLOT_ERR	fapi_interface_ue_sim.h	241;"	d
+FAPI_MSG_TX_ERR	fapi_interface_ue_sim.h	245;"	d
+FAPI_MSG_UL_DCI_ERR	fapi_interface_ue_sim.h	244;"	d
+FAPI_MTRP_SUPPORT_TAG	fapi_interface_ue_sim.h	288;"	d
+FAPI_MULTIPLE_CELLS_SSPBCH_IN_A_CARRIER_TAG	fapi_interface_ue_sim.h	262;"	d
+FAPI_MULTIPLE_CELLS_SS_PBCH_IN_A_CARRIER_TAG	fapi_interface_ue_sim.h	189;"	d
+FAPI_MULTI_PRACH_CONFIGURATION_TAG	fapi_interface_ue_sim.h	177;"	d
+FAPI_MULTI_SSB_RESOURCE_CONFIGURATION_TAG	fapi_interface_ue_sim.h	194;"	d
+FAPI_NR_SSB_PERIODICITY_10MS	fapi_interface_ue_sim.h	/^    FAPI_NR_SSB_PERIODICITY_10MS,$/;"	e	enum:nr_ssb_periodicity
+FAPI_NR_SSB_PERIODICITY_160MS	fapi_interface_ue_sim.h	/^    FAPI_NR_SSB_PERIODICITY_160MS$/;"	e	enum:nr_ssb_periodicity
+FAPI_NR_SSB_PERIODICITY_20MS	fapi_interface_ue_sim.h	/^    FAPI_NR_SSB_PERIODICITY_20MS,$/;"	e	enum:nr_ssb_periodicity
+FAPI_NR_SSB_PERIODICITY_40MS	fapi_interface_ue_sim.h	/^    FAPI_NR_SSB_PERIODICITY_40MS,$/;"	e	enum:nr_ssb_periodicity
+FAPI_NR_SSB_PERIODICITY_5MS	fapi_interface_ue_sim.h	/^    FAPI_NR_SSB_PERIODICITY_5MS,$/;"	e	enum:nr_ssb_periodicity
+FAPI_NR_SSB_PERIODICITY_80MS	fapi_interface_ue_sim.h	/^    FAPI_NR_SSB_PERIODICITY_80MS,$/;"	e	enum:nr_ssb_periodicity
+FAPI_NUMOFRATE_MATCH_PATTERN_LTECRC_INPHY_TAG	fapi_interface_ue_sim.h	270;"	d
+FAPI_NUM_ANT_PORTS	fapi_interface_ue_sim.h	233;"	d
+FAPI_NUM_CONFIG_TLVS_TO_REPORT_TYPE_TAG	fapi_interface_ue_sim.h	64;"	d
+FAPI_NUM_DIG_BEAMS	fapi_interface_ue_sim.h	226;"	d
+FAPI_NUM_LAYERS	fapi_interface_ue_sim.h	232;"	d
+FAPI_NUM_OF_RATE_MATCH_PATTERNLTECRCPERSLOT_TAG	fapi_interface_ue_sim.h	269;"	d
+FAPI_NUM_PRACH_FD_OCCASIONS_TAG	fapi_interface_ue_sim.h	165;"	d
+FAPI_NUM_ROOT_SEQUENCES_TAG	fapi_interface_ue_sim.h	167;"	d
+FAPI_NUM_RX_ANT_TAG	fapi_interface_ue_sim.h	139;"	d
+FAPI_NUM_RX_PORTS_TRP1_TAG	fapi_interface_ue_sim.h	223;"	d
+FAPI_NUM_TX_ANT_TAG	fapi_interface_ue_sim.h	134;"	d
+FAPI_NUM_TX_PORTS_TRP1_TAG	fapi_interface_ue_sim.h	222;"	d
+FAPI_NUM_TX_RUS	fapi_interface_ue_sim.h	227;"	d
+FAPI_NUM_UNUSED_ROOT_SEQUENCES_TAG	fapi_interface_ue_sim.h	170;"	d
+FAPI_PARAM_REQUEST	fapi_interface_ue_sim.h	30;"	d
+FAPI_PARAM_RESPONSE	fapi_interface_ue_sim.h	31;"	d
+FAPI_PDCCH_MU_MIMO_TAG	fapi_interface_ue_sim.h	74;"	d
+FAPI_PDCCH_PRECODER_CYCLING_TAG	fapi_interface_ue_sim.h	75;"	d
+FAPI_PDCCH_RATE_MATCH_TAG	fapi_interface_ue_sim.h	268;"	d
+FAPI_PDSCH_ALLOCATION_TYPES_TAG	fapi_interface_ue_sim.h	82;"	d
+FAPI_PDSCH_CBG_SCHEME	fapi_interface_ue_sim.h	215;"	d
+FAPI_PDSCH_CBG_TAG	fapi_interface_ue_sim.h	84;"	d
+FAPI_PDSCH_DATA_IN_DMRS_SYMBOLS_TAG	fapi_interface_ue_sim.h	92;"	d
+FAPI_PDSCH_DMRS_ADDITIONAL_POS_TAG	fapi_interface_ue_sim.h	87;"	d
+FAPI_PDSCH_DMRS_CONFIG_TYPES_TAG	fapi_interface_ue_sim.h	85;"	d
+FAPI_PDSCH_DMRS_MAX_LENGTH_TAG	fapi_interface_ue_sim.h	86;"	d
+FAPI_PDSCH_MAC_PDU_BIT_ALIGNMENT_TAG	fapi_interface_ue_sim.h	273;"	d
+FAPI_PDSCH_MAPPING_TYPE_TAG	fapi_interface_ue_sim.h	81;"	d
+FAPI_PDSCH_NON_SLOT_SUPPORT_TAG	fapi_interface_ue_sim.h	94;"	d
+FAPI_PDSCH_TRANS_TYPE_SUPPORT_TAG	fapi_interface_ue_sim.h	272;"	d
+FAPI_PDSCH_TRANS_TYPE_VALIDITY_TAG	fapi_interface_ue_sim.h	146;"	d
+FAPI_PDSCH_VRB_TO_PRB_MAPPING_TAG	fapi_interface_ue_sim.h	83;"	d
+FAPI_PHY_CELL_ID_TAG	fapi_interface_ue_sim.h	143;"	d
+FAPI_PHY_PARAMS_TAG	fapi_interface_ue_sim.h	282;"	d
+FAPI_PHY_PROFILE_ID_TAG	fapi_interface_ue_sim.h	124;"	d
+FAPI_PHY_PROTOCOL_VERSION_TAG	fapi_interface_ue_sim.h	284;"	d
+FAPI_PHY_STATE_TAG	fapi_interface_ue_sim.h	61;"	d
+FAPI_PM_IDX	fapi_interface_ue_sim.h	231;"	d
+FAPI_POWER_PROFILES_SUPPORTED_TAG	fapi_interface_ue_sim.h	257;"	d
+FAPI_PRACH_CONFIGURATION_TAG	fapi_interface_ue_sim.h	160;"	d
+FAPI_PRACH_CONFIG_INDEX_TAG	fapi_interface_ue_sim.h	204;"	d
+FAPI_PRACH_LONG_FORMATS_TAG	fapi_interface_ue_sim.h	114;"	d
+FAPI_PRACH_MULTIPLE_CARRIERS_IN_A_BAND_TAG	fapi_interface_ue_sim.h	173;"	d
+FAPI_PRACH_MULTIPLE_CARRIERS_IN_A_Band_TAG	fapi_interface_ue_sim.h	279;"	d
+FAPI_PRACH_RESTRICTED_SETS_TAG	fapi_interface_ue_sim.h	116;"	d
+FAPI_PRACH_ROOT_SEQUENCE_INDEX_TAG	fapi_interface_ue_sim.h	166;"	d
+FAPI_PRACH_SEQUENCE_LENGTH_TAG	fapi_interface_ue_sim.h	162;"	d
+FAPI_PRACH_SHORT_FORMATS_TAG	fapi_interface_ue_sim.h	115;"	d
+FAPI_PRACH_SUBC_SPACING_TAG	fapi_interface_ue_sim.h	163;"	d
+FAPI_PRACH_ZERO_CORR_CONF_TAG	fapi_interface_ue_sim.h	169;"	d
+FAPI_PRB_SYMBOL_RATE_MATCH_PATTERN_TAG	fapi_interface_ue_sim.h	209;"	d
+FAPI_PRECODER_GRANULARITY_CORESET_TAG	fapi_interface_ue_sim.h	73;"	d
+FAPI_PRECODER_WEIGHT_IM	fapi_interface_ue_sim.h	235;"	d
+FAPI_PRECODER_WEIGHT_RE	fapi_interface_ue_sim.h	234;"	d
+FAPI_PREMPTIONSUPPORT_TAG	fapi_interface_ue_sim.h	93;"	d
+FAPI_PROTOCOLVERSION_TAG	fapi_interface_ue_sim.h	256;"	d
+FAPI_PUCCHGROUP_AND_SEQUENCE_HOPPING_TAG	fapi_interface_ue_sim.h	263;"	d
+FAPI_PUCCH_AGGREGATION_TAG	fapi_interface_ue_sim.h	265;"	d
+FAPI_PUCCH_FORMATS_TAG	fapi_interface_ue_sim.h	78;"	d
+FAPI_PUCCH_SEMI_STATIC_CONFIG_TAG	fapi_interface_ue_sim.h	213;"	d
+FAPI_PUSCH_AGGREGATION_FACTOR_TAG	fapi_interface_ue_sim.h	112;"	d
+FAPI_PUSCH_ALLOCATION_TYPES_TAG	fapi_interface_ue_sim.h	104;"	d
+FAPI_PUSCH_CBG_TAG	fapi_interface_ue_sim.h	102;"	d
+FAPI_PUSCH_DMRS_ADDITIONAL_POS_TAG	fapi_interface_ue_sim.h	101;"	d
+FAPI_PUSCH_DMRS_CONFIG_TYPES_TAG	fapi_interface_ue_sim.h	99;"	d
+FAPI_PUSCH_DMRS_MAX_LEN_TAG	fapi_interface_ue_sim.h	100;"	d
+FAPI_PUSCH_FREQUENCY_HOPPING_TAG	fapi_interface_ue_sim.h	98;"	d
+FAPI_PUSCH_LBRM_SUPPORT_TAG	fapi_interface_ue_sim.h	275;"	d
+FAPI_PUSCH_MAC_PDU_BIT_ALIGNMENT_TAG	fapi_interface_ue_sim.h	277;"	d
+FAPI_PUSCH_MAPPING_TYPE_TAG	fapi_interface_ue_sim.h	103;"	d
+FAPI_PUSCH_MAX_PTRS_PORTS_TAG	fapi_interface_ue_sim.h	106;"	d
+FAPI_PUSCH_TRANS_TYPE_SUPPORT_TAG	fapi_interface_ue_sim.h	276;"	d
+FAPI_PUSCH_TRANS_TYPE_VALIDITY_TAG	fapi_interface_ue_sim.h	147;"	d
+FAPI_PUSCH_VRB_TO_PRB_MAPPING_TAG	fapi_interface_ue_sim.h	105;"	d
+FAPI_RACH_INDICATION	fapi_interface_ue_sim.h	51;"	d
+FAPI_RELEASE_CAPABILITY_TAG	fapi_interface_ue_sim.h	60;"	d
+FAPI_REQUEST_INSTANCES_PER_SLOT_TAG	fapi_interface_ue_sim.h	126;"	d
+FAPI_RESTRICTED_SET_CONFIG_TAG	fapi_interface_ue_sim.h	164;"	d
+FAPI_RSSI_MEASUREMENT_SUPPORT_TAG	fapi_interface_ue_sim.h	119;"	d
+FAPI_RSSI_MESUREMENT_TAG	fapi_interface_ue_sim.h	203;"	d
+FAPI_RX_DATA_INDICATION	fapi_interface_ue_sim.h	47;"	d
+FAPI_SCS_COMMON_TAG	fapi_interface_ue_sim.h	156;"	d
+FAPI_SKIP_BLANK_DL_CONFIG_TAG	fapi_interface_ue_sim.h	62;"	d
+FAPI_SKIP_BLANK_UL_CONFIG_TAG	fapi_interface_ue_sim.h	63;"	d
+FAPI_SLOT_CONFIG_TAG	fapi_interface_ue_sim.h	200;"	d
+FAPI_SLOT_INDICATION	fapi_interface_ue_sim.h	44;"	d
+FAPI_SRS_INDICATION	fapi_interface_ue_sim.h	50;"	d
+FAPI_SSB_MASK_TAG	fapi_interface_ue_sim.h	186;"	d
+FAPI_SSB_OFFSET_POINT_A_TAG	fapi_interface_ue_sim.h	181;"	d
+FAPI_SSB_PERIOD_TAG	fapi_interface_ue_sim.h	183;"	d
+FAPI_SSB_PER_RACH_TAG	fapi_interface_ue_sim.h	172;"	d
+FAPI_SSB_RATE_MATCH_TAG	fapi_interface_ue_sim.h	266;"	d
+FAPI_SSB_RESOURCE_CONFIGURATION_TAG	fapi_interface_ue_sim.h	179;"	d
+FAPI_SSB_SUBCARRIER_OFFSET_TAG	fapi_interface_ue_sim.h	184;"	d
+FAPI_SSPBCH_MULTIPLE_CARRIERS_IN_A_BAND_TAG	fapi_interface_ue_sim.h	261;"	d
+FAPI_SS_PBCH_BLOCK_POWER_SCALING_TAG	fapi_interface_ue_sim.h	152;"	d
+FAPI_SS_PBCH_MULTIPLE_CARRIERS_IN_A_BAND_TAG	fapi_interface_ue_sim.h	188;"	d
+FAPI_SS_PBCH_POWER_TAG	fapi_interface_ue_sim.h	150;"	d
+FAPI_START_REQUEST	fapi_interface_ue_sim.h	34;"	d
+FAPI_START_RESPONSE	fapi_interface_ue_sim.h	36;"	d
+FAPI_STOP_INDICATION	fapi_interface_ue_sim.h	39;"	d
+FAPI_STOP_REQUEST	fapi_interface_ue_sim.h	38;"	d
+FAPI_SUPPORTED_BANDWIDTH_DL_TAG	fapi_interface_ue_sim.h	68;"	d
+FAPI_SUPPORTED_BANDWIDTH_UL_TAG	fapi_interface_ue_sim.h	70;"	d
+FAPI_SUPPORTED_MAX_MODULATION_ORDER_DL_TAG	fapi_interface_ue_sim.h	90;"	d
+FAPI_SUPPORTED_MODULATION_ORDER_UL_TAG	fapi_interface_ue_sim.h	109;"	d
+FAPI_SUPPORTED_RATE_MATCH_PATTERN_TYPE_TAG	fapi_interface_ue_sim.h	267;"	d
+FAPI_SUPPORTED_SUBCARRIER_SPACING_DL_TAG	fapi_interface_ue_sim.h	67;"	d
+FAPI_SUPPORTED_SUBCARRIER_SPACING_UL_TAG	fapi_interface_ue_sim.h	69;"	d
+FAPI_TDD_PERIOD_TAG	fapi_interface_ue_sim.h	197;"	d
+FAPI_TDD_PERIOD_TAG	fapi_interface_ue_sim.h	199;"	d
+FAPI_TIME_MANAGEMENT_TAG	fapi_interface_ue_sim.h	283;"	d
+FAPI_TIMING_INFO	fapi_interface_ue_sim.h	56;"	d
+FAPI_TIMING_INFO_MODE_TAG	fapi_interface_ue_sim.h	218;"	d
+FAPI_TIMING_INFO_PERIOD_TAG	fapi_interface_ue_sim.h	219;"	d
+FAPI_TIMING_WINDOW_TAG	fapi_interface_ue_sim.h	217;"	d
+FAPI_TX_DATA_REQUEST	fapi_interface_ue_sim.h	46;"	d
+FAPI_TX_DATA_TIMING_OFFSET_TAG	fapi_interface_ue_sim.h	292;"	d
+FAPI_UCI_CONFIGURATION_TAG	fapi_interface_ue_sim.h	207;"	d
+FAPI_UCI_CSI_P1	fapi_interface_ue_sim.h	/^   FAPI_UCI_CSI_P1   = 4,$/;"	e	enum:fapi_uci_mux_typ
+FAPI_UCI_CSI_P2	fapi_interface_ue_sim.h	/^   FAPI_UCI_CSI_P2   = 8,$/;"	e	enum:fapi_uci_mux_typ
+FAPI_UCI_HQ	fapi_interface_ue_sim.h	/^   FAPI_UCI_HQ      = 2,$/;"	e	enum:fapi_uci_mux_typ
+FAPI_UCI_INDICATION	fapi_interface_ue_sim.h	49;"	d
+FAPI_UCI_MUX_TYP_HQ_CSI_1	fapi_interface_ue_sim.h	/^   FAPI_UCI_MUX_TYP_HQ_CSI_1    = 6,$/;"	e	enum:fapi_uci_mux_typ
+FAPI_UCI_MUX_TYP_SR_CSI_1	fapi_interface_ue_sim.h	/^   FAPI_UCI_MUX_TYP_SR_CSI_1    = 5, $/;"	e	enum:fapi_uci_mux_typ
+FAPI_UCI_MUX_TYP_SR_HQ	fapi_interface_ue_sim.h	/^   FAPI_UCI_MUX_TYP_SR_HQ       = 3, $/;"	e	enum:fapi_uci_mux_typ
+FAPI_UCI_MUX_TYP_SR_HQ_CSI_1	fapi_interface_ue_sim.h	/^   FAPI_UCI_MUX_TYP_SR_HQ_CSI_1 = 7$/;"	e	enum:fapi_uci_mux_typ
+FAPI_UCI_MUX_ULSCH_IN_PUSCH_TAG	fapi_interface_ue_sim.h	96;"	d
+FAPI_UCI_ONLY_PUSCH_TAG	fapi_interface_ue_sim.h	97;"	d
+FAPI_UCI_SR	fapi_interface_ue_sim.h	/^   FAPI_UCI_SR      = 1,$/;"	e	enum:fapi_uci_mux_typ
+FAPI_UL_DCI_REQUEST	fapi_interface_ue_sim.h	45;"	d
+FAPI_UL_DCI_TIMING_OFFSET_TAG	fapi_interface_ue_sim.h	291;"	d
+FAPI_UL_GRID_SIZE_TAG	fapi_interface_ue_sim.h	138;"	d
+FAPI_UL_K0_TAG	fapi_interface_ue_sim.h	137;"	d
+FAPI_UL_NODE_SYNC	fapi_interface_ue_sim.h	55;"	d
+FAPI_UL_TTI_REQUEST	fapi_interface_ue_sim.h	43;"	d
+FAPI_UL_TTI_TIMING_OFFSET_TAG	fapi_interface_ue_sim.h	290;"	d
+FAPI_UNUSED_ROOT_SEQUENCES_TAG	fapi_interface_ue_sim.h	171;"	d
+FAPI_UPLINK_BANDWIDTH_TAG	fapi_interface_ue_sim.h	135;"	d
+FAPI_UPLINK_FREQUENCY_TAG	fapi_interface_ue_sim.h	136;"	d
+IntraSlotFrequencyHopping	fapi_interface_ue_sim.h	/^    uint8_t                     IntraSlotFrequencyHopping;$/;"	m	struct:fapi_ul_pusch_pdu
+MAX_CSI_PART1_DATA_BYTES	fapi_interface_ue_sim.h	356;"	d
+MAX_CSI_PART2_DATA_BYTES	fapi_interface_ue_sim.h	357;"	d
+MAX_HARQ_INFO_LEN_BYTES	fapi_interface_ue_sim.h	355;"	d
+MAX_HARQ_PAYLOAD_SIZE	fapi_interface_ue_sim.h	360;"	d
+MAX_NDLTYPES_DL_TTI_REQ	fapi_interface_ue_sim.h	370;"	d
+MAX_NDLTYPES_UL_DCI_REQ	fapi_interface_ue_sim.h	371;"	d
+MAX_NUMBER_DCI_PDUS_PER_TTI	fapi_interface_ue_sim.h	348;"	d
+MAX_NUMBER_DL_DCI	fapi_interface_ue_sim.h	340;"	d
+MAX_NUMBER_DL_PDUS_PER_TTI	fapi_interface_ue_sim.h	342;"	d
+MAX_NUMBER_OF_BEAMS	fapi_interface_ue_sim.h	313;"	d
+MAX_NUMBER_OF_CODEWORDS_PER_PDU	fapi_interface_ue_sim.h	341;"	d
+MAX_NUMBER_OF_CRCS_PER_SLOT	fapi_interface_ue_sim.h	354;"	d
+MAX_NUMBER_OF_GROUPS_PER_TTI	fapi_interface_ue_sim.h	346;"	d
+MAX_NUMBER_OF_HARQS_PER_IND	fapi_interface_ue_sim.h	358;"	d
+MAX_NUMBER_OF_INVALID_IDLE_ONLY_TLVS	fapi_interface_ue_sim.h	334;"	d
+MAX_NUMBER_OF_INVALID_RUNNING_ONLY_TLVS	fapi_interface_ue_sim.h	335;"	d
+MAX_NUMBER_OF_MISSING_TLVS	fapi_interface_ue_sim.h	336;"	d
+MAX_NUMBER_OF_PDUS_PER_TTI	fapi_interface_ue_sim.h	352;"	d
+MAX_NUMBER_OF_REP_SYMBOLS	fapi_interface_ue_sim.h	363;"	d
+MAX_NUMBER_OF_TLVS_PER_PDU	fapi_interface_ue_sim.h	349;"	d
+MAX_NUMBER_OF_UES_PER_TTI	fapi_interface_ue_sim.h	343;"	d
+MAX_NUMBER_OF_ULSCH_PDUS_PER_TTI	fapi_interface_ue_sim.h	353;"	d
+MAX_NUMBER_RACH_PDUS_PER_SLOT	fapi_interface_ue_sim.h	366;"	d
+MAX_NUMBER_RBS	fapi_interface_ue_sim.h	362;"	d
+MAX_NUMBER_SRS_PDUS_PER_SLOT	fapi_interface_ue_sim.h	364;"	d
+MAX_NUMBER_TX_PDUS_PER_TTI	fapi_interface_ue_sim.h	350;"	d
+MAX_NUMBER_TX_RUS	fapi_interface_ue_sim.h	311;"	d
+MAX_NUMBER_UCI_PDUS_PER_SLOT	fapi_interface_ue_sim.h	361;"	d
+MAX_NUMBER_UL_PDUS_PER_TTI	fapi_interface_ue_sim.h	347;"	d
+MAX_NUMBER_UNSUPPORTED_TLVS	fapi_interface_ue_sim.h	333;"	d
+MAX_NUM_ANT_PORTS	fapi_interface_ue_sim.h	314;"	d
+MAX_NUM_CB_PER_TTI_IN_BYTES	fapi_interface_ue_sim.h	344;"	d
+MAX_NUM_DIGBFINTERFACES	fapi_interface_ue_sim.h	337;"	d
+MAX_NUM_LAYERS	fapi_interface_ue_sim.h	315;"	d
+MAX_NUM_OF_SYMBOLS_PER_SLOT	fapi_interface_ue_sim.h	309;"	d
+MAX_NUM_PRACH_FD_OCCASIONS	fapi_interface_ue_sim.h	308;"	d
+MAX_NUM_PREAMBLES_PER_SLOT	fapi_interface_ue_sim.h	365;"	d
+MAX_NUM_PRGS_PER_TTI	fapi_interface_ue_sim.h	338;"	d
+MAX_NUM_PTRS_PORTS	fapi_interface_ue_sim.h	345;"	d
+MAX_NUM_TLVS_CARRIER_CONFIG	fapi_interface_ue_sim.h	321;"	d
+MAX_NUM_TLVS_CELL_CONFIG	fapi_interface_ue_sim.h	317;"	d
+MAX_NUM_TLVS_CELL_CONFIG	fapi_interface_ue_sim.h	319;"	d
+MAX_NUM_TLVS_CONFIG	fapi_interface_ue_sim.h	329;"	d
+MAX_NUM_TLVS_CONFIG	fapi_interface_ue_sim.h	331;"	d
+MAX_NUM_TLVS_MEAS_CONFIG	fapi_interface_ue_sim.h	327;"	d
+MAX_NUM_TLVS_PDCCH_CONFIG	fapi_interface_ue_sim.h	322;"	d
+MAX_NUM_TLVS_PDSCH_CONFIG	fapi_interface_ue_sim.h	324;"	d
+MAX_NUM_TLVS_PRACH_CONFIG	fapi_interface_ue_sim.h	326;"	d
+MAX_NUM_TLVS_PUCCH_CONFIG	fapi_interface_ue_sim.h	323;"	d
+MAX_NUM_TLVS_PUSCH_CONFIG	fapi_interface_ue_sim.h	325;"	d
+MAX_NUM_UL_TYPES	fapi_interface_ue_sim.h	373;"	d
+MAX_NUM_UNUSED_ROOT_SEQUENCES	fapi_interface_ue_sim.h	307;"	d
+MAX_PDU_LENGTH	fapi_interface_ue_sim.h	351;"	d
+MAX_SIGNAL_INDEX	fapi_interface_ue_sim.h	372;"	d
+MAX_SR_PAYLOAD_SIZE	fapi_interface_ue_sim.h	359;"	d
+MAX_TDD_PERIODICITY	fapi_interface_ue_sim.h	310;"	d
+MSG_INVALID_DFE_Profile	fapi_interface_ue_sim.h	249;"	d
+MSG_INVALID_PHY_ID	fapi_interface_ue_sim.h	247;"	d
+MSG_UNINSTANTIATED_PHY	fapi_interface_ue_sim.h	248;"	d
+NUMEROLOGIES	fapi_interface_ue_sim.h	306;"	d
+PACK_STRUCT	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT$/;"	s
+PACK_STRUCT	fapi_interface_ue_sim.h	12;"	d
+PHY_Profile_Selection_incompatible	fapi_interface_ue_sim.h	250;"	d
+TA_AVG_TIME	fapi_interface_ue_sim.h	367;"	d
+TA_AVG_TIMElog2	fapi_interface_ue_sim.h	368;"	d
+_FAPI_INTERFACE_UE_SIM_H_	fapi_interface_ue_sim.h	9;"	d
+add_dmrs_flag	fapi_interface_ue_sim.h	/^    uint8_t                     add_dmrs_flag;$/;"	m	struct:fapi_ul_pucch_pdu
+aggregation_level	fapi_interface_ue_sim.h	/^    uint8_t                     aggregation_level;$/;"	m	struct:fapi_dl_dci
+alpha_scaling	fapi_interface_ue_sim.h	/^    uint8_t                     alpha_scaling;$/;"	m	struct:fapi_pusch_uci
+avgRssi	fapi_interface_ue_sim.h	/^   uint16_t                     avgRssi;$/;"	m	struct:fapi_rach_pdu
+avgRssi	fapi_interface_ue_sim.h	/^   uint8_t                      avgRssi;$/;"	m	struct:fapi_rach_pdu
+avgSnr	fapi_interface_ue_sim.h	/^   uint8_t                      avgSnr;       $/;"	m	struct:fapi_rach_pdu
+bandwidth_index	fapi_interface_ue_sim.h	/^    uint8_t                     bandwidth_index;$/;"	m	struct:fapi_ul_srs_pdu
+basic	fapi_interface_ue_sim.h	/^    fapi_basic_parms_t          basic;$/;"	m	struct:fapi_dl_csi_rs_mnt_parms
+basicParams	fapi_interface_ue_sim.h	/^    fapi_ssb_basic_parms_t            basicParams;$/;"	m	struct:fapi_dl_ssb_pbch_mnt_parms
+bchPayload	fapi_interface_ue_sim.h	/^    fapi_uint8_tlv_t_ue_sim            bchPayload;$/;"	m	struct:fapi_ssb_config
+bchPayloadFlag	fapi_interface_ue_sim.h	/^    fapi_uint8_tlv_t_ue_sim            bchPayloadFlag;$/;"	m	struct:fapi_ssb_pwr_pbch_config
+bch_payload	fapi_interface_ue_sim.h	/^        uint32_t                bch_payload;$/;"	m	union:fapi_bch_payload::__anon2
+bch_payload	fapi_interface_ue_sim.h	/^    fapi_bch_payload_t_ue_sim            bch_payload;$/;"	m	struct:fapi_dl_ssb_pdu
+bch_payload_flag	fapi_interface_ue_sim.h	/^    uint8_t                       bch_payload_flag;$/;"	m	struct:fapi_dl_ssb_pdu
+beamId	fapi_interface_ue_sim.h	/^    fapi_uint8_tlv_t_ue_sim            beamId[64];$/;"	m	struct:fapi_ssb_table
+beamId	fapi_interface_ue_sim.h	/^    uint8_t                     beamId[64];$/;"	m	struct:fapi_ssb_res_config_table
+beamIdx	fapi_interface_ue_sim.h	/^    uint16_t                    beamIdx;$/;"	m	struct:fapi_dig_beam_config
+beam_idx	fapi_interface_ue_sim.h	/^    fapi_bmi_t_ue_sim                  beam_idx[];$/;"	m	struct:fapi_pmi_bfi
+beam_idx	fapi_interface_ue_sim.h	/^    uint16_t                    beam_idx[][1];$/;"	m	struct:fapi_bmform
+beamforming	fapi_interface_ue_sim.h	/^    fapi_bmform_t               beamforming;$/;"	m	struct:fapi_ul_prach_pdu
+beamforming	fapi_interface_ue_sim.h	/^    fapi_bmform_t               beamforming;$/;"	m	struct:fapi_ul_pucch_pdu
+beamforming	fapi_interface_ue_sim.h	/^    fapi_bmform_t               beamforming;$/;"	m	struct:fapi_ul_pusch_pdu
+beamforming	fapi_interface_ue_sim.h	/^    fapi_bmform_t               beamforming;$/;"	m	struct:fapi_ul_srs_pdu
+beamformingTable	fapi_interface_ue_sim.h	/^    fapi_beamforming_table_t_ue_sim               beamformingTable;$/;"	m	struct:fapi_config
+beamformingTable	fapi_interface_ue_sim.h	/^    fapi_beamforming_table_t_ue_sim    beamformingTable;$/;"	m	struct:fapi_config
+beamidx	fapi_interface_ue_sim.h	/^    uint16_t                    beamidx;$/;"	m	struct:fapi_bmi
+betaPSSProfileSSS	fapi_interface_ue_sim.h	/^    uint16_t                    betaPSSProfileSSS;$/;"	m	struct:fapi_ssb_tx_pwr_info
+betaPss	fapi_interface_ue_sim.h	/^    fapi_uint8_tlv_t_ue_sim            betaPss;$/;"	m	struct:fapi_ssb_table
+betaPssProfileNR	fapi_interface_ue_sim.h	/^    uint8_t                       betaPssProfileNR;$/;"	m	struct:fapi_dl_ssb_pdu
+betaPssProfileNR	fapi_interface_ue_sim.h	/^    uint8_t                     betaPssProfileNR;$/;"	m	struct:fapi_ssb_res_config_table
+betaPssProfileSSS	fapi_interface_ue_sim.h	/^    int16_t                     betaPssProfileSSS;$/;"	m	struct:fapi_ssb_res_config_table
+beta_offset_csi1	fapi_interface_ue_sim.h	/^    uint8_t                     beta_offset_csi1;$/;"	m	struct:fapi_pusch_uci
+beta_offset_csi2	fapi_interface_ue_sim.h	/^    uint8_t                     beta_offset_csi2;$/;"	m	struct:fapi_pusch_uci
+beta_offset_harq_ack	fapi_interface_ue_sim.h	/^    uint8_t                     beta_offset_harq_ack;$/;"	m	struct:fapi_pusch_uci
+beta_pdcch_1_0	fapi_interface_ue_sim.h	/^    uint8_t                     beta_pdcch_1_0;$/;"	m	struct:fapi_tx_power_info
+beta_pss	fapi_interface_ue_sim.h	/^    uint8_t                       beta_pss;$/;"	m	struct:fapi_dl_ssb_pdu
+bit_len_csi_part1	fapi_interface_ue_sim.h	/^    uint16_t                    bit_len_csi_part1;$/;"	m	struct:fapi_ul_pucch_pdu
+bit_len_csi_part2	fapi_interface_ue_sim.h	/^    uint16_t                    bit_len_csi_part2;$/;"	m	struct:fapi_ul_pucch_pdu
+bit_len_harq	fapi_interface_ue_sim.h	/^    uint16_t                    bit_len_harq;$/;"	m	struct:fapi_ul_pucch_pdu
+bwp	fapi_interface_ue_sim.h	/^    fapi_bwp_t                       bwp;$/;"	m	struct:fapi_dl_pdsch_pdu
+bwp	fapi_interface_ue_sim.h	/^    fapi_bwp_t                  bwp;$/;"	m	struct:fapi_ul_pucch_pdu
+bwp	fapi_interface_ue_sim.h	/^    fapi_bwp_t                  bwp;$/;"	m	struct:fapi_ul_pusch_pdu
+bwp	fapi_interface_ue_sim.h	/^    fapi_bwp_t                  bwp;$/;"	m	struct:fapi_ul_srs_pdu
+bwp	fapi_interface_ue_sim.h	/^   fapi_bwp_t                  bwp;$/;"	m	struct:fapi_dl_pdcch_pdu
+bwp_size	fapi_interface_ue_sim.h	/^    uint16_t                    bwp_size;   \/* BWP configuration Start *\/$/;"	m	struct:fapi_bwp
+bwp_size	fapi_interface_ue_sim.h	/^    uint16_t                    bwp_size;$/;"	m	struct:fapi_ul_pucch_pdu
+bwp_size	fapi_interface_ue_sim.h	/^    uint16_t                    bwp_size;$/;"	m	struct:fapi_ul_pusch_pdu
+bwp_size	fapi_interface_ue_sim.h	/^    uint16_t                    bwp_size;$/;"	m	struct:fapi_ul_srs_pdu
+bwp_start	fapi_interface_ue_sim.h	/^    uint16_t                    bwp_start;$/;"	m	struct:fapi_bwp
+bwp_start	fapi_interface_ue_sim.h	/^    uint16_t                    bwp_start;$/;"	m	struct:fapi_ul_pucch_pdu
+bwp_start	fapi_interface_ue_sim.h	/^    uint16_t                    bwp_start;$/;"	m	struct:fapi_ul_pusch_pdu
+bwp_start	fapi_interface_ue_sim.h	/^    uint16_t                    bwp_start;$/;"	m	struct:fapi_ul_srs_pdu
+capability	fapi_interface_ue_sim.h	/^    fapi_capability_t	        capability[];$/;"	m	struct:fapi_capability_validity
+capabilityTag	fapi_interface_ue_sim.h	/^    uint16_t	                capabilityTag;$/;"	m	struct:fapi_capability
+capabilityValidity	fapi_interface_ue_sim.h	/^    fapi_capability_validity_t  	capabilityValidity;$/;"	m	struct:fapi_params
+carrParms	fapi_interface_ue_sim.h	/^    fapi_carrier_parms_t_ue_sim        	carrParms;$/;"	m	struct:fapi_params
+carrierBandwidthDL	fapi_interface_ue_sim.h	/^    uint8_t                     carrierBandwidthDL;$/;"	m	struct:fapi_lte_crs_rm_ptrn
+carrierConfig	fapi_interface_ue_sim.h	/^    fapi_carrier_config_t_ue_sim                  carrierConfig;$/;"	m	struct:fapi_config
+carrierConfig	fapi_interface_ue_sim.h	/^    fapi_carrier_config_t_ue_sim       carrierConfig;$/;"	m	struct:fapi_config
+carrierConfig	fapi_interface_ue_sim.h	/^    fapi_tl_t_ue_sim            carrierConfig;$/;"	m	struct:fapi_carrier_config
+carrierFreqDL	fapi_interface_ue_sim.h	/^    uint16_t                    carrierFreqDL;$/;"	m	struct:fapi_lte_crs_rm_ptrn
+cases	fapi_interface_ue_sim.h	/^    uint8_t                     cases;$/;"	m	struct:fapi_ssb_basic_parms
+cases	fapi_interface_ue_sim.h	/^    uint8_t                     cases;$/;"	m	struct:fapi_ssb_res_config_table
+cb_crc_status	fapi_interface_ue_sim.h	/^    uint8_t                     cb_crc_status[MAX_NUM_CB_PER_TTI_IN_BYTES];$/;"	m	struct:fapi_crc_ind_info
+cb_present_and_position	fapi_interface_ue_sim.h	/^    uint8_t                     cb_present_and_position[1];$/;"	m	struct:fapi_pusch_data
+cbgTxInfo	fapi_interface_ue_sim.h	/^    uint8_t                    cbgTxInfo;$/;"	m	struct:fapi_dl_code_word
+cbg_info	fapi_interface_ue_sim.h	/^    fapi_dl_pdsch_cbg_info_t         cbg_info;$/;"	m	struct:fapi_dl_pdsch_pdu
+cceMappingType	fapi_interface_ue_sim.h	/^    fapi_uint8_tlv_t_ue_sim            cceMappingType;$/;"	m	struct:fapi_pdcch_parms
+cce_index	fapi_interface_ue_sim.h	/^    uint8_t                     cce_index;$/;"	m	struct:fapi_dl_dci
+cce_reg_mapping_type	fapi_interface_ue_sim.h	/^    uint8_t                     cce_reg_mapping_type;$/;"	m	struct:fapi_coreset
+cdm_type	fapi_interface_ue_sim.h	/^    uint8_t                     cdm_type;$/;"	m	struct:fapi_dl_csi_rs_pdu
+cellConfig	fapi_interface_ue_sim.h	/^    fapi_cell_config_t_ue_sim                     cellConfig;$/;"	m	struct:fapi_config
+cellConfig	fapi_interface_ue_sim.h	/^    fapi_cell_config_t_ue_sim          cellConfig;$/;"	m	struct:fapi_config
+cellParms	fapi_interface_ue_sim.h	/^    fapi_cell_parms_t_ue_sim           	cellParms;$/;"	m	struct:fapi_params
+cell_barred	fapi_interface_ue_sim.h	/^    uint8_t                     cell_barred;$/;"	m	struct:fapi_phy_mib_pdu
+codeWord	fapi_interface_ue_sim.h	/^    fapi_dl_code_word_t        codeWord[0];$/;"	m	struct:fapi_dl_tx_pwr_info
+codewordInfo	fapi_interface_ue_sim.h	/^    fapi_dl_codeword_info_t    codewordInfo;$/;"	m	struct:fapi_dl_pdsch_mnt_parms
+collocatedAl16Candidate	fapi_interface_ue_sim.h	/^    uint8_t                      collocatedAl16Candidate;$/;"	m	struct:fapi_dci_specific_parms
+comb_offset	fapi_interface_ue_sim.h	/^    uint8_t                     comb_offset;$/;"	m	struct:fapi_ul_srs_pdu
+comb_size	fapi_interface_ue_sim.h	/^    uint8_t                     comb_size;$/;"	m	struct:fapi_ul_srs_pdu
+config_index	fapi_interface_ue_sim.h	/^    uint8_t                     config_index;$/;"	m	struct:fapi_ul_srs_pdu
+convertConfigRequest	fapi_cl_mac2phy.c	/^void convertConfigRequest(uint32_t msgLen, void *msg)$/;"	f
+core_set_type	fapi_interface_ue_sim.h	/^    uint8_t                     core_set_type;$/;"	m	struct:fapi_coreset
+coreset	fapi_interface_ue_sim.h	/^   fapi_coreset_t              coreset;$/;"	m	struct:fapi_dl_pdcch_pdu
+coresetOutsideFirst3OfdmSymsOfSlot	fapi_interface_ue_sim.h	/^    fapi_uint8_tlv_t_ue_sim            coresetOutsideFirst3OfdmSymsOfSlot;$/;"	m	struct:fapi_pdcch_parms
+coresetParms	fapi_interface_ue_sim.h	/^    fapi_coreset_parms_t       coresetParms;$/;"	m	struct:fapi_pdcch_mnt_parms
+coresetRmPatrn	fapi_interface_ue_sim.h	/^    fapi_dl_coreset_rm_patrn_t         coresetRmPatrn[0];$/;"	m	struct:fapi_dl_rate_match_ref
+coresetStartPoint	fapi_interface_ue_sim.h	/^    uint16_t                   coresetStartPoint;$/;"	m	struct:fapi_dl_pdsch_mnt_parms
+crc	fapi_interface_ue_sim.h	/^    fapi_crc_ind_info_t_ue_sim         crc[MAX_NUMBER_OF_CRCS_PER_SLOT];$/;"	m	struct:fapi_crc_ind
+crsRateMatchPatternID	fapi_interface_ue_sim.h	/^    uint8_t                     crsRateMatchPatternID;$/;"	m	struct:fapi_lte_crs_rm_ptrn
+csiPart1BitLength	fapi_interface_ue_sim.h	/^    uint16_t                    csiPart1BitLength;$/;"	m	struct:fapi_ul_pucch_pdu
+csiPart1Info	fapi_interface_ue_sim.h	/^    fapi_csi_p1_info_t_ue_sim          csiPart1Info; \/\/ This is included if indicated by the pduBitmap$/;"	m	struct:fapi_uci_o_pucch_f2f3f4
+csiPart1info	fapi_interface_ue_sim.h	/^    fapi_csi_p1_info_t_ue_sim          csiPart1info;  \/\/ This is included if indicated by the pduBitmap$/;"	m	struct:fapi_uci_o_pusch
+csiPart2Info	fapi_interface_ue_sim.h	/^    fapi_csi_p2_info_t_ue_sim          csiPart2Info; \/\/ This is included if indicated by the pduBitmap$/;"	m	struct:fapi_uci_o_pucch_f2f3f4
+csiPart2info	fapi_interface_ue_sim.h	/^    fapi_csi_p2_info_t_ue_sim          csiPart2info;  \/\/ This is included if indicated by the pduBitmap$/;"	m	struct:fapi_uci_o_pusch
+csiRsForRaMa	fapi_interface_ue_sim.h	/^    uint16_t                           csiRsForRaMa[0];  \/\/ side depends on numCsiRsForRaMa   $/;"	m	struct:fapi_dl_rate_match_ref
+csiRsMntParms	fapi_interface_ue_sim.h	/^    fapi_dl_csi_rs_mnt_parms_t  csiRsMntParms;$/;"	m	struct:fapi_dl_csi_rs_pdu
+csiRsPduIndex	fapi_interface_ue_sim.h	/^    uint16_t         csiRsPduIndex;            $/;"	m	struct:fapi_basic_parms
+csiRsPowerOffsetProfileSSS	fapi_interface_ue_sim.h	/^    uint16_t         csiRsPowerOffsetProfileSSS; $/;"	m	struct:ifapi_csi_rs_tx_pwr_info
+csiRsRateMatch	fapi_interface_ue_sim.h	/^    fapi_uint8_tlv_t_ue_sim		csiRsRateMatch;$/;"	m	struct:fapi_pdsch_parms
+csi_part1_bit_len	fapi_interface_ue_sim.h	/^    uint16_t                    csi_part1_bit_len;$/;"	m	struct:fapi_csi_p1_info
+csi_part1_bit_length	fapi_interface_ue_sim.h	/^    uint16_t                    csi_part1_bit_length;$/;"	m	struct:fapi_pusch_uci
+csi_part1_crc	fapi_interface_ue_sim.h	/^    uint8_t                     csi_part1_crc;$/;"	m	struct:fapi_csi_p1_info
+csi_part1_payload	fapi_interface_ue_sim.h	/^    uint8_t                     csi_part1_payload[MAX_CSI_PART1_DATA_BYTES];$/;"	m	struct:fapi_csi_p1_info
+csi_part2_bit_len	fapi_interface_ue_sim.h	/^    uint16_t                    csi_part2_bit_len;$/;"	m	struct:fapi_csi_p2_info
+csi_part2_bit_length	fapi_interface_ue_sim.h	/^    uint16_t                    csi_part2_bit_length;$/;"	m	struct:fapi_pusch_uci
+csi_part2_crc	fapi_interface_ue_sim.h	/^    uint8_t                     csi_part2_crc;$/;"	m	struct:fapi_csi_p2_info
+csi_part2_payload	fapi_interface_ue_sim.h	/^    uint8_t                     csi_part2_payload[MAX_CSI_PART2_DATA_BYTES];$/;"	m	struct:fapi_csi_p2_info
+csi_rs_pdu	fapi_interface_ue_sim.h	/^        fapi_dl_csi_rs_pdu_t_ue_sim       csi_rs_pdu;$/;"	m	union:fapi_dl_tti_req_pdu::__anon3
+csi_type	fapi_interface_ue_sim.h	/^    uint8_t                     csi_type;$/;"	m	struct:fapi_dl_csi_rs_pdu
+cwIndex	fapi_interface_ue_sim.h	/^    uint8_t                     cwIndex; \/* Ref: Table 3-90 Tx_Data.request message *\/$/;"	m	struct:fapi_tx_pdu_desc
+cw_info	fapi_interface_ue_sim.h	/^    fapi_codeword_pdu_t_ue_sim              cw_info[FAPI_MAX_NUM_CW];       \/* SCF : Code Word Info End *\/$/;"	m	struct:fapi_dl_pdsch_pdu
+cyclicPrefix	fapi_interface_ue_sim.h	/^    fapi_uint8_tlv_t_ue_sim            cyclicPrefix;$/;"	m	struct:fapi_carrier_parms
+cyclicPrefix	fapi_interface_ue_sim.h	/^    uint8_t                     cyclicPrefix;    \/* BWP Configuration End*\/$/;"	m	struct:fapi_dl_csi_rs_pdu
+cyclic_prefix	fapi_interface_ue_sim.h	/^    uint8_t                     cyclic_prefix;    \/* BWP Configuration End*\/$/;"	m	struct:fapi_bwp
+cyclic_prefix	fapi_interface_ue_sim.h	/^    uint8_t                     cyclic_prefix;$/;"	m	struct:fapi_ul_pucch_pdu
+cyclic_prefix	fapi_interface_ue_sim.h	/^    uint8_t                     cyclic_prefix;$/;"	m	struct:fapi_ul_pusch_pdu
+cyclic_prefix	fapi_interface_ue_sim.h	/^    uint8_t                     cyclic_prefix;$/;"	m	struct:fapi_ul_srs_pdu
+cyclic_shift	fapi_interface_ue_sim.h	/^    uint8_t                     cyclic_shift;$/;"	m	struct:fapi_ul_srs_pdu
+data_scrambling_id	fapi_interface_ue_sim.h	/^    uint16_t                         data_scrambling_id;$/;"	m	struct:fapi_dl_pdsch_pdu
+data_scrambling_id	fapi_interface_ue_sim.h	/^    uint16_t                    data_scrambling_id;$/;"	m	struct:fapi_ul_pucch_pdu
+data_scrambling_id	fapi_interface_ue_sim.h	/^    uint16_t                    data_scrambling_id;$/;"	m	struct:fapi_ul_pusch_pdu
+dciIndex	fapi_interface_ue_sim.h	/^    uint16_t                           dciIndex;$/;"	m	struct:fapi_dl_rate_match_ref
+dciIndex	fapi_interface_ue_sim.h	/^    uint16_t                     dciIndex;$/;"	m	struct:fapi_dci_specific_parms
+dciSpecificParms	fapi_interface_ue_sim.h	/^    fapi_dci_specific_parms_t  dciSpecificParms;$/;"	m	struct:fapi_pdcch_mnt_parms
+delayManagementParms	fapi_interface_ue_sim.h	/^    fapi_delay_management_parms_t	delayManagementParms;$/;"	m	struct:fapi_params
+delayMgmtConfig	fapi_interface_ue_sim.h	/^    fapi_delay_mgmt_config_t               delayMgmtConfig;$/;"	m	struct:fapi_config
+deltaBwp0StartFromActiveBwp	fapi_interface_ue_sim.h	/^    uint16_t                    deltaBwp0StartFromActiveBwp;$/;"	m	struct:fapi_pusch_mnt_parms
+dfeProfile	fapi_interface_ue_sim.h	/^    fapi_dfe_profile_t                  dfeProfile;$/;"	m	struct:fapi_params
+dfe_profile	fapi_interface_ue_sim.h	/^    fapi_tl_t_ue_sim	       dfe_profile;$/;"	m	struct:fapi_dfe_profile
+dftsOfdmSupport	fapi_interface_ue_sim.h	/^    fapi_uint8_tlv_t_ue_sim            dftsOfdmSupport;$/;"	m	struct:fapi_pusch_parms
+dfts_ofdm	fapi_interface_ue_sim.h	/^    fapi_dfts_ofdm_t_ue_sim            dfts_ofdm;$/;"	m	struct:fapi_ul_pusch_pdu
+digBeam	fapi_interface_ue_sim.h	/^    fapi_dig_beam_config_t_ue_sim      digBeam[MAX_NUMBER_OF_BEAMS];$/;"	m	struct:fapi_beamforming_table
+digBeamWeight	fapi_interface_ue_sim.h	/^    fapi_dig_beam_weight_t_ue_sim      digBeamWeight[MAX_NUMBER_TX_RUS];$/;"	m	struct:fapi_dig_beam_config
+digBeamWeightIm	fapi_interface_ue_sim.h	/^    int16_t                     digBeamWeightIm;$/;"	m	struct:fapi_dig_beam_weight
+digBeamWeightRe	fapi_interface_ue_sim.h	/^    int16_t                     digBeamWeightRe;$/;"	m	struct:fapi_dig_beam_weight
+dig_bf_interfaces	fapi_interface_ue_sim.h	/^    uint8_t                     dig_bf_interfaces;$/;"	m	struct:fapi_bmform
+dig_bf_interfaces	fapi_interface_ue_sim.h	/^    uint8_t                     dig_bf_interfaces;$/;"	m	struct:fapi_precoding_bmform
+dlBandwidth	fapi_interface_ue_sim.h	/^    fapi_uint16_tlv_t_ue_sim           dlBandwidth;$/;"	m	struct:fapi_carrier_config
+dlBandwidth	fapi_interface_ue_sim.h	/^    uint16_t                    dlBandwidth;$/;"	m	struct:fapi_carrier_config
+dlFrequency	fapi_interface_ue_sim.h	/^    fapi_uint32_tlv_t_ue_sim           dlFrequency;$/;"	m	struct:fapi_carrier_config
+dlFrequency	fapi_interface_ue_sim.h	/^    uint32_t                    dlFrequency;$/;"	m	struct:fapi_carrier_config
+dlGridSize	fapi_interface_ue_sim.h	/^    fapi_config_num_tlv_t	dlGridSize;$/;"	m	struct:fapi_carrier_config
+dlGridSize	fapi_interface_ue_sim.h	/^    fapi_config_num_tlv_t       dlGridSize;$/;"	m	struct:fapi_carrier_config
+dlGridSize	fapi_interface_ue_sim.h	/^    fapi_uint16_tlv_t_ue_sim           dlGridSize[NUMEROLOGIES];$/;"	m	struct:fapi_carrier_config
+dlGridSize	fapi_interface_ue_sim.h	/^    uint16_t                    dlGridSize[NUMEROLOGIES];$/;"	m	struct:fapi_carrier_config
+dlPdschMntparms	fapi_interface_ue_sim.h	/^    fapi_dl_pdsch_mnt_parms_t        dlPdschMntparms;$/;"	m	struct:fapi_dl_pdsch_pdu
+dlPdschPtrsMntParms	fapi_interface_ue_sim.h	/^    fapi_dl_pdsch_ptrs_mnt_parms_t   dlPdschPtrsMntParms;$/;"	m	struct:fapi_dl_pdsch_pdu
+dlPortRangeLen	fapi_interface_ue_sim.h	/^    uint16_t                    dlPortRangeLen[0];$/;"	m	struct:fapi_phy_port
+dlPortRangeStart	fapi_interface_ue_sim.h	/^    uint16_t                    dlPortRangeStart[0];  \/* Start of each range of DL ports, depends on Number of DL port ranges for this PHYs*\/$/;"	m	struct:fapi_phy_port
+dlTbCrc	fapi_interface_ue_sim.h	/^   uint32_t                    dlTbCrc[2];$/;"	m	struct:fapi_dl_pdsch_cbg_info
+dl_dci	fapi_interface_ue_sim.h	/^   fapi_dl_dci_t_ue_sim               dl_dci[0];$/;"	m	struct:fapi_dl_pdcch_pdu
+dl_dmrs_scrambling_id	fapi_interface_ue_sim.h	/^    uint16_t                    dl_dmrs_scrambling_id;$/;"	m	struct:fapi_dmrs
+dl_dmrs_symb_pos	fapi_interface_ue_sim.h	/^    uint16_t                    dl_dmrs_symb_pos; \/*SCF: DMRS Config Start *\/$/;"	m	struct:fapi_dmrs
+dl_tb_crc	fapi_interface_ue_sim.h	/^   uint32_t                    dl_tb_crc;$/;"	m	struct:fapi_dl_pdsch_cbg_info
+dl_tti_timing_offset	fapi_interface_ue_sim.h	/^    fapi_uint32_tlv_t_ue_sim	        dl_tti_timing_offset;$/;"	m	struct:fapi_delay_management_parms
+dlk0	fapi_interface_ue_sim.h	/^    fapi_config_num_tlv_t	dlk0;$/;"	m	struct:fapi_carrier_config
+dlk0	fapi_interface_ue_sim.h	/^    fapi_config_num_tlv_t       dlk0;$/;"	m	struct:fapi_carrier_config
+dlk0	fapi_interface_ue_sim.h	/^    fapi_uint16_tlv_t_ue_sim           dlk0[NUMEROLOGIES];$/;"	m	struct:fapi_carrier_config
+dlk0	fapi_interface_ue_sim.h	/^    uint16_t                    dlk0[NUMEROLOGIES];$/;"	m	struct:fapi_carrier_config
+dmrs	fapi_interface_ue_sim.h	/^    fapi_dmrs_t                      dmrs;$/;"	m	struct:fapi_dl_pdsch_pdu
+dmrs_config_type	fapi_interface_ue_sim.h	/^    uint8_t                     dmrs_config_type;$/;"	m	struct:fapi_dmrs
+dmrs_config_type	fapi_interface_ue_sim.h	/^    uint8_t                     dmrs_config_type;$/;"	m	struct:fapi_ul_pusch_pdu
+dmrs_cyclic_shift	fapi_interface_ue_sim.h	/^    uint8_t                     dmrs_cyclic_shift;$/;"	m	struct:fapi_ul_pucch_pdu
+dmrs_ports	fapi_interface_ue_sim.h	/^    uint16_t                    dmrs_ports;   \/*SCF: DMRS Config End *\/$/;"	m	struct:fapi_dmrs
+dmrs_ports	fapi_interface_ue_sim.h	/^    uint16_t                    dmrs_ports;$/;"	m	struct:fapi_ul_pusch_pdu
+dmrs_scrambling_id	fapi_interface_ue_sim.h	/^    uint16_t                    dmrs_scrambling_id;$/;"	m	struct:fapi_ul_pucch_pdu
+dmrs_type_a_position	fapi_interface_ue_sim.h	/^    uint8_t                     dmrs_type_a_position;$/;"	m	struct:fapi_phy_mib_pdu
+duration_symbols	fapi_interface_ue_sim.h	/^    uint8_t                     duration_symbols;$/;"	m	struct:fapi_coreset
+errorCode	fapi_interface_ue_sim.h	/^  uint8_t                     errorCode;$/;"	m	struct:fapi_start_resp
+error_code	fapi_interface_ue_sim.h	/^    uint8_t                     error_code;$/;"	m	struct:fapi_config_resp
+error_code	fapi_interface_ue_sim.h	/^    uint8_t                     error_code;$/;"	m	struct:fapi_error_ind
+error_code	fapi_interface_ue_sim.h	/^    uint8_t                     error_code;$/;"	m	struct:fapi_param_resp
+expectedSFN	fapi_interface_ue_sim.h	/^    uint16_t			expectedSFN;$/;"	m	struct:fapi_error_ind
+expectedSlot	fapi_interface_ue_sim.h	/^    uint16_t		        expectedSlot;$/;"	m	struct:fapi_error_ind
+fapi_basic_parms	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_basic_parms$/;"	s
+fapi_basic_parms_t	fapi_interface_ue_sim.h	/^} fapi_basic_parms_t;$/;"	t	typeref:struct:fapi_basic_parms
+fapi_bch_payload	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_bch_payload$/;"	s
+fapi_bch_payload_t_ue_sim	fapi_interface_ue_sim.h	/^} fapi_bch_payload_t_ue_sim;$/;"	t	typeref:struct:fapi_bch_payload
+fapi_beamforming_table	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_beamforming_table$/;"	s
+fapi_beamforming_table_t_ue_sim	fapi_interface_ue_sim.h	/^} fapi_beamforming_table_t_ue_sim;$/;"	t	typeref:struct:fapi_beamforming_table
+fapi_bmform	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_bmform$/;"	s
+fapi_bmform_t	fapi_interface_ue_sim.h	/^} fapi_bmform_t;$/;"	t	typeref:struct:fapi_bmform
+fapi_bmi	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_bmi$/;"	s
+fapi_bmi_t_ue_sim	fapi_interface_ue_sim.h	/^} fapi_bmi_t_ue_sim;$/;"	t	typeref:struct:fapi_bmi
+fapi_bwp	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_bwp$/;"	s
+fapi_bwp_t	fapi_interface_ue_sim.h	/^}fapi_bwp_t;$/;"	t	typeref:struct:fapi_bwp
+fapi_capability	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_capability$/;"	s
+fapi_capability_t	fapi_interface_ue_sim.h	/^}   fapi_capability_t;$/;"	t	typeref:struct:fapi_capability
+fapi_capability_validity	fapi_interface_ue_sim.h	/^    fapi_tl_t_ue_sim            fapi_capability_validity;$/;"	m	struct:fapi_capability_validity
+fapi_capability_validity	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_capability_validity$/;"	s
+fapi_capability_validity_t	fapi_interface_ue_sim.h	/^}   fapi_capability_validity_t;$/;"	t	typeref:struct:fapi_capability_validity
+fapi_carrier_config	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_carrier_config$/;"	s
+fapi_carrier_config_t_ue_sim	fapi_interface_ue_sim.h	/^} fapi_carrier_config_t_ue_sim;$/;"	t	typeref:struct:fapi_carrier_config
+fapi_carrier_parms	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_carrier_parms$/;"	s
+fapi_carrier_parms_t_ue_sim	fapi_interface_ue_sim.h	/^}   fapi_carrier_parms_t_ue_sim;$/;"	t	typeref:struct:fapi_carrier_parms
+fapi_cell_config	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_cell_config$/;"	s
+fapi_cell_config_t_ue_sim	fapi_interface_ue_sim.h	/^} fapi_cell_config_t_ue_sim;$/;"	t	typeref:struct:fapi_cell_config
+fapi_cell_params	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_cell_params$/;"	s
+fapi_cell_parms_t_ue_sim	fapi_interface_ue_sim.h	/^} fapi_cell_parms_t_ue_sim;$/;"	t	typeref:struct:fapi_cell_params
+fapi_codeword_pdu	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_codeword_pdu$/;"	s
+fapi_codeword_pdu_t_ue_sim	fapi_interface_ue_sim.h	/^} fapi_codeword_pdu_t_ue_sim;$/;"	t	typeref:struct:fapi_codeword_pdu
+fapi_config	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_config$/;"	s
+fapi_config_num_tlv_t	fapi_interface_ue_sim.h	/^} fapi_config_num_tlv_t;$/;"	t	typeref:struct:__anon1
+fapi_config_req	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_config_req$/;"	s
+fapi_config_req_t_ue_sim	fapi_interface_ue_sim.h	/^} fapi_config_req_t_ue_sim;$/;"	t	typeref:struct:fapi_config_req
+fapi_config_resp	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_config_resp$/;"	s
+fapi_config_resp_t_ue_sim	fapi_interface_ue_sim.h	/^} fapi_config_resp_t_ue_sim;$/;"	t	typeref:struct:fapi_config_resp
+fapi_config_t_ue_sim	fapi_interface_ue_sim.h	/^}fapi_config_t_ue_sim;$/;"	t	typeref:struct:fapi_config
+fapi_config_tlv	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_config_tlv$/;"	s
+fapi_config_tlv_t_ue_sim	fapi_interface_ue_sim.h	/^} fapi_config_tlv_t_ue_sim;$/;"	t	typeref:struct:fapi_config_tlv
+fapi_coreset	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_coreset$/;"	s
+fapi_coreset_parms	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_coreset_parms$/;"	s
+fapi_coreset_parms_t	fapi_interface_ue_sim.h	/^} fapi_coreset_parms_t;$/;"	t	typeref:struct:fapi_coreset_parms
+fapi_coreset_t	fapi_interface_ue_sim.h	/^}fapi_coreset_t;$/;"	t	typeref:struct:fapi_coreset
+fapi_crc_ind	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_crc_ind$/;"	s
+fapi_crc_ind_info	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_crc_ind_info$/;"	s
+fapi_crc_ind_info_t_ue_sim	fapi_interface_ue_sim.h	/^} fapi_crc_ind_info_t_ue_sim;$/;"	t	typeref:struct:fapi_crc_ind_info
+fapi_crc_ind_t_ue_sim	fapi_interface_ue_sim.h	/^} fapi_crc_ind_t_ue_sim;$/;"	t	typeref:struct:fapi_crc_ind
+fapi_csi_p1_info	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_csi_p1_info$/;"	s
+fapi_csi_p1_info_t_ue_sim	fapi_interface_ue_sim.h	/^} fapi_csi_p1_info_t_ue_sim;$/;"	t	typeref:struct:fapi_csi_p1_info
+fapi_csi_p2_info	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_csi_p2_info$/;"	s
+fapi_csi_p2_info_t_ue_sim	fapi_interface_ue_sim.h	/^} fapi_csi_p2_info_t_ue_sim;$/;"	t	typeref:struct:fapi_csi_p2_info
+fapi_csi_rs_tx_pwr_info_t	fapi_interface_ue_sim.h	/^} fapi_csi_rs_tx_pwr_info_t;$/;"	t	typeref:struct:ifapi_csi_rs_tx_pwr_info
+fapi_dci_pdu	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_dci_pdu$/;"	s
+fapi_dci_pdu_t_ue_sim	fapi_interface_ue_sim.h	/^} fapi_dci_pdu_t_ue_sim;$/;"	t	typeref:struct:fapi_dci_pdu
+fapi_dci_specific_parms	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_dci_specific_parms$/;"	s
+fapi_dci_specific_parms_t	fapi_interface_ue_sim.h	/^} fapi_dci_specific_parms_t;$/;"	t	typeref:struct:fapi_dci_specific_parms
+fapi_delay_management_parms	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_delay_management_parms$/;"	s
+fapi_delay_management_parms_t	fapi_interface_ue_sim.h	/^}fapi_delay_management_parms_t;$/;"	t	typeref:struct:fapi_delay_management_parms
+fapi_delay_mgmt_config	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_delay_mgmt_config$/;"	s
+fapi_delay_mgmt_config_t	fapi_interface_ue_sim.h	/^}fapi_delay_mgmt_config_t;$/;"	t	typeref:struct:fapi_delay_mgmt_config
+fapi_dfe_profile	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_dfe_profile$/;"	s
+fapi_dfe_profile_t	fapi_interface_ue_sim.h	/^}fapi_dfe_profile_t;$/;"	t	typeref:struct:fapi_dfe_profile
+fapi_dfts_ofdm	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_dfts_ofdm$/;"	s
+fapi_dfts_ofdm_t_ue_sim	fapi_interface_ue_sim.h	/^} fapi_dfts_ofdm_t_ue_sim;$/;"	t	typeref:struct:fapi_dfts_ofdm
+fapi_dig_beam_config	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_dig_beam_config$/;"	s
+fapi_dig_beam_config_t_ue_sim	fapi_interface_ue_sim.h	/^} fapi_dig_beam_config_t_ue_sim;$/;"	t	typeref:struct:fapi_dig_beam_config
+fapi_dig_beam_weight	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_dig_beam_weight$/;"	s
+fapi_dig_beam_weight_t_ue_sim	fapi_interface_ue_sim.h	/^} fapi_dig_beam_weight_t_ue_sim;$/;"	t	typeref:struct:fapi_dig_beam_weight
+fapi_dl_code_word	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_dl_code_word$/;"	s
+fapi_dl_code_word_t	fapi_interface_ue_sim.h	/^} fapi_dl_code_word_t;$/;"	t	typeref:struct:fapi_dl_code_word
+fapi_dl_codeword_info	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_dl_codeword_info$/;"	s
+fapi_dl_codeword_info_t	fapi_interface_ue_sim.h	/^} fapi_dl_codeword_info_t;$/;"	t	typeref:struct:fapi_dl_codeword_info
+fapi_dl_coreset_rm_patrn	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_dl_coreset_rm_patrn$/;"	s
+fapi_dl_coreset_rm_patrn_t	fapi_interface_ue_sim.h	/^} fapi_dl_coreset_rm_patrn_t;$/;"	t	typeref:struct:fapi_dl_coreset_rm_patrn
+fapi_dl_csi_rs_mnt_parms	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_dl_csi_rs_mnt_parms$/;"	s
+fapi_dl_csi_rs_mnt_parms_t	fapi_interface_ue_sim.h	/^}fapi_dl_csi_rs_mnt_parms_t;$/;"	t	typeref:struct:fapi_dl_csi_rs_mnt_parms
+fapi_dl_csi_rs_pdu	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_dl_csi_rs_pdu$/;"	s
+fapi_dl_csi_rs_pdu_t_ue_sim	fapi_interface_ue_sim.h	/^} fapi_dl_csi_rs_pdu_t_ue_sim;$/;"	t	typeref:struct:fapi_dl_csi_rs_pdu
+fapi_dl_dci	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_dl_dci$/;"	s
+fapi_dl_dci_t_ue_sim	fapi_interface_ue_sim.h	/^} fapi_dl_dci_t_ue_sim;$/;"	t	typeref:struct:fapi_dl_dci
+fapi_dl_pdcch_pdu	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_dl_pdcch_pdu$/;"	s
+fapi_dl_pdcch_pdu_t_ue_sim	fapi_interface_ue_sim.h	/^} fapi_dl_pdcch_pdu_t_ue_sim;$/;"	t	typeref:struct:fapi_dl_pdcch_pdu
+fapi_dl_pdsch_cbg_info	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_dl_pdsch_cbg_info$/;"	s
+fapi_dl_pdsch_cbg_info_t	fapi_interface_ue_sim.h	/^}  fapi_dl_pdsch_cbg_info_t;$/;"	t	typeref:struct:fapi_dl_pdsch_cbg_info
+fapi_dl_pdsch_mnt_parms	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_dl_pdsch_mnt_parms$/;"	s
+fapi_dl_pdsch_mnt_parms_t	fapi_interface_ue_sim.h	/^} fapi_dl_pdsch_mnt_parms_t;$/;"	t	typeref:struct:fapi_dl_pdsch_mnt_parms
+fapi_dl_pdsch_pdu	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_dl_pdsch_pdu$/;"	s
+fapi_dl_pdsch_pdu_t_ue_sim	fapi_interface_ue_sim.h	/^} fapi_dl_pdsch_pdu_t_ue_sim;$/;"	t	typeref:struct:fapi_dl_pdsch_pdu
+fapi_dl_pdsch_ptrs2	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_dl_pdsch_ptrs2$/;"	s
+fapi_dl_pdsch_ptrs2_t	fapi_interface_ue_sim.h	/^} fapi_dl_pdsch_ptrs2_t;$/;"	t	typeref:struct:fapi_dl_pdsch_ptrs2
+fapi_dl_pdsch_ptrs_info	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT  fapi_dl_pdsch_ptrs_info$/;"	s
+fapi_dl_pdsch_ptrs_info_t	fapi_interface_ue_sim.h	/^} fapi_dl_pdsch_ptrs_info_t;$/;"	t	typeref:struct:fapi_dl_pdsch_ptrs_info
+fapi_dl_pdsch_ptrs_mnt_parms	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT  fapi_dl_pdsch_ptrs_mnt_parms$/;"	s
+fapi_dl_pdsch_ptrs_mnt_parms_t	fapi_interface_ue_sim.h	/^} fapi_dl_pdsch_ptrs_mnt_parms_t;$/;"	t	typeref:struct:fapi_dl_pdsch_ptrs_mnt_parms
+fapi_dl_pdsch_ptrsv3	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_dl_pdsch_ptrsv3$/;"	s
+fapi_dl_pdsch_ptrsv3_t	fapi_interface_ue_sim.h	/^}fapi_dl_pdsch_ptrsv3_t;$/;"	t	typeref:struct:fapi_dl_pdsch_ptrsv3
+fapi_dl_prb_sym_rm_patrn_by_val	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_dl_prb_sym_rm_patrn_by_val$/;"	s
+fapi_dl_prb_sym_rm_patrn_by_val_t	fapi_interface_ue_sim.h	/^} fapi_dl_prb_sym_rm_patrn_by_val_t;$/;"	t	typeref:struct:fapi_dl_prb_sym_rm_patrn_by_val
+fapi_dl_ptrs_tx_pwr_info	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_dl_ptrs_tx_pwr_info$/;"	s
+fapi_dl_ptrs_tx_pwr_info_t	fapi_interface_ue_sim.h	/^}fapi_dl_ptrs_tx_pwr_info_t; $/;"	t	typeref:struct:fapi_dl_ptrs_tx_pwr_info
+fapi_dl_rate_match_ref	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_dl_rate_match_ref$/;"	s
+fapi_dl_rate_match_ref_t	fapi_interface_ue_sim.h	/^} fapi_dl_rate_match_ref_t;$/;"	t	typeref:struct:fapi_dl_rate_match_ref
+fapi_dl_rel16_pdsch_parms_t	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_dl_rel16_pdsch_parms_t$/;"	s
+fapi_dl_rel16_pdsch_parms_t	fapi_interface_ue_sim.h	/^} fapi_dl_rel16_pdsch_parms_t;$/;"	t	typeref:struct:fapi_dl_rel16_pdsch_parms_t
+fapi_dl_ssb_pbch_mnt_parms	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_dl_ssb_pbch_mnt_parms$/;"	s
+fapi_dl_ssb_pbch_mnt_parms_t	fapi_interface_ue_sim.h	/^}fapi_dl_ssb_pbch_mnt_parms_t;$/;"	t	typeref:struct:fapi_dl_ssb_pbch_mnt_parms
+fapi_dl_ssb_pdu	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_dl_ssb_pdu$/;"	s
+fapi_dl_ssb_pdu_t_ue_sim	fapi_interface_ue_sim.h	/^}  fapi_dl_ssb_pdu_t_ue_sim;$/;"	t	typeref:struct:fapi_dl_ssb_pdu
+fapi_dl_tti_req	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_dl_tti_req$/;"	s
+fapi_dl_tti_req_pdu	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_dl_tti_req_pdu$/;"	s
+fapi_dl_tti_req_pdu_t_ue_sim	fapi_interface_ue_sim.h	/^} fapi_dl_tti_req_pdu_t_ue_sim;$/;"	t	typeref:struct:fapi_dl_tti_req_pdu
+fapi_dl_tti_req_t_ue_sim	fapi_interface_ue_sim.h	/^} fapi_dl_tti_req_t_ue_sim;$/;"	t	typeref:struct:fapi_dl_tti_req
+fapi_dl_tx_pwr_info	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_dl_tx_pwr_info$/;"	s
+fapi_dl_tx_pwr_info_t	fapi_interface_ue_sim.h	/^} fapi_dl_tx_pwr_info_t;$/;"	t	typeref:struct:fapi_dl_tx_pwr_info
+fapi_dmrs	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_dmrs$/;"	s
+fapi_dmrs_t	fapi_interface_ue_sim.h	/^}  fapi_dmrs_t;$/;"	t	typeref:struct:fapi_dmrs
+fapi_error_ind	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_error_ind$/;"	s
+fapi_error_ind_t_ue_sim	fapi_interface_ue_sim.h	/^} fapi_error_ind_t_ue_sim;$/;"	t	typeref:struct:fapi_error_ind
+fapi_harq_f0f1_info	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_harq_f0f1_info$/;"	s
+fapi_harq_f0f1_info_t_ue_sim	fapi_interface_ue_sim.h	/^} fapi_harq_f0f1_info_t_ue_sim;$/;"	t	typeref:struct:fapi_harq_f0f1_info
+fapi_harq_f2f3f4_info	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_harq_f2f3f4_info$/;"	s
+fapi_harq_f2f3f4_info_t_ue_sim	fapi_interface_ue_sim.h	/^} fapi_harq_f2f3f4_info_t_ue_sim;$/;"	t	typeref:struct:fapi_harq_f2f3f4_info
+fapi_harq_info	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_harq_info$/;"	s
+fapi_harq_info_t_ue_sim	fapi_interface_ue_sim.h	/^} fapi_harq_info_t_ue_sim;$/;"	t	typeref:struct:fapi_harq_info
+fapi_int16_tlv	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_int16_tlv$/;"	s
+fapi_int16_tlv_t_ue_sim	fapi_interface_ue_sim.h	/^} fapi_int16_tlv_t_ue_sim;$/;"	t	typeref:struct:fapi_int16_tlv
+fapi_lte_crs_rm_pattern	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_lte_crs_rm_pattern$/;"	s
+fapi_lte_crs_rm_pattern_t	fapi_interface_ue_sim.h	/^}fapi_lte_crs_rm_pattern_t;$/;"	t	typeref:struct:fapi_lte_crs_rm_pattern
+fapi_lte_crs_rm_ptrn	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_lte_crs_rm_ptrn    $/;"	s
+fapi_lte_crs_rm_ptrn_t	fapi_interface_ue_sim.h	/^}fapi_lte_crs_rm_ptrn_t;   $/;"	t	typeref:struct:fapi_lte_crs_rm_ptrn
+fapi_map_index	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_map_index$/;"	s
+fapi_map_index_t	fapi_interface_ue_sim.h	/^}fapi_map_index_t;$/;"	t	typeref:struct:fapi_map_index
+fapi_mbsfn_sf_config_list	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_mbsfn_sf_config_list$/;"	s
+fapi_mbsfn_sf_config_list_t	fapi_interface_ue_sim.h	/^}fapi_mbsfn_sf_config_list_t;$/;"	t	typeref:struct:fapi_mbsfn_sf_config_list
+fapi_meas_config	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_meas_config$/;"	s
+fapi_meas_config_t_ue_sim	fapi_interface_ue_sim.h	/^} fapi_meas_config_t_ue_sim;$/;"	t	typeref:struct:fapi_meas_config
+fapi_meas_parms	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_meas_parms$/;"	s
+fapi_meas_parms_t_ue_sim	fapi_interface_ue_sim.h	/^}   fapi_meas_parms_t_ue_sim;$/;"	t	typeref:struct:fapi_meas_parms
+fapi_msg	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_msg$/;"	s
+fapi_msg_header	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_msg_header$/;"	s
+fapi_msg_header_t_ue_sim	fapi_interface_ue_sim.h	/^} fapi_msg_header_t_ue_sim;$/;"	t	typeref:struct:fapi_msg_header
+fapi_msg_t_ue_sim	fapi_interface_ue_sim.h	/^} fapi_msg_t_ue_sim;$/;"	t	typeref:struct:fapi_msg
+fapi_multi_prach_config	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_multi_prach_config$/;"	s
+fapi_multi_prach_config_t	fapi_interface_ue_sim.h	/^}fapi_multi_prach_config_t;$/;"	t	typeref:struct:fapi_multi_prach_config
+fapi_multi_ssb_resource_config_table	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_multi_ssb_resource_config_table$/;"	s
+fapi_multi_ssb_resource_config_table_t	fapi_interface_ue_sim.h	/^}fapi_multi_ssb_resource_config_table_t;$/;"	t	typeref:struct:fapi_multi_ssb_resource_config_table
+fapi_optional_pusch_uci	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_optional_pusch_uci$/;"	s
+fapi_optional_pusch_uci_t	fapi_interface_ue_sim.h	/^} fapi_optional_pusch_uci_t;$/;"	t	typeref:struct:fapi_optional_pusch_uci
+fapi_pRACH_Mntnc_param	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_pRACH_Mntnc_param$/;"	s
+fapi_pRACH_Mntnc_param_t	fapi_interface_ue_sim.h	/^}fapi_pRACH_Mntnc_param_t;$/;"	t	typeref:struct:fapi_pRACH_Mntnc_param
+fapi_pUCCH_Mntnnc_params	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_pUCCH_Mntnnc_params$/;"	s
+fapi_param_req	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_param_req$/;"	s
+fapi_param_req_t_ue_sim	fapi_interface_ue_sim.h	/^} fapi_param_req_t_ue_sim;$/;"	t	typeref:struct:fapi_param_req
+fapi_param_resp	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_param_resp$/;"	s
+fapi_param_resp_t_ue_sim	fapi_interface_ue_sim.h	/^} fapi_param_resp_t_ue_sim;$/;"	t	typeref:struct:fapi_param_resp
+fapi_params	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_params$/;"	s
+fapi_params_t_ue_sim	fapi_interface_ue_sim.h	/^} fapi_params_t_ue_sim;$/;"	t	typeref:struct:fapi_params
+fapi_part2_parms	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_part2_parms$/;"	s
+fapi_part2_parms_t	fapi_interface_ue_sim.h	/^} fapi_part2_parms_t;$/;"	t	typeref:struct:fapi_part2_parms
+fapi_pdcch_mnt_parms	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_pdcch_mnt_parms $/;"	s
+fapi_pdcch_mnt_parms_t	fapi_interface_ue_sim.h	/^} fapi_pdcch_mnt_parms_t;$/;"	t	typeref:struct:fapi_pdcch_mnt_parms
+fapi_pdcch_parms	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_pdcch_parms$/;"	s
+fapi_pdcch_parms_t_ue_sim	fapi_interface_ue_sim.h	/^}   fapi_pdcch_parms_t_ue_sim;$/;"	t	typeref:struct:fapi_pdcch_parms
+fapi_pdsch_config	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_pdsch_config$/;"	s
+fapi_pdsch_config_t	fapi_interface_ue_sim.h	/^}fapi_pdsch_config_t;$/;"	t	typeref:struct:fapi_pdsch_config
+fapi_pdsch_freq_dom_alloc	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_pdsch_freq_dom_alloc$/;"	s
+fapi_pdsch_freq_dom_alloc_t	fapi_interface_ue_sim.h	/^}  fapi_pdsch_freq_dom_alloc_t;$/;"	t	typeref:struct:fapi_pdsch_freq_dom_alloc
+fapi_pdsch_parms	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_pdsch_parms$/;"	s
+fapi_pdsch_parms_t_ue_sim	fapi_interface_ue_sim.h	/^}   fapi_pdsch_parms_t_ue_sim;$/;"	t	typeref:struct:fapi_pdsch_parms
+fapi_pdsch_time_dom_alloc	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_pdsch_time_dom_alloc$/;"	s
+fapi_pdsch_time_dom_alloc_t	fapi_interface_ue_sim.h	/^}  fapi_pdsch_time_dom_alloc_t;$/;"	t	typeref:struct:fapi_pdsch_time_dom_alloc
+fapi_pdu_ind_info	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_pdu_ind_info$/;"	s
+fapi_pdu_ind_info_t_ue_sim	fapi_interface_ue_sim.h	/^} fapi_pdu_ind_info_t_ue_sim;$/;"	t	typeref:struct:fapi_pdu_ind_info
+fapi_phy_config	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_phy_config$/;"	s
+fapi_phy_config_t	fapi_interface_ue_sim.h	/^}fapi_phy_config_t;$/;"	t	typeref:struct:fapi_phy_config
+fapi_phy_mib_pdu	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_phy_mib_pdu$/;"	s
+fapi_phy_mib_pdu_t_ue_sim	fapi_interface_ue_sim.h	/^} fapi_phy_mib_pdu_t_ue_sim;$/;"	t	typeref:struct:fapi_phy_mib_pdu
+fapi_phy_parms	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_phy_parms$/;"	s
+fapi_phy_port	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_phy_port$/;"	s
+fapi_phy_port_t	fapi_interface_ue_sim.h	/^}fapi_phy_port_t;$/;"	t	typeref:struct:fapi_phy_port
+fapi_phy_profile	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_phy_profile$/;"	s
+fapi_phy_profile_t	fapi_interface_ue_sim.h	/^}fapi_phy_profile_t;$/;"	t	typeref:struct:fapi_phy_profile
+fapi_phy_support_t	fapi_interface_ue_sim.h	/^}fapi_phy_support_t;$/;"	t	typeref:struct:fapi_phy_parms
+fapi_pmi_bfi	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_pmi_bfi$/;"	s
+fapi_pmi_bfi_t_ue_sim	fapi_interface_ue_sim.h	/^} fapi_pmi_bfi_t_ue_sim;$/;"	t	typeref:struct:fapi_pmi_bfi
+fapi_prachFdOccasion	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_prachFdOccasion$/;"	s
+fapi_prachFdOccasion_t_ue_sim	fapi_interface_ue_sim.h	/^} fapi_prachFdOccasion_t_ue_sim;$/;"	t	typeref:struct:fapi_prachFdOccasion
+fapi_prach_configuration	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_prach_configuration$/;"	s
+fapi_prach_configuration_t_ue_sim	fapi_interface_ue_sim.h	/^} fapi_prach_configuration_t_ue_sim;$/;"	t	typeref:struct:fapi_prach_configuration
+fapi_prach_parms	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_prach_parms$/;"	s
+fapi_prach_parms_t_ue_sim	fapi_interface_ue_sim.h	/^}fapi_prach_parms_t_ue_sim;$/;"	t	typeref:struct:fapi_prach_parms
+fapi_prb_sym_rate_match_pattern	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_prb_sym_rate_match_pattern$/;"	s
+fapi_prb_sym_rate_match_pattern_t	fapi_interface_ue_sim.h	/^}fapi_prb_sym_rate_match_pattern_t;$/;"	t	typeref:struct:fapi_prb_sym_rate_match_pattern
+fapi_prb_symbol_rate_match_pattern	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_prb_symbol_rate_match_pattern$/;"	s
+fapi_prb_symbol_rate_match_pattern_t	fapi_interface_ue_sim.h	/^}fapi_prb_symbol_rate_match_pattern_t;$/;"	t	typeref:struct:fapi_prb_symbol_rate_match_pattern
+fapi_preamble_info	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_preamble_info$/;"	s
+fapi_preamble_info_t_ue_sim	fapi_interface_ue_sim.h	/^} fapi_preamble_info_t_ue_sim;$/;"	t	typeref:struct:fapi_preamble_info
+fapi_precoderWeight	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_precoderWeight$/;"	s
+fapi_precoderWeight_t_ue_sim	fapi_interface_ue_sim.h	/^} fapi_precoderWeight_t_ue_sim;$/;"	t	typeref:struct:fapi_precoderWeight
+fapi_precoder_weight	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_precoder_weight$/;"	s
+fapi_precoder_weight_t_ue_sim	fapi_interface_ue_sim.h	/^} fapi_precoder_weight_t_ue_sim;$/;"	t	typeref:struct:fapi_precoder_weight
+fapi_precoding_bmform	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_precoding_bmform$/;"	s
+fapi_precoding_bmform_t_ue_sim	fapi_interface_ue_sim.h	/^} fapi_precoding_bmform_t_ue_sim;$/;"	t	typeref:struct:fapi_precoding_bmform
+fapi_precoding_table_t_ue_sim	fapi_interface_ue_sim.h	/^} fapi_precoding_table_t_ue_sim;$/;"	t	typeref:struct:PACK_STRUCT
+fapi_ptrs_info	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_ptrs_info$/;"	s
+fapi_ptrs_info_t_ue_sim	fapi_interface_ue_sim.h	/^} fapi_ptrs_info_t_ue_sim;$/;"	t	typeref:struct:fapi_ptrs_info
+fapi_pucch_mntnnc_params_t	fapi_interface_ue_sim.h	/^} fapi_pucch_mntnnc_params_t;$/;"	t	typeref:struct:fapi_pUCCH_Mntnnc_params
+fapi_pucch_parms	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_pucch_parms$/;"	s
+fapi_pucch_parms_t_ue_sim	fapi_interface_ue_sim.h	/^}   fapi_pucch_parms_t_ue_sim;$/;"	t	typeref:struct:fapi_pucch_parms
+fapi_pucch_semi_static_config	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_pucch_semi_static_config$/;"	s
+fapi_pucch_semi_static_config_t	fapi_interface_ue_sim.h	/^}fapi_pucch_semi_static_config_t;$/;"	t	typeref:struct:fapi_pucch_semi_static_config
+fapi_pusch_data	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_pusch_data$/;"	s
+fapi_pusch_data_t_ue_sim	fapi_interface_ue_sim.h	/^} fapi_pusch_data_t_ue_sim;$/;"	t	typeref:struct:fapi_pusch_data
+fapi_pusch_mnt_parms	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_pusch_mnt_parms$/;"	s
+fapi_pusch_mnt_parms_t	fapi_interface_ue_sim.h	/^} fapi_pusch_mnt_parms_t;$/;"	t	typeref:struct:fapi_pusch_mnt_parms
+fapi_pusch_parms	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_pusch_parms$/;"	s
+fapi_pusch_parms_t_ue_sim	fapi_interface_ue_sim.h	/^}fapi_pusch_parms_t_ue_sim;$/;"	t	typeref:struct:fapi_pusch_parms
+fapi_pusch_ptrs	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_pusch_ptrs$/;"	s
+fapi_pusch_ptrs_t_ue_sim	fapi_interface_ue_sim.h	/^} fapi_pusch_ptrs_t_ue_sim;$/;"	t	typeref:struct:fapi_pusch_ptrs
+fapi_pusch_uci	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_pusch_uci$/;"	s
+fapi_pusch_uci_t_ue_sim	fapi_interface_ue_sim.h	/^} fapi_pusch_uci_t_ue_sim;$/;"	t	typeref:struct:fapi_pusch_uci
+fapi_rach_indication	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_rach_indication$/;"	s
+fapi_rach_indication_t_ue_sim	fapi_interface_ue_sim.h	/^} fapi_rach_indication_t_ue_sim;$/;"	t	typeref:struct:fapi_rach_indication
+fapi_rach_pdu	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_rach_pdu$/;"	s
+fapi_rach_pdu_t_ue_sim	fapi_interface_ue_sim.h	/^} fapi_rach_pdu_t_ue_sim;$/;"	t	typeref:struct:fapi_rach_pdu
+fapi_rel16_mTRP_parameters	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_rel16_mTRP_parameters$/;"	s
+fapi_rel16_mTRP_parameters_t	fapi_interface_ue_sim.h	/^}fapi_rel16_mTRP_parameters_t;$/;"	t	typeref:struct:fapi_rel16_mTRP_parameters
+fapi_rel16_mtrp_config	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_rel16_mtrp_config$/;"	s
+fapi_rel16_mtrp_config_t	fapi_interface_ue_sim.h	/^}fapi_rel16_mtrp_config_t;$/;"	t	typeref:struct:fapi_rel16_mtrp_config
+fapi_rx_data_indication	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_rx_data_indication$/;"	s
+fapi_rx_data_indication_t_ue_sim	fapi_interface_ue_sim.h	/^} fapi_rx_data_indication_t_ue_sim;$/;"	t	typeref:struct:fapi_rx_data_indication
+fapi_signal_index	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_signal_index$/;"	s
+fapi_signal_index_t	fapi_interface_ue_sim.h	/^} fapi_signal_index_t;$/;"	t	typeref:struct:fapi_signal_index
+fapi_slot_ind	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_slot_ind$/;"	s
+fapi_slot_ind_t_ue_sim	fapi_interface_ue_sim.h	/^} fapi_slot_ind_t_ue_sim;$/;"	t	typeref:struct:fapi_slot_ind
+fapi_slotconfig	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_slotconfig$/;"	s
+fapi_slotconfig_t_ue_sim	fapi_interface_ue_sim.h	/^} fapi_slotconfig_t_ue_sim;$/;"	t	typeref:struct:fapi_slotconfig
+fapi_sr_f0f1_info	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_sr_f0f1_info$/;"	s
+fapi_sr_f0f1_info_t_ue_sim	fapi_interface_ue_sim.h	/^} fapi_sr_f0f1_info_t_ue_sim;$/;"	t	typeref:struct:fapi_sr_f0f1_info
+fapi_sr_f2f3f4_info	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_sr_f2f3f4_info$/;"	s
+fapi_sr_f2f3f4_info_t_ue_sim	fapi_interface_ue_sim.h	/^} fapi_sr_f2f3f4_info_t_ue_sim;$/;"	t	typeref:struct:fapi_sr_f2f3f4_info
+fapi_srs_indication	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_srs_indication$/;"	s
+fapi_srs_indication_t_ue_sim	fapi_interface_ue_sim.h	/^} fapi_srs_indication_t_ue_sim;$/;"	t	typeref:struct:fapi_srs_indication
+fapi_srs_pdu	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_srs_pdu$/;"	s
+fapi_srs_pdu_t_ue_sim	fapi_interface_ue_sim.h	/^} fapi_srs_pdu_t_ue_sim;$/;"	t	typeref:struct:fapi_srs_pdu
+fapi_ssb_basic_parms	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_ssb_basic_parms$/;"	s
+fapi_ssb_basic_parms_t	fapi_interface_ue_sim.h	/^} fapi_ssb_basic_parms_t;$/;"	t	typeref:struct:fapi_ssb_basic_parms
+fapi_ssb_config	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_ssb_config$/;"	s
+fapi_ssb_config_t_ue_sim	fapi_interface_ue_sim.h	/^} fapi_ssb_config_t_ue_sim;$/;"	t	typeref:struct:fapi_ssb_config
+fapi_ssb_pwr_pbch_config	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_ssb_pwr_pbch_config$/;"	s
+fapi_ssb_pwr_pbch_config_t	fapi_interface_ue_sim.h	/^}fapi_ssb_pwr_pbch_config_t;$/;"	t	typeref:struct:fapi_ssb_pwr_pbch_config
+fapi_ssb_res_config_table	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_ssb_res_config_table$/;"	s
+fapi_ssb_res_config_table_t	fapi_interface_ue_sim.h	/^}fapi_ssb_res_config_table_t;$/;"	t	typeref:struct:fapi_ssb_res_config_table
+fapi_ssb_table	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_ssb_table$/;"	s
+fapi_ssb_table_t_ue_sim	fapi_interface_ue_sim.h	/^} fapi_ssb_table_t_ue_sim;$/;"	t	typeref:struct:fapi_ssb_table
+fapi_ssb_tx_pwr_info	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_ssb_tx_pwr_info$/;"	s
+fapi_ssb_tx_pwr_info_t	fapi_interface_ue_sim.h	/^} fapi_ssb_tx_pwr_info_t;$/;"	t	typeref:struct:fapi_ssb_tx_pwr_info
+fapi_start_req	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_start_req$/;"	s
+fapi_start_req_t_ue_sim	fapi_interface_ue_sim.h	/^} fapi_start_req_t_ue_sim;$/;"	t	typeref:struct:fapi_start_req
+fapi_start_resp	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_start_resp$/;"	s
+fapi_start_resp_t	fapi_interface_ue_sim.h	/^}fapi_start_resp_t;$/;"	t	typeref:struct:fapi_start_resp
+fapi_stop_ind	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_stop_ind$/;"	s
+fapi_stop_ind_t_ue_sim	fapi_interface_ue_sim.h	/^} fapi_stop_ind_t_ue_sim;$/;"	t	typeref:struct:fapi_stop_ind
+fapi_stop_req	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_stop_req$/;"	s
+fapi_stop_req_t_ue_sim	fapi_interface_ue_sim.h	/^} fapi_stop_req_t_ue_sim;$/;"	t	typeref:struct:fapi_stop_req
+fapi_symb_snr	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_symb_snr$/;"	s
+fapi_symb_snr_t_ue_sim	fapi_interface_ue_sim.h	/^} fapi_symb_snr_t_ue_sim;$/;"	t	typeref:struct:fapi_symb_snr
+fapi_tdd_table	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_tdd_table$/;"	s
+fapi_tdd_table_t_ue_sim	fapi_interface_ue_sim.h	/^} fapi_tdd_table_t_ue_sim;$/;"	t	typeref:struct:fapi_tdd_table
+fapi_tl	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_tl$/;"	s
+fapi_tl_t_ue_sim	fapi_interface_ue_sim.h	/^} fapi_tl_t_ue_sim;$/;"	t	typeref:struct:fapi_tl
+fapi_tx_dat_tlv	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_tx_dat_tlv$/;"	s
+fapi_tx_dat_tlv_t	fapi_interface_ue_sim.h	/^} fapi_tx_dat_tlv_t;$/;"	t	typeref:struct:fapi_tx_dat_tlv
+fapi_tx_data_req	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_tx_data_req$/;"	s
+fapi_tx_data_req_t_ue_sim	fapi_interface_ue_sim.h	/^} fapi_tx_data_req_t_ue_sim;$/;"	t	typeref:struct:fapi_tx_data_req
+fapi_tx_pdu_desc	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_tx_pdu_desc$/;"	s
+fapi_tx_pdu_desc_t_ue_sim	fapi_interface_ue_sim.h	/^} fapi_tx_pdu_desc_t_ue_sim;$/;"	t	typeref:struct:fapi_tx_pdu_desc
+fapi_tx_power_info	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_tx_power_info$/;"	s
+fapi_tx_power_info_t	fapi_interface_ue_sim.h	/^} fapi_tx_power_info_t;$/;"	t	typeref:struct:fapi_tx_power_info
+fapi_tx_pwr_info	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_tx_pwr_info$/;"	s
+fapi_tx_pwr_info_t	fapi_interface_ue_sim.h	/^}  fapi_tx_pwr_info_t;$/;"	t	typeref:struct:fapi_tx_pwr_info
+fapi_uci_config	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_uci_config$/;"	s
+fapi_uci_config_t	fapi_interface_ue_sim.h	/^}fapi_uci_config_t;$/;"	t	typeref:struct:fapi_uci_config
+fapi_uci_indication	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_uci_indication$/;"	s
+fapi_uci_indication_t_ue_sim	fapi_interface_ue_sim.h	/^} fapi_uci_indication_t_ue_sim;$/;"	t	typeref:struct:fapi_uci_indication
+fapi_uci_mux_typ	fapi_interface_ue_sim.h	/^typedef enum PACK_STRUCT fapi_uci_mux_typ$/;"	g
+fapi_uci_mux_typ_t	fapi_interface_ue_sim.h	/^}fapi_uci_mux_typ_t;$/;"	t	typeref:enum:fapi_uci_mux_typ
+fapi_uci_o_pucch_f0f1	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_uci_o_pucch_f0f1$/;"	s
+fapi_uci_o_pucch_f0f1_t_ue_sim	fapi_interface_ue_sim.h	/^} fapi_uci_o_pucch_f0f1_t_ue_sim;$/;"	t	typeref:struct:fapi_uci_o_pucch_f0f1
+fapi_uci_o_pucch_f2f3f4	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_uci_o_pucch_f2f3f4$/;"	s
+fapi_uci_o_pucch_f2f3f4_t_ue_sim	fapi_interface_ue_sim.h	/^} fapi_uci_o_pucch_f2f3f4_t_ue_sim;$/;"	t	typeref:struct:fapi_uci_o_pucch_f2f3f4
+fapi_uci_o_pusch	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_uci_o_pusch$/;"	s
+fapi_uci_o_pusch_t_ue_sim	fapi_interface_ue_sim.h	/^} fapi_uci_o_pusch_t_ue_sim;$/;"	t	typeref:struct:fapi_uci_o_pusch
+fapi_uci_parms	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_uci_parms$/;"	s
+fapi_uci_parms_t	fapi_interface_ue_sim.h	/^}   fapi_uci_parms_t;$/;"	t	typeref:struct:fapi_uci_parms
+fapi_uci_part1_part2	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_uci_part1_part2$/;"	s
+fapi_uci_part1_part2_t	fapi_interface_ue_sim.h	/^} fapi_uci_part1_part2_t;$/;"	t	typeref:struct:fapi_uci_part1_part2
+fapi_uci_part2	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_uci_part2$/;"	s
+fapi_uci_part2_t	fapi_interface_ue_sim.h	/^}fapi_uci_part2_t;$/;"	t	typeref:struct:fapi_uci_part2
+fapi_uci_pdu_info	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_uci_pdu_info$/;"	s
+fapi_uci_pdu_info_t_ue_sim	fapi_interface_ue_sim.h	/^} fapi_uci_pdu_info_t_ue_sim;$/;"	t	typeref:struct:fapi_uci_pdu_info
+fapi_ue_info	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_ue_info$/;"	s
+fapi_ue_info_t_ue_sim	fapi_interface_ue_sim.h	/^} fapi_ue_info_t_ue_sim;	$/;"	t	typeref:struct:fapi_ue_info
+fapi_uint16_tlv	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_uint16_tlv$/;"	s
+fapi_uint16_tlv_t_ue_sim	fapi_interface_ue_sim.h	/^} fapi_uint16_tlv_t_ue_sim;$/;"	t	typeref:struct:fapi_uint16_tlv
+fapi_uint32_tlv	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_uint32_tlv$/;"	s
+fapi_uint32_tlv_t_ue_sim	fapi_interface_ue_sim.h	/^} fapi_uint32_tlv_t_ue_sim;$/;"	t	typeref:struct:fapi_uint32_tlv
+fapi_uint8_tlv	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_uint8_tlv$/;"	s
+fapi_uint8_tlv_t_ue_sim	fapi_interface_ue_sim.h	/^} fapi_uint8_tlv_t_ue_sim;$/;"	t	typeref:struct:fapi_uint8_tlv
+fapi_ul_bwp_id	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_ul_bwp_id$/;"	s
+fapi_ul_bwp_id_t	fapi_interface_ue_sim.h	/^}fapi_ul_bwp_id_t;$/;"	t	typeref:struct:fapi_ul_bwp_id
+fapi_ul_dci_req	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_ul_dci_req$/;"	s
+fapi_ul_dci_req_t_ue_sim	fapi_interface_ue_sim.h	/^} fapi_ul_dci_req_t_ue_sim;$/;"	t	typeref:struct:fapi_ul_dci_req
+fapi_ul_prach_pdu	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_ul_prach_pdu$/;"	s
+fapi_ul_prach_pdu_t_ue_sim	fapi_interface_ue_sim.h	/^} fapi_ul_prach_pdu_t_ue_sim;$/;"	t	typeref:struct:fapi_ul_prach_pdu
+fapi_ul_pucch_pdu	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_ul_pucch_pdu$/;"	s
+fapi_ul_pucch_pdu_t_ue_sim	fapi_interface_ue_sim.h	/^} fapi_ul_pucch_pdu_t_ue_sim;$/;"	t	typeref:struct:fapi_ul_pucch_pdu
+fapi_ul_pusch_pdu	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_ul_pusch_pdu$/;"	s
+fapi_ul_pusch_pdu_t_ue_sim	fapi_interface_ue_sim.h	/^} fapi_ul_pusch_pdu_t_ue_sim;$/;"	t	typeref:struct:fapi_ul_pusch_pdu
+fapi_ul_srs_pdu	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_ul_srs_pdu$/;"	s
+fapi_ul_srs_pdu_t_ue_sim	fapi_interface_ue_sim.h	/^} fapi_ul_srs_pdu_t_ue_sim;$/;"	t	typeref:struct:fapi_ul_srs_pdu
+fapi_ul_tti_req	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_ul_tti_req$/;"	s
+fapi_ul_tti_req_pdu	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT fapi_ul_tti_req_pdu$/;"	s
+fapi_ul_tti_req_pdu_t_ue_sim	fapi_interface_ue_sim.h	/^} fapi_ul_tti_req_pdu_t_ue_sim;$/;"	t	typeref:struct:fapi_ul_tti_req_pdu
+fapi_ul_tti_req_t_ue_sim	fapi_interface_ue_sim.h	/^} fapi_ul_tti_req_t_ue_sim;$/;"	t	typeref:struct:fapi_ul_tti_req
+flagCsiPart2	fapi_interface_ue_sim.h	/^    uint16_t                    flagCsiPart2;$/;"	m	struct:fapi_pusch_uci
+format_type	fapi_interface_ue_sim.h	/^    uint8_t                     format_type;$/;"	m	struct:fapi_ul_pucch_pdu
+frameDuplexType	fapi_interface_ue_sim.h	/^    fapi_uint8_tlv_t_ue_sim            frameDuplexType;$/;"	m	struct:fapi_cell_config
+freqDomainRB	fapi_interface_ue_sim.h	/^    uint8_t                     freqDomainRB[35];$/;"	m	struct:fapi_prb_sym_rate_match_pattern
+freqDomainRB	fapi_interface_ue_sim.h	/^    uint8_t                    freqDomainRB[35];$/;"	m	struct:fapi_dl_prb_sym_rm_patrn_by_val
+freqDomainResources	fapi_interface_ue_sim.h	/^    uint8_t                    freqDomainResources[6];$/;"	m	struct:fapi_dl_coreset_rm_patrn
+freqIndex	fapi_interface_ue_sim.h	/^    uint8_t                     freqIndex;$/;"	m	struct:fapi_rach_pdu
+freq_density	fapi_interface_ue_sim.h	/^    uint8_t                     freq_density;$/;"	m	struct:fapi_dl_csi_rs_pdu
+freq_domain	fapi_interface_ue_sim.h	/^    uint16_t                    freq_domain;$/;"	m	struct:fapi_dl_csi_rs_pdu
+freq_domain_resource	fapi_interface_ue_sim.h	/^    uint8_t                     freq_domain_resource[FAPI_MAX_FREQ_DOMAIN_RES];$/;"	m	struct:fapi_coreset
+freq_hop_flag	fapi_interface_ue_sim.h	/^    uint8_t                     freq_hop_flag;$/;"	m	struct:fapi_ul_pucch_pdu
+frequencyShift7p5KHz	fapi_interface_ue_sim.h	/^    fapi_uint8_tlv_t_ue_sim            frequencyShift7p5KHz;$/;"	m	struct:fapi_carrier_config
+frequencyShift7p5KHz	fapi_interface_ue_sim.h	/^    uint8_t                     frequencyShift7p5KHz;$/;"	m	struct:fapi_carrier_config
+frequency_hopping	fapi_interface_ue_sim.h	/^    uint8_t                     frequency_hopping;$/;"	m	struct:fapi_ul_pusch_pdu
+frequency_hopping	fapi_interface_ue_sim.h	/^    uint8_t                     frequency_hopping;$/;"	m	struct:fapi_ul_srs_pdu
+frequency_position	fapi_interface_ue_sim.h	/^    uint8_t                     frequency_position;$/;"	m	struct:fapi_ul_srs_pdu
+frequency_shift	fapi_interface_ue_sim.h	/^    uint16_t                    frequency_shift;$/;"	m	struct:fapi_ul_srs_pdu
+groupOrSequenceHopping	fapi_interface_ue_sim.h	/^    uint8_t                     groupOrSequenceHopping;$/;"	m	struct:fapi_pusch_mnt_parms
+group_hop_flag	fapi_interface_ue_sim.h	/^    uint8_t                     group_hop_flag;$/;"	m	struct:fapi_ul_pucch_pdu
+group_or_sequence_hopping	fapi_interface_ue_sim.h	/^    uint8_t                     group_or_sequence_hopping;$/;"	m	struct:fapi_ul_srs_pdu
+handle	fapi_interface_ue_sim.h	/^    uint16_t                    handle;$/;"	m	struct:fapi_rach_pdu
+handle	fapi_interface_ue_sim.h	/^    uint32_t                    handle;$/;"	m	struct:fapi_crc_ind_info
+handle	fapi_interface_ue_sim.h	/^    uint32_t                    handle;$/;"	m	struct:fapi_pdu_ind_info
+handle	fapi_interface_ue_sim.h	/^    uint32_t                    handle;$/;"	m	struct:fapi_srs_pdu
+handle	fapi_interface_ue_sim.h	/^    uint32_t                    handle;$/;"	m	struct:fapi_uci_o_pucch_f0f1
+handle	fapi_interface_ue_sim.h	/^    uint32_t                    handle;$/;"	m	struct:fapi_uci_o_pucch_f2f3f4
+handle	fapi_interface_ue_sim.h	/^    uint32_t                    handle;$/;"	m	struct:fapi_uci_o_pusch
+handle	fapi_interface_ue_sim.h	/^    uint32_t                    handle;$/;"	m	struct:fapi_ul_pucch_pdu
+handle	fapi_interface_ue_sim.h	/^    uint32_t                    handle;$/;"	m	struct:fapi_ul_pusch_pdu
+handle	fapi_interface_ue_sim.h	/^    uint32_t                    handle;$/;"	m	struct:fapi_ul_srs_pdu
+handle	fapi_interface_ue_sim.h	/^    uint8_t                     handle;   \/\/ Can be used for Phy Id or Carrier Id$/;"	m	struct:fapi_msg_header
+handle	fapi_interface_ue_sim.h	/^   uint32_t                     handle;   $/;"	m	struct:fapi_pRACH_Mntnc_param
+harqInfo	fapi_interface_ue_sim.h	/^    fapi_harq_f0f1_info_t_ue_sim       harqInfo;  \/\/ This is included if indicated by the pduBitmap$/;"	m	struct:fapi_uci_o_pucch_f0f1
+harqInfo	fapi_interface_ue_sim.h	/^    fapi_harq_f2f3f4_info_t_ue_sim     harqInfo; \/\/ This is included if indicated by the pduBitmap$/;"	m	struct:fapi_uci_o_pucch_f2f3f4
+harqInfo	fapi_interface_ue_sim.h	/^    fapi_harq_info_t_ue_sim            harqInfo; \/\/ This is included if indicated by the pduBitmap$/;"	m	struct:fapi_uci_o_pusch
+harq_ack_bit_length	fapi_interface_ue_sim.h	/^    uint16_t                    harq_ack_bit_length;$/;"	m	struct:fapi_pusch_uci
+harq_bit_len	fapi_interface_ue_sim.h	/^    uint16_t                     harq_bit_len;$/;"	m	struct:fapi_harq_info
+harq_bit_len	fapi_interface_ue_sim.h	/^    uint16_t                    harq_bit_len;$/;"	m	struct:fapi_harq_f2f3f4_info
+harq_confidence_level	fapi_interface_ue_sim.h	/^    uint8_t                     harq_confidence_level;$/;"	m	struct:fapi_harq_f0f1_info
+harq_crc	fapi_interface_ue_sim.h	/^    uint8_t                      harq_crc;$/;"	m	struct:fapi_harq_info
+harq_crc	fapi_interface_ue_sim.h	/^    uint8_t                     harq_crc;$/;"	m	struct:fapi_harq_f2f3f4_info
+harq_id	fapi_interface_ue_sim.h	/^    uint8_t                     harq_id;$/;"	m	struct:fapi_crc_ind_info
+harq_id	fapi_interface_ue_sim.h	/^    uint8_t                     harq_id;$/;"	m	struct:fapi_pdu_ind_info
+harq_payload	fapi_interface_ue_sim.h	/^    uint8_t                      harq_payload[MAX_HARQ_INFO_LEN_BYTES];$/;"	m	struct:fapi_harq_info
+harq_payload	fapi_interface_ue_sim.h	/^    uint8_t                     harq_payload[MAX_HARQ_PAYLOAD_SIZE];$/;"	m	struct:fapi_harq_f2f3f4_info
+harq_process_id	fapi_interface_ue_sim.h	/^    uint8_t                     harq_process_id;$/;"	m	struct:fapi_pusch_data
+harq_value	fapi_interface_ue_sim.h	/^    uint8_t                     harq_value[MAX_NUMBER_OF_HARQS_PER_IND];$/;"	m	struct:fapi_harq_f0f1_info
+header	fapi_interface_ue_sim.h	/^    fapi_msg_header_t_ue_sim           header;  \/\/ Message Length is zero for START.request$/;"	m	struct:fapi_start_req
+header	fapi_interface_ue_sim.h	/^    fapi_msg_header_t_ue_sim           header;  \/\/ Message Length is zero for STOP.request$/;"	m	struct:fapi_stop_req
+header	fapi_interface_ue_sim.h	/^    fapi_msg_header_t_ue_sim           header; \/\/ Message Length is zero for STOP.indication$/;"	m	struct:fapi_stop_ind
+header	fapi_interface_ue_sim.h	/^    fapi_msg_header_t_ue_sim    header;  \/\/ For PARAM.req message length in fapi_msg_t_ue_sim is zero$/;"	m	struct:fapi_param_req
+header	fapi_interface_ue_sim.h	/^    fapi_msg_header_t_ue_sim    header;$/;"	m	struct:fapi_config_req
+header	fapi_interface_ue_sim.h	/^    fapi_msg_header_t_ue_sim    header;$/;"	m	struct:fapi_config_resp
+header	fapi_interface_ue_sim.h	/^    fapi_msg_header_t_ue_sim    header;$/;"	m	struct:fapi_crc_ind
+header	fapi_interface_ue_sim.h	/^    fapi_msg_header_t_ue_sim    header;$/;"	m	struct:fapi_dl_tti_req
+header	fapi_interface_ue_sim.h	/^    fapi_msg_header_t_ue_sim    header;$/;"	m	struct:fapi_error_ind
+header	fapi_interface_ue_sim.h	/^    fapi_msg_header_t_ue_sim    header;$/;"	m	struct:fapi_param_resp
+header	fapi_interface_ue_sim.h	/^    fapi_msg_header_t_ue_sim    header;$/;"	m	struct:fapi_rach_indication
+header	fapi_interface_ue_sim.h	/^    fapi_msg_header_t_ue_sim    header;$/;"	m	struct:fapi_rx_data_indication
+header	fapi_interface_ue_sim.h	/^    fapi_msg_header_t_ue_sim    header;$/;"	m	struct:fapi_slot_ind
+header	fapi_interface_ue_sim.h	/^    fapi_msg_header_t_ue_sim    header;$/;"	m	struct:fapi_srs_indication
+header	fapi_interface_ue_sim.h	/^    fapi_msg_header_t_ue_sim    header;$/;"	m	struct:fapi_tx_data_req
+header	fapi_interface_ue_sim.h	/^    fapi_msg_header_t_ue_sim    header;$/;"	m	struct:fapi_uci_indication
+header	fapi_interface_ue_sim.h	/^    fapi_msg_header_t_ue_sim    header;$/;"	m	struct:fapi_ul_dci_req
+header	fapi_interface_ue_sim.h	/^    fapi_msg_header_t_ue_sim    header;$/;"	m	struct:fapi_ul_tti_req
+header	fapi_interface_ue_sim.h	/^  fapi_msg_header_t_ue_sim    header;$/;"	m	struct:fapi_start_resp
+hopping_id	fapi_interface_ue_sim.h	/^    uint16_t                    hopping_id;$/;"	m	struct:fapi_ul_pucch_pdu
+ifapi_csi_rs_tx_pwr_info	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT ifapi_csi_rs_tx_pwr_info$/;"	s
+imax	fapi_interface_ue_sim.h	/^    uint8_t                     imax;$/;"	m	struct:fapi_ssb_res_config_table
+indexFdRa	fapi_interface_ue_sim.h	/^    uint8_t                     indexFdRa;$/;"	m	struct:fapi_ul_prach_pdu
+indicationInstancePerSlot	fapi_interface_ue_sim.h	/^    fapi_uint8_tlv_t_ue_sim            indicationInstancePerSlot[6];$/;"	m	struct:fapi_phy_config
+initialDlBwpSize	fapi_interface_ue_sim.h	/^    uint16_t                   initialDlBwpSize;$/;"	m	struct:fapi_dl_pdsch_mnt_parms
+initialUlBwpSize	fapi_interface_ue_sim.h	/^    uint16_t                    initialUlBwpSize;$/;"	m	struct:fapi_pusch_mnt_parms
+initial_cyclic_shift	fapi_interface_ue_sim.h	/^    uint16_t                    initial_cyclic_shift;$/;"	m	struct:fapi_ul_pucch_pdu
+int16_t	fapi_interface_ue_sim.h	/^typedef int16_t int16_t;$/;"	t
+int32_t	fapi_interface_ue_sim.h	/^typedef int32_t     int32_t;$/;"	t
+int8_t	fapi_interface_ue_sim.h	/^typedef signed char     int8_t;$/;"	t
+interleaver_size	fapi_interface_ue_sim.h	/^    uint8_t                     interleaver_size;$/;"	m	struct:fapi_coreset
+intraSlotFrequencyHopping	fapi_interface_ue_sim.h	/^    uint8_t                     intraSlotFrequencyHopping;$/;"	m	struct:fapi_ul_pucch_pdu
+intra_freq_reselction	fapi_interface_ue_sim.h	/^    uint8_t                     intra_freq_reselction;$/;"	m	struct:fapi_phy_mib_pdu
+is_inline_tb_crc	fapi_interface_ue_sim.h	/^   uint8_t                     is_inline_tb_crc;$/;"	m	struct:fapi_dl_pdsch_cbg_info
+is_last_cb_present	fapi_interface_ue_sim.h	/^   uint8_t                     is_last_cb_present;$/;"	m	struct:fapi_dl_pdsch_cbg_info
+k1	fapi_interface_ue_sim.h	/^    fapi_uint16_tlv_t_ue_sim           k1;$/;"	m	struct:fapi_prachFdOccasion
+k1	fapi_interface_ue_sim.h	/^    int16_t                     k1;$/;"	m	struct:fapi_prachFdOccasion
+l1ProcessFapiRequest	fapi_cl_mac2phy.c	/^void l1ProcessFapiRequest(uint8_t msgType, uint32_t msgLen, void *msg)$/;"	f
+lMax	fapi_interface_ue_sim.h	/^    uint8_t                     lMax;$/;"	m	struct:fapi_ssb_basic_parms
+ldpcBaseGraph	fapi_interface_ue_sim.h	/^    uint8_t                     ldpcBaseGraph;$/;"	m	struct:fapi_pusch_mnt_parms
+ldpcBaseGraph	fapi_interface_ue_sim.h	/^    uint8_t                    ldpcBaseGraph;$/;"	m	struct:fapi_dl_codeword_info
+length	fapi_interface_ue_sim.h	/^    uint16_t                    length;$/;"	m	struct:fapi_tl
+length	fapi_interface_ue_sim.h	/^    uint32_t                    length; \/\/ Length of the message body in bytes$/;"	m	struct:fapi_msg
+length	fapi_interface_ue_sim.h	/^    uint32_t                    length;$/;"	m	struct:fapi_tx_dat_tlv
+length	fapi_interface_ue_sim.h	/^    uint8_t                     length;$/;"	m	struct:fapi_config_tlv
+low_papr_group_number	fapi_interface_ue_sim.h	/^    uint8_t                     low_papr_group_number;$/;"	m	struct:fapi_dfts_ofdm
+low_papr_sequence_number	fapi_interface_ue_sim.h	/^    uint16_t                    low_papr_sequence_number;$/;"	m	struct:fapi_dfts_ofdm
+lteCrsRaMaPatrn	fapi_interface_ue_sim.h	/^    uint8_t                            lteCrsRaMaPatrn[0]; \/\/ side depends on ceil(lteCrsRaMaPatrnBitmapSize \/ 8)$/;"	m	struct:fapi_dl_rate_match_ref
+lteCrsRaMaPatrnBitmapSize	fapi_interface_ue_sim.h	/^    uint8_t                            lteCrsRaMaPatrnBitmapSize;$/;"	m	struct:fapi_dl_rate_match_ref
+lteCrsRmPattern	fapi_interface_ue_sim.h	/^    fapi_tl_t_ue_sim            lteCrsRmPattern;$/;"	m	struct:fapi_lte_crs_rm_pattern
+lteCrsRmPtrn	fapi_interface_ue_sim.h	/^    fapi_lte_crs_rm_pattern_t              lteCrsRmPtrn;$/;"	m	struct:fapi_config
+lteCrsRmPtrn	fapi_interface_ue_sim.h	/^    fapi_lte_crs_rm_ptrn_t      lteCrsRmPtrn[0];$/;"	m	struct:fapi_lte_crs_rm_pattern
+lteFrameStructureType	fapi_interface_ue_sim.h	/^    uint8_t                     lteFrameStructureType;$/;"	m	struct:fapi_mbsfn_sf_config_list
+mTRP_Support	fapi_interface_ue_sim.h	/^    fapi_uint32_tlv_t_ue_sim	        mTRP_Support;	$/;"	m	struct:fapi_rel16_mTRP_parameters
+map	fapi_interface_ue_sim.h	/^    uint16_t                    map[0];$/;"	m	struct:fapi_map_index
+mapIndex	fapi_interface_ue_sim.h	/^    fapi_map_index_t            mapIndex[];$/;"	m	struct:fapi_uci_config
+maxCodeRate	fapi_interface_ue_sim.h	/^    uint8_t                     maxCodeRate;$/;"	m	struct:fapi_pUCCH_Mntnnc_params
+maxMuMimoUsersDl	fapi_interface_ue_sim.h	/^    fapi_uint8_tlv_t_ue_sim            maxMuMimoUsersDl;$/;"	m	struct:fapi_pdsch_parms
+maxMuMimoUsersUl	fapi_interface_ue_sim.h	/^    fapi_uint8_tlv_t_ue_sim            maxMuMimoUsersUl;$/;"	m	struct:fapi_pusch_parms
+maxNumCbgPerTb	fapi_interface_ue_sim.h	/^    uint8_t                    maxNumCbgPerTb;$/;"	m	struct:fapi_dl_tx_pwr_info
+maxNumPDUsInDL_TTI	fapi_interface_ue_sim.h	/^    fapi_uint16_tlv_t_ue_sim           maxNumPDUsInDL_TTI;$/;"	m	struct:fapi_cell_params
+maxNumPDUsInUL_DCI	fapi_interface_ue_sim.h	/^    fapi_uint16_tlv_t_ue_sim           maxNumPDUsInUL_DCI; $/;"	m	struct:fapi_cell_params
+maxNumPDUsInUL_TTI	fapi_interface_ue_sim.h	/^    fapi_uint16_tlv_t_ue_sim           maxNumPDUsInUL_TTI;$/;"	m	struct:fapi_cell_params
+maxNumPhys	fapi_interface_ue_sim.h	/^    uint8_t		        maxNumPhys;$/;"	m	struct:fapi_phy_profile
+maxNumPrachConfigurations	fapi_interface_ue_sim.h	/^    fapi_uint16_tlv_t_ue_sim           maxNumPrachConfigurations;$/;"	m	struct:fapi_prach_parms
+maxNumUciMaps	fapi_interface_ue_sim.h	/^    fapi_uint16_tlv_t_ue_sim           maxNumUciMaps;$/;"	m	struct:fapi_uci_parms
+maxNumUlBwpIds	fapi_interface_ue_sim.h	/^    fapi_uint8_tlv_t_ue_sim            maxNumUlBwpIds;$/;"	m	struct:fapi_pucch_parms
+maxNumberMimoLayersCbPusch	fapi_interface_ue_sim.h	/^    fapi_uint8_tlv_t_ue_sim		maxNumberMimoLayersCbPusch;$/;"	m	struct:fapi_pusch_parms
+maxNumberMimoLayersPdsch	fapi_interface_ue_sim.h	/^    fapi_uint8_tlv_t_ue_sim            maxNumberMimoLayersPdsch;$/;"	m	struct:fapi_pdsch_parms
+maxNumberMimoLayersnonCbPusch	fapi_interface_ue_sim.h	/^    fapi_uint8_tlv_t_ue_sim            maxNumberMimoLayersnonCbPusch;$/;"	m	struct:fapi_pusch_parms
+maxPdcchsPerSlot	fapi_interface_ue_sim.h	/^    fapi_uint8_tlv_t_ue_sim            maxPdcchsPerSlot;$/;"	m	struct:fapi_pdcch_parms
+maxPdschsTBsPerSlot	fapi_interface_ue_sim.h	/^    fapi_uint8_tlv_t_ue_sim            maxPdschsTBsPerSlot;$/;"	m	struct:fapi_pdsch_parms
+maxPduschsTBsPerSlot	fapi_interface_ue_sim.h	/^    fapi_uint8_tlv_t_ue_sim            maxPduschsTBsPerSlot;$/;"	m	struct:fapi_pusch_parms
+maxPrachFdOccasionsInASlot	fapi_interface_ue_sim.h	/^    fapi_uint8_tlv_t_ue_sim            maxPrachFdOccasionsInASlot;$/;"	m	struct:fapi_prach_parms
+maxPucchsPerSlot	fapi_interface_ue_sim.h	/^    fapi_uint8_tlv_t_ue_sim            maxPucchsPerSlot;$/;"	m	struct:fapi_pucch_parms
+mbsfnSFConfigList	fapi_interface_ue_sim.h	/^    fapi_mbsfn_sf_config_list_t mbsfnSFConfigList[0];$/;"	m	struct:fapi_lte_crs_rm_ptrn
+mcs_index	fapi_interface_ue_sim.h	/^    uint8_t                     mcs_index;$/;"	m	struct:fapi_codeword_pdu
+mcs_index	fapi_interface_ue_sim.h	/^    uint8_t                     mcs_index;$/;"	m	struct:fapi_ul_pusch_pdu
+mcs_table	fapi_interface_ue_sim.h	/^    uint8_t                     mcs_table;$/;"	m	struct:fapi_codeword_pdu
+mcs_table	fapi_interface_ue_sim.h	/^    uint8_t                     mcs_table;$/;"	m	struct:fapi_ul_pusch_pdu
+measConfig	fapi_interface_ue_sim.h	/^    fapi_meas_config_t_ue_sim                     measConfig;$/;"	m	struct:fapi_config
+measConfig	fapi_interface_ue_sim.h	/^    fapi_meas_config_t_ue_sim          measConfig;$/;"	m	struct:fapi_config
+measParms	fapi_interface_ue_sim.h	/^    fapi_meas_parms_t_ue_sim           	measParms;$/;"	m	struct:fapi_params
+message_id	fapi_interface_ue_sim.h	/^    uint8_t                     message_id;$/;"	m	struct:fapi_error_ind
+message_type_id	fapi_interface_ue_sim.h	/^    uint16_t                     message_type_id;$/;"	m	struct:fapi_msg
+mib	fapi_interface_ue_sim.h	/^    fapi_uint32_tlv_t_ue_sim           mib;$/;"	m	struct:fapi_ssb_table
+moreThanOneIndicationPerSlot	fapi_interface_ue_sim.h	/^    fapi_uint8_tlv_t_ue_sim	     moreThanOneIndicationPerSlot[6];$/;"	m	struct:fapi_phy_parms
+moreThanOneRequestPerSlot	fapi_interface_ue_sim.h	/^    fapi_uint8_tlv_t_ue_sim	     moreThanOneRequestPerSlot[4];         $/;"	m	struct:fapi_phy_parms
+msg_body	fapi_interface_ue_sim.h	/^    uint8_t*   msg_body;$/;"	m	struct:pkd_fapi_l1api_msg_frmt
+msg_details	fapi_interface_ue_sim.h	/^    fapi_msg_t_ue_sim           msg_details;$/;"	m	struct:fapi_msg_header
+msg_id	fapi_interface_ue_sim.h	/^    uint8_t    msg_id;$/;"	m	struct:pkd_fapi_l1api_msg_frmt
+msg_len	fapi_interface_ue_sim.h	/^    uint16_t   msg_len;$/;"	m	struct:pkd_fapi_l1api_msg_frmt
+multiPrachConfig	fapi_interface_ue_sim.h	/^    fapi_multi_prach_config_t              multiPrachConfig;$/;"	m	struct:fapi_config
+multiPrachConfig	fapi_interface_ue_sim.h	/^    fapi_tl_t_ue_sim            multiPrachConfig;$/;"	m	struct:fapi_multi_prach_config
+multiSsbResourceConfig	fapi_interface_ue_sim.h	/^    fapi_tl_t_ue_sim            multiSsbResourceConfig;$/;"	m	struct:fapi_multi_ssb_resource_config_table
+multiSsbResourceConfigTable	fapi_interface_ue_sim.h	/^    fapi_multi_ssb_resource_config_table_t multiSsbResourceConfigTable;$/;"	m	struct:fapi_config
+multi_slot_tx_indicator	fapi_interface_ue_sim.h	/^    uint8_t                     multi_slot_tx_indicator;$/;"	m	struct:fapi_ul_pucch_pdu
+multipleCellsSsPbchInACarrier	fapi_interface_ue_sim.h	/^    fapi_uint8_tlv_t_ue_sim            multipleCellsSsPbchInACarrier;$/;"	m	struct:fapi_carrier_parms
+multipleCellsSsPbchInACarrier	fapi_interface_ue_sim.h	/^    fapi_uint8_tlv_t_ue_sim            multipleCellsSsPbchInACarrier;$/;"	m	struct:fapi_ssb_table
+nDlTypes	fapi_interface_ue_sim.h	/^    uint8_t			nDlTypes;$/;"	m	struct:fapi_dl_tti_req
+nDlTypes	fapi_interface_ue_sim.h	/^    uint8_t			nDlTypes;$/;"	m	struct:fapi_ul_dci_req
+nEpreRatOfPdschToPtrsProfNR	fapi_interface_ue_sim.h	/^    uint8_t                      nEpreRatOfPdschToPtrsProfNR; $/;"	m	struct:fapi_dl_pdsch_ptrs2
+nIdPdcchData	fapi_interface_ue_sim.h	/^    uint16_t                    nIdPdcchData;$/;"	m	struct:fapi_dl_dci
+nIdPdcchDmrs	fapi_interface_ue_sim.h	/^    uint16_t                    nIdPdcchDmrs;  $/;"	m	struct:fapi_coreset_parms
+nIdPdsch	fapi_interface_ue_sim.h	/^    uint16_t                         nIdPdsch;$/;"	m	struct:fapi_dl_pdsch_pdu
+nIdPucchHopping	fapi_interface_ue_sim.h	/^    uint16_t                    nIdPucchHopping;$/;"	m	struct:fapi_ul_bwp_id
+nIdPucchHopping	fapi_interface_ue_sim.h	/^    uint8_t                     nIdPucchHopping;$/;"	m	struct:fapi_ul_pucch_pdu
+nIdPucchScrambling	fapi_interface_ue_sim.h	/^    uint16_t                    nIdPucchScrambling;$/;"	m	struct:fapi_ul_pucch_pdu
+nIdPusch	fapi_interface_ue_sim.h	/^    uint16_t                    nIdPusch;$/;"	m	struct:fapi_ul_pusch_pdu
+nPDUsOfEachType	fapi_interface_ue_sim.h	/^    uint16_t			nPDUsOfEachType[MAX_NDLTYPES_DL_TTI_REQ]; $/;"	m	struct:fapi_dl_tti_req
+nPDUsOfEachType	fapi_interface_ue_sim.h	/^    uint16_t			nPDUsOfEachType[MAX_NDLTYPES_UL_DCI_REQ];$/;"	m	struct:fapi_ul_dci_req
+nPDUsOfEachType	fapi_interface_ue_sim.h	/^    uint16_t                    nPDUsOfEachType[MAX_NUM_UL_TYPES];   $/;"	m	struct:fapi_ul_tti_req
+nRntiPdcchData	fapi_interface_ue_sim.h	/^    uint16_t                    nRntiPdcchData;$/;"	m	struct:fapi_dl_dci
+nScid	fapi_interface_ue_sim.h	/^    uint8_t                     nScid;$/;"	m	struct:fapi_ul_pusch_pdu
+nUlTypes	fapi_interface_ue_sim.h	/^    uint8_t                     nUlTypes;$/;"	m	struct:fapi_ul_tti_req
+n_epre_ratio_of_pdsch_to_ptrs	fapi_interface_ue_sim.h	/^    uint8_t                     n_epre_ratio_of_pdsch_to_ptrs;$/;"	m	struct:fapi_dl_pdsch_ptrs_info
+n_group	fapi_interface_ue_sim.h	/^    uint8_t                     n_group; \/* Number of UE Groups included in this message.*\/$/;"	m	struct:fapi_ul_tti_req
+n_group	fapi_interface_ue_sim.h	/^    uint8_t                     n_group;$/;"	m	struct:fapi_dl_tti_req
+n_pdus	fapi_interface_ue_sim.h	/^    uint16_t                    n_pdus;$/;"	m	struct:fapi_dl_tti_req
+n_pdus	fapi_interface_ue_sim.h	/^    uint16_t                    n_pdus;$/;"	m	struct:fapi_ul_tti_req
+n_pdus	fapi_interface_ue_sim.h	/^    uint8_t                     n_pdus;$/;"	m	struct:fapi_dl_tti_req
+n_pdus	fapi_interface_ue_sim.h	/^    uint8_t                     n_pdus;$/;"	m	struct:fapi_ul_tti_req
+n_ue	fapi_interface_ue_sim.h	/^    uint8_t                     n_ue;$/;"	m	struct:fapi_ue_info
+n_ulcch	fapi_interface_ue_sim.h	/^    uint8_t                     n_ulcch; \/* Number of ULCCH PDUs that are included in this message.*\/$/;"	m	struct:fapi_ul_tti_req
+n_ulsch	fapi_interface_ue_sim.h	/^    uint8_t                     n_ulsch; \/* Number of ULSCH PDUs that are included in this message.*\/$/;"	m	struct:fapi_ul_tti_req
+new_data_indicator	fapi_interface_ue_sim.h	/^    uint8_t                     new_data_indicator;$/;"	m	struct:fapi_pusch_data
+nrCrsPorts	fapi_interface_ue_sim.h	/^    uint8_t                     nrCrsPorts;$/;"	m	struct:fapi_lte_crs_rm_ptrn
+nr_of_code_words	fapi_interface_ue_sim.h	/^    uint8_t                          nr_of_code_words; \/* SCF : Code Word Info Start *\/$/;"	m	struct:fapi_dl_pdsch_pdu
+nr_of_layers	fapi_interface_ue_sim.h	/^    uint8_t                          nr_of_layers;$/;"	m	struct:fapi_dl_pdsch_pdu
+nr_of_layers	fapi_interface_ue_sim.h	/^    uint8_t                     nr_of_layers;$/;"	m	struct:fapi_ul_pusch_pdu
+nr_of_rbs	fapi_interface_ue_sim.h	/^    uint16_t                    nr_of_rbs;$/;"	m	struct:fapi_dl_csi_rs_pdu
+nr_of_symbols	fapi_interface_ue_sim.h	/^    uint8_t                     nr_of_symbols;  \/*SCF : PDSCH Allocation in Time Domain End *\/$/;"	m	struct:fapi_pdsch_time_dom_alloc
+nr_of_symbols	fapi_interface_ue_sim.h	/^    uint8_t                     nr_of_symbols;$/;"	m	struct:fapi_ul_pucch_pdu
+nr_of_symbols	fapi_interface_ue_sim.h	/^    uint8_t                     nr_of_symbols;$/;"	m	struct:fapi_ul_pusch_pdu
+nr_ssb_periodicity	fapi_interface_ue_sim.h	/^typedef enum nr_ssb_periodicity$/;"	g
+nr_ssb_periodicity_t	fapi_interface_ue_sim.h	/^} nr_ssb_periodicity_t;$/;"	t	typeref:enum:nr_ssb_periodicity
+numAntPorts	fapi_interface_ue_sim.h	/^    uint16_t                    numAntPorts;$/;"	m	struct:PACK_STRUCT
+numBasebandPorts	fapi_interface_ue_sim.h	/^    uint16_t                    numBasebandPorts;$/;"	m	struct:fapi_beamforming_table
+numCapabilities	fapi_interface_ue_sim.h	/^    uint16_t                    numCapabilities;$/;"	m	struct:fapi_capability_validity
+numCoresetRmPatrn	fapi_interface_ue_sim.h	/^    uint8_t                            numCoresetRmPatrn;$/;"	m	struct:fapi_dl_rate_match_ref
+numCsiRsForRaMa	fapi_interface_ue_sim.h	/^    uint8_t                            numCsiRsForRaMa;$/;"	m	struct:fapi_dl_rate_match_ref
+numDfeProfiles	fapi_interface_ue_sim.h	/^    uint16_t	             numDfeProfiles;$/;"	m	struct:fapi_dfe_profile
+numDigBeams	fapi_interface_ue_sim.h	/^    uint16_t                    numDigBeams;$/;"	m	struct:fapi_beamforming_table
+numDlBbPorts	fapi_interface_ue_sim.h	/^    uint16_t		        numDlBbPorts;$/;"	m	struct:fapi_phy_parms
+numDlPortRanges	fapi_interface_ue_sim.h	/^    uint8_t                     numDlPortRanges; \/* Number of DL port ranges for this PHYs *\/$/;"	m	struct:fapi_phy_port
+numFdRa	fapi_interface_ue_sim.h	/^   uint8_t                      numFdRa;$/;"	m	struct:fapi_pRACH_Mntnc_param
+numLayers	fapi_interface_ue_sim.h	/^    uint16_t                    numLayers;$/;"	m	struct:PACK_STRUCT
+numLteCrsRmPattern	fapi_interface_ue_sim.h	/^    uint8_t                     numLteCrsRmPattern;$/;"	m	struct:fapi_lte_crs_rm_pattern
+numOfRateMatchPatternLTECrsInPhy	fapi_interface_ue_sim.h	/^    fapi_uint8_tlv_t_ue_sim		numOfRateMatchPatternLTECrsInPhy;$/;"	m	struct:fapi_pdsch_parms
+numOfRateMatchPatternLTECrsPerSlot	fapi_interface_ue_sim.h	/^    fapi_uint8_tlv_t_ue_sim		numOfRateMatchPatternLTECrsPerSlot;$/;"	m	struct:fapi_pdsch_parms
+numPart1Params	fapi_interface_ue_sim.h	/^    uint8_t                     numPart1Params;$/;"	m	struct:fapi_map_index
+numPart1Params	fapi_interface_ue_sim.h	/^    uint8_t                     numPart1Params;$/;"	m	struct:fapi_part2_parms
+numPart1Params	fapi_interface_ue_sim.h	/^    uint8_t                     numPart1Params;$/;"	m	struct:fapi_uci_part2
+numPart2s	fapi_interface_ue_sim.h	/^    uint16_t                    numPart2s;$/;"	m	struct:fapi_optional_pusch_uci
+numPart2s	fapi_interface_ue_sim.h	/^    uint16_t                    numPart2s;$/;"	m	struct:fapi_uci_part1_part2
+numPdus	fapi_interface_ue_sim.h	/^    uint16_t                    numPdus;$/;"	m	struct:fapi_tx_data_req
+numPdus	fapi_interface_ue_sim.h	/^    uint8_t                     numPdus;$/;"	m	struct:fapi_rach_indication
+numPdus	fapi_interface_ue_sim.h	/^    uint8_t                     numPdus;$/;"	m	struct:fapi_srs_indication
+numPhyProfiles	fapi_interface_ue_sim.h	/^    uint16_t		        numPhyProfiles;$/;"	m	struct:fapi_phy_parms
+numPhyProfiles	fapi_interface_ue_sim.h	/^    uint16_t	             numPhyProfiles;$/;"	m	struct:fapi_dfe_profile
+numPrachConfigurations	fapi_interface_ue_sim.h	/^    uint16_t                    numPrachConfigurations;$/;"	m	struct:fapi_multi_prach_config
+numPrachConfigurationsTlv	fapi_interface_ue_sim.h	/^    fapi_prach_configuration_t_ue_sim  numPrachConfigurationsTlv[]; $/;"	m	struct:fapi_multi_prach_config
+numPrachFdOccasions	fapi_interface_ue_sim.h	/^    fapi_uint8_tlv_t_ue_sim            numPrachFdOccasions;$/;"	m	struct:fapi_prach_configuration
+numPrachFdOccasions	fapi_interface_ue_sim.h	/^    uint8_t                     numPrachFdOccasions;$/;"	m	struct:fapi_prach_configuration
+numPrbSymRmPatrnByVal	fapi_interface_ue_sim.h	/^    uint8_t                            numPrbSymRmPatrnByVal; $/;"	m	struct:fapi_dl_rate_match_ref
+numPrbSymbRatePattern	fapi_interface_ue_sim.h	/^    uint8_t                             numPrbSymbRatePattern;$/;"	m	struct:fapi_prb_symbol_rate_match_pattern
+numPreamble	fapi_interface_ue_sim.h	/^   uint8_t                      numPreamble;$/;"	m	struct:fapi_rach_pdu
+numPreambleIndices	fapi_interface_ue_sim.h	/^   uint8_t                      numPreambleIndices;$/;"	m	struct:fapi_pRACH_Mntnc_param
+numRbs	fapi_interface_ue_sim.h	/^    uint16_t                    numRbs;$/;"	m	struct:fapi_symb_snr
+numReportedSymbols	fapi_interface_ue_sim.h	/^    uint8_t                     numReportedSymbols;$/;"	m	struct:fapi_srs_pdu
+numRootSequences	fapi_interface_ue_sim.h	/^    fapi_uint8_tlv_t_ue_sim            numRootSequences;$/;"	m	struct:fapi_prachFdOccasion
+numRootSequences	fapi_interface_ue_sim.h	/^    uint8_t                     numRootSequences;$/;"	m	struct:fapi_prachFdOccasion
+numRxAnt	fapi_interface_ue_sim.h	/^    fapi_uint16_tlv_t_ue_sim           numRxAnt;$/;"	m	struct:fapi_carrier_config
+numRxAnt	fapi_interface_ue_sim.h	/^    uint16_t                    numRxAnt;$/;"	m	struct:fapi_carrier_config
+numRxPortsTRP1	fapi_interface_ue_sim.h	/^    fapi_uint8_tlv_t_ue_sim            numRxPortsTRP1;$/;"	m	struct:fapi_rel16_mtrp_config
+numSsbConfigurations	fapi_interface_ue_sim.h	/^    uint8_t                     numSsbConfigurations;$/;"	m	struct:fapi_multi_ssb_resource_config_table
+numSymbols	fapi_interface_ue_sim.h	/^    uint8_t                     numSymbols;$/;"	m	struct:fapi_srs_pdu
+numTlvs	fapi_interface_ue_sim.h	/^    uint32_t                    numTlvs;$/;"	m	struct:fapi_tx_pdu_desc
+numTlvsToReport	fapi_interface_ue_sim.h	/^    fapi_uint16_tlv_t_ue_sim           numTlvsToReport;$/;"	m	struct:fapi_cell_params
+numTxAnt	fapi_interface_ue_sim.h	/^    fapi_uint16_tlv_t_ue_sim           numTxAnt;$/;"	m	struct:fapi_carrier_config
+numTxAnt	fapi_interface_ue_sim.h	/^    uint16_t                    numTxAnt;$/;"	m	struct:fapi_carrier_config
+numTxPortsTRP1	fapi_interface_ue_sim.h	/^    fapi_uint8_tlv_t_ue_sim            numTxPortsTRP1;$/;"	m	struct:fapi_rel16_mtrp_config
+numTxRus	fapi_interface_ue_sim.h	/^    uint16_t                    numTxRus;$/;"	m	struct:fapi_beamforming_table
+numUci2Maps	fapi_interface_ue_sim.h	/^    uint16_t                    numUci2Maps;    $/;"	m	struct:fapi_uci_config
+numUlBbPorts	fapi_interface_ue_sim.h	/^    uint16_t	           numUlBbPorts;$/;"	m	struct:fapi_phy_parms
+numUlBwpIds	fapi_interface_ue_sim.h	/^    fapi_uint8_tlv_t_ue_sim            numUlBwpIds;$/;"	m	struct:fapi_pucch_semi_static_config
+numUlPortRanges	fapi_interface_ue_sim.h	/^    uint8_t                     numUlPortRanges;$/;"	m	struct:fapi_phy_port
+numUnusedRootSequences	fapi_interface_ue_sim.h	/^    fapi_uint16_tlv_t_ue_sim           numUnusedRootSequences;   \/\/ 5G FAPI Table 3-24 Subset$/;"	m	struct:fapi_prachFdOccasion
+numUnusedRootSequences	fapi_interface_ue_sim.h	/^    uint16_t                    numUnusedRootSequences;   \/\/ 5G FAPI Table 3-24 Subset$/;"	m	struct:fapi_prachFdOccasion
+num_ant_ports	fapi_interface_ue_sim.h	/^    uint8_t                     num_ant_ports;$/;"	m	struct:fapi_ul_srs_pdu
+num_cb	fapi_interface_ue_sim.h	/^    uint16_t                    num_cb;$/;"	m	struct:fapi_crc_ind_info
+num_cb	fapi_interface_ue_sim.h	/^    uint16_t                    num_cb;$/;"	m	struct:fapi_pusch_data
+num_crcs	fapi_interface_ue_sim.h	/^    uint16_t                    num_crcs;$/;"	m	struct:fapi_crc_ind
+num_cs	fapi_interface_ue_sim.h	/^    uint16_t                    num_cs;$/;"	m	struct:fapi_ul_prach_pdu
+num_dl_dci	fapi_interface_ue_sim.h	/^   uint16_t                    num_dl_dci; \/*Number of DCIs in this CORESET *\/      $/;"	m	struct:fapi_dl_pdcch_pdu
+num_dmrs_cdm_grps_no_data	fapi_interface_ue_sim.h	/^    uint8_t                     num_dmrs_cdm_grps_no_data;$/;"	m	struct:fapi_dmrs
+num_dmrs_cdm_grps_no_data	fapi_interface_ue_sim.h	/^    uint8_t                     num_dmrs_cdm_grps_no_data;$/;"	m	struct:fapi_ul_pusch_pdu
+num_harq	fapi_interface_ue_sim.h	/^    uint8_t                     num_harq;$/;"	m	struct:fapi_harq_f0f1_info
+num_pdus	fapi_interface_ue_sim.h	/^    uint16_t                    num_pdus;$/;"	m	struct:fapi_rx_data_indication
+num_pdus	fapi_interface_ue_sim.h	/^    uint8_t                     num_pdus;$/;"	m	struct:fapi_ul_dci_req
+num_prach_ocas	fapi_interface_ue_sim.h	/^    uint8_t                     num_prach_ocas;$/;"	m	struct:fapi_ul_prach_pdu
+num_prgs	fapi_interface_ue_sim.h	/^    uint16_t                    num_prgs;$/;"	m	struct:fapi_bmform
+num_prgs	fapi_interface_ue_sim.h	/^    uint16_t                    num_prgs;$/;"	m	struct:fapi_precoding_bmform
+num_ptrs_ports	fapi_interface_ue_sim.h	/^    uint8_t                     num_ptrs_ports;$/;"	m	struct:fapi_pusch_ptrs
+num_ra	fapi_interface_ue_sim.h	/^    uint8_t                     num_ra;$/;"	m	struct:fapi_ul_prach_pdu
+num_repetitions	fapi_interface_ue_sim.h	/^    uint8_t                     num_repetitions;$/;"	m	struct:fapi_ul_srs_pdu
+num_symbols	fapi_interface_ue_sim.h	/^    uint8_t                     num_symbols;$/;"	m	struct:fapi_ul_srs_pdu
+num_ucis	fapi_interface_ue_sim.h	/^    uint16_t                    num_ucis;$/;"	m	struct:fapi_uci_indication
+numberOfMessagesIncluded	fapi_interface_ue_sim.h	/^    uint8_t                     numberOfMessagesIncluded;$/;"	m	struct:fapi_msg_header
+number_of_inv_tlvs_idle_only	fapi_interface_ue_sim.h	/^    uint8_t                     number_of_inv_tlvs_idle_only;$/;"	m	struct:fapi_config_resp
+number_of_inv_tlvs_running_only	fapi_interface_ue_sim.h	/^    uint8_t                     number_of_inv_tlvs_running_only;	$/;"	m	struct:fapi_config_resp
+number_of_invalid_tlvs	fapi_interface_ue_sim.h	/^    uint8_t                     number_of_invalid_tlvs;$/;"	m	struct:fapi_config_resp
+number_of_missing_tlvs	fapi_interface_ue_sim.h	/^    uint8_t                     number_of_missing_tlvs;$/;"	m	struct:fapi_config_resp
+number_of_tlvs	fapi_interface_ue_sim.h	/^    uint8_t                     number_of_tlvs;$/;"	m	struct:fapi_config_req
+number_of_tlvs	fapi_interface_ue_sim.h	/^    uint8_t                     number_of_tlvs;$/;"	m	struct:fapi_param_resp
+obsolete8bit	fapi_interface_ue_sim.h	/^    uint8_t                     obsolete8bit;$/;"	m	struct:fapi_ul_pucch_pdu
+oneOrTwoSlots	fapi_interface_ue_sim.h	/^    uint8_t                     oneOrTwoSlots;$/;"	m	struct:fapi_prb_sym_rate_match_pattern
+optionalPuschUci	fapi_interface_ue_sim.h	/^    fapi_optional_pusch_uci_t   optionalPuschUci; $/;"	m	struct:fapi_ul_pusch_pdu
+pRACH_Mntnc	fapi_interface_ue_sim.h	/^    fapi_pRACH_Mntnc_param_t    pRACH_Mntnc;       $/;"	m	struct:fapi_ul_prach_pdu
+paramOffsets	fapi_interface_ue_sim.h	/^    uint16_t                    paramOffsets[0];$/;"	m	struct:fapi_part2_parms
+paramOffsets	fapi_interface_ue_sim.h	/^    uint16_t                    paramOffsets[0];$/;"	m	struct:fapi_uci_part2
+paramSizes	fapi_interface_ue_sim.h	/^    uint8_t                     paramSizes[0];$/;"	m	struct:fapi_part2_parms
+paramSizes	fapi_interface_ue_sim.h	/^    uint8_t                     paramSizes[0];$/;"	m	struct:fapi_uci_part2
+part2SizeMapIndex	fapi_interface_ue_sim.h	/^    uint16_t                    part2SizeMapIndex;      $/;"	m	struct:fapi_part2_parms
+part2SizeMapIndex	fapi_interface_ue_sim.h	/^    uint8_t                     part2SizeMapIndex;$/;"	m	struct:fapi_uci_part2
+part2_parms	fapi_interface_ue_sim.h	/^    fapi_part2_parms_t          part2_parms[0]; $/;"	m	struct:fapi_optional_pusch_uci
+payload	fapi_interface_ue_sim.h	/^    uint8_t                     payload[];$/;"	m	struct:fapi_dl_dci
+payload_size_bits	fapi_interface_ue_sim.h	/^    uint16_t                    payload_size_bits;$/;"	m	struct:fapi_dl_dci
+pc_and_bform	fapi_interface_ue_sim.h	/^    fapi_precoding_bmform_t_ue_sim     pc_and_bform;$/;"	m	struct:fapi_dl_dci
+pdcchDataPowerOffsetProfileSSS	fapi_interface_ue_sim.h	/^    int16_t                      pdcchDataPowerOffsetProfileSSS;  $/;"	m	struct:fapi_dci_specific_parms
+pdcchDmrsPowerOffsetProfileSSS	fapi_interface_ue_sim.h	/^    int16_t                      pdcchDmrsPowerOffsetProfileSSS;$/;"	m	struct:fapi_dci_specific_parms
+pdcchMntParms	fapi_interface_ue_sim.h	/^   fapi_pdcch_mnt_parms_t      pdcchMntParms;$/;"	m	struct:fapi_dl_pdcch_pdu
+pdcchMuMimo	fapi_interface_ue_sim.h	/^    fapi_uint8_tlv_t_ue_sim            pdcchMuMimo;$/;"	m	struct:fapi_pdcch_parms
+pdcchParms	fapi_interface_ue_sim.h	/^    fapi_pdcch_parms_t_ue_sim          	pdcchParms;$/;"	m	struct:fapi_params
+pdcchPduIndex	fapi_interface_ue_sim.h	/^    uint16_t                           pdcchPduIndex;$/;"	m	struct:fapi_dl_rate_match_ref
+pdcchPduIndex	fapi_interface_ue_sim.h	/^    uint16_t                    pdcchPduIndex;  $/;"	m	struct:fapi_coreset_parms
+pdcchPrecoderCycling	fapi_interface_ue_sim.h	/^    fapi_uint8_tlv_t_ue_sim            pdcchPrecoderCycling;$/;"	m	struct:fapi_pdcch_parms
+pdcchRateMatch	fapi_interface_ue_sim.h	/^    fapi_uint8_tlv_t_ue_sim		pdcchRateMatch; $/;"	m	struct:fapi_pdsch_parms
+pdcch_config_sib1	fapi_interface_ue_sim.h	/^    uint8_t                     pdcch_config_sib1;$/;"	m	struct:fapi_phy_mib_pdu
+pdcch_pdu	fapi_interface_ue_sim.h	/^        fapi_dl_pdcch_pdu_t_ue_sim        pdcch_pdu;$/;"	m	union:fapi_dl_tti_req_pdu::__anon3
+pdcch_pdu	fapi_interface_ue_sim.h	/^    fapi_dl_pdcch_pdu_t_ue_sim         pdcch_pdu;$/;"	m	struct:fapi_dci_pdu
+pdschAllocationTypes	fapi_interface_ue_sim.h	/^    fapi_uint8_tlv_t_ue_sim            pdschAllocationTypes;$/;"	m	struct:fapi_pdsch_parms
+pdschCbg	fapi_interface_ue_sim.h	/^    fapi_uint8_tlv_t_ue_sim            pdschCbg;$/;"	m	struct:fapi_pdsch_parms
+pdschCbgScheme	fapi_interface_ue_sim.h	/^    fapi_uint8_tlv_t_ue_sim            pdschCbgScheme;$/;"	m	struct:fapi_pdsch_config
+pdschConfig	fapi_interface_ue_sim.h	/^    fapi_pdsch_config_t                    pdschConfig;$/;"	m	struct:fapi_config
+pdschDataInDmrsSymbols	fapi_interface_ue_sim.h	/^    fapi_uint8_tlv_t_ue_sim            pdschDataInDmrsSymbols;$/;"	m	struct:fapi_pdsch_parms
+pdschDataPwrOffsetPrfSSS	fapi_interface_ue_sim.h	/^    uint16_t                   pdschDataPwrOffsetPrfSSS;$/;"	m	struct:fapi_dl_tx_pwr_info
+pdschDmrsAdditionalPos	fapi_interface_ue_sim.h	/^    fapi_uint8_tlv_t_ue_sim            pdschDmrsAdditionalPos;$/;"	m	struct:fapi_pdsch_parms
+pdschDmrsConfigTypes	fapi_interface_ue_sim.h	/^    fapi_uint8_tlv_t_ue_sim            pdschDmrsConfigTypes;$/;"	m	struct:fapi_pdsch_parms
+pdschDmrsMaxLength	fapi_interface_ue_sim.h	/^    fapi_uint8_tlv_t_ue_sim            pdschDmrsMaxLength;$/;"	m	struct:fapi_pdsch_parms
+pdschDmrsPwrOffsetPrfSSS	fapi_interface_ue_sim.h	/^    uint16_t                   pdschDmrsPwrOffsetPrfSSS;$/;"	m	struct:fapi_dl_tx_pwr_info
+pdschMacPduBitAlignment	fapi_interface_ue_sim.h	/^    fapi_uint8_tlv_t_ue_sim		pdschMacPduBitAlignment;$/;"	m	struct:fapi_pdsch_parms
+pdschMappingType	fapi_interface_ue_sim.h	/^    fapi_uint8_tlv_t_ue_sim            pdschMappingType;$/;"	m	struct:fapi_pdsch_parms
+pdschNonSlotSupport	fapi_interface_ue_sim.h	/^    fapi_uint8_tlv_t_ue_sim            pdschNonSlotSupport;$/;"	m	struct:fapi_pdsch_parms
+pdschParms	fapi_interface_ue_sim.h	/^    fapi_pdsch_parms_t_ue_sim          	pdschParms;$/;"	m	struct:fapi_params
+pdschPtrs2	fapi_interface_ue_sim.h	/^    fapi_dl_pdsch_ptrs2_t       pdschPtrs2;$/;"	m	struct:fapi_dl_rel16_pdsch_parms_t
+pdschPtrsPwrOffsetPrfSSS	fapi_interface_ue_sim.h	/^    uint16_t                    pdschPtrsPwrOffsetPrfSSS;  $/;"	m	struct:fapi_dl_ptrs_tx_pwr_info
+pdschPtrsV3	fapi_interface_ue_sim.h	/^    fapi_dl_pdsch_ptrsv3_t      pdschPtrsV3;$/;"	m	struct:fapi_dl_rel16_pdsch_parms_t
+pdschTransType	fapi_interface_ue_sim.h	/^    uint8_t                    pdschTransType;$/;"	m	struct:fapi_dl_pdsch_mnt_parms
+pdschTransTypeSupport	fapi_interface_ue_sim.h	/^    fapi_uint8_tlv_t_ue_sim		pdschTransTypeSupport;$/;"	m	struct:fapi_pdsch_parms
+pdschTransTypeValidity	fapi_interface_ue_sim.h	/^    fapi_uint8_tlv_t_ue_sim            pdschTransTypeValidity;$/;"	m	struct:fapi_cell_config
+pdschVrbToPrbMapping	fapi_interface_ue_sim.h	/^    fapi_uint8_tlv_t_ue_sim            pdschVrbToPrbMapping;$/;"	m	struct:fapi_pdsch_parms
+pdsch_freq_dom_alloc	fapi_interface_ue_sim.h	/^    fapi_pdsch_freq_dom_alloc_t      pdsch_freq_dom_alloc;$/;"	m	struct:fapi_dl_pdsch_pdu
+pdsch_pdu	fapi_interface_ue_sim.h	/^        fapi_dl_pdsch_pdu_t_ue_sim        pdsch_pdu;$/;"	m	union:fapi_dl_tti_req_pdu::__anon3
+pdsch_ptrs_info	fapi_interface_ue_sim.h	/^    fapi_dl_pdsch_ptrs_info_t        pdsch_ptrs_info;$/;"	m	struct:fapi_dl_pdsch_pdu
+pdsch_time_dom_alloc	fapi_interface_ue_sim.h	/^    fapi_pdsch_time_dom_alloc_t      pdsch_time_dom_alloc; $/;"	m	struct:fapi_dl_pdsch_pdu
+pduDataOrOffset	fapi_interface_ue_sim.h	/^	uint64_t                    pduDataOrOffset; \/\/Shared memory offset  \/\/ 5G FAPI Table 3-61 Subset$/;"	m	struct:fapi_pdu_ind_info
+pduDesc	fapi_interface_ue_sim.h	/^    fapi_tx_pdu_desc_t_ue_sim          pduDesc[];$/;"	m	struct:fapi_tx_data_req
+pduIndex	fapi_interface_ue_sim.h	/^    uint16_t                    pduIndex;$/;"	m	struct:fapi_tx_pdu_desc
+pduLength	fapi_interface_ue_sim.h	/^    uint32_t                    pduLength;$/;"	m	struct:fapi_tx_pdu_desc
+pduTag	fapi_interface_ue_sim.h	/^    uint16_t                    pduTag;$/;"	m	struct:fapi_pdu_ind_info
+pdu_bit_map	fapi_interface_ue_sim.h	/^    uint16_t                         pdu_bit_map; \/* Bit 0: pdschPtrs - Indicates PTRS included (FR2)$/;"	m	struct:fapi_dl_pdsch_pdu
+pdu_bitmap	fapi_interface_ue_sim.h	/^    uint16_t                    pdu_bitmap;$/;"	m	struct:fapi_ul_pusch_pdu
+pdu_bitmap	fapi_interface_ue_sim.h	/^    uint8_t                     pdu_bitmap;$/;"	m	struct:fapi_uci_o_pucch_f0f1
+pdu_bitmap	fapi_interface_ue_sim.h	/^    uint8_t                     pdu_bitmap;$/;"	m	struct:fapi_uci_o_pucch_f2f3f4
+pdu_bitmap	fapi_interface_ue_sim.h	/^    uint8_t                     pdu_bitmap;$/;"	m	struct:fapi_uci_o_pusch
+pdu_data	fapi_interface_ue_sim.h	/^    void*                       pdu_data;$/;"	m	struct:fapi_pdu_ind_info
+pdu_idx	fapi_interface_ue_sim.h	/^    uint8_t                     pdu_idx[];$/;"	m	struct:fapi_ue_info
+pdu_index	fapi_interface_ue_sim.h	/^    uint16_t                         pdu_index;$/;"	m	struct:fapi_dl_pdsch_pdu
+pdu_length	fapi_interface_ue_sim.h	/^	uint32_t					pdu_length;$/;"	m	struct:fapi_pdu_ind_info
+pdu_length	fapi_interface_ue_sim.h	/^    uint16_t                    pdu_length;$/;"	m	struct:fapi_pdu_ind_info
+pdu_size	fapi_interface_ue_sim.h	/^    uint16_t                    pdu_size;$/;"	m	struct:fapi_dci_pdu
+pdu_size	fapi_interface_ue_sim.h	/^    uint16_t                    pdu_size;$/;"	m	struct:fapi_dl_tti_req_pdu
+pdu_size	fapi_interface_ue_sim.h	/^    uint16_t                    pdu_size;$/;"	m	struct:fapi_uci_pdu_info
+pdu_size	fapi_interface_ue_sim.h	/^    uint16_t                    pdu_size;$/;"	m	struct:fapi_ul_tti_req_pdu
+pdu_type	fapi_interface_ue_sim.h	/^    uint16_t                    pdu_type;$/;"	m	struct:fapi_dci_pdu
+pdu_type	fapi_interface_ue_sim.h	/^    uint16_t                    pdu_type;$/;"	m	struct:fapi_dl_tti_req_pdu
+pdu_type	fapi_interface_ue_sim.h	/^    uint16_t                    pdu_type;$/;"	m	struct:fapi_uci_pdu_info
+pdu_type	fapi_interface_ue_sim.h	/^    uint16_t                    pdu_type;$/;"	m	struct:fapi_ul_tti_req_pdu
+pdus	fapi_interface_ue_sim.h	/^    fapi_dci_pdu_t_ue_sim              pdus[];$/;"	m	struct:fapi_ul_dci_req
+pdus	fapi_interface_ue_sim.h	/^    fapi_dl_tti_req_pdu_t_ue_sim       pdus[0];$/;"	m	struct:fapi_dl_tti_req
+pdus	fapi_interface_ue_sim.h	/^    fapi_pdu_ind_info_t_ue_sim         pdus[MAX_NUMBER_OF_ULSCH_PDUS_PER_TTI];$/;"	m	struct:fapi_rx_data_indication
+pdus	fapi_interface_ue_sim.h	/^    fapi_ul_tti_req_pdu_t_ue_sim       pdus[0];$/;"	m	struct:fapi_ul_tti_req
+phyCellId	fapi_interface_ue_sim.h	/^    fapi_uint16_tlv_t_ue_sim           phyCellId;      \/\/in legacy data type mentioned was uint8_t, though in spec it was uint16_t$/;"	m	struct:fapi_cell_config
+phyConfig	fapi_interface_ue_sim.h	/^    fapi_phy_config_t                      phyConfig;$/;"	m	struct:fapi_config
+phyFapiNegotiatedProtocolVersion	fapi_interface_ue_sim.h	/^    uint8_t		           phyFapiNegotiatedProtocolVersion;$/;"	m	struct:fapi_phy_parms
+phyFapiProtocolVersion	fapi_interface_ue_sim.h	/^    uint8_t		           phyFapiProtocolVersion;$/;"	m	struct:fapi_phy_parms
+phyProfileId	fapi_interface_ue_sim.h	/^    fapi_uint16_tlv_t_ue_sim           phyProfileId;$/;"	m	struct:fapi_phy_config
+phyProfiles	fapi_interface_ue_sim.h	/^    fapi_phy_profile_t    phyProfiles[0];$/;"	m	struct:fapi_phy_parms
+phyState	fapi_interface_ue_sim.h	/^    fapi_uint16_tlv_t_ue_sim           phyState;$/;"	m	struct:fapi_cell_params
+phySupport	fapi_interface_ue_sim.h	/^    fapi_phy_support_t                  phySupport;$/;"	m	struct:fapi_params
+phySupport	fapi_interface_ue_sim.h	/^    fapi_tl_t_ue_sim      phySupport;$/;"	m	struct:fapi_phy_parms
+phy_mib_pdu	fapi_interface_ue_sim.h	/^        fapi_phy_mib_pdu_t_ue_sim      phy_mib_pdu;$/;"	m	union:fapi_bch_payload::__anon2
+phy_port	fapi_interface_ue_sim.h	/^    fapi_phy_port_t	        phy_port[0];$/;"	m	struct:fapi_phy_profile
+phys_cell_id	fapi_interface_ue_sim.h	/^    uint16_t                      phys_cell_id;$/;"	m	struct:fapi_dl_ssb_pdu
+phys_cell_id	fapi_interface_ue_sim.h	/^    uint16_t                    phys_cell_id;$/;"	m	struct:fapi_ul_prach_pdu
+pi2_bpsk	fapi_interface_ue_sim.h	/^    uint8_t                     pi2_bpsk;$/;"	m	struct:fapi_ul_pucch_pdu
+pkd_fapi_l1api_msg_frmt	fapi_interface_ue_sim.h	/^typedef struct PACK_STRUCT  pkd_fapi_l1api_msg_frmt$/;"	s
+pkd_fapi_l1api_msg_frmt_t	fapi_interface_ue_sim.h	/^} pkd_fapi_l1api_msg_frmt_t;$/;"	t	typeref:struct:pkd_fapi_l1api_msg_frmt
+pmIdx	fapi_interface_ue_sim.h	/^    uint16_t                    pmIdx;$/;"	m	struct:PACK_STRUCT
+pm_idx	fapi_interface_ue_sim.h	/^    uint16_t                    pm_idx;$/;"	m	struct:fapi_pmi_bfi
+pmi_bfi	fapi_interface_ue_sim.h	/^    fapi_pmi_bfi_t_ue_sim              pmi_bfi[1];$/;"	m	struct:fapi_precoding_bmform
+powerControlOffsetSSProfileNR	fapi_interface_ue_sim.h	/^    int8_t                      powerControlOffsetSSProfileNR;$/;"	m	struct:fapi_tx_power_info
+powerOffsetMax	fapi_interface_ue_sim.h	/^    int16_t                     powerOffsetMax;$/;"	m	struct:fapi_signal_index
+powerOffsetMin	fapi_interface_ue_sim.h	/^    int16_t                     powerOffsetMin;$/;"	m	struct:fapi_signal_index
+powerOffsetRsIndex	fapi_interface_ue_sim.h	/^    uint8_t                     powerOffsetRsIndex;$/;"	m	struct:fapi_carrier_config
+powerProfile	fapi_interface_ue_sim.h	/^    uint8_t                     powerProfile;$/;"	m	struct:fapi_carrier_config
+powerProfilesSupported	fapi_interface_ue_sim.h	/^    fapi_uint8_tlv_t_ue_sim            powerProfilesSupported;$/;"	m	struct:fapi_cell_params
+power_control_offset	fapi_interface_ue_sim.h	/^    uint8_t                     power_control_offset; \/*SCF : TX Power Info Start *\/$/;"	m	struct:fapi_tx_pwr_info
+power_control_offset_ss	fapi_interface_ue_sim.h	/^    uint8_t                     power_control_offset_ss; \/*SCF : Tx Power Info End *\/$/;"	m	struct:fapi_tx_pwr_info
+power_control_ofsset_ss	fapi_interface_ue_sim.h	/^    uint8_t                     power_control_ofsset_ss;$/;"	m	struct:fapi_tx_power_info
+prachConfig	fapi_interface_ue_sim.h	/^    fapi_prach_configuration_t_ue_sim             prachConfig;$/;"	m	struct:fapi_config
+prachConfig	fapi_interface_ue_sim.h	/^    fapi_prach_configuration_t_ue_sim  prachConfig;$/;"	m	struct:fapi_config
+prachConfig	fapi_interface_ue_sim.h	/^    fapi_tl_t_ue_sim            prachConfig;$/;"	m	struct:fapi_prach_configuration
+prachConfigIndex	fapi_interface_ue_sim.h	/^    fapi_uint8_tlv_t_ue_sim            prachConfigIndex;$/;"	m	struct:fapi_prach_configuration
+prachConfigIndex	fapi_interface_ue_sim.h	/^    uint8_t                     prachConfigIndex;$/;"	m	struct:fapi_prach_configuration
+prachConfigScope	fapi_interface_ue_sim.h	/^   uint8_t                      prachConfigScope;$/;"	m	struct:fapi_pRACH_Mntnc_param
+prachFdOccasion	fapi_interface_ue_sim.h	/^    fapi_prachFdOccasion_t_ue_sim      prachFdOccasion[MAX_NUM_PRACH_FD_OCCASIONS];$/;"	m	struct:fapi_prach_configuration
+prachLongFormats	fapi_interface_ue_sim.h	/^    fapi_uint8_tlv_t_ue_sim            prachLongFormats;$/;"	m	struct:fapi_prach_parms
+prachMultipleCarriersInABand	fapi_interface_ue_sim.h	/^    fapi_uint8_tlv_t_ue_sim            prachMultipleCarriersInABand;$/;"	m	struct:fapi_prach_configuration
+prachMultipleCarriersInABand	fapi_interface_ue_sim.h	/^    fapi_uint8_tlv_t_ue_sim            prachMultipleCarriersInABand;$/;"	m	struct:fapi_prach_parms
+prachParms	fapi_interface_ue_sim.h	/^    fapi_prach_parms_t_ue_sim          	prachParms;$/;"	m	struct:fapi_params
+prachResConfigIndex	fapi_interface_ue_sim.h	/^    uint16_t                    prachResConfigIndex;$/;"	m	struct:fapi_prach_configuration
+prachResConfigIndex	fapi_interface_ue_sim.h	/^   uint16_t                     prachResConfigIndex;$/;"	m	struct:fapi_pRACH_Mntnc_param
+prachRestrictedSets	fapi_interface_ue_sim.h	/^    fapi_uint8_tlv_t_ue_sim            prachRestrictedSets;$/;"	m	struct:fapi_prach_parms
+prachRootSequenceIndex	fapi_interface_ue_sim.h	/^    fapi_uint16_tlv_t_ue_sim           prachRootSequenceIndex;$/;"	m	struct:fapi_prachFdOccasion
+prachRootSequenceIndex	fapi_interface_ue_sim.h	/^    uint16_t                    prachRootSequenceIndex;$/;"	m	struct:fapi_prachFdOccasion
+prachSequenceLength	fapi_interface_ue_sim.h	/^    fapi_uint8_tlv_t_ue_sim            prachSequenceLength;$/;"	m	struct:fapi_prach_configuration
+prachSequenceLength	fapi_interface_ue_sim.h	/^    uint8_t                     prachSequenceLength;$/;"	m	struct:fapi_prach_configuration
+prachShortFormats	fapi_interface_ue_sim.h	/^    fapi_uint8_tlv_t_ue_sim            prachShortFormats;$/;"	m	struct:fapi_prach_parms
+prachSubCSpacing	fapi_interface_ue_sim.h	/^    fapi_uint8_tlv_t_ue_sim            prachSubCSpacing;$/;"	m	struct:fapi_prach_configuration
+prachSubCSpacing	fapi_interface_ue_sim.h	/^    uint8_t                     prachSubCSpacing;$/;"	m	struct:fapi_prach_configuration
+prachZeroCorrConf	fapi_interface_ue_sim.h	/^    fapi_uint8_tlv_t_ue_sim            prachZeroCorrConf;$/;"	m	struct:fapi_prachFdOccasion
+prachZeroCorrConf	fapi_interface_ue_sim.h	/^    uint8_t                     prachZeroCorrConf;$/;"	m	struct:fapi_prachFdOccasion
+prach_format	fapi_interface_ue_sim.h	/^    uint8_t                     prach_format;$/;"	m	struct:fapi_ul_prach_pdu
+prach_pdu	fapi_interface_ue_sim.h	/^        fapi_ul_prach_pdu_t_ue_sim        prach_pdu;$/;"	m	union:fapi_ul_tti_req_pdu::__anon4
+prach_start_symbol	fapi_interface_ue_sim.h	/^    uint8_t                     prach_start_symbol;$/;"	m	struct:fapi_ul_prach_pdu
+prbSymRateMatchPattern	fapi_interface_ue_sim.h	/^    fapi_tl_t_ue_sim                    prbSymRateMatchPattern;$/;"	m	struct:fapi_prb_symbol_rate_match_pattern
+prbSymRmPatrnBitmapByRef	fapi_interface_ue_sim.h	/^    uint8_t                            prbSymRmPatrnBitmapByRef[0];  \/\/ side depends on ceil(prbSymRmPatrnBitmapSizeByRef \/ 8) $/;"	m	struct:fapi_dl_rate_match_ref
+prbSymRmPatrnBitmapSizeByRef	fapi_interface_ue_sim.h	/^    uint8_t                            prbSymRmPatrnBitmapSizeByRef;$/;"	m	struct:fapi_dl_rate_match_ref
+prbSymRmPatrnByValue	fapi_interface_ue_sim.h	/^    fapi_dl_prb_sym_rm_patrn_by_val_t  prbSymRmPatrnByValue[0];$/;"	m	struct:fapi_dl_rate_match_ref
+prbSymRmPtrn	fapi_interface_ue_sim.h	/^    fapi_prb_symbol_rate_match_pattern_t   prbSymRmPtrn;$/;"	m	struct:fapi_config
+prbSymbRateMatchPatternID	fapi_interface_ue_sim.h	/^    uint8_t                     prbSymbRateMatchPatternID;$/;"	m	struct:fapi_prb_sym_rate_match_pattern
+prbSymbRateMatchPatterns	fapi_interface_ue_sim.h	/^    fapi_prb_sym_rate_match_pattern_t   prbSymbRateMatchPatterns[];$/;"	m	struct:fapi_prb_symbol_rate_match_pattern
+prb_size	fapi_interface_ue_sim.h	/^    uint16_t                    prb_size;$/;"	m	struct:fapi_ul_pucch_pdu
+prb_start	fapi_interface_ue_sim.h	/^    uint16_t                    prb_start;$/;"	m	struct:fapi_ul_pucch_pdu
+preCoderWeightIm	fapi_interface_ue_sim.h	/^    int16_t                     preCoderWeightIm;$/;"	m	struct:fapi_precoderWeight
+preCoderWeightRe	fapi_interface_ue_sim.h	/^    int16_t                     preCoderWeightRe;$/;"	m	struct:fapi_precoderWeight
+pre_coding_and_beamforming	fapi_interface_ue_sim.h	/^    fapi_precoding_bmform_t_ue_sim          pre_coding_and_beamforming;$/;"	m	struct:fapi_dl_pdsch_pdu
+pre_coding_and_beamforming	fapi_interface_ue_sim.h	/^    fapi_precoding_bmform_t_ue_sim       pre_coding_and_beamforming;$/;"	m	struct:fapi_dl_ssb_pdu
+pre_coding_and_beamforming	fapi_interface_ue_sim.h	/^    fapi_precoding_bmform_t_ue_sim     pre_coding_and_beamforming;$/;"	m	struct:fapi_dl_csi_rs_pdu
+pre_dft_occ_idx	fapi_interface_ue_sim.h	/^    uint8_t                     pre_dft_occ_idx;$/;"	m	struct:fapi_ul_pucch_pdu
+pre_dft_occ_len	fapi_interface_ue_sim.h	/^    uint8_t                     pre_dft_occ_len;$/;"	m	struct:fapi_ul_pucch_pdu
+preambleIndex	fapi_interface_ue_sim.h	/^    uint8_t                     preambleIndex;$/;"	m	struct:fapi_preamble_info
+preambleInfo	fapi_interface_ue_sim.h	/^   fapi_preamble_info_t_ue_sim         preambleInfo[MAX_NUM_PREAMBLES_PER_SLOT];$/;"	m	struct:fapi_rach_pdu
+preambleSnr	fapi_interface_ue_sim.h	/^    uint8_t		        preambleSnr;$/;"	m	struct:fapi_preamble_info
+precoderGranularityCoreset	fapi_interface_ue_sim.h	/^    fapi_uint8_tlv_t_ue_sim            precoderGranularityCoreset;$/;"	m	struct:fapi_pdcch_parms
+precoderWeight	fapi_interface_ue_sim.h	/^    fapi_precoder_weight_t_ue_sim      precoderWeight[MAX_NUM_LAYERS];$/;"	m	struct:PACK_STRUCT
+precoder_granularity	fapi_interface_ue_sim.h	/^    uint8_t                     precoder_granularity;   \/* Coreset Configuration End *\/$/;"	m	struct:fapi_coreset
+precoder_weight	fapi_interface_ue_sim.h	/^    fapi_precoderWeight_t_ue_sim       precoder_weight[MAX_NUM_ANT_PORTS];$/;"	m	struct:fapi_precoder_weight
+precodingTable	fapi_interface_ue_sim.h	/^    fapi_precoding_table_t_ue_sim                 precodingTable;$/;"	m	struct:fapi_config
+precodingTable	fapi_interface_ue_sim.h	/^    fapi_precoding_table_t_ue_sim      precodingTable;$/;"	m	struct:fapi_config
+premblePwr	fapi_interface_ue_sim.h	/^    uint32_t                    premblePwr;$/;"	m	struct:fapi_preamble_info
+premptionSupport	fapi_interface_ue_sim.h	/^    fapi_uint8_tlv_t_ue_sim            premptionSupport;$/;"	m	struct:fapi_pdsch_parms
+prg_size	fapi_interface_ue_sim.h	/^    uint16_t                    prg_size;$/;"	m	struct:fapi_bmform
+prg_size	fapi_interface_ue_sim.h	/^    uint16_t                    prg_size;$/;"	m	struct:fapi_precoding_bmform
+priority	fapi_interface_ue_sim.h	/^    uint16_t                    priority;$/;"	m	struct:fapi_part2_parms
+priority	fapi_interface_ue_sim.h	/^    uint16_t                    priority;$/;"	m	struct:fapi_uci_part2
+profileValidityMap	fapi_interface_ue_sim.h	/^    uint8_t	                profileValidityMap;$/;"	m	struct:fapi_dfe_profile
+protocolVersion	fapi_interface_ue_sim.h	/^    fapi_tl_t_ue_sim		  protocolVersion;$/;"	m	struct:fapi_phy_parms
+protocolVersion	fapi_interface_ue_sim.h	/^    fapi_uint8_tlv_t_ue_sim            protocolVersion;$/;"	m	struct:fapi_param_req
+ptrsFreqDensity	fapi_interface_ue_sim.h	/^    uint8_t                      ptrsFreqDensity; $/;"	m	struct:fapi_dl_pdsch_ptrs2
+ptrsPortIndex	fapi_interface_ue_sim.h	/^    uint8_t                      ptrsPortIndex;$/;"	m	struct:fapi_dl_pdsch_ptrs2
+ptrsReOffset	fapi_interface_ue_sim.h	/^    uint8_t                      ptrsReOffset; $/;"	m	struct:fapi_dl_pdsch_ptrs2
+ptrsTimeDensity	fapi_interface_ue_sim.h	/^    uint8_t                      ptrsTimeDensity;$/;"	m	struct:fapi_dl_pdsch_ptrs2
+ptrs_dmrs_port	fapi_interface_ue_sim.h	/^    uint8_t                     ptrs_dmrs_port;$/;"	m	struct:fapi_ptrs_info
+ptrs_freq_density	fapi_interface_ue_sim.h	/^    uint8_t                     ptrs_freq_density;$/;"	m	struct:fapi_dl_pdsch_ptrs_info
+ptrs_freq_density	fapi_interface_ue_sim.h	/^    uint8_t                     ptrs_freq_density;$/;"	m	struct:fapi_pusch_ptrs
+ptrs_info	fapi_interface_ue_sim.h	/^    fapi_ptrs_info_t_ue_sim            ptrs_info[MAX_NUM_PTRS_PORTS];$/;"	m	struct:fapi_pusch_ptrs
+ptrs_port_index	fapi_interface_ue_sim.h	/^    uint16_t                    ptrs_port_index;$/;"	m	struct:fapi_ptrs_info
+ptrs_port_index	fapi_interface_ue_sim.h	/^    uint8_t                     ptrs_port_index;$/;"	m	struct:fapi_dl_pdsch_ptrs_info
+ptrs_re_offset	fapi_interface_ue_sim.h	/^    uint8_t                     ptrs_re_offset;$/;"	m	struct:fapi_dl_pdsch_ptrs_info
+ptrs_re_offset	fapi_interface_ue_sim.h	/^    uint8_t                     ptrs_re_offset;$/;"	m	struct:fapi_ptrs_info
+ptrs_time_density	fapi_interface_ue_sim.h	/^    uint8_t                     ptrs_time_density;$/;"	m	struct:fapi_dl_pdsch_ptrs_info
+ptrs_time_density	fapi_interface_ue_sim.h	/^    uint8_t                     ptrs_time_density;$/;"	m	struct:fapi_pusch_ptrs
+pucchAggregation	fapi_interface_ue_sim.h	/^    fapi_uint8_tlv_t_ue_sim            pucchAggregation;$/;"	m	struct:fapi_pucch_parms
+pucchFormats	fapi_interface_ue_sim.h	/^    fapi_uint8_tlv_t_ue_sim            pucchFormats;$/;"	m	struct:fapi_pucch_parms
+pucchGroupAndSequenceHopping	fapi_interface_ue_sim.h	/^    fapi_uint8_tlv_t_ue_sim            pucchGroupAndSequenceHopping;$/;"	m	struct:fapi_pucch_parms
+pucchGroupHopping	fapi_interface_ue_sim.h	/^    uint8_t                     pucchGroupHopping;$/;"	m	struct:fapi_ul_bwp_id
+pucchGroupHopping	fapi_interface_ue_sim.h	/^    uint8_t                     pucchGroupHopping;$/;"	m	struct:fapi_ul_pucch_pdu
+pucchParms	fapi_interface_ue_sim.h	/^    fapi_pucch_parms_t_ue_sim          	pucchParms;$/;"	m	struct:fapi_params
+pucchSemiStaticConfig	fapi_interface_ue_sim.h	/^    fapi_pucch_semi_static_config_t        pucchSemiStaticConfig;$/;"	m	struct:fapi_config
+pucch_basicextension	fapi_interface_ue_sim.h	/^    fapi_pucch_mntnnc_params_t  pucch_basicextension;$/;"	m	struct:fapi_ul_pucch_pdu
+pucch_format	fapi_interface_ue_sim.h	/^    uint8_t                     pucch_format;$/;"	m	struct:fapi_uci_o_pucch_f0f1
+pucch_format	fapi_interface_ue_sim.h	/^    uint8_t                     pucch_format;$/;"	m	struct:fapi_uci_o_pucch_f2f3f4
+pucch_pdu	fapi_interface_ue_sim.h	/^        fapi_ul_pucch_pdu_t_ue_sim        pucch_pdu;$/;"	m	union:fapi_ul_tti_req_pdu::__anon4
+puschAggregationFactor	fapi_interface_ue_sim.h	/^    fapi_uint8_tlv_t_ue_sim            puschAggregationFactor;$/;"	m	struct:fapi_pusch_parms
+puschAllocationTypes	fapi_interface_ue_sim.h	/^    fapi_uint8_tlv_t_ue_sim            puschAllocationTypes;$/;"	m	struct:fapi_pusch_parms
+puschCbg	fapi_interface_ue_sim.h	/^    fapi_uint8_tlv_t_ue_sim            puschCbg;$/;"	m	struct:fapi_pusch_parms
+puschDmrsAditionalPos	fapi_interface_ue_sim.h	/^    fapi_uint8_tlv_t_ue_sim            puschDmrsAditionalPos;$/;"	m	struct:fapi_pusch_parms
+puschDmrsConfigTypes	fapi_interface_ue_sim.h	/^    fapi_uint8_tlv_t_ue_sim            puschDmrsConfigTypes;$/;"	m	struct:fapi_pusch_parms
+puschDmrsMaxLen	fapi_interface_ue_sim.h	/^    fapi_uint8_tlv_t_ue_sim            puschDmrsMaxLen;$/;"	m	struct:fapi_pusch_parms
+puschFrequencyHopping	fapi_interface_ue_sim.h	/^    fapi_uint8_tlv_t_ue_sim            puschFrequencyHopping;$/;"	m	struct:fapi_pusch_parms
+puschLbrmSupport	fapi_interface_ue_sim.h	/^    fapi_uint8_tlv_t_ue_sim            puschLbrmSupport;$/;"	m	struct:fapi_pusch_parms
+puschMacPduBitAlignment	fapi_interface_ue_sim.h	/^    fapi_uint8_tlv_t_ue_sim            puschMacPduBitAlignment;$/;"	m	struct:fapi_pusch_parms
+puschMappingType	fapi_interface_ue_sim.h	/^    fapi_uint8_tlv_t_ue_sim            puschMappingType;$/;"	m	struct:fapi_pusch_parms
+puschMaxPtrsPorts	fapi_interface_ue_sim.h	/^    fapi_uint8_tlv_t_ue_sim            puschMaxPtrsPorts;$/;"	m	struct:fapi_pusch_parms
+puschMntParms	fapi_interface_ue_sim.h	/^    fapi_pusch_mnt_parms_t      puschMntParms;$/;"	m	struct:fapi_ul_pusch_pdu
+puschParms	fapi_interface_ue_sim.h	/^    fapi_pusch_parms_t_ue_sim          	puschParms;$/;"	m	struct:fapi_params
+puschSecondHopPRB	fapi_interface_ue_sim.h	/^    uint16_t                    puschSecondHopPRB;$/;"	m	struct:fapi_pusch_mnt_parms
+puschTransType	fapi_interface_ue_sim.h	/^    uint8_t                     puschTransType;$/;"	m	struct:fapi_pusch_mnt_parms
+puschTransTypeSupport	fapi_interface_ue_sim.h	/^    fapi_uint8_tlv_t_ue_sim            puschTransTypeSupport;$/;"	m	struct:fapi_pusch_parms
+puschTransTypeValidity	fapi_interface_ue_sim.h	/^    fapi_uint8_tlv_t_ue_sim            puschTransTypeValidity;$/;"	m	struct:fapi_cell_config
+puschVrbToPrbMapping	fapi_interface_ue_sim.h	/^    fapi_uint8_tlv_t_ue_sim            puschVrbToPrbMapping;$/;"	m	struct:fapi_pusch_parms
+pusch_data	fapi_interface_ue_sim.h	/^    fapi_pusch_data_t_ue_sim           pusch_data;$/;"	m	struct:fapi_ul_pusch_pdu
+pusch_identity	fapi_interface_ue_sim.h	/^    uint16_t                    pusch_identity;$/;"	m	struct:fapi_ul_pusch_pdu
+pusch_pdu	fapi_interface_ue_sim.h	/^        fapi_ul_pusch_pdu_t_ue_sim        pusch_pdu;$/;"	m	union:fapi_ul_tti_req_pdu::__anon4
+pusch_ptrs	fapi_interface_ue_sim.h	/^    fapi_pusch_ptrs_t_ue_sim           pusch_ptrs;$/;"	m	struct:fapi_ul_pusch_pdu
+pusch_uci	fapi_interface_ue_sim.h	/^    fapi_pusch_uci_t_ue_sim            pusch_uci;$/;"	m	struct:fapi_ul_pusch_pdu
+qam_mod_order	fapi_interface_ue_sim.h	/^    uint8_t                     qam_mod_order;$/;"	m	struct:fapi_codeword_pdu
+qam_mod_order	fapi_interface_ue_sim.h	/^    uint8_t                     qam_mod_order;$/;"	m	struct:fapi_ul_pusch_pdu
+raIndex	fapi_interface_ue_sim.h	/^    uint8_t                     raIndex;$/;"	m	struct:fapi_rach_pdu
+rachPdu	fapi_interface_ue_sim.h	/^    fapi_rach_pdu_t_ue_sim             rachPdu[MAX_NUMBER_RACH_PDUS_PER_SLOT];$/;"	m	struct:fapi_rach_indication
+rach_present	fapi_interface_ue_sim.h	/^    uint8_t                     rach_present;$/;"	m	struct:fapi_ul_tti_req
+radioframeAllocationOffset	fapi_interface_ue_sim.h	/^    uint8_t                     radioframeAllocationOffset;$/;"	m	struct:fapi_mbsfn_sf_config_list
+radioframeAllocationPeriod	fapi_interface_ue_sim.h	/^    uint8_t                     radioframeAllocationPeriod;$/;"	m	struct:fapi_mbsfn_sf_config_list
+rateMatchRef	fapi_interface_ue_sim.h	/^    fapi_dl_rate_match_ref_t   rateMatchRef;$/;"	m	struct:fapi_dl_pdsch_mnt_parms
+rbSNR	fapi_interface_ue_sim.h	/^    uint8_t                     rbSNR[MAX_NUMBER_RBS];$/;"	m	struct:fapi_symb_snr
+rb_bitmap	fapi_interface_ue_sim.h	/^    uint8_t                     rb_bitmap[36];$/;"	m	struct:fapi_pdsch_freq_dom_alloc
+rb_bitmap	fapi_interface_ue_sim.h	/^    uint8_t                     rb_bitmap[36];$/;"	m	struct:fapi_ul_pusch_pdu
+rb_size	fapi_interface_ue_sim.h	/^    uint16_t                    rb_size;    $/;"	m	struct:fapi_pdsch_freq_dom_alloc
+rb_size	fapi_interface_ue_sim.h	/^    uint16_t                    rb_size;$/;"	m	struct:fapi_ul_pusch_pdu
+rb_start	fapi_interface_ue_sim.h	/^    uint16_t                    rb_start;$/;"	m	struct:fapi_pdsch_freq_dom_alloc
+rb_start	fapi_interface_ue_sim.h	/^    uint16_t                    rb_start;$/;"	m	struct:fapi_ul_pusch_pdu
+ref_point	fapi_interface_ue_sim.h	/^    uint8_t                          ref_point;$/;"	m	struct:fapi_dl_pdsch_pdu
+referenceRS	fapi_interface_ue_sim.h	/^    uint8_t                     referenceRS;$/;"	m	struct:fapi_signal_index
+reg_bundle_size	fapi_interface_ue_sim.h	/^    uint8_t                     reg_bundle_size;$/;"	m	struct:fapi_coreset
+rel16MtrpConfig	fapi_interface_ue_sim.h	/^    fapi_rel16_mtrp_config_t               rel16MtrpConfig;$/;"	m	struct:fapi_config
+rel16PdschParms	fapi_interface_ue_sim.h	/^    fapi_dl_rel16_pdsch_parms_t      rel16PdschParms;$/;"	m	struct:fapi_dl_pdsch_pdu
+rel16mTRPParameters	fapi_interface_ue_sim.h	/^    fapi_rel16_mTRP_parameters_t	rel16mTRPParameters;$/;"	m	struct:fapi_params
+releaseCapability	fapi_interface_ue_sim.h	/^    fapi_uint16_tlv_t_ue_sim           releaseCapability;$/;"	m	struct:fapi_cell_params
+repetitionScheme	fapi_interface_ue_sim.h	/^    uint8_t                     repetitionScheme;$/;"	m	struct:fapi_dl_rel16_pdsch_parms_t
+requestInstancePerSlot	fapi_interface_ue_sim.h	/^    fapi_uint8_tlv_t_ue_sim            requestInstancePerSlot[4];$/;"	m	struct:fapi_phy_config
+resource_alloc	fapi_interface_ue_sim.h	/^    uint8_t                     resource_alloc; \/*SCF: PDSCH Allocation in Frequency Domain Start *\/$/;"	m	struct:fapi_pdsch_freq_dom_alloc
+resource_alloc	fapi_interface_ue_sim.h	/^    uint8_t                     resource_alloc;$/;"	m	struct:fapi_ul_pusch_pdu
+resource_type	fapi_interface_ue_sim.h	/^    uint8_t                     resource_type;$/;"	m	struct:fapi_ul_srs_pdu
+restrictedSetConfig	fapi_interface_ue_sim.h	/^    fapi_uint8_tlv_t_ue_sim            restrictedSetConfig;$/;"	m	struct:fapi_prach_configuration
+restrictedSetConfig	fapi_interface_ue_sim.h	/^    uint8_t                     restrictedSetConfig;$/;"	m	struct:fapi_prach_configuration
+rmsiPresence	fapi_interface_ue_sim.h	/^    uint8_t                     rmsiPresence;$/;"	m	struct:fapi_ssb_res_config_table
+rnti	fapi_interface_ue_sim.h	/^    uint16_t                         rnti;$/;"	m	struct:fapi_dl_pdsch_pdu
+rnti	fapi_interface_ue_sim.h	/^    uint16_t                    rnti;$/;"	m	struct:fapi_crc_ind_info
+rnti	fapi_interface_ue_sim.h	/^    uint16_t                    rnti;$/;"	m	struct:fapi_dl_dci
+rnti	fapi_interface_ue_sim.h	/^    uint16_t                    rnti;$/;"	m	struct:fapi_pdu_ind_info
+rnti	fapi_interface_ue_sim.h	/^    uint16_t                    rnti;$/;"	m	struct:fapi_srs_pdu
+rnti	fapi_interface_ue_sim.h	/^    uint16_t                    rnti;$/;"	m	struct:fapi_uci_o_pucch_f0f1
+rnti	fapi_interface_ue_sim.h	/^    uint16_t                    rnti;$/;"	m	struct:fapi_uci_o_pucch_f2f3f4
+rnti	fapi_interface_ue_sim.h	/^    uint16_t                    rnti;$/;"	m	struct:fapi_uci_o_pusch
+rnti	fapi_interface_ue_sim.h	/^    uint16_t                    rnti;$/;"	m	struct:fapi_ul_pucch_pdu
+rnti	fapi_interface_ue_sim.h	/^    uint16_t                    rnti;$/;"	m	struct:fapi_ul_pusch_pdu
+rnti	fapi_interface_ue_sim.h	/^    uint16_t                    rnti;$/;"	m	struct:fapi_ul_srs_pdu
+row	fapi_interface_ue_sim.h	/^    uint8_t                     row;$/;"	m	struct:fapi_dl_csi_rs_pdu
+rssi	fapi_interface_ue_sim.h	/^    uint16_t                    rssi;$/;"	m	struct:fapi_crc_ind_info
+rssi	fapi_interface_ue_sim.h	/^    uint16_t                    rssi;$/;"	m	struct:fapi_pdu_ind_info
+rssi	fapi_interface_ue_sim.h	/^    uint16_t                    rssi;$/;"	m	struct:fapi_uci_o_pucch_f0f1
+rssi	fapi_interface_ue_sim.h	/^    uint16_t                    rssi;$/;"	m	struct:fapi_uci_o_pucch_f2f3f4
+rssi	fapi_interface_ue_sim.h	/^    uint16_t                    rssi;$/;"	m	struct:fapi_uci_o_pusch
+rssiMeasurement	fapi_interface_ue_sim.h	/^    fapi_uint8_tlv_t_ue_sim            rssiMeasurement;$/;"	m	struct:fapi_meas_config
+rssiMeasurementSupport	fapi_interface_ue_sim.h	/^    fapi_uint8_tlv_t_ue_sim            rssiMeasurementSupport;$/;"	m	struct:fapi_meas_parms
+rsv	fapi_interface_ue_sim.h	/^	uint16_t                    rsv;			\/\/ To be 32-bit aligned, if FAPI_NUMEROLOGIES changes to some other value than 5 please ensure 32 bit alignment$/;"	m	struct:__anon1
+rsv	fapi_interface_ue_sim.h	/^    uint8_t                     rsv[3];$/;"	m	struct:fapi_uint8_tlv
+rsv	fapi_interface_ue_sim.h	/^    uint8_t rsv[2];$/;"	m	struct:fapi_int16_tlv
+rsv	fapi_interface_ue_sim.h	/^    uint8_t rsv[2];$/;"	m	struct:fapi_uint16_tlv
+rv_index	fapi_interface_ue_sim.h	/^    uint8_t                     rv_index;$/;"	m	struct:fapi_codeword_pdu
+rv_index	fapi_interface_ue_sim.h	/^    uint8_t                     rv_index;$/;"	m	struct:fapi_pusch_data
+scid	fapi_interface_ue_sim.h	/^    uint8_t                     scid;$/;"	m	struct:fapi_dmrs
+scid	fapi_interface_ue_sim.h	/^    uint8_t                     scid;$/;"	m	struct:fapi_ul_pusch_pdu
+scram_id	fapi_interface_ue_sim.h	/^    uint16_t                    scram_id;$/;"	m	struct:fapi_dl_csi_rs_pdu
+scrambling_id	fapi_interface_ue_sim.h	/^    uint16_t                    scrambling_id;$/;"	m	struct:fapi_dl_dci
+scrambling_rnti	fapi_interface_ue_sim.h	/^    uint16_t                    scrambling_rnti;$/;"	m	struct:fapi_dl_dci
+scsCommon	fapi_interface_ue_sim.h	/^    fapi_uint8_tlv_t_ue_sim            scsCommon;$/;"	m	struct:fapi_ssb_config
+second_hop_prb	fapi_interface_ue_sim.h	/^    uint16_t                    second_hop_prb;$/;"	m	struct:fapi_ul_pucch_pdu
+sequence_hop_flag	fapi_interface_ue_sim.h	/^    uint8_t                     sequence_hop_flag;$/;"	m	struct:fapi_ul_pucch_pdu
+sequence_id	fapi_interface_ue_sim.h	/^    uint16_t                    sequence_id;$/;"	m	struct:fapi_ul_srs_pdu
+sfn	fapi_interface_ue_sim.h	/^    uint16_t                    sfn;$/;"	m	struct:fapi_crc_ind
+sfn	fapi_interface_ue_sim.h	/^    uint16_t                    sfn;$/;"	m	struct:fapi_dl_tti_req
+sfn	fapi_interface_ue_sim.h	/^    uint16_t                    sfn;$/;"	m	struct:fapi_error_ind
+sfn	fapi_interface_ue_sim.h	/^    uint16_t                    sfn;$/;"	m	struct:fapi_rach_indication
+sfn	fapi_interface_ue_sim.h	/^    uint16_t                    sfn;$/;"	m	struct:fapi_rx_data_indication
+sfn	fapi_interface_ue_sim.h	/^    uint16_t                    sfn;$/;"	m	struct:fapi_slot_ind
+sfn	fapi_interface_ue_sim.h	/^    uint16_t                    sfn;$/;"	m	struct:fapi_srs_indication
+sfn	fapi_interface_ue_sim.h	/^    uint16_t                    sfn;$/;"	m	struct:fapi_tx_data_req
+sfn	fapi_interface_ue_sim.h	/^    uint16_t                    sfn;$/;"	m	struct:fapi_uci_indication
+sfn	fapi_interface_ue_sim.h	/^    uint16_t                    sfn;$/;"	m	struct:fapi_ul_dci_req
+sfn	fapi_interface_ue_sim.h	/^    uint16_t                    sfn;$/;"	m	struct:fapi_ul_tti_req
+shift_index	fapi_interface_ue_sim.h	/^    uint16_t                    shift_index;$/;"	m	struct:fapi_coreset
+signalIndex	fapi_interface_ue_sim.h	/^    fapi_signal_index_t         signalIndex[MAX_SIGNAL_INDEX];$/;"	m	struct:fapi_cell_params
+sizeMbsfnSubframeConfigList	fapi_interface_ue_sim.h	/^    uint8_t                     sizeMbsfnSubframeConfigList;$/;"	m	struct:fapi_lte_crs_rm_ptrn
+sizePart1Params	fapi_interface_ue_sim.h	/^    uint8_t                     sizePart1Params[0]; \/* Shall Not exced 12 *\/$/;"	m	struct:fapi_map_index
+skipBlankDlConfig	fapi_interface_ue_sim.h	/^    fapi_uint8_tlv_t_ue_sim            skipBlankDlConfig;$/;"	m	struct:fapi_cell_params
+skipBlankUlConfig	fapi_interface_ue_sim.h	/^    fapi_uint8_tlv_t_ue_sim            skipBlankUlConfig;$/;"	m	struct:fapi_cell_params
+slot	fapi_interface_ue_sim.h	/^    uint16_t                    slot;$/;"	m	struct:fapi_crc_ind
+slot	fapi_interface_ue_sim.h	/^    uint16_t                    slot;$/;"	m	struct:fapi_dl_tti_req
+slot	fapi_interface_ue_sim.h	/^    uint16_t                    slot;$/;"	m	struct:fapi_error_ind
+slot	fapi_interface_ue_sim.h	/^    uint16_t                    slot;$/;"	m	struct:fapi_rach_indication
+slot	fapi_interface_ue_sim.h	/^    uint16_t                    slot;$/;"	m	struct:fapi_rx_data_indication
+slot	fapi_interface_ue_sim.h	/^    uint16_t                    slot;$/;"	m	struct:fapi_slot_ind
+slot	fapi_interface_ue_sim.h	/^    uint16_t                    slot;$/;"	m	struct:fapi_srs_indication
+slot	fapi_interface_ue_sim.h	/^    uint16_t                    slot;$/;"	m	struct:fapi_tx_data_req
+slot	fapi_interface_ue_sim.h	/^    uint16_t                    slot;$/;"	m	struct:fapi_uci_indication
+slot	fapi_interface_ue_sim.h	/^    uint16_t                    slot;$/;"	m	struct:fapi_ul_dci_req
+slot	fapi_interface_ue_sim.h	/^    uint16_t                    slot;$/;"	m	struct:fapi_ul_tti_req
+slotConfig	fapi_interface_ue_sim.h	/^    fapi_slotconfig_t_ue_sim           slotConfig[MAX_TDD_PERIODICITY];$/;"	m	struct:fapi_tdd_table
+slotConfig	fapi_interface_ue_sim.h	/^    fapi_uint8_tlv_t_ue_sim            slotConfig[MAX_NUM_OF_SYMBOLS_PER_SLOT];$/;"	m	struct:fapi_slotconfig
+slotConfig	fapi_interface_ue_sim.h	/^    uint8_t                     slotConfig[MAX_NUM_OF_SYMBOLS_PER_SLOT];$/;"	m	struct:fapi_slotconfig
+slotIndex	fapi_interface_ue_sim.h	/^    uint8_t                     slotIndex;$/;"	m	struct:fapi_rach_pdu
+srInfo	fapi_interface_ue_sim.h	/^    fapi_sr_f0f1_info_t_ue_sim         srInfo;  \/\/ This is included if indicated by the pduBitmap$/;"	m	struct:fapi_uci_o_pucch_f0f1
+srInfo	fapi_interface_ue_sim.h	/^    fapi_sr_f2f3f4_info_t_ue_sim       srInfo; \/\/ This is included if indicated by the pduBitmap$/;"	m	struct:fapi_uci_o_pucch_f2f3f4
+sr_bitlen	fapi_interface_ue_sim.h	/^    uint16_t                    sr_bitlen;$/;"	m	struct:fapi_sr_f2f3f4_info
+sr_confidence_level	fapi_interface_ue_sim.h	/^    uint8_t                     sr_confidence_level;$/;"	m	struct:fapi_sr_f0f1_info
+sr_flag	fapi_interface_ue_sim.h	/^    uint8_t                     sr_flag;$/;"	m	struct:fapi_ul_pucch_pdu
+sr_indication	fapi_interface_ue_sim.h	/^    uint8_t                     sr_indication;$/;"	m	struct:fapi_sr_f0f1_info
+sr_payload	fapi_interface_ue_sim.h	/^    uint8_t                     sr_payload[MAX_SR_PAYLOAD_SIZE];$/;"	m	struct:fapi_sr_f2f3f4_info
+srsPdus	fapi_interface_ue_sim.h	/^    fapi_srs_pdu_t_ue_sim              srsPdus[MAX_NUMBER_SRS_PDUS_PER_SLOT];$/;"	m	struct:fapi_srs_indication
+srs_pdu	fapi_interface_ue_sim.h	/^        fapi_ul_srs_pdu_t_ue_sim          srs_pdu;$/;"	m	union:fapi_ul_tti_req_pdu::__anon4
+ssPbchBlockPowerScaling	fapi_interface_ue_sim.h	/^    fapi_int16_tlv_t_ue_sim            ssPbchBlockPowerScaling;$/;"	m	struct:fapi_ssb_pwr_pbch_config
+ssPbchBlockPowerScaling	fapi_interface_ue_sim.h	/^    uint16_t                    ssPbchBlockPowerScaling;$/;"	m	struct:fapi_ssb_tx_pwr_info
+ssPbchMultipleCarriersInABand	fapi_interface_ue_sim.h	/^    fapi_uint8_tlv_t_ue_sim            ssPbchMultipleCarriersInABand;$/;"	m	struct:fapi_carrier_parms
+ssPbchMultipleCarriersInABand	fapi_interface_ue_sim.h	/^    fapi_uint8_tlv_t_ue_sim            ssPbchMultipleCarriersInABand;$/;"	m	struct:fapi_ssb_table
+ssPbchPower	fapi_interface_ue_sim.h	/^    fapi_uint32_tlv_t_ue_sim           ssPbchPower;$/;"	m	struct:fapi_ssb_config
+ssPbchPower	fapi_interface_ue_sim.h	/^    fapi_uint32_tlv_t_ue_sim           ssPbchPower;$/;"	m	struct:fapi_ssb_pwr_pbch_config
+ssbConfig	fapi_interface_ue_sim.h	/^    fapi_ssb_config_t_ue_sim           ssbConfig;$/;"	m	struct:fapi_config
+ssbConfigForRateMatching	fapi_interface_ue_sim.h	/^    uint8_t                            ssbConfigForRateMatching;$/;"	m	struct:fapi_dl_rate_match_ref
+ssbConfigIndex	fapi_interface_ue_sim.h	/^    uint16_t                    ssbConfigIndex;$/;"	m	struct:fapi_ssb_res_config_table
+ssbConfigurationsTLVs	fapi_interface_ue_sim.h	/^    fapi_ssb_res_config_table_t ssbConfigurationsTLVs[];$/;"	m	struct:fapi_multi_ssb_resource_config_table
+ssbMask	fapi_interface_ue_sim.h	/^    fapi_uint32_tlv_t_ue_sim           ssbMask[2];$/;"	m	struct:fapi_ssb_table
+ssbMask	fapi_interface_ue_sim.h	/^    uint32_t                    ssbMask[2];$/;"	m	struct:fapi_ssb_res_config_table
+ssbOffsetPointA	fapi_interface_ue_sim.h	/^    fapi_uint16_tlv_t_ue_sim           ssbOffsetPointA;$/;"	m	struct:fapi_ssb_table
+ssbOffsetPointA	fapi_interface_ue_sim.h	/^    uint16_t                    ssbOffsetPointA;$/;"	m	struct:fapi_ssb_res_config_table
+ssbPbchMntParms	fapi_interface_ue_sim.h	/^    fapi_dl_ssb_pbch_mnt_parms_t  ssbPbchMntParms;$/;"	m	struct:fapi_dl_ssb_pdu
+ssbPduIndex	fapi_interface_ue_sim.h	/^    uint8_t                     ssbPduIndex;$/;"	m	struct:fapi_ssb_basic_parms
+ssbPdusForRateMatching	fapi_interface_ue_sim.h	/^    uint8_t                            ssbPdusForRateMatching[2];$/;"	m	struct:fapi_dl_rate_match_ref
+ssbPerRach	fapi_interface_ue_sim.h	/^    fapi_uint8_tlv_t_ue_sim            ssbPerRach;$/;"	m	struct:fapi_prach_configuration
+ssbPerRach	fapi_interface_ue_sim.h	/^    uint8_t                     ssbPerRach;$/;"	m	struct:fapi_prach_configuration
+ssbPeriod	fapi_interface_ue_sim.h	/^    fapi_uint8_tlv_t_ue_sim            ssbPeriod;$/;"	m	struct:fapi_ssb_table
+ssbPeriod	fapi_interface_ue_sim.h	/^    uint8_t                     ssbPeriod;$/;"	m	struct:fapi_ssb_res_config_table
+ssbPowerPbchConfig	fapi_interface_ue_sim.h	/^    fapi_ssb_pwr_pbch_config_t             ssbPowerPbchConfig;$/;"	m	struct:fapi_config
+ssbRateMatch	fapi_interface_ue_sim.h	/^    fapi_uint8_tlv_t_ue_sim		ssbRateMatch;$/;"	m	struct:fapi_pdsch_parms
+ssbResConfigTable	fapi_interface_ue_sim.h	/^    fapi_ssb_res_config_table_t            ssbResConfigTable;$/;"	m	struct:fapi_config
+ssbSubCarrierOffset	fapi_interface_ue_sim.h	/^    fapi_uint8_tlv_t_ue_sim            ssbSubCarrierOffset;$/;"	m	struct:fapi_ssb_table
+ssbSubcarrierOffset	fapi_interface_ue_sim.h	/^    uint8_t                     ssbSubcarrierOffset;$/;"	m	struct:fapi_ssb_res_config_table
+ssbTable	fapi_interface_ue_sim.h	/^    fapi_ssb_table_t_ue_sim            ssbTable;$/;"	m	struct:fapi_config
+ssbTableConfig	fapi_interface_ue_sim.h	/^    fapi_tl_t_ue_sim            ssbTableConfig;$/;"	m	struct:fapi_ssb_res_config_table
+ssb_block_index	fapi_interface_ue_sim.h	/^    uint8_t                       ssb_block_index;$/;"	m	struct:fapi_dl_ssb_pdu
+ssb_offset_point_a	fapi_interface_ue_sim.h	/^    uint16_t                      ssb_offset_point_a;$/;"	m	struct:fapi_dl_ssb_pdu
+ssb_pdu	fapi_interface_ue_sim.h	/^        fapi_dl_ssb_pdu_t_ue_sim          ssb_pdu;$/;"	m	union:fapi_dl_tti_req_pdu::__anon3
+ssb_sub_carrier_offset	fapi_interface_ue_sim.h	/^    uint8_t                       ssb_sub_carrier_offset;$/;"	m	struct:fapi_dl_ssb_pdu
+startPreambleIndex	fapi_interface_ue_sim.h	/^   uint8_t                      startPreambleIndex;$/;"	m	struct:fapi_pRACH_Mntnc_param
+start_rb	fapi_interface_ue_sim.h	/^    uint16_t                    start_rb;$/;"	m	struct:fapi_dl_csi_rs_pdu
+start_symb_index	fapi_interface_ue_sim.h	/^    uint8_t                     start_symb_index;$/;"	m	struct:fapi_ul_pusch_pdu
+start_symb_index	fapi_interface_ue_sim.h	/^    uint8_t                     start_symb_index;\/*SCF : PDSCH Allocation in Time Domain Start *\/$/;"	m	struct:fapi_pdsch_time_dom_alloc
+start_symbol_index	fapi_interface_ue_sim.h	/^    uint8_t                     start_symbol_index;  \/* Coreset Configuration Start *\/$/;"	m	struct:fapi_coreset
+start_symbol_index	fapi_interface_ue_sim.h	/^    uint8_t                     start_symbol_index;$/;"	m	struct:fapi_ul_pucch_pdu
+subCarrierSpacing	fapi_interface_ue_sim.h	/^    uint8_t                     subCarrierSpacing;$/;"	m	struct:fapi_dl_csi_rs_pdu
+subCarrierSpacing	fapi_interface_ue_sim.h	/^    uint8_t                     subCarrierSpacing;$/;"	m	struct:fapi_prb_sym_rate_match_pattern
+subCarrierSpacing	fapi_interface_ue_sim.h	/^    uint8_t                     subCarrierSpacing;$/;"	m	struct:fapi_ssb_res_config_table
+subCarrierSpacingCommon	fapi_interface_ue_sim.h	/^    uint8_t                     subCarrierSpacingCommon;$/;"	m	struct:fapi_ssb_res_config_table
+sub_carrier_spacing	fapi_interface_ue_sim.h	/^    uint8_t                     sub_carrier_spacing;$/;"	m	struct:fapi_bwp
+sub_carrier_spacing	fapi_interface_ue_sim.h	/^    uint8_t                     sub_carrier_spacing;$/;"	m	struct:fapi_ul_pucch_pdu
+sub_carrier_spacing	fapi_interface_ue_sim.h	/^    uint8_t                     sub_carrier_spacing;$/;"	m	struct:fapi_ul_pusch_pdu
+sub_carrier_spacing	fapi_interface_ue_sim.h	/^    uint8_t                     sub_carrier_spacing;$/;"	m	struct:fapi_ul_srs_pdu
+subcarrierSpacing	fapi_interface_ue_sim.h	/^    uint8_t                     subcarrierSpacing;$/;"	m	struct:fapi_ssb_basic_parms
+subframeAllocLength	fapi_interface_ue_sim.h	/^    uint8_t                     subframeAllocLength;$/;"	m	struct:fapi_mbsfn_sf_config_list
+subframeAllocationBitmap	fapi_interface_ue_sim.h	/^    uint32_t                    subframeAllocationBitmap; \/* Ref: Table 3-42 LTE-CRS rate match patterns configuration*\/$/;"	m	struct:fapi_mbsfn_sf_config_list
+supportedBandwidthDl	fapi_interface_ue_sim.h	/^    fapi_uint16_tlv_t_ue_sim           supportedBandwidthDl;$/;"	m	struct:fapi_carrier_parms
+supportedBandwidthUl	fapi_interface_ue_sim.h	/^    fapi_uint16_tlv_t_ue_sim           supportedBandwidthUl;$/;"	m	struct:fapi_carrier_parms
+supportedMaxModulationOrderDl	fapi_interface_ue_sim.h	/^    fapi_uint8_tlv_t_ue_sim            supportedMaxModulationOrderDl;$/;"	m	struct:fapi_pdsch_parms
+supportedModulationOrderUl	fapi_interface_ue_sim.h	/^    fapi_uint8_tlv_t_ue_sim            supportedModulationOrderUl;$/;"	m	struct:fapi_pusch_parms
+supportedRateMatchPatternType	fapi_interface_ue_sim.h	/^    fapi_uint8_tlv_t_ue_sim		supportedRateMatchPatternType;$/;"	m	struct:fapi_pdsch_parms
+supportedSubcarrierSpacingDl	fapi_interface_ue_sim.h	/^    fapi_uint8_tlv_t_ue_sim            supportedSubcarrierSpacingDl;$/;"	m	struct:fapi_carrier_parms
+supportedSubcarrierSpecingsUl	fapi_interface_ue_sim.h	/^    fapi_uint8_tlv_t_ue_sim            supportedSubcarrierSpecingsUl;$/;"	m	struct:fapi_carrier_parms
+symbSnr	fapi_interface_ue_sim.h	/^    fapi_symb_snr_t_ue_sim             symbSnr[MAX_NUMBER_OF_REP_SYMBOLS];$/;"	m	struct:fapi_srs_pdu
+symb_l0	fapi_interface_ue_sim.h	/^    uint8_t                     symb_l0;$/;"	m	struct:fapi_dl_csi_rs_pdu
+symb_l1	fapi_interface_ue_sim.h	/^    uint8_t                     symb_l1;$/;"	m	struct:fapi_dl_csi_rs_pdu
+symbolIndex	fapi_interface_ue_sim.h	/^    uint8_t                     symbolIndex;$/;"	m	struct:fapi_rach_pdu
+symbolsInRB	fapi_interface_ue_sim.h	/^    uint16_t                   symbolsInRB;  $/;"	m	struct:fapi_dl_prb_sym_rm_patrn_by_val
+symbolsInRB	fapi_interface_ue_sim.h	/^    uint32_t                    symbolsInRB;$/;"	m	struct:fapi_prb_sym_rate_match_pattern
+symbolsPatrn	fapi_interface_ue_sim.h	/^    uint16_t                   symbolsPatrn;$/;"	m	struct:fapi_dl_coreset_rm_patrn
+t_offset	fapi_interface_ue_sim.h	/^    uint16_t                    t_offset;$/;"	m	struct:fapi_ul_srs_pdu
+t_srs	fapi_interface_ue_sim.h	/^    uint16_t                    t_srs;$/;"	m	struct:fapi_ul_srs_pdu
+tag	fapi_interface_ue_sim.h	/^    uint16_t                    tag;                \/\/ In 5G FAPI for Cell Params$/;"	m	struct:fapi_config_tlv
+tag	fapi_interface_ue_sim.h	/^    uint16_t                    tag;$/;"	m	struct:fapi_tl
+tag	fapi_interface_ue_sim.h	/^    uint16_t                    tag;$/;"	m	struct:fapi_tx_dat_tlv
+target_code_rate	fapi_interface_ue_sim.h	/^    uint16_t                    target_code_rate;$/;"	m	struct:fapi_codeword_pdu
+target_code_rate	fapi_interface_ue_sim.h	/^    uint16_t                    target_code_rate;$/;"	m	struct:fapi_ul_pusch_pdu
+tbCrcRequired	fapi_interface_ue_sim.h	/^    uint8_t                    tbCrcRequired;$/;"	m	struct:fapi_dl_codeword_info
+tbSizeLbrmBytes	fapi_interface_ue_sim.h	/^    uint32_t                    tbSizeLbrmBytes; $/;"	m	struct:fapi_pusch_mnt_parms
+tbSizeLbrmBytes	fapi_interface_ue_sim.h	/^    uint32_t                   tbSizeLbrmBytes;$/;"	m	struct:fapi_dl_codeword_info
+tb_crc_status	fapi_interface_ue_sim.h	/^    uint8_t                     tb_crc_status;$/;"	m	struct:fapi_crc_ind_info
+tb_size	fapi_interface_ue_sim.h	/^    uint32_t                    tb_size;$/;"	m	struct:fapi_codeword_pdu
+tb_size	fapi_interface_ue_sim.h	/^    uint32_t                    tb_size;$/;"	m	struct:fapi_pusch_data
+tddPeriod	fapi_interface_ue_sim.h	/^    fapi_uint8_tlv_t_ue_sim            tddPeriod;$/;"	m	struct:fapi_tdd_table
+tddPeriod	fapi_interface_ue_sim.h	/^    uint8_t                     tddPeriod;$/;"	m	struct:fapi_tdd_table
+tddTable	fapi_interface_ue_sim.h	/^    fapi_tdd_table_t_ue_sim                       tddTable;$/;"	m	struct:fapi_config
+tddTable	fapi_interface_ue_sim.h	/^    fapi_tdd_table_t_ue_sim            tddTable;$/;"	m	struct:fapi_config
+tddTableConfig	fapi_interface_ue_sim.h	/^    fapi_tl_t_ue_sim            tddTableConfig;$/;"	m	struct:fapi_tdd_table
+timeDomainPattern	fapi_interface_ue_sim.h	/^    uint8_t                     timeDomainPattern[5];$/;"	m	struct:fapi_prb_sym_rate_match_pattern
+timeDomainPeriodicity	fapi_interface_ue_sim.h	/^    uint8_t                     timeDomainPeriodicity;$/;"	m	struct:fapi_prb_sym_rate_match_pattern
+timeManagement	fapi_interface_ue_sim.h	/^    fapi_uint8_tlv_t_ue_sim	     timeManagement;$/;"	m	struct:fapi_phy_parms
+time_domain_occ_idx	fapi_interface_ue_sim.h	/^    uint8_t                     time_domain_occ_idx;$/;"	m	struct:fapi_ul_pucch_pdu
+time_start_position	fapi_interface_ue_sim.h	/^    uint8_t                     time_start_position;$/;"	m	struct:fapi_ul_srs_pdu
+timingAdvance	fapi_interface_ue_sim.h	/^    uint16_t                    timingAdvance;$/;"	m	struct:fapi_preamble_info
+timingAdvance	fapi_interface_ue_sim.h	/^    uint16_t                    timingAdvance;$/;"	m	struct:fapi_srs_pdu
+timingInfoMode	fapi_interface_ue_sim.h	/^    fapi_uint8_tlv_t_ue_sim            timingInfoMode;$/;"	m	struct:fapi_delay_mgmt_config
+timingInfoPeriod	fapi_interface_ue_sim.h	/^    fapi_uint8_tlv_t_ue_sim            timingInfoPeriod;$/;"	m	struct:fapi_delay_mgmt_config
+timingWindow	fapi_interface_ue_sim.h	/^    fapi_uint16_tlv_t_ue_sim           timingWindow;$/;"	m	struct:fapi_delay_mgmt_config
+timing_advance	fapi_interface_ue_sim.h	/^    uint16_t                    timing_advance;$/;"	m	struct:fapi_crc_ind_info
+timing_advance	fapi_interface_ue_sim.h	/^    uint16_t                    timing_advance;$/;"	m	struct:fapi_pdu_ind_info
+timing_advance	fapi_interface_ue_sim.h	/^    uint16_t                    timing_advance;$/;"	m	struct:fapi_uci_o_pucch_f0f1
+timing_advance	fapi_interface_ue_sim.h	/^    uint16_t                    timing_advance;$/;"	m	struct:fapi_uci_o_pucch_f2f3f4
+timing_advance	fapi_interface_ue_sim.h	/^    uint16_t                    timing_advance;$/;"	m	struct:fapi_uci_o_pusch
+timing_info_period	fapi_interface_ue_sim.h	/^    fapi_uint8_tlv_t_ue_sim            timing_info_period;$/;"	m	struct:fapi_delay_management_parms
+timing_window	fapi_interface_ue_sim.h	/^    fapi_uint16_tlv_t_ue_sim           timing_window;$/;"	m	struct:fapi_delay_management_parms
+tl	fapi_interface_ue_sim.h	/^	fapi_tl_t_ue_sim            tl;$/;"	m	struct:__anon1
+tl	fapi_interface_ue_sim.h	/^    fapi_tl_t_ue_sim            tl;$/;"	m	struct:fapi_int16_tlv
+tl	fapi_interface_ue_sim.h	/^    fapi_tl_t_ue_sim            tl;$/;"	m	struct:fapi_uint16_tlv
+tl	fapi_interface_ue_sim.h	/^    fapi_tl_t_ue_sim            tl;$/;"	m	struct:fapi_uint32_tlv
+tl	fapi_interface_ue_sim.h	/^    fapi_tl_t_ue_sim            tl;$/;"	m	struct:fapi_uint8_tlv
+tlvs	fapi_interface_ue_sim.h	/^    fapi_tx_dat_tlv_t           tlvs[];$/;"	m	struct:fapi_tx_pdu_desc
+tlvs	fapi_interface_ue_sim.h	/^    fapi_uint16_tlv_t_ue_sim           tlvs[4 * MAX_NUM_TLVS_CONFIG];$/;"	m	struct:fapi_config_resp
+tlvs	fapi_interface_ue_sim.h	/^    fapi_uint16_tlv_t_ue_sim           tlvs[MAX_NUM_TLVS_CONFIG];$/;"	m	struct:fapi_config_req
+tlvs	fapi_interface_ue_sim.h	/^    fapi_uint16_tlv_t_ue_sim           tlvs[MAX_NUM_TLVS_CONFIG];$/;"	m	struct:fapi_param_resp
+transform_precoding	fapi_interface_ue_sim.h	/^    uint8_t                     transform_precoding;$/;"	m	struct:fapi_ul_pusch_pdu
+transmission_scheme	fapi_interface_ue_sim.h	/^    uint8_t                          transmission_scheme;$/;"	m	struct:fapi_dl_pdsch_pdu
+trpScheme	fapi_interface_ue_sim.h	/^    uint8_t                     trpScheme;$/;"	m	struct:fapi_bmform
+trpScheme	fapi_interface_ue_sim.h	/^    uint8_t                     trpScheme;$/;"	m	struct:fapi_precoding_bmform
+txPwrInfo	fapi_interface_ue_sim.h	/^    fapi_csi_rs_tx_pwr_info_t   txPwrInfo;$/;"	m	struct:fapi_dl_csi_rs_mnt_parms
+txPwrInfo	fapi_interface_ue_sim.h	/^    fapi_dl_ptrs_tx_pwr_info_t  txPwrInfo;  $/;"	m	struct:fapi_dl_pdsch_ptrs_mnt_parms
+txPwrInfo	fapi_interface_ue_sim.h	/^    fapi_dl_ptrs_tx_pwr_info_t  txPwrInfo;  $/;"	m	struct:fapi_dl_pdsch_ptrsv3
+txPwrInfo	fapi_interface_ue_sim.h	/^    fapi_dl_tx_pwr_info_t      txPwrInfo;$/;"	m	struct:fapi_dl_pdsch_mnt_parms
+tx_data_timing_offset	fapi_interface_ue_sim.h	/^    fapi_uint32_tlv_t_ue_sim           tx_data_timing_offset;$/;"	m	struct:fapi_delay_management_parms
+tx_direct_current_location	fapi_interface_ue_sim.h	/^    uint16_t                    tx_direct_current_location;$/;"	m	struct:fapi_ul_pusch_pdu
+tx_power_info	fapi_interface_ue_sim.h	/^    fapi_tx_power_info_t        tx_power_info;$/;"	m	struct:fapi_dl_dci
+tx_pwr_info	fapi_interface_ue_sim.h	/^    fapi_ssb_tx_pwr_info_t            tx_pwr_info;$/;"	m	struct:fapi_dl_ssb_pbch_mnt_parms
+tx_pwr_info	fapi_interface_ue_sim.h	/^    fapi_tx_pwr_info_t               tx_pwr_info;$/;"	m	struct:fapi_dl_pdsch_pdu
+tx_pwr_info	fapi_interface_ue_sim.h	/^    fapi_tx_pwr_info_t          tx_pwr_info;$/;"	m	struct:fapi_dl_csi_rs_pdu
+u	fapi_interface_ue_sim.h	/^    } u;$/;"	m	struct:fapi_bch_payload	typeref:union:fapi_bch_payload::__anon2
+u	fapi_interface_ue_sim.h	/^    }u;$/;"	m	struct:fapi_dl_tti_req_pdu	typeref:union:fapi_dl_tti_req_pdu::__anon3
+u	fapi_interface_ue_sim.h	/^    }u;$/;"	m	struct:fapi_uci_pdu_info	typeref:union:fapi_uci_pdu_info::__anon5
+u	fapi_interface_ue_sim.h	/^    }u;$/;"	m	struct:fapi_ul_tti_req_pdu	typeref:union:fapi_ul_tti_req_pdu::__anon4
+uciConfig	fapi_interface_ue_sim.h	/^    fapi_tl_t_ue_sim            uciConfig;$/;"	m	struct:fapi_uci_config
+uciConfig	fapi_interface_ue_sim.h	/^    fapi_uci_config_t                      uciConfig;$/;"	m	struct:fapi_config
+uciMuxUlschInPusch	fapi_interface_ue_sim.h	/^    fapi_uint8_tlv_t_ue_sim            uciMuxUlschInPusch;$/;"	m	struct:fapi_pusch_parms
+uciOnlyPusch	fapi_interface_ue_sim.h	/^    fapi_uint8_tlv_t_ue_sim            uciOnlyPusch;$/;"	m	struct:fapi_pusch_parms
+uciParms	fapi_interface_ue_sim.h	/^    fapi_uci_parms_t                    uciParms;$/;"	m	struct:fapi_params
+uci_part1_part2	fapi_interface_ue_sim.h	/^    fapi_uci_part1_part2_t      uci_part1_part2;$/;"	m	struct:fapi_ul_pucch_pdu
+uci_part2	fapi_interface_ue_sim.h	/^    fapi_uci_part2_t            uci_part2[0];$/;"	m	struct:fapi_uci_part1_part2
+uci_pdu	fapi_interface_ue_sim.h	/^    fapi_uci_pdu_info_t_ue_sim         uci_pdu[] ;\/\/max length of the array MAX_NUMBER_UCI_PDUS_PER_SLOT;$/;"	m	struct:fapi_uci_indication
+uci_pucch_f0f1	fapi_interface_ue_sim.h	/^        fapi_uci_o_pucch_f0f1_t_ue_sim    uci_pucch_f0f1;$/;"	m	union:fapi_uci_pdu_info::__anon5
+uci_pucch_f2f3f4	fapi_interface_ue_sim.h	/^        fapi_uci_o_pucch_f2f3f4_t_ue_sim  uci_pucch_f2f3f4;$/;"	m	union:fapi_uci_pdu_info::__anon5
+uci_pusch	fapi_interface_ue_sim.h	/^        fapi_uci_o_pusch_t_ue_sim         uci_pusch;$/;"	m	union:fapi_uci_pdu_info::__anon5
+ueGrpInfo	fapi_interface_ue_sim.h	/^    fapi_ue_info_t_ue_sim              ueGrpInfo[0];$/;"	m	struct:fapi_dl_tti_req
+ueGrpInfo	fapi_interface_ue_sim.h	/^    fapi_ue_info_t_ue_sim              ueGrpInfo[0];$/;"	m	struct:fapi_ul_tti_req
+uint16_t	fapi_interface_ue_sim.h	/^typedef uint16_t    uint16_t;$/;"	t
+uint32_t	fapi_interface_ue_sim.h	/^typedef uint32_t    uint32_t;$/;"	t
+uint64_t	fapi_interface_ue_sim.h	/^typedef uint64_t    uint64_t;$/;"	t
+uint8_t	fapi_interface_ue_sim.h	/^typedef unsigned char   uint8_t;$/;"	t
+ulBwpId	fapi_interface_ue_sim.h	/^    fapi_ul_bwp_id_t            ulBwpId[0];$/;"	m	struct:fapi_pucch_semi_static_config
+ulBwpId	fapi_interface_ue_sim.h	/^    uint8_t                     ulBwpId;$/;"	m	struct:fapi_pUCCH_Mntnnc_params
+ulBwpPuschScs	fapi_interface_ue_sim.h	/^    uint8_t                     ulBwpPuschScs;$/;"	m	struct:fapi_prach_configuration
+ulCarrierId	fapi_interface_ue_sim.h	/^    uint8_t                     ulCarrierId;$/;"	m	struct:fapi_rach_pdu
+ulGridSize	fapi_interface_ue_sim.h	/^    fapi_config_num_tlv_t       ulGridSize;$/;"	m	struct:fapi_carrier_config
+ulGridSize	fapi_interface_ue_sim.h	/^    fapi_uint16_tlv_t_ue_sim           ulGridSize[NUMEROLOGIES];$/;"	m	struct:fapi_carrier_config
+ulGridSize	fapi_interface_ue_sim.h	/^    uint16_t                    ulGridSize[NUMEROLOGIES];$/;"	m	struct:fapi_carrier_config
+ulPortRangeLen	fapi_interface_ue_sim.h	/^    uint16_t                    ulPortRangeLen[0]; $/;"	m	struct:fapi_phy_port
+ulPortRangeStart	fapi_interface_ue_sim.h	/^    uint16_t                    ulPortRangeStart[0];$/;"	m	struct:fapi_phy_port
+ul_cqi	fapi_interface_ue_sim.h	/^    uint8_t                     ul_cqi;$/;"	m	struct:fapi_crc_ind_info
+ul_cqi	fapi_interface_ue_sim.h	/^    uint8_t                     ul_cqi;$/;"	m	struct:fapi_pdu_ind_info
+ul_cqi	fapi_interface_ue_sim.h	/^    uint8_t                     ul_cqi;$/;"	m	struct:fapi_uci_o_pucch_f0f1
+ul_cqi	fapi_interface_ue_sim.h	/^    uint8_t                     ul_cqi;$/;"	m	struct:fapi_uci_o_pucch_f2f3f4
+ul_cqi	fapi_interface_ue_sim.h	/^    uint8_t                     ul_cqi;$/;"	m	struct:fapi_uci_o_pusch
+ul_dci_timing_offset	fapi_interface_ue_sim.h	/^    fapi_uint32_tlv_t_ue_sim           ul_dci_timing_offset;$/;"	m	struct:fapi_delay_management_parms
+ul_dmrs_scrambling_id	fapi_interface_ue_sim.h	/^    uint16_t                    ul_dmrs_scrambling_id;$/;"	m	struct:fapi_ul_pusch_pdu
+ul_dmrs_symb_pos	fapi_interface_ue_sim.h	/^    uint16_t                    ul_dmrs_symb_pos;$/;"	m	struct:fapi_ul_pusch_pdu
+ul_ptrs_power	fapi_interface_ue_sim.h	/^    uint8_t                     ul_ptrs_power;$/;"	m	struct:fapi_pusch_ptrs
+ul_ptrs_sample_density	fapi_interface_ue_sim.h	/^    uint8_t                     ul_ptrs_sample_density;$/;"	m	struct:fapi_dfts_ofdm
+ul_ptrs_time_density_transform_precoding	fapi_interface_ue_sim.h	/^    uint8_t                     ul_ptrs_time_density_transform_precoding;$/;"	m	struct:fapi_dfts_ofdm
+ul_tti_timing_offset	fapi_interface_ue_sim.h	/^    fapi_uint32_tlv_t_ue_sim           ul_tti_timing_offset;$/;"	m	struct:fapi_delay_management_parms
+ulk0	fapi_interface_ue_sim.h	/^    fapi_config_num_tlv_t       ulk0;$/;"	m	struct:fapi_carrier_config
+ulk0	fapi_interface_ue_sim.h	/^    fapi_uint16_tlv_t_ue_sim           ulk0[NUMEROLOGIES];$/;"	m	struct:fapi_carrier_config
+ulk0	fapi_interface_ue_sim.h	/^    uint16_t                    ulk0[NUMEROLOGIES];$/;"	m	struct:fapi_carrier_config
+unusedRootSequences	fapi_interface_ue_sim.h	/^    fapi_uint8_tlv_t_ue_sim            unusedRootSequences[MAX_NUM_UNUSED_ROOT_SEQUENCES];$/;"	m	struct:fapi_prachFdOccasion
+unusedRootSequences	fapi_interface_ue_sim.h	/^    uint16_t                    unusedRootSequences[MAX_NUM_UNUSED_ROOT_SEQUENCES];$/;"	m	struct:fapi_prachFdOccasion
+uplinkBandwidth	fapi_interface_ue_sim.h	/^    fapi_uint16_tlv_t_ue_sim           uplinkBandwidth;$/;"	m	struct:fapi_carrier_config
+uplinkBandwidth	fapi_interface_ue_sim.h	/^    uint16_t                    uplinkBandwidth;$/;"	m	struct:fapi_carrier_config
+uplinkFrequency	fapi_interface_ue_sim.h	/^    fapi_uint32_tlv_t_ue_sim           uplinkFrequency;$/;"	m	struct:fapi_carrier_config
+uplinkFrequency	fapi_interface_ue_sim.h	/^    uint32_t                    uplinkFrequency;$/;"	m	struct:fapi_carrier_config
+uplink_frequency_shift7p5khz	fapi_interface_ue_sim.h	/^    uint8_t                     uplink_frequency_shift7p5khz;$/;"	m	struct:fapi_ul_pusch_pdu
+vShift	fapi_interface_ue_sim.h	/^    uint8_t                     vShift;$/;"	m	struct:fapi_lte_crs_rm_ptrn
+validityScope	fapi_interface_ue_sim.h	/^    uint8_t	                validityScope;$/;"	m	struct:fapi_capability
+value	fapi_interface_ue_sim.h	/^	uint16_t                    value[NUMEROLOGIES];$/;"	m	struct:__anon1
+value	fapi_interface_ue_sim.h	/^    int16_t                     value;$/;"	m	struct:fapi_int16_tlv
+value	fapi_interface_ue_sim.h	/^    uint16_t                    value;$/;"	m	struct:fapi_uint16_tlv
+value	fapi_interface_ue_sim.h	/^    uint32_t                    value;$/;"	m	struct:fapi_uint32_tlv
+value	fapi_interface_ue_sim.h	/^    uint32_t                    value[];$/;"	m	struct:fapi_tx_dat_tlv
+value	fapi_interface_ue_sim.h	/^    uint8_t                     value;$/;"	m	struct:fapi_config_tlv
+value	fapi_interface_ue_sim.h	/^    uint8_t                     value;$/;"	m	struct:fapi_uint8_tlv
+valueOrOffset	fapi_interface_ue_sim.h	/^    uint64_t                    valueOrOffset;         \/\/ TLV with unsigned 32 bit value$/;"	m	struct:fapi_tx_dat_tlv
+vendor_spec_msg_body	fapi_interface_ue_sim.h	/^    uint8_t*   vendor_spec_msg_body;$/;"	m	struct:pkd_fapi_l1api_msg_frmt
+vendor_spec_msg_len	fapi_interface_ue_sim.h	/^    uint8_t    vendor_spec_msg_len;$/;"	m	struct:pkd_fapi_l1api_msg_frmt
+vrb_to_prb_mapping	fapi_interface_ue_sim.h	/^    uint8_t                     vrb_to_prb_mapping;$/;"	m	struct:fapi_ul_pusch_pdu
+vrb_to_prb_mapping	fapi_interface_ue_sim.h	/^    uint8_t                     vrb_to_prb_mapping;\/*SCF : PDSCH Allocation in Frequency Domain End *\/$/;"	m	struct:fapi_pdsch_freq_dom_alloc
+wideBandSnr	fapi_interface_ue_sim.h	/^    uint8_t                     wideBandSnr;$/;"	m	struct:fapi_srs_pdu
