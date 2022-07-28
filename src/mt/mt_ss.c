@@ -514,10 +514,24 @@ SsRegCfg cfgRegInfo[SS_MAX_REGS] =
 	    { SS_POOL_STATIC, 0 }
 	 }
       }
-#ifndef INTEL_WLS_MEM
+#if ((!defined(INTEL_WLS_MEM)) || (defined(UE_SIM_TEST)))
    ,
       {
          SS_DFLT_REGION + 7, SS_MAX_POOLS_PER_REG - 1,
+         {
+            { SS_POOL_DYNAMIC, MT_POOL_0_DSIZE },
+            { SS_POOL_DYNAMIC, MT_POOL_1_DSIZE },
+            { SS_POOL_DYNAMIC, MT_POOL_2_DSIZE },
+            { SS_POOL_DYNAMIC, MT_POOL_3_DSIZE },
+            { SS_POOL_DYNAMIC, MT_POOL_4_DSIZE },
+            { SS_POOL_STATIC, 0 }
+         }
+      }
+#endif
+#ifdef UE_SIM_TEST
+   ,
+      {
+         SS_DFLT_REGION + 8, SS_MAX_POOLS_PER_REG - 1,
          {
             { SS_POOL_DYNAMIC, MT_POOL_0_DSIZE },
             { SS_POOL_DYNAMIC, MT_POOL_1_DSIZE },
@@ -624,7 +638,7 @@ MtDynMemCfg mtDynMemoCfg =
 	    {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD}
 	 }
       }
-#ifndef INTEL_WLS_MEM
+#if ((!defined(INTEL_WLS_MEM)) || (defined(UE_SIM_TEST)))
       ,
          {
             SS_DFLT_REGION + 7,                         /* region id */
@@ -639,6 +653,22 @@ MtDynMemCfg mtDynMemoCfg =
             }
          }
 #endif
+#ifdef UE_SIM_TEST
+      ,    
+         {
+            SS_DFLT_REGION + 8,                         /* region id */
+            MT_MAX_BKTS,                            /* number of buckets */
+            {
+               /* block size, no. of blocks, Upper threshold, lower threshold */
+               {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD},
+               {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD},
+               {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD},
+               {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD},
+               {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD}
+            }
+         }
+#endif
+
 #if ((defined (SPLIT_RLC_DL_TASK)) && (!defined (L2_L3_SPLIT)))
       ,
 	 {
@@ -805,7 +835,7 @@ MtMemCfg mtMemoCfg =
 	    {MT_BKT_4_DSIZE, MT_BKT_4_STATIC_NUMBLKS}    /* block size, no. of blocks */
 	 }
       }
-#ifndef INTEL_WLS_MEM
+#if ((!defined(INTEL_WLS_MEM)) || (defined(UE_SIM_TEST)))
       ,
          {
             SS_DFLT_REGION + 7,                         /* region id */
@@ -820,6 +850,22 @@ MtMemCfg mtMemoCfg =
             }
          }
 #endif
+#ifdef UE_SIM_TEST
+      ,
+         {
+            SS_DFLT_REGION + 8,                         /* region id */
+            MT_MAX_BKTS,                            /* number of buckets */
+            MT_HEAP_SIZE,                           /* heap size */
+            {
+               {MT_BKT_0_DSIZE, MT_BKT_0_STATIC_NUMBLKS},   /* block size, no. of blocks */
+               {MT_BKT_1_DSIZE, MT_BKT_1_STATIC_NUMBLKS},    /* block size, no. of blocks */
+               {MT_BKT_2_DSIZE, MT_BKT_2_STATIC_NUMBLKS},   /* block size, no. of blocks */
+               {MT_BKT_3_DSIZE, MT_BKT_3_STATIC_NUMBLKS},    /* block size, no. of blocks */
+               {MT_BKT_4_DSIZE, MT_BKT_4_STATIC_NUMBLKS}    /* block size, no. of blocks */
+            }
+         }
+#endif
+
 #endif /* SS_LOCKLESS_MEMORY */
       STATIC_MEM_CFG
    }
@@ -5275,7 +5321,6 @@ Void mtTmrHdlrPublic()
 	 tsN.tv_nsec = 0;
 	 continue;
       }
-
       if (gettimeofday(&tv2,NULL) == -1)
       {
 #if (ERRCLASS & ERRCLS_DEBUG)
@@ -6636,7 +6681,7 @@ S16 SGlobMemInfoShow(Void)
    SDisplay(0, prntBuf);
    sprintf(prntBuf, "====================================================\n");
    SDisplay(0, prntBuf);
-   sprintf(prntBuf, "Bucket Id  Set Size  Free Sets  Allocated\n");
+   sprintf(prntBuf, "PoolId  PoolSize  NoOfBlocks  BucketSetSize  NoOfFreeSets  NoOfAllocatedSets\n");
    SDisplay(0, prntBuf);
    sprintf(prntBuf, "====================================================\n");
    SDisplay(0, prntBuf);
@@ -6649,11 +6694,15 @@ S16 SGlobMemInfoShow(Void)
 	    idx, globReg->bktTbl[idx].size, globReg->bktTbl[idx].bucketSetSize, globReg->bktTbl[idx].listValidBktSet.count, globReg->bktTbl[idx].listFreeBktSet.count);
 #else      
 #ifndef ALIGN_64BIT
-      sprintf(prntBuf, "%2u  %12lu  %8lu %9lu\n", 
-	    idx, globReg->bktTbl[idx].bucketSetSize, globReg->bktTbl[idx].listValidBktSet.count, globReg->bktTbl[idx].listFreeBktSet.count);
+      sprintf(prntBuf, "%d  %ld  %ld  %12lu  %8lu %9lu\n", 
+	    globReg->bktTbl[idx].poolId, globReg->bktTbl[idx].size, globReg->bktTbl[idx].numBlks, \
+       globReg->bktTbl[idx].bucketSetSize, globReg->bktTbl[idx].listValidBktSet.count, globReg->bktTbl[idx].listFreeBktSet.count);
 #else
-      sprintf(prntBuf, "%2u  %12u  %8u %9u\n", 
-	    idx, globReg->bktTbl[idx].bucketSetSize, globReg->bktTbl[idx].listValidBktSet.count, globReg->bktTbl[idx].listFreeBktSet.count);
+//      sprintf(prntBuf, "%2u  %12u  %8u %9u\n", 
+//	    idx, globReg->bktTbl[idx].bucketSetSize, globReg->bktTbl[idx].listValidBktSet.count, globReg->bktTbl[idx].listFreeBktSet.count);
+      sprintf(prntBuf, "%d  %ld  %ld  %12lu  %8lu %9lu\n", 
+	    globReg->bktTbl[idx].poolId, globReg->bktTbl[idx].size, globReg->bktTbl[idx].numBlks, \
+       globReg->bktTbl[idx].bucketSetSize, globReg->bktTbl[idx].listValidBktSet.count, globReg->bktTbl[idx].listFreeBktSet.count);
 #endif
 #endif      
       SDisplay(0, prntBuf);

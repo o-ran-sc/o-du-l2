@@ -169,7 +169,7 @@ uint8_t fapiMacCrcInd(Pst *pst, CrcInd *crcInd)
    crcIndInfo.crnti = crcInd->crcInfo[0].rnti;
    crcIndInfo.timingInfo.sfn = crcInd->timingInfo.sfn;
    crcIndInfo.timingInfo.slot = crcInd->timingInfo.slot;
-   crcIndInfo.numCrcInd = crcInd->crcInfo[0].numCb;
+   crcIndInfo.numCrcInd = crcInd->numCrc;
    crcIndInfo.crcInd[0] = crcInd->crcInfo[0].cbCrcStatus[0];
 
    MAC_FREE_SHRABL_BUF(pst->region, pst->pool, crcInd, sizeof(CrcInd));
