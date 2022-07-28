@@ -75,8 +75,8 @@
 #define ODU_SELECTOR_TC 1
 #define ODU_SELECTOR_LWLC 2
 
-#define ODU_START_CRNTI   100
-#define ODU_END_CRNTI     500
+#define ODU_START_CRNTI   17017
+#define ODU_END_CRNTI     17020
 
 /* LCID */
 #define SRB0_LCID  0
@@ -121,11 +121,14 @@
 
 #define MAX_SFN   1024
 
+#define TX_PAYLOAD_HDR_LEN 32           /* Intel L1 requires adding a 32 byte header to transmitted payload */
+
 /* Defining macros for common utility functions */
 #define ODU_GET_MSG_BUF SGetMsg
 #define ODU_PUT_MSG_BUF SPutMsg
 #define ODU_ADD_PRE_MSG_MULT SAddPreMsgMult
 #define ODU_ADD_PRE_MSG_MULT_IN_ORDER SAddPreMsgMultInOrder
+#define ODU_ADD_POST_MSG SAddPstMsg
 #define ODU_ADD_POST_MSG_MULT SAddPstMsgMult
 #define ODU_START_TASK SStartTask
 #define ODU_STOP_TASK SStopTask

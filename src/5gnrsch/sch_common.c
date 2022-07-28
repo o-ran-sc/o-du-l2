@@ -744,7 +744,9 @@ uint16_t schAllocPucchResource(SchCellCb *cell, SlotTimingInfo pucchTime, uint16
       /* set HARQ flag to true */
       schUlSlotInfo->schPucchInfo.harqFlag = true;
       schUlSlotInfo->schPucchInfo.numHarqBits = 1; /* 1 bit for HARQ */
-      ADD_DELTA_TO_TIME(pucchTime, pucchTime, 3); /* SLOT_DELAY=3 */
+      /* Below line is required when working with PHY stub. Must enclose within
+       corresponding flag */
+      //ADD_DELTA_TO_TIME(pucchTime, pucchTime, 3); /* SLOT_DELAY=3 */
       cmLListAdd2Tail(&(ueCb->hqDlmap[pucchTime.slot]->hqList), &hqP->ulSlotLnk);
    }
    return ROK;

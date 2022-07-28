@@ -296,6 +296,7 @@ uint8_t sendDlPcchIndToMac(MacPcchInd *pcchInd)
 *****************************************************************/
 uint8_t duHandleSlotInd(Pst *pst, SlotTimingInfo *slotIndInfo)
 {
+   static uint16_t count = 0;
    uint8_t cellIdx = 0, ret = ROK;
    DuCellCb *duCellCb = NULLP;
 
@@ -322,6 +323,9 @@ uint8_t duHandleSlotInd(Pst *pst, SlotTimingInfo *slotIndInfo)
       DU_LOG("\nERROR  -->  DU APP : Recevied null pointer from MAC");
       ret = RFAILED;
    }
+   //if(count == 3000)
+   //  BuildAndSendDUConfigUpdate(SERV_CELL_TO_DELETE);
+   //count++;
    return(ret);
 }
 /*******************************************************************

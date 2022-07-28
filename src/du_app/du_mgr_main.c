@@ -44,9 +44,15 @@ uint8_t rgActvTsk (Pst *, Buffer *);
 uint8_t rgActvInit (Ent, Inst, Region, Reason);
 uint8_t lwrMacActvTsk(Pst *, Buffer *);
 uint8_t lwrMacActvInit(Ent, Inst, Region, Reason);
-#ifndef INTEL_WLS_MEM
+#if (!defined(INTEL_WLS_MEM) && !defined(UE_SIM_TEST))
 uint8_t phyStubActvTsk(Pst *, Buffer *);
 uint8_t phyStubActvInit(Ent, Inst, Region, Reason);
+#endif
+#ifdef UE_SIM_TEST
+uint8_t fapiClRecvrActvTsk(Pst *, Buffer *);
+uint8_t fapiClRecvrActvInit(Ent, Inst, Region, Reason);
+uint8_t fapiClSlotIndActvTsk(Pst *, Buffer *);
+uint8_t fapiClSlotIndActvInit(Ent, Inst, Region, Reason);
 #endif
 
 /* Global variable */
@@ -478,7 +484,7 @@ uint8_t lwrMacInit(SSTskId sysTskId)
    return ROK;
 }
 
-#ifndef INTEL_WLS_MEM
+#if (!defined(INTEL_WLS_MEM) && !defined(UE_SIM_TEST))
 /*******************************************************************
  *
  * @brief Initializes Phy stub slot indication generator task
@@ -516,6 +522,78 @@ uint8_t phyStubInit(SSTskId sysTskId)
 }
 #endif
 
+#ifdef UE_SIM_TEST
+/*******************************************************************
+ *
+ * @brief Initializes FAPI CL TAPA tasks
+ *
+ * @details
+ *
+ *    Function : fapiClRecvrInit
+ *
+ *    Functionality:
+ *       - Registers and attaches TAPA tasks for FAPI CL
+ *
+ * @params[in] system task ID
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t fapiClRecvrInit(SSTskId sysTskId)
+{
+   /* Register FAPI CL slot indication TAPA Task */
+   if(ODU_REG_TTSK((Ent)ENTFAPICL, (Inst)0, (Ttype)TTNORM, (Prior)PRIOR0,
+            fapiClRecvrActvInit, (ActvTsk)fapiClRecvrActvTsk) != ROK)
+   {
+      return RFAILED;
+   }
+   /* Attach FAPI CL slot indication TAPA Task */
+   if (ODU_ATTACH_TTSK((Ent)ENTFAPICL, (Inst)0, sysTskId)!= ROK)
+   {
+      return RFAILED;
+   }
+
+   DU_LOG("\nINFO   -->  DU_APP : FAPI CL Receiver TAPA task created and registered to %d sys task",
+         sysTskId);
+   return ROK;
+}
+
+/*******************************************************************
+ *
+ * @brief Initializes FAPI CL TAPA tasks
+ *
+ * @details
+ *
+ *    Function : fapiClSlotIndInit
+ *
+ *    Functionality:
+ *       - Registers and attaches TAPA tasks for FAPI CL
+ *
+ * @params[in] system task ID
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t fapiClSlotIndInit(SSTskId sysTskId)
+{
+   /* Register FAPI CL slot indication TAPA Task */
+   if(ODU_REG_TTSK((Ent)ENTFAPICL, (Inst)1, (Ttype)TTNORM, (Prior)PRIOR0,
+            fapiClSlotIndActvInit, (ActvTsk)fapiClSlotIndActvTsk) != ROK)
+   {
+      return RFAILED;
+   }
+   /* Attach FAPI CL slot indication TAPA Task */
+   if (ODU_ATTACH_TTSK((Ent)ENTFAPICL, (Inst)1, sysTskId)!= ROK)
+   {
+      return RFAILED;
+   }
+
+   DU_LOG("\nINFO   -->  DU_APP : FAPI CL Slot Indicarion TAPA task created and registered to %d sys task",
+         sysTskId);
+   return ROK;
+}
+#endif
+
 /*******************************************************************
  *
  * @brief Initializes system and TAPA tasks
@@ -536,6 +614,9 @@ uint8_t commonInit()
 {
    /* Declare system task Ids */
    SSTskId du_app_stsk, egtp_stsk, sctp_stsk, rlc_ul_stsk, rlc_mac_cl_stsk, lwr_mac_stsk, phy_stub_slot_ind_stsk;
+#ifdef UE_SIM_TEST
+   SSTskId fapi_cl_slot_ind_stsk, fapi_cl_recvr_stsk;
+#endif
 
    pthread_attr_t attr;
 
@@ -548,7 +629,7 @@ uint8_t commonInit()
       DU_LOG("\nERROR  -->  DU_APP : System Task creation for DU APP failed");
       return RFAILED;
    }
-   ODU_SET_THREAD_AFFINITY(&du_app_stsk, SS_AFFINITY_MODE_EXCL, 16, 0);
+   //ODU_SET_THREAD_AFFINITY(&du_app_stsk, SS_AFFINITY_MODE_EXCL, 16, 0);
 
    /* system task for EGTP */
    if(ODU_CREATE_TASK(PRIOR0, &egtp_stsk) != ROK)
@@ -556,7 +637,7 @@ uint8_t commonInit()
       DU_LOG("\nERROR  -->  DU_APP : System Task creation for EGTP failed");
       return RFAILED;
    }
-   ODU_SET_THREAD_AFFINITY(&egtp_stsk, SS_AFFINITY_MODE_EXCL, 17, 0);
+   //ODU_SET_THREAD_AFFINITY(&egtp_stsk, SS_AFFINITY_MODE_EXCL, 17, 0);
 
    /* system task for RLC_DL and MAC */
    if(ODU_CREATE_TASK(PRIOR0, &rlc_mac_cl_stsk) != ROK)
@@ -566,7 +647,7 @@ uint8_t commonInit()
    }
    pthread_attr_init(&attr);
    pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
-   ODU_SET_THREAD_AFFINITY(&rlc_mac_cl_stsk, SS_AFFINITY_MODE_EXCL, 18, 0);
+   //ODU_SET_THREAD_AFFINITY(&rlc_mac_cl_stsk, SS_AFFINITY_MODE_EXCL, 18, 0);
 
    /* system task for RLC UL */
    if(ODU_CREATE_TASK(PRIOR1, &rlc_ul_stsk) != ROK)
@@ -574,7 +655,7 @@ uint8_t commonInit()
       DU_LOG("\nERROR  -->  DU_APP : System Task creation for RLC UL failed");
       return RFAILED;
    }
-   ODU_SET_THREAD_AFFINITY(&rlc_ul_stsk, SS_AFFINITY_MODE_EXCL, 19, 0);
+   //ODU_SET_THREAD_AFFINITY(&rlc_ul_stsk, SS_AFFINITY_MODE_EXCL, 19, 0);
 
    /* system task for SCTP receiver thread */
    if(ODU_CREATE_TASK(PRIOR0, &sctp_stsk) != ROK)
@@ -582,7 +663,7 @@ uint8_t commonInit()
       DU_LOG("\nERROR  -->  DU_APP : System Task creation for SCTP failed");
       return RFAILED;
    }
-   ODU_SET_THREAD_AFFINITY(&sctp_stsk, SS_AFFINITY_MODE_EXCL, 20, 0);
+   //ODU_SET_THREAD_AFFINITY(&sctp_stsk, SS_AFFINITY_MODE_EXCL, 20, 0);
 
    /* system task for lower-mac receiver thread */
    if(ODU_CREATE_TASK(PRIOR0, &lwr_mac_stsk) != ROK)
@@ -590,9 +671,9 @@ uint8_t commonInit()
       DU_LOG("\nERROR  -->  DU_APP : System Task creation for Lower MAC failed");
       return RFAILED;
    }
-   ODU_SET_THREAD_AFFINITY(&lwr_mac_stsk, SS_AFFINITY_MODE_EXCL, 21, 0);
+   //ODU_SET_THREAD_AFFINITY(&lwr_mac_stsk, SS_AFFINITY_MODE_EXCL, 21, 0);
 
-#ifndef INTEL_WLS_MEM
+#if (!defined(INTEL_WLS_MEM) && !defined(UE_SIM_TEST))
    /* system task for phy stub's slot indication generator thread */
    if(ODU_CREATE_TASK(PRIOR0, &phy_stub_slot_ind_stsk) != ROK)
    {
@@ -600,6 +681,20 @@ uint8_t commonInit()
       return RFAILED;
    }
 
+#endif
+#ifdef UE_SIM_TEST
+   /* system task for FAPI CL's slot indication generator thread */
+   if(ODU_CREATE_TASK(PRIOR0, &fapi_cl_recvr_stsk) != ROK)
+   {
+      DU_LOG("\nERROR  -->  DU_APP : System Task creation for FAPI CL receiver failed. MAX STSK [%d]", SS_MAX_STSKS);
+      return RFAILED;
+   }
+
+   if(ODU_CREATE_TASK(PRIOR0, &fapi_cl_slot_ind_stsk) != ROK)
+   {  
+      DU_LOG("\nERROR  -->  DU_APP : System Task creation for FAPI CL slot indication generator failed. MAX STSK [%d]", SS_MAX_STSKS);
+      return RFAILED;
+   }
 #endif
 
    /* Create TAPA tasks */
@@ -639,7 +734,7 @@ uint8_t commonInit()
       return RFAILED;
    }
 
-#ifndef INTEL_WLS_MEM
+#if (!defined(INTEL_WLS_MEM) && !defined(UE_SIM_TEST))
    if(phyStubInit(phy_stub_slot_ind_stsk) != ROK)
    {
       DU_LOG("\nERROR  -->  DU_APP : PHY stub slot indication Tapa Task initialization failed");
@@ -647,6 +742,19 @@ uint8_t commonInit()
    }
 #endif
 
+#ifdef UE_SIM_TEST
+   if(fapiClRecvrInit(fapi_cl_recvr_stsk) != ROK)
+   {
+      DU_LOG("\nERROR  -->  DU_APP : FAPI CL receiver Tapa Task initialization failed");
+      return RFAILED;
+   }
+
+   if(fapiClSlotIndInit(fapi_cl_slot_ind_stsk) != ROK)
+   {
+      DU_LOG("\nERROR  -->  DU_APP : FAPI CL slot indication Tapa Task initialization failed");
+      return RFAILED;
+   }
+#endif
 
    return ROK;
 }

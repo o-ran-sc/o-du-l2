@@ -48,6 +48,8 @@ uint8_t schProcessCrcInd(CrcIndInfo *crcInd, Inst schInst)
    uint8_t  ueId=0;
    SchUlHqProcCb *hqP = NULLP;
 
+   DU_LOG("\nDEBUG  -->  SCH : Received CRC indication");
+
    while(count  <crcInd->numCrcInd)
    {
       GET_UE_ID(crcInd->crnti, ueId);

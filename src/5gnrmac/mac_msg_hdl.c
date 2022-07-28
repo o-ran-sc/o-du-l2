@@ -169,7 +169,7 @@ uint8_t fapiMacCrcInd(Pst *pst, CrcInd *crcInd)
    crcIndInfo.crnti = crcInd->crcInfo[0].rnti;
    crcIndInfo.timingInfo.sfn = crcInd->timingInfo.sfn;
    crcIndInfo.timingInfo.slot = crcInd->timingInfo.slot;
-   crcIndInfo.numCrcInd = crcInd->crcInfo[0].numCb;
+   crcIndInfo.numCrcInd = crcInd->numCrc;
    crcIndInfo.crcInd[0] = crcInd->crcInfo[0].cbCrcStatus[0];
 
    MAC_FREE_SHRABL_BUF(pst->region, pst->pool, crcInd, sizeof(CrcInd));
@@ -758,7 +758,7 @@ uint8_t macProcLongBsr(uint16_t cellId, uint16_t crnti,uint8_t numLcg,\
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t buildAndSendHarqInd(HarqInfoF0F1 *harqInfo, uint8_t crnti, uint16_t cellIdx, SlotTimingInfo *slotInd)
+uint8_t buildAndSendHarqInd(HarqInfoF0F1 *harqInfo, uint16_t crnti, uint16_t cellIdx, SlotTimingInfo *slotInd)
 {
    uint16_t harqCounter=0;
    Pst pst;
@@ -801,7 +801,7 @@ uint8_t buildAndSendHarqInd(HarqInfoF0F1 *harqInfo, uint8_t crnti, uint16_t cell
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t buildAndSendSrInd(UciInd *macUciInd, uint8_t crnti)
+uint8_t buildAndSendSrInd(UciInd *macUciInd, uint16_t crnti)
 {
    uint16_t cellIdx;
    Pst pst;

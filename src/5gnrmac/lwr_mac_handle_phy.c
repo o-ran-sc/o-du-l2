@@ -276,10 +276,10 @@ uint8_t procCrcInd(fapi_crc_ind_t  *fapiCrcInd)
       crcIndInfo->harqId      = fapiCrcInd->crc[crcInfoIdx].harqId;
       crcIndInfo->tbCrcStatus = fapiCrcInd->crc[crcInfoIdx].tbCrcStatus;
       crcIndInfo->numCb       = fapiCrcInd->crc[crcInfoIdx].numCb;
-      for(crcStatusIdx = 0; crcStatusIdx < crcIndInfo->numCb; crcStatusIdx++)
+      for(crcStatusIdx = 0; crcStatusIdx < ceil(crcIndInfo->numCb/8); crcStatusIdx++)
       {
-	 crcIndInfo->cbCrcStatus[crcStatusIdx] = \
-	    fapiCrcInd->crc[crcInfoIdx].cbCrcStatus[crcStatusIdx];
+         crcIndInfo->cbCrcStatus[crcStatusIdx] = \
+                                                 fapiCrcInd->crc[crcInfoIdx].cbCrcStatus[crcStatusIdx];
       }
       crcIndInfo->ul_cqi  = fapiCrcInd->crc[crcInfoIdx].ul_cqi;
       crcIndInfo->timingAdvance = fapiCrcInd->crc[crcInfoIdx].timingAdvance;
