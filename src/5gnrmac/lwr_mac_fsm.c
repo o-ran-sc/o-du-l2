@@ -2206,7 +2206,7 @@ uint8_t lwr_mac_procConfigReqEvt(void *msg)
 	 sizeof(fapi_msg_header_t));
    msgHeader = (fapi_msg_header_t *)(headerElem + 1);
    msgHeader->num_msg = 2; /* Config req msg and vendor specific msg */
-   msgHeader->handle = 0;
+   msgHeader->handle = macCfgParams.cellId;
 
    DU_LOG("\nDEBUG  -->  LWR_MAC: Sending Config Request to Phy");
    LwrMacSendToL1(headerElem);
@@ -2239,25 +2239,25 @@ uint8_t lwr_mac_procConfigRspEvt(void *msg)
    configRsp = (fapi_config_resp_t *)msg;
 
    DU_LOG("\nINFO  -->  LWR_MAC: Received EVENT[%d] at STATE[%d]", lwrMacCb.event, \
-	 lwrMacCb.phyState);
+         lwrMacCb.phyState);
 
    if(configRsp != NULL)
    {
       if(configRsp->error_code == MSG_OK)
       {
-	 DU_LOG("\nDEBUG  -->  LWR_MAC: PHY has moved to Configured state \n");
-	 lwrMacCb.phyState = PHY_STATE_CONFIGURED;
-	 lwrMacCb.cellCb[0].state = PHY_STATE_CONFIGURED;
-	 /* TODO : 
-	  * Store config response into an intermediate struture and send to MAC
-	  * Support LC and LWLC for sending config rsp to MAC 
-	  */
-	 fapiMacConfigRsp(lwrMacCb.cellCb[0].cellId);
+         DU_LOG("\nDEBUG  -->  LWR_MAC: PHY has moved to Configured state \n");
+         lwrMacCb.phyState = PHY_STATE_CONFIGURED;
+         lwrMacCb.cellCb[0].state = PHY_STATE_CONFIGURED;
+         /* TODO : 
+          * Store config response into an intermediate struture and send to MAC
+          * Support LC and LWLC for sending config rsp to MAC 
+          */
+         fapiMacConfigRsp(lwrMacCb.cellCb[0].cellId);
       }
       else
       {
-	 DU_LOG("\nERROR  -->  LWR_MAC: Invalid error code %d", configRsp->error_code);
-	 return RFAILED;
+         DU_LOG("\nERROR  -->  LWR_MAC: Invalid error code %d", configRsp->error_code);
+         return RFAILED;
       }
    }
    else
@@ -2345,7 +2345,7 @@ uint8_t lwr_mac_procStartReqEvt(void *msg)
       sizeof(fapi_msg_header_t));
    msgHeader = (fapi_msg_header_t *)(headerElem + 1);
    msgHeader->num_msg = 2; /* Start req msg and vendor specific msg */
-   msgHeader->handle = 0;
+   msgHeader->handle = ((OduCellId *)msg)->cellId;
 
    /* Send to PHY */
    DU_LOG("\nDEBUG  -->  LWR_MAC: Sending Start Request to Phy");
@@ -3662,7 +3662,7 @@ uint16_t fillDlTtiReq(SlotTimingInfo currTimingInfo)
                sizeof(fapi_msg_header_t));
          msgHeader = (fapi_msg_header_t *)(headerElem + 1);
          msgHeader->num_msg = 1;
-         msgHeader->handle = 0;
+         msgHeader->handle = macCellCfg.cellId;
 
          /* Fill Dl TTI Request */
          dlTtiReq = (fapi_dl_tti_req_t *)(dlTtiElem +1);
@@ -4149,7 +4149,7 @@ void fillPuschPdu(fapi_ul_tti_req_pdu_t *ulTtiReqPdu, MacCellCfg *macCellCfg, Ma
       ulTtiReqPdu->pdu.pusch_pdu.pduBitMap = 1;
       ulTtiReqPdu->pdu.pusch_pdu.rnti = currUlSlot->ulInfo.crnti;
       /* TODO : Fill handle in raCb when scheduling pusch and access here */
-      ulTtiReqPdu->pdu.pusch_pdu.handle = 100;
+      ulTtiReqPdu->pdu.pusch_pdu.handle = macCellCfg->cellId;
       ulTtiReqPdu->pdu.pusch_pdu.bwpSize = macCellCfg->initialUlBwp.bwp.numPrb;
       ulTtiReqPdu->pdu.pusch_pdu.bwpStart = macCellCfg->initialUlBwp.bwp.firstPrb;
       ulTtiReqPdu->pdu.pusch_pdu.subCarrierSpacing = \
@@ -4228,7 +4228,7 @@ void fillPucchPdu(fapi_ul_tti_req_pdu_t *ulTtiReqPdu, MacCellCfg *macCellCfg,\
       memset(&ulTtiReqPdu->pdu.pucch_pdu, 0, sizeof(fapi_ul_pucch_pdu_t));
       ulTtiReqPdu->pdu.pucch_pdu.rnti         = currUlSlot->ulInfo.schPucchInfo.rnti;
       /* TODO : Fill handle in raCb when scheduling pucch and access here */
-      ulTtiReqPdu->pdu.pucch_pdu.handle       = 100;
+      ulTtiReqPdu->pdu.pucch_pdu.handle       = macCellCfg->cellId;
       ulTtiReqPdu->pdu.pucch_pdu.bwpSize      = macCellCfg->initialUlBwp.bwp.numPrb;
       ulTtiReqPdu->pdu.pucch_pdu.bwpStart     = macCellCfg->initialUlBwp.bwp.firstPrb;
       ulTtiReqPdu->pdu.pucch_pdu.subCarrierSpacing = macCellCfg->initialUlBwp.bwp.scs;

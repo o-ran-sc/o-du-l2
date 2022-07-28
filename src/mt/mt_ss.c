@@ -514,7 +514,7 @@ SsRegCfg cfgRegInfo[SS_MAX_REGS] =
 	    { SS_POOL_STATIC, 0 }
 	 }
       }
-#ifndef INTEL_WLS_MEM
+#if ((!defined(INTEL_WLS_MEM)) || (defined(UE_SIM_TEST)))
    ,
       {
          SS_DFLT_REGION + 7, SS_MAX_POOLS_PER_REG - 1,
@@ -624,7 +624,7 @@ MtDynMemCfg mtDynMemoCfg =
 	    {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD}
 	 }
       }
-#ifndef INTEL_WLS_MEM
+#if ((!defined(INTEL_WLS_MEM)) || (defined(UE_SIM_TEST)))
       ,
          {
             SS_DFLT_REGION + 7,                         /* region id */
@@ -805,7 +805,7 @@ MtMemCfg mtMemoCfg =
 	    {MT_BKT_4_DSIZE, MT_BKT_4_STATIC_NUMBLKS}    /* block size, no. of blocks */
 	 }
       }
-#ifndef INTEL_WLS_MEM
+#if ((!defined(INTEL_WLS_MEM)) || (defined(UE_SIM_TEST)))
       ,
          {
             SS_DFLT_REGION + 7,                         /* region id */
