@@ -63,7 +63,7 @@
 #define SS_MAX_STSKS                    5 
 #endif
 #else 
-#ifndef INTEL_WLS_MEM
+#if ((!defined(INTEL_WLS_MEM)) || (defined(UE_SIM_TEST)))
 #define SS_MAX_STSKS                    8
 #else
 #define SS_MAX_STSKS                    7 
