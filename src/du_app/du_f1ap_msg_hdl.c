@@ -6997,7 +6997,7 @@ uint8_t BuildPhyCellGrpCfg(DuUeCb *ueCb, PhysicalCellGroupConfig_t *phyCellGrpCf
  * ****************************************************************/
 uint8_t BuildMacCellGrpCfg(DuUeCb *ueCb, MAC_CellGroupConfig_t *macCellGrpCfg)
 {
-   macCellGrpCfg->drx_Config = NULLP;
+   macCellGrpCfg->drx_ConfigRrc = NULLP;
    macCellGrpCfg->schedulingRequestConfig = NULLP;
    DU_ALLOC(macCellGrpCfg->schedulingRequestConfig, sizeof(struct SchedulingRequestConfig));
    if(!macCellGrpCfg->schedulingRequestConfig)

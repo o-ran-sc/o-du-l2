@@ -5270,7 +5270,7 @@ uint8_t BuildSchedulingReqConfig(struct SchedulingRequestConfig *schedulingReque
  * ****************************************************************/
 uint8_t BuildMacCellGrpCfg(MAC_CellGroupConfig_t *macCellGrpCfg)
 {
-   macCellGrpCfg->drx_Config = NULLP;
+   macCellGrpCfg->drx_ConfigRrc = NULLP;
    macCellGrpCfg->schedulingRequestConfig = NULLP;
    CU_ALLOC(macCellGrpCfg->schedulingRequestConfig, sizeof(struct SchedulingRequestConfig));
    if(!macCellGrpCfg->schedulingRequestConfig)
