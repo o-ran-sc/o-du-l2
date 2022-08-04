@@ -160,6 +160,18 @@ void readCuCfg()
    cuCb.cuCfgParams.sctpParams.sctpAssoc[0].duPort = g_cfg.DU_Port;
    cuCb.cuCfgParams.sctpParams.sctpAssoc[0].cuPort = g_cfg.CU_Port; 
    cuCb.cuCfgParams.sctpParams.numDu = 1;
+   
+   cuCb.cuCfgParams.egtpParams.egtpAssoc[0].localIp.ipV4Pres = TRUE;
+   cuCb.cuCfgParams.egtpParams.egtpAssoc[0].localIp.ipV4Addr = ipv4_cu;
+   cuCb.cuCfgParams.egtpParams.egtpAssoc[0].localPort = CU_EGTP_PORT[0];
+   cuCb.cuCfgParams.egtpParams.egtpAssoc[0].destIp.ipV4Pres = TRUE;
+   cuCb.cuCfgParams.egtpParams.egtpAssoc[0].destIp.ipV4Addr = ipv4_du;
+   cuCb.cuCfgParams.egtpParams.egtpAssoc[0].destPort = DU_EGTP_PORT[0];
+   cuCb.cuCfgParams.egtpParams.minTunnelId = MIN_TEID;
+   cuCb.cuCfgParams.egtpParams.currTunnelId = cuCb.cuCfgParams.egtpParams.minTunnelId;
+   cuCb.cuCfgParams.egtpParams.maxTunnelId = MAX_TEID;
+   cuCb.cuCfgParams.egtpParams.numDu = 1;
+
 #else
    cuCb.cuCfgParams.sctpParams.numDu = 0;
    cuCb.cuCfgParams.egtpParams.numDu = 0;
