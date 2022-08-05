@@ -11389,6 +11389,7 @@ uint8_t procUeContextModificationResponse(uint32_t duId, F1AP_PDU_t *f1apMsg)
 {
    uint8_t idx=0, duIdx=0;
    uint8_t duUeF1apId = 0, cuUeF1apId = 0;
+
    DuDb *duDb = NULLP;
    CuUeCb *ueCb = NULLP;
    UEContextModificationResponse_t *ueCtxtModRsp = NULLP;
@@ -11472,6 +11473,43 @@ uint8_t procUeContextModificationResponse(uint32_t duId, F1AP_PDU_t *f1apMsg)
             }
          }
       }
+   }
+   else
+   {
+      uint32_t teId = 0;
+      uint32_t duId;
+      int32_t totalNumOfTestFlow = 5;
+      EgtpTeIdCb *teidCb = NULLP;
+
+
+      while(totalNumOfTestFlow)
+      {
+
+         for(duId = 1; duId<=MAX_DU_SUPPORTED; duId++)
+         {
+            for(teId = 1; teId <= NUM_TUNNEL_TO_PUMP_DATA; teId++)
+            {
+               teidCb = NULLP;
+               cmHashListFind(&(egtpCb.dstCb[duId-1].teIdLst), (uint8_t *)&(teId), sizeof(uint32_t), 0, (PTR *)&teidCb);
+               if(teidCb)
+               {
+                  DU_LOG("\nDEBUG  -->  EGTP: Sending DL User Data(duId %d, teId:%d)\n", duId, teId);
+                  if(cuEgtpDatReq(duId, teId) != ROK)
+                  {
+                     DU_LOG("\nERROR --> EGTP: Issue with teid=%d\n",teId);
+                     break;
+                  }
+                  sleep(1);
+               }
+               else
+               {
+                  DU_LOG("\nDEBUG  -->  EGTP: TunnelId Not Found for (duId %d, teId:%d)\n", duId, teId);
+               }
+            }
+         }
+         totalNumOfTestFlow--;
+      }
+
    }
    
    return ROK;
