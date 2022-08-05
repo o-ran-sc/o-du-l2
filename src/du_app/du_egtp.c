@@ -1147,8 +1147,8 @@ uint8_t egtpDecodeHdr(Buffer *mBuf, EgtpMsg  *egtpMsg)
 
    egtpMsg->msg = mBuf;
 
-   //DU_LOG("\nDEBUG   -->  EGTP : DL Data Buffer after decoding header ");
-   //ODU_PRINT_MSG(mBuf, 0, 0);
+   DU_LOG("\nDEBUG   -->  EGTP : DL Data Buffer after decoding header ");
+   ODU_PRINT_MSG(mBuf, 0, 0);
 
    /* Forward the data to duApp/RLC */
  
