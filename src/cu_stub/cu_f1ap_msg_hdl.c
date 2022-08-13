@@ -10681,7 +10681,7 @@ uint8_t BuildDrbToBeModifiedList(uint32_t duId, CuUeCb *ueCb, DRBs_ToBeModified_
       CU_ALLOC(drbSet->list.array[arrIdx], sizeof(DRBs_ToBeModified_ItemIEs_t));
       if(drbSet->list.array[arrIdx] == NULLP)
       {
-         DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in BuildDrbToBeSetupList");
+         DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in BuildDrbToBeModList");
          return  RFAILED;
       }
 
@@ -10689,6 +10689,92 @@ uint8_t BuildDrbToBeModifiedList(uint32_t duId, CuUeCb *ueCb, DRBs_ToBeModified_
       if(ret != ROK)
       {
          DU_LOG("\nERROR  -->  F1AP : FillDrbToBeModItemList failed");
+      }
+   }
+
+   return ret;
+}
+
+/*******************************************************************
+*
+* @brief Builds the DRB to be released Item IE
+*
+* @details
+*
+*    Function : FillDrbToBeRelItemList
+*
+*    Functionality: Constructs the DRB to be modified Mod Item Ies
+*
+* @params[in] struct DRBs_ToBeReleased_ItemIEs *drbItemIe
+*
+* @return ROK     - success
+*         RFAILED - failure
+*
+* ****************************************************************/
+
+uint8_t FillDrbToBeRelItemList(uint32_t duId, CuUeCb *ueCb, uint8_t arrIdx, struct DRBs_ToBeReleased_ItemIEs *drbItemIe)
+{
+   drbItemIe->id = ProtocolIE_ID_id_DRBs_ToBeReleased_Item;
+   drbItemIe->criticality = Criticality_reject;
+   drbItemIe->value.present = DRBs_ToBeReleased_ItemIEs__value_PR_DRBs_ToBeReleased_Item;
+   drbItemIe->value.choice.DRBs_ToBeReleased_Item.dRBID = DRB1 + arrIdx;
+
+   for(drbIdx = 0; drbIdx < numDrb; drbIdx++)
+   {
+      if(ueCb->drbList[drbIdx].drbId == drbItemIe->value.choice.DRBs_ToBeReleased_Item.dRBID)
+      {
+         deleteEgtpTunnel(duId, ueCb->drbList[drbIdx].dlUpTnlInfo.teId);
+         CU_FREE(ueCb->drbList[drbIdx].snssai, sizeof(Snssai));
+         break;
+      }
+   }
+   return ROK;
+}
+/*******************************************************************
+*
+* @brief Builds the DRB to be released list 
+*
+* @details
+*
+*    Function : BuildDrbToBeReleasedList 
+*
+*    Functionality: Constructs the DRB to be released list
+*
+* @params[in] DRBs_ToBeReleased_List_t *drbSet 
+*
+* @return ROK     - success
+*         RFAILED - failure
+*
+* ****************************************************************/
+
+uint8_t BuildDrbToBeReleasedList(uint32_t duId, CuUeCb *ueCb, DRBs_ToBeReleased_List_t *drbSet)
+{
+   uint8_t ret = ROK;
+   uint8_t arrIdx =0;
+   uint8_t drbCnt =0;
+
+   drbCnt = MAX_DRB_MODIFIED_UE_MOD_REQ;
+   drbSet->list.count = drbCnt;
+   drbSet->list.size = drbCnt * sizeof(DRBs_ToBeReleased_ItemIEs_t *);
+   CU_ALLOC(drbSet->list.array, drbSet->list.size);
+   if(drbSet->list.array == NULLP)
+   {
+      DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in BuildDrbToBeReleasedList");
+      return  RFAILED;
+   }
+   for(arrIdx=0; arrIdx<drbCnt; arrIdx++)
+   {
+      CU_ALLOC(drbSet->list.array[arrIdx], sizeof(DRBs_ToBeReleased_ItemIEs_t));
+      if(drbSet->list.array[arrIdx] == NULLP)
+      {
+         DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in BuildDrbToBeReleasedList");
+         return  RFAILED;
+      }
+
+      ret = FillDrbToBeRelItemList(duId, ueCb, arrIdx, (DRBs_ToBeReleased_ItemIEs_t *)drbSet->list.array[arrIdx]);
+      if(ret != ROK)
+      {
+         DU_LOG("\nERROR  -->  F1AP : FillDrbToBeRelItemList failed");
       }
    }
 
@@ -10817,6 +10903,40 @@ void FreeDrbToBeModifiedList(DRBs_ToBeModified_List_t *drbSet)
 }
 
 /*******************************************************************
+*
+* @brief free the DRB to be modfified list
+*
+* @details
+*
+*    Function : FreeDrbToBeReleasedList
+*
+*    Functionality: free the DRB to be Release list
+*
+* @params[in] FreeDrbToBeReleasedList_t *drbSet
+*
+* @return ROK     - success
+*         RFAILED - failure
+*
+* ****************************************************************/
+void FreeDrbToBeReleasedList(DRBs_ToBeReleased_List_t *drbSet)
+{
+   uint8_t arrIdx =0;
+   struct DRBs_ToBeReleased_ItemIEs *drbItemIe;
+
+   if(drbSet->list.array)
+   {
+      for(arrIdx=0; arrIdx<drbSet->list.count ; arrIdx++)
+      {
+         if(drbSet->list.array[arrIdx] != NULLP)
+         {
+            CU_FREE(drbSet->list.array[arrIdx], sizeof(DRBs_ToBeReleased_ItemIEs_t));
+         }
+      }
+      CU_FREE(drbSet->list.array, drbSet->list.size);
+   }
+}
+
+/*******************************************************************
  *
  * @brief  free the UeContextModification Request 
  *
@@ -10865,6 +10985,12 @@ void FreeUeContextModicationRequest(F1AP_PDU_t *f1apMsg)
                         {
                            FreeDrbToBeModifiedList(&ueContextModifyReq->protocolIEs.list.array[arrIdx]->value.\
                                  choice.DRBs_ToBeModified_List);
+                           break;
+                        }
+                     case ProtocolIE_ID_id_DRBs_ToBeReleased_List:
+                        {
+                           FreeDrbToBeReleasedList(&ueContextModifyReq->protocolIEs.list.array[arrIdx]->value.\
+                                 choice.DRBs_ToBeReleased_List);
                            break;
                         }
                     case ProtocolIE_ID_id_TransmissionActionIndicator:
@@ -10937,7 +11063,7 @@ uint8_t BuildAndSendUeContextModificationReq(uint32_t duId, void *cuUeCb, UeCtxt
       ueContextModifyReq =&f1apMsg->choice.initiatingMessage->value.choice.UEContextModificationRequest;
 
       if(action == MODIFY_UE)
-         elementCnt = 4;
+         elementCnt = 5;
       else if(action == QUERY_CONFIG)
          elementCnt = 3;
       else if(action == RRC_RECONFIG_COMPLETE_IND)
@@ -11000,15 +11126,29 @@ uint8_t BuildAndSendUeContextModificationReq(uint32_t duId, void *cuUeCb, UeCtxt
          ret = BuildDrbToBeModifiedList(duId, ueCb, &(ueContextModifyReq->protocolIEs.list.array[ieIdx]->\
                   value.choice.DRBs_ToBeModified_List));
 
-         /* TODO: DRB to be release list */
-
+         /* TODO: fill the RRC reconfiguration information in RRC Contaiiner ie in case of MODIFY_UE  */
          if(ret != ROK)
          {
             DU_LOG("\nERROR  -->  F1AP : BuildAndSendUeContextModificationReq(): Failed to build drb to be modified list");
             break;
          }
 
-         /* TODO: fill the RRC reconfiguration information in RRC Contaiiner ie in case of MODIFY_UE  */
+         /* DRB to be released list */
+         ieIdx++;
+         ueContextModifyReq->protocolIEs.list.array[ieIdx]->id = ProtocolIE_ID_id_DRBs_ToBeReleased_List;
+         ueContextModifyReq->protocolIEs.list.array[ieIdx]->criticality = Criticality_reject;
+         ueContextModifyReq->protocolIEs.list.array[ieIdx]->value.present =\
+                                                                           UEContextModificationRequestIEs__value_PR_DRBs_ToBeReleased_List;
+         ret = BuildDrbToBeReleasedList(duId, ueCb, &(ueContextModifyReq->protocolIEs.list.array[ieIdx]->\
+                  value.choice.DRBs_ToBeReleased_List));
+
+         /* TODO: DRB to be release list */
+
+         if(ret != ROK)
+         {
+            DU_LOG("\nERROR  -->  F1AP : BuildAndSendUeContextModificationReq(): Failed to build drb to be deleted list");
+            break;
+         }
       }
       else if(action == QUERY_CONFIG)
       {
@@ -11708,6 +11848,11 @@ uint8_t procUeContextModificationResponse(uint32_t duId, F1AP_PDU_t *f1apMsg)
                 procDrbSetupModList(duId, ueCb, &ueCtxtModRsp->protocolIEs.list.array[idx]->value.choice.DRBs_SetupMod_List);
                 break; 
 
+             }
+             case ProtocolIE_ID_id_DRBs_Modified_List:
+             {
+                DU_LOG("\nINFO  -->  Received DRBs Modified List");
+                break;
              }
           case ProtocolIE_ID_id_SRBs_SetupMod_List:
              {
