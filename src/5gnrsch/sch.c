@@ -1125,42 +1125,42 @@ uint8_t MacSchSrUciInd(Pst *pst, SrUciIndInfo *uciInd)
 
 /*******************************************************************
  *
- * @brief Processes HARQ UCI indication from MAC 
+ * @brief Processes DL HARQ indication from MAC 
  *
  * @details
  *
- *    Function : MacSchHarqUciInd
+ *    Function : MacSchDlHarqInd
  *
  *    Functionality:
- *      Processes HARQ UCI indication from MAC
+ *      Processes DL HARQ indication from MAC
  *
  * @params[in] Post structure
- *             UCI Indication
+ *             DL HARQ Indication
  * @return ROK     - success
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t MacSchHarqUciInd(Pst *pst, HarqUciIndInfo *uciInd)
+uint8_t MacSchDlHarqInd(Pst *pst, DlHarqInd *dlHarqInd)
 {
    Inst  inst = pst->dstInst-SCH_INST_START;
    SchUeCb   *ueCb;
    SchCellCb *cellCb = schCb[inst].cells[inst];
 
 #ifdef CALL_FLOW_DEBUG_LOG
-   DU_LOG("\nCall Flow: ENTMAC -> ENTSCH : EVENT_UCI_IND_TO_SCH\n");
+   DU_LOG("\nCall Flow: ENTMAC -> ENTSCH : EVENT_DL_HARQ_IND_TO_SCH\n");
 #endif
 
    DU_LOG("\nDEBUG  -->  SCH : Received HARQ");
 
-   ueCb = schGetUeCb(cellCb, uciInd->crnti);
+   ueCb = schGetUeCb(cellCb, dlHarqInd->crnti);
 
    if(ueCb->state == SCH_UE_STATE_INACTIVE)
    {
-      DU_LOG("\nERROR  -->  SCH : Crnti %d is inactive", uciInd->crnti);
+      DU_LOG("\nERROR  -->  SCH : Crnti %d is inactive", dlHarqInd->crnti);
       return ROK;
    }
 
-   schUpdateHarqFdbk(ueCb, uciInd->numHarq, uciInd->harqPayload, &uciInd->slotInd);
+   schUpdateHarqFdbk(ueCb, dlHarqInd->numHarq, dlHarqInd->harqPayload, &dlHarqInd->slotInd);
 
    return ROK;
 }

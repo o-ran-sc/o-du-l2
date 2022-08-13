@@ -70,12 +70,12 @@ MacSchSrUciIndFunc macSchSrUciIndOpts[]=
    packMacSchSrUciInd
 };
 
-/* Function pointer for sending HARQ Uci ind from MAC to SCH */
-MacSchHarqUciIndFunc macSchHarqUciIndOpts[]=
+/* Function pointer for sending DL HARQ Ind from MAC to SCH */
+MacSchDlHarqIndFunc macSchDlHarqIndOpts[]=
 {
-   packMacSchHarqUciInd,
-   MacSchHarqUciInd,
-   packMacSchHarqUciInd
+   packMacSchDlHarqInd,
+   MacSchDlHarqInd,
+   packMacSchDlHarqInd
 };
 
 /* Function pointer for sending Slice cfg  ind from MAC to SCH */
@@ -741,7 +741,7 @@ uint8_t macProcLongBsr(uint16_t cellId, uint16_t crnti,uint8_t numLcg,\
 
 /*******************************************************************
  *
- * @brief Builds and send HARQ UCI Indication to SCH
+ * @brief Builds and send DL HARQ Indication to SCH
  *
  * @details
  *
@@ -762,25 +762,25 @@ uint8_t buildAndSendHarqInd(HarqInfoF0F1 *harqInfo, uint8_t crnti, uint16_t cell
 {
    uint16_t harqCounter=0;
    Pst pst;
-   HarqUciIndInfo   harqUciInd;
+   DlHarqInd   dlHarqInd;
    memset(&pst, 0, sizeof(Pst));
-   memset(&harqUciInd, 0, sizeof(HarqUciIndInfo));
+   memset(&dlHarqInd, 0, sizeof(DlHarqInd));
 
-   harqUciInd.cellId       = macCb.macCell[cellIdx]->cellId;
-   harqUciInd.crnti        = crnti;
-   harqUciInd.slotInd.sfn  = slotInd->sfn;
-   harqUciInd.slotInd.slot = slotInd->slot;
-   harqUciInd.numHarq = harqInfo->numHarq;
-   memset(harqUciInd.harqPayload, 0, MAX_SR_BITS_IN_BYTES);
+   dlHarqInd.cellId       = macCb.macCell[cellIdx]->cellId;
+   dlHarqInd.crnti        = crnti;
+   dlHarqInd.slotInd.sfn  = slotInd->sfn;
+   dlHarqInd.slotInd.slot = slotInd->slot;
+   dlHarqInd.numHarq      = harqInfo->numHarq;
+   memset(dlHarqInd.harqPayload, 0, MAX_SR_BITS_IN_BYTES);
    for(harqCounter = 0; harqCounter < harqInfo->numHarq; harqCounter++)
    {
-      harqUciInd.harqPayload[harqCounter] = harqInfo->harqValue[harqCounter];
+      dlHarqInd.harqPayload[harqCounter] = harqInfo->harqValue[harqCounter];
    }
    
    /* Fill Pst */
-   FILL_PST_MAC_TO_SCH(pst, EVENT_UCI_IND_TO_SCH);
+   FILL_PST_MAC_TO_SCH(pst, EVENT_DL_HARQ_IND_TO_SCH);
 
-   return(*macSchHarqUciIndOpts[pst.selector])(&pst, &harqUciInd);
+   return(*macSchDlHarqIndOpts[pst.selector])(&pst, &dlHarqInd);
 }
 
 
