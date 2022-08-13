@@ -66,7 +66,7 @@ SchCellDeleteRspFunc SchCellDeleteRspOpts[]=
  *         RFAILED - failure
  *
  * ****************************************************************/
-void SchSendUeCfgRspToMac(uint16_t event, SchUeCfg *ueCfg, Inst inst,\
+void SchSendUeCfgRspToMac(uint16_t event, SchUeCfgReq *ueCfg, Inst inst,\
       SchMacRsp result, SchUeCfgRsp *cfgRsp)
 {
    Pst rspPst;
@@ -239,7 +239,7 @@ uint8_t updateDedLcInfo(Inst inst, Snssai *snssai, uint16_t *rsvdDedicatedPRB, b
  *
  * ****************************************************************/
 
-uint8_t fillSchUeCb(Inst inst, SchUeCb *ueCb, SchUeCfg *ueCfg)
+uint8_t fillSchUeCb(Inst inst, SchUeCb *ueCb, SchUeCfgReq *ueCfg)
 {
    uint8_t   lcIdx, ueLcIdx, idx;
    uint8_t   freqDomainResource[FREQ_DOM_RSRC_SIZE] = {0};
@@ -438,7 +438,7 @@ uint8_t fillSchUeCb(Inst inst, SchUeCb *ueCb, SchUeCfg *ueCfg)
  *
  * ****************************************************************/
 
-SchCellCb *getSchCellCb(uint16_t srcEvent, Inst inst, SchUeCfg *ueCfg)
+SchCellCb *getSchCellCb(uint16_t srcEvent, Inst inst, SchUeCfgReq *ueCfg)
 {
    uint8_t      idx;
    SchCellCb    *cellCb = NULLP;
@@ -485,7 +485,7 @@ SchCellCb *getSchCellCb(uint16_t srcEvent, Inst inst, SchUeCfg *ueCfg)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t MacSchAddUeConfigReq(Pst *pst, SchUeCfg *ueCfg)
+uint8_t MacSchAddUeConfigReq(Pst *pst, SchUeCfgReq *ueCfg)
 {
    uint8_t      lcIdx = 0, ret = ROK, idx = 0;
    SchCellCb    *cellCb = NULLP;
@@ -890,7 +890,7 @@ uint8_t schFillUlDci(SchUeCb *ueCb, SchPuschInfo *puschInfo, DciInfo *dciInfo, b
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t MacSchModUeConfigReq(Pst *pst, SchUeCfg *ueCfg)
+uint8_t MacSchModUeConfigReq(Pst *pst, SchUeCfgReq *ueCfg)
 {
    uint8_t ueId, lcIdx, ret = ROK;
    SchCellCb    *cellCb = NULLP;
@@ -955,7 +955,7 @@ uint8_t MacSchModUeConfigReq(Pst *pst, SchUeCfg *ueCfg)
 *         RFAILED - failure
 *
 * ****************************************************************/
-void SchSendUeDeleteRspToMac(Inst inst, SchUeDelete  *ueDelete, SchMacRsp result, ErrorCause cause)
+void SchSendUeDeleteRspToMac(Inst inst, SchUeDeleteReq  *ueDelete, SchMacRsp result, ErrorCause cause)
 {
     Pst rspPst;
     SchUeDeleteRsp  delRsp;
@@ -1160,7 +1160,7 @@ void deleteSchUeCb(SchUeCb *ueCb)
 *         RFAILED - failure
 *
 * ****************************************************************/
-uint8_t MacSchUeDeleteReq(Pst *pst, SchUeDelete  *ueDelete)
+uint8_t MacSchUeDeleteReq(Pst *pst, SchUeDeleteReq  *ueDelete)
 {
     uint8_t      idx=0, ueId=0, ueIdToDel=0, ret=ROK;
     ErrorCause   result;
@@ -1239,12 +1239,12 @@ uint8_t MacSchUeDeleteReq(Pst *pst, SchUeDelete  *ueDelete)
  *
  *    Functionality: Fill and send Cell delete response to MAC
  *
- * @params[in] SchCellDelete  *ueDelete, Inst inst, SchMacRsp result
+ * @params[in] SchCellDelete  *cellDelete, Inst inst, SchMacRsp result
  * @return ROK     - success
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t SchSendCellDeleteRspToMac(SchCellDelete  *ueDelete, Inst inst, SchMacRsp result)
+uint8_t SchSendCellDeleteRspToMac(SchCellDeleteReq  *cellDelete, Inst inst, SchMacRsp result)
 {
    Pst rspPst;
    uint8_t ret=0;
@@ -1253,7 +1253,7 @@ uint8_t SchSendCellDeleteRspToMac(SchCellDelete  *ueDelete, Inst inst, SchMacRsp
 
    DU_LOG("\nINFO   --> SCH : Filling Cell Delete response");
    memset(&delRsp, 0, sizeof(SchCellDeleteRsp));
-   delRsp.cellId = ueDelete->cellId;
+   delRsp.cellId = cellDelete->cellId;
    delRsp.rsp = result;
 
    /* Filling response post */
@@ -1385,7 +1385,7 @@ void deleteSchCellCb(SchCellCb *cellCb)
  *
  * ****************************************************************/
 
-uint8_t MacSchCellDeleteReq(Pst *pst, SchCellDelete  *cellDelete)
+uint8_t MacSchCellDeleteReq(Pst *pst, SchCellDeleteReq  *cellDelete)
 {
    uint8_t   cellIdx=0, ret = RFAILED;
    Inst      inst = pst->dstInst - SCH_INST_START;

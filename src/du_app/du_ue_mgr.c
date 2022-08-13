@@ -735,31 +735,31 @@ void fillDefaultInitUlBwp(InitialUlBwp *initUlBwp)
       if(initUlBwp->puschPresent)
       {
          initUlBwp->puschCfg.dataScramblingId = SCRAMBLING_ID;
-	 initUlBwp->puschCfg.dmrsUlCfgForPuschMapTypeA.addPos = ADDITIONALPOSITION_POS0; 
-	 initUlBwp->puschCfg.dmrsUlCfgForPuschMapTypeA.transPrecodDisabled. \
-	    scramblingId0 = SCRAMBLING_ID; 
-	 initUlBwp->puschCfg.resourceAllocType = RESOURCEALLOCATION_TYPE1;
-	 initUlBwp->puschCfg.numTimeDomRsrcAlloc = 2;
-	 idx = 0;
-	 if(initUlBwp->puschCfg.numTimeDomRsrcAlloc <= MAX_NUM_UL_ALLOC)
-	 {
-	    initUlBwp->puschCfg.timeDomRsrcAllocList[idx].k2 = PUSCH_K2_CFG1;
-	    initUlBwp->puschCfg.timeDomRsrcAllocList[idx].mappingType =\
-	       MAPPING_TYPEA;
-	    initUlBwp->puschCfg.timeDomRsrcAllocList[idx].startSymbol = PUSCH_START_SYMBOL;
-	    initUlBwp->puschCfg.timeDomRsrcAllocList[idx].symbolLength = PUSCH_LENGTH_SYMBOL;
-	    initUlBwp->puschCfg.timeDomRsrcAllocList[idx].startSymbolAndLength =\
-	       calcSliv(PUSCH_START_SYMBOL, PUSCH_LENGTH_SYMBOL);
+         initUlBwp->puschCfg.dmrsUlCfgForPuschMapTypeA.addPos = ADDITIONALPOSITION_POS0; 
+         initUlBwp->puschCfg.dmrsUlCfgForPuschMapTypeA.transPrecodDisabled. \
+            scramblingId0 = SCRAMBLING_ID; 
+         initUlBwp->puschCfg.resourceAllocType = RESOURCEALLOCATION_TYPE1;
+         initUlBwp->puschCfg.numTimeDomRsrcAlloc = 2;
+         idx = 0;
+         if(initUlBwp->puschCfg.numTimeDomRsrcAlloc <= MAX_NUM_UL_ALLOC)
+         {
+            initUlBwp->puschCfg.timeDomRsrcAllocList[idx].k2 = PUSCH_K2_CFG1;
+            initUlBwp->puschCfg.timeDomRsrcAllocList[idx].mappingType =\
+                                                                       MAPPING_TYPEA;
+            initUlBwp->puschCfg.timeDomRsrcAllocList[idx].startSymbol = PUSCH_START_SYMBOL;
+            initUlBwp->puschCfg.timeDomRsrcAllocList[idx].symbolLength = PUSCH_LENGTH_SYMBOL;
+            initUlBwp->puschCfg.timeDomRsrcAllocList[idx].startSymbolAndLength =\
+                                                                                calcSliv(PUSCH_START_SYMBOL, PUSCH_LENGTH_SYMBOL);
 
-       idx++;
-       initUlBwp->puschCfg.timeDomRsrcAllocList[idx].k2 = PUSCH_K2_CFG2;
-       initUlBwp->puschCfg.timeDomRsrcAllocList[idx].mappingType = MAPPING_TYPEA;
-       initUlBwp->puschCfg.timeDomRsrcAllocList[idx].startSymbol = PUSCH_START_SYMBOL;
-       initUlBwp->puschCfg.timeDomRsrcAllocList[idx].symbolLength = PUSCH_LENGTH_SYMBOL;
-       initUlBwp->puschCfg.timeDomRsrcAllocList[idx].startSymbolAndLength =\
-          calcSliv(PUSCH_START_SYMBOL, PUSCH_LENGTH_SYMBOL);
-	 }
-	 initUlBwp->puschCfg.transformPrecoder = TRANSFORM_PRECODER_DISABLED;
+            idx++;
+            initUlBwp->puschCfg.timeDomRsrcAllocList[idx].k2 = PUSCH_K2_CFG2;
+            initUlBwp->puschCfg.timeDomRsrcAllocList[idx].mappingType = MAPPING_TYPEA;
+            initUlBwp->puschCfg.timeDomRsrcAllocList[idx].startSymbol = PUSCH_START_SYMBOL;
+            initUlBwp->puschCfg.timeDomRsrcAllocList[idx].symbolLength = PUSCH_LENGTH_SYMBOL;
+            initUlBwp->puschCfg.timeDomRsrcAllocList[idx].startSymbolAndLength =\
+                                                                                calcSliv(PUSCH_START_SYMBOL, PUSCH_LENGTH_SYMBOL);
+         }
+         initUlBwp->puschCfg.transformPrecoder = TRANSFORM_PRECODER_DISABLED;
       }
    }
    else
@@ -802,7 +802,8 @@ uint8_t fillDefaultSpCellGrpInfo(MacUeCfg *macUeCfg)
          return RFAILED;
       }
 
-      spCell->servCellCfg.numDlBwpToAdd    = 0; 
+      spCell->servCellCfg.numDlBwpToAddOrMod    = 0; 
+      spCell->servCellCfg.numDlBwpToRel    = 0; 
       spCell->servCellCfg.firstActvDlBwpId = ACTIVE_DL_BWP_ID;
       spCell->servCellCfg.defaultDlBwpId   = ACTIVE_DL_BWP_ID;
       spCell->servCellCfg.bwpInactivityTmr = NULLP;
@@ -814,8 +815,9 @@ uint8_t fillDefaultSpCellGrpInfo(MacUeCfg *macUeCfg)
 
       /* Filling Initial UL Bwp*/
       fillDefaultInitUlBwp(&spCell->servCellCfg.initUlBwp);
-      spCell->servCellCfg.numUlBwpToAdd     = 0; 
-      spCell->servCellCfg.firstActvUlBwpId  = ACTIVE_DL_BWP_ID; 
+      spCell->servCellCfg.numUlBwpToAddOrMod  = 0; 
+      spCell->servCellCfg.numUlBwpToRel       = 0; 
+      spCell->servCellCfg.firstActvUlBwpId    = ACTIVE_DL_BWP_ID; 
    }
    else
    {

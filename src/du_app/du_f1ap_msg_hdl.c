@@ -5991,7 +5991,7 @@ uint8_t BuildDlBwpToAddModList(ServCellCfgInfo *servCellCfg, struct ServingCellC
 {
    uint8_t elementCnt, idx;
 
-   elementCnt = servCellCfg->numDlBwpToAdd;
+   elementCnt = servCellCfg->numDlBwpToAddOrMod;
    dlBwpAddModList->list.count = elementCnt;
    dlBwpAddModList->list.size = elementCnt * sizeof(struct BWP_Downlink *);
    dlBwpAddModList->list.array = NULLP;
@@ -6014,7 +6014,7 @@ uint8_t BuildDlBwpToAddModList(ServCellCfgInfo *servCellCfg, struct ServingCellC
 
    for(idx=0; idx<dlBwpAddModList->list.count; idx++)
    {
-      dlBwpAddModList->list.array[idx]->bwp_Id = servCellCfg->DlBwpToAddList[idx].bwpId;
+      dlBwpAddModList->list.array[idx]->bwp_Id = servCellCfg->DlBwpToAddOrModList[idx].bwpId;
       dlBwpAddModList->list.array[idx]->bwp_Common = NULLP;
       dlBwpAddModList->list.array[idx]->bwp_Dedicated = NULLP;
    }
@@ -6074,7 +6074,7 @@ uint8_t BuildSpCellCfgDed(DuUeCb *ueCb, ServingCellConfig_t *srvCellCfg)
    srvCellCfg->downlinkBWP_ToReleaseList = NULLP;
 
    srvCellCfg->downlinkBWP_ToAddModList = NULLP;
-   if(ueCb && ueCb->macUeCfg.spCellCfg.servCellCfg.numDlBwpToAdd)
+   if(ueCb && ueCb->macUeCfg.spCellCfg.servCellCfg.numDlBwpToAddOrMod)
    {
       DU_ALLOC(srvCellCfg->downlinkBWP_ToAddModList, sizeof(struct ServingCellConfig__downlinkBWP_ToAddModList));
       if(srvCellCfg->downlinkBWP_ToAddModList == NULLP)
@@ -9534,7 +9534,7 @@ void extractRlcAmCfg(AmBearerCfg *amCfgToSet, struct RLC_Config__am *rlcAmCfg)
 {
    if(rlcAmCfg)
    {
-      /* UL AM */
+      /* UL AM */ //Doubt why checked DL but filled DL
       if(rlcAmCfg->dl_AM_RLC.sn_FieldLength)
       {
 	 amCfgToSet->ulAmCfg.snLenUl = covertAmSnLenFromRrcEnumToIntEnum(*(rlcAmCfg->dl_AM_RLC.sn_FieldLength));

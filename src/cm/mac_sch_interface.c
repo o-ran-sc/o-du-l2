@@ -233,7 +233,7 @@ uint8_t packSchCellCfgCfm(Pst *pst, SchCellCfgCfm *schCellCfgCfm)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t packMacSchAddUeConfigReq(Pst *pst, SchUeCfg  *ueCfg)
+uint8_t packMacSchAddUeConfigReq(Pst *pst, SchUeCfgReq  *ueCfg)
 {
    if((pst->selector == ODU_SELECTOR_LC) || (pst->selector == ODU_SELECTOR_LC))
    {
@@ -328,21 +328,21 @@ uint8_t packMacSchSrUciInd(Pst *pst, SrUciIndInfo *uciInd)
 
 /*******************************************************************
  *
- * @brief Pack and Send HARQ UCI Ind from MAC to SCH
+ * @brief Pack and Send DL HARQ Ind from MAC to SCH
  *
  * @details
  *
- *    Function : packMacHarqSchUciInd
+ *    Function : packMacSchDlHarqInd
  *
  *    Functionality:
- *       Pack and Send HARQ UCI Ind from MAC to SCH
+ *       Pack and Send DL HARQ Ind from MAC to SCH
  *
  * @params[in]
  * @return ROK     - success
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t packMacSchHarqUciInd(Pst *pst, HarqUciIndInfo *uciInd)
+uint8_t packMacSchDlHarqInd(Pst *pst, DlHarqInd *dlHarqInd)
 {
    if((pst->selector == ODU_SELECTOR_LC) || (pst->selector == ODU_SELECTOR_LWLC))
    {
@@ -372,7 +372,7 @@ uint8_t packMacSchHarqUciInd(Pst *pst, HarqUciIndInfo *uciInd)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t packMacSchModUeConfigReq(Pst *pst, SchUeCfg  *ueCfg)
+uint8_t packMacSchModUeConfigReq(Pst *pst, SchUeCfgReq  *ueCfg)
 {
    if((pst->selector == ODU_SELECTOR_LC) || (pst->selector == ODU_SELECTOR_LC))
    {
@@ -491,7 +491,7 @@ uint8_t packMacSchRachRsrcRel(Pst *pst, SchRachRsrcRel *schRachRsrcRel)
 *         RFAILED - failure
 *
 * ****************************************************************/
-uint8_t packMacSchUeDeleteReq(Pst *pst,  SchUeDelete *schUeDel)
+uint8_t packMacSchUeDeleteReq(Pst *pst,  SchUeDeleteReq *schUeDel)
 {
     if((pst->selector == ODU_SELECTOR_LC) || (pst->selector == ODU_SELECTOR_LC))
     {
@@ -538,12 +538,12 @@ uint8_t packSchUeDeleteRsp(Pst *pst, SchUeDeleteRsp  *delRsp)
  *    Functionality:
  *       Pack and Send  Cell Delete Request from MAC to SCH
  *
- * @params[in] Pst *pst,  SchCellDelete *schCellDelete
+ * @params[in] Pst *pst,  SchCellDeleteReq *schCellDeleteReq
  * @return ROK     - success
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t packMacSchCellDeleteReq(Pst *pst,  SchCellDelete *schCellDelete)
+uint8_t packMacSchCellDeleteReq(Pst *pst,  SchCellDeleteReq *schCellDeleteReq)
 {
    if((pst->selector == ODU_SELECTOR_LC) || (pst->selector == ODU_SELECTOR_LC))
    {

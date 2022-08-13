@@ -125,7 +125,7 @@ typedef enum
    RLC_DU_APP_RSP_NOK
 }RlcRsp;
 
-typedef struct ulAmCfg
+typedef struct ulAmCfg //Verified
 {
    SnLenAm        snLenUl;              /* Sequence Number length in bits. Allowed values are 12 and 18 */
    int8_t         reAssemTmr;           /* T_reassembling Timer in msec*/
@@ -133,7 +133,7 @@ typedef struct ulAmCfg
 
 }UlAmCfg;
 
-typedef struct dlAmCfg
+typedef struct dlAmCfg //Verified
 {
    SnLenAm      snLenDl;             /* Sequence Number length in bits. Allowed values are 12 and 18 */
    uint16_t     pollRetxTmr;         /* T_poll_retransmit Timer in msec */
@@ -143,43 +143,43 @@ typedef struct dlAmCfg
 
 }DlAmCfg;
 
-typedef struct dlUmCfg
+typedef struct dlUmCfg //Verified
 {
    SnLenUm        snLenDlUm;             /* Sequence Number length in bits. Allowed values are 6 and 12 */
 
 }DlUmCfg;
 
-typedef struct ulUmCfg
+typedef struct ulUmCfg //Verified
 {
    SnLenUm        snLenUlUm;             /* Sequence Number length in bits. Allowed values are 6 and 12 */
    int8_t         reAssemTmr;            /* T_reassembling Timer in msec*/
 
 }UlUmCfg;
 
-typedef struct amBearerCfg
+typedef struct amBearerCfg //Verified
 {
    UlAmCfg  ulAmCfg;
    DlAmCfg  dlAmCfg;
 }AmBearerCfg;
 
-typedef struct umBiDirBearerCfg
+typedef struct umBiDirBearerCfg //Verified
 {
    UlUmCfg  ulUmCfg;
    DlUmCfg  dlUmCfg;
 }UmBiDirBearerCfg;
 
-typedef struct umUniDirUlBearerCfg
+typedef struct umUniDirUlBearerCfg //Verified
 {
    UlUmCfg  ulUmCfg;
 }UmUniDirUlBearerCfg;
 
-typedef struct umUniDirDlBearerCfg
+typedef struct umUniDirDlBearerCfg //Verified
 {
    DlUmCfg  dlUmCfg;
 }UmUniDirDlBearerCfg;
 
 /* Spec Ref: 38.331, 6.3.2 RLC-BearerConfig */
-typedef struct rlcBearerCfg
+typedef struct rlcBearerCfg //Verified
 {
    ConfigType   configType;
    uint8_t      rbId;
@@ -198,7 +198,7 @@ typedef struct rlcBearerCfg
    bool isLcAddModRspSent;
 }RlcBearerCfg;
 
-typedef struct rlcUeCfg
+typedef struct rlcUeCfg //Verified
 {
    uint16_t     cellId;
    uint8_t      ueId;
@@ -207,7 +207,7 @@ typedef struct rlcUeCfg
    UeCfgState rlcUeCfgState; /* InActive / Completed */
 }RlcUeCfg;
 
-typedef struct rlcUeCfgRsp
+typedef struct rlcUeCfgRsp //Verified
 {
    uint16_t       cellId;
    uint16_t       ueId;
@@ -215,13 +215,13 @@ typedef struct rlcUeCfgRsp
    FailureReason  reason;
 }RlcUeCfgRsp;
 
-typedef struct rlcUeDelete
+typedef struct rlcUeDelete //Verified
 {
    uint16_t      cellId;
    uint8_t       ueId;
 }RlcUeDelete;
 
-typedef struct rlcUeDeleteRsp
+typedef struct rlcUeDeleteRsp //Verified
 {
    uint16_t       cellId;
    uint8_t        ueId;
@@ -229,7 +229,7 @@ typedef struct rlcUeDeleteRsp
 }RlcUeDeleteRsp;
 
 /* UL RRC Message from RLC to DU APP */
-typedef struct ulRrcMsgInfo
+typedef struct ulRrcMsgInfo //Verified
 {
    uint16_t   cellId;       /* Cell Id */
    uint16_t   ueId;         /* UE Id */
@@ -249,7 +249,7 @@ typedef struct ulUserDatInfo
 }RlcUlUserDatInfo;
 
 /* DL RRC Message from DU APP to RLC */
-typedef struct dlRrcMsgInfo
+typedef struct dlRrcMsgInfo //Verified
 {
    uint16_t   cellId;         /* Cell Id */
    uint16_t   ueId;           /* UE Id */
@@ -272,7 +272,7 @@ typedef struct dlRrcMsgRsp
 }RlcDlRrcMsgRsp;
 
 /* RRC delivery message from RLC to DU APP */
-typedef struct rrcDeliveryStatus
+typedef struct rrcDeliveryStatus //Verified
 {
    uint16_t  deliveryStatus;
    uint16_t  triggeringMessage;
@@ -298,7 +298,7 @@ typedef struct slicePmList
    SlicePm *sliceRecord;
 }SlicePmList;
 
-typedef struct rrcDeliveryReportInfo
+typedef struct rrcDeliveryReportInfo //Verified
 {
    uint16_t  cellId;
    uint16_t  ueId;
@@ -327,6 +327,16 @@ typedef uint8_t (*RlcDuUeCfgRsp) ARGS((
    Pst          *pst,
    RlcUeCfgRsp  *ueCfgRsp));
 
+/* UE Reconfig Request from DU APP to RLC */
+typedef uint8_t (*DuRlcUeReconfigReq) ARGS((
+   Pst           *pst,
+   RlcUeCfg      *ueCfg ));
+
+/* UE Delete Request from DU APP to RLC */
+typedef uint8_t (*DuRlcUeDeleteReq) ARGS((
+   Pst           *pst,
+   RlcUeDelete   *ueDelete));
+
 /* UE Delete Response from RLC to DU APP*/
 typedef uint8_t (*RlcDuUeDeleteRsp) ARGS((
    Pst          *pst,
@@ -346,16 +356,6 @@ typedef uint8_t (*DuDlRrcMsgToRlcFunc) ARGS((
 typedef uint8_t (*RlcRrcDeliveryReportToDuFunc) ARGS((
    Pst           *pst,
    RrcDeliveryReport *rrcDeliveryReport));
-
-/* UE Reconfig Request from DU APP to RLC */
-typedef uint8_t (*DuRlcUeReconfigReq) ARGS((
-   Pst           *pst,
-   RlcUeCfg      *ueCfg ));
-
-/* UE Delete Request from DU APP to RLC */
-typedef uint8_t (*DuRlcUeDeleteReq) ARGS((
-   Pst           *pst,
-   RlcUeDelete   *ueDelete));
 
 /* DL RRC Message from RLC to DU APP */
 typedef uint8_t (*RlcDlRrcMsgRspToDuFunc) ARGS((
