@@ -841,7 +841,7 @@ uint8_t unpackDuMacUeCfgRsp(MacDuUeCfgRspFunc func, Pst *pst, Buffer *mBuf)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t packDuMacUeReconfigReq(Pst *pst, MacUeCfg *ueCfg)
+uint8_t packDuMacUeReconfigReq(Pst *pst, MacUeReCfg *ueCfg)
 {
    Buffer *mBuf = NULLP;
 
@@ -886,12 +886,12 @@ uint8_t unpackMacUeReconfigReq(DuMacUeReconfigReq func, Pst *pst, Buffer *mBuf)
 {
    if(pst->selector == ODU_SELECTOR_LWLC)
    {
-      MacUeCfg *ueCfg;
+      MacUeReCfg *ueReCfg;
 
       /* unpack the address of the structure */
-      CMCHKUNPK(oduUnpackPointer, (PTR *)&ueCfg, mBuf);
+      CMCHKUNPK(oduUnpackPointer, (PTR *)&ueReCfg, mBuf);
       ODU_PUT_MSG_BUF(mBuf);
-      return (*func)(pst, ueCfg);
+      return (*func)(pst, ueReCfg);
    }
    else
    {
@@ -900,6 +900,76 @@ uint8_t unpackMacUeReconfigReq(DuMacUeReconfigReq func, Pst *pst, Buffer *mBuf)
       ODU_PUT_MSG_BUF(mBuf);
    }
 
+   return RFAILED;
+}
+
+/*******************************************************************
+ *
+ * @brief Pack and send UE Reconfig response from MAC to DU APP
+ *
+ * @details
+ *
+ *    Function : packDuMacUeReCfgRsp
+ *
+ *    Functionality:
+ *       Pack and send UE Reconfig response from MAC to DU APP
+ *
+ * @params[in] 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t packDuMacUeReCfgRsp(Pst *pst, MacUeReCfgRsp *reCfgRsp)
+{
+   Buffer *mBuf = NULLP;
+
+   if(pst->selector == ODU_SELECTOR_LWLC)
+   {
+      if (ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf) != ROK)
+      {
+         DU_LOG("\nERROR  --> MAC : Memory allocation failed at packDuMacUeReCfgRsp");
+         return RFAILED;
+      }
+      /* pack the address of the structure */
+      CMCHKPK(oduPackPointer,(PTR)reCfgRsp, mBuf);
+   }
+   else
+   {
+      DU_LOG("\nERROR  -->  MAC: Only LWLC supported for packDuMacUeReCfgRsp");
+      return RFAILED;
+   }
+
+   return ODU_POST_TASK(pst,mBuf);
+}
+
+/*******************************************************************
+ *
+ * @brief Unpack UE ReConfig Response from MAC to DU APP
+ *
+ * @details
+ *
+ *    Function :unpackDuMacUeReCfgRsp 
+ *
+ *    Functionality: Unpack UE ReConfig Response from MAC to DU APP
+ *
+ * @params[in] 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t unpackDuMacUeReCfgRsp(MacDuUeReCfgRspFunc func, Pst *pst, Buffer *mBuf)
+{
+   if(pst->selector == ODU_SELECTOR_LWLC)
+   {
+      MacUeReCfgRsp *reCfgRsp = NULLP;
+
+      /* unpack the address of the structure */
+      CMCHKUNPK(oduUnpackPointer, (PTR *)&reCfgRsp, mBuf);
+      ODU_PUT_MSG_BUF(mBuf);
+      return (*func)(pst, reCfgRsp);
+   }
+
+   ODU_PUT_MSG_BUF(mBuf);
    return RFAILED;
 }
 
@@ -1610,7 +1680,7 @@ uint8_t unpackDuMacSliceCfgRsp(MacDuSliceCfgRspFunc func, Pst *pst, Buffer *mBuf
  *
  * ****************************************************************/
 
-uint8_t packDuMacSliceRecfgReq(Pst *pst, MacSliceCfgReq *sliceReCfgReq)
+uint8_t packDuMacSliceRecfgReq(Pst *pst, MacSliceReCfgReq *sliceReCfgReq)
 {
    Buffer *mBuf = NULLP;
 
@@ -1654,7 +1724,7 @@ uint8_t unpackMacSliceReCfgReq(DuMacSliceRecfgReq func, Pst *pst, Buffer *mBuf)
 {
     if(pst->selector == ODU_SELECTOR_LWLC)
     {
-       MacSliceCfgReq *sliceReCfgReq;
+       MacSliceReCfgReq *sliceReCfgReq;
        /* unpack the address of the structure */
        CMCHKUNPK(oduUnpackPointer, (PTR *)&sliceReCfgReq, mBuf);
        ODU_PUT_MSG_BUF(mBuf);
@@ -1686,7 +1756,7 @@ uint8_t unpackMacSliceReCfgReq(DuMacSliceRecfgReq func, Pst *pst, Buffer *mBuf)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t packDuMacSliceReCfgRsp(Pst *pst, MacSliceCfgRsp *cfgRsp)
+uint8_t packDuMacSliceReCfgRsp(Pst *pst, MacSliceReCfgRsp *cfgRsp)
 {
    Buffer *mBuf = NULLP;
 
@@ -1822,13 +1892,13 @@ uint8_t unpackDuMacSlotInd(DuMacSlotInd func, Pst *pst, Buffer *mBuf)
  *       Pack and send Dl Pcch indication to MAC
  *
  * @params[in] Post structure
- *             MacPcchInd *pcchInd;
+ *             DlPcchInd *pcchInd;
  * @return ROK     - success
  *         RFAILED - failure
  *
  * ****************************************************************/
 
-uint8_t packDuMacDlPcchInd(Pst *pst, MacPcchInd *pcchInd)
+uint8_t packDuMacDlPcchInd(Pst *pst, DlPcchInd *pcchInd)
 {
    Buffer *mBuf = NULLP;
 
@@ -1872,7 +1942,7 @@ uint8_t unpackMacDlPcchInd(DuMacDlPcchInd func, Pst *pst, Buffer *mBuf)
 {
    if(pst->selector == ODU_SELECTOR_LWLC)
    {
-      MacPcchInd *pcchInd=NULLP;
+      DlPcchInd *pcchInd=NULLP;
 
       /* unpack the address of the structure */
       CMCHKUNPK(oduUnpackPointer, (PTR *)&pcchInd, mBuf);
