@@ -720,7 +720,7 @@ uint8_t RlcProcUeReconfigReq(Pst *pst, RlcUeCfg *ueCfg)
    else
    {
       memset(rlcUeCfg, 0, sizeof(RlcCfgInfo));
-      ret = fillRlcCfg(rlcUeCb, rlcUeCfg, ueCfg);
+      ret = fillRlcCfg(rlcUeCb, rlcUeCfg, ueCfg); 
       if(ret != ROK)
       {
          DU_LOG("\nERROR  -->  RLC: Failed to fill configuration at RlcProcUeReconfigReq()");

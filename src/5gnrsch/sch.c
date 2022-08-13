@@ -1125,42 +1125,42 @@ uint8_t MacSchSrUciInd(Pst *pst, SrUciIndInfo *uciInd)
 
 /*******************************************************************
  *
- * @brief Processes HARQ UCI indication from MAC 
+ * @brief Processes DL HARQ indication from MAC 
  *
  * @details
  *
- *    Function : MacSchHarqUciInd
+ *    Function : MacSchDlHarqInd
  *
  *    Functionality:
- *      Processes HARQ UCI indication from MAC
+ *      Processes DL HARQ indication from MAC
  *
  * @params[in] Post structure
- *             UCI Indication
+ *             DL HARQ Indication
  * @return ROK     - success
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t MacSchHarqUciInd(Pst *pst, HarqUciIndInfo *uciInd)
+uint8_t MacSchDlHarqInd(Pst *pst, DlHarqInd *dlHarqInd)
 {
    Inst  inst = pst->dstInst-SCH_INST_START;
    SchUeCb   *ueCb;
    SchCellCb *cellCb = schCb[inst].cells[inst];
 
 #ifdef CALL_FLOW_DEBUG_LOG
-   DU_LOG("\nCall Flow: ENTMAC -> ENTSCH : EVENT_UCI_IND_TO_SCH\n");
+   DU_LOG("\nCall Flow: ENTMAC -> ENTSCH : EVENT_DL_HARQ_IND_TO_SCH\n");
 #endif
 
    DU_LOG("\nDEBUG  -->  SCH : Received HARQ");
 
-   ueCb = schGetUeCb(cellCb, uciInd->crnti);
+   ueCb = schGetUeCb(cellCb, dlHarqInd->crnti);
 
    if(ueCb->state == SCH_UE_STATE_INACTIVE)
    {
-      DU_LOG("\nERROR  -->  SCH : Crnti %d is inactive", uciInd->crnti);
+      DU_LOG("\nERROR  -->  SCH : Crnti %d is inactive", dlHarqInd->crnti);
       return ROK;
    }
 
-   schUpdateHarqFdbk(ueCb, uciInd->numHarq, uciInd->harqPayload, &uciInd->slotInd);
+   schUpdateHarqFdbk(ueCb, dlHarqInd->numHarq, dlHarqInd->harqPayload, &dlHarqInd->slotInd);
 
    return ROK;
 }
@@ -1906,7 +1906,7 @@ uint8_t MacSchSliceCfgReq(Pst *pst, SchSliceCfgReq *schSliceCfgReq)
  *        RFAILED - Failure
  *
  * ********************************************************************************/
-uint8_t modifySliceCfgInSchDb(SchSliceCfg *storeSliceCfg, SchSliceCfgReq *cfgReq, SchSliceCfgRsp cfgRsp, uint8_t count)
+uint8_t modifySliceCfgInSchDb(SchSliceCfg *storeSliceCfg, SchSliceReCfgReq *ReCfgReq, SchSliceReCfgRsp ReCfgRsp, uint8_t count)
 {
    uint8_t cfgIdx = 0, sliceIdx = 0; 
 
@@ -1918,15 +1918,15 @@ uint8_t modifySliceCfgInSchDb(SchSliceCfg *storeSliceCfg, SchSliceCfgReq *cfgReq
          return RFAILED;
       }
 
-      for(cfgIdx = 0; cfgIdx<cfgReq->numOfConfiguredSlice; cfgIdx++)
+      for(cfgIdx = 0; cfgIdx<ReCfgReq->numOfConfiguredSlice; cfgIdx++)
       {
-         if(cfgRsp.listOfSliceCfgRsp[cfgIdx]->rsp == RSP_OK)
+         if(ReCfgRsp.listOfSliceCfgRsp[cfgIdx]->rsp == RSP_OK)
          {
             for(sliceIdx = 0; sliceIdx<storeSliceCfg->numOfSliceConfigured; sliceIdx++)
             {
-               if(!memcmp(&storeSliceCfg->listOfConfirguration[sliceIdx]->snssai, &cfgReq->listOfConfirguration[cfgIdx]->snssai, sizeof(Snssai)))
+               if(!memcmp(&storeSliceCfg->listOfConfirguration[sliceIdx]->snssai, &ReCfgReq->listOfConfirguration[cfgIdx]->snssai, sizeof(Snssai)))
                {
-                  memcpy(storeSliceCfg->listOfConfirguration[sliceIdx]->rrmPolicyRatioInfo, cfgReq->listOfConfirguration[cfgIdx]->rrmPolicyRatioInfo,
+                  memcpy(storeSliceCfg->listOfConfirguration[sliceIdx]->rrmPolicyRatioInfo, ReCfgReq->listOfConfirguration[cfgIdx]->rrmPolicyRatioInfo,
                            sizeof(SchRrmPolicyRatio));
                   break;
                }
@@ -1934,7 +1934,7 @@ uint8_t modifySliceCfgInSchDb(SchSliceCfg *storeSliceCfg, SchSliceCfgReq *cfgReq
          }
       }
    }
-   freeSchSliceCfgReq(cfgReq);
+   freeSchSliceCfgReq(ReCfgReq);
    return ROK;
 }
 /*******************************************************************************
@@ -1953,7 +1953,7 @@ uint8_t modifySliceCfgInSchDb(SchSliceCfg *storeSliceCfg, SchSliceCfgReq *cfgReq
  * @return- void
  *
  * ********************************************************************************/
-void SchSendSliceReCfgRspToMac(Inst inst, SchSliceCfgRsp schSliceReCfgRsp)
+void SchSendSliceReCfgRspToMac(Inst inst, SchSliceReCfgRsp schSliceReCfgRsp)
 {
    Pst rspPst;
    
@@ -1981,11 +1981,11 @@ void SchSendSliceReCfgRspToMac(Inst inst, SchSliceCfgRsp schSliceReCfgRsp)
  *        RFAILED - Failure
  *
  * ********************************************************************************/
-uint8_t MacSchSliceReCfgReq(Pst *pst, SchSliceCfgReq *schSliceReCfgReq)
+uint8_t MacSchSliceReCfgReq(Pst *pst, SchSliceReCfgReq *schSliceReCfgReq)
 {
    uint8_t count = 0;
    Inst   inst = pst->dstInst - SCH_INST_START;
-   SchSliceCfgRsp schSliceReCfgRsp;
+   SchSliceReCfgRsp schSliceReCfgRsp;
 
    DU_LOG("\nINFO  -->  SCH : Received Slice ReCfg request from MAC");
    if(schSliceReCfgReq)

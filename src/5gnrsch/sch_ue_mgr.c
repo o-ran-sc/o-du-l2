@@ -37,6 +37,13 @@ SchUeCfgRspFunc SchUeCfgRspOpts[] =
    packSchUeCfgRsp       /* LWLC */
 };
 
+SchUeReCfgRspFunc SchUeReCfgRspOpts[] =
+{
+   packSchUeReCfgRsp,      /* LC */
+   MacProcSchUeReCfgRsp,   /* TC */
+   packSchUeReCfgRsp       /* LWLC */
+};
+
 SchUeDeleteRspFunc SchUeDeleteRspOpts[] =
 {
    packSchUeDeleteRsp,      /* LC */
@@ -66,7 +73,7 @@ SchCellDeleteRspFunc SchCellDeleteRspOpts[]=
  *         RFAILED - failure
  *
  * ****************************************************************/
-void SchSendUeCfgRspToMac(uint16_t event, SchUeCfg *ueCfg, Inst inst,\
+void SchSendUeCfgRspToMac(SchUeCfgReq *ueCfg, Inst inst,\
       SchMacRsp result, SchUeCfgRsp *cfgRsp)
 {
    Pst rspPst;
@@ -79,17 +86,42 @@ void SchSendUeCfgRspToMac(uint16_t event, SchUeCfg *ueCfg, Inst inst,\
    /* Filling response post */
    memset(&rspPst, 0, sizeof(Pst));
    FILL_PST_SCH_TO_MAC(rspPst, inst);
-   if(event == EVENT_ADD_UE_CONFIG_REQ_TO_SCH)
-   {
-      rspPst.event = EVENT_UE_CONFIG_RSP_TO_MAC;
-      DU_LOG("\nINFO  -->  SCH :  Sending UE Config response to MAC");
-   }
-   else if(event == EVENT_MODIFY_UE_CONFIG_REQ_TO_SCH)
-   {
-      rspPst.event = EVENT_UE_RECONFIG_RSP_TO_MAC;
-      DU_LOG("\nINFO  -->  SCH :  Sending UE Reconfig response to MAC");
-   }
+   rspPst.event = EVENT_UE_CONFIG_RSP_TO_MAC;
+   DU_LOG("\nINFO  -->  SCH :  Sending UE Config response to MAC");
    SchUeCfgRspOpts[rspPst.selector](&rspPst, cfgRsp);
+}
+
+/*******************************************************************
+ *
+ * @brief Fill and send UE Recfg response to MAC
+ *
+ * @details
+ *
+ *    Function : SchSendUeReCfgRspToMac
+ *
+ *    Functionality: Fill and send UE Recfg response to MAC
+ *
+ * @params[in] 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+void SchSendUeReCfgRspToMac(SchUeReCfgReq *ueCfg, Inst inst,\
+      SchMacRsp result, SchUeReCfgRsp *reCfgRsp)
+{
+   Pst rspPst;
+
+   reCfgRsp->cellId = ueCfg->cellId;
+   reCfgRsp->ueId = ueCfg->ueId;
+   reCfgRsp->crnti = ueCfg->crnti;
+   reCfgRsp->rsp = result;   
+
+   /* Filling response post */
+   memset(&rspPst, 0, sizeof(Pst));
+   FILL_PST_SCH_TO_MAC(rspPst, inst);
+   rspPst.event = EVENT_UE_RECONFIG_RSP_TO_MAC;
+   DU_LOG("\nINFO  -->  SCH :  Sending UE Reconfig response to MAC");
+   SchUeReCfgRspOpts[rspPst.selector](&rspPst, reCfgRsp);
 }
 
 /*******************************************************************
@@ -239,7 +271,7 @@ uint8_t updateDedLcInfo(Inst inst, Snssai *snssai, uint16_t *rsvdDedicatedPRB, b
  *
  * ****************************************************************/
 
-uint8_t fillSchUeCb(Inst inst, SchUeCb *ueCb, SchUeCfg *ueCfg)
+uint8_t fillSchUeCb(Inst inst, SchUeCb *ueCb, SchUeCfgReq *ueCfg, SchUeReCfgReq *ueReCfg)
 {
    uint8_t   lcIdx, ueLcIdx, idx;
    uint8_t   freqDomainResource[FREQ_DOM_RSRC_SIZE] = {0};
@@ -248,83 +280,83 @@ uint8_t fillSchUeCb(Inst inst, SchUeCb *ueCb, SchUeCfg *ueCfg)
    uint8_t retDL = ROK, retUL = ROK;
    bool isLcIdValid = FALSE;
 
-   ueCb->ueCfg.cellId = ueCfg->cellId;
-   ueCb->ueCfg.ueId = ueCfg->ueId;
-   ueCb->ueCfg.crnti = ueCfg->crnti;
-   ueCb->ueCfg.dataTransmissionAction = ueCfg->dataTransmissionInfo;
-   if(ueCfg->macCellGrpCfgPres == true)
+   if(ueCfg != NULLP)
    {
-      memcpy(&ueCb->ueCfg.macCellGrpCfg , &ueCfg->macCellGrpCfg, sizeof(SchMacCellGrpCfg)); 
-      ueCb->ueCfg.macCellGrpCfgPres = true;
-   }
-
-   if(ueCfg->phyCellGrpCfgPres == true)
-   {
-      memcpy(&ueCb->ueCfg.phyCellGrpCfg ,  &ueCfg->phyCellGrpCfg, sizeof(SchPhyCellGrpCfg));
-      ueCb->ueCfg.phyCellGrpCfgPres = true;
-   }
-
-   if(ueCfg->spCellCfgPres == true)
-   {
-      if(ueCfg->spCellCfg.servCellCfg.initDlBwp.pdschCfgPres == true)
+      ueCb->ueCfg.cellId = ueCfg->cellId;
+      ueCb->ueCfg.ueId = ueCfg->ueId;
+      ueCb->ueCfg.crnti = ueCfg->crnti;
+      ueCb->ueCfg.dataTransmissionAction = ueCfg->dataTransmissionInfo;
+      if(ueCfg->macCellGrpCfgPres == true)
       {
-         if(ueCb->ueCfg.spCellCfgPres && ueCb->ueCfg.spCellCfg.servCellCfg.initDlBwp.pdschCfgPres == true)
+         memcpy(&ueCb->ueCfg.macCellGrpCfg , &ueCfg->macCellGrpCfg, sizeof(SchMacCellGrpCfg)); 
+         ueCb->ueCfg.macCellGrpCfgPres = true;
+      }
+
+      if(ueCfg->phyCellGrpCfgPres == true)
+      {
+         memcpy(&ueCb->ueCfg.phyCellGrpCfg ,  &ueCfg->phyCellGrpCfg, sizeof(SchPhyCellGrpCfg));
+         ueCb->ueCfg.phyCellGrpCfgPres = true;
+      }
+
+      if(ueCfg->spCellCfgPres == true)
+      {
+         if(ueCfg->spCellCfg.servCellCfg.initDlBwp.pdschCfgPres == true)
          {
-            for(idx = 0; idx < ueCfg->spCellCfg.servCellCfg.initDlBwp.pdschCfg.numTimeDomRsrcAlloc; idx++)
+            if(ueCb->ueCfg.spCellCfgPres && ueCb->ueCfg.spCellCfg.servCellCfg.initDlBwp.pdschCfgPres == true)
             {
-               if(ueCb->ueCfg.spCellCfg.servCellCfg.initDlBwp.pdschCfg.timeDomRsrcAllociList[idx].k0 && ueCfg->spCellCfg.servCellCfg.initDlBwp.pdschCfg.timeDomRsrcAllociList[idx].k0)
+               for(idx = 0; idx < ueCfg->spCellCfg.servCellCfg.initDlBwp.pdschCfg.numTimeDomRsrcAlloc; idx++)
                {
-                   SCH_FREE(ueCb->ueCfg.spCellCfg.servCellCfg.initDlBwp.pdschCfg.timeDomRsrcAllociList[idx].k0, sizeof(uint8_t));  
+                  if(ueCb->ueCfg.spCellCfg.servCellCfg.initDlBwp.pdschCfg.timeDomRsrcAllociList[idx].k0 && ueCfg->spCellCfg.servCellCfg.initDlBwp.pdschCfg.timeDomRsrcAllociList[idx].k0)
+                  {
+                     SCH_FREE(ueCb->ueCfg.spCellCfg.servCellCfg.initDlBwp.pdschCfg.timeDomRsrcAllociList[idx].k0, sizeof(uint8_t));  
+                  }
                }
             }
          }
-      }
-      memcpy(&ueCb->ueCfg.spCellCfg , &ueCfg->spCellCfg, sizeof(SchSpCellCfg));
+         memcpy(&ueCb->ueCfg.spCellCfg , &ueCfg->spCellCfg, sizeof(SchSpCellCfg));
 
-      covertFreqDomRsrcMapToIAPIFormat(ueCb->ueCfg.spCellCfg.servCellCfg.initDlBwp.pdcchCfg.cRSetToAddModList[0].freqDomainRsrc,\
-            freqDomainResource);
-      memset(ueCb->ueCfg.spCellCfg.servCellCfg.initDlBwp.pdcchCfg.cRSetToAddModList[0].freqDomainRsrc, 0, FREQ_DOM_RSRC_SIZE);
-      memcpy(ueCb->ueCfg.spCellCfg.servCellCfg.initDlBwp.pdcchCfg.cRSetToAddModList[0].freqDomainRsrc, freqDomainResource, FREQ_DOM_RSRC_SIZE);
+         covertFreqDomRsrcMapToIAPIFormat(ueCb->ueCfg.spCellCfg.servCellCfg.initDlBwp.pdcchCfg.cRSetToAddModList[0].freqDomainRsrc,\
+               freqDomainResource);
+         memset(ueCb->ueCfg.spCellCfg.servCellCfg.initDlBwp.pdcchCfg.cRSetToAddModList[0].freqDomainRsrc, 0, FREQ_DOM_RSRC_SIZE);
+         memcpy(ueCb->ueCfg.spCellCfg.servCellCfg.initDlBwp.pdcchCfg.cRSetToAddModList[0].freqDomainRsrc, freqDomainResource, FREQ_DOM_RSRC_SIZE);
 
-      ueCb->ueCfg.spCellCfgPres = true;
-      dlDataToUlAck = ueCfg->spCellCfg.servCellCfg.initUlBwp.pucchCfg.dlDataToUlAck;
-      if(ueCb->cellCb)
-      {
-         if(dlDataToUlAck)
+         ueCb->ueCfg.spCellCfgPres = true;
+         dlDataToUlAck = ueCfg->spCellCfg.servCellCfg.initUlBwp.pucchCfg.dlDataToUlAck;
+         if(ueCb->cellCb)
          {
-            BuildK0K1Table(ueCb->cellCb, &ueCb->ueCfg.spCellCfg.servCellCfg.initDlBwp.k0K1InfoTbl, false, pdschCfg,\
-                  ueCfg->spCellCfg.servCellCfg.initDlBwp.pdschCfg, dlDataToUlAck->dlDataToUlAckListCount,\
-                  dlDataToUlAck->dlDataToUlAckList);
-            ueCb->ueCfg.spCellCfg.servCellCfg.initDlBwp.k0K1TblPrsnt = true;
-            BuildK2InfoTable(ueCb->cellCb, ueCfg->spCellCfg.servCellCfg.initUlBwp.puschCfg.timeDomRsrcAllocList,\
-                  ueCfg->spCellCfg.servCellCfg.initUlBwp.puschCfg.numTimeDomRsrcAlloc,\
-                  NULLP, &ueCb->ueCfg.spCellCfg.servCellCfg.initUlBwp.k2InfoTbl);
-                  ueCb->ueCfg.spCellCfg.servCellCfg.initUlBwp.k2TblPrsnt = true;
+            if(dlDataToUlAck)
+            {
+               BuildK0K1Table(ueCb->cellCb, &ueCb->ueCfg.spCellCfg.servCellCfg.initDlBwp.k0K1InfoTbl, false, pdschCfg,\
+                     ueCfg->spCellCfg.servCellCfg.initDlBwp.pdschCfg, dlDataToUlAck->dlDataToUlAckListCount,\
+                     dlDataToUlAck->dlDataToUlAckList);
+               ueCb->ueCfg.spCellCfg.servCellCfg.initDlBwp.k0K1TblPrsnt = true;
+               BuildK2InfoTable(ueCb->cellCb, ueCfg->spCellCfg.servCellCfg.initUlBwp.puschCfg.timeDomRsrcAllocList,\
+                     ueCfg->spCellCfg.servCellCfg.initUlBwp.puschCfg.numTimeDomRsrcAlloc,\
+                     NULLP, &ueCb->ueCfg.spCellCfg.servCellCfg.initUlBwp.k2InfoTbl);
+               ueCb->ueCfg.spCellCfg.servCellCfg.initUlBwp.k2TblPrsnt = true;
+            }
          }
       }
-   }
 
-   if(ueCfg->ambrCfg)
-   {
-      SCH_FREE(ueCb->ueCfg.ambrCfg, sizeof(SchAmbrCfg));
-      ueCb->ueCfg.ambrCfg =  ueCfg->ambrCfg;
-   }
-   memcpy(&ueCb->ueCfg.dlModInfo,  &ueCfg->dlModInfo , sizeof(SchModulationInfo));
-   memcpy(&ueCb->ueCfg.ulModInfo,  &ueCfg->ulModInfo , sizeof(SchModulationInfo));
-   //Updating SchUlCb and SchDlCb DB in SchUeCb
-   for(lcIdx = 0; lcIdx < ueCfg->numLcs; lcIdx++)
-   {
-      isLcIdValid = FALSE; /*Re-Initializing*/
-
-      ueLcIdx = ueCfg->schLcCfg[lcIdx].lcId;
-      CHECK_LCID(ueLcIdx, isLcIdValid);
-      if(isLcIdValid == FALSE)
+      if(ueCfg->ambrCfg)
       {
-         DU_LOG("ERROR --> SCH: LCID:%d is not Valid",ueLcIdx);
-         continue;
+         SCH_FREE(ueCb->ueCfg.ambrCfg, sizeof(SchAmbrCfg));
+         ueCb->ueCfg.ambrCfg =  ueCfg->ambrCfg;
       }
-      if(ueCfg->schLcCfg[lcIdx].configType == CONFIG_ADD)
+      memcpy(&ueCb->ueCfg.dlModInfo,  &ueCfg->dlModInfo , sizeof(SchModulationInfo));
+      memcpy(&ueCb->ueCfg.ulModInfo,  &ueCfg->ulModInfo , sizeof(SchModulationInfo));
+      //Updating SchUlCb and SchDlCb DB in SchUeCb
+      for(lcIdx = 0; lcIdx < ueCfg->numLcsToAdd; lcIdx++)
       {
+         isLcIdValid = FALSE; /*Re-Initializing*/
+
+         ueLcIdx = ueCfg->schLcCfg[lcIdx].lcId;
+         CHECK_LCID(ueLcIdx, isLcIdValid);
+         if(isLcIdValid == FALSE)
+         {
+            DU_LOG("ERROR --> SCH: LCID:%d is not Valid",ueLcIdx);
+            continue;
+         }
          fillSchUlLcCtxt(&ueCb->ulInfo.ulLcCtxt[ueLcIdx], &ueCfg->schLcCfg[lcIdx]);
          fillSchDlLcCtxt(&ueCb->dlInfo.dlLcCtxt[ueLcIdx], &ueCfg->schLcCfg[lcIdx]);
 
@@ -346,79 +378,189 @@ uint8_t fillSchUeCb(Inst inst, SchUeCb *ueCb, SchUeCfg *ueCfg)
             DU_LOG("\nERROR  -->  SCH : Failure in updateDedLcInfo");
             return RFAILED;
          }
-      }
-      else
+
+         SCH_FREE(ueCfg->schLcCfg[lcIdx].drbQos, sizeof(SchDrbQosInfo));
+         SCH_FREE(ueCfg->schLcCfg[lcIdx].snssai, sizeof(Snssai));
+
+      }/* End of outer for loop */
+   }
+   else if(ueReCfg != NULLP)
+   {
+      ueCb->ueCfg.cellId = ueReCfg->cellId;
+      ueCb->ueCfg.ueId = ueReCfg->ueId;
+      ueCb->ueCfg.crnti = ueReCfg->crnti;
+      ueCb->ueCfg.dataTransmissionAction = ueReCfg->dataTransmissionInfo;
+      if(ueReCfg->macCellGrpReCfgPres == true)
       {
-         if(ueCb->ulInfo.ulLcCtxt[ueLcIdx].lcId == ueCfg->schLcCfg[lcIdx].lcId)
+         memcpy(&ueCb->ueCfg.macCellGrpCfg , &ueReCfg->macCellGrpReCfg, sizeof(SchMacCellGrpCfg)); 
+         ueCb->ueCfg.macCellGrpCfgPres = true;
+      }
+
+      if(ueReCfg->phyCellGrpReCfgPres == true)
+      {
+         memcpy(&ueCb->ueCfg.phyCellGrpCfg ,  &ueReCfg->phyCellGrpReCfg, sizeof(SchPhyCellGrpCfg));
+         ueCb->ueCfg.phyCellGrpCfgPres = true;
+      }
+
+      if(ueReCfg->spCellReCfgPres == true)
+      {
+         if(ueReCfg->spCellReCfg.servCellReCfg.initDlBwp.pdschCfgPres == true)
          {
-            if(ueCfg->schLcCfg[lcIdx].configType == CONFIG_MOD)
+            if(ueCb->ueCfg.spCellCfgPres && ueCb->ueCfg.spCellCfg.servCellCfg.initDlBwp.pdschCfgPres == true)
             {
-               fillSchUlLcCtxt(&ueCb->ulInfo.ulLcCtxt[ueLcIdx], &ueCfg->schLcCfg[lcIdx]);
-               /*Updating the RRM reserved pool PRB count*/
-               if(ueCb->ulInfo.ulLcCtxt[ueLcIdx].snssai != NULLP)
+               for(idx = 0; idx < ueReCfg->spCellReCfg.servCellReCfg.initDlBwp.pdschCfg.numTimeDomRsrcAlloc; idx++)
                {
-                  retUL =  updateDedLcInfo(inst, ueCb->ulInfo.ulLcCtxt[ueLcIdx].snssai, &(ueCb->ulInfo.ulLcCtxt[ueLcIdx].rsvdDedicatedPRB),\
-                        &(ueCb->ulInfo.ulLcCtxt[ueLcIdx].isDedicated));
-               }
-               if(retUL == RFAILED)
-               {
-                  DU_LOG("\nERROR  -->  SCH : Failed in updating Ded Lc info");
-                  return RFAILED;
+                  if(ueCb->ueCfg.spCellCfg.servCellCfg.initDlBwp.pdschCfg.timeDomRsrcAllociList[idx].k0 && ueReCfg->spCellReCfg.servCellReCfg.initDlBwp.pdschCfg.timeDomRsrcAllociList[idx].k0)
+                  {
+                     SCH_FREE(ueCb->ueCfg.spCellCfg.servCellCfg.initDlBwp.pdschCfg.timeDomRsrcAllociList[idx].k0, sizeof(uint8_t));  
+                  }
                }
             }
-            if(ueCfg->schLcCfg[lcIdx].configType == CONFIG_DEL)
-            {
-               /*Delete the LC node from the UL LC List*/
-               if(ueCb->ulInfo.ulLcCtxt[ueLcIdx].isDedicated)
-               {
-                   /*Remove from HARQ Transmission or retransmission*/
-               }
-               else/*Default LC list*/
-               {
+         }
+         memcpy(&ueCb->ueCfg.spCellCfg , &ueReCfg->spCellReCfg, sizeof(SchSpCellCfg));
 
-               }
-               SCH_FREE(ueCb->ulInfo.ulLcCtxt[ueLcIdx].snssai, sizeof(Snssai));
-               memset(&ueCb->ulInfo.ulLcCtxt[ueLcIdx], 0, sizeof(SchUlLcCtxt));
+         covertFreqDomRsrcMapToIAPIFormat(ueCb->ueCfg.spCellCfg.servCellCfg.initDlBwp.pdcchCfg.cRSetToAddModList[0].freqDomainRsrc,\
+               freqDomainResource);
+         memset(ueCb->ueCfg.spCellCfg.servCellCfg.initDlBwp.pdcchCfg.cRSetToAddModList[0].freqDomainRsrc, 0, FREQ_DOM_RSRC_SIZE);
+         memcpy(ueCb->ueCfg.spCellCfg.servCellCfg.initDlBwp.pdcchCfg.cRSetToAddModList[0].freqDomainRsrc, freqDomainResource, FREQ_DOM_RSRC_SIZE);
+
+         ueCb->ueCfg.spCellCfgPres = true;
+         dlDataToUlAck = ueReCfg->spCellReCfg.servCellReCfg.initUlBwp.pucchCfg.dlDataToUlAck;
+         if(ueCb->cellCb)
+         {
+            if(dlDataToUlAck)
+            {
+               BuildK0K1Table(ueCb->cellCb, &ueCb->ueCfg.spCellCfg.servCellCfg.initDlBwp.k0K1InfoTbl, false, pdschCfg,\
+                     ueReCfg->spCellReCfg.servCellReCfg.initDlBwp.pdschCfg, dlDataToUlAck->dlDataToUlAckListCount,\
+                     dlDataToUlAck->dlDataToUlAckList);
+               ueCb->ueCfg.spCellCfg.servCellCfg.initDlBwp.k0K1TblPrsnt = true;
+               BuildK2InfoTable(ueCb->cellCb, ueReCfg->spCellReCfg.servCellReCfg.initUlBwp.puschCfg.timeDomRsrcAllocList,\
+                     ueReCfg->spCellReCfg.servCellReCfg.initUlBwp.puschCfg.numTimeDomRsrcAlloc,\
+                     NULLP, &ueCb->ueCfg.spCellCfg.servCellCfg.initUlBwp.k2InfoTbl);
+               ueCb->ueCfg.spCellCfg.servCellCfg.initUlBwp.k2TblPrsnt = true;
+            }
+         }
+      }
+
+      if(ueReCfg->ambrReCfg)
+      {
+         SCH_FREE(ueCb->ueCfg.ambrCfg, sizeof(SchAmbrCfg));
+         ueCb->ueCfg.ambrCfg =  ueReCfg->ambrReCfg;
+      }
+      memcpy(&ueCb->ueCfg.dlModInfo,  &ueReCfg->dlModInfo , sizeof(SchModulationInfo));
+      memcpy(&ueCb->ueCfg.ulModInfo,  &ueReCfg->ulModInfo , sizeof(SchModulationInfo));
+      //Updating Num of LC to ADD SchUlCb and SchDlCb DB in SchUeCb
+      for(lcIdx = 0; lcIdx < ueReCfg->numLcsToAdd; lcIdx++)
+      {
+         isLcIdValid = FALSE; /*Re-Initializing*/
+
+         ueLcIdx = ueReCfg->schLcCfgAdd[lcIdx].lcId;
+         CHECK_LCID(ueLcIdx, isLcIdValid);
+         if(isLcIdValid == FALSE)
+         {
+            DU_LOG("ERROR --> SCH: LCID:%d is not Valid",ueLcIdx);
+            continue;
+         }
+         fillSchUlLcCtxt(&ueCb->ulInfo.ulLcCtxt[ueLcIdx], &ueReCfg->schLcCfgAdd[lcIdx]);
+         fillSchDlLcCtxt(&ueCb->dlInfo.dlLcCtxt[ueLcIdx], &ueReCfg->schLcCfgAdd[lcIdx]);
+
+         /*Checking whether this LC belong to Dedicated S-NSSAI 
+          * and Create the Dedicated LC List & Update the Reserve PRB number*/
+         if(ueCb->dlInfo.dlLcCtxt[ueLcIdx].snssai != NULLP)
+         {
+            retDL = updateDedLcInfo(inst, ueCb->dlInfo.dlLcCtxt[ueLcIdx].snssai, &(ueCb->dlInfo.dlLcCtxt[ueLcIdx].rsvdDedicatedPRB),\
+                  &(ueCb->dlInfo.dlLcCtxt[ueLcIdx].isDedicated));
+         }
+         if(ueCb->ulInfo.ulLcCtxt[ueLcIdx].snssai != NULLP)
+         {
+            retUL =  updateDedLcInfo(inst, ueCb->ulInfo.ulLcCtxt[ueLcIdx].snssai, &(ueCb->ulInfo.ulLcCtxt[ueLcIdx].rsvdDedicatedPRB),\
+                  &(ueCb->ulInfo.ulLcCtxt[ueLcIdx].isDedicated));
+         }
+
+         if(retUL == RFAILED  || retDL == RFAILED)/*FATAL error*/
+         {
+            DU_LOG("\nERROR  -->  SCH : Failure in updateDedLcInfo");
+            return RFAILED;
+         }
+         SCH_FREE(ueReCfg->schLcCfgAdd[lcIdx].drbQos, sizeof(SchDrbQosInfo));
+         SCH_FREE(ueReCfg->schLcCfgAdd[lcIdx].snssai, sizeof(Snssai));
+      }
+      //Updating Num of LC to DEL SchUlCb and SchDlCb DB in SchUeCb
+      for(lcIdx = 0; lcIdx < ueReCfg->numLcsToDel; lcIdx++)
+      {
+         ueLcIdx = ueReCfg->lcIdToDel[lcIdx];
+
+         if(ueCb->dlInfo.dlLcCtxt[ueLcIdx].lcId == ueReCfg->lcIdToDel[lcIdx])
+         {
+            /*Delete the LC node from the DL LC List*/
+            if(ueCb->dlInfo.dlLcCtxt[ueLcIdx].isDedicated)
+            {
+               /*Remove from HARQ Transmission or retransmission*/
+            }
+            else
+            {
+            }
+            SCH_FREE(ueCb->dlInfo.dlLcCtxt[ueLcIdx].snssai, sizeof(Snssai));
+            memset(&ueCb->dlInfo.dlLcCtxt[ueLcIdx], 0, sizeof(SchDlLcCtxt));
+
+         }
+         if(ueCb->ulInfo.ulLcCtxt[ueLcIdx].lcId == ueReCfg->lcIdToDel[lcIdx])
+         {
+            /*Delete the LC node from the UL LC List*/
+            if(ueCb->ulInfo.ulLcCtxt[ueLcIdx].isDedicated)
+            {
+               /*Remove from HARQ Transmission or retransmission*/
+            }
+            else/*Default LC list*/
+            {
+
+            }
+            SCH_FREE(ueCb->ulInfo.ulLcCtxt[ueLcIdx].snssai, sizeof(Snssai));
+            memset(&ueCb->ulInfo.ulLcCtxt[ueLcIdx], 0, sizeof(SchUlLcCtxt));
+         }
+      }
+      //Updating Num of LC to DEL SchUlCb and SchDlCb DB in SchUeCb
+      for(lcIdx = 0; lcIdx < ueReCfg->numLcsToMod; lcIdx++)
+      {
+         ueLcIdx = ueReCfg->schLcCfgMod[lcIdx].lcId;
+
+         if(ueCb->ulInfo.ulLcCtxt[ueLcIdx].lcId == ueReCfg->schLcCfgMod[lcIdx].lcId)
+         {
+            fillSchUlLcCtxt(&ueCb->ulInfo.ulLcCtxt[ueLcIdx], &ueReCfg->schLcCfgMod[lcIdx]);
+            /*Updating the RRM reserved pool PRB count*/
+            if(ueCb->ulInfo.ulLcCtxt[ueLcIdx].snssai != NULLP)
+            {
+               retUL =  updateDedLcInfo(inst, ueCb->ulInfo.ulLcCtxt[ueLcIdx].snssai, &(ueCb->ulInfo.ulLcCtxt[ueLcIdx].rsvdDedicatedPRB),\
+                     &(ueCb->ulInfo.ulLcCtxt[ueLcIdx].isDedicated));
+            }
+            if(retUL == RFAILED)
+            {
+               DU_LOG("\nERROR  -->  SCH : Failed in updating Ded Lc info");
+               return RFAILED;
             }
          }/*End of UL LC Ctxt*/
 
-         if(ueCb->dlInfo.dlLcCtxt[ueLcIdx].lcId == ueCfg->schLcCfg[lcIdx].lcId)
+         if(ueCb->dlInfo.dlLcCtxt[ueLcIdx].lcId == ueReCfg->schLcCfgMod[lcIdx].lcId)
          {
-            if(ueCfg->schLcCfg[lcIdx].configType == CONFIG_MOD)
+            fillSchDlLcCtxt(&ueCb->dlInfo.dlLcCtxt[ueLcIdx], &ueReCfg->schLcCfgMod[lcIdx]);
+            /*Updating the RRM policy*/
+            if(ueCb->dlInfo.dlLcCtxt[ueLcIdx].snssai != NULLP)
             {
-               fillSchDlLcCtxt(&ueCb->dlInfo.dlLcCtxt[ueLcIdx], &ueCfg->schLcCfg[lcIdx]);
-               /*Updating the RRM policy*/
-               if(ueCb->dlInfo.dlLcCtxt[ueLcIdx].snssai != NULLP)
-               {
-                  retDL = updateDedLcInfo(inst, ueCb->dlInfo.dlLcCtxt[ueLcIdx].snssai, &(ueCb->dlInfo.dlLcCtxt[ueLcIdx].rsvdDedicatedPRB), \
-                        &(ueCb->dlInfo.dlLcCtxt[ueLcIdx].isDedicated));
-               }
-               if(retDL == RFAILED)
-               {
-                  DU_LOG("\nERROR  -->  SCH : Failed in updating Ded Lc info");
-                  return RFAILED;
-               }
+               retDL = updateDedLcInfo(inst, ueCb->dlInfo.dlLcCtxt[ueLcIdx].snssai, &(ueCb->dlInfo.dlLcCtxt[ueLcIdx].rsvdDedicatedPRB), \
+                     &(ueCb->dlInfo.dlLcCtxt[ueLcIdx].isDedicated));
             }
-            if(ueCfg->schLcCfg[lcIdx].configType == CONFIG_DEL)
+            if(retDL == RFAILED)
             {
-               /*Delete the LC node from the DL LC List*/
-               if(ueCb->dlInfo.dlLcCtxt[ueLcIdx].isDedicated)
-               {
-                  /*Remove from HARQ Transmission or retransmission*/
-               }
-               else
-               {
-               }
-               SCH_FREE(ueCb->dlInfo.dlLcCtxt[ueLcIdx].snssai, sizeof(Snssai));
-               memset(&ueCb->dlInfo.dlLcCtxt[ueLcIdx], 0, sizeof(SchDlLcCtxt));
+               DU_LOG("\nERROR  -->  SCH : Failed in updating Ded Lc info");
+               return RFAILED;
             }
          }/*End of DL LC ctxt*/
-      }
 
-      SCH_FREE(ueCfg->schLcCfg[lcIdx].drbQos, sizeof(SchDrbQosInfo));
-      SCH_FREE(ueCfg->schLcCfg[lcIdx].snssai, sizeof(Snssai));
+         SCH_FREE(ueReCfg->schLcCfgMod[lcIdx].drbQos, sizeof(SchDrbQosInfo));
+         SCH_FREE(ueReCfg->schLcCfgMod[lcIdx].snssai, sizeof(Snssai));
 
-   }/* End of outer for loop */
+      }/* End of outer for loop */
+   }
    return ROK;
 }
 
@@ -438,24 +580,21 @@ uint8_t fillSchUeCb(Inst inst, SchUeCb *ueCb, SchUeCfg *ueCfg)
  *
  * ****************************************************************/
 
-SchCellCb *getSchCellCb(uint16_t srcEvent, Inst inst, SchUeCfg *ueCfg)
+SchCellCb *getSchCellCb(uint16_t srcEvent, Inst inst, uint16_t cellId)
 {
    uint8_t      idx;
    SchCellCb    *cellCb = NULLP;
-   SchUeCfgRsp  cfgRsp;
-   memset(&cfgRsp, 0, sizeof(SchUeCfgRsp));
 
    /* Search of cell cb */
    for(idx = 0; idx < MAX_NUM_CELL; idx++)
    {
       cellCb = schCb[inst].cells[idx];
-      if(cellCb->cellId == ueCfg->cellId)
-	 break;
+      if(cellCb->cellId == cellId)
+         break;
    }
-   if(idx == MAX_NUM_CELL)
+   if((idx == MAX_NUM_CELL) || (cellCb == NULLP))
    {
-      DU_LOG("\nERROR  -->  SCH : Ue create request failed. Invalid cell id %d", ueCfg->cellId);
-      SchSendUeCfgRspToMac(srcEvent, ueCfg, inst, RSP_NOK, &cfgRsp);
+      DU_LOG("\nERROR  -->  SCH : Ue create request failed. Invalid cell id %d", cellId);
       return NULLP;
    }
 
@@ -463,7 +602,6 @@ SchCellCb *getSchCellCb(uint16_t srcEvent, Inst inst, SchUeCfg *ueCfg)
    if(cellCb->numActvUe > MAX_NUM_UE)
    {
       DU_LOG("\nERROR  -->  SCH :  Max number of UE [%d] already configured", MAX_NUM_UE);
-      SchSendUeCfgRspToMac(srcEvent, ueCfg, inst, RSP_NOK, &cfgRsp);
       return NULLP;
    }
    return cellCb;
@@ -485,7 +623,7 @@ SchCellCb *getSchCellCb(uint16_t srcEvent, Inst inst, SchUeCfg *ueCfg)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t MacSchAddUeConfigReq(Pst *pst, SchUeCfg *ueCfg)
+uint8_t MacSchAddUeConfigReq(Pst *pst, SchUeCfgReq *ueCfg)
 {
    uint8_t      lcIdx = 0, ret = ROK, idx = 0;
    SchCellCb    *cellCb = NULLP;
@@ -493,7 +631,7 @@ uint8_t MacSchAddUeConfigReq(Pst *pst, SchUeCfg *ueCfg)
    SchUeCfgRsp  cfgRsp;
    Inst         inst = pst->dstInst - SCH_INST_START;
    memset(&cfgRsp, 0, sizeof(SchUeCfgRsp));
-  
+
 #ifdef CALL_FLOW_DEBUG_LOG
    DU_LOG("\nCall Flow: ENTMAC -> ENTSCH : EVENT_ADD_UE_CONFIG_REQ_TO_SCH\n");
 #endif
@@ -504,15 +642,20 @@ uint8_t MacSchAddUeConfigReq(Pst *pst, SchUeCfg *ueCfg)
       return RFAILED;
    }
    DU_LOG("\nDEBUG  -->  SCH :  Adding UE Config Request for CRNTI[%d]", ueCfg->crnti);
-   cellCb = getSchCellCb(pst->event, inst, ueCfg);
+   cellCb = getSchCellCb(pst->event, inst, ueCfg->cellId);
 
+   if(cellCb == NULLP)
+   {
+      SchSendUeCfgRspToMac(ueCfg, inst, RSP_NOK, &cfgRsp);
+      return RFAILED; 
+   }
    /* Search if UE already configured */
    ueCb = &cellCb->ueCb[ueCfg->ueId - 1];
 
    if((ueCb->crnti == ueCfg->crnti) && (ueCb->state == SCH_UE_STATE_ACTIVE))
    {
       DU_LOG("\nDEBUG  -->  SCH : CRNTI %d already configured ", ueCfg->crnti);
-      SchSendUeCfgRspToMac(pst->event, ueCfg, inst, RSP_OK, &cfgRsp);
+      SchSendUeCfgRspToMac(ueCfg, inst, RSP_OK, &cfgRsp);
       return ROK;
    }
 
@@ -536,7 +679,7 @@ uint8_t MacSchAddUeConfigReq(Pst *pst, SchUeCfg *ueCfg)
    {
       SCH_ALLOC(ueCb->hqDlmap[idx], sizeof(SchHqDlMap));
       SCH_ALLOC(ueCb->hqUlmap[idx], sizeof(SchHqUlMap));
-      
+
       if ( (ueCb->hqDlmap[idx] == NULLP) || (ueCb->hqUlmap[idx] == NULLP) )
       {
          DU_LOG("\nINFO  -->  SCH : Memory Allocation Failed");
@@ -545,7 +688,7 @@ uint8_t MacSchAddUeConfigReq(Pst *pst, SchUeCfg *ueCfg)
       cmLListInit(&ueCb->hqDlmap[idx]->hqList);
       cmLListInit(&ueCb->hqUlmap[idx]->hqList);
    }
-   ret = fillSchUeCb(inst, ueCb, ueCfg);
+   ret = fillSchUeCb(inst, ueCb, ueCfg, NULLP);
 
    if(ret == ROK)
    {
@@ -569,7 +712,7 @@ uint8_t MacSchAddUeConfigReq(Pst *pst, SchUeCfg *ueCfg)
       for(lcIdx=0; lcIdx<MAX_NUM_LOGICAL_CHANNEL_GROUPS; lcIdx++)
          ueCb->bsrInfo[lcIdx].dataVol = 0;
 
-      SchSendUeCfgRspToMac(pst->event, ueCfg, inst, RSP_OK, &cfgRsp);
+      SchSendUeCfgRspToMac(ueCfg, inst, RSP_OK, &cfgRsp);
    }
    return ret;
 }
@@ -890,41 +1033,47 @@ uint8_t schFillUlDci(SchUeCb *ueCb, SchPuschInfo *puschInfo, DciInfo *dciInfo, b
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t MacSchModUeConfigReq(Pst *pst, SchUeCfg *ueCfg)
+uint8_t MacSchModUeConfigReq(Pst *pst, SchUeReCfgReq *ueReCfg)
 {
    uint8_t ueId, lcIdx, ret = ROK;
    SchCellCb    *cellCb = NULLP;
    SchUeCb      *ueCb = NULLP;
-   SchUeCfgRsp  cfgRsp;
+   SchUeReCfgRsp  reCfgRsp;
    Inst         inst = pst->dstInst - SCH_INST_START;
-   memset(&cfgRsp, 0, sizeof(SchUeCfgRsp));
+   memset(&reCfgRsp, 0, sizeof(SchUeReCfgRsp));
   
 #ifdef CALL_FLOW_DEBUG_LOG
    DU_LOG("\nCall Flow: ENTMAC -> ENTSCH : EVENT_MODIFY_UE_CONFIG_REQ_TO_SCH\n");
 #endif
 
-   if(!ueCfg)
+   if(!ueReCfg)
    {
       DU_LOG("\nERROR  -->  SCH : Modifying Ue Config request failed at MacSchModUeConfigReq()");
       return RFAILED;
    }
-   DU_LOG("\nDEBUG  -->  SCH : Modifying Ue Config Request for CRNTI[%d]", ueCfg->crnti);
-   cellCb = getSchCellCb(pst->event, inst, ueCfg);
+   DU_LOG("\nDEBUG  -->  SCH : Modifying Ue Config Request for CRNTI[%d]", ueReCfg->crnti);
+   cellCb = getSchCellCb(pst->event, inst, ueReCfg->cellId);
+
+   if(cellCb == NULLP)
+   {
+      SchSendUeReCfgRspToMac(ueReCfg, inst, RSP_NOK, &reCfgRsp);
+      return RFAILED;
+   }
 
    /* Search if UE already configured */
-   GET_UE_ID(ueCfg->crnti, ueId);
+   GET_UE_ID(ueReCfg->crnti, ueId);
    ueCb = &cellCb->ueCb[ueId -1];
    
    if(!ueCb)
    {
       DU_LOG("\nERROR  -->  SCH : SchUeCb not found at MacSchModUeConfigReq() ");
-      SchSendUeCfgRspToMac(pst->event, ueCfg, inst, RSP_NOK, &cfgRsp);
+      SchSendUeReCfgRspToMac(ueReCfg, inst, RSP_NOK, &reCfgRsp);
       return RFAILED;
    }
-   if((ueCb->crnti == ueCfg->crnti) && (ueCb->state == SCH_UE_STATE_ACTIVE))
+   if((ueCb->crnti == ueReCfg->crnti) && (ueCb->state == SCH_UE_STATE_ACTIVE))
    {
       /* Found the UeCb to Reconfig */
-      ret = fillSchUeCb(inst, ueCb, ueCfg);
+      ret = fillSchUeCb(inst, ueCb, NULLP, ueReCfg);
       if(ret == ROK)
       {
          ueCb->cellCb = cellCb;
@@ -933,7 +1082,7 @@ uint8_t MacSchModUeConfigReq(Pst *pst, SchUeCfg *ueCfg)
          for(lcIdx=0; lcIdx<MAX_NUM_LOGICAL_CHANNEL_GROUPS; lcIdx++)
             ueCb->bsrInfo[lcIdx].dataVol = 0;
 
-         SchSendUeCfgRspToMac(pst->event, ueCfg, inst, RSP_OK, &cfgRsp);
+         SchSendUeReCfgRspToMac(ueReCfg, inst, RSP_OK, &reCfgRsp);
       }
    }
    return ret;
@@ -955,7 +1104,7 @@ uint8_t MacSchModUeConfigReq(Pst *pst, SchUeCfg *ueCfg)
 *         RFAILED - failure
 *
 * ****************************************************************/
-void SchSendUeDeleteRspToMac(Inst inst, SchUeDelete  *ueDelete, SchMacRsp result, ErrorCause cause)
+void SchSendUeDeleteRspToMac(Inst inst, SchUeDeleteReq  *ueDelete, SchMacRsp result, ErrorCause cause)
 {
     Pst rspPst;
     SchUeDeleteRsp  delRsp;
@@ -1159,7 +1308,7 @@ void deleteSchUeCb(SchUeCb *ueCb)
 *         RFAILED - failure
 *
 * ****************************************************************/
-uint8_t MacSchUeDeleteReq(Pst *pst, SchUeDelete  *ueDelete)
+uint8_t MacSchUeDeleteReq(Pst *pst, SchUeDeleteReq  *ueDelete)
 {
     uint8_t      idx=0, ueId=0, ueIdToDel=0, ret=ROK;
     ErrorCause   result;
@@ -1238,12 +1387,12 @@ uint8_t MacSchUeDeleteReq(Pst *pst, SchUeDelete  *ueDelete)
  *
  *    Functionality: Fill and send Cell delete response to MAC
  *
- * @params[in] SchCellDelete  *ueDelete, Inst inst, SchMacRsp result
+ * @params[in] SchCellDelete  *cellDelete, Inst inst, SchMacRsp result
  * @return ROK     - success
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t SchSendCellDeleteRspToMac(SchCellDelete  *ueDelete, Inst inst, SchMacRsp result)
+uint8_t SchSendCellDeleteRspToMac(SchCellDeleteReq  *cellDelete, Inst inst, SchMacRsp result)
 {
    Pst rspPst;
    uint8_t ret=0;
@@ -1252,7 +1401,7 @@ uint8_t SchSendCellDeleteRspToMac(SchCellDelete  *ueDelete, Inst inst, SchMacRsp
 
    DU_LOG("\nINFO   --> SCH : Filling Cell Delete response");
    memset(&delRsp, 0, sizeof(SchCellDeleteRsp));
-   delRsp.cellId = ueDelete->cellId;
+   delRsp.cellId = cellDelete->cellId;
    delRsp.rsp = result;
 
    /* Filling response post */
@@ -1384,7 +1533,7 @@ void deleteSchCellCb(SchCellCb *cellCb)
  *
  * ****************************************************************/
 
-uint8_t MacSchCellDeleteReq(Pst *pst, SchCellDelete  *cellDelete)
+uint8_t MacSchCellDeleteReq(Pst *pst, SchCellDeleteReq  *cellDelete)
 {
    uint8_t   cellIdx=0, ret = RFAILED;
    Inst      inst = pst->dstInst - SCH_INST_START;
