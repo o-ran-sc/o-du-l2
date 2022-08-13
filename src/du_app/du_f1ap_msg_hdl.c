@@ -3231,7 +3231,7 @@ uint8_t BuildRlcConfig(RlcBearerCfg *rbCfg, struct RLC_Config *rlcConfig)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t BuildMacLCConfig(LcCfg *lcCfgDb, struct LogicalChannelConfig *macLcConfig)
+uint8_t BuildMacLCConfig(DuLcCfg *lcCfgDb, struct LogicalChannelConfig *macLcConfig)
 {
    macLcConfig->ul_SpecificParameters = NULLP;
    DU_ALLOC(macLcConfig->ul_SpecificParameters, sizeof(struct LogicalChannelConfig__ul_SpecificParameters));
@@ -5991,7 +5991,7 @@ uint8_t BuildDlBwpToAddModList(ServCellCfgInfo *servCellCfg, struct ServingCellC
 {
    uint8_t elementCnt, idx;
 
-   elementCnt = servCellCfg->numDlBwpToAdd;
+   elementCnt = servCellCfg->numDlBwpToAddOrMod;
    dlBwpAddModList->list.count = elementCnt;
    dlBwpAddModList->list.size = elementCnt * sizeof(struct BWP_Downlink *);
    dlBwpAddModList->list.array = NULLP;
@@ -6014,7 +6014,7 @@ uint8_t BuildDlBwpToAddModList(ServCellCfgInfo *servCellCfg, struct ServingCellC
 
    for(idx=0; idx<dlBwpAddModList->list.count; idx++)
    {
-      dlBwpAddModList->list.array[idx]->bwp_Id = servCellCfg->DlBwpToAddList[idx].bwpId;
+      dlBwpAddModList->list.array[idx]->bwp_Id = servCellCfg->DlBwpToAddOrModList[idx].bwpId;
       dlBwpAddModList->list.array[idx]->bwp_Common = NULLP;
       dlBwpAddModList->list.array[idx]->bwp_Dedicated = NULLP;
    }
@@ -6074,7 +6074,7 @@ uint8_t BuildSpCellCfgDed(DuUeCb *ueCb, ServingCellConfig_t *srvCellCfg)
    srvCellCfg->downlinkBWP_ToReleaseList = NULLP;
 
    srvCellCfg->downlinkBWP_ToAddModList = NULLP;
-   if(ueCb && ueCb->macUeCfg.spCellCfg.servCellCfg.numDlBwpToAdd)
+   if(ueCb && ueCb->macUeCfg.spCellCfg.servCellCfg.numDlBwpToAddOrMod)
    {
       DU_ALLOC(srvCellCfg->downlinkBWP_ToAddModList, sizeof(struct ServingCellConfig__downlinkBWP_ToAddModList));
       if(srvCellCfg->downlinkBWP_ToAddModList == NULLP)
@@ -8646,11 +8646,11 @@ uint8_t BuildAndSendInitialRrcMsgTransfer(uint32_t gnbDuUeF1apId, uint16_t crnti
  *
  *    Functionality: Free Qos And Snssai Drb Info
  *
- * @params[in] LcCfg *lcCfg,
+ * @params[in] DuLcCfg *lcCfg,
  * @return void
  *
  * ****************************************************************/
-void freeDrbQosAndSnssaiInfo(LcCfg *lcCfg)
+void freeDrbQosAndSnssaiInfo(DuLcCfg *lcCfg)
 {
    if(lcCfg->snssai)
    {
@@ -8716,12 +8716,12 @@ void freeRlcLcCfg(RlcBearerCfg *lcCfg)
  *
  *    Functionality: Function to free MacLcCfg
  *
- * @params[in] LcCfg *lcCfg,
+ * @params[in] DuLcCfg *lcCfg,
  * @return void
  *
  * ****************************************************************/
 
-void  freeMacLcCfg(LcCfg *lcCfg)
+void  freeMacLcCfg(DuLcCfg *lcCfg)
 {
     /* Deleting DRBQOS */
    if(lcCfg->drbQos)
@@ -9534,7 +9534,7 @@ void extractRlcAmCfg(AmBearerCfg *amCfgToSet, struct RLC_Config__am *rlcAmCfg)
 {
    if(rlcAmCfg)
    {
-      /* UL AM */
+      /* UL AM */ //Doubt why checked DL but filled DL
       if(rlcAmCfg->dl_AM_RLC.sn_FieldLength)
       {
 	 amCfgToSet->ulAmCfg.snLenUl = covertAmSnLenFromRrcEnumToIntEnum(*(rlcAmCfg->dl_AM_RLC.sn_FieldLength));
@@ -10000,12 +10000,12 @@ uint8_t extractUpTnlInfo(uint8_t drbId, uint8_t configType,\
 *
 *    Functionality: Function to extract Drb Qos Cfg Info from CU
 *
-* @params[in] DRB_Information_t *drbInfo, LcCfg *macLcToAdd
+* @params[in] DRB_Information_t *drbInfo, DuLcCfg *macLcToAdd
 * @return ROK/RFAILED
 *
 * ****************************************************************/
 
-uint8_t extractDrbQosCfg(DRB_Information_t *drbInfo, LcCfg *macLcToAdd ) 
+uint8_t extractDrbQosCfg(DRB_Information_t *drbInfo, DuLcCfg *macLcToAdd ) 
 {
    if(!macLcToAdd->drbQos)
    {
@@ -10044,7 +10044,7 @@ uint8_t extractDrbQosCfg(DRB_Information_t *drbInfo, LcCfg *macLcToAdd )
  *
  * ****************************************************************/
 uint8_t extractDrbCfg(DRBs_ToBeSetup_Item_t *drbItem, DRBs_ToBeSetupMod_Item_t *drbSetupModItem,\
-DRBs_ToBeModified_Item_t *drbModItem,  LcCfg *macLcToAdd, UpTnlCfg *upTnlInfo)
+DRBs_ToBeModified_Item_t *drbModItem,  DuLcCfg *macLcToAdd, UpTnlCfg *upTnlInfo)
 {
    DRB_Information_t *drbInfo = NULLP;
 
@@ -10136,7 +10136,7 @@ DRBs_ToBeModified_Item_t *drbModItem,  LcCfg *macLcToAdd, UpTnlCfg *upTnlInfo)
  * ****************************************************************/
 
 uint8_t extractMacRbCfg(uint8_t lcId, DRBs_ToBeSetup_Item_t *drbCfg,\
-DRBs_ToBeSetupMod_Item_t *drbSetupModCfg,  DRBs_ToBeModified_Item_t *drbModCfg, LogicalChannelConfig_t *ulLcCfg, LcCfg *lcCfg, UpTnlCfg *upTnlInfo)
+DRBs_ToBeSetupMod_Item_t *drbSetupModCfg,  DRBs_ToBeModified_Item_t *drbModCfg, LogicalChannelConfig_t *ulLcCfg, DuLcCfg *lcCfg, UpTnlCfg *upTnlInfo)
 {
    if(drbCfg != NULLP)
    {
@@ -10198,7 +10198,7 @@ DRBs_ToBeSetupMod_Item_t *drbSetupModCfg,  DRBs_ToBeModified_Item_t *drbModCfg, 
 
 uint8_t procMacLcCfg(uint8_t lcId, uint8_t rbType, uint8_t configType, DRBs_ToBeSetup_Item_t *drbItem,\
 DRBs_ToBeSetupMod_Item_t *drbSetupModItem, DRBs_ToBeModified_Item_t *drbModItem, LogicalChannelConfig_t *ulLcCfg,\
-LcCfg *lcCfg, UpTnlCfg *upTnlInfo)
+DuLcCfg *lcCfg, UpTnlCfg *upTnlInfo)
 {
    uint8_t ret = ROK;
 
@@ -10284,7 +10284,7 @@ uint8_t extractRlcCfgToAddMod(struct CellGroupConfigRrc__rlc_BearerToAddModList 
      }
      
      /* Filling RLC/MAC Config*/
-     memset(&ueCfgDb->macLcCfg[idx], 0, sizeof(LcCfg));
+     memset(&ueCfgDb->macLcCfg[idx], 0, sizeof(DuLcCfg));
      memset(&ueCfgDb->rlcLcCfg[idx], 0, sizeof(RlcBearerCfg));
      procRlcLcCfg(rbId, lcId, rbType, rlcMode, CONFIG_UNKNOWN, f1RlcCfg, &(ueCfgDb->rlcLcCfg[idx]), NULLP);
      if(procMacLcCfg(lcId, rbType, CONFIG_UNKNOWN, NULL, NULL, NULL, macUlLcCfg, &ueCfgDb->macLcCfg[idx], NULL) != ROK)
@@ -12444,12 +12444,12 @@ uint8_t extractCuToDuRrcInfoExt(ProtocolExtensionContainer_4624P16_t *protocolIe
  *    Functionality: Fills Srb List received  by CU
  *
  * @params[in] SRBs_ToBeSetup_Item_t *cuSrbItem
- *             LcCfg pointer
+ *             DuLcCfg pointer
  *             RlcBearerCfg pointer
  * @return void
  *
  * ****************************************************************/
-uint8_t procSrbListToSetup(SRBs_ToBeSetup_Item_t * srbItem, LcCfg *macLcToAdd, RlcBearerCfg *rlcLcToAdd)
+uint8_t procSrbListToSetup(SRBs_ToBeSetup_Item_t * srbItem, DuLcCfg *macLcToAdd, RlcBearerCfg *rlcLcToAdd)
 {
 
    /* Filling RLC INFO */
@@ -12488,7 +12488,7 @@ uint8_t extractSrbListToSetup(SRBs_ToBeSetup_List_t *srbCfg, DuUeCfg *ueCfgDb)
 {
    uint8_t ret = ROK, srbIdx = 0, rlcLcIdx = 0;
    SRBs_ToBeSetup_Item_t *srbItem = NULLP;
-   LcCfg *macLcCtxt = NULLP;
+   DuLcCfg *macLcCtxt = NULLP;
    RlcBearerCfg *rlcLcCtxt = NULLP;
 
    if(srbCfg)
@@ -12523,7 +12523,7 @@ uint8_t extractSrbListToSetup(SRBs_ToBeSetup_List_t *srbCfg, DuUeCfg *ueCfgDb)
          }
          if(!macLcCtxt)
          {
-            memset(&ueCfgDb->macLcCfg[ueCfgDb->numMacLcs], 0, sizeof(LcCfg));
+            memset(&ueCfgDb->macLcCfg[ueCfgDb->numMacLcs], 0, sizeof(DuLcCfg));
             macLcCtxt = &ueCfgDb->macLcCfg[ueCfgDb->numMacLcs];
             ueCfgDb->numMacLcs++;
          }
@@ -12563,14 +12563,14 @@ uint8_t extractSrbListToSetup(SRBs_ToBeSetup_List_t *srbCfg, DuUeCfg *ueCfgDb)
  *                   for both MAC and RLC
  *
  * @params[in] DRBs_ToBeSetup_Item_t , DRBs_ToBeSetupMod_Item_t,
- *             DRBs_ToBeModified_Item_t , lcId, LcCfg pointer,
+ *             DRBs_ToBeModified_Item_t , lcId, DuLcCfg pointer,
  *             RlcBearerCfg , UpTnlCfg, RlcUeCfg
  * @return void
  *
  * ****************************************************************/
 
 uint8_t procDrbListToSetupMod(uint8_t lcId, DRBs_ToBeSetup_Item_t *drbItem,\
-DRBs_ToBeSetupMod_Item_t *drbSetupModItem, DRBs_ToBeModified_Item_t *drbModItem, LcCfg *macLcToAdd, RlcBearerCfg *rlcLcToAdd, UpTnlCfg *upTnlInfo, RlcUeCfg *storedRlcUeCfg)
+DRBs_ToBeSetupMod_Item_t *drbSetupModItem, DRBs_ToBeModified_Item_t *drbModItem, DuLcCfg *macLcToAdd, RlcBearerCfg *rlcLcToAdd, UpTnlCfg *upTnlInfo, RlcUeCfg *storedRlcUeCfg)
 {
    uint8_t cfgIdx = 0;
    RlcMode rlcModeInfo;
@@ -12651,7 +12651,7 @@ uint8_t extractDrbListToSetupMod(DRBs_ToBeSetup_List_t *drbCfg, DRBs_ToBeSetupMo
    DRBs_ToBeSetup_Item_t *drbItem = NULLP;
    DRBs_ToBeSetupMod_ItemIEs_t *drbSetupModItem = NULLP;
    DRBs_ToBeModified_ItemIEs_t *drbModItem = NULLP;
-   LcCfg *macLcCtxt = NULLP;
+   DuLcCfg *macLcCtxt = NULLP;
    RlcBearerCfg *rlcLcCtxt = NULLP;
 
    ret = ROK;
@@ -12699,7 +12699,7 @@ uint8_t extractDrbListToSetupMod(DRBs_ToBeSetup_List_t *drbCfg, DRBs_ToBeSetupMo
          }
          if(!macLcCtxt)
          {
-            memset(&ueCfgDb->macLcCfg[ueCfgDb->numMacLcs], 0, sizeof(LcCfg));
+            memset(&ueCfgDb->macLcCfg[ueCfgDb->numMacLcs], 0, sizeof(DuLcCfg));
             macLcCtxt = &ueCfgDb->macLcCfg[ueCfgDb->numMacLcs];
             ueCfgDb->numMacLcs++;
          }

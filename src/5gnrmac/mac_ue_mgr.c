@@ -1329,7 +1329,7 @@ uint8_t fillSpCellCfg(SpCellCfg macSpCellCfg, SchSpCellCfg *schSpCellCfg)
    servCellCfg->numDlBwpToAdd = macSpCellCfg.servCellCfg.numDlBwpToAdd;
    if(servCellCfg->numDlBwpToAdd > MAX_NUM_BWP)
    {
-      DU_LOG("\nERROR  -->  MAC : Number of DL BWP to ADD/MOD [%d] exceeds max limit [%d]",\
+      DU_LOG("\nERROR  -->  MAC : Number of DL BWP to ADD [%d] exceeds max limit [%d]",\
 	    servCellCfg->numDlBwpToAdd, MAX_NUM_BWP);
       return RFAILED;
    }
@@ -1337,7 +1337,6 @@ uint8_t fillSpCellCfg(SpCellCfg macSpCellCfg, SchSpCellCfg *schSpCellCfg)
    {
       /* TODO : As of now numDlBwpToAdd = 0 */
    }
-
    servCellCfg->firstActvDlBwpId =  macSpCellCfg.servCellCfg.firstActvDlBwpId;
    servCellCfg->defaultDlBwpId = macSpCellCfg.servCellCfg.defaultDlBwpId;
    servCellCfg->bwpInactivityTmr = NULL;
@@ -1365,19 +1364,123 @@ uint8_t fillSpCellCfg(SpCellCfg macSpCellCfg, SchSpCellCfg *schSpCellCfg)
    servCellCfg->numUlBwpToAdd = macSpCellCfg.servCellCfg.numUlBwpToAdd;
    if(servCellCfg->numUlBwpToAdd > MAX_NUM_BWP)
    {
-      DU_LOG("\nERROR  -->  MAC : Number of UL BWP to ADD/MOD [%d] exceeds max limit [%d]",\
+      DU_LOG("\nERROR  -->  MAC : Number of UL BWP to ADD [%d] exceeds max limit [%d]",\
 	    servCellCfg->numUlBwpToAdd, MAX_NUM_BWP);
       return RFAILED;
    }
    for(idx = 0; idx < servCellCfg->numUlBwpToAdd; idx++)
    {
-      /* TODO : As of now numDlBwpToAdd = 0 */
+      /* TODO : As of now numUlBwpToAdd = 0 */
    }
    servCellCfg->firstActvUlBwpId =  macSpCellCfg.servCellCfg.firstActvUlBwpId;
 
    return ROK;
 }
 
+/*******************************************************************
+ *
+ * @brief Fills Sp Cell Reconfig to be sent to scheduler
+ *
+ * @details
+ *
+ *    Function : fillSpCellReCfg 
+ *
+ *    Functionality: Fills Sp Cell Reconfig to be sent to scheduler
+ *
+ * @params[in] macSpCellReCfg : SP cell Recfg at MAC
+ *             schSpCellReCfg : SP cell Recfg to be filled
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t fillSpCellReCfg(SpCellReCfg macSpCellReCfg, SchSpCellReCfg *schSpCellReCfg)
+{
+   uint8_t   idx;
+   SchServCellReCfgInfo   *servCellReCfg;
+
+   schSpCellReCfg->servCellIdx = macSpCellReCfg.servCellIdx;
+   servCellReCfg = &schSpCellReCfg->servCellReCfg;
+
+   /* Fill initial DL BWP */
+   if(fillInitialDlBwp(macSpCellReCfg.servCellReCfg.initDlBwp, \
+	    &servCellReCfg->initDlBwp) != ROK )
+   {
+      DU_LOG("\nERROR  -->  MAC : fillInitialDlBwp() failed");
+      return RFAILED;
+   }
+
+   servCellReCfg->numDlBwpToAddOrMod = macSpCellReCfg.servCellReCfg.numDlBwpToAddOrMod;
+   if(servCellReCfg->numDlBwpToAddOrMod > MAX_NUM_BWP)
+   {
+      DU_LOG("\nERROR  -->  MAC : Number of DL BWP to ADD/MOD [%d] exceeds max limit [%d]",\
+	    servCellReCfg->numDlBwpToAddOrMod, MAX_NUM_BWP);
+      return RFAILED;
+   }
+   for(idx = 0; idx < servCellReCfg->numDlBwpToAddOrMod; idx++)
+   {
+      /* TODO : As of now numDlBwpToAddOrMod = 0 */
+   }
+   servCellReCfg->numDlBwpToRel = macSpCellReCfg.servCellReCfg.numDlBwpToRel;
+   if(servCellReCfg->numDlBwpToRel > MAX_NUM_BWP)
+   {
+      DU_LOG("\nERROR  -->  MAC : Number of DL BWP to RELEASE [%d] exceeds max limit [%d]",\
+	    servCellReCfg->numDlBwpToRel, MAX_NUM_BWP);
+      return RFAILED;
+   }
+   for(idx = 0; idx < servCellReCfg->numDlBwpToRel; idx++)
+   {
+      /* TODO : As of now numDlBwpToRel = 0 */
+   }
+   servCellReCfg->firstActvDlBwpId =  macSpCellReCfg.servCellReCfg.firstActvDlBwpId;
+   servCellReCfg->defaultDlBwpId = macSpCellReCfg.servCellReCfg.defaultDlBwpId;
+   servCellReCfg->bwpInactivityTmr = NULL;
+   if(macSpCellReCfg.servCellReCfg.bwpInactivityTmr)
+   {
+      /* TODO : This is an optional parameter, not filled currently */
+   }
+
+   /* Fill PDSCH serving cell config */
+   if(fillPdschServCellCfg(macSpCellReCfg.servCellReCfg.pdschServCellCfg, \
+	    &servCellReCfg->pdschServCellCfg) != ROK)
+   {
+      DU_LOG("\nERROR  -->  MAC : fillPdschServCellCfg() failed");
+      return RFAILED;
+   }
+
+   /* Fill Initail UL BWP */
+   if(fillInitialUlBwp(macSpCellReCfg.servCellReCfg.initUlBwp, \
+	    &servCellReCfg->initUlBwp) != ROK)
+   {
+      DU_LOG("\nERROR  -->  MAC : fillInitialUlBwp() failed");
+      return RFAILED;
+   }
+
+   servCellReCfg->numUlBwpToAddOrMod = macSpCellReCfg.servCellReCfg.numUlBwpToAddOrMod;
+   if(servCellReCfg->numUlBwpToAddOrMod > MAX_NUM_BWP)
+   {
+      DU_LOG("\nERROR  -->  MAC : Number of UL BWP to ADD/MOD [%d] exceeds max limit [%d]",\
+	    servCellReCfg->numUlBwpToAddOrMod, MAX_NUM_BWP);
+      return RFAILED;
+   }
+   for(idx = 0; idx < servCellReCfg->numUlBwpToAddOrMod; idx++)
+   {
+      /* TODO : As of now numUlBwpToAddOrMod = 0 */
+   }
+   servCellReCfg->numUlBwpToRel = macSpCellReCfg.servCellReCfg.numUlBwpToRel;
+   if(servCellReCfg->numUlBwpToRel > MAX_NUM_BWP)
+   {
+      DU_LOG("\nERROR  -->  MAC : Number of UL BWP to RELEASE [%d] exceeds max limit [%d]",\
+	    servCellReCfg->numUlBwpToRel, MAX_NUM_BWP);
+      return RFAILED;
+   }
+   for(idx = 0; idx < servCellReCfg->numUlBwpToRel; idx++)
+   {
+      /* TODO : As of now numUlBwpToRel = 0 */
+   }
+   servCellReCfg->firstActvUlBwpId =  macSpCellReCfg.servCellReCfg.firstActvUlBwpId;
+
+   return ROK;
+}
 /*******************************************************************
  *
  * @brief Sends UE configuration to Scheduler
@@ -1394,18 +1497,18 @@ uint8_t fillSpCellCfg(SpCellCfg macSpCellCfg, SchSpCellCfg *schSpCellCfg)
  *
  * ****************************************************************/
 
-uint8_t sendUeReqToSch(Pst *pst, SchUeCfg *schUeCfg)
+uint8_t sendUeReqToSch(Pst *pst, SchUeCfgReq *schUeCfgReq, SchUeReCfgReq *schUeReCfgReq)
 {
    Pst schPst;
    switch(pst->event)
    {
       case EVENT_MAC_UE_CREATE_REQ:
 	 FILL_PST_MAC_TO_SCH(schPst, EVENT_ADD_UE_CONFIG_REQ_TO_SCH);
-	 return(*macSchAddUeConfigReqOpts[schPst.selector])(&schPst, schUeCfg);
+	 return(*macSchAddUeConfigReqOpts[schPst.selector])(&schPst, schUeCfgReq);
 
       case EVENT_MAC_UE_RECONFIG_REQ:
 	 FILL_PST_MAC_TO_SCH(schPst, EVENT_MODIFY_UE_CONFIG_REQ_TO_SCH);
-	 return(*macSchModUeConfigReqOpts[schPst.selector])(&schPst,schUeCfg);
+	 return(*macSchModUeConfigReqOpts[schPst.selector])(&schPst,schUeReCfgReq);
       default: 
 	 DU_LOG("\nERROR  -->  Invalid Pst received %d", pst->event);
 	 return RFAILED;
@@ -1566,13 +1669,13 @@ uint8_t fillLogicalChannelCfg(SchLcCfg *schLcCfg, LcCfg *macLcCfg)
 
 /*******************************************************************
  *
- * @brief Fills Logical channel Cfg List to Add/Mod/Del
+ * @brief Fills Logical channel Cfg List to Add
  *
  * @details
  *
  *    Function : fillSchLcCfgList
  *
- *    Functionality: Fills Logical channel Cfg List to Add/Mod/Del
+ *    Functionality: Fills Logical channel Cfg List to Add
  *
  * @params[in] MAC UE Cb Cfg , MAC UE Configuration
  * @return ROK     - success
@@ -1580,7 +1683,7 @@ uint8_t fillLogicalChannelCfg(SchLcCfg *schLcCfg, LcCfg *macLcCfg)
  *
  * ****************************************************************/
 
-uint8_t fillSchLcCfgList(SchUeCfg *schUeCfg, MacUeCfg *ueCfg)
+uint8_t fillSchLcCfgList(SchUeCfgReq *schUeCfg, MacUeCfg *ueCfg)
 {
    uint8_t lcIdx;
 
@@ -1588,10 +1691,59 @@ uint8_t fillSchLcCfgList(SchUeCfg *schUeCfg, MacUeCfg *ueCfg)
    {
       if(fillLogicalChannelCfg(&schUeCfg->schLcCfg[lcIdx], &ueCfg->lcCfgList[lcIdx]) != ROK)
       {
-	 DU_LOG("\nERROR  -->  MAC : fillLogicalChannelCfg() failed for lc Idx[%d]", lcIdx);
-	 return RFAILED;
+         DU_LOG("\nERROR  -->  MAC : fillLogicalChannelCfg() failed for lc Idx[%d]", lcIdx);
+         return RFAILED;
       }
       schUeCfg->numLcs++;
+   }
+   return ROK;
+}
+
+/*******************************************************************
+ *
+ * @brief Fills Logical channel ReCfg List to Add/Mod/Del
+ *
+ * @details
+ *
+ *    Function : fillSchLcReCfgList
+ *
+ *    Functionality: Fills Logical channel ReCfg List to Add/Mod/Del
+ *
+ * @params[in] MAC UE Cb ReCfg , MAC UE ReConfiguration
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+
+uint8_t fillSchLcReCfgList(SchUeReCfgReq *schUeReCfg, MacUeReCfg *ueReCfg)
+{
+   uint8_t lcIdx;
+
+    /*LC to ADD*/
+   for(lcIdx = 0; lcIdx < ueCfg->numLcsToAdd; lcIdx++)
+   {
+      if(fillLogicalChannelCfg(&schUeCfg->schLcCfgAdd[lcIdx], &ueCfg->lcCfgAdd[lcIdx]) != ROK)
+      {
+         DU_LOG("\nERROR  -->  MAC : fillLogicalChannelCfg() failed for lc Idx[%d]", lcIdx);
+         return RFAILED;
+      }
+      schUeCfg->numLcsToAdd++;
+   }
+    /*LC to DEL*/
+   for(lcIdx = 0; lcIdx < ueCfg->numLcsToDel; lcIdx++)
+   {
+      schUeCfg->schLcCfgDel[lcIdx] = ueCfg->lcCfgDel[lcIdx];
+      schUeCfg->numLcsToDel++;
+   }
+    /*LC to MOD*/
+   for(lcIdx = 0; lcIdx < ueCfg->numLcsToMod; lcIdx++)
+   {
+      if(fillLogicalChannelCfg(&schUeCfg->schLcCfgMod[lcIdx], &ueCfg->lcCfgMod[lcIdx]) != ROK)
+      {
+         DU_LOG("\nERROR  -->  MAC : fillLogicalChannelCfg() failed for lc Idx[%d]", lcIdx);
+         return RFAILED;
+      }
+      schUeCfg->numLcsToMod++;
    }
    return ROK;
 }
@@ -1611,7 +1763,7 @@ uint8_t fillSchLcCfgList(SchUeCfg *schUeCfg, MacUeCfg *ueCfg)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t fillSchUeCfg(Pst *pst, SchUeCfg *schUeCfg, MacUeCfg *ueCfg)
+uint8_t fillSchUeCfg(SchUeCfgReq *schUeCfg, MacUeCfg *ueCfg)
 {
    uint8_t ret = ROK;
 
@@ -1677,11 +1829,102 @@ uint8_t fillSchUeCfg(Pst *pst, SchUeCfg *schUeCfg, MacUeCfg *ueCfg)
    schUeCfg->ulModInfo.mcsIndex = ueCfg->ulModInfo.mcsIndex;
    schUeCfg->ulModInfo.mcsTable = ueCfg->ulModInfo.mcsTable;
 
-   /* Fill sch Lc Cfg  to Add/ Mod/ Del */
+   /* Fill sch Lc Cfg  to Add*/
    ret  = fillSchLcCfgList(schUeCfg, ueCfg);
    if(ret == RFAILED)
    {
       DU_LOG("\nERROR  -->  MAC : Failed to copy LCs at fillSchUeCfg()");
+      return ret;
+   }
+   return ret;
+}
+
+/*******************************************************************
+ *
+ * @brief Fills and sends UE Re-configuration to Scheduler
+ *
+ * @details
+ *
+ *    Function : fillSchUeReCfg
+ *
+ *    Functionality: Fills and sends UE Reconfiguration to Scheduler
+ *
+ * @params[in] Ue configuration from DU APP
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t fillSchUeReCfg(SchUeReCfgReq *schUeReCfg, MacUeReCfg *ueReCfg)
+{
+   uint8_t ret = ROK;
+
+   schUeReCfg->cellId = ueReCfg->cellId;
+   schUeReCfg->ueId = ueReCfg->ueId;
+   schUeReCfg->crnti = ueReCfg->crnti;
+   schUeReCfg->dataTransmissionInfo = ueReCfg->transmissionAction;
+   /* Copy MAC cell group config */
+   if(ueReCfg->macCellGrpReCfgPres == true)
+   {
+      schUeReCfg->macCellGrpReCfgPres = true;
+      memset(&schUeReCfg->macCellGrpReCfg, 0, sizeof(SchMacCellGrpCfg));
+      if(fillMacCellGroupCfg(ueReCfg->macCellGrpReCfg, &schUeReCfg->macCellGrpReCfg) != ROK)
+      {
+         DU_LOG("\nERROR  -->  MAC : fillMacCellGroupReCfg() failed");
+         return RFAILED;
+      }
+   }
+   if(ueReCfg->phyCellGrpReCfgPres == true)
+   {
+     schUeReCfg->phyCellGrpReCfgPres = true;
+     /* Copy Physical cell group config */
+      memset(&schUeReCfg->phyCellGrpReCfg, 0,sizeof(SchPhyCellGrpCfg));
+      if(fillPhyCellGroupCfg(ueReCfg->phyCellGrpReCfg, &schUeReCfg->phyCellGrpReCfg) != ROK)
+      {
+         DU_LOG("\nERROR  -->  MAC : fillPhyCellGroupReCfg() failed");
+         return RFAILED;
+      }
+   }
+
+   if(ueReCfg->spCellReCfgPres == true)
+   {
+      schUeReCfg->spCellReCfgPres = true;
+      /* Copy sp cell config */
+      memset(&schUeReCfg->spCellReCfg, 0, sizeof(SchSpCellCfg));
+      if(fillSpCellReCfg(ueReCfg->spCellReCfg, &schUeReCfg->spCellReCfg) != ROK)
+      {
+         DU_LOG("\nERROR  -->  MAC : fillSpCellReCfg() failed");
+         return RFAILED;
+      }
+   }
+   if(ueReCfg->ambrCfg != NULLP)
+   {
+      MAC_ALLOC(schUeReCfg->ambrCfg, sizeof(SchAmbrCfg));
+      if(!schUeReCfg->ambrCfg)
+      {
+         DU_LOG("\nERROR  -->  MAC : Memory allocation failed in sendReconfigReqToSch");
+         return RFAILED;
+      }
+      schUeReCfg->ambrCfg->ulBr = ueReCfg->ambrCfg->ulBr;
+   }
+   else
+   {
+      schUeReCfg->ambrCfg = NULLP;
+   }
+   /* Fill DL modulation infor */
+   schUeReCfg->dlModInfo.modOrder = ueReCfg->dlModInfo.modOrder;
+   schUeReCfg->dlModInfo.mcsIndex = ueReCfg->dlModInfo.mcsIndex;
+   schUeReCfg->dlModInfo.mcsTable = ueReCfg->dlModInfo.mcsTable;
+
+   /* Fill UL modulation infor */
+   schUeReCfg->ulModInfo.modOrder = ueReCfg->ulModInfo.modOrder;
+   schUeReCfg->ulModInfo.mcsIndex = ueReCfg->ulModInfo.mcsIndex;
+   schUeReCfg->ulModInfo.mcsTable = ueReCfg->ulModInfo.mcsTable;
+
+   /* Fill sch Lc Cfg  to Add/ Mod/ Del */
+   ret  = fillSchLcReCfgList(schUeReCfg, ueReCfg);
+   if(ret == RFAILED)
+   {
+      DU_LOG("\nERROR  -->  MAC : Failed to copy LCs at fillSchUeReCfg()");
       return ret;
    }
    return ret;
@@ -2293,8 +2536,8 @@ uint8_t copyToTmpData(MacUeCfg *ueCfg)
 uint8_t MacProcUeCreateReq(Pst *pst, MacUeCfg *ueCfg)
 {
    uint8_t ret = ROK;
-   SchUeCfg   schUeCfg;
-   memset(&schUeCfg, 0, sizeof(SchUeCfg));
+   SchUeCfgReq   schUeCfg;
+   memset(&schUeCfg, 0, sizeof(SchUeCfgReq));
 
    DU_LOG("\nINFO  -->  MAC : UE Create Request for CRNTI[%d]", ueCfg->crnti);
 
@@ -2318,7 +2561,7 @@ uint8_t MacProcUeCreateReq(Pst *pst, MacUeCfg *ueCfg)
          else
          {
             /* Fill event and send UE create request to SCH */
-            ret = sendUeReqToSch(pst, &schUeCfg);
+            ret = sendUeReqToSch(pst, &schUeCfg, NULLP);
             if(ret != ROK)
                DU_LOG("\nERROR  -->  MAC : Failed to send UE Create request to SCH");
          }
@@ -2568,28 +2811,28 @@ uint8_t MacProcSchUeCfgRsp(Pst *pst, SchUeCfgRsp *schCfgRsp)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t MacProcUeReconfigReq(Pst *pst, MacUeCfg *ueCfg)
+uint8_t MacProcUeReconfigReq(Pst *pst, MacUeReCfg *ueReCfg)
 {
    uint8_t ret = ROK;
-   SchUeCfg   schUeCfg;
-   memset(&schUeCfg, 0, sizeof(SchUeCfg));
+   SchUeReCfgReq   schUeReCfg;
+   memset(&schUeReCfg, 0, sizeof(SchUeCfgReq));
 
-   DU_LOG("\nINFO  -->  MAC : UE Reconfig Request for CRNTI[%d]", ueCfg->crnti);
+   DU_LOG("\nINFO  -->  MAC : UE Reconfig Request for CRNTI[%d]", ueReCfg->crnti);
 
-   if(ueCfg)
+   if(ueReCfg)
    {
-      /*Storing received ueCfg in ueCfgTmpData */
-      ret = copyToTmpData(ueCfg);
+      /*Storing received ueReCfg in ueCfgTmpData */
+      ret = copyToTmpData(ueReCfg);
       if(ret == ROK)
       {
          /*Sending Cfg Req to SCH */
-         ret = fillSchUeCfg(pst, &schUeCfg, ueCfg);
+         ret = fillSchUeReCfg(pst, &schUeReCfg, ueReCfg);
          if(ret != ROK)
             DU_LOG("\nERROR  -->  MAC : Failed to fill sch Ue Cfg at MacProcUeReconfigReq()");
          else
          {
-            /* Fill event and send UE create request to SCH */
-            ret = sendUeReqToSch(pst, &schUeCfg);
+            /* Fill event and send UE Reconfiguration request to SCH */
+            ret = sendUeReqToSch(pst, NULLP, &schUeReCfg);
             if(ret != ROK)
                DU_LOG("\nERROR  -->  MAC : Failed to send UE Reconfig Request to SCH");
          }
@@ -2601,11 +2844,11 @@ uint8_t MacProcUeReconfigReq(Pst *pst, MacUeCfg *ueCfg)
    }
    else
    {
-      DU_LOG("\nERROR  -->  MAC : MAC UE Create request processing failed");
+      DU_LOG("\nERROR  -->  MAC : MAC UE Reconfiguration request processing failed");
       ret = RFAILED;
    }
    /* FREE shared memory */
-   MAC_FREE_SHRABL_BUF(pst->region, pst->pool, ueCfg, sizeof(MacUeCfg));
+   MAC_FREE_SHRABL_BUF(pst->region, pst->pool, ueReCfg, sizeof(MacUeReCfg));
    return ROK;
 }
 
@@ -2833,9 +3076,9 @@ uint8_t sendUeDelReqToSch(Pst *pst, MacUeDelete *ueDelete)
    if(ueDelete != NULLP)
    {
       Pst schPst;
-      SchUeDelete schUeDel;
+      SchUeDeleteReq schUeDel;
 
-      memset(&schUeDel, 0, sizeof(SchUeDelete));
+      memset(&schUeDel, 0, sizeof(SchUeDeleteReq));
       schUeDel.cellId = ueDelete->cellId;
       schUeDel.crnti  = ueDelete->crnti;
       MAC_FREE_SHRABL_BUF(pst->region, pst->pool, ueDelete, sizeof(MacUeDelete));

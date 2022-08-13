@@ -729,7 +729,7 @@ typedef struct macCellCfgCfm
    uint8_t        rsp; 
 }MacCellCfgCfm;
 
-typedef struct ulCcchInd
+typedef struct ulCcchInd //Verified
 {
    uint16_t cellId;
    uint16_t crnti;
@@ -737,7 +737,7 @@ typedef struct ulCcchInd
    uint8_t  *ulCcchMsg;
 }UlCcchIndInfo;
 
-typedef struct dlCcchInd
+typedef struct dlCcchInd //Verified
 {
    uint16_t      cellId;
    uint16_t      crnti;
@@ -796,7 +796,7 @@ typedef struct phrCfg
    PhrModeOtherCG phrOtherCG;
 }PhrCfg;
 
-typedef struct macCellGrpCfg
+typedef struct macCellGrpCfg //Verified
 {
    SchedReqCfg schReqCfg;
    TagCfg      tagCfg;
@@ -805,7 +805,7 @@ typedef struct macCellGrpCfg
    PhrCfg      phrCfg;
 }MacCellGrpCfg;
 
-typedef struct phyCellGrpCfg
+typedef struct phyCellGrpCfg //Verified
 {
    PdschHarqAckCodebook  pdschHarqAckCodebook;
    uint8_t    pNrFr1;
@@ -895,7 +895,7 @@ typedef struct pdschConfig
 }PdschConfig;
 
 /* Initial Downlink BWP */
-typedef struct initialDlBwp
+typedef struct initialDlBwp //Verified
 {
    bool          pdcchPresent;
    PdcchConfig   pdcchCfg;
@@ -909,13 +909,13 @@ typedef struct bwpDlCommon
 }BwpDlCommon;
 
 /* Downlink BWP information */
-typedef struct dlBwpInfo
+typedef struct dlBwpInfo //Verified , TBD
 {
    uint8_t          bwpId;
 }DlBwpInfo;
 
 /* PDCCH Serving Cell configuration */
-typedef struct pdschServCellCfg
+typedef struct pdschServCellCfg //Verified
 {
    uint8_t              *maxMimoLayers;           
    NumHarqProcForPdsch  numHarqProcForPdsch;
@@ -1117,7 +1117,7 @@ typedef struct puschCfg
 }PuschCfg;
 
 /* Initial Uplink BWP */
-typedef struct initialUlBwp
+typedef struct initialUlBwp //Verified
 {
    bool       pucchPresent;
    PucchCfg   pucchCfg; 
@@ -1126,40 +1126,71 @@ typedef struct initialUlBwp
 }InitialUlBwp;
 
 /* Uplink BWP information */
-typedef struct ulBwpInfo
+typedef struct ulBwpInfo //Verified , TBD
 {
    uint8_t        bwpId;
 }UlBwpInfo;
 
 /* Serving cell configuration */
-typedef struct servCellCfgInfo
+typedef struct servCellCfgInfo //Verified
 {
    InitialDlBwp       initDlBwp;
-   uint8_t            numDlBwpToAdd;
-   DlBwpInfo          DlBwpToAddList[MAX_NUM_BWP];
+   uint8_t            numDlBwpToAddOrMod;
+   DlBwpInfo          DlBwpToAddOrModList[MAX_NUM_BWP];
+   uint8_t            numDlBwpToRel;
+   DlBwpInfo          DlBwpToRelList[MAX_NUM_BWP];
    uint8_t            firstActvDlBwpId;
    uint8_t            defaultDlBwpId;
    uint8_t            *bwpInactivityTmr;
    PdschServCellCfg   pdschServCellCfg;
    InitialUlBwp       initUlBwp;
-   uint8_t            numUlBwpToAdd;
-   UlBwpInfo          UlBwpToAddList[MAX_NUM_BWP];
+   uint8_t            numUlBwpToAddOrMod;
+   UlBwpInfo          UlBwpToAddOrModList[MAX_NUM_BWP];
+   uint8_t            numUlBwpToRel;
+   UlBwpInfo          UlBwpToRelList[MAX_NUM_BWP];
    uint8_t            firstActvUlBwpId;
 }ServCellCfgInfo;
 
 /* Special cell configuration */
-typedef struct spCellCfg
+typedef struct spCellCfg  //Verified
 {
    uint8_t           servCellIdx;
    ServCellCfgInfo   servCellCfg;
 }SpCellCfg;
+
+/* Serving cell Re-configuration */
+typedef struct servCellReCfgInfo //Verified
+{
+   InitialDlBwp       initDlBwp;
+   uint8_t            numDlBwpToAddOrMod;
+   DlBwpInfo          DlBwpToAddOrModList[MAX_NUM_BWP];
+   uint8_t            numDlBwpToRel;
+   DlBwpInfo          DlBwpToRelList[MAX_NUM_BWP];
+   uint8_t            firstActvDlBwpId;
+   uint8_t            defaultDlBwpId;
+   uint8_t            *bwpInactivityTmr;
+   PdschServCellCfg   pdschServCellCfg;
+   InitialUlBwp       initUlBwp;
+   uint8_t            numUlBwpToAddOrMod;
+   UlBwpInfo          UlBwpToAddOrModList[MAX_NUM_BWP];
+   uint8_t            numUlBwpToRel;
+   UlBwpInfo          UlBwpToRelList[MAX_NUM_BWP];
+   uint8_t            firstActvUlBwpId;
+}ServCellReCfgInfo;
+
+/* Special cell Re-configuration */
+typedef struct spCellReCfg  //Verified
+{
+   uint8_t           servCellIdx;
+   ServCellReCfgInfo   servCellReCfg;
+}SpCellReCfg;
 
 typedef struct ambrCfg
 {
    uint32_t ulBr;   /* UL Bit rate */
 }AmbrCfg;
 
-typedef struct nonDynFiveQi
+typedef struct nonDynFiveQi //Verified
 {
    uint16_t   fiveQi;
    uint8_t    priorLevel;
@@ -1167,7 +1198,7 @@ typedef struct nonDynFiveQi
    uint16_t   maxDataBurstVol;
 }NonDynFiveQi;
 
-typedef struct dynFiveQi
+typedef struct dynFiveQi //Verified
 {
    uint8_t    priorLevel;
    uint16_t   packetDelayBudget;
@@ -1179,14 +1210,14 @@ typedef struct dynFiveQi
    uint16_t   maxDataBurstVol;
 }DynFiveQi;
 
-typedef struct ngRanAllocAndRetPri
+typedef struct ngRanAllocAndRetPri  //Verified
 {
    uint8_t priorityLevel;
    uint8_t preEmptionCap;
    uint8_t preEmptionVul;
 }NgRanAllocAndRetPri;
 
-typedef struct grbQosInfo
+typedef struct grbQosInfo //Verified
 {
    uint32_t maxFlowBitRateDl;
    uint32_t maxFlowBitRateUl;
@@ -1194,7 +1225,7 @@ typedef struct grbQosInfo
    uint32_t guarFlowBitRateUl;
 }GrbQosInfo;
 
-typedef struct drbQos
+typedef struct drbQos //Verified
 {
    QosType  fiveQiType;   /* Dynamic or non-dynamic */ 
    union
@@ -1208,7 +1239,7 @@ typedef struct drbQos
    uint32_t             ulPduSessAggMaxBitRate;
 }DrbQosInfo;
 
-typedef struct ulLcCfg
+typedef struct ulLcCfg //Verified
 {
    uint8_t priority;
    uint8_t lcGroup;
@@ -1217,17 +1248,16 @@ typedef struct ulLcCfg
    BucketSizeDur bsd;        // bucketSizeDuration
 }UlLcCfg;
 
-typedef struct duLcCfg
+typedef struct dlLcCfg //Verified
 {
    LcPriority lcp;      // logical Channel Prioritization
 }DlLcCfg;
 
-typedef struct lcCfg
+typedef struct lcCfg //Verified
 {
-   ConfigType configType;
    uint8_t lcId;
-   DrbQosInfo *drbQos; 
    Snssai  *snssai;
+   DrbQosInfo *drbQos; 
    bool ulLcCfgPres;
    UlLcCfg ulLcCfg;
    DlLcCfg dlLcCfg;
@@ -1242,23 +1272,49 @@ typedef struct modulationInfo
 
 typedef struct macUeCfg
 {
-   uint16_t cellId;
-   uint8_t  ueId;
-   uint16_t crnti;
-   bool macCellGrpCfgPres;
-   MacCellGrpCfg macCellGrpCfg;
-   bool phyCellGrpCfgPres;
-   PhyCellGrpCfg phyCellGrpCfg;
-   bool spCellCfgPres;
-   SpCellCfg spCellCfg;
-   AmbrCfg   *ambrCfg;
-   ModulationInfo dlModInfo;    /* DL modulation info */
-   ModulationInfo ulModInfo;    /* UL modulation info */
-   uint8_t numLcs;
-   LcCfg lcCfgList[MAX_NUM_LC];
-   UeCfgState macUeCfgState;    /* InActive / Completed */
-   DataTransmissionAction transmissionAction;
+   uint16_t               cellId;
+   uint8_t                ueId;
+   uint16_t               crnti;
+   bool                   macCellGrpCfgPres;
+   MacCellGrpCfg          macCellGrpCfg;
+   bool                   phyCellGrpCfgPres;
+   PhyCellGrpCfg          phyCellGrpCfg;
+   bool                   spCellCfgPres;
+   SpCellCfg              spCellCfg;
+   AmbrCfg                *ambrCfg;
+   ModulationInfo         dlModInfo;    /* DL modulation info */ //TBD
+   ModulationInfo         ulModInfo;    /* UL modulation info */  //TBD
+   uint8_t                numLcs;
+   LcCfg                  lcCfgList[MAX_NUM_LC];
+   UeCfgState             macUeCfgState;    /* InActive / Completed */ //TBD
+   DataTransmissionAction transmissionAction; //TBD
 }MacUeCfg;
+
+/* UE Re-configuration */
+typedef struct macUeReCfgReq //Verified, TBD
+{
+   uint16_t        cellId;
+   uint8_t         ueId;
+   uint8_t         beamIdx; //TBD from WG8
+   uint16_t        crnti;
+   bool            macCellGrpReCfgPres;
+   MacCellGrpCfg   macCellGrpReCfg;
+   bool            phyCellGrpReCfgPres;
+   PhyCellGrpCfg   phyCellGrpReCfg;
+   bool            spCellReCfgPres;
+   SpCellReCfg     spCellReCfg;
+   AmbrCfg         *ambrReCfg;
+   ModulationInfo  dlModInfo;
+   ModulationInfo  ulModInfo;
+   uint8_t         numLcsToAdd;
+   LcCfg           lcCfgAdd[MAX_NUM_LC];
+   uint8_t         numLcsToDel;
+   uint8_t         lcIdToDel[MAX_NUM_LC];
+   uint8_t         numLcsToMod;
+   LcCfg           lcCfgMod[MAX_NUM_LC];
+   UeCfgState      macUeCfgState;    /* InActive / Completed */ //TBD
+   DataTransmission dataTransmissionInfo;
+}MacUeReCfg;
 
 typedef struct nrcgi
 {
@@ -1266,25 +1322,25 @@ typedef struct nrcgi
    uint16_t  cellId;
 }Nrcgi;
 
-typedef struct srbFailInfo
+typedef struct srbFailInfo //Verified
 {
    uint8_t       srbId;
    FailureCause  cause;
 }SRBFailInfo;
 
-typedef struct drbFailInfo
+typedef struct drbFailInfo //Verified
 {
    uint8_t       drbId;
    FailureCause  cause;
 }DRBFailInfo;
 
-typedef struct sCellFailInfo
+typedef struct sCellFailInfo //Verified
 {
    Nrcgi         nrcgi;
    FailureCause  cause;
 }SCellFailInfo;
 
-typedef struct ueCfgRsp
+typedef struct ueCfgRsp //Verified
 {
    uint16_t       cellId;
    uint16_t       ueId;
@@ -1295,9 +1351,11 @@ typedef struct ueCfgRsp
    DRBFailInfo    *failedDRBlist;
    uint8_t        numSCellFailed; /* valid values : 0 to MAX_NUM_SCELL */
    SCellFailInfo  *failedSCellList;
+   uint8_t        numDRBModFailed;   /* valid values : 0 to MAX_NUM_DRB */
+   DRBFailInfo    *failedDRBModlist;
 }MacUeCfgRsp;
 
-typedef struct rachRsrcReq
+typedef struct rachRsrcReq //Verified
 {
    uint16_t cellId;
    uint16_t ueId;
@@ -1317,7 +1375,7 @@ typedef struct macCfraResource
    MacCfraSsbResource ssbResource[MAX_NUM_SSB];
 }MacCfraResource;
 
-typedef struct macRachRsrcRsp
+typedef struct macRachRsrcRsp //Verified
 {
    uint16_t   cellId;
    uint16_t   ueId;
@@ -1326,21 +1384,21 @@ typedef struct macRachRsrcRsp
    MacCfraResource  cfraResource;
 }MacRachRsrcRsp;
 
-typedef struct macRachRsrcRel
+typedef struct macRachRsrcRel //Verified
 {
    uint16_t cellId;
    uint16_t ueId;
    uint16_t crnti;
 }MacRachRsrcRel;
 
-typedef struct ueDelete
+typedef struct ueDelete //Verified
 {
     uint16_t cellId;
     uint8_t  ueId;
     uint16_t crnti;
 }MacUeDelete;
 
-typedef struct ueDeleteRsp
+typedef struct ueDeleteRsp //Verified
 {
    uint16_t cellId;
    uint8_t  ueId;
@@ -1390,14 +1448,18 @@ typedef struct macSliceCfgRsp
    MacSliceRsp  **listOfSliceCfgRsp;
 }MacSliceCfgRsp;
 
-typedef struct macPcchInd
+/*As per ORAN-WG8, Slice Cfg and ReCfg are same structures*/
+typedef struct macSliceCfgReq MacSliceReCfgReq;
+typedef struct macSliceCfgRsp MacSliceReCfgRsp;
+
+typedef struct dlPcchInd
 {
    uint16_t  cellId;
    uint16_t  pf;
    uint8_t   i_s;
    uint16_t  pduLen;
    uint8_t  *pcchPdu;
-}MacPcchInd;
+}DlPcchInd;
 
 /* Functions for CellUp Ind from MAC to DU APP*/
 typedef uint8_t (*DuMacCellUpInd) ARGS((
@@ -1524,7 +1586,7 @@ typedef uint8_t (*MacDuSliceReCfgRspFunc) ARGS((
 /* Pcch indication from DU APP to MAC*/
 typedef uint8_t (*DuMacDlPcchInd) ARGS((
      Pst        *pst,
-     MacPcchInd *pcchInd));
+     DlPcchInd *pcchInd));
 
 uint64_t ueBitMapPerCell[MAX_NUM_CELL]; /* Bit Map to store used/free UE-IDX per Cell */
 
@@ -1559,9 +1621,9 @@ uint8_t sendStopIndMacToDuApp(uint16_t cellId);
 uint8_t packDuMacUeCfgRsp(Pst *pst, MacUeCfgRsp *cfgRsp);
 uint8_t unpackDuMacUeCfgRsp(MacDuUeCfgRspFunc func, Pst *pst, Buffer *mBuf);
 uint8_t DuProcMacUeCfgRsp(Pst *pst, MacUeCfgRsp *cfgRsp);
-uint8_t packDuMacUeReconfigReq(Pst *pst, MacUeCfg *ueCfg);
+uint8_t packDuMacUeReconfigReq(Pst *pst, MacUeReCfg *ueReCfg);
 uint8_t unpackMacUeReconfigReq(DuMacUeReconfigReq func, Pst *pst, Buffer *mBuf);
-uint8_t MacProcUeReconfigReq(Pst *pst, MacUeCfg *ueCfg);
+uint8_t MacProcUeReconfigReq(Pst *pst, MacUeReCfg *ueReCfg);
 uint8_t packDuMacRachRsrcReq(Pst *pst, MacRachRsrcReq *rachRsrcReq);
 uint8_t unpackMacRachRsrcReq(DuMacRachRsrcReq func, Pst *pst, Buffer *mBuf);
 uint8_t MacProcRachRsrcReq(Pst *pst, MacRachRsrcReq *rachRsrcReq);
@@ -1598,8 +1660,8 @@ uint8_t unpackDuMacSliceReCfgRsp(MacDuSliceReCfgRspFunc func, Pst *pst, Buffer *
 uint8_t duHandleSlotInd(Pst *pst, SlotTimingInfo *slotIndInfo);
 uint8_t packMacSlotInd(Pst *pst, SlotTimingInfo *slotIndInfo);
 uint8_t unpackDuMacSlotInd(DuMacSlotInd func, Pst *pst, Buffer *mBuf);
-uint8_t packDuMacDlPcchInd(Pst *pst, MacPcchInd *pcchInd);
-uint8_t MacProcDlPcchInd(Pst *pst, MacPcchInd *pcchInd);
+uint8_t packDuMacDlPcchInd(Pst *pst, DlPcchInd *pcchInd);
+uint8_t MacProcDlPcchInd(Pst *pst, DlPcchInd *pcchInd);
 uint8_t unpackMacDlPcchInd(DuMacDlPcchInd func, Pst *pst, Buffer *mBuf);
 int8_t getFreeBitFromUeBitMap(uint16_t cellId);
 void unsetBitInUeBitMap(uint16_t cellId, uint8_t bitPos);

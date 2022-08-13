@@ -129,6 +129,17 @@ typedef struct upTnlCfg
    GtpTnlCfg *tnlCfg2; /* Tunnel 2 */
 }UpTnlCfg;
 
+typedef struct duLcCfg
+{
+   ConfigType configType; 
+   uint8_t lcId;
+   Snssai  *snssai;
+   DrbQosInfo *drbQos;
+   bool ulLcCfgPres;
+   UlLcCfg ulLcCfg;
+   DlLcCfg dlLcCfg;
+}DuLcCfg;
+
 typedef struct duUeCfg
 {
    void *cellGrpCfg;
@@ -136,7 +147,7 @@ typedef struct duUeCfg
    uint8_t numRlcLcs;        /* Rlc Ue Cfg */
    RlcBearerCfg rlcLcCfg[MAX_NUM_LC];
    uint8_t numMacLcs;        /* Mac Ue Cfg */
-   LcCfg   macLcCfg[MAX_NUM_LC];
+   DuLcCfg   macLcCfg[MAX_NUM_LC];
    AmbrCfg *ambrCfg;
    uint8_t numDrb;
    UpTnlCfg upTnlInfo[MAX_NUM_DRB];  /* User plane TNL Info*/

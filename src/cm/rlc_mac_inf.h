@@ -54,13 +54,13 @@ typedef struct rlcSchedResultRpt
    //Slot info
    uint16_t       cellId;       /*!< CELL ID */
    uint16_t       rnti;         /*!< Temporary CRNTI */
-   uint8_t        numLc;        /*!< Number of logical channels scheduled */
    SlotTimingInfo    slotInfo;     /*!< Timing info */
+   uint8_t        numLc;        /*!< Number of logical channels scheduled */
    RlcLcSchInfo   lcSch[MAX_NUM_LC];  /*!< Scheduled info of logical channels */
 }RlcSchedResultRpt;
 
 /* DL/UL data transfer */
-typedef struct rlcPduInfo
+typedef struct rlcPduInfo //Verified
 {
    bool       commCh;   /*!<Common or Dedicated Channel */
    uint8_t    lcId;     /*!< Logical channel ID */
@@ -68,7 +68,7 @@ typedef struct rlcPduInfo
    uint8_t    *pduBuf;  /*!< RLC PDU buffer */
 }RlcPduInfo;
  
-typedef struct rlcData
+typedef struct rlcData //Verified
 {
    uint16_t      cellId;       /*!< CELL ID */
    uint16_t      rnti;         /*!< Temporary CRNTI */

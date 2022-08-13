@@ -1610,7 +1610,7 @@ uint8_t unpackDuMacSliceCfgRsp(MacDuSliceCfgRspFunc func, Pst *pst, Buffer *mBuf
  *
  * ****************************************************************/
 
-uint8_t packDuMacSliceRecfgReq(Pst *pst, MacSliceCfgReq *sliceReCfgReq)
+uint8_t packDuMacSliceRecfgReq(Pst *pst, MacSliceReCfgReq *sliceReCfgReq)
 {
    Buffer *mBuf = NULLP;
 
@@ -1654,7 +1654,7 @@ uint8_t unpackMacSliceReCfgReq(DuMacSliceRecfgReq func, Pst *pst, Buffer *mBuf)
 {
     if(pst->selector == ODU_SELECTOR_LWLC)
     {
-       MacSliceCfgReq *sliceReCfgReq;
+       MacSliceReCfgReq *sliceReCfgReq;
        /* unpack the address of the structure */
        CMCHKUNPK(oduUnpackPointer, (PTR *)&sliceReCfgReq, mBuf);
        ODU_PUT_MSG_BUF(mBuf);
@@ -1686,7 +1686,7 @@ uint8_t unpackMacSliceReCfgReq(DuMacSliceRecfgReq func, Pst *pst, Buffer *mBuf)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t packDuMacSliceReCfgRsp(Pst *pst, MacSliceCfgRsp *cfgRsp)
+uint8_t packDuMacSliceReCfgRsp(Pst *pst, MacSliceReCfgRsp *cfgRsp)
 {
    Buffer *mBuf = NULLP;
 
@@ -1822,13 +1822,13 @@ uint8_t unpackDuMacSlotInd(DuMacSlotInd func, Pst *pst, Buffer *mBuf)
  *       Pack and send Dl Pcch indication to MAC
  *
  * @params[in] Post structure
- *             MacPcchInd *pcchInd;
+ *             DlPcchInd *pcchInd;
  * @return ROK     - success
  *         RFAILED - failure
  *
  * ****************************************************************/
 
-uint8_t packDuMacDlPcchInd(Pst *pst, MacPcchInd *pcchInd)
+uint8_t packDuMacDlPcchInd(Pst *pst, DlPcchInd *pcchInd)
 {
    Buffer *mBuf = NULLP;
 
@@ -1872,7 +1872,7 @@ uint8_t unpackMacDlPcchInd(DuMacDlPcchInd func, Pst *pst, Buffer *mBuf)
 {
    if(pst->selector == ODU_SELECTOR_LWLC)
    {
-      MacPcchInd *pcchInd=NULLP;
+      DlPcchInd *pcchInd=NULLP;
 
       /* unpack the address of the structure */
       CMCHKUNPK(oduUnpackPointer, (PTR *)&pcchInd, mBuf);
