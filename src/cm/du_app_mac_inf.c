@@ -1822,13 +1822,13 @@ uint8_t unpackDuMacSlotInd(DuMacSlotInd func, Pst *pst, Buffer *mBuf)
  *       Pack and send Dl Pcch indication to MAC
  *
  * @params[in] Post structure
- *             MacPcchInd *pcchInd;
+ *             DlPcchInd *pcchInd;
  * @return ROK     - success
  *         RFAILED - failure
  *
  * ****************************************************************/
 
-uint8_t packDuMacDlPcchInd(Pst *pst, MacPcchInd *pcchInd)
+uint8_t packDuMacDlPcchInd(Pst *pst, DlPcchInd *pcchInd)
 {
    Buffer *mBuf = NULLP;
 
@@ -1872,7 +1872,7 @@ uint8_t unpackMacDlPcchInd(DuMacDlPcchInd func, Pst *pst, Buffer *mBuf)
 {
    if(pst->selector == ODU_SELECTOR_LWLC)
    {
-      MacPcchInd *pcchInd=NULLP;
+      DlPcchInd *pcchInd=NULLP;
 
       /* unpack the address of the structure */
       CMCHKUNPK(oduUnpackPointer, (PTR *)&pcchInd, mBuf);

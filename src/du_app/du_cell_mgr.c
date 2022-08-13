@@ -246,13 +246,13 @@ uint8_t checkPagingRecord(DuCellCb *cellCb)
  *
  *    Functionality: Send pcch indication to MAC
  *
- * @Params[in] MacPcchInd *pcchInd
+ * @Params[in] DlPcchInd *pcchInd
  * @return ROK     - success
  *         RFAILED - failure
  *
  * ****************************************************************/
 
-uint8_t sendDlPcchIndToMac(MacPcchInd *pcchInd)
+uint8_t sendDlPcchIndToMac(DlPcchInd *pcchInd)
 {
    uint8_t ret = ROK;
    Pst pst;
@@ -624,7 +624,7 @@ uint8_t BuildAndSendDlPcchIndToMac(uint16_t cellId, uint16_t pf, uint8_t i_s, Cm
    PCCH_Message_t *pcchMsg = NULLP;
    asn_enc_rval_t encRetVal;
    PagingRrc_t    *pagingMsg = NULLP;
-   MacPcchInd     *macPcchInd = NULLP;
+   DlPcchInd      *dlPcchInd = NULLP;
    uint8_t        recordIdx = 0, ret = RFAILED;
    
    /*As per 38.473 Sec 9.3.1.39,5G-S-TMSI :48 Bits >>  Bytes and 0 UnusedBits */
@@ -742,29 +742,29 @@ uint8_t BuildAndSendDlPcchIndToMac(uint16_t cellId, uint16_t pf, uint8_t i_s, Cm
       {
          DU_LOG("\nDEBUG  -->  F1AP : Created APER encoded buffer for RRC PDU for Pcch indication \n");
          
-         DU_ALLOC_SHRABL_BUF(macPcchInd, sizeof(MacPcchInd));
-         if(macPcchInd == NULLP)
+         DU_ALLOC_SHRABL_BUF(dlPcchInd, sizeof(DlPcchInd));
+         if(dlPcchInd == NULLP)
          {
-            DU_LOG("\nERROR  -->  DU APP: BuildAndSendDlPcchIndToMac(); (macPcchInd) Memory Alloction failed!");
+            DU_LOG("\nERROR  -->  DU APP: BuildAndSendDlPcchIndToMac(); (dlPcchInd) Memory Alloction failed!");
             break;
          }
          
-         macPcchInd->cellId = cellId;
-         macPcchInd->pf = pf;
-         macPcchInd->i_s = i_s;
-         macPcchInd->pduLen = encBufSize;
-         DU_ALLOC_SHRABL_BUF(macPcchInd->pcchPdu, macPcchInd->pduLen);
-         if(macPcchInd->pcchPdu == NULLP)
+         dlPcchInd->cellId = cellId;
+         dlPcchInd->pf = pf;
+         dlPcchInd->i_s = i_s;
+         dlPcchInd->pduLen = encBufSize;
+         DU_ALLOC_SHRABL_BUF(dlPcchInd->pcchPdu, dlPcchInd->pduLen);
+         if(dlPcchInd->pcchPdu == NULLP)
          {
             DU_LOG("\nERROR  -->  DU APP: BuildAndSendDlPcchIndToMac(); (PcchPDU) Memory Alloction failed!");
             break;
          }
-         memcpy(macPcchInd->pcchPdu, encBuf, macPcchInd->pduLen);
-         ret = sendDlPcchIndToMac(macPcchInd);
+         memcpy(dlPcchInd->pcchPdu, encBuf, dlPcchInd->pduLen);
+         ret = sendDlPcchIndToMac(dlPcchInd);
          if(ret != ROK)
          {
-            DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, macPcchInd->pcchPdu, macPcchInd->pduLen);
-            DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, macPcchInd, sizeof(MacPcchInd));
+            DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, dlPcchInd->pcchPdu, dlPcchInd->pduLen);
+            DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, dlPcchInd, sizeof(DlPcchInd));
             break;
          }
       }
