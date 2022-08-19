@@ -70,6 +70,7 @@ typedef struct ueCb
    bool     msg5ShortBsrSent;
    bool     msg5Sent;
    bool     dlDedMsg;
+   bool     msgAuthenticationRspComp;
    bool     msgSecurityModeComp;
    bool     msgRrcReconfigComp;
    bool     msgRegistrationComp;
@@ -105,6 +106,7 @@ typedef enum
    MSG_TYPE_MSG3,
    MSG_TYPE_SHORT_BSR,
    MSG_TYPE_MSG5,
+   MSG_TYPE_AUTHENTICATION_REPSONSE_COMPLETE,
    MSG_TYPE_SECURITY_MODE_COMPLETE,
    MSG_TYPE_REGISTRATION_COMPLETE,
    MSG_TYPE_RRC_RECONFIG_COMPLETE

@@ -1513,8 +1513,29 @@ uint8_t	BuildDLRRCContainer(CuUeCb *ueCb, uint8_t rrcMsgType, RRCContainer_t *rr
    }
    else if(rrcMsgType == RRC_SETUP_COMPLETE)
    {
+      DU_LOG("\nINFO --> F1AP : Sending Authentication Request");
+      char authReqBuf[51] = {0x00, 0x02, 0x2a, 0x85, 0x4f, 0xc0, 0x0a, 0xc0, 0x40, 0x40, 0x00, 0x04, 0x2f, 0x58, 0x39, 0x12,\
+                             0x37, 0x15, 0x74, 0x16, 0x4c, 0x8d, 0xd3, 0x95, 0xa6, 0x9e, 0x94, 0x03, 0x24, 0x02, 0x00, 0x6f,\
+                             0x0b, 0x39, 0x5e, 0xbc, 0xb0, 0x00, 0x1a, 0xb1, 0xc1, 0x3f, 0x84, 0x4f, 0x77, 0xe3, 0x20, 0x00,\
+                             0x00, 0x00, 0x00};
+      bufLen = 51;
+      rrcContainer->size = bufLen;
+      CU_ALLOC(rrcContainer->buf, rrcContainer->size);
+      if(rrcContainer->buf != NULLP)
+      {     
+         memset(rrcContainer->buf, 0, bufLen);
+         memcpy(rrcContainer->buf, authReqBuf, bufLen);
+      }     
+      else  
+      {     
+         DU_LOG("\nERROR  -->  F1AP : Memory allocation failure for RRC Container buffer");
+         ret = RFAILED;
+      }     
+   }
+   else if(rrcMsgType == AUTHENTICATION_RESPONSE)
+   {
       DU_LOG("\nINFO --> F1AP : Sending Security mode command");
-      char secModeBuf[9]={0x00, 0x02, 0x22, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00};
+      char secModeBuf[9]={0x00, 0x03, 0x22, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00};
       bufLen =9;
       rrcContainer->size = bufLen;
       CU_ALLOC(rrcContainer->buf, rrcContainer->size);
@@ -1533,7 +1554,7 @@ uint8_t	BuildDLRRCContainer(CuUeCb *ueCb, uint8_t rrcMsgType, RRCContainer_t *rr
    {
       /*Hardcoded RRC Container from reference logs*/
       DU_LOG("\nINFO --> F1AP : Sending Registration accept");
-      char buf[14] ={0x00, 0x03, 0x2a, 0x80, 0xaf, 0xc0, 0x08, 0x40, 0x20, 0x20, 0x00, 0x00, 0x00, 0x00};
+      char buf[14] ={0x00, 0x04, 0x2a, 0x80, 0xaf, 0xc0, 0x08, 0x40, 0x20, 0x20, 0x00, 0x00, 0x00, 0x00};
       bufLen =14;
       rrcContainer->size = bufLen;
       CU_ALLOC(rrcContainer->buf, rrcContainer->size);
@@ -1766,6 +1787,9 @@ uint8_t setDlRRCMsgType(CuUeCb *ueCb)
          break;
       case RRC_SETUP_COMPLETE:
          rrcMsgType = RRC_SETUP_COMPLETE;
+         break;
+      case AUTHENTICATION_RESPONSE:
+         rrcMsgType = AUTHENTICATION_RESPONSE;
          break;
       case SECURITY_MODE_COMPLETE:
          rrcMsgType = SECURITY_MODE_COMPLETE;
@@ -9506,7 +9530,13 @@ uint8_t procUlRrcMsg(uint32_t duId, F1AP_PDU_t *f1apMsg)
       ueCb = &duDb->ueCb[duUeF1apId-1];
       ueCb->f1apMsgDb.dlRrcMsgCount++;
       rrcMsgType = setDlRRCMsgType(ueCb);
+
       if(rrcMsgType == RRC_SETUP_COMPLETE)
+      {
+         DU_LOG("\nINFO  -->  F1AP: Sending DL RRC MSG for Authentication Request");
+         ret = BuildAndSendDLRRCMessageTransfer(duId, ueCb, srbId, rrcMsgType);
+      }
+      else if(rrcMsgType == AUTHENTICATION_RESPONSE)
       {
          DU_LOG("\nINFO  -->  F1AP: Sending DL RRC MSG for Security Mode Command"); 
          ret = BuildAndSendDLRRCMessageTransfer(duId, ueCb, srbId, rrcMsgType);
