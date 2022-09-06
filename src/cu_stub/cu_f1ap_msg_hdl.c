@@ -11517,13 +11517,11 @@ void procF1SetupReq(uint32_t *destDuId, F1AP_PDU_t *f1apMsg)
               if(duDb == NULLP)
               {
                  duDb = &cuCb.duInfo[cuCb.numDu];
-                 memset(duDb, 0, sizeof(DuDb));
-                 duDb->duId = duId;
                  cuCb.numDu++;
-                 *destDuId = duId;
               }
-              else
-                 return;
+              memset(duDb, 0, sizeof(DuDb));
+              duDb->duId = duId;
+              *destDuId = duId;
               break;
            }
          case ProtocolIE_ID_id_gNB_DU_Name:
