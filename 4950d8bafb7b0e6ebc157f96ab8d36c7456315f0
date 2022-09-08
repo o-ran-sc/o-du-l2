@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "33be527b_f0f539e5",
+        "filename": "src/cm/mac_sch_interface.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 822,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-09-08T11:27:21Z",
+      "side": 1,
+      "message": "can we just store the offset directly in drxLongCycleStartOffset without seggregating it for all values?",
+      "revId": "4950d8bafb7b0e6ebc157f96ab8d36c7456315f0",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7a8cb4cb_5671268f",
+        "filename": "src/du_app/du_cfg.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 438,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-09-08T11:27:21Z",
+      "side": 1,
+      "message": "can we not have just one parameter to store the offset? do we need to seggregate it for all options?",
+      "revId": "4950d8bafb7b0e6ebc157f96ab8d36c7456315f0",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8e511d6e_bb72affb",
+        "filename": "src/du_app/du_mgr_main.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 559,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-09-08T11:27:21Z",
+      "side": 1,
+      "message": "revert before merge",
+      "range": {
+        "startLine": 559,
+        "startChar": 5,
+        "endLine": 559,
+        "endChar": 28
+      },
+      "revId": "4950d8bafb7b0e6ebc157f96ab8d36c7456315f0",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
