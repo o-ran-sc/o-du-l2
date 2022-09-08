@@ -772,6 +772,59 @@ typedef struct schHqCfgParam
    uint8_t maxUlDataHqTx;
 }SchHqCfg;
 
+#ifdef NR_DRX
+typedef struct schDrxOnDurationTimer
+{
+   bool     onDurationTimerValInMs;
+   uint8_t  subMilliSeconds;
+   uint16_t milliSeconds;
+}SchDrxOnDurationTimer;
+
+typedef struct schDrxLongCycleStartOffset
+{
+   uint16_t drxLongCycleStartOffsetChoice;
+   uint8_t	 ms10;
+   uint8_t	 ms20;
+   uint8_t	 ms32;
+   uint8_t	 ms40;
+   uint8_t	 ms60;
+   uint8_t	 ms64;
+   uint8_t	 ms70;
+   uint8_t	 ms80;
+   uint8_t	 ms128;
+   uint8_t	 ms160;
+   uint8_t	 ms256;
+   uint16_t	 ms320;
+   uint16_t	 ms512;
+   uint16_t	 ms640;
+   uint16_t	 ms1024;
+   uint16_t	 ms1280;
+   uint16_t	 ms2048;
+   uint16_t	 ms2560;
+   uint16_t	 ms5120;
+   uint16_t  ms10240;
+}SchDrxLongCycleStartOffset;
+
+typedef struct schShortDrx
+{
+   uint16_t   drxShortCycle;
+   uint8_t    drxShortCycleTimer;
+}SchShortDrx;
+
+typedef struct schDrxInfo
+{
+   SchDrxOnDurationTimer       drxOnDurationTimer;
+   uint16_t drxInactivityTimer;
+   uint8_t  drxHarqRttTimerDl;
+   uint8_t  drxHarqRttTimerUl;
+   uint16_t drxRetransmissionTimerDl;
+   uint16_t drxRetransmissionTimerUl;
+   SchDrxLongCycleStartOffset  drxLongCycleStartOffset;
+   SchShortDrx                 shortDrx;
+   uint8_t  drxSlotOffset;
+}SchDrxInfo;
+#endif
+
 typedef struct schCellCfg
 {
    uint16_t       cellId;           /* Cell Id */
@@ -790,7 +843,10 @@ typedef struct schCellCfg
    SchHqCfg       schHqCfg;
 #ifdef NR_TDD
    TDDCfg         tddCfg;           /* TDD Cfg */ 
-#endif  
+#endif 
+#ifdef NR_DRX
+   SchDrxInfo     drxInfo;          /* Drx configuration */
+#endif
 }SchCellCfg;
 
 typedef struct schCellCfgCfm
