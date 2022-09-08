@@ -772,6 +772,45 @@ typedef struct schHqCfgParam
    uint8_t maxUlDataHqTx;
 }SchHqCfg;
 
+#ifdef NR_DRX
+/* The following list of structures is taken from the DRX-Config section of specification 33.331. */
+
+typedef struct schDrxOnDurationTimer
+{
+   bool     onDurationTimerValInMs;
+   union
+   {
+      uint8_t  subMilliSeconds;
+      uint16_t milliSeconds;
+   }onDurationtimerValue;
+}SchDrxOnDurationTimer;
+
+typedef struct schDrxLongCycleStartOffset
+{
+   uint16_t drxLongCycleStartOffsetChoice;
+   uint16_t drxLongCycleStartOffsetVal;
+}SchDrxLongCycleStartOffset;
+
+typedef struct schShortDrx
+{
+   uint16_t   drxShortCycle;
+   uint8_t    drxShortCycleTimer;
+}SchShortDrx;
+
+typedef struct schDrxInfo
+{
+   SchDrxOnDurationTimer       drxOnDurationTimer;
+   uint16_t                    drxInactivityTimer;
+   uint8_t                     drxHarqRttTimerDl;
+   uint8_t                     drxHarqRttTimerUl;
+   uint16_t                    drxRetransmissionTimerDl;
+   uint16_t                    drxRetransmissionTimerUl;
+   SchDrxLongCycleStartOffset  drxLongCycleStartOffset;
+   SchShortDrx                 shortDrx;
+   uint8_t  drxSlotOffset;
+}SchDrxInfo;
+#endif
+
 typedef struct schCellCfg
 {
    uint16_t       cellId;           /* Cell Id */
@@ -790,7 +829,10 @@ typedef struct schCellCfg
    SchHqCfg       schHqCfg;
 #ifdef NR_TDD
    TDDCfg         tddCfg;           /* TDD Cfg */ 
-#endif  
+#endif 
+#ifdef NR_DRX
+   SchDrxInfo     drxInfo;          /* Drx configuration */
+#endif
 }SchCellCfg;
 
 typedef struct schCellCfgCfm

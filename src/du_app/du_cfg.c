@@ -417,6 +417,28 @@ uint8_t readMacCfg()
    cpyRrmPolicyInDuCfgParams(&rrmPolicy, 1, &duCfgParam.tempSliceCfg);
   
 #endif
+
+#ifdef NR_DRX
+   /* Storing the DRX configuration */
+   memset(&duCfgParam.macCellCfg.drxInfo, 0, sizeof(DrxInfo));
+   duCfgParam.macCellCfg.drxInfo.drxOnDurationTimer.onDurationTimerValInMs = DRX_ONDURATION_TIMER_VALUE_PRESENT_IN_MS;
+   if(!duCfgParam.macCellCfg.drxInfo.drxOnDurationTimer.onDurationTimerValInMs)
+      duCfgParam.macCellCfg.drxInfo.drxOnDurationTimer.onDurationtimerValue.subMilliSeconds = \
+      DRX_ONDURATION_TIMER_VALUE_IN_SUBMS;
+   else
+      duCfgParam.macCellCfg.drxInfo.drxOnDurationTimer.onDurationtimerValue.milliSeconds = \
+      DRX_ONDURATION_TIMER_VALUE_IN_MS;
+   duCfgParam.macCellCfg.drxInfo.drxInactivityTimer = DRX_INACTIVITY_TIMER;
+   duCfgParam.macCellCfg.drxInfo.drxHarqRttTimerDl = DRX_HARQ_RTT_TIMER_DL;
+   duCfgParam.macCellCfg.drxInfo.drxHarqRttTimerUl = DRX_HARQ_RTT_TIMER_UL;
+   duCfgParam.macCellCfg.drxInfo.drxRetransmissionTimerDl = DRX_RETRANSMISSION_TIMER_DL;
+   duCfgParam.macCellCfg.drxInfo.drxRetransmissionTimerUl = DRX_RETRANSMISSION_TIMER_UL;
+   duCfgParam.macCellCfg.drxInfo.drxLongCycleStartOffset.drxLongCycleStartOffsetChoice = DRX_LONG_CYCLE_START_OFFSET_CHOICE;
+   duCfgParam.macCellCfg.drxInfo.drxLongCycleStartOffset.drxLongCycleStartOffsetVal = DRX_LONG_CYCLE_START_OFFSET_VAL;
+   duCfgParam.macCellCfg.drxInfo.shortDrx.drxShortCycle = DRX_SHORT_CYCLE;
+   duCfgParam.macCellCfg.drxInfo.shortDrx.drxShortCycleTimer = DRX_SHORT_CYCLE_TIMER;
+   duCfgParam.macCellCfg.drxInfo.drxSlotOffset = DRX_SLOT_OFFSET;
+#endif
    return ROK;
 }
 
