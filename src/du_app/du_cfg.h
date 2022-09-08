@@ -18,11 +18,9 @@
 
 #ifndef __DU_CONFIG_H_
 #define __DU_CONFIG_H__
-
 #ifdef O1_ENABLE
 #include "CmInterface.h"
 #endif
-
 /* MACROS */
 #define DU_INST 0
 #define DU_ID 1
