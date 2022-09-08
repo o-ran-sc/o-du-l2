@@ -417,6 +417,87 @@ uint8_t readMacCfg()
    cpyRrmPolicyInDuCfgParams(&rrmPolicy, 1, &duCfgParam.tempSliceCfg);
   
 #endif
+
+   /* Storing the DRX configuration */
+   memset(&duCfgParam.macCellCfg.drxInfo, 0, sizeof(DrxInfo));
+   duCfgParam.macCellCfg.drxInfo.drxOnDurationTimer.onDurationTimerValInMs = DRX_ONDURATION_TIMER_VALUE_PRESENT_IN_MS;
+   if(!duCfgParam.macCellCfg.drxInfo.drxOnDurationTimer.onDurationTimerValInMs)
+      duCfgParam.macCellCfg.drxInfo.drxOnDurationTimer.subMilliSeconds = DRX_ONDURATION_TIMER_VALUE_IN_SUBMS;
+   else
+      duCfgParam.macCellCfg.drxInfo.drxOnDurationTimer.milliSeconds = DRX_ONDURATION_TIMER_VALUE_IN_MS;
+   duCfgParam.macCellCfg.drxInfo.drxInactivityTimer = DRX_INACTIVITY_TIMER;
+   duCfgParam.macCellCfg.drxInfo.drxHarqRttTimerDl = DRX_HARQ_RTT_TIMER_DL;
+   duCfgParam.macCellCfg.drxInfo.drxHarqRttTimerUl = DRX_HARQ_RTT_TIMER_UL;
+   duCfgParam.macCellCfg.drxInfo.drxRetransmissionTimerDl = DRX_RETRANSMISSION_TIMER_DL;
+   duCfgParam.macCellCfg.drxInfo.drxRetransmissionTimerUl = DRX_RETRANSMISSION_TIMER_UL;
+   duCfgParam.macCellCfg.drxInfo.drxLongCycleStartOffset.drxLongCycleStartOffsetChoice = DRX_LONG_CYCLE_START_OFFSET_CHOICE;
+   switch(duCfgParam.macCellCfg.drxInfo.drxLongCycleStartOffset.drxLongCycleStartOffsetChoice)
+   {
+      case 10:
+         duCfgParam.macCellCfg.drxInfo.drxLongCycleStartOffset.ms10 = DRX_LONG_CYCLE_START_OFFSET_VAL;
+         break;
+      case 20:
+         duCfgParam.macCellCfg.drxInfo.drxLongCycleStartOffset.ms20 = DRX_LONG_CYCLE_START_OFFSET_VAL;
+         break;
+      case 32:
+         duCfgParam.macCellCfg.drxInfo.drxLongCycleStartOffset.ms32 = DRX_LONG_CYCLE_START_OFFSET_VAL;
+         break;
+      case 40:
+         duCfgParam.macCellCfg.drxInfo.drxLongCycleStartOffset.ms40 = DRX_LONG_CYCLE_START_OFFSET_VAL;
+         break;
+      case 60:
+         duCfgParam.macCellCfg.drxInfo.drxLongCycleStartOffset.ms60 = DRX_LONG_CYCLE_START_OFFSET_VAL;
+         break;
+      case 64:
+         duCfgParam.macCellCfg.drxInfo.drxLongCycleStartOffset.ms64 = DRX_LONG_CYCLE_START_OFFSET_VAL;
+         break;
+      case 70:
+         duCfgParam.macCellCfg.drxInfo.drxLongCycleStartOffset.ms70 = DRX_LONG_CYCLE_START_OFFSET_VAL;
+         break;
+      case 80:
+         duCfgParam.macCellCfg.drxInfo.drxLongCycleStartOffset.ms80 = DRX_LONG_CYCLE_START_OFFSET_VAL;
+         break;
+      case 128:
+         duCfgParam.macCellCfg.drxInfo.drxLongCycleStartOffset.ms128 = DRX_LONG_CYCLE_START_OFFSET_VAL;
+         break;
+      case 160:
+         duCfgParam.macCellCfg.drxInfo.drxLongCycleStartOffset.ms160 = DRX_LONG_CYCLE_START_OFFSET_VAL;
+         break;
+      case 256:
+         duCfgParam.macCellCfg.drxInfo.drxLongCycleStartOffset.ms256 = DRX_LONG_CYCLE_START_OFFSET_VAL;
+         break;
+      case 320:
+         duCfgParam.macCellCfg.drxInfo.drxLongCycleStartOffset.ms320 = DRX_LONG_CYCLE_START_OFFSET_VAL;
+         break;
+      case 512:
+         duCfgParam.macCellCfg.drxInfo.drxLongCycleStartOffset.ms512 = DRX_LONG_CYCLE_START_OFFSET_VAL;
+         break;
+      case 640:
+         duCfgParam.macCellCfg.drxInfo.drxLongCycleStartOffset.ms640 = DRX_LONG_CYCLE_START_OFFSET_VAL;
+         break;
+      case 1024:
+         duCfgParam.macCellCfg.drxInfo.drxLongCycleStartOffset.ms1024 = DRX_LONG_CYCLE_START_OFFSET_VAL;
+         break;
+      case 1280:
+         duCfgParam.macCellCfg.drxInfo.drxLongCycleStartOffset.ms1280 = DRX_LONG_CYCLE_START_OFFSET_VAL;
+         break;
+      case 2048:
+         duCfgParam.macCellCfg.drxInfo.drxLongCycleStartOffset.ms2048 = DRX_LONG_CYCLE_START_OFFSET_VAL;
+         break;
+      case 2560:
+         duCfgParam.macCellCfg.drxInfo.drxLongCycleStartOffset.ms2560 = DRX_LONG_CYCLE_START_OFFSET_VAL;
+         break;
+      case 5120:
+         duCfgParam.macCellCfg.drxInfo.drxLongCycleStartOffset.ms5120 = DRX_LONG_CYCLE_START_OFFSET_VAL;
+         break;
+      case 10240:
+         duCfgParam.macCellCfg.drxInfo.drxLongCycleStartOffset.ms10240 = DRX_LONG_CYCLE_START_OFFSET_VAL;
+         break;
+   }
+   duCfgParam.macCellCfg.drxInfo.shortDrx.drxShortCycle = DRX_SHORT_CYCLE;
+   duCfgParam.macCellCfg.drxInfo.shortDrx.drxShortCycleTimer = DRX_SHORT_CYCLE_TIMER;
+   duCfgParam.macCellCfg.drxInfo.drxSlotOffset = DRX_SLOT_OFFSET;
+
    return ROK;
 }
 

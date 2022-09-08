@@ -388,6 +388,87 @@ uint8_t MacSchCellCfgReq(Pst *pst, MacCellCfg *macCellCfg)
       }
    }
 
+   /* Drx configuration */
+
+   schCellCfg.drxInfo.drxOnDurationTimer.onDurationTimerValInMs = macCellCfg->drxInfo.drxOnDurationTimer.onDurationTimerValInMs;
+   if(!macCellCfg->drxInfo.drxOnDurationTimer.onDurationTimerValInMs)
+      schCellCfg.drxInfo.drxOnDurationTimer.subMilliSeconds = macCellCfg->drxInfo.drxOnDurationTimer.subMilliSeconds;
+   else
+      schCellCfg.drxInfo.drxOnDurationTimer.milliSeconds = macCellCfg->drxInfo.drxOnDurationTimer.milliSeconds;
+   schCellCfg.drxInfo.drxInactivityTimer = macCellCfg->drxInfo.drxInactivityTimer;
+   schCellCfg.drxInfo.drxHarqRttTimerDl = macCellCfg->drxInfo.drxHarqRttTimerDl;
+   schCellCfg.drxInfo.drxHarqRttTimerUl = macCellCfg->drxInfo.drxHarqRttTimerUl;
+   schCellCfg.drxInfo.drxRetransmissionTimerDl = macCellCfg->drxInfo.drxRetransmissionTimerDl;
+   schCellCfg.drxInfo.drxRetransmissionTimerUl = macCellCfg->drxInfo.drxRetransmissionTimerUl;
+   schCellCfg.drxInfo.drxLongCycleStartOffset.drxLongCycleStartOffsetChoice = macCellCfg->drxInfo.drxLongCycleStartOffset.\
+                                                                              drxLongCycleStartOffsetChoice;
+   switch(macCellCfg->drxInfo.drxLongCycleStartOffset.drxLongCycleStartOffsetChoice)
+   {
+      case 10:
+         schCellCfg.drxInfo.drxLongCycleStartOffset.ms10 = macCellCfg->drxInfo.drxLongCycleStartOffset.ms10;
+         break;
+      case 20:
+         schCellCfg.drxInfo.drxLongCycleStartOffset.ms20 = macCellCfg->drxInfo.drxLongCycleStartOffset.ms20;
+         break;
+      case 32:
+         schCellCfg.drxInfo.drxLongCycleStartOffset.ms32 = macCellCfg->drxInfo.drxLongCycleStartOffset.ms32;
+         break;
+      case 40:
+         schCellCfg.drxInfo.drxLongCycleStartOffset.ms40 = macCellCfg->drxInfo.drxLongCycleStartOffset.ms40;
+         break;
+      case 60:
+         schCellCfg.drxInfo.drxLongCycleStartOffset.ms60 = macCellCfg->drxInfo.drxLongCycleStartOffset.ms60;
+         break;
+      case 64:
+         schCellCfg.drxInfo.drxLongCycleStartOffset.ms64 = macCellCfg->drxInfo.drxLongCycleStartOffset.ms64;
+         break;
+      case 70:
+         schCellCfg.drxInfo.drxLongCycleStartOffset.ms70 = macCellCfg->drxInfo.drxLongCycleStartOffset.ms70;
+         break;
+      case 80:
+         schCellCfg.drxInfo.drxLongCycleStartOffset.ms80 = macCellCfg->drxInfo.drxLongCycleStartOffset.ms80;
+         break;
+      case 128:
+         schCellCfg.drxInfo.drxLongCycleStartOffset.ms128 = macCellCfg->drxInfo.drxLongCycleStartOffset.ms128;
+         break;
+      case 160:
+         schCellCfg.drxInfo.drxLongCycleStartOffset.ms160 = macCellCfg->drxInfo.drxLongCycleStartOffset.ms160;
+         break;
+      case 256:
+         schCellCfg.drxInfo.drxLongCycleStartOffset.ms256 = macCellCfg->drxInfo.drxLongCycleStartOffset.ms256;
+         break;
+      case 320:
+         schCellCfg.drxInfo.drxLongCycleStartOffset.ms320 = macCellCfg->drxInfo.drxLongCycleStartOffset.ms320;
+         break;
+      case 512:
+         schCellCfg.drxInfo.drxLongCycleStartOffset.ms512 = macCellCfg->drxInfo.drxLongCycleStartOffset.ms512;
+         break;
+      case 640:
+         schCellCfg.drxInfo.drxLongCycleStartOffset.ms640 = macCellCfg->drxInfo.drxLongCycleStartOffset.ms640;
+         break;
+      case 1024:
+         schCellCfg.drxInfo.drxLongCycleStartOffset.ms1024 = macCellCfg->drxInfo.drxLongCycleStartOffset.ms1024;
+         break;
+      case 1280:
+         schCellCfg.drxInfo.drxLongCycleStartOffset.ms1280 = macCellCfg->drxInfo.drxLongCycleStartOffset.ms1280;
+         break;
+      case 2048:
+         schCellCfg.drxInfo.drxLongCycleStartOffset.ms2048 = macCellCfg->drxInfo.drxLongCycleStartOffset.ms2048;
+         break;
+      case 2560:
+         schCellCfg.drxInfo.drxLongCycleStartOffset.ms2560 = macCellCfg->drxInfo.drxLongCycleStartOffset.ms2560;
+         break;
+      case 5120:
+         schCellCfg.drxInfo.drxLongCycleStartOffset.ms5120 = macCellCfg->drxInfo.drxLongCycleStartOffset.ms5120;
+         break;
+      case 10240:
+         schCellCfg.drxInfo.drxLongCycleStartOffset.ms10240 = macCellCfg->drxInfo.drxLongCycleStartOffset.ms10240;
+         break;
+   }
+   schCellCfg.drxInfo.shortDrx.drxShortCycle = macCellCfg->drxInfo.shortDrx.drxShortCycle;
+   schCellCfg.drxInfo.shortDrx.drxShortCycleTimer = macCellCfg->drxInfo.shortDrx.drxShortCycleTimer;
+   schCellCfg.drxInfo.drxSlotOffset = macCellCfg->drxInfo.drxSlotOffset;
+
 #ifdef NR_TDD
    memcpy(&schCellCfg.tddCfg, &macCellCfg->tddCfg, sizeof(TDDCfg));
 #endif
