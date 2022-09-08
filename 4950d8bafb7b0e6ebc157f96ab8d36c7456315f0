@@ -18,6 +18,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "08258006_52c8ab50",
+        "filename": "src/cm/mac_sch_interface.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 822,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-09-08T13:11:47Z",
+      "side": 1,
+      "message": "resolved in 3rd patch.",
+      "parentUuid": "33be527b_f0f539e5",
+      "revId": "4950d8bafb7b0e6ebc157f96ab8d36c7456315f0",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7a8cb4cb_5671268f",
@@ -35,6 +53,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "91d1ede7_74129878",
+        "filename": "src/du_app/du_cfg.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 438,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-09-08T13:11:47Z",
+      "side": 1,
+      "message": "resolved in 3rd patch",
+      "parentUuid": "7a8cb4cb_5671268f",
+      "revId": "4950d8bafb7b0e6ebc157f96ab8d36c7456315f0",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8e511d6e_bb72affb",
@@ -48,6 +84,30 @@
       "writtenOn": "2022-09-08T11:27:21Z",
       "side": 1,
       "message": "revert before merge",
+      "range": {
+        "startLine": 559,
+        "startChar": 5,
+        "endLine": 559,
+        "endChar": 28
+      },
+      "revId": "4950d8bafb7b0e6ebc157f96ab8d36c7456315f0",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "72c46d50_d3b087eb",
+        "filename": "src/du_app/du_mgr_main.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 559,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-09-08T13:11:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8e511d6e_bb72affb",
       "range": {
         "startLine": 559,
         "startChar": 5,
