@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "acb017c3_dfd0e521",
+        "filename": "src/cm/du_app_mac_inf.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 719,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-09-09T07:39:29Z",
+      "side": 1,
+      "message": "Please mention Spec reference as discussed",
+      "range": {
+        "startLine": 719,
+        "startChar": 7,
+        "endLine": 719,
+        "endChar": 13
+      },
+      "revId": "b3224f964107fee7a671f0e31a7d0549b2b43328",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4fedfc3d_69a945da",
+        "filename": "src/cm/du_app_mac_inf.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 723,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-09-09T07:39:29Z",
+      "side": 1,
+      "message": "As per 38.331, drx-onDurationTimer has CHOICE between \"submillisec\" and \"millisecond\" . i think we can make i union or something to avoid two separate parameters",
+      "range": {
+        "startLine": 723,
+        "startChar": 12,
+        "endLine": 723,
+        "endChar": 27
+      },
+      "revId": "b3224f964107fee7a671f0e31a7d0549b2b43328",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "76106299_55a2fe68",
+        "filename": "src/cm/du_app_mac_inf.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 741,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-09-09T07:39:29Z",
+      "side": 1,
+      "message": "please align the parameters below to this one",
+      "range": {
+        "startLine": 741,
+        "startChar": 28,
+        "endLine": 741,
+        "endChar": 46
+      },
+      "revId": "b3224f964107fee7a671f0e31a7d0549b2b43328",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
