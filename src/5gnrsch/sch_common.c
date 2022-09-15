@@ -1972,7 +1972,8 @@ uint8_t schCalculateUlTbs(SchUeCb *ueCb, SlotTimingInfo puschTime, uint8_t symbL
  *******************************************************************/
 bool schProcessSrOrBsrReq(SchCellCb *cell, SlotTimingInfo currTime, uint8_t ueId, bool isRetx, SchUlHqProcCb **hqP)
 {
-   bool k2Found = FALSE, ret = RFAILED;
+   bool k2Found = FALSE;
+   uint8_t ret = RFAILED;
    uint8_t startSymb = 0, symbLen = 0;
    uint8_t k2TblIdx = 0, k2Index = 0, k2Val = 0;
    uint16_t startPrb = 0;
@@ -2047,7 +2048,7 @@ bool schProcessSrOrBsrReq(SchCellCb *cell, SlotTimingInfo currTime, uint8_t ueId
          break;
       }
    }
-
+   
    if(k2Found == true)
    {
       ret = schCalculateUlTbs(ueCb, puschTime, symbLen, &startPrb, &totDataReq, isRetx, *hqP);
@@ -2097,7 +2098,12 @@ bool schProcessSrOrBsrReq(SchCellCb *cell, SlotTimingInfo currTime, uint8_t ueId
          updateBsrAndLcList(&((*hqP)->ulLcPrbEst.defLcList), ueCb->bsrInfo, RFAILED);
       }
    }
-   return (ret);
+   else
+   {
+      DU_LOG("\nERROR  -->  SCH : schProcessSrOrBsrReq(): K2 value is not found");
+      return false;     
+   }
+   return true;
 }
 
 
