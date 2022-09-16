@@ -2001,7 +2001,7 @@ uint8_t lwr_mac_procConfigReqEvt(void *msg)
    uint8_t slotIdx = 0; 
    uint8_t symbolIdx =0;
 #endif   
-   uint8_t index = 0;
+   uint16_t index = 0;
    uint16_t *cellId =NULLP;
    uint16_t cellIdx =0;
    uint32_t msgLen = 0;
@@ -2062,7 +2062,11 @@ uint8_t lwr_mac_procConfigReqEvt(void *msg)
    configReq = (fapi_config_req_t *)(cfgReqQElem + 1);
    memset(configReq, 0, sizeof(fapi_config_req_t));
    fillMsgHeader(&configReq->header, FAPI_CONFIG_REQUEST, sizeof(fapi_config_req_t));
+#ifdef NR_TDD
+   configReq->number_of_tlvs = 25 + 1 + MAX_TDD_PERIODICITY_SLOTS * MAX_SYMB_PER_SLOT;
+#else
    configReq->number_of_tlvs = 25;
+#endif
    msgLen = sizeof(configReq->number_of_tlvs);
 
    if(macCfgParams.dlCarrCfg.pres)
