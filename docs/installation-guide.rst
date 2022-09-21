@@ -150,19 +150,13 @@ Setting up Netconf server (Only if O1 interface enabled)
       | Open the oamVesConfig.json and edit the details of OAM VES collector.
       | Open the smoVesConfig.json and edit the details of SMO VES collector.
       | Open the netconfConfig.json and edit the details of Netopeer server.
-      | Install the yang modules and load initial configuration.
+
+- Install the yang modules and load initial configuration.
 
       - Ubuntu :
       
       | $cd <O-DU High Directory>/l2/build/scripts
       | $sudo ./load_yang.sh
-
-    - To enable Standard Defined VES format:      
-      
-      | cd l2/src/o1/ves
-            
-      | Enable the Macro "StdDef" in file VesUtils.h      
-      | #define StdDef
 
 - Start Netopeer2-server:
 
@@ -170,6 +164,12 @@ Setting up Netconf server (Only if O1 interface enabled)
        | cd <O-DU High Directory>/l2/build/scripts
        | sudo ./netopeer-server.sh start
 
+- In case standard defined VES format is to be enabled (this step is optional): 
+      
+      | cd l2/src/o1/ves
+            
+      | Enable the Macro "StdDef" in file VesUtils.h      
+      | #define StdDef
 
 Compilation
 ===========

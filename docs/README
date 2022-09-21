@@ -55,22 +55,24 @@ C. Pre-requisite for O1 Interface (Required only if run with O1 interface enable
    d. Open the oamVesConfig.json and edit the details of OAM VES collector.
    e. Open the smoVesConfig.json and edit the details of SMO VES collector.
    f. Open the netconfConfig.json and edit the details of Netopeer server.
-   g. Install the yang modules and load initial configuration
+   
+3. Install the yang modules and load initial configuration:
 
    $cd l2/build/scripts
    $sudo ./load_yang.sh
 
-   h. To enable Standard Defined VES format:
+4. Start Netopeer2-server:
+
+   $cd l2/build/scripts
+   $sudo ./netopeer-server.sh start
+
+5. In case standard defined VES format is to be enabled (this step is optional): 
       
       cd l2/src/o1/ves
       
       Enable the Macro "StdDef" in file VesUtils.h
       
       #define StdDef
-
-3. Start Netopeer2-server:
-   $cd l2/build/scripts
-   $sudo ./netopeer-server.sh start
 
 
 D. How to Clean and Build:
@@ -178,7 +180,7 @@ PS: If O1 interface is enabled, IP should match those configured in step C.2.a.
       	./odu
 
 PS: CU stub and RIC stub must be run (in no particular sequence) before ODU
-
+    In case O1 is enabled and SMO is not available run section H to start the stack.
 
 G. How to test with Intel L1:
 -----------------------------
@@ -250,27 +252,40 @@ II. Execution
           	./odu
 
 
-H. How to execute the Health Check : get alarm-list
-----------------------------------------------------
-   
-   Steps:
+H. Push cell and slice configuration over O1 using netopeer-cli
+---------------------------------------------------------------
+   When O-DU High is run with O1 enabled it waits for initial cell configuration to be pushed by SMO before starting the stack. In case the SMO is not available then these configurations can be pushed via netopeer-cli as follows:
 
-   1. Start Netconf netopeer client 
-   
-   2. Connect to the server with 
+      $cd l2/build/config
+      $netopeer2-cli
+       > connect --login netconf
+       Interactive SSH Authentication
+       Type your password:
+       Password: netconf!
+       > edit-config --target candidate --config=cellConfig.xml
+       > OK
+       > commit
+       > OK
+       > edit-config --target candidate --config=rrmPolicy.xml
+       > OK
+       > commit
+       > OK
 
-        user: netconf
-        pwd:  netconf!
+   For pushing these configurations in subsequent runs please edit cellConfig.xml and rrmPolicy.xml and increment number in the <id> tag to a new value e.g.
 
-   3. Send a Netconf get request for alarms xpath
+    <id>rrm-2</id 
 
-   Here are the steps as executed in the terminal 
+
+I. How to execute the Health Check using netopeer-cli : get alarm-list
+-----------------------------------------------------------------------
+    
+   In case the SMO is not available the alarm list can be checked using netopeer-cli as follows:
 
       $netopeer2-cli
        > connect --login netconf
        Interactive SSH Authentication
        Type your password:
-       Password:
+       Password: netconf!
        > get --filter-xpath /o-ran-sc-odu-alarm-v1:odu/alarms
        DATA
        <odu xmlns="urn:o-ran:odu:alarm:1.0">
@@ -287,15 +302,6 @@ H. How to execute the Health Check : get alarm-list
 
    The XML output is a list of active alarms in the O-DU High system.
 
-I. Push cell and slice configuration over O1 using netopeer-cli
----------------------------------------------------------------
-   When O-DU High is run with O1 enabled it waits for cell configuration to be pushed by SMO. In case the SMO is not available then these configurations can be pushed via netopeer-cli as follows.
-   1. Follow step H.1 and H.2.
-   2. update cellConfig.xml and rrmPolicy.xml.
-      $cd l2/build/config
-      $edit-config --target candidate --config=cellConfig.xml
-      $edit-config --target candidate --config=rrmPolicy.xml
-
 
 J. Troubleshooting Netconf server issues
 ----------------------------------------
@@ -303,4 +309,4 @@ J. Troubleshooting Netconf server issues
 
    $cd l2/build/scripts
    $sudo ./troubleshoot_netconf.sh cleanup
-   execute section C.2.f, C.3 again
+   execute section C.3 and C.4 again

@@ -57,8 +57,8 @@ PS: If O1 interface is enabled, IPs should match those configured in "startup_co
 
       - ./odu
 
-PS: CU stub and RIC stub must be run (in no particular sequence) before ODU. 
-    In case O1 is enabled and SMO is not available follow section E below.
+PS: CU stub and RIC stub must be run (in no particular sequence) before ODU.
+    In case O1 is enabled and SMO is not available run section D to start the stack.
 
 II. Execution - Using Docker Images
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -66,17 +66,17 @@ II. Execution - Using Docker Images
 The call flow between O-DU High and CU Stub can be achieved by executing docker containers.
 
 - Pull the last built docker images:
-    -	docker pull nexus3.o-ran-sc.org:10004/o-ran-sc/o-du-l2:6.0.4
-    -	docker pull nexus3.o-ran-sc.org:10004/o-ran-sc/o-du-l2-cu-stub:6.0.4
+    -	docker pull nexus3.o-ran-sc.org:10004/o-ran-sc/o-du-l2:6.0.3
+    -	docker pull nexus3.o-ran-sc.org:10004/o-ran-sc/o-du-l2-cu-stub:6.0.3
 
 - Run CU Stub docker:
     - docker run -it --privileged --net=host --entrypoint bash
-      nexus3.o-ran-sc.org:10004/o-ran-sc/o-du-l2-cu-stub:6.0.4
+      nexus3.o-ran-sc.org:10004/o-ran-sc/o-du-l2-cu-stub:6.0.3
     - ./cu_stub
 
 - Run ODU docker:
     - docker run -it --privileged --net=host --entrypoint bash
-      nexus3.o-ran-sc.org:10004/o-ran-sc/o-du-l2:6.0.4
+      nexus3.o-ran-sc.org:10004/o-ran-sc/o-du-l2:6.0.3
     - ./odu
 
 
@@ -205,28 +205,39 @@ Note: UL IQ-Sample request and response are needed by Intel O-DU Low in timer mo
 these are guarded under INTEL_TIMER_MODE flag which can be enabled using compilation option "PHY_MODE=TIMER", as
 mentioned in section B.I.1.d .
 
+D. Push cell and slice configuration over O1 using netopeer-cli
+---------------------------------------------------------------
+   When O-DU High is run with O1 enabled it waits for initial cell configuration to be pushed by SMO before starting the stack. In case the SMO is not available then these configurations can be pushed via netopeer-cli as follows:
 
-D. Health Check execution: get alarm-list
--------------------------------------------
+      | $cd l2/build/config
+      | $netopeer2-cli
+      |  > connect --login netconf
+      |  Interactive SSH Authentication
+      |  Type your password:
+      |  Password: netconf!
+      |  > edit-config --target candidate --config=cellConfig.xml
+      |  > OK
+      |  > commit
+      |  > OK
+      |  > edit-config --target candidate --config=rrmPolicy.xml
+      |  > OK
+      |  > commit
+      |  > OK
 
-To execute the get alarm-list flow, following steps are required to be executed:
+   For pushing these configurations in subsequent runs please edit cellConfig.xml and rrmPolicy.xml and increment number in the <id> tag to a new value e.g.
 
-   1.	Start Netconf netopeer client 
-   
-   2. Connect to the server with 
+    <id>rrm-2</id
 
-      | user: netconf
-      | pwd:  netconf!
+E. How to execute the Health Check using netopeer-cli : get alarm-list
+-----------------------------------------------------------------------
 
-   3. Send a Netconf get request for alarms xpath
-
-Here are the steps as executed in the terminal 
+   In case the SMO is not available the alarm list can be checked using netopeer-cli as follows:
 
      |  netopeer2-cli
      |  > connect --login netconf
      |  Interactive SSH Authentication
      |  Type your password:
-     |  Password:
+     |  Password: netconf!
      |  > get --filter-xpath /o-ran-sc-odu-alarm-v1\:odu/alarms
      |  DATA
      |  <odu xmlns=\"urn\:o-ran\:odu\:alarm\:1.0\">
@@ -243,14 +254,3 @@ Here are the steps as executed in the terminal
 
 The XML output is a list of active alarms in the O-DU High system.
 
-E. Push cell and slice configuration over O1 using netopeer-cli
----------------------------------------------------------------
-
-When O-DU High is run with O1 enabled it waits for cell configuration to be pushed by SMO. In case the SMO is not available then these configurations can be pushed via netopeer-cli as follows.
-
-   1. Follow step D.1 and D.2.
-   2. update cellConfig.xml and rrmPolicy.xml.
-
-      | $cd <O-DU High Directory>/l2/build/config
-      | $edit-config --target candidate --config=cellConfig.xml
-      | $edit-config --target candidate --config=rrmPolicy.xml
