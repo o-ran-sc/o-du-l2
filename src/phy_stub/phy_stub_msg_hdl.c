@@ -719,6 +719,7 @@ uint16_t l1BuildAndSendRachInd(uint16_t slot, uint16_t sfn, uint8_t raPreambleId
  * ****************************************************************/
 uint16_t l1BuildAndSendSlotIndication()
 {
+   uint8_t ueIdx=0, drbIdx=0;
    Pst pst;
    Buffer *mBuf;
 
@@ -767,6 +768,19 @@ uint16_t l1BuildAndSendSlotIndication()
       }
       CMCHKPK(oduPackPointer, (PTR)slotIndMsg, mBuf);
       ODU_POST_TASK(&pst, mBuf);
+      
+      if(sfnValue == 700)
+      {   
+         /* Start Pumping data from PHY stub to DU */
+         for(ueIdx=0; ueIdx < phyDb.ueDb.numActvUe; ueIdx++)
+         {
+            for(drbIdx = 0; drbIdx < NUM_DRB_TO_PUMP_DATA; drbIdx++) //Number of DRB times the loop will run
+            {
+               DU_LOG("\nDEBUG  --> PHY STUB: Sending UL User Data[DrbId:%d] for UEIdx %d\n",drbIdx,ueIdx);
+               l1SendUlUserData(drbIdx,ueIdx);
+            }
+         }
+      }
    }
 #endif
    return ROK;

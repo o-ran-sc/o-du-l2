@@ -44,7 +44,7 @@
 #define MIN_TEID 1   /*[Spec 29.281,Sec 5.1]: All Zero TEIDs are never assigned for setting up GTP-U Tunnel*/
 #define MAX_TEID MAX_NUM_DRB * MAX_NUM_UE /*[Spec 29.281]: Max limit is not mentioned but as per GTP-U Header Format, TEID occupies 4 octets */
 
-#define NUM_TUNNEL_TO_PUMP_DATA 4
+#define NUM_TUNNEL_TO_PUMP_DATA 2
 #define NUM_DL_PACKETS 1
 
 uint8_t         sockType;
