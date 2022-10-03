@@ -419,10 +419,15 @@ uint16_t l1BuildAndSendRxDataInd(uint16_t slot, uint16_t sfn, fapi_ul_pusch_pdu_
          phyDb.ueDb.ueCb[ueId-1].msg5Sent = true;
          type = MSG_TYPE_MSG5;
       }
-      else if(!phyDb.ueDb.ueCb[ueId-1].msgSecurityModeComp)
+      else if(!phyDb.ueDb.ueCb[ueId-1].msgNasSecurityModeComp)
       {
-         phyDb.ueDb.ueCb[ueId-1].msgSecurityModeComp = true;
-         type = MSG_TYPE_SECURITY_MODE_COMPLETE;
+         phyDb.ueDb.ueCb[ueId-1].msgNasSecurityModeComp = true;
+         type = MSG_TYPE_NAS_SECURITY_MODE_COMPLETE;
+      }
+      else if(!phyDb.ueDb.ueCb[ueId-1].msgRrcSecurityModeComp)
+      {
+         phyDb.ueDb.ueCb[ueId-1].msgRrcSecurityModeComp = true;
+         type = MSG_TYPE_RRC_SECURITY_MODE_COMPLETE;
       }
       else if(!phyDb.ueDb.ueCb[ueId-1].msgRegistrationComp)
       {
@@ -533,8 +538,35 @@ uint16_t l1BuildAndSendRxDataInd(uint16_t slot, uint16_t sfn, fapi_ul_pusch_pdu_
          byteIdx += msg5PduLen; /* 4 bytes of header : MAC+RLC */
          break;
       }
+      
+      case MSG_TYPE_NAS_SECURITY_MODE_COMPLETE:
+      {
+        /* For NAS security mode complete where RRC Container is dummy
+          *
+          * MAC subheader format is R/F/LCId/L (2/3 bytes)
+          * LCId is 1 for SRB1
+          * L is length of PDU i.e 6bytes here 
+          * From 38.321 section 6.1.1
+          *
+          * RLC subheader for AM PDU is D/C/P/SI/SN (2 bytes for 12-bit SN)
+          * From 38.322, section 6.2.2.4
+          */
+         DU_LOG("\nDEBUG  -->  PHY_STUB: Forming NAS SECURITY MODE COMPLETE PDU");
+         uint8_t  pduLen = 93; /* Length of PDU */
+         pduLen += 2; /* RLC subheader */
+         uint8_t msg[] = {1, pduLen, 128, phyDb.ueDb.ueCb[ueId-1].rlcSnForSrb1++, 0, phyDb.ueDb.ueCb[ueId-1].pdcpSn++, 0x3a, 0x2a, 0x3f, 
+                          0x02, 0x75, 0xa0, 0xa0, 0xc0, 0x80, 0x3f, 0x00, 0x2f, 0x3b, 0x80, 0x04, 0x9a, 0xa2, 0x81, 0x09, 0x80, 0xc0, 
+                          0x28, 0x04, 0xf8, 0xb8, 0x80, 0x1d, 0xbf, 0x00, 0x20, 0x8c, 0x80, 0x05, 0xf9, 0x00, 0x78, 0x88, 0x7a, 0x88, 
+                          0xd9, 0x00, 0x00, 0x00, 0x03, 0x08, 0x00, 0x81, 0x97, 0x02, 0x78, 0x38, 0x78, 0x38, 0x17, 0x82, 0x82, 0x00, 
+                          0x80, 0x00, 0x00, 0xa9, 0x00, 0x78, 0x88, 0x00, 0x00, 0x00, 0x8b, 0x83, 0xf8, 0x38, 0x60, 0x20, 0x0c, 0xc0, 
+                          0x50, 0x0c, 0x00, 0x80, 0x3a, 0x00, 0x00, 0x48, 0x29, 0x80, 0x80, 0x80, 0x00, 0x00, 0x00, 0x00};
 
-      case MSG_TYPE_SECURITY_MODE_COMPLETE:
+         pduLen += 2;  /* 2 bytes of MAC header */
+         memcpy(pdu, &msg, pduLen);
+         byteIdx += pduLen; /* 4 bytes of header : MAC+RLC */
+break;
+      }
+      case MSG_TYPE_RRC_SECURITY_MODE_COMPLETE:
       {
          /* For security mode complete where RRC Container is dummy
           *
@@ -546,7 +578,7 @@ uint16_t l1BuildAndSendRxDataInd(uint16_t slot, uint16_t sfn, fapi_ul_pusch_pdu_
           * RLC subheader for AM PDU is D/C/P/SI/SN (2 bytes for 12-bit SN)
           * From 38.322, section 6.2.2.4
           */
-         DU_LOG("\nDEBUG  -->  PHY_STUB: Forming SECURITY MODE COMPLETE PDU");
+         DU_LOG("\nDEBUG  -->  PHY_STUB: Forming RRC SECURITY MODE COMPLETE PDU");
          uint8_t  pduLen = 12; /* Length of PDU */
          pduLen += 2; /* RLC subheader */
          uint8_t msg[] = {1, pduLen, 128, phyDb.ueDb.ueCb[ueId-1].rlcSnForSrb1++, 0, phyDb.ueDb.ueCb[ueId-1].pdcpSn++, 0x2a, 0x40, \

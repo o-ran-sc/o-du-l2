@@ -1513,8 +1513,27 @@ uint8_t	BuildDLRRCContainer(CuUeCb *ueCb, uint8_t rrcMsgType, RRCContainer_t *rr
    }
    else if(rrcMsgType == RRC_SETUP_COMPLETE)
    {
-      DU_LOG("\nINFO --> F1AP : Sending Security mode command");
-      char secModeBuf[9]={0x00, 0x02, 0x22, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00};
+      DU_LOG("\nINFO --> F1AP : Sending NAS Security mode command");
+      char secModeBuf[30]={0x00, 0x02, 0x2e, 0x82, 0xaf, 0xc0, 0x7d, 0x1c, 0x4e, 0xfc, 0x80, 0x0f, 0xc0, 
+                          0x0b, 0xa0, 0x20, 0x40, 0x9e, 0x0e, 0x1e, 0x0e, 0x1c, 0x26, 0xc0, 0x20, 0x40, 0x00, 0x00, 0x00, 0x00};
+      bufLen =30;
+      rrcContainer->size = bufLen;
+      CU_ALLOC(rrcContainer->buf, rrcContainer->size);
+      if(rrcContainer->buf != NULLP)
+      {     
+         memset(rrcContainer->buf, 0, bufLen);
+         memcpy(rrcContainer->buf, secModeBuf, bufLen);
+      }
+      else
+      {     
+         DU_LOG("\nERROR  -->  F1AP : Memory allocation failure for RRC Container buffer");
+         ret = RFAILED;
+      }     
+   }
+   else if(rrcMsgType == NAS_SECURITY_MODE_COMPLETE)
+   {
+      DU_LOG("\nINFO --> F1AP : Sending RRC Security mode command");
+      char secModeBuf[9]={0x00, 0x03, 0x22, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00};
       bufLen =9;
       rrcContainer->size = bufLen;
       CU_ALLOC(rrcContainer->buf, rrcContainer->size);
@@ -1529,11 +1548,11 @@ uint8_t	BuildDLRRCContainer(CuUeCb *ueCb, uint8_t rrcMsgType, RRCContainer_t *rr
          ret = RFAILED;
       }
    }
-   else if(rrcMsgType == SECURITY_MODE_COMPLETE)
+   else if(rrcMsgType == RRC_SECURITY_MODE_COMPLETE)
    {
       /*Hardcoded RRC Container from reference logs*/
       DU_LOG("\nINFO --> F1AP : Sending Registration accept");
-      char buf[14] ={0x00, 0x03, 0x2a, 0x80, 0xaf, 0xc0, 0x08, 0x40, 0x20, 0x20, 0x00, 0x00, 0x00, 0x00};
+      char buf[14] ={0x00, 0x04, 0x2a, 0x80, 0xaf, 0xc0, 0x08, 0x40, 0x20, 0x20, 0x00, 0x00, 0x00, 0x00};
       bufLen =14;
       rrcContainer->size = bufLen;
       CU_ALLOC(rrcContainer->buf, rrcContainer->size);
@@ -1767,8 +1786,11 @@ uint8_t setDlRRCMsgType(CuUeCb *ueCb)
       case RRC_SETUP_COMPLETE:
          rrcMsgType = RRC_SETUP_COMPLETE;
          break;
-      case SECURITY_MODE_COMPLETE:
-         rrcMsgType = SECURITY_MODE_COMPLETE;
+      case NAS_SECURITY_MODE_COMPLETE:
+         rrcMsgType = NAS_SECURITY_MODE_COMPLETE;
+         break;
+      case RRC_SECURITY_MODE_COMPLETE:
+         rrcMsgType = RRC_SECURITY_MODE_COMPLETE;
          break;
       case REGISTRATION_COMPLETE:
          rrcMsgType = REGISTRATION_COMPLETE;
@@ -9508,10 +9530,15 @@ uint8_t procUlRrcMsg(uint32_t duId, F1AP_PDU_t *f1apMsg)
       rrcMsgType = setDlRRCMsgType(ueCb);
       if(rrcMsgType == RRC_SETUP_COMPLETE)
       {
-         DU_LOG("\nINFO  -->  F1AP: Sending DL RRC MSG for Security Mode Command"); 
+         DU_LOG("\nINFO  -->  F1AP: Sending DL RRC MSG for NAS Security Mode Command");
          ret = BuildAndSendDLRRCMessageTransfer(duId, ueCb, srbId, rrcMsgType);
       }
-      else if(rrcMsgType == SECURITY_MODE_COMPLETE)
+      if(rrcMsgType == NAS_SECURITY_MODE_COMPLETE)
+      {
+         DU_LOG("\nINFO  -->  F1AP: Sending DL RRC MSG for RRC Security Mode Command"); 
+         ret = BuildAndSendDLRRCMessageTransfer(duId, ueCb, srbId, rrcMsgType);
+      }
+      else if(rrcMsgType == RRC_SECURITY_MODE_COMPLETE)
       {
          DU_LOG("\nINFO  -->  F1AP: Sending DL RRC MSG for RRC Registration Accept");
          BuildAndSendDLRRCMessageTransfer(duId, ueCb, srbId, rrcMsgType);

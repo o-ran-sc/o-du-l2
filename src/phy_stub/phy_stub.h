@@ -70,7 +70,8 @@ typedef struct ueCb
    bool     msg5ShortBsrSent;
    bool     msg5Sent;
    bool     dlDedMsg;
-   bool     msgSecurityModeComp;
+   bool     msgNasSecurityModeComp;
+   bool     msgRrcSecurityModeComp;
    bool     msgRrcReconfigComp;
    bool     msgRegistrationComp;
    uint8_t  rlcSnForSrb1;           /* Sequence number of PDU at RLC for AM mode */
@@ -105,7 +106,8 @@ typedef enum
    MSG_TYPE_MSG3,
    MSG_TYPE_SHORT_BSR,
    MSG_TYPE_MSG5,
-   MSG_TYPE_SECURITY_MODE_COMPLETE,
+   MSG_TYPE_NAS_SECURITY_MODE_COMPLETE,
+   MSG_TYPE_RRC_SECURITY_MODE_COMPLETE,
    MSG_TYPE_REGISTRATION_COMPLETE,
    MSG_TYPE_RRC_RECONFIG_COMPLETE
 }MsgType;
