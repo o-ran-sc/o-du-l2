@@ -125,6 +125,7 @@
 #include "BWP-UplinkCommon.h"
 #include "ReconfigurationWithSync.h"
 #include "du_sys_info_hdl.h"
+#include "DRX-ConfigRrc.h"
 
 #ifdef O1_ENABLE
 #include "CmInterface.h"
@@ -6978,7 +6979,200 @@ uint8_t BuildPhyCellGrpCfg(DuUeCb *ueCb, PhysicalCellGroupConfig_t *phyCellGrpCf
 
    return ROK;
 }
-
+#ifdef NR_DRX
+/*******************************************************************
+ *
+ * @brief fill long cycle offset value of drx
+ *
+ * @details
+ *
+ *    Function : fillLongCycleOffsetValFromDuCb 
+ *
+ *    Functionality: fill long cycle offset value of drx
+ *
+ * @params[in] DrxLongCycleStartOffset  drxLongCycleStartOffset,
+ * struct DRX_ConfigRrc__drx_LongCycleStartOffset drx_LongCycleStartOffset
+ *
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+void fillLongCycleOffsetValFromDuCb(DrxLongCycleStartOffset  drxLongCycleStartOffset,\
+struct DRX_ConfigRrc__drx_LongCycleStartOffset *drx_LongCycleStartOffset)
+{
+   
+   drx_LongCycleStartOffset->present = convertLongDrxCycleLengthValueToEnum(drxLongCycleStartOffset.drxLongCycleStartOffsetChoice); 
+   switch(drx_LongCycleStartOffset->present)
+   {
+      case DRX_ConfigRrc__drx_LongCycleStartOffset_PR_ms10:
+         {
+            drx_LongCycleStartOffset->choice.ms10 = drxLongCycleStartOffset.drxLongCycleStartOffsetVal;
+            break;
+         }
+      case DRX_ConfigRrc__drx_LongCycleStartOffset_PR_ms20:
+         {
+            drx_LongCycleStartOffset->choice.ms20 = drxLongCycleStartOffset.drxLongCycleStartOffsetVal;
+            break;
+         }
+      case DRX_ConfigRrc__drx_LongCycleStartOffset_PR_ms32:
+         {
+            drx_LongCycleStartOffset->choice.ms32 = drxLongCycleStartOffset.drxLongCycleStartOffsetVal;
+            break;
+         }
+      case DRX_ConfigRrc__drx_LongCycleStartOffset_PR_ms40:
+         {
+            drx_LongCycleStartOffset->choice.ms40 = drxLongCycleStartOffset.drxLongCycleStartOffsetVal;
+            break;
+         }
+      case DRX_ConfigRrc__drx_LongCycleStartOffset_PR_ms60:
+         {
+            drx_LongCycleStartOffset->choice.ms60 = drxLongCycleStartOffset.drxLongCycleStartOffsetVal;
+            break;
+         }
+      case DRX_ConfigRrc__drx_LongCycleStartOffset_PR_ms64:
+         {
+            drx_LongCycleStartOffset->choice.ms64 = drxLongCycleStartOffset.drxLongCycleStartOffsetVal;
+            break;
+         }
+      case DRX_ConfigRrc__drx_LongCycleStartOffset_PR_ms70:
+         {
+            drx_LongCycleStartOffset->choice.ms70 = drxLongCycleStartOffset.drxLongCycleStartOffsetVal;
+            break;
+         }
+      case DRX_ConfigRrc__drx_LongCycleStartOffset_PR_ms80:
+         {
+            drx_LongCycleStartOffset->choice.ms80 = drxLongCycleStartOffset.drxLongCycleStartOffsetVal;
+            break;
+         }
+      case DRX_ConfigRrc__drx_LongCycleStartOffset_PR_ms128:
+         {
+            drx_LongCycleStartOffset->choice.ms128 = drxLongCycleStartOffset.drxLongCycleStartOffsetVal;
+            break;
+         }
+      case DRX_ConfigRrc__drx_LongCycleStartOffset_PR_ms160:
+         {
+            drx_LongCycleStartOffset->choice.ms160 = drxLongCycleStartOffset.drxLongCycleStartOffsetVal;
+            break;
+         }
+      case DRX_ConfigRrc__drx_LongCycleStartOffset_PR_ms256:
+         {
+            drx_LongCycleStartOffset->choice.ms256 = drxLongCycleStartOffset.drxLongCycleStartOffsetVal;
+            break;
+         }
+      case DRX_ConfigRrc__drx_LongCycleStartOffset_PR_ms320:
+         {
+            drx_LongCycleStartOffset->choice.ms320 = drxLongCycleStartOffset.drxLongCycleStartOffsetVal;
+            break;
+         }
+      case DRX_ConfigRrc__drx_LongCycleStartOffset_PR_ms512:
+         {
+            drx_LongCycleStartOffset->choice.ms512 = drxLongCycleStartOffset.drxLongCycleStartOffsetVal;
+            break;
+         }
+      case DRX_ConfigRrc__drx_LongCycleStartOffset_PR_ms640:
+         {
+            drx_LongCycleStartOffset->choice.ms640 = drxLongCycleStartOffset.drxLongCycleStartOffsetVal;
+            break;
+         }
+      case DRX_ConfigRrc__drx_LongCycleStartOffset_PR_ms1024:
+         {
+            drx_LongCycleStartOffset->choice.ms1024 = drxLongCycleStartOffset.drxLongCycleStartOffsetVal;
+            break;
+         }
+      case DRX_ConfigRrc__drx_LongCycleStartOffset_PR_ms1280:
+         {
+            drx_LongCycleStartOffset->choice.ms1280 = drxLongCycleStartOffset.drxLongCycleStartOffsetVal;
+            break;
+         }
+      case DRX_ConfigRrc__drx_LongCycleStartOffset_PR_ms2048:
+         {
+            drx_LongCycleStartOffset->choice.ms2048 = drxLongCycleStartOffset.drxLongCycleStartOffsetVal;
+            break;
+         }
+      case DRX_ConfigRrc__drx_LongCycleStartOffset_PR_ms2560:
+         {
+            drx_LongCycleStartOffset->choice.ms2560 = drxLongCycleStartOffset.drxLongCycleStartOffsetVal;
+            break;
+         }
+      case DRX_ConfigRrc__drx_LongCycleStartOffset_PR_ms5120:
+         {
+            drx_LongCycleStartOffset->choice.ms5120 = drxLongCycleStartOffset.drxLongCycleStartOffsetVal;
+            break;
+         }
+      case DRX_ConfigRrc__drx_LongCycleStartOffset_PR_ms10240:
+         {
+            drx_LongCycleStartOffset->choice.ms10240 = drxLongCycleStartOffset.drxLongCycleStartOffsetVal;
+            break;
+         }
+      default :
+         break;
+   }
+}
+/*******************************************************************
+ *
+ * @brief Builds drx config IE 
+ *
+ * @details
+ *
+ *    Function : BuildDrxConfigRrc 
+ *
+ *    Functionality: Build drx config in MacCellGrpCfg 
+ *
+ * @params[in] struct MAC_CellGroupConfig__drx_ConfigRrc 
+ *
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t BuildDrxConfigRrc(DuUeCb *ueCb, struct MAC_CellGroupConfig__drx_ConfigRrc *drxCfg)
+{
+   drxCfg->present = MAC_CellGroupConfig__drx_ConfigRrc_PR_setup;
+   DU_ALLOC(drxCfg->choice.setup, sizeof(struct DRX_ConfigRrc));
+   if(!drxCfg->choice.setup)
+   {
+      DU_LOG("\nERROR  -->  F1AP : Memory allocation failure in BuildDrxConfigRrc");
+      return RFAILED;
+   }
+   if(ueCb->macUeCfg.macCellGrpCfg.drxCfg.drxOnDurationTimer.onDurationTimerValInMs)
+   {
+      drxCfg->choice.setup->drx_onDurationTimer.present = DRX_ConfigRrc__drx_onDurationTimer_PR_milliSeconds;
+      drxCfg->choice.setup->drx_onDurationTimer.choice.milliSeconds = convertOnDurationTimerMilliSecondsValueToEnum(ueCb->macUeCfg.\
+      macCellGrpCfg.drxCfg.drxOnDurationTimer.onDurationtimerValue.milliSeconds);
+   }
+   else
+   {
+      drxCfg->choice.setup->drx_onDurationTimer.present = DRX_ConfigRrc__drx_onDurationTimer_PR_subMilliSeconds;
+      drxCfg->choice.setup->drx_onDurationTimer.choice.subMilliSeconds = ueCb->macUeCfg.macCellGrpCfg.drxCfg.\
+      drxOnDurationTimer.onDurationtimerValue.subMilliSeconds;
+   }
+   drxCfg->choice.setup->drx_InactivityTimer = convertDrxInactivityTimerValueToEnum(ueCb->macUeCfg.macCellGrpCfg.drxCfg.drxInactivityTimer);
+   drxCfg->choice.setup->drx_HARQ_RTT_TimerDL = ueCb->macUeCfg.macCellGrpCfg.drxCfg.drxHarqRttTimerDl;
+   drxCfg->choice.setup->drx_HARQ_RTT_TimerUL = ueCb->macUeCfg.macCellGrpCfg.drxCfg.drxHarqRttTimerUl;
+   drxCfg->choice.setup->drx_RetransmissionTimerDL = convertDrxRetransmissionTimerDlValueToEnum(ueCb->macUeCfg.macCellGrpCfg.drxCfg.\
+   drxRetransmissionTimerDl);
+   drxCfg->choice.setup->drx_RetransmissionTimerUL = convertDrxRetransmissionTimerUlValueToEnum(ueCb->macUeCfg.macCellGrpCfg.drxCfg.\
+   drxRetransmissionTimerUl);
+   drxCfg->choice.setup->drx_SlotOffset = ueCb->macUeCfg.macCellGrpCfg.drxCfg.drxSlotOffset;
+   fillLongCycleOffsetValFromDuCb(ueCb->macUeCfg.macCellGrpCfg.drxCfg.drxLongCycleStartOffset, &drxCfg->choice.setup->drx_LongCycleStartOffset);
+   
+   if(ueCb->macUeCfg.macCellGrpCfg.drxCfg.shortDrxPres)
+   {
+      DU_ALLOC(drxCfg->choice.setup->shortDRX, sizeof(struct DRX_ConfigRrc__shortDRX));
+      if(drxCfg->choice.setup->shortDRX)
+      {
+         drxCfg->choice.setup->shortDRX->drx_ShortCycle = convertShortDrxCycleLengthValueToEnum(ueCb->macUeCfg.macCellGrpCfg.drxCfg.\
+         shortDrx.drxShortCycle);
+         drxCfg->choice.setup->shortDRX->drx_ShortCycleTimer = ueCb->macUeCfg.macCellGrpCfg.drxCfg.shortDrx.drxShortCycleTimer;
+      }
+      else
+      {
+         DU_LOG("\nERROR  -->  F1AP : Memory allocation failure in BuildDrxConfigRrc");
+         return RFAILED;
+      }
+   }
+   return ROK;
+}
+#endif
 /*******************************************************************
  *
  * @brief Builds Mac cell group config 
@@ -6998,6 +7192,22 @@ uint8_t BuildPhyCellGrpCfg(DuUeCb *ueCb, PhysicalCellGroupConfig_t *phyCellGrpCf
 uint8_t BuildMacCellGrpCfg(DuUeCb *ueCb, MAC_CellGroupConfig_t *macCellGrpCfg)
 {
    macCellGrpCfg->drx_ConfigRrc = NULLP;
+#ifdef NR_DRX   
+   if(ueCb)
+   {
+      DU_ALLOC(macCellGrpCfg->drx_ConfigRrc, sizeof(struct MAC_CellGroupConfig__drx_ConfigRrc));
+      if(!macCellGrpCfg->drx_ConfigRrc)
+      {
+         DU_LOG("\nERROR  -->  F1AP : Memory allocation failure in BuildMacCellGrpCfg");
+         return RFAILED;
+      }
+      if(BuildDrxConfigRrc(ueCb, macCellGrpCfg->drx_ConfigRrc) != ROK)
+      {
+         DU_LOG("\nERROR  -->  F1AP : failed to build drx config");
+         return RFAILED;
+      }
+   }
+#endif
    macCellGrpCfg->schedulingRequestConfig = NULLP;
    DU_ALLOC(macCellGrpCfg->schedulingRequestConfig, sizeof(struct SchedulingRequestConfig));
    if(!macCellGrpCfg->schedulingRequestConfig)
@@ -7991,6 +8201,7 @@ uint8_t FreeMemDuToCuRrcCont(CellGroupConfigRrc_t *cellGrpCfg)
    struct CellGroupConfigRrc__rlc_BearerToAddModList *rlcBearerList=NULLP;
    struct RLC_Config *rlcConfig=NULLP;
    struct LogicalChannelConfig *macLcConfig=NULLP;
+   struct MAC_CellGroupConfig__drx_ConfigRrc *drxCfg=NULLP;
    struct SchedulingRequestConfig *schedulingRequestConfig=NULLP;
    struct SchedulingRequestConfig__schedulingRequestToAddModList *schReqList=NULLP;
    struct TAG_Config *tagConfig=NULLP;
@@ -8013,6 +8224,9 @@ uint8_t FreeMemDuToCuRrcCont(CellGroupConfigRrc_t *cellGrpCfg)
                {
                   switch(rlcConfig->present)
                   {
+                     case RLC_Config_PR_NOTHING:
+                        break;
+
                      case RLC_Config_PR_am:
                         {
                            if(rlcConfig->choice.am)
@@ -8076,6 +8290,27 @@ uint8_t FreeMemDuToCuRrcCont(CellGroupConfigRrc_t *cellGrpCfg)
    macCellGrpCfg = cellGrpCfg->mac_CellGroupConfig;
    if(macCellGrpCfg)
    {
+      drxCfg = macCellGrpCfg->drx_ConfigRrc;
+
+      if(drxCfg)
+      {
+          switch(drxCfg->present)
+          {
+            case MAC_CellGroupConfig__drx_ConfigRrc_PR_NOTHING:
+               break;
+            case MAC_CellGroupConfig__drx_ConfigRrc_PR_setup:
+            {
+               if(drxCfg->choice.setup)
+               {
+                  DU_FREE(drxCfg->choice.setup->shortDRX, sizeof(struct DRX_ConfigRrc__shortDRX));  
+                  DU_FREE(drxCfg->choice.setup, sizeof(struct DRX_ConfigRrc));
+               }
+            }
+            case MAC_CellGroupConfig__drx_ConfigRrc_PR_release:
+               break;
+          }
+          DU_FREE(drxCfg, sizeof(struct MAC_CellGroupConfig__drx_ConfigRrc));
+      }
       schedulingRequestConfig = macCellGrpCfg->schedulingRequestConfig; 
       if(schedulingRequestConfig)
       {
@@ -11715,6 +11950,228 @@ ServCellCfgInfo *storedSrvCellCfg)
    }
    return ret;
 }
+
+#ifdef NR_DRX
+
+/*******************************************************************
+ *
+ * @brief fill long cycle offset value of drx in UE structure
+ *
+ * @details
+ *
+ *    Function : fillLongCycleOffsetValueInUeDb
+ *
+ *    Functionality: fill long cycle offset value of drx in UE structure
+ *
+ * @params[in] DrxLongCycleStartOffset  drxLongCycleStartOffset,
+ * struct DRX_ConfigRrc__drx_LongCycleStartOffset drx_LongCycleStartOffset
+ *
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+void fillLongCycleOffsetValueInUeDb(DrxLongCycleStartOffset *drxLongCycleStartOffset, struct DRX_ConfigRrc__drx_LongCycleStartOffset  *drx_LongCycleStartOffset)
+{
+
+   drxLongCycleStartOffset->drxLongCycleStartOffsetChoice = convertLongDrxCycleLengthEnumToValue(drx_LongCycleStartOffset->present);
+   switch(drx_LongCycleStartOffset->present)
+   {
+      case DRX_ConfigRrc__drx_LongCycleStartOffset_PR_ms10:
+         {
+            drxLongCycleStartOffset->drxLongCycleStartOffsetVal = drx_LongCycleStartOffset->choice.ms10;
+            break;
+         }
+      case DRX_ConfigRrc__drx_LongCycleStartOffset_PR_ms20:
+         {
+            drxLongCycleStartOffset->drxLongCycleStartOffsetVal = drx_LongCycleStartOffset->choice.ms20;
+            break;
+         }
+      case DRX_ConfigRrc__drx_LongCycleStartOffset_PR_ms32:
+         {
+            drxLongCycleStartOffset->drxLongCycleStartOffsetVal = drx_LongCycleStartOffset->choice.ms32;
+            break;
+         }
+      case DRX_ConfigRrc__drx_LongCycleStartOffset_PR_ms40:
+        {
+            drxLongCycleStartOffset->drxLongCycleStartOffsetVal = drx_LongCycleStartOffset->choice.ms40;
+            break;
+         }
+      case DRX_ConfigRrc__drx_LongCycleStartOffset_PR_ms60:
+         {
+            drxLongCycleStartOffset->drxLongCycleStartOffsetVal = drx_LongCycleStartOffset->choice.ms60;
+            break;
+         }
+      case DRX_ConfigRrc__drx_LongCycleStartOffset_PR_ms64:
+         {
+            drxLongCycleStartOffset->drxLongCycleStartOffsetVal = drx_LongCycleStartOffset->choice.ms64;
+            break;
+         }
+      case DRX_ConfigRrc__drx_LongCycleStartOffset_PR_ms70:
+         {
+            drxLongCycleStartOffset->drxLongCycleStartOffsetVal = drx_LongCycleStartOffset->choice.ms70;
+            break;
+         }
+      case DRX_ConfigRrc__drx_LongCycleStartOffset_PR_ms80:
+         {
+            drxLongCycleStartOffset->drxLongCycleStartOffsetVal = drx_LongCycleStartOffset->choice.ms80;
+            break;
+         }
+      case DRX_ConfigRrc__drx_LongCycleStartOffset_PR_ms128:
+         {
+            drxLongCycleStartOffset->drxLongCycleStartOffsetVal = drx_LongCycleStartOffset->choice.ms128;
+            break;
+         }
+      case DRX_ConfigRrc__drx_LongCycleStartOffset_PR_ms160:
+         {
+            drxLongCycleStartOffset->drxLongCycleStartOffsetVal = drx_LongCycleStartOffset->choice.ms160;
+            break;
+         }
+      case DRX_ConfigRrc__drx_LongCycleStartOffset_PR_ms256:
+         {
+            drxLongCycleStartOffset->drxLongCycleStartOffsetVal = drx_LongCycleStartOffset->choice.ms256;
+            break;
+         }
+      case DRX_ConfigRrc__drx_LongCycleStartOffset_PR_ms320:
+         {
+            drxLongCycleStartOffset->drxLongCycleStartOffsetVal = drx_LongCycleStartOffset->choice.ms320;
+            break;
+         }
+      case DRX_ConfigRrc__drx_LongCycleStartOffset_PR_ms512:
+         {
+            drxLongCycleStartOffset->drxLongCycleStartOffsetVal = drx_LongCycleStartOffset->choice.ms512;
+            break;
+         }
+      case DRX_ConfigRrc__drx_LongCycleStartOffset_PR_ms640:
+         {
+            drxLongCycleStartOffset->drxLongCycleStartOffsetVal = drx_LongCycleStartOffset->choice.ms640;
+            break;
+         }
+      case DRX_ConfigRrc__drx_LongCycleStartOffset_PR_ms1024:
+         {
+            drxLongCycleStartOffset->drxLongCycleStartOffsetVal = drx_LongCycleStartOffset->choice.ms1024;
+            break;
+         }
+      case DRX_ConfigRrc__drx_LongCycleStartOffset_PR_ms1280:
+         {
+            drxLongCycleStartOffset->drxLongCycleStartOffsetVal = drx_LongCycleStartOffset->choice.ms1280;
+            break;
+         }
+      case DRX_ConfigRrc__drx_LongCycleStartOffset_PR_ms2048:
+         {
+            drxLongCycleStartOffset->drxLongCycleStartOffsetVal = drx_LongCycleStartOffset->choice.ms2048;
+            break;
+         }
+      case DRX_ConfigRrc__drx_LongCycleStartOffset_PR_ms2560:
+         {
+            drxLongCycleStartOffset->drxLongCycleStartOffsetVal = drx_LongCycleStartOffset->choice.ms2560;
+            break;
+         }
+       case DRX_ConfigRrc__drx_LongCycleStartOffset_PR_ms5120:
+         {
+            drxLongCycleStartOffset->drxLongCycleStartOffsetVal = drx_LongCycleStartOffset->choice.ms5120;
+            break;
+         }
+      case DRX_ConfigRrc__drx_LongCycleStartOffset_PR_ms10240:
+         {
+            drxLongCycleStartOffset->drxLongCycleStartOffsetVal = drx_LongCycleStartOffset->choice.ms10240;
+            break;
+         }
+      default :
+         break;
+   }
+}
+
+/*******************************************************************
+ *
+ * @brief Fills drx configuration structure with the help of drx_ConfigRrc
+ *which recive from CU or storedDrxCfg which is already stored
+ *
+ * @details
+ *
+ *    Function : extractDrxConfiguration 
+ *
+ *    Functionality: Fills Reconfig Cell group Info received by CU
+ *   
+ * @params[in] cuMacCellGrpDrxConfig  = MAC_CellGroupConfig__drx_ConfigRrc information which
+ *                       is send by CU, which we have stored in F1UeContextSetupDb
+ *             DrxCfg * drxCfg  = Used to Store the information,
+ *                      which needs to send in other layer, as well as this can be
+ *                      the variable which stores the information in DuCb,
+ *             DrxCfg *storedDrxCfg = Null in case of sending the
+ *                      information to other layer else it will have the drx information 
+ *                      stored in the copyOfmacUeCfg which we have stored in F1UeContextSetupDb.
+ *
+ * @return void
+ *
+ * ****************************************************************/
+void extractDrxConfiguration(struct MAC_CellGroupConfig__drx_ConfigRrc *cuMacCellGrpDrxConfig, DrxCfg * drxCfg, DrxCfg *storedDrxCfg)
+{
+   struct DRX_ConfigRrc *cuDrxConfig;
+
+   if(storedDrxCfg)
+   {
+      memcpy(drxCfg, storedDrxCfg, sizeof(DrxCfg));
+   }
+   else
+   {
+      if(cuMacCellGrpDrxConfig)
+      {
+         switch(cuMacCellGrpDrxConfig->present)
+         {
+            case MAC_CellGroupConfig__drx_ConfigRrc_PR_NOTHING:
+               break;
+
+            case MAC_CellGroupConfig__drx_ConfigRrc_PR_setup:
+               {
+                  cuDrxConfig = cuMacCellGrpDrxConfig->choice.setup;
+                  if(cuDrxConfig)
+                  {
+                     switch(cuDrxConfig->drx_onDurationTimer.present)
+                     {
+                        case DRX_ConfigRrc__drx_onDurationTimer_PR_NOTHING:
+                           break;
+                        case DRX_ConfigRrc__drx_onDurationTimer_PR_milliSeconds:
+                           {
+                              drxCfg->drxOnDurationTimer.onDurationTimerValInMs = true;
+                              drxCfg->drxOnDurationTimer.onDurationtimerValue.milliSeconds=convertOnDurationTimerMilliSecondsEnumToValue(cuDrxConfig->\
+                              drx_onDurationTimer.choice.milliSeconds);
+                              break;
+                           }
+                        case DRX_ConfigRrc__drx_onDurationTimer_PR_subMilliSeconds:
+                           {
+                              drxCfg->drxOnDurationTimer.onDurationTimerValInMs = false;
+                              drxCfg->drxOnDurationTimer.onDurationtimerValue.subMilliSeconds = cuDrxConfig->drx_onDurationTimer.choice.subMilliSeconds;
+                              break;
+                           }
+                     }
+                  }
+                  fillLongCycleOffsetValueInUeDb(&drxCfg->drxLongCycleStartOffset, &cuDrxConfig->drx_LongCycleStartOffset);
+                  drxCfg->drxInactivityTimer = convertDrxInactivityTimerEnumToValue(cuDrxConfig->drx_InactivityTimer);
+                  drxCfg->drxHarqRttTimerDl = cuDrxConfig->drx_HARQ_RTT_TimerDL;
+                  drxCfg->drxHarqRttTimerUl = cuDrxConfig->drx_HARQ_RTT_TimerUL;
+                  drxCfg->drxRetransmissionTimerDl = convertDrxRetransmissionTimerDlEnumToValue(cuDrxConfig->drx_RetransmissionTimerDL);
+                  drxCfg->drxRetransmissionTimerUl = convertDrxRetransmissionTimerUlEnumToValue(cuDrxConfig->drx_RetransmissionTimerUL);
+                  drxCfg->drxSlotOffset = cuDrxConfig->drx_SlotOffset;
+                  if(cuDrxConfig->shortDRX)
+                  {
+                     drxCfg->shortDrxPres=true;
+                     drxCfg->shortDrx.drxShortCycle = convertShortDrxCycleLengthEnumToValue(cuDrxConfig->shortDRX->drx_ShortCycle);
+                     drxCfg->shortDrx.drxShortCycleTimer = cuDrxConfig->shortDRX->drx_ShortCycleTimer;
+                  }
+                  else
+                     drxCfg->shortDrxPres=false;
+
+                  break;
+               }
+
+            case MAC_CellGroupConfig__drx_ConfigRrc_PR_release:
+               break;
+         }
+      }
+   }
+}
+#endif
+
 /*******************************************************************
  *
  * @brief Fills Reconfig Cell group Info received by CU
@@ -11752,6 +12209,28 @@ uint8_t extractUeReCfgCellInfo(CellGroupConfigRrc_t *cellGrp, MacUeCfg *macUeCfg
       {
          macUeCfg->macCellGrpCfgPres = true;
          macCellGroup = ((MAC_CellGroupConfig_t *)(cellGrp->mac_CellGroupConfig));
+
+#ifdef NR_DRX         
+         if(macCellGroup->drx_ConfigRrc)
+         {
+            if(storedMacUeCfg)
+            {
+               if(!storedMacUeCfg->macCellGrpCfgPres) 
+               {
+                  extractDrxConfiguration(macCellGroup->drx_ConfigRrc, &macUeCfg->macCellGrpCfg.drxCfg,NULL);    
+               }
+               else
+               {
+                  extractDrxConfiguration(macCellGroup->drx_ConfigRrc, &macUeCfg->macCellGrpCfg.drxCfg, &storedMacUeCfg->macCellGrpCfg.drxCfg);    
+               }
+            }
+            else
+            {
+               extractDrxConfiguration(macCellGroup->drx_ConfigRrc, &macUeCfg->macCellGrpCfg.drxCfg,NULL); 
+            }
+         }
+#endif
+
          if(macCellGroup->schedulingRequestConfig)
          {
             extractSchReqReConfig(macCellGroup->schedulingRequestConfig, &macUeCfg->macCellGrpCfg.schReqCfg);
@@ -13004,6 +13483,7 @@ uint8_t procF1UeContextSetupReq(F1AP_PDU_t *f1apMsg)
    UEContextSetupRequest_t   *ueSetReq = NULL;
    DRBs_ToBeSetup_List_t *drbCfg = NULL;
    CUtoDURRCInformation_t *rrcInfo = NULL;
+   DRXCycle_t *drxCycle;
 
    ret = ROK;
 
@@ -13140,12 +13620,25 @@ uint8_t procF1UeContextSetupReq(F1AP_PDU_t *f1apMsg)
                break;
             } 
 
-         case ProtocolIE_ID_id_SCell_ToBeSetup_List:
+#ifdef NR_DRX
+         case ProtocolIE_ID_id_DRXCycle:
             {
-               DU_LOG("\nINFO   -->  DU_APP: Received SCell_ToBeSetup_List but  Not processing the list");
+               duUeCb->f1UeDb->duUeCfg.drxCyclePres = true;
+               drxCycle = &ueSetReq->protocolIEs.list.array[ieIdx]->value.choice.DRXCycle;
+               duUeCb->f1UeDb->duUeCfg.drxCycle.drxLongCycleLength =  convertLongDrxCycleLengthEnumToValue(drxCycle->longDRXCycleLength);
+               if(drxCycle->shortDRXCycleLength)
+               {
+                  duUeCb->f1UeDb->duUeCfg.drxCycle.shortDrxCyclePres = true;
+                  duUeCb->f1UeDb->duUeCfg.drxCycle.shortDrxCycle.drxShortCycle = \
+                  convertShortDrxCycleLengthEnumToValue(*(drxCycle->shortDRXCycleLength));
+               }
+               if(drxCycle->shortDRXCycleTimer)
+                  duUeCb->f1UeDb->duUeCfg.drxCycle.shortDrxCycle.drxShortCycleTimer = *(drxCycle->shortDRXCycleTimer);   
+
                break;
             }
 
+#endif
          case ProtocolIE_ID_id_SRBs_ToBeSetup_List:
             {
                if(extractSrbListToSetup(&ueSetReq->protocolIEs.list.array[ieIdx]->value.choice.SRBs_ToBeSetup_List,\
@@ -13170,7 +13663,6 @@ uint8_t procF1UeContextSetupReq(F1AP_PDU_t *f1apMsg)
                }
                break;
             }
-
          case ProtocolIE_ID_id_RRCContainer:
             {
                /* Filling Dl RRC Msg Info */
