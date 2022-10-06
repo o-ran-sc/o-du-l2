@@ -1496,6 +1496,788 @@ e_ServingCellConfigCommon__dmrs_TypeA_Position convertDmrsTypeAPosValueToEnum(ui
    }
 }
 
+/************************************************************************
+ *
+ * @brief Converts enum values into actual value of Long drx Cycle length
+ *
+ * @details
+ *
+ *    Function : convertLongDrxCycleLengthEnumToValue 
+ *
+ *    Functionality: As per Spec 38.331,
+ *          Converts enum values into actual value of Long drx Cycle length
+ *    
+ *
+ * @params[in] Enum value of e_LongDRXCycleLength
+ * @return Actual value of long Drx cycle length
+ *
+ * **********************************************************************/
+uint16_t convertLongDrxCycleLengthEnumToValue(e_LongDRXCycleLength longDrxCycleLength)
+{
+   switch(longDrxCycleLength)
+   {
+      case LongDRXCycleLength_ms10:
+            return 10;
+      case LongDRXCycleLength_ms20:
+            return 20;
+      case LongDRXCycleLength_ms32:
+            return 32;
+      case LongDRXCycleLength_ms40:
+            return 40;
+      case LongDRXCycleLength_ms60:
+            return 60;
+      case LongDRXCycleLength_ms64:
+            return 64;
+      case LongDRXCycleLength_ms70:
+            return 70;
+      case LongDRXCycleLength_ms80:
+            return 80;
+      case LongDRXCycleLength_ms128:
+            return 128;
+      case LongDRXCycleLength_ms160:
+            return 160;
+      case LongDRXCycleLength_ms256:
+            return 256;
+      case LongDRXCycleLength_ms320:
+            return 320;
+      case LongDRXCycleLength_ms512:
+            return 512;
+      case LongDRXCycleLength_ms640:
+            return 640;
+      case LongDRXCycleLength_ms1024:
+            return 1024;
+      case LongDRXCycleLength_ms1280:
+            return 1280;
+      case LongDRXCycleLength_ms2048:
+            return 2048;
+      case LongDRXCycleLength_ms2560:
+            return 2560;
+      case LongDRXCycleLength_ms5120:
+            return 5120;
+      case LongDRXCycleLength_ms10240:
+            return 10240;
+      default:
+        return 20;        
+   }
+}
+/************************************************************************
+ *
+ * @brief Converts enum values into actual value of Short drx Cycle length
+ *
+ * @details
+ *
+ *    Function : convertShortDrxCycleLengthEnumToValue 
+ *
+ *    Functionality: As per Spec 38.331,
+ *          Converts enum values into actual value of Short drx Cycle length
+ *    
+ *
+ * @params[in] Enum value of e_ShortDRXCycleLength
+ * @return Actual value of short Drx cycle length
+ *
+ * **********************************************************************/
+uint16_t convertShortDrxCycleLengthEnumToValue(e_ShortDRXCycleLength shortDrxCycleLength)
+{
+   switch(shortDrxCycleLength)
+   {
+      case ShortDRXCycleLength_ms2:
+            return 2;
+      case ShortDRXCycleLength_ms3:
+            return 3;
+      case ShortDRXCycleLength_ms4:
+            return 4;
+      case ShortDRXCycleLength_ms5:
+            return 5;
+      case ShortDRXCycleLength_ms6:
+            return 6;
+      case ShortDRXCycleLength_ms7:
+            return 7;
+      case ShortDRXCycleLength_ms8:
+            return 8;
+      case ShortDRXCycleLength_ms10:
+            return 10;
+      case ShortDRXCycleLength_ms14:
+            return 14;
+      case ShortDRXCycleLength_ms16:
+            return 16;
+      case ShortDRXCycleLength_ms20:
+            return 20;
+      case ShortDRXCycleLength_ms30:
+            return 30;
+      case ShortDRXCycleLength_ms32:
+            return 32;
+      case ShortDRXCycleLength_ms35:
+            return 35;
+      case ShortDRXCycleLength_ms40:
+            return 40;
+      case ShortDRXCycleLength_ms64:
+            return 64;
+      case ShortDRXCycleLength_ms80:
+            return 80;
+      case ShortDRXCycleLength_ms128:
+            return 128;
+      case ShortDRXCycleLength_ms160:
+            return 160;
+      case ShortDRXCycleLength_ms256:
+            return 256;
+      case ShortDRXCycleLength_ms320:
+            return 320;
+      case ShortDRXCycleLength_ms512:
+            return 512;
+      case ShortDRXCycleLength_ms640:
+            return 640;
+      default:
+         return 2;        
+   }
+}
+/************************************************************************
+ *
+ * @brief Converts actual value of long drx Cycle length to enum value
+ *
+ * @details
+ *
+ *    Function : convertLongDrxCycleLengthValueToEnum
+ *
+ *    Functionality: As per Spec 38.331,
+ *         Converts actual value of long drx Cycle length to enum value    
+ *
+ * @params[in] uint16_t longDRXCycleLength
+ * @return enum value of long drx cycle
+ *
+ * **********************************************************************/
+enum DRX_ConfigRrc__drx_LongCycleStartOffset_PR convertLongDrxCycleLengthValueToEnum(uint16_t longDrxCycleLength)
+{
+   switch(longDrxCycleLength)
+   {
+      case 10:
+         return DRX_ConfigRrc__drx_LongCycleStartOffset_PR_ms10;
+      case 20:
+         return DRX_ConfigRrc__drx_LongCycleStartOffset_PR_ms20;
+      case 32:
+         return DRX_ConfigRrc__drx_LongCycleStartOffset_PR_ms32;
+      case 40:
+         return DRX_ConfigRrc__drx_LongCycleStartOffset_PR_ms40;
+      case 60:
+         return DRX_ConfigRrc__drx_LongCycleStartOffset_PR_ms60;
+      case 64:
+         return DRX_ConfigRrc__drx_LongCycleStartOffset_PR_ms64;
+      case 70:
+         return DRX_ConfigRrc__drx_LongCycleStartOffset_PR_ms70;
+      case 80:
+         return DRX_ConfigRrc__drx_LongCycleStartOffset_PR_ms80;
+      case 128:
+         return DRX_ConfigRrc__drx_LongCycleStartOffset_PR_ms128;
+      case 160:
+         return DRX_ConfigRrc__drx_LongCycleStartOffset_PR_ms160;
+      case 256:
+         return DRX_ConfigRrc__drx_LongCycleStartOffset_PR_ms256;
+      case 320:
+         return DRX_ConfigRrc__drx_LongCycleStartOffset_PR_ms320;
+      case 512:
+         return DRX_ConfigRrc__drx_LongCycleStartOffset_PR_ms512;
+      case 640:
+         return DRX_ConfigRrc__drx_LongCycleStartOffset_PR_ms640;
+      case 1024:
+         return DRX_ConfigRrc__drx_LongCycleStartOffset_PR_ms1024;
+      case 1280:
+         return DRX_ConfigRrc__drx_LongCycleStartOffset_PR_ms1280;
+      case 2048:
+         return DRX_ConfigRrc__drx_LongCycleStartOffset_PR_ms2048;
+      case 2560:
+         return DRX_ConfigRrc__drx_LongCycleStartOffset_PR_ms2560;
+      case 5120:
+         return DRX_ConfigRrc__drx_LongCycleStartOffset_PR_ms5120;
+      case 10240:
+         return DRX_ConfigRrc__drx_LongCycleStartOffset_PR_ms10240;
+      default:
+         return DRX_ConfigRrc__drx_LongCycleStartOffset_PR_ms20;
+   }
+}
+/************************************************************************
+ *
+ * @brief Converts actual value of Short drx Cycle length to enum value
+ *
+ * @details
+ *
+ *    Function : convertShortDrxCycleLengthValueToEnum
+ *
+ *    Functionality: As per Spec 38.331,
+ *         Converts actual value of Short drx Cycle length to enum value    
+ *
+ * @params[in] uint16_t shortDRXCycleLength
+ * @return enum value of short drx cycle
+ *
+ * **********************************************************************/
+e_DRX_ConfigRrc__shortDRX__drx_ShortCycle convertShortDrxCycleLengthValueToEnum(uint16_t shortDrxCycleLength)
+{
+   switch(shortDrxCycleLength)
+   {
+      case 2:
+         return DRX_ConfigRrc__shortDRX__drx_ShortCycle_ms2;
+      case 3:
+         return DRX_ConfigRrc__shortDRX__drx_ShortCycle_ms3;
+      case 4:
+         return DRX_ConfigRrc__shortDRX__drx_ShortCycle_ms4;
+      case 5:
+         return DRX_ConfigRrc__shortDRX__drx_ShortCycle_ms5;
+      case 6:
+         return DRX_ConfigRrc__shortDRX__drx_ShortCycle_ms6;
+      case 7:
+         return DRX_ConfigRrc__shortDRX__drx_ShortCycle_ms7;
+      case 8:
+         return DRX_ConfigRrc__shortDRX__drx_ShortCycle_ms8;
+      case 10:
+         return DRX_ConfigRrc__shortDRX__drx_ShortCycle_ms10;
+      case 14:
+         return DRX_ConfigRrc__shortDRX__drx_ShortCycle_ms14;
+      case 16:
+         return DRX_ConfigRrc__shortDRX__drx_ShortCycle_ms16;
+      case 20:
+         return DRX_ConfigRrc__shortDRX__drx_ShortCycle_ms20;
+      case 30:
+         return DRX_ConfigRrc__shortDRX__drx_ShortCycle_ms30;
+      case 32:
+         return DRX_ConfigRrc__shortDRX__drx_ShortCycle_ms32;
+      case 35:
+         return DRX_ConfigRrc__shortDRX__drx_ShortCycle_ms35;
+      case 40:
+         return DRX_ConfigRrc__shortDRX__drx_ShortCycle_ms40;
+      case 64:
+         return DRX_ConfigRrc__shortDRX__drx_ShortCycle_ms64;
+      case 80:
+         return DRX_ConfigRrc__shortDRX__drx_ShortCycle_ms80;
+      case 128:
+         return DRX_ConfigRrc__shortDRX__drx_ShortCycle_ms128;
+      case 160:
+         return DRX_ConfigRrc__shortDRX__drx_ShortCycle_ms160;
+      case 256:
+         return DRX_ConfigRrc__shortDRX__drx_ShortCycle_ms256;
+      case 320:
+         return DRX_ConfigRrc__shortDRX__drx_ShortCycle_ms320;
+      case 512:
+         return DRX_ConfigRrc__shortDRX__drx_ShortCycle_ms512;
+      case 640:
+         return DRX_ConfigRrc__shortDRX__drx_ShortCycle_ms640;
+      default:
+         return DRX_ConfigRrc__shortDRX__drx_ShortCycle_ms2;
+   }
+}
+/************************************************************************
+ *
+ * @brief Converts actual value of ondurationTime length to enum value
+ *
+ * @details
+ *
+ *    Function : convertOnDurationTimerMilliSecondsValueToEnum 
+ *
+ *    Functionality: As per Spec 38.331,
+ *         Converts actual value of ondurationTime to enum value    
+ *
+ * @params[in] uint16_t ondurationTime
+ * @return enum value of onDurationTimer in milliSeconds 
+ *
+ * **********************************************************************/
+e_DRX_ConfigRrc__drx_onDurationTimer__milliSeconds convertOnDurationTimerMilliSecondsValueToEnum(uint16_t ondurationTime)
+{
+   switch(ondurationTime)
+   {
+      case 1:
+         return DRX_ConfigRrc__drx_onDurationTimer__milliSeconds_ms1;
+      case 2: 
+         return DRX_ConfigRrc__drx_onDurationTimer__milliSeconds_ms2;
+      case 3:                                                    
+         return DRX_ConfigRrc__drx_onDurationTimer__milliSeconds_ms3;
+      case 4:                                                    
+         return DRX_ConfigRrc__drx_onDurationTimer__milliSeconds_ms4;
+      case 5:                                                    
+         return DRX_ConfigRrc__drx_onDurationTimer__milliSeconds_ms5;
+      case 6:                                                    
+         return DRX_ConfigRrc__drx_onDurationTimer__milliSeconds_ms6;
+      case 8:                                                    
+         return DRX_ConfigRrc__drx_onDurationTimer__milliSeconds_ms8;
+      case 10:                                                    
+         return DRX_ConfigRrc__drx_onDurationTimer__milliSeconds_ms10;
+      case 20: 
+         return DRX_ConfigRrc__drx_onDurationTimer__milliSeconds_ms20;
+      case 30: 
+         return DRX_ConfigRrc__drx_onDurationTimer__milliSeconds_ms30;
+      case 40: 
+         return DRX_ConfigRrc__drx_onDurationTimer__milliSeconds_ms40;
+      case 50: 
+         return DRX_ConfigRrc__drx_onDurationTimer__milliSeconds_ms50;
+      case 60: 
+         return DRX_ConfigRrc__drx_onDurationTimer__milliSeconds_ms60;
+      case 80: 
+         return DRX_ConfigRrc__drx_onDurationTimer__milliSeconds_ms80;
+      case 100: 
+         return DRX_ConfigRrc__drx_onDurationTimer__milliSeconds_ms100;
+      case 200: 
+         return DRX_ConfigRrc__drx_onDurationTimer__milliSeconds_ms200;
+      case 300: 
+         return DRX_ConfigRrc__drx_onDurationTimer__milliSeconds_ms300;
+      case 400: 
+         return DRX_ConfigRrc__drx_onDurationTimer__milliSeconds_ms400;
+      case 500: 
+         return DRX_ConfigRrc__drx_onDurationTimer__milliSeconds_ms500;
+      case 600: 
+         return DRX_ConfigRrc__drx_onDurationTimer__milliSeconds_ms600;
+      case 800: 
+         return DRX_ConfigRrc__drx_onDurationTimer__milliSeconds_ms800;
+      case 1000: 
+         return DRX_ConfigRrc__drx_onDurationTimer__milliSeconds_ms1000;
+      case 1200: 
+         return DRX_ConfigRrc__drx_onDurationTimer__milliSeconds_ms1200;
+      case 1600: 
+         return DRX_ConfigRrc__drx_onDurationTimer__milliSeconds_ms1600;
+      default:
+         return DRX_ConfigRrc__drx_onDurationTimer__milliSeconds_ms1;
+   }
+}
+
+/************************************************************************
+ *
+ * @brief Converts enum value of ondurationTime length to actual value
+ *
+ * @details
+ *
+ *    Function : convertOnDurationTimerMilliSecondsEnumToValue
+ *
+ *    Functionality: As per Spec 38.331,
+ *         Converts enum value of ondurationTime to actual value
+ *
+ * @params[in] e_DRX_ConfigRrc__drx_onDurationTimer__milliSeconds ondurationTime
+ * @return actual value of onDurationTimer in milliSeconds
+ *
+ * **********************************************************************/
+uint16_t convertOnDurationTimerMilliSecondsEnumToValue(e_DRX_ConfigRrc__drx_onDurationTimer__milliSeconds ondurationTime)
+{
+   switch(ondurationTime)
+   {
+      case DRX_ConfigRrc__drx_onDurationTimer__milliSeconds_ms1:
+         return 1;
+      case DRX_ConfigRrc__drx_onDurationTimer__milliSeconds_ms2:
+         return 2;
+      case DRX_ConfigRrc__drx_onDurationTimer__milliSeconds_ms3:
+         return 3;
+      case DRX_ConfigRrc__drx_onDurationTimer__milliSeconds_ms4:
+         return 4;
+      case DRX_ConfigRrc__drx_onDurationTimer__milliSeconds_ms5:
+         return 5;
+      case DRX_ConfigRrc__drx_onDurationTimer__milliSeconds_ms6:
+         return 6;
+      case DRX_ConfigRrc__drx_onDurationTimer__milliSeconds_ms8:
+         return 8;
+      case DRX_ConfigRrc__drx_onDurationTimer__milliSeconds_ms10:
+         return 10;
+      case DRX_ConfigRrc__drx_onDurationTimer__milliSeconds_ms20:
+         return 20;
+      case DRX_ConfigRrc__drx_onDurationTimer__milliSeconds_ms30:
+         return 30;
+      case DRX_ConfigRrc__drx_onDurationTimer__milliSeconds_ms40:
+         return 40;
+      case DRX_ConfigRrc__drx_onDurationTimer__milliSeconds_ms50:
+         return 50;
+      case DRX_ConfigRrc__drx_onDurationTimer__milliSeconds_ms60:
+         return 60;
+      case DRX_ConfigRrc__drx_onDurationTimer__milliSeconds_ms80:
+         return 80;
+      case DRX_ConfigRrc__drx_onDurationTimer__milliSeconds_ms100:
+         return 100;
+      case DRX_ConfigRrc__drx_onDurationTimer__milliSeconds_ms200:
+         return 200;
+      case DRX_ConfigRrc__drx_onDurationTimer__milliSeconds_ms300:
+         return 300;
+      case DRX_ConfigRrc__drx_onDurationTimer__milliSeconds_ms400:
+         return 400;
+      case DRX_ConfigRrc__drx_onDurationTimer__milliSeconds_ms500:
+         return 500;
+      case DRX_ConfigRrc__drx_onDurationTimer__milliSeconds_ms600:
+         return 600;
+      case DRX_ConfigRrc__drx_onDurationTimer__milliSeconds_ms800:
+         return 800;
+      case DRX_ConfigRrc__drx_onDurationTimer__milliSeconds_ms1000:
+         return 1000;
+      case DRX_ConfigRrc__drx_onDurationTimer__milliSeconds_ms1200:
+         return 1200; 
+      case DRX_ConfigRrc__drx_onDurationTimer__milliSeconds_ms1600:
+         return 1600;
+      default:
+         return 1;
+   }
+}
+
+/************************************************************************
+ *
+ * @brief Converts actual value of drx RetransmissionTimerUL to enum value
+ *
+ * @details
+ *
+ *    Function : convertDrxRetransmissionTimerUlValueToEnum 
+ *
+ *    Functionality: As per Spec 38.331,
+ *         Converts actual value  drx RetransmissionTimerUL to enum value    
+ *
+ * @params[in] uint16_t retransmissionTimerUL
+ * @return enum value of drx RetransmissionTimerUL
+ *
+ * **********************************************************************/
+e_DRX_ConfigRrc__drx_RetransmissionTimerUL convertDrxRetransmissionTimerUlValueToEnum(uint16_t retransmissionTimerUL)
+{
+   switch(retransmissionTimerUL)
+   {
+      case 0: 
+         return DRX_ConfigRrc__drx_RetransmissionTimerUL_sl0;
+      case 1:
+         return DRX_ConfigRrc__drx_RetransmissionTimerUL_sl1;
+      case 2:
+         return DRX_ConfigRrc__drx_RetransmissionTimerUL_sl2;
+      case 4:
+         return DRX_ConfigRrc__drx_RetransmissionTimerUL_sl4;
+      case 6:
+         return DRX_ConfigRrc__drx_RetransmissionTimerUL_sl6;
+      case 8:
+         return DRX_ConfigRrc__drx_RetransmissionTimerUL_sl8;
+      case 16:
+         return DRX_ConfigRrc__drx_RetransmissionTimerUL_sl16;
+      case 24:
+         return DRX_ConfigRrc__drx_RetransmissionTimerUL_sl24;
+      case 33:
+         return DRX_ConfigRrc__drx_RetransmissionTimerUL_sl33;
+      case 40:
+         return DRX_ConfigRrc__drx_RetransmissionTimerUL_sl40;
+      case 64:
+         return DRX_ConfigRrc__drx_RetransmissionTimerUL_sl64;
+      case 80:
+         return DRX_ConfigRrc__drx_RetransmissionTimerUL_sl80;
+      case 96:
+         return DRX_ConfigRrc__drx_RetransmissionTimerUL_sl96;
+      case 112:
+         return DRX_ConfigRrc__drx_RetransmissionTimerUL_sl112;
+      case 128:
+         return DRX_ConfigRrc__drx_RetransmissionTimerUL_sl128;
+      case 160:
+         return DRX_ConfigRrc__drx_RetransmissionTimerUL_sl160;
+      case 320:
+         return DRX_ConfigRrc__drx_RetransmissionTimerUL_sl320;
+      default:
+         return DRX_ConfigRrc__drx_RetransmissionTimerUL_sl4;
+   }
+}
+
+/************************************************************************
+ *
+ * @brief Converts enum value of drx RetransmissionTimerUL to actual value
+ *
+ * @details
+ *
+ *    Function : convertDrxRetransmissionTimerUlEnumToValue
+ *
+ *    Functionality: As per Spec 38.331,
+ *         Converts enum value drx RetransmissionTimerUL to actual value
+ *
+ * @params[in] e_DRX_ConfigRrc__drx_RetransmissionTimerUL retransmissionTimerUL
+ * @return actual value of drx RetransmissionTimerUL
+ *
+ * **********************************************************************/
+uint16_t convertDrxRetransmissionTimerUlEnumToValue(e_DRX_ConfigRrc__drx_RetransmissionTimerUL retransmissionTimerUL)
+{
+   switch(retransmissionTimerUL)
+   {
+
+      case DRX_ConfigRrc__drx_RetransmissionTimerUL_sl0:
+         return 0;
+      case DRX_ConfigRrc__drx_RetransmissionTimerUL_sl1:
+         return 1;
+      case DRX_ConfigRrc__drx_RetransmissionTimerUL_sl2:
+         return 2;
+      case DRX_ConfigRrc__drx_RetransmissionTimerUL_sl4:
+         return 4;
+      case DRX_ConfigRrc__drx_RetransmissionTimerUL_sl6:
+         return 6;
+      case DRX_ConfigRrc__drx_RetransmissionTimerUL_sl8:
+         return 8;
+      case DRX_ConfigRrc__drx_RetransmissionTimerUL_sl16:
+         return 16;
+      case DRX_ConfigRrc__drx_RetransmissionTimerUL_sl24:
+         return 24;
+      case DRX_ConfigRrc__drx_RetransmissionTimerUL_sl33:
+         return 33;
+      case DRX_ConfigRrc__drx_RetransmissionTimerUL_sl40:
+         return 40;
+      case DRX_ConfigRrc__drx_RetransmissionTimerUL_sl64:
+         return 64;
+      case DRX_ConfigRrc__drx_RetransmissionTimerUL_sl80:
+         return 80;
+      case DRX_ConfigRrc__drx_RetransmissionTimerUL_sl96:
+         return 96;
+      case DRX_ConfigRrc__drx_RetransmissionTimerUL_sl112:
+         return 112;
+      case DRX_ConfigRrc__drx_RetransmissionTimerUL_sl128:
+         return 128;
+      case DRX_ConfigRrc__drx_RetransmissionTimerUL_sl160:
+         return 160;
+      case DRX_ConfigRrc__drx_RetransmissionTimerUL_sl320:
+         return 320;
+      default:
+         return 4;
+   }
+}
+
+/************************************************************************
+ *
+ * @brief Converts actual value of drx RetransmissionTimerDL to enum value
+ *
+ * @details
+ *
+ *    Function : convertDrxRetransmissionTimerDlValueToEnum 
+ *
+ *    Functionality: As per Spec 38.331,
+ *         Converts actual value drx RetransmissionTimerDL to enum value    
+ *
+ * @params[in] uint16_t retransmissionTimerDL
+ * @return enum value of drx RetransmissionTimerDL
+ *
+ * **********************************************************************/
+e_DRX_ConfigRrc__drx_RetransmissionTimerDL convertDrxRetransmissionTimerDlValueToEnum(uint16_t retransmissionTimerDL)
+{
+   switch(retransmissionTimerDL)
+   {
+      case 0: 
+         return DRX_ConfigRrc__drx_RetransmissionTimerDL_sl0;
+      case 1:
+         return DRX_ConfigRrc__drx_RetransmissionTimerDL_sl1;
+      case 2:
+         return DRX_ConfigRrc__drx_RetransmissionTimerDL_sl2;
+      case 4:
+         return DRX_ConfigRrc__drx_RetransmissionTimerDL_sl4;
+      case 6:
+         return DRX_ConfigRrc__drx_RetransmissionTimerDL_sl6;
+      case 8:
+         return DRX_ConfigRrc__drx_RetransmissionTimerDL_sl8;
+      case 16:
+         return DRX_ConfigRrc__drx_RetransmissionTimerDL_sl16;
+      case 24:
+         return DRX_ConfigRrc__drx_RetransmissionTimerDL_sl24;
+      case 33:
+         return DRX_ConfigRrc__drx_RetransmissionTimerDL_sl33;
+      case 40:
+         return DRX_ConfigRrc__drx_RetransmissionTimerDL_sl40;
+      case 64:
+         return DRX_ConfigRrc__drx_RetransmissionTimerDL_sl64;
+      case 80:
+         return DRX_ConfigRrc__drx_RetransmissionTimerDL_sl80;
+      case 96:
+         return DRX_ConfigRrc__drx_RetransmissionTimerDL_sl96;
+      case 112:
+         return DRX_ConfigRrc__drx_RetransmissionTimerDL_sl112;
+      case 128:
+         return DRX_ConfigRrc__drx_RetransmissionTimerDL_sl128;
+      case 160:
+         return DRX_ConfigRrc__drx_RetransmissionTimerDL_sl160;
+      case 320:
+         return DRX_ConfigRrc__drx_RetransmissionTimerDL_sl320;
+      default:
+         return DRX_ConfigRrc__drx_RetransmissionTimerDL_sl4;
+   }
+}
+/************************************************************************
+ *
+ * @brief Converts enum value of drx RetransmissionTimerDL to actual value
+ *
+ * @details
+ *
+ *    Function : convertDrxRetransmissionTimerDlEnumToValue
+ *
+ *    Functionality: As per Spec 38.331,
+ *         Converts enum value drx RetransmissionTimerDL to actual value
+ *
+ * @params[in] e_DRX_ConfigRrc__drx_RetransmissionTimerDL retransmissionTimerDL
+ * @return actual value of drx RetransmissionTimerDL
+ *
+ * **********************************************************************/
+uint16_t convertDrxRetransmissionTimerDlEnumToValue(e_DRX_ConfigRrc__drx_RetransmissionTimerDL retransmissionTimerDL)
+{
+   switch(retransmissionTimerDL)
+   {
+
+      case DRX_ConfigRrc__drx_RetransmissionTimerDL_sl0:
+         return 0;
+      case DRX_ConfigRrc__drx_RetransmissionTimerDL_sl1:
+         return 1;
+      case DRX_ConfigRrc__drx_RetransmissionTimerDL_sl2:
+         return 2;
+      case DRX_ConfigRrc__drx_RetransmissionTimerDL_sl4:
+         return 4;
+      case DRX_ConfigRrc__drx_RetransmissionTimerDL_sl6:
+         return 6;
+      case DRX_ConfigRrc__drx_RetransmissionTimerDL_sl8:
+         return 8;
+      case DRX_ConfigRrc__drx_RetransmissionTimerDL_sl16:
+         return 16;
+      case DRX_ConfigRrc__drx_RetransmissionTimerDL_sl24:
+         return 24;
+      case DRX_ConfigRrc__drx_RetransmissionTimerDL_sl33:
+         return 33;
+      case DRX_ConfigRrc__drx_RetransmissionTimerDL_sl40:
+         return 40;
+      case DRX_ConfigRrc__drx_RetransmissionTimerDL_sl64:
+         return 64;
+      case DRX_ConfigRrc__drx_RetransmissionTimerDL_sl80:
+         return 80;
+      case DRX_ConfigRrc__drx_RetransmissionTimerDL_sl96:
+         return 96;
+      case DRX_ConfigRrc__drx_RetransmissionTimerDL_sl112:
+         return 112;
+      case DRX_ConfigRrc__drx_RetransmissionTimerDL_sl128:
+         return 128;
+      case DRX_ConfigRrc__drx_RetransmissionTimerDL_sl160:
+         return 160;
+      case DRX_ConfigRrc__drx_RetransmissionTimerDL_sl320:
+         return 320;
+      default:
+         return 4;
+   }
+}
+
+/************************************************************************
+ *
+ * @brief Converts actual value of drx inactivityTimer to enum value
+ *
+ * @details
+ *
+ *    Function : convertDrxInactivityTimerValueToEnum 
+ *
+ *    Functionality: As per Spec 38.331,
+ *         Converts actual value drx inactivityTimer to enum value    
+ *
+ * @params[in] uint16_tinactivityTimer  
+ * @return enum value of drxinactivityTimer 
+ *
+ * **********************************************************************/
+e_DRX_ConfigRrc__drx_InactivityTimer convertDrxInactivityTimerValueToEnum(uint16_t inactivityTimer)
+{
+   switch(inactivityTimer)
+   {
+      case 0: 
+         return DRX_ConfigRrc__drx_InactivityTimer_ms0;
+      case 1: 
+         return DRX_ConfigRrc__drx_InactivityTimer_ms1;
+      case 2: 
+         return DRX_ConfigRrc__drx_InactivityTimer_ms2;
+      case 3: 
+         return DRX_ConfigRrc__drx_InactivityTimer_ms3;
+      case 4: 
+         return DRX_ConfigRrc__drx_InactivityTimer_ms4;
+      case 5: 
+         return DRX_ConfigRrc__drx_InactivityTimer_ms5;
+      case 6: 
+         return DRX_ConfigRrc__drx_InactivityTimer_ms6;
+      case 8: 
+         return DRX_ConfigRrc__drx_InactivityTimer_ms8;
+      case 10: 
+         return DRX_ConfigRrc__drx_InactivityTimer_ms10;
+      case 20:
+         return DRX_ConfigRrc__drx_InactivityTimer_ms20;
+      case 30:
+         return DRX_ConfigRrc__drx_InactivityTimer_ms30;
+      case 40: 
+         return DRX_ConfigRrc__drx_InactivityTimer_ms40;
+      case 50: 
+         return DRX_ConfigRrc__drx_InactivityTimer_ms50;
+      case 60: 
+         return DRX_ConfigRrc__drx_InactivityTimer_ms60;
+      case 80: 
+         return DRX_ConfigRrc__drx_InactivityTimer_ms80;
+      case 100: 
+         return DRX_ConfigRrc__drx_InactivityTimer_ms100;
+      case 200: 
+         return DRX_ConfigRrc__drx_InactivityTimer_ms200;
+      case 300: 
+         return DRX_ConfigRrc__drx_InactivityTimer_ms300;
+      case 500: 
+         return DRX_ConfigRrc__drx_InactivityTimer_ms500;
+      case 750: 
+         return DRX_ConfigRrc__drx_InactivityTimer_ms750;
+      case 1280: 
+         return DRX_ConfigRrc__drx_InactivityTimer_ms1280;
+      case 1920: 
+         return DRX_ConfigRrc__drx_InactivityTimer_ms1920;
+      case 2560: 
+         return DRX_ConfigRrc__drx_InactivityTimer_ms2560;
+      default:
+         return DRX_ConfigRrc__drx_InactivityTimer_ms1;
+   }
+}
+/************************************************************************
+ *
+ * @brief Converts enum value of drx inactivityTimer to actual value
+ *
+ * @details
+ *
+ *    Function : convertDrxInactivityTimerEnumToValue
+ *
+ *    Functionality: As per Spec 38.331,
+ *         Converts enum value drx inactivityTimer to actual value
+ *
+ * @params[in] e_DRX_ConfigRrc__drx_InactivityTimer inactivityTimer
+ * @return value of drxinactivityTimer
+ *
+ * **********************************************************************/
+uint16_t convertDrxInactivityTimerEnumToValue(e_DRX_ConfigRrc__drx_InactivityTimer inactivityTimer)
+{
+   switch(inactivityTimer)
+   {
+      case DRX_ConfigRrc__drx_InactivityTimer_ms0:
+         return 0;
+      case DRX_ConfigRrc__drx_InactivityTimer_ms1: 
+         return 1;
+      case DRX_ConfigRrc__drx_InactivityTimer_ms2:
+         return 2;
+      case DRX_ConfigRrc__drx_InactivityTimer_ms3:
+         return 3;
+      case DRX_ConfigRrc__drx_InactivityTimer_ms4:
+         return 4;
+      case DRX_ConfigRrc__drx_InactivityTimer_ms5:
+         return 5;
+      case DRX_ConfigRrc__drx_InactivityTimer_ms6:
+         return 6;
+      case DRX_ConfigRrc__drx_InactivityTimer_ms8:
+         return 8;
+      case DRX_ConfigRrc__drx_InactivityTimer_ms10:
+         return 10;
+      case DRX_ConfigRrc__drx_InactivityTimer_ms20:
+         return 20;
+      case DRX_ConfigRrc__drx_InactivityTimer_ms30:
+         return 30;
+      case DRX_ConfigRrc__drx_InactivityTimer_ms40:
+         return 40;
+      case DRX_ConfigRrc__drx_InactivityTimer_ms50:
+         return 50;
+      case DRX_ConfigRrc__drx_InactivityTimer_ms60:
+         return 60;
+      case DRX_ConfigRrc__drx_InactivityTimer_ms80:
+         return 80;
+      case DRX_ConfigRrc__drx_InactivityTimer_ms100:
+         return 100;
+      case DRX_ConfigRrc__drx_InactivityTimer_ms200:
+         return 200;
+      case DRX_ConfigRrc__drx_InactivityTimer_ms300:
+         return 300;
+      case DRX_ConfigRrc__drx_InactivityTimer_ms500:
+         return 500;
+      case DRX_ConfigRrc__drx_InactivityTimer_ms750:
+         return 750;
+      case DRX_ConfigRrc__drx_InactivityTimer_ms1280:
+         return 1280;
+      case DRX_ConfigRrc__drx_InactivityTimer_ms1920:
+         return 1920;
+      case DRX_ConfigRrc__drx_InactivityTimer_ms2560:
+         return 2560;
+      default:
+         return 1;
+   }
+}
+
 /**********************************************************************
   End of file
  **********************************************************************/

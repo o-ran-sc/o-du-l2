@@ -91,23 +91,6 @@
 
 #define PAGING_SCHED_DELTA  4
 
-#ifdef NR_DRX
-/* Macros for Drx configuration */
-#define DRX_ONDURATION_TIMER_VALUE_PRESENT_IN_MS true
-#define DRX_ONDURATION_TIMER_VALUE_IN_SUBMS 32
-#define DRX_ONDURATION_TIMER_VALUE_IN_MS 1
-#define DRX_INACTIVITY_TIMER 2
-#define DRX_HARQ_RTT_TIMER_DL 56
-#define DRX_HARQ_RTT_TIMER_UL 56
-#define DRX_RETRANSMISSION_TIMER_DL 4
-#define DRX_RETRANSMISSION_TIMER_UL 4
-#define DRX_LONG_CYCLE_START_OFFSET_CHOICE 20
-#define DRX_LONG_CYCLE_START_OFFSET_VAL 8
-#define DRX_SHORT_CYCLE 2
-#define DRX_SHORT_CYCLE_TIMER 2
-#define DRX_SLOT_OFFSET 0
-#endif
-
 typedef enum
 {
    MAC_DU_APP_RSP_NOK,
@@ -740,7 +723,7 @@ typedef struct shortDrx
    uint8_t    drxShortCycleTimer;
 }ShortDrx;
 
-typedef struct drxInfo
+typedef struct drxCfg
 {
    DrxOnDurationTimer       drxOnDurationTimer;   
    uint16_t                 drxInactivityTimer;
@@ -749,9 +732,10 @@ typedef struct drxInfo
    uint16_t                 drxRetransmissionTimerDl;
    uint16_t                 drxRetransmissionTimerUl;
    DrxLongCycleStartOffset  drxLongCycleStartOffset;
+   bool                     shortDrxPres;
    ShortDrx                 shortDrx;
-   uint8_t  drxSlotOffset;
-}DrxInfo;
+   uint8_t                  drxSlotOffset;
+}DrxCfg;
 #endif
 
 typedef struct macCellCfg
@@ -776,9 +760,6 @@ typedef struct macCellCfg
    uint8_t        dmrsTypeAPos;     /* DMRS Type A position */
    PlmnInfoList   plmnInfoList;     /* Consits of PlmnId and Snssai list */
    //RrmPolicy      *rrmPolicy;       /* RRM policy details */ 
-#ifdef NR_DRX
-   DrxInfo        drxInfo;           /* Drx info */
-#endif
 }MacCellCfg;
 
 typedef struct macCellCfgCfm
@@ -861,6 +842,9 @@ typedef struct macCellGrpCfg
    BsrTmrCfg   bsrTmrCfg;
    bool        phrCfgSetupPres;   /* true/false: phrCfgSetup/phrCfgRelease */
    PhrCfg      phrCfg;
+#ifdef NR_DRX
+   DrxCfg      drxCfg;
+#endif
 }MacCellGrpCfg;
 
 typedef struct phyCellGrpCfg
