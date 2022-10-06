@@ -872,11 +872,13 @@ void fillDefaultPhyCellGrpInfo(MacUeCfg *macUeCfg)
  * @return void
  *
  *****************************************************************/
-void fillDefaultMacCellGrpInfo(MacUeCfg *macUeCfg)
+void fillDefaultMacCellGrpInfo(MacUeCfg *macUeCfg, void *drxCycleInfo)
 {
    uint8_t idx;
    MacCellGrpCfg *cellGrp = NULL;
-
+#ifdef NR_DRX
+   DrxCycle *drxCycle = (DrxCycle*)drxCycleInfo;
+#endif
    if(macUeCfg)
       cellGrp = &macUeCfg->macCellGrpCfg;
 
@@ -888,12 +890,12 @@ void fillDefaultMacCellGrpInfo(MacUeCfg *macUeCfg)
       cellGrp->schReqCfg.addModListCount = 1;
       if(cellGrp->schReqCfg.addModListCount <= MAX_NUM_SR_CFG_PER_CELL_GRP)
       {
-	 for(idx = 0; idx < cellGrp->schReqCfg.addModListCount; idx++)
-	 {
-	    cellGrp->schReqCfg.addModList[idx].schedReqId    = SCH_REQ_ID;
-	    cellGrp->schReqCfg.addModList[idx].srProhibitTmr = SR_PROHIBIT_MS_32;
-	    cellGrp->schReqCfg.addModList[idx].srTransMax    = SR_TRANS_MAX_N_16;
-	 }
+         for(idx = 0; idx < cellGrp->schReqCfg.addModListCount; idx++)
+         {
+            cellGrp->schReqCfg.addModList[idx].schedReqId    = SCH_REQ_ID;
+            cellGrp->schReqCfg.addModList[idx].srProhibitTmr = SR_PROHIBIT_MS_32;
+            cellGrp->schReqCfg.addModList[idx].srTransMax    = SR_TRANS_MAX_N_16;
+         }
       }
       cellGrp->schReqCfg.relListCount = 0;
 
@@ -901,11 +903,11 @@ void fillDefaultMacCellGrpInfo(MacUeCfg *macUeCfg)
       cellGrp->tagCfg.addModListCount = 1;
       if(cellGrp->tagCfg.addModListCount <= MAC_NUM_TAGS)
       {
-	 for(idx = 0; idx < cellGrp->tagCfg.addModListCount; idx++)
-	 {
-	    cellGrp->tagCfg.addModList[idx].tagId = TAG_ID;
-	    cellGrp->tagCfg.addModList[idx].timeAlignTimer = TIME_ALIGNMENT_TIMER_INFINITY;
-	 }
+         for(idx = 0; idx < cellGrp->tagCfg.addModListCount; idx++)
+         {
+            cellGrp->tagCfg.addModList[idx].tagId = TAG_ID;
+            cellGrp->tagCfg.addModList[idx].timeAlignTimer = TIME_ALIGNMENT_TIMER_INFINITY;
+         }
       }
       cellGrp->tagCfg.relListCount = 0;
 
@@ -923,6 +925,43 @@ void fillDefaultMacCellGrpInfo(MacUeCfg *macUeCfg)
       cellGrp->phrCfg.dummy         = false;
       cellGrp->phrCfg.phrType2OtherCell = false;
       cellGrp->phrCfg.phrOtherCG = PHR_MODE_OTHER_CG_REAL;  
+
+      /* Filling Drx Config */
+#ifdef NR_DRX
+      cellGrp->drxCfg.drxOnDurationTimer.onDurationTimerValInMs = DRX_ONDURATION_TIMER_VALUE_PRESENT_IN_MS;
+      if(!cellGrp->drxCfg.drxOnDurationTimer.onDurationTimerValInMs)
+         cellGrp->drxCfg.drxOnDurationTimer.onDurationtimerValue.subMilliSeconds = \
+                                                                                   DRX_ONDURATION_TIMER_VALUE_IN_SUBMS;
+      else
+         cellGrp->drxCfg.drxOnDurationTimer.onDurationtimerValue.milliSeconds = \
+                                                                                DRX_ONDURATION_TIMER_VALUE_IN_MS;
+      cellGrp->drxCfg.drxInactivityTimer = DRX_INACTIVITY_TIMER;
+      cellGrp->drxCfg.drxHarqRttTimerDl = DRX_HARQ_RTT_TIMER_DL;
+      cellGrp->drxCfg.drxHarqRttTimerUl = DRX_HARQ_RTT_TIMER_UL;
+      cellGrp->drxCfg.drxRetransmissionTimerDl = DRX_RETRANSMISSION_TIMER_DL;
+      cellGrp->drxCfg.drxRetransmissionTimerUl = DRX_RETRANSMISSION_TIMER_UL;
+      cellGrp->drxCfg.drxLongCycleStartOffset.drxLongCycleStartOffsetVal = DRX_LONG_CYCLE_START_OFFSET_VAL;
+      if(!drxCycle)
+      {
+         cellGrp->drxCfg.drxLongCycleStartOffset.drxLongCycleStartOffsetChoice = DRX_LONG_CYCLE_START_OFFSET_CHOICE;
+         cellGrp->drxCfg.shortDrxPres = DRX_SHORT_CYCLE_PRESENT;
+         cellGrp->drxCfg.shortDrx.drxShortCycle = DRX_SHORT_CYCLE;
+         cellGrp->drxCfg.shortDrx.drxShortCycleTimer = DRX_SHORT_CYCLE_TIMER;
+      }
+      else
+      {
+         cellGrp->drxCfg.drxLongCycleStartOffset.drxLongCycleStartOffsetChoice = drxCycle->drxLongCycleLength;
+         if(drxCycle->shortDrxCyclePres)
+         {
+            cellGrp->drxCfg.shortDrxPres = true;
+            cellGrp->drxCfg.shortDrx.drxShortCycle = drxCycle->shortDrxCycle.drxShortCycle;
+            cellGrp->drxCfg.shortDrx.drxShortCycleTimer = drxCycle->shortDrxCycle.drxShortCycleTimer;
+         }
+         else
+            cellGrp->drxCfg.shortDrxPres = false;
+      }
+      cellGrp->drxCfg.drxSlotOffset = DRX_SLOT_OFFSET;
+#endif
 
    }
    else
@@ -1189,7 +1228,7 @@ uint8_t fillMacUeCfg(uint16_t cellId, uint8_t gnbDuUef1apId, uint16_t crnti, DuU
 
    if(!ueCfgDb)
    {
-      fillDefaultMacCellGrpInfo(macUeCfg);
+      fillDefaultMacCellGrpInfo(macUeCfg, NULLP);
       fillDefaultPhyCellGrpInfo(macUeCfg);
 
       if((fillDefaultSpCellGrpInfo(macUeCfg)) != ROK)
@@ -1250,7 +1289,11 @@ uint8_t fillMacUeCfg(uint16_t cellId, uint8_t gnbDuUef1apId, uint16_t crnti, DuU
       }
       else
       {
-         fillDefaultMacCellGrpInfo(macUeCfg);
+#ifdef NR_DRX
+         fillDefaultMacCellGrpInfo(macUeCfg, &ueCfgDb->drxCycle);
+#else
+         fillDefaultMacCellGrpInfo(macUeCfg, NULLP);
+#endif
          fillDefaultPhyCellGrpInfo(macUeCfg);
          fillDefaultSpCellGrpInfo(macUeCfg);
          fillDefaultModulation(macUeCfg);
@@ -1970,6 +2013,9 @@ uint8_t duUpdateMacCfg(MacUeCfg *macUeCfg, F1UeContextSetupDb *f1UeDb)
 
    /*Filling Cell Group Cfg*/
    ret =  procUeReCfgCellInfo(macUeCfg, &f1UeDb->duUeCfg.copyOfmacUeCfg, f1UeDb->duUeCfg.cellGrpCfg);
+#ifdef NR_DRX
+   memcpy(&macUeCfg->macCellGrpCfg.drxCfg, &f1UeDb->duUeCfg.copyOfmacUeCfg.macCellGrpCfg.drxCfg, sizeof(DrxCfg));
+#endif
    if(ret == ROK)
    {
       if(macUeCfg->spCellCfg.servCellCfg.initDlBwp.pdschPresent)

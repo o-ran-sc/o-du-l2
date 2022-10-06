@@ -136,6 +136,32 @@ uint8_t fillMacCellGroupCfg(MacCellGrpCfg macCellGrp, SchMacCellGrpCfg  *macCell
       macCellGrpCfg->phrCfg.modeOtherCG = macCellGrp.phrCfg.phrOtherCG;
    }
 
+#ifdef NR_DRX
+   /* Copy Drx configuration */
+
+   macCellGrpCfg->drxCfg.drxOnDurationTimer.onDurationTimerValInMs = macCellGrp.drxCfg.drxOnDurationTimer.onDurationTimerValInMs;
+   if(!macCellGrp.drxCfg.drxOnDurationTimer.onDurationTimerValInMs)
+      macCellGrpCfg->drxCfg.drxOnDurationTimer.onDurationtimerValue.subMilliSeconds = \
+      macCellGrp.drxCfg.drxOnDurationTimer.onDurationtimerValue.subMilliSeconds;
+   else
+      macCellGrpCfg->drxCfg.drxOnDurationTimer.onDurationtimerValue.milliSeconds = \
+      macCellGrp.drxCfg.drxOnDurationTimer.onDurationtimerValue.milliSeconds;
+   macCellGrpCfg->drxCfg.drxInactivityTimer = macCellGrp.drxCfg.drxInactivityTimer;
+   macCellGrpCfg->drxCfg.drxHarqRttTimerDl = macCellGrp.drxCfg.drxHarqRttTimerDl;
+   macCellGrpCfg->drxCfg.drxHarqRttTimerUl = macCellGrp.drxCfg.drxHarqRttTimerUl;
+   macCellGrpCfg->drxCfg.drxRetransmissionTimerDl = macCellGrp.drxCfg.drxRetransmissionTimerDl;
+   macCellGrpCfg->drxCfg.drxRetransmissionTimerUl = macCellGrp.drxCfg.drxRetransmissionTimerUl;
+   macCellGrpCfg->drxCfg.drxLongCycleStartOffset.drxLongCycleStartOffsetChoice = macCellGrp.drxCfg.drxLongCycleStartOffset.\
+                                                                              drxLongCycleStartOffsetChoice;
+   macCellGrpCfg->drxCfg.drxLongCycleStartOffset.drxLongCycleStartOffsetVal = macCellGrp.drxCfg.drxLongCycleStartOffset.drxLongCycleStartOffsetVal;
+   macCellGrpCfg->drxCfg.shortDrxPres = macCellGrp.drxCfg.shortDrxPres;
+   if(macCellGrpCfg->drxCfg.shortDrxPres)
+   {
+      macCellGrpCfg->drxCfg.shortDrx.drxShortCycle = macCellGrp.drxCfg.shortDrx.drxShortCycle;
+      macCellGrpCfg->drxCfg.shortDrx.drxShortCycleTimer = macCellGrp.drxCfg.shortDrx.drxShortCycleTimer;
+   }
+   macCellGrpCfg->drxCfg.drxSlotOffset = macCellGrp.drxCfg.drxSlotOffset;
+#endif
    return ROK;
 }
 

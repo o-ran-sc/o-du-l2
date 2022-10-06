@@ -1964,7 +1964,7 @@ uint8_t extractDuToCuRrcCont(CuUeCb *ueCb, OCTET_STRING_t rrcCont)
 
    if(rval.code == RC_FAIL || rval.code == RC_WMORE)
    {
-      DU_LOG("\nERROR  -->  F1AP : ASN decode failed");
+      DU_LOG("\nERROR  -->  F1AP : ASN decode failed in extractDuToCuRrcCont");
       return RFAILED;
    }
    printf("\n");
@@ -8809,7 +8809,42 @@ uint8_t fillCuToDuContainer(CuUeCb *ueCb, CUtoDURRCInformation_t *rrcMsg)
    }
    return ret;
 }
-
+/*******************************************************************
+ *
+ * @brief Build the drx cycle  
+ *
+ * @details
+ *
+ *    Function : BuildDrxCycle
+ *
+ *    Functionality: Build drx cycle IE
+ *
+ * @params[in] pointer to DRXCycle_t
+ *
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ ******************************************************************/
+uint8_t BuildDrxCycle(DRXCycle_t *drxCycle)
+{
+   drxCycle->longDRXCycleLength = LongDRXCycleLength_ms40;
+   CU_ALLOC(drxCycle->shortDRXCycleLength, sizeof(ShortDRXCycleLength_t));
+   if(!drxCycle->shortDRXCycleLength)
+   {
+      DU_LOG("\nERROR  -->  F1AP : Memory allocation failed for shortDRXCycleLength");
+      return RFAILED;
+   }
+   *(drxCycle->shortDRXCycleLength) = ShortDRXCycleLength_ms4;
+   
+   CU_ALLOC(drxCycle->shortDRXCycleTimer, sizeof(ShortDRXCycleTimer_t));
+   if(!drxCycle->shortDRXCycleTimer)
+   {
+      DU_LOG("\nERROR  -->  F1AP : Memory allocation failed for shortDRXCycleTimer");
+      return RFAILED;
+   }
+   *(drxCycle->shortDRXCycleTimer) = 4;
+   return ROK;
+}
 /*******************************************************************
  *
  * @brief Free CuToDuContainer 
@@ -8932,7 +8967,13 @@ uint8_t BuildAndSendUeContextSetupReq(uint32_t duId, CuUeCb *ueCb)
       if(ueCb->state == UE_HANDOVER_IN_PROGRESS)
          elementCnt = 7;
       else
+      {
+#ifdef NR_DRX
+         elementCnt = 12;
+#else
          elementCnt = 11;
+#endif
+      }
       ueSetReq->protocolIEs.list.count = elementCnt;
       ueSetReq->protocolIEs.list.size = elementCnt * sizeof(UEContextSetupRequestIEs_t *);
 
@@ -9022,6 +9063,18 @@ uint8_t BuildAndSendUeContextSetupReq(uint32_t duId, CuUeCb *ueCb)
 
       if(ueCb->state != UE_HANDOVER_IN_PROGRESS)
       {
+         /*Drx cycle*/
+#ifdef NR_DRX
+         idx++;
+         ueSetReq->protocolIEs.list.array[idx]->id	= ProtocolIE_ID_id_DRXCycle;
+         ueSetReq->protocolIEs.list.array[idx]->criticality	= 	Criticality_ignore;
+         ueSetReq->protocolIEs.list.array[idx]->value.present = UEContextSetupRequestIEs__value_PR_DRXCycle;
+         if(BuildDrxCycle(&ueSetReq->protocolIEs.list.array[idx]->value.choice.DRXCycle) != ROK)
+         {
+            DU_LOG("\nERROR  -->  F1AP : Failed to build drx cycle");
+            break;
+         }
+#endif         
          /*Special Cells to be SetupList*/
          idx++;
          ueSetReq->protocolIEs.list.array[idx]->id	= ProtocolIE_ID_id_SCell_ToBeSetup_List;

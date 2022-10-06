@@ -129,6 +129,15 @@ typedef struct upTnlCfg
    GtpTnlCfg *tnlCfg2; /* Tunnel 2 */
 }UpTnlCfg;
 
+#ifdef NR_DRX
+typedef struct drxCycle
+{
+   uint16_t drxLongCycleLength;
+   bool     shortDrxCyclePres;
+   ShortDrx shortDrxCycle;
+}DrxCycle;
+#endif
+
 typedef struct duUeCfg
 {
    void *cellGrpCfg;
@@ -142,7 +151,10 @@ typedef struct duUeCfg
    UpTnlCfg upTnlInfo[MAX_NUM_DRB];  /* User plane TNL Info*/
    uint8_t numDrbSetupMod;        /*No. of DRB Added during Modification*/
    MacUeCfg copyOfmacUeCfg;
-   DataTransmissionAction dataTransmissionAction; 
+   DataTransmissionAction dataTransmissionAction;
+#ifdef NR_DRX
+   DrxCycle drxCycle;
+#endif
 }DuUeCfg;
 
 typedef struct f1UeContextSetup
