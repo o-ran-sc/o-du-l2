@@ -130,6 +130,7 @@
 #include "CNUEPagingIdentity.h"
 #include "PagingCell-Item.h"
 #include "UL-DCCH-Message.h"
+#include "DRX-ConfigRrc.h"
 
 #include "cu_stub_sctp.h"
 #include "cu_stub_egtp.h"
@@ -1785,6 +1786,61 @@ uint8_t setDlRRCMsgType(CuUeCb *ueCb)
    return rrcMsgType;   
 }
 
+#ifdef NR_DRX
+/*******************************************************************
+ *
+ * @brief Extract configuration from DRX_ConfigRrc 
+ *    and store the drx configuration in UeCb
+ *
+ * @details
+ *
+ *    Function : storeDrxCfgInUeCb 
+ *
+ *    Functionality: Store drx configuration in UeCb 
+ *
+ * @params[in] (struct DRX_ConfigRrc *setup, DrxCfg *drxCfg) 
+ *
+ * @return void 
+ * ****************************************************************/
+void storeDrxCfgInUeCb(struct DRX_ConfigRrc *drxSetup, DrxCfg *drxCfg)
+{
+   if(drxSetup)
+   {
+      switch(drxSetup->drx_onDurationTimer.present)
+      {
+         case DRX_ConfigRrc__drx_onDurationTimer_PR_NOTHING:
+            break;
+         case DRX_ConfigRrc__drx_onDurationTimer_PR_milliSeconds:
+            {
+               drxCfg->drxOnDurationTimer.onDurationTimerValInMs = true;
+               drxCfg->drxOnDurationTimer.onDurationtimerValue.milliSeconds=drxSetup->drx_onDurationTimer.choice.milliSeconds;
+               break;
+            }
+         case DRX_ConfigRrc__drx_onDurationTimer_PR_subMilliSeconds:
+            {
+               drxCfg->drxOnDurationTimer.onDurationTimerValInMs = false;
+               drxCfg->drxOnDurationTimer.onDurationtimerValue.subMilliSeconds = drxSetup->drx_onDurationTimer.choice.subMilliSeconds;
+               break;
+            }
+      }
+   }
+   drxCfg->drxInactivityTimer = drxSetup->drx_InactivityTimer;
+   drxCfg->drxHarqRttTimerDl = drxSetup->drx_HARQ_RTT_TimerDL;
+   drxCfg->drxHarqRttTimerUl = drxSetup->drx_HARQ_RTT_TimerUL;
+   drxCfg->drxRetransmissionTimerDl = drxSetup->drx_RetransmissionTimerDL;
+   drxCfg->drxRetransmissionTimerDl = drxSetup->drx_RetransmissionTimerUL;
+   drxCfg->drxSlotOffset = drxSetup->drx_SlotOffset;
+   if(drxSetup->shortDRX) 
+   {
+      drxCfg->shortDrxPres=true;
+      drxCfg->shortDrx.drxShortCycle = drxSetup->shortDRX->drx_ShortCycle;
+      drxCfg->shortDrx.drxShortCycleTimer = drxSetup->shortDRX->drx_ShortCycleTimer;
+   }
+   else
+      drxCfg->shortDrxPres=false;
+}
+#endif
+
 /*******************************************************************
  *
  * @brief Extract configuration from CellGroupConfig
@@ -1814,6 +1870,9 @@ uint8_t extractCellGroupConfig(CuUeCb *ueCb, CellGroupConfigRrc_t *cellGrpCfg)
    RLC_BearerConfig_t *rlcCfg = NULLP;
    RLC_Config_t *rlcLcCfg = NULLP;
    LogicalChannelConfig_t *macLcCfg = NULLP;
+#ifdef NR_DRX
+   DrxCfg    drxCfg;
+#endif
 
    if(ueCb == NULLP)
    {
@@ -1826,6 +1885,29 @@ uint8_t extractCellGroupConfig(CuUeCb *ueCb, CellGroupConfigRrc_t *cellGrpCfg)
       DU_LOG("\nERROR  -->  F1AP: extractCellGroupConfig(): cellGrpCfg is NULL");
       return RFAILED;
    }
+
+#ifdef NR_DRX
+   if(cellGrpCfg->mac_CellGroupConfig)
+   {
+      if(cellGrpCfg->mac_CellGroupConfig->drx_ConfigRrc)
+      {
+         switch(cellGrpCfg->mac_CellGroupConfig->drx_ConfigRrc->present)
+         {
+            case MAC_CellGroupConfig__drx_ConfigRrc_PR_NOTHING:
+               break;
+
+            case MAC_CellGroupConfig__drx_ConfigRrc_PR_setup:
+            {
+               storeDrxCfgInUeCb(cellGrpCfg->mac_CellGroupConfig->drx_ConfigRrc->choice.setup, &ueCb->drxCfg);
+               break;
+            }
+
+            case MAC_CellGroupConfig__drx_ConfigRrc_PR_release:
+               break;
+         }
+      }
+   }
+#endif
 
    for(rbIdx = 0; rbIdx < cellGrpCfg->rlc_BearerToAddModList->list.count; rbIdx++)
    {
@@ -1964,7 +2046,7 @@ uint8_t extractDuToCuRrcCont(CuUeCb *ueCb, OCTET_STRING_t rrcCont)
 
    if(rval.code == RC_FAIL || rval.code == RC_WMORE)
    {
-      DU_LOG("\nERROR  -->  F1AP : ASN decode failed");
+      DU_LOG("\nERROR  -->  F1AP : ASN decode failed in extractDuToCuRrcCont");
       return RFAILED;
    }
    printf("\n");
@@ -8809,7 +8891,42 @@ uint8_t fillCuToDuContainer(CuUeCb *ueCb, CUtoDURRCInformation_t *rrcMsg)
    }
    return ret;
 }
-
+/*******************************************************************
+ *
+ * @brief Build the drx cycle  
+ *
+ * @details
+ *
+ *    Function : BuildDrxCycle
+ *
+ *    Functionality: Build drx cycle IE
+ *
+ * @params[in] pointer to DRXCycle_t
+ *
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ ******************************************************************/
+uint8_t BuildDrxCycle(DRXCycle_t *drxCycle)
+{
+   drxCycle->longDRXCycleLength = LongDRXCycleLength_ms40;
+   CU_ALLOC(drxCycle->shortDRXCycleLength, sizeof(ShortDRXCycleLength_t));
+   if(!drxCycle->shortDRXCycleLength)
+   {
+      DU_LOG("\nERROR  -->  F1AP : Memory allocation failed for shortDRXCycleLength");
+      return RFAILED;
+   }
+   *(drxCycle->shortDRXCycleLength) = ShortDRXCycleLength_ms4;
+   
+   CU_ALLOC(drxCycle->shortDRXCycleTimer, sizeof(ShortDRXCycleTimer_t));
+   if(!drxCycle->shortDRXCycleTimer)
+   {
+      DU_LOG("\nERROR  -->  F1AP : Memory allocation failed for shortDRXCycleTimer");
+      return RFAILED;
+   }
+   *(drxCycle->shortDRXCycleTimer) = 4;
+   return ROK;
+}
 /*******************************************************************
  *
  * @brief Free CuToDuContainer 
@@ -8932,7 +9049,13 @@ uint8_t BuildAndSendUeContextSetupReq(uint32_t duId, CuUeCb *ueCb)
       if(ueCb->state == UE_HANDOVER_IN_PROGRESS)
          elementCnt = 7;
       else
+      {
+#ifdef NR_DRX
+         elementCnt = 12;
+#else
          elementCnt = 11;
+#endif
+      }
       ueSetReq->protocolIEs.list.count = elementCnt;
       ueSetReq->protocolIEs.list.size = elementCnt * sizeof(UEContextSetupRequestIEs_t *);
 
@@ -9022,6 +9145,18 @@ uint8_t BuildAndSendUeContextSetupReq(uint32_t duId, CuUeCb *ueCb)
 
       if(ueCb->state != UE_HANDOVER_IN_PROGRESS)
       {
+         /*Drx cycle*/
+#ifdef NR_DRX
+         idx++;
+         ueSetReq->protocolIEs.list.array[idx]->id	= ProtocolIE_ID_id_DRXCycle;
+         ueSetReq->protocolIEs.list.array[idx]->criticality	= 	Criticality_ignore;
+         ueSetReq->protocolIEs.list.array[idx]->value.present = UEContextSetupRequestIEs__value_PR_DRXCycle;
+         if(BuildDrxCycle(&ueSetReq->protocolIEs.list.array[idx]->value.choice.DRXCycle) != ROK)
+         {
+            DU_LOG("\nERROR  -->  F1AP : Failed to build drx cycle");
+            break;
+         }
+#endif         
          /*Special Cells to be SetupList*/
          idx++;
          ueSetReq->protocolIEs.list.array[idx]->id	= ProtocolIE_ID_id_SCell_ToBeSetup_List;

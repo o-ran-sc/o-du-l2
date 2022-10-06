@@ -1496,6 +1496,268 @@ e_ServingCellConfigCommon__dmrs_TypeA_Position convertDmrsTypeAPosValueToEnum(ui
    }
 }
 
+/************************************************************************
+ *
+ * @brief Converts enum values into actual value of Long drx Cycle length
+ *
+ * @details
+ *
+ *    Function : convertLongDrxCycleLengthEnumToValue 
+ *
+ *    Functionality: As per Spec 38.331,
+ *          Converts enum values into actual value of Long drx Cycle length
+ *    
+ *
+ * @params[in] Enum value of e_LongDRXCycleLength
+ * @return Actual value of long Drx cycle length
+ *
+ * **********************************************************************/
+uint16_t convertLongDrxCycleLengthEnumToValue(e_LongDRXCycleLength longDrxCycleLength)
+{
+   switch(longDrxCycleLength)
+   {
+      case LongDRXCycleLength_ms10:
+            return 10;
+      case LongDRXCycleLength_ms20:
+            return 20;
+      case LongDRXCycleLength_ms32:
+            return 32;
+      case LongDRXCycleLength_ms40:
+            return 40;
+      case LongDRXCycleLength_ms60:
+            return 60;
+      case LongDRXCycleLength_ms64:
+            return 64;
+      case LongDRXCycleLength_ms70:
+            return 70;
+      case LongDRXCycleLength_ms80:
+            return 80;
+      case LongDRXCycleLength_ms128:
+            return 128;
+      case LongDRXCycleLength_ms160:
+            return 160;
+      case LongDRXCycleLength_ms256:
+            return 256;
+      case LongDRXCycleLength_ms320:
+            return 320;
+      case LongDRXCycleLength_ms512:
+            return 512;
+      case LongDRXCycleLength_ms640:
+            return 640;
+      case LongDRXCycleLength_ms1024:
+            return 1024;
+      case LongDRXCycleLength_ms1280:
+            return 1280;
+      case LongDRXCycleLength_ms2048:
+            return 2048;
+      case LongDRXCycleLength_ms2560:
+            return 2560;
+      case LongDRXCycleLength_ms5120:
+            return 5120;
+      case LongDRXCycleLength_ms10240:
+            return 10240;
+   }
+   return ROK; 
+}
+/************************************************************************
+ *
+ * @brief Converts enum values into actual value of Short drx Cycle length
+ *
+ * @details
+ *
+ *    Function : convertShortDrxCycleLengthEnumToValue 
+ *
+ *    Functionality: As per Spec 38.331,
+ *          Converts enum values into actual value of Short drx Cycle length
+ *    
+ *
+ * @params[in] Enum value of e_ShortDRXCycleLength
+ * @return Actual value of short Drx cycle length
+ *
+ * **********************************************************************/
+uint16_t convertShortDrxCycleLengthEnumToValue(e_ShortDRXCycleLength shortDrxCycleLength)
+{
+   switch(shortDrxCycleLength)
+   {
+      case ShortDRXCycleLength_ms2:
+            return 2;
+      case ShortDRXCycleLength_ms3:
+            return 3;
+      case ShortDRXCycleLength_ms4:
+            return 4;
+      case ShortDRXCycleLength_ms5:
+            return 5;
+      case ShortDRXCycleLength_ms6:
+            return 6;
+      case ShortDRXCycleLength_ms7:
+            return 7;
+      case ShortDRXCycleLength_ms8:
+            return 8;
+      case ShortDRXCycleLength_ms10:
+            return 10;
+      case ShortDRXCycleLength_ms14:
+            return 14;
+      case ShortDRXCycleLength_ms16:
+            return 16;
+      case ShortDRXCycleLength_ms20:
+            return 20;
+      case ShortDRXCycleLength_ms30:
+            return 30;
+      case ShortDRXCycleLength_ms32:
+            return 32;
+      case ShortDRXCycleLength_ms35:
+            return 35;
+      case ShortDRXCycleLength_ms40:
+            return 40;
+      case ShortDRXCycleLength_ms64:
+            return 64;
+      case ShortDRXCycleLength_ms80:
+            return 80;
+      case ShortDRXCycleLength_ms128:
+            return 128;
+      case ShortDRXCycleLength_ms160:
+            return 160;
+      case ShortDRXCycleLength_ms256:
+            return 256;
+      case ShortDRXCycleLength_ms320:
+            return 320;
+      case ShortDRXCycleLength_ms512:
+            return 512;
+      case ShortDRXCycleLength_ms640:
+            return 640;
+   }
+   return ROK; 
+}
+/************************************************************************
+ *
+ * @brief Converts actual value of long drx Cycle length to enum value
+ *
+ * @details
+ *
+ *    Function : convertLongDrxCycleLengthValueToEnum
+ *
+ *    Functionality: As per Spec 38.331,
+ *         Converts actual value of long drx Cycle length to enum value    
+ *
+ * @params[in] uint16_t longDRXCycleLength
+ * @return enum value of long drx cycle
+ *
+ * **********************************************************************/
+enum DRX_ConfigRrc__drx_LongCycleStartOffset_PR convertLongDrxCycleLengthValueToEnum(uint16_t longDrxCycleLength)
+{
+   switch(longDrxCycleLength)
+   {
+      case 10:
+         return DRX_ConfigRrc__drx_LongCycleStartOffset_PR_ms10;
+      case 20:
+         return DRX_ConfigRrc__drx_LongCycleStartOffset_PR_ms20;
+      case 32:
+         return DRX_ConfigRrc__drx_LongCycleStartOffset_PR_ms32;
+      case 40:
+         return DRX_ConfigRrc__drx_LongCycleStartOffset_PR_ms40;
+      case 60:
+         return DRX_ConfigRrc__drx_LongCycleStartOffset_PR_ms60;
+      case 64:
+         return DRX_ConfigRrc__drx_LongCycleStartOffset_PR_ms64;
+      case 70:
+         return DRX_ConfigRrc__drx_LongCycleStartOffset_PR_ms70;
+      case 80:
+         return DRX_ConfigRrc__drx_LongCycleStartOffset_PR_ms80;
+      case 128:
+         return DRX_ConfigRrc__drx_LongCycleStartOffset_PR_ms128;
+      case 160:
+         return DRX_ConfigRrc__drx_LongCycleStartOffset_PR_ms160;
+      case 256:
+         return DRX_ConfigRrc__drx_LongCycleStartOffset_PR_ms256;
+      case 320:
+         return DRX_ConfigRrc__drx_LongCycleStartOffset_PR_ms320;
+      case 512:
+         return DRX_ConfigRrc__drx_LongCycleStartOffset_PR_ms512;
+      case 640:
+         return DRX_ConfigRrc__drx_LongCycleStartOffset_PR_ms640;
+      case 1024:
+         return DRX_ConfigRrc__drx_LongCycleStartOffset_PR_ms1024;
+      case 1280:
+         return DRX_ConfigRrc__drx_LongCycleStartOffset_PR_ms1280;
+      case 2048:
+         return DRX_ConfigRrc__drx_LongCycleStartOffset_PR_ms2048;
+      case 2560:
+         return DRX_ConfigRrc__drx_LongCycleStartOffset_PR_ms2560;
+      case 5120:
+         return DRX_ConfigRrc__drx_LongCycleStartOffset_PR_ms5120;
+      case 10240:
+         return DRX_ConfigRrc__drx_LongCycleStartOffset_PR_ms10240;
+   }
+   return DRX_ConfigRrc__drx_LongCycleStartOffset_PR_NOTHING;
+}
+/************************************************************************
+ *
+ * @brief Converts actual value of Short drx Cycle length to enum value
+ *
+ * @details
+ *
+ *    Function : convertShortDrxCycleLengthValueToEnum
+ *
+ *    Functionality: As per Spec 38.331,
+ *         Converts actual value of Short drx Cycle length to enum value    
+ *
+ * @params[in] uint16_t shortDRXCycleLength
+ * @return enum value of short drx cycle
+ *
+ * **********************************************************************/
+e_DRX_ConfigRrc__shortDRX__drx_ShortCycle convertShortDrxCycleLengthValueToEnum(uint16_t shortDrxCycleLength)
+{
+   switch(shortDrxCycleLength)
+   {
+      case 2:
+         return DRX_ConfigRrc__shortDRX__drx_ShortCycle_ms2;
+      case 3:
+         return DRX_ConfigRrc__shortDRX__drx_ShortCycle_ms3;
+      case 4:
+         return DRX_ConfigRrc__shortDRX__drx_ShortCycle_ms4;
+      case 5:
+         return DRX_ConfigRrc__shortDRX__drx_ShortCycle_ms5;
+      case 6:
+         return DRX_ConfigRrc__shortDRX__drx_ShortCycle_ms6;
+      case 7:
+         return DRX_ConfigRrc__shortDRX__drx_ShortCycle_ms7;
+      case 8:
+         return DRX_ConfigRrc__shortDRX__drx_ShortCycle_ms8;
+      case 10:
+         return DRX_ConfigRrc__shortDRX__drx_ShortCycle_ms10;
+      case 14:
+         return DRX_ConfigRrc__shortDRX__drx_ShortCycle_ms14;
+      case 16:
+         return DRX_ConfigRrc__shortDRX__drx_ShortCycle_ms16;
+      case 20:
+         return DRX_ConfigRrc__shortDRX__drx_ShortCycle_ms20;
+      case 30:
+         return DRX_ConfigRrc__shortDRX__drx_ShortCycle_ms30;
+      case 32:
+         return DRX_ConfigRrc__shortDRX__drx_ShortCycle_ms32;
+      case 35:
+         return DRX_ConfigRrc__shortDRX__drx_ShortCycle_ms35;
+      case 40:
+         return DRX_ConfigRrc__shortDRX__drx_ShortCycle_ms40;
+      case 64:
+         return DRX_ConfigRrc__shortDRX__drx_ShortCycle_ms64;
+      case 80:
+         return DRX_ConfigRrc__shortDRX__drx_ShortCycle_ms80;
+      case 128:
+         return DRX_ConfigRrc__shortDRX__drx_ShortCycle_ms128;
+      case 160:
+         return DRX_ConfigRrc__shortDRX__drx_ShortCycle_ms160;
+      case 256:
+         return DRX_ConfigRrc__shortDRX__drx_ShortCycle_ms256;
+      case 320:
+         return DRX_ConfigRrc__shortDRX__drx_ShortCycle_ms320;
+      case 512:
+         return DRX_ConfigRrc__shortDRX__drx_ShortCycle_ms512;
+      case 640:
+         return DRX_ConfigRrc__shortDRX__drx_ShortCycle_ms640;
+   }
+   return DRX_ConfigRrc__shortDRX__drx_ShortCycle_ms2;
+}
 /**********************************************************************
   End of file
  **********************************************************************/

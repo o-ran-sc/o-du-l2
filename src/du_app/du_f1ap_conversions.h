@@ -35,6 +35,9 @@
 #include "CFRA.h"
 #include "RACH-ConfigCommon.h"
 #include "du_app_rlc_inf.h"
+#include "LongDRXCycleLength.h"
+#include "ShortDRXCycleLength.h"
+#include "DRX-ConfigRrc.h"
 
 RLC_BearerConfig__servedRadioBearer_PR covertRbTypeFromIntEnumToRrcEnum(RlcRbType rbType);
 RLC_Config_PR covertRlcModeFromIntEnumToRrcEnum(RlcMode mode);
@@ -70,6 +73,10 @@ e_CFRA__occasions__ssb_perRACH_Occasion convertCFRASsbPerRachOccasionValueToEnum
 e_ServingCellConfigCommon__dmrs_TypeA_Position convertDmrsTypeAPosValueToEnum(uint8_t dmrsTypeAPos);
 e_RACH_ConfigCommon__ssb_perRACH_OccasionAndCB_PreamblesPerSSB__one convertCbPreamblePerSsbValueToEnum(uint8_t numCbPreamblePerSsb);
 
+uint16_t convertShortDrxCycleLengthEnumToValue(e_ShortDRXCycleLength shortDrxCycleLength);
+uint16_t convertLongDrxCycleLengthEnumToValue(e_LongDRXCycleLength longDrxCycleLength);
+e_DRX_ConfigRrc__shortDRX__drx_ShortCycle convertShortDrxCycleLengthValueToEnum(uint16_t shortDrxCycleLength);
+enum DRX_ConfigRrc__drx_LongCycleStartOffset_PR convertLongDrxCycleLengthValueToEnum(uint16_t longDrxCycleLength);
 /**********************************************************************
   End of file
  **********************************************************************/

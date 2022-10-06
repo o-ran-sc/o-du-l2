@@ -797,7 +797,7 @@ typedef struct schShortDrx
    uint8_t    drxShortCycleTimer;
 }SchShortDrx;
 
-typedef struct schDrxInfo
+typedef struct schDrxCfg
 {
    SchDrxOnDurationTimer       drxOnDurationTimer;
    uint16_t                    drxInactivityTimer;
@@ -806,9 +806,10 @@ typedef struct schDrxInfo
    uint16_t                    drxRetransmissionTimerDl;
    uint16_t                    drxRetransmissionTimerUl;
    SchDrxLongCycleStartOffset  drxLongCycleStartOffset;
+   bool                        shortDrxPres;
    SchShortDrx                 shortDrx;
-   uint8_t  drxSlotOffset;
-}SchDrxInfo;
+   uint8_t                     drxSlotOffset;
+}SchDrxCfg;
 #endif
 
 typedef struct schCellCfg
@@ -830,9 +831,6 @@ typedef struct schCellCfg
 #ifdef NR_TDD
    TDDCfg         tddCfg;           /* TDD Cfg */ 
 #endif 
-#ifdef NR_DRX
-   SchDrxInfo     drxInfo;          /* Drx configuration */
-#endif
 }SchCellCfg;
 
 typedef struct schCellCfgCfm
@@ -1201,6 +1199,9 @@ typedef struct schMacCellGrpCfg
    SchSchedReqCfg   schedReqCfg;
    SchTagCfg        tagCfg;
    SchPhrCfg        phrCfg;             /* To be used only if phrCfgSetupPres is true */      
+#ifdef NR_DRX
+   SchDrxCfg        drxCfg;          /* Drx configuration */
+#endif
 }SchMacCellGrpCfg;
 
 /* Physical Cell Group Configuration */

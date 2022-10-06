@@ -212,10 +212,13 @@ uint8_t schDlGetAvlHqProcess(SchCellCb *cellCb, SchUeCb *ueCb, SchDlHqProcCb **h
  **/
 void schDlReleaseHqProcess(SchDlHqProcCb *hqP)
 {
-   cmLListDeleteLList(&hqP->dlLcPrbEst.dedLcList);
-   cmLListDeleteLList(&hqP->dlLcPrbEst.defLcList);
-   schDlHqDeleteFromInUseList(hqP);
-   schDlHqAddToFreeList(hqP);
+   if(hqP)
+   {
+      cmLListDeleteLList(&hqP->dlLcPrbEst.dedLcList);
+      cmLListDeleteLList(&hqP->dlLcPrbEst.defLcList);
+      schDlHqDeleteFromInUseList(hqP);
+      schDlHqAddToFreeList(hqP);
+   }
 }
 
 /*******************************************************************
