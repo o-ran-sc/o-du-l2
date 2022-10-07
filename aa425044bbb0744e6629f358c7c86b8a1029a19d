@@ -1,0 +1,101 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f7c9c312_b597a1a4",
+        "filename": "src/cm/du_app_mac_inf.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-10-07T17:28:37Z",
+      "side": 1,
+      "message": "all static configurations are part of du_cfg.h",
+      "revId": "aa425044bbb0744e6629f358c7c86b8a1029a19d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fb15a42a_d751ed45",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 11981,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-10-07T17:28:37Z",
+      "side": 1,
+      "message": "since these values are being filled in ue Db in du.. we should do a conversion and store the actual values of the offset.\n\nSimilarly, when filling F1 structure from ueDb, convert actual values to enum",
+      "revId": "aa425044bbb0744e6629f358c7c86b8a1029a19d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2cb08050_199b7140",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 932,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-10-07T17:28:37Z",
+      "side": 1,
+      "message": "For all these values, please recheck very thoroughly at all places that actual values (in sec/ms) is sent to the mac/sch layers so that timers run for correct period of time but while filling at F1 (at duapp \u0026 cu stub) and FAPI (at lower-mac), enum or real values must be filled as required by SPEC.",
+      "range": {
+        "startLine": 932,
+        "startChar": 83,
+        "endLine": 932,
+        "endChar": 118
+      },
+      "revId": "aa425044bbb0744e6629f358c7c86b8a1029a19d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "898b3d23_19b1860c",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1287,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-10-07T17:28:37Z",
+      "side": 1,
+      "message": "is drxLongCycleStartOffsetChoice and drxLongCycleLength the same thing?",
+      "range": {
+        "startLine": 1287,
+        "startChar": 114,
+        "endLine": 1287,
+        "endChar": 132
+      },
+      "revId": "aa425044bbb0744e6629f358c7c86b8a1029a19d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d26ddfe2_3758056c",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1299,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-10-07T17:28:37Z",
+      "side": 1,
+      "message": "As we discussed, this part of code is dependent on the presence of cellGrpCfg and must be filled inside procUeReCfgCellInfo\nLets re-discuss if any doubts",
+      "revId": "aa425044bbb0744e6629f358c7c86b8a1029a19d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
