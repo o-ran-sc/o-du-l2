@@ -18,6 +18,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "919a0c78_02cc4502",
+        "filename": "src/cm/du_app_mac_inf.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-10-08T12:44:45Z",
+      "side": 1,
+      "message": "Done, i will raise the gerrit for this.",
+      "parentUuid": "f7c9c312_b597a1a4",
+      "revId": "aa425044bbb0744e6629f358c7c86b8a1029a19d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fb15a42a_d751ed45",
@@ -35,6 +53,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2316a1a4_a4d1fc6d",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 11981,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-10-08T12:44:45Z",
+      "side": 1,
+      "message": "As per 38.331 only these values needs the conersion drxLongCycleStartOffset-\u003edrxLongCycleStartOffsetChoice \u003d convertLongDrxCycleLengthEnumToValue(drx_LongCycleStartOffset-\u003epresent);\nall the other drx_LongCycleStartOffset-\u003echoice are not in enum form  they are stored in actaul values only. so thats why conversion of drx_LongCycleStartOffset-\u003echoice is not needed.",
+      "parentUuid": "fb15a42a_d751ed45",
+      "revId": "aa425044bbb0744e6629f358c7c86b8a1029a19d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2cb08050_199b7140",
@@ -48,6 +84,30 @@
       "writtenOn": "2022-10-07T17:28:37Z",
       "side": 1,
       "message": "For all these values, please recheck very thoroughly at all places that actual values (in sec/ms) is sent to the mac/sch layers so that timers run for correct period of time but while filling at F1 (at duapp \u0026 cu stub) and FAPI (at lower-mac), enum or real values must be filled as required by SPEC.",
+      "range": {
+        "startLine": 932,
+        "startChar": 83,
+        "endLine": 932,
+        "endChar": 118
+      },
+      "revId": "aa425044bbb0744e6629f358c7c86b8a1029a19d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "575785a8_c8068b1a",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 932,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-10-08T12:44:45Z",
+      "side": 1,
+      "message": "As per 38.331 drx-onDurationTimer has two choices subMilliSeconds and milliSeconds.\nmilliSeconds is an enum value while subMilliSeconds INTEGER (1..31).\nSo subMilliSeconds doesnot required any conversion.\n\nAnd i have checked i have stored all the values as per above discription.",
+      "parentUuid": "2cb08050_199b7140",
       "range": {
         "startLine": 932,
         "startChar": 83,
@@ -81,6 +141,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "971756a7_18e6b676",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1287,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-10-08T12:44:45Z",
+      "side": 1,
+      "message": "Yes drxLongCycleStartOffsetChoice and drxLongCycleLength are same.",
+      "parentUuid": "898b3d23_19b1860c",
+      "range": {
+        "startLine": 1287,
+        "startChar": 114,
+        "endLine": 1287,
+        "endChar": 132
+      },
+      "revId": "aa425044bbb0744e6629f358c7c86b8a1029a19d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d26ddfe2_3758056c",
@@ -94,6 +178,24 @@
       "writtenOn": "2022-10-07T17:28:37Z",
       "side": 1,
       "message": "As we discussed, this part of code is dependent on the presence of cellGrpCfg and must be filled inside procUeReCfgCellInfo\nLets re-discuss if any doubts",
+      "revId": "aa425044bbb0744e6629f358c7c86b8a1029a19d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "378974aa_22cb9653",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1299,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-10-08T12:44:45Z",
+      "side": 1,
+      "message": "This is not part of [DRX-Config] MAC-CellGroupConfig. this is the spacial case when CU sends the DRX Cycle IE which is a sperate IE to DU. If this IE recive then DU have to update those Long DRX Cycle Length,Short DRX Cycle Length ,Short DRX Cycle Timer.\nSo thats why i have added these thing independently and whatever is the part of  MAC-CellGroupConfig i have added those in sperately in procUeReCfgCellInfo function.",
+      "parentUuid": "d26ddfe2_3758056c",
       "revId": "aa425044bbb0744e6629f358c7c86b8a1029a19d",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
