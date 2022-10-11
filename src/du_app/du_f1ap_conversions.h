@@ -35,6 +35,9 @@
 #include "CFRA.h"
 #include "RACH-ConfigCommon.h"
 #include "du_app_rlc_inf.h"
+#include "LongDRXCycleLength.h"
+#include "ShortDRXCycleLength.h"
+#include "DRX-ConfigRrc.h"
 
 RLC_BearerConfig__servedRadioBearer_PR covertRbTypeFromIntEnumToRrcEnum(RlcRbType rbType);
 RLC_Config_PR covertRlcModeFromIntEnumToRrcEnum(RlcMode mode);
@@ -70,6 +73,18 @@ e_CFRA__occasions__ssb_perRACH_Occasion convertCFRASsbPerRachOccasionValueToEnum
 e_ServingCellConfigCommon__dmrs_TypeA_Position convertDmrsTypeAPosValueToEnum(uint8_t dmrsTypeAPos);
 e_RACH_ConfigCommon__ssb_perRACH_OccasionAndCB_PreamblesPerSSB__one convertCbPreamblePerSsbValueToEnum(uint8_t numCbPreamblePerSsb);
 
+enum DRX_ConfigRrc__drx_LongCycleStartOffset_PR convertLongDrxCycleLengthValueToEnum(uint16_t longDrxCycleLength);
+e_DRX_ConfigRrc__shortDRX__drx_ShortCycle convertShortDrxCycleLengthValueToEnum(uint16_t shortDrxCycleLength);
+e_DRX_ConfigRrc__drx_onDurationTimer__milliSeconds convertOnDurationTimerMilliSecondsValueToEnum(uint16_t ondurationTime);
+e_DRX_ConfigRrc__drx_RetransmissionTimerUL convertDrxRetransmissionTimerUlValueToEnum(uint16_t retransmissionTimerUL);
+e_DRX_ConfigRrc__drx_RetransmissionTimerDL convertDrxRetransmissionTimerDlValueToEnum(uint16_t retransmissionTimerDL);
+e_DRX_ConfigRrc__drx_InactivityTimer convertDrxInactivityTimerValueToEnum(uint16_t inactivityTimer);
+uint16_t convertShortDrxCycleLengthEnumToValue(e_ShortDRXCycleLength shortDrxCycleLength);
+uint16_t convertLongDrxCycleLengthEnumToValue(e_LongDRXCycleLength longDrxCycleLength);
+uint16_t convertDrxInactivityTimerEnumToValue(e_DRX_ConfigRrc__drx_InactivityTimer inactivityTimer);
+uint16_t convertDrxRetransmissionTimerDlEnumToValue(e_DRX_ConfigRrc__drx_RetransmissionTimerDL retransmissionTimerDL);
+uint16_t convertDrxRetransmissionTimerUlEnumToValue(e_DRX_ConfigRrc__drx_RetransmissionTimerUL retransmissionTimerUL);
+uint16_t convertOnDurationTimerMilliSecondsEnumToValue(e_DRX_ConfigRrc__drx_onDurationTimer__milliSeconds ondurationTime);
 /**********************************************************************
   End of file
  **********************************************************************/

@@ -252,6 +252,45 @@ typedef struct drbInfo
 
 typedef struct cuCellCb CuCellCb;
 
+#ifdef NR_DRX
+/* The following list of structures is taken from the DRX-Config section of specification 33.331. */
+typedef struct drxOnDurationTimer
+{
+   bool  onDurationTimerValInMs;
+   union
+   {
+      uint8_t  subMilliSeconds;
+      uint16_t milliSeconds;
+   }onDurationtimerValue;
+}DrxOnDurationTimer;
+
+typedef struct drxLongCycleStartOffset
+{
+   uint16_t drxLongCycleStartOffsetChoice;
+   uint16_t drxLongCycleStartOffsetVal;
+}DrxLongCycleStartOffset;
+
+typedef struct shortDrx
+{
+   uint16_t   drxShortCycle;
+   uint8_t    drxShortCycleTimer;
+}ShortDrx;
+
+typedef struct drxCfg
+{
+   DrxOnDurationTimer       drxOnDurationTimer;
+   uint16_t                 drxInactivityTimer;
+   uint8_t                  drxHarqRttTimerDl;
+   uint8_t                  drxHarqRttTimerUl;
+   uint16_t                 drxRetransmissionTimerDl;
+   uint16_t                 drxRetransmissionTimerUl;
+   DrxLongCycleStartOffset  drxLongCycleStartOffset;
+   bool                     shortDrxPres;
+   ShortDrx                 shortDrx;
+   uint8_t                  drxSlotOffset;
+}DrxCfg;
+#endif
+
 typedef struct cuUeCb
 {
    CuCellCb  *cellCb;
@@ -264,6 +303,9 @@ typedef struct cuUeCb
    DrbInfo   drbList[MAX_NUM_DRB];
    F1apMsgDb f1apMsgDb;
    UeState   state;
+#ifdef NR_DRX
+   DrxCfg    drxCfg;
+#endif
    HandoverInfo hoInfo;
 }CuUeCb;
 
