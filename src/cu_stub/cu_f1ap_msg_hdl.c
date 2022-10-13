@@ -1826,108 +1826,108 @@ uint8_t setDlRRCMsgType(CuUeCb *ueCb)
  *         RFAILED - failure
  *
  * ****************************************************************/
-void fillLongCycleOffsetValue(DrxLongCycleStartOffset *drxLongCycleStartOffset, struct DRX_ConfigRrc__recvedLongCycleOffsetVal  *recvedLongCycleOffsetVal)
+void fillLongCycleOffsetValue(DrxLongCycleStartOffset *drxLongCycleStartOffset, struct DRX_ConfigRrc__drx_LongCycleStartOffset *recvedLongCycleOffsetVal)
 {
 
    drxLongCycleStartOffset->drxLongCycleStartOffsetChoice = recvedLongCycleOffsetVal->present;
    switch(recvedLongCycleOffsetVal->present)
    {
-      case DRX_ConfigRrc__recvedLongCycleOffsetVal_PR_ms10:
+      case DRX_ConfigRrc__drx_LongCycleStartOffset_PR_ms10:
          {
             drxLongCycleStartOffset->drxLongCycleStartOffsetVal = recvedLongCycleOffsetVal->choice.ms10;
             break;
          }
-      case DRX_ConfigRrc__recvedLongCycleOffsetVal_PR_ms20:
+      case DRX_ConfigRrc__drx_LongCycleStartOffset_PR_ms20:
          {
             drxLongCycleStartOffset->drxLongCycleStartOffsetVal = recvedLongCycleOffsetVal->choice.ms20;
             break;
          }
-      case DRX_ConfigRrc__recvedLongCycleOffsetVal_PR_ms32:
+      case DRX_ConfigRrc__drx_LongCycleStartOffset_PR_ms32:
          {
             drxLongCycleStartOffset->drxLongCycleStartOffsetVal = recvedLongCycleOffsetVal->choice.ms32;
             break;
          }
-      case DRX_ConfigRrc__recvedLongCycleOffsetVal_PR_ms40:
+      case DRX_ConfigRrc__drx_LongCycleStartOffset_PR_ms40:
          {
             drxLongCycleStartOffset->drxLongCycleStartOffsetVal = recvedLongCycleOffsetVal->choice.ms40;
             break;
          }
-      case DRX_ConfigRrc__recvedLongCycleOffsetVal_PR_ms60:
+      case DRX_ConfigRrc__drx_LongCycleStartOffset_PR_ms60:
          {
             drxLongCycleStartOffset->drxLongCycleStartOffsetVal = recvedLongCycleOffsetVal->choice.ms60;
             break;
          }
-      case DRX_ConfigRrc__recvedLongCycleOffsetVal_PR_ms64:
+      case DRX_ConfigRrc__drx_LongCycleStartOffset_PR_ms64:
          {
             drxLongCycleStartOffset->drxLongCycleStartOffsetVal = recvedLongCycleOffsetVal->choice.ms64;
             break;
          }
-      case DRX_ConfigRrc__recvedLongCycleOffsetVal_PR_ms70:
+      case DRX_ConfigRrc__drx_LongCycleStartOffset_PR_ms70:
          {
             drxLongCycleStartOffset->drxLongCycleStartOffsetVal = recvedLongCycleOffsetVal->choice.ms70;
             break;
          }
-      case DRX_ConfigRrc__recvedLongCycleOffsetVal_PR_ms80:
+      case DRX_ConfigRrc__drx_LongCycleStartOffset_PR_ms80:
          {
             drxLongCycleStartOffset->drxLongCycleStartOffsetVal = recvedLongCycleOffsetVal->choice.ms80;
             break;
          }
-      case DRX_ConfigRrc__recvedLongCycleOffsetVal_PR_ms128:
+      case DRX_ConfigRrc__drx_LongCycleStartOffset_PR_ms128:
          {
             drxLongCycleStartOffset->drxLongCycleStartOffsetVal = recvedLongCycleOffsetVal->choice.ms128;
             break;
          }
-      case DRX_ConfigRrc__recvedLongCycleOffsetVal_PR_ms160:
+      case DRX_ConfigRrc__drx_LongCycleStartOffset_PR_ms160:
          {
             drxLongCycleStartOffset->drxLongCycleStartOffsetVal = recvedLongCycleOffsetVal->choice.ms160;
             break;
          }
-      case DRX_ConfigRrc__recvedLongCycleOffsetVal_PR_ms256:
+      case DRX_ConfigRrc__drx_LongCycleStartOffset_PR_ms256:
          {
             drxLongCycleStartOffset->drxLongCycleStartOffsetVal = recvedLongCycleOffsetVal->choice.ms256;
             break;
          }
-      case DRX_ConfigRrc__recvedLongCycleOffsetVal_PR_ms320:
+      case DRX_ConfigRrc__drx_LongCycleStartOffset_PR_ms320:
          {
             drxLongCycleStartOffset->drxLongCycleStartOffsetVal = recvedLongCycleOffsetVal->choice.ms320;
             break;
          }
-      case DRX_ConfigRrc__recvedLongCycleOffsetVal_PR_ms512:
+      case DRX_ConfigRrc__drx_LongCycleStartOffset_PR_ms512:
          {
             drxLongCycleStartOffset->drxLongCycleStartOffsetVal = recvedLongCycleOffsetVal->choice.ms512;
             break;
          }
-      case DRX_ConfigRrc__recvedLongCycleOffsetVal_PR_ms640:
+      case DRX_ConfigRrc__drx_LongCycleStartOffset_PR_ms640:
          {
             drxLongCycleStartOffset->drxLongCycleStartOffsetVal = recvedLongCycleOffsetVal->choice.ms640;
             break;
          }
-      case DRX_ConfigRrc__recvedLongCycleOffsetVal_PR_ms1024:
+      case DRX_ConfigRrc__drx_LongCycleStartOffset_PR_ms1024:
          {
             drxLongCycleStartOffset->drxLongCycleStartOffsetVal = recvedLongCycleOffsetVal->choice.ms1024;
             break;
          }
-      case DRX_ConfigRrc__recvedLongCycleOffsetVal_PR_ms1280:
+      case DRX_ConfigRrc__drx_LongCycleStartOffset_PR_ms1280:
          {
             drxLongCycleStartOffset->drxLongCycleStartOffsetVal = recvedLongCycleOffsetVal->choice.ms1280;
             break;
          }
-      case DRX_ConfigRrc__recvedLongCycleOffsetVal_PR_ms2048:
+      case DRX_ConfigRrc__drx_LongCycleStartOffset_PR_ms2048:
          {
             drxLongCycleStartOffset->drxLongCycleStartOffsetVal = recvedLongCycleOffsetVal->choice.ms2048;
             break;
          }
-      case DRX_ConfigRrc__recvedLongCycleOffsetVal_PR_ms2560:
+      case DRX_ConfigRrc__drx_LongCycleStartOffset_PR_ms2560:
          {
             drxLongCycleStartOffset->drxLongCycleStartOffsetVal = recvedLongCycleOffsetVal->choice.ms2560;
             break;
          }
-      case DRX_ConfigRrc__recvedLongCycleOffsetVal_PR_ms5120:
+      case DRX_ConfigRrc__drx_LongCycleStartOffset_PR_ms5120:
          {
             drxLongCycleStartOffset->drxLongCycleStartOffsetVal = recvedLongCycleOffsetVal->choice.ms5120;
             break;
          }
-      case DRX_ConfigRrc__recvedLongCycleOffsetVal_PR_ms10240:
+      case DRX_ConfigRrc__drx_LongCycleStartOffset_PR_ms10240:
          {
             drxLongCycleStartOffset->drxLongCycleStartOffsetVal = recvedLongCycleOffsetVal->choice.ms10240;
             break;
