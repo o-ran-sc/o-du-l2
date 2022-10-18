@@ -99,7 +99,11 @@
 #define CORESET1_NUM_PRB   24
 
 /* MACRO defines for PRACH Configuration */
+#ifndef NR_TDD
+#define PRACH_CONFIG_IDX   16
+#else
 #define PRACH_CONFIG_IDX   88
+#endif
 #define PRACH_MAX_PRB  24  /* As per (spec 38.211-Table 6.3.3.2-1), max allocated PRBs can go upto 24 */
 #define PRACH_FREQ_START  (MAX_NUM_RB - PRACH_MAX_PRB) /* In order to allocate PRACH from end of the resource grid */
 #define PRACH_SEQ_LEN SHORT_SEQUENCE

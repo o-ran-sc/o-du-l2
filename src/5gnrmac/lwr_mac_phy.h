@@ -32,6 +32,18 @@ typedef enum
    MSG_TX_ERR
 }ErrorCode;
 
+#ifdef ODU_MEMORY_DEBUG_LOG
+#define WLS_MEM_LOG(_macro, _file, _line, _func, _size, _datPtr)\
+{\
+   printf("\n%s=== %s +%d, %s, %lu, %p",           \
+      _macro, _file, _line, _func, (uint64_t)_size, _datPtr); \
+}
+#else
+#define WLS_MEM_LOG(_macro, _file, _line, _func, _size, _datPtr) \
+{\
+}
+#endif
+
 #ifdef INTEL_WLS_MEM
 #define LWR_MAC_WLS_BUF_SIZE   32000      /* Size of WLS memory block */
 #define EVT_START_WLS_RCVR     1
@@ -42,7 +54,10 @@ typedef enum
    uint8_t _ret;                                             \
    _ret = SGetSBufWls(0, 0, (Data **)&_datPtr, _size);       \
    if(_ret == ROK)                                           \
-      memset(_datPtr, 0, _size);                      \
+   {\
+      WLS_MEM_LOG("WLSMEM_ALLOC", __FILE__, __LINE__, __FUNCTION__, _size, _datPtr);\
+      memset(_datPtr, 0, _size);                             \
+   }\
    else                                                      \
       _datPtr = NULLP;                                       \
 }                                                              
@@ -51,6 +66,7 @@ typedef enum
 #define WLS_MEM_FREE(_datPtr, _size)                         \
    if(_datPtr)                                               \
    {                                                         \
+      WLS_MEM_LOG("WLSMEM_FREE", __FILE__, __LINE__, __FUNCTION__, _size, _datPtr);\
       SPutSBufWls(0, 0, (Data *)_datPtr, _size);             \
       _datPtr = NULLP;                                       \
    }
