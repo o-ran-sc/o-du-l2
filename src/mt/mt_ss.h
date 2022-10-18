@@ -276,7 +276,7 @@ that are configured below.
 #endif
 
 #define MT_BKT_4_DSIZE   65000
-#define MT_BKT_4_NUMBLKS 1000
+#define MT_BKT_4_NUMBLKS 2000
 
 /* For Non-Sharable regions/static regions */
 #ifdef XEON_SPECIFIC_CHANGES

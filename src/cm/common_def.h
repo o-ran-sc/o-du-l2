@@ -67,8 +67,13 @@
 #define MAX_NUM_TB_PER_UE 2  /* spec 38.331, maxNrofCodeWordsScheduledByDCI */
 
 /* 5G ORAN phy delay */
+#ifdef NR_TDD
+#define PHY_DELTA_DL 2
+#define PHY_DELTA_UL 0
+#else
 #define PHY_DELTA_DL 1
 #define PHY_DELTA_UL 0
+#endif
 
  /* SELECTORS */ 
 #define ODU_SELECTOR_LC 0
@@ -154,8 +159,10 @@
 
 #ifdef NR_TDD
 /* Maximum slots for max periodicity and highest numerology is 320.
- * However, aligning to fapi_interface.h, setting this macro to 160 */
-#define MAX_TDD_PERIODICITY_SLOTS 160 
+ * However, aligning to fapi_interface.h, setting this macro to 160.
+ * TODO : To support 160, FAPI_MAX_NUM_TLVS_CONFIG in fapi_interface.h
+ * of Intel L1 must be incremented to a higher number */
+#define MAX_TDD_PERIODICITY_SLOTS 10 
 #endif
 
 #define GET_UE_ID( _crnti,_ueId)           \
@@ -337,12 +344,13 @@ void fillCoresetFeqDomAllocMap(uint16_t startPrb, uint16_t prbSize, uint8_t *fre
 void oduCpyFixBufToMsg(uint8_t *fixBuf, Buffer *mBuf, uint16_t len);
 uint8_t buildPlmnId(Plmn plmn, uint8_t *buf);
 uint16_t convertScsEnumValToScsVal(uint8_t scsEnumValue);
+uint8_t convertScsValToScsEnum(uint32_t num);
 
-uint8_t SGetSBufNewForDebug(char *file, char *func, char *line, Region region, Pool pool, Data **ptr, Size size);
-uint8_t SPutSBufNewForDebug(char *file, char *func, char *line, Region region, Pool pool, Data *ptr, Size size);
-uint8_t SGetStaticBufNewForDebug(char *file, char *func, char *line, \
+uint8_t SGetSBufNewForDebug(char *file, const char *func, int line, Region region, Pool pool, Data **ptr, Size size);
+uint8_t SPutSBufNewForDebug(char *file, const char *func, int line, Region region, Pool pool, Data *ptr, Size size);
+uint8_t SGetStaticBufNewForDebug(char *file, const char *func, int line, \
 Region region, Pool pool, Data **ptr, Size size, uint8_t memType);
-uint8_t SPutStaticBufNewForDebug(char *file, char *func, char *line, \
+uint8_t SPutStaticBufNewForDebug(char *file, const char *func, int line, \
 Region region, Pool pool, Data *ptr, Size size, uint8_t memType);
 uint8_t countSetBits(uint32_t num);
 
