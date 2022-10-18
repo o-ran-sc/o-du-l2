@@ -203,12 +203,14 @@ uint8_t BuildMibPdu()
          break;
       }    
 
+#ifdef DEBUG_ASN_PRINT
       /* Print encoded buffer */
       for(int i=0; i< encBufSize; i++)
       {
          printf("%x\t",encBuf[i]);
       } 
       printf("\n");
+#endif
 
       ret = ROK;
       break;
@@ -297,12 +299,14 @@ uint8_t BuildMibMsg()
          break;
       }  
 
+#ifdef DEBUG_ASN_PRINT
       /* Print encoded buffer */
       for(int i=0; i< encBufSize; i++)
       {
          printf("%x\t",encBuf[i]);
       } 
       printf("\n");
+#endif
 
       /* Free allocated memory */
       ret = ROK;
@@ -2461,11 +2465,13 @@ uint8_t BuildSib1Msg()
                "unknown");
          break;
       }
+#ifdef DEBUG_ASN_PRINT
       for(int i=0; i< encBufSize; i++)
       {
          printf("%x\t",encBuf[i]);
       }
       printf("\n");
+#endif
 
       ret = ROK;
       break; 

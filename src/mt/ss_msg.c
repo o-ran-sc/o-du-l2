@@ -649,7 +649,9 @@ Buffer *mBuf
    CM_MEM_GET_REGION(tmpThrReg)
    if(tmpThrReg == 0xFF)
    {
+#ifdef ERROR_PRINT
       printf("\n Not able to get region \n");
+#endif
       return RFAILED;
    }
 #endif
@@ -3631,7 +3633,9 @@ Buffer **dstBuf
                (Void) SPutDBuf(minfo1->region, minfo1->pool, newblk);
                newblk = curblk;
             }
+#ifdef ERROR_PRINT
             printf("\nFailed to get the buffer of size %s %d\n", __FILE__, __LINE__);
+#endif            
             (Void) SPutMsg(*dstBuf);
             return (ROUTRES);
          }
@@ -4100,7 +4104,9 @@ Buffer **bufPtr
 #ifndef SS_DBUF_REFLOCK_DISABLE
    if((SInitLock (&(dptr->dBufLock), SS_LOCK_MUTEX)) != 0)
    {
+#ifdef ERROR_PRINT
       printf("\nFalied to destroy lock\n");
+#endif
    }
 #endif
 
@@ -4257,7 +4263,9 @@ Buffer *buf
         ret = SUnlock(&dptr->dBufLock) ;
         if((SDestroyLock(&dptr->dBufLock)) != 0)
         {
+#ifdef ERROR_PRINT
             printf("\nFalied to destroy lock\n");
+#endif
         }
 #endif
       /* free buffer to region */
@@ -5401,6 +5409,7 @@ S16 dst                     /* destination id */
    mlen = ((SsMsgInfo*)(mBuf->b_rptr))->len;
    reg = ((SsMsgInfo*)(mBuf->b_rptr))->region;
    /*ss013.301: Fixed Warnings for 32/64 bit compilation*/
+#ifdef DEBUG_PRINT
    sprintf(prntBuf,"\nmsg: qlen: %04d mlen: %04d   %02d-->%02d region: %02d\n",
            (uint16_t)qlen,(uint16_t)mlen,src,dst,reg);
    SPrint( prntBuf);
@@ -5410,6 +5419,7 @@ S16 dst                     /* destination id */
    SPrint((S8*) "dat: ");
 #ifdef XEON_SPECIFIC_CHANGES
    printf("\ndat: ");
+#endif   
 #endif   
 
    if (mlen == 0)
@@ -5433,9 +5443,11 @@ S16 dst                     /* destination id */
             /* print hex */
             tdata[j]=data;
             sprintf( prntBuf,"%02x ",(uint16_t) data);
+#ifdef DEBUG_PRINT
             SPrint( prntBuf);
 #ifdef XEON_SPECIFIC_CHANGES
    printf("%s\n", prntBuf);
+#endif
 #endif   
             if (cptr == tmp->b_wptr)
             {
@@ -5451,9 +5463,11 @@ S16 dst                     /* destination id */
          else
          {
             sprintf( prntBuf,"   ");
+#ifdef DEBUG_PRINT
             SPrint( prntBuf );
 #ifdef XEON_SPECIFIC_CHANGES
    printf("%s\n", prntBuf);
+#endif
 #endif   
          }
       } 
@@ -5465,25 +5479,31 @@ S16 dst                     /* destination id */
          {
             /* print character if printable */
             sprintf(prntBuf,"%c",tdata[k]);
+#ifdef DEBUG_PRINT
             SPrint( prntBuf);
 #ifdef XEON_SPECIFIC_CHANGES
    printf("%s\n", prntBuf);
+#endif
 #endif   
          }
          else
          {
             /* print . if non printable */
+#ifdef DEBUG_PRINT
             SPrint((S8*) ".");
 #ifdef XEON_SPECIFIC_CHANGES
    printf(".");
 #endif   
+#endif
          }
       }
       sprintf(prntBuf,"\n     ");
+#ifdef DEBUG_PRINT
       SPrint(prntBuf);
 #ifdef XEON_SPECIFIC_CHANGES
    printf("%s\n", prntBuf);
 #endif   
+#endif
    }
    return ROK;
 
@@ -7558,7 +7578,9 @@ Buffer** mBuf
 #ifndef SS_DBUF_REFLOCK_DISABLE
    if((SInitLock (&(dptr->dBufLock), SS_LOCK_MUTEX)) != 0)
    {
+#ifdef ERROR_PRINT
       printf("\nFalied to destroy lock\n");
+#endif     
    }
 #endif
 
@@ -7668,7 +7690,9 @@ Buffer *buf
          ret = SUnlock(&dptr->dBufLock) ;
          if((SDestroyLock(&dptr->dBufLock)) != 0)
          {
+#ifdef ERROR_PRINT
              printf("\nFalied to destroy lock\n");
+#endif
          }
 #endif
 #ifdef SS_HISTOGRAM_SUPPORT 
@@ -7789,7 +7813,9 @@ Buffer** mBuf
 #ifndef SS_DBUF_REFLOCK_DISABLE
    if((SInitLock (&(dptr->dBufLock), SS_LOCK_MUTEX)) != 0)
    {
+#ifdef ERROR_PRINT
       printf("\nFalied to destroy lock\n");
+#endif
    }
 #endif
 
@@ -7936,7 +7962,9 @@ Buffer** mBuf
 #ifndef SS_DBUF_REFLOCK_DISABLE
    if((SInitLock (&(dptr->dBufLock), SS_LOCK_MUTEX)) != 0)
    {
+#ifdef ERROR_PRINT
       printf("\nFalied to destroy lock\n");
+#endif
    }
 #endif
 

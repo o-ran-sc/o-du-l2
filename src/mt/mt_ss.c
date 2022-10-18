@@ -899,7 +899,7 @@ static int SOpenWlsIntf()
    void *hdl = NULLP;
 #define WLS_DEVICE_NAME "wls0"
 
-   char *my_argv[] = {"gnodeb", "-c3", "--proc-type=auto", "--file-prefix", WLS_DEVICE_NAME, "--iova-mode=pa"};
+   char *my_argv[] = {"gnodeb", "-c3", "--proc-type=auto", "--file-prefix", "gnb0", "--iova-mode=pa"};
    printf("\nCalling rte_eal_init: ");
    for (i = 0; i < RTE_DIM(my_argv); i++)
    {
@@ -1563,10 +1563,42 @@ Void * ssGetIccHdl(Region region)
 #ifdef T2K_MEM_LEAK_DBG
 RegionMemLeakInfo regMemLeakInfo;
 #endif /* T2K_MEM_LEAK_DBG */
+#define WLS_MSG_BLOCK_SIZE ( 16384 * 16 )
+static uint32_t wls_mac_check_block_size(uint32_t nBlockSize)
+{
+
+    uint32_t nExp, j, k;
+
+    j = nBlockSize;
+    nExp = 0;
+    k = 1;
+    while (j > 1)
+    {
+        j = j >> 1;
+
+        k = k << 1;
+        nExp++;
+    }
+
+    if (nBlockSize > k)
+    {
+        k = k << 1;
+        nExp++;
+    }
+
+    if (nExp == 0)
+    {
+        k = WLS_MSG_BLOCK_SIZE;
+        nExp++;
+    }
+
+    return k;
+}
 
 #ifdef SS_USE_WLS_MEM
 static S16 SPartitionWlsDynMem()
 {
+#if 0
    uint32_t i;
    uint8_t *bktMemStrtAddr = (uint8_t *)(((uint8_t*)osCp.wls.allocAddr) + (4 * 1024 * 1024));
 
@@ -1581,6 +1613,40 @@ static S16 SPartitionWlsDynMem()
    {
       printf("mtDynMemSz[%d]: [0x%016lx]\n", i, (unsigned long int)mtDynMemSz[i].startAddr);
    }
+#else
+   uint32_t i;
+   uint32_t     reqdMemSz;
+   uint64_t nWlsMemBaseUsable;
+   uint64_t nTotalMemorySizeUsable;
+   uint64_t nBalance, nBlockSize, nBlockSizeMask;
+   nWlsMemBaseUsable = (uint64_t)osCp.wls.allocAddr;
+   nTotalMemorySizeUsable = nWlsMacMemorySize;
+   nBlockSize = wls_mac_check_block_size(WLS_MSG_BLOCK_SIZE );
+   nBlockSizeMask = nBlockSize-1;
+   nWlsMemBaseUsable = (nWlsMemBaseUsable + nBlockSizeMask) & (~nBlockSizeMask);
+   nBalance = nWlsMemBaseUsable - (uint64_t)osCp.wls.allocAddr;
+   nTotalMemorySizeUsable -= nBalance;
+   nBalance = nTotalMemorySizeUsable % nBlockSize;
+   nTotalMemorySizeUsable -= nBalance;
+   uint8_t *bktMemStrtAddr = (uint8_t *)(nWlsMemBaseUsable);
+
+   for (i = 0 ; i < mtGlobMemoCfg.numBkts ; i++)
+   {
+      reqdMemSz += (mtGlobMemoCfg.bkt[i].blkSize * mtGlobMemoCfg.bkt[i].numBlks);
+   }
+
+   for (i = 0 ; i < mtGlobMemoCfg.numBkts ; i++)
+   {
+      mtDynMemSz[i].startAddr = bktMemStrtAddr;
+      bktMemStrtAddr += mtDynMemSz[i].reqdSz;
+   }
+
+   printf("\n SPartitionWlsDynMem Global Memory Info: \n");
+   for (i = 0 ; i <  mtGlobMemoCfg.numBkts ; i++)
+   {
+      printf("mtDynMemSz[%d]: [0x%016lx]\n", i, (unsigned long int)mtDynMemSz[i].startAddr);
+   }
+#endif
    return ROK;
 }
 

@@ -107,8 +107,8 @@ extern "C" {
 #ifdef ODU_MEMORY_DEBUG_LOG
 #define RLC_MEM_LOG(_macro, _file, _line, _func, _size, _datPtr)\
 {\
-   printf("\n%s=== %s +%d, %s, %d, %p\n",           \
-         _macro, _file, _line, _func, _size, _datPtr); \
+   printf("\n%s=== %s +%d, %s, %lu, %p",           \
+         _macro, _file, _line, _func, (uint64_t)_size, _datPtr); \
 }
 #else
 #define RLC_MEM_LOG(_macro, _file, _line, _func, _size, _dataPtr) {}

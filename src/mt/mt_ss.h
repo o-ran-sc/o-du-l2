@@ -209,7 +209,7 @@ that are configured below.
 
 /* Bucket 0 configuration */
 /* mt032.201 changed  MT_BKT_0_DSIZE from 120 to 128 for 64k compilation */
-#define MT_BKT_0_DSIZE          256
+#define MT_BKT_0_DSIZE          256*2
 /*mt004.301-changed for FAP*/
 #ifndef SS_FAP
 #ifdef XEON_SPECIFIC_CHANGES
@@ -231,31 +231,31 @@ that are configured below.
 #ifdef XEON_SPECIFIC_CHANGES
 #define MT_BKT_1_DSIZE          1024  /* Modified from 256 to 4096 */
 #else
-#define MT_BKT_1_DSIZE          1280  /* Modified from 256 to 4096 */
+#define MT_BKT_1_DSIZE          1280*2  /* Modified from 256 to 4096 */
 #endif
 #ifdef SS_USE_WLS_MEM
-#define MT_BKT_1_NUMBLKS        310720 /* 1000*/
+#define MT_BKT_1_NUMBLKS        310720*2 /* 1000*/
 #else
-#define MT_BKT_1_NUMBLKS        10496 /* 1000*/
+#define MT_BKT_1_NUMBLKS        10496*8 /* 1000*/
 #endif
 #else
 /*mt010.301*/
-#define MT_BKT_1_DSIZE          256
-#define MT_BKT_1_NUMBLKS        2000
+#define MT_BKT_1_DSIZE          256*2
+#define MT_BKT_1_NUMBLKS        2000*8
 #endif
 
 /* Bucket 2 configuration */
 /*mt010.301*/
 #ifdef SS_FAP
-#define MT_BKT_2_DSIZE      1376      /* Fill in this value as required */
-#define MT_BKT_2_NUMBLKS    4000        /* Fill in this value as required */
+#define MT_BKT_2_DSIZE      1376*2      /* Fill in this value as required */
+#define MT_BKT_2_NUMBLKS    4000*8        /* Fill in this value as required */
 #else
 #ifdef XEON_SPECIFIC_CHANGES
-#define MT_BKT_2_DSIZE   1768 /* 1664 2048 */
-#define MT_BKT_2_NUMBLKS 5248 /* 10496 */
+#define MT_BKT_2_DSIZE   1768*2 /* 1664 2048 */
+#define MT_BKT_2_NUMBLKS 5248*8 /* 10496 */
 #else
-#define MT_BKT_2_DSIZE   2048 /* 1664 2048 */
-#define MT_BKT_2_NUMBLKS 2000 /* 10496 */
+#define MT_BKT_2_DSIZE   2048*2 /* 1664 2048 */
+#define MT_BKT_2_NUMBLKS 2000*8 /* 10496 */
 #endif
 #endif
 
@@ -263,20 +263,20 @@ that are configured below.
 /* Bucket 3 configuration */
 /*mt010.301*/
 #ifdef SS_FAP
-#define MT_BKT_3_DSIZE     2592      /* Fill in this value as required */
-#define MT_BKT_3_NUMBLKS   1500     /* Fill in this value as required */
+#define MT_BKT_3_DSIZE     2*2592      /* Fill in this value as required */
+#define MT_BKT_3_NUMBLKS   4*1500     /* Fill in this value as required */
 #else
 #ifdef XEON_SPECIFIC_CHANGES
-#define MT_BKT_3_DSIZE     4224      /* Fill in this value as required */
-#define MT_BKT_3_NUMBLKS   5248 /*10496 */       /* Fill in this value as required */
+#define MT_BKT_3_DSIZE     2*4224      /* Fill in this value as required */
+#define MT_BKT_3_NUMBLKS   8*5248 /*10496 */       /* Fill in this value as required */
 #else
-#define MT_BKT_3_DSIZE     12200      /* Fill in this value as required */
-#define MT_BKT_3_NUMBLKS   1000 /*10496 */       /* Fill in this value as required */
+#define MT_BKT_3_DSIZE     12200*2      /* Fill in this value as required */
+#define MT_BKT_3_NUMBLKS   2000*2 /*10496 */       /* Fill in this value as required */
 #endif
 #endif
 
 #define MT_BKT_4_DSIZE   65000
-#define MT_BKT_4_NUMBLKS 1000
+#define MT_BKT_4_NUMBLKS 4000
 
 /* For Non-Sharable regions/static regions */
 #ifdef XEON_SPECIFIC_CHANGES

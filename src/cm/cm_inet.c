@@ -45,12 +45,7 @@
   
 /* header include files (.h) */
   
-#include "envopt.h"             /* environment options */  
-#include "envdep.h"             /* environment dependent */
-#include "envind.h"             /* environment independent */
-
-#include "gen.h"                /* general */
-#include "ssi.h"                /* system services interface */
+#include "common_def.h"  
 #include "cm_inet.h"            /* socket library file */
 
 /*cm_inet_c_001.main_35 : Updated for C++ compilation */
@@ -145,14 +140,10 @@ extern "C" {
 #endif /* __cplusplus */
 /* header/extern include files (.x) */
 
-#include "gen.x"                /* general */
-#include "ssi.x"                /* system services interface */
 #include "cm_inet.x"            /* socket library file */
-#include "cm_lib.x"             /* lib library file */
 #ifdef NTL_LIB
 #include "ntl_lib.h"
 #endif 
-#include "du_log.h"
 
   
 /* local defines */

@@ -1158,6 +1158,34 @@ S16 l1HdlUlTtiReq(uint16_t msgLen, void *msg)
       if(ulTtiReq->pdus[numPdus-1].pduType == 0)
       {
          DU_LOG("\nINFO   -->  PHY STUB: PRACH PDU");
+
+         /* Send RACH Ind to L2 for first UE */
+         if(phyDb.ueDb.ueCb[UE_IDX_0].rachIndSent == false)
+         {
+            phyDb.ueDb.ueCb[UE_IDX_0].isCFRA = false;
+            phyDb.ueDb.ueCb[UE_IDX_0].rachIndSent = true;
+            l1BuildAndSendRachInd(ulTtiReq->slot, ulTtiReq->sfn, CB_RA_PREAMBLE_IDX);
+            phyDb.ueDb.numActvUe++;
+         }
+#if 0
+         /* Send RACH Ind to L2 for second UE */
+         if(phyDb.ueDb.ueCb[UE_IDX_1].rachIndSent == false && phyDb.ueDb.ueCb[UE_IDX_0].msgRrcReconfigComp == true)
+         {
+            phyDb.ueDb.ueCb[UE_IDX_0].isCFRA = false;
+            phyDb.ueDb.ueCb[UE_IDX_1].rachIndSent = true;
+            l1BuildAndSendRachInd(ulTtiReq->slot, ulTtiReq->sfn, CB_RA_PREAMBLE_IDX);
+            phyDb.ueDb.numActvUe++;
+         }
+
+         /* Send RACH Ind to L2 for third UE */
+         if(phyDb.ueDb.ueCb[UE_IDX_2].rachIndSent == false && phyDb.ueDb.ueCb[UE_IDX_1].msgRrcReconfigComp == true)
+         {
+            phyDb.ueDb.ueCb[UE_IDX_0].isCFRA = false;
+            phyDb.ueDb.ueCb[UE_IDX_2].rachIndSent = true;
+            l1BuildAndSendRachInd(ulTtiReq->slot, ulTtiReq->sfn, CB_RA_PREAMBLE_IDX);
+            phyDb.ueDb.numActvUe++;
+         }
+#endif       
       }
       if(ulTtiReq->pdus[numPdus-1].pduType == 1)
       {
@@ -1181,36 +1209,6 @@ S16 l1HdlUlTtiReq(uint16_t msgLen, void *msg)
       numPdus--;
    }
 
-   /* TODO: [SFN:SLOT] at which RACH Indication is sent should be calculated
-    * based on PRACH cfg index */
-   /* Send RACH Ind to L2 for first UE */
-   if(phyDb.ueDb.ueCb[UE_IDX_0].rachIndSent == false && ulTtiReq->sfn == 16 && ulTtiReq->slot == 6)
-   {
-      phyDb.ueDb.ueCb[UE_IDX_0].isCFRA = false;
-      phyDb.ueDb.ueCb[UE_IDX_0].rachIndSent = true;
-      l1BuildAndSendRachInd(ulTtiReq->slot, ulTtiReq->sfn, CB_RA_PREAMBLE_IDX);
-      phyDb.ueDb.numActvUe++;
-   }
-   
-#if 0
-   /* Send RACH Ind to L2 for second UE */
-   if(phyDb.ueDb.ueCb[UE_IDX_1].rachIndSent == false && ulTtiReq->sfn == 304 && ulTtiReq->slot == 0)
-   {
-      phyDb.ueDb.ueCb[UE_IDX_0].isCFRA = false;
-      phyDb.ueDb.ueCb[UE_IDX_1].rachIndSent = true;
-      l1BuildAndSendRachInd(ulTtiReq->slot, ulTtiReq->sfn, CB_RA_PREAMBLE_IDX);
-      phyDb.ueDb.numActvUe++;
-   }
-
-   /* Send RACH Ind to L2 for third UE */
-   if(phyDb.ueDb.ueCb[UE_IDX_2].rachIndSent == false && ulTtiReq->sfn == 526 && ulTtiReq->slot == 0)
-   {
-      phyDb.ueDb.ueCb[UE_IDX_0].isCFRA = false;
-      phyDb.ueDb.ueCb[UE_IDX_2].rachIndSent = true;
-      l1BuildAndSendRachInd(ulTtiReq->slot, ulTtiReq->sfn, CB_RA_PREAMBLE_IDX);
-      phyDb.ueDb.numActvUe++;
-   }
-#endif
    MAC_FREE(msg, msgLen);
 #endif
    return ROK;
