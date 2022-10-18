@@ -29,6 +29,7 @@
 #include "du_mgr_main.h"
 #include "du_sctp.h"
 #include "du_egtp.h"
+#include <stdio.h>
 
 #ifdef O1_ENABLE
 
@@ -556,7 +557,7 @@ uint8_t commonInit()
       DU_LOG("\nERROR  -->  DU_APP : System Task creation for EGTP failed");
       return RFAILED;
    }
-   ODU_SET_THREAD_AFFINITY(&egtp_stsk, SS_AFFINITY_MODE_EXCL, 17, 0);
+   ODU_SET_THREAD_AFFINITY(&egtp_stsk, SS_AFFINITY_MODE_EXCL, 27, 0);
 
    /* system task for RLC_DL and MAC */
    if(ODU_CREATE_TASK(PRIOR0, &rlc_mac_cl_stsk) != ROK)
@@ -574,7 +575,7 @@ uint8_t commonInit()
       DU_LOG("\nERROR  -->  DU_APP : System Task creation for RLC UL failed");
       return RFAILED;
    }
-   ODU_SET_THREAD_AFFINITY(&rlc_ul_stsk, SS_AFFINITY_MODE_EXCL, 19, 0);
+   ODU_SET_THREAD_AFFINITY(&rlc_ul_stsk, SS_AFFINITY_MODE_EXCL, 22, 0);
 
    /* system task for SCTP receiver thread */
    if(ODU_CREATE_TASK(PRIOR0, &sctp_stsk) != ROK)
@@ -582,7 +583,7 @@ uint8_t commonInit()
       DU_LOG("\nERROR  -->  DU_APP : System Task creation for SCTP failed");
       return RFAILED;
    }
-   ODU_SET_THREAD_AFFINITY(&sctp_stsk, SS_AFFINITY_MODE_EXCL, 20, 0);
+   ODU_SET_THREAD_AFFINITY(&sctp_stsk, SS_AFFINITY_MODE_EXCL, 25, 0);
 
    /* system task for lower-mac receiver thread */
    if(ODU_CREATE_TASK(PRIOR0, &lwr_mac_stsk) != ROK)
@@ -703,7 +704,6 @@ void init_log()
 uint8_t tst(void)
 {
    init_log();
-
 #ifdef O1_ENABLE
    if(start_O1_module() != ROK)
       return RFAILED;

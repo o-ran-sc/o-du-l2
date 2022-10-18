@@ -1513,10 +1513,12 @@ uint8_t BuildAndSendF1SetupReq()
       else
       {
          DU_LOG("\nDEBUG   -->  F1AP : Created APER encoded buffer for F1SetupRequest\n");
+#ifdef DEBUG_ASN_PRINT
          for(ieIdx=0; ieIdx< encBufSize; ieIdx++)
          {
             printf("%x",encBuf[ieIdx]);
          }
+#endif
          
          duCb.f1SetupReqAndRspMsg.f1MsgReqBufSize = encBufSize;
          DU_ALLOC(duCb.f1SetupReqAndRspMsg.f1MsgReqBuf, encBufSize);
@@ -2448,10 +2450,12 @@ uint8_t BuildAndSendDUConfigUpdate(ServCellAction servCellAction)
       else
       {
          DU_LOG("\nDEBUG   -->  F1AP : Created APER encoded buffer for DUConfigUpdate\n");
+#ifdef DEBUG_ASN_PRINT
          for(ieIdx =0; ieIdx < encBufSize; ieIdx++)
          {
             printf("%x",encBuf[ieIdx]);
          }
+#endif
       }
       /* Sending msg */
       if(sendF1APMsg() != ROK)
@@ -2649,10 +2653,12 @@ uint8_t BuildAndSendULRRCMessageTransfer(DuUeCb  *ueCb, uint8_t lcId, \
       else
       {
 	 DU_LOG("\nDEBUG   -->  F1AP : Created APER encoded buffer for ULRRCMessageTransfer\n");
+#ifdef DEBUG_ASN_PRINT
 	 for(int i=0; i< encBufSize; i++)
 	 {
 	    printf("%x",encBuf[i]);
 	 }
+#endif
       }
 
       /* Sending  msg  */
@@ -8562,10 +8568,12 @@ uint8_t BuildCellGroupConfigRrc(DuUeCb *ueCb, OCTET_STRING_t *duToCuRrcContainer
       else
       {
          DU_LOG("\nDEBUG   -->  F1AP : Created APER encoded buffer for DuToCuRrcContainer\n");
+#ifdef DEBUG_ASN_PRINT
          for(int i=0; i< encBufSize; i++)
          {
             printf("%x",encBuf[i]);
          }
+#endif
       }
 
       duToCuRrcContainer->size = encBufSize;
@@ -8851,10 +8859,12 @@ uint8_t BuildAndSendInitialRrcMsgTransfer(uint32_t gnbDuUeF1apId, uint16_t crnti
 
 	 DU_LOG("\nDEBUG   -->  F1AP : Created APER encoded buffer for Initial UL RRC\
 	       Message transfer\n");
+#ifdef DEBUG_ASN_PRINT
 	 for(int i=0; i< encBufSize; i++)
 	 {
 	    printf("%x",encBuf[i]);
 	 }
+#endif
       }
       /* Sending  msg  */
       if(sendF1APMsg() != ROK)
@@ -13914,10 +13924,12 @@ uint8_t EncodeUeCntxtDuToCuInfo(CellGroupConfig_t *duToCuCellGrp, CellGroupConfi
    else
    {
       DU_LOG("\nDEBUG   -->  F1AP : Created APER encoded buffer for UeCntxtDuToCuInfo\n");
+#ifdef DEBUG_ASN_PRINT
       for(int i=0; i< encBufSize; i++)
       {
 	 printf("%x",encBuf[i]);
       }
+#endif
    }
    duToCuCellGrp->size = encBufSize;
    DU_ALLOC(duToCuCellGrp->buf, duToCuCellGrp->size);
@@ -14246,10 +14258,12 @@ uint8_t BuildAndSendUeContextSetupRsp(uint8_t cellId,uint8_t ueId)
       else
       {
          DU_LOG("\nDEBUG   -->  F1AP : Created APER encoded buffer for UE Context Setup Response\n");
+#ifdef DEBUG_ASN_PRINT
          for(int i=0; i< encBufSize; i++)
          {
             printf("%x",encBuf[i]);
          }
+#endif
       }
 
       /* Sending  msg  */
@@ -14461,10 +14475,12 @@ uint8_t BuildAndSendF1ResetReq()
       else
       {
 	 DU_LOG("\nDEBUG   -->  F1AP : Created APER encoded buffer for F1Reset\n");
+#ifdef DEBUG_ASN_PRINT
 	 for(idx=0; idx< encBufSize; idx++)
 	 {
 	    printf("%x",encBuf[idx]);
 	 }
+#endif
       }
 
       if(sendF1APMsg() != ROK)
@@ -14614,10 +14630,12 @@ uint8_t BuildAndSendF1ResetAck()
       else
       {
 	 DU_LOG("\nDUBUG   -->  F1AP : Created APER encoded buffer for F1ResetAck\n");
+#ifdef DEBUG_ASN_PRINT
 	 for(int i=0; i< encBufSize; i++)
 	 {
 	    printf("%x",encBuf[i]);
 	 }
+#endif
       }
       /* Sending msg */
       if(sendF1APMsg() != ROK)
@@ -14880,10 +14898,12 @@ uint8_t BuildAndSendRrcDeliveryReport(uint32_t gnbCuUeF1apId, \
       else
       {
 	 DU_LOG("\nDEBUG   -->  F1AP : Created APER encoded buffer for RRC Delivery Msg \n");
+#ifdef DEBUG_ASN_PRINT
 	 for(idx=0; idx< encBufSize; idx++)
 	 {
 	    printf("%x",encBuf[idx]);
 	 }
+#endif
       }
 
       /* Sending msg */
@@ -15900,10 +15920,12 @@ uint8_t BuildAndSendUeContextModRsp(DuUeCb *ueCb)
       else
       {
          DU_LOG("\nDEBUG   -->  F1AP : Created APER encoded buffer for UE Context Modification Response\n");
+#ifdef DEBUG_ASN_PRINT
          for(int i=0; i< encBufSize; i++)
          {
             printf("%x",encBuf[i]);
          }
+#endif
       }
 
       /* Sending  msg  */
@@ -16519,10 +16541,12 @@ uint8_t BuildAndSendUeContextReleaseReq(uint16_t cellId, uint8_t ueId)
       else
       {
          DU_LOG("\nDEBUG   -->  F1AP : Created APER encoded buffer for UEContextReleaseRequest\n");
+#ifdef DEBUG_ASN_PRINT
          for(ieIdx=0; ieIdx< encBufSize; ieIdx++)
          {
             printf("%x",encBuf[ieIdx]);
          }
+#endif
       }
 
       /* Sending msg */
@@ -16683,10 +16707,12 @@ uint8_t BuildAndSendUeContextReleaseComplete(uint16_t cellId, uint32_t gnbCuUeF1
       else
       {
          DU_LOG("\nDEBUG   -->  F1AP : Created APER encoded buffer for UEContextReleaseComplete\n");
+#ifdef DEBUG_ASN_PRINT
          for(ieIdx=0; ieIdx< encBufSize; ieIdx++)
          {
             printf("%x",encBuf[ieIdx]);
          }
+#endif
       }
 
       /* Sending msg */
@@ -17160,11 +17186,13 @@ void F1APMsgHdlr(Buffer *mBuf)
       return;
    }
 
+#ifdef DEBUG_ASN_PRINT
    printf("\nDEBUG   -->  F1AP : Received flat buffer to be decoded : ");
    for(i=0; i< recvBufLen; i++)
    {
       printf("%x",recvBuf[i]);
    }
+#endif
 
    /* Decoding flat buffer into F1AP messsage */
    f1apMsg = &f1apasnmsg;
