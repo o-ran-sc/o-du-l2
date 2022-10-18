@@ -114,7 +114,6 @@ uint8_t procSlotInd(fapi_slot_ind_t *fapiSlotInd)
       slotInd->cellId = lwrMacCb.cellCb[0].cellId; 
       slotInd->sfn = fapiSlotInd->sfn;
       slotInd->slot = fapiSlotInd->slot;
-
       FILL_PST_LWR_MAC_TO_MAC(pst, EVENT_SLOT_IND_TO_MAC);
       pst.selector = ODU_SELECTOR_LWLC;
       ret = (*sendSlotIndOpts[pst.selector])(&pst, slotInd);
@@ -188,18 +187,18 @@ uint8_t procRachInd(fapi_rach_indication_t  *fapiRachInd)
    RachPduInfo  *rachPdu = NULLP;
    RachInd      *rachInd = NULLP;
 
-   MAC_ALLOC_SHRABL_BUF(rachInd, sizeof(RachInd));
-   if(!rachInd)
-   {
-      DU_LOG("\nERROR  -->  LWR_MAC : Memory Allocation failed in procRachInd");
-      return RFAILED;
-   }
    if(!fapiRachInd->numPdus)
    {
       DU_LOG("\nDEBUG  -->  LWR_MAC : No PDU in RACH.indication at [%d, %d]", fapiRachInd->sfn, fapiRachInd->slot);
       return ROK;
    }
 
+   MAC_ALLOC_SHRABL_BUF(rachInd, sizeof(RachInd));
+   if(!rachInd)
+   {
+      DU_LOG("\nERROR  -->  LWR_MAC : Memory Allocation failed in procRachInd");
+      return RFAILED;
+   }
    rachInd->cellId = lwrMacCb.cellCb[0].cellId;
    rachInd->timingInfo.sfn = fapiRachInd->sfn;
    rachInd->timingInfo.slot = fapiRachInd->slot;
@@ -534,6 +533,7 @@ void callFlowFromPhyToLwrMac(uint16_t msgId)
    }
    DU_LOG("\nCall Flow: PHY -> ENTLWRMAC : %s\n",message);
 }
+
 /*******************************************************************
  *
  * @brief Processes message from PHY
@@ -559,6 +559,7 @@ void procPhyMessages(uint16_t msgType, uint32_t msgSize, void *msg)
 #ifdef CALL_FLOW_DEBUG_LOG 
    callFlowFromPhyToLwrMac(header->msg_id);
 #endif
+
    switch(header->msg_id)
    {
 #ifdef INTEL_TIMER_MODE

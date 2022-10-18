@@ -67,8 +67,13 @@
 #define MAX_NUM_TB_PER_UE 2  /* spec 38.331, maxNrofCodeWordsScheduledByDCI */
 
 /* 5G ORAN phy delay */
+#ifdef NR_TDD
+#define PHY_DELTA_DL 2
+#define PHY_DELTA_UL 0
+#else
 #define PHY_DELTA_DL 1
 #define PHY_DELTA_UL 0
+#endif
 
  /* SELECTORS */ 
 #define ODU_SELECTOR_LC 0
@@ -155,7 +160,7 @@
 #ifdef NR_TDD
 /* Maximum slots for max periodicity and highest numerology is 320.
  * However, aligning to fapi_interface.h, setting this macro to 160 */
-#define MAX_TDD_PERIODICITY_SLOTS 160 
+#define MAX_TDD_PERIODICITY_SLOTS 10 
 #endif
 
 #define GET_UE_ID( _crnti,_ueId)           \

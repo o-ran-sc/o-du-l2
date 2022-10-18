@@ -57,7 +57,7 @@ extern "C" {
 /* Bucket threshold default values */
 #define SS_BLK_RELEASE_THRESHOLD        110
 #define SS_BLK_ACQUIRE_THRESHOLD        20
-#define SS_DFLT_MEM_BLK_SET_SIZE        128
+#define SS_DFLT_MEM_BLK_SET_SIZE        256
 #define SS_MEM_TYPE_SSI_ZBC 0x11
 #ifdef XEON_SPECIFIC_CHANGES
 #define SS_MEM_TYPE_DPDK_ZBC 0x12

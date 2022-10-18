@@ -21,7 +21,8 @@
 #define __LWR_MAC_H__
 
 #ifdef INTEL_WLS_MEM
-#define LWR_MAC_ALLOC(_datPtr, _size)   WLS_MEM_ALLOC(_datPtr, _size);
+#define LWR_MAC_ALLOC(_datPtr, _size)\
+   WLS_MEM_ALLOC(_datPtr, _size);
 #else                                     
 #define LWR_MAC_ALLOC(_datPtr, _size)   MAC_ALLOC(_datPtr, _size);
 #endif                                    

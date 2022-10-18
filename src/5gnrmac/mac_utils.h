@@ -26,11 +26,12 @@
 #ifdef ODU_MEMORY_DEBUG_LOG
 #define MAC_MEM_LOG(_macro, _file, _line, _func, _size, _datPtr)\
 {\
-   printf("\n%s=== %s +%d, %s, %d, %p\n",           \
+   printf("%s=== %s +%d, %s, %d, %p\n",           \
       _macro, _file, _line, _func, _size, _datPtr); \
 }
 #else
-#define MAC_MEM_LOG(_macro, _file, _line, _func, _size, _dataPtr) {}
+#define MAC_MEM_LOG(_macro, _file, _line, _func, _size, _dataPtr){\
+}
 #endif
 
 /* allocate and zero out a MAC static buffer */

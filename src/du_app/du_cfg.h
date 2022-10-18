@@ -28,9 +28,9 @@
 #define DU_ID 1
 
 #ifndef O1_ENABLE
-#define DU_IP_V4_ADDR "192.168.130.81"
-#define CU_IP_V4_ADDR "192.168.130.82"
-#define RIC_IP_V4_ADDR "192.168.130.80"
+#define DU_IP_V4_ADDR "192.168.130.71"
+#define CU_IP_V4_ADDR "192.168.130.72"
+#define RIC_IP_V4_ADDR "192.168.130.70"
 #define DU_PORT 38472
 #define CU_PORT 38472
 #define RIC_PORT 36421
@@ -99,7 +99,7 @@
 #define CORESET1_NUM_PRB   24
 
 /* MACRO defines for PRACH Configuration */
-#define PRACH_CONFIG_IDX   88
+#define PRACH_CONFIG_IDX   16
 #define PRACH_MAX_PRB  24  /* As per (spec 38.211-Table 6.3.3.2-1), max allocated PRBs can go upto 24 */
 #define PRACH_FREQ_START  (MAX_NUM_RB - PRACH_MAX_PRB) /* In order to allocate PRACH from end of the resource grid */
 #define PRACH_SEQ_LEN SHORT_SEQUENCE

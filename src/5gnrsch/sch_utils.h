@@ -51,11 +51,12 @@
 #ifdef ODU_MEMORY_DEBUG_LOG
 #define SCH_MEM_LOG(_macro, _file, _line, _func, _size, _datPtr)\
 {\
-   printf("\n%s=== %s +%d, %s, %d, %p\n",           \
+   printf("%s=== %s +%d, %s, %d, %p\n",           \
          _macro, _file, _line, _func, _size, _datPtr); \
 }
 #else
-#define SCH_MEM_LOG(_macro, _file, _line, _func, _size, _dataPtr) {}
+#define SCH_MEM_LOG(_macro, _file, _line, _func, _size, _dataPtr){\
+}
 #endif
 
 #define SCH_ALLOC(_datPtr, _size)                               \
