@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "772e1817_87dd1a92",
+        "filename": "tools/Memory_Leak_Detector/README",
+        "patchSetId": 1
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-10-26T09:40:20Z",
+      "side": 1,
+      "message": "actionType \u003d \"UE_CTXT_MOD\" \nI think in our code this action doesn\u0027t gets trigger.\nright now this function \"BuildAndSendUeCtxtRsp\" gets trigger from some where else.",
+      "range": {
+        "startLine": 16,
+        "startChar": 18,
+        "endLine": 16,
+        "endChar": 39
+      },
+      "revId": "98dff34da968d2fc18109cb1ccf019a8770bd016",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "08681a64_f9fdb236",
+        "filename": "tools/Memory_Leak_Detector/README",
+        "patchSetId": 1
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-10-26T09:40:20Z",
+      "side": 1,
+      "message": "is this accessible to others other than us?",
+      "range": {
+        "startLine": 28,
+        "startChar": 0,
+        "endLine": 28,
+        "endChar": 108
+      },
+      "revId": "98dff34da968d2fc18109cb1ccf019a8770bd016",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
