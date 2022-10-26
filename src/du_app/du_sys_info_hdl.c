@@ -2863,7 +2863,7 @@ void FreePuschCfgCommon(struct BWP_UplinkCommon__pusch_ConfigCommon *puschCfg)
       /* P0 Nominal with grant */
       DU_FREE(setup->p0_NominalWithGrant, sizeof(long));
 
-      DU_ALLOC(puschCfg->choice.setup, sizeof(PUSCH_ConfigCommon_t));
+      DU_FREE(puschCfg->choice.setup, sizeof(PUSCH_ConfigCommon_t));
    }
 }/* BuildPuschCfgCommon */
 

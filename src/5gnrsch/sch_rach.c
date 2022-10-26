@@ -375,10 +375,8 @@ uint16_t calculateRaRnti(uint8_t symbolIdx, uint8_t slotIdx, uint8_t freqIdx)
  *  @param[in]  shed instance
  *  @return  void
  **/
-void createSchRaCb(SchRaReq *raReq, Inst schInst)
+void createSchRaCb(uint8_t ueId, SchRaReq *raReq, Inst schInst)
 {
-   uint8_t ueId = 0;
-
    if(raReq->isCFRA)
    {
       /* If a UE in handover has triggered CFRA, its UE CB context is already present in SCH, 
@@ -760,7 +758,7 @@ bool schProcessRaReq(Inst schInst, SchCellCb *cell, SlotTimingInfo currTime, uin
          cell->schUlSlotInfo[msg3Time.slot]->puschUe = ueId;
 
       /* Create raCb at SCH */
-      createSchRaCb(cell->raReq[ueId-1], schInst);
+      createSchRaCb(ueId, cell->raReq[ueId-1], schInst);
 
       /* Remove RachInd from pending RA request list */
       SCH_FREE(cell->raReq[ueId-1]->rachInd, sizeof(RachIndInfo));

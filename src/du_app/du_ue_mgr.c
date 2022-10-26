@@ -1279,6 +1279,7 @@ uint8_t fillMacUeCfg(uint16_t cellId, uint8_t gnbDuUef1apId, uint16_t crnti, DuU
          fillDefaultPhyCellGrpInfo(macUeCfg);
          fillDefaultSpCellGrpInfo(macUeCfg);
          fillDefaultModulation(macUeCfg);
+         macUeCfg->ambrCfg = NULLP;
       }
 
 #ifdef NR_DRX
