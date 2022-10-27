@@ -1200,6 +1200,7 @@ typedef struct schMacCellGrpCfg
    SchTagCfg        tagCfg;
    SchPhrCfg        phrCfg;             /* To be used only if phrCfgSetupPres is true */      
 #ifdef NR_DRX
+   bool             drxCfgPresent;
    SchDrxCfg        drxCfg;          /* Drx configuration */
 #endif
 }SchMacCellGrpCfg;
@@ -1654,6 +1655,9 @@ typedef struct schUeCfg
    uint8_t            numLcs;
    SchLcCfg           schLcCfg[MAX_NUM_LC];
    SchDataTransmission dataTransmissionInfo;
+#ifdef NR_DRX   
+   bool     drxConfigIndicatorRelease;
+#endif
 }SchUeCfg;
 
 typedef struct schUeCfgRsp
