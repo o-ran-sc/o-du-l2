@@ -41,6 +41,9 @@ File:     sch_slot_ind.c
 #include "mac_sch_interface.h"
 #include "sch.h"
 #include "sch_utils.h"
+#ifdef NR_DRX 
+#include "sch_drx.h"
+#endif
 
 SchMacDlAllocFunc schMacDlAllocOpts[] =
 {
@@ -793,6 +796,10 @@ uint8_t schProcessSlotInd(SlotTimingInfo *slotInd, Inst schInst)
    dlSchedInfo.cellId = cell->cellId;
    slot = dlSchedInfo.schSlotValue.broadcastTime.slot;
 
+#ifdef NR_DRX 
+   schHandleStartDrxTimer(cell);
+#endif
+   
    /* Check for SSB occassion */
    dlBrdcstAlloc->ssbTrans = schCheckSsbOcc(cell, dlSchedInfo.schSlotValue.broadcastTime); 
    if(dlBrdcstAlloc->ssbTrans)
@@ -838,6 +845,7 @@ uint8_t schProcessSlotInd(SlotTimingInfo *slotInd, Inst schInst)
       {
          ueNode = (uint8_t *)pendingUeNode->node;
          ueId = *(uint8_t *)(pendingUeNode->node);
+         
          /* If RAR is pending for this UE, schedule PDCCH,PDSCH to send RAR and 
           * PUSCH to receive MSG3 as per k0-k2 configuration*/
          if(cell->raReq[ueId-1] != NULLP)
@@ -852,6 +860,14 @@ uint8_t schProcessSlotInd(SlotTimingInfo *slotInd, Inst schInst)
             schMsg3RetxSchedulingForUe(&(cell->raCb[ueId-1]));
          }
 
+#ifdef NR_DRX 
+         if(!(cell->ueCb[ueId-1].ueDrxInfoPres) && !(cell->ueCb[ueId-1].drxUeCb.drxDlUeActiveStatus))
+         {
+            cmLListAdd2Tail(&cell->ueToBeScheduled, cmLListDelFrm(&cell->ueToBeScheduled, pendingUeNode));
+         }
+         else 
+#endif
+         {
          /* If MSG4 is pending for this UE, schedule PDCCH,PDSCH to send MSG4 and
           * PUCCH to receive UL msg as per k0-k1 configuration  */
          if (cell->ueCb[ueId-1].retxMsg4HqProc) //should work from dlmap later tbd
@@ -913,6 +929,13 @@ uint8_t schProcessSlotInd(SlotTimingInfo *slotInd, Inst schInst)
                /* If DL scheduling failed, free the newly assigned HARQ process */
                if(!isDlMsgScheduled)
                   schDlReleaseHqProcess(hqP);
+               else
+               {
+#ifdef NR_DRX 
+                  if(cell->ueCb[ueId-1].ueDrxInfoPres)
+                     schHdlDrxInActvStrtTmr(cell, &cell->ueCb[ueId-1], PHY_DELTA_DL + SCHED_DELTA);
+#endif               
+               }
             }
          }
 
@@ -934,6 +957,13 @@ uint8_t schProcessSlotInd(SlotTimingInfo *slotInd, Inst schInst)
                isUlGrantScheduled = schProcessSrOrBsrReq(cell, *slotInd, ueId, FALSE, &ulHqP);
                if(!isUlGrantScheduled)
                   schUlReleaseHqProcess(ulHqP, FALSE);
+               else
+               {
+#ifdef NR_DRX 
+                  if(cell->ueCb[ueId-1].ueDrxInfoPres)
+                     schHdlDrxInActvStrtTmr(cell, &cell->ueCb[ueId-1], PHY_DELTA_UL + SCHED_DELTA);
+#endif               
+               }
             }
          }
 
@@ -950,7 +980,7 @@ uint8_t schProcessSlotInd(SlotTimingInfo *slotInd, Inst schInst)
             SCH_FREE(ueNode, sizeof(uint8_t));
             deleteNodeFromLList(&cell->ueToBeScheduled, pendingUeNode);
          }
-      }
+      }}
    }
 
    /* Check if any PDU is scheduled at this slot for any UE */
@@ -992,7 +1022,9 @@ uint8_t schProcessSlotInd(SlotTimingInfo *slotInd, Inst schInst)
 
    schInitDlSlot(cell->schDlSlotInfo[slot]);
    schUlResAlloc(cell, schInst);
-
+#ifdef NR_DRX 
+   schHandleExpiryDrxTimer(cell);
+#endif   
    return ret;
 }
 
