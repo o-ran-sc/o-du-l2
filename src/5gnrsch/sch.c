@@ -666,6 +666,10 @@ uint8_t schInitCellCb(Inst inst, SchCellCfg *schCellCfg)
    cell->firstSib1Transmitted = false;
    fillSsbStartSymb(cell);
    cmLListInit(&cell->ueToBeScheduled);
+
+#ifdef NR_DRX
+   memset(cell->drxCb, 0, MAX_DRX_SIZE*sizeof(SchDrxCb));
+#endif   
    schCb[inst].cells[inst] = cell;
 
    DU_LOG("\nINFO  -->  SCH : Cell init completed for cellId:%d", cell->cellId);
@@ -1114,6 +1118,13 @@ uint8_t MacSchSrUciInd(Pst *pst, SrUciIndInfo *uciInd)
       DU_LOG("\nINFO --> SCH: UL Data transmission not allowed for UE %d", ueCb->ueCfg.ueId);
       return ROK;
    }
+#ifdef NR_DRX
+   if(ueCb->ueDrxInfoPres)
+   {
+      if(!ueCb->drxUeCb.drxUlUeActiveStatus)
+         ueCb->drxUeCb.drxUlUeActiveStatus = true;
+   }
+#endif
    if(uciInd->numSrBits)
    {
       ueCb->srRcvd = true;      

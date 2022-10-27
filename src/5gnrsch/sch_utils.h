@@ -138,10 +138,8 @@ void deleteLcLL(CmLListCp *lcLL);
 CmLList *schPageInfoSearchFromPageList(SlotTimingInfo slotInfo, CmLListCp *storedPageList);
 void schDeleteFromPageInfoList(CmLListCp *list, CmLList *node);
 
-#if 0
 /*Will be enabled for debugging*/
-void printLcLL(CmLListCp *lcLL);
-#endif
+void printLcLL(CmLListCp *lcLL, uint16_t idx);
 
 /**********************************************************************
   End of file
