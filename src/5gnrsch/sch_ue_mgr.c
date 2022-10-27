@@ -256,8 +256,33 @@ uint8_t fillSchUeCb(Inst inst, SchUeCb *ueCb, SchUeCfg *ueCfg)
    {
       memcpy(&ueCb->ueCfg.macCellGrpCfg , &ueCfg->macCellGrpCfg, sizeof(SchMacCellGrpCfg)); 
       ueCb->ueCfg.macCellGrpCfgPres = true;
+#ifdef NR_DRX
+      if(ueCfg->macCellGrpCfg.drxCfgPresent == true)
+      {
+         if(ueCb->ueDrxInfoPres == false)
+         {
+            ueCb->ueDrxInfoPres = true;
+            //schFillDrxUeCb(ueCb->cellCb->cellCfg.numerology, ueCfg->macCellGrpCfg.drxCfg, &ueCb->drxUeCb);
+         }
+         else
+         {
+            //schFillDrxUeCb(ueCb->cellCb->cellCfg.numerology, ueCfg->macCellGrpCfg.drxCfg, &ueCb->drxUeCb);
+         }
+      }
+#endif
    }
 
+#ifdef NR_DRX
+   if(ueCfg->drxConfigIndicatorRelease == true)
+   {
+      if(ueCb->ueDrxInfoPres == true)
+      {
+         schDeleteUeDrxInfo(ueCb->cellCb, ueCb);
+         ueCb->ueDrxInfoPres = false;
+      }
+   }
+#endif
+   
    if(ueCfg->phyCellGrpCfgPres == true)
    {
       memcpy(&ueCb->ueCfg.phyCellGrpCfg ,  &ueCfg->phyCellGrpCfg, sizeof(SchPhyCellGrpCfg));
@@ -1139,7 +1164,14 @@ void deleteSchUeCb(SchUeCb *ueCb)
          SCH_FREE(ueCb->ulInfo.ulLcCtxt[ueLcIdx].snssai, sizeof(Snssai));
          SCH_FREE(ueCb->dlInfo.dlLcCtxt[ueLcIdx].snssai, sizeof(Snssai));
       }
-
+#ifdef NR_DRX
+      if(ueCb->ueDrxInfoPres)
+      {
+         /* Removing all the calculated drx configuration */ 
+         schDeleteUeDrxInfo(ueCb->cellCb, ueCb);
+         ueCb->ueDrxInfoPres = false;
+      }
+#endif
       memset(ueCb, 0, sizeof(SchUeCb));
    }
 }
