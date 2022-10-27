@@ -1283,6 +1283,11 @@ uint8_t fillMacUeCfg(uint16_t cellId, uint8_t gnbDuUef1apId, uint16_t crnti, DuU
       }
 
 #ifdef NR_DRX
+      if(ueCfgDb->drxConfigIndicatorRelease == true)
+     {
+         macUeCfg->drxConfigIndicatorRelease = true;
+      }
+      
       if(ueCfgDb->drxCyclePres)
       {
          macUeCfg->macCellGrpCfg.drxCfg.drxLongCycleStartOffset.drxLongCycleStartOffsetChoice = ueCfgDb->drxCycle.drxLongCycleLength;
