@@ -76,35 +76,38 @@ uint8_t schProcessCrcInd(CrcIndInfo *crcInd, Inst schInst)
       }
       else
       {
-         if (cell->ueCb[ueId-1].hqUlmap[crcInd->timingInfo.slot]->hqList.count == 0)
+         if(cell->ueCb[ueId-1].hqUlmap[crcInd->timingInfo.slot])
          {
-            DU_LOG("\n ERROR no harq stored in ul hq map at slot %d ue id %d\n",crcInd->timingInfo.slot, ueId);
-            continue;
-         }
-         if (cell->ueCb[ueId-1].hqUlmap[crcInd->timingInfo.slot]->hqList.first == 0)
-         {
-            DU_LOG("\n ERROR NULL harq stored in ul hq map at slot %d ue id %d\n",crcInd->timingInfo.slot, ueId);
-            continue;
-         }
-         hqP = (SchUlHqProcCb*) cell->ueCb[ueId-1].hqUlmap[crcInd->timingInfo.slot]->hqList.first->node;
-         if(hqP == NULLP)
-         {
-            continue;
-         }
-         else
-         {
-            if (crcInd->crcInd[count])
-            {             
-               /* failure case*/
-               schUlHqProcessNack(hqP);
+            if (cell->ueCb[ueId-1].hqUlmap[crcInd->timingInfo.slot]->hqList.count == 0)
+            {
+               DU_LOG("\n ERROR no harq stored in ul hq map at slot %d ue id %d\n",crcInd->timingInfo.slot, ueId);
+               continue;
+            }
+            if (cell->ueCb[ueId-1].hqUlmap[crcInd->timingInfo.slot]->hqList.first == 0)
+            {
+               DU_LOG("\n ERROR NULL harq stored in ul hq map at slot %d ue id %d\n",crcInd->timingInfo.slot, ueId);
+               continue;
+            }
+            hqP = (SchUlHqProcCb*) cell->ueCb[ueId-1].hqUlmap[crcInd->timingInfo.slot]->hqList.first->node;
+            if(hqP == NULLP)
+            {
+               continue;
             }
             else
             {
-               /* pass case*/
-               schUlHqProcessAck(hqP);
+               if (crcInd->crcInd[count])
+               {             
+                  /* failure case*/
+                  schUlHqProcessNack(hqP);
+               }
+               else
+               {
+                  /* pass case*/
+                  schUlHqProcessAck(hqP);
+               }
             }
+            cmLListDelFrm(&(cell->ueCb[ueId-1].hqUlmap[crcInd->timingInfo.slot]->hqList), &hqP->ulSlotLnk);
          }
-         cmLListDelFrm(&(cell->ueCb[ueId-1].hqUlmap[crcInd->timingInfo.slot]->hqList), &hqP->ulSlotLnk);
       }
       count++;
    }
