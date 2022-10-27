@@ -28,6 +28,9 @@
 #include "mac_sch_interface.h"
 #include "sch.h"
 #include "sch_utils.h"
+#ifdef NR_DRX 
+#include "sch_drx.h"
+#endif
 
 /* local defines */
 SchUeCfgRspFunc SchUeCfgRspOpts[] =
@@ -256,8 +259,56 @@ uint8_t fillSchUeCb(Inst inst, SchUeCb *ueCb, SchUeCfg *ueCfg)
    {
       memcpy(&ueCb->ueCfg.macCellGrpCfg , &ueCfg->macCellGrpCfg, sizeof(SchMacCellGrpCfg)); 
       ueCb->ueCfg.macCellGrpCfgPres = true;
+#ifdef NR_DRX
+      if(ueCfg->macCellGrpCfg.drxCfgPresent == true)
+      {
+         if(ueCb->ueDrxInfoPres == false)
+         {
+            ueCb->ueDrxInfoPres = true;
+            /* intialize the drxUeCb */
+            schInitDrxUeCb(ueCb);
+            
+            /* intialize the Dl drxHarqCb */
+            for(uint8_t idx =0; idx<ueCb->dlHqEnt.numHqPrcs; idx++)
+            {
+               schInitDrxHarqCb(&ueCb->dlHqEnt.procs[idx].drxHarqCb);
+            }
+            /* intialize the Ul drxHarqCb */
+            for(uint8_t idx =0; idx<ueCb->ulHqEnt.numHqPrcs; idx++)
+            {
+               schInitDrxHarqCb(&ueCb->ulHqEnt.procs[idx].drxHarqCb);
+            }
+            /* convert all the drx configuration recived in ms/subms into number of slots and store into the drxUeCb */
+            schFillDrxUeCb(ueCb->cellCb->cellCfg.numerology, ueCfg->macCellGrpCfg.drxCfg, &ueCb->drxUeCb);
+            /* Calculate the onduration timer and short cycle timer (if shortcycle configuration is present) as soon as we 
+             * recived ueCfg request */
+            schAddUeInOndurationAndShortCycleList(ueCb->cellCb, ueCb, 0);
+
+         }
+         else
+         {
+            /* convert all the drx configuration recived in ms/subms into number
+             * of slots and store into the drxUeCb */
+            schFillDrxUeCb(ueCb->cellCb->cellCfg.numerology, ueCfg->macCellGrpCfg.drxCfg, &ueCb->drxUeCb);
+
+            /* Recalculate/Restart timer based on their presence */
+            schDrxUeReCfgTimer(ueCb->cellCb, ueCb);
+         }
+      }
+#endif
    }
 
+#ifdef NR_DRX
+   if(ueCfg->drxConfigIndicatorRelease == true)
+   {
+      if(ueCb->ueDrxInfoPres == true)
+      {
+         schDeleteUeDrxInfo(ueCb->cellCb, ueCb);
+         ueCb->ueDrxInfoPres = false;
+      }
+   }
+#endif
+   
    if(ueCfg->phyCellGrpCfgPres == true)
    {
       memcpy(&ueCb->ueCfg.phyCellGrpCfg ,  &ueCfg->phyCellGrpCfg, sizeof(SchPhyCellGrpCfg));
@@ -1139,7 +1190,14 @@ void deleteSchUeCb(SchUeCb *ueCb)
          SCH_FREE(ueCb->ulInfo.ulLcCtxt[ueLcIdx].snssai, sizeof(Snssai));
          SCH_FREE(ueCb->dlInfo.dlLcCtxt[ueLcIdx].snssai, sizeof(Snssai));
       }
-
+#ifdef NR_DRX
+      if(ueCb->ueDrxInfoPres)
+      {
+         /* Removing all the calculated drx configuration timer list */ 
+         schDeleteUeDrxInfo(ueCb->cellCb, ueCb);
+         ueCb->ueDrxInfoPres = false;
+      }
+#endif
       memset(ueCb, 0, sizeof(SchUeCb));
    }
 }

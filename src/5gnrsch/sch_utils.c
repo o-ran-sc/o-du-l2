@@ -1636,7 +1636,6 @@ CmLList *schPageInfoSearchFromPageList(SlotTimingInfo slotInfo, CmLListCp *store
 }
 
 /*Below function for printing will be used in future so disabling it for now*/
-#if 0
 /****************************************************************************
  *
  * @brief Print the LC in list for debugging purpose 
@@ -1654,10 +1653,11 @@ CmLList *schPageInfoSearchFromPageList(SlotTimingInfo slotInfo, CmLListCp *store
  * @return void 
  *        
  *************************************************************************/
-void printLcLL(CmLListCp *lcLL)
+void printLcLL(CmLListCp *lcLL, uint16_t idx)
 {
    CmLList *node = NULLP;
    LcInfo *lcNode = NULLP;
+   SchUeCb      *ueCb = NULLP;
 
    if(lcLL == NULLP)
    {
@@ -1667,17 +1667,16 @@ void printLcLL(CmLListCp *lcLL)
    node = lcLL->first;
    while(node)
    {
-      lcNode = (LcInfo *)node->node;
-      if(lcNode)
+      ueCb = (SchUeCb *)node->node;
+      if(ueCb)
       {
-         DU_LOG("\nINFO   -->  SCH : LcID:%d, [reqBO, allocBO, allocPRB]:[%d,%d,%d]",\
-               lcNode->lcId,lcNode->reqBO, lcNode->allocBO, lcNode->allocPRB);
+         //DU_LOG("\nINFO   -->  SCH : LcID:%d, [reqBO, allocBO, allocPRB]:[%d,%d,%d]", lcNode->lcId,lcNode->reqBO, lcNode->allocBO, lcNode->allocPRB);
+         DU_LOG("\nPBORLA INFO   -->  SCH : idx %d crnti %d ",idx, ueCb->crnti );
       }
 
       node = node->next;
    }
 }
-#endif
 
 #ifdef NR_TDD
 
