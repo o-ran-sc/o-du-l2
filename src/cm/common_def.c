@@ -276,14 +276,14 @@ uint8_t convertScsPeriodicityToEnum(uint32_t num)
 *         RFAILED - failure
 *
 * ****************************************************************/
-uint8_t SGetSBufNewForDebug(char *file, char *func, char *line, Region region, Pool pool, Data **ptr, Size size)
+uint8_t SGetSBufNewForDebug(char *file, const char *func, int line, Region region, Pool pool, Data **ptr, Size size)
 {
    if(SGetSBuf(region, pool, ptr, size) == ROK)
    {
 #ifdef ODU_MEMORY_DEBUG_LOG
       if (strncmp(func,"cmInetRecvMsg",sizeof("cmInetRecvMsg")))
       {
-         printf("\nCM_ALLOC=== SGetSBufNewForDebug %s +%d, %s, %d, %p\n",\
+         printf("\nCM_ALLOC=== SGetSBufNewForDebug %s +%d, %s, %d, %p",\
          file, line, func, size, *ptr);
       }
 #endif
@@ -309,14 +309,14 @@ uint8_t SGetSBufNewForDebug(char *file, char *func, char *line, Region region, P
 *         RFAILED - failure
 *
 * ****************************************************************/
-uint8_t SPutSBufNewForDebug(char *file, char *func, char *line, Region region, Pool pool, Data *ptr, Size size)
+uint8_t SPutSBufNewForDebug(char *file, const char *func, int line, Region region, Pool pool, Data *ptr, Size size)
 {
    if(SPutSBuf(region, pool, ptr, size) == ROK)
    {
 #ifdef ODU_MEMORY_DEBUG_LOG
       if (strncmp(func,"cmInetRecvMsg",sizeof("cmInetRecvMsg")))
       {
-         printf("\nCM_FREE=== SPutSBufNewForDebug %s +%d, %s, %d, %p\n",\
+         printf("\nCM_FREE=== SPutSBufNewForDebug %s +%d, %s, %d, %p",\
          file, line, func, size, ptr);
       }
 #endif
@@ -343,13 +343,13 @@ uint8_t SPutSBufNewForDebug(char *file, char *func, char *line, Region region, P
 *         RFAILED - failure
 *
 * ****************************************************************/
-uint8_t SGetStaticBufNewForDebug(char *file, char *func, char *line, \
+uint8_t SGetStaticBufNewForDebug(char *file, const char *func, int line, \
 Region region, Pool pool, Data **ptr, Size size, uint8_t memType)
 {
    if(SGetStaticBuffer(region, pool, ptr, size, memType) == ROK)
    {
 #ifdef ODU_MEMORY_DEBUG_LOG
-      printf("\nCM_ALLOC=== SGetStaticBufNewForDebug %s +%d, %s, %d, %p\n",\
+      printf("\nCM_ALLOC=== SGetStaticBufNewForDebug %s +%d, %s, %d, %p",\
          file, line, func, size, *ptr);
 #endif
       return ROK;
@@ -374,13 +374,13 @@ Region region, Pool pool, Data **ptr, Size size, uint8_t memType)
 *         RFAILED - failure
 *
 * ****************************************************************/
-uint8_t SPutStaticBufNewForDebug(char *file, char *func, char *line, \
+uint8_t SPutStaticBufNewForDebug(char *file, const char *func, int line, \
 Region region, Pool pool, Data *ptr, Size size, uint8_t memType)
 {
    if(SPutStaticBuffer(region, pool, ptr, size, memType) == ROK)
    {
 #ifdef ODU_MEMORY_DEBUG_LOG
-      printf("\nCM_FREE=== SPutStaticBufNewForDebug %s +%d, %s, %d, %p\n",\
+      printf("\nCM_FREE=== SPutStaticBufNewForDebug %s +%d, %s, %d, %p",\
          file, line, func, size, ptr);
 #endif
       return ROK;

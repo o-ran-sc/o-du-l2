@@ -476,10 +476,12 @@ uint8_t BuildAndSendE2SetupReq()
       else
       {
          DU_LOG("\nDEBUG   -->  E2AP : Created APER encoded buffer for E2SetupRequest\n");
+#ifdef DEBUG_ASN_PRINT
          for(int i=0; i< encBufSize; i++)
          {
             printf("%x",encBuf[i]);
          }
+#endif
       }
       if(SendE2APMsg(DU_APP_MEM_REGION, DU_POOL) != ROK)
       {
@@ -841,10 +843,12 @@ uint8_t BuildAndSendRicSubscriptionRsp()
       else
       {
 	 DU_LOG("\nDEBUG   -->  E2AP : Created APER encoded buffer for RIC subscription response \n");
+#ifdef DEBUG_ASN_PRINT
 	 for(int i=0; i< encBufSize; i++)
 	 {
 	    printf("%x",encBuf[i]);
 	 } 
+#endif
       } 
 
       if(SendE2APMsg(DU_APP_MEM_REGION, DU_POOL) != ROK)
@@ -1367,10 +1371,12 @@ uint8_t BuildAndSendRicIndication()
       else
       {
 	 DU_LOG("\nDEBUG  -->  E2AP : Created APER encoded buffer for RIC Indication Message \n");
+#ifdef DEBUG_ASN_PRINT
 	 for(int i=0; i< encBufSize; i++)
 	 {
 	    printf("%x",encBuf[i]);
 	 } 
+#endif
       }
 
       if(SendE2APMsg(DU_APP_MEM_REGION, DU_POOL) != ROK)
@@ -1570,10 +1576,12 @@ uint8_t BuildAndSendE2NodeConfigUpdate()
       else
       {
          DU_LOG("\nDEBUG   -->  E2AP : Created APER encoded buffer for E2nodeConfigurationUpdate\n");
+#ifdef DEBUG_ASN_PRINT
          for(int i=0; i< encBufSize; i++)
          {
             printf("%x",encBuf[i]);
          }
+#endif
       }
       if(SendE2APMsg(DU_APP_MEM_REGION, DU_POOL) != ROK)
       {
@@ -1633,11 +1641,13 @@ void E2APMsgHdlr(Buffer *mBuf)
       return;
    }
 
+#ifdef DEBUG_ASN_PRINT
    printf("\nDEBUG   -->  E2AP : Received flat buffer to be decoded : ");
    for(i=0; i< recvBufLen; i++)
    {
       printf("%x",recvBuf[i]);
    }
+#endif
 
    /* Decoding flat buffer into E2AP messsage */
    e2apMsg = &e2apasnmsg;
