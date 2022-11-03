@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "51725fb8_9f4e3f2a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-11-03T14:39:45Z",
+      "side": 1,
+      "message": "PatchSet2: Slice Reconfig ",
+      "revId": "1bf4e7e91e3e2ff832132b4992ba57a356cdb92d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
