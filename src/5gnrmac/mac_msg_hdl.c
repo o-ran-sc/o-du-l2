@@ -70,12 +70,12 @@ MacSchSrUciIndFunc macSchSrUciIndOpts[]=
    packMacSchSrUciInd
 };
 
-/* Function pointer for sending HARQ Uci ind from MAC to SCH */
-MacSchHarqUciIndFunc macSchHarqUciIndOpts[]=
+/* Function pointer for sending DL HARQ Ind from MAC to SCH */
+MacSchDlHarqIndFunc macSchDlHarqIndOpts[]=
 {
-   packMacSchHarqUciInd,
-   MacSchHarqUciInd,
-   packMacSchHarqUciInd
+   packMacSchDlHarqInd,
+   MacSchDlHarqInd,
+   packMacSchDlHarqInd
 };
 
 /* Function pointer for sending Slice cfg  ind from MAC to SCH */
@@ -87,11 +87,11 @@ MacSchSliceCfgReqFunc macSchSliceCfgReqOpts[]=
 };
 
 /* Function pointer for sending Slice cfg  ind from MAC to SCH */
-MacSchSliceReCfgReqFunc macSchSliceReCfgReqOpts[]=
+MacSchSliceRecfgReqFunc macSchSliceRecfgReqOpts[]=
 {
-   packMacSchSliceReCfgReq,
-   MacSchSliceReCfgReq,
-   packMacSchSliceReCfgReq
+   packMacSchSliceRecfgReq,
+   MacSchSliceRecfgReq,
+   packMacSchSliceRecfgReq
 };
 /*******************************************************************
  *
@@ -497,14 +497,14 @@ uint8_t sendSchedRptToRlc(DlSchedInfo dlInfo, SlotTimingInfo slotInfo, uint8_t u
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t MacProcCellStart(Pst *pst, OduCellId  *cellId)
+uint8_t MacProcCellStart(Pst *pst, CellStartInfo  *cellStart)
 {
    DU_LOG("\nINFO  -->  MAC : Handling cell start request");
    gSlotCount = 0;
-   sendToLowerMac(START_REQUEST, 0, cellId);
+   sendToLowerMac(START_REQUEST, 0, cellStart);
 
-   MAC_FREE_SHRABL_BUF(pst->region, pst->pool, cellId, \
-	 sizeof(OduCellId));
+   MAC_FREE_SHRABL_BUF(pst->region, pst->pool, cellStart, \
+	 sizeof(CellStartInfo));
 
    return ROK;
 }
@@ -526,21 +526,21 @@ uint8_t MacProcCellStart(Pst *pst, OduCellId  *cellId)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t MacProcCellStop(Pst *pst, OduCellId  *cellId)
+uint8_t MacProcCellStop(Pst *pst, CellStopInfo  *cellStop)
 {
 #ifdef INTEL_FAPI
    uint16_t      cellIdx; 
 
    DU_LOG("\nINFO  -->  MAC : Sending cell stop request to Lower Mac");
-   GET_CELL_IDX(cellId->cellId, cellIdx);
+   GET_CELL_IDX(cellStop->cellId, cellIdx);
    if(macCb.macCell[cellIdx])
    {
       macCb.macCell[cellIdx]->state = CELL_TO_BE_STOPPED;
    }
 #endif
 
-   MAC_FREE_SHRABL_BUF(pst->region, pst->pool, cellId, \
-	 sizeof(OduCellId));
+   MAC_FREE_SHRABL_BUF(pst->region, pst->pool, cellStop, \
+	 sizeof(CellStopInfo));
 
    return ROK;
 }
@@ -741,7 +741,7 @@ uint8_t macProcLongBsr(uint16_t cellId, uint16_t crnti,uint8_t numLcg,\
 
 /*******************************************************************
  *
- * @brief Builds and send HARQ UCI Indication to SCH
+ * @brief Builds and send DL HARQ Indication to SCH
  *
  * @details
  *
@@ -762,25 +762,25 @@ uint8_t buildAndSendHarqInd(HarqInfoF0F1 *harqInfo, uint8_t crnti, uint16_t cell
 {
    uint16_t harqCounter=0;
    Pst pst;
-   HarqUciIndInfo   harqUciInd;
+   DlHarqInd   dlHarqInd;
    memset(&pst, 0, sizeof(Pst));
-   memset(&harqUciInd, 0, sizeof(HarqUciIndInfo));
+   memset(&dlHarqInd, 0, sizeof(DlHarqInd));
 
-   harqUciInd.cellId       = macCb.macCell[cellIdx]->cellId;
-   harqUciInd.crnti        = crnti;
-   harqUciInd.slotInd.sfn  = slotInd->sfn;
-   harqUciInd.slotInd.slot = slotInd->slot;
-   harqUciInd.numHarq = harqInfo->numHarq;
-   memset(harqUciInd.harqPayload, 0, MAX_SR_BITS_IN_BYTES);
+   dlHarqInd.cellId       = macCb.macCell[cellIdx]->cellId;
+   dlHarqInd.crnti        = crnti;
+   dlHarqInd.slotInd.sfn  = slotInd->sfn;
+   dlHarqInd.slotInd.slot = slotInd->slot;
+   dlHarqInd.numHarq      = harqInfo->numHarq;
+   memset(dlHarqInd.harqPayload, 0, MAX_SR_BITS_IN_BYTES);
    for(harqCounter = 0; harqCounter < harqInfo->numHarq; harqCounter++)
    {
-      harqUciInd.harqPayload[harqCounter] = harqInfo->harqValue[harqCounter];
+      dlHarqInd.harqPayload[harqCounter] = harqInfo->harqValue[harqCounter];
    }
    
    /* Fill Pst */
-   FILL_PST_MAC_TO_SCH(pst, EVENT_UCI_IND_TO_SCH);
+   FILL_PST_MAC_TO_SCH(pst, EVENT_DL_HARQ_IND_TO_SCH);
 
-   return(*macSchHarqUciIndOpts[pst.selector])(&pst, &harqUciInd);
+   return(*macSchDlHarqIndOpts[pst.selector])(&pst, &dlHarqInd);
 }
 
 
@@ -1001,46 +1001,46 @@ uint8_t MacProcSliceCfgReq(Pst *pst, MacSliceCfgReq *macSliceCfgReq)
  *
  * @details
  *
- *    Function : MacProcSliceReCfgReq 
+ *    Function : MacProcSliceRecfgReq 
  *
  *    Functionality:
  *       Processes Processes Slice ReCfg Request recived from DU
  *
  * @params[in] Post Structure Pointer
- *             MacSliceCfgReq *macSliceReCfgReq;
+ *             MacSliceCfgReq *macSliceRecfgReq;
  * @return ROK     - success
  *         RFAILED - failure
  *
  **********************************************************************/
-uint8_t MacProcSliceReCfgReq(Pst *pst, MacSliceCfgReq *macSliceReCfgReq)
+uint8_t MacProcSliceRecfgReq(Pst *pst, MacSliceRecfgReq *macSliceRecfgReq)
 {
    uint8_t ret = ROK;
    Pst schPst;
-   SchSliceCfgReq *schSliceReCfgReq;
+   SchSliceRecfgReq *schSliceRecfgReq;
 
    DU_LOG("\nINFO  -->  MAC : Received Slice ReCfg request from DU APP");
-   if(macSliceReCfgReq)
+   if(macSliceRecfgReq)
    {
-      MAC_ALLOC(schSliceReCfgReq, sizeof(SchSliceCfgReq));
-      if(schSliceReCfgReq == NULLP)
+      MAC_ALLOC(schSliceRecfgReq, sizeof(SchSliceRecfgReq));
+      if(schSliceRecfgReq == NULLP)
       {
-         DU_LOG("\nERROR -->  MAC : Memory allocation failed in MacProcSliceReCfgReq");
+         DU_LOG("\nERROR -->  MAC : Memory allocation failed in MacProcSliceRecfgReq");
          ret = RFAILED;
       }
       else
       {
-         if(fillSliceCfgInfo(schSliceReCfgReq, macSliceReCfgReq) == ROK)
+         if(fillSliceCfgInfo(schSliceRecfgReq, macSliceRecfgReq) == ROK)
          {
             FILL_PST_MAC_TO_SCH(schPst, EVENT_SLICE_RECFG_REQ_TO_SCH);
-            ret = (*macSchSliceReCfgReqOpts[schPst.selector])(&schPst, schSliceReCfgReq);
+            ret = (*macSchSliceRecfgReqOpts[schPst.selector])(&schPst, schSliceRecfgReq);
          }
 
       }
-      freeMacSliceCfgReq(macSliceReCfgReq, pst);
+      freeMacSliceCfgReq(macSliceRecfgReq, pst);
    }
    else
    {
-      DU_LOG("\nINFO  -->  MAC : Received MacSliceCfgReq is NULL");
+      DU_LOG("\nINFO  -->  MAC : Received MacSliceRecfgReq is NULL");
    }
    return ret;
 }
