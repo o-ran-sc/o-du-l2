@@ -1532,13 +1532,13 @@ uint8_t  duHandleMacCellCfgCfm(Pst *pst, MacCellCfgCfm *macCellCfgCfm)
 uint8_t duBuildAndSendMacCellStart()
 {
    Pst pst;
-   OduCellId *cellId = NULL;
+   CellStartInfo *cellStart = NULL;
 
    DU_LOG("\nINFO   -->  DU APP : Building and Sending cell start request to MAC");
 
    /* Send Cell Start Request to MAC */
-   DU_ALLOC_SHRABL_BUF(cellId, sizeof(OduCellId));
-   if(!cellId)
+   DU_ALLOC_SHRABL_BUF(cellStart, sizeof(CellStartInfo));
+   if(!cellStart)
    {
       DU_LOG("\nERROR  -->  DU APP : Memory alloc failed while building cell start request");
       return RFAILED;
@@ -1548,12 +1548,12 @@ uint8_t duBuildAndSendMacCellStart()
    {
       if(duCb.actvCellLst[id])
       {
-         cellId->cellId = duCb.actvCellLst[id]->cellId;
+         cellStart->cellId = duCb.actvCellLst[id]->cellId;
 
          /* Fill Pst */
          FILL_PST_DUAPP_TO_MAC(pst, EVENT_MAC_CELL_START);
 
-         return (*packMacCellStartOpts[pst.selector])(&pst, cellId);
+         return (*packMacCellStartOpts[pst.selector])(&pst, cellStart);
       }
    }
    return ROK;
@@ -1992,14 +1992,14 @@ uint8_t DuProcMacSliceCfgRsp(Pst *pst,  MacSliceCfgRsp *cfgRsp)
  *
  * ****************************************************************/
 
-uint8_t fillSliceCfgReCfgInfo(MacSliceCfgReq *sliceCfgReq, RrmPolicy *rrmPolicy[], uint8_t totalRrmPolicy, uint8_t totalSliceCount)
+uint8_t fillSliceCfgReCfgInfo(MacSliceReCfgReq *sliceReCfgReq, RrmPolicy *rrmPolicy[], uint8_t totalRrmPolicy, uint8_t totalSliceCount)
 {
    uint8_t sliceIdx = 0, cfgIdx = 0, memberListIdx = 0;
    
    if(totalRrmPolicy)
    {
-      DU_ALLOC_SHRABL_BUF(sliceCfgReq->listOfSliceCfg, totalSliceCount*sizeof(MacSliceRrmPolicy*)); 
-      if(sliceCfgReq->listOfSliceCfg == NULLP)
+      DU_ALLOC_SHRABL_BUF(sliceReCfgReq->listOfSliceCfg, totalSliceCount*sizeof(MacSliceRrmPolicy*)); 
+      if(sliceReCfgReq->listOfSliceCfg == NULLP)
       {
          DU_LOG("\nERROR  -->  DU_APP : Memory allocation failed in fillSliceCfgReCfgInfo");
          return RFAILED;
@@ -2009,27 +2009,27 @@ uint8_t fillSliceCfgReCfgInfo(MacSliceCfgReq *sliceCfgReq, RrmPolicy *rrmPolicy[
       {
          for(memberListIdx = 0; memberListIdx<rrmPolicy[sliceIdx]->numMemberList; memberListIdx++)
          {
-            DU_ALLOC_SHRABL_BUF(sliceCfgReq->listOfSliceCfg[cfgIdx], sizeof(MacSliceRrmPolicy));
-            if(sliceCfgReq->listOfSliceCfg[cfgIdx] == NULLP)
+            DU_ALLOC_SHRABL_BUF(sliceReCfgReq->listOfSliceCfg[cfgIdx], sizeof(MacSliceRrmPolicy));
+            if(sliceReCfgReq->listOfSliceCfg[cfgIdx] == NULLP)
             { 
                DU_LOG("\nERROR  -->  DU_APP : Memory allocation failed in fillSliceCfgReCfgInfo");
                return RFAILED;
             }
 
 
-            memcpy(&sliceCfgReq->listOfSliceCfg[cfgIdx]->snssai, &rrmPolicy[sliceIdx]->memberList[memberListIdx]->snssai, sizeof(Snssai));
+            memcpy(&sliceReCfgReq->listOfSliceCfg[cfgIdx]->snssai, &rrmPolicy[sliceIdx]->memberList[memberListIdx]->snssai, sizeof(Snssai));
 
-            DU_ALLOC_SHRABL_BUF(sliceCfgReq->listOfSliceCfg[cfgIdx]->rrmPolicyRatio, sizeof(RrmPolicyRatio));
-            if(sliceCfgReq->listOfSliceCfg[cfgIdx]->rrmPolicyRatio == NULLP)
+            DU_ALLOC_SHRABL_BUF(sliceReCfgReq->listOfSliceCfg[cfgIdx]->rrmPolicyRatio, sizeof(RrmPolicyRatio));
+            if(sliceReCfgReq->listOfSliceCfg[cfgIdx]->rrmPolicyRatio == NULLP)
             { 
                DU_LOG("\nERROR  -->  DU_APP : Memory allocation failed in fillSliceCfgReCfgInfo");
                return RFAILED;
             }
 
-            sliceCfgReq->listOfSliceCfg[cfgIdx]->rrmPolicyRatio->policyMaxRatio = rrmPolicy[sliceIdx]->policyMaxRatio;
-            sliceCfgReq->listOfSliceCfg[cfgIdx]->rrmPolicyRatio->policyMinRatio = rrmPolicy[sliceIdx]->policyMinRatio;
-            sliceCfgReq->listOfSliceCfg[cfgIdx]->rrmPolicyRatio->policyDedicatedRatio = rrmPolicy[sliceIdx]->policyDedicatedRatio; 
-            sliceCfgReq->numOfConfiguredSlice++;
+            sliceReCfgReq->listOfSliceCfg[cfgIdx]->rrmPolicyRatio->policyMaxRatio = rrmPolicy[sliceIdx]->policyMaxRatio;
+            sliceReCfgReq->listOfSliceCfg[cfgIdx]->rrmPolicyRatio->policyMinRatio = rrmPolicy[sliceIdx]->policyMinRatio;
+            sliceReCfgReq->listOfSliceCfg[cfgIdx]->rrmPolicyRatio->policyDedicatedRatio = rrmPolicy[sliceIdx]->policyDedicatedRatio; 
+            sliceReCfgReq->numOfConfiguredSlice++;
             cfgIdx++;
          }
       }
@@ -2106,11 +2106,11 @@ uint8_t BuildAndSendSliceConfigReq(RrmPolicy *rrmPolicy[], uint8_t totalRrmPolic
 uint8_t BuildAndSendSliceReCfgReq(RrmPolicy *rrmPolicy[], uint8_t totalRrmPolicy, uint8_t totalSliceCount)
 {
    Pst pst;
-   MacSliceCfgReq *sliceReCfgReq = NULLP;
+   MacSliceReCfgReq *sliceReCfgReq = NULLP;
    
    DU_LOG("\nINFO  --> DU_APP : Slice ReConfiguration Request received");
 
-   DU_ALLOC_SHRABL_BUF(sliceReCfgReq, sizeof(MacSliceCfgReq));
+   DU_ALLOC_SHRABL_BUF(sliceReCfgReq, sizeof(MacSliceReCfgReq));
    if(sliceReCfgReq == NULLP)
    {
       DU_LOG("\nERROR  -->  DU_APP : Memory allocation failed to BuildAndSendSliceReCfgReq");
@@ -2129,7 +2129,7 @@ uint8_t BuildAndSendSliceReCfgReq(RrmPolicy *rrmPolicy[], uint8_t totalRrmPolicy
       if( (*packMacSliceReCfgReqOpts[pst.selector])(&pst, sliceReCfgReq) == RFAILED)
       {
          DU_LOG("\nERROR  -->  DU_APP: Failed to send Slice ReCfg Req to MAC");
-         DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, sliceReCfgReq, sizeof(MacSliceCfgReq));
+         DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, sliceReCfgReq, sizeof(MacSliceReCfgReq));
       }
    }
    return ROK;  
@@ -2144,13 +2144,13 @@ uint8_t BuildAndSendSliceReCfgReq(RrmPolicy *rrmPolicy[], uint8_t totalRrmPolicy
  *
  *    Functionality: process the slice ReCfg rsp received from MAC
  *
- * @params[in] Post structure, MacSliceCfgRsp  *ReCfgRsp
+ * @params[in] Post structure, MacSliceReCfgRsp  *ReCfgRsp
  *             
  * @return ROK     - success
  *         RFAILED - failure
  *
  **********************************************************************/
-uint8_t DuProcMacSliceReCfgRsp(Pst *pst,  MacSliceCfgRsp *reCfgRsp)
+uint8_t DuProcMacSliceReCfgRsp(Pst *pst,  MacSliceReCfgRsp *reCfgRsp)
 {
    uint8_t cfgIdx = 0;
 
