@@ -165,7 +165,7 @@ uint8_t setRrmPolicy(RrmPolicyList rrmPolicy[], uint8_t policyNum)
            }
            else 
            {
-              BuildAndSendSliceReCfgReq(duCfgParam.tempSliceCfg.rrmPolicy, duCfgParam.tempSliceCfg.totalRrmPolicy,\
+              BuildAndSendSliceRecfgReq(duCfgParam.tempSliceCfg.rrmPolicy, duCfgParam.tempSliceCfg.totalRrmPolicy,\
               duCfgParam.tempSliceCfg.totalSliceCount);
            }
        }

@@ -160,7 +160,7 @@ Buffer  *mBuf                       /* message buffer       */
       case EVENT_MAC_SLICE_RECFG_REQ:
          {
             /* Process Slice Reconfiguration Request */
-            unpackMacSliceCfgReq(MacProcSliceReCfgReq, pst, mBuf);
+            unpackMacSliceRecfgReq(MacProcSliceRecfgReq, pst, mBuf);
             break;
          }
       case EVENT_MAC_RACH_RESOURCE_REQ:

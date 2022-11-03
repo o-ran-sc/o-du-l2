@@ -558,7 +558,7 @@ uint8_t duActvTsk(Pst *pst, Buffer *mBuf)
                   }
                case EVENT_MAC_SLICE_RECFG_RSP:
                   {
-                     ret = unpackDuMacSliceReCfgRsp(DuProcMacSliceReCfgRsp, pst, mBuf);
+                     ret = unpackDuMacSliceRecfgRsp(DuProcMacSliceRecfgRsp, pst, mBuf);
                      break;
                   }
                case EVENT_MAC_RACH_RESOURCE_RSP:
