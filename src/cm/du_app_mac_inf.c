@@ -1314,7 +1314,7 @@ uint8_t unpackMacCellDeleteReq(DuMacCellDeleteReq func, Pst *pst, Buffer *mBuf)
 {
    if(pst->selector == ODU_SELECTOR_LWLC)
    {
-      MacCellDelete *cellDelete=NULLP;
+      MacCellDeleteReq *cellDelete=NULLP;
 
       /* unpack the address of the structure */
       CMCHKUNPK(oduUnpackPointer, (PTR *)&cellDelete, mBuf);
@@ -1350,7 +1350,7 @@ uint8_t unpackMacCellDeleteReq(DuMacCellDeleteReq func, Pst *pst, Buffer *mBuf)
  *
  * ****************************************************************/
 
-uint8_t packDuMacCellDeleteReq(Pst *pst, MacCellDelete *cellDelete)
+uint8_t packDuMacCellDeleteReq(Pst *pst, MacCellDeleteReq *cellDelete)
 {
    Buffer *mBuf = NULLP;
 
@@ -1604,13 +1604,13 @@ uint8_t unpackDuMacSliceCfgRsp(MacDuSliceCfgRspFunc func, Pst *pst, Buffer *mBuf
  *    Functionality:
  *       Pack and send Slice ReCfg request from MAC to DU APP
  *
- * @params[in] Pst *pst, MacSliceCfgReq *sliceReCfgReq
+ * @params[in] Pst *pst, MacSliceReCfgReq *sliceReCfgReq
  * @return ROK     - success
  *         RFAILED - failure
  *
  * ****************************************************************/
 
-uint8_t packDuMacSliceRecfgReq(Pst *pst, MacSliceCfgReq *sliceReCfgReq)
+uint8_t packDuMacSliceRecfgReq(Pst *pst, MacSliceReCfgReq *sliceReCfgReq)
 {
    Buffer *mBuf = NULLP;
 
@@ -1654,7 +1654,7 @@ uint8_t unpackMacSliceReCfgReq(DuMacSliceRecfgReq func, Pst *pst, Buffer *mBuf)
 {
     if(pst->selector == ODU_SELECTOR_LWLC)
     {
-       MacSliceCfgReq *sliceReCfgReq;
+       MacSliceReCfgReq *sliceReCfgReq;
        /* unpack the address of the structure */
        CMCHKUNPK(oduUnpackPointer, (PTR *)&sliceReCfgReq, mBuf);
        ODU_PUT_MSG_BUF(mBuf);
@@ -1686,7 +1686,7 @@ uint8_t unpackMacSliceReCfgReq(DuMacSliceRecfgReq func, Pst *pst, Buffer *mBuf)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t packDuMacSliceReCfgRsp(Pst *pst, MacSliceCfgRsp *cfgRsp)
+uint8_t packDuMacSliceReCfgRsp(Pst *pst, MacSliceReCfgRsp *cfgRsp)
 {
    Buffer *mBuf = NULLP;
 
@@ -1728,7 +1728,7 @@ uint8_t unpackDuMacSliceReCfgRsp(MacDuSliceReCfgRspFunc func, Pst *pst, Buffer *
 {
    if(pst->selector == ODU_SELECTOR_LWLC)
    {
-      MacSliceCfgRsp *cfgRsp = NULLP;
+      MacSliceReCfgRsp *cfgRsp = NULLP;
 
       /* unpack the address of the structure */
       CMCHKUNPK(oduUnpackPointer, (PTR *)&cfgRsp, mBuf);
