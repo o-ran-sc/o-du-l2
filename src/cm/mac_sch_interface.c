@@ -328,21 +328,21 @@ uint8_t packMacSchSrUciInd(Pst *pst, SrUciIndInfo *uciInd)
 
 /*******************************************************************
  *
- * @brief Pack and Send HARQ UCI Ind from MAC to SCH
+ * @brief Pack and Send DL HARQ Ind from MAC to SCH
  *
  * @details
  *
- *    Function : packMacHarqSchUciInd
+ *    Function : packMacSchDlHarqInd
  *
  *    Functionality:
- *       Pack and Send HARQ UCI Ind from MAC to SCH
+ *       Pack and Send DL HARQ Ind from MAC to SCH
  *
  * @params[in]
  * @return ROK     - success
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t packMacSchHarqUciInd(Pst *pst, HarqUciIndInfo *uciInd)
+uint8_t packMacSchDlHarqInd(Pst *pst, DlHarqInd *dlHarqInd)
 {
    if((pst->selector == ODU_SELECTOR_LC) || (pst->selector == ODU_SELECTOR_LWLC))
    {
@@ -543,7 +543,7 @@ uint8_t packSchUeDeleteRsp(Pst *pst, SchUeDeleteRsp  *delRsp)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t packMacSchCellDeleteReq(Pst *pst,  SchCellDelete *schCellDelete)
+uint8_t packMacSchCellDeleteReq(Pst *pst,  SchCellDeleteReq *schCellDelete)
 {
    if((pst->selector == ODU_SELECTOR_LC) || (pst->selector == ODU_SELECTOR_LC))
    {
@@ -629,17 +629,17 @@ uint8_t packSchSliceCfgRsp(Pst *pst, SchSliceCfgRsp *cfgRsp)
  *
  * @details
  *
- *    Function : packMacSchSliceReCfgReq 
+ *    Function : packMacSchSliceRecfgReq 
  *
  *    Functionality:
  *       Pack and Send Slice ReCfg request from MAC to SCH
  *
- * @params[in] Pst *pst, SchSliceCfgReq *cfgReq 
+ * @params[in] Pst *pst, SchSliceRecfgReq *cfgReq 
  * @return ROK     - success
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t packMacSchSliceReCfgReq(Pst *pst, SchSliceCfgReq *cfgReq)
+uint8_t packMacSchSliceRecfgReq(Pst *pst, SchSliceRecfgReq *sliceRecfgReq)
 {
    if((pst->selector == ODU_SELECTOR_LC) || (pst->selector == ODU_SELECTOR_LWLC))
    {
@@ -657,13 +657,13 @@ uint8_t packMacSchSliceReCfgReq(Pst *pst, SchSliceCfgReq *cfgReq)
  *
  * @details
  *
- *     Function : packSchSliceReCfgRsp 
+ *     Function : packSchSliceRecfgRsp 
  *     
  *     
- *  @param[in]  Pst *pst, SchSliceCfgRsp *cfgRsp
+ *  @param[in]  Pst *pst, SchSliceRecfgRsp *cfgRsp
  *  @return  S16 - ROK
  **/
-uint8_t packSchSliceReCfgRsp(Pst *pst, SchSliceCfgRsp *cfgRsp)
+uint8_t packSchSliceRecfgRsp(Pst *pst, SchSliceRecfgRsp *recfgRsp)
 {
    return ROK;
 }
