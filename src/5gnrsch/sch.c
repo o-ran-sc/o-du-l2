@@ -66,11 +66,11 @@ SchSliceCfgRspFunc SchSliceCfgRspOpts[] =
 
 };
 
-SchSliceReCfgRspFunc SchSliceReCfgRspOpts[] =
+SchSliceRecfgRspFunc SchSliceRecfgRspOpts[] =
 {
-   packSchSliceReCfgRsp,     /* LC */
-   MacProcSchSliceReCfgRsp,  /* TC */
-   packSchSliceReCfgRsp      /* LWLC */
+   packSchSliceRecfgRsp,     /* LC */
+   MacProcSchSliceRecfgRsp,  /* TC */
+   packSchSliceRecfgRsp      /* LWLC */
 };
 
 /**
@@ -1125,42 +1125,42 @@ uint8_t MacSchSrUciInd(Pst *pst, SrUciIndInfo *uciInd)
 
 /*******************************************************************
  *
- * @brief Processes HARQ UCI indication from MAC 
+ * @brief Processes DL HARQ indication from MAC 
  *
  * @details
  *
- *    Function : MacSchHarqUciInd
+ *    Function : MacSchDlHarqInd
  *
  *    Functionality:
- *      Processes HARQ UCI indication from MAC
+ *      Processes DL HARQ indication from MAC
  *
  * @params[in] Post structure
- *             UCI Indication
+ *             DL HARQ Indication
  * @return ROK     - success
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t MacSchHarqUciInd(Pst *pst, HarqUciIndInfo *uciInd)
+uint8_t MacSchDlHarqInd(Pst *pst, DlHarqInd *dlHarqInd)
 {
    Inst  inst = pst->dstInst-SCH_INST_START;
    SchUeCb   *ueCb;
    SchCellCb *cellCb = schCb[inst].cells[inst];
 
 #ifdef CALL_FLOW_DEBUG_LOG
-   DU_LOG("\nCall Flow: ENTMAC -> ENTSCH : EVENT_UCI_IND_TO_SCH\n");
+   DU_LOG("\nCall Flow: ENTMAC -> ENTSCH : EVENT_DL_HARQ_IND_TO_SCH\n");
 #endif
 
    DU_LOG("\nDEBUG  -->  SCH : Received HARQ");
 
-   ueCb = schGetUeCb(cellCb, uciInd->crnti);
+   ueCb = schGetUeCb(cellCb, dlHarqInd->crnti);
 
    if(ueCb->state == SCH_UE_STATE_INACTIVE)
    {
-      DU_LOG("\nERROR  -->  SCH : Crnti %d is inactive", uciInd->crnti);
+      DU_LOG("\nERROR  -->  SCH : Crnti %d is inactive", dlHarqInd->crnti);
       return ROK;
    }
 
-   schUpdateHarqFdbk(ueCb, uciInd->numHarq, uciInd->harqPayload, &uciInd->slotInd);
+   schUpdateHarqFdbk(ueCb, dlHarqInd->numHarq, dlHarqInd->harqPayload, &dlHarqInd->slotInd);
 
    return ROK;
 }
@@ -1670,7 +1670,7 @@ void SchSendSliceCfgRspToMac(Inst inst, SchSliceCfgRsp sliceCfgRsp)
  *        RFAILED - Failure
  *
  * ********************************************************************************/
-uint8_t fillSliceCfgRsp(bool sliceReCfg, SchSliceCfg *storedSliceCfg, SchCellCb *cellCb, SchSliceCfgReq *schSliceCfgReq, SchSliceCfgRsp *schSliceCfgRsp, uint8_t *count)
+uint8_t fillSliceCfgRsp(bool SliceRecfg, SchSliceCfg *storedSliceCfg, SchCellCb *cellCb, SchSliceCfgReq *schSliceCfgReq, SchSliceCfgRsp *schSliceCfgRsp, uint8_t *count)
 {
    bool sliceFound = false;
    uint8_t cfgIdx = 0, sliceIdx = 0;
@@ -1687,7 +1687,7 @@ uint8_t fillSliceCfgRsp(bool sliceReCfg, SchSliceCfg *storedSliceCfg, SchCellCb 
    {
       sliceFound = false;
       /* Here comparing the slice cfg request with the slice stored in cellCfg */
-      if(sliceReCfg != true)
+      if(SliceRecfg != true)
       {
          for(sliceIdx = 0; sliceIdx<cellCb->cellCfg.plmnInfoList.numSliceSupport; sliceIdx++)
          {
@@ -1815,25 +1815,25 @@ uint8_t addSliceCfgInSchDb(SchSliceCfg *storeSliceCfg, SchSliceCfgReq *cfgReq, S
  *        ROK - Success
  *        RFAILED - Failure
  * ********************************************************************************/
-void freeSchSliceCfgReq(SchSliceCfgReq *cfgReq)
+void freeSchSliceCfgReq(SchSliceCfgReq *sliceCfgReq)
 {
    uint8_t cfgIdx = 0;
    
-   if(cfgReq)
+   if(sliceCfgReq)
    {
-      if(cfgReq->numOfConfiguredSlice)
+      if(sliceCfgReq->numOfConfiguredSlice)
       {
-         for(cfgIdx = 0; cfgIdx<cfgReq->numOfConfiguredSlice; cfgIdx++)
+         for(cfgIdx = 0; cfgIdx<sliceCfgReq->numOfConfiguredSlice; cfgIdx++)
          {
-            if(cfgReq->listOfConfirguration[cfgIdx])
+            if(sliceCfgReq->listOfConfirguration[cfgIdx])
             {
-               SCH_FREE(cfgReq->listOfConfirguration[cfgIdx]->rrmPolicyRatioInfo, sizeof(SchRrmPolicyRatio));
-               SCH_FREE(cfgReq->listOfConfirguration[cfgIdx], sizeof(SchRrmPolicyOfSlice));
+               SCH_FREE(sliceCfgReq->listOfConfirguration[cfgIdx]->rrmPolicyRatioInfo, sizeof(SchRrmPolicyRatio));
+               SCH_FREE(sliceCfgReq->listOfConfirguration[cfgIdx], sizeof(SchRrmPolicyOfSlice));
             }
          }
-         SCH_FREE(cfgReq->listOfConfirguration, cfgReq->numOfConfiguredSlice * sizeof(SchRrmPolicyOfSlice*));
+         SCH_FREE(sliceCfgReq->listOfConfirguration, sliceCfgReq->numOfConfiguredSlice * sizeof(SchRrmPolicyOfSlice*));
       }
-      SCH_FREE(cfgReq, sizeof(SchSliceCfgReq));
+      SCH_FREE(sliceCfgReq, sizeof(SchSliceCfgReq));
    }
 }
 /*******************************************************************************
@@ -1906,7 +1906,7 @@ uint8_t MacSchSliceCfgReq(Pst *pst, SchSliceCfgReq *schSliceCfgReq)
  *        RFAILED - Failure
  *
  * ********************************************************************************/
-uint8_t modifySliceCfgInSchDb(SchSliceCfg *storeSliceCfg, SchSliceCfgReq *cfgReq, SchSliceCfgRsp cfgRsp, uint8_t count)
+uint8_t modifySliceCfgInSchDb(SchSliceCfg *storeSliceCfg, SchSliceRecfgReq *reCfgReq, SchSliceRecfgRsp reCfgRsp, uint8_t count)
 {
    uint8_t cfgIdx = 0, sliceIdx = 0; 
 
@@ -1918,15 +1918,15 @@ uint8_t modifySliceCfgInSchDb(SchSliceCfg *storeSliceCfg, SchSliceCfgReq *cfgReq
          return RFAILED;
       }
 
-      for(cfgIdx = 0; cfgIdx<cfgReq->numOfConfiguredSlice; cfgIdx++)
+      for(cfgIdx = 0; cfgIdx<reCfgReq->numOfConfiguredSlice; cfgIdx++)
       {
-         if(cfgRsp.listOfSliceCfgRsp[cfgIdx]->rsp == RSP_OK)
+         if(reCfgRsp.listOfSliceCfgRsp[cfgIdx]->rsp == RSP_OK)
          {
             for(sliceIdx = 0; sliceIdx<storeSliceCfg->numOfSliceConfigured; sliceIdx++)
             {
-               if(!memcmp(&storeSliceCfg->listOfConfirguration[sliceIdx]->snssai, &cfgReq->listOfConfirguration[cfgIdx]->snssai, sizeof(Snssai)))
+               if(!memcmp(&storeSliceCfg->listOfConfirguration[sliceIdx]->snssai, &reCfgReq->listOfConfirguration[cfgIdx]->snssai, sizeof(Snssai)))
                {
-                  memcpy(storeSliceCfg->listOfConfirguration[sliceIdx]->rrmPolicyRatioInfo, cfgReq->listOfConfirguration[cfgIdx]->rrmPolicyRatioInfo,
+                  memcpy(storeSliceCfg->listOfConfirguration[sliceIdx]->rrmPolicyRatioInfo, reCfgReq->listOfConfirguration[cfgIdx]->rrmPolicyRatioInfo,
                            sizeof(SchRrmPolicyRatio));
                   break;
                }
@@ -1934,7 +1934,7 @@ uint8_t modifySliceCfgInSchDb(SchSliceCfg *storeSliceCfg, SchSliceCfgReq *cfgReq
          }
       }
    }
-   freeSchSliceCfgReq(cfgReq);
+   freeSchSliceCfgReq(reCfgReq);
    return ROK;
 }
 /*******************************************************************************
@@ -1943,17 +1943,17 @@ uint8_t modifySliceCfgInSchDb(SchSliceCfg *storeSliceCfg, SchSliceCfgReq *cfgReq
  *
  * @details
  *
- *    Function : SchSendSliceCfgRspToMac
+ *    Function : SchSendSliceRecfgRspToMac
  *
  *    Functionality:
  *     function is used to send Slice re Cfg rsp to MAC
  *
- * @params[in] Pst *pst, SchSliceCfgRsp schSliceReCfgRsp
+ * @params[in] Pst *pst, SchSliceRecfgRsp schSliceRecfgRsp
  *
  * @return- void
  *
  * ********************************************************************************/
-void SchSendSliceReCfgRspToMac(Inst inst, SchSliceCfgRsp schSliceReCfgRsp)
+void SchSendSliceRecfgRspToMac(Inst inst, SchSliceRecfgRsp schSliceRecfgRsp)
 {
    Pst rspPst;
    
@@ -1961,7 +1961,7 @@ void SchSendSliceReCfgRspToMac(Inst inst, SchSliceCfgRsp schSliceReCfgRsp)
    FILL_PST_SCH_TO_MAC(rspPst, inst);
    rspPst.event = EVENT_SLICE_RECFG_RSP_TO_MAC;
    
-   SchSliceReCfgRspOpts[rspPst.selector](&rspPst, &schSliceReCfgRsp);
+   SchSliceRecfgRspOpts[rspPst.selector](&rspPst, &schSliceRecfgRsp);
 }
 /*******************************************************************************
  *
@@ -1969,48 +1969,48 @@ void SchSendSliceReCfgRspToMac(Inst inst, SchSliceCfgRsp schSliceReCfgRsp)
  *
  * @details
  *
- *    Function : MacSchSliceReCfgReq 
+ *    Function : MacSchSliceRecfgReq 
  *
  *    Functionality:
  *     function is used to store the slice re configuration Sch DB
  *
- * @params[in] Pst *pst, SchSliceCfgReq *schSliceReCfgReq
+ * @params[in] Pst *pst, SchSliceRecfgReq *schSliceRecfgReq
  *
  * @return
  *        ROK - Success
  *        RFAILED - Failure
  *
  * ********************************************************************************/
-uint8_t MacSchSliceReCfgReq(Pst *pst, SchSliceCfgReq *schSliceReCfgReq)
+uint8_t MacSchSliceRecfgReq(Pst *pst, SchSliceRecfgReq *schSliceRecfgReq)
 {
    uint8_t count = 0;
    Inst   inst = pst->dstInst - SCH_INST_START;
-   SchSliceCfgRsp schSliceReCfgRsp;
+   SchSliceRecfgRsp schSliceRecfgRsp;
 
    DU_LOG("\nINFO  -->  SCH : Received Slice ReCfg request from MAC");
-   if(schSliceReCfgReq)
+   if(schSliceRecfgReq)
    {
-      if(schSliceReCfgReq->listOfConfirguration)
+      if(schSliceRecfgReq->listOfConfirguration)
       {
          /* filling the slice configuration response of each slice */
-         if(fillSliceCfgRsp(true, &schCb[inst].sliceCfg, NULLP, schSliceReCfgReq, &schSliceReCfgRsp, &count) != ROK)
+         if(fillSliceCfgRsp(true, &schCb[inst].sliceCfg, NULLP, schSliceRecfgReq, &schSliceRecfgRsp, &count) != ROK)
          {
             DU_LOG("\nERROR  -->  SCH : Failed to fill sch slice cfg response");
             return RFAILED;
          }
          
          /* Modify the slice configuration stored in schCb */
-         if(modifySliceCfgInSchDb(&schCb[inst].sliceCfg, schSliceReCfgReq, schSliceReCfgRsp, count) != ROK)
+         if(modifySliceCfgInSchDb(&schCb[inst].sliceCfg, schSliceRecfgReq, schSliceRecfgRsp, count) != ROK)
          {
             DU_LOG("\nERROR  -->  SCH : Failed to modify slice cfg of SchDb");
             return RFAILED;
          }
-         SchSendSliceReCfgRspToMac(inst, schSliceReCfgRsp);
+         SchSendSliceRecfgRspToMac(inst, schSliceRecfgRsp);
       }
    }
    else
    {
-      DU_LOG("\nERROR  -->  SCH : Received SchSliceCfgReq is NULL");
+      DU_LOG("\nERROR  -->  SCH : Received SchSliceRecfgReq is NULL");
    }
    return ROK;
 }

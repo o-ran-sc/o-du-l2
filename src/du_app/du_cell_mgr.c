@@ -246,13 +246,13 @@ uint8_t checkPagingRecord(DuCellCb *cellCb)
  *
  *    Functionality: Send pcch indication to MAC
  *
- * @Params[in] MacPcchInd *pcchInd
+ * @Params[in] DlPcchInd *pcchInd
  * @return ROK     - success
  *         RFAILED - failure
  *
  * ****************************************************************/
 
-uint8_t sendDlPcchIndToMac(MacPcchInd *pcchInd)
+uint8_t sendDlPcchIndToMac(DlPcchInd *pcchInd)
 {
    uint8_t ret = ROK;
    Pst pst;
@@ -473,9 +473,9 @@ uint8_t sendCellDeleteReqToMac(uint16_t cellId)
 {
    Pst pst;
    uint8_t ret=ROK;
-   MacCellDelete *cellDelete = NULLP;
+   MacCellDeleteReq *cellDelete = NULLP;
    
-   DU_ALLOC_SHRABL_BUF(cellDelete, sizeof(MacCellDelete));
+   DU_ALLOC_SHRABL_BUF(cellDelete, sizeof(MacCellDeleteReq));
    if(cellDelete)
    {
       cellDelete->cellId = cellId;
@@ -487,7 +487,7 @@ uint8_t sendCellDeleteReqToMac(uint16_t cellId)
       if(ret == RFAILED)
       {
          DU_LOG("\nERROR  -->  DU APP : sendCellDeleteReqToMac(): Failed to send Cell delete Req to MAC");
-         DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, cellDelete, sizeof(MacCellDelete));
+         DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, cellDelete, sizeof(MacCellDeleteReq));
       }
    }
    else
@@ -624,7 +624,7 @@ uint8_t BuildAndSendDlPcchIndToMac(uint16_t cellId, uint16_t pf, uint8_t i_s, Cm
    PCCH_Message_t *pcchMsg = NULLP;
    asn_enc_rval_t encRetVal;
    PagingRrc_t    *pagingMsg = NULLP;
-   MacPcchInd     *macPcchInd = NULLP;
+   DlPcchInd     *macPcchInd = NULLP;
    uint8_t        recordIdx = 0, ret = RFAILED;
    
    /*As per 38.473 Sec 9.3.1.39,5G-S-TMSI :48 Bits >>  Bytes and 0 UnusedBits */
@@ -742,7 +742,7 @@ uint8_t BuildAndSendDlPcchIndToMac(uint16_t cellId, uint16_t pf, uint8_t i_s, Cm
       {
          DU_LOG("\nDEBUG  -->  F1AP : Created APER encoded buffer for RRC PDU for Pcch indication \n");
          
-         DU_ALLOC_SHRABL_BUF(macPcchInd, sizeof(MacPcchInd));
+         DU_ALLOC_SHRABL_BUF(macPcchInd, sizeof(DlPcchInd));
          if(macPcchInd == NULLP)
          {
             DU_LOG("\nERROR  -->  DU APP: BuildAndSendDlPcchIndToMac(); (macPcchInd) Memory Alloction failed!");
@@ -764,7 +764,7 @@ uint8_t BuildAndSendDlPcchIndToMac(uint16_t cellId, uint16_t pf, uint8_t i_s, Cm
          if(ret != ROK)
          {
             DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, macPcchInd->pcchPdu, macPcchInd->pduLen);
-            DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, macPcchInd, sizeof(MacPcchInd));
+            DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, macPcchInd, sizeof(DlPcchInd));
             break;
          }
       }
