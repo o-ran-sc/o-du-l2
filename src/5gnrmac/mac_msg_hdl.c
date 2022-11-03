@@ -1012,16 +1012,16 @@ uint8_t MacProcSliceCfgReq(Pst *pst, MacSliceCfgReq *macSliceCfgReq)
  *         RFAILED - failure
  *
  **********************************************************************/
-uint8_t MacProcSliceReCfgReq(Pst *pst, MacSliceCfgReq *macSliceReCfgReq)
+uint8_t MacProcSliceReCfgReq(Pst *pst, MacSliceReCfgReq *macSliceReCfgReq)
 {
    uint8_t ret = ROK;
    Pst schPst;
-   SchSliceCfgReq *schSliceReCfgReq;
+   SchSliceReCfgReq *schSliceReCfgReq;
 
    DU_LOG("\nINFO  -->  MAC : Received Slice ReCfg request from DU APP");
    if(macSliceReCfgReq)
    {
-      MAC_ALLOC(schSliceReCfgReq, sizeof(SchSliceCfgReq));
+      MAC_ALLOC(schSliceReCfgReq, sizeof(SchSliceReCfgReq));
       if(schSliceReCfgReq == NULLP)
       {
          DU_LOG("\nERROR -->  MAC : Memory allocation failed in MacProcSliceReCfgReq");

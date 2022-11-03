@@ -543,7 +543,7 @@ uint8_t packSchUeDeleteRsp(Pst *pst, SchUeDeleteRsp  *delRsp)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t packMacSchCellDeleteReq(Pst *pst,  SchCellDelete *schCellDelete)
+uint8_t packMacSchCellDeleteReq(Pst *pst,  SchCellDeleteReq *schCellDelete)
 {
    if((pst->selector == ODU_SELECTOR_LC) || (pst->selector == ODU_SELECTOR_LC))
    {
@@ -634,12 +634,12 @@ uint8_t packSchSliceCfgRsp(Pst *pst, SchSliceCfgRsp *cfgRsp)
  *    Functionality:
  *       Pack and Send Slice ReCfg request from MAC to SCH
  *
- * @params[in] Pst *pst, SchSliceCfgReq *cfgReq 
+ * @params[in] Pst *pst, SchSliceReCfgReq *cfgReq 
  * @return ROK     - success
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t packMacSchSliceReCfgReq(Pst *pst, SchSliceCfgReq *cfgReq)
+uint8_t packMacSchSliceReCfgReq(Pst *pst, SchSliceReCfgReq *cfgReq)
 {
    if((pst->selector == ODU_SELECTOR_LC) || (pst->selector == ODU_SELECTOR_LWLC))
    {
@@ -660,10 +660,10 @@ uint8_t packMacSchSliceReCfgReq(Pst *pst, SchSliceCfgReq *cfgReq)
  *     Function : packSchSliceReCfgRsp 
  *     
  *     
- *  @param[in]  Pst *pst, SchSliceCfgRsp *cfgRsp
+ *  @param[in]  Pst *pst, SchSliceReCfgRsp *cfgRsp
  *  @return  S16 - ROK
  **/
-uint8_t packSchSliceReCfgRsp(Pst *pst, SchSliceCfgRsp *cfgRsp)
+uint8_t packSchSliceReCfgRsp(Pst *pst, SchSliceReCfgRsp *cfgRsp)
 {
    return ROK;
 }

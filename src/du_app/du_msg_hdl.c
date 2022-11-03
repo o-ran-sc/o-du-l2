@@ -1992,7 +1992,7 @@ uint8_t DuProcMacSliceCfgRsp(Pst *pst,  MacSliceCfgRsp *cfgRsp)
  *
  * ****************************************************************/
 
-uint8_t fillSliceCfgReCfgInfo(MacSliceCfgReq *sliceCfgReq, RrmPolicy *rrmPolicy[], uint8_t totalRrmPolicy, uint8_t totalSliceCount)
+uint8_t fillSliceCfgReCfgInfo(MacSliceReCfgReq *sliceCfgReq, RrmPolicy *rrmPolicy[], uint8_t totalRrmPolicy, uint8_t totalSliceCount)
 {
    uint8_t sliceIdx = 0, cfgIdx = 0, memberListIdx = 0;
    
@@ -2106,11 +2106,11 @@ uint8_t BuildAndSendSliceConfigReq(RrmPolicy *rrmPolicy[], uint8_t totalRrmPolic
 uint8_t BuildAndSendSliceReCfgReq(RrmPolicy *rrmPolicy[], uint8_t totalRrmPolicy, uint8_t totalSliceCount)
 {
    Pst pst;
-   MacSliceCfgReq *sliceReCfgReq = NULLP;
+   MacSliceReCfgReq *sliceReCfgReq = NULLP;
    
    DU_LOG("\nINFO  --> DU_APP : Slice ReConfiguration Request received");
 
-   DU_ALLOC_SHRABL_BUF(sliceReCfgReq, sizeof(MacSliceCfgReq));
+   DU_ALLOC_SHRABL_BUF(sliceReCfgReq, sizeof(MacSliceReCfgReq));
    if(sliceReCfgReq == NULLP)
    {
       DU_LOG("\nERROR  -->  DU_APP : Memory allocation failed to BuildAndSendSliceReCfgReq");
@@ -2129,7 +2129,7 @@ uint8_t BuildAndSendSliceReCfgReq(RrmPolicy *rrmPolicy[], uint8_t totalRrmPolicy
       if( (*packMacSliceReCfgReqOpts[pst.selector])(&pst, sliceReCfgReq) == RFAILED)
       {
          DU_LOG("\nERROR  -->  DU_APP: Failed to send Slice ReCfg Req to MAC");
-         DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, sliceReCfgReq, sizeof(MacSliceCfgReq));
+         DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, sliceReCfgReq, sizeof(MacSliceReCfgReq));
       }
    }
    return ROK;  
@@ -2150,7 +2150,7 @@ uint8_t BuildAndSendSliceReCfgReq(RrmPolicy *rrmPolicy[], uint8_t totalRrmPolicy
  *         RFAILED - failure
  *
  **********************************************************************/
-uint8_t DuProcMacSliceReCfgRsp(Pst *pst,  MacSliceCfgRsp *reCfgRsp)
+uint8_t DuProcMacSliceReCfgRsp(Pst *pst,  MacSliceReCfgRsp *reCfgRsp)
 {
    uint8_t cfgIdx = 0;
 

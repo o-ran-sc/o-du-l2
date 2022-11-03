@@ -1943,17 +1943,17 @@ uint8_t modifySliceCfgInSchDb(SchSliceCfg *storeSliceCfg, SchSliceCfgReq *cfgReq
  *
  * @details
  *
- *    Function : SchSendSliceCfgRspToMac
+ *    Function : SchSendSliceReCfgRspToMac
  *
  *    Functionality:
  *     function is used to send Slice re Cfg rsp to MAC
  *
- * @params[in] Pst *pst, SchSliceCfgRsp schSliceReCfgRsp
+ * @params[in] Pst *pst, SchSliceReCfgRsp schSliceReCfgRsp
  *
  * @return- void
  *
  * ********************************************************************************/
-void SchSendSliceReCfgRspToMac(Inst inst, SchSliceCfgRsp schSliceReCfgRsp)
+void SchSendSliceReCfgRspToMac(Inst inst, SchSliceReCfgRsp schSliceReCfgRsp)
 {
    Pst rspPst;
    
@@ -1974,18 +1974,18 @@ void SchSendSliceReCfgRspToMac(Inst inst, SchSliceCfgRsp schSliceReCfgRsp)
  *    Functionality:
  *     function is used to store the slice re configuration Sch DB
  *
- * @params[in] Pst *pst, SchSliceCfgReq *schSliceReCfgReq
+ * @params[in] Pst *pst, SchSliceReCfgReq *schSliceReCfgReq
  *
  * @return
  *        ROK - Success
  *        RFAILED - Failure
  *
  * ********************************************************************************/
-uint8_t MacSchSliceReCfgReq(Pst *pst, SchSliceCfgReq *schSliceReCfgReq)
+uint8_t MacSchSliceReCfgReq(Pst *pst, SchSliceReCfgReq *schSliceReCfgReq)
 {
    uint8_t count = 0;
    Inst   inst = pst->dstInst - SCH_INST_START;
-   SchSliceCfgRsp schSliceReCfgRsp;
+   SchSliceReCfgRsp schSliceReCfgRsp;
 
    DU_LOG("\nINFO  -->  SCH : Received Slice ReCfg request from MAC");
    if(schSliceReCfgReq)

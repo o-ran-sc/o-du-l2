@@ -639,11 +639,11 @@ uint8_t MacProcSchCellDeleteRsp(Pst *pst, SchCellDeleteRsp *schCellDelRsp)
  *
  * ****************************************************************/
 
-uint8_t sendCellDelReqToSch(SchCellDelete *schCellDel)
+uint8_t sendCellDelReqToSch(SchCellDeleteReq *schCellDelReq)
 {
    Pst schPst;
    FILL_PST_MAC_TO_SCH(schPst, EVENT_CELL_DELETE_REQ_TO_SCH);
-   return(*macSchCellDeleteReqOpts[schPst.selector])(&schPst, schCellDel);
+   return(*macSchCellDeleteReqOpts[schPst.selector])(&schPst, schCellDelReq);
 }
 
 /*******************************************************************
@@ -662,10 +662,10 @@ uint8_t sendCellDelReqToSch(SchCellDelete *schCellDel)
  *
  *
  * ****************************************************************/
-uint8_t MacProcCellDeleteReq(Pst *pst, MacCellDelete *cellDelete)
+uint8_t MacProcCellDeleteReq(Pst *pst, MacCellDeleteReq *cellDelete)
 {
    uint8_t ret = ROK, cellIdx=0;
-   SchCellDelete schCellDelete;
+   SchCellDeleteReq schCellDelete;
 
    DU_LOG("\nINFO   -->  MAC : Cell Delete Request received for cellId[%d]", cellDelete->cellId);
 
@@ -676,7 +676,7 @@ uint8_t MacProcCellDeleteReq(Pst *pst, MacCellDelete *cellDelete)
       {
          if(macCb.macCell[cellIdx]->cellId == cellDelete->cellId)
          {
-            memset(&schCellDelete, 0, sizeof(SchCellDelete));
+            memset(&schCellDelete, 0, sizeof(SchCellDeleteReq ));
             schCellDelete.cellId =  cellDelete->cellId;
             ret = sendCellDelReqToSch(&schCellDelete);
             if(ret != ROK)
@@ -709,7 +709,7 @@ uint8_t MacProcCellDeleteReq(Pst *pst, MacCellDelete *cellDelete)
           }
 
       }
-      MAC_FREE_SHRABL_BUF(pst->region, pst->pool, cellDelete, sizeof(MacCellDelete));
+      MAC_FREE_SHRABL_BUF(pst->region, pst->pool, cellDelete, sizeof(MacCellDeleteReq));
    }
    else
    {
@@ -913,7 +913,7 @@ uint8_t MacProcSchSliceCfgRsp(Pst *pst, SchSliceCfgRsp *schSliceCfgRsp)
 *  @return  int
 *      -# ROK
 **/
-uint8_t MacSendSliceReconfigRsp(MacSliceCfgRsp *macSliceRecfgRsp)
+uint8_t MacSendSliceReconfigRsp(MacSliceReCfgRsp *macSliceRecfgRsp)
 {
    Pst  rspPst;
 
@@ -937,13 +937,13 @@ uint8_t MacSendSliceReconfigRsp(MacSliceCfgRsp *macSliceRecfgRsp)
  *  @return  int
  *      -# ROK
  **/
-uint8_t MacProcSchSliceReCfgRsp(Pst *pst, SchSliceCfgRsp *schSliceRecfgRsp)
+uint8_t MacProcSchSliceReCfgRsp(Pst *pst, SchSliceReCfgRsp *schSliceRecfgRsp)
 {
-   MacSliceCfgRsp *macSliceReCfgRsp = NULLP;
+   MacSliceReCfgRsp *macSliceReCfgRsp = NULLP;
 
    if(schSliceRecfgRsp)
    {
-      MAC_ALLOC_SHRABL_BUF(macSliceReCfgRsp, sizeof(MacSliceCfgRsp));
+      MAC_ALLOC_SHRABL_BUF(macSliceReCfgRsp, sizeof(MacSliceReCfgRsp));
       if(macSliceReCfgRsp == NULLP)
       {
           DU_LOG("\nERROR  -->  MAC : Failed to allocate memory in MacProcSchSliceReCfgRsp");

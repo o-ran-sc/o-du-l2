@@ -1717,7 +1717,7 @@ typedef struct schUeDeleteRsp
 typedef struct schCellDelete 
 {
    uint16_t   cellId;
-}SchCellDelete;
+}SchCellDeleteReq;
 
 
 typedef struct schCellDeleteRsp
@@ -1790,6 +1790,10 @@ typedef struct schSliceRsp
    uint8_t    numSliceCfgRsp;
    SliceRsp   **listOfSliceCfgRsp;
 }SchSliceCfgRsp;
+
+/*As per ORAN-WG8, Slice Cfg and ReCfg are same structures*/
+typedef struct schSliceCfgReq SchSliceReCfgReq;
+typedef struct schSliceRsp SchSliceReCfgRsp;
 
 typedef struct schPageInd
 {
@@ -1906,7 +1910,7 @@ typedef uint8_t (*SchUeDeleteRspFunc) ARGS((
 
 typedef uint8_t (*MacSchCellDeleteReqFunc) ARGS((
    Pst         *pst,           /* Post structure */
-   SchCellDelete *schCellDelete)); /*Scheduler UE Del*/
+   SchCellDeleteReq *schCellDelete)); /*Scheduler UE Del*/
 
 typedef uint8_t (*SchCellDeleteRspFunc) ARGS((
    Pst          *pst,           /* Post structure */
@@ -1923,11 +1927,11 @@ typedef uint8_t (*SchSliceCfgRspFunc)    ARGS((
 
 typedef uint8_t (*MacSchSliceReCfgReqFunc) ARGS((
    Pst          *pst,           /* Post structure */
-   SchSliceCfgReq *schSliceReCfgReq));  /* Scheduler Slice ReCfg Req */
+   SchSliceReCfgReq *schSliceReCfgReq));  /* Scheduler Slice ReCfg Req */
 
 typedef uint8_t (*SchSliceReCfgRspFunc)    ARGS((
 	 Pst            *pst,            /* Post Structure */                         
-	 SchSliceCfgRsp  *schSliceReCfgRsp /* Cell ReCfg Cfm */
+	 SchSliceReCfgRsp  *schSliceReCfgRsp /* Cell ReCfg Cfm */
 	 ));
 
 typedef uint8_t (*MacSchPagingIndFunc) ARGS((
@@ -1983,18 +1987,18 @@ uint8_t packMacSchUeDeleteReq(Pst *pst,  SchUeDelete *schUeDel);
 uint8_t MacSchUeDeleteReq(Pst *pst, SchUeDelete  *ueDelete);
 uint8_t packSchUeDeleteRsp(Pst *pst, SchUeDeleteRsp  *delRsp);
 uint8_t MacProcSchUeDeleteRsp(Pst *pst, SchUeDeleteRsp *schUeDelRsp);
-uint8_t packMacSchCellDeleteReq(Pst *pst,  SchCellDelete *schCellDelete);
-uint8_t MacSchCellDeleteReq(Pst *pst, SchCellDelete  *schCellDelete);
+uint8_t packMacSchCellDeleteReq(Pst *pst,  SchCellDeleteReq *schCellDelete);
+uint8_t MacSchCellDeleteReq(Pst *pst, SchCellDeleteReq  *schCellDelete);
 uint8_t packSchCellDeleteRsp(Pst *pst, SchCellDeleteRsp  *schCellDeleteRsp);
 uint8_t MacProcSchCellDeleteRsp(Pst *pst, SchCellDeleteRsp *schCellDeleteRsp);
 uint8_t packMacSchSliceCfgReq(Pst *pst, SchSliceCfgReq *cfgReq);
 uint8_t MacSchSliceCfgReq(Pst *pst, SchSliceCfgReq *schSliceCfgReq);
 uint8_t packSchSliceCfgRsp(Pst *pst, SchSliceCfgRsp *cfgRsp);
 uint8_t MacProcSchSliceCfgRsp(Pst *pst, SchSliceCfgRsp *cfgRsp);
-uint8_t packMacSchSliceReCfgReq(Pst *pst, SchSliceCfgReq *cfgReq);
-uint8_t MacSchSliceReCfgReq(Pst *pst, SchSliceCfgReq *schSliceCfgReq);
-uint8_t packSchSliceReCfgRsp(Pst *pst, SchSliceCfgRsp *cfgRsp);
-uint8_t MacProcSchSliceReCfgRsp(Pst *pst, SchSliceCfgRsp *sliceReCfgrsp);
+uint8_t packMacSchSliceReCfgReq(Pst *pst, SchSliceReCfgReq *cfgReq);
+uint8_t MacSchSliceReCfgReq(Pst *pst, SchSliceReCfgReq *schSliceReCfgReq);
+uint8_t packSchSliceReCfgRsp(Pst *pst, SchSliceReCfgRsp *cfgRsp);
+uint8_t MacProcSchSliceReCfgRsp(Pst *pst, SchSliceReCfgRsp *sliceReCfgrsp);
 uint8_t packMacSchPagingInd(Pst *pst,  SchPageInd *pageInd);
 uint8_t MacSchPagingInd(Pst *pst,  SchPageInd *pageInd);
 uint8_t packSchMacDlPageAlloc(Pst *pst, DlPageAlloc *dlPageAlloc);
