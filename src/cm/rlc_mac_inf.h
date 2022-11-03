@@ -52,10 +52,10 @@ typedef struct rlcLcSchInfo
 typedef struct rlcSchedResultRpt
 {
    //Slot info
+   SlotTimingInfo slotInfo;     /*!< Timing info */
    uint16_t       cellId;       /*!< CELL ID */
    uint16_t       rnti;         /*!< Temporary CRNTI */
    uint8_t        numLc;        /*!< Number of logical channels scheduled */
-   SlotTimingInfo    slotInfo;     /*!< Timing info */
    RlcLcSchInfo   lcSch[MAX_NUM_LC];  /*!< Scheduled info of logical channels */
 }RlcSchedResultRpt;
 

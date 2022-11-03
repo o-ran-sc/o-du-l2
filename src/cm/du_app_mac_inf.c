@@ -192,7 +192,7 @@ uint8_t unpackMacCellCfgCfm(DuMacCellCfgCfm func, Pst *pst, Buffer *mBuf)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t packMacCellStart(Pst *pst, OduCellId *cellId)
+uint8_t packMacCellStart(Pst *pst, CellStartInfo *cellStart)
 {
    Buffer *mBuf = NULLP;
 
@@ -211,7 +211,7 @@ uint8_t packMacCellStart(Pst *pst, OduCellId *cellId)
       }
 
       /* pack the address of the structure */
-      CMCHKPK(oduPackPointer,(PTR)cellId, mBuf);
+      CMCHKPK(oduPackPointer,(PTR)cellStart, mBuf);
 
    }
    return ODU_POST_TASK(pst,mBuf);
@@ -237,14 +237,14 @@ uint8_t packMacCellStart(Pst *pst, OduCellId *cellId)
  * ****************************************************************/
 uint8_t unpackMacCellStart(DuMacCellStart func, Pst *pst, Buffer *mBuf)
 {
-   OduCellId  *cellId;
+   CellStartInfo  *cellStart;
 
    if(pst->selector == ODU_SELECTOR_LWLC)
    {
       /* unpack the address of the structure */
-      CMCHKUNPK(oduUnpackPointer, (PTR *)&cellId, mBuf);
+      CMCHKUNPK(oduUnpackPointer, (PTR *)&cellStart, mBuf);
       ODU_PUT_MSG_BUF(mBuf); 
-      return (*func)(pst, cellId);
+      return (*func)(pst, cellStart);
    }
    else
    {
@@ -271,7 +271,7 @@ uint8_t unpackMacCellStart(DuMacCellStart func, Pst *pst, Buffer *mBuf)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t packMacCellStop(Pst *pst, OduCellId  *cellId)
+uint8_t packMacCellStop(Pst *pst, CellStopInfo *cellStop)
 {
    if(pst->selector == ODU_SELECTOR_LC)
    {
@@ -289,7 +289,7 @@ uint8_t packMacCellStop(Pst *pst, OduCellId  *cellId)
       }
 
       /* pack the address of the structure */
-      CMCHKPK(oduPackPointer,(PTR)cellId, mBuf);
+      CMCHKPK(oduPackPointer,(PTR)cellStop, mBuf);
 
       return ODU_POST_TASK(pst,mBuf);
    }
@@ -316,14 +316,14 @@ uint8_t packMacCellStop(Pst *pst, OduCellId  *cellId)
  * ****************************************************************/
 uint8_t unpackMacCellStop(DuMacCellStop func, Pst *pst, Buffer *mBuf)
 {
-   OduCellId *cellId;
+   CellStopInfo *cellStop;
    
    if(pst->selector == ODU_SELECTOR_LWLC)
    {
       /* unpack the address of the structure */
-      CMCHKUNPK(oduUnpackPointer, (PTR *)&cellId, mBuf);
+      CMCHKUNPK(oduUnpackPointer, (PTR *)&cellStop, mBuf);
       ODU_PUT_MSG_BUF(mBuf);
-      return (*func)(pst, cellId);
+      return (*func)(pst, cellStop);
    }
    else
    {
@@ -1314,7 +1314,7 @@ uint8_t unpackMacCellDeleteReq(DuMacCellDeleteReq func, Pst *pst, Buffer *mBuf)
 {
    if(pst->selector == ODU_SELECTOR_LWLC)
    {
-      MacCellDelete *cellDelete=NULLP;
+      MacCellDeleteReq *cellDelete=NULLP;
 
       /* unpack the address of the structure */
       CMCHKUNPK(oduUnpackPointer, (PTR *)&cellDelete, mBuf);
@@ -1350,7 +1350,7 @@ uint8_t unpackMacCellDeleteReq(DuMacCellDeleteReq func, Pst *pst, Buffer *mBuf)
  *
  * ****************************************************************/
 
-uint8_t packDuMacCellDeleteReq(Pst *pst, MacCellDelete *cellDelete)
+uint8_t packDuMacCellDeleteReq(Pst *pst, MacCellDeleteReq *cellDelete)
 {
    Buffer *mBuf = NULLP;
 
@@ -1604,13 +1604,13 @@ uint8_t unpackDuMacSliceCfgRsp(MacDuSliceCfgRspFunc func, Pst *pst, Buffer *mBuf
  *    Functionality:
  *       Pack and send Slice ReCfg request from MAC to DU APP
  *
- * @params[in] Pst *pst, MacSliceCfgReq *sliceReCfgReq
+ * @params[in] Pst *pst, MacSliceReCfgReq *sliceReCfgReq
  * @return ROK     - success
  *         RFAILED - failure
  *
  * ****************************************************************/
 
-uint8_t packDuMacSliceRecfgReq(Pst *pst, MacSliceCfgReq *sliceReCfgReq)
+uint8_t packDuMacSliceRecfgReq(Pst *pst, MacSliceReCfgReq *sliceReCfgReq)
 {
    Buffer *mBuf = NULLP;
 
@@ -1654,7 +1654,7 @@ uint8_t unpackMacSliceReCfgReq(DuMacSliceRecfgReq func, Pst *pst, Buffer *mBuf)
 {
     if(pst->selector == ODU_SELECTOR_LWLC)
     {
-       MacSliceCfgReq *sliceReCfgReq;
+       MacSliceReCfgReq *sliceReCfgReq;
        /* unpack the address of the structure */
        CMCHKUNPK(oduUnpackPointer, (PTR *)&sliceReCfgReq, mBuf);
        ODU_PUT_MSG_BUF(mBuf);
@@ -1686,7 +1686,7 @@ uint8_t unpackMacSliceReCfgReq(DuMacSliceRecfgReq func, Pst *pst, Buffer *mBuf)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t packDuMacSliceReCfgRsp(Pst *pst, MacSliceCfgRsp *cfgRsp)
+uint8_t packDuMacSliceReCfgRsp(Pst *pst, MacSliceReCfgRsp *cfgRsp)
 {
    Buffer *mBuf = NULLP;
 
@@ -1728,7 +1728,7 @@ uint8_t unpackDuMacSliceReCfgRsp(MacDuSliceReCfgRspFunc func, Pst *pst, Buffer *
 {
    if(pst->selector == ODU_SELECTOR_LWLC)
    {
-      MacSliceCfgRsp *cfgRsp = NULLP;
+      MacSliceReCfgRsp *cfgRsp = NULLP;
 
       /* unpack the address of the structure */
       CMCHKUNPK(oduUnpackPointer, (PTR *)&cfgRsp, mBuf);
@@ -1822,13 +1822,13 @@ uint8_t unpackDuMacSlotInd(DuMacSlotInd func, Pst *pst, Buffer *mBuf)
  *       Pack and send Dl Pcch indication to MAC
  *
  * @params[in] Post structure
- *             MacPcchInd *pcchInd;
+ *             DlPcchInd *pcchInd;
  * @return ROK     - success
  *         RFAILED - failure
  *
  * ****************************************************************/
 
-uint8_t packDuMacDlPcchInd(Pst *pst, MacPcchInd *pcchInd)
+uint8_t packDuMacDlPcchInd(Pst *pst, DlPcchInd *pcchInd)
 {
    Buffer *mBuf = NULLP;
 
@@ -1872,7 +1872,7 @@ uint8_t unpackMacDlPcchInd(DuMacDlPcchInd func, Pst *pst, Buffer *mBuf)
 {
    if(pst->selector == ODU_SELECTOR_LWLC)
    {
-      MacPcchInd *pcchInd=NULLP;
+      DlPcchInd *pcchInd=NULLP;
 
       /* unpack the address of the structure */
       CMCHKUNPK(oduUnpackPointer, (PTR *)&pcchInd, mBuf);
