@@ -1717,7 +1717,7 @@ typedef struct schUeDeleteRsp
 typedef struct schCellDelete 
 {
    uint16_t   cellId;
-}SchCellDelete;
+}SchCellDeleteReq;
 
 
 typedef struct schCellDeleteRsp
@@ -1906,7 +1906,7 @@ typedef uint8_t (*SchUeDeleteRspFunc) ARGS((
 
 typedef uint8_t (*MacSchCellDeleteReqFunc) ARGS((
    Pst         *pst,           /* Post structure */
-   SchCellDelete *schCellDelete)); /*Scheduler UE Del*/
+   SchCellDeleteReq *schCellDelete)); /*Scheduler UE Del*/
 
 typedef uint8_t (*SchCellDeleteRspFunc) ARGS((
    Pst          *pst,           /* Post structure */
@@ -1983,8 +1983,8 @@ uint8_t packMacSchUeDeleteReq(Pst *pst,  SchUeDelete *schUeDel);
 uint8_t MacSchUeDeleteReq(Pst *pst, SchUeDelete  *ueDelete);
 uint8_t packSchUeDeleteRsp(Pst *pst, SchUeDeleteRsp  *delRsp);
 uint8_t MacProcSchUeDeleteRsp(Pst *pst, SchUeDeleteRsp *schUeDelRsp);
-uint8_t packMacSchCellDeleteReq(Pst *pst,  SchCellDelete *schCellDelete);
-uint8_t MacSchCellDeleteReq(Pst *pst, SchCellDelete  *schCellDelete);
+uint8_t packMacSchCellDeleteReq(Pst *pst,  SchCellDeleteReq *schCellDelete);
+uint8_t MacSchCellDeleteReq(Pst *pst, SchCellDeleteReq  *schCellDelete);
 uint8_t packSchCellDeleteRsp(Pst *pst, SchCellDeleteRsp  *schCellDeleteRsp);
 uint8_t MacProcSchCellDeleteRsp(Pst *pst, SchCellDeleteRsp *schCellDeleteRsp);
 uint8_t packMacSchSliceCfgReq(Pst *pst, SchSliceCfgReq *cfgReq);

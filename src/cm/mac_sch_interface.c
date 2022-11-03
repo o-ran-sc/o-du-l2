@@ -543,7 +543,7 @@ uint8_t packSchUeDeleteRsp(Pst *pst, SchUeDeleteRsp  *delRsp)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t packMacSchCellDeleteReq(Pst *pst,  SchCellDelete *schCellDelete)
+uint8_t packMacSchCellDeleteReq(Pst *pst,  SchCellDeleteReq *schCellDelete)
 {
    if((pst->selector == ODU_SELECTOR_LC) || (pst->selector == ODU_SELECTOR_LC))
    {

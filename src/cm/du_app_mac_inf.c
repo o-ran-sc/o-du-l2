@@ -1314,7 +1314,7 @@ uint8_t unpackMacCellDeleteReq(DuMacCellDeleteReq func, Pst *pst, Buffer *mBuf)
 {
    if(pst->selector == ODU_SELECTOR_LWLC)
    {
-      MacCellDelete *cellDelete=NULLP;
+      MacCellDeleteReq *cellDelete=NULLP;
 
       /* unpack the address of the structure */
       CMCHKUNPK(oduUnpackPointer, (PTR *)&cellDelete, mBuf);
@@ -1350,7 +1350,7 @@ uint8_t unpackMacCellDeleteReq(DuMacCellDeleteReq func, Pst *pst, Buffer *mBuf)
  *
  * ****************************************************************/
 
-uint8_t packDuMacCellDeleteReq(Pst *pst, MacCellDelete *cellDelete)
+uint8_t packDuMacCellDeleteReq(Pst *pst, MacCellDeleteReq *cellDelete)
 {
    Buffer *mBuf = NULLP;
 

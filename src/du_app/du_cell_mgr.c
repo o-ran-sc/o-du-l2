@@ -473,9 +473,9 @@ uint8_t sendCellDeleteReqToMac(uint16_t cellId)
 {
    Pst pst;
    uint8_t ret=ROK;
-   MacCellDelete *cellDelete = NULLP;
+   MacCellDeleteReq *cellDelete = NULLP;
    
-   DU_ALLOC_SHRABL_BUF(cellDelete, sizeof(MacCellDelete));
+   DU_ALLOC_SHRABL_BUF(cellDelete, sizeof(MacCellDeleteReq));
    if(cellDelete)
    {
       cellDelete->cellId = cellId;
@@ -487,7 +487,7 @@ uint8_t sendCellDeleteReqToMac(uint16_t cellId)
       if(ret == RFAILED)
       {
          DU_LOG("\nERROR  -->  DU APP : sendCellDeleteReqToMac(): Failed to send Cell delete Req to MAC");
-         DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, cellDelete, sizeof(MacCellDelete));
+         DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, cellDelete, sizeof(MacCellDeleteReq));
       }
    }
    else

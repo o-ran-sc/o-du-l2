@@ -1243,7 +1243,7 @@ uint8_t MacSchUeDeleteReq(Pst *pst, SchUeDelete  *ueDelete)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t SchSendCellDeleteRspToMac(SchCellDelete  *ueDelete, Inst inst, SchMacRsp result)
+uint8_t SchSendCellDeleteRspToMac(SchCellDeleteReq  *ueDelete, Inst inst, SchMacRsp result)
 {
    Pst rspPst;
    uint8_t ret=0;
@@ -1384,7 +1384,7 @@ void deleteSchCellCb(SchCellCb *cellCb)
  *
  * ****************************************************************/
 
-uint8_t MacSchCellDeleteReq(Pst *pst, SchCellDelete  *cellDelete)
+uint8_t MacSchCellDeleteReq(Pst *pst, SchCellDeleteReq  *cellDelete)
 {
    uint8_t   cellIdx=0, ret = RFAILED;
    Inst      inst = pst->dstInst - SCH_INST_START;
