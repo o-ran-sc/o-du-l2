@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7944cb86_e3ac1063",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-11-04T16:05:02Z",
+      "side": 1,
+      "message": "PatchSet 4: DUAPP - MAC\n1. Cell Start/Stop\n2. DL pcchInd",
+      "revId": "e8f239958820a63d6d1bdf960e640cd8450a22a0",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
