@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "18f101a5_0944206a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-11-04T10:53:40Z",
+      "side": 1,
+      "message": "Patchset 3: (MAC-SCH)\n1. RACH Resource \u0026 Release Request\n2. Cell Configuration/Deletion Response\n",
+      "revId": "f1fcf5700cda0aaf9fc27d781cfcf56ada8028e4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
