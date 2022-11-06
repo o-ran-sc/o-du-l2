@@ -538,7 +538,7 @@ uint8_t duActvTsk(Pst *pst, Buffer *mBuf)
                   }
                case EVENT_MAC_UE_RECONFIG_RSP:
                   {
-                     ret = unpackDuMacUeCfgRsp(DuProcMacUeCfgRsp, pst, mBuf); 
+                     ret = unpackDuMacUeReCfgRsp(DuProcMacUeReCfgRsp, pst, mBuf); 
                      break;
                   }
                case EVENT_MAC_UE_DELETE_RSP:

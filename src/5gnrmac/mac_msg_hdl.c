@@ -239,7 +239,7 @@ uint8_t fapiMacRxDataInd(Pst *pst, RxDataInd *rxDataInd)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t MacProcRlcDlData(Pst* pstInfo, RlcData *dlData)
+uint8_t MacProcRlcDlData(Pst* pstInfo, RlcDlData *dlData)
 {
    uint8_t   pduIdx = 0;
    uint8_t   ueId  = 0;
@@ -323,7 +323,7 @@ uint8_t MacProcRlcDlData(Pst* pstInfo, RlcData *dlData)
    }
    if(pstInfo->selector == ODU_SELECTOR_LWLC)
    {
-      MAC_FREE_SHRABL_BUF(pstInfo->region, pstInfo->pool, dlData, sizeof(RlcData));
+      MAC_FREE_SHRABL_BUF(pstInfo->region, pstInfo->pool, dlData, sizeof(RlcDlData));
    }
    return ROK;
 }
@@ -352,16 +352,16 @@ uint8_t macProcUlData(uint16_t cellId, uint16_t rnti, SlotTimingInfo slotInfo, \
 uint8_t lcId, uint16_t pduLen, uint8_t *pdu)
 {
    Pst         pst;
-   RlcData     *ulData;
+   RlcUlData     *ulData;
 
    /* Filling RLC Ul Data*/
-   MAC_ALLOC_SHRABL_BUF(ulData, sizeof(RlcData));
+   MAC_ALLOC_SHRABL_BUF(ulData, sizeof(RlcUlData));
    if(!ulData)
    {
       DU_LOG("\nERROR  -->  MAC : Memory allocation failed while sending UL data to RLC");
       return RFAILED;
    }
-   memset(ulData, 0, sizeof(RlcData));
+   memset(ulData, 0, sizeof(RlcUlData));
    ulData->cellId = cellId; 
    ulData->rnti = rnti;
    memcpy(&ulData->slotInfo, &slotInfo, sizeof(SlotTimingInfo));

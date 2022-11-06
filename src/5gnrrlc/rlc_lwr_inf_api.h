@@ -19,7 +19,7 @@
 /* This file stores defines used at RLC lower mac interface */
 
 uint8_t RlcSendBoStatusToMac(Pst *pst, RlcBoStatus *staRsp);
-uint8_t RlcSendDlDataToMac(Pst *pst, RlcData *dlData);
+uint8_t RlcSendDlDataToMac(Pst *pst, RlcDlData *dlData);
 
 /**********************************************************************
          End of file

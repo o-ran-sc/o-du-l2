@@ -33,8 +33,8 @@ uint8_t BuildAndSendDUConfigUpdate();
 uint8_t BuildAndSendInitialRrcMsgTransfer(uint32_t gnbDuUeF1apId, uint16_t crnti, uint16_t rrcContSize, 
           uint8_t *rrcContainer);
 uint8_t BuildAndSendULRRCMessageTransfer(DuUeCb *ueCb, uint8_t lcId,  uint16_t msgLen, uint8_t *rrcMsg);
-uint8_t procUeReCfgCellInfo(MacUeCfg *macUeCfg, MacUeCfg *storedMacUeCfg, void *cellGrp);
-void freeUeReCfgCellGrpInfo(MacUeCfg *macUeCfg);
+uint8_t procUeReCfgCellInfo(DuMacUeCfg *macUeCfg, DuMacUeCfg *storedMacUeCfg, void *cellGrp);
+void freeUeReCfgCellGrpInfo(DuMacUeCfg *macUeCfg);
 uint8_t BuildAndSendUeCtxtRsp(uint8_t cellId, uint8_t ueId);
 uint8_t getDrbLcId(uint32_t *drbBitMap);
 void  freeMacLcCfg(LcCfg *lcCfg);
@@ -43,7 +43,7 @@ uint8_t BuildAndSendRrcDeliveryReport(uint32_t gnbCuUeF1apId, uint32_t gnbDuUeF1
 uint8_t sctpSend(Buffer *mBuf, uint8_t itfType);
 uint8_t duProcDlRrcMsg(F1DlRrcMsg *dlRrcMsg);
 uint8_t duProcUeContextSetupRequest(DuUeCb *ueCb);
-void duFillModulationDetails(MacUeCfg *ueCfg, MacUeCfg *oldUeCfg, void *ueCap);
+void duFillModulationDetails(DuMacUeCfg *ueCfg, DuMacUeCfg *oldUeCfg, void *ueCap);
 int8_t getReAsmblTmr(uint8_t reAsmblTmrCfg);
 int16_t getStatProhTmr(uint8_t statProhTmrCfg);
 uint8_t duProcUeContextModReq(DuUeCb *ueCb);
