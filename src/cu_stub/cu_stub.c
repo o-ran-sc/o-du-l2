@@ -402,6 +402,23 @@ void *cuConsoleHandler(void *args)
          }
          continue;
       }
+      else if(ch == 'm')
+      {
+         uint8_t ueId = 1;
+         uint8_t duId = 1;
+         uint8_t duIdx = 0;
+
+         DU_LOG("\nINFO  --> CU_STUB: UE Context Mod for ueId [%d] at DU ID [%d]", \
+                  ueId, duId );
+         DuDb *duDb = NULLP;
+         CuUeCb *ueCb = NULLP;
+
+         SEARCH_DU_DB(duIdx, duId, duDb); 
+         if(duDb)
+            ueCb = &duDb->ueCb[ueId-1];
+         BuildAndSendUeContextModificationReq(duId, ueCb, MODIFY_UE);
+
+      }
    }
 }
 /**********************************************************************
