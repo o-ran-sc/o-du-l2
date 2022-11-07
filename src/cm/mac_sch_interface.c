@@ -233,7 +233,7 @@ uint8_t packSchCellCfgCfm(Pst *pst, SchCellCfgCfm *schCellCfgCfm)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t packMacSchAddUeConfigReq(Pst *pst, SchUeCfg  *ueCfg)
+uint8_t packMacSchAddUeConfigReq(Pst *pst, SchUeCfgReq  *ueCfg)
 {
    if((pst->selector == ODU_SELECTOR_LC) || (pst->selector == ODU_SELECTOR_LC))
    {
@@ -268,6 +268,30 @@ uint8_t packSchUeCfgRsp(Pst *pst, SchUeCfgRsp *cfgRsp)
 {
    return ROK;
 }
+
+
+/*******************************************************************
+ *
+ * @brief Packs and send UE reconfig response
+ *
+ * @details 
+ *
+ *    Function : packSchUeReCfgRsp
+ *
+ *    Functionality:
+ *      Packs and send UE reconfig response
+ *
+ * @params[in] Post structure
+ *             UE re-config response
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t packSchUeReCfgRsp(Pst *pst, SchUeReCfgRsp *cfgRsp)
+{
+   return ROK;
+}
+
 /*******************************************************************
  *
  * @brief Pack and Send BSR from MAC to SCH
@@ -342,7 +366,7 @@ uint8_t packMacSchSrUciInd(Pst *pst, SrUciIndInfo *uciInd)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t packMacSchDlHarqInd(Pst *pst, DlHarqInd *dlHarqInd)
+uint8_t packMacSchDlHarqInd(Pst *pst, DlHarqInd *uciInd)
 {
    if((pst->selector == ODU_SELECTOR_LC) || (pst->selector == ODU_SELECTOR_LWLC))
    {
@@ -372,7 +396,7 @@ uint8_t packMacSchDlHarqInd(Pst *pst, DlHarqInd *dlHarqInd)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t packMacSchModUeConfigReq(Pst *pst, SchUeCfg  *ueCfg)
+uint8_t packMacSchModUeConfigReq(Pst *pst, SchUeReCfgReq  *ueReCfg)
 {
    if((pst->selector == ODU_SELECTOR_LC) || (pst->selector == ODU_SELECTOR_LC))
    {
