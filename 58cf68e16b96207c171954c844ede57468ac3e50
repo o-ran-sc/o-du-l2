@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7348570b_4d6d366f",
+        "filename": "src/cm/du_app_mac_inf.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1689,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-11-07T14:32:44Z",
+      "side": 1,
+      "message": "rename to reCfgRsp or sliceRecfgRsp",
+      "range": {
+        "startLine": 1689,
+        "startChar": 59,
+        "endLine": 1689,
+        "endChar": 65
+      },
+      "revId": "58cf68e16b96207c171954c844ede57468ac3e50",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "16f12cbc_3c7c3155",
+        "filename": "src/cm/du_app_mac_inf.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1731,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-11-07T14:32:44Z",
+      "side": 1,
+      "message": "same as above",
+      "range": {
+        "startLine": 1731,
+        "startChar": 24,
+        "endLine": 1731,
+        "endChar": 31
+      },
+      "revId": "58cf68e16b96207c171954c844ede57468ac3e50",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5e6e9a64_b41c1ca4",
+        "filename": "src/cm/du_app_mac_inf.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 1452,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-11-07T14:32:44Z",
+      "side": 1,
+      "message": "can we call this structure CellInfo and typedef it to CellStartInfo and CellStopInfo",
+      "range": {
+        "startLine": 1452,
+        "startChar": 1,
+        "endLine": 1452,
+        "endChar": 14
+      },
+      "revId": "58cf68e16b96207c171954c844ede57468ac3e50",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8f31982b_d3eb7b4f",
+        "filename": "src/cm/du_app_mac_inf.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 1593,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-11-07T14:32:44Z",
+      "side": 1,
+      "message": "rename cellId to cellStop/cellStart at lines 1588,1590,1591,1593",
+      "range": {
+        "startLine": 1593,
+        "startChar": 48,
+        "endLine": 1593,
+        "endChar": 54
+      },
+      "revId": "58cf68e16b96207c171954c844ede57468ac3e50",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "368ce60c_e32f8d04",
+        "filename": "src/cm/du_app_mac_inf.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 1650,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-11-07T14:32:44Z",
+      "side": 1,
+      "message": "rename to recfgRsp at lines 1649 \u0026 1650",
+      "range": {
+        "startLine": 1650,
+        "startChar": 59,
+        "endLine": 1650,
+        "endChar": 65
+      },
+      "revId": "58cf68e16b96207c171954c844ede57468ac3e50",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
