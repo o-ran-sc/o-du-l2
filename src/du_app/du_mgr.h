@@ -157,6 +157,7 @@ typedef struct duUeCfg
 #ifdef NR_DRX
    bool     drxCyclePres;
    DrxCycle drxCycle;
+   bool     drxConfigIndicatorRelease;
 #endif
 }DuUeCfg;
 

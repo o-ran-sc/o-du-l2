@@ -95,6 +95,12 @@
    }\
 }
 
+#ifdef NR_DRX
+/* Set this parameter true of false as per the need to enable or disable drx of
+ * a particular UE */
+#define DRX_TO_BE_RELEASE true 
+#endif
+
 typedef enum
 {
    CELL_INACTIVE,
@@ -304,6 +310,7 @@ typedef struct cuUeCb
    F1apMsgDb f1apMsgDb;
    UeState   state;
 #ifdef NR_DRX
+   bool      drxCfgPresent;
    DrxCfg    drxCfg;
 #endif
    HandoverInfo hoInfo;
