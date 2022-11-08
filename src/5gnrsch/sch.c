@@ -666,6 +666,10 @@ uint8_t schInitCellCb(Inst inst, SchCellCfg *schCellCfg)
    cell->firstSib1Transmitted = false;
    fillSsbStartSymb(cell);
    cmLListInit(&cell->ueToBeScheduled);
+
+#ifdef NR_DRX
+   memset(cell->drxCb, 0, MAX_DRX_SIZE*sizeof(SchDrxCb));
+#endif   
    schCb[inst].cells[inst] = cell;
 
    DU_LOG("\nINFO  -->  SCH : Cell init completed for cellId:%d", cell->cellId);

@@ -69,6 +69,13 @@
 #define HQ_NACK 1
 #define HQ_DTX 2
 
+#ifdef NR_DRX
+/* As per 38.331 the largest offset which can be used in of size 10240.
+ * But using this much size of array can cause memory related issue so thats why
+ * taking this size which are a multiple of the larger size */
+#define MAX_DRX_SIZE 512
+#endif
+
 typedef struct schDlHqProcCb SchDlHqProcCb;
 typedef struct schUlHqEnt SchUlHqEnt;
 typedef struct schRaReq SchRaReq;
@@ -178,6 +185,17 @@ typedef struct schDlHqTbCb
    uint8_t                statsBitmap;
 }SchDlHqTbCb;
 
+#ifdef NR_DRX
+typedef struct schDrxHarqCb
+{
+   uint32_t     retxStrtIndex;     
+   uint32_t     rttIndex;                  
+   uint32_t     retxIndex;        
+   int16_t      retxExpDistance; 
+   uint8_t      retxTmrReduction;     
+}SchDrxHarqCb;
+#endif
+
 typedef struct schUlHqProcCb
 {
    uint8_t           procId;       /*!< HARQ Process ID */
@@ -196,6 +214,9 @@ typedef struct schUlHqProcCb
    uint8_t           dmrsMappingType;
    uint8_t           nrOfDmrsSymbols;
    uint8_t           dmrsAddPos;
+#ifdef NR_DRX
+   SchDrxHarqCb      ulDrxHarqCb;
+#endif
 }SchUlHqProcCb;
 
 struct schDlHqProcCb
@@ -209,6 +230,9 @@ struct schDlHqProcCb
    uint8_t           k1;
    SchLcPrbEstimate  dlLcPrbEst; /*DL PRB Alloc Estimate among different LC*/
    CmLList           dlHqProcLink;
+#ifdef NR_DRX
+   SchDrxHarqCb      dlDrxHarqCb;
+#endif
 };
 struct schUlHqEnt
 {
@@ -385,6 +409,38 @@ typedef struct schHqUlMap
    CmLListCp hqList;
 }SchHqUlMap;
 
+#ifdef NR_DRX
+typedef struct  schDrxUeCb
+{
+   bool      drxDlUeActiveStatus;    /* variable is used to store the status about downlink active status */
+   bool      drxUlUeActiveStatus;    /* variable is used to store the status about uplink active status */
+   uint32_t  onDurationLen;          /* length of on duration which received from ue cfg/recfg this informs about after how many slots on duration gets expire */
+   uint32_t  inActvTimerLen;         /* length of inActvTimer value received from ue cfg/recfg this informs about after how many slots in active gets expire */
+   uint8_t   harqRttDlTimerLen;      /* length of the harqRttDlTimer value inform about after how many slots on the harq drx-HARQ-RTT-TimerDL expire */
+   uint8_t   harqRttUlTimerLen;      /* length of harqRttUlTimer value informs about after how many slots on harq drx-HARQ-RTT-TimerUL expire*/
+   uint32_t  retransDlTimerLen;      /* length of retransDlTimer value informs about after how many slots on harq RetransmissionTimer dl timer expire*/
+   uint32_t  retransUlTimerLen;      /* length of retransUlTimer value informs about after how many slots on harq RetransmissionTimer ul timer expire*/
+   uint32_t  longCycleLen;           /* length of long Cycle value received from ue cfg/recfg */
+   bool      longCycleToBeUsed;      /* long cycle should be used once the short cycle gets expires */
+   uint32_t  drxStartOffset;         /* length of drxStartOffset value received from ue cfg/recfg which helps in getting on duration start point*/
+   bool      shortCyclePresent;      /* set this value if shortCycle is Present */
+   uint32_t  shortCycleLen;          /* length of short Cycle value received from ue cfg/recfg */
+   uint32_t  shortCycleTmrLen;       /* value shortCycleTmr is the multiple of shortCycle which is received from ue cfg/recfg*/
+   uint32_t  drxSlotOffset;          /* drxSlotOffset value received from ue cfg/recfg which is used to delay before starting the drx-onDuration*/
+   uint32_t  onDurationStartIndex;   /* Index at which UE is stored in onDuration starts list */
+   uint32_t  onDurationExpiryIndex;  /* Index at which UE is stored in onDuration expires in the list */ 
+   uint32_t  inActvExpiryIndex;      /* Index at which UE is stored in inActvTimer expires in the list */
+   uint32_t  shortCycleExpiryIndex;  /* Index at which UE is stored in shortCycle expires in the list */
+   int32_t   shortCycleDistance;     /* Distance after how many slot short cycle tmr gets expire */ 
+   int32_t   onDurationStartDistance;/* Distance after how many slot on Duration Start tmr gets expire */
+   int32_t   onDurationExpiryDistance;/* Distance after how many slot on Duration tmr gets expire */
+   int32_t   inActiveTmrExpiryDistance;/* Distance after how many slot inActive tmr gets expire */
+   CmLList   *onDurationStartNodeInfo; /* Node present in on duration start list*/
+   CmLList   *onDurationExpiryNodeInfo;/* Node present in on duration exp list*/
+   CmLList   *inActvTimerExpiryNodeInfo; /* Node present in in active exp list*/
+   CmLList   *shortCycleTmrExpiryNodeInfo; /* Node present in short cycle exp list*/
+}SchDrxUeCb;
+#endif
 /**
  * @brief
  * UE control block
@@ -410,6 +466,10 @@ typedef struct schUeCb
    SchHqUlMap   **hqUlmap;
    CmLListCp  ulRetxHqList;
    CmLListCp  dlRetxHqList;
+#ifdef NR_DRX
+   bool           ueDrxInfoPres;
+   SchDrxUeCb     drxUeCb;
+#endif
 }SchUeCb;
 
 /**
@@ -448,6 +508,22 @@ typedef struct schPageCb
    SchPagingOcc pagMonOcc[MAX_PO_PER_PF];   /*Paging Occasion Slot/FrameOffset are stored*/ 
 }SchPageCb;
 
+#ifdef NR_DRX
+typedef struct schDrxCb
+{
+   CmLListCp   onDurationStartList;   /*!< Tracks the start of onDuration Timer. */
+   CmLListCp   onDurationExpiryList;   /*!< Tracks the Expiry of onDuration Timer. */
+   CmLListCp   inActvTmrExpiryList;   /*!< Tracks the Expiry of drx-InactivityTimer. */
+   CmLListCp   shortCycleExpiryList;   /*!< Tracks the Expiry of DRX Short Cycle. */
+   CmLListCp   dlHarqRttExpiryList;   /*!< Tracks the Expiry of DL HARQ RTT timer. */
+   CmLListCp   dlRetransExpiryList;   /*!< Tracks the Expiry of DL Re-Transmission timer. */
+   CmLListCp   ulHarqRttExpiryList;   /*!< Tracks the Expiry of UL HARQ RTT timer. */
+   CmLListCp   ulRetransExpiryList;   /*!< Tracks the Expiry of UL Re-Transmission timer. */
+   CmLListCp   dlRetransTmrStartList; /*!< It has list of DL harq procs for */
+   CmLListCp   ulRetransTmrStartList; /*!< It has list of UL harq procs for */
+}SchDrxCb;
+#endif
+
 /**
  * @brief
  * Cell Control block per cell.
@@ -478,6 +554,9 @@ typedef struct schCellCb
    uint8_t       numSlotsInPeriodicity;             /*!< number of slots in configured periodicity and SCS */
    uint32_t      slotFrmtBitMap;                    /*!< 2 bits must be read together to determine D/U/S slots. 00-D, 01-U, 10-S */
    uint32_t      symbFrmtBitMap;                    /*!< 2 bits must be read together to determine D/U/S symbols. 00-D, 01-U, 10-S */
+#endif
+#ifdef NR_DRX
+   SchDrxCb      drxCb[MAX_DRX_SIZE];                           /*!< Drx cb*/
 #endif
 }SchCellCb;
 
