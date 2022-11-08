@@ -24,6 +24,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5f5307f5_3a787e13",
+        "filename": "src/cm/mac_sch_interface.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 642,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-11-08T16:26:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "64fd1c47_1c60fb99",
+      "range": {
+        "startLine": 642,
+        "startChar": 60,
+        "endLine": 642,
+        "endChar": 66
+      },
+      "revId": "523919032c5a2397f587a5046c727903faba64f7",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c004dedd_4b69d510",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-11-07T14:32:44Z",
       "side": 1,
       "message": "recfgRsp",
+      "range": {
+        "startLine": 666,
+        "startChar": 57,
+        "endLine": 666,
+        "endChar": 63
+      },
+      "revId": "523919032c5a2397f587a5046c727903faba64f7",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c060cd24_a6c273e8",
+        "filename": "src/cm/mac_sch_interface.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 666,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-11-08T16:26:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c004dedd_4b69d510",
       "range": {
         "startLine": 666,
         "startChar": 57,
@@ -70,6 +118,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d060bde8_17c29292",
+        "filename": "src/cm/mac_sch_interface.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-11-08T16:26:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "aab3b766_55211499",
+      "range": {
+        "startLine": 32,
+        "startChar": 8,
+        "endLine": 32,
+        "endChar": 37
+      },
+      "revId": "523919032c5a2397f587a5046c727903faba64f7",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "167f843c_19c2bb76",
@@ -83,6 +155,30 @@
       "writtenOn": "2022-11-07T14:32:44Z",
       "side": 1,
       "message": "rename to schCellDeleteReq",
+      "range": {
+        "startLine": 1721,
+        "startChar": 15,
+        "endLine": 1721,
+        "endChar": 29
+      },
+      "revId": "523919032c5a2397f587a5046c727903faba64f7",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "86d07bb3_91573530",
+        "filename": "src/cm/mac_sch_interface.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 1721,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-11-08T16:26:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "167f843c_19c2bb76",
       "range": {
         "startLine": 1721,
         "startChar": 15,
@@ -116,6 +212,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b160bd30_5bb45da9",
+        "filename": "src/cm/mac_sch_interface.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 1793,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-11-08T16:26:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a7f7d551_1b409cb9",
+      "range": {
+        "startLine": 1793,
+        "startChar": 15,
+        "endLine": 1793,
+        "endChar": 26
+      },
+      "revId": "523919032c5a2397f587a5046c727903faba64f7",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8558c926_fc0ba781",
@@ -129,6 +249,30 @@
       "writtenOn": "2022-11-07T14:32:44Z",
       "side": 1,
       "message": "rename to recfgReq or sliceRecfgReq",
+      "range": {
+        "startLine": 2003,
+        "startChar": 60,
+        "endLine": 2003,
+        "endChar": 66
+      },
+      "revId": "523919032c5a2397f587a5046c727903faba64f7",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8b67b454_6c410f12",
+        "filename": "src/cm/mac_sch_interface.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 2003,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-11-08T16:26:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8558c926_fc0ba781",
       "range": {
         "startLine": 2003,
         "startChar": 60,
@@ -162,6 +306,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "459d3cdb_48bc7953",
+        "filename": "src/cm/mac_sch_interface.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 2005,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-11-08T16:26:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b8491d5a_a72c4697",
+      "range": {
+        "startLine": 2005,
+        "startChar": 57,
+        "endLine": 2005,
+        "endChar": 63
+      },
+      "revId": "523919032c5a2397f587a5046c727903faba64f7",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bdd1ef32_7359346b",
@@ -175,6 +343,30 @@
       "writtenOn": "2022-11-07T14:32:44Z",
       "side": 1,
       "message": "use of camel-case is incorrect here, it should be sliceRecfgRsp.\n\nReconfiguration is a single word, hence we write \"recfg\" rather than \"reCfg\"\n\nPlease recheck at all places",
+      "range": {
+        "startLine": 2006,
+        "startChar": 60,
+        "endLine": 2006,
+        "endChar": 73
+      },
+      "revId": "523919032c5a2397f587a5046c727903faba64f7",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c2673572_2a62e040",
+        "filename": "src/cm/mac_sch_interface.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 2006,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-11-08T16:26:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bdd1ef32_7359346b",
       "range": {
         "startLine": 2006,
         "startChar": 60,
