@@ -1203,7 +1203,7 @@ S16 l1HdlUlTtiReq(uint16_t msgLen, void *msg)
          memset(&ulTtiSlotInd, 0, sizeof(fapi_ul_tti_req_t));
          ulTtiSlotInd.slot = ulTtiReq->slot;
          ulTtiSlotInd.sfn  = ulTtiReq->sfn;
-         ADD_DELTA_TO_TIME(ulTtiSlotInd, ulTtiSlotInd, SLOT_DELAY);
+         ADD_DELTA_TO_TIME(ulTtiSlotInd, ulTtiSlotInd, SLOT_DELAY, MAX_SLOTS);
          l1BuildAndSendUciInd(ulTtiSlotInd.slot, ulTtiSlotInd.sfn, ulTtiReq->pdus[numPdus-1].pdu.pucch_pdu);
       }
       numPdus--;

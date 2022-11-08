@@ -347,7 +347,7 @@ void buildAndSendMuxPdu(SlotTimingInfo currTimingInfo)
 
    GET_CELL_IDX(currTimingInfo.cellId, cellIdx);
 
-   ADD_DELTA_TO_TIME(currTimingInfo, muxTimingInfo, PHY_DELTA_DL);
+   ADD_DELTA_TO_TIME(currTimingInfo, muxTimingInfo, PHY_DELTA_DL, macCb.macCell[cellIdx]->numOfSlots);
    currDlSlot = &macCb.macCell[cellIdx]->dlSlot[muxTimingInfo.slot];
 
    for(ueIdx=0; ueIdx<MAX_NUM_UE; ueIdx++)

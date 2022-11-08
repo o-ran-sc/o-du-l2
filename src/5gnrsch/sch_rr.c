@@ -54,7 +54,7 @@ uint8_t schMsg3RetxSchedulingForUe(SchRaCb *raCb)
    currTime = cell->slotInfo;
 
    /* Calculating time frame to send DCI for MSG3 Retx*/
-   ADD_DELTA_TO_TIME(currTime, dciTime, PHY_DELTA_DL + SCHED_DELTA);
+   ADD_DELTA_TO_TIME(currTime, dciTime, PHY_DELTA_DL + SCHED_DELTA, cell->numSlots);
 #ifdef NR_TDD
    /* Consider this slot for sending DCI, only if it is a DL slot */
    if(schGetSlotSymbFrmt(dciSlot, raCb->cell->slotFrmtBitMap) == DL_SLOT)
@@ -154,7 +154,7 @@ bool schGetMsg3K2(SchCellCb *cell, SchUlHqProcCb* msg3HqProc, uint16_t dlTime, S
       k2 = k2 + msg3Delta;
       if(k2 >= msg3MinSchTime)
       {
-         ADD_DELTA_TO_TIME(currTime, msg3TempTime, k2);
+         ADD_DELTA_TO_TIME(currTime, msg3TempTime, k2, cell->numSlots);
 #ifdef NR_TDD
          if(schGetSlotSymbFrmt(msg3TempTime.slot % totalCfgSlot, cell->slotFrmtBitMap) == DL_SLOT)
             continue;

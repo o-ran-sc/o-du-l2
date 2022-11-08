@@ -476,7 +476,7 @@ uint8_t schUlResAlloc(SchCellCb *cell, Inst schInst)
    memset(&ulSchedInfo, 0, sizeof(UlSchedInfo));
 
    /* add PHY delta */
-   ADD_DELTA_TO_TIME(cell->slotInfo,ulTimingInfo,PHY_DELTA_UL+SCHED_DELTA);
+   ADD_DELTA_TO_TIME(cell->slotInfo,ulTimingInfo,PHY_DELTA_UL+SCHED_DELTA, cell->numSlots);
 
    ulSchedInfo.cellId = cell->cellId;
    ulSchedInfo.slotIndInfo.cellId = ulSchedInfo.cellId;
@@ -744,7 +744,7 @@ uint16_t schAllocPucchResource(SchCellCb *cell, SlotTimingInfo pucchTime, uint16
       /* set HARQ flag to true */
       schUlSlotInfo->schPucchInfo.harqFlag = true;
       schUlSlotInfo->schPucchInfo.numHarqBits = 1; /* 1 bit for HARQ */
-      ADD_DELTA_TO_TIME(pucchTime, pucchTime, 3); /* SLOT_DELAY=3 */
+      ADD_DELTA_TO_TIME(pucchTime, pucchTime, 3, cell->numSlots); /* SLOT_DELAY=3 */
       cmLListAdd2Tail(&(ueCb->hqDlmap[pucchTime.slot]->hqList), &hqP->ulSlotLnk);
    }
    return ROK;
@@ -2007,7 +2007,7 @@ bool schProcessSrOrBsrReq(SchCellCb *cell, SlotTimingInfo currTime, uint8_t ueId
    }
 
    /* Calculating time frame to send DCI for SR */
-   ADD_DELTA_TO_TIME(currTime, dciTime, PHY_DELTA_DL + SCHED_DELTA);
+   ADD_DELTA_TO_TIME(currTime, dciTime, PHY_DELTA_DL + SCHED_DELTA, cell->numSlots);
 #ifdef NR_TDD
    if(schGetSlotSymbFrmt(dciTime.slot, cell->slotFrmtBitMap) == DL_SLOT)
 #endif
@@ -2035,7 +2035,7 @@ bool schProcessSrOrBsrReq(SchCellCb *cell, SlotTimingInfo currTime, uint8_t ueId
          }
          /* Check for number of Symbol of PUSCH should be same as original in case of transmisson*/
          /* Calculating time frame to send PUSCH for SR */
-         ADD_DELTA_TO_TIME(dciTime, puschTime, k2Val);
+         ADD_DELTA_TO_TIME(dciTime, puschTime, k2Val, cell->numSlots);
 #ifdef NR_TDD
          if(schGetSlotSymbFrmt(puschTime.slot, cell->slotFrmtBitMap) == DL_SLOT)
             continue;

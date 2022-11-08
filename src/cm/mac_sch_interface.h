@@ -105,9 +105,9 @@
 #define DEFAULT_K2_VALUE_FOR_SCS60  2
 #define DEFAULT_K2_VALUE_FOR_SCS120 3 
 
-#define ADD_DELTA_TO_TIME(crntTime, toFill, incr)          \
+#define ADD_DELTA_TO_TIME(crntTime, toFill, incr, numOfSlot)          \
 {                                                          \
-   if ((crntTime.slot + incr) > (MAX_SLOTS - 1))           \
+   if ((crntTime.slot + incr) > (numOfSlot - 1))           \
    {                                                       \
       toFill.sfn = (crntTime.sfn + 1);                     \
    }                                                       \
@@ -115,7 +115,7 @@
    {                                                       \
       toFill.sfn = crntTime.sfn;                           \
    }                                                       \
-   toFill.slot = (crntTime.slot + incr) % MAX_SLOTS;       \
+   toFill.slot = (crntTime.slot + incr) % numOfSlot;       \
    if (toFill.sfn >= MAX_SFN)                              \
    {                                                       \
       toFill.sfn%=MAX_SFN;                                 \
@@ -1200,6 +1200,7 @@ typedef struct schMacCellGrpCfg
    SchTagCfg        tagCfg;
    SchPhrCfg        phrCfg;             /* To be used only if phrCfgSetupPres is true */      
 #ifdef NR_DRX
+   bool             drxCfgPresent;
    SchDrxCfg        drxCfg;          /* Drx configuration */
 #endif
 }SchMacCellGrpCfg;
@@ -1654,6 +1655,9 @@ typedef struct schUeCfg
    uint8_t            numLcs;
    SchLcCfg           schLcCfg[MAX_NUM_LC];
    SchDataTransmission dataTransmissionInfo;
+#ifdef NR_DRX   
+   bool     drxConfigIndicatorRelease;
+#endif
 }SchUeCfg;
 
 typedef struct schUeCfgRsp

@@ -128,7 +128,7 @@ uint8_t sendDlPageAllocToMac(DlPageAlloc *dlPageAlloc, Inst inst)
  *         RFAILED - failure
  *
  * ****************************************************************/
-void schCalcSlotValues(SlotTimingInfo slotInd, SchSlotValue *schSlotValue)
+void schCalcSlotValues(SlotTimingInfo slotInd, SchSlotValue *schSlotValue, uint16_t numOfSlots)
 {
    /****************************************************************
     * PHY_DELTA - the physical layer delta                         * 
@@ -143,11 +143,11 @@ void schCalcSlotValues(SlotTimingInfo slotInd, SchSlotValue *schSlotValue)
     *        on PHY_DELTA + SCHED_DELTA + BO_DELTA                 *
     ****************************************************************/
 
-   ADD_DELTA_TO_TIME(slotInd, schSlotValue->currentTime, PHY_DELTA_DL);
-   ADD_DELTA_TO_TIME(slotInd, schSlotValue->broadcastTime, PHY_DELTA_DL + SCHED_DELTA);
-   ADD_DELTA_TO_TIME(slotInd, schSlotValue->rarTime, PHY_DELTA_DL + SCHED_DELTA);
-   ADD_DELTA_TO_TIME(slotInd, schSlotValue->dlMsgTime, PHY_DELTA_DL + SCHED_DELTA);
-   ADD_DELTA_TO_TIME(slotInd, schSlotValue->ulDciTime, PHY_DELTA_DL + SCHED_DELTA);
+   ADD_DELTA_TO_TIME(slotInd, schSlotValue->currentTime, PHY_DELTA_DL, numOfSlots);
+   ADD_DELTA_TO_TIME(slotInd, schSlotValue->broadcastTime, PHY_DELTA_DL + SCHED_DELTA, numOfSlots);
+   ADD_DELTA_TO_TIME(slotInd, schSlotValue->rarTime, PHY_DELTA_DL + SCHED_DELTA, numOfSlots);
+   ADD_DELTA_TO_TIME(slotInd, schSlotValue->dlMsgTime, PHY_DELTA_DL + SCHED_DELTA, numOfSlots);
+   ADD_DELTA_TO_TIME(slotInd, schSlotValue->ulDciTime, PHY_DELTA_DL + SCHED_DELTA, numOfSlots);
 }
 
 /*******************************************************************
@@ -252,7 +252,7 @@ bool findValidK0K1Value(SchCellCb *cell, SlotTimingInfo currTime, uint8_t ueId, 
    SchUeCb *ueCb = NULLP;
    SchK0K1TimingInfoTbl *k0K1InfoTbl;
 
-   ADD_DELTA_TO_TIME(currTime, (*pdcchTime), PHY_DELTA_DL + SCHED_DELTA);
+   ADD_DELTA_TO_TIME(currTime, (*pdcchTime), PHY_DELTA_DL + SCHED_DELTA, cell->numSlots);
 #ifdef NR_TDD
    if(schGetSlotSymbFrmt(pdcchTime->slot, cell->slotFrmtBitMap) != DL_SLOT)
    {
@@ -296,7 +296,7 @@ bool findValidK0K1Value(SchCellCb *cell, SlotTimingInfo currTime, uint8_t ueId, 
          }
       }
 
-      ADD_DELTA_TO_TIME((*pdcchTime), (*pdschTime), k0Val);
+      ADD_DELTA_TO_TIME((*pdcchTime), (*pdschTime), k0Val, cell->numSlots);
 #ifdef NR_TDD
       if(schGetSlotSymbFrmt(pdschTime->slot, cell->slotFrmtBitMap) != DL_SLOT)
       {
@@ -323,7 +323,7 @@ bool findValidK0K1Value(SchCellCb *cell, SlotTimingInfo currTime, uint8_t ueId, 
                k1Val = ueCb->ueCfg.spCellCfg.servCellCfg.initUlBwp.pucchCfg.dlDataToUlAck->dlDataToUlAckList[k1Index];
             }
          }
-         ADD_DELTA_TO_TIME((*pdschTime),(*pucchTime), k1Val);
+         ADD_DELTA_TO_TIME((*pdschTime),(*pucchTime), k1Val, cell->numSlots);
 #ifdef NR_TDD
          if(schGetSlotSymbFrmt(pucchTime->slot, cell->slotFrmtBitMap) == DL_SLOT)
          {
@@ -678,7 +678,7 @@ uint8_t schProcDlPageAlloc(SchCellCb *cell, SlotTimingInfo currTime, Inst schIns
    {
       dlPageAlloc.cellId = currTime.cellId;
 
-      ADD_DELTA_TO_TIME(currTime, dlPageAlloc.dlPageTime, PHY_DELTA_DL + SCHED_DELTA);
+      ADD_DELTA_TO_TIME(currTime, dlPageAlloc.dlPageTime, PHY_DELTA_DL + SCHED_DELTA, cell->numSlots);
       dlPageAlloc.shortMsgInd  = FALSE;
       pdschTime = dlPageAlloc.dlPageTime;
 
@@ -775,18 +775,18 @@ uint8_t schProcessSlotInd(SlotTimingInfo *slotInd, Inst schInst)
    SchDlHqProcCb  *hqP = NULLP;
    SchUlHqProcCb *ulHqP = NULLP;
 
-   memset(&dlSchedInfo, 0, sizeof(DlSchedInfo));
-   schCalcSlotValues(*slotInd, &dlSchedInfo.schSlotValue);
-   dlBrdcstAlloc = &dlSchedInfo.brdcstAlloc;
-   dlBrdcstAlloc->ssbTrans = NO_TRANSMISSION;
-   dlBrdcstAlloc->sib1Trans = NO_TRANSMISSION;
-
    cell = schCb[schInst].cells[schInst];
    if(cell == NULLP)
    {
       DU_LOG("\nERROR  -->  SCH : Cell Does not exist");
       return RFAILED;
    }
+   memset(&dlSchedInfo, 0, sizeof(DlSchedInfo));
+   schCalcSlotValues(*slotInd, &dlSchedInfo.schSlotValue, cell->numSlots);
+   dlBrdcstAlloc = &dlSchedInfo.brdcstAlloc;
+   dlBrdcstAlloc->ssbTrans = NO_TRANSMISSION;
+   dlBrdcstAlloc->sib1Trans = NO_TRANSMISSION;
+
    memcpy(&cell->slotInfo, slotInd, sizeof(SlotTimingInfo));
    dlBrdcstAlloc->ssbIdxSupported = SSB_IDX_SUPPORTED;
 
