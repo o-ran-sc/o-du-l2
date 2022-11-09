@@ -1,0 +1,130 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8f3833f1_564a1064",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 1673,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-11-09T09:20:14Z",
+      "side": 1,
+      "message": "all variables must start with lower-case letter",
+      "range": {
+        "startLine": 1673,
+        "startChar": 29,
+        "endLine": 1673,
+        "endChar": 39
+      },
+      "revId": "eb79b8ba5ffab3680a98a1eed95e02bc06c0afd9",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a0989df8_9530f612",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 1909,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-11-09T09:20:14Z",
+      "side": 1,
+      "message": "camel case for recfg in variables reCfgReq and reCfgRsp",
+      "revId": "eb79b8ba5ffab3680a98a1eed95e02bc06c0afd9",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "855209bd_0d519e79",
+        "filename": "src/cm/du_app_mac_inf.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 1589,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-11-09T09:20:14Z",
+      "side": 1,
+      "message": "since CellStartInfo contains not just the cellId, lets call this variable \"cellStartInfo\" or \"cellInfo\".\nSame for lines 1591, 1592, 1594",
+      "range": {
+        "startLine": 1589,
+        "startChar": 50,
+        "endLine": 1589,
+        "endChar": 61
+      },
+      "revId": "eb79b8ba5ffab3680a98a1eed95e02bc06c0afd9",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "765f4d79_198b6e77",
+        "filename": "src/cm/mac_sch_interface.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 666,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-11-09T09:20:14Z",
+      "side": 1,
+      "message": "recfgRsp",
+      "range": {
+        "startLine": 666,
+        "startChar": 57,
+        "endLine": 666,
+        "endChar": 65
+      },
+      "revId": "eb79b8ba5ffab3680a98a1eed95e02bc06c0afd9",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "22e0bc6b_338fb92c",
+        "filename": "src/cm/mac_sch_interface.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 2003,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-11-09T09:20:14Z",
+      "side": 1,
+      "message": "recfgReq",
+      "range": {
+        "startLine": 2003,
+        "startChar": 60,
+        "endLine": 2003,
+        "endChar": 66
+      },
+      "revId": "eb79b8ba5ffab3680a98a1eed95e02bc06c0afd9",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "10d27b94_0790fba7",
+        "filename": "src/du_app/du_msg_hdl.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 1995,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-11-09T09:20:14Z",
+      "side": 1,
+      "message": "lowercase letter to be used at start of all variables",
+      "revId": "eb79b8ba5ffab3680a98a1eed95e02bc06c0afd9",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
