@@ -85,6 +85,52 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5d087a73_d3354fb4",
+        "filename": "src/cm/du_app_mac_inf.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 1446,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-11-09T09:35:48Z",
+      "side": 1,
+      "message": "like we have added mac in all the other strcutre. can we add macDlPcchInd in this structure as well?",
+      "range": {
+        "startLine": 1446,
+        "startChar": 1,
+        "endLine": 1446,
+        "endChar": 10
+      },
+      "revId": "eb79b8ba5ffab3680a98a1eed95e02bc06c0afd9",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "55a44458_1dca49d7",
+        "filename": "src/cm/du_app_mac_inf.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 1452,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-11-09T09:35:48Z",
+      "side": 1,
+      "message": "same as above",
+      "range": {
+        "startLine": 1452,
+        "startChar": 1,
+        "endLine": 1452,
+        "endChar": 9
+      },
+      "revId": "eb79b8ba5ffab3680a98a1eed95e02bc06c0afd9",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "855209bd_0d519e79",
         "filename": "src/cm/du_app_mac_inf.h",
         "patchSetId": 8
