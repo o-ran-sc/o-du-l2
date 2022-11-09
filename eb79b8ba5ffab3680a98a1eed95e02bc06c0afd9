@@ -106,6 +106,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c0227252_56990e7e",
+        "filename": "src/cm/du_app_mac_inf.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 1446,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-11-09T09:43:36Z",
+      "side": 1,
+      "message": "actually in WG8 Sec(9.2.4.16) this message is named as DlPcchInd\n\nSince the Slice Cfg is present between every interface thus to differentiate the \"mac\" prefix is added",
+      "parentUuid": "5d087a73_d3354fb4",
+      "range": {
+        "startLine": 1446,
+        "startChar": 1,
+        "endLine": 1446,
+        "endChar": 10
+      },
+      "revId": "eb79b8ba5ffab3680a98a1eed95e02bc06c0afd9",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "55a44458_1dca49d7",
@@ -119,6 +143,30 @@
       "writtenOn": "2022-11-09T09:35:48Z",
       "side": 1,
       "message": "same as above",
+      "range": {
+        "startLine": 1452,
+        "startChar": 1,
+        "endLine": 1452,
+        "endChar": 9
+      },
+      "revId": "eb79b8ba5ffab3680a98a1eed95e02bc06c0afd9",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4b628d45_bb01d8a2",
+        "filename": "src/cm/du_app_mac_inf.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 1452,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-11-09T09:43:36Z",
+      "side": 1,
+      "message": "Same as above(Refer WG8, sec 9.2.4.1, 9.2.4.2)",
+      "parentUuid": "55a44458_1dca49d7",
       "range": {
         "startLine": 1452,
         "startChar": 1,
