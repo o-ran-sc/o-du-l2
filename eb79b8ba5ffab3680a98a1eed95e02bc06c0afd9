@@ -24,6 +24,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "778a6ee7_1743e971",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 1673,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-11-09T09:35:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8f3833f1_564a1064",
+      "range": {
+        "startLine": 1673,
+        "startChar": 29,
+        "endLine": 1673,
+        "endChar": 39
+      },
+      "revId": "eb79b8ba5ffab3680a98a1eed95e02bc06c0afd9",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a0989df8_9530f612",
@@ -41,6 +65,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8d984350_619a020f",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 1909,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-11-09T09:35:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a0989df8_9530f612",
+      "revId": "eb79b8ba5ffab3680a98a1eed95e02bc06c0afd9",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "855209bd_0d519e79",
@@ -54,6 +96,30 @@
       "writtenOn": "2022-11-09T09:20:14Z",
       "side": 1,
       "message": "since CellStartInfo contains not just the cellId, lets call this variable \"cellStartInfo\" or \"cellInfo\".\nSame for lines 1591, 1592, 1594",
+      "range": {
+        "startLine": 1589,
+        "startChar": 50,
+        "endLine": 1589,
+        "endChar": 61
+      },
+      "revId": "eb79b8ba5ffab3680a98a1eed95e02bc06c0afd9",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f0f46be2_1e2671e9",
+        "filename": "src/cm/du_app_mac_inf.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 1589,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-11-09T09:35:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "855209bd_0d519e79",
       "range": {
         "startLine": 1589,
         "startChar": 50,
@@ -87,6 +153,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3cbef438_4476c1aa",
+        "filename": "src/cm/mac_sch_interface.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 666,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-11-09T09:35:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "765f4d79_198b6e77",
+      "range": {
+        "startLine": 666,
+        "startChar": 57,
+        "endLine": 666,
+        "endChar": 65
+      },
+      "revId": "eb79b8ba5ffab3680a98a1eed95e02bc06c0afd9",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "22e0bc6b_338fb92c",
@@ -110,6 +200,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "81711618_423846a0",
+        "filename": "src/cm/mac_sch_interface.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 2003,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-11-09T09:35:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "22e0bc6b_338fb92c",
+      "range": {
+        "startLine": 2003,
+        "startChar": 60,
+        "endLine": 2003,
+        "endChar": 66
+      },
+      "revId": "eb79b8ba5ffab3680a98a1eed95e02bc06c0afd9",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "10d27b94_0790fba7",
@@ -123,6 +237,24 @@
       "writtenOn": "2022-11-09T09:20:14Z",
       "side": 1,
       "message": "lowercase letter to be used at start of all variables",
+      "revId": "eb79b8ba5ffab3680a98a1eed95e02bc06c0afd9",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "73f84707_5f4684b9",
+        "filename": "src/du_app/du_msg_hdl.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 1995,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-11-09T09:35:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "10d27b94_0790fba7",
       "revId": "eb79b8ba5ffab3680a98a1eed95e02bc06c0afd9",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
