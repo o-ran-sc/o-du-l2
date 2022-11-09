@@ -142,6 +142,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fc9c111a_ec7752c2",
+        "filename": "src/cm/mac_sch_interface.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-11-09T05:01:51Z",
+      "side": 1,
+      "message": "EVENT_UCI_IND_TO_SCH cant be removed because it is used for SR UCI ind from PHY",
+      "parentUuid": "d060bde8_17c29292",
+      "range": {
+        "startLine": 32,
+        "startChar": 8,
+        "endLine": 32,
+        "endChar": 37
+      },
+      "revId": "523919032c5a2397f587a5046c727903faba64f7",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "167f843c_19c2bb76",
