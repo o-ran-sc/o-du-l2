@@ -1,0 +1,251 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3bb99fe1_6cd93df9",
+        "filename": "src/5gnrmac/mac_ue_mgr.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1716,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-11-10T13:50:52Z",
+      "side": 1,
+      "message": "since its a bool variable , cant we directly assign the value to schUeCfg?",
+      "range": {
+        "startLine": 1716,
+        "startChar": 16,
+        "endLine": 1716,
+        "endChar": 42
+      },
+      "revId": "7581c5241eea5cc011327d79e7959c0cfd16eb45",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a92873ee_00a765db",
+        "filename": "src/5gnrsch/sch.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 218,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-11-10T13:50:52Z",
+      "side": 1,
+      "message": "since we have DRX HArq cb in both ul and dl.. lets put prefix dl or ul for drxHarqCb",
+      "range": {
+        "startLine": 218,
+        "startChar": 21,
+        "endLine": 218,
+        "endChar": 30
+      },
+      "revId": "7581c5241eea5cc011327d79e7959c0cfd16eb45",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "40e3e17e_e73c4874",
+        "filename": "src/5gnrsch/sch.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 234,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-11-10T13:50:52Z",
+      "side": 1,
+      "message": "same as above",
+      "range": {
+        "startLine": 234,
+        "startChar": 21,
+        "endLine": 234,
+        "endChar": 30
+      },
+      "revId": "7581c5241eea5cc011327d79e7959c0cfd16eb45",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c6cc0860_c425056c",
+        "filename": "src/5gnrsch/sch.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 428,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-11-10T13:50:52Z",
+      "side": 1,
+      "message": "can we explain this in more better and exact..as discussed. Please go through all the variables.. this will help a lot",
+      "range": {
+        "startLine": 428,
+        "startChar": 40,
+        "endLine": 428,
+        "endChar": 54
+      },
+      "revId": "7581c5241eea5cc011327d79e7959c0cfd16eb45",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d1745ecc_afdf60ab",
+        "filename": "src/5gnrsch/sch_drx.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-11-10T13:50:52Z",
+      "side": 1,
+      "message": "havent reviewed the harq part.. wheneveryou will enable i will check it thoroughly",
+      "range": {
+        "startLine": 98,
+        "startChar": 6,
+        "endLine": 98,
+        "endChar": 29
+      },
+      "revId": "7581c5241eea5cc011327d79e7959c0cfd16eb45",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "881c98fd_103aa1f2",
+        "filename": "src/5gnrsch/sch_drx.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 407,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-11-10T13:50:52Z",
+      "side": 1,
+      "message": "make these logs more standard ones",
+      "range": {
+        "startLine": 407,
+        "startChar": 12,
+        "endLine": 407,
+        "endChar": 19
+      },
+      "revId": "7581c5241eea5cc011327d79e7959c0cfd16eb45",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ccf85f64_e58ab1db",
+        "filename": "src/5gnrsch/sch_drx.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 488,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-11-10T13:50:52Z",
+      "side": 1,
+      "message": "line break and check between all the fucntions as well in this file",
+      "revId": "7581c5241eea5cc011327d79e7959c0cfd16eb45",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "30c3ad0e_93c0e5d9",
+        "filename": "src/cm/du_app_mac_inf.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 1305,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-11-10T13:50:52Z",
+      "side": 1,
+      "message": "can we put it inside MacCellGrpCfg",
+      "range": {
+        "startLine": 1305,
+        "startChar": 12,
+        "endLine": 1305,
+        "endChar": 37
+      },
+      "revId": "7581c5241eea5cc011327d79e7959c0cfd16eb45",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "131bf263_e66343d6",
+        "filename": "src/cm/mac_sch_interface.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 1659,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-11-10T13:50:52Z",
+      "side": 1,
+      "message": "Can we put it inside SchMacCellGrpCfg?",
+      "range": {
+        "startLine": 1659,
+        "startChar": 12,
+        "endLine": 1659,
+        "endChar": 37
+      },
+      "revId": "7581c5241eea5cc011327d79e7959c0cfd16eb45",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "05edf6b3_d52233cd",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2051,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-11-10T13:50:52Z",
+      "side": 1,
+      "message": "I dont see any use of this parameter. In cu stub it is only assigned values",
+      "range": {
+        "startLine": 2051,
+        "startChar": 24,
+        "endLine": 2051,
+        "endChar": 37
+      },
+      "revId": "7581c5241eea5cc011327d79e7959c0cfd16eb45",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ec69b644_ed8918ae",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1286,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-11-10T13:50:52Z",
+      "side": 1,
+      "message": "since its a bool variable , cant we directly assign the value to macUeCfg?",
+      "range": {
+        "startLine": 1286,
+        "startChar": 18,
+        "endLine": 1286,
+        "endChar": 44
+      },
+      "revId": "7581c5241eea5cc011327d79e7959c0cfd16eb45",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
