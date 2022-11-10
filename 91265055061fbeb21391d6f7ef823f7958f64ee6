@@ -47,6 +47,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "70f887fb_565bc36e",
+        "filename": "src/cm/du_app_mac_inf.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 1657,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-11-10T10:04:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "de780b37_e225ecaf",
+      "range": {
+        "startLine": 1657,
+        "startChar": 25,
+        "endLine": 1657,
+        "endChar": 38
+      },
+      "revId": "91265055061fbeb21391d6f7ef823f7958f64ee6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "03170726_2e0c36fd",
@@ -60,6 +84,30 @@
       "writtenOn": "2022-11-10T08:58:18Z",
       "side": 1,
       "message": "same as above",
+      "range": {
+        "startLine": 1689,
+        "startChar": 59,
+        "endLine": 1689,
+        "endChar": 72
+      },
+      "revId": "91265055061fbeb21391d6f7ef823f7958f64ee6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e22a699b_de3608ea",
+        "filename": "src/cm/du_app_mac_inf.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 1689,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-11-10T10:04:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "03170726_2e0c36fd",
       "range": {
         "startLine": 1689,
         "startChar": 59,
@@ -93,6 +141,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2a49506d_1422113e",
+        "filename": "src/cm/du_app_mac_inf.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 1731,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-11-10T10:04:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c5c2de84_17c5cb1e",
+      "range": {
+        "startLine": 1731,
+        "startChar": 24,
+        "endLine": 1731,
+        "endChar": 38
+      },
+      "revId": "91265055061fbeb21391d6f7ef823f7958f64ee6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5af7fa0e_fbf80a29",
@@ -116,6 +188,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e5a02c3c_05f764d4",
+        "filename": "src/cm/mac_sch_interface.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 2006,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-11-10T10:04:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5af7fa0e_fbf80a29",
+      "range": {
+        "startLine": 2006,
+        "startChar": 60,
+        "endLine": 2006,
+        "endChar": 73
+      },
+      "revId": "91265055061fbeb21391d6f7ef823f7958f64ee6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b152f4e4_bb5f8625",
@@ -129,6 +225,30 @@
       "writtenOn": "2022-11-10T08:58:18Z",
       "side": 1,
       "message": "lower case first letter",
+      "range": {
+        "startLine": 2109,
+        "startChar": 21,
+        "endLine": 2109,
+        "endChar": 35
+      },
+      "revId": "91265055061fbeb21391d6f7ef823f7958f64ee6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a4658007_1282cd61",
+        "filename": "src/du_app/du_msg_hdl.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 2109,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-11-10T10:04:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b152f4e4_bb5f8625",
       "range": {
         "startLine": 2109,
         "startChar": 21,
