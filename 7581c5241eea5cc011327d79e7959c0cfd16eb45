@@ -24,6 +24,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "13392cb1_ca8f3154",
+        "filename": "src/5gnrmac/mac_ue_mgr.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1716,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-11-11T06:30:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3bb99fe1_6cd93df9",
+      "range": {
+        "startLine": 1716,
+        "startChar": 16,
+        "endLine": 1716,
+        "endChar": 42
+      },
+      "revId": "7581c5241eea5cc011327d79e7959c0cfd16eb45",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a92873ee_00a765db",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-11-10T13:50:52Z",
       "side": 1,
       "message": "since we have DRX HArq cb in both ul and dl.. lets put prefix dl or ul for drxHarqCb",
+      "range": {
+        "startLine": 218,
+        "startChar": 21,
+        "endLine": 218,
+        "endChar": 30
+      },
+      "revId": "7581c5241eea5cc011327d79e7959c0cfd16eb45",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a230719c_70c40356",
+        "filename": "src/5gnrsch/sch.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 218,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-11-11T06:30:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a92873ee_00a765db",
       "range": {
         "startLine": 218,
         "startChar": 21,
@@ -70,6 +118,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9f9b2a0e_56b0dcf4",
+        "filename": "src/5gnrsch/sch.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 234,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-11-11T06:30:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "40e3e17e_e73c4874",
+      "range": {
+        "startLine": 234,
+        "startChar": 21,
+        "endLine": 234,
+        "endChar": 30
+      },
+      "revId": "7581c5241eea5cc011327d79e7959c0cfd16eb45",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c6cc0860_c425056c",
@@ -83,6 +155,30 @@
       "writtenOn": "2022-11-10T13:50:52Z",
       "side": 1,
       "message": "can we explain this in more better and exact..as discussed. Please go through all the variables.. this will help a lot",
+      "range": {
+        "startLine": 428,
+        "startChar": 40,
+        "endLine": 428,
+        "endChar": 54
+      },
+      "revId": "7581c5241eea5cc011327d79e7959c0cfd16eb45",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f5624e46_cbe02fd2",
+        "filename": "src/5gnrsch/sch.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 428,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-11-11T06:30:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c6cc0860_c425056c",
       "range": {
         "startLine": 428,
         "startChar": 40,
@@ -116,6 +212,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8cbbf19d_5a1f9b00",
+        "filename": "src/5gnrsch/sch_drx.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-11-11T06:30:55Z",
+      "side": 1,
+      "message": "Okay",
+      "parentUuid": "d1745ecc_afdf60ab",
+      "range": {
+        "startLine": 98,
+        "startChar": 6,
+        "endLine": 98,
+        "endChar": 29
+      },
+      "revId": "7581c5241eea5cc011327d79e7959c0cfd16eb45",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "881c98fd_103aa1f2",
@@ -129,6 +249,30 @@
       "writtenOn": "2022-11-10T13:50:52Z",
       "side": 1,
       "message": "make these logs more standard ones",
+      "range": {
+        "startLine": 407,
+        "startChar": 12,
+        "endLine": 407,
+        "endChar": 19
+      },
+      "revId": "7581c5241eea5cc011327d79e7959c0cfd16eb45",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "057f8475_c350f237",
+        "filename": "src/5gnrsch/sch_drx.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 407,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-11-11T06:30:55Z",
+      "side": 1,
+      "message": "This log I have added this for testing purposes so I removed it.",
+      "parentUuid": "881c98fd_103aa1f2",
       "range": {
         "startLine": 407,
         "startChar": 12,
@@ -156,6 +300,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c49c2a7b_ce1e449f",
+        "filename": "src/5gnrsch/sch_drx.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 488,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-11-11T06:30:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ccf85f64_e58ab1db",
+      "revId": "7581c5241eea5cc011327d79e7959c0cfd16eb45",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "30c3ad0e_93c0e5d9",
@@ -169,6 +331,30 @@
       "writtenOn": "2022-11-10T13:50:52Z",
       "side": 1,
       "message": "can we put it inside MacCellGrpCfg",
+      "range": {
+        "startLine": 1305,
+        "startChar": 12,
+        "endLine": 1305,
+        "endChar": 37
+      },
+      "revId": "7581c5241eea5cc011327d79e7959c0cfd16eb45",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "879b6bc7_a4259d16",
+        "filename": "src/cm/du_app_mac_inf.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 1305,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-11-11T06:30:55Z",
+      "side": 1,
+      "message": "As per my knowledge, this parameter is not part of MacCellGrpCfg[38.331], so I have not included it in the MacCellGrpCfg structure. \nAs per 38.473 UE CONTEXT MODIFICATION REQUEST DRX configuration indicator is a separate IE. \nAnd since we are trying to align everything with the aad spec so I think we should not add this parameter in MacCellGrpCfg",
+      "parentUuid": "30c3ad0e_93c0e5d9",
       "range": {
         "startLine": 1305,
         "startChar": 12,
@@ -202,6 +388,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "498a1d98_b167677d",
+        "filename": "src/cm/mac_sch_interface.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 1659,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-11-11T06:30:55Z",
+      "side": 1,
+      "message": "No, we can\u0027t put this in SchMacCellGrpCfg because as per 38.331\nMAC-CellGroupConfig can have only the below-mentioned structure. \ndrx-Config \nschedulingRequestConfig \nbsr-Config \ntag-Config \nphr-Config \nskipUplinkTxDynamic.\n\ndrxConfigIndicatorRelease is a separate IE that we receive in UE contexted modification so thats why I have added this parameter out of MAC-CellGroupConfig.",
+      "parentUuid": "131bf263_e66343d6",
+      "range": {
+        "startLine": 1659,
+        "startChar": 12,
+        "endLine": 1659,
+        "endChar": 37
+      },
+      "revId": "7581c5241eea5cc011327d79e7959c0cfd16eb45",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "05edf6b3_d52233cd",
@@ -225,6 +435,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b289dc03_9e9b25af",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2051,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-11-11T06:30:55Z",
+      "side": 1,
+      "message": "I have added this parameter in BuildAndSendUeContextModificationReq now. please check.",
+      "parentUuid": "05edf6b3_d52233cd",
+      "range": {
+        "startLine": 2051,
+        "startChar": 24,
+        "endLine": 2051,
+        "endChar": 37
+      },
+      "revId": "7581c5241eea5cc011327d79e7959c0cfd16eb45",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ec69b644_ed8918ae",
@@ -238,6 +472,30 @@
       "writtenOn": "2022-11-10T13:50:52Z",
       "side": 1,
       "message": "since its a bool variable , cant we directly assign the value to macUeCfg?",
+      "range": {
+        "startLine": 1286,
+        "startChar": 18,
+        "endLine": 1286,
+        "endChar": 44
+      },
+      "revId": "7581c5241eea5cc011327d79e7959c0cfd16eb45",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "43246e14_7f7056ac",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1286,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-11-11T06:30:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ec69b644_ed8918ae",
       "range": {
         "startLine": 1286,
         "startChar": 18,
