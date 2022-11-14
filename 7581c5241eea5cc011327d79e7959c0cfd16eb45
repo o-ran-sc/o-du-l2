@@ -144,6 +144,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6e1a3f09_95c07905",
+        "filename": "src/5gnrsch/sch.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 413,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-11-14T11:51:21Z",
+      "side": 1,
+      "message": "as we discussed yesterday, mention in comments for each timer whether the value of a timer is in terms of no. of slots or in ms",
+      "revId": "7581c5241eea5cc011327d79e7959c0cfd16eb45",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c6cc0860_c425056c",
         "filename": "src/5gnrsch/sch.h",
         "patchSetId": 3
@@ -238,6 +255,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "46e5e139_d6d25f66",
+        "filename": "src/5gnrsch/sch_drx.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 356,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-11-14T11:51:21Z",
+      "side": 1,
+      "message": "is there a way to calculate MAX_SLOTS based on numerology instead of hardcoding its value?",
+      "revId": "7581c5241eea5cc011327d79e7959c0cfd16eb45",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "881c98fd_103aa1f2",
         "filename": "src/5gnrsch/sch_drx.c",
         "patchSetId": 3
@@ -314,6 +348,29 @@
       "side": 1,
       "message": "Done",
       "parentUuid": "ccf85f64_e58ab1db",
+      "revId": "7581c5241eea5cc011327d79e7959c0cfd16eb45",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d7e77ceb_8c008174",
+        "filename": "src/5gnrsch/sch_drx.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-11-14T11:51:21Z",
+      "side": 1,
+      "message": "this is not \"no of ms\", hence rename to something like _timeInMs",
+      "range": {
+        "startLine": 25,
+        "startChar": 39,
+        "endLine": 25,
+        "endChar": 45
+      },
       "revId": "7581c5241eea5cc011327d79e7959c0cfd16eb45",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
