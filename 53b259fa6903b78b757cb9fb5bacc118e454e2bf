@@ -18,6 +18,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6c50c395_3c1eca9f",
+        "filename": "src/5gnrsch/sch_drx.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 413,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-11-14T15:08:06Z",
+      "side": 1,
+      "message": "created macro for timer index SCH_CALCULATE_TIMER_INDEX.",
+      "parentUuid": "e8b2c098_a1fbaccc",
+      "revId": "53b259fa6903b78b757cb9fb5bacc118e454e2bf",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "86e4fd14_fd2c4612",
@@ -35,6 +53,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1dfa1ac8_a31448c2",
+        "filename": "src/5gnrsch/sch_drx.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 463,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-11-14T15:08:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "86e4fd14_fd2c4612",
+      "revId": "53b259fa6903b78b757cb9fb5bacc118e454e2bf",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6c4806c2_f1046b5c",
@@ -48,6 +84,30 @@
       "writtenOn": "2022-11-14T11:51:21Z",
       "side": 1,
       "message": "since you are incrementing elementCnt at line 10951, do we need to increment here too?",
+      "range": {
+        "startLine": 10941,
+        "startChar": 9,
+        "endLine": 10941,
+        "endChar": 20
+      },
+      "revId": "53b259fa6903b78b757cb9fb5bacc118e454e2bf",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4f69c144_dd333e67",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 10941,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-11-14T15:08:06Z",
+      "side": 1,
+      "message": "correct. we don\u0027t need an increment here.",
+      "parentUuid": "6c4806c2_f1046b5c",
       "range": {
         "startLine": 10941,
         "startChar": 9,
