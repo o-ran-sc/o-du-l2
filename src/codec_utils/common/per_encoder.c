@@ -43,10 +43,6 @@ uper_encode(const asn_TYPE_descriptor_t *td,
 
         if(_uper_encode_flush_outp(&po)) ASN__ENCODE_FAILED;
     }
-    else
-    {
-       printf("else return val er.encoded %u, er.failed_type->name '%s'\n", er.encoded, er.failed_type->name);
-   }
 
     return er;
 }

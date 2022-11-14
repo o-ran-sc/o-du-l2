@@ -68,7 +68,6 @@ int
 BIT_STRING_constraint(const asn_TYPE_descriptor_t *td, const void *sptr,
                       asn_app_constraint_failed_f *ctfailcb, void *app_key) {
     const BIT_STRING_t *st = (const BIT_STRING_t *)sptr;
-       printf("Inside %s:%d\n", __FILE__,__LINE__);
 
 	if(st && st->buf) {
 		if((st->size == 0 && st->bits_unused)
@@ -447,9 +446,7 @@ BIT_STRING_encode_uper(const asn_TYPE_descriptor_t *td,
 
 	if(specs->subvariant == ASN_OSUBV_BIT) {
         if((st->size == 0 && st->bits_unused) || (st->bits_unused & ~7))
-{
             ASN__ENCODE_FAILED;
-}
     } else {
 		ASN__ENCODE_FAILED;
     }
@@ -479,7 +476,6 @@ BIT_STRING_encode_uper(const asn_TYPE_descriptor_t *td,
                 csiz = &asn_DEF_BIT_STRING_constraint_size;
                 inext = 1;
             } else {
-        printf("Inside bit string endocde %s:%d\n", __FILE__, __LINE__);
                 ASN__ENCODE_FAILED;
             }
         }
@@ -490,10 +486,7 @@ BIT_STRING_encode_uper(const asn_TYPE_descriptor_t *td,
     if(ct_extensible) {
 		/* Declare whether length is [not] within extension root */
 		if(per_put_few_bits(po, inext, 1))
-{
-        printf("Inside bit string endocde %s:%d\n", __FILE__, __LINE__);
 			ASN__ENCODE_FAILED;
-}
 	}
 
     if(csiz->effective_bits >= 0 && !inext) {
@@ -507,17 +500,9 @@ BIT_STRING_encode_uper(const asn_TYPE_descriptor_t *td,
         ret = per_put_few_bits(
             po, add_trailer ? 0 : (ssize_t)size_in_bits - csiz->lower_bound,
             csiz->effective_bits);
-        if(ret) 
-{
-        printf("Inside bit string endocde %s:%d\n", __FILE__, __LINE__);
-ASN__ENCODE_FAILED;
-}
+        if(ret) ASN__ENCODE_FAILED;
         ret = per_put_many_bits(po, st->buf, size_in_bits);
-        if(ret) 
-{
-        printf("Inside bit string endocde %s:%d\n", __FILE__, __LINE__);
-ASN__ENCODE_FAILED;
-}
+        if(ret) ASN__ENCODE_FAILED;
         if(add_trailer) {
             static const uint8_t zeros[16];
             size_t trailing_zero_bits = csiz->lower_bound - size_in_bits;
@@ -529,11 +514,7 @@ ASN__ENCODE_FAILED;
                     ret = per_put_many_bits(po, zeros, trailing_zero_bits);
                     trailing_zero_bits = 0;
                 }
-        if(ret) 
-{
-        printf("Inside bit string endocde %s:%d\n", __FILE__, __LINE__);
-ASN__ENCODE_FAILED;
-}
+                if(ret) ASN__ENCODE_FAILED;
             }
         }
         ASN__ENCODED_OK(er);
@@ -545,29 +526,18 @@ ASN__ENCODE_FAILED;
     do {
         int need_eom = 0;
         ssize_t maySave = uper_put_length(po, size_in_bits, &need_eom);
-        if(maySave < 0) 
-{
-        printf("Inside bit string endocde %s:%d\n", __FILE__, __LINE__);
-ASN__ENCODE_FAILED;
-}
+        if(maySave < 0) ASN__ENCODE_FAILED;
 
         ASN_DEBUG("Encoding %" ASN_PRI_SSIZE " of %" ASN_PRI_SIZE "", maySave, size_in_bits);
 
         ret = per_put_many_bits(po, buf, maySave);
-        if(ret) 
-{
-        printf("Inside bit string endocde %s:%d\n", __FILE__, __LINE__);
-ASN__ENCODE_FAILED;
-}
+        if(ret) ASN__ENCODE_FAILED;
 
         buf += maySave >> 3;
         size_in_bits -= maySave;
         assert(!(maySave & 0x07) || !size_in_bits);
         if(need_eom && uper_put_length(po, 0, 0))
-{
-        printf("Inside bit string endocde %s:%d\n", __FILE__, __LINE__);
             ASN__ENCODE_FAILED; /* End of Message length */
-}
     } while(size_in_bits);
 
     ASN__ENCODED_OK(er);
