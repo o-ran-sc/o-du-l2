@@ -1802,7 +1802,7 @@ OCTET_STRING_decode_aper(const asn_codec_ctx_t *opt_codec_ctx,
 			(long)csiz->effective_bits, (long)raw_len,
 			repeat ? "repeat" : "once", td->name);
 
-		if (raw_len > 2) { /* X.691 #16 NOTE 1 */
+		if ((st->size > 2) || (csiz->lower_bound != csiz->upper_bound)) { /* X.691 #16.11 */
 			if (aper_get_align(pd) < 0)
 				RETURN(RC_FAIL);
 		}
