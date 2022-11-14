@@ -55,9 +55,6 @@ int
 xer_fprint(FILE *stream, const asn_TYPE_descriptor_t *td, const void *sptr) {
 	asn_enc_rval_t er = {0,0,0};
 
-#ifndef DEBUG_ASN_PRINT
-	return 0;
-#endif
 	if(!stream) stream = stdout;
 	if(!td || !sptr)
 		return -1;

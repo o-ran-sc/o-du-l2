@@ -1,0 +1,14 @@
+include ../F1_output/Makefile.am.libasncodec
+
+bin_PROGRAMS += asn1convert
+asn1convert_CFLAGS = $(ASN_MODULE_CFLAGS) -DASN_PDU_COLLECTION 
+asn1convert_CPPFLAGS = -I$(top_srcdir)/../F1_output/
+asn1convert_LDADD = libasncodec.la
+asn1convert_SOURCES = \
+	../F1_output/converter-example.c\
+	../F1_output/pdu_collection.c
+regen: regenerate-from-asn1-source
+
+regenerate-from-asn1-source:
+	./asn1c/asn1c -D ../F1_output/ -fcompound-names -fno-include-deps -findirect-choice -gen-PER ../F1.asn1
+

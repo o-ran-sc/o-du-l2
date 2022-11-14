@@ -310,9 +310,12 @@ aper_get_length(asn_per_data_t *pd, int range, int ebits, int *repeat) {
 
 	*repeat = 0;
 
-	if (range <= 65536 && range >= 0)
-		return aper_get_nsnnwn(pd, range);
-
+	// First check effective_bits parameter.
+	if (ebits >= 0) {
+	  if (range <= 65536 && range >= 0)
+	    return aper_get_nsnnwn(pd, range);
+	}
+	
 	if (aper_get_align(pd) < 0)
 		return -1;
 
