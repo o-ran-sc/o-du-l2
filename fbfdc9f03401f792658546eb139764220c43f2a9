@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4fd07d77_22da492a",
+        "filename": "src/codec_utils/F1AP/asn_constant.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-11-14T15:12:35Z",
+      "side": 1,
+      "message": "club with asn_constant.h from RRC",
+      "revId": "fbfdc9f03401f792658546eb139764220c43f2a9",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
