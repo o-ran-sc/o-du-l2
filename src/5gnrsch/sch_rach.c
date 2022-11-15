@@ -570,7 +570,7 @@ bool schProcessRaReq(Inst schInst, SchCellCb *cell, SlotTimingInfo currTime, uin
    }
 
    /* Calculating time frame to send DCI for RAR */
-   ADD_DELTA_TO_TIME(currTime, dciTime, PHY_DELTA_DL + SCHED_DELTA);
+   ADD_DELTA_TO_TIME(currTime, dciTime, PHY_DELTA_DL + SCHED_DELTA, cell->numSlots);
    dciSlot = dciTime.slot;
 #ifdef NR_TDD
    /* Consider this slot for sending DCI, only if it is a DL slot */
@@ -595,7 +595,7 @@ bool schProcessRaReq(Inst schInst, SchCellCb *cell, SlotTimingInfo currTime, uin
             k0 = cell->cellCfg.schInitialDlBwp.pdschCommon.timeDomRsrcAllocList[k0Index].k0;
 
             /* Calculating time frame to send RAR PDSCH */
-            ADD_DELTA_TO_TIME(dciTime, rarTime, k0);
+            ADD_DELTA_TO_TIME(dciTime, rarTime, k0, cell->numSlots);
             rarSlot = rarTime.slot;
             
             /* If PDSCH is already scheduled on this slot, cannot schedule PDSCH for another UE here. */
@@ -620,7 +620,7 @@ bool schProcessRaReq(Inst schInst, SchCellCb *cell, SlotTimingInfo currTime, uin
                      k1 = defaultUlAckTbl[k1Index];
                   }
 
-                  ADD_DELTA_TO_TIME(rarTime, pucchTime, k1);
+                  ADD_DELTA_TO_TIME(rarTime, pucchTime, k1, cell->numSlots);
 #ifdef NR_TDD
                   if(schGetSlotSymbFrmt(pucchTime.slot, cell->slotFrmtBitMap) == DL_SLOT)
                      continue;
@@ -643,7 +643,7 @@ bool schProcessRaReq(Inst schInst, SchCellCb *cell, SlotTimingInfo currTime, uin
                   k2 = k2 + msg3Delta;
                   if(k2 >= msg3MinSchTime)
                   {
-                     ADD_DELTA_TO_TIME(rarTime, msg3Time, k2);
+                     ADD_DELTA_TO_TIME(rarTime, msg3Time, k2, cell->numSlots);
 #ifdef NR_TDD
                      if(schGetSlotSymbFrmt(msg3Time.slot % totalCfgSlot, cell->slotFrmtBitMap) == DL_SLOT)
                         continue;
@@ -830,7 +830,7 @@ uint8_t schProcessRachInd(RachIndInfo *rachInd, Inst schInst)
    winNumSlots = (float)cell->cellCfg.schRachCfg.raRspWindow / slotDuration;
    
    /* Adding window size to window start time to get window end time */
-   ADD_DELTA_TO_TIME(raReq->winStartTime, raReq->winEndTime, winNumSlots);
+   ADD_DELTA_TO_TIME(raReq->winStartTime, raReq->winEndTime, winNumSlots, cell->numSlots);
    cell->raReq[ueId -1] = raReq;
 
    /* Adding UE Id to list of pending UEs to be scheduled */

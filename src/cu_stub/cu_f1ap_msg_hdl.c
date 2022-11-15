@@ -1965,25 +1965,22 @@ void fillLongCycleOffsetValue(DrxLongCycleStartOffset *drxLongCycleStartOffset, 
  * ****************************************************************/
 void storeDrxCfgInUeCb(struct DRX_ConfigRrc *drxSetup, DrxCfg *drxCfg)
 {
-   if(drxSetup)
+   switch(drxSetup->drx_onDurationTimer.present)
    {
-      switch(drxSetup->drx_onDurationTimer.present)
-      {
-         case DRX_ConfigRrc__drx_onDurationTimer_PR_NOTHING:
+      case DRX_ConfigRrc__drx_onDurationTimer_PR_NOTHING:
+         break;
+      case DRX_ConfigRrc__drx_onDurationTimer_PR_milliSeconds:
+         {
+            drxCfg->drxOnDurationTimer.onDurationTimerValInMs = true;
+            drxCfg->drxOnDurationTimer.onDurationtimerValue.milliSeconds=drxSetup->drx_onDurationTimer.choice.milliSeconds;
             break;
-         case DRX_ConfigRrc__drx_onDurationTimer_PR_milliSeconds:
-            {
-               drxCfg->drxOnDurationTimer.onDurationTimerValInMs = true;
-               drxCfg->drxOnDurationTimer.onDurationtimerValue.milliSeconds=drxSetup->drx_onDurationTimer.choice.milliSeconds;
-               break;
-            }
-         case DRX_ConfigRrc__drx_onDurationTimer_PR_subMilliSeconds:
-            {
-               drxCfg->drxOnDurationTimer.onDurationTimerValInMs = false;
-               drxCfg->drxOnDurationTimer.onDurationtimerValue.subMilliSeconds = drxSetup->drx_onDurationTimer.choice.subMilliSeconds;
-               break;
-            }
-      }
+         }
+      case DRX_ConfigRrc__drx_onDurationTimer_PR_subMilliSeconds:
+         {
+            drxCfg->drxOnDurationTimer.onDurationTimerValInMs = false;
+            drxCfg->drxOnDurationTimer.onDurationtimerValue.subMilliSeconds = drxSetup->drx_onDurationTimer.choice.subMilliSeconds;
+            break;
+         }
    }
    fillLongCycleOffsetValue(&drxCfg->drxLongCycleStartOffset, &drxSetup->drx_LongCycleStartOffset);
    drxCfg->drxInactivityTimer = drxSetup->drx_InactivityTimer;
@@ -2060,7 +2057,11 @@ uint8_t extractCellGroupConfig(CuUeCb *ueCb, CellGroupConfigRrc_t *cellGrpCfg)
 
             case MAC_CellGroupConfig__drx_ConfigRrc_PR_setup:
             {
-               storeDrxCfgInUeCb(cellGrpCfg->mac_CellGroupConfig->drx_ConfigRrc->choice.setup, &ueCb->drxCfg);
+               if(cellGrpCfg->mac_CellGroupConfig->drx_ConfigRrc->choice.setup)
+               {
+                  ueCb->drxCfgPresent = true;  
+                  storeDrxCfgInUeCb(cellGrpCfg->mac_CellGroupConfig->drx_ConfigRrc->choice.setup, &ueCb->drxCfg);
+               }
                break;
             }
 
@@ -10955,7 +10956,11 @@ uint8_t BuildAndSendUeContextModificationReq(uint32_t duId, void *cuUeCb, UeCtxt
          elementCnt = 3;
       else if((action == STOP_DATA_TX) || (action == RESTART_DATA_TX)) 
          elementCnt = 5;
-
+      
+#ifdef NR_DRX
+      if(DRX_TO_BE_RELEASE && ueCb->drxCfgPresent)
+         elementCnt++;
+#endif      
       ueContextModifyReq->protocolIEs.list.count = elementCnt;
       ueContextModifyReq->protocolIEs.list.size = elementCnt*sizeof(UEContextModificationRequest_t *);
 
@@ -11080,6 +11085,20 @@ uint8_t BuildAndSendUeContextModificationReq(uint32_t duId, void *cuUeCb, UeCtxt
          ueContextModifyReq->protocolIEs.list.array[ieIdx]->value.present = UEContextModificationRequestIEs__value_PR_RRCDeliveryStatusRequest;
          ueContextModifyReq->protocolIEs.list.array[ieIdx]->value.choice.RRCDeliveryStatusRequest = RRCDeliveryStatusRequest_true;
       }
+
+#ifdef NR_DRX
+      if(DRX_TO_BE_RELEASE && ueCb->drxCfgPresent)
+      {
+         /* DRX Configuration Indicator */
+         ieIdx++;
+         ueContextModifyReq->protocolIEs.list.array[ieIdx]->id = ProtocolIE_ID_id_DRXConfigurationIndicator;
+         ueContextModifyReq->protocolIEs.list.array[ieIdx]->criticality = Criticality_ignore;
+         ueContextModifyReq->protocolIEs.list.array[ieIdx]->value.present = UEContextModificationRequestIEs__value_PR_DRXConfigurationIndicator;
+         ueContextModifyReq->protocolIEs.list.array[ieIdx]->value.choice.DRXConfigurationIndicator = DRXConfigurationIndicator_release;
+         ueCb->drxCfgPresent = false;
+         memset(&ueCb->drxCfg, 0, sizeof(DrxCfg));
+      }
+#endif
 
       xer_fprint(stdout, &asn_DEF_F1AP_PDU, f1apMsg);
 

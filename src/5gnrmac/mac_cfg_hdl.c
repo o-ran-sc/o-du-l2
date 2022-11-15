@@ -174,6 +174,7 @@ uint8_t MacProcCellCfgReq(Pst *pst, MacCellCfg *macCellCfg)
    GET_CELL_IDX(macCellCfg->cellId, cellIdx);
    macCb.macCell[cellIdx] = macCellCb;
    macCb.macCell[cellIdx]->cellId = macCellCfg->cellId;
+   macCb.macCell[cellIdx]->numOfSlots = 10 * (1 << macCellCfg->numerology);
    memcpy(&macCb.macCell[cellIdx]->macCellCfg, macCellCfg, sizeof(MacCellCfg));
 
    MAC_ALLOC(macCb.macCell[cellIdx]->macCellCfg.sib1Cfg.sib1Pdu, \

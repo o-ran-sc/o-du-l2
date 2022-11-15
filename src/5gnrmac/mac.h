@@ -229,6 +229,7 @@ typedef struct macUeCb
 struct macCellCb
 {
    uint16_t    cellId;
+   uint16_t    numOfSlots;
    CellState   state;
    uint16_t    crntiMap;
    MacRaCbInfo macRaCb[MAX_NUM_UE];

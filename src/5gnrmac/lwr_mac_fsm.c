@@ -3664,7 +3664,7 @@ uint16_t fillDlTtiReq(SlotTimingInfo currTimingInfo)
    {
 	   GET_CELL_IDX(currTimingInfo.cellId, cellIdx);
 	   /* consider phy delay */
-	   ADD_DELTA_TO_TIME(currTimingInfo,dlTtiReqTimingInfo,PHY_DELTA_DL);
+	   ADD_DELTA_TO_TIME(currTimingInfo,dlTtiReqTimingInfo,PHY_DELTA_DL, macCb.macCell[cellIdx]->numOfSlots);
 	   dlTtiReqTimingInfo.cellId = currTimingInfo.cellId;
 
 	   macCellCfg = macCb.macCell[cellIdx]->macCellCfg;
@@ -4378,8 +4378,8 @@ uint16_t fillUlTtiReq(SlotTimingInfo currTimingInfo, p_fapi_api_queue_elem_t pre
       macCellCfg = macCb.macCell[cellIdx]->macCellCfg;
 
       /* add PHY delta */
-      ADD_DELTA_TO_TIME(currTimingInfo,ulTtiReqTimingInfo,PHY_DELTA_UL);
-      currUlSlot = &macCb.macCell[cellIdx]->ulSlot[ulTtiReqTimingInfo.slot % MAX_SLOTS];
+      ADD_DELTA_TO_TIME(currTimingInfo,ulTtiReqTimingInfo,PHY_DELTA_UL, macCb.macCell[cellIdx]->numOfSlots);
+      currUlSlot = &macCb.macCell[cellIdx]->ulSlot[ulTtiReqTimingInfo.slot % macCb.macCell[cellIdx]->numOfSlots];
 
       LWR_MAC_ALLOC(ulTtiElem, (sizeof(fapi_api_queue_elem_t) + sizeof(fapi_ul_tti_req_t)));
       if(ulTtiElem)
@@ -4679,7 +4679,7 @@ uint16_t fillUlDciReq(SlotTimingInfo currTimingInfo, p_fapi_api_queue_elem_t pre
    {
       GET_CELL_IDX(currTimingInfo.cellId, cellIdx);
       memcpy(&ulDciReqTimingInfo, &currTimingInfo, sizeof(SlotTimingInfo));
-      currDlSlot = &macCb.macCell[cellIdx]->dlSlot[ulDciReqTimingInfo.slot % MAX_SLOTS];
+      currDlSlot = &macCb.macCell[cellIdx]->dlSlot[ulDciReqTimingInfo.slot % macCb.macCell[cellIdx]->numOfSlots];
 
          LWR_MAC_ALLOC(ulDciElem, (sizeof(fapi_api_queue_elem_t) + sizeof(fapi_ul_dci_req_t)));
          if(ulDciElem)
