@@ -470,7 +470,6 @@ uint16_t fillPucchResourceInfo(SchPucchInfo *schPucchInfo, Inst inst, SlotTiming
 uint8_t schUlResAlloc(SchCellCb *cell, Inst schInst)
 {
    int ret = ROK;
-   SchUeCb   *ueCb;
    UlSchedInfo ulSchedInfo;
    SchUlSlotInfo  *schUlSlotInfo = NULLP;
    SlotTimingInfo ulTimingInfo;
@@ -492,15 +491,6 @@ uint8_t schUlResAlloc(SchCellCb *cell, Inst schInst)
    if(schUlSlotInfo->schPuschInfo)
    {
       ulSchedInfo.crnti = schUlSlotInfo->schPuschInfo->crnti;
-      /* Check the ue drx status if the UE is active for uplink scheduling or not  */
-#ifdef NR_DRX 
-      ueCb = schGetUeCb(cell, ulSchedInfo.crnti);
-      if(ueCb->ueDrxInfoPres)
-      {
-         if(ueCb->drxUeCb.drxUlUeActiveStatus)
-            return RFAILED;
-      }
-#endif
       ulSchedInfo.dataType |= SCH_DATATYPE_PUSCH;
       memcpy(&ulSchedInfo.schPuschInfo, schUlSlotInfo->schPuschInfo,
 	    sizeof(SchPuschInfo));
