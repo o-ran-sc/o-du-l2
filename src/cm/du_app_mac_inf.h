@@ -843,7 +843,6 @@ typedef struct macCellGrpCfg
    bool        phrCfgSetupPres;   /* true/false: phrCfgSetup/phrCfgRelease */
    PhrCfg      phrCfg;
 #ifdef NR_DRX
-   bool        drxCfgPresent;
    DrxCfg      drxCfg;
 #endif
 }MacCellGrpCfg;
@@ -1301,9 +1300,6 @@ typedef struct macUeCfg
    LcCfg lcCfgList[MAX_NUM_LC];
    UeCfgState macUeCfgState;    /* InActive / Completed */
    DataTransmissionAction transmissionAction;
-#ifdef NR_DRX   
-   bool     drxConfigIndicatorRelease;
-#endif
 }MacUeCfg;
 
 typedef struct nrcgi

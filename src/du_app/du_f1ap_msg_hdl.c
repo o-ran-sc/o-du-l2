@@ -13456,72 +13456,62 @@ void freeAperDecodeF1UeContextSetupReq(UEContextSetupRequest_t   *ueSetReq)
    {
       for(ieIdx = 0; ieIdx < ueSetReq->protocolIEs.list.count; ieIdx++)
       {
-         if(ueSetReq->protocolIEs.list.array[ieIdx])
-         {
-            switch(ueSetReq->protocolIEs.list.array[ieIdx]->id)
-            {
-               case ProtocolIE_ID_id_gNB_CU_UE_F1AP_ID:
-                  break;
-               case ProtocolIE_ID_id_gNB_DU_UE_F1AP_ID:
-                  break;
-               case ProtocolIE_ID_id_SpCell_ID:
-                  freeAperDecodeNrcgi(&ueSetReq->protocolIEs.list.array[ieIdx]->value.choice.NRCGI);
-                  break;
-               case ProtocolIE_ID_id_ServCellIndex:
-                  break;
-               case ProtocolIE_ID_id_SpCellULConfigured:
-                  break;
-               case ProtocolIE_ID_id_CUtoDURRCInformation:
+	 if(ueSetReq->protocolIEs.list.array[ieIdx])
+	 {
+	    switch(ueSetReq->protocolIEs.list.array[ieIdx]->id)
+	    {
+	       case ProtocolIE_ID_id_gNB_CU_UE_F1AP_ID:
+		  break;
+	       case ProtocolIE_ID_id_gNB_DU_UE_F1AP_ID:
+		  break;
+	       case ProtocolIE_ID_id_SpCell_ID:
+		  freeAperDecodeNrcgi(&ueSetReq->protocolIEs.list.array[ieIdx]->value.choice.NRCGI);
+		  break;
+	       case ProtocolIE_ID_id_ServCellIndex:
+		  break;
+	       case ProtocolIE_ID_id_SpCellULConfigured:
+		  break;
+	       case ProtocolIE_ID_id_CUtoDURRCInformation:
 
-                  freeAperDecodeCuToDuInfo(&ueSetReq->protocolIEs.list.array[ieIdx]->value.choice.CUtoDURRCInformation);
-                  break;
-               case ProtocolIE_ID_id_SCell_ToBeSetup_List:
+		  freeAperDecodeCuToDuInfo(&ueSetReq->protocolIEs.list.array[ieIdx]->value.choice.CUtoDURRCInformation);
+		  break;
+	       case ProtocolIE_ID_id_SCell_ToBeSetup_List:
 
-                  freeAperDecodeSplCellList(&ueSetReq->protocolIEs.list.array[ieIdx]->value.choice.SCell_ToBeSetup_List);
-                  break;
-               case ProtocolIE_ID_id_SRBs_ToBeSetup_List:
+		  freeAperDecodeSplCellList(&ueSetReq->protocolIEs.list.array[ieIdx]->value.choice.SCell_ToBeSetup_List);
+		  break;
+	       case ProtocolIE_ID_id_SRBs_ToBeSetup_List:
 
-                  freeAperDecodeSRBSetup(&ueSetReq->protocolIEs.list.array[ieIdx]->value.choice.SRBs_ToBeSetup_List);
-                  break;
-               case ProtocolIE_ID_id_DRBs_ToBeSetup_List:
+		  freeAperDecodeSRBSetup(&ueSetReq->protocolIEs.list.array[ieIdx]->value.choice.SRBs_ToBeSetup_List);
+		  break;
+	       case ProtocolIE_ID_id_DRBs_ToBeSetup_List:
 
-                  freeAperDecodeDRBSetup(&ueSetReq->protocolIEs.list.array[ieIdx]->value.choice.DRBs_ToBeSetup_List);
-                  break;
-               case ProtocolIE_ID_id_RRCContainer:
-                  {
+		  freeAperDecodeDRBSetup(&ueSetReq->protocolIEs.list.array[ieIdx]->value.choice.DRBs_ToBeSetup_List);
+		  break;
+	       case ProtocolIE_ID_id_RRCContainer:
+		  {
 
-                     if(ueSetReq->protocolIEs.list.array[ieIdx]->value.choice.RRCContainer.buf != NULLP)
-                     {
+		     if(ueSetReq->protocolIEs.list.array[ieIdx]->value.choice.RRCContainer.buf != NULLP)
+		     {
 
-                        free(ueSetReq->protocolIEs.list.array[ieIdx]->value.choice.RRCContainer.buf);
-                     }
-                     break;
-                  }
-               case ProtocolIE_ID_id_RRCDeliveryStatusRequest:
-                  break;
-               case ProtocolIE_ID_id_GNB_DU_UE_AMBR_UL:
-                  {
-                     if(ueSetReq->protocolIEs.list.array[ieIdx]->value.choice.BitRate.buf)
-                     {
-                        free(ueSetReq->protocolIEs.list.array[ieIdx]->value.choice.BitRate.buf);
-                     }
-                     break;
-                  }
-#ifdef NR_DRX
-               case ProtocolIE_ID_id_DRXCycle:
-                  {
-                     if(ueSetReq->protocolIEs.list.array[ieIdx]->value.choice.DRXCycle.shortDRXCycleLength)
-                        free(ueSetReq->protocolIEs.list.array[ieIdx]->value.choice.DRXCycle.shortDRXCycleLength);
-                     if(ueSetReq->protocolIEs.list.array[ieIdx]->value.choice.DRXCycle.shortDRXCycleTimer)
-                        free(ueSetReq->protocolIEs.list.array[ieIdx]->value.choice.DRXCycle.shortDRXCycleTimer);
-                     break;
-                  }
-#endif             
-                default:
-                  DU_LOG("\nERROR  -->  F1AP: Invalid event type %ld " ,ueSetReq->protocolIEs.list.array[ieIdx]->id);
-            } 
-            free(ueSetReq->protocolIEs.list.array[ieIdx]);
-         }
+			free(ueSetReq->protocolIEs.list.array[ieIdx]->value.choice.RRCContainer.buf);
+		     }
+		     break;
+		  }
+	       case ProtocolIE_ID_id_RRCDeliveryStatusRequest:
+		  break;
+	       case ProtocolIE_ID_id_GNB_DU_UE_AMBR_UL:
+		  {
+		     if(ueSetReq->protocolIEs.list.array[ieIdx]->value.choice.BitRate.buf)
+		     {
+			free(ueSetReq->protocolIEs.list.array[ieIdx]->value.choice.BitRate.buf);
+		     }
+		     break;
+		  }
+	       default:
+		  DU_LOG("\nERROR  -->  F1AP: Invalid event type %ld " ,ueSetReq->protocolIEs.list.array[ieIdx]->id);
+	    } 
+	    free(ueSetReq->protocolIEs.list.array[ieIdx]);
+	 }
       }
       free(ueSetReq->protocolIEs.list.array);
    }
@@ -13900,52 +13890,50 @@ void FreeUeContextSetupRsp(F1AP_PDU_t *f1apMsg)
    {
       if(f1apMsg->choice.successfulOutcome)
       {
-         ueSetRsp = &f1apMsg->choice.successfulOutcome->value.choice.\
-                    UEContextSetupResponse;
-         if(ueSetRsp->protocolIEs.list.array)
-         {
-            for(idx = 0; idx < ueSetRsp->protocolIEs.list.count; idx++)
-            {
-               if(ueSetRsp->protocolIEs.list.array[idx])
-               {
-                  switch(ueSetRsp->protocolIEs.list.array[idx]->id)
-                  {
-                     case ProtocolIE_ID_id_gNB_CU_UE_F1AP_ID:
-                        break;
-                     case ProtocolIE_ID_id_gNB_DU_UE_F1AP_ID:
-                        break;
-                     case ProtocolIE_ID_id_C_RNTI:
-                        break;
-                     case ProtocolIE_ID_id_DUtoCURRCInformation:
-                        {
-                           CellGroupConfig_t *cellGrpCfg = NULLP;
-                           cellGrpCfg  = &ueSetRsp->protocolIEs.list.array[idx]->value.choice.\
-                                         DUtoCURRCInformation.cellGroupConfig;
-                           if(cellGrpCfg->buf != NULLP)
-                           {
-                              DU_FREE(cellGrpCfg->buf, cellGrpCfg->size);
-                              cellGrpCfg = NULLP;
-                           }
-                           break;
-                        }
-                     case ProtocolIE_ID_id_DRBs_Setup_List:
-                        {
+	 ueSetRsp = &f1apMsg->choice.successfulOutcome->value.choice.\
+		    UEContextSetupResponse;
+	 if(ueSetRsp->protocolIEs.list.array)
+	 {
+	    for(idx = 0; idx < ueSetRsp->protocolIEs.list.count; idx++)
+	    {
+	       if(ueSetRsp->protocolIEs.list.array[idx])
+	       {
+		  switch(ueSetRsp->protocolIEs.list.array[idx]->id)
+		  {
+		     case ProtocolIE_ID_id_gNB_CU_UE_F1AP_ID:
+			break;
+		     case ProtocolIE_ID_id_gNB_DU_UE_F1AP_ID:
+			break;
+		     case ProtocolIE_ID_id_DUtoCURRCInformation:
+			{
+			   CellGroupConfig_t *cellGrpCfg = NULLP;
+			   cellGrpCfg  = &ueSetRsp->protocolIEs.list.array[idx]->value.choice.\
+					 DUtoCURRCInformation.cellGroupConfig;
+			   if(cellGrpCfg->buf != NULLP)
+			   {
+			      DU_FREE(cellGrpCfg->buf, cellGrpCfg->size);
+			      cellGrpCfg = NULLP;
+			   }
+			   break;
+			}
+                    case ProtocolIE_ID_id_DRBs_Setup_List:
+		        {
                            freeDrbSetupList(&ueSetRsp->protocolIEs.list.array[idx]->value.choice.DRBs_Setup_List); 
                            break;
-                        }
-                     default:
-                        DU_LOG("\nERROR  -->  DUAPP: Invalid Id %ld at FreeUeContextSetupRsp()",\
-                              ueSetRsp->protocolIEs.list.array[idx]->id);
-                        break;
-                  }
-                  DU_FREE(ueSetRsp->protocolIEs.list.array[idx],\
-                        sizeof(UEContextSetupResponseIEs_t));
-               }
-            }
-            DU_FREE(ueSetRsp->protocolIEs.list.array, \
-                  ueSetRsp->protocolIEs.list.size);
-         }
-         DU_FREE(f1apMsg->choice.successfulOutcome, sizeof(SuccessfulOutcome_t));
+		        }
+		     default:
+		        DU_LOG("\nERROR  -->  DUAPP: Invalid Id %ld at FreeUeContextSetupRsp()",\
+			ueSetRsp->protocolIEs.list.array[idx]->id);
+		        break;
+		  }
+		  DU_FREE(ueSetRsp->protocolIEs.list.array[idx],\
+			sizeof(UEContextSetupResponseIEs_t));
+	       }
+	    }
+	    DU_FREE(ueSetRsp->protocolIEs.list.array, \
+		  ueSetRsp->protocolIEs.list.size);
+	 }
+	 DU_FREE(f1apMsg->choice.successfulOutcome, sizeof(SuccessfulOutcome_t));
       }
       DU_FREE(f1apMsg, sizeof(F1AP_PDU_t));
    }
@@ -16002,8 +15990,6 @@ uint8_t BuildAndSendUeContextModRsp(DuUeCb *ueCb)
       break;
    }
    FreeUeContextModResp(f1apMsg);
-   //sleep(5);
-   //BuildAndSendDUConfigUpdate(SERV_CELL_TO_DELETE);
    return ret;
 }
 /*******************************************************************
@@ -16424,13 +16410,6 @@ uint8_t procF1UeContextModificationReq(F1AP_PDU_t *f1apMsg)
                }
                break;
             }
-#ifdef NR_DRX
-         case ProtocolIE_ID_id_DRXConfigurationIndicator:
-            {
-               duUeCb->f1UeDb->duUeCfg.drxConfigIndicatorRelease = true;
-               break;
-            }
-#endif
               
       }
    }
