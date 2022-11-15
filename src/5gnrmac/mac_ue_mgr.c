@@ -138,7 +138,7 @@ uint8_t fillMacCellGroupCfg(MacCellGrpCfg macCellGrp, SchMacCellGrpCfg  *macCell
 
 #ifdef NR_DRX
    /* Copy Drx configuration */
-   macCellGrpCfg->drxCfgPresent = true;
+
    macCellGrpCfg->drxCfg.drxOnDurationTimer.onDurationTimerValInMs = macCellGrp.drxCfg.drxOnDurationTimer.onDurationTimerValInMs;
    if(!macCellGrp.drxCfg.drxOnDurationTimer.onDurationTimerValInMs)
       macCellGrpCfg->drxCfg.drxOnDurationTimer.onDurationtimerValue.subMilliSeconds = \
@@ -1710,12 +1710,6 @@ uint8_t fillSchUeCfg(Pst *pst, SchUeCfg *schUeCfg, MacUeCfg *ueCfg)
       DU_LOG("\nERROR  -->  MAC : Failed to copy LCs at fillSchUeCfg()");
       return ret;
    }
-#ifdef NR_DRX
-   if(ueCfg->drxConfigIndicatorRelease)
-   {
-      schUeCfg->drxConfigIndicatorRelease = true;
-   }
-#endif
    return ret;
 }
 
