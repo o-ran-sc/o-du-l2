@@ -1442,7 +1442,7 @@ S16 l1HdlUlDciReq(uint16_t msgLen, void *msg)
    {
       if(ulDciReq->pdus[numPdus-1].pduType == 0)
       {
-	 DU_LOG("\nINFO   -->  PHY STUB: Received UL DCI Request for PDCCH PDU");
+         DU_LOG("\nINFO   -->  PHY STUB: Received UL DCI Request for PDCCH PDU");
 	 //l1BuildAndSendMsg5(ulDciReq->sfn, ulDciReq->slot);
 	 //msg5Sent = true;
       }

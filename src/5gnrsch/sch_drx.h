@@ -18,8 +18,11 @@
 
 #define SCH_DRX_INVALID_DISTANCE -1
 #define SCH_DRX_INVALID_INDEX 0xFFFFFF 
-#define SCH_DRX_MAX_DELTA 1
+#define SCH_DRX_MAX_DELTA 3
 #define SCH_DRX_TMRS_EXP_DELTA 1
+#define UE_ACTIVE_FOR_ONDURATION 1
+#define UE_ACTIVE_FOR_INACTIVE_TIMER 2
+#define UE_ACTIVE_FOR_SR 4
 
 /** @brief Macro to convert milli second to slots */
 #define SCH_CNVRT_MS_TO_SLOT(_numSlot, _timeInMs, _mu)\

@@ -412,8 +412,8 @@ typedef struct schHqUlMap
 #ifdef NR_DRX
 typedef struct  schDrxUeCb
 {
-   bool      drxDlUeActiveStatus;    /* variable is used to store the status about downlink active status */
-   bool      drxUlUeActiveStatus;    /* variable is used to store the status about uplink active status */
+   uint32_t  drxDlUeActiveStatus;    /* variable is used to store the status about downlink active status */
+   uint32_t  drxUlUeActiveStatus;    /* variable is used to store the status about uplink active status */
    uint32_t  onDurationLen;          /* length of on duration which is received from ue cfg/recfg in form of ms and subms, informs about after how many slots on duration gets expire */
    uint32_t  inActvTimerLen;         /* length of inActvTimer value received from ue cfg/recfg in form of ms, informs about after how many slots in active gets expire */
    uint8_t   harqRttDlTimerLen;      /* length of harqRttDlTimer received from ue cfg/recfg in form of symbols, inform about after how many slots on the harq drx-HARQ-RTT-TimerDL expire */

@@ -41,6 +41,9 @@ File:     sch_slot_ind.c
 #include "mac_sch_interface.h"
 #include "sch.h"
 #include "sch_utils.h"
+#ifdef NR_DRX 
+#include "sch_drx.h"
+#endif
 
 SchMacDlAllocFunc schMacDlAllocOpts[] =
 {
@@ -793,6 +796,10 @@ uint8_t schProcessSlotInd(SlotTimingInfo *slotInd, Inst schInst)
    dlSchedInfo.cellId = cell->cellId;
    slot = dlSchedInfo.schSlotValue.broadcastTime.slot;
 
+#ifdef NR_DRX 
+   schHandleStartDrxTimer(cell);
+#endif
+   
    /* Check for SSB occassion */
    dlBrdcstAlloc->ssbTrans = schCheckSsbOcc(cell, dlSchedInfo.schSlotValue.broadcastTime); 
    if(dlBrdcstAlloc->ssbTrans)
@@ -893,62 +900,75 @@ uint8_t schProcessSlotInd(SlotTimingInfo *slotInd, Inst schInst)
             }
          }
 
-         /* DL Data */
-         node = cell->ueCb[ueId-1].dlRetxHqList.first;
-         if(node != NULLP)
+#ifdef NR_DRX 
+         if((cell->ueCb[ueId-1].ueDrxInfoPres == true) && (cell->ueCb[ueId-1].drxUeCb.drxDlUeActiveStatus != true))
          {
-            /* DL Data ReTransmisson */
-            isDlMsgPending = true;
-            isDlMsgScheduled = schFillBoGrantDlSchedInfo(cell, *slotInd, ueId, TRUE, ((SchDlHqProcCb**) &(node->node)));
-            cmLListDelFrm(&cell->ueCb[ueId-1].dlRetxHqList, node);
-         }
-         else
-         {
-            /* DL Data new transmission */
-            if((cell->boIndBitMap) & (1<<ueId))
+            if(pendingUeNode->node)
             {
-               isDlMsgPending = true;               
-               isDlMsgScheduled = schFillBoGrantDlSchedInfo(cell, *slotInd, ueId, FALSE, &hqP);
-
-               /* If DL scheduling failed, free the newly assigned HARQ process */
-               if(!isDlMsgScheduled)
-                  schDlReleaseHqProcess(hqP);
+               cmLListAdd2Tail(&cell->ueToBeScheduled, cmLListDelFrm(&cell->ueToBeScheduled, pendingUeNode));
             }
          }
-
-         /* Scheduling of UL grant */
-         node = cell->ueCb[ueId-1].ulRetxHqList.first;
-         if(node != NULLP)
+         else 
+#endif
          {
-            /* UL Data ReTransmisson */
-            isUlGrantPending = true;
-            isUlGrantScheduled = schProcessSrOrBsrReq(cell, *slotInd, ueId, TRUE, (SchUlHqProcCb**) &(node->node));
-            cmLListDelFrm(&cell->ueCb[ueId-1].ulRetxHqList, node);
-         }
-         else
-         {
-            /* UL Data new transmission */
-            if(cell->ueCb[ueId-1].srRcvd || cell->ueCb[ueId-1].bsrRcvd)
+            
+            /* DL Data */
+            node = cell->ueCb[ueId-1].dlRetxHqList.first;
+            if(node != NULLP)
             {
+               /* DL Data ReTransmisson */
+               isDlMsgPending = true;
+               isDlMsgScheduled = schFillBoGrantDlSchedInfo(cell, *slotInd, ueId, TRUE, ((SchDlHqProcCb**) &(node->node)));
+               cmLListDelFrm(&cell->ueCb[ueId-1].dlRetxHqList, node);
+            }
+            else
+            {
+               /* DL Data new transmission */
+               if((cell->boIndBitMap) & (1<<ueId))
+               {
+                  isDlMsgPending = true;               
+                  isDlMsgScheduled = schFillBoGrantDlSchedInfo(cell, *slotInd, ueId, FALSE, &hqP);
+
+                  /* If DL scheduling failed, free the newly assigned HARQ process */
+                  if(!isDlMsgScheduled)
+                     schDlReleaseHqProcess(hqP);
+               }
+            }
+
+            /* Scheduling of UL grant */
+            node = cell->ueCb[ueId-1].ulRetxHqList.first;
+            if(node != NULLP)
+            {
+               /* UL Data ReTransmisson */
                isUlGrantPending = true;
-               isUlGrantScheduled = schProcessSrOrBsrReq(cell, *slotInd, ueId, FALSE, &ulHqP);
-               if(!isUlGrantScheduled)
-                  schUlReleaseHqProcess(ulHqP, FALSE);
+               isUlGrantScheduled = schProcessSrOrBsrReq(cell, *slotInd, ueId, TRUE, (SchUlHqProcCb**) &(node->node));
+               cmLListDelFrm(&cell->ueCb[ueId-1].ulRetxHqList, node);
             }
-         }
+            else
+            {
+               /* UL Data new transmission */
+               if(cell->ueCb[ueId-1].srRcvd || cell->ueCb[ueId-1].bsrRcvd)
+               {
+                  isUlGrantPending = true;
+                  isUlGrantScheduled = schProcessSrOrBsrReq(cell, *slotInd, ueId, FALSE, &ulHqP);
+                  if(!isUlGrantScheduled)
+                     schUlReleaseHqProcess(ulHqP, FALSE);
+               }
+            }
 
-         if(!isUlGrantPending && !isDlMsgPending)
-         {
-            /* No action required */  
-         }
-         else if((isUlGrantPending && !isUlGrantScheduled) || (isDlMsgPending && !isDlMsgScheduled))
-         {
-            cmLListAdd2Tail(&cell->ueToBeScheduled, cmLListDelFrm(&cell->ueToBeScheduled, pendingUeNode));
-         }
-         else
-         {
-            SCH_FREE(ueNode, sizeof(uint8_t));
-            deleteNodeFromLList(&cell->ueToBeScheduled, pendingUeNode);
+            if(!isUlGrantPending && !isDlMsgPending)
+            {
+               /* No action required */  
+            }
+            else if((isUlGrantPending && !isUlGrantScheduled) || (isDlMsgPending && !isDlMsgScheduled))
+            {
+               cmLListAdd2Tail(&cell->ueToBeScheduled, cmLListDelFrm(&cell->ueToBeScheduled, pendingUeNode));
+            }
+            else
+            {
+               SCH_FREE(ueNode, sizeof(uint8_t));
+               deleteNodeFromLList(&cell->ueToBeScheduled, pendingUeNode);
+            }
          }
       }
    }
@@ -992,7 +1012,9 @@ uint8_t schProcessSlotInd(SlotTimingInfo *slotInd, Inst schInst)
 
    schInitDlSlot(cell->schDlSlotInfo[slot]);
    schUlResAlloc(cell, schInst);
-
+#ifdef NR_DRX 
+   schHandleExpiryDrxTimer(cell);
+#endif   
    return ret;
 }
 

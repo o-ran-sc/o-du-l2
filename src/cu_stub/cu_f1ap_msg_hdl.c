@@ -9072,7 +9072,7 @@ uint8_t fillCuToDuContainer(CuUeCb *ueCb, CUtoDURRCInformation_t *rrcMsg)
  ******************************************************************/
 uint8_t BuildDrxCycle(DRXCycle_t *drxCycle)
 {
-   drxCycle->longDRXCycleLength = LongDRXCycleLength_ms40;
+   drxCycle->longDRXCycleLength = LongDRXCycleLength_ms80;
    CU_ALLOC(drxCycle->shortDRXCycleLength, sizeof(ShortDRXCycleLength_t));
    if(!drxCycle->shortDRXCycleLength)
    {
