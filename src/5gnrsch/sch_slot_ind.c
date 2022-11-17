@@ -41,6 +41,9 @@ File:     sch_slot_ind.c
 #include "mac_sch_interface.h"
 #include "sch.h"
 #include "sch_utils.h"
+#ifdef NR_DRX 
+#include "sch_drx.h"
+#endif
 
 SchMacDlAllocFunc schMacDlAllocOpts[] =
 {
@@ -793,6 +796,10 @@ uint8_t schProcessSlotInd(SlotTimingInfo *slotInd, Inst schInst)
    dlSchedInfo.cellId = cell->cellId;
    slot = dlSchedInfo.schSlotValue.broadcastTime.slot;
 
+#ifdef NR_DRX 
+   schHandleStartDrxTimer(cell);
+#endif
+   
    /* Check for SSB occassion */
    dlBrdcstAlloc->ssbTrans = schCheckSsbOcc(cell, dlSchedInfo.schSlotValue.broadcastTime); 
    if(dlBrdcstAlloc->ssbTrans)
@@ -852,6 +859,14 @@ uint8_t schProcessSlotInd(SlotTimingInfo *slotInd, Inst schInst)
             schMsg3RetxSchedulingForUe(&(cell->raCb[ueId-1]));
          }
 
+#ifdef NR_DRX 
+         if(!(cell->ueCb[ueId-1].ueDrxInfoPres) && !(cell->ueCb[ueId-1].drxUeCb.drxDlUeActiveStatus))//&&  !(cell->ueCb[ueId-1].drxUeCb.drxUlUeActiveStatus))
+         {
+            cmLListAdd2Tail(&cell->ueToBeScheduled, cmLListDelFrm(&cell->ueToBeScheduled, pendingUeNode));
+         }
+         else 
+#endif
+         {
          /* If MSG4 is pending for this UE, schedule PDCCH,PDSCH to send MSG4 and
           * PUCCH to receive UL msg as per k0-k1 configuration  */
          if (cell->ueCb[ueId-1].retxMsg4HqProc) //should work from dlmap later tbd
@@ -950,7 +965,7 @@ uint8_t schProcessSlotInd(SlotTimingInfo *slotInd, Inst schInst)
             SCH_FREE(ueNode, sizeof(uint8_t));
             deleteNodeFromLList(&cell->ueToBeScheduled, pendingUeNode);
          }
-      }
+      }}
    }
 
    /* Check if any PDU is scheduled at this slot for any UE */
@@ -992,7 +1007,9 @@ uint8_t schProcessSlotInd(SlotTimingInfo *slotInd, Inst schInst)
 
    schInitDlSlot(cell->schDlSlotInfo[slot]);
    schUlResAlloc(cell, schInst);
-
+#ifdef NR_DRX 
+   schHandleExpiryDrxTimer(cell);
+#endif   
    return ret;
 }
 
