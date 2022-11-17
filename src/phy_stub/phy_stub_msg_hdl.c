@@ -886,7 +886,10 @@ S16 l1HdlDlTtiReq(uint16_t msgLen, void *msg)
       }
       else if(dlTtiReq->pdus[pduCount].pduType == 0)
       {
-         DU_LOG("\nINFO   -->  PHY_STUB: PDCCH PDU");
+         //DU_LOG("\nINFO   -->  PHY_STUB: PDCCH PDU");
+         DU_LOG("\nINFO   -->  PHY_STUB: PDCCH PDU %d sfn=%d slot=%d",dlTtiReq->sfn,dlTtiReq->slot, dlTtiReq->pdus[0].pdu.pdcch_pdu.dlDci[0].rnti);
+         //DU_LOG("\nINFO   -->  PHY_STUB: PDCCH PDU sfn=%d slot=%d",dlTtiReq->sfn,dlTtiReq->slot);
+         //DU_LOG("\nINFO   -->  PHY_STUB: PDCCH PDU sfn=%d slot=%d",dlTtiReq->sfn,dlTtiReq->slot);
       }
       else if(dlTtiReq->pdus[pduCount].pduType == 1)
       {
@@ -1442,7 +1445,7 @@ S16 l1HdlUlDciReq(uint16_t msgLen, void *msg)
    {
       if(ulDciReq->pdus[numPdus-1].pduType == 0)
       {
-	 DU_LOG("\nINFO   -->  PHY STUB: Received UL DCI Request for PDCCH PDU");
+         DU_LOG("\nINFO   -->  PHY STUB: Received UL DCI Request for PDCCH PDU %d", ulDciReq->pdus[numPdus-1].pdcchPduConfig.dlDci[0].rnti);
 	 //l1BuildAndSendMsg5(ulDciReq->sfn, ulDciReq->slot);
 	 //msg5Sent = true;
       }

@@ -413,10 +413,19 @@ uint16_t fillPucchResourceInfo(SchPucchInfo *schPucchInfo, Inst inst, SlotTiming
    SchCellCb  *cell = schCb[inst].cells[inst];
    SchPucchCfgCmn *pucchCfg = NULLP;
    SchBwpParams *ulBwp = NULLP;
+   SchUeCb *ueCb = NULLP;
    uint16_t startPrb;
 
    GET_UE_ID(schPucchInfo->rnti, ueId);
    ueIdx = ueId -1;
+#ifdef NR_DRX 
+      ueCb = schGetUeCb(cell, schPucchInfo->rnti);
+      if(ueCb->ueDrxInfoPres)
+      {
+         if(!ueCb->drxUeCb.drxUlUeActiveStatus)
+            return RFAILED;
+      }
+#endif
    if(cell->ueCb[ueIdx].ueCfg.spCellCfg.servCellCfg.initUlBwp.pucchCfgPres)
    {
       /* fill pucch dedicated cfg */
@@ -470,6 +479,7 @@ uint16_t fillPucchResourceInfo(SchPucchInfo *schPucchInfo, Inst inst, SlotTiming
 uint8_t schUlResAlloc(SchCellCb *cell, Inst schInst)
 {
    int ret = ROK;
+   SchUeCb   *ueCb;
    UlSchedInfo ulSchedInfo;
    SchUlSlotInfo  *schUlSlotInfo = NULLP;
    SlotTimingInfo ulTimingInfo;
@@ -491,6 +501,15 @@ uint8_t schUlResAlloc(SchCellCb *cell, Inst schInst)
    if(schUlSlotInfo->schPuschInfo)
    {
       ulSchedInfo.crnti = schUlSlotInfo->schPuschInfo->crnti;
+      /* Check the ue drx status if the UE is active for uplink scheduling or not  */
+#ifdef NR_DRX 
+      ueCb = schGetUeCb(cell, ulSchedInfo.crnti);
+      if(ueCb->ueDrxInfoPres)
+      {
+         if(!ueCb->drxUeCb.drxUlUeActiveStatus)
+            return RFAILED;
+      }
+#endif
       ulSchedInfo.dataType |= SCH_DATATYPE_PUSCH;
       memcpy(&ulSchedInfo.schPuschInfo, schUlSlotInfo->schPuschInfo,
 	    sizeof(SchPuschInfo));
@@ -506,6 +525,10 @@ uint8_t schUlResAlloc(SchCellCb *cell, Inst schInst)
          ulSchedInfo.dataType |= SCH_DATATYPE_UCI;
          memcpy(&ulSchedInfo.schPucchInfo, &schUlSlotInfo->schPucchInfo,
                sizeof(SchPucchInfo));
+      }
+      else
+      {
+         return RFAILED;
       }
       memset(&schUlSlotInfo->schPucchInfo, 0, sizeof(SchPucchInfo));
    }
