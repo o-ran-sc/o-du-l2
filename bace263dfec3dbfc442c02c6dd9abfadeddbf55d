@@ -1,0 +1,124 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "434c5652_09f32c8c",
+        "filename": "src/5gnrsch/sch_drx.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 537,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-11-18T13:09:40Z",
+      "side": 1,
+      "message": "this parameter is not used anywhere in the function.\nAlso since you have already separated functions for UL and DL, there is no use of this parameter according to my  understanding",
+      "range": {
+        "startLine": 537,
+        "startChar": 89,
+        "endLine": 537,
+        "endChar": 102
+      },
+      "revId": "bace263dfec3dbfc442c02c6dd9abfadeddbf55d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ee85f017_f2f2c035",
+        "filename": "src/5gnrsch/sch_drx.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 614,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-11-18T13:09:40Z",
+      "side": 1,
+      "message": "we do not need to decrement this param for UL? like we did for DL",
+      "range": {
+        "startLine": 614,
+        "startChar": 12,
+        "endLine": 614,
+        "endChar": 49
+      },
+      "revId": "bace263dfec3dbfc442c02c6dd9abfadeddbf55d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "06a9ca19_548476fb",
+        "filename": "src/5gnrsch/sch_drx.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 637,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-11-18T13:09:40Z",
+      "side": 1,
+      "message": "we dont calculate the expiry for this on duration timer?",
+      "revId": "bace263dfec3dbfc442c02c6dd9abfadeddbf55d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "774aa62f_e4cea7b0",
+        "filename": "src/5gnrsch/sch_drx.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 764,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-11-18T13:09:40Z",
+      "side": 1,
+      "message": "where is the entry for UL on duration expiry list.. I think it should be done in schHdlDrxOnDurStrtTimerForUlDirection like you did for DL",
+      "revId": "bace263dfec3dbfc442c02c6dd9abfadeddbf55d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "49fb28ce_cbd0a2d4",
+        "filename": "src/phy_stub/phy_stub_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 892,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-11-18T13:09:40Z",
+      "side": 1,
+      "message": "remove logs which is not required",
+      "revId": "bace263dfec3dbfc442c02c6dd9abfadeddbf55d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e1cc2cfd_ce0da2a8",
+        "filename": "src/phy_stub/phy_stub_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1448,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-11-18T13:09:40Z",
+      "side": 1,
+      "message": "mention what is the value that you are printing here. is it crnti?",
+      "range": {
+        "startLine": 1448,
+        "startChar": 80,
+        "endLine": 1448,
+        "endChar": 81
+      },
+      "revId": "bace263dfec3dbfc442c02c6dd9abfadeddbf55d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
