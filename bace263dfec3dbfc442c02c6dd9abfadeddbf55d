@@ -24,6 +24,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "01ace89d_9ca7663a",
+        "filename": "src/5gnrsch/sch_drx.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 537,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-11-18T13:37:23Z",
+      "side": 1,
+      "message": "correct i have removed",
+      "parentUuid": "434c5652_09f32c8c",
+      "range": {
+        "startLine": 537,
+        "startChar": 89,
+        "endLine": 537,
+        "endChar": 102
+      },
+      "revId": "bace263dfec3dbfc442c02c6dd9abfadeddbf55d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ee85f017_f2f2c035",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-11-18T13:09:40Z",
       "side": 1,
       "message": "we do not need to decrement this param for UL? like we did for DL",
+      "range": {
+        "startLine": 614,
+        "startChar": 12,
+        "endLine": 614,
+        "endChar": 49
+      },
+      "revId": "bace263dfec3dbfc442c02c6dd9abfadeddbf55d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5c1a1f4f_30e29885",
+        "filename": "src/5gnrsch/sch_drx.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 614,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-11-18T13:37:23Z",
+      "side": 1,
+      "message": "No, we will not decrement at ul.\nAll the timers the timer value decremented at the DL index only.",
+      "parentUuid": "ee85f017_f2f2c035",
       "range": {
         "startLine": 614,
         "startChar": 12,
@@ -64,6 +112,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f54763d7_2eaa6276",
+        "filename": "src/5gnrsch/sch_drx.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 637,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-11-18T13:37:23Z",
+      "side": 1,
+      "message": "I have already calculated the duration exp on the dl index. \nwe can calculate new on-duration exp at any index dl or ul, so I have calculated at dl index.",
+      "parentUuid": "06a9ca19_548476fb",
+      "revId": "bace263dfec3dbfc442c02c6dd9abfadeddbf55d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "774aa62f_e4cea7b0",
@@ -77,6 +143,24 @@
       "writtenOn": "2022-11-18T13:09:40Z",
       "side": 1,
       "message": "where is the entry for UL on duration expiry list.. I think it should be done in schHdlDrxOnDurStrtTimerForUlDirection like you did for DL",
+      "revId": "bace263dfec3dbfc442c02c6dd9abfadeddbf55d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ed909ed9_4b1a2ba2",
+        "filename": "src/5gnrsch/sch_drx.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 764,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-11-18T13:37:23Z",
+      "side": 1,
+      "message": "new on-duration expiry is not required to calculate here.\nthe new duration exp index is calculated once the on-duration start timer hits.",
+      "parentUuid": "774aa62f_e4cea7b0",
       "revId": "bace263dfec3dbfc442c02c6dd9abfadeddbf55d",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -98,6 +182,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "73da6b83_a0a1b15f",
+        "filename": "src/phy_stub/phy_stub_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 892,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-11-18T13:37:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "49fb28ce_cbd0a2d4",
+      "revId": "bace263dfec3dbfc442c02c6dd9abfadeddbf55d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e1cc2cfd_ce0da2a8",
@@ -111,6 +213,30 @@
       "writtenOn": "2022-11-18T13:09:40Z",
       "side": 1,
       "message": "mention what is the value that you are printing here. is it crnti?",
+      "range": {
+        "startLine": 1448,
+        "startChar": 80,
+        "endLine": 1448,
+        "endChar": 81
+      },
+      "revId": "bace263dfec3dbfc442c02c6dd9abfadeddbf55d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1ad26262_d700b029",
+        "filename": "src/phy_stub/phy_stub_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1448,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-11-18T13:37:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e1cc2cfd_ce0da2a8",
       "range": {
         "startLine": 1448,
         "startChar": 80,
