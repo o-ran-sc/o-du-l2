@@ -667,6 +667,53 @@ void schHdlDrxOnDurStrtTimer(SchCellCb  *cell)
 }
 
 /**
+ * @brief Handling of the DRX in-active start timer
+ *
+ * @details
+ *
+ *     Function : 
+ *
+ *      Handling of DRX in-active start timer
+ *
+ *  @param[in] SchCellCb  *cell
+ *  @return
+ *      -# ROK
+ *      -# RFAILED
+ **/
+
+void schHdlDrxInActvStrtTmr(SchCellCb  *cell,  SchUeCb *ueCb, uint8_t delta)
+{
+   uint16_t slotIndx = 0;
+   SlotTimingInfo tmpSlotInfo;
+   
+   if(ueCb->drxUeCb.inActvTimerLen == 0)
+   {
+      return;
+   }
+
+   ADD_DELTA_TO_TIME(cell->slotInfo, tmpSlotInfo,  delta, cell->numSlots);
+   slotIndx = (tmpSlotInfo.sfn*MAX_SLOTS+tmpSlotInfo.slot)%MAX_DRX_SIZE;
+
+   /* if there is any entry present in the in-active exp list then remove the entry */
+   if(ueCb->drxUeCb.inActvExpiryIndex != SCH_DRX_INVALID_INDEX)
+   {
+      cmLListDelFrm(&cell->drxCb[ueCb->drxUeCb.inActvExpiryIndex].inActvTmrExpiryList, ueCb->drxUeCb.inActvTimerExpiryNodeInfo);
+      SCH_FREE(ueCb->drxUeCb.inActvTimerExpiryNodeInfo, sizeof(CmLList));
+      ueCb->drxUeCb.inActvExpiryIndex= SCH_DRX_INVALID_INDEX;
+      ueCb->drxUeCb.inActiveTmrExpiryDistance= SCH_DRX_INVALID_DISTANCE;
+   }
+
+   /* Adding the new entry in in-activity timer list */
+   ueCb->drxUeCb.inActvExpiryIndex = (slotIndx + ueCb->drxUeCb.inActvTimerLen) % MAX_DRX_SIZE;
+   ueCb->drxUeCb.inActiveTmrExpiryDistance = (ueCb->drxUeCb.inActvTimerLen) / MAX_DRX_SIZE;
+   schAddDrxTimerIntoList(&cell->drxCb[ueCb->drxUeCb.inActvExpiryIndex].inActvTmrExpiryList, ueCb, ueCb->drxUeCb.inActvTimerExpiryNodeInfo);
+
+   /* Set the UE active for UL And Dl transfer */
+   ueCb->drxUeCb.drxDlUeActiveStatus |= UE_ACTIVE_FOR_INACTIVE_TIMER;
+   ueCb->drxUeCb.drxUlUeActiveStatus |= UE_ACTIVE_FOR_INACTIVE_TIMER;
+}
+
+/**
  * @brief Handling of the  DRX timers start
  *
  * @details
@@ -794,6 +841,124 @@ void schHdlDrxOnDurExpiryTimer(SchCellCb  *cell)
 }
 
 /**
+ * @brief Handling of the expiry of in-active DRX timers in Dl
+ *
+ * @details
+ *
+ *     Function : schHdlDrxInActvExpiryTimerForDlDirection
+ *
+ *      Handling of expiry of in-active DRX timers at Dl index
+ *
+ *  @param[in] SchCellCb  *cell,  uint16_t dlIndx
+ *  @return
+ *      -# ROK
+ *      -# RFAILED
+ **/
+
+void schHdlDrxInActvExpiryTimerForDlDirection(SchCellCb  *cell, uint16_t dlIndx)
+{
+   CmLList  *drxNode;
+   SchUeCb *ueCb = NULLP;
+
+   drxNode = cell->drxCb[dlIndx].inActvTmrExpiryList.first;
+   if(drxNode)
+   {
+      /* Handling of dl On duration drx start list */
+      while(drxNode)
+      {
+         ueCb = (SchUeCb*)drxNode->node;
+         drxNode = drxNode->next;
+         ueCb->drxUeCb.inActiveTmrExpiryDistance--;
+
+         if(ueCb->drxUeCb.onDurationExpiryDistance != SCH_DRX_INVALID_DISTANCE)
+         {  
+            continue;
+         }
+         
+         ueCb->drxUeCb.drxDlUeActiveStatus &= ~UE_ACTIVE_FOR_INACTIVE_TIMER;
+      }
+   }
+}
+
+/**
+ * @brief Handling of the expiry of in-active DRX timers in Ul
+ *
+ * @details
+ *
+ *     Function : schHdlDrxInActvExpiryTimerForUlDirection
+ *
+ *      Handling of expiry of in-active DRX timers at Ul index
+ *
+ *  @param[in] SchCellCb  *cell,  uint16_t ulIndx
+ *  @return
+ *      -# ROK
+ *      -# RFAILED
+ **/
+
+void schHdlDrxInActvExpiryTimerForUlDirection(SchCellCb  *cell, uint16_t ulIndx)
+{
+   CmLList  *drxNode;
+   SchUeCb *ueCb = NULLP;
+
+   drxNode = cell->drxCb[ulIndx].inActvTmrExpiryList.first;
+   if(drxNode)
+   {
+      /* Handling of dl On duration drx start list */
+      while(drxNode)
+      {
+         ueCb = (SchUeCb*)drxNode->node;
+         drxNode = drxNode->next;
+
+         if(ueCb->drxUeCb.onDurationExpiryDistance != SCH_DRX_INVALID_DISTANCE)
+         {  
+            continue;
+         }
+         
+         ueCb->drxUeCb.drxUlUeActiveStatus &= ~UE_ACTIVE_FOR_INACTIVE_TIMER;
+         
+         /* Remove the entry from the in-active exp timer list */
+         cmLListDelFrm(&cell->drxCb[ulIndx].inActvTmrExpiryList, ueCb->drxUeCb.inActvTimerExpiryNodeInfo);
+         SCH_FREE(ueCb->drxUeCb.inActvTimerExpiryNodeInfo, sizeof(CmLList));
+         ueCb->drxUeCb.inActvExpiryIndex = SCH_DRX_INVALID_INDEX;
+
+         if(ueCb->drxUeCb.shortCyclePresent)
+         {  
+            /* Start short cycle timer */
+            /* TODO Will implement this in next gerrit */
+         }
+      }
+   }
+}
+
+/**
+ * @brief Handling of the expiry of in-active DRX timers
+ *
+ * @details
+ *
+ *     Function :schHdlDrxInActvExpiryTimer
+ *
+ *      Handling of expiry  of in-active DRX timers
+ *
+ *  @param[in] SchCellCb  *cell
+ *  @return
+ *      -# ROK
+ *      -# RFAILED
+ **/
+void schHdlDrxInActvExpiryTimer(SchCellCb  *cell)
+{
+   uint16_t dlIndx = 0, ulIndx = 0;
+   SlotTimingInfo dlSlotInfo, ulSlotInfo;
+
+   ADD_DELTA_TO_TIME(cell->slotInfo, dlSlotInfo, PHY_DELTA_DL + SCHED_DELTA, cell->numSlots);
+   ADD_DELTA_TO_TIME(cell->slotInfo, ulSlotInfo, PHY_DELTA_UL + SCHED_DELTA, cell->numSlots);
+   dlIndx = (dlSlotInfo.sfn*MAX_SLOTS+dlSlotInfo.slot)%MAX_DRX_SIZE;
+   ulIndx = (ulSlotInfo.sfn*MAX_SLOTS+ulSlotInfo.slot)%MAX_DRX_SIZE;
+
+   schHdlDrxInActvExpiryTimerForDlDirection(cell, dlIndx);
+   schHdlDrxInActvExpiryTimerForUlDirection(cell, ulIndx);
+}
+
+/**
  * @brief Handling of the expiry  DRX timers
  *
  * @details
@@ -811,6 +976,7 @@ void schHandleExpiryDrxTimer(SchCellCb  *cell)
 {
    /* Handling the onduration start timer */
    schHdlDrxOnDurExpiryTimer(cell);
+   schHdlDrxInActvExpiryTimer(cell);
 }
 
 #endif

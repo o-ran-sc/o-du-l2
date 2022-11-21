@@ -932,6 +932,12 @@ uint8_t schProcessSlotInd(SlotTimingInfo *slotInd, Inst schInst)
                   /* If DL scheduling failed, free the newly assigned HARQ process */
                   if(!isDlMsgScheduled)
                      schDlReleaseHqProcess(hqP);
+                  else
+                  {
+#ifdef NR_DRX
+                     schHdlDrxInActvStrtTmr(cell, &cell->ueCb[ueId-1], PHY_DELTA_DL + SCHED_DELTA);
+#endif
+                  }
                }
             }
 
@@ -953,6 +959,12 @@ uint8_t schProcessSlotInd(SlotTimingInfo *slotInd, Inst schInst)
                   isUlGrantScheduled = schProcessSrOrBsrReq(cell, *slotInd, ueId, FALSE, &ulHqP);
                   if(!isUlGrantScheduled)
                      schUlReleaseHqProcess(ulHqP, FALSE);
+                  else
+                  {
+#ifdef NR_DRX
+                     schHdlDrxInActvStrtTmr(cell, &cell->ueCb[ueId-1], PHY_DELTA_UL + SCHED_DELTA);
+#endif
+                  }
                }
             }
 
