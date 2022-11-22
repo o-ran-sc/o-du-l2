@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ec18f8d9_b468ffcd",
+        "filename": "src/5gnrsch/sch_drx.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 738,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-11-22T10:34:25Z",
+      "side": 1,
+      "message": "Do this only if onDuration timer is running. For the very first time when short cycle starts, that time onduration timer of long cycle would have already expired before expiry of inactive timer. So add a check else this code may lead to seg fault.",
+      "revId": "4b0f8ce085ca72f24262a76e9276dc83ee2b678e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
