@@ -714,6 +714,52 @@ void schHdlDrxInActvStrtTmr(SchCellCb  *cell,  SchUeCb *ueCb, uint8_t delta)
 }
 
 /**
+ * @brief Handling of short cycle drx start timer
+ *
+ * @details
+ *
+ *     Function : schHdlDrxStartShortCycleTimer
+ *
+ *      Handling of short cycle drx start timer
+ *
+ *  @param[in] SchCellCb  *cell
+ *  @return
+ *      -# ROK
+ *      -# RFAILED
+ **/
+
+ void schHdlDrxStartShortCycleTimer(SchCellCb  *cell, SchUeCb *ueCb)
+ {
+    ueCb->drxUeCb.longCycleToBeUsed = false;
+
+    /* if there is any present in on-duration start list, remove the entry from on duration start list */
+    if(ueCb->drxUeCb.onDurationStartIndex != SCH_DRX_INVALID_INDEX)
+    {
+       cmLListDelFrm(&cell->drxCb[ueCb->drxUeCb.onDurationStartIndex].onDurationStartList, ueCb->drxUeCb.onDurationStartNodeInfo);
+       SCH_FREE(ueCb->drxUeCb.onDurationStartNodeInfo, sizeof(CmLList));
+       ueCb->drxUeCb.onDurationStartIndex = SCH_DRX_INVALID_INDEX; 
+       ueCb->drxUeCb.onDurationStartDistance = SCH_DRX_INVALID_DISTANCE; 
+    } 
+    
+    /* recalculate the new index of on duration start based on short cycle */
+    schAddUeInOndurationList(cell, ueCb, PHY_DELTA_DL + SCHED_DELTA);
+    
+    /* if any node is present in short cycle exp list then remove the node from list  */
+    if(ueCb->drxUeCb.shortCycleExpiryIndex != SCH_DRX_INVALID_INDEX && ueCb->drxUeCb.shortCycleDistance != SCH_DRX_INVALID_DISTANCE)
+    {
+       cmLListDelFrm(&cell->drxCb[ueCb->drxUeCb.shortCycleExpiryIndex].shortCycleExpiryList, ueCb->drxUeCb.shortCycleTmrExpiryNodeInfo);
+       SCH_FREE(ueCb->drxUeCb.shortCycleTmrExpiryNodeInfo, sizeof(CmLList));
+       ueCb->drxUeCb.shortCycleExpiryIndex = SCH_DRX_INVALID_INDEX;
+       ueCb->drxUeCb.shortCycleDistance = SCH_DRX_INVALID_DISTANCE;
+    }
+ 
+    /* recalculate the new index for shortCycleExpiryList */
+    ueCb->drxUeCb.shortCycleExpiryIndex = (ueCb->drxUeCb.onDurationStartIndex + ueCb->drxUeCb.shortCycleTmrLen) % MAX_DRX_SIZE;
+    ueCb->drxUeCb.shortCycleDistance = ueCb->drxUeCb.shortCycleTmrLen / MAX_DRX_SIZE;
+    schAddDrxTimerIntoList(&cell->drxCb[ueCb->drxUeCb.shortCycleExpiryIndex].shortCycleExpiryList, ueCb, ueCb->drxUeCb.shortCycleTmrExpiryNodeInfo);
+ }
+
+/**
  * @brief Handling of the  DRX timers start
  *
  * @details
@@ -924,7 +970,7 @@ void schHdlDrxInActvExpiryTimerForUlDirection(SchCellCb  *cell, uint16_t ulIndx)
          if(ueCb->drxUeCb.shortCyclePresent)
          {  
             /* Start short cycle timer */
-            /* TODO Will implement this in next gerrit */
+            schHdlDrxStartShortCycleTimer(cell, ueCb);
          }
       }
    }
@@ -959,6 +1005,127 @@ void schHdlDrxInActvExpiryTimer(SchCellCb  *cell)
 }
 
 /**
+ * @brief Handling of the expiry ShortCycle DRX timers in DL
+ *
+ * @details
+ *
+ *     Function : schHdlDrxShortCycleExpiryTimerForDlDirection
+ *
+ *      Handling of expiry ShortCycle
+ *
+ *  @param[in] SchCellCb  *cell
+ *  @return
+ *      -# ROK
+ *      -# RFAILED
+ **/
+
+void schHdlDrxShortCycleExpiryTimerForDlDirection(SchCellCb  *cell, uint16_t dlIndx)
+{
+   CmLList  *drxCurrNode = NULLP;
+   SchUeCb *ueCb = NULLP;
+
+   drxCurrNode = cell->drxCb[dlIndx].shortCycleExpiryList.first;
+   if(drxCurrNode)
+   {
+      /* Handling of short cycle expiry in Dl */
+      while(drxCurrNode)
+      {
+         ueCb = (SchUeCb*)drxCurrNode->node;
+         drxCurrNode = drxCurrNode->next;
+
+         ueCb->drxUeCb.shortCycleDistance--;
+
+         if(ueCb->drxUeCb.shortCycleDistance != SCH_DRX_INVALID_DISTANCE)
+         {
+            continue;
+         }
+
+         /* once short cycle timer gets expire we will recalculate on-duration start with long cycle */ 
+         ueCb->drxUeCb.longCycleToBeUsed = true;
+
+         /* delete the entry from on-duration start */
+         cmLListDelFrm(&cell->drxCb[ueCb->drxUeCb.onDurationStartIndex].onDurationStartList, ueCb->drxUeCb.onDurationStartNodeInfo);
+         SCH_FREE(ueCb->drxUeCb.onDurationStartNodeInfo, sizeof(CmLList));
+         ueCb->drxUeCb.onDurationStartIndex = SCH_DRX_INVALID_INDEX; 
+         ueCb->drxUeCb.onDurationStartDistance = SCH_DRX_INVALID_DISTANCE; 
+
+         /* Recalculate on-duration with  long cycle */
+         schAddUeInOndurationList(cell, ueCb, PHY_DELTA_DL + SCHED_DELTA);
+      }
+   }
+}
+
+/**
+ * @brief Handling of the expiry ShortCycle DRX timers in UL
+ *
+ * @details
+ *
+ *     Function : schHdlDrxShortCycleExpiryTimerForUlDirection
+ *
+ *      Handling of expiry ShortCycle
+ *
+ *  @param[in] SchCellCb  *cell
+ *  @return
+ *      -# ROK
+ *      -# RFAILED
+ **/
+
+void schHdlDrxShortCycleExpiryTimerForUlDirection(SchCellCb  *cell, uint16_t ulIndx)
+{
+   CmLList  *drxCurrNode = NULLP;
+   SchUeCb *ueCb = NULLP;
+
+   drxCurrNode = cell->drxCb[ulIndx].shortCycleExpiryList.first;
+   if(drxCurrNode)
+   {
+      /* Handling of short cycle expiry in Ul */
+      while(drxCurrNode)
+      {
+         ueCb = (SchUeCb*)drxCurrNode->node;
+         drxCurrNode = drxCurrNode->next;
+         
+         if(ueCb->drxUeCb.shortCycleDistance != SCH_DRX_INVALID_DISTANCE)
+         {
+            continue;
+         }
+         
+         cmLListDelFrm(&cell->drxCb[ulIndx].shortCycleExpiryList, ueCb->drxUeCb.shortCycleTmrExpiryNodeInfo);
+         SCH_FREE(ueCb->drxUeCb.shortCycleTmrExpiryNodeInfo, sizeof(CmLList));
+         ueCb->drxUeCb.shortCycleExpiryIndex = SCH_DRX_INVALID_INDEX;
+
+      }
+   }
+}
+
+/**
+ * @brief Handling of the expiry ShortCycle DRX timers
+ *
+ * @details
+ *
+ *     Function :schHdlDrxShortCycleExpiryTimer
+ *
+ *      Handling of expiry ShortCycle
+ *
+ *  @param[in] SchCellCb  *cell
+ *  @return
+ *      -# ROK
+ *      -# RFAILED
+ **/
+void schHdlDrxShortCycleExpiryTimer(SchCellCb  *cell)
+{
+   uint16_t dlIndx = 0, ulIndx= 0;
+   SlotTimingInfo dlSlotInfo, ulSlotInfo;
+
+   ADD_DELTA_TO_TIME(cell->slotInfo, dlSlotInfo, PHY_DELTA_DL + SCHED_DELTA, cell->numSlots);
+   ADD_DELTA_TO_TIME(cell->slotInfo, ulSlotInfo, PHY_DELTA_UL + SCHED_DELTA, cell->numSlots);
+   dlIndx = (dlSlotInfo.sfn*MAX_SLOTS+dlSlotInfo.slot)%MAX_DRX_SIZE;
+   ulIndx = (ulSlotInfo.sfn*MAX_SLOTS+ulSlotInfo.slot)%MAX_DRX_SIZE;
+
+   schHdlDrxShortCycleExpiryTimerForDlDirection(cell, dlIndx);
+   schHdlDrxShortCycleExpiryTimerForUlDirection(cell, ulIndx);
+}
+
+/**
  * @brief Handling of the expiry  DRX timers
  *
  * @details
@@ -974,7 +1141,7 @@ void schHdlDrxInActvExpiryTimer(SchCellCb  *cell)
  **/
 void schHandleExpiryDrxTimer(SchCellCb  *cell)
 {
-   /* Handling the onduration start timer */
+   schHdlDrxShortCycleExpiryTimer(cell);
    schHdlDrxOnDurExpiryTimer(cell);
    schHdlDrxInActvExpiryTimer(cell);
 }
