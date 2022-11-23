@@ -41,7 +41,7 @@
 #define NR_PCI 1
 #define NR_CELL_ID 1
 
-#define DU_NAME "ORAN_OAM_DU"
+#define DU_NAME "ORAN OAM DU"
 #define CELL_TYPE SMALL
 
 //TODO: while testing for TDD, Mu1 and 100 MHz, this flag must be enabled

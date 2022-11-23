@@ -1457,16 +1457,16 @@ uint8_t BuildAndSendF1SetupReq()
       DU_ALLOC(f1SetupReq->protocolIEs.list.array,f1SetupReq->protocolIEs.list.size);
       if(f1SetupReq->protocolIEs.list.array == NULLP)
       {
-	 break;
+         break;
       }
       for(ieIdx=0; ieIdx<elementCnt; ieIdx++)
       {
-	 DU_ALLOC(f1SetupReq->protocolIEs.list.array[ieIdx],\
-	       sizeof(F1SetupRequestIEs_t));
-	 if(f1SetupReq->protocolIEs.list.array[ieIdx] == NULLP)
-	 {
-	    break;
-	 }
+         DU_ALLOC(f1SetupReq->protocolIEs.list.array[ieIdx],\
+               sizeof(F1SetupRequestIEs_t));
+         if(f1SetupReq->protocolIEs.list.array[ieIdx] == NULLP)
+         {
+            break;
+         }
       }
 
       ieIdx = 0;
@@ -1474,84 +1474,82 @@ uint8_t BuildAndSendF1SetupReq()
       f1SetupReq->protocolIEs.list.array[ieIdx]->id = ProtocolIE_ID_id_TransactionID;
       f1SetupReq->protocolIEs.list.array[ieIdx]->criticality = Criticality_reject;
       f1SetupReq->protocolIEs.list.array[ieIdx]->value.present =\
-							       F1SetupRequestIEs__value_PR_TransactionID;
+                                                                F1SetupRequestIEs__value_PR_TransactionID;
       f1SetupReq->protocolIEs.list.array[ieIdx]->value.choice.TransactionID = \
-									     TRANS_ID;
+                                                                              TRANS_ID;
 
       /*DU ID*/
       ieIdx++;
       f1SetupReq->protocolIEs.list.array[ieIdx]->id = ProtocolIE_ID_id_gNB_DU_ID;
       f1SetupReq->protocolIEs.list.array[ieIdx]->criticality = Criticality_reject;
       f1SetupReq->protocolIEs.list.array[ieIdx]->value.present = \
-								F1SetupRequestIEs__value_PR_GNB_DU_ID;
+                                                                 F1SetupRequestIEs__value_PR_GNB_DU_ID;
       f1SetupReq->protocolIEs.list.array[ieIdx]->value.choice.GNB_DU_ID.size =\
-									     sizeof(uint8_t);
+                                                                              sizeof(uint8_t);
 
       DU_ALLOC(f1SetupReq->protocolIEs.list.array[ieIdx]->value.choice.GNB_DU_ID.buf,\
-	    f1SetupReq->protocolIEs.list.array[ieIdx]->value.choice.GNB_DU_ID.size);
+            f1SetupReq->protocolIEs.list.array[ieIdx]->value.choice.GNB_DU_ID.size);
       if(f1SetupReq->protocolIEs.list.array[ieIdx]->value.choice.GNB_DU_ID.buf == \
-	    NULLP)
+            NULLP)
       {
-	 break;
+         break;
       }
 
       f1SetupReq->protocolIEs.list.array[ieIdx]->value.choice.GNB_DU_ID.buf[0] =\
-         duCfgParam.duId;
-
+                                                                                duCfgParam.duId;
       /*DU Name*/
       if(duCfgParam.duName != NULL)
       {
-	 ieIdx++;
-	 f1SetupReq->protocolIEs.list.array[ieIdx]->id = ProtocolIE_ID_id_gNB_DU_Name;
-	 f1SetupReq->protocolIEs.list.array[ieIdx]->criticality = Criticality_ignore;
-	 f1SetupReq->protocolIEs.list.array[ieIdx]->value.present = F1SetupRequestIEs__value_PR_GNB_DU_Name;
-	 f1SetupReq->protocolIEs.list.array[ieIdx]->value.choice.GNB_DU_Name.size =\
-	    strlen((char *)duCfgParam.duName);
-	 DU_ALLOC(f1SetupReq->protocolIEs.list.array[ieIdx]->value.choice.\
-	       GNB_DU_Name.buf, strlen((char *)duCfgParam.duName));
-	 if(f1SetupReq->protocolIEs.list.array[ieIdx]->value.choice.GNB_DU_Name.\
-	       buf == NULLP)
-	 {
-	    break;
-	 }
-	 strcpy((char*)f1SetupReq->protocolIEs.list.array[ieIdx]->value.\
-	       choice.GNB_DU_Name.buf,
-	       (char*)&duCfgParam.duName);
-
+         ieIdx++;
+         f1SetupReq->protocolIEs.list.array[ieIdx]->id = ProtocolIE_ID_id_gNB_DU_Name;
+         f1SetupReq->protocolIEs.list.array[ieIdx]->criticality = Criticality_ignore;
+         f1SetupReq->protocolIEs.list.array[ieIdx]->value.present = F1SetupRequestIEs__value_PR_GNB_DU_Name;
+         f1SetupReq->protocolIEs.list.array[ieIdx]->value.choice.GNB_DU_Name.size = strlen((char *)duCfgParam.duName);
+         DU_ALLOC(f1SetupReq->protocolIEs.list.array[ieIdx]->value.choice.GNB_DU_Name.buf, \
+               f1SetupReq->protocolIEs.list.array[ieIdx]->value.choice.GNB_DU_Name.size);
+         if(f1SetupReq->protocolIEs.list.array[ieIdx]->value.choice.GNB_DU_Name.buf == NULLP)
+         {
+            break;
+         }
+         strcpy((char*)f1SetupReq->protocolIEs.list.array[ieIdx]->value.choice.GNB_DU_Name.buf,
+               (char*)&duCfgParam.duName);
       }
 
       /*Served Cell list */
       ieIdx++;
       f1SetupReq->protocolIEs.list.array[ieIdx]->id = \
-						     ProtocolIE_ID_id_gNB_DU_Served_Cells_List;
+                                                      ProtocolIE_ID_id_gNB_DU_Served_Cells_List;
       f1SetupReq->protocolIEs.list.array[ieIdx]->criticality = Criticality_reject;
       f1SetupReq->protocolIEs.list.array[ieIdx]->value.present = \
-								F1SetupRequestIEs__value_PR_GNB_DU_Served_Cells_List;
+                                                                 F1SetupRequestIEs__value_PR_GNB_DU_Served_Cells_List;
       duServedCell = &f1SetupReq->protocolIEs.list.\
-		     array[ieIdx]->value.choice.GNB_DU_Served_Cells_List;
+                     array[ieIdx]->value.choice.GNB_DU_Served_Cells_List;
       if(BuildServedCellList(duServedCell))
       {
-	 break;
+         break;
       }
+
+
       /*RRC Version*/
       ieIdx++;
       f1SetupReq->protocolIEs.list.array[ieIdx]->id = \
-						     ProtocolIE_ID_id_GNB_DU_RRC_Version ;
+                                                      ProtocolIE_ID_id_GNB_DU_RRC_Version ;
       f1SetupReq->protocolIEs.list.array[ieIdx]->criticality = Criticality_reject;
       f1SetupReq->protocolIEs.list.array[ieIdx]->value.present = \
-								F1SetupRequestIEs__value_PR_RRC_Version;
+                                                                 F1SetupRequestIEs__value_PR_RRC_Version;
       rrcVer = &f1SetupReq->protocolIEs.list.array[ieIdx]->value.choice.RRC_Version;
       if(BuildRrcVer(rrcVer))
       {
-	 break;
+         break;
       }
+
       xer_fprint(stdout, &asn_DEF_F1AP_PDU, f1apMsg);
 
       /* Encode the F1SetupRequest type as APER */
       memset(encBuf, 0, ENC_BUF_MAX_LEN);
       encBufSize = 0;
       encRetVal = aper_encode(&asn_DEF_F1AP_PDU, 0, f1apMsg, PrepFinalEncBuf,\
-	    encBuf);
+            encBuf);
 
       /* Encode results */
       if(encRetVal.encoded == ENCODE_FAIL)
@@ -1569,13 +1567,13 @@ uint8_t BuildAndSendF1SetupReq()
             printf("%x",encBuf[ieIdx]);
          }
 #endif
-         
+
          duCb.f1SetupReqAndRspMsg.f1MsgReqBufSize = encBufSize;
          DU_ALLOC(duCb.f1SetupReqAndRspMsg.f1MsgReqBuf, encBufSize);
          if(duCb.f1SetupReqAndRspMsg.f1MsgReqBuf == NULLP)
          {
-             DU_LOG("\nERROR  -->  F1AP : Memory allocation failed to store the encoding of f1setup req");
-             return RFAILED;
+            DU_LOG("\nERROR  -->  F1AP : Memory allocation failed to store the encoding of f1setup req");
+            return RFAILED;
          }
          memcpy(duCb.f1SetupReqAndRspMsg.f1MsgReqBuf, &encBuf, duCb.f1SetupReqAndRspMsg.f1MsgReqBufSize);
       }
@@ -5500,6 +5498,7 @@ uint8_t BuildSrsRsrcAddModList(struct SRS_Config__srs_ResourceToAddModList *reso
       DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in BuildSrsRsrcAddModList");
       return RFAILED;
    }
+
    resourceList->list.array[rsrcIdx]->sequenceId = SRS_SEQ_ID;
 
    return ROK;
@@ -5665,7 +5664,6 @@ uint8_t BuildBWPUlDedSrsCfg(SRS_Config_t *srsCfg)
    {
       return RFAILED;
    }
-
    srsCfg->tpc_Accumulation = NULLP;
 
    return ROK;
@@ -5704,6 +5702,7 @@ uint8_t BuildPuschSrvCellCfg(struct UplinkConfig__pusch_ServingCellConfig *pusch
    puschCfg->choice.setup->rateMatching = NULLP;
    puschCfg->choice.setup->xOverhead = NULLP;
    puschCfg->choice.setup->ext1 = NULLP;
+
    DU_ALLOC(puschCfg->choice.setup->ext1, sizeof(struct PUSCH_ServingCellConfig__ext1));
    if(!puschCfg->choice.setup->ext1)
    {
@@ -5728,6 +5727,7 @@ uint8_t BuildPuschSrvCellCfg(struct UplinkConfig__pusch_ServingCellConfig *pusch
       return RFAILED;
    }
    *(puschCfg->choice.setup->ext1->processingType2Enabled) = PUSCH_PROCESS_TYPE2_ENABLED;
+
    return ROK;
 }
 
@@ -6107,12 +6107,6 @@ uint8_t BuildSpCellCfgDed(DuUeCb *ueCb, ServingCellConfig_t *srvCellCfg)
    }
 
    srvCellCfg->tdd_UL_DL_ConfigurationDedicated = NULLP;
-   DU_ALLOC(srvCellCfg->tdd_UL_DL_ConfigurationDedicated, sizeof(TDD_UL_DL_ConfigDedicated_t));
-   if(!srvCellCfg->tdd_UL_DL_ConfigurationDedicated)
-   {
-      DU_LOG("\nERROR  -->  F1AP : Memory allocation failure in BuildSpCellCfgDed");
-      return RFAILED;
-   }
 
    srvCellCfg->initialDownlinkBWP = NULLP;
    DU_ALLOC(srvCellCfg->initialDownlinkBWP, sizeof(BWP_DownlinkDedicated_t));
@@ -8606,7 +8600,7 @@ uint8_t BuildCellGroupConfigRrc(DuUeCb *ueCb, OCTET_STRING_t *duToCuRrcContainer
       xer_fprint(stdout, &asn_DEF_CellGroupConfigRrc, &cellGrpCfg);
       memset(encBuf, 0, ENC_BUF_MAX_LEN);
       encBufSize = 0;
-      encRetVal = aper_encode(&asn_DEF_CellGroupConfigRrc, 0, &cellGrpCfg, PrepFinalEncBuf, encBuf);
+      encRetVal = uper_encode(&asn_DEF_CellGroupConfigRrc, 0, &cellGrpCfg, PrepFinalEncBuf, encBuf);
       /* Encode results */
       if(encRetVal.encoded == ENCODE_FAIL)
       {
@@ -12941,7 +12935,7 @@ uint8_t extractCuToDuRrcInfoExt(ProtocolExtensionContainer_4624P16_t *protocolIe
                   if(cellGrpCfg)
                   {
                      memset(cellGrpCfg, 0, sizeof(CellGroupConfigRrc_t));
-                     rval = aper_decode(0, &asn_DEF_CellGroupConfigRrc, (void **)&cellGrpCfg,
+                     rval = uper_decode(0, &asn_DEF_CellGroupConfigRrc, (void **)&cellGrpCfg,
                            extIeInfo->extensionValue.choice.CellGroupConfig.buf, recvBufLen, 0, 0);
                      if(rval.code == RC_FAIL || rval.code == RC_WMORE)
                      {
@@ -13386,7 +13380,7 @@ UE_NR_Capability_t *extractUeCapability(UE_CapabilityRAT_ContainerList_t *ueCapa
    }
    memset(ueCapRatContList, 0, sizeof(UE_CapabilityRAT_ContainerListRRC_t));
    memset(&rval, 0, sizeof(asn_dec_rval_t));
-   rval = aper_decode(0, &asn_DEF_UE_CapabilityRAT_ContainerListRRC, (void **)&ueCapRatContList,
+   rval = uper_decode(0, &asn_DEF_UE_CapabilityRAT_ContainerListRRC, (void **)&ueCapRatContList,
           ueCapablityListBuf->buf, recvBufLen, 0, 0);
    if(rval.code == RC_FAIL || rval.code == RC_WMORE)
    {
@@ -13412,7 +13406,7 @@ UE_NR_Capability_t *extractUeCapability(UE_CapabilityRAT_ContainerList_t *ueCapa
           } 
           memset(ueNrCap, 0, sizeof(UE_NR_Capability_t));
           memset(&rval, 0, sizeof(asn_dec_rval_t));
-          rval = aper_decode(0, &asn_DEF_UE_NR_Capability, (void **)&ueNrCap,
+          rval = uper_decode(0, &asn_DEF_UE_NR_Capability, (void **)&ueNrCap,
                  ueCapRatContList->list.array[idx]->ue_CapabilityRAT_Container.buf, recvBufLen, 0, 0);
           if(rval.code == RC_FAIL || rval.code == RC_WMORE)
           {
@@ -13975,7 +13969,7 @@ uint8_t EncodeUeCntxtDuToCuInfo(CellGroupConfig_t *duToCuCellGrp, CellGroupConfi
    xer_fprint(stdout, &asn_DEF_CellGroupConfigRrc, duCellGrpCfg);
    memset((uint8_t *)encBuf, 0, ENC_BUF_MAX_LEN);
    encBufSize = 0;
-   encRetVal = aper_encode(&asn_DEF_CellGroupConfigRrc, 0, duCellGrpCfg, PrepFinalEncBuf, encBuf);
+   encRetVal = uper_encode(&asn_DEF_CellGroupConfigRrc, 0, duCellGrpCfg, PrepFinalEncBuf, encBuf);
    /* Encode results */
    if(encRetVal.encoded == ENCODE_FAIL)
    {
@@ -15194,7 +15188,7 @@ uint8_t procF1SetupRsp(F1AP_PDU_t *f1apMsg, MsgLen recvBufLen, char *recvBuf)
 	    DU_LOG("\nERROR  -->  DU_APP : Invalid IE received in F1SetupRsp:%ld",
 		  f1SetRspMsg->protocolIEs.list.array[idx]->id);
       }
-      duProcF1SetupRsp();
+      //duProcF1SetupRsp();
    }
    
    freeAperDecodeF1SetupRsp(f1SetRspMsg);
@@ -15207,7 +15201,7 @@ uint8_t procF1SetupRsp(F1AP_PDU_t *f1apMsg, MsgLen recvBufLen, char *recvBuf)
       return RFAILED;
    }
    memcpy(duCb.f1SetupReqAndRspMsg.f1MsgRspBuf, recvBuf, recvBufLen);
-   
+
    if(BuildAndSendE2SetupReq() != ROK)
    {
       DU_LOG("\nERROR  -->  F1AP : Failed to build and send E2 setup request ");
