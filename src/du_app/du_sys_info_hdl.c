@@ -191,7 +191,7 @@ uint8_t BuildMibPdu()
       xer_fprint(stdout, &asn_DEF_BCCH_BCH_Message, bcchMsg);
       memset(encBuf, 0, ENC_BUF_MAX_LEN);
       encBufSize = 0;
-      encRetVal = aper_encode(&asn_DEF_BCCH_BCH_Message, 0,
+      encRetVal = uper_encode(&asn_DEF_BCCH_BCH_Message, 0,
             bcchMsg, PrepFinalEncBuf, encBuf);
       printf("\nencbufSize:%d\n", encBufSize);
       if(encRetVal.encoded == -1) 
@@ -287,7 +287,7 @@ uint8_t BuildMibMsg()
       xer_fprint(stdout, &asn_DEF_MIB, mibMsg);
       memset(encBuf, 0, ENC_BUF_MAX_LEN);
       encBufSize = 0;
-      encRetVal = aper_encode(&asn_DEF_MIB, 0,
+      encRetVal = uper_encode(&asn_DEF_MIB, 0,
             mibMsg, PrepFinalEncBuf, encBuf);
       printf("\nencbufSize:%d\n", encBufSize);
       if(encRetVal.encoded	== -1) 
@@ -947,7 +947,8 @@ uint8_t BuildCommonSerachSpaceList( struct PDCCH_ConfigCommon__commonSearchSpace
                DU_LOG("\nERROR  -->  DU APP : Common search space list memory alloc failed");
                return RFAILED;
             }
-
+            
+            searchSpace->searchSpaceType->choice.common->dci_Format0_0_AndFormat1_0 = NULLP;
             DU_ALLOC(searchSpace->searchSpaceType->choice.common->dci_Format0_0_AndFormat1_0, \
                sizeof(struct SearchSpace__searchSpaceType__common__dci_Format0_0_AndFormat1_0));
             if(!searchSpace->searchSpaceType->choice.common->dci_Format0_0_AndFormat1_0)
@@ -955,6 +956,11 @@ uint8_t BuildCommonSerachSpaceList( struct PDCCH_ConfigCommon__commonSearchSpace
                DU_LOG("\nERROR  -->  DU APP : Common search space list memory alloc failed");
                return RFAILED;
             }
+
+            searchSpace->searchSpaceType->choice.common->dci_Format2_0 = NULLP;
+            searchSpace->searchSpaceType->choice.common->dci_Format2_1 = NULLP;
+            searchSpace->searchSpaceType->choice.common->dci_Format2_2 = NULLP;
+            searchSpace->searchSpaceType->choice.common->dci_Format2_3 = NULLP;
             break;
          }
       case SearchSpace__searchSpaceType_PR_ue_Specific:
@@ -967,7 +973,6 @@ uint8_t BuildCommonSerachSpaceList( struct PDCCH_ConfigCommon__commonSearchSpace
             return RFAILED;
          }
    }
-
    return ROK;
 }/* BuildCommonSerachSpaceList */
 
@@ -1082,7 +1087,6 @@ uint8_t BuildPdcchCfgCommon(struct BWP_DownlinkCommon__pdcch_ConfigCommon *pdcch
                return RFAILED;
             }             
             *pdcchSetup->ra_SearchSpace = duPdcchCfg.raSearchSpc;
-
             break;
          }
       default :
@@ -2454,7 +2458,7 @@ uint8_t BuildSib1Msg()
       /* Encode the F1SetupRequest type as APER */
       memset(encBuf, 0, ENC_BUF_MAX_LEN);
       encBufSize = 0;
-      encRetVal = aper_encode(&asn_DEF_SIB1, 0, sib1Msg, PrepFinalEncBuf,\
+      encRetVal = uper_encode(&asn_DEF_SIB1, 0, sib1Msg, PrepFinalEncBuf,\
             encBuf);
       printf("\nencbufSize: %d\n", encBufSize);
       if(encRetVal.encoded == -1)
