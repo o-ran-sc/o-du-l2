@@ -24,6 +24,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "945c636d_e2d4a2be",
+        "filename": "src/cm/du_app_mac_inf.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 1613,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-11-23T05:12:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "46c2169d_cfdd5e15",
+      "range": {
+        "startLine": 1613,
+        "startChar": 59,
+        "endLine": 1613,
+        "endChar": 72
+      },
+      "revId": "91265055061fbeb21391d6f7ef823f7958f64ee6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "de780b37_e225ecaf",
