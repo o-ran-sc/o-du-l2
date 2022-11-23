@@ -20,7 +20,7 @@
 #define __CU_MGR_MAIN_H__
 
 #define CU_ID 1
-#define CU_NAME "ORAN_OAM_CU"
+#define CU_NAME "ORAN OAM CU"
 
 #define DU_IP_V6_ADDR "0000:0000:0000:0000:0000:0000:0000:0001"
 #define CU_IP_V6_ADDR "0000:0000:0000:0000:0000:0000:0000:0011"
@@ -303,6 +303,7 @@ typedef struct cuUeCb
    uint32_t  crnti;
    uint8_t   gnbDuUeF1apId;
    uint8_t   gnbCuUeF1apId;
+   uint16_t  pdcpSn;
    uint8_t   numSrb;
    SrbInfo   srbList[MAX_NUM_SRB];
    uint8_t   numDrb;
