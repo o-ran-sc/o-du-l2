@@ -224,10 +224,10 @@ uint8_t BuildAndSendF1SetupRsp(uint32_t duId, BIT_STRING_t *nrcellId)
    uint8_t    idx,ieIdx;
    uint8_t    elementCnt,cellCnt;
    F1AP_PDU_t         *f1apMsg = NULL;
-   F1SetupResponse_t  *f1SetupRsp;
-   GNB_CU_Name_t      *cuName;
+   F1SetupResponse_t  *f1SetupRsp = NULL;
+   GNB_CU_Name_t      *cuName = NULL;
    Cells_to_be_Activated_List_t *cellToActivate;
-   RRC_Version_t      *rrcVer;
+   RRC_Version_t      *rrcVer = NULL;
    asn_enc_rval_t     encRetVal; 
    DU_LOG("\nINFO  -->  F1AP : Building F1 Setup Response\n");
 
@@ -254,7 +254,7 @@ uint8_t BuildAndSendF1SetupRsp(uint32_t duId, BIT_STRING_t *nrcellId)
                                                       SuccessfulOutcome__value_PR_F1SetupResponse;
    f1SetupRsp = &f1apMsg->choice.successfulOutcome->value.choice.F1SetupResponse;
 
-   elementCnt = 4;
+   elementCnt = 3;
    f1SetupRsp->protocolIEs.list.count = elementCnt;
    f1SetupRsp->protocolIEs.list.size = elementCnt*sizeof(F1SetupResponseIEs_t *);
 
@@ -291,58 +291,54 @@ uint8_t BuildAndSendF1SetupRsp(uint32_t duId, BIT_STRING_t *nrcellId)
                                                             F1SetupResponseIEs__value_PR_TransactionID;
    f1SetupRsp->protocolIEs.list.array[idx]->value.choice.TransactionID =\
                                                                         TRANS_ID;
-
+#if 0
+   /* CU name IE is of type printableString_t which wireshark is unable to decode.
+    * However this string is decoded successfully on online decoders.
+    * Since this is an optional IE and the value received in it are not
+    * used as of now, eliminating this IE for now to avoid wireshark error.
+    */
    /*CU Name*/
    idx++;
    f1SetupRsp->protocolIEs.list.array[idx]->id = ProtocolIE_ID_id_gNB_CU_Name;
    f1SetupRsp->protocolIEs.list.array[idx]->criticality = Criticality_ignore;
-   f1SetupRsp->protocolIEs.list.array[idx]->value.present = \
-                                                            F1SetupResponseIEs__value_PR_GNB_CU_Name;
+   f1SetupRsp->protocolIEs.list.array[idx]->value.present = F1SetupResponseIEs__value_PR_GNB_CU_Name;
    cuName = &f1SetupRsp->protocolIEs.list.array[idx]->value.choice.GNB_CU_Name;
-   cuName->size = sizeof(cuCb.cuCfgParams.cuName);
+   cuName->size = strlen((char *)cuCb.cuCfgParams.cuName);
 
-   CU_ALLOC(cuName->buf, sizeof(cuName->size)); 
+   CU_ALLOC(cuName->buf, cuName->size); 
    if(cuName->buf == NULLP)
    {
       for(ieIdx=0; ieIdx<elementCnt; ieIdx++)
       {
-         CU_FREE(f1SetupRsp->protocolIEs.list.array[ieIdx],\
-               sizeof(F1SetupResponseIEs_t));
+         CU_FREE(f1SetupRsp->protocolIEs.list.array[ieIdx], sizeof(F1SetupResponseIEs_t));
       }
-      CU_FREE(f1SetupRsp->protocolIEs.list.array,\
-            elementCnt * sizeof(F1SetupResponseIEs_t *));
-      CU_FREE(f1apMsg->choice.successfulOutcome,\
-            sizeof(SuccessfulOutcome_t));
+      CU_FREE(f1SetupRsp->protocolIEs.list.array, elementCnt * sizeof(F1SetupResponseIEs_t *));
+      CU_FREE(f1apMsg->choice.successfulOutcome, sizeof(SuccessfulOutcome_t));
       CU_FREE(f1apMsg, sizeof(F1AP_PDU_t));
       return RFAILED;
    }
    strcpy((char*)cuName->buf, (char*)cuCb.cuCfgParams.cuName);
+#endif
 
    /*Cells to be activated list*/
    idx++;
-   f1SetupRsp->protocolIEs.list.array[idx]->id = \
-                                                 ProtocolIE_ID_id_Cells_to_be_Activated_List ;
+   f1SetupRsp->protocolIEs.list.array[idx]->id = ProtocolIE_ID_id_Cells_to_be_Activated_List ;
    f1SetupRsp->protocolIEs.list.array[idx]->criticality = Criticality_reject;
-   f1SetupRsp->protocolIEs.list.array[idx]->value.present = \
-                                                            F1SetupResponseIEs__value_PR_Cells_to_be_Activated_List;
-   cellToActivate = &f1SetupRsp->protocolIEs.list.array[idx]->value.choice.\
-                    Cells_to_be_Activated_List;
+   f1SetupRsp->protocolIEs.list.array[idx]->value.present = F1SetupResponseIEs__value_PR_Cells_to_be_Activated_List;
+   cellToActivate = &f1SetupRsp->protocolIEs.list.array[idx]->value.choice.Cells_to_be_Activated_List;
+
    cellCnt=1;
    cellToActivate->list.count = cellCnt;
-   cellToActivate->list.size = \
-                               cellCnt*sizeof(struct Cells_to_be_Activated_List_ItemIEs  *);
-   CU_ALLOC(cellToActivate->list.array,\
-         sizeof(struct Cells_to_be_Activated_List_ItemIEs  *));
+   cellToActivate->list.size = cellCnt * sizeof(struct Cells_to_be_Activated_List_ItemIEs  *);
+   CU_ALLOC(cellToActivate->list.array, sizeof(struct Cells_to_be_Activated_List_ItemIEs  *));
    if(cellToActivate->list.array == NULLP)
    {
       CU_FREE(cuName->buf, sizeof(cuName->size));
       for(ieIdx=0; ieIdx<elementCnt; ieIdx++)
       {
-         CU_FREE(f1SetupRsp->protocolIEs.list.array[ieIdx],\
-               sizeof(F1SetupResponseIEs_t));
+         CU_FREE(f1SetupRsp->protocolIEs.list.array[ieIdx], sizeof(F1SetupResponseIEs_t));
       }
-      CU_FREE(f1SetupRsp->protocolIEs.list.array,\
-            elementCnt * sizeof(F1SetupResponseIEs_t *));
+      CU_FREE(f1SetupRsp->protocolIEs.list.array, elementCnt * sizeof(F1SetupResponseIEs_t *));
       CU_FREE(f1apMsg->choice.successfulOutcome, sizeof(SuccessfulOutcome_t));
       CU_FREE(f1apMsg, sizeof(F1AP_PDU_t));
       return RFAILED;
@@ -352,18 +348,14 @@ uint8_t BuildAndSendF1SetupRsp(uint32_t duId, BIT_STRING_t *nrcellId)
       CU_ALLOC(cellToActivate->list.array[ieIdx],sizeof(struct Cells_to_be_Activated_List_ItemIEs ));
       if(cellToActivate->list.array[ieIdx] == NULLP)
       {
-         CU_FREE(cellToActivate->list.array,\
-               sizeof(struct Cells_to_be_Activated_List_ItemIEs  *));
+         CU_FREE(cellToActivate->list.array, sizeof(struct Cells_to_be_Activated_List_ItemIEs  *));
          CU_FREE(cuName->buf, sizeof(cuName->size));
          for(ieIdx=0; ieIdx<elementCnt; ieIdx++)
          {
-            CU_FREE(f1SetupRsp->protocolIEs.list.array[ieIdx], \
-                  sizeof(F1SetupResponseIEs_t));
+            CU_FREE(f1SetupRsp->protocolIEs.list.array[ieIdx], sizeof(F1SetupResponseIEs_t));
          }
-         CU_FREE(f1SetupRsp->protocolIEs.list.array, \
-               elementCnt * sizeof(F1SetupResponseIEs_t *));
-         CU_FREE(f1apMsg->choice.successfulOutcome, \
-               sizeof(SuccessfulOutcome_t));
+         CU_FREE(f1SetupRsp->protocolIEs.list.array, elementCnt * sizeof(F1SetupResponseIEs_t *));
+         CU_FREE(f1apMsg->choice.successfulOutcome, sizeof(SuccessfulOutcome_t));
          CU_FREE(f1apMsg, sizeof(F1AP_PDU_t));
          return RFAILED;
       }
@@ -439,6 +431,7 @@ uint8_t BuildAndSendF1SetupRsp(uint32_t duId, BIT_STRING_t *nrcellId)
       return RFAILED;
    }
    memcpy(&cellToActivate->list.array[0]->value.choice.Cells_to_be_Activated_List_Item.nRCGI.nRCellIdentity, nrcellId, sizeof(BIT_STRING_t)); 
+
    /* RRC Version */
    idx++;
    f1SetupRsp->protocolIEs.list.array[idx]->id = \
@@ -573,8 +566,10 @@ uint8_t BuildAndSendF1SetupRsp(uint32_t duId, BIT_STRING_t *nrcellId)
    encRetVal = aper_encode(&asn_DEF_F1AP_PDU, 0, f1apMsg, PrepFinalEncBuf, encBuf);
 
    /* Clean up */
-   CU_FREE(rrcVer->latest_RRC_Version.buf, sizeof(uint8_t));
-   CU_FREE(cuName->buf, sizeof(cuName->size));
+   if(rrcVer)
+      CU_FREE(rrcVer->latest_RRC_Version.buf, sizeof(uint8_t));
+   if(cuName)
+      CU_FREE(cuName->buf, cuName->size);
    for(idx=0; idx<elementCnt; idx++)
    {
       CU_FREE(f1SetupRsp->protocolIEs.list.array[idx], sizeof(F1SetupResponseIEs_t));
@@ -1113,7 +1108,7 @@ uint8_t fillDlCcchRrcMsg(CuUeCb *ueCb, RRCContainer_t *rrcContainer)
                   xer_fprint(stdout, &asn_DEF_DL_CCCH_MessageType, &dl_CCCH_Msg);
                   memset(encBuf, 0, ENC_BUF_MAX_LEN);
                   encBufSize = 0;
-                  encRetVal = aper_encode(&asn_DEF_DL_CCCH_MessageType, 0, &dl_CCCH_Msg, PrepFinalEncBuf, encBuf);
+                  encRetVal = uper_encode(&asn_DEF_DL_CCCH_MessageType, 0, &dl_CCCH_Msg, PrepFinalEncBuf, encBuf);
                   /* Encode results */
                   if(encRetVal.encoded == ENCODE_FAIL)
                   {
@@ -1446,7 +1441,7 @@ uint8_t fillDlDcchRrcMsg(CuUeCb *ueCb, RRCContainer_t *rrcContainer)
                xer_fprint(stdout, &asn_DEF_DL_DCCH_MessageType, &dl_DCCH_Msg);
                memset(encBuf, 0, ENC_BUF_MAX_LEN);
                encBufSize = 0;
-               encRetVal = aper_encode(&asn_DEF_DL_DCCH_MessageType, 0, &dl_DCCH_Msg, PrepFinalEncBuf, encBuf);
+               encRetVal = uper_encode(&asn_DEF_DL_DCCH_MessageType, 0, &dl_DCCH_Msg, PrepFinalEncBuf, encBuf);
                /* Encode results */
                if(encRetVal.encoded == ENCODE_FAIL)
                {
@@ -1581,8 +1576,22 @@ uint8_t	BuildDLRRCContainer(CuUeCb *ueCb, uint8_t rrcMsgType, RRCContainer_t *rr
    }
    else if(rrcMsgType == UE_CONTEXT_SETUP_RSP)
    {
+      uint16_t tmpBufIdx = 0, bufIdx = 0;
+      RRCContainer_t rrcContainerTmp;
       DU_LOG("\nINFO --> F1AP : Filling DL DCCH RRC Message for RRC Reconfiguration ");
-      ret = fillDlDcchRrcMsg(ueCb, rrcContainer);
+      ret = fillDlDcchRrcMsg(ueCb, &rrcContainerTmp);
+      rrcContainer->size = rrcContainerTmp.size + 2;
+      CU_ALLOC(rrcContainer->buf, rrcContainer->size);
+      if(rrcContainer->buf != NULLP)
+      {
+         memset(rrcContainer->buf, 0, rrcContainer->size);
+         rrcContainer->buf[0] = 0x00;
+         rrcContainer->buf[1] = 0x05; //PDCP SN
+         for(bufIdx = 2, tmpBufIdx = 0; bufIdx < rrcContainer->size; bufIdx++, tmpBufIdx++)
+         {
+            rrcContainer->buf[bufIdx] = rrcContainerTmp.buf[tmpBufIdx];
+         }
+      }
       if(ret == RFAILED)
          DU_LOG("\nERROR  -->  F1AP: Failed to fill DL-DCCH Msg for RRC Reconfiguration");
    }
@@ -2205,7 +2214,7 @@ uint8_t extractDuToCuRrcCont(CuUeCb *ueCb, OCTET_STRING_t rrcCont)
    cellGrpCfgMsg = &cellGrpCfg;
    memset(cellGrpCfgMsg, 0, sizeof(CellGroupConfigRrc_t));
 
-   rval = aper_decode(0, &asn_DEF_CellGroupConfigRrc, (void **)&cellGrpCfgMsg, rrcCont.buf, rrcCont.size, 0, 0);
+   rval = uper_decode(0, &asn_DEF_CellGroupConfigRrc, (void **)&cellGrpCfgMsg, rrcCont.buf, rrcCont.size, 0, 0);
 
    if(rval.code == RC_FAIL || rval.code == RC_WMORE)
    {
@@ -6738,7 +6747,7 @@ uint8_t fillCellGrpCfg(CuUeCb *ueCb, OCTET_STRING_t *cellGrp, bool updateAllRbCf
       xer_fprint(stdout, &asn_DEF_CellGroupConfigRrc, &cellGrpCfg);
       cmMemset((uint8_t *)encBuf, 0, ENC_BUF_MAX_LEN);
       encBufSize = 0;
-      encRetVal = aper_encode(&asn_DEF_CellGroupConfigRrc, 0, &cellGrpCfg, PrepFinalEncBuf, encBuf);
+      encRetVal = uper_encode(&asn_DEF_CellGroupConfigRrc, 0, &cellGrpCfg, PrepFinalEncBuf, encBuf);
       /* Encode results */
       if(encRetVal.encoded == ENCODE_FAIL)
       {
@@ -7126,7 +7135,7 @@ uint8_t fillUeCapRatCont(OCTET_STRING_t *ueCapRatContBuf)
       xer_fprint(stdout, &asn_DEF_UE_NR_Capability, &ueNrCap);
       cmMemset((uint8_t *)encBuf, 0, ENC_BUF_MAX_LEN);
       encBufSize = 0;
-      encRetVal = aper_encode(&asn_DEF_UE_NR_Capability, 0, &ueNrCap, PrepFinalEncBuf, encBuf);
+      encRetVal = uper_encode(&asn_DEF_UE_NR_Capability, 0, &ueNrCap, PrepFinalEncBuf, encBuf);
    
       /* Encode results */
       if(encRetVal.encoded == ENCODE_FAIL)
@@ -7254,7 +7263,7 @@ uint8_t fillUeCapRatContListBuf(UE_CapabilityRAT_ContainerList_t *ueCapablityLis
       xer_fprint(stdout, &asn_DEF_UE_CapabilityRAT_ContainerListRRC, &ueCapablityList);
       cmMemset((uint8_t *)encBuf, 0, ENC_BUF_MAX_LEN);
       encBufSize = 0;
-      encRetVal = aper_encode(&asn_DEF_UE_CapabilityRAT_ContainerListRRC, 0, \
+      encRetVal = uper_encode(&asn_DEF_UE_CapabilityRAT_ContainerListRRC, 0, \
             &ueCapablityList, PrepFinalEncBuf, encBuf);
 
       /* Encode results */
@@ -7452,7 +7461,7 @@ uint8_t fillMeasTimingConfigBuf(MeasConfig_t *measTimingConfigBuf)
       xer_fprint(stdout, &asn_DEF_MeasurementTimingConfigurationRrc, &measTimingConfig);
       cmMemset((uint8_t *)encBuf, 0, ENC_BUF_MAX_LEN);
       encBufSize = 0;
-      encRetVal = aper_encode(&asn_DEF_MeasurementTimingConfigurationRrc, 0, &measTimingConfig, PrepFinalEncBuf, encBuf);
+      encRetVal = uper_encode(&asn_DEF_MeasurementTimingConfigurationRrc, 0, &measTimingConfig, PrepFinalEncBuf, encBuf);
 
       /* Encode results */
       if(encRetVal.encoded == ENCODE_FAIL)
@@ -8265,7 +8274,7 @@ uint8_t fillMeasObjToAddModList(MeasObjectToAddModList_t *measObjList)
 
    /* RSRQ offset for SSB */
    CU_ALLOC(measObject->offsetMO.rsrqOffsetSSB, sizeof(Q_OffsetRange_t));
-   if(!measObject->offsetMO.rsrpOffsetSSB)
+   if(!measObject->offsetMO.rsrqOffsetSSB)
    {
       DU_LOG("\nERROR  -->  F1AP: Memory allocation failed for SSB RSRQ offset in fillMeasObjToAddModList");
       return RFAILED;
@@ -8820,7 +8829,7 @@ uint8_t fillRrcReconfigBuf(CuUeCb *ueCb, OCTET_STRING_t  *rrcReconfigBuf, bool u
       xer_fprint(stdout, &asn_DEF_RRCReconfiguration, rrcReconfig);
       cmMemset((uint8_t *)encBuf, 0, ENC_BUF_MAX_LEN);
       encBufSize = 0;
-      encRetVal = aper_encode(&asn_DEF_RRCReconfiguration, 0, rrcReconfig, PrepFinalEncBuf, encBuf);
+      encRetVal = uper_encode(&asn_DEF_RRCReconfiguration, 0, rrcReconfig, PrepFinalEncBuf, encBuf);
 
       /* Encode results */
       if(encRetVal.encoded == ENCODE_FAIL)
@@ -8931,7 +8940,7 @@ uint8_t fillHOPreparationInfoBuf(CuUeCb *ueCb, HandoverPreparationInformation_t 
       xer_fprint(stdout, &asn_DEF_HandoverPreparationInformationRrc, &hoPrepInfo);
       cmMemset((uint8_t *)encBuf, 0, ENC_BUF_MAX_LEN);
       encBufSize = 0;
-      encRetVal = aper_encode(&asn_DEF_HandoverPreparationInformationRrc, 0, \
+      encRetVal = uper_encode(&asn_DEF_HandoverPreparationInformationRrc, 0, \
             &hoPrepInfo, PrepFinalEncBuf, encBuf);
 
       /* Encode results */
@@ -8997,6 +9006,21 @@ uint8_t fillCuToDuContainer(CuUeCb *ueCb, CUtoDURRCInformation_t *rrcMsg)
    }
    ret = fillUeCapRatContListBuf(rrcMsg->uE_CapabilityRAT_ContainerList);
 
+#if 0
+
+   /* Commenting this because:
+    * CUToDURRCInformation->MeasConfig contains measurement gap configurations.
+    * Howeever measurement gap is not supported in our code. Measurement Gap will
+    * be required if we want to support inter-RAT handover or handover to
+    * neighbouring cells operating on a different frequency than serving cell.
+    *
+    * In case we plan to use this IE in future, following fixes are required:
+    * As of now, we are filling MeasurementTimingConfigurationRrc_t into rrcMsg->measConfig.
+    * This is incorrect. We must fill MeasConfigRrc_t in rrcMsg->measConfig.
+    * MeasurementTimingConfigurationRrc_t should be filled in 
+    * rrcMsg->iE_Extensions->MeasurementTimingConfiguration, if required.
+    */
+
    CU_ALLOC(rrcMsg->measConfig, sizeof(MeasConfig_t));
    if(!rrcMsg->measConfig)
    {
@@ -9004,6 +9028,7 @@ uint8_t fillCuToDuContainer(CuUeCb *ueCb, CUtoDURRCInformation_t *rrcMsg)
       return RFAILED;
    }
    ret = fillMeasTimingConfigBuf(rrcMsg->measConfig);
+#endif
 
    if(ueCb->state == UE_HANDOVER_IN_PROGRESS)
    {

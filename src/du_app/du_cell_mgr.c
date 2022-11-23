@@ -729,7 +729,7 @@ uint8_t BuildAndSendDlPcchIndToMac(uint16_t cellId, uint16_t pf, uint8_t i_s, Cm
       memset(encBuf, 0, ENC_BUF_MAX_LEN);
       encBufSize = 0;
        /* Encode the PCCH RRC PDU as APER */
-      encRetVal = aper_encode(&asn_DEF_PCCH_Message, 0, pcchMsg, PrepFinalEncBuf,\
+      encRetVal = uper_encode(&asn_DEF_PCCH_Message, 0, pcchMsg, PrepFinalEncBuf,\
             encBuf);
 
       if(encRetVal.encoded == ENCODE_FAIL)
