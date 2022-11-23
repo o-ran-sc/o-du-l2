@@ -1579,27 +1579,27 @@ uint8_t duBuildAndSendMacCellStop(uint16_t cellId)
 {
    Pst pst;
    uint16_t cellIdx=0;
-   OduCellId *oduCellId = NULL;
-   
+   CellStopInfo *cellStop = NULL;
+
    DU_LOG("\nINFO   -->  DU APP : Building and Sending cell stop request to MAC");
 
    GET_CELL_IDX(cellId, cellIdx);
    if(duCb.actvCellLst[cellIdx] != NULLP)
    {
       /* Send Cell Stop Request to MAC */
-      DU_ALLOC_SHRABL_BUF(oduCellId, sizeof(OduCellId));
-      if(!oduCellId)
+      DU_ALLOC_SHRABL_BUF(cellStop, sizeof(CellStopInfo));
+      if(!cellStop)
       {
-         DU_LOG("\nERROR  -->  DU APP : duBuildAndSendMacCellStop():  Memory allocation failed ");
+         DU_LOG("\nERROR  -->  DU APP : Memory alloc failed while building cell stop request");
          return RFAILED;
       }
-      memset(oduCellId, 0, sizeof(OduCellId));
-      oduCellId->cellId = duCb.actvCellLst[cellIdx]->cellId;
+      memset(cellStop, 0, sizeof(CellStopInfo));
+      cellStop->cellId = duCb.actvCellLst[cellIdx]->cellId;
 
       /* Fill Pst */
       FILL_PST_DUAPP_TO_MAC(pst, EVENT_MAC_CELL_STOP);
 
-      return (*packMacCellStopOpts[pst.selector])(&pst, oduCellId);
+      return (*packMacCellStopOpts[pst.selector])(&pst, cellStop);
    }
    else
    {
