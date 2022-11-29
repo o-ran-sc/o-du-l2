@@ -2068,6 +2068,10 @@ bool schProcessSrOrBsrReq(SchCellCb *cell, SlotTimingInfo currTime, uint8_t ueId
             continue;
          }
          k2Found = true;
+         if(hqP)
+         {
+            ADD_DELTA_TO_TIME(puschTime, (*hqP)->puschTime, 0, cell->numSlots);
+         }
          break;
       }
    }
@@ -2075,7 +2079,7 @@ bool schProcessSrOrBsrReq(SchCellCb *cell, SlotTimingInfo currTime, uint8_t ueId
    if(k2Found == true)
    {
       ret = schCalculateUlTbs(ueCb, puschTime, symbLen, &startPrb, &totDataReq, isRetx, *hqP);
-
+   
       if(totDataReq > 0 && ret == ROK)
       {
          SCH_ALLOC(dciInfo, sizeof(DciInfo));
