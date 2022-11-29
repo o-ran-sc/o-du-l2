@@ -13554,8 +13554,9 @@ uint8_t procF1UeContextSetupReq(F1AP_PDU_t *f1apMsg)
    UEContextSetupRequest_t   *ueSetReq = NULL;
    DRBs_ToBeSetup_List_t *drbCfg = NULL;
    CUtoDURRCInformation_t *rrcInfo = NULL;
+#ifdef NR_DRX
    DRXCycle_t *drxCycle;
-
+#endif
    ret = ROK;
 
    ueSetReq = &f1apMsg->choice.initiatingMessage->value.choice.UEContextSetupRequest;

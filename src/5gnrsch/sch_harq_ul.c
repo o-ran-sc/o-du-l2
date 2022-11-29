@@ -25,6 +25,9 @@
 #include "mac_sch_interface.h"
 #include "sch.h"
 #include "sch_utils.h"
+#ifdef NR_DRX
+#include "sch_drx.h"
+#endif
 typedef struct schCellCb SchCellCb;
 typedef struct schUeCb SchUeCb;
 void schUlHqEntReset(SchCellCb *cellCb, SchUeCb *ueCb, SchUlHqEnt *hqE);
@@ -237,7 +240,16 @@ void schUlHqProcessNack(SchUlHqProcCb *hqP)
    if (hqP->tbInfo.txCntr < hqP->maxHqTxPerHqP)
    {
       cmLListAdd2Tail(&(hqP->hqEnt->ue->ulRetxHqList), &hqP->ulHqProcLink);
-      addUeToBeScheduled(hqP->hqEnt->cell, hqP->hqEnt->ue->ueId);
+#ifdef NR_DRX
+      if(hqP->hqEnt->ue->ueDrxInfoPres == true)
+      {
+         schDrxStrtUlHqRttTmr(hqP);
+      }
+      else
+#endif
+      {
+         addUeToBeScheduled(hqP->hqEnt->cell, hqP->hqEnt->ue->ueId);
+      }   
    }
    else
    {

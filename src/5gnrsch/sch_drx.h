@@ -63,6 +63,9 @@ void schHdlDrxOnDurExpiryTimer(SchCellCb  *cell);
 void schHandleExpiryDrxTimer(SchCellCb  *cell);
 void schDrxStrtDlHqRttTmr(SchDlHqProcCb *hqP);
 void schDrxStopDlHqRetxTmr(SchCellCb  *cell, SchUeCb *uecb, SchDlHqProcCb **hqP);
+void schDrxStopUlHqRetxTmr(SchCellCb  *cell, SchUeCb *ueCb, SchUlHqProcCb **hqP);
+void schDrxStrtUlHqRttTmr(SchUlHqProcCb *hqP);
+void schHdlDrxUlHqRetxStrtTimer(SchCellCb  *cell);
 /**********************************************************************
   End of file
  **********************************************************************/
