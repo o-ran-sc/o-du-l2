@@ -961,8 +961,8 @@ uint8_t fillPucchF0F1PduInfo(fapi_uci_o_pucch_f0f1_t *pduInfo, fapi_ul_pucch_pdu
    static uint8_t ind=0;
    uint8_t result[]={0,//msg4
                      0,//Security Mode Command
-                     0,//Registration Accept
-                     0,//RRC Reconfiguration
+                     1,//Registration Accept
+                     1,//RRC Reconfiguration
                      0,//Data 1
                      0,//Data 2
                      0,//Data 3

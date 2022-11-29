@@ -188,10 +188,12 @@ typedef struct schDlHqTbCb
 #ifdef NR_DRX
 typedef struct schDrxHarqCb
 {
-   uint32_t     retxStrtIndex;     
-   uint32_t     rttIndex;                  
-   uint32_t     retxIndex;        
-   int16_t      retxExpDistance; 
+   uint32_t     retxStrtIndex; 
+   CmLList      *retxStrtNode;
+   uint32_t     rttIndex;
+   CmLList      *rttNode;
+   uint32_t     retxIndex;
+   CmLList      *retxExpNode;
    uint8_t      retxTmrReduction;     
 }SchDrxHarqCb;
 #endif
@@ -214,6 +216,7 @@ typedef struct schUlHqProcCb
    uint8_t           dmrsMappingType;
    uint8_t           nrOfDmrsSymbols;
    uint8_t           dmrsAddPos;
+   SlotTimingInfo    puschTime;
 #ifdef NR_DRX
    SchDrxHarqCb      ulDrxHarqCb;
 #endif
@@ -230,6 +233,7 @@ struct schDlHqProcCb
    uint8_t           k1;
    SchLcPrbEstimate  dlLcPrbEst; /*DL PRB Alloc Estimate among different LC*/
    CmLList           dlHqProcLink;
+   SlotTimingInfo    pucchTime;
 #ifdef NR_DRX
    SchDrxHarqCb      dlDrxHarqCb;
 #endif
@@ -412,8 +416,12 @@ typedef struct schHqUlMap
 #ifdef NR_DRX
 typedef struct  schDrxUeCb
 {
-   uint32_t  drxDlUeActiveStatus;    /* variable is used to store the status about downlink active status */
-   uint32_t  drxUlUeActiveStatus;    /* variable is used to store the status about uplink active status */
+   bool      drxDlUeActiveStatus;       /* Final Dl Ue status which is marked as true if drxDlUeActiveMask or drxDlUeActiveMaskForHarq is present */
+   bool      drxUlUeActiveStatus;       /* Final Ul Ue status which is marked as true if drxUlUeActiveMask or drxUlUeActiveMaskForHarq is present */
+   uint32_t  drxDlUeActiveMask;          /* variable is used to store the status about downlink active status of Ue for On-duration, inactive timer*/
+   uint32_t  drxUlUeActiveMask;          /* variable is used to store the status about uplink active status for on-duration inactive timer*/
+   uint32_t  drxDlUeActiveMaskForHarq;   /* variable is used to store the status about downlink active status for harq*/
+   uint32_t  drxUlUeActiveMaskForHarq;   /* variable is used to store the status about uplink active status for harq */
    uint32_t  onDurationLen;          /* length of on duration which is received from ue cfg/recfg in form of ms and subms, informs about after how many slots on duration gets expire */
    uint32_t  inActvTimerLen;         /* length of inActvTimer value received from ue cfg/recfg in form of ms, informs about after how many slots in active gets expire */
    uint8_t   harqRttDlTimerLen;      /* length of harqRttDlTimer received from ue cfg/recfg in form of symbols, inform about after how many slots on the harq drx-HARQ-RTT-TimerDL expire */

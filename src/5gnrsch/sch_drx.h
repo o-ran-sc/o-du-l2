@@ -20,6 +20,9 @@
 #define SCH_DRX_INVALID_INDEX 0xFFFFFF 
 #define SCH_DRX_MAX_DELTA 3
 #define SCH_DRX_TMRS_EXP_DELTA 1
+#define SCH_UE_DRX_INACTIVE      0xFFFFFF
+#define SCH_DRX_DL_HARQ_BITMASK  0x000001
+#define SCH_DRX_UL_HARQ_BITMASK  0x000001
 #define UE_ACTIVE_FOR_ONDURATION 1
 #define UE_ACTIVE_FOR_INACTIVE_TIMER 2
 #define UE_ACTIVE_FOR_SR 4
@@ -59,6 +62,8 @@ void schDrxUeReCfgTimer(SchCellCb *cell, SchUeCb *ueCb);
 void schHdlDrxShortCycleExpiryTimer(SchCellCb  *cell);
 void schHdlDrxOnDurExpiryTimer(SchCellCb  *cell);
 void schHandleExpiryDrxTimer(SchCellCb  *cell);
+void schDrxStrtDlHqRttTmr(SchDlHqProcCb *hqP);
+void schDrxStopDlHqRetxTmr(SchCellCb  *cell, SchUeCb *uecb, SchDlHqProcCb **hqP);
 /**********************************************************************
   End of file
  **********************************************************************/

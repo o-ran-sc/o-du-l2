@@ -337,6 +337,10 @@ bool findValidK0K1Value(SchCellCb *cell, SlotTimingInfo currTime, uint8_t ueId, 
          {
             continue; 
          }
+         if(hqP)
+         {
+            ADD_DELTA_TO_TIME((*pucchTime), hqP->pucchTime, 0, cell->numSlots);
+         }
          return true;
       }
    }
@@ -901,7 +905,7 @@ uint8_t schProcessSlotInd(SlotTimingInfo *slotInd, Inst schInst)
          }
 
 #ifdef NR_DRX 
-         if((cell->ueCb[ueId-1].ueDrxInfoPres == true) && (cell->ueCb[ueId-1].drxUeCb.drxDlUeActiveStatus != true))
+         if((cell->ueCb[ueId-1].ueDrxInfoPres == true) && (cell->ueCb[ueId-1].drxUeCb.drxUlUeActiveStatus != true))
          {
             if(pendingUeNode->node)
             {
@@ -919,6 +923,12 @@ uint8_t schProcessSlotInd(SlotTimingInfo *slotInd, Inst schInst)
                /* DL Data ReTransmisson */
                isDlMsgPending = true;
                isDlMsgScheduled = schFillBoGrantDlSchedInfo(cell, *slotInd, ueId, TRUE, ((SchDlHqProcCb**) &(node->node)));
+#ifdef NR_DRX 
+               if(isDlMsgScheduled)
+               {
+                  schDrxStopDlHqRetxTmr(cell, &cell->ueCb[ueId-1], ((SchDlHqProcCb*) &(node->node)));
+               }
+#endif
                cmLListDelFrm(&cell->ueCb[ueId-1].dlRetxHqList, node);
             }
             else
