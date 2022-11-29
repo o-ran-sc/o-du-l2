@@ -291,7 +291,7 @@ uint16_t l1BuildAndSendCrcInd(uint16_t slot, uint16_t sfn, fapi_ul_pusch_pdu_t p
                      0,//BSR
                      0,//MSG5 RRC Setup Complete
                      0,//Security Mode Complete
-                     0,//Registraion Complete
+                     1,//Registraion Complete
                      0,//RRC Reconfiguration Complete
                      0,//UL DATA -1
                      0,//UL DATA -2

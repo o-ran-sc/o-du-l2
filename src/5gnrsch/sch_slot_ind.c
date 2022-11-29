@@ -337,6 +337,10 @@ bool findValidK0K1Value(SchCellCb *cell, SlotTimingInfo currTime, uint8_t ueId, 
          {
             continue; 
          }
+         if(hqP)
+         {
+            ADD_DELTA_TO_TIME((*pucchTime), hqP->pucchTime, 0, cell->numSlots);
+         }
          return true;
       }
    }
@@ -948,6 +952,12 @@ uint8_t schProcessSlotInd(SlotTimingInfo *slotInd, Inst schInst)
                /* UL Data ReTransmisson */
                isUlGrantPending = true;
                isUlGrantScheduled = schProcessSrOrBsrReq(cell, *slotInd, ueId, TRUE, (SchUlHqProcCb**) &(node->node));
+#ifdef NR_DRX 
+               if(isUlGrantScheduled)
+               {
+                  schDrxStopUlHqRetxTmr(cell, &cell->ueCb[ueId-1], ((SchUlHqProcCb**) &(node->node)));
+               }
+#endif
                cmLListDelFrm(&cell->ueCb[ueId-1].ulRetxHqList, node);
             }
             else
