@@ -413,18 +413,20 @@ uint16_t fillPucchResourceInfo(SchPucchInfo *schPucchInfo, Inst inst, SlotTiming
    SchCellCb  *cell = schCb[inst].cells[inst];
    SchPucchCfgCmn *pucchCfg = NULLP;
    SchBwpParams *ulBwp = NULLP;
+#ifdef NR_DRX 
    SchUeCb *ueCb = NULLP;
+#endif
    uint16_t startPrb;
 
    GET_UE_ID(schPucchInfo->rnti, ueId);
    ueIdx = ueId -1;
 #ifdef NR_DRX 
-      ueCb = schGetUeCb(cell, schPucchInfo->rnti);
-      if(ueCb->ueDrxInfoPres)
-      {
-         if(!ueCb->drxUeCb.drxUlUeActiveStatus)
-            return RFAILED;
-      }
+   ueCb = schGetUeCb(cell, schPucchInfo->rnti);
+   if(ueCb->ueDrxInfoPres)
+   {
+      if(!ueCb->drxUeCb.drxUlUeActiveStatus)
+         return RFAILED;
+   }
 #endif
    if(cell->ueCb[ueIdx].ueCfg.spCellCfg.servCellCfg.initUlBwp.pucchCfgPres)
    {
@@ -479,7 +481,9 @@ uint16_t fillPucchResourceInfo(SchPucchInfo *schPucchInfo, Inst inst, SlotTiming
 uint8_t schUlResAlloc(SchCellCb *cell, Inst schInst)
 {
    int ret = ROK;
+#ifdef NR_DRX 
    SchUeCb   *ueCb;
+#endif
    UlSchedInfo ulSchedInfo;
    SchUlSlotInfo  *schUlSlotInfo = NULLP;
    SlotTimingInfo ulTimingInfo;
