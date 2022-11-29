@@ -26,6 +26,9 @@
 #include "sch.h"
 #include "sch_utils.h"
 #include "cm_llist.h"
+#ifdef NR_DRX
+#include "sch_drx.h"
+#endif
 
 SchMacDlReleaseHarqFunc schMacDlReleaseHarqOpts[] =
 {
@@ -376,6 +379,7 @@ void schDlHqFeedbackUpdate(SchDlHqProcCb *hqP, uint8_t fdbk1, uint8_t fdbk2)
    uint8_t tbIdx;
    for (tbIdx = 0; tbIdx <2; tbIdx++)
    {
+      DU_LOG("\nPBORLA %d %sfdbk1 %d,fdbk2 %d", __LINE__, __func__,fdbk1, fdbk2 );
       if (HQ_TB_WAITING == hqP->tbInfo[tbIdx].state)
       {
          hqP->tbInfo[tbIdx].isAckNackDtx = (0 == tbIdx)?fdbk1:fdbk2;
@@ -395,7 +399,17 @@ void schDlHqFeedbackUpdate(SchDlHqProcCb *hqP, uint8_t fdbk1, uint8_t fdbk2)
             else
             {
                schDlHqTbFail(hqP, tbIdx, FALSE);
-               addUeToBeScheduled(hqP->hqEnt->cell, hqP->hqEnt->ue->ueId);
+#ifdef NR_DRX
+               if(hqP->hqEnt->ue->ueDrxInfoPres == true)
+               {
+                  schDrxStrtDlHqRttTmr(hqP);
+                  DU_LOG("\nPBORLA %d %s", __LINE__, __func__);
+               }
+               else
+#endif
+               {
+                  addUeToBeScheduled(hqP->hqEnt->cell, hqP->hqEnt->ue->ueId);
+               }
             }
          }
       }
