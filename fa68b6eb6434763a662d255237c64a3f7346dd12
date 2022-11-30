@@ -73,6 +73,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b864f27f_d1090822",
+        "filename": "src/5gnrsch/sch_drx.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 382,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-11-30T11:34:19Z",
+      "side": 1,
+      "message": "Add a line break. Please check the same between every newly added funtions",
+      "revId": "fa68b6eb6434763a662d255237c64a3f7346dd12",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "177197e0_c8f80790",
         "filename": "src/5gnrsch/sch_drx.c",
         "patchSetId": 4
