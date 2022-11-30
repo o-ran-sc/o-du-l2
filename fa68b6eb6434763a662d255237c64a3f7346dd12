@@ -1,0 +1,124 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d3baab15_945b51e0",
+        "filename": "src/5gnrsch/sch.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 197,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-11-30T10:13:46Z",
+      "side": 1,
+      "message": "Lets rearrange the parameters in the sequence of its occurrence i.e. rttExp, then retxStart and then retxExp",
+      "revId": "fa68b6eb6434763a662d255237c64a3f7346dd12",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ea980517_3c81bc45",
+        "filename": "src/5gnrsch/sch_drx.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-11-30T10:13:46Z",
+      "side": 1,
+      "message": "add this file under NR_DRX flag",
+      "revId": "fa68b6eb6434763a662d255237c64a3f7346dd12",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "177197e0_c8f80790",
+        "filename": "src/5gnrsch/sch_drx.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1573,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-11-30T10:13:46Z",
+      "side": 1,
+      "message": "Keep same nomenclature. use schHdlDrxHarqExpireTimer",
+      "range": {
+        "startLine": 1573,
+        "startChar": 3,
+        "endLine": 1573,
+        "endChar": 29
+      },
+      "revId": "fa68b6eb6434763a662d255237c64a3f7346dd12",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "77f7fd87_d6a558a3",
+        "filename": "src/5gnrsch/sch_harq_dl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 382,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-11-30T10:13:46Z",
+      "side": 1,
+      "message": "remove print",
+      "range": {
+        "startLine": 382,
+        "startChar": 6,
+        "endLine": 382,
+        "endChar": 12
+      },
+      "revId": "fa68b6eb6434763a662d255237c64a3f7346dd12",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "907dd8b4_61e056a3",
+        "filename": "src/5gnrsch/sch_harq_dl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 406,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-11-30T10:13:46Z",
+      "side": 1,
+      "message": "remove print",
+      "range": {
+        "startLine": 406,
+        "startChar": 18,
+        "endLine": 406,
+        "endChar": 24
+      },
+      "revId": "fa68b6eb6434763a662d255237c64a3f7346dd12",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4a80f7f2_b34fab6e",
+        "filename": "src/5gnrsch/sch_slot_ind.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 929,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-11-30T10:13:46Z",
+      "side": 1,
+      "message": "how do we know here that the DL transmission scheduled here is a new transmission or a retransmission for which timer is running?",
+      "revId": "fa68b6eb6434763a662d255237c64a3f7346dd12",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
