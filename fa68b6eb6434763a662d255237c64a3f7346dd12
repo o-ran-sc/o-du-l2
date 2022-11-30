@@ -88,6 +88,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8b9e056f_89c0c20b",
+        "filename": "src/5gnrsch/sch_drx.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 382,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-11-30T12:10:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b864f27f_d1090822",
+      "revId": "fa68b6eb6434763a662d255237c64a3f7346dd12",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "177197e0_c8f80790",
