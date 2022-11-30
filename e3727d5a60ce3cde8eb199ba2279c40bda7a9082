@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0f139a2f_7b424e33",
+        "filename": "src/5gnrsch/sch_drx.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 974,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-11-30T07:25:41Z",
+      "side": 1,
+      "message": "chnage the data type",
+      "range": {
+        "startLine": 974,
+        "startChar": 3,
+        "endLine": 974,
+        "endChar": 10
+      },
+      "revId": "e3727d5a60ce3cde8eb199ba2279c40bda7a9082",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
