@@ -30,6 +30,42 @@
 #include "sch_drx.h"
 
 /**
+ * @brief set the final Ue drx status 
+ *
+ * @details
+ *
+ *     Function : setDrxUeStatusForDlandUl
+ *      
+ *    set the final Ue drx status to active or inactive 
+ *           
+ *  @param[in] SchDrxUeCb *drxUeCb 
+ *  @return  
+ *      -#void 
+ **/
+
+void setDrxUeStatusForDlandUl(SchDrxUeCb *drxUeCb)
+{
+    /* Setting the Dl Ue status */
+    if(drxUeCb->drxDlUeActiveMask || drxUeCb->drxDlUeActiveMaskForHarq)
+    {
+       drxUeCb->drxDlUeActiveStatus = true;
+    }
+    else
+    {
+       drxUeCb->drxDlUeActiveStatus = false;
+    }
+    /* Setting the Ul Ue status */
+    if(drxUeCb->drxUlUeActiveMask || drxUeCb->drxUlUeActiveMaskForHarq)
+    {
+       drxUeCb->drxUlUeActiveStatus = true;
+    }
+    else
+    {
+       drxUeCb->drxUlUeActiveStatus = false;
+    }
+}
+
+/**
  * @brief intialize the SchDrxHarqCb structre 
  *
  * @details
@@ -47,10 +83,9 @@
 void schInitDrxHarqCb(SchDrxHarqCb *hqDrxCb)
 {
    memset(hqDrxCb, 0, sizeof(SchDrxHarqCb));
-   hqDrxCb->retxExpDistance  = SCH_DRX_INVALID_DISTANCE;
    hqDrxCb->retxStrtIndex    = SCH_DRX_INVALID_INDEX;
-   hqDrxCb->rttIndex         = SCH_DRX_INVALID_INDEX;
-   hqDrxCb->retxIndex        = SCH_DRX_INVALID_INDEX;
+   hqDrxCb->rttExpIndex         = SCH_DRX_INVALID_INDEX;
+   hqDrxCb->retxExpIndex        = SCH_DRX_INVALID_INDEX;
 }
 
 /**
@@ -78,12 +113,8 @@ void schInitDrxUeCb(SchUeCb *ueCb)
    ueCb->drxUeCb.onDurationStartDistance = SCH_DRX_INVALID_DISTANCE;
    ueCb->drxUeCb.onDurationExpiryDistance = SCH_DRX_INVALID_DISTANCE;
    ueCb->drxUeCb.inActiveTmrExpiryDistance = SCH_DRX_INVALID_DISTANCE;
-   ueCb->drxUeCb.drxDlUeActiveStatus = 0; 
-   ueCb->drxUeCb.drxUlUeActiveStatus = 0; 
 }
 
-/* will uncomment this function in next gerrit */
-#if 0
 /**
  * @brief delete Dl harq drx timers and information 
  *
@@ -98,43 +129,37 @@ void schInitDrxUeCb(SchUeCb *ueCb)
  *      -# ROK
  *      -# RFAILED
  **/
- void schDeleteDlHarqDrxTimer(SchCellCb  *cell, SchDlHqEnt *dlHqEnt)
- {
-    uint8_t idx, numHqPrcs;
-    uint16_t tmrIdx = 0;
-    SchDlHqProcCb *procs;
-    CmLList  *node = NULLP;
-   
-    numHqPrcs = dlHqEnt->numHqPrcs;
-    for(idx =0; idx<numHqPrcs; idx++)
-    {
-       procs = &dlHqEnt->procs[idx];
-       tmrIdx = procs->dlDrxHarqCb.retxStrtIndex;
-       CM_LLIST_FIRST_NODE(&cell->drxCb[tmrIdx].dlRetransTmrStartList, node);
-       if(node)
-       {
-          cmLListDelFrm(&cell->drxCb[tmrIdx].dlRetransTmrStartList, node);
-          SCH_FREE(node, sizeof(CmLList));
-       }
 
-       tmrIdx = procs->dlDrxHarqCb.rttIndex;
-       CM_LLIST_FIRST_NODE(&cell->drxCb[tmrIdx].dlHarqRttExpiryList, node);
-       if(node)
-       {
-          cmLListDelFrm(&cell->drxCb[tmrIdx].dlHarqRttExpiryList, node);
-          SCH_FREE(node, sizeof(CmLList));
-       }
+void schDeleteDlHarqDrxTimer(SchCellCb  *cell, SchDlHqEnt *dlHqEnt)
+{
+   uint8_t idx, numHqPrcs;
+   SchDlHqProcCb *dlProc;
 
-       tmrIdx = procs->dlDrxHarqCb.retxIndex;
-       CM_LLIST_FIRST_NODE(&cell->drxCb[tmrIdx].dlRetransExpiryList, node);
-       if(node)
-       {
-          cmLListDelFrm(&cell->drxCb[tmrIdx].dlRetransExpiryList, node);
-          SCH_FREE(node, sizeof(CmLList));
-       }
-       schInitDrxHarqCb(&procs->dlDrxHarqCb);
-    }
- }
+   numHqPrcs = dlHqEnt->numHqPrcs;
+   for(idx =0; idx<numHqPrcs; idx++)
+   {
+      dlProc = &dlHqEnt->procs[idx];
+
+      if(dlProc->dlDrxHarqCb.retxStrtIndex != SCH_DRX_INVALID_INDEX)
+      {
+         cmLListDelFrm(&cell->drxCb[dlProc->dlDrxHarqCb.retxStrtIndex].dlRetransTmrStartList, dlProc->dlDrxHarqCb.retxStrtNode);
+         SCH_FREE(dlProc->dlDrxHarqCb.retxStrtNode, sizeof(CmLList));
+      }
+
+      if(dlProc->dlDrxHarqCb.rttExpIndex != SCH_DRX_INVALID_INDEX)
+      {
+         cmLListDelFrm(&cell->drxCb[dlProc->dlDrxHarqCb.rttExpIndex ].dlHarqRttExpiryList, dlProc->dlDrxHarqCb.rttExpNode);
+         SCH_FREE(dlProc->dlDrxHarqCb.rttExpNode, sizeof(CmLList));
+      }
+
+      if(dlProc->dlDrxHarqCb.retxExpIndex != SCH_DRX_INVALID_INDEX)
+      {
+         cmLListDelFrm(&cell->drxCb[dlProc->dlDrxHarqCb.retxExpIndex].dlRetransExpiryList, dlProc->dlDrxHarqCb.retxExpNode);
+         SCH_FREE(dlProc->dlDrxHarqCb.retxExpNode, sizeof(CmLList));
+      }
+      schInitDrxHarqCb(&dlProc->dlDrxHarqCb);
+   }
+}
 
 /**
  * @brief delete UL harq drx timers and information 
@@ -149,45 +174,38 @@ void schInitDrxUeCb(SchUeCb *ueCb)
  *  @return  
  *      -# ROK
  *      -# RFAILED
- **/
- void schDeleteUlHarqDrxTimer(SchCellCb  *cell, SchUlHqEnt *ulHqEnt)
- {
-    uint8_t idx, numHqPrcs;
-    uint16_t tmrIdx = 0;
-    CmLList  *node = NULLP;
-    SchUlHqProcCb *procs;
+**/
 
-    numHqPrcs = ulHqEnt->numHqPrcs;
-    for(idx =0; idx<numHqPrcs; idx++)
-    {
-       procs = &ulHqEnt->procs[idx];
-       tmrIdx = procs->ulDrxHarqCb.retxStrtIndex;
-       CM_LLIST_FIRST_NODE(&cell->drxCb[tmrIdx].ulRetransTmrStartList, node);
-       if(node)
-       {
-          cmLListDelFrm(&cell->drxCb[tmrIdx].ulRetransTmrStartList, node);
-          SCH_FREE(node, sizeof(CmLList));
-       }
+void schDeleteUlHarqDrxTimer(SchCellCb  *cell, SchUlHqEnt *ulHqEnt)
+{
+   uint8_t idx, numHqPrcs;
+   SchUlHqProcCb *ulProc;
 
-       tmrIdx = procs->ulDrxHarqCb.rttIndex;
-       CM_LLIST_FIRST_NODE(&cell->drxCb[tmrIdx].ulHarqRttExpiryList, node);
-       if(node)
-       {
-          cmLListDelFrm(&cell->drxCb[tmrIdx].ulHarqRttExpiryList, node);
-          SCH_FREE(node, sizeof(CmLList));
-       }
+   numHqPrcs = ulHqEnt->numHqPrcs;
+   for(idx =0; idx<numHqPrcs; idx++)
+   {
+      ulProc = &ulHqEnt->procs[idx];
 
-       tmrIdx = procs->ulDrxHarqCb.retxIndex;
-       CM_LLIST_FIRST_NODE(&cell->drxCb[tmrIdx].ulRetransExpiryList, node);
-       if(node)
-       {
-          cmLListDelFrm(&cell->drxCb[tmrIdx].ulRetransExpiryList, node);
-          SCH_FREE(node, sizeof(CmLList));
-       }
-       schInitDrxHarqCb(&procs->ulDrxHarqCb);
-    }
- }
-#endif
+      if(ulProc->ulDrxHarqCb.retxStrtIndex != SCH_DRX_INVALID_INDEX)
+      {
+         cmLListDelFrm(&cell->drxCb[ulProc->ulDrxHarqCb.retxStrtIndex].ulRetransTmrStartList, ulProc->ulDrxHarqCb.retxStrtNode);
+         SCH_FREE(ulProc->ulDrxHarqCb.retxStrtNode, sizeof(CmLList));
+      }
+
+      if(ulProc->ulDrxHarqCb.rttExpIndex != SCH_DRX_INVALID_INDEX)
+      {
+         cmLListDelFrm(&cell->drxCb[ulProc->ulDrxHarqCb.rttExpIndex ].ulHarqRttExpiryList, ulProc->ulDrxHarqCb.rttExpNode);
+         SCH_FREE(ulProc->ulDrxHarqCb.rttExpNode, sizeof(CmLList));
+      }
+
+      if(ulProc->ulDrxHarqCb.retxExpIndex != SCH_DRX_INVALID_INDEX)
+      {
+         cmLListDelFrm(&cell->drxCb[ulProc->ulDrxHarqCb.retxExpIndex].ulRetransExpiryList, ulProc->ulDrxHarqCb.retxExpNode);
+         SCH_FREE(ulProc->ulDrxHarqCb.retxExpNode, sizeof(CmLList));
+      }
+      schInitDrxHarqCb(&ulProc->ulDrxHarqCb);
+   }
+}
 
 /**
  * @brief delete UE drx timers and information 
@@ -238,9 +256,9 @@ void schDeleteUeDrxInfo(SchCellCb  *cell, SchUeCb *ueCb)
          cmLListDelFrm(&cell->drxCb[drxUeCb->shortCycleExpiryIndex].shortCycleExpiryList, drxUeCb->shortCycleTmrExpiryNodeInfo);
          SCH_FREE(drxUeCb->shortCycleTmrExpiryNodeInfo, sizeof(CmLList));
       }
-      /* TODO - will uncomment this function in next gerrit */
-      //schDeleteDlHarqDrxTimer(cell, &ueCb->dlHqEnt);
-      //schDeleteUlHarqDrxTimer(cell, &ueCb->ulHqEnt);
+      
+      schDeleteDlHarqDrxTimer(cell, &ueCb->dlHqEnt);
+      schDeleteUlHarqDrxTimer(cell, &ueCb->ulHqEnt);
       schInitDrxUeCb(ueCb);
    }
 }
@@ -322,6 +340,43 @@ uint8_t schAddDrxTimerIntoList(CmLListCp *drxTimerList,void * nodeInfo, CmLList 
    cmLListAdd2Tail(drxTimerList, currentNodeInfo);
    drxNodeInfo = currentNodeInfo;
    DU_LOG("\nINFO --> SCH : Drx node added into the list");
+   return ROK;
+}
+
+/**
+ * @brief Add new entry into the drx harq timer list
+ *
+ * @details
+ *
+ *     Function : schAddDrxNodeIntoHarqTimerList 
+ *      
+ *      Add new entry into the drx harq timer list
+ *           
+ *  @param[in] CmLListCp *drxTimerList -> List in which new entery have to add
+ *  	       void * nodeInfo-> ue information which is need to the added into list
+ *  	        CmLList **drxNodeInfo -> pointer to the node
+ *  @return  
+ *      -# ROK
+ *      -# RFAILED
+ **/
+
+uint8_t schAddDrxNodeIntoHarqTimerList(CmLListCp *drxTimerList,void * nodeInfo, CmLList **drxNodeInfo)
+{
+   CmLList  *currentNodeInfo = NULLP;
+
+   SCH_ALLOC(currentNodeInfo, sizeof(CmLList));
+   if(!currentNodeInfo)
+   {
+      DU_LOG("\nERROR  --> SCH : schAddDrxTimerIntoList() : Memory allocation failed");
+      return RFAILED;
+   }
+
+   currentNodeInfo->node = (PTR)nodeInfo;
+   
+   cmLListAdd2Tail(drxTimerList, currentNodeInfo);
+   (*drxNodeInfo) = currentNodeInfo;
+   DU_LOG("\nINFO --> SCH : Drx node added into the list");
+
    return ROK;
 }
 
@@ -557,7 +612,10 @@ void schHdlDrxOnDurStrtTimerForDlDirection(SchCellCb  *cell, uint16_t currListIn
          }
          else
          {
-            ueCb->drxUeCb.drxDlUeActiveStatus |= UE_ACTIVE_FOR_ONDURATION;
+            ueCb->drxUeCb.drxDlUeActiveMask |= UE_ACTIVE_FOR_ONDURATION;
+            
+            /* set the Ue status as active or inactive*/
+            setDrxUeStatusForDlandUl(&ueCb->drxUeCb);
             
             /* If there is any entery present in onDurationExpiry list remove
              * the entery from the list and recalculate the
@@ -615,9 +673,10 @@ void schHdlDrxOnDurStrtTimerForUlDirection(SchCellCb  *cell, uint16_t currListIn
          {
             continue;
          }
-         ueCb->drxUeCb.drxUlUeActiveStatus |= UE_ACTIVE_FOR_ONDURATION;
-
-
+         ueCb->drxUeCb.drxUlUeActiveMask |= UE_ACTIVE_FOR_ONDURATION;
+         /* set the final Ue status as active or inactive */
+         setDrxUeStatusForDlandUl(&ueCb->drxUeCb);
+         
          /* if there short cycle length is used as the cycle length for onduration calculation then based on the short cycle else long cycle is used for calculating next onduration */
          cmLListDelFrm(&cell->drxCb[currListIndx].onDurationStartList, ueCb->drxUeCb.onDurationStartNodeInfo);
          SCH_FREE(ueCb->drxUeCb.onDurationStartNodeInfo, sizeof(CmLList));
@@ -652,6 +711,7 @@ void schHdlDrxOnDurStrtTimerForUlDirection(SchCellCb  *cell, uint16_t currListIn
  *      -# ROK
  *      -# RFAILED
  **/
+
 void schHdlDrxOnDurStrtTimer(SchCellCb  *cell)
 {
    uint16_t dlIndx = 0, ulIndx=0;
@@ -709,8 +769,9 @@ void schHdlDrxInActvStrtTmr(SchCellCb  *cell,  SchUeCb *ueCb, uint8_t delta)
    schAddDrxTimerIntoList(&cell->drxCb[ueCb->drxUeCb.inActvExpiryIndex].inActvTmrExpiryList, ueCb, ueCb->drxUeCb.inActvTimerExpiryNodeInfo);
 
    /* Set the UE active for UL And Dl transfer */
-   ueCb->drxUeCb.drxDlUeActiveStatus |= UE_ACTIVE_FOR_INACTIVE_TIMER;
-   ueCb->drxUeCb.drxUlUeActiveStatus |= UE_ACTIVE_FOR_INACTIVE_TIMER;
+   ueCb->drxUeCb.drxDlUeActiveMask |= UE_ACTIVE_FOR_INACTIVE_TIMER;
+   ueCb->drxUeCb.drxUlUeActiveMask |= UE_ACTIVE_FOR_INACTIVE_TIMER;
+   setDrxUeStatusForDlandUl(&ueCb->drxUeCb);
 }
 
 /**
@@ -728,36 +789,149 @@ void schHdlDrxInActvStrtTmr(SchCellCb  *cell,  SchUeCb *ueCb, uint8_t delta)
  *      -# RFAILED
  **/
 
- void schHdlDrxStartShortCycleTimer(SchCellCb  *cell, SchUeCb *ueCb)
- {
-    ueCb->drxUeCb.longCycleToBeUsed = false;
+void schHdlDrxStartShortCycleTimer(SchCellCb  *cell, SchUeCb *ueCb)
+{
+   ueCb->drxUeCb.longCycleToBeUsed = false;
 
-    /* if there is any present in on-duration start list, remove the entry from on duration start list */
-    if(ueCb->drxUeCb.onDurationStartIndex != SCH_DRX_INVALID_INDEX)
-    {
-       cmLListDelFrm(&cell->drxCb[ueCb->drxUeCb.onDurationStartIndex].onDurationStartList, ueCb->drxUeCb.onDurationStartNodeInfo);
-       SCH_FREE(ueCb->drxUeCb.onDurationStartNodeInfo, sizeof(CmLList));
-       ueCb->drxUeCb.onDurationStartIndex = SCH_DRX_INVALID_INDEX; 
-       ueCb->drxUeCb.onDurationStartDistance = SCH_DRX_INVALID_DISTANCE; 
-    } 
-    
-    /* recalculate the new index of on duration start based on short cycle */
-    schAddUeInOndurationList(cell, ueCb, PHY_DELTA_DL + SCHED_DELTA);
-    
-    /* if any node is present in short cycle exp list then remove the node from list  */
-    if(ueCb->drxUeCb.shortCycleExpiryIndex != SCH_DRX_INVALID_INDEX && ueCb->drxUeCb.shortCycleDistance != SCH_DRX_INVALID_DISTANCE)
-    {
-       cmLListDelFrm(&cell->drxCb[ueCb->drxUeCb.shortCycleExpiryIndex].shortCycleExpiryList, ueCb->drxUeCb.shortCycleTmrExpiryNodeInfo);
-       SCH_FREE(ueCb->drxUeCb.shortCycleTmrExpiryNodeInfo, sizeof(CmLList));
-       ueCb->drxUeCb.shortCycleExpiryIndex = SCH_DRX_INVALID_INDEX;
-       ueCb->drxUeCb.shortCycleDistance = SCH_DRX_INVALID_DISTANCE;
-    }
+   /* if there is any present in on-duration start list, remove the entry from on duration start list */
+   if(ueCb->drxUeCb.onDurationStartIndex != SCH_DRX_INVALID_INDEX)
+   {
+      cmLListDelFrm(&cell->drxCb[ueCb->drxUeCb.onDurationStartIndex].onDurationStartList, ueCb->drxUeCb.onDurationStartNodeInfo);
+      SCH_FREE(ueCb->drxUeCb.onDurationStartNodeInfo, sizeof(CmLList));
+      ueCb->drxUeCb.onDurationStartIndex = SCH_DRX_INVALID_INDEX; 
+      ueCb->drxUeCb.onDurationStartDistance = SCH_DRX_INVALID_DISTANCE; 
+   } 
+
+   /* recalculate the new index of on duration start based on short cycle */
+   schAddUeInOndurationList(cell, ueCb, PHY_DELTA_DL + SCHED_DELTA);
+
+   /* if any node is present in short cycle exp list then remove the node from list  */
+   if(ueCb->drxUeCb.shortCycleExpiryIndex != SCH_DRX_INVALID_INDEX && ueCb->drxUeCb.shortCycleDistance != SCH_DRX_INVALID_DISTANCE)
+   {
+      cmLListDelFrm(&cell->drxCb[ueCb->drxUeCb.shortCycleExpiryIndex].shortCycleExpiryList, ueCb->drxUeCb.shortCycleTmrExpiryNodeInfo);
+      SCH_FREE(ueCb->drxUeCb.shortCycleTmrExpiryNodeInfo, sizeof(CmLList));
+      ueCb->drxUeCb.shortCycleExpiryIndex = SCH_DRX_INVALID_INDEX;
+      ueCb->drxUeCb.shortCycleDistance = SCH_DRX_INVALID_DISTANCE;
+   }
+
+   /* recalculate the new index for shortCycleExpiryList */
+   ueCb->drxUeCb.shortCycleExpiryIndex = (ueCb->drxUeCb.onDurationStartIndex + ueCb->drxUeCb.shortCycleTmrLen) % MAX_DRX_SIZE;
+   ueCb->drxUeCb.shortCycleDistance = ueCb->drxUeCb.shortCycleTmrLen / MAX_DRX_SIZE;
+   schAddDrxTimerIntoList(&cell->drxCb[ueCb->drxUeCb.shortCycleExpiryIndex].shortCycleExpiryList, ueCb, ueCb->drxUeCb.shortCycleTmrExpiryNodeInfo);
+}
+
+/**
+ * @brief Handling of the Dl harq DRX timers start for Dl scheduling
+ *
+ * @details
+ *
+ *     Function : schHdlDlHqRetxStrtTimerForDl
+ *
+ *      Handling of Dl harq DRX timers start for Dl scheduling
+ *
+ *  @param[in] SchCellCb *cell, uint16_t currIdx
+ *  @return
+ *     void
+**/
  
-    /* recalculate the new index for shortCycleExpiryList */
-    ueCb->drxUeCb.shortCycleExpiryIndex = (ueCb->drxUeCb.onDurationStartIndex + ueCb->drxUeCb.shortCycleTmrLen) % MAX_DRX_SIZE;
-    ueCb->drxUeCb.shortCycleDistance = ueCb->drxUeCb.shortCycleTmrLen / MAX_DRX_SIZE;
-    schAddDrxTimerIntoList(&cell->drxCb[ueCb->drxUeCb.shortCycleExpiryIndex].shortCycleExpiryList, ueCb, ueCb->drxUeCb.shortCycleTmrExpiryNodeInfo);
- }
+void schHdlDlHqRetxStrtTimerForDl(SchCellCb *cell, uint16_t currIndx)
+{
+   uint32_t retxExpIndx;
+   CmLList *currNode;
+   SchDlHqProcCb *hqP;
+   SchUeCb *ueCb;
+   
+   currNode = cell->drxCb[currIndx].dlRetransTmrStartList.first;
+   
+   while(currNode)
+   {
+      hqP  = (SchDlHqProcCb*)currNode->node;
+      currNode = currNode->next;
+      addUeToBeScheduled(hqP->hqEnt->cell, hqP->hqEnt->ue->ueId);
+      ueCb = hqP->hqEnt->ue;
+      
+      /* calculate the retransmission exp index */
+      retxExpIndx =  (currIndx + ueCb->drxUeCb.retransDlTimerLen)%MAX_DRX_SIZE;
+      if(hqP->dlDrxHarqCb.retxExpIndex == SCH_DRX_INVALID_INDEX)
+      {
+         hqP->dlDrxHarqCb.retxExpIndex = retxExpIndx;
+         schAddDrxNodeIntoHarqTimerList(&cell->drxCb[retxExpIndx].dlRetransExpiryList, hqP, &hqP->dlDrxHarqCb.retxExpNode);
+      }
+      
+      /* Mark the UE active for downlink */
+      ueCb->drxUeCb.drxDlUeActiveMaskForHarq |= (SCH_DRX_DL_HARQ_BITMASK << hqP->procId);
+      setDrxUeStatusForDlandUl(&ueCb->drxUeCb);
+   }
+}
+
+/**
+ * @brief Handling of the Dl harq DRX timers start for Ul scheduling
+ *
+ * @details
+ *
+ *     Function : schHdlDlHqRetxStrtTimerForUl
+ *
+ *      Handling of Dl harq DRX timers start for Ul scheduling
+ *
+ *  @param[in] SchCellCb *cell, uint16_t currIdx
+ *  @return
+ *     void
+ **/
+ 
+void schHdlDlHqRetxStrtTimerForUl(SchCellCb *cell, uint16_t currIndx)
+{
+   CmLList *currNode;
+   SchDlHqProcCb *hqP;
+   SchUeCb *ueCb;
+
+   currNode = cell->drxCb[currIndx].dlRetransTmrStartList.first;
+   
+   while(currNode)
+   {
+      hqP  = (SchDlHqProcCb*)currNode->node;
+      currNode = currNode->next;
+      ueCb = hqP->hqEnt->ue;
+      
+      /* Mark the UE active for uplink */
+      ueCb->drxUeCb.drxUlUeActiveMaskForHarq |= (SCH_DRX_UL_HARQ_BITMASK << hqP->procId);
+      setDrxUeStatusForDlandUl(&ueCb->drxUeCb);
+      
+      /* Delete the node */
+      cmLListDelFrm(&cell->drxCb[currIndx].dlRetransTmrStartList, hqP->dlDrxHarqCb.retxStrtNode);
+      SCH_FREE(hqP->dlDrxHarqCb.retxStrtNode, sizeof(CmLList));
+      hqP->dlDrxHarqCb.retxStrtIndex = SCH_DRX_INVALID_INDEX;
+   }
+}
+
+/**
+ * @brief Handling of the Dl harq DRX timers start
+ *
+ * @details
+ *
+ *     Function : schHdlDrxDlHqRetxStrtTimer
+ *
+ *      Handling of Dl harq DRX timers start
+ *
+ *  @param[in] SchCellCb  *cell
+ *  @return
+ *      -# ROK
+ *      -# RFAILED
+ **/
+
+void schHdlDrxDlHqRetxStrtTimer(SchCellCb  *cell)
+{
+   uint16_t dlIndx = 0, ulIndx=0;
+   SlotTimingInfo dlSlotInfo, ulSlotInfo;
+
+   ADD_DELTA_TO_TIME(cell->slotInfo, dlSlotInfo,  PHY_DELTA_DL + SCHED_DELTA, cell->numSlots);
+   ADD_DELTA_TO_TIME(cell->slotInfo, ulSlotInfo,  PHY_DELTA_UL + SCHED_DELTA, cell->numSlots);
+
+   dlIndx = (dlSlotInfo.sfn*MAX_SLOTS+dlSlotInfo.slot)%MAX_DRX_SIZE;
+   ulIndx = (ulSlotInfo.sfn*MAX_SLOTS+ulSlotInfo.slot)%MAX_DRX_SIZE;
+
+   schHdlDlHqRetxStrtTimerForDl(cell, dlIndx);
+   schHdlDlHqRetxStrtTimerForUl(cell, ulIndx);
+}
 
 /**
  * @brief Handling of the  DRX timers start
@@ -773,10 +947,39 @@ void schHdlDrxInActvStrtTmr(SchCellCb  *cell,  SchUeCb *ueCb, uint8_t delta)
  *      -# ROK
  *      -# RFAILED
  **/
+
 void schHandleStartDrxTimer(SchCellCb  *cell)
 {
    /* Handling the onduration start timer */
    schHdlDrxOnDurStrtTimer(cell);
+   schHdlDrxDlHqRetxStrtTimer(cell);
+}
+
+/**
+ * @brief Handling of the Dl harq Rtt start DRX timers
+ *
+ * @details
+ *
+ *     Function : schDrxStrtDlHqRttTmr
+ *
+ *      Handling of the Dl harq Rtt start DRX timers
+ *
+ *  @param[in] SchCellCb  *cell
+ *  @return
+ *      -# ROK
+ *      -# RFAILED
+ **/
+
+void schDrxStrtDlHqRttTmr(SchDlHqProcCb *hqP)
+{
+   uint16_t harqRttExpTimer=0;
+   SchDrxUeCb *drxUeCb;
+   
+   drxUeCb = &hqP->hqEnt->ue->drxUeCb;
+   
+   harqRttExpTimer =  (hqP->pucchTime.sfn * MAX_SLOTS + hqP->pucchTime.slot + drxUeCb->harqRttDlTimerLen)%MAX_DRX_SIZE;
+   hqP->dlDrxHarqCb.rttExpIndex = harqRttExpTimer;
+   schAddDrxNodeIntoHarqTimerList(&hqP->hqEnt->cell->drxCb[harqRttExpTimer].dlHarqRttExpiryList, hqP, &hqP->dlDrxHarqCb.rttExpNode);
 }
 
 /**
@@ -793,6 +996,7 @@ void schHandleStartDrxTimer(SchCellCb  *cell)
  *      -# ROK
  *      -# RFAILED
  **/
+
 void schHdlDrxOnDurExpiryTimerForDlDirection(SchCellCb  *cell, uint16_t currListIndx)
 {
    CmLList  *drxCurrNode;
@@ -813,7 +1017,8 @@ void schHdlDrxOnDurExpiryTimerForDlDirection(SchCellCb  *cell, uint16_t currList
          {
             continue;
          }
-         ueCb->drxUeCb.drxDlUeActiveStatus &= ~UE_ACTIVE_FOR_ONDURATION;
+         ueCb->drxUeCb.drxDlUeActiveMask &= ~UE_ACTIVE_FOR_ONDURATION;
+         setDrxUeStatusForDlandUl(&ueCb->drxUeCb);
       }
    }
 }
@@ -832,6 +1037,7 @@ void schHdlDrxOnDurExpiryTimerForDlDirection(SchCellCb  *cell, uint16_t currList
  *      -# ROK
  *      -# RFAILED
  **/
+
 void schHdlDrxOnDurExpiryTimerForUlDirection(SchCellCb  *cell, uint16_t currListIndx)
 {
    CmLList  *drxCurrNode;
@@ -851,13 +1057,15 @@ void schHdlDrxOnDurExpiryTimerForUlDirection(SchCellCb  *cell, uint16_t currList
             continue;
          }
 
-         ueCb->drxUeCb.drxUlUeActiveStatus &= ~UE_ACTIVE_FOR_ONDURATION;
+         ueCb->drxUeCb.drxUlUeActiveMask &= ~UE_ACTIVE_FOR_ONDURATION;
+         setDrxUeStatusForDlandUl(&ueCb->drxUeCb);
          cmLListDelFrm(&cell->drxCb[ueCb->drxUeCb.onDurationExpiryIndex].onDurationExpiryList, ueCb->drxUeCb.onDurationExpiryNodeInfo);
          SCH_FREE(ueCb->drxUeCb.onDurationExpiryNodeInfo, sizeof(CmLList));
          ueCb->drxUeCb.onDurationExpiryIndex = SCH_DRX_INVALID_INDEX; 
       }
    }
 }
+
 /**
  * @brief Handling of the expiry onduration DRX timers
  *
@@ -872,6 +1080,7 @@ void schHdlDrxOnDurExpiryTimerForUlDirection(SchCellCb  *cell, uint16_t currList
  *      -# ROK
  *      -# RFAILED
  **/
+
 void schHdlDrxOnDurExpiryTimer(SchCellCb  *cell)
 {
    uint16_t dlIndx = 0, ulIndx = 0;
@@ -921,7 +1130,8 @@ void schHdlDrxInActvExpiryTimerForDlDirection(SchCellCb  *cell, uint16_t dlIndx)
             continue;
          }
          
-         ueCb->drxUeCb.drxDlUeActiveStatus &= ~UE_ACTIVE_FOR_INACTIVE_TIMER;
+         ueCb->drxUeCb.drxDlUeActiveMask &= ~UE_ACTIVE_FOR_INACTIVE_TIMER;
+         setDrxUeStatusForDlandUl(&ueCb->drxUeCb);
       }
    }
 }
@@ -960,7 +1170,8 @@ void schHdlDrxInActvExpiryTimerForUlDirection(SchCellCb  *cell, uint16_t ulIndx)
             continue;
          }
          
-         ueCb->drxUeCb.drxUlUeActiveStatus &= ~UE_ACTIVE_FOR_INACTIVE_TIMER;
+         ueCb->drxUeCb.drxUlUeActiveMask &= ~UE_ACTIVE_FOR_INACTIVE_TIMER;
+         setDrxUeStatusForDlandUl(&ueCb->drxUeCb);
          
          /* Remove the entry from the in-active exp timer list */
          cmLListDelFrm(&cell->drxCb[ulIndx].inActvTmrExpiryList, ueCb->drxUeCb.inActvTimerExpiryNodeInfo);
@@ -990,6 +1201,7 @@ void schHdlDrxInActvExpiryTimerForUlDirection(SchCellCb  *cell, uint16_t ulIndx)
  *      -# ROK
  *      -# RFAILED
  **/
+
 void schHdlDrxInActvExpiryTimer(SchCellCb  *cell)
 {
    uint16_t dlIndx = 0, ulIndx = 0;
@@ -1111,6 +1323,7 @@ void schHdlDrxShortCycleExpiryTimerForUlDirection(SchCellCb  *cell, uint16_t ulI
  *      -# ROK
  *      -# RFAILED
  **/
+
 void schHdlDrxShortCycleExpiryTimer(SchCellCb  *cell)
 {
    uint16_t dlIndx = 0, ulIndx= 0;
@@ -1123,6 +1336,232 @@ void schHdlDrxShortCycleExpiryTimer(SchCellCb  *cell)
 
    schHdlDrxShortCycleExpiryTimerForDlDirection(cell, dlIndx);
    schHdlDrxShortCycleExpiryTimerForUlDirection(cell, ulIndx);
+}
+
+/**
+ * @brief Handling of the expiry Dl harq rrt DRX timers
+ *
+ * @details
+ *
+ *     Function : schHdlDlHqRttExpiryTimerForDl
+ *
+ *      Handling of expiry Dl harq rrt DRX timers
+ *
+ *  @param[in] SchCellCb  *cell
+ *  @return
+ *      -# ROK
+ *      -# RFAILED
+ **/
+
+void schHdlDlHqRttExpiryTimerForDl(SchCellCb  *cell, uint16_t currIdx)
+{
+   SchDlHqProcCb *hqP;
+   CmLList *drxCurrNode;
+
+   drxCurrNode = cell->drxCb[currIdx].dlHarqRttExpiryList.first;
+   
+   while(drxCurrNode)
+   {
+      hqP  = (SchDlHqProcCb*)drxCurrNode->node;
+      drxCurrNode = drxCurrNode->next;
+      
+     /* Add ue to dlRetransTmrStartList list */
+     if(hqP->dlDrxHarqCb.retxStrtIndex == SCH_DRX_INVALID_INDEX)
+     {
+       schAddDrxNodeIntoHarqTimerList(&cell->drxCb[currIdx + 1].dlRetransTmrStartList, hqP, &hqP->dlDrxHarqCb.retxStrtNode);
+       hqP->dlDrxHarqCb.retxStrtIndex = currIdx + 1;
+     }
+   }
+}
+
+/**
+ * @brief Handling of the expiry Dl harq retransmission DRX timers
+ *
+ * @details
+ *
+ *     Function : schHdlDlHqRetxExpiryTimerForDl
+ *
+ *      Handling of expiry Dl harq retransmission DRX timers
+ *
+ *  @param[in] SchCellCb  *cell
+ *  @return
+ *      -# ROK
+ *      -# RFAILED
+**/
+
+void schHdlDlHqRetxExpiryTimerForDl(SchCellCb  *cell, uint16_t currIdx)
+{
+   SchDlHqProcCb *hqP;
+   SchUeCb *ueCb;
+   CmLList *drxCurrNode;
+
+   drxCurrNode = cell->drxCb[currIdx].dlRetransExpiryList.first;
+   
+   while(drxCurrNode)
+   {
+      hqP  = (SchDlHqProcCb*)drxCurrNode->node;
+      drxCurrNode = drxCurrNode->next;
+      ueCb = hqP->hqEnt->ue;
+      
+      ueCb->drxUeCb.drxDlUeActiveMaskForHarq &= ~(SCH_DRX_DL_HARQ_BITMASK << hqP->procId);
+      
+      /* Set the Ue status as inactive */
+      setDrxUeStatusForDlandUl(&ueCb->drxUeCb);
+   } 
+}
+
+/**
+ * @brief Handling of the expiry Dl harq rrt DRX timers for Ul scheduling
+ *
+ * @details
+ *
+ *     Function : schHdlDlHqRttExpiryTimerForUl
+ *
+ *      Handling of expiry Dl harq rrt DRX timers for Ul scheduling
+ *
+ *  @param[in] SchCellCb  *cell
+ *  @return
+ *      -# ROK
+ *      -# RFAILED
+**/
+
+void schHdlDlHqRttExpiryTimerForUl(SchCellCb  *cell, uint16_t currIdx)
+{
+   SchDlHqProcCb *hqP;
+   CmLList *drxCurrNode;
+
+   drxCurrNode = cell->drxCb[currIdx].dlHarqRttExpiryList.first;
+   
+   while(drxCurrNode)
+   {
+      hqP  = (SchDlHqProcCb*)drxCurrNode->node;
+      drxCurrNode = drxCurrNode->next;
+      
+      /* Delete the node from list */
+      cmLListDelFrm(&cell->drxCb[currIdx].dlHarqRttExpiryList, hqP->dlDrxHarqCb.rttExpNode);
+      SCH_FREE(hqP->dlDrxHarqCb.rttExpNode, sizeof(CmLList));
+      hqP->dlDrxHarqCb.rttExpIndex = SCH_DRX_INVALID_INDEX;
+   } 
+}
+
+/**
+ * @brief Handling of the expiry Dl harq retransmission DRX timers for Ul scheduling
+ *
+ * @details
+ *
+ *     Function : schHdlDlHqRetxExpiryTimerForUl
+ *
+ *      Handling of expiry Dl harq retransmission DRX timers for Ul scheduling
+ *
+ *  @param[in] SchCellCb  *cell
+ *  @return
+ *      -# ROK
+ *      -# RFAILED
+**/
+
+void schHdlDlHqRetxExpiryTimerForUl(SchCellCb  *cell, uint16_t currIdx)
+{
+   SchDlHqProcCb *hqP;
+   SchUeCb *ueCb;
+   CmLList *drxCurrNode;
+
+   drxCurrNode = cell->drxCb[currIdx].dlRetransExpiryList.first;
+   
+   while(drxCurrNode)
+   {
+      hqP  = (SchDlHqProcCb*)drxCurrNode->node;
+      ueCb = hqP->hqEnt->ue;
+      drxCurrNode = drxCurrNode->next;
+      
+      /* Set the Ue status as inactive for uplink */
+      ueCb->drxUeCb.drxUlUeActiveMaskForHarq &= ~(SCH_DRX_UL_HARQ_BITMASK << hqP->procId);
+      setDrxUeStatusForDlandUl(&ueCb->drxUeCb);
+      
+      /* Delete the UE */
+      cmLListDelFrm(&cell->drxCb[currIdx].dlRetransExpiryList, hqP->dlDrxHarqCb.retxExpNode);
+      SCH_FREE(hqP->dlDrxHarqCb.retxExpNode, sizeof(CmLList));
+      hqP->dlDrxHarqCb.retxExpIndex = SCH_DRX_INVALID_INDEX;
+      
+   } 
+}
+
+/**
+ * @brief Handling of the expiry of Dl harq DRX timers
+ *
+ * @details
+ *
+ *     Function : schHdlDrxHarqExpireTimer
+ *
+ *      Handling of expiry of Dl harq DRX timers
+ *
+ *  @param[in] SchCellCb  *cell
+ *  @return
+ *      -# void
+ 
+ **/
+
+void schHdlDrxHarqExpireTimer(SchCellCb  *cell)
+{
+   uint16_t dlIndx = 0, ulIndx = 0;
+   SlotTimingInfo dlSlotInfo, ulSlotInfo;
+
+   ADD_DELTA_TO_TIME(cell->slotInfo, dlSlotInfo, PHY_DELTA_DL + SCHED_DELTA, cell->numSlots);
+   ADD_DELTA_TO_TIME(cell->slotInfo, ulSlotInfo, PHY_DELTA_UL + SCHED_DELTA, cell->numSlots);
+   dlIndx = (dlSlotInfo.sfn*MAX_SLOTS+dlSlotInfo.slot)%MAX_DRX_SIZE;
+   ulIndx = (ulSlotInfo.sfn*MAX_SLOTS+ulSlotInfo.slot)%MAX_DRX_SIZE;
+   
+   schHdlDlHqRttExpiryTimerForDl(cell, dlIndx);
+   schHdlDlHqRetxExpiryTimerForDl(cell, dlIndx);
+   schHdlDlHqRttExpiryTimerForUl(cell, ulIndx );
+   schHdlDlHqRetxExpiryTimerForUl(cell, ulIndx);
+}
+
+/**
+ * @brief Handling of the expiry of harq DRX timers
+ *
+ * @details
+ *
+ *     Function : schDrxStopDlHqRetxTmr
+ *
+ *      Handling of expiry  DRX timers
+ *
+ *  @param[in] SchCellCb  *cell
+ *  @return
+ *      -# ROK
+ *      -# RFAILED
+ **/
+
+void schDrxStopDlHqRetxTmr(SchCellCb  *cell, SchUeCb *ueCb, SchDlHqProcCb **hqP)
+{
+    
+   if((*hqP)->dlDrxHarqCb.retxExpIndex != SCH_DRX_INVALID_INDEX)
+   {
+      ueCb->drxUeCb.drxDlUeActiveMaskForHarq &= ~(SCH_DRX_DL_HARQ_BITMASK << (*hqP)->procId);
+      ueCb->drxUeCb.drxUlUeActiveMaskForHarq &= ~(SCH_DRX_UL_HARQ_BITMASK << (*hqP)->procId);
+
+      /* Change the UE status to Inactive */
+      setDrxUeStatusForDlandUl(&ueCb->drxUeCb);
+      
+      /* If there is any node present in rtt list then remove the node from list */
+      if((*hqP)->dlDrxHarqCb.rttExpIndex != SCH_DRX_INVALID_INDEX)
+      {
+         cmLListDelFrm(&cell->drxCb[(*hqP)->dlDrxHarqCb.rttExpIndex].dlHarqRttExpiryList, (*hqP)->dlDrxHarqCb.rttExpNode);
+         SCH_FREE((*hqP)->dlDrxHarqCb.rttExpNode, sizeof(CmLList));
+         (*hqP)->dlDrxHarqCb.rttExpIndex = SCH_DRX_INVALID_INDEX;
+      }
+      
+      /* If there is any node present in retx list then remove the node from list */
+      if((*hqP)->dlDrxHarqCb.retxStrtIndex != SCH_DRX_INVALID_INDEX)
+      {
+         cmLListDelFrm(&cell->drxCb[(*hqP)->dlDrxHarqCb.retxStrtIndex].dlRetransTmrStartList, (*hqP)->dlDrxHarqCb.retxStrtNode);
+         SCH_FREE((*hqP)->dlDrxHarqCb.retxStrtNode, sizeof(CmLList));
+         (*hqP)->dlDrxHarqCb.retxStrtIndex  = SCH_DRX_INVALID_INDEX;
+      }
+
+      cmLListDelFrm(&cell->drxCb[(*hqP)->dlDrxHarqCb.retxExpIndex].dlRetransExpiryList, (*hqP)->dlDrxHarqCb.retxExpNode);
+      SCH_FREE((*hqP)->dlDrxHarqCb.retxExpNode, sizeof(CmLList));
+      (*hqP)->dlDrxHarqCb.retxExpIndex  = SCH_DRX_INVALID_INDEX;
+   }
 }
 
 /**
@@ -1139,11 +1578,13 @@ void schHdlDrxShortCycleExpiryTimer(SchCellCb  *cell)
  *      -# ROK
  *      -# RFAILED
  **/
+
 void schHandleExpiryDrxTimer(SchCellCb  *cell)
 {
    schHdlDrxShortCycleExpiryTimer(cell);
    schHdlDrxOnDurExpiryTimer(cell);
    schHdlDrxInActvExpiryTimer(cell);
+   schHdlDrxHarqExpireTimer(cell);
 }
 
 #endif

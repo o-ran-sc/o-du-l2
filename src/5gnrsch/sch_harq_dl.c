@@ -26,6 +26,9 @@
 #include "sch.h"
 #include "sch_utils.h"
 #include "cm_llist.h"
+#ifdef NR_DRX
+#include "sch_drx.h"
+#endif
 
 SchMacDlReleaseHarqFunc schMacDlReleaseHarqOpts[] =
 {
@@ -395,7 +398,16 @@ void schDlHqFeedbackUpdate(SchDlHqProcCb *hqP, uint8_t fdbk1, uint8_t fdbk2)
             else
             {
                schDlHqTbFail(hqP, tbIdx, FALSE);
-               addUeToBeScheduled(hqP->hqEnt->cell, hqP->hqEnt->ue->ueId);
+#ifdef NR_DRX
+               if(hqP->hqEnt->ue->ueDrxInfoPres == true)
+               {
+                  schDrxStrtDlHqRttTmr(hqP);
+               }
+               else
+#endif
+               {
+                  addUeToBeScheduled(hqP->hqEnt->cell, hqP->hqEnt->ue->ueId);
+               }
             }
          }
       }
