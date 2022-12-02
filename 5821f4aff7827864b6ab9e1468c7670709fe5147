@@ -24,6 +24,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9b2ae5c3_9f36b3a1",
+        "filename": "build/odu/makefile",
+        "patchSetId": 2
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-12-02T11:36:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "599d7baa_d896cd39",
+      "range": {
+        "startLine": 77,
+        "startChar": 130,
+        "endLine": 77,
+        "endChar": 138
+      },
+      "revId": "5821f4aff7827864b6ab9e1468c7670709fe5147",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6457437f_6d753e9a",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-12-02T11:26:35Z",
       "side": 1,
       "message": "I think we can directly use this parameter instead of adding a new one",
+      "range": {
+        "startLine": 473,
+        "startChar": 8,
+        "endLine": 473,
+        "endChar": 51
+      },
+      "revId": "5821f4aff7827864b6ab9e1468c7670709fe5147",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1d710328_2f032fc1",
+        "filename": "src/phy_stub/phy_stub_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 473,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-12-02T11:36:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6457437f_6d753e9a",
       "range": {
         "startLine": 473,
         "startChar": 8,
