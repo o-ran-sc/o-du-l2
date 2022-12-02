@@ -23,6 +23,7 @@
 #include "mac.h"
 #include "mac_utils.h"
 #include "mac_harq_dl.h"
+#include "mac_ue_mgr.h"
 
 /**
  * @brief Add HARQ process to UE's DL HARQ Entity

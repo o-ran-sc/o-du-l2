@@ -38,6 +38,37 @@
 
 /*******************************************************************
  *
+ * @brief start the uplink data
+ *
+ * @details
+ *
+ *    Function : startUlData 
+ *
+ *    Functionality: start the uplink data
+ *
+ * @params[in]   
+ *
+ * @return void
+ *
+ * ****************************************************************/
+
+void startUlData()
+{
+   uint8_t ueIdx=0, drbIdx=0;
+
+   /* Start Pumping data from PHY stub to DU */
+   for(ueIdx=0; ueIdx < phyDb.ueDb.numActvUe; ueIdx++)
+   {
+      for(drbIdx = 0; drbIdx < NUM_DRB_TO_PUMP_DATA; drbIdx++) //Number of DRB times the loop will run
+      {
+         DU_LOG("\nDEBUG  --> PHY STUB: Sending UL User Data[DrbId:%d] for UEIdx %d\n",drbIdx,ueIdx);
+         l1SendUlUserData(drbIdx,ueIdx);
+      }
+   } 
+}
+
+/*******************************************************************
+ *
  * @brief Builds and sends param response to MAC CL
  *
  * @details
@@ -667,6 +698,13 @@ break;
    if(pduInfo->pdu_length)
       MAC_FREE(pduInfo->pduData, pduInfo->pdu_length);
    MAC_FREE(rxDataInd, sizeof(fapi_rx_data_indication_t));
+
+#ifdef START_DL_UL_DATA 
+      if(phyDb.ueDb.ueCb[ueId-1].msgRrcReconfigComp == true)
+      {
+         startUlData();
+      }
+#endif
    return ROK;
 }
 #endif
@@ -731,6 +769,7 @@ uint16_t l1BuildAndSendRachInd(uint16_t slot, uint16_t sfn, uint8_t raPreambleId
 #endif
    return ROK;
 }
+
 
 /*******************************************************************
  *
@@ -799,6 +838,7 @@ uint16_t l1BuildAndSendSlotIndication()
       }
       CMCHKPK(oduPackPointer, (PTR)slotIndMsg, mBuf);
       ODU_POST_TASK(&pst, mBuf);
+
    }
 #endif
    return ROK;

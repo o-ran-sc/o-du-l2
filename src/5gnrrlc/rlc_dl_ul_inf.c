@@ -959,16 +959,16 @@ S16 cmUnpkUdxCfgCfm(UdxCfgCfm func,Pst  *pst,Buffer *mBuf)
            }
 
           ret1 = cmUnpkUdxStruct(mBuf,0,(uint8_t *)cfgCfmInfo, sizeof(RlcCfgCfmInfo));
-#if(ERRCLASS & ERRCLS_DEBUG)
           if(ret1 != ROK)
           {
+#if(ERRCLASS & ERRCLS_DEBUG)
              ODU_PUT_MSG_BUF(mBuf);
              SLogError(pst->dstEnt, pst->dstInst, pst->dstProcId,
                    __FILE__, __LINE__, (ErrCls)ERRCLS_DEBUG,
                   (ErrVal)EUDXXXX, (ErrVal)ret1, "Unpacking failure");
              return ( ret1 );
-          }
 #endif /* ERRCLASS & ERRCLS_DEBUG */
+          }
           break;
        }
        case UDX_SEL_LWLC:
