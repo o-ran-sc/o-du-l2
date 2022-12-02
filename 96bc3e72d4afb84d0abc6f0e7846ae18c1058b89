@@ -22,6 +22,30 @@
       },
       "revId": "96bc3e72d4afb84d0abc6f0e7846ae18c1058b89",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1652fd11_8bf70549",
+        "filename": "src/phy_stub/phy_stub_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 838,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-12-02T11:23:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d55c38cd_a25e2b20",
+      "range": {
+        "startLine": 838,
+        "startChar": 9,
+        "endLine": 838,
+        "endChar": 20
+      },
+      "revId": "96bc3e72d4afb84d0abc6f0e7846ae18c1058b89",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
   ]
 }
