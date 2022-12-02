@@ -38,6 +38,37 @@
 
 /*******************************************************************
  *
+ * @brief start the uplink data
+ *
+ * @details
+ *
+ *    Function : startUlData 
+ *
+ *    Functionality: start the uplink data
+ *
+ * @params[in]   
+ *
+ * @return void
+ *
+ * ****************************************************************/
+
+void startUlData()
+{
+   uint8_t ueIdx=0, drbIdx=0;
+
+   /* Start Pumping data from PHY stub to DU */
+   for(ueIdx=0; ueIdx < phyDb.ueDb.numActvUe; ueIdx++)
+   {
+      for(drbIdx = 0; drbIdx < NUM_DRB_TO_PUMP_DATA; drbIdx++) //Number of DRB times the loop will run
+      {
+         DU_LOG("\nDEBUG  --> PHY STUB: Sending UL User Data[DrbId:%d] for UEIdx %d\n",drbIdx,ueIdx);
+         l1SendUlUserData(drbIdx,ueIdx);
+      }
+   } 
+}
+
+/*******************************************************************
+ *
  * @brief Builds and sends param response to MAC CL
  *
  * @details
@@ -383,6 +414,9 @@ uint16_t l1BuildAndSendRxDataInd(uint16_t slot, uint16_t sfn, fapi_ul_pusch_pdu_
    uint16_t byteIdx = 0;
    uint32_t msgLen = 0;
    MsgType type = 0;
+#ifdef START_DL_UL_DATA
+   bool RRCReconfigComplete = false;
+#endif
 
    GET_UE_ID(puschPdu.rnti, ueId);
    if(phyDb.ueDb.ueCb[ueId-1].isCFRA)
@@ -635,6 +669,9 @@ break;
          pduLen += 2;  /* 2bytes of MAC header */
          memcpy(pdu, &msg, pduLen);
          byteIdx += pduLen; /* 4 bytes of header : MAC+RLC*/
+#ifdef START_DL_UL_DATA
+         RRCReconfigComplete = true;
+#endif
          break;
 
       }
@@ -667,6 +704,13 @@ break;
    if(pduInfo->pdu_length)
       MAC_FREE(pduInfo->pduData, pduInfo->pdu_length);
    MAC_FREE(rxDataInd, sizeof(fapi_rx_data_indication_t));
+
+#ifdef START_DL_UL_DATA 
+      if(RRCReconfigComplete == true)
+      {
+         startUlData();
+      }
+#endif
    return ROK;
 }
 #endif
@@ -731,6 +775,7 @@ uint16_t l1BuildAndSendRachInd(uint16_t slot, uint16_t sfn, uint8_t raPreambleId
 #endif
    return ROK;
 }
+
 
 /*******************************************************************
  *
@@ -799,6 +844,7 @@ uint16_t l1BuildAndSendSlotIndication()
       }
       CMCHKPK(oduPackPointer, (PTR)slotIndMsg, mBuf);
       ODU_POST_TASK(&pst, mBuf);
+
    }
 #endif
    return ROK;

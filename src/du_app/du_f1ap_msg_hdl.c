@@ -13545,7 +13545,8 @@ void freeAperDecodeF1UeContextSetupReq(UEContextSetupRequest_t   *ueSetReq)
 uint8_t procF1UeContextSetupReq(F1AP_PDU_t *f1apMsg)
 {
    int8_t ueIdx = -1;
-   uint8_t  ret=0, ieIdx=0, ieExtIdx = 0, servCellIdx = 0;
+   uint8_t  ret=0, ieIdx=0, ieExtIdx = 0;
+   //uint8_t servCellIdx = 0;
    bool ueCbFound = false, hoInProgress = false;
    uint16_t cellIdx=0;
    uint64_t nrCellId = 0;
@@ -13591,7 +13592,7 @@ uint8_t procF1UeContextSetupReq(F1AP_PDU_t *f1apMsg)
 
          case ProtocolIE_ID_id_ServCellIndex:
             {
-               servCellIdx = ueSetReq->protocolIEs.list.array[ieIdx]->value.choice.ServCellIndex;
+               //servCellIdx = ueSetReq->protocolIEs.list.array[ieIdx]->value.choice.ServCellIndex;
                break;
             }
 

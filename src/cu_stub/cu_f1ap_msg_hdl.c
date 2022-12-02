@@ -11832,6 +11832,10 @@ uint8_t procUeContextModificationResponse(uint32_t duId, F1AP_PDU_t *f1apMsg)
       }
    }
    
+#ifdef START_DL_UL_DATA
+   startDlData();
+#endif
+
    return ROK;
 }
 
