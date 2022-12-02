@@ -2093,11 +2093,9 @@ void deleteMacRaCb(uint16_t cellIdx, MacUeCb *ueCb)
 {
    uint8_t tbIdx;
    MacRaCbInfo *raCb = ueCb->raCb;
-   DlHarqProcCb *hqProcCb;
 
    if(raCb && (raCb->crnti == ueCb->crnti))
    {
-      hqProcCb = &raCb->msg4HqInfo;
       MAC_FREE(raCb->msg4Pdu, raCb->msg4PduLen);
       for(tbIdx = 0; tbIdx < raCb->msg4HqInfo.numTb; tbIdx++)
       {

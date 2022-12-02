@@ -734,6 +734,37 @@ uint16_t l1BuildAndSendRachInd(uint16_t slot, uint16_t sfn, uint8_t raPreambleId
 
 /*******************************************************************
  *
+ * @brief start the uplink data
+ *
+ * @details
+ *
+ *    Function : startUlData 
+ *
+ *    Functionality: start the uplink data
+ *
+ * @params[in]   
+ *
+ * @return void
+ *
+ * ****************************************************************/
+
+void startUlData()
+{
+   uint8_t ueIdx=0, drbIdx=0;
+
+   /* Start Pumping data from PHY stub to DU */
+   for(ueIdx=0; ueIdx < phyDb.ueDb.numActvUe; ueIdx++)
+   {
+      for(drbIdx = 0; drbIdx < NUM_DRB_TO_PUMP_DATA; drbIdx++) //Number of DRB times the loop will run
+      {
+         DU_LOG("\nDEBUG  --> PHY STUB: Sending UL User Data[DrbId:%d] for UEIdx %d\n",drbIdx,ueIdx);
+         l1SendUlUserData(drbIdx,ueIdx);
+      }
+   } 
+}
+
+/*******************************************************************
+ *
  * @brief Builds and Send the Slot Indication message to MAC
  *
  * @details
@@ -799,6 +830,15 @@ uint16_t l1BuildAndSendSlotIndication()
       }
       CMCHKPK(oduPackPointer, (PTR)slotIndMsg, mBuf);
       ODU_POST_TASK(&pst, mBuf);
+
+#ifdef START_DL_UL_DATA 
+      /* This sfn value is selected randomly */
+      if(sfnValue == 700)
+      {
+         startUlData();
+      }
+#endif
+
    }
 #endif
    return ROK;
