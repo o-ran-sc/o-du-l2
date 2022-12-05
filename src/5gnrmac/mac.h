@@ -237,6 +237,7 @@ struct macCellCb
    MacUlSlot   ulSlot[MAX_SLOTS];
    uint16_t    numActvUe;
    MacUeCfg    *ueCfgTmpData[MAX_NUM_UE];
+   MacUeRecfg  *ueRecfgTmpData[MAX_NUM_UE];
    MacUeCb     ueCb[MAX_NUM_UE];
    MacCellCfg  macCellCfg;
    SlotTimingInfo currTime;
@@ -273,6 +274,7 @@ uint8_t sendSchedRptToRlc(DlSchedInfo dlInfo, SlotTimingInfo slotInfo, uint8_t u
 uint8_t macProcLongBsr(uint16_t cellId, uint16_t crnti,uint8_t numLcg,\
                          DataVolInfo dataVolInfo[MAX_NUM_LOGICAL_CHANNEL_GROUPS]);
 void freeMacSliceCfgReq(MacSliceCfgReq *cfgReq,Pst *pst);
+void deleteMacRaCb(uint16_t cellIdx, MacUeCb *ueCb);
 #endif
 /**********************************************************************
   End of file

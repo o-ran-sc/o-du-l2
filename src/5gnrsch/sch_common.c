@@ -428,11 +428,11 @@ uint16_t fillPucchResourceInfo(SchPucchInfo *schPucchInfo, Inst inst, SlotTiming
          return RFAILED;
    }
 #endif
-   if(cell->ueCb[ueIdx].ueCfg.spCellCfg.servCellCfg.initUlBwp.pucchCfgPres)
+   if(cell->ueCb[ueIdx].ueCfg.spCellCfg.servCellRecfg.initUlBwp.pucchCfgPres)
    {
       /* fill pucch dedicated cfg */
       ret = fillUlSchedPucchDedicatedCfg(cell,\
-       &cell->ueCb[ueIdx].ueCfg.spCellCfg.servCellCfg.initUlBwp.pucchCfg, &slotInfo, schPucchInfo);
+       &cell->ueCb[ueIdx].ueCfg.spCellCfg.servCellRecfg.initUlBwp.pucchCfg, &slotInfo, schPucchInfo);
       if(ret == RFAILED)
       {
          memset(schPucchInfo, 0, sizeof(SchPucchInfo));
@@ -816,8 +816,8 @@ uint8_t schDlRsrcAllocDlMsg(SchCellCb *cell, SlotTimingInfo slotTime, uint16_t c
 
    GET_UE_ID(crnti, ueId);
    ueCb  = cell->ueCb[ueId-1];
-   coreset1 = ueCb.ueCfg.spCellCfg.servCellCfg.initDlBwp.pdcchCfg.cRSetToAddModList[0];
-   pdschCfg = ueCb.ueCfg.spCellCfg.servCellCfg.initDlBwp.pdschCfg;
+   coreset1 = ueCb.ueCfg.spCellCfg.servCellRecfg.initDlBwp.pdcchCfg.cRSetToAddModList[0];
+   pdschCfg = ueCb.ueCfg.spCellCfg.servCellRecfg.initDlBwp.pdschCfg;
 
    /* fill BWP */
    bwp->freqAlloc.numPrb = MAX_NUM_RB;
@@ -2039,8 +2039,8 @@ bool schProcessSrOrBsrReq(SchCellCb *cell, SlotTimingInfo currTime, uint8_t ueId
    if(schGetSlotSymbFrmt(dciTime.slot, cell->slotFrmtBitMap) == DL_SLOT)
 #endif
    {     
-      if(ueCb->ueCfg.spCellCfg.servCellCfg.initUlBwp.k2TblPrsnt)
-         k2InfoTbl = &ueCb->ueCfg.spCellCfg.servCellCfg.initUlBwp.k2InfoTbl;
+      if(ueCb->ueCfg.spCellCfg.servCellRecfg.initUlBwp.k2TblPrsnt)
+         k2InfoTbl = &ueCb->ueCfg.spCellCfg.servCellRecfg.initUlBwp.k2InfoTbl;
       else
          k2InfoTbl =  &cell->cellCfg.schInitialUlBwp.k2InfoTbl;
 
@@ -2048,7 +2048,7 @@ bool schProcessSrOrBsrReq(SchCellCb *cell, SlotTimingInfo currTime, uint8_t ueId
       {
          k2Index = k2InfoTbl->k2TimingInfo[dciTime.slot].k2Indexes[k2TblIdx];
 
-         if(!ueCb->ueCfg.spCellCfg.servCellCfg.initUlBwp.k2TblPrsnt)
+         if(!ueCb->ueCfg.spCellCfg.servCellRecfg.initUlBwp.k2TblPrsnt)
          {
             k2Val = cell->cellCfg.schInitialUlBwp.puschCommon.timeDomRsrcAllocList[k2Index].k2;
             startSymb = cell->cellCfg.schInitialUlBwp.puschCommon.timeDomRsrcAllocList[k2Index].startSymbol;
@@ -2056,9 +2056,9 @@ bool schProcessSrOrBsrReq(SchCellCb *cell, SlotTimingInfo currTime, uint8_t ueId
          }
          else
          {
-            k2Val = ueCb->ueCfg.spCellCfg.servCellCfg.initUlBwp.puschCfg.timeDomRsrcAllocList[k2Index].k2;
-            startSymb =  ueCb->ueCfg.spCellCfg.servCellCfg.initUlBwp.puschCfg.timeDomRsrcAllocList[k2Index].startSymbol;
-            symbLen =  ueCb->ueCfg.spCellCfg.servCellCfg.initUlBwp.puschCfg.timeDomRsrcAllocList[k2Index].symbolLength;
+            k2Val = ueCb->ueCfg.spCellCfg.servCellRecfg.initUlBwp.puschCfg.timeDomRsrcAllocList[k2Index].k2;
+            startSymb =  ueCb->ueCfg.spCellCfg.servCellRecfg.initUlBwp.puschCfg.timeDomRsrcAllocList[k2Index].startSymbol;
+            symbLen =  ueCb->ueCfg.spCellCfg.servCellRecfg.initUlBwp.puschCfg.timeDomRsrcAllocList[k2Index].symbolLength;
          }
          /* Check for number of Symbol of PUSCH should be same as original in case of transmisson*/
          /* Calculating time frame to send PUSCH for SR */

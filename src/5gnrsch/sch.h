@@ -395,7 +395,7 @@ typedef struct schUeCfgCb
    bool phyCellGrpCfgPres;
    SchPhyCellGrpCfg   phyCellGrpCfg;
    bool spCellCfgPres;
-   SchSpCellCfg       spCellCfg;
+   SchSpCellRecfg       spCellCfg;
    SchAmbrCfg         *ambrCfg;
    SchModulationInfo  dlModInfo;
    SchModulationInfo  ulModInfo;

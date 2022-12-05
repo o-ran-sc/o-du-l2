@@ -1179,14 +1179,14 @@ typedef struct servCellCfgInfo
 {
    InitialDlBwp       initDlBwp;
    uint8_t            numDlBwpToAdd;
-   DlBwpInfo          DlBwpToAddList[MAX_NUM_BWP];
+   DlBwpInfo          dlBwpToAddList[MAX_NUM_BWP];
    uint8_t            firstActvDlBwpId;
    uint8_t            defaultDlBwpId;
    uint8_t            *bwpInactivityTmr;
    PdschServCellCfg   pdschServCellCfg;
    InitialUlBwp       initUlBwp;
    uint8_t            numUlBwpToAdd;
-   UlBwpInfo          UlBwpToAddList[MAX_NUM_BWP];
+   UlBwpInfo          ulBwpToAddList[MAX_NUM_BWP];
    uint8_t            firstActvUlBwpId;
 }ServCellCfgInfo;
 
@@ -1196,6 +1196,33 @@ typedef struct spCellCfg
    uint8_t           servCellIdx;
    ServCellCfgInfo   servCellCfg;
 }SpCellCfg;
+
+/* Serving cell Re-configuration */
+typedef struct servCellRecfgInfo
+{
+   InitialDlBwp       initDlBwp;
+   uint8_t            numDlBwpToAddOrMod;
+   DlBwpInfo          dlBwpToAddOrModList[MAX_NUM_BWP];
+   uint8_t            numDlBwpToRel;
+   DlBwpInfo          dlBwpToRelList[MAX_NUM_BWP];
+   uint8_t            firstActvDlBwpId;
+   uint8_t            defaultDlBwpId;
+   uint8_t            *bwpInactivityTmr;
+   PdschServCellCfg   pdschServCellCfg;
+   InitialUlBwp       initUlBwp;
+   uint8_t            numUlBwpToAddOrMod;
+   UlBwpInfo          ulBwpToAddOrModList[MAX_NUM_BWP];
+   uint8_t            numUlBwpToRel;
+   UlBwpInfo          ulBwpToRelList[MAX_NUM_BWP];
+   uint8_t            firstActvUlBwpId;
+}ServCellRecfgInfo;
+
+/* Special cell Re-configuration */
+typedef struct spCellRecfg 
+{
+   uint8_t             servCellIdx;
+   ServCellRecfgInfo   servCellCfg;
+}SpCellRecfg;
 
 typedef struct ambrCfg
 {
@@ -1260,17 +1287,16 @@ typedef struct ulLcCfg
    BucketSizeDur bsd;        // bucketSizeDuration
 }UlLcCfg;
 
-typedef struct duLcCfg
+typedef struct dlLcCfg
 {
    LcPriority lcp;      // logical Channel Prioritization
 }DlLcCfg;
 
 typedef struct lcCfg
 {
-   ConfigType configType;
    uint8_t lcId;
-   DrbQosInfo *drbQos; 
    Snssai  *snssai;
+   DrbQosInfo *drbQos; 
    bool ulLcCfgPres;
    UlLcCfg ulLcCfg;
    DlLcCfg dlLcCfg;
@@ -1285,26 +1311,53 @@ typedef struct modulationInfo
 
 typedef struct macUeCfg
 {
-   uint16_t cellId;
-   uint8_t  ueId;
-   uint16_t crnti;
-   bool macCellGrpCfgPres;
-   MacCellGrpCfg macCellGrpCfg;
-   bool phyCellGrpCfgPres;
-   PhyCellGrpCfg phyCellGrpCfg;
-   bool spCellCfgPres;
-   SpCellCfg spCellCfg;
-   AmbrCfg   *ambrCfg;
-   ModulationInfo dlModInfo;    /* DL modulation info */
-   ModulationInfo ulModInfo;    /* UL modulation info */
-   uint8_t numLcs;
-   LcCfg lcCfgList[MAX_NUM_LC];
-   UeCfgState macUeCfgState;    /* InActive / Completed */
+   uint16_t               cellId;
+   uint8_t                ueId;
+   uint16_t               crnti;
+   bool                   macCellGrpCfgPres;
+   MacCellGrpCfg          macCellGrpCfg;
+   bool                   phyCellGrpCfgPres;
+   PhyCellGrpCfg          phyCellGrpCfg;
+   bool                   spCellCfgPres;
+   SpCellCfg              spCellCfg;
+   AmbrCfg                *ambrCfg;
+   ModulationInfo         dlModInfo;    /* DL modulation info */ 
+   ModulationInfo         ulModInfo;    /* UL modulation info */
+   uint8_t                numLcs;
+   LcCfg                  lcCfgList[MAX_NUM_LC];
    DataTransmissionAction transmissionAction;
 #ifdef NR_DRX   
    bool     drxConfigIndicatorRelease;
 #endif
 }MacUeCfg;
+
+/* UE Re-configuration */
+typedef struct macUeRecfg
+{
+   uint16_t        cellId;
+   uint8_t         ueId;
+   uint8_t         beamIdx;
+   uint16_t        crnti;
+   bool            macCellGrpRecfgPres;
+   MacCellGrpCfg   macCellGrpRecfg;
+   bool            phyCellGrpRecfgPres;
+   PhyCellGrpCfg   phyCellGrpRecfg;
+   bool            spCellRecfgPres;
+   SpCellRecfg     spCellRecfg;
+   AmbrCfg         *ambrRecfg;
+   ModulationInfo  dlModInfo;
+   ModulationInfo  ulModInfo;
+   uint8_t         numLcsToAdd;
+   LcCfg           lcCfgAdd[MAX_NUM_LC];
+   uint8_t         numLcsToDel;
+   uint8_t         lcIdToDel[MAX_NUM_LC];
+   uint8_t         numLcsToMod;
+   LcCfg           lcCfgMod[MAX_NUM_LC];
+   DataTransmissionAction transmissionAction;
+#ifdef NR_DRX   
+   bool            drxConfigIndicatorRelease;
+#endif
+}MacUeRecfg;
 
 typedef struct nrcgi
 {
@@ -1341,7 +1394,11 @@ typedef struct ueCfgRsp
    DRBFailInfo    *failedDRBlist;
    uint8_t        numSCellFailed; /* valid values : 0 to MAX_NUM_SCELL */
    SCellFailInfo  *failedSCellList;
+   uint8_t        numDRBModFailed;   /* valid values : 0 to MAX_NUM_DRB */
+   DRBFailInfo    *failedDRBModlist;
 }MacUeCfgRsp;
+
+typedef struct ueCfgRsp MacUeRecfgRsp;
 
 typedef struct rachRsrcReq
 {
@@ -1523,7 +1580,12 @@ typedef uint8_t (*MacDuUeCfgRspFunc) ARGS((
 /* UE Reconfig Request from DU APP to MAC */
 typedef uint8_t (*DuMacUeReconfigReq) ARGS((
 	 Pst           *pst,
-	 MacUeCfg      *ueCfg ));
+	 MacUeRecfg      *ueCfg ));
+
+/* UE Reconfig Response from MAC to DU APP */
+typedef uint8_t (*MacDuUeRecfgRspFunc) ARGS((
+	 Pst           *pst, 
+	 MacUeRecfgRsp   *cfgRsp));
 
 /* RACH Resource Request from DU APP to MAC */
 typedef uint8_t (*DuMacRachRsrcReq) ARGS((
@@ -1618,9 +1680,12 @@ uint8_t sendStopIndMacToDuApp(uint16_t cellId);
 uint8_t packDuMacUeCfgRsp(Pst *pst, MacUeCfgRsp *cfgRsp);
 uint8_t unpackDuMacUeCfgRsp(MacDuUeCfgRspFunc func, Pst *pst, Buffer *mBuf);
 uint8_t DuProcMacUeCfgRsp(Pst *pst, MacUeCfgRsp *cfgRsp);
-uint8_t packDuMacUeReconfigReq(Pst *pst, MacUeCfg *ueCfg);
+uint8_t packDuMacUeReconfigReq(Pst *pst, MacUeRecfg *ueRecfg);
 uint8_t unpackMacUeReconfigReq(DuMacUeReconfigReq func, Pst *pst, Buffer *mBuf);
-uint8_t MacProcUeReconfigReq(Pst *pst, MacUeCfg *ueCfg);
+uint8_t MacProcUeReconfigReq(Pst *pst, MacUeRecfg *ueRecfg);
+uint8_t packDuMacUeRecfgRsp(Pst *pst, MacUeRecfgRsp *recfgRsp);
+uint8_t unpackDuMacUeRecfgRsp(MacDuUeRecfgRspFunc func, Pst *pst, Buffer *mBuf);
+uint8_t DuProcMacUeRecfgRsp(Pst *pst, MacUeRecfgRsp *recfgRsp);
 uint8_t packDuMacRachRsrcReq(Pst *pst, MacRachRsrcReq *rachRsrcReq);
 uint8_t unpackMacRachRsrcReq(DuMacRachRsrcReq func, Pst *pst, Buffer *mBuf);
 uint8_t MacProcRachRsrcReq(Pst *pst, MacRachRsrcReq *rachRsrcReq);

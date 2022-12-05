@@ -272,7 +272,7 @@ bool findValidK0K1Value(SchCellCb *cell, SlotTimingInfo currTime, uint8_t ueId, 
    if(dedMsg == true)
    {
       ueCb = &cell->ueCb[ueId-1];
-      k0K1InfoTbl = &ueCb->ueCfg.spCellCfg.servCellCfg.initDlBwp.k0K1InfoTbl;
+      k0K1InfoTbl = &ueCb->ueCfg.spCellCfg.servCellRecfg.initDlBwp.k0K1InfoTbl;
    }
    else
    {
@@ -291,11 +291,11 @@ bool findValidK0K1Value(SchCellCb *cell, SlotTimingInfo currTime, uint8_t ueId, 
       }
       else
       {
-         if(ueCb->ueCfg.spCellCfg.servCellCfg.initDlBwp.pdschCfg.timeDomRsrcAllociList[k0Index].k0 != NULLP)
+         if(ueCb->ueCfg.spCellCfg.servCellRecfg.initDlBwp.pdschCfg.timeDomRsrcAllociList[k0Index].k0 != NULLP)
          {
-            k0Val = *(ueCb->ueCfg.spCellCfg.servCellCfg.initDlBwp.pdschCfg.timeDomRsrcAllociList[k0Index].k0);
-            *pdschStartSymbol = ueCb->ueCfg.spCellCfg.servCellCfg.initDlBwp.pdschCfg.timeDomRsrcAllociList[k0Index].startSymbol;
-            *pdschSymblLen = ueCb->ueCfg.spCellCfg.servCellCfg.initDlBwp.pdschCfg.timeDomRsrcAllociList[k0Index].symbolLength;
+            k0Val = *(ueCb->ueCfg.spCellCfg.servCellRecfg.initDlBwp.pdschCfg.timeDomRsrcAllociList[k0Index].k0);
+            *pdschStartSymbol = ueCb->ueCfg.spCellCfg.servCellRecfg.initDlBwp.pdschCfg.timeDomRsrcAllociList[k0Index].startSymbol;
+            *pdschSymblLen = ueCb->ueCfg.spCellCfg.servCellRecfg.initDlBwp.pdschCfg.timeDomRsrcAllociList[k0Index].symbolLength;
          }
       }
 
@@ -321,9 +321,9 @@ bool findValidK0K1Value(SchCellCb *cell, SlotTimingInfo currTime, uint8_t ueId, 
          }
          else
          {
-            if(ueCb->ueCfg.spCellCfg.servCellCfg.initUlBwp.pucchCfg.dlDataToUlAck)
+            if(ueCb->ueCfg.spCellCfg.servCellRecfg.initUlBwp.pucchCfg.dlDataToUlAck)
             {
-               k1Val = ueCb->ueCfg.spCellCfg.servCellCfg.initUlBwp.pucchCfg.dlDataToUlAck->dlDataToUlAckList[k1Index];
+               k1Val = ueCb->ueCfg.spCellCfg.servCellRecfg.initUlBwp.pucchCfg.dlDataToUlAck->dlDataToUlAckList[k1Index];
             }
          }
          ADD_DELTA_TO_TIME((*pdschTime),(*pucchTime), k1Val, cell->numSlots);
@@ -397,7 +397,7 @@ bool schFillBoGrantDlSchedInfo(SchCellCb *cell, SlotTimingInfo currTime, uint8_t
       }
    }
 
-   if(findValidK0K1Value(cell, currTime, ueId, ueCb->ueCfg.spCellCfg.servCellCfg.initDlBwp.k0K1TblPrsnt,\
+   if(findValidK0K1Value(cell, currTime, ueId, ueCb->ueCfg.spCellCfg.servCellRecfg.initDlBwp.k0K1TblPrsnt,\
             &pdschStartSymbol, &pdschNumSymbols, &pdcchTime, &pdschTime, &pucchTime, isRetx, *hqP) != true )
    {
       /* If a valid combination of slots to scheduled PDCCH, PDSCH and PUCCH is
