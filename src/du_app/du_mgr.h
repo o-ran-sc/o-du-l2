@@ -140,6 +140,35 @@ typedef struct drxCycle
 }DrxCycle;
 #endif
 
+typedef struct duLcCfg
+{
+   ConfigType configType;
+   LcCfg      lcConfig;
+}DuLcCfg;
+
+typedef struct duMacUeCfg
+{
+   uint16_t               cellId;
+   uint8_t                ueId;
+   uint16_t               crnti;
+   bool                   macCellGrpCfgPres;
+   MacCellGrpCfg          macCellGrpCfg;
+   bool                   phyCellGrpCfgPres;
+   PhyCellGrpCfg          phyCellGrpCfg;
+   bool                   spCellCfgPres;
+   SpCellRecfg            spCellCfg;
+   AmbrCfg                *ambrCfg;
+   ModulationInfo         dlModInfo;    /* DL modulation info */ //TBD
+   ModulationInfo         ulModInfo;    /* UL modulation info */  //TBD
+   uint8_t                numLcs;
+   DuLcCfg                lcCfgList[MAX_NUM_LC];
+   UeCfgState             macUeCfgState;    /* InActive / Completed */ //TBD
+   DataTransmissionAction transmissionAction; //TBD
+#ifdef NR_DRX
+   bool     drxConfigIndicatorRelease;
+#endif
+}DuMacUeCfg;
+
 typedef struct duUeCfg
 {
    void *cellGrpCfg;
@@ -147,12 +176,13 @@ typedef struct duUeCfg
    uint8_t numRlcLcs;        /* Rlc Ue Cfg */
    RlcBearerCfg rlcLcCfg[MAX_NUM_LC];
    uint8_t numMacLcs;        /* Mac Ue Cfg */
-   LcCfg   macLcCfg[MAX_NUM_LC];
+   DuLcCfg   macLcCfg[MAX_NUM_LC];
    AmbrCfg *ambrCfg;
    uint8_t numDrb;
    UpTnlCfg upTnlInfo[MAX_NUM_DRB];  /* User plane TNL Info*/
    uint8_t numDrbSetupMod;        /*No. of DRB Added during Modification*/
-   MacUeCfg copyOfmacUeCfg;
+   uint8_t numDrbModified;        /*No. of DRB Modified during Modification*/
+   DuMacUeCfg copyOfmacUeCfg;
    DataTransmissionAction dataTransmissionAction;
 #ifdef NR_DRX
    bool     drxCyclePres;
@@ -188,7 +218,7 @@ typedef struct duUeCb
    uint32_t drbBitMap;       /* Drb Bit Map */
    UeState  ueState;         /* UE Active/ Ue Inactive state */
    MacCfraResource cfraResource; /* CF-RA resource assigned by MAC/SCH */
-   MacUeCfg macUeCfg;        /* Mac Ue Cfg */
+   DuMacUeCfg duMacUeCfg;        /* Mac Ue Cfg */
    RlcUeCfg rlcUeCfg;        /* Rlc Ue Cfg */
 }DuUeCb;
 

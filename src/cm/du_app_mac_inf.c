@@ -284,8 +284,8 @@ uint8_t packMacCellStop(Pst *pst, CellStopInfo *cellStop)
 
       if (ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf) != ROK)
       {
-	 DU_LOG("\nERROR  --> DU APP : Memory allocation failed for cell stop req pack");
-	 return RFAILED;
+         DU_LOG("\nERROR  --> DU APP : Memory allocation failed for cell stop req pack");
+         return RFAILED;
       }
 
       /* pack the address of the structure */
@@ -841,7 +841,7 @@ uint8_t unpackDuMacUeCfgRsp(MacDuUeCfgRspFunc func, Pst *pst, Buffer *mBuf)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t packDuMacUeReconfigReq(Pst *pst, MacUeCfg *ueCfg)
+uint8_t packDuMacUeReconfigReq(Pst *pst, MacUeRecfg *ueCfg)
 {
    Buffer *mBuf = NULLP;
 
@@ -886,12 +886,12 @@ uint8_t unpackMacUeReconfigReq(DuMacUeReconfigReq func, Pst *pst, Buffer *mBuf)
 {
    if(pst->selector == ODU_SELECTOR_LWLC)
    {
-      MacUeCfg *ueCfg;
+      MacUeRecfg *ueRecfg;
 
       /* unpack the address of the structure */
-      CMCHKUNPK(oduUnpackPointer, (PTR *)&ueCfg, mBuf);
+      CMCHKUNPK(oduUnpackPointer, (PTR *)&ueRecfg, mBuf);
       ODU_PUT_MSG_BUF(mBuf);
-      return (*func)(pst, ueCfg);
+      return (*func)(pst, ueRecfg);
    }
    else
    {
@@ -900,6 +900,76 @@ uint8_t unpackMacUeReconfigReq(DuMacUeReconfigReq func, Pst *pst, Buffer *mBuf)
       ODU_PUT_MSG_BUF(mBuf);
    }
 
+   return RFAILED;
+}
+
+/*******************************************************************
+ *
+ * @brief Pack and send UE Reconfig response from MAC to DU APP
+ *
+ * @details
+ *
+ *    Function : packDuMacUeRecfgRsp
+ *
+ *    Functionality:
+ *       Pack and send UE Reconfig response from MAC to DU APP
+ *
+ * @params[in] 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t packDuMacUeRecfgRsp(Pst *pst, MacUeRecfgRsp *recfgRsp)
+{
+   Buffer *mBuf = NULLP;
+
+   if(pst->selector == ODU_SELECTOR_LWLC)
+   {
+      if (ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf) != ROK)
+      {
+         DU_LOG("\nERROR  --> MAC : Memory allocation failed at packDuMacUeRecfgRsp");
+         return RFAILED;
+      }
+      /* pack the address of the structure */
+      CMCHKPK(oduPackPointer,(PTR)recfgRsp, mBuf);
+   }
+   else
+   {
+      DU_LOG("\nERROR  -->  MAC: Only LWLC supported for packDuMacUeRecfgRsp");
+      return RFAILED;
+   }
+
+   return ODU_POST_TASK(pst,mBuf);
+}
+
+/*******************************************************************
+ *
+ * @brief Unpack UE ReConfig Response from MAC to DU APP
+ *
+ * @details
+ *
+ *    Function :unpackDuMacUeRecfgRsp 
+ *
+ *    Functionality: Unpack UE ReConfig Response from MAC to DU APP
+ *
+ * @params[in] 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t unpackDuMacUeRecfgRsp(MacDuUeRecfgRspFunc func, Pst *pst, Buffer *mBuf)
+{
+   if(pst->selector == ODU_SELECTOR_LWLC)
+   {
+      MacUeRecfgRsp *recfgRsp = NULLP;
+
+      /* unpack the address of the structure */
+      CMCHKUNPK(oduUnpackPointer, (PTR *)&recfgRsp, mBuf);
+      ODU_PUT_MSG_BUF(mBuf);
+      return (*func)(pst, recfgRsp);
+   }
+
+   ODU_PUT_MSG_BUF(mBuf);
    return RFAILED;
 }
 
