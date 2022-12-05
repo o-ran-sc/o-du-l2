@@ -610,9 +610,9 @@ bool schProcessRaReq(Inst schInst, SchCellCb *cell, SlotTimingInfo currTime, uin
                for(k1TblIdx = 0; k1TblIdx < numK1; k1TblIdx++)
                {   
                   k1Index = k0K1InfoTbl->k0k1TimingInfo[dciTime.slot].k0Indexes[k0TblIdx].k1TimingInfo.k1Indexes[k1TblIdx];
-                  if(cell->raReq[ueId-1]->ueCb->ueCfg.spCellCfg.servCellCfg.initUlBwp.pucchCfg.dlDataToUlAck)
+                  if(cell->raReq[ueId-1]->ueCb->ueCfg.spCellCfg.servCellRecfg.initUlBwp.pucchCfg.dlDataToUlAck)
                   {
-                     k1 = cell->raReq[ueId-1]->ueCb->ueCfg.spCellCfg.servCellCfg.initUlBwp.pucchCfg.dlDataToUlAck->\
+                     k1 = cell->raReq[ueId-1]->ueCb->ueCfg.spCellCfg.servCellRecfg.initUlBwp.pucchCfg.dlDataToUlAck->\
                         dlDataToUlAckList[k1Index];
                   }
                   else
