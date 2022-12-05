@@ -18,6 +18,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2b17a4d8_b69f63fa",
+        "filename": "src/5gnrmac/mac_ue_mgr.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1533,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-12-05T09:25:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0447a3a3_a1362c1a",
+      "revId": "bf61903e151f712a7d0f16485e4ebc8fab6782e2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f255f1c2_37f4a129",
@@ -31,6 +49,30 @@
       "writtenOn": "2022-11-10T11:28:20Z",
       "side": 1,
       "message": "lower case first letter. Please check all files",
+      "range": {
+        "startLine": 1750,
+        "startChar": 66,
+        "endLine": 1750,
+        "endChar": 73
+      },
+      "revId": "bf61903e151f712a7d0f16485e4ebc8fab6782e2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8baaae17_4e33683c",
+        "filename": "src/5gnrmac/mac_ue_mgr.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1750,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-12-05T09:25:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f255f1c2_37f4a129",
       "range": {
         "startLine": 1750,
         "startChar": 66,
@@ -58,6 +100,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2f2ff6fb_48b89575",
+        "filename": "src/5gnrsch/sch_ue_mgr.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 274,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-12-05T09:25:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "531d9dc9_c5967360",
+      "revId": "bf61903e151f712a7d0f16485e4ebc8fab6782e2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7209e23b_41ee26f7",
@@ -75,6 +135,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c3067a9b_e46274c6",
+        "filename": "src/cm/du_app_mac_inf.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 1217,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-12-05T09:25:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7209e23b_41ee26f7",
+      "revId": "bf61903e151f712a7d0f16485e4ebc8fab6782e2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6d7ab278_8da1a0ce",
@@ -88,6 +166,30 @@
       "writtenOn": "2022-11-10T11:28:20Z",
       "side": 1,
       "message": "1. check all vars in above struct to have first letter in lower case\n2. reCfg-\u003erecfg",
+      "range": {
+        "startLine": 1546,
+        "startChar": 1,
+        "endLine": 1546,
+        "endChar": 21
+      },
+      "revId": "bf61903e151f712a7d0f16485e4ebc8fab6782e2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a5a896a9_6ca60364",
+        "filename": "src/cm/mac_sch_interface.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 1546,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-12-05T09:25:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6d7ab278_8da1a0ce",
       "range": {
         "startLine": 1546,
         "startChar": 1,
@@ -121,6 +223,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9bf8bb5d_99769da9",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 11131,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-12-05T09:25:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "abe299a4_590e17a4",
+      "range": {
+        "startLine": 11131,
+        "startChar": 12,
+        "endLine": 11131,
+        "endChar": 16
+      },
+      "revId": "bf61903e151f712a7d0f16485e4ebc8fab6782e2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1f3c84d7_044c07c6",
@@ -138,6 +264,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e921edc1_08cc4804",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 11138,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-12-05T09:25:45Z",
+      "side": 1,
+      "message": "yea this will not be triggered during initial UE attach as the action_type is set as MODIFY_UE.. this is only triggered at CU when user trigger a \"UE MODIFICATION REQ\" from console",
+      "parentUuid": "1f3c84d7_044c07c6",
+      "revId": "bf61903e151f712a7d0f16485e4ebc8fab6782e2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "aa67795e_47e66fc2",
@@ -151,6 +295,30 @@
       "writtenOn": "2022-11-10T11:28:20Z",
       "side": 1,
       "message": "remove comment",
+      "range": {
+        "startLine": 11147,
+        "startChar": 12,
+        "endLine": 11147,
+        "endChar": 16
+      },
+      "revId": "bf61903e151f712a7d0f16485e4ebc8fab6782e2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7697dc5a_762148ba",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 11147,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-12-05T09:25:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "aa67795e_47e66fc2",
       "range": {
         "startLine": 11147,
         "startChar": 12,
@@ -184,6 +352,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5cfa9f6f_d0618645",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 5802,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-12-05T09:25:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a5815b98_8121d03e",
+      "range": {
+        "startLine": 5802,
+        "startChar": 19,
+        "endLine": 5802,
+        "endChar": 37
+      },
+      "revId": "bf61903e151f712a7d0f16485e4ebc8fab6782e2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f2247a7c_49baf35c",
@@ -197,6 +389,30 @@
       "writtenOn": "2022-11-10T11:28:20Z",
       "side": 1,
       "message": "from",
+      "range": {
+        "startLine": 13249,
+        "startChar": 47,
+        "endLine": 13249,
+        "endChar": 50
+      },
+      "revId": "bf61903e151f712a7d0f16485e4ebc8fab6782e2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "43617171_5a547d06",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 13249,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-12-05T09:25:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f2247a7c_49baf35c",
       "range": {
         "startLine": 13249,
         "startChar": 47,
@@ -224,6 +440,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fdbfe804_a81b70ab",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 15786,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-12-05T09:25:45Z",
+      "side": 1,
+      "message": "removed this check as we are checking in parent function that whether there are any DRBs which are modified",
+      "parentUuid": "e9a0d7aa_c8948ea2",
+      "revId": "bf61903e151f712a7d0f16485e4ebc8fab6782e2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2229cf2a_831c8e84",
@@ -237,6 +471,30 @@
       "writtenOn": "2022-11-10T11:28:20Z",
       "side": 1,
       "message": "free drbItem-\u003eqoSInformation",
+      "range": {
+        "startLine": 16383,
+        "startChar": 15,
+        "endLine": 16383,
+        "endChar": 29
+      },
+      "revId": "bf61903e151f712a7d0f16485e4ebc8fab6782e2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "19cb2b54_25d269d6",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 16383,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-12-05T09:25:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2229cf2a_831c8e84",
       "range": {
         "startLine": 16383,
         "startChar": 15,
@@ -270,6 +528,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "44603e81_c57ba7cf",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 16507,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-12-05T09:25:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b9de109c_61570b69",
+      "range": {
+        "startLine": 16507,
+        "startChar": 37,
+        "endLine": 16507,
+        "endChar": 46
+      },
+      "revId": "bf61903e151f712a7d0f16485e4ebc8fab6782e2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0e5ea8c0_5e20d364",
@@ -283,6 +565,30 @@
       "writtenOn": "2022-11-10T11:28:20Z",
       "side": 1,
       "message": "lets rename the parameter too to lcCfg",
+      "range": {
+        "startLine": 176,
+        "startChar": 13,
+        "endLine": 176,
+        "endChar": 21
+      },
+      "revId": "bf61903e151f712a7d0f16485e4ebc8fab6782e2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fbb08ae8_b25f4373",
+        "filename": "src/du_app/du_mgr.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 176,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-12-05T09:25:45Z",
+      "side": 1,
+      "message": "I think the parameter name \u0027macLcCfg\u0027 is correct as this cfg will be sent by duapp to mac in cfg_req..",
+      "parentUuid": "0e5ea8c0_5e20d364",
       "range": {
         "startLine": 176,
         "startChar": 13,
@@ -316,6 +622,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "86a80684_ff4a099d",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1207,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-12-05T09:25:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "11f8b911_22fb8489",
+      "range": {
+        "startLine": 1207,
+        "startChar": 111,
+        "endLine": 1207,
+        "endChar": 119
+      },
+      "revId": "bf61903e151f712a7d0f16485e4ebc8fab6782e2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bea62276_d16cefe9",
@@ -333,6 +663,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3cb9a279_3e0201c5",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1872,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-12-05T09:25:45Z",
+      "side": 1,
+      "message": "As per spec AAD WG8, UE Create only include LC to add.. Modify and Delete are included as part of UE Modification",
+      "parentUuid": "bea62276_d16cefe9",
+      "revId": "bf61903e151f712a7d0f16485e4ebc8fab6782e2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "aae78d5c_5e378fdc",
@@ -346,6 +694,24 @@
       "writtenOn": "2022-11-10T11:28:20Z",
       "side": 1,
       "message": "free ambrCfg if !\u003dNULL",
+      "revId": "bf61903e151f712a7d0f16485e4ebc8fab6782e2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6050e0d5_5fe91413",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 3406,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-12-05T09:25:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "aae78d5c_5e378fdc",
       "revId": "bf61903e151f712a7d0f16485e4ebc8fab6782e2",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
