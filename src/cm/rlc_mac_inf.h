@@ -35,7 +35,6 @@ typedef struct rlcBoStatus
 {
    uint16_t   cellId;     /*!< CELL ID */
    uint16_t   ueId;       /*!< UE ID */
-   bool       commCh;     /*!< Common or Dedicated Channel */
    uint8_t    lcId;       /*!< Logical channel ID */
    uint32_t   bo;         /*!< Buffer occupancy reported by RLC */
 }RlcBoStatus;
@@ -43,7 +42,6 @@ typedef struct rlcBoStatus
 /* Scheduled logical channel info */
 typedef struct rlcLcSchInfo
 {
-   bool      commCh;      /* Common or dedicated channel */
    uint8_t   lcId;        /*!< Logical channel ID */
    uint32_t  bufSize;  /*!< Total buffer size in bytes scheduled by MAC */
 }RlcLcSchInfo;
@@ -51,7 +49,6 @@ typedef struct rlcLcSchInfo
 /* Schedule result report */
 typedef struct rlcSchedResultRpt
 {
-   //Slot info
    SlotTimingInfo slotInfo;     /*!< Timing info */
    uint16_t       cellId;       /*!< CELL ID */
    uint16_t       rnti;         /*!< Temporary CRNTI */
@@ -62,28 +59,36 @@ typedef struct rlcSchedResultRpt
 /* DL/UL data transfer */
 typedef struct rlcPduInfo
 {
-   bool       commCh;   /*!<Common or Dedicated Channel */
    uint8_t    lcId;     /*!< Logical channel ID */
    uint16_t   pduLen;   /*!< PDU Length */
    uint8_t    *pduBuf;  /*!< RLC PDU buffer */
 }RlcPduInfo;
  
-typedef struct rlcData
+typedef struct rlcDlData
 {
-   uint16_t      cellId;       /*!< CELL ID */
-   uint16_t      rnti;         /*!< Temporary CRNTI */
-   SlotTimingInfo   slotInfo;     /*!< Timing info */
-   uint8_t       numPdu;       /*!< Number of RLC PDUs */
-   RlcPduInfo    pduInfo[MAX_NUM_PDU];
-   uint8_t       numLc;
-   RlcBoStatus   boStatus[MAX_NUM_LC];     /*!< Buffer occupancy */
-}RlcData;
+   SlotTimingInfo slotInfo;     /*!< Timing info */
+   uint16_t       cellId;       /*!< CELL ID */
+   uint16_t       rnti;         /*!< Temporary CRNTI */
+   uint8_t        numPdu;       /*!< Number of RLC PDUs */
+   RlcPduInfo     pduInfo[MAX_NUM_PDU];
+   uint8_t        numLc;
+   RlcBoStatus    boStatus[MAX_NUM_LC];     /*!< Buffer occupancy */
+}RlcDlData;
+
+typedef struct rlcUlData
+{
+   SlotTimingInfo slotInfo;     /*!< Timing info */
+   uint16_t       cellId;       /*!< CELL ID */
+   uint16_t       rnti;         /*!< Temporary CRNTI */
+   uint8_t        numPdu;       /*!< Number of RLC PDUs */
+   RlcPduInfo     pduInfo[MAX_NUM_PDU];
+}RlcUlData;
 
 /* Function pointers */
 typedef uint8_t (*RlcMacBoStatusFunc)(Pst* pst, RlcBoStatus  *boStatus);
 typedef uint8_t (*RlcMacSchedResultRptFunc)(Pst *pst, RlcSchedResultRpt *schRpt);
-typedef uint8_t (*RlcMacDlDataFunc)(Pst* pst, RlcData *dlData);
-typedef uint8_t (*RlcMacUlDataFunc)(Pst* pst, RlcData *ulData);
+typedef uint8_t (*RlcMacDlDataFunc)(Pst* pst, RlcDlData *dlData);
+typedef uint8_t (*RlcMacUlDataFunc)(Pst* pst, RlcUlData *ulData);
 
 /* Function declarations */
 uint8_t packRlcBoStatus(Pst* pst, RlcBoStatus*  boStatus);
@@ -92,12 +97,12 @@ uint8_t MacProcRlcBoStatus(Pst* pst, RlcBoStatus* boStatus);
 uint8_t packRlcSchedResultRpt(Pst* pst, RlcSchedResultRpt *schRpt);
 uint8_t unpackSchedResultRpt(RlcMacSchedResultRptFunc func, Pst *pst, Buffer *mBuf);
 uint8_t RlcProcSchedResultRpt(Pst *pst, RlcSchedResultRpt *schRpt);
-uint8_t packRlcDlData(Pst* pst, RlcData *datReq);
+uint8_t packRlcDlData(Pst* pst, RlcDlData *datReq);
 uint8_t unpackRlcDlData(RlcMacDlDataFunc func, Pst *pst, Buffer *mBuf);
-uint8_t MacProcRlcDlData(Pst* pst, RlcData *dlData);
-uint8_t packRlcUlData(Pst* pst, RlcData *ulData);
+uint8_t MacProcRlcDlData(Pst* pst, RlcDlData *dlData);
+uint8_t packRlcUlData(Pst* pst, RlcUlData *ulData);
 uint8_t unpackRlcUlData(RlcMacUlDataFunc func, Pst *pst, Buffer *mBuf);
-uint8_t RlcProcUlData(Pst* pst, RlcData *ulData);
+uint8_t RlcProcUlData(Pst* pst, RlcUlData *ulData);
 
 /**********************************************************************
           End of file

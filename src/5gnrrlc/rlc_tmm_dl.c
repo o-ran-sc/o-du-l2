@@ -156,7 +156,7 @@ void rlcTmmSendToMac(RlcCb *gCb, SuId suId, RlcDlRbCb *rbCb, RguCStaIndInfo *sta
    Pst              pst;
    CmLList          *node;          /* Current Link List Node */
    RlcSdu           *sdu;           /* SDU */
-   RlcData          *dlData;
+   RlcDlData        *dlData;
    uint16_t         pduLen;
    uint16_t         copyLen;
    int16_t          timeDiff = 0;
@@ -288,7 +288,7 @@ void rlcTmmSendToMac(RlcCb *gCb, SuId suId, RlcDlRbCb *rbCb, RguCStaIndInfo *sta
    sdu = (RlcSdu *)node->node;
 
     RLC_ALLOC_SHRABL_BUF(RLC_MEM_REGION_DL, RLC_POOL,
-                        dlData,(Size)sizeof(RlcData));
+                        dlData,(Size)sizeof(RlcDlData));
 #if (ERRCLASS & ERRCLS_ADD_RES)
    if ( dlData == NULLP )
    {
@@ -303,7 +303,6 @@ void rlcTmmSendToMac(RlcCb *gCb, SuId suId, RlcDlRbCb *rbCb, RguCStaIndInfo *sta
    dlData->cellId = rbCb->rlcId.cellId;
    dlData->rnti = sdu->mode.tm.rnti;
    dlData->numPdu = 1;
-   dlData->pduInfo[0].commCh = TRUE;
    dlData->pduInfo[0].lcId = rbCb->lch.lChId;
 
    /* Copy Message to fixed buffer to send */
@@ -343,7 +342,7 @@ void rlcTmmSendToMac(RlcCb *gCb, SuId suId, RlcDlRbCb *rbCb, RguCStaIndInfo *sta
    {
       RLC_FREE_SHRABL_BUF(pst.region, pst.pool, dlData->pduInfo[0].pduBuf, \
          dlData->pduInfo[0].pduLen);
-      RLC_FREE_SHRABL_BUF(pst.region, pst.pool, dlData, sizeof(RlcData));
+      RLC_FREE_SHRABL_BUF(pst.region, pst.pool, dlData, sizeof(RlcDlData));
    } 
 
    return;
@@ -414,7 +413,6 @@ static void rlcTmmSendBoSta(RlcCb *gCb, RlcDlRbCb *rbCb, MsgLen bo, RlcDatReqInf
 
    boStatus->cellId = rbCb->rlcId.cellId;
    boStatus->ueId = rbCb->rlcId.ueId;
-   boStatus->commCh = TRUE;
    boStatus->lcId = rbCb->lch.lChId;
    boStatus->bo = bo;
 
