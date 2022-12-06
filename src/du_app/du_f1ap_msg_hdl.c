@@ -7199,27 +7199,27 @@ uint8_t BuildDrxConfigRrc(DuUeCb *ueCb, struct MAC_CellGroupConfig__drx_ConfigRr
    else
    {
       drxCfg->choice.setup->drx_onDurationTimer.present = DRX_ConfigRrc__drx_onDurationTimer_PR_subMilliSeconds;
-      drxCfg->choice.setup->drx_onDurationTimer.choice.subMilliSeconds = ueCb->macUeCfg.macCellGrpCfg.drxCfg.\
+      drxCfg->choice.setup->drx_onDurationTimer.choice.subMilliSeconds = ueCb->duMacUeCfg.macCellGrpCfg.drxCfg.\
       drxOnDurationTimer.onDurationtimerValue.subMilliSeconds;
    }
-   drxCfg->choice.setup->drx_InactivityTimer = convertDrxInactivityTimerValueToEnum(ueCb->macUeCfg.macCellGrpCfg.drxCfg.drxInactivityTimer);
-   drxCfg->choice.setup->drx_HARQ_RTT_TimerDL = ueCb->macUeCfg.macCellGrpCfg.drxCfg.drxHarqRttTimerDl;
-   drxCfg->choice.setup->drx_HARQ_RTT_TimerUL = ueCb->macUeCfg.macCellGrpCfg.drxCfg.drxHarqRttTimerUl;
-   drxCfg->choice.setup->drx_RetransmissionTimerDL = convertDrxRetransmissionTimerDlValueToEnum(ueCb->macUeCfg.macCellGrpCfg.drxCfg.\
+   drxCfg->choice.setup->drx_InactivityTimer = convertDrxInactivityTimerValueToEnum(ueCb->duMacUeCfg.macCellGrpCfg.drxCfg.drxInactivityTimer);
+   drxCfg->choice.setup->drx_HARQ_RTT_TimerDL = ueCb->duMacUeCfg.macCellGrpCfg.drxCfg.drxHarqRttTimerDl;
+   drxCfg->choice.setup->drx_HARQ_RTT_TimerUL = ueCb->duMacUeCfg.macCellGrpCfg.drxCfg.drxHarqRttTimerUl;
+   drxCfg->choice.setup->drx_RetransmissionTimerDL = convertDrxRetransmissionTimerDlValueToEnum(ueCb->duMacUeCfg.macCellGrpCfg.drxCfg.\
    drxRetransmissionTimerDl);
-   drxCfg->choice.setup->drx_RetransmissionTimerUL = convertDrxRetransmissionTimerUlValueToEnum(ueCb->macUeCfg.macCellGrpCfg.drxCfg.\
+   drxCfg->choice.setup->drx_RetransmissionTimerUL = convertDrxRetransmissionTimerUlValueToEnum(ueCb->duMacUeCfg.macCellGrpCfg.drxCfg.\
    drxRetransmissionTimerUl);
-   drxCfg->choice.setup->drx_SlotOffset = ueCb->macUeCfg.macCellGrpCfg.drxCfg.drxSlotOffset;
-   fillLongCycleOffsetValFromDuCb(ueCb->macUeCfg.macCellGrpCfg.drxCfg.drxLongCycleStartOffset, &drxCfg->choice.setup->drx_LongCycleStartOffset);
+   drxCfg->choice.setup->drx_SlotOffset = ueCb->duMacUeCfg.macCellGrpCfg.drxCfg.drxSlotOffset;
+   fillLongCycleOffsetValFromDuCb(ueCb->duMacUeCfg.macCellGrpCfg.drxCfg.drxLongCycleStartOffset, &drxCfg->choice.setup->drx_LongCycleStartOffset);
    
-   if(ueCb->macUeCfg.macCellGrpCfg.drxCfg.shortDrxPres)
+   if(ueCb->duMacUeCfg.macCellGrpCfg.drxCfg.shortDrxPres)
    {
       DU_ALLOC(drxCfg->choice.setup->shortDRX, sizeof(struct DRX_ConfigRrc__shortDRX));
       if(drxCfg->choice.setup->shortDRX)
       {
-         drxCfg->choice.setup->shortDRX->drx_ShortCycle = convertShortDrxCycleLengthValueToEnum(ueCb->macUeCfg.macCellGrpCfg.drxCfg.\
+         drxCfg->choice.setup->shortDRX->drx_ShortCycle = convertShortDrxCycleLengthValueToEnum(ueCb->duMacUeCfg.macCellGrpCfg.drxCfg.\
          shortDrx.drxShortCycle);
-         drxCfg->choice.setup->shortDRX->drx_ShortCycleTimer = ueCb->macUeCfg.macCellGrpCfg.drxCfg.shortDrx.drxShortCycleTimer;
+         drxCfg->choice.setup->shortDRX->drx_ShortCycleTimer = ueCb->duMacUeCfg.macCellGrpCfg.drxCfg.shortDrx.drxShortCycleTimer;
       }
       else
       {
