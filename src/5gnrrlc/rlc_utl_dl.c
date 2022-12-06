@@ -224,7 +224,7 @@ uint8_t rlcSendDedLcDlData(Pst *post, SpId spId, RguDDatReqInfo *datReqInfo)
    RguDDatReqPerUe  datPerUe;             /* DL data info per UE */
    RguDatReqTb      datPerTb;             /* DL data info per TB */
    RguLchDatReq     datPerLch;            /* DL data info per Lch */
-   RlcData          *dlData = NULLP;      /* DL data to be sent to MAC */
+   RlcDlData        *dlData = NULLP;      /* DL data to be sent to MAC */
    RlcDlRrcMsgRsp   *dlRrcMsgRsp = NULLP; /*DL RRC Rsp to be sent to DU*/
    Pst              pst;                  /* Post structure */
    uint16_t         pduLen;               /* PDU length */
@@ -234,7 +234,7 @@ uint8_t rlcSendDedLcDlData(Pst *post, SpId spId, RguDDatReqInfo *datReqInfo)
    uint8_t          ret = ROK;
 
    RLC_ALLOC_SHRABL_BUF(RLC_MEM_REGION_DL, RLC_POOL,
-         dlData, sizeof(RlcData));
+         dlData, sizeof(RlcDlData));
    if(dlData == NULLP)
    {
       DU_LOG("\nERROR  -->  RLC_DL : rlcSendDedLcDlData: Memory allocation failed for dl data");
@@ -242,7 +242,7 @@ uint8_t rlcSendDedLcDlData(Pst *post, SpId spId, RguDDatReqInfo *datReqInfo)
             datReqInfo, sizeof(RguDDatReqInfo));
       return RFAILED;
    }
-   memset(dlData, 0, sizeof(RlcData));
+   memset(dlData, 0, sizeof(RlcDlData));
 
    for(ueIdx = 0; ueIdx < datReqInfo->nmbOfUeGrantPerTti; ueIdx++)
    {
@@ -282,7 +282,7 @@ uint8_t rlcSendDedLcDlData(Pst *post, SpId spId, RguDDatReqInfo *datReqInfo)
                            dlData->pduInfo[pduIdx].pduLen);
                   }
                   RLC_FREE_SHRABL_BUF(RLC_MEM_REGION_DL, RLC_POOL,
-                        dlData, sizeof(RlcData));
+                        dlData, sizeof(RlcDlData));
                   RLC_FREE_SHRABL_BUF(post->region, post->pool,
                         datReqInfo, sizeof(RguDDatReqInfo));
                   return RFAILED;
@@ -337,7 +337,7 @@ uint8_t rlcSendDedLcDlData(Pst *post, SpId spId, RguDDatReqInfo *datReqInfo)
             DU_LOG("\nDEBUG  -->  RLC_DL : rlcSendDedLcDlData: BO Status sent successfully for LCID:%d,BO:%d",\
                   boStatus->lcId, boStatus->bo);
          }
-         RLC_FREE_SHRABL_BUF(RLC_MEM_REGION_DL, RLC_POOL, dlData, sizeof(RlcData));
+         RLC_FREE_SHRABL_BUF(RLC_MEM_REGION_DL, RLC_POOL, dlData, sizeof(RlcDlData));
          RLC_FREE_SHRABL_BUF(post->region, post->pool, datReqInfo, sizeof(RguDDatReqInfo));
          return (ret);
       }
@@ -351,7 +351,7 @@ uint8_t rlcSendDedLcDlData(Pst *post, SpId spId, RguDDatReqInfo *datReqInfo)
             RLC_FREE_SHRABL_BUF(pst.region, pst.pool, dlData->pduInfo[pduIdx].pduBuf,\
                   dlData->pduInfo[pduIdx].pduLen);
          }
-         RLC_FREE_SHRABL_BUF(pst.region, pst.pool, dlData, sizeof(RlcData));
+         RLC_FREE_SHRABL_BUF(pst.region, pst.pool, dlData, sizeof(RlcDlData));
          RLC_FREE_SHRABL_BUF(RLC_MEM_REGION_DL, RLC_POOL,
                datReqInfo, sizeof(RguDDatReqInfo));
          return RFAILED;
@@ -370,7 +370,7 @@ uint8_t rlcSendDedLcDlData(Pst *post, SpId spId, RguDDatReqInfo *datReqInfo)
             RLC_FREE_SHRABL_BUF(pst.region, pst.pool, dlData->pduInfo[pduIdx].pduBuf,\
                   dlData->pduInfo[pduIdx].pduLen);
          }
-         RLC_FREE_SHRABL_BUF(pst.region, pst.pool, dlData, sizeof(RlcData));
+         RLC_FREE_SHRABL_BUF(pst.region, pst.pool, dlData, sizeof(RlcDlData));
          RLC_FREE_SHRABL_BUF(post->region, post->pool, datReqInfo, sizeof(RguDDatReqInfo));
          RLC_FREE_SHRABL_BUF(pst.region, pst.pool, dlRrcMsgRsp, sizeof(RlcDlRrcMsgRsp));
          return RFAILED;

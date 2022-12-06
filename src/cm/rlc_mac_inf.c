@@ -171,7 +171,7 @@ uint8_t unpackSchedResultRpt(RlcMacSchedResultRptFunc func, Pst *pst, Buffer *mB
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t packRlcDlData(Pst* pst, RlcData *dlData)
+uint8_t packRlcDlData(Pst* pst, RlcDlData *dlData)
 {
    Buffer *mBuf = NULLP;
 
@@ -210,7 +210,7 @@ uint8_t packRlcDlData(Pst* pst, RlcData *dlData)
  * ****************************************************************/
 uint8_t unpackRlcDlData(RlcMacDlDataFunc func, Pst *pst, Buffer *mBuf)
 {
-   RlcData *dlData;
+   RlcDlData *dlData;
 
    if (pst->selector == ODU_SELECTOR_LWLC)
    {
@@ -239,7 +239,7 @@ uint8_t unpackRlcDlData(RlcMacDlDataFunc func, Pst *pst, Buffer *mBuf)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t packRlcUlData(Pst* pst, RlcData *ulData)
+uint8_t packRlcUlData(Pst* pst, RlcUlData *ulData)
 {
    Buffer *mBuf = NULLP;
  
@@ -279,7 +279,7 @@ uint8_t packRlcUlData(Pst* pst, RlcData *ulData)
  * ****************************************************************/
 uint8_t unpackRlcUlData(RlcMacUlDataFunc func, Pst *pst, Buffer *mBuf)
 {
-   RlcData *ulData;
+   RlcUlData *ulData;
  
    if (pst->selector == ODU_SELECTOR_LWLC)
    {

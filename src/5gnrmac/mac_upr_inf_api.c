@@ -173,7 +173,7 @@ uint8_t MacDuAppUlCcchInd(Pst *pst, UlCcchIndInfo *ulCcchIndInfo)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t MacSendUlDataToRlc(Pst *pst, RlcData *ulData)
+uint8_t MacSendUlDataToRlc(Pst *pst, RlcUlData *ulData)
 {
    return (*rlcMacSendUlDataOpts[pst->selector])(pst, ulData);
 }

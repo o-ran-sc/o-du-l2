@@ -455,7 +455,7 @@ uint8_t RlcProcDlRrcMsgTransfer(Pst *pst, RlcDlRrcMsgInfo *dlRrcMsgInfo)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t RlcProcUlData(Pst *pst, RlcData *ulData)
+uint8_t RlcProcUlData(Pst *pst, RlcUlData *ulData)
 {
    uint8_t         ret = ROK;
    uint8_t         idx, pduIdx;
@@ -574,7 +574,7 @@ uint8_t RlcProcUlData(Pst *pst, RlcData *ulData)
       RLC_FREE_SHRABL_BUF(pst->region, pst->pool, ulData->pduInfo[pduIdx].pduBuf, \
             ulData->pduInfo[pduIdx].pduLen);
    }
-   RLC_FREE_SHRABL_BUF(pst->region, pst->pool, ulData, sizeof(RlcData));
+   RLC_FREE_SHRABL_BUF(pst->region, pst->pool, ulData, sizeof(RlcUlData));
    return ROK;
 
 }/* End of RlcProcUlData */
