@@ -401,11 +401,11 @@ uint8_t RlcProcDlRrcMsgTransfer(Pst *pst, RlcDlRrcMsgInfo *dlRrcMsgInfo)
       return RFAILED;
    }
 
-   datReqInfo->rlcId.rbType = dlRrcMsgInfo->rbType;
-   datReqInfo->rlcId.rbId = dlRrcMsgInfo->rbId;
+   datReqInfo->rlcId.rbType = RB_TYPE_SRB;
+   datReqInfo->rlcId.rbId = dlRrcMsgInfo->lcId;
    datReqInfo->rlcId.ueId = dlRrcMsgInfo->ueId;
    datReqInfo->rlcId.cellId = dlRrcMsgInfo->cellId;
-   datReqInfo->lcType = dlRrcMsgInfo->lcType;
+   datReqInfo->lcType = LCH_DCCH;
    datReqInfo->sduId = ++(rlcCb[pst->dstInst]->dlSduId);
 
    /* Copy fixed buffer to message */
@@ -455,7 +455,7 @@ uint8_t RlcProcDlRrcMsgTransfer(Pst *pst, RlcDlRrcMsgInfo *dlRrcMsgInfo)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t RlcProcUlData(Pst *pst, RlcData *ulData)
+uint8_t RlcProcUlData(Pst *pst, RlcUlData *ulData)
 {
    uint8_t         ret = ROK;
    uint8_t         idx, pduIdx;
@@ -479,72 +479,39 @@ uint8_t RlcProcUlData(Pst *pst, RlcData *ulData)
     * and call common channel's handler */
    for(idx = 0; idx< ulData->numPdu; idx++)
    {
-      if(ulData->pduInfo[idx].commCh)
+      if(!dLchPduPres)
       {
-         RLC_SHRABL_STATIC_BUF_ALLOC(RLC_MEM_REGION_UL, RLC_POOL, cLchUlDat, \
-               sizeof(RguCDatIndInfo));
-         if(!cLchUlDat)
-         {
-            DU_LOG("\nERROR  -->  RLC : Memory allocation failed at RlcProcUlData");
-            ret = RFAILED;
-            break;
-         }
-         memset(cLchUlDat, 0, sizeof(RguCDatIndInfo));
-
-         cLchUlDat->cellId = ulData->cellId;
-         GET_UE_ID(ulData->rnti, cLchUlDat->rnti);
-         cLchUlDat->lcId   = ulData->pduInfo[idx].lcId;
-
-         /* Copy fixed buffer to message */
-         if(ODU_GET_MSG_BUF(RLC_MEM_REGION_UL, RLC_POOL, &cLchUlDat->pdu) != ROK)
-         {
-            DU_LOG("\nERROR  -->  RLC : Memory allocation failed at RlcProcUlData");
-            RLC_SHRABL_STATIC_BUF_FREE(RLC_MEM_REGION_UL, RLC_POOL, cLchUlDat, \
-                  sizeof(RguCDatIndInfo));
-            ret = RFAILED;
-            break;
-         }
-         oduCpyFixBufToMsg(ulData->pduInfo[idx].pduBuf, cLchUlDat->pdu, \
-               ulData->pduInfo[idx].pduLen);
-
-         rlcProcCommLcUlData(pst, 0, cLchUlDat);
-      }
-      else
-      {
-         if(!dLchPduPres)
-         {
-            RLC_SHRABL_STATIC_BUF_ALLOC(RLC_MEM_REGION_UL, RLC_POOL, dLchUlDat, \
-                  sizeof(RguDDatIndInfo));
-            if(!dLchUlDat)
-            {
-               DU_LOG("\nERROR  -->  RLC : Memory allocation failed at RlcMacProcUlData");
-               ret = RFAILED;
-               break;
-            }
-            dLchPduPres = TRUE;
-         }
-
-         /* Copy fixed buffer to message */
-         lcId = ulData->pduInfo[idx].lcId;
-         if(ODU_GET_MSG_BUF(RLC_MEM_REGION_UL, RLC_POOL, \
-                  &dLchData[lcId].pdu.mBuf[dLchData[lcId].pdu.numPdu]) != ROK)
+         RLC_SHRABL_STATIC_BUF_ALLOC(RLC_MEM_REGION_UL, RLC_POOL, dLchUlDat, \
+               sizeof(RguDDatIndInfo));
+         if(!dLchUlDat)
          {
             DU_LOG("\nERROR  -->  RLC : Memory allocation failed at RlcMacProcUlData");
-            for(pduIdx=0; pduIdx < dLchData[lcId].pdu.numPdu; pduIdx++)
-            {
-               ODU_PUT_MSG_BUF(dLchData[lcId].pdu.mBuf[dLchData[lcId].pdu.numPdu]);
-            }
-            RLC_SHRABL_STATIC_BUF_FREE(RLC_MEM_REGION_UL, RLC_POOL, dLchUlDat, \
-                  sizeof(RguDDatIndInfo));
             ret = RFAILED;
             break;
          }
-         oduCpyFixBufToMsg(ulData->pduInfo[idx].pduBuf, \
-               dLchData[lcId].pdu.mBuf[dLchData[lcId].pdu.numPdu],\
-               ulData->pduInfo[idx].pduLen);
-
-         dLchData[lcId].pdu.numPdu++;
+         dLchPduPres = TRUE;
       }
+
+      /* Copy fixed buffer to message */
+      lcId = ulData->pduInfo[idx].lcId;
+      if(ODU_GET_MSG_BUF(RLC_MEM_REGION_UL, RLC_POOL, \
+               &dLchData[lcId].pdu.mBuf[dLchData[lcId].pdu.numPdu]) != ROK)
+      {
+         DU_LOG("\nERROR  -->  RLC : Memory allocation failed at RlcMacProcUlData");
+         for(pduIdx=0; pduIdx < dLchData[lcId].pdu.numPdu; pduIdx++)
+         {
+            ODU_PUT_MSG_BUF(dLchData[lcId].pdu.mBuf[dLchData[lcId].pdu.numPdu]);
+         }
+         RLC_SHRABL_STATIC_BUF_FREE(RLC_MEM_REGION_UL, RLC_POOL, dLchUlDat, \
+               sizeof(RguDDatIndInfo));
+         ret = RFAILED;
+         break;
+      }
+      oduCpyFixBufToMsg(ulData->pduInfo[idx].pduBuf, \
+            dLchData[lcId].pdu.mBuf[dLchData[lcId].pdu.numPdu],\
+            ulData->pduInfo[idx].pduLen);
+
+      dLchData[lcId].pdu.numPdu++;
    }
 
    /* If any PDU received on dedicated logical channel, copy into RguDDatIndInfo
@@ -574,7 +541,7 @@ uint8_t RlcProcUlData(Pst *pst, RlcData *ulData)
       RLC_FREE_SHRABL_BUF(pst->region, pst->pool, ulData->pduInfo[pduIdx].pduBuf, \
             ulData->pduInfo[pduIdx].pduLen);
    }
-   RLC_FREE_SHRABL_BUF(pst->region, pst->pool, ulData, sizeof(RlcData));
+   RLC_FREE_SHRABL_BUF(pst->region, pst->pool, ulData, sizeof(RlcUlData));
    return ROK;
 
 }/* End of RlcProcUlData */
@@ -608,64 +575,38 @@ uint8_t RlcProcSchedResultRpt(Pst *pst, RlcSchedResultRpt *schRep)
    DU_LOG("\nDEBUG  -->  RLC : Received scheduling report from MAC");
    for(idx=0; idx < schRep->numLc; idx++)
    {
-      /* If it is common channel, fill status indication information
-       * and trigger the handler for each common lch separately */
-      if(schRep->lcSch[idx].commCh)
+      /* Fill status info structure if at least one channel's scheduling report is received */
+      if(nmbDLch == 0)
       {
-          RLC_SHRABL_STATIC_BUF_ALLOC(RLC_MEM_REGION_DL, RLC_POOL, cLchSchInfo, \
-	     sizeof(RguCStaIndInfo));
-	  if(!cLchSchInfo)
-	  {
-	     DU_LOG("\nERROR  -->  RLC: RlcProcSchedResultRpt: Memory allocation failed for cLchSchInfo");
-	     ret = RFAILED;
-	     break;
-	  }
-          memset(cLchSchInfo, 0, sizeof(RguCStaIndInfo));
+         RLC_SHRABL_STATIC_BUF_ALLOC(RLC_MEM_REGION_DL, RLC_POOL, dLchSchInfo, \
+               sizeof(RguDStaIndInfo));
+         if(!dLchSchInfo)
+         {
+            DU_LOG("\nERROR  -->  RLC: RlcProcSchedResultRpt: Memory allocation failed for dLchSchInfo");
+            ret = RFAILED;
+            break;
+         }
 
-          cLchSchInfo->cellId  = schRep->cellId;
-          cLchSchInfo->lcId    = schRep->lcSch[idx].lcId;
-          cLchSchInfo->transId = schRep->slotInfo.sfn;
-	  cLchSchInfo->transId = (cLchSchInfo->transId << 16) | schRep->slotInfo.slot;
-          cLchSchInfo->rnti = schRep->rnti;
-          rlcProcCommLcSchedRpt(pst, 0, cLchSchInfo);
+         dLchSchInfo->cellId = schRep->cellId;
+         dLchSchInfo->nmbOfUeGrantPerTti = 1;
+         /* MAC sends Scheduling report for one UE at a time. Hence filling
+            only the 0th index of staInd */
+         dLchSchInfo->staInd[0].rnti = schRep->rnti;
 
+         /* Storing sfn/slot into a single 32-bit variable to be used later*/
+         dLchSchInfo->staInd[0].transId = schRep->slotInfo.sfn;
+         dLchSchInfo->staInd[0].transId = \
+                                          (dLchSchInfo->staInd[0].transId << 16) | schRep->slotInfo.slot; 
+         dLchSchInfo->staInd[0].nmbOfTbs = 1;
+         dLchSchInfo->staInd[0].fillCtrlPdu = true; 
       }
-      else
-      {
-          /* Fill status info structure if at least one dedicated channel
-           * scheduling report is received */
-          if(nmbDLch == 0)
-          {
-             RLC_SHRABL_STATIC_BUF_ALLOC(RLC_MEM_REGION_DL, RLC_POOL, dLchSchInfo, \
-	        sizeof(RguDStaIndInfo));
-             if(!dLchSchInfo)
-             {
-                DU_LOG("\nERROR  -->  RLC: RlcProcSchedResultRpt: Memory allocation failed for dLchSchInfo");
-                ret = RFAILED;
-                break;
-             }
 
-             dLchSchInfo->cellId = schRep->cellId;
-             dLchSchInfo->nmbOfUeGrantPerTti = 1;
-	     /* MAC sends Scheduling report for one UE at a time. Hence filling
-	     only the 0th index of staInd */
-             dLchSchInfo->staInd[0].rnti = schRep->rnti;
-
-	     /* Storing sfn/slot into a single 32-bit variable to be used later*/
-	     dLchSchInfo->staInd[0].transId = schRep->slotInfo.sfn;
-	     dLchSchInfo->staInd[0].transId = \
-	        (dLchSchInfo->staInd[0].transId << 16) | schRep->slotInfo.slot; 
-             dLchSchInfo->staInd[0].nmbOfTbs = 1;
-             dLchSchInfo->staInd[0].fillCtrlPdu = true; 
-          }
-
-          /* Fill logical channel scheduling info */
-	  dLchSchInfo->staInd[0].staIndTb[0].lchStaInd[nmbDLch].lcId = \
-	     schRep->lcSch[idx].lcId;
-	  dLchSchInfo->staInd[0].staIndTb[0].lchStaInd[nmbDLch].totBufSize = \
-	     schRep->lcSch[idx].bufSize;
-          nmbDLch++;
-      }
+      /* Fill logical channel scheduling info */
+      dLchSchInfo->staInd[0].staIndTb[0].lchStaInd[nmbDLch].lcId = \
+                                                                   schRep->lcSch[idx].lcId;
+      dLchSchInfo->staInd[0].staIndTb[0].lchStaInd[nmbDLch].totBufSize = \
+                                                                         schRep->lcSch[idx].bufSize;
+      nmbDLch++;
    }
 
    /* Calling handler for all dedicated channels scheduling*/

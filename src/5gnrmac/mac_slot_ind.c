@@ -169,7 +169,7 @@ uint8_t MacProcDlAlloc(Pst *pst, DlSchedInfo *dlSchedInfo)
                         MAC_ALLOC(txPdu, txPduLen);
                         if(!txPdu)
                         {
-                           DU_LOG("\nERROR  -->  MAC : Memory allocation failed in MacProcRlcDlData");
+                           DU_LOG("\nERROR  -->  MAC : Memory allocation failed in MacProcDlAlloc");
                            return RFAILED;
                         }   
                         memcpy(txPdu, retxTb,  txPduLen);

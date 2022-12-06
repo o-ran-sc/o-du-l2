@@ -253,10 +253,7 @@ typedef struct dlRrcMsgInfo
 {
    uint16_t   cellId;         /* Cell Id */
    uint16_t   ueId;           /* UE Id */
-   RlcRbType  rbType;         /* Radio Bearer Type */
-   uint8_t    rbId;           /* Radio Bearer Id */
-   uint8_t    lcType;         /* Logical channel type */
-   uint8_t    lcId;           /* Logical channel Id */
+   uint8_t    lcId;           /* Logical channel Id {1...3} */
    bool       execDup;        /* Execution duplication enabled */
    bool       deliveryStaRpt;  /* Reporting of delivery status by RLC to DU-APP enabled */
    uint16_t   msgLen;         /* RRC Message length */
@@ -311,7 +308,7 @@ typedef struct dlDataMsgInfo
 {
    uint16_t   cellId;         /* Cell Id */
    uint16_t   ueId;           /* UE Id */
-   uint8_t    rbId;           /* Radio Bearer Id */
+   uint8_t    rbId;           /* Radio Bearer Id {4 .. MACX_NUM_DRB} */
    uint16_t   msgLen;         /* Message length */
    Buffer     *dlMsg;         /* DL Data */
 }RlcDlUserDataInfo;

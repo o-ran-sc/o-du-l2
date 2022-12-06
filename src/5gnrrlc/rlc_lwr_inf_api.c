@@ -75,7 +75,7 @@ uint8_t RlcSendBoStatusToMac(Pst *pst, RlcBoStatus *boSta)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t RlcSendDlDataToMac(Pst *pst, RlcData *dlData)
+uint8_t RlcSendDlDataToMac(Pst *pst, RlcDlData *dlData)
 {
    /* jump to specific primitive depending on configured selector */
    return (*rlcMacSendDlDataOpts[pst->selector])(pst, dlData);
