@@ -15832,15 +15832,6 @@ uint8_t BuildDrbModList(DRBs_Modified_List_t *drbModList, DuUeCfg *ueCfg)
    uint8_t drbCnt =0;
    struct DRBs_Modified_ItemIEs *drbItemIe;
 
-   /*VS: Below for loop is for debug purpose, to remove in final patch*/
-   for(arrIdx = 0; arrIdx < ueCfg->numDrb; arrIdx++)
-   {
-      if(ueCfg->upTnlInfo[arrIdx].configType == CONFIG_MOD)
-      {
-         drbCnt++; 
-      }
-   }
-
    drbCnt = ueCfg->numDrbModified;
 
    drbModList->list.count = drbCnt;

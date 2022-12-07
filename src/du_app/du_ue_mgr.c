@@ -389,15 +389,23 @@ uint8_t duBuildAndSendDlRrcMsgToRlc(uint16_t cellId, RlcUeCfg ueCfg, F1DlRrcMsg 
       return RFAILED;
    }
 
+   /*As per Spec ORAN WG8 AAD, lcId for DL RRC range from 1...3*/
+   if((f1DlRrcMsg->srbId < SRB1_LCID) || (f1DlRrcMsg->srbId > SRB3_LCID))
+   {
+      DU_LOG("\nERROR  -->  DU APP : Received SRBID for this Dl RRC Msg is not valid");
+      return RFAILED;
+   }
+
    DU_ALLOC_SHRABL_BUF(dlRrcMsgInfo, sizeof(RlcDlRrcMsgInfo));
+  
    if(!dlRrcMsgInfo)
    {
       DU_LOG("\nERROR  -->  DU APP : Memory allocation failed for dlRrcMsgInfo in \
-         duBuildAndSendDlRrcMsgToRlc");
+            duBuildAndSendDlRrcMsgToRlc");
       DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, f1DlRrcMsg->rrcMsgPdu, f1DlRrcMsg->rrcMsgSize);
       return RFAILED;
    }
-   
+
    /* Filling up the RRC msg info */
    dlRrcMsgInfo->cellId = cellId;
    dlRrcMsgInfo->ueId = ueCfg.ueId;
@@ -405,13 +413,17 @@ uint8_t duBuildAndSendDlRrcMsgToRlc(uint16_t cellId, RlcUeCfg ueCfg, F1DlRrcMsg 
    {
       if(ueCfg.rlcLcCfg[lcIdx].lcId == f1DlRrcMsg->srbId)
       {
-         dlRrcMsgInfo->rbType = ueCfg.rlcLcCfg[lcIdx].rbType;
-         dlRrcMsgInfo->rbId   = ueCfg.rlcLcCfg[lcIdx].rbId;
-	 dlRrcMsgInfo->lcType = ueCfg.rlcLcCfg[lcIdx].lcType;
-         dlRrcMsgInfo->lcId   = ueCfg.rlcLcCfg[lcIdx].lcId;
-	 break;
+         dlRrcMsgInfo->lcId   = f1DlRrcMsg->srbId;
+         break;
       }
    }
+   if(lcIdx == (MAX_NUM_LC + 1))
+   {
+      DU_LOG("\nERROR  -->  DU APP : (duBuildAndSendDlRrcMsgToRlc) SRB for this DL_RRC msg is not configured.");
+      DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, f1DlRrcMsg->rrcMsgPdu, f1DlRrcMsg->rrcMsgSize);
+      return RFAILED;
+   }
+
    dlRrcMsgInfo->execDup = f1DlRrcMsg->execDup;
    dlRrcMsgInfo->deliveryStaRpt = f1DlRrcMsg->deliveryStatRpt;
    dlRrcMsgInfo->msgLen = f1DlRrcMsg->rrcMsgSize;
@@ -513,6 +525,11 @@ uint8_t duProcDlRrcMsg(F1DlRrcMsg *dlRrcMsg)
                ueFound = true;
                ret = duBuildAndSendDlRrcMsgToRlc(duCb.actvCellLst[cellIdx]->cellId, \
                      duCb.actvCellLst[cellIdx]->ueCb[ueIdx].rlcUeCfg, dlRrcMsg);
+               if(ret == RFAILED)
+               {
+                  DU_LOG("\nERROR   -->  DU_APP: duBuildAndSendDlRrcMsgToRlc() Failed for UE ID:%d", dlRrcMsg->gnbDuUeF1apId);
+                  return RFAILED;
+               }
                break; 
             }
          }
