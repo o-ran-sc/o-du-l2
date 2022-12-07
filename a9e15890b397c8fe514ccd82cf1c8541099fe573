@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c0e803c0_bb8730e4",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 412,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-12-07T11:44:34Z",
+      "side": 1,
+      "message": "I think lcIdx will be from 0 to MAX_NUM_LC??",
+      "revId": "a9e15890b397c8fe514ccd82cf1c8541099fe573",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
