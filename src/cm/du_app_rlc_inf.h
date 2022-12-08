@@ -181,7 +181,6 @@ typedef struct umUniDirDlBearerCfg
 /* Spec Ref: 38.331, 6.3.2 RLC-BearerConfig */
 typedef struct rlcBearerCfg
 {
-   ConfigType   configType;
    uint8_t      rbId;
    RlcRbType    rbType;
    uint8_t      lcId;
@@ -198,13 +197,24 @@ typedef struct rlcBearerCfg
    bool isLcAddModRspSent;
 }RlcBearerCfg;
 
+typedef struct rlcUeRecfg
+{
+   uint16_t       cellId;
+   uint8_t        ueId;
+   uint8_t        numLcsToAdd;
+   RlcBearerCfg   rlcLcCfgAdd[MAX_NUM_LC];
+   uint8_t        numLcsToMod;
+   RlcBearerCfg   rlcLcCfgMod[MAX_NUM_LC];
+   uint8_t        numLcsToRel;
+   uint8_t        lcIdToRel[MAX_NUM_LC];
+}RlcUeRecfg;
+
 typedef struct rlcUeCfg
 {
-   uint16_t     cellId;
-   uint8_t      ueId;
-   uint8_t      numLcs;
-   RlcBearerCfg rlcLcCfg[MAX_NUM_LC];
-   UeCfgState rlcUeCfgState; /* InActive / Completed */
+   uint16_t       cellId;
+   uint8_t        ueId;
+   uint8_t        numLcsToAdd;
+   RlcBearerCfg   rlcLcCfgAdd[MAX_NUM_LC];
 }RlcUeCfg;
 
 typedef struct rlcUeCfgRsp
@@ -347,7 +357,7 @@ typedef uint8_t (*RlcRrcDeliveryReportToDuFunc) ARGS((
 /* UE Reconfig Request from DU APP to RLC */
 typedef uint8_t (*DuRlcUeReconfigReq) ARGS((
    Pst           *pst,
-   RlcUeCfg      *ueCfg ));
+   RlcUeRecfg      *ueRecfg ));
 
 /* UE Delete Request from DU APP to RLC */
 typedef uint8_t (*DuRlcUeDeleteReq) ARGS((

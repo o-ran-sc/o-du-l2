@@ -213,10 +213,10 @@ uint8_t fetchLcId(uint8_t drbId)
             numLcs = duCb.actvCellLst[cellIdx]->ueCb[ueIdx].rlcUeCfg.numLcs;
             for(lcIdx = 0; lcIdx < numLcs; lcIdx++)
             {
-               if(duCb.actvCellLst[cellIdx]->ueCb[ueIdx].rlcUeCfg.rlcLcCfg[lcIdx].rbId == drbId && \
-                  duCb.actvCellLst[cellIdx]->ueCb[ueIdx].rlcUeCfg.rlcLcCfg[lcIdx].rbType == RB_TYPE_DRB)
+               if(duCb.actvCellLst[cellIdx]->ueCb[ueIdx].rlcUeCfg.rlcLcCfg[lcIdx].rlcBearerCfg.rbId == drbId && \
+                  duCb.actvCellLst[cellIdx]->ueCb[ueIdx].rlcUeCfg.rlcLcCfg[lcIdx].rlcBearerCfg.rbType == RB_TYPE_DRB)
                {
-                  lcId = duCb.actvCellLst[cellIdx]->ueCb[ueIdx].rlcUeCfg.rlcLcCfg[lcIdx].lcId;
+                  lcId = duCb.actvCellLst[cellIdx]->ueCb[ueIdx].rlcUeCfg.rlcLcCfg[lcIdx].rlcBearerCfg.lcId;
                   return lcId;
                }
             }
@@ -3382,7 +3382,7 @@ uint8_t BuildRlcBearerToAddModList(DuUeCb *ueCb, struct CellGroupConfigRrc__rlc_
    {
       for(lcIdx = 0; lcIdx<ueCb->rlcUeCfg.numLcs; lcIdx++)
       {
-         if(ueCb->rlcUeCfg.rlcLcCfg[lcIdx].isLcAddModRspSent == false)
+         if(ueCb->rlcUeCfg.rlcLcCfg[lcIdx].rlcBearerCfg.isLcAddModRspSent == false)
             elementCnt++;
       }
    }
@@ -3455,11 +3455,11 @@ uint8_t BuildRlcBearerToAddModList(DuUeCb *ueCb, struct CellGroupConfigRrc__rlc_
       idx=0;
       for(lcIdx=0; lcIdx<ueCb->rlcUeCfg.numLcs; lcIdx++)
       {
-         if((ueCb->f1UeDb->actionType != UE_CTXT_CFG_QUERY) && (ueCb->rlcUeCfg.rlcLcCfg[lcIdx].isLcAddModRspSent == true))
+         if((ueCb->f1UeDb->actionType != UE_CTXT_CFG_QUERY) && (ueCb->rlcUeCfg.rlcLcCfg[lcIdx].rlcBearerCfg.isLcAddModRspSent == true))
             continue;
 
          /* Fill Logical channel identity */
-         rlcBearerList->list.array[idx]->logicalChannelIdentity = ueCb->rlcUeCfg.rlcLcCfg[lcIdx].lcId;
+         rlcBearerList->list.array[idx]->logicalChannelIdentity = ueCb->rlcUeCfg.rlcLcCfg[lcIdx].rlcBearerCfg.lcId;
 
          /* Fill Radio Bearer Id and type (DRB/SRB) for this logical channel */
          DU_ALLOC(rlcBearerList->list.array[idx]->servedRadioBearer, sizeof(struct RLC_BearerConfig__servedRadioBearer));
@@ -3469,20 +3469,20 @@ uint8_t BuildRlcBearerToAddModList(DuUeCb *ueCb, struct CellGroupConfigRrc__rlc_
             return RFAILED;
          }
          rlcBearerList->list.array[idx]->servedRadioBearer->present = \
-                                                                      covertRbTypeFromIntEnumToRrcEnum(ueCb->rlcUeCfg.rlcLcCfg[lcIdx].rbType);
+                                                                      covertRbTypeFromIntEnumToRrcEnum(ueCb->rlcUeCfg.rlcLcCfg[lcIdx].rlcBearerCfg.rbType);
          switch(rlcBearerList->list.array[idx]->servedRadioBearer->present)
          {
             case RLC_BearerConfig__servedRadioBearer_PR_srb_Identity: 
-               rlcBearerList->list.array[idx]->servedRadioBearer->choice.srb_Identity = ueCb->rlcUeCfg.rlcLcCfg[lcIdx].rbId;
+               rlcBearerList->list.array[idx]->servedRadioBearer->choice.srb_Identity = ueCb->rlcUeCfg.rlcLcCfg[lcIdx].rlcBearerCfg.rbId;
                break;
             case RLC_BearerConfig__servedRadioBearer_PR_drb_Identity:
-               rlcBearerList->list.array[idx]->servedRadioBearer->choice.drb_Identity = ueCb->rlcUeCfg.rlcLcCfg[lcIdx].rbId;
+               rlcBearerList->list.array[idx]->servedRadioBearer->choice.drb_Identity = ueCb->rlcUeCfg.rlcLcCfg[lcIdx].rlcBearerCfg.rbId;
                break;
             case RLC_BearerConfig__servedRadioBearer_PR_NOTHING:
             default:
                break;
          }
-         ueCb->rlcUeCfg.rlcLcCfg[lcIdx].isLcAddModRspSent = true;
+         ueCb->rlcUeCfg.rlcLcCfg[lcIdx].rlcBearerCfg.isLcAddModRspSent = true;
 
          rlcBearerList->list.array[idx]->reestablishRLC = NULLP;
 
@@ -3494,7 +3494,7 @@ uint8_t BuildRlcBearerToAddModList(DuUeCb *ueCb, struct CellGroupConfigRrc__rlc_
             DU_LOG("\nERROR  -->  F1AP : Memory allocation failure in BuildRlcBearerToAddModList");
             return RFAILED;
          }
-         if(BuildRlcConfig(&ueCb->rlcUeCfg.rlcLcCfg[lcIdx], rlcBearerList->list.array[idx]->rlc_Config) != ROK)
+         if(BuildRlcConfig(&ueCb->rlcUeCfg.rlcLcCfg[lcIdx].rlcBearerCfg, rlcBearerList->list.array[idx]->rlc_Config) != ROK)
          {
             DU_LOG("\nERROR  -->  F1AP : BuildRlcConfig failed");
             return RFAILED;
@@ -3510,7 +3510,7 @@ uint8_t BuildRlcBearerToAddModList(DuUeCb *ueCb, struct CellGroupConfigRrc__rlc_
          }
          for(macLcIdx = 0; macLcIdx < ueCb->duMacUeCfg.numLcs; macLcIdx++)
          {
-            if(ueCb->duMacUeCfg.lcCfgList[macLcIdx].lcConfig.lcId == ueCb->rlcUeCfg.rlcLcCfg[lcIdx].lcId)
+            if(ueCb->duMacUeCfg.lcCfgList[macLcIdx].lcConfig.lcId == ueCb->rlcUeCfg.rlcLcCfg[lcIdx].rlcBearerCfg.lcId)
             {
                if(BuildMacLCConfig(&ueCb->duMacUeCfg.lcCfgList[macLcIdx].lcConfig, rlcBearerList->list.array[idx]->mac_LogicalChannelConfig) != ROK)
                {
@@ -9736,7 +9736,7 @@ void freeDuUeCfg(UeCtxtActionType actionType, DuUeCfg *ueCfg)
    {
       for(lcIdx = 0; lcIdx < ueCfg->numRlcLcs; lcIdx++)
       {
-         freeRlcLcCfg(&ueCfg->rlcLcCfg[lcIdx]);
+         freeRlcLcCfg(&ueCfg->rlcLcCfg[lcIdx].rlcBearerCfg);
       }
    }
 
@@ -10082,30 +10082,30 @@ uint8_t extractDrbSnssaiCfg(SNSSAI_t *RecvSnssai, Snssai **snssaiToBeShared)
  * ****************************************************************/
 
 void procRlcLcCfg(uint8_t rbId, uint8_t lcId, uint8_t rbType, uint8_t rlcMode,\
-   uint8_t configType, RLC_Config_t *f1RlcCfg, RlcBearerCfg *lcCfg, QoSInformation_t *qoSInformation)
+   uint8_t configType, RLC_Config_t *f1RlcCfg, DuRlcBearerCfg *lcCfg, QoSInformation_t *qoSInformation)
 {
    DRB_Information_t *drbInfo;
 
-   lcCfg->rbId   = rbId;
+   lcCfg->rlcBearerCfg.rbId   = rbId;
    lcCfg->configType = configType;
 
    if(rbType == RB_TYPE_SRB)
    {
-      lcCfg->rbType = RB_TYPE_SRB;
-      lcCfg->lcId   = rbId;
-      lcCfg->lcType = LCH_DCCH;
-      lcCfg->rlcMode = RLC_AM;
+      lcCfg->rlcBearerCfg.rbType = RB_TYPE_SRB;
+      lcCfg->rlcBearerCfg.lcId   = rbId;
+      lcCfg->rlcBearerCfg.lcType = LCH_DCCH;
+      lcCfg->rlcBearerCfg.rlcMode = RLC_AM;
    }
    else if(rbType == RB_TYPE_DRB)
    {
-      lcCfg->rbType = RB_TYPE_DRB;
-      lcCfg->lcId   = lcId;
-      lcCfg->lcType = LCH_DTCH;
-      lcCfg->rlcMode = rlcMode;
+      lcCfg->rlcBearerCfg.rbType = RB_TYPE_DRB;
+      lcCfg->rlcBearerCfg.lcId   = lcId;
+      lcCfg->rlcBearerCfg.lcType = LCH_DTCH;
+      lcCfg->rlcBearerCfg.rlcMode = rlcMode;
    }
    if(f1RlcCfg) /* rlc mode config recived */
    {
-      extractRlcModeCfg(lcCfg->rlcMode, lcCfg, f1RlcCfg);
+      extractRlcModeCfg(lcCfg->rlcBearerCfg.rlcMode, &lcCfg->rlcBearerCfg, f1RlcCfg);
    }
    if(qoSInformation != NULLP)
    {
@@ -10115,7 +10115,7 @@ void procRlcLcCfg(uint8_t rbId, uint8_t lcId, uint8_t rbType, uint8_t rlcMode,\
                QoSInformation_ExtIEs__value_PR_DRB_Information)
          {
             drbInfo = &qoSInformation->choice.choice_extension->value.choice.DRB_Information; 
-            if(extractDrbSnssaiCfg(&drbInfo->sNSSAI, &lcCfg->snssai) != ROK)
+            if(extractDrbSnssaiCfg(&drbInfo->sNSSAI, &lcCfg->rlcBearerCfg.snssai) != ROK)
             {
                DU_LOG("\nERROR  -->  DUAPP: Unable to extract Snssai information at procRlcLcCfg()");
                return;
@@ -10556,7 +10556,7 @@ uint8_t extractRlcCfgToAddMod(struct CellGroupConfigRrc__rlc_BearerToAddModList 
      
      /* Filling RLC/MAC Config*/
      memset(&ueCfgDb->macLcCfg[idx], 0, sizeof(DuLcCfg));
-     memset(&ueCfgDb->rlcLcCfg[idx], 0, sizeof(RlcBearerCfg));
+     memset(&ueCfgDb->rlcLcCfg[idx], 0, sizeof(DuRlcBearerCfg));
      procRlcLcCfg(rbId, lcId, rbType, rlcMode, CONFIG_UNKNOWN, f1RlcCfg, &(ueCfgDb->rlcLcCfg[idx]), NULLP);
      if(procMacLcCfg(lcId, rbType, CONFIG_UNKNOWN, NULL, NULL, NULL, macUlLcCfg, &ueCfgDb->macLcCfg[idx], NULL) != ROK)
      {
@@ -12964,7 +12964,7 @@ uint8_t extractCuToDuRrcInfoExt(ProtocolExtensionContainer_4624P16_t *protocolIe
  * @return void
  *
  * ****************************************************************/
-uint8_t procSrbListToSetup(SRBs_ToBeSetup_Item_t * srbItem, DuLcCfg *duMacLcToAdd, RlcBearerCfg *rlcLcToAdd)
+uint8_t procSrbListToSetup(SRBs_ToBeSetup_Item_t * srbItem, DuLcCfg *duMacLcToAdd, DuRlcBearerCfg *rlcLcToAdd)
 {
 
    /* Filling RLC INFO */
@@ -13004,7 +13004,7 @@ uint8_t extractSrbListToSetup(SRBs_ToBeSetup_List_t *srbCfg, DuUeCfg *ueCfgDb)
    uint8_t ret = ROK, srbIdx = 0, rlcLcIdx = 0;
    SRBs_ToBeSetup_Item_t *srbItem = NULLP;
    DuLcCfg *macLcCtxt = NULLP;
-   RlcBearerCfg *rlcLcCtxt = NULLP;
+   DuRlcBearerCfg *rlcLcCtxt = NULLP;
 
    if(srbCfg)
    {
@@ -13029,7 +13029,7 @@ uint8_t extractSrbListToSetup(SRBs_ToBeSetup_List_t *srbCfg, DuUeCfg *ueCfgDb)
 
          for(rlcLcIdx = 0; rlcLcIdx < ueCfgDb->numMacLcs; rlcLcIdx++)
          {
-            if(ueCfgDb->rlcLcCfg[rlcLcIdx].rbId == srbItem->sRBID && ueCfgDb->rlcLcCfg[rlcLcIdx].rbType == RB_TYPE_SRB)
+            if(ueCfgDb->rlcLcCfg[rlcLcIdx].rlcBearerCfg.rbId == srbItem->sRBID && ueCfgDb->rlcLcCfg[rlcLcIdx].rlcBearerCfg.rbType == RB_TYPE_SRB)
             {
                macLcCtxt = &ueCfgDb->macLcCfg[rlcLcIdx];
                rlcLcCtxt = &ueCfgDb->rlcLcCfg[rlcLcIdx];
@@ -13044,7 +13044,7 @@ uint8_t extractSrbListToSetup(SRBs_ToBeSetup_List_t *srbCfg, DuUeCfg *ueCfgDb)
          }
          if(!rlcLcCtxt)
          {
-            memset(&ueCfgDb->rlcLcCfg[ueCfgDb->numRlcLcs], 0, sizeof(RlcBearerCfg));
+            memset(&ueCfgDb->rlcLcCfg[ueCfgDb->numRlcLcs], 0, sizeof(DuRlcBearerCfg));
             rlcLcCtxt = &ueCfgDb->rlcLcCfg[ueCfgDb->numRlcLcs];
             ueCfgDb->numRlcLcs++;
          }
@@ -13085,7 +13085,7 @@ uint8_t extractSrbListToSetup(SRBs_ToBeSetup_List_t *srbCfg, DuUeCfg *ueCfgDb)
  * ****************************************************************/
 
 uint8_t procDrbListToSetupMod(uint8_t lcId, DRBs_ToBeSetup_Item_t *drbItem,\
-DRBs_ToBeSetupMod_Item_t *drbSetupModItem, DRBs_ToBeModified_Item_t *drbModItem, DuLcCfg *macLcToAdd, RlcBearerCfg *rlcLcToAdd, UpTnlCfg *upTnlInfo, RlcUeCfg *storedRlcUeCfg)
+DRBs_ToBeSetupMod_Item_t *drbSetupModItem, DRBs_ToBeModified_Item_t *drbModItem, DuLcCfg *macLcToAdd, DuRlcBearerCfg *rlcLcToAdd, UpTnlCfg *upTnlInfo, RlcUeCfg *storedRlcUeCfg)
 {
    uint8_t cfgIdx = 0;
    RlcMode rlcModeInfo;
@@ -13122,9 +13122,9 @@ DRBs_ToBeSetupMod_Item_t *drbSetupModItem, DRBs_ToBeModified_Item_t *drbModItem,
       {
          for(cfgIdx = 0; cfgIdx < storedRlcUeCfg->numLcs; cfgIdx++)
          {
-            if(storedRlcUeCfg->rlcLcCfg[cfgIdx].lcId == lcId)
+            if(storedRlcUeCfg->rlcLcCfg[cfgIdx].rlcBearerCfg.lcId == lcId)
             {
-               rlcModeInfo = storedRlcUeCfg->rlcLcCfg[cfgIdx].rlcMode;
+               rlcModeInfo = storedRlcUeCfg->rlcLcCfg[cfgIdx].rlcBearerCfg.rlcMode;
                break;
             }
          }
@@ -13167,7 +13167,7 @@ uint8_t extractDrbListToSetupMod(DRBs_ToBeSetup_List_t *drbCfg, DRBs_ToBeSetupMo
    DRBs_ToBeSetupMod_ItemIEs_t *drbSetupModItem = NULLP;
    DRBs_ToBeModified_ItemIEs_t *drbModItem = NULLP;
    DuLcCfg *macLcCtxt = NULLP;
-   RlcBearerCfg *rlcLcCtxt = NULLP;
+   DuRlcBearerCfg *rlcLcCtxt = NULLP;
 
    ret = ROK;
    if(drbCount > 0)
@@ -13314,7 +13314,7 @@ uint8_t extractDrbListToRelease(uint8_t ueId, DRBs_ToBeReleased_List_t *drbToRel
    uint8_t drbId = 0, lcId = 0;
    DRBs_ToBeReleased_ItemIEs_t *drbRelItem = NULLP;
    DuLcCfg *macLcCtxt = NULLP;
-   RlcBearerCfg *rlcLcCtxt = NULLP;
+   DuRlcBearerCfg *rlcLcCtxt = NULLP;
 
    ret = ROK;
    if(drbCount > 0)
@@ -13337,7 +13337,7 @@ uint8_t extractDrbListToRelease(uint8_t ueId, DRBs_ToBeReleased_List_t *drbToRel
 
          for(rlcLcIdx = 0; rlcLcIdx < ueCfgDb->numRlcLcs; rlcLcIdx++)
          {
-            if(ueCfgDb->rlcLcCfg[rlcLcIdx].rbId == drbId && ueCfgDb->rlcLcCfg[rlcLcIdx].rbType == RB_TYPE_DRB)
+            if(ueCfgDb->rlcLcCfg[rlcLcIdx].rlcBearerCfg.rbId == drbId && ueCfgDb->rlcLcCfg[rlcLcIdx].rlcBearerCfg.rbType == RB_TYPE_DRB)
             {
                macLcCtxt = &ueCfgDb->macLcCfg[rlcLcIdx];
                rlcLcCtxt = &ueCfgDb->rlcLcCfg[rlcLcIdx];
@@ -13353,7 +13353,7 @@ uint8_t extractDrbListToRelease(uint8_t ueId, DRBs_ToBeReleased_List_t *drbToRel
          }
          if(!rlcLcCtxt)
          {
-            memset(&ueCfgDb->rlcLcCfg[ueCfgDb->numRlcLcs], 0, sizeof(RlcBearerCfg));
+            memset(&ueCfgDb->rlcLcCfg[ueCfgDb->numRlcLcs], 0, sizeof(DuRlcBearerCfg));
             rlcLcCtxt = &ueCfgDb->rlcLcCfg[ueCfgDb->numRlcLcs];
             ueCfgDb->numRlcLcs++;
          }
@@ -15717,8 +15717,8 @@ uint8_t BuildSrbSetupModList(SRBs_SetupMod_List_t *srbList, DuUeCfg *ueCfg)
       srbItemIe->id = ProtocolIE_ID_id_SRBs_SetupMod_Item;
       srbItemIe->criticality = Criticality_reject;
       srbItemIe->value.present = SRBs_SetupMod_ItemIEs__value_PR_SRBs_SetupMod_Item;
-      srbItemIe->value.choice.SRBs_SetupMod_Item.sRBID = ueCfg->rlcLcCfg[srbIdx].rbId;
-      srbItemIe->value.choice.SRBs_SetupMod_Item.lCID = ueCfg->rlcLcCfg[srbIdx].lcId;
+      srbItemIe->value.choice.SRBs_SetupMod_Item.sRBID = ueCfg->rlcLcCfg[srbIdx].rlcBearerCfg.rbId;
+      srbItemIe->value.choice.SRBs_SetupMod_Item.lCID = ueCfg->rlcLcCfg[srbIdx].rlcBearerCfg.lcId;
    }
    return ROK;
 }
@@ -16152,10 +16152,10 @@ uint8_t BuildAndSendUeContextModRsp(DuUeCb *ueCb)
                                                                             UEContextModificationResponseIEs__value_PR_SRBs_SetupMod_List;
          for(rbIdx = 0; rbIdx < ueCb->rlcUeCfg.numLcs; rbIdx++)
          {
-            if(ueCb->rlcUeCfg.rlcLcCfg[rbIdx].rbType == RB_TYPE_SRB)
+            if(ueCb->rlcUeCfg.rlcLcCfg[rbIdx].rlcBearerCfg.rbType == RB_TYPE_SRB)
             {
                memcpy(&ueCb->f1UeDb->duUeCfg.rlcLcCfg[ueCb->f1UeDb->duUeCfg.numRlcLcs++], &ueCb->rlcUeCfg.rlcLcCfg[rbIdx],\
-                     sizeof(RlcBearerCfg));
+                     sizeof(DulcBearerCfg));
             }
          }
          ret = BuildSrbSetupModList(&ueContextModifyRes->protocolIEs.list.array[ieIdx]->value.choice.SRBs_SetupMod_List, \
