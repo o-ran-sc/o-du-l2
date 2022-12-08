@@ -169,12 +169,28 @@ typedef struct duMacUeCfg
 #endif
 }DuMacUeCfg;
 
+typedef struct duRlcBearerCfg
+{
+   ConfigType   configType;
+   RlcBearerCfg rlcBearerCfg;
+}DuRlcBearerCfg;
+
+typedef struct duRlcUeCfg
+{
+   uint16_t       cellId;
+   uint8_t        ueId;
+   uint8_t        numLcs;
+   DuRlcBearerCfg rlcLcCfg[MAX_NUM_LC];
+   UeCfgState     rlcUeCfgState; /* InActive / Completed */
+}DuRlcUeCfg;
+
+
 typedef struct duUeCfg
 {
    void *cellGrpCfg;
    void *ueNrCapability;
    uint8_t numRlcLcs;        /* Rlc Ue Cfg */
-   RlcBearerCfg rlcLcCfg[MAX_NUM_LC];
+   DuRlcBearerCfg rlcLcCfg[MAX_NUM_LC];
    uint8_t numMacLcs;        /* Mac Ue Cfg */
    DuLcCfg   macLcCfg[MAX_NUM_LC];
    AmbrCfg *ambrCfg;
@@ -219,7 +235,7 @@ typedef struct duUeCb
    UeState  ueState;         /* UE Active/ Ue Inactive state */
    MacCfraResource cfraResource; /* CF-RA resource assigned by MAC/SCH */
    DuMacUeCfg duMacUeCfg;        /* Mac Ue Cfg */
-   RlcUeCfg rlcUeCfg;        /* Rlc Ue Cfg */
+   DuRlcUeCfg duRlcUeCfg;        /* Rlc Ue Cfg */
 }DuUeCb;
 
 typedef struct  slotInfo

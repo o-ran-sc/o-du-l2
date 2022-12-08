@@ -166,7 +166,6 @@ uint8_t fillLcCfg(RlcCb *gCb, RlcEntCfgInfo *rlcUeCfg, RlcBearerCfg *duRlcUeCfg)
       memcpy(rlcUeCfg->snssai, duRlcUeCfg->snssai, sizeof(Snssai));
    }
    fillEntModeAndDir(&rlcUeCfg->entMode, &rlcUeCfg->dir, duRlcUeCfg->rlcMode);
-   rlcUeCfg->cfgType               = duRlcUeCfg->configType;
    switch(rlcUeCfg->entMode)
    {
 
@@ -213,7 +212,7 @@ uint8_t fillLcCfg(RlcCb *gCb, RlcEntCfgInfo *rlcUeCfg, RlcBearerCfg *duRlcUeCfg)
  *    Function : fillRlcCfg
  *
  *    Functionality:
- *      fills LC Cfgs to be Add/Mod/Del in RLC
+ *      fills LC Cfgs to be Add in RLC
  *
  * @params[in] 
  *             RlcEntCfgInfo pointer
@@ -229,16 +228,77 @@ uint8_t fillRlcCfg(RlcCb *gCb, RlcCfgInfo *rlcUeCfg, RlcUeCfg *ueCfg)
    
    rlcUeCfg->ueId    = ueCfg->ueId;
    rlcUeCfg->cellId  = ueCfg->cellId;
-   rlcUeCfg->numEnt  = ueCfg->numLcs;
+   rlcUeCfg->numEnt  = ueCfg->numLcsToAdd;
    rlcUeCfg->transId = getTransId();
-   
    for(lcIdx = 0; lcIdx < rlcUeCfg->numEnt; lcIdx++)
    {
-      if(fillLcCfg(gCb, &rlcUeCfg->entCfg[lcIdx], &ueCfg->rlcLcCfg[lcIdx]) != ROK)
+      if(fillLcCfg(gCb, &rlcUeCfg->entCfg[lcIdx], &ueCfg->rlcLcCfgAdd[lcIdx]) != ROK)
       {
           DU_LOG("\nERROR  --> RLC : fillRlcCfg(): Failed to fill LC configuration");
           return RFAILED;
       }
+      rlcUeCfg->entCfg[lcIdx].cfgType = CONFIG_ADD; 
+   }
+   return ROK;
+}
+
+/*******************************************************************
+ *
+ * @brief updates LC Cfgs to be Added/Mod/Rel in RLC
+ *
+ * @details
+ *
+ *    Function : updateRlcCfg
+ *
+ *    Functionality:
+ *      updates LC Cfgs to be Add/Mod/Del in RLC
+ *
+ * @params[in] 
+ *             RlcEntCfgInfo pointer
+ *             RlcBearerCfg pointer
+ * @return ROK - Success
+ *          RFAILED - Failure
+ *
+ ******************************************************************/
+
+uint8_t updateRlcCfg(RlcCb *gCb, RlcCfgInfo *rlcUeCfg, RlcUeRecfg *ueRecfg)
+{
+   uint8_t lcIdx = 0;
+   
+   rlcUeCfg->ueId    = ueRecfg->ueId;
+   rlcUeCfg->cellId  = ueRecfg->cellId;
+   rlcUeCfg->transId = getTransId();
+   
+   rlcUeCfg->numEnt = 0;
+   for(lcIdx = 0; lcIdx < ueRecfg->numLcsToAdd; lcIdx++)
+   {
+      if(fillLcCfg(gCb, &rlcUeCfg->entCfg[rlcUeCfg->numEnt], &ueRecfg->rlcLcCfgAdd[lcIdx]) != ROK)
+      {
+          DU_LOG("\nERROR  --> RLC : fillRlcCfg(): Failed to fill LC configuration");
+          return RFAILED;
+      }
+      rlcUeCfg->entCfg[rlcUeCfg->numEnt].cfgType = CONFIG_ADD;
+      rlcUeCfg->numEnt++;
+   }
+   for(lcIdx = 0; lcIdx < ueRecfg->numLcsToMod; lcIdx++)
+   {
+      if(fillLcCfg(gCb, &rlcUeCfg->entCfg[rlcUeCfg->numEnt], &ueRecfg->rlcLcCfgMod[lcIdx]) != ROK)
+      {
+          DU_LOG("\nERROR  --> RLC : fillRlcCfg(): Failed to fill LC configuration");
+          return RFAILED;
+      }
+      rlcUeCfg->entCfg[rlcUeCfg->numEnt].cfgType = CONFIG_MOD;
+      rlcUeCfg->numEnt++;
+   }
+   for(lcIdx = 0; lcIdx < ueRecfg->numLcsToRel; lcIdx++)
+   {
+      if(fillLcCfg(gCb, &rlcUeCfg->entCfg[rlcUeCfg->numEnt], &ueRecfg->rlcLcCfgRel[lcIdx]) != ROK)
+      {
+          DU_LOG("\nERROR  --> RLC : fillRlcCfg(): Failed to fill LC configuration");
+          return RFAILED;
+      }
+      rlcUeCfg->entCfg[rlcUeCfg->numEnt].cfgType = CONFIG_DEL;
+      rlcUeCfg->numEnt++;
    }
    return ROK;
 }
@@ -265,15 +325,65 @@ void fillRlcCfgFailureRsp(RlcCfgCfmInfo *cfgRsp, RlcUeCfg *ueCfg)
 
    cfgRsp->ueId = ueCfg->ueId;
    cfgRsp->cellId = ueCfg->cellId;
-   cfgRsp->numEnt = ueCfg->numLcs;
-   for(cfgIdx =0; cfgIdx<ueCfg->numLcs; cfgIdx++)
+   cfgRsp->numEnt = ueCfg->numLcsToAdd;
+   for(cfgIdx =0; cfgIdx<ueCfg->numLcsToAdd; cfgIdx++)
    {
-      cfgRsp->entCfgCfm[cfgIdx].rbId = ueCfg->rlcLcCfg[cfgIdx].rbId;
-      cfgRsp->entCfgCfm[cfgIdx].rbType = ueCfg->rlcLcCfg[cfgIdx].rbType;
+      cfgRsp->entCfgCfm[cfgIdx].rbId = ueCfg->rlcLcCfgAdd[cfgIdx].rbId;
+      cfgRsp->entCfgCfm[cfgIdx].rbType = ueCfg->rlcLcCfgAdd[cfgIdx].rbType;
       cfgRsp->entCfgCfm[cfgIdx].status.status = RLC_DU_APP_RSP_NOK;
       cfgRsp->entCfgCfm[cfgIdx].status.reason = CKW_CFG_REAS_NONE;
    }
 }
+
+/*******************************************************************
+ *
+ * @brief Fill RlcCfgCfmInfo structure for sending failure response to DU
+ *
+ * @details
+ *
+ *    Function : fillRlcRecfgFailureRsp
+ *
+ *    Functionality:
+ *      Fill RlcCfgCfmInfo structure for sending failure response to DU
+ *
+ * @params[in] RlcCfgCfmInfo *cfgRsp, RlcUeCfg *ueCfg
+ *             
+ * @return void 
+ *
+ * ****************************************************************/
+void fillRlcRecfgFailureRsp(RlcCfgCfmInfo *cfgRsp, RlcUeRecfg *ueRecfg)
+{
+   uint8_t cfgIdx =0;
+
+   cfgRsp->ueId = ueRecfg->ueId;
+   cfgRsp->cellId = ueRecfg->cellId;
+   cfgRsp->numEnt = 0;
+   for(cfgIdx =0; cfgIdx<ueRecfg->numLcsToAdd; cfgIdx++)
+   {
+      cfgRsp->entCfgCfm[cfgRsp->numEnt].rbId = ueRecfg->rlcLcCfgAdd[cfgIdx].rbId;
+      cfgRsp->entCfgCfm[cfgRsp->numEnt].rbType = ueRecfg->rlcLcCfgAdd[cfgIdx].rbType;
+      cfgRsp->entCfgCfm[cfgRsp->numEnt].status.status = RLC_DU_APP_RSP_NOK;
+      cfgRsp->entCfgCfm[cfgRsp->numEnt].status.reason = CKW_CFG_REAS_NONE;
+      cfgRsp->numEnt++;
+   }
+   for(cfgIdx =0; cfgIdx<ueRecfg->numLcsToMod; cfgIdx++)
+   {
+      cfgRsp->entCfgCfm[cfgRsp->numEnt].rbId = ueRecfg->rlcLcCfgMod[cfgIdx].rbId;
+      cfgRsp->entCfgCfm[cfgRsp->numEnt].rbType = ueRecfg->rlcLcCfgMod[cfgIdx].rbType;
+      cfgRsp->entCfgCfm[cfgRsp->numEnt].status.status = RLC_DU_APP_RSP_NOK;
+      cfgRsp->entCfgCfm[cfgRsp->numEnt].status.reason = CKW_CFG_REAS_NONE;
+      cfgRsp->numEnt++;
+   }
+   for(cfgIdx =0; cfgIdx<ueRecfg->numLcsToRel; cfgIdx++)
+   {
+      cfgRsp->entCfgCfm[cfgRsp->numEnt].rbId = ueRecfg->rlcLcCfgRel[cfgIdx].rbId;
+      cfgRsp->entCfgCfm[cfgRsp->numEnt].rbType = ueRecfg->rlcLcCfgRel[cfgIdx].rbType;
+      cfgRsp->entCfgCfm[cfgRsp->numEnt].status.status = RLC_DU_APP_RSP_NOK;
+      cfgRsp->entCfgCfm[cfgRsp->numEnt].status.reason = CKW_CFG_REAS_NONE;
+      cfgRsp->numEnt++;
+   }
+}
+
 /*******************************************************************
  *
  * @brief Handles Ue Create Request from DU APP
@@ -464,7 +574,6 @@ uint8_t RlcProcUlData(Pst *pst, RlcUlData *ulData)
    bool            dLchPduPres;             /* PDU received on dedicated logical channel */
    RguLchDatInd    dLchData[MAX_NUM_LC];    /* PDU info on dedicated logical channel */
    RguDDatIndInfo  *dLchUlDat;              /* UL data on dedicated logical channel */
-   RguCDatIndInfo  *cLchUlDat;              /* UL data on common logical channel */
 
    /* Initializing dedicated logical channel Database */
    DU_LOG("\nDEBUG  -->  RLC: Received UL Data request from MAC");
@@ -569,7 +678,6 @@ uint8_t RlcProcSchedResultRpt(Pst *pst, RlcSchedResultRpt *schRep)
    uint8_t ret = ROK;
    uint8_t idx;                     /* Iterator */
    uint8_t nmbDLch = 0;                 /* Number of dedicated logical channles */
-   RguCStaIndInfo   *cLchSchInfo;    /* Common logical channel scheduling result */
    RguDStaIndInfo   *dLchSchInfo;  /* Dedicated logical channel scheduling result */
 
    DU_LOG("\nDEBUG  -->  RLC : Received scheduling report from MAC");
@@ -641,7 +749,7 @@ uint8_t RlcProcSchedResultRpt(Pst *pst, RlcSchedResultRpt *schRep)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t RlcProcUeReconfigReq(Pst *pst, RlcUeCfg *ueCfg)
+uint8_t RlcProcUeReconfigReq(Pst *pst, RlcUeRecfg *ueRecfg)
 {
    uint8_t ret = ROK;
    RlcCfgInfo *rlcUeCfg = NULLP; //Seed code Rlc cfg struct
@@ -649,7 +757,7 @@ uint8_t RlcProcUeReconfigReq(Pst *pst, RlcUeCfg *ueCfg)
    RlcCfgCfmInfo cfgRsp; 
    Pst rspPst;
 
-   DU_LOG("\nDEBUG  -->  RLC: UE reconfig request received. CellID[%d] UEID[%d]",ueCfg->cellId, ueCfg->ueId);
+   DU_LOG("\nDEBUG  -->  RLC: UE reconfig request received. CellID[%d] UEID[%d]",ueRecfg->cellId, ueRecfg->ueId);
 
    rlcUeCb = RLC_GET_RLCCB(pst->dstInst);
    RLC_ALLOC(rlcUeCb, rlcUeCfg, sizeof(RlcCfgInfo));
@@ -661,12 +769,12 @@ uint8_t RlcProcUeReconfigReq(Pst *pst, RlcUeCfg *ueCfg)
    else
    {
       memset(rlcUeCfg, 0, sizeof(RlcCfgInfo));
-      ret = fillRlcCfg(rlcUeCb, rlcUeCfg, ueCfg);
+      ret = updateRlcCfg(rlcUeCb, rlcUeCfg, ueRecfg);
       if(ret != ROK)
       {
          DU_LOG("\nERROR  -->  RLC: Failed to fill configuration at RlcProcUeReconfigReq()");
          FILL_PST_RLC_TO_DUAPP(rspPst, RLC_UL_INST, EVENT_RLC_UE_RECONFIG_RSP);
-         fillRlcCfgFailureRsp(&cfgRsp, ueCfg);
+         fillRlcRecfgFailureRsp(&cfgRsp, ueRecfg);
          SendRlcUeCfgRspToDu(&rspPst, &cfgRsp);
       }
       else
@@ -677,7 +785,7 @@ uint8_t RlcProcUeReconfigReq(Pst *pst, RlcUeCfg *ueCfg)
       }
    }
    
-   RLC_FREE_SHRABL_BUF(pst->region, pst->pool, ueCfg, sizeof(RlcUeCfg));
+   RLC_FREE_SHRABL_BUF(pst->region, pst->pool, ueRecfg, sizeof(RlcUeRecfg));
    return ret;
 }
 
