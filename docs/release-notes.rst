@@ -19,6 +19,10 @@ Version history
 | **Date**           | **Ver.**           | **Author**         | **Comment**        |
 |                    |                    |                    |                    |
 +--------------------+--------------------+--------------------+--------------------+
+|2022-12-15          | 7.0.0              | Radisys,           | G release          |
+|                    |                    | HCL Technologies   |                    |
+|                    |                    | Ltd.               |                    |
++--------------------+--------------------+--------------------+--------------------+
 |2022-06-16          | 6.0.0              | Radisys,           | F release          |
 |                    |                    | HCL Technologies   |                    |
 |                    |                    | Ltd.               |                    |
@@ -46,6 +50,22 @@ Version history
 Summary
 -------
 
+G- release
+^^^^^^^^^^
+This release contains the following:
+
+ - Improvement of code coverage
+
+ - Discontinuous reception (DRX)
+
+ - Alignment of O-DU high with the latest AAD WG8 specification (above 80% complaint)
+
+ - End-to-end integration support 
+   
+   - WLS memory management update aligned with latest odu-low (FlexRAN 21.11 intel L1)
+   - Upgrade to the latest FAPI Interface and vendor-specific messages
+   - Successfully tested broadcast message reception at L1
+
 F- release
 ^^^^^^^^^^
 This release contains the following:
@@ -57,7 +77,6 @@ This release contains the following:
  - Support for IDLE Mode Paging
 
  - Mobility mode Support (Intra-CU handover)
-
 
  - O1 Module
 
@@ -174,6 +193,27 @@ This release contains the following:
 
 Release Data
 ------------
+G release
+^^^^^^^^^^
++--------------------------------------+--------------------------------------+
+| **Project**                          | ODUHIGH                              |
+|                                      |                                      |   
++--------------------------------------+--------------------------------------+
+| **Repo/commit-ID**                   |o-du/l2/                              |
+|                                      |I05aa5e6890842c41ebed3f7bd07b07708bbaa|
+|                                      |f34                                   |
+|                                      |                                      |
++--------------------------------------+--------------------------------------+
+| **Release designation**              | G release                            |
+|                                      |                                      |   
++--------------------------------------+--------------------------------------+
+| **Release date**                     |2022-12-05                            |
+|                                      |                                      |   
++--------------------------------------+--------------------------------------+
+| **Purpose of the delivery**          | G release                            |
+|                                      |                                      |   
++--------------------------------------+--------------------------------------+
+
 F release
 ^^^^^^^^^^
 +--------------------------------------+--------------------------------------+
@@ -304,6 +344,26 @@ Feature Additions
 ------------------
 
 **JIRA BACK-LOG:**
+
+G-release
+^^^^^^^^^^
+
++-----------------------------------------------+-----------------------------------------------+
+| **JIRA REFERENCE**                            | **SLOGAN**                                    |
+|                                               |                                               |
++-----------------------------------------------+-----------------------------------------------+
+| https://jira.o-ran-sc.org/browse/ODUHIGH-461  | Improvement of code coverage                  |
+|                                               |                                               |
++-----------------------------------------------+-----------------------------------------------+
+| https://jira.o-ran-sc.org/browse/ODUHIGH-462  | Implementation of Discontinuous Reception(DRX)|
+|                                               |                                               |
++-----------------------------------------------+-----------------------------------------------+
+| https://jira.o-ran-sc.org/browse/ODUHIGH-464  | Alignment to latest ORAN WG8 AAD specification|
+|                                               |                                               |
++-----------------------------------------------+-----------------------------------------------+
+| https://jira.o-ran-sc.org/browse/ODUHIGH-475  | Integration of ODU-High with L1               |
+|                                               |                                               |
++-----------------------------------------------+-----------------------------------------------+
 
 F-release
 ^^^^^^^^^^

@@ -6,7 +6,7 @@
 API-Docs
 **********
 
-This is the API-docs for F release o-du/l2.
+This is the API-docs for G release o-du/l2.
 
 .. contents::
    :depth: 3
@@ -89,6 +89,9 @@ API Functions
       p. UL HARQ CRC Indication : MAC receives CRC Indication from PHY and forwards the decoded results to SCH as per Section 
          9.2.3.2.9 of the AAD Spec.
 
+      q. Scheduling Request Indication : MAC indicates to scheduler through this API when UE has to be scheduled for uplink 
+         grant as per Spec 9.2.3.2.17 of the AAD Spec.
+
    B. Scheduler to MAC
 
       a. Cell Configuration Response - Response to cell configuration request from MAC, as per Section 9.2.3.3.1 of the AAD Spec.
@@ -120,6 +123,7 @@ API Functions
       l. Downlink Paging Allocation :  Provides DCI and DL data scheduling information for any Paging queued for a given slot 
          for Paging Channel, as per Section 9.2.3.3.13 of the AAD Spec.
 
+      m. Ue Configuration Response : Response to UE reconfiguration request from MAC, as per Section 9.2.3.3.5 of the AAD Spec.
 
 3. DU APP - MAC Interface
 
@@ -175,7 +179,7 @@ API Functions
 
    B. RLC to DU APP
 
-      a. UE Create Response - Response to UE Create Request from DU APP, as per Section 9.2.5.3 of the AAD Spec.
+      a. UE Create Response - Response to UE Create Request from DU APP, as per Section 9.2.5.2 of the AAD Spec.
 
       b. UE Reconfiguration Response - Response to UE Recofiguration Request from DU APP, as per Section 9.2.5.4 of the AAD Spec.
 
