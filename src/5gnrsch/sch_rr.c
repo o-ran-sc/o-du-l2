@@ -42,9 +42,6 @@
 uint8_t schMsg3RetxSchedulingForUe(SchRaCb *raCb)
 {
    bool      k2Found = false;
-#ifdef NR_TDD
-   uint8_t   totalCfgSlot = 0;
-#endif
    uint16_t             dciSlot = 0;
    SlotTimingInfo       dciTime, msg3Time;
    SchCellCb            *cell = NULLP;
