@@ -423,7 +423,7 @@ uint8_t unpackRrcDeliveryReportToDu(RlcRrcDeliveryReportToDuFunc func, Pst *pst,
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t packDuRlcUeReconfigReq(Pst *pst, RlcUeCfg *ueCfg)
+uint8_t packDuRlcUeReconfigReq(Pst *pst, RlcUeRecfg *ueRecfg)
 {
    Buffer *mBuf = NULLP;
  
@@ -435,7 +435,7 @@ uint8_t packDuRlcUeReconfigReq(Pst *pst, RlcUeCfg *ueCfg)
          return RFAILED;
       }
       /* pack the address of the structure */
-      CMCHKPK(oduPackPointer,(PTR)ueCfg, mBuf);
+      CMCHKPK(oduPackPointer,(PTR)ueRecfg, mBuf);
    }
    else
    {
@@ -467,11 +467,11 @@ uint8_t unpackRlcUeReconfigReq(DuRlcUeReconfigReq func, Pst *pst, Buffer *mBuf)
 {
    if(pst->selector == ODU_SELECTOR_LWLC)
    {
-      RlcUeCfg *ueCfg;
+      RlcUeRecfg *ueRecfg;
       /* unpack the address of the structure */
-      CMCHKUNPK(oduUnpackPointer, (PTR *)&ueCfg, mBuf);
+      CMCHKUNPK(oduUnpackPointer, (PTR *)&ueRecfg, mBuf);
       ODU_PUT_MSG_BUF(mBuf);
-      return (*func)(pst, ueCfg);
+      return (*func)(pst, ueRecfg);
    }
    else
    {
