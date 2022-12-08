@@ -1,12 +1,13 @@
 .. This work is licensed under a Creative Commons Attribution 4.0 International License.
 .. SPDX-License-Identifier: CC-BY-4.0
 
-
+##################
 O-DU High Overview
-*********************
+##################
 
+**********************
 O-DU High Architecture
------------------------
+**********************
 
 O-DU implements the functional blocks of L2 layer of a 5G NR protocol stack in SA(StandAlone) mode.
 These layers primarily include NR MAC, NR Scheduler and NR RLC layers.
@@ -19,6 +20,7 @@ O-DU modules are developed as shown in the below diagram.
 
   Figure 1 - O-DU High Architecture Diagram
 
+==============================
 O-DU High Thread Architecture
 ==============================
 
@@ -42,11 +44,13 @@ level as follows:
 
 - Thread 8: O1
 
+=================
 O-DU High Modules
 =================
 
 DU APP 
-^^^^^^^^^^^^^^^^^^
+************
+
 This module configures and manages all the operations of O-DU.
 It interfaces with external entities as follows:
 
@@ -74,7 +78,8 @@ DU App submodules are as follows:
 - ASN.1 Codecs contain ASN.1 encode/decode functions which are used for System information, F1AP and E2AP messages.
 
 5G NR RLC
-^^^^^^^^^^^^^^^^^^
+************
+
 This module provides services for transferring the control and data messages
 between MAC layer and O-CU (via DU App).
 
@@ -82,7 +87,8 @@ between MAC layer and O-CU (via DU App).
 uplink and downlink functionality respectively. 
 
 5G NR MAC
-^^^^^^^^^^^^^^^^^^
+************
+
 This module uses the services of the NR physical layer to send and receive data
 on the various logical channels.
 Functions of the 5G NR MAC module are as follows:
@@ -97,12 +103,13 @@ Functions of the 5G NR MAC module are as follows:
 
 
 O-DU Utility and Common Functions
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+*********************************
+
 These modules contain platform specific files and support O-DU High functionality and message exchanges.
 
 
 O1 Module
-^^^^^^^^^^
+==========
 
 .. figure:: ODU-O1-Arch.jpg
   :width: 554
@@ -126,9 +133,9 @@ O1 architecture has following components:
 
 - Netopeer server: Serves the northbound SMO/OAM Netconf requests.
 
-
-O-DU-High Interfaces
---------------------
+**********************
+O-DU High Interfaces
+**********************
 
 This section describes the other modules that O-DU High interfaces with, as shown in below diagram.
 
@@ -227,12 +234,13 @@ As shown in Figure 3, O-DU High interfaces with the following modules:
 
 
 
+***********************
 O-DU High functionality
------------------------
+***********************
 
-
+===============================
 Cell Up and Broadcast Procedure
-================================
+===============================
 
 This section describes the cell-up procedure within O-DU High.
 
@@ -276,10 +284,9 @@ As seen in the Figure 4,
 - The 5G NR MAC mutiplexes the PDU and sends SSB/SIB1 packets towards the O-DU Low through the Lower MAC.
 
 
-
+=====================
 UE Related Procedure
-====================
-
+=====================
 
 The O-DU High supports 
 
@@ -335,6 +342,7 @@ Figure 5 below depicts the above call flow, inclusive of all interfaces:
 
   - RRC Release
 
+================================
 Closed Loop Automation Procedure
 ================================
 
@@ -361,7 +369,7 @@ This section describes the closed loop automation procedure within O-DU High.
 
 7. On receiving cell bring up command from SMO, the complete Cell bring up and UE attach procedure will be repeated (as explained in above sections)
 
-
+===================================
 O1 Netconf get-alarm list procedure
 ===================================
 
@@ -370,7 +378,7 @@ This section describes the *Health Status Retrieval* scenario of O-DU High healt
 
 .. figure:: ODU-O1-GetAlarmListFlow.jpg
   :width: 869
-  :alt: Figure 6 O1 get alarm-list flow  
+  :alt: Figure 7 O1 get alarm-list flow  
 
   Figure 7 - O1 get alarm-list flow
 
@@ -386,9 +394,9 @@ As seen in the Figure 7,
 
 - The callback function fetches the alarm list from Alarm Manager and sends it back to the client (SMO/OAM) via  Netconf interface. 
 
-
+==========================
 Network Slicing procedure
-=========================
+==========================
 
 This section describes the Network Slicing feature within O-DU High.
 
@@ -413,9 +421,9 @@ As seen in the Figure 8,
 
 - Scheduler updates the received Slice Configuration in its DB and sends back the Slice Reconfiguration Response to MAC and further MAC forwards it to DU APP. Scheduler applies the optimized RRM policies for the dedicated slice.
 
-
+==========================
 Idle Mode Paging procedure
-===========================
+==========================
 
 This section describes the Idle Mode Paging procedure within O-DU High.
 
@@ -438,8 +446,9 @@ As seen in the Figure 9,
 
 - MAC forwards the PAGE to PHY in TX_Data.Request.
 
+==============================
 Inter-DU Handover within O-CU
-=============================
+==============================
 
 This section describes the handling of inter-DU handover of a UE within O-DU High.
 
@@ -447,7 +456,7 @@ This section describes the handling of inter-DU handover of a UE within O-DU Hig
    :width: 600
    :alt: Inter-DU Handover withing O-CU
  
-   Figure 9 -  Inter_DU Handover call flow
+   Figure 10 -  Inter_DU Handover call flow
 
 Assumption: UE is RRC connected with DU and PDU data session is active.
 
@@ -483,9 +492,58 @@ Assumption: UE is RRC connected with DU and PDU data session is active.
 
 - The source O-DU responds to O-CU with UE CONTEXT RELEASE COMPLETE message.
 
+=============================
+Discontinuous reception (DRX)
+=============================
 
+This section describes the Discontinuous reception (DRX) feature within O-DU High.
+
+
+.. figure:: Discontinuous_reception.PNG
+  :width: 600
+  :alt: Discontinuous reception flow
+
+  Figure 11 -  Discontinuous reception flow
+
+- The connected mode DRX is used to improve UE's battery power consumption. This allows UE to be active for a certain amount of time to monitor PDCCH. UE shall become active or inactive based on the DRX timers. 
+
+- When UE is created at O-DU during RRC connection setup procedure, DU APP forwards the default DRX configuration to MAC, who then passes it to SCH as part of UE configuration request. SCH stores these configuration and will use it to calculate the start time and expiry time of various DRX timers. But these timers will only start after UE is RRC connected.
+
+- O-DU may receive modified DRX-configuration in UE CONTEXT SETUP REQUEST from O-CU. DU APP forwards it to MAC who forwards it to SCH as part of UE reconfiguration request. In this case, SCH will stop all DRX timers, re-calculate the start time and expiry time of various timers based on  updated configuration and restart the drx-onDurationTimer. 
+
+- Along with long cycle, DRX in O-DU high also supports short cycle which is enabled if short cycle configuration is recived in UE CONTEXT SETUP REQUEST. 
+
+- DRX timers supported in ODU-High are drx-onDurationTimer, drx-InactivityTimer, drx-ShortCycleTimer, drx-HARQ-RTT-TimerDL, drx-RetransmissionTimerDL, drx-HARQ-RTT-TimerUL and drx-RetransmissionTimerUL. 
+
+- UE is active when any of the following timers is running: drx-onDurationTimer, drx-InactivityTimer, drx-RetransmissionTimerDL or drx-RetransmissionTimerUL, else the UE is considered as inactive.
+
+- Initially, drx-onDurationTimer is started based on long cycle length. While drx-onDurationTimer or drx-InactivityTimer are running, UE becomes active to monitor PDCCH and send data in UL/DL. When drx-InactivityTimer expires, drx-ShortCycleTimer starts. While drx-ShortCycleTimer is running, drx-onDurationTimer is started based on short cycle length. Once drx-ShortCycleTimer expires, long cycle length is used again. Refer to figure 12 below for detailed working of these timers.
+
+.. figure:: Drx_Onduration_Inactive_ShortCycle_Timer.png
+  :width: 600
+  :alt: onDurationTimer,InactivityTimer,ShortCycleTimer flow
+
+  Figure 12 -  onDurationTimer,InactivityTimer,ShortCycleTimer flow
+
+- If HARQ is received/sent, drx-HARQ-RTT-TimerDL or drx-HARQ-RTT-TimerUL is started. On its expiry drx-RetransmissionTimerDL or drx-RetransmissionTimerUL will start. While it is running, UE becomes active for retransmission of data in DL/UL. Refer to figure 13 and 14 below for detailed working of these timers.
+
+.. figure:: Drx_Dl_Harq_Retransmission_Timer.png
+  :width: 600
+  :alt: HARQ-RTT-TimerDL, RetransmissionTimerDL flow
+
+  Figure 13 - DL Harq Retransmission Timers flow
+
+.. figure:: Drx_Ul_Harq_Retransmission_Timer.png
+  :width: 600
+  :alt: HARQ-RTT-TimerUL, RetransmissionTimerUL flow
+
+  Figure 14 - UL Harq Retransmission Timers flow
+
+- If O-DU receives DRX configuration release indicator IE as a part of UE CONTEXT MODIFICATION REQUEST from O-CU, DU APP will forward this indicator to MAC which forwards it to SCH as part of UE reconfiguration request. In this case SCH stops all DRX timers, deletes DRX configuration and marks UE as active by default. 
+
+***********************
 OSC Testcases Supported
------------------------
+***********************
 
 The O-DU High partially supports below use-cases:
 

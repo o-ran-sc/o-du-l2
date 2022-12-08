@@ -26,9 +26,9 @@ O-DU High uses C languages. The coding guidelines followed are:
 
 .. figure:: LicHeader.jpg
   :width: 600
-  :alt: Figure 8 License Header and Footer
+  :alt: Figure 16 License Header and Footer
 
-  Figure 8 : License Header and Footer
+  Figure 16 : License Header and Footer
 
 O-DU High code
 ---------------
@@ -280,9 +280,9 @@ Here,
 
 .. figure:: ModeofCommunication.jpg
    :width: 600
-   :alt: Figure 9 Mode of communication between O-DU High entities
+   :alt: Figure 17 Mode of communication between O-DU High entities
 
-   Figure 9: Mode of communication between O-DU High entities
+   Figure 17: Mode of communication between O-DU High entities
 
 Steps of Communication
 ++++++++++++++++++++++
@@ -344,9 +344,9 @@ Below figure summarized the above steps of intra O-DU High communication
 
 .. figure:: StepsOfCommunication.jpg
    :width: 600
-   :alt: Figure 10 Communication between entities
+   :alt: Figure 18 Communication between entities
 
-   Figure 10: Steps of Communication between O-DU High entities
+   Figure 18: Steps of Communication between O-DU High entities
 
 
 Communication with Intel O-DU Low
