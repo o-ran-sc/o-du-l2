@@ -6,7 +6,7 @@
 API-Docs
 **********
 
-This is the API-docs for F release o-du/l2.
+This is the API-docs for G release o-du/l2.
 
 .. contents::
    :depth: 3
