@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0d2dea3b_f8f35cd5",
+        "filename": "src/5gnrrlc/rlc_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 270,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-12-08T08:57:23Z",
+      "side": 1,
+      "message": "we can remove this line, because numEnt is reset to 0 and incremented in for loops below",
+      "range": {
+        "startLine": 270,
+        "startChar": 32,
+        "endLine": 270,
+        "endChar": 43
+      },
+      "revId": "e4ed039e339fb3107451d29f49ae4aa53bc6600c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e21a73a4_1e300f6d",
+        "filename": "src/5gnrrlc/rlc_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 281,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-12-08T08:57:23Z",
+      "side": 1,
+      "message": "here index should be rlcUeCfg-\u003enumEnt instead of lcIdx. Same at lines 291 and 301",
+      "range": {
+        "startLine": 281,
+        "startChar": 23,
+        "endLine": 281,
+        "endChar": 28
+      },
+      "revId": "e4ed039e339fb3107451d29f49ae4aa53bc6600c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
