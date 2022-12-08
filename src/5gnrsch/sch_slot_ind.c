@@ -923,13 +923,13 @@ uint8_t schProcessSlotInd(SlotTimingInfo *slotInd, Inst schInst)
                /* DL Data ReTransmisson */
                isDlMsgPending = true;
                isDlMsgScheduled = schFillBoGrantDlSchedInfo(cell, *slotInd, ueId, TRUE, ((SchDlHqProcCb**) &(node->node)));
-#ifdef NR_DRX 
                if(isDlMsgScheduled)
                {
+#ifdef NR_DRX 
                   schDrxStopDlHqRetxTmr(cell, &cell->ueCb[ueId-1], ((SchDlHqProcCb**) &(node->node)));
-               }
 #endif
-               cmLListDelFrm(&cell->ueCb[ueId-1].dlRetxHqList, node);
+                  cmLListDelFrm(&cell->ueCb[ueId-1].dlRetxHqList, node);
+               }
             }
             else
             {
@@ -958,13 +958,13 @@ uint8_t schProcessSlotInd(SlotTimingInfo *slotInd, Inst schInst)
                /* UL Data ReTransmisson */
                isUlGrantPending = true;
                isUlGrantScheduled = schProcessSrOrBsrReq(cell, *slotInd, ueId, TRUE, (SchUlHqProcCb**) &(node->node));
-#ifdef NR_DRX 
                if(isUlGrantScheduled)
                {
+#ifdef NR_DRX 
                   schDrxStopUlHqRetxTmr(cell, &cell->ueCb[ueId-1], ((SchUlHqProcCb**) &(node->node)));
-               }
 #endif
-               cmLListDelFrm(&cell->ueCb[ueId-1].ulRetxHqList, node);
+                  cmLListDelFrm(&cell->ueCb[ueId-1].ulRetxHqList, node);
+               }
             }
             else
             {
