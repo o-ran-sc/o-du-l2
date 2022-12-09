@@ -710,7 +710,9 @@ uint8_t fillDefaultInitDlBwp(InitialDlBwp *initDlBwp)
             return RFAILED;
          }
          if(initDlBwp->pdschCfg.timeDomRsrcAllociList[idx].k0)
+         {
             *(initDlBwp->pdschCfg.timeDomRsrcAllociList[idx].k0) = 1;
+         }
          initDlBwp->pdschCfg.timeDomRsrcAllociList[idx].mappingType = MAPPING_TYPEA;
          initDlBwp->pdschCfg.timeDomRsrcAllociList[idx].startSymbol = PDSCH_START_SYMBOL; 
          initDlBwp->pdschCfg.timeDomRsrcAllociList[idx].symbolLength = PDSCH_LENGTH_SYMBOL;
@@ -2119,6 +2121,47 @@ uint8_t DuProcMacRachRsrcRsp(Pst *pst, MacRachRsrcRsp *rachRsrcRsp)
 
 /*******************************************************************
  *
+ * @brief  fill k0 value in duCb
+ *
+ * @details
+ *
+ *    Function : fillK0Values
+ *    Functionality:  update k0 value in duCb 
+ *
+ * @params[in] PdschConfig *cuPdschCfg, PdschConfig *storePdschCfg 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+
+uint8_t fillK0Values(Bool toUpdate, PdschConfig *cuPdschCfg, PdschConfig *storePdschCfg)
+{
+   uint8_t numTimeDomRsrcAlloc, i;
+   PdschTimeDomRsrcAlloc   timeDomRsrcAllociList;
+
+   if(toUpdate)
+   {
+      if(cuPdschCfg)
+      {
+         if(storePdschCfg->numTimeDomRsrcAlloc)
+         {
+            numTimeDomRsrcAlloc = cuPdschCfg->numTimeDomRsrcAlloc;
+            for(i =0 ; i<numTimeDomRsrcAlloc; i++)
+            {
+               if(storePdschCfg->timeDomRsrcAllociList[i].k0 && cuPdschCfg->timeDomRsrcAllociList[i].k0)
+               {
+                  *(storePdschCfg->timeDomRsrcAllociList[i].k0) = *(cuPdschCfg->timeDomRsrcAllociList[i].k0);
+                  DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, cuPdschCfg->timeDomRsrcAllociList[i].k0, sizeof(uint8_t));
+               }
+            }
+         }
+      }
+   }
+   return ROK;
+}
+
+/*******************************************************************
+ *
  * @brief To update DuUeCb Mac Cfg
  *
  * @details
@@ -2155,6 +2198,8 @@ uint8_t duUpdateMacCfg(DuMacUeCfg *macUeCfg, F1UeContextSetupDb *f1UeDb)
    {
       if(macUeCfg->spCellCfg.servCellCfg.initDlBwp.pdschPresent)
       {
+         /* update k0 values */
+         fillK0Values(true, &f1UeDb->duUeCfg.copyOfmacUeCfg.spCellCfg.servCellCfg.initDlBwp.pdschCfg, &macUeCfg->spCellCfg.servCellCfg.initDlBwp.pdschCfg); 
          fillStartSymbolAndLen(macUeCfg->spCellCfg.servCellCfg.initDlBwp.pdschCfg.numTimeDomRsrcAlloc,\
                &macUeCfg->spCellCfg.servCellCfg.initDlBwp.pdschCfg, NULL);
       }
@@ -3025,6 +3070,7 @@ uint8_t duBuildAndSendUeRecfgReqToRlc(uint8_t cellId, uint8_t gnbDuUeF1apId, uin
       DU_LOG("\nERROR  -->  DU APP : Memory Alloc failed at duBuildAndSendUeRecfgReqToRlc()");
       ret = RFAILED;
    }
+   DU_FREE(duRlcUeCfg, sizeof(DuRlcUeCfg));
    return ret;
 }
 
