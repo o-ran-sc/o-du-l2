@@ -47,7 +47,7 @@
 #ifdef ODU_MEMORY_DEBUG_LOG
 #define DU_MEM_LOG(_macro, _file, _line, _func, _size, _datPtr)\
 {\
-   printf("\n%s=== %s +%d, %s, %lu, %p",           \
+   printf("\n%s=== %s +%d, %s, %lu, %p \n",           \
          _macro, _file, _line, _func, (uint64_t)_size, _datPtr); \
 }
 #else
