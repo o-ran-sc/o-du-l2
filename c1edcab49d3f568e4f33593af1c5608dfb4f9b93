@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c556b2f1_85fab3d5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-12-09T09:12:59Z",
+      "side": 1,
+      "message": "Please abandon because changes have been taken in other gerrit",
+      "revId": "c1edcab49d3f568e4f33593af1c5608dfb4f9b93",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
