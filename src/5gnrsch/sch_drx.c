@@ -324,7 +324,7 @@ void schFillDrxUeCb(uint8_t numerology, SchDrxCfg drxCfg, SchDrxUeCb *drxUeCb)
  *      -# RFAILED
  **/
 
-uint8_t schAddDrxTimerIntoList(CmLListCp *drxTimerList,void * nodeInfo, CmLList *drxNodeInfo)
+uint8_t schAddDrxTimerIntoList(CmLListCp *drxTimerList,void * nodeInfo, CmLList **drxNodeInfo)
 {
    CmLList  *currentNodeInfo = NULLP;
 
@@ -338,7 +338,7 @@ uint8_t schAddDrxTimerIntoList(CmLListCp *drxTimerList,void * nodeInfo, CmLList 
    currentNodeInfo->node = (PTR)nodeInfo;
    
    cmLListAdd2Tail(drxTimerList, currentNodeInfo);
-   drxNodeInfo = currentNodeInfo;
+   (*drxNodeInfo) = currentNodeInfo;
    DU_LOG("\nINFO --> SCH : Drx node added into the list");
    return ROK;
 }
@@ -539,7 +539,7 @@ void schDrxUeReCfgTimer(SchCellCb *cell, SchUeCb *ueCb)
    }
    SCH_CALCULATE_TIMER_INDEX(onDurTime, ueCb->drxUeCb.onDurationStartIndex);
    ueCb->drxUeCb.onDurationStartDistance = SCH_CALC_SLOT_DIFF(onDurationOccurance, cell->slotInfo, cell->numSlots)/MAX_DRX_SIZE;
-   schAddDrxTimerIntoList(&cell->drxCb[ueCb->drxUeCb.onDurationStartIndex].onDurationStartList, ueCb, ueCb->drxUeCb.onDurationStartNodeInfo);
+   schAddDrxTimerIntoList(&cell->drxCb[ueCb->drxUeCb.onDurationStartIndex].onDurationStartList, ueCb, &ueCb->drxUeCb.onDurationStartNodeInfo);
 }
 
 /**
@@ -569,7 +569,7 @@ void schAddUeInOndurationList(SchCellCb *cell, SchUeCb *ueCb, uint8_t delta)
       onDurTime = onDurationOccurance.sfn*cell->numSlots+onDurationOccurance.slot;
       SCH_CALCULATE_TIMER_INDEX(onDurTime, ueCb->drxUeCb.onDurationStartIndex);
       ueCb->drxUeCb.onDurationStartDistance = SCH_CALC_SLOT_DIFF(onDurationOccurance, cell->slotInfo, cell->numSlots)/MAX_DRX_SIZE;
-      schAddDrxTimerIntoList(&cell->drxCb[ueCb->drxUeCb.onDurationStartIndex].onDurationStartList, ueCb, ueCb->drxUeCb.onDurationStartNodeInfo);
+      schAddDrxTimerIntoList(&cell->drxCb[ueCb->drxUeCb.onDurationStartIndex].onDurationStartList, ueCb, &ueCb->drxUeCb.onDurationStartNodeInfo);
 
    }
 }
@@ -631,7 +631,7 @@ void schHdlDrxOnDurStrtTimerForDlDirection(SchCellCb  *cell, uint16_t currListIn
             /* onDurationExpiry  = (current slot + onduration length) % MAX_DRX_SIZE*/
             onDurationExpiry = (currListIndx + ueCb->drxUeCb.onDurationLen)%MAX_DRX_SIZE;
             ueCb->drxUeCb.onDurationExpiryDistance =  (ueCb->drxUeCb.onDurationLen)/MAX_DRX_SIZE;
-            schAddDrxTimerIntoList(&cell->drxCb[onDurationExpiry].onDurationExpiryList, ueCb, ueCb->drxUeCb.onDurationExpiryNodeInfo);
+            schAddDrxTimerIntoList(&cell->drxCb[onDurationExpiry].onDurationExpiryList, ueCb, &ueCb->drxUeCb.onDurationExpiryNodeInfo);
             ueCb->drxUeCb.onDurationExpiryIndex = onDurationExpiry;
 
          }
@@ -692,7 +692,7 @@ void schHdlDrxOnDurStrtTimerForUlDirection(SchCellCb  *cell, uint16_t currListIn
          }
          SCH_CALCULATE_TIMER_INDEX(onDurTime, ueCb->drxUeCb.onDurationStartIndex);
          ueCb->drxUeCb.onDurationStartDistance = ueCb->drxUeCb.longCycleLen/MAX_DRX_SIZE;
-         schAddDrxTimerIntoList(&cell->drxCb[ueCb->drxUeCb.onDurationStartIndex].onDurationStartList, ueCb, ueCb->drxUeCb.onDurationStartNodeInfo);
+         schAddDrxTimerIntoList(&cell->drxCb[ueCb->drxUeCb.onDurationStartIndex].onDurationStartList, ueCb, &ueCb->drxUeCb.onDurationStartNodeInfo);
       }
    }
 }
@@ -766,7 +766,7 @@ void schHdlDrxInActvStrtTmr(SchCellCb  *cell,  SchUeCb *ueCb, uint8_t delta)
    /* Adding the new entry in in-activity timer list */
    ueCb->drxUeCb.inActvExpiryIndex = (slotIndx + ueCb->drxUeCb.inActvTimerLen) % MAX_DRX_SIZE;
    ueCb->drxUeCb.inActiveTmrExpiryDistance = (ueCb->drxUeCb.inActvTimerLen) / MAX_DRX_SIZE;
-   schAddDrxTimerIntoList(&cell->drxCb[ueCb->drxUeCb.inActvExpiryIndex].inActvTmrExpiryList, ueCb, ueCb->drxUeCb.inActvTimerExpiryNodeInfo);
+   schAddDrxTimerIntoList(&cell->drxCb[ueCb->drxUeCb.inActvExpiryIndex].inActvTmrExpiryList, ueCb, &ueCb->drxUeCb.inActvTimerExpiryNodeInfo);
 
    /* Set the UE active for UL And Dl transfer */
    ueCb->drxUeCb.drxDlUeActiveMask |= UE_ACTIVE_FOR_INACTIVE_TIMER;
@@ -817,7 +817,7 @@ void schHdlDrxStartShortCycleTimer(SchCellCb  *cell, SchUeCb *ueCb)
    /* recalculate the new index for shortCycleExpiryList */
    ueCb->drxUeCb.shortCycleExpiryIndex = (ueCb->drxUeCb.onDurationStartIndex + ueCb->drxUeCb.shortCycleTmrLen) % MAX_DRX_SIZE;
    ueCb->drxUeCb.shortCycleDistance = ueCb->drxUeCb.shortCycleTmrLen / MAX_DRX_SIZE;
-   schAddDrxTimerIntoList(&cell->drxCb[ueCb->drxUeCb.shortCycleExpiryIndex].shortCycleExpiryList, ueCb, ueCb->drxUeCb.shortCycleTmrExpiryNodeInfo);
+   schAddDrxTimerIntoList(&cell->drxCb[ueCb->drxUeCb.shortCycleExpiryIndex].shortCycleExpiryList, ueCb, &ueCb->drxUeCb.shortCycleTmrExpiryNodeInfo);
 }
 
 /**

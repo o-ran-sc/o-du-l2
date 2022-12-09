@@ -55,7 +55,7 @@ void fapiMacConfigRsp(uint16_t cellId);
 uint16_t sendTxDataReq(SlotTimingInfo currTimingInfo, MacDlSlot *dlSlot, p_fapi_api_queue_elem_t prevElem, fapi_vendor_tx_data_req_t *vendorTxDataReq);
 uint16_t fillUlTtiReq(SlotTimingInfo currTimingInfo, p_fapi_api_queue_elem_t prevElem, fapi_vendor_ul_tti_req_t* vendorUlTti);
 uint16_t fillUlDciReq(SlotTimingInfo currTimingInfo, p_fapi_api_queue_elem_t prevElem, fapi_vendor_ul_dci_req_t *vendorUlDciReq);
-uint8_t lwr_mac_procStopReqEvt(SlotTimingInfo slotInfo, p_fapi_api_queue_elem_t  prevElem);
+uint8_t lwr_mac_procStopReqEvt(SlotTimingInfo slotInfo, p_fapi_api_queue_elem_t  prevElem, fapi_stop_req_vendor_msg_t *vendorMsg);
 
 void lwrMacLayerInit(Region region, Pool pool)
 {
@@ -2383,7 +2383,7 @@ uint8_t lwr_mac_procStartReqEvt(void *msg)
  *
  ********************************************************************/
 
-uint8_t lwr_mac_procStopReqEvt(SlotTimingInfo slotInfo, p_fapi_api_queue_elem_t  prevElem)
+uint8_t lwr_mac_procStopReqEvt(SlotTimingInfo slotInfo, p_fapi_api_queue_elem_t  prevElem, fapi_stop_req_vendor_msg_t *vendorMsg)
 {
 #ifdef INTEL_FAPI
 #ifdef CALL_FLOW_DEBUG_LOG
@@ -2391,33 +2391,19 @@ uint8_t lwr_mac_procStopReqEvt(SlotTimingInfo slotInfo, p_fapi_api_queue_elem_t 
 #endif
 
    fapi_stop_req_t   *stopReq;
-   fapi_vendor_msg_t *vendorMsg;
    p_fapi_api_queue_elem_t  stopReqElem;
-   p_fapi_api_queue_elem_t  vendorMsgElem;
 
-   /* Allocte And fill Vendor msg */
-   LWR_MAC_ALLOC(vendorMsgElem, (sizeof(fapi_api_queue_elem_t) + sizeof(fapi_vendor_msg_t)));
-   if(!vendorMsgElem)
-   {
-      DU_LOG("\nERROR  -->  LWR_MAC: Memory allocation failed for vendor msg in stop req");
-      return RFAILED;
-   }
-   FILL_FAPI_LIST_ELEM(vendorMsgElem, NULLP, FAPI_VENDOR_MESSAGE, 1, sizeof(fapi_vendor_msg_t));
-   vendorMsg = (fapi_vendor_msg_t *)(vendorMsgElem + 1);
-   fillMsgHeader(&vendorMsg->header, FAPI_VENDOR_MESSAGE, sizeof(fapi_vendor_msg_t));
-   vendorMsg->stop_req_vendor.sfn = slotInfo.sfn;
-   vendorMsg->stop_req_vendor.slot = slotInfo.slot;
+   vendorMsg->sfn = slotInfo.sfn;
+   vendorMsg->slot = slotInfo.slot;
 
    /* Fill FAPI stop req */
    LWR_MAC_ALLOC(stopReqElem, (sizeof(fapi_api_queue_elem_t) + sizeof(fapi_stop_req_t)));
    if(!stopReqElem)
    {
       DU_LOG("\nERROR  -->  LWR_MAC: Memory allocation failed for stop req");
-      LWR_MAC_FREE(vendorMsgElem, (sizeof(fapi_api_queue_elem_t) + sizeof(fapi_vendor_msg_t)));
       return RFAILED;
    }
-   FILL_FAPI_LIST_ELEM(stopReqElem, vendorMsgElem, FAPI_STOP_REQUEST, 1, \
-      sizeof(fapi_stop_req_t));
+   FILL_FAPI_LIST_ELEM(stopReqElem, NULLP, FAPI_STOP_REQUEST, 1, sizeof(fapi_stop_req_t));
    stopReq = (fapi_stop_req_t *)(stopReqElem + 1);
    memset(stopReq, 0, sizeof(fapi_stop_req_t));
    fillMsgHeader(&stopReq->header, FAPI_STOP_REQUEST, sizeof(fapi_stop_req_t));
@@ -3919,10 +3905,10 @@ uint16_t fillDlTtiReq(SlotTimingInfo currTimingInfo)
 		   if(macCb.macCell[cellIdx]->state == CELL_TO_BE_STOPPED)
 		   {
 			   /* Intel L1 expects UL_DCI.request following DL_TTI.request */
-			   lwr_mac_procStopReqEvt(currTimingInfo, prevElem);
+			   lwr_mac_procStopReqEvt(currTimingInfo, prevElem, &(vendorMsg->stop_req_vendor));
 			   msgHeader->num_msg++;
 			   macCb.macCell[cellIdx]->state = CELL_STOP_IN_PROGRESS;
-                           prevElem = prevElem->p_next;
+            prevElem = prevElem->p_next;
 		   }
 		   prevElem->p_next = vendorMsgQElem;
 		   LwrMacSendToL1(headerElem);
