@@ -1,0 +1,95 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4afb996f_95112e4a",
+        "filename": "docs/Drx_timer1.png",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-12-12T11:05:34Z",
+      "side": 1,
+      "message": "Name of file should be meaningful so we know which image contains which aspect of DRX. \nSame for other files too",
+      "revId": "425bf5314c1145137f8aedd5df3f27a49836bae7",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "27fbbdbc_1c339c90",
+        "filename": "docs/installation-guide.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-12-12T11:05:34Z",
+      "side": 1,
+      "message": "We will update the date when we merge this finally",
+      "revId": "425bf5314c1145137f8aedd5df3f27a49836bae7",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2e5780d7_8776a497",
+        "filename": "docs/release-notes.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-12-12T11:05:34Z",
+      "side": 1,
+      "message": "we will update the date before merging",
+      "revId": "425bf5314c1145137f8aedd5df3f27a49836bae7",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "62dd62c5_f44ec083",
+        "filename": "docs/release-notes.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 194,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-12-12T11:05:34Z",
+      "side": 1,
+      "message": "will update it to the find commit of this release",
+      "revId": "425bf5314c1145137f8aedd5df3f27a49836bae7",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "64104c9b_7558566d",
+        "filename": "releases/container-release-o-du-l2",
+        "patchSetId": 1
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-12-12T11:05:34Z",
+      "side": 1,
+      "message": "will be updated before merging",
+      "range": {
+        "startLine": 8,
+        "startChar": 5,
+        "endLine": 8,
+        "endChar": 46
+      },
+      "revId": "425bf5314c1145137f8aedd5df3f27a49836bae7",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
