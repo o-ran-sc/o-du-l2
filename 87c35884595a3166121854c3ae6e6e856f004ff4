@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2aa48190_213650d3",
+        "filename": "src/5gnrmac/rg_ptmi.c",
+        "patchSetId": 15
+      },
+      "lineNbr": 153,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-12-13T12:19:51Z",
+      "side": 0,
+      "message": "TDB : Status indication toward lower manager can be removed",
+      "range": {
+        "startLine": 153,
+        "startChar": 23,
+        "endLine": 153,
+        "endChar": 38
+      },
+      "revId": "87c35884595a3166121854c3ae6e6e856f004ff4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "438f5c70_37e01081",
+        "filename": "src/5gnrmac/rg_ptmi.c",
+        "patchSetId": 15
+      },
+      "lineNbr": 168,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2022-12-13T12:19:51Z",
+      "side": 0,
+      "message": "TBD : Same as above",
+      "range": {
+        "startLine": 168,
+        "startChar": 26,
+        "endLine": 168,
+        "endChar": 44
+      },
+      "revId": "87c35884595a3166121854c3ae6e6e856f004ff4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
