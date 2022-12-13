@@ -3,6 +3,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "04a0e2a0_a4001ee4",
+        "filename": "src/5gnrmac/rg_pom_scell.x",
+        "patchSetId": 15
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-12-13T12:20:52Z",
+      "side": 0,
+      "message": "can you please check this file needs to be deleted or not",
+      "revId": "87c35884595a3166121854c3ae6e6e856f004ff4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2aa48190_213650d3",
         "filename": "src/5gnrmac/rg_ptmi.c",
         "patchSetId": 15
@@ -43,6 +60,23 @@
         "endLine": 168,
         "endChar": 44
       },
+      "revId": "87c35884595a3166121854c3ae6e6e856f004ff4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "faef0d82_acc1d605",
+        "filename": "src/5gnrsch/rg_sch.x",
+        "patchSetId": 15
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-12-13T12:20:52Z",
+      "side": 0,
+      "message": "do we need this empty file? please check all the empty files again.",
       "revId": "87c35884595a3166121854c3ae6e6e856f004ff4",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
