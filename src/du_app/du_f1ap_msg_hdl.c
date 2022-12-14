@@ -4083,14 +4083,16 @@ elementCnt = pdschCfg->numTimeDomRsrcAlloc;
       for(idx = 0; idx < elementCnt; idx++)
       {
          timeDomAlloc = timeDomAllocList->choice.setup->list.array[idx];
-         DU_ALLOC(timeDomAlloc->k0, sizeof(long));
-         if(!timeDomAlloc->k0)
-         {
-            DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in BuildPdschTimeDomAllocList");
-            return RFAILED;
-         }
          if(pdschCfg->timeDomRsrcAllociList[idx].k0)
+         {
+            DU_ALLOC(timeDomAlloc->k0, sizeof(long));
+            if(!timeDomAlloc->k0)
+            {
+               DU_LOG("\nERROR  -->  F1AP : Memory allocation failed in BuildPdschTimeDomAllocList");
+               return RFAILED;
+            }
             *(timeDomAlloc->k0) = *(pdschCfg->timeDomRsrcAllociList[idx].k0);
+         }
          timeDomAlloc->mappingType = pdschCfg->timeDomRsrcAllociList[idx].mappingType;
          timeDomAlloc->startSymbolAndLength = pdschCfg->timeDomRsrcAllociList[idx].startSymbolAndLength;
       }
