@@ -2151,8 +2151,10 @@ uint8_t fillK0Values(Bool toUpdate, PdschConfig *cuPdschCfg, PdschConfig *storeP
                {
                   if(storePdschCfg->timeDomRsrcAllociList[rsrcIdx].k0)
                   {
+                     DU_LOG("\nPBORLA storePdschCfg %p cuPdschCfg- %p", storePdschCfg->timeDomRsrcAllociList[rsrcIdx].k0, cuPdschCfg->timeDomRsrcAllociList[rsrcIdx].k0);
                      *(storePdschCfg->timeDomRsrcAllociList[rsrcIdx].k0) = *(cuPdschCfg->timeDomRsrcAllociList[rsrcIdx].k0);
-                     DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, cuPdschCfg->timeDomRsrcAllociList[rsrcIdx].k0, sizeof(uint8_t));
+                     if(storePdschCfg->timeDomRsrcAllociList[rsrcIdx].k0 != cuPdschCfg->timeDomRsrcAllociList[rsrcIdx].k0)
+                        DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, cuPdschCfg->timeDomRsrcAllociList[rsrcIdx].k0, sizeof(uint8_t));
                   }
                   else
                   {
