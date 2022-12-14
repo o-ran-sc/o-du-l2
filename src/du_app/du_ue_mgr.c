@@ -2134,30 +2134,28 @@ uint8_t DuProcMacRachRsrcRsp(Pst *pst, MacRachRsrcRsp *rachRsrcRsp)
  *
  * ****************************************************************/
 
-uint8_t fillK0Values(Bool toUpdate, PdschConfig *cuPdschCfg, PdschConfig *storePdschCfg)
+uint8_t fillK0Values(PdschConfig *cuPdschCfg, PdschConfig *storePdschCfg)
 {
    uint8_t numTimeDomRsrcAlloc, rsrcIdx;
 
-   if(toUpdate)
+   if(cuPdschCfg)
    {
-      if(cuPdschCfg)
+      if(storePdschCfg->numTimeDomRsrcAlloc)
       {
-         if(storePdschCfg->numTimeDomRsrcAlloc)
+         numTimeDomRsrcAlloc = cuPdschCfg->numTimeDomRsrcAlloc;
+         for(rsrcIdx =0 ; rsrcIdx<numTimeDomRsrcAlloc; rsrcIdx++)
          {
-            numTimeDomRsrcAlloc = cuPdschCfg->numTimeDomRsrcAlloc;
-            for(rsrcIdx =0 ; rsrcIdx<numTimeDomRsrcAlloc; rsrcIdx++)
+            if(cuPdschCfg->timeDomRsrcAllociList[rsrcIdx].k0)
             {
-               if(cuPdschCfg->timeDomRsrcAllociList[rsrcIdx].k0)
+               if(storePdschCfg->timeDomRsrcAllociList[rsrcIdx].k0)
                {
-                  if(storePdschCfg->timeDomRsrcAllociList[rsrcIdx].k0)
-                  {
-                     *(storePdschCfg->timeDomRsrcAllociList[rsrcIdx].k0) = *(cuPdschCfg->timeDomRsrcAllociList[rsrcIdx].k0);
+                  *(storePdschCfg->timeDomRsrcAllociList[rsrcIdx].k0) = *(cuPdschCfg->timeDomRsrcAllociList[rsrcIdx].k0);
+                  if(storePdschCfg->timeDomRsrcAllociList[rsrcIdx].k0 != cuPdschCfg->timeDomRsrcAllociList[rsrcIdx].k0)
                      DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, cuPdschCfg->timeDomRsrcAllociList[rsrcIdx].k0, sizeof(uint8_t));
-                  }
-                  else
-                  {
-                     (storePdschCfg->timeDomRsrcAllociList[rsrcIdx].k0) = (cuPdschCfg->timeDomRsrcAllociList[rsrcIdx].k0);
-                  }
+               }
+               else
+               {
+                  (storePdschCfg->timeDomRsrcAllociList[rsrcIdx].k0) = (cuPdschCfg->timeDomRsrcAllociList[rsrcIdx].k0);
                }
             }
          }
@@ -2205,7 +2203,7 @@ uint8_t duUpdateMacCfg(DuMacUeCfg *macUeCfg, F1UeContextSetupDb *f1UeDb)
       if(macUeCfg->spCellCfg.servCellCfg.initDlBwp.pdschPresent)
       {
          /* update k0 values */
-         fillK0Values(true, &f1UeDb->duUeCfg.copyOfmacUeCfg.spCellCfg.servCellCfg.initDlBwp.pdschCfg, &macUeCfg->spCellCfg.servCellCfg.initDlBwp.pdschCfg); 
+         fillK0Values(&f1UeDb->duUeCfg.copyOfmacUeCfg.spCellCfg.servCellCfg.initDlBwp.pdschCfg, &macUeCfg->spCellCfg.servCellCfg.initDlBwp.pdschCfg); 
          fillStartSymbolAndLen(macUeCfg->spCellCfg.servCellCfg.initDlBwp.pdschCfg.numTimeDomRsrcAlloc,\
                &macUeCfg->spCellCfg.servCellCfg.initDlBwp.pdschCfg, NULL);
       }
