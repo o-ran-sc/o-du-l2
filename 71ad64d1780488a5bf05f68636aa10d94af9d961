@@ -18,6 +18,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2ee54750_f9cdc7e4",
+        "filename": "src/5gnrmac/mac_msg_router.c",
+        "patchSetId": 15
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-12-15T05:50:08Z",
+      "side": 1,
+      "message": "will take up in next gerrit",
+      "parentUuid": "80a421a3_6d1356ce",
+      "revId": "71ad64d1780488a5bf05f68636aa10d94af9d961",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6dfe9c5d_f85761b0",
@@ -31,6 +49,30 @@
       "writtenOn": "2022-12-13T12:19:51Z",
       "side": 1,
       "message": "TBD: remove RG GEN cfg REQUEST",
+      "range": {
+        "startLine": 85,
+        "startChar": 11,
+        "endLine": 85,
+        "endChar": 23
+      },
+      "revId": "71ad64d1780488a5bf05f68636aa10d94af9d961",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5b4d42d3_da302a69",
+        "filename": "src/5gnrmac/mac_msg_router.c",
+        "patchSetId": 15
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-12-15T05:50:08Z",
+      "side": 1,
+      "message": "will take up in next gerrit",
+      "parentUuid": "6dfe9c5d_f85761b0",
       "range": {
         "startLine": 85,
         "startChar": 11,
@@ -58,6 +100,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1bba9fc5_9a6b2dd7",
+        "filename": "src/5gnrmac/mac_msg_router.c",
+        "patchSetId": 15
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-12-15T05:50:08Z",
+      "side": 1,
+      "message": "will take up in next gerrit",
+      "parentUuid": "c854a622_de3ed2b2",
+      "revId": "71ad64d1780488a5bf05f68636aa10d94af9d961",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3bfdc930_8ed79e97",
@@ -71,6 +131,30 @@
       "writtenOn": "2022-12-13T12:19:51Z",
       "side": 1,
       "message": "TBD : remove statistics request/rsp functions from all layers",
+      "range": {
+        "startLine": 93,
+        "startChar": 11,
+        "endLine": 93,
+        "endChar": 23
+      },
+      "revId": "71ad64d1780488a5bf05f68636aa10d94af9d961",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "91054c27_2a8ea37a",
+        "filename": "src/5gnrmac/mac_msg_router.c",
+        "patchSetId": 15
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-12-15T05:50:08Z",
+      "side": 1,
+      "message": "will take up in next gerrit",
+      "parentUuid": "3bfdc930_8ed79e97",
       "range": {
         "startLine": 93,
         "startChar": 11,
@@ -98,6 +182,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cb843ad6_dfa28370",
+        "filename": "src/5gnrmac/mac_msg_router.c",
+        "patchSetId": 15
+      },
+      "lineNbr": 248,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-12-15T05:50:08Z",
+      "side": 1,
+      "message": "will take up in next gerrit",
+      "parentUuid": "b95c4ad0_9ef0b5eb",
+      "revId": "71ad64d1780488a5bf05f68636aa10d94af9d961",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b6f0654a_bb006f7f",
@@ -115,6 +217,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d7dadee7_3694bc0a",
+        "filename": "src/5gnrmac/mac_msg_router.c",
+        "patchSetId": 15
+      },
+      "lineNbr": 649,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-12-15T05:50:08Z",
+      "side": 1,
+      "message": "will take up in next gerrit",
+      "parentUuid": "b6f0654a_bb006f7f",
+      "revId": "71ad64d1780488a5bf05f68636aa10d94af9d961",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f56ea5b4_383811d8",
@@ -128,6 +248,30 @@
       "writtenOn": "2022-12-13T12:19:51Z",
       "side": 1,
       "message": "TBD : Since we have a tightly coupled MAC-SCH, this complete function is not used by us, neither do we use the functions called inside this.",
+      "range": {
+        "startLine": 658,
+        "startChar": 10,
+        "endLine": 658,
+        "endChar": 23
+      },
+      "revId": "71ad64d1780488a5bf05f68636aa10d94af9d961",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9728fd36_1ff39fde",
+        "filename": "src/5gnrmac/mac_msg_router.c",
+        "patchSetId": 15
+      },
+      "lineNbr": 658,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-12-15T05:50:08Z",
+      "side": 1,
+      "message": "will take up in next gerrit",
+      "parentUuid": "f56ea5b4_383811d8",
       "range": {
         "startLine": 658,
         "startChar": 10,
