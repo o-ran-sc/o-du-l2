@@ -18,6 +18,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "94a8a654_496f7c86",
+        "filename": "src/5gnrmac/rg_pom_scell.x",
+        "patchSetId": 15
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-12-15T05:45:00Z",
+      "side": 0,
+      "message": "Done",
+      "parentUuid": "04a0e2a0_a4001ee4",
+      "revId": "87c35884595a3166121854c3ae6e6e856f004ff4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2aa48190_213650d3",
@@ -77,6 +95,24 @@
       "writtenOn": "2022-12-13T12:20:52Z",
       "side": 0,
       "message": "do we need this empty file? please check all the empty files again.",
+      "revId": "87c35884595a3166121854c3ae6e6e856f004ff4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a20553a7_9a0d4bec",
+        "filename": "src/5gnrsch/rg_sch.x",
+        "patchSetId": 15
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2022-12-15T05:45:00Z",
+      "side": 0,
+      "message": "Done",
+      "parentUuid": "faef0d82_acc1d605",
       "revId": "87c35884595a3166121854c3ae6e6e856f004ff4",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
