@@ -829,16 +829,6 @@ RgInfL2MeasCfm      *measInfo
 ));
 #endif /* LTE_L2_MEAS */
 
-typedef struct rgInfLcgRegReq
-{
-   CmLteCellId          cellId;      /*!< Cell Identifier */
-   CmLteRnti            crnti;       /*!< RNTI which uniquely identifies the UE
-                                          RNTI range is specified in Section 
-                                          7.1 in 25.321 Specification. */
-   uint8_t                   lcgId;
-   Bool                 isGbr;       /* Indicate if the LCG is Gbr */
-} RgInfLcgRegReq;
-
 
 /* Added support for SPS*/
 #ifdef LTEMAC_SPS
@@ -863,19 +853,6 @@ typedef struct rgInfSpsLcInfo
    uint8_t                   implRelCnt;  /*!< "implicitRelAfter" vallue */  
    uint16_t                  spsPrd;      /*!< SPS periodicity of the UE */
 } RgInfSpsLcInfo;
-
-/** 
- * @brief This structure contains UL SPS param Reset related to
- *  uplink SPS for a particular UE identified by the CRNTI.
- */
-typedef struct rgInfUlSpsReset
-{
-   CmLteCellId          cellId;      /*!< Cell Identifier */
-   CmLteRnti            crnti;       /*!< RNTI which uniquely identifies the UE
-                                          RNTI range is specified in Section 
-                                          7.1 in 25.321 Specification. */
-} RgInfUlSpsReset;
-
 
 /** 
  * @brief This structure contains the information to release UL SPS for a UE */
@@ -1200,116 +1177,7 @@ S16 cmUnpkSchMacRlsRntiReq ARGS((
 ));
 /* Added support for SPS*/
 
-typedef S16 (*LcgReg) ARGS((
-   Pst*                 pst,    
-   RgInfLcgRegReq       *lcgRegReq    
-));
-
-S16 cmPkSchMacLcgRegReq ARGS((
-   Pst*                 pst,
-   RgInfLcgRegReq       *lcgRegReq  
-));
-
-S16  RgSchMacLcgRegReq ARGS((Pst *pst, RgInfLcgRegReq *lcgRegReq));
-
-S16 cmUnpkSchMacLcgRegReq ARGS((
-   LcgReg          func,
-   Pst             *pst,
-   Buffer          *mBuf
-));
-
-S16  RgSchMacLcgReg ARGS((Pst* pst, RgInfLcgRegReq *lcgRegReq));
-
 #ifdef LTEMAC_SPS
-/** 
- * @brief Primitive from Scheduler to MAC to register the logical channels of
- * a SPS UE
- * @details  This primitive is used for light-weight loose coupling.
- */
-S16 cmPkSchMacSpsLcRegReq ARGS((
-   Pst*                 pst,
-   RgInfSpsLcInfo       *lcInfo    
-));
-
-typedef S16 (*SpsLcReg) ARGS((
-   Pst*                 pst,    
-   RgInfSpsLcInfo       *lcInfo    
-));
-
-/** 
- * @brief Request from Scheduler to register the SPS related logical channels.
- * @details  Scheduler calls this primitive to send the list of logical channels
- *  that belong to the SPS logical channel group.   
- */
-S16  RgSchMacSpsLcRegReq ARGS((Pst *pst, RgInfSpsLcInfo *lcInfo));
-
-S16 cmUnpkSchMacSpsLcRegReq ARGS((
-   SpsLcReg        func,
-   Pst             *pst,
-   Buffer          *mBuf
-));
-
-
-/** 
- * @brief Primitive from Scheduler to MAC to Reset UL SPS related Params
- * @details  This primitive is used for light-weight loose coupling.
- */
-S16 cmPkSchMacUlSpsResetReq ARGS((
-   Pst*                 pst,
-   RgInfUlSpsReset       *ulSpsResetInfo    
-));
-
-typedef S16 (*UlSpsReset) ARGS((
-   Pst*                 pst,    
-   RgInfUlSpsReset       *ulSpsResetInfo    
-));
-
-/** 
- * @brief Request from Scheduler to reset UL SPS Params
- * @details  Scheduler calls this primitive to reset implicit and explicit
- * release counters for the UE
- */
-S16  RgSchMacUlSpsResetReq ARGS((Pst *pst, RgInfUlSpsReset *ulSpsResetInfo));
-
-S16 cmUnpkSchMacUlSpsResetReq ARGS((
-   UlSpsReset        func,
-   Pst             *pst,
-   Buffer          *mBuf
-));
-
-
-
-/** 
- * @brief Primitive from Scheduler to MAC to deregister the logical channels of
- * a SPS UE
- * @details  This primitive is used for light-weight loose coupling.
- */
-S16 cmPkSchMacSpsLcDeregReq ARGS((
-   Pst*                 pst,    
-   CmLteCellId          cellId,
-   CmLteRnti            crnti
-));
-
-typedef S16 (*SpsLcDereg) ARGS((
-   Pst*                 pst,    
-   CmLteCellId          cellId,
-   CmLteRnti            crnti
-));
-
-/** 
- * @brief Request from Scheduler to deregister the SPS related logical channels.
- * @details  Scheduler calls this primitive to send the deregistration request
- * for a UE once SPS is released for it
- */
-S16  RgSchMacSpsLcDeregReq ARGS((Pst *pst, CmLteCellId cellId, CmLteRnti
-    crnti));
-
-S16 cmUnpkSchMacSpsLcDeregReq ARGS((
-   SpsLcDereg           func,
-   Pst*                 pst,
-   Buffer               *mBuf
-));
-
 /** 
  * @brief Primitive from MAC to Scheduler to indicate release of UL SPS for a UE
  * @details  This primitive is used for light-weight loose coupling.
@@ -1432,7 +1300,6 @@ S16 RgSchMacL2MeasSend ARGS((Pst* pst, RgInfL2MeasSndReq *measInfo));
 /* Added support for SPS*/
 #ifdef LTEMAC_SPS
 S16 RgSchMacSpsLcReg ARGS((Pst *pst, RgInfSpsLcInfo *lcInfo));
-S16 RgSchMacUlSpsReset ARGS((Pst *pst, RgInfUlSpsReset *lcInfo));
 S16 RgSchMacSpsLcDereg ARGS((Pst *pst, CmLteCellId cellId, CmLteRnti
     crnti));
 S16 RgMacSchSpsRel ARGS((Pst *pst, RgInfSpsRelInfo* relInfo));
