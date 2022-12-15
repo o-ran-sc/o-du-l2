@@ -24,6 +24,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1dd3f250_13f26d1a",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2137,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-12-15T05:14:03Z",
+      "side": 1,
+      "message": "yes we dont need this.",
+      "parentUuid": "7d9102f6_13c252c7",
+      "range": {
+        "startLine": 2137,
+        "startChar": 26,
+        "endLine": 2137,
+        "endChar": 34
+      },
+      "revId": "422cf777b0aeb2937c6f8cd64442b10f511662bb",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2c7929c9_c3331d5d",
@@ -37,6 +61,24 @@
       "writtenOn": "2022-12-14T16:16:29Z",
       "side": 1,
       "message": "remove log",
+      "revId": "422cf777b0aeb2937c6f8cd64442b10f511662bb",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cdd17509_7b72fd28",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2154,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2022-12-15T05:14:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2c7929c9_c3331d5d",
       "revId": "422cf777b0aeb2937c6f8cd64442b10f511662bb",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
