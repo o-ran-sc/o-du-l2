@@ -4,7 +4,7 @@
 User Guide
 ***********
 
-This is the user guide for F release of O-DU/l2.
+This is the user guide for G release of O-DU/l2.
 Follow installation-guide to get all the dependencies ready.
 
 .. contents::
@@ -66,17 +66,17 @@ II. Execution - Using Docker Images
 The call flow between O-DU High and CU Stub can be achieved by executing docker containers.
 
 - Pull the last built docker images:
-    -	docker pull nexus3.o-ran-sc.org:10004/o-ran-sc/o-du-l2:6.0.3
-    -	docker pull nexus3.o-ran-sc.org:10004/o-ran-sc/o-du-l2-cu-stub:6.0.3
+    -	docker pull nexus3.o-ran-sc.org:10004/o-ran-sc/o-du-l2:7.0.1
+    -	docker pull nexus3.o-ran-sc.org:10004/o-ran-sc/o-du-l2-cu-stub:7.0.1
 
 - Run CU Stub docker:
     - docker run -it --privileged --net=host --entrypoint bash
-      nexus3.o-ran-sc.org:10004/o-ran-sc/o-du-l2-cu-stub:6.0.3
+      nexus3.o-ran-sc.org:10004/o-ran-sc/o-du-l2-cu-stub:7.0.1
     - ./cu_stub
 
 - Run ODU docker:
     - docker run -it --privileged --net=host --entrypoint bash
-      nexus3.o-ran-sc.org:10004/o-ran-sc/o-du-l2:6.0.3
+      nexus3.o-ran-sc.org:10004/o-ran-sc/o-du-l2:7.0.1
     - ./odu
 
 
@@ -197,9 +197,9 @@ Following diagram shows P5 messages exchanged with O-DU Low in timer mode.
 
 .. figure:: O-DU_High_Low_Flow.PNG
   :width: 600
-  :alt: Figure 7 O-DU High - O-DU Low Message Flow Diagram
+  :alt: Figure 15 O-DU High - O-DU Low Message Flow Diagram
 
-  Figure 7 - O-DU High - O-DU Low Message Flow Diagram
+  Figure 15 - O-DU High - O-DU Low Message Flow Diagram
 
 Note: UL IQ-Sample request and response are needed by Intel O-DU Low in timer mode(testing mode) only. Code changes for
 these are guarded under INTEL_TIMER_MODE flag which can be enabled using compilation option "PHY_MODE=TIMER", as
