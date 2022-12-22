@@ -450,6 +450,11 @@ uint16_t l1BuildAndSendRxDataInd(uint16_t slot, uint16_t sfn, fapi_ul_pusch_pdu_
          phyDb.ueDb.ueCb[ueId-1].msg5Sent = true;
          type = MSG_TYPE_MSG5;
       }
+      else if(!phyDb.ueDb.ueCb[ueId-1].msgNasAuthenticationComp)
+      {
+        phyDb.ueDb.ueCb[ueId-1].msgNasAuthenticationComp = true;
+        type = MSG_TYPE_NAS_AUTHENTICATION_COMPLETE;
+      }
       else if(!phyDb.ueDb.ueCb[ueId-1].msgNasSecurityModeComp)
       {
          phyDb.ueDb.ueCb[ueId-1].msgNasSecurityModeComp = true;
@@ -569,6 +574,31 @@ uint16_t l1BuildAndSendRxDataInd(uint16_t slot, uint16_t sfn, fapi_ul_pusch_pdu_
          byteIdx += msg5PduLen; /* 4 bytes of header : MAC+RLC */
          break;
       }
+
+      case MSG_TYPE_NAS_AUTHENTICATION_COMPLETE:
+      {
+        /* For Authentication response where RRC Container is dummy
+          *
+          * MAC subheader format is R/F/LCId/L (2/3 bytes)
+          * LCId is 1 for SRB1
+          * L is length of PDU i.e 6bytes here 
+          * From 38.321 section 6.1.1
+          *
+          * RLC subheader for AM PDU is D/C/P/SI/SN (2 bytes for 12-bit SN)
+          * From 38.322, section 6.2.2.4
+          */
+         DU_LOG("\nDEBUG  -->  PHY_STUB: Forming AUTHENTICATION RESPONSE PDU");
+         uint8_t  pduLen = 37; /* Length of PDU */
+         pduLen += 2; /* RLC subheader */
+         uint8_t msg[] = {1, pduLen, 128, phyDb.ueDb.ueCb[ueId-1].rlcSnForSrb1++, 0, phyDb.ueDb.ueCb[ueId-1].pdcpSn++, 0x3a, \
+                          0x0e, 0x3f, 0x00, 0xca, 0x95, 0xe9, 0x19, 0x41, 0x3f, 0x00, 0x2b, 0x96, 0x88, 0x06, 0xd7, 0x16, 0xc6, \
+                          0x8b, 0xea, 0xae, 0x45, 0xd1, 0x01, 0xfd, 0x34, 0xd4, 0xfd, 0xd5, 0x71, 0x00, 0x00, 0x00, 0x00, 0x00};
+
+         pduLen += 2;  /* 2 bytes of MAC header */
+         memcpy(pdu, &msg, pduLen);
+         byteIdx += pduLen; /* 4 bytes of header : MAC+RLC */
+         break;
+      }
       
       case MSG_TYPE_NAS_SECURITY_MODE_COMPLETE:
       {
@@ -595,8 +625,9 @@ uint16_t l1BuildAndSendRxDataInd(uint16_t slot, uint16_t sfn, fapi_ul_pusch_pdu_
          pduLen += 2;  /* 2 bytes of MAC header */
          memcpy(pdu, &msg, pduLen);
          byteIdx += pduLen; /* 4 bytes of header : MAC+RLC */
-break;
+         break;
       }
+
       case MSG_TYPE_RRC_SECURITY_MODE_COMPLETE:
       {
          /* For security mode complete where RRC Container is dummy
