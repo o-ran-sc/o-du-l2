@@ -44,7 +44,7 @@ PARALLEL_COMP=-j $(NUM_PARALLEL)
 # # Other apsects of tool chain set here
 # # These should be made available appropriately to the builds
 ifeq ($(MACHINE),BIT64)
-ifeq ($(COVERAGE),1)
+ifeq ($(COVERAGE),ENABLE)
 CC          =gcc -m64 --coverage
 else
 CC          =gcc -m64
@@ -158,6 +158,7 @@ help:
 		@echo -e "$(OPTS)    MODE=TDD             - If not specified, MODE=FDD$(NORM)"
 		@echo -e "$(OPTS)    PHY=INTEL_L1         - If not specified, Phy stub is used$(NORM)"
 		@echo -e "$(OPTS)    PHY_MODE=TIMER       - Testing mode for INTEL_L1"
+		@echo -e "$(OPTS)    COVERAGE=ENABLE      - To record the code coverage stats. Disabled by default"
 		@echo -e "******************************************************************"
 
 prepare_dirs:
