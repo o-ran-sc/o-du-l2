@@ -47,12 +47,11 @@
 #ifdef ODU_MEMORY_DEBUG_LOG
 #define DU_MEM_LOG(_macro, _file, _line, _func, _size, _datPtr)\
 {\
-   printf("\n%s=== %s +%d, %s, %lu, %p \n",           \
+   printf("\n%s,=== %s +%d, %s, %lu, %p \n",           \
          _macro, _file, _line, _func, (uint64_t)_size, _datPtr); \
 }
 #else
-#define DU_MEM_LOG(_macro, _file, _line, _func, _size, _dataPtr) {\
-}
+#define DU_MEM_LOG(_macro, _file, _line, _func, _size, _dataPtr) {}
 #endif
 
 #define DU_ALLOC(_datPtr, _size)                                \
@@ -62,7 +61,7 @@
                     (Data **)&_datPtr, _size);                  \
    if(_ret == ROK)     \
    {\
-      DU_MEM_LOG("DU_ALLOC", __FILE__, __LINE__, __FUNCTION__, _size, _datPtr);\
+      DU_MEM_LOG("DU,ALLOC", __FILE__, __LINE__, __FUNCTION__, _size, _datPtr);\
       memset(_datPtr, 0, _size);                         \
    }\
    else                                                         \
@@ -74,7 +73,7 @@
 {                                                               \
    if(_datPtr != NULLP)                                                  \
    {                                                            \
-      DU_MEM_LOG("DU_FREE", __FILE__, __LINE__, __FUNCTION__, _size, _datPtr);\
+      DU_MEM_LOG("DU,FREE", __FILE__, __LINE__, __FUNCTION__, _size, _datPtr);\
       SPutSBuf(DU_APP_MEM_REGION, DU_POOL,                      \
          (Data *)_datPtr, _size);                               \
       _datPtr = NULLP;                                          \
@@ -87,7 +86,7 @@
    if(SGetStaticBuffer(DU_APP_MEM_REGION, DU_POOL,           \
       (Data **)&_buf, (Size) _size, 0) == ROK)               \
    {                                                         \
-      DU_MEM_LOG("DU_ALLOC_SHRABL_BUF", __FILE__, __LINE__, __FUNCTION__, _size, _buf);\
+      DU_MEM_LOG("DU,ALLOC_SHRABL_BUF", __FILE__, __LINE__, __FUNCTION__, _size, _buf);\
       memset((_buf), 0, _size);                      \
    }                                                         \
    else                                                      \
@@ -101,7 +100,7 @@
 {                                                               \
    if (_buf != NULLP)                                           \
    {                                                            \
-      DU_MEM_LOG("DU_FREE_SHRABL_BUF", __FILE__, __LINE__, __FUNCTION__, _size, _buf);\
+      DU_MEM_LOG("DU,FREE_SHRABL_BUF", __FILE__, __LINE__, __FUNCTION__, _size, _buf);\
       (Void) SPutStaticBuffer(_region, _pool,                   \
            (Data *) _buf, (Size) _size, 0);                     \
        _buf = NULLP;                                            \
