@@ -1,0 +1,65 @@
+Overview:
+This tool is used to identify memory leaks and invalid memory-handling operations present in ODU-High code. It helps in resolving segmentation fault and undefinded behaviour occuring due to memory corruption.
+ 
+Execution Steps
+1. Enable the platform flag in makefile of ODU-H binary.
+   a. vim l2/build/odu/makefile
+   b. Update the following line to enable flag "ODU_MEMORY_DEBUG_LOG"
+         PLTFRM_FLAGS= -UMSPD -DODU -DINTEL_FAPI -DODU_MEMORY_DEBUG_LOG
+ 
+2. Enable the CLA use-case in ODU-H flow i.e. add the trigger to bring the cell down.
+   (This is a hack to help us execute the complete scenario from Cell up to Down so that we can capture the memory status between them)
+   a. vim l2/src/du_app/du_egtp.c
+      In function egtpRecvMsg(), disable the infinite loop (while loop) of receiver EGTP thread.
+     
+   b. vim l2/src/du_app/du_f1ap_msg_hdl.c
+      At the end of BuildAndSendUeContextModRsp() i.e. after sending UE Context Modification Response, add following line :
+        BuildAndSendDUConfigUpdate(SERV_CELL_TO_DELETE);
+        
+2. Compile and generate all the three binaries : ODU, CU_STUB and RIC_STUB
+ 
+3. Execute the RIC_STUB and CU_STUB binaries first. Then execute ODU and capture its console logs.
+   
+4. Once CELL down is complete at ODU, stop/kill the ODU binary and save the log file.
+ 
+5. Download this log file in your local system. Here we will segregate the logs for memory allocation and memory free.
+   
+   a. Download Text Editor tool "TextAnalysisTool.NET.exe" placed at : 
+      https://radisyscorp.sharepoint.com/sites/ODU/Shared%20Documents/General/Tools/TextAnalysisTool.NET.exe
+   b. Execute the tool and open the log file in this tool(File->Open)
+   c. Filter out the ALLOC and FREE log prints by following steps:
+        i. Filters -> Add New Filters. In the Pop-up window, enter "ALLOC". Check the box to enable "Case-sensitive". Press OK to add this filter. 
+        ii. Repeat this step for "FREE" keyword
+        iii. Go to "View -> Show only Filtered Lines". 
+        iv. Now enable ALLOC filters by clicking on the checkbox. The result will show only those lines from log_file 
+             that contain substring "ALLOC". Copy all the filtered lines in excel sheet 1.
+        v. Uncheck filter for ALLOC and check the filter for FREE. The newly filtered lines show logs for memory free. 
+            Copy these lines to excel sheet 2.
+       
+   d. We need to filter out only memory size and address from filtered data copied to excel sheet
+        i. In excel, go to "Data ->  Text to Columns". A pop-up window will show.
+          Step 1 : Choose "Delimited" , CLick Next>
+          Step 2 : Enable following Delimiters 
+                    Tabs, Semicolon, Comma
+          Step 3 : Click Finish
+        ii. Repeat above steps for both sheets
+        iii. Delete columns C and D to remove unwanted text. Now, the allocation/free type, size and address will be in columns B, C and D. 
+               Copy all rows containing data of these columns (Ctrl+shift+Down arrow).
+       
+6. Now we will pass the filtered data (from excel sheet) into Memory_Leak_Detetctor
+   a. Remove/delete following output files, if present from previous executions : "freeoutput.txt" and "allocoutput.txt"
+   b. Clean alloc.txt file for any prevoius entries. Now paste here, columns B, C and D copied from excel sheet 1.
+   c. Remove any double spaces in alloc.txt using vi editor command (:%s/  / /g). Use this command twice.
+   d. Follow above two steps for file "free.txt". 
+   e. Execute ./a.out . Output files "freeoutput.txt" and "allocoutput.txt" are generated.
+    
+7. Ideally, "freeoutput.txt" and "allocoutput.txt"  should be empty. 
+   a. Any entry in freeoutput.txt shows a memory block which is freed without any prior allocation.
+   b. Any entry in allocoutput.txt shows a memory leak i.e. a memory block which was allocated but not freed.
+    
+NOTE : Some static memory blocks are allocated when the stack is intitialized. These are freed only when the binary is 
+       stopped/killed. Since we are executing our binary up to cell down, these initially alloacted memory are not yet
+       freed and will be visible in allocoutput.txt. We can ignored these.
+     
+       However, "freeoutput.txt" must be empty.
+ 
