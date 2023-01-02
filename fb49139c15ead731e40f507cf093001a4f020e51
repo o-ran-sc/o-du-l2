@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ae11fb81_8739341c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-01-02T11:21:39Z",
+      "side": 1,
+      "message": "a.out  \u003e\u003e This is binary file so I don\u0027t think we need to put it in repository",
+      "revId": "fb49139c15ead731e40f507cf093001a4f020e51",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
