@@ -283,7 +283,7 @@ uint8_t SGetSBufNewForDebug(char *file, const char *func, int line, Region regio
 #ifdef ODU_MEMORY_DEBUG_LOG
       if (strncmp(func,"cmInetRecvMsg",sizeof("cmInetRecvMsg")))
       {
-         printf("\nCM_ALLOC=== SGetSBufNewForDebug %s +%d, %s, %d, %p \n",\
+         printf("\nCM,ALLOC,=== SGetSBufNewForDebug %s +%d, %s, %d, %p \n",\
          file, line, func, size, *ptr);
       }
 #endif
@@ -316,7 +316,7 @@ uint8_t SPutSBufNewForDebug(char *file, const char *func, int line, Region regio
 #ifdef ODU_MEMORY_DEBUG_LOG
       if (strncmp(func,"cmInetRecvMsg",sizeof("cmInetRecvMsg")))
       {
-         printf("\nCM_FREE=== SPutSBufNewForDebug %s +%d, %s, %d, %p \n",\
+         printf("\nCM,FREE,=== SPutSBufNewForDebug %s +%d, %s, %d, %p \n",\
          file, line, func, size, ptr);
       }
 #endif
@@ -349,7 +349,7 @@ Region region, Pool pool, Data **ptr, Size size, uint8_t memType)
    if(SGetStaticBuffer(region, pool, ptr, size, memType) == ROK)
    {
 #ifdef ODU_MEMORY_DEBUG_LOG
-      printf("\nCM_ALLOC=== SGetStaticBufNewForDebug %s +%d, %s, %d, %p \n",\
+      printf("\nCM,ALLOC,=== SGetStaticBufNewForDebug %s +%d, %s, %d, %p \n",\
          file, line, func, size, *ptr);
 #endif
       return ROK;
@@ -380,7 +380,7 @@ Region region, Pool pool, Data *ptr, Size size, uint8_t memType)
    if(SPutStaticBuffer(region, pool, ptr, size, memType) == ROK)
    {
 #ifdef ODU_MEMORY_DEBUG_LOG
-      printf("\nCM_FREE=== SPutStaticBufNewForDebug %s +%d, %s, %d, %p \n",\
+      printf("\nCM,FREE,=== SPutStaticBufNewForDebug %s +%d, %s, %d, %p \n",\
          file, line, func, size, ptr);
 #endif
       return ROK;
