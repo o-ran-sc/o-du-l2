@@ -571,7 +571,7 @@ typedef struct schCellCb
 typedef struct schSliceCfg
 {
    uint8_t        numOfSliceConfigured;
-   SchRrmPolicyOfSlice **listOfConfirguration;
+   SchRrmPolicyOfSlice **listOfSlices;
 }SchSliceCfg;
 
 /**

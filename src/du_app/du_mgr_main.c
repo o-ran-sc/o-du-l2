@@ -162,13 +162,11 @@ uint8_t setRrmPolicy(RrmPolicyList rrmPolicy[], uint8_t policyNum)
        {
            if(duCb.sliceState == SLICE_INFO_NOT_AVAILABLE)
            {
-              BuildAndSendSliceConfigReq(duCfgParam.tempSliceCfg.rrmPolicy, duCfgParam.tempSliceCfg.totalRrmPolicy,\
-              duCfgParam.tempSliceCfg.totalSliceCount);
+              BuildAndSendSliceConfigReq();
            }
            else 
            {
-              BuildAndSendSliceRecfgReq(duCfgParam.tempSliceCfg.rrmPolicy, duCfgParam.tempSliceCfg.totalRrmPolicy,\
-              duCfgParam.tempSliceCfg.totalSliceCount);
+              BuildAndSendSliceRecfgReq();
            }
        }
     }

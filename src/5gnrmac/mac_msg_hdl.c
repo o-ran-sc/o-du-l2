@@ -900,46 +900,50 @@ uint8_t FapiMacUciInd(Pst *pst, UciInd *macUciInd)
  *         RFAILED - failure
  *
  **********************************************************************/
- uint8_t fillSliceCfgInfo(SchSliceCfgReq *schSliceCfgReq, MacSliceCfgReq *macSliceCfgReq)
- {
-    uint8_t cfgIdx = 0;
-    
-    if(macSliceCfgReq->listOfSliceCfg)
-    {
-       schSliceCfgReq->numOfConfiguredSlice =  macSliceCfgReq->numOfConfiguredSlice;
-       MAC_ALLOC(schSliceCfgReq->listOfConfirguration, schSliceCfgReq->numOfConfiguredSlice *sizeof(SchRrmPolicyOfSlice*));
-       if(schSliceCfgReq->listOfConfirguration == NULLP)
-       {
-          DU_LOG("\nERROR  -->  MAC : Memory allocation failed in fillSliceCfgInfo");
-          return RFAILED;
-       }
-       for(cfgIdx = 0; cfgIdx<schSliceCfgReq->numOfConfiguredSlice; cfgIdx++)
-       {
-          MAC_ALLOC(schSliceCfgReq->listOfConfirguration[cfgIdx], sizeof(SchRrmPolicyOfSlice));
-          if(schSliceCfgReq->listOfConfirguration[cfgIdx] == NULLP)
-          {
-             DU_LOG("\nERROR  -->  MAC : Memory allocation failed in fillSliceCfgInfo");
-             return RFAILED;
-          }
-          
-          memcpy(&schSliceCfgReq->listOfConfirguration[cfgIdx]->snssai, &macSliceCfgReq->listOfSliceCfg[cfgIdx]->snssai, sizeof(Snssai));
+uint8_t fillSliceCfgInfo(SchSliceCfgReq *schSliceCfgReq, MacSliceCfgReq *macSliceCfgReq)
+{
+   uint8_t cfgIdx = 0, memberListIdx = 0, totalSliceCfgRecvd = 0;
 
-          if(macSliceCfgReq->listOfSliceCfg[cfgIdx]->rrmPolicyRatio)
-          {
-             MAC_ALLOC(schSliceCfgReq->listOfConfirguration[cfgIdx]->rrmPolicyRatioInfo, sizeof(SchRrmPolicyRatio));
-             if(schSliceCfgReq->listOfConfirguration[cfgIdx]->rrmPolicyRatioInfo == NULLP)
-             {
-                DU_LOG("\nERROR  -->  MAC : Memory allocation failed in fillSliceCfgInfo");
-                return RFAILED;
-             }
-             schSliceCfgReq->listOfConfirguration[cfgIdx]->rrmPolicyRatioInfo->policyMaxRatio = macSliceCfgReq->listOfSliceCfg[cfgIdx]->rrmPolicyRatio->policyMaxRatio;
-             schSliceCfgReq->listOfConfirguration[cfgIdx]->rrmPolicyRatioInfo->policyMinRatio = macSliceCfgReq->listOfSliceCfg[cfgIdx]->rrmPolicyRatio->policyMinRatio;
-             schSliceCfgReq->listOfConfirguration[cfgIdx]->rrmPolicyRatioInfo->policyDedicatedRatio = macSliceCfgReq->listOfSliceCfg[cfgIdx]->rrmPolicyRatio->policyDedicatedRatio;
-          }
-       }
-    }
-    return ROK;
- }
+   if(macSliceCfgReq->listOfRrmPolicy)
+   {
+      for(cfgIdx = 0; cfgIdx<macSliceCfgReq->numOfRrmPolicy; cfgIdx++)
+      {
+          totalSliceCfgRecvd += macSliceCfgReq->listOfRrmPolicy[cfgIdx]->numOfRrmPolicyMem;  
+      }
+
+      schSliceCfgReq->numOfConfiguredSlice =  totalSliceCfgRecvd;
+      MAC_ALLOC(schSliceCfgReq->listOfSlices, schSliceCfgReq->numOfConfiguredSlice *sizeof(SchRrmPolicyOfSlice*));
+      if(schSliceCfgReq->listOfSlices == NULLP)
+      {
+         DU_LOG("\nERROR  -->  MAC : Memory allocation failed in fillSliceCfgInfo");
+         return RFAILED;
+      }
+      for(cfgIdx = 0; cfgIdx<schSliceCfgReq->numOfConfiguredSlice; cfgIdx++)
+      {
+         for(memberListIdx = 0; memberListIdx<macSliceCfgReq->listOfRrmPolicy[cfgIdx]->numOfRrmPolicyMem; memberListIdx++)
+         {
+            if(macSliceCfgReq->listOfRrmPolicy[cfgIdx]->rRMPolicyMemberList[memberListIdx])
+            {
+
+               MAC_ALLOC(schSliceCfgReq->listOfSlices[cfgIdx], sizeof(SchRrmPolicyOfSlice));
+               if(schSliceCfgReq->listOfSlices[cfgIdx] == NULLP)
+               {
+                  DU_LOG("\nERROR  -->  MAC : Memory allocation failed in fillSliceCfgInfo");
+                  return RFAILED;
+               }
+
+               memcpy(&schSliceCfgReq->listOfSlices[cfgIdx]->snssai, &macSliceCfgReq->listOfRrmPolicy[cfgIdx]->rRMPolicyMemberList[memberListIdx]->snssai, sizeof(Snssai));
+
+               schSliceCfgReq->listOfSlices[cfgIdx]->rrmPolicyRatioInfo.maxRatio = macSliceCfgReq->listOfRrmPolicy[cfgIdx]->policyRatio.maxRatio;
+               schSliceCfgReq->listOfSlices[cfgIdx]->rrmPolicyRatioInfo.minRatio = macSliceCfgReq->listOfRrmPolicy[cfgIdx]->policyRatio.minRatio;
+               schSliceCfgReq->listOfSlices[cfgIdx]->rrmPolicyRatioInfo.dedicatedRatio = macSliceCfgReq->listOfRrmPolicy[cfgIdx]->policyRatio.dedicatedRatio;
+            }
+         }
+      }
+   }
+   return ROK;
+}
+
 /*******************************************************************
  *
  * @brief Processes Slice Cfg Request recived from DU
@@ -1028,7 +1032,6 @@ uint8_t MacProcSliceRecfgReq(Pst *pst, MacSliceRecfgReq *macSliceRecfgReq)
             FILL_PST_MAC_TO_SCH(schPst, EVENT_SLICE_RECFG_REQ_TO_SCH);
             ret = (*macSchSliceRecfgReqOpts[schPst.selector])(&schPst, schSliceRecfgReq);
          }
-
       }
       freeMacSliceCfgReq(macSliceRecfgReq, pst);
    }
