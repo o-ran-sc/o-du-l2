@@ -1246,29 +1246,6 @@ typedef struct sib1Params
    SrvCellCfgCommSib     srvCellCfgCommSib;
 }Sib1Params;
 
-typedef struct policyMemberList
-{
-   Plmn plmn;
-   Snssai  snssai;
-}PolicyMemberList;
-
-typedef struct rrmPolicy
-{
-   ResourceType     rsrcType;
-   uint8_t          numMemberList;
-   PolicyMemberList **memberList;
-   uint8_t          policyMaxRatio;
-   uint8_t          policyMinRatio;
-   uint8_t          policyDedicatedRatio;
-}RrmPolicy;
-
-typedef struct copyOfRecvdSliceCfg
-{
-   RrmPolicy          **rrmPolicy;
-   uint8_t            totalRrmPolicy;
-   uint8_t            totalSliceCount;
-}CopyOfRecvdSliceCfg;
-
 typedef struct duCfgParams
 {
    SctpParams         sctpParams;                  /* SCTP Params */
@@ -1282,7 +1259,7 @@ typedef struct duCfgParams
    MacCellCfg	       macCellCfg;	              /* MAC cell configuration */
    MibParams          mibParams;                  /* MIB Params */
    Sib1Params         sib1Params;                 /* SIB1 Params */
-   CopyOfRecvdSliceCfg tempSliceCfg;
+   MacSliceCfgReq     tempSliceCfg;
 }DuCfgParams;
 
 typedef struct f1SetupMsg
@@ -1334,7 +1311,7 @@ uint8_t readClCfg();
 uint8_t readCfg();
 uint8_t duReadCfg(); 
 uint16_t calcSliv(uint8_t startSymbol, uint8_t lengthSymbol);
-uint8_t cpyRrmPolicyInDuCfgParams(RrmPolicyList rrmPolicy[], uint8_t policyNum, CopyOfRecvdSliceCfg *tempSliceCfg);
+uint8_t cpyRrmPolicyInDuCfgParams(RrmPolicyList rrmPolicy[], uint8_t policyNum, MacSliceCfgReq *tempSliceCfg);
 
 #endif /* __DU_CONFIG_H__ */
 

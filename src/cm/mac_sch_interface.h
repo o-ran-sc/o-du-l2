@@ -1825,15 +1825,15 @@ typedef struct dlHarqInd
 
 typedef struct schRrmPolicyRatio
 {
-   uint8_t policyMaxRatio;
-   uint8_t policyMinRatio;
-   uint8_t policyDedicatedRatio;
+   uint8_t maxRatio;
+   uint8_t minRatio;
+   uint8_t dedicatedRatio;
 }SchRrmPolicyRatio;
 
 typedef struct schRrmPolicyOfSlice
 {
    Snssai  snssai;
-   SchRrmPolicyRatio *rrmPolicyRatioInfo;
+   SchRrmPolicyRatio rrmPolicyRatioInfo;
 }SchRrmPolicyOfSlice;
 
 typedef struct schSliceCfgReq
