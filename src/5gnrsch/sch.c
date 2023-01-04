@@ -1784,15 +1784,8 @@ uint8_t addSliceCfgInSchDb(SchSliceCfg *storeSliceCfg, SchSliceCfgReq *cfgReq, S
                return RFAILED;
             }
 
-            SCH_ALLOC(storeSliceCfg->listOfConfirguration[sliceIdx]->rrmPolicyRatioInfo, sizeof(SchRrmPolicyRatio));
-            if(storeSliceCfg->listOfConfirguration[sliceIdx]->rrmPolicyRatioInfo == NULLP)
-            {
-               DU_LOG("\nERROR  -->  SCH : Failed to allocate memory in addSliceCfgInSchDb");
-               return RFAILED;
-            }
-
             memcpy(&storeSliceCfg->listOfConfirguration[sliceIdx]->snssai, &cfgReq->listOfConfirguration[sliceIdx]->snssai, sizeof(Snssai));
-            memcpy(storeSliceCfg->listOfConfirguration[sliceIdx]->rrmPolicyRatioInfo, cfgReq->listOfConfirguration[sliceIdx]->rrmPolicyRatioInfo,
+            memcpy(&storeSliceCfg->listOfConfirguration[sliceIdx]->rrmPolicyRatioInfo, &cfgReq->listOfConfirguration[sliceIdx]->rrmPolicyRatioInfo,
                       sizeof(SchRrmPolicyRatio));
             sliceIdx++;
          }
@@ -1830,7 +1823,6 @@ void freeSchSliceCfgReq(SchSliceCfgReq *sliceCfgReq)
          {
             if(sliceCfgReq->listOfConfirguration[cfgIdx])
             {
-               SCH_FREE(sliceCfgReq->listOfConfirguration[cfgIdx]->rrmPolicyRatioInfo, sizeof(SchRrmPolicyRatio));
                SCH_FREE(sliceCfgReq->listOfConfirguration[cfgIdx], sizeof(SchRrmPolicyOfSlice));
             }
          }
@@ -1929,7 +1921,7 @@ uint8_t modifySliceCfgInSchDb(SchSliceCfg *storeSliceCfg, SchSliceRecfgReq *recf
             {
                if(!memcmp(&storeSliceCfg->listOfConfirguration[sliceIdx]->snssai, &recfgReq->listOfConfirguration[cfgIdx]->snssai, sizeof(Snssai)))
                {
-                  memcpy(storeSliceCfg->listOfConfirguration[sliceIdx]->rrmPolicyRatioInfo, recfgReq->listOfConfirguration[cfgIdx]->rrmPolicyRatioInfo,
+                  memcpy(&storeSliceCfg->listOfConfirguration[sliceIdx]->rrmPolicyRatioInfo, &recfgReq->listOfConfirguration[cfgIdx]->rrmPolicyRatioInfo,
                            sizeof(SchRrmPolicyRatio));
                   break;
                }

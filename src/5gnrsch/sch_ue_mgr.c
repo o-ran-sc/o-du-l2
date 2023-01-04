@@ -238,14 +238,11 @@ uint8_t updateDedLcInfo(Inst inst, Snssai *snssai, uint16_t *rsvdDedicatedPRB, b
       {
          if(memcmp(snssai, &(sliceCfg.listOfConfirguration[sliceCfgIdx]->snssai), sizeof(Snssai)) == 0)
          {
-            if(sliceCfg.listOfConfirguration[sliceCfgIdx]->rrmPolicyRatioInfo)
-            {
-               /*Updating latest RrmPolicy*/
-                *rsvdDedicatedPRB = \
-               (uint16_t)(((sliceCfg.listOfConfirguration[sliceCfgIdx]->rrmPolicyRatioInfo->policyDedicatedRatio)*(MAX_NUM_RB))/100);
-               *isDedicated = TRUE;
-               DU_LOG("\nINFO  -->  SCH : Updated RRM policy, reservedPOOL:%d",*rsvdDedicatedPRB);
-            }
+            /*Updating latest RrmPolicy*/
+            *rsvdDedicatedPRB = \
+                                (uint16_t)(((sliceCfg.listOfConfirguration[sliceCfgIdx]->rrmPolicyRatioInfo.dedicatedRatio)*(MAX_NUM_RB))/100);
+            *isDedicated = TRUE;
+            DU_LOG("\nINFO  -->  SCH : Updated RRM policy, reservedPOOL:%d",*rsvdDedicatedPRB);
          }
       }
       /*case: This LcCtxt  is either a Default LC or this LC is part of someother RRM_MemberList*/
