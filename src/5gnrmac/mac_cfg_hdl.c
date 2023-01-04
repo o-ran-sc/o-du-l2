@@ -735,24 +735,35 @@ uint8_t MacProcCellDeleteReq(Pst *pst, MacCellDeleteReq *cellDelete)
  **/
 void freeMacSliceCfgReq(MacSliceCfgReq *cfgReq,Pst *pst)
 {
-   uint8_t cfgIdx = 0;
-   
-   if(cfgReq)
-   {
-      if(cfgReq->numOfConfiguredSlice)
-      {
-         for(cfgIdx = 0; cfgIdx<cfgReq->numOfConfiguredSlice; cfgIdx++)
-         {
-            if(cfgReq->listOfSliceCfg[cfgIdx])
-            {
-               MAC_FREE_SHRABL_BUF(pst->region, pst->pool, cfgReq->listOfSliceCfg[cfgIdx]->rrmPolicyRatio, sizeof(RrmPolicyRatio)); 
-            }
-            MAC_FREE_SHRABL_BUF(pst->region, pst->pool, cfgReq->listOfSliceCfg[cfgIdx], sizeof(MacSliceRrmPolicy));
-         }
-         MAC_FREE_SHRABL_BUF(pst->region, pst->pool, cfgReq->listOfSliceCfg, cfgReq->numOfConfiguredSlice * sizeof(MacSliceRrmPolicy*));
-      }
-      MAC_FREE_SHRABL_BUF(pst->region, pst->pool, cfgReq, sizeof(MacSliceCfgReq));
-   }
+    uint8_t policyIdx = 0, memberListIdx=0;
+
+    if(cfgReq->numOfRrmPolicy)
+    {
+       if(cfgReq->listOfRrmPolicy)
+       {
+          for(policyIdx = 0; policyIdx<cfgReq->numOfRrmPolicy; policyIdx++)
+          {
+             if(cfgReq->listOfRrmPolicy[policyIdx])
+             {
+                if(cfgReq->listOfRrmPolicy[policyIdx]->rRMMemberNum)
+                {
+                   if(cfgReq->listOfRrmPolicy[policyIdx]->rRMPolicyMemberList)
+                   {
+                      for(memberListIdx = 0; memberListIdx<cfgReq->listOfRrmPolicy[policyIdx]->rRMMemberNum; memberListIdx++)
+                      {
+                         MAC_FREE_SHRABL_BUF(pst->region, pst->pool, cfgReq->listOfRrmPolicy[policyIdx]->rRMPolicyMemberList[memberListIdx], sizeof(RrmPolicyMemberList));
+                      }
+                      MAC_FREE_SHRABL_BUF(pst->region, pst->pool, cfgReq->listOfRrmPolicy[policyIdx]->rRMPolicyMemberList,\
+                      cfgReq->listOfRrmPolicy[policyIdx]->rRMMemberNum * sizeof(RrmPolicyMemberList*));
+                   }
+                }
+                MAC_FREE_SHRABL_BUF(pst->region, pst->pool, cfgReq->listOfRrmPolicy[policyIdx], sizeof(MacSliceRrmPolicy));
+             }
+          }
+          MAC_FREE_SHRABL_BUF(pst->region, pst->pool, cfgReq->listOfRrmPolicy, cfgReq->numOfRrmPolicy  * sizeof(MacSliceRrmPolicy*));
+       }
+    }
+
 }
 /**
  * @brief fill Mac Slice Config Rsp
