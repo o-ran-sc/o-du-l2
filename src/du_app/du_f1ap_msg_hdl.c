@@ -15636,35 +15636,35 @@ uint8_t procF1DlRrcMsgTrans(F1AP_PDU_t *f1apMsg)
 	    {
 	       if(f1DlRrcMsg->protocolIEs.list.array[idx]->value.choice.RRCContainer.size > 0)
 	       {
-		  dlMsg.rrcMsgSize = f1DlRrcMsg->protocolIEs.list.array[idx]->value.choice.RRCContainer.size;
-		  DU_ALLOC_SHRABL_BUF(dlMsg.rrcMsgPdu, dlMsg.rrcMsgSize);
-		  if(dlMsg.rrcMsgPdu)
-		  {
-		     memcpy(dlMsg.rrcMsgPdu, f1DlRrcMsg->protocolIEs.list.array[idx]->value.choice.RRCContainer.buf,\
-			dlMsg.rrcMsgSize);
-	          }
-		  else
-		  {
-		     DU_LOG("\nERROR  -->  DU APP : Memory alloc Failed at RRC Container at procF1DlRrcMsgTrans()");
-                     return RFAILED;
-		  }
-	       }
-	       else
-	       {
-		  DU_LOG("\nERROR  -->  DU_APP : RRC Container Size is invalid:%ld",\
-	          f1DlRrcMsg->protocolIEs.list.array[idx]->value.choice.RRCContainer.size);
-		  return RFAILED;
-	       }
-	       break;
-	    }
-         case ProtocolIE_ID_id_RRCDeliveryStatusRequest:
-	    {
-	       dlMsg.deliveryStatRpt = true;
-	       break;
-	    }
-	 default:
-	    DU_LOG("\nERROR  -->  DU_APP : Invalid IE received in DL RRC Msg Transfer:%ld",
-		  f1DlRrcMsg->protocolIEs.list.array[idx]->id);
+             dlMsg.rrcMsgSize = f1DlRrcMsg->protocolIEs.list.array[idx]->value.choice.RRCContainer.size;
+             DU_ALLOC_SHRABL_BUF(dlMsg.rrcMsgPdu, dlMsg.rrcMsgSize);
+             if(dlMsg.rrcMsgPdu)
+             {
+                memcpy(dlMsg.rrcMsgPdu, f1DlRrcMsg->protocolIEs.list.array[idx]->value.choice.RRCContainer.buf,\
+                      dlMsg.rrcMsgSize);
+             }
+             else
+             {
+                DU_LOG("\nERROR  -->  DU APP : Memory alloc Failed at RRC Container at procF1DlRrcMsgTrans()");
+                return RFAILED;
+             }
+          }
+          else
+          {
+             DU_LOG("\nERROR  -->  DU_APP : RRC Container Size is invalid:%ld",\
+                   f1DlRrcMsg->protocolIEs.list.array[idx]->value.choice.RRCContainer.size);
+             return RFAILED;
+          }
+          break;
+       }
+    case ProtocolIE_ID_id_RRCDeliveryStatusRequest:
+       {
+          dlMsg.deliveryStatRpt = true;
+          break;
+       }
+    default:
+       DU_LOG("\nERROR  -->  DU_APP : Invalid IE received in DL RRC Msg Transfer:%ld",
+             f1DlRrcMsg->protocolIEs.list.array[idx]->id);
       }
    }
 

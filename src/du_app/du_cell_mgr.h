@@ -24,8 +24,8 @@ uint8_t duBuildAndSendMacCellCfg(uint16_t cellId);
 uint8_t duProcCellsToBeActivated(uint8_t *plmnStr, uint16_t nci, uint16_t nRPci);
 void duProcF1SetupRsp();
 uint8_t duGetCellCb(uint16_t cellId, DuCellCb **cellCb);
-uint8_t BuildAndSendSliceConfigReq(RrmPolicy *rrmPolicy[], uint8_t totalRrrmPolicy, uint8_t totalSliceCfgReq);
-uint8_t BuildAndSendSliceRecfgReq(RrmPolicy *rrmPolicy[], uint8_t totalRrmPolicy, uint8_t totalSliceRecfg);
+uint8_t BuildAndSendSliceConfigReq();
+uint8_t BuildAndSendSliceRecfgReq();
 uint8_t processPagingMsg(uint16_t cellId, DuPagingMsg *rcvdF1apPagingParam);
 uint8_t BuildAndSendDlPcchIndToMac(uint16_t cellId, uint16_t pf, uint8_t i_s, CmLListCp *pageUeLL);
 #endif

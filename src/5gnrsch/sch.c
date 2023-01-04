@@ -1694,7 +1694,7 @@ uint8_t fillSliceCfgRsp(bool sliceRecfg, SchSliceCfg *storedSliceCfg, SchCellCb 
       {
          for(sliceIdx = 0; sliceIdx<cellCb->cellCfg.plmnInfoList.numSliceSupport; sliceIdx++)
          {
-            if(!memcmp(&schSliceCfgReq->listOfConfirguration[cfgIdx]->snssai, cellCb->cellCfg.plmnInfoList.snssai[sliceIdx], sizeof(Snssai)))
+            if(!memcmp(&schSliceCfgReq->listOfSlices[cfgIdx]->snssai, cellCb->cellCfg.plmnInfoList.snssai[sliceIdx], sizeof(Snssai)))
             {
                (*count)++;
                sliceFound = true;
@@ -1705,11 +1705,11 @@ uint8_t fillSliceCfgRsp(bool sliceRecfg, SchSliceCfg *storedSliceCfg, SchCellCb 
       else
       {
          /* Here comparing the slice cfg request with the slice stored in SchDb */
-         if(storedSliceCfg->listOfConfirguration)
+         if(storedSliceCfg->listOfSlices)
          {
             for(sliceIdx = 0; sliceIdx<storedSliceCfg->numOfSliceConfigured; sliceIdx++)
             {
-               if(!memcmp(&schSliceCfgReq->listOfConfirguration[cfgIdx]->snssai, &storedSliceCfg->listOfConfirguration[sliceIdx]->snssai,\
+               if(!memcmp(&schSliceCfgReq->listOfSlices[cfgIdx]->snssai, &storedSliceCfg->listOfSlices[sliceIdx]->snssai,\
                         sizeof(Snssai)))
                {
                   (*count)++;
@@ -1728,7 +1728,7 @@ uint8_t fillSliceCfgRsp(bool sliceRecfg, SchSliceCfg *storedSliceCfg, SchCellCb 
       }
 
       
-      schSliceCfgRsp->listOfSliceCfgRsp[cfgIdx]->snssai = schSliceCfgReq->listOfConfirguration[cfgIdx]->snssai;
+      schSliceCfgRsp->listOfSliceCfgRsp[cfgIdx]->snssai = schSliceCfgReq->listOfSlices[cfgIdx]->snssai;
       if(sliceFound == true)
          schSliceCfgRsp->listOfSliceCfgRsp[cfgIdx]->rsp    = RSP_OK;
       else
@@ -1766,8 +1766,8 @@ uint8_t addSliceCfgInSchDb(SchSliceCfg *storeSliceCfg, SchSliceCfgReq *cfgReq, S
    if(count)
    {
       storeSliceCfg->numOfSliceConfigured = count;
-      SCH_ALLOC(storeSliceCfg->listOfConfirguration, storeSliceCfg->numOfSliceConfigured * sizeof(SchRrmPolicyOfSlice*));
-      if(storeSliceCfg->listOfConfirguration == NULLP)
+      SCH_ALLOC(storeSliceCfg->listOfSlices, storeSliceCfg->numOfSliceConfigured * sizeof(SchRrmPolicyOfSlice*));
+      if(storeSliceCfg->listOfSlices == NULLP)
       {
          DU_LOG("\nERROR  -->  SCH : Failed to allocate memory in addSliceCfgInSchDb");
          return RFAILED;
@@ -1777,22 +1777,15 @@ uint8_t addSliceCfgInSchDb(SchSliceCfg *storeSliceCfg, SchSliceCfgReq *cfgReq, S
       {
          if(cfgRsp.listOfSliceCfgRsp[cfgIdx]->rsp == RSP_OK)
          {
-            SCH_ALLOC(storeSliceCfg->listOfConfirguration[sliceIdx], sizeof(SchRrmPolicyOfSlice));
-            if(storeSliceCfg->listOfConfirguration[sliceIdx] == NULLP)
+            SCH_ALLOC(storeSliceCfg->listOfSlices[sliceIdx], sizeof(SchRrmPolicyOfSlice));
+            if(storeSliceCfg->listOfSlices[sliceIdx] == NULLP)
             {
                DU_LOG("\nERROR  -->  SCH : Failed to allocate memory in addSliceCfgInSchDb");
                return RFAILED;
             }
 
-            SCH_ALLOC(storeSliceCfg->listOfConfirguration[sliceIdx]->rrmPolicyRatioInfo, sizeof(SchRrmPolicyRatio));
-            if(storeSliceCfg->listOfConfirguration[sliceIdx]->rrmPolicyRatioInfo == NULLP)
-            {
-               DU_LOG("\nERROR  -->  SCH : Failed to allocate memory in addSliceCfgInSchDb");
-               return RFAILED;
-            }
-
-            memcpy(&storeSliceCfg->listOfConfirguration[sliceIdx]->snssai, &cfgReq->listOfConfirguration[sliceIdx]->snssai, sizeof(Snssai));
-            memcpy(storeSliceCfg->listOfConfirguration[sliceIdx]->rrmPolicyRatioInfo, cfgReq->listOfConfirguration[sliceIdx]->rrmPolicyRatioInfo,
+            memcpy(&storeSliceCfg->listOfSlices[sliceIdx]->snssai, &cfgReq->listOfSlices[sliceIdx]->snssai, sizeof(Snssai));
+            memcpy(&storeSliceCfg->listOfSlices[sliceIdx]->rrmPolicyRatioInfo, &cfgReq->listOfSlices[sliceIdx]->rrmPolicyRatioInfo,
                       sizeof(SchRrmPolicyRatio));
             sliceIdx++;
          }
@@ -1828,13 +1821,12 @@ void freeSchSliceCfgReq(SchSliceCfgReq *sliceCfgReq)
       {
          for(cfgIdx = 0; cfgIdx<sliceCfgReq->numOfConfiguredSlice; cfgIdx++)
          {
-            if(sliceCfgReq->listOfConfirguration[cfgIdx])
+            if(sliceCfgReq->listOfSlices[cfgIdx])
             {
-               SCH_FREE(sliceCfgReq->listOfConfirguration[cfgIdx]->rrmPolicyRatioInfo, sizeof(SchRrmPolicyRatio));
-               SCH_FREE(sliceCfgReq->listOfConfirguration[cfgIdx], sizeof(SchRrmPolicyOfSlice));
+               SCH_FREE(sliceCfgReq->listOfSlices[cfgIdx], sizeof(SchRrmPolicyOfSlice));
             }
          }
-         SCH_FREE(sliceCfgReq->listOfConfirguration, sliceCfgReq->numOfConfiguredSlice * sizeof(SchRrmPolicyOfSlice*));
+         SCH_FREE(sliceCfgReq->listOfSlices, sliceCfgReq->numOfConfiguredSlice * sizeof(SchRrmPolicyOfSlice*));
       }
       SCH_FREE(sliceCfgReq, sizeof(SchSliceCfgReq));
    }
@@ -1866,7 +1858,7 @@ uint8_t MacSchSliceCfgReq(Pst *pst, SchSliceCfgReq *schSliceCfgReq)
    DU_LOG("\nINFO  -->  SCH : Received Slice Cfg request from MAC");
    if(schSliceCfgReq)
    {
-      if(schSliceCfgReq->listOfConfirguration)
+      if(schSliceCfgReq->listOfSlices)
       {
          /* filling the slice configuration response of each slice */
          if(fillSliceCfgRsp(false, NULLP, schCb[inst].cells[0], schSliceCfgReq, &sliceCfgRsp, &count) != ROK)
@@ -1915,7 +1907,7 @@ uint8_t modifySliceCfgInSchDb(SchSliceCfg *storeSliceCfg, SchSliceRecfgReq *recf
 
    if(count)
    {
-      if(storeSliceCfg->listOfConfirguration == NULLP)
+      if(storeSliceCfg->listOfSlices == NULLP)
       {
          DU_LOG("\nINFO  -->  SCH : Memory allocation failed in modifySliceCfgInSchDb");
          return RFAILED;
@@ -1927,9 +1919,9 @@ uint8_t modifySliceCfgInSchDb(SchSliceCfg *storeSliceCfg, SchSliceRecfgReq *recf
          {
             for(sliceIdx = 0; sliceIdx<storeSliceCfg->numOfSliceConfigured; sliceIdx++)
             {
-               if(!memcmp(&storeSliceCfg->listOfConfirguration[sliceIdx]->snssai, &recfgReq->listOfConfirguration[cfgIdx]->snssai, sizeof(Snssai)))
+               if(!memcmp(&storeSliceCfg->listOfSlices[sliceIdx]->snssai, &recfgReq->listOfSlices[cfgIdx]->snssai, sizeof(Snssai)))
                {
-                  memcpy(storeSliceCfg->listOfConfirguration[sliceIdx]->rrmPolicyRatioInfo, recfgReq->listOfConfirguration[cfgIdx]->rrmPolicyRatioInfo,
+                  memcpy(&storeSliceCfg->listOfSlices[sliceIdx]->rrmPolicyRatioInfo, &recfgReq->listOfSlices[cfgIdx]->rrmPolicyRatioInfo,
                            sizeof(SchRrmPolicyRatio));
                   break;
                }
@@ -1993,7 +1985,7 @@ uint8_t MacSchSliceRecfgReq(Pst *pst, SchSliceRecfgReq *schSliceRecfgReq)
    DU_LOG("\nINFO  -->  SCH : Received Slice ReCfg request from MAC");
    if(schSliceRecfgReq)
    {
-      if(schSliceRecfgReq->listOfConfirguration)
+      if(schSliceRecfgReq->listOfSlices)
       {
          /* filling the slice configuration response of each slice */
          if(fillSliceCfgRsp(true, &schCb[inst].sliceCfg, NULLP, schSliceRecfgReq, &schSliceRecfgRsp, &count) != ROK)

@@ -1466,26 +1466,34 @@ typedef struct macSliceRsp
 
 typedef struct rrmPolicyRatio
 {
-   uint8_t policyMaxRatio;
-   uint8_t policyMinRatio;
-   uint8_t policyDedicatedRatio;
+   uint8_t maxRatio;
+   uint8_t minRatio;
+   uint8_t dedicatedRatio;
 }RrmPolicyRatio;
+
+typedef struct rrmPolicyMemberList
+{
+   Plmn    plmn;
+   Snssai  snssai;
+}RrmPolicyMemberList;
 
 typedef struct macSliceRrmPolicy
 {
-   Snssai  snssai;
-   RrmPolicyRatio *rrmPolicyRatio;
+   ResourceType        resourceType;
+   uint8_t             numOfRrmPolicyMem;
+   RrmPolicyMemberList **rRMPolicyMemberList;
+   RrmPolicyRatio      policyRatio;
 }MacSliceRrmPolicy;
 
 typedef struct macSliceCfgReq
 {
-   uint8_t  numOfConfiguredSlice;
-   MacSliceRrmPolicy **listOfSliceCfg;
+   uint8_t           numOfRrmPolicy;
+   MacSliceRrmPolicy **listOfRrmPolicy;
 }MacSliceCfgReq;
 
 typedef struct macSliceCfgRsp
 {
-   uint8_t  numSliceCfgRsp;
+   uint8_t      numSliceCfgRsp;
    MacSliceRsp  **listOfSliceCfgRsp;
 }MacSliceCfgRsp;
 
