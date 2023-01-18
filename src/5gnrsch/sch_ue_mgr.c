@@ -912,11 +912,10 @@ uint8_t schFillPuschAlloc(SchUeCb *ueCb, SlotTimingInfo puschTime, uint32_t tbSi
 
    if (isRetx == FALSE)
    {
-      puschInfo.crnti             = ueCb->crnti;
-      puschInfo.harqProcId        = SCH_HARQ_PROC_ID;
-      puschInfo.resAllocType      = SCH_ALLOC_TYPE_1;
-      puschInfo.fdAlloc.startPrb  = startPrb;
-      puschInfo.fdAlloc.numPrb    = numRb;
+      puschInfo.harqProcId                       = SCH_HARQ_PROC_ID;
+      puschInfo.fdAlloc.resAllocType             = SCH_ALLOC_TYPE_1;
+      puschInfo.fdAlloc.resAlloc.type1.startPrb  = startPrb;
+      puschInfo.fdAlloc.resAlloc.type1.numPrb    = numRb;
       puschInfo.tdAlloc.startSymb = startSymb;
       puschInfo.tdAlloc.numSymb   = symbLen;
       puschInfo.tbInfo.qamOrder   = ueCb->ueCfg.ulModInfo.modOrder;
@@ -925,12 +924,14 @@ uint8_t schFillPuschAlloc(SchUeCb *ueCb, SlotTimingInfo puschTime, uint32_t tbSi
       puschInfo.tbInfo.ndi        = 1; /* new transmission */
       puschInfo.tbInfo.rv         = 0;
       puschInfo.tbInfo.tbSize     = tbSize;
+#ifdef INTEL_FAPI      
       puschInfo.dmrsMappingType   = DMRS_MAP_TYPE_A;  /* Setting Type-A */
       puschInfo.nrOfDmrsSymbols   = NUM_DMRS_SYMBOLS;
       puschInfo.dmrsAddPos        = DMRS_ADDITIONAL_POS;
-      hqP->puschResType = puschInfo.resAllocType;
-      hqP->puschStartPrb = puschInfo.fdAlloc.startPrb;
-      hqP->puschNumPrb = puschInfo.fdAlloc.numPrb;
+#endif      
+      hqP->puschResType = puschInfo.fdAlloc.resAllocType;
+      hqP->puschStartPrb = puschInfo.fdAlloc.resAlloc.type1.startPrb;
+      hqP->puschNumPrb = puschInfo.fdAlloc.resAlloc.type1.numPrb;
       hqP->strtSymbl = puschInfo.tdAlloc.startSymb;
       hqP->numSymbl = puschInfo.tdAlloc.numSymb;
       hqP->tbInfo.qamOrder = puschInfo.tbInfo.qamOrder;
@@ -940,17 +941,18 @@ uint8_t schFillPuschAlloc(SchUeCb *ueCb, SlotTimingInfo puschTime, uint32_t tbSi
       hqP->tbInfo.rv = puschInfo.tbInfo.rv;
       hqP->tbInfo.rvIdx = 0;
       hqP->tbInfo.tbSzReq = puschInfo.tbInfo.tbSize;
+#ifdef INTEL_FAPI      
       hqP->dmrsMappingType = puschInfo.dmrsMappingType;
       hqP->nrOfDmrsSymbols = puschInfo.nrOfDmrsSymbols;
       hqP->dmrsAddPos = puschInfo.dmrsAddPos;
+#endif
    }
    else
    {
-      puschInfo.crnti             = ueCb->crnti;
-      puschInfo.harqProcId        = hqP->procId;
-      puschInfo.resAllocType      = hqP->puschResType;
-      puschInfo.fdAlloc.startPrb  = hqP->puschStartPrb;
-      puschInfo.fdAlloc.numPrb    = hqP->puschNumPrb;
+      puschInfo.harqProcId                       = hqP->procId;
+      puschInfo.fdAlloc.resAllocType             = hqP->puschResType;
+      puschInfo.fdAlloc.resAlloc.type1.startPrb  = hqP->puschStartPrb;
+      puschInfo.fdAlloc.resAlloc.type1.numPrb    = hqP->puschNumPrb;
       puschInfo.tdAlloc.startSymb = hqP->strtSymbl;
       puschInfo.tdAlloc.numSymb   = hqP->numSymbl;
       puschInfo.tbInfo.qamOrder   = hqP->tbInfo.qamOrder;
@@ -960,10 +962,12 @@ uint8_t schFillPuschAlloc(SchUeCb *ueCb, SlotTimingInfo puschTime, uint32_t tbSi
       hqP->tbInfo.rvIdx = (hqP->tbInfo.rvIdx +1) & 0x3;
       puschInfo.tbInfo.rv         = schCmnDlRvTbl[hqP->tbInfo.rvIdx];
       puschInfo.tbInfo.tbSize     = hqP->tbInfo.tbSzReq;
+#ifdef INTEL_FAPI      
       puschInfo.dmrsMappingType   = hqP->dmrsMappingType;  /* Setting Type-A */
       puschInfo.nrOfDmrsSymbols   = hqP->nrOfDmrsSymbols;
       puschInfo.dmrsAddPos        = hqP->dmrsAddPos;
-   }
+#endif 
+  }
   schUlSlotInfo = cellCb->schUlSlotInfo[puschTime.slot];
   SCH_ALLOC(schUlSlotInfo->schPuschInfo, sizeof(SchPuschInfo));
   if(!schUlSlotInfo->schPuschInfo)
@@ -1060,11 +1064,10 @@ uint8_t schFillUlDciForMsg3Retx(SchRaCb *raCb, SchPuschInfo *puschInfo, DciInfo 
    dciInfo->dciInfo.pdschCfg                          = NULL; /* No DL data being sent */
    msg3HqProc->tbInfo.txCntr++;
 
-  puschInfo->crnti             = raCb->tcrnti;
-  puschInfo->harqProcId        = msg3HqProc->procId;
-  puschInfo->resAllocType      = msg3HqProc->puschResType;
-  puschInfo->fdAlloc.startPrb  = msg3HqProc->puschStartPrb;
-  puschInfo->fdAlloc.numPrb    = msg3HqProc->puschNumPrb;
+  puschInfo->harqProcId                       = msg3HqProc->procId;
+  puschInfo->fdAlloc.resAllocType             = msg3HqProc->puschResType;
+  puschInfo->fdAlloc.resAlloc.type1.startPrb  = msg3HqProc->puschStartPrb;
+  puschInfo->fdAlloc.resAlloc.type1.numPrb    = msg3HqProc->puschNumPrb;
   puschInfo->tdAlloc.startSymb = msg3HqProc->strtSymbl;
   puschInfo->tdAlloc.numSymb   = msg3HqProc->numSymbl;
   puschInfo->tbInfo.qamOrder   = msg3HqProc->tbInfo.qamOrder;
@@ -1073,10 +1076,11 @@ uint8_t schFillUlDciForMsg3Retx(SchRaCb *raCb, SchPuschInfo *puschInfo, DciInfo 
   puschInfo->tbInfo.ndi        = msg3HqProc->tbInfo.ndi; /* retransmission */
   puschInfo->tbInfo.rv         = msg3HqProc->tbInfo.rvIdx;
   puschInfo->tbInfo.tbSize     = msg3HqProc->tbInfo.tbSzReq;
+#ifdef INTEL_FAPI
   puschInfo->dmrsMappingType   = msg3HqProc->dmrsMappingType;  /* Setting Type-A */
   puschInfo->nrOfDmrsSymbols   = msg3HqProc->nrOfDmrsSymbols;
   puschInfo->dmrsAddPos        = msg3HqProc->dmrsAddPos;
-
+#endif
    return ROK;
 }
 
@@ -1136,9 +1140,9 @@ uint8_t schFillUlDci(SchUeCb *ueCb, SchPuschInfo *puschInfo, DciInfo *dciInfo, b
    dciInfo->formatType = FORMAT0_0;
    
    /* fill UL grant */
-   dciInfo->format.format0_0.resourceAllocType   = puschInfo->resAllocType;
-   dciInfo->format.format0_0.freqAlloc.startPrb  = puschInfo->fdAlloc.startPrb;
-   dciInfo->format.format0_0.freqAlloc.numPrb    = puschInfo->fdAlloc.numPrb;
+   dciInfo->format.format0_0.resourceAllocType   = puschInfo->fdAlloc.resAllocType;
+   dciInfo->format.format0_0.freqAlloc.startPrb  = puschInfo->fdAlloc.resAlloc.type1.startPrb;
+   dciInfo->format.format0_0.freqAlloc.numPrb    = puschInfo->fdAlloc.resAlloc.type1.numPrb;
    dciInfo->format.format0_0.timeAlloc.startSymb = puschInfo->tdAlloc.startSymb;
    dciInfo->format.format0_0.timeAlloc.numSymb   = puschInfo->tdAlloc.numSymb;
    dciInfo->format.format0_0.rowIndex            = 0; /* row Index */
