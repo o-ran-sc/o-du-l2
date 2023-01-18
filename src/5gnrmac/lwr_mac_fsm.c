@@ -4208,11 +4208,11 @@ void fillPuschPdu(fapi_ul_tti_req_pdu_t *ulTtiReqPdu, fapi_vendor_ul_tti_req_pdu
       ulTtiReqPdu->pdu.pusch_pdu.numDmrsCdmGrpsNoData = 1;
       ulTtiReqPdu->pdu.pusch_pdu.dmrsPorts = 0;
       ulTtiReqPdu->pdu.pusch_pdu.resourceAlloc = \
-	 currUlSlot->ulInfo.schPuschInfo.resAllocType;
+	 currUlSlot->ulInfo.schPuschInfo.fdAlloc.resAllocType;
       ulTtiReqPdu->pdu.pusch_pdu.rbStart = \
-         currUlSlot->ulInfo.schPuschInfo.fdAlloc.startPrb;
+         currUlSlot->ulInfo.schPuschInfo.fdAlloc.resAlloc.type1.startPrb;
       ulTtiReqPdu->pdu.pusch_pdu.rbSize = \
-	 currUlSlot->ulInfo.schPuschInfo.fdAlloc.numPrb;
+	 currUlSlot->ulInfo.schPuschInfo.fdAlloc.resAlloc.type1.numPrb;
       ulTtiReqPdu->pdu.pusch_pdu.vrbToPrbMapping = 0;
       ulTtiReqPdu->pdu.pusch_pdu.frequencyHopping = 0;
       ulTtiReqPdu->pdu.pusch_pdu.txDirectCurrentLocation = 0;
@@ -4273,7 +4273,7 @@ void fillPucchPdu(fapi_ul_tti_req_pdu_t *ulTtiReqPdu, fapi_vendor_ul_tti_req_pdu
    {
       ulTtiReqPdu->pduType                  = PUCCH_PDU_TYPE;
       memset(&ulTtiReqPdu->pdu.pucch_pdu, 0, sizeof(fapi_ul_pucch_pdu_t));
-      ulTtiReqPdu->pdu.pucch_pdu.rnti         = currUlSlot->ulInfo.schPucchInfo.rnti;
+      ulTtiReqPdu->pdu.pucch_pdu.rnti         = currUlSlot->ulInfo.crnti;
       /* TODO : Fill handle in raCb when scheduling pucch and access here */
       ulTtiReqPdu->pdu.pucch_pdu.handle       = 100;
       ulTtiReqPdu->pdu.pucch_pdu.bwpSize      = macCellCfg->initialUlBwp.bwp.numPrb;
@@ -4283,8 +4283,8 @@ void fillPucchPdu(fapi_ul_tti_req_pdu_t *ulTtiReqPdu, fapi_vendor_ul_tti_req_pdu
       ulTtiReqPdu->pdu.pucch_pdu.formatType   = currUlSlot->ulInfo.schPucchInfo.pucchFormat; /* Supporting PUCCH Format 0 */
       ulTtiReqPdu->pdu.pucch_pdu.multiSlotTxIndicator = 0; /* No Multi Slot transmission */
       
-      ulTtiReqPdu->pdu.pucch_pdu.prbStart     = currUlSlot->ulInfo.schPucchInfo.fdAlloc.startPrb;
-      ulTtiReqPdu->pdu.pucch_pdu.prbSize      = currUlSlot->ulInfo.schPucchInfo.fdAlloc.numPrb;
+      ulTtiReqPdu->pdu.pucch_pdu.prbStart     = currUlSlot->ulInfo.schPucchInfo.fdAlloc.resAlloc.type1.startPrb;
+      ulTtiReqPdu->pdu.pucch_pdu.prbSize      = currUlSlot->ulInfo.schPucchInfo.fdAlloc.resAlloc.type1.numPrb;
       ulTtiReqPdu->pdu.pucch_pdu.startSymbolIndex = currUlSlot->ulInfo.schPucchInfo.tdAlloc.startSymb;
       ulTtiReqPdu->pdu.pucch_pdu.nrOfSymbols  = currUlSlot->ulInfo.schPucchInfo.tdAlloc.numSymb;
       ulTtiReqPdu->pdu.pucch_pdu.freqHopFlag  = currUlSlot->ulInfo.schPucchInfo.intraFreqHop;
@@ -4299,12 +4299,12 @@ void fillPucchPdu(fapi_ul_tti_req_pdu_t *ulTtiReqPdu, fapi_vendor_ul_tti_req_pdu
       ulTtiReqPdu->pdu.pucch_pdu.timeDomainOccIdx = currUlSlot->ulInfo.schPucchInfo.timeDomOCC; 
       ulTtiReqPdu->pdu.pucch_pdu.preDftOccIdx = currUlSlot->ulInfo.schPucchInfo.occIdx; /* Valid for Format 4 only */
       ulTtiReqPdu->pdu.pucch_pdu.preDftOccLen = currUlSlot->ulInfo.schPucchInfo.occLen; /* Valid for Format 4 only */
-      ulTtiReqPdu->pdu.pucch_pdu.pi2Bpsk = currUlSlot->ulInfo.schPucchInfo.cmnFormatCfg.pi2BPSK;
-      ulTtiReqPdu->pdu.pucch_pdu.addDmrsFlag = currUlSlot->ulInfo.schPucchInfo.cmnFormatCfg.addDmrs;/* Valid for Format 3, 4 only */
+      ulTtiReqPdu->pdu.pucch_pdu.pi2Bpsk = currUlSlot->ulInfo.schPucchInfo.pi2BPSK;
+      ulTtiReqPdu->pdu.pucch_pdu.addDmrsFlag = currUlSlot->ulInfo.schPucchInfo.addDmrs;/* Valid for Format 3, 4 only */
       ulTtiReqPdu->pdu.pucch_pdu.dmrsScramblingId = 0; /* Valid for Format 2 */
       ulTtiReqPdu->pdu.pucch_pdu.dmrsCyclicShift  = 0; /* Valid for Format 4 */
       ulTtiReqPdu->pdu.pucch_pdu.srFlag           = currUlSlot->ulInfo.schPucchInfo.srFlag;
-      ulTtiReqPdu->pdu.pucch_pdu.bitLenHarq       = currUlSlot->ulInfo.schPucchInfo.numHarqBits;
+      ulTtiReqPdu->pdu.pucch_pdu.bitLenHarq       = currUlSlot->ulInfo.schPucchInfo.harqInfo.harqBitLength;
       ulTtiReqPdu->pdu.pucch_pdu.bitLenCsiPart1   = 0; /* Valid for Format 2, 3, 4 */
       ulTtiReqPdu->pdu.pucch_pdu.bitLenCsiPart2   = 0; /* Valid for Format 2, 3, 4 */
       ulTtiReqPdu->pdu.pucch_pdu.beamforming.numPrgs = 0; /* Not Supported */
