@@ -456,11 +456,10 @@ SchPuschInfo* schAllocMsg3Pusch(Inst schInst, uint16_t crnti, uint8_t k2Index, S
    tbSize = schCalcTbSizeFromNPrb(numRb, mcs, NUM_PDSCH_SYMBOL);
    tbSize = tbSize / 8 ; /*bits to byte conversion*/
 
-   schUlSlotInfo->schPuschInfo->crnti             = crnti;
    schUlSlotInfo->schPuschInfo->harqProcId        = msg3HqProc->procId;
-   schUlSlotInfo->schPuschInfo->resAllocType      = SCH_ALLOC_TYPE_1;
-   schUlSlotInfo->schPuschInfo->fdAlloc.startPrb  = startRb;
-   schUlSlotInfo->schPuschInfo->fdAlloc.numPrb    = numRb;
+   schUlSlotInfo->schPuschInfo->fdAlloc.resAllocType      = SCH_ALLOC_TYPE_1;
+   schUlSlotInfo->schPuschInfo->fdAlloc.resAlloc.type1.startPrb  = startRb;
+   schUlSlotInfo->schPuschInfo->fdAlloc.resAlloc.type1.numPrb    = numRb;
    schUlSlotInfo->schPuschInfo->tdAlloc.startSymb = startSymb;
    schUlSlotInfo->schPuschInfo->tdAlloc.numSymb   = symbLen;
    schUlSlotInfo->schPuschInfo->tbInfo.qamOrder   = QPSK_MODULATION;  /* QPSK modulation */
@@ -469,25 +468,30 @@ SchPuschInfo* schAllocMsg3Pusch(Inst schInst, uint16_t crnti, uint8_t k2Index, S
    schUlSlotInfo->schPuschInfo->tbInfo.ndi        = NEW_TRANSMISSION; /* new transmission */
    schUlSlotInfo->schPuschInfo->tbInfo.rv	        = 0;
    schUlSlotInfo->schPuschInfo->tbInfo.tbSize     = tbSize;
+#ifdef INTEL_FAPI   
    schUlSlotInfo->schPuschInfo->dmrsMappingType   = DMRS_MAP_TYPE_A;  /* Setting Type-A */
    schUlSlotInfo->schPuschInfo->nrOfDmrsSymbols   = NUM_DMRS_SYMBOLS;
    schUlSlotInfo->schPuschInfo->dmrsAddPos        = DMRS_ADDITIONAL_POS;
+#endif   
+   
    if(!isRetx)
    {
       msg3HqProc->strtSymbl = startSymb;
       msg3HqProc->numSymbl = symbLen;
-      msg3HqProc->puschResType = schUlSlotInfo->schPuschInfo->resAllocType;
-      msg3HqProc->puschStartPrb = schUlSlotInfo->schPuschInfo->fdAlloc.startPrb;
-      msg3HqProc->puschNumPrb = schUlSlotInfo->schPuschInfo->fdAlloc.numPrb;
+      msg3HqProc->puschResType = schUlSlotInfo->schPuschInfo->fdAlloc.resAllocType;
+      msg3HqProc->puschStartPrb = schUlSlotInfo->schPuschInfo->fdAlloc.resAlloc.type1.startPrb;
+      msg3HqProc->puschNumPrb = schUlSlotInfo->schPuschInfo->fdAlloc.resAlloc.type1.numPrb;
       msg3HqProc->tbInfo.qamOrder = schUlSlotInfo->schPuschInfo->tbInfo.qamOrder;
       msg3HqProc->tbInfo.iMcs = schUlSlotInfo->schPuschInfo->tbInfo.mcs;
       msg3HqProc->tbInfo.mcsTable = schUlSlotInfo->schPuschInfo->tbInfo.mcsTable;
       msg3HqProc->tbInfo.ndi = schUlSlotInfo->schPuschInfo->tbInfo.ndi;
       msg3HqProc->tbInfo.rv = schUlSlotInfo->schPuschInfo->tbInfo.rv;
       msg3HqProc->tbInfo.tbSzReq = schUlSlotInfo->schPuschInfo->tbInfo.tbSize;
+#ifdef INTEL_FAPI      
       msg3HqProc->dmrsMappingType = schUlSlotInfo->schPuschInfo->dmrsMappingType;
       msg3HqProc->nrOfDmrsSymbols = schUlSlotInfo->schPuschInfo->nrOfDmrsSymbols;
       msg3HqProc->dmrsAddPos = schUlSlotInfo->schPuschInfo->dmrsAddPos;
+#endif
    }
    return schUlSlotInfo->schPuschInfo;
 }
@@ -711,8 +715,8 @@ bool schProcessRaReq(Inst schInst, SchCellCb *cell, SlotTimingInfo currTime, uin
             dciSlotAlloc->rarInfo.ulGrant.bwpSize = cell->cellCfg.schInitialUlBwp.bwp.freqAlloc.numPrb;
             /* Spec 38.213, section 8.2, 0 : MSG3 PUSCH will be transmitted without frequency hopping */
             dciSlotAlloc->rarInfo.ulGrant.freqHopFlag = 0;
-            dciSlotAlloc->rarInfo.ulGrant.msg3FreqAlloc.startPrb = msg3PuschInfo->fdAlloc.startPrb;
-            dciSlotAlloc->rarInfo.ulGrant.msg3FreqAlloc.numPrb = msg3PuschInfo->fdAlloc.numPrb;
+            dciSlotAlloc->rarInfo.ulGrant.msg3FreqAlloc.startPrb = msg3PuschInfo->fdAlloc.resAlloc.type1.startPrb;
+            dciSlotAlloc->rarInfo.ulGrant.msg3FreqAlloc.numPrb = msg3PuschInfo->fdAlloc.resAlloc.type1.numPrb;
             dciSlotAlloc->rarInfo.ulGrant.k2Index = k2Index;
             dciSlotAlloc->rarInfo.ulGrant.mcs = msg3PuschInfo->tbInfo.mcs;
             dciSlotAlloc->rarInfo.ulGrant.tpc = 3;  /* TODO : Check appropriate value to be filled */
