@@ -442,12 +442,16 @@ typedef struct timeDomainAlloc
    uint16_t numSymb;
 }TimeDomainAlloc;
 
-typedef struct freqDomainAlloc
+typedef struct resAllocType0 
+{
+   uint8_t rbBitmap[36];
+}ResAllocType0;
+
+typedef struct resAllocType1 
 {
    uint16_t startPrb;
    uint16_t numPrb;
-}FreqDomainAlloc;
-
+}ResAllocType1;
 
 typedef struct
 {
@@ -467,7 +471,7 @@ typedef struct bwpCfg
 {
    uint8_t         subcarrierSpacing;
    uint8_t         cyclicPrefix;
-   FreqDomainAlloc freqAlloc;	
+   ResAllocType1   freqAlloc;	
 }BwpCfg;
 
 typedef struct prg
@@ -513,7 +517,7 @@ typedef struct pdschFreqAlloc
 {
    uint8_t  resourceAllocType;
    /* since we are using type-1, rbBitmap excluded */
-   FreqDomainAlloc freqAlloc;
+   ResAllocType1 freqAlloc;
    uint8_t  vrbPrbMapping;
 } PdschFreqAlloc;
 
@@ -640,7 +644,7 @@ typedef struct schRachCfg
 
 typedef struct schBwpParams
 {
-   FreqDomainAlloc freqAlloc;
+   ResAllocType1   freqAlloc;
    uint8_t         scs;
    uint8_t         cyclicPrefix;
 }SchBwpParams;
@@ -845,7 +849,7 @@ typedef struct ssbInfo
 {
    uint8_t         ssbIdx;          /* SSB Index */
    TimeDomainAlloc tdAlloc; /* Time domain allocation */
-   FreqDomainAlloc fdAlloc; /* Freq domain allocation */
+   ResAllocType1   fdAlloc; /* Freq domain allocation */
 }SsbInfo;
 
 typedef struct sib1AllocInfo
@@ -861,7 +865,7 @@ typedef struct prachSchInfo
    uint8_t  prachFormat;    /* PRACH Format */
    uint8_t  numRa;          /* Freq domain ocassion */
    uint8_t  prachStartSymb; /* Freq domain ocassion */
-}PrachSchInfo;
+}SchPrachInfo;
 
 /* Interface structure signifying DL broadcast allocation for SSB, SIB1 */
 typedef struct dlBrdcstAlloc
@@ -885,7 +889,7 @@ typedef struct msg3UlGrant
 {
    uint8_t         freqHopFlag;
    uint16_t        bwpSize;
-   FreqDomainAlloc msg3FreqAlloc;
+   ResAllocType1   msg3FreqAlloc;
    uint8_t         k2Index;
    uint8_t         mcs;
    uint8_t         tpc;
@@ -967,7 +971,7 @@ typedef struct format0_0
 {
    uint8_t         resourceAllocType;
    /* since we are using type-1, hence rbBitmap excluded */
-   FreqDomainAlloc freqAlloc;
+   ResAllocType1   freqAlloc;
    TimeDomainAlloc timeAlloc;
    uint16_t        rowIndex;
    uint8_t         mcs;
@@ -1060,11 +1064,19 @@ typedef struct tbInfo
    uint16_t tbSize;    /* TB Size */
 }TbInfo;
 
+typedef struct freqDomainAlloc
+{
+   uint8_t          resAllocType; /* Resource allocation type */
+   union
+   {
+      ResAllocType0    type0;
+      ResAllocType1    type1;
+   }resAlloc;
+}FreqDomainAlloc;
+
 typedef struct schPuschInfo
 {
-   uint16_t         crnti;
    uint8_t          harqProcId;   /* HARQ Process ID */
-   uint8_t          resAllocType; /* Resource allocation type */
    FreqDomainAlloc  fdAlloc;      /* Freq domain allocation */
    TimeDomainAlloc  tdAlloc;      /* Time domain allocation */
    TbInfo           tbInfo;       /* TB info */
@@ -1072,6 +1084,28 @@ typedef struct schPuschInfo
    uint8_t          nrOfDmrsSymbols;
    uint8_t          dmrsAddPos;
 }SchPuschInfo;
+
+typedef struct harqInfo
+{
+   uint16_t    harqAckBitLength;
+   uint8_t     betaOffsetHarqAck;
+}HarqInfo;
+
+typedef struct csiInfo
+{
+   uint16_t csiBits;
+   uint8_t  betaOffsetCsi;
+}CsiInfo;
+
+typedef struct harqAckInfo
+{
+   uint16_t    harqBitLength;
+}HarqFdbkInfo;
+
+typedef struct csiPartInfo
+{
+   uint16_t csiBits;
+}csiFdbkInfo;
 
 typedef struct schPucchFormatCfg
 {
@@ -1085,33 +1119,43 @@ typedef struct schPucchFormatCfg
 
 typedef struct schPucchInfo
 {
-   uint16_t         rnti;
    uint8_t          pucchFormat;
    FreqDomainAlloc  fdAlloc;      /* Freq domain allocation */
    TimeDomainAlloc  tdAlloc;      /* Time domain allocation */
    uint8_t          srFlag;
-   uint8_t          harqFlag;
-   uint8_t          numHarqBits;
-   uint8_t          uciFlag;
-   uint8_t          numUciBits;
+   HarqFdbkInfo      harqInfo;
+   csiFdbkInfo     csiInfo;
    uint8_t          intraFreqHop;
    uint16_t         secondPrbHop;
    uint8_t          initialCyclicShift;
    uint8_t          occLen;
    uint8_t          occIdx;
    uint8_t          timeDomOCC;
-   SchPucchFormatCfg cmnFormatCfg;
+   uint8_t          addDmrs;
+   bool             pi2BPSK;
+   BeamformingInfo  beamForming;
 }SchPucchInfo;
+
+typedef struct schPuschUci
+{
+   uint8_t          harqProcId;   /* HARQ Process ID */
+   FreqDomainAlloc  fdAlloc;      /* Freq domain allocation */
+   TimeDomainAlloc  tdAlloc;      /* Time domain allocation */
+   TbInfo           tbInfo;       /* TB information */
+   HarqInfo         harqInfo;    /* Harq Information */
+   CsiInfo          csiInfo;    /* Csi information*/
+}SchPuschUci;
 
 typedef struct ulSchedInfo
 {
-   uint16_t      cellId;         /* Cell Id */
-   uint16_t      crnti;          /* CRNI */
+   uint16_t         cellId;         /* Cell Id */
+   uint16_t         crnti;          /* CRNI */
    SlotTimingInfo   slotIndInfo;    /* Slot Info: sfn, slot number */
-   uint8_t       dataType;       /* Type of info being scheduled */
-   PrachSchInfo  prachSchInfo;   /* Prach scheduling info */
-   SchPuschInfo  schPuschInfo;   /* Pusch scheduling info */
-   SchPucchInfo  schPucchInfo;   /* Pusch scheduling info */
+   uint8_t          dataType;       /* Type of info being scheduled */
+   SchPrachInfo     prachSchInfo;   /* Prach scheduling info */
+   SchPuschInfo     schPuschInfo;   /* Pusch scheduling info */
+   SchPuschUci      schPuschUci;    /* Pusch Uci */
+   SchPucchInfo     schPucchInfo;   /* Pucch and Uci scheduling info */
 }UlSchedInfo;
 
 typedef struct rachIndInfo
