@@ -216,7 +216,7 @@ PduTxOccsaion schCheckSib1Occ(SchCellCb *cell, SlotTimingInfo slotTime)
    }
    else if(cell->firstSib1Transmitted) 
    {
-      if((slotTime.sfn % (cell->cellCfg.sib1SchCfg.sib1RepetitionPeriod/10) == 0) &&
+      if((slotTime.sfn % (SIB1_REPETITION_PERIOD/10) == 0) &&
             (slotTime.slot == 0))
       {
          return REPEATITION;

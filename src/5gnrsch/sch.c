@@ -433,15 +433,14 @@ void schInitTddSlotCfg(SchCellCb *cell, SchCellCfg *schCellCfg)
    periodicityInMicroSec = schGetPeriodicityInMsec(schCellCfg->tddCfg.tddPeriod);
    cell->numSlotsInPeriodicity = (periodicityInMicroSec * pow(2, schCellCfg->numerology))/1000;
    cell->slotFrmtBitMap = 0;
-   cell->symbFrmtBitMap = 0;
    for(slotIdx = cell->numSlotsInPeriodicity-1; slotIdx >= 0; slotIdx--)
    {
       symbIdx = 0;
       /* If the first and last symbol are the same, the entire slot is the same type */
-      if((schCellCfg->tddCfg.slotCfg[slotIdx][symbIdx] == schCellCfg->tddCfg.slotCfg[slotIdx][MAX_SYMB_PER_SLOT-1]) &&
-              schCellCfg->tddCfg.slotCfg[slotIdx][symbIdx] != FLEXI_SLOT)
+      if((cell->slotCfg[slotIdx][symbIdx] == cell->slotCfg[slotIdx][MAX_SYMB_PER_SLOT-1]) &&
+              cell->slotCfg[slotIdx][symbIdx] != FLEXI_SLOT)
       {
-         switch(schCellCfg->tddCfg.slotCfg[slotIdx][symbIdx])
+         switch(cell->slotCfg[slotIdx][symbIdx])
          {
             case DL_SLOT:
             {
@@ -462,34 +461,6 @@ void schInitTddSlotCfg(SchCellCb *cell, SchCellCfg *schCellCfg)
       }
       /* slot config is flexible. First set slotBitMap to 10 */
       cell->slotFrmtBitMap = ((cell->slotFrmtBitMap<<2) | (FLEXI_SLOT));
-
-      /* Now set symbol bitmap */ 
-      for(symbIdx = MAX_SYMB_PER_SLOT-1; symbIdx >= 0; symbIdx--)
-      {
-         switch(schCellCfg->tddCfg.slotCfg[slotIdx][symbIdx])
-         {
-            case DL_SLOT:
-            {
-               /*symbol BitMap to be set to 00 */
-               cell->symbFrmtBitMap = (cell->symbFrmtBitMap<<2);
-               break;
-            }
-            case UL_SLOT:
-            {
-               /*symbol BitMap to be set to 01 */
-               cell->symbFrmtBitMap = ((cell->symbFrmtBitMap<<2) | (UL_SLOT));
-               break;
-            }
-            case FLEXI_SLOT:
-            {
-               /*symbol BitMap to be set to 10 */
-               cell->symbFrmtBitMap = ((cell->symbFrmtBitMap<<2) | (FLEXI_SLOT));
-               break;
-            }
-            default:
-	       DU_LOG("\nERROR  -->  SCH : Invalid slot Config in schInitTddSlotCfg");
-         }
-      }
    }
 }
 #endif
@@ -799,7 +770,7 @@ void fillSchSib1Cfg(uint8_t mu, uint8_t bandwidth, uint8_t numSlots, SchSib1Cfg 
    {
       pdsch->codeword[cwCount].targetCodeRate = 308;
       pdsch->codeword[cwCount].qamModOrder = 2;
-      pdsch->codeword[cwCount].mcsIndex = sib1SchCfg->sib1Mcs;
+      pdsch->codeword[cwCount].mcsIndex = DEFAULT_MCS;
       pdsch->codeword[cwCount].mcsTable = 0; /* notqam256 */
       pdsch->codeword[cwCount].rvIndex = 0;
       tbSize = schCalcTbSize(sib1SchCfg->sib1PduLen + TX_PAYLOAD_HDR_LEN);
@@ -822,7 +793,7 @@ void fillSchSib1Cfg(uint8_t mu, uint8_t bandwidth, uint8_t numSlots, SchSib1Cfg 
    pdsch->pdschFreqAlloc.resourceAllocType   = 1; /* RAT type-1 RIV format */
    /* the RB numbering starts from coreset0, and PDSCH is always above SSB */
    pdsch->pdschFreqAlloc.freqAlloc.startPrb  = offsetPointA + SCH_SSB_NUM_PRB;
-   pdsch->pdschFreqAlloc.freqAlloc.numPrb    = schCalcNumPrb(tbSize,sib1SchCfg->sib1Mcs, NUM_PDSCH_SYMBOL);
+   pdsch->pdschFreqAlloc.freqAlloc.numPrb    = schCalcNumPrb(tbSize, DEFAULT_MCS, NUM_PDSCH_SYMBOL);
    pdsch->pdschFreqAlloc.vrbPrbMapping       = 0; /* non-interleaved */
    pdsch->pdschTimeAlloc.rowIndex            = 1;
    /* This is Intel's requirement. PDSCH should start after PDSCH DRMS symbol */

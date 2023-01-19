@@ -90,6 +90,7 @@
 #define BSR_SR_DELAY_TMR_2560 2560
 
 #define PAGING_SCHED_DELTA  4
+#define MAX_PLMN 2
 
 typedef enum
 {
@@ -152,7 +153,7 @@ typedef enum
 typedef enum
 {
    BETA_PSS_0DB,
-   BETA_PSS_1DB
+   BETA_PSS_3DB
 }BetaPss;
 
 typedef enum 
@@ -531,28 +532,68 @@ typedef struct failureCause
 
 typedef struct carrierCfg
 {
-   bool  pres;
-   uint32_t   bw;             /* DL/UL bandwidth */
-   uint32_t   freq;           /* Absolute frequency of DL/UL point A in KHz */
-   uint16_t   k0[NUM_NUMEROLOGY];          /* K0 for DL/UL */
-   uint16_t   gridSize[NUM_NUMEROLOGY];    /* DL/UL Grid size for each numerologies */
-   uint16_t   numAnt;         /* Number of Tx/Rx antennas */
+   uint32_t   dlBw;                   /* DL bandwidth */
+   uint32_t   dlFreq;                 /* Absolute frequency of DL point A in KHz */
+   uint32_t   ulBw;                   /* UL bandwidth */
+   uint32_t   ulFreq;                 /* Absolute frequency of UL point A in KHz */
+   uint16_t   numTxAnt;               /* Number of Tx antennas */
+   uint16_t   numRxAnt;               /* Number of Rx antennas */
 }CarrierCfg;
+
+typedef enum
+{
+   DISABLED,     
+   ENABLED,     
+}OpState;
+
+typedef enum
+{
+   LOCKED,     
+   UNLOCKED,  
+   SHUTTING_DOWN, 
+}AdminState;
+
+typedef enum
+{
+   IDLE,
+   INACTIVE,
+   ACTIVE,
+}CellState;
+
+typedef struct plmnInfoList
+{
+   Plmn           plmn;
+   uint8_t        numSupportedSlice; /* Total slice supporting */
+   Snssai         **snssai;         /* List of supporting snssai*/
+}PlmnInfoList;
+
+typedef struct cellCfg
+{
+   OpState      opState;
+   AdminState   adminState;
+   CellState    cellState;
+   PlmnInfoList plmnInfoList[MAX_PLMN];   /* Consits of PlmnId and Snssai list */
+   uint32_t     phyCellId;                /* Physical cell id */
+   uint32_t     tac;
+   uint32_t     ssbFreq;
+   uint16_t     subCarrSpacing;
+   DuplexMode   dupType;          /* Duplex type: TDD/FDD */
+   uint8_t      numerology;       /* Supported numerology */
+}CellCfg;
 
 typedef struct ssbCfg
 {
    uint32_t    ssbPbchPwr;       /* SSB block power */
-   BchPduOpt   bchPayloadFlag;   /* Options for generation of payload */
    uint8_t     scsCmn;           /* subcarrier spacing for common */
    uint16_t    ssbOffsetPointA;  /* SSB subcarrier offset from point A */
-   BetaPss     betaPss;
    SSBPeriod   ssbPeriod;        /* SSB Periodicity in msec */
    uint8_t     ssbScOffset;       /* Subcarrier Offset */
-   uint8_t     mibPdu[3];           /* MIB payload */
    uint32_t    ssbMask[SSB_MASK_SIZE];      /* Bitmap for actually transmitted SSB. */
    uint8_t     beamId[NUM_SSB];
-   bool        multCarrBand;     /* Multiple carriers in a band */
-   bool        multCellCarr;     /* Multiple cells in single carrier */
+   BetaPss     betaPss;
+   BchPduOpt   bchPayloadFlag;   /* Options for generation of payload */
+   uint8_t     mibPdu[3];           /* MIB payload */
+   uint8_t     dmrsTypeAPos;     /* DMRS Type A position */
 }SsbCfg;
 
 typedef struct fdmInfo
@@ -561,28 +602,20 @@ typedef struct fdmInfo
    uint8_t    numRootSeq;        /* Number of root sequences required for FD */
    uint16_t   k1;                /* Frequency Offset for each FD */
    uint8_t    zeroCorrZoneCfg;   /* Zero correlation zone cofig */
-   uint8_t    numUnusedRootSeq;  /* Number of unused root sequence */
-   uint8_t    *unsuedRootSeq;     /* Unused root sequence per FD */
 }PrachFdmInfo;
 
 typedef struct prachCfg
 {
-   bool          pres;
-   uint8_t       prachCfgIdx;         /* PRACH Cfg Index */
    PrachSeqLen   prachSeqLen;         /* RACH Sequence length: Long/short */
    uint8_t       prachSubcSpacing;    /* Subcarrier spacing of RACH */
-   RstSetCfg     prachRstSetCfg;      /* PRACH restricted set config */
-   uint16_t      msg1FreqStart;       /* Msg1-FrequencyStart */
-   uint8_t       msg1Fdm;             /* PRACH FDM (1,2,4,8) */
-   uint8_t       rootSeqLen;          /* Root sequence length */
+   uint8_t       msg1Fdm;             /* Number of RACH frequency domain occasions/ PRACH FDM (1,2,4,8) */
+   uint8_t       prachCfgIdx;         /* PRACH Cfg Index */
    PrachFdmInfo  fdm[8];              /* FDM info */
-   uint8_t       totalNumRaPreamble;  /* Total number of RA preambles */
+   RstSetCfg     prachRstSetCfg;      /* PRACH restricted set config */
    uint8_t       ssbPerRach;          /* SSB per RACH occassion */
+   uint8_t       totalNumRaPreamble;  /* Total number of RA preambles */
    uint8_t       numCbPreamblePerSsb; /* Number of CB preamble per SSB */
-   bool          prachMultCarrBand;   /* Multiple carriers in Band */
-   uint8_t       prachRestrictedSet; /* Support for PRACH restricted set */
-   uint8_t       raContResTmr;        /* RA Contention Resoultion Timer */
-   uint8_t       rsrpThreshSsb;       /* RSRP Threshold SSB */
+   uint16_t      msg1FreqStart;       /* Msg1-FrequencyStart */
    uint8_t       raRspWindow;         /* RA Response Window */
 }PrachCfg;
 
@@ -593,15 +626,18 @@ typedef struct schPageCfg
   uint16_t pagingOcc[MAX_PO_PER_PF]; /*FirstPDCCH-Monitoring Paging Occasion*/
 }SchPageCfg;
 
-typedef struct sib1CellCfg
+typedef struct pdcchConfigSib1
 {
-   uint8_t  *sib1Pdu;
-   uint16_t sib1PduLen;
-   uint16_t sib1RepetitionPeriod;
    uint8_t coresetZeroIndex;     /* derived from 4 LSB of pdcchSib1 present in MIB */
    uint8_t searchSpaceZeroIndex; /* derived from 4 MSB of pdcchSib1 present in MIB */
-   uint16_t sib1Mcs;
-   SchPageCfg  pagingCfg;
+}PdcchConfigSib1;
+
+typedef struct sib1CellCfg
+{
+   PdcchConfigSib1  pdcchCfgSib1;  /*Freq pos where UE may find SS/PBCH block with SIB1*/
+   uint8_t          *sib1Pdu;
+   uint16_t         sib1PduLen;
+   SchPageCfg       pagingCfg;
 } Sib1CellCfg; 
 
 typedef struct bwpParams
@@ -692,13 +728,6 @@ typedef struct bwpUlConfig
    PuschConfigCommon puschCommon;
 }BwpUlConfig;
 
-typedef struct plmnInfoList
-{
-   Plmn           plmn;
-   uint8_t        numSupportedSlice; /* Total slice supporting */
-   Snssai         **snssai;         /* List of supporting snssai*/
-}PlmnInfoList;
-
 #ifdef NR_DRX
 /* The following list of structures is taken from the DRX-Config section of specification 33.331. */
 typedef struct drxOnDurationTimer
@@ -741,25 +770,16 @@ typedef struct drxCfg
 typedef struct macCellCfg
 {
    uint16_t       cellId;           /* Cell Id */
-   uint8_t        carrierId;        /* Carrired Index */
-   uint16_t       phyCellId;        /* Physical cell id */
-   uint8_t        numerology;       /* Supported numerology */
-   DuplexMode     dupType;          /* Duplex type: TDD/FDD */
-   CarrierCfg     dlCarrCfg;        /* DL Carrier configuration */
-   CarrierCfg     ulCarrCfg;        /* UL Carrier configuration */
-   bool           freqShft;         /* Indicates presence of 7.5kHz frequency shift */
+   CarrierCfg     carrCfg;          /* Carrier configuration */
+   CellCfg        cellCfg;          /* Cell Configuration*/
    SsbCfg         ssbCfg;           /* SSB configuration */          
    PrachCfg       prachCfg;         /* PRACH Configuration */
 #ifdef NR_TDD
    TDDCfg         tddCfg;           /* TDD periodicity and slot configuration */
 #endif
-   RSSIMeasUnit   rssiUnit;         /* RSSI measurement unit */
    Sib1CellCfg    sib1Cfg;          /* SIB1 config */
    BwpDlConfig    initialDlBwp;     /* Initial DL BWP */
    BwpUlConfig    initialUlBwp;     /* Initial UL BWP */
-   uint8_t        dmrsTypeAPos;     /* DMRS Type A position */
-   PlmnInfoList   plmnInfoList;     /* Consits of PlmnId and Snssai list */
-   //RrmPolicy      *rrmPolicy;       /* RRM policy details */ 
 }MacCellCfg;
 
 typedef struct macCellCfgCfm

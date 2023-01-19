@@ -605,10 +605,8 @@ typedef struct
 {
    /* parameters recieved from DU-APP */
    uint16_t sib1PduLen;
-   uint16_t sib1RepetitionPeriod;
    uint8_t  coresetZeroIndex;     /* derived from 4 LSB of pdcchSib1 present in MIB */
    uint8_t  searchSpaceZeroIndex; /* derived from 4 MSB of pdcchSib1 present in MIB */
-   uint16_t sib1Mcs;
 
    /* parameters derived in scheduler */
    uint8_t   n0;
