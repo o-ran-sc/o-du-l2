@@ -320,7 +320,7 @@ PduTxOccsaion schCheckSsbOcc(SchCellCb *cell, SlotTimingInfo slotTime)
 {
    uint8_t  ssb_rep;
 
-   ssb_rep = cell->cellCfg.ssbSchCfg.ssbPeriod;
+   ssb_rep = cell->cellCfg.ssbPeriod;
 
    /* Identify SSB ocassion*/
    if ((slotTime.sfn % SCH_MIB_TRANS == 0) && (slotTime.slot ==0))
@@ -363,7 +363,7 @@ PduTxOccsaion schCheckSib1Occ(SchCellCb *cell, SlotTimingInfo slotTime)
    }
    else if(cell->firstSib1Transmitted) 
    {
-      if((slotTime.sfn % (cell->cellCfg.sib1SchCfg.sib1RepetitionPeriod/10) == 0) &&
+      if((slotTime.sfn % (SIB1_REPETITION_PERIOD/10) == 0) &&
             (slotTime.slot == 0))
       {
          return REPEATITION;
@@ -423,7 +423,7 @@ bool findValidK0K1Value(SchCellCb *cell, SlotTimingInfo currTime, uint8_t ueId, 
    }
    else
    {
-      k0K1InfoTbl = &cell->cellCfg.schInitialDlBwp.k0K1InfoTbl;
+      k0K1InfoTbl = &cell->k0K1InfoTbl;
    }
 
    numK0 = k0K1InfoTbl->k0k1TimingInfo[pdcchTime->slot].numK0;

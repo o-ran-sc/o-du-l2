@@ -587,7 +587,7 @@ uint8_t schDlRsrcAllocMsg4(SchCellCb *cell, SlotTimingInfo msg4Time, uint8_t ueI
    msg4Alloc = &dlMsgAlloc->dlMsgSchedInfo[dlMsgAlloc->numSchedInfo];
    initialBwp   = &cell->cellCfg.schInitialDlBwp;
    pdcch = &msg4Alloc->dlMsgPdcchCfg;
-   pdsch = &msg4Alloc->dlMsgPdschCfg;
+   pdsch = &msg4Alloc->dlMsgPdcchCfg->dci->pdcschCfg;
    bwp = &msg4Alloc->bwp;
    coreset0Idx  = initialBwp->pdcchCommon.commonSearchSpace.coresetId;
 
@@ -640,7 +640,7 @@ uint8_t schDlRsrcAllocMsg4(SchCellCb *cell, SlotTimingInfo msg4Time, uint8_t ueI
    pdcch->dci.beamPdcchInfo.prg[0].beamIdx[0] = 0;
    pdcch->dci.txPdcchPower.beta_pdcch_1_0 = 0;
    pdcch->dci.txPdcchPower.powerControlOffsetSS = 0;
-   pdcch->dci.pdschCfg = pdsch;
+   //pdcch->dci.pdschCfg = pdsch;
 
    /* fill the PDSCH PDU */
    uint8_t cwCount = 0;
@@ -719,7 +719,7 @@ uint8_t schDlRsrcAllocMsg4(SchCellCb *cell, SlotTimingInfo msg4Time, uint8_t ueI
    pdsch->beamPdschInfo.prg[0].pmIdx = 0;
    pdsch->beamPdschInfo.prg[0].beamIdx[0] = 0;
    pdsch->txPdschPower.powerControlOffset = 0;
-   pdsch->txPdschPower.powerControlOffsetSS = 0;
+   pedsch->txPdschPower.powerControlOffsetSS = 0;
 
    msg4Alloc->dlMsgInfo.isMsg4Pdu = true;
    return ROK;
@@ -1072,7 +1072,7 @@ SchPdschConfig pdschDedCfg, uint8_t ulAckListCount, uint8_t *UlAckTbl)
       /* Initialization the K0K1 structure, total num of slot and calculating the slot pattern length. */
       memset(k0K1InfoTbl, 0, sizeof(SchK0K1TimingInfoTbl));
       k0K1InfoTbl->tblSize = cell->numSlots;
-      totalCfgSlot = calculateSlotPatternLength(cell->cellCfg.ssbSchCfg.scsCommon, cell->cellCfg.tddCfg.tddPeriod);
+      totalCfgSlot = calculateSlotPatternLength(cell->cellCfg.scsCommon, cell->cellCfg.tddCfg.tddPeriod);
       
       /* Storing time domain resource allocation list based on common or 
        * dedicated configuration availability. */
@@ -1102,7 +1102,8 @@ SchPdschConfig pdschDedCfg, uint8_t ulAckListCount, uint8_t *UlAckTbl)
          {
             continue;
          }
-         
+        
+         ulSlotPresent = false;
          /* Storing K0 , start symbol and length symbol for further processing.
           * If K0 value is not available then we can fill the default values
           * given in spec 38.331. */
@@ -1143,13 +1144,20 @@ SchPdschConfig pdschDedCfg, uint8_t ulAckListCount, uint8_t *UlAckTbl)
             {
                for(checkSymbol = startSymbol; checkSymbol<endSymbol; checkSymbol ++)
                {
-                  slotCfg = cell->cellCfg.tddCfg.slotCfg[tmpSlot][checkSymbol];
+                  slotCfg = cell->slotCfg[tmpSlot][checkSymbol];
                   if(slotCfg == UL_SLOT)
                   {
-                     continue;
+                     ulSlotPresent = true;
+                     break;
                   }
                }
+               if(ulSlotPresent == true)
+               {
+                  continue;
+               }
             }
+
+             ulSlotPresent = false; //Re-initializing
 
             /* If current slot + k0 + k1 is a DL slot then skip the slot
              * else if it is UL slot then store the information 
@@ -1171,7 +1179,7 @@ SchPdschConfig pdschDedCfg, uint8_t ulAckListCount, uint8_t *UlAckTbl)
                   {
                      for(checkSymbol = 0; checkSymbol< MAX_SYMB_PER_SLOT;checkSymbol++)
                      {
-                        if(cell->cellCfg.tddCfg.slotCfg[tmpSlot][checkSymbol] == UL_SLOT)
+                        if(cell->slotCfg[tmpSlot][checkSymbol] == UL_SLOT)
                         {
                            ulSlotPresent = true;
                            break;
@@ -1294,7 +1302,7 @@ SchK2TimingInfoTbl *msg3K2InfoTbl, SchK2TimingInfoTbl *k2InfoTbl)
       k2InfoTbl->tblSize = cell->numSlots;
       if(msg3K2InfoTbl)
          msg3K2InfoTbl->tblSize = cell->numSlots;
-      totalCfgSlot = calculateSlotPatternLength(cell->cellCfg.ssbSchCfg.scsCommon, cell->cellCfg.tddCfg.tddPeriod);
+      totalCfgSlot = calculateSlotPatternLength(cell->cellCfg.scsCommon, cell->cellCfg.tddCfg.tddPeriod);
 
       /* Checking all possible indexes for K2. */
       for(slotIdx = 0; slotIdx < cell->numSlots; slotIdx++)
@@ -1312,7 +1320,7 @@ SchK2TimingInfoTbl *msg3K2InfoTbl, SchK2TimingInfoTbl *k2InfoTbl)
                k2Val = timeDomRsrcAllocList[k2Index].k2;
                if(!k2Val)
                {
-                  switch(cell->cellCfg.ssbSchCfg.scsCommon)
+                  switch(cell->cellCfg.scsCommon)
                   {
                      case SCS_15KHZ:
                         k2Val = DEFAULT_K2_VALUE_FOR_SCS15;
@@ -1343,7 +1351,7 @@ SchK2TimingInfoTbl *msg3K2InfoTbl, SchK2TimingInfoTbl *k2InfoTbl)
                      dlSymbolPresent = false;
                      for(checkSymbol= startSymbol; checkSymbol<endSymbol; checkSymbol++)
                      {
-                        currentSymbol = cell->cellCfg.tddCfg.slotCfg[k2TmpVal][checkSymbol];
+                        currentSymbol = cell->slotCfg[k2TmpVal][checkSymbol];
                         if(currentSymbol == DL_SLOT || currentSymbol == FLEXI_SLOT)
                         {
                            dlSymbolPresent = true;
@@ -1379,7 +1387,7 @@ SchK2TimingInfoTbl *msg3K2InfoTbl, SchK2TimingInfoTbl *k2InfoTbl)
                         dlSymbolPresent = false;
                         for(checkSymbol= startSymbol; checkSymbol<endSymbol; checkSymbol++)
                         {
-                           currentSymbol = cell->cellCfg.tddCfg.slotCfg[msg3K2TmpVal][checkSymbol];
+                           currentSymbol = cell->slotCfg[msg3K2TmpVal][checkSymbol];
                            if(currentSymbol == DL_SLOT || currentSymbol == FLEXI_SLOT)
                            {
                               dlSymbolPresent = true;
@@ -1951,7 +1959,7 @@ bool schProcessSrOrBsrReq(SchCellCb *cell, SlotTimingInfo currTime, uint8_t ueId
       if(ueCb->ueCfg.spCellCfg.servCellRecfg.initUlBwp.k2TblPrsnt)
          k2InfoTbl = &ueCb->ueCfg.spCellCfg.servCellRecfg.initUlBwp.k2InfoTbl;
       else
-         k2InfoTbl =  &cell->cellCfg.schInitialUlBwp.k2InfoTbl;
+         k2InfoTbl =  &cell->k2InfoTbl;
 
       for(k2TblIdx = 0; k2TblIdx < k2InfoTbl->k2TimingInfo[dciTime.slot].numK2; k2TblIdx++)
       {

@@ -2015,7 +2015,7 @@ uint8_t lwr_mac_procConfigReqEvt(void *msg)
    p_fapi_api_queue_elem_t  cfgReqQElem;
 
    DU_LOG("\nINFO  -->  LWR_MAC: Received EVENT[%d] at STATE[%d]", lwrMacCb.event, \
-	 lwrMacCb.phyState);
+         lwrMacCb.phyState);
 
    cellId = (uint16_t *)msg;
    GET_CELL_IDX(*cellId, cellIdx);
@@ -2064,7 +2064,7 @@ uint8_t lwr_mac_procConfigReqEvt(void *msg)
       return RFAILED;
    }
    FILL_FAPI_LIST_ELEM(cfgReqQElem, vendorMsgQElem, FAPI_CONFIG_REQUEST, 1, \
-      sizeof(fapi_config_req_t));
+         sizeof(fapi_config_req_t));
 
    configReq = (fapi_config_req_t *)(cfgReqQElem + 1);
    memset(configReq, 0, sizeof(fapi_config_req_t));
@@ -2077,70 +2077,64 @@ uint8_t lwr_mac_procConfigReqEvt(void *msg)
 
    msgLen = sizeof(configReq->number_of_tlvs);
 
-   if(macCfgParams.dlCarrCfg.pres)
-   {
-      fillTlvs(&configReq->tlvs[index++], FAPI_DL_BANDWIDTH_TAG,           \
-         sizeof(uint32_t), macCfgParams.dlCarrCfg.bw, &msgLen);
-      fillTlvs(&configReq->tlvs[index++], FAPI_DL_FREQUENCY_TAG,           \
-         sizeof(uint32_t), macCfgParams.dlCarrCfg.freq, &msgLen);
-      /* Due to bug in Intel FT code, commenting TLVs that are are not 
-       * needed to avoid error. Must be uncommented when FT bug is fixed */
-      //fillTlvs(&configReq->tlvs[index++], FAPI_DL_K0_TAG,                  \
-         sizeof(uint16_t), macCfgParams.dlCarrCfg.k0[0], &msgLen);
-      //fillTlvs(&configReq->tlvs[index++], FAPI_DL_GRIDSIZE_TAG,            \
-         sizeof(uint16_t), macCfgParams.dlCarrCfg.gridSize[0], &msgLen);
-      fillTlvs(&configReq->tlvs[index++], FAPI_NUM_TX_ANT_TAG,             \
-         sizeof(uint16_t), macCfgParams.dlCarrCfg.numAnt, &msgLen);
-   }
-   if(macCfgParams.ulCarrCfg.pres)
-   {
-      fillTlvs(&configReq->tlvs[index++], FAPI_UPLINK_BANDWIDTH_TAG,       \
-	    sizeof(uint32_t), macCfgParams.ulCarrCfg.bw, &msgLen);
-      fillTlvs(&configReq->tlvs[index++], FAPI_UPLINK_FREQUENCY_TAG,       \
-	    sizeof(uint32_t), macCfgParams.ulCarrCfg.freq, &msgLen);
-      //fillTlvs(&configReq->tlvs[index++], FAPI_UL_K0_TAG,                  \
-      sizeof(uint16_t), macCfgParams.ulCarrCfg.k0[0], &msgLen);
-      //fillTlvs(&configReq->tlvs[index++], FAPI_UL_GRID_SIZE_TAG,           \
-      sizeof(uint16_t), macCfgParams.ulCarrCfg.gridSize[0], &msgLen);
-      fillTlvs(&configReq->tlvs[index++], FAPI_NUM_RX_ANT_TAG,             \
-	    sizeof(uint16_t), macCfgParams.ulCarrCfg.numAnt, &msgLen);
-   }
+   fillTlvs(&configReq->tlvs[index++], FAPI_DL_BANDWIDTH_TAG,           \
+         sizeof(uint32_t), macCfgParams.carrCfg.dlBw, &msgLen);
+   fillTlvs(&configReq->tlvs[index++], FAPI_DL_FREQUENCY_TAG,           \
+         sizeof(uint32_t), macCfgParams.carrCfg.dlFreq, &msgLen);
+   /* Due to bug in Intel FT code, commenting TLVs that are are not 
+    * needed to avoid error. Must be uncommented when FT bug is fixed */
+   //fillTlvs(&configReq->tlvs[index++], FAPI_DL_K0_TAG,                  \
+   sizeof(uint16_t), macCfgParams.dlCarrCfg.k0[0], &msgLen);
+   //fillTlvs(&configReq->tlvs[index++], FAPI_DL_GRIDSIZE_TAG,            \
+   sizeof(uint16_t), macCfgParams.dlCarrCfg.gridSize[0], &msgLen);
+   fillTlvs(&configReq->tlvs[index++], FAPI_NUM_TX_ANT_TAG,             \
+         sizeof(uint16_t), macCfgParams.carrCfg.numTxAnt, &msgLen);
+   fillTlvs(&configReq->tlvs[index++], FAPI_UPLINK_BANDWIDTH_TAG,       \
+         sizeof(uint32_t), macCfgParams.carrCfg.ulBw, &msgLen);
+   fillTlvs(&configReq->tlvs[index++], FAPI_UPLINK_FREQUENCY_TAG,       \
+         sizeof(uint32_t), macCfgParams.carrCfg.ulFreq, &msgLen);
+   //fillTlvs(&configReq->tlvs[index++], FAPI_UL_K0_TAG,                  \
+   sizeof(uint16_t), macCfgParams.ulCarrCfg.k0[0], &msgLen);
+   //fillTlvs(&configReq->tlvs[index++], FAPI_UL_GRID_SIZE_TAG,           \
+   sizeof(uint16_t), macCfgParams.ulCarrCfg.gridSize[0], &msgLen);
+   fillTlvs(&configReq->tlvs[index++], FAPI_NUM_RX_ANT_TAG,             \
+         sizeof(uint16_t), macCfgParams.carrCfg.numRxAnt, &msgLen);
    //fillTlvs(&configReq->tlvs[index++], FAPI_FREQUENCY_SHIFT_7P5_KHZ_TAG,   \
    sizeof(uint8_t), macCfgParams.freqShft, &msgLen);
 
    /* fill cell config */
    fillTlvs(&configReq->tlvs[index++], FAPI_PHY_CELL_ID_TAG,               \
-	 sizeof(uint8_t), macCfgParams.phyCellId, &msgLen);
+         sizeof(uint8_t), macCfgParams.phyCellId, &msgLen);
    fillTlvs(&configReq->tlvs[index++], FAPI_FRAME_DUPLEX_TYPE_TAG,         \
-	 sizeof(uint8_t), macCfgParams.dupType, &msgLen);
+         sizeof(uint8_t), macCfgParams.dupType, &msgLen);
 
    /* fill SSB configuration */
    fillTlvs(&configReq->tlvs[index++], FAPI_SS_PBCH_POWER_TAG,             \
-	 sizeof(uint32_t), macCfgParams.ssbCfg.ssbPbchPwr, &msgLen);
+         sizeof(uint32_t), macCfgParams.ssbCfg.ssbPbchPwr, &msgLen);
    //fillTlvs(&configReq->tlvs[index++], FAPI_BCH_PAYLOAD_TAG,               \
    sizeof(uint8_t), macCfgParams.ssbCfg.bchPayloadFlag, &msgLen);
    fillTlvs(&configReq->tlvs[index++], FAPI_SCS_COMMON_TAG,                \
-	 sizeof(uint8_t), macCfgParams.ssbCfg.scsCmn, &msgLen);
+         sizeof(uint8_t), macCfgParams.ssbCfg.scsCmn, &msgLen);
 
    /* fill PRACH configuration */
    //fillTlvs(&configReq->tlvs[index++], FAPI_PRACH_SEQUENCE_LENGTH_TAG,     \
    sizeof(uint8_t), macCfgParams.prachCfg.prachSeqLen, &msgLen);
    fillTlvs(&configReq->tlvs[index++], FAPI_PRACH_SUBC_SPACING_TAG,        \
-	 sizeof(uint8_t), convertScsValToScsEnum(macCfgParams.prachCfg.prachSubcSpacing), &msgLen);
+         sizeof(uint8_t), convertScsValToScsEnum(macCfgParams.prachCfg.prachSubcSpacing), &msgLen);
    fillTlvs(&configReq->tlvs[index++], FAPI_RESTRICTED_SET_CONFIG_TAG,     \
-	 sizeof(uint8_t), macCfgParams.prachCfg.prachRstSetCfg, &msgLen);
+         sizeof(uint8_t), macCfgParams.prachCfg.prachRstSetCfg, &msgLen);
    fillTlvs(&configReq->tlvs[index++], FAPI_NUM_PRACH_FD_OCCASIONS_TAG,
-	 sizeof(uint8_t), macCfgParams.prachCfg.msg1Fdm, &msgLen);
+         sizeof(uint8_t), macCfgParams.prachCfg.msg1Fdm, &msgLen);
    fillTlvs(&configReq->tlvs[index++], FAPI_PRACH_CONFIG_INDEX_TAG,
-	 sizeof(uint8_t), macCfgParams.prachCfg.prachCfgIdx, &msgLen);
+         sizeof(uint8_t), macCfgParams.prachCfg.prachCfgIdx, &msgLen);
    fillTlvs(&configReq->tlvs[index++], FAPI_PRACH_ROOT_SEQUENCE_INDEX_TAG, \
-	 sizeof(uint16_t), macCfgParams.prachCfg.fdm[0].rootSeqIdx, &msgLen);
+         sizeof(uint16_t), macCfgParams.prachCfg.fdm[0].rootSeqIdx, &msgLen);
    //fillTlvs(&configReq->tlvs[index++], FAPI_NUM_ROOT_SEQUENCES_TAG,        \
    sizeof(uint8_t), macCfgParams.prachCfg.fdm[0].numRootSeq, &msgLen);
    fillTlvs(&configReq->tlvs[index++], FAPI_K1_TAG,                        \
-	 sizeof(uint16_t), macCfgParams.prachCfg.fdm[0].k1, &msgLen);
+         sizeof(uint16_t), macCfgParams.prachCfg.fdm[0].k1, &msgLen);
    fillTlvs(&configReq->tlvs[index++], FAPI_PRACH_ZERO_CORR_CONF_TAG ,     \
-	 sizeof(uint8_t), macCfgParams.prachCfg.fdm[0].zeroCorrZoneCfg, &msgLen);
+         sizeof(uint8_t), macCfgParams.prachCfg.fdm[0].zeroCorrZoneCfg, &msgLen);
    //fillTlvs(&configReq->tlvs[index++], FAPI_NUM_UNUSED_ROOT_SEQUENCES_TAG, \
    sizeof(uint8_t), macCfgParams.prachCfg.fdm[0].numUnusedRootSeq, &msgLen);
    /* if(macCfgParams.prachCfg.fdm[0].numUnusedRootSeq)
@@ -2156,28 +2150,28 @@ uint8_t lwr_mac_procConfigReqEvt(void *msg)
       }*/
 
    fillTlvs(&configReq->tlvs[index++], FAPI_SSB_PER_RACH_TAG,              \
-	 sizeof(uint8_t), macCfgParams.prachCfg.ssbPerRach, &msgLen);
+         sizeof(uint8_t), macCfgParams.prachCfg.ssbPerRach, &msgLen);
    //fillTlvs(&configReq->tlvs[index++], FAPI_PRACH_MULTIPLE_CARRIERS_IN_A_BAND_TAG,  \
    sizeof(uint8_t), macCfgParams.prachCfg.prachMultCarrBand, &msgLen);
 
    /* fill SSB table */
    fillTlvs(&configReq->tlvs[index++], FAPI_SSB_OFFSET_POINT_A_TAG,        \
-	 sizeof(uint16_t), macCfgParams.ssbCfg.ssbOffsetPointA, &msgLen);
+         sizeof(uint16_t), macCfgParams.ssbCfg.ssbOffsetPointA, &msgLen);
    //fillTlvs(&configReq->tlvs[index++], FAPI_BETA_PSS_TAG,                  \
    sizeof(uint8_t),  macCfgParams.ssbCfg.betaPss, &msgLen);
    fillTlvs(&configReq->tlvs[index++], FAPI_SSB_PERIOD_TAG,                \
-	 sizeof(uint8_t),  macCfgParams.ssbCfg.ssbPeriod, &msgLen);
+         sizeof(uint8_t),  macCfgParams.ssbCfg.ssbPeriod, &msgLen);
    fillTlvs(&configReq->tlvs[index++], FAPI_SSB_SUBCARRIER_OFFSET_TAG,     \
-	 sizeof(uint8_t),  macCfgParams.ssbCfg.ssbScOffset, &msgLen);
+         sizeof(uint8_t),  macCfgParams.ssbCfg.ssbScOffset, &msgLen);
 
    setMibPdu(macCfgParams.ssbCfg.mibPdu, &mib, 0);
    fillTlvs(&configReq->tlvs[index++], FAPI_MIB_TAG ,                      \
-	 sizeof(uint32_t), mib, &msgLen);
+         sizeof(uint32_t), mib, &msgLen);
 
    fillTlvs(&configReq->tlvs[index++], FAPI_SSB_MASK_TAG,                  \
-	 sizeof(uint32_t), macCfgParams.ssbCfg.ssbMask[0], &msgLen);
+         sizeof(uint32_t), macCfgParams.ssbCfg.ssbMask[0], &msgLen);
    fillTlvs(&configReq->tlvs[index++], FAPI_BEAM_ID_TAG,                   \
-	 sizeof(uint8_t),  macCfgParams.ssbCfg.beamId[0], &msgLen);
+         sizeof(uint8_t),  macCfgParams.ssbCfg.beamId[0], &msgLen);
    //fillTlvs(&configReq->tlvs[index++], FAPI_SS_PBCH_MULTIPLE_CARRIERS_IN_A_BAND_TAG, \
    sizeof(uint8_t), macCfgParams.ssbCfg.multCarrBand, &msgLen);
    //fillTlvs(&configReq->tlvs[index++], FAPI_MULTIPLE_CELLS_SS_PBCH_IN_A_CARRIER_TAG, \
@@ -2186,24 +2180,45 @@ uint8_t lwr_mac_procConfigReqEvt(void *msg)
 #ifdef NR_TDD
    /* fill TDD table */
    fillTlvs(&configReq->tlvs[index++], FAPI_TDD_PERIOD_TAG,                \
-   sizeof(uint8_t), macCfgParams.tddCfg.tddPeriod, &msgLen);
-   for(slotIdx =0 ;slotIdx< MAX_TDD_PERIODICITY_SLOTS; slotIdx++) 
+         sizeof(uint8_t), macCfgParams.tddCfg.tddPeriod, &msgLen);
+
+   for(slotIdx =0 ;slotIdx < MAX_TDD_PERIODICITY_SLOTS; slotIdx++) 
    {
-      for(symbolIdx = 0; symbolIdx< MAX_SYMB_PER_SLOT; symbolIdx++)
+      for(symbolIdx = 0; symbolIdx < MAX_SYMB_PER_SLOT; symbolIdx++)
       {
-	 fillTlvs(&configReq->tlvs[index++], FAPI_SLOT_CONFIG_TAG,               \
-	       sizeof(uint8_t), macCfgParams.tddCfg.slotCfg[slotIdx][symbolIdx], &msgLen);
+         /*Fill Full-DL Slots as well as DL symbols ini 1st Flexi Slo*/
+         if(slotIdx < macCfgParams.tddCfg.nrOfDlSlots || \
+               (slotIdx == macCfgParams.tddCfg.nrOfDlSlots && symbolIdx < macCfgParams.tddCfg.nrOfDlSymbols)) 
+         {
+            fillTlvs(&configReq->tlvs[index++], FAPI_SLOT_CONFIG_TAG,               \
+                  sizeof(uint8_t), DL_SYMBOL, &msgLen);
+         }
+
+         /*Fill Full-FLEXI SLOT and as well as Flexi Symbols in 1 slot preceding FULL-UL slot*/ 
+         else if(slotIdx < (MAX_TDD_PERIODICITY_SLOTS - macCfgParams.tddCfg.nrOfUlSlots -1) ||  \
+               (slotIdx == (MAX_TDD_PERIODICITY_SLOTS - macCfgParams.tddCfg.nrOfUlSlots -1) && \
+                symbolIdx < (MAX_SYMB_PER_SLOT - macCfgParams.tddCfg.nrOfUlSymbols)))
+         {
+            fillTlvs(&configReq->tlvs[index++], FAPI_SLOT_CONFIG_TAG,               \
+                  sizeof(uint8_t), FLEXI_SYMBOL, &msgLen);
+         }
+         /*Fill Partial UL symbols and Full-UL slot*/
+         else
+         {
+            fillTlvs(&configReq->tlvs[index++], FAPI_SLOT_CONFIG_TAG,               \
+                  sizeof(uint8_t), UL_SYMBOL, &msgLen);
+         }
       }
    }
 #endif   
-   
+
    /* fill measurement config */
    //fillTlvs(&configReq->tlvs[index++], FAPI_RSSI_MEASUREMENT_TAG,          \
    sizeof(uint8_t), macCfgParams.rssiUnit, &msgLen);
 
    /* fill DMRS Type A Pos */
    fillTlvs(&configReq->tlvs[index++], FAPI_DMRS_TYPE_A_POS_TAG,           \
-	 sizeof(uint8_t), macCfgParams.dmrsTypeAPos, &msgLen);
+         sizeof(uint8_t), macCfgParams.ssbCfg.dmrsTypeAPos, &msgLen);
 
    /* Fill message header */
    LWR_MAC_ALLOC(headerElem, (sizeof(fapi_api_queue_elem_t) + sizeof(fapi_msg_header_t)));
@@ -2215,7 +2230,7 @@ uint8_t lwr_mac_procConfigReqEvt(void *msg)
       return RFAILED;
    }
    FILL_FAPI_LIST_ELEM(headerElem, cfgReqQElem, FAPI_VENDOR_MSG_HEADER_IND, 1, \
-	 sizeof(fapi_msg_header_t));
+         sizeof(fapi_msg_header_t));
    msgHeader = (fapi_msg_header_t *)(headerElem + 1);
    msgHeader->num_msg = 2; /* Config req msg and vendor specific msg */
    msgHeader->handle = 0;

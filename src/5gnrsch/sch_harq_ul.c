@@ -49,7 +49,7 @@ void schUlHqAddToFreeList(SchUlHqProcCb *hqP);
 void schUlHqEntInit(SchCellCb *cellCb, SchUeCb *ueCb)
 {
    ueCb->ulHqEnt.numHqPrcs = SCH_MAX_NUM_UL_HQ_PROC;
-   ueCb->ulHqEnt.maxHqTx  = cellCb->cellCfg.schHqCfg.maxUlDataHqTx;
+   ueCb->ulHqEnt.maxHqTx  = cellCb->schHqCfg.maxUlDataHqTx;
    ueCb->ulHqEnt.cell = cellCb;
    ueCb->ulHqEnt.ue =ueCb;
    schUlHqEntReset(cellCb, ueCb, &ueCb->ulHqEnt);

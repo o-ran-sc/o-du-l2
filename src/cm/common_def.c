@@ -18,6 +18,14 @@
 
 #include "common_def.h"
 
+/*Spec 38.104, Table 5.4.2.1-1 ARFCN - FREQ mapping*/
+/*{  F_REF(Mhz), ΔF_Global, F_REF-Offs, N_REF-offs, Range of N_REF }*/
+uint32_t arfcnFreqTable[3][5] = {
+  {   3000,   5,         0,        0,   599999 }, /*index 0*/
+  {  24250,  15,      3000,   600000,  2016666 }, /*index 1*/
+  { 100000,  60,  24250.08,  2016667,  3279165 }, /*index 2*/
+};
+
 /**
  * @brief frequency domain allocation function. 
  *
@@ -415,6 +423,73 @@ uint8_t countSetBits(uint32_t num)
       num >>= 1;
    }
    return(count);
+}
+
+/*******************************************************************
+*
+* @brief  convert ARFCN to freq in kHZ
+*
+* @details
+*
+*    Function : convertArfcnToFreqKhz
+*
+*    Functionality: convert ARFCN to freq in kHZ as per Table below
+*                  3GPP TS 38.104, Table 5.4.2.1-1
+*       Formula: F_REF = F_REF-Offs + ΔF_Global (N_REF – N_REF-Offs)
+*
+* @params[in] uint32_t number
+*
+* @return [out] uint32_t Freq in kHZ
+*
+* ****************************************************************/
+uint32_t convertArfcnToFreqKhz(uint32_t arfcn)
+{
+   uint8_t indexTable = 0;
+   uint32_t freq = 0;
+
+   for(indexTable = 0; indexTable < 4; indexTable++)
+   {
+      if(arfcn <= arfcnFreqTable[indexTable][4])
+      {
+         freq = arfcnFreqTable[indexTable][2] + (arfcnFreqTable[indexTable][1] * (arfcn - arfcnFreqTable[indexTable][3]));
+         return (freq*1000);
+      }
+   }
+   DU_LOG("ERROR  -->  DUAPP: ARFCN vaid range is between 0 and 3279165");
+}
+
+
+/*******************************************************************
+*
+* @brief  convert Freq(MHZ) to ARFCN
+*
+* @details
+*
+*    Function : convertFreqToArfcn
+*
+*    Functionality: convert freq to ARFCN as per Table below
+*                  3GPP TS 38.104, Table 5.4.2.1-1
+*       Formula: NREF = NREF-Offs +  (FREF – FREF-Offs) / ΔFGlobal
+*
+* @params[in] uint32_t Freq(MHZ)
+*
+* @return [out] uint32_t ARFCN(number)
+*
+* ****************************************************************/
+uint32_t convertFreqToArfcn(uint32_t freq)
+{
+   uint8_t indexTable = 0;
+   uint32_t arfcn = 0;
+
+   for(indexTable = 0; indexTable < 4; indexTable++)
+   {
+      if(freq < arfcnFreqTable[indexTable][0])
+      {
+         arfcn = arfcnFreqTable[indexTable][3] + ((freq - arfcnFreqTable[indexTable][2]) / (arfcnFreqTable[indexTable][1]));
+         return (arfcn);
+      }
+   }
+   DU_LOG("ERROR  -->  DUAPP: FREQ vaid range is between 0 and 100000 MHz");
 }
 
 /**********************************************************************
