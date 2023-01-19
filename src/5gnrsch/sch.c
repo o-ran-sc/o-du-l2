@@ -341,15 +341,14 @@ void schInitTddSlotCfg(SchCellCb *cell, SchCellCfg *schCellCfg)
    periodicityInMicroSec = schGetPeriodicityInMsec(schCellCfg->tddCfg.tddPeriod);
    cell->numSlotsInPeriodicity = (periodicityInMicroSec * pow(2, schCellCfg->numerology))/1000;
    cell->slotFrmtBitMap = 0;
-   cell->symbFrmtBitMap = 0;
    for(slotIdx = cell->numSlotsInPeriodicity-1; slotIdx >= 0; slotIdx--)
    {
       symbIdx = 0;
       /* If the first and last symbol are the same, the entire slot is the same type */
-      if((schCellCfg->tddCfg.slotCfg[slotIdx][symbIdx] == schCellCfg->tddCfg.slotCfg[slotIdx][MAX_SYMB_PER_SLOT-1]) &&
-              schCellCfg->tddCfg.slotCfg[slotIdx][symbIdx] != FLEXI_SLOT)
+      if((cell->slotCfg[slotIdx][symbIdx] == cell->slotCfg[slotIdx][MAX_SYMB_PER_SLOT-1]) &&
+              cell->slotCfg[slotIdx][symbIdx] != FLEXI_SLOT)
       {
-         switch(schCellCfg->tddCfg.slotCfg[slotIdx][symbIdx])
+         switch(cell->slotCfg[slotIdx][symbIdx])
          {
             case DL_SLOT:
             {
@@ -370,34 +369,6 @@ void schInitTddSlotCfg(SchCellCb *cell, SchCellCfg *schCellCfg)
       }
       /* slot config is flexible. First set slotBitMap to 10 */
       cell->slotFrmtBitMap = ((cell->slotFrmtBitMap<<2) | (FLEXI_SLOT));
-
-      /* Now set symbol bitmap */ 
-      for(symbIdx = MAX_SYMB_PER_SLOT-1; symbIdx >= 0; symbIdx--)
-      {
-         switch(schCellCfg->tddCfg.slotCfg[slotIdx][symbIdx])
-         {
-            case DL_SLOT:
-            {
-               /*symbol BitMap to be set to 00 */
-               cell->symbFrmtBitMap = (cell->symbFrmtBitMap<<2);
-               break;
-            }
-            case UL_SLOT:
-            {
-               /*symbol BitMap to be set to 01 */
-               cell->symbFrmtBitMap = ((cell->symbFrmtBitMap<<2) | (UL_SLOT));
-               break;
-            }
-            case FLEXI_SLOT:
-            {
-               /*symbol BitMap to be set to 10 */
-               cell->symbFrmtBitMap = ((cell->symbFrmtBitMap<<2) | (FLEXI_SLOT));
-               break;
-            }
-            default:
-	       DU_LOG("\nERROR  -->  SCH : Invalid slot Config in schInitTddSlotCfg");
-         }
-      }
    }
 }
 #endif
@@ -420,7 +391,7 @@ void fillSsbStartSymb(SchCellCb *cellCb)
 {
    uint8_t cnt, scs, symbIdx, ssbStartSymbArr[SCH_MAX_SSB_BEAM];
 
-   scs = cellCb->cellCfg.ssbSchCfg.scsCommon;
+   scs = cellCb->cellCfg.scsCommon;
 
    memset(ssbStartSymbArr, 0, sizeof(SCH_MAX_SSB_BEAM));
    symbIdx = 0;
@@ -428,41 +399,40 @@ void fillSsbStartSymb(SchCellCb *cellCb)
    switch(scs)
    {
       case SCS_15KHZ:
-	 {
-            if(cellCb->cellCfg.dlFreq <= 300000)
-	       cnt = 2;/* n = 0, 1 */
+         {
+            if(cellCb->cellCfg.ssbFrequency <= 300000)
+               cnt = 2;/* n = 0, 1 */
             else
                cnt = 4; /* n = 0, 1, 2, 3 */
-	    for(uint8_t idx=0; idx<cnt; idx++)
-	    {
-	       /* start symbol determined using {2, 8} + 14n */
-	       ssbStartSymbArr[symbIdx++] = 2 +  MAX_SYMB_PER_SLOT*idx;
-	       ssbStartSymbArr[symbIdx++] = 8 +  MAX_SYMB_PER_SLOT*idx;
-	    }
-	 }
-	 break;
+            for(uint8_t idx=0; idx<cnt; idx++)
+            {
+               /* start symbol determined using {2, 8} + 14n */
+               ssbStartSymbArr[symbIdx++] = 2 +  MAX_SYMB_PER_SLOT*idx;
+               ssbStartSymbArr[symbIdx++] = 8 +  MAX_SYMB_PER_SLOT*idx;
+            }
+         }
+         break;
       case SCS_30KHZ:
-	 {
-            if(cellCb->cellCfg.dlFreq <= 300000)
-	       cnt = 1;/* n = 0 */
+         {
+            if(cellCb->cellCfg.ssbFrequency <= 300000)
+               cnt = 1;/* n = 0 */
             else
                cnt = 2; /* n = 0, 1 */
-	    for(uint8_t idx=0; idx<cnt; idx++)
-	    {
-	       /* start symbol determined using {4, 8, 16, 20} + 28n */
-	       ssbStartSymbArr[symbIdx++] = 4 +  MAX_SYMB_PER_SLOT*idx;
-	       ssbStartSymbArr[symbIdx++] = 8 +  MAX_SYMB_PER_SLOT*idx;
-	       ssbStartSymbArr[symbIdx++] = 16 +  MAX_SYMB_PER_SLOT*idx;
-	       ssbStartSymbArr[symbIdx++] = 20 +  MAX_SYMB_PER_SLOT*idx;
+            for(uint8_t idx=0; idx<cnt; idx++)
+            {
+               /* start symbol determined using {4, 8, 16, 20} + 28n */
+               ssbStartSymbArr[symbIdx++] = 4 +  MAX_SYMB_PER_SLOT*idx;
+               ssbStartSymbArr[symbIdx++] = 8 +  MAX_SYMB_PER_SLOT*idx;
+               ssbStartSymbArr[symbIdx++] = 16 +  MAX_SYMB_PER_SLOT*idx;
+               ssbStartSymbArr[symbIdx++] = 20 +  MAX_SYMB_PER_SLOT*idx;
             }
-	 }
-	 break;
+         }
+         break;
       default:
-	 DU_LOG("\nERROR  -->  SCH : SCS %d is currently not supported", scs);
+         DU_LOG("\nERROR  -->  SCH : SCS %d is currently not supported", scs);
    }
    memset(cellCb->ssbStartSymbArr, 0, sizeof(SCH_MAX_SSB_BEAM));
    memcpy(cellCb->ssbStartSymbArr, ssbStartSymbArr, SCH_MAX_SSB_BEAM);
-
 }
 
 
@@ -599,7 +569,8 @@ uint8_t schInitCellCb(Inst inst, SchCellCfg *schCellCfg)
  *              uint8_t offsetPointA : offset
  *  @return  void
  **/
-uint8_t fillSchSib1Cfg(uint8_t mu, uint8_t bandwidth, uint8_t numSlots, SchSib1Cfg *sib1SchCfg, uint16_t pci, uint8_t offsetPointA)
+uint8_t fillSchSib1Cfg(uint8_t mu, uint8_t bandwidth, uint8_t numSlots,SchPdcchConfigSib1 *pdcchCfgSib1,\
+               SchSib1Cfg *sib1SchCfg, uint16_t pci, uint8_t offsetPointA, uint16_t sib1PduLen)
 {
    uint8_t coreset0Idx = 0;
    uint8_t searchSpace0Idx = 0;
@@ -622,8 +593,8 @@ uint8_t fillSchSib1Cfg(uint8_t mu, uint8_t bandwidth, uint8_t numSlots, SchSib1C
    pdcch = &(sib1SchCfg->sib1PdcchCfg);
    bwp = &(sib1SchCfg->bwp);
 
-   coreset0Idx     = sib1SchCfg->coresetZeroIndex;
-   searchSpace0Idx = sib1SchCfg->searchSpaceZeroIndex;
+   coreset0Idx     = pdcchCfgSib1->coresetZeroIndex;
+   searchSpace0Idx = pdcchCfgSib1->searchSpaceZeroIndex;
 
    /* derive the sib1 coreset0 params from table 13-1 spec 38.213 */
    //ssbMuxPattern = coresetIdxTable[coreset0Idx][0];
@@ -714,10 +685,10 @@ uint8_t fillSchSib1Cfg(uint8_t mu, uint8_t bandwidth, uint8_t numSlots, SchSib1C
    {
       pdsch->codeword[cwCount].targetCodeRate = 308;
       pdsch->codeword[cwCount].qamModOrder = 2;
-      pdsch->codeword[cwCount].mcsIndex = sib1SchCfg->sib1Mcs;
+      pdsch->codeword[cwCount].mcsIndex = DEFAULT_MCS;
       pdsch->codeword[cwCount].mcsTable = 0; /* notqam256 */
       pdsch->codeword[cwCount].rvIndex = 0;
-      tbSize = schCalcTbSize(sib1SchCfg->sib1PduLen + TX_PAYLOAD_HDR_LEN);
+      tbSize = schCalcTbSize(sib1PduLen + TX_PAYLOAD_HDR_LEN);
       pdsch->codeword[cwCount].tbSize = tbSize;
    }
    pdsch->dataScramblingId                   = pci;
@@ -737,7 +708,7 @@ uint8_t fillSchSib1Cfg(uint8_t mu, uint8_t bandwidth, uint8_t numSlots, SchSib1C
    pdsch->pdschFreqAlloc.resourceAllocType   = 1; /* RAT type-1 RIV format */
    /* the RB numbering starts from coreset0, and PDSCH is always above SSB */
    pdsch->pdschFreqAlloc.startPrb  = offsetPointA + SCH_SSB_NUM_PRB;
-   pdsch->pdschFreqAlloc.numPrb    = schCalcNumPrb(tbSize,sib1SchCfg->sib1Mcs, NUM_PDSCH_SYMBOL);
+   pdsch->pdschFreqAlloc.numPrb    = schCalcNumPrb(tbSize, DEFAULT_MCS, NUM_PDSCH_SYMBOL);
    pdsch->pdschFreqAlloc.vrbPrbMapping       = 0; /* non-interleaved */
    pdsch->pdschTimeAlloc.rowIndex            = 1;
    /* This is Intel's requirement. PDSCH should start after PDSCH DRMS symbol */
@@ -787,9 +758,9 @@ uint8_t SchProcCellCfgReq(Pst *pst, SchCellCfg *schCellCfg)
    cellCb->macInst = pst->srcInst;
 
    /* derive the SIB1 config parameters */
-   ret = fillSchSib1Cfg(schCellCfg->numerology, schCellCfg->bandwidth, cellCb->numSlots,
-	 &(schCellCfg->sib1SchCfg), schCellCfg->phyCellId,
-	 schCellCfg->ssbSchCfg.ssbOffsetPointA);
+   ret = fillSchSib1Cfg(schCellCfg->numerology, schCellCfg->dlBandwidth, cellCb->numSlots,
+	 &(schCellCfg->pdcchCfgSib1), &(cellCb->sib1SchCfg), schCellCfg->phyCellId,
+	 schCellCfg->dlCfgCommon.schFreqInfoDlSib.offsetToPointA, schCellCfg->sib1PduLen);
    
    if(ret != ROK)
    {
@@ -800,28 +771,40 @@ uint8_t SchProcCellCfgReq(Pst *pst, SchCellCfg *schCellCfg)
    schProcPagingCfg(cellCb);
 
    /* Fill coreset frequencyDomainResource bitmap */
-   coreset0Idx = cellCb->cellCfg.schInitialDlBwp.pdcchCommon.commonSearchSpace.coresetId;
+   coreset0Idx = cellCb->cellCfg.dlCfgCommon.schInitialDlBwp.pdcchCommon.commonSearchSpace.coresetId;
    numRbs = coresetIdxTable[coreset0Idx][1];
    offset = coresetIdxTable[coreset0Idx][3];
-   fillCoresetFeqDomAllocMap(((cellCb->cellCfg.ssbSchCfg.ssbOffsetPointA - offset)/6), (numRbs/6), freqDomainResource);
+   fillCoresetFeqDomAllocMap(((cellCb->cellCfg.dlCfgCommon.schFreqInfoDlSib.offsetToPointA - offset)/6), \
+                                  (numRbs/6), freqDomainResource);
    covertFreqDomRsrcMapToIAPIFormat(freqDomainResource, \
-      cellCb->cellCfg.schInitialDlBwp.pdcchCommon.commonSearchSpace.freqDomainRsrc);
+      cellCb->cellCfg.dlCfgCommon.schInitialDlBwp.pdcchCommon.commonSearchSpace.freqDomainRsrc);
 
    /* Fill K0 - K1 table for common cfg*/ 
-   BuildK0K1Table(cellCb, &cellCb->cellCfg.schInitialDlBwp.k0K1InfoTbl, true, cellCb->cellCfg.schInitialDlBwp.pdschCommon,
-   pdschCfg, DEFAULT_UL_ACK_LIST_COUNT, defaultUlAckTbl);
+   BuildK0K1Table(cellCb, &cellCb->k0K1InfoTbl, true, cellCb->cellCfg.dlCfgCommon.schInitialDlBwp.pdschCommon,
+                   pdschCfg, DEFAULT_UL_ACK_LIST_COUNT, defaultUlAckTbl);
    
-   BuildK2InfoTable(cellCb, cellCb->cellCfg.schInitialUlBwp.puschCommon.timeDomRsrcAllocList,\
-   cellCb->cellCfg.schInitialUlBwp.puschCommon.numTimeDomRsrcAlloc, &cellCb->cellCfg.schInitialUlBwp.msg3K2InfoTbl, \
-   &cellCb->cellCfg.schInitialUlBwp.k2InfoTbl);
+   BuildK2InfoTable(cellCb, cellCb->cellCfg.ulCfgCommon.schInitialUlBwp.puschCommon.timeDomRsrcAllocList,\
+   cellCb->cellCfg.ulCfgCommon.schInitialUlBwp.puschCommon.numTimeDomRsrcAlloc, &cellCb->msg3K2InfoTbl, \
+   &cellCb->k2InfoTbl);
+   
+   /*As per Spec 38.211, Sec 6.3.3.2; RootSeq Len(Lra) where Lra=839 or Lra=139,
+    *depending on the PRACH preamble format as given by Tables 6.3.3.1-1 and 6.3.3.1-2.*/
+   if(prachCfgIdxTable[cellCb->cellCfg.ulCfgCommon.schInitialUlBwp.schRachCfg.prachCfgGeneric.prachCfgIdx][0] <= 3)
+   {
+      cellCb->cellCfg.ulCfgCommon.schInitialUlBwp.schRachCfg.rootSeqLen = ROOT_SEQ_LEN_1;
+   }
+   else
+   {
+      cellCb->cellCfg.ulCfgCommon.schInitialUlBwp.schRachCfg.rootSeqLen = ROOT_SEQ_LEN_2;
+   }
    /* Initializing global variables */
    cellCb->actvUeBitMap = 0;
    cellCb->boIndBitMap = 0;
 
-   cellCb->cellCfg.schHqCfg.maxDlDataHqTx = SCH_MAX_NUM_DL_HQ_TX;
-   cellCb->cellCfg.schHqCfg.maxMsg4HqTx = SCH_MAX_NUM_MSG4_TX;
-   cellCb->cellCfg.schHqCfg.maxUlDataHqTx = SCH_MAX_NUM_UL_HQ_TX;
-   cellCb->cellCfg.schRachCfg.maxMsg3Tx = SCH_MAX_NUM_MSG3_TX;
+   cellCb->schHqCfg.maxDlDataHqTx = SCH_MAX_NUM_DL_HQ_TX;
+   cellCb->schHqCfg.maxMsg4HqTx = SCH_MAX_NUM_MSG4_TX;
+   cellCb->schHqCfg.maxUlDataHqTx = SCH_MAX_NUM_UL_HQ_TX;
+   cellCb->maxMsg3Tx = SCH_MAX_NUM_MSG3_TX;
 
    cellCb->schAlgoType = SCH_FCFS;
    cellCb->api = &schCb[inst].allApis[cellCb->schAlgoType]; /* For FCFS */
@@ -897,7 +880,7 @@ uint8_t SchSendCellDeleteRspToMac(SchCellDeleteReq  *ueDelete, Inst inst, SchMac
  * ****************************************************************/
 void deleteSchCellCb(SchCellCb *cellCb)
 {
-   uint8_t sliceIdx=0, slotIdx=0;
+   uint8_t sliceIdx=0, slotIdx=0, plmnIdx = 0;
    CmLListCp *list=NULL;
    CmLList *node=NULL, *next=NULL;
    SchPageInfo *tempNode = NULLP;
@@ -938,16 +921,18 @@ void deleteSchCellCb(SchCellCb *cellCb)
       SCH_FREE(cellCb->schUlSlotInfo,  cellCb->numSlots * sizeof(SchUlSlotInfo*));
    }
 
-   if(cellCb->cellCfg.plmnInfoList.snssai)
+   for(plmnIdx = 0; plmnIdx < MAX_PLMN; plmnIdx++)
    {
-      for(sliceIdx=0; sliceIdx<cellCb->cellCfg.plmnInfoList.numSliceSupport; sliceIdx++)
+      if(cellCb->cellCfg.plmnInfoList[plmnIdx].snssai)
       {
-         SCH_FREE(cellCb->cellCfg.plmnInfoList.snssai[sliceIdx], sizeof(Snssai));
+         for(sliceIdx=0; sliceIdx<cellCb->cellCfg.plmnInfoList[plmnIdx].numSliceSupport; sliceIdx++)
+         {
+            SCH_FREE(cellCb->cellCfg.plmnInfoList[plmnIdx].snssai[sliceIdx], sizeof(Snssai));
+         }
+         SCH_FREE(cellCb->cellCfg.plmnInfoList[plmnIdx].snssai, cellCb->cellCfg.plmnInfoList[plmnIdx].numSliceSupport*sizeof(Snssai*));
       }
-      SCH_FREE(cellCb->cellCfg.plmnInfoList.snssai, cellCb->cellCfg.plmnInfoList.numSliceSupport*sizeof(Snssai*));
    }
-   
-   SCH_FREE(cellCb->cellCfg.sib1SchCfg.sib1PdcchCfg.dci.pdschCfg, sizeof(PdschCfg));
+   SCH_FREE(cellCb->sib1SchCfg.sib1PdcchCfg.dci.pdschCfg, sizeof(PdschCfg));
 
    for(uint16_t idx =0; idx<MAX_SFN; idx++)
    {
@@ -1307,18 +1292,18 @@ uint8_t allocatePrbDl(SchCellCb *cell, SlotTimingInfo slotTime, \
 
       if(ssbOccasion && sib1Occasion)
       {
-         broadcastPrbStart = cell->cellCfg.ssbSchCfg.ssbOffsetPointA; 
-         broadcastPrbEnd = broadcastPrbStart + SCH_SSB_NUM_PRB + cell->cellCfg.sib1SchCfg.sib1PdcchCfg.dci.pdschCfg->pdschFreqAlloc.numPrb -1;
+         broadcastPrbStart = cell->cellCfg.dlCfgCommon.schFreqInfoDlSib.offsetToPointA; 
+         broadcastPrbEnd = broadcastPrbStart + SCH_SSB_NUM_PRB + cell->sib1SchCfg.sib1PdcchCfg.dci.pdschCfg->pdschFreqAlloc.numPrb -1;
       }
       else if(ssbOccasion)
       {
-         broadcastPrbStart = cell->cellCfg.ssbSchCfg.ssbOffsetPointA;
+         broadcastPrbStart = cell->cellCfg.dlCfgCommon.schFreqInfoDlSib.offsetToPointA;
          broadcastPrbEnd = broadcastPrbStart + SCH_SSB_NUM_PRB -1;
       }
       else if(sib1Occasion)
       {
-         broadcastPrbStart = cell->cellCfg.sib1SchCfg.sib1PdcchCfg.dci.pdschCfg->pdschFreqAlloc.startPrb;
-         broadcastPrbEnd = broadcastPrbStart + cell->cellCfg.sib1SchCfg.sib1PdcchCfg.dci.pdschCfg->pdschFreqAlloc.numPrb -1;
+         broadcastPrbStart = cell->sib1SchCfg.sib1PdcchCfg.dci.pdschCfg->pdschFreqAlloc.startPrb;
+         broadcastPrbEnd = broadcastPrbStart + cell->sib1SchCfg.sib1PdcchCfg.dci.pdschCfg->pdschFreqAlloc.numPrb -1;
       }
 
       /* Iterate through all free PRB blocks */
@@ -1450,7 +1435,7 @@ uint8_t allocatePrbUl(SchCellCb *cell, SlotTimingInfo slotTime, \
       isPrachOccasion = schCheckPrachOcc(cell, slotTime);
       if(isPrachOccasion)
       {
-         prachStartPrb =  cell->cellCfg.schRachCfg.msg1FreqStart;
+         prachStartPrb =  cell->cellCfg.ulCfgCommon.schInitialUlBwp.schRachCfg.prachCfgGeneric.msg1FreqStart;
          prachNumPrb = schCalcPrachNumRb(cell);
          prachEndPrb = prachStartPrb + prachNumPrb -1;
       }
@@ -1584,19 +1569,19 @@ uint16_t searchLargestFreeBlock(SchCellCb *cell, SlotTimingInfo slotTime,uint16_
       checkOccasion = TRUE;
       if(ssbOccasion && sib1Occasion)
       {
-         reservedPrbStart = cell->cellCfg.ssbSchCfg.ssbOffsetPointA; 
+         reservedPrbStart = cell->cellCfg.dlCfgCommon.schFreqInfoDlSib.offsetToPointA; 
          reservedPrbEnd = reservedPrbStart + SCH_SSB_NUM_PRB + \
-                          cell->cellCfg.sib1SchCfg.sib1PdcchCfg.dci.pdschCfg->pdschFreqAlloc.numPrb -1;
+                          cell->sib1SchCfg.sib1PdcchCfg.dci.pdschCfg->pdschFreqAlloc.numPrb -1;
       }
       else if(ssbOccasion)
       {
-         reservedPrbStart = cell->cellCfg.ssbSchCfg.ssbOffsetPointA;
+         reservedPrbStart = cell->cellCfg.dlCfgCommon.schFreqInfoDlSib.offsetToPointA;
          reservedPrbEnd = reservedPrbStart + SCH_SSB_NUM_PRB -1;
       }
       else if(sib1Occasion)
       {
-         reservedPrbStart = cell->cellCfg.sib1SchCfg.sib1PdcchCfg.dci.pdschCfg->pdschFreqAlloc.startPrb;
-         reservedPrbEnd = reservedPrbStart + cell->cellCfg.sib1SchCfg.sib1PdcchCfg.dci.pdschCfg->pdschFreqAlloc.numPrb -1;
+         reservedPrbStart = cell->sib1SchCfg.sib1PdcchCfg.dci.pdschCfg->pdschFreqAlloc.startPrb;
+         reservedPrbEnd = reservedPrbStart + cell->sib1SchCfg.sib1PdcchCfg.dci.pdschCfg->pdschFreqAlloc.numPrb -1;
       }
       else
       {
@@ -1611,7 +1596,7 @@ uint16_t searchLargestFreeBlock(SchCellCb *cell, SlotTimingInfo slotTime,uint16_
       checkOccasion = schCheckPrachOcc(cell, slotTime);
       if(checkOccasion)
       {
-         reservedPrbStart =  cell->cellCfg.schRachCfg.msg1FreqStart;
+         reservedPrbStart =  cell->cellCfg.ulCfgCommon.schInitialUlBwp.schRachCfg.prachCfgGeneric.msg1FreqStart;
          reservedPrbEnd = reservedPrbStart + (schCalcPrachNumRb(cell)) -1;
       }
    }
@@ -1720,7 +1705,7 @@ void SchSendSliceCfgRspToMac(Inst inst, SchSliceCfgRsp sliceCfgRsp)
 uint8_t fillSliceCfgRsp(bool sliceRecfg, SchSliceCfg *storedSliceCfg, SchCellCb *cellCb, SchSliceCfgReq *schSliceCfgReq, SchSliceCfgRsp *schSliceCfgRsp, uint8_t *count)
 {
    bool sliceFound = false;
-   uint8_t cfgIdx = 0, sliceIdx = 0;
+   uint8_t cfgIdx = 0, sliceIdx = 0, plmnIdx = 0;
 
    schSliceCfgRsp->numSliceCfgRsp  = schSliceCfgReq->numOfConfiguredSlice;
    SCH_ALLOC(schSliceCfgRsp->listOfSliceCfgRsp, schSliceCfgRsp->numSliceCfgRsp * sizeof(SliceRsp*));
@@ -1729,19 +1714,26 @@ uint8_t fillSliceCfgRsp(bool sliceRecfg, SchSliceCfg *storedSliceCfg, SchCellCb 
       DU_LOG("\nERROR  --> SCH : Memory allocation failed at fillSliceCfgRsp");
       return RFAILED;
    }
-   
+
    for(cfgIdx = 0; cfgIdx<schSliceCfgRsp->numSliceCfgRsp ; cfgIdx++)
    {
       sliceFound = false;
       /* Here comparing the slice cfg request with the slice stored in cellCfg */
       if(sliceRecfg != true)
       {
-         for(sliceIdx = 0; sliceIdx<cellCb->cellCfg.plmnInfoList.numSliceSupport; sliceIdx++)
+         for(plmnIdx = 0; plmnIdx < MAX_PLMN; plmnIdx++)
          {
-            if(!memcmp(&schSliceCfgReq->listOfSlices[cfgIdx]->snssai, cellCb->cellCfg.plmnInfoList.snssai[sliceIdx], sizeof(Snssai)))
+            for(sliceIdx = 0; sliceIdx<cellCb->cellCfg.plmnInfoList[plmnIdx].numSliceSupport; sliceIdx++)
             {
-               (*count)++;
-               sliceFound = true;
+               if(!memcmp(&schSliceCfgReq->listOfSlices[cfgIdx]->snssai, cellCb->cellCfg.plmnInfoList[plmnIdx].snssai[sliceIdx], sizeof(Snssai)))
+               {
+                  (*count)++;
+                  sliceFound = true;
+                  break;
+               }
+            }
+            if(sliceFound == true)
+            {
                break;
             }
          }
@@ -1771,7 +1763,7 @@ uint8_t fillSliceCfgRsp(bool sliceRecfg, SchSliceCfg *storedSliceCfg, SchCellCb 
          return RFAILED;
       }
 
-      
+
       schSliceCfgRsp->listOfSliceCfgRsp[cfgIdx]->snssai = schSliceCfgReq->listOfSlices[cfgIdx]->snssai;
       if(sliceFound == true)
          schSliceCfgRsp->listOfSliceCfgRsp[cfgIdx]->rsp    = RSP_OK;
@@ -2081,10 +2073,10 @@ uint8_t SchProcSliceRecfgReq(Pst *pst, SchSliceRecfgReq *schSliceRecfgReq)
  *************************************************************************/
 void schProcPagingCfg(SchCellCb *cell)
 {
-   PageCfg *pageCfgRcvd = NULL;
+   SchPcchCfg *pageCfgRcvd = NULL;
    uint8_t i_sIdx = 0;
 
-   pageCfgRcvd = &(cell->cellCfg.sib1SchCfg.pageCfg);
+   pageCfgRcvd = &(cell->cellCfg.dlCfgCommon.schPcchCfg);
 
    if(pageCfgRcvd->poPresent == TRUE)
    {
@@ -2126,8 +2118,8 @@ void schProcPagingCfg(SchCellCb *cell)
 void schCfgPdcchMonOccOfPO(SchCellCb *cell)
 {
    uint8_t         cnt = 0, incr = 1, i_sIdx = 0, frameOffSet = 0;
-   uint8_t         nsValue = cell->cellCfg.sib1SchCfg.pageCfg.numPO;
-   uint8_t         totalNumSsb = cell->cellCfg.ssbSchCfg.totNumSsb;
+   uint8_t         nsValue = cell->cellCfg.dlCfgCommon.schPcchCfg.numPO;
+   uint8_t         totalNumSsb = countSetBits(cell->cellCfg.ssbPosInBurst[0]);
    SlotTimingInfo  tmpTimingInfo, pdcchTime; 
 
    /*Starting with First Sfn and slot*/
@@ -2266,7 +2258,7 @@ uint8_t SchProcPagingInd(Pst *pst,  SchPageInd *pageInd)
       }
       if(cellCb)
       {
-         if(pageInd->i_s > cellCb->cellCfg.sib1SchCfg.pageCfg.numPO)
+         if(pageInd->i_s > cellCb->cellCfg.dlCfgCommon.schPcchCfg.numPO)
          {
             DU_LOG("\nERROR --> SCH : SchProcPagingInd(): i_s should not be greater than number of paging occasion");
          }
