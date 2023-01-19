@@ -431,20 +431,63 @@ void *cuConsoleHandler(void *args)
       }
       else if(ch == 'm')
       {
-         uint8_t ueId = 1;
-         uint8_t duId = 1;
-         uint8_t duIdx = 0;
+         uint8_t  ueId  = 1;
+         uint8_t  duId  = 0;
+         uint8_t  duIdx = 0;
+         DuDb    *duDb  = NULLP;
+         CuUeCb  *ueCb  = NULLP;
+
+         DU_LOG("\nEnter DU ID whose UE has to be modified");
+         scanf("%d", &duId);
+         DU_LOG("\nEnter UE ID to be modified");
+         scanf("%d", &ueId);
 
          DU_LOG("\nINFO  --> CU_STUB: UE Context Mod for ueId [%d] at DU ID [%d]", \
-                  ueId, duId );
-         DuDb *duDb = NULLP;
-         CuUeCb *ueCb = NULLP;
+                  ueId, duId);
 
          SEARCH_DU_DB(duIdx, duId, duDb); 
          if(duDb)
+         {
             ueCb = &duDb->ueCb[ueId-1];
-         BuildAndSendUeContextModificationReq(duId, ueCb, MODIFY_UE);
+            BuildAndSendUeContextModificationReq(duId, ueCb, MODIFY_UE);
+         }
+         else
+         {
+            DU_LOG("ERROR --> DuDb is NULLP");
+         }
+         continue;
 
+      }
+      /*UE context release command from CU*/
+      else if(ch == 'c')
+      {
+         uint32_t duId, cuUeF1apId, duUeF1apId;
+         uint8_t  duIdx = 0;
+         DuDb    *duDb  = NULLP;
+         
+         DU_LOG("\nEnter DU ID on which UE has to be released");
+         scanf("%d", &duId);
+         DU_LOG("\nEnter UE ID to be released");
+         scanf("%d", &duUeF1apId);
+        
+         SEARCH_DU_DB(duIdx, duId, duDb); 
+         if(duDb)
+         {
+            if(duDb->ueCb[duUeF1apId-1].gnbDuUeF1apId == duUeF1apId)
+            {
+               cuUeF1apId = duDb->ueCb[duUeF1apId-1].gnbCuUeF1apId;
+               DU_LOG("INFO   -->  CU_STUB: Cu UeId: %d Du UeId:%d",cuUeF1apId, duUeF1apId);
+               BuildAndSendUeContextReleaseCommand(duId, cuUeF1apId, duUeF1apId);
+            }
+            else
+            {
+               DU_LOG("ERROR  -->  CU_STUB: Du UeId:%d in UeCb mismatch",\
+                        duDb->ueCb[duUeF1apId-1].gnbDuUeF1apId);
+            }
+         }
+
+         sleep(5);
+         continue;
       }
    }
 }
