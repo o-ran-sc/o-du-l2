@@ -972,10 +972,10 @@ uint8_t schFillUlDciForMsg3Retx(SchRaCb *raCb, SchPuschInfo *puschInfo, DciInfo 
    }
 
    /* fill bwp cfg */
-   dciInfo->bwpCfg.subcarrierSpacing  = cellCb->cellCfg.sib1SchCfg.bwp.subcarrierSpacing;
-   dciInfo->bwpCfg.cyclicPrefix       = cellCb->cellCfg.sib1SchCfg.bwp.cyclicPrefix;
-   dciInfo->bwpCfg.freqAlloc.startPrb = cellCb->cellCfg.schInitialDlBwp.bwp.freqAlloc.startPrb;
-   dciInfo->bwpCfg.freqAlloc.numPrb   = cellCb->cellCfg.schInitialDlBwp.bwp.freqAlloc.numPrb; 
+   dciInfo->bwpCfg.subcarrierSpacing  = cellCb->sib1SchCfg.bwp.subcarrierSpacing;
+   dciInfo->bwpCfg.cyclicPrefix       = cellCb->sib1SchCfg.bwp.cyclicPrefix;
+   dciInfo->bwpCfg.freqAlloc.startPrb = cellCb->cellCfg.dlCfgCommon.schInitialDlBwp.bwp.freqAlloc.startPrb;
+   dciInfo->bwpCfg.freqAlloc.numPrb   = cellCb->cellCfg.dlCfgCommon.schInitialDlBwp.bwp.freqAlloc.numPrb; 
 
    /*fill coreset cfg */
    //Considering number of RBs in coreset1 is same as coreset0
@@ -983,7 +983,7 @@ uint8_t schFillUlDciForMsg3Retx(SchRaCb *raCb, SchPuschInfo *puschInfo, DciInfo 
    //Considering coreset1 also starts from same symbol as coreset0
    dciInfo->coresetCfg.startSymbolIndex = searchSpaceIdxTable[0][3];
    dciInfo->coresetCfg.durationSymbols  = coresetIdxTable[0][2];
-   memcpy(dciInfo->coresetCfg.freqDomainResource, cellCb->cellCfg.schInitialDlBwp.pdcchCommon.commonSearchSpace.freqDomainRsrc, FREQ_DOM_RSRC_SIZE);
+   memcpy(dciInfo->coresetCfg.freqDomainResource, cellCb->cellCfg.dlCfgCommon.schInitialDlBwp.pdcchCommon.commonSearchSpace.freqDomainRsrc, FREQ_DOM_RSRC_SIZE);
    
    dciInfo->coresetCfg.cceRegMappingType   = 1; /* coreset0 is always interleaved */
    dciInfo->coresetCfg.regBundleSize       = 6; /* spec-38.211 sec 7.3.2.2 */
@@ -1080,10 +1080,10 @@ uint8_t schFillUlDci(SchUeCb *ueCb, SchPuschInfo *puschInfo, DciInfo *dciInfo, b
    dciInfo->crnti  = ueCb->crnti;
 
    /* fill bwp cfg */
-   dciInfo->bwpCfg.subcarrierSpacing  = cellCb->cellCfg.sib1SchCfg.bwp.subcarrierSpacing;
-   dciInfo->bwpCfg.cyclicPrefix       = cellCb->cellCfg.sib1SchCfg.bwp.cyclicPrefix;
-   dciInfo->bwpCfg.freqAlloc.startPrb = cellCb->cellCfg.schInitialDlBwp.bwp.freqAlloc.startPrb;
-   dciInfo->bwpCfg.freqAlloc.numPrb   = cellCb->cellCfg.schInitialDlBwp.bwp.freqAlloc.numPrb; 
+   dciInfo->bwpCfg.subcarrierSpacing  = cellCb->sib1SchCfg.bwp.subcarrierSpacing;
+   dciInfo->bwpCfg.cyclicPrefix       = cellCb->sib1SchCfg.bwp.cyclicPrefix;
+   dciInfo->bwpCfg.freqAlloc.startPrb = cellCb->cellCfg.dlCfgCommon.schInitialDlBwp.bwp.freqAlloc.startPrb;
+   dciInfo->bwpCfg.freqAlloc.numPrb   = cellCb->cellCfg.dlCfgCommon.schInitialDlBwp.bwp.freqAlloc.numPrb; 
 
    /*fill coreset cfg */
    //Considering number of RBs in coreset1 is same as coreset0
