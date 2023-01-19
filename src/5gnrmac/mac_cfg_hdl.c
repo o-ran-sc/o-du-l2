@@ -158,7 +158,7 @@ uint8_t MacProcCellCfgReq(Pst *pst, MacCellCfg *macCellCfg)
 {
    Pst cfmPst;
    uint16_t cellIdx;
-   uint8_t ret = ROK, sliceIdx = 0;
+   uint8_t ret = ROK, plmnIdx = 0,sliceIdx = 0;
    MacCellCb     *macCellCb;
 
    memset((uint8_t *)&cfmPst, 0, sizeof(Pst));
@@ -174,46 +174,48 @@ uint8_t MacProcCellCfgReq(Pst *pst, MacCellCfg *macCellCfg)
    GET_CELL_IDX(macCellCfg->cellId, cellIdx);
    macCb.macCell[cellIdx] = macCellCb;
    macCb.macCell[cellIdx]->cellId = macCellCfg->cellId;
-   macCb.macCell[cellIdx]->numOfSlots = 10 * (1 << macCellCfg->numerology);
+   macCb.macCell[cellIdx]->numOfSlots = 10 * (1 << macCellCfg->cellCfg.numerology);
    memcpy(&macCb.macCell[cellIdx]->macCellCfg, macCellCfg, sizeof(MacCellCfg));
 
    MAC_ALLOC(macCb.macCell[cellIdx]->macCellCfg.sib1Cfg.sib1Pdu, \
-	 macCb.macCell[cellIdx]->macCellCfg.sib1Cfg.sib1PduLen);
+         macCb.macCell[cellIdx]->macCellCfg.sib1Cfg.sib1PduLen);
    if(macCb.macCell[cellIdx]->macCellCfg.sib1Cfg.sib1Pdu == NULLP)
    {
       DU_LOG("\nERROR  -->  MAC : macCellCb is NULL at handling of sib1Pdu of macCellCfg\n");
       return RFAILED;
    }
    memcpy(macCb.macCell[cellIdx]->macCellCfg.sib1Cfg.sib1Pdu, macCellCfg->sib1Cfg.sib1Pdu, \
-	 macCb.macCell[cellIdx]->macCellCfg.sib1Cfg.sib1PduLen);
-   
-   macCb.macCell[cellIdx]->macCellCfg.plmnInfoList.numSupportedSlice = macCellCfg->plmnInfoList.numSupportedSlice;
-   MAC_ALLOC(macCb.macCell[cellIdx]->macCellCfg.plmnInfoList.snssai, macCb.macCell[cellIdx]->macCellCfg.plmnInfoList.numSupportedSlice\
-         * sizeof(Snssai*));
-   if(macCb.macCell[cellIdx]->macCellCfg.plmnInfoList.snssai == NULLP)
-   {
-      DU_LOG("\nERROR  --> MAC: Memory allocation failed at MacProcCellCfgReq");
-      return RFAILED;
-   }
+         macCb.macCell[cellIdx]->macCellCfg.sib1Cfg.sib1PduLen);
 
-   if(macCb.macCell[cellIdx]->macCellCfg.plmnInfoList.snssai)
+   for(plmnIdx = 0; plmnIdx < MAX_PLMN; plmnIdx++)
    {
-      for(sliceIdx=0; sliceIdx<macCb.macCell[cellIdx]->macCellCfg.plmnInfoList.numSupportedSlice; sliceIdx++)
+      macCb.macCell[cellIdx]->macCellCfg.cellCfg.plmnInfoList[plmnIdx].numSupportedSlice = macCellCfg->cellCfg.plmnInfoList[plmnIdx].numSupportedSlice;
+      MAC_ALLOC(macCb.macCell[cellIdx]->macCellCfg.cellCfg.plmnInfoList[plmnIdx].snssai, macCb.macCell[cellIdx]->macCellCfg.cellCfg.plmnInfoList[plmnIdx].numSupportedSlice\
+            * sizeof(Snssai*));
+      if(macCb.macCell[cellIdx]->macCellCfg.cellCfg.plmnInfoList[plmnIdx].snssai == NULLP)
       {
-         if(macCellCfg->plmnInfoList.snssai[sliceIdx])
+         DU_LOG("\nERROR  --> MAC: Memory allocation failed at MacProcCellCfgReq");
+         return RFAILED;
+      }
+
+      if(macCb.macCell[cellIdx]->macCellCfg.cellCfg.plmnInfoList[plmnIdx].snssai)
+      {
+         for(sliceIdx=0; sliceIdx<macCb.macCell[cellIdx]->macCellCfg.cellCfg.plmnInfoList[plmnIdx].numSupportedSlice; sliceIdx++)
          {
-            MAC_ALLOC(macCb.macCell[cellIdx]->macCellCfg.plmnInfoList.snssai[sliceIdx], sizeof(Snssai));
-            if(!macCb.macCell[cellIdx]->macCellCfg.plmnInfoList.snssai[sliceIdx])
+            if(macCellCfg->cellCfg.plmnInfoList[plmnIdx].snssai[sliceIdx])
             {
-               DU_LOG("\nERROR  --> MAC: Memory allocation failed at MacProcCellCfgReq");
-               return RFAILED;
+               MAC_ALLOC(macCb.macCell[cellIdx]->macCellCfg.cellCfg.plmnInfoList[plmnIdx].snssai[sliceIdx], sizeof(Snssai));
+               if(!macCb.macCell[cellIdx]->macCellCfg.cellCfg.plmnInfoList[plmnIdx].snssai[sliceIdx])
+               {
+                  DU_LOG("\nERROR  --> MAC: Memory allocation failed at MacProcCellCfgReq");
+                  return RFAILED;
+               }
+               memcpy(macCb.macCell[cellIdx]->macCellCfg.cellCfg.plmnInfoList[plmnIdx].snssai[sliceIdx], macCellCfg->cellCfg.plmnInfoList[plmnIdx].snssai[sliceIdx],\
+                     sizeof(Snssai));
             }
-            memcpy(macCb.macCell[cellIdx]->macCellCfg.plmnInfoList.snssai[sliceIdx], macCellCfg->plmnInfoList.snssai[sliceIdx],\
-            sizeof(Snssai));
          }
       }
    }
-
    /* Send cell cfg to scheduler */
    ret = MacSchCellCfgReq(pst, macCellCfg);
    if(ret != ROK)
@@ -257,12 +259,12 @@ uint8_t MacSchCellCfgReq(Pst *pst, MacCellCfg *macCellCfg)
    memset(&cfgPst, 0, sizeof(Pst));
    memset(&schCellCfg, 0, sizeof(SchCellCfg));
    schCellCfg.cellId = macCellCfg->cellId;
-   schCellCfg.phyCellId = macCellCfg->phyCellId;
-   schCellCfg.numerology = macCellCfg->numerology;
-   schCellCfg.dupMode = macCellCfg->dupType;
-   schCellCfg.bandwidth = macCellCfg->dlCarrCfg.bw;
-   schCellCfg.dlFreq = macCellCfg->dlCarrCfg.freq;
-   schCellCfg.ulFreq = macCellCfg->ulCarrCfg.freq;
+   schCellCfg.phyCellId = macCellCfg->cellCfg.phyCellId;
+   schCellCfg.numerology = macCellCfg->cellCfg.numerology;
+   schCellCfg.dupMode = macCellCfg->cellCfg.dupType;
+   schCellCfg.bandwidth = macCellCfg->carrCfg.dlBw;
+   schCellCfg.dlFreq = macCellCfg->carrCfg.dlFreq;
+   schCellCfg.ulFreq = macCellCfg->carrCfg.dlFreq;
 
    /* fill ssb scheduler parameters */
    schCellCfg.ssbSchCfg.ssbPbchPwr = macCellCfg->ssbCfg.ssbPbchPwr;
@@ -296,16 +298,12 @@ uint8_t MacSchCellCfgReq(Pst *pst, MacCellCfg *macCellCfg)
 					    macCellCfg->prachCfg.prachSubcSpacing;
    schCellCfg.schRachCfg.msg1FreqStart = macCellCfg->prachCfg.msg1FreqStart;
    schCellCfg.schRachCfg.msg1Fdm       = macCellCfg->prachCfg.msg1Fdm;
-   schCellCfg.schRachCfg.rootSeqLen    = macCellCfg->prachCfg.rootSeqLen;
    schCellCfg.schRachCfg.rootSeqIdx    = macCellCfg->prachCfg.fdm[0].rootSeqIdx;
    schCellCfg.schRachCfg.numRootSeq    = macCellCfg->prachCfg.fdm[0].numRootSeq;
    schCellCfg.schRachCfg.k1            = macCellCfg->prachCfg.fdm[0].k1;
    schCellCfg.schRachCfg.totalNumRaPreamble = macCellCfg->prachCfg.totalNumRaPreamble;
    schCellCfg.schRachCfg.ssbPerRach    = macCellCfg->prachCfg.ssbPerRach;
    schCellCfg.schRachCfg.numCbPreamblePerSsb = macCellCfg->prachCfg.numCbPreamblePerSsb;
-   schCellCfg.schRachCfg.prachMultCarrBand = macCellCfg->prachCfg.prachMultCarrBand;
-   schCellCfg.schRachCfg.raContResTmr  = macCellCfg->prachCfg.raContResTmr;
-   schCellCfg.schRachCfg.rsrpThreshSsb = macCellCfg->prachCfg.rsrpThreshSsb;
    schCellCfg.schRachCfg.raRspWindow   = macCellCfg->prachCfg.raRspWindow;
 
    /* fill initial DL BWP */
@@ -365,7 +363,7 @@ uint8_t MacSchCellCfgReq(Pst *pst, MacCellCfg *macCellCfg)
          macCellCfg->initialUlBwp.puschCommon.timeDomRsrcAllocList[rsrcListIdx].symbolLength;
    }
 
-   if(macCellCfg->plmnInfoList.snssai) 
+   if(macCellCfg->cellCfg.plmnInfoList.snssai) 
    {
       schCellCfg.plmnInfoList.numSliceSupport = macCellCfg->plmnInfoList.numSupportedSlice;
       MAC_ALLOC(schCellCfg.plmnInfoList.snssai, schCellCfg.plmnInfoList.numSliceSupport * sizeof(Snssai*));

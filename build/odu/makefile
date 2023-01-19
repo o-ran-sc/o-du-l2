@@ -44,7 +44,7 @@ PARALLEL_COMP=-j $(NUM_PARALLEL)
 # # Other apsects of tool chain set here
 # # These should be made available appropriately to the builds
 ifeq ($(MACHINE),BIT64)
-ifeq ($(COVERAGE),1)
+ifeq ($(COVERAGE),ENABLE)
 CC          =gcc -m64 --coverage
 else
 CC          =gcc -m64

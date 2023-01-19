@@ -1115,7 +1115,8 @@ SchPdschConfig pdschDedCfg, uint8_t ulAckListCount, uint8_t *UlAckTbl)
          {
             continue;
          }
-         
+        
+         ulSlotPresent = false;
          /* Storing K0 , start symbol and length symbol for further processing.
           * If K0 value is not available then we can fill the default values
           * given in spec 38.331. */
@@ -1156,13 +1157,20 @@ SchPdschConfig pdschDedCfg, uint8_t ulAckListCount, uint8_t *UlAckTbl)
             {
                for(checkSymbol = startSymbol; checkSymbol<endSymbol; checkSymbol ++)
                {
-                  slotCfg = cell->cellCfg.tddCfg.slotCfg[tmpSlot][checkSymbol];
+                  slotCfg = cell->slotCfg[tmpSlot][checkSymbol];
                   if(slotCfg == UL_SLOT)
                   {
-                     continue;
+                     ulSlotPresent = true;
+                     break;
                   }
                }
+               if(ulSlotPresent == true)
+               {
+                  continue;
+               }
             }
+
+             ulSlotPresent = false; //Re-initializing
 
             /* If current slot + k0 + k1 is a DL slot then skip the slot
              * else if it is UL slot then store the information 
@@ -1184,7 +1192,7 @@ SchPdschConfig pdschDedCfg, uint8_t ulAckListCount, uint8_t *UlAckTbl)
                   {
                      for(checkSymbol = 0; checkSymbol< MAX_SYMB_PER_SLOT;checkSymbol++)
                      {
-                        if(cell->cellCfg.tddCfg.slotCfg[tmpSlot][checkSymbol] == UL_SLOT)
+                        if(cell->slotCfg[tmpSlot][checkSymbol] == UL_SLOT)
                         {
                            ulSlotPresent = true;
                            break;
@@ -1356,7 +1364,7 @@ SchK2TimingInfoTbl *msg3K2InfoTbl, SchK2TimingInfoTbl *k2InfoTbl)
                      dlSymbolPresent = false;
                      for(checkSymbol= startSymbol; checkSymbol<endSymbol; checkSymbol++)
                      {
-                        currentSymbol = cell->cellCfg.tddCfg.slotCfg[k2TmpVal][checkSymbol];
+                        currentSymbol = cell->slotCfg[k2TmpVal][checkSymbol];
                         if(currentSymbol == DL_SLOT || currentSymbol == FLEXI_SLOT)
                         {
                            dlSymbolPresent = true;
@@ -1392,7 +1400,7 @@ SchK2TimingInfoTbl *msg3K2InfoTbl, SchK2TimingInfoTbl *k2InfoTbl)
                         dlSymbolPresent = false;
                         for(checkSymbol= startSymbol; checkSymbol<endSymbol; checkSymbol++)
                         {
-                           currentSymbol = cell->cellCfg.tddCfg.slotCfg[msg3K2TmpVal][checkSymbol];
+                           currentSymbol = cell->slotCfg[msg3K2TmpVal][checkSymbol];
                            if(currentSymbol == DL_SLOT || currentSymbol == FLEXI_SLOT)
                            {
                               dlSymbolPresent = true;
