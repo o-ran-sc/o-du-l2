@@ -57,7 +57,7 @@ uint8_t SchProcCrcInd(Pst *pst, CrcIndInfo *crcInd)
          if (crcInd->crcInd[count])
          {
             /* failure case*/
-            if (cell->raCb[ueId-1].msg3HqProc.tbInfo.txCntr < cell->cellCfg.schRachCfg.maxMsg3Tx)
+            if (cell->raCb[ueId-1].msg3HqProc.tbInfo.txCntr < cell->maxMsg3Tx)
             {
                cell->api->SchCrcInd(cell, ueId);
                cell->raCb[ueId - 1].retxMsg3HqProc = &cell->raCb[ueId - 1].msg3HqProc;

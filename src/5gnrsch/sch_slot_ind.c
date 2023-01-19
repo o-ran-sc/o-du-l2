@@ -320,7 +320,7 @@ PduTxOccsaion schCheckSsbOcc(SchCellCb *cell, SlotTimingInfo slotTime)
 {
    uint8_t  ssb_rep;
 
-   ssb_rep = cell->cellCfg.ssbSchCfg.ssbPeriod;
+   ssb_rep = cell->cellCfg.ssbPeriod;
 
    /* Identify SSB ocassion*/
    if ((slotTime.sfn % SCH_MIB_TRANS == 0) && (slotTime.slot ==0))
@@ -363,7 +363,7 @@ PduTxOccsaion schCheckSib1Occ(SchCellCb *cell, SlotTimingInfo slotTime)
    }
    else if(cell->firstSib1Transmitted) 
    {
-      if((slotTime.sfn % (cell->cellCfg.sib1SchCfg.sib1RepetitionPeriod/10) == 0) &&
+      if((slotTime.sfn % (SIB1_REPETITION_PERIOD/10) == 0) &&
             (slotTime.slot == 0))
       {
          return REPEATITION;
@@ -423,7 +423,7 @@ bool findValidK0K1Value(SchCellCb *cell, SlotTimingInfo currTime, uint8_t ueId, 
    }
    else
    {
-      k0K1InfoTbl = &cell->cellCfg.schInitialDlBwp.k0K1InfoTbl;
+      k0K1InfoTbl = &cell->k0K1InfoTbl;
    }
 
    numK0 = k0K1InfoTbl->k0k1TimingInfo[pdcchTime->slot].numK0;
@@ -432,9 +432,9 @@ bool findValidK0K1Value(SchCellCb *cell, SlotTimingInfo currTime, uint8_t ueId, 
       k0Index = k0K1InfoTbl->k0k1TimingInfo[pdcchTime->slot].k0Indexes[k0TblIdx].k0Index;
       if(dedMsg != true)
       {
-         k0Val = cell->cellCfg.schInitialDlBwp.pdschCommon.timeDomRsrcAllocList[k0Index].k0;
-         *pdschStartSymbol = cell->cellCfg.schInitialDlBwp.pdschCommon.timeDomRsrcAllocList[k0Index].startSymbol;
-         *pdschSymblLen = cell->cellCfg.schInitialDlBwp.pdschCommon.timeDomRsrcAllocList[k0Index].lengthSymbol;
+         k0Val = cell->cellCfg.dlCfgCommon.schInitialDlBwp.pdschCommon.timeDomRsrcAllocList[k0Index].k0;
+         *pdschStartSymbol = cell->cellCfg.dlCfgCommon.schInitialDlBwp.pdschCommon.timeDomRsrcAllocList[k0Index].startSymbol;
+         *pdschSymblLen = cell->cellCfg.dlCfgCommon.schInitialDlBwp.pdschCommon.timeDomRsrcAllocList[k0Index].lengthSymbol;
       }
       else
       {
@@ -553,11 +553,11 @@ uint8_t schProcDlPageAlloc(SchCellCb *cell, SlotTimingInfo currTime, Inst schIns
          break;
       }
       /*Fill PDCCH: PDCCH Cfg is same as SIB1 as Paging will be a broadcast message*/
-      memcpy(&dlPageAlloc.pagePdcchCfg, &cell->cellCfg.sib1SchCfg.sib1PdcchCfg, sizeof(PdcchCfg));
+      memcpy(&dlPageAlloc.pagePdcchCfg, &cell->sib1SchCfg.sib1PdcchCfg, sizeof(PdcchCfg));
       dlPageAlloc.pagePdcchCfg.dci.rnti = P_RNTI;
 
       /*Fill BWP*/
-      memcpy(&dlPageAlloc.bwp, &cell->cellCfg.sib1SchCfg.bwp, sizeof(BwpCfg)); 
+      memcpy(&dlPageAlloc.bwp, &cell->sib1SchCfg.bwp, sizeof(BwpCfg)); 
 
       /*Fill PDSCH*/
       if(schFillPagePdschCfg(cell, &dlPageAlloc.pagePdschCfg, pdschTime, tbSize, pageInfo->mcs, startPrb) != ROK)
