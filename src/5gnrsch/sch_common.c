@@ -77,7 +77,7 @@ uint8_t schBroadcastSsbAlloc(SchCellCb *cell, SlotTimingInfo slotTime, DlBrdcstA
    }
 
    schDlSlotInfo = cell->schDlSlotInfo[slotTime.slot];
-   ssbStartPrb = cell->cellCfg.ssbSchCfg.ssbOffsetPointA; //+Kssb
+   ssbStartPrb = cell->cellCfg.ssbSubcOffset; //+Kssb
    ssbStartSymb = cell->ssbStartSymbArr[dlBrdcstAlloc->ssbIdxSupported-1]; /*since we are supporting only 1 ssb beam */
 
    /* Assign interface structure */
@@ -138,9 +138,9 @@ uint8_t schBroadcastSib1Alloc(SchCellCb *cell, SlotTimingInfo slotTime, DlBrdcst
    }
    
    dlBrdcstAlloc->crnti = SI_RNTI;
-   dmrs = cell->cellCfg.sib1SchCfg.sib1PdcchCfg.dci.pdschCfg->dmrs;
-   freqAlloc = cell->cellCfg.sib1SchCfg.sib1PdcchCfg.dci.pdschCfg->pdschFreqAlloc;
-   timeAlloc = cell->cellCfg.sib1SchCfg.sib1PdcchCfg.dci.pdschCfg->pdschTimeAlloc;
+   dmrs = cell->sib1SchCfg.sib1PdcchCfg.dci.pdschCfg->dmrs;
+   freqAlloc = cell->sib1SchCfg.sib1PdcchCfg.dci.pdschCfg->pdschFreqAlloc;
+   timeAlloc = cell->sib1SchCfg.sib1PdcchCfg.dci.pdschCfg->pdschTimeAlloc;
    schDlSlotInfo = cell->schDlSlotInfo[slotTime.slot];
 
    /* Find total symbols used including DMRS */
@@ -166,8 +166,8 @@ uint8_t schBroadcastSib1Alloc(SchCellCb *cell, SlotTimingInfo slotTime, DlBrdcst
        return RFAILED;
    }
 
-   memcpy(&dlBrdcstAlloc->sib1Alloc.bwp, &cell->cellCfg.sib1SchCfg.bwp, sizeof(BwpCfg)); 
-   memcpy(&dlBrdcstAlloc->sib1Alloc.sib1PdcchCfg, &cell->cellCfg.sib1SchCfg.sib1PdcchCfg, sizeof(PdcchCfg)); 
+   memcpy(&dlBrdcstAlloc->sib1Alloc.bwp, &cell->sib1SchCfg.bwp, sizeof(BwpCfg)); 
+   memcpy(&dlBrdcstAlloc->sib1Alloc.sib1PdcchCfg, &cell->sib1SchCfg.sib1PdcchCfg, sizeof(PdcchCfg)); 
    schDlSlotInfo->sib1Pres = true;
    return ROK;
 }
@@ -433,9 +433,9 @@ uint16_t fillPucchResourceInfo(uint8_t ueId, SchPucchInfo *schPucchInfo, Inst in
    {
       /* fill pucch common cfg */
       /* derive pucchResourceSet from schCellCfg */
-      pucchCfg = &cell->cellCfg.schInitialUlBwp.pucchCommon;
+      pucchCfg = &cell->cellCfg.ulCfgCommon.schInitialUlBwp.pucchCommon;
       pucchIdx = pucchCfg->pucchResourceCommon;
-      ulBwp = &cell->cellCfg.schInitialUlBwp.bwp;
+      ulBwp = &cell->cellCfg.ulCfgCommon.schInitialUlBwp.bwp;
       startPrb = ulBwp->freqAlloc.startPrb + pucchResourceSet[pucchIdx][3];
       ret = allocatePrbUl(cell, slotInfo, pucchResourceSet[pucchIdx][1], pucchResourceSet[pucchIdx][2],\
             &startPrb, PUCCH_NUM_PRB_FORMAT_0_1_4);
@@ -585,9 +585,9 @@ uint8_t schDlRsrcAllocMsg4(SchCellCb *cell, SlotTimingInfo msg4Time, uint8_t ueI
    }
 
    msg4Alloc = &dlMsgAlloc->dlMsgSchedInfo[dlMsgAlloc->numSchedInfo];
-   initialBwp   = &cell->cellCfg.schInitialDlBwp;
+   initialBwp   = &cell->cellCfg.dlCfgCommon.schInitialDlBwp;
    pdcch = &msg4Alloc->dlMsgPdcchCfg;
-   pdsch = &msg4Alloc->dlMsgPdschCfg;
+   pdsch = msg4Alloc->dlMsgPdcchCfg.dci.pdschCfg;
    bwp = &msg4Alloc->bwp;
    coreset0Idx  = initialBwp->pdcchCommon.commonSearchSpace.coresetId;
 
@@ -618,7 +618,7 @@ uint8_t schDlRsrcAllocMsg4(SchCellCb *cell, SlotTimingInfo msg4Time, uint8_t ueI
    pdcch->coresetCfg.startSymbolIndex = firstSymbol;
    pdcch->coresetCfg.durationSymbols = numSymbols;
    memcpy(pdcch->coresetCfg.freqDomainResource, \
-      cell->cellCfg.schInitialDlBwp.pdcchCommon.commonSearchSpace.freqDomainRsrc, FREQ_DOM_RSRC_SIZE);
+      cell->cellCfg.dlCfgCommon.schInitialDlBwp.pdcchCommon.commonSearchSpace.freqDomainRsrc, FREQ_DOM_RSRC_SIZE);
 
    pdcch->coresetCfg.cceRegMappingType = 1; /* coreset0 is always interleaved */
    pdcch->coresetCfg.regBundleSize = 6;    /* spec-38.211 sec 7.3.2.2 */
@@ -640,7 +640,7 @@ uint8_t schDlRsrcAllocMsg4(SchCellCb *cell, SlotTimingInfo msg4Time, uint8_t ueI
    pdcch->dci.beamPdcchInfo.prg[0].beamIdx[0] = 0;
    pdcch->dci.txPdcchPower.beta_pdcch_1_0 = 0;
    pdcch->dci.txPdcchPower.powerControlOffsetSS = 0;
-   pdcch->dci.pdschCfg = pdsch;
+   //pdcch->dci.pdschCfg = pdsch;
 
    /* fill the PDSCH PDU */
    uint8_t cwCount = 0;
@@ -809,8 +809,8 @@ uint8_t schDlRsrcAllocDlMsg(SchCellCb *cell, SlotTimingInfo slotTime, uint16_t c
    /* fill BWP */
    bwp->freqAlloc.numPrb = MAX_NUM_RB;
    bwp->freqAlloc.startPrb = 0;
-   bwp->subcarrierSpacing = cell->cellCfg.sib1SchCfg.bwp.subcarrierSpacing;
-   bwp->cyclicPrefix = cell->cellCfg.sib1SchCfg.bwp.cyclicPrefix;
+   bwp->subcarrierSpacing = cell->sib1SchCfg.bwp.subcarrierSpacing;
+   bwp->cyclicPrefix = cell->sib1SchCfg.bwp.cyclicPrefix;
 
    /* fill the PDCCH PDU */
    //Considering coreset1 also starts from same symbol as coreset0
@@ -1072,7 +1072,7 @@ SchPdschConfig pdschDedCfg, uint8_t ulAckListCount, uint8_t *UlAckTbl)
       /* Initialization the K0K1 structure, total num of slot and calculating the slot pattern length. */
       memset(k0K1InfoTbl, 0, sizeof(SchK0K1TimingInfoTbl));
       k0K1InfoTbl->tblSize = cell->numSlots;
-      totalCfgSlot = calculateSlotPatternLength(cell->cellCfg.ssbSchCfg.scsCommon, cell->cellCfg.tddCfg.tddPeriod);
+      totalCfgSlot = calculateSlotPatternLength(cell->cellCfg.scsCommon, cell->cellCfg.tddCfg.tddPeriod);
       
       /* Storing time domain resource allocation list based on common or 
        * dedicated configuration availability. */
@@ -1102,7 +1102,8 @@ SchPdschConfig pdschDedCfg, uint8_t ulAckListCount, uint8_t *UlAckTbl)
          {
             continue;
          }
-         
+        
+         ulSlotPresent = false;
          /* Storing K0 , start symbol and length symbol for further processing.
           * If K0 value is not available then we can fill the default values
           * given in spec 38.331. */
@@ -1143,13 +1144,20 @@ SchPdschConfig pdschDedCfg, uint8_t ulAckListCount, uint8_t *UlAckTbl)
             {
                for(checkSymbol = startSymbol; checkSymbol<endSymbol; checkSymbol ++)
                {
-                  slotCfg = cell->cellCfg.tddCfg.slotCfg[tmpSlot][checkSymbol];
+                  slotCfg = cell->slotCfg[tmpSlot][checkSymbol];
                   if(slotCfg == UL_SLOT)
                   {
-                     continue;
+                     ulSlotPresent = true;
+                     break;
                   }
                }
+               if(ulSlotPresent == true)
+               {
+                  continue;
+               }
             }
+
+             ulSlotPresent = false; //Re-initializing
 
             /* If current slot + k0 + k1 is a DL slot then skip the slot
              * else if it is UL slot then store the information 
@@ -1171,7 +1179,7 @@ SchPdschConfig pdschDedCfg, uint8_t ulAckListCount, uint8_t *UlAckTbl)
                   {
                      for(checkSymbol = 0; checkSymbol< MAX_SYMB_PER_SLOT;checkSymbol++)
                      {
-                        if(cell->cellCfg.tddCfg.slotCfg[tmpSlot][checkSymbol] == UL_SLOT)
+                        if(cell->slotCfg[tmpSlot][checkSymbol] == UL_SLOT)
                         {
                            ulSlotPresent = true;
                            break;
@@ -1294,7 +1302,7 @@ SchK2TimingInfoTbl *msg3K2InfoTbl, SchK2TimingInfoTbl *k2InfoTbl)
       k2InfoTbl->tblSize = cell->numSlots;
       if(msg3K2InfoTbl)
          msg3K2InfoTbl->tblSize = cell->numSlots;
-      totalCfgSlot = calculateSlotPatternLength(cell->cellCfg.ssbSchCfg.scsCommon, cell->cellCfg.tddCfg.tddPeriod);
+      totalCfgSlot = calculateSlotPatternLength(cell->cellCfg.scsCommon, cell->cellCfg.tddCfg.tddPeriod);
 
       /* Checking all possible indexes for K2. */
       for(slotIdx = 0; slotIdx < cell->numSlots; slotIdx++)
@@ -1312,7 +1320,7 @@ SchK2TimingInfoTbl *msg3K2InfoTbl, SchK2TimingInfoTbl *k2InfoTbl)
                k2Val = timeDomRsrcAllocList[k2Index].k2;
                if(!k2Val)
                {
-                  switch(cell->cellCfg.ssbSchCfg.scsCommon)
+                  switch(cell->cellCfg.scsCommon)
                   {
                      case SCS_15KHZ:
                         k2Val = DEFAULT_K2_VALUE_FOR_SCS15;
@@ -1343,7 +1351,7 @@ SchK2TimingInfoTbl *msg3K2InfoTbl, SchK2TimingInfoTbl *k2InfoTbl)
                      dlSymbolPresent = false;
                      for(checkSymbol= startSymbol; checkSymbol<endSymbol; checkSymbol++)
                      {
-                        currentSymbol = cell->cellCfg.tddCfg.slotCfg[k2TmpVal][checkSymbol];
+                        currentSymbol = cell->slotCfg[k2TmpVal][checkSymbol];
                         if(currentSymbol == DL_SLOT || currentSymbol == FLEXI_SLOT)
                         {
                            dlSymbolPresent = true;
@@ -1379,7 +1387,7 @@ SchK2TimingInfoTbl *msg3K2InfoTbl, SchK2TimingInfoTbl *k2InfoTbl)
                         dlSymbolPresent = false;
                         for(checkSymbol= startSymbol; checkSymbol<endSymbol; checkSymbol++)
                         {
-                           currentSymbol = cell->cellCfg.tddCfg.slotCfg[msg3K2TmpVal][checkSymbol];
+                           currentSymbol = cell->slotCfg[msg3K2TmpVal][checkSymbol];
                            if(currentSymbol == DL_SLOT || currentSymbol == FLEXI_SLOT)
                            {
                               dlSymbolPresent = true;
@@ -1951,7 +1959,7 @@ bool schProcessSrOrBsrReq(SchCellCb *cell, SlotTimingInfo currTime, uint8_t ueId
       if(ueCb->ueCfg.spCellCfg.servCellRecfg.initUlBwp.k2TblPrsnt)
          k2InfoTbl = &ueCb->ueCfg.spCellCfg.servCellRecfg.initUlBwp.k2InfoTbl;
       else
-         k2InfoTbl =  &cell->cellCfg.schInitialUlBwp.k2InfoTbl;
+         k2InfoTbl =  &cell->k2InfoTbl;
 
       for(k2TblIdx = 0; k2TblIdx < k2InfoTbl->k2TimingInfo[dciTime.slot].numK2; k2TblIdx++)
       {
@@ -1959,9 +1967,9 @@ bool schProcessSrOrBsrReq(SchCellCb *cell, SlotTimingInfo currTime, uint8_t ueId
 
          if(!ueCb->ueCfg.spCellCfg.servCellRecfg.initUlBwp.k2TblPrsnt)
          {
-            k2Val = cell->cellCfg.schInitialUlBwp.puschCommon.timeDomRsrcAllocList[k2Index].k2;
-            startSymb = cell->cellCfg.schInitialUlBwp.puschCommon.timeDomRsrcAllocList[k2Index].startSymbol;
-            symbLen = cell->cellCfg.schInitialUlBwp.puschCommon.timeDomRsrcAllocList[k2Index].symbolLength;
+            k2Val = cell->cellCfg.ulCfgCommon.schInitialUlBwp.puschCommon.timeDomRsrcAllocList[k2Index].k2;
+            startSymb = cell->cellCfg.ulCfgCommon.schInitialUlBwp.puschCommon.timeDomRsrcAllocList[k2Index].startSymbol;
+            symbLen = cell->cellCfg.ulCfgCommon.schInitialUlBwp.puschCommon.timeDomRsrcAllocList[k2Index].symbolLength;
          }
          else
          {
@@ -2229,15 +2237,15 @@ bool schGetMsg3K2(SchCellCb *cell, SchUlHqProcCb* msg3HqProc, uint16_t dlTime, S
       if(!msg3HqProc)
          return false;
 
-      numK2 = cell->cellCfg.schInitialUlBwp.k2InfoTbl.k2TimingInfo[dlTime].numK2;
-      msg3K2InfoTbl = &cell->cellCfg.schInitialUlBwp.msg3K2InfoTbl;
+      numK2 = cell->k2InfoTbl.k2TimingInfo[dlTime].numK2;
+      msg3K2InfoTbl = &cell->msg3K2InfoTbl;
       msg3MinSchTime = 0;
       msg3Delta = 0;
    }
    else
    {
-      numK2 = cell->cellCfg.schInitialUlBwp.msg3K2InfoTbl.k2TimingInfo[dlTime].numK2;
-      msg3K2InfoTbl = &cell->cellCfg.schInitialUlBwp.k2InfoTbl;
+      numK2 = cell->msg3K2InfoTbl.k2TimingInfo[dlTime].numK2;
+      msg3K2InfoTbl = &cell->k2InfoTbl;
       msg3MinSchTime = minMsg3SchTime[cell->cellCfg.numerology];
       msg3Delta = puschDeltaTable[puschMu];
    }

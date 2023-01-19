@@ -47,8 +47,30 @@
 #include "mac_sch_interface.h"
 #include "sch.h"
 #include "sch_utils.h"
-#include "sch_fcfs.h"
-#include "sch_slice_based.h"
+
+
+/* local defines */
+SchCellCfgCfmFunc SchCellCfgCfmOpts[] = 
+{
+   packSchCellCfgCfm,     /* LC */
+   MacProcSchCellCfgCfm,  /* TC */
+   packSchCellCfgCfm      /* LWLC */
+};
+
+SchSliceCfgRspFunc SchSliceCfgRspOpts[] =
+{
+   packSchSliceCfgRsp,     /* LC */
+   MacProcSchSliceCfgRsp,  /* TC */
+   packSchSliceCfgRsp      /* LWLC */
+
+};
+
+SchSliceRecfgRspFunc SchSliceRecfgRspOpts[] =
+{
+   packSchSliceRecfgRsp,     /* LC */
+   MacProcSchSliceRecfgRsp,  /* TC */
+   packSchSliceRecfgRsp      /* LWLC */
+};
 
 /**
  * @brief Task Initiation function. 
@@ -90,25 +112,6 @@ uint8_t schActvInit(Ent entity, Inst instId, Region region, Reason reason)
 
    return ROK;
 } /* schActvInit */
-
-/**
- * @brief Scheduler All Apis initialized. 
- *
- * @details
- *
- *     Function : schAllApisInit
- *     
- *     This function initializes all Scheduler APIs/functionality for each kind
- *     of scheduler type. 
- *     
- *  @param[in]  Inst inst, the Scheduler instance 
- *  @return  void
- **/
-void schAllApisInit(Inst inst)
-{
-    schFcfsAllApisInit(&schCb[inst].allApis[SCH_FCFS]);  
-    schSliceBasedAllApisInit(&schCb[inst].allApis[SCH_SLICE_BASED]);
-}
 
 /**
  * @brief Scheduler instance Configuration Handler. 
@@ -175,8 +178,7 @@ uint8_t SchInstCfg(RgCfg *cfg, Inst  dInst)
    /* Set Config done in TskInit */
    schCb[inst].schInit.cfgDone = TRUE;
    DU_LOG("\nINFO   -->  SCH : Scheduler gen config done");
-   
-   schAllApisInit(inst);
+
    return ret;
 }
 
@@ -204,6 +206,10 @@ uint8_t SchProcGenCfgReq(Pst *pst, RgMngmt *cfg)
    uint16_t  reason = LCM_REASON_NOT_APPL;
    RgMngmt   cfm;
    Pst       cfmPst;
+
+#ifdef CALL_FLOW_DEBUG_LOG
+   DU_LOG("\nCall Flow: ENTMAC -> ENTSCH : GENERAL_CFG_REQ\n");
+#endif
 
    if(pst->dstInst < SCH_INST_START)
    {
@@ -250,6 +256,92 @@ uint8_t SchProcGenCfgReq(Pst *pst, RgMngmt *cfg)
 
    return ROK;
 }/*-- SchProcGenCfgReq --*/
+
+/**
+ * @brief slot indication from MAC to SCH.
+ *
+ * @details
+ *
+ *     Function : MacSchSlotInd 
+ *      
+ *      This API is invoked by PHY to indicate slot indication to Scheduler for
+ *      a cell.
+ *           
+ *  @param[in]  Pst            *pst
+ *  @param[in]  SlotTimingInfo    *slotInd
+ *  @return  S16
+ *      -# ROK 
+ *      -# RFAILED 
+ **/
+uint8_t MacSchSlotInd(Pst *pst, SlotTimingInfo *slotInd)
+{
+   Inst  inst = pst->dstInst-SCH_INST_START;
+
+#ifdef CALL_FLOW_DEBUG_LOG
+   DU_LOG("\nCall Flow: ENTMAC -> ENTSCH : EVENT_SLOT_IND_TO_SCH\n");
+#endif
+
+   schProcessSlotInd(slotInd, inst);
+
+   return ROK;
+}  /* MacSchSlotInd */
+
+/*******************************************************************
+ *
+ * @brief Processes Rach indication from MAC 
+ *
+ * @details
+ *
+ *    Function : MacSchRachInd
+ *
+ *    Functionality:
+ *      Processes Rach indication from MAC
+ *
+ * @params[in] 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t MacSchRachInd(Pst *pst, RachIndInfo *rachInd)
+{
+   Inst  inst = pst->dstInst-SCH_INST_START;
+
+#ifdef CALL_FLOW_DEBUG_LOG
+   DU_LOG("\nCall Flow: ENTMAC -> ENTSCH : EVENT_RACH_IND_TO_SCH\n");
+#endif
+
+   DU_LOG("\nINFO  -->  SCH : Received Rach indication");
+   schProcessRachInd(rachInd, inst);
+   return ROK;
+}
+
+/*******************************************************************
+ *
+ * @brief Processes CRC indication from MAC 
+ *
+ * @details
+ *
+ *    Function : MacSchCrcInd
+ *
+ *    Functionality:
+ *      Processes CRC indication from MAC
+ *
+ * @params[in] Post structure
+ *             Crc Indication
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t MacSchCrcInd(Pst *pst, CrcIndInfo *crcInd)
+{
+   Inst  inst = pst->dstInst-SCH_INST_START;
+#ifdef CALL_FLOW_DEBUG_LOG
+   DU_LOG("\nCall Flow: ENTMAC -> ENTSCH : EVENT_CRC_IND_TO_SCH\n");
+#endif
+
+   schProcessCrcInd(crcInd, inst);
+   return ROK;
+}
 
 #ifdef NR_TDD
 /**
@@ -319,7 +411,6 @@ uint16_t schGetPeriodicityInMsec(DlUlTxPeriodicity tddPeriod)
    return periodicityInMsec;
 }
 
-
 /**
  * @brief init TDD slot config 
  *
@@ -341,34 +432,49 @@ void schInitTddSlotCfg(SchCellCb *cell, SchCellCfg *schCellCfg)
    periodicityInMicroSec = schGetPeriodicityInMsec(schCellCfg->tddCfg.tddPeriod);
    cell->numSlotsInPeriodicity = (periodicityInMicroSec * pow(2, schCellCfg->numerology))/1000;
    cell->slotFrmtBitMap = 0;
-   for(slotIdx = cell->numSlotsInPeriodicity-1; slotIdx >= 0; slotIdx--)
+   cell->symbFrmtBitMap = 0;
+
+   /*If there are FULL UL slots configured.*/
+   for(slotIdx = (cell->numSlotsInPeriodicity-1); \
+         slotIdx >= (cell->numSlotsInPeriodicity - schCellCfg->tddCfg.nrOfUlSlot); slotIdx--) 
    {
-      symbIdx = 0;
-      /* If the first and last symbol are the same, the entire slot is the same type */
-      if((cell->slotCfg[slotIdx][symbIdx] == cell->slotCfg[slotIdx][MAX_SYMB_PER_SLOT-1]) &&
-              cell->slotCfg[slotIdx][symbIdx] != FLEXI_SLOT)
-      {
-         switch(cell->slotCfg[slotIdx][symbIdx])
-         {
-            case DL_SLOT:
-            {
-               /*BitMap to be set to 00 */
-               cell->slotFrmtBitMap = (cell->slotFrmtBitMap<<2);
-               break;
-            }
-            case UL_SLOT:
-            {
-               /*BitMap to be set to 01 */
-               cell->slotFrmtBitMap = ((cell->slotFrmtBitMap<<2) | (UL_SLOT));
-               break;
-            }
-            default:
-               DU_LOG("\nERROR  -->  SCH : Invalid slot Config in schInitTddSlotCfg");
-           }
-         continue;
-      }
+      /*BitMap to be set to 01 */
+      cell->slotFrmtBitMap = ((cell->slotFrmtBitMap<<2) | (UL_SLOT));
+   }
+
+   /*If there are FLEXI slots*/
+   for(slotIdx = ((cell->numSlotsInPeriodicity-schCellCfg->tddCfg.nrOfUlSlot) -1);\
+         slotIdx >= (schCellCfg->tddCfg.nrOfDlSlot); slotIdx--)
+   {
       /* slot config is flexible. First set slotBitMap to 10 */
       cell->slotFrmtBitMap = ((cell->slotFrmtBitMap<<2) | (FLEXI_SLOT));
+
+      /* Now set symbol bitmap */ 
+      for(symbIdx = MAX_SYMB_PER_SLOT-1;  \
+            symbIdx >= (MAX_SYMB_PER_SLOT - macCfgParams.tddCfg.nrOfUlSymbols); symbIdx--)
+      {
+         /*symbol BitMap to be set to 01 */
+         cell->symbFrmtBitMap = ((cell->symbFrmtBitMap<<2) | (UL_SLOT));
+      }
+      for(symbIdx = ((MAX_SYMB_PER_SLOT - macCfgParams.tddCfg.nrOfUlSymbols)-1);  \
+            symbIdx >=  macCfgParams.tddCfg.nrOfDlSymbols; symbIdx--)
+      {
+         /*symbol BitMap to be set to 10 */
+         cell->symbFrmtBitMap = ((cell->symbFrmtBitMap<<2) | (FLEXI_SLOT));
+
+      }
+      for(symbIdx =(macCfgParams.tddCfg.nrOfDlSymbols-1); symbIdx >= 0; symbIdx--)
+      {
+         /*symbol BitMap to be set to 00 */
+         cell->symbFrmtBitMap = (cell->symbFrmtBitMap<<2);
+      }
+   }
+   
+   /*If there are FULL DL slots configured.*/
+   for(slotIdx =(schCellCfg->tddCfg.nrOfDlSlot - 1); slotIdx >=0 ;slotIdx--)
+   {
+      /*BitMap to be set to 00 */
+      cell->slotFrmtBitMap = (cell->slotFrmtBitMap<<2);
    }
 }
 #endif
@@ -390,9 +496,8 @@ void schInitTddSlotCfg(SchCellCb *cell, SchCellCfg *schCellCfg)
 void fillSsbStartSymb(SchCellCb *cellCb)
 {
    uint8_t cnt, scs, symbIdx, ssbStartSymbArr[SCH_MAX_SSB_BEAM];
-   uint32_t dlfreq=300000;//calculation based on incoming values to be done
 
-   scs = cellCb->cellCfg.scsCommon;
+   scs = cellCb->cellCfg.ssbSchCfg.scsCommon;
 
    memset(ssbStartSymbArr, 0, sizeof(SCH_MAX_SSB_BEAM));
    symbIdx = 0;
@@ -401,7 +506,7 @@ void fillSsbStartSymb(SchCellCb *cellCb)
    {
       case SCS_15KHZ:
 	 {
-            if(dlFreq <= 300000)
+            if(cellCb->cellCfg.dlFreq <= 300000)
 	       cnt = 2;/* n = 0, 1 */
             else
                cnt = 4; /* n = 0, 1, 2, 3 */
@@ -415,7 +520,7 @@ void fillSsbStartSymb(SchCellCb *cellCb)
 	 break;
       case SCS_30KHZ:
 	 {
-            if(dlFreq <= 300000)
+            if(cellCb->cellCfg.dlFreq <= 300000)
 	       cnt = 1;/* n = 0 */
             else
                cnt = 2; /* n = 0, 1 */
@@ -544,6 +649,7 @@ uint8_t schInitCellCb(Inst inst, SchCellCfg *schCellCfg)
    cell->firstSsbTransmitted = false;
    cell->firstSib1Transmitted = false;
    fillSsbStartSymb(cell);
+   cmLListInit(&cell->ueToBeScheduled);
 
 #ifdef NR_DRX
    memset(cell->drxCb, 0, MAX_DRX_SIZE*sizeof(SchDrxCb));
@@ -571,8 +677,7 @@ uint8_t schInitCellCb(Inst inst, SchCellCfg *schCellCfg)
  *              uint8_t offsetPointA : offset
  *  @return  void
  **/
-void fillSchSib1Cfg(uint8_t mu, uint8_t bandwidth, uint8_t numSlots,SchPdcchConfigSib1 *pdcchCfgSib1,\
-               SchSib1Cfg *sib1SchCfg, uint16_t pci, uint8_t offsetPointA, uint16_t sib1PduLen)
+void fillSchSib1Cfg(uint8_t mu, uint8_t bandwidth, uint8_t numSlots, SchSib1Cfg *sib1SchCfg, uint16_t pci, uint8_t offsetPointA)
 {
    uint8_t coreset0Idx = 0;
    uint8_t searchSpace0Idx = 0;
@@ -588,15 +693,13 @@ void fillSchSib1Cfg(uint8_t mu, uint8_t bandwidth, uint8_t numSlots,SchPdcchConf
    uint8_t FreqDomainResource[FREQ_DOM_RSRC_SIZE] = {0};
    uint16_t tbSize = 0;
    uint8_t ssbIdx = 0;
-   PdcchCfg *pdcch;
-   PdschCfg *pdsch;
-   BwpCfg *bwp;
 
-   pdcch = &(sib1SchCfg->sib1PdcchCfg);
-   bwp = &(sib1SchCfg->bwp);
+   PdcchCfg *pdcch = &(sib1SchCfg->sib1PdcchCfg);
+   PdschCfg *pdsch = &(sib1SchCfg->sib1PdschCfg);
+   BwpCfg *bwp = &(sib1SchCfg->bwp);
 
-   coreset0Idx     = pdcchCfgSib1->coresetZeroIndex;
-   searchSpace0Idx = pdcchCfgSib1->searchSpaceZeroIndex;
+   coreset0Idx     = sib1SchCfg->coresetZeroIndex;
+   searchSpace0Idx = sib1SchCfg->searchSpaceZeroIndex;
 
    /* derive the sib1 coreset0 params from table 13-1 spec 38.213 */
    //ssbMuxPattern = coresetIdxTable[coreset0Idx][0];
@@ -665,17 +768,11 @@ void fillSchSib1Cfg(uint8_t mu, uint8_t bandwidth, uint8_t numSlots,SchPdcchConf
    pdcch->dci.beamPdcchInfo.digBfInterfaces = 0;
    pdcch->dci.beamPdcchInfo.prg[0].pmIdx = 0;
    pdcch->dci.beamPdcchInfo.prg[0].beamIdx[0] = 0;
-   pdcch->dci.txPdcchPower.beta_pdcch_1_0= 0;
+   pdcch->dci.txPdcchPower.powerValue = 0;
    pdcch->dci.txPdcchPower.powerControlOffsetSS = 0;
    /* Storing pdschCfg pointer here. Required to access pdsch config while
       fillig up pdcch pdu */
-   SCH_ALLOC(pdcch->dci.pdschCfg, sizeof(PdschCfg));
-   if(pdcch->dci.pdschCfg == NULLP)
-   {
-      DU_LOG("\nERROR  -->  SCH : Memory allocation failed in %s ", __func__);
-      return RFAILED;
-   }
-   pdsch = pdcch->dci.pdschCfg; 
+   pdcch->dci.pdschCfg = pdsch; 
 
    /* fill the PDSCH PDU */
    uint8_t cwCount = 0;
@@ -687,10 +784,10 @@ void fillSchSib1Cfg(uint8_t mu, uint8_t bandwidth, uint8_t numSlots,SchPdcchConf
    {
       pdsch->codeword[cwCount].targetCodeRate = 308;
       pdsch->codeword[cwCount].qamModOrder = 2;
-      pdsch->codeword[cwCount].mcsIndex = DEFAULT_MCS;
+      pdsch->codeword[cwCount].mcsIndex = sib1SchCfg->sib1Mcs;
       pdsch->codeword[cwCount].mcsTable = 0; /* notqam256 */
       pdsch->codeword[cwCount].rvIndex = 0;
-      tbSize = schCalcTbSize(sib1PduLen + TX_PAYLOAD_HDR_LEN);
+      tbSize = schCalcTbSize(sib1SchCfg->sib1PduLen + TX_PAYLOAD_HDR_LEN);
       pdsch->codeword[cwCount].tbSize = tbSize;
    }
    pdsch->dataScramblingId                   = pci;
@@ -710,12 +807,12 @@ void fillSchSib1Cfg(uint8_t mu, uint8_t bandwidth, uint8_t numSlots,SchPdcchConf
    pdsch->pdschFreqAlloc.resourceAllocType   = 1; /* RAT type-1 RIV format */
    /* the RB numbering starts from coreset0, and PDSCH is always above SSB */
    pdsch->pdschFreqAlloc.freqAlloc.startPrb  = offsetPointA + SCH_SSB_NUM_PRB;
-   pdsch->pdschFreqAlloc.freqAlloc.numPrb    = schCalcNumPrb(tbSize, DEFAULT_MCS, NUM_PDSCH_SYMBOL);
+   pdsch->pdschFreqAlloc.freqAlloc.numPrb    = schCalcNumPrb(tbSize,sib1SchCfg->sib1Mcs, NUM_PDSCH_SYMBOL);
    pdsch->pdschFreqAlloc.vrbPrbMapping       = 0; /* non-interleaved */
    pdsch->pdschTimeAlloc.rowIndex            = 1;
    /* This is Intel's requirement. PDSCH should start after PDSCH DRMS symbol */
-   pdsch->pdschTimeAlloc.startSymb = 3; /* spec-38.214, Table 5.1.2.1-1 */
-   pdsch->pdschTimeAlloc.numSymb   = NUM_PDSCH_SYMBOL;
+   pdsch->pdschTimeAlloc.timeAlloc.startSymb = 3; /* spec-38.214, Table 5.1.2.1-1 */
+   pdsch->pdschTimeAlloc.timeAlloc.numSymb   = NUM_PDSCH_SYMBOL;
    pdsch->beamPdschInfo.numPrgs              = 1;
    pdsch->beamPdschInfo.prgSize              = 1;
    pdsch->beamPdschInfo.digBfInterfaces      = 0;
@@ -724,7 +821,6 @@ void fillSchSib1Cfg(uint8_t mu, uint8_t bandwidth, uint8_t numSlots,SchPdcchConf
    pdsch->txPdschPower.powerControlOffset    = 0;
    pdsch->txPdschPower.powerControlOffsetSS  = 0;
 
-   return ROK;
 }
 
 /**
@@ -742,7 +838,7 @@ void fillSchSib1Cfg(uint8_t mu, uint8_t bandwidth, uint8_t numSlots,SchPdcchConf
  *      -# ROK 
  *      -# RFAILED 
  **/
-uint8_t SchProcCellCfgReq(Pst *pst, SchCellCfg *schCellCfg)
+uint8_t SchHdlCellCfgReq(Pst *pst, SchCellCfg *schCellCfg)
 {
    uint8_t ret = ROK;
    SchCellCb *cellCb;
@@ -755,20 +851,20 @@ uint8_t SchProcCellCfgReq(Pst *pst, SchCellCfg *schCellCfg)
    uint8_t freqDomainResource[FREQ_DOM_RSRC_SIZE] = {0};
    SchPdschConfig pdschCfg;
 
+#ifdef CALL_FLOW_DEBUG_LOG
+   DU_LOG("\nCall Flow: ENTMAC -> ENTSCH : EVENT_SCH_CELL_CFG\n");
+#endif 
+
    schInitCellCb(inst, schCellCfg);
    cellCb = schCb[inst].cells[inst]; //cells is of MAX_CELLS, why inst
    cellCb->macInst = pst->srcInst;
 
    /* derive the SIB1 config parameters */
-   fillSchSib1Cfg(schCellCfg->numerology, schCellCfg->dlBandwidth, cellCb->numSlots,
-	 &(schCellCfg->pdcchCfgSib1), &(cellCb->sib1SchCfg), schCellCfg->phyCellId,
-	 schCellCfg->dlCfgCommon.schFreqInfoUlSib.offsetToPointA, schCellCfg->sib1PduLen);
+   fillSchSib1Cfg(schCellCfg->numerology, schCellCfg->bandwidth, cellCb->numSlots,
+	 &(schCellCfg->sib1SchCfg), schCellCfg->phyCellId,
+	 schCellCfg->ssbSchCfg.ssbOffsetPointA);
    
-   if(ret != ROK)
-   {
-      DU_LOG("\nERROR --> SCH : Failed to fill sib1 configuration");
-      return RFAILED;
-   }
+   
    memcpy(&cellCb->cellCfg, schCellCfg, sizeof(SchCellCfg));
    schProcPagingCfg(cellCb);
 
@@ -776,42 +872,26 @@ uint8_t SchProcCellCfgReq(Pst *pst, SchCellCfg *schCellCfg)
    coreset0Idx = cellCb->cellCfg.schInitialDlBwp.pdcchCommon.commonSearchSpace.coresetId;
    numRbs = coresetIdxTable[coreset0Idx][1];
    offset = coresetIdxTable[coreset0Idx][3];
-   fillCoresetFeqDomAllocMap(((cellCb->cellCfg.dlCfgCommon.schFreqInfoUlSib.offsetToPointA - offset)/6), \
-                                  (numRbs/6), freqDomainResource);
+   fillCoresetFeqDomAllocMap(((cellCb->cellCfg.ssbSchCfg.ssbOffsetPointA - offset)/6), (numRbs/6), freqDomainResource);
    covertFreqDomRsrcMapToIAPIFormat(freqDomainResource, \
-      cellCb->cellCfg.dlCfgCommon.schInitialDlBwp.pdcchCommon.commonSearchSpace.freqDomainRsrc);
+      cellCb->cellCfg.schInitialDlBwp.pdcchCommon.commonSearchSpace.freqDomainRsrc);
 
    /* Fill K0 - K1 table for common cfg*/ 
-   BuildK0K1Table(cellCb, &cellCb->k0K1InfoTbl, true, cellCb->cellCfg.dlCfgCommon.schInitialDlBwp.pdschCommon,
-                   pdschCfg, DEFAULT_UL_ACK_LIST_COUNT, defaultUlAckTbl);
+   BuildK0K1Table(cellCb, &cellCb->cellCfg.schInitialDlBwp.k0K1InfoTbl, true, cellCb->cellCfg.schInitialDlBwp.pdschCommon,
+   pdschCfg, DEFAULT_UL_ACK_LIST_COUNT, defaultUlAckTbl);
    
-   BuildK2InfoTable(cellCb, cellCb->cellCfg.ulCfgCommon.schInitialUlBwp.puschCommon.timeDomRsrcAllocList,\
-   cellCb->cellCfg.ulCfgCommon.schInitialUlBwp.puschCommon.numTimeDomRsrcAlloc, &cellCb->cellCfg.ulCfgCommon.schInitialUlBwp.msg3K2InfoTbl, \
+   BuildK2InfoTable(cellCb, cellCb->cellCfg.schInitialUlBwp.puschCommon.timeDomRsrcAllocList,\
+   cellCb->cellCfg.schInitialUlBwp.puschCommon.numTimeDomRsrcAlloc, &cellCb->cellCfg.schInitialUlBwp.msg3K2InfoTbl, \
    &cellCb->cellCfg.schInitialUlBwp.k2InfoTbl);
-   
-   /*As per Spec 38.211, Sec 6.3.3.2; RootSeq Len(Lra) where Lra=839 or Lra=139,
-    *depending on the PRACH preamble format as given by Tables 6.3.3.1-1 and 6.3.3.1-2.*/
-   if(prachCfgIdxTable[cell->cellCfg.ulCfgCommon.schRachCfg.prachCfgIdx][0] <= 3)
-   {
-      cellCb->cellCfg.ulCfgCommon.schRachCfg.rootSeqLen = ROOT_SEQ_LEN_1;
-   }
-   else
-   {
-      cellCb->cellCfg.ulCfgCommon.schRachCfg.rootSeqLen = ROOT_SEQ_LEN_2;
-   }
    /* Initializing global variables */
    cellCb->actvUeBitMap = 0;
    cellCb->boIndBitMap = 0;
 
-   cellCb->schHqCfg.maxDlDataHqTx = SCH_MAX_NUM_DL_HQ_TX;
-   cellCb->schHqCfg.maxMsg4HqTx = SCH_MAX_NUM_MSG4_TX;
-   cellCb->schHqCfg.maxUlDataHqTx = SCH_MAX_NUM_UL_HQ_TX;
-   cellCb->maxMsg3Tx = SCH_MAX_NUM_MSG3_TX;
+   cellCb->cellCfg.schHqCfg.maxDlDataHqTx = SCH_MAX_NUM_DL_HQ_TX;
+   cellCb->cellCfg.schHqCfg.maxMsg4HqTx = SCH_MAX_NUM_MSG4_TX;
+   cellCb->cellCfg.schHqCfg.maxUlDataHqTx = SCH_MAX_NUM_UL_HQ_TX;
+   cellCb->cellCfg.schRachCfg.maxMsg3Tx = SCH_MAX_NUM_MSG3_TX;
 
-   cellCb->schAlgoType = SCH_FCFS;
-   cellCb->api = &schCb[inst].allApis[cellCb->schAlgoType]; /* For FCFS */
-   cellCb->api->SchCellCfgReq(cellCb);
-   
    /* Fill and send Cell config confirm */
    memset(&rspPst, 0, sizeof(Pst));
    FILL_PST_SCH_TO_MAC(rspPst, pst->dstInst);
@@ -820,200 +900,9 @@ uint8_t SchProcCellCfgReq(Pst *pst, SchCellCfg *schCellCfg)
    schCellCfgCfm.cellId = schCellCfg->cellId; 
    schCellCfgCfm.rsp = RSP_OK;
 
-   ret = MacMessageRouter(&rspPst, (void *)&schCellCfgCfm);
+   ret = (*SchCellCfgCfmOpts[rspPst.selector])(&rspPst, &schCellCfgCfm);
    return ret;
 
-}
-
-/*******************************************************************
- *
- * @brief Fill and send Cell delete response to MAC
- *
- * @details
- *
- *    Function :  SchSendCellDeleteRspToMac
- *
- *    Functionality: Fill and send Cell delete response to MAC
- *
- * @params[in] SchCellDelete  *ueDelete, Inst inst, SchMacRsp result
- * @return ROK     - success
- *         RFAILED - failure
- *
- * ****************************************************************/
-uint8_t SchSendCellDeleteRspToMac(SchCellDeleteReq  *ueDelete, Inst inst, SchMacRsp result)
-{
-   Pst rspPst;
-   uint8_t ret=0;
-   
-   SchCellDeleteRsp  delRsp;
-
-   DU_LOG("\nINFO   --> SCH : Filling Cell Delete response");
-   memset(&delRsp, 0, sizeof(SchCellDeleteRsp));
-   delRsp.cellId = ueDelete->cellId;
-   delRsp.rsp = result;
-
-   /* Filling response post */
-   memset(&rspPst, 0, sizeof(Pst));
-   FILL_PST_SCH_TO_MAC(rspPst, inst);
-   rspPst.event = EVENT_CELL_DELETE_RSP_TO_MAC;
-   ret = MacMessageRouter(&rspPst, (void *)&delRsp);
-   if(ret == RFAILED)
-   {
-      DU_LOG("\nERROR  -->  SCH : SchSendCellDeleteRspToMac(): failed to send the Cell Delete response");
-      return ret;
-   }
-   return ret;
-}
-
-/*******************************************************************
- *
- * @brief Function for cellCb Deletion 
- *
- * @details
- *
- *    Function : deleteSchCellCb 
- *
- *    Functionality: Function for cellCb Deletion 
- *
- * @params[in] SchCellDelete  *cellDelete
- * @return ROK     - success
- *         RFAILED - failure
- *
- * ****************************************************************/
-void deleteSchCellCb(SchCellCb *cellCb)
-{
-   uint8_t sliceIdx=0, slotIdx=0;
-   CmLListCp *list=NULL;
-   CmLList *node=NULL, *next=NULL;
-   SchPageInfo *tempNode = NULLP;
-
-   if(cellCb->schDlSlotInfo)
-   {
-      for(slotIdx=0; slotIdx<cellCb->numSlots; slotIdx++)
-      {
-         list = &cellCb->schDlSlotInfo[slotIdx]->prbAlloc.freePrbBlockList;
-         node = list->first;
-         while(node)
-         {
-            next = node->next;
-            SCH_FREE(node->node, sizeof(FreePrbBlock));
-            deleteNodeFromLList(list, node);
-            node = next;
-         }
-         SCH_FREE(cellCb->schDlSlotInfo[slotIdx], sizeof(SchDlSlotInfo));
-      }
-      SCH_FREE(cellCb->schDlSlotInfo, cellCb->numSlots *sizeof(SchDlSlotInfo*));
-   }
-
-   if(cellCb->schUlSlotInfo)
-   {
-      for(slotIdx=0; slotIdx<cellCb->numSlots; slotIdx++)
-      {
-         list = &cellCb->schUlSlotInfo[slotIdx]->prbAlloc.freePrbBlockList;
-         node = list->first;
-         while(node)
-         {
-            next = node->next;
-            SCH_FREE(node->node, sizeof(FreePrbBlock));
-            deleteNodeFromLList(list, node);
-            node = next;
-         }
-         SCH_FREE(cellCb->schUlSlotInfo[slotIdx], sizeof(SchUlSlotInfo));  
-      }
-      SCH_FREE(cellCb->schUlSlotInfo,  cellCb->numSlots * sizeof(SchUlSlotInfo*));
-   }
-
-   if(cellCb->cellCfg.plmnInfoList.snssai)
-   {
-      for(sliceIdx=0; sliceIdx<cellCb->cellCfg.plmnInfoList.numSliceSupport; sliceIdx++)
-      {
-         SCH_FREE(cellCb->cellCfg.plmnInfoList.snssai[sliceIdx], sizeof(Snssai));
-      }
-      SCH_FREE(cellCb->cellCfg.plmnInfoList.snssai, cellCb->cellCfg.plmnInfoList.numSliceSupport*sizeof(Snssai*));
-   }
-   
-   SCH_FREE(cellCb->cellCfg.sib1SchCfg.sib1PdcchCfg.dci.pdschCfg, sizeof(PdschCfg));
-
-   for(uint16_t idx =0; idx<MAX_SFN; idx++)
-   {
-      list = &cellCb->pageCb.pageIndInfoRecord[idx];
-      node = list->first;
-      while(node)
-      {
-         next = node->next;
-         if(node->node)
-         {
-            tempNode = (SchPageInfo*)(node->node);
-            SCH_FREE(tempNode->pagePdu, tempNode->msgLen);
-            SCH_FREE(node->node,  sizeof(SchPageInfo));
-         }
-         deleteNodeFromLList(list, node);
-         node = next;
-      }
-   }
-
-   cellCb->api->SchCellDeleteReq(cellCb);
-
-   memset(cellCb, 0, sizeof(SchCellCb));
-}
-
-/*******************************************************************
- *
- * @brief Function for cell Delete request from MAC to SCH
- *
- * @details
- *
- *    Function : SchProcCellDeleteReq
- *
- *    Functionality: Function for cell Delete request from MAC to SCH
- *
- * @params[in] Pst *pst, SchCellDelete  *cellDelete
- * @return ROK     - success
- *         RFAILED - failure
- *
- * ****************************************************************/
-uint8_t SchProcCellDeleteReq(Pst *pst, SchCellDeleteReq  *cellDelete)
-{
-   uint8_t   cellIdx=0, ret = RFAILED;
-   Inst      inst = pst->dstInst - SCH_INST_START;
-   SchMacRsp result= RSP_OK;
-   
-   if(!cellDelete)
-   {
-      DU_LOG("\nERROR  -->  SCH : SchProcCellDeleteReq(): Ue Delete request failed");
-   }
-   else
-   {
-      GET_CELL_IDX(cellDelete->cellId, cellIdx);
-      if(schCb[inst].cells[cellIdx] == NULLP)
-      { 
-         DU_LOG("\nERROR  -->  SCH : SchProcCellDeleteReq(): cell Id[%d] is not available", cellDelete->cellId);
-         result = RSP_NOK;
-      }
-      else
-      {
-         if(schCb[inst].cells[cellIdx]->cellId == cellDelete->cellId)
-         {
-            deleteSchCellCb(schCb[inst].cells[cellIdx]);
-            result = RSP_OK;
-            ret = ROK;
-            SCH_FREE(schCb[inst].cells[cellIdx], sizeof(SchCellCb));
-            DU_LOG("\nINFO   -->  SCH : Sending Cell Delete response to MAC");
-         }
-         else
-         {
-            DU_LOG("\nERROR  -->  SCH : SchProcCellDeleteReq(): cell Id[%d] is not available",cellDelete->cellId);
-            result = RSP_NOK;
-         }
-      }
-
-      if(SchSendCellDeleteRspToMac(cellDelete, inst, result)!=ROK)
-      {
-         DU_LOG("\nERROR  -->  SCH : SchProcCellDeleteReq(): failed to send Cell Delete response");
-         ret =  RFAILED;
-      }
-   }
-   return ret;   
 }
 
 /*******************************************************************
@@ -1022,7 +911,7 @@ uint8_t SchProcCellDeleteReq(Pst *pst, SchCellDeleteReq  *cellDelete)
  *
  * @details
  *
- *    Function : SchProcDlRlcBoInfo
+ *    Function : MacSchDlRlcBoInfo
  *
  *    Functionality:
  *       Processes DL RLC BO info from MAC
@@ -1032,7 +921,7 @@ uint8_t SchProcCellDeleteReq(Pst *pst, SchCellDeleteReq  *cellDelete)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t SchProcDlRlcBoInfo(Pst *pst, DlRlcBoInfo *dlBoInfo)
+uint8_t MacSchDlRlcBoInfo(Pst *pst, DlRlcBoInfo *dlBoInfo)
 {
    uint8_t  lcId = 0;
    uint16_t ueId = 0;
@@ -1041,12 +930,15 @@ uint8_t SchProcDlRlcBoInfo(Pst *pst, DlRlcBoInfo *dlBoInfo)
    SchCellCb *cell = NULLP;
    Inst  inst = pst->dstInst-SCH_INST_START;   
 
+#ifdef CALL_FLOW_DEBUG_LOG
+   DU_LOG("\nCall Flow: ENTMAC -> ENTSCH : EVENT_DL_RLC_BO_INFO_TO_SCH\n");
+#endif   
    DU_LOG("\nDEBUG  -->  SCH : Received RLC BO Status indication LCId [%d] BO [%d]", dlBoInfo->lcId, dlBoInfo->dataVolume);
    cell = schCb[inst].cells[inst];
 
    if(cell == NULLP)
    {
-      DU_LOG("\nERROR  -->  SCH : SchProcDlRlcBoInfo(): Cell does not exists");
+      DU_LOG("\nERROR  -->  SCH : MacSchDlRlcBoInfo(): Cell does not exists");
       return RFAILED;
    }
 
@@ -1097,7 +989,7 @@ uint8_t SchProcDlRlcBoInfo(Pst *pst, DlRlcBoInfo *dlBoInfo)
       }
    }
    /* Adding UE Id to list of pending UEs to be scheduled */
-   cell->api->SchDlRlcBoInfo(cell, ueId);
+   addUeToBeScheduled(cell, ueId);
    return ROK;
 }
 
@@ -1107,7 +999,7 @@ uint8_t SchProcDlRlcBoInfo(Pst *pst, DlRlcBoInfo *dlBoInfo)
  *
  * @details
  *
- *    Function : SchProcBsr
+ *    Function : MacSchBsr
  *
  *    Functionality:
  *       Processes DL BSR from MAC
@@ -1118,12 +1010,16 @@ uint8_t SchProcDlRlcBoInfo(Pst *pst, DlRlcBoInfo *dlBoInfo)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t SchProcBsr(Pst *pst, UlBufferStatusRptInd *bsrInd)
+uint8_t MacSchBsr(Pst *pst, UlBufferStatusRptInd *bsrInd)
 {
    Inst           schInst       = pst->dstInst-SCH_INST_START;
    SchCellCb      *cellCb       = NULLP;
    SchUeCb        *ueCb         = NULLP;
    uint8_t        lcgIdx = 0;
+
+#ifdef CALL_FLOW_DEBUG_LOG
+   DU_LOG("\nCall Flow: ENTMAC -> ENTSCH : EVENT_SHORT_BSR\n");
+#endif
 
    DU_LOG("\nDEBUG  -->  SCH : Received BSR");
    if(bsrInd == NULLP)
@@ -1160,7 +1056,7 @@ uint8_t SchProcBsr(Pst *pst, UlBufferStatusRptInd *bsrInd)
    }
    
    /* Adding UE Id to list of pending UEs to be scheduled */
-   cellCb->api->SchBsr(cellCb, ueCb->ueId);
+   addUeToBeScheduled(cellCb, ueCb->ueId);
    return ROK;
 }
 
@@ -1170,7 +1066,7 @@ uint8_t SchProcBsr(Pst *pst, UlBufferStatusRptInd *bsrInd)
  *
  * @details
  *
- *    Function : SchProcSrUciInd
+ *    Function : MacSchSrUciInd
  *
  *    Functionality:
  *      Processes SR UCI indication from MAC
@@ -1181,12 +1077,16 @@ uint8_t SchProcBsr(Pst *pst, UlBufferStatusRptInd *bsrInd)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t SchProcSrUciInd(Pst *pst, SrUciIndInfo *uciInd)
+uint8_t MacSchSrUciInd(Pst *pst, SrUciIndInfo *uciInd)
 {
    Inst  inst = pst->dstInst-SCH_INST_START;
 
    SchUeCb   *ueCb; 
    SchCellCb *cellCb = schCb[inst].cells[inst];
+
+#ifdef CALL_FLOW_DEBUG_LOG
+   DU_LOG("\nCall Flow: ENTMAC -> ENTSCH : EVENT_UCI_IND_TO_SCH\n");
+#endif
 
    DU_LOG("\nDEBUG  -->  SCH : Received SR");
 
@@ -1206,7 +1106,7 @@ uint8_t SchProcSrUciInd(Pst *pst, SrUciIndInfo *uciInd)
    {
       ueCb->srRcvd = true;      
       /* Adding UE Id to list of pending UEs to be scheduled */
-      cellCb->api->SchSrUciInd(cellCb, ueCb->ueId);
+      addUeToBeScheduled(cellCb, ueCb->ueId);
    }
    return ROK;
 }
@@ -1217,7 +1117,7 @@ uint8_t SchProcSrUciInd(Pst *pst, SrUciIndInfo *uciInd)
  *
  * @details
  *
- *    Function : SchProcDlHarqInd
+ *    Function : MacSchDlHarqInd
  *
  *    Functionality:
  *      Processes DL HARQ indication from MAC
@@ -1228,11 +1128,15 @@ uint8_t SchProcSrUciInd(Pst *pst, SrUciIndInfo *uciInd)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t SchProcDlHarqInd(Pst *pst, DlHarqInd *dlHarqInd)
+uint8_t MacSchDlHarqInd(Pst *pst, DlHarqInd *dlHarqInd)
 {
    Inst  inst = pst->dstInst-SCH_INST_START;
    SchUeCb   *ueCb;
    SchCellCb *cellCb = schCb[inst].cells[inst];
+
+#ifdef CALL_FLOW_DEBUG_LOG
+   DU_LOG("\nCall Flow: ENTMAC -> ENTSCH : EVENT_DL_HARQ_IND_TO_SCH\n");
+#endif
 
    DU_LOG("\nDEBUG  -->  SCH : Received HARQ");
 
@@ -1292,18 +1196,18 @@ uint8_t allocatePrbDl(SchCellCb *cell, SlotTimingInfo slotTime, \
 
       if(ssbOccasion && sib1Occasion)
       {
-         broadcastPrbStart = cell->cellCfg.dlCfgCommon.schFreqInfoUlSib.offsetToPointA; 
-         broadcastPrbEnd = broadcastPrbStart + SCH_SSB_NUM_PRB + cell->cellCfg.sib1SchCfg.sib1PdcchCfg.dci.pdschCfg->pdschFreqAlloc.numPrb -1;
+         broadcastPrbStart = cell->cellCfg.ssbSchCfg.ssbOffsetPointA; 
+         broadcastPrbEnd = broadcastPrbStart + SCH_SSB_NUM_PRB + cell->cellCfg.sib1SchCfg.sib1PdschCfg.pdschFreqAlloc.freqAlloc.numPrb -1;
       }
       else if(ssbOccasion)
       {
-         broadcastPrbStart = cell->cellCfg.dlCfgCommon.schFreqInfoUlSib.offsetToPointA;
+         broadcastPrbStart = cell->cellCfg.ssbSchCfg.ssbOffsetPointA;
          broadcastPrbEnd = broadcastPrbStart + SCH_SSB_NUM_PRB -1;
       }
       else if(sib1Occasion)
       {
-         broadcastPrbStart = cell->cellCfg.sib1SchCfg.sib1PdcchCfg.dci.pdschCfg->pdschFreqAlloc.startPrb;
-         broadcastPrbEnd = broadcastPrbStart + cell->cellCfg.sib1SchCfg.sib1PdcchCfg.dci.pdschCfg->pdschFreqAlloc.numPrb -1;
+         broadcastPrbStart = cell->cellCfg.sib1SchCfg.sib1PdschCfg.pdschFreqAlloc.freqAlloc.startPrb;
+         broadcastPrbEnd = broadcastPrbStart + cell->cellCfg.sib1SchCfg.sib1PdschCfg.pdschFreqAlloc.freqAlloc.numPrb -1;
       }
 
       /* Iterate through all free PRB blocks */
@@ -1521,6 +1425,58 @@ uint8_t allocatePrbUl(SchCellCb *cell, SlotTimingInfo slotTime, \
    return ROK;
 }
 
+/*******************************************************************
+ *
+ * @brief Add UE to ueToBeScheduled List
+ *
+ * @details
+ *
+ *    Function : addUeToBeScheduled
+ *
+ *    Functionality:
+ *      Search if UE entry present in the list
+ *      If yes, return.
+ *      If no, add UE to the list
+ *
+ * @params[in] Cell control block
+ *             Ue Idx to be added
+ *
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t addUeToBeScheduled(SchCellCb *cell, uint8_t ueIdToAdd)
+{
+   uint8_t *ueId;
+   CmLList *node;
+
+   /* Search if UE entry is already present in ueToBeScheduled list.
+    * If yes, another entry for same UE not needed. Hence, return */
+   node = cell->ueToBeScheduled.first;
+   while(node)
+   {
+      ueId = (uint8_t *)node->node;
+      if(*ueId == ueIdToAdd)
+         return ROK;
+      node = node->next;
+   }
+
+   /* If UE entry not present already, add UE to the end of ueToBeScheduled list */
+   SCH_ALLOC(ueId, sizeof(uint8_t));
+   if(!ueId)
+   {
+      DU_LOG("\nERROR  -->  SCH : Memory allocation failure in addUeToBeScheduled");
+      return RFAILED;
+   }
+   *ueId = ueIdToAdd;
+   if(addNodeToLList(&cell->ueToBeScheduled, ueId, NULLP) != ROK)
+   {
+      DU_LOG("\nERROR  --> SCH : Failed to add ueId [%d] to cell->ueToBeScheduled list", *ueId);
+      return RFAILED;
+   }
+   return ROK;
+}
+ 
 /*******************************************************************************
  *
  * @brief Try to find Best Free Block with Max Num PRB 
@@ -1569,19 +1525,19 @@ uint16_t searchLargestFreeBlock(SchCellCb *cell, SlotTimingInfo slotTime,uint16_
       checkOccasion = TRUE;
       if(ssbOccasion && sib1Occasion)
       {
-         reservedPrbStart = cell->cellCfg.dlCfgCommon.schFreqInfoUlSib.offsetToPointA; 
+         reservedPrbStart = cell->cellCfg.ssbSchCfg.ssbOffsetPointA; 
          reservedPrbEnd = reservedPrbStart + SCH_SSB_NUM_PRB + \
-                          cell->cellCfg.sib1SchCfg.sib1PdcchCfg.dci.pdschCfg->pdschFreqAlloc.numPrb -1;
+                          cell->cellCfg.sib1SchCfg.sib1PdschCfg.pdschFreqAlloc.freqAlloc.numPrb -1;
       }
       else if(ssbOccasion)
       {
-         reservedPrbStart = cell->cellCfg.dlCfgCommon.schFreqInfoUlSib.offsetToPointA;
+         reservedPrbStart = cell->cellCfg.ssbSchCfg.ssbOffsetPointA;
          reservedPrbEnd = reservedPrbStart + SCH_SSB_NUM_PRB -1;
       }
       else if(sib1Occasion)
       {
-         reservedPrbStart = cell->cellCfg.sib1SchCfg.sib1PdcchCfg.dci.pdschCfg->pdschFreqAlloc.startPrb;
-         reservedPrbEnd = reservedPrbStart + cell->cellCfg.sib1SchCfg.sib1PdcchCfg.dci.pdschCfg->pdschFreqAlloc.numPrb -1;
+         reservedPrbStart = cell->cellCfg.sib1SchCfg.sib1PdschCfg.pdschFreqAlloc.freqAlloc.startPrb;
+         reservedPrbEnd = reservedPrbStart + cell->cellCfg.sib1SchCfg.sib1PdschCfg.pdschFreqAlloc.freqAlloc.numPrb -1;
       }
       else
       {
@@ -1681,7 +1637,7 @@ void SchSendSliceCfgRspToMac(Inst inst, SchSliceCfgRsp sliceCfgRsp)
    FILL_PST_SCH_TO_MAC(rspPst, inst);
    rspPst.event = EVENT_SLICE_CFG_RSP_TO_MAC;
    
-   MacMessageRouter(&rspPst, (void *)&sliceCfgRsp);
+   SchSliceCfgRspOpts[rspPst.selector](&rspPst, &sliceCfgRsp);
 
 }
 /*******************************************************************************
@@ -1723,7 +1679,7 @@ uint8_t fillSliceCfgRsp(bool sliceRecfg, SchSliceCfg *storedSliceCfg, SchCellCb 
       {
          for(sliceIdx = 0; sliceIdx<cellCb->cellCfg.plmnInfoList.numSliceSupport; sliceIdx++)
          {
-            if(!memcmp(&schSliceCfgReq->listOfSlices[cfgIdx]->snssai, cellCb->cellCfg.plmnInfoList.snssai[sliceIdx], sizeof(Snssai)))
+            if(!memcmp(&schSliceCfgReq->listOfConfirguration[cfgIdx]->snssai, cellCb->cellCfg.plmnInfoList.snssai[sliceIdx], sizeof(Snssai)))
             {
                (*count)++;
                sliceFound = true;
@@ -1734,11 +1690,11 @@ uint8_t fillSliceCfgRsp(bool sliceRecfg, SchSliceCfg *storedSliceCfg, SchCellCb 
       else
       {
          /* Here comparing the slice cfg request with the slice stored in SchDb */
-         if(storedSliceCfg->listOfSlices)
+         if(storedSliceCfg->listOfConfirguration)
          {
             for(sliceIdx = 0; sliceIdx<storedSliceCfg->numOfSliceConfigured; sliceIdx++)
             {
-               if(!memcmp(&schSliceCfgReq->listOfSlices[cfgIdx]->snssai, &storedSliceCfg->listOfSlices[sliceIdx]->snssai,\
+               if(!memcmp(&schSliceCfgReq->listOfConfirguration[cfgIdx]->snssai, &storedSliceCfg->listOfConfirguration[sliceIdx]->snssai,\
                         sizeof(Snssai)))
                {
                   (*count)++;
@@ -1757,7 +1713,7 @@ uint8_t fillSliceCfgRsp(bool sliceRecfg, SchSliceCfg *storedSliceCfg, SchCellCb 
       }
 
       
-      schSliceCfgRsp->listOfSliceCfgRsp[cfgIdx]->snssai = schSliceCfgReq->listOfSlices[cfgIdx]->snssai;
+      schSliceCfgRsp->listOfSliceCfgRsp[cfgIdx]->snssai = schSliceCfgReq->listOfConfirguration[cfgIdx]->snssai;
       if(sliceFound == true)
          schSliceCfgRsp->listOfSliceCfgRsp[cfgIdx]->rsp    = RSP_OK;
       else
@@ -1795,8 +1751,8 @@ uint8_t addSliceCfgInSchDb(SchSliceCfg *storeSliceCfg, SchSliceCfgReq *cfgReq, S
    if(count)
    {
       storeSliceCfg->numOfSliceConfigured = count;
-      SCH_ALLOC(storeSliceCfg->listOfSlices, storeSliceCfg->numOfSliceConfigured * sizeof(SchRrmPolicyOfSlice*));
-      if(storeSliceCfg->listOfSlices == NULLP)
+      SCH_ALLOC(storeSliceCfg->listOfConfirguration, storeSliceCfg->numOfSliceConfigured * sizeof(SchRrmPolicyOfSlice*));
+      if(storeSliceCfg->listOfConfirguration == NULLP)
       {
          DU_LOG("\nERROR  -->  SCH : Failed to allocate memory in addSliceCfgInSchDb");
          return RFAILED;
@@ -1806,15 +1762,22 @@ uint8_t addSliceCfgInSchDb(SchSliceCfg *storeSliceCfg, SchSliceCfgReq *cfgReq, S
       {
          if(cfgRsp.listOfSliceCfgRsp[cfgIdx]->rsp == RSP_OK)
          {
-            SCH_ALLOC(storeSliceCfg->listOfSlices[sliceIdx], sizeof(SchRrmPolicyOfSlice));
-            if(storeSliceCfg->listOfSlices[sliceIdx] == NULLP)
+            SCH_ALLOC(storeSliceCfg->listOfConfirguration[sliceIdx], sizeof(SchRrmPolicyOfSlice));
+            if(storeSliceCfg->listOfConfirguration[sliceIdx] == NULLP)
             {
                DU_LOG("\nERROR  -->  SCH : Failed to allocate memory in addSliceCfgInSchDb");
                return RFAILED;
             }
 
-            memcpy(&storeSliceCfg->listOfSlices[sliceIdx]->snssai, &cfgReq->listOfSlices[sliceIdx]->snssai, sizeof(Snssai));
-            memcpy(&storeSliceCfg->listOfSlices[sliceIdx]->rrmPolicyRatioInfo, &cfgReq->listOfSlices[sliceIdx]->rrmPolicyRatioInfo,
+            SCH_ALLOC(storeSliceCfg->listOfConfirguration[sliceIdx]->rrmPolicyRatioInfo, sizeof(SchRrmPolicyRatio));
+            if(storeSliceCfg->listOfConfirguration[sliceIdx]->rrmPolicyRatioInfo == NULLP)
+            {
+               DU_LOG("\nERROR  -->  SCH : Failed to allocate memory in addSliceCfgInSchDb");
+               return RFAILED;
+            }
+
+            memcpy(&storeSliceCfg->listOfConfirguration[sliceIdx]->snssai, &cfgReq->listOfConfirguration[sliceIdx]->snssai, sizeof(Snssai));
+            memcpy(storeSliceCfg->listOfConfirguration[sliceIdx]->rrmPolicyRatioInfo, cfgReq->listOfConfirguration[sliceIdx]->rrmPolicyRatioInfo,
                       sizeof(SchRrmPolicyRatio));
             sliceIdx++;
          }
@@ -1850,12 +1813,13 @@ void freeSchSliceCfgReq(SchSliceCfgReq *sliceCfgReq)
       {
          for(cfgIdx = 0; cfgIdx<sliceCfgReq->numOfConfiguredSlice; cfgIdx++)
          {
-            if(sliceCfgReq->listOfSlices[cfgIdx])
+            if(sliceCfgReq->listOfConfirguration[cfgIdx])
             {
-               SCH_FREE(sliceCfgReq->listOfSlices[cfgIdx], sizeof(SchRrmPolicyOfSlice));
+               SCH_FREE(sliceCfgReq->listOfConfirguration[cfgIdx]->rrmPolicyRatioInfo, sizeof(SchRrmPolicyRatio));
+               SCH_FREE(sliceCfgReq->listOfConfirguration[cfgIdx], sizeof(SchRrmPolicyOfSlice));
             }
          }
-         SCH_FREE(sliceCfgReq->listOfSlices, sliceCfgReq->numOfConfiguredSlice * sizeof(SchRrmPolicyOfSlice*));
+         SCH_FREE(sliceCfgReq->listOfConfirguration, sliceCfgReq->numOfConfiguredSlice * sizeof(SchRrmPolicyOfSlice*));
       }
       SCH_FREE(sliceCfgReq, sizeof(SchSliceCfgReq));
    }
@@ -1866,7 +1830,7 @@ void freeSchSliceCfgReq(SchSliceCfgReq *sliceCfgReq)
  *
  * @details
  *
- *    Function : SchProcSliceCfgReq 
+ *    Function : MacSchSliceCfgReq 
  *
  *    Functionality:
  *     function is used to store the slice configuration Sch DB
@@ -1878,7 +1842,7 @@ void freeSchSliceCfgReq(SchSliceCfgReq *sliceCfgReq)
  *        RFAILED - Failure
  *
  * ********************************************************************************/
-uint8_t SchProcSliceCfgReq(Pst *pst, SchSliceCfgReq *schSliceCfgReq)
+uint8_t MacSchSliceCfgReq(Pst *pst, SchSliceCfgReq *schSliceCfgReq)
 {
    uint8_t count = 0;
    Inst   inst = pst->dstInst - SCH_INST_START;
@@ -1887,7 +1851,7 @@ uint8_t SchProcSliceCfgReq(Pst *pst, SchSliceCfgReq *schSliceCfgReq)
    DU_LOG("\nINFO  -->  SCH : Received Slice Cfg request from MAC");
    if(schSliceCfgReq)
    {
-      if(schSliceCfgReq->listOfSlices)
+      if(schSliceCfgReq->listOfConfirguration)
       {
          /* filling the slice configuration response of each slice */
          if(fillSliceCfgRsp(false, NULLP, schCb[inst].cells[0], schSliceCfgReq, &sliceCfgRsp, &count) != ROK)
@@ -1936,7 +1900,7 @@ uint8_t modifySliceCfgInSchDb(SchSliceCfg *storeSliceCfg, SchSliceRecfgReq *recf
 
    if(count)
    {
-      if(storeSliceCfg->listOfSlices == NULLP)
+      if(storeSliceCfg->listOfConfirguration == NULLP)
       {
          DU_LOG("\nINFO  -->  SCH : Memory allocation failed in modifySliceCfgInSchDb");
          return RFAILED;
@@ -1948,9 +1912,9 @@ uint8_t modifySliceCfgInSchDb(SchSliceCfg *storeSliceCfg, SchSliceRecfgReq *recf
          {
             for(sliceIdx = 0; sliceIdx<storeSliceCfg->numOfSliceConfigured; sliceIdx++)
             {
-               if(!memcmp(&storeSliceCfg->listOfSlices[sliceIdx]->snssai, &recfgReq->listOfSlices[cfgIdx]->snssai, sizeof(Snssai)))
+               if(!memcmp(&storeSliceCfg->listOfConfirguration[sliceIdx]->snssai, &recfgReq->listOfConfirguration[cfgIdx]->snssai, sizeof(Snssai)))
                {
-                  memcpy(&storeSliceCfg->listOfSlices[sliceIdx]->rrmPolicyRatioInfo, &recfgReq->listOfSlices[cfgIdx]->rrmPolicyRatioInfo,
+                  memcpy(storeSliceCfg->listOfConfirguration[sliceIdx]->rrmPolicyRatioInfo, recfgReq->listOfConfirguration[cfgIdx]->rrmPolicyRatioInfo,
                            sizeof(SchRrmPolicyRatio));
                   break;
                }
@@ -1985,7 +1949,7 @@ void SchSendSliceRecfgRspToMac(Inst inst, SchSliceRecfgRsp schSliceRecfgRsp)
    FILL_PST_SCH_TO_MAC(rspPst, inst);
    rspPst.event = EVENT_SLICE_RECFG_RSP_TO_MAC;
    
-   MacMessageRouter(&rspPst, (void *)&schSliceRecfgRsp);
+   SchSliceRecfgRspOpts[rspPst.selector](&rspPst, &schSliceRecfgRsp);
 }
 /*******************************************************************************
  *
@@ -1993,7 +1957,7 @@ void SchSendSliceRecfgRspToMac(Inst inst, SchSliceRecfgRsp schSliceRecfgRsp)
  *
  * @details
  *
- *    Function : SchProcSliceRecfgReq 
+ *    Function : MacSchSliceRecfgReq 
  *
  *    Functionality:
  *     function is used to store the slice re configuration Sch DB
@@ -2005,7 +1969,7 @@ void SchSendSliceRecfgRspToMac(Inst inst, SchSliceRecfgRsp schSliceRecfgRsp)
  *        RFAILED - Failure
  *
  * ********************************************************************************/
-uint8_t SchProcSliceRecfgReq(Pst *pst, SchSliceRecfgReq *schSliceRecfgReq)
+uint8_t MacSchSliceRecfgReq(Pst *pst, SchSliceRecfgReq *schSliceRecfgReq)
 {
    uint8_t count = 0;
    Inst   inst = pst->dstInst - SCH_INST_START;
@@ -2014,7 +1978,7 @@ uint8_t SchProcSliceRecfgReq(Pst *pst, SchSliceRecfgReq *schSliceRecfgReq)
    DU_LOG("\nINFO  -->  SCH : Received Slice ReCfg request from MAC");
    if(schSliceRecfgReq)
    {
-      if(schSliceRecfgReq->listOfSlices)
+      if(schSliceRecfgReq->listOfConfirguration)
       {
          /* filling the slice configuration response of each slice */
          if(fillSliceCfgRsp(true, &schCb[inst].sliceCfg, NULLP, schSliceRecfgReq, &schSliceRecfgRsp, &count) != ROK)
@@ -2066,10 +2030,10 @@ uint8_t SchProcSliceRecfgReq(Pst *pst, SchSliceRecfgReq *schSliceRecfgReq)
  *************************************************************************/
 void schProcPagingCfg(SchCellCb *cell)
 {
-   SchPcchCfg *pageCfgRcvd = NULL;
+   PageCfg *pageCfgRcvd = NULL;
    uint8_t i_sIdx = 0;
 
-   pageCfgRcvd = &(cell->cellCfg.dlCfgCommon.pcchCfg);
+   pageCfgRcvd = &(cell->cellCfg.sib1SchCfg.pageCfg);
 
    if(pageCfgRcvd->poPresent == TRUE)
    {
@@ -2111,8 +2075,8 @@ void schProcPagingCfg(SchCellCb *cell)
 void schCfgPdcchMonOccOfPO(SchCellCb *cell)
 {
    uint8_t         cnt = 0, incr = 1, i_sIdx = 0, frameOffSet = 0;
-   uint8_t         nsValue = cell->cellCfg.dlCfgCommon.pcchCfg.numPO;
-   uint8_t         totalNumSsb = countSetBits(cell->cellCfg.ssbPosInBurst[0]);
+   uint8_t         nsValue = cell->cellCfg.sib1SchCfg.pageCfg.numPO;
+   uint8_t         totalNumSsb = cell->cellCfg.ssbSchCfg.totNumSsb;
    SlotTimingInfo  tmpTimingInfo, pdcchTime; 
 
    /*Starting with First Sfn and slot*/
@@ -2218,7 +2182,7 @@ uint8_t schAddPagingIndtoList(CmLListCp *storedPageList,void * pageIndInfo)
  *
  * @details
  *
- *    Function : SchProcPagingInd
+ *    Function : MacSchPagingInd
  *
  *    Functionality: Process paging indication at SCH recevied form MAC 
  *
@@ -2227,7 +2191,7 @@ uint8_t schAddPagingIndtoList(CmLListCp *storedPageList,void * pageIndInfo)
  * @return void 
  *        
  *************************************************************************/
-uint8_t SchProcPagingInd(Pst *pst,  SchPageInd *pageInd)
+uint8_t MacSchPagingInd(Pst *pst,  SchPageInd *pageInd)
 {
    uint8_t ret = RFAILED;
    uint16_t cellIdx = 0;
@@ -2251,9 +2215,9 @@ uint8_t SchProcPagingInd(Pst *pst,  SchPageInd *pageInd)
       }
       if(cellCb)
       {
-         if(pageInd->i_s > cellCb->cellCfg.dlCfgCommon.pcchCfg.numPO)
+         if(pageInd->i_s > cellCb->cellCfg.sib1SchCfg.pageCfg.numPO)
          {
-            DU_LOG("\nERROR --> SCH : SchProcPagingInd(): i_s should not be greater than number of paging occasion");
+            DU_LOG("\nERROR --> SCH : MacSchPagingInd(): i_s should not be greater than number of paging occasion");
          }
          else
          {
@@ -2270,7 +2234,7 @@ uint8_t SchProcPagingInd(Pst *pst,  SchPageInd *pageInd)
                SCH_ALLOC(pageInfo->pagePdu, pageInfo->msgLen);
                if(!pageInfo->pagePdu)
                {
-                  DU_LOG("\nERROR  --> SCH : SchProcPagingInd(): Failed to allocate memory");
+                  DU_LOG("\nERROR  --> SCH : MacSchPagingInd(): Failed to allocate memory");
                }
                else
                {
@@ -2278,13 +2242,13 @@ uint8_t SchProcPagingInd(Pst *pst,  SchPageInd *pageInd)
                   ret = schAddPagingIndtoList(&cellCb->pageCb.pageIndInfoRecord[pageInfo->pageTxTime.sfn], pageInfo);
                   if(ret != ROK)
                   {
-                     DU_LOG("\nERROR  --> SCH : SchProcPagingInd(): Failed to store paging record");
+                     DU_LOG("\nERROR  --> SCH : MacSchPagingInd(): Failed to store paging record");
                   }
                }
             }
             else
             {
-               DU_LOG("\nERROR  --> SCH : SchProcPagingInd(): Failed to allocate memory");
+               DU_LOG("\nERROR  --> SCH : MacSchPagingInd(): Failed to allocate memory");
             }
          }
       }
@@ -2297,7 +2261,7 @@ uint8_t SchProcPagingInd(Pst *pst,  SchPageInd *pageInd)
    }
    else
    {
-      DU_LOG("\nERROR  --> SCH : SchProcPagingInd(): Received null pointer");
+      DU_LOG("\nERROR  --> SCH : MacSchPagingInd(): Received null pointer");
    }
    return ret;
 }

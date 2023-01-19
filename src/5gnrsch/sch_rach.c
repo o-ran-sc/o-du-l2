@@ -65,7 +65,7 @@ bool schCheckPrachOcc(SchCellCb *cell, SlotTimingInfo prachOccasionTimingInfo)
    uint8_t  subFrame = 0;
    uint16_t prachSubframe = 0;
 
-   prachCfgIdx      = cell->cellCfg.schRachCfg.prachCfgIdx;
+   prachCfgIdx      = cell->cellCfg.ulCfgCommon.schInitialUlBwp.schRachCfg.prachCfgGeneric.prachCfgIdx;
 
    /* derive the prachCfgIdx table paramters */
    x                = prachCfgIdxTable[prachCfgIdx][1];
@@ -109,12 +109,12 @@ bool schCheckPrachOcc(SchCellCb *cell, SlotTimingInfo prachOccasionTimingInfo)
 uint8_t schCalcPrachNumRb(SchCellCb *cell)
 {
    uint8_t tableIdx = 0;
-   uint16_t puschScs = convertScsEnumValToScsVal(cell->cellCfg.schInitialUlBwp.bwp.scs);
+   uint16_t puschScs = convertScsEnumValToScsVal(cell->cellCfg.ulCfgCommon.schInitialUlBwp.bwp.scs);
 
    for(tableIdx=0; tableIdx < MAX_RACH_NUM_RB_IDX; tableIdx++)
    {
-      if((numRbForPrachTable[tableIdx][0] == cell->cellCfg.schRachCfg.rootSeqLen) &&
-            (numRbForPrachTable[tableIdx][1] == cell->cellCfg.schRachCfg.prachSubcSpacing) &&
+      if((numRbForPrachTable[tableIdx][0] == cell->cellCfg.ulCfgCommon.schInitialUlBwp.schRachCfg.rootSeqLen) &&
+            (numRbForPrachTable[tableIdx][1] == cell->cellCfg.ulCfgCommon.schInitialUlBwp.schRachCfg.msg1SubcSpacing) &&
             (numRbForPrachTable[tableIdx][2] == puschScs))
       {
          return numRbForPrachTable[tableIdx][3];
@@ -158,7 +158,7 @@ void schPrachResAlloc(SchCellCb *cell, UlSchedInfo *ulSchedInfo, SlotTimingInfo 
    if(!schCheckPrachOcc(cell, prachOccasionTimingInfo))
       return;
 
-   prachCfgIdx      = cell->cellCfg.schRachCfg.prachCfgIdx;
+   prachCfgIdx      = cell->cellCfg.ulCfgCommon.schInitialUlBwp.schRachCfg.prachCfgGeneric.prachCfgIdx;
    prachFormat      = prachCfgIdxTable[prachCfgIdx][0];
    prachStartSymbol = prachCfgIdxTable[prachCfgIdx][4];
    prachOcas        = prachCfgIdxTable[prachCfgIdx][6];
@@ -166,10 +166,10 @@ void schPrachResAlloc(SchCellCb *cell, UlSchedInfo *ulSchedInfo, SlotTimingInfo 
 
    /* numRa determined as 𝑛 belonging {0,1,.., M − 1},
     * where M is given by msg1Fdm */
-   numRa = (cell->cellCfg.schRachCfg.msg1Fdm - 1);
+   numRa = (cell->cellCfg.ulCfgCommon.schInitialUlBwp.schRachCfg.prachCfgGeneric.msg1Fdm - 1);
 
    /* freq domain resource determination for RACH*/
-   freqStart = cell->cellCfg.schRachCfg.msg1FreqStart;
+   freqStart = cell->cellCfg.ulCfgCommon.schInitialUlBwp.schRachCfg.prachCfgGeneric.msg1FreqStart;
    numPrachRb = schCalcPrachNumRb(cell);
    /* Allocate PRACH resources from the UL resource bitmap */
    allocatePrbUl(cell, prachOccasionTimingInfo, prachStartSymbol, prachDuration, &freqStart, numPrachRb);
@@ -265,8 +265,8 @@ uint8_t SchProcRachRsrcReq(Pst *pst, SchRachRsrcReq *schRachRsrcReq)
        * Preamble index from 0 to (numCbPreamblePerSsb-1) is used for CBRA 
        * Preamble index from numCbPreamblePerSsb to totalNumOfRAPreamble
        * is used for CFRA */
-      firstCFPreambleIndex = cellCb->cellCfg.schRachCfg.numCbPreamblePerSsb;
-      lastCFPreambleIndex = cellCb->cellCfg.schRachCfg.totalNumRaPreamble;
+      firstCFPreambleIndex = cellCb->cellCfg.ulCfgCommon.schInitialUlBwp.schRachCfg.numCbPreamblePerSsb;
+      lastCFPreambleIndex = cellCb->cellCfg.ulCfgCommon.schInitialUlBwp.schRachCfg.totalNumRaPreamble;
 
       /* Allocate resource for each SSB index requested */
       for(ssbIdx = 0; ssbIdx < schRachRsrcReq->numSsb; ssbIdx++)
@@ -427,8 +427,8 @@ SchPuschInfo* schAllocMsg3Pusch(Inst schInst, uint16_t crnti, uint8_t k2Index, S
    }
 
    /* Allocate time-domain and frequency-domain resource for MSG3 PUSCH */
-   startSymb = cell->cellCfg.schInitialUlBwp.puschCommon.timeDomRsrcAllocList[k2Index].startSymbol;
-   symbLen = cell->cellCfg.schInitialUlBwp.puschCommon.timeDomRsrcAllocList[k2Index].symbolLength;
+   startSymb = cell->cellCfg.ulCfgCommon.schInitialUlBwp.puschCommon.timeDomRsrcAllocList[k2Index].startSymbol;
+   symbLen = cell->cellCfg.ulCfgCommon.schInitialUlBwp.puschCommon.timeDomRsrcAllocList[k2Index].symbolLength;
 
    startRb = MAX_NUM_RB;
    tbSize = schCalcTbSize(8); /* 6 bytes msg3 and 2 bytes header */
@@ -555,12 +555,12 @@ bool schProcessRaReq(Inst schInst, SchCellCb *cell, SlotTimingInfo currTime, uin
    RaRspWindowStatus    windowStatus=0;
    
 #ifdef NR_TDD
-   totalCfgSlot = calculateSlotPatternLength(cell->cellCfg.ssbSchCfg.scsCommon, cell->cellCfg.tddCfg.tddPeriod);
+   totalCfgSlot = calculateSlotPatternLength(cell->cellCfg.scsCommon, cell->cellCfg.tddCfg.tddPeriod);
 #endif
-   k0K1InfoTbl    = &cell->cellCfg.schInitialDlBwp.k0K1InfoTbl;
+   k0K1InfoTbl    = &cell->k0K1InfoTbl;
    if(cell->raReq[ueId-1]->isCFRA == false)
    {
-      msg3K2InfoTbl  = &cell->cellCfg.schInitialUlBwp.msg3K2InfoTbl;
+      msg3K2InfoTbl  = &cell->msg3K2InfoTbl;
       puschMu        = cell->cellCfg.numerology;
       msg3Delta      = puschDeltaTable[puschMu];
       msg3MinSchTime = minMsg3SchTime[cell->cellCfg.numerology];
@@ -589,7 +589,7 @@ bool schProcessRaReq(Inst schInst, SchCellCb *cell, SlotTimingInfo currTime, uin
          for(k0TblIdx = 0; k0TblIdx < k0K1InfoTbl->k0k1TimingInfo[dciSlot].numK0; k0TblIdx++)
          {
             k0Index = k0K1InfoTbl->k0k1TimingInfo[dciSlot].k0Indexes[k0TblIdx].k0Index;
-            k0 = cell->cellCfg.schInitialDlBwp.pdschCommon.timeDomRsrcAllocList[k0Index].k0;
+            k0 = cell->cellCfg.dlCfgCommon.schInitialDlBwp.pdschCommon.timeDomRsrcAllocList[k0Index].k0;
 
             /* Calculating time frame to send RAR PDSCH */
             ADD_DELTA_TO_TIME(dciTime, rarTime, k0, cell->numSlots);
@@ -634,7 +634,7 @@ bool schProcessRaReq(Inst schInst, SchCellCb *cell, SlotTimingInfo currTime, uin
                for(k2TblIdx = 0; k2TblIdx < msg3K2InfoTbl->k2TimingInfo[rarSlot].numK2; k2TblIdx++)
                {
                   k2Index = msg3K2InfoTbl->k2TimingInfo[rarSlot].k2Indexes[k2TblIdx];
-                  k2 = cell->cellCfg.schInitialUlBwp.puschCommon.timeDomRsrcAllocList[k2Index].k2;
+                  k2 = cell->cellCfg.dlCfgCommon.schInitialUlBwp.puschCommon.timeDomRsrcAllocList[k2Index].k2;
 
                   /* Delta is added to the slot allocation for msg3 based on 38.214 section 6.1.2.1 */
                   k2 = k2 + msg3Delta;
@@ -705,7 +705,7 @@ bool schProcessRaReq(Inst schInst, SchCellCb *cell, SlotTimingInfo currTime, uin
          msg3PuschInfo = schAllocMsg3Pusch(schInst, cell->raReq[ueId-1]->rachInd->crnti, k2Index, msg3Time, &(cell->raCb[ueId-1].msg3HqProc), FALSE);
          if(msg3PuschInfo)
          {
-            dciSlotAlloc->rarInfo.ulGrant.bwpSize = cell->cellCfg.schInitialUlBwp.bwp.freqAlloc.numPrb;
+            dciSlotAlloc->rarInfo.ulGrant.bwpSize = cell->cellCfg.ulCfgCommon.schInitialUlBwp.bwp.freqAlloc.numPrb;
             /* Spec 38.213, section 8.2, 0 : MSG3 PUSCH will be transmitted without frequency hopping */
             dciSlotAlloc->rarInfo.ulGrant.freqHopFlag = 0;
             dciSlotAlloc->rarInfo.ulGrant.msg3FreqAlloc.startPrb = msg3PuschInfo->fdAlloc.resAlloc.type1.startPrb;
@@ -827,7 +827,7 @@ uint8_t SchProcRachInd(Pst *pst, RachIndInfo *rachInd)
   
    /* Converting window size from ms to number of slots */
    slotDuration = (1 / pow(2, cell->cellCfg.numerology));
-   winNumSlots = (float)cell->cellCfg.schRachCfg.raRspWindow / slotDuration;
+   winNumSlots = (float)cell->cellCfg.ulCfgCommon.schInitialUlBwp.schRachCfg.prachCfgGeneric.raRspWindow / slotDuration;
    
    /* Adding window size to window start time to get window end time */
    ADD_DELTA_TO_TIME(raReq->winStartTime, raReq->winEndTime, winNumSlots, cell->numSlots);
@@ -862,7 +862,7 @@ uint8_t schFillRar(SchCellCb *cell, SlotTimingInfo rarTime, uint16_t ueId, RarAl
    uint16_t numRbs = 0;
    uint16_t tbSize = 0;
 
-   SchBwpDlCfg *initialBwp = &cell->cellCfg.schInitialDlBwp;
+   SchBwpDlCfg *initialBwp = &cell->cellCfg.dlCfgCommon.schInitialDlBwp;
    PdcchCfg *pdcch = &rarAlloc->rarPdcchCfg;
    PdschCfg *pdsch = &rarAlloc->rarPdschCfg;
    BwpCfg *bwp = &rarAlloc->bwp;
@@ -893,7 +893,7 @@ uint8_t schFillRar(SchCellCb *cell, SlotTimingInfo rarTime, uint16_t ueId, RarAl
    pdcch->coresetCfg.startSymbolIndex = firstSymbol;
    pdcch->coresetCfg.durationSymbols = numSymbols;
    memcpy(pdcch->coresetCfg.freqDomainResource, \
-      cell->cellCfg.schInitialDlBwp.pdcchCommon.commonSearchSpace.freqDomainRsrc, FREQ_DOM_RSRC_SIZE);
+      cell->cellCfg.dlCfgCommon.schInitialDlBwp.pdcchCommon.commonSearchSpace.freqDomainRsrc, FREQ_DOM_RSRC_SIZE);
 
    pdcch->coresetCfg.cceRegMappingType = 1; /* coreset0 is always interleaved */
    pdcch->coresetCfg.regBundleSize = 6;    /* spec-38.211 sec 7.3.2.2 */
