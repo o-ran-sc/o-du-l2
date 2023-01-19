@@ -52,6 +52,14 @@ typedef enum{
    P_RNTI_TYPE
 }RntiType;
 
+#ifdef NR_TDD
+typedef enum
+{
+   DL_SYMBOL,
+   UL_SYMBOL,
+   FLEXI_SYMBOL
+}SymbolConfig;
+#endif
 uint8_t lwr_mac_procInvalidEvt(void *msg);
 uint8_t lwr_mac_procParamReqEvt(void *msg);
 uint8_t lwr_mac_procParamRspEvt(void *msg);
