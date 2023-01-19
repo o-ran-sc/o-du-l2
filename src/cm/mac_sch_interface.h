@@ -106,6 +106,8 @@
 #define DEFAULT_K2_VALUE_FOR_SCS60  2
 #define DEFAULT_K2_VALUE_FOR_SCS120 3 
 
+#define MAX_PLMN 2
+
 #define ADD_DELTA_TO_TIME(crntTime, toFill, incr, numOfSlot)          \
 {                                                          \
    if ((crntTime.slot + incr) > (numOfSlot - 1))           \
@@ -455,20 +457,6 @@ typedef struct resAllocType1
 
 typedef struct resAllocType1 FreqDomainRsrc;
 
-typedef struct
-{
-   uint32_t    ssbPbchPwr;       /* SSB block power */
-   uint8_t     scsCommon;           /* subcarrier spacing for common [0-3]*/
-   uint8_t     ssbOffsetPointA;  /* SSB sub carrier offset from point A */
-   SchSSBPeriod   ssbPeriod;        /* SSB Periodicity in msec */
-   uint8_t     ssbSubcOffset;    /* Subcarrier Offset(Kssb) */
-   uint32_t    nSSBMask[SCH_SSB_MASK_SIZE];      /* Bitmap for actually transmitted SSB. */
-   
-   /*Ref:Spec 38.331 "ssb-PositionsInBurst", Value 0 in Bitmap => corresponding SS/PBCH block is not transmitted
-    *value 1 => corresponding SS/PBCH block is transmitted*/
-   uint8_t     totNumSsb;       /*S = Total Number of Actual SSB transmitted*/
-}SchSsbCfg;
-
 /* Reference -> O-RAN.WG8.AAD.0-v07.00, Table 9-32 BWP Information  */
 typedef struct bwpCfg
 {
@@ -607,47 +595,43 @@ typedef struct pdcchCfg
 } PdcchCfg;
 /* end of SIB1 PDCCH structures */
 
-typedef struct pageCfg
+typedef struct schPcchCfg
 {
    uint8_t  numPO;                    /*Derived from Ns*/
    bool     poPresent;                /*FirstPDCCH-MonitoringPO is present or not*/
    uint16_t pagingOcc[MAX_PO_PER_PF]; /*FirstPDCCH-Monitoring Paging Occasion*/
-}PageCfg;
+}SchPcchCfg;
 
-typedef struct
+typedef struct schPdcchConfigSib1
 {
-   /* parameters recieved from DU-APP */
-   uint16_t sib1PduLen;
-   uint16_t sib1RepetitionPeriod;
    uint8_t  coresetZeroIndex;     /* derived from 4 LSB of pdcchSib1 present in MIB */
    uint8_t  searchSpaceZeroIndex; /* derived from 4 MSB of pdcchSib1 present in MIB */
-   uint16_t sib1Mcs;
+}SchPdcchConfigSib1;
 
-   /* parameters derived in scheduler */
-   uint8_t   n0;
-   BwpCfg    bwp;
-   PdcchCfg  sib1PdcchCfg;
-   PageCfg   pageCfg;         /*Config of Paging*/
-}SchSib1Cfg;
+typedef struct schRachCfgGeneric
+{
+   uint8_t      prachCfgIdx;       /* PRACH config idx */
+   uint8_t      msg1Fdm;           /* PRACH FDM (1,2,4,8) */
+   uint16_t     msg1FreqStart;     /* Msg1-FrequencyStart */
+   uint8_t      zeroCorrZoneCfg;   /* Zero correlation zone cofig */
+   int16_t      preambleRcvdTargetPower;
+   uint8_t      preambleTransMax;
+   uint8_t      pwrRampingStep;
+   uint8_t      raRspWindow;       /* RA Response Window */
+}SchRachCfgGeneric;
 
 typedef struct schRachCfg
 {
-   uint8_t      prachCfgIdx;       /* PRACH config idx */
-   uint8_t      prachSubcSpacing;  /* Subcarrier spacing of RACH */
-   uint16_t     msg1FreqStart;     /* Msg1-FrequencyStart */
-   uint8_t      msg1Fdm;           /* PRACH FDM (1,2,4,8) */
-   uint8_t      rootSeqLen;        /* root sequence length */
-   uint16_t     rootSeqIdx;        /* Root sequence index */
-   uint8_t      numRootSeq;        /* Number of root sequences required for FD */
-   uint16_t     k1;                /* Frequency Offset for each FD */
+   SchRachCfgGeneric  prachCfgGeneric;
    uint8_t      totalNumRaPreamble; /* Total number of RA preambles */
    uint8_t      ssbPerRach;        /* SSB per RACH occassion */
    uint8_t      numCbPreamblePerSsb; /* Number of CB preamble per SSB */
-   uint8_t      prachMultCarrBand; /* Presence of Multiple carriers in Band */
    uint8_t      raContResTmr;      /* RA Contention Resoultion Timer */
    uint8_t      rsrpThreshSsb;     /* RSRP Threshold SSB */
-   uint8_t      raRspWindow;       /* RA Response Window */
-   uint8_t      maxMsg3Tx;         /* MAximum num of msg3 tx*/
+   uint16_t     rootSeqIdx;        /* Root sequence index */
+   uint16_t     rootSeqLen;        /* root sequence length */
+   uint8_t      numRootSeq;        /* Number of root sequences required for FD */
+   uint8_t      msg1SubcSpacing;  /* Subcarrier spacing of RACH */
 }SchRachCfg;
 
 typedef struct schBwpParams
@@ -747,7 +731,6 @@ typedef struct schBwpDlCfg
    SchBwpParams   bwp;
    SchPdcchCfgCmn pdcchCommon;
    SchPdschCfgCmn pdschCommon;
-   SchK0K1TimingInfoTbl k0K1InfoTbl;
 }SchBwpDlCfg;
 
 typedef struct schK2TimingInfo
@@ -765,10 +748,9 @@ typedef struct schK2TimingInfoTbl
 typedef struct schBwpUlCfg
 {
    SchBwpParams   bwp;
+   SchRachCfg     schRachCfg;       /* PRACH config */
    SchPucchCfgCmn pucchCommon;
    SchPuschCfgCmn puschCommon;
-   SchK2TimingInfoTbl msg3K2InfoTbl;
-   SchK2TimingInfoTbl k2InfoTbl;
 }SchBwpUlCfg;
 
 typedef struct schPlmnInfoList
@@ -777,13 +759,6 @@ typedef struct schPlmnInfoList
    uint8_t        numSliceSupport; /* Total slice supporting */
    Snssai         **snssai;         /* List of supporting snssai*/
 }SchPlmnInfoList;
-
-typedef struct schHqCfgParam
-{
-   uint8_t maxDlDataHqTx;
-   uint8_t maxMsg4HqTx;
-   uint8_t maxUlDataHqTx;
-}SchHqCfg;
 
 #ifdef NR_DRX
 /* The following list of structures is taken from the DRX-Config section of specification 33.331. */
@@ -825,25 +800,93 @@ typedef struct schDrxCfg
 }SchDrxCfg;
 #endif
 
+/*Spec 38.331 'NrNsPmaxList'*/
+typedef struct schNrNsPmaxList
+{
+   long additionalPMax;
+   long additionalSpectrumEmission;
+}SchNrNsPmaxList;
+
+/*Spec 38.331 'FrequencyInfoDL-SIB'*/
+typedef struct schMultiFreqBandListSib
+{
+   long freqBandIndNr;
+   SchNrNsPmaxList nrNsPmaxList[1];
+}SchMultiFreqBandListSib;
+
+/*Spec 38.331 'SCS-SpecificCarrier'*/
+typedef struct schScsSpecificCarrier
+{
+  uint16_t offsetToCarrier;
+  uint8_t  subCarrierSpacing;
+  uint16_t carrierBw;
+  uint16_t txDirectCurrentLoc;
+}SchScsSpecificCarrier;
+
+/*Spec 38.331 'FrequencyInfoDL-SIB'*/
+typedef struct schFreqInfoDlSib
+{
+   SchMultiFreqBandListSib mutiFreqBandList[1];
+   uint16_t                offsetToPointA;
+   SchScsSpecificCarrier   schSpcCarrier[1];
+}SchFreqInfoDlSib;
+
+typedef struct schBcchCfg
+{
+   long modPeriodCoeff;
+}SchBcchCfg;
+
+typedef struct schDlCfgCommon
+{
+   SchFreqInfoDlSib  schFreqInfoDlSib;
+   SchBwpDlCfg       schInitialDlBwp;  /* Initial DL BWP */
+   SchBcchCfg        schBcchCfg;
+   SchPcchCfg        schPcchCfg;
+}SchDlCfgCommon;
+
+typedef struct schFreqInfoUlSib
+{
+   SchMultiFreqBandListSib mutiFreqBandList[1];
+   uint16_t                absoluteFreqPointA;
+   SchScsSpecificCarrier   schSpcCarrier[1];
+   int8_t                  schPMax;
+   bool                    frequencyShift7p5khz;
+}SchFreqInfoUlSib;
+
+typedef struct schUlCfgCommon
+{
+   SchFreqInfoUlSib  schFreqInfoUlSib;
+   SchBwpUlCfg       schInitialUlBwp;  /* Initial DL BWP */
+   uint16_t          schTimeAlignTimer;
+}SchUlCfgCommon;
+
 typedef struct schCellCfg
 {
-   uint16_t       cellId;           /* Cell Id */
-   uint16_t       phyCellId;        /* Physical cell id */
-   uint8_t        numerology;       /* Supported numerology */
-   SchDuplexMode  dupMode;          /* Duplex type: TDD/FDD */
-   uint8_t        bandwidth;        /* Supported B/W */
-   uint32_t       dlFreq;           /* DL Frequency */
-   uint32_t       ulFreq;           /* UL Frequency */
-   SchSsbCfg      ssbSchCfg;        /* SSB config */
-   SchSib1Cfg     sib1SchCfg;       /* SIB1 config */
-   SchRachCfg     schRachCfg;       /* PRACH config */
-   SchBwpDlCfg    schInitialDlBwp;  /* Initial DL BWP */
-   SchBwpUlCfg    schInitialUlBwp;  /* Initial UL BWP */
-   SchPlmnInfoList plmnInfoList;     /* Consits of PlmnId and Snssai list */
-   SchHqCfg       schHqCfg;
+   uint16_t        cellId;           /* Cell Id */
+   uint8_t         numOfBeams;
+   uint8_t         numLayers;
+   uint8_t         numAntPorts;
+   uint16_t        phyCellId;              /* Physical cell id */
+   SchPlmnInfoList plmnInfoList[MAX_PLMN];     /* Consits of PlmnId and Snssai list */
+   SchDuplexMode   dupMode;          /* Duplex type: TDD/FDD */
+   uint8_t         numerology;       /* Supported numerology */
+   uint8_t         dlBandwidth;        /* Supported B/W */
+   uint8_t         ulBandwidth;        /* Supported B/W */
+   SchDlCfgCommon  dlCfgCommon;      /*Spec 38.331 DownlinkConfigCommonSIB*/
+   SchUlCfgCommon  ulCfgCommon;      /*Spec 38.331 UplinkConfigCommonSIB*/
 #ifdef NR_TDD
-   TDDCfg         tddCfg;           /* TDD Cfg */ 
+   TDDCfg          tddCfg;           /* TDD Cfg */ 
 #endif 
+   /*Ref:Spec 38.331 "ssb-PositionsInBurst", Value 0 in Bitmap => corresponding SS/PBCH block is not transmitted
+    *value 1 => corresponding SS/PBCH block is transmitted*/
+   uint32_t            ssbPosInBurst[SCH_SSB_MASK_SIZE];  /* Bitmap for actually transmitted SSB. */
+   SchSSBPeriod        ssbPeriod;        /* SSB Periodicity in msec */
+   uint8_t             dmrsTypeAPos;
+   uint8_t             scsCommon;        /* subcarrier spacing for common [0-3]*/
+   SchPdcchConfigSib1  pdcchCfgSib1;      /* Req to configure CORESET#0 and SearchSpace#0*/
+   uint32_t            ssbPbchPwr;       /* SSB block power */
+   uint8_t             ssbSubcOffset;    /* Subcarrier Offset(Kssb) */
+   uint16_t            sib1PduLen;
 }SchCellCfg;
 
 typedef struct schCellCfgCfm

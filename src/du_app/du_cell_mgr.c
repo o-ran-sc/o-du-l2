@@ -367,7 +367,8 @@ uint8_t duHandleCellUpInd(Pst *pst, OduCellId *cellId)
       raiseCellAlrm(CELL_UP_ALARM_ID, cellId->cellId);
       setCellOpState(cellId->cellId, ENABLED, ACTIVE);
 #endif
-
+       duCfgParam.macCellCfg.cellCfg.opState = ENABLED;
+       duCfgParam.macCellCfg.cellCfg.cellState = ACTIVE;
    }
 
    if((pst->selector == ODU_SELECTOR_LWLC) || (pst->selector == ODU_SELECTOR_TC))
