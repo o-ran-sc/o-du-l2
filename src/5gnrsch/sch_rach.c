@@ -117,10 +117,18 @@ uint8_t schCalcPrachNumRb(SchCellCb *cell)
 {
    uint8_t tableIdx = 0;
    uint16_t puschScs = convertScsEnumValToScsVal(cell->cellCfg.schInitialUlBwp.bwp.scs);
+   uint16_t rootSeqLen = ROOT_SEQ_LEN_2;
+
+   /*As per Spec 38.211, Sec 6.3.3.2; RootSeq Len(Lra) where Lra=839 or Lra=139,
+    *depending on the PRACH preamble format as given by Tables 6.3.3.1-1 and 6.3.3.1-2.*/
+   if(prachCfgIdxTable[cell->cellCfg.schRachCfg.prachCfgIdx][0] <= 3)
+   {
+      rootSeqLen = ROOT_SEQ_LEN_1;
+   }
 
    for(tableIdx=0; tableIdx < MAX_RACH_NUM_RB_IDX; tableIdx++)
    {
-      if((numRbForPrachTable[tableIdx][0] == cell->cellCfg.schRachCfg.rootSeqLen) &&
+      if((numRbForPrachTable[tableIdx][0] == rootSeqLen) &&
             (numRbForPrachTable[tableIdx][1] == cell->cellCfg.schRachCfg.prachSubcSpacing) &&
             (numRbForPrachTable[tableIdx][2] == puschScs))
       {
@@ -558,7 +566,7 @@ bool schProcessRaReq(Inst schInst, SchCellCb *cell, SlotTimingInfo currTime, uin
    RaRspWindowStatus    windowStatus=0;
    
 #ifdef NR_TDD
-   totalCfgSlot = calculateSlotPatternLength(cell->cellCfg.ssbSchCfg.scsCommon, cell->cellCfg.tddCfg.tddPeriod);
+   totalCfgSlot = calculateSlotPatternLength(cell->cellCfg.scsCommon, cell->cellCfg.tddCfg.tddPeriod);
 #endif
    k0K1InfoTbl    = &cell->cellCfg.schInitialDlBwp.k0K1InfoTbl;
    if(cell->raReq[ueId-1]->isCFRA == false)
