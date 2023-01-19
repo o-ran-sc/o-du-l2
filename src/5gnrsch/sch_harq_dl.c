@@ -52,7 +52,7 @@ void schDlHqAddToFreeList(SchDlHqProcCb *hqP);
 void schDlHqEntInit(SchCellCb *cellCb, SchUeCb *ueCb)
 {
    ueCb->dlHqEnt.numHqPrcs = SCH_MAX_NUM_DL_HQ_PROC;
-   ueCb->dlHqEnt.maxHqTx  = cellCb->cellCfg.schHqCfg.maxDlDataHqTx;
+   ueCb->dlHqEnt.maxHqTx  = cellCb->schHqCfg.maxDlDataHqTx;
    ueCb->dlHqEnt.cell = cellCb;
    ueCb->dlHqEnt.ue =ueCb;
    schDlHqEntReset(cellCb, ueCb, &ueCb->dlHqEnt);
@@ -343,7 +343,7 @@ void schMsg4FeedbackUpdate(SchDlHqProcCb *hqP, uint8_t fdbk)
    }
    else
    {
-      if( hqP->tbInfo[0].txCntr >= hqP->hqEnt->cell->cellCfg.schHqCfg.maxMsg4HqTx)
+      if( hqP->tbInfo[0].txCntr >= hqP->hqEnt->cell->schHqCfg.maxMsg4HqTx)
       {
          schDlReleaseHqProcess(hqP);
          hqP->hqEnt->ue->msg4HqProc = NULLP;
