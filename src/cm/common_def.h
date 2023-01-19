@@ -242,13 +242,6 @@ typedef enum
 #ifdef NR_TDD
 typedef enum
 {
-   DL_SLOT,
-   UL_SLOT,
-   FLEXI_SLOT
-}SlotConfig;
-
-typedef enum
-{
    TX_PRDCTY_MS_0P5,
    TX_PRDCTY_MS_0P625,
    TX_PRDCTY_MS_1,
@@ -330,9 +323,11 @@ typedef struct oduCellId
 #ifdef NR_TDD
 typedef struct tddCfg
 {
-   bool               pres;
-   DlUlTxPeriodicity  tddPeriod;      /* DL UL Transmission periodicity */
-   SlotConfig         slotCfg[MAX_TDD_PERIODICITY_SLOTS][MAX_SYMB_PER_SLOT]; 
+   DlUlTxPeriodicity  tddPeriod;     /*DL UL Transmission periodicity */
+   uint8_t            nrOfDlSlots;   /*No. of consecultive full DL slots at beginning of DL-UL pattern*/
+   uint8_t            nrOfDlSymbols; /*No. of consecultive DL symbol at beginning of slot after last full DL slot*/ 
+   uint8_t            nrOfUlSlots;   /*No. of consecutive full UL slots at the end of each DL-UL pattern*/
+   uint8_t            nrOfUlSymbols; /*No. of consecutive UL symbols in the end of the slot before the first full UL slot*/
 }TDDCfg;
 #endif
 
@@ -354,7 +349,7 @@ Region region, Pool pool, Data **ptr, Size size, uint8_t memType);
 uint8_t SPutStaticBufNewForDebug(char *file, const char *func, int line, \
 Region region, Pool pool, Data *ptr, Size size, uint8_t memType);
 uint8_t countSetBits(uint32_t num);
-
+uint32_t convertArfcnToFreqKhz(uint32_t arfcn);
 #endif
 
 /**********************************************************************
