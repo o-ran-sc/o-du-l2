@@ -102,19 +102,20 @@ uint8_t sctpActvTsk(Pst *pst, Buffer *mBuf)
 
 uint8_t sctpCfgReq()
 {
-   int destIdx;
+   int destIdx = 0, assocIdx = 0;
    
-   for(destIdx=0; destIdx < sctpCb.sctpCfg.numDu; destIdx++)
+   fillAddrLst(&sctpCb.localAddrLst, &sctpCb.sctpCfg.localIpAddr);
+   memset(&sctpCb.f1LstnSockFd, -1, sizeof(CmInetFd));
+
+   for(destIdx=0; destIdx < sctpCb.sctpCfg.numDestNode; destIdx++)
    {
-      sctpCb.destCb[destIdx].destPort = sctpCb.sctpCfg.sctpAssoc[destIdx].duPort;
-      sctpCb.destCb[destIdx].srcPort  = sctpCb.sctpCfg.sctpAssoc[destIdx].cuPort;
-      sctpCb.destCb[destIdx].bReadFdSet = ROK;
-      memset(&sctpCb.destCb[destIdx].sockFd, -1, sizeof(CmInetFd));
-      memset(&sctpCb.destCb[destIdx].lstnSockFd, -1, sizeof(CmInetFd));
-      fillDestNetAddr(&sctpCb.destCb[destIdx].destIpNetAddr, &sctpCb.sctpCfg.sctpAssoc[destIdx].duIpAddr);
-      fillAddrLst(&sctpCb.destCb[destIdx].localAddrLst, &sctpCb.sctpCfg.sctpAssoc[destIdx].cuIpAddr);
+      sctpCb.assocCb[assocIdx].destPort = sctpCb.sctpCfg.destCb[destIdx].destPort;
+      sctpCb.assocCb[assocIdx].bReadFdSet = ROK;
+      memset(&sctpCb.assocCb[assocIdx].sockFd, -1, sizeof(CmInetFd));
+      fillDestNetAddr(&sctpCb.assocCb[assocIdx].destIpNetAddr, &sctpCb.sctpCfg.destCb[destIdx].destIpAddr);
+      assocIdx++;
    }
-   sctpCb.numDu = sctpCb.sctpCfg.numDu;
+   sctpCb.numAssoc = assocIdx;
    return ROK;
 }
 
@@ -189,30 +190,45 @@ uint8_t fillDestNetAddr(CmInetNetAddr *destAddrPtr, SctpIpAddr *dstIpPtr)
 
 uint8_t sctpStartReq()
 {
-   uint8_t destIdx;
+   uint8_t assocIdx;
    uint8_t ret = ROK;
 
    socket_type = CM_INET_STREAM;
-   for(destIdx=0; destIdx < sctpCb.numDu; destIdx++)
+
+   if(sctpCb.numAssoc)
    {
-      if((ret = cmInetSocket(socket_type, &sctpCb.destCb[destIdx].lstnSockFd, IPPROTO_SCTP) != ROK))
+      if((ret = cmInetSocket(socket_type, &sctpCb.f1LstnSockFd, IPPROTO_SCTP) != ROK))
       {
-         DU_LOG("\nERROR  -->  SCTP : Socket[%d] coudnt open for listening", sctpCb.destCb[destIdx].lstnSockFd.fd);
+         DU_LOG("\nERROR  -->  SCTP : Socket[%d] coudnt open for listening", sctpCb.f1LstnSockFd.fd);
       } 
-      else if((ret = cmInetSctpBindx(&sctpCb.destCb[destIdx].lstnSockFd, &sctpCb.destCb[destIdx].localAddrLst, \
-         sctpCb.destCb[destIdx].srcPort)) != ROK)
+      else if((ret = cmInetSctpBindx(&sctpCb.f1LstnSockFd, &sctpCb.localAddrLst, sctpCb.sctpCfg.f1SctpPort)) != ROK)
       {
          DU_LOG("\nERROR  -->  SCTP: Binding failed at CU");
       }
-      else if((ret = sctpAccept(&sctpCb.destCb[destIdx])) != ROK)
+      else if(ret = cmInetListen(&sctpCb.f1LstnSockFd, 1) != ROK)
       {
-         DU_LOG("\nERROR  -->  SCTP: Unable to accept the connection at CU");
+         DU_LOG("\nERROR  -->  SCTP : Listening on socket failed");
+         cmInetClose(&sctpCb.f1LstnSockFd);
+         return RFAILED;
+      }
+      else
+      {
+         for(assocIdx=0; assocIdx < sctpCb.numAssoc; assocIdx++)
+         {
+            if((ret = sctpAccept(&sctpCb.assocCb[assocIdx])) != ROK)
+            {
+               DU_LOG("\nERROR  -->  SCTP: Unable to accept the connection at CU");
+            }
+         }
       }
    }
 
-   if(sctpSockPoll() != ROK)
+   if(ret == ROK)
    {
-      DU_LOG("\nERROR  -->  SCTP: Polling failed to start at CU");
+      if(sctpSockPoll() != ROK)
+      {
+         DU_LOG("\nERROR  -->  SCTP: Polling failed to start at CU");
+      }
    }
    return (ret);
 }
@@ -271,23 +287,15 @@ uint8_t sctpSetSockOpts(CmInetFd *sock_Fd)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t sctpAccept(CuSctpDestCb *destCb)
+uint8_t sctpAccept(CuSctpAssocCb *assocCb)
 {
    uint8_t  ret;
 
-   ret = cmInetListen(&destCb->lstnSockFd, 1);
-   if (ret != ROK)
-   {
-      DU_LOG("\nERROR  -->  SCTP : Listening on socket failed");
-      cmInetClose(&destCb->lstnSockFd);
-      return RFAILED;
-   }
-   
    DU_LOG("\nINFO  -->  SCTP : Connecting");
 
-   while(!destCb->connUp)
+   while(!assocCb->connUp)
    {
-      ret = cmInetAccept(&destCb->lstnSockFd, &destCb->peerAddr, &destCb->sockFd);
+      ret = cmInetAccept(&sctpCb.f1LstnSockFd, &assocCb->peerAddr, &assocCb->sockFd);
       if (ret == ROKDNA)
       {
          continue;
@@ -299,8 +307,8 @@ uint8_t sctpAccept(CuSctpDestCb *destCb)
       }
       else
       {
-         destCb->connUp = TRUE;
-         sctpSetSockOpts(&destCb->sockFd);
+         assocCb->connUp = TRUE;
+         sctpSetSockOpts(&assocCb->sockFd);
          break;
       }
    }
@@ -326,7 +334,7 @@ uint8_t sctpAccept(CuSctpDestCb *destCb)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t sctpNtfyHdlr(CuSctpDestCb *destCb, CmInetSctpNotification *ntfy)
+uint8_t sctpNtfyHdlr(CuSctpAssocCb *assocCb, CmInetSctpNotification *ntfy)
 {
    switch(ntfy->header.nType)
    {
@@ -336,23 +344,23 @@ uint8_t sctpNtfyHdlr(CuSctpDestCb *destCb, CmInetSctpNotification *ntfy)
          {
             case CM_INET_SCTP_COMM_UP:
                DU_LOG("DEBUG  -->  Event : COMMUNICATION UP");
-               destCb->connUp = TRUE;
+               assocCb->connUp = TRUE;
                break;
             case CM_INET_SCTP_COMM_LOST:
                DU_LOG("DEBUG  -->  Event : COMMUNICATION LOST");
-               destCb->connUp = FALSE;
+               assocCb->connUp = FALSE;
                break;
             case CM_INET_SCTP_RESTART:
                DU_LOG("DEBUG  -->  Event : SCTP RESTART");
-               destCb->connUp = FALSE;
+               assocCb->connUp = FALSE;
                break;
             case CM_INET_SCTP_SHUTDOWN_COMP: /* association gracefully shutdown */
                DU_LOG("DEBUG  -->  Event : SHUTDOWN COMPLETE");
-               destCb->connUp = FALSE;
+               assocCb->connUp = FALSE;
                break;
             case CM_INET_SCTP_CANT_STR_ASSOC:
                DU_LOG("DEBUG  -->  Event : CANT START ASSOC");
-               destCb->connUp = FALSE;
+               assocCb->connUp = FALSE;
                break;
             default:
                DU_LOG("\nERROR  -->  Invalid event");
@@ -371,7 +379,7 @@ uint8_t sctpNtfyHdlr(CuSctpDestCb *destCb, CmInetSctpNotification *ntfy)
          break;
       case CM_INET_SCTP_SHUTDOWN_EVENT : /* peer socket gracefully closed */
          DU_LOG("\nINFO  -->  SCTP : Shutdown Event notification received\n");
-         destCb->connUp = FALSE;
+         assocCb->connUp = FALSE;
          exit(0);
          break;
       case CM_INET_SCTP_ADAPTATION_INDICATION :
@@ -407,7 +415,7 @@ uint8_t sctpNtfyHdlr(CuSctpDestCb *destCb, CmInetSctpNotification *ntfy)
  * ****************************************************************/
 uint8_t sctpSockPoll()
 {
-   uint8_t       destIdx;
+   uint8_t       assocIdx = 0, destIdx = 0;
    uint16_t      ret = ROK;
    uint32_t      timeout;
    uint32_t      *timeoutPtr;
@@ -432,9 +440,9 @@ uint8_t sctpSockPoll()
    while(1)
    {
       /* Receiving SCTP data */
-      for(destIdx = 0; destIdx < sctpCb.numDu; destIdx++)
+      for(assocIdx = 0; assocIdx < sctpCb.numAssoc; assocIdx++)
       {
-         if((ret = processPolling(&f1PollParams, &sctpCb.destCb[destIdx], timeoutPtr, &memInfo)) != ROK)
+         if((ret = processPolling(&f1PollParams, &sctpCb.assocCb[assocIdx], timeoutPtr, &memInfo)) != ROK)
          {
             DU_LOG("\nERROR  -->  SCTP : Failed to RecvMsg for F1 at CU\n");
          }
@@ -484,33 +492,33 @@ uint8_t sctpSockPoll()
  *
  * ****************************************************************/
 
-uint8_t processPolling(sctpSockPollParams *pollParams, CuSctpDestCb *destCb, uint32_t *timeoutPtr, CmInetMemInfo *memInfo)
+uint8_t processPolling(sctpSockPollParams *pollParams, CuSctpAssocCb *assocCb, uint32_t *timeoutPtr, CmInetMemInfo *memInfo)
 {
    uint16_t ret = ROK;
-   CM_INET_FD_SET(&destCb->sockFd, &pollParams->readFd);
+   CM_INET_FD_SET(&assocCb->sockFd, &pollParams->readFd);
    ret = cmInetSelect(&pollParams->readFd, NULLP, timeoutPtr, &pollParams->numFd);
-   if(CM_INET_FD_ISSET(&destCb->sockFd, &pollParams->readFd))
+   if(CM_INET_FD_ISSET(&assocCb->sockFd, &pollParams->readFd))
    {
-      CM_INET_FD_CLR(&destCb->sockFd, &pollParams->readFd);
-      ret = cmInetSctpRecvMsg(&destCb->sockFd, &pollParams->addr, &pollParams->port, memInfo, &pollParams->mBuf, \
+      CM_INET_FD_CLR(&assocCb->sockFd, &pollParams->readFd);
+      ret = cmInetSctpRecvMsg(&assocCb->sockFd, &pollParams->addr, &pollParams->port, memInfo, &pollParams->mBuf, \
          &pollParams->bufLen, &pollParams->info, &pollParams->flag, &pollParams->ntfy);
-      if(destCb->connUp & (ret != ROK))
+      if(assocCb->connUp & (ret != ROK))
       {
-         destCb->bReadFdSet = RFAILED;
+         assocCb->bReadFdSet = RFAILED;
       }
       else
       {
          if(((pollParams->flag & CM_INET_SCTP_MSG_NOTIFICATION) != 0) && (ret == ROK))
          {
-            ret = sctpNtfyHdlr(destCb, &pollParams->ntfy);
+            ret = sctpNtfyHdlr(assocCb, &pollParams->ntfy);
             if(ret != ROK)
             {
                DU_LOG("\nERROR  -->  SCTP : Failed to process sctp notify msg\n");
             }
          }
-         else if(destCb->connUp & (pollParams->port == destCb->destPort))
+         else if(assocCb->connUp)
          {  
-            F1APMsgHdlr(&destCb->duId, pollParams->mBuf);
+            F1APMsgHdlr(&assocCb->duId, pollParams->mBuf);
             ODU_PUT_MSG_BUF(pollParams->mBuf);
          }
          else
@@ -540,7 +548,7 @@ uint8_t processPolling(sctpSockPollParams *pollParams, CuSctpDestCb *destCb, uin
  * ****************************************************************/
 uint8_t sctpSend(uint32_t duId, Buffer *mBuf)
 {
-   uint8_t          ret = ROK, destIdx = 0;
+   uint8_t          ret = ROK, assocIdx = 0;
    MsgLen           len = 0;          /* number of actually sent octets */
    CmInetMemInfo    memInfo;                        
   
@@ -548,12 +556,12 @@ uint8_t sctpSend(uint32_t duId, Buffer *mBuf)
    memInfo.region = CU_APP_MEM_REG;               
    memInfo.pool   = CU_POOL;
 
-   for(destIdx=0; destIdx < sctpCb.numDu; destIdx++)
+   for(assocIdx=0; assocIdx < sctpCb.numAssoc; assocIdx++)
    {
-      if(sctpCb.destCb[destIdx].duId == duId)
+      if(sctpCb.assocCb[assocIdx].duId == duId)
       {
-         ret = cmInetSctpSendMsg(&sctpCb.destCb[destIdx].sockFd, &sctpCb.destCb[destIdx].destIpNetAddr, \
-                  sctpCb.destCb[destIdx].destPort, &memInfo, mBuf, &len, 0, FALSE, 0, 0/*SCT_PROTID_NONE*/, RWOULDBLOCK);
+         ret = cmInetSctpSendMsg(&sctpCb.assocCb[assocIdx].sockFd, &sctpCb.assocCb[assocIdx].destIpNetAddr, \
+                  sctpCb.assocCb[assocIdx].destPort, &memInfo, mBuf, &len, 0, FALSE, 0, 0/*SCT_PROTID_NONE*/, RWOULDBLOCK);
 
          if(ret != ROK && ret != RWOULDBLOCK)
          {
