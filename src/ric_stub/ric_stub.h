@@ -26,11 +26,11 @@
 #define RIC_IP_V6_ADDR "0000:0000:0000:0000:0000:0000:0000:0011"
 
 #ifndef O1_ENABLE
-#define DU_IP_V4_ADDR (char*[]){"192.168.130.81", "192.168.130.83"}
-#define DU_SCTP_PORT (int[]){36421, 36422}
+#define LOCAL_IP_RIC "192.168.130.80"
 
-#define RIC_IP_V4_ADDR "192.168.130.80"
-#define RIC_SCTP_PORT_TO_DU (int[]){36421, 36422}
+#define E2_SCTP_PORT 36421
+#define NUM_E2_ASSOC 1
+#define REMOTE_IP_DU (char*[]){"192.168.130.81", "192.168.130.83"}
 #endif
 
 #define RRC_VER 0
@@ -64,15 +64,40 @@
    SPutSBuf(RIC_APP_MEM_REG, RIC_POOL,                         \
          (Data *)_datPtr, _size);
 
+#define SEARCH_DU_DB(_duIdx, _duId, _duDb){\
+   _duDb = NULLP; \
+   for(_duIdx=0; _duIdx < ricCb.numDu; _duIdx++)\
+   {\
+      if(ricCb.duInfo[_duIdx].duId == _duId)\
+      {\
+         _duDb =  (&ricCb.duInfo[_duIdx]);\
+         break; \
+     }\
+   }\
+}
+
+typedef struct duDb
+{
+   uint32_t duId;
+   Bool     ricSubscribedToDu;
+}DuDb;
+
 typedef struct ricCfgParams
 {
    uint32_t        ricId;
    char            ricName[RIC_DU_NAME_LEN_MAX];
    RicSctpParams   sctpParams;
    Plmn            plmn;
-   Bool            ricSubsStatus;
 }RicCfgParams;
-RicCfgParams ricCfgParams; //global variable to hold all configs
+
+typedef struct cuGlobalCb
+{
+   RicCfgParams ricCfgParams;
+   uint8_t      numDu;
+   DuDb         duInfo[MAX_DU_SUPPORTED];
+}RicGlobalCb;
+
+RicGlobalCb ricCb;
 
 void readRicCfg();
 void cuAppInmsgHdlr(Buffer *mBuf);

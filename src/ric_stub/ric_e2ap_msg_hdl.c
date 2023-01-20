@@ -50,7 +50,7 @@
 *
 * ****************************************************************/
 
-uint8_t SendE2APMsg(Region region, Pool pool)
+uint8_t SendE2APMsg(Region region, Pool pool, uint32_t duId)
 {
    Buffer *mBuf;
 
@@ -60,7 +60,7 @@ uint8_t SendE2APMsg(Region region, Pool pool)
       {
          ODU_PRINT_MSG(mBuf, 0,0);
  
-         if(sctpSend(mBuf) != ROK)
+         if(sctpSend(duId, mBuf) != ROK)
          {
             DU_LOG("\nERROR  -->  E2AP : SCTP Send for E2  failed");
             ODU_PUT_MSG_BUF(mBuf);
@@ -109,7 +109,7 @@ uint8_t BuildGlobalRicId(GlobalRIC_ID_t *ricId)
    {
       ricId->pLMN_Identity.size = byteSize * sizeof(uint8_t);
       RIC_ALLOC(ricId->pLMN_Identity.buf,  ricId->pLMN_Identity.size);
-      buildPlmnId(ricCfgParams.plmn , ricId->pLMN_Identity.buf);
+      buildPlmnId(ricCb.ricCfgParams.plmn , ricId->pLMN_Identity.buf);
       /* fill ric Id */
       ricId->ric_ID.size = byteSize * sizeof(uint8_t);
       RIC_ALLOC(ricId->ric_ID.buf, ricId->ric_ID.size);
@@ -245,7 +245,7 @@ uint8_t BuildE2nodeComponentConfigAdditionAck(E2nodeComponentConfigAdditionAck_L
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t BuildAndSendE2SetupRsp(uint8_t duId)
+uint8_t BuildAndSendE2SetupRsp(uint32_t duId)
 {
    E2AP_PDU_t         *e2apMsg = NULL;
    E2setupResponse_t  *e2SetupRsp;
@@ -357,7 +357,7 @@ uint8_t BuildAndSendE2SetupRsp(uint8_t duId)
          } 
       }
 
-      if(SendE2APMsg(RIC_APP_MEM_REG, RIC_POOL) != ROK)
+      if(SendE2APMsg(RIC_APP_MEM_REG, RIC_POOL, duId) != ROK)
       {
          DU_LOG("\nERROR  -->  E2AP : Sending E2 Setup Response failed");      
          break;   
@@ -366,6 +366,7 @@ uint8_t BuildAndSendE2SetupRsp(uint8_t duId)
    }
 
    FreeE2SetupRsp(e2apMsg);
+   BuildAndSendRicSubscriptionReq(duId);
    return ROK;
 }
 
@@ -478,7 +479,7 @@ uint8_t BuildRicSubsDetails(RICsubscriptionDetails_t *subsDetails)
       uint8_t byteSize = 3;
       subsDetails->ricEventTriggerDefinition.size = byteSize * sizeof(uint8_t);
       RIC_ALLOC(subsDetails->ricEventTriggerDefinition.buf,  subsDetails->ricEventTriggerDefinition.size);
-      buildPlmnId(ricCfgParams.plmn, subsDetails->ricEventTriggerDefinition.buf);
+      buildPlmnId(ricCb.ricCfgParams.plmn, subsDetails->ricEventTriggerDefinition.buf);
       elementCnt = 1;
       subsDetails->ricAction_ToBeSetup_List.list.count = elementCnt;
       subsDetails->ricAction_ToBeSetup_List.list.size = \
@@ -512,7 +513,7 @@ uint8_t BuildRicSubsDetails(RICsubscriptionDetails_t *subsDetails)
  *
  ******************************************************************/
 
-uint8_t BuildAndSendRicSubscriptionReq()
+uint8_t BuildAndSendRicSubscriptionReq(uint32_t duId)
 {
 
    E2AP_PDU_t                 *e2apRicMsg = NULL;
@@ -522,7 +523,6 @@ uint8_t BuildAndSendRicSubscriptionReq()
    uint8_t         ieId;
    uint8_t         ret; 
    asn_enc_rval_t  encRetVal;        /* Encoder return value */
-   ricCfgParams.ricSubsStatus = TRUE;
 
    DU_LOG("\nINFO   -->  E2AP : Building RIC Subscription Request\n");
 
@@ -636,13 +636,39 @@ uint8_t BuildAndSendRicSubscriptionReq()
 
 
    /* Sending msg */
-   if(SendE2APMsg(RIC_APP_MEM_REG, RIC_POOL) != ROK)
+   if(SendE2APMsg(RIC_APP_MEM_REG, RIC_POOL, duId) != ROK)
    {
       DU_LOG("\nERROR  -->  E2AP : Sending RIC subscription Request failed");
       return RFAILED;
    }
 
    return ROK;
+}
+
+/*******************************************************************
+ *
+ * @brief Process RicSubscriptionResponse
+ *
+ * @details
+ *
+ *    Function : ProcRicSubscriptionRsp
+ *
+ * Functionality: Processes RicSubscriptionRsp
+ *
+ * @return ROK     - void
+ *
+ ******************************************************************/
+
+void ProcRicSubscriptionResponse(uint32_t duId)
+{
+   uint8_t duIdx = 0;
+   DuDb *duDb;
+
+   DU_LOG("\nINFO  -->  E2AP : RICsubscriptionResponse Msg Acknowledged");
+
+   SEARCH_DU_DB(duIdx, duId, duDb);
+   if(duDb)
+      duDb->ricSubscribedToDu = true;
 }
 
 /*******************************************************************
@@ -660,9 +686,10 @@ uint8_t BuildAndSendRicSubscriptionReq()
  *
  ******************************************************************/
 
-uint8_t ProcE2SetupReq(E2setupRequest_t  *e2SetupReq)
+uint8_t ProcE2SetupReq(uint32_t *duId, E2setupRequest_t  *e2SetupReq)
 {
-   uint8_t arrIdx = 0, e2NodeAddListIdx =0;;
+   uint8_t arrIdx = 0, e2NodeAddListIdx =0, duIdx = 0;
+   DuDb    *duDb = NULLP;
    E2nodeComponentConfigAddition_List_t *e2NodeAddList;
    E2nodeComponentConfigAddition_ItemIEs_t *e2NodeAddItem;
 
@@ -686,13 +713,24 @@ uint8_t ProcE2SetupReq(E2setupRequest_t  *e2SetupReq)
                               if(e2NodeAddList->list.array[e2NodeAddListIdx])
                               {
                                  e2NodeAddItem = (E2nodeComponentConfigAddition_ItemIEs_t *) e2NodeAddList->list.array[e2NodeAddListIdx];
-                                 if(e2NodeAddItem->value.choice.E2nodeComponentConfigAddition_Item.e2nodeComponentID.choice.e2nodeComponentInterfaceTypeF1)
+                                 if(e2NodeAddItem->value.choice.E2nodeComponentConfigAddition_Item.e2nodeComponentID.choice.\
+                                    e2nodeComponentInterfaceTypeF1)
                                  {
-                                    if(e2NodeAddItem->value.choice.E2nodeComponentConfigAddition_Item.e2nodeComponentID.choice.e2nodeComponentInterfaceTypeF1->\
-                                    gNB_DU_ID.buf)
+                                    if(e2NodeAddItem->value.choice.E2nodeComponentConfigAddition_Item.e2nodeComponentID.choice.\
+                                       e2nodeComponentInterfaceTypeF1->gNB_DU_ID.buf)
                                     {
-                                       if(BuildAndSendE2SetupRsp(e2NodeAddItem->value.choice.E2nodeComponentConfigAddition_Item.e2nodeComponentID.choice.\
-                                       e2nodeComponentInterfaceTypeF1->gNB_DU_ID.buf[0]) !=ROK)
+                                       *duId = e2NodeAddItem->value.choice.E2nodeComponentConfigAddition_Item.e2nodeComponentID.\
+                                               choice.e2nodeComponentInterfaceTypeF1->gNB_DU_ID.buf[0];
+                                       SEARCH_DU_DB(duIdx, duId, duDb); 
+                                       if(duDb == NULLP)
+                                       {
+                                          duDb = &ricCb.duInfo[ricCb.numDu];
+                                          ricCb.numDu++;
+                                       }
+                                       memset(duDb, 0, sizeof(DuDb));
+                                       duDb->duId = *duId;
+
+                                       if(BuildAndSendE2SetupRsp(*duId) !=ROK)
                                        {
                                            DU_LOG("\nERROR  -->  E2AP : Failed to build and send E2 setup response");
                                            return RFAILED;
@@ -769,7 +807,7 @@ void FreeE2NodeConfigUpdateAck(E2AP_PDU_t *e2apMsg)
  *
  * ****************************************************************/
 
-uint8_t BuildAndSendE2NodeConfigUpdateAck()
+uint8_t BuildAndSendE2NodeConfigUpdateAck(uint32_t duId)
 {
    uint8_t arrIdx = 0,elementCnt = 1;
    uint8_t ret = ROK;
@@ -853,7 +891,7 @@ uint8_t BuildAndSendE2NodeConfigUpdateAck()
 
 
       /* Sending msg */
-      if(SendE2APMsg(RIC_APP_MEM_REG, RIC_POOL) != ROK)
+      if(SendE2APMsg(RIC_APP_MEM_REG, RIC_POOL, duId) != ROK)
       {
          DU_LOG("\nERROR  -->  E2AP : Failed to send E2 Node config update ack ");
          return RFAILED;
@@ -883,7 +921,7 @@ uint8_t BuildAndSendE2NodeConfigUpdateAck()
 *         RFAILED - failure
 *
 * ****************************************************************/
-void E2APMsgHdlr(Buffer *mBuf)
+void E2APMsgHdlr(uint32_t *duId, Buffer *mBuf)
 {
    int             i;
    char            *recvBuf;
@@ -941,13 +979,13 @@ void E2APMsgHdlr(Buffer *mBuf)
             case InitiatingMessageE2__value_PR_E2setupRequest:
             {
                DU_LOG("\nINFO  -->  E2AP : E2 setup request received");
-               ProcE2SetupReq(&e2apMsg->choice.initiatingMessage->value.choice.E2setupRequest);
+               ProcE2SetupReq(duId, &e2apMsg->choice.initiatingMessage->value.choice.E2setupRequest);
 	            break;
             }
             case InitiatingMessageE2__value_PR_E2nodeConfigurationUpdate:
             {
                DU_LOG("\nINFO  -->  E2AP : E2 node config update received");
-               BuildAndSendE2NodeConfigUpdateAck();
+               BuildAndSendE2NodeConfigUpdateAck(*duId);
                break;
             }
             case InitiatingMessageE2__value_PR_RICindication:
@@ -969,7 +1007,7 @@ void E2APMsgHdlr(Buffer *mBuf)
          {
             case SuccessfulOutcomeE2__value_PR_RICsubscriptionResponse:  
             {
-               DU_LOG("\nINFO  -->  E2AP : RICsubscriptionResponse Msg Acknowledged");
+               ProcRicSubscriptionResponse(*duId);
                break;
             }
             default:
@@ -988,10 +1026,6 @@ void E2APMsgHdlr(Buffer *mBuf)
       }
  
     }/* End of switch(e2apMsg->present) */
-
-    if(!ricCfgParams.ricSubsStatus)
-      BuildAndSendRicSubscriptionReq(); 
-       
 } /* End of E2APMsgHdlr */
 
 

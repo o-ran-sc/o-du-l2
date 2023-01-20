@@ -173,28 +173,29 @@ void readCuCfg()
    cuCb.cuCfgParams.egtpParams.numDu = 1;
 
 #else
-   cuCb.cuCfgParams.sctpParams.numDu = 0;
+   /* CU IP Address and Port*/
+   memset(&ipv4_du, 0, sizeof(uint32_t));
+   cmInetAddr((S8*)LOCAL_IP_CU, &ipv4_cu);
+   cuCb.cuCfgParams.sctpParams.localIpAddr.ipV4Addr = ipv4_cu;
+   cuCb.cuCfgParams.sctpParams.localIpAddr.ipV6Pres = false;
+   cuCb.cuCfgParams.sctpParams.f1SctpPort = F1_SCTP_PORT;
+
+   cuCb.cuCfgParams.sctpParams.numDestNode = 0;
    cuCb.cuCfgParams.egtpParams.numDu = 0;
+
    numDu = 0;
-   while(numDu < MAX_DU_SUPPORTED)
+   while(numDu < NUM_F1_ASSOC)
    {
       /* DU IP Address and Port*/
       memset(&ipv4_du, 0, sizeof(uint32_t));
-      cmInetAddr((S8*)DU_IP_V4_ADDR[numDu], &ipv4_du);
-      cuCb.cuCfgParams.sctpParams.sctpAssoc[numDu].duIpAddr.ipV4Addr = ipv4_du;
-      cuCb.cuCfgParams.sctpParams.sctpAssoc[numDu].duIpAddr.ipV6Pres = false;
-      cuCb.cuCfgParams.sctpParams.sctpAssoc[numDu].duPort = DU_SCTP_PORT[numDu];
-
-      /* CU IP Address and Port*/
-      memset(&ipv4_du, 0, sizeof(uint32_t));
-      cmInetAddr((S8*)CU_IP_V4_ADDR, &ipv4_cu);
-      cuCb.cuCfgParams.sctpParams.sctpAssoc[numDu].cuIpAddr.ipV4Addr = ipv4_cu;
-      cuCb.cuCfgParams.sctpParams.sctpAssoc[numDu].cuIpAddr.ipV6Pres = false;
-      cuCb.cuCfgParams.sctpParams.sctpAssoc[numDu].cuPort = CU_SCTP_PORT_TO_DU[numDu];
+      cmInetAddr((S8*)REMOTE_IP_DU[numDu], &ipv4_du);
+      cuCb.cuCfgParams.sctpParams.destCb[numDu].destIpAddr.ipV4Addr = ipv4_du;
+      cuCb.cuCfgParams.sctpParams.destCb[numDu].destIpAddr.ipV6Pres = false;
+      cuCb.cuCfgParams.sctpParams.destCb[numDu].destPort = F1_SCTP_PORT;
 
       /* EGTP Parameters */
       memset(&ipv4_du, 0, sizeof(uint32_t));
-      cmInetAddr((S8*)DU_IP_V4_ADDR[numDu], &ipv4_du);
+      cmInetAddr((S8*)REMOTE_IP_DU[numDu], &ipv4_du);
       cuCb.cuCfgParams.egtpParams.egtpAssoc[numDu].localIp.ipV4Pres = TRUE;
       cuCb.cuCfgParams.egtpParams.egtpAssoc[numDu].localIp.ipV4Addr = ipv4_cu;
       cuCb.cuCfgParams.egtpParams.egtpAssoc[numDu].localPort = CU_EGTP_PORT[numDu];
@@ -209,7 +210,7 @@ void readCuCfg()
    cuCb.cuCfgParams.egtpParams.currTunnelId = cuCb.cuCfgParams.egtpParams.minTunnelId;
    cuCb.cuCfgParams.egtpParams.maxTunnelId = MAX_TEID;
    cuCb.cuCfgParams.egtpParams.numDu = numDu;
-   cuCb.cuCfgParams.sctpParams.numDu = numDu;
+   cuCb.cuCfgParams.sctpParams.numDestNode = numDu;
 #endif
 
    /*PLMN*/
@@ -294,7 +295,7 @@ uint8_t startDlData()
    
    while(totalNumOfTestFlow)
    {
-      for(duId = 1; duId<=MAX_DU_SUPPORTED; duId++)
+      for(duId = 1; duId <= NUM_F1_ASSOC; duId++)
       {
          for(teId = 1; teId <= NUM_TUNNEL_TO_PUMP_DATA; teId++)
          {

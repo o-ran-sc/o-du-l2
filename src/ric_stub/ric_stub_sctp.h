@@ -23,7 +23,8 @@
 
 #define MAX_RETRY 5
 #define MAX_IPV6_LEN 16
-#define MAX_DU_SUPPORTED 1 
+#define MAX_DU_SUPPORTED 2
+#define MAX_ASSOC_SUPPORTED MAX_DU_SUPPORTED
 
 /* Global variable declaration */
 uint8_t   socket_type;      /* Socket type */
@@ -43,17 +44,15 @@ typedef struct
 
 typedef struct
 {
+   uint32_t              duId;
    uint16_t              destPort;         /* DU PORTS */
-   uint16_t              srcPort;
    bool                  bReadFdSet;
    CmInetFd              sockFd;           /* Socket file descriptor */
    CmInetAddr            peerAddr;
-   CmInetFd              lstnSockFd;       /* Listening Socket file descriptor */
    CmInetNetAddrLst      destAddrLst;      /* DU Ip address */
-   CmInetNetAddrLst      localAddrLst;
    CmInetNetAddr         destIpNetAddr;    /* DU Ip address */ 
    Bool                  connUp;
-}RicSctpDestCb;
+}RicSctpAssocCb;
 
 typedef struct ipAddr
 {
@@ -65,35 +64,37 @@ typedef struct ipAddr
 
 typedef struct sctpAssocInfo
 {
-   SctpIpAddr  duIpAddr;
-   uint16_t    duPort;
-   SctpIpAddr  ricIpAddr;
-   uint16_t    ricPort;
-}SctpAssocInfo;
+   SctpIpAddr  destIpAddr;
+   uint16_t    destPort;
+}SctpDestInfo;
 
 typedef struct ricSctpParams
 {
-   uint8_t        numDu;
-   SctpAssocInfo  sctpAssoc[MAX_DU_SUPPORTED];
+   SctpIpAddr     localIpAddr;
+   uint16_t       e2SctpPort;
+   uint8_t        numDestNode;
+   SctpDestInfo   destCb[MAX_DU_SUPPORTED];
 }RicSctpParams;
 
 typedef struct sctpGlobalCb
 {
-   RicSctpParams sctpCfg;
-   uint8_t      numDu;
-   RicSctpDestCb destCb[MAX_DU_SUPPORTED]; 
+   RicSctpParams    sctpCfg;
+   CmInetNetAddrLst localAddrLst;
+   CmInetFd         e2LstnSockFd;       /* Listening Socket file descriptor for E2 association */
+   uint8_t          numAssoc;
+   RicSctpAssocCb   assocCb[MAX_ASSOC_SUPPORTED]; 
 }SctpGlobalCb;
 
 SctpGlobalCb sctpCb;
 
 uint8_t sctpActvInit();
-uint8_t sctpSend(Buffer *mBuf);
+uint8_t sctpSend(uint32_t duId, Buffer *mBuf);
 uint8_t sctpCfgReq();
 uint8_t sctpStartReq();
 uint8_t sctpSetSockOpts(CmInetFd *sock_Fd);
-uint8_t sctpAccept(RicSctpDestCb *destCb);
+uint8_t sctpAccept(RicSctpAssocCb *assocCb);
 uint8_t sctpSockPoll();
-uint8_t processPolling(sctpSockPollParams *pollParams, RicSctpDestCb *destCb, uint32_t *timeoutPtr, CmInetMemInfo *memInfo);
+uint8_t processPolling(sctpSockPollParams *pollParams, RicSctpAssocCb *destCb, uint32_t *timeoutPtr, CmInetMemInfo *memInfo);
 uint8_t fillAddrLst(CmInetNetAddrLst *addrLstPtr, SctpIpAddr *ipAddr);
 uint8_t fillDestNetAddr(CmInetNetAddr *destAddrPtr, SctpIpAddr *dstIpPtr);
 
