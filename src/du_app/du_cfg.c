@@ -444,8 +444,8 @@ uint8_t fillDuPort(uint16_t *duPort)
    duPort[F1_INTERFACE]   = g_cfg.DU_Port;
    duPort[E2_INTERFACE]   = g_cfg.RIC_Port;
 #else
-   duPort[F1_INTERFACE]   = DU_PORT;     /* DU Port idx  0 38472 */
-   duPort[E2_INTERFACE]   = RIC_PORT;    /* RIC Port idx 1 38482 */
+   duPort[F1_INTERFACE]   = F1_SCTP_PORT;     /* DU Port idx  0 38472 */
+   duPort[E2_INTERFACE]   = E2_SCTP_PORT;    /* RIC Port idx 1 38482 */
 #endif
    return ROK;
 }
@@ -699,8 +699,8 @@ uint8_t readCfg()
    cmInetAddr((S8*)CU_IP_V4_ADDR, &ipv4_cu);
    cmInetAddr((S8*)RIC_IP_V4_ADDR, &ipv4_ric);
 
-   duCfgParam.sctpParams.cuPort = CU_PORT;
-   duCfgParam.sctpParams.ricPort = RIC_PORT;
+   duCfgParam.sctpParams.cuPort = F1_SCTP_PORT;
+   duCfgParam.sctpParams.ricPort = E2_SCTP_PORT;
 #endif
 
    fillDuPort(duCfgParam.sctpParams.duPort);

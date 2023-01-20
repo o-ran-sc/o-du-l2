@@ -66,17 +66,17 @@ II. Execution - Using Docker Images
 The call flow between O-DU High and CU Stub can be achieved by executing docker containers.
 
 - Pull the last built docker images:
-    -	docker pull nexus3.o-ran-sc.org:10004/o-ran-sc/o-du-l2:7.0.2
-    -	docker pull nexus3.o-ran-sc.org:10004/o-ran-sc/o-du-l2-cu-stub:7.0.2
+    -	docker pull nexus3.o-ran-sc.org:10004/o-ran-sc/o-du-l2:7.0.3
+    -	docker pull nexus3.o-ran-sc.org:10004/o-ran-sc/o-du-l2-cu-stub:7.0.3
 
 - Run CU Stub docker:
     - docker run -it --privileged --net=host --entrypoint bash
-      nexus3.o-ran-sc.org:10004/o-ran-sc/o-du-l2-cu-stub:7.0.2
+      nexus3.o-ran-sc.org:10004/o-ran-sc/o-du-l2-cu-stub:7.0.3
     - ./cu_stub
 
 - Run ODU docker:
     - docker run -it --privileged --net=host --entrypoint bash
-      nexus3.o-ran-sc.org:10004/o-ran-sc/o-du-l2:7.0.2
+      nexus3.o-ran-sc.org:10004/o-ran-sc/o-du-l2:7.0.3
     - ./odu
 
 
