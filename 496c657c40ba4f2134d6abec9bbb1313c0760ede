@@ -1,0 +1,255 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "16346918_177b41c1",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 422,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-01-23T13:29:37Z",
+      "side": 1,
+      "message": "remove commented code",
+      "revId": "496c657c40ba4f2134d6abec9bbb1313c0760ede",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1324f418_5b74e881",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 504,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-01-23T13:29:37Z",
+      "side": 1,
+      "message": "remove commented code",
+      "revId": "496c657c40ba4f2134d6abec9bbb1313c0760ede",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6538109c_da06f8d8",
+        "filename": "src/5gnrsch/sch_rach.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 459,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-01-23T13:29:37Z",
+      "side": 1,
+      "message": "remove",
+      "revId": "496c657c40ba4f2134d6abec9bbb1313c0760ede",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8e1e59f0_2a533f9d",
+        "filename": "src/5gnrsch/sch_ue_mgr.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 915,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-01-23T13:29:37Z",
+      "side": 1,
+      "message": "remove",
+      "revId": "496c657c40ba4f2134d6abec9bbb1313c0760ede",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0a27bc51_72f5d5b5",
+        "filename": "src/5gnrsch/sch_ue_mgr.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 949,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-01-23T13:29:37Z",
+      "side": 1,
+      "message": "remove",
+      "range": {
+        "startLine": 949,
+        "startChar": 8,
+        "endLine": 949,
+        "endChar": 17
+      },
+      "revId": "496c657c40ba4f2134d6abec9bbb1313c0760ede",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "073cbe6f_e2e3271c",
+        "filename": "src/cm/mac_sch_interface.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 1108,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-01-23T13:29:37Z",
+      "side": 1,
+      "message": "As per WG8 AAD spec, CSI also has beamPUSCHInfo. Shouldn\u0027t we add this too even if we are not using, like we did for puschUci",
+      "revId": "496c657c40ba4f2134d6abec9bbb1313c0760ede",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5cf6c452_9efa4a6c",
+        "filename": "src/cm/mac_sch_interface.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 1126,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-01-23T13:29:37Z",
+      "side": 1,
+      "message": "HarqFdbkInfo (it can be ack or nack, so use the term feedback)",
+      "range": {
+        "startLine": 1126,
+        "startChar": 3,
+        "endLine": 1126,
+        "endChar": 14
+      },
+      "revId": "496c657c40ba4f2134d6abec9bbb1313c0760ede",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "93bbafa1_a9072ade",
+        "filename": "src/cm/mac_sch_interface.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 1127,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-01-23T13:29:37Z",
+      "side": 1,
+      "message": "csiFdbkInfo",
+      "revId": "496c657c40ba4f2134d6abec9bbb1313c0760ede",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8fdae241_fc893831",
+        "filename": "src/cm/mac_sch_interface.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 1146,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-01-23T13:29:37Z",
+      "side": 1,
+      "message": "csiInfo",
+      "range": {
+        "startLine": 1146,
+        "startChar": 20,
+        "endLine": 1146,
+        "endChar": 28
+      },
+      "revId": "496c657c40ba4f2134d6abec9bbb1313c0760ede",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1b3df2cc_8cae4091",
+        "filename": "src/cm/mac_sch_interface.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 1155,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-01-23T13:29:37Z",
+      "side": 1,
+      "message": "As discussed, lets fill this structure only in case of non-Intel-L1, since Intel\u0027s L1 is not using this",
+      "revId": "496c657c40ba4f2134d6abec9bbb1313c0760ede",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "724366c0_5932af95",
+        "filename": "src/cm/mac_sch_interface.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 1155,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-01-23T13:29:37Z",
+      "side": 1,
+      "message": "rename to SchPrachInfo to have consistency in naming",
+      "range": {
+        "startLine": 1155,
+        "startChar": 3,
+        "endLine": 1155,
+        "endChar": 15
+      },
+      "revId": "496c657c40ba4f2134d6abec9bbb1313c0760ede",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0ae63ebf_66e9bb44",
+        "filename": "src/cm/mac_sch_interface.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 1158,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-01-23T13:29:37Z",
+      "side": 1,
+      "message": "Decide whether to rename PUCCH info to UCI info",
+      "range": {
+        "startLine": 1158,
+        "startChar": 20,
+        "endLine": 1158,
+        "endChar": 32
+      },
+      "revId": "496c657c40ba4f2134d6abec9bbb1313c0760ede",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4ae8e3fc_738b8f42",
+        "filename": "src/du_app/du_mgr_main.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 551,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-01-23T13:29:37Z",
+      "side": 1,
+      "message": "Reminder to revert before submissions",
+      "revId": "496c657c40ba4f2134d6abec9bbb1313c0760ede",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
