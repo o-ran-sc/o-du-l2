@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "950867ec_ac6b5ce7",
+        "filename": "src/cm/common_def.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 335,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-01-23T10:49:42Z",
+      "side": 0,
+      "message": "Since this is removed, please check if definition of SlotConfig is also to be removed or used anywhere else.",
+      "range": {
+        "startLine": 335,
+        "startChar": 3,
+        "endLine": 335,
+        "endChar": 13
+      },
+      "revId": "a6fdf00681f781fbccf7aa4bf95582f20e3039bb",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
