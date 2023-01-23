@@ -24,6 +24,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "716a9836_52b8935d",
+        "filename": "src/cu_stub/cu_stub_sctp.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-01-23T06:53:31Z",
+      "side": 1,
+      "message": "Assoc Id is a term used at linux SCTP socket level. This ID is assigned by SCTP to the association established. In order to not confuse between DU ID and Assoc Id, I feel its better we keep duId.",
+      "parentUuid": "6455b285_6f22b37c",
+      "range": {
+        "startLine": 47,
+        "startChar": 20,
+        "endLine": 47,
+        "endChar": 24
+      },
+      "revId": "090ade36ec6e45cea55853c61c9910752f818dc6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6cb9f00f_fd1b9dd9",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-01-23T05:19:39Z",
       "side": 1,
       "message": "can we change it to MAX_ASSOC_SUPPORTED?",
+      "range": {
+        "startLine": 76,
+        "startChar": 25,
+        "endLine": 76,
+        "endChar": 41
+      },
+      "revId": "090ade36ec6e45cea55853c61c9910752f818dc6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1045fef5_ee78065c",
+        "filename": "src/cu_stub/cu_stub_sctp.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-01-23T06:53:31Z",
+      "side": 1,
+      "message": "In SCTP, a destination can have multiple associations. Hence I have kept the differentiation between the MAX_DU and MAX_ASSOC. However, in our implementation, since one F1 assoc is established with one DU, the value for both macros remain the same.",
+      "parentUuid": "6cb9f00f_fd1b9dd9",
       "range": {
         "startLine": 76,
         "startChar": 25,
@@ -93,6 +141,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "08049857_849531f6",
+        "filename": "src/ric_stub/ric_stub_sctp.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-01-23T06:53:31Z",
+      "side": 1,
+      "message": "Assoc Id is a term used at linux SCTP socket level. This ID is assigned by SCTP to the association established. In order to not confuse between DU ID and Assoc Id, I feel its better we keep duId.",
+      "parentUuid": "1f57c6f7_65a15e2d",
+      "range": {
+        "startLine": 47,
+        "startChar": 25,
+        "endLine": 47,
+        "endChar": 29
+      },
+      "revId": "090ade36ec6e45cea55853c61c9910752f818dc6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "01ac4a58_c032d019",
@@ -106,6 +178,30 @@
       "writtenOn": "2023-01-23T05:19:39Z",
       "side": 1,
       "message": "can we rename it to MAX_ASSOC_SUPPO",
+      "range": {
+        "startLine": 76,
+        "startChar": 25,
+        "endLine": 76,
+        "endChar": 41
+      },
+      "revId": "090ade36ec6e45cea55853c61c9910752f818dc6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cfc0292e_c35d703f",
+        "filename": "src/ric_stub/ric_stub_sctp.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-01-23T06:53:31Z",
+      "side": 1,
+      "message": "In SCTP, a destination can have multiple associations. Hence I have kept the differentiation between the MAX_DU and MAX_ASSOC. However, in our implementation, since one E2 assoc is established with one DU, the value for both macros remain the same.",
+      "parentUuid": "01ac4a58_c032d019",
       "range": {
         "startLine": 76,
         "startChar": 25,
