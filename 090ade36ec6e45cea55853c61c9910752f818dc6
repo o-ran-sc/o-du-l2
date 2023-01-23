@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6455b285_6f22b37c",
+        "filename": "src/cu_stub/cu_stub_sctp.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-01-23T05:19:39Z",
+      "side": 1,
+      "message": "can we name it to assocId to make it generic",
+      "range": {
+        "startLine": 47,
+        "startChar": 20,
+        "endLine": 47,
+        "endChar": 24
+      },
+      "revId": "090ade36ec6e45cea55853c61c9910752f818dc6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6cb9f00f_fd1b9dd9",
+        "filename": "src/cu_stub/cu_stub_sctp.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-01-23T05:19:39Z",
+      "side": 1,
+      "message": "can we change it to MAX_ASSOC_SUPPORTED?",
+      "range": {
+        "startLine": 76,
+        "startChar": 25,
+        "endLine": 76,
+        "endChar": 41
+      },
+      "revId": "090ade36ec6e45cea55853c61c9910752f818dc6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5899a735_1cc08f5e",
+        "filename": "src/du_app/du_cfg.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-01-23T05:19:39Z",
+      "side": 1,
+      "message": "Can we mention the spec ref?",
+      "range": {
+        "startLine": 35,
+        "startChar": 8,
+        "endLine": 35,
+        "endChar": 21
+      },
+      "revId": "090ade36ec6e45cea55853c61c9910752f818dc6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1f57c6f7_65a15e2d",
+        "filename": "src/ric_stub/ric_stub_sctp.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-01-23T05:19:39Z",
+      "side": 1,
+      "message": "can we rename it to generic name?",
+      "range": {
+        "startLine": 47,
+        "startChar": 25,
+        "endLine": 47,
+        "endChar": 29
+      },
+      "revId": "090ade36ec6e45cea55853c61c9910752f818dc6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "01ac4a58_c032d019",
+        "filename": "src/ric_stub/ric_stub_sctp.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-01-23T05:19:39Z",
+      "side": 1,
+      "message": "can we rename it to MAX_ASSOC_SUPPO",
+      "range": {
+        "startLine": 76,
+        "startChar": 25,
+        "endLine": 76,
+        "endChar": 41
+      },
+      "revId": "090ade36ec6e45cea55853c61c9910752f818dc6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
