@@ -94,6 +94,52 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "be717dd9_b7a1cbd4",
+        "filename": "src/cm/mac_sch_interface.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 1062,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-01-24T08:07:34Z",
+      "side": 1,
+      "message": "rearrange the parameters as per WG8",
+      "range": {
+        "startLine": 1062,
+        "startChar": 3,
+        "endLine": 1062,
+        "endChar": 12
+      },
+      "revId": "496c657c40ba4f2134d6abec9bbb1313c0760ede",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "335e6f19_7898f3a6",
+        "filename": "src/cm/mac_sch_interface.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 1083,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-01-24T08:07:34Z",
+      "side": 1,
+      "message": "I  just checked the FAPI PUSCH PDU. It doesnt mention this and next two parameters..\n\nAs discussed, if Intel is reading this parameter then we will put these three parameters inside INTEL flag else, please remove it from this structure also remove the filling part in lwr_mac_fsm.c",
+      "range": {
+        "startLine": 1083,
+        "startChar": 20,
+        "endLine": 1083,
+        "endChar": 35
+      },
+      "revId": "496c657c40ba4f2134d6abec9bbb1313c0760ede",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "073cbe6f_e2e3271c",
         "filename": "src/cm/mac_sch_interface.h",
         "patchSetId": 2
@@ -105,6 +151,24 @@
       "writtenOn": "2023-01-23T13:29:37Z",
       "side": 1,
       "message": "As per WG8 AAD spec, CSI also has beamPUSCHInfo. Shouldn\u0027t we add this too even if we are not using, like we did for puschUci",
+      "revId": "496c657c40ba4f2134d6abec9bbb1313c0760ede",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b171cfdd_b1360bcd",
+        "filename": "src/cm/mac_sch_interface.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 1108,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-01-24T08:07:34Z",
+      "side": 1,
+      "message": "Actually this BeamPuchInfo is not a part of CSI , it is a part inside UCI i.e. schPucchInfo. That is added in its parent structure \"schPucchInfo\"",
+      "parentUuid": "073cbe6f_e2e3271c",
       "revId": "496c657c40ba4f2134d6abec9bbb1313c0760ede",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -134,6 +198,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "96f9bd1a_44d10e88",
+        "filename": "src/cm/mac_sch_interface.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 1126,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-01-24T08:07:34Z",
+      "side": 1,
+      "message": "Please also add harqFlag inside this structure because WG8 specifies to check the presence of this HARQ in UCI. A flag will help . \n\"harqFlag\" which is removed , can we put it inside HarqAckInfo?",
+      "range": {
+        "startLine": 1126,
+        "startChar": 14,
+        "endLine": 1126,
+        "endChar": 20
+      },
+      "revId": "496c657c40ba4f2134d6abec9bbb1313c0760ede",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "93bbafa1_a9072ade",
         "filename": "src/cm/mac_sch_interface.h",
         "patchSetId": 2
@@ -145,6 +232,75 @@
       "writtenOn": "2023-01-23T13:29:37Z",
       "side": 1,
       "message": "csiFdbkInfo",
+      "revId": "496c657c40ba4f2134d6abec9bbb1313c0760ede",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c3b1b00e_cd39025e",
+        "filename": "src/cm/mac_sch_interface.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 1127,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-01-24T08:07:34Z",
+      "side": 1,
+      "message": "Same as above, please include CSI flag",
+      "range": {
+        "startLine": 1127,
+        "startChar": 3,
+        "endLine": 1127,
+        "endChar": 20
+      },
+      "revId": "496c657c40ba4f2134d6abec9bbb1313c0760ede",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "657b1b8b_4cc06edf",
+        "filename": "src/cm/mac_sch_interface.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 1136,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-01-24T08:07:34Z",
+      "side": 1,
+      "message": "Can you please rename it to beamPuschInfo as per WG8",
+      "range": {
+        "startLine": 1136,
+        "startChar": 20,
+        "endLine": 1136,
+        "endChar": 31
+      },
+      "revId": "496c657c40ba4f2134d6abec9bbb1313c0760ede",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "887a0969_fc80e964",
+        "filename": "src/cm/mac_sch_interface.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 1136,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-01-24T08:07:34Z",
+      "side": 1,
+      "message": "If possible.. can you arrange these parameters in same order as WG8 spec",
+      "range": {
+        "startLine": 1136,
+        "startChar": 3,
+        "endLine": 1136,
+        "endChar": 20
+      },
       "revId": "496c657c40ba4f2134d6abec9bbb1313c0760ede",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
