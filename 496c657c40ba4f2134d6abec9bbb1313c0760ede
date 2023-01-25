@@ -211,6 +211,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c67138ce_6257c6b6",
+        "filename": "src/cm/mac_sch_interface.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 1062,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-01-25T07:17:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "be717dd9_b7a1cbd4",
+      "range": {
+        "startLine": 1062,
+        "startChar": 3,
+        "endLine": 1062,
+        "endChar": 12
+      },
+      "revId": "496c657c40ba4f2134d6abec9bbb1313c0760ede",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "335e6f19_7898f3a6",
@@ -224,6 +248,30 @@
       "writtenOn": "2023-01-24T08:07:34Z",
       "side": 1,
       "message": "I  just checked the FAPI PUSCH PDU. It doesnt mention this and next two parameters..\n\nAs discussed, if Intel is reading this parameter then we will put these three parameters inside INTEL flag else, please remove it from this structure also remove the filling part in lwr_mac_fsm.c",
+      "range": {
+        "startLine": 1083,
+        "startChar": 20,
+        "endLine": 1083,
+        "endChar": 35
+      },
+      "revId": "496c657c40ba4f2134d6abec9bbb1313c0760ede",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a13bfdb2_07ffaf1f",
+        "filename": "src/cm/mac_sch_interface.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 1083,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-01-25T07:17:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "335e6f19_7898f3a6",
       "range": {
         "startLine": 1083,
         "startChar": 20,
@@ -357,6 +405,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5a6264c3_741fbfd0",
+        "filename": "src/cm/mac_sch_interface.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 1126,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-01-25T07:17:22Z",
+      "side": 1,
+      "message": "as discussed,\nThere is no need to add any flag for this parameter. we can identify the presence of the structure based on the value assigned to it.\n0 \u003d no HARQ bits\n1-\u003e2 \u003d Valid for Formats 0 and 1\n2 -\u003e 1706 \u003d Valid for Formats 2, 3 and 4",
+      "parentUuid": "96f9bd1a_44d10e88",
+      "range": {
+        "startLine": 1126,
+        "startChar": 14,
+        "endLine": 1126,
+        "endChar": 20
+      },
+      "revId": "496c657c40ba4f2134d6abec9bbb1313c0760ede",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "93bbafa1_a9072ade",
@@ -415,6 +487,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3575676b_f552b615",
+        "filename": "src/cm/mac_sch_interface.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 1127,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-01-25T07:17:22Z",
+      "side": 1,
+      "message": "There is no need to add any flag for this parameter. we can identify the presence of the structure based on the value assigned to it.\nValue: \n0 \u003d no CSI bits\n1 -\u003e 1706",
+      "parentUuid": "c3b1b00e_cd39025e",
+      "range": {
+        "startLine": 1127,
+        "startChar": 3,
+        "endLine": 1127,
+        "endChar": 20
+      },
+      "revId": "496c657c40ba4f2134d6abec9bbb1313c0760ede",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "657b1b8b_4cc06edf",
@@ -456,6 +552,54 @@
         "startChar": 3,
         "endLine": 1136,
         "endChar": 20
+      },
+      "revId": "496c657c40ba4f2134d6abec9bbb1313c0760ede",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2a3f8e91_1a486d60",
+        "filename": "src/cm/mac_sch_interface.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 1136,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-01-25T07:17:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "887a0969_fc80e964",
+      "range": {
+        "startLine": 1136,
+        "startChar": 3,
+        "endLine": 1136,
+        "endChar": 20
+      },
+      "revId": "496c657c40ba4f2134d6abec9bbb1313c0760ede",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3a6f88d2_5f70f614",
+        "filename": "src/cm/mac_sch_interface.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 1136,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-01-25T07:17:22Z",
+      "side": 1,
+      "message": "in wg8 we need to correct this name beamPuschInfo-\u003ebeamPucchInfo.",
+      "parentUuid": "657b1b8b_4cc06edf",
+      "range": {
+        "startLine": 1136,
+        "startChar": 20,
+        "endLine": 1136,
+        "endChar": 31
       },
       "revId": "496c657c40ba4f2134d6abec9bbb1313c0760ede",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
