@@ -33,7 +33,7 @@
 #define MAX_SFN_VALUE    1023
 #define NR_PCI            1
 #define SLOT_DELAY       3
-#define NUM_DRB_TO_PUMP_DATA  3
+#define NUM_DRB_TO_PUMP_DATA  2
 #define NUM_UL_PACKETS   1
 
 /*UE Ids for RACH IND*/

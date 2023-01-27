@@ -28,13 +28,12 @@
 #ifndef O1_ENABLE
 #define LOCAL_IP_CU "192.168.130.82"
 
-#define F1_SCTP_PORT 38472
+#define F1_SCTP_PORT 38472  /* As per the spec 38.472, the registered port number for F1AP is 38472 */
 #define NUM_F1_ASSOC 1  
 #define REMOTE_IP_DU (char*[]){"192.168.130.81", "192.168.130.83"}
 #endif
 
-#define DU_EGTP_PORT  (int[]){39001, 39002}
-#define CU_EGTP_PORT (int[]){39003, 39004}
+#define F1_EGTP_PORT 2152 /* As per the spec 29.281, the registered port number for GTP-U is 2152 */
 #define RRC_VER 0
 #define EXT_RRC_VER 5
 

@@ -345,6 +345,7 @@ void oduCpyFixBufToMsg(uint8_t *fixBuf, Buffer *mBuf, uint16_t len);
 uint8_t buildPlmnId(Plmn plmn, uint8_t *buf);
 uint16_t convertScsEnumValToScsVal(uint8_t scsEnumValue);
 uint8_t convertScsValToScsEnum(uint32_t num);
+uint8_t convertScsPeriodicityToEnum(uint32_t num);
 
 uint8_t SGetSBufNewForDebug(char *file, const char *func, int line, Region region, Pool pool, Data **ptr, Size size);
 uint8_t SPutSBufNewForDebug(char *file, const char *func, int line, Region region, Pool pool, Data *ptr, Size size);

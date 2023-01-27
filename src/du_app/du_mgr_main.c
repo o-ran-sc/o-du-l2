@@ -29,6 +29,8 @@
 #include "du_mgr_main.h"
 #include "du_sctp.h"
 #include "du_egtp.h"
+#include "du_cell_mgr.h"
+#include "du_f1ap_msg_hdl.h"
 
 #ifdef O1_ENABLE
 
