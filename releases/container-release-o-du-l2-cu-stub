@@ -5,7 +5,7 @@ container_release_tag: 7.0.4
 container_pull_registry: nexus.o-ran-sc.org:10004
 container_push_registry: nexus.o-ran-sc.org:10002
 project: o-du-l2 
-ref: 021ed9015df5ec5b3b97a449d2c5e14e2fa7c99c 
+ref: 835385c065ae59f6e62368c5c2cb452750422461 
 containers:
 - name: o-du-l2-cu-stub
 version: 7.0.4
