@@ -40,12 +40,6 @@
 uint8_t unpackEgtpSrvOpenReq(EgtpSrvOpenReq func, Pst *pst, Buffer *mBuf);
 uint8_t         protType;
 
-typedef struct egtpTptSrvr
-{
-   CmInetAddr  addr; 
-   CmInetFd    sockFd;     /* Socket file descriptor */
-}EgtpTptSrvr;
-
 typedef struct EgtpTeIdCb
 {
    uint32_t teId;              /* Local tunnel id */
@@ -59,9 +53,7 @@ typedef struct EgtpTeIdCb
 
 typedef struct egtpDstCb
 {
-   CmInetIpAddr  dstIp;          /* destination IP */
-   uint16_t      dstPort;        /* destination port that sends data */
-   EgtpTptSrvr   sendTptSrvr;    /* Transport server for sending UDP msg to */
+   CmInetAddr    dstAddr;       /* Destination Server address */
    uint32_t      numTunn;        /* Number of tunnels */
    CmHashListCp  teIdLst;        /* Tunnel Id list for this destination */
 }EgtpDstCb;
@@ -69,7 +61,8 @@ typedef struct egtpDstCb
 typedef struct egtpGlobalCb
 {
    EgtpConfig   egtpCfg;         /* EGTP configuration */
-   EgtpTptSrvr  recvTptSrvr;     /* Transport server for receiving UDP msg */
+   CmInetAddr   localAddr;       /* Local Server address */
+   CmInetFd     sockFd;          /* Socket file descriptor */
    EgtpDstCb    dstCb;           /* Destination endpoint */
 }EgtpGlobalCb;
 
@@ -81,7 +74,7 @@ uint8_t egtpActvTsk(Pst *pst, Buffer *mBuf);
 uint8_t egtpFillRspPst(Pst *pst, Pst *rspPst);
 uint8_t egtpCfgReq(Pst *pst, EgtpConfig egtpCfg);
 uint8_t egtpSrvOpenReq(Pst *pst);
-uint8_t egtpSrvOpenPrc(uint8_t sockType, EgtpTptSrvr *server);
+uint8_t egtpSrvOpenPrc(uint8_t sockType);
 uint8_t egtpTnlMgmtReq(Pst *pst, EgtpTnlEvt tnlEvt);
 uint8_t egtpTnlAdd(EgtpTnlEvt tnlEvt);
 uint8_t egtpTnlMod(EgtpTnlEvt tnlEvt);

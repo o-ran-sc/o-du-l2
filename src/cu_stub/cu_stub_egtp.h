@@ -21,7 +21,6 @@
 #ifndef __CU_STUB_EGTP_H__
 #define __CU_STUB_EGTP_H__
 
-#define EGTP_RECVR_PORT 2152 /* As per the spec 29.281, the registered port number for GTP-U is 2152 */
 #define EGTP_TNL_MGMT_ADD 1
 #define EGTP_TNL_MGMT_MOD 2
 #define EGTP_TNL_MGMT_DEL 3
@@ -92,12 +91,6 @@ typedef struct egtpTnlEvt
    uint32_t remTeid;
 }EgtpTnlEvt;
 
-typedef struct egtpTptSrvr
-{
-   CmInetAddr  addr; 
-   CmInetFd    sockFd;     /* Socket file descriptor */
-}EgtpTptSrvr;
-
 typedef struct EgtpTeIdCb
 {
    uint32_t teId;              /* Local tunnel id */
@@ -112,20 +105,16 @@ typedef struct EgtpTeIdCb
 typedef struct egtpDstCb
 {
    uint32_t      duId;
-   CmInetIpAddr  dstIp;          /* destination IP */
-   uint16_t      dstPort;        /* Remote port that sends data */
-   EgtpTptSrvr   sendTptSrvr;    /* Transport server for sending UDP msg to */
+   CmInetAddr    dstAddr;
    uint32_t      numTunn;        /* Number of tunnels */
    CmHashListCp  teIdLst;        /* Tunnel Id list for this destination */
 }EgtpDstCb;
 
-typedef struct egtpAssoc 
+typedef struct egtpDstCfg 
 {
-   SctpIpAddr  localIp;
-   uint16_t    localPort;
-   SctpIpAddr  destIp;
-   uint16_t    destPort;
-}EgtpAssoc;
+   SctpIpAddr  dstIp;
+   uint16_t    dstPort;
+}EgtpDstCfg;
 
 typedef struct cuEgtpParams
 {
@@ -133,13 +122,16 @@ typedef struct cuEgtpParams
    uint32_t       minTunnelId;
    uint32_t       maxTunnelId;
    uint8_t        numDu;
-   EgtpAssoc      egtpAssoc[MAX_DU_SUPPORTED];
+   SctpIpAddr     localIp;
+   uint16_t       localPort;
+   EgtpDstCfg     dstCfg[MAX_DU_SUPPORTED];
 }CuEgtpParams;
 
 typedef struct egtpGlobalCb
 {
    CuEgtpParams egtpCfg;         /* EGTP configuration */
-   EgtpTptSrvr  recvTptSrvr;     /* Transport server for receiving UDP msg */
+   CmInetAddr   localAddr;
+   CmInetFd     sockFd;     /* Socket file descriptor */
    uint8_t      numDu;
    EgtpDstCb    dstCb[MAX_DU_SUPPORTED];          /* Destination endpoint */
    uint8_t      gCntPdu[MAX_TEID+1]; /* Maintaining PDU count for each bearer */

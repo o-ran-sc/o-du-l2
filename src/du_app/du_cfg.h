@@ -32,12 +32,11 @@
 #define CU_IP_V4_ADDR "192.168.130.82"
 #define RIC_IP_V4_ADDR "192.168.130.80"
 
-#define F1_SCTP_PORT 38472
+#define F1_SCTP_PORT 38472  /* As per the spec 38.472, the registered port number for F1AP is 38472 */
 #define E2_SCTP_PORT 36421
 #endif
 
-#define DU_EGTP_PORT  39001
-#define CU_EGTP_PORT  39003
+#define F1_EGTP_PORT  2152  /* As per the spec 29.281, the registered port number for GTP-U is 2152 */
 #define NR_PCI 1
 #define NR_CELL_ID 1
 
