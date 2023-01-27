@@ -288,13 +288,11 @@ uint8_t egtpCfgReq(Pst *pst, EgtpConfig egtpCfg)
 
    memcpy(&egtpCb.egtpCfg, &egtpCfg, sizeof(EgtpConfig));
 
-   egtpCb.recvTptSrvr.addr.address = CM_INET_NTOH_UINT32(egtpCb.egtpCfg.localIp.ipV4Addr);
-   egtpCb.recvTptSrvr.addr.port = EGTP_RECVR_PORT;
+   egtpCb.localAddr.address = CM_INET_NTOH_UINT32(egtpCb.egtpCfg.localIp.ipV4Addr);
+   egtpCb.localAddr.port = egtpCb.egtpCfg.localPort;
 
-   egtpCb.dstCb.dstIp = CM_INET_NTOH_UINT32(egtpCb.egtpCfg.destIp.ipV4Addr);
-   egtpCb.dstCb.dstPort = egtpCb.egtpCfg.destPort;
-   egtpCb.dstCb.sendTptSrvr.addr.address = CM_INET_NTOH_UINT32(egtpCb.egtpCfg.localIp.ipV4Addr);
-   egtpCb.dstCb.sendTptSrvr.addr.port = egtpCb.egtpCfg.localPort;
+   egtpCb.dstCb.dstAddr.address = CM_INET_NTOH_UINT32(egtpCb.egtpCfg.destIp.ipV4Addr);
+   egtpCb.dstCb.dstAddr.port = egtpCb.egtpCfg.destPort;
    egtpCb.dstCb.numTunn = 0;
 
    ret = cmHashListInit(&(egtpCb.dstCb.teIdLst), 1024, sizeof(EgtpTeIdCb), FALSE, CM_HASH_KEYTYPE_UINT32_MOD, DU_APP_MEM_REGION, DU_POOL);
@@ -381,23 +379,15 @@ uint8_t egtpSrvOpenReq(Pst *pst)
    DU_LOG("\nDEBUG  -->  EGTP : Received EGTP open server request");
  
    sockType = CM_INET_DGRAM;
-   ret = egtpSrvOpenPrc(sockType, &(egtpCb.recvTptSrvr));
-	/* Opening and Binding receiver socket */
+   ret = egtpSrvOpenPrc(sockType);
+   /* Opening and Binding receiver socket */
    if(ret != ROK)
    {
       DU_LOG("\nERROR  -->  EGTP : Failed while opening receiver transport server");
       return ret;
    }
-   /* Opening and Binding sender socket */
-	ret = egtpSrvOpenPrc(sockType, &(egtpCb.dstCb.sendTptSrvr));
-   if(ret != ROK)
-   {
-      DU_LOG("\nERROR  -->  EGTP : Failed while opening sender transport server");
-      return ret;
-   }
 
-   DU_LOG("\nDEBUG   -->  EGTP : Receiver socket[%d] and Sender socket[%d] open", egtpCb.recvTptSrvr.sockFd.fd,\
-   egtpCb.dstCb.sendTptSrvr.sockFd.fd);
+   DU_LOG("\nDEBUG   -->  EGTP : Socket [%d] is open", egtpCb.sockFd.fd);
 
    /* Start Socket polling */
    memset(&egtpPst, 0, sizeof(egtpPst));
@@ -440,16 +430,16 @@ uint8_t egtpSrvOpenReq(Pst *pst)
  *
  * ****************************************************************/
 
-uint8_t egtpSrvOpenPrc(uint8_t sockType, EgtpTptSrvr *server)
+uint8_t egtpSrvOpenPrc(uint8_t sockType)
 {
    S8 ret=ROK;
-   ret = cmInetSocket(sockType, &(server->sockFd), protType); 
+   ret = cmInetSocket(sockType, &(egtpCb.sockFd), protType); 
 	if(ret != ROK)
    {  
       DU_LOG("\nERROR  -->  EGTP : Failed to open UDP socket");
       return ret;
    }
-   ret = cmInetBind(&(server->sockFd), &(server->addr));  
+   ret = cmInetBind(&(egtpCb.sockFd), &(egtpCb.localAddr));  
    if(ret != ROK)
    {  
       DU_LOG("\nERROR  -->  EGTP : Failed to bind socket");
@@ -875,17 +865,12 @@ uint8_t egtpSendMsg(Buffer *mBuf)
    uint8_t        ret;
    uint16_t       txLen;
    CmInetMemInfo  info;
-   CmInetAddr     dstAddr;
    static uint64_t numDataSent = 0;
 
    info.region = DU_APP_MEM_REGION;
    info.pool = DU_POOL;
 
-   dstAddr.port = EGTP_RECVR_PORT;
-   dstAddr.address = egtpCb.dstCb.dstIp;
-
-   ret = cmInetSendMsg(&(egtpCb.dstCb.sendTptSrvr.sockFd), &dstAddr, &info, \
-      mBuf, (int16_t *)&txLen, CM_INET_NO_FLAG);
+   ret = cmInetSendMsg(&egtpCb.sockFd, &egtpCb.dstCb.dstAddr, &info, mBuf, (int16_t *)&txLen, CM_INET_NO_FLAG);
    if(ret != ROK && ret != RWOULDBLOCK)
    {
       DU_LOG("\nERROR  -->  EGTP : Failed sending the message");
@@ -922,20 +907,15 @@ uint8_t egtpRecvMsg()
    uint8_t        ret;           /* Return value */
    uint16_t       bufLen;        /* Length of received buffer */
    Buffer         *recvBuf;      /* Received buffer */
-   CmInetAddr     fromAddr;      /* Egtp data sender address */
    CmInetMemInfo  memInfo;       /* Buffer allocation info */
 
    memInfo.region = DU_APP_MEM_REGION;
    memInfo.pool   = DU_POOL;
     
-   fromAddr.port = egtpCb.dstCb.dstPort;
-   fromAddr.address = egtpCb.dstCb.dstIp;
-
    while(true)
    {
       bufLen = -1;
-      ret = cmInetRecvMsg(&(egtpCb.recvTptSrvr.sockFd), &fromAddr, &memInfo, \
-         &recvBuf, (int16_t *)&bufLen, CM_INET_NO_FLAG);
+      ret = cmInetRecvMsg(&egtpCb.sockFd, &egtpCb.dstCb.dstAddr, &memInfo, &recvBuf, (int16_t *)&bufLen, CM_INET_NO_FLAG);
       if(ret == ROK && recvBuf != NULLP)
       {  
          DU_LOG("\nDEBUG  -->  EGTP : Received DL Message[%ld]\n", gDlDataRcvdCnt + 1);
