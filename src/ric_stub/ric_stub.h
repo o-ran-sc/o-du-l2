@@ -29,7 +29,7 @@
 #define LOCAL_IP_RIC "192.168.130.80"
 
 #define E2_SCTP_PORT 36421
-#define NUM_E2_ASSOC 1
+#define NUM_E2_ASSOC 1 
 #define REMOTE_IP_DU (char*[]){"192.168.130.81", "192.168.130.83"}
 #endif
 
