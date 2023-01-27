@@ -123,16 +123,14 @@ S16 cuEgtpCfgReq()
    
    memcpy(&egtpCb.egtpCfg, &cuCb.cuCfgParams.egtpParams, sizeof(CuEgtpParams));
    
+   egtpCb.localAddr.address = CM_INET_NTOH_UINT32(egtpCb.egtpCfg.localIp.ipV4Addr);
+   egtpCb.localAddr.port = egtpCb.egtpCfg.localPort;
+
    for(destIdx=0; destIdx < egtpCb.egtpCfg.numDu; destIdx++)
    {
-      egtpCb.recvTptSrvr.addr.address = CM_INET_NTOH_UINT32(egtpCb.egtpCfg.egtpAssoc[destIdx].localIp.ipV4Addr);
-      egtpCb.recvTptSrvr.addr.port = EGTP_RECVR_PORT;
-
       egtpCb.dstCb[destIdx].duId = destIdx+1;
-      egtpCb.dstCb[destIdx].dstIp = CM_INET_NTOH_UINT32(egtpCb.egtpCfg.egtpAssoc[destIdx].destIp.ipV4Addr);
-      egtpCb.dstCb[destIdx].dstPort = egtpCb.egtpCfg.egtpAssoc[destIdx].destPort;
-      egtpCb.dstCb[destIdx].sendTptSrvr.addr.address = CM_INET_NTOH_UINT32(egtpCb.egtpCfg.egtpAssoc[destIdx].localIp.ipV4Addr);
-      egtpCb.dstCb[destIdx].sendTptSrvr.addr.port = egtpCb.egtpCfg.egtpAssoc[destIdx].localPort;
+      egtpCb.dstCb[destIdx].dstAddr.address = CM_INET_NTOH_UINT32(egtpCb.egtpCfg.dstCfg[destIdx].dstIp.ipV4Addr);
+      egtpCb.dstCb[destIdx].dstAddr.port = egtpCb.egtpCfg.dstCfg[destIdx].dstPort;
       egtpCb.dstCb[destIdx].numTunn = 0;
 
       ret = cmHashListInit(&(egtpCb.dstCb[destIdx].teIdLst), 1024, sizeof(EgtpTeIdCb), FALSE, CM_HASH_KEYTYPE_UINT32_MOD, CU_APP_MEM_REG, CU_POOL);
@@ -177,39 +175,20 @@ S16 cuEgtpSrvOpenReq(Pst *pst)
    DU_LOG("\nINFO  -->  EGTP : Received open server request");
 
    sockType = CM_INET_DGRAM;
-   if((ret = (cmInetSocket(sockType, &(egtpCb.recvTptSrvr.sockFd), protType))) != ROK)
+   if((ret = (cmInetSocket(sockType, &(egtpCb.sockFd), protType))) != ROK)
    {
       DU_LOG("\nERROR  -->  EGTP : Failed to open UDP socket");
       return RFAILED;
    }
 
-   ret = cmInetBind(&(egtpCb.recvTptSrvr.sockFd), &(egtpCb.recvTptSrvr.addr));
+   ret = cmInetBind(&(egtpCb.sockFd), &(egtpCb.localAddr));
    if(ret != ROK)
    {
       DU_LOG("\nERROR  -->  EGTP : Failed to bind socket");
       return RFAILED;
    }
-   
-   for(destIdx=0; destIdx < egtpCb.egtpCfg.numDu; destIdx++)
-   {
-      if(ret = (cmInetSocket(sockType, &(egtpCb.dstCb[destIdx].sendTptSrvr.sockFd), protType)) != ROK)
-      {  
-         DU_LOG("\nERROR  -->  EGTP : Failed to open UDP socket");
-         return RFAILED;
-      }
 
-      ret = cmInetBind(&(egtpCb.dstCb[destIdx].sendTptSrvr.sockFd), &(egtpCb.dstCb[destIdx].sendTptSrvr.addr));
-      if(ret != ROK)
-      {  
-         DU_LOG("\nERROR  -->  EGTP : Failed to bind socket");
-         return RFAILED;
-      }
-
-      /* TODO: set socket options */
-
-      DU_LOG("\nINFO  -->  EGTP : Receiver socket[%d] and Sender socket[%d] open", egtpCb.recvTptSrvr.sockFd.fd,\
-            egtpCb.dstCb[destIdx].sendTptSrvr.sockFd.fd);
-   }
+   DU_LOG("\nINFO  -->  EGTP : Socket[%d] is open", egtpCb.sockFd.fd);
    return ROK;
 } /* cuEgtpSrvOpenReq */
 
@@ -780,8 +759,8 @@ S16 BuildAppMsg(uint32_t duId, EgtpMsg  *egtpMsg)
    ipv4Hdr.length = CM_IPV4_HDRLEN + mLen;
    ipv4Hdr.hdrVer = 0x45;
    ipv4Hdr.proto = 1;
-   ipv4Hdr.srcAddr = CM_INET_NTOH_UINT32(egtpCb.egtpCfg.egtpAssoc[duId-1].localIp.ipV4Addr);
-   ipv4Hdr.destAddr = CM_INET_NTOH_UINT32(egtpCb.egtpCfg.egtpAssoc[duId-1].destIp.ipV4Addr);
+   ipv4Hdr.srcAddr = CM_INET_NTOH_UINT32(egtpCb.egtpCfg.localIp.ipV4Addr);
+   ipv4Hdr.destAddr = CM_INET_NTOH_UINT32(egtpCb.egtpCfg.dstCfg[duId-1].dstIp.ipV4Addr);
  
    /* Packing IPv4 header into buffer */
    S16          ret, cnt, idx;
@@ -965,15 +944,11 @@ S16 cuEgtpSendMsg(uint32_t duId, Buffer *mBuf)
    S16            ret;
    MsgLen         txLen;
    CmInetMemInfo  info;
-   CmInetAddr     dstAddr;
 
    info.region = CU_APP_MEM_REG;
    info.pool = CU_POOL;
  
-   dstAddr.port =  EGTP_RECVR_PORT;
-   dstAddr.address = egtpCb.dstCb[duId-1].dstIp;
- 
-   ret = cmInetSendMsg(&(egtpCb.dstCb[duId-1].sendTptSrvr.sockFd), &dstAddr, &info, mBuf, &txLen, CM_INET_NO_FLAG);
+   ret = cmInetSendMsg(&(egtpCb.sockFd), &egtpCb.dstCb[duId-1].dstAddr, &info, mBuf, &txLen, CM_INET_NO_FLAG);
    if(ret != ROK && ret != RWOULDBLOCK)
    {
       DU_LOG("\nERROR  -->  EGTP : Message send failure");

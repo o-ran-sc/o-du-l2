@@ -161,12 +161,12 @@ void readCuCfg()
    cuCb.cuCfgParams.sctpParams.f1SctpPort = g_cfg.CU_Port; 
    cuCb.cuCfgParams.sctpParams.numDestNode = 1;
    
-   cuCb.cuCfgParams.egtpParams.egtpAssoc[0].localIp.ipV4Pres = TRUE;
-   cuCb.cuCfgParams.egtpParams.egtpAssoc[0].localIp.ipV4Addr = ipv4_cu;
-   cuCb.cuCfgParams.egtpParams.egtpAssoc[0].localPort = CU_EGTP_PORT[0];
-   cuCb.cuCfgParams.egtpParams.egtpAssoc[0].destIp.ipV4Pres = TRUE;
-   cuCb.cuCfgParams.egtpParams.egtpAssoc[0].destIp.ipV4Addr = ipv4_du;
-   cuCb.cuCfgParams.egtpParams.egtpAssoc[0].destPort = DU_EGTP_PORT[0];
+   cuCb.cuCfgParams.egtpParams.localIp.ipV4Pres = TRUE;
+   cuCb.cuCfgParams.egtpParams.localIp.ipV4Addr = ipv4_cu;
+   cuCb.cuCfgParams.egtpParams.localPort = F1_EGTP_PORT;
+   cuCb.cuCfgParams.egtpParams.dstCfg[0].dstIp.ipV4Pres = TRUE;
+   cuCb.cuCfgParams.egtpParams.dstCfg[0].dstIp.ipV4Addr = ipv4_du;
+   cuCb.cuCfgParams.egtpParams.dstcfg[0].dstPort = F1_EGTP_PORT;
    cuCb.cuCfgParams.egtpParams.minTunnelId = MIN_TEID;
    cuCb.cuCfgParams.egtpParams.currTunnelId = cuCb.cuCfgParams.egtpParams.minTunnelId;
    cuCb.cuCfgParams.egtpParams.maxTunnelId = MAX_TEID;
@@ -176,9 +176,14 @@ void readCuCfg()
    /* CU IP Address and Port*/
    memset(&ipv4_du, 0, sizeof(uint32_t));
    cmInetAddr((S8*)LOCAL_IP_CU, &ipv4_cu);
+
    cuCb.cuCfgParams.sctpParams.localIpAddr.ipV4Addr = ipv4_cu;
    cuCb.cuCfgParams.sctpParams.localIpAddr.ipV6Pres = false;
    cuCb.cuCfgParams.sctpParams.f1SctpPort = F1_SCTP_PORT;
+
+   cuCb.cuCfgParams.egtpParams.localIp.ipV4Pres = TRUE;
+   cuCb.cuCfgParams.egtpParams.localIp.ipV4Addr = ipv4_cu;
+   cuCb.cuCfgParams.egtpParams.localPort = F1_EGTP_PORT;
 
    cuCb.cuCfgParams.sctpParams.numDestNode = 0;
    cuCb.cuCfgParams.egtpParams.numDu = 0;
@@ -186,22 +191,19 @@ void readCuCfg()
    numDu = 0;
    while(numDu < NUM_F1_ASSOC)
    {
-      /* DU IP Address and Port*/
+      /* DU IP Address */
       memset(&ipv4_du, 0, sizeof(uint32_t));
       cmInetAddr((S8*)REMOTE_IP_DU[numDu], &ipv4_du);
+      
+      /* SCTP Parameters */
       cuCb.cuCfgParams.sctpParams.destCb[numDu].destIpAddr.ipV4Addr = ipv4_du;
       cuCb.cuCfgParams.sctpParams.destCb[numDu].destIpAddr.ipV6Pres = false;
       cuCb.cuCfgParams.sctpParams.destCb[numDu].destPort = F1_SCTP_PORT;
 
       /* EGTP Parameters */
-      memset(&ipv4_du, 0, sizeof(uint32_t));
-      cmInetAddr((S8*)REMOTE_IP_DU[numDu], &ipv4_du);
-      cuCb.cuCfgParams.egtpParams.egtpAssoc[numDu].localIp.ipV4Pres = TRUE;
-      cuCb.cuCfgParams.egtpParams.egtpAssoc[numDu].localIp.ipV4Addr = ipv4_cu;
-      cuCb.cuCfgParams.egtpParams.egtpAssoc[numDu].localPort = CU_EGTP_PORT[numDu];
-      cuCb.cuCfgParams.egtpParams.egtpAssoc[numDu].destIp.ipV4Pres = TRUE;
-      cuCb.cuCfgParams.egtpParams.egtpAssoc[numDu].destIp.ipV4Addr = ipv4_du;
-      cuCb.cuCfgParams.egtpParams.egtpAssoc[numDu].destPort = DU_EGTP_PORT[numDu];
+      cuCb.cuCfgParams.egtpParams.dstCfg[numDu].dstIp.ipV4Pres = TRUE;
+      cuCb.cuCfgParams.egtpParams.dstCfg[numDu].dstIp.ipV4Addr = ipv4_du;
+      cuCb.cuCfgParams.egtpParams.dstCfg[numDu].dstPort = F1_EGTP_PORT;
       
       (numDu)++;
    }
