@@ -717,10 +717,10 @@ uint8_t readCfg()
    /* EGTP Parameters */
    duCfgParam.egtpParams.localIp.ipV4Pres = TRUE;
    duCfgParam.egtpParams.localIp.ipV4Addr = ipv4_du;
-   duCfgParam.egtpParams.localPort = DU_EGTP_PORT;
+   duCfgParam.egtpParams.localPort = F1_EGTP_PORT;
    duCfgParam.egtpParams.destIp.ipV4Pres = TRUE;
    duCfgParam.egtpParams.destIp.ipV4Addr = ipv4_cu;
-   duCfgParam.egtpParams.destPort = CU_EGTP_PORT;
+   duCfgParam.egtpParams.destPort = F1_EGTP_PORT;
    duCfgParam.egtpParams.minTunnelId = MIN_TEID;
    duCfgParam.egtpParams.maxTunnelId = MAX_TEID;
 
