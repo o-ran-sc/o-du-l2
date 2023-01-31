@@ -36,6 +36,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "498c4547_20e93418",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-01-31T09:52:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c6844ae1_20746fdd",
+      "revId": "f2676d6082b98d921546945c06fde437abc488d8",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3520477b_ead72a98",
@@ -49,6 +67,30 @@
       "writtenOn": "2023-01-06T10:56:45Z",
       "side": 1,
       "message": "rename to numOfRrmPolicyMem",
+      "range": {
+        "startLine": 1483,
+        "startChar": 23,
+        "endLine": 1483,
+        "endChar": 35
+      },
+      "revId": "f2676d6082b98d921546945c06fde437abc488d8",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1a3367d1_92ee367f",
+        "filename": "src/cm/du_app_mac_inf.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 1483,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-01-31T09:52:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3520477b_ead72a98",
       "range": {
         "startLine": 1483,
         "startChar": 23,
@@ -82,6 +124,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d962e552_65191a92",
+        "filename": "src/cm/mac_sch_interface.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 1842,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-01-31T09:52:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d4de59b0_c5c77e7c",
+      "range": {
+        "startLine": 1842,
+        "startChar": 25,
+        "endLine": 1842,
+        "endChar": 45
+      },
+      "revId": "f2676d6082b98d921546945c06fde437abc488d8",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c1727285_19519f30",
@@ -95,6 +161,24 @@
       "writtenOn": "2023-01-06T10:56:45Z",
       "side": 1,
       "message": "check alignment",
+      "revId": "f2676d6082b98d921546945c06fde437abc488d8",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d9233d7a_45fdb516",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 15639,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-01-31T09:52:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c1727285_19519f30",
       "revId": "f2676d6082b98d921546945c06fde437abc488d8",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
