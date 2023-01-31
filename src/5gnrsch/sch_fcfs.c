@@ -16,25 +16,9 @@
 ################################################################################
  *******************************************************************************/
 
-/************************************************************************
-
-Name:     5G NR SCH layer
-
-Type:     C source file
-
-Desc:     C source code for Entry point fucntions
-
-File:     sch_common.c
-
- **********************************************************************/
-
-/** @file sch_common.c
-  @brief This module performs common scheduling
- */
-#include "common_def.h"
+#include "common_def.h"	
 #include "tfu.h"
 #include "lrg.h"
-
 #include "tfu.x"
 #include "lrg.x"
 #include "du_log.h"
@@ -42,13 +26,7 @@ File:     sch_common.c
 #include "mac_sch_interface.h"
 #include "sch.h"
 #include "sch_utils.h"
-
-SchMacUlSchInfoFunc schMacUlSchInfoOpts[] =
-{
-   packSchMacUlSchInfo,
-   MacProcUlSchInfo,
-   packSchMacUlSchInfo
-};
+#include "sch_fcfs.h"
 
 /**
  * @brief common resource allocation for SSB
@@ -204,7 +182,7 @@ int sendUlSchInfoToMac(UlSchedInfo *ulSchedInfo, Inst inst)
    FILL_PST_SCH_TO_MAC(pst, inst);
    pst.event = EVENT_UL_SCH_INFO;
 
-   return(*schMacUlSchInfoOpts[pst.selector])(&pst, ulSchedInfo);
+   return(MacMessageRouter(&pst, (void *)ulSchedInfo));
 }
 
 /**
@@ -2330,6 +2308,1145 @@ uint8_t schFillPagePdschCfg(SchCellCb *cell, PdschCfg *pagePdschCfg, SlotTimingI
    return ROK;
 }
 
+/**********************************************************************
+  End of file
+ **********************************************************************/
+
+/*******************************************************************
+ *
+ * @brief Fill and send Cell delete response to MAC
+ *
+ * @details
+ *
+ *    Function :  SchSendCellDeleteRspToMac
+ *
+ *    Functionality: Fill and send Cell delete response to MAC
+ *
+ * @params[in] SchCellDelete  *cellDelete, Inst inst, SchMacRsp result
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t SchSendCellDeleteRspToMac(SchCellDeleteReq  *cellDelete, Inst inst, SchMacRsp result)
+{
+   Pst rspPst;
+   uint8_t ret=0;
+   
+   SchCellDeleteRsp  delRsp;
+
+   DU_LOG("\nINFO   --> SCH : Filling Cell Delete response");
+   memset(&delRsp, 0, sizeof(SchCellDeleteRsp));
+   delRsp.cellId = cellDelete->cellId;
+   delRsp.rsp = result;
+
+   /* Filling response post */
+   memset(&rspPst, 0, sizeof(Pst));
+   FILL_PST_SCH_TO_MAC(rspPst, inst);
+   rspPst.event = EVENT_CELL_DELETE_RSP_TO_MAC;
+   ret = MacMessageRouter(&rspPst, (void *)&delRsp);
+   if(ret == RFAILED)
+   {
+      DU_LOG("\nERROR  -->  SCH : SchSendCellDeleteRspToMac(): failed to send the Cell Delete response");
+      return ret;
+   }
+   return ret;
+}
+
+/*******************************************************************
+ *
+ * @brief Function for cellCb Deletion 
+ *
+ * @details
+ *
+ *    Function : deleteSchCellCb 
+ *
+ *    Functionality: Function for cellCb Deletion 
+ *
+ * @params[in] SchCellDelete  *cellDelete
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+void deleteSchCellCb(SchCellCb *cellCb)
+{
+   uint8_t sliceIdx=0, slotIdx=0;
+   CmLListCp *list=NULL;
+   CmLList *node=NULL, *next=NULL;
+   SchPageInfo *tempNode = NULLP;
+
+   if(cellCb->schDlSlotInfo)
+   {
+      for(slotIdx=0; slotIdx<cellCb->numSlots; slotIdx++)
+      {
+         list = &cellCb->schDlSlotInfo[slotIdx]->prbAlloc.freePrbBlockList;
+         node = list->first;
+         while(node)
+         {
+            next = node->next;
+            SCH_FREE(node->node, sizeof(FreePrbBlock));
+            deleteNodeFromLList(list, node);
+            node = next;
+         }
+         SCH_FREE(cellCb->schDlSlotInfo[slotIdx], sizeof(SchDlSlotInfo));
+      }
+      SCH_FREE(cellCb->schDlSlotInfo, cellCb->numSlots *sizeof(SchDlSlotInfo*));
+   }
+
+   if(cellCb->schUlSlotInfo)
+   {
+      for(slotIdx=0; slotIdx<cellCb->numSlots; slotIdx++)
+      {
+         list = &cellCb->schUlSlotInfo[slotIdx]->prbAlloc.freePrbBlockList;
+         node = list->first;
+         while(node)
+         {
+            next = node->next;
+            SCH_FREE(node->node, sizeof(FreePrbBlock));
+            deleteNodeFromLList(list, node);
+            node = next;
+         }
+         SCH_FREE(cellCb->schUlSlotInfo[slotIdx], sizeof(SchUlSlotInfo));  
+      }
+      SCH_FREE(cellCb->schUlSlotInfo,  cellCb->numSlots * sizeof(SchUlSlotInfo*));
+   }
+
+   if(cellCb->cellCfg.plmnInfoList.snssai)
+   {
+      for(sliceIdx=0; sliceIdx<cellCb->cellCfg.plmnInfoList.numSliceSupport; sliceIdx++)
+      {
+         SCH_FREE(cellCb->cellCfg.plmnInfoList.snssai[sliceIdx], sizeof(Snssai));
+      }
+      SCH_FREE(cellCb->cellCfg.plmnInfoList.snssai, cellCb->cellCfg.plmnInfoList.numSliceSupport*sizeof(Snssai*));
+   }
+   
+   for(uint16_t idx =0; idx<MAX_SFN; idx++)
+   {
+      list = &cellCb->pageCb.pageIndInfoRecord[idx];
+      node = list->first;
+      while(node)
+      {
+         next = node->next;
+         if(node->node)
+         {
+            tempNode = (SchPageInfo*)(node->node);
+            SCH_FREE(tempNode->pagePdu, tempNode->msgLen);
+            SCH_FREE(node->node,  sizeof(SchPageInfo));
+         }
+         deleteNodeFromLList(list, node);
+         node = next;
+      }
+   }
+
+   /* Remove all UE from ueToBeScheduled list and deallocate */
+   node = cellCb->ueToBeScheduled.first;
+   while(node)
+   {
+      next = node->next;
+      SCH_FREE(node->node, sizeof(uint8_t));
+      cmLListDelFrm(&cellCb->ueToBeScheduled, node);
+      SCH_FREE(node, sizeof(CmLList));
+      node = next;
+   }
+
+   memset(cellCb, 0, sizeof(SchCellCb));
+
+}
+
+/*******************************************************************
+ *
+ * @brief Function for cell Delete request from MAC to SCH
+ *
+ * @details
+ *
+ *    Function : MacSchCellDeleteReq
+ *
+ *    Functionality: Function for cell Delete request from MAC to SCH
+ *
+ * @params[in] Pst *pst, SchCellDelete  *cellDelete
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+
+uint8_t schFcFsCellDelReq(Pst *pst, SchCellDeleteReq  *cellDelete)
+{
+   uint8_t   cellIdx=0, ret = RFAILED;
+   Inst      inst = pst->dstInst - SCH_INST_START;
+   SchMacRsp result= RSP_OK;
+   
+#ifdef CALL_FLOW_DEBUG_LOG
+   DU_LOG("\nCall Flow: ENTMAC -> ENTSCH : EVENT_CELL_DELETE_REQ_TO_SCH\n");
+#endif   
+
+   if(!cellDelete)
+   {
+      DU_LOG("\nERROR  -->  SCH : MacSchCellDeleteReq(): Ue Delete request failed");
+   }
+   else
+   {
+      GET_CELL_IDX(cellDelete->cellId, cellIdx);
+      if(schCb[inst].cells[cellIdx] == NULLP)
+      { 
+         DU_LOG("\nERROR  -->  SCH : MacSchCellDeleteReq(): cell Id[%d] is not available", cellDelete->cellId);
+         result = RSP_NOK;
+      }
+      else
+      {
+         if(schCb[inst].cells[cellIdx]->cellId == cellDelete->cellId)
+         {
+            deleteSchCellCb(schCb[inst].cells[cellIdx]);
+            result = RSP_OK;
+            ret = ROK;
+            SCH_FREE(schCb[inst].cells[cellIdx], sizeof(SchCellCb));
+            DU_LOG("\nINFO   -->  SCH : Sending Cell Delete response to MAC");
+         }
+         else
+         {
+            DU_LOG("\nERROR  -->  SCH : MacSchCellDeleteReq(): cell Id[%d] is not available",cellDelete->cellId);
+            result = RSP_NOK;
+         }
+      }
+
+      if(SchSendCellDeleteRspToMac(cellDelete, inst, result)!=ROK)
+      {
+         DU_LOG("\nERROR  -->  SCH : MacSchCellDeleteReq(): failed to send Cell Delete response");
+         ret =  RFAILED;
+      }
+   }
+   return ret;   
+}
+
+/****************************************************************************
+ *
+ * @brief Storing the paging information in SCH database 
+ *
+ * @details
+ *
+ *    Function : schAddPagingIndtoList
+ *
+ *    Functionality: Storing the paging information in SCH database
+ *
+ * @params[in] CmLListCp *storedPageList, CmLList *pageIndInfo
+ *       
+ * @return ROK - sucess
+ *         RFAILED - failure
+ *        
+ *************************************************************************/
+uint8_t schAddPagingIndtoList(CmLListCp *storedPageList,void * pageIndInfo)
+{
+   CmLList  *firstNodeOfList = NULLP;
+   CmLList  *currentNodeInfo = NULLP;
+   SchPageInfo *tempNode = NULLP, *recvdNode = NULLP;
+   
+   recvdNode = (SchPageInfo*) pageIndInfo;
+   CM_LLIST_FIRST_NODE(storedPageList,firstNodeOfList);
+   
+   SCH_ALLOC(currentNodeInfo, sizeof(CmLList));
+   if(!currentNodeInfo)
+   {  
+      DU_LOG("\nERROR  --> SCH : schAddPagingIndtoList() : Memory allocation failed");
+      return RFAILED;
+   }
+   
+   currentNodeInfo->node = (PTR)pageIndInfo;
+   while(firstNodeOfList)
+   {
+      tempNode = (SchPageInfo*)(firstNodeOfList->node);
+      if ((recvdNode->pageTxTime.slot < tempNode->pageTxTime.slot))
+      {
+         cmLListInsCrnt(storedPageList, currentNodeInfo);
+         break;
+      }
+      else if ((recvdNode->pageTxTime.slot == tempNode->pageTxTime.slot))
+      {
+         DU_LOG("\nERROR  --> SCH : schAddPagingIndtoList() : Slot[%d] is already present in the list", recvdNode->pageTxTime.slot);
+         return RFAILED;
+      }
+      else
+      {
+         CM_LLIST_NEXT_NODE(storedPageList, firstNodeOfList);
+      }
+   } 
+   
+   if(!firstNodeOfList)
+   {
+      cmLListAdd2Tail(storedPageList, currentNodeInfo);
+   }
+   DU_LOG("\nDEBUG   -->  SCH : Paging information is stored successfully for PF:%d, Slot:%d",\
+              recvdNode->pageTxTime.sfn, recvdNode->pageTxTime.slot);
+   return ROK;
+}
+
+/****************************************************************************
+ *
+ * @brief Process paging indication at  SCH recevied form MAC 
+ *
+ * @details
+ *
+ *    Function : SchFcfsPagingInd
+ *
+ *    Functionality: Process paging indication at SCH recevied form MAC 
+ *
+ * @params[in] Pst *pst,  SchPageInd *pageInd 
+ *       
+ * @return void 
+ *        
+ *************************************************************************/
+uint8_t schFcfsPagingInd(Pst *pst,  SchPageInd *pageInd)
+{
+   uint8_t ret = RFAILED;
+   uint16_t cellIdx = 0;
+   Inst  inst = pst->dstInst - SCH_INST_START;
+   SchCellCb *cellCb = NULLP;
+   SchPageInfo *pageInfo = NULLP;
+
+   if(pageInd)
+   {
+      DU_LOG("\nDEBUG   -->  SCH : Received paging indication from MAC for cellId[%d]",\
+                  pageInd->cellId);
+
+      /* Fetch Cell CB */
+      for(cellIdx = 0; cellIdx < MAX_NUM_CELL; cellIdx++)
+      {
+         if((schCb[inst].cells[cellIdx]) && (schCb[inst].cells[cellIdx]->cellId == pageInd->cellId))
+         {
+            cellCb = schCb[inst].cells[cellIdx];
+            break;
+         }
+      }
+      if(cellCb)
+      {
+         if(pageInd->i_s > cellCb->cellCfg.sib1SchCfg.pageCfg.numPO)
+         {
+            DU_LOG("\nERROR --> SCH : MacSchPagingInd(): i_s should not be greater than number of paging occasion");
+         }
+         else
+         {
+            SCH_ALLOC(pageInfo, sizeof(SchPageInfo));
+            if(pageInfo)
+            {
+               pageInfo->pf = pageInd->pf; 
+               pageInfo->i_s = pageInd->i_s;
+               pageInfo->pageTxTime.cellId = pageInd->cellId;
+               pageInfo->pageTxTime.sfn = (pageInd->pf +  cellCb->pageCb.pagMonOcc[pageInd->i_s].frameOffset) % MAX_SFN;
+               pageInfo->pageTxTime.slot = cellCb->pageCb.pagMonOcc[pageInd->i_s].pagingOccSlot;
+               pageInfo->mcs = DEFAULT_MCS;
+               pageInfo->msgLen =  pageInd->pduLen;
+               SCH_ALLOC(pageInfo->pagePdu, pageInfo->msgLen);
+               if(!pageInfo->pagePdu)
+               {
+                  DU_LOG("\nERROR  --> SCH : MacSchPagingInd(): Failed to allocate memory");
+               }
+               else
+               {
+                  memcpy(pageInfo->pagePdu, pageInd->pagePdu, pageInfo->msgLen);
+                  ret = schAddPagingIndtoList(&cellCb->pageCb.pageIndInfoRecord[pageInfo->pageTxTime.sfn], pageInfo);
+                  if(ret != ROK)
+                  {
+                     DU_LOG("\nERROR  --> SCH : MacSchPagingInd(): Failed to store paging record");
+                  }
+               }
+            }
+            else
+            {
+               DU_LOG("\nERROR  --> SCH : MacSchPagingInd(): Failed to allocate memory");
+            }
+         }
+      }
+      else
+      {
+         DU_LOG("\nERROR  -->  SCH : Cell ID [%d] not found", pageInd->cellId);
+      }
+      SCH_FREE(pageInd->pagePdu, pageInd->pduLen);
+      SCH_FREE(pageInd, sizeof(SchPageInd));
+   }
+   else
+   {
+      DU_LOG("\nERROR  --> SCH : MacSchPagingInd(): Received null pointer");
+   }
+   return ret;
+}
+
+/*******************************************************************
+ *
+ * @brief Processes DL RLC BO info from MAC
+ *
+ * @details
+ *
+ *    Function : schFcfsDlRlcBoInfo
+ *
+ *    Functionality:
+ *       Processes DL RLC BO info from MAC
+ *
+ * @params[in] 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t schFcfsDlRlcBoInfo(Pst *pst, DlRlcBoInfo *dlBoInfo)
+{
+   uint8_t  lcId = 0;
+   uint16_t ueId = 0;
+   bool isLcIdValid = false;
+   SchUeCb *ueCb = NULLP;
+   SchCellCb *cell = NULLP;
+   Inst  inst = pst->dstInst-SCH_INST_START;   
+
+#ifdef CALL_FLOW_DEBUG_LOG
+   DU_LOG("\nCall Flow: ENTMAC -> ENTSCH : EVENT_DL_RLC_BO_INFO_TO_SCH\n");
+#endif   
+   DU_LOG("\nDEBUG  -->  SCH : Received RLC BO Status indication LCId [%d] BO [%d]", dlBoInfo->lcId, dlBoInfo->dataVolume);
+   cell = schCb[inst].cells[inst];
+
+   if(cell == NULLP)
+   {
+      DU_LOG("\nERROR  -->  SCH : MacSchDlRlcBoInfo(): Cell does not exists");
+      return RFAILED;
+   }
+
+   GET_UE_ID(dlBoInfo->crnti, ueId);
+   ueCb = &cell->ueCb[ueId-1];
+   if(ueCb->ueCfg.dataTransmissionAction == STOP_DATA_TRANSMISSION)
+   {
+      DU_LOG("INFO  --> SCH : DL Data transmission not allowed for UE %d", ueCb->ueCfg.ueId);
+      return ROK;
+   }
+   
+   lcId  = dlBoInfo->lcId;
+   CHECK_LCID(lcId, isLcIdValid);
+   if(isLcIdValid == FALSE)
+   {
+      DU_LOG("ERROR --> SCH: LCID:%d is not valid", lcId);
+      return RFAILED;
+   }
+
+   /*Expected when theres a case of Retransmission Failure or Resetablishment
+    *By Zero BO, the RLC is informing that previous data can be cleared out
+    *Thus clearing out the LC from the Lc priority list*/
+   if(dlBoInfo->dataVolume == 0)
+   {
+      /* TODO : Check the LC is Dedicated or default and accordingly LCList
+       * will be used*/
+      return ROK;
+   }
+
+   if(lcId == SRB0_LCID)
+   {
+      cell->raCb[ueId -1].msg4recvd = true;
+      cell->raCb[ueId -1].dlMsgPduLen = dlBoInfo->dataVolume;      
+   }
+   else
+   {
+      /* TODO : These part of changes will be corrected during DL scheduling as
+       * per K0 - K1 -K2 */
+      SET_ONE_BIT(ueId, cell->boIndBitMap);
+      if(ueCb->dlInfo.dlLcCtxt[lcId].lcId == lcId)
+      {
+         ueCb->dlInfo.dlLcCtxt[lcId].bo = dlBoInfo->dataVolume;
+      }
+      else
+      {
+         DU_LOG("ERROR --> SCH: LCID:%d is not configured in SCH Cb",lcId);
+         return RFAILED;
+      }
+   }
+   /* Adding UE Id to list of pending UEs to be scheduled */
+   addUeToBeScheduled(cell, ueId);
+   return ROK;
+}
+
+/*******************************************************************
+ *
+ * @brief Processes SR UCI indication from MAC 
+ *
+ * @details
+ *
+ *    Function : schFcfsSrUciInd
+ *
+ *    Functionality:
+ *      Processes SR UCI indication from MAC
+ *
+ * @params[in] Post structure
+ *             UCI Indication
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t schFcfsSrUciInd(Pst *pst, SrUciIndInfo *uciInd)
+{
+   Inst  inst = pst->dstInst-SCH_INST_START;
+
+   SchUeCb   *ueCb; 
+   SchCellCb *cellCb = schCb[inst].cells[inst];
+
+#ifdef CALL_FLOW_DEBUG_LOG
+   DU_LOG("\nCall Flow: ENTMAC -> ENTSCH : EVENT_UCI_IND_TO_SCH\n");
+#endif
+
+   DU_LOG("\nDEBUG  -->  SCH : Received SR");
+
+   ueCb = schGetUeCb(cellCb, uciInd->crnti);
+   
+   if(ueCb->state == SCH_UE_STATE_INACTIVE)
+   {
+      DU_LOG("\nERROR  -->  SCH : Crnti %d is inactive", uciInd->crnti);
+      return ROK;  
+   }
+   if(ueCb->ueCfg.dataTransmissionAction == STOP_DATA_TRANSMISSION)
+   {
+      DU_LOG("\nINFO --> SCH: UL Data transmission not allowed for UE %d", ueCb->ueCfg.ueId);
+      return ROK;
+   }
+   if(uciInd->numSrBits)
+   {
+      ueCb->srRcvd = true;      
+      /* Adding UE Id to list of pending UEs to be scheduled */
+      addUeToBeScheduled(cellCb, ueCb->ueId);
+   }
+   return ROK;
+}
+
+/*******************************************************************
+ *
+ * @brief Processes BSR indiation from MAC
+ *
+ * @details
+ *
+ *    Function : schFcfsBsr
+ *
+ *    Functionality:
+ *       Processes DL BSR from MAC
+ *
+ * @params[in]    Pst pst
+ *                UlBufferStatusRptInd bsrInd
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t schFcfsBsr(Pst *pst, UlBufferStatusRptInd *bsrInd)
+{
+   Inst           schInst       = pst->dstInst-SCH_INST_START;
+   SchCellCb      *cellCb       = NULLP;
+   SchUeCb        *ueCb         = NULLP;
+   uint8_t        lcgIdx = 0;
+
+#ifdef CALL_FLOW_DEBUG_LOG
+   DU_LOG("\nCall Flow: ENTMAC -> ENTSCH : EVENT_SHORT_BSR\n");
+#endif
+
+   DU_LOG("\nDEBUG  -->  SCH : Received BSR");
+   if(bsrInd == NULLP)
+   {
+      DU_LOG("\nERROR  -->  SCH : BSR Ind is empty");
+      return RFAILED;
+   }
+   cellCb = schCb[schInst].cells[schInst];
+   if(cellCb == NULLP)
+   {
+      DU_LOG("\nERROR  -->  SCH : CellCb is empty");
+      return RFAILED;
+   }
+   ueCb = schGetUeCb(cellCb, bsrInd->crnti);
+
+   if(ueCb == NULLP)
+   {
+      DU_LOG("\nERROR  -->  SCH : UeCB is empty");
+      return RFAILED;
+   }
+
+   if(ueCb->ueCfg.dataTransmissionAction == STOP_DATA_TRANSMISSION)
+   {
+      DU_LOG("\nINFO --> SCH: UL Data transmission not allowed for UE %d", ueCb->ueCfg.ueId);
+      return ROK;
+   }
+   
+   ueCb->bsrRcvd = true;
+   /* store dataVolume per lcg in uecb */
+   for(lcgIdx = 0; lcgIdx < bsrInd->numLcg; lcgIdx++)
+   {
+      ueCb->bsrInfo[bsrInd->dataVolInfo[lcgIdx].lcgId].priority = 1; //TODO: determining LCG priority?
+      ueCb->bsrInfo[bsrInd->dataVolInfo[lcgIdx].lcgId].dataVol = bsrInd->dataVolInfo[lcgIdx].dataVol;
+   }
+   
+   /* Adding UE Id to list of pending UEs to be scheduled */
+   addUeToBeScheduled(cellCb, ueCb->ueId);
+   return ROK;
+}
+
+
+void schFcfsAllApisInit(SchAllApis *allFcfsApi)
+{
+    allFcfsApi->SchSlotInd = schFcfsProcessSlotInd;
+    allFcfsApi->SchCellDeleteReq = schFcFsCellDelReq;
+    allFcfsApi->SchAddUeConfigReq = SchFcfsAddUeConfigReq;
+    allFcfsApi->SchModUeConfigReq = SchFcfsModUeConfigReq;
+    allFcfsApi->SchUeDeleteReq = SchFcfsUeDeleteReq;
+    allFcfsApi->SchDlHarqInd = SchFcfsDlHarqInd;
+    allFcfsApi->SchCrcInd = schFcfsProcessCrcInd;
+    allFcfsApi->SchRachInd = schFcfsProcessRachInd;
+    allFcfsApi->SchPagingInd = schFcfsPagingInd;
+    allFcfsApi->SchRachRsrcReq = schFcfsRachRsrcReq; 
+    allFcfsApi->SchRachRsrcRel = schFcfsRachRsrcRel;
+    allFcfsApi->SchDlRlcBoInfo = schFcfsDlRlcBoInfo;
+    allFcfsApi->SchSrUciInd = schFcfsSrUciInd;
+    allFcfsApi->SchBsr = schFcfsBsr;
+}
+
+/*******************************************************************
+ *
+ * @brief Allocates requested PRBs for DL
+ *
+ * @details
+ *
+ *    Function : allocatePrbDl
+ *
+ *    Functionality:
+ *      Allocates requested PRBs in DL
+ *      Keeps track of allocated PRB (using bitmap) and remaining PRBs
+ *
+ * @params[in] prbAlloc table
+ *             Start symbol
+ *             Number of symbols
+ *             Start PRB
+ *             Number of PRBs
+ *
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t allocatePrbDl(SchCellCb *cell, SlotTimingInfo slotTime, \
+   uint8_t startSymbol, uint8_t symbolLength, uint16_t *startPrb, uint16_t numPrb)
+{
+   uint8_t        symbol = 0;
+   uint16_t       broadcastPrbStart=0, broadcastPrbEnd=0;
+   FreePrbBlock   *freePrbBlock = NULLP;
+   CmLList        *freePrbNode = NULLP;
+   PduTxOccsaion  ssbOccasion=0, sib1Occasion=0;
+   SchDlSlotInfo  *schDlSlotInfo = cell->schDlSlotInfo[slotTime.slot];
+   SchPrbAlloc    *prbAlloc = &schDlSlotInfo->prbAlloc;
+
+   /* If startPrb is set to MAX_NUM_RB, it means startPrb is not known currently.
+    * Search for an appropriate location in PRB grid and allocate requested resources */
+   if(*startPrb == MAX_NUM_RB)
+   {
+      /* Check if SSB/SIB1 is also scheduled in this slot  */
+      ssbOccasion = schCheckSsbOcc(cell, slotTime);
+      sib1Occasion = schCheckSib1Occ(cell, slotTime);
+
+      if(ssbOccasion && sib1Occasion)
+      {
+         broadcastPrbStart = cell->cellCfg.ssbSchCfg.ssbOffsetPointA; 
+         broadcastPrbEnd = broadcastPrbStart + SCH_SSB_NUM_PRB + cell->cellCfg.sib1SchCfg.sib1PdschCfg.pdschFreqAlloc.freqAlloc.numPrb -1;
+      }
+      else if(ssbOccasion)
+      {
+         broadcastPrbStart = cell->cellCfg.ssbSchCfg.ssbOffsetPointA;
+         broadcastPrbEnd = broadcastPrbStart + SCH_SSB_NUM_PRB -1;
+      }
+      else if(sib1Occasion)
+      {
+         broadcastPrbStart = cell->cellCfg.sib1SchCfg.sib1PdschCfg.pdschFreqAlloc.freqAlloc.startPrb;
+         broadcastPrbEnd = broadcastPrbStart + cell->cellCfg.sib1SchCfg.sib1PdschCfg.pdschFreqAlloc.freqAlloc.numPrb -1;
+      }
+
+      /* Iterate through all free PRB blocks */
+      freePrbNode = prbAlloc->freePrbBlockList.first; 
+      while(freePrbNode)
+      {
+         freePrbBlock = (FreePrbBlock *)freePrbNode->node; 
+
+         /* If broadcast message is scheduled in this slot, then check if its PRBs belong to the current free block.
+          * Since SSB/SIB1 PRB location is fixed, these PRBs cannot be allocated to other message in same slot */
+         if((ssbOccasion || sib1Occasion) && 
+            ((broadcastPrbStart >= freePrbBlock->startPrb) && (broadcastPrbStart <= freePrbBlock->endPrb)) && \
+            ((broadcastPrbEnd >= freePrbBlock->startPrb) && (broadcastPrbEnd <= freePrbBlock->endPrb)))
+         {
+            /* Implmentation is done such that highest-numbered free-RB is allocated first */ 
+            if((freePrbBlock->endPrb > broadcastPrbEnd) && ((freePrbBlock->endPrb - broadcastPrbEnd) >= numPrb))
+            {
+               /* If sufficient free PRBs are available above bradcast message then,
+                * endPrb = freePrbBlock->endPrb
+                * startPrb = endPrb - numPrb +1;
+                */
+               *startPrb = freePrbBlock->endPrb - numPrb +1;
+               break;
+            }
+            else if((broadcastPrbStart > freePrbBlock->startPrb) && ((broadcastPrbStart - freePrbBlock->startPrb) >= numPrb))
+            {
+               /* If free PRBs are available below broadcast message then,
+                * endPrb = broadcastPrbStart - 1
+                * startPrb = endPrb - numPrb +1
+                */
+               *startPrb = broadcastPrbStart - numPrb; 
+               break;
+            }
+            else
+            {
+               freePrbNode = freePrbNode->next;
+               continue;
+            }
+         }
+         else
+         {
+            /* Check if requested number of blocks can be allocated from the current block */ 
+            if (freePrbBlock->numFreePrb < numPrb)
+            {
+               freePrbNode = freePrbNode->next;
+               continue;
+            }
+            *startPrb = freePrbBlock->endPrb - numPrb +1;
+            break;  
+         }
+      }
+
+      /* If no free block can be used to allocated request number of RBs */
+      if(*startPrb == MAX_NUM_RB)
+         return RFAILED;
+   }
+
+   /* If startPrb is known already, check if requested PRBs are available for allocation */
+   else
+   {
+      freePrbNode = isPrbAvailable(&prbAlloc->freePrbBlockList, *startPrb, numPrb);
+      if(!freePrbNode)
+      {
+         DU_LOG("\nERROR  -->  SCH: Requested DL PRB unavailable");
+         return RFAILED;
+      }
+   }
+
+   /* Update bitmap to allocate PRBs */
+   for(symbol=startSymbol; symbol < (startSymbol+symbolLength); symbol++)
+   {
+      if(fillPrbBitmap(prbAlloc->prbBitMap[symbol], *startPrb, numPrb) != ROK)
+      {
+         DU_LOG("\nERROR  -->  SCH: fillPrbBitmap() failed for symbol [%d] in DL", symbol);
+         return RFAILED;
+      }
+   }
+
+   /* Update the remaining number for free PRBs */
+   removeAllocatedPrbFromFreePrbList(&prbAlloc->freePrbBlockList, freePrbNode, *startPrb, numPrb);
+
+   return ROK;
+}
+
+/*******************************************************************
+ *
+ * @brief Allocates requested PRBs for UL
+ *
+ * @details
+ *
+ *    Function : allocatePrbUl
+ *
+ *    Functionality:
+ *      Allocates requested PRBs in UL
+ *      Keeps track of allocated PRB (using bitmap) and remaining PRBs
+ *
+ * @params[in] prbAlloc table
+ *             Start symbol
+ *             Number of symbols
+ *             Start PRB
+ *             Number of PRBs
+ *
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t allocatePrbUl(SchCellCb *cell, SlotTimingInfo slotTime, \
+   uint8_t startSymbol, uint8_t symbolLength, uint16_t *startPrb, uint16_t numPrb)
+{
+   uint8_t        symbol = 0;
+   uint16_t       prachStartPrb, prachNumPrb, prachEndPrb;
+   bool           isPrachOccasion;
+   FreePrbBlock   *freePrbBlock = NULLP;
+   CmLList        *freePrbNode = NULLP;
+   SchPrbAlloc    *prbAlloc = NULLP;
+
+   if(cell == NULLP)
+   {
+      DU_LOG("\nERROR  --> SCH : allocatePrbUl(): Received cellCb is null");
+      return RFAILED;
+   }
+   
+   prbAlloc =   &cell->schUlSlotInfo[slotTime.slot]->prbAlloc;
+   /* If startPrb is set to MAX_NUM_RB, it means startPrb is not known currently.
+    * Search for an appropriate location in PRB grid and allocate requested resources */
+   if(*startPrb == MAX_NUM_RB)
+   {
+      /* Check if PRACH is also scheduled in this slot */
+      isPrachOccasion = schCheckPrachOcc(cell, slotTime);
+      if(isPrachOccasion)
+      {
+         prachStartPrb =  cell->cellCfg.schRachCfg.msg1FreqStart;
+         prachNumPrb = schCalcPrachNumRb(cell);
+         prachEndPrb = prachStartPrb + prachNumPrb -1;
+      }
+
+      /* Iterate through all free PRB blocks */
+      freePrbNode = prbAlloc->freePrbBlockList.first; 
+      while(freePrbNode)
+      {
+         freePrbBlock = (FreePrbBlock *)freePrbNode->node; 
+
+         /* If PRACH is scheduled in this slot, then check if its PRBs belong to the current free block.
+          * PRBs required for PRACH cannot be allocated to any other message */
+         if((isPrachOccasion) &&
+            ((prachStartPrb >= freePrbBlock->startPrb) && (prachStartPrb <= freePrbBlock->endPrb)) &&
+            ((prachEndPrb >= freePrbBlock->startPrb) && (prachEndPrb <= freePrbBlock->endPrb)))
+         {
+            /* Implmentation is done such that highest-numbered free-RB is allocated first */ 
+            if((freePrbBlock->endPrb > prachEndPrb) && ((freePrbBlock->endPrb - prachEndPrb) >= numPrb))
+            {
+               /* If sufficient free PRBs are available above PRACH message then,
+                * endPrb = freePrbBlock->endPrb
+                * startPrb = endPrb - numPrb +1;
+                */
+               *startPrb = freePrbBlock->endPrb - numPrb +1;
+               break;
+            }
+            else if((prachStartPrb > freePrbBlock->startPrb) && ((prachStartPrb - freePrbBlock->startPrb) >= numPrb))
+            {
+               /* If free PRBs are available below PRACH message then,
+                * endPrb = prachStartPrb - 1
+                * startPrb = endPrb - numPrb +1
+                */
+               *startPrb = prachStartPrb - numPrb; 
+               break;
+            }
+            else
+            {
+               freePrbNode = freePrbNode->next;
+               continue;
+            } 
+         }
+         else
+         {
+            /* Check if requested number of PRBs can be allocated from currect block */
+            if(freePrbBlock->numFreePrb < numPrb)
+            {
+               freePrbNode = freePrbNode->next;
+               continue;
+            }
+            *startPrb = freePrbBlock->endPrb - numPrb +1;
+            break;
+         }
+      }
+
+      /* If no free block can be used to allocated requested number of RBs */
+      if(*startPrb == MAX_NUM_RB)
+         return RFAILED;
+   }
+   else
+   {
+      /* If startPrb is known already, check if requested PRBs are available for allocation */
+      freePrbNode = isPrbAvailable(&prbAlloc->freePrbBlockList, *startPrb, numPrb);
+      if(!freePrbNode)
+      {
+         DU_LOG("\nERROR  -->  SCH: Requested UL PRB unavailable");
+         return RFAILED;
+      }
+   }
+
+   /* Update bitmap to allocate PRBs */
+   for(symbol=startSymbol; symbol < (startSymbol+symbolLength); symbol++)
+   {
+      if(fillPrbBitmap(prbAlloc->prbBitMap[symbol], *startPrb, numPrb) != ROK)
+      {
+         DU_LOG("\nERROR  -->  SCH: fillPrbBitmap() failed for symbol [%d] in UL", symbol);
+         return RFAILED;
+      }
+   }
+
+   /* Update the remaining number for free PRBs */
+   removeAllocatedPrbFromFreePrbList(&prbAlloc->freePrbBlockList, freePrbNode, *startPrb, numPrb);
+
+   return ROK;
+}
+
+/*******************************************************************************
+ *
+ * @brief Try to find Best Free Block with Max Num PRB 
+ *
+ * @details
+ *
+ *    Function : searchLargestFreeBlock
+ *
+ *    Functionality:
+ *     Finds the FreeBlock with MaxNum of FREE PRB considering SSB/SIB1 ocassions.
+ *
+ * @params[in] I/P > prbAlloc table (FreeBlock list)
+ *             I/P > Slot timing Info
+ *             O/P > Start PRB
+ *             I/P > Direction (UL/DL)
+ *       
+ *
+ * @return Max Number of Free PRB 
+ *         If 0, then no Suitable Free Block
+ *
+ * ********************************************************************************/
+
+uint16_t searchLargestFreeBlock(SchCellCb *cell, SlotTimingInfo slotTime,uint16_t *startPrb, Direction dir)
+{
+   uint16_t       reservedPrbStart=0, reservedPrbEnd=0, maxFreePRB = 0;
+   FreePrbBlock   *freePrbBlock = NULLP;
+   CmLList        *freePrbNode = NULLP;
+   SchPrbAlloc    *prbAlloc = NULLP;
+   bool           checkOccasion = FALSE;
+
+   *startPrb = 0; /*Initialize the StartPRB to zero*/
+
+   /*Based on Direction, Reserved Messsages will differi.e.
+    * DL >> SSB and SIB1 ocassions wheres for UL, PRACH ocassions to be checked
+    * and reserved before allocation for dedicated DL/UL msg*/
+   if(dir == DIR_DL)
+   {
+      SchDlSlotInfo  *schDlSlotInfo = cell->schDlSlotInfo[slotTime.slot];
+      PduTxOccsaion  ssbOccasion=0, sib1Occasion=0;
+
+      prbAlloc = &schDlSlotInfo->prbAlloc;
+
+      ssbOccasion = schCheckSsbOcc(cell, slotTime);
+      sib1Occasion = schCheckSib1Occ(cell, slotTime);
+
+      checkOccasion = TRUE;
+      if(ssbOccasion && sib1Occasion)
+      {
+         reservedPrbStart = cell->cellCfg.ssbSchCfg.ssbOffsetPointA; 
+         reservedPrbEnd = reservedPrbStart + SCH_SSB_NUM_PRB + \
+                          cell->cellCfg.sib1SchCfg.sib1PdschCfg.pdschFreqAlloc.freqAlloc.numPrb -1;
+      }
+      else if(ssbOccasion)
+      {
+         reservedPrbStart = cell->cellCfg.ssbSchCfg.ssbOffsetPointA;
+         reservedPrbEnd = reservedPrbStart + SCH_SSB_NUM_PRB -1;
+      }
+      else if(sib1Occasion)
+      {
+         reservedPrbStart = cell->cellCfg.sib1SchCfg.sib1PdschCfg.pdschFreqAlloc.freqAlloc.startPrb;
+         reservedPrbEnd = reservedPrbStart + cell->cellCfg.sib1SchCfg.sib1PdschCfg.pdschFreqAlloc.freqAlloc.numPrb -1;
+      }
+      else
+      {
+         checkOccasion = FALSE;  
+      }
+   }
+   else if(dir == DIR_UL)
+   {
+      prbAlloc = &cell->schUlSlotInfo[slotTime.slot]->prbAlloc;
+
+      /* Check if PRACH is also scheduled in this slot */
+      checkOccasion = schCheckPrachOcc(cell, slotTime);
+      if(checkOccasion)
+      {
+         reservedPrbStart =  cell->cellCfg.schRachCfg.msg1FreqStart;
+         reservedPrbEnd = reservedPrbStart + (schCalcPrachNumRb(cell)) -1;
+      }
+   }
+   else
+   {
+      DU_LOG("\nERROR --> SCH: Invalid Direction!");
+      return (maxFreePRB);
+   }
+
+   freePrbNode = prbAlloc->freePrbBlockList.first; 
+   while(freePrbNode)
+   {
+      freePrbBlock = (FreePrbBlock *)freePrbNode->node;
+
+      /*For block with same numFreeBlocks, choose the one with HighestPRB range
+       *Since FreeBLockList are arranged in Descending order of PRB range thus Skipping this block*/
+      if(maxFreePRB >= freePrbBlock->numFreePrb) 
+      {
+         //skip this block
+         freePrbNode = freePrbNode->next;
+         continue;
+      }
+
+      /* If Broadcast/Prach message is scheduled in this slot, then check if its PRBs belong to the current free block.
+       * Since SSB/SIB1 PRB location is fixed, these PRBs cannot be allocated to other message in same slot */
+      if(checkOccasion && 
+            ((reservedPrbStart >= freePrbBlock->startPrb) && (reservedPrbStart <= freePrbBlock->endPrb)) && \
+            ((reservedPrbEnd >= freePrbBlock->startPrb) && (reservedPrbEnd <= freePrbBlock->endPrb)))
+      {
+
+         /* Implmentation is done such that highest-numbered free-RB is Checked first
+            and freePRB in this block is greater than Max till now */
+         if((freePrbBlock->endPrb > reservedPrbEnd) && ((freePrbBlock->endPrb - reservedPrbEnd) > maxFreePRB))
+         {
+            /* If sufficient free PRBs are available above reserved message*/
+            *startPrb = reservedPrbEnd + 1;
+            maxFreePRB = (freePrbBlock->endPrb - reservedPrbEnd);		 
+         }
+         /*Also check the other freeBlock (i.e. Above the reserved message) for MAX FREE PRB*/
+         if((reservedPrbStart > freePrbBlock->startPrb) && ((reservedPrbStart - freePrbBlock->startPrb) > maxFreePRB))
+         {
+            /* If free PRBs are available below reserved message*/
+            *startPrb = freePrbBlock->startPrb;
+            maxFreePRB = (reservedPrbStart - freePrbBlock->startPrb);
+         }
+      }
+      else  //Best Block
+      {
+         if(maxFreePRB < freePrbBlock->numFreePrb)
+         {
+            *startPrb = freePrbBlock->startPrb;
+            maxFreePRB = freePrbBlock->numFreePrb;
+         }
+
+      }
+      freePrbNode = freePrbNode->next;
+   }  
+   return(maxFreePRB);
+}
+
+/**
+ * @brief Handles retransmission for MSG3
+ *
+ * @details
+ *
+ *     Function : schMsg3RetxSchedulingForUe
+ *      
+ *      This function handles retransmission for MSG3
+ *           
+ *  @param[in]  SchRaCb *raCb, RA cb pointer
+ *  @return  
+ *      -# ROK
+ *      -# RFAILED
+ **/
+uint8_t schMsg3RetxSchedulingForUe(SchRaCb *raCb)
+{
+   bool      k2Found = false;
+   uint16_t             dciSlot = 0;
+   SlotTimingInfo       dciTime, msg3Time;
+   SchCellCb            *cell = NULLP;
+   SlotTimingInfo       currTime;
+   DciInfo  *dciInfo = NULLP;
+   cell = raCb->cell;
+   currTime = cell->slotInfo;
+
+   /* Calculating time frame to send DCI for MSG3 Retx*/
+   ADD_DELTA_TO_TIME(currTime, dciTime, PHY_DELTA_DL + SCHED_DELTA, cell->numSlots);
+#ifdef NR_TDD
+   /* Consider this slot for sending DCI, only if it is a DL slot */
+   if(schGetSlotSymbFrmt(dciSlot, raCb->cell->slotFrmtBitMap) == DL_SLOT)
+#endif
+   {
+      /* If PDCCH is already scheduled on this slot, cannot schedule PDSCH for another UE here. */
+      if(cell->schDlSlotInfo[dciSlot]->pdcchUe != 0)
+         return false;
+
+      k2Found = schGetMsg3K2(cell, &raCb->msg3HqProc, dciTime.slot, &msg3Time, TRUE);
+
+      if (!k2Found)
+      {
+         return RFAILED;
+      }
+      SCH_ALLOC(dciInfo, sizeof(DciInfo));
+      if(!dciInfo)
+      {
+         DU_LOG("\nERROR  -->  SCH : Memory Allocation failed for dciInfo alloc");
+         return RFAILED;
+      }
+      cell->schDlSlotInfo[msg3Time.slot]->ulGrant = dciInfo;
+      SCH_ALLOC(cell->schUlSlotInfo[msg3Time.slot]->schPuschInfo, sizeof(SchPuschInfo));
+      memset(dciInfo,0,sizeof(DciInfo));
+      schFillUlDciForMsg3Retx(raCb, cell->schUlSlotInfo[msg3Time.slot]->schPuschInfo, dciInfo);
+   }   
+   raCb->retxMsg3HqProc = NULLP;
+   return ROK;
+}
+/**
+ * @brief Get K2 value for MSG3
+ *
+ * @details
+ *
+ *     Function : schGetMsg3K2
+ *      
+ *      This function gets K2 for MSG3
+ *           
+ *  @param[in]  SchCellCb *cell, Cell cb struc pointer
+ *  @param[in]  SchUlHqProcCb* msg3HqProc, msg3 harq proc pointer
+ *  @param[in]  uint16_t dlTime, DL time of scheduling
+ *  @param[in]  SlotTimingInfo *msg3Time, MSG3 timing info
+ *  @param[in]  bool isRetx, indicates MSG3 retransmission
+ *  @return  
+ *      -# true
+ *      -# false
+ **/
+bool schGetMsg3K2(SchCellCb *cell, SchUlHqProcCb* msg3HqProc, uint16_t dlTime, SlotTimingInfo *msg3Time, bool isRetx)
+{
+   bool      k2Found = false;
+   uint8_t   k2TblIdx = 0;
+   uint8_t   k2Index = 0;
+   uint8_t   k2 = 0;
+   uint8_t   numK2 = 0;
+   uint8_t   puschMu = 0;
+   uint8_t   msg3Delta = 0, msg3MinSchTime = 0;
+#ifdef NR_TDD
+   uint8_t   totalCfgSlot = 0;
+#endif
+   SchK2TimingInfoTbl   *msg3K2InfoTbl=NULLP;
+   SlotTimingInfo       currTime, msg3TempTime;
+   currTime = cell->slotInfo;
+   puschMu = cell->cellCfg.numerology;
+
+   if (isRetx)
+   {
+      if(!msg3HqProc)
+         return false;
+
+      numK2 = cell->cellCfg.schInitialUlBwp.k2InfoTbl.k2TimingInfo[dlTime].numK2;
+      msg3K2InfoTbl = &cell->cellCfg.schInitialUlBwp.msg3K2InfoTbl;      
+      msg3MinSchTime = 0;
+      msg3Delta = 0;
+   }
+   else
+   {
+      numK2 = cell->cellCfg.schInitialUlBwp.msg3K2InfoTbl.k2TimingInfo[dlTime].numK2;
+      msg3K2InfoTbl = &cell->cellCfg.schInitialUlBwp.k2InfoTbl;
+      msg3MinSchTime = minMsg3SchTime[cell->cellCfg.numerology];
+      msg3Delta = puschDeltaTable[puschMu];      
+   }
+
+   for(k2TblIdx = 0; k2TblIdx < numK2; k2TblIdx++)
+   {
+      k2Index = msg3K2InfoTbl->k2TimingInfo[dlTime].k2Indexes[k2TblIdx];
+
+      k2 = cell->cellCfg.schInitialUlBwp.puschCommon.timeDomRsrcAllocList[k2Index].k2;
+      if (isRetx)
+      {
+         if ((msg3HqProc->strtSymbl != cell->cellCfg.schInitialUlBwp.puschCommon.timeDomRsrcAllocList[k2Index].startSymbol) ||
+            (msg3HqProc->numSymbl != cell->cellCfg.schInitialUlBwp.puschCommon.timeDomRsrcAllocList[k2Index].symbolLength))
+         {
+            continue;
+         }
+      }
+      /* Delta is added to the slot allocation for msg3 based on 38.214 section 6.1.2.1 */
+      k2 = k2 + msg3Delta;
+      if(k2 >= msg3MinSchTime)
+      {
+         ADD_DELTA_TO_TIME(currTime, msg3TempTime, k2, cell->numSlots);
+#ifdef NR_TDD
+         if(schGetSlotSymbFrmt(msg3TempTime.slot % totalCfgSlot, cell->slotFrmtBitMap) == DL_SLOT)
+            continue;
+#endif
+         /* If PUSCH is already scheduled on this slot, another PUSCH
+          * pdu cannot be scheduled here */
+         if(cell->schUlSlotInfo[msg3TempTime.slot]->puschUe != 0)
+            continue;
+         k2Found = true;
+         break;
+      }
+   }
+   if (k2Found == true)
+   {
+      msg3Time->slot = msg3TempTime.slot;
+      msg3Time->sfn = msg3TempTime.sfn;
+      msg3Time->slot = msg3TempTime.slot;
+   }
+   return k2Found;
+}
 /**********************************************************************
   End of file
  **********************************************************************/

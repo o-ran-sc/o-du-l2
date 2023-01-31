@@ -35,27 +35,6 @@ uint8_t packMacSchSlotInd(Pst *pst, SlotTimingInfo *slotInd)
    return ODU_POST_TASK(pst,mBuf);
 }
 
-/**
- * @brief function to unpack Slot ind message from MAC
- *        to scheduler with loose coupling
- *
- * @details
- *
- *     Function : unpackMacSchSlotInd
- *
- *
- *  @param[in]  Pst *pst, the post structure
- *  @param[in]  Buffer *mBuf, the message buffer
- *  @return  S16
- *      -# ROK
- **/
-uint8_t unpackMacSchSlotInd(MacSchSlotIndFunc func, Pst *pst, Buffer  *mBuf)
-{
-   /* TODO */
-   return ROK;
-}
-
-
 /*******************************************************************
  *
  * @brief Pack and Send Rach Ind from MAC to SCH

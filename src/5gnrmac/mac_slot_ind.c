@@ -31,14 +31,6 @@
 #include "mac_harq_dl.h"
 #include "lwr_mac_phy.h"
 
-/* function pointers for packing slot ind from mac to sch */
-MacSchSlotIndFunc macSchSlotIndOpts[] =
-{
-   packMacSchSlotInd,
-   MacSchSlotInd,
-   packMacSchSlotInd
-};
-
 /**
  * @brief process DL allocation from scheduler
  *
@@ -387,7 +379,7 @@ int sendSlotIndMacToSch(SlotTimingInfo *slotInd)
    Pst pst;
 
    FILL_PST_MAC_TO_SCH(pst, EVENT_SLOT_IND_TO_SCH);
-   return(*macSchSlotIndOpts[pst.selector])(&pst,slotInd);
+   return(SchMessageRouter(&pst, slotInd->cellId, (void *)slotInd));
 }
 
 /*******************************************************************

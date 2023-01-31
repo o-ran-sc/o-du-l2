@@ -42,13 +42,6 @@
 #include "sch.h"
 #include "sch_utils.h"
 
-SchRachRsrcRspFunc SchRachRsrcRspOpts[] =
-{
-   packSchRachRsrcRsp,      /* LC */
-   MacProcSchRachRsrcRsp,   /* TC */
-   packSchRachRsrcRsp       /* LWLC */
-};
-
 /**
  * @brief Checks if PRACH can be scheduled in current slot
  *
@@ -196,7 +189,7 @@ void schPrachResAlloc(SchCellCb *cell, UlSchedInfo *ulSchedInfo, SlotTimingInfo 
  *
  * @details
  *
- *     Function : MacSchRachRsrcReq
+ *     Function : schFcfsRachRsrcReq
  *     
  *     This function processes RACH resorce request 
  *     from MAC for CFRA. It assigns a dedicated preamble
@@ -208,7 +201,7 @@ void schPrachResAlloc(SchCellCb *cell, UlSchedInfo *ulSchedInfo, SlotTimingInfo 
  *  @return     ROK
  *              RFAILED
  **/
-uint8_t MacSchRachRsrcReq(Pst *pst, SchRachRsrcReq *schRachRsrcReq)
+uint8_t schFcfsRachRsrcReq(Pst *pst, SchRachRsrcReq *schRachRsrcReq)
 {
    uint8_t      ssbIdx = 0, cfraSsbIdx = 0;
    uint8_t      firstCFPreambleIndex = 0, lastCFPreambleIndex = 0;
@@ -335,7 +328,7 @@ uint8_t MacSchRachRsrcReq(Pst *pst, SchRachRsrcReq *schRachRsrcReq)
    SCH_FREE(schRachRsrcReq, sizeof(SchRachRsrcReq));
 
    /* Send RACH resource response to MAC */
-   return (SchRachRsrcRspOpts[rspPst.selector](&rspPst, rachRsrcRsp));
+   return(MacMessageRouter(&rspPst, (void *)rachRsrcRsp));
 }
 
 /**
@@ -782,8 +775,9 @@ bool schProcessRaReq(Inst schInst, SchCellCb *cell, SlotTimingInfo currTime, uin
  *  @param[in]  shed instance
  *  @return  ROK
  **/
-uint8_t schProcessRachInd(RachIndInfo *rachInd, Inst schInst)
+uint8_t schFcfsProcessRachInd(Pst *pst, RachIndInfo *rachInd)
 {
+   Inst  schInst = pst->dstInst-SCH_INST_START;
    SchCellCb *cell = schCb[schInst].cells[schInst];
    SchRaReq  *raReq = NULLP;
    float    slotDuration;
@@ -998,7 +992,7 @@ uint8_t schFillRar(SchCellCb *cell, SlotTimingInfo rarTime, uint16_t ueId, RarAl
  *
  * @details
  *
- *     Function : MacSchRachRsrcRel
+ *     Function : schFcfsRachRsrcRel
  *     
  *     This function processes RACH resorce release
  *     from MAC after CFRA. It releases the dedicated 
@@ -1009,7 +1003,7 @@ uint8_t schFillRar(SchCellCb *cell, SlotTimingInfo rarTime, uint16_t ueId, RarAl
  *  @return     ROK
  *              RFAILED
  */
-uint8_t MacSchRachRsrcRel(Pst *pst, SchRachRsrcRel *schRachRsrcRel)
+uint8_t schFcfsRachRsrcRel(Pst *pst, SchRachRsrcRel *schRachRsrcRel)
 {
    uint8_t      ret = ROK;
    uint8_t      ssbIdx = 0, cfraSsbIdx = 0;

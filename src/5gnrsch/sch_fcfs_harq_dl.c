@@ -30,13 +30,6 @@
 #include "sch_drx.h"
 #endif
 
-SchMacDlReleaseHarqFunc schMacDlReleaseHarqOpts[] =
-{
-   packSchMacDlReleaseHarq,
-   MacSchReleaseDlHarqProc,
-   packSchMacDlReleaseHarq
-};
-
 typedef struct schCellCb SchCellCb;
 typedef struct schUeCb SchUeCb;
 void schDlHqEntReset(SchCellCb *cellCb, SchUeCb *ueCb, SchDlHqEnt *hqE);
@@ -256,7 +249,7 @@ uint8_t sendDlHarqProcReleaseToMac(SchDlHqProcCb *hqP, Inst inst)
    rlsHqInfo->ueHqInfo[0].crnti = hqP->hqEnt->ue->crnti;
    rlsHqInfo->ueHqInfo[0].hqProcId = hqP->procId;   
 
-   return(*schMacDlReleaseHarqOpts[pst.selector])(&pst, rlsHqInfo);
+   return(MacMessageRouter(&pst, (void *)rlsHqInfo));
 }
 /**
  * @brief Release Harq process TB from the DL Harq process
@@ -413,6 +406,49 @@ void schDlHqFeedbackUpdate(SchDlHqProcCb *hqP, uint8_t fdbk1, uint8_t fdbk2)
       }
    }
 }
+
+/*******************************************************************
+ *
+ * @brief Processes DL HARQ indication from MAC 
+ *
+ * @details
+ *
+ *    Function : SchFcfsDlHarqInd
+ *
+ *    Functionality:
+ *      Processes DL HARQ indication from MAC
+ *
+ * @params[in] Post structure
+ *             DL HARQ Indication
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t SchFcfsDlHarqInd(Pst *pst, DlHarqInd *dlHarqInd)
+{
+   Inst  inst = pst->dstInst-SCH_INST_START;
+   SchUeCb   *ueCb;
+   SchCellCb *cellCb = schCb[inst].cells[inst];
+
+#ifdef CALL_FLOW_DEBUG_LOG
+   DU_LOG("\nCall Flow: ENTMAC -> ENTSCH : EVENT_DL_HARQ_IND_TO_SCH\n");
+#endif
+
+   DU_LOG("\nDEBUG  -->  SCH : Received HARQ");
+
+   ueCb = schGetUeCb(cellCb, dlHarqInd->crnti);
+
+   if(ueCb->state == SCH_UE_STATE_INACTIVE)
+   {
+      DU_LOG("\nERROR  -->  SCH : Crnti %d is inactive", dlHarqInd->crnti);
+      return ROK;
+   }
+
+   schUpdateHarqFdbk(ueCb, dlHarqInd->numHarq, dlHarqInd->harqPayload, &dlHarqInd->slotInd);
+
+   return ROK;
+}
+
 /**********************************************************************
   End of file
  **********************************************************************/

@@ -76,12 +76,19 @@
 #define MAX_DRX_SIZE 512
 #endif
 
+#define NUM_SCH_TYPE 1  /*Supported number of Scheduler Algorithm types*/
+
 typedef struct schDlHqProcCb SchDlHqProcCb;
 typedef struct schUlHqEnt SchUlHqEnt;
 typedef struct schRaReq SchRaReq;
 typedef struct schDlHqEnt SchDlHqEnt;
 typedef struct schCellCb SchCellCb;
 typedef struct schUeCb SchUeCb;
+
+typedef enum
+{
+   SCH_FCFS
+}SchType;
 
 typedef enum
 {
@@ -531,6 +538,23 @@ typedef struct schDrxCb
 }SchDrxCb;
 #endif
 
+typedef struct schAllApis
+{
+   uint8_t (* SchSlotInd) ARGS((Pst * pst, SlotTimingInfo * slotInd));
+   uint8_t (* SchCellDeleteReq) (Pst *pst, SchCellDeleteReq  *schCellDelete);
+   uint8_t (* SchAddUeConfigReq) (Pst *pst, SchUeCfgReq *ueCfgToSch);
+   uint8_t (* SchModUeConfigReq) (Pst *pst, SchUeRecfgReq *ueRecfgToSch);
+   uint8_t (* SchUeDeleteReq) (Pst *pst, SchUeDelete  *ueDelete);
+   uint8_t (* SchDlHarqInd) (Pst *pst, DlHarqInd *dlHarqInd);
+   uint8_t (* SchCrcInd) (Pst *pst, CrcIndInfo *crcInd);
+   uint8_t (* SchRachInd) (Pst *pst, RachIndInfo *rachInd);
+   uint8_t (* SchPagingInd) (Pst *pst,  SchPageInd *pageInd);
+   uint8_t (* SchRachRsrcReq) (Pst *pst, SchRachRsrcReq *schRachRsrcReq);
+   uint8_t (* SchRachRsrcRel) (Pst *pst, SchRachRsrcRel *schRachRsrcRel);
+   uint8_t (* SchDlRlcBoInfo) (Pst *pst, DlRlcBoInfo *dlBoInfo);
+   uint8_t (* SchSrUciInd) (Pst *pst, SrUciIndInfo *uciInd);
+   uint8_t (* SchBsr) (Pst *pst, UlBufferStatusRptInd *bsrInd);
+}SchAllApis;
 /**
  * @brief
  * Cell Control block per cell.
@@ -563,8 +587,10 @@ typedef struct schCellCb
    uint32_t      symbFrmtBitMap;                    /*!< 2 bits must be read together to determine D/U/S symbols. 00-D, 01-U, 10-S */
 #endif
 #ifdef NR_DRX
-   SchDrxCb      drxCb[MAX_DRX_SIZE];                           /*!< Drx cb*/
+   SchDrxCb      drxCb[MAX_DRX_SIZE];               /*!< Drx cb*/
 #endif
+   SchType       schAlgoType;                       /*!< The scheduler type which the cell is configured with.*/
+   SchAllApis     *api;                              /*!< Reference of sch APIs for this cell based on the SchType*/
 }SchCellCb;
 
 
@@ -574,18 +600,20 @@ typedef struct schSliceCfg
    SchRrmPolicyOfSlice **listOfConfirguration;
 }SchSliceCfg;
 
+
 /**
  * @brief
  * Control block for sch
  */
 typedef struct schCb
 {
-   TskInit       schInit;               /*!< Task Init info */
-   SchGenCb      genCfg;                /*!< General Config info */
-   CmTqCp        tmrTqCp;               /*!< Timer Task Queue Cntrl Point */
-   CmTqType      tmrTq[SCH_TQ_SIZE];    /*!< Timer Task Queue */
-   SchCellCb     *cells[MAX_NUM_CELL];  /* Array to store cellCb ptr */
-   SchSliceCfg   sliceCfg;
+   TskInit                schInit;               /*!< Task Init info */
+   SchGenCb               genCfg;                /*!< General Config info */
+   CmTqCp                 tmrTqCp;               /*!< Timer Task Queue Cntrl Point */
+   CmTqType               tmrTq[SCH_TQ_SIZE];    /*!< Timer Task Queue */
+   SchAllApis             allApis[NUM_SCH_TYPE]; /*!<List of All Scheduler Type dependent Function pointers*/
+   SchCellCb              *cells[MAX_NUM_CELL];  /* Array to store cellCb ptr */
+   SchSliceCfg            sliceCfg;
 }SchCb;
 
 /* Declaration for scheduler control blocks */
@@ -607,9 +635,6 @@ SchUeCb* schGetUeCb(SchCellCb *cellCb, uint16_t crnti);
 uint8_t addUeToBeScheduled(SchCellCb *cell, uint8_t ueId);
 
 /* Incoming message handler function declarations */
-uint8_t schProcessSlotInd(SlotTimingInfo *slotInd, Inst inst);
-uint8_t schProcessRachInd(RachIndInfo *rachInd, Inst schInst);
-uint8_t schProcessCrcInd(CrcIndInfo *crcInd, Inst schInst);
 
 /* DL scheduling related function declarations */
 PduTxOccsaion schCheckSsbOcc(SchCellCb *cell, SlotTimingInfo slotTime);
@@ -680,6 +705,12 @@ void schUpdateHarqFdbk(SchUeCb *ueCb, uint8_t numHarq, uint8_t *harqPayload,Slot
 uint8_t schFillUlDciForMsg3Retx(SchRaCb *raCb, SchPuschInfo *puschInfo, DciInfo *dciInfo);
 bool schGetMsg3K2(SchCellCb *cell, SchUlHqProcCb* msg3HqProc, uint16_t dlTime, SlotTimingInfo *msg3Time, bool isRetx);
 void schMsg4Complete(SchUeCb *ueCb);
+
+/*Scheduler Type Independent APIs*/
+uint8_t SchHdlCellCfgReq(Pst *pst, SchCellCfg *schCellCfg);
+uint8_t SchProcSliceCfgReq(Pst *pst, SchSliceCfgReq *schSliceCfgReq);
+uint8_t SchProcSliceRecfgReq(Pst *pst, SchSliceRecfgReq *schSliceRecfgReq);
+
 /**********************************************************************
   End of file
  **********************************************************************/

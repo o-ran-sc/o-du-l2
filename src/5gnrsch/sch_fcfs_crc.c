@@ -31,7 +31,7 @@
  *
  * @details
  *
- *     Function : schProcessCrcInd
+ *     Function : schFcfsProcessCrcInd
  *      
  *      This function process CRC indication
  *           
@@ -41,8 +41,9 @@
  *      -# ROK
  *      -# RFAILED
  **/
-uint8_t schProcessCrcInd(CrcIndInfo *crcInd, Inst schInst)
+uint8_t schFcfsProcessCrcInd(Pst *pst, CrcIndInfo *crcInd)
 {
+   Inst  schInst = pst->dstInst-SCH_INST_START;
    SchCellCb *cell = schCb[schInst].cells[schInst];
    uint16_t count=0;
    uint8_t  ueId=0;
