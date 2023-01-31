@@ -22,6 +22,30 @@
       },
       "revId": "c0421fee45d07243f1cc3b2250bd66600f15aac7",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9e495ba2_f20ce420",
+        "filename": "src/5gnrsch/sch_ue_mgr.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 241,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-01-31T09:26:08Z",
+      "side": 0,
+      "message": "Yes, we are setting this flag to true only for a dedicated slice.",
+      "parentUuid": "7a26a42b_853c4332",
+      "range": {
+        "startLine": 241,
+        "startChar": 24,
+        "endLine": 241,
+        "endChar": 44
+      },
+      "revId": "c0421fee45d07243f1cc3b2250bd66600f15aac7",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
   ]
 }
