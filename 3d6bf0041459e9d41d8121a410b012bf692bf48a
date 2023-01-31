@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "320ec26c_b4cb90d1",
+        "filename": "src/du_app/du_cfg.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 448,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-01-31T10:48:17Z",
+      "side": 1,
+      "message": "port no. is incorrect, its 36421",
+      "range": {
+        "startLine": 448,
+        "startChar": 63,
+        "endLine": 448,
+        "endChar": 69
+      },
+      "revId": "3d6bf0041459e9d41d8121a410b012bf692bf48a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
