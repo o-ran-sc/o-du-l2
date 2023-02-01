@@ -103,7 +103,7 @@ static Void rgLMMFillCfmPst ARGS((
  *
  * @details
  *
- *     Function : rgActvInit
+ *     Function : macActvInit
  *     
  *     This function is supplied as one of parameters during MAC's 
  *     task registration. SSI will invoke this function once, after
@@ -117,7 +117,7 @@ static Void rgLMMFillCfmPst ARGS((
  *  @return  S16
  *      -# ROK
  **/
-S16 rgActvInit
+uint8_t macActvInit
 (
 Ent entity,            /* entity */
 Inst inst,             /* instance */
@@ -177,7 +177,7 @@ Reason reason          /* reason */
 
    return ROK;
 
-} /* rgActvInit */
+} /* macActvInit */
 
 /**
  * @brief Layer Manager Configuration request handler. 

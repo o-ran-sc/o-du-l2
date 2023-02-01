@@ -58,26 +58,26 @@ registered with SSI during the LTE MAC Task initialization.
 #include "rg.x"            /* typedefs for MAC */
 #include "rlc_mac_inf.h"
 #include "lwr_mac_upr_inf.h"
+#include "mac_sch_interface.h"
+#include "mac.h"
+#include "mac_ue_mgr.h"
+#include "mac_harq_dl.h"
 
 /**
- * @brief Task Activation callback function Entity SM. 
+ * @brief Task Activation callback function Entity DU APP. 
  *
  * @details
  *
- *     Function : rgHdlSMEvents
+ *     Function : MacHdlDuappEvents
  *     
- *     Process Messages received from Entity SM
+ *     Process Messages received from Entity DU APP
  *     
  *  @param[in]  Pst     *pst, Post structure of the primitive.     
  *  @param[in]  Buffer *mBuf, Packed primitive parameters in the buffer.
  *  @param[in]  Reason reason.
  *  @return  void
  **/
-static inline void rgHdlSMEvents
-(
-Pst     *pst,                       /* post structure       */
-Buffer  *mBuf                       /* message buffer       */
-)
+void MacHdlDuappEvents(Pst *pst, Buffer *mBuf)
 {
    switch(pst->event)
    {
@@ -180,66 +180,24 @@ Buffer  *mBuf                       /* message buffer       */
    }
 }
 
-
 /**
- * @brief Task Activation callback function Entity NH. 
+ * @brief Task Activation callback function Entity RLC. 
  *
  * @details
  *
- *     Function : rgHdlNHEvents
+ *     Function : MacHdlRlcEvents
  *     
- *     Process Messages received from Entity NH
+ *     Process Messages received from Entity RLC
  *     
  *  @param[in]  Pst     *pst, Post structure of the primitive.     
  *  @param[in]  Buffer *mBuf, Packed primitive parameters in the buffer.
  *  @param[in]  Reason reason.
  *  @return  void
  **/
-static inline void rgHdlNHEvents
-(
-Pst     *pst,                       /* post structure       */
-Buffer  *mBuf                       /* message buffer       */
-)
+void MacHdlRlcEvents(Pst *pst, Buffer *mBuf)
 {
    switch(pst->event)
    {
-#ifdef LCRGUICRG
-      case EVTCRGBNDREQ:
-         cmUnpkCrgBndReq(RgUiCrgBndReq, pst, mBuf);
-         break;
-      case EVTCRGUBNDREQ:
-         cmUnpkCrgUbndReq(RgUiCrgUbndReq, pst, mBuf);
-         break;
-#endif            
-      default:
-         RG_FREE_MSG(mBuf);
-         break;
-   }
-}
-
-/**
- * @brief Task Activation callback function Entity KW. 
- *
- * @details
- *
- *     Function : rgHdlKWEvents
- *     
- *     Process Messages received from Entity KW
- *     
- *  @param[in]  Pst     *pst, Post structure of the primitive.     
- *  @param[in]  Buffer *mBuf, Packed primitive parameters in the buffer.
- *  @param[in]  Reason reason.
- *  @return  void
- **/
-static inline void rgHdlKWEvents
-(
-Pst     *pst,                       /* post structure       */
-Buffer  *mBuf                       /* message buffer       */
-)
-{
-   switch(pst->event)
-   {
-#ifdef LCRGUIRGU
       case EVTRGUBNDREQ:
          cmUnpkRguBndReq(RgUiRguBndReq, pst, mBuf);
          break;
@@ -252,14 +210,6 @@ Buffer  *mBuf                       /* message buffer       */
       case EVENT_BO_STATUS_TO_MAC:
          unpackRlcBoStatus(MacProcRlcBoStatus, pst, mBuf);
          break;
-#ifdef LTE_L2_MEAS
-
-      case EVTRGUL2MULTHRPMEASREQ:
-         cmUnpkRguL2MUlThrpMeasReq(RgUiRguL2MUlThrpMeasReq, pst,mBuf);
-         break;
-
-#endif
-#endif            
       default:
          RG_FREE_MSG(mBuf);
          break;
@@ -267,147 +217,44 @@ Buffer  *mBuf                       /* message buffer       */
 }
 
 /**
- * @brief Task Activation callback function Entity TF. 
+ * @brief Task Activation callback function Entity Lower MAC 
  *
  * @details
  *
- *     Function : rgHdlTFEvents
+ *     Function : MacHdlLwrMacEvents
  *     
- *     Process Messages received from Entity TF
+ *     Process Messages received from Entity Lower MAC
  *     
  *  @param[in]  Pst     *pst, Post structure of the primitive.     
  *  @param[in]  Buffer *mBuf, Packed primitive parameters in the buffer.
  *  @param[in]  Reason reason.
  *  @return  void
  **/
-static inline void rgHdlTFEvents
-(
-Pst     *pst,                       /* post structure       */
-Buffer  *mBuf                       /* message buffer       */
-)
+void MacHdlLwrMacEvents(Pst *pst, Buffer *mBuf)
 {
    switch(pst->event)
    {
       case EVENT_SLOT_IND_TO_MAC:
-	 unpackSlotInd(fapiMacSlotInd, pst, mBuf);
+         unpackSlotInd(fapiMacSlotInd, pst, mBuf);
          break;
       case EVENT_STOP_IND_TO_MAC:
-	 unpackStopInd(fapiMacStopInd, pst, mBuf);
-	 break;
+         unpackStopInd(fapiMacStopInd, pst, mBuf);
+         break;
       case EVENT_RACH_IND_TO_MAC:
-	 unpackRachInd(fapiMacRachInd, pst, mBuf);
-	 break;
+         unpackRachInd(fapiMacRachInd, pst, mBuf);
+         break;
       case EVENT_CRC_IND_TO_MAC:
-	 unpackCrcInd(fapiMacCrcInd, pst, mBuf);
-	 break;
+         unpackCrcInd(fapiMacCrcInd, pst, mBuf);
+         break;
       case EVENT_RX_DATA_IND_TO_MAC:
-	 unpackRxDataInd(fapiMacRxDataInd, pst, mBuf);
-	 break;
+         unpackRxDataInd(fapiMacRxDataInd, pst, mBuf);
+         break;
       case EVENT_UCI_IND_TO_MAC:
-	 unpackUciInd(FapiMacUciInd, pst, mBuf);
-	 break;
+         unpackUciInd(FapiMacUciInd, pst, mBuf);
+         break;
       default:
          RG_FREE_MSG(mBuf);
          break;
-   }
-}
-
-
-/**
- * @brief Task Activation callback function Entity RG SCH. 
- *
- * @details
- *
- *     Function : rgHdlRGEvents
- *     
- *     Process Messages received from Entity RG SCH
- *     
- *  @param[in]  Pst     *pst, Post structure of the primitive.     
- *  @param[in]  Buffer *mBuf, Packed primitive parameters in the buffer.
- *  @param[in]  Reason reason.
- *  @return  void
- **/
-static inline void rgHdlRGEvents
-(
-Pst     *pst,                       /* post structure       */
-Buffer  *mBuf                       /* message buffer       */
-)
-{
-   switch(pst->event)
-   {
-#ifdef LCRG
-      case EVTINFCELLREGREQ:
-         cmUnpkSchMacCellRegReq(RgSchMacCellRegReq, pst, mBuf);
-         break;
-      case EVTINFSFALLOCREQ:
-         cmUnpkSchMacSfAllocReq(RgSchMacSfAllocReq, pst, mBuf);
-         break;
-      case EVTINFRLSHQREQ:
-         cmUnpkSchMacRlsHqReq(RgSchMacRlsHqReq, pst, mBuf);
-         break;
-      case EVTINFHQENTRESET:
-         cmUnpkSchMacRstHqEntReq(RgSchMacRstHqEntReq, pst, mBuf);
-         break;
-      case EVTINFRLSRNTIREQ:
-         cmUnpkSchMacRlsRntiReq(RgSchMacRlsRntiReq, pst, mBuf);
-         break;
-#ifdef LTE_L2_MEAS
-      case EVTINFL2MEASREQ:
-         cmUnpkSchMacL2MeasReq(RgSchMacL2MeasReq, pst, mBuf);
-         break;
-      case EVTINFL2MEASSENDREQ :
-         cmUnpkSchMacL2MeasSendReq(RgSchMacL2MeasSendReq, pst , mBuf);
-         break;
-      case EVTINFL2MEASSTOPREQ:
-         cmUnpkSchMacL2MeasStopReq(RgSchMacL2MeasStopReq, pst , mBuf);
-         break;
-#endif/* LTE_L2_MEAS */
-#endif /* LCRG */
-#if defined(LTE_ADV) && defined(LCPRG)
-      case EVTPRGUESCELLCFGREQ:
-      {
-         cmUnpkPrgPMacSMacUeSCellCfgReq(RgPrgPMacSMacUeSCellCfgReq, pst, mBuf);
-      }
-      break;
-      case EVTPRGUESCELLCFGCFM:
-      case EVTPRGUESCELLLCHMODCFM:
-      case EVTPRGUESCELLLCHDELCFMDEL:
-      case EVTPRGUESCELLLCHADDCFM:
-      {
-         cmUnpkPrgSMacPMacCfgCfm(RgPrgSMacPMacCfgCfm, pst, mBuf);
-      }
-      break;
-      case EVTPRGUESCELLDELREQ:
-      {
-         cmUnpkPrgPMacSMacUeSCellDelReq(RgPrgPMacSMacUeSCellDelReq, pst, mBuf);
-      }
-      break;
-      case EVTPRGUESCELLLCHMODREQ:
-      {
-         cmUnpkPrgPMacSMacUeSCellLchModReq(RgPrgPMacSMacUeSCellLchModReq, pst,
-                                           mBuf);
-      }
-      break;
-      case EVTPRGUESCELLLCHDELREQ:
-      {
-         cmUnpkPrgPMacSMacUeSCellLchDelReq(RgPrgPMacSMacUeSCellLchDelReq, pst,
-                                           mBuf);
-      }
-      break;
-      case EVTPRGUESCELLLCHADDREQ:
-      {
-         cmUnpkPrgPMacSMacUeSCellLchAddReq(RgPrgPMacSMacUeSCellLchAddReq, pst,
-                                           mBuf);
-      }
-      break;
-
-#endif
-      default:
-      {
-         RG_FREE_MSG(mBuf);
-         break;
-      }
-
    }
 }
 
@@ -417,7 +264,7 @@ Buffer  *mBuf                       /* message buffer       */
 *
 * @details
 *
-*     Function : callFlowRgActvTsk 
+*     Function : callFlowMacActvTsk 
 *
 *     Function prints src, dest, msg infor about all the msgs that received
 *
@@ -426,7 +273,7 @@ Buffer  *mBuf                       /* message buffer       */
 *  @return  void
 **/
 
-void callFlowRgActvTsk(Pst *pst)
+void callFlowMacActvTsk(Pst *pst)
 {
    char sourceTask[50];
    char destTask[50]="ENTMAC";
@@ -539,65 +386,80 @@ void callFlowRgActvTsk(Pst *pst)
 
             break;
          }
-      case ENTMAC: /* When scheduler instance sends msg to MAC */
+      case ENTMAC:
          {
-            strcpy(sourceTask,"ENTMAC");
-            switch(pst->event)
+            if(pst->srcInst == 1)
             {
-#ifdef LCRG
-               case EVTINFCELLREGREQ:
-                  strcpy(message,"EVTINFCELLREGREQ");
-                  break;
-               case EVTINFSFALLOCREQ:
-                  strcpy(message,"EVTINFSFALLOCREQ");
-                  break;
-               case EVTINFRLSHQREQ:
-                  strcpy(message,"EVTINFRLSHQREQ");
-                  break;
-               case EVTINFHQENTRESET:
-                  strcpy(message,"EVTINFHQENTRESET");
-                  break;
-               case EVTINFRLSRNTIREQ:
-                  strcpy(message,"EVTINFRLSRNTIREQ");
-                  break;
-#endif            
-#if defined(LTE_ADV) && defined(LCPRG)
-               case EVTPRGUESCELLCFGREQ:
-                  strcpy(message,"EVTPRGUESCELLCFGREQ");
-                  break;
-               case EVTPRGUESCELLCFGCFM:
-                  strcpy(message,"EVTPRGUESCELLCFGCFM");
-                  break;
-               case EVTPRGUESCELLLCHMODCFM:
-                  strcpy(message,"EVTPRGUESCELLLCHMODCFM");
-                  break;
-               case EVTPRGUESCELLLCHDELCFMDEL:
-                  strcpy(message,"EVTPRGUESCELLLCHDELCFMDEL");
-                  break;
-               case EVTPRGUESCELLLCHADDCFM:
-                  strcpy(message,"EVTPRGUESCELLLCHADDCFM");
-                  break;
-               case EVTPRGUESCELLDELREQ:
-                  strcpy(message,"EVTPRGUESCELLDELREQ");
-                  break;
-               case EVTPRGUESCELLLCHMODREQ:
-                  strcpy(message,"EVTPRGUESCELLLCHMODREQ");
-                  break;
-               case EVTPRGUESCELLLCHDELREQ:
-                  strcpy(message,"EVTPRGUESCELLLCHDELREQ");
-                  break;
-               case EVTPRGUESCELLLCHADDREQ:
-                  strcpy(message,"EVTPRGUESCELLLCHADDREQ");
-                  break;
-
-#endif
-               default:
-                  strcpy(message,"Invalid Event");
-                  break;
+               strcpy(sourceTask,"ENTSCH");
+               switch(pst->event)
+               {
+                  case EVENT_SLICE_CFG_RSP_TO_MAC:
+                     {
+                        strcpy(message,"EVENT_SLICE_CFG_RSP_TO_MAC");
+                        break;
+                     }
+                  case EVENT_SLICE_RECFG_RSP_TO_MAC:
+                     {
+                        strcpy(message,"EVENT_SLICE_RECFG_RSP_TO_MAC");
+                        break;
+                     }
+                  case EVENT_SCH_CELL_CFG_CFM:
+                     {
+                        strcpy(message,"EVENT_SCH_CELL_CFG_CFM");
+                        break;
+                     }
+                  case EVENT_UE_CONFIG_RSP_TO_MAC:
+                     {
+                        strcpy(message,"EVENT_UE_CONFIG_RSP_TO_MAC");
+                        break;
+                     }
+                  case EVENT_UE_RECONFIG_RSP_TO_MAC:
+                     {
+                        strcpy(message,"EVENT_UE_RECONFIG_RSP_TO_MAC");
+                        break;
+                     }
+                  case EVENT_DL_SCH_INFO:
+                     {
+                        strcpy(message,"EVENT_DL_SCH_INFO");
+                        break;
+                     }
+                  case EVENT_UL_SCH_INFO:
+                     {
+                        strcpy(message,"EVENT_UL_SCH_INFO");
+                        break;
+                     }
+                  case EVENT_RACH_RESOURCE_RESPONSE_TO_MAC:
+                     {
+                        strcpy(message,"EVENT_RACH_RESOURCE_RESPONSE_TO_MAC");
+                        break;
+                     }
+                  case EVENT_DL_PAGING_ALLOC:
+                     {
+                        strcpy(message,"EVENT_DL_PAGING_ALLOC");
+                        break;
+                     }
+                  case EVENT_UE_DELETE_RSP_TO_MAC:
+                     {
+                        strcpy(message,"EVENT_UE_DELETE_RSP_TO_MAC");
+                        break;
+                     }
+                  case EVENT_CELL_DELETE_RSP_TO_MAC:
+                     {
+                        strcpy(message,"EVENT_CELL_DELETE_RSP_TO_MAC");
+                        break;
+                     }
+                  case EVENT_DL_REL_HQ_PROC:
+                     {
+                        strcpy(message,"EVENT_DL_REL_HQ_PROC");
+                        break;
+                     }
+                  default:
+                     strcpy(message,"Invalid Event");
+                     break;
+               }
             }
             break;
          }
-
       default:
          {
             strcpy(sourceTask,"Invalid Source Entity Id");
@@ -614,7 +476,7 @@ void callFlowRgActvTsk(Pst *pst)
  *
  * @details
  *
- *     Function : rgActvTsk
+ *     Function : macActvTsk
  *     
  *     Primitives invoked by MAC's users/providers through
  *     a loosely coupled interface arrive here by means of 
@@ -624,46 +486,124 @@ void callFlowRgActvTsk(Pst *pst)
  *  @param[in]  Pst     *pst, Post structure of the primitive.     
  *  @param[in]  Buffer *mBuf, Packed primitive parameters in the buffer.
  *  @param[in]  Reason reason.
- *  @return  S16
+ *  @return  uint8_t
  *      -# ROK
  **/
-S16 rgActvTsk
-(
-Pst     *pst,                       /* post structure       */
-Buffer  *mBuf                       /* message buffer       */
-)
+uint8_t macActvTsk(Pst *pst, Buffer *mBuf)
 {
 
 #ifdef CALL_FLOW_DEBUG_LOG
-   callFlowRgActvTsk(pst);
+   callFlowMacActvTsk(pst);
 #endif
 
    switch(pst->srcEnt)
    {
-      /* The originator of this message is the stack manager,
-       * unpack and go to the respective primitive processing function */
       case ENTDUAPP:
-          rgHdlSMEvents(pst, mBuf);
-           break;
-      case ENTNH:
-          rgHdlNHEvents(pst, mBuf);
-          break;
+         MacHdlDuappEvents(pst, mBuf);
+         break;
       case ENTRLC:
-          rgHdlKWEvents(pst, mBuf);
-          break;
+         MacHdlRlcEvents(pst, mBuf);
+         break;
       case ENTLWRMAC:
-          rgHdlTFEvents(pst, mBuf);
-          break;
-      case ENTMAC: /* When scheduler instance sends msg to MAC */
-          rgHdlRGEvents(pst, mBuf);
-          break;
-       default:
-          RG_FREE_MSG(mBuf);
-          break;
+         MacHdlLwrMacEvents(pst, mBuf);
+         break;
+      default:
+         RG_FREE_MSG(mBuf);
+         break;
    }
    ODU_EXIT_TASK();
    return ROK;
-}/* end of rgActvTsk */
+}/* end of MacActvTsk */
+
+/**
+ * @brief Callback function for events from entity SCH
+ *
+ * @details
+ *
+ *     Function :MacMessageRouter
+ *     
+ *     Process Messages received from Entity SCH
+ *     
+ *  @param[in]  Pst     *pst, Post structure of the primitive.     
+ *  @param[in]  Buffer *mBuf, Packed primitive parameters in the buffer.
+ *  @param[in]  Reason reason.
+ *  @return  void
+ **/
+uint8_t MacMessageRouter(Pst *pst, void *msg)
+{
+#ifdef CALL_FLOW_DEBUG_LOG
+   callFlowMacActvTsk(pst);
+#endif
+
+   switch(pst->event)
+   {
+      case EVENT_SLICE_CFG_RSP_TO_MAC:
+         {
+            MacProcSchSliceCfgRsp(pst, (SchSliceCfgRsp *)msg);
+            break;
+         }
+      case EVENT_SLICE_RECFG_RSP_TO_MAC:
+         {
+            MacProcSchSliceRecfgRsp(pst, (SchSliceRecfgRsp *)msg);
+            break;
+         }
+      case EVENT_SCH_CELL_CFG_CFM:
+         {
+            MacProcSchCellCfgCfm(pst, (SchCellCfgCfm *)msg);
+            break;
+         }
+      case EVENT_UE_CONFIG_RSP_TO_MAC:
+         {
+            MacProcSchUeCfgRsp(pst, (SchUeCfgRsp *)msg);
+            break;
+         }
+      case EVENT_UE_RECONFIG_RSP_TO_MAC:
+         {
+            MacProcSchUeRecfgRsp(pst, (SchUeRecfgRsp *)msg);
+            break;
+         }
+      case EVENT_DL_SCH_INFO:
+         {
+            MacProcDlAlloc(pst, (DlSchedInfo *)msg);
+            break;
+         }
+      case EVENT_UL_SCH_INFO:
+         {
+            MacProcUlSchInfo(pst, (UlSchedInfo *)msg);
+            break;
+         }
+      case EVENT_RACH_RESOURCE_RESPONSE_TO_MAC:
+         {
+            MacProcSchRachRsrcRsp(pst, (SchRachRsrcRsp *)msg);
+            break;
+         }
+      case EVENT_DL_PAGING_ALLOC:
+         {
+            MacProcDlPageAlloc(pst, (DlPageAlloc *)msg);
+            break;
+         }
+      case EVENT_UE_DELETE_RSP_TO_MAC:
+         {
+            MacProcSchUeDeleteRsp(pst, (SchUeDeleteRsp *)msg);
+            break;
+         }
+      case EVENT_CELL_DELETE_RSP_TO_MAC:
+         {
+            MacProcSchCellDeleteRsp(pst, (SchCellDeleteRsp *)msg);
+            break;
+         }
+      case EVENT_DL_REL_HQ_PROC: 
+         {
+            MacSchReleaseDlHarqProc(pst, (SchRlsHqInfo *)msg);
+            break;
+         }
+      default:
+         {
+            return RFAILED;
+         }
+   }
+   return ROK;
+}
 
 
 /**********************************************************************
