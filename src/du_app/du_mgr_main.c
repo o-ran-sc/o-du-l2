@@ -42,8 +42,8 @@ uint8_t rlcUlActvTsk (Pst *, Buffer *);
 uint8_t rlcUlActvInit (Ent, Inst, Region, Reason);
 uint8_t rlcDlActvTsk (Pst *, Buffer *);
 uint8_t rlcDlActvInit (Ent, Inst, Region, Reason);
-uint8_t rgActvTsk (Pst *, Buffer *);
-uint8_t rgActvInit (Ent, Inst, Region, Reason);
+uint8_t macActvTsk (Pst *, Buffer *);
+uint8_t macActvInit (Ent, Inst, Region, Reason);
 uint8_t lwrMacActvTsk(Pst *, Buffer *);
 uint8_t lwrMacActvInit(Ent, Inst, Region, Reason);
 #ifndef INTEL_WLS_MEM
@@ -396,7 +396,7 @@ uint8_t rlcDlInit(SSTskId sysTskId)
 
    /* Register MAC TAPA Task */
    if(ODU_REG_TTSK((Ent)ENTMAC, (Inst)0, (Ttype)TTNORM, (Prior)PRIOR0,
-            rgActvInit, (ActvTsk)rgActvTsk) != ROK)
+            macActvInit, (ActvTsk)macActvTsk) != ROK)
    {
       return RFAILED;
    }

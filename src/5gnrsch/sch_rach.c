@@ -42,13 +42,6 @@
 #include "sch.h"
 #include "sch_utils.h"
 
-SchRachRsrcRspFunc SchRachRsrcRspOpts[] =
-{
-   packSchRachRsrcRsp,      /* LC */
-   MacProcSchRachRsrcRsp,   /* TC */
-   packSchRachRsrcRsp       /* LWLC */
-};
-
 /**
  * @brief Checks if PRACH can be scheduled in current slot
  *
@@ -196,7 +189,7 @@ void schPrachResAlloc(SchCellCb *cell, UlSchedInfo *ulSchedInfo, SlotTimingInfo 
  *
  * @details
  *
- *     Function : MacSchRachRsrcReq
+ *     Function : SchProcRachRsrcReq
  *     
  *     This function processes RACH resorce request 
  *     from MAC for CFRA. It assigns a dedicated preamble
@@ -208,7 +201,7 @@ void schPrachResAlloc(SchCellCb *cell, UlSchedInfo *ulSchedInfo, SlotTimingInfo 
  *  @return     ROK
  *              RFAILED
  **/
-uint8_t MacSchRachRsrcReq(Pst *pst, SchRachRsrcReq *schRachRsrcReq)
+uint8_t SchProcRachRsrcReq(Pst *pst, SchRachRsrcReq *schRachRsrcReq)
 {
    uint8_t      ssbIdx = 0, cfraSsbIdx = 0;
    uint8_t      firstCFPreambleIndex = 0, lastCFPreambleIndex = 0;
@@ -335,7 +328,7 @@ uint8_t MacSchRachRsrcReq(Pst *pst, SchRachRsrcReq *schRachRsrcReq)
    SCH_FREE(schRachRsrcReq, sizeof(SchRachRsrcReq));
 
    /* Send RACH resource response to MAC */
-   return (SchRachRsrcRspOpts[rspPst.selector](&rspPst, rachRsrcRsp));
+   return(MacMessageRouter(&rspPst, (void *)rachRsrcRsp));
 }
 
 /**
@@ -774,7 +767,7 @@ bool schProcessRaReq(Inst schInst, SchCellCb *cell, SlotTimingInfo currTime, uin
  *
  * @details
  *
- *     Function : schProcessRachInd
+ *     Function : SchProcRachInd
  *     
  *     This function process rach indication
  *     
@@ -782,17 +775,20 @@ bool schProcessRaReq(Inst schInst, SchCellCb *cell, SlotTimingInfo currTime, uin
  *  @param[in]  shed instance
  *  @return  ROK
  **/
-uint8_t schProcessRachInd(RachIndInfo *rachInd, Inst schInst)
+uint8_t SchProcRachInd(Pst *pst, RachIndInfo *rachInd)
 {
-   SchCellCb *cell = schCb[schInst].cells[schInst];
    SchRaReq  *raReq = NULLP;
-   float    slotDuration;
-   uint8_t  winNumSlots;
-   uint8_t  ueId;
+   float     slotDuration;
+   uint8_t   winNumSlots;
+   uint8_t   ueId;
+   Inst      schInst = pst->dstInst-SCH_INST_START;
+   SchCellCb *cell = schCb[schInst].cells[schInst];
+
+   DU_LOG("\nINFO  -->  SCH : Received Rach indication");
 
    if(cell == NULLP)
    {
-      DU_LOG("\nERROR  -->  SCH: Failed to find cell in schProcessRachInd");
+      DU_LOG("\nERROR  -->  SCH: Failed to find cell in SchProcRachInd");
       return RFAILED;
    }
 
@@ -807,7 +803,7 @@ uint8_t schProcessRachInd(RachIndInfo *rachInd, Inst schInst)
    SCH_ALLOC(raReq, sizeof(SchRaReq));
    if(!raReq)
    {
-      DU_LOG("\nERROR  -->  SCH : Memory allocation failure in schProcessRachInd");
+      DU_LOG("\nERROR  -->  SCH : Memory allocation failure in SchProcRachInd");
       SCH_FREE(rachInd, sizeof(RachIndInfo));
       return RFAILED;
    }
@@ -834,8 +830,7 @@ uint8_t schProcessRachInd(RachIndInfo *rachInd, Inst schInst)
    cell->raReq[ueId -1] = raReq;
 
    /* Adding UE Id to list of pending UEs to be scheduled */
-   addUeToBeScheduled(cell, ueId);
-
+   cell->api->SchRachInd(cell, ueId);
    return ROK;
 }
 
@@ -998,7 +993,7 @@ uint8_t schFillRar(SchCellCb *cell, SlotTimingInfo rarTime, uint16_t ueId, RarAl
  *
  * @details
  *
- *     Function : MacSchRachRsrcRel
+ *     Function : SchProcRachRsrcRel
  *     
  *     This function processes RACH resorce release
  *     from MAC after CFRA. It releases the dedicated 
@@ -1009,7 +1004,7 @@ uint8_t schFillRar(SchCellCb *cell, SlotTimingInfo rarTime, uint16_t ueId, RarAl
  *  @return     ROK
  *              RFAILED
  */
-uint8_t MacSchRachRsrcRel(Pst *pst, SchRachRsrcRel *schRachRsrcRel)
+uint8_t SchProcRachRsrcRel(Pst *pst, SchRachRsrcRel *schRachRsrcRel)
 {
    uint8_t      ret = ROK;
    uint8_t      ssbIdx = 0, cfraSsbIdx = 0;
@@ -1087,7 +1082,7 @@ void schMsg4Complete(SchUeCb *ueCb)
 {
    DU_LOG("\nINFO --> SCH: State change for ueId[%2d] to SCH_RA_STATE_MSG4_DONE\n",ueCb->ueId);
    ueCb->cellCb->raCb[ueCb->ueId-1].raState = SCH_RA_STATE_MSG4_DONE;
-   ueCb->msg4Proc = ueCb->retxMsg4HqProc = NULLP;
+   ueCb->msg4HqProc = ueCb->retxMsg4HqProc = NULLP;
 }
 /**********************************************************************
          End of file
