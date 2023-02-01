@@ -84,6 +84,7 @@ void schUlHqEntReset(SchCellCb *cellCb, SchUeCb *ueCb, SchUlHqEnt *hqE)
       hqP->ulHqEntLnk.node = (PTR)hqP;
       hqP->ulHqProcLink.node = (PTR)hqP;
       hqP->ulSlotLnk.node = (PTR)hqP;
+      cellCb->api.SchInitUlHqProcCb(hqP);
       schUlHqAddToFreeList(hqP);
    }
 }
@@ -213,12 +214,15 @@ uint8_t schUlGetAvlHqProcess(SchCellCb *cellCb, SchUeCb *ueCb, SchUlHqProcCb **h
  **/
 void schUlReleaseHqProcess(SchUlHqProcCb *hqP, Bool togNdi)
 {
+   SchCellCb  *cellCb = NULLP;
    if (togNdi == TRUE)
    {
       hqP->tbInfo.ndi ^= 1;
    }
-   cmLListDeleteLList(&hqP->ulLcPrbEst.dedLcList);
-   cmLListDeleteLList(&hqP->ulLcPrbEst.defLcList);
+
+   cellCb = hqP->hqEnt->cell;
+   cellCb->apis->SchFreeUlHqProcCb(hqP);
+   
    schUlHqDeleteFromInUseList(hqP);
    schUlHqAddToFreeList(hqP);
 }
@@ -239,17 +243,7 @@ void schUlHqProcessNack(SchUlHqProcCb *hqP)
 {
    if (hqP->tbInfo.txCntr < hqP->maxHqTxPerHqP)
    {
-      cmLListAdd2Tail(&(hqP->hqEnt->ue->ulRetxHqList), &hqP->ulHqProcLink);
-#ifdef NR_DRX
-      if(hqP->hqEnt->ue->ueDrxInfoPres == true)
-      {
-         schDrxStrtUlHqRttTmr(hqP);
-      }
-      else
-#endif
-      {
-         addUeToBeScheduled(hqP->hqEnt->cell, hqP->hqEnt->ue->ueId);
-      }   
+       hqP->hqEnt->cell->api.SchAddToHqReTxList(hqP, DIR_UL);
    }
    else
    {

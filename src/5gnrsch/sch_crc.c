@@ -58,7 +58,7 @@ uint8_t schProcessCrcInd(CrcIndInfo *crcInd, Inst schInst)
             /* failure case*/
             if (cell->raCb[ueId-1].msg3HqProc.tbInfo.txCntr < cell->cellCfg.schRachCfg.maxMsg3Tx)
             {
-               addUeToBeScheduled(cell, ueId);
+               cell->api.SchCrcInd(cell, ueId);
                cell->raCb[ueId - 1].retxMsg3HqProc = &cell->raCb[ueId - 1].msg3HqProc;
             }
             else

@@ -17,6 +17,10 @@
  *******************************************************************************/
 
 void deleteMacRaCb(uint16_t cellIdx, MacUeCb *ueCb);
+uint8_t MacProcSchUeCfgRsp(Pst *pst, SchUeCfgRsp *cfgRsp);
+uint8_t MacProcSchUeRecfgRsp(Pst *pst, SchUeRecfgRsp *reCfgRsp);
+uint8_t MacProcSchUeDeleteRsp(Pst *pst, SchUeDeleteRsp *schUeDelRsp);
+
 /**********************************************************************
   End of file
  **********************************************************************/
