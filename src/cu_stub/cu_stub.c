@@ -292,7 +292,7 @@ uint8_t startDlData()
    uint32_t duId;
    uint8_t ret = ROK;
    uint8_t cnt = 0;
-   int32_t totalNumOfTestFlow = 20; 
+   int32_t totalNumOfTestFlow = 5; 
    EgtpTeIdCb *teidCb = NULLP;
    
    while(totalNumOfTestFlow)

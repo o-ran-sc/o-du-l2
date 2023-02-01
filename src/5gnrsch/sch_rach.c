@@ -42,13 +42,6 @@
 #include "sch.h"
 #include "sch_utils.h"
 
-SchRachRsrcRspFunc SchRachRsrcRspOpts[] =
-{
-   packSchRachRsrcRsp,      /* LC */
-   MacProcSchRachRsrcRsp,   /* TC */
-   packSchRachRsrcRsp       /* LWLC */
-};
-
 /**
  * @brief Checks if PRACH can be scheduled in current slot
  *
@@ -335,7 +328,7 @@ uint8_t MacSchRachRsrcReq(Pst *pst, SchRachRsrcReq *schRachRsrcReq)
    SCH_FREE(schRachRsrcReq, sizeof(SchRachRsrcReq));
 
    /* Send RACH resource response to MAC */
-   return (SchRachRsrcRspOpts[rspPst.selector](&rspPst, rachRsrcRsp));
+   return(MacMessageRouter(&rspPst, (void *)rachRsrcRsp));
 }
 
 /**
@@ -834,8 +827,7 @@ uint8_t schProcessRachInd(RachIndInfo *rachInd, Inst schInst)
    cell->raReq[ueId -1] = raReq;
 
    /* Adding UE Id to list of pending UEs to be scheduled */
-   addUeToBeScheduled(cell, ueId);
-
+   cell->api->SchRachInd(cell, ueId);
    return ROK;
 }
 
@@ -1087,7 +1079,7 @@ void schMsg4Complete(SchUeCb *ueCb)
 {
    DU_LOG("\nINFO --> SCH: State change for ueId[%2d] to SCH_RA_STATE_MSG4_DONE\n",ueCb->ueId);
    ueCb->cellCb->raCb[ueCb->ueId-1].raState = SCH_RA_STATE_MSG4_DONE;
-   ueCb->msg4Proc = ueCb->retxMsg4HqProc = NULLP;
+   ueCb->msg4HqProc = ueCb->retxMsg4HqProc = NULLP;
 }
 /**********************************************************************
          End of file

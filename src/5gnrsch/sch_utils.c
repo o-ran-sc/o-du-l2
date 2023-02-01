@@ -1466,6 +1466,7 @@ LcInfo* handleLcLList(CmLListCp *lcLL, uint8_t lcId, ActionTypeLL action)
 uint8_t updateLcListReqPRB(CmLListCp *lcLL, uint8_t lcId, uint32_t payloadSize)
 {
    LcInfo    *lcNode = NULLP;
+   printf("\nHLAL : updateLcListReqPRB() : LCID [%d] BO [%d]", lcId, payloadSize);
    lcNode = handleLcLList(lcLL, lcId, CREATE);
 
    if(lcNode == NULLP)

@@ -28,9 +28,9 @@
 #define DU_ID 1
 
 #ifndef O1_ENABLE
-#define DU_IP_V4_ADDR "192.168.130.81"
-#define CU_IP_V4_ADDR "192.168.130.82"
-#define RIC_IP_V4_ADDR "192.168.130.80"
+#define DU_IP_V4_ADDR "192.168.130.71"
+#define CU_IP_V4_ADDR "192.168.130.72"
+#define RIC_IP_V4_ADDR "192.168.130.70"
 
 #define F1_SCTP_PORT 38472  /* As per the spec 38.472, the registered port number for F1AP is 38472 */
 #define E2_SCTP_PORT 36421

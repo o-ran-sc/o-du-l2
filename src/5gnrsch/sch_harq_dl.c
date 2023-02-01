@@ -30,13 +30,6 @@
 #include "sch_drx.h"
 #endif
 
-SchMacDlReleaseHarqFunc schMacDlReleaseHarqOpts[] =
-{
-   packSchMacDlReleaseHarq,
-   MacSchReleaseDlHarqProc,
-   packSchMacDlReleaseHarq
-};
-
 typedef struct schCellCb SchCellCb;
 typedef struct schUeCb SchUeCb;
 void schDlHqEntReset(SchCellCb *cellCb, SchUeCb *ueCb, SchDlHqEnt *hqE);
@@ -95,6 +88,7 @@ void schDlHqEntReset(SchCellCb *cellCb, SchUeCb *ueCb, SchDlHqEnt *hqE)
       hqP->dlHqEntLnk.node = (PTR)hqP;
       hqP->dlHqProcLink.node = (PTR)hqP;
       hqP->ulSlotLnk.node = (PTR)hqP;
+      cellCb->api->SchInitDlHqProcCb(hqP);
       schDlHqAddToFreeList(hqP);
    }
 }
@@ -215,10 +209,11 @@ uint8_t schDlGetAvlHqProcess(SchCellCb *cellCb, SchUeCb *ueCb, SchDlHqProcCb **h
  **/
 void schDlReleaseHqProcess(SchDlHqProcCb *hqP)
 {
+   SchCellCb  *cellCb = NULLP;
    if(hqP)
    {
-      cmLListDeleteLList(&hqP->dlLcPrbEst.dedLcList);
-      cmLListDeleteLList(&hqP->dlLcPrbEst.defLcList);
+      cellCb = hqP->hqEnt->cell;
+      cellCb->api->SchFreeDlHqProcCb(hqP);
       schDlHqDeleteFromInUseList(hqP);
       schDlHqAddToFreeList(hqP);
    }
@@ -256,7 +251,7 @@ uint8_t sendDlHarqProcReleaseToMac(SchDlHqProcCb *hqP, Inst inst)
    rlsHqInfo->ueHqInfo[0].crnti = hqP->hqEnt->ue->crnti;
    rlsHqInfo->ueHqInfo[0].hqProcId = hqP->procId;   
 
-   return(*schMacDlReleaseHarqOpts[pst.selector])(&pst, rlsHqInfo);
+   return(MacMessageRouter(&pst, (void *)rlsHqInfo));
 }
 /**
  * @brief Release Harq process TB from the DL Harq process
@@ -318,7 +313,7 @@ void schDlHqTbFail(SchDlHqProcCb *hqP, uint8_t tbIdx, bool isMaxRetx)
       hqP->tbInfo[tbIdx].state = HQ_TB_NACKED;
       if (HQ_TB_WAITING == hqP->tbInfo[tbIdx^1].state)
       {
-         cmLListAdd2Tail( &(hqP->hqEnt->ue->dlRetxHqList), &hqP->dlHqProcLink);
+         hqP->hqEnt->cell->api->SchAddToDlHqRetxList(hqP);
       }
    }
 }
@@ -351,11 +346,12 @@ void schMsg4FeedbackUpdate(SchDlHqProcCb *hqP, uint8_t fdbk)
       if( hqP->tbInfo[0].txCntr >= hqP->hqEnt->cell->cellCfg.schHqCfg.maxMsg4HqTx)
       {
          schDlReleaseHqProcess(hqP);
-         hqP->hqEnt->ue->msg4Proc = NULLP;
+         hqP->hqEnt->ue->msg4HqProc = NULLP;
          hqP->hqEnt->ue->retxMsg4HqProc = NULLP;
          /* Delete UE and RA context */
       }
-      addUeToBeScheduled(hqP->hqEnt->cell,hqP->hqEnt->ue->ueId);
+      //addUeToBeScheduled(hqP->hqEnt->cell,hqP->hqEnt->ue->ueId);
+      hqP->hqEnt->cell->api->SchAddUeToSchedule(hqP->hqEnt->cell,hqP->hqEnt->ue->ueId);
       hqP->hqEnt->ue->retxMsg4HqProc = hqP;
    }
 }
@@ -398,21 +394,27 @@ void schDlHqFeedbackUpdate(SchDlHqProcCb *hqP, uint8_t fdbk1, uint8_t fdbk2)
             else
             {
                schDlHqTbFail(hqP, tbIdx, FALSE);
-#ifdef NR_DRX
-               if(hqP->hqEnt->ue->ueDrxInfoPres == true)
-               {
-                  schDrxStrtDlHqRttTmr(hqP);
-               }
-               else
-#endif
-               {
-                  addUeToBeScheduled(hqP->hqEnt->cell, hqP->hqEnt->ue->ueId);
-               }
             }
          }
       }
    }
 }
+
+void schDlHqEntDelete(SchUeCb *ueCb)
+{
+  uint8_t count;
+  SchDlHqProcCb *hqP;
+
+  cmLListDeleteLList(&ueCb->dlHqEnt.free);
+  cmLListDeleteLList(&ueCb->dlHqEnt.inUse);
+  for(count=0; count < ueCb->dlHqEnt.numHqPrcs; count++)
+  {
+     hqP = &(ueCb->dlHqEnt.procs[count]);
+     ueCb->cellCb->api->SchDeleteDlHqProcCb(hqP);
+  }
+  memset(&ueCb->dlHqEnt, 0, sizeof(SchDlHqEnt));
+}
+
 /**********************************************************************
   End of file
  **********************************************************************/
