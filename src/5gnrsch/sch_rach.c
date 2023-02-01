@@ -42,13 +42,6 @@
 #include "sch.h"
 #include "sch_utils.h"
 
-SchRachRsrcRspFunc SchRachRsrcRspOpts[] =
-{
-   packSchRachRsrcRsp,      /* LC */
-   MacProcSchRachRsrcRsp,   /* TC */
-   packSchRachRsrcRsp       /* LWLC */
-};
-
 /**
  * @brief Checks if PRACH can be scheduled in current slot
  *
@@ -335,7 +328,7 @@ uint8_t MacSchRachRsrcReq(Pst *pst, SchRachRsrcReq *schRachRsrcReq)
    SCH_FREE(schRachRsrcReq, sizeof(SchRachRsrcReq));
 
    /* Send RACH resource response to MAC */
-   return (SchRachRsrcRspOpts[rspPst.selector](&rspPst, rachRsrcRsp));
+   return(MacMessageRouter(&rspPst, (void *)rachRsrcRsp));
 }
 
 /**

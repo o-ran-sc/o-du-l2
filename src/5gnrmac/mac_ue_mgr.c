@@ -28,14 +28,6 @@
 #include "mac.h"
 #include "mac_utils.h"
 
-/* function pointers for packing slot ind from mac to sch */
-MacSchAddUeConfigReqFunc macSchAddUeConfigReqOpts[] =
-{
-   packMacSchAddUeConfigReq,    /* packing for loosely coupled */
-   MacSchAddUeConfigReq,        /* packing for tightly coupled */
-   packMacSchAddUeConfigReq     /* packing for light weight loosely coupled */
-};
-
 MacDuUeCfgRspFunc macDuUeCfgRspOpts[] =
 {
    packDuMacUeCfgRsp,   /* packing for loosely coupled */
@@ -48,20 +40,6 @@ MacDuUeRecfgRspFunc macDuUeRecfgRspOpts[] =
    packDuMacUeRecfgRsp,   /* packing for loosely coupled */
    DuProcMacUeRecfgRsp,   /* packing for tightly coupled */
    packDuMacUeRecfgRsp   /* packing for light weight loosly coupled */
-};
-
-MacSchModUeConfigReqFunc macSchModUeConfigReqOpts[] =
-{
-   packMacSchModUeConfigReq,    /* packing for loosely coupled */
-   MacSchModUeConfigReq,        /* packing for tightly coupled */
-   packMacSchModUeConfigReq     /* packing for light weight loosely coupled */
-};
-
-MacSchUeDeleteReqFunc macSchUeDeleteReqOpts[] =
-{
-   packMacSchUeDeleteReq,    /* packing for loosely coupled */
-   MacSchUeDeleteReq,        /* packing for tightly coupled */
-   packMacSchUeDeleteReq     /* packing for light weight loosely coupled */
 };
 
 MacDuUeDeleteRspFunc macDuUeDeleteRspOpts[] =
@@ -1541,14 +1519,14 @@ uint8_t sendUeReqToSch(Pst *pst, void *schUeCfg)
          SchUeCfgReq *schUeCfgReq = NULLP;
          schUeCfgReq = (SchUeCfgReq *)schUeCfg;
          FILL_PST_MAC_TO_SCH(schPst, EVENT_ADD_UE_CONFIG_REQ_TO_SCH);
-         return(*macSchAddUeConfigReqOpts[schPst.selector])(&schPst, schUeCfgReq);
+         return(SchMessageRouter(&schPst, schUeCfgReq->cellId, (void *)schUeCfgReq));
       }
       case EVENT_MAC_UE_RECONFIG_REQ:
       {
          SchUeRecfgReq *schUeRecfgReq = NULLP;
          schUeRecfgReq = (SchUeRecfgReq *)schUeCfg;
          FILL_PST_MAC_TO_SCH(schPst, EVENT_MODIFY_UE_CONFIG_REQ_TO_SCH);
-         return(*macSchModUeConfigReqOpts[schPst.selector])(&schPst,schUeRecfgReq);
+         return(SchMessageRouter(&schPst, schUeRecfgReq->cellId, (void *)schUeRecfgReq));
       }
       default: 
       {
@@ -3347,7 +3325,7 @@ uint8_t sendUeDelReqToSch(Pst *pst, MacUeDelete *ueDelete)
       schUeDel.crnti  = ueDelete->crnti;
       MAC_FREE_SHRABL_BUF(pst->region, pst->pool, ueDelete, sizeof(MacUeDelete));
       FILL_PST_MAC_TO_SCH(schPst, EVENT_UE_DELETE_REQ_TO_SCH);
-      return(*macSchUeDeleteReqOpts[schPst.selector])(&schPst, &schUeDel);
+      return(SchMessageRouter(&schPst, schUeDel.cellId, (void *)&schUeDel));
    }
    else
    {

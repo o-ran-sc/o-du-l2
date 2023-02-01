@@ -28,6 +28,121 @@
   
 **********************************************************************/
 
+uint8_t SchMessageRouter(Pst *pst, void *msg)
+{
+   Inst  inst;
+   uint16_t cellIdx = 0;
+
+   switch(pst->event)
+   {
+      case EVENT_SCH_GEN_CFG:
+      {
+         SchProcGenCfgReq(pst, (RgMngmt *)msg);
+         break;
+      }
+      case EVENT_SLICE_CFG_REQ_TO_SCH:
+      {    
+         MacSchSliceCfgReq(pst, (SchSliceCfgReq *)msg);
+         break;
+      }    
+      case EVENT_SLICE_RECFG_REQ_TO_SCH:
+      {    
+         MacSchSliceRecfgReq(pst, (SchSliceRecfgReq *)msg);
+         break;
+      }
+      case EVENT_SCH_CELL_CFG:
+      {
+         SchHdlCellCfgReq(pst, (SchCellCfg *)msg);
+         break;
+      }
+      case EVENT_SLOT_IND_TO_SCH:
+      {
+         MacSchSlotInd(pst, (SlotTimingInfo *)msg);
+         break;
+      }
+      case EVENT_ADD_UE_CONFIG_REQ_TO_SCH:
+      {
+         MacSchAddUeConfigReq(pst, (SchUeCfgReq *)msg);
+         break;
+      }
+      case EVENT_MODIFY_UE_CONFIG_REQ_TO_SCH:
+      {
+         MacSchModUeConfigReq(pst, (SchUeRecfgReq *)msg);
+         break;
+      }
+      case EVENT_RACH_IND_TO_SCH:
+      {
+         MacSchRachInd(pst, (RachIndInfo *)msg);
+         break;
+      }
+      case EVENT_CRC_IND_TO_SCH:
+      {
+         MacSchCrcInd(pst, (CrcIndInfo *)msg);
+         break;
+      }
+      case EVENT_DL_RLC_BO_INFO_TO_SCH:
+      {
+         MacSchDlRlcBoInfo(pst, (DlRlcBoInfo *)msg);
+         break;
+      }
+      case EVENT_SHORT_BSR:
+      case EVENT_LONG_BSR:
+      {
+         //cellCb->api->SchBsr(pst, (UlBufferStatusRptInd *)msg);
+         MacSchBsr(pst, (UlBufferStatusRptInd *)msg);
+         break;
+      }
+      case EVENT_UCI_IND_TO_SCH:
+      {
+         //cellCb->api->SchSrUciInd(pst, (SrUciIndInfo *)msg);
+         MacSchSrUciInd(pst, (SrUciIndInfo *)msg);
+         break;
+      }
+      case EVENT_UE_DELETE_REQ_TO_SCH:
+      {
+         //cellCb->api->SchUeDeleteReq(pst, (SchUeDelete *)msg);
+         MacSchUeDeleteReq(pst, (SchUeDelete *)msg);
+         break;
+      }
+      case EVENT_CELL_DELETE_REQ_TO_SCH:
+      {
+         //cellCb->api->SchCellDeleteReq(pst, (SchCellDeleteReq *)msg);
+         MacSchCellDeleteReq(pst, (SchCellDeleteReq *)msg);
+         break;
+      }
+      case EVENT_RACH_RESOURCE_REQUEST_TO_SCH:
+      {
+         //cellCb->api->SchRachRsrcReq(pst, (SchRachRsrcReq *)msg);
+         MacSchRachRsrcReq(pst, (SchRachRsrcReq *)msg);
+         break;
+      }
+      case EVENT_RACH_RESOURCE_RELEASE_TO_SCH:
+      {
+         //cellCb->api->SchRachRsrcRel(pst, (SchRachRsrcRel *)msg);
+         MacSchRachRsrcRel(pst, (SchRachRsrcRel *)msg);
+         break;
+      }
+      case EVENT_PAGING_IND_TO_SCH:
+      {
+         //cellCb->api->SchPagingInd(pst, (SchPageInd *)msg);
+         MacSchPagingInd(pst, (SchPageInd *)msg);
+         break;
+      }
+      case EVENT_DL_HARQ_IND_TO_SCH:
+      {
+         //cellCb->api->SchDlHarqInd(pst, (DlHarqInd *)msg);
+         MacSchDlHarqInd(pst, (DlHarqInd *)msg);
+         break;
+      }
+      default:
+      {
+         DU_LOG("\nERROR  -->  SCH : SchMessageRouter(): Invalid event [%d] received", pst->event);
+         return RFAILED;
+      }
+   }
+   return ROK;
+}
+
 #if 0 /*MAC-SCH Interface working as Tightly Coupled thus Commenting*/
 
 /** @file sch_msg_router.c

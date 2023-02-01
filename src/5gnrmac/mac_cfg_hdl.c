@@ -42,20 +42,6 @@ packMacCellCfgConfirm packMacCellCfmOpts[] =
    packMacCellCfgCfm,    /* packing for light weight loosly coupled */
 };
 
-SchCellCfgFunc SchCellCfgOpts[] =
-{
-   packSchCellCfg,   /* packing for loosely coupled */
-   SchHdlCellCfgReq, /* packing for tightly coupled */
-   packSchCellCfg    /* packing for light weight loosly coupled */
-};
-
-MacSchCellDeleteReqFunc macSchCellDeleteReqOpts[]=
-{
-   packMacSchCellDeleteReq,    /* packing for loosely coupled */
-   MacSchCellDeleteReq,        /* packing for tightly coupled */
-   packMacSchCellDeleteReq     /* packing for light weight loosely coupled */
-};
-
 MacDuCellDeleteRspFunc macDuCellDeleteRspOpts[] =
 {
    packDuMacCellDeleteRsp,   /* packing for loosely coupled */
@@ -75,13 +61,6 @@ MacDuSliceRecfgRspFunc macDuSliceRecfgRspOpts[] =
    packDuMacSliceRecfgRsp,   /* packing for loosely coupled */
    DuProcMacSliceRecfgRsp,   /* packing for tightly coupled */
    packDuMacSliceRecfgRsp    /* packing for light weight loosly coupled */
-};
-
-MacSchPagingIndFunc macSchPagingIndOpts[] = 
-{
-   packMacSchPagingInd,   /* packing for loosely coupled */
-   MacSchPagingInd,       /* packing for tightly coupled */
-   packMacSchPagingInd    /* packing for light weight loosely coupled */
 };
 
 /**
@@ -106,7 +85,8 @@ uint8_t MacSchGenCfgReq(Pst *pst, RgMngmt *cfg)
    printf("\nReceived Scheduler gen config at MAC");
    memset(&schPst, 0, sizeof(Pst));
    FILL_PST_MAC_TO_SCH(schPst, EVENT_SCH_GEN_CFG);
-   SchProcGenCfgReq(&schPst, cfg);
+   
+   SchMessageRouter(&schPst, 0, (void *)cfg);
 
    return ROK;
 }
@@ -395,7 +375,7 @@ uint8_t MacSchCellCfgReq(Pst *pst, MacCellCfg *macCellCfg)
 
    FILL_PST_MAC_TO_SCH(cfgPst, EVENT_SCH_CELL_CFG);
 
-   ret = (*SchCellCfgOpts[cfgPst.selector])(&cfgPst, &schCellCfg);
+   SchMessageRouter(&cfgPst, 0, (void *)&schCellCfg);
    return ret;
 } /* end of MacSchCellCfgReq */
 
@@ -644,7 +624,7 @@ uint8_t sendCellDelReqToSch(SchCellDeleteReq *schCellDelReq)
 {
    Pst schPst;
    FILL_PST_MAC_TO_SCH(schPst, EVENT_CELL_DELETE_REQ_TO_SCH);
-   return(*macSchCellDeleteReqOpts[schPst.selector])(&schPst, schCellDelReq);
+   return(SchMessageRouter(&schPst, schCellDelReq->cellId, (void *)schCellDelReq));
 }
 
 /*******************************************************************
@@ -1027,7 +1007,7 @@ uint8_t MacProcDlPcchInd(Pst *pst, DlPcchInd *pcchInd)
                   memcpy(schPageInd->pagePdu, pcchInd->pcchPdu, pcchInd->pduLen);
 
                   FILL_PST_MAC_TO_SCH(schPst, EVENT_PAGING_IND_TO_SCH);
-                  ret = (*macSchPagingIndOpts[schPst.selector])(&schPst, schPageInd);
+                  ret = SchMessageRouter(&schPst, schPageInd->cellId, (void *)schPageInd);
                }
             }
          }

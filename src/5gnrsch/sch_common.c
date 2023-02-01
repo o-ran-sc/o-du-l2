@@ -43,13 +43,6 @@ File:     sch_common.c
 #include "sch.h"
 #include "sch_utils.h"
 
-SchMacUlSchInfoFunc schMacUlSchInfoOpts[] =
-{
-   packSchMacUlSchInfo,
-   MacProcUlSchInfo,
-   packSchMacUlSchInfo
-};
-
 /**
  * @brief common resource allocation for SSB
  *
@@ -204,7 +197,7 @@ int sendUlSchInfoToMac(UlSchedInfo *ulSchedInfo, Inst inst)
    FILL_PST_SCH_TO_MAC(pst, inst);
    pst.event = EVENT_UL_SCH_INFO;
 
-   return(*schMacUlSchInfoOpts[pst.selector])(&pst, ulSchedInfo);
+   return(MacMessageRouter(&pst, (void *)ulSchedInfo));
 }
 
 /**

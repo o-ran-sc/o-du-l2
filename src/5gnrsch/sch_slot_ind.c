@@ -45,20 +45,6 @@ File:     sch_slot_ind.c
 #include "sch_drx.h"
 #endif
 
-SchMacDlAllocFunc schMacDlAllocOpts[] =
-{
-   packSchMacDlAlloc,
-   MacProcDlAlloc,
-   packSchMacDlAlloc
-};
-
-SchMacDlPageAllocFunc schMacDlPageAllocOpts[] =
-{
-   packSchMacDlPageAlloc,
-   MacProcDlPageAlloc,
-   packSchMacDlPageAlloc
-};
-
 /*******************************************************************
  *
  * @brief Handles sending DL broadcast alloc to MAC 
@@ -83,8 +69,7 @@ uint8_t sendDlAllocToMac(DlSchedInfo *dlSchedInfo, Inst inst)
    FILL_PST_SCH_TO_MAC(pst, inst);
    pst.event = EVENT_DL_SCH_INFO;
 
-   return(*schMacDlAllocOpts[pst.selector])(&pst, dlSchedInfo);
-
+   return(MacMessageRouter(&pst, (void *)dlSchedInfo));
 }
 
 /*******************************************************************
@@ -111,8 +96,7 @@ uint8_t sendDlPageAllocToMac(DlPageAlloc *dlPageAlloc, Inst inst)
    FILL_PST_SCH_TO_MAC(pst, inst);
    pst.event = EVENT_DL_PAGING_ALLOC;
 
-   return(*schMacDlPageAllocOpts[pst.selector])(&pst, dlPageAlloc);
-
+   return(MacMessageRouter(&pst, (void *)dlPageAlloc));
 }
 
 /*******************************************************************

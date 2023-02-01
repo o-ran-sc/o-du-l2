@@ -275,6 +275,19 @@ uint8_t macProcLongBsr(uint16_t cellId, uint16_t crnti,uint8_t numLcg,\
                          DataVolInfo dataVolInfo[MAX_NUM_LOGICAL_CHANNEL_GROUPS]);
 void freeMacSliceCfgReq(MacSliceCfgReq *cfgReq,Pst *pst);
 void deleteMacRaCb(uint16_t cellIdx, MacUeCb *ueCb);
+
+uint8_t MacProcSchSliceCfgRsp(Pst *pst, SchSliceCfgRsp *schSliceCfgRsp);
+uint8_t MacProcSchSliceRecfgRsp(Pst *pst, SchSliceRecfgRsp *sliceRecfgrsp);
+uint8_t MacProcSchCellCfgCfm(Pst *pst, SchCellCfgCfm  *schCellCfgCfm);
+uint8_t MacProcSchUeCfgRsp(Pst *pst, SchUeCfgRsp *cfgRsp);
+uint8_t MacProcSchUeRecfgRsp(Pst *pst, SchUeRecfgRsp *reCfgRsp);
+uint8_t MacProcDlAlloc(Pst *pst, DlSchedInfo *dlSchedInfo);
+uint8_t MacProcUlSchInfo(Pst *pst, UlSchedInfo *ulSchedInfo);
+uint8_t MacProcSchRachRsrcRsp(Pst *pst, SchRachRsrcRsp *schRachRsrcRsp);
+uint8_t MacProcDlPageAlloc(Pst *pst, DlPageAlloc *dlPageAlloc);
+uint8_t MacProcSchUeDeleteRsp(Pst *pst, SchUeDeleteRsp *schUeDelRsp);
+uint8_t MacProcSchCellDeleteRsp(Pst *pst, SchCellDeleteRsp *schCellDeleteRsp);
+uint8_t MacSchReleaseDlHarqProc(Pst *pst, SchRlsHqInfo *rlsHqInfo);
 #endif
 /**********************************************************************
   End of file

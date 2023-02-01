@@ -30,13 +30,6 @@
 #include "sch_drx.h"
 #endif
 
-SchMacDlReleaseHarqFunc schMacDlReleaseHarqOpts[] =
-{
-   packSchMacDlReleaseHarq,
-   MacSchReleaseDlHarqProc,
-   packSchMacDlReleaseHarq
-};
-
 typedef struct schCellCb SchCellCb;
 typedef struct schUeCb SchUeCb;
 void schDlHqEntReset(SchCellCb *cellCb, SchUeCb *ueCb, SchDlHqEnt *hqE);
@@ -256,7 +249,7 @@ uint8_t sendDlHarqProcReleaseToMac(SchDlHqProcCb *hqP, Inst inst)
    rlsHqInfo->ueHqInfo[0].crnti = hqP->hqEnt->ue->crnti;
    rlsHqInfo->ueHqInfo[0].hqProcId = hqP->procId;   
 
-   return(*schMacDlReleaseHarqOpts[pst.selector])(&pst, rlsHqInfo);
+   return(MacMessageRouter(&pst, (void *)rlsHqInfo));
 }
 /**
  * @brief Release Harq process TB from the DL Harq process
