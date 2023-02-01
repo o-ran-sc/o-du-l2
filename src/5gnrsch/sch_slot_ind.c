@@ -45,20 +45,6 @@ File:     sch_slot_ind.c
 #include "sch_drx.h"
 #endif
 
-SchMacDlAllocFunc schMacDlAllocOpts[] =
-{
-   packSchMacDlAlloc,
-   MacProcDlAlloc,
-   packSchMacDlAlloc
-};
-
-SchMacDlPageAllocFunc schMacDlPageAllocOpts[] =
-{
-   packSchMacDlPageAlloc,
-   MacProcDlPageAlloc,
-   packSchMacDlPageAlloc
-};
-
 /*******************************************************************
  *
  * @brief Handles sending DL broadcast alloc to MAC 
@@ -83,8 +69,170 @@ uint8_t sendDlAllocToMac(DlSchedInfo *dlSchedInfo, Inst inst)
    FILL_PST_SCH_TO_MAC(pst, inst);
    pst.event = EVENT_DL_SCH_INFO;
 
-   return(*schMacDlAllocOpts[pst.selector])(&pst, dlSchedInfo);
+   return(MacMessageRouter(&pst, (void *)dlSchedInfo));
+}
 
+/*******************************************************************
+ *
+ * @brief 
+ *
+ * @details
+ *
+ *    Function : schFillBoGrantDlSchedInfo 
+ *
+ *    Functionality:
+ 
+ *
+ * @params[in] SchCellCb *cell, SlotTimingInfo currTime, uint8_t ueId
+ * @params[in] bool isRetx, SchDlHqProcCb **hqP
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+bool schFillBoGrantDlSchedInfo(SchCellCb *cell, SlotTimingInfo currTime, uint8_t ueId, bool isRetx, SchDlHqProcCb **hqP)
+{
+   uint8_t pdschNumSymbols = 0, pdschStartSymbol = 0;
+   uint16_t startPrb = 0;
+   uint16_t crnti = 0;
+   uint32_t accumalatedSize = 0;
+   SchUeCb *ueCb = NULLP;
+   DlMsgAlloc *dciSlotAlloc, *dlMsgAlloc;
+   SlotTimingInfo pdcchTime, pdschTime, pucchTime;
+
+   GET_CRNTI(crnti,ueId);
+   ueCb = &cell->ueCb[ueId-1];
+
+   if (isRetx == FALSE)
+   {
+      if(schDlGetAvlHqProcess(cell, ueCb, hqP) != ROK)
+      {
+         return false;
+      }
+   }
+
+   if(findValidK0K1Value(cell, currTime, ueId, ueCb->ueCfg.spCellCfg.servCellRecfg.initDlBwp.k0K1TblPrsnt,\
+            &pdschStartSymbol, &pdschNumSymbols, &pdcchTime, &pdschTime, &pucchTime, isRetx, *hqP) != true )
+   {
+      /* If a valid combination of slots to scheduled PDCCH, PDSCH and PUCCH is
+       * not found, do not perform resource allocation. Return from here. */
+      return false;
+   }
+   
+   /* allocate PDCCH and PDSCH resources for the ue */
+   if(cell->schDlSlotInfo[pdcchTime.slot]->dlMsgAlloc[ueId-1] == NULL)
+   {
+
+      SCH_ALLOC(dciSlotAlloc, sizeof(DlMsgAlloc));
+      if(!dciSlotAlloc)
+      {
+         DU_LOG("\nERROR  -->  SCH : Memory Allocation failed for ded DL msg alloc");
+         return false;
+      }
+      cell->schDlSlotInfo[pdcchTime.slot]->dlMsgAlloc[ueId -1] = dciSlotAlloc;
+      memset(dciSlotAlloc, 0, sizeof(DlMsgAlloc));
+      dciSlotAlloc->crnti = crnti;
+   }
+   else
+   {
+      dciSlotAlloc = cell->schDlSlotInfo[pdcchTime.slot]->dlMsgAlloc[ueId -1];
+   }
+   /* Dl ded Msg info is copied, this was earlier filled in macSchDlRlcBoInfo */
+   fillDlMsgInfo(&dciSlotAlloc->dlMsgSchedInfo[dciSlotAlloc->numSchedInfo].dlMsgInfo, dciSlotAlloc->crnti, isRetx, *hqP);
+   dciSlotAlloc->dlMsgSchedInfo[dciSlotAlloc->numSchedInfo].isRetx = isRetx;
+
+   accumalatedSize = cell->api->SchScheduleDlLc(pdcchTime, pdschTime, pdschNumSymbols, isRetx, hqP);
+
+   /*Below case will hit if NO LC(s) are allocated due to resource crunch*/
+   if (!accumalatedSize)
+      return false;
+
+   /*[Step6]: pdcch and pdsch data is filled */
+   if((schDlRsrcAllocDlMsg(cell, pdschTime, crnti, accumalatedSize, dciSlotAlloc, startPrb, pdschStartSymbol, pdschNumSymbols, isRetx, *hqP)) != ROK)
+   {
+      DU_LOG("\nERROR  --> SCH : Scheduling of DL dedicated message failed");
+
+      /* Free the dl ded msg info allocated in macSchDlRlcBoInfo */
+      if(dciSlotAlloc->numSchedInfo == 0)
+      {
+         SCH_FREE(dciSlotAlloc, sizeof(DlMsgAlloc));
+         cell->schDlSlotInfo[pdcchTime.slot]->dlMsgAlloc[ueId -1] = NULL;
+      }
+      else
+      {
+         memset(&dciSlotAlloc->dlMsgSchedInfo[dciSlotAlloc->numSchedInfo], 0, sizeof(DlMsgSchInfo));
+      }
+      return false;
+   }
+
+   /* TODO : Update the scheduling byte report for multiple LC based on QCI
+    * and Priority */
+   /* As of now, the total number of bytes scheduled for a slot is divided
+    * equally amongst all LC with pending data. This is avoid starving of any
+    * LC 
+    * */
+#if 0
+   accumalatedSize = accumalatedSize/dlMsgAlloc->numLc;
+   for(lcIdx = 0; lcIdx < dlMsgAlloc->numLc; lcIdx ++)
+      dlMsgAlloc->lcSchInfo[lcIdx].schBytes = accumalatedSize;
+#endif
+   
+   /* Check if both DCI and DL_MSG are sent in the same slot.
+    * If not, allocate memory for DL_MSG PDSCH slot to store PDSCH info */
+
+   if(pdcchTime.slot == pdschTime.slot)
+   {
+      dciSlotAlloc->dlMsgSchedInfo[dciSlotAlloc->numSchedInfo].pduPres = BOTH;
+      dciSlotAlloc->numSchedInfo++;
+   }
+   else
+   {
+      /* Allocate memory to schedule dlMsgAlloc to send DL_Msg, pointer will be checked at schProcessSlotInd() */
+      if(cell->schDlSlotInfo[pdschTime.slot]->dlMsgAlloc[ueId-1] == NULLP)
+      {
+         SCH_ALLOC(dlMsgAlloc, sizeof(DlMsgAlloc));
+         if(dlMsgAlloc == NULLP)
+         {
+            DU_LOG("\nERROR  -->  SCH : Memory Allocation failed for dlMsgAlloc");
+            if(dciSlotAlloc->numSchedInfo == 0)
+            {
+               SCH_FREE(dciSlotAlloc, sizeof(DlMsgAlloc));
+               cell->schDlSlotInfo[pdcchTime.slot]->dlMsgAlloc[ueId-1] = NULLP;
+            }
+            else
+               memset(&dciSlotAlloc->dlMsgSchedInfo[dciSlotAlloc->numSchedInfo], 0, sizeof(DlMsgSchInfo));
+            return false;
+         }
+         cell->schDlSlotInfo[pdschTime.slot]->dlMsgAlloc[ueId-1] = dlMsgAlloc;
+         memset(dlMsgAlloc, 0, sizeof(DlMsgAlloc));
+         dlMsgAlloc->crnti = dciSlotAlloc->crnti;
+      }
+      else
+         dlMsgAlloc = cell->schDlSlotInfo[pdschTime.slot]->dlMsgAlloc[ueId-1];
+
+      /* Copy all DL_MSG info */
+      memcpy(&dlMsgAlloc->dlMsgSchedInfo[dlMsgAlloc->numSchedInfo], \
+            &dciSlotAlloc->dlMsgSchedInfo[dciSlotAlloc->numSchedInfo], sizeof(DlMsgSchInfo));
+      dlMsgAlloc->dlMsgSchedInfo[dlMsgAlloc->numSchedInfo].dlMsgPdcchCfg.dci.pdschCfg = \
+            &dlMsgAlloc->dlMsgSchedInfo[dlMsgAlloc->numSchedInfo].dlMsgPdschCfg;
+
+      /* Assign correct PDU types in corresponding slots */
+      dlMsgAlloc->dlMsgSchedInfo[dlMsgAlloc->numSchedInfo].pduPres = PDSCH_PDU;
+      dciSlotAlloc->dlMsgSchedInfo[dciSlotAlloc->numSchedInfo].pduPres = PDCCH_PDU;
+      dciSlotAlloc->dlMsgSchedInfo[dciSlotAlloc->numSchedInfo].pdschSlot = pdschTime.slot;
+
+      dciSlotAlloc->numSchedInfo++;
+      dlMsgAlloc->numSchedInfo++;
+   }
+
+   schAllocPucchResource(cell, pucchTime, crnti, ueCb, isRetx, *hqP);
+
+   cell->schDlSlotInfo[pdcchTime.slot]->pdcchUe = ueId;
+   cell->schDlSlotInfo[pdschTime.slot]->pdschUe = ueId;
+   cell->schUlSlotInfo[pucchTime.slot]->pucchUe = ueId;
+
+   /* after allocation is done, unset the bo bit for that ue */
+   UNSET_ONE_BIT(ueId, cell->boIndBitMap);
+   return true;
 }
 
 /*******************************************************************
@@ -111,8 +259,7 @@ uint8_t sendDlPageAllocToMac(DlPageAlloc *dlPageAlloc, Inst inst)
    FILL_PST_SCH_TO_MAC(pst, inst);
    pst.event = EVENT_DL_PAGING_ALLOC;
 
-   return(*schMacDlPageAllocOpts[pst.selector])(&pst, dlPageAlloc);
-
+   return(MacMessageRouter(&pst, (void *)dlPageAlloc));
 }
 
 /*******************************************************************
@@ -352,303 +499,6 @@ bool findValidK0K1Value(SchCellCb *cell, SlotTimingInfo currTime, uint8_t ueId, 
 }
 
 /*******************************************************************
- *
- * @brief 
- *
- * @details
- *
- *    Function : schFillBoGrantDlSchedInfo 
- *
- *    Functionality:
- 
- *
- * @params[in] SchCellCb *cell, SlotTimingInfo currTime, uint8_t ueId
- * @params[in] bool isRetx, SchDlHqProcCb **hqP
- * @return ROK     - success
- *         RFAILED - failure
- *
- * ****************************************************************/
-bool schFillBoGrantDlSchedInfo(SchCellCb *cell, SlotTimingInfo currTime, uint8_t ueId, bool isRetx, SchDlHqProcCb **hqP)
-{
-   uint8_t lcIdx = 0;
-   uint8_t pdschNumSymbols = 0, pdschStartSymbol = 0;
-   uint16_t startPrb = 0, maxFreePRB = 0;
-   uint16_t crnti = 0, mcsIdx = 0;
-   uint32_t accumalatedSize = 0;
-   SchUeCb *ueCb = NULLP;
-   CmLListCp *lcLL = NULLP;
-   DlMsgAlloc *dciSlotAlloc, *dlMsgAlloc;
-   SlotTimingInfo pdcchTime, pdschTime, pucchTime;
-   uint16_t rsvdDedicatedPRB = 0;
-
-   /* TX_PAYLOAD_HDR_LEN: Overhead which is to be Added once for any UE while estimating Accumulated TB Size
-    * Following flag added to keep the record whether TX_PAYLOAD_HDR_LEN is added to the first Node getting allocated.
-    * If both Dedicated and Default LC lists are present then First LC in Dedicated List will include this overhead
-    * else if only Default list is present then first node in this List will add this overhead len*/
-   bool isTxPayloadLenAdded = FALSE;
-   GET_CRNTI(crnti,ueId);
-   ueCb = &cell->ueCb[ueId-1];
-
-   if (isRetx == FALSE)
-   {
-      if(schDlGetAvlHqProcess(cell, ueCb, hqP) != ROK)
-      {
-         return false;
-      }
-   }
-
-   if(findValidK0K1Value(cell, currTime, ueId, ueCb->ueCfg.spCellCfg.servCellRecfg.initDlBwp.k0K1TblPrsnt,\
-            &pdschStartSymbol, &pdschNumSymbols, &pdcchTime, &pdschTime, &pucchTime, isRetx, *hqP) != true )
-   {
-      /* If a valid combination of slots to scheduled PDCCH, PDSCH and PUCCH is
-       * not found, do not perform resource allocation. Return from here. */
-      return false;
-   }
-   
-   /* allocate PDCCH and PDSCH resources for the ue */
-   if(cell->schDlSlotInfo[pdcchTime.slot]->dlMsgAlloc[ueId-1] == NULL)
-   {
-
-      SCH_ALLOC(dciSlotAlloc, sizeof(DlMsgAlloc));
-      if(!dciSlotAlloc)
-      {
-         DU_LOG("\nERROR  -->  SCH : Memory Allocation failed for ded DL msg alloc");
-         return false;
-      }
-      cell->schDlSlotInfo[pdcchTime.slot]->dlMsgAlloc[ueId -1] = dciSlotAlloc;
-      memset(dciSlotAlloc, 0, sizeof(DlMsgAlloc));
-      dciSlotAlloc->crnti = crnti;
-   }
-   else
-   {
-      dciSlotAlloc = cell->schDlSlotInfo[pdcchTime.slot]->dlMsgAlloc[ueId -1];
-   }
-   /* Dl ded Msg info is copied, this was earlier filled in macSchDlRlcBoInfo */
-   fillDlMsgInfo(&dciSlotAlloc->dlMsgSchedInfo[dciSlotAlloc->numSchedInfo].dlMsgInfo, dciSlotAlloc->crnti, isRetx, *hqP);
-   dciSlotAlloc->dlMsgSchedInfo[dciSlotAlloc->numSchedInfo].isRetx = isRetx;
-
-
-   if (isRetx == FALSE)
-   {
-      /*Re-Initalization per UE*/
-      /* scheduled LC data fill */
-      dciSlotAlloc->dlMsgSchedInfo[dciSlotAlloc->numSchedInfo].numLc = 0;
-      isTxPayloadLenAdded = FALSE; /*Re-initlaize the flag for every UE*/
-      accumalatedSize = 0;
-
-      for(lcIdx = 0; lcIdx < MAX_NUM_LC; lcIdx++)
-      {
-         if(ueCb->dlInfo.dlLcCtxt[lcIdx].bo)
-         {
-            /*Check the LC is Dedicated or default and accordingly LCList will
-            * be used*/
-            if(ueCb->dlInfo.dlLcCtxt[lcIdx].isDedicated)
-            {
-               lcLL = &((*hqP)->dlLcPrbEst.dedLcList);
-               rsvdDedicatedPRB = ueCb->dlInfo.dlLcCtxt[lcIdx].rsvdDedicatedPRB;
-            }
-            else
-            {
-               lcLL = &((*hqP)->dlLcPrbEst.defLcList);
-            }
-
-            /*[Step2]: Update the reqPRB and Payloadsize for this LC in the appropriate List*/
-            if(updateLcListReqPRB(lcLL, ueCb->dlInfo.dlLcCtxt[lcIdx].lcId,\
-                     (ueCb->dlInfo.dlLcCtxt[lcIdx].bo + MAC_HDR_SIZE)) != ROK)
-            {
-               DU_LOG("\nERROR  --> SCH : Updation in LC List Failed");
-               /* Free the dl ded msg info allocated in macSchDlRlcBoInfo */
-               if(dciSlotAlloc->numSchedInfo == 0)
-               {
-                  SCH_FREE(dciSlotAlloc, sizeof(DlMsgAlloc));
-                  cell->schDlSlotInfo[pdcchTime.slot]->dlMsgAlloc[ueId -1] = NULL;
-               }
-               else
-                  memset(&dciSlotAlloc->dlMsgSchedInfo[dciSlotAlloc->numSchedInfo], 0, sizeof(DlMsgSchInfo));
-               return false;
-            }
-         }
-         ueCb->dlInfo.dlLcCtxt[lcIdx].bo = 0;
-      }//End of for loop
-      if (((*hqP)->dlLcPrbEst.defLcList.count == 0) && ( ((*hqP)->dlLcPrbEst.dedLcList.count == 0)))
-      {
-         DU_LOG("\nDEBUG  -->  SCH : No pending BO for any LC id\n");
-         UNSET_ONE_BIT(ueId, cell->boIndBitMap);
-
-         /* Free the dl ded msg info allocated in macSchDlRlcBoInfo */
-         if(dciSlotAlloc->numSchedInfo == 0)
-         {
-            SCH_FREE(dciSlotAlloc, sizeof(DlMsgAlloc));
-            cell->schDlSlotInfo[pdcchTime.slot]->dlMsgAlloc[ueId -1] = NULL;
-         }
-         else
-            memset(&dciSlotAlloc->dlMsgSchedInfo[dciSlotAlloc->numSchedInfo], 0, sizeof(DlMsgSchInfo));
-
-         /*TRUE because this UE has nothing to be scheduled*/
-         return true;
-      }
-   }
-
-   /*[Step3]: Calculate Best FREE BLOCK with MAX PRB count*/
-   maxFreePRB = searchLargestFreeBlock(cell, pdschTime, &startPrb, DIR_DL);
-
-   /*[Step4]: Estimation of PRB and BO which can be allocated to each LC in
-    * the list based on RRM policy*/
-
-   /*Either this UE contains no reservedPRB pool fir dedicated S-NSSAI or 
-    * Num of Free PRB available is not enough to reserve Dedicated PRBs*/
-   if(isRetx == FALSE)
-   {
-      if(maxFreePRB != 0)
-      {
-         mcsIdx = ueCb->ueCfg.dlModInfo.mcsIndex;
-
-         if(((*hqP)->dlLcPrbEst.dedLcList.count == NULLP) 
-               || ((maxFreePRB < rsvdDedicatedPRB)))
-         { 
-            (*hqP)->dlLcPrbEst.sharedNumPrb = maxFreePRB;
-            DU_LOG("\nDEBUG  --> SCH : DL Only Default Slice is scheduled, sharedPRB Count:%d",\
-                  (*hqP)->dlLcPrbEst.sharedNumPrb);
-
-            /*PRB Alloc for Default LCs*/
-            prbAllocUsingRRMPolicy(&((*hqP)->dlLcPrbEst.defLcList), FALSE, mcsIdx, pdschNumSymbols,\
-                  &((*hqP)->dlLcPrbEst.sharedNumPrb), NULLP, &isTxPayloadLenAdded, NULLP);
-         }
-         else
-         {
-            (*hqP)->dlLcPrbEst.sharedNumPrb = maxFreePRB - rsvdDedicatedPRB;
-            /*PRB Alloc for Dedicated LCs*/
-            prbAllocUsingRRMPolicy(&((*hqP)->dlLcPrbEst.dedLcList), TRUE, mcsIdx, pdschNumSymbols,\
-                  &((*hqP)->dlLcPrbEst.sharedNumPrb), &(rsvdDedicatedPRB), &isTxPayloadLenAdded, NULLP);
-
-            /*PRB Alloc for Default LCs*/
-            prbAllocUsingRRMPolicy(&((*hqP)->dlLcPrbEst.defLcList), FALSE, mcsIdx, pdschNumSymbols, \
-                  &((*hqP)->dlLcPrbEst.sharedNumPrb), &(rsvdDedicatedPRB), &isTxPayloadLenAdded, NULLP);
-         }
-      }
-   }
-
-   /*[Step5]:Traverse each LCID in LcList to calculate the exact Scheduled Bytes
-    * using allocated BO per LC and Update dlMsgAlloc(BO report for MAC*/
-   if (isRetx == FALSE)
-   {
-      if((*hqP)->dlLcPrbEst.dedLcList.count != 0)
-         updateGrantSizeForBoRpt(&((*hqP)->dlLcPrbEst.dedLcList), dciSlotAlloc, NULLP, &(accumalatedSize));
-
-      updateGrantSizeForBoRpt(&((*hqP)->dlLcPrbEst.defLcList), dciSlotAlloc, NULLP, &(accumalatedSize));
-   }
-   else
-   {
-      accumalatedSize = (*hqP)->tbInfo[0].tbSzReq;
-   }
-
-   /*Below case will hit if NO LC(s) are allocated due to resource crunch*/
-   if (!accumalatedSize)
-   {
-      if(maxFreePRB == 0)
-      {
-         DU_LOG("\nERROR  --> SCH : NO FREE PRB!!");
-      }
-      else
-      {
-         /*Schedule the LC for next slot*/
-         DU_LOG("\nDEBUG  -->  SCH : No LC has been scheduled");
-      }
-      /* Not Freeing dlMsgAlloc as ZERO BO REPORT to be sent to RLC so that
-       * Allocation can be done in next slot*/
-      return false;
-   }
-
-   /*[Step6]: pdcch and pdsch data is filled */
-   if((schDlRsrcAllocDlMsg(cell, pdschTime, crnti, accumalatedSize, dciSlotAlloc, startPrb, pdschStartSymbol, pdschNumSymbols, isRetx, *hqP)) != ROK)
-   {
-      DU_LOG("\nERROR  --> SCH : Scheduling of DL dedicated message failed");
-
-      /* Free the dl ded msg info allocated in macSchDlRlcBoInfo */
-      if(dciSlotAlloc->numSchedInfo == 0)
-      {
-         SCH_FREE(dciSlotAlloc, sizeof(DlMsgAlloc));
-         cell->schDlSlotInfo[pdcchTime.slot]->dlMsgAlloc[ueId -1] = NULL;
-      }
-      else
-      {
-         memset(&dciSlotAlloc->dlMsgSchedInfo[dciSlotAlloc->numSchedInfo], 0, sizeof(DlMsgSchInfo));
-      }
-      return false;
-   }
-
-   /* TODO : Update the scheduling byte report for multiple LC based on QCI
-    * and Priority */
-   /* As of now, the total number of bytes scheduled for a slot is divided
-    * equally amongst all LC with pending data. This is avoid starving of any
-    * LC 
-    * */
-#if 0
-   accumalatedSize = accumalatedSize/dlMsgAlloc->numLc;
-   for(lcIdx = 0; lcIdx < dlMsgAlloc->numLc; lcIdx ++)
-      dlMsgAlloc->lcSchInfo[lcIdx].schBytes = accumalatedSize;
-#endif
-   
-   /* Check if both DCI and DL_MSG are sent in the same slot.
-    * If not, allocate memory for DL_MSG PDSCH slot to store PDSCH info */
-
-   if(pdcchTime.slot == pdschTime.slot)
-   {
-      dciSlotAlloc->dlMsgSchedInfo[dciSlotAlloc->numSchedInfo].pduPres = BOTH;
-      dciSlotAlloc->numSchedInfo++;
-   }
-   else
-   {
-      /* Allocate memory to schedule dlMsgAlloc to send DL_Msg, pointer will be checked at schProcessSlotInd() */
-      if(cell->schDlSlotInfo[pdschTime.slot]->dlMsgAlloc[ueId-1] == NULLP)
-      {
-         SCH_ALLOC(dlMsgAlloc, sizeof(DlMsgAlloc));
-         if(dlMsgAlloc == NULLP)
-         {
-            DU_LOG("\nERROR  -->  SCH : Memory Allocation failed for dlMsgAlloc");
-            if(dciSlotAlloc->numSchedInfo == 0)
-            {
-               SCH_FREE(dciSlotAlloc, sizeof(DlMsgAlloc));
-               cell->schDlSlotInfo[pdcchTime.slot]->dlMsgAlloc[ueId-1] = NULLP;
-            }
-            else
-               memset(&dciSlotAlloc->dlMsgSchedInfo[dciSlotAlloc->numSchedInfo], 0, sizeof(DlMsgSchInfo));
-            return false;
-         }
-         cell->schDlSlotInfo[pdschTime.slot]->dlMsgAlloc[ueId-1] = dlMsgAlloc;
-         memset(dlMsgAlloc, 0, sizeof(DlMsgAlloc));
-         dlMsgAlloc->crnti = dciSlotAlloc->crnti;
-      }
-      else
-         dlMsgAlloc = cell->schDlSlotInfo[pdschTime.slot]->dlMsgAlloc[ueId-1];
-
-      /* Copy all DL_MSG info */
-      memcpy(&dlMsgAlloc->dlMsgSchedInfo[dlMsgAlloc->numSchedInfo], \
-            &dciSlotAlloc->dlMsgSchedInfo[dciSlotAlloc->numSchedInfo], sizeof(DlMsgSchInfo));
-      dlMsgAlloc->dlMsgSchedInfo[dlMsgAlloc->numSchedInfo].dlMsgPdcchCfg.dci.pdschCfg = \
-            &dlMsgAlloc->dlMsgSchedInfo[dlMsgAlloc->numSchedInfo].dlMsgPdschCfg;
-
-      /* Assign correct PDU types in corresponding slots */
-      dlMsgAlloc->dlMsgSchedInfo[dlMsgAlloc->numSchedInfo].pduPres = PDSCH_PDU;
-      dciSlotAlloc->dlMsgSchedInfo[dciSlotAlloc->numSchedInfo].pduPres = PDCCH_PDU;
-      dciSlotAlloc->dlMsgSchedInfo[dciSlotAlloc->numSchedInfo].pdschSlot = pdschTime.slot;
-
-      dciSlotAlloc->numSchedInfo++;
-      dlMsgAlloc->numSchedInfo++;
-   }
-
-   schAllocPucchResource(cell, pucchTime, crnti, ueCb, isRetx, *hqP);
-
-   cell->schDlSlotInfo[pdcchTime.slot]->pdcchUe = ueId;
-   cell->schDlSlotInfo[pdschTime.slot]->pdschUe = ueId;
-   cell->schUlSlotInfo[pucchTime.slot]->pucchUe = ueId;
-
-   /* after allocation is done, unset the bo bit for that ue */
-   UNSET_ONE_BIT(ueId, cell->boIndBitMap);
-   return true;
-}
-
-/*******************************************************************
 *
 * @brief Process DL Resource allocation for Page
 *
@@ -767,20 +617,11 @@ uint8_t schProcDlPageAlloc(SchCellCb *cell, SlotTimingInfo currTime, Inst schIns
  * ****************************************************************/
 uint8_t schProcessSlotInd(SlotTimingInfo *slotInd, Inst schInst)
 {
-   uint8_t   ueId, ueIdx, ret = ROK;
-   uint16_t  slot;
-   bool      isRarPending = false, isRarScheduled = false;
-   bool      isMsg4Pending = false, isMsg4Scheduled = false;
-   bool      isUlGrantPending = false, isUlGrantScheduled = false;
-   bool      isDlMsgPending = false, isDlMsgScheduled = false;
-   CmLList        *pendingUeNode;
+   uint8_t        ueIdx, ret = ROK;
+   uint16_t       slot;
    DlSchedInfo    dlSchedInfo;
    DlBrdcstAlloc  *dlBrdcstAlloc = NULLP;
    SchCellCb      *cell = NULLP;
-   CmLList        *node;
-   uint8_t*       ueNode;
-   SchDlHqProcCb  *hqP = NULLP;
-   SchUlHqProcCb *ulHqP = NULLP;
 
    cell = schCb[schInst].cells[schInst];
    if(cell == NULLP)
@@ -841,165 +682,7 @@ uint8_t schProcessSlotInd(SlotTimingInfo *slotInd, Inst schInst)
    /*Process Paging Msg*/
    schProcDlPageAlloc(cell, *slotInd, schInst);
 
-   /* Select first UE in the linked list to be scheduled next */
-   pendingUeNode = cell->ueToBeScheduled.first;
-   if(pendingUeNode)
-   {
-      if(pendingUeNode->node)
-      {
-         ueNode = (uint8_t *)pendingUeNode->node;
-         ueId = *(uint8_t *)(pendingUeNode->node);
-         /* If RAR is pending for this UE, schedule PDCCH,PDSCH to send RAR and 
-          * PUSCH to receive MSG3 as per k0-k2 configuration*/
-         if(cell->raReq[ueId-1] != NULLP)
-         {
-            isRarPending = true;
-            isRarScheduled = schProcessRaReq(schInst, cell, *slotInd, ueId);
-         }
-
-         /*MSG3 retransmisson*/
-         if(cell->raCb[ueId-1].retxMsg3HqProc)
-         {            
-            schMsg3RetxSchedulingForUe(&(cell->raCb[ueId-1]));
-         }
-
-         /* If MSG4 is pending for this UE, schedule PDCCH,PDSCH to send MSG4 and
-          * PUCCH to receive UL msg as per k0-k1 configuration  */
-         if (cell->ueCb[ueId-1].retxMsg4HqProc) //should work from dlmap later tbd
-         {
-            /* Retransmission of MSG4 */
-            isMsg4Pending = true;
-            if(schProcessMsg4Req(cell, *slotInd, ueId, TRUE, &cell->ueCb[ueId-1].retxMsg4HqProc) == ROK)
-               isMsg4Scheduled = true;
-         }
-         else
-         {
-            /* First transmission of MSG4 */
-            if(cell->raCb[ueId-1].msg4recvd)
-            {
-               isMsg4Pending = true;
-               if(schProcessMsg4Req(cell, *slotInd, ueId, FALSE, &cell->ueCb[ueId-1].msg4Proc) == ROK)
-                  isMsg4Scheduled = true;
-
-               /* If MSG4 scheduling failed, free the newly assigned HARQ process */
-               if(!isMsg4Scheduled)
-                  schDlReleaseHqProcess(cell->ueCb[ueId-1].msg4Proc);
-            }
-         }
-
-         if(isRarPending || isMsg4Pending)
-         {
-            /* If RAR or MSG is successfully scheduled then
-             * remove UE from linked list since no pending msgs for this UE */
-            if(isRarScheduled || isMsg4Scheduled)
-            {
-               SCH_FREE(pendingUeNode->node, sizeof(uint8_t));
-               deleteNodeFromLList(&cell->ueToBeScheduled, pendingUeNode);
-            }
-            /* If RAR/MSG4 is pending but couldnt be scheduled then,
-             * put this UE at the end of linked list to be scheduled later */
-            else
-            {
-               cmLListAdd2Tail(&cell->ueToBeScheduled, cmLListDelFrm(&cell->ueToBeScheduled, pendingUeNode));
-            }
-         }
-
-#ifdef NR_DRX 
-         if((cell->ueCb[ueId-1].ueDrxInfoPres == true) && (cell->ueCb[ueId-1].drxUeCb.drxDlUeActiveStatus != true))
-         {
-            if(pendingUeNode->node)
-            {
-               cmLListAdd2Tail(&cell->ueToBeScheduled, cmLListDelFrm(&cell->ueToBeScheduled, pendingUeNode));
-            }
-         }
-         else 
-#endif
-         {
-            
-            /* DL Data */
-            node = cell->ueCb[ueId-1].dlRetxHqList.first;
-            if(node != NULLP)
-            {
-               /* DL Data ReTransmisson */
-               isDlMsgPending = true;
-               isDlMsgScheduled = schFillBoGrantDlSchedInfo(cell, *slotInd, ueId, TRUE, ((SchDlHqProcCb**) &(node->node)));
-               if(isDlMsgScheduled)
-               {
-#ifdef NR_DRX 
-                  schDrxStopDlHqRetxTmr(cell, &cell->ueCb[ueId-1], ((SchDlHqProcCb**) &(node->node)));
-#endif
-                  cmLListDelFrm(&cell->ueCb[ueId-1].dlRetxHqList, node);
-               }
-            }
-            else
-            {
-               /* DL Data new transmission */
-               if((cell->boIndBitMap) & (1<<ueId))
-               {
-                  isDlMsgPending = true;               
-                  isDlMsgScheduled = schFillBoGrantDlSchedInfo(cell, *slotInd, ueId, FALSE, &hqP);
-
-                  /* If DL scheduling failed, free the newly assigned HARQ process */
-                  if(!isDlMsgScheduled)
-                     schDlReleaseHqProcess(hqP);
-                  else
-                  {
-#ifdef NR_DRX
-                     schHdlDrxInActvStrtTmr(cell, &cell->ueCb[ueId-1], PHY_DELTA_DL + SCHED_DELTA);
-#endif
-                  }
-               }
-            }
-
-            /* Scheduling of UL grant */
-            node = cell->ueCb[ueId-1].ulRetxHqList.first;
-            if(node != NULLP)
-            {
-               /* UL Data ReTransmisson */
-               isUlGrantPending = true;
-               isUlGrantScheduled = schProcessSrOrBsrReq(cell, *slotInd, ueId, TRUE, (SchUlHqProcCb**) &(node->node));
-               if(isUlGrantScheduled)
-               {
-#ifdef NR_DRX 
-                  schDrxStopUlHqRetxTmr(cell, &cell->ueCb[ueId-1], ((SchUlHqProcCb**) &(node->node)));
-#endif
-                  cmLListDelFrm(&cell->ueCb[ueId-1].ulRetxHqList, node);
-               }
-            }
-            else
-            {
-               /* UL Data new transmission */
-               if(cell->ueCb[ueId-1].srRcvd || cell->ueCb[ueId-1].bsrRcvd)
-               {
-                  isUlGrantPending = true;
-                  isUlGrantScheduled = schProcessSrOrBsrReq(cell, *slotInd, ueId, FALSE, &ulHqP);
-                  if(!isUlGrantScheduled)
-                     schUlReleaseHqProcess(ulHqP, FALSE);
-                  else
-                  {
-#ifdef NR_DRX
-                     schHdlDrxInActvStrtTmr(cell, &cell->ueCb[ueId-1], PHY_DELTA_UL + SCHED_DELTA);
-#endif
-                  }
-               }
-            }
-
-            if(!isUlGrantPending && !isDlMsgPending)
-            {
-               /* No action required */  
-            }
-            else if((isUlGrantPending && !isUlGrantScheduled) || (isDlMsgPending && !isDlMsgScheduled))
-            {
-               cmLListAdd2Tail(&cell->ueToBeScheduled, cmLListDelFrm(&cell->ueToBeScheduled, pendingUeNode));
-            }
-            else
-            {
-               SCH_FREE(ueNode, sizeof(uint8_t));
-               deleteNodeFromLList(&cell->ueToBeScheduled, pendingUeNode);
-            }
-         }
-      }
-   }
+   cell->api->SchScheduleSlot(cell, slotInd, schInst);
 
    /* Check if any PDU is scheduled at this slot for any UE */
    for(ueIdx=0; ueIdx<MAX_NUM_UE; ueIdx++)

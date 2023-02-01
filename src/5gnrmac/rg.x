@@ -745,12 +745,6 @@ S16 rgLMMStopTmr ARGS((Inst inst,S16 tmrEvnt, PTR cb));
 S16 rgLMMTmrExpiry ARGS((PTR cb, S16 tmrEvnt));
 /* To send a Unsolicited Status Indication to Layer Manager */
 S16 rgLMMStaInd ARGS((Inst inst,uint16_t category, uint16_t event, uint16_t cause, RgUstaDgn *dgn));
-/* LIM uses this to forward the BndCfm to LMM. This function invokes a
- * Control Confirmation to the LM. */
-S16 rgActvTmr ARGS((Ent ent, Inst inst ));
-S16 rgActvInit ARGS((Ent entity, Inst inst, Region 
-       region, Reason reason));
-S16 rgActvTsk ARGS((Pst *pst, Buffer *mBuf));
 
 /* APIs Exposed by UIM */
 S16 rgUIMRguBndCfm ARGS ((Inst inst,SuId suId, uint8_t status));
