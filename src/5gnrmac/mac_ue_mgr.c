@@ -1155,6 +1155,7 @@ uint8_t fillInitDlBwpPdcchCfg(PdcchConfig macPdcchCfg, SchPdcchConfig *schPdcchC
 	 macPdcchCfg.cRSetToAddModList[idx].precoderGranularity;
       schPdcchCfg->cRSetToAddModList[idx].dmrsScramblingId = \
 	 macPdcchCfg.cRSetToAddModList[idx].dmrsScramblingId;
+    DU_LOG("\nPBORLA %d, %s cceRegMappingType %d",__LINE__,__func__,schPdcchCfg->cRSetToAddModList[idx].cceRegMappingType);
    }
 
    schPdcchCfg->numCRsetToRel = macPdcchCfg.numCRsetToRel;

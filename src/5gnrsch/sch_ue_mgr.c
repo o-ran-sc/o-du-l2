@@ -990,8 +990,8 @@ uint8_t schFillPuschAlloc(SchUeCb *ueCb, SlotTimingInfo puschTime, uint32_t tbSi
 uint8_t schFillUlDciForMsg3Retx(SchRaCb *raCb, SchPuschInfo *puschInfo, DciInfo *dciInfo)
 {
    SchCellCb         *cellCb  = raCb->cell;
-   dciInfo->cellId = cellCb->cellId;
-   dciInfo->crnti  = raCb->tcrnti;
+   //dciInfo->cellId = cellCb->cellId;
+   //dciInfo->crnti  = raCb->tcrnti;
    SchUlHqProcCb *msg3HqProc = &raCb->msg3HqProc;
    if (msg3HqProc == NULLP)
    {
@@ -1012,12 +1012,13 @@ uint8_t schFillUlDciForMsg3Retx(SchRaCb *raCb, SchPuschInfo *puschInfo, DciInfo 
    dciInfo->coresetCfg.durationSymbols  = coresetIdxTable[0][2];
    memcpy(dciInfo->coresetCfg.freqDomainResource, cellCb->cellCfg.schInitialDlBwp.pdcchCommon.commonSearchSpace.freqDomainRsrc, FREQ_DOM_RSRC_SIZE);
    
-   dciInfo->coresetCfg.cceRegMappingType   = 1; /* coreset0 is always interleaved */
-   dciInfo->coresetCfg.regBundleSize       = 6; /* spec-38.211 sec 7.3.2.2 */
-   dciInfo->coresetCfg.interleaverSize     = 2; /* spec-38.211 sec 7.3.2.2 */
+   dciInfo->coresetCfg.cceRegMapping.cceRegMappingType = 1; /* coreset0 is always interleaved */
+   DU_LOG("\nPBORLA %d, %s cceRegMappingType %d",__LINE__,__func__,dciInfo->coresetCfg.cceRegMapping.cceRegMappingType); 
+   dciInfo->coresetCfg.cceRegMapping.mappingType.interleavedMapping.regBundleSize       = 6; /* spec-38.211 sec 7.3.2.2 */
+   dciInfo->coresetCfg.cceRegMapping.mappingType.interleavedMapping.interleaverSize     = 2; /* spec-38.211 sec 7.3.2.2 */
+   dciInfo->coresetCfg.cceRegMapping.mappingType.interleavedMapping.shiftIndex          = cellCb->cellCfg.phyCellId;
    dciInfo->coresetCfg.coreSetType         = 0;
    dciInfo->coresetCfg.coreSetSize         = coresetIdxTable[0][1];
-   dciInfo->coresetCfg.shiftIndex          = cellCb->cellCfg.phyCellId;
    dciInfo->coresetCfg.precoderGranularity = 0;
    dciInfo->coresetCfg.cceIndex            = 0; /* 0-3 for UL and 4-7 for DL */
    dciInfo->coresetCfg.aggregationLevel    = 4; /* same as for sib1 */
@@ -1034,7 +1035,6 @@ uint8_t schFillUlDciForMsg3Retx(SchRaCb *raCb, SchPuschInfo *puschInfo, DciInfo 
    dciInfo->format.format0_0.rowIndex            = 0; /* row Index */
    dciInfo->format.format0_0.mcs                 = msg3HqProc->tbInfo.iMcs;
    dciInfo->format.format0_0.harqProcId          = msg3HqProc->procId;
-   dciInfo->format.format0_0.puschHopFlag        = FALSE; /* disabled */
    dciInfo->format.format0_0.freqHopFlag         = FALSE; /* disabled */
    dciInfo->format.format0_0.ndi                 = msg3HqProc->tbInfo.ndi; /* new transmission */
    dciInfo->format.format0_0.rv                  = msg3HqProc->tbInfo.rv;
@@ -1104,8 +1104,8 @@ uint8_t schFillUlDci(SchUeCb *ueCb, SchPuschInfo *puschInfo, DciInfo *dciInfo, b
      coreset1 = ueCb->ueCfg.spCellCfg.servCellRecfg.initDlBwp.pdcchCfg.cRSetToAddModList[0];
    }
    
-   dciInfo->cellId = cellCb->cellId;
-   dciInfo->crnti  = ueCb->crnti;
+   //dciInfo->cellId = cellCb->cellId;
+   //dciInfo->crnti  = ueCb->crnti;
 
    /* fill bwp cfg */
    dciInfo->bwpCfg.subcarrierSpacing  = cellCb->cellCfg.sib1SchCfg.bwp.subcarrierSpacing;
@@ -1121,11 +1121,12 @@ uint8_t schFillUlDci(SchUeCb *ueCb, SchPuschInfo *puschInfo, DciInfo *dciInfo, b
    dciInfo->coresetCfg.durationSymbols  = coreset1.duration;
    memcpy(dciInfo->coresetCfg.freqDomainResource, coreset1.freqDomainRsrc, FREQ_DOM_RSRC_SIZE);
    
-   dciInfo->coresetCfg.cceRegMappingType   = coreset1.cceRegMappingType; /* non-interleaved */
-   dciInfo->coresetCfg.regBundleSize       = 6; /* must be 6 for non-interleaved */
-   dciInfo->coresetCfg.interleaverSize     = 0; /* NA for non-interleaved */
+   dciInfo->coresetCfg.cceRegMapping.cceRegMappingType = coreset1.cceRegMappingType; /* non-interleaved */
+   DU_LOG("\nPBORLA %d, %s cceRegMappingType %d",__LINE__,__func__,dciInfo->coresetCfg.cceRegMapping.cceRegMappingType );
+   dciInfo->coresetCfg.cceRegMapping.mappingType.interleavedMapping.regBundleSize       = 6; /* must be 6 for non-interleaved */
+   dciInfo->coresetCfg.cceRegMapping.mappingType.interleavedMapping.interleaverSize     = 0; /* NA for non-interleaved */
+   dciInfo->coresetCfg.cceRegMapping.mappingType.interleavedMapping.shiftIndex          = cellCb->cellCfg.phyCellId;
    dciInfo->coresetCfg.coreSetType         = 1; /* non PBCH coreset */
-   dciInfo->coresetCfg.shiftIndex          = cellCb->cellCfg.phyCellId;
    dciInfo->coresetCfg.precoderGranularity = coreset1.precoderGranularity;
    dciInfo->coresetCfg.cceIndex            = 0; /* 0-3 for UL and 4-7 for DL */
    dciInfo->coresetCfg.aggregationLevel    = 4; /* same as for sib1 */
@@ -1141,7 +1142,6 @@ uint8_t schFillUlDci(SchUeCb *ueCb, SchPuschInfo *puschInfo, DciInfo *dciInfo, b
    dciInfo->format.format0_0.rowIndex            = 0; /* row Index */
    dciInfo->format.format0_0.mcs                 = puschInfo->tbInfo.mcs;
    dciInfo->format.format0_0.harqProcId          = puschInfo->harqProcId;
-   dciInfo->format.format0_0.puschHopFlag        = FALSE; /* disabled */
    dciInfo->format.format0_0.freqHopFlag         = FALSE; /* disabled */
    dciInfo->format.format0_0.ndi                 = puschInfo->tbInfo.ndi; /* new transmission */
    dciInfo->format.format0_0.rv                  = puschInfo->tbInfo.rv;

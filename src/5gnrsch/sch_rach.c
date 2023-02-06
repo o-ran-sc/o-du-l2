@@ -896,12 +896,13 @@ uint8_t schFillRar(SchCellCb *cell, SlotTimingInfo rarTime, uint16_t ueId, RarAl
    memcpy(pdcch->coresetCfg.freqDomainResource, \
       cell->cellCfg.schInitialDlBwp.pdcchCommon.commonSearchSpace.freqDomainRsrc, FREQ_DOM_RSRC_SIZE);
 
-   pdcch->coresetCfg.cceRegMappingType = 1; /* coreset0 is always interleaved */
-   pdcch->coresetCfg.regBundleSize = 6;    /* spec-38.211 sec 7.3.2.2 */
-   pdcch->coresetCfg.interleaverSize = 2;  /* spec-38.211 sec 7.3.2.2 */
+   pdcch->coresetCfg.cceRegMapping.cceRegMappingType= 1; /* coreset0 is always interleaved */
+   DU_LOG("\nPBORLA %d, %s cceRegMappingType %d",__LINE__,__func__, pdcch->coresetCfg.cceRegMapping.cceRegMappingType);
+   pdcch->coresetCfg.cceRegMapping.mappingType.interleavedMapping.regBundleSize = 6;    /* spec-38.211 sec 7.3.2.2 */
+   pdcch->coresetCfg.cceRegMapping.mappingType.interleavedMapping.interleaverSize = 2;  /* spec-38.211 sec 7.3.2.2 */
+   pdcch->coresetCfg.cceRegMapping.mappingType.interleavedMapping.shiftIndex = cell->cellCfg.phyCellId;
    pdcch->coresetCfg.coreSetType = 0;
    pdcch->coresetCfg.coreSetSize = numRbs;
-   pdcch->coresetCfg.shiftIndex = cell->cellCfg.phyCellId;
    pdcch->coresetCfg.precoderGranularity = 0; /* sameAsRegBundle */
    pdcch->numDlDci = 1;
    pdcch->dci.rnti = cell->raReq[ueId-1]->raRnti; /* RA-RNTI */

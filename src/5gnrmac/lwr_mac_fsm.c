@@ -3137,10 +3137,10 @@ uint8_t fillPdcchPdu(fapi_dl_tti_req_pdu_t *dlTtiReqPdu, fapi_vendor_dl_tti_req_
       dlTtiReqPdu->pdu.pdcch_pdu.startSymbolIndex = pdcchInfo->coresetCfg.startSymbolIndex;
       dlTtiReqPdu->pdu.pdcch_pdu.durationSymbols = pdcchInfo->coresetCfg.durationSymbols;
       memcpy(dlTtiReqPdu->pdu.pdcch_pdu.freqDomainResource, pdcchInfo->coresetCfg.freqDomainResource, 6);
-      dlTtiReqPdu->pdu.pdcch_pdu.cceRegMappingType = pdcchInfo->coresetCfg.cceRegMappingType;
-      dlTtiReqPdu->pdu.pdcch_pdu.regBundleSize = pdcchInfo->coresetCfg.regBundleSize;
-      dlTtiReqPdu->pdu.pdcch_pdu.interleaverSize = pdcchInfo->coresetCfg.interleaverSize;
-      dlTtiReqPdu->pdu.pdcch_pdu.shiftIndex =  pdcchInfo->coresetCfg.shiftIndex;
+      dlTtiReqPdu->pdu.pdcch_pdu.cceRegMappingType = pdcchInfo->coresetCfg.cceRegMapping.cceRegMappingType;
+      dlTtiReqPdu->pdu.pdcch_pdu.regBundleSize = pdcchInfo->coresetCfg.cceRegMapping.mappingType.interleavedMapping.regBundleSize;
+      dlTtiReqPdu->pdu.pdcch_pdu.interleaverSize = pdcchInfo->coresetCfg.cceRegMapping.mappingType.interleavedMapping.interleaverSize;
+      dlTtiReqPdu->pdu.pdcch_pdu.shiftIndex =  pdcchInfo->coresetCfg.cceRegMapping.mappingType.interleavedMapping.shiftIndex;
       dlTtiReqPdu->pdu.pdcch_pdu.precoderGranularity = pdcchInfo->coresetCfg.precoderGranularity;
       dlTtiReqPdu->pdu.pdcch_pdu.numDlDci = pdcchInfo->numDlDci;
       dlTtiReqPdu->pdu.pdcch_pdu.coreSetType = coreSetType;
@@ -3382,7 +3382,7 @@ uint8_t calcTxDataReqPduCount(MacDlSlot *dlSlot)
  *
  * ********************************************************************/
 uint8_t fillSib1TxDataReq(fapi_tx_pdu_desc_t *pduDesc, uint16_t pduIndex, MacCellCfg *macCellCfg,
-      PdschCfg pdschCfg)
+      PdschCfg *pdschCfg)
 {
    uint32_t payloadSize = 0;
    uint8_t *sib1Payload = NULLP;
@@ -3395,7 +3395,7 @@ uint8_t fillSib1TxDataReq(fapi_tx_pdu_desc_t *pduDesc, uint16_t pduIndex, MacCel
    pduDesc[pduIndex].num_tlvs = 1;
 
    /* fill the TLV */
-   payloadSize = pdschCfg.codeword[0].tbSize;
+   payloadSize = pdschCfg->codeword[0].tbSize;
    pduDesc[pduIndex].tlvs[0].tl.tag = ((payloadSize & 0xff0000) >> 8) | FAPI_TX_DATA_PTR_TO_PAYLOAD_64;
    pduDesc[pduIndex].tlvs[0].tl.length = (payloadSize & 0x0000ffff);
    LWR_MAC_ALLOC(sib1Payload, payloadSize);
@@ -3739,7 +3739,7 @@ uint16_t fillDlTtiReq(SlotTimingInfo currTimingInfo)
 
 						   /* PDSCH PDU */
 						   fillPdschPdu(&dlTtiReq->pdus[numPduEncoded], &vendorMsg->p7_req_vendor.dl_tti_req.pdus[numPduEncoded],
-								   &currDlSlot->dlInfo.brdcstAlloc.sib1Alloc.sib1PdschCfg,
+								   currDlSlot->dlInfo.brdcstAlloc.sib1Alloc.sib1PdcchCfg.dci.pdschCfg,
 								   currDlSlot->dlInfo.brdcstAlloc.sib1Alloc.bwp,
 								   pduIndex);
 						   dlTtiReq->ue_grp_info[dlTtiReq->nGroup].pduIdx[pduIndex] = pduIndex;
@@ -3988,7 +3988,7 @@ uint16_t sendTxDataReq(SlotTimingInfo currTimingInfo, MacDlSlot *dlSlot, p_fapi_
       if(dlSlot->dlInfo.brdcstAlloc.sib1Trans)
       {
          fillSib1TxDataReq(txDataReq->pdu_desc, pduIndex, &macCb.macCell[cellIdx]->macCellCfg, \
-               dlSlot->dlInfo.brdcstAlloc.sib1Alloc.sib1PdschCfg);
+               dlSlot->dlInfo.brdcstAlloc.sib1Alloc.sib1PdcchCfg.dci.pdschCfg);
          pduIndex++;
          txDataReq->num_pdus++;
       }
@@ -4616,10 +4616,11 @@ uint8_t fillUlDciPdcchPdu(fapi_dci_pdu_t *ulDciReqPdu, fapi_vendor_dci_pdu_t *ve
       ulDciReqPdu->pdcchPduConfig.startSymbolIndex  = dlInfo->ulGrant->coresetCfg.startSymbolIndex;
       ulDciReqPdu->pdcchPduConfig.durationSymbols   = dlInfo->ulGrant->coresetCfg.durationSymbols;
       memcpy(ulDciReqPdu->pdcchPduConfig.freqDomainResource, dlInfo->ulGrant->coresetCfg.freqDomainResource, 6);
-      ulDciReqPdu->pdcchPduConfig.cceRegMappingType = dlInfo->ulGrant->coresetCfg.cceRegMappingType;
-      ulDciReqPdu->pdcchPduConfig.regBundleSize     = dlInfo->ulGrant->coresetCfg.regBundleSize;
-      ulDciReqPdu->pdcchPduConfig.interleaverSize   = dlInfo->ulGrant->coresetCfg.interleaverSize;
-      ulDciReqPdu->pdcchPduConfig.shiftIndex        = dlInfo->ulGrant->coresetCfg.shiftIndex;
+      ulDciReqPdu->pdcchPduConfig.cceRegMappingType = dlInfo->ulGrant->coresetCfg.cceRegMapping.cceRegMappingType;
+      DU_LOG("\nPBORLA %d, %s cceRegMappingType %d",__LINE__,__func__,dlInfo->ulGrant->coresetCfg.cceRegMapping.cceRegMappingType );
+      ulDciReqPdu->pdcchPduConfig.regBundleSize     = dlInfo->ulGrant->coresetCfg.cceRegMapping.mappingType.interleavedMapping.regBundleSize;
+      ulDciReqPdu->pdcchPduConfig.interleaverSize   = dlInfo->ulGrant->coresetCfg.cceRegMapping.mappingType.interleavedMapping.interleaverSize;
+      ulDciReqPdu->pdcchPduConfig.shiftIndex        = dlInfo->ulGrant->coresetCfg.cceRegMapping.mappingType.interleavedMapping.shiftIndex;
       ulDciReqPdu->pdcchPduConfig.precoderGranularity = dlInfo->ulGrant->coresetCfg.precoderGranularity;
       ulDciReqPdu->pdcchPduConfig.numDlDci          = 1;
       ulDciReqPdu->pdcchPduConfig.coreSetType       = coreSetType;

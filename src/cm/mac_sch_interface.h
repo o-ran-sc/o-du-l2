@@ -549,6 +549,21 @@ typedef struct pdschCfg
 /* SIB1 PDSCH structures end */
 
 /* SIB1 interface structure */
+typedef struct interleaved
+{
+   uint8_t regBundleSize;
+   uint8_t interleaverSize;
+   uint16_t shiftIndex;
+}Interleaved;
+
+typedef struct cceRegMapping
+{
+   SchREGMappingType cceRegMappingType;
+   union {
+      Interleaved  interleavedMapping;
+      uint8_t      nonInterleavedMapping;
+   }mappingType;
+}CceRegMapping;
 
 typedef struct coresetCfg
 {
@@ -556,14 +571,12 @@ typedef struct coresetCfg
    uint8_t startSymbolIndex;
    uint8_t durationSymbols;
    uint8_t freqDomainResource[6];
-   uint8_t cceRegMappingType;
-   uint8_t regBundleSize;
-   uint8_t interleaverSize;
+   CceRegMapping cceRegMapping;
    uint8_t coreSetType;
-   uint16_t shiftIndex;
    uint8_t precoderGranularity;
    uint8_t cceIndex;
    uint8_t aggregationLevel;
+   uint8_t CoresetPoolIndex;
 } CoresetCfg;
 
 typedef struct txPowerPdcchInfo
@@ -614,7 +627,7 @@ typedef struct
    uint8_t   n0;
    BwpCfg    bwp;
    PdcchCfg  sib1PdcchCfg;
-   PdschCfg  sib1PdschCfg;
+   //PdschCfg  sib1PdschCfg;
    PageCfg   pageCfg;         /*Config of Paging*/
 }SchSib1Cfg;
 
@@ -852,7 +865,7 @@ typedef struct sib1AllocInfo
 {
    BwpCfg bwp;
    PdcchCfg sib1PdcchCfg;
-   PdschCfg sib1PdschCfg;
+   //PdschCfg sib1PdschCfg;
 } Sib1AllocInfo;
 
 typedef struct prachSchInfo
@@ -972,7 +985,7 @@ typedef struct format0_0
    uint16_t        rowIndex;
    uint8_t         mcs;
    uint8_t         harqProcId;   /* HARQ Process ID */
-   bool            puschHopFlag;
+   uint8_t         puschHopping;
    bool            freqHopFlag;
    uint8_t         ndi;    /* NDI */
    uint8_t         rv;     /* Redundancy Version */
@@ -999,9 +1012,9 @@ typedef struct format1_1
 
 typedef struct dciInfo
 {
-   uint16_t      cellId;   
-   uint16_t      crnti;          /* CRNI */
-   SlotTimingInfo   slotIndInfo;    /* Slot Info: sfn, slot number */
+   //uint16_t      cellId;   
+   //uint16_t      crnti;          /* CRNI */
+   //SlotTimingInfo   slotIndInfo;    /* Slot Info: sfn, slot number */
    BwpCfg        bwpCfg;         /* BWP Cfg */
    CoresetCfg    coresetCfg;     /* Coreset1 Cfg */
    FormatType    formatType;     /* DCI Format */
@@ -1019,6 +1032,7 @@ typedef struct dciInfo
 typedef struct dlSchedInfo
 {
    uint16_t cellId;  /* Cell Id */
+   uint8_t  crnti;
    SchSlotValue schSlotValue;
 
    /* Allocation for broadcast messages */

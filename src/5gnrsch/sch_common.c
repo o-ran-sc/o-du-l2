@@ -144,9 +144,9 @@ uint8_t schBroadcastSib1Alloc(SchCellCb *cell, SlotTimingInfo slotTime, DlBrdcst
       return RFAILED;
    }
 
-   dmrs = cell->cellCfg.sib1SchCfg.sib1PdschCfg.dmrs;
-   freqAlloc = cell->cellCfg.sib1SchCfg.sib1PdschCfg.pdschFreqAlloc.freqAlloc;
-   timeAlloc = cell->cellCfg.sib1SchCfg.sib1PdschCfg.pdschTimeAlloc.timeAlloc;
+   dmrs = cell->cellCfg.sib1SchCfg.sib1PdcchCfg.dci.pdschCfg->dmrs;
+   freqAlloc = cell->cellCfg.sib1SchCfg.sib1PdcchCfg.dci.pdschCfg->pdschFreqAlloc.freqAlloc;
+   timeAlloc = cell->cellCfg.sib1SchCfg.sib1PdcchCfg.dci.pdschCfg->pdschTimeAlloc.timeAlloc;
    schDlSlotInfo = cell->schDlSlotInfo[slotTime.slot];
 
    /* Find total symbols used including DMRS */
@@ -174,8 +174,17 @@ uint8_t schBroadcastSib1Alloc(SchCellCb *cell, SlotTimingInfo slotTime, DlBrdcst
 
    memcpy(&dlBrdcstAlloc->sib1Alloc.bwp, &cell->cellCfg.sib1SchCfg.bwp, sizeof(BwpCfg)); 
    memcpy(&dlBrdcstAlloc->sib1Alloc.sib1PdcchCfg, &cell->cellCfg.sib1SchCfg.sib1PdcchCfg, sizeof(PdcchCfg)); 
-   memcpy(&dlBrdcstAlloc->sib1Alloc.sib1PdschCfg, &cell->cellCfg.sib1SchCfg.sib1PdschCfg, sizeof(PdschCfg)); 
-   dlBrdcstAlloc->sib1Alloc.sib1PdcchCfg.dci.pdschCfg = &dlBrdcstAlloc->sib1Alloc.sib1PdschCfg;
+#if 0   
+   if(dlBrdcstAlloc->sib1Alloc.sib1PdcchCfg.dci.pdschCfg)
+   {
+      SCH_FREE(dlBrdcstAlloc->sib1Alloc.sib1PdcchCfg.dci.pdschCfg, sizeof(PdschCfg));
+   }
+   SCH_ALLOC(dlBrdcstAlloc->sib1Alloc.sib1PdcchCfg.dci.pdschCfg, sizeof(PdschCfg));
+   memcpy(dlBrdcstAlloc->sib1Alloc.sib1PdcchCfg.dci.pdschCfg, cell->cellCfg.sib1SchCfg.sib1PdcchCfg.dci.pdschCfg, sizeof(PdschCfg)); 
+   //dlBrdcstAlloc->sib1Alloc.sib1PdcchCfg.dci.pdschCfg = &dlBrdcstAlloc->sib1Alloc.sib1PdschCfg;
+#endif
+    DU_LOG("\nPBORLA dci.pdschCfg %p", dlBrdcstAlloc->sib1Alloc.sib1PdcchCfg.dci.pdschCfg);
+   
    schDlSlotInfo->sib1Pres = true;
    return ROK;
 }
@@ -631,12 +640,13 @@ uint8_t schDlRsrcAllocMsg4(SchCellCb *cell, SlotTimingInfo msg4Time, uint8_t ueI
    memcpy(pdcch->coresetCfg.freqDomainResource, \
       cell->cellCfg.schInitialDlBwp.pdcchCommon.commonSearchSpace.freqDomainRsrc, FREQ_DOM_RSRC_SIZE);
 
-   pdcch->coresetCfg.cceRegMappingType = 1; /* coreset0 is always interleaved */
-   pdcch->coresetCfg.regBundleSize = 6;    /* spec-38.211 sec 7.3.2.2 */
-   pdcch->coresetCfg.interleaverSize = 2;  /* spec-38.211 sec 7.3.2.2 */
+   pdcch->coresetCfg.cceRegMapping.cceRegMappingType = 1; /* coreset0 is always interleaved */
+   DU_LOG("\nPBORLA %d, %s, cceRegMappingType %d",__LINE__, __func__,pdcch->coresetCfg.cceRegMapping.cceRegMappingType );
+   pdcch->coresetCfg.cceRegMapping.mappingType.interleavedMapping.regBundleSize = 6;    /* spec-38.211 sec 7.3.2.2 */
+   pdcch->coresetCfg.cceRegMapping.mappingType.interleavedMapping.interleaverSize = 2;  /* spec-38.211 sec 7.3.2.2 */
+   pdcch->coresetCfg.cceRegMapping.mappingType.interleavedMapping.shiftIndex = cell->cellCfg.phyCellId;
    pdcch->coresetCfg.coreSetType = 0;
    pdcch->coresetCfg.coreSetSize = numRbs;
-   pdcch->coresetCfg.shiftIndex = cell->cellCfg.phyCellId;
    pdcch->coresetCfg.precoderGranularity = 0; /* sameAsRegBundle */
    pdcch->numDlDci = 1;
    pdcch->dci.rnti = cell->raCb[ueId-1].tcrnti;
@@ -830,13 +840,14 @@ uint8_t schDlRsrcAllocDlMsg(SchCellCb *cell, SlotTimingInfo slotTime, uint16_t c
    pdcch->coresetCfg.startSymbolIndex = coresetIdxTable[0][3];
    pdcch->coresetCfg.durationSymbols = coreset1.duration;
    memcpy(pdcch->coresetCfg.freqDomainResource, coreset1.freqDomainRsrc, FREQ_DOM_RSRC_SIZE);
-   pdcch->coresetCfg.cceRegMappingType = coreset1.cceRegMappingType; /* non-interleaved */
-   pdcch->coresetCfg.regBundleSize = 6;   /* must be 6 for non-interleaved */
-   pdcch->coresetCfg.interleaverSize = 0; /* NA for non-interleaved */
+   pdcch->coresetCfg.cceRegMapping.cceRegMappingType = coreset1.cceRegMappingType; /* non-interleaved */
+   DU_LOG("\nPBORLA %d, %s, cceRegMappingType %d",__LINE__, __func__,pdcch->coresetCfg.cceRegMapping.cceRegMappingType );
+   pdcch->coresetCfg.cceRegMapping.mappingType.interleavedMapping.regBundleSize = 6;   /* must be 6 for non-interleaved */
+   pdcch->coresetCfg.cceRegMapping.mappingType.interleavedMapping.shiftIndex = cell->cellCfg.phyCellId;
+   pdcch->coresetCfg.cceRegMapping.mappingType.interleavedMapping.interleaverSize = 0; /* NA for non-interleaved */
    pdcch->coresetCfg.coreSetType = 1; /* non PBCH coreset */
    //Considering number of RBs in coreset1 is same as coreset0
    pdcch->coresetCfg.coreSetSize = coresetIdxTable[0][1];
-   pdcch->coresetCfg.shiftIndex = cell->cellCfg.phyCellId;
    pdcch->coresetCfg.precoderGranularity =  coreset1.precoderGranularity;
    pdcch->numDlDci = 1;
    pdcch->dci.rnti = ueCb.crnti;
@@ -2112,7 +2123,7 @@ bool schProcessSrOrBsrReq(SchCellCb *cell, SlotTimingInfo currTime, uint8_t ueId
                {
                   /* Fill DCI for UL grant */
                   schFillUlDci(ueCb, puschInfo, dciInfo, isRetx, *hqP);
-                  memcpy(&dciInfo->slotIndInfo, &dciTime, sizeof(SlotTimingInfo));
+                  //memcpy(&dciInfo->slotIndInfo, &dciTime, sizeof(SlotTimingInfo));
                   ueCb->srRcvd = false;
                   ueCb->bsrRcvd = false;
                   cell->schUlSlotInfo[puschTime.slot]->puschUe = ueId;

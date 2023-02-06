@@ -77,8 +77,8 @@ uint8_t MacProcDlAlloc(Pst *pst, DlSchedInfo *dlSchedInfo)
                       dlSlot[dlSchedInfo->schSlotValue.broadcastTime.slot];
          currDlSlot->dlInfo.isBroadcastPres = true;
          memcpy(&currDlSlot->dlInfo.brdcstAlloc, &dlSchedInfo->brdcstAlloc, sizeof(DlBrdcstAlloc));
-         currDlSlot->dlInfo.brdcstAlloc.sib1Alloc.sib1PdcchCfg.dci.pdschCfg = \
-                                            &currDlSlot->dlInfo.brdcstAlloc.sib1Alloc.sib1PdschCfg;
+         DU_LOG("\nPBORLA dci.pdschCfg %p, func %s", currDlSlot->dlInfo.brdcstAlloc.sib1Alloc.sib1PdcchCfg.dci.pdschCfg, __func__);
+         //currDlSlot->dlInfo.brdcstAlloc.sib1Alloc.sib1PdcchCfg.dci.pdschCfg = &currDlSlot->dlInfo.brdcstAlloc.sib1Alloc.sib1PdschCfg;
       }
 
       for(ueIdx=0; ueIdx<MAX_NUM_UE; ueIdx++)

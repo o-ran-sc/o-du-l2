@@ -710,7 +710,7 @@ void fillSchSib1Cfg(uint8_t mu, uint8_t bandwidth, uint8_t numSlots, SchSib1Cfg 
    uint8_t ssbIdx = 0;
 
    PdcchCfg *pdcch = &(sib1SchCfg->sib1PdcchCfg);
-   PdschCfg *pdsch = &(sib1SchCfg->sib1PdschCfg);
+   PdschCfg *pdsch;///= &(sib1SchCfg->sib1PdschCfg);
    BwpCfg *bwp = &(sib1SchCfg->bwp);
 
    coreset0Idx     = sib1SchCfg->coresetZeroIndex;
@@ -766,11 +766,12 @@ void fillSchSib1Cfg(uint8_t mu, uint8_t bandwidth, uint8_t numSlots, SchSib1Cfg 
    fillCoresetFeqDomAllocMap(((offsetPointA-offset)/6), (numRbs/6), FreqDomainResource);
    covertFreqDomRsrcMapToIAPIFormat(FreqDomainResource, pdcch->coresetCfg.freqDomainResource);
 
-   pdcch->coresetCfg.cceRegMappingType = 1; /* coreset0 is always interleaved */
-   pdcch->coresetCfg.regBundleSize = 6;    /* spec-38.211 sec 7.3.2.2 */
-   pdcch->coresetCfg.interleaverSize = 2;  /* spec-38.211 sec 7.3.2.2 */
+   pdcch->coresetCfg.cceRegMapping.cceRegMappingType = 1; /* coreset0 is always interleaved */
+   DU_LOG("\nPBORLA %d, %s, cceRegMappingType %d",__LINE__, __func__,pdcch->coresetCfg.cceRegMapping.cceRegMappingType);
+   pdcch->coresetCfg.cceRegMapping.mappingType.interleavedMapping.regBundleSize = 6;    /* spec-38.211 sec 7.3.2.2 */
+   pdcch->coresetCfg.cceRegMapping.mappingType.interleavedMapping.interleaverSize = 2;  /* spec-38.211 sec 7.3.2.2 */
+   pdcch->coresetCfg.cceRegMapping.mappingType.interleavedMapping.shiftIndex = pci;
    pdcch->coresetCfg.coreSetType = 0;
-   pdcch->coresetCfg.shiftIndex = pci;
    pdcch->coresetCfg.precoderGranularity = 0; /* sameAsRegBundle */
    pdcch->numDlDci = 1;
    pdcch->dci.rnti = SI_RNTI;
@@ -787,8 +788,9 @@ void fillSchSib1Cfg(uint8_t mu, uint8_t bandwidth, uint8_t numSlots, SchSib1Cfg 
    pdcch->dci.txPdcchPower.powerControlOffsetSS = 0;
    /* Storing pdschCfg pointer here. Required to access pdsch config while
       fillig up pdcch pdu */
-   pdcch->dci.pdschCfg = pdsch; 
-
+   //pdcch->dci.pdschCfg = pdsch;
+   SCH_ALLOC(pdcch->dci.pdschCfg, sizeof(PdschConfig));
+   pdsch = pdcch->dci.pdschCfg; 
    /* fill the PDSCH PDU */
    uint8_t cwCount = 0;
    pdsch->pduBitmap = 0; /* PTRS and CBG params are excluded */
@@ -1212,7 +1214,7 @@ uint8_t allocatePrbDl(SchCellCb *cell, SlotTimingInfo slotTime, \
       if(ssbOccasion && sib1Occasion)
       {
          broadcastPrbStart = cell->cellCfg.ssbSchCfg.ssbOffsetPointA; 
-         broadcastPrbEnd = broadcastPrbStart + SCH_SSB_NUM_PRB + cell->cellCfg.sib1SchCfg.sib1PdschCfg.pdschFreqAlloc.freqAlloc.numPrb -1;
+         broadcastPrbEnd = broadcastPrbStart + SCH_SSB_NUM_PRB + cell->cellCfg.sib1SchCfg.sib1PdcchCfg.dci.pdschCfg->pdschFreqAlloc.freqAlloc.numPrb -1;
       }
       else if(ssbOccasion)
       {
@@ -1221,8 +1223,8 @@ uint8_t allocatePrbDl(SchCellCb *cell, SlotTimingInfo slotTime, \
       }
       else if(sib1Occasion)
       {
-         broadcastPrbStart = cell->cellCfg.sib1SchCfg.sib1PdschCfg.pdschFreqAlloc.freqAlloc.startPrb;
-         broadcastPrbEnd = broadcastPrbStart + cell->cellCfg.sib1SchCfg.sib1PdschCfg.pdschFreqAlloc.freqAlloc.numPrb -1;
+         broadcastPrbStart = cell->cellCfg.sib1SchCfg.sib1PdcchCfg.dci.pdschCfg->pdschFreqAlloc.freqAlloc.startPrb;
+         broadcastPrbEnd = broadcastPrbStart + cell->cellCfg.sib1SchCfg.sib1PdcchCfg.dci.pdschCfg->pdschFreqAlloc.freqAlloc.numPrb -1;
       }
 
       /* Iterate through all free PRB blocks */
@@ -1542,7 +1544,7 @@ uint16_t searchLargestFreeBlock(SchCellCb *cell, SlotTimingInfo slotTime,uint16_
       {
          reservedPrbStart = cell->cellCfg.ssbSchCfg.ssbOffsetPointA; 
          reservedPrbEnd = reservedPrbStart + SCH_SSB_NUM_PRB + \
-                          cell->cellCfg.sib1SchCfg.sib1PdschCfg.pdschFreqAlloc.freqAlloc.numPrb -1;
+                          cell->cellCfg.sib1SchCfg.sib1PdcchCfg.dci.pdschCfg->pdschFreqAlloc.freqAlloc.numPrb -1;
       }
       else if(ssbOccasion)
       {
@@ -1551,8 +1553,8 @@ uint16_t searchLargestFreeBlock(SchCellCb *cell, SlotTimingInfo slotTime,uint16_
       }
       else if(sib1Occasion)
       {
-         reservedPrbStart = cell->cellCfg.sib1SchCfg.sib1PdschCfg.pdschFreqAlloc.freqAlloc.startPrb;
-         reservedPrbEnd = reservedPrbStart + cell->cellCfg.sib1SchCfg.sib1PdschCfg.pdschFreqAlloc.freqAlloc.numPrb -1;
+         reservedPrbStart = cell->cellCfg.sib1SchCfg.sib1PdcchCfg.dci.pdschCfg->pdschFreqAlloc.freqAlloc.startPrb;
+         reservedPrbEnd = reservedPrbStart + cell->cellCfg.sib1SchCfg.sib1PdcchCfg.dci.pdschCfg->pdschFreqAlloc.freqAlloc.numPrb -1;
       }
       else
       {
