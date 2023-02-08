@@ -43,13 +43,6 @@ File:     sch_common.c
 #include "sch.h"
 #include "sch_utils.h"
 
-SchMacUlSchInfoFunc schMacUlSchInfoOpts[] =
-{
-   packSchMacUlSchInfo,
-   MacProcUlSchInfo,
-   packSchMacUlSchInfo
-};
-
 /**
  * @brief common resource allocation for SSB
  *
@@ -204,7 +197,7 @@ int sendUlSchInfoToMac(UlSchedInfo *ulSchedInfo, Inst inst)
    FILL_PST_SCH_TO_MAC(pst, inst);
    pst.event = EVENT_UL_SCH_INFO;
 
-   return(*schMacUlSchInfoOpts[pst.selector])(&pst, ulSchedInfo);
+   return(MacMessageRouter(&pst, (void *)ulSchedInfo));
 }
 
 /**
@@ -1647,7 +1640,7 @@ void updateGrantSizeForBoRpt(CmLListCp *lcLL, DlMsgAlloc *dlMsgAlloc,\
                   lcNode->lcId,lcNode->reqBO, dlMsgSchInfo->numLc, *accumalatedBOSize);
 
             dlMsgSchInfo->numLc++;
-            /*The LC has been fully allocated, clean it*/
+            /* The LC has been fully allocated, clean it */
             if(lcNode->reqBO == 0)
             {
                handleLcLList(lcLL, lcNode->lcId, DELETE);
@@ -1842,137 +1835,64 @@ uint8_t schProcessMsg4Req(SchCellCb *cell, SlotTimingInfo currTime, uint8_t ueId
 
 /*******************************************************************
  *
- * @brief  Handler to calculate TBS size for BSR requested
+ * @brief sch Process pending Sr or Bsr Req
  *
  * @details
  *
- *    Function :  schCalculateUlTbs
+ *    Function : updateBsrAndLcList
  *
- *    Functionality: Function will note the required TBS for each LCGIDX and use
- *    the Priority LCG List and RRM policy to allocate the TBS size
+ *    Functionality:
+ *       Updating the BSRInfo in UECB and Lclist
  *
- * @params [in] ueCb (Pointer to UE CB)
- *         [in] puschTime (Time slot where PUSCH will be sent)
- *         [in] symbLen (No of Symbols used for PUSCH transmission)
- *         [out] startPrb(Pointer to startPRB which will be calculated while
- *         finding the best Free Block)
- *         [out] totTBS(Pointer to total TBS size)
- *         [in] isRetx (to indicate retransmission)
- *         [in] hqP (UL Harq process pointer)
+ * @params[in] SchCellCb *cell,  SlotTimingInfo currTime 
+ * @return ROK     - success
+ *         RFAILED - failure
  *
- * @return uint8_t : ROK > Scheduling of UL grant is successful
- *                   RFAILED > vice versa
- *
- * ****************************************************************/
-uint8_t schCalculateUlTbs(SchUeCb *ueCb, SlotTimingInfo puschTime, uint8_t symbLen,\
-                          uint16_t *startPrb, uint32_t *totTBS, bool isRetx, SchUlHqProcCb *hqP)
+ *******************************************************************/
+void updateBsrAndLcList(CmLListCp *lcLL, BsrInfo *bsrInfo, uint8_t status)
 {
-   uint16_t mcsIdx = 0;
-   CmLListCp *lcLL = NULLP;
-   uint16_t lcgIdx = 0, lcId =0, maxFreePRB = 0;
-   uint16_t rsvdDedicatedPRB;
-   *startPrb = 0;
-   *totTBS = 0;
+   CmLList *node = NULLP, *next = NULLP;
+   LcInfo *lcNode = NULLP;
 
-   /* check for BSR */
-   for(lcgIdx=0; lcgIdx<MAX_NUM_LOGICAL_CHANNEL_GROUPS; lcgIdx++)
+   if(lcLL == NULLP)
    {
-      if(ueCb->bsrInfo[lcgIdx].dataVol == 0)
-      {
-         continue;
-      }
-
-      /*TODO: lcgIdx and LCID has been implemented as one to one mapping.
-       * Need to check the mapping to figure out the LCID and lcgIdx once L2
-       * spec specifies any logic*/
-      lcId = lcgIdx;
-      if(ueCb->ulInfo.ulLcCtxt[lcId].isDedicated)
-      {
-         lcLL = &(hqP->ulLcPrbEst.dedLcList);
-         rsvdDedicatedPRB = ueCb->ulInfo.ulLcCtxt[lcId].rsvdDedicatedPRB;
-      }
-      else
-      {
-         lcLL = &(hqP->ulLcPrbEst.defLcList);
-      }
-
-      /*[Step2]: Update the reqPRB and Payloadsize for this LC in the appropriate List*/
-      if(updateLcListReqPRB(lcLL, lcId, ueCb->bsrInfo[lcgIdx].dataVol) != ROK)
-      {
-         DU_LOG("\nERROR  --> SCH: LcgId:%d updation failed",lcId);         
-         return RFAILED;
-      }
+      DU_LOG("\nERROR --> SCH: LcList not present");
+      return;
    }
 
-   if ((hqP->ulLcPrbEst.defLcList.count == 0) && (hqP->ulLcPrbEst.dedLcList.count == 0))
+   if(lcLL->count)
    {
-      if( (ueCb->srRcvd) || (isRetx) )
-      {
-         *startPrb = MAX_NUM_RB;
-         *totTBS = schCalcTbSize(UL_GRANT_SIZE);
-      }
-      /*Returning true when NO Grant is there for UE as this is not scheduling
-       * error*/      
-      return ROK;
+      node = lcLL->first;
+   }
+   else
+   {
+      /*lcLL is empty*/
+      return;
    }
 
-   maxFreePRB = searchLargestFreeBlock(ueCb->cellCb, puschTime, startPrb, DIR_UL);
-
-   /*[Step4]: Estimation of PRB and BO which can be allocated to each LC in
-    * the list based on RRM policy*/
-
-   /*Either this UE contains no reservedPRB pool fir dedicated S-NSSAI or 
-    * Num of Free PRB available is not enough to reserve Dedicated PRBs*/
-   if(maxFreePRB != 0)
+   while(node)
    {
-      mcsIdx = ueCb->ueCfg.ulModInfo.mcsIndex;
-      if((hqP->ulLcPrbEst.dedLcList.count == 0) || ((maxFreePRB < rsvdDedicatedPRB)))
+      next = node->next;
+      lcNode = (LcInfo *)node->node;
+      if(lcNode != NULLP)
       {
-         hqP->ulLcPrbEst.sharedNumPrb = maxFreePRB;
-         DU_LOG("\nDEBUG  -->  SCH : UL Only Default Slice is scheduled, sharedPRB Count:%d",\
-               hqP->ulLcPrbEst.sharedNumPrb);
+          /*Only when Status is OK then allocation is marked as ZERO and reqBO
+           * is updated in UE's DB. If Failure, then allocation is added to reqBO 
+           * and same is updated in Ue's DB inside BSR Info structure*/
+         if(status == ROK)
+         {
+            lcNode->allocBO = 0;
+         }
 
-         /*PRB Alloc for Default LCs*/
-         prbAllocUsingRRMPolicy(&(hqP->ulLcPrbEst.defLcList), FALSE, mcsIdx, symbLen,\
-               &(hqP->ulLcPrbEst.sharedNumPrb), NULLP, NULLP,&(ueCb->srRcvd));
+         lcNode->reqBO += lcNode->allocBO;
+         bsrInfo[lcNode->lcId].dataVol = lcNode->reqBO;
+         if(lcNode->reqBO == 0)
+         {
+            handleLcLList(lcLL, lcNode->lcId, DELETE);
+         }
       }
-      else
-      {
-         hqP->ulLcPrbEst.sharedNumPrb = maxFreePRB - rsvdDedicatedPRB;
-
-         /*PRB Alloc for Dedicated LCs*/
-         prbAllocUsingRRMPolicy(&(hqP->ulLcPrbEst.dedLcList), TRUE, mcsIdx, symbLen,\
-               &(hqP->ulLcPrbEst.sharedNumPrb), &(rsvdDedicatedPRB),\
-               NULLP,&(ueCb->srRcvd));
-
-         /*PRB Alloc for Default LCs*/
-         prbAllocUsingRRMPolicy(&(hqP->ulLcPrbEst.defLcList), FALSE, mcsIdx, symbLen, \
-               &(hqP->ulLcPrbEst.sharedNumPrb), &(rsvdDedicatedPRB),\
-               NULLP,&(ueCb->srRcvd));
-      }
+      node = next;
    }
-   /*[Step5]:Traverse each LCID in LcList to calculate the exact Scheduled Bytes
-    * using allocated BO per LC and Update dlMsgAlloc(BO report for MAC*/ 
-   if(hqP->ulLcPrbEst.dedLcList.count != 0)
-      updateGrantSizeForBoRpt(&(hqP->ulLcPrbEst.dedLcList), NULLP, ueCb->bsrInfo, totTBS);
-
-   updateGrantSizeForBoRpt(&(hqP->ulLcPrbEst.defLcList), NULLP, ueCb->bsrInfo, totTBS);
-
-   /*Below case will hit if NO LC(s) are allocated due to resource crunch*/
-   if (*totTBS == 0)
-   {
-      if(maxFreePRB == 0)
-      {
-         DU_LOG("\nERROR  --> SCH : NO FREE PRB!!");
-      }
-      else
-      {
-         /*Schedule the LC for next slot*/
-         DU_LOG("\nDEBUG  -->  SCH : No LC has been scheduled");
-      }      
-      return RFAILED;
-   }   
-   return ROK;
 }
 
 /*******************************************************************
@@ -1995,14 +1915,9 @@ uint8_t schCalculateUlTbs(SchUeCb *ueCb, SlotTimingInfo puschTime, uint8_t symbL
 bool schProcessSrOrBsrReq(SchCellCb *cell, SlotTimingInfo currTime, uint8_t ueId, bool isRetx, SchUlHqProcCb **hqP)
 {
    bool k2Found = FALSE;
-   uint8_t ret = RFAILED;
    uint8_t startSymb = 0, symbLen = 0;
    uint8_t k2TblIdx = 0, k2Index = 0, k2Val = 0;
-   uint16_t startPrb = 0;
-   uint32_t totDataReq = 0; /* in bytes */
    SchUeCb *ueCb;
-   SchPuschInfo *puschInfo;
-   DciInfo  *dciInfo = NULLP;
    SchK2TimingInfoTbl *k2InfoTbl=NULLP;
    SlotTimingInfo dciTime, puschTime;
    
@@ -2077,52 +1992,8 @@ bool schProcessSrOrBsrReq(SchCellCb *cell, SlotTimingInfo currTime, uint8_t ueId
    
    if(k2Found == true)
    {
-      ret = schCalculateUlTbs(ueCb, puschTime, symbLen, &startPrb, &totDataReq, isRetx, *hqP);
-   
-      if(totDataReq > 0 && ret == ROK)
-      {
-         SCH_ALLOC(dciInfo, sizeof(DciInfo));
-         if(!dciInfo)
-         {
-            DU_LOG("\nERROR  -->  SCH : Memory Allocation failed for dciInfo alloc");
-            if(isRetx != TRUE)
-            {
-               if((*hqP)->ulLcPrbEst.dedLcList.count != 0)
-                  updateBsrAndLcList(&((*hqP)->ulLcPrbEst.dedLcList), ueCb->bsrInfo, RFAILED);
-
-               updateBsrAndLcList(&((*hqP)->ulLcPrbEst.defLcList), ueCb->bsrInfo, RFAILED);
-            }
-            return false;
-         }
-         cell->schDlSlotInfo[dciTime.slot]->ulGrant = dciInfo;
-         memset(dciInfo,0,sizeof(DciInfo));
-
-         /* Update PUSCH allocation */
-         if(schFillPuschAlloc(ueCb, puschTime, totDataReq, startSymb, symbLen, startPrb, isRetx, *hqP) == ROK)
-         {
-            if(cell->schUlSlotInfo[puschTime.slot]->schPuschInfo)
-            {
-               puschInfo = cell->schUlSlotInfo[puschTime.slot]->schPuschInfo;
-               if(puschInfo != NULLP)
-               {
-                  /* Fill DCI for UL grant */
-                  schFillUlDci(ueCb, puschInfo, dciInfo, isRetx, *hqP);
-                  memcpy(&dciInfo->slotIndInfo, &dciTime, sizeof(SlotTimingInfo));
-                  ueCb->srRcvd = false;
-                  ueCb->bsrRcvd = false;
-                  cell->schUlSlotInfo[puschTime.slot]->puschUe = ueId;
-                  if((*hqP)->ulLcPrbEst.dedLcList.count != 0)
-                     updateBsrAndLcList(&((*hqP)->ulLcPrbEst.dedLcList), ueCb->bsrInfo, ROK);
-                  updateBsrAndLcList(&((*hqP)->ulLcPrbEst.defLcList), ueCb->bsrInfo, ROK);
-                  cmLListAdd2Tail(&(ueCb->hqUlmap[puschTime.slot]->hqList), &(*hqP)->ulSlotLnk);                  
-                  return true;
-               }
-            }
-         }
-         if((*hqP)->ulLcPrbEst.dedLcList.count != 0)
-            updateBsrAndLcList(&((*hqP)->ulLcPrbEst.dedLcList), ueCb->bsrInfo, RFAILED);
-         updateBsrAndLcList(&((*hqP)->ulLcPrbEst.defLcList), ueCb->bsrInfo, RFAILED);
-      }
+      if(cell->api->SchScheduleUlLc(dciTime, puschTime, startSymb, symbLen, isRetx, hqP) != ROK)
+         return false;
    }
    else
    {
@@ -2130,69 +2001,6 @@ bool schProcessSrOrBsrReq(SchCellCb *cell, SlotTimingInfo currTime, uint8_t ueId
       return false;     
    }
    return true;
-}
-
-
-/*******************************************************************
- *
- * @brief sch Process pending Sr or Bsr Req
- *
- * @details
- *
- *    Function : updateBsrAndLcList
- *
- *    Functionality:
- *       Updating the BSRInfo in UECB and Lclist
- *
- * @params[in] SchCellCb *cell,  SlotTimingInfo currTime 
- * @return ROK     - success
- *         RFAILED - failure
- *
- *******************************************************************/
-void updateBsrAndLcList(CmLListCp *lcLL, BsrInfo *bsrInfo, uint8_t status)
-{
-   CmLList *node = NULLP, *next = NULLP;
-   LcInfo *lcNode = NULLP;
-
-   if(lcLL == NULLP)
-   {
-      DU_LOG("\nERROR --> SCH: LcList not present");
-      return;
-   }
-
-   if(lcLL->count)
-   {
-      node = lcLL->first;
-   }
-   else
-   {
-      /*lcLL is empty*/
-      return;
-   }
-
-   while(node)
-   {
-      next = node->next;
-      lcNode = (LcInfo *)node->node;
-      if(lcNode != NULLP)
-      {
-          /*Only when Status is OK then allocation is marked as ZERO and reqBO
-           * is updated in UE's DB. If Failure, then allocation is added to reqBO 
-           * and same is updated in Ue's DB inside BSR Info structure*/
-         if(status == ROK)
-         {
-            lcNode->allocBO = 0;
-         }
-
-         lcNode->reqBO += lcNode->allocBO;
-         bsrInfo[lcNode->lcId].dataVol = lcNode->reqBO;
-         if(lcNode->reqBO == 0)
-         {
-            handleLcLList(lcLL, lcNode->lcId, DELETE);
-         }
-      }
-      node = next;
-   }
 }
 
 /********************************************************************************

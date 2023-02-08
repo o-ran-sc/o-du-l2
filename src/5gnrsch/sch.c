@@ -47,30 +47,7 @@
 #include "mac_sch_interface.h"
 #include "sch.h"
 #include "sch_utils.h"
-
-
-/* local defines */
-SchCellCfgCfmFunc SchCellCfgCfmOpts[] = 
-{
-   packSchCellCfgCfm,     /* LC */
-   MacProcSchCellCfgCfm,  /* TC */
-   packSchCellCfgCfm      /* LWLC */
-};
-
-SchSliceCfgRspFunc SchSliceCfgRspOpts[] =
-{
-   packSchSliceCfgRsp,     /* LC */
-   MacProcSchSliceCfgRsp,  /* TC */
-   packSchSliceCfgRsp      /* LWLC */
-
-};
-
-SchSliceRecfgRspFunc SchSliceRecfgRspOpts[] =
-{
-   packSchSliceRecfgRsp,     /* LC */
-   MacProcSchSliceRecfgRsp,  /* TC */
-   packSchSliceRecfgRsp      /* LWLC */
-};
+#include "sch_fcfs.h"
 
 /**
  * @brief Task Initiation function. 
@@ -112,6 +89,24 @@ uint8_t schActvInit(Ent entity, Inst instId, Region region, Reason reason)
 
    return ROK;
 } /* schActvInit */
+
+/**
+ * @brief Scheduler All Apis initialized. 
+ *
+ * @details
+ *
+ *     Function : schAllApisInit
+ *     
+ *     This function initializes all Scheduler APIs/functionality for each kind
+ *     of scheduler type. 
+ *     
+ *  @param[in]  Inst inst, the Scheduler instance 
+ *  @return  void
+ **/
+void schAllApisInit(Inst inst)
+{
+    schFcfsAllApisInit(&schCb[inst].allApis[SCH_FCFS]);  
+}
 
 /**
  * @brief Scheduler instance Configuration Handler. 
@@ -178,7 +173,8 @@ uint8_t SchInstCfg(RgCfg *cfg, Inst  dInst)
    /* Set Config done in TskInit */
    schCb[inst].schInit.cfgDone = TRUE;
    DU_LOG("\nINFO   -->  SCH : Scheduler gen config done");
-
+   
+   schAllApisInit(inst);
    return ret;
 }
 
@@ -206,10 +202,6 @@ uint8_t SchProcGenCfgReq(Pst *pst, RgMngmt *cfg)
    uint16_t  reason = LCM_REASON_NOT_APPL;
    RgMngmt   cfm;
    Pst       cfmPst;
-
-#ifdef CALL_FLOW_DEBUG_LOG
-   DU_LOG("\nCall Flow: ENTMAC -> ENTSCH : GENERAL_CFG_REQ\n");
-#endif
 
    if(pst->dstInst < SCH_INST_START)
    {
@@ -256,92 +248,6 @@ uint8_t SchProcGenCfgReq(Pst *pst, RgMngmt *cfg)
 
    return ROK;
 }/*-- SchProcGenCfgReq --*/
-
-/**
- * @brief slot indication from MAC to SCH.
- *
- * @details
- *
- *     Function : MacSchSlotInd 
- *      
- *      This API is invoked by PHY to indicate slot indication to Scheduler for
- *      a cell.
- *           
- *  @param[in]  Pst            *pst
- *  @param[in]  SlotTimingInfo    *slotInd
- *  @return  S16
- *      -# ROK 
- *      -# RFAILED 
- **/
-uint8_t MacSchSlotInd(Pst *pst, SlotTimingInfo *slotInd)
-{
-   Inst  inst = pst->dstInst-SCH_INST_START;
-
-#ifdef CALL_FLOW_DEBUG_LOG
-   DU_LOG("\nCall Flow: ENTMAC -> ENTSCH : EVENT_SLOT_IND_TO_SCH\n");
-#endif
-
-   schProcessSlotInd(slotInd, inst);
-
-   return ROK;
-}  /* MacSchSlotInd */
-
-/*******************************************************************
- *
- * @brief Processes Rach indication from MAC 
- *
- * @details
- *
- *    Function : MacSchRachInd
- *
- *    Functionality:
- *      Processes Rach indication from MAC
- *
- * @params[in] 
- * @return ROK     - success
- *         RFAILED - failure
- *
- * ****************************************************************/
-uint8_t MacSchRachInd(Pst *pst, RachIndInfo *rachInd)
-{
-   Inst  inst = pst->dstInst-SCH_INST_START;
-
-#ifdef CALL_FLOW_DEBUG_LOG
-   DU_LOG("\nCall Flow: ENTMAC -> ENTSCH : EVENT_RACH_IND_TO_SCH\n");
-#endif
-
-   DU_LOG("\nINFO  -->  SCH : Received Rach indication");
-   schProcessRachInd(rachInd, inst);
-   return ROK;
-}
-
-/*******************************************************************
- *
- * @brief Processes CRC indication from MAC 
- *
- * @details
- *
- *    Function : MacSchCrcInd
- *
- *    Functionality:
- *      Processes CRC indication from MAC
- *
- * @params[in] Post structure
- *             Crc Indication
- * @return ROK     - success
- *         RFAILED - failure
- *
- * ****************************************************************/
-uint8_t MacSchCrcInd(Pst *pst, CrcIndInfo *crcInd)
-{
-   Inst  inst = pst->dstInst-SCH_INST_START;
-#ifdef CALL_FLOW_DEBUG_LOG
-   DU_LOG("\nCall Flow: ENTMAC -> ENTSCH : EVENT_CRC_IND_TO_SCH\n");
-#endif
-
-   schProcessCrcInd(crcInd, inst);
-   return ROK;
-}
 
 #ifdef NR_TDD
 /**
@@ -664,7 +570,6 @@ uint8_t schInitCellCb(Inst inst, SchCellCfg *schCellCfg)
    cell->firstSsbTransmitted = false;
    cell->firstSib1Transmitted = false;
    fillSsbStartSymb(cell);
-   cmLListInit(&cell->ueToBeScheduled);
 
 #ifdef NR_DRX
    memset(cell->drxCb, 0, MAX_DRX_SIZE*sizeof(SchDrxCb));
@@ -853,7 +758,7 @@ void fillSchSib1Cfg(uint8_t mu, uint8_t bandwidth, uint8_t numSlots, SchSib1Cfg 
  *      -# ROK 
  *      -# RFAILED 
  **/
-uint8_t SchHdlCellCfgReq(Pst *pst, SchCellCfg *schCellCfg)
+uint8_t SchProcCellCfgReq(Pst *pst, SchCellCfg *schCellCfg)
 {
    uint8_t ret = ROK;
    SchCellCb *cellCb;
@@ -865,10 +770,6 @@ uint8_t SchHdlCellCfgReq(Pst *pst, SchCellCfg *schCellCfg)
    uint8_t offset = 0;
    uint8_t freqDomainResource[FREQ_DOM_RSRC_SIZE] = {0};
    SchPdschConfig pdschCfg;
-
-#ifdef CALL_FLOW_DEBUG_LOG
-   DU_LOG("\nCall Flow: ENTMAC -> ENTSCH : EVENT_SCH_CELL_CFG\n");
-#endif 
 
    schInitCellCb(inst, schCellCfg);
    cellCb = schCb[inst].cells[inst]; //cells is of MAX_CELLS, why inst
@@ -907,6 +808,10 @@ uint8_t SchHdlCellCfgReq(Pst *pst, SchCellCfg *schCellCfg)
    cellCb->cellCfg.schHqCfg.maxUlDataHqTx = SCH_MAX_NUM_UL_HQ_TX;
    cellCb->cellCfg.schRachCfg.maxMsg3Tx = SCH_MAX_NUM_MSG3_TX;
 
+   cellCb->schAlgoType = SCH_FCFS;
+   cellCb->api = &schCb[inst].allApis[cellCb->schAlgoType]; /* For FCFS */
+   cellCb->api->SchCellCfgReq(cellCb);
+   
    /* Fill and send Cell config confirm */
    memset(&rspPst, 0, sizeof(Pst));
    FILL_PST_SCH_TO_MAC(rspPst, pst->dstInst);
@@ -915,9 +820,198 @@ uint8_t SchHdlCellCfgReq(Pst *pst, SchCellCfg *schCellCfg)
    schCellCfgCfm.cellId = schCellCfg->cellId; 
    schCellCfgCfm.rsp = RSP_OK;
 
-   ret = (*SchCellCfgCfmOpts[rspPst.selector])(&rspPst, &schCellCfgCfm);
+   ret = MacMessageRouter(&rspPst, (void *)&schCellCfgCfm);
    return ret;
 
+}
+
+/*******************************************************************
+ *
+ * @brief Fill and send Cell delete response to MAC
+ *
+ * @details
+ *
+ *    Function :  SchSendCellDeleteRspToMac
+ *
+ *    Functionality: Fill and send Cell delete response to MAC
+ *
+ * @params[in] SchCellDelete  *ueDelete, Inst inst, SchMacRsp result
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t SchSendCellDeleteRspToMac(SchCellDeleteReq  *ueDelete, Inst inst, SchMacRsp result)
+{
+   Pst rspPst;
+   uint8_t ret=0;
+   
+   SchCellDeleteRsp  delRsp;
+
+   DU_LOG("\nINFO   --> SCH : Filling Cell Delete response");
+   memset(&delRsp, 0, sizeof(SchCellDeleteRsp));
+   delRsp.cellId = ueDelete->cellId;
+   delRsp.rsp = result;
+
+   /* Filling response post */
+   memset(&rspPst, 0, sizeof(Pst));
+   FILL_PST_SCH_TO_MAC(rspPst, inst);
+   rspPst.event = EVENT_CELL_DELETE_RSP_TO_MAC;
+   ret = MacMessageRouter(&rspPst, (void *)&delRsp);
+   if(ret == RFAILED)
+   {
+      DU_LOG("\nERROR  -->  SCH : SchSendCellDeleteRspToMac(): failed to send the Cell Delete response");
+      return ret;
+   }
+   return ret;
+}
+
+/*******************************************************************
+ *
+ * @brief Function for cellCb Deletion 
+ *
+ * @details
+ *
+ *    Function : deleteSchCellCb 
+ *
+ *    Functionality: Function for cellCb Deletion 
+ *
+ * @params[in] SchCellDelete  *cellDelete
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+void deleteSchCellCb(SchCellCb *cellCb)
+{
+   uint8_t sliceIdx=0, slotIdx=0;
+   CmLListCp *list=NULL;
+   CmLList *node=NULL, *next=NULL;
+   SchPageInfo *tempNode = NULLP;
+
+   if(cellCb->schDlSlotInfo)
+   {
+      for(slotIdx=0; slotIdx<cellCb->numSlots; slotIdx++)
+      {
+         list = &cellCb->schDlSlotInfo[slotIdx]->prbAlloc.freePrbBlockList;
+         node = list->first;
+         while(node)
+         {
+            next = node->next;
+            SCH_FREE(node->node, sizeof(FreePrbBlock));
+            deleteNodeFromLList(list, node);
+            node = next;
+         }
+         SCH_FREE(cellCb->schDlSlotInfo[slotIdx], sizeof(SchDlSlotInfo));
+      }
+      SCH_FREE(cellCb->schDlSlotInfo, cellCb->numSlots *sizeof(SchDlSlotInfo*));
+   }
+
+   if(cellCb->schUlSlotInfo)
+   {
+      for(slotIdx=0; slotIdx<cellCb->numSlots; slotIdx++)
+      {
+         list = &cellCb->schUlSlotInfo[slotIdx]->prbAlloc.freePrbBlockList;
+         node = list->first;
+         while(node)
+         {
+            next = node->next;
+            SCH_FREE(node->node, sizeof(FreePrbBlock));
+            deleteNodeFromLList(list, node);
+            node = next;
+         }
+         SCH_FREE(cellCb->schUlSlotInfo[slotIdx], sizeof(SchUlSlotInfo));  
+      }
+      SCH_FREE(cellCb->schUlSlotInfo,  cellCb->numSlots * sizeof(SchUlSlotInfo*));
+   }
+
+   if(cellCb->cellCfg.plmnInfoList.snssai)
+   {
+      for(sliceIdx=0; sliceIdx<cellCb->cellCfg.plmnInfoList.numSliceSupport; sliceIdx++)
+      {
+         SCH_FREE(cellCb->cellCfg.plmnInfoList.snssai[sliceIdx], sizeof(Snssai));
+      }
+      SCH_FREE(cellCb->cellCfg.plmnInfoList.snssai, cellCb->cellCfg.plmnInfoList.numSliceSupport*sizeof(Snssai*));
+   }
+   
+   for(uint16_t idx =0; idx<MAX_SFN; idx++)
+   {
+      list = &cellCb->pageCb.pageIndInfoRecord[idx];
+      node = list->first;
+      while(node)
+      {
+         next = node->next;
+         if(node->node)
+         {
+            tempNode = (SchPageInfo*)(node->node);
+            SCH_FREE(tempNode->pagePdu, tempNode->msgLen);
+            SCH_FREE(node->node,  sizeof(SchPageInfo));
+         }
+         deleteNodeFromLList(list, node);
+         node = next;
+      }
+   }
+
+   cellCb->api->SchCellDeleteReq(cellCb);
+
+   memset(cellCb, 0, sizeof(SchCellCb));
+}
+
+/*******************************************************************
+ *
+ * @brief Function for cell Delete request from MAC to SCH
+ *
+ * @details
+ *
+ *    Function : SchProcCellDeleteReq
+ *
+ *    Functionality: Function for cell Delete request from MAC to SCH
+ *
+ * @params[in] Pst *pst, SchCellDelete  *cellDelete
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t SchProcCellDeleteReq(Pst *pst, SchCellDeleteReq  *cellDelete)
+{
+   uint8_t   cellIdx=0, ret = RFAILED;
+   Inst      inst = pst->dstInst - SCH_INST_START;
+   SchMacRsp result= RSP_OK;
+   
+   if(!cellDelete)
+   {
+      DU_LOG("\nERROR  -->  SCH : SchProcCellDeleteReq(): Ue Delete request failed");
+   }
+   else
+   {
+      GET_CELL_IDX(cellDelete->cellId, cellIdx);
+      if(schCb[inst].cells[cellIdx] == NULLP)
+      { 
+         DU_LOG("\nERROR  -->  SCH : SchProcCellDeleteReq(): cell Id[%d] is not available", cellDelete->cellId);
+         result = RSP_NOK;
+      }
+      else
+      {
+         if(schCb[inst].cells[cellIdx]->cellId == cellDelete->cellId)
+         {
+            deleteSchCellCb(schCb[inst].cells[cellIdx]);
+            result = RSP_OK;
+            ret = ROK;
+            SCH_FREE(schCb[inst].cells[cellIdx], sizeof(SchCellCb));
+            DU_LOG("\nINFO   -->  SCH : Sending Cell Delete response to MAC");
+         }
+         else
+         {
+            DU_LOG("\nERROR  -->  SCH : SchProcCellDeleteReq(): cell Id[%d] is not available",cellDelete->cellId);
+            result = RSP_NOK;
+         }
+      }
+
+      if(SchSendCellDeleteRspToMac(cellDelete, inst, result)!=ROK)
+      {
+         DU_LOG("\nERROR  -->  SCH : SchProcCellDeleteReq(): failed to send Cell Delete response");
+         ret =  RFAILED;
+      }
+   }
+   return ret;   
 }
 
 /*******************************************************************
@@ -926,7 +1020,7 @@ uint8_t SchHdlCellCfgReq(Pst *pst, SchCellCfg *schCellCfg)
  *
  * @details
  *
- *    Function : MacSchDlRlcBoInfo
+ *    Function : SchProcDlRlcBoInfo
  *
  *    Functionality:
  *       Processes DL RLC BO info from MAC
@@ -936,7 +1030,7 @@ uint8_t SchHdlCellCfgReq(Pst *pst, SchCellCfg *schCellCfg)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t MacSchDlRlcBoInfo(Pst *pst, DlRlcBoInfo *dlBoInfo)
+uint8_t SchProcDlRlcBoInfo(Pst *pst, DlRlcBoInfo *dlBoInfo)
 {
    uint8_t  lcId = 0;
    uint16_t ueId = 0;
@@ -945,15 +1039,12 @@ uint8_t MacSchDlRlcBoInfo(Pst *pst, DlRlcBoInfo *dlBoInfo)
    SchCellCb *cell = NULLP;
    Inst  inst = pst->dstInst-SCH_INST_START;   
 
-#ifdef CALL_FLOW_DEBUG_LOG
-   DU_LOG("\nCall Flow: ENTMAC -> ENTSCH : EVENT_DL_RLC_BO_INFO_TO_SCH\n");
-#endif   
    DU_LOG("\nDEBUG  -->  SCH : Received RLC BO Status indication LCId [%d] BO [%d]", dlBoInfo->lcId, dlBoInfo->dataVolume);
    cell = schCb[inst].cells[inst];
 
    if(cell == NULLP)
    {
-      DU_LOG("\nERROR  -->  SCH : MacSchDlRlcBoInfo(): Cell does not exists");
+      DU_LOG("\nERROR  -->  SCH : SchProcDlRlcBoInfo(): Cell does not exists");
       return RFAILED;
    }
 
@@ -1004,7 +1095,7 @@ uint8_t MacSchDlRlcBoInfo(Pst *pst, DlRlcBoInfo *dlBoInfo)
       }
    }
    /* Adding UE Id to list of pending UEs to be scheduled */
-   addUeToBeScheduled(cell, ueId);
+   cell->api->SchDlRlcBoInfo(cell, ueId);
    return ROK;
 }
 
@@ -1014,7 +1105,7 @@ uint8_t MacSchDlRlcBoInfo(Pst *pst, DlRlcBoInfo *dlBoInfo)
  *
  * @details
  *
- *    Function : MacSchBsr
+ *    Function : SchProcBsr
  *
  *    Functionality:
  *       Processes DL BSR from MAC
@@ -1025,16 +1116,12 @@ uint8_t MacSchDlRlcBoInfo(Pst *pst, DlRlcBoInfo *dlBoInfo)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t MacSchBsr(Pst *pst, UlBufferStatusRptInd *bsrInd)
+uint8_t SchProcBsr(Pst *pst, UlBufferStatusRptInd *bsrInd)
 {
    Inst           schInst       = pst->dstInst-SCH_INST_START;
    SchCellCb      *cellCb       = NULLP;
    SchUeCb        *ueCb         = NULLP;
    uint8_t        lcgIdx = 0;
-
-#ifdef CALL_FLOW_DEBUG_LOG
-   DU_LOG("\nCall Flow: ENTMAC -> ENTSCH : EVENT_SHORT_BSR\n");
-#endif
 
    DU_LOG("\nDEBUG  -->  SCH : Received BSR");
    if(bsrInd == NULLP)
@@ -1071,7 +1158,7 @@ uint8_t MacSchBsr(Pst *pst, UlBufferStatusRptInd *bsrInd)
    }
    
    /* Adding UE Id to list of pending UEs to be scheduled */
-   addUeToBeScheduled(cellCb, ueCb->ueId);
+   cellCb->api->SchBsr(cellCb, ueCb->ueId);
    return ROK;
 }
 
@@ -1081,7 +1168,7 @@ uint8_t MacSchBsr(Pst *pst, UlBufferStatusRptInd *bsrInd)
  *
  * @details
  *
- *    Function : MacSchSrUciInd
+ *    Function : SchProcSrUciInd
  *
  *    Functionality:
  *      Processes SR UCI indication from MAC
@@ -1092,16 +1179,12 @@ uint8_t MacSchBsr(Pst *pst, UlBufferStatusRptInd *bsrInd)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t MacSchSrUciInd(Pst *pst, SrUciIndInfo *uciInd)
+uint8_t SchProcSrUciInd(Pst *pst, SrUciIndInfo *uciInd)
 {
    Inst  inst = pst->dstInst-SCH_INST_START;
 
    SchUeCb   *ueCb; 
    SchCellCb *cellCb = schCb[inst].cells[inst];
-
-#ifdef CALL_FLOW_DEBUG_LOG
-   DU_LOG("\nCall Flow: ENTMAC -> ENTSCH : EVENT_UCI_IND_TO_SCH\n");
-#endif
 
    DU_LOG("\nDEBUG  -->  SCH : Received SR");
 
@@ -1121,7 +1204,7 @@ uint8_t MacSchSrUciInd(Pst *pst, SrUciIndInfo *uciInd)
    {
       ueCb->srRcvd = true;      
       /* Adding UE Id to list of pending UEs to be scheduled */
-      addUeToBeScheduled(cellCb, ueCb->ueId);
+      cellCb->api->SchSrUciInd(cellCb, ueCb->ueId);
    }
    return ROK;
 }
@@ -1132,7 +1215,7 @@ uint8_t MacSchSrUciInd(Pst *pst, SrUciIndInfo *uciInd)
  *
  * @details
  *
- *    Function : MacSchDlHarqInd
+ *    Function : SchProcDlHarqInd
  *
  *    Functionality:
  *      Processes DL HARQ indication from MAC
@@ -1143,15 +1226,11 @@ uint8_t MacSchSrUciInd(Pst *pst, SrUciIndInfo *uciInd)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t MacSchDlHarqInd(Pst *pst, DlHarqInd *dlHarqInd)
+uint8_t SchProcDlHarqInd(Pst *pst, DlHarqInd *dlHarqInd)
 {
    Inst  inst = pst->dstInst-SCH_INST_START;
    SchUeCb   *ueCb;
    SchCellCb *cellCb = schCb[inst].cells[inst];
-
-#ifdef CALL_FLOW_DEBUG_LOG
-   DU_LOG("\nCall Flow: ENTMAC -> ENTSCH : EVENT_DL_HARQ_IND_TO_SCH\n");
-#endif
 
    DU_LOG("\nDEBUG  -->  SCH : Received HARQ");
 
@@ -1440,58 +1519,6 @@ uint8_t allocatePrbUl(SchCellCb *cell, SlotTimingInfo slotTime, \
    return ROK;
 }
 
-/*******************************************************************
- *
- * @brief Add UE to ueToBeScheduled List
- *
- * @details
- *
- *    Function : addUeToBeScheduled
- *
- *    Functionality:
- *      Search if UE entry present in the list
- *      If yes, return.
- *      If no, add UE to the list
- *
- * @params[in] Cell control block
- *             Ue Idx to be added
- *
- * @return ROK     - success
- *         RFAILED - failure
- *
- * ****************************************************************/
-uint8_t addUeToBeScheduled(SchCellCb *cell, uint8_t ueIdToAdd)
-{
-   uint8_t *ueId;
-   CmLList *node;
-
-   /* Search if UE entry is already present in ueToBeScheduled list.
-    * If yes, another entry for same UE not needed. Hence, return */
-   node = cell->ueToBeScheduled.first;
-   while(node)
-   {
-      ueId = (uint8_t *)node->node;
-      if(*ueId == ueIdToAdd)
-         return ROK;
-      node = node->next;
-   }
-
-   /* If UE entry not present already, add UE to the end of ueToBeScheduled list */
-   SCH_ALLOC(ueId, sizeof(uint8_t));
-   if(!ueId)
-   {
-      DU_LOG("\nERROR  -->  SCH : Memory allocation failure in addUeToBeScheduled");
-      return RFAILED;
-   }
-   *ueId = ueIdToAdd;
-   if(addNodeToLList(&cell->ueToBeScheduled, ueId, NULLP) != ROK)
-   {
-      DU_LOG("\nERROR  --> SCH : Failed to add ueId [%d] to cell->ueToBeScheduled list", *ueId);
-      return RFAILED;
-   }
-   return ROK;
-}
- 
 /*******************************************************************************
  *
  * @brief Try to find Best Free Block with Max Num PRB 
@@ -1652,7 +1679,7 @@ void SchSendSliceCfgRspToMac(Inst inst, SchSliceCfgRsp sliceCfgRsp)
    FILL_PST_SCH_TO_MAC(rspPst, inst);
    rspPst.event = EVENT_SLICE_CFG_RSP_TO_MAC;
    
-   SchSliceCfgRspOpts[rspPst.selector](&rspPst, &sliceCfgRsp);
+   MacMessageRouter(&rspPst, (void *)&sliceCfgRsp);
 
 }
 /*******************************************************************************
@@ -1837,7 +1864,7 @@ void freeSchSliceCfgReq(SchSliceCfgReq *sliceCfgReq)
  *
  * @details
  *
- *    Function : MacSchSliceCfgReq 
+ *    Function : SchProcSliceCfgReq 
  *
  *    Functionality:
  *     function is used to store the slice configuration Sch DB
@@ -1849,7 +1876,7 @@ void freeSchSliceCfgReq(SchSliceCfgReq *sliceCfgReq)
  *        RFAILED - Failure
  *
  * ********************************************************************************/
-uint8_t MacSchSliceCfgReq(Pst *pst, SchSliceCfgReq *schSliceCfgReq)
+uint8_t SchProcSliceCfgReq(Pst *pst, SchSliceCfgReq *schSliceCfgReq)
 {
    uint8_t count = 0;
    Inst   inst = pst->dstInst - SCH_INST_START;
@@ -1956,7 +1983,7 @@ void SchSendSliceRecfgRspToMac(Inst inst, SchSliceRecfgRsp schSliceRecfgRsp)
    FILL_PST_SCH_TO_MAC(rspPst, inst);
    rspPst.event = EVENT_SLICE_RECFG_RSP_TO_MAC;
    
-   SchSliceRecfgRspOpts[rspPst.selector](&rspPst, &schSliceRecfgRsp);
+   MacMessageRouter(&rspPst, (void *)&schSliceRecfgRsp);
 }
 /*******************************************************************************
  *
@@ -1964,7 +1991,7 @@ void SchSendSliceRecfgRspToMac(Inst inst, SchSliceRecfgRsp schSliceRecfgRsp)
  *
  * @details
  *
- *    Function : MacSchSliceRecfgReq 
+ *    Function : SchProcSliceRecfgReq 
  *
  *    Functionality:
  *     function is used to store the slice re configuration Sch DB
@@ -1976,7 +2003,7 @@ void SchSendSliceRecfgRspToMac(Inst inst, SchSliceRecfgRsp schSliceRecfgRsp)
  *        RFAILED - Failure
  *
  * ********************************************************************************/
-uint8_t MacSchSliceRecfgReq(Pst *pst, SchSliceRecfgReq *schSliceRecfgReq)
+uint8_t SchProcSliceRecfgReq(Pst *pst, SchSliceRecfgReq *schSliceRecfgReq)
 {
    uint8_t count = 0;
    Inst   inst = pst->dstInst - SCH_INST_START;
@@ -2189,7 +2216,7 @@ uint8_t schAddPagingIndtoList(CmLListCp *storedPageList,void * pageIndInfo)
  *
  * @details
  *
- *    Function : MacSchPagingInd
+ *    Function : SchProcPagingInd
  *
  *    Functionality: Process paging indication at SCH recevied form MAC 
  *
@@ -2198,7 +2225,7 @@ uint8_t schAddPagingIndtoList(CmLListCp *storedPageList,void * pageIndInfo)
  * @return void 
  *        
  *************************************************************************/
-uint8_t MacSchPagingInd(Pst *pst,  SchPageInd *pageInd)
+uint8_t SchProcPagingInd(Pst *pst,  SchPageInd *pageInd)
 {
    uint8_t ret = RFAILED;
    uint16_t cellIdx = 0;
@@ -2224,7 +2251,7 @@ uint8_t MacSchPagingInd(Pst *pst,  SchPageInd *pageInd)
       {
          if(pageInd->i_s > cellCb->cellCfg.sib1SchCfg.pageCfg.numPO)
          {
-            DU_LOG("\nERROR --> SCH : MacSchPagingInd(): i_s should not be greater than number of paging occasion");
+            DU_LOG("\nERROR --> SCH : SchProcPagingInd(): i_s should not be greater than number of paging occasion");
          }
          else
          {
@@ -2241,7 +2268,7 @@ uint8_t MacSchPagingInd(Pst *pst,  SchPageInd *pageInd)
                SCH_ALLOC(pageInfo->pagePdu, pageInfo->msgLen);
                if(!pageInfo->pagePdu)
                {
-                  DU_LOG("\nERROR  --> SCH : MacSchPagingInd(): Failed to allocate memory");
+                  DU_LOG("\nERROR  --> SCH : SchProcPagingInd(): Failed to allocate memory");
                }
                else
                {
@@ -2249,13 +2276,13 @@ uint8_t MacSchPagingInd(Pst *pst,  SchPageInd *pageInd)
                   ret = schAddPagingIndtoList(&cellCb->pageCb.pageIndInfoRecord[pageInfo->pageTxTime.sfn], pageInfo);
                   if(ret != ROK)
                   {
-                     DU_LOG("\nERROR  --> SCH : MacSchPagingInd(): Failed to store paging record");
+                     DU_LOG("\nERROR  --> SCH : SchProcPagingInd(): Failed to store paging record");
                   }
                }
             }
             else
             {
-               DU_LOG("\nERROR  --> SCH : MacSchPagingInd(): Failed to allocate memory");
+               DU_LOG("\nERROR  --> SCH : SchProcPagingInd(): Failed to allocate memory");
             }
          }
       }
@@ -2268,7 +2295,7 @@ uint8_t MacSchPagingInd(Pst *pst,  SchPageInd *pageInd)
    }
    else
    {
-      DU_LOG("\nERROR  --> SCH : MacSchPagingInd(): Received null pointer");
+      DU_LOG("\nERROR  --> SCH : SchProcPagingInd(): Received null pointer");
    }
    return ret;
 }

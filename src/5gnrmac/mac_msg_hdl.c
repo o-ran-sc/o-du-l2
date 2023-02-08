@@ -38,61 +38,6 @@
 
 MacCb  macCb;
 
-/* Function pointer for sending crc ind from MAC to SCH */
-MacSchCrcIndFunc macSchCrcIndOpts[]=
-{
-   packMacSchCrcInd,
-   MacSchCrcInd,
-   packMacSchCrcInd
-};
-
-/* Function pointer for sending DL RLC BO Info from MAC to SCH */
-MacSchDlRlcBoInfoFunc macSchDlRlcBoInfoOpts[]=
-{
-   packMacSchDlRlcBoInfo,
-   MacSchDlRlcBoInfo,
-   packMacSchDlRlcBoInfo
-};
-
-/* Function pointer for sending short BSR from MAC to SCH */
-MacSchBsrFunc macSchBsrOpts[]=
-{
-   packMacSchBsr,
-   MacSchBsr,
-   packMacSchBsr
-};
-
-/* Function pointer for sending SR Uci ind from MAC to SCH */
-MacSchSrUciIndFunc macSchSrUciIndOpts[]=
-{
-   packMacSchSrUciInd,
-   MacSchSrUciInd,
-   packMacSchSrUciInd
-};
-
-/* Function pointer for sending DL HARQ Ind from MAC to SCH */
-MacSchDlHarqIndFunc macSchDlHarqIndOpts[]=
-{
-   packMacSchDlHarqInd,
-   MacSchDlHarqInd,
-   packMacSchDlHarqInd
-};
-
-/* Function pointer for sending Slice cfg  ind from MAC to SCH */
-MacSchSliceCfgReqFunc macSchSliceCfgReqOpts[]=
-{
-   packMacSchSliceCfgReq,
-   MacSchSliceCfgReq,
-   packMacSchSliceCfgReq
-};
-
-/* Function pointer for sending Slice cfg  ind from MAC to SCH */
-MacSchSliceRecfgReqFunc macSchSliceRecfgReqOpts[]=
-{
-   packMacSchSliceRecfgReq,
-   MacSchSliceRecfgReq,
-   packMacSchSliceRecfgReq
-};
 /*******************************************************************
  *
  * @brief Sends DL BO Info to SCH
@@ -114,7 +59,7 @@ uint8_t sendDlRlcBoInfoToSch(DlRlcBoInfo *dlBoInfo)
    Pst pst;
 
    FILL_PST_MAC_TO_SCH(pst, EVENT_DL_RLC_BO_INFO_TO_SCH);
-   return(*macSchDlRlcBoInfoOpts[pst.selector])(&pst, dlBoInfo);
+   return(SchMessageRouter(&pst, (void *)dlBoInfo));
 }
 
 /*******************************************************************
@@ -138,7 +83,7 @@ uint8_t sendCrcIndMacToSch(CrcIndInfo *crcInd)
    Pst pst;
 
    FILL_PST_MAC_TO_SCH(pst, EVENT_CRC_IND_TO_SCH);
-   return(*macSchCrcIndOpts[pst.selector])(&pst, crcInd);
+   return(SchMessageRouter(&pst, (void *)crcInd));
 }
 
 /*******************************************************************
@@ -688,7 +633,7 @@ uint8_t macProcShortBsr(uint16_t cellId, uint16_t crnti, uint8_t lcgId, uint32_t
    bsrInd.dataVolInfo[0].dataVol = bufferSize;
 
    FILL_PST_MAC_TO_SCH(pst, EVENT_SHORT_BSR);
-   return(*macSchBsrOpts[pst.selector])(&pst, &bsrInd);
+   return(SchMessageRouter(&pst, (void *)&bsrInd));
 }
 
 /*******************************************************************
@@ -730,7 +675,7 @@ uint8_t macProcLongBsr(uint16_t cellId, uint16_t crnti,uint8_t numLcg,\
       memcpy(&(bsrInd.dataVolInfo[lcgIdx]), &(dataVolInfo[lcgIdx]), sizeof(DataVolInfo));
 
    FILL_PST_MAC_TO_SCH(pst, EVENT_LONG_BSR);
-   return(*macSchBsrOpts[pst.selector])(&pst, &bsrInd);
+   return(SchMessageRouter(&pst, (void *)&bsrInd));
 }
 
 /*******************************************************************
@@ -774,7 +719,7 @@ uint8_t buildAndSendHarqInd(HarqInfoF0F1 *harqInfo, uint8_t crnti, uint16_t cell
    /* Fill Pst */
    FILL_PST_MAC_TO_SCH(pst, EVENT_DL_HARQ_IND_TO_SCH);
 
-   return(*macSchDlHarqIndOpts[pst.selector])(&pst, &dlHarqInd);
+   return SchMessageRouter(&pst, (void *)&dlHarqInd);
 }
 
 
@@ -814,7 +759,7 @@ uint8_t buildAndSendSrInd(UciInd *macUciInd, uint8_t crnti)
    /* Fill Pst */
    FILL_PST_MAC_TO_SCH(pst, EVENT_UCI_IND_TO_SCH);
 
-   return(*macSchSrUciIndOpts[pst.selector])(&pst, &srUciInd);
+   return(SchMessageRouter(&pst, (void *)&srUciInd));
 }
 
 /*******************************************************************
@@ -981,7 +926,7 @@ uint8_t MacProcSliceCfgReq(Pst *pst, MacSliceCfgReq *macSliceCfgReq)
          if(fillSliceCfgInfo(schSliceCfgReq, macSliceCfgReq) == ROK)
          {
             FILL_PST_MAC_TO_SCH(schPst, EVENT_SLICE_CFG_REQ_TO_SCH);
-            ret = (*macSchSliceCfgReqOpts[schPst.selector])(&schPst, schSliceCfgReq);
+            ret = SchMessageRouter(&schPst, (void *)schSliceCfgReq);
          }
       }
       freeMacSliceCfgReq(macSliceCfgReq, pst); 
@@ -1030,7 +975,7 @@ uint8_t MacProcSliceRecfgReq(Pst *pst, MacSliceRecfgReq *macSliceRecfgReq)
          if(fillSliceCfgInfo(schSliceRecfgReq, macSliceRecfgReq) == ROK)
          {
             FILL_PST_MAC_TO_SCH(schPst, EVENT_SLICE_RECFG_REQ_TO_SCH);
-            ret = (*macSchSliceRecfgReqOpts[schPst.selector])(&schPst, schSliceRecfgReq);
+            ret = SchMessageRouter(&schPst, (void *)schSliceRecfgReq);
          }
       }
       freeMacSliceCfgReq(macSliceRecfgReq, pst);

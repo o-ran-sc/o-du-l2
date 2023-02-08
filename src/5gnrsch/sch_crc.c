@@ -31,7 +31,7 @@
  *
  * @details
  *
- *     Function : schProcessCrcInd
+ *     Function : SchProcCrcInd
  *      
  *      This function process CRC indication
  *           
@@ -41,13 +41,14 @@
  *      -# ROK
  *      -# RFAILED
  **/
-uint8_t schProcessCrcInd(CrcIndInfo *crcInd, Inst schInst)
+uint8_t SchProcCrcInd(Pst *pst, CrcIndInfo *crcInd)
 {
-   SchCellCb *cell = schCb[schInst].cells[schInst];
    uint16_t count=0;
    uint8_t  ueId=0;
    SchUlHqProcCb *hqP = NULLP;
-
+   Inst  schInst = pst->dstInst - SCH_INST_START;
+   SchCellCb *cell = schCb[schInst].cells[schInst];
+   
    while(count  <crcInd->numCrcInd)
    {
       GET_UE_ID(crcInd->crnti, ueId);
@@ -58,7 +59,7 @@ uint8_t schProcessCrcInd(CrcIndInfo *crcInd, Inst schInst)
             /* failure case*/
             if (cell->raCb[ueId-1].msg3HqProc.tbInfo.txCntr < cell->cellCfg.schRachCfg.maxMsg3Tx)
             {
-               addUeToBeScheduled(cell, ueId);
+               cell->api->SchCrcInd(cell, ueId);
                cell->raCb[ueId - 1].retxMsg3HqProc = &cell->raCb[ueId - 1].msg3HqProc;
             }
             else

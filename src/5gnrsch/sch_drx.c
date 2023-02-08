@@ -847,7 +847,7 @@ void schHdlDlHqRetxStrtTimerForDl(SchCellCb *cell, uint16_t currIndx)
    {
       hqP  = (SchDlHqProcCb*)currNode->node;
       currNode = currNode->next;
-      addUeToBeScheduled(hqP->hqEnt->cell, hqP->hqEnt->ue->ueId);
+      cell->api->SchAddUeToSchedule(hqP->hqEnt->cell, hqP->hqEnt->ue->ueId);
       ueCb = hqP->hqEnt->ue;
       
       /* calculate the retransmission exp index */
@@ -1010,7 +1010,7 @@ void schHdlUlHqRetxStrtTimerForDl(SchCellCb *cell, uint16_t currIndx)
    {
       hqP  = (SchUlHqProcCb*)currNode->node;
       currNode = currNode->next;
-      addUeToBeScheduled(hqP->hqEnt->cell, hqP->hqEnt->ue->ueId);
+      cell->api->SchAddUeToSchedule(hqP->hqEnt->cell, hqP->hqEnt->ue->ueId);
       ueCb = hqP->hqEnt->ue;
       
       /* calculate the retransmission exp index */

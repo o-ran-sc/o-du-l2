@@ -19,6 +19,7 @@
 void addDlHqProcInUe(SlotTimingInfo dlMsgTime, MacUeCb *ueCb, DlMsgSchInfo schedInfo);
 uint8_t updateNewTbInDlHqProcCb(SlotTimingInfo slotInfo, MacUeCb *ueCb, uint32_t tbSize, uint8_t *txPdu);
 uint8_t* fetchTbfromDlHarqProc(SlotTimingInfo slotInfo, MacUeCb *ueCb, uint8_t hqProcId, uint32_t tbSize);
+uint8_t MacSchReleaseDlHarqProc(Pst *pst, SchRlsHqInfo *rlsHqInfo);
 
 /**********************************************************************
   End of file

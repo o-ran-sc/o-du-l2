@@ -25,36 +25,12 @@
 #include "mac.h"
 #include "mac_utils.h"
 
-/* Function pointer for sending rach ind from MAC to SCH */
-MacSchRachIndFunc macSchRachIndOpts[]=
-{
-   packMacSchRachInd,   /* packing for loosely coupled */
-   MacSchRachInd,       /* packing for tightly coupled */ 
-   packMacSchRachInd    /* packing for light weight loosely coupled */
-};
-
-/* Function pointer for sending RACH resource request from MAC to SCH */
-MacSchRachRsrcReqFunc macSchRachRsrcReqOpts[] = 
-{
-   packMacSchRachRsrcReq,   /* packing for loosely coupled */
-   MacSchRachRsrcReq,       /* packing for tightly coupled */
-   packMacSchRachRsrcReq    /* packing for light weight loosely coupled */
-};
-
 /* Function pointer for sending RACH resource response from MAC to DU APP */
 MacDuRachRsrcRspFunc macDuRachRsrcRspOpts[] =
 {
    packDuMacRachRsrcRsp,   /* packing for loosely coupled */
    DuProcMacRachRsrcRsp,   /* packing for tightly coupled */
    packDuMacRachRsrcRsp    /* packing for light weight loosly coupled */
-};
-
-/* Function pointer for sending RACH resource release from MAC to SCH */
-MacSchRachRsrcRelFunc macSchRachRsrcRelOpts[] =
-{
-   packMacSchRachRsrcRel,   /* packing for loosely coupled */
-   MacSchRachRsrcRel,       /* packing for tightly coupled */
-   packMacSchRachRsrcRel    /* packing for light weight loosely coupled */
 };
 
 /*******************************************************************
@@ -78,7 +54,7 @@ uint8_t sendRachIndMacToSch(RachIndInfo *rachInd)
    Pst pst;
 
    FILL_PST_MAC_TO_SCH(pst, EVENT_RACH_IND_TO_SCH);
-   return(*macSchRachIndOpts[pst.selector])(&pst, rachInd); 
+   return(SchMessageRouter(&pst, (void *)rachInd));
 }
 
 /*******************************************************************
@@ -283,7 +259,7 @@ uint8_t MacProcRachRsrcReq(Pst *pst, MacRachRsrcReq *rachRsrcReq)
 
             /* Send RACH resource request from MAC to SCH */
             FILL_PST_MAC_TO_SCH(schPst, EVENT_RACH_RESOURCE_REQUEST_TO_SCH);
-            ret = (*macSchRachRsrcReqOpts[schPst.selector])(&schPst, schRachRsrcReq);
+            ret = SchMessageRouter(&schPst, (void *)schRachRsrcReq);
          }
          else
             DU_LOG("\nERROR  -->  MAC : Memory allocation failed for RACH resource request to SCH");
@@ -450,7 +426,7 @@ uint8_t MacProcRachRsrcRel(Pst *pst, MacRachRsrcRel *rachRsrcRel)
 
             /* Send RACH resource release from MAC to SCH */
             FILL_PST_MAC_TO_SCH(schPst, EVENT_RACH_RESOURCE_RELEASE_TO_SCH);
-            ret = (*macSchRachRsrcRelOpts[schPst.selector])(&schPst, schRachRsrcRel);
+            ret = SchMessageRouter(&schPst, (void *)schRachRsrcRel);
          }
          else
             DU_LOG("\nERROR  -->  MAC : Memory allocation failed for RACH resource release to SCH");

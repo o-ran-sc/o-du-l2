@@ -28,212 +28,256 @@
   
 **********************************************************************/
 
-#if 0 /*MAC-SCH Interface working as Tightly Coupled thus Commenting*/
-
-/** @file sch_msg_router.c
-@brief This file contains the implementation of callback functions 
-registered with SSI during the LTE MAC Task initialization.
-*/
-/* header include files -- defines (.h) */
 #include "common_def.h"
-#include "tfu.h"           /* RGU defines */
-#include "lrg.h"           /* layer management defines for LTE-MAC */
-#include "rgr.h"           /* layer management defines for LTE-MAC */
-#include "rgm.h"           /* layer management defines for LTE-MAC */
-#include "rg_env.h"        /* customisable defines and macros for LTE-MAC */
-#include "rg_sch_err.h"        /* defines and macros for Scheduler */
-#include "rg_sch_inf.h"        /* defines and macros for Scheduler */
-#include "rg_sch.h"        /* defines and macros for Scheduler */
-
-
-/* header/extern include files (.x) */
-#include "tfu.x"           /* RGU types */
-#include "lrg.x"           /* layer management typedefs for MAC */
-#include "rgr.x"           /* layer management typedefs for MAC */
-#include "rgm.x"           /* layer management typedefs for MAC */
-#include "rg_sch_inf.x"        /* typedefs for Scheduler */
-#include "rg_sch.x"        /* typedefs for Scheduler */
+#include "lrg.h"
+#include "tfu.h"
+#include "du_log.h"
+#include "rgr.h"
+#include "rg_sch_inf.h"
+#include "rg_sch.h"
 #include "mac_sch_interface.h"
 
-#ifdef CALL_FLOW_DEBUG_LOG
-/*
-* @brief
-*
-* Function:
-*   name : callFlowSchActvTsk 
-*
-*  @b Description:
-*  Function used to print values of src, dest, message
-*  received at the layer
-*
-*  @param[in] pst   - Pst Structure
-*
-*  @return void
-*/
+#include "tfu.x"           /* TFU types */
+#include "lrg.x"           /* layer management typedefs for MAC */
+#include "rgr.x"           /* layer management typedefs for MAC */
+#include "rg_sch_inf.x"         /* typedefs for Scheduler */
+#include "sch.h"
 
-void callFlowSchActvTsk(Pst *pst)    
+#ifdef CALL_FLOW_DEBUG_LOG
+/**
+* @brief Function prints src, dest, msg infor about all the msgs that received.
+*
+* @details
+*
+*     Function : callFlowSchMsgRouter 
+*
+*     Function prints src, dest, msg infor about all the msgs that received
+*
+*  @param[in]  Pst     *pst, Post structure of the primitive.
+*
+*  @return  void
+**/
+
+void callFlowSchMsgRouter(Pst *pst)
 {
    char sourceTask[50];
    char destTask[50]="ENTSCH";
    char message[100];
 
-   switch(pst->srcEnt)
+   strcpy(sourceTask,"ENTMAC");
+   switch(pst->event)
    {
-      case ENTMAC: /* When MAC sends a msg to Scheduler instance */
+      case EVENT_SCH_GEN_CFG:
          {
-            strcpy(sourceTask,"ENTMAC");
-            switch(pst->event)
-            {
-#ifdef LCSCH
-               case EVTINFDEDBOUPDTREQ:
-                  strcpy(message,"EVTINFDEDBOUPDTREQ");
-                  break;
-               case EVTINFCMNBOUPDTREQ:
-                  strcpy(message,"EVTINFCMNBOUPDTREQ");
-                  break;   
-               case EVTINFSFRECPIND:
-                  strcpy(message,"EVTINFSFRECPIND");
-                  break;
-                  /*Fix: start: Inform UE delete to scheduler*/
-               case EVTINFUEDELIND:
-                  strcpy(message,"EVTINFUEDELIND");
-                  break;
-                  /*Fix: end: Inform UE delete to scheduler*/
-#ifdef LTE_L2_MEAS
-               case EVTINFL2MEASCFM:
-                  strcpy(message,"EVTINFL2MEASCFM");
-                  break;
-               case EVTINFL2MEASSTOPCFM:
-                  strcpy(message,"EVTINFL2MEASSTOPCFM");
-                  break;
-#endif
-#endif            
-               case EVENT_SLOT_IND_TO_SCH:
-                  strcpy(message,"EVENT_SLOT_IND_TO_SCH");
-                  break;
-               default:
-                  strcpy(message,"Invalid Event");
-                  break;
-            }
+            strcpy(message,"EVENT_SCH_GEN_CFG");
+            break;
+         }   
+      case EVENT_SLICE_CFG_REQ_TO_SCH:
+         {      
+            strcpy(message,"EVENT_SLICE_CFG_REQ_TO_SCH");
+            break;
+         }      
+      case EVENT_SLICE_RECFG_REQ_TO_SCH:
+         {      
+            strcpy(message,"EVENT_SLICE_RECFG_REQ_TO_SCH");
+            break;
+         }   
+      case EVENT_SCH_CELL_CFG:
+         {
+            strcpy(message,"EVENT_SCH_CELL_CFG");
+            break;
+         }   
+      case EVENT_SLOT_IND_TO_SCH:
+         {
+            strcpy(message,"EVENT_SLOT_IND_TO_SCH");
+            break;
+         }   
+      case EVENT_ADD_UE_CONFIG_REQ_TO_SCH:
+         {   
+            strcpy(message,"EVENT_ADD_UE_CONFIG_REQ_TO_SCH");
+            break;
+         }   
+      case EVENT_MODIFY_UE_CONFIG_REQ_TO_SCH:
+         {   
+            strcpy(message,"EVENT_MODIFY_UE_CONFIG_REQ_TO_SCH");
+            break;
+         }
+      case EVENT_RACH_IND_TO_SCH:
+         {
+            strcpy(message,"EVENT_RACH_IND_TO_SCH");
+            break;
+         }
+      case EVENT_CRC_IND_TO_SCH:
+         {
+            strcpy(message,"EVENT_CRC_IND_TO_SCH");
+            break;
+         }
+      case EVENT_DL_RLC_BO_INFO_TO_SCH:
+         {
+            strcpy(message,"EVENT_DL_RLC_BO_INFO_TO_SCH");
+            break;
+         }
+      case EVENT_SHORT_BSR:
+         {
+            strcpy(message,"EVENT_SHORT_BSR");
+            break;
+         }
+      case EVENT_LONG_BSR:
+         {
+            strcpy(message,"EVENT_LONG_BSR");
+            break;
+         }
+      case EVENT_UCI_IND_TO_SCH:
+         {
+            strcpy(message,"EVENT_UCI_IND_TO_SCH");
+            break;
+         }
+      case EVENT_UE_DELETE_REQ_TO_SCH:
+         {
+            strcpy(message,"EVENT_UE_DELETE_REQ_TO_SCH");
+            break;
+         }
+      case EVENT_CELL_DELETE_REQ_TO_SCH:
+         {
+            strcpy(message,"EVENT_CELL_DELETE_REQ_TO_SCH");
+            break;
+         }
+      case EVENT_RACH_RESOURCE_REQUEST_TO_SCH:
+         {
+            strcpy(message,"EVENT_RACH_RESOURCE_REQUEST_TO_SCH");
+            break;
+         }
+      case EVENT_RACH_RESOURCE_RELEASE_TO_SCH:
+         {
+            strcpy(message,"EVENT_RACH_RESOURCE_RELEASE_TO_SCH");
+            break;
+         }
+      case EVENT_PAGING_IND_TO_SCH:
+         {
+            strcpy(message,"EVENT_PAGING_IND_TO_SCH");
+            break;
+         }
+      case EVENT_DL_HARQ_IND_TO_SCH:
+         {
+            strcpy(message,"EVENT_DL_HARQ_IND_TO_SCH");
             break;
          }
       default:
-         strcpy(sourceTask,"Invalid Source Entity Id");
+         strcpy(message,"Invalid Event");
          break;
    }
    DU_LOG("\nCall Flow: %s -> %s : %s\n", sourceTask, destTask, message);
 }
 #endif
 
-/**
- * @brief Task Activation callback function. 
- *
- * @details
- *
- *     Function : schActvTsk
- *     
- *     Primitives invoked by MAC's users/providers through
- *     a loosely coupled interface arrive here by means of 
- *     SSI's message handling. This API is registered with
- *     SSI during the Task Registration of MAC.
- *     
- *  @param[in]  Pst     *pst, post structure of the Primitive.     
- *  @param[in]  Buffer *mBuf, Packed primitive parameters in the buffer.
- *  @param[in]  Reason reason.
- *  @return  S16
- *      -# ROK
- **/
-S16 schActvTsk
-(
-Pst     *pst,                       /* post structure       */
-Buffer  *mBuf                       /* message buffer       */
-)
+uint8_t SchMessageRouter(Pst *pst, void *msg)
 {
-
 #ifdef CALL_FLOW_DEBUG_LOG
-   callFlowSchActvTsk(pst);
+   callFlowSchMsgRouter(pst);
 #endif
 
-   switch(pst->srcEnt)
+   switch(pst->event)
    {
-      /* The originator of this message is the stack manager,
-       * unpack and go to the respective primitive processing function */
-      case ENTSM:
-         switch(pst->event)
+      case EVENT_SCH_GEN_CFG:
          {
-#ifdef LCRGMILRG
-            case EVTMACSCHGENCFGREQ:
-               /* Process a config. request */
-               cmUnpkLrgSchCfgReq(SchProcGenCfgReq, pst, mBuf);
-               break;
-            case EVTLRGSCHSTAIND:
-               /* Process a control request */
-               cmUnpkLrgSchStaInd(RgMiLrgSchStaInd, pst, mBuf);
-               break;
-#ifdef LTE_L2_MEAS
-            case EVTLRGSCHL2MEASREQ:
-               /* Process L2 Measurement request */
-               cmUnpkLrgSchL2MeasReq(RgMiLrgSchL2MeasReq, pst, mBuf);
-               break;
-            case EVTLRGSCHL2MEASSTOPREQ:
-               /* Process L2 Measurement Stop request */
-               cmUnpkLrgSchL2MeasStopReq(RgMiLrgSchL2MeasStopReq, pst, mBuf);
-               break;
-            case EVTLRGSCHL2MEASSENDREQ:
-               /* Process L2 Measurement Send  request */
-               cmUnpkLrgSchL2MeasSendReq(RgMiLrgSchL2MeasSendReq, pst, mBuf);
-               break;
-#endif
-#endif /* LCRGMILRG */
-            default:
-               RGSCH_FREE_MSG(mBuf);
-               break;
-         }
+            SchProcGenCfgReq(pst, (RgMngmt *)msg);
          break;
-      case ENTMAC: /* When MAC sends a msg to Scheduler instance */
-         switch(pst->event)
-         {
-#ifdef LCSCH
-            case EVTINFDEDBOUPDTREQ:
-               cmUnpkMacSchDedBoUpdtReq(RgMacSchDedBoUpdtReq, pst, mBuf);
-               break;
-            case EVTINFCMNBOUPDTREQ:
-               cmUnpkMacSchCmnBoUpdtReq(RgMacSchCmnBoUpdtReq, pst, mBuf);
-               break;   
-            case EVTINFSFRECPIND:
-               cmUnpkMacSchSfRecpInd(RgMacSchSfRecpInd, pst, mBuf);
-               break;
-               /*Fix: start: Inform UE delete to scheduler*/
-            case EVTINFUEDELIND:
-               cmUnpkMacSchUeDelInd(RgMacSchUeDelInd, pst, mBuf);
-               break;
-            /*Fix: end: Inform UE delete to scheduler*/
-#ifdef LTE_L2_MEAS
-            case EVTINFL2MEASCFM:
-               cmUnpkMacSchL2MeasCfm(RgMacSchL2MeasCfm, pst, mBuf);
-               break;
-            case EVTINFL2MEASSTOPCFM:
-               cmUnpkMacSchL2MeasCfm(RgMacSchL2MeasStopCfm, pst, mBuf);
-               break;
-#endif
-#endif            
-            case EVENT_SLOT_IND_TO_SCH:
-               unpackMacSchSlotInd(MacSchSlotInd, pst, mBuf);
-               break;
-            default:
-               RGSCH_FREE_MSG(mBuf);
-               break;
-         }
+      }
+      case EVENT_SLICE_CFG_REQ_TO_SCH:
+      {    
+         SchProcSliceCfgReq(pst, (SchSliceCfgReq *)msg);
          break;
+      }    
+      case EVENT_SLICE_RECFG_REQ_TO_SCH:
+      {    
+         SchProcSliceRecfgReq(pst, (SchSliceRecfgReq *)msg);
+         break;
+      }
+      case EVENT_SCH_CELL_CFG:
+      {
+         SchProcCellCfgReq(pst, (SchCellCfg *)msg);
+         break;
+      }
+      case EVENT_SLOT_IND_TO_SCH:
+      {
+         SchProcSlotInd(pst, (SlotTimingInfo *)msg);
+         break;
+      }
+      case EVENT_ADD_UE_CONFIG_REQ_TO_SCH:
+      {
+         SchAddUeConfigReq(pst, (SchUeCfgReq *)msg);
+         break;
+      }
+      case EVENT_MODIFY_UE_CONFIG_REQ_TO_SCH:
+      {
+         SchModUeConfigReq(pst, (SchUeRecfgReq *)msg);
+         break;
+      }
+      case EVENT_RACH_IND_TO_SCH:
+      {
+         SchProcRachInd(pst, (RachIndInfo *)msg);
+         break;
+      }
+      case EVENT_CRC_IND_TO_SCH:
+      {
+         SchProcCrcInd(pst, (CrcIndInfo *)msg);
+         break;
+      }
+      case EVENT_DL_RLC_BO_INFO_TO_SCH:
+      {
+         SchProcDlRlcBoInfo(pst, (DlRlcBoInfo *)msg);
+         break;
+      }
+      case EVENT_SHORT_BSR:
+      case EVENT_LONG_BSR:
+      {
+         SchProcBsr(pst, (UlBufferStatusRptInd *)msg);
+         break;
+      }
+      case EVENT_UCI_IND_TO_SCH:
+      {
+         SchProcSrUciInd(pst, (SrUciIndInfo *)msg);
+         break;
+      }
+      case EVENT_UE_DELETE_REQ_TO_SCH:
+      {
+         SchProcUeDeleteReq(pst, (SchUeDelete *)msg);
+         break;
+      }
+      case EVENT_CELL_DELETE_REQ_TO_SCH:
+      {
+         SchProcCellDeleteReq(pst, (SchCellDeleteReq *)msg);
+         break;
+      }
+      case EVENT_RACH_RESOURCE_REQUEST_TO_SCH:
+      {
+         SchProcRachRsrcReq(pst, (SchRachRsrcReq *)msg);
+         break;
+      }
+      case EVENT_RACH_RESOURCE_RELEASE_TO_SCH:
+      {
+         SchProcRachRsrcRel(pst, (SchRachRsrcRel *)msg);
+         break;
+      }
+      case EVENT_PAGING_IND_TO_SCH:
+      {
+         SchProcPagingInd(pst, (SchPageInd *)msg);
+         break;
+      }
+      case EVENT_DL_HARQ_IND_TO_SCH:
+      {
+         SchProcDlHarqInd(pst, (DlHarqInd *)msg);
+         break;
+      }
       default:
-          RGSCH_FREE_MSG(mBuf);
-          break;
+      {
+         DU_LOG("\nERROR  -->  SCH : SchMessageRouter(): Invalid event [%d] received", pst->event);
+         return RFAILED;
+      }
    }
-   ODU_EXIT_TASK();
    return ROK;
-}/* end of schActvTsk */
+}
 
-#endif
 
 /**********************************************************************
  

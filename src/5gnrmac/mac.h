@@ -258,7 +258,10 @@ typedef struct macCb
 MacCb macCb;
 
 /* Function declarations */
+uint8_t macActvInit ARGS((Ent entity, Inst inst, Region region, Reason reason));
+uint8_t macActvTsk(Pst *pst, Buffer *mBuf);
 short int macActvTmr(Ent ent,Inst inst);
+
 void fillRarPdu(RarInfo *rarInfo);
 void fillMsg4DlData(MacDlData *dlData, uint16_t msg4PduLen, uint8_t *msg4Pdu);
 void fillMacCe(MacCeInfo  *macCeData, uint8_t *msg3Pdu);
@@ -268,13 +271,20 @@ void fillMg4Pdu(DlMsgAlloc *msg4Alloc);
 void buildAndSendMuxPdu(SlotTimingInfo currTimingInfo);
 uint8_t macProcUlCcchInd(uint16_t cellId, uint16_t crnti, uint16_t rrcContSize, uint8_t *rrcContainer);
 uint8_t macProcShortBsr(uint16_t cellId, uint16_t crnti, uint8_t lcgId, uint32_t bufferSize);
-uint8_t macProcUlData(uint16_t cellId, uint16_t rnti, SlotTimingInfo slotInfo, \
-   uint8_t lcId, uint16_t pduLen, uint8_t *pdu);
+uint8_t macProcUlData(uint16_t cellId, uint16_t rnti, SlotTimingInfo slotInfo, uint8_t lcId, uint16_t pduLen, uint8_t *pdu);
 uint8_t sendSchedRptToRlc(DlSchedInfo dlInfo, SlotTimingInfo slotInfo, uint8_t ueIdx, uint8_t schInfoIdx);
-uint8_t macProcLongBsr(uint16_t cellId, uint16_t crnti,uint8_t numLcg,\
-                         DataVolInfo dataVolInfo[MAX_NUM_LOGICAL_CHANNEL_GROUPS]);
+uint8_t macProcLongBsr(uint16_t cellId, uint16_t crnti,uint8_t numLcg, DataVolInfo dataVolInfo[MAX_NUM_LOGICAL_CHANNEL_GROUPS]);
 void freeMacSliceCfgReq(MacSliceCfgReq *cfgReq,Pst *pst);
 void deleteMacRaCb(uint16_t cellIdx, MacUeCb *ueCb);
+
+uint8_t MacProcSchSliceCfgRsp(Pst *pst, SchSliceCfgRsp *schSliceCfgRsp);
+uint8_t MacProcSchSliceRecfgRsp(Pst *pst, SchSliceRecfgRsp *sliceRecfgrsp);
+uint8_t MacProcSchCellCfgCfm(Pst *pst, SchCellCfgCfm  *schCellCfgCfm);
+uint8_t MacProcDlAlloc(Pst *pst, DlSchedInfo *dlSchedInfo);
+uint8_t MacProcUlSchInfo(Pst *pst, UlSchedInfo *ulSchedInfo);
+uint8_t MacProcSchRachRsrcRsp(Pst *pst, SchRachRsrcRsp *schRachRsrcRsp);
+uint8_t MacProcDlPageAlloc(Pst *pst, DlPageAlloc *dlPageAlloc);
+uint8_t MacProcSchCellDeleteRsp(Pst *pst, SchCellDeleteRsp *schCellDeleteRsp);
 #endif
 /**********************************************************************
   End of file
