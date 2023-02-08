@@ -48,6 +48,7 @@
 #include "sch.h"
 #include "sch_utils.h"
 #include "sch_fcfs.h"
+#include "sch_slice_based.h"
 
 /**
  * @brief Task Initiation function. 
@@ -106,6 +107,7 @@ uint8_t schActvInit(Ent entity, Inst instId, Region region, Reason reason)
 void schAllApisInit(Inst inst)
 {
     schFcfsAllApisInit(&schCb[inst].allApis[SCH_FCFS]);  
+    schSliceBasedAllApisInit(&schCb[inst].allApis[SCH_SLICE_BASED]);
 }
 
 /**
@@ -808,7 +810,7 @@ uint8_t SchProcCellCfgReq(Pst *pst, SchCellCfg *schCellCfg)
    cellCb->cellCfg.schHqCfg.maxUlDataHqTx = SCH_MAX_NUM_UL_HQ_TX;
    cellCb->cellCfg.schRachCfg.maxMsg3Tx = SCH_MAX_NUM_MSG3_TX;
 
-   cellCb->schAlgoType = SCH_FCFS;
+   cellCb->schAlgoType = SCH_SLICE_BASED;
    cellCb->api = &schCb[inst].allApis[cellCb->schAlgoType]; /* For FCFS */
    cellCb->api->SchCellCfgReq(cellCb);
    
