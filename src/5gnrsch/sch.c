@@ -48,6 +48,7 @@
 #include "sch.h"
 #include "sch_utils.h"
 #include "sch_fcfs.h"
+#include "sch_slice_based.h"
 
 /**
  * @brief Task Initiation function. 
@@ -106,6 +107,7 @@ uint8_t schActvInit(Ent entity, Inst instId, Region region, Reason reason)
 void schAllApisInit(Inst inst)
 {
     schFcfsAllApisInit(&schCb[inst].allApis[SCH_FCFS]);  
+    schSliceBasedAllApisInit(&schCb[inst].allApis[SCH_SLICE_BASED]);
 }
 
 /**

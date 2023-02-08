@@ -76,7 +76,7 @@
 #define MAX_DRX_SIZE 512
 #endif
 
-#define NUM_SCH_TYPE 1  /*Supported number of Scheduler Algorithm types*/
+#define NUM_SCH_TYPE 2  /*Supported number of Scheduler Algorithm types*/
 
 typedef struct schDlHqProcCb SchDlHqProcCb;
 typedef struct schUlHqEnt SchUlHqEnt;
@@ -87,7 +87,8 @@ typedef struct schUeCb SchUeCb;
 
 typedef enum
 {
-   SCH_FCFS
+   SCH_FCFS,
+   SCH_SLICE_BASED
 }SchType;
 
 typedef enum
