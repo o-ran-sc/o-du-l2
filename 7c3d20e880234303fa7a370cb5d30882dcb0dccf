@@ -16,6 +16,24 @@
       "message": "shouldnt this be freed when cell is deleted?",
       "revId": "7c3d20e880234303fa7a370cb5d30882dcb0dccf",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "853ed02c_6926be10",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 699,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-02-09T13:39:01Z",
+      "side": 1,
+      "message": "i have freed this pointer in deleteSchCellCb",
+      "parentUuid": "c0f3fe68_9a574d44",
+      "revId": "7c3d20e880234303fa7a370cb5d30882dcb0dccf",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
   ]
 }
