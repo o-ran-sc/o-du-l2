@@ -2446,9 +2446,9 @@ uint8_t fillSsbPdu(fapi_dl_tti_req_pdu_t *dlTtiReqPdu, MacCellCfg *macCellCfg,
       dlTtiReqPdu->pdu.ssb_pdu.physCellId = macCellCfg->phyCellId;
       dlTtiReqPdu->pdu.ssb_pdu.betaPss = macCellCfg->ssbCfg.betaPss;
       dlTtiReqPdu->pdu.ssb_pdu.ssbBlockIndex = currDlSlot->dlInfo.brdcstAlloc.ssbInfo[ssbIdxCount].ssbIdx;
-      dlTtiReqPdu->pdu.ssb_pdu.ssbSubCarrierOffset = macCellCfg->ssbCfg.ssbScOffset;
+      dlTtiReqPdu->pdu.ssb_pdu.ssbSubCarrierOffset = currDlSlot->dlInfo.brdcstAlloc.ssbInfo[ssbIdxCount].ssbSubCarrierOffset;
       /* ssbOfPdufstA to be filled in ssbCfg */
-      dlTtiReqPdu->pdu.ssb_pdu.ssbOffsetPointA = macCellCfg->ssbCfg.ssbOffsetPointA;
+      dlTtiReqPdu->pdu.ssb_pdu.ssbOffsetPointA = currDlSlot->dlInfo.brdcstAlloc.ssbInfo[ssbIdxCount].ssbOffsetPointA;
       dlTtiReqPdu->pdu.ssb_pdu.bchPayloadFlag = macCellCfg->ssbCfg.bchPayloadFlag;
       /* Bit manipulation for SFN */
       setMibPdu(macCellCfg->ssbCfg.mibPdu, &mibPayload, sfn);
@@ -2460,7 +2460,6 @@ uint8_t fillSsbPdu(fapi_dl_tti_req_pdu_t *dlTtiReqPdu, MacCellCfg *macCellCfg,
       dlTtiReqPdu->pdu.ssb_pdu.preCodingAndBeamforming. \
 	 pmi_bfi[0].beamIdx[0].beamidx = macCellCfg->ssbCfg.beamId[0];
       dlTtiReqPdu->pduSize = sizeof(fapi_dl_ssb_pdu_t);  /* Size of SSB PDU */
-
       return ROK;
    }
    return RFAILED;
@@ -2522,7 +2521,7 @@ void fillSib1DlDciPdu(fapi_dl_dci_t *dlDciPtr, PdcchCfg *sib1PdcchInfo)
       dlDciPtr->pc_and_bform.digBfInterfaces = sib1PdcchInfo->dci.beamPdcchInfo.digBfInterfaces;
       dlDciPtr->pc_and_bform.pmi_bfi[0].pmIdx = sib1PdcchInfo->dci.beamPdcchInfo.prg[0].pmIdx;
       dlDciPtr->pc_and_bform.pmi_bfi[0].beamIdx[0].beamidx = sib1PdcchInfo->dci.beamPdcchInfo.prg[0].beamIdx[0];
-      dlDciPtr->beta_pdcch_1_0 = sib1PdcchInfo->dci.txPdcchPower.powerValue;           
+      dlDciPtr->beta_pdcch_1_0 = sib1PdcchInfo->dci.txPdcchPower.beta_pdcch_1_0;           
       dlDciPtr->powerControlOffsetSS = sib1PdcchInfo->dci.txPdcchPower.powerControlOffsetSS;
 
       /* Calculating freq domain resource allocation field value and size
@@ -2532,8 +2531,8 @@ void fillSib1DlDciPdu(fapi_dl_dci_t *dlDciPtr, PdcchCfg *sib1PdcchInfo)
        * Spec 38.214 Sec 5.1.2.2.2
        */
       coreset0Size= sib1PdcchInfo->coresetCfg.coreSetSize;
-      rbStart = sib1PdcchInfo->dci.pdschCfg->pdschFreqAlloc.freqAlloc.startPrb;
-      rbLen = sib1PdcchInfo->dci.pdschCfg->pdschFreqAlloc.freqAlloc.numPrb;
+      rbStart = sib1PdcchInfo->dci.pdschCfg->pdschFreqAlloc.startPrb;
+      rbLen = sib1PdcchInfo->dci.pdschCfg->pdschFreqAlloc.numPrb;
 
       if((rbLen >=1) && (rbLen <= coreset0Size - rbStart))
       {
@@ -2662,7 +2661,7 @@ void fillPageDlDciPdu(fapi_dl_dci_t *dlDciPtr, DlPageAlloc *dlPageAlloc)
       dlDciPtr->pc_and_bform.digBfInterfaces = dlPageAlloc->pagePdcchCfg.dci.beamPdcchInfo.digBfInterfaces;
       dlDciPtr->pc_and_bform.pmi_bfi[0].pmIdx = dlPageAlloc->pagePdcchCfg.dci.beamPdcchInfo.prg[0].pmIdx;
       dlDciPtr->pc_and_bform.pmi_bfi[0].beamIdx[0].beamidx = dlPageAlloc->pagePdcchCfg.dci.beamPdcchInfo.prg[0].beamIdx[0];
-      dlDciPtr->beta_pdcch_1_0 = dlPageAlloc->pagePdcchCfg.dci.txPdcchPower.powerValue;           
+      dlDciPtr->beta_pdcch_1_0 = dlPageAlloc->pagePdcchCfg.dci.txPdcchPower.beta_pdcch_1_0;           
       dlDciPtr->powerControlOffsetSS = dlPageAlloc->pagePdcchCfg.dci.txPdcchPower.powerControlOffsetSS;
 
       /* Calculating freq domain resource allocation field value and size
@@ -2672,8 +2671,8 @@ void fillPageDlDciPdu(fapi_dl_dci_t *dlDciPtr, DlPageAlloc *dlPageAlloc)
        * Spec 38.214 Sec 5.1.2.2.2
        */
       coreset0Size = dlPageAlloc->pagePdcchCfg.coresetCfg.coreSetSize;
-      rbStart = dlPageAlloc->pagePdcchCfg.dci.pdschCfg->pdschFreqAlloc.freqAlloc.startPrb;
-      rbLen = dlPageAlloc->pagePdcchCfg.dci.pdschCfg->pdschFreqAlloc.freqAlloc.numPrb;
+      rbStart = dlPageAlloc->pagePdcchCfg.dci.pdschCfg->pdschFreqAlloc.startPrb;
+      rbLen = dlPageAlloc->pagePdcchCfg.dci.pdschCfg->pdschFreqAlloc.numPrb;
 
       if((rbLen >=1) && (rbLen <= coreset0Size - rbStart))
       {
@@ -2815,7 +2814,7 @@ void fillRarDlDciPdu(fapi_dl_dci_t *dlDciPtr, PdcchCfg *rarPdcchInfo)
       uint8_t modNCodSchemeSize    = 5;
       uint8_t tbScalingSize        = 2;
       uint8_t reservedSize         = 16;
-
+      
       dlDciPtr->rnti = rarPdcchInfo->dci.rnti;
       dlDciPtr->scramblingId = rarPdcchInfo->dci.scramblingId;    
       dlDciPtr->scramblingRnti = rarPdcchInfo->dci.scramblingRnti;
@@ -2826,7 +2825,7 @@ void fillRarDlDciPdu(fapi_dl_dci_t *dlDciPtr, PdcchCfg *rarPdcchInfo)
       dlDciPtr->pc_and_bform.digBfInterfaces = rarPdcchInfo->dci.beamPdcchInfo.digBfInterfaces;
       dlDciPtr->pc_and_bform.pmi_bfi[0].pmIdx = rarPdcchInfo->dci.beamPdcchInfo.prg[0].pmIdx;
       dlDciPtr->pc_and_bform.pmi_bfi[0].beamIdx[0].beamidx = rarPdcchInfo->dci.beamPdcchInfo.prg[0].beamIdx[0];
-      dlDciPtr->beta_pdcch_1_0 = rarPdcchInfo->dci.txPdcchPower.powerValue;           
+      dlDciPtr->beta_pdcch_1_0 = rarPdcchInfo->dci.txPdcchPower.beta_pdcch_1_0;           
       dlDciPtr->powerControlOffsetSS = rarPdcchInfo->dci.txPdcchPower.powerControlOffsetSS;
 
       /* Calculating freq domain resource allocation field value and size
@@ -2838,8 +2837,8 @@ void fillRarDlDciPdu(fapi_dl_dci_t *dlDciPtr, PdcchCfg *rarPdcchInfo)
 
       /* TODO: Fill values of coreset0Size, rbStart and rbLen */
       coreset0Size= rarPdcchInfo->coresetCfg.coreSetSize;
-      rbStart = rarPdcchInfo->dci.pdschCfg->pdschFreqAlloc.freqAlloc.startPrb;
-      rbLen = rarPdcchInfo->dci.pdschCfg->pdschFreqAlloc.freqAlloc.numPrb;
+      rbStart = rarPdcchInfo->dci.pdschCfg->pdschFreqAlloc.startPrb;
+      rbLen = rarPdcchInfo->dci.pdschCfg->pdschFreqAlloc.numPrb;
 
       if((rbLen >=1) && (rbLen <= coreset0Size - rbStart))
       {
@@ -2968,7 +2967,7 @@ void fillDlMsgDlDciPdu(fapi_dl_dci_t *dlDciPtr, PdcchCfg *pdcchInfo,\
       dlDciPtr->pc_and_bform.digBfInterfaces = pdcchInfo->dci.beamPdcchInfo.digBfInterfaces;
       dlDciPtr->pc_and_bform.pmi_bfi[0].pmIdx = pdcchInfo->dci.beamPdcchInfo.prg[0].pmIdx;
       dlDciPtr->pc_and_bform.pmi_bfi[0].beamIdx[0].beamidx = pdcchInfo->dci.beamPdcchInfo.prg[0].beamIdx[0];
-      dlDciPtr->beta_pdcch_1_0 = pdcchInfo->dci.txPdcchPower.powerValue;
+      dlDciPtr->beta_pdcch_1_0 = pdcchInfo->dci.txPdcchPower.beta_pdcch_1_0;
       dlDciPtr->powerControlOffsetSS = pdcchInfo->dci.txPdcchPower.powerControlOffsetSS;
 
       /* Calculating freq domain resource allocation field value and size
@@ -2978,8 +2977,8 @@ void fillDlMsgDlDciPdu(fapi_dl_dci_t *dlDciPtr, PdcchCfg *pdcchInfo,\
        * Spec 38.214 Sec 5.1.2.2.2
        */
       coresetSize = pdcchInfo->coresetCfg.coreSetSize;
-      rbStart = pdcchInfo->dci.pdschCfg->pdschFreqAlloc.freqAlloc.startPrb;
-      rbLen = pdcchInfo->dci.pdschCfg->pdschFreqAlloc.freqAlloc.numPrb;
+      rbStart = pdcchInfo->dci.pdschCfg->pdschFreqAlloc.startPrb;
+      rbLen = pdcchInfo->dci.pdschCfg->pdschFreqAlloc.numPrb;
 
       if((rbLen >=1) && (rbLen <= coresetSize - rbStart))
       {
@@ -3216,11 +3215,11 @@ void fillPdschPdu(fapi_dl_tti_req_pdu_t *dlTtiReqPdu, fapi_vendor_dl_tti_req_pdu
       dlTtiReqPdu->pdu.pdsch_pdu.dmrsPorts = pdschInfo->dmrs.dmrsPorts;
       dlTtiReqPdu->pdu.pdsch_pdu.resourceAlloc = pdschInfo->pdschFreqAlloc.resourceAllocType;
       /* since we are using type-1, hence rbBitmap excluded */
-      dlTtiReqPdu->pdu.pdsch_pdu.rbStart = pdschInfo->pdschFreqAlloc.freqAlloc.startPrb;
-      dlTtiReqPdu->pdu.pdsch_pdu.rbSize = pdschInfo->pdschFreqAlloc.freqAlloc.numPrb;
+      dlTtiReqPdu->pdu.pdsch_pdu.rbStart = pdschInfo->pdschFreqAlloc.startPrb;
+      dlTtiReqPdu->pdu.pdsch_pdu.rbSize = pdschInfo->pdschFreqAlloc.numPrb;
       dlTtiReqPdu->pdu.pdsch_pdu.vrbToPrbMapping = pdschInfo->pdschFreqAlloc.vrbPrbMapping;
-      dlTtiReqPdu->pdu.pdsch_pdu.startSymbIndex = pdschInfo->pdschTimeAlloc.timeAlloc.startSymb;
-      dlTtiReqPdu->pdu.pdsch_pdu.nrOfSymbols = pdschInfo->pdschTimeAlloc.timeAlloc.numSymb;
+      dlTtiReqPdu->pdu.pdsch_pdu.startSymbIndex = pdschInfo->pdschTimeAlloc.startSymb;
+      dlTtiReqPdu->pdu.pdsch_pdu.nrOfSymbols = pdschInfo->pdschTimeAlloc.numSymb;
       dlTtiReqPdu->pdu.pdsch_pdu.preCodingAndBeamforming.numPrgs = pdschInfo->beamPdschInfo.numPrgs;
       dlTtiReqPdu->pdu.pdsch_pdu.preCodingAndBeamforming.prgSize = pdschInfo->beamPdschInfo.prgSize;
       dlTtiReqPdu->pdu.pdsch_pdu.preCodingAndBeamforming.digBfInterfaces = pdschInfo->beamPdschInfo.digBfInterfaces;
@@ -3269,7 +3268,7 @@ uint8_t calcDlTtiReqPduCount(MacDlSlot *dlSlot)
 
    if(dlSlot->dlInfo.isBroadcastPres)
    {
-      if(dlSlot->dlInfo.brdcstAlloc.ssbTrans)
+      if(dlSlot->dlInfo.brdcstAlloc.ssbTransmissionMode)
       {
          for(idx = 0; idx < dlSlot->dlInfo.brdcstAlloc.ssbIdxSupported; idx++)
          {
@@ -3277,7 +3276,7 @@ uint8_t calcDlTtiReqPduCount(MacDlSlot *dlSlot)
             count++;
          }
       }
-      if(dlSlot->dlInfo.brdcstAlloc.sib1Trans)
+      if(dlSlot->dlInfo.brdcstAlloc.sib1TransmissionMode)
       {
          /* PDCCH and PDSCH PDU is filled */
          count += 2;
@@ -3335,7 +3334,7 @@ uint8_t calcTxDataReqPduCount(MacDlSlot *dlSlot)
 {
    uint8_t idx = 0, count = 0, ueIdx=0;
 
-   if(dlSlot->dlInfo.isBroadcastPres && dlSlot->dlInfo.brdcstAlloc.sib1Trans)
+   if(dlSlot->dlInfo.isBroadcastPres && dlSlot->dlInfo.brdcstAlloc.sib1TransmissionMode)
    {
       count++;
    }
@@ -3382,7 +3381,7 @@ uint8_t calcTxDataReqPduCount(MacDlSlot *dlSlot)
  *
  * ********************************************************************/
 uint8_t fillSib1TxDataReq(fapi_tx_pdu_desc_t *pduDesc, uint16_t pduIndex, MacCellCfg *macCellCfg,
-      PdschCfg pdschCfg)
+      PdschCfg *pdschCfg)
 {
    uint32_t payloadSize = 0;
    uint8_t *sib1Payload = NULLP;
@@ -3395,7 +3394,7 @@ uint8_t fillSib1TxDataReq(fapi_tx_pdu_desc_t *pduDesc, uint16_t pduIndex, MacCel
    pduDesc[pduIndex].num_tlvs = 1;
 
    /* fill the TLV */
-   payloadSize = pdschCfg.codeword[0].tbSize;
+   payloadSize = pdschCfg->codeword[0].tbSize;
    pduDesc[pduIndex].tlvs[0].tl.tag = ((payloadSize & 0xff0000) >> 8) | FAPI_TX_DATA_PTR_TO_PAYLOAD_64;
    pduDesc[pduIndex].tlvs[0].tl.length = (payloadSize & 0x0000ffff);
    LWR_MAC_ALLOC(sib1Payload, payloadSize);
@@ -3709,7 +3708,7 @@ uint16_t fillDlTtiReq(SlotTimingInfo currTimingInfo)
 		   {
 			   if(currDlSlot->dlInfo.isBroadcastPres)
 			   {
-				   if(currDlSlot->dlInfo.brdcstAlloc.ssbTrans)
+				   if(currDlSlot->dlInfo.brdcstAlloc.ssbTransmissionMode)
 				   {
 					   if(dlTtiReq->pdus != NULLP)
 					   {
@@ -3725,12 +3724,12 @@ uint16_t fillDlTtiReq(SlotTimingInfo currTimingInfo)
 					   DU_LOG("\033[0m");
 				   }
 
-				   if(currDlSlot->dlInfo.brdcstAlloc.sib1Trans)
+				   if(currDlSlot->dlInfo.brdcstAlloc.sib1TransmissionMode)
 				   {
 					   /* Filling SIB1 param */
 					   if(numPduEncoded != nPdu)
 					   {
-						   rntiType = SI_RNTI_TYPE;
+						   rntiType = currDlSlot->dlInfo.crnti;
 
 						   /* PDCCH PDU */
 						   fillPdcchPdu(&dlTtiReq->pdus[numPduEncoded], &vendorMsg->p7_req_vendor.dl_tti_req.pdus[numPduEncoded], 
@@ -3739,7 +3738,7 @@ uint16_t fillDlTtiReq(SlotTimingInfo currTimingInfo)
 
 						   /* PDSCH PDU */
 						   fillPdschPdu(&dlTtiReq->pdus[numPduEncoded], &vendorMsg->p7_req_vendor.dl_tti_req.pdus[numPduEncoded],
-								   &currDlSlot->dlInfo.brdcstAlloc.sib1Alloc.sib1PdschCfg,
+								   currDlSlot->dlInfo.brdcstAlloc.sib1Alloc.sib1PdcchCfg.dci.pdschCfg,
 								   currDlSlot->dlInfo.brdcstAlloc.sib1Alloc.bwp,
 								   pduIndex);
 						   dlTtiReq->ue_grp_info[dlTtiReq->nGroup].pduIdx[pduIndex] = pduIndex;
@@ -3985,10 +3984,10 @@ uint16_t sendTxDataReq(SlotTimingInfo currTimingInfo, MacDlSlot *dlSlot, p_fapi_
 
       txDataReq->sfn  = currTimingInfo.sfn;
       txDataReq->slot = currTimingInfo.slot;
-      if(dlSlot->dlInfo.brdcstAlloc.sib1Trans)
+      if(dlSlot->dlInfo.brdcstAlloc.sib1TransmissionMode)
       {
          fillSib1TxDataReq(txDataReq->pdu_desc, pduIndex, &macCb.macCell[cellIdx]->macCellCfg, \
-               dlSlot->dlInfo.brdcstAlloc.sib1Alloc.sib1PdschCfg);
+               dlSlot->dlInfo.brdcstAlloc.sib1Alloc.sib1PdcchCfg.dci.pdschCfg);
          pduIndex++;
          txDataReq->num_pdus++;
       }
@@ -4496,7 +4495,7 @@ void fillUlDciPdu(fapi_dl_dci_t *ulDciPtr, DciInfo *schDciInfo)
       ulDciPtr->pc_and_bform.digBfInterfaces  = schDciInfo->dciInfo.beamPdcchInfo.digBfInterfaces;
       ulDciPtr->pc_and_bform.pmi_bfi[0].pmIdx = schDciInfo->dciInfo.beamPdcchInfo.prg[0].pmIdx;
       ulDciPtr->pc_and_bform.pmi_bfi[0].beamIdx[0].beamidx = schDciInfo->dciInfo.beamPdcchInfo.prg[0].beamIdx[0];
-      ulDciPtr->beta_pdcch_1_0                = schDciInfo->dciInfo.txPdcchPower.powerValue;           
+      ulDciPtr->beta_pdcch_1_0                = schDciInfo->dciInfo.txPdcchPower.beta_pdcch_1_0;           
       ulDciPtr->powerControlOffsetSS          = schDciInfo->dciInfo.txPdcchPower.powerControlOffsetSS;
 
       /* Calculating freq domain resource allocation field value and size

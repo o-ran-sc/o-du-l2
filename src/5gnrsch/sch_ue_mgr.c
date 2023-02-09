@@ -1025,7 +1025,7 @@ uint8_t schFillUlDciForMsg3Retx(SchRaCb *raCb, SchPuschInfo *puschInfo, DciInfo 
    dciInfo->dciInfo.beamPdcchInfo.digBfInterfaces     = 0;
    dciInfo->dciInfo.beamPdcchInfo.prg[0].pmIdx        = 0;
    dciInfo->dciInfo.beamPdcchInfo.prg[0].beamIdx[0]   = 0;
-   dciInfo->dciInfo.txPdcchPower.powerValue           = 0;
+   dciInfo->dciInfo.txPdcchPower.beta_pdcch_1_0       = 0;
    dciInfo->dciInfo.txPdcchPower.powerControlOffsetSS = 0;
    dciInfo->dciInfo.pdschCfg                          = NULL; /* No DL data being sent */
    msg3HqProc->tbInfo.txCntr++;
@@ -1132,7 +1132,7 @@ uint8_t schFillUlDci(SchUeCb *ueCb, SchPuschInfo *puschInfo, DciInfo *dciInfo, b
    dciInfo->dciInfo.beamPdcchInfo.digBfInterfaces     = 0;
    dciInfo->dciInfo.beamPdcchInfo.prg[0].pmIdx        = 0;
    dciInfo->dciInfo.beamPdcchInfo.prg[0].beamIdx[0]   = 0;
-   dciInfo->dciInfo.txPdcchPower.powerValue           = 0;
+   dciInfo->dciInfo.txPdcchPower.beta_pdcch_1_0       = 0;
    dciInfo->dciInfo.txPdcchPower.powerControlOffsetSS = 0;
    dciInfo->dciInfo.pdschCfg                          = NULL; /* No DL data being sent */
 

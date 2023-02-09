@@ -517,14 +517,17 @@ typedef struct pdschFreqAlloc
 {
    uint8_t  resourceAllocType;
    /* since we are using type-1, rbBitmap excluded */
-   ResAllocType1 freqAlloc;
+   uint8_t  rbBitmap[36];
+   uint16_t startPrb;
+   uint16_t numPrb;
    uint8_t  vrbPrbMapping;
-} PdschFreqAlloc;
+}PdschFreqAlloc;
 
 typedef struct pdschTimeAlloc
 {
-   uint8_t         rowIndex;
-   TimeDomainAlloc timeAlloc;
+   uint8_t  rowIndex; 
+   uint16_t startSymb;
+   uint16_t numSymb;
 } PdschTimeAlloc;
 
 typedef struct txPowerPdschInfo
@@ -563,8 +566,9 @@ typedef struct coresetCfg
    uint8_t cceRegMappingType;
    uint8_t regBundleSize;
    uint8_t interleaverSize;
-   uint8_t coreSetType;
    uint16_t shiftIndex;
+   uint8_t coreSetType;
+   uint8_t coresetPoolIndex;
    uint8_t precoderGranularity;
    uint8_t cceIndex;
    uint8_t aggregationLevel;
@@ -572,9 +576,9 @@ typedef struct coresetCfg
 
 typedef struct txPowerPdcchInfo
 {
-   uint8_t powerValue;
+   uint8_t beta_pdcch_1_0;
    uint8_t powerControlOffsetSS;
-} TxPowerPdcchInfo;
+}TxPowerPdcchInfo;
 
 typedef struct dlDCI
 {
@@ -586,7 +590,7 @@ typedef struct dlDCI
    BeamformingInfo beamPdcchInfo;
    TxPowerPdcchInfo txPdcchPower;
    PdschCfg     *pdschCfg;
-} DlDCI;
+}DlDCI;
 
 typedef struct pdcchCfg
 {
@@ -618,7 +622,6 @@ typedef struct
    uint8_t   n0;
    BwpCfg    bwp;
    PdcchCfg  sib1PdcchCfg;
-   PdschCfg  sib1PdschCfg;
    PageCfg   pageCfg;         /*Config of Paging*/
 }SchSib1Cfg;
 
@@ -848,16 +851,17 @@ typedef struct schCellCfgCfm
 typedef struct ssbInfo
 {
    uint8_t         ssbIdx;          /* SSB Index */
-   TimeDomainAlloc tdAlloc; /* Time domain allocation */
-   ResAllocType1   fdAlloc; /* Freq domain allocation */
+   TimeDomainAlloc tdAlloc;         /* Time domain allocation */
+   ResAllocType1   fdAlloc;         /* Freq domain allocation */
+   uint8_t         ssbSubCarrierOffset; /* As per O-RAN.WG8.AAD.0-v07, 11.2.4.3.12 Downlink Broadcast Allocation  */
+   uint16_t        ssbOffsetPointA;     /* As per O-RAN.WG8.AAD.0-v07, 11.2.4.3.12 Downlink Broadcast Allocation  */
 }SsbInfo;
 
 typedef struct sib1AllocInfo
 {
    BwpCfg bwp;
    PdcchCfg sib1PdcchCfg;
-   PdschCfg sib1PdschCfg;
-} Sib1AllocInfo;
+}Sib1AllocInfo;
 
 typedef struct prachSchInfo
 {
@@ -874,14 +878,16 @@ typedef struct dlBrdcstAlloc
     * 0 : No tranamission
     * 1 : SSB Transmission
     * 2 : SSB Repetition */
-   uint8_t ssbTrans;
+   uint8_t ssbTransmissionMode;
    uint8_t ssbIdxSupported;
    SsbInfo ssbInfo[MAX_SSB_IDX];
+   bool    systemInfoIndicator;
+   uint8_t *siContent; 
    /* Sib1 transmission is determined as follows:
     * 0 : No tranamission
     * 1 : SIB1 Transmission
     * 2 : SIB1 Repetition */
-   uint8_t sib1Trans;
+   uint8_t sib1TransmissionMode;
    Sib1AllocInfo sib1Alloc;
 }DlBrdcstAlloc;
 
@@ -1022,8 +1028,9 @@ typedef struct dciInfo
 
 typedef struct dlSchedInfo
 {
-   uint16_t cellId;  /* Cell Id */
+   uint16_t     cellId;  /* Cell Id */
    SchSlotValue schSlotValue;
+   uint16_t     crnti; /* SI-RNTI or C-RNTI or RA-RNTI */
 
    /* Allocation for broadcast messages */
    bool isBroadcastPres;
