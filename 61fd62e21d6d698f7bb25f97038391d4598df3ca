@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d4abd43b_7d3f6a92",
+        "filename": "src/cm/mac_sch_interface.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 855,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-02-09T12:33:42Z",
+      "side": 1,
+      "message": "can we rename it to FreqDomainAlloc?.. i think this will be common for all the dl msg types",
+      "range": {
+        "startLine": 855,
+        "startChar": 3,
+        "endLine": 855,
+        "endChar": 19
+      },
+      "revId": "61fd62e21d6d698f7bb25f97038391d4598df3ca",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7217dd83_fcf4fce7",
+        "filename": "src/cm/mac_sch_interface.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 856,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-02-09T12:33:42Z",
+      "side": 1,
+      "message": "I think below 2 parameters are already in MAC\u0027s Cell Cfg db. I dont think we need to send these here. Lets discuss these two parameters in DSM.\n\nFor eg: In func fillSsbPdu(), we fill ssbPdu.ssbOffsetPointA \u003d macCellCfg-\u003essbCfg.ssbOffsetPointA",
+      "range": {
+        "startLine": 856,
+        "startChar": 19,
+        "endLine": 856,
+        "endChar": 38
+      },
+      "revId": "61fd62e21d6d698f7bb25f97038391d4598df3ca",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
