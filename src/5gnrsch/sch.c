@@ -599,7 +599,7 @@ uint8_t schInitCellCb(Inst inst, SchCellCfg *schCellCfg)
  *              uint8_t offsetPointA : offset
  *  @return  void
  **/
-void fillSchSib1Cfg(uint8_t mu, uint8_t bandwidth, uint8_t numSlots, SchSib1Cfg *sib1SchCfg, uint16_t pci, uint8_t offsetPointA)
+uint8_t fillSchSib1Cfg(uint8_t mu, uint8_t bandwidth, uint8_t numSlots, SchSib1Cfg *sib1SchCfg, uint16_t pci, uint8_t offsetPointA)
 {
    uint8_t coreset0Idx = 0;
    uint8_t searchSpace0Idx = 0;
@@ -615,10 +615,12 @@ void fillSchSib1Cfg(uint8_t mu, uint8_t bandwidth, uint8_t numSlots, SchSib1Cfg 
    uint8_t FreqDomainResource[FREQ_DOM_RSRC_SIZE] = {0};
    uint16_t tbSize = 0;
    uint8_t ssbIdx = 0;
+   PdcchCfg *pdcch;
+   PdschCfg *pdsch;
+   BwpCfg *bwp;
 
-   PdcchCfg *pdcch = &(sib1SchCfg->sib1PdcchCfg);
-   PdschCfg *pdsch = &(sib1SchCfg->sib1PdschCfg);
-   BwpCfg *bwp = &(sib1SchCfg->bwp);
+   pdcch = &(sib1SchCfg->sib1PdcchCfg);
+   bwp = &(sib1SchCfg->bwp);
 
    coreset0Idx     = sib1SchCfg->coresetZeroIndex;
    searchSpace0Idx = sib1SchCfg->searchSpaceZeroIndex;
@@ -690,11 +692,17 @@ void fillSchSib1Cfg(uint8_t mu, uint8_t bandwidth, uint8_t numSlots, SchSib1Cfg 
    pdcch->dci.beamPdcchInfo.digBfInterfaces = 0;
    pdcch->dci.beamPdcchInfo.prg[0].pmIdx = 0;
    pdcch->dci.beamPdcchInfo.prg[0].beamIdx[0] = 0;
-   pdcch->dci.txPdcchPower.powerValue = 0;
+   pdcch->dci.txPdcchPower.beta_pdcch_1_0= 0;
    pdcch->dci.txPdcchPower.powerControlOffsetSS = 0;
    /* Storing pdschCfg pointer here. Required to access pdsch config while
       fillig up pdcch pdu */
-   pdcch->dci.pdschCfg = pdsch; 
+   SCH_ALLOC(pdcch->dci.pdschCfg, sizeof(PdschCfg));
+   if(pdcch->dci.pdschCfg == NULLP)
+   {
+      DU_LOG("\nERROR  -->  SCH : Memory allocation failed in %s ", __func__);
+      return RFAILED;
+   }
+   pdsch = pdcch->dci.pdschCfg; 
 
    /* fill the PDSCH PDU */
    uint8_t cwCount = 0;
@@ -728,13 +736,13 @@ void fillSchSib1Cfg(uint8_t mu, uint8_t bandwidth, uint8_t numSlots, SchSib1Cfg 
 
    pdsch->pdschFreqAlloc.resourceAllocType   = 1; /* RAT type-1 RIV format */
    /* the RB numbering starts from coreset0, and PDSCH is always above SSB */
-   pdsch->pdschFreqAlloc.freqAlloc.startPrb  = offsetPointA + SCH_SSB_NUM_PRB;
-   pdsch->pdschFreqAlloc.freqAlloc.numPrb    = schCalcNumPrb(tbSize,sib1SchCfg->sib1Mcs, NUM_PDSCH_SYMBOL);
+   pdsch->pdschFreqAlloc.startPrb  = offsetPointA + SCH_SSB_NUM_PRB;
+   pdsch->pdschFreqAlloc.numPrb    = schCalcNumPrb(tbSize,sib1SchCfg->sib1Mcs, NUM_PDSCH_SYMBOL);
    pdsch->pdschFreqAlloc.vrbPrbMapping       = 0; /* non-interleaved */
    pdsch->pdschTimeAlloc.rowIndex            = 1;
    /* This is Intel's requirement. PDSCH should start after PDSCH DRMS symbol */
-   pdsch->pdschTimeAlloc.timeAlloc.startSymb = 3; /* spec-38.214, Table 5.1.2.1-1 */
-   pdsch->pdschTimeAlloc.timeAlloc.numSymb   = NUM_PDSCH_SYMBOL;
+   pdsch->pdschTimeAlloc.startSymb = 3; /* spec-38.214, Table 5.1.2.1-1 */
+   pdsch->pdschTimeAlloc.numSymb   = NUM_PDSCH_SYMBOL;
    pdsch->beamPdschInfo.numPrgs              = 1;
    pdsch->beamPdschInfo.prgSize              = 1;
    pdsch->beamPdschInfo.digBfInterfaces      = 0;
@@ -743,6 +751,7 @@ void fillSchSib1Cfg(uint8_t mu, uint8_t bandwidth, uint8_t numSlots, SchSib1Cfg 
    pdsch->txPdschPower.powerControlOffset    = 0;
    pdsch->txPdschPower.powerControlOffsetSS  = 0;
 
+   return ROK;
 }
 
 /**
@@ -778,11 +787,15 @@ uint8_t SchProcCellCfgReq(Pst *pst, SchCellCfg *schCellCfg)
    cellCb->macInst = pst->srcInst;
 
    /* derive the SIB1 config parameters */
-   fillSchSib1Cfg(schCellCfg->numerology, schCellCfg->bandwidth, cellCb->numSlots,
+   ret = fillSchSib1Cfg(schCellCfg->numerology, schCellCfg->bandwidth, cellCb->numSlots,
 	 &(schCellCfg->sib1SchCfg), schCellCfg->phyCellId,
 	 schCellCfg->ssbSchCfg.ssbOffsetPointA);
    
-   
+   if(ret != ROK)
+   {
+      DU_LOG("\nERROR --> SCH : Failed to fill sib1 configuration");
+      return RFAILED;
+   }
    memcpy(&cellCb->cellCfg, schCellCfg, sizeof(SchCellCfg));
    schProcPagingCfg(cellCb);
 
@@ -934,6 +947,8 @@ void deleteSchCellCb(SchCellCb *cellCb)
       SCH_FREE(cellCb->cellCfg.plmnInfoList.snssai, cellCb->cellCfg.plmnInfoList.numSliceSupport*sizeof(Snssai*));
    }
    
+   SCH_FREE(cellCb->cellCfg.sib1SchCfg.sib1PdcchCfg.dci.pdschCfg, sizeof(PdschCfg));
+
    for(uint16_t idx =0; idx<MAX_SFN; idx++)
    {
       list = &cellCb->pageCb.pageIndInfoRecord[idx];
@@ -1293,7 +1308,7 @@ uint8_t allocatePrbDl(SchCellCb *cell, SlotTimingInfo slotTime, \
       if(ssbOccasion && sib1Occasion)
       {
          broadcastPrbStart = cell->cellCfg.ssbSchCfg.ssbOffsetPointA; 
-         broadcastPrbEnd = broadcastPrbStart + SCH_SSB_NUM_PRB + cell->cellCfg.sib1SchCfg.sib1PdschCfg.pdschFreqAlloc.freqAlloc.numPrb -1;
+         broadcastPrbEnd = broadcastPrbStart + SCH_SSB_NUM_PRB + cell->cellCfg.sib1SchCfg.sib1PdcchCfg.dci.pdschCfg->pdschFreqAlloc.numPrb -1;
       }
       else if(ssbOccasion)
       {
@@ -1302,8 +1317,8 @@ uint8_t allocatePrbDl(SchCellCb *cell, SlotTimingInfo slotTime, \
       }
       else if(sib1Occasion)
       {
-         broadcastPrbStart = cell->cellCfg.sib1SchCfg.sib1PdschCfg.pdschFreqAlloc.freqAlloc.startPrb;
-         broadcastPrbEnd = broadcastPrbStart + cell->cellCfg.sib1SchCfg.sib1PdschCfg.pdschFreqAlloc.freqAlloc.numPrb -1;
+         broadcastPrbStart = cell->cellCfg.sib1SchCfg.sib1PdcchCfg.dci.pdschCfg->pdschFreqAlloc.startPrb;
+         broadcastPrbEnd = broadcastPrbStart + cell->cellCfg.sib1SchCfg.sib1PdcchCfg.dci.pdschCfg->pdschFreqAlloc.numPrb -1;
       }
 
       /* Iterate through all free PRB blocks */
@@ -1571,7 +1586,7 @@ uint16_t searchLargestFreeBlock(SchCellCb *cell, SlotTimingInfo slotTime,uint16_
       {
          reservedPrbStart = cell->cellCfg.ssbSchCfg.ssbOffsetPointA; 
          reservedPrbEnd = reservedPrbStart + SCH_SSB_NUM_PRB + \
-                          cell->cellCfg.sib1SchCfg.sib1PdschCfg.pdschFreqAlloc.freqAlloc.numPrb -1;
+                          cell->cellCfg.sib1SchCfg.sib1PdcchCfg.dci.pdschCfg->pdschFreqAlloc.numPrb -1;
       }
       else if(ssbOccasion)
       {
@@ -1580,8 +1595,8 @@ uint16_t searchLargestFreeBlock(SchCellCb *cell, SlotTimingInfo slotTime,uint16_
       }
       else if(sib1Occasion)
       {
-         reservedPrbStart = cell->cellCfg.sib1SchCfg.sib1PdschCfg.pdschFreqAlloc.freqAlloc.startPrb;
-         reservedPrbEnd = reservedPrbStart + cell->cellCfg.sib1SchCfg.sib1PdschCfg.pdschFreqAlloc.freqAlloc.numPrb -1;
+         reservedPrbStart = cell->cellCfg.sib1SchCfg.sib1PdcchCfg.dci.pdschCfg->pdschFreqAlloc.startPrb;
+         reservedPrbEnd = reservedPrbStart + cell->cellCfg.sib1SchCfg.sib1PdcchCfg.dci.pdschCfg->pdschFreqAlloc.numPrb -1;
       }
       else
       {
