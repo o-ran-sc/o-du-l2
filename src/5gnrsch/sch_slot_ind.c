@@ -633,8 +633,8 @@ uint8_t SchProcSlotInd(Pst *pst, SlotTimingInfo *slotInd)
    memset(&dlSchedInfo, 0, sizeof(DlSchedInfo));
    schCalcSlotValues(*slotInd, &dlSchedInfo.schSlotValue, cell->numSlots);
    dlBrdcstAlloc = &dlSchedInfo.brdcstAlloc;
-   dlBrdcstAlloc->ssbTrans = NO_TRANSMISSION;
-   dlBrdcstAlloc->sib1Trans = NO_TRANSMISSION;
+   dlBrdcstAlloc->ssbTransmissionMode = NO_TRANSMISSION;
+   dlBrdcstAlloc->sib1TransmissionMode = NO_TRANSMISSION;
 
    memcpy(&cell->slotInfo, slotInd, sizeof(SlotTimingInfo));
    dlBrdcstAlloc->ssbIdxSupported = SSB_IDX_SUPPORTED;
@@ -647,35 +647,35 @@ uint8_t SchProcSlotInd(Pst *pst, SlotTimingInfo *slotInd)
 #endif
    
    /* Check for SSB occassion */
-   dlBrdcstAlloc->ssbTrans = schCheckSsbOcc(cell, dlSchedInfo.schSlotValue.broadcastTime); 
-   if(dlBrdcstAlloc->ssbTrans)
+   dlBrdcstAlloc->ssbTransmissionMode = schCheckSsbOcc(cell, dlSchedInfo.schSlotValue.broadcastTime); 
+   if(dlBrdcstAlloc->ssbTransmissionMode)
    {
       if(schBroadcastSsbAlloc(cell, dlSchedInfo.schSlotValue.broadcastTime, dlBrdcstAlloc) != ROK)
       {
          DU_LOG("\nERROR  -->  SCH : schBroadcastSsbAlloc failed");
-         dlBrdcstAlloc->ssbTrans = NO_TRANSMISSION;
+         dlBrdcstAlloc->ssbTransmissionMode = NO_TRANSMISSION;
       }
       else 
       {
          dlSchedInfo.isBroadcastPres = true;
-         if((dlBrdcstAlloc->ssbTrans == NEW_TRANSMISSION) && (!cell->firstSsbTransmitted))
+         if((dlBrdcstAlloc->ssbTransmissionMode == NEW_TRANSMISSION) && (!cell->firstSsbTransmitted))
             cell->firstSsbTransmitted = true;
       }
    }
 
    /* Check for SIB1 occassion */
-   dlBrdcstAlloc->sib1Trans = schCheckSib1Occ(cell, dlSchedInfo.schSlotValue.broadcastTime);
-   if(dlBrdcstAlloc->sib1Trans)
+   dlBrdcstAlloc->sib1TransmissionMode = schCheckSib1Occ(cell, dlSchedInfo.schSlotValue.broadcastTime);
+   if(dlBrdcstAlloc->sib1TransmissionMode)
    {
       if(schBroadcastSib1Alloc(cell, dlSchedInfo.schSlotValue.broadcastTime, dlBrdcstAlloc) != ROK)
       {
          DU_LOG("\nERROR  -->  SCH : schBroadcastSib1Alloc failed");
-         dlBrdcstAlloc->sib1Trans = NO_TRANSMISSION;
+         dlBrdcstAlloc->sib1TransmissionMode = NO_TRANSMISSION;
       }
       else 
       {
          dlSchedInfo.isBroadcastPres = true;
-         if((dlBrdcstAlloc->sib1Trans == NEW_TRANSMISSION) && (!cell->firstSib1Transmitted))
+         if((dlBrdcstAlloc->sib1TransmissionMode == NEW_TRANSMISSION) && (!cell->firstSib1Transmitted))
             cell->firstSib1Transmitted = true;
       }
    }
