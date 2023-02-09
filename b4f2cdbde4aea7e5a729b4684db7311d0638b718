@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e14b64c5_10da0c3b",
+        "filename": "src/cm/mac_sch_interface.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 1034,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-02-09T13:40:28Z",
+      "side": 1,
+      "message": "say \"section 11.2.4.3.8\"\njust giving a number doesnt clarify if it is section, table or anything else",
+      "range": {
+        "startLine": 1034,
+        "startChar": 40,
+        "endLine": 1034,
+        "endChar": 51
+      },
+      "revId": "b4f2cdbde4aea7e5a729b4684db7311d0638b718",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
