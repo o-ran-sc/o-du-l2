@@ -941,7 +941,6 @@ uint8_t schSliceBasedScheduleUlLc(SlotTimingInfo dciTime, SlotTimingInfo puschTi
             {
                /* Fill DCI for UL grant */
                schFillUlDci(ueCb, puschInfo, dciInfo, isRetx, *hqP);
-               memcpy(&dciInfo->slotIndInfo, &dciTime, sizeof(SlotTimingInfo));
                ueCb->srRcvd = false;
                ueCb->bsrRcvd = false;
                cell->schUlSlotInfo[puschTime.slot]->puschUe = ueCb->ueId;

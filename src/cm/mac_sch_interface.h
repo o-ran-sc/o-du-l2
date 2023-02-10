@@ -469,6 +469,7 @@ typedef struct
    uint8_t     totNumSsb;       /*S = Total Number of Actual SSB transmitted*/
 }SchSsbCfg;
 
+/* Reference -> O-RAN.WG8.AAD.0-v07.00, Table 9-32 BWP Information  */
 typedef struct bwpCfg
 {
    uint8_t         subcarrierSpacing;
@@ -976,56 +977,80 @@ typedef struct schSlotValue
    SlotTimingInfo ulDciTime;
 }SchSlotValue;
 
+typedef struct freqDomainAlloc
+{
+   uint8_t          resAllocType; /* Resource allocation type */
+   union
+   {
+      ResAllocType0    type0;
+      ResAllocType1    type1;
+   }resAlloc;
+}FreqDomainAlloc;
+
+/* Reference -> O-RAN.WG8.AAD.0-v07.00, Table 9-36 DCI Format0_0 Configuration */
 typedef struct format0_0
 {
    uint8_t         resourceAllocType;
-   /* since we are using type-1, hence rbBitmap excluded */
+   FreqDomainAlloc freqAlloc;
+   TimeDomainAlloc timeAlloc;
+   uint16_t        rowIndex;
+   uint8_t         mcs;
+   uint8_t         harqProcId;  
+   bool            freqHopFlag;
+   uint8_t         ndi;    
+   uint8_t         rvIndex;     
+   uint8_t         tpcCmd;
+   bool            sulIndicator;
+}Format0_0;
+
+/* Reference -> O-RAN.WG8.AAD.0-v07.00, Table 9-40 DCI Format 0_1 Configuration */
+typedef struct format0_1
+{
+   uint8_t         carrierIndicator;
+   bool            sulIndicator;
+   uint8_t         bwpIndicator;
+   uint8_t         resourceAlloc;
    FreqDomainRsrc  freqAlloc;
    TimeDomainAlloc timeAlloc;
    uint16_t        rowIndex;
    uint8_t         mcs;
-   uint8_t         harqProcId;   /* HARQ Process ID */
-   bool            puschHopFlag;
+   uint8_t         harqProcId;  
    bool            freqHopFlag;
-   uint8_t         ndi;    /* NDI */
-   uint8_t         rv;     /* Redundancy Version */
-   uint8_t         tpcCmd;
-   bool            sUlCfgd;
-}Format0_0;
-
-typedef struct format0_1
-{
-/* TBD */
-
+   uint8_t         ndi;   
+   uint8_t         rvIndex;    
+   uint8_t         firstDownlinkAssignmentIndex;
+   uint8_t         secondDownlinkAssignmentIndex;
+   uint8_t         tpcCommand;
+   uint8_t         srsResourceSetIndicator;
+   uint8_t         srsResourceIndicator;
+   uint8_t         tpmi;
+   uint8_t         antennaPorts;
+   uint8_t         srsRequest;
+   uint8_t         csiRequest;
+   uint8_t         cbgTransmissionInfo;
+   uint8_t         ptrsDmrs;
+   uint8_t         betaOffsetIndicator;
+   bool            dmrsSequenceInitialization;
+   bool            ulschIndicatior;
 }Format0_1;
 
-typedef struct format1_0
+typedef struct dciFormat
 {
-/* TBD */
-
-}Format1_0;
-
-typedef struct format1_1
-{
-/* TBD */
-}Format1_1;
-
-typedef struct dciInfo
-{
-   uint16_t      cellId;   
-   uint16_t      crnti;          /* CRNI */
-   SlotTimingInfo   slotIndInfo;    /* Slot Info: sfn, slot number */
-   BwpCfg        bwpCfg;         /* BWP Cfg */
-   CoresetCfg    coresetCfg;     /* Coreset1 Cfg */
-   FormatType    formatType;     /* DCI Format */
+   FormatType     formatType;     /* DCI Format */
    union
    {
       Format0_0  format0_0;      /* Format 0_0 */
       Format0_1  format0_1;      /* Format 0_1 */
-      Format1_0  format1_0;      /* Format 1_0 */
-      Format1_1  format1_1;      /* Format 1_1 */
    }format;
-   DlDCI    dciInfo;
+}DciFormat;
+
+typedef struct dciInfo
+{
+   uint16_t       crnti;          /* CRNTI */
+   BwpCfg         bwpCfg;         /* BWP Cfg */
+   CoresetCfg     coresetCfg;     /* Coreset1 Cfg */
+   DciFormat      dciFormatInfo;  /* Dci Format */
+   DlDCI          dciInfo;        /* DlDCI */
 }DciInfo;
 
 
@@ -1073,16 +1098,6 @@ typedef struct tbInfo
    uint8_t      qamOrder;  /* Modulation Order */
    SchMcsTable  mcsTable;  /* MCS Table */
 }TbInfo;
-
-typedef struct freqDomainAlloc
-{
-   uint8_t          resAllocType; /* Resource allocation type */
-   union
-   {
-      ResAllocType0    type0;
-      ResAllocType1    type1;
-   }resAlloc;
-}FreqDomainAlloc;
 
 typedef struct schPuschInfo
 {

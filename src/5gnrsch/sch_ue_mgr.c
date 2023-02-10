@@ -963,7 +963,7 @@ uint8_t schFillPuschAlloc(SchUeCb *ueCb, SlotTimingInfo puschTime, uint32_t tbSi
 uint8_t schFillUlDciForMsg3Retx(SchRaCb *raCb, SchPuschInfo *puschInfo, DciInfo *dciInfo)
 {
    SchCellCb         *cellCb  = raCb->cell;
-   dciInfo->cellId = cellCb->cellId;
+   
    dciInfo->crnti  = raCb->tcrnti;
    SchUlHqProcCb *msg3HqProc = &raCb->msg3HqProc;
    if (msg3HqProc == NULLP)
@@ -995,24 +995,24 @@ uint8_t schFillUlDciForMsg3Retx(SchRaCb *raCb, SchPuschInfo *puschInfo, DciInfo 
    dciInfo->coresetCfg.cceIndex            = 0; /* 0-3 for UL and 4-7 for DL */
    dciInfo->coresetCfg.aggregationLevel    = 4; /* same as for sib1 */
    
-   dciInfo->formatType = FORMAT0_0;
+   dciInfo->dciFormatInfo.formatType = FORMAT0_0;
    msg3HqProc->tbInfo.rvIdx++;
    msg3HqProc->tbInfo.rv = schCmnDlRvTbl[msg3HqProc->tbInfo.rvIdx & 0x03];
    /* fill UL grant */
-   dciInfo->format.format0_0.resourceAllocType   = msg3HqProc->puschResType;
-   dciInfo->format.format0_0.freqAlloc.startPrb  = msg3HqProc->puschStartPrb;
-   dciInfo->format.format0_0.freqAlloc.numPrb    = msg3HqProc->puschNumPrb;
-   dciInfo->format.format0_0.timeAlloc.startSymb = msg3HqProc->strtSymbl;
-   dciInfo->format.format0_0.timeAlloc.numSymb   = msg3HqProc->numSymbl;
-   dciInfo->format.format0_0.rowIndex            = 0; /* row Index */
-   dciInfo->format.format0_0.mcs                 = msg3HqProc->tbInfo.iMcs;
-   dciInfo->format.format0_0.harqProcId          = msg3HqProc->procId;
-   dciInfo->format.format0_0.puschHopFlag        = FALSE; /* disabled */
-   dciInfo->format.format0_0.freqHopFlag         = FALSE; /* disabled */
-   dciInfo->format.format0_0.ndi                 = msg3HqProc->tbInfo.ndi; /* new transmission */
-   dciInfo->format.format0_0.rv                  = msg3HqProc->tbInfo.rv;
-   dciInfo->format.format0_0.tpcCmd              = 0; //Sphoorthi TODO: check
-   dciInfo->format.format0_0.sUlCfgd             = FALSE; /* SUL not configured */
+   dciInfo->dciFormatInfo.format.format0_0.resourceAllocType                  = msg3HqProc->puschResType;
+   dciInfo->dciFormatInfo.format.format0_0.freqAlloc.resAllocType             = msg3HqProc->puschResType;
+   dciInfo->dciFormatInfo.format.format0_0.freqAlloc.resAlloc.type1.startPrb  = msg3HqProc->puschStartPrb;
+   dciInfo->dciFormatInfo.format.format0_0.freqAlloc.resAlloc.type1.numPrb    = msg3HqProc->puschNumPrb;
+   dciInfo->dciFormatInfo.format.format0_0.timeAlloc.startSymb = msg3HqProc->strtSymbl;
+   dciInfo->dciFormatInfo.format.format0_0.timeAlloc.numSymb   = msg3HqProc->numSymbl;
+   dciInfo->dciFormatInfo.format.format0_0.rowIndex            = 0; /* row Index */
+   dciInfo->dciFormatInfo.format.format0_0.mcs                 = msg3HqProc->tbInfo.iMcs;
+   dciInfo->dciFormatInfo.format.format0_0.harqProcId          = msg3HqProc->procId;
+   dciInfo->dciFormatInfo.format.format0_0.freqHopFlag         = FALSE; /* disabled */
+   dciInfo->dciFormatInfo.format.format0_0.ndi                 = msg3HqProc->tbInfo.ndi; /* new transmission */
+   dciInfo->dciFormatInfo.format.format0_0.rvIndex             = msg3HqProc->tbInfo.rv;
+   dciInfo->dciFormatInfo.format.format0_0.tpcCmd              = 0; //Sphoorthi TODO: check
+   dciInfo->dciFormatInfo.format.format0_0.sulIndicator             = FALSE; /* SUL not configured */
    
    /* Fill DCI Structure */
    dciInfo->dciInfo.rnti                              = raCb->tcrnti;
@@ -1077,7 +1077,6 @@ uint8_t schFillUlDci(SchUeCb *ueCb, SchPuschInfo *puschInfo, DciInfo *dciInfo, b
      coreset1 = ueCb->ueCfg.spCellCfg.servCellRecfg.initDlBwp.pdcchCfg.cRSetToAddModList[0];
    }
    
-   dciInfo->cellId = cellCb->cellId;
    dciInfo->crnti  = ueCb->crnti;
 
    /* fill bwp cfg */
@@ -1103,23 +1102,25 @@ uint8_t schFillUlDci(SchUeCb *ueCb, SchPuschInfo *puschInfo, DciInfo *dciInfo, b
    dciInfo->coresetCfg.cceIndex            = 0; /* 0-3 for UL and 4-7 for DL */
    dciInfo->coresetCfg.aggregationLevel    = 4; /* same as for sib1 */
    
-   dciInfo->formatType = FORMAT0_0;
+   dciInfo->dciFormatInfo.formatType = FORMAT0_0;
    
    /* fill UL grant */
-   dciInfo->format.format0_0.resourceAllocType   = puschInfo->fdAlloc.resAllocType;
-   dciInfo->format.format0_0.freqAlloc.startPrb  = puschInfo->fdAlloc.resAlloc.type1.startPrb;
-   dciInfo->format.format0_0.freqAlloc.numPrb    = puschInfo->fdAlloc.resAlloc.type1.numPrb;
-   dciInfo->format.format0_0.timeAlloc.startSymb = puschInfo->tdAlloc.startSymb;
-   dciInfo->format.format0_0.timeAlloc.numSymb   = puschInfo->tdAlloc.numSymb;
-   dciInfo->format.format0_0.rowIndex            = 0; /* row Index */
-   dciInfo->format.format0_0.mcs                 = puschInfo->tbInfo.mcs;
-   dciInfo->format.format0_0.harqProcId          = puschInfo->harqProcId;
-   dciInfo->format.format0_0.puschHopFlag        = FALSE; /* disabled */
-   dciInfo->format.format0_0.freqHopFlag         = FALSE; /* disabled */
-   dciInfo->format.format0_0.ndi                 = puschInfo->tbInfo.ndi; /* new transmission */
-   dciInfo->format.format0_0.rv                  = puschInfo->tbInfo.rv;
-   dciInfo->format.format0_0.tpcCmd              = 0; //Sphoorthi TODO: check
-   dciInfo->format.format0_0.sUlCfgd             = FALSE; /* SUL not configured */
+   dciInfo->dciFormatInfo.format.format0_0.resourceAllocType   = puschInfo->fdAlloc.resAllocType;
+   dciInfo->dciFormatInfo.format.format0_0.freqAlloc.resAllocType = puschInfo->fdAlloc.resAllocType;
+   dciInfo->dciFormatInfo.format.format0_0.freqAlloc.resAlloc.type1.startPrb  = \
+   puschInfo->fdAlloc.resAlloc.type1.startPrb;
+   dciInfo->dciFormatInfo.format.format0_0.freqAlloc.resAlloc.type1.numPrb    = \
+   puschInfo->fdAlloc.resAlloc.type1.numPrb;
+   dciInfo->dciFormatInfo.format.format0_0.timeAlloc.startSymb = puschInfo->tdAlloc.startSymb;
+   dciInfo->dciFormatInfo.format.format0_0.timeAlloc.numSymb   = puschInfo->tdAlloc.numSymb;
+   dciInfo->dciFormatInfo.format.format0_0.rowIndex            = 0; /* row Index */
+   dciInfo->dciFormatInfo.format.format0_0.mcs                 = puschInfo->tbInfo.mcs;
+   dciInfo->dciFormatInfo.format.format0_0.harqProcId          = puschInfo->harqProcId;
+   dciInfo->dciFormatInfo.format.format0_0.freqHopFlag         = FALSE; /* disabled */
+   dciInfo->dciFormatInfo.format.format0_0.ndi                 = puschInfo->tbInfo.ndi; /* new transmission */
+   dciInfo->dciFormatInfo.format.format0_0.rvIndex             = puschInfo->tbInfo.rv;
+   dciInfo->dciFormatInfo.format.format0_0.tpcCmd              = 0; //Sphoorthi TODO: check
+   dciInfo->dciFormatInfo.format.format0_0.sulIndicator             = FALSE; /* SUL not configured */
    
    /* Fill DCI Structure */
    dciInfo->dciInfo.rnti                              = ueCb->crnti;
