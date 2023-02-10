@@ -908,7 +908,6 @@ typedef struct msg3UlGrant
 
 typedef struct rarInfo
 {
-   uint16_t        raRnti;
    uint8_t         RAPID;
    uint16_t        ta;
    Msg3UlGrant     ulGrant;
@@ -919,24 +918,24 @@ typedef struct rarInfo
 
 typedef struct rarAlloc
 {
+   uint16_t   raRnti;
+   RarInfo    rarInfo;
+   BwpCfg     bwp;
+   PdcchCfg   rarPdcchCfg;
    DlPduType  pduPres;
-   uint8_t    pdschSlot;
-   RarInfo rarInfo;
-   BwpCfg  bwp;
-   PdcchCfg rarPdcchCfg;
-   PdschCfg rarPdschCfg;
 }RarAlloc;
 
 typedef struct dlMsgInfo
 {
    uint16_t crnti;
-   uint8_t  ndi;
+   uint8_t  dciFormatId;
    uint8_t  harqProcNum;
+   bool     vrbPrbMappin;
    uint8_t  dlAssignIdx;
    uint8_t  pucchTpc;
    uint8_t  pucchResInd;
    uint8_t  harqFeedbackInd;
-   uint8_t  dciFormatId;
+   uint8_t  ndi;
    bool     isMsg4Pdu;
    uint16_t  dlMsgPduLen;
    uint8_t  *dlMsgPdu;
@@ -955,9 +954,8 @@ typedef struct dlMsgSchedInfo
    LcSchInfo  lcSchInfo[MAX_NUM_LC]; /* Scheduled LC info */
    BwpCfg     bwp;
    PdcchCfg   dlMsgPdcchCfg;
-   PdschCfg   dlMsgPdschCfg;
+   //PdschCfg   dlMsgPdschCfg;
    DlPduType  pduPres;
-   uint8_t    pdschSlot;
    DlMsgInfo  dlMsgInfo;
 }DlMsgSchInfo;
 

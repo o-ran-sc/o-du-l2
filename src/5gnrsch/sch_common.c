@@ -587,7 +587,6 @@ uint8_t schDlRsrcAllocMsg4(SchCellCb *cell, SlotTimingInfo msg4Time, uint8_t ueI
    msg4Alloc = &dlMsgAlloc->dlMsgSchedInfo[dlMsgAlloc->numSchedInfo];
    initialBwp   = &cell->cellCfg.schInitialDlBwp;
    pdcch = &msg4Alloc->dlMsgPdcchCfg;
-   pdsch = &msg4Alloc->dlMsgPdschCfg;
    bwp = &msg4Alloc->bwp;
    coreset0Idx  = initialBwp->pdcchCommon.commonSearchSpace.coresetId;
 
@@ -640,8 +639,14 @@ uint8_t schDlRsrcAllocMsg4(SchCellCb *cell, SlotTimingInfo msg4Time, uint8_t ueI
    pdcch->dci.beamPdcchInfo.prg[0].beamIdx[0] = 0;
    pdcch->dci.txPdcchPower.beta_pdcch_1_0 = 0;
    pdcch->dci.txPdcchPower.powerControlOffsetSS = 0;
-   pdcch->dci.pdschCfg = pdsch;
 
+   SCH_ALLOC(pdcch->dci.pdschCfg, sizeof(PdschCfg));
+   if(pdcch->dci.pdschCfg == NULLP)
+   {
+       DU_LOG("\nERROR  --> SCH : Memrory allocation failed %s", __func__);
+       return RFAILED;
+   }
+   pdsch = pdcch->dci.pdschCfg;
    /* fill the PDSCH PDU */
    uint8_t cwCount = 0;
    pdsch->pduBitmap = 0; /* PTRS and CBG params are excluded */
@@ -789,6 +794,7 @@ uint8_t schDlRsrcAllocDlMsg(SchCellCb *cell, SlotTimingInfo slotTime, uint16_t c
                 uint8_t pdschNumSymbols, bool isRetx, SchDlHqProcCb *hqP)
 {
    uint8_t ueId=0;
+   uint8_t cwCount = 0;
    PdcchCfg *pdcch = NULLP;
    PdschCfg *pdsch = NULLP;
    BwpCfg *bwp = NULLP;
@@ -798,7 +804,6 @@ uint8_t schDlRsrcAllocDlMsg(SchCellCb *cell, SlotTimingInfo slotTime, uint16_t c
    uint8_t dmrsStartSymbol, startSymbol, numSymbol;
 
    pdcch = &dlMsgAlloc->dlMsgSchedInfo[dlMsgAlloc->numSchedInfo].dlMsgPdcchCfg;
-   pdsch = &dlMsgAlloc->dlMsgSchedInfo[dlMsgAlloc->numSchedInfo].dlMsgPdschCfg;
    bwp = &dlMsgAlloc->dlMsgSchedInfo[dlMsgAlloc->numSchedInfo].bwp;
 
    GET_UE_ID(crnti, ueId);
@@ -840,7 +845,13 @@ uint8_t schDlRsrcAllocDlMsg(SchCellCb *cell, SlotTimingInfo slotTime, uint16_t c
    pdcch->dci.txPdcchPower.powerControlOffsetSS = 0;
 
    /* fill the PDSCH PDU */
-   uint8_t cwCount = 0;
+   SCH_ALLOC(pdcch->dci.pdschCfg, sizeof(PdschCfg));
+   if(pdcch->dci.pdschCfg == NULLP)
+   {
+       DU_LOG("\nERROR  --> SCH : Memrory allocation failed %s", __func__);
+       return RFAILED;
+   }
+   pdsch = pdcch->dci.pdschCfg;
    pdsch->pduBitmap = 0; /* PTRS and CBG params are excluded */
    pdsch->rnti = ueCb.crnti;
    pdsch->pduIndex = 0;
@@ -914,7 +925,6 @@ uint8_t schDlRsrcAllocDlMsg(SchCellCb *cell, SlotTimingInfo slotTime, uint16_t c
    pdsch->txPdschPower.powerControlOffset = 0;
    pdsch->txPdschPower.powerControlOffsetSS = 0;
 
-   pdcch->dci.pdschCfg = pdsch;
    return ROK;
 }
 
@@ -1806,13 +1816,10 @@ uint8_t schProcessMsg4Req(SchCellCb *cell, SlotTimingInfo currTime, uint8_t ueId
       /* Copy all RAR info */
       memcpy(&msg4SlotAlloc->dlMsgSchedInfo[msg4SlotAlloc->numSchedInfo], \
          &dciSlotAlloc->dlMsgSchedInfo[dciSlotAlloc->numSchedInfo], sizeof(DlMsgSchInfo));
-      msg4SlotAlloc->dlMsgSchedInfo[msg4SlotAlloc->numSchedInfo].dlMsgPdcchCfg.dci.pdschCfg = \
-         &msg4SlotAlloc->dlMsgSchedInfo[msg4SlotAlloc->numSchedInfo].dlMsgPdschCfg;
 
       /* Assign correct PDU types in corresponding slots */
       msg4SlotAlloc->dlMsgSchedInfo[msg4SlotAlloc->numSchedInfo].pduPres = PDSCH_PDU;
       dciSlotAlloc->dlMsgSchedInfo[dciSlotAlloc->numSchedInfo].pduPres = PDCCH_PDU;
-      dciSlotAlloc->dlMsgSchedInfo[dciSlotAlloc->numSchedInfo].pdschSlot = pdschTime.slot;
 
       dciSlotAlloc->numSchedInfo++;
       msg4SlotAlloc->numSchedInfo++;
