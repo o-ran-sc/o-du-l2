@@ -92,8 +92,9 @@ uint8_t MacProcDlAlloc(Pst *pst, DlSchedInfo *dlSchedInfo)
             /* Check if the downlink pdu is msg4 */
             for(schInfoIdx=0; schInfoIdx < dlSchedInfo->dlMsgAlloc[ueIdx]->numSchedInfo; schInfoIdx++)
             {
-               if(dlSchedInfo->dlMsgAlloc[ueIdx]->dlMsgSchedInfo[schInfoIdx].dlMsgInfo.isMsg4Pdu)
+               if(dlSchedInfo->dlMsgAlloc[ueIdx]->dlMsgSchedInfo[schInfoIdx].dlMsgPdcchCfg.coresetCfg.coreSetType == CORESET_TYPE0)
                {
+               DU_LOG("\nPBORLA MacProcDlAlloc coreset val %d",dlSchedInfo->dlMsgAlloc[ueIdx]->dlMsgSchedInfo[schInfoIdx].dlMsgPdcchCfg.coresetCfg.coreSetType);
                   GET_UE_ID(dlSchedInfo->dlMsgAlloc[ueIdx]->dlMsgSchedInfo[schInfoIdx].dlMsgInfo.crnti, ueId);
                   ueIdx = ueId -1;
                   schedInfo = dlSchedInfo->dlMsgAlloc[ueIdx]->dlMsgSchedInfo[schInfoIdx];
@@ -103,11 +104,11 @@ uint8_t MacProcDlAlloc(Pst *pst, DlSchedInfo *dlSchedInfo)
                   {
                      /* First transmission of MSG4 */
                      hqProcCb->procId = schedInfo.dlMsgInfo.harqProcNum;
-                     for(cwIdx = 0; cwIdx < schedInfo.dlMsgPdschCfg.numCodewords; cwIdx++)
+                     for(cwIdx = 0; cwIdx < schedInfo.dlMsgPdcchCfg.dci.pdschCfg->numCodewords; cwIdx++)
                      {
                         memcpy(&hqProcCb->tbInfo[hqProcCb->numTb].txTime, &dlSchedInfo->schSlotValue.dlMsgTime, \
                               sizeof(SlotTimingInfo));
-                        hqProcCb->tbInfo[hqProcCb->numTb].tbSize = schedInfo.dlMsgPdschCfg.codeword[cwIdx].tbSize;
+                        hqProcCb->tbInfo[hqProcCb->numTb].tbSize = schedInfo.dlMsgPdcchCfg.dci.pdschCfg->codeword[cwIdx].tbSize;
                         hqProcCb->numTb++;
                      }
                   }
@@ -146,11 +147,11 @@ uint8_t MacProcDlAlloc(Pst *pst, DlSchedInfo *dlSchedInfo)
                       * TODO : update handling of fetched TB appropriately when support for two TB is added 
                       */
                      for(cwIdx = 0; \
-                           cwIdx < dlSchedInfo->dlMsgAlloc[ueIdx]->dlMsgSchedInfo[schInfoIdx].dlMsgPdschCfg.numCodewords;\
+                           cwIdx < dlSchedInfo->dlMsgAlloc[ueIdx]->dlMsgSchedInfo[schInfoIdx].dlMsgPdcchCfg.dci.pdschCfg->numCodewords;\
                            cwIdx++)
                      {
                         /* Fetch TB to be retransmitted */
-                        txPduLen = dlSchedInfo->dlMsgAlloc[ueIdx]->dlMsgSchedInfo[schInfoIdx].dlMsgPdschCfg.codeword[cwIdx].tbSize;
+                        txPduLen = dlSchedInfo->dlMsgAlloc[ueIdx]->dlMsgSchedInfo[schInfoIdx].dlMsgPdcchCfg.dci.pdschCfg->codeword[cwIdx].tbSize;
                         retxTb = fetchTbfromDlHarqProc(currDlSlot->dlInfo.schSlotValue.dlMsgTime, \
                               &macCb.macCell[cellIdx]->ueCb[ueIdx], \
                               dlSchedInfo->dlMsgAlloc[ueIdx]->dlMsgSchedInfo[schInfoIdx].dlMsgInfo.harqProcNum, txPduLen);
@@ -346,10 +347,11 @@ void buildAndSendMuxPdu(SlotTimingInfo currTimingInfo)
       {
          for(schInfoIdx=0; schInfoIdx<currDlSlot->dlInfo.dlMsgAlloc[ueIdx]->numSchedInfo; schInfoIdx++)
          {
-            if((currDlSlot->dlInfo.dlMsgAlloc[ueIdx]->dlMsgSchedInfo[schInfoIdx].dlMsgInfo.isMsg4Pdu) &&
+            if((currDlSlot->dlInfo.dlMsgAlloc[ueIdx]->dlMsgSchedInfo[schInfoIdx].dlMsgPdcchCfg.coresetCfg.coreSetType == CORESET_TYPE0) &&
                   ((currDlSlot->dlInfo.dlMsgAlloc[ueIdx]->dlMsgSchedInfo[schInfoIdx].pduPres == PDSCH_PDU) ||
                    (currDlSlot->dlInfo.dlMsgAlloc[ueIdx]->dlMsgSchedInfo[schInfoIdx].pduPres == BOTH)))
             {
+               DU_LOG("\nPBORLA buildAndSendMuxPdu coreset val %d",currDlSlot->dlInfo.dlMsgAlloc[ueIdx]->dlMsgSchedInfo[schInfoIdx].dlMsgPdcchCfg.coresetCfg.coreSetType);
                fillMsg4Pdu(currTimingInfo.cellId, &currDlSlot->dlInfo.dlMsgAlloc[ueIdx]->dlMsgSchedInfo[schInfoIdx]);
             }
          }

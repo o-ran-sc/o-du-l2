@@ -72,10 +72,10 @@ void addDlHqProcInUe(SlotTimingInfo dlMsgTime, MacUeCb *ueCb, DlMsgSchInfo sched
 
    /* Fill HARQ Proc Cb */
    hqProcCb->procId = hqProcId;
-   for(cwIdx = 0; cwIdx < schedInfo.dlMsgPdschCfg.numCodewords; cwIdx++)
+   for(cwIdx = 0; cwIdx < schedInfo.dlMsgPdcchCfg.dci.pdschCfg->numCodewords; cwIdx++)
    {
       memcpy(&hqProcCb->tbInfo[hqProcCb->numTb].txTime, &dlMsgTime, sizeof(SlotTimingInfo));
-      hqProcCb->tbInfo[hqProcCb->numTb].tbSize = schedInfo.dlMsgPdschCfg.codeword[cwIdx].tbSize;
+      hqProcCb->tbInfo[hqProcCb->numTb].tbSize = schedInfo.dlMsgPdcchCfg.dci.pdschCfg->codeword[cwIdx].tbSize;
       hqProcCb->numTb++;
    }
    return;
