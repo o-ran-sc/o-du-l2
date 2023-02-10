@@ -908,7 +908,6 @@ typedef struct msg3UlGrant
 
 typedef struct rarInfo
 {
-   uint16_t        raRnti;
    uint8_t         RAPID;
    uint16_t        ta;
    Msg3UlGrant     ulGrant;
@@ -919,12 +918,11 @@ typedef struct rarInfo
 
 typedef struct rarAlloc
 {
+   uint16_t   raRnti;
+   RarInfo    rarInfo;
+   BwpCfg     bwp;
+   PdcchCfg   rarPdcchCfg;
    DlPduType  pduPres;
-   uint8_t    pdschSlot;
-   RarInfo rarInfo;
-   BwpCfg  bwp;
-   PdcchCfg rarPdcchCfg;
-   PdschCfg rarPdschCfg;
 }RarAlloc;
 
 typedef struct dlMsgInfo
