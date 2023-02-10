@@ -18,6 +18,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5720c222_28de9c4c",
+        "filename": "src/cm/mac_sch_interface.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 472,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-02-10T08:55:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1d6d69cb_ad54d7fe",
+      "revId": "94535d5e4134bbd700c94774228388ca26802ece",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "768fc542_e6f73975",
@@ -31,6 +49,24 @@
       "writtenOn": "2023-02-10T08:04:38Z",
       "side": 1,
       "message": "SUL indicator",
+      "revId": "94535d5e4134bbd700c94774228388ca26802ece",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "61b50fb3_2ba39c03",
+        "filename": "src/cm/mac_sch_interface.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 993,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-02-10T08:55:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "768fc542_e6f73975",
       "revId": "94535d5e4134bbd700c94774228388ca26802ece",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -52,6 +88,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f7d5c05e_0582ce41",
+        "filename": "src/cm/mac_sch_interface.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 1000,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-02-10T08:55:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7b01b463_18ee4435",
+      "revId": "94535d5e4134bbd700c94774228388ca26802ece",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1d76d142_5f13f5a2",
@@ -69,6 +123,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0861df13_6aa2a356",
+        "filename": "src/cm/mac_sch_interface.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 1011,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-02-10T08:55:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1d76d142_5f13f5a2",
+      "revId": "94535d5e4134bbd700c94774228388ca26802ece",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8acd8761_1cf46eaa",
@@ -82,6 +154,24 @@
       "writtenOn": "2023-02-10T08:04:38Z",
       "side": 1,
       "message": "remove format1 since only format0 is to be used for PUSCH scheduling",
+      "revId": "94535d5e4134bbd700c94774228388ca26802ece",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "86959384_6c0af305",
+        "filename": "src/cm/mac_sch_interface.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 1021,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-02-10T08:55:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8acd8761_1cf46eaa",
       "revId": "94535d5e4134bbd700c94774228388ca26802ece",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
