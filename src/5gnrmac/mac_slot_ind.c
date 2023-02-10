@@ -103,11 +103,11 @@ uint8_t MacProcDlAlloc(Pst *pst, DlSchedInfo *dlSchedInfo)
                   {
                      /* First transmission of MSG4 */
                      hqProcCb->procId = schedInfo.dlMsgInfo.harqProcNum;
-                     for(cwIdx = 0; cwIdx < schedInfo.dlMsgPdschCfg.numCodewords; cwIdx++)
+                     for(cwIdx = 0; cwIdx < schedInfo.dlMsgPdcchCfg.dci.pdschCfg->numCodewords; cwIdx++)
                      {
                         memcpy(&hqProcCb->tbInfo[hqProcCb->numTb].txTime, &dlSchedInfo->schSlotValue.dlMsgTime, \
                               sizeof(SlotTimingInfo));
-                        hqProcCb->tbInfo[hqProcCb->numTb].tbSize = schedInfo.dlMsgPdschCfg.codeword[cwIdx].tbSize;
+                        hqProcCb->tbInfo[hqProcCb->numTb].tbSize = schedInfo.dlMsgPdcchCfg.dci.pdschCfg->codeword[cwIdx].tbSize;
                         hqProcCb->numTb++;
                      }
                   }
@@ -146,11 +146,11 @@ uint8_t MacProcDlAlloc(Pst *pst, DlSchedInfo *dlSchedInfo)
                       * TODO : update handling of fetched TB appropriately when support for two TB is added 
                       */
                      for(cwIdx = 0; \
-                           cwIdx < dlSchedInfo->dlMsgAlloc[ueIdx]->dlMsgSchedInfo[schInfoIdx].dlMsgPdschCfg.numCodewords;\
+                           cwIdx < dlSchedInfo->dlMsgAlloc[ueIdx]->dlMsgSchedInfo[schInfoIdx].dlMsgPdcchCfg.dci.pdschCfg->numCodewords;\
                            cwIdx++)
                      {
                         /* Fetch TB to be retransmitted */
-                        txPduLen = dlSchedInfo->dlMsgAlloc[ueIdx]->dlMsgSchedInfo[schInfoIdx].dlMsgPdschCfg.codeword[cwIdx].tbSize;
+                        txPduLen = dlSchedInfo->dlMsgAlloc[ueIdx]->dlMsgSchedInfo[schInfoIdx].dlMsgPdcchCfg.dci.pdschCfg->codeword[cwIdx].tbSize;
                         retxTb = fetchTbfromDlHarqProc(currDlSlot->dlInfo.schSlotValue.dlMsgTime, \
                               &macCb.macCell[cellIdx]->ueCb[ueIdx], \
                               dlSchedInfo->dlMsgAlloc[ueIdx]->dlMsgSchedInfo[schInfoIdx].dlMsgInfo.harqProcNum, txPduLen);

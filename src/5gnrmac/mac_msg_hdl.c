@@ -229,7 +229,7 @@ uint8_t MacProcRlcDlData(Pst* pstInfo, RlcDlData *dlData)
             break;
       }
 
-      txPduLen = currDlSlot->dlInfo.dlMsgAlloc[ueId-1]->dlMsgSchedInfo[schInfoIdx].dlMsgPdschCfg.codeword[0].tbSize\
+      txPduLen = currDlSlot->dlInfo.dlMsgAlloc[ueId-1]->dlMsgSchedInfo[schInfoIdx].dlMsgPdcchCfg.dci.pdschCfg->codeword[0].tbSize\
                  - TX_PAYLOAD_HDR_LEN;
       MAC_ALLOC(txPdu, txPduLen);
       if(!txPdu)
@@ -244,7 +244,7 @@ uint8_t MacProcRlcDlData(Pst* pstInfo, RlcDlData *dlData)
       /* Add muxed TB to DL HARQ Proc CB. This will be used if retranmission of
        * TB is requested in future. */
       updateNewTbInDlHqProcCb(dlData->slotInfo, &macCb.macCell[cellIdx]->ueCb[ueId -1], \
-         currDlSlot->dlInfo.dlMsgAlloc[ueId-1]->dlMsgSchedInfo[schInfoIdx].dlMsgPdschCfg.codeword[0].tbSize, txPdu);
+         currDlSlot->dlInfo.dlMsgAlloc[ueId-1]->dlMsgSchedInfo[schInfoIdx].dlMsgPdcchCfg.dci.pdschCfg->codeword[0].tbSize, txPdu);
    }
 
    for(lcIdx = 0; lcIdx < dlData->numLc; lcIdx++)

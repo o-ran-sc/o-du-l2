@@ -3504,7 +3504,7 @@ uint8_t fillPageTxDataReq(fapi_tx_pdu_desc_t *pduDesc, uint16_t pduIndex, DlPage
  * @return ROK
  *
  * ********************************************************************/
-uint8_t fillRarTxDataReq(fapi_tx_pdu_desc_t *pduDesc, uint16_t pduIndex, RarInfo *rarInfo, PdschCfg pdschCfg)
+uint8_t fillRarTxDataReq(fapi_tx_pdu_desc_t *pduDesc, uint16_t pduIndex, RarInfo *rarInfo, PdschCfg *pdschCfg)
 {
    uint16_t payloadSize;
    uint8_t  *rarPayload = NULLP;
@@ -3517,7 +3517,7 @@ uint8_t fillRarTxDataReq(fapi_tx_pdu_desc_t *pduDesc, uint16_t pduIndex, RarInfo
    pduDesc[pduIndex].num_tlvs = 1;
 
    /* fill the TLV */
-   payloadSize = pdschCfg.codeword[0].tbSize;
+   payloadSize = pdschCfg->codeword[0].tbSize;
    pduDesc[pduIndex].tlvs[0].tl.tag = FAPI_TX_DATA_PTR_TO_PAYLOAD_64;
    pduDesc[pduIndex].tlvs[0].tl.length = payloadSize;
    LWR_MAC_ALLOC(rarPayload, payloadSize);
@@ -3563,7 +3563,7 @@ uint8_t fillRarTxDataReq(fapi_tx_pdu_desc_t *pduDesc, uint16_t pduIndex, RarInfo
  * @return ROK
  *
  * ********************************************************************/
-uint8_t fillDlMsgTxDataReq(fapi_tx_pdu_desc_t *pduDesc, uint16_t pduIndex, DlMsgInfo *dlMsgInfo, PdschCfg pdschCfg)
+uint8_t fillDlMsgTxDataReq(fapi_tx_pdu_desc_t *pduDesc, uint16_t pduIndex, DlMsgInfo *dlMsgInfo, PdschCfg *pdschCfg)
 {
    uint16_t payloadSize;
    uint8_t  *dlMsgPayload = NULLP;
@@ -3576,7 +3576,7 @@ uint8_t fillDlMsgTxDataReq(fapi_tx_pdu_desc_t *pduDesc, uint16_t pduIndex, DlMsg
    pduDesc[pduIndex].num_tlvs = 1;
 
    /* fill the TLV */
-   payloadSize = pdschCfg.codeword[0].tbSize;
+   payloadSize = pdschCfg->codeword[0].tbSize;
    pduDesc[pduIndex].tlvs[0].tl.tag = FAPI_TX_DATA_PTR_TO_PAYLOAD_64;
    pduDesc[pduIndex].tlvs[0].tl.length = payloadSize;
    LWR_MAC_ALLOC(dlMsgPayload, payloadSize);
@@ -3791,13 +3791,13 @@ uint16_t fillDlTtiReq(SlotTimingInfo currTimingInfo)
 							   (currDlSlot->dlInfo.rarAlloc[ueIdx]->pduPres == PDSCH_PDU))
 					   {
 						   fillPdschPdu(&dlTtiReq->pdus[numPduEncoded], &vendorMsg->p7_req_vendor.dl_tti_req.pdus[numPduEncoded],
-								   &currDlSlot->dlInfo.rarAlloc[ueIdx]->rarPdschCfg,
+								   currDlSlot->dlInfo.rarAlloc[ueIdx]->rarPdcchCfg.dci.pdschCfg,
 								   currDlSlot->dlInfo.rarAlloc[ueIdx]->bwp,
 								   pduIndex);
 						   numPduEncoded++;
 						   pduIndex++;
 
-						   DU_LOG("\033[1;32m");
+                     DU_LOG("\033[1;32m");
 						   DU_LOG("\nDEBUG  -->  LWR_MAC: RAR sent...");
 						   DU_LOG("\033[0m");
 					   }
@@ -3833,7 +3833,7 @@ uint16_t fillDlTtiReq(SlotTimingInfo currTimingInfo)
 									   (currDlSlot->dlInfo.dlMsgAlloc[ueIdx]->dlMsgSchedInfo[idx].pduPres == PDSCH_PDU))
 							   {
 								   fillPdschPdu(&dlTtiReq->pdus[numPduEncoded], &vendorMsg->p7_req_vendor.dl_tti_req.pdus[numPduEncoded], \
-										   &currDlSlot->dlInfo.dlMsgAlloc[ueIdx]->dlMsgSchedInfo[idx].dlMsgPdschCfg,\
+										   currDlSlot->dlInfo.dlMsgAlloc[ueIdx]->dlMsgSchedInfo[idx].dlMsgPdcchCfg.dci.pdschCfg,\
 										   currDlSlot->dlInfo.dlMsgAlloc[ueIdx]->dlMsgSchedInfo[idx].bwp, pduIndex);
 								   numPduEncoded++;
 								   pduIndex++;
@@ -4009,9 +4009,10 @@ uint16_t sendTxDataReq(SlotTimingInfo currTimingInfo, MacDlSlot *dlSlot, p_fapi_
             if((dlSlot->dlInfo.rarAlloc[ueIdx]->pduPres == BOTH) || (dlSlot->dlInfo.rarAlloc[ueIdx]->pduPres == PDSCH_PDU))
             {
                fillRarTxDataReq(txDataReq->pdu_desc, pduIndex, &dlSlot->dlInfo.rarAlloc[ueIdx]->rarInfo,\
-                     dlSlot->dlInfo.rarAlloc[ueIdx]->rarPdschCfg);
+                     dlSlot->dlInfo.rarAlloc[ueIdx]->rarPdcchCfg.dci.pdschCfg);
                pduIndex++;
                txDataReq->num_pdus++;
+               MAC_FREE(dlSlot->dlInfo.rarAlloc[ueIdx]->rarPdcchCfg.dci.pdschCfg, sizeof(PdschCfg));
             }
             MAC_FREE(dlSlot->dlInfo.rarAlloc[ueIdx],sizeof(RarAlloc));
          }
@@ -4025,9 +4026,10 @@ uint16_t sendTxDataReq(SlotTimingInfo currTimingInfo, MacDlSlot *dlSlot, p_fapi_
                {
                   fillDlMsgTxDataReq(txDataReq->pdu_desc, pduIndex, \
                         &dlSlot->dlInfo.dlMsgAlloc[ueIdx]->dlMsgSchedInfo[schInfoIdx].dlMsgInfo, \
-                        dlSlot->dlInfo.dlMsgAlloc[ueIdx]->dlMsgSchedInfo[schInfoIdx].dlMsgPdschCfg);
+                        dlSlot->dlInfo.dlMsgAlloc[ueIdx]->dlMsgSchedInfo[schInfoIdx].dlMsgPdcchCfg.dci.pdschCfg);
                   pduIndex++;
                   txDataReq->num_pdus++;
+                  MAC_FREE(dlSlot->dlInfo.dlMsgAlloc[ueIdx]->dlMsgSchedInfo[schInfoIdx].dlMsgPdcchCfg.dci.pdschCfg,sizeof(PdschCfg));
                }
                MAC_FREE(dlSlot->dlInfo.dlMsgAlloc[ueIdx]->dlMsgSchedInfo[schInfoIdx].dlMsgInfo.dlMsgPdu, \
                      dlSlot->dlInfo.dlMsgAlloc[ueIdx]->dlMsgSchedInfo[schInfoIdx].dlMsgInfo.dlMsgPduLen);

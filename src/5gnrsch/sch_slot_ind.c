@@ -212,13 +212,10 @@ bool schFillBoGrantDlSchedInfo(SchCellCb *cell, SlotTimingInfo currTime, uint8_t
       /* Copy all DL_MSG info */
       memcpy(&dlMsgAlloc->dlMsgSchedInfo[dlMsgAlloc->numSchedInfo], \
             &dciSlotAlloc->dlMsgSchedInfo[dciSlotAlloc->numSchedInfo], sizeof(DlMsgSchInfo));
-      dlMsgAlloc->dlMsgSchedInfo[dlMsgAlloc->numSchedInfo].dlMsgPdcchCfg.dci.pdschCfg = \
-            &dlMsgAlloc->dlMsgSchedInfo[dlMsgAlloc->numSchedInfo].dlMsgPdschCfg;
 
       /* Assign correct PDU types in corresponding slots */
       dlMsgAlloc->dlMsgSchedInfo[dlMsgAlloc->numSchedInfo].pduPres = PDSCH_PDU;
       dciSlotAlloc->dlMsgSchedInfo[dciSlotAlloc->numSchedInfo].pduPres = PDCCH_PDU;
-      dciSlotAlloc->dlMsgSchedInfo[dciSlotAlloc->numSchedInfo].pdschSlot = pdschTime.slot;
 
       dciSlotAlloc->numSchedInfo++;
       dlMsgAlloc->numSchedInfo++;
