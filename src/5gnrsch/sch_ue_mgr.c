@@ -1027,7 +1027,7 @@ uint8_t schFillUlDciForMsg3Retx(SchRaCb *raCb, SchPuschInfo *puschInfo, DciInfo 
    dciInfo->dciInfo.beamPdcchInfo.prg[0].beamIdx[0]   = 0;
    dciInfo->dciInfo.txPdcchPower.beta_pdcch_1_0       = 0;
    dciInfo->dciInfo.txPdcchPower.powerControlOffsetSS = 0;
-   dciInfo->dciInfo.pdschCfg                          = NULL; /* No DL data being sent */
+   memset(&dciInfo->dciInfo.pdschCfg, 0, sizeof(PdschCfg));
    msg3HqProc->tbInfo.txCntr++;
 
   puschInfo->harqProcId                       = msg3HqProc->procId;
@@ -1135,7 +1135,7 @@ uint8_t schFillUlDci(SchUeCb *ueCb, SchPuschInfo *puschInfo, DciInfo *dciInfo, b
    dciInfo->dciInfo.beamPdcchInfo.prg[0].beamIdx[0]   = 0;
    dciInfo->dciInfo.txPdcchPower.beta_pdcch_1_0       = 0;
    dciInfo->dciInfo.txPdcchPower.powerControlOffsetSS = 0;
-   dciInfo->dciInfo.pdschCfg                          = NULL; /* No DL data being sent */
+   memset(&dciInfo->dciInfo.pdschCfg, 0, sizeof(PdschCfg));
 
    return ROK;
 }

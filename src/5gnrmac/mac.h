@@ -86,6 +86,12 @@ typedef enum
 
 typedef enum
 {
+   MAC_RA_STATE_MSG4_PENDING,
+   MAC_RA_STATE_MSG4_DONE
+}MacRaState;
+
+typedef enum
+{
    MAC_LC_STATE_INACTIVE,
    MAC_LC_STATE_ACTIVE
 }MacLcState;
@@ -124,6 +130,7 @@ typedef struct macCbInfo
    uint8_t     *msg4Pdu;    /* storing DL-CCCH Ind Pdu */
    uint16_t    msg4PduLen;  /* storing DL-CCCH Ind Pdu Len */
    DlHarqProcCb msg4HqInfo; /* HARQ process info for msg 4 */
+   MacRaState   macRaStatus;
 }MacRaCbInfo;
 
 typedef struct macCe
@@ -267,7 +274,7 @@ void fillMsg4DlData(MacDlData *dlData, uint16_t msg4PduLen, uint8_t *msg4Pdu);
 void fillMacCe(MacCeInfo  *macCeData, uint8_t *msg3Pdu);
 void macMuxPdu(MacDlData *dlData, MacCeInfo *macCeData, uint8_t *msg4TxPdu, uint16_t tbSize);
 uint8_t unpackRxData(uint16_t cellId, SlotTimingInfo slotInfo, RxDataIndPdu *rxDataIndPdu);
-void fillMg4Pdu(DlMsgAlloc *msg4Alloc);
+void fillMg4Pdu(DlMsgSchInfo *msg4Alloc);
 void buildAndSendMuxPdu(SlotTimingInfo currTimingInfo);
 uint8_t macProcUlCcchInd(uint16_t cellId, uint16_t crnti, uint16_t rrcContSize, uint8_t *rrcContainer);
 uint8_t macProcShortBsr(uint16_t cellId, uint16_t crnti, uint8_t lcgId, uint32_t bufferSize);
