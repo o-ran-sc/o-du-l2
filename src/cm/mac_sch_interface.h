@@ -976,6 +976,7 @@ typedef struct schSlotValue
    SlotTimingInfo ulDciTime;
 }SchSlotValue;
 
+/* Reference -> O-RAN.WG8.AAD.0-v07.00, Table 9-36 DCI Format0_0 Configuration */
 typedef struct format0_0
 {
    uint8_t         resourceAllocType;
@@ -985,7 +986,6 @@ typedef struct format0_0
    uint16_t        rowIndex;
    uint8_t         mcs;
    uint8_t         harqProcId;   /* HARQ Process ID */
-   bool            puschHopFlag;
    bool            freqHopFlag;
    uint8_t         ndi;    /* NDI */
    uint8_t         rv;     /* Redundancy Version */
@@ -1010,14 +1010,9 @@ typedef struct format1_1
 /* TBD */
 }Format1_1;
 
-typedef struct dciInfo
+typedef struct dciFormat
 {
-   uint16_t      cellId;   
-   uint16_t      crnti;          /* CRNI */
-   SlotTimingInfo   slotIndInfo;    /* Slot Info: sfn, slot number */
-   BwpCfg        bwpCfg;         /* BWP Cfg */
-   CoresetCfg    coresetCfg;     /* Coreset1 Cfg */
-   FormatType    formatType;     /* DCI Format */
+   FormatType     formatType;     /* DCI Format */
    union
    {
       Format0_0  format0_0;      /* Format 0_0 */
@@ -1025,7 +1020,15 @@ typedef struct dciInfo
       Format1_0  format1_0;      /* Format 1_0 */
       Format1_1  format1_1;      /* Format 1_1 */
    }format;
-   DlDCI    dciInfo;
+}DciFormat;
+
+typedef struct dciInfo
+{
+   uint16_t       crnti;          /* CRNI */
+   BwpCfg         bwpCfg;         /* BWP Cfg */
+   CoresetCfg     coresetCfg;     /* Coreset1 Cfg */
+   DciFormat      dciFormatInfo;  /* Dci Format */
+   DlDCI          dciInfo;        /* DlDCI */
 }DciInfo;
 
 

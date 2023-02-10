@@ -4505,11 +4505,11 @@ void fillUlDciPdu(fapi_dl_dci_t *ulDciPtr, DciInfo *schDciInfo)
        * RBLen = length of contiguously allocted RBs
        * Spec 38.214 Sec 5.1.2.2.2
        */
-      if(schDciInfo->formatType == FORMAT0_0)
+      if(schDciInfo->dciFormatInfo.formatType == FORMAT0_0)
       {
          coreset1Size = schDciInfo->coresetCfg.coreSetSize;
-         rbLen = schDciInfo->format.format0_0.freqAlloc.numPrb;
-         rbStart = schDciInfo->format.format0_0.freqAlloc.startPrb;
+         rbLen = schDciInfo->dciFormatInfo.format.format0_0.freqAlloc.numPrb;
+         rbStart = schDciInfo->dciFormatInfo.format.format0_0.freqAlloc.startPrb;
 
          if((rbLen >=1) && (rbLen <= coreset1Size - rbStart))
          {
@@ -4522,15 +4522,15 @@ void fillUlDciPdu(fapi_dl_dci_t *ulDciPtr, DciInfo *schDciInfo)
             freqDomResAssignSize = ceil(log2(coreset1Size * (coreset1Size + 1) / 2));
          }
          /* Fetching DCI field values */
-         dciFormatId      = schDciInfo->formatType; /* DCI indentifier for UL DCI */
-         timeDomResAssign = schDciInfo->format.format0_0.rowIndex;
-         freqHopFlag      = schDciInfo->format.format0_0.freqHopFlag; 
-         modNCodScheme    = schDciInfo->format.format0_0.mcs;
-         ndi              = schDciInfo->format.format0_0.ndi; 
-         redundancyVer    = schDciInfo->format.format0_0.rv;
-         harqProcessNum   = schDciInfo->format.format0_0.harqProcId; 
-         puschTpc         = schDciInfo->format.format0_0.tpcCmd;
-         ul_SlInd         = schDciInfo->format.format0_0.sUlCfgd;
+         dciFormatId      = schDciInfo->dciFormatInfo.formatType; /* DCI indentifier for UL DCI */
+         timeDomResAssign = schDciInfo->dciFormatInfo.format.format0_0.rowIndex;
+         freqHopFlag      = schDciInfo->dciFormatInfo.format.format0_0.freqHopFlag; 
+         modNCodScheme    = schDciInfo->dciFormatInfo.format.format0_0.mcs;
+         ndi              = schDciInfo->dciFormatInfo.format.format0_0.ndi; 
+         redundancyVer    = schDciInfo->dciFormatInfo.format.format0_0.rv;
+         harqProcessNum   = schDciInfo->dciFormatInfo.format.format0_0.harqProcId; 
+         puschTpc         = schDciInfo->dciFormatInfo.format.format0_0.tpcCmd;
+         ul_SlInd         = schDciInfo->dciFormatInfo.format.format0_0.sUlCfgd;
      
          /* Reversing bits in each DCI field */
          dciFormatId      = reverseBits(dciFormatId, dciFormatIdSize);
