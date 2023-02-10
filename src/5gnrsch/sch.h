@@ -321,7 +321,7 @@ typedef struct schDlSlotInfo
    uint8_t      pdschUe;                  /*!< UE for which PDSCH is scheduled in this slot */
    RarAlloc     *rarAlloc[MAX_NUM_UE];    /*!< RAR allocation per UE*/
    DciInfo      *ulGrant;
-   DlMsgAlloc   *dlMsgAlloc[MAX_NUM_UE];  /*!< Dl msg allocation per UE*/
+   DlMsgSchInfo *dlMsgAlloc[MAX_NUM_UE];  /*!< Dl msg allocation per UE*/
 }SchDlSlotInfo;
 
 typedef struct schRaCb
@@ -710,12 +710,12 @@ uint8_t schProcessMsg4Req(SchCellCb *cell, SlotTimingInfo currTime, uint8_t ueId
 uint8_t schFillRar(SchCellCb *cell, SlotTimingInfo rarTime, uint16_t ueId, RarAlloc *rarAlloc, uint8_t k0Index);
 bool schFillBoGrantDlSchedInfo(SchCellCb *cell, SlotTimingInfo currTime, uint8_t ueId, bool isRetx, SchDlHqProcCb **hqP);
 uint8_t schDlRsrcAllocDlMsg(SchCellCb *cell, SlotTimingInfo slotTime, uint16_t crnti,
-uint32_t tbSize, DlMsgAlloc *dlMsgAlloc, uint16_t startPRB, uint8_t pdschStartSymbol, uint8_t pdschNumSymbols,bool isRetx, SchDlHqProcCb* hqP);
-uint8_t schDlRsrcAllocMsg4(SchCellCb *cell, SlotTimingInfo msg4Time, uint8_t ueId, DlMsgAlloc *msg4Alloc,\
+uint32_t tbSize, DlMsgSchInfo *dlMsgAlloc, uint16_t startPRB, uint8_t pdschStartSymbol, uint8_t pdschNumSymbols,bool isRetx, SchDlHqProcCb* hqP);
+uint8_t schDlRsrcAllocMsg4(SchCellCb *cell, SlotTimingInfo msg4Time, uint8_t ueId, DlMsgSchInfo *msg4Alloc,\
 uint8_t pdschStartSymbol, uint8_t pdschNumSymbols, bool isRetx, SchDlHqProcCb *hqP);
 uint8_t allocatePrbDl(SchCellCb *cell, SlotTimingInfo slotTime, uint8_t startSymbol, uint8_t symbolLength, \
    uint16_t *startPrb, uint16_t numPrb);
-void fillDlMsgInfo(DlMsgInfo *dlMsgInfo, uint8_t crnti, bool isRetx, SchDlHqProcCb* hqP);
+void fillDlMsgInfo(DlMsgSchInfo *dlMsgInfo, uint8_t crnti, bool isRetx, SchDlHqProcCb* hqP);
 bool findValidK0K1Value(SchCellCb *cell, SlotTimingInfo currTime, uint8_t ueId, bool dedMsg, uint8_t *pdschStartSymbol,\
 uint8_t *pdschSymblLen, SlotTimingInfo *pdcchTime,  SlotTimingInfo *pdschTime, SlotTimingInfo *pucchTime, bool isRetx, SchDlHqProcCb *hqP);
 RaRspWindowStatus isInRaRspWindow(SchRaReq *raReq, SlotTimingInfo frameToCheck, uint16_t numSlotsPerSystemFrame);
@@ -734,7 +734,7 @@ uint8_t allocatePrbUl(SchCellCb *cell, SlotTimingInfo slotTime, uint8_t startSym
 bool schProcessSrOrBsrReq(SchCellCb *cell, SlotTimingInfo currTime, uint8_t ueId, bool isRetx, SchUlHqProcCb **hqP);
 
 /*Generic Functions*/
-void updateGrantSizeForBoRpt(CmLListCp *lcLL, DlMsgAlloc *dlMsgAlloc, BsrInfo *bsrInfo, uint32_t *accumalatedBOSize);
+void updateGrantSizeForBoRpt(CmLListCp *lcLL, DlMsgSchInfo *dlMsgAlloc, BsrInfo *bsrInfo, uint32_t *accumalatedBOSize);
 uint16_t searchLargestFreeBlock(SchCellCb *cell, SlotTimingInfo slotTime,uint16_t *startPrb, Direction dir);
 LcInfo* handleLcLList(CmLListCp *lcLL, uint8_t lcId, ActionTypeLL action);
 void prbAllocUsingRRMPolicy(CmLListCp *lcLL, bool dedicatedPRB, uint16_t mcsIdx,uint8_t numSymbols,\
