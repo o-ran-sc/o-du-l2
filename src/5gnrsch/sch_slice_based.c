@@ -985,7 +985,7 @@ uint32_t schSliceBasedScheduleDlLc(SlotTimingInfo pdcchTime, SlotTimingInfo pdsc
    uint32_t accumalatedSize = 0;
    CmLListCp *lcLL = NULLP;
    uint16_t rsvdDedicatedPRB = 0;
-   DlMsgAlloc *dciSlotAlloc;
+   DlMsgSchInfo *dciSlotAlloc;
 
    /* TX_PAYLOAD_HDR_LEN: Overhead which is to be Added once for any UE while estimating Accumulated TB Size
     * Following flag added to keep the record whether TX_PAYLOAD_HDR_LEN is added to the first Node getting allocated.
@@ -1001,7 +1001,7 @@ uint32_t schSliceBasedScheduleDlLc(SlotTimingInfo pdcchTime, SlotTimingInfo pdsc
    {
       /*Re-Initalization per UE*/
       /* scheduled LC data fill */
-      dciSlotAlloc->dlMsgSchedInfo[dciSlotAlloc->numSchedInfo].numLc = 0;
+      dciSlotAlloc->transportBlock[0].numLc = 0;
       isTxPayloadLenAdded = FALSE; /*Re-initlaize the flag for every UE*/
       accumalatedSize = 0;
 
@@ -1027,17 +1027,14 @@ uint32_t schSliceBasedScheduleDlLc(SlotTimingInfo pdcchTime, SlotTimingInfo pdsc
             {
                DU_LOG("\nERROR  --> SCH : Updation in LC List Failed");
                /* Free the dl ded msg info allocated in macSchDlRlcBoInfo */
-               if(dciSlotAlloc->numSchedInfo == 0)
+               if(!dciSlotAlloc->dlMsgPdschCfg)
                {
-                  SCH_FREE(dciSlotAlloc, sizeof(DlMsgAlloc));
+                  SCH_FREE(dciSlotAlloc, sizeof(DlMsgSchInfo));
                   (*hqP)->hqEnt->cell->schDlSlotInfo[pdcchTime.slot]->dlMsgAlloc[ueCb->ueId -1] = NULL;
                }
-               else
-                  memset(&dciSlotAlloc->dlMsgSchedInfo[dciSlotAlloc->numSchedInfo], 0, sizeof(DlMsgSchInfo));
-               return false;
+               return accumalatedSize;
             }
          }
-         ueCb->dlInfo.dlLcCtxt[lcIdx].bo = 0;
       }//End of for loop
 
       if ((schSpcHqProcCb->lcCb.defLcList.count == 0) && (schSpcHqProcCb->lcCb.dedLcList.count == 0))
@@ -1046,16 +1043,13 @@ uint32_t schSliceBasedScheduleDlLc(SlotTimingInfo pdcchTime, SlotTimingInfo pdsc
          UNSET_ONE_BIT((*hqP)->hqEnt->ue->ueId, (*hqP)->hqEnt->cell->boIndBitMap);
 
          /* Free the dl ded msg info allocated in macSchDlRlcBoInfo */
-         if(dciSlotAlloc->numSchedInfo == 0)
+         if(!dciSlotAlloc->dlMsgPdschCfg)
          {
-            SCH_FREE(dciSlotAlloc, sizeof(DlMsgAlloc));
+            SCH_FREE(dciSlotAlloc, sizeof(DlMsgSchInfo));
             (*hqP)->hqEnt->cell->schDlSlotInfo[pdcchTime.slot]->dlMsgAlloc[ueCb->ueId -1] = NULL;
          }
-         else
-            memset(&dciSlotAlloc->dlMsgSchedInfo[dciSlotAlloc->numSchedInfo], 0, sizeof(DlMsgSchInfo));
-
          /*TRUE because this UE has nothing to be scheduled*/
-         return true;
+         return accumalatedSize;
       }
    }
 
