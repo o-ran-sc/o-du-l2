@@ -710,13 +710,15 @@ uint8_t fillSchSib1Cfg(uint8_t mu, uint8_t bandwidth, uint8_t numSlots,SchPdcchC
    pdcch->dci.txPdcchPower.powerControlOffsetSS = 0;
    /* Storing pdschCfg pointer here. Required to access pdsch config while
       fillig up pdcch pdu */
+#if 0   
    SCH_ALLOC(pdcch->dci.pdschCfg, sizeof(PdschCfg));
    if(pdcch->dci.pdschCfg == NULLP)
    {
       DU_LOG("\nERROR  -->  SCH : Memory allocation failed in %s ", __func__);
       return RFAILED;
    }
-   pdsch = pdcch->dci.pdschCfg; 
+#endif   
+   pdsch = &pdcch->dci.pdschCfg; 
 
    /* fill the PDSCH PDU */
    uint8_t cwCount = 0;
@@ -975,7 +977,7 @@ void deleteSchCellCb(SchCellCb *cellCb)
          SCH_FREE(cellCb->cellCfg.plmnInfoList[plmnIdx].snssai, cellCb->cellCfg.plmnInfoList[plmnIdx].numSliceSupport*sizeof(Snssai*));
       }
    }
-   SCH_FREE(cellCb->sib1SchCfg.sib1PdcchCfg.dci.pdschCfg, sizeof(PdschCfg));
+   //SCH_FREE(cellCb->sib1SchCfg.sib1PdcchCfg.dci.pdschCfg, sizeof(PdschCfg));
 
    for(uint16_t idx =0; idx<MAX_SFN; idx++)
    {
@@ -1336,7 +1338,7 @@ uint8_t allocatePrbDl(SchCellCb *cell, SlotTimingInfo slotTime, \
       if(ssbOccasion && sib1Occasion)
       {
          broadcastPrbStart = cell->cellCfg.dlCfgCommon.schFreqInfoDlSib.offsetToPointA; 
-         broadcastPrbEnd = broadcastPrbStart + SCH_SSB_NUM_PRB + cell->sib1SchCfg.sib1PdcchCfg.dci.pdschCfg->pdschFreqAlloc.numPrb -1;
+         broadcastPrbEnd = broadcastPrbStart + SCH_SSB_NUM_PRB + cell->sib1SchCfg.sib1PdcchCfg.dci.pdschCfg.pdschFreqAlloc.numPrb -1;
       }
       else if(ssbOccasion)
       {
@@ -1345,8 +1347,8 @@ uint8_t allocatePrbDl(SchCellCb *cell, SlotTimingInfo slotTime, \
       }
       else if(sib1Occasion)
       {
-         broadcastPrbStart = cell->sib1SchCfg.sib1PdcchCfg.dci.pdschCfg->pdschFreqAlloc.startPrb;
-         broadcastPrbEnd = broadcastPrbStart + cell->sib1SchCfg.sib1PdcchCfg.dci.pdschCfg->pdschFreqAlloc.numPrb -1;
+         broadcastPrbStart = cell->sib1SchCfg.sib1PdcchCfg.dci.pdschCfg.pdschFreqAlloc.startPrb;
+         broadcastPrbEnd = broadcastPrbStart + cell->sib1SchCfg.sib1PdcchCfg.dci.pdschCfg.pdschFreqAlloc.numPrb -1;
       }
 
       /* Iterate through all free PRB blocks */
@@ -1614,7 +1616,7 @@ uint16_t searchLargestFreeBlock(SchCellCb *cell, SlotTimingInfo slotTime,uint16_
       {
          reservedPrbStart = cell->cellCfg.dlCfgCommon.schFreqInfoDlSib.offsetToPointA; 
          reservedPrbEnd = reservedPrbStart + SCH_SSB_NUM_PRB + \
-                          cell->sib1SchCfg.sib1PdcchCfg.dci.pdschCfg->pdschFreqAlloc.numPrb -1;
+                          cell->sib1SchCfg.sib1PdcchCfg.dci.pdschCfg.pdschFreqAlloc.numPrb -1;
       }
       else if(ssbOccasion)
       {
@@ -1623,8 +1625,8 @@ uint16_t searchLargestFreeBlock(SchCellCb *cell, SlotTimingInfo slotTime,uint16_
       }
       else if(sib1Occasion)
       {
-         reservedPrbStart = cell->sib1SchCfg.sib1PdcchCfg.dci.pdschCfg->pdschFreqAlloc.startPrb;
-         reservedPrbEnd = reservedPrbStart + cell->sib1SchCfg.sib1PdcchCfg.dci.pdschCfg->pdschFreqAlloc.numPrb -1;
+         reservedPrbStart = cell->sib1SchCfg.sib1PdcchCfg.dci.pdschCfg.pdschFreqAlloc.startPrb;
+         reservedPrbEnd = reservedPrbStart + cell->sib1SchCfg.sib1PdcchCfg.dci.pdschCfg.pdschFreqAlloc.numPrb -1;
       }
       else
       {
