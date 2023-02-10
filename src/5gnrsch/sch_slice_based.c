@@ -1001,7 +1001,7 @@ uint32_t schSliceBasedScheduleDlLc(SlotTimingInfo pdcchTime, SlotTimingInfo pdsc
    {
       /*Re-Initalization per UE*/
       /* scheduled LC data fill */
-      dciSlotAlloc->dlMsgSchedInfo[dciSlotAlloc->numSchedInfo].numLc = 0;
+      dciSlotAlloc->dlMsgSchedInfo[dciSlotAlloc->numSchedInfo].transportBlock[0].numLc = 0;
       isTxPayloadLenAdded = FALSE; /*Re-initlaize the flag for every UE*/
       accumalatedSize = 0;
 

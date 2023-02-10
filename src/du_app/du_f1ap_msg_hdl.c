@@ -16211,6 +16211,7 @@ uint8_t BuildAndSendUeContextModRsp(DuUeCb *ueCb)
       break;
    }
    FreeUeContextModResp(f1apMsg);
+   //BuildAndSendDUConfigUpdate(SERV_CELL_TO_DELETE);
    return ret;
 }
 

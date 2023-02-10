@@ -229,7 +229,7 @@ uint8_t MacProcRlcDlData(Pst* pstInfo, RlcDlData *dlData)
             break;
       }
 
-      txPduLen = currDlSlot->dlInfo.dlMsgAlloc[ueId-1]->dlMsgSchedInfo[schInfoIdx].dlMsgPdschCfg.codeword[0].tbSize\
+      txPduLen = currDlSlot->dlInfo.dlMsgAlloc[ueId-1]->dlMsgSchedInfo[schInfoIdx].dlMsgPdcchCfg.dci.pdschCfg->codeword[0].tbSize\
                  - TX_PAYLOAD_HDR_LEN;
       MAC_ALLOC(txPdu, txPduLen);
       if(!txPdu)
@@ -239,12 +239,12 @@ uint8_t MacProcRlcDlData(Pst* pstInfo, RlcDlData *dlData)
       }
       macMuxPdu(&macDlData, NULLP, txPdu, txPduLen);
 
-      currDlSlot->dlInfo.dlMsgAlloc[ueId-1]->dlMsgSchedInfo[schInfoIdx].dlMsgInfo.dlMsgPduLen = txPduLen;
-      currDlSlot->dlInfo.dlMsgAlloc[ueId-1]->dlMsgSchedInfo[schInfoIdx].dlMsgInfo.dlMsgPdu = txPdu;
+      currDlSlot->dlInfo.dlMsgAlloc[ueId-1]->dlMsgSchedInfo[schInfoIdx].dlMsgPduLen = txPduLen;
+      currDlSlot->dlInfo.dlMsgAlloc[ueId-1]->dlMsgSchedInfo[schInfoIdx].dlMsgPdu = txPdu;
       /* Add muxed TB to DL HARQ Proc CB. This will be used if retranmission of
        * TB is requested in future. */
       updateNewTbInDlHqProcCb(dlData->slotInfo, &macCb.macCell[cellIdx]->ueCb[ueId -1], \
-         currDlSlot->dlInfo.dlMsgAlloc[ueId-1]->dlMsgSchedInfo[schInfoIdx].dlMsgPdschCfg.codeword[0].tbSize, txPdu);
+         currDlSlot->dlInfo.dlMsgAlloc[ueId-1]->dlMsgSchedInfo[schInfoIdx].dlMsgPdcchCfg.dci.pdschCfg->codeword[0].tbSize, txPdu);
    }
 
    for(lcIdx = 0; lcIdx < dlData->numLc; lcIdx++)
@@ -398,12 +398,12 @@ uint8_t sendSchedRptToRlc(DlSchedInfo dlInfo, SlotTimingInfo slotInfo, uint8_t u
 
    if(dlInfo.dlMsgAlloc[ueIdx])
    {
-      schedRpt->rnti = dlInfo.dlMsgAlloc[ueIdx]->crnti;
-      schedRpt->numLc = dlInfo.dlMsgAlloc[ueIdx]->dlMsgSchedInfo[schInfoIdx].numLc;
+      schedRpt->rnti = dlInfo.dlMsgAlloc[ueIdx]->dlMsgSchedInfo[schInfoIdx].crnti;
+      schedRpt->numLc = dlInfo.dlMsgAlloc[ueIdx]->dlMsgSchedInfo[schInfoIdx].transportBlock[0].numLc;
       for(lcIdx = 0; lcIdx < schedRpt->numLc; lcIdx++)
       {
-         schedRpt->lcSch[lcIdx].lcId = dlInfo.dlMsgAlloc[ueIdx]->dlMsgSchedInfo[schInfoIdx].lcSchInfo[lcIdx].lcId;
-         schedRpt->lcSch[lcIdx].bufSize = dlInfo.dlMsgAlloc[ueIdx]->dlMsgSchedInfo[schInfoIdx].lcSchInfo[lcIdx].schBytes;
+         schedRpt->lcSch[lcIdx].lcId = dlInfo.dlMsgAlloc[ueIdx]->dlMsgSchedInfo[schInfoIdx].transportBlock[0].lcSchInfo[lcIdx].lcId;
+         schedRpt->lcSch[lcIdx].bufSize = dlInfo.dlMsgAlloc[ueIdx]->dlMsgSchedInfo[schInfoIdx].transportBlock[0].lcSchInfo[lcIdx].schBytes;
       }
    }
 

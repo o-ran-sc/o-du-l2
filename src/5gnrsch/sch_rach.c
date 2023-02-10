@@ -689,7 +689,7 @@ bool schProcessRaReq(Inst schInst, SchCellCb *cell, SlotTimingInfo currTime, uin
       }
 
       /* Fill RAR info */
-      dciSlotAlloc->rarInfo.raRnti = cell->raReq[ueId-1]->raRnti;
+      dciSlotAlloc->raRnti = cell->raReq[ueId-1]->raRnti;
       dciSlotAlloc->rarInfo.tcrnti = cell->raReq[ueId-1]->rachInd->crnti;
       dciSlotAlloc->rarInfo.RAPID = cell->raReq[ueId-1]->rachInd->preambleIdx;
       dciSlotAlloc->rarInfo.ta = cell->raReq[ueId-1]->rachInd->timingAdv;
@@ -739,12 +739,10 @@ bool schProcessRaReq(Inst schInst, SchCellCb *cell, SlotTimingInfo currTime, uin
 
          /* Copy all RAR info */
          memcpy(rarSlotAlloc, dciSlotAlloc, sizeof(RarAlloc));
-         rarSlotAlloc->rarPdcchCfg.dci.pdschCfg = &rarSlotAlloc->rarPdschCfg;
 
          /* Assign correct PDU types in corresponding slots */
          rarSlotAlloc->pduPres = PDSCH_PDU;
          dciSlotAlloc->pduPres = PDCCH_PDU;
-         dciSlotAlloc->pdschSlot = rarSlot;  
       }
 
       cell->schDlSlotInfo[dciSlot]->pdcchUe = ueId;
@@ -861,10 +859,10 @@ uint8_t schFillRar(SchCellCb *cell, SlotTimingInfo rarTime, uint16_t ueId, RarAl
    uint8_t  dmrsStartSymbol, startSymbol, numSymbol ;
    uint16_t numRbs = 0;
    uint16_t tbSize = 0;
+   PdschCfg *pdsch;
 
    SchBwpDlCfg *initialBwp = &cell->cellCfg.schInitialDlBwp;
    PdcchCfg *pdcch = &rarAlloc->rarPdcchCfg;
-   PdschCfg *pdsch = &rarAlloc->rarPdschCfg;
    BwpCfg *bwp = &rarAlloc->bwp;
 
    /* derive the sib1 coreset0 params from table 13-1 spec 38.213 */
@@ -915,8 +913,13 @@ uint8_t schFillRar(SchCellCb *cell, SlotTimingInfo rarTime, uint16_t ueId, RarAl
    pdcch->dci.beamPdcchInfo.prg[0].beamIdx[0] = 0;
    pdcch->dci.txPdcchPower.beta_pdcch_1_0 = 0;
    pdcch->dci.txPdcchPower.powerControlOffsetSS = 0;
-   pdcch->dci.pdschCfg = pdsch;
-
+   SCH_ALLOC(pdcch->dci.pdschCfg, sizeof(PdschCfg));
+   if(pdcch->dci.pdschCfg == NULLP)
+   {
+      DU_LOG("\nERROR  --> SCH : Memory allocation failed in %s",__func__);
+      return RFAILED;
+   }
+   pdsch = pdcch->dci.pdschCfg;
    /* fill the PDSCH PDU */
    uint8_t cwCount = 0;
    pdsch->pduBitmap = 0; /* PTRS and CBG params are excluded */

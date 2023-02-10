@@ -47,11 +47,11 @@ void addDlHqProcInUe(SlotTimingInfo dlMsgTime, MacUeCb *ueCb, DlMsgSchInfo sched
    DlHarqProcCb  *hqProcCb = NULLP;
 
    dlHqEnt = &ueCb->dlInfo.dlHarqEnt;  
-   hqProcId = schedInfo.dlMsgInfo.harqProcNum;
+   hqProcId = schedInfo.harqProcNum;
    hqProcCb = &dlHqEnt->harqProcCb[hqProcId];
 
    /* Check if harqProcId is already present in UE's DL HARQ Entity */
-   if(hqProcCb->procId == schedInfo.dlMsgInfo.harqProcNum)
+   if(hqProcCb->procId == schedInfo.harqProcNum)
    {
       /* Expected Behaviour:
        * If a HARQ proc is already present in DL HARQ entity, it means this HARQ proc 
@@ -72,10 +72,10 @@ void addDlHqProcInUe(SlotTimingInfo dlMsgTime, MacUeCb *ueCb, DlMsgSchInfo sched
 
    /* Fill HARQ Proc Cb */
    hqProcCb->procId = hqProcId;
-   for(cwIdx = 0; cwIdx < schedInfo.dlMsgPdschCfg.numCodewords; cwIdx++)
+   for(cwIdx = 0; cwIdx < schedInfo.dlMsgPdcchCfg.dci.pdschCfg->numCodewords; cwIdx++)
    {
       memcpy(&hqProcCb->tbInfo[hqProcCb->numTb].txTime, &dlMsgTime, sizeof(SlotTimingInfo));
-      hqProcCb->tbInfo[hqProcCb->numTb].tbSize = schedInfo.dlMsgPdschCfg.codeword[cwIdx].tbSize;
+      hqProcCb->tbInfo[hqProcCb->numTb].tbSize = schedInfo.dlMsgPdcchCfg.dci.pdschCfg->codeword[cwIdx].tbSize;
       hqProcCb->numTb++;
    }
    return;

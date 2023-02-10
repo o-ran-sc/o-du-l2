@@ -2919,7 +2919,7 @@ void fillRarDlDciPdu(fapi_dl_dci_t *dlDciPtr, PdcchCfg *rarPdcchInfo)
  *
  ******************************************************************/
 void fillDlMsgDlDciPdu(fapi_dl_dci_t *dlDciPtr, PdcchCfg *pdcchInfo,\
-      DlMsgInfo *dlMsgInfo)
+      DlMsgSchInfo *dlMsgSchInfo)
 {
    if(dlDciPtr != NULLP)
    {
@@ -2992,17 +2992,17 @@ void fillDlMsgDlDciPdu(fapi_dl_dci_t *dlDciPtr, PdcchCfg *pdcchInfo,\
       }
 
       /* Fetching DCI field values */
-      dciFormatId      = dlMsgInfo->dciFormatId;     /* Always set to 1 for DL */
+      dciFormatId      = dlMsgSchInfo->dciFormatId;     /* Always set to 1 for DL */
       timeDomResAssign = pdcchInfo->dci.pdschCfg->pdschTimeAlloc.rowIndex -1;
       VRB2PRBMap       = pdcchInfo->dci.pdschCfg->pdschFreqAlloc.vrbPrbMapping;
       modNCodScheme    = pdcchInfo->dci.pdschCfg->codeword[0].mcsIndex;
-      ndi              = dlMsgInfo->ndi;
+      ndi              = dlMsgSchInfo->transportBlock[0].ndi;
       redundancyVer    = pdcchInfo->dci.pdschCfg->codeword[0].rvIndex;
-      harqProcessNum   = dlMsgInfo->harqProcNum;
-      dlAssignmentIdx  = dlMsgInfo->dlAssignIdx;
-      pucchTpc         = dlMsgInfo->pucchTpc;
-      pucchResoInd     = dlMsgInfo->pucchResInd;
-      harqFeedbackInd  = dlMsgInfo->harqFeedbackInd;
+      harqProcessNum   = dlMsgSchInfo->harqProcNum;
+      dlAssignmentIdx  = dlMsgSchInfo->dlAssignIdx;
+      pucchTpc         = dlMsgSchInfo->pucchTpc;
+      pucchResoInd     = dlMsgSchInfo->pucchResInd;
+      harqFeedbackInd  = dlMsgSchInfo->harqFeedbackInd;
 
       /* Reversing bits in each DCI field */
       dciFormatId      = reverseBits(dciFormatId, dciFormatIdSize);
@@ -3121,7 +3121,7 @@ uint8_t fillPdcchPdu(fapi_dl_tti_req_pdu_t *dlTtiReqPdu, fapi_vendor_dl_tti_req_
          pdcchInfo = &dlSlot->dlInfo.dlMsgAlloc[ueIdx]->dlMsgSchedInfo[dlMsgSchInfoIdx].dlMsgPdcchCfg;
          bwp = &dlSlot->dlInfo.dlMsgAlloc[ueIdx]->dlMsgSchedInfo[dlMsgSchInfoIdx].bwp;
          fillDlMsgDlDciPdu(dlTtiReqPdu->pdu.pdcch_pdu.dlDci, pdcchInfo,\
-               &dlSlot->dlInfo.dlMsgAlloc[ueIdx]->dlMsgSchedInfo[dlMsgSchInfoIdx].dlMsgInfo);
+               &dlSlot->dlInfo.dlMsgAlloc[ueIdx]->dlMsgSchedInfo[dlMsgSchInfoIdx]);
       }
       else
       {
@@ -3504,7 +3504,7 @@ uint8_t fillPageTxDataReq(fapi_tx_pdu_desc_t *pduDesc, uint16_t pduIndex, DlPage
  * @return ROK
  *
  * ********************************************************************/
-uint8_t fillRarTxDataReq(fapi_tx_pdu_desc_t *pduDesc, uint16_t pduIndex, RarInfo *rarInfo, PdschCfg pdschCfg)
+uint8_t fillRarTxDataReq(fapi_tx_pdu_desc_t *pduDesc, uint16_t pduIndex, RarInfo *rarInfo, PdschCfg *pdschCfg)
 {
    uint16_t payloadSize;
    uint8_t  *rarPayload = NULLP;
@@ -3517,7 +3517,7 @@ uint8_t fillRarTxDataReq(fapi_tx_pdu_desc_t *pduDesc, uint16_t pduIndex, RarInfo
    pduDesc[pduIndex].num_tlvs = 1;
 
    /* fill the TLV */
-   payloadSize = pdschCfg.codeword[0].tbSize;
+   payloadSize = pdschCfg->codeword[0].tbSize;
    pduDesc[pduIndex].tlvs[0].tl.tag = FAPI_TX_DATA_PTR_TO_PAYLOAD_64;
    pduDesc[pduIndex].tlvs[0].tl.length = payloadSize;
    LWR_MAC_ALLOC(rarPayload, payloadSize);
@@ -3563,7 +3563,7 @@ uint8_t fillRarTxDataReq(fapi_tx_pdu_desc_t *pduDesc, uint16_t pduIndex, RarInfo
  * @return ROK
  *
  * ********************************************************************/
-uint8_t fillDlMsgTxDataReq(fapi_tx_pdu_desc_t *pduDesc, uint16_t pduIndex, DlMsgInfo *dlMsgInfo, PdschCfg pdschCfg)
+uint8_t fillDlMsgTxDataReq(fapi_tx_pdu_desc_t *pduDesc, uint16_t pduIndex, DlMsgSchInfo *dlMsgSchInfo, PdschCfg *pdschCfg)
 {
    uint16_t payloadSize;
    uint8_t  *dlMsgPayload = NULLP;
@@ -3576,7 +3576,7 @@ uint8_t fillDlMsgTxDataReq(fapi_tx_pdu_desc_t *pduDesc, uint16_t pduIndex, DlMsg
    pduDesc[pduIndex].num_tlvs = 1;
 
    /* fill the TLV */
-   payloadSize = pdschCfg.codeword[0].tbSize;
+   payloadSize = pdschCfg->codeword[0].tbSize;
    pduDesc[pduIndex].tlvs[0].tl.tag = FAPI_TX_DATA_PTR_TO_PAYLOAD_64;
    pduDesc[pduIndex].tlvs[0].tl.length = payloadSize;
    LWR_MAC_ALLOC(dlMsgPayload, payloadSize);
@@ -3585,8 +3585,8 @@ uint8_t fillDlMsgTxDataReq(fapi_tx_pdu_desc_t *pduDesc, uint16_t pduIndex, DlMsg
       return RFAILED;
    }
    payloadElem = (fapi_api_queue_elem_t *)dlMsgPayload;
-   FILL_FAPI_LIST_ELEM(payloadElem, NULLP, FAPI_VENDOR_MSG_PHY_ZBC_BLOCK_REQ, 1, dlMsgInfo->dlMsgPduLen);
-   memcpy(dlMsgPayload + TX_PAYLOAD_HDR_LEN, dlMsgInfo->dlMsgPdu, dlMsgInfo->dlMsgPduLen);
+   FILL_FAPI_LIST_ELEM(payloadElem, NULLP, FAPI_VENDOR_MSG_PHY_ZBC_BLOCK_REQ, 1, dlMsgSchInfo->dlMsgPduLen);
+   memcpy(dlMsgPayload + TX_PAYLOAD_HDR_LEN, dlMsgSchInfo->dlMsgPdu, dlMsgSchInfo->dlMsgPduLen);
 
 #ifdef INTEL_WLS_MEM
    mtGetWlsHdl(&wlsHdlr);
@@ -3791,13 +3791,13 @@ uint16_t fillDlTtiReq(SlotTimingInfo currTimingInfo)
 							   (currDlSlot->dlInfo.rarAlloc[ueIdx]->pduPres == PDSCH_PDU))
 					   {
 						   fillPdschPdu(&dlTtiReq->pdus[numPduEncoded], &vendorMsg->p7_req_vendor.dl_tti_req.pdus[numPduEncoded],
-								   &currDlSlot->dlInfo.rarAlloc[ueIdx]->rarPdschCfg,
+								   currDlSlot->dlInfo.rarAlloc[ueIdx]->rarPdcchCfg.dci.pdschCfg,
 								   currDlSlot->dlInfo.rarAlloc[ueIdx]->bwp,
 								   pduIndex);
 						   numPduEncoded++;
 						   pduIndex++;
 
-						   DU_LOG("\033[1;32m");
+                     DU_LOG("\033[1;32m");
 						   DU_LOG("\nDEBUG  -->  LWR_MAC: RAR sent...");
 						   DU_LOG("\033[0m");
 					   }
@@ -3811,35 +3811,26 @@ uint16_t fillDlTtiReq(SlotTimingInfo currTimingInfo)
 						   if((currDlSlot->dlInfo.dlMsgAlloc[ueIdx]->dlMsgSchedInfo[idx].pduPres == BOTH) || \
 								   (currDlSlot->dlInfo.dlMsgAlloc[ueIdx]->dlMsgSchedInfo[idx].pduPres == PDCCH_PDU))
 						   {
-							   if(currDlSlot->dlInfo.dlMsgAlloc[ueIdx]->dlMsgSchedInfo[idx].dlMsgInfo.isMsg4Pdu)
-							   {
-								   rntiType = TC_RNTI_TYPE;
-								   fillPdcchPdu(&dlTtiReq->pdus[numPduEncoded], &vendorMsg->p7_req_vendor.dl_tti_req.pdus[numPduEncoded],
-										   currDlSlot, idx, rntiType, CORESET_TYPE0, ueIdx);
-							   }
-							   else
-							   { 
-								   /* Filling other DL msg params */
-								   rntiType = C_RNTI_TYPE;
-								   fillPdcchPdu(&dlTtiReq->pdus[numPduEncoded], &vendorMsg->p7_req_vendor.dl_tti_req.pdus[numPduEncoded],
-										   currDlSlot, idx, rntiType, CORESET_TYPE1, ueIdx);
-							   }
+                        rntiType = C_RNTI_TYPE;
+                        fillPdcchPdu(&dlTtiReq->pdus[numPduEncoded], &vendorMsg->p7_req_vendor.dl_tti_req.pdus[numPduEncoded],
+                              currDlSlot, idx, rntiType, currDlSlot->dlInfo.dlMsgAlloc[ueIdx]->dlMsgSchedInfo[idx].dlMsgPdcchCfg.coresetCfg.coreSetType, ueIdx);
+                        DU_LOG("\nPBORLA msg4 coreset val %d",currDlSlot->dlInfo.dlMsgAlloc[ueIdx]->dlMsgSchedInfo[idx].dlMsgPdcchCfg.coresetCfg.coreSetType);
 							   numPduEncoded++;
 						   }
 
-						   if(currDlSlot->dlInfo.dlMsgAlloc[ueIdx]->dlMsgSchedInfo[idx].dlMsgInfo.dlMsgPdu != NULLP)
+						   if(currDlSlot->dlInfo.dlMsgAlloc[ueIdx]->dlMsgSchedInfo[idx].dlMsgPdu != NULLP)
 						   {
 							   if((currDlSlot->dlInfo.dlMsgAlloc[ueIdx]->dlMsgSchedInfo[idx].pduPres == BOTH) || \
 									   (currDlSlot->dlInfo.dlMsgAlloc[ueIdx]->dlMsgSchedInfo[idx].pduPres == PDSCH_PDU))
 							   {
 								   fillPdschPdu(&dlTtiReq->pdus[numPduEncoded], &vendorMsg->p7_req_vendor.dl_tti_req.pdus[numPduEncoded], \
-										   &currDlSlot->dlInfo.dlMsgAlloc[ueIdx]->dlMsgSchedInfo[idx].dlMsgPdschCfg,\
+										   currDlSlot->dlInfo.dlMsgAlloc[ueIdx]->dlMsgSchedInfo[idx].dlMsgPdcchCfg.dci.pdschCfg,\
 										   currDlSlot->dlInfo.dlMsgAlloc[ueIdx]->dlMsgSchedInfo[idx].bwp, pduIndex);
 								   numPduEncoded++;
 								   pduIndex++;
 
 								   DU_LOG("\033[1;32m");
-								   if(currDlSlot->dlInfo.dlMsgAlloc[ueIdx]->dlMsgSchedInfo[idx].dlMsgInfo.isMsg4Pdu)
+								   if(currDlSlot->dlInfo.dlMsgAlloc[ueIdx]->dlMsgSchedInfo[idx].dlMsgPdcchCfg.coresetCfg.coreSetType == CORESET_TYPE0)
 								   {
 									   DU_LOG("\nDEBUG  -->  LWR_MAC: MSG4 sent...");
 								   }
@@ -4009,9 +4000,10 @@ uint16_t sendTxDataReq(SlotTimingInfo currTimingInfo, MacDlSlot *dlSlot, p_fapi_
             if((dlSlot->dlInfo.rarAlloc[ueIdx]->pduPres == BOTH) || (dlSlot->dlInfo.rarAlloc[ueIdx]->pduPres == PDSCH_PDU))
             {
                fillRarTxDataReq(txDataReq->pdu_desc, pduIndex, &dlSlot->dlInfo.rarAlloc[ueIdx]->rarInfo,\
-                     dlSlot->dlInfo.rarAlloc[ueIdx]->rarPdschCfg);
+                     dlSlot->dlInfo.rarAlloc[ueIdx]->rarPdcchCfg.dci.pdschCfg);
                pduIndex++;
                txDataReq->num_pdus++;
+               MAC_FREE(dlSlot->dlInfo.rarAlloc[ueIdx]->rarPdcchCfg.dci.pdschCfg, sizeof(PdschCfg));
             }
             MAC_FREE(dlSlot->dlInfo.rarAlloc[ueIdx],sizeof(RarAlloc));
          }
@@ -4024,14 +4016,15 @@ uint16_t sendTxDataReq(SlotTimingInfo currTimingInfo, MacDlSlot *dlSlot, p_fapi_
                      (dlSlot->dlInfo.dlMsgAlloc[ueIdx]->dlMsgSchedInfo[schInfoIdx].pduPres == PDSCH_PDU))
                {
                   fillDlMsgTxDataReq(txDataReq->pdu_desc, pduIndex, \
-                        &dlSlot->dlInfo.dlMsgAlloc[ueIdx]->dlMsgSchedInfo[schInfoIdx].dlMsgInfo, \
-                        dlSlot->dlInfo.dlMsgAlloc[ueIdx]->dlMsgSchedInfo[schInfoIdx].dlMsgPdschCfg);
+                        &dlSlot->dlInfo.dlMsgAlloc[ueIdx]->dlMsgSchedInfo[schInfoIdx], \
+                        dlSlot->dlInfo.dlMsgAlloc[ueIdx]->dlMsgSchedInfo[schInfoIdx].dlMsgPdcchCfg.dci.pdschCfg);
                   pduIndex++;
                   txDataReq->num_pdus++;
+                  MAC_FREE(dlSlot->dlInfo.dlMsgAlloc[ueIdx]->dlMsgSchedInfo[schInfoIdx].dlMsgPdcchCfg.dci.pdschCfg,sizeof(PdschCfg));
                }
-               MAC_FREE(dlSlot->dlInfo.dlMsgAlloc[ueIdx]->dlMsgSchedInfo[schInfoIdx].dlMsgInfo.dlMsgPdu, \
-                     dlSlot->dlInfo.dlMsgAlloc[ueIdx]->dlMsgSchedInfo[schInfoIdx].dlMsgInfo.dlMsgPduLen);
-               dlSlot->dlInfo.dlMsgAlloc[ueIdx]->dlMsgSchedInfo[schInfoIdx].dlMsgInfo.dlMsgPdu = NULLP;
+               MAC_FREE(dlSlot->dlInfo.dlMsgAlloc[ueIdx]->dlMsgSchedInfo[schInfoIdx].dlMsgPdu, \
+                     dlSlot->dlInfo.dlMsgAlloc[ueIdx]->dlMsgSchedInfo[schInfoIdx].dlMsgPduLen);
+               dlSlot->dlInfo.dlMsgAlloc[ueIdx]->dlMsgSchedInfo[schInfoIdx].dlMsgPdu = NULLP;
             }
             MAC_FREE(dlSlot->dlInfo.dlMsgAlloc[ueIdx], sizeof(DlMsgAlloc));
          }

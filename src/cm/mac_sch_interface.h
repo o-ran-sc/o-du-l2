@@ -908,7 +908,6 @@ typedef struct msg3UlGrant
 
 typedef struct rarInfo
 {
-   uint16_t        raRnti;
    uint8_t         RAPID;
    uint16_t        ta;
    Msg3UlGrant     ulGrant;
@@ -919,51 +918,70 @@ typedef struct rarInfo
 
 typedef struct rarAlloc
 {
+   uint16_t   raRnti;
+   RarInfo    rarInfo;
+   BwpCfg     bwp;
+   PdcchCfg   rarPdcchCfg;
    DlPduType  pduPres;
-   uint8_t    pdschSlot;
-   RarInfo rarInfo;
-   BwpCfg  bwp;
-   PdcchCfg rarPdcchCfg;
-   PdschCfg rarPdschCfg;
 }RarAlloc;
-
-typedef struct dlMsgInfo
-{
-   uint16_t crnti;
-   uint8_t  ndi;
-   uint8_t  harqProcNum;
-   uint8_t  dlAssignIdx;
-   uint8_t  pucchTpc;
-   uint8_t  pucchResInd;
-   uint8_t  harqFeedbackInd;
-   uint8_t  dciFormatId;
-   bool     isMsg4Pdu;
-   uint16_t  dlMsgPduLen;
-   uint8_t  *dlMsgPdu;
-}DlMsgInfo;
 
 typedef struct lcSchInfo
 {
    uint8_t   lcId;
-   uint32_t  schBytes; /* Number of scheduled bytes */
+   uint32_t  schBytes; 
 }LcSchInfo;
+
+typedef struct ceSchInfo
+{
+   uint8_t   ceLcId;
+   uint8_t   *ceContent; 
+}CeSchInfo;
+
+typedef struct freqDomainAlloc
+{
+   uint8_t          resAllocType; /* Resource allocation type */
+   union
+   {
+      ResAllocType0    type0;
+      ResAllocType1    type1;
+   }resAlloc;
+}FreqDomainAlloc;
+
+typedef struct transportBlock
+{
+   uint8_t    mcs;       
+   bool       ndi;       
+   uint8_t    rv;        
+   uint16_t   tbSize;    
+   uint8_t    numCe;
+   CeSchInfo  ceSchInfo[MAX_NUM_LC]; 
+   uint8_t    numLc;
+   LcSchInfo  lcSchInfo[MAX_NUM_LC]; 
+}TransportBlock;
 
 typedef struct dlMsgSchedInfo
 {
-   bool       isRetx;
-   uint8_t    numLc;
-   LcSchInfo  lcSchInfo[MAX_NUM_LC]; /* Scheduled LC info */
-   BwpCfg     bwp;
-   PdcchCfg   dlMsgPdcchCfg;
-   PdschCfg   dlMsgPdschCfg;
-   DlPduType  pduPres;
-   uint8_t    pdschSlot;
-   DlMsgInfo  dlMsgInfo;
+   uint16_t        crnti;
+   uint8_t         dciFormatId;
+   uint8_t         harqProcNum;
+   bool            vrbPrbMapping;
+   uint8_t         dlAssignIdx;
+   uint8_t         pucchTpc;
+   uint8_t         pucchResInd;
+   uint8_t         harqFeedbackInd;
+   uint16_t        dlMsgPduLen;
+   uint8_t         *dlMsgPdu;
+   FreqDomainAlloc freqAlloc;
+   TimeDomainAlloc timeAlloc;
+   uint8_t         numOfTbs;
+   TransportBlock  transportBlock[2];
+   BwpCfg          bwp;
+   PdcchCfg        dlMsgPdcchCfg;
+   DlPduType       pduPres;
 }DlMsgSchInfo;
 
 typedef struct dlMsgAlloc
 {
-   uint16_t     crnti;
    uint8_t      numSchedInfo;
    DlMsgSchInfo dlMsgSchedInfo[2];
 }DlMsgAlloc;
@@ -977,15 +995,6 @@ typedef struct schSlotValue
    SlotTimingInfo ulDciTime;
 }SchSlotValue;
 
-typedef struct freqDomainAlloc
-{
-   uint8_t          resAllocType; /* Resource allocation type */
-   union
-   {
-      ResAllocType0    type0;
-      ResAllocType1    type1;
-   }resAlloc;
-}FreqDomainAlloc;
 
 /* Reference -> O-RAN.WG8.AAD.0-v07.00, Table 9-36 DCI Format0_0 Configuration */
 typedef struct format0_0
