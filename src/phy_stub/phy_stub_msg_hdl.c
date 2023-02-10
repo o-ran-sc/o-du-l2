@@ -957,11 +957,13 @@ S16 l1HdlDlTtiReq(uint16_t msgLen, void *msg)
       }
       else if(dlTtiReq->pdus[pduCount].pduType == 0)
       {
-         DU_LOG("\nINFO   -->  PHY_STUB: PDCCH PDU");
+         DU_LOG("\nINFO   -->  PHY_STUB: PDCCH PDU ueId %d",dlTtiReq->pdus[pduCount].pdu.pdcch_pdu.dlDci[0].rnti);
+         //DU_LOG("\nINFO   -->  PHY_STUB: PDCCH PDU");
       }
       else if(dlTtiReq->pdus[pduCount].pduType == 1)
       {
-         DU_LOG("\nINFO   -->  PHY_STUB: PDSCH PDU");
+          DU_LOG("\nINFO   -->  PHY_STUB: PDSCH PDU ueid %d ", dlTtiReq->pdus[pduCount].pdu.pdsch_pdu.rnti);
+         //DU_LOG("\nINFO   -->  PHY_STUB: PDSCH PDU");
       }
    }
 

@@ -26,11 +26,11 @@
 #define CU_IP_V6_ADDR "0000:0000:0000:0000:0000:0000:0000:0011"
 
 #ifndef O1_ENABLE
-#define LOCAL_IP_CU "192.168.130.82"
+#define LOCAL_IP_CU "192.168.130.72"
 
 #define F1_SCTP_PORT 38472  /* As per the spec 38.472, the registered port number for F1AP is 38472 */
 #define NUM_F1_ASSOC 1  
-#define REMOTE_IP_DU (char*[]){"192.168.130.81", "192.168.130.83"}
+#define REMOTE_IP_DU (char*[]){"192.168.130.71", "192.168.130.83"}
 
 #define XN_SCTP_PORT 38422 /* As per 3GPP TS 38.422, The SCTP Destination Port number value assigned by IANA to be used for XnAP is 38422 */
 #define NUM_XN_ASSOC 0
