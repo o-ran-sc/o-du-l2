@@ -133,8 +133,8 @@ uint8_t tst()
 
 void readCuCfg()
 {
-   uint8_t  numDu;
-   uint32_t ipv4_du, ipv4_cu;
+   uint8_t  numDu, *numRemoteCu;
+   uint32_t ipv4_du, ipv4_cu, ipv4_remote_cu;
 
    DU_LOG("\nDEBUG  -->  CU_STUB : Reading CU configurations");
 
@@ -179,13 +179,15 @@ void readCuCfg()
 
    cuCb.cuCfgParams.sctpParams.localIpAddr.ipV4Addr = ipv4_cu;
    cuCb.cuCfgParams.sctpParams.localIpAddr.ipV6Pres = false;
-   cuCb.cuCfgParams.sctpParams.f1SctpPort = F1_SCTP_PORT;
+
+   /* SCTP and EGTP configuration for F1 Interface */
+   cuCb.cuCfgParams.sctpParams.f1SctpInfo.port = F1_SCTP_PORT;
 
    cuCb.cuCfgParams.egtpParams.localIp.ipV4Pres = TRUE;
    cuCb.cuCfgParams.egtpParams.localIp.ipV4Addr = ipv4_cu;
    cuCb.cuCfgParams.egtpParams.localPort = F1_EGTP_PORT;
 
-   cuCb.cuCfgParams.sctpParams.numDestNode = 0;
+   cuCb.cuCfgParams.sctpParams.f1SctpInfo.numDestNode = 0;
    cuCb.cuCfgParams.egtpParams.numDu = 0;
 
    numDu = 0;
@@ -196,9 +198,9 @@ void readCuCfg()
       cmInetAddr((S8*)REMOTE_IP_DU[numDu], &ipv4_du);
       
       /* SCTP Parameters */
-      cuCb.cuCfgParams.sctpParams.destCb[numDu].destIpAddr.ipV4Addr = ipv4_du;
-      cuCb.cuCfgParams.sctpParams.destCb[numDu].destIpAddr.ipV6Pres = false;
-      cuCb.cuCfgParams.sctpParams.destCb[numDu].destPort = F1_SCTP_PORT;
+      cuCb.cuCfgParams.sctpParams.f1SctpInfo.destCb[numDu].destIpAddr.ipV4Addr = ipv4_du;
+      cuCb.cuCfgParams.sctpParams.f1SctpInfo.destCb[numDu].destIpAddr.ipV6Pres = false;
+      cuCb.cuCfgParams.sctpParams.f1SctpInfo.destCb[numDu].destPort = F1_SCTP_PORT;
 
       /* EGTP Parameters */
       cuCb.cuCfgParams.egtpParams.dstCfg[numDu].dstIp.ipV4Pres = TRUE;
@@ -212,7 +214,26 @@ void readCuCfg()
    cuCb.cuCfgParams.egtpParams.currTunnelId = cuCb.cuCfgParams.egtpParams.minTunnelId;
    cuCb.cuCfgParams.egtpParams.maxTunnelId = MAX_TEID;
    cuCb.cuCfgParams.egtpParams.numDu = numDu;
-   cuCb.cuCfgParams.sctpParams.numDestNode = numDu;
+   cuCb.cuCfgParams.sctpParams.f1SctpInfo.numDestNode = numDu;
+
+   /* SCTP configuration for Xn interface */
+   cuCb.cuCfgParams.sctpParams.xnSctpInfo.port = XN_SCTP_PORT;
+   cuCb.cuCfgParams.sctpParams.xnSctpInfo.localNodeType = LOCAL_NODE_TYPE;
+   numRemoteCu = &cuCb.cuCfgParams.sctpParams.xnSctpInfo.numDestNode;   
+   (*numRemoteCu) = 0;
+   while((*numRemoteCu) < NUM_XN_ASSOC)
+   {
+      /* Remote CU IP address */
+      memset(&ipv4_remote_cu, 0, sizeof(uint32_t));
+      cmInetAddr((S8*)REMOTE_IP_CU[*numRemoteCu], &ipv4_remote_cu);
+
+      /* SCTP Parameters */
+      cuCb.cuCfgParams.sctpParams.xnSctpInfo.destCb[*numRemoteCu].destIpAddr.ipV4Addr = ipv4_remote_cu;
+      cuCb.cuCfgParams.sctpParams.xnSctpInfo.destCb[*numRemoteCu].destIpAddr.ipV6Pres = false;
+      cuCb.cuCfgParams.sctpParams.xnSctpInfo.destCb[*numRemoteCu].destPort = XN_SCTP_PORT;
+
+      (*numRemoteCu)++;
+   }
 #endif
 
    /*PLMN*/
@@ -268,6 +289,32 @@ void initiateInterDuHandover(uint32_t sourceDuId, uint32_t targetDuId, uint32_t 
     DU_LOG("\nINFO  --> CU_STUB: Inter-DU Handover Started for ueId [%d] from DU ID [%d] to DU ID [%d]", \
           ueId, sourceDuId, targetDuId);
     BuildAndSendUeContextModificationReq(sourceDuId, ueCb, QUERY_CONFIG);
+}
+
+
+/*******************************************************************
+ *
+ * @brief Initiates inter CU handover
+ *
+ * @details
+ *
+ *    Function : initiateInterCuHandover
+ *
+ *    Functionality: Initiates the first procedure of inter-CU
+ *    handover
+ *
+ * @params[in] Source CU Id
+ *             Target CU Id
+ *             UE Id to be handed off 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+void initiateInterCuHandover(uint32_t sourceCuId, uint32_t targetCuId, uint32_t ueId)
+{
+    DU_LOG("\nINFO  --> CU_STUB: Inter-CU Handover Started for ueId [%d] from CU ID [%d] to CU ID [%d]", \
+          ueId, sourceCuId, targetCuId);
+    //TODO : First message of HO procedure to be triggered here. Changes to be done in next commit.
 }
 
 /*******************************************************************
@@ -401,16 +448,34 @@ void *cuConsoleHandler(void *args)
       /* Start Handover procedure towards DU when 'h' is received from console input */
       else if(ch == 'h')
       {
-         uint32_t sourceDuId, targetDuId, ueId;
+         HandoverType hoType;
+         uint32_t sourceId, targetId, ueId;
 
-         DU_LOG("\nEnter Source DU ID for Inter-DU Handover");
-         scanf("%d", &sourceDuId);
-         DU_LOG("\nEnter Target DU ID for Inter-DU Handover");
-         scanf("%d", &targetDuId);
-         DU_LOG("\nEnter DU UE F1AP ID to be handed over");
-         scanf("%d", &ueId);
+         DU_LOG("\n\nChoose the type of handover to initiate : \nEnter 1 for Inter-CU Handover over Xn interface\nEnter 2 for Inter-DU Handover\n");
+         scanf("%d", &hoType);
 
-         initiateInterDuHandover(sourceDuId, targetDuId, ueId);
+         if(hoType == Xn_Based_Inter_CU_HO)
+         {
+            DU_LOG("\nEnter Source CU ID for Inter-CU Handover : ");
+            scanf("%d", &sourceId);
+            DU_LOG("\nEnter Target CU ID for Inter-CU Handover : ");
+            scanf("%d", &targetId);
+            DU_LOG("\nEnter CU UE F1AP ID to be handed over : ");
+            scanf("%d", &ueId);
+
+            initiateInterCuHandover(sourceId, targetId, ueId);
+         }
+         else if(hoType == Inter_DU_HO)
+         {
+            DU_LOG("\nEnter Source DU ID for Inter-DU Handover : ");
+            scanf("%d", &sourceId);
+            DU_LOG("\nEnter Target DU ID for Inter-DU Handover : ");
+            scanf("%d", &targetId);
+            DU_LOG("\nEnter DU UE F1AP ID to be handed over : ");
+            scanf("%d", &ueId);
+
+            initiateInterDuHandover(sourceId, targetId, ueId);
+         }
       }
       /* Start Idle mode paging when 'p' is received from console input */
       else if(ch == 'p')
