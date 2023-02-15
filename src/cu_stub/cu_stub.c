@@ -133,8 +133,8 @@ uint8_t tst()
 
 void readCuCfg()
 {
-   uint8_t  numDu;
-   uint32_t ipv4_du, ipv4_cu;
+   uint8_t  numDu, *numRemoteCu;
+   uint32_t ipv4_du, ipv4_cu, ipv4_remote_cu;
 
    DU_LOG("\nDEBUG  -->  CU_STUB : Reading CU configurations");
 
@@ -179,13 +179,15 @@ void readCuCfg()
 
    cuCb.cuCfgParams.sctpParams.localIpAddr.ipV4Addr = ipv4_cu;
    cuCb.cuCfgParams.sctpParams.localIpAddr.ipV6Pres = false;
-   cuCb.cuCfgParams.sctpParams.f1SctpPort = F1_SCTP_PORT;
+
+   /* SCTP and EGTP configuration for F1 Interface */
+   cuCb.cuCfgParams.sctpParams.f1SctpInfo.port = F1_SCTP_PORT;
 
    cuCb.cuCfgParams.egtpParams.localIp.ipV4Pres = TRUE;
    cuCb.cuCfgParams.egtpParams.localIp.ipV4Addr = ipv4_cu;
    cuCb.cuCfgParams.egtpParams.localPort = F1_EGTP_PORT;
 
-   cuCb.cuCfgParams.sctpParams.numDestNode = 0;
+   cuCb.cuCfgParams.sctpParams.f1SctpInfo.numDestNode = 0;
    cuCb.cuCfgParams.egtpParams.numDu = 0;
 
    numDu = 0;
@@ -196,9 +198,9 @@ void readCuCfg()
       cmInetAddr((S8*)REMOTE_IP_DU[numDu], &ipv4_du);
       
       /* SCTP Parameters */
-      cuCb.cuCfgParams.sctpParams.destCb[numDu].destIpAddr.ipV4Addr = ipv4_du;
-      cuCb.cuCfgParams.sctpParams.destCb[numDu].destIpAddr.ipV6Pres = false;
-      cuCb.cuCfgParams.sctpParams.destCb[numDu].destPort = F1_SCTP_PORT;
+      cuCb.cuCfgParams.sctpParams.f1SctpInfo.destCb[numDu].destIpAddr.ipV4Addr = ipv4_du;
+      cuCb.cuCfgParams.sctpParams.f1SctpInfo.destCb[numDu].destIpAddr.ipV6Pres = false;
+      cuCb.cuCfgParams.sctpParams.f1SctpInfo.destCb[numDu].destPort = F1_SCTP_PORT;
 
       /* EGTP Parameters */
       cuCb.cuCfgParams.egtpParams.dstCfg[numDu].dstIp.ipV4Pres = TRUE;
@@ -212,7 +214,26 @@ void readCuCfg()
    cuCb.cuCfgParams.egtpParams.currTunnelId = cuCb.cuCfgParams.egtpParams.minTunnelId;
    cuCb.cuCfgParams.egtpParams.maxTunnelId = MAX_TEID;
    cuCb.cuCfgParams.egtpParams.numDu = numDu;
-   cuCb.cuCfgParams.sctpParams.numDestNode = numDu;
+   cuCb.cuCfgParams.sctpParams.f1SctpInfo.numDestNode = numDu;
+
+   /* SCTP configuration for Xn interface */
+   cuCb.cuCfgParams.sctpParams.xnSctpInfo.port = XN_SCTP_PORT;
+   cuCb.cuCfgParams.sctpParams.xnSctpInfo.localNodeType = LOCAL_NODE_TYPE;
+   numRemoteCu = &cuCb.cuCfgParams.sctpParams.xnSctpInfo.numDestNode;   
+   (*numRemoteCu) = 0;
+   while((*numRemoteCu) < NUM_XN_ASSOC)
+   {
+      /* Remote CU IP address */
+      memset(&ipv4_remote_cu, 0, sizeof(uint32_t));
+      cmInetAddr((S8*)REMOTE_IP_CU[*numRemoteCu], &ipv4_remote_cu);
+
+      /* SCTP Parameters */
+      cuCb.cuCfgParams.sctpParams.xnSctpInfo.destCb[*numRemoteCu].destIpAddr.ipV4Addr = ipv4_remote_cu;
+      cuCb.cuCfgParams.sctpParams.xnSctpInfo.destCb[*numRemoteCu].destIpAddr.ipV6Pres = false;
+      cuCb.cuCfgParams.sctpParams.xnSctpInfo.destCb[*numRemoteCu].destPort = XN_SCTP_PORT;
+
+      (*numRemoteCu)++;
+   }
 #endif
 
    /*PLMN*/
