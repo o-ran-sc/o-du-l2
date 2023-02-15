@@ -177,7 +177,7 @@ S16 SendF1APMsg(Region region, Pool pool, uint32_t duId)
       {
          ODU_PRINT_MSG(mBuf, 0,0);
 
-         if(sctpSend(duId, mBuf) != ROK)
+         if(sctpSend(F1_INTERFACE, duId, mBuf) != ROK)
          {
             DU_LOG("\nERROR  -->  F1AP : SCTP Send failed");
             ODU_PUT_MSG_BUF(mBuf);
