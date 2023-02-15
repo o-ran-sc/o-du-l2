@@ -24,6 +24,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "85932739_13bbc9e3",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2093,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-02-15T11:48:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "046d87b2_6cee6547",
+      "range": {
+        "startLine": 2093,
+        "startChar": 48,
+        "endLine": 2093,
+        "endChar": 52
+      },
+      "revId": "4946f0bede4c7ef9bbd12b4cbee12f7ce7822ff0",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9309d233_9d5b3463",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-01-23T10:49:42Z",
       "side": 1,
       "message": "ulFreq",
+      "range": {
+        "startLine": 2095,
+        "startChar": 48,
+        "endLine": 2095,
+        "endChar": 54
+      },
+      "revId": "4946f0bede4c7ef9bbd12b4cbee12f7ce7822ff0",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4a8ba336_b0c5327f",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2095,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-02-15T11:48:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9309d233_9d5b3463",
       "range": {
         "startLine": 2095,
         "startChar": 48,
@@ -70,6 +118,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "24a8d8a9_dee42da3",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2194,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-02-15T11:48:40Z",
+      "side": 1,
+      "message": "Done. Created an enum called SymbolConfig inside \"lwr_mac_fsm.h\"",
+      "parentUuid": "70a74323_064d16d1",
+      "range": {
+        "startLine": 2194,
+        "startChar": 35,
+        "endLine": 2194,
+        "endChar": 42
+      },
+      "revId": "4946f0bede4c7ef9bbd12b4cbee12f7ce7822ff0",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1c547aa2_bc8edc75",
@@ -88,6 +160,53 @@
         "startChar": 43,
         "endLine": 267,
         "endChar": 49
+      },
+      "revId": "4946f0bede4c7ef9bbd12b4cbee12f7ce7822ff0",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e5bdfd9f_568ce449",
+        "filename": "src/5gnrmac/mac_cfg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 267,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-02-15T11:48:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1c547aa2_bc8edc75",
+      "range": {
+        "startLine": 267,
+        "startChar": 43,
+        "endLine": 267,
+        "endChar": 49
+      },
+      "revId": "4946f0bede4c7ef9bbd12b4cbee12f7ce7822ff0",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "590c17a4_cfd65d6e",
+        "filename": "src/5gnrsch/sch.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 563,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-02-15T11:48:40Z",
+      "side": 1,
+      "message": "Need to fill these during cell config for mac_sch interface.\nDONE!",
+      "range": {
+        "startLine": 563,
+        "startChar": 17,
+        "endLine": 563,
+        "endChar": 24
       },
       "revId": "4946f0bede4c7ef9bbd12b4cbee12f7ce7822ff0",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
@@ -139,6 +258,54 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "46985ac7_f3fd87ee",
+        "filename": "src/cm/common_def.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-02-15T11:48:40Z",
+      "side": 1,
+      "message": "Done. I think its 5.4.2.1-1",
+      "parentUuid": "217aa6f9_14524bd4",
+      "range": {
+        "startLine": 21,
+        "startChar": 21,
+        "endLine": 21,
+        "endChar": 28
+      },
+      "revId": "4946f0bede4c7ef9bbd12b4cbee12f7ce7822ff0",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "86260ff1_e13b602b",
+        "filename": "src/cm/common_def.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-02-15T11:48:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2b62f494_1fdf3c31",
+      "range": {
+        "startLine": 21,
+        "startChar": 7,
+        "endLine": 21,
+        "endChar": 13
+      },
+      "revId": "4946f0bede4c7ef9bbd12b4cbee12f7ce7822ff0",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2c8ccac3_1fb1d48b",
@@ -152,6 +319,24 @@
       "writtenOn": "2023-01-23T10:49:42Z",
       "side": 1,
       "message": "Remove the comments from the above 2 ENUMs.",
+      "revId": "4946f0bede4c7ef9bbd12b4cbee12f7ce7822ff0",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1e029e59_066ef199",
+        "filename": "src/cm/du_app_mac_inf.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 554,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-02-15T11:48:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2c8ccac3_1fb1d48b",
       "revId": "4946f0bede4c7ef9bbd12b4cbee12f7ce7822ff0",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -173,6 +358,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2754204d_70d50c03",
+        "filename": "src/cm/du_app_mac_inf.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 781,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-02-15T11:48:40Z",
+      "side": 1,
+      "message": "Yes parameters in those parameters are needed at MAC and sch for scheduling various initial msgs like rar,msg4,msg3,etc",
+      "parentUuid": "8d2ef397_5be1a838",
+      "revId": "4946f0bede4c7ef9bbd12b4cbee12f7ce7822ff0",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1ce4b4ad_27864341",
@@ -186,6 +389,30 @@
       "writtenOn": "2023-01-23T10:49:42Z",
       "side": 1,
       "message": "Why do we need this delay ?",
+      "range": {
+        "startLine": 486,
+        "startChar": 9,
+        "endLine": 486,
+        "endChar": 14
+      },
+      "revId": "4946f0bede4c7ef9bbd12b4cbee12f7ce7822ff0",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "352072a6_61567774",
+        "filename": "src/cu_stub/cu_stub.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 486,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-02-15T11:48:40Z",
+      "side": 1,
+      "message": "Will let you know the reason",
+      "parentUuid": "1ce4b4ad_27864341",
       "range": {
         "startLine": 486,
         "startChar": 9,
@@ -219,6 +446,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4b90dac3_67d02322",
+        "filename": "src/du_app/du_cfg.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 146,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-02-15T11:48:40Z",
+      "side": 1,
+      "message": "This is already getting freed in MAC inside \"MacProcSchCellDeleteRsp\" from Line no. 577 to 584",
+      "parentUuid": "3a347e55_76e7fc9d",
+      "range": {
+        "startLine": 146,
+        "startChar": 9,
+        "endLine": 146,
+        "endChar": 28
+      },
+      "revId": "4946f0bede4c7ef9bbd12b4cbee12f7ce7822ff0",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bcf45c65_0d31400b",
@@ -232,6 +483,30 @@
       "writtenOn": "2023-01-23T10:49:42Z",
       "side": 1,
       "message": "Free memory",
+      "range": {
+        "startLine": 157,
+        "startChar": 12,
+        "endLine": 157,
+        "endChar": 31
+      },
+      "revId": "4946f0bede4c7ef9bbd12b4cbee12f7ce7822ff0",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2bb416cc_5f421b60",
+        "filename": "src/du_app/du_cfg.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 157,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-02-15T11:48:40Z",
+      "side": 1,
+      "message": "Same as above",
+      "parentUuid": "bcf45c65_0d31400b",
       "range": {
         "startLine": 157,
         "startChar": 12,
