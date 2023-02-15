@@ -107,12 +107,24 @@ uint8_t sctpCfgReq()
    fillAddrLst(&sctpCb.localAddrLst, &sctpCb.sctpCfg.localIpAddr);
    memset(&sctpCb.f1LstnSockFd, -1, sizeof(CmInetFd));
 
-   for(destIdx=0; destIdx < sctpCb.sctpCfg.numDestNode; destIdx++)
+   for(destIdx=0; destIdx < sctpCb.sctpCfg.f1SctpInfo.numDestNode; destIdx++)
    {
-      sctpCb.assocCb[assocIdx].destPort = sctpCb.sctpCfg.destCb[destIdx].destPort;
+      sctpCb.assocCb[assocIdx].intf = F1_INTERFACE;
+      sctpCb.assocCb[assocIdx].destPort = sctpCb.sctpCfg.f1SctpInfo.destCb[destIdx].destPort;
       sctpCb.assocCb[assocIdx].bReadFdSet = ROK;
       memset(&sctpCb.assocCb[assocIdx].sockFd, -1, sizeof(CmInetFd));
-      fillDestNetAddr(&sctpCb.assocCb[assocIdx].destIpNetAddr, &sctpCb.sctpCfg.destCb[destIdx].destIpAddr);
+      fillDestNetAddr(&sctpCb.assocCb[assocIdx].destIpNetAddr, &sctpCb.sctpCfg.f1SctpInfo.destCb[destIdx].destIpAddr);
+      assocIdx++;
+   }
+
+   sctpCb.localXnNodeType = sctpCb.sctpCfg.xnSctpInfo.localNodeType;
+   for(destIdx=0; destIdx < sctpCb.sctpCfg.xnSctpInfo.numDestNode; destIdx++)
+   {
+      sctpCb.assocCb[assocIdx].intf = XN_INTERFACE;
+      sctpCb.assocCb[assocIdx].destPort = sctpCb.sctpCfg.xnSctpInfo.destCb[destIdx].destPort;
+      sctpCb.assocCb[assocIdx].bReadFdSet = ROK;
+      memset(&sctpCb.assocCb[assocIdx].sockFd, -1, sizeof(CmInetFd));
+      fillDestNetAddr(&sctpCb.assocCb[assocIdx].destIpNetAddr, &sctpCb.sctpCfg.xnSctpInfo.destCb[destIdx].destIpAddr);
       assocIdx++;
    }
    sctpCb.numAssoc = assocIdx;
@@ -192,16 +204,97 @@ uint8_t sctpStartReq()
 {
    uint8_t assocIdx;
    uint8_t ret = ROK;
+   CmInetFd sockFd;
 
    socket_type = CM_INET_STREAM;
 
-   if(sctpCb.numAssoc)
+   /* Establish SCTP association at XN interface */
+   if(sctpCb.sctpCfg.xnSctpInfo.numDestNode)
+   {
+      if(sctpCb.localXnNodeType == SERVER)
+      {
+         if((ret = cmInetSocket(socket_type, &sctpCb.xnLstnSockFd, IPPROTO_SCTP) != ROK))
+         {   
+            DU_LOG("\nERROR  -->  SCTP : Socket[%d] coudnt open for listening", sctpCb.f1LstnSockFd.fd);
+         }   
+         else if((ret = cmInetSctpBindx(&sctpCb.xnLstnSockFd, &sctpCb.localAddrLst, sctpCb.sctpCfg.xnSctpInfo.port)) != ROK)
+         {   
+            DU_LOG("\nERROR  -->  SCTP: Binding failed at CU");
+         }   
+         else if(ret = cmInetListen(&sctpCb.xnLstnSockFd, 1) != ROK)
+         {   
+            DU_LOG("\nERROR  -->  SCTP : Listening on socket failed");
+            cmInetClose(&sctpCb.xnLstnSockFd);
+            return RFAILED;
+         }   
+         else
+         {   
+            for(assocIdx=0; assocIdx < sctpCb.numAssoc; assocIdx++)
+            {   
+               if(sctpCb.assocCb[assocIdx].intf == XN_INTERFACE)
+               {   
+                  if((ret = sctpAccept(&sctpCb.xnLstnSockFd, &sctpCb.assocCb[assocIdx])) != ROK)
+                  {
+                     DU_LOG("\nERROR  -->  SCTP: Unable to accept the connection at CU");
+                  }
+               }
+            }
+         }
+      }
+      else if(sctpCb.localXnNodeType == CLIENT)
+      {
+         for(assocIdx=0; assocIdx < sctpCb.numAssoc; assocIdx++)
+         {
+            if(sctpCb.assocCb[assocIdx].intf == XN_INTERFACE)
+            {
+               if((ret = cmInetSocket(socket_type, &sctpCb.assocCb[assocIdx].sockFd, IPPROTO_SCTP)) != ROK)
+               {   
+                  DU_LOG("\nERROR  -->  SCTP : Failed while opening a socket in ODU");
+               }   
+               else if((ret = cmInetSctpBindx(&sctpCb.assocCb[assocIdx].sockFd, &sctpCb.localAddrLst, sctpCb.sctpCfg.xnSctpInfo.port)) != ROK)
+               {   
+                  DU_LOG("\nERROR  -->  SCTP:  Failed during Binding in ODU");
+               }   
+               else if((ret = sctpSetSockOpts(&sctpCb.assocCb[assocIdx].sockFd)) != ROK)
+               {   
+                  DU_LOG("\nERROR  -->  SCTP : Failed to set Socket Opt in ODU");
+               }    
+               else
+               {   
+                  if(ret != ROK)
+                  {   
+                     DU_LOG("\nERROR  -->  SCTP : Failed while establishing Req at DU");
+                     ret = RFAILED;
+                  }   
+                  else 
+                  {   
+                     ret = cmInetSctpConnectx(&sctpCb.assocCb[assocIdx].sockFd, &sctpCb.assocCb[assocIdx].destIpNetAddr, \
+                              &sctpCb.assocCb[assocIdx].destAddrLst, sctpCb.assocCb[assocIdx].destPort);
+                     /* 115 error_code indicates that Operation is in progress and hence ignored if SctpConnect failed due to this */
+                     if(ret == 18)    
+                     {
+                        ret = ROK; 
+                     }
+                     else
+                     {
+                        //sctpCb.assocCb[assocIdx].connUp = TRUE;
+                        DU_LOG("\nINFO  -->  SCTP HLAL 1 : Connection established");
+                     }
+                  }   
+               }
+            }
+         }
+      }
+   }
+
+   /* Establish SCTP association at F1 interface */
+   if(sctpCb.sctpCfg.f1SctpInfo.numDestNode)
    {
       if((ret = cmInetSocket(socket_type, &sctpCb.f1LstnSockFd, IPPROTO_SCTP) != ROK))
       {
          DU_LOG("\nERROR  -->  SCTP : Socket[%d] coudnt open for listening", sctpCb.f1LstnSockFd.fd);
       } 
-      else if((ret = cmInetSctpBindx(&sctpCb.f1LstnSockFd, &sctpCb.localAddrLst, sctpCb.sctpCfg.f1SctpPort)) != ROK)
+      else if((ret = cmInetSctpBindx(&sctpCb.f1LstnSockFd, &sctpCb.localAddrLst, sctpCb.sctpCfg.f1SctpInfo.port)) != ROK)
       {
          DU_LOG("\nERROR  -->  SCTP: Binding failed at CU");
       }
@@ -215,9 +308,12 @@ uint8_t sctpStartReq()
       {
          for(assocIdx=0; assocIdx < sctpCb.numAssoc; assocIdx++)
          {
-            if((ret = sctpAccept(&sctpCb.assocCb[assocIdx])) != ROK)
+            if(sctpCb.assocCb[assocIdx].intf == F1_INTERFACE)
             {
-               DU_LOG("\nERROR  -->  SCTP: Unable to accept the connection at CU");
+               if((ret = sctpAccept(&sctpCb.f1LstnSockFd, &sctpCb.assocCb[assocIdx])) != ROK)
+               {
+                  DU_LOG("\nERROR  -->  SCTP: Unable to accept the connection at CU");
+               }
             }
          }
       }
@@ -232,6 +328,7 @@ uint8_t sctpStartReq()
    }
    return (ret);
 }
+
 /*******************************************************************
  *
  * @brief Sets socket options as per requirement
@@ -287,7 +384,7 @@ uint8_t sctpSetSockOpts(CmInetFd *sock_Fd)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t sctpAccept(CuSctpAssocCb *assocCb)
+uint8_t sctpAccept(CmInetFd *lstnSockFd, CuSctpAssocCb *assocCb)
 {
    uint8_t  ret;
 
@@ -295,7 +392,7 @@ uint8_t sctpAccept(CuSctpAssocCb *assocCb)
 
    while(!assocCb->connUp)
    {
-      ret = cmInetAccept(&sctpCb.f1LstnSockFd, &assocCb->peerAddr, &assocCb->sockFd);
+      ret = cmInetAccept(lstnSockFd, &assocCb->peerAddr, &assocCb->sockFd);
       if (ret == ROKDNA)
       {
          continue;
@@ -345,6 +442,7 @@ uint8_t sctpNtfyHdlr(CuSctpAssocCb *assocCb, CmInetSctpNotification *ntfy)
             case CM_INET_SCTP_COMM_UP:
                DU_LOG("DEBUG  -->  Event : COMMUNICATION UP");
                assocCb->connUp = TRUE;
+               DU_LOG("\nINFO  -->  SCTP HLAL 2 : Connection established");
                break;
             case CM_INET_SCTP_COMM_LOST:
                DU_LOG("DEBUG  -->  Event : COMMUNICATION LOST");
@@ -519,7 +617,7 @@ uint8_t processPolling(sctpSockPollParams *pollParams, CuSctpAssocCb *assocCb, u
          }
          else if(assocCb->connUp)
          {  
-            F1APMsgHdlr(&assocCb->duId, pollParams->mBuf);
+            F1APMsgHdlr(&assocCb->destId, pollParams->mBuf);
             ODU_PUT_MSG_BUF(pollParams->mBuf);
          }
          else
@@ -559,7 +657,7 @@ uint8_t sctpSend(uint32_t duId, Buffer *mBuf)
 
    for(assocIdx=0; assocIdx < sctpCb.numAssoc; assocIdx++)
    {
-      if(sctpCb.assocCb[assocIdx].duId == duId)
+      if((sctpCb.assocCb[assocIdx].intf == F1_INTERFACE) && (sctpCb.assocCb[assocIdx].destId == duId))
       {
          ret = cmInetSctpSendMsg(&sctpCb.assocCb[assocIdx].sockFd, &sctpCb.assocCb[assocIdx].destIpNetAddr, \
                   sctpCb.assocCb[assocIdx].destPort, &memInfo, mBuf, &len, 0, FALSE, 0, 0/*SCT_PROTID_NONE*/, RWOULDBLOCK);
