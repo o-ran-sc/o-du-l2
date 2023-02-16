@@ -24,6 +24,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e9efd0b1_9514f144",
+        "filename": "src/cu_stub/cu_stub.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-02-16T06:16:53Z",
+      "side": 1,
+      "message": "yes, *numRemoteCu is used to store address of \"cuCb.cuCfgParams.sctpParams.xnSctpInfo.numDestNode\".\n\nThis paramereter is initialized to zero and will be incremented later in this function. To avoid writing \"cuCb.cuCfgParams.sctpParams.xnSctpInfo.numDestNode\" at all places, we use the pointer variable numRemoteCu so that change in the value of numRemoteCu gets reflected in cuCb.cuCfgParams.sctpParams.xnSctpInfo.numDestNode.",
+      "parentUuid": "b4f1e0ea_2a47000f",
+      "range": {
+        "startLine": 136,
+        "startChar": 20,
+        "endLine": 136,
+        "endChar": 31
+      },
+      "revId": "d2ebb1a629dae5f8bb9cfdd059d7628a9877644d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b5a17b5c_77944466",
@@ -47,6 +71,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "032ea2db_d5cb1962",
+        "filename": "src/cu_stub/cu_stub.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-02-16T06:16:53Z",
+      "side": 1,
+      "message": "When we run just 1 GNB (1 CU and 1 DU) in case of normal UE attach,there will be no Xn assoc to be established. Hence the default value of NUM_XN_ASSOC is set to 0.\nThis will be increment to 1 only when we have 2 GNBs where both CUs establish a connection i.e in case of Inter-CU HO.\n\nNo, there is no relation between NUM_F1_ASSOC and NUM_XN_ASSOC.",
+      "parentUuid": "b5a17b5c_77944466",
+      "range": {
+        "startLine": 36,
+        "startChar": 8,
+        "endLine": 36,
+        "endChar": 21
+      },
+      "revId": "d2ebb1a629dae5f8bb9cfdd059d7628a9877644d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "19f84acf_bd21b84d",
@@ -60,6 +108,30 @@
       "writtenOn": "2023-02-16T06:03:51Z",
       "side": 1,
       "message": "I see that destId in case of F1 is not assigned. Where do we do that because this is used in sctpSend right?",
+      "range": {
+        "startLine": 113,
+        "startChar": 49,
+        "endLine": 113,
+        "endChar": 56
+      },
+      "revId": "d2ebb1a629dae5f8bb9cfdd059d7628a9877644d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7b8453f9_1b142349",
+        "filename": "src/cu_stub/cu_stub_sctp.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-02-16T06:16:53Z",
+      "side": 1,
+      "message": "destId in F1 is assigned when F1 setup is performed.\nHowever in case of xn interface, we are not using spec defined msg, hence I have assigned destId locally here.",
+      "parentUuid": "19f84acf_bd21b84d",
       "range": {
         "startLine": 113,
         "startChar": 49,
