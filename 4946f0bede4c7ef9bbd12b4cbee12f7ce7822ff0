@@ -423,6 +423,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "600205e9_972f31e2",
+        "filename": "src/cu_stub/cu_stub.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 486,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-02-16T07:30:38Z",
+      "side": 1,
+      "message": "Actually this sleep is to wait for the CU to get UE Context release complete command from DU then only the context of UE and tunnels assoc gets cleared",
+      "parentUuid": "352072a6_61567774",
+      "range": {
+        "startLine": 486,
+        "startChar": 9,
+        "endLine": 486,
+        "endChar": 14
+      },
+      "revId": "4946f0bede4c7ef9bbd12b4cbee12f7ce7822ff0",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3a347e55_76e7fc9d",
