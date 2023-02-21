@@ -270,25 +270,31 @@ void readCuCfg()
  *         RFAILED - failure
  *
  * ****************************************************************/
-void initiateInterDuHandover(uint32_t sourceDuId, uint32_t targetDuId, uint32_t ueId)
+void initiateInterDuHandover(uint32_t sourceDuId, uint32_t targetDuId, uint32_t duUeF1apId)
 {
-    uint8_t duIdx = 0;
-    DuDb *duDb = NULLP;
-    CuUeCb *ueCb = NULLP;
-   
-    SEARCH_DU_DB(duIdx, sourceDuId, duDb); 
-    if(duDb)
-       ueCb = &duDb->ueCb[ueId-1];
-    if(ueCb)
-    {
-       ueCb->state = UE_HANDOVER_IN_PROGRESS;
-       ueCb->hoInfo.sourceDuId = sourceDuId;
-       ueCb->hoInfo.targetDuId = targetDuId;
-    }
+   uint8_t duIdx = 0;
+   DuDb *duDb = NULLP;
+   CuUeCb *ueCb = NULLP;
 
-    DU_LOG("\nINFO  --> CU_STUB: Inter-DU Handover Started for ueId [%d] from DU ID [%d] to DU ID [%d]", \
-          ueId, sourceDuId, targetDuId);
-    BuildAndSendUeContextModificationReq(sourceDuId, ueCb, QUERY_CONFIG);
+   DU_LOG("\nINFO  --> CU_STUB: Inter-DU Handover Started for ueId [%d] from DU ID [%d] to DU ID [%d]", \
+         duUeF1apId, sourceDuId, targetDuId);
+
+   SEARCH_DU_DB(duIdx, sourceDuId, duDb); 
+   if(duDb)
+      ueCb = &duDb->ueCb[duUeF1apId-1];
+   if(ueCb)
+   {
+      ueCb->state = UE_HANDOVER_IN_PROGRESS;
+      ueCb->hoInfo.HOType = Inter_DU_HO;
+      ueCb->hoInfo.sourceId = sourceDuId;
+      ueCb->hoInfo.targetId = targetDuId;
+
+      BuildAndSendUeContextModificationReq(sourceDuId, ueCb, QUERY_CONFIG);
+   }
+   else
+   {
+      DU_LOG("\nINFO  --> CU_STUB: DU UE F1AP ID [%d] not found", duUeF1apId);
+   }
 }
 
 
@@ -310,11 +316,41 @@ void initiateInterDuHandover(uint32_t sourceDuId, uint32_t targetDuId, uint32_t 
  *         RFAILED - failure
  *
  * ****************************************************************/
-void initiateInterCuHandover(uint32_t sourceCuId, uint32_t targetCuId, uint32_t ueId)
+void initiateInterCuHandover(uint32_t sourceCuId, uint32_t targetCuId, uint32_t cuUeF1apId)
 {
+    uint8_t  duIdx, ueIdx;
+    CuUeCb   *ueCb = NULLP;
+
     DU_LOG("\nINFO  --> CU_STUB: Inter-CU Handover Started for ueId [%d] from CU ID [%d] to CU ID [%d]", \
-          ueId, sourceCuId, targetCuId);
-    //TODO : First message of HO procedure to be triggered here. Changes to be done in next commit.
+          cuUeF1apId, sourceCuId, targetCuId);
+
+    for(duIdx = 0; duIdx < cuCb.numDu; duIdx++)
+    {
+       for(ueIdx = 0; ueIdx < (MAX_NUM_CELL * MAX_NUM_UE); ueIdx++)
+       {
+          ueCb = &cuCb.duInfo[duIdx].ueCb[ueIdx];
+          if(cuCb.duInfo[duIdx].ueCb[ueIdx].gnbCuUeF1apId == cuUeF1apId)
+          {
+             ueCb = &cuCb.duInfo[duIdx].ueCb[ueIdx];
+             break; 
+          }
+       }
+       if(ueCb)
+          break;
+    }
+
+    if(ueCb)
+    {   
+       ueCb->state = UE_HANDOVER_IN_PROGRESS;
+       ueCb->hoInfo.HOType = Xn_Based_Inter_CU_HO;
+       ueCb->hoInfo.sourceId = sourceCuId;
+       ueCb->hoInfo.targetId = targetCuId;
+       BuildAndSendUeContextModificationReq(cuCb.duInfo[duIdx].duId, ueCb, QUERY_CONFIG);
+    }   
+    else
+    {
+       DU_LOG("\nINFO  --> CU_STUB: CU UE F1AP ID [%d] not found", cuUeF1apId);
+    }
 }
 
 /*******************************************************************

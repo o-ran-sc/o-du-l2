@@ -145,8 +145,9 @@ typedef struct cuCfgParams
 
 typedef struct handoverInfo
 {
-   uint32_t sourceDuId;
-   uint32_t targetDuId;
+   HandoverType HOType;
+   uint32_t sourceId;   /* If Inter_DU HO, this is Source DU ID. In case of Inter CU HO, this is Source CU ID */
+   uint32_t targetId;   /* If Inter_DU HO, this is Taregt DU ID. In case of Inter CU HO, this is Target CU ID */
 }HandoverInfo;
 
 typedef struct dlAmCfg
