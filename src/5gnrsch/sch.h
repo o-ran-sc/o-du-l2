@@ -144,6 +144,13 @@ typedef enum
    UL_SLOT,
    FLEXI_SLOT
 }SlotConfig;
+
+typedef enum
+{
+   DL_SYMBOL,
+   UL_SYMBOL,
+   FLEXI_SYMBOL
+}SchSymbolConfig;
 #endif
 
 /*Following structures to keep record and estimations of PRB allocated for each
@@ -618,7 +625,7 @@ typedef struct schCellCb
 #ifdef NR_TDD
    uint8_t       numSlotsInPeriodicity;             /*!< number of slots in configured periodicity and SCS */
    uint32_t      slotFrmtBitMap;                    /*!< 2 bits must be read together to determine D/U/S slots. 00-D, 01-U, 10-S */
-   uint8_t       slotCfg[MAX_TDD_PERIODICITY_SLOTS][MAX_SYMB_PER_SLOT];
+   SchSymbolConfig       slotCfg[MAX_TDD_PERIODICITY_SLOTS][MAX_SYMB_PER_SLOT];
 #endif
 #ifdef NR_DRX
    SchDrxCb      drxCb[MAX_DRX_SIZE];                           /*!< Drx cb*/

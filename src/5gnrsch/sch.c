@@ -319,6 +319,48 @@ uint16_t schGetPeriodicityInMsec(DlUlTxPeriodicity tddPeriod)
    return periodicityInMsec;
 }
 
+/**
+ *@brief Fills the slotCfg from CellCfg
+ *
+ * @details
+ * 
+ * Function : schFillSlotConfig 
+ * 
+ * This API Fills the slotCfg from CellCfg
+ * 
+ * @param[in] SchCellCb *cell, TDDCfg tddCfg
+ * @return  void
+ * **/
+void schFillSlotConfig(SchCellCb *cell, TDDCfg tddCfg)
+{
+   uint8_t slotIdx = 0, symbolIdx = 0;
+
+   for(slotIdx =0 ;slotIdx < MAX_TDD_PERIODICITY_SLOTS; slotIdx++) 
+   {
+      for(symbolIdx = 0; symbolIdx < MAX_SYMB_PER_SLOT; symbolIdx++)
+      {
+         /*Fill Full-DL Slots as well as DL symbols ini 1st Flexi Slo*/
+         if(slotIdx < tddCfg.nrOfDlSlots || \
+               (slotIdx == tddCfg.nrOfDlSlots && symbolIdx < tddCfg.nrOfDlSymbols)) 
+         {
+              cell->slotCfg[slotIdx][symbolIdx] = DL_SYMBOL; 
+         }
+
+         /*Fill Full-FLEXI SLOT and as well as Flexi Symbols in 1 slot preceding FULL-UL slot*/ 
+         else if(slotIdx < (MAX_TDD_PERIODICITY_SLOTS - tddCfg.nrOfUlSlots -1) ||  \
+               (slotIdx == (MAX_TDD_PERIODICITY_SLOTS - tddCfg.nrOfUlSlots -1) && \
+                symbolIdx < (MAX_SYMB_PER_SLOT - tddCfg.nrOfUlSymbols)))
+         {
+              cell->slotCfg[slotIdx][symbolIdx] = FLEXI_SYMBOL; 
+         }
+         /*Fill Partial UL symbols and Full-UL slot*/
+         else
+         {
+              cell->slotCfg[slotIdx][symbolIdx] = UL_SYMBOL; 
+         }
+      }
+   }
+}
 
 /**
  * @brief init TDD slot config 
@@ -341,12 +383,13 @@ void schInitTddSlotCfg(SchCellCb *cell, SchCellCfg *schCellCfg)
    periodicityInMicroSec = schGetPeriodicityInMsec(schCellCfg->tddCfg.tddPeriod);
    cell->numSlotsInPeriodicity = (periodicityInMicroSec * pow(2, schCellCfg->numerology))/1000;
    cell->slotFrmtBitMap = 0;
+   schFillSlotConfig(cell, schCellCfg->tddCfg);
    for(slotIdx = cell->numSlotsInPeriodicity-1; slotIdx >= 0; slotIdx--)
    {
       symbIdx = 0;
       /* If the first and last symbol are the same, the entire slot is the same type */
       if((cell->slotCfg[slotIdx][symbIdx] == cell->slotCfg[slotIdx][MAX_SYMB_PER_SLOT-1]) &&
-              cell->slotCfg[slotIdx][symbIdx] != FLEXI_SLOT)
+              cell->slotCfg[slotIdx][symbIdx] != FLEXI_SYMBOL)
       {
          switch(cell->slotCfg[slotIdx][symbIdx])
          {

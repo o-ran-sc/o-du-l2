@@ -1179,7 +1179,7 @@ SchPdschConfig pdschDedCfg, uint8_t ulAckListCount, uint8_t *UlAckTbl)
                   {
                      for(checkSymbol = 0; checkSymbol< MAX_SYMB_PER_SLOT;checkSymbol++)
                      {
-                        if(cell->slotCfg[tmpSlot][checkSymbol] == UL_SLOT)
+                        if(cell->slotCfg[tmpSlot][checkSymbol] == UL_SYMBOL)
                         {
                            ulSlotPresent = true;
                            break;
@@ -1647,11 +1647,7 @@ void updateGrantSizeForBoRpt(CmLListCp *lcLL, DlMsgAlloc *dlMsgAlloc,\
                   lcNode->lcId,lcNode->reqBO, dlMsgSchInfo->numLc, *accumalatedBOSize);
 
             dlMsgSchInfo->numLc++;
-            /* The LC has been fully allocated, clean it */
-            if(lcNode->reqBO == 0)
-            {
-               handleLcLList(lcLL, lcNode->lcId, DELETE);
-            }
+            handleLcLList(lcLL, lcNode->lcId, DELETE);
          }
          else if(bsrInfo != NULLP)
          {
