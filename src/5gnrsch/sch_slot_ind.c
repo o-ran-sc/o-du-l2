@@ -553,38 +553,45 @@ uint8_t schProcDlPageAlloc(SchCellCb *cell, SlotTimingInfo currTime, Inst schIns
          break;
       }
       /*Fill PDCCH: PDCCH Cfg is same as SIB1 as Paging will be a broadcast message*/
-      memcpy(&dlPageAlloc.pagePdcchCfg, &cell->sib1SchCfg.sib1PdcchCfg, sizeof(PdcchCfg));
-      dlPageAlloc.pagePdcchCfg.dci.rnti = P_RNTI;
-
+      memcpy(dlPageAlloc.pageDlDci.freqDomainResource, cell->sib1SchCfg.sib1PdcchCfg.coresetCfg.freqDomainResource, 6 * sizeof(uint8_t));
+      dlPageAlloc.pageDlDci.durationSymbols = cell->sib1SchCfg.sib1PdcchCfg.coresetCfg.durationSymbols;
+      dlPageAlloc.pageDlDci.cceRegMappingType = INTERLEAVED_CCE_REG_MAPPING;
+      dlPageAlloc.pageDlDci.cceReg.interleaved.regBundleSize = cell->sib1SchCfg.sib1PdcchCfg.coresetCfg.regBundleSize;
+      dlPageAlloc.pageDlDci.cceReg.interleaved.interleaverSize = cell->sib1SchCfg.sib1PdcchCfg.coresetCfg.interleaverSize;
+      dlPageAlloc.pageDlDci.cceReg.interleaved.shiftIndex = cell->sib1SchCfg.sib1PdcchCfg.coresetCfg.shiftIndex;
+      dlPageAlloc.pageDlDci.ssStartSymbolIndex = cell->sib1SchCfg.sib1PdcchCfg.coresetCfg.startSymbolIndex;
+      dlPageAlloc.pageDlDci.cceIndex = cell->sib1SchCfg.sib1PdcchCfg.dci.cceIndex;
+      dlPageAlloc.pageDlDci.aggregLevel = cell->sib1SchCfg.sib1PdcchCfg.dci.aggregLevel;
+      dlPageAlloc.pageDlDci.precoderGranularity = cell->sib1SchCfg.sib1PdcchCfg.coresetCfg.precoderGranularity;
+      dlPageAlloc.pageDlDci.coreSetSize = cell->sib1SchCfg.sib1PdcchCfg.coresetCfg.coreSetSize;
       /*Fill BWP*/
       memcpy(&dlPageAlloc.bwp, &cell->sib1SchCfg.bwp, sizeof(BwpCfg)); 
 
       /*Fill PDSCH*/
-      if(schFillPagePdschCfg(cell, &dlPageAlloc.pagePdschCfg, pdschTime, tbSize, pageInfo->mcs, startPrb) != ROK)
+      if(schFillPagePdschCfg(cell, &dlPageAlloc.pageDlSch, pdschTime, tbSize, pageInfo->mcs, startPrb) != ROK)
       {
          DU_LOG("\nERROR  --> SCH: Issue in PDSCH Allocation for Paging at SFN:%d, SLOT:%d",\
                pdschTime.sfn, pdschTime.slot);
          break;
       }
-      dlPageAlloc.pagePdcchCfg.dci.pdschCfg = &dlPageAlloc.pagePdschCfg;
 
       /*Fill Page PDU information*/
-      dlPageAlloc.dlPagePduLen = pageInfo->msgLen;
+      dlPageAlloc.pageDlSch.dlPagePduLen = pageInfo->msgLen;
 
-      SCH_ALLOC(dlPageAlloc.dlPagePdu, sizeof(dlPageAlloc.dlPagePduLen));
+      SCH_ALLOC(dlPageAlloc.pageDlSch.dlPagePdu, sizeof(dlPageAlloc.pageDlSch.dlPagePduLen));
 
-      if(dlPageAlloc.dlPagePdu == NULLP)
+      if(dlPageAlloc.pageDlSch.dlPagePdu == NULLP)
       {
          DU_LOG("\nERROR  --> SCH: Memory Allocation Failed during Page Resource allocation");
          break;
       }
-      memcpy(dlPageAlloc.dlPagePdu, pageInfo->pagePdu, dlPageAlloc.dlPagePduLen);
+      memcpy(dlPageAlloc.pageDlSch.dlPagePdu, pageInfo->pagePdu, dlPageAlloc.pageDlSch.dlPagePduLen);
 
       /* Send msg to MAC */
       if(sendDlPageAllocToMac(&dlPageAlloc, schInst) != ROK)
       {
          DU_LOG("\nERROR  -->  SCH : Sending DL Paging allocation from SCH to MAC failed");
-         SCH_FREE(dlPageAlloc.dlPagePdu, sizeof(dlPageAlloc.dlPagePduLen));
+         SCH_FREE(dlPageAlloc.pageDlSch.dlPagePdu, sizeof(dlPageAlloc.pageDlSch.dlPagePduLen));
          break;
       }
       ret = ROK;
