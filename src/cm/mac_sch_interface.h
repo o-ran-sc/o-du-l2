@@ -1124,6 +1124,65 @@ typedef struct dlSchedInfo
 
 }DlSchedInfo;
 
+/*Reference: O-RAN.WG8.AAD.v7.0.0, Sec 11.2.3.3.13 Downlink Paging Allocation*/
+typedef struct interleaved_t
+{
+   uint8_t regBundleSize;
+   uint8_t interleaverSize;
+   uint16_t shiftIndex;
+}Interleaved;
+
+typedef struct pageDlDci
+{
+   uint8_t    freqDomainResource[6];
+   uint8_t    durationSymbols;
+   uint8_t    cceRegMappingType;
+   union
+   {
+      Interleaved  interleaved;
+      uint8_t      nonInterleaved;
+   }cceReg;
+   uint8_t    ssStartSymbolIndex;
+   uint8_t    cceIndex;
+   uint8_t    aggregLevel;
+   uint8_t    precoderGranularity;
+   uint8_t    coreSetSize;
+}PageDlDci;
+
+typedef struct resAllocType1 PageFreqDomainAlloc;
+
+typedef struct pageTimeDomainAlloc
+{
+   uint8_t mappingType;
+   uint16_t startSymb;
+   uint16_t numSymb;
+}PageTimeDomainAlloc;
+
+typedef struct pageDmrsConfig
+{
+   uint8_t dmrsType;
+   uint8_t dmrsAddPos;
+   uint8_t nrOfDmrsSymbols;
+}PageDmrsConfig;
+
+typedef struct pageTbInfo
+{
+   uint8_t         mcs;
+   uint32_t        tbSize;
+}PageTbInfo;
+
+typedef struct pageDlSch
+{
+   PageFreqDomainAlloc  freqAlloc;
+   PageTimeDomainAlloc  timeAlloc;
+   PageDmrsConfig       dmrs;
+   uint8_t              vrbPrbMapping;
+   PageTbInfo           tbInfo;
+   uint8_t              tbScaling;
+   uint16_t             dlPagePduLen;
+   uint8_t             *dlPagePdu;
+}PageDlSch;
+
 typedef struct dlPageAlloc
 {
    uint16_t       cellId;
@@ -1132,10 +1191,8 @@ typedef struct dlPageAlloc
    bool           shortMsgInd;
    uint8_t        shortMsg;
    BwpCfg         bwp;
-   PdcchCfg       pagePdcchCfg;
-   PdschCfg       pagePdschCfg;
-   uint16_t       dlPagePduLen;
-   uint8_t        *dlPagePdu;
+   PageDlDci      pageDlDci;
+   PageDlSch      pageDlSch;
 }DlPageAlloc;
 
 typedef struct tbInfo
