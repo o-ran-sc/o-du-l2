@@ -24,6 +24,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d2aca797_1120ece7",
+        "filename": "src/5gnrsch/sch.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 146,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-02-22T11:34:22Z",
+      "side": 1,
+      "message": "Actually this is used when filling the cell-\u003eslotFrmtBitMap. Since we store it as SLOT cfg so cant use SYMBOL\u0027s enum",
+      "parentUuid": "2e504e75_466c0de6",
+      "range": {
+        "startLine": 146,
+        "startChar": 1,
+        "endLine": 146,
+        "endChar": 11
+      },
+      "revId": "b864875ccd95278bcfcc40187def1ed7a6fb8aa4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "50029d47_8f055c08",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-02-22T11:24:37Z",
       "side": 1,
       "message": "why we are using hardcoded value here?",
+      "range": {
+        "startLine": 1217,
+        "startChar": 13,
+        "endLine": 1217,
+        "endChar": 20
+      },
+      "revId": "b864875ccd95278bcfcc40187def1ed7a6fb8aa4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9150e92b_40155bce",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1217,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-02-22T11:34:22Z",
+      "side": 1,
+      "message": "Actually when we BuildServedCellList , we have hardcoded the PLMN Cnt as 1 so that number of plmn\u0027s should be freed instead of total/MAX_PLMN in system.",
+      "parentUuid": "50029d47_8f055c08",
       "range": {
         "startLine": 1217,
         "startChar": 13,
