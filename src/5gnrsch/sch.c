@@ -738,7 +738,7 @@ uint8_t fillSchSib1Cfg(uint8_t mu, uint8_t bandwidth, uint8_t numSlots,SchPdcchC
    pdsch->numLayers                          = 1;
    pdsch->transmissionScheme                 = 0;
    pdsch->refPoint                           = 0;
-   pdsch->dmrs.dlDmrsSymbPos                 = 4; /* Bitmap value 00000000000100 i.e. using 3rd symbol for PDSCH DMRS */
+   pdsch->dmrs.dlDmrsSymbPos                 = DL_DMRS_SYMBOL_POS; 
    pdsch->dmrs.dmrsConfigType                = 0; /* type-1 */
    pdsch->dmrs.dlDmrsScramblingId            = pci;
    pdsch->dmrs.scid                          = 0;
