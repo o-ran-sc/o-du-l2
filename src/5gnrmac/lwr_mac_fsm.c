@@ -2635,7 +2635,7 @@ void fillSib1DlDciPdu(fapi_dl_dci_t *dlDciPtr, PdcchCfg *sib1PdcchInfo)
  *
  ******************************************************************/
 
-void fillPageDlDciPdu(fapi_dl_dci_t *dlDciPtr, DlPageAlloc *dlPageAlloc)
+void fillPageDlDciPdu(fapi_dl_dci_t *dlDciPtr, DlPageAlloc *dlPageAlloc, MacCellCfg *macCellCfg)
 {
    if(dlDciPtr != NULLP)
    {
@@ -2666,18 +2666,18 @@ void fillPageDlDciPdu(fapi_dl_dci_t *dlDciPtr, DlPageAlloc *dlPageAlloc)
       uint8_t tbScalingSize        = 2;
       uint8_t reservedSize         = 6;
 
-      dlDciPtr->rnti = dlPageAlloc->pagePdcchCfg.dci.rnti;
-      dlDciPtr->scramblingId = dlPageAlloc->pagePdcchCfg.dci.scramblingId;    
-      dlDciPtr->scramblingRnti = dlPageAlloc->pagePdcchCfg.dci.scramblingRnti;
-      dlDciPtr->cceIndex = dlPageAlloc->pagePdcchCfg.dci.cceIndex;
-      dlDciPtr->aggregationLevel = dlPageAlloc->pagePdcchCfg.dci.aggregLevel;
-      dlDciPtr->pc_and_bform.numPrgs = dlPageAlloc->pagePdcchCfg.dci.beamPdcchInfo.numPrgs;
-      dlDciPtr->pc_and_bform.prgSize = dlPageAlloc->pagePdcchCfg.dci.beamPdcchInfo.prgSize;
-      dlDciPtr->pc_and_bform.digBfInterfaces = dlPageAlloc->pagePdcchCfg.dci.beamPdcchInfo.digBfInterfaces;
-      dlDciPtr->pc_and_bform.pmi_bfi[0].pmIdx = dlPageAlloc->pagePdcchCfg.dci.beamPdcchInfo.prg[0].pmIdx;
-      dlDciPtr->pc_and_bform.pmi_bfi[0].beamIdx[0].beamidx = dlPageAlloc->pagePdcchCfg.dci.beamPdcchInfo.prg[0].beamIdx[0];
-      dlDciPtr->beta_pdcch_1_0 = dlPageAlloc->pagePdcchCfg.dci.txPdcchPower.beta_pdcch_1_0;           
-      dlDciPtr->powerControlOffsetSS = dlPageAlloc->pagePdcchCfg.dci.txPdcchPower.powerControlOffsetSS;
+      dlDciPtr->rnti = P_RNTI;
+      dlDciPtr->scramblingId = macCellCfg->cellCfg.phyCellId;    
+      dlDciPtr->scramblingRnti = 0;
+      dlDciPtr->cceIndex = dlPageAlloc->pageDlDci.cceIndex;
+      dlDciPtr->aggregationLevel = dlPageAlloc->pageDlDci.aggregLevel;
+      dlDciPtr->pc_and_bform.numPrgs = 1;
+      dlDciPtr->pc_and_bform.prgSize = 1;
+      dlDciPtr->pc_and_bform.digBfInterfaces = 0;
+      dlDciPtr->pc_and_bform.pmi_bfi[0].pmIdx = 0;
+      dlDciPtr->pc_and_bform.pmi_bfi[0].beamIdx[0].beamidx = 0;
+      dlDciPtr->beta_pdcch_1_0 = 0;           
+      dlDciPtr->powerControlOffsetSS = 0;
 
       /* Calculating freq domain resource allocation field value and size
        * coreset0Size = Size of coreset 0
@@ -2685,9 +2685,9 @@ void fillPageDlDciPdu(fapi_dl_dci_t *dlDciPtr, DlPageAlloc *dlPageAlloc)
        * RBLen = length of contiguously allocted RBs
        * Spec 38.214 Sec 5.1.2.2.2
        */
-      coreset0Size = dlPageAlloc->pagePdcchCfg.coresetCfg.coreSetSize;
-      rbStart = dlPageAlloc->pagePdcchCfg.dci.pdschCfg->pdschFreqAlloc.startPrb;
-      rbLen = dlPageAlloc->pagePdcchCfg.dci.pdschCfg->pdschFreqAlloc.numPrb;
+      coreset0Size = dlPageAlloc->pageDlDci.coreSetSize;
+      rbStart = dlPageAlloc->pageDlSch.freqAlloc.startPrb;
+      rbLen = dlPageAlloc->pageDlSch.freqAlloc.numPrb;
 
       if((rbLen >=1) && (rbLen <= coreset0Size - rbStart))
       {
@@ -2712,7 +2712,7 @@ void fillPageDlDciPdu(fapi_dl_dci_t *dlDciPtr, DlPageAlloc *dlPageAlloc)
       else
       {
          /*Short Msg is Present*/
-         if(dlPageAlloc->dlPagePduLen == 0 || dlPageAlloc->dlPagePdu == NULLP)
+         if(dlPageAlloc->pageDlSch.dlPagePduLen == 0 || dlPageAlloc->pageDlSch.dlPagePdu == NULLP)
          {
             /*When Paging Msg is absent*/
             shortMsgInd = 2;
@@ -2725,9 +2725,9 @@ void fillPageDlDciPdu(fapi_dl_dci_t *dlDciPtr, DlPageAlloc *dlPageAlloc)
          shortMsg = dlPageAlloc->shortMsg;
       }
 
-      timeDomResAssign = dlPageAlloc->pagePdcchCfg.dci.pdschCfg->pdschTimeAlloc.rowIndex -1;
-      VRB2PRBMap       = dlPageAlloc->pagePdcchCfg.dci.pdschCfg->pdschFreqAlloc.vrbPrbMapping;
-      modNCodScheme    = dlPageAlloc->pagePdcchCfg.dci.pdschCfg->codeword[0].mcsIndex;
+      timeDomResAssign = 0;
+      VRB2PRBMap       = dlPageAlloc->pageDlSch.vrbPrbMapping;
+      modNCodScheme    = dlPageAlloc->pageDlSch.tbInfo.mcs;
       tbScaling        = 0;
       reserved         = 0;
 
@@ -3089,6 +3089,62 @@ void fillDlMsgDlDciPdu(fapi_dl_dci_t *dlDciPtr, PdcchCfg *pdcchInfo,\
 
 /*******************************************************************
  *
+ * @brief fills Dl PDCCH Info from DL PageAlloc
+ *
+ * @details
+ *
+ *    Function : fillPdcchInfoFrmPageAlloc
+ *
+ *    Functionality:
+ *         -Fills the PdcchInfo
+ *
+ * @params[in] Pointer to DlPageAlloc
+ *             Pointer to PdcchCfg
+ * @return ROK
+ *
+ ******************************************************************/
+void fillPagePdcchPdu(fapi_dl_tti_req_pdu_t *dlTtiReqPdu, fapi_vendor_dl_tti_req_pdu_t *dlTtiVendorPdu, DlPageAlloc *pageAlloc, MacCellCfg *macCellCfg)
+{
+   if(dlTtiReqPdu != NULLP)
+   {
+      BwpCfg *bwp = NULLP;
+
+      memset(&dlTtiReqPdu->pdu.pdcch_pdu, 0, sizeof(fapi_dl_pdcch_pdu_t));
+      bwp = &pageAlloc->bwp;
+      fillPageDlDciPdu(dlTtiReqPdu->pdu.pdcch_pdu.dlDci, pageAlloc, macCellCfg);
+
+      dlTtiReqPdu->pduType = PDCCH_PDU_TYPE;
+
+      dlTtiReqPdu->pdu.pdcch_pdu.bwpSize           = bwp->freqAlloc.numPrb;
+      dlTtiReqPdu->pdu.pdcch_pdu.bwpStart          = bwp->freqAlloc.startPrb;
+      dlTtiReqPdu->pdu.pdcch_pdu.subCarrierSpacing = bwp->subcarrierSpacing; 
+      dlTtiReqPdu->pdu.pdcch_pdu.cyclicPrefix      = bwp->cyclicPrefix; 
+
+      dlTtiReqPdu->pdu.pdcch_pdu.startSymbolIndex    = pageAlloc->pageDlDci.ssStartSymbolIndex; 
+      dlTtiReqPdu->pdu.pdcch_pdu.durationSymbols     = pageAlloc->pageDlDci.durationSymbols; 
+      memcpy(dlTtiReqPdu->pdu.pdcch_pdu.freqDomainResource, pageAlloc->pageDlDci.freqDomainResource, 6*sizeof(uint8_t)); 
+      dlTtiReqPdu->pdu.pdcch_pdu.cceRegMappingType   = pageAlloc->pageDlDci.cceRegMappingType; 
+      dlTtiReqPdu->pdu.pdcch_pdu.regBundleSize       = pageAlloc->pageDlDci.cceReg.interleaved.regBundleSize; 
+      dlTtiReqPdu->pdu.pdcch_pdu.interleaverSize     = pageAlloc->pageDlDci.cceReg.interleaved.interleaverSize; 
+      dlTtiReqPdu->pdu.pdcch_pdu.shiftIndex          = pageAlloc->pageDlDci.cceReg.interleaved.shiftIndex; 
+      dlTtiReqPdu->pdu.pdcch_pdu.precoderGranularity = pageAlloc->pageDlDci.precoderGranularity; 
+      dlTtiReqPdu->pdu.pdcch_pdu.numDlDci            = 1; 
+      dlTtiReqPdu->pdu.pdcch_pdu.coreSetType         = CORESET_TYPE0;
+
+      /* Calculating PDU length. Considering only one dl dci pdu for now */
+      dlTtiReqPdu->pduSize = sizeof(fapi_dl_pdcch_pdu_t);
+
+      /* Filling Vendor message PDU */
+      dlTtiVendorPdu->pdu_type = FAPI_PDCCH_PDU_TYPE;
+      dlTtiVendorPdu->pdu_size = sizeof(fapi_vendor_dl_pdcch_pdu_t);
+      dlTtiVendorPdu->pdu.pdcch_pdu.num_dl_dci = dlTtiReqPdu->pdu.pdcch_pdu.numDlDci;
+      dlTtiVendorPdu->pdu.pdcch_pdu.dl_dci[0].epre_ratio_of_pdcch_to_ssb = 0;
+      dlTtiVendorPdu->pdu.pdcch_pdu.dl_dci[0].epre_ratio_of_dmrs_to_ssb = 0;
+   }
+}
+
+/*******************************************************************
+ *
  * @brief fills PDCCH PDU required for DL TTI info in MAC
  *
  * @details
@@ -3119,12 +3175,6 @@ uint8_t fillPdcchPdu(fapi_dl_tti_req_pdu_t *dlTtiReqPdu, fapi_vendor_dl_tti_req_
          bwp = &dlSlot->dlInfo.brdcstAlloc.sib1Alloc.bwp;
          fillSib1DlDciPdu(dlTtiReqPdu->pdu.pdcch_pdu.dlDci, pdcchInfo);
       }
-      else if(rntiType == P_RNTI_TYPE)
-      {
-         pdcchInfo = &dlSlot->pageAllocInfo->pagePdcchCfg;
-         bwp = &dlSlot->pageAllocInfo->bwp;
-         fillPageDlDciPdu(dlTtiReqPdu->pdu.pdcch_pdu.dlDci, dlSlot->pageAllocInfo);
-      }
       else if(rntiType == RA_RNTI_TYPE)
       {
          pdcchInfo = &dlSlot->dlInfo.rarAlloc[ueIdx]->rarPdcchCfg;
@@ -3148,6 +3198,7 @@ uint8_t fillPdcchPdu(fapi_dl_tti_req_pdu_t *dlTtiReqPdu, fapi_vendor_dl_tti_req_
       dlTtiReqPdu->pdu.pdcch_pdu.bwpStart = bwp->freqAlloc.startPrb;
       dlTtiReqPdu->pdu.pdcch_pdu.subCarrierSpacing = bwp->subcarrierSpacing; 
       dlTtiReqPdu->pdu.pdcch_pdu.cyclicPrefix = bwp->cyclicPrefix; 
+
       dlTtiReqPdu->pdu.pdcch_pdu.startSymbolIndex = pdcchInfo->coresetCfg.startSymbolIndex;
       dlTtiReqPdu->pdu.pdcch_pdu.durationSymbols = pdcchInfo->coresetCfg.durationSymbols;
       memcpy(dlTtiReqPdu->pdu.pdcch_pdu.freqDomainResource, pdcchInfo->coresetCfg.freqDomainResource, 6);
@@ -3171,6 +3222,91 @@ uint8_t fillPdcchPdu(fapi_dl_tti_req_pdu_t *dlTtiReqPdu, fapi_vendor_dl_tti_req_
    }
 
    return ROK;
+}
+
+/*******************************************************************
+ *
+ * @brief fills PDSCH PDU from PageAlloc required for DL TTI info in MAC
+ *
+ * @details
+ *
+ *    Function : fillPagePdschPdu
+ *
+ *    Functionality:
+ *         -Fills the Pdsch PDU info
+ *          stored in MAC
+ *
+ * @params[in] Pointer to FAPI DL TTI Req
+ *             Pointer to PdschCfg
+ *             Pointer to msgLen of DL TTI Info
+ * @return ROK
+ *
+ ******************************************************************/
+void fillPagePdschPdu(fapi_dl_tti_req_pdu_t *dlTtiReqPdu, fapi_vendor_dl_tti_req_pdu_t *dlTtiVendorPdu, DlPageAlloc *pageAlloc,
+                       uint16_t pduIndex, MacCellCfg *macCellCfg)
+{
+   uint8_t idx;
+
+   if(dlTtiReqPdu != NULLP)
+   {
+      dlTtiReqPdu->pduType = PDSCH_PDU_TYPE;
+      memset(&dlTtiReqPdu->pdu.pdsch_pdu, 0, sizeof(fapi_dl_pdsch_pdu_t));
+      dlTtiReqPdu->pdu.pdsch_pdu.pduBitMap = 0; /* PTRS and CBG params are excluded */ 
+      dlTtiReqPdu->pdu.pdsch_pdu.rnti = P_RNTI;         
+      dlTtiReqPdu->pdu.pdsch_pdu.pdu_index = pduIndex;
+      dlTtiReqPdu->pdu.pdsch_pdu.bwpSize = pageAlloc->bwp.freqAlloc.numPrb;       
+      dlTtiReqPdu->pdu.pdsch_pdu.bwpStart = pageAlloc->bwp.freqAlloc.startPrb;
+      dlTtiReqPdu->pdu.pdsch_pdu.subCarrierSpacing = pageAlloc->bwp.subcarrierSpacing;
+      dlTtiReqPdu->pdu.pdsch_pdu.cyclicPrefix = pageAlloc->bwp.cyclicPrefix;
+      dlTtiReqPdu->pdu.pdsch_pdu.nrOfCodeWords = 1;
+      for(idx = 0; idx < MAX_CODEWORDS ; idx++)
+      { 
+         dlTtiReqPdu->pdu.pdsch_pdu.cwInfo[idx].targetCodeRate = 308;
+         dlTtiReqPdu->pdu.pdsch_pdu.cwInfo[idx].qamModOrder = 2;
+         dlTtiReqPdu->pdu.pdsch_pdu.cwInfo[idx].mcsIndex = pageAlloc->pageDlSch.tbInfo.mcs;
+         dlTtiReqPdu->pdu.pdsch_pdu.cwInfo[idx].mcsTable = 0;
+         dlTtiReqPdu->pdu.pdsch_pdu.cwInfo[idx].rvIndex = 0;
+         dlTtiReqPdu->pdu.pdsch_pdu.cwInfo[idx].tbSize = pageAlloc->pageDlSch.tbInfo.tbSize;
+      }
+      dlTtiReqPdu->pdu.pdsch_pdu.dataScramblingId = macCellCfg->cellCfg.phyCellId;       
+      dlTtiReqPdu->pdu.pdsch_pdu.nrOfLayers = 1;
+      dlTtiReqPdu->pdu.pdsch_pdu.transmissionScheme = 0;
+      dlTtiReqPdu->pdu.pdsch_pdu.refPoint = 0;
+      dlTtiReqPdu->pdu.pdsch_pdu.dlDmrsSymbPos = DL_DMRS_SYMBOL_POS;
+      dlTtiReqPdu->pdu.pdsch_pdu.dmrsConfigType = pageAlloc->pageDlSch.dmrs.dmrsType;
+      dlTtiReqPdu->pdu.pdsch_pdu.dlDmrsScramblingId = macCellCfg->cellCfg.phyCellId; 
+      dlTtiReqPdu->pdu.pdsch_pdu.scid = 0;
+      dlTtiReqPdu->pdu.pdsch_pdu.numDmrsCdmGrpsNoData = 1;
+      dlTtiReqPdu->pdu.pdsch_pdu.dmrsPorts = 0x0001;
+      dlTtiReqPdu->pdu.pdsch_pdu.resourceAlloc = 1;
+      /* since we are using type-1, hence rbBitmap excluded */
+      dlTtiReqPdu->pdu.pdsch_pdu.rbStart = pageAlloc->pageDlSch.freqAlloc.startPrb;
+      dlTtiReqPdu->pdu.pdsch_pdu.rbSize = pageAlloc->pageDlSch.freqAlloc.numPrb;
+      dlTtiReqPdu->pdu.pdsch_pdu.vrbToPrbMapping = pageAlloc->pageDlSch.vrbPrbMapping;
+      dlTtiReqPdu->pdu.pdsch_pdu.startSymbIndex = pageAlloc->pageDlSch.timeAlloc.startSymb;
+      dlTtiReqPdu->pdu.pdsch_pdu.nrOfSymbols = pageAlloc->pageDlSch.timeAlloc.numSymb;
+      dlTtiReqPdu->pdu.pdsch_pdu.preCodingAndBeamforming.numPrgs = 1;
+      dlTtiReqPdu->pdu.pdsch_pdu.preCodingAndBeamforming.prgSize = 0;
+      dlTtiReqPdu->pdu.pdsch_pdu.preCodingAndBeamforming.digBfInterfaces = 0;
+      dlTtiReqPdu->pdu.pdsch_pdu.preCodingAndBeamforming.pmi_bfi[0].pmIdx = 0;
+      dlTtiReqPdu->pdu.pdsch_pdu.preCodingAndBeamforming.pmi_bfi[0].beamIdx[0].beamidx = 0;
+      dlTtiReqPdu->pdu.pdsch_pdu.powerControlOffset = 0;  
+      dlTtiReqPdu->pdu.pdsch_pdu.powerControlOffsetSS = 0;
+      dlTtiReqPdu->pdu.pdsch_pdu.mappingType =   pageAlloc->pageDlSch.timeAlloc.mappingType;
+      dlTtiReqPdu->pdu.pdsch_pdu.nrOfDmrsSymbols = pageAlloc->pageDlSch.dmrs.nrOfDmrsSymbols;
+      dlTtiReqPdu->pdu.pdsch_pdu.dmrsAddPos = pageAlloc->pageDlSch.dmrs.dmrsAddPos;
+
+      dlTtiReqPdu->pduSize = sizeof(fapi_dl_pdsch_pdu_t);
+
+      /* DL TTI Request vendor message */
+      dlTtiVendorPdu->pdu_type = FAPI_PDSCH_PDU_TYPE;
+      dlTtiVendorPdu->pdu_size = sizeof(fapi_vendor_dl_pdsch_pdu_t);
+      dlTtiVendorPdu->pdu.pdsch_pdu.nr_of_antenna_ports = 1;
+      for(int i =0; i< FAPI_VENDOR_MAX_TXRU_NUM; i++)
+      {
+	      dlTtiVendorPdu->pdu.pdsch_pdu.tx_ru_idx[i] =0;
+      }
+   }
 }
 
 /*******************************************************************
@@ -3457,8 +3593,7 @@ uint8_t fillSib1TxDataReq(fapi_tx_pdu_desc_t *pduDesc, uint16_t pduIndex, MacCel
  * @return ROK
  *
  * ********************************************************************/
-uint8_t fillPageTxDataReq(fapi_tx_pdu_desc_t *pduDesc, uint16_t pduIndex, DlPageAlloc *pageAllocInfo,
-                           PdschCfg pdschCfg)
+uint8_t fillPageTxDataReq(fapi_tx_pdu_desc_t *pduDesc, uint16_t pduIndex, DlPageAlloc *pageAllocInfo)
 {
    uint32_t payloadSize = 0;
    uint8_t *pagePayload = NULLP;
@@ -3471,7 +3606,7 @@ uint8_t fillPageTxDataReq(fapi_tx_pdu_desc_t *pduDesc, uint16_t pduIndex, DlPage
    pduDesc[pduIndex].num_tlvs = 1;
 
    /* fill the TLV */
-   payloadSize = pdschCfg.codeword[0].tbSize;
+   payloadSize = pageAllocInfo->pageDlSch.tbInfo.tbSize;
    pduDesc[pduIndex].tlvs[0].tl.tag = ((payloadSize & 0xff0000) >> 8) | FAPI_TX_DATA_PTR_TO_PAYLOAD_64;
    pduDesc[pduIndex].tlvs[0].tl.length = (payloadSize & 0x0000ffff);
    LWR_MAC_ALLOC(pagePayload, payloadSize);
@@ -3481,8 +3616,8 @@ uint8_t fillPageTxDataReq(fapi_tx_pdu_desc_t *pduDesc, uint16_t pduIndex, DlPage
    }
    payloadElem = (fapi_api_queue_elem_t *)pagePayload;
    FILL_FAPI_LIST_ELEM(payloadElem, NULLP, FAPI_VENDOR_MSG_PHY_ZBC_BLOCK_REQ, 1, \
-         pageAllocInfo->dlPagePduLen);
-   memcpy(pagePayload + TX_PAYLOAD_HDR_LEN, pageAllocInfo->dlPagePdu, pageAllocInfo->dlPagePduLen);
+         pageAllocInfo->pageDlSch.dlPagePduLen);
+   memcpy(pagePayload + TX_PAYLOAD_HDR_LEN, pageAllocInfo->pageDlSch.dlPagePdu, pageAllocInfo->pageDlSch.dlPagePduLen);
 
 #ifdef INTEL_WLS_MEM
    mtGetWlsHdl(&wlsHdlr);
@@ -3773,13 +3908,11 @@ uint16_t fillDlTtiReq(SlotTimingInfo currTimingInfo)
 				   if(numPduEncoded != nPdu)
 				   {
 					   rntiType = P_RNTI_TYPE;
-					   fillPdcchPdu(&dlTtiReq->pdus[numPduEncoded], &vendorMsg->p7_req_vendor.dl_tti_req.pdus[numPduEncoded], currDlSlot, -1, \
-							   rntiType, CORESET_TYPE0, MAX_NUM_UE);
+					   fillPagePdcchPdu(&dlTtiReq->pdus[numPduEncoded], &vendorMsg->p7_req_vendor.dl_tti_req.pdus[numPduEncoded], \
+                                   currDlSlot->pageAllocInfo, &macCellCfg);
 					   numPduEncoded++;
-					   fillPdschPdu(&dlTtiReq->pdus[numPduEncoded], &vendorMsg->p7_req_vendor.dl_tti_req.pdus[numPduEncoded],
-							   &currDlSlot->pageAllocInfo->pagePdschCfg,
-							   currDlSlot->pageAllocInfo->bwp,
-							   pduIndex);
+					   fillPagePdschPdu(&dlTtiReq->pdus[numPduEncoded], &vendorMsg->p7_req_vendor.dl_tti_req.pdus[numPduEncoded],
+							               currDlSlot->pageAllocInfo, pduIndex, &macCellCfg);
 					   dlTtiReq->ue_grp_info[dlTtiReq->nGroup].pduIdx[pduIndex] = pduIndex;
 					   pduIndex++;
 					   numPduEncoded++;
@@ -4009,11 +4142,10 @@ uint16_t sendTxDataReq(SlotTimingInfo currTimingInfo, MacDlSlot *dlSlot, p_fapi_
       }
       if(dlSlot->pageAllocInfo != NULLP)
       {
-         fillPageTxDataReq(txDataReq->pdu_desc, pduIndex, dlSlot->pageAllocInfo, \
-               dlSlot->pageAllocInfo->pagePdschCfg);
+         fillPageTxDataReq(txDataReq->pdu_desc, pduIndex, dlSlot->pageAllocInfo);
          pduIndex++;
          txDataReq->num_pdus++;
-         MAC_FREE(dlSlot->pageAllocInfo->dlPagePdu, sizeof(dlSlot->pageAllocInfo->dlPagePduLen));
+         MAC_FREE(dlSlot->pageAllocInfo->pageDlSch.dlPagePdu, sizeof(dlSlot->pageAllocInfo->pageDlSch.dlPagePduLen));
          MAC_FREE(dlSlot->pageAllocInfo,sizeof(DlPageAlloc));
       }
 

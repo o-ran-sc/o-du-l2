@@ -82,7 +82,7 @@ bool schCheckPrachOcc(SchCellCb *cell, SlotTimingInfo prachOccasionTimingInfo)
          /* prach ocassion present in this subframe */
 #ifdef NR_TDD
          if(UL_SLOT != schGetSlotSymbFrmt(prachOccasionTimingInfo.slot % cell->numSlotsInPeriodicity,\
-         cell->slotFrmtBitMap))
+                                             cell->slotFrmtBitMap))
          {
             DU_LOG("\nERROR  --> SCH : PrachCfgIdx %d doesn't support UL slot", prachCfgIdx);
             return FALSE;
@@ -938,7 +938,7 @@ uint8_t schFillRar(SchCellCb *cell, SlotTimingInfo rarTime, uint16_t ueId, RarAl
    pdsch->numLayers = 1;
    pdsch->transmissionScheme = 0;
    pdsch->refPoint = 0;
-   pdsch->dmrs.dlDmrsSymbPos = 4;  /* Bitmap value 00000000000100 i.e. using 3rd symbol for PDSCH DMRS */
+   pdsch->dmrs.dlDmrsSymbPos = DL_DMRS_SYMBOL_POS; 
    pdsch->dmrs.dmrsConfigType = 0; /* type-1 */
    pdsch->dmrs.dlDmrsScramblingId = cell->cellCfg.phyCellId;
    pdsch->dmrs.scid = 0;

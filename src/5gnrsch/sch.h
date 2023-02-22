@@ -745,7 +745,7 @@ void updateBsrAndLcList(CmLListCp *lcLL, BsrInfo *bsrInfo, uint8_t status);
 void schProcPagingCfg(SchCellCb *cell);
 void schCfgPdcchMonOccOfPO(SchCellCb *cell);
 void schIncrSlot(SlotTimingInfo *timingInfo, uint8_t incr, uint16_t numSlotsPerRF);
-uint8_t schFillPagePdschCfg(SchCellCb *cell, PdschCfg *pagePdschCfg, SlotTimingInfo slotTime, \
+uint8_t schFillPagePdschCfg(SchCellCb *cell, PageDlSch *pageDlSch, SlotTimingInfo slotTime, \
                              uint16_t tbSize, uint8_t mcs, uint16_t startPrb);
 /*DL HARQ Functions*/
 void schDlHqEntInit(SchCellCb *cellCb, SchUeCb *ueCb);
