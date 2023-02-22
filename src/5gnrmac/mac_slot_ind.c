@@ -217,8 +217,6 @@ uint8_t MacProcDlPageAlloc(Pst *pst, DlPageAlloc *dlPageAlloc)
          return RFAILED;
       }
       memcpy(currDlSlot->pageAllocInfo, dlPageAlloc, sizeof(DlPageAlloc));
-      currDlSlot->pageAllocInfo->pagePdcchCfg.dci.pdschCfg = \
-                                                             &currDlSlot->pageAllocInfo->pagePdschCfg;
    }
    else
    {
