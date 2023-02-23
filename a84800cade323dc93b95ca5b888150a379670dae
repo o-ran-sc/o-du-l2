@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ab520ebb_98f26ec2",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 3275,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-02-23T12:16:31Z",
+      "side": 1,
+      "message": "Can we create a macro for this as done for othe DMRS params like NUM_DMRS_SYMBOLS and DMRS_ADDITIONAL_POS. Lets use this macro at all places in lwr_mac and SCH",
+      "range": {
+        "startLine": 3275,
+        "startChar": 49,
+        "endLine": 3275,
+        "endChar": 50
+      },
+      "revId": "a84800cade323dc93b95ca5b888150a379670dae",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
