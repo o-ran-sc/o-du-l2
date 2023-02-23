@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e270f7a6_7b78f91c",
+        "filename": "src/5gnrsch/sch_fcfs.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 1031,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-02-23T13:08:53Z",
+      "side": 1,
+      "message": "same",
+      "revId": "d34ded54402d98df0118f41633e4bfa40dccb620",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cf0f7d67_8ad37a0c",
+        "filename": "src/5gnrsch/sch_fcfs.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 1050,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-02-23T13:08:53Z",
+      "side": 1,
+      "message": "if (dciSlotAlloc-\u003edlMsgPdcchCfg\u003d\u003dNULL || dciSlotAlloc-\u003edlMsgPdschCfg\u003d\u003dNULL)",
+      "revId": "d34ded54402d98df0118f41633e4bfa40dccb620",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "505277e0_7943f095",
+        "filename": "src/5gnrsch/sch_slice_based.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 1030,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-02-23T13:08:53Z",
+      "side": 1,
+      "message": "if (dciSlotAlloc-\u003edlMsgPdcchCfg\u003d\u003dNULL || dciSlotAlloc-\u003edlMsgPdschCfg\u003d\u003dNULL)",
+      "revId": "d34ded54402d98df0118f41633e4bfa40dccb620",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
