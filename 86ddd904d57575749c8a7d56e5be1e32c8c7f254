@@ -18,6 +18,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6e4aa926_3f9fb3c5",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2674,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-02-24T05:55:45Z",
+      "side": 1,
+      "message": "BWP doesnt have beamforming parameters. They are hardcoded here because those parameters are not defined in WG8 to be sent from SCH to MAC. Since these parameters are needed for DL_TTI_REQ thus assigning the default values.",
+      "parentUuid": "eec69a46_925960a1",
+      "revId": "86ddd904d57575749c8a7d56e5be1e32c8c7f254",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "49dc6130_e9eadeac",
@@ -31,6 +49,24 @@
       "writtenOn": "2023-02-24T05:43:37Z",
       "side": 1,
       "message": "we can create a macro for defining the mapping type.\ni think we can use this SchREGMappingType",
+      "revId": "86ddd904d57575749c8a7d56e5be1e32c8c7f254",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "761d4f1b_a9b4f68c",
+        "filename": "src/5gnrsch/sch_slot_ind.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 558,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-02-24T05:55:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "49dc6130_e9eadeac",
       "revId": "86ddd904d57575749c8a7d56e5be1e32c8c7f254",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
