@@ -3,6 +3,207 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "49d59cf9_83507cdc",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 3365,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-02-24T15:01:30Z",
+      "side": 1,
+      "message": "pls remove the line break at the end",
+      "revId": "2878a101417cf7e740b15e2589099d884f3bea50",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f74ba4bb_8137e92b",
+        "filename": "src/5gnrmac/mac_slot_ind.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 216,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-02-24T15:01:30Z",
+      "side": 1,
+      "message": "please remove this as paging is now chnaged",
+      "range": {
+        "startLine": 216,
+        "startChar": 109,
+        "endLine": 216,
+        "endChar": 110
+      },
+      "revId": "2878a101417cf7e740b15e2589099d884f3bea50",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c3c884e4_ab6426f2",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 658,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-02-24T15:01:30Z",
+      "side": 1,
+      "message": "as discussed, please remove this from here and we can put it in its parent function based on pdcch and pdsch time slots",
+      "range": {
+        "startLine": 658,
+        "startChar": 24,
+        "endLine": 658,
+        "endChar": 37
+      },
+      "revId": "2878a101417cf7e740b15e2589099d884f3bea50",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3f2de840_62bcac6d",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 734,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-02-24T15:01:30Z",
+      "side": 1,
+      "message": "remove this as well",
+      "range": {
+        "startLine": 734,
+        "startChar": 26,
+        "endLine": 734,
+        "endChar": 39
+      },
+      "revId": "2878a101417cf7e740b15e2589099d884f3bea50",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1233bf05_1e74d18d",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 746,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-02-24T15:01:30Z",
+      "side": 1,
+      "message": "pls remove this",
+      "range": {
+        "startLine": 746,
+        "startChar": 27,
+        "endLine": 746,
+        "endChar": 32
+      },
+      "revId": "2878a101417cf7e740b15e2589099d884f3bea50",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "971d7b85_531704e5",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 871,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-02-24T15:01:30Z",
+      "side": 1,
+      "message": "As discussed, please remove the allocation and filling part of PdschCfg pointer and rather fill pdcch-\u003edci.pdschCfg here",
+      "range": {
+        "startLine": 871,
+        "startChar": 3,
+        "endLine": 871,
+        "endChar": 12
+      },
+      "revId": "2878a101417cf7e740b15e2589099d884f3bea50",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "343bd8c4_bc4cc2d3",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 941,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-02-24T15:01:30Z",
+      "side": 1,
+      "message": "please remove this as we can remove the pdschCfg for any previous data",
+      "range": {
+        "startLine": 941,
+        "startChar": 27,
+        "endLine": 941,
+        "endChar": 40
+      },
+      "revId": "2878a101417cf7e740b15e2589099d884f3bea50",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c211f132_51230960",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 953,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-02-24T15:01:30Z",
+      "side": 1,
+      "message": "pls remove",
+      "range": {
+        "startLine": 953,
+        "startChar": 14,
+        "endLine": 953,
+        "endChar": 23
+      },
+      "revId": "2878a101417cf7e740b15e2589099d884f3bea50",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5edcc400_9c3459aa",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 1643,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-02-24T15:01:30Z",
+      "side": 1,
+      "message": "we can remove this and directly use dlMsgAlloc",
+      "range": {
+        "startLine": 1643,
+        "startChar": 17,
+        "endLine": 1643,
+        "endChar": 30
+      },
+      "revId": "2878a101417cf7e740b15e2589099d884f3bea50",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a4d12eaa_31010c06",
         "filename": "src/5gnrsch/sch_common.c",
         "patchSetId": 8
@@ -20,6 +221,184 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "fa50cdb7_80a2c949",
+        "filename": "src/5gnrsch/sch_rach.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 725,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-02-24T15:01:30Z",
+      "side": 1,
+      "message": "check this as discussed",
+      "range": {
+        "startLine": 725,
+        "startChar": 27,
+        "endLine": 725,
+        "endChar": 28
+      },
+      "revId": "2878a101417cf7e740b15e2589099d884f3bea50",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "312660d8_62c3e7f0",
+        "filename": "src/5gnrsch/sch_slice_based.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 1032,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-02-24T15:01:30Z",
+      "side": 1,
+      "message": "same as comment given in sch_slot_ind.c",
+      "range": {
+        "startLine": 1032,
+        "startChar": 18,
+        "endLine": 1032,
+        "endChar": 26
+      },
+      "revId": "2878a101417cf7e740b15e2589099d884f3bea50",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "727a7d50_e207bd31",
+        "filename": "src/5gnrsch/sch_slot_ind.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 156,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-02-24T15:01:30Z",
+      "side": 1,
+      "message": "please recheck the free part in failure as we discussed",
+      "range": {
+        "startLine": 156,
+        "startChar": 18,
+        "endLine": 156,
+        "endChar": 30
+      },
+      "revId": "2878a101417cf7e740b15e2589099d884f3bea50",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "35eae1aa_61816d96",
+        "filename": "src/5gnrsch/sch_slot_ind.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-02-24T15:01:30Z",
+      "side": 1,
+      "message": "dont need this i think bcz we changed the design",
+      "range": {
+        "startLine": 161,
+        "startChar": 16,
+        "endLine": 161,
+        "endChar": 17
+      },
+      "revId": "2878a101417cf7e740b15e2589099d884f3bea50",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2562db2f_84c04f83",
+        "filename": "src/5gnrsch/sch_slot_ind.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 180,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-02-24T15:01:30Z",
+      "side": 1,
+      "message": "I still think we can move the allocation and memcpy part of PdschCfg pointer (DlMsgSchInfo-\u003ePdcschCfg) here. \nplease check",
+      "revId": "2878a101417cf7e740b15e2589099d884f3bea50",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2861bb38_63697da2",
+        "filename": "src/5gnrsch/sch_slot_ind.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 192,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-02-24T15:01:30Z",
+      "side": 1,
+      "message": "Check the freeing part here as mentioned above",
+      "range": {
+        "startLine": 192,
+        "startChar": 24,
+        "endLine": 192,
+        "endChar": 36
+      },
+      "revId": "2878a101417cf7e740b15e2589099d884f3bea50",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a971065e_4175e098",
+        "filename": "src/5gnrsch/sch_slot_ind.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 197,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-02-24T15:01:30Z",
+      "side": 1,
+      "message": "recheck this memset",
+      "range": {
+        "startLine": 197,
+        "startChar": 21,
+        "endLine": 197,
+        "endChar": 22
+      },
+      "revId": "2878a101417cf7e740b15e2589099d884f3bea50",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "534cea3b_d5e88dcd",
+        "filename": "src/5gnrsch/sch_slot_ind.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 209,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-02-24T15:01:30Z",
+      "side": 1,
+      "message": "dlMsgAlloc on left side. also do the memcpy",
+      "range": {
+        "startLine": 209,
+        "startChar": 6,
+        "endLine": 209,
+        "endChar": 18
+      },
+      "revId": "2878a101417cf7e740b15e2589099d884f3bea50",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7def3d19_5c863ad8",
         "filename": "src/5gnrsch/sch_slot_ind.c",
         "patchSetId": 8
@@ -31,6 +410,70 @@
       "writtenOn": "2023-02-24T05:15:04Z",
       "side": 1,
       "message": "dciSlotAlloc-\u003ePdschCfg must be freed here after coping in dlMsgAlloc-\u003epdschcfg.",
+      "revId": "2878a101417cf7e740b15e2589099d884f3bea50",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eaf864b9_df48566f",
+        "filename": "src/5gnrsch/sch_slot_ind.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 210,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-02-24T15:01:30Z",
+      "side": 1,
+      "message": "dont we need to mem alloc on dlMsgAlloc-\u003edlMsgPdschCfg before memcpy?",
+      "range": {
+        "startLine": 210,
+        "startChar": 25,
+        "endLine": 210,
+        "endChar": 38
+      },
+      "revId": "2878a101417cf7e740b15e2589099d884f3bea50",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7ff9cd4c_312a186d",
+        "filename": "src/5gnrsch/sch_slot_ind.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 210,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-02-24T15:01:30Z",
+      "side": 1,
+      "message": "agreed and assign it to NULL also",
+      "parentUuid": "7def3d19_5c863ad8",
+      "revId": "2878a101417cf7e740b15e2589099d884f3bea50",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0ad6ee61_e965856f",
+        "filename": "src/5gnrsch/sch_slot_ind.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 556,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-02-24T15:01:30Z",
+      "side": 1,
+      "message": "Can u please remove this line.. bcz I have changed the dlPageAlloc structure altogether.. once page gerrit gets merged u will understand the logic",
+      "range": {
+        "startLine": 556,
+        "startChar": 39,
+        "endLine": 556,
+        "endChar": 42
+      },
       "revId": "2878a101417cf7e740b15e2589099d884f3bea50",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
