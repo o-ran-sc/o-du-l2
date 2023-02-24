@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eec69a46_925960a1",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2674,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-02-24T05:43:37Z",
+      "side": 1,
+      "message": "rather than using hardcoding we can fill these parameter with the help of macCellCfg-\u003einitialDlBwp.bwp",
+      "revId": "86ddd904d57575749c8a7d56e5be1e32c8c7f254",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "49dc6130_e9eadeac",
+        "filename": "src/5gnrsch/sch_slot_ind.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 558,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-02-24T05:43:37Z",
+      "side": 1,
+      "message": "we can create a macro for defining the mapping type.\ni think we can use this SchREGMappingType",
+      "revId": "86ddd904d57575749c8a7d56e5be1e32c8c7f254",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
