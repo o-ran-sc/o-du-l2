@@ -18,6 +18,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b99771d8_96375b77",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 3365,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-02-27T11:59:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "49d59cf9_83507cdc",
+      "revId": "2878a101417cf7e740b15e2589099d884f3bea50",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f74ba4bb_8137e92b",
@@ -31,6 +49,30 @@
       "writtenOn": "2023-02-24T15:01:30Z",
       "side": 1,
       "message": "please remove this as paging is now chnaged",
+      "range": {
+        "startLine": 216,
+        "startChar": 109,
+        "endLine": 216,
+        "endChar": 110
+      },
+      "revId": "2878a101417cf7e740b15e2589099d884f3bea50",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "060a0c4a_3085134b",
+        "filename": "src/5gnrmac/mac_slot_ind.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 216,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-02-27T11:59:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f74ba4bb_8137e92b",
       "range": {
         "startLine": 216,
         "startChar": 109,
@@ -64,6 +106,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5d247b53_ff4e8b67",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 658,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-02-27T11:59:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c3c884e4_ab6426f2",
+      "range": {
+        "startLine": 658,
+        "startChar": 24,
+        "endLine": 658,
+        "endChar": 37
+      },
+      "revId": "2878a101417cf7e740b15e2589099d884f3bea50",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3f2de840_62bcac6d",
@@ -77,6 +143,30 @@
       "writtenOn": "2023-02-24T15:01:30Z",
       "side": 1,
       "message": "remove this as well",
+      "range": {
+        "startLine": 734,
+        "startChar": 26,
+        "endLine": 734,
+        "endChar": 39
+      },
+      "revId": "2878a101417cf7e740b15e2589099d884f3bea50",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "85fa0a8c_46bbf4a5",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 734,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-02-27T11:59:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3f2de840_62bcac6d",
       "range": {
         "startLine": 734,
         "startChar": 26,
@@ -110,6 +200,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6f643683_36367b92",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 746,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-02-27T11:59:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1233bf05_1e74d18d",
+      "range": {
+        "startLine": 746,
+        "startChar": 27,
+        "endLine": 746,
+        "endChar": 32
+      },
+      "revId": "2878a101417cf7e740b15e2589099d884f3bea50",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "971d7b85_531704e5",
@@ -123,6 +237,30 @@
       "writtenOn": "2023-02-24T15:01:30Z",
       "side": 1,
       "message": "As discussed, please remove the allocation and filling part of PdschCfg pointer and rather fill pdcch-\u003edci.pdschCfg here",
+      "range": {
+        "startLine": 871,
+        "startChar": 3,
+        "endLine": 871,
+        "endChar": 12
+      },
+      "revId": "2878a101417cf7e740b15e2589099d884f3bea50",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8d5d62a7_028a3657",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 871,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-02-27T11:59:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "971d7b85_531704e5",
       "range": {
         "startLine": 871,
         "startChar": 3,
@@ -156,6 +294,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2f33088e_87832d62",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 941,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-02-27T11:59:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "343bd8c4_bc4cc2d3",
+      "range": {
+        "startLine": 941,
+        "startChar": 27,
+        "endLine": 941,
+        "endChar": 40
+      },
+      "revId": "2878a101417cf7e740b15e2589099d884f3bea50",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c211f132_51230960",
@@ -169,6 +331,30 @@
       "writtenOn": "2023-02-24T15:01:30Z",
       "side": 1,
       "message": "pls remove",
+      "range": {
+        "startLine": 953,
+        "startChar": 14,
+        "endLine": 953,
+        "endChar": 23
+      },
+      "revId": "2878a101417cf7e740b15e2589099d884f3bea50",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3a92d6e2_85e81054",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 953,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-02-27T11:59:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c211f132_51230960",
       "range": {
         "startLine": 953,
         "startChar": 14,
@@ -202,6 +388,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "eb6b03c3_bc841938",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 1643,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-02-27T11:59:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5edcc400_9c3459aa",
+      "range": {
+        "startLine": 1643,
+        "startChar": 17,
+        "endLine": 1643,
+        "endChar": 30
+      },
+      "revId": "2878a101417cf7e740b15e2589099d884f3bea50",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a4d12eaa_31010c06",
@@ -219,6 +429,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "dea05073_9f28efcd",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 1847,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-02-27T11:59:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a4d12eaa_31010c06",
+      "revId": "2878a101417cf7e740b15e2589099d884f3bea50",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fa50cdb7_80a2c949",
@@ -232,6 +460,30 @@
       "writtenOn": "2023-02-24T15:01:30Z",
       "side": 1,
       "message": "check this as discussed",
+      "range": {
+        "startLine": 725,
+        "startChar": 27,
+        "endLine": 725,
+        "endChar": 28
+      },
+      "revId": "2878a101417cf7e740b15e2589099d884f3bea50",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "76d58f9e_51273c2e",
+        "filename": "src/5gnrsch/sch_rach.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 725,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-02-27T11:59:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fa50cdb7_80a2c949",
       "range": {
         "startLine": 725,
         "startChar": 27,
@@ -267,6 +519,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "36c9d859_0e97eedb",
+        "filename": "src/5gnrsch/sch_slice_based.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 1032,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-02-27T11:59:40Z",
+      "side": 1,
+      "message": "needs to remove dciSlotAlloc-\u003edlMsgPdcchCfg check. \nonly pdsch check needs to keep. will remove this in nect patch",
+      "parentUuid": "312660d8_62c3e7f0",
+      "range": {
+        "startLine": 1032,
+        "startChar": 18,
+        "endLine": 1032,
+        "endChar": 26
+      },
+      "revId": "2878a101417cf7e740b15e2589099d884f3bea50",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "727a7d50_e207bd31",
         "filename": "src/5gnrsch/sch_slot_ind.c",
         "patchSetId": 8
@@ -278,6 +554,30 @@
       "writtenOn": "2023-02-24T15:01:30Z",
       "side": 1,
       "message": "please recheck the free part in failure as we discussed",
+      "range": {
+        "startLine": 156,
+        "startChar": 18,
+        "endLine": 156,
+        "endChar": 30
+      },
+      "revId": "2878a101417cf7e740b15e2589099d884f3bea50",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ae739f05_8bb4d67e",
+        "filename": "src/5gnrsch/sch_slot_ind.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 156,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-02-27T11:59:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "727a7d50_e207bd31",
       "range": {
         "startLine": 156,
         "startChar": 18,
@@ -311,6 +611,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3f398536_a899f489",
+        "filename": "src/5gnrsch/sch_slot_ind.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-02-27T11:59:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "35eae1aa_61816d96",
+      "range": {
+        "startLine": 161,
+        "startChar": 16,
+        "endLine": 161,
+        "endChar": 17
+      },
+      "revId": "2878a101417cf7e740b15e2589099d884f3bea50",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2562db2f_84c04f83",
@@ -328,6 +652,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "af427686_ad08d38e",
+        "filename": "src/5gnrsch/sch_slot_ind.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 180,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-02-27T11:59:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2562db2f_84c04f83",
+      "revId": "2878a101417cf7e740b15e2589099d884f3bea50",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2861bb38_63697da2",
@@ -341,6 +683,30 @@
       "writtenOn": "2023-02-24T15:01:30Z",
       "side": 1,
       "message": "Check the freeing part here as mentioned above",
+      "range": {
+        "startLine": 192,
+        "startChar": 24,
+        "endLine": 192,
+        "endChar": 36
+      },
+      "revId": "2878a101417cf7e740b15e2589099d884f3bea50",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cbc8996a_e87cff0f",
+        "filename": "src/5gnrsch/sch_slot_ind.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 192,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-02-27T11:59:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2861bb38_63697da2",
       "range": {
         "startLine": 192,
         "startChar": 24,
@@ -374,6 +740,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d77cbef2_ad711499",
+        "filename": "src/5gnrsch/sch_slot_ind.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 197,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-02-27T11:59:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a971065e_4175e098",
+      "range": {
+        "startLine": 197,
+        "startChar": 21,
+        "endLine": 197,
+        "endChar": 22
+      },
+      "revId": "2878a101417cf7e740b15e2589099d884f3bea50",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "534cea3b_d5e88dcd",
@@ -387,6 +777,30 @@
       "writtenOn": "2023-02-24T15:01:30Z",
       "side": 1,
       "message": "dlMsgAlloc on left side. also do the memcpy",
+      "range": {
+        "startLine": 209,
+        "startChar": 6,
+        "endLine": 209,
+        "endChar": 18
+      },
+      "revId": "2878a101417cf7e740b15e2589099d884f3bea50",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "40b9338a_62d52566",
+        "filename": "src/5gnrsch/sch_slot_ind.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 209,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-02-27T11:59:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "534cea3b_d5e88dcd",
       "range": {
         "startLine": 209,
         "startChar": 6,
@@ -455,6 +869,48 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "75341eb6_e073d8bc",
+        "filename": "src/5gnrsch/sch_slot_ind.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 210,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-02-27T11:59:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7ff9cd4c_312a186d",
+      "revId": "2878a101417cf7e740b15e2589099d884f3bea50",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "44840ed5_55f4768d",
+        "filename": "src/5gnrsch/sch_slot_ind.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 210,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-02-27T11:59:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "eaf864b9_df48566f",
+      "range": {
+        "startLine": 210,
+        "startChar": 25,
+        "endLine": 210,
+        "endChar": 38
+      },
+      "revId": "2878a101417cf7e740b15e2589099d884f3bea50",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0ad6ee61_e965856f",
@@ -468,6 +924,30 @@
       "writtenOn": "2023-02-24T15:01:30Z",
       "side": 1,
       "message": "Can u please remove this line.. bcz I have changed the dlPageAlloc structure altogether.. once page gerrit gets merged u will understand the logic",
+      "range": {
+        "startLine": 556,
+        "startChar": 39,
+        "endLine": 556,
+        "endChar": 42
+      },
+      "revId": "2878a101417cf7e740b15e2589099d884f3bea50",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f671bdd0_38a79ae6",
+        "filename": "src/5gnrsch/sch_slot_ind.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 556,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-02-27T11:59:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0ad6ee61_e965856f",
       "range": {
         "startLine": 556,
         "startChar": 39,
