@@ -1,0 +1,366 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "39375241_cf8f08cd",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 10
+      },
+      "lineNbr": 4314,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-02-28T04:50:49Z",
+      "side": 1,
+      "message": "didnt understand the condition",
+      "range": {
+        "startLine": 4314,
+        "startChar": 37,
+        "endLine": 4314,
+        "endChar": 42
+      },
+      "revId": "d536214b64b9b3c8f97d117ab9189bb86f58dae2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3f7f07c9_753b4bdf",
+        "filename": "src/5gnrmac/mac_slot_ind.c",
+        "patchSetId": 10
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-02-28T04:50:49Z",
+      "side": 1,
+      "message": "Dont you need to check whether dlSchedInfo-\u003edlMsgAlloc[ueIdx]-\u003edlMsgPdschCfg !\u003d NULL. Because we need to be sure that we have received a pdsch in this particular slot when MSG4 is pending",
+      "range": {
+        "startLine": 94,
+        "startChar": 26,
+        "endLine": 94,
+        "endChar": 33
+      },
+      "revId": "d536214b64b9b3c8f97d117ab9189bb86f58dae2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "62738570_3c24b3e8",
+        "filename": "src/5gnrmac/mac_slot_ind.c",
+        "patchSetId": 10
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-02-28T04:50:49Z",
+      "side": 1,
+      "message": "it is better to have the macRaStatus transitions here based on whether PdschCfg is NULL or not.",
+      "revId": "d536214b64b9b3c8f97d117ab9189bb86f58dae2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b4311377_84c0673e",
+        "filename": "src/5gnrmac/mac_slot_ind.c",
+        "patchSetId": 10
+      },
+      "lineNbr": 339,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-02-28T04:50:49Z",
+      "side": 1,
+      "message": "here dlMsgPdcchCfg check should be removed. Because msg4pdu must be formed when pdschCfg is present.",
+      "range": {
+        "startLine": 339,
+        "startChar": 50,
+        "endLine": 339,
+        "endChar": 64
+      },
+      "revId": "d536214b64b9b3c8f97d117ab9189bb86f58dae2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "541a1422_9ab6cace",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 10
+      },
+      "lineNbr": 1785,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-02-28T04:50:49Z",
+      "side": 1,
+      "message": "pls change it to pdsch",
+      "range": {
+        "startLine": 1785,
+        "startChar": 24,
+        "endLine": 1785,
+        "endChar": 37
+      },
+      "revId": "d536214b64b9b3c8f97d117ab9189bb86f58dae2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4e186f69_e9f5dc6f",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 10
+      },
+      "lineNbr": 1792,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-02-28T04:50:49Z",
+      "side": 1,
+      "message": "remove this memset",
+      "range": {
+        "startLine": 1792,
+        "startChar": 9,
+        "endLine": 1792,
+        "endChar": 15
+      },
+      "revId": "d536214b64b9b3c8f97d117ab9189bb86f58dae2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8eca5a51_bf0c0aab",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 10
+      },
+      "lineNbr": 1805,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-02-28T04:50:49Z",
+      "side": 1,
+      "message": "please free dciSlotAlloc-\u003edlMsgPdcchMsg here\nand also following two lines\n   SCH_FREE(dciSlotAlloc, sizeof(DlMsgSchInfo));\n   cell-\u003eschDlSlotInfo[pdcchTime.slot]-\u003edlMsgAlloc[ueId-1] \u003d NULLP;",
+      "range": {
+        "startLine": 1805,
+        "startChar": 35,
+        "endLine": 1805,
+        "endChar": 37
+      },
+      "revId": "d536214b64b9b3c8f97d117ab9189bb86f58dae2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "588f0beb_2cb4ac29",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 10
+      },
+      "lineNbr": 1819,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-02-28T04:50:49Z",
+      "side": 1,
+      "message": "pdsch \u003d\u003d NULLP",
+      "range": {
+        "startLine": 1819,
+        "startChar": 30,
+        "endLine": 1819,
+        "endChar": 43
+      },
+      "revId": "d536214b64b9b3c8f97d117ab9189bb86f58dae2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a4fcb850_a15cfd24",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 10
+      },
+      "lineNbr": 1826,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-02-28T04:50:49Z",
+      "side": 1,
+      "message": "remove this",
+      "range": {
+        "startLine": 1826,
+        "startChar": 15,
+        "endLine": 1826,
+        "endChar": 21
+      },
+      "revId": "d536214b64b9b3c8f97d117ab9189bb86f58dae2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4e1899a9_2894c94c",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 10
+      },
+      "lineNbr": 1828,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-02-28T04:50:49Z",
+      "side": 1,
+      "message": "before return ffree dciSlotAlloc-\u003edlMsgPdcchCfg",
+      "range": {
+        "startLine": 1828,
+        "startChar": 12,
+        "endLine": 1828,
+        "endChar": 19
+      },
+      "revId": "d536214b64b9b3c8f97d117ab9189bb86f58dae2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fbb48410_30920a69",
+        "filename": "src/5gnrsch/sch_slot_ind.c",
+        "patchSetId": 10
+      },
+      "lineNbr": 154,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-02-28T04:50:49Z",
+      "side": 1,
+      "message": "pls change it to pdsch",
+      "range": {
+        "startLine": 154,
+        "startChar": 24,
+        "endLine": 154,
+        "endChar": 37
+      },
+      "revId": "d536214b64b9b3c8f97d117ab9189bb86f58dae2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4c3570b3_5ad3c0be",
+        "filename": "src/5gnrsch/sch_slot_ind.c",
+        "patchSetId": 10
+      },
+      "lineNbr": 182,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-02-28T04:50:49Z",
+      "side": 1,
+      "message": "please free dciSlotAlloc-\u003edlMsgPdcchMsg here\nand also following two lines\n   SCH_FREE(dciSlotAlloc, sizeof(DlMsgSchInfo));\n   cell-\u003eschDlSlotInfo[pdcchTime.slot]-\u003edlMsgAlloc[ueId-1] \u003d NULLP;",
+      "range": {
+        "startLine": 182,
+        "startChar": 18,
+        "endLine": 182,
+        "endChar": 26
+      },
+      "revId": "d536214b64b9b3c8f97d117ab9189bb86f58dae2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "92cb8f7a_a7237728",
+        "filename": "src/5gnrsch/sch_slot_ind.c",
+        "patchSetId": 10
+      },
+      "lineNbr": 198,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-02-28T04:50:49Z",
+      "side": 1,
+      "message": "check only pdsch \u003d\u003d nullp",
+      "range": {
+        "startLine": 198,
+        "startChar": 15,
+        "endLine": 198,
+        "endChar": 23
+      },
+      "revId": "d536214b64b9b3c8f97d117ab9189bb86f58dae2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9ebccc26_a17a4964",
+        "filename": "src/5gnrsch/sch_slot_ind.c",
+        "patchSetId": 10
+      },
+      "lineNbr": 201,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-02-28T04:50:49Z",
+      "side": 1,
+      "message": "before return free dciSlotAlloc-\u003edlMsgPdcchCfg",
+      "range": {
+        "startLine": 201,
+        "startChar": 12,
+        "endLine": 201,
+        "endChar": 19
+      },
+      "revId": "d536214b64b9b3c8f97d117ab9189bb86f58dae2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fb943108_c5e51331",
+        "filename": "src/5gnrsch/sch_slot_ind.c",
+        "patchSetId": 10
+      },
+      "lineNbr": 215,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-02-28T04:50:49Z",
+      "side": 1,
+      "message": "we shld copy from dciSlotAlloc-\u003epdcch.dci.pdschCfg",
+      "range": {
+        "startLine": 215,
+        "startChar": 57,
+        "endLine": 215,
+        "endChar": 70
+      },
+      "revId": "d536214b64b9b3c8f97d117ab9189bb86f58dae2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "85d75798_13a62895",
+        "filename": "src/5gnrsch/sch_slot_ind.c",
+        "patchSetId": 10
+      },
+      "lineNbr": 219,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-02-28T04:50:49Z",
+      "side": 1,
+      "message": "SCH_FREE(dlMsgAlloc, sizeof(DlMsgSchInfo)\n cell-\u003eschDlSlotInfo[pdschTime.slot]-\u003edlMsgAlloc[ueId-1] \u003d NULLP",
+      "range": {
+        "startLine": 219,
+        "startChar": 9,
+        "endLine": 219,
+        "endChar": 15
+      },
+      "revId": "d536214b64b9b3c8f97d117ab9189bb86f58dae2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
