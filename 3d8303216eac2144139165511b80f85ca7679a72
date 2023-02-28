@@ -18,6 +18,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c224253a_462cde43",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 11
+      },
+      "lineNbr": 3948,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-02-28T10:28:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c856a153_f156df2e",
+      "revId": "3d8303216eac2144139165511b80f85ca7679a72",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8f08420d_691a5270",
@@ -31,6 +49,24 @@
       "writtenOn": "2023-02-28T09:50:22Z",
       "side": 1,
       "message": "do we not need to different RNTI type depending on msg4 or other dl dedicated msg",
+      "revId": "3d8303216eac2144139165511b80f85ca7679a72",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a8887c1f_00e65fa1",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 11
+      },
+      "lineNbr": 3951,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-02-28T10:28:13Z",
+      "side": 1,
+      "message": "No, we dont need now.We are handling both the case in same way.",
+      "parentUuid": "8f08420d_691a5270",
       "revId": "3d8303216eac2144139165511b80f85ca7679a72",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -58,6 +94,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3e298b59_b9c0d118",
+        "filename": "src/5gnrmac/mac_msg_hdl.c",
+        "patchSetId": 11
+      },
+      "lineNbr": 224,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-02-28T10:28:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8917afee_7919ad88",
+      "range": {
+        "startLine": 224,
+        "startChar": 17,
+        "endLine": 224,
+        "endChar": 69
+      },
+      "revId": "3d8303216eac2144139165511b80f85ca7679a72",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ca387452_e0bba5a3",
@@ -71,6 +131,24 @@
       "writtenOn": "2023-02-28T09:50:22Z",
       "side": 1,
       "message": "remove commented code",
+      "revId": "3d8303216eac2144139165511b80f85ca7679a72",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "08b8b9e8_b930a7ae",
+        "filename": "src/5gnrsch/sch_rach.c",
+        "patchSetId": 11
+      },
+      "lineNbr": 949,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-02-28T10:28:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ca387452_e0bba5a3",
       "revId": "3d8303216eac2144139165511b80f85ca7679a72",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -92,6 +170,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "04aea7d4_610565eb",
+        "filename": "src/cm/mac_sch_interface.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 916,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-02-28T10:28:13Z",
+      "side": 1,
+      "message": "yes we dont need here sib1PdschCfg because we are accessing PdcchCfg-\u003edldci-\u003epdschCfg here",
+      "parentUuid": "7647512a_0fb51a51",
+      "revId": "3d8303216eac2144139165511b80f85ca7679a72",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1b3c94c7_a7189615",
@@ -105,6 +201,24 @@
       "writtenOn": "2023-02-28T09:50:22Z",
       "side": 1,
       "message": "Also uncomment the CORE AFFINITY macro in du_mgr_main.c",
+      "revId": "3d8303216eac2144139165511b80f85ca7679a72",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e0110890_d8379bd1",
+        "filename": "src/du_app/du_cfg.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-02-28T10:28:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1b3c94c7_a7189615",
       "revId": "3d8303216eac2144139165511b80f85ca7679a72",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }

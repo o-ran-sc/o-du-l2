@@ -975,6 +975,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e45697a4_5196f5d3",
+        "filename": "src/cu_stub/cu_stub.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-02-28T10:28:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d8185621_ba07902a",
+      "revId": "2878a101417cf7e740b15e2589099d884f3bea50",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7cafd595_24eb3a46",
@@ -988,6 +1006,24 @@
       "writtenOn": "2023-02-28T09:50:22Z",
       "side": 1,
       "message": "revert changes before submission",
+      "revId": "2878a101417cf7e740b15e2589099d884f3bea50",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "de62a538_4755dde8",
+        "filename": "src/du_app/du_cfg.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-02-28T10:28:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7cafd595_24eb3a46",
       "revId": "2878a101417cf7e740b15e2589099d884f3bea50",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -1009,6 +1045,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "165ea7bb_582d1e3e",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 16214,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-02-28T10:28:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c5890afd_2d67b553",
+      "revId": "2878a101417cf7e740b15e2589099d884f3bea50",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "175c7248_921ec9f3",
@@ -1022,6 +1076,24 @@
       "writtenOn": "2023-02-28T09:50:22Z",
       "side": 1,
       "message": "revert changes before submission",
+      "revId": "2878a101417cf7e740b15e2589099d884f3bea50",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "da8cb95e_d29e29bc",
+        "filename": "src/ric_stub/ric_stub.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-02-28T10:28:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "175c7248_921ec9f3",
       "revId": "2878a101417cf7e740b15e2589099d884f3bea50",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
