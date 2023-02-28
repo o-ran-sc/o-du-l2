@@ -68,6 +68,8 @@
 #define HQ_ACK 0
 #define HQ_NACK 1
 #define HQ_DTX 2
+#define ROOT_SEQ_LEN_1 139
+#define ROOT_SEQ_LEN_2 839
 
 #ifdef NR_DRX
 /* As per 38.331 the largest offset which can be used in of size 10240.
@@ -76,7 +78,7 @@
 #define MAX_DRX_SIZE 512
 #endif
 
-#define NUM_SCH_TYPE 1  /*Supported number of Scheduler Algorithm types*/
+#define NUM_SCH_TYPE 2  /*Supported number of Scheduler Algorithm types*/
 
 typedef struct schDlHqProcCb SchDlHqProcCb;
 typedef struct schUlHqEnt SchUlHqEnt;
@@ -87,7 +89,8 @@ typedef struct schUeCb SchUeCb;
 
 typedef enum
 {
-   SCH_FCFS
+   SCH_FCFS,
+   SCH_SLICE_BASED
 }SchType;
 
 typedef enum
@@ -133,6 +136,22 @@ typedef enum
    HQ_TB_NACKED,
    HQ_TB_WAITING
 }SchHqTbState;
+
+#ifdef NR_TDD
+typedef enum
+{
+   DL_SLOT,
+   UL_SLOT,
+   FLEXI_SLOT
+}SlotConfig;
+
+typedef enum
+{
+   DL_SYMBOL,
+   UL_SYMBOL,
+   FLEXI_SYMBOL
+}SchSymbolConfig;
+#endif
 
 /*Following structures to keep record and estimations of PRB allocated for each
  * LC taking into consideration the RRM policies*/
@@ -561,6 +580,23 @@ typedef struct schAllApis
    uint8_t (* SchScheduleUlLc)(SlotTimingInfo dciTime, SlotTimingInfo puschTime, uint8_t startStmb, \
       uint8_t symbLen, bool isRetx, SchUlHqProcCb **hqP);
 }SchAllApis;
+
+typedef struct schHqCfgParam
+{
+   uint8_t maxDlDataHqTx;
+   uint8_t maxMsg4HqTx;
+   uint8_t maxUlDataHqTx;
+}SchHqCfg;
+
+typedef struct
+{
+   /* parameters derived in scheduler */
+   uint8_t   n0;
+   BwpCfg    bwp;
+   PdcchCfg  sib1PdcchCfg;
+   PdschCfg  sib1PdschCfg;
+}SchSib1Cfg;
+
 /**
  * @brief
  * Cell Control block per cell.
@@ -589,7 +625,7 @@ typedef struct schCellCb
 #ifdef NR_TDD
    uint8_t       numSlotsInPeriodicity;             /*!< number of slots in configured periodicity and SCS */
    uint32_t      slotFrmtBitMap;                    /*!< 2 bits must be read together to determine D/U/S slots. 00-D, 01-U, 10-S */
-   uint32_t      symbFrmtBitMap;                    /*!< 2 bits must be read together to determine D/U/S symbols. 00-D, 01-U, 10-S */
+   SchSymbolConfig       slotCfg[MAX_TDD_PERIODICITY_SLOTS][MAX_SYMB_PER_SLOT];
 #endif
 #ifdef NR_DRX
    SchDrxCb      drxCb[MAX_DRX_SIZE];                           /*!< Drx cb*/
@@ -597,6 +633,12 @@ typedef struct schCellCb
    SchType       schAlgoType;                       /*!< The scheduler type which the cell is configured with.*/
    SchAllApis    *api;                             /*!< Reference of sch APIs for this cell based on the SchType*/
    void          *schSpcCell;                       /*Ref of Scheduler specific structure*/
+   SchHqCfg             schHqCfg;
+   SchK0K1TimingInfoTbl k0K1InfoTbl;
+   SchK2TimingInfoTbl   msg3K2InfoTbl;
+   SchK2TimingInfoTbl   k2InfoTbl;
+   SchSib1Cfg           sib1SchCfg;       /* SIB1 config */
+   uint8_t              maxMsg3Tx;         /* MAximum num of msg3 tx*/
 }SchCellCb;
 
 
@@ -703,7 +745,7 @@ void updateBsrAndLcList(CmLListCp *lcLL, BsrInfo *bsrInfo, uint8_t status);
 void schProcPagingCfg(SchCellCb *cell);
 void schCfgPdcchMonOccOfPO(SchCellCb *cell);
 void schIncrSlot(SlotTimingInfo *timingInfo, uint8_t incr, uint16_t numSlotsPerRF);
-uint8_t schFillPagePdschCfg(SchCellCb *cell, PdschCfg *pagePdschCfg, SlotTimingInfo slotTime, \
+uint8_t schFillPagePdschCfg(SchCellCb *cell, PageDlSch *pageDlSch, SlotTimingInfo slotTime, \
                              uint16_t tbSize, uint8_t mcs, uint16_t startPrb);
 /*DL HARQ Functions*/
 void schDlHqEntInit(SchCellCb *cellCb, SchUeCb *ueCb);

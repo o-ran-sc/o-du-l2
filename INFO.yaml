@@ -34,11 +34,6 @@ repositories:
     - o-du/l2
 committers:
     - <<: *oran_o_du_l2_ptl
-    - name: 'Sphoorthi Dayanand'
-      email: 'sphoorthi.dayanand@radisys.com'
-      company: 'Radisys'
-      id: 'sphoorthi'
-      timezone: 'Asia/Kolkata'
     - name: 'Harshita Lal'
       email: 'harshita.lal@radisys.com'
       company: 'Radisys'
@@ -59,6 +54,21 @@ committers:
       company: 'Radisys'
       id: 'barveankit'
       timezone: 'Asia/Kolkata'
+    - name: 'Sangeeta Vaidhyanathan'
+      email: 'svaidhya@radisys.com'
+      company: 'Radisys'
+      id: 'svaidhya'
+      timezone: 'Asia/Kolkata'
+    - name: 'Priyanka Borla'
+      email: 'pborla@radisys.com'
+      company: 'Radisys'
+      id: 'pborla'
+      timezone: 'Asia/Kolkata'
+    - name: 'Ray-Guang Cheng'
+      email: 'crg@mail.ntust.edu.tw'
+      company: 'NTUST'
+      id: 'crg'
+      timezone: 'Asia/Taipei'
 tsc:
     # yamllint disable rule:line-length
     approval: 'missing'

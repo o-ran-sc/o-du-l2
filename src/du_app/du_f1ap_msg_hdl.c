@@ -1214,7 +1214,7 @@ void freeFddNrFreqInfo(FDD_Info_t *fDD)
  * ****************************************************************/
 void FreeServedCellList( GNB_DU_Served_Cells_List_t *duServedCell)
 {
-   uint8_t   plmnCnt=MAX_PLMN;
+   uint8_t   plmnCnt= 1;
    uint8_t  extensionCnt=IE_EXTENSION_LIST_COUNT;
    uint8_t  plmnIdx=0, sliceIdx=0;
    GNB_DU_Served_Cells_Item_t *srvCellItem;
@@ -6717,7 +6717,7 @@ uint8_t BuildSpCellConfigCommon(ServingCellConfigCommon_t *spCellConfigCommon)
       convertSsbPeriodicityValueToEnum(duCfgParam.sib1Params.srvCellCfgCommSib.ssbPrdServingCell);
 
    /* DMRS Type A position */
-   spCellConfigCommon->dmrs_TypeA_Position = convertDmrsTypeAPosValueToEnum(duCfgParam.macCellCfg.dmrsTypeAPos);
+   spCellConfigCommon->dmrs_TypeA_Position = convertDmrsTypeAPosValueToEnum(duCfgParam.macCellCfg.ssbCfg.dmrsTypeAPos);
 
    /* SSB subcarrier spacing */
    DU_ALLOC(spCellConfigCommon->ssbSubcarrierSpacing, sizeof(SubcarrierSpacing_t));

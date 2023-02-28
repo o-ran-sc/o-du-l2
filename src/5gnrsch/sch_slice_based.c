@@ -22,10 +22,9 @@ Name:     5G NR SCH layer
 
 Type:     C source file
 
-Desc:     C source code for scheduling based on First Come First Serve
-          algorithm
+Desc:     C source code for Slice based scheduling algorithm
 
-File:     sch_fcfs.c
+File:     sch_slice_based.c
 
  **********************************************************************/
 
@@ -42,7 +41,7 @@ File:     sch_fcfs.c
 #include "mac_sch_interface.h"
 #include "sch.h"
 #include "sch_utils.h"
-#include "sch_fcfs.h"
+#include "sch_slice_based.h"
 #ifdef NR_DRX 
 #include "sch_drx.h"
 #endif
@@ -53,28 +52,28 @@ File:     sch_fcfs.c
  *
  * @details
  *
- *    Function : schFcfsCellCfgReq
+ *    Function : schSliceBasedCellCfgReq
  *
  *    Functionality: This function configures cell paremeters
- *       required for FCFS scheduling
+ *       required for Slice Based scheduling
  *
  * @params[in] SchCellCb *cellCb, Cell control block
  * @return ROK
  *         RFAILED
  *
  * ****************************************************************/
-uint8_t schFcfsCellCfgReq(SchCellCb *cellCb)
+uint8_t schSliceBasedCellCfgReq(SchCellCb *cellCb)
 {
-   SchFcfsCellCb *fcfsCellCb = NULLP;
+   SchSliceBasedCellCb *schSpcCellCb = NULLP;
    
-   SCH_ALLOC(fcfsCellCb, sizeof(SchFcfsCellCb));
-   if(!fcfsCellCb)
+   SCH_ALLOC(schSpcCellCb, sizeof(SchSliceBasedCellCb));
+   if(!schSpcCellCb)
    {
-      DU_LOG("\nERROR  -->  SCH: Memory allocation failed in schFcfsCellCfgReq");
+      DU_LOG("\nERROR  -->  SCH: Memory allocation failed in schSliceBasedCellCfgReq");
       return RFAILED;
    }
-   cmLListInit(&fcfsCellCb->ueToBeScheduled);
-   cellCb->schSpcCell = (void *)fcfsCellCb;
+   cmLListInit(&schSpcCellCb->ueToBeScheduled);
+   cellCb->schSpcCell = (void *)schSpcCellCb;
    return ROK;
 }
 
@@ -84,32 +83,32 @@ uint8_t schFcfsCellCfgReq(SchCellCb *cellCb)
  *
  * @details
  *
- *    Function : schFcfsCellDelReq
+ *    Function : schSliceBasedCellDelReq
  *
  *    Functionality: This function deletes/frees cell params
- *       specific to FCFS scheduling
+ *       specific to Slice Based scheduling
  *
  * @params[in] Pointer to Cell control block
  * @return void
  *
  * ****************************************************************/
-void schFcfsCellDelReq(SchCellCb *cellCb)
+void schSliceBasedCellDelReq(SchCellCb *cellCb)
 {
-   SchFcfsCellCb *fcfsCellCb = NULLP;
+   SchSliceBasedCellCb *schSpcCellCb = NULLP;
    CmLList *node=NULL, *next=NULL;
 
-   fcfsCellCb = (SchFcfsCellCb *)cellCb->schSpcCell;
+   schSpcCellCb = (SchSliceBasedCellCb *)cellCb->schSpcCell;
    /* Remove all UE from ueToBeScheduled list and deallocate */
-   node = fcfsCellCb->ueToBeScheduled.first;
+   node = schSpcCellCb->ueToBeScheduled.first;
    while(node)
    {
       next = node->next;
       SCH_FREE(node->node, sizeof(uint8_t));
-      cmLListDelFrm(&fcfsCellCb->ueToBeScheduled, node);
+      cmLListDelFrm(&schSpcCellCb->ueToBeScheduled, node);
       SCH_FREE(node, sizeof(CmLList));
       node = next;
    }
-   SCH_FREE(fcfsCellCb, sizeof(SchFcfsCellCb));
+   SCH_FREE(schSpcCellCb, sizeof(SchSliceBasedCellCb));
    cellCb->schSpcCell = NULLP;
 }
 
@@ -119,30 +118,30 @@ void schFcfsCellDelReq(SchCellCb *cellCb)
  *
  * @details
  *
- *    Function : SchFcfsAddUeConfigReq
+ *    Function : SchSliceBasedAddUeConfigReq
  *
  *    Functionality: Adds/Configures UE parameters required for
- *       FCFS scheduling
+ *       Slice Based scheduling
  *
  * @params[in] Pointer to UE control block
  * @return ROK
  *         RFAILED
  *
  * ****************************************************************/
-uint8_t SchFcfsAddUeConfigReq(SchUeCb *ueCb)
+uint8_t SchSliceBasedAddUeConfigReq(SchUeCb *ueCb)
 {
-   SchFcfsUeCb *ueFcfsCb;
+   SchSliceBasedUeCb *ueSliceBasedCb;
 
-   SCH_ALLOC(ueFcfsCb, sizeof(SchFcfsHqCb));
-   if(!ueFcfsCb)
+   SCH_ALLOC(ueSliceBasedCb, sizeof(SchSliceBasedHqCb));
+   if(!ueSliceBasedCb)
    {
-      DU_LOG("\nERROR  -->  SCH: Memory allocation failed in SchFcfsAddUeConfigReq");
+      DU_LOG("\nERROR  -->  SCH: Memory allocation failed in SchSliceBasedAddUeConfigReq");
       return RFAILED;
    }
    
-   cmLListInit(&ueFcfsCb->hqRetxCb.ulRetxHqList);
-   cmLListInit(&ueFcfsCb->hqRetxCb.dlRetxHqList);
-   ueCb->schSpcUeCb = (void *)ueFcfsCb;
+   cmLListInit(&ueSliceBasedCb->hqRetxCb.ulRetxHqList);
+   cmLListInit(&ueSliceBasedCb->hqRetxCb.dlRetxHqList);
+   ueCb->schSpcUeCb = (void *)ueSliceBasedCb;
    
    return ROK;
 }
@@ -153,7 +152,7 @@ uint8_t SchFcfsAddUeConfigReq(SchUeCb *ueCb)
  *
  * @details
  *
- *    Function : SchFcfsModUeConfigReq
+ *    Function : SchSliceBasedModUeConfigReq
  *
  *    Functionality: 
  *
@@ -161,9 +160,9 @@ uint8_t SchFcfsAddUeConfigReq(SchUeCb *ueCb)
  * @return void
  *
  * ****************************************************************/
-void SchFcfsModUeConfigReq(SchUeCb *ueCb)
+void SchSliceBasedModUeConfigReq(SchUeCb *ueCb)
 {
-   /*TBD: No action required for FCFS*/
+   /*TBD: No action required for Slice Based*/
    return;
 }
 
@@ -173,25 +172,25 @@ void SchFcfsModUeConfigReq(SchUeCb *ueCb)
  *
  * @details
  *
- *    Function : SchFcfsUeDeleteReq 
+ *    Function : SchSliceBasedUeDeleteReq 
  *
  *    Functionality: Deletes/Frees UE parameters specific to 
- *       FCFS scheduling
+ *       Slice Based scheduling
  *
  * @params[in] Pointer to UE control block
  * @return void
  *
  * ****************************************************************/
-void SchFcfsUeDeleteReq(SchUeCb *ueCb)
+void SchSliceBasedUeDeleteReq(SchUeCb *ueCb)
 {
-   SchFcfsCellCb *fcfsCellCb = NULLP;
-   SchFcfsUeCb *ueFcfsCb = NULLP;
+   SchSliceBasedCellCb *schSpcCellCb = NULLP;
+   SchSliceBasedUeCb *ueSliceBasedCb = NULLP;
    CmLList *node=NULL, *next=NULL;
    uint8_t ueId = 0;
 
-   fcfsCellCb = (SchFcfsCellCb *)ueCb->cellCb->schSpcCell;
+   schSpcCellCb = (SchSliceBasedCellCb *)ueCb->cellCb->schSpcCell;
    /* Remove all UE from ueToBeScheduled list and deallocate */
-   node = fcfsCellCb->ueToBeScheduled.first;
+   node = schSpcCellCb->ueToBeScheduled.first;
    while(node)
    {
       next = node->next;
@@ -199,18 +198,18 @@ void SchFcfsUeDeleteReq(SchUeCb *ueCb)
       if(ueId == ueCb->ueId)
       {
         SCH_FREE(node->node, sizeof(uint8_t));
-        cmLListDelFrm(&fcfsCellCb->ueToBeScheduled, node);
+        cmLListDelFrm(&schSpcCellCb->ueToBeScheduled, node);
         SCH_FREE(node, sizeof(CmLList));
         break;
       }
       node = next;
    }
    
-   ueFcfsCb = (SchFcfsUeCb *)ueCb->schSpcUeCb;
-   cmLListDeleteLList(&ueFcfsCb->hqRetxCb.ulRetxHqList);
-   cmLListDeleteLList(&ueFcfsCb->hqRetxCb.dlRetxHqList);
+   ueSliceBasedCb = (SchSliceBasedUeCb *)ueCb->schSpcUeCb;
+   cmLListDeleteLList(&ueSliceBasedCb->hqRetxCb.ulRetxHqList);
+   cmLListDeleteLList(&ueSliceBasedCb->hqRetxCb.dlRetxHqList);
 
-   SCH_FREE(ueFcfsCb, sizeof(SchFcfsUeCb));
+   SCH_FREE(ueSliceBasedCb, sizeof(SchSliceBasedUeCb));
    ueCb->schSpcUeCb = NULLP;
    return;
 }
@@ -221,30 +220,30 @@ void SchFcfsUeDeleteReq(SchUeCb *ueCb)
  *
  * @details
  *
- *    Function : schFcfsInitDlHqProcCb
+ *    Function : schSliceBasedInitDlHqProcCb
  *
  *    Functionality: Intitialized parameters of HARQ process control
- *       block specific to FCFS scheduling in Downlink
+ *       block specific to Slice Based scheduling in Downlink
  *
  * @params[in] Pointer to Downlink HARQ Process control block
  * @return ROK
  *         RFAILED
  *
  * ****************************************************************/
-uint8_t schFcfsInitDlHqProcCb(SchDlHqProcCb *hqP)
+uint8_t schSliceBasedInitDlHqProcCb(SchDlHqProcCb *hqP)
 {
-   SchFcfsHqProcCb *fcfsHqP;
+   SchSliceBasedHqProcCb *schSpcHqP;
 
-   SCH_ALLOC(fcfsHqP, sizeof(SchFcfsHqProcCb));
-   if(!fcfsHqP)
+   SCH_ALLOC(schSpcHqP, sizeof(SchSliceBasedHqProcCb));
+   if(!schSpcHqP)
    {
-      DU_LOG("\nERROR  -->  SCH: Memory allocation failed in schFcfsInitDlHqProcCb");
+      DU_LOG("\nERROR  -->  SCH: Memory allocation failed in schSliceBasedInitDlHqProcCb");
       return RFAILED;
    }
 
-   cmLListInit(&fcfsHqP->lcCb.dedLcList);
-   cmLListInit(&fcfsHqP->lcCb.defLcList);
-   hqP->schSpcDlHqProcCb = (void *)fcfsHqP;
+   cmLListInit(&schSpcHqP->lcCb.dedLcList);
+   cmLListInit(&schSpcHqP->lcCb.defLcList);
+   hqP->schSpcDlHqProcCb = (void *)schSpcHqP;
 
    return ROK;
 }
@@ -255,21 +254,21 @@ uint8_t schFcfsInitDlHqProcCb(SchDlHqProcCb *hqP)
  *
  * @details 
  *
- *    Function : schFcfsDeleteDlHqProcCb
+ *    Function : schSliceBasedDeleteDlHqProcCb
  *
  *    Functionality: Deletes HARQ Process parameters specific to 
- *       FCFS scheduling in Downlink
+ *       Slice Based scheduling in Downlink
  *
  * @params[in] Pointer to Downlink HARQ Process control block
  * @return void
  *
  * ****************************************************************/
-void schFcfsDeleteDlHqProcCb(SchDlHqProcCb *hqP)
+void schSliceBasedDeleteDlHqProcCb(SchDlHqProcCb *hqP)
 {
-   SchFcfsHqProcCb *fcfsHqP = (SchFcfsHqProcCb *)hqP->schSpcDlHqProcCb;
-   cmLListDeleteLList(&fcfsHqP->lcCb.dedLcList);
-   cmLListDeleteLList(&fcfsHqP->lcCb.defLcList);
-   SCH_FREE(fcfsHqP, sizeof(SchFcfsHqProcCb));
+   SchSliceBasedHqProcCb *schSpcHqP = (SchSliceBasedHqProcCb *)hqP->schSpcDlHqProcCb;
+   cmLListDeleteLList(&schSpcHqP->lcCb.dedLcList);
+   cmLListDeleteLList(&schSpcHqP->lcCb.defLcList);
+   SCH_FREE(schSpcHqP, sizeof(SchSliceBasedHqProcCb));
    hqP->schSpcDlHqProcCb = NULLP;
 }
 
@@ -279,29 +278,29 @@ void schFcfsDeleteDlHqProcCb(SchDlHqProcCb *hqP)
  *
  * @details
  *
- *    Function : schFcfsInitUlHqProcCb
+ *    Function : schSliceBasedInitUlHqProcCb
  *
  *    Functionality: Intitialized parameters of HARQ process control
- *       block specific to FCFS scheduling in Uplink
+ *       block specific to Slice Based scheduling in Uplink
  *
  * @params[in] Pointer to Uplink HARQ Process control block
  * @return ROK
  *         RFAILED
  *
  * ****************************************************************/
-uint8_t schFcfsInitUlHqProcCb(SchUlHqProcCb *hqP)
+uint8_t schSliceBasedInitUlHqProcCb(SchUlHqProcCb *hqP)
 {
-   SchFcfsHqProcCb *fcfsHqP;
+   SchSliceBasedHqProcCb *schSpcHqP;
 
-   SCH_ALLOC(fcfsHqP, sizeof(SchFcfsHqProcCb));
-   if(!fcfsHqP)
+   SCH_ALLOC(schSpcHqP, sizeof(SchSliceBasedHqProcCb));
+   if(!schSpcHqP)
    {
-      DU_LOG("\nERROR  -->  SCH: Memory allocation failed in schFcfsInitUlHqProcCb");
+      DU_LOG("\nERROR  -->  SCH: Memory allocation failed in schSliceBasedInitUlHqProcCb");
       return RFAILED;
    }
-   cmLListInit(&fcfsHqP->lcCb.dedLcList);
-   cmLListInit(&fcfsHqP->lcCb.defLcList);
-   hqP->schSpcUlHqProcCb = (void *)fcfsHqP;
+   cmLListInit(&schSpcHqP->lcCb.dedLcList);
+   cmLListInit(&schSpcHqP->lcCb.defLcList);
+   hqP->schSpcUlHqProcCb = (void *)schSpcHqP;
  
    return ROK;
 }
@@ -312,21 +311,21 @@ uint8_t schFcfsInitUlHqProcCb(SchUlHqProcCb *hqP)
  *
  * @details
  *
- *    Function : schFcfsDeleteUlHqProcCb
+ *    Function : schSliceBasedDeleteUlHqProcCb
  *
  *    Functionality: Deletes HARQ Process parameters specific to 
- *       FCFS scheduling in Uplink
+ *       Slice Based scheduling in Uplink
  *
  * @params[in] Pointer to Uplink HARQ Process Control block
  * @return void
  *
  * ****************************************************************/
-void schFcfsDeleteUlHqProcCb(SchUlHqProcCb *hqP)
+void schSliceBasedDeleteUlHqProcCb(SchUlHqProcCb *hqP)
 {
-   SchFcfsHqProcCb *fcfsHqP = (SchFcfsHqProcCb *)hqP->schSpcUlHqProcCb;
-   cmLListDeleteLList(&fcfsHqP->lcCb.dedLcList);
-   cmLListDeleteLList(&fcfsHqP->lcCb.defLcList);
-   SCH_FREE(fcfsHqP, sizeof(SchFcfsHqProcCb));
+   SchSliceBasedHqProcCb *schSpcHqP = (SchSliceBasedHqProcCb *)hqP->schSpcUlHqProcCb;
+   cmLListDeleteLList(&schSpcHqP->lcCb.dedLcList);
+   cmLListDeleteLList(&schSpcHqP->lcCb.defLcList);
+   SCH_FREE(schSpcHqP, sizeof(SchSliceBasedHqProcCb));
    hqP->schSpcUlHqProcCb = NULLP;
 }
 
@@ -336,21 +335,21 @@ void schFcfsDeleteUlHqProcCb(SchUlHqProcCb *hqP)
  *
  * @details
  *
- *    Function : schFcfsFreeDlHqProcCb
+ *    Function : schSliceBasedFreeDlHqProcCb
  *
  *    Functionality: Frees HARQ Process parameters specific to 
- *       FCFS scheduling in Downlink when HARQ process becomes free
+ *       Slice Based scheduling in Downlink when HARQ process becomes free
  *
  * @params[in] Pointer to HARQ process control block
  * @return void
  *
  * ****************************************************************/
-void schFcfsFreeDlHqProcCb(SchDlHqProcCb *hqP)
+void schSliceBasedFreeDlHqProcCb(SchDlHqProcCb *hqP)
 {
-   SchFcfsHqProcCb *fcfsHqP = (SchFcfsHqProcCb *)hqP->schSpcDlHqProcCb;
+   SchSliceBasedHqProcCb *schSpcHqP = (SchSliceBasedHqProcCb *)hqP->schSpcDlHqProcCb;
 
-   cmLListDeleteLList(&fcfsHqP->lcCb.dedLcList);
-   cmLListDeleteLList(&fcfsHqP->lcCb.defLcList);
+   cmLListDeleteLList(&schSpcHqP->lcCb.dedLcList);
+   cmLListDeleteLList(&schSpcHqP->lcCb.defLcList);
 }
 
 /*******************************************************************
@@ -359,21 +358,21 @@ void schFcfsFreeDlHqProcCb(SchDlHqProcCb *hqP)
  *
  * @details
  *
- *    Function : schFcfsFreeUlHqProcCb
+ *    Function : schSliceBasedFreeUlHqProcCb
  *
  *    Functionality: Frees HARQ Process parameters specific to 
- *       FCFS scheduling in Uplink when HARQ process becomes free
+ *       Slice Based scheduling in Uplink when HARQ process becomes free
  *
  * @params[in] Pointer to HARQ process control block
  * @return void
  *
  * ****************************************************************/
-void schFcfsFreeUlHqProcCb(SchUlHqProcCb *hqP)
+void schSliceBasedFreeUlHqProcCb(SchUlHqProcCb *hqP)
 {
-   SchFcfsHqProcCb *fcfsHqP = (SchFcfsHqProcCb *)hqP->schSpcUlHqProcCb;
+   SchSliceBasedHqProcCb *schSpcHqP = (SchSliceBasedHqProcCb *)hqP->schSpcUlHqProcCb;
 
-   cmLListDeleteLList(&fcfsHqP->lcCb.dedLcList);
-   cmLListDeleteLList(&fcfsHqP->lcCb.defLcList);
+   cmLListDeleteLList(&schSpcHqP->lcCb.dedLcList);
+   cmLListDeleteLList(&schSpcHqP->lcCb.defLcList);
 }
 
 /*******************************************************************
@@ -382,7 +381,7 @@ void schFcfsFreeUlHqProcCb(SchUlHqProcCb *hqP)
  *
  * @details
  *
- *    Function : schFcfsAddToDlHqRetxList
+ *    Function : schSliceBasedAddToDlHqRetxList
  *
  *    Functionality: Adds HARQ process to retransmission list
  *
@@ -390,12 +389,12 @@ void schFcfsFreeUlHqProcCb(SchUlHqProcCb *hqP)
  * @return void
  *
  * ****************************************************************/
-void schFcfsAddToDlHqRetxList(SchDlHqProcCb *hqP)
+void schSliceBasedAddToDlHqRetxList(SchDlHqProcCb *hqP)
 {
-   SchFcfsUeCb *fcfsUeCb;
+   SchSliceBasedUeCb *schSpcUeCb;
 
-   fcfsUeCb = (SchFcfsUeCb *)hqP->hqEnt->ue->schSpcUeCb;
-   cmLListAdd2Tail(&(fcfsUeCb->hqRetxCb.dlRetxHqList),&hqP->dlHqProcLink);  
+   schSpcUeCb = (SchSliceBasedUeCb *)hqP->hqEnt->ue->schSpcUeCb;
+   cmLListAdd2Tail(&(schSpcUeCb->hqRetxCb.dlRetxHqList),&hqP->dlHqProcLink);  
 #ifdef NR_DRX
    if(hqP->hqEnt->ue->ueDrxInfoPres == true)
    {
@@ -404,7 +403,7 @@ void schFcfsAddToDlHqRetxList(SchDlHqProcCb *hqP)
    else
 #endif
    {
-      schFcfsAddUeToSchedule(hqP->hqEnt->cell, hqP->hqEnt->ue->ueId);
+      schSliceBasedAddUeToSchedule(hqP->hqEnt->cell, hqP->hqEnt->ue->ueId);
    }
 }
 
@@ -414,7 +413,7 @@ void schFcfsAddToDlHqRetxList(SchDlHqProcCb *hqP)
  *
  * @details
  *
- *    Function : schFcfsAddToUlHqRetxList
+ *    Function : schSliceBasedAddToUlHqRetxList
  *
  *    Functionality: Adds HARQ process to retransmission list
  *
@@ -422,12 +421,12 @@ void schFcfsAddToDlHqRetxList(SchDlHqProcCb *hqP)
  * @return void
  *
  * ****************************************************************/
-void schFcfsAddToUlHqRetxList(SchUlHqProcCb *hqP)
+void schSliceBasedAddToUlHqRetxList(SchUlHqProcCb *hqP)
 {
-   SchFcfsUeCb *fcfsUeCb;
+   SchSliceBasedUeCb *schSpcUeCb;
 
-   fcfsUeCb = (SchFcfsUeCb *)hqP->hqEnt->ue->schSpcUeCb;
-   cmLListAdd2Tail(&(fcfsUeCb->hqRetxCb.ulRetxHqList),&hqP->ulHqProcLink);  
+   schSpcUeCb = (SchSliceBasedUeCb *)hqP->hqEnt->ue->schSpcUeCb;
+   cmLListAdd2Tail(&(schSpcUeCb->hqRetxCb.ulRetxHqList),&hqP->ulHqProcLink);  
 #ifdef NR_DRX
    if(hqP->hqEnt->ue->ueDrxInfoPres == true)
    {
@@ -436,7 +435,7 @@ void schFcfsAddToUlHqRetxList(SchUlHqProcCb *hqP)
    else
 #endif
    {
-      schFcfsAddUeToSchedule(hqP->hqEnt->cell, hqP->hqEnt->ue->ueId);
+      schSliceBasedAddUeToSchedule(hqP->hqEnt->cell, hqP->hqEnt->ue->ueId);
    }   
 }
 
@@ -446,7 +445,7 @@ void schFcfsAddToUlHqRetxList(SchUlHqProcCb *hqP)
  *
  * @details
  *
- *    Function : schFcfsAddUeToSchedule
+ *    Function : schSliceBasedAddUeToSchedule
  *
  *    Functionality:
  *      Search if UE entry present in the list
@@ -460,16 +459,16 @@ void schFcfsAddToUlHqRetxList(SchUlHqProcCb *hqP)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t schFcfsAddUeToSchedule(SchCellCb *cellCb, uint16_t ueIdToAdd)
+uint8_t schSliceBasedAddUeToSchedule(SchCellCb *cellCb, uint16_t ueIdToAdd)
 {
-   SchFcfsCellCb *fcfsCellCb = NULLP;
+   SchSliceBasedCellCb *schSpcCellCb = NULLP;
    uint8_t *ueId;
    CmLList *node;
 
-   fcfsCellCb = (SchFcfsCellCb *)cellCb->schSpcCell;
+   schSpcCellCb = (SchSliceBasedCellCb *)cellCb->schSpcCell;
    /* Search if UE entry is already present in ueToBeScheduled list.
     * If yes, another entry for same UE not needed. Hence, return */
-   node = fcfsCellCb->ueToBeScheduled.first;
+   node = schSpcCellCb->ueToBeScheduled.first;
    while(node)
    {
       ueId = (uint8_t *)node->node;
@@ -482,11 +481,11 @@ uint8_t schFcfsAddUeToSchedule(SchCellCb *cellCb, uint16_t ueIdToAdd)
    SCH_ALLOC(ueId, sizeof(uint8_t));
    if(!ueId)
    {
-      DU_LOG("\nERROR  -->  SCH : Memory allocation failure in schFcfsAddUeToSchedule");
+      DU_LOG("\nERROR  -->  SCH : Memory allocation failure in schSliceBasedAddUeToSchedule");
       return RFAILED;
    }
    *ueId = ueIdToAdd;
-   if(addNodeToLList(&fcfsCellCb->ueToBeScheduled, ueId, NULLP) != ROK)
+   if(addNodeToLList(&schSpcCellCb->ueToBeScheduled, ueId, NULLP) != ROK)
    {
       DU_LOG("\nERROR  --> SCH : Failed to add ueId [%d] to cell->ueToBeScheduled list", *ueId);
       return RFAILED;
@@ -500,9 +499,9 @@ uint8_t schFcfsAddUeToSchedule(SchCellCb *cellCb, uint16_t ueIdToAdd)
  *
  * @details
  *
- *    Function : schFcfsProcessCrcInd
+ *    Function : schSliceBasedProcessCrcInd
  *
- *    Functionality: Processes CRC Indication as required for FCFS
+ *    Functionality: Processes CRC Indication as required for Slice Based
  *       scheduling
  *
  * @params[in] Pointer to Cell control block
@@ -510,9 +509,9 @@ uint8_t schFcfsAddUeToSchedule(SchCellCb *cellCb, uint16_t ueIdToAdd)
  * @return void
  *
  * ****************************************************************/
-void schFcfsProcessCrcInd(SchCellCb *cellCb, uint16_t ueId)
+void schSliceBasedProcessCrcInd(SchCellCb *cellCb, uint16_t ueId)
 {
-   schFcfsAddUeToSchedule(cellCb, ueId);   
+   schSliceBasedAddUeToSchedule(cellCb, ueId);   
 }
 
 /*******************************************************************
@@ -521,7 +520,7 @@ void schFcfsProcessCrcInd(SchCellCb *cellCb, uint16_t ueId)
  *
  * @details
  *
- *    Function : schFcfsDlRlcBoInfo
+ *    Function : schSliceBasedDlRlcBoInfo
  *
  *    Functionality: Process buffer occupany report 
  *
@@ -529,9 +528,9 @@ void schFcfsProcessCrcInd(SchCellCb *cellCb, uint16_t ueId)
  * @return
  *
  * ****************************************************************/
-void schFcfsDlRlcBoInfo(SchCellCb *cellCb, uint16_t ueId)
+void schSliceBasedDlRlcBoInfo(SchCellCb *cellCb, uint16_t ueId)
 {
-   schFcfsAddUeToSchedule(cellCb, ueId);   
+   schSliceBasedAddUeToSchedule(cellCb, ueId);   
 }
 
 /*******************************************************************
@@ -540,18 +539,18 @@ void schFcfsDlRlcBoInfo(SchCellCb *cellCb, uint16_t ueId)
  *
  * @details
  *
- *    Function : schFcfsBsr
+ *    Function : schSliceBasedBsr
  *
- *    Functionality: Processes BSR as per FCFS scheduling
+ *    Functionality: Processes BSR as per Slice Based scheduling
  *
  * @params[in] Pointer to Cell 
  *             UE ID
  * @return void
  *
  * ****************************************************************/
-void schFcfsBsr(SchCellCb *cellCb, uint16_t ueId)
+void schSliceBasedBsr(SchCellCb *cellCb, uint16_t ueId)
 {
-   schFcfsAddUeToSchedule(cellCb, ueId);   
+   schSliceBasedAddUeToSchedule(cellCb, ueId);   
 }
 
 /*******************************************************************
@@ -560,19 +559,19 @@ void schFcfsBsr(SchCellCb *cellCb, uint16_t ueId)
  *
  * @details
  *
- *    Function : schFcfsSrUciInd
+ *    Function : schSliceBasedSrUciInd
  *
  *    Functionality: Processing of UCI indication specific to 
- *       FCFS scheduling
+ *       Slice Based scheduling
  *
  * @params[in] Pointer to Cell
  *             UE Id
  * @return void
  *
  * ****************************************************************/
-void schFcfsSrUciInd(SchCellCb *cellCb, uint16_t ueId)
+void schSliceBasedSrUciInd(SchCellCb *cellCb, uint16_t ueId)
 {
-   schFcfsAddUeToSchedule(cellCb, ueId);   
+   schSliceBasedAddUeToSchedule(cellCb, ueId);   
 }
 
 /*******************************************************************
@@ -581,19 +580,19 @@ void schFcfsSrUciInd(SchCellCb *cellCb, uint16_t ueId)
  *
  * @details
  *
- *    Function : schFcfsProcessRachInd
+ *    Function : schSliceBasedProcessRachInd
  *
  *    Functionality: Processing of RACH Indication specific to 
- *       FCFS scheduling
+ *       Slice Based scheduling
  *
  * @params[in] Pointer to Cell Cb
  *             UE Id
  * @return void
  *
  * ****************************************************************/
-void schFcfsProcessRachInd(SchCellCb *cellCb, uint16_t ueId)
+void schSliceBasedProcessRachInd(SchCellCb *cellCb, uint16_t ueId)
 {
-   schFcfsAddUeToSchedule(cellCb, ueId);   
+   schSliceBasedAddUeToSchedule(cellCb, ueId);   
 }
 
 /*******************************************************************
@@ -602,7 +601,7 @@ void schFcfsProcessRachInd(SchCellCb *cellCb, uint16_t ueId)
  *
  * @details
  *
- *    Function : SchFcfsDlHarqInd
+ *    Function : SchSliceBasedDlHarqInd
  *
  *    Functionality:
  *
@@ -610,7 +609,7 @@ void schFcfsProcessRachInd(SchCellCb *cellCb, uint16_t ueId)
  * @return void
  *
  * ****************************************************************/
-void SchFcfsDlHarqInd()
+void SchSliceBasedDlHarqInd()
 {
    return;
 }
@@ -621,7 +620,7 @@ void SchFcfsDlHarqInd()
  *
  * @details
  *
- *    Function : schFcfsPagingInd
+ *    Function : schSliceBasedPagingInd
  *
  *    Functionality:
  *
@@ -629,7 +628,7 @@ void SchFcfsDlHarqInd()
  * @return void
  *
  * ****************************************************************/
-void schFcfsPagingInd()
+void schSliceBasedPagingInd()
 {
    return;
 }
@@ -640,7 +639,7 @@ void schFcfsPagingInd()
  *
  * @details
  *
- *    Function : schFcfsRachRsrcReq
+ *    Function : schSliceBasedRachRsrcReq
  *
  *    Functionality:
  *
@@ -648,7 +647,7 @@ void schFcfsPagingInd()
  * @return void
  *
  * ****************************************************************/
-void schFcfsRachRsrcReq()
+void schSliceBasedRachRsrcReq()
 {
    return;
 }
@@ -659,7 +658,7 @@ void schFcfsRachRsrcReq()
  *
  * @details
  *
- *    Function : schFcfsRachRsrcRel
+ *    Function : schSliceBasedRachRsrcRel
  *
  *    Functionality:
  *
@@ -667,7 +666,7 @@ void schFcfsRachRsrcReq()
  * @return void
  *
  * ****************************************************************/
-void schFcfsRachRsrcRel()
+void schSliceBasedRachRsrcRel()
 {
    return;
 }
@@ -678,7 +677,7 @@ void schFcfsRachRsrcRel()
  *
  * @details
  *
- *    Function : schFcfsRemoveFrmDlHqRetxList
+ *    Function : schSliceBasedRemoveFrmDlHqRetxList
  *
  *    Functionality: Remove entry from HARQ retransmission list
  *
@@ -687,12 +686,12 @@ void schFcfsRachRsrcRel()
  * @return void
  *
  * ****************************************************************/
-void schFcfsRemoveFrmDlHqRetxList(SchUeCb *ueCb, CmLList *node)
+void schSliceBasedRemoveFrmDlHqRetxList(SchUeCb *ueCb, CmLList *node)
 {
-   SchFcfsUeCb *fcfsUeCb;
+   SchSliceBasedUeCb *schSpcUeCb;
 
-   fcfsUeCb = (SchFcfsUeCb *)ueCb->schSpcUeCb;
-   cmLListDelFrm(&fcfsUeCb->hqRetxCb.dlRetxHqList, node);
+   schSpcUeCb = (SchSliceBasedUeCb *)ueCb->schSpcUeCb;
+   cmLListDelFrm(&schSpcUeCb->hqRetxCb.dlRetxHqList, node);
 }
 
 /*******************************************************************
@@ -701,7 +700,7 @@ void schFcfsRemoveFrmDlHqRetxList(SchUeCb *ueCb, CmLList *node)
  *
  * @details
  *
- *    Function : schFcfsRemoveFrmUlHqRetxList
+ *    Function : schSliceBasedRemoveFrmUlHqRetxList
  *
  *    Functionality: Remove entry from HARQ retransmission list
  *
@@ -710,12 +709,12 @@ void schFcfsRemoveFrmDlHqRetxList(SchUeCb *ueCb, CmLList *node)
  * @return void
  *
  * ****************************************************************/
-void schFcfsRemoveFrmUlHqRetxList(SchUeCb *ueCb, CmLList *node)
+void schSliceBasedRemoveFrmUlHqRetxList(SchUeCb *ueCb, CmLList *node)
 {
-   SchFcfsUeCb *fcfsUeCb;
+   SchSliceBasedUeCb *schSpcUeCb;
 
-   fcfsUeCb = (SchFcfsUeCb *)ueCb->schSpcUeCb;
-   cmLListDelFrm(&fcfsUeCb->hqRetxCb.ulRetxHqList, node);
+   schSpcUeCb = (SchSliceBasedUeCb *)ueCb->schSpcUeCb;
+   cmLListDelFrm(&schSpcUeCb->hqRetxCb.ulRetxHqList, node);
 }
 
 /*******************************************************************
@@ -724,7 +723,7 @@ void schFcfsRemoveFrmUlHqRetxList(SchUeCb *ueCb, CmLList *node)
  *
  * @details
  *
- *    Function : schFcfsRemoveUeFrmScheduleLst
+ *    Function : schSliceBasedRemoveUeFrmScheduleLst
  *
  *    Functionality: Remove UE from Scheduling List
  *
@@ -733,13 +732,13 @@ void schFcfsRemoveFrmUlHqRetxList(SchUeCb *ueCb, CmLList *node)
  * @return void
  *
  * ****************************************************************/
-void schFcfsRemoveUeFrmScheduleLst(SchCellCb *cell, CmLList *node)
+void schSliceBasedRemoveUeFrmScheduleLst(SchCellCb *cell, CmLList *node)
 {
-   SchFcfsCellCb *fcfsCell;
+   SchSliceBasedCellCb *schSpcCell;
 
-   fcfsCell = (SchFcfsCellCb *)cell->schSpcCell;
+   schSpcCell = (SchSliceBasedCellCb *)cell->schSpcCell;
    SCH_FREE(node->node, sizeof(uint8_t));
-   deleteNodeFromLList(&fcfsCell->ueToBeScheduled, node);
+   deleteNodeFromLList(&schSpcCell->ueToBeScheduled, node);
 }
 
 /*******************************************************************
@@ -748,7 +747,7 @@ void schFcfsRemoveUeFrmScheduleLst(SchCellCb *cell, CmLList *node)
  *
  * @details
  *
- *    Function :  schFcfsCalculateUlTbs
+ *    Function :  schSliceBasedCalculateUlTbs
  *
  *    Functionality: Function will note the required TBS for each LCGIDX and use
  *    the Priority LCG List and RRM policy to allocate the TBS size
@@ -766,8 +765,8 @@ void schFcfsRemoveUeFrmScheduleLst(SchCellCb *cell, CmLList *node)
  *                   RFAILED > vice versa
  *
  * ****************************************************************/
-uint8_t schFcfsCalculateUlTbs(SchUeCb *ueCb, SlotTimingInfo puschTime, uint8_t symbLen,\
-                          uint16_t *startPrb, uint32_t *totTBS, bool isRetx, SchUlHqProcCb *hqP, SchFcfsHqProcCb *fcfsHqP)
+uint8_t schSliceBasedCalculateUlTbs(SchUeCb *ueCb, SlotTimingInfo puschTime, uint8_t symbLen,\
+                          uint16_t *startPrb, uint32_t *totTBS, bool isRetx, SchUlHqProcCb *hqP, SchSliceBasedHqProcCb *schSpcHqP)
 {
    uint16_t mcsIdx = 0;
    CmLListCp *lcLL = NULLP;
@@ -790,12 +789,12 @@ uint8_t schFcfsCalculateUlTbs(SchUeCb *ueCb, SlotTimingInfo puschTime, uint8_t s
       lcId = lcgIdx;
       if(ueCb->ulInfo.ulLcCtxt[lcId].isDedicated)
       {
-         lcLL = &(fcfsHqP->lcCb.dedLcList);
+         lcLL = &(schSpcHqP->lcCb.dedLcList);
          rsvdDedicatedPRB = ueCb->ulInfo.ulLcCtxt[lcId].rsvdDedicatedPRB;
       }
       else
       {
-         lcLL = &(fcfsHqP->lcCb.defLcList);
+         lcLL = &(schSpcHqP->lcCb.defLcList);
       }
 
       /*[Step2]: Update the reqPRB and Payloadsize for this LC in the appropriate List*/
@@ -806,7 +805,7 @@ uint8_t schFcfsCalculateUlTbs(SchUeCb *ueCb, SlotTimingInfo puschTime, uint8_t s
       }
    }
 
-   if ((fcfsHqP->lcCb.defLcList.count == 0) && (fcfsHqP->lcCb.dedLcList.count == 0))
+   if ((schSpcHqP->lcCb.defLcList.count == 0) && (schSpcHqP->lcCb.dedLcList.count == 0))
    {
       if( (ueCb->srRcvd) || (isRetx) )
       {
@@ -828,37 +827,37 @@ uint8_t schFcfsCalculateUlTbs(SchUeCb *ueCb, SlotTimingInfo puschTime, uint8_t s
    if(maxFreePRB != 0)
    {
       mcsIdx = ueCb->ueCfg.ulModInfo.mcsIndex;
-      if((fcfsHqP->lcCb.dedLcList.count == 0) || ((maxFreePRB < rsvdDedicatedPRB)))
+      if((schSpcHqP->lcCb.dedLcList.count == 0) || ((maxFreePRB < rsvdDedicatedPRB)))
       {
-         fcfsHqP->lcCb.sharedNumPrb = maxFreePRB;
+         schSpcHqP->lcCb.sharedNumPrb = maxFreePRB;
          DU_LOG("\nDEBUG  -->  SCH : UL Only Default Slice is scheduled, sharedPRB Count:%d",\
-               fcfsHqP->lcCb.sharedNumPrb);
+               schSpcHqP->lcCb.sharedNumPrb);
 
          /*PRB Alloc for Default LCs*/
-         prbAllocUsingRRMPolicy(&(fcfsHqP->lcCb.defLcList), FALSE, mcsIdx, symbLen,\
-               &(fcfsHqP->lcCb.sharedNumPrb), NULLP, NULLP,&(ueCb->srRcvd));
+         prbAllocUsingRRMPolicy(&(schSpcHqP->lcCb.defLcList), FALSE, mcsIdx, symbLen,\
+               &(schSpcHqP->lcCb.sharedNumPrb), NULLP, NULLP,&(ueCb->srRcvd));
       }
       else
       {
-         fcfsHqP->lcCb.sharedNumPrb = maxFreePRB - rsvdDedicatedPRB;
+         schSpcHqP->lcCb.sharedNumPrb = maxFreePRB - rsvdDedicatedPRB;
 
          /*PRB Alloc for Dedicated LCs*/
-         prbAllocUsingRRMPolicy(&(fcfsHqP->lcCb.dedLcList), TRUE, mcsIdx, symbLen,\
-               &(fcfsHqP->lcCb.sharedNumPrb), &(rsvdDedicatedPRB),\
+         prbAllocUsingRRMPolicy(&(schSpcHqP->lcCb.dedLcList), TRUE, mcsIdx, symbLen,\
+               &(schSpcHqP->lcCb.sharedNumPrb), &(rsvdDedicatedPRB),\
                NULLP, &(ueCb->srRcvd));
 
          /*PRB Alloc for Default LCs*/
-         prbAllocUsingRRMPolicy(&(fcfsHqP->lcCb.defLcList), FALSE, mcsIdx, symbLen, \
-               &(fcfsHqP->lcCb.sharedNumPrb), &(rsvdDedicatedPRB),\
+         prbAllocUsingRRMPolicy(&(schSpcHqP->lcCb.defLcList), FALSE, mcsIdx, symbLen, \
+               &(schSpcHqP->lcCb.sharedNumPrb), &(rsvdDedicatedPRB),\
                NULLP,&(ueCb->srRcvd));
       }
    }
    /*[Step5]:Traverse each LCID in LcList to calculate the exact Scheduled Bytes
     * using allocated BO per LC and Update dlMsgAlloc(BO report for MAC*/ 
-   if(fcfsHqP->lcCb.dedLcList.count != 0)
-      updateGrantSizeForBoRpt(&(fcfsHqP->lcCb.dedLcList), NULLP, ueCb->bsrInfo, totTBS);
+   if(schSpcHqP->lcCb.dedLcList.count != 0)
+      updateGrantSizeForBoRpt(&(schSpcHqP->lcCb.dedLcList), NULLP, ueCb->bsrInfo, totTBS);
 
-   updateGrantSizeForBoRpt(&(fcfsHqP->lcCb.defLcList), NULLP, ueCb->bsrInfo, totTBS);
+   updateGrantSizeForBoRpt(&(schSpcHqP->lcCb.defLcList), NULLP, ueCb->bsrInfo, totTBS);
 
    /*Below case will hit if NO LC(s) are allocated due to resource crunch*/
    if (*totTBS == 0)
@@ -898,10 +897,10 @@ uint8_t schFcfsCalculateUlTbs(SchUeCb *ueCb, SlotTimingInfo puschTime, uint8_t s
  *         RFAILED
  *
  *******************************************************************/
-uint8_t schFcfsScheduleUlLc(SlotTimingInfo dciTime, SlotTimingInfo puschTime, uint8_t startSymb , uint8_t symbLen, bool isRetx, SchUlHqProcCb **hqP)
+uint8_t schSliceBasedScheduleUlLc(SlotTimingInfo dciTime, SlotTimingInfo puschTime, uint8_t startSymb , uint8_t symbLen, bool isRetx, SchUlHqProcCb **hqP)
 {
    SchCellCb *cell;
-   SchFcfsHqProcCb *fcfsHqProcCb;
+   SchSliceBasedHqProcCb *schSpcHqProcCb;
    uint8_t ret = RFAILED;
    uint16_t startPrb = 0;
    uint32_t totDataReq = 0; /* in bytes */
@@ -911,8 +910,8 @@ uint8_t schFcfsScheduleUlLc(SlotTimingInfo dciTime, SlotTimingInfo puschTime, ui
 
    cell = (*hqP)->hqEnt->cell;
    ueCb = (*hqP)->hqEnt->ue;
-   fcfsHqProcCb = (SchFcfsHqProcCb *)(*hqP)->schSpcUlHqProcCb;
-   ret = schFcfsCalculateUlTbs(ueCb, puschTime, symbLen, &startPrb, &totDataReq, isRetx, *hqP, fcfsHqProcCb);
+   schSpcHqProcCb = (SchSliceBasedHqProcCb *)(*hqP)->schSpcUlHqProcCb;
+   ret = schSliceBasedCalculateUlTbs(ueCb, puschTime, symbLen, &startPrb, &totDataReq, isRetx, *hqP, schSpcHqProcCb);
 
    if(totDataReq > 0 && ret == ROK)
    {
@@ -922,10 +921,10 @@ uint8_t schFcfsScheduleUlLc(SlotTimingInfo dciTime, SlotTimingInfo puschTime, ui
          DU_LOG("\nERROR  -->  SCH : Memory Allocation failed for dciInfo alloc");
          if(isRetx != TRUE)
          {
-            if(fcfsHqProcCb->lcCb.dedLcList.count != 0)
-               updateBsrAndLcList(&(fcfsHqProcCb->lcCb.dedLcList), ueCb->bsrInfo, RFAILED);
+            if(schSpcHqProcCb->lcCb.dedLcList.count != 0)
+               updateBsrAndLcList(&(schSpcHqProcCb->lcCb.dedLcList), ueCb->bsrInfo, RFAILED);
 
-            updateBsrAndLcList(&(fcfsHqProcCb->lcCb.defLcList), ueCb->bsrInfo, RFAILED);
+            updateBsrAndLcList(&(schSpcHqProcCb->lcCb.defLcList), ueCb->bsrInfo, RFAILED);
          }
          return RFAILED;
       }
@@ -945,17 +944,17 @@ uint8_t schFcfsScheduleUlLc(SlotTimingInfo dciTime, SlotTimingInfo puschTime, ui
                ueCb->srRcvd = false;
                ueCb->bsrRcvd = false;
                cell->schUlSlotInfo[puschTime.slot]->puschUe = ueCb->ueId;
-               if(fcfsHqProcCb->lcCb.dedLcList.count != 0)
-                  updateBsrAndLcList(&(fcfsHqProcCb->lcCb.dedLcList), ueCb->bsrInfo, ROK);
-               updateBsrAndLcList(&(fcfsHqProcCb->lcCb.defLcList), ueCb->bsrInfo, ROK);
+               if(schSpcHqProcCb->lcCb.dedLcList.count != 0)
+                  updateBsrAndLcList(&(schSpcHqProcCb->lcCb.dedLcList), ueCb->bsrInfo, ROK);
+               updateBsrAndLcList(&(schSpcHqProcCb->lcCb.defLcList), ueCb->bsrInfo, ROK);
                cmLListAdd2Tail(&(ueCb->hqUlmap[puschTime.slot]->hqList), &(*hqP)->ulSlotLnk);                  
                return ROK;
             }
          }
       }
-      if(fcfsHqProcCb->lcCb.dedLcList.count != 0)
-         updateBsrAndLcList(&(fcfsHqProcCb->lcCb.dedLcList), ueCb->bsrInfo, RFAILED);
-      updateBsrAndLcList(&(fcfsHqProcCb->lcCb.defLcList), ueCb->bsrInfo, RFAILED);
+      if(schSpcHqProcCb->lcCb.dedLcList.count != 0)
+         updateBsrAndLcList(&(schSpcHqProcCb->lcCb.dedLcList), ueCb->bsrInfo, RFAILED);
+      updateBsrAndLcList(&(schSpcHqProcCb->lcCb.defLcList), ueCb->bsrInfo, RFAILED);
    }
    return ROK;
 }
@@ -966,7 +965,7 @@ uint8_t schFcfsScheduleUlLc(SlotTimingInfo dciTime, SlotTimingInfo puschTime, ui
  *
  * @details
  *
- *    Function : schFcfsScheduleDlLc 
+ *    Function : schSliceBasedScheduleDlLc 
  *
  *    Functionality: Grants resources to LC in uplink
  *
@@ -976,9 +975,9 @@ uint8_t schFcfsScheduleUlLc(SlotTimingInfo dciTime, SlotTimingInfo puschTime, ui
  *         RFAILED
  *
  * ****************************************************************/
-uint32_t schFcfsScheduleDlLc(SlotTimingInfo pdcchTime, SlotTimingInfo pdschTime, uint8_t pdschNumSymbols, bool isRetx, SchDlHqProcCb **hqP)
+uint32_t schSliceBasedScheduleDlLc(SlotTimingInfo pdcchTime, SlotTimingInfo pdschTime, uint8_t pdschNumSymbols, bool isRetx, SchDlHqProcCb **hqP)
 {
-   SchFcfsHqProcCb *fcfsHqProcCb;
+   SchSliceBasedHqProcCb *schSpcHqProcCb;
    SchUeCb *ueCb;
    uint8_t lcIdx = 0;
    uint16_t startPrb = 0, maxFreePRB = 0;
@@ -996,7 +995,7 @@ uint32_t schFcfsScheduleDlLc(SlotTimingInfo pdcchTime, SlotTimingInfo pdschTime,
 
    ueCb = (*hqP)->hqEnt->ue;
    dciSlotAlloc = (*hqP)->hqEnt->cell->schDlSlotInfo[pdcchTime.slot]->dlMsgAlloc[ueCb->ueId -1];
-   fcfsHqProcCb = (SchFcfsHqProcCb *)((*hqP)->schSpcDlHqProcCb);
+   schSpcHqProcCb = (SchSliceBasedHqProcCb *)((*hqP)->schSpcDlHqProcCb);
 
    if (isRetx == FALSE)
    {
@@ -1014,12 +1013,12 @@ uint32_t schFcfsScheduleDlLc(SlotTimingInfo pdcchTime, SlotTimingInfo pdschTime,
             * be used*/
             if(ueCb->dlInfo.dlLcCtxt[lcIdx].isDedicated)
             {
-               lcLL = &(fcfsHqProcCb->lcCb.dedLcList);
+               lcLL = &(schSpcHqProcCb->lcCb.dedLcList);
                rsvdDedicatedPRB = ueCb->dlInfo.dlLcCtxt[lcIdx].rsvdDedicatedPRB;
             }
             else
             {
-               lcLL = &(fcfsHqProcCb->lcCb.defLcList);
+               lcLL = &(schSpcHqProcCb->lcCb.defLcList);
             }
 
             /*[Step2]: Update the reqPRB and Payloadsize for this LC in the appropriate List*/
@@ -1041,7 +1040,7 @@ uint32_t schFcfsScheduleDlLc(SlotTimingInfo pdcchTime, SlotTimingInfo pdschTime,
          ueCb->dlInfo.dlLcCtxt[lcIdx].bo = 0;
       }//End of for loop
 
-      if ((fcfsHqProcCb->lcCb.defLcList.count == 0) && (fcfsHqProcCb->lcCb.dedLcList.count == 0))
+      if ((schSpcHqProcCb->lcCb.defLcList.count == 0) && (schSpcHqProcCb->lcCb.dedLcList.count == 0))
       {
          DU_LOG("\nDEBUG  -->  SCH : No pending BO for any LC id\n");
          UNSET_ONE_BIT((*hqP)->hqEnt->ue->ueId, (*hqP)->hqEnt->cell->boIndBitMap);
@@ -1074,26 +1073,26 @@ uint32_t schFcfsScheduleDlLc(SlotTimingInfo pdcchTime, SlotTimingInfo pdschTime,
       {
          mcsIdx = ueCb->ueCfg.dlModInfo.mcsIndex;
 
-         if((fcfsHqProcCb->lcCb.dedLcList.count == NULLP) || ((maxFreePRB < rsvdDedicatedPRB)))
+         if((schSpcHqProcCb->lcCb.dedLcList.count == NULLP) || ((maxFreePRB < rsvdDedicatedPRB)))
          { 
-            fcfsHqProcCb->lcCb.sharedNumPrb = maxFreePRB;
+            schSpcHqProcCb->lcCb.sharedNumPrb = maxFreePRB;
             DU_LOG("\nDEBUG  --> SCH : DL Only Default Slice is scheduled, sharedPRB Count:%d",\
-                  fcfsHqProcCb->lcCb.sharedNumPrb);
+                  schSpcHqProcCb->lcCb.sharedNumPrb);
 
             /*PRB Alloc for Default LCs*/
-            prbAllocUsingRRMPolicy(&(fcfsHqProcCb->lcCb.defLcList), FALSE, mcsIdx, pdschNumSymbols,\
-                  &(fcfsHqProcCb->lcCb.sharedNumPrb), NULLP, &isTxPayloadLenAdded, NULLP);
+            prbAllocUsingRRMPolicy(&(schSpcHqProcCb->lcCb.defLcList), FALSE, mcsIdx, pdschNumSymbols,\
+                  &(schSpcHqProcCb->lcCb.sharedNumPrb), NULLP, &isTxPayloadLenAdded, NULLP);
          }
          else
          {
-            fcfsHqProcCb->lcCb.sharedNumPrb = maxFreePRB - rsvdDedicatedPRB;
+            schSpcHqProcCb->lcCb.sharedNumPrb = maxFreePRB - rsvdDedicatedPRB;
             /*PRB Alloc for Dedicated LCs*/
-            prbAllocUsingRRMPolicy(&(fcfsHqProcCb->lcCb.dedLcList), TRUE, mcsIdx, pdschNumSymbols,\
-                  &(fcfsHqProcCb->lcCb.sharedNumPrb), &(rsvdDedicatedPRB), &isTxPayloadLenAdded, NULLP);
+            prbAllocUsingRRMPolicy(&(schSpcHqProcCb->lcCb.dedLcList), TRUE, mcsIdx, pdschNumSymbols,\
+                  &(schSpcHqProcCb->lcCb.sharedNumPrb), &(rsvdDedicatedPRB), &isTxPayloadLenAdded, NULLP);
 
             /*PRB Alloc for Default LCs*/
-            prbAllocUsingRRMPolicy(&(fcfsHqProcCb->lcCb.defLcList), FALSE, mcsIdx, pdschNumSymbols, \
-                  &(fcfsHqProcCb->lcCb.sharedNumPrb), &(rsvdDedicatedPRB), &isTxPayloadLenAdded, NULLP);
+            prbAllocUsingRRMPolicy(&(schSpcHqProcCb->lcCb.defLcList), FALSE, mcsIdx, pdschNumSymbols, \
+                  &(schSpcHqProcCb->lcCb.sharedNumPrb), &(rsvdDedicatedPRB), &isTxPayloadLenAdded, NULLP);
          }
       }
    }
@@ -1102,10 +1101,10 @@ uint32_t schFcfsScheduleDlLc(SlotTimingInfo pdcchTime, SlotTimingInfo pdschTime,
     * using allocated BO per LC and Update dlMsgAlloc BO report for MAC */
    if (isRetx == FALSE)
    {
-      if(fcfsHqProcCb->lcCb.dedLcList.count != 0)
-         updateGrantSizeForBoRpt(&(fcfsHqProcCb->lcCb.dedLcList), dciSlotAlloc, NULLP, &(accumalatedSize));
+      if(schSpcHqProcCb->lcCb.dedLcList.count != 0)
+         updateGrantSizeForBoRpt(&(schSpcHqProcCb->lcCb.dedLcList), dciSlotAlloc, NULLP, &(accumalatedSize));
 
-      updateGrantSizeForBoRpt(&(fcfsHqProcCb->lcCb.defLcList), dciSlotAlloc, NULLP, &(accumalatedSize));
+      updateGrantSizeForBoRpt(&(schSpcHqProcCb->lcCb.defLcList), dciSlotAlloc, NULLP, &(accumalatedSize));
    }
    else
    {
@@ -1138,10 +1137,10 @@ uint32_t schFcfsScheduleDlLc(SlotTimingInfo pdcchTime, SlotTimingInfo pdschTime,
  *
  * @details
  *
- *    Function : schFcfsScheduleSlot
+ *    Function : schSliceBasedScheduleSlot
  *
  *    Functionality: Scheduling of slots in UL and DL specific to 
- *       FCFS scheduling
+ *       Slice Based scheduling
  *
  * @params[in] Pointer to Cell
  *             Slot timing info
@@ -1149,10 +1148,10 @@ uint32_t schFcfsScheduleDlLc(SlotTimingInfo pdcchTime, SlotTimingInfo pdschTime,
  * @return void
  *
  * ****************************************************************/
-void schFcfsScheduleSlot(SchCellCb *cell, SlotTimingInfo *slotInd, Inst schInst)
+void schSliceBasedScheduleSlot(SchCellCb *cell, SlotTimingInfo *slotInd, Inst schInst)
 {
-   SchFcfsCellCb  *fcfsCell;
-   SchFcfsUeCb    *fcfsUeCb;
+   SchSliceBasedCellCb  *schSpcCell;
+   SchSliceBasedUeCb    *schSpcUeCb;
    SchDlHqProcCb  *hqP = NULLP;
    SchUlHqProcCb  *ulHqP = NULLP;
    CmLList        *pendingUeNode;
@@ -1163,16 +1162,16 @@ void schFcfsScheduleSlot(SchCellCb *cell, SlotTimingInfo *slotInd, Inst schInst)
    bool           isDlMsgPending = false, isDlMsgScheduled = false;
    bool           isUlGrantPending = false, isUlGrantScheduled = false;
 
-   fcfsCell = (SchFcfsCellCb *)cell->schSpcCell;
+   schSpcCell = (SchSliceBasedCellCb *)cell->schSpcCell;
    
    /* Select first UE in the linked list to be scheduled next */
-   pendingUeNode = fcfsCell->ueToBeScheduled.first;
+   pendingUeNode = schSpcCell->ueToBeScheduled.first;
    if(pendingUeNode)
    {
       if(pendingUeNode->node)
       {
          ueId = *(uint8_t *)(pendingUeNode->node);
-         fcfsUeCb = (SchFcfsUeCb *)cell->ueCb[ueId-1].schSpcUeCb;
+         schSpcUeCb = (SchSliceBasedUeCb *)cell->ueCb[ueId-1].schSpcUeCb;
 
          /* If RAR is pending for this UE, schedule PDCCH,PDSCH to send RAR and 
           * PUSCH to receive MSG3 as per k0-k2 configuration*/
@@ -1218,13 +1217,13 @@ void schFcfsScheduleSlot(SchCellCb *cell, SlotTimingInfo *slotInd, Inst schInst)
              * remove UE from linked list since no pending msgs for this UE */
             if(isRarScheduled || isMsg4Scheduled)
             {
-               schFcfsRemoveUeFrmScheduleLst(cell, pendingUeNode);
+               schSliceBasedRemoveUeFrmScheduleLst(cell, pendingUeNode);
             }
             /* If RAR/MSG4 is pending but couldnt be scheduled then,
              * put this UE at the end of linked list to be scheduled later */
             else
             {
-               cmLListAdd2Tail(&fcfsCell->ueToBeScheduled, cmLListDelFrm(&fcfsCell->ueToBeScheduled, pendingUeNode));
+               cmLListAdd2Tail(&schSpcCell->ueToBeScheduled, cmLListDelFrm(&schSpcCell->ueToBeScheduled, pendingUeNode));
             }
          }
 
@@ -1233,7 +1232,7 @@ void schFcfsScheduleSlot(SchCellCb *cell, SlotTimingInfo *slotInd, Inst schInst)
          {
             if(pendingUeNode->node)
             {
-               cmLListAdd2Tail(&fcfsCell->ueToBeScheduled, cmLListDelFrm(&fcfsCell->ueToBeScheduled, pendingUeNode));
+               cmLListAdd2Tail(&schSpcCell->ueToBeScheduled, cmLListDelFrm(&schSpcCell->ueToBeScheduled, pendingUeNode));
             }
          }
          else 
@@ -1242,8 +1241,8 @@ void schFcfsScheduleSlot(SchCellCb *cell, SlotTimingInfo *slotInd, Inst schInst)
 
             /* DL Data */
             node = NULLP;
-            if(fcfsUeCb)
-               node = fcfsUeCb->hqRetxCb.dlRetxHqList.first;
+            if(schSpcUeCb)
+               node = schSpcUeCb->hqRetxCb.dlRetxHqList.first;
             if(node != NULLP)
             {
                /* DL Data ReTransmisson */
@@ -1254,7 +1253,7 @@ void schFcfsScheduleSlot(SchCellCb *cell, SlotTimingInfo *slotInd, Inst schInst)
 #ifdef NR_DRX 
                   schDrxStopDlHqRetxTmr(cell, &cell->ueCb[ueId-1], ((SchDlHqProcCb**) &(node->node)));
 #endif
-                  schFcfsRemoveFrmDlHqRetxList(&cell->ueCb[ueId-1], node);
+                  schSliceBasedRemoveFrmDlHqRetxList(&cell->ueCb[ueId-1], node);
                }
             }
             else
@@ -1279,8 +1278,8 @@ void schFcfsScheduleSlot(SchCellCb *cell, SlotTimingInfo *slotInd, Inst schInst)
 
             /* Scheduling of UL grant */
             node = NULLP;
-            if(fcfsUeCb)
-               node = fcfsUeCb->hqRetxCb.ulRetxHqList.first;
+            if(schSpcUeCb)
+               node = schSpcUeCb->hqRetxCb.ulRetxHqList.first;
             if(node != NULLP)
             {
                /* UL Data ReTransmisson */
@@ -1291,7 +1290,7 @@ void schFcfsScheduleSlot(SchCellCb *cell, SlotTimingInfo *slotInd, Inst schInst)
 #ifdef NR_DRX 
                   schDrxStopUlHqRetxTmr(cell, &cell->ueCb[ueId-1], ((SchUlHqProcCb**) &(node->node)));
 #endif
-                  schFcfsRemoveFrmUlHqRetxList(&cell->ueCb[ueId-1], node);
+                  schSliceBasedRemoveFrmUlHqRetxList(&cell->ueCb[ueId-1], node);
                }
             }
             else
@@ -1318,11 +1317,11 @@ void schFcfsScheduleSlot(SchCellCb *cell, SlotTimingInfo *slotInd, Inst schInst)
             }
             else if((isUlGrantPending && !isUlGrantScheduled) || (isDlMsgPending && !isDlMsgScheduled))
             {
-               cmLListAdd2Tail(&fcfsCell->ueToBeScheduled, cmLListDelFrm(&fcfsCell->ueToBeScheduled, pendingUeNode));
+               cmLListAdd2Tail(&schSpcCell->ueToBeScheduled, cmLListDelFrm(&schSpcCell->ueToBeScheduled, pendingUeNode));
             }
             else
             {
-               schFcfsRemoveUeFrmScheduleLst(cell, pendingUeNode);
+               schSliceBasedRemoveUeFrmScheduleLst(cell, pendingUeNode);
             }
          }
       }
@@ -1331,53 +1330,53 @@ void schFcfsScheduleSlot(SchCellCb *cell, SlotTimingInfo *slotInd, Inst schInst)
 
 /*******************************************************************
  *
- * @brief Initializes all function pointers to FCFS function handler
+ * @brief Initializes all function pointers to Slice Based function handler
  *
  * @details
  *
- *    Function : schFcfsAllApisInit
+ *    Function : schSliceBasedAllApisInit
  *
- *    Functionality: Initializes all function pointers to FCFS 
+ *    Functionality: Initializes all function pointers to Slice Based 
  *       function handler
  *
  * @params[in] Function pointer array
  * @return void
  *
  * ****************************************************************/
-void schFcfsAllApisInit(SchAllApis *allFcfsApi)
+void schSliceBasedAllApisInit(SchAllApis *allSliceBasedApi)
 {
     /* Interface API function pointers */
-    allFcfsApi->SchCellCfgReq = schFcfsCellCfgReq;
-    allFcfsApi->SchCellDeleteReq = schFcfsCellDelReq;
-    allFcfsApi->SchAddUeConfigReq = SchFcfsAddUeConfigReq;
-    allFcfsApi->SchModUeConfigReq = SchFcfsModUeConfigReq;
-    allFcfsApi->SchUeDeleteReq = SchFcfsUeDeleteReq; 
-    allFcfsApi->SchDlHarqInd = SchFcfsDlHarqInd; 
-    allFcfsApi->SchCrcInd = schFcfsProcessCrcInd;
-    allFcfsApi->SchRachInd = schFcfsProcessRachInd;
-    allFcfsApi->SchPagingInd = schFcfsPagingInd;
-    allFcfsApi->SchRachRsrcReq = schFcfsRachRsrcReq; 
-    allFcfsApi->SchRachRsrcRel = schFcfsRachRsrcRel;
-    allFcfsApi->SchDlRlcBoInfo = schFcfsDlRlcBoInfo;
-    allFcfsApi->SchSrUciInd = schFcfsSrUciInd;
-    allFcfsApi->SchBsr = schFcfsBsr;
+    allSliceBasedApi->SchCellCfgReq = schSliceBasedCellCfgReq;
+    allSliceBasedApi->SchCellDeleteReq = schSliceBasedCellDelReq;
+    allSliceBasedApi->SchAddUeConfigReq = SchSliceBasedAddUeConfigReq;
+    allSliceBasedApi->SchModUeConfigReq = SchSliceBasedModUeConfigReq;
+    allSliceBasedApi->SchUeDeleteReq = SchSliceBasedUeDeleteReq; 
+    allSliceBasedApi->SchDlHarqInd = SchSliceBasedDlHarqInd; 
+    allSliceBasedApi->SchCrcInd = schSliceBasedProcessCrcInd;
+    allSliceBasedApi->SchRachInd = schSliceBasedProcessRachInd;
+    allSliceBasedApi->SchPagingInd = schSliceBasedPagingInd;
+    allSliceBasedApi->SchRachRsrcReq = schSliceBasedRachRsrcReq; 
+    allSliceBasedApi->SchRachRsrcRel = schSliceBasedRachRsrcRel;
+    allSliceBasedApi->SchDlRlcBoInfo = schSliceBasedDlRlcBoInfo;
+    allSliceBasedApi->SchSrUciInd = schSliceBasedSrUciInd;
+    allSliceBasedApi->SchBsr = schSliceBasedBsr;
 
     /* Internal API function pointers */
-    allFcfsApi->SchAddToDlHqRetxList = schFcfsAddToDlHqRetxList;
-    allFcfsApi->SchAddToUlHqRetxList = schFcfsAddToUlHqRetxList;
-    allFcfsApi->SchRemoveFrmDlHqRetxList = schFcfsRemoveFrmDlHqRetxList;
-    allFcfsApi->SchRemoveFrmUlHqRetxList = schFcfsRemoveFrmUlHqRetxList;
-    allFcfsApi->SchAddUeToSchedule = schFcfsAddUeToSchedule;
-    allFcfsApi->SchRemoveUeFrmScheduleLst = schFcfsRemoveUeFrmScheduleLst;
-    allFcfsApi->SchInitDlHqProcCb = schFcfsInitDlHqProcCb;
-    allFcfsApi->SchInitUlHqProcCb = schFcfsInitUlHqProcCb;
-    allFcfsApi->SchFreeDlHqProcCb = schFcfsFreeDlHqProcCb;
-    allFcfsApi->SchFreeUlHqProcCb = schFcfsFreeUlHqProcCb;
-    allFcfsApi->SchDeleteDlHqProcCb = schFcfsDeleteDlHqProcCb;
-    allFcfsApi->SchDeleteUlHqProcCb = schFcfsDeleteUlHqProcCb;
-    allFcfsApi->SchScheduleSlot = schFcfsScheduleSlot;
-    allFcfsApi->SchScheduleDlLc = schFcfsScheduleDlLc;
-    allFcfsApi->SchScheduleUlLc = schFcfsScheduleUlLc;
+    allSliceBasedApi->SchAddToDlHqRetxList = schSliceBasedAddToDlHqRetxList;
+    allSliceBasedApi->SchAddToUlHqRetxList = schSliceBasedAddToUlHqRetxList;
+    allSliceBasedApi->SchRemoveFrmDlHqRetxList = schSliceBasedRemoveFrmDlHqRetxList;
+    allSliceBasedApi->SchRemoveFrmUlHqRetxList = schSliceBasedRemoveFrmUlHqRetxList;
+    allSliceBasedApi->SchAddUeToSchedule = schSliceBasedAddUeToSchedule;
+    allSliceBasedApi->SchRemoveUeFrmScheduleLst = schSliceBasedRemoveUeFrmScheduleLst;
+    allSliceBasedApi->SchInitDlHqProcCb = schSliceBasedInitDlHqProcCb;
+    allSliceBasedApi->SchInitUlHqProcCb = schSliceBasedInitUlHqProcCb;
+    allSliceBasedApi->SchFreeDlHqProcCb = schSliceBasedFreeDlHqProcCb;
+    allSliceBasedApi->SchFreeUlHqProcCb = schSliceBasedFreeUlHqProcCb;
+    allSliceBasedApi->SchDeleteDlHqProcCb = schSliceBasedDeleteDlHqProcCb;
+    allSliceBasedApi->SchDeleteUlHqProcCb = schSliceBasedDeleteUlHqProcCb;
+    allSliceBasedApi->SchScheduleSlot = schSliceBasedScheduleSlot;
+    allSliceBasedApi->SchScheduleDlLc = schSliceBasedScheduleDlLc;
+    allSliceBasedApi->SchScheduleUlLc = schSliceBasedScheduleUlLc;
 }
 /**********************************************************************
     End of file

@@ -177,7 +177,7 @@ S16 SendF1APMsg(Region region, Pool pool, uint32_t duId)
       {
          ODU_PRINT_MSG(mBuf, 0,0);
 
-         if(sctpSend(duId, mBuf) != ROK)
+         if(sctpSend(F1_INTERFACE, duId, mBuf) != ROK)
          {
             DU_LOG("\nERROR  -->  F1AP : SCTP Send failed");
             ODU_PUT_MSG_BUF(mBuf);
@@ -9316,7 +9316,7 @@ uint8_t BuildAndSendUeContextSetupReq(uint32_t duId, CuUeCb *ueCb)
       if(ueCb->state == UE_HANDOVER_IN_PROGRESS)
       {
          /* Spec 38.473 Sec 9.2.2.1 : For handover case, this IE shall be considered as target cell. */
-         SEARCH_DU_DB(duIdx, ueCb->hoInfo.targetDuId, targetDuDb);
+         SEARCH_DU_DB(duIdx, ueCb->hoInfo.targetId, targetDuDb);
          /* Since we are supporting only one cell per DU, accessing 0th index to
           * get target cell info */
          spCellId = targetDuDb->cellCb[0].nrCellId;
@@ -9654,7 +9654,7 @@ uint8_t procUeContextSetupResponse(uint32_t duId, F1AP_PDU_t *f1apMsg)
                    ueCb->gnbDuUeF1apId = duUeF1apId;
                    ueCb->gnbCuUeF1apId = cuUeF1apId;
                    ueCb->state = UE_HANDOVER_IN_PROGRESS;
-                   ueCb->hoInfo.targetDuId = duId; 
+                   ueCb->hoInfo.targetId = duId; 
                    (duDb->numUe)++;
 
                    ueCb->cellCb->ueCb[ueCb->cellCb->numUe] = ueCb;
@@ -9720,7 +9720,7 @@ uint8_t procUeContextSetupResponse(uint32_t duId, F1AP_PDU_t *f1apMsg)
 
                   /* Store source DU info in the new UE context created in
                    * tareget DU */
-                  ueCb->hoInfo.sourceDuId = srcDuDb->duId;
+                  ueCb->hoInfo.sourceId = srcDuDb->duId;
 
                   /* Copy the received container to UeCb */
                   memcpy(&ueCbInSrcDu->f1apMsgDb.duToCuContainer, duToCuRrcContainer, sizeof(OCTET_STRING_t));
@@ -9816,7 +9816,7 @@ uint8_t procUlRrcMsg(uint32_t duId, F1AP_PDU_t *f1apMsg)
                if(duDb->ueCb[duUeF1apId-1].state == UE_HANDOVER_IN_PROGRESS)
                {
                   uint8_t ueIdx = 0;
-                  uint8_t srcDuId = duDb->ueCb[duUeF1apId-1].hoInfo.sourceDuId;
+                  uint8_t srcDuId = duDb->ueCb[duUeF1apId-1].hoInfo.sourceId;
                   DuDb *srcDuDb = NULLP;
 
                   /* In target DU DB, mark UE as active and delete HO info */
@@ -11958,13 +11958,13 @@ uint8_t procUeContextModificationResponse(uint32_t duId, F1AP_PDU_t *f1apMsg)
 
    /* If UE is in handover and UE context is not yet created at target DU, then send
     * UE context setup request to target DU */
-   if(ueCb->state == UE_HANDOVER_IN_PROGRESS)
+   if(ueCb->state == UE_HANDOVER_IN_PROGRESS && ueCb->hoInfo.HOType == Inter_DU_HO)
    {
       uint8_t ueIdx = 0;
       DuDb *tgtDuDb = NULLP;
       CuUeCb *ueCbInTgtDu = NULLP;
 
-      SEARCH_DU_DB(duIdx, ueCb->hoInfo.targetDuId, tgtDuDb);
+      SEARCH_DU_DB(duIdx, ueCb->hoInfo.targetId, tgtDuDb);
       if(tgtDuDb)
       {
          /* Since DU UE F1AP ID assigned by target DU to this UE in handover is
@@ -11983,7 +11983,7 @@ uint8_t procUeContextModificationResponse(uint32_t duId, F1AP_PDU_t *f1apMsg)
           * request */
          if(ueCbInTgtDu == NULLP)
          {
-            if((BuildAndSendUeContextSetupReq(ueCb->hoInfo.targetDuId, ueCb)) != ROK)
+            if((BuildAndSendUeContextSetupReq(ueCb->hoInfo.targetId, ueCb)) != ROK)
             {
                DU_LOG("\nERROR  ->  F1AP : Failed at BuildAndSendUeContextSetupReq");
                return RFAILED;

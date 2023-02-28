@@ -133,8 +133,8 @@ uint8_t tst()
 
 void readCuCfg()
 {
-   uint8_t  numDu;
-   uint32_t ipv4_du, ipv4_cu;
+   uint8_t  numDu, *numRemoteCu;
+   uint32_t ipv4_du, ipv4_cu, ipv4_remote_cu;
 
    DU_LOG("\nDEBUG  -->  CU_STUB : Reading CU configurations");
 
@@ -179,13 +179,15 @@ void readCuCfg()
 
    cuCb.cuCfgParams.sctpParams.localIpAddr.ipV4Addr = ipv4_cu;
    cuCb.cuCfgParams.sctpParams.localIpAddr.ipV6Pres = false;
-   cuCb.cuCfgParams.sctpParams.f1SctpPort = F1_SCTP_PORT;
+
+   /* SCTP and EGTP configuration for F1 Interface */
+   cuCb.cuCfgParams.sctpParams.f1SctpInfo.port = F1_SCTP_PORT;
 
    cuCb.cuCfgParams.egtpParams.localIp.ipV4Pres = TRUE;
    cuCb.cuCfgParams.egtpParams.localIp.ipV4Addr = ipv4_cu;
    cuCb.cuCfgParams.egtpParams.localPort = F1_EGTP_PORT;
 
-   cuCb.cuCfgParams.sctpParams.numDestNode = 0;
+   cuCb.cuCfgParams.sctpParams.f1SctpInfo.numDestNode = 0;
    cuCb.cuCfgParams.egtpParams.numDu = 0;
 
    numDu = 0;
@@ -196,9 +198,9 @@ void readCuCfg()
       cmInetAddr((S8*)REMOTE_IP_DU[numDu], &ipv4_du);
       
       /* SCTP Parameters */
-      cuCb.cuCfgParams.sctpParams.destCb[numDu].destIpAddr.ipV4Addr = ipv4_du;
-      cuCb.cuCfgParams.sctpParams.destCb[numDu].destIpAddr.ipV6Pres = false;
-      cuCb.cuCfgParams.sctpParams.destCb[numDu].destPort = F1_SCTP_PORT;
+      cuCb.cuCfgParams.sctpParams.f1SctpInfo.destCb[numDu].destIpAddr.ipV4Addr = ipv4_du;
+      cuCb.cuCfgParams.sctpParams.f1SctpInfo.destCb[numDu].destIpAddr.ipV6Pres = false;
+      cuCb.cuCfgParams.sctpParams.f1SctpInfo.destCb[numDu].destPort = F1_SCTP_PORT;
 
       /* EGTP Parameters */
       cuCb.cuCfgParams.egtpParams.dstCfg[numDu].dstIp.ipV4Pres = TRUE;
@@ -212,7 +214,26 @@ void readCuCfg()
    cuCb.cuCfgParams.egtpParams.currTunnelId = cuCb.cuCfgParams.egtpParams.minTunnelId;
    cuCb.cuCfgParams.egtpParams.maxTunnelId = MAX_TEID;
    cuCb.cuCfgParams.egtpParams.numDu = numDu;
-   cuCb.cuCfgParams.sctpParams.numDestNode = numDu;
+   cuCb.cuCfgParams.sctpParams.f1SctpInfo.numDestNode = numDu;
+
+   /* SCTP configuration for Xn interface */
+   cuCb.cuCfgParams.sctpParams.xnSctpInfo.port = XN_SCTP_PORT;
+   cuCb.cuCfgParams.sctpParams.xnSctpInfo.localNodeType = LOCAL_NODE_TYPE;
+   numRemoteCu = &cuCb.cuCfgParams.sctpParams.xnSctpInfo.numDestNode;   
+   (*numRemoteCu) = 0;
+   while((*numRemoteCu) < NUM_XN_ASSOC)
+   {
+      /* Remote CU IP address */
+      memset(&ipv4_remote_cu, 0, sizeof(uint32_t));
+      cmInetAddr((S8*)REMOTE_IP_CU[*numRemoteCu], &ipv4_remote_cu);
+
+      /* SCTP Parameters */
+      cuCb.cuCfgParams.sctpParams.xnSctpInfo.destCb[*numRemoteCu].destIpAddr.ipV4Addr = ipv4_remote_cu;
+      cuCb.cuCfgParams.sctpParams.xnSctpInfo.destCb[*numRemoteCu].destIpAddr.ipV6Pres = false;
+      cuCb.cuCfgParams.sctpParams.xnSctpInfo.destCb[*numRemoteCu].destPort = XN_SCTP_PORT;
+
+      (*numRemoteCu)++;
+   }
 #endif
 
    /*PLMN*/
@@ -249,25 +270,87 @@ void readCuCfg()
  *         RFAILED - failure
  *
  * ****************************************************************/
-void initiateInterDuHandover(uint32_t sourceDuId, uint32_t targetDuId, uint32_t ueId)
+void initiateInterDuHandover(uint32_t sourceDuId, uint32_t targetDuId, uint32_t duUeF1apId)
 {
-    uint8_t duIdx = 0;
-    DuDb *duDb = NULLP;
-    CuUeCb *ueCb = NULLP;
-   
-    SEARCH_DU_DB(duIdx, sourceDuId, duDb); 
-    if(duDb)
-       ueCb = &duDb->ueCb[ueId-1];
-    if(ueCb)
+   uint8_t duIdx = 0;
+   DuDb *duDb = NULLP;
+   CuUeCb *ueCb = NULLP;
+
+   DU_LOG("\nINFO  --> CU_STUB: Inter-DU Handover Started for ueId [%d] from DU ID [%d] to DU ID [%d]", \
+         duUeF1apId, sourceDuId, targetDuId);
+
+   SEARCH_DU_DB(duIdx, sourceDuId, duDb); 
+   if(duDb)
+      ueCb = &duDb->ueCb[duUeF1apId-1];
+   if(ueCb)
+   {
+      ueCb->state = UE_HANDOVER_IN_PROGRESS;
+      ueCb->hoInfo.HOType = Inter_DU_HO;
+      ueCb->hoInfo.sourceId = sourceDuId;
+      ueCb->hoInfo.targetId = targetDuId;
+
+      BuildAndSendUeContextModificationReq(sourceDuId, ueCb, QUERY_CONFIG);
+   }
+   else
+   {
+      DU_LOG("\nINFO  --> CU_STUB: DU UE F1AP ID [%d] not found", duUeF1apId);
+   }
+}
+
+
+/*******************************************************************
+ *
+ * @brief Initiates inter CU handover
+ *
+ * @details
+ *
+ *    Function : initiateInterCuHandover
+ *
+ *    Functionality: Initiates the first procedure of inter-CU
+ *    handover
+ *
+ * @params[in] Source CU Id
+ *             Target CU Id
+ *             UE Id to be handed off 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+void initiateInterCuHandover(uint32_t sourceCuId, uint32_t targetCuId, uint32_t cuUeF1apId)
+{
+    uint8_t  duIdx, ueIdx;
+    CuUeCb   *ueCb = NULLP;
+
+    DU_LOG("\nINFO  --> CU_STUB: Inter-CU Handover Started for ueId [%d] from CU ID [%d] to CU ID [%d]", \
+          cuUeF1apId, sourceCuId, targetCuId);
+
+    for(duIdx = 0; duIdx < cuCb.numDu; duIdx++)
     {
-       ueCb->state = UE_HANDOVER_IN_PROGRESS;
-       ueCb->hoInfo.sourceDuId = sourceDuId;
-       ueCb->hoInfo.targetDuId = targetDuId;
+       for(ueIdx = 0; ueIdx < (MAX_NUM_CELL * MAX_NUM_UE); ueIdx++)
+       {
+          ueCb = &cuCb.duInfo[duIdx].ueCb[ueIdx];
+          if(cuCb.duInfo[duIdx].ueCb[ueIdx].gnbCuUeF1apId == cuUeF1apId)
+          {
+             ueCb = &cuCb.duInfo[duIdx].ueCb[ueIdx];
+             break; 
+          }
+       }
+       if(ueCb)
+          break;
     }
 
-    DU_LOG("\nINFO  --> CU_STUB: Inter-DU Handover Started for ueId [%d] from DU ID [%d] to DU ID [%d]", \
-          ueId, sourceDuId, targetDuId);
-    BuildAndSendUeContextModificationReq(sourceDuId, ueCb, QUERY_CONFIG);
+    if(ueCb)
+    {   
+       ueCb->state = UE_HANDOVER_IN_PROGRESS;
+       ueCb->hoInfo.HOType = Xn_Based_Inter_CU_HO;
+       ueCb->hoInfo.sourceId = sourceCuId;
+       ueCb->hoInfo.targetId = targetCuId;
+       BuildAndSendUeContextModificationReq(cuCb.duInfo[duIdx].duId, ueCb, QUERY_CONFIG);
+    }   
+    else
+    {
+       DU_LOG("\nINFO  --> CU_STUB: CU UE F1AP ID [%d] not found", cuUeF1apId);
+    }
 }
 
 /*******************************************************************
@@ -401,16 +484,34 @@ void *cuConsoleHandler(void *args)
       /* Start Handover procedure towards DU when 'h' is received from console input */
       else if(ch == 'h')
       {
-         uint32_t sourceDuId, targetDuId, ueId;
+         HandoverType hoType;
+         uint32_t sourceId, targetId, ueId;
 
-         DU_LOG("\nEnter Source DU ID for Inter-DU Handover");
-         scanf("%d", &sourceDuId);
-         DU_LOG("\nEnter Target DU ID for Inter-DU Handover");
-         scanf("%d", &targetDuId);
-         DU_LOG("\nEnter DU UE F1AP ID to be handed over");
-         scanf("%d", &ueId);
+         DU_LOG("\n\nChoose the type of handover to initiate : \nEnter 1 for Inter-CU Handover over Xn interface\nEnter 2 for Inter-DU Handover\n");
+         scanf("%d", &hoType);
 
-         initiateInterDuHandover(sourceDuId, targetDuId, ueId);
+         if(hoType == Xn_Based_Inter_CU_HO)
+         {
+            DU_LOG("\nEnter Source CU ID for Inter-CU Handover : ");
+            scanf("%d", &sourceId);
+            DU_LOG("\nEnter Target CU ID for Inter-CU Handover : ");
+            scanf("%d", &targetId);
+            DU_LOG("\nEnter CU UE F1AP ID to be handed over : ");
+            scanf("%d", &ueId);
+
+            initiateInterCuHandover(sourceId, targetId, ueId);
+         }
+         else if(hoType == Inter_DU_HO)
+         {
+            DU_LOG("\nEnter Source DU ID for Inter-DU Handover : ");
+            scanf("%d", &sourceId);
+            DU_LOG("\nEnter Target DU ID for Inter-DU Handover : ");
+            scanf("%d", &targetId);
+            DU_LOG("\nEnter DU UE F1AP ID to be handed over : ");
+            scanf("%d", &ueId);
+
+            initiateInterDuHandover(sourceId, targetId, ueId);
+         }
       }
       /* Start Idle mode paging when 'p' is received from console input */
       else if(ch == 'p')
@@ -431,20 +532,63 @@ void *cuConsoleHandler(void *args)
       }
       else if(ch == 'm')
       {
-         uint8_t ueId = 1;
-         uint8_t duId = 1;
-         uint8_t duIdx = 0;
+         uint8_t  ueId  = 1;
+         uint8_t  duId  = 0;
+         uint8_t  duIdx = 0;
+         DuDb    *duDb  = NULLP;
+         CuUeCb  *ueCb  = NULLP;
+
+         DU_LOG("\nEnter DU ID whose UE has to be modified");
+         scanf("%d", &duId);
+         DU_LOG("\nEnter UE ID to be modified");
+         scanf("%d", &ueId);
 
          DU_LOG("\nINFO  --> CU_STUB: UE Context Mod for ueId [%d] at DU ID [%d]", \
-                  ueId, duId );
-         DuDb *duDb = NULLP;
-         CuUeCb *ueCb = NULLP;
+                  ueId, duId);
 
          SEARCH_DU_DB(duIdx, duId, duDb); 
          if(duDb)
+         {
             ueCb = &duDb->ueCb[ueId-1];
-         BuildAndSendUeContextModificationReq(duId, ueCb, MODIFY_UE);
+            BuildAndSendUeContextModificationReq(duId, ueCb, MODIFY_UE);
+         }
+         else
+         {
+            DU_LOG("ERROR --> DuDb is NULLP");
+         }
+         continue;
 
+      }
+      /*UE context release command from CU*/
+      else if(ch == 'c')
+      {
+         uint32_t duId, cuUeF1apId, duUeF1apId;
+         uint8_t  duIdx = 0;
+         DuDb    *duDb  = NULLP;
+         
+         DU_LOG("\nEnter DU ID on which UE has to be released");
+         scanf("%d", &duId);
+         DU_LOG("\nEnter UE ID to be released");
+         scanf("%d", &duUeF1apId);
+        
+         SEARCH_DU_DB(duIdx, duId, duDb); 
+         if(duDb)
+         {
+            if(duDb->ueCb[duUeF1apId-1].gnbDuUeF1apId == duUeF1apId)
+            {
+               cuUeF1apId = duDb->ueCb[duUeF1apId-1].gnbCuUeF1apId;
+               DU_LOG("INFO   -->  CU_STUB: Cu UeId: %d Du UeId:%d",cuUeF1apId, duUeF1apId);
+               BuildAndSendUeContextReleaseCommand(duId, cuUeF1apId, duUeF1apId);
+            }
+            else
+            {
+               DU_LOG("ERROR  -->  CU_STUB: Du UeId:%d in UeCb mismatch",\
+                        duDb->ueCb[duUeF1apId-1].gnbDuUeF1apId);
+            }
+         }
+
+         sleep(5);
+         continue;
       }
    }
 }

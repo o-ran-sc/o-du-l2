@@ -31,6 +31,11 @@
 #define F1_SCTP_PORT 38472  /* As per the spec 38.472, the registered port number for F1AP is 38472 */
 #define NUM_F1_ASSOC 1  
 #define REMOTE_IP_DU (char*[]){"192.168.130.81", "192.168.130.83"}
+
+#define XN_SCTP_PORT 38422 /* As per 3GPP TS 38.422, The SCTP Destination Port number value assigned by IANA to be used for XnAP is 38422 */
+#define NUM_XN_ASSOC 0
+#define REMOTE_IP_CU (char*[]){"192.168.130.84"}
+#define LOCAL_NODE_TYPE SERVER
 #endif
 
 #define F1_EGTP_PORT 2152 /* As per the spec 29.281, the registered port number for GTP-U is 2152 */
@@ -103,6 +108,12 @@
 
 typedef enum
 {
+  Xn_Based_Inter_CU_HO = 1,
+  Inter_DU_HO
+}HandoverType;
+
+typedef enum
+{
    CELL_INACTIVE,
    CELL_ACTIVE,
    CELL_DELETION_IN_PROGRESS
@@ -134,8 +145,9 @@ typedef struct cuCfgParams
 
 typedef struct handoverInfo
 {
-   uint32_t sourceDuId;
-   uint32_t targetDuId;
+   HandoverType HOType;
+   uint32_t sourceId;   /* If Inter_DU HO, this is Source DU ID. In case of Inter CU HO, this is Source CU ID */
+   uint32_t targetId;   /* If Inter_DU HO, this is Taregt DU ID. In case of Inter CU HO, this is Target CU ID */
 }HandoverInfo;
 
 typedef struct dlAmCfg
