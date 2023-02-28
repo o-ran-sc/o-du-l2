@@ -1,0 +1,112 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c856a153_f156df2e",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 11
+      },
+      "lineNbr": 3948,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-02-28T09:50:22Z",
+      "side": 1,
+      "message": "remove this comment",
+      "revId": "3d8303216eac2144139165511b80f85ca7679a72",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8f08420d_691a5270",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 11
+      },
+      "lineNbr": 3951,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-02-28T09:50:22Z",
+      "side": 1,
+      "message": "do we not need to different RNTI type depending on msg4 or other dl dedicated msg",
+      "revId": "3d8303216eac2144139165511b80f85ca7679a72",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8917afee_7919ad88",
+        "filename": "src/5gnrmac/mac_msg_hdl.c",
+        "patchSetId": 11
+      },
+      "lineNbr": 224,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-02-28T09:50:22Z",
+      "side": 1,
+      "message": "before accessing the pointer pdschCfg, add a null check",
+      "range": {
+        "startLine": 224,
+        "startChar": 17,
+        "endLine": 224,
+        "endChar": 69
+      },
+      "revId": "3d8303216eac2144139165511b80f85ca7679a72",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ca387452_e0bba5a3",
+        "filename": "src/5gnrsch/sch_rach.c",
+        "patchSetId": 11
+      },
+      "lineNbr": 949,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-02-28T09:50:22Z",
+      "side": 1,
+      "message": "remove commented code",
+      "revId": "3d8303216eac2144139165511b80f85ca7679a72",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7647512a_0fb51a51",
+        "filename": "src/cm/mac_sch_interface.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 916,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-02-28T09:50:22Z",
+      "side": 1,
+      "message": "we are not adding sib1PdschCfg here separately because we are always scheduling PDCCH and PDSCH of SIB1 in the same slot? and in this case, pdsch can always be fetched from PdcchCfg-\u003edldci-\u003epdschCfg?\n\nPlease confirm if my understanding is correct.",
+      "revId": "3d8303216eac2144139165511b80f85ca7679a72",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1b3c94c7_a7189615",
+        "filename": "src/du_app/du_cfg.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-02-28T09:50:22Z",
+      "side": 1,
+      "message": "Also uncomment the CORE AFFINITY macro in du_mgr_main.c",
+      "revId": "3d8303216eac2144139165511b80f85ca7679a72",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
