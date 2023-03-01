@@ -1,0 +1,188 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4e1a1084_2e1f5afc",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 12
+      },
+      "lineNbr": 1820,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-03-01T06:14:10Z",
+      "side": 1,
+      "message": "we should move it before the above if. because this data\u0027s pdsch\u0027s allocation filed so pdcch has to be removed in all cases.",
+      "range": {
+        "startLine": 1820,
+        "startChar": 38,
+        "endLine": 1820,
+        "endChar": 51
+      },
+      "revId": "c7f6b78794c543ebabab79aff409e38e95400371",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4eb0ad6b_7775d70f",
+        "filename": "src/5gnrsch/sch_rach.c",
+        "patchSetId": 12
+      },
+      "lineNbr": 686,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-03-01T06:14:10Z",
+      "side": 1,
+      "message": "dont we need to check dciSlotAlloc-\u003epdsch !\u003d NULL before freeing dciSlotAlloc?",
+      "range": {
+        "startLine": 686,
+        "startChar": 18,
+        "endLine": 686,
+        "endChar": 30
+      },
+      "revId": "c7f6b78794c543ebabab79aff409e38e95400371",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d601b7c5_3a28e564",
+        "filename": "src/5gnrsch/sch_rach.c",
+        "patchSetId": 12
+      },
+      "lineNbr": 734,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-03-01T06:14:10Z",
+      "side": 1,
+      "message": "here pdcchCfg needs to be freed\nAlso dciSlotAlloc to be freed",
+      "range": {
+        "startLine": 734,
+        "startChar": 28,
+        "endLine": 734,
+        "endChar": 31
+      },
+      "revId": "c7f6b78794c543ebabab79aff409e38e95400371",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5c69e257_833d47ad",
+        "filename": "src/5gnrsch/sch_rach.c",
+        "patchSetId": 12
+      },
+      "lineNbr": 746,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-03-01T06:14:10Z",
+      "side": 1,
+      "message": "pls check dciSlotAlloc-\u003epdschCfg \u003d\u003d NULL before freeing",
+      "range": {
+        "startLine": 746,
+        "startChar": 42,
+        "endLine": 746,
+        "endChar": 50
+      },
+      "revId": "c7f6b78794c543ebabab79aff409e38e95400371",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "594dd1a2_496abeb0",
+        "filename": "src/5gnrsch/sch_rach.c",
+        "patchSetId": 12
+      },
+      "lineNbr": 762,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-03-01T06:14:10Z",
+      "side": 1,
+      "message": "please check this",
+      "range": {
+        "startLine": 762,
+        "startChar": 27,
+        "endLine": 762,
+        "endChar": 29
+      },
+      "revId": "c7f6b78794c543ebabab79aff409e38e95400371",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fdd30170_c9c13d52",
+        "filename": "src/5gnrsch/sch_slice_based.c",
+        "patchSetId": 12
+      },
+      "lineNbr": 1037,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-03-01T06:14:10Z",
+      "side": 1,
+      "message": "remove memset",
+      "range": {
+        "startLine": 1037,
+        "startChar": 26,
+        "endLine": 1037,
+        "endChar": 38
+      },
+      "revId": "c7f6b78794c543ebabab79aff409e38e95400371",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bf2ae0f2_c8f05570",
+        "filename": "src/5gnrsch/sch_slice_based.c",
+        "patchSetId": 12
+      },
+      "lineNbr": 1058,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-03-01T06:14:10Z",
+      "side": 1,
+      "message": "remove memset",
+      "range": {
+        "startLine": 1058,
+        "startChar": 20,
+        "endLine": 1058,
+        "endChar": 32
+      },
+      "revId": "c7f6b78794c543ebabab79aff409e38e95400371",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "60737313_ab1fc4b4",
+        "filename": "src/5gnrsch/sch_slot_ind.c",
+        "patchSetId": 12
+      },
+      "lineNbr": 201,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-03-01T06:14:10Z",
+      "side": 1,
+      "message": "move pdcchCfg outside the if condition. because pdcch needs to freed at all cases as its pdsch allocation failed",
+      "range": {
+        "startLine": 201,
+        "startChar": 36,
+        "endLine": 201,
+        "endChar": 37
+      },
+      "revId": "c7f6b78794c543ebabab79aff409e38e95400371",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
