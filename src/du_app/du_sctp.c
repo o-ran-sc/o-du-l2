@@ -843,7 +843,7 @@ uint8_t sctpSend(Buffer *mBuf, uint8_t itfType)
 
    if(itfType == F1_INTERFACE)
    {
-      DU_LOG("\nDEBUG   -->  SCTP : sending the message to CU");
+      DU_LOG("\nDEBUG  --> SCTP : sending the message to CU");
 #ifdef CALL_FLOW_DEBUG_LOG
       DU_LOG("\nCall Flow: ENTSCTP -> CU : EVENT_F1AP_MSG_TO_CU\n");
 #endif
@@ -852,7 +852,7 @@ uint8_t sctpSend(Buffer *mBuf, uint8_t itfType)
 
    if(itfType == E2_INTERFACE)
    {
-      DU_LOG("\nDEBUG   -->  SCTP : sending the message to ric");
+      DU_LOG("\nDEBUG  -->  SCTP : sending the message to ric");
 #ifdef CALL_FLOW_DEBUG_LOG
       DU_LOG("\nCall Flow: ENTSCTP -> RIC : EVENT_E2AP_MSG_TO_RIC\n");
 #endif

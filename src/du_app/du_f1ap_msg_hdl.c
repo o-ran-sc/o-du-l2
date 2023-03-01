@@ -2606,7 +2606,7 @@ uint8_t BuildAndSendULRRCMessageTransfer(DuUeCb  *ueCb, uint8_t lcId, \
 
    while(true)
    {
-      DU_LOG("\n INFO   -->  F1AP : Building UL RRC Message Transfer Message\n");
+      DU_LOG("\nINFO   -->  F1AP : Building UL RRC Message Transfer Message\n");
 
       DU_ALLOC(f1apMsg, sizeof(F1AP_PDU_t));
       if(f1apMsg == NULLP)
@@ -2707,7 +2707,7 @@ uint8_t BuildAndSendULRRCMessageTransfer(DuUeCb  *ueCb, uint8_t lcId, \
       }
       else
       {
-	 DU_LOG("\nDEBUG   -->  F1AP : Created APER encoded buffer for ULRRCMessageTransfer\n");
+	 DU_LOG("\nDEBUG  -->  F1AP : Created APER encoded buffer for ULRRCMessageTransfer\n");
 #ifdef DEBUG_ASN_PRINT
 	 for(int i=0; i< encBufSize; i++)
 	 {
