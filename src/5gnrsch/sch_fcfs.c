@@ -1035,10 +1035,9 @@ uint32_t schFcfsScheduleDlLc(SlotTimingInfo pdcchTime, SlotTimingInfo pdschTime,
                }
                else
                   memset(&dciSlotAlloc->dlMsgSchedInfo[dciSlotAlloc->numSchedInfo], 0, sizeof(DlMsgSchInfo));
-               return false;
+               return accumalatedSize;
             }
          }
-         ueCb->dlInfo.dlLcCtxt[lcIdx].bo = 0;
       }//End of for loop
 
       if ((fcfsHqProcCb->lcCb.defLcList.count == 0) && (fcfsHqProcCb->lcCb.dedLcList.count == 0))
@@ -1056,7 +1055,7 @@ uint32_t schFcfsScheduleDlLc(SlotTimingInfo pdcchTime, SlotTimingInfo pdschTime,
             memset(&dciSlotAlloc->dlMsgSchedInfo[dciSlotAlloc->numSchedInfo], 0, sizeof(DlMsgSchInfo));
 
          /*TRUE because this UE has nothing to be scheduled*/
-         return true;
+         return accumalatedSize;
       }
    }
 

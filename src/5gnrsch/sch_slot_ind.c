@@ -92,6 +92,7 @@ uint8_t sendDlAllocToMac(DlSchedInfo *dlSchedInfo, Inst inst)
 bool schFillBoGrantDlSchedInfo(SchCellCb *cell, SlotTimingInfo currTime, uint8_t ueId, bool isRetx, SchDlHqProcCb **hqP)
 {
    uint8_t pdschNumSymbols = 0, pdschStartSymbol = 0;
+   uint8_t lcIdx = 0;
    uint16_t startPrb = 0;
    uint16_t crnti = 0;
    uint32_t accumalatedSize = 0;
@@ -229,6 +230,12 @@ bool schFillBoGrantDlSchedInfo(SchCellCb *cell, SlotTimingInfo currTime, uint8_t
    cell->schDlSlotInfo[pdcchTime.slot]->pdcchUe = ueId;
    cell->schDlSlotInfo[pdschTime.slot]->pdschUe = ueId;
    cell->schUlSlotInfo[pucchTime.slot]->pucchUe = ueId;
+
+   /*Re-setting the BO's of all DL LCs in this UE*/
+   for(lcIdx = 0; lcIdx < MAX_NUM_LC; lcIdx++)
+   {
+      ueCb->dlInfo.dlLcCtxt[lcIdx].bo = 0;
+   }
 
    /* after allocation is done, unset the bo bit for that ue */
    UNSET_ONE_BIT(ueId, cell->boIndBitMap);
