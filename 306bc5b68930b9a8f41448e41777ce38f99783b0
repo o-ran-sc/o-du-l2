@@ -1,4 +1,22 @@
 {
-  "comments": [],
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2ab91791_46b95c73",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-03-01T07:38:04Z",
+      "side": 1,
+      "message": "This gerrit has been divided into multiple gerrits. Task which is linked to this is following:\nhttps://jira.o-ran-sc.org/browse/ODUHIGH-492\n",
+      "revId": "306bc5b68930b9a8f41448e41777ce38f99783b0",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ],
   "submitRequirementResults": []
 }
