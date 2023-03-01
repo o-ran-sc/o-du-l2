@@ -893,8 +893,11 @@ CmLList* isPrbAvailable(CmLListCp *freePrbBlockList, uint16_t startPrb, uint16_t
 
       /* Check if requested number of blocks can be allocated from the current block */
       if(freeBlock->numFreePrb < numPrb)
+      {
+         DU_LOG("\nINFO   --> SCH: In isPrbAvailable, numFreePrb:%d is less than reqPrb:%d", freeBlock->numFreePrb, numPrb);
+         node = node->next;
          continue;
-
+      }
       /* Check if requested PRBs belong within the range of current free block */
       if(((startPrb >= freeBlock->startPrb) && (startPrb <= freeBlock->endPrb)) && \
          ((endPrb >= freeBlock->startPrb) && (endPrb <= freeBlock->endPrb)))

@@ -683,13 +683,16 @@ bool schProcessRaReq(Inst schInst, SchCellCb *cell, SlotTimingInfo currTime, uin
       if((schFillRar(cell, rarTime, ueId, dciSlotAlloc, k0Index)) != ROK)
       {
          DU_LOG("\nERROR  -->  SCH: Scheduling of RAR failed in slot [%d]", rarSlot);
-         SCH_FREE(dciSlotAlloc, sizeof(RarAlloc));
-         cell->schDlSlotInfo[dciSlot]->rarAlloc[ueId-1] = NULLP;
+         if(!dciSlotAlloc->rarPdschCfg)
+         {
+            SCH_FREE(dciSlotAlloc, sizeof(RarAlloc));
+            cell->schDlSlotInfo[dciSlot]->rarAlloc[ueId-1] = NULLP;
+         }
          return false;
       }
 
       /* Fill RAR info */
-      dciSlotAlloc->rarInfo.raRnti = cell->raReq[ueId-1]->raRnti;
+      dciSlotAlloc->raRnti = cell->raReq[ueId-1]->raRnti;
       dciSlotAlloc->rarInfo.tcrnti = cell->raReq[ueId-1]->rachInd->crnti;
       dciSlotAlloc->rarInfo.RAPID = cell->raReq[ueId-1]->rachInd->preambleIdx;
       dciSlotAlloc->rarInfo.ta = cell->raReq[ueId-1]->rachInd->timingAdv;
@@ -723,7 +726,22 @@ bool schProcessRaReq(Inst schInst, SchCellCb *cell, SlotTimingInfo currTime, uin
        * If not, allocate memory RAR PDSCH slot to store RAR info
        */
       if(dciSlot == rarSlot)
-         dciSlotAlloc->pduPres = BOTH;
+      {
+         SCH_ALLOC(dciSlotAlloc->rarPdschCfg, sizeof(PdschCfg));
+         if(dciSlotAlloc->rarPdschCfg)
+         {
+             memcpy(dciSlotAlloc->rarPdschCfg, &dciSlotAlloc->rarPdcchCfg->dci.pdschCfg, sizeof(PdschCfg));
+         }
+         else
+         {
+            SCH_FREE(dciSlotAlloc->rarPdcchCfg, sizeof(PdcchCfg));
+            SCH_FREE(dciSlotAlloc, sizeof(RarAlloc));
+            cell->schDlSlotInfo[dciSlot]->rarAlloc[ueId-1] = NULLP;
+            DU_LOG("\nERROR  -->  SCH : Memory Allocation failed for dciSlotAlloc->rarPdschCfg");
+            return false;
+         }
+
+      }
       else
       {
          /* Allocate memory to schedule rarSlot to send RAR, pointer will be checked at schProcessSlotInd() */
@@ -731,20 +749,37 @@ bool schProcessRaReq(Inst schInst, SchCellCb *cell, SlotTimingInfo currTime, uin
          if(rarSlotAlloc == NULLP)
          {
             DU_LOG("\nERROR  -->  SCH : Memory Allocation failed for rarSlotAlloc");
-            SCH_FREE(dciSlotAlloc, sizeof(RarAlloc));
-            cell->schDlSlotInfo[dciSlot]->rarAlloc[ueId-1] = NULLP;
+            SCH_FREE(dciSlotAlloc->rarPdcchCfg, sizeof(PdcchCfg));
+            if(!dciSlotAlloc->rarPdschCfg)
+            {
+               SCH_FREE(dciSlotAlloc, sizeof(RarAlloc));
+               cell->schDlSlotInfo[dciSlot]->rarAlloc[ueId-1] = NULLP;
+            }
             return false;
          }
          cell->schDlSlotInfo[rarSlot]->rarAlloc[ueId-1] = rarSlotAlloc;
 
          /* Copy all RAR info */
-         memcpy(rarSlotAlloc, dciSlotAlloc, sizeof(RarAlloc));
-         rarSlotAlloc->rarPdcchCfg.dci.pdschCfg = &rarSlotAlloc->rarPdschCfg;
-
-         /* Assign correct PDU types in corresponding slots */
-         rarSlotAlloc->pduPres = PDSCH_PDU;
-         dciSlotAlloc->pduPres = PDCCH_PDU;
-         dciSlotAlloc->pdschSlot = rarSlot;  
+         rarSlotAlloc->raRnti = dciSlotAlloc->raRnti;
+         rarSlotAlloc->bwp = dciSlotAlloc->bwp;
+         SCH_ALLOC(rarSlotAlloc->rarPdschCfg, sizeof(PdschCfg));
+         if(rarSlotAlloc->rarPdschCfg)
+         {
+            memcpy(rarSlotAlloc->rarPdschCfg, &dciSlotAlloc->rarPdcchCfg->dci.pdschCfg,sizeof(PdschCfg));
+         }
+         else
+         {
+            DU_LOG("\nERROR  -->  SCH : Memory Allocation failed for rarSlotAlloc->rarPdschCfg");
+            SCH_FREE(dciSlotAlloc->rarPdcchCfg, sizeof(PdcchCfg));
+            if(!dciSlotAlloc->rarPdschCfg)
+            {
+               SCH_FREE(dciSlotAlloc, sizeof(RarAlloc));
+               cell->schDlSlotInfo[dciSlot]->rarAlloc[ueId-1] = NULLP;
+            }
+            SCH_FREE(rarSlotAlloc, sizeof(RarAlloc));
+            cell->schDlSlotInfo[rarSlot]->rarAlloc[ueId-1] = NULLP;
+            return false;
+         }
       }
 
       cell->schDlSlotInfo[dciSlot]->pdcchUe = ueId;
@@ -861,10 +896,16 @@ uint8_t schFillRar(SchCellCb *cell, SlotTimingInfo rarTime, uint16_t ueId, RarAl
    uint8_t  dmrsStartSymbol, startSymbol, numSymbol ;
    uint16_t numRbs = 0;
    uint16_t tbSize = 0;
+   PdschCfg *pdsch;
 
    SchBwpDlCfg *initialBwp = &cell->cellCfg.dlCfgCommon.schInitialDlBwp;
-   PdcchCfg *pdcch = &rarAlloc->rarPdcchCfg;
-   PdschCfg *pdsch = &rarAlloc->rarPdschCfg;
+   SCH_ALLOC(rarAlloc->rarPdcchCfg, sizeof(PdcchCfg));
+   if(rarAlloc->rarPdcchCfg == NULLP)
+   {
+      DU_LOG("\nERROR  --> SCH : Memory allocation failed in %s",__func__);
+      return RFAILED;
+   }
+   PdcchCfg *pdcch = rarAlloc->rarPdcchCfg;
    BwpCfg *bwp = &rarAlloc->bwp;
 
    /* derive the sib1 coreset0 params from table 13-1 spec 38.213 */
@@ -915,8 +956,8 @@ uint8_t schFillRar(SchCellCb *cell, SlotTimingInfo rarTime, uint16_t ueId, RarAl
    pdcch->dci.beamPdcchInfo.prg[0].beamIdx[0] = 0;
    pdcch->dci.txPdcchPower.beta_pdcch_1_0 = 0;
    pdcch->dci.txPdcchPower.powerControlOffsetSS = 0;
-   pdcch->dci.pdschCfg = pdsch;
 
+   pdsch = &pdcch->dci.pdschCfg;
    /* fill the PDSCH PDU */
    uint8_t cwCount = 0;
    pdsch->pduBitmap = 0; /* PTRS and CBG params are excluded */
@@ -979,6 +1020,7 @@ uint8_t schFillRar(SchCellCb *cell, SlotTimingInfo rarTime, uint16_t ueId, RarAl
       &pdsch->pdschFreqAlloc.startPrb, pdsch->pdschFreqAlloc.numPrb)) != ROK)
    {
       DU_LOG("\nERROR  --> SCH : allocatePrbDl() failed for RAR");
+      SCH_FREE(rarAlloc->rarPdcchCfg, sizeof(PdcchCfg));
       return RFAILED;
    }
 
