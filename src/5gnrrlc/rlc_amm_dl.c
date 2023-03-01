@@ -2062,7 +2062,7 @@ static bool rlcAmmDlCheckAndSetPoll(RlcCb *gCb, RlcDlRbCb *rbCb, bool newPdu, Ms
 
       amDl->pollSn = (amDl->txNext - 1) & amDl->snModMask;
 
-      DU_LOG("\nINFO  -->  RLC_DL : rlcAmmDlCheckAndSetPoll: Poll SN = %d UEID:%d CELLID:%d", 
+      DU_LOG("\nINFO   -->  RLC_DL : rlcAmmDlCheckAndSetPoll: Poll SN = %d UEID:%d CELLID:%d", 
          amDl->pollSn, rbCb->rlcId.ueId, rbCb->rlcId.cellId);
 
       /* kw005.201: Fix for poll retransmission timer. 

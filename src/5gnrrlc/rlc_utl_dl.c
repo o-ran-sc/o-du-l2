@@ -512,7 +512,7 @@ uint8_t rlcUtlSendToMac(RlcCb *gCb, SuId suId, KwDStaIndInfo *staIndInfo)
                   if(snssaiTputNode != NULLP)
                   {
                      snssaiTputNode->dataVol += staIndTb->lchStaInd[count].totBufSize;
-                     DU_LOG("\nINFO   -->SCH: SNSSAI List Grant:%d, lcId:%d, total :%ld",\
+                     DU_LOG("\nINFO   -->  RLC_DL: SNSSAI List Grant:%d, lcId:%d, total :%ld",\
                            staIndTb->lchStaInd[count].totBufSize, staIndTb->lchStaInd[count].lcId,\
                            snssaiTputNode->dataVol);
                   }
