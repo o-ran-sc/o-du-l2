@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4f864031_ad563d3a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-03-01T10:51:26Z",
+      "side": 1,
+      "message": "commit msg here can be \"Rebasing to master branch change Id I3d4911daa4f61a170bf7c0a154e2bbfa8993f06a\"",
+      "range": {
+        "startLine": 7,
+        "startChar": 44,
+        "endLine": 7,
+        "endChar": 136
+      },
+      "revId": "045c5b0dbe685d2c90834938311fe63e6df9fcfb",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
