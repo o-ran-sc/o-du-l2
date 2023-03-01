@@ -92,11 +92,12 @@ uint8_t sendDlAllocToMac(DlSchedInfo *dlSchedInfo, Inst inst)
 bool schFillBoGrantDlSchedInfo(SchCellCb *cell, SlotTimingInfo currTime, uint8_t ueId, bool isRetx, SchDlHqProcCb **hqP)
 {
    uint8_t pdschNumSymbols = 0, pdschStartSymbol = 0;
+   uint8_t lcIdx = 0;
    uint16_t startPrb = 0;
    uint16_t crnti = 0;
    uint32_t accumalatedSize = 0;
    SchUeCb *ueCb = NULLP;
-   DlMsgAlloc *dciSlotAlloc, *dlMsgAlloc;
+   DlMsgSchInfo *dciSlotAlloc, *dlMsgAlloc;
    SlotTimingInfo pdcchTime, pdschTime, pucchTime;
 
    GET_CRNTI(crnti,ueId);
@@ -122,23 +123,22 @@ bool schFillBoGrantDlSchedInfo(SchCellCb *cell, SlotTimingInfo currTime, uint8_t
    if(cell->schDlSlotInfo[pdcchTime.slot]->dlMsgAlloc[ueId-1] == NULL)
    {
 
-      SCH_ALLOC(dciSlotAlloc, sizeof(DlMsgAlloc));
+      SCH_ALLOC(dciSlotAlloc, sizeof(DlMsgSchInfo));
       if(!dciSlotAlloc)
       {
          DU_LOG("\nERROR  -->  SCH : Memory Allocation failed for ded DL msg alloc");
          return false;
       }
       cell->schDlSlotInfo[pdcchTime.slot]->dlMsgAlloc[ueId -1] = dciSlotAlloc;
-      memset(dciSlotAlloc, 0, sizeof(DlMsgAlloc));
-      dciSlotAlloc->crnti = crnti;
+      memset(dciSlotAlloc, 0, sizeof(DlMsgSchInfo));
    }
    else
    {
       dciSlotAlloc = cell->schDlSlotInfo[pdcchTime.slot]->dlMsgAlloc[ueId -1];
    }
    /* Dl ded Msg info is copied, this was earlier filled in macSchDlRlcBoInfo */
-   fillDlMsgInfo(&dciSlotAlloc->dlMsgSchedInfo[dciSlotAlloc->numSchedInfo].dlMsgInfo, dciSlotAlloc->crnti, isRetx, *hqP);
-   dciSlotAlloc->dlMsgSchedInfo[dciSlotAlloc->numSchedInfo].isRetx = isRetx;
+   fillDlMsgInfo(dciSlotAlloc, crnti, isRetx, *hqP);
+   dciSlotAlloc->transportBlock[0].ndi = isRetx;
 
    accumalatedSize = cell->api->SchScheduleDlLc(pdcchTime, pdschTime, pdschNumSymbols, isRetx, hqP);
 
@@ -152,14 +152,10 @@ bool schFillBoGrantDlSchedInfo(SchCellCb *cell, SlotTimingInfo currTime, uint8_t
       DU_LOG("\nERROR  --> SCH : Scheduling of DL dedicated message failed");
 
       /* Free the dl ded msg info allocated in macSchDlRlcBoInfo */
-      if(dciSlotAlloc->numSchedInfo == 0)
+      if(!dciSlotAlloc->dlMsgPdschCfg)
       {
-         SCH_FREE(dciSlotAlloc, sizeof(DlMsgAlloc));
+         SCH_FREE(dciSlotAlloc, sizeof(DlMsgSchInfo));
          cell->schDlSlotInfo[pdcchTime.slot]->dlMsgAlloc[ueId -1] = NULL;
-      }
-      else
-      {
-         memset(&dciSlotAlloc->dlMsgSchedInfo[dciSlotAlloc->numSchedInfo], 0, sizeof(DlMsgSchInfo));
       }
       return false;
    }
@@ -181,47 +177,62 @@ bool schFillBoGrantDlSchedInfo(SchCellCb *cell, SlotTimingInfo currTime, uint8_t
 
    if(pdcchTime.slot == pdschTime.slot)
    {
-      dciSlotAlloc->dlMsgSchedInfo[dciSlotAlloc->numSchedInfo].pduPres = BOTH;
-      dciSlotAlloc->numSchedInfo++;
+      SCH_ALLOC(dciSlotAlloc->dlMsgPdschCfg, sizeof(PdschCfg));
+      if(!dciSlotAlloc->dlMsgPdschCfg)
+      {
+         DU_LOG("\nERROR  -->  SCH : Memory Allocation failed for dciSlotAlloc->dlMsgPdschCfg");
+         SCH_FREE(dciSlotAlloc->dlMsgPdcchCfg, sizeof(PdcchCfg));
+         SCH_FREE(dciSlotAlloc, sizeof(DlMsgSchInfo));
+         cell->schDlSlotInfo[pdcchTime.slot]->dlMsgAlloc[ueId-1] = NULLP;
+         return false;
+      }
+      memcpy(dciSlotAlloc->dlMsgPdschCfg, &dciSlotAlloc->dlMsgPdcchCfg->dci.pdschCfg,  sizeof(PdschCfg));
    }
    else
    {
       /* Allocate memory to schedule dlMsgAlloc to send DL_Msg, pointer will be checked at schProcessSlotInd() */
       if(cell->schDlSlotInfo[pdschTime.slot]->dlMsgAlloc[ueId-1] == NULLP)
       {
-         SCH_ALLOC(dlMsgAlloc, sizeof(DlMsgAlloc));
+         SCH_ALLOC(dlMsgAlloc, sizeof(DlMsgSchInfo));
          if(dlMsgAlloc == NULLP)
          {
             DU_LOG("\nERROR  -->  SCH : Memory Allocation failed for dlMsgAlloc");
-            if(dciSlotAlloc->numSchedInfo == 0)
+            SCH_FREE(dciSlotAlloc->dlMsgPdcchCfg, sizeof(PdcchCfg));
+            if(dciSlotAlloc->dlMsgPdschCfg == NULLP)
             {
-               SCH_FREE(dciSlotAlloc, sizeof(DlMsgAlloc));
+               SCH_FREE(dciSlotAlloc, sizeof(DlMsgSchInfo));
                cell->schDlSlotInfo[pdcchTime.slot]->dlMsgAlloc[ueId-1] = NULLP;
             }
-            else
-               memset(&dciSlotAlloc->dlMsgSchedInfo[dciSlotAlloc->numSchedInfo], 0, sizeof(DlMsgSchInfo));
             return false;
          }
          cell->schDlSlotInfo[pdschTime.slot]->dlMsgAlloc[ueId-1] = dlMsgAlloc;
-         memset(dlMsgAlloc, 0, sizeof(DlMsgAlloc));
-         dlMsgAlloc->crnti = dciSlotAlloc->crnti;
+         memset(dlMsgAlloc, 0, sizeof(DlMsgSchInfo));
       }
       else
          dlMsgAlloc = cell->schDlSlotInfo[pdschTime.slot]->dlMsgAlloc[ueId-1];
 
       /* Copy all DL_MSG info */
-      memcpy(&dlMsgAlloc->dlMsgSchedInfo[dlMsgAlloc->numSchedInfo], \
-            &dciSlotAlloc->dlMsgSchedInfo[dciSlotAlloc->numSchedInfo], sizeof(DlMsgSchInfo));
-      dlMsgAlloc->dlMsgSchedInfo[dlMsgAlloc->numSchedInfo].dlMsgPdcchCfg.dci.pdschCfg = \
-            &dlMsgAlloc->dlMsgSchedInfo[dlMsgAlloc->numSchedInfo].dlMsgPdschCfg;
+      dlMsgAlloc->crnti =crnti;
+      dlMsgAlloc->bwp = dciSlotAlloc->bwp;
+      SCH_ALLOC(dlMsgAlloc->dlMsgPdschCfg, sizeof(PdschCfg));
+      if(dlMsgAlloc->dlMsgPdschCfg)
+      {
+         memcpy(dlMsgAlloc->dlMsgPdschCfg, &dciSlotAlloc->dlMsgPdcchCfg->dci.pdschCfg, sizeof(PdschCfg));
+      }
+      else
+      {
+         SCH_FREE(dciSlotAlloc->dlMsgPdcchCfg, sizeof(PdcchCfg));    
+         if(dciSlotAlloc->dlMsgPdschCfg == NULLP)
+         {
+            SCH_FREE(dciSlotAlloc, sizeof(DlMsgSchInfo));
+            cell->schDlSlotInfo[pdcchTime.slot]->dlMsgAlloc[ueId-1] = NULLP;
 
-      /* Assign correct PDU types in corresponding slots */
-      dlMsgAlloc->dlMsgSchedInfo[dlMsgAlloc->numSchedInfo].pduPres = PDSCH_PDU;
-      dciSlotAlloc->dlMsgSchedInfo[dciSlotAlloc->numSchedInfo].pduPres = PDCCH_PDU;
-      dciSlotAlloc->dlMsgSchedInfo[dciSlotAlloc->numSchedInfo].pdschSlot = pdschTime.slot;
-
-      dciSlotAlloc->numSchedInfo++;
-      dlMsgAlloc->numSchedInfo++;
+         }
+         SCH_FREE(dlMsgAlloc, sizeof(DlMsgSchInfo));
+         cell->schDlSlotInfo[pdschTime.slot]->dlMsgAlloc[ueId-1] = NULLP;
+         DU_LOG("\nERROR  -->  SCH : Memory Allocation failed for dlMsgAlloc->dlMsgPdschCfg");
+         return false;
+      }
    }
 
    schAllocPucchResource(cell, pucchTime, crnti, ueCb, isRetx, *hqP);
@@ -229,6 +240,12 @@ bool schFillBoGrantDlSchedInfo(SchCellCb *cell, SlotTimingInfo currTime, uint8_t
    cell->schDlSlotInfo[pdcchTime.slot]->pdcchUe = ueId;
    cell->schDlSlotInfo[pdschTime.slot]->pdschUe = ueId;
    cell->schUlSlotInfo[pucchTime.slot]->pucchUe = ueId;
+
+   /*Re-setting the BO's of all DL LCs in this UE*/
+   for(lcIdx = 0; lcIdx < MAX_NUM_LC; lcIdx++)
+   {
+      ueCb->dlInfo.dlLcCtxt[lcIdx].bo = 0;
+   }
 
    /* after allocation is done, unset the bo bit for that ue */
    UNSET_ONE_BIT(ueId, cell->boIndBitMap);
@@ -488,6 +505,9 @@ bool findValidK0K1Value(SchCellCb *cell, SlotTimingInfo currTime, uint8_t ueId, 
          {
             ADD_DELTA_TO_TIME((*pucchTime), hqP->pucchTime, 0, cell->numSlots);
          }
+         pdcchTime->cellId = cell->cellId;
+         pdschTime->cellId = cell->cellId;
+
          return true;
       }
    }

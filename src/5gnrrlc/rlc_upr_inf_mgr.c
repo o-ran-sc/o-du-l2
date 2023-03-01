@@ -895,7 +895,7 @@ RlcTptPerSnssai* rlcHandleSnssaiTputlist(RlcCb *gCb, Snssai *snssai, ActionTypeL
       snssaiNode = (RlcTptPerSnssai *)node->node;
       if(memcmp(snssaiNode->snssai, snssai, sizeof(Snssai)) == 0)
       { 
-         DU_LOG("\nDEBUG  --> RLC : SNSSAI found in LL");
+         DU_LOG("\nDEBUG  -->  RLC : SNSSAI found in LL");
          found = TRUE;
          break;
       }
