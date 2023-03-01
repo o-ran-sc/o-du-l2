@@ -121,7 +121,6 @@ uint8_t sctpCfgReq()
    for(destIdx=0; destIdx < sctpCb.sctpCfg.xnSctpInfo.numDestNode; destIdx++)
    {
       sctpCb.assocCb[assocIdx].intf = XN_INTERFACE;
-      sctpCb.assocCb[assocIdx].destId = CU_ID + destIdx +1;
       sctpCb.assocCb[assocIdx].destPort = sctpCb.sctpCfg.xnSctpInfo.destCb[destIdx].destPort;
       sctpCb.assocCb[assocIdx].bReadFdSet = ROK;
       memset(&sctpCb.assocCb[assocIdx].sockFd, -1, sizeof(CmInetFd));
@@ -617,9 +616,9 @@ uint8_t processPolling(sctpSockPollParams *pollParams, CuSctpAssocCb *assocCb, u
          }
          else if(assocCb->connUp && assocCb->intf == XN_INTERFACE)
          {
-            //TODO : Handler for messages on XN interface to be added in future commits
             DU_LOG("\nDEBUG  -->  SCTP : Received message at XN interface");
             ODU_PRINT_MSG(pollParams->mBuf, 0,0);
+            XNAPMsgHdlr(&assocCb->destId, pollParams->mBuf);
             ODU_PUT_MSG_BUF(pollParams->mBuf);
          }
          else
@@ -630,6 +629,43 @@ uint8_t processPolling(sctpSockPollParams *pollParams, CuSctpAssocCb *assocCb, u
   }
   return ROK;
 }/* End of sctpSockPoll() */
+
+/*******************************************************************
+ *
+ * @brief Send message on an SCTP Association
+ *
+ * @details
+ *
+ *    Function : sendOnSctpAssoc
+ *
+ *    Functionality:
+ *        Send message on SCTP association
+ *
+ * @params[in] 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t sendOnSctpAssoc(CuSctpAssocCb *assocCb, Buffer *mBuf)
+{
+   uint8_t          ret = ROK;
+   MsgLen           len = 0;          /* number of actually sent octets */
+   CmInetMemInfo    memInfo;
+   
+   memset(&memInfo , 0, sizeof(CmInetMemInfo));
+   memInfo.region = CU_APP_MEM_REG;    
+   memInfo.pool   = CU_POOL;
+
+   ret = cmInetSctpSendMsg(&assocCb->sockFd, &assocCb->destIpNetAddr, assocCb->destPort, &memInfo, mBuf, &len, 0, \
+      FALSE, 0, 0/*SCT_PROTID_NONE*/, RWOULDBLOCK);
+
+   if(ret != ROK && ret != RWOULDBLOCK)
+   {
+      DU_LOG("\nERROR  -->  SCTP : Send message failed");
+      return RFAILED;
+   }
+   return ROK;
+}
 
 /*******************************************************************
  *
@@ -661,15 +697,10 @@ uint8_t sctpSend(InterfaceType intf, uint32_t destId, Buffer *mBuf)
    {
       if((sctpCb.assocCb[assocIdx].intf == intf) && (sctpCb.assocCb[assocIdx].destId == destId))
       {
-         ret = cmInetSctpSendMsg(&sctpCb.assocCb[assocIdx].sockFd, &sctpCb.assocCb[assocIdx].destIpNetAddr, \
-                  sctpCb.assocCb[assocIdx].destPort, &memInfo, mBuf, &len, 0, FALSE, 0, 0/*SCT_PROTID_NONE*/, RWOULDBLOCK);
-
-         if(ret != ROK && ret != RWOULDBLOCK)
-         {
-            DU_LOG("\nERROR  -->  SCTP : Send message failed");
-            return RFAILED;
-         }
-         return ROK;
+         if(sendOnSctpAssoc(&sctpCb.assocCb[assocIdx], mBuf) == ROK)
+            return ROK;
+         else
+            break;
       }
    }
    DU_LOG("\nERROR  -->  SCTP : Dest ID [%d] at Interface [%d] not found in SCTP DestCb list. Failed to send message", destId, intf);
