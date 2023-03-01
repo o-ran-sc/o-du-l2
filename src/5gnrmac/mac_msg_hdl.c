@@ -190,7 +190,6 @@ uint8_t MacProcRlcDlData(Pst* pstInfo, RlcDlData *dlData)
    uint8_t   ueId  = 0;
    uint8_t   lcIdx = 0;
    uint8_t   *txPdu = NULLP;
-   uint8_t   schInfoIdx = 0 ;
    uint16_t  cellIdx = 0, txPduLen = 0;
    MacDlData macDlData;
    MacDlSlot *currDlSlot = NULLP;
@@ -222,29 +221,25 @@ uint8_t MacProcRlcDlData(Pst* pstInfo, RlcDlData *dlData)
    currDlSlot = &macCb.macCell[cellIdx]->dlSlot[dlData->slotInfo.slot];
    if(currDlSlot->dlInfo.dlMsgAlloc[ueId-1])
    {
-      for(schInfoIdx=0; schInfoIdx<currDlSlot->dlInfo.dlMsgAlloc[ueId-1]->numSchedInfo; schInfoIdx++)
+      if(currDlSlot->dlInfo.dlMsgAlloc[ueId-1]->dlMsgPdschCfg)
       {
-         if((currDlSlot->dlInfo.dlMsgAlloc[ueId-1]->dlMsgSchedInfo[schInfoIdx].pduPres == PDSCH_PDU) ||
-               (currDlSlot->dlInfo.dlMsgAlloc[ueId-1]->dlMsgSchedInfo[schInfoIdx].pduPres == BOTH))
-            break;
-      }
+         txPduLen = currDlSlot->dlInfo.dlMsgAlloc[ueId-1]->dlMsgPdschCfg->codeword[0].tbSize\
+                    - TX_PAYLOAD_HDR_LEN;
+         MAC_ALLOC(txPdu, txPduLen);
+         if(!txPdu)
+         {
+            DU_LOG("\nERROR  -->  MAC : Memory allocation failed in MacProcRlcDlData");
+            return RFAILED;
+         }
+         macMuxPdu(&macDlData, NULLP, txPdu, txPduLen);
 
-      txPduLen = currDlSlot->dlInfo.dlMsgAlloc[ueId-1]->dlMsgSchedInfo[schInfoIdx].dlMsgPdschCfg.codeword[0].tbSize\
-                 - TX_PAYLOAD_HDR_LEN;
-      MAC_ALLOC(txPdu, txPduLen);
-      if(!txPdu)
-      {
-         DU_LOG("\nERROR  -->  MAC : Memory allocation failed in MacProcRlcDlData");
-         return RFAILED;
+         currDlSlot->dlInfo.dlMsgAlloc[ueId-1]->dlMsgPduLen = txPduLen;
+         currDlSlot->dlInfo.dlMsgAlloc[ueId-1]->dlMsgPdu = txPdu;
+         /* Add muxed TB to DL HARQ Proc CB. This will be used if retranmission of
+          * TB is requested in future. */
+         updateNewTbInDlHqProcCb(dlData->slotInfo, &macCb.macCell[cellIdx]->ueCb[ueId -1], \
+               currDlSlot->dlInfo.dlMsgAlloc[ueId-1]->dlMsgPdschCfg->codeword[0].tbSize, txPdu);
       }
-      macMuxPdu(&macDlData, NULLP, txPdu, txPduLen);
-
-      currDlSlot->dlInfo.dlMsgAlloc[ueId-1]->dlMsgSchedInfo[schInfoIdx].dlMsgInfo.dlMsgPduLen = txPduLen;
-      currDlSlot->dlInfo.dlMsgAlloc[ueId-1]->dlMsgSchedInfo[schInfoIdx].dlMsgInfo.dlMsgPdu = txPdu;
-      /* Add muxed TB to DL HARQ Proc CB. This will be used if retranmission of
-       * TB is requested in future. */
-      updateNewTbInDlHqProcCb(dlData->slotInfo, &macCb.macCell[cellIdx]->ueCb[ueId -1], \
-         currDlSlot->dlInfo.dlMsgAlloc[ueId-1]->dlMsgSchedInfo[schInfoIdx].dlMsgPdschCfg.codeword[0].tbSize, txPdu);
    }
 
    for(lcIdx = 0; lcIdx < dlData->numLc; lcIdx++)
@@ -399,11 +394,11 @@ uint8_t sendSchedRptToRlc(DlSchedInfo dlInfo, SlotTimingInfo slotInfo, uint8_t u
    if(dlInfo.dlMsgAlloc[ueIdx])
    {
       schedRpt->rnti = dlInfo.dlMsgAlloc[ueIdx]->crnti;
-      schedRpt->numLc = dlInfo.dlMsgAlloc[ueIdx]->dlMsgSchedInfo[schInfoIdx].numLc;
+      schedRpt->numLc = dlInfo.dlMsgAlloc[ueIdx]->transportBlock[0].numLc;
       for(lcIdx = 0; lcIdx < schedRpt->numLc; lcIdx++)
       {
-         schedRpt->lcSch[lcIdx].lcId = dlInfo.dlMsgAlloc[ueIdx]->dlMsgSchedInfo[schInfoIdx].lcSchInfo[lcIdx].lcId;
-         schedRpt->lcSch[lcIdx].bufSize = dlInfo.dlMsgAlloc[ueIdx]->dlMsgSchedInfo[schInfoIdx].lcSchInfo[lcIdx].schBytes;
+         schedRpt->lcSch[lcIdx].lcId = dlInfo.dlMsgAlloc[ueIdx]->transportBlock[0].lcSchInfo[lcIdx].lcId;
+         schedRpt->lcSch[lcIdx].bufSize = dlInfo.dlMsgAlloc[ueIdx]->transportBlock[0].lcSchInfo[lcIdx].schBytes;
       }
    }
 
