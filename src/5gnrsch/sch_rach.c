@@ -181,7 +181,7 @@ void schPrachResAlloc(SchCellCb *cell, UlSchedInfo *ulSchedInfo, SlotTimingInfo 
    ulSchedInfo->prachSchInfo.prachFormat    = prachFormat;
    ulSchedInfo->prachSchInfo.numRa          = numRa;
    ulSchedInfo->prachSchInfo.prachStartSymb = prachStartSymbol;
-   DU_LOG("\nINFO  --> SCH : RACH occassion set for slot %d", prachOccasionTimingInfo.slot);
+   DU_LOG("\nINFO   --> SCH : RACH occassion set for slot %d", prachOccasionTimingInfo.slot);
 }
 
 /**

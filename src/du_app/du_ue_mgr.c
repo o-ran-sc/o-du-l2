@@ -431,7 +431,7 @@ uint8_t duBuildAndSendDlRrcMsgToRlc(uint16_t cellId, DuRlcUeCfg ueCfg, F1DlRrcMs
 
    /* Filling post structure and sending msg */ 
    FILL_PST_DUAPP_TO_RLC(pst, RLC_DL_INST, EVENT_DL_RRC_MSG_TRANS_TO_RLC);
-   DU_LOG("\nDEBUG   -->  DU_APP: Sending Dl RRC Msg to RLC \n");
+   DU_LOG("\nDEBUG  -->  DU_APP: Sending Dl RRC Msg to RLC \n");
    ret = (*duSendDlRrcMsgToRlcOpts[pst.selector])(&pst, dlRrcMsgInfo);
    if(ret != ROK)
    {

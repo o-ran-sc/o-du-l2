@@ -211,7 +211,7 @@ RgMngmt  *cfg     /* config structure  */
 
 
 
-   DU_LOG("\nINFO  -->  MAC : Received CfgReq for MAC layer, Entity = %d, Instance = %d", pst->srcEnt, pst->srcInst);
+   DU_LOG("\nINFO    -->  MAC : Received CfgReq for MAC layer, Entity = %d, Instance = %d", pst->srcEnt, pst->srcInst);
 
    RG_IS_INST_VALID(pst->dstInst);
    inst = pst->dstInst - RG_INST_START;

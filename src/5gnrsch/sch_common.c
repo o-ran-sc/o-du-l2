@@ -1514,7 +1514,7 @@ void prbAllocUsingRRMPolicy(CmLListCp *lcLL, bool isDedicatedPRB, uint16_t mcsId
       /*[Exit1]: All LCs are allocated(allocBO = 0 for fully unallocated LC)*/
       if(lcNode->allocBO != 0)
       {
-         DU_LOG("\nDEBUG -->  SCH: All LC are allocated [SharedPRB:%d]",*sharedPRB);
+         DU_LOG("\nDEBUG  -->  SCH: All LC are allocated [SharedPRB:%d]",*sharedPRB);
          return;
       }
 
@@ -1533,7 +1533,7 @@ void prbAllocUsingRRMPolicy(CmLListCp *lcLL, bool isDedicatedPRB, uint16_t mcsId
          /*Loop Exit: All resources exhausted*/
          if(*sharedPRB == 0)
          {
-            DU_LOG("\nDEBUG  --> SCH: Default resources exhausted for LC:%d",lcNode->lcId);
+            DU_LOG("\nDEBUG  -->  SCH: Default resources exhausted for LC:%d",lcNode->lcId);
             return;
          }
       }
@@ -1544,7 +1544,7 @@ void prbAllocUsingRRMPolicy(CmLListCp *lcLL, bool isDedicatedPRB, uint16_t mcsId
       /*[Step4]*/
       if((isTxPayloadLenAdded != NULLP) && (*isTxPayloadLenAdded == FALSE))
       {
-         DU_LOG("\nDEBUG  --> SCH: LC:%d is the First node to be allocated which includes TX_PAYLOAD_HDR_LEN",\
+         DU_LOG("\nDEBUG  -->  SCH: LC:%d is the First node to be allocated which includes TX_PAYLOAD_HDR_LEN",\
                lcNode->lcId);
          *isTxPayloadLenAdded = TRUE;
          lcNode->allocBO = calculateEstimateTBSize((lcNode->reqBO + TX_PAYLOAD_HDR_LEN),\
@@ -1648,7 +1648,7 @@ void updateGrantSizeForBoRpt(CmLListCp *lcLL, DlMsgSchInfo *dlMsgAlloc,\
       lcNode = (LcInfo *)node->node;
       if(lcNode != NULLP)
       {
-         DU_LOG("\nINFO   --> SCH : LcID:%d, [reqBO, allocBO, allocPRB]:[%d,%d,%d]",\
+         DU_LOG("\nINFO   -->  SCH : LcID:%d, [reqBO, allocBO, allocPRB]:[%d,%d,%d]",\
                lcNode->lcId, lcNode->reqBO, lcNode->allocBO, lcNode->allocPRB);
          if(dlMsgAlloc != NULLP)
          {
@@ -1662,7 +1662,7 @@ void updateGrantSizeForBoRpt(CmLListCp *lcLL, DlMsgSchInfo *dlMsgAlloc,\
             /*Calculate the Total Payload/BO size allocated*/
             *accumalatedBOSize += dlMsgAlloc->transportBlock[0].lcSchInfo[dlMsgAlloc->transportBlock[0].numLc].schBytes; 
 
-            DU_LOG("\nINFO   --> SCH: Added in MAC BO report: LCID:%d,reqBO:%d,Idx:%d, TotalBO Size:%d",\
+            DU_LOG("\nINFO   -->  SCH: Added in MAC BO report: LCID:%d,reqBO:%d,Idx:%d, TotalBO Size:%d",\
                   lcNode->lcId,lcNode->reqBO, dlMsgAlloc->transportBlock[0].numLc, *accumalatedBOSize);
 
             dlMsgAlloc->transportBlock[0].numLc++;
@@ -2031,7 +2031,7 @@ bool schProcessSrOrBsrReq(SchCellCb *cell, SlotTimingInfo currTime, uint8_t ueId
    }
    else
    {
-      DU_LOG("\nERROR  -->  SCH : schProcessSrOrBsrReq(): K2 value is not found");
+      DU_LOG("\nDEBUG  -->  SCH : schProcessSrOrBsrReq(): K2 value is not found");
       return false;     
    }
    return true;

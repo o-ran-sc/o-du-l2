@@ -398,14 +398,14 @@ static S16 rlcLmmGenCfg(RlcCb  *gCb,RlcGenCfg *cfg)
       /* Starting timer to print throughput */
       if((rlcChkTmr(gCb, (PTR)(&gCb->rlcThpt), EVENT_RLC_UE_THROUGHPUT_TMR)) == FALSE)
       {
-         DU_LOG("\nINFO   --> RLC_DL : Starting UE Throughput timer");
+         DU_LOG("\nINFO    --> RLC_DL : Starting UE Throughput timer");
          rlcStartTmr(gCb, (PTR)(&gCb->rlcThpt), EVENT_RLC_UE_THROUGHPUT_TMR);
       }
    }
       /* Starting timer to print throughput */
       if((rlcChkTmr(gCb, (PTR)(&gCb->rlcThpt), EVENT_RLC_SNSSAI_THROUGHPUT_TMR)) == FALSE)
       {
-         DU_LOG("\nINFO   --> RLC_DL : Starting SNSSAI Throughput timer");
+         DU_LOG("\nINFO    --> RLC_DL : Starting SNSSAI Throughput timer");
          rlcStartTmr(gCb, (PTR)(&gCb->rlcThpt), EVENT_RLC_SNSSAI_THROUGHPUT_TMR);
       }
 
@@ -596,7 +596,7 @@ uint8_t RlcMiRlcConfigReq (Pst *pst,RlcMngmt *cfg)
       return (RFAILED);
    }
 
-   DU_LOG("\nDEBUG  --> RLC : RlcMiRlcConfigReq elmId(%d)", cfg->hdr.elmId.elmnt);
+   DU_LOG("\nDEBUG   -->  RLC : RlcMiRlcConfigReq elmId(%d)", cfg->hdr.elmId.elmnt);
 
    switch(cfg->hdr.elmId.elmnt)
    {
