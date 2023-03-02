@@ -976,12 +976,13 @@ uint8_t schFcfsScheduleUlLc(SlotTimingInfo dciTime, SlotTimingInfo puschTime, ui
  *         RFAILED
  *
  * ****************************************************************/
-uint32_t schFcfsScheduleDlLc(SlotTimingInfo pdcchTime, SlotTimingInfo pdschTime, uint8_t pdschNumSymbols, bool isRetx, SchDlHqProcCb **hqP)
+uint32_t schFcfsScheduleDlLc(SlotTimingInfo pdcchTime, SlotTimingInfo pdschTime, uint8_t pdschNumSymbols, \
+                               uint16_t *startPrb, bool isRetx, SchDlHqProcCb **hqP)
 {
    SchFcfsHqProcCb *fcfsHqProcCb;
    SchUeCb *ueCb;
    uint8_t lcIdx = 0;
-   uint16_t startPrb = 0, maxFreePRB = 0;
+   uint16_t maxFreePRB = 0;
    uint16_t mcsIdx = 0;
    uint32_t accumalatedSize = 0;
    CmLListCp *lcLL = NULLP;
@@ -1055,7 +1056,7 @@ uint32_t schFcfsScheduleDlLc(SlotTimingInfo pdcchTime, SlotTimingInfo pdschTime,
    }
 
    /*[Step3]: Calculate Best FREE BLOCK with MAX PRB count*/
-   maxFreePRB = searchLargestFreeBlock((*hqP)->hqEnt->cell, pdschTime, &startPrb, DIR_DL);
+   maxFreePRB = searchLargestFreeBlock((*hqP)->hqEnt->cell, pdschTime, startPrb, DIR_DL);
 
    /*[Step4]: Estimation of PRB and BO which can be allocated to each LC in
     * the list based on RRM policy*/
@@ -1071,7 +1072,7 @@ uint32_t schFcfsScheduleDlLc(SlotTimingInfo pdcchTime, SlotTimingInfo pdschTime,
          if((fcfsHqProcCb->lcCb.dedLcList.count == NULLP) || ((maxFreePRB < rsvdDedicatedPRB)))
          { 
             fcfsHqProcCb->lcCb.sharedNumPrb = maxFreePRB;
-            DU_LOG("\nDEBUG  --> SCH : DL Only Default Slice is scheduled, sharedPRB Count:%d",\
+            DU_LOG("\nDEBUG  -->  SCH : DL Only Default Slice is scheduled, sharedPRB Count:%d",\
                   fcfsHqProcCb->lcCb.sharedNumPrb);
 
             /*PRB Alloc for Default LCs*/

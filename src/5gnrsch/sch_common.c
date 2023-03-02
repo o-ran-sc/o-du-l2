@@ -1576,7 +1576,7 @@ void prbAllocUsingRRMPolicy(CmLListCp *lcLL, bool isDedicatedPRB, uint16_t mcsId
       {
          if(*sharedPRB <=  (estPrb - remReservedPRB))
          {
-            DU_LOG("\nDEBUG  --> SCH: SharedPRB is less");
+            DU_LOG("\nDEBUG  -->  SCH: SharedPRB is less");
             *sharedPRB = 0;
          }
          else
