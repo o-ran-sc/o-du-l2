@@ -576,7 +576,7 @@ typedef struct schAllApis
    void (* SchDeleteUlHqProcCb)(SchUlHqProcCb *hqP);
    void (* SchScheduleSlot)(SchCellCb *cell, SlotTimingInfo *slotInd, Inst schInst);
    uint32_t (* SchScheduleDlLc)(SlotTimingInfo pdcchTime, SlotTimingInfo pdschTime, uint8_t pdschNumSymbols, \
-      bool isRetx, SchDlHqProcCb **hqP);
+      uint16_t *startPrb, bool isRetx, SchDlHqProcCb **hqP);
    uint8_t (* SchScheduleUlLc)(SlotTimingInfo dciTime, SlotTimingInfo puschTime, uint8_t startStmb, \
       uint8_t symbLen, bool isRetx, SchUlHqProcCb **hqP);
 }SchAllApis;

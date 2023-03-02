@@ -272,7 +272,7 @@ uint8_t duHdlEgtpDlData(EgtpMsg  *egtpMsg)
     DU_LOG("\nCall Flow: ENTEGTP -> ENTDUAPP : EVENT_HDL_RECV_DL_DATA\n");
 #endif
 
-   DU_LOG("\nDEBUG  --> DU_APP : Processing DL data in duHdlEgtpDlData()");
+   DU_LOG("\nDEBUG  -->  DU_APP : Processing DL data in duHdlEgtpDlData()");
    
    if(!egtpMsg->msg)
    {

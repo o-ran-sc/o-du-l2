@@ -140,7 +140,7 @@ bool schFillBoGrantDlSchedInfo(SchCellCb *cell, SlotTimingInfo currTime, uint8_t
    fillDlMsgInfo(dciSlotAlloc, crnti, isRetx, *hqP);
    dciSlotAlloc->transportBlock[0].ndi = isRetx;
 
-   accumalatedSize = cell->api->SchScheduleDlLc(pdcchTime, pdschTime, pdschNumSymbols, isRetx, hqP);
+   accumalatedSize = cell->api->SchScheduleDlLc(pdcchTime, pdschTime, pdschNumSymbols, &startPrb, isRetx, hqP);
 
    /*Below case will hit if NO LC(s) are allocated due to resource crunch*/
    if (!accumalatedSize)
