@@ -18,6 +18,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "de99f737_a51cacc3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-03-02T09:14:30Z",
+      "side": 1,
+      "message": "Right.",
+      "parentUuid": "e7c9c0ba_c1b3a307",
+      "revId": "3732db818480d60c8074a21912353900183b02c5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "35e22613_3373d215",
@@ -65,6 +83,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "682fde94_6cd57433",
+        "filename": "src/cu_stub/cu_stub_sctp.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 690,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-03-02T09:14:30Z",
+      "side": 1,
+      "message": "removed ret, len, meminfo and below 3 lines",
+      "parentUuid": "c68817df_20f5a600",
+      "range": {
+        "startLine": 690,
+        "startChar": 20,
+        "endLine": 690,
+        "endChar": 27
+      },
+      "revId": "3732db818480d60c8074a21912353900183b02c5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3c29e342_d7f2c813",
@@ -88,6 +130,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d0450710_a25201eb",
+        "filename": "src/cu_stub/cu_xnap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-03-02T09:14:30Z",
+      "side": 1,
+      "message": "sctpSend uses destination ID to search for assocCb and then send msg on this assoc..\n\nHowever, when we trigger xn setup req towards peer CU, CU ID of peer is not known at this point of time. So we need to directly use assocCb to send on the established SCTP assoc with peer CU. Only when xn setup response is received, the peer cu id wil be known and filled in assocCb-\u003edestId.",
+      "parentUuid": "3c29e342_d7f2c813",
+      "range": {
+        "startLine": 58,
+        "startChar": 15,
+        "endLine": 58,
+        "endChar": 30
+      },
+      "revId": "3732db818480d60c8074a21912353900183b02c5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "54a10151_63e88cd6",
@@ -101,6 +167,24 @@
       "writtenOn": "2023-03-02T05:48:21Z",
       "side": 1,
       "message": "pls add description",
+      "revId": "3732db818480d60c8074a21912353900183b02c5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1843ec73_ab5e4787",
+        "filename": "src/cu_stub/cu_xnap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 149,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-03-02T09:14:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "54a10151_63e88cd6",
       "revId": "3732db818480d60c8074a21912353900183b02c5",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
