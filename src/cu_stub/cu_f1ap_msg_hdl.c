@@ -11898,7 +11898,7 @@ uint8_t procServedCellPlmnList(ServedPLMNs_List_t *srvPlmn)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t procUeContextModificationResponse(uint32_t duId, F1AP_PDU_t *f1apMsg)
+uint8_t procUeContextModificationResponse(uint32_t duId, F1AP_PDU_t *f1apMsg, char *recvBuf, MsgLen recvBufLen)
 {
    uint8_t idx=0, duIdx=0;
    uint8_t duUeF1apId = 0, cuUeF1apId = 0;
@@ -11922,6 +11922,11 @@ uint8_t procUeContextModificationResponse(uint32_t duId, F1AP_PDU_t *f1apMsg)
              {
                 duUeF1apId = ueCtxtModRsp->protocolIEs.list.array[idx]->value.choice.GNB_DU_UE_F1AP_ID;
                 ueCb = &duDb->ueCb[duUeF1apId-1];
+
+                if((ueCb->state == UE_HANDOVER_IN_PROGRESS) && (ueCb->hoInfo.HOType == Xn_Based_Inter_CU_HO))
+                {
+                   BuildAndSendHOReq(ueCb, HO_REQ, recvBuf, recvBufLen);
+                }
                 break;
              }
           case ProtocolIE_ID_id_DRBs_SetupMod_List:
@@ -11958,35 +11963,38 @@ uint8_t procUeContextModificationResponse(uint32_t duId, F1AP_PDU_t *f1apMsg)
 
    /* If UE is in handover and UE context is not yet created at target DU, then send
     * UE context setup request to target DU */
-   if(ueCb->state == UE_HANDOVER_IN_PROGRESS && ueCb->hoInfo.HOType == Inter_DU_HO)
+   if(ueCb->state == UE_HANDOVER_IN_PROGRESS)
    {
-      uint8_t ueIdx = 0;
-      DuDb *tgtDuDb = NULLP;
-      CuUeCb *ueCbInTgtDu = NULLP;
-
-      SEARCH_DU_DB(duIdx, ueCb->hoInfo.targetId, tgtDuDb);
-      if(tgtDuDb)
+      if(ueCb->hoInfo.HOType == Inter_DU_HO)
       {
-         /* Since DU UE F1AP ID assigned by target DU to this UE in handover is
-          * not known here, using CU UE F1AP ID to search for UE Cb in target DU
-          * DB */
-         for(ueIdx = 0; ueIdx < MAX_NUM_UE; ueIdx++)
-         {
-            if(tgtDuDb->ueCb[ueIdx].gnbCuUeF1apId == cuUeF1apId)
-            {
-               ueCbInTgtDu = &tgtDuDb->ueCb[ueIdx];
-               break;
-            }
-         }
+         uint8_t ueIdx = 0;
+         DuDb *tgtDuDb = NULLP;
+         CuUeCb *ueCbInTgtDu = NULLP;
 
-         /* If UE context is not found in Target DU DU, send UE context setup
-          * request */
-         if(ueCbInTgtDu == NULLP)
+         SEARCH_DU_DB(duIdx, ueCb->hoInfo.targetId, tgtDuDb);
+         if(tgtDuDb)
          {
-            if((BuildAndSendUeContextSetupReq(ueCb->hoInfo.targetId, ueCb)) != ROK)
+            /* Since DU UE F1AP ID assigned by target DU to this UE in handover is
+             * not known here, using CU UE F1AP ID to search for UE Cb in target DU
+             * DB */
+            for(ueIdx = 0; ueIdx < MAX_NUM_UE; ueIdx++)
             {
-               DU_LOG("\nERROR  ->  F1AP : Failed at BuildAndSendUeContextSetupReq");
-               return RFAILED;
+               if(tgtDuDb->ueCb[ueIdx].gnbCuUeF1apId == cuUeF1apId)
+               {
+                  ueCbInTgtDu = &tgtDuDb->ueCb[ueIdx];
+                  break;
+               }
+            }
+
+            /* If UE context is not found in Target DU DU, send UE context setup
+             * request */
+            if(ueCbInTgtDu == NULLP)
+            {
+               if((BuildAndSendUeContextSetupReq(ueCb->hoInfo.targetId, ueCb)) != ROK)
+               {
+                  DU_LOG("\nERROR  ->  F1AP : Failed at BuildAndSendUeContextSetupReq");
+                  return RFAILED;
+               }
             }
          }
       }
@@ -12026,6 +12034,10 @@ void procF1SetupReq(uint32_t *destDuId, F1AP_PDU_t *f1apMsg)
    F1SetupRequest_t *f1SetupReq = NULLP;
    GNB_DU_Served_Cells_Item_t *srvCellItem = NULLP; 
    GNB_DU_Served_Cells_List_t *duServedCell = NULLP;
+
+   /* Triggering XN setup request before F1 setup establishment */
+   if(LOCAL_NODE_TYPE == CLIENT)
+      BuildAndSendXnSetupReq();
 
    f1SetupReq = &f1apMsg->choice.initiatingMessage->value.choice.F1SetupRequest;
    for(ieIdx=0; ieIdx < f1SetupReq->protocolIEs.list.count; ieIdx++)
@@ -12676,7 +12688,7 @@ void F1APMsgHdlr(uint32_t *duId, Buffer *mBuf)
                case SuccessfulOutcome__value_PR_UEContextModificationResponse:
                   {
                      DU_LOG("\nINFO  -->  F1AP : UE Context Modification Response received");
-                     procUeContextModificationResponse(*duId, f1apMsg);
+                     procUeContextModificationResponse(*duId, f1apMsg, recvBuf, recvBufLen);
                      break;
                   }
                case SuccessfulOutcome__value_PR_UEContextReleaseComplete:
