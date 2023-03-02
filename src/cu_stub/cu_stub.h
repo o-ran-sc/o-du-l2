@@ -114,6 +114,13 @@ typedef enum
 
 typedef enum
 {
+   XN_SETUP_REQ,
+   XN_SETUP_RSP,
+   HO_REQ
+}XnEventType;
+
+typedef enum
+{
    CELL_INACTIVE,
    CELL_ACTIVE,
    CELL_DELETION_IN_PROGRESS
