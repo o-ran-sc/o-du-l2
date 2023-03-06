@@ -1863,40 +1863,6 @@ uint8_t DuProcRlcUlUserDataTrans(Pst *pst, RlcUlUserDatInfo *ulUserData)
 
 /*******************************************************************
  *
- * @brief  free the slice cfg rsp
- *
- * @details
- *
- *    Function : duFreeSliceCfgRsp 
- *
- *    Functionality: free the slice cfg rsp 
- *
- * @params[in] Post structure, MacSliceCfgRsp  *cfgRsp
- *             
- * @return ROK     - success
- *         RFAILED - failure
- *
- **********************************************************************/
-void duFreeSliceCfgRsp(Pst *pst,  MacSliceCfgRsp *cfgRsp) 
-{
-   uint8_t cfgIdx;
-
-   if(cfgRsp)
-   {
-      if(cfgRsp->numSliceCfgRsp)
-      {
-         for(cfgIdx = 0; cfgIdx<cfgRsp->numSliceCfgRsp; cfgIdx++)
-         {
-            DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, cfgRsp->listOfSliceCfgRsp[cfgIdx], sizeof(MacSliceRsp)); 
-         }
-         DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, cfgRsp->listOfSliceCfgRsp, cfgRsp->numSliceCfgRsp * sizeof(MacSliceRsp*)); 
-      }
-      DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, cfgRsp, sizeof(MacSliceCfgRsp)); 
-   }
-}
-
-/*******************************************************************
- *
  * @brief process the slice cfg rsp received from MAC
  *
  * @details
@@ -1913,22 +1879,18 @@ void duFreeSliceCfgRsp(Pst *pst,  MacSliceCfgRsp *cfgRsp)
  **********************************************************************/
 uint8_t DuProcMacSliceCfgRsp(Pst *pst,  MacSliceCfgRsp *cfgRsp)
 {
-    uint8_t cfgIdx = 0;
-    
     if(cfgRsp)
     {
-        if(cfgRsp->listOfSliceCfgRsp)
-        {
-            for(cfgIdx = 0; cfgIdx<cfgRsp->numSliceCfgRsp; cfgIdx++)
-            {
-                if(cfgRsp->listOfSliceCfgRsp[cfgIdx]->rsp ==  MAC_DU_APP_RSP_OK)
-                {
-                    duCb.sliceState = SLICE_CONFIGURED;
-                }
-            }
-            DU_LOG("\nINFO  -->  DU_APP : Slice Configuration is done successfully ");
-        }
-        duFreeSliceCfgRsp(pst, cfgRsp);
+       if(cfgRsp->rsp ==  MAC_DU_APP_RSP_OK)
+       {
+          duCb.sliceState = SLICE_CONFIGURED;
+       }
+       else
+       {
+          DU_LOG("\nERROR  -->  DU_APP : Slice not available");
+       }
+       DU_LOG("\nINFO  -->  DU_APP : Slice Configuration is done successfully ");
+       DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, cfgRsp, sizeof(MacSliceCfgRsp));
     }
     return ROK;
 }
@@ -2038,28 +2000,19 @@ uint8_t BuildAndSendSliceRecfgReq()
  *         RFAILED - failure
  *
  **********************************************************************/
-uint8_t DuProcMacSliceRecfgRsp(Pst *pst,  MacSliceRecfgRsp *reCfgRsp)
+uint8_t DuProcMacSliceRecfgRsp(Pst *pst,  MacSliceRecfgRsp *recfgRsp)
 {
-   uint8_t cfgIdx = 0;
-
-   if(reCfgRsp)
+   if(recfgRsp)
    {
-      if(reCfgRsp->listOfSliceCfgRsp)
+      if(recfgRsp->rsp == MAC_DU_APP_RSP_OK)
       {
-         for(cfgIdx = 0; cfgIdx < reCfgRsp->numSliceCfgRsp; cfgIdx++)
-         {
-            if(reCfgRsp->listOfSliceCfgRsp[cfgIdx]->rsp == MAC_DU_APP_RSP_OK)
-            {
-               duCb.sliceState = SLICE_RECONFIGURED; 
-            }
-            else
-            {
-               DU_LOG("\nERROR  -->  DU_APP : Slice not available");
-            }
-         }
-         DU_LOG("\nINFO  --> DU_APP : Slice ReCOnfiguration response received");
+         duCb.sliceState = SLICE_RECONFIGURED; 
       }
-      duFreeSliceCfgRsp(pst, reCfgRsp);
+      else
+      {
+         DU_LOG("\nERROR  -->  DU_APP : Slice not available");
+      }
+      DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, recfgRsp, sizeof(MacSliceCfgRsp));
    }
    return ROK;
 }
