@@ -1720,6 +1720,45 @@ void SchSendSliceCfgRspToMac(Inst inst, SchSliceCfgRsp sliceCfgRsp)
    MacMessageRouter(&rspPst, (void *)&sliceCfgRsp);
 
 }
+
+/*******************************************************************************
+ *
+ * @brief This function is used to store or modify the slice configuration Sch DB
+ *
+ * @details
+ *
+ *    Function : addOrModifySliceCfgInSchDb 
+ *
+ *    Functionality:
+ *     function is used to store or modify the slice configuration Sch DB
+ *
+ * @params[in] SchSliceCfg *storeSliceCfg, SchSliceCfgReq *cfgReq,
+ * SchSliceCfgRsp cfgRsp, uint8_t count
+ *
+ * @return
+ *        ROK - Success
+ *        RFAILED - Failure
+ *
+ * ********************************************************************************/
+uint8_t addSliceCfgInSchDb(CmLListCp *sliceCfgInDb, SchRrmPolicyOfSlice *cfgReq)
+{
+   SchRrmPolicyOfSlice *sliceToStore;
+
+   SCH_ALLOC(sliceToStore, sizeof(SchRrmPolicyOfSlice));
+   if(sliceToStore)
+   {
+      memcpy(&sliceToStore->snssai, &cfgReq->snssai, sizeof(Snssai));  
+      memcpy(&sliceToStore->rrmPolicyRatioInfo, &cfgReq->rrmPolicyRatioInfo, sizeof(SchRrmPolicyRatio));  
+      addNodeToLList(sliceCfgInDb, sliceToStore, NULL);
+   }
+   else
+   {
+      DU_LOG("\nERROR  -->  SCH : Memory allocation failed in addOrModifySliceCfgInSchDb");
+      return RFAILED;
+   }
+   return ROK;
+}
+
 /*******************************************************************************
  *
  * @brief fill slice configuration response
@@ -1738,132 +1777,52 @@ void SchSendSliceCfgRspToMac(Inst inst, SchSliceCfgRsp sliceCfgRsp)
  *        RFAILED - Failure
  *
  * ********************************************************************************/
-uint8_t fillSliceCfgRsp(bool sliceRecfg, SchSliceCfg *storedSliceCfg, SchCellCb *cellCb, SchSliceCfgReq *schSliceCfgReq, SchSliceCfgRsp *schSliceCfgRsp, uint8_t *count)
+uint8_t fillSliceCfgRsp(Inst inst, CmLListCp *storedSliceCfg, SchCellCb *cellCb, SchSliceCfgReq *schSliceCfgReq)
 {
-   bool sliceFound = false;
-   uint8_t cfgIdx = 0, sliceIdx = 0, plmnIdx = 0;
+   SchMacRsp sliceFound;
+   uint8_t cfgIdx = 0, sliceIdx = 0, plmnIdx = 0, ret =RFAILED;
+   uint8_t result;
+   SchSliceCfgRsp schSliceCfgRsp;
 
-   schSliceCfgRsp->numSliceCfgRsp  = schSliceCfgReq->numOfConfiguredSlice;
-   SCH_ALLOC(schSliceCfgRsp->listOfSliceCfgRsp, schSliceCfgRsp->numSliceCfgRsp * sizeof(SliceRsp*));
-   if(schSliceCfgRsp->listOfSliceCfgRsp == NULLP)
+   for(cfgIdx = 0; cfgIdx<schSliceCfgReq->numOfConfiguredSlice; cfgIdx++)
    {
-      DU_LOG("\nERROR  --> SCH : Memory allocation failed at fillSliceCfgRsp");
-      return RFAILED;
-   }
-
-   for(cfgIdx = 0; cfgIdx<schSliceCfgRsp->numSliceCfgRsp ; cfgIdx++)
-   {
-      sliceFound = false;
+      sliceFound = RSP_NOK;
       /* Here comparing the slice cfg request with the slice stored in cellCfg */
-      if(sliceRecfg != true)
+      for(plmnIdx = 0; plmnIdx < MAX_PLMN; plmnIdx++)
       {
-         for(plmnIdx = 0; plmnIdx < MAX_PLMN; plmnIdx++)
+         for(sliceIdx = 0; sliceIdx<cellCb->cellCfg.plmnInfoList[plmnIdx].numSliceSupport; sliceIdx++)
          {
-            for(sliceIdx = 0; sliceIdx<cellCb->cellCfg.plmnInfoList[plmnIdx].numSliceSupport; sliceIdx++)
+            result = memcmp(&schSliceCfgReq->listOfSlices[cfgIdx]->snssai, cellCb->cellCfg.plmnInfoList[plmnIdx].snssai[sliceIdx], sizeof(Snssai));
+            if(result == ROK)
             {
-               if(!memcmp(&schSliceCfgReq->listOfSlices[cfgIdx]->snssai, cellCb->cellCfg.plmnInfoList[plmnIdx].snssai[sliceIdx], sizeof(Snssai)))
-               {
-                  (*count)++;
-                  sliceFound = true;
-                  break;
-               }
-            }
-            if(sliceFound == true)
-            {
+               plmnIdx = MAX_PLMN;
                break;
             }
          }
       }
-      else
+      
+      if(result == ROK)
       {
-         /* Here comparing the slice cfg request with the slice stored in SchDb */
-         if(storedSliceCfg->listOfSlices)
+         if(addSliceCfgInSchDb(storedSliceCfg, schSliceCfgReq->listOfSlices[cfgIdx]) == ROK)
          {
-            for(sliceIdx = 0; sliceIdx<storedSliceCfg->numOfSliceConfigured; sliceIdx++)
-            {
-               if(!memcmp(&schSliceCfgReq->listOfSlices[cfgIdx]->snssai, &storedSliceCfg->listOfSlices[sliceIdx]->snssai,\
-                        sizeof(Snssai)))
-               {
-                  (*count)++;
-                  sliceFound = true;
-                  break;
-               }
-            }
+            sliceFound = RSP_OK;
+            schSliceCfgRsp.cause = SLICE_CONFIGURED;
+            ret = ROK;
+         }
+         else
+         {
+            DU_LOG("\nERROR  --> SCH : Failed to store slice configuration in SchDb");
+            schSliceCfgRsp.cause = RESOURCE_NOT_AVAILABLE;
          }
       }
-
-      SCH_ALLOC(schSliceCfgRsp->listOfSliceCfgRsp[cfgIdx], sizeof(SliceRsp));
-      if(schSliceCfgRsp->listOfSliceCfgRsp[cfgIdx] == NULLP)
-      {
-         DU_LOG("\nERROR  -->  SCH : Failed to allocate memory in fillSliceCfgRsp");
-         return RFAILED;
-      }
-
-
-      schSliceCfgRsp->listOfSliceCfgRsp[cfgIdx]->snssai = schSliceCfgReq->listOfSlices[cfgIdx]->snssai;
-      if(sliceFound == true)
-         schSliceCfgRsp->listOfSliceCfgRsp[cfgIdx]->rsp    = RSP_OK;
       else
-      {
-         schSliceCfgRsp->listOfSliceCfgRsp[cfgIdx]->rsp    = RSP_NOK;
-         schSliceCfgRsp->listOfSliceCfgRsp[cfgIdx]->cause  = SLICE_NOT_FOUND;
-      }
+         schSliceCfgRsp.cause = SLICE_NOT_AVAILABLE;
+      
+      schSliceCfgRsp.snssai = schSliceCfgReq->listOfSlices[cfgIdx]->snssai;
+      schSliceCfgRsp.rsp    = sliceFound;
+      SchSendSliceCfgRspToMac(inst, schSliceCfgRsp);
    }
-   return ROK;
-}
-
-/*******************************************************************************
- *
- * @brief This function is used to store the slice configuration Sch DB
- *
- * @details
- *
- *    Function : addSliceCfgInSchDb 
- *
- *    Functionality:
- *     function is used to store the slice configuration Sch DB
- *
- * @params[in] SchSliceCfg *storeSliceCfg, SchSliceCfgReq *cfgReq,
- * SchSliceCfgRsp cfgRsp, uint8_t count
- *
- * @return
- *        ROK - Success
- *        RFAILED - Failure
- *
- * ********************************************************************************/
-uint8_t addSliceCfgInSchDb(SchSliceCfg *storeSliceCfg, SchSliceCfgReq *cfgReq, SchSliceCfgRsp cfgRsp, uint8_t count)
-{
-   uint8_t cfgIdx = 0, sliceIdx = 0; 
-   
-   if(count)
-   {
-      storeSliceCfg->numOfSliceConfigured = count;
-      SCH_ALLOC(storeSliceCfg->listOfSlices, storeSliceCfg->numOfSliceConfigured * sizeof(SchRrmPolicyOfSlice*));
-      if(storeSliceCfg->listOfSlices == NULLP)
-      {
-         DU_LOG("\nERROR  -->  SCH : Failed to allocate memory in addSliceCfgInSchDb");
-         return RFAILED;
-      }
-
-      for(cfgIdx = 0; cfgIdx<storeSliceCfg->numOfSliceConfigured; cfgIdx++)
-      {
-         if(cfgRsp.listOfSliceCfgRsp[cfgIdx]->rsp == RSP_OK)
-         {
-            SCH_ALLOC(storeSliceCfg->listOfSlices[sliceIdx], sizeof(SchRrmPolicyOfSlice));
-            if(storeSliceCfg->listOfSlices[sliceIdx] == NULLP)
-            {
-               DU_LOG("\nERROR  -->  SCH : Failed to allocate memory in addSliceCfgInSchDb");
-               return RFAILED;
-            }
-
-            memcpy(&storeSliceCfg->listOfSlices[sliceIdx]->snssai, &cfgReq->listOfSlices[sliceIdx]->snssai, sizeof(Snssai));
-            memcpy(&storeSliceCfg->listOfSlices[sliceIdx]->rrmPolicyRatioInfo, &cfgReq->listOfSlices[sliceIdx]->rrmPolicyRatioInfo,
-                      sizeof(SchRrmPolicyRatio));
-            sliceIdx++;
-         }
-      }
-   }
-   return ROK;
+   return ret;
 }
 
 /*******************************************************************************
@@ -1923,9 +1882,8 @@ void freeSchSliceCfgReq(SchSliceCfgReq *sliceCfgReq)
  * ********************************************************************************/
 uint8_t SchProcSliceCfgReq(Pst *pst, SchSliceCfgReq *schSliceCfgReq)
 {
-   uint8_t count = 0;
+   uint8_t ret = ROK;
    Inst   inst = pst->dstInst - SCH_INST_START;
-   SchSliceCfgRsp sliceCfgRsp;
 
    DU_LOG("\nINFO  -->  SCH : Received Slice Cfg request from MAC");
    if(schSliceCfgReq)
@@ -1933,77 +1891,22 @@ uint8_t SchProcSliceCfgReq(Pst *pst, SchSliceCfgReq *schSliceCfgReq)
       if(schSliceCfgReq->listOfSlices)
       {
          /* filling the slice configuration response of each slice */
-         if(fillSliceCfgRsp(false, NULLP, schCb[inst].cells[0], schSliceCfgReq, &sliceCfgRsp, &count) != ROK)
+         if(fillSliceCfgRsp(inst, &schCb[inst].sliceCfg, schCb[inst].cells[0], schSliceCfgReq) != ROK)
          {
             DU_LOG("\nERROR  -->  SCH : Failed to fill the slice cfg rsp");
-            return RFAILED;
-         }
-
-         if(addSliceCfgInSchDb(&schCb[inst].sliceCfg, schSliceCfgReq, sliceCfgRsp, count) != ROK)
-         {
-            DU_LOG("\nERROR  -->  SCH : Failed to add slice cfg in sch database");
-            return RFAILED;
+            ret = RFAILED;
          }
          freeSchSliceCfgReq(schSliceCfgReq);
-         SchSendSliceCfgRspToMac(inst, sliceCfgRsp);
       }
    }
    else
    {
       DU_LOG("\nERROR  -->  SCH : Received SchSliceCfgReq is NULL");
+      ret = RFAILED;
    }
-   return ROK;
+   return ret;
 }
 
-/*******************************************************************************
- *
- * @brief This function is used to store the slice reconfiguration Sch DB
- *
- * @details
- *
- *    Function : modifySliceCfgInSchDb 
- *
- *    Functionality:
- *     function is used to store the slice re configuration Sch DB
- *
- * @params[in] Pst *pst, SchSliceCfgReq *schSliceCfgReq
- *
- * @return
- *        ROK - Success
- *        RFAILED - Failure
- *
- * ********************************************************************************/
-uint8_t modifySliceCfgInSchDb(SchSliceCfg *storeSliceCfg, SchSliceRecfgReq *recfgReq, SchSliceRecfgRsp recfgRsp, uint8_t count)
-{
-   uint8_t cfgIdx = 0, sliceIdx = 0; 
-
-   if(count)
-   {
-      if(storeSliceCfg->listOfSlices == NULLP)
-      {
-         DU_LOG("\nINFO  -->  SCH : Memory allocation failed in modifySliceCfgInSchDb");
-         return RFAILED;
-      }
-
-      for(cfgIdx = 0; cfgIdx<recfgReq->numOfConfiguredSlice; cfgIdx++)
-      {
-         if(recfgRsp.listOfSliceCfgRsp[cfgIdx]->rsp == RSP_OK)
-         {
-            for(sliceIdx = 0; sliceIdx<storeSliceCfg->numOfSliceConfigured; sliceIdx++)
-            {
-               if(!memcmp(&storeSliceCfg->listOfSlices[sliceIdx]->snssai, &recfgReq->listOfSlices[cfgIdx]->snssai, sizeof(Snssai)))
-               {
-                  memcpy(&storeSliceCfg->listOfSlices[sliceIdx]->rrmPolicyRatioInfo, &recfgReq->listOfSlices[cfgIdx]->rrmPolicyRatioInfo,
-                           sizeof(SchRrmPolicyRatio));
-                  break;
-               }
-            }
-         }
-      }
-   }
-   freeSchSliceCfgReq(recfgReq);
-   return ROK;
-}
 /*******************************************************************************
  *
  * @brief This function is used to send Slice re Cfg rsp to MAC
@@ -2030,6 +1933,61 @@ void SchSendSliceRecfgRspToMac(Inst inst, SchSliceRecfgRsp schSliceRecfgRsp)
    
    MacMessageRouter(&rspPst, (void *)&schSliceRecfgRsp);
 }
+
+/*******************************************************************************
+ *
+ * @brief fill slice configuration response
+ *
+ * @details
+ *
+ *    Function : fillSliceRecfgRsp
+ *
+ *    Functionality: fill slice reconfiguration response
+ *
+ * @params[in] SchCellCb, SchSliceCfgReq, SchSliceCfgRsp,uint8_t  count
+ *
+ * @return
+ *        ROK - Success
+ *        RFAILED - Failure
+ *
+ * ********************************************************************************/
+
+uint8_t fillSliceRecfgRsp(Inst inst, CmLListCp *storedSliceCfg, SchSliceRecfgReq *schSliceRecfgReq)
+{
+   SchMacRsp sliceFound;
+   uint8_t cfgIdx = 0;
+   SchRrmPolicyOfSlice *rrmPolicyOfSlices;
+   SchSliceRecfgRsp schSliceRecfgRsp;
+
+   for(cfgIdx = 0; cfgIdx<schSliceRecfgReq->numOfConfiguredSlice; cfgIdx++)
+   {
+      sliceFound = RSP_NOK;
+      /* Here comparing the slice recfg request with the StoredSliceCfg */
+      CmLList *sliceCfg = storedSliceCfg->first;
+
+      while(sliceCfg)
+      {
+         rrmPolicyOfSlices = (SchRrmPolicyOfSlice*)sliceCfg->node;
+         
+         if(rrmPolicyOfSlices && (memcmp(&schSliceRecfgReq->listOfSlices[cfgIdx]->snssai, &(rrmPolicyOfSlices->snssai), sizeof(Snssai)) == 0))
+         {
+            memcpy(&rrmPolicyOfSlices->rrmPolicyRatioInfo, &schSliceRecfgReq->listOfSlices[cfgIdx]->rrmPolicyRatioInfo, sizeof(SchRrmPolicyRatio));
+            sliceFound = RSP_OK;
+            break;
+         }
+         sliceCfg = sliceCfg->next;
+      }
+
+      schSliceRecfgRsp.snssai = schSliceRecfgReq->listOfSlices[cfgIdx]->snssai;
+      schSliceRecfgRsp.rsp    = sliceFound;
+      if(schSliceRecfgRsp.rsp == RSP_OK)
+         schSliceRecfgRsp.cause = SLICE_RECONFIGURED;
+      else
+         schSliceRecfgRsp.cause = SLICE_NOT_AVAILABLE;
+      SchSendSliceRecfgRspToMac(inst, schSliceRecfgRsp);
+   }
+   return ROK;
+}
 /*******************************************************************************
  *
  * @brief This function is used to store the slice reconfiguration Sch DB
@@ -2050,9 +2008,8 @@ void SchSendSliceRecfgRspToMac(Inst inst, SchSliceRecfgRsp schSliceRecfgRsp)
  * ********************************************************************************/
 uint8_t SchProcSliceRecfgReq(Pst *pst, SchSliceRecfgReq *schSliceRecfgReq)
 {
-   uint8_t count = 0;
+   uint8_t ret = ROK;
    Inst   inst = pst->dstInst - SCH_INST_START;
-   SchSliceRecfgRsp schSliceRecfgRsp;
 
    DU_LOG("\nINFO  -->  SCH : Received Slice ReCfg request from MAC");
    if(schSliceRecfgReq)
@@ -2060,26 +2017,20 @@ uint8_t SchProcSliceRecfgReq(Pst *pst, SchSliceRecfgReq *schSliceRecfgReq)
       if(schSliceRecfgReq->listOfSlices)
       {
          /* filling the slice configuration response of each slice */
-         if(fillSliceCfgRsp(true, &schCb[inst].sliceCfg, NULLP, schSliceRecfgReq, &schSliceRecfgRsp, &count) != ROK)
+         if(fillSliceRecfgRsp(inst, &schCb[inst].sliceCfg, schSliceRecfgReq) != ROK)
          {
             DU_LOG("\nERROR  -->  SCH : Failed to fill sch slice cfg response");
-            return RFAILED;
+            ret = RFAILED;
          }
-         
-         /* Modify the slice configuration stored in schCb */
-         if(modifySliceCfgInSchDb(&schCb[inst].sliceCfg, schSliceRecfgReq, schSliceRecfgRsp, count) != ROK)
-         {
-            DU_LOG("\nERROR  -->  SCH : Failed to modify slice cfg of SchDb");
-            return RFAILED;
-         }
-         SchSendSliceRecfgRspToMac(inst, schSliceRecfgRsp);
+         freeSchSliceCfgReq(schSliceRecfgReq);
       }
    }
    else
    {
       DU_LOG("\nERROR  -->  SCH : Received SchSliceRecfgReq is NULL");
+
    }
-   return ROK;
+   return ret;
 }
 
 /****************************************************************************
