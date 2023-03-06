@@ -1503,12 +1503,12 @@ typedef struct macCellDeleteRsp
    CellDeleteStatus result;
 }MacCellDeleteRsp;
 
-typedef struct macSliceRsp
+typedef struct macSliceCfgRsp 
 {
    Snssai     snssai;
    MacRsp     rsp;
    RspReason  cause;  
-}MacSliceRsp;
+}MacSliceCfgRsp;
 
 typedef struct rrmPolicyRatio
 {
@@ -1536,12 +1536,6 @@ typedef struct macSliceCfgReq
    uint8_t           numOfRrmPolicy;
    MacSliceRrmPolicy **listOfRrmPolicy;
 }MacSliceCfgReq;
-
-typedef struct macSliceCfgRsp
-{
-   uint8_t      numSliceCfgRsp;
-   MacSliceRsp  **listOfSliceCfgRsp;
-}MacSliceCfgRsp;
 
 /*As per ORAN-WG8, Slice Cfg and ReCfg are same structures*/
 typedef struct macSliceCfgReq MacSliceRecfgReq;

@@ -642,12 +642,6 @@ typedef struct schCellCb
 }SchCellCb;
 
 
-typedef struct schSliceCfg
-{
-   uint8_t        numOfSliceConfigured;
-   SchRrmPolicyOfSlice **listOfSlices;
-}SchSliceCfg;
-
 /**
  * @brief
  * Control block for sch
@@ -660,7 +654,7 @@ typedef struct schCb
    CmTqType               tmrTq[SCH_TQ_SIZE];    /*!< Timer Task Queue */
    SchAllApis             allApis[NUM_SCH_TYPE]; /*!<List of All Scheduler Type dependent Function pointers*/
    SchCellCb              *cells[MAX_NUM_CELL];  /* Array to store cellCb ptr */
-   SchSliceCfg            sliceCfg;
+   CmLListCp              sliceCfg;              /* Linklist to Store Slice configuration */
 }SchCb;
 
 /* Declaration for scheduler control blocks */

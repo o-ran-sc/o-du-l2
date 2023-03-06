@@ -2023,17 +2023,11 @@ typedef struct schSliceCfgReq
    SchRrmPolicyOfSlice **listOfSlices;
 }SchSliceCfgReq;
 
-typedef struct sliceRsp
+typedef struct schSliceCfgRsp 
 {
    Snssai     snssai;
    SchMacRsp  rsp;
    RspCause   cause;
-}SliceRsp;
-
-typedef struct schSliceCfgRsp
-{
-   uint8_t    numSliceCfgRsp;
-   SliceRsp   **listOfSliceCfgRsp;
 }SchSliceCfgRsp;
 
 /*As per ORAN-WG8, Slice Cfg and Recfg are same structures*/
