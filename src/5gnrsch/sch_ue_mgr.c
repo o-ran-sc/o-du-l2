@@ -200,27 +200,27 @@ void fillSchUlLcCtxt(SchUlLcCtxt *ueCbLcCfg, SchLcCfg *lcCfg)
 
 uint8_t updateDedLcInfo(Inst inst, Snssai *snssai, uint16_t *rsvdDedicatedPRB, bool *isDedicated)
 {
-   uint8_t sliceCfgIdx =0;
-   SchSliceCfg sliceCfg = schCb[inst].sliceCfg;
+   CmLList *sliceCfg = schCb[inst].sliceCfg.first;
+   SchRrmPolicyOfSlice *rrmPolicyOfSlices;
 
-   if(sliceCfg.numOfSliceConfigured)
+   while(sliceCfg)
    {
-      for(sliceCfgIdx = 0; sliceCfgIdx<sliceCfg.numOfSliceConfigured; sliceCfgIdx++)
+      rrmPolicyOfSlices = (SchRrmPolicyOfSlice*)sliceCfg->node;
+      if(rrmPolicyOfSlices && (memcmp(snssai, &(rrmPolicyOfSlices->snssai), sizeof(Snssai)) == 0))
       {
-         if(memcmp(snssai, &(sliceCfg.listOfSlices[sliceCfgIdx]->snssai), sizeof(Snssai)) == 0)
-         {
-            /*Updating latest RrmPolicy*/
-            *rsvdDedicatedPRB = \
-                                (uint16_t)(((sliceCfg.listOfSlices[sliceCfgIdx]->rrmPolicyRatioInfo.dedicatedRatio)*(MAX_NUM_RB))/100);
-            *isDedicated = TRUE;
-            DU_LOG("\nINFO  -->  SCH : Updated RRM policy, reservedPOOL:%d",*rsvdDedicatedPRB);
-         }
+         /*Updating latest RrmPolicy*/
+         *rsvdDedicatedPRB = \
+                             (uint16_t)(((rrmPolicyOfSlices->rrmPolicyRatioInfo.dedicatedRatio)*(MAX_NUM_RB))/100);
+         *isDedicated = TRUE;
+         DU_LOG("\nINFO  -->  SCH : Updated RRM policy, reservedPOOL:%d",*rsvdDedicatedPRB);
+         break;
       }
-      /*case: This LcCtxt  is either a Default LC or this LC is part of someother RRM_MemberList*/
-      if(*isDedicated != TRUE) 
-      {
-         DU_LOG("\nINFO  -->  SCH : This SNSSAI is not a part of this RRMPolicy");
-      }
+      sliceCfg = sliceCfg->next;
+   }
+   /*case: This LcCtxt  is either a Default LC or this LC is part of someother RRM_MemberList*/
+   if(*isDedicated != TRUE) 
+   {
+      DU_LOG("\nINFO  -->  SCH : This SNSSAI is not a part of this RRMPolicy");
    }
    return ROK;	 
 }
