@@ -24,6 +24,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f0887b77_419eaffd",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1804,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-03-07T10:00:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1eedaf4d_2816986f",
+      "range": {
+        "startLine": 1804,
+        "startChar": 15,
+        "endLine": 1804,
+        "endChar": 41
+      },
+      "revId": "52420804ed29dcb80e53c77fd99056b7630b9e07",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f0c611bf_7b32dfb9",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-03-07T07:11:58Z",
       "side": 1,
       "message": "we need to remove this bcz if adding in SCHCb gets failed then sliceFound will be RSP_NOK, but we need to break from the loop .. \nSolution: Remove this if and make the plmnIdx \u003d MAX_PLMN inside the above if.",
+      "range": {
+        "startLine": 1808,
+        "startChar": 12,
+        "endLine": 1808,
+        "endChar": 23
+      },
+      "revId": "52420804ed29dcb80e53c77fd99056b7630b9e07",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cd400cf3_6e1132d3",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1808,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-03-07T10:00:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f0c611bf_7b32dfb9",
       "range": {
         "startLine": 1808,
         "startChar": 12,
@@ -64,6 +112,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e937e0e7_e809e560",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1889,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-03-07T10:00:34Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "e67773dd_589f4835",
+      "revId": "52420804ed29dcb80e53c77fd99056b7630b9e07",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ef5eff5d_c43ee8a3",
@@ -77,6 +143,30 @@
       "writtenOn": "2023-03-07T07:11:58Z",
       "side": 1,
       "message": "please change the comment, here we are not comparing with cellCfg.. StoredSliceCfg is compared with ReCfgReq.",
+      "range": {
+        "startLine": 1956,
+        "startChar": 51,
+        "endLine": 1956,
+        "endChar": 55
+      },
+      "revId": "52420804ed29dcb80e53c77fd99056b7630b9e07",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4dd1d0c1_050e08d0",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1956,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-03-07T10:00:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ef5eff5d_c43ee8a3",
       "range": {
         "startLine": 1956,
         "startChar": 51,
@@ -110,6 +200,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f3257994_22d01d7d",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1959,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-03-07T10:00:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b3666bc4_adaca975",
+      "range": {
+        "startLine": 1959,
+        "startChar": 9,
+        "endLine": 1959,
+        "endChar": 17
+      },
+      "revId": "52420804ed29dcb80e53c77fd99056b7630b9e07",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5a3d2fc9_225dc242",
@@ -123,6 +237,30 @@
       "writtenOn": "2023-03-07T07:11:58Z",
       "side": 1,
       "message": "check is rrmPolicyOfSlices is NULL .. If NULL, move to next node and continue",
+      "range": {
+        "startLine": 1963,
+        "startChar": 12,
+        "endLine": 1963,
+        "endChar": 30
+      },
+      "revId": "52420804ed29dcb80e53c77fd99056b7630b9e07",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "122916a2_73a8597a",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1963,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-03-07T10:00:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5a3d2fc9_225dc242",
       "range": {
         "startLine": 1963,
         "startChar": 12,
@@ -156,6 +294,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3abf29b4_a3d57b4d",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1967,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-03-07T10:00:34Z",
+      "side": 1,
+      "message": "modified",
+      "parentUuid": "48175662_f61151bd",
+      "range": {
+        "startLine": 1967,
+        "startChar": 15,
+        "endLine": 1967,
+        "endChar": 41
+      },
+      "revId": "52420804ed29dcb80e53c77fd99056b7630b9e07",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "42ea6d2e_13d18ba4",
@@ -173,6 +335,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f33bc245_88a3ab8c",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2012,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-03-07T10:00:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "42ea6d2e_13d18ba4",
+      "revId": "52420804ed29dcb80e53c77fd99056b7630b9e07",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "17e1308b_6a067d75",
@@ -186,6 +366,24 @@
       "writtenOn": "2023-03-07T07:11:58Z",
       "side": 1,
       "message": "please add in the comment the structure which will be linklist.",
+      "revId": "52420804ed29dcb80e53c77fd99056b7630b9e07",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c9369bd0_7c974fd0",
+        "filename": "src/5gnrsch/sch.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 657,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-03-07T10:00:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "17e1308b_6a067d75",
       "revId": "52420804ed29dcb80e53c77fd99056b7630b9e07",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -213,6 +411,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f91fe726_2e798969",
+        "filename": "src/5gnrsch/sch_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 206,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-03-07T10:00:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a46216fe_1cb9061b",
+      "range": {
+        "startLine": 206,
+        "startChar": 6,
+        "endLine": 206,
+        "endChar": 14
+      },
+      "revId": "52420804ed29dcb80e53c77fd99056b7630b9e07",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e062388a_85fe3e05",
@@ -230,6 +452,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "be06aede_064687b7",
+        "filename": "src/5gnrsch/sch_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 210,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-03-07T10:00:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e062388a_85fe3e05",
+      "revId": "52420804ed29dcb80e53c77fd99056b7630b9e07",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c9dd7f94_8b2ee5d4",
@@ -243,6 +483,30 @@
       "writtenOn": "2023-03-07T07:11:58Z",
       "side": 1,
       "message": "move it after if",
+      "range": {
+        "startLine": 211,
+        "startChar": 20,
+        "endLine": 211,
+        "endChar": 28
+      },
+      "revId": "52420804ed29dcb80e53c77fd99056b7630b9e07",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b2947da3_a4075087",
+        "filename": "src/5gnrsch/sch_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 211,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-03-07T10:00:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c9dd7f94_8b2ee5d4",
       "range": {
         "startLine": 211,
         "startChar": 20,
@@ -276,6 +540,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "62e886d2_9ab1e0c5",
+        "filename": "src/5gnrsch/sch_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 218,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-03-07T10:00:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9ec7ad7a_5c65036a",
+      "range": {
+        "startLine": 218,
+        "startChar": 12,
+        "endLine": 218,
+        "endChar": 18
+      },
+      "revId": "52420804ed29dcb80e53c77fd99056b7630b9e07",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ceab6069_ced96039",
@@ -289,6 +577,24 @@
       "writtenOn": "2023-03-07T07:11:58Z",
       "side": 1,
       "message": "once the if is done, move to the next node",
+      "revId": "52420804ed29dcb80e53c77fd99056b7630b9e07",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "613b2fef_b3376f18",
+        "filename": "src/5gnrsch/sch_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 219,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-03-07T10:00:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ceab6069_ced96039",
       "revId": "52420804ed29dcb80e53c77fd99056b7630b9e07",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
