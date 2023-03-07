@@ -1,0 +1,296 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1eedaf4d_2816986f",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1804,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-03-07T07:11:58Z",
+      "side": 1,
+      "message": "pls check the return of this function.. if is FAILURE, then sliceFound will be marked as RSP_NOK and break from the loop also. For this slice , negative response will be sent",
+      "range": {
+        "startLine": 1804,
+        "startChar": 15,
+        "endLine": 1804,
+        "endChar": 41
+      },
+      "revId": "52420804ed29dcb80e53c77fd99056b7630b9e07",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f0c611bf_7b32dfb9",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1808,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-03-07T07:11:58Z",
+      "side": 1,
+      "message": "we need to remove this bcz if adding in SCHCb gets failed then sliceFound will be RSP_NOK, but we need to break from the loop .. \nSolution: Remove this if and make the plmnIdx \u003d MAX_PLMN inside the above if.",
+      "range": {
+        "startLine": 1808,
+        "startChar": 12,
+        "endLine": 1808,
+        "endChar": 23
+      },
+      "revId": "52420804ed29dcb80e53c77fd99056b7630b9e07",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e67773dd_589f4835",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1889,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-03-07T07:11:58Z",
+      "side": 1,
+      "message": "even if this fails we need to add  freeSchSliceCfgReq(schSliceCfgReq);",
+      "revId": "52420804ed29dcb80e53c77fd99056b7630b9e07",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ef5eff5d_c43ee8a3",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1956,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-03-07T07:11:58Z",
+      "side": 1,
+      "message": "please change the comment, here we are not comparing with cellCfg.. StoredSliceCfg is compared with ReCfgReq.",
+      "range": {
+        "startLine": 1956,
+        "startChar": 51,
+        "endLine": 1956,
+        "endChar": 55
+      },
+      "revId": "52420804ed29dcb80e53c77fd99056b7630b9e07",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b3666bc4_adaca975",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1959,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-03-07T07:11:58Z",
+      "side": 1,
+      "message": "i dont think we need this if. pls check",
+      "range": {
+        "startLine": 1959,
+        "startChar": 9,
+        "endLine": 1959,
+        "endChar": 17
+      },
+      "revId": "52420804ed29dcb80e53c77fd99056b7630b9e07",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5a3d2fc9_225dc242",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1963,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-03-07T07:11:58Z",
+      "side": 1,
+      "message": "check is rrmPolicyOfSlices is NULL .. If NULL, move to next node and continue",
+      "range": {
+        "startLine": 1963,
+        "startChar": 12,
+        "endLine": 1963,
+        "endChar": 30
+      },
+      "revId": "52420804ed29dcb80e53c77fd99056b7630b9e07",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "48175662_f61151bd",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1967,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-03-07T07:11:58Z",
+      "side": 1,
+      "message": "pls check the return of this function.. if is FAILURE, then sliceFound will be marked as RSP_NOK and break from the loop also. For this slice , negative response will be sent",
+      "range": {
+        "startLine": 1967,
+        "startChar": 15,
+        "endLine": 1967,
+        "endChar": 41
+      },
+      "revId": "52420804ed29dcb80e53c77fd99056b7630b9e07",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "42ea6d2e_13d18ba4",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2012,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-03-07T07:11:58Z",
+      "side": 1,
+      "message": "even if this fails we need to add  freeSchSliceCfgReq(schSliceRecfgReq);",
+      "revId": "52420804ed29dcb80e53c77fd99056b7630b9e07",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "17e1308b_6a067d75",
+        "filename": "src/5gnrsch/sch.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 657,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-03-07T07:11:58Z",
+      "side": 1,
+      "message": "please add in the comment the structure which will be linklist.",
+      "revId": "52420804ed29dcb80e53c77fd99056b7630b9e07",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a46216fe_1cb9061b",
+        "filename": "src/5gnrsch/sch_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 206,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-03-07T07:11:58Z",
+      "side": 1,
+      "message": "pls check if we need this if?",
+      "range": {
+        "startLine": 206,
+        "startChar": 6,
+        "endLine": 206,
+        "endChar": 14
+      },
+      "revId": "52420804ed29dcb80e53c77fd99056b7630b9e07",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e062388a_85fe3e05",
+        "filename": "src/5gnrsch/sch_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 210,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-03-07T07:11:58Z",
+      "side": 1,
+      "message": "pls check if rrmPolicyOfSlices is NULL, if NULL, move to next node and continue",
+      "revId": "52420804ed29dcb80e53c77fd99056b7630b9e07",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c9dd7f94_8b2ee5d4",
+        "filename": "src/5gnrsch/sch_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 211,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-03-07T07:11:58Z",
+      "side": 1,
+      "message": "move it after if",
+      "range": {
+        "startLine": 211,
+        "startChar": 20,
+        "endLine": 211,
+        "endChar": 28
+      },
+      "revId": "52420804ed29dcb80e53c77fd99056b7630b9e07",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9ec7ad7a_5c65036a",
+        "filename": "src/5gnrsch/sch_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 218,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-03-07T07:11:58Z",
+      "side": 1,
+      "message": "add a break below",
+      "range": {
+        "startLine": 218,
+        "startChar": 12,
+        "endLine": 218,
+        "endChar": 18
+      },
+      "revId": "52420804ed29dcb80e53c77fd99056b7630b9e07",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ceab6069_ced96039",
+        "filename": "src/5gnrsch/sch_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 219,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-03-07T07:11:58Z",
+      "side": 1,
+      "message": "once the if is done, move to the next node",
+      "revId": "52420804ed29dcb80e53c77fd99056b7630b9e07",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
