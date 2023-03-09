@@ -1234,15 +1234,15 @@ typedef struct csiInfo
    uint8_t  betaOffsetCsi;
 }CsiInfo;
 
-typedef struct harqAckInfo
+typedef struct harqFdbkInfo
 {
    uint16_t    harqBitLength;
 }HarqFdbkInfo;
 
-typedef struct csiPartInfo
+typedef struct csiFdbkInfo
 {
    uint16_t csiBits;
-}csiFdbkInfo;
+}CsiFdbkInfo;
 
 typedef struct schPucchFormatCfg
 {
@@ -1256,11 +1256,11 @@ typedef struct schPucchFormatCfg
 
 typedef struct schPucchInfo
 {
-   FreqDomainAlloc  fdAlloc;      
+   FreqDomainRsrc   fdAlloc;      
    TimeDomainAlloc  tdAlloc;      
    uint8_t          srFlag;
    HarqFdbkInfo     harqInfo;
-   csiFdbkInfo      csiInfo;
+   CsiFdbkInfo      csiInfo;
    BeamformingInfo  beamPucchInfo;
    uint8_t          pucchFormat;
    uint8_t          intraFreqHop;
