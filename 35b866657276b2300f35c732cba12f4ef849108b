@@ -1,0 +1,95 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b6b153a7_9e25b5bb",
+        "filename": "src/5gnrmac/mac_cfg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 815,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-03-13T07:58:40Z",
+      "side": 1,
+      "message": "I think we should fill the cause received from SCH?",
+      "revId": "35b866657276b2300f35c732cba12f4ef849108b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ee625e7f_11b33d31",
+        "filename": "src/5gnrmac/mac_cfg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 878,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-03-13T07:58:40Z",
+      "side": 1,
+      "message": "same as above",
+      "range": {
+        "startLine": 878,
+        "startChar": 36,
+        "endLine": 878,
+        "endChar": 53
+      },
+      "revId": "35b866657276b2300f35c732cba12f4ef849108b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "843cdbf7_30ecf6f2",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1795,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-03-13T07:58:40Z",
+      "side": 1,
+      "message": "If we search snssai in this way, then lets say an snssai is already present at 2nd index, however the above condition will get satisfied for 1st index, and we will try to add it to SCH.\nwe must first check the whole list and then if slice is not found, add to sch db.",
+      "revId": "35b866657276b2300f35c732cba12f4ef849108b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f6e57812_6cef11c8",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1812,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-03-13T07:58:40Z",
+      "side": 1,
+      "message": "in case slice is already present, cause should be set to something like \"duplicate entry\".\nIn case addSliceCfgInSchDb() fails due to memory allocation failure, then set cause to \"resource unavailable\"",
+      "revId": "35b866657276b2300f35c732cba12f4ef849108b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0bdf128d_33f0f87a",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1972,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-03-13T07:58:40Z",
+      "side": 1,
+      "message": "lets check here if (sliceFound \u003d\u003d RSP_NOK), the cause \u003d slice not found.\nThe same can be then filled into sliceCfgrsp at MAC",
+      "revId": "35b866657276b2300f35c732cba12f4ef849108b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
