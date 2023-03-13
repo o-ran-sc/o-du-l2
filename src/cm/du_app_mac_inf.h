@@ -84,6 +84,8 @@
 #define EVENT_MAC_RACH_RESOURCE_RSP  222
 #define EVENT_MAC_RACH_RESOURCE_REL  223
 #define EVENT_MAC_DL_PCCH_IND        224
+#define EVENT_MAC_UE_RESET_REQ       225
+#define EVENT_MAC_UE_RESET_RSP       226
 
 #define BSR_PERIODIC_TIMER_SF_10 10
 #define BSR_RETX_TIMER_SF_320 320
@@ -110,6 +112,13 @@ typedef enum
    CELLID_INVALID,
    UEID_INVALID
 }UeDeleteStatus;
+
+typedef enum
+{
+   RESET_SUCCESSFUL,
+   CELLID_IS_NOT_VALID,
+   UEID_IS_NOT_VALID
+}UeResetStatus;
 
 typedef enum
 {
@@ -1565,6 +1574,19 @@ typedef struct cellInfo
 typedef struct cellInfo CellStartInfo;
 typedef struct cellInfo CellStopInfo;
 
+typedef struct ueReset
+{
+    uint16_t cellId;
+    uint8_t  ueId;
+}MacUeReset;
+
+typedef struct ueResetRsp
+{
+   uint16_t cellId;
+   uint8_t  ueId;
+   UeResetStatus result;
+}MacUeResetRsp;
+
 /* Functions for CellUp Ind from MAC to DU APP*/
 typedef uint8_t (*DuMacCellUpInd) ARGS((
 	 Pst       *pst,
@@ -1697,6 +1719,16 @@ typedef uint8_t (*DuMacDlPcchInd) ARGS((
      Pst        *pst,
      DlPcchInd *pcchInd));
 
+/* UE Reset Request from DU APP to MAC*/
+typedef uint8_t (*DuMacUeResetReq) ARGS((
+     Pst           *pst,
+     MacUeReset   *ueReset ));
+
+/* UE Reset Response from MAC to DU APP*/
+typedef uint8_t (*MacDuUeResetRspFunc) ARGS((
+     Pst            *pst,
+     MacUeResetRsp *resetRsp));
+
 uint64_t ueBitMapPerCell[MAX_NUM_CELL]; /* Bit Map to store used/free UE-IDX per Cell */
 
 uint8_t packMacCellUpInd(Pst *pst, OduCellId *cellId);
@@ -1777,6 +1809,13 @@ uint8_t MacProcDlPcchInd(Pst *pst, DlPcchInd *pcchInd);
 uint8_t unpackMacDlPcchInd(DuMacDlPcchInd func, Pst *pst, Buffer *mBuf);
 int8_t getFreeBitFromUeBitMap(uint16_t cellId);
 void unsetBitInUeBitMap(uint16_t cellId, uint8_t bitPos);
+uint8_t packDuMacUeResetReq(Pst *pst, MacUeReset *ueReset);
+uint8_t MacProcUeResetReq(Pst *pst,  MacUeReset *ueReset);
+uint8_t unpackMacUeResetReq(DuMacUeResetReq func, Pst *pst, Buffer *mBuf);
+uint8_t packDuMacUeResetRsp(Pst *pst, MacUeResetRsp *resetRsp);
+uint8_t DuProcMacUeResetRsp(Pst *pst, MacUeResetRsp *resetRsp);
+uint8_t unpackDuMacUeResetRsp(MacDuUeResetRspFunc func, Pst *pst, Buffer *mBuf);
+
 #endif
 
 

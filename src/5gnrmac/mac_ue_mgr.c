@@ -49,6 +49,12 @@ MacDuUeDeleteRspFunc macDuUeDeleteRspOpts[] =
    packDuMacUeDeleteRsp   /* packing for light weight loosly coupled */
 };
 
+MacDuUeResetRspFunc macDuUeResetRspOpts[] =
+{
+   packDuMacUeResetRsp,   /* packing for loosely coupled */
+   DuProcMacUeResetRsp,   /* packing for tightly coupled */
+   packDuMacUeResetRsp   /* packing for light weight loosly coupled */
+};
 /*******************************************************************
  *
  * @brief Fills mac cell group config to be sent to scheduler
@@ -3404,6 +3410,109 @@ uint8_t MacProcUeDeleteReq(Pst *pst, MacUeDelete *ueDelete)
    return ret;
 }
 
+/*******************************************************************
+*
+* @brief Fill and Send UE Reset response from MAC to DU APP
+*
+* @details
+*
+*    Function : MacSendUeResetRsp 
+*
+*    Functionality: Fill and Send UE Reset response from MAC to DUAPP
+*
+* @params[in] MAC UE Reset result
+*             SCH UE Reset response
+* @return ROK     - success
+*         RFAILED - failure
+*
+* ****************************************************************/
+
+uint8_t MacSendUeResetRsp(uint16_t cellId, uint16_t ueId, UeResetStatus result)
+{
+   MacUeResetRsp *ResetRsp;
+   Pst            rspPst;
+
+   MAC_ALLOC_SHRABL_BUF(ResetRsp, sizeof(MacUeResetRsp));
+   if(!ResetRsp)
+   {
+      DU_LOG("\nERROR  -->  MAC : Memory allocation for UE Reset response failed");
+      return RFAILED;
+   }
+
+   /* Filling UE Reset response */
+   ResetRsp->cellId = cellId;
+   ResetRsp->ueId   = ueId;
+   ResetRsp->result = result;
+
+   /* Fill Post structure and send UE Reset response*/
+   memset(&rspPst, 0, sizeof(Pst));
+   FILL_PST_MAC_TO_DUAPP(rspPst, EVENT_MAC_UE_RESET_RSP);
+   return (*macDuUeResetRspOpts[rspPst.selector])(&rspPst, ResetRsp);
+}
+
+/*******************************************************************
+ *
+ * @brief Handles UE Reset requst from DU APP
+ *
+ * @details
+ *
+ *    Function : MacProcUeResetReq
+ *
+ *    Functionality: Handles UE Reset requst from DU APP
+ *
+ * @params[in] Pst *pst, MacUeReset *ueReset
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+
+uint8_t MacProcUeResetReq(Pst *pst, MacUeReset *ueReset)
+{
+   uint8_t ret = ROK;
+   uint8_t cellIdx=0;
+   UeResetStatus result=RESET_SUCCESSFUL;
+   MacUeCb  *ueCb = NULLP;
+   MacCellCb *cellCb = NULLP;
+
+   DU_LOG("\nINFO   -->  MAC : UE Reset Request received for ueId[%d]", ueReset->ueId);
+
+   if(ueReset)
+   {
+      GET_CELL_IDX(ueReset->cellId, cellIdx);     
+      cellCb = macCb.macCell[cellIdx];
+      if(cellCb)
+      {
+         ueCb = &cellCb->ueCb[ueReset->ueId-1];
+         if(ueCb->ueId == ueReset->ueId)
+         {
+            /* TODO := complete the processing of UE reset request*/
+         }
+         else
+         {
+            DU_LOG("\nERROR  -->  MAC : MacProcUeResetReq(): CRNTI is not matched");
+            result = UEID_INVALID;
+         }
+      }
+      else
+      {
+         DU_LOG("\nERROR  -->  MAC : MacProcUeResetReq(): Failed to find the MacUeCb of UeId = %d",ueReset->ueId);
+         result = CELLID_INVALID;
+      }
+
+      if(result != RESET_SUCCESSFUL)
+      {
+         MacSendUeResetRsp(ueReset->cellId, ueReset->ueId, result);
+         MAC_FREE_SHRABL_BUF(pst->region, pst->pool, ueReset, sizeof(MacUeReset));
+         ret = RFAILED;
+      }
+   }
+   else
+   {
+      DU_LOG("\nERROR  -->  MAC : MacProcUeResetReq(): MAC UE reset request processing failed");
+      ret = RFAILED;
+   }
+   return ret;
+}
 /**********************************************************************
   End of file
  **********************************************************************/
