@@ -18,6 +18,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ab999e8b_775730bc",
+        "filename": "src/5gnrmac/mac_cfg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 815,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-03-13T11:37:38Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b6b153a7_9e25b5bb",
+      "revId": "35b866657276b2300f35c732cba12f4ef849108b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ee625e7f_11b33d31",
@@ -31,6 +49,30 @@
       "writtenOn": "2023-03-13T07:58:40Z",
       "side": 1,
       "message": "same as above",
+      "range": {
+        "startLine": 878,
+        "startChar": 36,
+        "endLine": 878,
+        "endChar": 53
+      },
+      "revId": "35b866657276b2300f35c732cba12f4ef849108b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "af50f6e4_33498cad",
+        "filename": "src/5gnrmac/mac_cfg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 878,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-03-13T11:37:38Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ee625e7f_11b33d31",
       "range": {
         "startLine": 878,
         "startChar": 36,
@@ -58,6 +100,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "768f5d0c_fce2ced6",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1795,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-03-13T11:37:38Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "843cdbf7_30ecf6f2",
+      "revId": "35b866657276b2300f35c732cba12f4ef849108b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f6e57812_6cef11c8",
@@ -75,6 +135,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "282674b5_43bfc69f",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1812,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-03-13T11:37:38Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f6e57812_6cef11c8",
+      "revId": "35b866657276b2300f35c732cba12f4ef849108b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0bdf128d_33f0f87a",
@@ -88,6 +166,24 @@
       "writtenOn": "2023-03-13T07:58:40Z",
       "side": 1,
       "message": "lets check here if (sliceFound \u003d\u003d RSP_NOK), the cause \u003d slice not found.\nThe same can be then filled into sliceCfgrsp at MAC",
+      "revId": "35b866657276b2300f35c732cba12f4ef849108b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c578e3bb_b7c9ed3e",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1972,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-03-13T11:37:38Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0bdf128d_33f0f87a",
       "revId": "35b866657276b2300f35c732cba12f4ef849108b",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
