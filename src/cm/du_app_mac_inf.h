@@ -84,6 +84,8 @@
 #define EVENT_MAC_RACH_RESOURCE_RSP  222
 #define EVENT_MAC_RACH_RESOURCE_REL  223
 #define EVENT_MAC_DL_PCCH_IND        224
+#define EVENT_MAC_UE_RESET_REQ       225
+#define EVENT_MAC_UE_RESET_RSP       226
 
 #define BSR_PERIODIC_TIMER_SF_10 10
 #define BSR_RETX_TIMER_SF_320 320
@@ -97,27 +99,6 @@ typedef enum
    MAC_DU_APP_RSP_NOK,
    MAC_DU_APP_RSP_OK
 }MacRsp;
-
-typedef enum
-{
-   SLICE_NOT_PRESENT,
-   SLICE_IS_CONFIGURED,
-   SLICE_IS_RECONFIGURED,
-   RESOURCE_DOES_NOT_AVAILABLE
-}RspReason;
-
-typedef enum
-{
-   DEL_SUCCESSFUL,
-   CELLID_INVALID,
-   UEID_INVALID
-}UeDeleteStatus;
-
-typedef enum
-{
-   SUCCESSFUL_RSP,
-   CELL_ID_INVALID
-}CellDeleteStatus;
 
 typedef enum
 {
@@ -520,15 +501,15 @@ typedef enum
    RESTART_TRANSMISSION
 }DataTransmissionAction;
 
-typedef struct failureCause
+typedef struct failureCause 
 {
    CauseGrp   type;
    union
    {
-      RadioNwLyrCause   radioNwCause;
-      TransLyrCause     transportCause;
-      ProtCause         protcolCause;
-      MiscFailCause     miscCause;
+      RadioNwLyrCause   radioNwResult;
+      TransLyrCause     transportResult;
+      ProtCause         protcolResult;
+      MiscFailCause     miscResult;
    }u;
 }FailureCause;
 
@@ -1491,7 +1472,7 @@ typedef struct ueDeleteRsp
 {
    uint16_t cellId;
    uint8_t  ueId;
-   UeDeleteStatus result;
+   Result   result;
 }MacUeDeleteRsp;
 
 typedef struct macCellDeleteReq
@@ -1502,14 +1483,14 @@ typedef struct macCellDeleteReq
 typedef struct macCellDeleteRsp
 {
    uint16_t cellId;
-   CellDeleteStatus result;
+   Result   result;
 }MacCellDeleteRsp;
 
 typedef struct macSliceCfgRsp 
 {
    Snssai     snssai;
    MacRsp     rsp;
-   RspReason  cause;  
+   Result     cause;  
 }MacSliceCfgRsp;
 
 typedef struct rrmPolicyRatio
@@ -1560,6 +1541,19 @@ typedef struct cellInfo
 
 typedef struct cellInfo CellStartInfo;
 typedef struct cellInfo CellStopInfo;
+
+typedef struct ueReset
+{
+    uint16_t cellId;
+    uint8_t  ueId;
+}MacUeResetReq;
+
+typedef struct ueResetRsp
+{
+   uint16_t cellId;
+   uint8_t  ueId;
+   Result   result;
+}MacUeResetRsp;
 
 /* Functions for CellUp Ind from MAC to DU APP*/
 typedef uint8_t (*DuMacCellUpInd) ARGS((
@@ -1693,6 +1687,16 @@ typedef uint8_t (*DuMacDlPcchInd) ARGS((
      Pst        *pst,
      DlPcchInd *pcchInd));
 
+/* UE Reset Request from DU APP to MAC*/
+typedef uint8_t (*DuMacUeResetReq) ARGS((
+     Pst           *pst,
+     MacUeResetReq *ueReset ));
+
+/* UE Reset Response from MAC to DU APP*/
+typedef uint8_t (*MacDuUeResetRspFunc) ARGS((
+     Pst            *pst,
+     MacUeResetRsp *resetRsp));
+
 uint64_t ueBitMapPerCell[MAX_NUM_CELL]; /* Bit Map to store used/free UE-IDX per Cell */
 
 uint8_t packMacCellUpInd(Pst *pst, OduCellId *cellId);
@@ -1773,6 +1777,13 @@ uint8_t MacProcDlPcchInd(Pst *pst, DlPcchInd *pcchInd);
 uint8_t unpackMacDlPcchInd(DuMacDlPcchInd func, Pst *pst, Buffer *mBuf);
 int8_t getFreeBitFromUeBitMap(uint16_t cellId);
 void unsetBitInUeBitMap(uint16_t cellId, uint8_t bitPos);
+uint8_t packDuMacUeResetReq(Pst *pst, MacUeResetReq *ueReset);
+uint8_t MacProcUeResetReq(Pst *pst,  MacUeResetReq *ueReset);
+uint8_t unpackMacUeResetReq(DuMacUeResetReq func, Pst *pst, Buffer *mBuf);
+uint8_t packDuMacUeResetRsp(Pst *pst, MacUeResetRsp *resetRsp);
+uint8_t DuProcMacUeResetRsp(Pst *pst, MacUeResetRsp *resetRsp);
+uint8_t unpackDuMacUeResetRsp(MacDuUeResetRspFunc func, Pst *pst, Buffer *mBuf);
+
 #endif
 
 

@@ -94,13 +94,6 @@ typedef enum
 
 typedef enum
 {
-   SUCCESSFUL            ,  /*!< No Failure */
-   INVALID_CELLID      ,  /*!< CellId not present */
-   INVALID_UEID        ,  /*!< UEId not present */
-}UeDeleteResult;
-
-typedef enum
-{
    RLC_AM,                    //Acknowledged Mode
    RLC_UM_BI_DIRECTIONAL,     //UnAcknowledged Mode
    RLC_UM_UNI_DIRECTIONAL_UL,
@@ -235,7 +228,7 @@ typedef struct rlcUeDeleteRsp
 {
    uint16_t       cellId;
    uint8_t        ueId;
-   UeDeleteResult result;
+   Result         result;
 }RlcUeDeleteRsp;
 
 /* UL RRC Message from RLC to DU APP */

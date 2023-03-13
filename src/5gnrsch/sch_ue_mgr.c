@@ -1399,12 +1399,12 @@ void deleteSchUeCb(SchUeCb *ueCb)
 *    Functionality: Fill and send UE delete response to MAC
 *
 * @params[in] Inst inst, SchUeDelete  *ueDelete, SchMacRsp result, 
-*              ErrorCause cause
+*              Cause cause
 * @return ROK     - success
 *         RFAILED - failure
 *
 * ****************************************************************/
-void SchSendUeDeleteRspToMac(Inst inst, SchUeDelete  *ueDelete, SchMacRsp result, ErrorCause cause)
+void SchSendUeDeleteRspToMac(Inst inst, SchUeDelete  *ueDelete, SchMacRsp result, Cause cause)
 {
     Pst rspPst;
     SchUeDeleteRsp  delRsp;
@@ -1440,7 +1440,7 @@ void SchSendUeDeleteRspToMac(Inst inst, SchUeDelete  *ueDelete, SchMacRsp result
 uint8_t SchProcUeDeleteReq(Pst *pst, SchUeDelete  *ueDelete)
 {
     uint8_t      idx=0, ueId=0, ret=ROK;
-    ErrorCause   result;
+    Cause   result;
     SchCellCb    *cellCb = NULLP;
     Inst         inst = pst->dstInst - SCH_INST_START;
    
@@ -1456,7 +1456,7 @@ uint8_t SchProcUeDeleteReq(Pst *pst, SchUeDelete  *ueDelete)
     if(cellCb->cellId != ueDelete->cellId)
     {
        DU_LOG("\nERROR  -->  SCH : SchProcUeDeleteReq(): cell Id is not available");
-       result =  INVALID_CELLID;
+       result =  CELLID_INVALID;
     }
     else
     {
@@ -1467,16 +1467,16 @@ uint8_t SchProcUeDeleteReq(Pst *pst, SchUeDelete  *ueDelete)
           cellCb->api->SchUeDeleteReq(&cellCb->ueCb[ueId-1]);
           deleteSchUeCb(&cellCb->ueCb[ueId-1]);
           cellCb->numActvUe--;
-          result = NOT_APPLICABLE;
+          result = SUCCESSFUL;
        }
        else
        {
           DU_LOG("\nERROR  -->  SCH : SchProcUeDeleteReq(): SchUeCb not found");
-          result =  INVALID_UEID;
+          result =  UEID_INVALID;
        }
     }
     
-    if(result == NOT_APPLICABLE)
+    if(result == SUCCESSFUL)
     {
        SchSendUeDeleteRspToMac(inst, ueDelete, RSP_OK, result);
     }

@@ -500,7 +500,7 @@ void fapiMacConfigRsp(uint16_t cellId)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t MacSendCellDeleteRsp(CellDeleteStatus result, uint8_t cellId)
+uint8_t MacSendCellDeleteRsp(Cause result, uint8_t cellId)
 {
    MacCellDeleteRsp *deleteRsp=NULLP;
    Pst            rspPst;
@@ -545,7 +545,7 @@ uint8_t MacProcSchCellDeleteRsp(Pst *pst, SchCellDeleteRsp *schCellDelRsp)
 {
    uint8_t  ret = ROK, sliceIdx = 0, plmnIdx = 0;
    uint16_t cellIdx=0;
-   CellDeleteStatus status;
+   Cause status;
 
 #ifdef CALL_FLOW_DEBUG_LOG
    DU_LOG("\nCall Flow: ENTSCH -> ENTMAC : EVENT_CELL_DELETE_RSP_TO_MAC\n");
@@ -562,7 +562,7 @@ uint8_t MacProcSchCellDeleteRsp(Pst *pst, SchCellDeleteRsp *schCellDelRsp)
          {
             if(macCb.macCell[cellIdx]->cellId == schCellDelRsp->cellId)
             {
-               status  = SUCCESSFUL_RSP;
+               status  = SUCCESSFUL;
                for(plmnIdx = 0; plmnIdx < MAX_PLMN; plmnIdx++)
                {
                   if(macCb.macCell[cellIdx]->macCellCfg.cellCfg.plmnInfoList[plmnIdx].snssai)
@@ -582,21 +582,21 @@ uint8_t MacProcSchCellDeleteRsp(Pst *pst, SchCellDeleteRsp *schCellDelRsp)
             else
             {
                DU_LOG("ERROR  -->  MAC : MacProcSchCellDeleteRsp(): CellId[%d] does not exists", schCellDelRsp->cellId);
-               status = CELL_ID_INVALID;
+               status = CELLID_INVALID;
                ret = RFAILED;
             }
          }
          else
          {
             DU_LOG("ERROR  -->  MAC : MacProcSchCellDeleteRsp(): CellId[%d] does not exists", schCellDelRsp->cellId);
-            status = CELL_ID_INVALID;
+            status = CELLID_INVALID;
             ret = RFAILED;
          }
       }
       else
       {
          DU_LOG("ERROR  -->  MAC : MacProcSchCellDeleteRsp(): CellId[%d] does not exists", schCellDelRsp->cellId);
-         status = CELL_ID_INVALID;
+         status = CELLID_INVALID;
          ret = RFAILED;
       }
       if(MacSendCellDeleteRsp(status, schCellDelRsp->cellId) != ROK)
@@ -693,7 +693,7 @@ uint8_t MacProcCellDeleteReq(Pst *pst, MacCellDeleteReq *cellDelete)
       if(ret == RFAILED)
       {
           DU_LOG("\nERROR  -->  MAC : MacProcCellDeleteReq(): Sending failure response to DU");
-          if(MacSendCellDeleteRsp(CELL_ID_INVALID, cellDelete->cellId) != ROK)
+          if(MacSendCellDeleteRsp(CELLID_INVALID, cellDelete->cellId) != ROK)
           {
              DU_LOG("\nERROR  -->  MAC : MacProcCellDeleteReq(): failed to send cell delete rsp for cellID[%d]",\
              cellDelete->cellId);
