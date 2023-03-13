@@ -225,7 +225,7 @@ void fillPucchFormat0(SchPucchInfo *ulSchedPucch, SchPucchResrcInfo *resrcInfo)
 {
    if(resrcInfo->SchPucchFormat.format0)
    {
-      ulSchedPucch->fdAlloc.resAlloc.type1.numPrb = PUCCH_NUM_PRB_FORMAT_0_1_4;
+      ulSchedPucch->fdAlloc.numPrb = PUCCH_NUM_PRB_FORMAT_0_1_4;
       ulSchedPucch->pucchFormat  = PUCCH_FORMAT_0;
       ulSchedPucch->initialCyclicShift =  resrcInfo->SchPucchFormat.format0->initialCyclicShift;
       ulSchedPucch->tdAlloc.numSymb = resrcInfo->SchPucchFormat.format0->numSymbols;
@@ -250,7 +250,7 @@ void fillPucchFormat1(SchPucchInfo *ulSchedPucch, SchPucchResrcInfo *resrcInfo)
 {
    if(resrcInfo->SchPucchFormat.format1)
    {
-      ulSchedPucch->fdAlloc.resAlloc.type1.numPrb = PUCCH_NUM_PRB_FORMAT_0_1_4;
+      ulSchedPucch->fdAlloc.numPrb = PUCCH_NUM_PRB_FORMAT_0_1_4;
       ulSchedPucch->pucchFormat  = PUCCH_FORMAT_1;
       ulSchedPucch->initialCyclicShift =  resrcInfo->SchPucchFormat.format1->initialCyclicShift;
       ulSchedPucch->tdAlloc.numSymb = resrcInfo->SchPucchFormat.format1->numSymbols;
@@ -343,7 +343,7 @@ uint8_t fillUlSchedPucchDedicatedCfg(SchCellCb *cell, SchPucchCfg *pucchDedCfg,\
             {
                ulSchedPucch->intraFreqHop = pucchDedCfg->resrc->resrcToAddModList[resrcIdx].intraFreqHop;
                ulSchedPucch->secondPrbHop = pucchDedCfg->resrc->resrcToAddModList[resrcIdx].secondPrbHop;
-               ulSchedPucch->fdAlloc.resAlloc.type1.startPrb = pucchDedCfg->resrc->resrcToAddModList[resrcIdx].startPrb;
+               ulSchedPucch->fdAlloc.startPrb = pucchDedCfg->resrc->resrcToAddModList[resrcIdx].startPrb;
                ulSchedPucch->pucchFormat = pucchDedCfg->resrc->resrcToAddModList[resrcIdx].pucchFormat;
                ret = fillUlSchedPucchFormat(ulSchedPucch->pucchFormat, ulSchedPucch,\
                      &pucchDedCfg->resrc->resrcToAddModList[resrcIdx], NULLP);
@@ -450,8 +450,8 @@ uint16_t fillPucchResourceInfo(uint8_t ueId, SchPucchInfo *schPucchInfo, Inst in
             &startPrb, PUCCH_NUM_PRB_FORMAT_0_1_4);
       if (ret == ROK)
       {
-         schPucchInfo->fdAlloc.resAlloc.type1.startPrb = ulBwp->freqAlloc.startPrb + pucchResourceSet[pucchIdx][3];
-         schPucchInfo->fdAlloc.resAlloc.type1.numPrb = PUCCH_NUM_PRB_FORMAT_0_1_4;
+         schPucchInfo->fdAlloc.startPrb = ulBwp->freqAlloc.startPrb + pucchResourceSet[pucchIdx][3];
+         schPucchInfo->fdAlloc.numPrb = PUCCH_NUM_PRB_FORMAT_0_1_4;
          schPucchInfo->tdAlloc.startSymb = pucchResourceSet[pucchIdx][1];
          schPucchInfo->tdAlloc.numSymb = pucchResourceSet[pucchIdx][2];
          schPucchInfo->pucchFormat = pucchResourceSet[pucchIdx][0];
