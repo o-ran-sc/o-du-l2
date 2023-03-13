@@ -135,26 +135,10 @@ typedef enum
 
 typedef enum
 {
-   SLICE_NOT_FOUND,
-   SLICE_CONFIGURED,
-   SLICE_RECONFIGURED,
-   RESOURCE_NOT_AVAILABLE 
-}RspCause;
-
-typedef enum
-{
    NO_TRANSMISSION,
    NEW_TRANSMISSION,
    REPEATITION 
 }PduTxOccsaion;
-
-typedef enum
-{
-   UNSPECIFIED_CAUSE,
-   INVALID_PARAM_VALUE,
-   RESOURCE_UNAVAILABLE,
-   SYSTEM_ERROR
-}SchFailureCause;
 
 typedef enum
 {
@@ -167,13 +151,6 @@ typedef enum
    SR_PROHIBIT_MS64,
    SR_PROHIBIT_MS128
 }SchSrProhibitTimer;
-
-typedef enum
-{
-   NOT_APPLICABLE,
-   INVALID_CELLID,
-   INVALID_UEID
-}ErrorCause;
 
 typedef enum
 {
@@ -902,7 +879,7 @@ typedef struct schCellCfgCfm
 {
    uint16_t         cellId;     /* Cell Id */
    SchMacRsp        rsp;   
-   SchFailureCause  cause;
+   CausesOfResult   cause;
 }SchCellCfgCfm;
 
 typedef struct ssbInfo
@@ -1903,7 +1880,7 @@ typedef struct schUeCfgRsp
    uint16_t   ueId;
    uint16_t   crnti;
    SchMacRsp  rsp;
-   SchFailureCause cause;
+   CausesOfResult cause;
 }SchUeCfgRsp;
 
 /*As per WG8, UE ReCFG and UECFG have same structure definition*/
@@ -1957,7 +1934,7 @@ typedef struct schUeDeleteRsp
    uint16_t   cellId;
    uint16_t   crnti;
    SchMacRsp  rsp;
-   ErrorCause cause;
+   CausesOfResult cause;
 }SchUeDeleteRsp;
 
 typedef struct schCellDeleteReq 
@@ -1970,7 +1947,7 @@ typedef struct schCellDeleteRsp
 {
    uint16_t        cellId;
    SchMacRsp       rsp;
-   SchFailureCause cause;
+   CausesOfResult  cause;
 }SchCellDeleteRsp;
 
 typedef struct dataVolInfo
@@ -2029,7 +2006,7 @@ typedef struct schSliceCfgRsp
 {
    Snssai     snssai;
    SchMacRsp  rsp;
-   RspCause   cause;
+   CausesOfResult cause;
 }SchSliceCfgRsp;
 
 /*As per ORAN-WG8, Slice Cfg and Recfg are same structures*/

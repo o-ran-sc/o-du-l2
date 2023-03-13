@@ -1399,12 +1399,12 @@ void deleteSchUeCb(SchUeCb *ueCb)
 *    Functionality: Fill and send UE delete response to MAC
 *
 * @params[in] Inst inst, SchUeDelete  *ueDelete, SchMacRsp result, 
-*              ErrorCause cause
+*              CausesOfResult cause
 * @return ROK     - success
 *         RFAILED - failure
 *
 * ****************************************************************/
-void SchSendUeDeleteRspToMac(Inst inst, SchUeDelete  *ueDelete, SchMacRsp result, ErrorCause cause)
+void SchSendUeDeleteRspToMac(Inst inst, SchUeDelete  *ueDelete, SchMacRsp result, CausesOfResult cause)
 {
     Pst rspPst;
     SchUeDeleteRsp  delRsp;
@@ -1439,9 +1439,9 @@ void SchSendUeDeleteRspToMac(Inst inst, SchUeDelete  *ueDelete, SchMacRsp result
 * ****************************************************************/
 uint8_t SchProcUeDeleteReq(Pst *pst, SchUeDelete  *ueDelete)
 {
-    uint8_t      idx=0, ueId=0, ret=ROK;
-    ErrorCause   result;
-    SchCellCb    *cellCb = NULLP;
+    uint8_t idx=0, ueId=0, ret=ROK;
+    CausesOfResult cause;
+    SchCellCb *cellCb = NULLP;
     Inst         inst = pst->dstInst - SCH_INST_START;
    
     if(!ueDelete)
@@ -1456,7 +1456,7 @@ uint8_t SchProcUeDeleteReq(Pst *pst, SchUeDelete  *ueDelete)
     if(cellCb->cellId != ueDelete->cellId)
     {
        DU_LOG("\nERROR  -->  SCH : SchProcUeDeleteReq(): cell Id is not available");
-       result =  INVALID_CELLID;
+       cause =  CELLID_INVALID;
     }
     else
     {
@@ -1467,22 +1467,22 @@ uint8_t SchProcUeDeleteReq(Pst *pst, SchUeDelete  *ueDelete)
           cellCb->api->SchUeDeleteReq(&cellCb->ueCb[ueId-1]);
           deleteSchUeCb(&cellCb->ueCb[ueId-1]);
           cellCb->numActvUe--;
-          result = NOT_APPLICABLE;
+          cause = SUCCESSFUL;
        }
        else
        {
           DU_LOG("\nERROR  -->  SCH : SchProcUeDeleteReq(): SchUeCb not found");
-          result =  INVALID_UEID;
+          cause =  UEID_INVALID;
        }
     }
     
-    if(result == NOT_APPLICABLE)
+    if(cause == SUCCESSFUL)
     {
-       SchSendUeDeleteRspToMac(inst, ueDelete, RSP_OK, result);
+       SchSendUeDeleteRspToMac(inst, ueDelete, RSP_OK, cause);
     }
     else
     {
-       SchSendUeDeleteRspToMac(inst, ueDelete, RSP_NOK, result);
+       SchSendUeDeleteRspToMac(inst, ueDelete, RSP_NOK, cause);
        ret = RFAILED;
     }
     return ret;

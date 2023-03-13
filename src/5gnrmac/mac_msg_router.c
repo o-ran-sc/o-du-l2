@@ -173,6 +173,12 @@ void MacHdlDuappEvents(Pst *pst, Buffer *mBuf)
             unpackMacDlPcchInd(MacProcDlPcchInd, pst, mBuf);
             break;
          }
+      case EVENT_MAC_UE_RESET_REQ:
+         {
+            /* Process UE Reset Request */  
+            unpackMacUeResetReq(MacProcUeResetReq, pst, mBuf);
+            break;
+         }
 
       default:
          RG_FREE_MSG(mBuf);

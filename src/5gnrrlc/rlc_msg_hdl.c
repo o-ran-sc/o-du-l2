@@ -853,13 +853,13 @@ uint8_t RlcProcDlUserDataTransfer(Pst *pst, RlcDlUserDataInfo *dlDataMsgInfo)
  *    Functionality:
  *      sending UE delete response to DU 
  *
- * @params[in] uint8_t cellId, uint8_t ueId, UeDeleteResult result 
+ * @params[in] uint8_t cellId, uint8_t ueId, CausesOfResult cause 
  *
  * @return ROK     - success
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t sendRlcUeDeleteRspToDu(uint16_t cellId,uint8_t ueId, UeDeleteResult result)
+uint8_t sendRlcUeDeleteRspToDu(uint16_t cellId,uint8_t ueId, CausesOfResult cause)
 {
    Pst pst;  
    RlcUeDeleteRsp *ueDeleteRsp = NULLP;
@@ -876,7 +876,7 @@ uint8_t sendRlcUeDeleteRspToDu(uint16_t cellId,uint8_t ueId, UeDeleteResult resu
    {
       ueDeleteRsp->cellId = cellId;
       ueDeleteRsp->ueId = ueId;
-      ueDeleteRsp->result = result;
+      ueDeleteRsp->cause = cause;
   
       if(rlcSendUeDeleteRspToDu(&pst, ueDeleteRsp) == ROK)
       {
@@ -915,7 +915,7 @@ uint8_t RlcProcUeDeleteReq(Pst *pst, RlcUeDelete *ueDelete)
    uint8_t ret = ROK;
    RlcCb *gRlcCb = NULLP;
    RlcUlUeCb *ueCb = NULLP;
-   UeDeleteResult result=SUCCESSFUL;
+   CausesOfResult cause =SUCCESSFUL;
 
    DU_LOG("\nDEBUG  -->  RLC: UE Delete request received. CellID[%d] UEID[%d]",ueDelete->cellId, ueDelete->ueId);
 
@@ -935,17 +935,17 @@ uint8_t RlcProcUeDeleteReq(Pst *pst, RlcUeDelete *ueDelete)
          }
          else
          {
-            result = INVALID_CELLID;
+            cause = CELLID_INVALID;
          }
       }
       else
       {
-         result = INVALID_UEID;
+         cause = UEID_INVALID;
       }
 
-      if(result != SUCCESSFUL)
+      if(cause != SUCCESSFUL)
       {
-         ret = sendRlcUeDeleteRspToDu(ueDelete->cellId, ueDelete->ueId, result);
+         ret = sendRlcUeDeleteRspToDu(ueDelete->cellId, ueDelete->ueId, cause );
          if(ret != ROK)
          {
             DU_LOG("\nERROR  -->  RLC: RlcProcUeDeleteReq():Failed to send UE Delete response to DU");
