@@ -1797,12 +1797,12 @@ uint8_t fillSliceCfgRsp(Inst inst, CmLListCp *storedSliceCfg, SchCellCb *cellCb,
                if(addSliceCfgInSchDb(storedSliceCfg, schSliceCfgReq->listOfSlices[cfgIdx]) == ROK)
                {
                   sliceFound = RSP_OK;
-                  schSliceCfgRsp.cause = SLICE_CONFIGURED;
+                  schSliceCfgRsp.cause = SUCCESSFUL;
                }
                else
                {
                   DU_LOG("\nERROR  --> SCH : Failed to store slice configuration in SchDb");
-                  schSliceCfgRsp.cause = RESOURCE_NOT_AVAILABLE;
+                  schSliceCfgRsp.cause = RESOURCE_UNAVAILABLE;
                   ret = RFAILED;
                }
                plmnIdx = MAX_PLMN;
@@ -1811,7 +1811,7 @@ uint8_t fillSliceCfgRsp(Inst inst, CmLListCp *storedSliceCfg, SchCellCb *cellCb,
          }
       }
       
-      if((sliceFound == RSP_NOK) && (schSliceCfgRsp.cause != RESOURCE_NOT_AVAILABLE))
+      if((sliceFound == RSP_NOK) && (schSliceCfgRsp.cause != RESOURCE_UNAVAILABLE))
          schSliceCfgRsp.cause = SLICE_NOT_FOUND;
       
       schSliceCfgRsp.snssai = schSliceCfgReq->listOfSlices[cfgIdx]->snssai;
@@ -1977,7 +1977,7 @@ uint8_t fillSliceRecfgRsp(Inst inst, CmLListCp *storedSliceCfg, SchSliceRecfgReq
       schSliceRecfgRsp.snssai = schSliceRecfgReq->listOfSlices[cfgIdx]->snssai;
       schSliceRecfgRsp.rsp    = sliceFound;
       if(schSliceRecfgRsp.rsp == RSP_OK)
-         schSliceRecfgRsp.cause = SLICE_RECONFIGURED;
+         schSliceRecfgRsp.cause = SUCCESSFUL;
       else
          schSliceRecfgRsp.cause = SLICE_NOT_FOUND;
       SchSendSliceRecfgRspToMac(inst, schSliceRecfgRsp);

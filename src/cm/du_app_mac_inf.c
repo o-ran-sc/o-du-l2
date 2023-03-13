@@ -1960,6 +1960,155 @@ uint8_t unpackMacDlPcchInd(DuMacDlPcchInd func, Pst *pst, Buffer *mBuf)
 }
 
 /*******************************************************************
+*
+* @brief Packs and Sends UE Reset Request from DUAPP to MAC
+*
+* @details
+*
+*    Function : packDuMacUeResetReq
+*
+*    Functionality:
+*       Packs and Sends UE Reset Request from DUAPP to MAC
+*
+*
+* @params[in] Post structure pointer
+*             MacUeResetReq pointer
+* @return ROK     - success
+*         RFAILED - failure
+*
+* ****************************************************************/
+uint8_t packDuMacUeResetReq(Pst *pst, MacUeResetReq *ueDel)
+{
+    Buffer *mBuf = NULLP;
+
+    if(pst->selector == ODU_SELECTOR_LWLC)
+    {
+       if (ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf) != ROK)
+       {
+          DU_LOG("\nERROR  --> MAC : Memory allocation failed at packDuMacUeResetReq");
+          return RFAILED;
+       }
+       /* pack the address of the structure */
+       CMCHKPK(oduPackPointer,(PTR)ueDel, mBuf);
+    }
+    else
+    {
+       DU_LOG("\nERROR  -->  MAC: Only LWLC supported for packDuMacUeResetReq");
+       return RFAILED;
+    }
+    return ODU_POST_TASK(pst,mBuf);
+}
+
+/*******************************************************************
+*
+* @brief Unpacks UE Reset Request received from DU APP
+*
+* @details
+*
+*    Function : unpackMacUeResetReq 
+*
+*    Functionality:
+*         Unpacks UE Reset Request received from DU APP
+*
+* @params[in] Pointer to Handler
+*             Post structure pointer
+*             Message Buffer
+* @return ROK     - success
+*         RFAILED - failure
+*
+* ****************************************************************/
+uint8_t unpackMacUeResetReq(DuMacUeResetReq func, Pst *pst, Buffer *mBuf)
+{
+    if(pst->selector == ODU_SELECTOR_LWLC)
+    {
+       MacUeResetReq *ueReset;
+
+       /* unpack the address of the structure */
+       CMCHKUNPK(oduUnpackPointer, (PTR *)&ueReset, mBuf);
+       ODU_PUT_MSG_BUF(mBuf);
+       return (*func)(pst, ueReset);
+    }
+    else
+    {
+       /* Nothing to do for other selectors */
+       DU_LOG("\nERROR  -->  DU APP : Only LWLC supported for UE Reset Request ");
+       ODU_PUT_MSG_BUF(mBuf);
+    }
+
+    return RFAILED;
+}
+
+/*******************************************************************
+ *
+ * @brief Pack and send UE reset response from MAC to DU APP
+ *
+ * @details
+ *
+ *    Function : packDuMacUeResetRsp
+ *
+ *    Functionality:
+ *       Pack and send UE  reset response from MAC to DU APP
+ *
+ * @params[in]
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t packDuMacUeResetRsp(Pst *pst, MacUeResetRsp *resetRsp)
+{
+   Buffer *mBuf = NULLP;
+   
+   if(pst->selector == ODU_SELECTOR_LWLC)
+   {
+      if (ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf) != ROK)
+      {
+         DU_LOG("\nERROR  --> MAC : Memory allocation failed at packDuMacUeResetRsp");
+         return RFAILED;
+      }
+      /* pack the address of the structure */
+      CMCHKPK(oduPackPointer,(PTR)resetRsp, mBuf);
+   }
+   else
+   {
+      DU_LOG("\nERROR  -->  MAC: Only LWLC supported for packDuMacUeResetRsp");
+      return RFAILED;
+   }
+   
+   return ODU_POST_TASK(pst,mBuf);
+}
+
+/*******************************************************************
+*
+* @brief Unpack UE Config Response from MAC to DU APP
+*
+* @details
+*
+*    Function :unpackDuMacUeResetRsp 
+*
+*    Functionality: Unpack UE Config Response from MAC to DU APP
+*
+* @params[in]
+* @return ROK     - success
+*         RFAILED - failure
+*
+* ****************************************************************/
+uint8_t unpackDuMacUeResetRsp(MacDuUeResetRspFunc func, Pst *pst, Buffer *mBuf)
+{
+    if(pst->selector == ODU_SELECTOR_LWLC)
+    {
+       MacUeResetRsp *ueResetRsp = NULLP;
+
+       /* unpack the address of the structure */
+       CMCHKUNPK(oduUnpackPointer, (PTR *)&ueResetRsp, mBuf);
+       ODU_PUT_MSG_BUF(mBuf);
+       return (*func)(pst, ueResetRsp);
+    }
+
+    ODU_PUT_MSG_BUF(mBuf);
+    return RFAILED;
+}
+
+/*******************************************************************
  *
  * @brief Searches for first unset bit in ueBitMap
  *

@@ -400,7 +400,7 @@ uint8_t DuProcMacCellDeleteRsp(Pst *pst, MacCellDeleteRsp *deleteRsp)
 
    if(deleteRsp)
    {
-      if(deleteRsp->result == SUCCESSFUL_RSP)
+      if(deleteRsp->status == SUCCESSFUL)
       {
          GET_CELL_IDX(deleteRsp->cellId, cellIdx);
          DU_LOG("\nINFO   -->  DU APP : MAC CELL Delete Response : SUCCESS [CELL IDX : %d]", deleteRsp->cellId);

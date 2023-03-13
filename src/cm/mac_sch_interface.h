@@ -141,26 +141,10 @@ typedef enum
 
 typedef enum
 {
-   SLICE_NOT_FOUND,
-   SLICE_CONFIGURED,
-   SLICE_RECONFIGURED,
-   RESOURCE_NOT_AVAILABLE 
-}RspCause;
-
-typedef enum
-{
    NO_TRANSMISSION,
    NEW_TRANSMISSION,
    REPEATITION 
 }PduTxOccsaion;
-
-typedef enum
-{
-   UNSPECIFIED_CAUSE,
-   INVALID_PARAM_VALUE,
-   RESOURCE_UNAVAILABLE,
-   SYSTEM_ERROR
-}SchFailureCause;
 
 typedef enum
 {
@@ -173,13 +157,6 @@ typedef enum
    SR_PROHIBIT_MS64,
    SR_PROHIBIT_MS128
 }SchSrProhibitTimer;
-
-typedef enum
-{
-   NOT_APPLICABLE,
-   INVALID_CELLID,
-   INVALID_UEID
-}ErrorCause;
 
 typedef enum
 {
@@ -934,7 +911,7 @@ typedef struct schCellCfgCfm
 {
    uint16_t         cellId;     /* Cell Id */
    SchMacRsp        rsp;   
-   SchFailureCause  cause;
+   CauseOfResult    cause;
 }SchCellCfgCfm;
 
 /*Ref: ORAN_WG8.V7.0.0 Sec 11.2.4.2.2 Cell Del Req*/
@@ -948,7 +925,7 @@ typedef struct schCellDeleteRsp
 {
    uint16_t        cellId;
    SchMacRsp       rsp;
-   SchFailureCause cause;
+   CauseOfResult   cause;
 }SchCellDeleteRsp;
 
 /*Ref: ORAN_WG8.V7.0.0 Sec 11.2.4.2.3*/
@@ -976,7 +953,7 @@ typedef struct schSliceCfgRsp
 {
    Snssai     snssai;
    SchMacRsp  rsp;
-   RspCause   cause;
+   CauseOfResult cause;
 }SchSliceCfgRsp;
 
 /*As per ORAN-WG8 V7.0.0 Sec 11.2.4.3.4 , Slice Cfg and Recfg are same structures*/
@@ -2037,7 +2014,7 @@ typedef struct schUeCfgRsp
    uint16_t   ueId;
    uint16_t   crnti;
    SchMacRsp  rsp;
-   SchFailureCause cause;
+   CauseOfResult cause;
 }SchUeCfgRsp;
 
 /*As per WG8 V7.0.0 Sec 11.2.4.3.6, UE ReCFG and UECFG have same structure definition*/
@@ -2056,7 +2033,7 @@ typedef struct schUeDeleteRsp
    uint16_t   cellId;
    uint16_t   crnti;
    SchMacRsp  rsp;
-   ErrorCause cause;
+   CauseOfResult cause;
 }SchUeDeleteRsp;
 
 /*Spec O-RAN, WG8, V7.0.0, '11.2.4.2.8' DL HARQ Indication*/
