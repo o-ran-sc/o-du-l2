@@ -88,6 +88,78 @@ uint8_t sendCrcIndMacToSch(CrcIndInfo *crcInd)
 
 /*******************************************************************
  *
+ * @brief Sends UL CQI Indication to SCH
+ *
+ * @details
+ *
+ *    Function : sendUlCqiIndMacToSch 
+ *
+ *    Functionality:
+ *       Sends Ul Cqi Indication to SCH
+ *
+ * @params[in] 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ ****************************************************************/
+uint8_t sendUlCqiIndMacToSch(UlCqiInd *ulCqiInd)
+{
+   Pst pst;
+
+   FILL_PST_MAC_TO_SCH(pst, EVENT_UL_CQI_TO_SCH);
+   return(SchMessageRouter(&pst, (void *)ulCqiInd));
+}
+
+/*******************************************************************
+ *
+ * @brief Sends DL CQI Indication to SCH
+ *
+ * @details
+ *
+ *    Function : sendDlCqiIndMacToSch 
+ *
+ *    Functionality:
+ *       Sends Dl Cqi Indication to SCH
+ *
+ * @params[in] 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ ****************************************************************/
+uint8_t sendDlCqiIndMacToSch(DlCqiInd *dlCqiInd)
+{
+   Pst pst;
+
+   FILL_PST_MAC_TO_SCH(pst, EVENT_DL_CQI_TO_SCH);
+   return(SchMessageRouter(&pst, (void *)dlCqiInd));
+}
+
+/*******************************************************************
+ *
+ * @brief Sends Power Headroom Indication to SCH
+ *
+ * @details
+ *
+ *    Function : sendPhrIndToSch 
+ *
+ *    Functionality:
+ *       Sends Phr Indication to SCH
+ *
+ * @params[in] 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ ****************************************************************/
+uint8_t sendPhrIndToSch(PwrHeadroomInd *macPhrInd)
+{
+   Pst pst;
+
+   FILL_PST_MAC_TO_SCH(pst, EVENT_PHR_IND_TO_SCH);
+   return(SchMessageRouter(&pst, (void *)macPhrInd));
+}
+
+/*******************************************************************
+ *
  * @brief Processes CRC Indication from PHY
  *
  * @details

@@ -2387,6 +2387,201 @@ RgMngmt       *cfm
    return;
 }
 
+/*******************************************************************
+ *
+ * @brief Processes DL CQI ind from MAC
+ *
+ * @details
+ *
+ *    Function : SchProcDlCqiInd
+ *
+ *    Functionality:
+ *       Processes DL CQI ind from MAC
+ *
+ * @params[in] 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t SchProcDlCqiInd(Pst *pst, DlCqiInd *dlCqiInd)
+{
+   uint8_t  ret = ROK;
+   uint16_t ueId = 0, cellIdx = 0;
+   SchUeCb *ueCb = NULLP;
+   SchCellCb *cell = NULLP;
+   Inst  inst = pst->dstInst-SCH_INST_START;   
+
+   if(!dlCqiInd)
+   {
+      DU_LOG("\nERROR  -->  SCH : SchProcDlCqiInd(): CQI Ind is empty");
+      ret = RFAILED;
+   }
+   else
+   {
+      GET_CELL_IDX(dlCqiInd->cellId, cellIdx);
+      cell = schCb[inst].cells[cellIdx];
+      if(cell == NULLP)
+      { 
+         DU_LOG("\nERROR  -->  SCH : SchProcDlCqiInd(): cell Id[%d] is not available", dlCqiInd->cellId);
+         ret = RFAILED;
+      }
+      else
+      {
+         if(cell->cellId == dlCqiInd->cellId)
+         {
+            GET_UE_ID(dlCqiInd->crnti, ueId);
+            ueCb = &cell->ueCb[ueId-1];
+            if(!ueCb)
+            {
+               DU_LOG("\nERROR  -->  SCH : SchProcDlCqiInd(): UeCb[%d] is empty for received crnti[%d]",ueId,dlCqiInd->crnti);
+               ret = RFAILED;
+            }
+            else
+            {
+               /*TODO: complete the processing of DL CQI Ind*/ 
+            }
+         }
+         else
+         {
+            DU_LOG("\nERROR  -->  SCH : SchProcDlCqiInd(): Received cell Id[%d] is not matching with CellCb[%d]",\
+                    dlCqiInd->cellId, cell->cellId);
+            ret = RFAILED;
+         }
+      }
+   }
+   return ret;
+}
+
+/*******************************************************************
+ *
+ * @brief Processes UL CQI ind from MAC
+ *
+ * @details
+ *
+ *    Function : SchProcUlCqiInd
+ *
+ *    Functionality:
+ *       Processes UL CQI ind from MAC
+ *
+ * @params[in] 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t SchProcUlCqiInd(Pst *pst, UlCqiInd *ulCqiInd)
+{
+   uint8_t  ret = ROK;
+   uint16_t ueId = 0, cellIdx = 0;
+   SchUeCb *ueCb = NULLP;
+   SchCellCb *cell = NULLP;
+   Inst  inst = pst->dstInst-SCH_INST_START;   
+
+   if(!ulCqiInd)
+   {
+      DU_LOG("\nERROR  -->  SCH : SchProcUlCqiInd(): CQI Ind is empty");
+      ret = RFAILED;
+   }
+   else
+   {
+      GET_CELL_IDX(ulCqiInd->cellId, cellIdx);
+      cell = schCb[inst].cells[cellIdx];
+      if(cell == NULLP)
+      { 
+         DU_LOG("\nERROR  -->  SCH : SchProcUlCqiInd(): cell Id[%d] is not available", ulCqiInd->cellId);
+         ret = RFAILED;
+      }
+      else
+      {
+         if(cell->cellId == ulCqiInd->cellId)
+         {
+            GET_UE_ID(ulCqiInd->crnti, ueId);
+            ueCb = &cell->ueCb[ueId-1];
+            if(!ueCb)
+            {
+               DU_LOG("\nERROR  -->  SCH : SchProcUlCqiInd(): UeCb[%d] is empty for received crnti[%d]",ueId,ulCqiInd->crnti);
+               ret = RFAILED;
+            }
+            else
+            {
+               /*TODO: complete the processing of UL CQI Ind*/ 
+            }
+         }
+         else
+         {
+            DU_LOG("\nERROR  -->  SCH : SchProcUlCqiInd(): Received cell Id[%d] is not matching with CellCb[%d]",\
+                    ulCqiInd->cellId, cell->cellId);
+            ret = RFAILED;
+         }
+      }
+   }
+   return ret;
+}
+
+/*******************************************************************
+ *
+ * @brief Processes PHR ind from MAC
+ *
+ * @details
+ *
+ *    Function : SchProcPhrInd
+ *
+ *    Functionality:
+ *       Processes PHR ind from MAC
+ *
+ * @params[in] 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t SchProcPhrInd(Pst *pst, PwrHeadroomInd *schPhrInd)
+{
+   uint8_t  ret = ROK;
+   uint16_t ueId = 0, cellIdx = 0;
+   SchUeCb *ueCb = NULLP;
+   SchCellCb *cell = NULLP;
+   Inst  inst = pst->dstInst-SCH_INST_START;   
+
+   if(!schPhrInd)
+   {
+      DU_LOG("\nERROR  -->  SCH : SchProcPhrInd(): PHR is empty");
+      ret = RFAILED;
+   }
+   else
+   {
+      GET_CELL_IDX(schPhrInd->cellId, cellIdx);
+      cell = schCb[inst].cells[cellIdx];
+      if(cell == NULLP)
+      { 
+         DU_LOG("\nERROR  -->  SCH : schProcPhrInd(): cell Id[%d] is not available", schPhrInd->cellId);
+         ret = RFAILED;
+      }
+      else
+      {
+         if(cell->cellId == schPhrInd->cellId)
+         {
+            GET_UE_ID(schPhrInd->crnti, ueId);
+            ueCb = &cell->ueCb[ueId-1];
+            if(!ueCb)
+            {
+               DU_LOG("\nERROR  -->  SCH : SchProcPhrInd(): UeCb[%d] is empty for received crnti[%d]",ueId,schPhrInd->crnti);
+               ret = RFAILED;
+            }
+            else
+            {
+               /*TODO: complete the processing of PHR Ind*/ 
+            }
+         }
+         else
+         {
+            DU_LOG("\nERROR  -->  SCH : SchProcPhrInd(): Received cell Id[%d] is not matching with CellCb[%d]",\
+                    schPhrInd->cellId, cell->cellId);
+            ret = RFAILED;
+         }
+      }
+   }
+   return ret;
+}
+
 /**********************************************************************
   End of file
  **********************************************************************/

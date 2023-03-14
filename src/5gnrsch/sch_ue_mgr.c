@@ -374,14 +374,14 @@ uint8_t fillSchUeCbFrmCfgReq(Inst inst, SchUeCb *ueCb, SchUeCfgReq *ueCfg)
       {
          if(dlDataToUlAck)
          {
-            BuildK0K1Table(ueCb->cellCb, &ueCb->ueCfg.spCellCfg.servCellRecfg.initDlBwp.k0K1InfoTbl, false, pdschCfg,\
+            BuildK0K1Table(ueCb->cellCb, &ueCb->k0K1InfoTbl, false, pdschCfg,\
                   ueCfg->spCellCfg.servCellCfg.initDlBwp.pdschCfg, dlDataToUlAck->dlDataToUlAckListCount,\
                   dlDataToUlAck->dlDataToUlAckList);
-            ueCb->ueCfg.spCellCfg.servCellRecfg.initDlBwp.k0K1TblPrsnt = true;
+            ueCb->k0K1TblPrsnt = true;
             BuildK2InfoTable(ueCb->cellCb, ueCfg->spCellCfg.servCellCfg.initUlBwp.puschCfg.timeDomRsrcAllocList,\
                   ueCfg->spCellCfg.servCellCfg.initUlBwp.puschCfg.numTimeDomRsrcAlloc,\
-                  NULLP, &ueCb->ueCfg.spCellCfg.servCellRecfg.initUlBwp.k2InfoTbl);
-            ueCb->ueCfg.spCellCfg.servCellRecfg.initUlBwp.k2TblPrsnt = true;
+                  NULLP, &ueCb->k2InfoTbl);
+            ueCb->k2TblPrsnt = true;
          }
       }
    }
@@ -552,14 +552,14 @@ uint8_t fillSchUeCbFrmRecfgReq(Inst inst, SchUeCb *ueCb, SchUeRecfgReq *ueRecfg)
       {
          if(dlDataToUlAck)
          {
-            BuildK0K1Table(ueCb->cellCb, &ueCb->ueCfg.spCellCfg.servCellRecfg.initDlBwp.k0K1InfoTbl, false, pdschCfg,\
+            BuildK0K1Table(ueCb->cellCb, &ueCb->k0K1InfoTbl, false, pdschCfg,\
                   ueRecfg->spCellRecfg.servCellRecfg.initDlBwp.pdschCfg, dlDataToUlAck->dlDataToUlAckListCount,\
                   dlDataToUlAck->dlDataToUlAckList);
-            ueCb->ueCfg.spCellCfg.servCellRecfg.initDlBwp.k0K1TblPrsnt = true;
+            ueCb->k0K1TblPrsnt = true;
             BuildK2InfoTable(ueCb->cellCb, ueRecfg->spCellRecfg.servCellRecfg.initUlBwp.puschCfg.timeDomRsrcAllocList,\
                   ueRecfg->spCellRecfg.servCellRecfg.initUlBwp.puschCfg.numTimeDomRsrcAlloc,\
-                  NULLP, &ueCb->ueCfg.spCellCfg.servCellRecfg.initUlBwp.k2InfoTbl);
-            ueCb->ueCfg.spCellCfg.servCellRecfg.initUlBwp.k2TblPrsnt = true;
+                  NULLP, &ueCb->k2InfoTbl);
+            ueCb->k2TblPrsnt = true;
          }
       }
    }
