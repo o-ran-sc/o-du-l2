@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ed8b461a_c308f25a",
+        "filename": "src/5gnrmac/mac_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 3502,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-03-14T05:39:36Z",
+      "side": 1,
+      "message": "no need to check the result value, bcz this condition is restricting the sending of successful response",
+      "range": {
+        "startLine": 3502,
+        "startChar": 19,
+        "endLine": 3502,
+        "endChar": 35
+      },
+      "revId": "f2951a3f5010f51bc0b175ae444f60dc19af3676",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
