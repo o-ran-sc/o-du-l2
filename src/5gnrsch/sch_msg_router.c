@@ -102,6 +102,20 @@ void callFlowSchMsgRouter(Pst *pst)
             strcpy(message,"EVENT_MODIFY_UE_CONFIG_REQ_TO_SCH");
             break;
          }
+      case EVENT_UL_CQI_TO_SCH:
+         {
+            strcpy(message,"EVENT_UL_CQI_TO_SCH");
+            break;
+         }
+      case EVENT_DL_CQI_TO_SCH:
+         {
+            strcpy(message,"EVENT_DL_CQI_TO_SCH");
+            break;
+         }
+      case EVENT_PHR_IND_TO_SCH
+         {
+            strcpy(message,"EVENT_PHR_IND_TO_SCH");
+         }
       case EVENT_RACH_IND_TO_SCH:
          {
             strcpy(message,"EVENT_RACH_IND_TO_SCH");
@@ -179,7 +193,7 @@ uint8_t SchMessageRouter(Pst *pst, void *msg)
    switch(pst->event)
    {
       case EVENT_SCH_GEN_CFG:
-         {
+      {
             SchProcGenCfgReq(pst, (RgMngmt *)msg);
          break;
       }
@@ -211,6 +225,21 @@ uint8_t SchMessageRouter(Pst *pst, void *msg)
       case EVENT_MODIFY_UE_CONFIG_REQ_TO_SCH:
       {
          SchModUeConfigReq(pst, (SchUeRecfgReq *)msg);
+         break;
+      }
+      case EVENT_UL_CQI_TO_SCH:
+      {
+         SchProcUlCqiInd(pst, (SchUlCqiInd *)msg);
+         break;
+      }
+      case EVENT_DL_CQI_TO_SCH:
+      {
+         SchProcDlCqiInd(pst, (SchDlCqiInd *)msg);
+         break;
+      }
+      case EVENT_PHR_IND_TO_SCH:
+      {
+         SchProcPhrInd(pst, (SchPwrHeadroomInd *)msg);
          break;
       }
       case EVENT_RACH_IND_TO_SCH:
