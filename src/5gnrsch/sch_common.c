@@ -1983,8 +1983,8 @@ bool schProcessSrOrBsrReq(SchCellCb *cell, SlotTimingInfo currTime, uint8_t ueId
    if(schGetSlotSymbFrmt(dciTime.slot, cell->slotFrmtBitMap) == DL_SLOT)
 #endif
    {     
-      if(ueCb->ueCfg.spCellCfg.servCellRecfg.initUlBwp.k2TblPrsnt)
-         k2InfoTbl = &ueCb->ueCfg.spCellCfg.servCellRecfg.initUlBwp.k2InfoTbl;
+      if(ueCb->k2TblPrsnt)
+         k2InfoTbl = &ueCb->k2InfoTbl;
       else
          k2InfoTbl =  &cell->k2InfoTbl;
 
@@ -1992,7 +1992,7 @@ bool schProcessSrOrBsrReq(SchCellCb *cell, SlotTimingInfo currTime, uint8_t ueId
       {
          k2Index = k2InfoTbl->k2TimingInfo[dciTime.slot].k2Indexes[k2TblIdx];
 
-         if(!ueCb->ueCfg.spCellCfg.servCellRecfg.initUlBwp.k2TblPrsnt)
+         if(!ueCb->k2TblPrsnt)
          {
             k2Val = cell->cellCfg.ulCfgCommon.schInitialUlBwp.puschCommon.timeDomRsrcAllocList[k2Index].k2;
             startSymb = cell->cellCfg.ulCfgCommon.schInitialUlBwp.puschCommon.timeDomRsrcAllocList[k2Index].startSymbol;
