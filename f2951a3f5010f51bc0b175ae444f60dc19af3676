@@ -3,6 +3,69 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "8c0d933b_7f1e2a41",
+        "filename": "src/5gnrmac/mac_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 3455,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-03-14T06:55:49Z",
+      "side": 1,
+      "message": "request",
+      "revId": "f2951a3f5010f51bc0b175ae444f60dc19af3676",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "03ef7cdc_b57fc0a3",
+        "filename": "src/5gnrmac/mac_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 3492,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-03-14T06:55:49Z",
+      "side": 1,
+      "message": "Say \"UE ID [%d] not found in Cell Id [%d]\"",
+      "range": {
+        "startLine": 3492,
+        "startChar": 61,
+        "endLine": 3492,
+        "endChar": 81
+      },
+      "revId": "f2951a3f5010f51bc0b175ae444f60dc19af3676",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "acae5b68_ec2294b9",
+        "filename": "src/5gnrmac/mac_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 3498,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-03-14T06:55:49Z",
+      "side": 1,
+      "message": "say \"Cell Id [%d] not found\"",
+      "range": {
+        "startLine": 3498,
+        "startChar": 58,
+        "endLine": 3498,
+        "endChar": 97
+      },
+      "revId": "f2951a3f5010f51bc0b175ae444f60dc19af3676",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ed8b461a_c308f25a",
         "filename": "src/5gnrmac/mac_ue_mgr.c",
         "patchSetId": 1
@@ -19,6 +82,172 @@
         "startChar": 19,
         "endLine": 3502,
         "endChar": 35
+      },
+      "revId": "f2951a3f5010f51bc0b175ae444f60dc19af3676",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "873c408d_d979d3fa",
+        "filename": "src/5gnrmac/mac_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 3506,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-03-14T06:55:49Z",
+      "side": 1,
+      "message": "return ROK from here.\nEven if UE reset fails due to UEID/CellID invalid, here ROK should be returned since this return value is not saying if UE reset happened successfully or not. It is just saying if we were able to process UE reset request msg or not, which we did, hence return ROK.",
+      "range": {
+        "startLine": 3506,
+        "startChar": 9,
+        "endLine": 3506,
+        "endChar": 13
+      },
+      "revId": "f2951a3f5010f51bc0b175ae444f60dc19af3676",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1ae1b453_3d5b0658",
+        "filename": "src/cm/du_app_mac_inf.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-03-14T06:55:49Z",
+      "side": 1,
+      "message": "CELLID_INVALID",
+      "revId": "f2951a3f5010f51bc0b175ae444f60dc19af3676",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3c454a19_668d9d5d",
+        "filename": "src/cm/du_app_mac_inf.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-03-14T06:55:49Z",
+      "side": 1,
+      "message": "UEID_INVALID",
+      "revId": "f2951a3f5010f51bc0b175ae444f60dc19af3676",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "15c6f98e_49307fa2",
+        "filename": "src/cm/du_app_mac_inf.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 1581,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-03-14T06:55:49Z",
+      "side": 1,
+      "message": "Call this MacUeResetReq",
+      "revId": "f2951a3f5010f51bc0b175ae444f60dc19af3676",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bc2e16a9_0ff206ad",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 4091,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-03-14T06:55:49Z",
+      "side": 1,
+      "message": "We haven\u0027t triggered this function from anywhere yet.. right?\nThis can be called by anyone who wishes to trigger UE reset in future?",
+      "range": {
+        "startLine": 4091,
+        "startChar": 8,
+        "endLine": 4091,
+        "endChar": 32
+      },
+      "revId": "f2951a3f5010f51bc0b175ae444f60dc19af3676",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cacbc5c9_1d2c2839",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 4096,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-03-14T06:55:49Z",
+      "side": 1,
+      "message": "say \"Building UE reset request\"",
+      "range": {
+        "startLine": 4096,
+        "startChar": 33,
+        "endLine": 4096,
+        "endChar": 44
+      },
+      "revId": "f2951a3f5010f51bc0b175ae444f60dc19af3676",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "33da72f6_9413b1eb",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 4111,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-03-14T06:55:49Z",
+      "side": 1,
+      "message": "RLC ?",
+      "range": {
+        "startLine": 4111,
+        "startChar": 96,
+        "endLine": 4111,
+        "endChar": 100
+      },
+      "revId": "f2951a3f5010f51bc0b175ae444f60dc19af3676",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9ee6ad0c_bd5f4613",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 4117,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-03-14T06:55:49Z",
+      "side": 1,
+      "message": "print cell id here",
+      "range": {
+        "startLine": 4117,
+        "startChar": 70,
+        "endLine": 4117,
+        "endChar": 72
       },
       "revId": "f2951a3f5010f51bc0b175ae444f60dc19af3676",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
