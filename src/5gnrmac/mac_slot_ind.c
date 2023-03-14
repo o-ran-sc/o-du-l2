@@ -226,6 +226,93 @@ uint8_t MacProcDlPageAlloc(Pst *pst, DlPageAlloc *dlPageAlloc)
 }
 
 /**
+ * @brief process DL Ctrl Channel Info from scheduler
+ *
+ * @details
+ *
+ *     Function : MacProcDlCtrlChanInfo
+ *      
+ *      This function copied dl Ctrl Channel info in the mac slot info
+ *           
+ *  @param[in]  Pst            *pst
+ *  @param[in]  DL Ctrl Channel info from scheduler
+ *  @return
+ *      -# ROK 
+ *      -# RFAILED 
+ **/
+uint8_t MacProcDlCtrlChanInfo(Pst *pst, DlCtrlChannelInfo *dlCtrlChanInfo)
+{
+   uint16_t  cellIdx = 0;
+   MacDlSlot *currDlSlot = NULLP;
+
+#ifdef CALL_FLOW_DEBUG_LOG
+   DU_LOG("\nCall Flow: ENTSCH -> ENTMAC : EVENT_DL_CTRL_CHAN_INFO\n");
+#endif
+   if(dlCtrlChanInfo != NULLP)
+   {
+      GET_CELL_IDX(dlCtrlChanInfo->cellId, cellIdx);
+      currDlSlot =  &macCb.macCell[cellIdx]->dlSlot[dlCtrlChanInfo->slotIndInfo.slot];
+      MAC_ALLOC(currDlSlot->dlCtrlChanInfo, sizeof(DlCtrlChannelInfo));
+      if(currDlSlot->dlCtrlChanInfo == NULLP)
+      {
+          DU_LOG("\nERROR  --> MAC : MacProcDlCtrlChanInfo : Memory Allocation is failed!");
+          return RFAILED;
+      }
+      memcpy(currDlSlot->dlCtrlChanInfo, dlCtrlChanInfo, sizeof(DlCtrlChannelInfo));
+   }
+   else
+   {
+       DU_LOG("\nERROR  --> MAC : DL Control Channel Info failed!");
+       return RFAILED;
+   }
+   return ROK;
+}
+
+/**
+ * @brief process DL Broadcast allocation from scheduler
+ *
+ * @details
+ *
+ *     Function : MacProcDlBroadcaseAlloc
+ *      
+ *      This function copied dl Broadcast allocation in the mac slot info
+ *           
+ *  @param[in]  Pst            *pst
+ *  @param[in]  DL  Broadcast allocation from scheduler
+ *  @return
+ *      -# ROK 
+ *      -# RFAILED 
+ **/
+uint8_t MacProcDlBroadcastAlloc(Pst *pst, DlBroadcastAlloc *dlBroadcastAlloc)
+{
+   uint16_t  cellIdx = 0;
+   MacDlSlot *currDlSlot = NULLP;
+
+#ifdef CALL_FLOW_DEBUG_LOG
+   DU_LOG("\nCall Flow: ENTSCH -> ENTMAC : EVENT_DL_BROADCST_ALLOC\n");
+#endif
+   if(dlBroadcastAlloc != NULLP)
+   {
+      GET_CELL_IDX(dlBroadcastAlloc->cellId, cellIdx);
+      currDlSlot =  &macCb.macCell[cellIdx]->dlSlot[dlBroadcastAlloc->slotIndInfo.slot];
+      MAC_ALLOC(currDlSlot->dlBroadcastAlloc, sizeof(DlBroadcastAlloc));
+      if(currDlSlot->dlBroadcastAlloc == NULLP)
+      {
+          DU_LOG("\nERROR  --> MAC : MacProcDlBroadcastAlloc : Memory Allocation is failed!");
+          return RFAILED;
+      }
+      memcpy(currDlSlot->dlBroadcastAlloc, dlBroadcastAlloc, sizeof(DlBroadcastAlloc));
+   }
+   else
+   {
+       DU_LOG("\nERROR  --> MAC : DL Broadcast Allocation failed!");
+       return RFAILED;
+   }
+   return ROK;
+}
+
+
+/**
  * @brief Forming and filling the MUX Pdu
  * @details
  *

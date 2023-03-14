@@ -562,6 +562,14 @@ typedef enum
    CELL_ACTIVE,
 }MacCellState;
 
+/*Spec Ref: 38.331: RadioLinkMonitoringConfig*/
+typedef enum
+{
+   BeamFailure,
+   Rlf,
+   Both
+}PurposeOfFailureDet;
+
 typedef struct plmnInfoList
 {
    Plmn           plmn;
@@ -794,6 +802,7 @@ typedef struct beamformingConf
    uint32_t digitalAzimuth;    
 }BeamformingConf;
 
+/**O-RAN WG8 v7.0.0 Sec 11.2.1.1 NR Cell Configuration*/
 typedef struct macCellCfg
 {
    uint16_t         cellId;           /* Cell Id */
@@ -816,30 +825,82 @@ typedef struct macCellCfgCfm
    uint8_t        rsp; 
 }MacCellCfgCfm;
 
-typedef struct ulCcchInd
+
+typedef struct macCellDeleteReq
 {
    uint16_t cellId;
-   uint16_t crnti;
-   uint16_t ulCcchMsgLen;
-   uint8_t  *ulCcchMsg;
-}UlCcchIndInfo;
+}MacCellDeleteReq;
 
-typedef struct dlCcchInd
+typedef struct macCellDeleteRsp
 {
-   uint16_t      cellId;
-   uint16_t      crnti;
-   DlCcchMsgType msgType;
-   uint16_t      dlCcchMsgLen;
-   uint8_t       *dlCcchMsg;
-}DlCcchIndInfo;
+   uint16_t cellId;
+   CellDeleteStatus result;
+}MacCellDeleteRsp;
 
+/**O-RAN WG8 v7.0.0 Sec 11.2.1.2 Slice Configuration*/
+typedef struct macSliceRsp
+{
+   Snssai     snssai;
+   MacRsp     rsp;
+   RspReason  cause;  
+}MacSliceRsp;
+
+typedef struct rrmPolicyRatio
+{
+   uint8_t maxRatio;
+   uint8_t minRatio;
+   uint8_t dedicatedRatio;
+}RrmPolicyRatio;
+
+typedef struct rrmPolicyMemberList
+{
+   Plmn    plmn;
+   Snssai  snssai;
+}RrmPolicyMemberList;
+
+typedef struct macSliceRrmPolicy
+{
+   ResourceType        resourceType;
+   uint8_t             numOfRrmPolicyMem;
+   RrmPolicyMemberList **rRMPolicyMemberList;
+   RrmPolicyRatio      policyRatio;
+}MacSliceRrmPolicy;
+
+typedef struct macSliceCfgReq
+{
+   uint8_t           numOfRrmPolicy;
+   MacSliceRrmPolicy **listOfRrmPolicy;
+}MacSliceCfgReq;
+
+typedef struct macSliceCfgRsp
+{
+   uint8_t      numSliceCfgRsp;
+   MacSliceRsp  **listOfSliceCfgRsp;
+}MacSliceCfgRsp;
+
+/*As per ORAN-WG8, Slice Cfg and ReCfg are same structures*/
+typedef struct macSliceCfgReq MacSliceRecfgReq;
+typedef struct macSliceCfgRsp MacSliceRecfgRsp;
+
+/**O-RAN WG8 v7.0.0 Sec 11.2.4.1 Cell Start*/
+typedef struct cellInfo
+{
+    SlotTimingInfo slotInfo;
+    uint16_t       cellId;
+}CellInfo;
+
+typedef struct cellInfo CellStartInfo;
+
+/**O-RAN WG8 v7.0.0 Sec 11.2.4.2 Cell Stop*/
+typedef struct cellInfo CellStopInfo;
+
+/**O-RAN WG8 v7.0.0 Sec 11.2.4.3 UE Create Request*/
 typedef struct bsrTmrCfg
 {
    uint16_t     periodicTimer;
    uint16_t     retxTimer;
    uint16_t     srDelayTimer;
 }BsrTmrCfg;
-
 
 /* Info of Scheduling Request to Add/Modify */
 typedef struct schedReqInfo
@@ -994,15 +1055,51 @@ typedef struct initialDlBwp
    PdschConfig   pdschCfg;
 }InitialDlBwp;
 
-/* BWP Downlink common */
-typedef struct bwpDlCommon
+/*Spec 38.331 "SPS-Config'*/
+typedef struct spsConfig
 {
-}BwpDlCommon;
+   uint16_t     periodicity;
+   uint8_t      numOfHqProcess;
+   uint8_t      n1PucchAN;
+   McsTable     mcsTable;
+}SpsConfig;
+
+typedef uint8_t RadioLinkMonitoringRsId;
+
+typedef struct radioLinkMonRS
+{
+   RadioLinkMonitoringRsId radioLinkMonitoringRsId;
+   PurposeOfFailureDet      purpose; 
+   union
+   {
+      uint8_t ssbIndx;
+      uint8_t nzpCsiRsResId;
+   }detectionRes;
+}RadioLinkMonRS;
+
+typedef struct radioLinkConfig
+{
+   RadioLinkMonRS             failurDetResAddModList[1];
+   RadioLinkMonitoringRsId   failurDetResRelList[1];
+   uint8_t                    beamFailureInstanceMaxCount;
+   uint8_t                    beamFailureDetectionTimer;
+}RadioLinkConfig;
+
+/* Spec 38.331, 'BWP-DownlinkDedicated'*/
+typedef struct bwpDlCfgDed
+{
+  PdcchConfig     pdcchCfgDed;
+  PdschConfig     pdschCfgDed;
+  SpsConfig       spsCfgDed;
+  RadioLinkConfig radioLnkMonCfgDed;
+}BwpDlCfgDed;
 
 /* Downlink BWP information */
 typedef struct dlBwpInfo
 {
    uint8_t          bwpId;
+   BwpDlConfig      bwpCommon;
+   BwpDlCfgDed      bwpDedicated;
 }DlBwpInfo;
 
 /* PDCCH Serving Cell configuration */
@@ -1216,26 +1313,88 @@ typedef struct initialUlBwp
    PuschCfg   puschCfg;
 }InitialUlBwp;
 
+typedef struct bwpCfgDedicated
+{
+   PucchCfg   pucchCfg;
+   PuschCfg   puschCfg;
+}BwpCfgDedicated;
+
 /* Uplink BWP information */
 typedef struct ulBwpInfo
 {
-   uint8_t        bwpId;
+   uint8_t          bwpId;
+   BwpUlConfig      bwpCommon;
+   BwpCfgDedicated  bwpDed;
 }UlBwpInfo;
+
+typedef struct rachCfgGeneric
+{
+   uint8_t      prachCfgIdx;       /* PRACH config idx */
+   uint8_t      msg1Fdm;           /* PRACH FDM (1,2,4,8) */
+   uint16_t     msg1FreqStart;     /* Msg1-FrequencyStart */
+   uint8_t      zeroCorrZoneCfg;   /* Zero correlation zone cofig */
+   int16_t      preambleRcvdTargetPower;
+   uint8_t      preambleTransMax;
+   uint8_t      pwrRampingStep;
+   uint8_t      raRspWindow;       /* RA Response Window */
+}RachCfgGeneric;
+
+typedef struct raPrioritization
+{
+   uint8_t powerRampingStepHighPriority;
+   uint8_t scalingFactorBI;
+}RaPrioritization;
+
+typedef struct bfrCsiRsRes
+{
+   uint8_t csrRsIndex;
+   uint8_t raOccList;
+   uint8_t raPreambleIndex;
+}BfrCsiRsRes;
+
+typedef struct bfrSsbRes
+{
+   uint16_t ssbIndex;
+   uint8_t raPreambleIndex;
+}BfrSsbRes;
+
+typedef struct prachResDedBfr
+{
+   BfrSsbRes    ssb;
+   BfrCsiRsRes  csiRs;
+}PrachResDedBfr;
+
+/*Spec 38.331 'BeamFailureRecoveryConfig' */
+typedef struct beamFailRecoveryCfg
+{
+   uint8_t             rootSeqIndexBfr;
+   RachCfgGeneric      rachCfgBfr;
+   uint8_t             rsrpThreshSsbBfr;     /* RSRP Threshold SSB */
+   PrachResDedBfr      candidteBeamRSList;
+   uint8_t             ssbPerachBfr;        /* SSB per RACH occassion */
+   uint8_t             raSsbOccMaskIndex;
+   uint8_t             recoverySearchSpaceId;
+   RaPrioritization    raPrioBfr;
+   uint16_t            bfrTimer;
+   uint8_t             msg1SubcSpacing;  /* Subcarrier spacing of RACH */
+}BeamFailRecoveryCfg;
 
 /* Serving cell configuration */
 typedef struct servCellCfgInfo
 {
-   InitialDlBwp       initDlBwp;
-   uint8_t            numDlBwpToAdd;
-   DlBwpInfo          dlBwpToAddList[MAX_NUM_BWP];
-   uint8_t            firstActvDlBwpId;
-   uint8_t            defaultDlBwpId;
-   uint8_t            *bwpInactivityTmr;
-   PdschServCellCfg   pdschServCellCfg;
-   InitialUlBwp       initUlBwp;
-   uint8_t            numUlBwpToAdd;
-   UlBwpInfo          ulBwpToAddList[MAX_NUM_BWP];
-   uint8_t            firstActvUlBwpId;
+   InitialDlBwp         initDlBwp;
+   RadioLinkConfig      radioLinkMonConfig;
+   uint8_t              numDlBwpToAdd;
+   DlBwpInfo            dlBwpToAddList[MAX_NUM_BWP];
+   uint8_t              firstActvDlBwpId;
+   uint8_t              defaultDlBwpId;
+   uint8_t              *bwpInactivityTmr;
+   PdschServCellCfg     pdschServCellCfg;
+   InitialUlBwp         initUlBwp;
+   BeamFailRecoveryCfg  beamFailureRecoveryCfg;
+   uint8_t              numUlBwpToAdd;
+   UlBwpInfo            ulBwpToAddList[MAX_NUM_BWP];
+   uint8_t              firstActvUlBwpId;
 }ServCellCfgInfo;
 
 /* Special cell configuration */
@@ -1245,14 +1404,21 @@ typedef struct spCellCfg
    ServCellCfgInfo   servCellCfg;
 }SpCellCfg;
 
+typedef struct bwpRelInfo
+{
+   uint8_t bwpId;
+}BwpRelInfo;
+
+/* Serving cell configuration */
 /* Serving cell Re-configuration */
 typedef struct servCellRecfgInfo
 {
    InitialDlBwp       initDlBwp;
+   RadioLinkConfig    radioLinkMonConfig;
    uint8_t            numDlBwpToAddOrMod;
    DlBwpInfo          dlBwpToAddOrModList[MAX_NUM_BWP];
    uint8_t            numDlBwpToRel;
-   DlBwpInfo          dlBwpToRelList[MAX_NUM_BWP];
+   BwpRelInfo         dlBwpToRelList[MAX_NUM_BWP];
    uint8_t            firstActvDlBwpId;
    uint8_t            defaultDlBwpId;
    uint8_t            *bwpInactivityTmr;
@@ -1261,7 +1427,7 @@ typedef struct servCellRecfgInfo
    uint8_t            numUlBwpToAddOrMod;
    UlBwpInfo          ulBwpToAddOrModList[MAX_NUM_BWP];
    uint8_t            numUlBwpToRel;
-   UlBwpInfo          ulBwpToRelList[MAX_NUM_BWP];
+   BwpRelInfo         ulBwpToRelList[MAX_NUM_BWP];
    uint8_t            firstActvUlBwpId;
 }ServCellRecfgInfo;
 
@@ -1357,10 +1523,12 @@ typedef struct modulationInfo
    McsTable    mcsTable;    /* MCS table */
 }ModulationInfo;
 
+/**O-RAN WG8 v7.0.0 Sec 11.2.4.3 UE Create Request*/
 typedef struct macUeCfg
 {
    uint16_t               cellId;
    uint8_t                ueId;
+   uint8_t                beamIdx; 
    uint16_t               crnti;
    bool                   macCellGrpCfgPres;
    MacCellGrpCfg          macCellGrpCfg;
@@ -1375,6 +1543,7 @@ typedef struct macUeCfg
    LcCfg                  lcCfgList[MAX_NUM_LC];
 }MacUeCfg;
 
+/**O-RAN WG8 v7.0.0 Sec 11.2.4.5 UE Reconfg Request*/
 /* UE Re-configuration */
 typedef struct macUeRecfg
 {
@@ -1403,6 +1572,7 @@ typedef struct macUeRecfg
 #endif
 }MacUeRecfg;
 
+/**O-RAN WG8 v7.0.0 Sec 11.2.4.4 UE Create Response*/
 typedef struct nrcgi
 {
    Plmn      plmn;
@@ -1442,8 +1612,26 @@ typedef struct ueCfgRsp
    DRBFailInfo    *failedDRBModlist;
 }MacUeCfgRsp;
 
+/**O-RAN WG8 v7.0.0 Sec 11.2.4.6 UE ReCfg Response*/
 typedef struct ueCfgRsp MacUeRecfgRsp;
 
+/**O-RAN WG8 v7.0.0 Sec 11.2.4.7 UE Delete Req*/
+typedef struct ueDelete
+{
+    uint16_t cellId;
+    uint8_t  ueId;
+    uint16_t crnti;
+}MacUeDelete;
+
+/**O-RAN WG8 v7.0.0 Sec 11.2.4.8 UE Delete Response*/
+typedef struct ueDeleteRsp
+{
+   uint16_t cellId;
+   uint8_t  ueId;
+   UeDeleteStatus result;
+}MacUeDeleteRsp;
+
+/**O-RAN WG8 v7.0.0 Sec 11.2.4.9 RACH Res Request*/
 typedef struct rachRsrcReq
 {
    uint16_t cellId;
@@ -1452,6 +1640,7 @@ typedef struct rachRsrcReq
    uint8_t  ssbIdx[MAX_NUM_SSB];
 }MacRachRsrcReq;
 
+/**O-RAN WG8 v7.0.0 Sec 11.2.4.10 RACH Res Response*/
 typedef struct macCfraSsbResource
 {
    uint8_t  ssbIdx;
@@ -1473,6 +1662,7 @@ typedef struct macRachRsrcRsp
    MacCfraResource  cfraResource;
 }MacRachRsrcRsp;
 
+/**O-RAN WG8 v7.0.0 Sec 11.2.4.11 RACH Resourse Release*/
 typedef struct macRachRsrcRel
 {
    uint16_t cellId;
@@ -1480,69 +1670,26 @@ typedef struct macRachRsrcRel
    uint16_t crnti;
 }MacRachRsrcRel;
 
-typedef struct ueDelete
-{
-    uint16_t cellId;
-    uint8_t  ueId;
-    uint16_t crnti;
-}MacUeDelete;
-
-typedef struct ueDeleteRsp
+/**O-RAN WG8 v7.0.0 Sec 11.2.4.15 UL CCCH Ind*/
+typedef struct ulCcchInd
 {
    uint16_t cellId;
-   uint8_t  ueId;
-   UeDeleteStatus result;
-}MacUeDeleteRsp;
+   uint16_t crnti;
+   uint16_t ulCcchMsgLen;
+   uint8_t  *ulCcchMsg;
+}UlCcchIndInfo;
 
-typedef struct macCellDeleteReq
+/**O-RAN WG8 v7.0.0 Sec 11.2.4.16 DL CCCH Ind*/
+typedef struct dlCcchInd
 {
-   uint16_t cellId;
-}MacCellDeleteReq;
+   uint16_t      cellId;
+   uint16_t      crnti;
+   DlCcchMsgType msgType;
+   uint16_t      dlCcchMsgLen;
+   uint8_t       *dlCcchMsg;
+}DlCcchIndInfo;
 
-typedef struct macCellDeleteRsp
-{
-   uint16_t cellId;
-   CellDeleteStatus result;
-}MacCellDeleteRsp;
-
-typedef struct macSliceCfgRsp 
-{
-   Snssai     snssai;
-   MacRsp     rsp;
-   RspReason  cause;  
-}MacSliceCfgRsp;
-
-typedef struct rrmPolicyRatio
-{
-   uint8_t maxRatio;
-   uint8_t minRatio;
-   uint8_t dedicatedRatio;
-}RrmPolicyRatio;
-
-typedef struct rrmPolicyMemberList
-{
-   Plmn    plmn;
-   Snssai  snssai;
-}RrmPolicyMemberList;
-
-typedef struct macSliceRrmPolicy
-{
-   ResourceType        resourceType;
-   uint8_t             numOfRrmPolicyMem;
-   RrmPolicyMemberList **rRMPolicyMemberList;
-   RrmPolicyRatio      policyRatio;
-}MacSliceRrmPolicy;
-
-typedef struct macSliceCfgReq
-{
-   uint8_t           numOfRrmPolicy;
-   MacSliceRrmPolicy **listOfRrmPolicy;
-}MacSliceCfgReq;
-
-/*As per ORAN-WG8, Slice Cfg and ReCfg are same structures*/
-typedef struct macSliceCfgReq MacSliceRecfgReq;
-typedef struct macSliceCfgRsp MacSliceRecfgRsp;
-
+/**O-RAN WG8 v7.0.0 Sec 11.2.4.17 DL PCCH Ind*/
 typedef struct dlPcchInd
 {
    uint16_t  cellId;
@@ -1551,15 +1698,6 @@ typedef struct dlPcchInd
    uint16_t  pduLen;
    uint8_t  *pcchPdu;
 }DlPcchInd;
-
-typedef struct cellInfo
-{
-    SlotTimingInfo slotInfo;
-    uint16_t       cellId;
-}CellInfo;
-
-typedef struct cellInfo CellStartInfo;
-typedef struct cellInfo CellStopInfo;
 
 /* Functions for CellUp Ind from MAC to DU APP*/
 typedef uint8_t (*DuMacCellUpInd) ARGS((

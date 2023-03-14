@@ -480,6 +480,50 @@ uint8_t MacProcUlSchInfo(Pst *pst, UlSchedInfo *ulSchedInfo)
    return ROK;
 }
 
+/*******************************************************************
+ *
+ * @brief Processes UL RAR info from SCH
+ *
+ * @details
+ *
+ *    Function : MacProcUlRarInfo
+ *
+ *    Functionality: Processes UL RAR info from SCH
+ *
+ * @params[in] Post structure
+ *             UL scheduling info
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t MacProcUlRarInfo(Pst *pst, UlRarInfo *ulRarInfo)
+{
+   uint16_t  cellIdx;
+   MacUlSlot *currUlSlot = NULLP;
+
+#ifdef CALL_FLOW_DEBUG_LOG
+   DU_LOG("\nCall Flow: ENTSCH -> ENTMAC : EVENT_UL_RAR_INFO\n");
+#endif
+
+   GET_CELL_IDX(ulRarInfo->cellId, cellIdx);
+   if(ulRarInfo != NULLP)
+   {
+       currUlSlot = &macCb.macCell[cellIdx]->ulSlot[ulRarInfo->slotIndInfo.slot % macCb.macCell[cellIdx]->numOfSlots];
+       MAC_ALLOC(currUlSlot->ulRarInfo, sizeof(UlRarInfo));
+       if(currUlSlot->ulRarInfo == NULLP)
+       {
+          DU_LOG("\nERROR  --> MAC : MacProcUlRarInfo(): Memory Allocation is failed!");
+          return RFAILED;
+       }
+       memcpy(&currUlSlot->ulRarInfo, ulRarInfo, sizeof(UlRarInfo)); 
+   }
+   else
+   {
+       DU_LOG("\nERROR  --> MAC : UL RAR Info failed!");
+       return RFAILED;
+   }
+   return ROK;
+}
 /**********************************************************************
   End of file
  **********************************************************************/

@@ -107,13 +107,16 @@ typedef struct dlHarqProcCb
 
 typedef struct macDlSlot
 {
-   DlSchedInfo dlInfo;
-   DlPageAlloc *pageAllocInfo;
+   DlSchedInfo       dlInfo;
+   DlPageAlloc       *pageAllocInfo;
+   DlCtrlChannelInfo *dlCtrlChanInfo;
+   DlBroadcastAlloc  *dlBroadcastAlloc;
 }MacDlSlot;
 
 typedef struct macUlSlot
 {
    UlSchedInfo  ulInfo;
+   UlRarInfo    *ulRarInfo;
 }MacUlSlot;
 
 typedef struct macCbInfo
@@ -286,6 +289,9 @@ uint8_t MacProcUlSchInfo(Pst *pst, UlSchedInfo *ulSchedInfo);
 uint8_t MacProcSchRachRsrcRsp(Pst *pst, SchRachRsrcRsp *schRachRsrcRsp);
 uint8_t MacProcDlPageAlloc(Pst *pst, DlPageAlloc *dlPageAlloc);
 uint8_t MacProcSchCellDeleteRsp(Pst *pst, SchCellDeleteRsp *schCellDeleteRsp);
+uint8_t MacProcUlRarInfo(Pst *pst, UlRarInfo *ulRarInfo);
+uint8_t MacProcDlCtrlChanInfo(Pst *pst, DlCtrlChannelInfo *dlCtrlChanInfo);
+uint8_t MacProcDlBroadcastAlloc(Pst *pst, DlBroadcastAlloc *dlBroadcastAlloc);
 #endif
 /**********************************************************************
   End of file

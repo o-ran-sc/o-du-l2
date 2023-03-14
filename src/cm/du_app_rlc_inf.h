@@ -197,6 +197,25 @@ typedef struct rlcBearerCfg
    bool isLcAddModRspSent;
 }RlcBearerCfg;
 
+/**O-RAN WG8 v7.0.0 Sec 11.2.5.1 UE Create*/
+typedef struct rlcUeCfg
+{
+   uint16_t       cellId;
+   uint8_t        ueId;
+   uint8_t        numLcsToAdd;
+   RlcBearerCfg   rlcLcCfgAdd[MAX_NUM_LC];
+}RlcUeCfg;
+
+/**O-RAN WG8 v7.0.0 Sec 11.2.5.2 UE Create Response*/
+typedef struct rlcUeCfgRsp
+{
+   uint16_t       cellId;
+   uint16_t       ueId;
+   RlcRsp         result;
+   FailureReason  reason;
+}RlcUeCfgRsp;
+
+/**O-RAN WG8 v7.0.0 Sec 11.2.5.3 UE Reconfiguration*/
 typedef struct rlcUeRecfg
 {
    uint16_t       cellId;
@@ -209,28 +228,14 @@ typedef struct rlcUeRecfg
    RlcBearerCfg   rlcLcCfgRel[MAX_NUM_LC];
 }RlcUeRecfg;
 
-typedef struct rlcUeCfg
-{
-   uint16_t       cellId;
-   uint8_t        ueId;
-   uint8_t        numLcsToAdd;
-   RlcBearerCfg   rlcLcCfgAdd[MAX_NUM_LC];
-}RlcUeCfg;
-
-typedef struct rlcUeCfgRsp
-{
-   uint16_t       cellId;
-   uint16_t       ueId;
-   RlcRsp         result;
-   FailureReason  reason;
-}RlcUeCfgRsp;
-
+/**O-RAN WG8 v7.0.0 Sec 11.2.5.5 UE Delete Req*/
 typedef struct rlcUeDelete
 {
    uint16_t      cellId;
    uint8_t       ueId;
 }RlcUeDelete;
 
+/**O-RAN WG8 v7.0.0 Sec 11.2.5.6 UE Delete Response*/
 typedef struct rlcUeDeleteRsp
 {
    uint16_t       cellId;
@@ -238,26 +243,7 @@ typedef struct rlcUeDeleteRsp
    UeDeleteResult result;
 }RlcUeDeleteRsp;
 
-/* UL RRC Message from RLC to DU APP */
-typedef struct ulRrcMsgInfo
-{
-   uint16_t   cellId;       /* Cell Id */
-   uint16_t   ueId;         /* UE Id */
-   uint8_t    lcId;         /* Logical channel Id */
-   uint16_t   msgLen;       /* RRC message length (in bytes) */
-   uint8_t    *rrcMsg;      /* RRC Message (UL-DCCH Message) */
-}RlcUlRrcMsgInfo;
-
-/* UL User Data from RLC to DU APP */
-typedef struct ulUserDatInfo
-{
-   uint16_t   cellId;       /* Cell Id */
-   uint16_t   ueId;         /* UE Id */
-   uint8_t    rbId;
-   uint16_t   msgLen;       /* User data length (in bytes) */
-   uint8_t    *userData;    /* User data (UL-DTCH Message) */
-}RlcUlUserDatInfo;
-
+/**O-RAN WG8 v7.0.0 Sec 11.2.5.7 DL RRC Message Transfer*/
 /* DL RRC Message from DU APP to RLC */
 typedef struct dlRrcMsgInfo
 {
@@ -270,6 +256,53 @@ typedef struct dlRrcMsgInfo
    uint8_t    *rrcMsg;        /* RRC Message (DL-DCCH Message) */
 }RlcDlRrcMsgInfo;
 
+/**O-RAN WG8 v7.0.0 Sec 11.2.5.8 UL RRC Message Transfer*/
+/* UL RRC Message from RLC to DU APP */
+typedef struct ulRrcMsgInfo
+{
+   uint16_t   cellId;       /* Cell Id */
+   uint16_t   ueId;         /* UE Id */
+   uint8_t    lcId;         /* Logical channel Id */
+   uint16_t   msgLen;       /* RRC message length (in bytes) */
+   uint8_t    *rrcMsg;      /* RRC Message (UL-DCCH Message) */
+}RlcUlRrcMsgInfo;
+
+/**O-RAN WG8 v7.0.0 Sec 11.2.5.9 UL RRC MESSAGE DELIVERY REPORT*/
+/* RRC delivery message from RLC to DU APP */
+typedef struct rrcDeliveryStatus
+{
+   uint16_t  deliveryStatus;
+   uint16_t  triggeringMessage;
+}RrcDeliveryStatus;
+
+typedef struct rrcDeliveryReportInfo
+{
+   uint16_t  cellId;
+   uint16_t  ueId;
+   uint8_t   srbId;
+   RrcDeliveryStatus  rrcDeliveryStatus;
+}RrcDeliveryReport;
+
+/* UL User Data from RLC to DU APP */
+typedef struct ulUserDatInfo
+{
+   uint16_t   cellId;       /* Cell Id */
+   uint16_t   ueId;         /* UE Id */
+   uint8_t    rbId;
+   uint16_t   msgLen;       /* User data length (in bytes) */
+   uint8_t    *userData;    /* User data (UL-DTCH Message) */
+}RlcUlUserDatInfo;
+
+/* DL Data Message from DU APP to RLC */
+typedef struct dlDataMsgInfo
+{
+   uint16_t   cellId;         /* Cell Id */
+   uint16_t   ueId;           /* UE Id */
+   uint8_t    rbId;           /* Radio Bearer Id {4 .. MACX_NUM_DRB} */
+   uint16_t   msgLen;         /* Message length */
+   Buffer     *dlMsg;         /* DL Data */
+}RlcDlUserDataInfo;
+
 /* DL RRC Message Rsp From RLC to DU APP */
 typedef struct dlRrcMsgRsp
 {
@@ -278,13 +311,7 @@ typedef struct dlRrcMsgRsp
    DlMsgState state;         /* Dl RRC Msg State */
 }RlcDlRrcMsgRsp;
 
-/* RRC delivery message from RLC to DU APP */
-typedef struct rrcDeliveryStatus
-{
-   uint16_t  deliveryStatus;
-   uint16_t  triggeringMessage;
-}RrcDeliveryStatus;
-
+/*Reference O-RAN WG8 v7.0.0 Sec 11.2.6.1 PM slice Throughput Event*/
 typedef struct
 {
   uint32_t sd:24;
@@ -304,24 +331,6 @@ typedef struct slicePmList
    uint8_t numSlice;
    SlicePm *sliceRecord;
 }SlicePmList;
-
-typedef struct rrcDeliveryReportInfo
-{
-   uint16_t  cellId;
-   uint16_t  ueId;
-   uint8_t   srbId;
-   RrcDeliveryStatus  rrcDeliveryStatus;
-}RrcDeliveryReport;
-
-/* DL Data Message from DU APP to RLC */
-typedef struct dlDataMsgInfo
-{
-   uint16_t   cellId;         /* Cell Id */
-   uint16_t   ueId;           /* UE Id */
-   uint8_t    rbId;           /* Radio Bearer Id {4 .. MACX_NUM_DRB} */
-   uint16_t   msgLen;         /* Message length */
-   Buffer     *dlMsg;         /* DL Data */
-}RlcDlUserDataInfo;
 
 /* Function Pointers */
 /* UE create Request from DU APP to RLC*/

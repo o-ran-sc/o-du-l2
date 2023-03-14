@@ -208,6 +208,87 @@ int sendUlSchInfoToMac(UlSchedInfo *ulSchedInfo, Inst inst)
    return(MacMessageRouter(&pst, (void *)ulSchedInfo));
 }
 
+/*******************************************************************
+ *
+ * @brief Handles sending RAR Info to MAC 
+ *
+ * @details
+ *
+ *    Function : sendUlRarInfoToMac
+ *
+ *    Functionality:
+ *     Sends RAR Info to MAC from SCH
+ *
+ * @params[in] 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+int sendUlRarInfoToMac(UlRarInfo *ulRarInfo, Inst inst)
+{
+   Pst pst;
+
+   memset(&pst, 0, sizeof(Pst));
+   FILL_PST_SCH_TO_MAC(pst, inst);
+   pst.event = EVENT_UL_RAR_INFO_TO_MAC;
+
+   return(MacMessageRouter(&pst, (void *)ulRarInfo));
+}
+
+/*******************************************************************
+ *
+ * @brief Handles sending DL Ctrl Channel Info to MAC 
+ *
+ * @details
+ *
+ *    Function : sendDlCtrlChannelInfoToMac
+ *
+ *    Functionality:
+ *     Sends DL Ctrl Channel info to MAC from SCH
+ *
+ * @params[in] 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+int sendDlCtrlChannelInfoToMac(DlCtrlChannelInfo *dlCtrlChannelInfo, Inst inst)
+{
+   Pst pst;
+
+   memset(&pst, 0, sizeof(Pst));
+   FILL_PST_SCH_TO_MAC(pst, inst);
+   pst.event = EVENT_DL_CTRL_CHAN_INFO_TO_MAC;
+
+   return(MacMessageRouter(&pst, (void *)dlCtrlChannelInfo));
+}
+
+/*******************************************************************
+ *
+ * @brief Handles sending DL BroadCast alloc info to MAC 
+ *
+ * @details
+ *
+ *    Function : sendDlBroadcastAllocToMac
+ *
+ *    Functionality:
+ *     Sends DL Broadcast allocation to MAC from SCH
+ *
+ * @params[in] 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+int sendDlBroadcastAllocToMac(DlBroadcastAlloc *dlBroadcastAlloc, Inst inst)
+{
+   Pst pst;
+
+   memset(&pst, 0, sizeof(Pst));
+   FILL_PST_SCH_TO_MAC(pst, inst);
+   pst.event = EVENT_DL_BROADCAST_ALLOC_TO_MAC;
+
+   return(MacMessageRouter(&pst, (void *)dlBroadcastAlloc));
+}
+
 /**
  * @brief Function to fill Pucch Format 0
  *
@@ -1983,8 +2064,8 @@ bool schProcessSrOrBsrReq(SchCellCb *cell, SlotTimingInfo currTime, uint8_t ueId
    if(schGetSlotSymbFrmt(dciTime.slot, cell->slotFrmtBitMap) == DL_SLOT)
 #endif
    {     
-      if(ueCb->ueCfg.spCellCfg.servCellRecfg.initUlBwp.k2TblPrsnt)
-         k2InfoTbl = &ueCb->ueCfg.spCellCfg.servCellRecfg.initUlBwp.k2InfoTbl;
+      if(ueCb->k2TblPrsnt)
+         k2InfoTbl = &ueCb->k2InfoTbl;
       else
          k2InfoTbl =  &cell->k2InfoTbl;
 
@@ -1992,7 +2073,7 @@ bool schProcessSrOrBsrReq(SchCellCb *cell, SlotTimingInfo currTime, uint8_t ueId
       {
          k2Index = k2InfoTbl->k2TimingInfo[dciTime.slot].k2Indexes[k2TblIdx];
 
-         if(!ueCb->ueCfg.spCellCfg.servCellRecfg.initUlBwp.k2TblPrsnt)
+         if(!ueCb->k2TblPrsnt)
          {
             k2Val = cell->cellCfg.ulCfgCommon.schInitialUlBwp.puschCommon.timeDomRsrcAllocList[k2Index].k2;
             startSymb = cell->cellCfg.ulCfgCommon.schInitialUlBwp.puschCommon.timeDomRsrcAllocList[k2Index].startSymbol;
@@ -2283,6 +2364,7 @@ bool schGetMsg3K2(SchCellCb *cell, SchUlHqProcCb* msg3HqProc, uint16_t dlTime, S
    }
    return k2Found;
 }
+
 
 /**********************************************************************
   End of file
