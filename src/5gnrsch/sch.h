@@ -491,6 +491,10 @@ typedef struct schUeCb
    bool          ueDrxInfoPres;
    SchDrxUeCb    drxUeCb;
 #endif
+   bool                 k0K1TblPrsnt;
+   SchK0K1TimingInfoTbl k0K1InfoTbl;
+   bool                 k2TblPrsnt;
+   SchK2TimingInfoTbl   k2InfoTbl;
 }SchUeCb;
 
 /**

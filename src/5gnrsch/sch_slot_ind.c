@@ -111,7 +111,7 @@ bool schFillBoGrantDlSchedInfo(SchCellCb *cell, SlotTimingInfo currTime, uint8_t
       }
    }
 
-   if(findValidK0K1Value(cell, currTime, ueId, ueCb->ueCfg.spCellCfg.servCellRecfg.initDlBwp.k0K1TblPrsnt,\
+   if(findValidK0K1Value(cell, currTime, ueId, ueCb->k0K1TblPrsnt,\
             &pdschStartSymbol, &pdschNumSymbols, &pdcchTime, &pdschTime, &pucchTime, isRetx, *hqP) != true )
    {
       /* If a valid combination of slots to scheduled PDCCH, PDSCH and PUCCH is
@@ -436,7 +436,7 @@ bool findValidK0K1Value(SchCellCb *cell, SlotTimingInfo currTime, uint8_t ueId, 
    if(dedMsg == true)
    {
       ueCb = &cell->ueCb[ueId-1];
-      k0K1InfoTbl = &ueCb->ueCfg.spCellCfg.servCellRecfg.initDlBwp.k0K1InfoTbl;
+      k0K1InfoTbl = &ueCb->k0K1InfoTbl;
    }
    else
    {
