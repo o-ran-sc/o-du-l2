@@ -562,6 +562,14 @@ typedef enum
    CELL_ACTIVE,
 }MacCellState;
 
+/*Spec Ref: 38.331: RadioLinkMonitoringConfig*/
+typedef enum
+{
+   BeamFailure,
+   Rlf,
+   Both
+}PurposeOfFailureDet;
+
 typedef struct plmnInfoList
 {
    Plmn           plmn;
@@ -994,15 +1002,51 @@ typedef struct initialDlBwp
    PdschConfig   pdschCfg;
 }InitialDlBwp;
 
-/* BWP Downlink common */
-typedef struct bwpDlCommon
+/*Spec 38.331 "SPS-Config'*/
+typedef struct spsConfig
 {
-}BwpDlCommon;
+   uint16_t     periodicity;
+   uint8_t      numOfHqProcess;
+   uint8_t      n1PucchAN;
+   McsTable     mcsTable;
+}SpsConfig;
+
+typedef uint8_t RadioLinkMonitoringRsId;
+
+typedef struct radioLinkMonRS
+{
+   RadioLinkMonitoringRsId radioLinkMonitoringRsId;
+   PurposeOfFailureDet      purpose; 
+   union
+   {
+      uint8_t ssbIndx;
+      uint8_t nzpCsiRsResId;
+   }detectionRes;
+}RadioLinkMonRS;
+
+typedef struct radioLinkConfig
+{
+   RadioLinkMonRS             failurDetResAddModList[1];
+   RadioLinkMonitoringRsId   failurDetResRelList[1];
+   uint8_t                    beamFailureInstanceMaxCount;
+   uint8_t                    beamFailureDetectionTimer;
+}RadioLinkConfig;
+
+/* Spec 38.331, 'BWP-DownlinkDedicated'*/
+typedef struct bwpDlCfgDed
+{
+  PdcchConfig     pdcchCfgDed;
+  PdschConfig     pdschCfgDed;
+  SpsConfig       spsCfgDed;
+  RadioLinkConfig radioLnkMonCfgDed;
+}BwpDlCfgDed;
 
 /* Downlink BWP information */
 typedef struct dlBwpInfo
 {
    uint8_t          bwpId;
+   BwpDlConfig      bwpCommon;
+   BwpDlCfgDed      bwpDedicated;
 }DlBwpInfo;
 
 /* PDCCH Serving Cell configuration */
@@ -1216,26 +1260,88 @@ typedef struct initialUlBwp
    PuschCfg   puschCfg;
 }InitialUlBwp;
 
+typedef struct bwpUlCfgDed
+{
+   PucchCfg   pucchCfg;
+   PuschCfg   puschCfg;
+}BwpUlCfgDed;
+
 /* Uplink BWP information */
 typedef struct ulBwpInfo
 {
-   uint8_t        bwpId;
+   uint8_t          bwpId;
+   BwpUlConfig      bwpCommon;
+   BwpUlCfgDed      bwpDed;
 }UlBwpInfo;
+
+typedef struct rachCfgGeneric
+{
+   uint8_t      prachCfgIdx;       /* PRACH config idx */
+   uint8_t      msg1Fdm;           /* PRACH FDM (1,2,4,8) */
+   uint16_t     msg1FreqStart;     /* Msg1-FrequencyStart */
+   uint8_t      zeroCorrZoneCfg;   /* Zero correlation zone cofig */
+   int16_t      preambleRcvdTargetPower;
+   uint8_t      preambleTransMax;
+   uint8_t      pwrRampingStep;
+   uint8_t      raRspWindow;       /* RA Response Window */
+}RachCfgGeneric;
+
+typedef struct raPrioritization
+{
+   uint8_t powerRampingStepHighPriority;
+   uint8_t scalingFactorBI;
+}RaPrioritization;
+
+typedef struct bfrCsiRsRes
+{
+   uint8_t csrRsIndex;
+   uint8_t raOccList;
+   uint8_t raPreambleIndex;
+}BfrCsiRsRes;
+
+typedef struct bfrSsbRes
+{
+   uint16_t ssbIndex;
+   uint8_t raPreambleIndex;
+}BfrSsbRes;
+
+typedef struct prachResDedBfr
+{
+   BfrSsbRes    ssb;
+   BfrCsiRsRes  csiRs;
+}PrachResDedBfr;
+
+/*Spec 38.331 'BeamFailureRecoveryConfig' */
+typedef struct beamFailRecoveryCfg
+{
+   uint8_t             rootSeqIndexBfr;
+   RachCfgGeneric      rachCfgBfr;
+   uint8_t             rsrpThreshSsbBfr;     /* RSRP Threshold SSB */
+   PrachResDedBfr      candidteBeamRSList;
+   uint8_t             ssbPerachBfr;        /* SSB per RACH occassion */
+   uint8_t             raSsbOccMaskIndex;
+   uint8_t             recoverySearchSpaceId;
+   RaPrioritization    raPrioBfr;
+   uint16_t            bfrTimer;
+   uint8_t             msg1SubcSpacing;  /* Subcarrier spacing of RACH */
+}BeamFailRecoveryCfg;
 
 /* Serving cell configuration */
 typedef struct servCellCfgInfo
 {
-   InitialDlBwp       initDlBwp;
-   uint8_t            numDlBwpToAdd;
-   DlBwpInfo          dlBwpToAddList[MAX_NUM_BWP];
-   uint8_t            firstActvDlBwpId;
-   uint8_t            defaultDlBwpId;
-   uint8_t            *bwpInactivityTmr;
-   PdschServCellCfg   pdschServCellCfg;
-   InitialUlBwp       initUlBwp;
-   uint8_t            numUlBwpToAdd;
-   UlBwpInfo          ulBwpToAddList[MAX_NUM_BWP];
-   uint8_t            firstActvUlBwpId;
+   InitialDlBwp         initDlBwp;
+   RadioLinkConfig      radioLinkMonConfig;
+   uint8_t              numDlBwpToAdd;
+   DlBwpInfo            dlBwpToAddList[MAX_NUM_BWP];
+   uint8_t              firstActvDlBwpId;
+   uint8_t              defaultDlBwpId;
+   uint8_t              *bwpInactivityTmr;
+   PdschServCellCfg     pdschServCellCfg;
+   InitialUlBwp         initUlBwp;
+   BeamFailRecoveryCfg  beamFailureRecoveryCfg;
+   uint8_t              numUlBwpToAdd;
+   UlBwpInfo            ulBwpToAddList[MAX_NUM_BWP];
+   uint8_t              firstActvUlBwpId;
 }ServCellCfgInfo;
 
 /* Special cell configuration */
@@ -1245,14 +1351,21 @@ typedef struct spCellCfg
    ServCellCfgInfo   servCellCfg;
 }SpCellCfg;
 
+typedef struct bwpRelInfo
+{
+   uint8_t bwpId;
+}BwpRelInfo;
+
+/* Serving cell configuration */
 /* Serving cell Re-configuration */
 typedef struct servCellRecfgInfo
 {
    InitialDlBwp       initDlBwp;
+   RadioLinkConfig    radioLinkMonConfig;
    uint8_t            numDlBwpToAddOrMod;
    DlBwpInfo          dlBwpToAddOrModList[MAX_NUM_BWP];
    uint8_t            numDlBwpToRel;
-   DlBwpInfo          dlBwpToRelList[MAX_NUM_BWP];
+   BwpRelInfo         dlBwpToRelList[MAX_NUM_BWP];
    uint8_t            firstActvDlBwpId;
    uint8_t            defaultDlBwpId;
    uint8_t            *bwpInactivityTmr;
@@ -1261,7 +1374,7 @@ typedef struct servCellRecfgInfo
    uint8_t            numUlBwpToAddOrMod;
    UlBwpInfo          ulBwpToAddOrModList[MAX_NUM_BWP];
    uint8_t            numUlBwpToRel;
-   UlBwpInfo          ulBwpToRelList[MAX_NUM_BWP];
+   BwpRelInfo         ulBwpToRelList[MAX_NUM_BWP];
    uint8_t            firstActvUlBwpId;
 }ServCellRecfgInfo;
 
@@ -1361,6 +1474,7 @@ typedef struct macUeCfg
 {
    uint16_t               cellId;
    uint8_t                ueId;
+   uint8_t                beamIdx; 
    uint16_t               crnti;
    bool                   macCellGrpCfgPres;
    MacCellGrpCfg          macCellGrpCfg;
