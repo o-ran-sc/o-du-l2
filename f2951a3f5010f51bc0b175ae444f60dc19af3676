@@ -18,6 +18,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0377f920_b9cc1986",
+        "filename": "src/5gnrmac/mac_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 3455,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-03-15T08:30:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8c0d933b_7f1e2a41",
+      "revId": "f2951a3f5010f51bc0b175ae444f60dc19af3676",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "03ef7cdc_b57fc0a3",
@@ -31,6 +49,30 @@
       "writtenOn": "2023-03-14T06:55:49Z",
       "side": 1,
       "message": "Say \"UE ID [%d] not found in Cell Id [%d]\"",
+      "range": {
+        "startLine": 3492,
+        "startChar": 61,
+        "endLine": 3492,
+        "endChar": 81
+      },
+      "revId": "f2951a3f5010f51bc0b175ae444f60dc19af3676",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7c5aec35_4e447aba",
+        "filename": "src/5gnrmac/mac_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 3492,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-03-15T08:30:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "03ef7cdc_b57fc0a3",
       "range": {
         "startLine": 3492,
         "startChar": 61,
@@ -64,6 +106,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8c160256_563d814e",
+        "filename": "src/5gnrmac/mac_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 3498,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-03-15T08:30:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "acae5b68_ec2294b9",
+      "range": {
+        "startLine": 3498,
+        "startChar": 58,
+        "endLine": 3498,
+        "endChar": 97
+      },
+      "revId": "f2951a3f5010f51bc0b175ae444f60dc19af3676",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ed8b461a_c308f25a",
@@ -77,6 +143,54 @@
       "writtenOn": "2023-03-14T05:39:36Z",
       "side": 1,
       "message": "no need to check the result value, bcz this condition is restricting the sending of successful response",
+      "range": {
+        "startLine": 3502,
+        "startChar": 19,
+        "endLine": 3502,
+        "endChar": 35
+      },
+      "revId": "f2951a3f5010f51bc0b175ae444f60dc19af3676",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0d06f330_9fc9d90b",
+        "filename": "src/5gnrmac/mac_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 3502,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-03-15T08:30:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ed8b461a_c308f25a",
+      "range": {
+        "startLine": 3502,
+        "startChar": 19,
+        "endLine": 3502,
+        "endChar": 35
+      },
+      "revId": "f2951a3f5010f51bc0b175ae444f60dc19af3676",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e6f0be80_466c1137",
+        "filename": "src/5gnrmac/mac_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 3502,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-03-15T08:30:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ed8b461a_c308f25a",
       "range": {
         "startLine": 3502,
         "startChar": 19,
@@ -110,6 +224,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6c995eaf_0333cca4",
+        "filename": "src/5gnrmac/mac_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 3506,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-03-15T08:30:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "873c408d_d979d3fa",
+      "range": {
+        "startLine": 3506,
+        "startChar": 9,
+        "endLine": 3506,
+        "endChar": 13
+      },
+      "revId": "f2951a3f5010f51bc0b175ae444f60dc19af3676",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1ae1b453_3d5b0658",
@@ -123,6 +261,24 @@
       "writtenOn": "2023-03-14T06:55:49Z",
       "side": 1,
       "message": "CELLID_INVALID",
+      "revId": "f2951a3f5010f51bc0b175ae444f60dc19af3676",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "11c44b14_46c37004",
+        "filename": "src/cm/du_app_mac_inf.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-03-15T08:30:28Z",
+      "side": 1,
+      "message": "CELLID_INVALID is already defined in another enum.",
+      "parentUuid": "1ae1b453_3d5b0658",
       "revId": "f2951a3f5010f51bc0b175ae444f60dc19af3676",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -146,6 +302,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "fa117696_77caeae9",
+        "filename": "src/cm/du_app_mac_inf.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-03-15T08:30:28Z",
+      "side": 1,
+      "message": "UEID_INVALID is already defined in another enum.",
+      "parentUuid": "3c454a19_668d9d5d",
+      "revId": "f2951a3f5010f51bc0b175ae444f60dc19af3676",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "15c6f98e_49307fa2",
         "filename": "src/cm/du_app_mac_inf.h",
         "patchSetId": 1
@@ -157,6 +331,24 @@
       "writtenOn": "2023-03-14T06:55:49Z",
       "side": 1,
       "message": "Call this MacUeResetReq",
+      "revId": "f2951a3f5010f51bc0b175ae444f60dc19af3676",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0ef27118_9482dca8",
+        "filename": "src/cm/du_app_mac_inf.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 1581,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-03-15T08:30:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "15c6f98e_49307fa2",
       "revId": "f2951a3f5010f51bc0b175ae444f60dc19af3676",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -174,6 +366,30 @@
       "writtenOn": "2023-03-14T06:55:49Z",
       "side": 1,
       "message": "We haven\u0027t triggered this function from anywhere yet.. right?\nThis can be called by anyone who wishes to trigger UE reset in future?",
+      "range": {
+        "startLine": 4091,
+        "startChar": 8,
+        "endLine": 4091,
+        "endChar": 32
+      },
+      "revId": "f2951a3f5010f51bc0b175ae444f60dc19af3676",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e2dbfc16_a527472e",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 4091,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-03-15T08:30:28Z",
+      "side": 1,
+      "message": "Right.",
+      "parentUuid": "bc2e16a9_0ff206ad",
       "range": {
         "startLine": 4091,
         "startChar": 8,
@@ -207,6 +423,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e17b32c8_2b2bc8ca",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 4096,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-03-15T08:30:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cacbc5c9_1d2c2839",
+      "range": {
+        "startLine": 4096,
+        "startChar": 33,
+        "endLine": 4096,
+        "endChar": 44
+      },
+      "revId": "f2951a3f5010f51bc0b175ae444f60dc19af3676",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "33da72f6_9413b1eb",
@@ -230,6 +470,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "66559aae_d182b7be",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 4111,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-03-15T08:30:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "33da72f6_9413b1eb",
+      "range": {
+        "startLine": 4111,
+        "startChar": 96,
+        "endLine": 4111,
+        "endChar": 100
+      },
+      "revId": "f2951a3f5010f51bc0b175ae444f60dc19af3676",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9ee6ad0c_bd5f4613",
@@ -243,6 +507,30 @@
       "writtenOn": "2023-03-14T06:55:49Z",
       "side": 1,
       "message": "print cell id here",
+      "range": {
+        "startLine": 4117,
+        "startChar": 70,
+        "endLine": 4117,
+        "endChar": 72
+      },
+      "revId": "f2951a3f5010f51bc0b175ae444f60dc19af3676",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8cea68e0_63461a53",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 4117,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-03-15T08:30:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9ee6ad0c_bd5f4613",
       "range": {
         "startLine": 4117,
         "startChar": 70,
