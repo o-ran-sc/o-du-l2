@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "11d41bbf_cbd87cc5",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-03-15T12:00:56Z",
+      "side": 1,
+      "message": "reset",
+      "range": {
+        "startLine": 7,
+        "startChar": 64,
+        "endLine": 7,
+        "endChar": 71
+      },
+      "revId": "d01ddfd915615ceb970f932f8eafdb6828936668",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "362d941a_d35ad18b",
+        "filename": "src/cm/common_def.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 235,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-03-15T12:00:56Z",
+      "side": 1,
+      "message": "this is not result, its cause of result",
+      "range": {
+        "startLine": 235,
+        "startChar": 1,
+        "endLine": 235,
+        "endChar": 7
+      },
+      "revId": "d01ddfd915615ceb970f932f8eafdb6828936668",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
