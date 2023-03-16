@@ -84,6 +84,7 @@
 #define EVENT_MAC_RACH_RESOURCE_RSP  222
 #define EVENT_MAC_RACH_RESOURCE_REL  223
 #define EVENT_MAC_DL_PCCH_IND        224
+#define EVENT_MAC_UE_SYNC_STATUS_IND 225
 
 #define BSR_PERIODIC_TIMER_SF_10 10
 #define BSR_RETX_TIMER_SF_320 320
@@ -97,6 +98,13 @@ typedef enum
    MAC_DU_APP_RSP_NOK,
    MAC_DU_APP_RSP_OK
 }MacRsp;
+
+typedef enum
+{
+   IN_SYNC,
+   OUT_OF_SYNC,
+   OUT_OF_SUNC_MAX_RETRIESS
+}SyncStatus;
 
 typedef enum
 {
@@ -1561,6 +1569,13 @@ typedef struct cellInfo
 typedef struct cellInfo CellStartInfo;
 typedef struct cellInfo CellStopInfo;
 
+typedef struct ueSyncStatusInd
+{
+   uint16_t   cellId;
+   uint8_t    ueId;
+   SyncStatus status;
+}MacUeSyncStatusInd;
+
 /* Functions for CellUp Ind from MAC to DU APP*/
 typedef uint8_t (*DuMacCellUpInd) ARGS((
 	 Pst       *pst,
@@ -1693,6 +1708,11 @@ typedef uint8_t (*DuMacDlPcchInd) ARGS((
      Pst        *pst,
      DlPcchInd *pcchInd));
 
+/* UE sync status indication from MAC to DU APP*/
+typedef uint8_t (*MacDuUeSyncStatusIndFunc) ARGS((
+        Pst            *pst,
+        MacUeSyncStatusInd *syncStatusInd));
+
 uint64_t ueBitMapPerCell[MAX_NUM_CELL]; /* Bit Map to store used/free UE-IDX per Cell */
 
 uint8_t packMacCellUpInd(Pst *pst, OduCellId *cellId);
@@ -1773,6 +1793,9 @@ uint8_t MacProcDlPcchInd(Pst *pst, DlPcchInd *pcchInd);
 uint8_t unpackMacDlPcchInd(DuMacDlPcchInd func, Pst *pst, Buffer *mBuf);
 int8_t getFreeBitFromUeBitMap(uint16_t cellId);
 void unsetBitInUeBitMap(uint16_t cellId, uint8_t bitPos);
+uint8_t packDuMacUeSyncStatusInd(Pst *pst, MacUeSyncStatusInd *ueSyncStatusInd);
+uint8_t DuProcMacUeSyncStatusInd(Pst *pst, MacUeSyncStatusInd *ueSyncStatusInd);
+uint8_t unpackDuMacUeSyncStatusInd(MacDuUeSyncStatusIndFunc func, Pst *pst, Buffer *mBuf);
 #endif
 
 

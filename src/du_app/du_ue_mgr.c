@@ -39,6 +39,7 @@
 #include "CmInterface.h"
 #endif
 
+uint8_t DuProcMacUeSyncStatusInd(Pst *pst, MacUeSyncStatusInd *ueSyncStatusInd);
 DuMacDlCcchInd packMacDlCcchIndOpts[] =
 {
    packMacDlCcchInd,           /* Loose coupling */
@@ -4019,6 +4020,62 @@ uint8_t duProcUeContextReleaseCommand(uint16_t cellId, DuUeCb *duUeCb)
    return ret;
 }
 
+/*******************************************************************
+*
+* @brief Handle UE sync status indication from MAC
+*
+* @details
+*
+*    Function : DuProcMacUeSyncStatusInd
+*
+*    Functionality: Handle UE sync status indication from MAC
+*
+* @params[in] Pointer to MacUeSyncStatusInd and Pst
+* @return ROK     - success
+*         RFAILED - failure
+*
+* ****************************************************************/
+
+uint8_t DuProcMacUeSyncStatusInd(Pst *pst, MacUeSyncStatusInd *ueSyncStatusInd)
+{
+   uint8_t  ret =RFAILED;
+   uint16_t cellIdx=0, crnti = 0;
+   
+   if(ueSyncStatusInd)
+   {
+      GET_CELL_IDX(ueSyncStatusInd->cellId, cellIdx);
+      if(duCb.actvCellLst[cellIdx])
+      {
+         GET_CRNTI(crnti, ueSyncStatusInd->ueId);
+         if(duCb.actvCellLst[cellIdx]->ueCb[ueSyncStatusInd->ueId-1].crnti == crnti)
+         {
+            if(ueSyncStatusInd->status == IN_SYNC)
+            {
+               DU_LOG("\nINFO  -->  DU APP : MAC UE sync status indication : SUCCESS [UE IDX : %d]", ueSyncStatusInd->ueId);
+               ret =  ROK;
+            }
+            else
+            {
+               DU_LOG("\nINFO   -->  DU APP : MAC UE sync status indication : FAILED [UE IDX : %d]", ueSyncStatusInd->ueId);
+            }
+         }
+         else
+         {
+            DU_LOG("\nERROR  -->  DU APP : DuProcMacUeSyncStatusInd(): MAC UE sync status indication : Ue Id [%d] not found",ueSyncStatusInd->cellId);
+         }
+      }
+      else
+      {
+         DU_LOG("\nERROR  -->  DU APP : DuProcMacUeSyncStatusInd(): MAC UE sync status indication : Cell Id [%d] not found",ueSyncStatusInd->cellId);
+      }
+      DU_FREE_SHRABL_BUF(pst->region, pst->pool, ueSyncStatusInd, sizeof(MacUeSyncStatusInd));
+   }
+   else
+   {
+      DU_LOG("\nERROR  -->  DU APP : DuProcMacUeSyncStatusInd(): MAC UE sync status indication is null");
+   }
+   return ret;
+}
 /**********************************************************************
   End of file
 ***********************************************************************/
