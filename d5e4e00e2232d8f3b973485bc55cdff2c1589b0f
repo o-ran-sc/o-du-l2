@@ -24,6 +24,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "32b3eb00_d99b4554",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-03-16T07:05:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bc29b305_7951d521",
+      "range": {
+        "startLine": 7,
+        "startChar": 61,
+        "endLine": 7,
+        "endChar": 85
+      },
+      "revId": "d5e4e00e2232d8f3b973485bc55cdff2c1589b0f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fa8e1318_a5ccd62e",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-03-16T06:26:59Z",
       "side": 1,
       "message": "Cell Id [%d] not found",
+      "range": {
+        "startLine": 2425,
+        "startChar": 75,
+        "endLine": 2425,
+        "endChar": 84
+      },
+      "revId": "d5e4e00e2232d8f3b973485bc55cdff2c1589b0f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b181dfab_70e14bab",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2425,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-03-16T07:05:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fa8e1318_a5ccd62e",
       "range": {
         "startLine": 2425,
         "startChar": 75,
@@ -70,6 +118,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0b9f51db_28e26cf1",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2436,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-03-16T07:05:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a3ef3bba_682a3d67",
+      "range": {
+        "startLine": 2436,
+        "startChar": 62,
+        "endLine": 2436,
+        "endChar": 66
+      },
+      "revId": "d5e4e00e2232d8f3b973485bc55cdff2c1589b0f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bf53cb54_9fea56c6",
@@ -83,6 +155,30 @@
       "writtenOn": "2023-03-16T06:26:59Z",
       "side": 1,
       "message": "Comment can be like \"Mismatch between cell Id [%d] received from MAC and cell Id [%d] found at SCH\"",
+      "range": {
+        "startLine": 2446,
+        "startChar": 101,
+        "endLine": 2446,
+        "endChar": 107
+      },
+      "revId": "d5e4e00e2232d8f3b973485bc55cdff2c1589b0f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "33138146_4398b23e",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2446,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-03-16T07:05:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bf53cb54_9fea56c6",
       "range": {
         "startLine": 2446,
         "startChar": 101,
@@ -110,6 +206,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b6e68be8_e90fe4cb",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2514,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-03-16T07:05:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "21280b97_9aba9408",
+      "revId": "d5e4e00e2232d8f3b973485bc55cdff2c1589b0f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "226d86eb_2cae8bcf",
@@ -123,6 +237,24 @@
       "writtenOn": "2023-03-16T06:26:59Z",
       "side": 1,
       "message": "same as above",
+      "revId": "d5e4e00e2232d8f3b973485bc55cdff2c1589b0f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d18da7ad_062a3e98",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2579,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-03-16T07:05:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "226d86eb_2cae8bcf",
       "revId": "d5e4e00e2232d8f3b973485bc55cdff2c1589b0f",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -144,6 +276,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "abad1718_09ec673c",
+        "filename": "src/5gnrsch/sch_msg_router.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 232,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-03-16T07:05:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "94f1365c_ce4a3964",
+      "revId": "d5e4e00e2232d8f3b973485bc55cdff2c1589b0f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "214927d8_428997ab",
@@ -161,6 +311,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "60a49a1f_8ca58b66",
+        "filename": "src/cm/du_app_mac_inf.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 1272,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-03-16T07:05:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "214927d8_428997ab",
+      "revId": "d5e4e00e2232d8f3b973485bc55cdff2c1589b0f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8e79fd94_c2b1a620",
@@ -174,6 +342,30 @@
       "writtenOn": "2023-03-16T06:26:59Z",
       "side": 1,
       "message": "lets define macro for the length of these arrays",
+      "range": {
+        "startLine": 1553,
+        "startChar": 54,
+        "endLine": 1553,
+        "endChar": 55
+      },
+      "revId": "d5e4e00e2232d8f3b973485bc55cdff2c1589b0f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "da538aec_894cec07",
+        "filename": "src/cm/mac_sch_interface.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 1553,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-03-16T07:05:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8e79fd94_c2b1a620",
       "range": {
         "startLine": 1553,
         "startChar": 54,
@@ -207,6 +399,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d688e9f2_0f1a8d38",
+        "filename": "src/cm/mac_sch_interface.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 2088,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-03-16T07:05:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "26c32685_ac514677",
+      "range": {
+        "startLine": 2088,
+        "startChar": 12,
+        "endLine": 2088,
+        "endChar": 22
+      },
+      "revId": "d5e4e00e2232d8f3b973485bc55cdff2c1589b0f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "db31ce61_54cb6d48",
@@ -220,6 +436,24 @@
       "writtenOn": "2023-03-16T06:26:59Z",
       "side": 1,
       "message": "same as above",
+      "revId": "d5e4e00e2232d8f3b973485bc55cdff2c1589b0f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4a3cefb6_02d2e74a",
+        "filename": "src/cm/mac_sch_interface.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 2105,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-03-16T07:05:04Z",
+      "side": 1,
+      "message": "the Spec says needs to be a bitmap so I think making it enum will not be needed here.",
+      "parentUuid": "db31ce61_54cb6d48",
       "revId": "d5e4e00e2232d8f3b973485bc55cdff2c1589b0f",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -247,6 +481,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cfd348fd_a9f5b5a8",
+        "filename": "src/cm/mac_sch_interface.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 2221,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-03-16T07:05:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6879f8b1_a0b1c987",
+      "range": {
+        "startLine": 2221,
+        "startChar": 11,
+        "endLine": 2221,
+        "endChar": 13
+      },
+      "revId": "d5e4e00e2232d8f3b973485bc55cdff2c1589b0f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "39834806_53244730",
@@ -260,6 +518,30 @@
       "writtenOn": "2023-03-16T06:26:59Z",
       "side": 1,
       "message": "as per wg8 this param is PCMAX,f,c. Hence can we call this pcmax_f_c",
+      "range": {
+        "startLine": 2222,
+        "startChar": 11,
+        "endLine": 2222,
+        "endChar": 19
+      },
+      "revId": "d5e4e00e2232d8f3b973485bc55cdff2c1589b0f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e9408dcd_653665ab",
+        "filename": "src/cm/mac_sch_interface.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 2222,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-03-16T07:05:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "39834806_53244730",
       "range": {
         "startLine": 2222,
         "startChar": 11,
