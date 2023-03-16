@@ -283,6 +283,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "693e5045_95240a50",
+        "filename": "src/cm/du_app_mac_inf.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-03-16T07:08:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "11c44b14_46c37004",
+      "revId": "f2951a3f5010f51bc0b175ae444f60dc19af3676",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3c454a19_668d9d5d",
@@ -314,6 +332,24 @@
       "side": 1,
       "message": "UEID_INVALID is already defined in another enum.",
       "parentUuid": "3c454a19_668d9d5d",
+      "revId": "f2951a3f5010f51bc0b175ae444f60dc19af3676",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "58fa19cd_ca86bbb8",
+        "filename": "src/cm/du_app_mac_inf.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-03-16T07:08:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fa117696_77caeae9",
       "revId": "f2951a3f5010f51bc0b175ae444f60dc19af3676",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
