@@ -428,6 +428,21 @@ void callFlowMacActvTsk(Pst *pst)
                         strcpy(message,"EVENT_UL_SCH_INFO");
                         break;
                      }
+                  case EVENT_UL_RAR_INFO_TO_MAC:
+                     {
+                        strcpy(message,"EVENT_UL_RAR_INFO_TO_MAC");
+                        break;
+                     }
+                  case EVENT_DL_CTRL_CHAN_INFO_TO_MAC:
+                     {
+                        strcpy(message,"EVENT_DL_CTRL_CHAN_INFO_TO_MAC");
+                        break;
+                     }
+                  case EVENT_DL_BROADCAST_ALLOC_TO_MAC:
+                     {
+                        strcpy(message,"EVENT_DL_BROADCAST_ALLOC_TO_MAC");
+                        break;
+                     }
                   case EVENT_RACH_RESOURCE_RESPONSE_TO_MAC:
                      {
                         strcpy(message,"EVENT_RACH_RESOURCE_RESPONSE_TO_MAC");
@@ -570,6 +585,21 @@ uint8_t MacMessageRouter(Pst *pst, void *msg)
       case EVENT_UL_SCH_INFO:
          {
             MacProcUlSchInfo(pst, (UlSchedInfo *)msg);
+            break;
+         }
+      case EVENT_UL_RAR_INFO_TO_MAC:
+         {
+            MacProcUlRarInfo(pst, (UlRarInfo *)msg);
+            break;
+         }
+      case EVENT_DL_CTRL_CHAN_INFO_TO_MAC:
+         {
+            MacProcDlCtrlChanInfo(pst, (DlCtrlChannelInfo *)msg);
+            break;
+         }
+      case EVENT_DL_BROADCAST_ALLOC_TO_MAC:
+         {
+            MacProcDlBroadcastAlloc(pst, (DlBroadcastAlloc *)msg);
             break;
          }
       case EVENT_RACH_RESOURCE_RESPONSE_TO_MAC:

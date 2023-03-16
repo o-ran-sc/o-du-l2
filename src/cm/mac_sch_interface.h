@@ -51,6 +51,9 @@
 #define EVENT_DL_CQI_TO_SCH          32
 #define EVENT_UL_CQI_TO_SCH          33
 #define EVENT_PHR_IND_TO_SCH         34
+#define EVENT_DL_CTRL_CHAN_INFO_TO_MAC 35
+#define EVENT_UL_RAR_INFO_TO_MAC     36
+#define EVENT_DL_BROADCAST_ALLOC_TO_MAC 37
 /*macros*/
 #define MAX_SSB_IDX 1 /* forcing it as 1 for now. Right value is 64 */
 #define SCH_SSB_MASK_SIZE   1
@@ -464,6 +467,7 @@ typedef enum
    SchBoth
 }SchPurposeOfFailureDet;
 
+/*Ref: ORAN_WG8.V7.0.0 Sec 11.2.3.2.1 Cell Conf Req*/
 /*structures*/
 typedef struct timeDomainAlloc
 {
@@ -890,7 +894,7 @@ typedef struct schUlCfgCommon
    uint16_t          schTimeAlignTimer;
 }SchUlCfgCommon;
 
-/*Ref: ORAN_WG8.V7.0.0 Sec 11.2.3.2.1 */
+/*Ref: ORAN_WG8.V7.0.0 Sec 11.2.3.2.1 Cell Conf Req*/
 typedef struct schCellCfg
 {
    uint16_t        cellId;                 /* Cell Id */
@@ -944,7 +948,7 @@ typedef struct schCellDeleteRsp
    SchFailureCause cause;
 }SchCellDeleteRsp;
 
-/*Ref: ORAN_WG8.V7.0.0 Sec 11.2.3.2.3*/
+/*Ref: ORAN_WG8.V7.0.0 Sec 11.2.3.2.3 Slice Cfg Req*/
 typedef struct schRrmPolicyRatio
 {
    uint8_t maxRatio;
@@ -965,23 +969,18 @@ typedef struct schSliceCfgReq
 }SchSliceCfgReq;
 
 /*Ref: ORAN_WG8.V7.0.0 Sec 11.2.3.3.3 Slice Cfg Response*/
-typedef struct sliceRsp
+typedef struct schSliceCfgRsp
 {
    Snssai     snssai;
    SchMacRsp  rsp;
    RspCause   cause;
-}SliceRsp;
-
-typedef struct schSliceCfgRsp
-{
-   uint8_t    numSliceCfgRsp;
-   SliceRsp   **listOfSliceCfgRsp;
 }SchSliceCfgRsp;
 
 /*As per ORAN-WG8 V7.0.0 Sec 11.2.3.3.4 , Slice Cfg and Recfg are same structures*/
 typedef struct schSliceCfgReq SchSliceRecfgReq;
 typedef struct schSliceCfgRsp SchSliceRecfgRsp;
 
+/* Reference -> O-RAN.WG8.AAD.0-v07.00, Section 11.2.3.3.8 DL Scheduling Information */
 typedef struct ssbInfo
 {
    uint8_t         ssbIdx;          /* SSB Index */
@@ -1207,77 +1206,7 @@ typedef struct dlSchedInfo
 
 }DlSchedInfo;
 
-/*Reference: O-RAN.WG8.AAD.v7.0.0, Sec 11.2.3.3.13 Downlink Paging Allocation*/
-typedef struct interleaved_t
-{
-   uint8_t regBundleSize;
-   uint8_t interleaverSize;
-   uint16_t shiftIndex;
-}Interleaved;
-
-typedef struct pageDlDci
-{
-   uint8_t    freqDomainResource[6];
-   uint8_t    durationSymbols;
-   uint8_t    cceRegMappingType;
-   union
-   {
-      Interleaved  interleaved;
-      uint8_t      nonInterleaved;
-   }cceReg;
-   uint8_t    ssStartSymbolIndex;
-   uint8_t    cceIndex;
-   uint8_t    aggregLevel;
-   uint8_t    precoderGranularity;
-   uint8_t    coreSetSize;
-}PageDlDci;
-
-typedef struct resAllocType1 PageFreqDomainAlloc;
-
-typedef struct pageTimeDomainAlloc
-{
-   uint8_t mappingType;
-   uint16_t startSymb;
-   uint16_t numSymb;
-}PageTimeDomainAlloc;
-
-typedef struct pageDmrsConfig
-{
-   uint8_t dmrsType;
-   uint8_t dmrsAddPos;
-   uint8_t nrOfDmrsSymbols;
-}PageDmrsConfig;
-
-typedef struct pageTbInfo
-{
-   uint8_t         mcs;
-   uint32_t        tbSize;
-}PageTbInfo;
-
-typedef struct pageDlSch
-{
-   PageFreqDomainAlloc  freqAlloc;
-   PageTimeDomainAlloc  timeAlloc;
-   PageDmrsConfig       dmrs;
-   uint8_t              vrbPrbMapping;
-   PageTbInfo           tbInfo;
-   uint8_t              tbScaling;
-   uint16_t             dlPagePduLen;
-   uint8_t             *dlPagePdu;
-}PageDlSch;
-
-typedef struct dlPageAlloc
-{
-   uint16_t       cellId;
-   SlotTimingInfo dlPageTime;
-   uint8_t        ssbIdx;
-   bool           shortMsgInd;
-   uint8_t        shortMsg;
-   BwpCfg         bwp;
-   PageDlDci      pageDlDci;
-   PageDlSch      pageDlSch;
-}DlPageAlloc;
-
+/* Reference -> O-RAN.WG8.AAD.0-v07.00, Section 11.2.3.3.9 UL Scheduling Information */
 typedef struct tbInfo
 {
    uint8_t      mcs;       /* MCS */
@@ -1375,12 +1304,240 @@ typedef struct ulSchedInfo
    SchPucchInfo     schPucchInfo;   /* Pucch and Uci scheduling info */
 }UlSchedInfo;
 
+/* Reference -> ORAN.WG8.AAD.0-v07.00, Section 11.2.3.3.10 RAR Information */
+typedef struct rarAllocInfo
+{
+    uint8_t     RAPID;
+    uint16_t    ta;
+    uint8_t     startRb;
+    uint8_t     numRB;
+    uint16_t    tcrnti;
+}RarAllocInfo;
+
+typedef struct ulRarInfo
+{
+   uint16_t         cellId;         /* Cell Id */
+   SlotTimingInfo   slotIndInfo;    /* Slot Info: sfn, slot number */
+   uint8_t          numPreamble;
+   RarAllocInfo     **rarAllocInfo;
+}UlRarInfo;
+
+/* Reference -> ORAN.WG8.AAD.0-v07.00, Section 11.2.3.3.11 DL Control Channel Information */
+typedef struct interleaved_t
+{
+   uint8_t   regBundleSize;
+   uint8_t   interleaverSize;
+   uint16_t  shiftIndex;
+}Interleaved;
+
+typedef struct dlCtrl_Format0_0
+{
+   uint8_t  puschHopping;
+   bool     freqHopFlag;
+   uint8_t  tpcCommand;
+   bool     sulIndicator;
+}DlCtrl_Format0_0;
+
+typedef struct dlCtrl_Format0_1
+{
+   uint8_t   carrierIndicator;
+   bool      sulIndicator;
+   uint8_t   bwpIndicator;
+   uint8_t   puschHopping;
+   bool      freqHopFlag;
+   uint8_t   tpcCommand;
+   uint8_t   srsResourceIndicator;
+   uint8_t   preCodingInfo;
+   uint8_t   srsRequest;
+   uint8_t   csiRequest;
+   uint8_t   cbgTransmissionInfo;
+   uint8_t   betaOffsetIndicator;
+   bool      dmrsSequenceInitialization;
+   bool      ulschIndicatior;
+}DlCtrl_Format0_1;
+
+typedef struct dlCtrl_Format1_0
+{
+   uint8_t  vrbPrbMapping;
+   uint8_t  dai;
+   uint8_t  tpcCommand;
+   uint8_t  pucchResInd;
+   uint8_t  pdschToHarqFeedbackInd;
+}DlCtrl_Format1_0;
+
+typedef struct dlCtrl_Format1_1
+{
+   uint8_t   carrierIndicator;
+   uint8_t   bwpIndicator;
+   uint8_t   vrbPrbMapping;
+   uint8_t   prbBundleSizeInd;
+   uint8_t   rateMachingInd;
+   uint8_t   zpCsiRsTrigger;
+   uint8_t   dai;
+   uint8_t   tpcCommand;
+   uint8_t   pucchResInd;
+   uint8_t   pdschToHarqFeedbackInd;
+   uint8_t   transConfigInd; 
+   uint8_t   srsRequest;
+   uint8_t   cbgTransmissionInfo;
+   uint8_t   cbgFlushingOutInfo;
+   uint8_t   dmrsSequenceInitialization;
+}DlCtrl_Format1_1;
+
+typedef struct dlCtrlDciFormat
+{
+   FormatType     formatType;     /* DCI Format */
+   union
+   {
+      DlCtrl_Format0_0  format0_0;      /* Format 0_0 */
+      DlCtrl_Format0_1  format0_1;      /* Format 0_1 */
+      DlCtrl_Format1_0  format1_0;      /* Format 0_0 */
+      DlCtrl_Format1_1  format1_1;      /* Format 0_1 */
+   }format;
+}DlCtrlDciFormat;
+
 typedef struct dlCtrlChannelInfo
 {
-
+   SlotTimingInfo slotIndInfo;    /* Slot Info: sfn, slot number */
+   uint16_t       cellId;         /* Cell Id */
+   uint16_t       crnti;          /* CRNI */
+   uint8_t        freqDomainResource[6];
+   uint8_t        durationSymbols;
+   uint8_t        cceRegMappingType;
+   union
+   {
+      Interleaved  interleaved;
+      uint8_t      nonInterleaved;
+   }cceReg;
+   uint8_t    ssStartSymbolIndex;
+   uint8_t    cceIndex;
+   uint8_t    aggregLevel;
+   uint8_t    precoderGranularity;
+   int8_t     pdcchPowerOffset;
 }DlCtrlChannelInfo;
 
+/* Reference -> ORAN.WG8.AAD.0-v07.00, Section 11.2.3.3.12 DL Broadcast Allocation Information */
+typedef struct dmrsConfig
+{
+   uint8_t dmrsType;
+   uint8_t dmrsAddPos;
+   uint8_t nrOfDmrsSymbols;
+}DmrsConfig;
 
+typedef struct schDlDci
+{
+   uint8_t        freqDomainResource[6];
+   uint8_t        duration;
+   uint8_t        cceRegMappingType;
+   union
+   {
+      Interleaved  interleaved;
+      uint8_t      nonInterleaved;
+   }cceReg;
+   int8_t                    SearchSpaceStartSymbol;
+   uint8_t                   cceIndex;
+   SchPrecoderGranul    precoderGranularity;
+   uint8_t                   pdcchPowerOffset;
+}SchDlDci;
+
+typedef struct SchDlDciForBoradCast
+{
+   SchDlDci dlDci;
+}SchDlDciForBoradCast;
+
+typedef struct schTransportBlock
+{
+   uint8_t mcs;
+   uint16_t tbSize;
+}SchTransportBlock;
+
+typedef struct SchDlSchForBoradCast
+{
+   FreqDomainRsrc     fdAlloc;      
+   TimeDomainAlloc    tdAlloc;      
+   DmrsConfig         dmrsConfig;
+   uint8_t            vrbPrbMapping;
+   SchTransportBlock  transportBlock;
+   uint8_t            tbScaling;   
+   uint8_t            siInfoInd;
+   uint8_t            *siContent;
+}SchDlSchForBoradCast;
+
+typedef struct schSsbInfo     
+{
+   uint8_t ssbSubcarrierOffset;
+   uint8_t ssbOffsetPointA;  
+}SchSsbInfo;
+
+typedef struct dlBroadcastAlloc
+{
+   uint16_t             cellId;         /* Cell Id */
+   SlotTimingInfo       slotIndInfo;    /* Slot Info: sfn, slot number */
+   uint16_t             ssbIndex;
+   SchDlDciForBoradCast dlDci;
+   SchDlSchForBoradCast dlSch;   
+   SchSsbInfo           ssbInfo; 
+}DlBroadcastAlloc;
+
+/*Reference: O-RAN.WG8.AAD.v7.0.0, Sec 11.2.3.3.13 Downlink Paging Allocation*/
+
+typedef struct pageDlDci
+{
+   uint8_t    freqDomainResource[6];
+   uint8_t    durationSymbols;
+   uint8_t    cceRegMappingType;
+   union
+   {
+      Interleaved  interleaved;
+      uint8_t      nonInterleaved;
+   }cceReg;
+   uint8_t    ssStartSymbolIndex;
+   uint8_t    cceIndex;
+   uint8_t    aggregLevel;
+   uint8_t    precoderGranularity;
+   uint8_t    coreSetSize;
+}PageDlDci;
+
+typedef struct resAllocType1 PageFreqDomainAlloc;
+
+typedef struct pageTimeDomainAlloc
+{
+   uint8_t mappingType;
+   uint16_t startSymb;
+   uint16_t numSymb;
+}PageTimeDomainAlloc;
+
+typedef struct pageTbInfo
+{
+   uint8_t         mcs;
+   uint32_t        tbSize;
+}PageTbInfo;
+
+typedef struct pageDlSch
+{
+   PageFreqDomainAlloc  freqAlloc;
+   PageTimeDomainAlloc  timeAlloc;
+   DmrsConfig           dmrs;
+   uint8_t              vrbPrbMapping;
+   PageTbInfo           tbInfo;
+   uint8_t              tbScaling;
+   uint16_t             dlPagePduLen;
+   uint8_t             *dlPagePdu;
+}PageDlSch;
+
+typedef struct dlPageAlloc
+{
+   uint16_t       cellId;
+   SlotTimingInfo dlPageTime;
+   uint8_t        ssbIdx;
+   bool           shortMsgInd;
+   uint8_t        shortMsg;
+   BwpCfg         bwp;
+   PageDlDci      pageDlDci;
+   PageDlSch      pageDlSch;
+}DlPageAlloc;
+
+/*Spec O-RAN, WG8, V7.0.0, '11.2.3.2.5' Add UE Reconfiguration Request*/
 /* Info of Scheduling Request to Add/Modify */
 typedef struct schSchedReqInfo
 {

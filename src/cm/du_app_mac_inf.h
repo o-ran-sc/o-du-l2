@@ -802,6 +802,7 @@ typedef struct beamformingConf
    uint32_t digitalAzimuth;    
 }BeamformingConf;
 
+/**O-RAN WG8 v7.0.0 Sec 11.2.1.1 NR Cell Configuration*/
 typedef struct macCellCfg
 {
    uint16_t         cellId;           /* Cell Id */
@@ -824,30 +825,75 @@ typedef struct macCellCfgCfm
    uint8_t        rsp; 
 }MacCellCfgCfm;
 
-typedef struct ulCcchInd
+typedef struct macCellDeleteReq
 {
    uint16_t cellId;
-   uint16_t crnti;
-   uint16_t ulCcchMsgLen;
-   uint8_t  *ulCcchMsg;
-}UlCcchIndInfo;
+}MacCellDeleteReq;
 
-typedef struct dlCcchInd
+typedef struct macCellDeleteRsp
 {
-   uint16_t      cellId;
-   uint16_t      crnti;
-   DlCcchMsgType msgType;
-   uint16_t      dlCcchMsgLen;
-   uint8_t       *dlCcchMsg;
-}DlCcchIndInfo;
+   uint16_t cellId;
+   CellDeleteStatus result;
+}MacCellDeleteRsp;
 
+/**O-RAN WG8 v7.0.0 Sec 11.2.1.2 Slice Configuration*/
+typedef struct macSliceCfgRsp 
+{
+   Snssai     snssai;
+   MacRsp     rsp;
+   RspReason  cause;  
+}MacSliceCfgRsp;
+
+typedef struct rrmPolicyRatio
+{
+   uint8_t maxRatio;
+   uint8_t minRatio;
+   uint8_t dedicatedRatio;
+}RrmPolicyRatio;
+
+typedef struct rrmPolicyMemberList
+{
+   Plmn    plmn;
+   Snssai  snssai;
+}RrmPolicyMemberList;
+
+typedef struct macSliceRrmPolicy
+{
+   ResourceType        resourceType;
+   uint8_t             numOfRrmPolicyMem;
+   RrmPolicyMemberList **rRMPolicyMemberList;
+   RrmPolicyRatio      policyRatio;
+}MacSliceRrmPolicy;
+
+typedef struct macSliceCfgReq
+{
+   uint8_t           numOfRrmPolicy;
+   MacSliceRrmPolicy **listOfRrmPolicy;
+}MacSliceCfgReq;
+
+/*As per ORAN-WG8, Slice Cfg and ReCfg are same structures*/
+typedef struct macSliceCfgReq MacSliceRecfgReq;
+typedef struct macSliceCfgRsp MacSliceRecfgRsp;
+
+/**O-RAN WG8 v7.0.0 Sec 11.2.4.1 Cell Start*/
+typedef struct cellInfo
+{
+    SlotTimingInfo slotInfo;
+    uint16_t       cellId;
+}CellInfo;
+
+typedef struct cellInfo CellStartInfo;
+
+/**O-RAN WG8 v7.0.0 Sec 11.2.4.2 Cell Stop*/
+typedef struct cellInfo CellStopInfo;
+
+/**O-RAN WG8 v7.0.0 Sec 11.2.4.3 UE Create Request*/
 typedef struct bsrTmrCfg
 {
    uint16_t     periodicTimer;
    uint16_t     retxTimer;
    uint16_t     srDelayTimer;
 }BsrTmrCfg;
-
 
 /* Info of Scheduling Request to Add/Modify */
 typedef struct schedReqInfo
@@ -1470,6 +1516,7 @@ typedef struct modulationInfo
    McsTable    mcsTable;    /* MCS table */
 }ModulationInfo;
 
+/**O-RAN WG8 v7.0.0 Sec 11.2.4.3 UE Create Request*/
 typedef struct macUeCfg
 {
    uint16_t               cellId;
@@ -1489,6 +1536,7 @@ typedef struct macUeCfg
    LcCfg                  lcCfgList[MAX_NUM_LC];
 }MacUeCfg;
 
+/**O-RAN WG8 v7.0.0 Sec 11.2.4.5 UE Reconfg Request*/
 /* UE Re-configuration */
 typedef struct macUeRecfg
 {
@@ -1517,6 +1565,7 @@ typedef struct macUeRecfg
 #endif
 }MacUeRecfg;
 
+/**O-RAN WG8 v7.0.0 Sec 11.2.4.4 UE Create Response*/
 typedef struct nrcgi
 {
    Plmn      plmn;
@@ -1556,8 +1605,26 @@ typedef struct ueCfgRsp
    DRBFailInfo    *failedDRBModlist;
 }MacUeCfgRsp;
 
+/**O-RAN WG8 v7.0.0 Sec 11.2.4.6 UE ReCfg Response*/
 typedef struct ueCfgRsp MacUeRecfgRsp;
 
+/**O-RAN WG8 v7.0.0 Sec 11.2.4.7 UE Delete Req*/
+typedef struct ueDelete
+{
+    uint16_t cellId;
+    uint8_t  ueId;
+    uint16_t crnti;
+}MacUeDelete;
+
+/**O-RAN WG8 v7.0.0 Sec 11.2.4.8 UE Delete Response*/
+typedef struct ueDeleteRsp
+{
+   uint16_t cellId;
+   uint8_t  ueId;
+   UeDeleteStatus result;
+}MacUeDeleteRsp;
+
+/**O-RAN WG8 v7.0.0 Sec 11.2.4.9 RACH Res Request*/
 typedef struct rachRsrcReq
 {
    uint16_t cellId;
@@ -1566,6 +1633,7 @@ typedef struct rachRsrcReq
    uint8_t  ssbIdx[MAX_NUM_SSB];
 }MacRachRsrcReq;
 
+/**O-RAN WG8 v7.0.0 Sec 11.2.4.10 RACH Res Response*/
 typedef struct macCfraSsbResource
 {
    uint8_t  ssbIdx;
@@ -1587,6 +1655,7 @@ typedef struct macRachRsrcRsp
    MacCfraResource  cfraResource;
 }MacRachRsrcRsp;
 
+/**O-RAN WG8 v7.0.0 Sec 11.2.4.11 RACH Resourse Release*/
 typedef struct macRachRsrcRel
 {
    uint16_t cellId;
@@ -1594,69 +1663,26 @@ typedef struct macRachRsrcRel
    uint16_t crnti;
 }MacRachRsrcRel;
 
-typedef struct ueDelete
-{
-    uint16_t cellId;
-    uint8_t  ueId;
-    uint16_t crnti;
-}MacUeDelete;
-
-typedef struct ueDeleteRsp
+/**O-RAN WG8 v7.0.0 Sec 11.2.4.15 UL CCCH Ind*/
+typedef struct ulCcchInd
 {
    uint16_t cellId;
-   uint8_t  ueId;
-   UeDeleteStatus result;
-}MacUeDeleteRsp;
+   uint16_t crnti;
+   uint16_t ulCcchMsgLen;
+   uint8_t  *ulCcchMsg;
+}UlCcchIndInfo;
 
-typedef struct macCellDeleteReq
+/**O-RAN WG8 v7.0.0 Sec 11.2.4.16 DL CCCH Ind*/
+typedef struct dlCcchInd
 {
-   uint16_t cellId;
-}MacCellDeleteReq;
+   uint16_t      cellId;
+   uint16_t      crnti;
+   DlCcchMsgType msgType;
+   uint16_t      dlCcchMsgLen;
+   uint8_t       *dlCcchMsg;
+}DlCcchIndInfo;
 
-typedef struct macCellDeleteRsp
-{
-   uint16_t cellId;
-   CellDeleteStatus result;
-}MacCellDeleteRsp;
-
-typedef struct macSliceCfgRsp 
-{
-   Snssai     snssai;
-   MacRsp     rsp;
-   RspReason  cause;  
-}MacSliceCfgRsp;
-
-typedef struct rrmPolicyRatio
-{
-   uint8_t maxRatio;
-   uint8_t minRatio;
-   uint8_t dedicatedRatio;
-}RrmPolicyRatio;
-
-typedef struct rrmPolicyMemberList
-{
-   Plmn    plmn;
-   Snssai  snssai;
-}RrmPolicyMemberList;
-
-typedef struct macSliceRrmPolicy
-{
-   ResourceType        resourceType;
-   uint8_t             numOfRrmPolicyMem;
-   RrmPolicyMemberList **rRMPolicyMemberList;
-   RrmPolicyRatio      policyRatio;
-}MacSliceRrmPolicy;
-
-typedef struct macSliceCfgReq
-{
-   uint8_t           numOfRrmPolicy;
-   MacSliceRrmPolicy **listOfRrmPolicy;
-}MacSliceCfgReq;
-
-/*As per ORAN-WG8, Slice Cfg and ReCfg are same structures*/
-typedef struct macSliceCfgReq MacSliceRecfgReq;
-typedef struct macSliceCfgRsp MacSliceRecfgRsp;
-
+/**O-RAN WG8 v7.0.0 Sec 11.2.4.17 DL PCCH Ind*/
 typedef struct dlPcchInd
 {
    uint16_t  cellId;
@@ -1665,15 +1691,6 @@ typedef struct dlPcchInd
    uint16_t  pduLen;
    uint8_t  *pcchPdu;
 }DlPcchInd;
-
-typedef struct cellInfo
-{
-    SlotTimingInfo slotInfo;
-    uint16_t       cellId;
-}CellInfo;
-
-typedef struct cellInfo CellStartInfo;
-typedef struct cellInfo CellStopInfo;
 
 /* Functions for CellUp Ind from MAC to DU APP*/
 typedef uint8_t (*DuMacCellUpInd) ARGS((
