@@ -55,6 +55,53 @@ MacDuUeResetRspFunc macDuUeResetRspOpts[] =
    DuProcMacUeResetRsp,   /* packing for tightly coupled */
    packDuMacUeResetRsp   /* packing for light weight loosly coupled */
 };
+
+MacDuUeSyncStatusIndFunc macDuUeSyncStatusIndOpts[] =
+{
+   packDuMacUeSyncStatusInd,   /* packing for loosely coupled */
+   DuProcMacUeSyncStatusInd,   /* packing for tightly coupled */
+   packDuMacUeSyncStatusInd    /* packing for light weight loosly coupled */
+};
+
+/*******************************************************************
+*
+* @brief Fill and Send UE Sync Status Indication from MAC to DU APP
+*
+* @details
+*
+*    Function : MacSendUeSyncStatusInd 
+*
+*    Functionality: Fill and Send UE Sync Status Indication from MAC to DUAPP
+*
+* @params[in] uint16_t cellId, uint16_t ueId, SyncStatus status 
+* @return ROK     - success
+*         RFAILED - failure
+*
+* ****************************************************************/
+
+uint8_t MacSendUeSyncStatusInd(uint16_t cellId, uint16_t ueId, SyncStatus  status)
+{
+   MacUeSyncStatusInd *ueSyncStatusInd;
+   Pst            rspPst;
+
+   MAC_ALLOC_SHRABL_BUF(ueSyncStatusInd, sizeof(MacUeSyncStatusInd));
+   if(!ueSyncStatusInd)
+   {
+      DU_LOG("\nERROR  -->  MAC : Memory allocation for UE Sync Status Indication failed");
+      return RFAILED;
+   }
+
+   /* Filling UE Sync Status Indication */
+   ueSyncStatusInd->cellId = cellId;
+   ueSyncStatusInd->ueId   = ueId;
+   ueSyncStatusInd->status = status;
+
+   /* Fill Post structure and send UE Sync Status Indication */
+   memset(&rspPst, 0, sizeof(Pst));
+   FILL_PST_MAC_TO_DUAPP(rspPst, EVENT_MAC_UE_SYNC_STATUS_IND);
+   return (*macDuUeSyncStatusIndOpts[rspPst.selector])(&rspPst, ueSyncStatusInd);
+}
+
 /*******************************************************************
  *
  * @brief Fills mac cell group config to be sent to scheduler
@@ -2998,7 +3045,7 @@ uint8_t MacProcSchUeRecfgRsp(Pst *pst, SchUeRecfgRsp *schRecfgRsp)
    uint8_t ret = ROK;
    uint16_t cellIdx;
    MacUeRecfg *ueRecfg = NULLP;
-
+   
 #ifdef CALL_FLOW_DEBUG_LOG
    switch(pst->event)
    {

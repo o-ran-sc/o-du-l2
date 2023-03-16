@@ -550,6 +550,11 @@ uint8_t duActvTsk(Pst *pst, Buffer *mBuf)
                      ret = unpackDuMacSliceCfgRsp(DuProcMacSliceCfgRsp, pst, mBuf);
                      break;
                   }
+               case EVENT_MAC_UE_SYNC_STATUS_IND:
+                  {
+                     ret = unpackDuMacUeSyncStatusInd(DuProcMacUeSyncStatusInd, pst, mBuf);
+                     break;
+                                                                                                }
                case EVENT_MAC_SLICE_RECFG_RSP:
                   {
                      ret = unpackDuMacSliceRecfgRsp(DuProcMacSliceRecfgRsp, pst, mBuf);
