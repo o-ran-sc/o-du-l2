@@ -24,6 +24,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "78a2962b_2068c6bd",
+        "filename": "src/5gnrmac/mac_ue_mgr.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 3120,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-03-16T08:02:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fc474fec_2a20e964",
+      "range": {
+        "startLine": 3120,
+        "startChar": 75,
+        "endLine": 3120,
+        "endChar": 80
+      },
+      "revId": "ed719ca95a5fa4fadbbff56cfb67036131c9f063",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f8f90a0a_d7cbb972",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-03-16T07:13:08Z",
       "side": 1,
       "message": "status",
+      "range": {
+        "startLine": 3219,
+        "startChar": 18,
+        "endLine": 3219,
+        "endChar": 23
+      },
+      "revId": "ed719ca95a5fa4fadbbff56cfb67036131c9f063",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5959cc91_27dd1345",
+        "filename": "src/5gnrmac/mac_ue_mgr.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 3219,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-03-16T08:02:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f8f90a0a_d7cbb972",
       "range": {
         "startLine": 3219,
         "startChar": 18,
@@ -70,6 +118,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "17f2ce7f_0543ce2a",
+        "filename": "src/5gnrmac/mac_ue_mgr.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 3364,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-03-16T08:02:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5768577e_c1b0f1f5",
+      "range": {
+        "startLine": 3364,
+        "startChar": 18,
+        "endLine": 3364,
+        "endChar": 23
+      },
+      "revId": "ed719ca95a5fa4fadbbff56cfb67036131c9f063",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a0a965b7_84d1040b",
@@ -83,6 +155,30 @@
       "writtenOn": "2023-03-16T07:13:08Z",
       "side": 1,
       "message": "status",
+      "range": {
+        "startLine": 3430,
+        "startChar": 73,
+        "endLine": 3430,
+        "endChar": 78
+      },
+      "revId": "ed719ca95a5fa4fadbbff56cfb67036131c9f063",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "376b1e11_28708a2b",
+        "filename": "src/5gnrmac/mac_ue_mgr.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 3430,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-03-16T08:02:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a0a965b7_84d1040b",
       "range": {
         "startLine": 3430,
         "startChar": 73,
@@ -116,6 +212,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "82878b54_8a547691",
+        "filename": "src/5gnrmac/mac_ue_mgr.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 3472,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-03-16T08:02:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1d7ee249_a45758b3",
+      "range": {
+        "startLine": 3472,
+        "startChar": 18,
+        "endLine": 3472,
+        "endChar": 23
+      },
+      "revId": "ed719ca95a5fa4fadbbff56cfb67036131c9f063",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "09fb7b32_4599fe5a",
@@ -129,6 +249,24 @@
       "writtenOn": "2023-03-16T07:13:08Z",
       "side": 1,
       "message": "status",
+      "revId": "ed719ca95a5fa4fadbbff56cfb67036131c9f063",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b9855e7b_473c07da",
+        "filename": "src/5gnrrlc/rlc_mgr.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-03-16T08:02:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "09fb7b32_4599fe5a",
       "revId": "ed719ca95a5fa4fadbbff56cfb67036131c9f063",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -150,6 +288,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "db85873b_882c5da8",
+        "filename": "src/5gnrrlc/rlc_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 862,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-03-16T08:02:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "88142e57_ea477845",
+      "revId": "ed719ca95a5fa4fadbbff56cfb67036131c9f063",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "54a36959_a6f3bc80",
@@ -167,6 +323,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bad267b3_eeeafef3",
+        "filename": "src/5gnrrlc/rlc_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 918,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-03-16T08:02:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "54a36959_a6f3bc80",
+      "revId": "ed719ca95a5fa4fadbbff56cfb67036131c9f063",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d545e61b_7e0d53e2",
@@ -180,6 +354,30 @@
       "writtenOn": "2023-03-16T07:13:08Z",
       "side": 1,
       "message": "status",
+      "range": {
+        "startLine": 1407,
+        "startChar": 97,
+        "endLine": 1407,
+        "endChar": 102
+      },
+      "revId": "ed719ca95a5fa4fadbbff56cfb67036131c9f063",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "21d4df4d_edfd1c08",
+        "filename": "src/5gnrsch/sch_ue_mgr.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1407,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-03-16T08:02:30Z",
+      "side": 1,
+      "message": "i think cause is the correct word to use here because it has result/rsp.",
+      "parentUuid": "d545e61b_7e0d53e2",
       "range": {
         "startLine": 1407,
         "startChar": 97,
@@ -213,6 +411,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7c79e553_5aa963a2",
+        "filename": "src/5gnrsch/sch_ue_mgr.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1443,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-03-16T08:02:30Z",
+      "side": 1,
+      "message": "same as above",
+      "parentUuid": "1d0a75a9_6199dc2a",
+      "range": {
+        "startLine": 1443,
+        "startChar": 19,
+        "endLine": 1443,
+        "endChar": 24
+      },
+      "revId": "ed719ca95a5fa4fadbbff56cfb67036131c9f063",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "695a07fe_3d557949",
@@ -226,6 +448,30 @@
       "writtenOn": "2023-03-16T07:13:08Z",
       "side": 1,
       "message": "like we have specified invalid cellid and ueid. Please check for which param this cause is used. Can we add specific param name? Lets discuss.",
+      "range": {
+        "startLine": 233,
+        "startChar": 3,
+        "endLine": 233,
+        "endChar": 22
+      },
+      "revId": "ed719ca95a5fa4fadbbff56cfb67036131c9f063",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "49670303_2883e6f8",
+        "filename": "src/cm/common_def.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 233,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-03-16T08:02:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "695a07fe_3d557949",
       "range": {
         "startLine": 233,
         "startChar": 3,
@@ -276,6 +522,48 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6deed8bd_f432aa10",
+        "filename": "src/cm/du_app_mac_inf.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 1475,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-03-16T08:02:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "797f5d3e_55690a2c",
+      "range": {
+        "startLine": 1475,
+        "startChar": 18,
+        "endLine": 1475,
+        "endChar": 23
+      },
+      "revId": "ed719ca95a5fa4fadbbff56cfb67036131c9f063",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3382f3c1_ec8f02e8",
+        "filename": "src/cm/du_app_mac_inf.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 1475,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-03-16T08:02:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "993aa03a_19639df4",
+      "revId": "ed719ca95a5fa4fadbbff56cfb67036131c9f063",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d7f46e66_83856b31",
@@ -306,6 +594,48 @@
       "writtenOn": "2023-03-16T07:13:08Z",
       "side": 1,
       "message": "call this status since result and cause both are in the same parameter here.",
+      "range": {
+        "startLine": 1486,
+        "startChar": 18,
+        "endLine": 1486,
+        "endChar": 23
+      },
+      "revId": "ed719ca95a5fa4fadbbff56cfb67036131c9f063",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "178743be_094fb031",
+        "filename": "src/cm/du_app_mac_inf.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 1486,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-03-16T08:02:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d7f46e66_83856b31",
+      "revId": "ed719ca95a5fa4fadbbff56cfb67036131c9f063",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ce0e32f8_f0c3fed3",
+        "filename": "src/cm/du_app_mac_inf.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 1486,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-03-16T08:02:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "47a79b87_d7ea64ed",
       "range": {
         "startLine": 1486,
         "startChar": 18,
@@ -350,6 +680,42 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f2f62aaf_6cdfae6e",
+        "filename": "src/cm/du_app_mac_inf.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 1555,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-03-16T08:02:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "132bb6fd_f0a506ed",
+      "revId": "ed719ca95a5fa4fadbbff56cfb67036131c9f063",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "674bf027_8f27983c",
+        "filename": "src/cm/du_app_mac_inf.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 1555,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-03-16T08:02:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a566691b_22b2298b",
+      "revId": "ed719ca95a5fa4fadbbff56cfb67036131c9f063",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d2f9bec2_d0fd8c47",
@@ -386,6 +752,54 @@
       "writtenOn": "2023-03-16T07:13:08Z",
       "side": 1,
       "message": "call this status since result and cause both are in the same parameter here.",
+      "range": {
+        "startLine": 231,
+        "startChar": 18,
+        "endLine": 231,
+        "endChar": 23
+      },
+      "revId": "ed719ca95a5fa4fadbbff56cfb67036131c9f063",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "39722040_27ee7098",
+        "filename": "src/cm/du_app_rlc_inf.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 231,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-03-16T08:02:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0abd70fa_a2a18700",
+      "range": {
+        "startLine": 231,
+        "startChar": 18,
+        "endLine": 231,
+        "endChar": 23
+      },
+      "revId": "ed719ca95a5fa4fadbbff56cfb67036131c9f063",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5392d254_ba617e89",
+        "filename": "src/cm/du_app_rlc_inf.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 231,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-03-16T08:02:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d2f9bec2_d0fd8c47",
       "range": {
         "startLine": 231,
         "startChar": 18,
