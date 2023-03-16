@@ -86,6 +86,7 @@
 #define EVENT_MAC_DL_PCCH_IND        224
 #define EVENT_MAC_UE_RESET_REQ       225
 #define EVENT_MAC_UE_RESET_RSP       226
+#define EVENT_MAC_UE_SYNC_STATUS_IND 227
 
 #define BSR_PERIODIC_TIMER_SF_10 10
 #define BSR_RETX_TIMER_SF_320 320
@@ -99,6 +100,13 @@ typedef enum
    MAC_DU_APP_RSP_NOK,
    MAC_DU_APP_RSP_OK
 }MacRsp;
+
+typedef enum
+{
+   IN_SYNC,
+   OUT_OF_SYNC,
+   OUT_OF_SUNC_MAX_RETRIES
+}SyncStatus;
 
 typedef enum
 {
@@ -1668,6 +1676,13 @@ typedef struct ueResetRsp
    CauseOfResult  status;
 }MacUeResetRsp;
 
+typedef struct ueSyncStatusInd
+{
+   uint16_t   cellId;
+   uint8_t    ueId;
+   SyncStatus status;
+}MacUeSyncStatusInd;
+
 /* Functions for CellUp Ind from MAC to DU APP*/
 typedef uint8_t (*DuMacCellUpInd) ARGS((
 	 Pst       *pst,
@@ -1810,6 +1825,11 @@ typedef uint8_t (*MacDuUeResetRspFunc) ARGS((
      Pst            *pst,
      MacUeResetRsp *resetRsp));
 
+/* UE sync status indication from MAC to DU APP*/
+typedef uint8_t (*MacDuUeSyncStatusIndFunc) ARGS((
+        Pst            *pst,
+        MacUeSyncStatusInd *syncStatusInd));
+
 uint64_t ueBitMapPerCell[MAX_NUM_CELL]; /* Bit Map to store used/free UE-IDX per Cell */
 
 uint8_t packMacCellUpInd(Pst *pst, OduCellId *cellId);
@@ -1896,7 +1916,9 @@ uint8_t unpackMacUeResetReq(DuMacUeResetReq func, Pst *pst, Buffer *mBuf);
 uint8_t packDuMacUeResetRsp(Pst *pst, MacUeResetRsp *resetRsp);
 uint8_t DuProcMacUeResetRsp(Pst *pst, MacUeResetRsp *resetRsp);
 uint8_t unpackDuMacUeResetRsp(MacDuUeResetRspFunc func, Pst *pst, Buffer *mBuf);
-
+uint8_t packDuMacUeSyncStatusInd(Pst *pst, MacUeSyncStatusInd *ueSyncStatusInd);
+uint8_t DuProcMacUeSyncStatusInd(Pst *pst, MacUeSyncStatusInd *ueSyncStatusInd);
+uint8_t unpackDuMacUeSyncStatusInd(MacDuUeSyncStatusIndFunc func, Pst *pst, Buffer *mBuf);
 #endif
 
 
