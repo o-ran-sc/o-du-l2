@@ -1,0 +1,273 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bc29b305_7951d521",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-03-16T06:26:59Z",
+      "side": 1,
+      "message": "Lets give the message name here.",
+      "range": {
+        "startLine": 7,
+        "startChar": 61,
+        "endLine": 7,
+        "endChar": 85
+      },
+      "revId": "d5e4e00e2232d8f3b973485bc55cdff2c1589b0f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fa8e1318_a5ccd62e",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2425,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-03-16T06:26:59Z",
+      "side": 1,
+      "message": "Cell Id [%d] not found",
+      "range": {
+        "startLine": 2425,
+        "startChar": 75,
+        "endLine": 2425,
+        "endChar": 84
+      },
+      "revId": "d5e4e00e2232d8f3b973485bc55cdff2c1589b0f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a3ef3bba_682a3d67",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2436,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-03-16T06:26:59Z",
+      "side": 1,
+      "message": "we are fetching uecb from \"\u0026cell-\u003eueCb[ueId-1]\", which means uecb will never be null.\nTo actually check if ue is present, check if(ueCb-\u003eueId \u003d\u003d ueId) or if(ueCb-\u003ecrnti \u003d\u003d dlCqiInd-\u003ecrnti).\nIf not, then add log as \"UE CB for CRNTI [%d] not found\"",
+      "range": {
+        "startLine": 2436,
+        "startChar": 62,
+        "endLine": 2436,
+        "endChar": 66
+      },
+      "revId": "d5e4e00e2232d8f3b973485bc55cdff2c1589b0f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bf53cb54_9fea56c6",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2446,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-03-16T06:26:59Z",
+      "side": 1,
+      "message": "Comment can be like \"Mismatch between cell Id [%d] received from MAC and cell Id [%d] found at SCH\"",
+      "range": {
+        "startLine": 2446,
+        "startChar": 101,
+        "endLine": 2446,
+        "endChar": 107
+      },
+      "revId": "d5e4e00e2232d8f3b973485bc55cdff2c1589b0f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "21280b97_9aba9408",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2514,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-03-16T06:26:59Z",
+      "side": 1,
+      "message": "All comments in SchProcDlCqiInd are also applicable to SchProcUlCqiInd",
+      "revId": "d5e4e00e2232d8f3b973485bc55cdff2c1589b0f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "226d86eb_2cae8bcf",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2579,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-03-16T06:26:59Z",
+      "side": 1,
+      "message": "same as above",
+      "revId": "d5e4e00e2232d8f3b973485bc55cdff2c1589b0f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "94f1365c_ce4a3964",
+        "filename": "src/5gnrsch/sch_msg_router.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 232,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-03-16T06:26:59Z",
+      "side": 1,
+      "message": "Can we add Sch as prefix to UlCqiInd, DlCqiInd and PwrHdroomInd because all above interface structures have same nomenclature.",
+      "revId": "d5e4e00e2232d8f3b973485bc55cdff2c1589b0f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "214927d8_428997ab",
+        "filename": "src/cm/du_app_mac_inf.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 1272,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-03-16T06:26:59Z",
+      "side": 1,
+      "message": "lets call this BwpUlCfgDed, similar to how we names DL",
+      "revId": "d5e4e00e2232d8f3b973485bc55cdff2c1589b0f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8e79fd94_c2b1a620",
+        "filename": "src/cm/mac_sch_interface.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 1553,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-03-16T06:26:59Z",
+      "side": 1,
+      "message": "lets define macro for the length of these arrays",
+      "range": {
+        "startLine": 1553,
+        "startChar": 54,
+        "endLine": 1553,
+        "endChar": 55
+      },
+      "revId": "d5e4e00e2232d8f3b973485bc55cdff2c1589b0f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "26c32685_ac514677",
+        "filename": "src/cm/mac_sch_interface.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 2088,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-03-16T06:26:59Z",
+      "side": 1,
+      "message": "Can we define an enum for the same? like CQIRepottType",
+      "range": {
+        "startLine": 2088,
+        "startChar": 12,
+        "endLine": 2088,
+        "endChar": 22
+      },
+      "revId": "d5e4e00e2232d8f3b973485bc55cdff2c1589b0f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "db31ce61_54cb6d48",
+        "filename": "src/cm/mac_sch_interface.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 2105,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-03-16T06:26:59Z",
+      "side": 1,
+      "message": "same as above",
+      "revId": "d5e4e00e2232d8f3b973485bc55cdff2c1589b0f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6879f8b1_a0b1c987",
+        "filename": "src/cm/mac_sch_interface.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 2221,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-03-16T06:26:59Z",
+      "side": 1,
+      "message": "lets call this phr (power head room)",
+      "range": {
+        "startLine": 2221,
+        "startChar": 11,
+        "endLine": 2221,
+        "endChar": 13
+      },
+      "revId": "d5e4e00e2232d8f3b973485bc55cdff2c1589b0f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "39834806_53244730",
+        "filename": "src/cm/mac_sch_interface.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 2222,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-03-16T06:26:59Z",
+      "side": 1,
+      "message": "as per wg8 this param is PCMAX,f,c. Hence can we call this pcmax_f_c",
+      "range": {
+        "startLine": 2222,
+        "startChar": 11,
+        "endLine": 2222,
+        "endChar": 19
+      },
+      "revId": "d5e4e00e2232d8f3b973485bc55cdff2c1589b0f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
