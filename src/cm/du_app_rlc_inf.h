@@ -34,6 +34,7 @@
 #define EVENT_RLC_UE_DELETE_REQ 220
 #define EVENT_RLC_UE_DELETE_RSP 221
 #define EVENT_RLC_SLICE_PM_TO_DU 222
+#define EVENT_RLC_MAX_RETRANSMISSION_INFO 225
 
 #define RB_ID_SRB 0
 #define RB_ID_DRB 1
@@ -117,6 +118,22 @@ typedef enum
    RLC_DU_APP_RSP_OK = 1,
    RLC_DU_APP_RSP_NOK
 }RlcRsp;
+
+typedef enum
+{
+   LC_TYPE_SRB,
+   LC_TYPE_DRB
+}LcType;
+
+/*  Ref: ORAN_WG8.V7.0.0 Sec 11.2.5.10 RLC Max Retransmission Reached */
+
+typedef struct rlcMaxRetransInfo 
+{
+   uint16_t       cellId;
+   uint16_t       ueId;
+   LcType         lcType;
+   uint8_t        lcId;
+}RlcMaxRetransInfo;
 
 typedef struct ulAmCfg
 {
@@ -317,6 +334,12 @@ typedef struct dlDataMsgInfo
 }RlcDlUserDataInfo;
 
 /* Function Pointers */
+
+/* Max Retransmission  from RLC to DU APP*/
+typedef uint8_t (*RlcDuMaxRetransInfo) ARGS((
+         Pst          *pst,
+         RlcMaxRetransInfo *maxRetransInfo));
+
 /* UE create Request from DU APP to RLC*/
 typedef uint8_t (*DuRlcUeCreateReq) ARGS((
    Pst           *pst,
@@ -378,6 +401,8 @@ typedef uint8_t (*RlcSlicePmToDuFunc) ARGS((
    SlicePmList *sliceStats));
 
 /* Pack/Unpack function declarations */
+uint8_t packRlcDuMaxRetransInfo(Pst *pst, RlcMaxRetransInfo *maxRetransmissionReachedInfo);
+uint8_t unpackRlcMaxRetransInfo(RlcDuMaxRetransInfo  func, Pst *pst, Buffer *mBuf);
 uint8_t packDuRlcUeCreateReq(Pst *pst, RlcUeCfg *ueCfg);
 uint8_t unpackRlcUeCreateReq(DuRlcUeCreateReq func, Pst *pst, Buffer *mBuf);
 uint8_t packRlcDuUeCfgRsp(Pst *pst, RlcUeCfgRsp *ueCfgRsp);
@@ -404,6 +429,7 @@ uint8_t packRlcDuSlicePm(Pst *pst, SlicePmList *sliceStats);
 uint8_t unpackRlcSlicePm(RlcSlicePmToDuFunc func, Pst *pst, Buffer *mBuf);
 
 /* Event Handler function declarations */
+uint8_t DuProcRlcMaxRetransInfo(Pst *pst, RlcMaxRetransInfo *maxRetransmissionReachedInfo);
 uint8_t RlcProcUeCreateReq(Pst *pst, RlcUeCfg *ueCfg);
 uint8_t DuProcRlcUeCfgRsp(Pst *pst, RlcUeCfgRsp *cfgRsp);
 uint8_t DuProcRlcUlRrcMsgTrans(Pst *pst, RlcUlRrcMsgInfo *ulRrcMsgInfo);

@@ -16,6 +16,7 @@
 ################################################################################
 *******************************************************************************/
 
+uint8_t rlcSendMaxRetransmissionReachedInfoToDu(Pst *pst, RlcMaxRetransInfo *retransmissionInfo);
 uint8_t rlcSendUlRrcMsgToDu(Pst *pst, RlcUlRrcMsgInfo *ulRrcMsgInfo);
 uint8_t rlcSendRrcDeliveryReportToDu(Pst *pst, RrcDeliveryReport *rrcDelivery);
 uint8_t rlcSendDlRrcMsgRspToDu(Pst *pst, RlcDlRrcMsgRsp *dlRrcMsgRsp);

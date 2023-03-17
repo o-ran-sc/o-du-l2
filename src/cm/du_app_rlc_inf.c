@@ -20,6 +20,88 @@
 #include "du_app_rlc_inf.h"
 
 /*******************************************************************
+*
+* @brief Packs and Sends Max Retransmission Reached Info from RLC to DUAPP
+*
+* @details
+*
+*    Function : packRlcDuMaxRetransInfo
+*
+*    Functionality:
+*       Packs and Sends Max Retransmission Reached Info from RLC to DUAPP
+*
+*
+* @params[in] Post structure pointer
+*             RlcMaxRetransInfo *maxRetransmissionReachedInfo
+*
+* @return ROK     - success
+*         RFAILED - failure
+*
+* ****************************************************************/
+
+uint8_t packRlcDuMaxRetransInfo(Pst *pst, RlcMaxRetransInfo *maxRetransmissionReachedInfo)
+{
+   Buffer *mBuf = NULLP;
+
+   if(pst->selector == ODU_SELECTOR_LWLC)
+   {
+      if (ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf) != ROK)
+      {
+         DU_LOG("\nERROR  --> RLC : Memory allocation failed at packRlcDuMaxRetransInfo");
+         return RFAILED;
+      }
+      /* pack the address of the structure */
+      CMCHKPK(oduPackPointer,(PTR)maxRetransmissionReachedInfo, mBuf);
+   }
+   else
+   {
+      DU_LOG("\nERROR  -->  RLC: Only LWLC supported for packRlcDuMaxRetransInfo");
+      return RFAILED;
+   }
+
+   return ODU_POST_TASK(pst,mBuf);
+}
+
+/*******************************************************************
+*
+* @brief Unpacks Max Retransmission Reached Info received from DU APP
+*
+* @details
+*
+*    Function : unpackRlcMaxRetransInfo
+*
+*    Functionality:
+*         Unpacks Max Retransmission Reached Info received from DU APP
+*
+* @params[in] Pointer to Handler
+*             Post structure pointer
+*             Message Buffer
+* @return ROK     - success
+*         RFAILED - failure
+*
+* ****************************************************************/
+
+uint8_t unpackRlcMaxRetransInfo(RlcDuMaxRetransInfo func, Pst *pst, Buffer *mBuf)
+{
+    if(pst->selector == ODU_SELECTOR_LWLC)
+    {
+       RlcMaxRetransInfo *maxRetransmissionReachedInfo = NULLP;
+       /* unpack the address of the structure */
+       CMCHKUNPK(oduUnpackPointer, (PTR *)&maxRetransmissionReachedInfo, mBuf);
+       ODU_PUT_MSG_BUF(mBuf);
+       return (*func)(pst, maxRetransmissionReachedInfo);
+    }
+    else
+    {
+       /* Nothing to do for other selectors */
+       DU_LOG("\nERROR  -->  RLC: Only LWLC supported for Max Retransmission Reached Info ");
+       ODU_PUT_MSG_BUF(mBuf);
+    }
+
+    return RFAILED;
+}
+
+/*******************************************************************
  *
  * @brief Packs and Sends UE create Request from DUAPP to RLC
  *
@@ -940,6 +1022,7 @@ uint8_t unpackRlcSlicePm(RlcSlicePmToDuFunc func, Pst *pst, Buffer *mBuf)
 
     return RFAILED;
 }
+
 /**********************************************************************
          End of file
 ***********************************************************************/
