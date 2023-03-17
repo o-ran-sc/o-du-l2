@@ -24,6 +24,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "69f35d48_ad6ece2b",
+        "filename": "src/5gnrrlc/rlc_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1211,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-03-17T13:30:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4e66e1dc_5b11b02f",
+      "range": {
+        "startLine": 1211,
+        "startChar": 20,
+        "endLine": 1211,
+        "endChar": 28
+      },
+      "revId": "b34e24255eaba7abba92a234865de4967aff22b7",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e644ed83_40d9484d",
@@ -37,6 +61,24 @@
       "writtenOn": "2023-03-17T08:57:10Z",
       "side": 1,
       "message": "Please check RLC code and find at what point RLC UL actually triggers RLC UE reestablishment response. We will have to call this wrapper from that point.",
+      "revId": "b34e24255eaba7abba92a234865de4967aff22b7",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5ea6845b_eda67396",
+        "filename": "src/5gnrrlc/rlc_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1225,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-03-17T13:30:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e644ed83_40d9484d",
       "revId": "b34e24255eaba7abba92a234865de4967aff22b7",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -58,6 +100,42 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "25441691_b2b6350e",
+        "filename": "src/cm/du_app_rlc_inf.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 321,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-03-17T13:30:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "224318ab_768300a9",
+      "revId": "b34e24255eaba7abba92a234865de4967aff22b7",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d45145f6_07c1f5b0",
+        "filename": "src/cm/du_app_rlc_inf.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 321,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-03-17T13:30:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "224318ab_768300a9",
+      "revId": "b34e24255eaba7abba92a234865de4967aff22b7",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "64adbf0d_53af9cae",
@@ -71,6 +149,24 @@
       "writtenOn": "2023-03-17T08:57:10Z",
       "side": 1,
       "message": "Can we not directly create a list here like \nuint8_t lcIdToReest[MAX_NUM_LC];",
+      "revId": "b34e24255eaba7abba92a234865de4967aff22b7",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4f04d6d3_b66d389b",
+        "filename": "src/cm/du_app_rlc_inf.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 332,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-03-17T13:30:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "64adbf0d_53af9cae",
       "revId": "b34e24255eaba7abba92a234865de4967aff22b7",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -92,6 +188,42 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7becbed5_f1e81b89",
+        "filename": "src/du_app/du_mgr_main.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 551,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-03-17T13:30:55Z",
+      "side": 1,
+      "message": "ok",
+      "parentUuid": "203c5338_5997bb39",
+      "revId": "b34e24255eaba7abba92a234865de4967aff22b7",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3b4bdc12_822bf005",
+        "filename": "src/du_app/du_mgr_main.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 551,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-03-17T13:30:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "203c5338_5997bb39",
+      "revId": "b34e24255eaba7abba92a234865de4967aff22b7",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3e3c739c_f82be1d8",
@@ -105,6 +237,24 @@
       "writtenOn": "2023-03-17T08:57:10Z",
       "side": 1,
       "message": "In you want you can shorten the name for convenience to RlcUeReestRsp/Req.\nYou take the call on how to keept it.",
+      "revId": "b34e24255eaba7abba92a234865de4967aff22b7",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8af18dd0_a1b1b8a8",
+        "filename": "src/du_app/du_mgr_msg_router.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 475,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-03-17T13:30:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3e3c739c_f82be1d8",
       "revId": "b34e24255eaba7abba92a234865de4967aff22b7",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -126,6 +276,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "22b5d8a3_0e28335d",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 4315,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-03-17T13:30:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b8d8d661_494fa466",
+      "revId": "b34e24255eaba7abba92a234865de4967aff22b7",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "019e6d7c_97615625",
@@ -143,6 +311,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a315c4ac_f175a77b",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 4329,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-03-17T13:30:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "019e6d7c_97615625",
+      "revId": "b34e24255eaba7abba92a234865de4967aff22b7",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4cc2abf5_e167806e",
@@ -156,6 +342,30 @@
       "writtenOn": "2023-03-17T08:57:10Z",
       "side": 1,
       "message": "print cell Id",
+      "range": {
+        "startLine": 4335,
+        "startChar": 75,
+        "endLine": 4335,
+        "endChar": 79
+      },
+      "revId": "b34e24255eaba7abba92a234865de4967aff22b7",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fd5dc89a_7bfd4e56",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 4335,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-03-17T13:30:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4cc2abf5_e167806e",
       "range": {
         "startLine": 4335,
         "startChar": 75,
