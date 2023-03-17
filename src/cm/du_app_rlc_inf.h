@@ -34,6 +34,8 @@
 #define EVENT_RLC_UE_DELETE_REQ 220
 #define EVENT_RLC_UE_DELETE_RSP 221
 #define EVENT_RLC_SLICE_PM_TO_DU 222
+#define EVENT_RLC_UE_REESTABLISHMENT_REQ 223
+#define EVENT_RLC_UE_REESTABLISHMENT_RSP 224
 
 #define RB_ID_SRB 0
 #define RB_ID_DRB 1
@@ -316,6 +318,27 @@ typedef struct dlDataMsgInfo
    Buffer     *dlMsg;         /* DL Data */
 }RlcDlUserDataInfo;
 
+/* UE RLC Re-establishment req from DU APP to RLC */
+typedef struct lcReestablishment
+{
+   uint8_t lcId;
+}LcReestablishment;
+
+typedef struct rlcUeReestablishmentReq
+{  
+   uint16_t   cellId;         
+   uint16_t   ueId;           
+   uint8_t    numLcsToReestablishment;
+   LcReestablishment lcToReestablishment[MAX_NUM_LC];
+}RlcUeReestablishmentReq;
+
+typedef struct rlcUeReestablishmentRsp 
+{
+   uint16_t       cellId;
+   uint8_t        ueId;
+   CauseOfResult  status;
+}RlcUeReestablishmentRsp;
+
 /* Function Pointers */
 /* UE create Request from DU APP to RLC*/
 typedef uint8_t (*DuRlcUeCreateReq) ARGS((
@@ -377,6 +400,16 @@ typedef uint8_t (*RlcSlicePmToDuFunc) ARGS((
    Pst           *pst,
    SlicePmList *sliceStats));
 
+/* UE Re-establishment Request from DU APP to RLC */
+typedef uint8_t (*DuRlcUeReestablishmentReq) ARGS((
+   Pst           *pst,
+   RlcUeReestablishmentReq   *ueReestablishmentReq));
+
+/* UE Re-establishment Response from RLC to DU APP*/
+typedef uint8_t (*RlcDuUeReestablishmentRsp) ARGS((
+   Pst          *pst,
+   RlcUeReestablishmentRsp  *ueDelRsp));
+
 /* Pack/Unpack function declarations */
 uint8_t packDuRlcUeCreateReq(Pst *pst, RlcUeCfg *ueCfg);
 uint8_t unpackRlcUeCreateReq(DuRlcUeCreateReq func, Pst *pst, Buffer *mBuf);
@@ -402,6 +435,10 @@ uint8_t packRlcDuUeDeleteRsp(Pst *pst, RlcUeDeleteRsp *ueDeleteRsp);
 uint8_t unpackRlcUeDeleteRsp(RlcDuUeDeleteRsp func, Pst *pst, Buffer *mBuf);
 uint8_t packRlcDuSlicePm(Pst *pst, SlicePmList *sliceStats);
 uint8_t unpackRlcSlicePm(RlcSlicePmToDuFunc func, Pst *pst, Buffer *mBuf);
+uint8_t packDuRlcUeReestablishmentReq(Pst *pst, RlcUeReestablishmentReq *ueReestablishment);
+uint8_t unpackRlcUeReestablishmentReq(DuRlcUeReestablishmentReq func, Pst *pst, Buffer *mBuf);
+uint8_t packRlcDuUeReestablishmentRsp(Pst *pst, RlcUeReestablishmentRsp *ueReestablishmentRsp);
+uint8_t unpackRlcUeReestablishmentRsp(RlcDuUeReestablishmentRsp func, Pst *pst, Buffer *mBuf);
 
 /* Event Handler function declarations */
 uint8_t RlcProcUeCreateReq(Pst *pst, RlcUeCfg *ueCfg);
@@ -416,6 +453,8 @@ uint8_t RlcProcDlUserDataTransfer(Pst *pst, RlcDlUserDataInfo *dlDataMsgInfo);
 uint8_t RlcProcUeDeleteReq(Pst *pst, RlcUeDelete *ueDelete);
 uint8_t DuProcRlcUeDeleteRsp(Pst *pst, RlcUeDeleteRsp *delRsp);
 uint8_t DuProcRlcSliceMetrics(Pst *pst, SlicePmList *sliceStats);
+uint8_t RlcProcUeReestablishmentReq(Pst *pst, RlcUeReestablishmentReq *ueReestablishment);
+uint8_t DuProcRlcUeReestablishmentRsp(Pst *pst, RlcUeReestablishmentRsp *delRsp);
 #endif /* RLC_INF_H */
 
 /**********************************************************************

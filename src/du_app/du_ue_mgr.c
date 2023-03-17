@@ -39,6 +39,13 @@
 #include "CmInterface.h"
 #endif
 
+DuRlcUeReestablishmentReq packRlcUeReestablishmentReqOpts[] =
+{
+   packDuRlcUeReestablishmentReq,       /* Loose coupling */
+   RlcProcUeReestablishmentReq,         /* TIght coupling */
+   packDuRlcUeReestablishmentReq        /* Light weight-loose coupling */
+};
+
 DuMacDlCcchInd packMacDlCcchIndOpts[] =
 {
    packMacDlCcchInd,           /* Loose coupling */
@@ -4234,6 +4241,156 @@ uint8_t DuProcMacUeSyncStatusInd(Pst *pst, MacUeSyncStatusInd *ueSyncStatusInd)
    else
    {
       DU_LOG("\nERROR  -->  DU APP : DuProcMacUeSyncStatusInd(): MAC UE sync status indication is null");
+   }
+   return ret;
+}
+
+/*******************************************************************
+ *
+ * @brief Sending UE Reestablishment Req To Rlc
+ *
+ * @details
+ *
+ *    Function : sendUeReestablishmentReqToRlc
+ *
+ *    Functionality:
+ *     Sending UE Reestablishment Req To Rlc
+ *
+ *  @params[in]  cellId, ueId 
+ *  @return ROK     - success
+ *          RFAILED - failure
+ *
+ *****************************************************************/
+
+uint8_t sendUeReestablishmentReqToRlc(uint16_t cellId, uint8_t ueId)
+{
+   uint8_t ret;
+   Pst pst;
+   RlcUeReestablishmentReq *ueReestablishment;
+
+   DU_ALLOC_SHRABL_BUF(ueReestablishment, sizeof(RlcUeReestablishmentReq));
+   if(ueReestablishment !=NULLP)
+   {
+      ueReestablishment->cellId = cellId;
+      ueReestablishment->ueId = ueId;
+      FILL_PST_DUAPP_TO_RLC(pst, RLC_UL_INST, EVENT_RLC_UE_REESTABLISHMENT_REQ);
+
+      ret = (*packRlcUeReestablishmentReqOpts[pst.selector])(&pst, ueReestablishment);
+      if(ret == RFAILED)
+      {
+         DU_LOG("\nERROR  -->  DU_APP : sendUeReestablishmentReqToRlc():Failed to send UE Reestablishment  Req to RLC"); 
+         DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, ueReestablishment, sizeof(RlcUeReestablishmentReq));
+      }
+   }
+   else
+   {
+      DU_LOG("\nERROR  -->   DU_APP: sendUeReestablishmentReqToRlc():Memory allocation failed");
+      ret = RFAILED;
+   }
+   return ret;
+}
+
+/*******************************************************************
+ *
+ * @brief DU processes UE reestablishment req from CU and sends to MAC and RLC 
+ *
+ * @details
+ *
+ *    Function : duBuildAndSendUeReestablishmentReq
+ *
+ *    Functionality: DU processes UE reestablishment req from CU and sends to MAC 
+ *                   and RLC 
+ *
+ * @params[in] cellId, crnti 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+
+uint8_t duBuildAndSendUeReestablishmentReq(uint16_t cellId, uint16_t crnti)
+{
+   uint8_t  ueId =0;
+   uint16_t cellIdx = 0;
+
+   DU_LOG("\nDEBUG  -->  DU_APP: Processing UE Reestablishment Request ");
+   GET_CELL_IDX(cellId, cellIdx);
+   GET_UE_ID(crnti, ueId);
+
+   if(duCb.actvCellLst[cellIdx] != NULLP)
+   {
+      if(crnti != duCb.actvCellLst[cellIdx]->ueCb[ueId - 1].crnti)
+      {
+         DU_LOG("\nERROR  -->  DU APP : duBuildAndSendUeReestablishmentReq(): CRNTI [%d] not found", crnti);
+         return RFAILED;
+      }
+
+      if(sendUeReestablishmentReqToRlc(cellId, ueId) == RFAILED)
+      {
+         DU_LOG("\nERROR  -->  DU APP : duBuildAndSendUeReestablishmentReq():Failed to build UE  reestablishment req for RLC ");
+         return RFAILED;
+      }
+   }
+   else
+   {
+      DU_LOG("\nERROR  -->  DU APP : duBuildAndSendUeReestablishmentReq(): Cell Id is not found");
+      return RFAILED;
+   }
+
+   return ROK;
+}
+
+/*******************************************************************
+ *
+ * @brief Processes UE Reestablishment Rsp received from RLC 
+ *
+ * @details
+ *
+ *    Function : DuProcRlcUeReestablishmentRsp
+ *
+ *    Functionality:
+ *     Processes UE Reestablishment Rsp received from RLC 
+ *
+ *  @params[in]  Post structure
+ *               Pointer to RlcUeReestablishmentRsp
+ *  @return ROK     - success
+ *          RFAILED - failure
+ *
+ * *****************************************************************/
+
+uint8_t DuProcRlcUeReestablishmentRsp(Pst *pst, RlcUeReestablishmentRsp *ueReestablishmentRsp)
+{
+   uint8_t  ueId = 0, ret = RFAILED;
+   uint16_t cellIdx = 0,crnti=0;
+
+   if(ueReestablishmentRsp)
+   {
+      ueId = ueReestablishmentRsp->ueId;
+      GET_CELL_IDX(ueReestablishmentRsp->cellId, cellIdx);
+
+      if(ueReestablishmentRsp->status == SUCCESSFUL)
+      {
+         if(duCb.actvCellLst[cellIdx]!=NULLP)
+         {
+            GET_CRNTI(crnti, ueId);
+            if(duCb.actvCellLst[cellIdx]->ueCb[ueId-1].crnti ==  crnti)
+            {
+               /*TODO: complete the processing of UE Reestablishment Response */
+               DU_LOG("\nINFO   -->  DU_APP: RLC UE Reestablishment Response : SUCCESS [UE IDX:%d]", ueId);
+               ret = ROK;
+            }
+            else
+               DU_LOG("\nERROR  -->  DU APP : duBuildAndSendUeReestablishmentReq(): CRNTI [%d] not found", crnti);
+         }
+         else
+            DU_LOG("\nERROR  -->  DU APP : duBuildAndSendUeReestablishmentReq(): Cell Id[%d] is not found", ueReestablishmentRsp->cellId);
+            
+      }
+      else
+      {
+         DU_LOG("\nERROR   -->  DU_APP: RLC UE Reestablishment Response : FAILED [UE IDX:%d]", ueId);
+      }
+      DU_FREE_SHRABL_BUF(pst->region, pst->pool, ueReestablishmentRsp, sizeof(RlcUeReestablishmentRsp));
+
    }
    return ret;
 }
