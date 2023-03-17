@@ -20,7 +20,7 @@
 uint8_t fillRlcUeCfgRsp(RlcUeCfgRsp *rlcCfgRsp, RlcCfgCfmInfo *rlcCRsp);
 uint8_t SendRlcUeCfgRspToDu(Pst *pst, RlcCfgCfmInfo *cfgRsp);
 uint8_t sendRlcUeDeleteRspToDu(uint16_t cellId, uint8_t ueId, CauseOfResult  status);
-
+uint8_t sendRlcUeReestablishRspToDu(uint16_t cellId,uint8_t ueId, CauseOfResult  status);
 /**********************************************************************
          End of file
 **********************************************************************/

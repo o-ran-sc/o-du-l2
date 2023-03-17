@@ -1124,6 +1124,135 @@ uint8_t BuildSliceReportToDu(uint8_t snssaiCnt)
    sendSlicePmToDu(sliceStats);
    return ROK;
 }
+
+/*******************************************************************
+ *
+ * @brief sending UE reestablishment response to DU 
+ *
+ * @details
+ *
+ *    Function : sendRlcUeReestablishRspToDu 
+ *
+ *    Functionality:
+ *      sending UE reestablishment response to DU 
+ *
+ * @params[in] uint8_t cellId, uint8_t ueId, CauseOfResult  status 
+ *
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t sendRlcUeReestablishRspToDu(uint16_t cellId,uint8_t ueId, CauseOfResult  status)
+{
+   Pst pst;  
+   RlcUeReestablishRsp *ueReestablishmentRsp = NULLP;
+   
+   FILL_PST_RLC_TO_DUAPP(pst, RLC_UL_INST, EVENT_RLC_UE_REESTABLISHMENT_RSP);
+
+   RLC_ALLOC_SHRABL_BUF(pst.region, pst.pool, ueReestablishmentRsp, sizeof(RlcUeReestablishRsp));
+   if(!ueReestablishmentRsp)
+   {
+      DU_LOG("\nERROR  -->  RLC: sendRlcUeReestablishRspToDu(): Memory allocation failed ");
+      return RFAILED;
+   }
+   else
+   {
+      ueReestablishmentRsp->cellId = cellId;
+      ueReestablishmentRsp->ueId = ueId;
+      ueReestablishmentRsp->status = status;
+  
+      if(rlcSendUeReestablishmentRspToDu(&pst, ueReestablishmentRsp) == ROK)
+      {
+         DU_LOG("\nDEBUG  -->  RLC: UE Reestablishment response send successfully");
+      }
+      else
+      {
+         DU_LOG("\nERROR  -->  RLC: SendRlcUeReestablishRspToDu():Failed to send UE Reestablishment response to DU");
+         RLC_FREE_SHRABL_BUF(pst.region, pst.pool, ueReestablishmentRsp, sizeof(RlcUeReestablishRsp));
+         return RFAILED;
+      }
+   }
+   return ROK;
+}
+
+/*******************************************************************
+*
+* @brief Handles Ue reestablishment Request from DU APP
+*
+* @details
+*
+*    Function : RlcProcUeReestablishReq
+*
+*    Functionality:
+*      Handles Ue reestablishment Request from DU APP
+*
+* @params[in] Post structure pointer
+*             RlcUeReestablishReq pointer
+* @return ROK     - success
+*         RFAILED - failure
+*
+* ****************************************************************/
+
+uint8_t RlcProcUeReestablishReq(Pst *pst, RlcUeReestablishReq *ueReestablishmentRsp)
+{
+   uint8_t idx, ret = RFAILED;
+   RlcCb *gRlcCb = NULLP;
+   RlcUlUeCb *ueCb = NULLP;
+   CauseOfResult  status =SUCCESSFUL;
+   CmLList *node = NULLP, *next=NULLP;
+
+   if(ueReestablishmentRsp != NULLP)
+   {
+      gRlcCb = RLC_GET_RLCCB(pst->dstInst);
+      rlcDbmFetchUlUeCb(gRlcCb,ueReestablishmentRsp->ueId, ueReestablishmentRsp->cellId, &ueCb);
+      if(ueCb != NULLP)
+      {
+         if(ueReestablishmentRsp->cellId == ueCb->cellId)
+         {
+            /* TODO : 
+             * Step 1: Fill the RlcCfgInfo structure with data from the ueReestablishmentRsp, just as we did in fillRlcCfg function and set 
+             * ConfigType = CONFIG_REESTABLISH
+             * Step 2: To finish processing the Ue Reestablishment, call the RlcProcCfgReq function */
+         }
+         else
+         {
+            status = CELLID_INVALID;
+            DU_LOG("\nERROR  -->  SCH : RlcProcUeReestablishReq(): cell Id[%d] not found", ueReestablishmentRsp->cellId);
+         }
+      }
+      else
+      {
+         status = UEID_INVALID;
+         DU_LOG("\nERROR  -->  SCH : RlcProcUeReestablishReq(): ue Id[%d] not found", ueReestablishmentRsp->cellId);
+      }
+
+      if(status != SUCCESSFUL)
+      {
+         if(sendRlcUeReestablishRspToDu(ueReestablishmentRsp->cellId, ueReestablishmentRsp->ueId, status)  != ROK)
+         {
+            DU_LOG("\nERROR  -->  RLC: RlcProcUeReestablishReq():Failed to send UE Reestablishment response to DU");
+         }
+      }
+      for(idx=0; idx<ueReestablishmentRsp->numLcsToReestablishment; idx++);
+      {
+         node = ueReestablishmentRsp->LcReestablishment.first;
+         while(node)
+         {
+            next = node->next;
+            cmLListDelFrm(&ueReestablishmentRsp->LcReestablishment, node);
+            RLC_FREE_SHRABL_BUF(pst->region, pst->pool, node->node, sizeof(uint8_t));
+            RLC_FREE_SHRABL_BUF(pst->region, pst->pool, node, sizeof(CmLList));
+            node = next;
+         }
+      }
+      RLC_FREE_SHRABL_BUF(pst->region, pst->pool, ueReestablishmentRsp, sizeof(RlcUeDelete));
+   }
+   else
+   {
+      DU_LOG("\nERROR  -->  RLC: RlcProcUeReestablishReq(): Recieved NULL pointer UE Reestablishment ");
+   }
+   return ret;
+}
 /**********************************************************************
-         End of file
-**********************************************************************/
+  End of file
+ **********************************************************************/

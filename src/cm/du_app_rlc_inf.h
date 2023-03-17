@@ -34,6 +34,8 @@
 #define EVENT_RLC_UE_DELETE_REQ 220
 #define EVENT_RLC_UE_DELETE_RSP 221
 #define EVENT_RLC_SLICE_PM_TO_DU 222
+#define EVENT_RLC_UE_REESTABLISHMENT_REQ 223
+#define EVENT_RLC_UE_REESTABLISHMENT_RSP 224
 
 #define RB_ID_SRB 0
 #define RB_ID_DRB 1
@@ -190,6 +192,7 @@ typedef struct rlcBearerCfg
    bool isLcAddModRspSent;
 }RlcBearerCfg;
 
+/*  Ref: ORAN_WG8.V7.0.0 Sec 11.2.5.3 UE Reconfiguration */
 typedef struct rlcUeRecfg
 {
    uint16_t       cellId;
@@ -202,6 +205,7 @@ typedef struct rlcUeRecfg
    RlcBearerCfg   rlcLcCfgRel[MAX_NUM_LC];
 }RlcUeRecfg;
 
+/*  Ref: ORAN_WG8.V7.0.0 Sec 11.2.5.1 UE Create */
 typedef struct rlcUeCfg
 {
    uint16_t       cellId;
@@ -210,6 +214,7 @@ typedef struct rlcUeCfg
    RlcBearerCfg   rlcLcCfgAdd[MAX_NUM_LC];
 }RlcUeCfg;
 
+/*  Ref: ORAN_WG8.V7.0.0 Sec 11.2.5.2 UE Create Response */
 typedef struct rlcUeCfgRsp
 {
    uint16_t       cellId;
@@ -218,12 +223,14 @@ typedef struct rlcUeCfgRsp
    FailureReason  reason;
 }RlcUeCfgRsp;
 
+/*  Ref: ORAN_WG8.V7.0.0 Sec 11.2.5.5 UE Delete Response */
 typedef struct rlcUeDelete
 {
    uint16_t      cellId;
    uint8_t       ueId;
 }RlcUeDelete;
 
+/*  Ref: ORAN_WG8.V7.0.0 Sec 11.2.5.6 UE Delete Response */
 typedef struct rlcUeDeleteRsp
 {
    uint16_t       cellId;
@@ -231,7 +238,7 @@ typedef struct rlcUeDeleteRsp
    CauseOfResult  status;
 }RlcUeDeleteRsp;
 
-/* UL RRC Message from RLC to DU APP */
+/* Ref: ORAN_WG8.V7.0.0 Sec 11.2.5.8 UL RRC Message Transfer*/
 typedef struct ulRrcMsgInfo
 {
    uint16_t   cellId;       /* Cell Id */
@@ -241,17 +248,7 @@ typedef struct ulRrcMsgInfo
    uint8_t    *rrcMsg;      /* RRC Message (UL-DCCH Message) */
 }RlcUlRrcMsgInfo;
 
-/* UL User Data from RLC to DU APP */
-typedef struct ulUserDatInfo
-{
-   uint16_t   cellId;       /* Cell Id */
-   uint16_t   ueId;         /* UE Id */
-   uint8_t    rbId;
-   uint16_t   msgLen;       /* User data length (in bytes) */
-   uint8_t    *userData;    /* User data (UL-DTCH Message) */
-}RlcUlUserDatInfo;
-
-/* DL RRC Message from DU APP to RLC */
+/* Ref: ORAN_WG8.V7.0.0 Sec 11.2.5.7 DL RRC Message Transfer */
 typedef struct dlRrcMsgInfo
 {
    uint16_t   cellId;         /* Cell Id */
@@ -263,20 +260,23 @@ typedef struct dlRrcMsgInfo
    uint8_t    *rrcMsg;        /* RRC Message (DL-DCCH Message) */
 }RlcDlRrcMsgInfo;
 
-/* DL RRC Message Rsp From RLC to DU APP */
+/* UL User Data from RLC to DU APP */
+typedef struct ulUserDatInfo
+{
+   uint16_t   cellId;       /* Cell Id */
+   uint16_t   ueId;         /* UE Id */
+   uint8_t    rbId;
+   uint16_t   msgLen;       /* User data length (in bytes) */
+   uint8_t    *userData;    /* User data (UL-DTCH Message) */
+}RlcUlUserDatInfo;
+
+/* DL RRC Message Rsp From RLC to DU APP  */
 typedef struct dlRrcMsgRsp
 {
    uint16_t   cellId;         /* Cell Id */
    uint16_t   crnti;          /* UE index */
    DlMsgState state;         /* Dl RRC Msg State */
 }RlcDlRrcMsgRsp;
-
-/* RRC delivery message from RLC to DU APP */
-typedef struct rrcDeliveryStatus
-{
-   uint16_t  deliveryStatus;
-   uint16_t  triggeringMessage;
-}RrcDeliveryStatus;
 
 typedef struct
 {
@@ -298,14 +298,6 @@ typedef struct slicePmList
    SlicePm *sliceRecord;
 }SlicePmList;
 
-typedef struct rrcDeliveryReportInfo
-{
-   uint16_t  cellId;
-   uint16_t  ueId;
-   uint8_t   srbId;
-   RrcDeliveryStatus  rrcDeliveryStatus;
-}RrcDeliveryReport;
-
 /* DL Data Message from DU APP to RLC */
 typedef struct dlDataMsgInfo
 {
@@ -315,6 +307,43 @@ typedef struct dlDataMsgInfo
    uint16_t   msgLen;         /* Message length */
    Buffer     *dlMsg;         /* DL Data */
 }RlcDlUserDataInfo;
+
+/*Ref: ORAN_WG8.V7.0.0 Sec 11.2.5.9 UL RRC Message Delivery Report */
+typedef struct rrcDeliveryStatus
+{
+   uint16_t  deliveryStatus;
+   uint16_t  triggeringMessage;
+}RrcDeliveryStatus;
+
+typedef struct rrcDeliveryReportInfo
+{
+   uint16_t  cellId;
+   uint16_t  ueId;
+   uint8_t   srbId;
+   RrcDeliveryStatus  rrcDeliveryStatus;
+}RrcDeliveryReport;
+
+/*Ref: ORAN_WG8.V7.0.0 Sec 11.2.5.11 UE RLC Re-establishment Req */
+typedef struct lcReestablishment
+{
+   uint8_t lcId;
+}LcReestablishment;
+
+typedef struct rlcUeReestablishmentReq
+{  
+   uint16_t   cellId;         
+   uint16_t   ueId;           
+   uint8_t    numLcsToReestablishment;
+   CmLListCp  LcReestablishment;  
+}RlcUeReestablishReq;
+
+/*Ref: ORAN_WG8.V7.0.0 Sec 11.2.5.12 UE RLC Re-establishment Rsp */
+typedef struct rlcUeReestablishmentRsp 
+{
+   uint16_t       cellId;
+   uint16_t        ueId;
+   CauseOfResult  status;
+}RlcUeReestablishRsp;
 
 /* Function Pointers */
 /* UE create Request from DU APP to RLC*/
@@ -377,6 +406,16 @@ typedef uint8_t (*RlcSlicePmToDuFunc) ARGS((
    Pst           *pst,
    SlicePmList *sliceStats));
 
+/* UE Re-establishment Request from DU APP to RLC */
+typedef uint8_t (*DuRlcUeReestablishReq) ARGS((
+   Pst           *pst,
+   RlcUeReestablishReq   *ueReestablishmentReq));
+
+/* UE Re-establishment Response from RLC to DU APP*/
+typedef uint8_t (*RlcDuUeReestablishRsp) ARGS((
+   Pst          *pst,
+   RlcUeReestablishRsp  *ueDelRsp));
+
 /* Pack/Unpack function declarations */
 uint8_t packDuRlcUeCreateReq(Pst *pst, RlcUeCfg *ueCfg);
 uint8_t unpackRlcUeCreateReq(DuRlcUeCreateReq func, Pst *pst, Buffer *mBuf);
@@ -402,6 +441,10 @@ uint8_t packRlcDuUeDeleteRsp(Pst *pst, RlcUeDeleteRsp *ueDeleteRsp);
 uint8_t unpackRlcUeDeleteRsp(RlcDuUeDeleteRsp func, Pst *pst, Buffer *mBuf);
 uint8_t packRlcDuSlicePm(Pst *pst, SlicePmList *sliceStats);
 uint8_t unpackRlcSlicePm(RlcSlicePmToDuFunc func, Pst *pst, Buffer *mBuf);
+uint8_t packDuRlcUeReestablishReq(Pst *pst, RlcUeReestablishReq *ueReestablishment);
+uint8_t unpackRlcUeReestablishReq(DuRlcUeReestablishReq func, Pst *pst, Buffer *mBuf);
+uint8_t packRlcDuUeReestablishRsp(Pst *pst, RlcUeReestablishRsp *ueReestablishmentRsp);
+uint8_t unpackRlcUeReestablishRsp(RlcDuUeReestablishRsp func, Pst *pst, Buffer *mBuf);
 
 /* Event Handler function declarations */
 uint8_t RlcProcUeCreateReq(Pst *pst, RlcUeCfg *ueCfg);
@@ -416,6 +459,8 @@ uint8_t RlcProcDlUserDataTransfer(Pst *pst, RlcDlUserDataInfo *dlDataMsgInfo);
 uint8_t RlcProcUeDeleteReq(Pst *pst, RlcUeDelete *ueDelete);
 uint8_t DuProcRlcUeDeleteRsp(Pst *pst, RlcUeDeleteRsp *delRsp);
 uint8_t DuProcRlcSliceMetrics(Pst *pst, SlicePmList *sliceStats);
+uint8_t RlcProcUeReestablishReq(Pst *pst, RlcUeReestablishReq *ueReestablishment);
+uint8_t DuProcRlcUeReestablishRsp(Pst *pst, RlcUeReestablishRsp *delRsp);
 #endif /* RLC_INF_H */
 
 /**********************************************************************

@@ -62,6 +62,14 @@ RlcSlicePmToDuFunc rlcSlicePmOpts[] =
    DuProcRlcSliceMetrics,     /* 1 - tightly coupled */
    packRlcDuSlicePm           /* 2 - LWLC loosely coupled */
 };
+
+RlcDuUeReestablishRsp rlcUeReestablishmentRspOpts[] =
+{
+   packRlcDuUeReestablishRsp,     /* 0 - loosely coupled */
+   DuProcRlcUeReestablishRsp,     /* 1 - tightly coupled */
+   packRlcDuUeReestablishRsp     /* 2 - LWLC loosely coupled */
+};
+
 /*******************************************************************
  *
  * @brief Sends UL RRC Message Info to DU APP
@@ -186,6 +194,28 @@ uint8_t rlcSendSlicePmToDu(Pst *pst, SlicePmList *sliceStats)
 {
     return (*rlcSlicePmOpts[pst->selector])(pst, sliceStats);
 }
+
+/*******************************************************************
+ *
+ * @brief Sends Ue Reestablishment Rsp to DU APP
+ *
+ * @details
+ *
+ *    Function : rlcSendUeReestablishmentRspToDu 
+ *
+ *    Functionality:  Sends Ue Reestablishment Rsp to DU APP
+ *
+ * @params[in] Pst *pst, RlcUeReestablishRsp *ueReestablishmentRsp 
+ *             
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t rlcSendUeReestablishmentRspToDu(Pst *pst, RlcUeReestablishRsp *ueReestablishmentRsp)
+{
+    return (*rlcUeReestablishmentRspOpts[pst->selector])(pst, ueReestablishmentRsp);
+}
+
 /**********************************************************************
          End of file
 **********************************************************************/
