@@ -1124,6 +1124,122 @@ uint8_t BuildSliceReportToDu(uint8_t snssaiCnt)
    sendSlicePmToDu(sliceStats);
    return ROK;
 }
+
+/*******************************************************************
+ *
+ * @brief sending UE reestablishment response to DU 
+ *
+ * @details
+ *
+ *    Function : sendRlcUeReestablishmentRspToDu 
+ *
+ *    Functionality:
+ *      sending UE reestablishment response to DU 
+ *
+ * @params[in] uint8_t cellId, uint8_t ueId, CauseOfResult  status 
+ *
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t sendRlcUeReestablishmentRspToDu(uint16_t cellId,uint8_t ueId, CauseOfResult  status)
+{
+   Pst pst;  
+   RlcUeReestablishmentRsp *ueReestablishmentRsp = NULLP;
+   
+   FILL_PST_RLC_TO_DUAPP(pst, RLC_UL_INST, EVENT_RLC_UE_REESTABLISHMENT_RSP);
+
+   RLC_ALLOC_SHRABL_BUF(pst.region, pst.pool, ueReestablishmentRsp, sizeof(RlcUeReestablishmentRsp));
+   if(!ueReestablishmentRsp)
+   {
+      DU_LOG("\nERROR  -->  RLC: sendRlcUeReestablishmentRspToDu(): Memory allocation failed ");
+      return RFAILED;
+   }
+   else
+   {
+      ueReestablishmentRsp->cellId = cellId;
+      ueReestablishmentRsp->ueId = ueId;
+      ueReestablishmentRsp->status = status;
+  
+      if(rlcSendUeReestablishmentRspToDu(&pst, ueReestablishmentRsp) == ROK)
+      {
+         DU_LOG("\nDEBUG  -->  RLC: UE Reestablishment response send successfully");
+      }
+      else
+      {
+         DU_LOG("\nERROR  -->  RLC: SendRlcUeReestablishmentRspToDu():Failed to send UE Reestablishment response to DU");
+         RLC_FREE_SHRABL_BUF(pst.region, pst.pool, ueReestablishmentRsp, sizeof(RlcUeReestablishmentRsp));
+         return RFAILED;
+      }
+   }
+   return ROK;
+}
+
+/*******************************************************************
+*
+* @brief Handles Ue reestablishment Request from DU APP
+*
+* @details
+*
+*    Function : RlcProcUeReestablishReq
+*
+*    Functionality:
+*      Handles Ue reestablishment Request from DU APP
+*
+* @params[in] Post structure pointer
+*             RlcUeReestablishReq pointer
+* @return ROK     - success
+*         RFAILED - failure
+*
+* ****************************************************************/
+
+uint8_t RlcProcUeReestablishReq(Pst *pst, RlcUeReestablishReq *ueReestablishmentReq)
+{
+   uint8_t ret = RFAILED;
+   RlcCb *gRlcCb = NULLP;
+   RlcUlUeCb *ueCb = NULLP;
+   CauseOfResult  status =SUCCESSFUL;
+
+   if(ueReestablishmentReq != NULLP)
+   {
+      gRlcCb = RLC_GET_RLCCB(pst->dstInst);
+      rlcDbmFetchUlUeCb(gRlcCb,ueReestablishmentReq->ueId, ueReestablishmentReq->cellId, &ueCb);
+      if(ueCb != NULLP)
+      {
+         if(ueReestablishmentReq->cellId == ueCb->cellId)
+         {
+            /* TODO : 
+             * Step 1: Fill the RlcCfgInfo structure with data from the ueReestablishmentReq, just as we did in fillRlcCfg function and set 
+             * ConfigType = CONFIG_REESTABLISH
+             * Step 2: To finish processing of Ue Reestablishment, call the RlcProcCfgReq function */
+         }
+         else
+         {
+            status = CELLID_INVALID;
+            DU_LOG("\nERROR  -->  SCH : RlcProcUeReestablishReq(): cell Id[%d] not found", ueReestablishmentReq->cellId);
+         }
+      }
+      else
+      {
+         status = UEID_INVALID;
+         DU_LOG("\nERROR  -->  SCH : RlcProcUeReestablishReq(): ue Id[%d] not found", ueReestablishmentReq->cellId);
+      }
+
+      if(status != SUCCESSFUL)
+      {
+         if(sendRlcUeReestablishmentRspToDu(ueReestablishmentReq->cellId, ueReestablishmentReq->ueId, status)  != ROK)
+         {
+            DU_LOG("\nERROR  -->  RLC: RlcProcUeReestablishReq():Failed to send UE Reestablishment response to DU");
+         }
+      }
+      RLC_FREE_SHRABL_BUF(pst->region, pst->pool, ueReestablishmentReq, sizeof(RlcUeDelete));
+   }
+   else
+   {
+      DU_LOG("\nERROR  -->  RLC: RlcProcUeReestablishReq(): Recieved NULL pointer UE Reestablishment ");
+   }
+   return ret;
+}
 /**********************************************************************
-         End of file
-**********************************************************************/
+  End of file
+ **********************************************************************/
