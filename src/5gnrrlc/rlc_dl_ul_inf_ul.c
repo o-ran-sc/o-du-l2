@@ -280,6 +280,16 @@ RlcCfgCfmInfo   *cfmInfo
       }
       RLC_FREE(tRlcCb, cfgCfm, sizeof(RlcCfgCfmInfo));
    }
+   else if  (tRlcCb->u.ulCb->rlcUlUdxEventType == EVENT_RLC_UE_REESTABLISH_REQ)
+   {
+      if(sendRlcUeReestablishRspToDu(cfgCfm->cellId, cfgCfm->ueId, SUCCESSFUL) != ROK)
+      {
+         DU_LOG("ERROR  --> RLC_UL: rlcUlUdxCfgCfm(): Failed to send UE Reestablishment response to DU ");
+         RLC_FREE(tRlcCb, cfgCfm, sizeof(RlcCfgCfmInfo));
+         return RFAILED;
+      }
+      RLC_FREE(tRlcCb, cfgCfm, sizeof(RlcCfgCfmInfo));
+   }
 
    /* free the memory from DL */
    RLC_FREE_SHRABL_BUF(pst->region, pst->pool, cfmInfo, sizeof(RlcCfgCfmInfo));
