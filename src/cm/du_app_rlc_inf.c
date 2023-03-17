@@ -940,6 +940,167 @@ uint8_t unpackRlcSlicePm(RlcSlicePmToDuFunc func, Pst *pst, Buffer *mBuf)
 
     return RFAILED;
 }
+
+/*******************************************************************
+*
+* @brief Packs and Sends UE Reestablishment Req from DUAPP to RLC
+*
+* @details
+*
+*    Function : packDuRlcUeReestablishReq 
+*
+*    Functionality:
+*       Packs and Sends UE Reestablishment Req from DUAPP to RLC
+*
+*
+* @params[in] Post structure pointer
+*             RlcUeReestablishReq pointer
+* @return ROK     - success
+*         RFAILED - failure
+*
+* ****************************************************************/
+
+uint8_t packDuRlcUeReestablishReq(Pst *pst, RlcUeReestablishReq *ueDelete)
+{
+   Buffer *mBuf = NULLP;
+
+   if(pst->selector == ODU_SELECTOR_LWLC)
+   {
+      if (ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf) != ROK)
+      {
+         DU_LOG("\nERROR  --> RLC : Memory allocation failed at packDuRlcUeReestablishReq");
+         return RFAILED;
+      }
+      /* pack the address of the structure */
+      CMCHKPK(oduPackPointer,(PTR)ueDelete, mBuf);
+   }
+   else
+   {
+      DU_LOG("\nERROR  -->  RLC: Only LWLC supported for packDuRlcUeReestablishReq");
+      return RFAILED;
+   }
+
+   return ODU_POST_TASK(pst,mBuf);
+}
+
+/*******************************************************************
+* @brief Unpacks UE Reestablishment Req received from DU APP
+*
+* @details
+*
+*    Function : unpackRlcUeReestablishReq 
+*
+*    Functionality:
+*         Unpacks UE Reestablishment Req received from DU APP
+*
+* @params[in] Pointer to Handler
+*             Post structure pointer
+*             Message Buffer
+* @return ROK     - success
+*         RFAILED - failure
+*
+* ****************************************************************/
+
+uint8_t unpackRlcUeReestablishReq(DuRlcUeReestablishReq func, Pst *pst, Buffer *mBuf)
+{
+    if(pst->selector == ODU_SELECTOR_LWLC)
+    {
+       RlcUeReestablishReq *ueDelete;
+       /* unpack the address of the structure */
+       CMCHKUNPK(oduUnpackPointer, (PTR *)&ueDelete, mBuf);
+       ODU_PUT_MSG_BUF(mBuf);
+       return (*func)(pst, ueDelete);
+    }
+    else
+    {
+       /* Nothing to do for other selectors */
+       DU_LOG("\nERROR  -->  RLC: Only LWLC supported for UE Reestablishment Req ");
+       ODU_PUT_MSG_BUF(mBuf);
+    }
+    return RFAILED;
+}
+
+/*******************************************************************
+*
+* @brief Packs and Sends UE Reestablishment Response from RLC to DUAPP
+*
+* @details
+*
+*    Function : packRlcDuUeReestablishmentRsp
+*
+*    Functionality:
+*       Packs and Sends UE Reestablishment Response from RLC to DUAPP
+*
+*
+* @params[in] Post structure pointer
+*             RlcUeReestablishRsp *ueReestablishment
+*
+* @return ROK     - success
+*         RFAILED - failure
+*
+* ****************************************************************/
+
+uint8_t packRlcDuUeReestablishmentRsp(Pst *pst, RlcUeReestablishRsp *ueReestablishment)
+{
+   Buffer *mBuf = NULLP;
+
+   if(pst->selector == ODU_SELECTOR_LWLC)
+   {
+      if (ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf) != ROK)
+      {
+         DU_LOG("\nERROR  --> RLC : Memory allocation failed at packRlcDuUeReestablishmentRsp");
+         return RFAILED;
+      }
+      /* pack the address of the structure */
+      CMCHKPK(oduPackPointer,(PTR)ueReestablishment, mBuf);
+   }
+   else
+   {
+      DU_LOG("\nERROR  -->  RLC: Only LWLC supported for packRlcDuUeReestablishmentRsp");
+      return RFAILED;
+   }
+
+   return ODU_POST_TASK(pst,mBuf);
+}
+
+/*******************************************************************
+*
+* @brief Unpacks UE Reestablishment Response received from DU APP
+*
+* @details
+*
+*    Function : unpackRlcUeReestablishRsp
+*
+*    Functionality:
+*         Unpacks UE Reestablishment Response received from DU APP
+*
+* @params[in] Pointer to Handler
+*             Post structure pointer
+*             Message Buffer
+* @return ROK     - success
+*         RFAILED - failure
+*
+* ****************************************************************/
+
+uint8_t unpackRlcUeReestablishRsp(RlcDuUeReestablishmentRsp func, Pst *pst, Buffer *mBuf)
+{
+    if(pst->selector == ODU_SELECTOR_LWLC)
+    {
+       RlcUeReestablishRsp *ueReestablishmentRsp = NULLP;
+       /* unpack the address of the structure */
+       CMCHKUNPK(oduUnpackPointer, (PTR *)&ueReestablishmentRsp, mBuf);
+       ODU_PUT_MSG_BUF(mBuf);
+       return (*func)(pst, ueReestablishmentRsp);
+    }
+    else
+    {
+       /* Nothing to do for other selectors */
+       DU_LOG("\nERROR  -->  RLC: Only LWLC supported for UE Reestablishment Response ");
+       ODU_PUT_MSG_BUF(mBuf);
+    }
+
+    return RFAILED;
+}
 /**********************************************************************
          End of file
 ***********************************************************************/
