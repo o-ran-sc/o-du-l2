@@ -491,6 +491,10 @@ typedef struct schUeCb
    bool          ueDrxInfoPres;
    SchDrxUeCb    drxUeCb;
 #endif
+   bool                 k0K1TblPrsnt;
+   SchK0K1TimingInfoTbl k0K1InfoTbl;
+   bool                 k2TblPrsnt;
+   SchK2TimingInfoTbl   k2InfoTbl;
 }SchUeCb;
 
 /**
@@ -642,12 +646,6 @@ typedef struct schCellCb
 }SchCellCb;
 
 
-typedef struct schSliceCfg
-{
-   uint8_t        numOfSliceConfigured;
-   SchRrmPolicyOfSlice **listOfSlices;
-}SchSliceCfg;
-
 /**
  * @brief
  * Control block for sch
@@ -660,7 +658,7 @@ typedef struct schCb
    CmTqType               tmrTq[SCH_TQ_SIZE];    /*!< Timer Task Queue */
    SchAllApis             allApis[NUM_SCH_TYPE]; /*!<List of All Scheduler Type dependent Function pointers*/
    SchCellCb              *cells[MAX_NUM_CELL];  /* Array to store cellCb ptr */
-   SchSliceCfg            sliceCfg;
+   CmLListCp              sliceCfg;              /* Linklist to Store Slice configuration */
 }SchCb;
 
 /* Declaration for scheduler control blocks */
@@ -686,6 +684,9 @@ uint8_t SchProcCellCfgReq(Pst *pst, SchCellCfg *schCellCfg);
 uint8_t SchProcSlotInd(Pst *pst, SlotTimingInfo *slotInd);
 uint8_t SchProcRachInd(Pst *pst, RachIndInfo *rachInd);
 uint8_t SchProcCrcInd(Pst *pst, CrcIndInfo *crcInd);
+uint8_t SchProcUlCqiInd(Pst *pst, SchUlCqiInd *ulCqiInd);
+uint8_t SchProcDlCqiInd(Pst *pst, SchDlCqiInd *dlCqiInd);
+uint8_t SchProcPhrInd(Pst *pst, SchPwrHeadroomInd *schPhrInd);
 uint8_t SchProcDlRlcBoInfo(Pst *pst, DlRlcBoInfo *dlBoInfo);
 uint8_t SchAddUeConfigReq(Pst *pst, SchUeCfgReq *ueCfgToSch);
 uint8_t SchProcBsr(Pst *pst, UlBufferStatusRptInd *bsrInd);

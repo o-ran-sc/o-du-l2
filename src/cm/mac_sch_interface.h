@@ -48,6 +48,9 @@
 #define EVENT_DL_PAGING_ALLOC        29
 #define EVENT_DL_REL_HQ_PROC         30 
 #define EVENT_DL_HARQ_IND_TO_SCH     31
+#define EVENT_DL_CQI_TO_SCH          32
+#define EVENT_UL_CQI_TO_SCH          33
+#define EVENT_PHR_IND_TO_SCH         34
 /*macros*/
 #define MAX_SSB_IDX 1 /* forcing it as 1 for now. Right value is 64 */
 #define SCH_SSB_MASK_SIZE   1
@@ -109,6 +112,9 @@
 #define MAX_PLMN 2
 #define DL_DMRS_SYMBOL_POS 4 /* Bitmap value 00000000000100 i.e. using 3rd symbol for PDSCH DMRS */
 
+#define MAX_PHR_REPORT 1 /*TODO: Range of PHR reports in multiple PHR.*/
+#define MAX_FAILURE_DET_RESOURCES 10 /*Spec 38.331 'maxNrofFailureDetectionResources'*/
+
 #define ADD_DELTA_TO_TIME(crntTime, toFill, incr, numOfSlot)          \
 {                                                          \
    if ((crntTime.slot + incr) > (numOfSlot - 1))           \
@@ -135,24 +141,10 @@ typedef enum
 
 typedef enum
 {
-   SLICE_FOUND,
-   SLICE_NOT_FOUND
-}RspCause;
-
-typedef enum
-{
    NO_TRANSMISSION,
    NEW_TRANSMISSION,
    REPEATITION 
 }PduTxOccsaion;
-
-typedef enum
-{
-   UNSPECIFIED_CAUSE,
-   INVALID_PARAM_VALUE,
-   RESOURCE_UNAVAILABLE,
-   SYSTEM_ERROR
-}SchFailureCause;
 
 typedef enum
 {
@@ -165,13 +157,6 @@ typedef enum
    SR_PROHIBIT_MS64,
    SR_PROHIBIT_MS128
 }SchSrProhibitTimer;
-
-typedef enum
-{
-   NOT_APPLICABLE,
-   INVALID_CELLID,
-   INVALID_UEID
-}ErrorCause;
 
 typedef enum
 {
@@ -410,6 +395,18 @@ typedef enum
 
 typedef enum
 {
+   SINGLE_ENTRY_PHR,
+   MULTIPLE_ENTRY_PHR
+}PhrType;
+
+typedef enum
+{
+  PH_TYPE_1,
+  PH_TYPE_2
+}PhType;
+
+typedef enum
+{
    FORMAT0_0,
    FORMAT0_1,
    FORMAT1_0,
@@ -437,6 +434,19 @@ typedef enum
    STOP_DATA_TRANSMISSION,
    RESTART_DATA_TRANSMISSION
 }SchDataTransmission;
+
+typedef enum
+{
+   SchBeamFailure,
+   SchRlf,
+   SchBoth
+}SchPurposeOfFailureDet;
+
+typedef enum
+{
+   CQI_PUCCH = 1,
+   CQI_PUSCH
+}CqiUlReportType;
 
 /*structures*/
 typedef struct timeDomainAlloc
@@ -864,7 +874,7 @@ typedef struct schUlCfgCommon
    uint16_t          schTimeAlignTimer;
 }SchUlCfgCommon;
 
-/*Ref: ORAN_WG8.V7.0.0 Sec 11.2.3.2.1*/
+/*Ref: ORAN_WG8.V7.0.0 Sec 11.2.4.2.1 Cell Conf Request*/
 typedef struct schCellCfg
 {
    uint16_t        cellId;                 /* Cell Id */
@@ -896,12 +906,59 @@ typedef struct schCellCfg
    uint16_t            sib1PduLen;
 }SchCellCfg;
 
+/*Ref: ORAN_WG8.V7.0.0 Sec 11.2.4.3.1 Cell Config Response*/
 typedef struct schCellCfgCfm
 {
    uint16_t         cellId;     /* Cell Id */
    SchMacRsp        rsp;   
-   SchFailureCause  cause;
+   CauseOfResult    cause;
 }SchCellCfgCfm;
+
+/*Ref: ORAN_WG8.V7.0.0 Sec 11.2.4.2.2 Cell Del Req*/
+typedef struct schCellDeleteReq 
+{
+   uint16_t   cellId;
+}SchCellDeleteReq;
+
+/*Ref: ORAN_WG8.V7.0.0 Sec 11.2.4.3.2 Cell Del Response*/
+typedef struct schCellDeleteRsp
+{
+   uint16_t        cellId;
+   SchMacRsp       rsp;
+   CauseOfResult   cause;
+}SchCellDeleteRsp;
+
+/*Ref: ORAN_WG8.V7.0.0 Sec 11.2.4.2.3*/
+typedef struct schRrmPolicyRatio
+{
+   uint8_t maxRatio;
+   uint8_t minRatio;
+   uint8_t dedicatedRatio;
+}SchRrmPolicyRatio;
+
+typedef struct schRrmPolicyOfSlice
+{
+   Snssai  snssai;
+   SchRrmPolicyRatio rrmPolicyRatioInfo;
+}SchRrmPolicyOfSlice;
+
+typedef struct schSliceCfgReq
+{
+   uint8_t  numOfConfiguredSlice;
+   SchRrmPolicyOfSlice **listOfSlices;
+}SchSliceCfgReq;
+
+/*Ref: ORAN_WG8.V7.0.0 Sec 11.2.4.3.3 Slice Cfg Response*/
+typedef struct schSliceCfgRsp
+{
+   Snssai     snssai;
+   SchMacRsp  rsp;
+   CauseOfResult cause;
+}SchSliceCfgRsp;
+
+/*As per ORAN-WG8 V7.0.0 Sec 11.2.4.3.4 , Slice Cfg and Recfg are same structures*/
+typedef struct schSliceCfgReq SchSliceRecfgReq;
+typedef struct schSliceCfgRsp SchSliceRecfgRsp;
 
 typedef struct ssbInfo
 {
@@ -1128,7 +1185,7 @@ typedef struct dlSchedInfo
 
 }DlSchedInfo;
 
-/*Reference: O-RAN.WG8.AAD.v7.0.0, Sec 11.2.3.3.13 Downlink Paging Allocation*/
+/*Reference: O-RAN.WG8.AAD.v7.0.0, Sec 11.2.4.3.13 Downlink Paging Allocation*/
 typedef struct interleaved_t
 {
    uint8_t regBundleSize;
@@ -1283,6 +1340,7 @@ typedef struct schPuschUci
    CsiInfo          csiInfo;    /* Csi information*/
 }SchPuschUci;
 
+/* Reference -> O-RAN.WG8.AAD.0-v07.00, Section 11.2.4.3.9 UL Scheduling Information */
 typedef struct ulSchedInfo
 {
    uint16_t         cellId;         /* Cell Id */
@@ -1294,42 +1352,6 @@ typedef struct ulSchedInfo
    SchPuschUci      schPuschUci;    /* Pusch Uci */
    SchPucchInfo     schPucchInfo;   /* Pucch and Uci scheduling info */
 }UlSchedInfo;
-
-typedef struct rachIndInfo
-{
-   uint16_t    cellId;
-   uint16_t    crnti;
-   SlotTimingInfo timingInfo;
-   uint8_t     slotIdx;
-   uint8_t     symbolIdx;
-   uint8_t     freqIdx;
-   uint8_t     preambleIdx;
-   uint16_t    timingAdv;
-}RachIndInfo;
-
-
-typedef struct crcIndInfo
-{
-   uint16_t    cellId;
-   uint16_t    crnti;
-   SlotTimingInfo timingInfo;
-   uint16_t    numCrcInd;
-   uint8_t     crcInd[MAX_NUMBER_OF_CRC_IND_BITS];
-}CrcIndInfo;
-
-typedef struct boInfo
-{
-   uint8_t   lcId;
-   uint32_t  dataVolume;
-}BOInfo;
-
-typedef struct dlRlcBOInfo
-{
-   uint16_t    cellId;
-   uint16_t    crnti;
-   uint8_t     lcId;
-   uint32_t    dataVolume;
-}DlRlcBoInfo;
 
 /* Info of Scheduling Request to Add/Modify */
 typedef struct schSchedReqInfo
@@ -1484,19 +1506,54 @@ typedef struct schInitalDlBwp
    SchPdcchConfig   pdcchCfg;
    bool             pdschCfgPres;
    SchPdschConfig   pdschCfg;
-   bool             k0K1TblPrsnt;
-   SchK0K1TimingInfoTbl k0K1InfoTbl;
 }SchInitalDlBwp;
 
-/* BWP Downlink common */
-typedef struct schBwpDlCommon
-{
-}SchBwpDlCommon;
+/*Spec 38.331 'RadioLinkMonitoringConfig'*/
+typedef uint8_t SchRadioLinkMonitoringRsId;
 
-/* Downlink BWP information */
+typedef struct schRadioLinkMonRS
+{
+   SchRadioLinkMonitoringRsId  radioLinkMonitoringRsId;
+   SchPurposeOfFailureDet      purpose; 
+   union
+   {
+      uint8_t ssbIndx;
+      uint8_t nzpCsiRsResId;
+   }SchDetectionRes;
+}SchRadioLinkMonRS;
+
+typedef struct schRadioLinkConfig
+{
+   SchRadioLinkMonRS           failurDetResAddModList[MAX_FAILURE_DET_RESOURCES];
+   SchRadioLinkMonitoringRsId  failurDetResRelList[MAX_FAILURE_DET_RESOURCES];
+   uint8_t                     beamFailureInstanceMaxCount;
+   uint8_t                     beamFailureDetectionTimer;
+}SchRadioLinkConfig;
+
+/*Spec 38.331 "SPS-Config'*/
+typedef struct schSpsConfig
+{
+   uint16_t     periodicity;
+   uint8_t      numOfHqProcess;
+   uint8_t      n1PucchAN;
+   SchMcsTable  mcsTable;
+}SchSpsConfig;
+
+/* Spec 38.331, 'BWP-DownlinkDedicated'*/
+typedef struct schBwpDlCfgDed
+{
+  SchPdcchConfig     pdcchCfgDed;
+  SchPdschConfig     pdschCfgDed;
+  SchSpsConfig       spsCfgDed;
+  SchRadioLinkConfig radioLnkMonCfgDed;
+}SchBwpDlCfgDed;
+
+/* Spec 38.331, 'BWP-Downlink' Downlink BWP information */
 typedef struct schDlBwpInfo
 {
    uint8_t          bwpId;
+   SchBwpDlCfg      bwpCommon;
+   SchBwpDlCfgDed   bwpDedicated;
 }SchDlBwpInfo;
 
 /* PDCCH Serving Cell configuration */
@@ -1508,6 +1565,46 @@ typedef struct schPdschServCellCfg
    bool                     *codeBlkGrpFlushInd;
    SchPdschXOverhead        *xOverhead;
 }SchPdschServCellCfg;
+
+typedef struct schRaPrioritization
+{
+   uint8_t powerRampingStepHighPriority;
+   uint8_t scalingFactorBI;
+}SchRaPrioritization;
+
+typedef struct schBfrCsiRsRes
+{
+   uint8_t csrRsIndex;
+   uint8_t raOccList;
+   uint8_t raPreambleIndex;
+}SchBfrCsiRsRes;
+
+typedef struct schBfrSsbRes
+{
+   uint16_t ssbIndex;
+   uint8_t raPreambleIndex;
+}SchBfrSsbRes;
+
+typedef struct schPrachResDedBfr
+{
+   SchBfrSsbRes    ssb;
+   SchBfrCsiRsRes  csiRs;
+}SchPrachResDedBfr;
+
+/*Spec 38.331 'BeamFailureRecoveryConfig' */
+typedef struct schBeamFailRecoveryCfg
+{
+   uint8_t             rootSeqIndexBfr;
+   SchRachCfgGeneric   rachCfgBfr;
+   uint8_t             rsrpThreshSsbBfr;     /* RSRP Threshold SSB */
+   SchPrachResDedBfr   candidateBeamRSList;
+   uint8_t             ssbPerRachBfr;        /* SSB per RACH occassion */
+   uint8_t             raSsbOccMaskIndex;
+   uint8_t             recoverySearchSpaceId;
+   SchRaPrioritization raPrioBfr;
+   uint16_t            bfrTimer;
+   uint8_t             msg1SubcSpacing;  /* Subcarrier spacing of RACH */
+}SchBeamFailRecoveryCfg;
 
 /* PUCCH Configuration */
 typedef struct schPucchResrcSetInfo
@@ -1697,50 +1794,65 @@ typedef struct schInitialUlBwp
    SchPucchCfg   pucchCfg;
    bool          puschCfgPres;
    SchPuschCfg   puschCfg;
-   bool          k2TblPrsnt;
-   SchK2TimingInfoTbl k2InfoTbl;
 }SchInitialUlBwp;
+
+typedef struct schBwpCfgDedicated
+{
+   SchPucchCfg   pucchCfg;
+   SchPuschCfg   puschCfg;
+}SchBwpCfgDedicated;
 
 /* Uplink BWP information */
 typedef struct schUlBwpInfo
 {
-   uint8_t        bwpId;
+   uint8_t             bwpId;
+   SchBwpUlCfg         bwpCommon;
+   SchBwpCfgDedicated  bwpDed;
 }SchUlBwpInfo;
+
+typedef struct schBwpRelInfo
+{
+   uint8_t bwpId;
+}SchBwpRelInfo;
 
 /* Serving cell configuration */
 typedef struct schServCellRecfgInfo
 {
-   SchInitalDlBwp        initDlBwp;
-   uint8_t               numDlBwpToAddOrMod;
-   SchDlBwpInfo          dlBwpToAddOrModList[MAX_NUM_BWP];
-   uint8_t               numDlBwpToRel;
-   SchDlBwpInfo          dlBwpToRelList[MAX_NUM_BWP];
-   uint8_t               firstActvDlBwpId;
-   uint8_t               defaultDlBwpId;
-   uint8_t               *bwpInactivityTmr;
-   SchPdschServCellCfg   pdschServCellCfg;
-   SchInitialUlBwp       initUlBwp;
-   uint8_t               numUlBwpToAddOrMod;
-   SchUlBwpInfo          ulBwpToAddOrModList[MAX_NUM_BWP];
-   uint8_t               numUlBwpToRel;
-   SchUlBwpInfo          ulBwpToRelList[MAX_NUM_BWP];
-   uint8_t               firstActvUlBwpId;
+   SchInitalDlBwp          initDlBwp;
+   SchRadioLinkConfig      radioLinkMonConfig;
+   uint8_t                 numDlBwpToAddOrMod;
+   SchDlBwpInfo            dlBwpToAddOrModList[MAX_NUM_BWP];
+   uint8_t                 numDlBwpToRel;
+   SchBwpRelInfo           dlBwpToRelList[MAX_NUM_BWP];
+   uint8_t                 firstActvDlBwpId;
+   uint8_t                 defaultDlBwpId;
+   uint8_t                 *bwpInactivityTmr;
+   SchPdschServCellCfg     pdschServCellCfg;
+   SchInitialUlBwp         initUlBwp;
+   SchBeamFailRecoveryCfg  beamFailureRecoveryCfg;
+   uint8_t                 numUlBwpToAddOrMod;
+   SchUlBwpInfo            ulBwpToAddOrModList[MAX_NUM_BWP];
+   uint8_t                 numUlBwpToRel;
+   SchBwpRelInfo           ulBwpToRelList[MAX_NUM_BWP];
+   uint8_t                 firstActvUlBwpId;
 }SchServCellRecfgInfo;
 
 /* Serving cell configuration */
 typedef struct schServCellCfgInfo
 {
    SchInitalDlBwp        initDlBwp;
+   SchRadioLinkConfig    radioLinkMonConfig;
    uint8_t               numDlBwpToAdd;
    SchDlBwpInfo          dlBwpToAddList[MAX_NUM_BWP];
    uint8_t               firstActvDlBwpId;
    uint8_t               defaultDlBwpId;
    uint8_t               *bwpInactivityTmr;
-   SchPdschServCellCfg   pdschServCellCfg;
-   SchInitialUlBwp       initUlBwp;
-   uint8_t               numUlBwpToAdd;
-   SchUlBwpInfo          ulBwpToAddList[MAX_NUM_BWP];
-   uint8_t               firstActvUlBwpId;
+   SchPdschServCellCfg     pdschServCellCfg;
+   SchInitialUlBwp         initUlBwp;
+   SchBeamFailRecoveryCfg  beamFailureRecoveryCfg;
+   uint8_t                 numUlBwpToAdd;
+   SchUlBwpInfo            ulBwpToAddList[MAX_NUM_BWP];
+   uint8_t                 firstActvUlBwpId;
 }SchServCellCfgInfo;
 
 typedef struct schNonDynFiveQi
@@ -1846,18 +1958,18 @@ typedef struct schModulationInfo
    SchMcsTable  mcsTable;
 }SchModulationInfo;
 
-/* UE configuration */
+/*Spec O-RAN, WG8, V7.0.0, '11.2.4.2.5' UE Configuration Request*/
 typedef struct schUeCfgReq
 {
-   uint16_t        cellId;
-   uint8_t         ueId;
-   uint8_t         beamIdx; 
-   uint16_t        crnti;
-   bool macCellGrpCfgPres;
+   uint16_t           cellId;
+   uint8_t            ueId;
+   uint8_t            beamIdx; 
+   uint16_t           crnti;
+   bool               macCellGrpCfgPres;
    SchMacCellGrpCfg   macCellGrpCfg;
-   bool phyCellGrpCfgPres;
+   bool               phyCellGrpCfgPres;
    SchPhyCellGrpCfg   phyCellGrpCfg;
-   bool spCellCfgPres;
+   bool               spCellCfgPres;
    SchSpCellCfg       spCellCfg;
    SchAmbrCfg         *ambrCfg;
    SchModulationInfo  dlModInfo;
@@ -1866,7 +1978,7 @@ typedef struct schUeCfgReq
    SchLcCfg           schLcCfg[MAX_NUM_LC];
 }SchUeCfgReq;
 
-/* UE Re-configuration */
+/*Spec O-RAN, WG8, V7.0.0, '11.2.4.2.6' UE Reconfiguration Request*/
 typedef struct schUeRecfgReq
 {
    uint16_t         cellId;
@@ -1894,6 +2006,7 @@ typedef struct schUeRecfgReq
 #endif
 }SchUeRecfgReq;
 
+/*Ref: ORAN_WG8.V7.0.0 Sec 11.2.4.3.5 UE Confg Response*/
 typedef struct schUeCfgRsp
 {
    uint16_t   cellId;
@@ -1901,12 +2014,108 @@ typedef struct schUeCfgRsp
    uint16_t   ueId;
    uint16_t   crnti;
    SchMacRsp  rsp;
-   SchFailureCause cause;
+   CauseOfResult cause;
 }SchUeCfgRsp;
 
-/*As per WG8, UE ReCFG and UECFG have same structure definition*/
+/*As per WG8 V7.0.0 Sec 11.2.4.3.6, UE ReCFG and UECFG have same structure definition*/
 typedef struct schUeCfgRsp SchUeRecfgRsp;
 
+/*Spec O-RAN, WG8, V7.0.0, '11.2.4.2.7' Delete UE Request*/
+typedef struct schUeDelete
+{
+   uint16_t   cellId;
+   uint16_t   crnti;
+}SchUeDelete;
+
+/*Ref: ORAN_WG8.V7.0.0 Sec 11.2.4.3.7*/
+typedef struct schUeDeleteRsp
+{
+   uint16_t   cellId;
+   uint16_t   crnti;
+   SchMacRsp  rsp;
+   CauseOfResult cause;
+}SchUeDeleteRsp;
+
+/*Spec O-RAN, WG8, V7.0.0, '11.2.4.2.8' DL HARQ Indication*/
+typedef struct dlHarqInd
+{
+   uint16_t       cellId;
+   uint16_t       crnti;
+   SlotTimingInfo slotInd;
+   uint8_t        numHarq;
+   uint8_t        harqPayload[MAX_HARQ_BITS_IN_BYTES];
+}DlHarqInd;
+
+/*Spec O-RAN, WG8, V7.0.0, '11.2.4.2.9' UL HARQ (CRC) Indication*/
+typedef struct crcIndInfo
+{
+   uint16_t       cellId;
+   uint16_t       crnti;
+   SlotTimingInfo timingInfo;
+   uint16_t       numCrcInd;
+   uint8_t        crcInd[MAX_NUMBER_OF_CRC_IND_BITS];
+}CrcIndInfo;
+
+/*Spec O-RAN, WG8, V7.0.0, '11.2.4.2.10' UL Channel Quality Indication*/
+typedef struct ulCqiReport
+{
+   CqiUlReportType  reportType;
+   uint16_t ulCqi;
+   uint8_t  timingAdv;
+}UlCqiReport;
+
+typedef struct schUlCqiInd
+{
+   uint16_t       cellId;
+   uint16_t       crnti;
+   SlotTimingInfo timingInfo;
+   uint8_t        numUlCqiReported;
+   UlCqiReport    ulCqiRpt;
+}SchUlCqiInd;
+
+/*Spec O-RAN, WG8, V7.0.0, '11.2.4.2.11' DL Channel Quality Indication*/
+typedef struct dlCqiReport
+{
+   uint8_t  reportType; /*Bitmap for CQI, PMI, RI, CRI report*/
+   uint16_t cqi;
+   uint16_t pmi;
+   uint16_t cri;
+   uint16_t ri;
+}DlCqiReport;
+
+typedef struct schDlCqiInd
+{
+   uint16_t       cellId;
+   uint16_t       crnti;
+   SlotTimingInfo timingInfo;
+   uint8_t        numDlCqiReported;
+   DlCqiReport    dlCqiRpt;
+}SchDlCqiInd;
+
+/*Spec O-RAN WG8 v7.0.0, '11.2.4.2.12' Rach Ind contents*/
+typedef struct rachIndInfo
+{
+   uint16_t    cellId;
+   uint16_t    crnti;
+   SlotTimingInfo timingInfo;
+   uint8_t     slotIdx;
+   uint8_t     symbolIdx;
+   uint8_t     freqIdx;
+   uint8_t     preambleIdx;
+   uint16_t    timingAdv;
+}RachIndInfo;
+
+/*Spec O-RAN WG8 v7.0.0, '11.2.4.2.13' Paging Ind contents*/
+typedef struct schPageInd
+{
+   uint16_t  cellId;
+   uint16_t  pf;
+   uint8_t   i_s;
+   uint16_t  pduLen;
+   uint8_t  *pagePdu;
+}SchPageInd;
+
+/*ORAN WG8 v7.0.0, Sec 11.2.4.2.14 Rach Res Request*/
 typedef struct schRachRsrcReq
 {
    SlotTimingInfo slotInd;
@@ -1936,6 +2145,7 @@ typedef struct schRachRsrcRsp
    SchCfraResource  cfraResource;
 }SchRachRsrcRsp;
 
+/*ORAN WG8 v7.0.0, Sec 11.2.4.2.15 Rach Res Release*/
 typedef struct schRachRsrcRel
 {
    SlotTimingInfo slotInd;
@@ -1944,33 +2154,26 @@ typedef struct schRachRsrcRel
    SchCfraResource  cfraResource;
 }SchRachRsrcRel;
 
-typedef struct schUeDelete
+/*O-RAN WG* v7.0.0 Sec 11.2.4.2.16 DL RLC Buffer Status Information*/
+typedef struct dlRlcBOInfo
 {
-   uint16_t   cellId;
-   uint16_t   crnti;
-}SchUeDelete;
+   uint16_t    cellId;
+   uint16_t    crnti;
+   uint8_t     lcId;
+   uint32_t    dataVolume;
+}DlRlcBoInfo;
 
-typedef struct schUeDeleteRsp
+/*O-RAN WG8 v7.0.0 Sec 11.2.4.2.17 Scheduling Request Indication*/
+typedef struct srUciIndInfo
 {
-   uint16_t   cellId;
-   uint16_t   crnti;
-   SchMacRsp  rsp;
-   ErrorCause cause;
-}SchUeDeleteRsp;
+   uint16_t    cellId;
+   uint16_t    crnti;
+   SlotTimingInfo slotInd;
+   uint8_t     numSrBits;
+   uint8_t     srPayload[MAX_SR_BITS_IN_BYTES];
+}SrUciIndInfo;
 
-typedef struct schCellDeleteReq 
-{
-   uint16_t   cellId;
-}SchCellDeleteReq;
-
-
-typedef struct schCellDeleteRsp
-{
-   uint16_t        cellId;
-   SchMacRsp       rsp;
-   SchFailureCause cause;
-}SchCellDeleteRsp;
-
+/*O-RAN WG* v7.0.0 Sec 11.2.4.2.18 UL RLC Buffer Status Information*/
 typedef struct dataVolInfo
 {
    uint8_t  lcgId;
@@ -1986,68 +2189,41 @@ typedef struct ulBufferStatusRptInd
    DataVolInfo dataVolInfo[MAX_NUM_LOGICAL_CHANNEL_GROUPS];
 }UlBufferStatusRptInd;
 
-typedef struct srUciIndInfo
+/**O-RAN WG* v7.0.0 Sec 11.2.4.2.19 Power Headroom Indication*/
+typedef struct phrData /*Spec 38.321 Sec 6.1.3.8*/
+{
+   uint8_t phr;
+   uint8_t pcmax_f_c;
+}PhrData;
+
+typedef struct singlePhrInfo
+{
+   PhrData  phrData;
+}SinglePhrInfo;
+
+typedef struct multiPhr
+{
+   PhType   phType;
+   PhrData  phrData;
+}MultiPhr;
+
+typedef struct multiplePhrInfo /*Spec 38.321 Sec 6.1.3.9*/
+{
+   uint8_t  numPhrReported;
+   MultiPhr multiPhrStat[MAX_PHR_REPORT];
+}MultiplePhrInfo;
+
+typedef struct schPwrHeadroomInd
 {
    uint16_t    cellId;
    uint16_t    crnti;
-   SlotTimingInfo slotInd;
-   uint8_t     numSrBits;
-   uint8_t     srPayload[MAX_SR_BITS_IN_BYTES];
-}SrUciIndInfo;
-
-typedef struct dlHarqInd
-{
-   uint16_t    cellId;
-   uint16_t    crnti;
-   SlotTimingInfo slotInd;
-   uint8_t     numHarq;
-   uint8_t     harqPayload[MAX_HARQ_BITS_IN_BYTES];
-}DlHarqInd;
-
-typedef struct schRrmPolicyRatio
-{
-   uint8_t maxRatio;
-   uint8_t minRatio;
-   uint8_t dedicatedRatio;
-}SchRrmPolicyRatio;
-
-typedef struct schRrmPolicyOfSlice
-{
-   Snssai  snssai;
-   SchRrmPolicyRatio rrmPolicyRatioInfo;
-}SchRrmPolicyOfSlice;
-
-typedef struct schSliceCfgReq
-{
-   uint8_t  numOfConfiguredSlice;
-   SchRrmPolicyOfSlice **listOfSlices;
-}SchSliceCfgReq;
-
-typedef struct sliceRsp
-{
-   Snssai     snssai;
-   SchMacRsp  rsp;
-   RspCause   cause;
-}SliceRsp;
-
-typedef struct schSliceCfgRsp
-{
-   uint8_t    numSliceCfgRsp;
-   SliceRsp   **listOfSliceCfgRsp;
-}SchSliceCfgRsp;
-
-/*As per ORAN-WG8, Slice Cfg and Recfg are same structures*/
-typedef struct schSliceCfgReq SchSliceRecfgReq;
-typedef struct schSliceCfgRsp SchSliceRecfgRsp;
-
-typedef struct schPageInd
-{
-   uint16_t  cellId;
-   uint16_t  pf;
-   uint8_t   i_s;
-   uint16_t  pduLen;
-   uint8_t  *pagePdu;
-}SchPageInd;
+   PhrType     phrType;
+   union
+   {
+      SinglePhrInfo   singlePhr;
+      MultiplePhrInfo multiPhr;
+   }phrInfo;
+}SchPwrHeadroomInd;
 
 typedef struct schUeHqInfo
 {

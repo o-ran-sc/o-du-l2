@@ -500,7 +500,7 @@ void fapiMacConfigRsp(uint16_t cellId)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t MacSendCellDeleteRsp(CellDeleteStatus result, uint8_t cellId)
+uint8_t MacSendCellDeleteRsp(CauseOfResult  status, uint8_t cellId)
 {
    MacCellDeleteRsp *deleteRsp=NULLP;
    Pst            rspPst;
@@ -516,7 +516,7 @@ uint8_t MacSendCellDeleteRsp(CellDeleteStatus result, uint8_t cellId)
    
    memset(deleteRsp, 0, sizeof(MacCellDeleteRsp));
    deleteRsp->cellId = cellId;
-   deleteRsp->result = result;
+   deleteRsp->status = status;
 
    /* Fill Post structure and send CELL delete response*/
    memset(&rspPst, 0, sizeof(Pst));
@@ -545,7 +545,7 @@ uint8_t MacProcSchCellDeleteRsp(Pst *pst, SchCellDeleteRsp *schCellDelRsp)
 {
    uint8_t  ret = ROK, sliceIdx = 0, plmnIdx = 0;
    uint16_t cellIdx=0;
-   CellDeleteStatus status;
+   CauseOfResult  cause;
 
 #ifdef CALL_FLOW_DEBUG_LOG
    DU_LOG("\nCall Flow: ENTSCH -> ENTMAC : EVENT_CELL_DELETE_RSP_TO_MAC\n");
@@ -562,7 +562,7 @@ uint8_t MacProcSchCellDeleteRsp(Pst *pst, SchCellDeleteRsp *schCellDelRsp)
          {
             if(macCb.macCell[cellIdx]->cellId == schCellDelRsp->cellId)
             {
-               status  = SUCCESSFUL_RSP;
+               cause = SUCCESSFUL;
                for(plmnIdx = 0; plmnIdx < MAX_PLMN; plmnIdx++)
                {
                   if(macCb.macCell[cellIdx]->macCellCfg.cellCfg.plmnInfoList[plmnIdx].snssai)
@@ -582,24 +582,24 @@ uint8_t MacProcSchCellDeleteRsp(Pst *pst, SchCellDeleteRsp *schCellDelRsp)
             else
             {
                DU_LOG("ERROR  -->  MAC : MacProcSchCellDeleteRsp(): CellId[%d] does not exists", schCellDelRsp->cellId);
-               status = CELL_ID_INVALID;
+               cause = CELLID_INVALID;
                ret = RFAILED;
             }
          }
          else
          {
             DU_LOG("ERROR  -->  MAC : MacProcSchCellDeleteRsp(): CellId[%d] does not exists", schCellDelRsp->cellId);
-            status = CELL_ID_INVALID;
+            cause = CELLID_INVALID;
             ret = RFAILED;
          }
       }
       else
       {
          DU_LOG("ERROR  -->  MAC : MacProcSchCellDeleteRsp(): CellId[%d] does not exists", schCellDelRsp->cellId);
-         status = CELL_ID_INVALID;
+         cause = CELLID_INVALID;
          ret = RFAILED;
       }
-      if(MacSendCellDeleteRsp(status, schCellDelRsp->cellId) != ROK)
+      if(MacSendCellDeleteRsp(cause, schCellDelRsp->cellId) != ROK)
       {
          DU_LOG("\nERROR  -->  MAC: MacProcSchCellDeleteRsp(): Failed to send CELL delete response");
          ret = RFAILED;
@@ -693,7 +693,7 @@ uint8_t MacProcCellDeleteReq(Pst *pst, MacCellDeleteReq *cellDelete)
       if(ret == RFAILED)
       {
           DU_LOG("\nERROR  -->  MAC : MacProcCellDeleteReq(): Sending failure response to DU");
-          if(MacSendCellDeleteRsp(CELL_ID_INVALID, cellDelete->cellId) != ROK)
+          if(MacSendCellDeleteRsp(CELLID_INVALID, cellDelete->cellId) != ROK)
           {
              DU_LOG("\nERROR  -->  MAC : MacProcCellDeleteReq(): failed to send cell delete rsp for cellID[%d]",\
              cellDelete->cellId);
@@ -755,60 +755,6 @@ void freeMacSliceCfgReq(MacSliceCfgReq *cfgReq,Pst *pst)
     }
 
 }
-/**
- * @brief fill Mac Slice Config Rsp
- *
- * @details
- *
- *     Function : fillMacSliceCfgRsp 
- *
- *     This function   fill Mac Slice Config Rsp
- *
- *  @param[in]  SchSliceCfgRsp *sliceCfgRsp, MacSliceCfgRsp *macSliceCfgRsp,
- *  uint8_t *count
- *  @return  int
- *      -# ROK
- **/
-uint8_t fillMacSliceCfgRsp(SchSliceCfgRsp *schSliceCfgRsp, MacSliceCfgRsp *macSliceCfgRsp)
-{
-   
-    bool sliceFound = false;
-    uint8_t cfgIdx = 0;
-
-    macSliceCfgRsp->numSliceCfgRsp  = schSliceCfgRsp->numSliceCfgRsp;
-    MAC_ALLOC_SHRABL_BUF(macSliceCfgRsp->listOfSliceCfgRsp,  macSliceCfgRsp->numSliceCfgRsp* sizeof(MacSliceRsp*));
-    if(macSliceCfgRsp->listOfSliceCfgRsp == NULLP)
-    {
-       DU_LOG("\nERROR  -->  MAC : Memory allocation failedi in fillMacSliceCfgRsp");
-       return RFAILED;
-    }
-
-    for(cfgIdx = 0; cfgIdx<schSliceCfgRsp->numSliceCfgRsp; cfgIdx++)
-    {
-       sliceFound = false;
-       if(schSliceCfgRsp->listOfSliceCfgRsp[cfgIdx]->rsp == RSP_OK)
-       {
-          sliceFound = true;
-       }
-
-       MAC_ALLOC_SHRABL_BUF(macSliceCfgRsp->listOfSliceCfgRsp[cfgIdx], sizeof(SliceRsp));
-       if(macSliceCfgRsp->listOfSliceCfgRsp[cfgIdx] == NULLP)
-       {
-          DU_LOG("\nERROR  -->  MAC : Memory allocation failedi in fillMacSliceCfgRsp");
-          return RFAILED;
-       }
-
-       macSliceCfgRsp->listOfSliceCfgRsp[cfgIdx]->snssai = schSliceCfgRsp->listOfSliceCfgRsp[cfgIdx]->snssai;
-       if(sliceFound == true)
-          macSliceCfgRsp->listOfSliceCfgRsp[cfgIdx]->rsp    = MAC_DU_APP_RSP_OK;
-       else
-       {
-          macSliceCfgRsp->listOfSliceCfgRsp[cfgIdx]->rsp    = MAC_DU_APP_RSP_NOK;
-          macSliceCfgRsp->listOfSliceCfgRsp[cfgIdx]->cause  = SLICE_NOT_PRESENT;
-       }
-    }
-    return ROK;
-}
 
 /**
  * @brief send slice cfg response to duapp.
@@ -832,35 +778,6 @@ uint8_t MacSendSliceConfigRsp(MacSliceCfgRsp *macSliceCfgRsp)
     return (*macDuSliceCfgRspOpts[rspPst.selector])(&rspPst, macSliceCfgRsp);
 
 }
-/**
- * @brief free the slice cfg rsp received from sch.
- *
- * @details
- *
- *     Function : freeSchSliceCfgRsp 
- *
- *     This free the slice cfg rsp received from sch
- *
- *  @param[in]  SchSliceCfgRsp *sliceCfgrsp
- *  @return  int
- *      -# ROK
- **/
-void freeSchSliceCfgRsp(SchSliceCfgRsp *schSliceCfgRsp)
-{
-   uint8_t cfgIdx = 0;
-
-   if(schSliceCfgRsp)
-   {
-      if(schSliceCfgRsp->numSliceCfgRsp)
-      {
-         for(cfgIdx = 0; cfgIdx< schSliceCfgRsp->numSliceCfgRsp; cfgIdx++)
-         {
-            MAC_FREE(schSliceCfgRsp->listOfSliceCfgRsp[cfgIdx], sizeof(SliceRsp));
-         }
-         MAC_FREE(schSliceCfgRsp->listOfSliceCfgRsp, schSliceCfgRsp->numSliceCfgRsp * sizeof(SliceRsp*));
-      }
-   }
-}
 
 /**
  * @brief Mac process the slice cfg rsp received from sch.
@@ -876,6 +793,7 @@ void freeSchSliceCfgRsp(SchSliceCfgRsp *schSliceCfgRsp)
  *  @return  int
  *      -# ROK
  **/
+
 uint8_t MacProcSchSliceCfgRsp(Pst *pst, SchSliceCfgRsp *schSliceCfgRsp)
 {
    MacSliceCfgRsp *macSliceCfgRsp = NULLP;
@@ -888,33 +806,32 @@ uint8_t MacProcSchSliceCfgRsp(Pst *pst, SchSliceCfgRsp *schSliceCfgRsp)
           DU_LOG("\nERROR  -->  MAC : Failed to allocate memory in MacProcSchSliceCfgRsp");
           return RFAILED;
       }
-      if(schSliceCfgRsp->listOfSliceCfgRsp)
+      macSliceCfgRsp->snssai = schSliceCfgRsp->snssai;
+      if(schSliceCfgRsp->rsp == RSP_OK)
+         macSliceCfgRsp->rsp    = MAC_DU_APP_RSP_OK;
+      else
       {
-         if(fillMacSliceCfgRsp(schSliceCfgRsp, macSliceCfgRsp) != ROK)
-         {
-            DU_LOG("\nERROR  -->  MAC : Failed to fill the slice cfg response");
-            return RFAILED;
-         }
-         MacSendSliceConfigRsp(macSliceCfgRsp);
+         macSliceCfgRsp->rsp    = MAC_DU_APP_RSP_NOK;
       }
-      freeSchSliceCfgRsp(schSliceCfgRsp);
+      macSliceCfgRsp->cause  = schSliceCfgRsp->cause;
+      MacSendSliceConfigRsp(macSliceCfgRsp);
    }
    return ROK;
 }
 
 /**
-* @brief send slice cfg response to duapp.
-*
-* @details
-*
-*     Function : MacSendSliceReconfigRsp 
-*
-*   sends  slice cfg response to duapp
-*
-*  @param[in] MacSliceRecfgRsp macSliceRecfgRsp
-*  @return  int
-*      -# ROK
-**/
+ * @brief send slice cfg response to duapp.
+ *
+ * @details
+ *
+ *     Function : MacSendSliceReconfigRsp 
+ *
+ *   sends  slice cfg response to duapp
+ *
+ *  @param[in] MacSliceRecfgRsp macSliceRecfgRsp
+ *  @return  int
+ *      -# ROK
+ **/
 uint8_t MacSendSliceReconfigRsp(MacSliceRecfgRsp *macSliceRecfgRsp)
 {
    Pst  rspPst;
@@ -952,16 +869,15 @@ uint8_t MacProcSchSliceRecfgRsp(Pst *pst, SchSliceRecfgRsp *schSliceRecfgRsp)
           return RFAILED;
       }
 
-      if(schSliceRecfgRsp->listOfSliceCfgRsp)
+      macSliceRecfgRsp->snssai = schSliceRecfgRsp->snssai;
+      if(schSliceRecfgRsp->rsp == RSP_OK)
+         macSliceRecfgRsp->rsp    = MAC_DU_APP_RSP_OK;
+      else
       {
-         if(fillMacSliceCfgRsp(schSliceRecfgRsp, macSliceRecfgRsp) != ROK)
-         {
-            DU_LOG("\nERROR  -->  MAC : Failed to fill the slice Recfg response");
-            return RFAILED;
-         }
-         MacSendSliceReconfigRsp(macSliceRecfgRsp);
+         macSliceRecfgRsp->rsp    = MAC_DU_APP_RSP_NOK;
       }
-      freeSchSliceCfgRsp(schSliceRecfgRsp);
+      macSliceRecfgRsp->cause  = schSliceRecfgRsp->cause;
+      MacSendSliceReconfigRsp(macSliceRecfgRsp);
    }
    return ROK;
 }

@@ -84,6 +84,9 @@
 #define EVENT_MAC_RACH_RESOURCE_RSP  222
 #define EVENT_MAC_RACH_RESOURCE_REL  223
 #define EVENT_MAC_DL_PCCH_IND        224
+#define EVENT_MAC_UE_RESET_REQ       225
+#define EVENT_MAC_UE_RESET_RSP       226
+#define EVENT_MAC_UE_SYNC_STATUS_IND 227
 
 #define BSR_PERIODIC_TIMER_SF_10 10
 #define BSR_RETX_TIMER_SF_320 320
@@ -100,22 +103,10 @@ typedef enum
 
 typedef enum
 {
-   SLICE_PRESENT,
-   SLICE_NOT_PRESENT
-}RspReason;
-
-typedef enum
-{
-   DEL_SUCCESSFUL,
-   CELLID_INVALID,
-   UEID_INVALID
-}UeDeleteStatus;
-
-typedef enum
-{
-   SUCCESSFUL_RSP,
-   CELL_ID_INVALID
-}CellDeleteStatus;
+   IN_SYNC,
+   OUT_OF_SYNC,
+   OUT_OF_SUNC_MAX_RETRIES
+}SyncStatus;
 
 typedef enum
 {
@@ -518,15 +509,15 @@ typedef enum
    RESTART_TRANSMISSION
 }DataTransmissionAction;
 
-typedef struct failureCause
+typedef struct failureCause 
 {
    CauseGrp   type;
    union
    {
-      RadioNwLyrCause   radioNwCause;
-      TransLyrCause     transportCause;
-      ProtCause         protcolCause;
-      MiscFailCause     miscCause;
+      RadioNwLyrCause   radioNwResult;
+      TransLyrCause     transportResult;
+      ProtCause         protcolResult;
+      MiscFailCause     miscResult;
    }u;
 }FailureCause;
 
@@ -559,6 +550,14 @@ typedef enum
    CELL_INACTIVE,
    CELL_ACTIVE,
 }MacCellState;
+
+/*Spec Ref: 38.331: RadioLinkMonitoringConfig*/
+typedef enum
+{
+   BeamFailure,
+   Rlf,
+   Both
+}PurposeOfFailureDet;
 
 typedef struct plmnInfoList
 {
@@ -992,15 +991,51 @@ typedef struct initialDlBwp
    PdschConfig   pdschCfg;
 }InitialDlBwp;
 
-/* BWP Downlink common */
-typedef struct bwpDlCommon
+/*Spec 38.331 "SPS-Config'*/
+typedef struct spsConfig
 {
-}BwpDlCommon;
+   uint16_t     periodicity;
+   uint8_t      numOfHqProcess;
+   uint8_t      n1PucchAN;
+   McsTable     mcsTable;
+}SpsConfig;
+
+typedef uint8_t RadioLinkMonitoringRsId;
+
+typedef struct radioLinkMonRS
+{
+   RadioLinkMonitoringRsId radioLinkMonitoringRsId;
+   PurposeOfFailureDet      purpose; 
+   union
+   {
+      uint8_t ssbIndx;
+      uint8_t nzpCsiRsResId;
+   }detectionRes;
+}RadioLinkMonRS;
+
+typedef struct radioLinkConfig
+{
+   RadioLinkMonRS             failurDetResAddModList[1];
+   RadioLinkMonitoringRsId   failurDetResRelList[1];
+   uint8_t                    beamFailureInstanceMaxCount;
+   uint8_t                    beamFailureDetectionTimer;
+}RadioLinkConfig;
+
+/* Spec 38.331, 'BWP-DownlinkDedicated'*/
+typedef struct bwpDlCfgDed
+{
+  PdcchConfig     pdcchCfgDed;
+  PdschConfig     pdschCfgDed;
+  SpsConfig       spsCfgDed;
+  RadioLinkConfig radioLnkMonCfgDed;
+}BwpDlCfgDed;
 
 /* Downlink BWP information */
 typedef struct dlBwpInfo
 {
    uint8_t          bwpId;
+   BwpDlConfig      bwpCommon;
+   BwpDlCfgDed      bwpDedicated;
 }DlBwpInfo;
 
 /* PDCCH Serving Cell configuration */
@@ -1214,26 +1249,88 @@ typedef struct initialUlBwp
    PuschCfg   puschCfg;
 }InitialUlBwp;
 
+typedef struct bwpUlCfgDed
+{
+   PucchCfg   pucchCfg;
+   PuschCfg   puschCfg;
+}BwpUlCfgDed;
+
 /* Uplink BWP information */
 typedef struct ulBwpInfo
 {
-   uint8_t        bwpId;
+   uint8_t          bwpId;
+   BwpUlConfig      bwpCommon;
+   BwpUlCfgDed      bwpDed;
 }UlBwpInfo;
+
+typedef struct rachCfgGeneric
+{
+   uint8_t      prachCfgIdx;       /* PRACH config idx */
+   uint8_t      msg1Fdm;           /* PRACH FDM (1,2,4,8) */
+   uint16_t     msg1FreqStart;     /* Msg1-FrequencyStart */
+   uint8_t      zeroCorrZoneCfg;   /* Zero correlation zone cofig */
+   int16_t      preambleRcvdTargetPower; /*Prach Target power received*/
+   uint8_t      preambleTransMax;  /*Preamble Transmission Max power*/
+   uint8_t      pwrRampingStep;    /*Power Ramping Step*/
+   uint8_t      raRspWindow;       /* RA Response Window */
+}RachCfgGeneric;
+
+typedef struct raPrioritization
+{
+   uint8_t powerRampingStepHighPriority;
+   uint8_t scalingFactorBI;
+}RaPrioritization;
+
+typedef struct bfrCsiRsRes
+{
+   uint8_t csrRsIndex;
+   uint8_t raOccList;
+   uint8_t raPreambleIndex;
+}BfrCsiRsRes;
+
+typedef struct bfrSsbRes
+{
+   uint16_t ssbIndex;
+   uint8_t raPreambleIndex;
+}BfrSsbRes;
+
+typedef struct prachResDedBfr
+{
+   BfrSsbRes    ssb;
+   BfrCsiRsRes  csiRs;
+}PrachResDedBfr;
+
+/*Spec 38.331 'BeamFailureRecoveryConfig' */
+typedef struct beamFailRecoveryCfg
+{
+   uint8_t             rootSeqIndexBfr;
+   RachCfgGeneric      rachCfgBfr;
+   uint8_t             rsrpThreshSsbBfr;
+   PrachResDedBfr      candidteBeamRSList;
+   uint8_t             ssbPerachBfr;
+   uint8_t             raSsbOccMaskIndex;
+   uint8_t             recoverySearchSpaceId;
+   RaPrioritization    raPrioBfr;
+   uint16_t            bfrTimer;
+   uint8_t             msg1SubcSpacing;
+}BeamFailRecoveryCfg;
 
 /* Serving cell configuration */
 typedef struct servCellCfgInfo
 {
-   InitialDlBwp       initDlBwp;
-   uint8_t            numDlBwpToAdd;
-   DlBwpInfo          dlBwpToAddList[MAX_NUM_BWP];
-   uint8_t            firstActvDlBwpId;
-   uint8_t            defaultDlBwpId;
-   uint8_t            *bwpInactivityTmr;
-   PdschServCellCfg   pdschServCellCfg;
-   InitialUlBwp       initUlBwp;
-   uint8_t            numUlBwpToAdd;
-   UlBwpInfo          ulBwpToAddList[MAX_NUM_BWP];
-   uint8_t            firstActvUlBwpId;
+   InitialDlBwp         initDlBwp;
+   RadioLinkConfig      radioLinkMonConfig;
+   uint8_t              numDlBwpToAdd;
+   DlBwpInfo            dlBwpToAddList[MAX_NUM_BWP];
+   uint8_t              firstActvDlBwpId;
+   uint8_t              defaultDlBwpId;
+   uint8_t              *bwpInactivityTmr;
+   PdschServCellCfg     pdschServCellCfg;
+   InitialUlBwp         initUlBwp;
+   BeamFailRecoveryCfg  beamFailureRecoveryCfg;
+   uint8_t              numUlBwpToAdd;
+   UlBwpInfo            ulBwpToAddList[MAX_NUM_BWP];
+   uint8_t              firstActvUlBwpId;
 }ServCellCfgInfo;
 
 /* Special cell configuration */
@@ -1243,14 +1340,20 @@ typedef struct spCellCfg
    ServCellCfgInfo   servCellCfg;
 }SpCellCfg;
 
+typedef struct bwpRelInfo
+{
+   uint8_t bwpId;
+}BwpRelInfo;
+
 /* Serving cell Re-configuration */
 typedef struct servCellRecfgInfo
 {
    InitialDlBwp       initDlBwp;
+   RadioLinkConfig    radioLinkMonConfig;
    uint8_t            numDlBwpToAddOrMod;
    DlBwpInfo          dlBwpToAddOrModList[MAX_NUM_BWP];
    uint8_t            numDlBwpToRel;
-   DlBwpInfo          dlBwpToRelList[MAX_NUM_BWP];
+   BwpRelInfo         dlBwpToRelList[MAX_NUM_BWP];
    uint8_t            firstActvDlBwpId;
    uint8_t            defaultDlBwpId;
    uint8_t            *bwpInactivityTmr;
@@ -1259,7 +1362,7 @@ typedef struct servCellRecfgInfo
    uint8_t            numUlBwpToAddOrMod;
    UlBwpInfo          ulBwpToAddOrModList[MAX_NUM_BWP];
    uint8_t            numUlBwpToRel;
-   UlBwpInfo          ulBwpToRelList[MAX_NUM_BWP];
+   BwpRelInfo         ulBwpToRelList[MAX_NUM_BWP];
    uint8_t            firstActvUlBwpId;
 }ServCellRecfgInfo;
 
@@ -1359,6 +1462,7 @@ typedef struct macUeCfg
 {
    uint16_t               cellId;
    uint8_t                ueId;
+   uint8_t                beamIdx; 
    uint16_t               crnti;
    bool                   macCellGrpCfgPres;
    MacCellGrpCfg          macCellGrpCfg;
@@ -1489,7 +1593,7 @@ typedef struct ueDeleteRsp
 {
    uint16_t cellId;
    uint8_t  ueId;
-   UeDeleteStatus result;
+   CauseOfResult  status;
 }MacUeDeleteRsp;
 
 typedef struct macCellDeleteReq
@@ -1500,15 +1604,15 @@ typedef struct macCellDeleteReq
 typedef struct macCellDeleteRsp
 {
    uint16_t cellId;
-   CellDeleteStatus result;
+   CauseOfResult  status;
 }MacCellDeleteRsp;
 
-typedef struct macSliceRsp
+typedef struct macSliceCfgRsp 
 {
    Snssai     snssai;
    MacRsp     rsp;
-   RspReason  cause;  
-}MacSliceRsp;
+   CauseOfResult  cause;  
+}MacSliceCfgRsp;
 
 typedef struct rrmPolicyRatio
 {
@@ -1537,12 +1641,6 @@ typedef struct macSliceCfgReq
    MacSliceRrmPolicy **listOfRrmPolicy;
 }MacSliceCfgReq;
 
-typedef struct macSliceCfgRsp
-{
-   uint8_t      numSliceCfgRsp;
-   MacSliceRsp  **listOfSliceCfgRsp;
-}MacSliceCfgRsp;
-
 /*As per ORAN-WG8, Slice Cfg and ReCfg are same structures*/
 typedef struct macSliceCfgReq MacSliceRecfgReq;
 typedef struct macSliceCfgRsp MacSliceRecfgRsp;
@@ -1564,6 +1662,26 @@ typedef struct cellInfo
 
 typedef struct cellInfo CellStartInfo;
 typedef struct cellInfo CellStopInfo;
+
+typedef struct ueReset
+{
+    uint16_t cellId;
+    uint8_t  ueId;
+}MacUeResetReq;
+
+typedef struct ueResetRsp
+{
+   uint16_t cellId;
+   uint8_t  ueId;
+   CauseOfResult  status;
+}MacUeResetRsp;
+
+typedef struct ueSyncStatusInd
+{
+   uint16_t   cellId;
+   uint8_t    ueId;
+   SyncStatus status;
+}MacUeSyncStatusInd;
 
 /* Functions for CellUp Ind from MAC to DU APP*/
 typedef uint8_t (*DuMacCellUpInd) ARGS((
@@ -1697,6 +1815,21 @@ typedef uint8_t (*DuMacDlPcchInd) ARGS((
      Pst        *pst,
      DlPcchInd *pcchInd));
 
+/* UE Reset Request from DU APP to MAC*/
+typedef uint8_t (*DuMacUeResetReq) ARGS((
+     Pst           *pst,
+     MacUeResetReq *ueReset ));
+
+/* UE Reset Response from MAC to DU APP*/
+typedef uint8_t (*MacDuUeResetRspFunc) ARGS((
+     Pst            *pst,
+     MacUeResetRsp *resetRsp));
+
+/* UE sync status indication from MAC to DU APP*/
+typedef uint8_t (*MacDuUeSyncStatusIndFunc) ARGS((
+        Pst            *pst,
+        MacUeSyncStatusInd *syncStatusInd));
+
 uint64_t ueBitMapPerCell[MAX_NUM_CELL]; /* Bit Map to store used/free UE-IDX per Cell */
 
 uint8_t packMacCellUpInd(Pst *pst, OduCellId *cellId);
@@ -1777,6 +1910,15 @@ uint8_t MacProcDlPcchInd(Pst *pst, DlPcchInd *pcchInd);
 uint8_t unpackMacDlPcchInd(DuMacDlPcchInd func, Pst *pst, Buffer *mBuf);
 int8_t getFreeBitFromUeBitMap(uint16_t cellId);
 void unsetBitInUeBitMap(uint16_t cellId, uint8_t bitPos);
+uint8_t packDuMacUeResetReq(Pst *pst, MacUeResetReq *ueReset);
+uint8_t MacProcUeResetReq(Pst *pst,  MacUeResetReq *ueReset);
+uint8_t unpackMacUeResetReq(DuMacUeResetReq func, Pst *pst, Buffer *mBuf);
+uint8_t packDuMacUeResetRsp(Pst *pst, MacUeResetRsp *resetRsp);
+uint8_t DuProcMacUeResetRsp(Pst *pst, MacUeResetRsp *resetRsp);
+uint8_t unpackDuMacUeResetRsp(MacDuUeResetRspFunc func, Pst *pst, Buffer *mBuf);
+uint8_t packDuMacUeSyncStatusInd(Pst *pst, MacUeSyncStatusInd *ueSyncStatusInd);
+uint8_t DuProcMacUeSyncStatusInd(Pst *pst, MacUeSyncStatusInd *ueSyncStatusInd);
+uint8_t unpackDuMacUeSyncStatusInd(MacDuUeSyncStatusIndFunc func, Pst *pst, Buffer *mBuf);
 #endif
 
 

@@ -88,6 +88,78 @@ uint8_t sendCrcIndMacToSch(CrcIndInfo *crcInd)
 
 /*******************************************************************
  *
+ * @brief Sends UL CQI Indication to SCH
+ *
+ * @details
+ *
+ *    Function : sendUlCqiIndMacToSch 
+ *
+ *    Functionality:
+ *       Sends Ul Cqi Indication to SCH
+ *
+ * @params[in] 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ ****************************************************************/
+uint8_t sendUlCqiIndMacToSch(SchUlCqiInd *ulCqiInd)
+{
+   Pst pst;
+
+   FILL_PST_MAC_TO_SCH(pst, EVENT_UL_CQI_TO_SCH);
+   return(SchMessageRouter(&pst, (void *)ulCqiInd));
+}
+
+/*******************************************************************
+ *
+ * @brief Sends DL CQI Indication to SCH
+ *
+ * @details
+ *
+ *    Function : sendDlCqiIndMacToSch 
+ *
+ *    Functionality:
+ *       Sends Dl Cqi Indication to SCH
+ *
+ * @params[in] 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ ****************************************************************/
+uint8_t sendDlCqiIndMacToSch(SchDlCqiInd *dlCqiInd)
+{
+   Pst pst;
+
+   FILL_PST_MAC_TO_SCH(pst, EVENT_DL_CQI_TO_SCH);
+   return(SchMessageRouter(&pst, (void *)dlCqiInd));
+}
+
+/*******************************************************************
+ *
+ * @brief Sends Power Headroom Indication to SCH
+ *
+ * @details
+ *
+ *    Function : sendPhrIndToSch 
+ *
+ *    Functionality:
+ *       Sends Phr Indication to SCH
+ *
+ * @params[in] 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ ****************************************************************/
+uint8_t sendPhrIndToSch(SchPwrHeadroomInd *macPhrInd)
+{
+   Pst pst;
+
+   FILL_PST_MAC_TO_SCH(pst, EVENT_PHR_IND_TO_SCH);
+   return(SchMessageRouter(&pst, (void *)macPhrInd));
+}
+
+/*******************************************************************
+ *
  * @brief Processes CRC Indication from PHY
  *
  * @details
@@ -842,8 +914,8 @@ uint8_t FapiMacUciInd(Pst *pst, UciInd *macUciInd)
  **********************************************************************/
 uint8_t fillSliceCfgInfo(SchSliceCfgReq *schSliceCfgReq, MacSliceCfgReq *macSliceCfgReq)
 {
-   uint8_t cfgIdx = 0, memberListIdx = 0, totalSliceCfgRecvd = 0;
-
+   uint8_t rrmPolicyIdx= 0,cfgIdx = 0, memberListIdx = 0, totalSliceCfgRecvd = 0;
+ 
    if(macSliceCfgReq->listOfRrmPolicy)
    {
       for(cfgIdx = 0; cfgIdx<macSliceCfgReq->numOfRrmPolicy; cfgIdx++)
@@ -858,11 +930,13 @@ uint8_t fillSliceCfgInfo(SchSliceCfgReq *schSliceCfgReq, MacSliceCfgReq *macSlic
          DU_LOG("\nERROR  -->  MAC : Memory allocation failed in fillSliceCfgInfo");
          return RFAILED;
       }
-      for(cfgIdx = 0; cfgIdx<schSliceCfgReq->numOfConfiguredSlice; cfgIdx++)
+      cfgIdx = 0; 
+
+      for(rrmPolicyIdx = 0; rrmPolicyIdx<macSliceCfgReq->numOfRrmPolicy; rrmPolicyIdx++)
       {
-         for(memberListIdx = 0; memberListIdx<macSliceCfgReq->listOfRrmPolicy[cfgIdx]->numOfRrmPolicyMem; memberListIdx++)
+         for(memberListIdx = 0; memberListIdx<macSliceCfgReq->listOfRrmPolicy[rrmPolicyIdx]->numOfRrmPolicyMem; memberListIdx++)
          {
-            if(macSliceCfgReq->listOfRrmPolicy[cfgIdx]->rRMPolicyMemberList[memberListIdx])
+            if(macSliceCfgReq->listOfRrmPolicy[rrmPolicyIdx]->rRMPolicyMemberList[memberListIdx])
             {
 
                MAC_ALLOC(schSliceCfgReq->listOfSlices[cfgIdx], sizeof(SchRrmPolicyOfSlice));
@@ -872,11 +946,12 @@ uint8_t fillSliceCfgInfo(SchSliceCfgReq *schSliceCfgReq, MacSliceCfgReq *macSlic
                   return RFAILED;
                }
 
-               memcpy(&schSliceCfgReq->listOfSlices[cfgIdx]->snssai, &macSliceCfgReq->listOfRrmPolicy[cfgIdx]->rRMPolicyMemberList[memberListIdx]->snssai, sizeof(Snssai));
+               memcpy(&schSliceCfgReq->listOfSlices[cfgIdx]->snssai, &macSliceCfgReq->listOfRrmPolicy[rrmPolicyIdx]->rRMPolicyMemberList[memberListIdx]->snssai, sizeof(Snssai));
 
-               schSliceCfgReq->listOfSlices[cfgIdx]->rrmPolicyRatioInfo.maxRatio = macSliceCfgReq->listOfRrmPolicy[cfgIdx]->policyRatio.maxRatio;
-               schSliceCfgReq->listOfSlices[cfgIdx]->rrmPolicyRatioInfo.minRatio = macSliceCfgReq->listOfRrmPolicy[cfgIdx]->policyRatio.minRatio;
-               schSliceCfgReq->listOfSlices[cfgIdx]->rrmPolicyRatioInfo.dedicatedRatio = macSliceCfgReq->listOfRrmPolicy[cfgIdx]->policyRatio.dedicatedRatio;
+               schSliceCfgReq->listOfSlices[cfgIdx]->rrmPolicyRatioInfo.maxRatio = macSliceCfgReq->listOfRrmPolicy[rrmPolicyIdx]->policyRatio.maxRatio;
+               schSliceCfgReq->listOfSlices[cfgIdx]->rrmPolicyRatioInfo.minRatio = macSliceCfgReq->listOfRrmPolicy[rrmPolicyIdx]->policyRatio.minRatio;
+               schSliceCfgReq->listOfSlices[cfgIdx]->rrmPolicyRatioInfo.dedicatedRatio = macSliceCfgReq->listOfRrmPolicy[rrmPolicyIdx]->policyRatio.dedicatedRatio;
+               cfgIdx++;
             }
          }
       }

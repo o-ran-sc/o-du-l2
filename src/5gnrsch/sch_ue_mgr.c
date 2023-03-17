@@ -200,27 +200,27 @@ void fillSchUlLcCtxt(SchUlLcCtxt *ueCbLcCfg, SchLcCfg *lcCfg)
 
 uint8_t updateDedLcInfo(Inst inst, Snssai *snssai, uint16_t *rsvdDedicatedPRB, bool *isDedicated)
 {
-   uint8_t sliceCfgIdx =0;
-   SchSliceCfg sliceCfg = schCb[inst].sliceCfg;
+   CmLList *sliceCfg = schCb[inst].sliceCfg.first;
+   SchRrmPolicyOfSlice *rrmPolicyOfSlices;
 
-   if(sliceCfg.numOfSliceConfigured)
+   while(sliceCfg)
    {
-      for(sliceCfgIdx = 0; sliceCfgIdx<sliceCfg.numOfSliceConfigured; sliceCfgIdx++)
+      rrmPolicyOfSlices = (SchRrmPolicyOfSlice*)sliceCfg->node;
+      if(rrmPolicyOfSlices && (memcmp(snssai, &(rrmPolicyOfSlices->snssai), sizeof(Snssai)) == 0))
       {
-         if(memcmp(snssai, &(sliceCfg.listOfSlices[sliceCfgIdx]->snssai), sizeof(Snssai)) == 0)
-         {
-            /*Updating latest RrmPolicy*/
-            *rsvdDedicatedPRB = \
-                                (uint16_t)(((sliceCfg.listOfSlices[sliceCfgIdx]->rrmPolicyRatioInfo.dedicatedRatio)*(MAX_NUM_RB))/100);
-            *isDedicated = TRUE;
-            DU_LOG("\nINFO  -->  SCH : Updated RRM policy, reservedPOOL:%d",*rsvdDedicatedPRB);
-         }
+         /*Updating latest RrmPolicy*/
+         *rsvdDedicatedPRB = \
+                             (uint16_t)(((rrmPolicyOfSlices->rrmPolicyRatioInfo.dedicatedRatio)*(MAX_NUM_RB))/100);
+         *isDedicated = TRUE;
+         DU_LOG("\nINFO  -->  SCH : Updated RRM policy, reservedPOOL:%d",*rsvdDedicatedPRB);
+         break;
       }
-      /*case: This LcCtxt  is either a Default LC or this LC is part of someother RRM_MemberList*/
-      if(*isDedicated != TRUE) 
-      {
-         DU_LOG("\nINFO  -->  SCH : This SNSSAI is not a part of this RRMPolicy");
-      }
+      sliceCfg = sliceCfg->next;
+   }
+   /*case: This LcCtxt  is either a Default LC or this LC is part of someother RRM_MemberList*/
+   if(*isDedicated != TRUE) 
+   {
+      DU_LOG("\nINFO  -->  SCH : This SNSSAI is not a part of this RRMPolicy");
    }
    return ROK;	 
 }
@@ -374,14 +374,14 @@ uint8_t fillSchUeCbFrmCfgReq(Inst inst, SchUeCb *ueCb, SchUeCfgReq *ueCfg)
       {
          if(dlDataToUlAck)
          {
-            BuildK0K1Table(ueCb->cellCb, &ueCb->ueCfg.spCellCfg.servCellRecfg.initDlBwp.k0K1InfoTbl, false, pdschCfg,\
+            BuildK0K1Table(ueCb->cellCb, &ueCb->k0K1InfoTbl, false, pdschCfg,\
                   ueCfg->spCellCfg.servCellCfg.initDlBwp.pdschCfg, dlDataToUlAck->dlDataToUlAckListCount,\
                   dlDataToUlAck->dlDataToUlAckList);
-            ueCb->ueCfg.spCellCfg.servCellRecfg.initDlBwp.k0K1TblPrsnt = true;
+            ueCb->k0K1TblPrsnt = true;
             BuildK2InfoTable(ueCb->cellCb, ueCfg->spCellCfg.servCellCfg.initUlBwp.puschCfg.timeDomRsrcAllocList,\
                   ueCfg->spCellCfg.servCellCfg.initUlBwp.puschCfg.numTimeDomRsrcAlloc,\
-                  NULLP, &ueCb->ueCfg.spCellCfg.servCellRecfg.initUlBwp.k2InfoTbl);
-            ueCb->ueCfg.spCellCfg.servCellRecfg.initUlBwp.k2TblPrsnt = true;
+                  NULLP, &ueCb->k2InfoTbl);
+            ueCb->k2TblPrsnt = true;
          }
       }
    }
@@ -552,14 +552,14 @@ uint8_t fillSchUeCbFrmRecfgReq(Inst inst, SchUeCb *ueCb, SchUeRecfgReq *ueRecfg)
       {
          if(dlDataToUlAck)
          {
-            BuildK0K1Table(ueCb->cellCb, &ueCb->ueCfg.spCellCfg.servCellRecfg.initDlBwp.k0K1InfoTbl, false, pdschCfg,\
+            BuildK0K1Table(ueCb->cellCb, &ueCb->k0K1InfoTbl, false, pdschCfg,\
                   ueRecfg->spCellRecfg.servCellRecfg.initDlBwp.pdschCfg, dlDataToUlAck->dlDataToUlAckListCount,\
                   dlDataToUlAck->dlDataToUlAckList);
-            ueCb->ueCfg.spCellCfg.servCellRecfg.initDlBwp.k0K1TblPrsnt = true;
+            ueCb->k0K1TblPrsnt = true;
             BuildK2InfoTable(ueCb->cellCb, ueRecfg->spCellRecfg.servCellRecfg.initUlBwp.puschCfg.timeDomRsrcAllocList,\
                   ueRecfg->spCellRecfg.servCellRecfg.initUlBwp.puschCfg.numTimeDomRsrcAlloc,\
-                  NULLP, &ueCb->ueCfg.spCellCfg.servCellRecfg.initUlBwp.k2InfoTbl);
-            ueCb->ueCfg.spCellCfg.servCellRecfg.initUlBwp.k2TblPrsnt = true;
+                  NULLP, &ueCb->k2InfoTbl);
+            ueCb->k2TblPrsnt = true;
          }
       }
    }
@@ -1399,12 +1399,12 @@ void deleteSchUeCb(SchUeCb *ueCb)
 *    Functionality: Fill and send UE delete response to MAC
 *
 * @params[in] Inst inst, SchUeDelete  *ueDelete, SchMacRsp result, 
-*              ErrorCause cause
+*              CauseOfResult  cause
 * @return ROK     - success
 *         RFAILED - failure
 *
 * ****************************************************************/
-void SchSendUeDeleteRspToMac(Inst inst, SchUeDelete  *ueDelete, SchMacRsp result, ErrorCause cause)
+void SchSendUeDeleteRspToMac(Inst inst, SchUeDelete  *ueDelete, SchMacRsp result, CauseOfResult  cause)
 {
     Pst rspPst;
     SchUeDeleteRsp  delRsp;
@@ -1439,9 +1439,9 @@ void SchSendUeDeleteRspToMac(Inst inst, SchUeDelete  *ueDelete, SchMacRsp result
 * ****************************************************************/
 uint8_t SchProcUeDeleteReq(Pst *pst, SchUeDelete  *ueDelete)
 {
-    uint8_t      idx=0, ueId=0, ret=ROK;
-    ErrorCause   result;
-    SchCellCb    *cellCb = NULLP;
+    uint8_t idx=0, ueId=0, ret=ROK;
+    CauseOfResult  cause;
+    SchCellCb *cellCb = NULLP;
     Inst         inst = pst->dstInst - SCH_INST_START;
    
     if(!ueDelete)
@@ -1456,7 +1456,7 @@ uint8_t SchProcUeDeleteReq(Pst *pst, SchUeDelete  *ueDelete)
     if(cellCb->cellId != ueDelete->cellId)
     {
        DU_LOG("\nERROR  -->  SCH : SchProcUeDeleteReq(): cell Id is not available");
-       result =  INVALID_CELLID;
+       cause =  CELLID_INVALID;
     }
     else
     {
@@ -1467,22 +1467,22 @@ uint8_t SchProcUeDeleteReq(Pst *pst, SchUeDelete  *ueDelete)
           cellCb->api->SchUeDeleteReq(&cellCb->ueCb[ueId-1]);
           deleteSchUeCb(&cellCb->ueCb[ueId-1]);
           cellCb->numActvUe--;
-          result = NOT_APPLICABLE;
+          cause = SUCCESSFUL;
        }
        else
        {
           DU_LOG("\nERROR  -->  SCH : SchProcUeDeleteReq(): SchUeCb not found");
-          result =  INVALID_UEID;
+          cause =  UEID_INVALID;
        }
     }
     
-    if(result == NOT_APPLICABLE)
+    if(cause == SUCCESSFUL)
     {
-       SchSendUeDeleteRspToMac(inst, ueDelete, RSP_OK, result);
+       SchSendUeDeleteRspToMac(inst, ueDelete, RSP_OK, cause);
     }
     else
     {
-       SchSendUeDeleteRspToMac(inst, ueDelete, RSP_NOK, result);
+       SchSendUeDeleteRspToMac(inst, ueDelete, RSP_NOK, cause);
        ret = RFAILED;
     }
     return ret;

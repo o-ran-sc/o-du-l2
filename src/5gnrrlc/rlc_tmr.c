@@ -683,7 +683,7 @@ uint8_t rlcUeDeleteTmrExpiry(PTR cb)
    if(RlcProcCfgReq(&ueCb->ueDeleteInfo.pst, rlcUeCfg) != ROK)
    {
       DU_LOG("\nERROR  -->  RLC: rlcUeDeleteTmrExpiry(): Failed to delete UE");
-      if(sendRlcUeDeleteRspToDu(rlcUeCfg->cellId, rlcUeCfg->ueId, INVALID_UEID) != ROK)
+      if(sendRlcUeDeleteRspToDu(rlcUeCfg->cellId, rlcUeCfg->ueId, UEID_INVALID) != ROK)
       {
          DU_LOG("ERROR  --> RLC: rlcUeDeleteTmrExpiry(): Failed to send UE delete response ");
          return RFAILED;
