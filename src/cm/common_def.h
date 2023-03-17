@@ -246,7 +246,8 @@ typedef enum
    CONFIG_UNKNOWN,
    CONFIG_ADD,
    CONFIG_MOD,
-   CONFIG_DEL
+   CONFIG_DEL,
+   CONFIG_REESTABLISH
 }ConfigType;
 
 #ifdef NR_TDD
