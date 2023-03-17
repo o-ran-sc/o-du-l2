@@ -40,6 +40,58 @@
 #include "du_app_rlc_inf.h"
 #include "rlc_upr_inf_api.h"
 #include "rlc_mgr.h"
+
+/*******************************************************************
+ *
+ * @brief building and sending UE max retransmission info to DU 
+ *
+ * @details
+ *
+ *    Function : BuildAndSendRlcMaxRetransIndToDu 
+ *
+ *    Functionality:
+ *      Building and sending UE  max retransmission information to DU 
+ *
+ * @params[in] uint8_t cellId, uint8_t ueId, CauseOfResult  status 
+ *
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t BuildAndSendRlcMaxRetransIndToDu(uint16_t cellId,uint8_t ueId, uint8_t lcId, uint8_t lcType)
+{
+   Pst pst;  
+   RlcMaxRetransInfo *retransmissionInfo = NULLP;
+   
+   FILL_PST_RLC_TO_DUAPP(pst, RLC_UL_INST, EVENT_RLC_MAX_RETRANSMISSION);
+
+   RLC_ALLOC_SHRABL_BUF(pst.region, pst.pool, retransmissionInfo, sizeof(RlcMaxRetransInfo));
+   if(!retransmissionInfo)
+   {
+      DU_LOG("\nERROR  -->  RLC: sendRlcMaxRetransIndToDu(): Memory allocation failed ");
+      return RFAILED;
+   }
+   else
+   {
+      retransmissionInfo->cellId = cellId;
+      retransmissionInfo->ueId = ueId;
+      retransmissionInfo->lcId = lcId;
+      retransmissionInfo->lcType = lcType;
+  
+      if(rlcSendMaxRetransIndToDu(&pst, retransmissionInfo) == ROK)
+      {
+         DU_LOG("\nDEBUG  -->  RLC: UE [ %d] max retransmission information sent successfully",ueId);
+      }
+      else
+      {
+         DU_LOG("\nERROR  -->  RLC: SendRlcMaxRetransIndToDu(): fail to send UeId's[%d] maximum retransmission information", ueId);
+         RLC_FREE_SHRABL_BUF(pst.region, pst.pool, retransmissionInfo, sizeof(RlcMaxRetransInfo));
+         return RFAILED;
+      }
+   }
+   return ROK;
+}
+
 /*******************************************************************
  *
  * @brief Fills RLC UL UE Cfg Rsp from RlcCRsp 
@@ -756,7 +808,7 @@ uint8_t RlcProcUeReconfigReq(Pst *pst, RlcUeRecfg *ueRecfg)
    RlcCb *rlcUeCb = NULLP;
    RlcCfgCfmInfo cfgRsp; 
    Pst rspPst;
-
+   
    DU_LOG("\nDEBUG  -->  RLC: UE reconfig request received. CellID[%d] UEID[%d]",ueRecfg->cellId, ueRecfg->ueId);
 
    rlcUeCb = RLC_GET_RLCCB(pst->dstInst);
@@ -1120,7 +1172,7 @@ uint8_t BuildSliceReportToDu(uint8_t snssaiCnt)
       }
       dir++;
    }
-
+   
    sendSlicePmToDu(sliceStats);
    return ROK;
 }

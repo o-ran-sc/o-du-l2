@@ -129,6 +129,55 @@ DuMacUeResetReq packMacUeResetReqOpts[] =
    MacProcUeResetReq,         /* TIght coupling */
    packDuMacUeResetReq        /* Light weight-loose coupling */
 };
+
+/*******************************************************************
+ *
+ * @brief Processes UE's max retransmission information received from RLC 
+ *
+ * @details
+ *
+ *    Function : DuProcRlcMaxRetransInd
+ *
+ *    Functionality:
+ *     Processes max retransmission reached information received from RLC 
+ *
+ *  @params[in]  Post structure
+ *               Pointer to RlcMaxRetransInfo
+ *  @return ROK     - success
+ *          RFAILED - failure
+ *
+ * *****************************************************************/
+
+uint8_t DuProcRlcMaxRetransInd(Pst *pst, RlcMaxRetransInfo *maxRetransInd)
+{
+   uint8_t  ueId = 0, ret = RFAILED;
+   uint16_t cellIdx = 0,crnti=0;
+
+   if(maxRetransInd)
+   {
+      GET_CELL_IDX(maxRetransInd->cellId, cellIdx);
+
+      if(duCb.actvCellLst[cellIdx]!=NULLP)
+      {
+         ueId = maxRetransInd->ueId;
+         GET_CRNTI(crnti, ueId);
+         if(duCb.actvCellLst[cellIdx]->ueCb[ueId-1].crnti ==  crnti)
+         {
+            /*TODO: complete the processing of max retransmission */
+            ret = ROK;
+         }
+         else
+            DU_LOG("\nERROR  -->  DU APP : DuProcRlcMaxRetransInd(): CRNTI [%d] not found", crnti);
+      }
+      else
+         DU_LOG("\nERROR  -->  DU APP : DuProcRlcMaxRetransInd(): Cell Id[%d] is not found", maxRetransInd->cellId);
+      
+      DU_FREE_SHRABL_BUF(pst->region, pst->pool, maxRetransInd, sizeof(RlcMaxRetransInfo));
+
+   }
+   return ret;
+}
+
 /******************************************************************
  *
  * @brief Function to return Drb LcId

@@ -460,6 +460,11 @@ uint8_t duActvTsk(Pst *pst, Buffer *mBuf)
                      ret = unpackRlcDlRrcMsgRspToDu(DuProcRlcDlRrcMsgRsp, pst, mBuf);
                      break;
                   }
+               case EVENT_RLC_MAX_RETRANSMISSION:
+                  {
+                     ret = unpackRlcMaxRetransInd(DuProcRlcMaxRetransInd, pst, mBuf);
+                     break;
+                  }
                case EVENT_UL_USER_DATA_TRANS_TO_DU:
                   {
                      ret = unpackRlcUlUserDataToDu(DuProcRlcUlUserDataTrans, pst, mBuf);

@@ -26,6 +26,13 @@ RlcUlRrcMsgToDuFunc rlcSendUlRrcMsgToDuOpts[] =
    packRlcUlRrcMsgToDu        /* 2 - Light weight loosely coupled */
 };
 
+RlcDuMaxRetransInd rlcMaxRetransReachedIndOpts[] =
+{
+   packRlcDuMaxRetransInd,     /* 0 - loosely coupled */
+   DuProcRlcMaxRetransInd,     /* 1 - tightly coupled */
+   packRlcDuMaxRetransInd     /* 2 - LWLC loosely coupled */
+};
+
 RlcRrcDeliveryReportToDuFunc rlcSendRrcDeliveryReportToDuOpts[]=
 {
    packRrcDeliveryReportToDu,          /* 0 - Loosely coupled */
@@ -89,6 +96,27 @@ RlcDuUeReestablishRsp rlcUeReestablishRspOpts[] =
 uint8_t rlcSendUlRrcMsgToDu(Pst *pst, RlcUlRrcMsgInfo *ulRrcMsgInfo)
 {
    return (*rlcSendUlRrcMsgToDuOpts[pst->selector])(pst, ulRrcMsgInfo);
+}
+
+/*******************************************************************
+*
+* @brief Sends max retransmission reached Info to DU APP
+*
+* @details
+*
+*    Function : rlcSendMaxRetransIndToDu 
+*
+*    Functionality:  Sends  max retransmission reached Info to DU APP
+*
+* @params[in] Pst structure
+*              max retransmission reached Info
+* @return ROK     - success
+*         RFAILED - failure
+*
+* ****************************************************************/
+uint8_t rlcSendMaxRetransIndToDu(Pst *pst, RlcMaxRetransInfo *retransmissionInfo) 
+{
+   return (*rlcMaxRetransReachedIndOpts[pst->selector])(pst, retransmissionInfo);
 }
 
 /*******************************************************************
