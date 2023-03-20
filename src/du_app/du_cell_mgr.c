@@ -60,6 +60,12 @@ DuMacDlPcchInd packMacDlPcchIndOpts[] =
    packDuMacDlPcchInd        /* Light weight-loose coupling */
 };
 
+DuMacDlBroadcastReq packMacDlBroadcastReqOpts[] =
+{
+   packDuMacDlBroadcastReq,       /* Loose coupling */
+   MacProcDlBroadcastReq,         /* TIght coupling */
+   packDuMacDlBroadcastReq        /* Light weight-loose coupling */
+};
 /*******************************************************************
  *
  * @brief Processes cells to be activated
@@ -1062,6 +1068,57 @@ uint8_t processPagingMsg(uint16_t cellId, DuPagingMsg *rcvdF1apPagingParam)
    return ROK;
 
 }
+
+/*******************************************************************
+ *
+ * @brief DU build and send dl broacast req  and send it to MAC
+ *
+ * @details
+ *
+ *    Function : duBuildAndSendDlBroadcastReq
+ *
+ *    Functionality: DU build and send dl broacast req and send to MAC
+ *                   
+ *
+ * @params[in] cellId, crnti 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+
+uint8_t duBuildAndSendDlBroadcastReq(MacDlBroadcastReq broadcastReq)
+{
+   Pst pst;
+   uint8_t ret =ROK;
+   uint16_t cellIdx = 0;
+   MacDlBroadcastReq *dlBroadcast=NULLP;
+
+   DU_LOG("\nDEBUG  -->  DU_APP : Building Dl broadcast request");
+
+   DU_ALLOC_SHRABL_BUF(dlBroadcast, sizeof(MacDlBroadcastReq));
+   if(dlBroadcast)
+   {
+      memcpy(dlBroadcast, &broadcastReq, sizeof(MacDlBroadcastReq));
+
+      FILL_PST_DUAPP_TO_MAC(pst, EVENT_MAC_DL_BROADCAST_REQ);
+
+      DU_LOG("\nDEBUG  -->  DU_APP: Sending Dl broadcast  Request to MAC ");
+      ret = (*packMacDlBroadcastReqOpts[pst.selector])(&pst, dlBroadcast);
+      if(ret == RFAILED)
+      {
+         DU_LOG("\nERROR  -->  DU_APP: sendDlBroadcastReqToMac(): Failed to send Dl broadcast  Req to MAC");
+         DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, dlBroadcast, sizeof(MacDlBroadcastReq));
+      }
+   }
+   else
+   {
+      DU_LOG("\nERROR  -->   DU_APP: sendDlBroadcastReqToMac(): Failed to allocate memory"); 
+      ret =  RFAILED;
+   }
+
+   return ret;
+}
+
 /**********************************************************************
   End of file
  **********************************************************************/

@@ -21,7 +21,8 @@
 #define __MACINT_H__
 
 #define NUM_NUMEROLOGY 5  /* Number of numerology */
-
+#define NUM_SI_MESSAGES 32 /* As per 138 331 V15.3 Maximum number of SI messages */ 
+#define NUM_SIB 32         /* As per 138 331 V15.3 Maximum number of SIBs */ 
 #define NUM_SSB		1	/* max value is 64 */
 #define SSB_MASK_SIZE	1	/* SSB mask size is 32bit for sub6 */
 #define SIB1_REPETITION_PERIOD   20
@@ -87,6 +88,7 @@
 #define EVENT_MAC_UE_RESET_REQ       225
 #define EVENT_MAC_UE_RESET_RSP       226
 #define EVENT_MAC_UE_SYNC_STATUS_IND 227
+#define EVENT_MAC_DL_BROADCAST_REQ   228
 
 #define BSR_PERIODIC_TIMER_SF_10 10
 #define BSR_RETX_TIMER_SF_320 320
@@ -94,6 +96,72 @@
 
 #define PAGING_SCHED_DELTA  4
 #define MAX_PLMN 2
+
+typedef enum
+{
+   SIB_TYPE2,
+   SIB_TYPE3,
+   SIB_TYPE4,
+   SIB_TYPE5,
+   SIB_TYPE6,
+   SIB_TYPE7,
+   SIB_TYPE8,
+   SIB_TYPE9,
+}SibType;
+
+typedef enum
+{
+   SSB_PER_RAC_OCCASION_ONE_EIGHTH,
+   SSB_PER_RAC_OCCASION_ONE_FOURTH,
+   SSB_PER_RAC_OCCASION_ONE_HALF,
+   SSB_PER_RAC_OCCASION_ONE,
+   SSB_PER_RAC_OCCASION_TWO,
+   SSB_PER_RAC_OCCASION_FOUR,
+   SSB_PER_RAC_OCCASION_EIGHT,
+   SSB_PER_RAC_OCCASION_SIXTEEN
+}SsbPerRachOccasion;
+
+typedef enum
+{
+   BROADCASTING,
+   NOTBROADCASTING,
+}SiBroadcastStatus;
+
+typedef enum
+{
+   RF8,
+   RF16,
+   RF32,
+   RF64,
+   RF128,
+   RF256,
+   RF512
+}SiPeriodicity;
+
+typedef enum
+{
+   S5,
+   S10,
+   S20, 
+   S40, 
+   S80, 
+   S160, 
+   S320, 
+   S640, 
+   S1280
+}SiWindowLength;
+
+typedef enum
+{
+   SI_REQ_PERIOD_1,
+   SI_REQ_PERIOD_2,
+   SI_REQ_PERIOD_4,
+   SI_REQ_PERIOD_6,
+   SI_REQ_PERIOD_8,
+   SI_REQ_PERIOD_10,
+   SI_REQ_PERIOD_12,
+   SI_REQ_PERIOD_16
+}SiRequestPeriod;
 
 typedef enum
 {
@@ -1645,6 +1713,7 @@ typedef struct macSliceCfgReq
 typedef struct macSliceCfgReq MacSliceRecfgReq;
 typedef struct macSliceCfgRsp MacSliceRecfgRsp;
 
+/*  Ref: ORAN_WG8.V7.0.0 Sec 1.1.1.17 DL PCCH Indication */
 typedef struct dlPcchInd
 {
    uint16_t  cellId;
@@ -1654,6 +1723,8 @@ typedef struct dlPcchInd
    uint8_t  *pcchPdu;
 }DlPcchInd;
 
+
+/*  Ref: ORAN_WG8.V7.0.0 Sec 1.1.1.1 Cell Start */
 typedef struct cellInfo
 {
     SlotTimingInfo slotInfo;
@@ -1663,12 +1734,14 @@ typedef struct cellInfo
 typedef struct cellInfo CellStartInfo;
 typedef struct cellInfo CellStopInfo;
 
+/*  Ref: ORAN_WG8.V7.0.0 Sec 1.1.1.12 UE Reset Request */
 typedef struct ueReset
 {
     uint16_t cellId;
     uint8_t  ueId;
 }MacUeResetReq;
 
+/*  Ref: ORAN_WG8.V7.0.0 Sec 1.1.1.13 UE Reset Response */
 typedef struct ueResetRsp
 {
    uint16_t cellId;
@@ -1676,12 +1749,88 @@ typedef struct ueResetRsp
    CauseOfResult  status;
 }MacUeResetRsp;
 
+/*  Ref: ORAN_WG8.V7.0.0 Sec 1.1.1.14 UE Sync Status Indication */
 typedef struct ueSyncStatusInd
 {
    uint16_t   cellId;
    uint8_t    ueId;
    SyncStatus status;
 }MacUeSyncStatusInd;
+
+/* The following list of structures is taken from the SI-SchedulingInfo section of specification 33.331. */
+typedef struct sibTypeInfo
+{
+   SibType sibType;
+   uint8_t valueTag;
+   bool    areaScope;
+}SibTypeInfo;
+
+typedef struct sibMappingInfo
+{
+   uint8_t      numSibTypeInfo;
+   SibTypeInfo  sibTypeInfo[NUM_SIB];
+}SibMappingInfo;
+
+typedef struct schedulingInfo 
+{
+   SiBroadcastStatus siBroadcastStatus;
+   SiPeriodicity     siPeriodicity;
+   SibMappingInfo    sibMappingInfo;
+}SchedulingInfo;
+
+typedef struct rachOccasionsSi
+{
+   RachCfgGeneric     rachConfigSi;
+   SsbPerRachOccasion ssbPerRachOccasion;
+}RachOccasionsSi;
+
+typedef struct siReqRsrc 
+{
+   uint8_t raPreambleStartIndex;
+   uint8_t raAssociationPeriodIndex;
+   uint8_t raSsbOccasionMaskIndex; 
+}SiReqRsrc;
+
+typedef struct siRequestResource
+{
+   uint8_t    numOfSiReq;
+   SiReqRsrc  siReqRsrc[NUM_SI_MESSAGES];
+}SiRequestResource;
+
+typedef struct siRequestConfig
+{
+   RachOccasionsSi    rachOccasionsSi;
+   SiRequestPeriod    siRequestPeriod;
+   SiRequestResource  siRequestResource;
+}SiRequestConfig;
+
+typedef struct schedulingInfoList
+{
+   uint8_t        numSchInfo;
+   SchedulingInfo schedulingInfo[NUM_SI_MESSAGES];
+}SchedulingInfoList;
+
+typedef struct siSchedulingInfo
+{
+   SchedulingInfoList schInfoList;
+   SiWindowLength     siWindowLength;
+   SiRequestConfig    siRequestConfig;
+   SiRequestConfig    siRequestConfigSUL;
+   uint8_t            *siAreaID;
+}SiSchedulingInfo;
+
+/*  Ref: ORAN_WG8.V7.0.0 Sec 1.1.1.18 DL Broadcast Request  */
+typedef struct macDlBroadcastReq
+{
+    uint16_t         cellId;
+    uint8_t          numSiBlock;
+    SiSchedulingInfo **siSchedulingInfo;
+}MacDlBroadcastReq;
+
+/* DL broadcast req from DU APP to MAC*/
+typedef uint8_t (*DuMacDlBroadcastReq) ARGS((
+         Pst           *pst,
+         MacDlBroadcastReq *dlBroadcast));
 
 /* Functions for CellUp Ind from MAC to DU APP*/
 typedef uint8_t (*DuMacCellUpInd) ARGS((
@@ -1919,6 +2068,9 @@ uint8_t unpackDuMacUeResetRsp(MacDuUeResetRspFunc func, Pst *pst, Buffer *mBuf);
 uint8_t packDuMacUeSyncStatusInd(Pst *pst, MacUeSyncStatusInd *ueSyncStatusInd);
 uint8_t DuProcMacUeSyncStatusInd(Pst *pst, MacUeSyncStatusInd *ueSyncStatusInd);
 uint8_t unpackDuMacUeSyncStatusInd(MacDuUeSyncStatusIndFunc func, Pst *pst, Buffer *mBuf);
+uint8_t packDuMacDlBroadcastReq(Pst *pst, MacDlBroadcastReq *dlBroadcastReq);
+uint8_t MacProcDlBroadcastReq(Pst *pst,  MacDlBroadcastReq *dlBroadcastReq);
+uint8_t unpackMacDlBroadcastReq(DuMacDlBroadcastReq func, Pst *pst, Buffer *mBuf);
 #endif
 
 

@@ -961,6 +961,55 @@ uint8_t MacProcDlPcchInd(Pst *pst, DlPcchInd *pcchInd)
    }
    return ret;
 }
+
+/**
+ * @brief Mac process the downlink Broadcast Req received from DUAPP
+ *
+ * @details
+ *
+ *     Function : MacProcDlBroadcastReq 
+ *
+ *     This function process the downlink Broadcast Req received from DUAPP
+ *
+ *  @param[in]  Pst           *pst
+ *  @param[in]  DlBroadcastReq    *dlBroadcastReq 
+ *  @return  int
+ *      -# ROK
+ **/
+uint8_t MacProcDlBroadcastReq(Pst *pst, MacDlBroadcastReq *dlBroadcastReq)
+{
+   uint8_t ret = ROK, idx=0;
+   uint16_t cellIdx = 0;
+
+   if(dlBroadcastReq)
+   {
+      DU_LOG("\nINFO   -->  MAC : Received DL braodcast req from DU_APP for cellId[%d]", dlBroadcastReq->cellId);
+      
+      GET_CELL_IDX(dlBroadcastReq->cellId, cellIdx);
+
+      if(macCb.macCell[cellIdx] == NULLP || macCb.macCell[cellIdx]->cellId != dlBroadcastReq->cellId)
+      {
+         ret = RFAILED;
+         DU_LOG("\nERROR  -->  MAC : MacProcDlBroadcastReq(): CellId[%d] does not exist", dlBroadcastReq->cellId);
+      }
+      else
+      {
+         /*TODO - Complete the processing of DL Broadcast Request*/
+      }
+      for(idx = 0; idx<dlBroadcastReq->numSiBlock; idx++)
+      {
+         MAC_FREE_SHRABL_BUF(pst->region, pst->pool, dlBroadcastReq->siSchedulingInfo[idx]->siAreaID, sizeof(uint8_t));
+         MAC_FREE_SHRABL_BUF(pst->region, pst->pool, dlBroadcastReq->siSchedulingInfo[idx], sizeof(SiSchedulingInfo));
+      }
+      MAC_FREE_SHRABL_BUF(pst->region, pst->pool, dlBroadcastReq, sizeof(MacDlBroadcastReq));
+   }
+   else
+   {
+      ret = RFAILED;
+      DU_LOG("\nERROR  -->  MAC : MacProcDlBroadcastReq(): Received Null pointer");
+   }
+   return ret;
+}
 /**********************************************************************
   End of file
  **********************************************************************/
