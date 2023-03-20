@@ -1,0 +1,135 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6d897dc8_fe4a4948",
+        "filename": "src/cm/du_app_rlc_inf.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-03-20T15:34:24Z",
+      "side": 1,
+      "message": "Long variable name. Shorten it. Please check in all files.",
+      "range": {
+        "startLine": 42,
+        "startChar": 61,
+        "endLine": 42,
+        "endChar": 89
+      },
+      "revId": "93292464fe3109d2607409a8739ceb2c726868d5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0a97bc15_3734291c",
+        "filename": "src/cm/du_app_rlc_inf.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-03-20T15:34:24Z",
+      "side": 1,
+      "message": "same as above",
+      "revId": "93292464fe3109d2607409a8739ceb2c726868d5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "13e6a45b_e5e51029",
+        "filename": "src/cm/du_app_rlc_inf.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-03-20T15:34:24Z",
+      "side": 1,
+      "message": "EVENT_RLC_MAX_RETRANSMISSION",
+      "revId": "93292464fe3109d2607409a8739ceb2c726868d5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "be73b9ad_cf4d5bb8",
+        "filename": "src/cm/du_app_rlc_inf.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-03-20T15:34:24Z",
+      "side": 1,
+      "message": "I think LC type or RB type enum must be already defined somewhere in this interface or common_def. Check and use the same.\n\nIf defined in mac_rlc inf, then move it to common_def to be used by all layers.",
+      "revId": "93292464fe3109d2607409a8739ceb2c726868d5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "62e8e41b_638fa5cb",
+        "filename": "src/cm/du_app_rlc_inf.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 339,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-03-20T15:34:24Z",
+      "side": 1,
+      "message": "Instead of calling this API as Max Retrans Info, I think it be will more meaningful to call it Max Retransmission indication.\n\nLet the structure be called MaxRetransInfo, API can be called MaxRetransInd.",
+      "revId": "93292464fe3109d2607409a8739ceb2c726868d5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "19db01ca_409a35ee",
+        "filename": "src/cm/du_app_rlc_inf.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 432,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-03-20T15:34:24Z",
+      "side": 1,
+      "message": "Keep variable names short but understandable. (A coding tip to be followed always)\nlike. maxRetransInfo",
+      "range": {
+        "startLine": 432,
+        "startChar": 61,
+        "endLine": 432,
+        "endChar": 89
+      },
+      "revId": "93292464fe3109d2607409a8739ceb2c726868d5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bbac27a2_d0210e81",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 144,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-03-20T15:34:24Z",
+      "side": 1,
+      "message": "Shorten variable name",
+      "revId": "93292464fe3109d2607409a8739ceb2c726868d5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
