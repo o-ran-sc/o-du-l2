@@ -15291,9 +15291,9 @@ uint8_t procF1SetupRsp(F1AP_PDU_t *f1apMsg, MsgLen recvBufLen, char *recvBuf)
 	    DU_LOG("\nERROR  -->  DU_APP : Invalid IE received in F1SetupRsp:%ld",
 		  f1SetRspMsg->protocolIEs.list.array[idx]->id);
       }
-      duProcF1SetupRsp();
    }
    
+   duProcF1SetupRsp();
    freeAperDecodeF1SetupRsp(f1SetRspMsg);
 
    duCb.f1SetupReqAndRspMsg.f1MsgRspBufSize = recvBufLen;
