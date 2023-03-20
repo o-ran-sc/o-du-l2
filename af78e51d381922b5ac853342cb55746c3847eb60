@@ -24,6 +24,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2ec74389_cc9cdca5",
+        "filename": "src/5gnrrlc/rlc_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1196,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-03-20T15:57:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "abf914fe_7232a1d2",
+      "range": {
+        "startLine": 1196,
+        "startChar": 80,
+        "endLine": 1196,
+        "endChar": 83
+      },
+      "revId": "af78e51d381922b5ac853342cb55746c3847eb60",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "605b7828_2a2802f8",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-03-20T15:14:39Z",
       "side": 1,
       "message": "From Ue reestablishment response?? I think it should be request.",
+      "range": {
+        "startLine": 1213,
+        "startChar": 72,
+        "endLine": 1213,
+        "endChar": 92
+      },
+      "revId": "af78e51d381922b5ac853342cb55746c3847eb60",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "14162fc9_c17ed551",
+        "filename": "src/5gnrrlc/rlc_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1213,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-03-20T15:57:24Z",
+      "side": 1,
+      "message": "Right, corrected.",
+      "parentUuid": "605b7828_2a2802f8",
       "range": {
         "startLine": 1213,
         "startChar": 72,
@@ -70,6 +118,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "159b3651_fd0fe514",
+        "filename": "src/5gnrrlc/rlc_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1215,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-03-20T15:57:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d92bbf24_edf60f3a",
+      "range": {
+        "startLine": 1215,
+        "startChar": 44,
+        "endLine": 1215,
+        "endChar": 47
+      },
+      "revId": "af78e51d381922b5ac853342cb55746c3847eb60",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "03bde805_97d6ddb3",
@@ -83,6 +155,30 @@
       "writtenOn": "2023-03-20T15:14:39Z",
       "side": 1,
       "message": "reestablish instead of Reestablishment\nPlease check at all places, some place reestablish is used and other places reestablishment. Lets keep it consistent.",
+      "range": {
+        "startLine": 66,
+        "startChar": 22,
+        "endLine": 66,
+        "endChar": 49
+      },
+      "revId": "af78e51d381922b5ac853342cb55746c3847eb60",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "888f3f8c_ed281f4a",
+        "filename": "src/5gnrrlc/rlc_upr_inf_api.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-03-20T15:57:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "03bde805_97d6ddb3",
       "range": {
         "startLine": 66,
         "startChar": 22,
@@ -123,6 +219,42 @@
       "writtenOn": "2023-03-20T15:14:39Z",
       "side": 1,
       "message": "Why does this have to be linked list?\nCan we not directly use array of lcId?",
+      "revId": "af78e51d381922b5ac853342cb55746c3847eb60",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "10edb311_54775169",
+        "filename": "src/cm/du_app_rlc_inf.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 337,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-03-20T15:57:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c8b5dfdd_e75d3ed3",
+      "revId": "af78e51d381922b5ac853342cb55746c3847eb60",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d43fb68a_8e1b3ec2",
+        "filename": "src/cm/du_app_rlc_inf.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 337,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-03-20T15:57:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "96feecb0_161f5d1e",
       "revId": "af78e51d381922b5ac853342cb55746c3847eb60",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
