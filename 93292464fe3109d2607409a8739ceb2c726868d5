@@ -24,6 +24,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "00344d08_7961395a",
+        "filename": "src/cm/du_app_rlc_inf.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-03-21T07:54:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6d897dc8_fe4a4948",
+      "range": {
+        "startLine": 42,
+        "startChar": 61,
+        "endLine": 42,
+        "endChar": 89
+      },
+      "revId": "93292464fe3109d2607409a8739ceb2c726868d5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0a97bc15_3734291c",
@@ -37,6 +61,24 @@
       "writtenOn": "2023-03-20T15:34:24Z",
       "side": 1,
       "message": "same as above",
+      "revId": "93292464fe3109d2607409a8739ceb2c726868d5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "65b37dae_8f27c038",
+        "filename": "src/cm/du_app_rlc_inf.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-03-21T07:54:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0a97bc15_3734291c",
       "revId": "93292464fe3109d2607409a8739ceb2c726868d5",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -58,6 +100,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9a384341_f69b33cd",
+        "filename": "src/cm/du_app_rlc_inf.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-03-21T07:54:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "13e6a45b_e5e51029",
+      "revId": "93292464fe3109d2607409a8739ceb2c726868d5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "be73b9ad_cf4d5bb8",
@@ -75,6 +135,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2b5b89eb_c9e9564a",
+        "filename": "src/cm/du_app_rlc_inf.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-03-21T07:54:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "be73b9ad_cf4d5bb8",
+      "revId": "93292464fe3109d2607409a8739ceb2c726868d5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "62e8e41b_638fa5cb",
@@ -88,6 +166,24 @@
       "writtenOn": "2023-03-20T15:34:24Z",
       "side": 1,
       "message": "Instead of calling this API as Max Retrans Info, I think it be will more meaningful to call it Max Retransmission indication.\n\nLet the structure be called MaxRetransInfo, API can be called MaxRetransInd.",
+      "revId": "93292464fe3109d2607409a8739ceb2c726868d5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "425b2ee4_5b4b58f9",
+        "filename": "src/cm/du_app_rlc_inf.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 339,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-03-21T07:54:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "62e8e41b_638fa5cb",
       "revId": "93292464fe3109d2607409a8739ceb2c726868d5",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -115,6 +211,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a3ceb109_c0f66eae",
+        "filename": "src/cm/du_app_rlc_inf.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 432,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-03-21T07:54:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "19db01ca_409a35ee",
+      "range": {
+        "startLine": 432,
+        "startChar": 61,
+        "endLine": 432,
+        "endChar": 89
+      },
+      "revId": "93292464fe3109d2607409a8739ceb2c726868d5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bbac27a2_d0210e81",
@@ -128,6 +248,24 @@
       "writtenOn": "2023-03-20T15:34:24Z",
       "side": 1,
       "message": "Shorten variable name",
+      "revId": "93292464fe3109d2607409a8739ceb2c726868d5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "80c948f8_af07d93a",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 144,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-03-21T07:54:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bbac27a2_d0210e81",
       "revId": "93292464fe3109d2607409a8739ceb2c726868d5",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
