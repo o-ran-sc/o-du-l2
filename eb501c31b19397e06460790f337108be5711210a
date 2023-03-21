@@ -3,6 +3,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "491b8bec_48e78f1f",
+        "filename": "src/cm/du_app_mac_inf.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-03-21T06:07:47Z",
+      "side": 1,
+      "message": "when adding the reference esp from 38.331 always try to mention the struct name or #defines exactly from which the reference is taken.\n\n Here, there must be a keyword from Sec 6.4 \u0027RRC multiplicity and type constraint values\u0027 which is referred here as num_si_messages . Please mention that keyword /#define also",
+      "range": {
+        "startLine": 25,
+        "startChar": 18,
+        "endLine": 25,
+        "endChar": 27
+      },
+      "revId": "eb501c31b19397e06460790f337108be5711210a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "70bf79c1_e32eacf0",
         "filename": "src/cm/du_app_mac_inf.h",
         "patchSetId": 1
@@ -43,6 +66,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "207d5a7c_2db27207",
+        "filename": "src/cm/du_app_mac_inf.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 1783,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-03-21T06:07:47Z",
+      "side": 1,
+      "message": "theres no structure defined for this?",
+      "range": {
+        "startLine": 1783,
+        "startChar": 3,
+        "endLine": 1783,
+        "endChar": 22
+      },
+      "revId": "eb501c31b19397e06460790f337108be5711210a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a0dfa647_f18c94e7",
         "filename": "src/cm/du_app_mac_inf.h",
         "patchSetId": 1
@@ -54,6 +100,29 @@
       "writtenOn": "2023-03-20T16:09:17Z",
       "side": 1,
       "message": "numOfSiReqRsrc",
+      "revId": "eb501c31b19397e06460790f337108be5711210a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "033cfabf_20915831",
+        "filename": "src/cm/du_app_mac_inf.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 1797,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-03-21T06:07:47Z",
+      "side": 1,
+      "message": "we can rename it to MAX_SI_MESSAGE",
+      "range": {
+        "startLine": 1797,
+        "startChar": 24,
+        "endLine": 1797,
+        "endChar": 39
+      },
       "revId": "eb501c31b19397e06460790f337108be5711210a",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
