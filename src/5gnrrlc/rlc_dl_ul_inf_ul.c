@@ -262,12 +262,12 @@ RlcCfgCfmInfo   *cfmInfo
    if(tRlcCb->u.ulCb->rlcUlUdxEventType == EVENT_RLC_UE_CREATE_REQ)
    {
       FILL_PST_RLC_TO_DUAPP(rspPst, RLC_UL_INST, EVENT_RLC_UE_CREATE_RSP);
-      SendRlcUeCfgRspToDu(&rspPst, cfgCfm);
+      SendRlcUeCreateRspToDu(&rspPst, cfgCfm);
    }
    else if(tRlcCb->u.ulCb->rlcUlUdxEventType == EVENT_RLC_UE_RECONFIG_REQ)
    {
       FILL_PST_RLC_TO_DUAPP(rspPst, RLC_UL_INST, EVENT_RLC_UE_RECONFIG_RSP);
-      SendRlcUeCfgRspToDu(&rspPst, cfgCfm);
+      SendRlcUeReconfigRspToDu(&rspPst, cfgCfm);
    }
    else if (tRlcCb->u.ulCb->rlcUlUdxEventType == EVENT_RLC_UE_DELETE_REQ)
    {

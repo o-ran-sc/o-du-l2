@@ -1664,7 +1664,7 @@ uint8_t fillRlcSrb1LcCfg(DuRlcBearerCfg *rlcLcCfg)
  *    Functionality: 
  *     Processes UE Reconfig Req to RLC UL
  * 
- *  @params[in]     Pointer to RlcUeCfg
+ *  @params[in]     Pointer to RlcUeRecfg
  *  @return ROK     - success
  *          RFAILED - failure
  * 
@@ -1689,7 +1689,7 @@ uint8_t sendUeRecfgReqToRlc(RlcUeRecfg *rlcUeRecfg)
    }
    else
    {
-      DU_LOG("\nERROR  -->   DU_APP: Received RlcUeCfg is NULL at sendUeRecfgReqToRlc()");
+      DU_LOG("\nERROR  -->   DU_APP: Received RlcUeRecfg is NULL at sendUeRecfgReqToRlc()");
       ret = RFAILED;
    }
    return ret;
@@ -1884,7 +1884,7 @@ uint8_t duCreateUeCb(UeCcchCtxt *ueCcchCtxt, uint32_t gnbCuUeF1apId)
 
 /**********************************************************************************
  *
- * @brief Fills Ue Cfg from DU DB to MacUeCfg
+ * @brief Fills Ue Cfg from DU DB to MacUeCreateReq
  *
  * @details
  *
@@ -1893,12 +1893,12 @@ uint8_t duCreateUeCb(UeCcchCtxt *ueCcchCtxt, uint32_t gnbCuUeF1apId)
  *    Functionality: fills ue Cfg to be sent to MAC
  *
  * @params[in] DuMacUeCfg Pointer
- *             MacUeCfg Pointer
+ *             MacUeCreateReq Pointer
  *
  * @return ROK     - success
  *         RFAILED - failure
  * *******************************************************************************/
-void fillMacUeCfg(DuMacUeCfg *duMacUeCfg, MacUeCfg *macUeCfg)
+void fillMacUeCfg(DuMacUeCfg *duMacUeCfg, MacUeCreateReq *macUeCfg)
 {
    uint8_t lcIdx = 0;
 
@@ -1971,12 +1971,12 @@ void fillMacUeCfg(DuMacUeCfg *duMacUeCfg, MacUeCfg *macUeCfg)
  *    Functionality: fills ue Cfg to be sent to RLC
  *
  * @params[in] DuRlcUeCfg Pointer
- *             RlcUeCfg Pointer
+ *             RlcUeCreate Pointer
  *
  * @return ROK     - success
  *         RFAILED - failure
  * *******************************************************************************/
-void fillRlcUeCfg(DuRlcUeCfg *duRlcUeCfg, RlcUeCfg *rlcUeCfg)
+void fillRlcUeCfg(DuRlcUeCfg *duRlcUeCfg, RlcUeCreate *rlcUeCfg)
 {
    uint8_t lcIdx = 0;
 
@@ -2018,7 +2018,7 @@ void fillRlcUeCfg(DuRlcUeCfg *duRlcUeCfg, RlcUeCfg *rlcUeCfg)
 uint8_t duBuildAndSendUeCreateReqToMac(uint16_t cellId, uint8_t gnbDuUeF1apId, uint16_t crnti, DuUeCfg *ueCfgDb, DuMacUeCfg *duMacUeCfg)
 {
    uint8_t  ret = ROK;
-   MacUeCfg *macUeCfg = NULLP;
+   MacUeCreateReq *macUeCfg = NULLP;
    Pst       pst;
    memset(&pst, 0, sizeof(Pst));
 
@@ -2034,10 +2034,10 @@ uint8_t duBuildAndSendUeCreateReqToMac(uint16_t cellId, uint8_t gnbDuUeF1apId, u
    FILL_PST_DUAPP_TO_MAC(pst, EVENT_MAC_UE_CREATE_REQ);
 
    /* Copying ueCb to a sharable buffer */
-   DU_ALLOC_SHRABL_BUF(macUeCfg, sizeof(MacUeCfg));
+   DU_ALLOC_SHRABL_BUF(macUeCfg, sizeof(MacUeCreateReq));
    if(macUeCfg)
    {
-      memset(macUeCfg, 0, sizeof(MacUeCfg));
+      memset(macUeCfg, 0, sizeof(MacUeCreateReq));
       fillMacUeCfg(duMacUeCfg, macUeCfg); 
       DU_LOG("\nDEBUG   -->  DU_APP: Sending UE create request to MAC");
 
@@ -2046,7 +2046,7 @@ uint8_t duBuildAndSendUeCreateReqToMac(uint16_t cellId, uint8_t gnbDuUeF1apId, u
       if(ret == RFAILED)
       {
          DU_LOG("\nERROR  -->  DU_APP : Failure in sending Ue Create Req to MAC at duBuildAndSendUeCreateReqToMac()");
-         DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, macUeCfg, sizeof(MacUeCfg));
+         DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, macUeCfg, sizeof(MacUeCreateReq));
       }
    }
    else
@@ -2736,20 +2736,20 @@ uint8_t duUpdateDuUeCbCfg(uint8_t ueId, uint8_t cellId)
 
 /*******************************************************************
  *
- * @brief Handle UE config response from MAC
+ * @brief Handle UE create response from MAC
  *
  * @details
  *
- *    Function : DuProcMacUeCfgRsp
+ *    Function : DuProcMacUeCreateRsp
  *
- *    Functionality: Handle UE Config response from MAC
+ *    Functionality: Handle UE Create response from MAC
  *
- * @params[in] Pointer to MacUeCfgRsp and Pst 
+ * @params[in] Pointer to MacUeCreateRsp and Pst 
  * @return ROK     - success
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t DuProcMacUeCfgRsp(Pst *pst, MacUeCfgRsp *cfgRsp)
+uint8_t DuProcMacUeCreateRsp(Pst *pst, MacUeCreateRsp *cfgRsp)
 {
    uint8_t ret = ROK;
    uint16_t cellIdx;
@@ -2778,14 +2778,14 @@ uint8_t DuProcMacUeCfgRsp(Pst *pst, MacUeCfgRsp *cfgRsp)
                      if((duBuildAndSendRachRsrcReqToMac(cfgRsp->cellId, cfgRsp->ueId)) != ROK)
                      {
                         DU_LOG("\nERROR  --> DU APP : Failed to send RACH Resource Request to MAC");
-                        DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, cfgRsp, sizeof(MacUeCfgRsp));
+                        DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, cfgRsp, sizeof(MacUeCreateRsp));
                         return RFAILED;
                      }
                   }
                   else
                   {
                      DU_LOG("\nERROR  ->  DU APP : Failure in updating DU UE CB");
-                     DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, cfgRsp, sizeof(MacUeCfgRsp));
+                     DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, cfgRsp, sizeof(MacUeCreateRsp));
                      return RFAILED;
                   }
                }
@@ -2797,11 +2797,11 @@ uint8_t DuProcMacUeCfgRsp(Pst *pst, MacUeCfgRsp *cfgRsp)
          DU_LOG("\nERROR  -->  DU APP : MAC UE CFG Response for EVENT[%d]: FAILURE [DU UE F1AP ID : %d]", pst->event, cfgRsp->ueId);
          ret = RFAILED;
       }
-      DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, cfgRsp, sizeof(MacUeCfgRsp));
+      DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, cfgRsp, sizeof(MacUeCreateRsp));
    }
    else
    {
-      DU_LOG("\nERROR  -->  DU APP : Received MAC Ue Config Response is NULL at DuProcMacUeCfgRsp()");
+      DU_LOG("\nERROR  -->  DU APP : Received MAC Ue Config Response is NULL at DuProcMacUeCreateRsp()");
       ret = RFAILED;
    }
    return ret;
@@ -2893,7 +2893,7 @@ uint8_t DuProcMacUeRecfgRsp(Pst *pst, MacUeRecfgRsp *reCfgRsp)
  * 
  *  @params[in]  cellId,
  *               ueId,
- *               Pointer to RlcUeCfg
+ *               Pointer to RlcUeCreate
  *  @return ROK     - success
  *          RFAILED - failure
  * 
@@ -2902,7 +2902,7 @@ uint8_t DuProcMacUeRecfgRsp(Pst *pst, MacUeRecfgRsp *reCfgRsp)
 uint8_t duBuildAndSendUeCreateReqToRlc(uint16_t cellId, uint8_t gnbDuUeF1apId, DuUeCfg *ueCfgDb, DuRlcUeCfg *duRlcUeCfg)
 {
    uint8_t  ret = ROK;
-   RlcUeCfg *rlcUeCfg = NULLP;
+   RlcUeCreate *rlcUeCfg = NULLP;
    Pst       pst;
   
    ret = updateRlcUeCfg(cellId, gnbDuUeF1apId, ueCfgDb, duRlcUeCfg);
@@ -2914,10 +2914,10 @@ uint8_t duBuildAndSendUeCreateReqToRlc(uint16_t cellId, uint8_t gnbDuUeF1apId, D
 
    FILL_PST_DUAPP_TO_RLC(pst, RLC_UL_INST, EVENT_RLC_UE_CREATE_REQ);
    /* Copying ueCfg to a sharable buffer */
-   DU_ALLOC_SHRABL_BUF(rlcUeCfg, sizeof(RlcUeCfg));
+   DU_ALLOC_SHRABL_BUF(rlcUeCfg, sizeof(RlcUeCreate));
    if(rlcUeCfg)
    {
-      memset(rlcUeCfg, 0, sizeof(RlcUeCfg));
+      memset(rlcUeCfg, 0, sizeof(RlcUeCreate));
       fillRlcUeCfg(duRlcUeCfg, rlcUeCfg);
 
       /* Processing one Ue at a time to RLC */
@@ -2926,7 +2926,7 @@ uint8_t duBuildAndSendUeCreateReqToRlc(uint16_t cellId, uint8_t gnbDuUeF1apId, D
       if(ret == RFAILED)
       {
          DU_LOG("\nERROR  -->  DU_APP : Failure in sending Ue Create Req to RLC");
-         DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, rlcUeCfg, sizeof(RlcUeCfg));
+         DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, rlcUeCfg, sizeof(RlcUeCreate));
          ret = RFAILED;
       }
    }
@@ -2945,7 +2945,7 @@ uint8_t duBuildAndSendUeCreateReqToRlc(uint16_t cellId, uint8_t gnbDuUeF1apId, D
  * @details
  *
  
- *    Function : DuProcRlcUeCfgRsp
+ *    Function : DuProcRlcUeCreateRsp
  *
  *    Functionality: 
  *     Processes UE create Rsp received from RLC UL
@@ -2956,7 +2956,7 @@ uint8_t duBuildAndSendUeCreateReqToRlc(uint16_t cellId, uint8_t gnbDuUeF1apId, D
  *          RFAILED - failure
  * 
  *****************************************************************/
-uint8_t DuProcRlcUeCfgRsp(Pst *pst, RlcUeCfgRsp *cfgRsp)
+uint8_t DuProcRlcUeCreateRsp(Pst *pst, RlcUeCreateRsp *cfgRsp)
 {
    uint8_t ret = ROK;
 
@@ -2980,20 +2980,62 @@ uint8_t DuProcRlcUeCfgRsp(Pst *pst, RlcUeCfgRsp *cfgRsp)
                   if((duBuildAndSendRachRsrcReqToMac(cfgRsp->cellId, cfgRsp->ueId)) != ROK)
                   {
                      DU_LOG("\nERROR  --> DU APP : Failed to send RACH Resource Request to MAC");
-                     DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, cfgRsp, sizeof(MacUeCfgRsp));
-                     DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, cfgRsp, sizeof(RlcUeCfgRsp));
+                     DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, cfgRsp, sizeof(RlcUeCreateRsp));
                      return RFAILED;
                   }
                }
                else
                {
                   DU_LOG("\nERROR  -->  DU APP : Failure in updating DU UE CB");
-                  DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, cfgRsp, sizeof(RlcUeCfgRsp));
+                  DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, cfgRsp, sizeof(RlcUeCreateRsp));
                   return RFAILED;
                }
             }
          }
-         else if(pst->event == EVENT_RLC_UE_RECONFIG_RSP)
+      }
+      else
+      {
+         DU_LOG("\nERROR  -->  DU_APP: RLC UE CREATE Response for EVENT[%d] : FAILED [UE IDX : %d, REASON :%d]",\
+               pst->event, cfgRsp->ueId, cfgRsp->reason);
+         ret = RFAILED;
+      }
+      DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, cfgRsp, sizeof(RlcUeCreateRsp));
+   }
+   else
+   {
+      DU_LOG("\nERROR  -->  DU_APP: Received RLC Ue Create Response is NULL at DuProcRlcUeCreateRsp()");
+      ret = RFAILED;
+   }
+   return ret;
+}
+
+/*******************************************************************
+ *
+ * @brief Processes UE reconfig Rsp received from RLC UL
+ *
+ * @details
+ *
+ 
+ *    Function : DuProcRlcUeReconfigRsp
+ *
+ *    Functionality: 
+ *     Processes UE reconfig Rsp received from RLC UL
+ * 
+ *  @params[in]  Post structure
+ *               Pointer to RlcCfgCfm
+ *  @return ROK     - success
+ *          RFAILED - failure
+ * 
+ *****************************************************************/
+uint8_t DuProcRlcUeReconfigRsp(Pst *pst, RlcUeReconfigRsp *cfgRsp)
+{
+   uint8_t ret = ROK;
+
+   if(cfgRsp)
+   {
+      if(cfgRsp->result == RLC_DU_APP_RSP_OK)
+      {
+         if(pst->event == EVENT_RLC_UE_RECONFIG_RSP)
          {
             DU_LOG("\nINFO   -->  DU_APP: RLC UE Reconfig Response : SUCCESS [UE IDX:%d]", cfgRsp->ueId);
 
@@ -3006,14 +3048,14 @@ uint8_t DuProcRlcUeCfgRsp(Pst *pst, RlcUeCfgRsp *cfgRsp)
                   if((BuildAndSendUeCtxtRsp(cfgRsp->cellId, cfgRsp->ueId)) != ROK)
                   {
                      DU_LOG("\nERROR  -->  DU APP : Failure in BuildAndSendUeCtxtRsp");
-                     DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, cfgRsp, sizeof(RlcUeCfgRsp));
+                     DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, cfgRsp, sizeof(RlcUeReconfigRsp));
                      return RFAILED;
                   }
                }
                else
                {
                   DU_LOG("\nERROR  -->  DU APP : Failure in updating DU UE CB");
-                  DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, cfgRsp, sizeof(RlcUeCfgRsp));
+                  DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, cfgRsp, sizeof(RlcUeReconfigRsp));
                   return RFAILED;
                }
             }
@@ -3021,7 +3063,7 @@ uint8_t DuProcRlcUeCfgRsp(Pst *pst, RlcUeCfgRsp *cfgRsp)
       }
       else
       {
-         DU_LOG("\nERROR  -->  DU_APP: RLC UE CFG Response for EVENT[%d] : FAILED [UE IDX : %d, REASON :%d]",\
+         DU_LOG("\nERROR  -->  DU_APP: RLC UE RE-CFG Response for EVENT[%d] : FAILED [UE IDX : %d, REASON :%d]",\
                pst->event, cfgRsp->ueId, cfgRsp->reason);
          if((pst->event == EVENT_RLC_UE_RECONFIG_RSP))
          {
@@ -3029,16 +3071,15 @@ uint8_t DuProcRlcUeCfgRsp(Pst *pst, RlcUeCfgRsp *cfgRsp)
          }
          ret = RFAILED;
       }
-      DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, cfgRsp, sizeof(RlcUeCfgRsp));
+      DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, cfgRsp, sizeof(RlcUeReconfigRsp));
    }
    else
    {
-      DU_LOG("\nERROR  -->  DU_APP: Received RLC Ue Config Response is NULL at DuProcRlcUeCfgRsp()");
+      DU_LOG("\nERROR  -->  DU_APP: Received RLC Ue ReConfig Response is NULL at DuProcRlcUeReconfigRsp()");
       ret = RFAILED;
    }
    return ret;
 }
-
 /**********************************************************************************
  *
  * @brief Fills Ue ReCfg from DU DB to RlcUeRecfg
@@ -3102,7 +3143,7 @@ void fillRlcUeRecfg(DuRlcUeCfg *duRlcUeCfg, RlcUeRecfg *rlcUeRecfg)
  *
  * @params[in] cellId, crnti
  *             DuUeCfg *ueCfgDb
- *             RlcUeCfg *rlcUeCfg
+ *             RlcUeCreate *rlcUeCfg
  * @return ROK     - success
  *         RFAILED - failure
  *
@@ -3971,16 +4012,16 @@ uint8_t duBuildAndSendUeDeleteReq(uint16_t cellId, uint16_t crnti)
 
 /*******************************************************************
  *
- * @brief delete RlcUeCfg from duCb
+ * @brief delete RlcUeCreate from duCb
  *
  * @details
  *
  *    Function : deleteRlcUeCfg
  *
  *    Functionality:
- *       delete  RlcUeCfg from duCb
+ *       delete  RlcUeCreate from duCb
  *
- *  @params[in] RlcUeCfg *ueCfg 
+ *  @params[in] RlcUeCreate *ueCfg 
  *               
  *  @return ROK     - success
  *          RFAILED - failure
@@ -4021,7 +4062,7 @@ void deleteRlcUeCfg(DuRlcUeCfg *ueCfg)
          }
          DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, lcCfg->snssai, sizeof(Snssai));
       }
-      memset(ueCfg, 0, sizeof(RlcUeCfg));
+      memset(ueCfg, 0, sizeof(RlcUeCreate));
    }
 }
 

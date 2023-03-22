@@ -1458,7 +1458,7 @@ typedef struct modulationInfo
    McsTable    mcsTable;    /* MCS table */
 }ModulationInfo;
 
-typedef struct macUeCfg
+typedef struct macUeCreateReq
 {
    uint16_t               cellId;
    uint8_t                ueId;
@@ -1475,7 +1475,7 @@ typedef struct macUeCfg
    ModulationInfo         ulModInfo;    /* UL modulation info */
    uint8_t                numLcs;
    LcCfg                  lcCfgList[MAX_NUM_LC];
-}MacUeCfg;
+}MacUeCreateReq;
 
 /* UE Re-configuration */
 typedef struct macUeRecfg
@@ -1529,7 +1529,7 @@ typedef struct sCellFailInfo
    FailureCause  cause;
 }SCellFailInfo;
 
-typedef struct ueCfgRsp
+typedef struct macUeCreateRsp
 {
    uint16_t       cellId;
    uint16_t       ueId;
@@ -1542,9 +1542,9 @@ typedef struct ueCfgRsp
    SCellFailInfo  *failedSCellList;
    uint8_t        numDRBModFailed;   /* valid values : 0 to MAX_NUM_DRB */
    DRBFailInfo    *failedDRBModlist;
-}MacUeCfgRsp;
+}MacUeCreateRsp;
 
-typedef struct ueCfgRsp MacUeRecfgRsp;
+typedef struct macUeCreateRsp MacUeRecfgRsp;
 
 typedef struct rachRsrcReq
 {
@@ -1738,12 +1738,12 @@ typedef uint8_t (*DuMacDlCcchInd) ARGS((
 /* UE create Request from DU APP to MAC*/
 typedef uint8_t (*DuMacUeCreateReq) ARGS((
 	 Pst           *pst,
-	 MacUeCfg      *ueCfg ));
+	 MacUeCreateReq      *ueCfg ));
 
 /* UE create Response from MAC to DU APP */
-typedef uint8_t (*MacDuUeCfgRspFunc) ARGS((
+typedef uint8_t (*MacDuUeCreateRspFunc) ARGS((
 	 Pst           *pst, 
-	 MacUeCfgRsp   *cfgRsp));
+	 MacUeCreateRsp   *cfgRsp));
 
 /* UE Reconfig Request from DU APP to MAC */
 typedef uint8_t (*DuMacUeReconfigReq) ARGS((
@@ -1856,13 +1856,13 @@ uint8_t duHandleUlCcchInd(Pst *pst, UlCcchIndInfo *ulCcchIndInfo);
 uint8_t packMacDlCcchInd(Pst *pst, DlCcchIndInfo *dlCcchIndInfo);
 uint8_t unpackMacDlCcchInd(DuMacDlCcchInd func, Pst *pst, Buffer *mBuf);
 uint8_t MacProcDlCcchInd(Pst *pst, DlCcchIndInfo *dlCcchIndInfo);
-uint8_t packDuMacUeCreateReq(Pst *pst, MacUeCfg *ueCfg);
+uint8_t packDuMacUeCreateReq(Pst *pst, MacUeCreateReq *ueCfg);
 uint8_t unpackMacUeCreateReq(DuMacUeCreateReq func, Pst *pst, Buffer *mBuf);
-uint8_t MacProcUeCreateReq(Pst *pst, MacUeCfg *ueCfg);
+uint8_t MacProcUeCreateReq(Pst *pst, MacUeCreateReq *ueCfg);
 uint8_t sendStopIndMacToDuApp(uint16_t cellId);
-uint8_t packDuMacUeCfgRsp(Pst *pst, MacUeCfgRsp *cfgRsp);
-uint8_t unpackDuMacUeCfgRsp(MacDuUeCfgRspFunc func, Pst *pst, Buffer *mBuf);
-uint8_t DuProcMacUeCfgRsp(Pst *pst, MacUeCfgRsp *cfgRsp);
+uint8_t packDuMacUeCreateRsp(Pst *pst, MacUeCreateRsp *cfgRsp);
+uint8_t unpackDuMacUeCreateRsp(MacDuUeCreateRspFunc func, Pst *pst, Buffer *mBuf);
+uint8_t DuProcMacUeCreateRsp(Pst *pst, MacUeCreateRsp *cfgRsp);
 uint8_t packDuMacUeReconfigReq(Pst *pst, MacUeRecfg *ueRecfg);
 uint8_t unpackMacUeReconfigReq(DuMacUeReconfigReq func, Pst *pst, Buffer *mBuf);
 uint8_t MacProcUeReconfigReq(Pst *pst, MacUeRecfg *ueRecfg);

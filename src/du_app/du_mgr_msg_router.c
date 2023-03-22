@@ -432,12 +432,12 @@ uint8_t duActvTsk(Pst *pst, Buffer *mBuf)
                   }
                case EVENT_RLC_UE_CREATE_RSP:
                   {
-                     ret = unpackRlcUeCfgRsp(DuProcRlcUeCfgRsp, pst, mBuf);
+                     ret = unpackRlcUeCreateRsp(DuProcRlcUeCreateRsp, pst, mBuf);
                      break;
                   }
                case EVENT_RLC_UE_RECONFIG_RSP:
                   {
-                     ret = unpackRlcUeCfgRsp(DuProcRlcUeCfgRsp, pst, mBuf);
+                     ret = unpackRlcUeReconfigRsp(DuProcRlcUeReconfigRsp, pst, mBuf);
                      break;
                   }
                case EVENT_RLC_UE_DELETE_RSP:
@@ -537,7 +537,7 @@ uint8_t duActvTsk(Pst *pst, Buffer *mBuf)
                   }
                case EVENT_MAC_UE_CREATE_RSP:
                   {
-                     ret = unpackDuMacUeCfgRsp(DuProcMacUeCfgRsp, pst, mBuf); 
+                     ret = unpackDuMacUeCreateRsp(DuProcMacUeCreateRsp, pst, mBuf); 
                      break;
                   }
                case EVENT_MAC_UE_RECONFIG_RSP:
