@@ -229,19 +229,19 @@ typedef struct macUeCb
 
 struct macCellCb
 {
-   uint16_t       cellId;
-   uint16_t       numOfSlots;
-   MacCellStatus  state;
-   uint16_t       crntiMap;
-   MacRaCbInfo    macRaCb[MAX_NUM_UE];
-   MacDlSlot      dlSlot[MAX_SLOTS];
-   MacUlSlot      ulSlot[MAX_SLOTS];
-   uint16_t       numActvUe;
-   MacUeCfg       *ueCfgTmpData[MAX_NUM_UE];
-   MacUeRecfg     *ueRecfgTmpData[MAX_NUM_UE];
-   MacUeCb        ueCb[MAX_NUM_UE];
-   MacCellCfg     macCellCfg;
-   SlotTimingInfo currTime;
+   uint16_t        cellId;
+   uint16_t        numOfSlots;
+   MacCellStatus   state;
+   uint16_t        crntiMap;
+   MacRaCbInfo     macRaCb[MAX_NUM_UE];
+   MacDlSlot       dlSlot[MAX_SLOTS];
+   MacUlSlot       ulSlot[MAX_SLOTS];
+   uint16_t        numActvUe;
+   MacUeCreateReq  *ueCfgTmpData[MAX_NUM_UE];
+   MacUeRecfg      *ueRecfgTmpData[MAX_NUM_UE];
+   MacUeCb         ueCb[MAX_NUM_UE];
+   MacCellCfg      macCellCfg;
+   SlotTimingInfo  currTime;
 };
 
 typedef struct macCb
