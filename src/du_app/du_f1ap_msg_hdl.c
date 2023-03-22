@@ -13081,7 +13081,7 @@ uint8_t extractSrbListToSetup(SRBs_ToBeSetup_List_t *srbCfg, DuUeCfg *ueCfgDb)
  *
  * @params[in] DRBs_ToBeSetup_Item_t , DRBs_ToBeSetupMod_Item_t,
  *             DRBs_ToBeModified_Item_t , lcId, DuLcCfg pointer,
- *             RlcBearerCfg , UpTnlCfg, RlcUeCfg
+ *             RlcBearerCfg , UpTnlCfg, DuRlcUeCfg
  * @return void
  *
  * ****************************************************************/
