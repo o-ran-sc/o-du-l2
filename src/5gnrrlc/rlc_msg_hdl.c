@@ -98,19 +98,19 @@ uint8_t BuildAndSendRlcMaxRetransIndToDu(uint16_t cellId,uint8_t ueId, uint8_t l
  *
  * @details
  *
- *    Function : fillRlcUeCfgRsp
+ *    Function : fillRlcUeCreateRsp
  *
  *    Functionality: 
  *     Fills RLC UL UE Cfg Rsp from RlcCRsp
  * 
  *  @params[in]  Pointer to RlcCfgCfm
- *               Pointer to RlcUeCfgRsp
+ *               Pointer to RlcUeCreateRsp
  *
  *  @return ROK/RFAILED
  * 
  *****************************************************************/
 
-uint8_t fillRlcUeCfgRsp(RlcUeCfgRsp *rlcCfgRsp, RlcCfgCfmInfo *rlcCRsp)
+uint8_t fillRlcUeCreateRsp(RlcUeCreateRsp *rlcCfgRsp, RlcCfgCfmInfo *rlcCRsp)
 {
    uint8_t idx;
    uint8_t ret = ROK;
@@ -274,7 +274,7 @@ uint8_t fillLcCfg(RlcCb *gCb, RlcEntCfgInfo *rlcUeCfg, RlcBearerCfg *duRlcUeCfg)
  *
  ******************************************************************/
 
-uint8_t fillRlcCfg(RlcCb *gCb, RlcCfgInfo *rlcUeCfg, RlcUeCfg *ueCfg)
+uint8_t fillRlcCfg(RlcCb *gCb, RlcCfgInfo *rlcUeCfg, RlcUeCreate *ueCfg)
 {
    uint8_t lcIdx;
    
@@ -366,12 +366,12 @@ uint8_t updateRlcCfg(RlcCb *gCb, RlcCfgInfo *rlcUeCfg, RlcUeRecfg *ueRecfg)
  *    Functionality:
  *      Fill RlcCfgCfmInfo structure for sending failure response to DU
  *
- * @params[in] RlcCfgCfmInfo *cfgRsp, RlcUeCfg *ueCfg
+ * @params[in] RlcCfgCfmInfo *cfgRsp, RlcUeCreate *ueCfg
  *             
  * @return void 
  *
  * ****************************************************************/
-void fillRlcCfgFailureRsp(RlcCfgCfmInfo *cfgRsp, RlcUeCfg *ueCfg)
+void fillRlcCfgFailureRsp(RlcCfgCfmInfo *cfgRsp, RlcUeCreate *ueCfg)
 {
    uint8_t cfgIdx =0;
 
@@ -398,7 +398,7 @@ void fillRlcCfgFailureRsp(RlcCfgCfmInfo *cfgRsp, RlcUeCfg *ueCfg)
  *    Functionality:
  *      Fill RlcCfgCfmInfo structure for sending failure response to DU
  *
- * @params[in] RlcCfgCfmInfo *cfgRsp, RlcUeCfg *ueCfg
+ * @params[in] RlcCfgCfmInfo *cfgRsp, RlcUeCreate *ueCfg
  *             
  * @return void 
  *
@@ -448,12 +448,12 @@ void fillRlcRecfgFailureRsp(RlcCfgCfmInfo *cfgRsp, RlcUeRecfg *ueRecfg)
  *      Handles Ue create Request from DU APP
  *
  * @params[in] Post structure pointer
- *             RlcUeCfg pointer 
+ *             RlcUeCreate pointer 
  * @return ROK     - success
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t RlcProcUeCreateReq(Pst *pst, RlcUeCfg *ueCfg)
+uint8_t RlcProcUeCreateReq(Pst *pst, RlcUeCreate *ueCfg)
 {
    uint8_t ret = ROK;
    RlcCb *gCb;
@@ -477,7 +477,7 @@ uint8_t RlcProcUeCreateReq(Pst *pst, RlcUeCfg *ueCfg)
          DU_LOG("\nERROR  -->  RLC: Failed to fill configuration at RlcProcUeCreateReq()");
          FILL_PST_RLC_TO_DUAPP(rspPst, RLC_UL_INST, EVENT_RLC_UE_CREATE_RSP);
          fillRlcCfgFailureRsp(&cfgRsp, ueCfg);
-         SendRlcUeCfgRspToDu(&rspPst, &cfgRsp);
+         SendRlcUeCreateRspToDu(&rspPst, &cfgRsp);
 
       }
       else
@@ -487,7 +487,7 @@ uint8_t RlcProcUeCreateReq(Pst *pst, RlcUeCfg *ueCfg)
             DU_LOG("\nERROR  -->  RLC: Failed to configure Add/Mod/Del entities at RlcProcUeCreateReq()");
       }
    }
-   RLC_FREE_SHRABL_BUF(pst->region, pst->pool, ueCfg, sizeof(RlcUeCfg));
+   RLC_FREE_SHRABL_BUF(pst->region, pst->pool, ueCfg, sizeof(RlcUeCreate));
    return ret;
 }
 
@@ -827,7 +827,7 @@ uint8_t RlcProcUeReconfigReq(Pst *pst, RlcUeRecfg *ueRecfg)
          DU_LOG("\nERROR  -->  RLC: Failed to fill configuration at RlcProcUeReconfigReq()");
          FILL_PST_RLC_TO_DUAPP(rspPst, RLC_UL_INST, EVENT_RLC_UE_RECONFIG_RSP);
          fillRlcRecfgFailureRsp(&cfgRsp, ueRecfg);
-         SendRlcUeCfgRspToDu(&rspPst, &cfgRsp);
+         SendRlcUeReconfigRspToDu(&rspPst, &cfgRsp);
       }
       else
       {

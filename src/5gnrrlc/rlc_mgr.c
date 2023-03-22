@@ -35,13 +35,19 @@
 #include "du_app_rlc_inf.h"
 #include "rlc_mgr.h"
 
-RlcDuUeCfgRsp rlcUeCfgRspOpts[] =
+RlcDuUeCreateRsp rlcUeCreateRspOpts[] =
 {
-   packRlcDuUeCfgRsp,     /* 0 - loosely coupled */
-   DuProcRlcUeCfgRsp,     /* 1 - tightly coupled */
-   packRlcDuUeCfgRsp     /* 2 - LWLC loosely coupled */
+   packRlcDuUeCreateRsp,     /* 0 - loosely coupled */
+   DuProcRlcUeCreateRsp,     /* 1 - tightly coupled */
+   packRlcDuUeCreateRsp     /* 2 - LWLC loosely coupled */
 };
 
+RlcDuUeReconfigRsp rlcUeReconfigRspOpts[] =
+{
+   packRlcDuUeReconfigRsp,     /* 0 - loosely coupled */
+   DuProcRlcUeReconfigRsp,     /* 1 - tightly coupled */
+   packRlcDuUeReconfigRsp     /* 2 - LWLC loosely coupled */
+};
 
 /***********************************************************
  *
@@ -61,15 +67,15 @@ RlcDuUeCfgRsp rlcUeCfgRspOpts[] =
  *      -# RFAILED
  *
  *************************************************************/
-uint8_t SendRlcUeCfgRspToDu(Pst *pst, RlcCfgCfmInfo *cfgRsp)
+uint8_t SendRlcUeCreateRspToDu(Pst *pst, RlcCfgCfmInfo *cfgRsp)
 {
    /* jump to specific primitive depending on configured selector */
    uint8_t ret = ROK;
    RlcCb   *gCb;
-   RlcUeCfgRsp *ueRsp = NULLP;
+   RlcUeCreateRsp *ueRsp = NULLP;
 
    gCb = RLC_GET_RLCCB(pst->srcInst);
-   RLC_ALLOC_SHRABL_BUF(pst->region, pst->pool, ueRsp, sizeof(RlcUeCfgRsp));
+   RLC_ALLOC_SHRABL_BUF(pst->region, pst->pool, ueRsp, sizeof(RlcUeCreateRsp));
    if(!ueRsp)
    {  
       DU_LOG("\nERROR  -->  RLC: Memory allocation failed for ueRsp at SendRlcUeCreateRspToDu()");
@@ -78,25 +84,80 @@ uint8_t SendRlcUeCfgRspToDu(Pst *pst, RlcCfgCfmInfo *cfgRsp)
    else
    {
       /* Mapping Old api to New Api */
-      ret = fillRlcUeCfgRsp(ueRsp, cfgRsp);
+      ret = fillRlcUeCreateRsp(ueRsp, cfgRsp);
       if(!ret)
       {
-         ret = (*rlcUeCfgRspOpts[pst->selector])(pst, ueRsp);
+         ret = (*rlcUeCreateRspOpts[pst->selector])(pst, ueRsp);
          if(ret)
          {
-            DU_LOG("\nERROR  -->  RLC: Failed at SendRlcUeCfgRspToDu()");
-            RLC_FREE_SHRABL_BUF(pst->region, pst->pool, ueRsp, sizeof(RlcUeCfgRsp));
+            DU_LOG("\nERROR  -->  RLC: Failed at SendRlcUeCreateRspToDu()");
+            RLC_FREE_SHRABL_BUF(pst->region, pst->pool, ueRsp, sizeof(RlcUeCreateRsp));
          }
       }
       else
       {
-         DU_LOG("\nERROR  -->  RLC: Failed at fillRlcUeCfgRsp() for event %d", pst->event);
-         RLC_FREE_SHRABL_BUF(pst->region, pst->pool, ueRsp, sizeof(RlcUeCfgRsp));
+         DU_LOG("\nERROR  -->  RLC: Failed at fillRlcUeCreateRsp() for event %d", pst->event);
+         RLC_FREE_SHRABL_BUF(pst->region, pst->pool, ueRsp, sizeof(RlcUeCreateRsp));
       }
    }
    RLC_FREE(gCb, cfgRsp, sizeof(RlcCfgCfmInfo));
    return ret;
-} /* end of SendRlcUeCfgRspToDu */
+} /* end of SendRlcUeCreateRspToDu */
+
+/***********************************************************
+ *
+ * @brief  
+ *
+ *        Handler for the ue Reconfig response to DUAPP
+ *
+ * @b Description:
+ *
+ *        This function reports  ue Reconfig response to DUAPP
+ *
+ *  @param[in] post         Post structure  
+ *  @param[in] cfgRsp       ue reconfig Config Response
+ *
+ *  @return  uint16_t
+ *      -# ROK 
+ *      -# RFAILED
+ *
+ *************************************************************/
+uint8_t SendRlcUeReconfigRspToDu(Pst *pst, RlcCfgCfmInfo *cfgRsp)
+{
+   /* jump to specific primitive depending on configured selector */
+   uint8_t ret = ROK;
+   RlcCb   *gCb;
+   RlcUeReconfigRsp *ueRsp = NULLP;
+
+   gCb = RLC_GET_RLCCB(pst->srcInst);
+   RLC_ALLOC_SHRABL_BUF(pst->region, pst->pool, ueRsp, sizeof(RlcUeReconfigRsp));
+   if(!ueRsp)
+   {  
+      DU_LOG("\nERROR  -->  RLC: Memory allocation failed for ueRsp at SendRlcUeReconfigRspToDu()");
+      ret = RFAILED;
+   }
+   else
+   {
+      /* Mapping Old api to New Api */
+      ret = fillRlcUeCreateRsp(ueRsp, cfgRsp);
+      if(!ret)
+      {
+         ret = (*rlcUeReconfigRspOpts[pst->selector])(pst, ueRsp);
+         if(ret)
+         {
+            DU_LOG("\nERROR  -->  RLC: Failed at SendRlcUeReconfigRspToDu()");
+            RLC_FREE_SHRABL_BUF(pst->region, pst->pool, ueRsp, sizeof(RlcUeReconfigRsp));
+         }
+      }
+      else
+      {
+         DU_LOG("\nERROR  -->  RLC: Failed at fillRlcUeCreateRsp() for event %d", pst->event);
+         RLC_FREE_SHRABL_BUF(pst->region, pst->pool, ueRsp, sizeof(RlcUeReconfigRsp));
+      }
+   }
+   RLC_FREE(gCb, cfgRsp, sizeof(RlcCfgCfmInfo));
+   return ret;
+} /* end of SendRlcUeReconfigRspToDu */
 
 /**********************************************************************
          End of file
