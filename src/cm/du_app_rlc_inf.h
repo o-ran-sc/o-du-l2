@@ -217,22 +217,25 @@ typedef struct rlcUeRecfg
 }RlcUeRecfg;
 
 /*  Ref: ORAN_WG8.V7.0.0 Sec 11.2.5.1 UE Create */
-typedef struct rlcUeCfg
+typedef struct rlcUeCreate
 {
    uint16_t       cellId;
    uint8_t        ueId;
    uint8_t        numLcsToAdd;
    RlcBearerCfg   rlcLcCfgAdd[MAX_NUM_LC];
-}RlcUeCfg;
+}RlcUeCreate;
 
 /*  Ref: ORAN_WG8.V7.0.0 Sec 11.2.5.2 UE Create Response */
-typedef struct rlcUeCfgRsp
+typedef struct rlcUeCreateRsp
 {
    uint16_t       cellId;
    uint16_t       ueId;
    RlcRsp         result;
    FailureReason  reason;
-}RlcUeCfgRsp;
+}RlcUeCreateRsp;
+
+/*  Ref: ORAN_WG8.V7.0.0 Sec 11.2.5.4 UE Reconfig Response */
+typedef struct rlcUeCreateRsp RlcUeReconfigRsp;
 
 /*  Ref: ORAN_WG8.V7.0.0 Sec 11.2.5.5 UE Delete Response */
 typedef struct rlcUeDelete
@@ -362,12 +365,12 @@ typedef uint8_t (*RlcDuMaxRetransInd) ARGS((
 /* UE create Request from DU APP to RLC*/
 typedef uint8_t (*DuRlcUeCreateReq) ARGS((
    Pst           *pst,
-   RlcUeCfg      *ueCfg ));
+   RlcUeCreate      *ueCfg ));
 
-/* UE Cfg Response from RLC to DU APP*/
-typedef uint8_t (*RlcDuUeCfgRsp) ARGS((
+/* UE Create Response from RLC to DU APP*/
+typedef uint8_t (*RlcDuUeCreateRsp) ARGS((
    Pst          *pst,
-   RlcUeCfgRsp  *ueCfgRsp));
+   RlcUeCreateRsp  *ueCreateRsp));
 
 /* UE Delete Response from RLC to DU APP*/
 typedef uint8_t (*RlcDuUeDeleteRsp) ARGS((
@@ -393,6 +396,11 @@ typedef uint8_t (*RlcRrcDeliveryReportToDuFunc) ARGS((
 typedef uint8_t (*DuRlcUeReconfigReq) ARGS((
    Pst           *pst,
    RlcUeRecfg      *ueRecfg ));
+
+/* UE Reconfig Response from RLC to DU APP*/
+typedef uint8_t (*RlcDuUeReconfigRsp) ARGS((
+   Pst          *pst,
+   RlcUeReconfigRsp  *ueReconfigRsp));
 
 /* UE Delete Request from DU APP to RLC */
 typedef uint8_t (*DuRlcUeDeleteReq) ARGS((
@@ -432,10 +440,12 @@ typedef uint8_t (*RlcDuUeReestablishRsp) ARGS((
 /* Pack/Unpack function declarations */
 uint8_t packRlcDuMaxRetransInd(Pst *pst, RlcMaxRetransInfo *maxRetransInd);
 uint8_t unpackRlcMaxRetransInd(RlcDuMaxRetransInd  func, Pst *pst, Buffer *mBuf);
-uint8_t packDuRlcUeCreateReq(Pst *pst, RlcUeCfg *ueCfg);
+uint8_t packDuRlcUeCreateReq(Pst *pst, RlcUeCreate *ueCfg);
 uint8_t unpackRlcUeCreateReq(DuRlcUeCreateReq func, Pst *pst, Buffer *mBuf);
-uint8_t packRlcDuUeCfgRsp(Pst *pst, RlcUeCfgRsp *ueCfgRsp);
-uint8_t unpackRlcUeCfgRsp(RlcDuUeCfgRsp func, Pst *pst, Buffer *mBuf);
+uint8_t packRlcDuUeCreateRsp(Pst *pst, RlcUeCreateRsp *ueCfgRsp);
+uint8_t unpackRlcUeCreateRsp(RlcDuUeCreateRsp func, Pst *pst, Buffer *mBuf);
+uint8_t packRlcDuUeReconfigRsp(Pst *pst, RlcUeReconfigRsp *ueCfgRsp);
+uint8_t unpackRlcUeReconfigRsp(RlcDuUeReconfigRsp func, Pst *pst, Buffer *mBuf);
 uint8_t packRlcUlRrcMsgToDu(Pst *pst, RlcUlRrcMsgInfo *ulRrcMsgInfo);
 uint8_t unpackRlcUlRrcMsgToDu(RlcUlRrcMsgToDuFunc func, Pst *pst, Buffer *mBuf);
 uint8_t packDlRrcMsgToRlc(Pst *pst, RlcDlRrcMsgInfo *dlRrcMsgInfo);
@@ -463,8 +473,9 @@ uint8_t unpackRlcUeReestablishRsp(RlcDuUeReestablishRsp func, Pst *pst, Buffer *
 
 /* Event Handler function declarations */
 uint8_t DuProcRlcMaxRetransInd(Pst *pst, RlcMaxRetransInfo *maxRetransInd);
-uint8_t RlcProcUeCreateReq(Pst *pst, RlcUeCfg *ueCfg);
-uint8_t DuProcRlcUeCfgRsp(Pst *pst, RlcUeCfgRsp *cfgRsp);
+uint8_t RlcProcUeCreateReq(Pst *pst, RlcUeCreate *ueCfg);
+uint8_t DuProcRlcUeCreateRsp(Pst *pst, RlcUeCreateRsp *cfgRsp);
+uint8_t DuProcRlcUeReconfigRsp(Pst *pst, RlcUeReconfigRsp *recfgRsp);
 uint8_t DuProcRlcUlRrcMsgTrans(Pst *pst, RlcUlRrcMsgInfo *ulRrcMsgInfo);
 uint8_t RlcProcDlRrcMsgTransfer(Pst *pst, RlcDlRrcMsgInfo *dlRrcMsgInfo);
 uint8_t DuProcRlcRrcDeliveryReport(Pst *pst, RrcDeliveryReport *rrcDeliveryReport);
