@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "08295d61_1a73f14b",
+        "filename": "src/du_app/du_mgr_main.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 593,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-03-23T06:54:26Z",
+      "side": 1,
+      "message": "revert before submission",
+      "revId": "4b8237779894b9a838f5c7ed92746e3b8edbf002",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
