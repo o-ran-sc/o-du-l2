@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0fd2f176_51907b95",
+        "filename": "src/cm/common_def.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 485,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-03-27T08:49:52Z",
+      "side": 1,
+      "message": "Here we do not need  to change to 3?",
+      "revId": "297d0368de9e69f2f1b8f7d4f1a920dcbcb4a47f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
