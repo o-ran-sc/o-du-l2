@@ -687,12 +687,12 @@ uint8_t unpackMacDlCcchInd(DuMacDlCcchInd func, Pst *pst, Buffer *mBuf)
  *
  *
  * @params[in] Post structure pointer
- *             MacUeCfg pointer              
+ *             MacUeCreateReq pointer              
  * @return ROK     - success
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t packDuMacUeCreateReq(Pst *pst, MacUeCfg *ueCfg)
+uint8_t packDuMacUeCreateReq(Pst *pst, MacUeCreateReq *ueCfg)
 {
    Buffer *mBuf = NULLP;
 
@@ -737,7 +737,7 @@ uint8_t unpackMacUeCreateReq(DuMacUeCreateReq func, Pst *pst, Buffer *mBuf)
 {
    if(pst->selector == ODU_SELECTOR_LWLC)
    {
-      MacUeCfg *ueCfg;
+      MacUeCreateReq *ueCfg;
 
       /* unpack the address of the structure */
       CMCHKUNPK(oduUnpackPointer, (PTR *)&ueCfg, mBuf);
@@ -756,21 +756,21 @@ uint8_t unpackMacUeCreateReq(DuMacUeCreateReq func, Pst *pst, Buffer *mBuf)
 
 /*******************************************************************
  *
- * @brief Pack and send UE config response from MAC to DU APP
+ * @brief Pack and send UE create response from MAC to DU APP
  *
  * @details
  *
- *    Function : packDuMacUeCfgRsp
+ *    Function : packDuMacUeCreateRsp
  *
  *    Functionality:
- *       Pack and send UE config response from MAC to DU APP
+ *       Pack and send UE create response from MAC to DU APP
  *
  * @params[in] 
  * @return ROK     - success
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t packDuMacUeCfgRsp(Pst *pst, MacUeCfgRsp *cfgRsp)
+uint8_t packDuMacUeCreateRsp(Pst *pst, MacUeCreateRsp *cfgRsp)
 {
    Buffer *mBuf = NULLP;
 
@@ -778,7 +778,7 @@ uint8_t packDuMacUeCfgRsp(Pst *pst, MacUeCfgRsp *cfgRsp)
    {
       if (ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf) != ROK)
       {
-	 DU_LOG("\nERROR  --> MAC : Memory allocation failed at packDuMacUeCfgRsp");
+	 DU_LOG("\nERROR  --> MAC : Memory allocation failed at packDuMacUeCreateRsp");
 	 return RFAILED;
       }
       /* pack the address of the structure */
@@ -786,7 +786,7 @@ uint8_t packDuMacUeCfgRsp(Pst *pst, MacUeCfgRsp *cfgRsp)
    }
    else
    {
-      DU_LOG("\nERROR  -->  MAC: Only LWLC supported for packDuMacUeCfgRsp");
+      DU_LOG("\nERROR  -->  MAC: Only LWLC supported for packDuMacUeCreateRsp");
       return RFAILED;
    }
 
@@ -794,24 +794,24 @@ uint8_t packDuMacUeCfgRsp(Pst *pst, MacUeCfgRsp *cfgRsp)
 }
 /*******************************************************************
  *
- * @brief Unpack UE Config Response from MAC to DU APP
+ * @brief Unpack UE Create Response from MAC to DU APP
  *
  * @details
  *
- *    Function :unpackDuMacUeCfgRsp 
+ *    Function :unpackDuMacUeCreateRsp 
  *
- *    Functionality: Unpack UE Config Response from MAC to DU APP
+ *    Functionality: Unpack UE Create Response from MAC to DU APP
  *
  * @params[in] 
  * @return ROK     - success
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t unpackDuMacUeCfgRsp(MacDuUeCfgRspFunc func, Pst *pst, Buffer *mBuf)
+uint8_t unpackDuMacUeCreateRsp(MacDuUeCreateRspFunc func, Pst *pst, Buffer *mBuf)
 {
    if(pst->selector == ODU_SELECTOR_LWLC)
    {
-      MacUeCfgRsp *cfgRsp = NULLP;
+      MacUeCreateRsp *cfgRsp = NULLP;
 
       /* unpack the address of the structure */
       CMCHKUNPK(oduUnpackPointer, (PTR *)&cfgRsp, mBuf);
@@ -836,7 +836,7 @@ uint8_t unpackDuMacUeCfgRsp(MacDuUeCfgRspFunc func, Pst *pst, Buffer *mBuf)
  *
  *
  * @params[in] Post structure pointer
- *             MacUeCfg pointer              
+ *             MacUeRecfg pointer              
  * @return ROK     - success
  *         RFAILED - failure
  *
