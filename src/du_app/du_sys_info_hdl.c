@@ -54,6 +54,7 @@
 #include "TDD-UL-DL-ConfigCommon.h"
 #include "ServingCellConfigCommonSIB.h"
 #include "MCC.h"
+#include "BCCH-DL-SCH-Message.h"
 #include "SIB1.h"
 #include "odu_common_codec.h"
 #include "du_sys_info_hdl.h"
@@ -452,6 +453,7 @@ uint8_t BuildPlmnList(CellAccessRelatedInfo_t *cellAccessInfo)
       DU_LOG("\nERROR  -->  DU APP: BuildPlmnList memory allocation failure");
       return RFAILED;
    }   
+
    elementCnt = cellAccessInfo->plmn_IdentityList.list.count; 
    for(idx=0; idx<elementCnt; idx++)
    {   
@@ -468,8 +470,7 @@ uint8_t BuildPlmnList(CellAccessRelatedInfo_t *cellAccessInfo)
    /* PLMN list */
    elementCnt = ODU_VALUE_ONE;
 
-   plmnIdInfo = &cellAccessInfo->plmn_IdentityList.list.array[idx]->\
-                plmn_IdentityList;
+   plmnIdInfo = &cellAccessInfo->plmn_IdentityList.list.array[idx]->plmn_IdentityList;
    plmnIdInfo->list.count = elementCnt;
    plmnIdInfo->list.size  = elementCnt * sizeof(PLMN_IdentitY_t *);
    DU_ALLOC(plmnIdInfo->list.array, plmnIdInfo->list.size);
@@ -481,8 +482,7 @@ uint8_t BuildPlmnList(CellAccessRelatedInfo_t *cellAccessInfo)
 
    for(idx1=0; idx1<elementCnt; idx1++)
    {
-      DU_ALLOC(plmnIdInfo->list.array[idx1],
-            sizeof(PLMN_IdentitY_t));
+      DU_ALLOC(plmnIdInfo->list.array[idx1], sizeof(PLMN_IdentitY_t));
       if(!(plmnIdInfo->list.array[idx1]))
       {
          DU_LOG("\nERROR  -->  DU APP: BuildPlmnList memory allocation failure");
@@ -490,8 +490,7 @@ uint8_t BuildPlmnList(CellAccessRelatedInfo_t *cellAccessInfo)
       }
    }
    idx1 = 0;
-   DU_ALLOC(plmnIdInfo->list.array[idx1]->mcc,
-         sizeof(MCC_t));
+   DU_ALLOC(plmnIdInfo->list.array[idx1]->mcc, sizeof(MCC_t));
    if(!plmnIdInfo->list.array[idx1]->mcc)
    {
       DU_LOG("\nERROR  -->  DU APP: BuildPlmnList memory allocation failure");
@@ -500,15 +499,13 @@ uint8_t BuildPlmnList(CellAccessRelatedInfo_t *cellAccessInfo)
 
    elementCnt = ODU_VALUE_THREE;
    plmnIdInfo->list.array[idx1]->mcc->list.count = elementCnt;
-   plmnIdInfo->list.array[idx1]->mcc->list.size =\
-                                                 elementCnt * sizeof(MCC_MNC_Digit_t *);
-   DU_ALLOC(plmnIdInfo->list.array[idx1]->mcc->list.array,
-         plmnIdInfo->list.array[idx1]->mcc->list.size)
-      if(!(plmnIdInfo->list.array[idx1]->mcc->list.array))
-      {
-         DU_LOG("\nERROR  -->  DU APP: BuildPlmnList memory allocation failure");
-         return RFAILED;
-      }
+   plmnIdInfo->list.array[idx1]->mcc->list.size = elementCnt * sizeof(MCC_MNC_Digit_t *);
+   DU_ALLOC(plmnIdInfo->list.array[idx1]->mcc->list.array, plmnIdInfo->list.array[idx1]->mcc->list.size);
+   if(!(plmnIdInfo->list.array[idx1]->mcc->list.array))
+   {
+      DU_LOG("\nERROR  -->  DU APP: BuildPlmnList memory allocation failure");
+      return RFAILED;
+   }
    for(idx2=0; idx2<elementCnt; idx2++)
    {
       DU_ALLOC(plmnIdInfo->list.array[idx1]->mcc->list.array[idx2],
@@ -923,6 +920,12 @@ uint8_t BuildCommonSerachSpaceList( struct PDCCH_ConfigCommon__commonSearchSpace
    searchSpace->nrofCandidates->aggregationLevel8 = duPdcchCfg.numCandAggLvl8;
    searchSpace->nrofCandidates->aggregationLevel16 = duPdcchCfg.numCandAggLvl16;
 
+/* Commented due to ASN decode failure in wireshark.
+ * Parameters like dci_Format0_0_AndFormat1_0 which are pointer to a structure that 
+ * does not have any member parameter lead to decode failure in wireshark. 
+ * The issue has been reported to Nokia.
+ * The following code will be uncommented once the issue is resolved */
+#if 0
    /* Search Space type and  DCI Format */
    DU_ALLOC(searchSpace->searchSpaceType, sizeof( struct SearchSpace__searchSpaceType));
    if(!searchSpace->searchSpaceType)
@@ -973,6 +976,8 @@ uint8_t BuildCommonSerachSpaceList( struct PDCCH_ConfigCommon__commonSearchSpace
             return RFAILED;
          }
    }
+#endif
+
    return ROK;
 }/* BuildCommonSerachSpaceList */
 
@@ -2382,6 +2387,7 @@ uint8_t BuildServCellCfgCommonSib(ServingCellConfigCommonSIB_t *srvCellCfg)
  * ****************************************************************/
 uint8_t BuildSib1Msg()
 {
+   BCCH_DL_SCH_Message_t    bcchMsg;
    SIB1_t                   *sib1Msg;
    CellAccessRelatedInfo_t  *cellAccessInfo;
    uint8_t                  elementCnt;
@@ -2391,14 +2397,49 @@ uint8_t BuildSib1Msg()
 
    do
    {
-      DU_ALLOC(sib1Msg, sizeof(SIB1_t));
-      if(!sib1Msg)
+      bcchMsg.message.present = BCCH_DL_SCH_MessageType_PR_c1;
+      
+      DU_ALLOC(bcchMsg.message.choice.c1, sizeof(struct BCCH_DL_SCH_MessageType__c1));
+      if(!bcchMsg.message.choice.c1)
+      {
+         DU_LOG("\nERROR  -->  DU APP: BCCH-DL-SCH msg memory allocation failure");
+         break;
+      }
+      bcchMsg.message.choice.c1->present = BCCH_DL_SCH_MessageType__c1_PR_systemInformationBlockType1;
+      DU_ALLOC(bcchMsg.message.choice.c1->choice.systemInformationBlockType1, sizeof(SIB1_t));
+      if(!bcchMsg.message.choice.c1->choice.systemInformationBlockType1)
       {   
          DU_LOG("\nERROR  -->  DU APP: SIB1 msg memory allocation failure");
          break;
       }   
-
+      sib1Msg = bcchMsg.message.choice.c1->choice.systemInformationBlockType1;
       elementCnt = ODU_VALUE_ONE;
+
+      /* Cell Selection Info */
+      DU_ALLOC(sib1Msg->cellSelectionInfo, sizeof(struct SIB1__cellSelectionInfo));
+      if(!sib1Msg->cellSelectionInfo)
+      {
+         DU_LOG("\nERROR  -->  DU APP: SIB1 Cell Selection Info memory allocation failed");
+         break;
+      }
+
+      sib1Msg->cellSelectionInfo->q_RxLevMin = -50;
+
+      DU_ALLOC(sib1Msg->cellSelectionInfo->q_RxLevMinSUL, sizeof(Q_RxLevMin_t));
+      if(!sib1Msg->cellSelectionInfo->q_RxLevMinSUL)
+      {
+         DU_LOG("\nERROR  -->  DU APP: BuildSib1Msg(): Memory allocation failed for q_RxLevMinSUL");
+         break;
+      }
+      *(sib1Msg->cellSelectionInfo->q_RxLevMinSUL) = -50;
+
+      DU_ALLOC(sib1Msg->cellSelectionInfo->q_QualMin, sizeof(Q_QualMin_t));
+      if(!sib1Msg->cellSelectionInfo->q_QualMin)
+      {
+         DU_LOG("\nERROR  -->  DU APP: BuildSib1Msg(): Memory allocation failed for q_QualMin");
+         break;
+      }
+      *(sib1Msg->cellSelectionInfo->q_QualMin) = -30;
 
       /* PLMN list */
       cellAccessInfo = &sib1Msg->cellAccessRelatedInfo;
@@ -2417,10 +2458,16 @@ uint8_t BuildSib1Msg()
          DU_LOG("\nERROR  -->  DU APP: sib1Msg->connEstFailureControl memory allocation failure");
          break;
       }
-      sib1Msg->connEstFailureControl->connEstFailCount =\
-                                                        duCfgParam.sib1Params.connEstFailCnt;
-      sib1Msg->connEstFailureControl->connEstFailOffsetValidity =\
-                                                                 duCfgParam.sib1Params.connEstFailOffValidity;
+      sib1Msg->connEstFailureControl->connEstFailCount = duCfgParam.sib1Params.connEstFailCnt;
+      sib1Msg->connEstFailureControl->connEstFailOffsetValidity = duCfgParam.sib1Params.connEstFailOffValidity;
+      
+      DU_ALLOC(sib1Msg->connEstFailureControl->connEstFailOffset, sizeof(long));
+      if(!sib1Msg->connEstFailureControl->connEstFailOffset)
+      {
+         DU_LOG("\nERROR  -->  DU APP: BuildSib1Msg(): Memory allocation failed for connEstFailOffset");
+         break;
+      }
+      *(sib1Msg->connEstFailureControl->connEstFailOffset) = duCfgParam.sib1Params.connEstFailOffset;
 
       /* SI Scheduling Info */
       DU_ALLOC(sib1Msg->si_SchedulingInfo, sizeof(SI_SchedulingInfo_t));
@@ -2453,17 +2500,17 @@ uint8_t BuildSib1Msg()
          break;
       }
 
-      xer_fprint(stdout, &asn_DEF_SIB1, sib1Msg);
+      xer_fprint(stdout, &asn_DEF_BCCH_DL_SCH_Message, &bcchMsg);
 
       /* Encode the F1SetupRequest type as APER */
       memset(encBuf, 0, ENC_BUF_MAX_LEN);
       encBufSize = 0;
-      encRetVal = uper_encode(&asn_DEF_SIB1, 0, sib1Msg, PrepFinalEncBuf,\
+      encRetVal = uper_encode(&asn_DEF_BCCH_DL_SCH_Message, 0, &bcchMsg, PrepFinalEncBuf,\
             encBuf);
       printf("\nencbufSize: %d\n", encBufSize);
       if(encRetVal.encoded == -1)
       {
-         DU_LOG("\nERROR  -->  DU APP : Could not encode SIB1 structure (at %s)\n",\
+         DU_LOG("\nERROR  -->  DU APP : Could not encode BCCH-DL-SCH structure (at %s)\n",\
                encRetVal.failed_type ?
                encRetVal.failed_type->name :
                "unknown");
@@ -2481,12 +2528,11 @@ uint8_t BuildSib1Msg()
       break; 
    }while(true);
 
-   FreeSib1Msg(sib1Msg);
+   FreeBcchDlSchMsg(bcchMsg);
 
    return ret;
-
-
 }
+
 /*******************************************************************
  *
  * @brief      :  deallocating the memory of BuildSib1Msg 
@@ -3203,6 +3249,40 @@ void FreeSib1Msg(SIB1_t *sib1Msg)
       DU_FREE(sib1Msg, sizeof(SIB1_t)); 
    }
 
+}
+
+/*******************************************************************
+ *
+ * @brief      :  Deallocation of BCCH_DL_SCH_Message_t
+ *
+ * @details
+ *
+ *     Function : FreeBcchDlSchMsg
+ *
+ *    Functionality: Freeing memory of BCCH DL SCH Message
+ *
+ * @params[in] : BCCH_DL_SCH_Message_t bcchMsg
+ * @return     :  void
+ *
+ *******************************************************************/
+void FreeBcchDlSchMsg(BCCH_DL_SCH_Message_t bcchMsg)
+{
+   switch(bcchMsg.message.present)
+   {
+      case BCCH_DL_SCH_MessageType_PR_c1:
+      {
+         switch(bcchMsg.message.choice.c1->present)
+         {
+            case BCCH_DL_SCH_MessageType__c1_PR_systemInformationBlockType1:
+            {
+               FreeSib1Msg(bcchMsg.message.choice.c1->choice.systemInformationBlockType1);
+               break;
+            }
+         }
+         DU_FREE(bcchMsg.message.choice.c1, sizeof(struct BCCH_DL_SCH_MessageType__c1));
+         break;
+      }
+   }
 }
 
 /**********************************************************************

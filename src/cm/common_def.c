@@ -228,11 +228,11 @@ uint8_t convertScsValToScsEnum(uint32_t num)
 }
 
 /*******************************************************************
- * @brief convert scs periodicity value into the enum value received from O1 
+ * @brief convert SSB periodicity value into the enum value received from O1 
  *
  * @details
  *
- *    Function : convertScsPeriodicityToEnum
+ *    Function : convertSSBPeriodicityToEnum
  *
  *    Functionality:
  *       - convert scs periodicity value 
@@ -242,30 +242,30 @@ uint8_t convertScsValToScsEnum(uint32_t num)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t convertScsPeriodicityToEnum(uint32_t num)
+uint8_t convertSSBPeriodicityToEnum(uint32_t num)
 {
    switch(num)
    {
       case 5:
-         return SCS_5MS;
+         return SSB_5MS;
 
       case 10:
-         return SCS_10MS;
+         return SSB_10MS;
 
       case 20:
-         return SCS_20MS;
+         return SSB_20MS;
 
       case 40:
-         return SCS_40MS;
+         return SSB_40MS;
 
       case 80:
-         return SCS_80MS;
+         return SSB_80MS;
 
       case 160:
-         return SCS_160MS;
+         return SSB_160MS;
 
       default:
-         return SCS_5MS;
+         return SSB_5MS;
    }
 }
 /*******************************************************************
