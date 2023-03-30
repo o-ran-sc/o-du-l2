@@ -47,8 +47,8 @@
 #ifdef NR_TDD
 #define DUPLEX_MODE DUP_MODE_TDD
 #define NR_NUMEROLOGY 1
-#define NR_DL_ARFCN 623400
-#define NR_UL_ARFCN 623400
+#define NR_DL_ARFCN 630164
+#define NR_UL_ARFCN 630164
 #define NR_FREQ_BAND 78
 #define NR_SCS SCS_30KHZ
 #define NR_BANDWIDTH BANDWIDTH_100MHZ
@@ -76,7 +76,8 @@
 #define SUL_ARFCN 100
 #define SUL_BAND 2
 
-#define TIME_CFG 0
+#define TIME_CFG 4
+#define MEAS_TIMING_ARFCN 630432
 #define CARRIER_IDX 1
 #define NUM_TX_ANT 2
 #define NUM_RX_ANT 2
@@ -233,7 +234,7 @@
 #define IE_EXTENSION_LIST_COUNT 1
 
 /* Macro definitions for MIB/SIB1 */
-#define SYS_FRAME_NUM 0
+#define SYS_FRAME_NUM 240
 #define SPARE 0
 #define SSB_SC_OFFSET 0
 #define DU_RANAC 1
@@ -296,7 +297,7 @@
 #define MAX_RATIO        30
 #define MIN_RATIO        20
 #define DEDICATED_RATIO  10
-#define NUM_OF_SUPPORTED_SLICE  2
+#define NUM_OF_SUPPORTED_SLICE  1
 
 #ifdef NR_DRX
 /* Macros for Drx configuration */
@@ -714,7 +715,7 @@ typedef struct f1DuCellInfo
    uint16_t           tac;          /* tracking area code */
    uint16_t           epsTac;       /* Configured EPS TAC */
    NrModeInfo         f1Mode;       /* NR mode info : FDD/TDD */
-   uint8_t            measTimeCfg;  /* Measurement timing configuration */
+   uint8_t            measTimeCfgDuration;  /* Measurement timing configuration */
    F1CellDir          cellDir;      /* Cell Direction */
    F1CellType         cellType;     /* Cell Type */
    F1BrdcstPlmnInfo   brdcstPlmnInfo[MAX_BPLMN_NRCELL_MINUS_1]; /* Broadcast PLMN Identity Info List */
@@ -1240,6 +1241,7 @@ typedef struct sib1Params
    long      cellResvdForOpUse;
    long      connEstFailCnt;
    long      connEstFailOffValidity;
+   long      connEstFailOffset;
    SiSchedInfo           siSchedInfo;
    SrvCellCfgCommSib     srvCellCfgCommSib;
 }Sib1Params;
@@ -1250,7 +1252,7 @@ typedef struct duCfgParams
    F1EgtpParams       egtpParams;                  /* EGTP Params */
    uint32_t           maxUe;
    uint32_t           duId;
-   uint8_t            duName[CU_DU_NAME_LEN_MAX];
+   char               *duName;
    SchedulerCfg       schedCfg;
    F1DuSrvdCellInfo   srvdCellLst[MAX_NUM_CELL];  /* Serving cell list *///TODO: this must be removed eventually
    F1RrcVersion       rrcVersion;                 /* RRC version */
