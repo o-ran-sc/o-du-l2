@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3017d095_3e621eb7",
+        "filename": "src/du_app/du_cfg.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 652,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-04-04T08:41:19Z",
+      "side": 1,
+      "message": "add a null check.",
+      "range": {
+        "startLine": 652,
+        "startChar": 12,
+        "endLine": 652,
+        "endChar": 22
+      },
+      "revId": "38fcce4d8d8c8abeecf1f08db680a18b5f33563c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0be53d85_c85df4d2",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1727,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-04-04T08:41:19Z",
+      "side": 1,
+      "message": "can u add BuildMeasTimingConf free part here",
+      "range": {
+        "startLine": 1727,
+        "startChar": 3,
+        "endLine": 1727,
+        "endChar": 17
+      },
+      "revId": "38fcce4d8d8c8abeecf1f08db680a18b5f33563c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ba2e6bf1_54e32b65",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2273,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-04-04T08:41:19Z",
+      "side": 1,
+      "message": "update FreeDUConfigUpdate as well",
+      "revId": "38fcce4d8d8c8abeecf1f08db680a18b5f33563c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
