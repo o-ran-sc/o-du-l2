@@ -47,8 +47,8 @@
 #ifdef NR_TDD
 #define DUPLEX_MODE DUP_MODE_TDD
 #define NR_NUMEROLOGY 1
-#define NR_DL_ARFCN 623400
-#define NR_UL_ARFCN 623400
+#define NR_DL_ARFCN 630164
+#define NR_UL_ARFCN 630164
 #define NR_FREQ_BAND 78
 #define NR_SCS SCS_30KHZ
 #define NR_BANDWIDTH BANDWIDTH_100MHZ
@@ -233,7 +233,7 @@
 #define IE_EXTENSION_LIST_COUNT 1
 
 /* Macro definitions for MIB/SIB1 */
-#define SYS_FRAME_NUM 0
+#define SYS_FRAME_NUM 240
 #define SPARE 0
 #define SSB_SC_OFFSET 0
 #define DU_RANAC 1
@@ -296,7 +296,7 @@
 #define MAX_RATIO        30
 #define MIN_RATIO        20
 #define DEDICATED_RATIO  10
-#define NUM_OF_SUPPORTED_SLICE  2
+#define NUM_OF_SUPPORTED_SLICE  1
 
 #ifdef NR_DRX
 /* Macros for Drx configuration */

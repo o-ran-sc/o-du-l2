@@ -2422,6 +2422,7 @@ uint8_t BuildSib1Msg()
       sib1Msg->connEstFailureControl->connEstFailOffsetValidity =\
                                                                  duCfgParam.sib1Params.connEstFailOffValidity;
 
+#if UE_PAL_MODE_TEST
       /* SI Scheduling Info */
       DU_ALLOC(sib1Msg->si_SchedulingInfo, sizeof(SI_SchedulingInfo_t));
       if(!sib1Msg->si_SchedulingInfo)
@@ -2452,6 +2453,7 @@ uint8_t BuildSib1Msg()
       {
          break;
       }
+#endif      
 
       xer_fprint(stdout, &asn_DEF_SIB1, sib1Msg);
 
