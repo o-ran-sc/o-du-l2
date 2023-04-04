@@ -328,9 +328,9 @@ uint8_t readMacCfg()
    memcpy(rrmPolicy.rRMPolicyMemberList[0].mcc,duCfgParam.macCellCfg.cellCfg.plmnInfoList[0].plmn.mcc, 3*sizeof(uint8_t));
    memcpy(rrmPolicy.rRMPolicyMemberList[0].mnc,duCfgParam.macCellCfg.cellCfg.plmnInfoList[0].plmn.mnc, 3*sizeof(uint8_t));
    rrmPolicy.rRMPolicyMemberList[0].sst = 1;
-   rrmPolicy.rRMPolicyMemberList[0].sd[0] = 2;
-   rrmPolicy.rRMPolicyMemberList[0].sd[1] = 3;
-   rrmPolicy.rRMPolicyMemberList[0].sd[2] = 4;
+   rrmPolicy.rRMPolicyMemberList[0].sd[0] = 0;
+   rrmPolicy.rRMPolicyMemberList[0].sd[1] = 0;
+   rrmPolicy.rRMPolicyMemberList[0].sd[2] = 1;
    rrmPolicy.rRMPolicyMaxRatio = 90;
    rrmPolicy.rRMPolicyMinRatio = 30;
    rrmPolicy.rRMPolicyDedicatedRatio = 10;
@@ -601,7 +601,8 @@ uint8_t readCfg()
 
 #ifndef O1_ENABLE
    /* Note: Added these below variable for local testing*/
-   Snssai snssai[NUM_OF_SUPPORTED_SLICE] = {{1,{2,3,4}},{5,{6,7,8}}};
+   //Snssai snssai[NUM_OF_SUPPORTED_SLICE] = {{1,{2,3,4}},{5,{6,7,8}}};
+   Snssai snssai[NUM_OF_SUPPORTED_SLICE] = {{1,{0,0,1}}};
 #endif
 
 #ifdef O1_ENABLE
@@ -669,7 +670,7 @@ uint8_t readCfg()
    mib.controlResourceSetZero = CORESET_0_INDEX;
    mib.searchSpaceZero = SEARCHSPACE_0_INDEX;
    mib.cellBarred = MIB__cellBarred_notBarred;
-   mib.intraFreqReselection = MIB__intraFreqReselection_notAllowed;
+   ib.intraFreqReselection = MIB__intraFreqReselection_allowed;
    duCfgParam.mibParams = mib;
 
    /* SIB1 Params */
