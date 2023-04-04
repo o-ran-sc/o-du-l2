@@ -22,6 +22,30 @@
       },
       "revId": "c9eb909f64c6b5607428cd187f2b1ce8a63cd437",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cc43b3b9_5a43a3a0",
+        "filename": "src/du_app/du_cfg.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 822,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-04-04T16:52:25Z",
+      "side": 0,
+      "message": "This is being used for SSB periodicity. So I have corrected the name to convertSSBPeriodicityToEnum",
+      "parentUuid": "f1fcbf9a_920e4f99",
+      "range": {
+        "startLine": 822,
+        "startChar": 106,
+        "endLine": 822,
+        "endChar": 133
+      },
+      "revId": "c9eb909f64c6b5607428cd187f2b1ce8a63cd437",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
   ]
 }
