@@ -16,12 +16,14 @@
 ################################################################################
 *******************************************************************************/
 
+uint8_t rlcSendMaxRetransIndToDu(Pst *pst, RlcMaxRetransInfo *maxRetransInfo);
 uint8_t rlcSendUlRrcMsgToDu(Pst *pst, RlcUlRrcMsgInfo *ulRrcMsgInfo);
 uint8_t rlcSendRrcDeliveryReportToDu(Pst *pst, RrcDeliveryReport *rrcDelivery);
 uint8_t rlcSendDlRrcMsgRspToDu(Pst *pst, RlcDlRrcMsgRsp *dlRrcMsgRsp);
 uint8_t rlcSendUlUserDataToDu(Pst *pst, RlcUlUserDatInfo *ulUserData);
 uint8_t rlcSendUeDeleteRspToDu(Pst *pst, RlcUeDeleteRsp *ueDeleteRsp);
 uint8_t rlcSendSlicePmToDu(Pst *pst, SlicePmList *sliceStats);
+uint8_t rlcSendUeReestablishRspToDu(Pst *pst, RlcUeReestablishRsp *ueReestablishRsp);
 /**********************************************************************
          End of file
 **********************************************************************/

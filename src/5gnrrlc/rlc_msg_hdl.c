@@ -40,25 +40,77 @@
 #include "du_app_rlc_inf.h"
 #include "rlc_upr_inf_api.h"
 #include "rlc_mgr.h"
+
+/*******************************************************************
+ *
+ * @brief building and sending UE max retransmission info to DU 
+ *
+ * @details
+ *
+ *    Function : BuildAndSendRlcMaxRetransIndToDu 
+ *
+ *    Functionality:
+ *      Building and sending UE  max retransmission information to DU 
+ *
+ * @params[in] uint8_t cellId, uint8_t ueId, CauseOfResult  status 
+ *
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t BuildAndSendRlcMaxRetransIndToDu(uint16_t cellId,uint8_t ueId, uint8_t lcId, uint8_t lcType)
+{
+   Pst pst;  
+   RlcMaxRetransInfo *maxRetransInfo = NULLP;
+   
+   FILL_PST_RLC_TO_DUAPP(pst, RLC_UL_INST, EVENT_RLC_MAX_RETRANSMISSION);
+
+   RLC_ALLOC_SHRABL_BUF(pst.region, pst.pool, maxRetransInfo, sizeof(RlcMaxRetransInfo));
+   if(!maxRetransInfo)
+   {
+      DU_LOG("\nERROR  -->  RLC: sendRlcMaxRetransIndToDu(): Memory allocation failed ");
+      return RFAILED;
+   }
+   else
+   {
+      maxRetransInfo->cellId = cellId;
+      maxRetransInfo->ueId = ueId;
+      maxRetransInfo->lcId = lcId;
+      maxRetransInfo->lcType = lcType;
+  
+      if(rlcSendMaxRetransIndToDu(&pst, maxRetransInfo) == ROK)
+      {
+         DU_LOG("\nDEBUG  -->  RLC: UE [ %d] max retransmission information sent successfully",ueId);
+      }
+      else
+      {
+         DU_LOG("\nERROR  -->  RLC: SendRlcMaxRetransIndToDu(): fail to send UeId's[%d] maximum retransmission information", ueId);
+         RLC_FREE_SHRABL_BUF(pst.region, pst.pool, maxRetransInfo, sizeof(RlcMaxRetransInfo));
+         return RFAILED;
+      }
+   }
+   return ROK;
+}
+
 /*******************************************************************
  *
  * @brief Fills RLC UL UE Cfg Rsp from RlcCRsp 
  *
  * @details
  *
- *    Function : fillRlcUeCfgRsp
+ *    Function : fillRlcUeCreateRsp
  *
  *    Functionality: 
  *     Fills RLC UL UE Cfg Rsp from RlcCRsp
  * 
  *  @params[in]  Pointer to RlcCfgCfm
- *               Pointer to RlcUeCfgRsp
+ *               Pointer to RlcUeCreateRsp
  *
  *  @return ROK/RFAILED
  * 
  *****************************************************************/
 
-uint8_t fillRlcUeCfgRsp(RlcUeCfgRsp *rlcCfgRsp, RlcCfgCfmInfo *rlcCRsp)
+uint8_t fillRlcUeCreateRsp(RlcUeCreateRsp *rlcCfgRsp, RlcCfgCfmInfo *rlcCRsp)
 {
    uint8_t idx;
    uint8_t ret = ROK;
@@ -222,7 +274,7 @@ uint8_t fillLcCfg(RlcCb *gCb, RlcEntCfgInfo *rlcUeCfg, RlcBearerCfg *duRlcUeCfg)
  *
  ******************************************************************/
 
-uint8_t fillRlcCfg(RlcCb *gCb, RlcCfgInfo *rlcUeCfg, RlcUeCfg *ueCfg)
+uint8_t fillRlcCfg(RlcCb *gCb, RlcCfgInfo *rlcUeCfg, RlcUeCreate *ueCfg)
 {
    uint8_t lcIdx;
    
@@ -314,12 +366,12 @@ uint8_t updateRlcCfg(RlcCb *gCb, RlcCfgInfo *rlcUeCfg, RlcUeRecfg *ueRecfg)
  *    Functionality:
  *      Fill RlcCfgCfmInfo structure for sending failure response to DU
  *
- * @params[in] RlcCfgCfmInfo *cfgRsp, RlcUeCfg *ueCfg
+ * @params[in] RlcCfgCfmInfo *cfgRsp, RlcUeCreate *ueCfg
  *             
  * @return void 
  *
  * ****************************************************************/
-void fillRlcCfgFailureRsp(RlcCfgCfmInfo *cfgRsp, RlcUeCfg *ueCfg)
+void fillRlcCfgFailureRsp(RlcCfgCfmInfo *cfgRsp, RlcUeCreate *ueCfg)
 {
    uint8_t cfgIdx =0;
 
@@ -346,7 +398,7 @@ void fillRlcCfgFailureRsp(RlcCfgCfmInfo *cfgRsp, RlcUeCfg *ueCfg)
  *    Functionality:
  *      Fill RlcCfgCfmInfo structure for sending failure response to DU
  *
- * @params[in] RlcCfgCfmInfo *cfgRsp, RlcUeCfg *ueCfg
+ * @params[in] RlcCfgCfmInfo *cfgRsp, RlcUeCreate *ueCfg
  *             
  * @return void 
  *
@@ -396,12 +448,12 @@ void fillRlcRecfgFailureRsp(RlcCfgCfmInfo *cfgRsp, RlcUeRecfg *ueRecfg)
  *      Handles Ue create Request from DU APP
  *
  * @params[in] Post structure pointer
- *             RlcUeCfg pointer 
+ *             RlcUeCreate pointer 
  * @return ROK     - success
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t RlcProcUeCreateReq(Pst *pst, RlcUeCfg *ueCfg)
+uint8_t RlcProcUeCreateReq(Pst *pst, RlcUeCreate *ueCfg)
 {
    uint8_t ret = ROK;
    RlcCb *gCb;
@@ -425,7 +477,7 @@ uint8_t RlcProcUeCreateReq(Pst *pst, RlcUeCfg *ueCfg)
          DU_LOG("\nERROR  -->  RLC: Failed to fill configuration at RlcProcUeCreateReq()");
          FILL_PST_RLC_TO_DUAPP(rspPst, RLC_UL_INST, EVENT_RLC_UE_CREATE_RSP);
          fillRlcCfgFailureRsp(&cfgRsp, ueCfg);
-         SendRlcUeCfgRspToDu(&rspPst, &cfgRsp);
+         SendRlcUeCreateRspToDu(&rspPst, &cfgRsp);
 
       }
       else
@@ -435,7 +487,7 @@ uint8_t RlcProcUeCreateReq(Pst *pst, RlcUeCfg *ueCfg)
             DU_LOG("\nERROR  -->  RLC: Failed to configure Add/Mod/Del entities at RlcProcUeCreateReq()");
       }
    }
-   RLC_FREE_SHRABL_BUF(pst->region, pst->pool, ueCfg, sizeof(RlcUeCfg));
+   RLC_FREE_SHRABL_BUF(pst->region, pst->pool, ueCfg, sizeof(RlcUeCreate));
    return ret;
 }
 
@@ -756,7 +808,7 @@ uint8_t RlcProcUeReconfigReq(Pst *pst, RlcUeRecfg *ueRecfg)
    RlcCb *rlcUeCb = NULLP;
    RlcCfgCfmInfo cfgRsp; 
    Pst rspPst;
-
+   
    DU_LOG("\nDEBUG  -->  RLC: UE reconfig request received. CellID[%d] UEID[%d]",ueRecfg->cellId, ueRecfg->ueId);
 
    rlcUeCb = RLC_GET_RLCCB(pst->dstInst);
@@ -775,7 +827,7 @@ uint8_t RlcProcUeReconfigReq(Pst *pst, RlcUeRecfg *ueRecfg)
          DU_LOG("\nERROR  -->  RLC: Failed to fill configuration at RlcProcUeReconfigReq()");
          FILL_PST_RLC_TO_DUAPP(rspPst, RLC_UL_INST, EVENT_RLC_UE_RECONFIG_RSP);
          fillRlcRecfgFailureRsp(&cfgRsp, ueRecfg);
-         SendRlcUeCfgRspToDu(&rspPst, &cfgRsp);
+         SendRlcUeReconfigRspToDu(&rspPst, &cfgRsp);
       }
       else
       {
@@ -1120,10 +1172,126 @@ uint8_t BuildSliceReportToDu(uint8_t snssaiCnt)
       }
       dir++;
    }
-
+   
    sendSlicePmToDu(sliceStats);
    return ROK;
 }
+
+/*******************************************************************
+ *
+ * @brief sending UE reestablishment response to DU 
+ *
+ * @details
+ *
+ *    Function : sendRlcUeReestablishRspToDu 
+ *
+ *    Functionality:
+ *      sending UE reestablishment response to DU 
+ *
+ * @params[in] uint8_t cellId, uint8_t ueId, CauseOfResult  status 
+ *
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t sendRlcUeReestablishRspToDu(uint16_t cellId,uint8_t ueId, CauseOfResult  status)
+{
+   Pst pst;  
+   RlcUeReestablishRsp *ueReestablishRsp = NULLP;
+   
+   FILL_PST_RLC_TO_DUAPP(pst, RLC_UL_INST, EVENT_RLC_UE_REESTABLISH_RSP);
+
+   RLC_ALLOC_SHRABL_BUF(pst.region, pst.pool, ueReestablishRsp, sizeof(RlcUeReestablishRsp));
+   if(!ueReestablishRsp)
+   {
+      DU_LOG("\nERROR  -->  RLC: sendRlcUeReestablishRspToDu(): Memory allocation failed ");
+      return RFAILED;
+   }
+   else
+   {
+      ueReestablishRsp->cellId = cellId;
+      ueReestablishRsp->ueId = ueId;
+      ueReestablishRsp->status = status;
+  
+      if(rlcSendUeReestablishRspToDu(&pst, ueReestablishRsp) == ROK)
+      {
+         DU_LOG("\nDEBUG  -->  RLC: UE Reestablishment response send successfully");
+      }
+      else
+      {
+         DU_LOG("\nERROR  -->  RLC: SendRlcUeReestablishRspToDu():Failed to send UE Reestablishment response to DU");
+         RLC_FREE_SHRABL_BUF(pst.region, pst.pool, ueReestablishRsp, sizeof(RlcUeReestablishRsp));
+         return RFAILED;
+      }
+   }
+   return ROK;
+}
+
+/*******************************************************************
+*
+* @brief Handles Ue reestablishment Request from DU APP
+*
+* @details
+*
+*    Function : RlcProcUeReestablishReq
+*
+*    Functionality:
+*      Handles Ue reestablishment Request from DU APP
+*
+* @params[in] Post structure pointer
+*             RlcUeReestablishReq pointer
+* @return ROK     - success
+*         RFAILED - failure
+*
+* ****************************************************************/
+
+uint8_t RlcProcUeReestablishReq(Pst *pst, RlcUeReestablishReq *ueReestablishReq)
+{
+   uint8_t ret = RFAILED;
+   RlcCb *gRlcCb = NULLP;
+   RlcUlUeCb *ueCb = NULLP;
+   CauseOfResult  status =SUCCESSFUL;
+
+   if(ueReestablishReq != NULLP)
+   {
+      gRlcCb = RLC_GET_RLCCB(pst->dstInst);
+      rlcDbmFetchUlUeCb(gRlcCb,ueReestablishReq->ueId, ueReestablishReq->cellId, &ueCb);
+      if(ueCb != NULLP)
+      {
+         if(ueReestablishReq->cellId == ueCb->cellId)
+         {
+            /* TODO : 
+             * Step 1: Fill the RlcCfgInfo structure with data from the ueReestablishReq, just as we did in fillRlcCfg function and set 
+             * ConfigType = CONFIG_REESTABLISH
+             * Step 2: To finish processing of Ue Reestablishment, call the RlcProcCfgReq function */
+         }
+         else
+         {
+            status = CELLID_INVALID;
+            DU_LOG("\nERROR  -->  SCH : RlcProcUeReestablishReq(): cell Id[%d] not found", ueReestablishReq->cellId);
+         }
+      }
+      else
+      {
+         status = UEID_INVALID;
+         DU_LOG("\nERROR  -->  SCH : RlcProcUeReestablishReq(): ue Id[%d] not found", ueReestablishReq->cellId);
+      }
+
+      if(status != SUCCESSFUL)
+      {
+         if(sendRlcUeReestablishRspToDu(ueReestablishReq->cellId, ueReestablishReq->ueId, status)  != ROK)
+         {
+            DU_LOG("\nERROR  -->  RLC: RlcProcUeReestablishReq():Failed to send UE Reestablishment response to DU");
+         }
+      }
+      RLC_FREE_SHRABL_BUF(pst->region, pst->pool, ueReestablishReq, sizeof(RlcUeDelete));
+   }
+   else
+   {
+      DU_LOG("\nERROR  -->  RLC: RlcProcUeReestablishReq(): Recieved NULL pointer UE Reestablishment ");
+   }
+   return ret;
+}
 /**********************************************************************
-         End of file
-**********************************************************************/
+  End of file
+ **********************************************************************/

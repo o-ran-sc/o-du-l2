@@ -262,12 +262,12 @@ RlcCfgCfmInfo   *cfmInfo
    if(tRlcCb->u.ulCb->rlcUlUdxEventType == EVENT_RLC_UE_CREATE_REQ)
    {
       FILL_PST_RLC_TO_DUAPP(rspPst, RLC_UL_INST, EVENT_RLC_UE_CREATE_RSP);
-      SendRlcUeCfgRspToDu(&rspPst, cfgCfm);
+      SendRlcUeCreateRspToDu(&rspPst, cfgCfm);
    }
    else if(tRlcCb->u.ulCb->rlcUlUdxEventType == EVENT_RLC_UE_RECONFIG_REQ)
    {
       FILL_PST_RLC_TO_DUAPP(rspPst, RLC_UL_INST, EVENT_RLC_UE_RECONFIG_RSP);
-      SendRlcUeCfgRspToDu(&rspPst, cfgCfm);
+      SendRlcUeReconfigRspToDu(&rspPst, cfgCfm);
    }
    else if (tRlcCb->u.ulCb->rlcUlUdxEventType == EVENT_RLC_UE_DELETE_REQ)
    {
@@ -275,6 +275,16 @@ RlcCfgCfmInfo   *cfmInfo
       if(sendRlcUeDeleteRspToDu(cfgCfm->cellId, cfgCfm->ueId, SUCCESSFUL) != ROK)
       {
          DU_LOG("ERROR  --> RLC_UL: rlcUlUdxCfgCfm(): Failed to send UE delete response ");
+         RLC_FREE(tRlcCb, cfgCfm, sizeof(RlcCfgCfmInfo));
+         return RFAILED;
+      }
+      RLC_FREE(tRlcCb, cfgCfm, sizeof(RlcCfgCfmInfo));
+   }
+   else if  (tRlcCb->u.ulCb->rlcUlUdxEventType == EVENT_RLC_UE_REESTABLISH_REQ)
+   {
+      if(sendRlcUeReestablishRspToDu(cfgCfm->cellId, cfgCfm->ueId, SUCCESSFUL) != ROK)
+      {
+         DU_LOG("ERROR  --> RLC_UL: rlcUlUdxCfgCfm(): Failed to send UE Reestablishment response to DU ");
          RLC_FREE(tRlcCb, cfgCfm, sizeof(RlcCfgCfmInfo));
          return RFAILED;
       }

@@ -432,12 +432,12 @@ uint8_t duActvTsk(Pst *pst, Buffer *mBuf)
                   }
                case EVENT_RLC_UE_CREATE_RSP:
                   {
-                     ret = unpackRlcUeCfgRsp(DuProcRlcUeCfgRsp, pst, mBuf);
+                     ret = unpackRlcUeCreateRsp(DuProcRlcUeCreateRsp, pst, mBuf);
                      break;
                   }
                case EVENT_RLC_UE_RECONFIG_RSP:
                   {
-                     ret = unpackRlcUeCfgRsp(DuProcRlcUeCfgRsp, pst, mBuf);
+                     ret = unpackRlcUeReconfigRsp(DuProcRlcUeReconfigRsp, pst, mBuf);
                      break;
                   }
                case EVENT_RLC_UE_DELETE_RSP:
@@ -460,6 +460,11 @@ uint8_t duActvTsk(Pst *pst, Buffer *mBuf)
                      ret = unpackRlcDlRrcMsgRspToDu(DuProcRlcDlRrcMsgRsp, pst, mBuf);
                      break;
                   }
+               case EVENT_RLC_MAX_RETRANSMISSION:
+                  {
+                     ret = unpackRlcMaxRetransInd(DuProcRlcMaxRetransInd, pst, mBuf);
+                     break;
+                  }
                case EVENT_UL_USER_DATA_TRANS_TO_DU:
                   {
                      ret = unpackRlcUlUserDataToDu(DuProcRlcUlUserDataTrans, pst, mBuf);
@@ -468,6 +473,11 @@ uint8_t duActvTsk(Pst *pst, Buffer *mBuf)
                case EVENT_RLC_SLICE_PM_TO_DU:
                   {
                      ret = unpackRlcSlicePm(DuProcRlcSliceMetrics, pst, mBuf);
+                     break;
+                  }
+               case EVENT_RLC_UE_REESTABLISH_RSP:
+                  {
+                     ret = unpackRlcUeReestablishRsp(DuProcRlcUeReestablishRsp, pst, mBuf);
                      break;
                   }
                default:
@@ -527,7 +537,7 @@ uint8_t duActvTsk(Pst *pst, Buffer *mBuf)
                   }
                case EVENT_MAC_UE_CREATE_RSP:
                   {
-                     ret = unpackDuMacUeCfgRsp(DuProcMacUeCfgRsp, pst, mBuf); 
+                     ret = unpackDuMacUeCreateRsp(DuProcMacUeCreateRsp, pst, mBuf); 
                      break;
                   }
                case EVENT_MAC_UE_RECONFIG_RSP:

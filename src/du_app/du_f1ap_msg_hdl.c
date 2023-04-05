@@ -13081,7 +13081,7 @@ uint8_t extractSrbListToSetup(SRBs_ToBeSetup_List_t *srbCfg, DuUeCfg *ueCfgDb)
  *
  * @params[in] DRBs_ToBeSetup_Item_t , DRBs_ToBeSetupMod_Item_t,
  *             DRBs_ToBeModified_Item_t , lcId, DuLcCfg pointer,
- *             RlcBearerCfg , UpTnlCfg, RlcUeCfg
+ *             RlcBearerCfg , UpTnlCfg, DuRlcUeCfg
  * @return void
  *
  * ****************************************************************/
@@ -15291,9 +15291,9 @@ uint8_t procF1SetupRsp(F1AP_PDU_t *f1apMsg, MsgLen recvBufLen, char *recvBuf)
 	    DU_LOG("\nERROR  -->  DU_APP : Invalid IE received in F1SetupRsp:%ld",
 		  f1SetRspMsg->protocolIEs.list.array[idx]->id);
       }
-      duProcF1SetupRsp();
    }
    
+   duProcF1SetupRsp();
    freeAperDecodeF1SetupRsp(f1SetRspMsg);
 
    duCb.f1SetupReqAndRspMsg.f1MsgRspBufSize = recvBufLen;
