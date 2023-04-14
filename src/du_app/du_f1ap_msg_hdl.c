@@ -180,6 +180,8 @@
 #include "MeasurementTimingConfigurationRrc-IEs.h"
 #include "MeasTimingList.h"
 #include "MeasTiming.h"
+#include "Cells-Status-List.h"
+#include "Cells-Status-Item.h"
 
 #ifdef O1_ENABLE
 #include "CmInterface.h"
@@ -1046,19 +1048,19 @@ uint8_t BuildServedCellList(GNB_DU_Served_Cells_List_t *duServedCell)
    for(plmnidx=0; plmnidx<plmnCnt; plmnidx++)
    {
       DU_ALLOC(duServedCell->list.array[plmnidx],\
-	    sizeof(GNB_DU_Served_Cells_ItemIEs_t));
+            sizeof(GNB_DU_Served_Cells_ItemIEs_t));
       if(duServedCell->list.array[plmnidx] == NULLP)
       {
-	 return RFAILED;
+         return RFAILED;
       }
    }
    idx = 0;
    duServedCell->list.array[idx]->id = ProtocolIE_ID_id_GNB_DU_Served_Cells_Item;
    duServedCell->list.array[idx]->criticality = Criticality_reject;
    duServedCell->list.array[idx]->value.present = \
-						  GNB_DU_Served_Cells_ItemIEs__value_PR_GNB_DU_Served_Cells_Item;
+                                                  GNB_DU_Served_Cells_ItemIEs__value_PR_GNB_DU_Served_Cells_Item;
    srvCellItem = \
-		 &duServedCell->list.array[idx]->value.choice.GNB_DU_Served_Cells_Item;
+                 &duServedCell->list.array[idx]->value.choice.GNB_DU_Served_Cells_Item;
    /*nRCGI*/
    BuildNrcgiret = BuildNrcgi(&srvCellItem->served_Cell_Information.nRCGI);
    if(BuildNrcgiret != ROK)
@@ -1067,7 +1069,7 @@ uint8_t BuildServedCellList(GNB_DU_Served_Cells_List_t *duServedCell)
    }
    /*nRPCI*/
    srvCellItem->served_Cell_Information.nRPCI = \
-						duCfgParam.srvdCellLst[0].duCellInfo.cellInfo.nrPci;
+                                                duCfgParam.srvdCellLst[0].duCellInfo.cellInfo.nrPci;
 
    /* fiveGS_TAC */
    BuildFiveGSTacret = BuildFiveGSTac(&srvCellItem->served_Cell_Information);
@@ -1096,7 +1098,7 @@ uint8_t BuildServedCellList(GNB_DU_Served_Cells_List_t *duServedCell)
 
    /* GNB DU System Information */
    DU_ALLOC(srvCellItem->gNB_DU_System_Information,
-	 sizeof(GNB_DU_System_Information_t));
+         sizeof(GNB_DU_System_Information_t));
    if(!srvCellItem->gNB_DU_System_Information)
    {
       return RFAILED;
@@ -1104,20 +1106,20 @@ uint8_t BuildServedCellList(GNB_DU_Served_Cells_List_t *duServedCell)
    /* MIB */
    srvCellItem->gNB_DU_System_Information->mIB_message.size = duCfgParam.srvdCellLst[0].duSysInfo.mibLen;
    DU_ALLOC(srvCellItem->gNB_DU_System_Information->mIB_message.buf,
-	 srvCellItem->gNB_DU_System_Information->mIB_message.size);
+         srvCellItem->gNB_DU_System_Information->mIB_message.size);
    if(!srvCellItem->gNB_DU_System_Information->mIB_message.buf)
    {
       return RFAILED;
    }
    memcpy(srvCellItem->gNB_DU_System_Information->mIB_message.buf, duCfgParam.srvdCellLst[0].duSysInfo.mibMsg, \
-		   srvCellItem->gNB_DU_System_Information->mIB_message.size);
+         srvCellItem->gNB_DU_System_Information->mIB_message.size);
 
    /* SIB1 */
    srvCellItem->gNB_DU_System_Information->sIB1_message.size =\
-							      duCfgParam.srvdCellLst[0].duSysInfo.sib1Len;
+                                                              duCfgParam.srvdCellLst[0].duSysInfo.sib1Len;
 
    DU_ALLOC(srvCellItem->gNB_DU_System_Information->sIB1_message.buf,
-	 srvCellItem->gNB_DU_System_Information->sIB1_message.size);
+         srvCellItem->gNB_DU_System_Information->sIB1_message.size);
    if(!srvCellItem->gNB_DU_System_Information->sIB1_message.buf)
    {
       return RFAILED;
@@ -1125,7 +1127,7 @@ uint8_t BuildServedCellList(GNB_DU_Served_Cells_List_t *duServedCell)
    for(int x=0; x<srvCellItem->gNB_DU_System_Information->sIB1_message.size; x++)
    {
       srvCellItem->gNB_DU_System_Information->sIB1_message.buf[x]=\
-								  duCfgParam.srvdCellLst[0].duSysInfo.sib1Msg[x];
+                                                                  duCfgParam.srvdCellLst[0].duSysInfo.sib1Msg[x];
    }
    return ROK; 
 }                                                                                                                  
@@ -1631,7 +1633,7 @@ uint8_t BuildAndSendF1SetupReq()
       elementCnt = 5;
 
       f1SetupReq->protocolIEs.list.count = elementCnt;
-      f1SetupReq->protocolIEs.list.size = elementCnt * sizeof(F1SetupRequestIEs_t );
+      f1SetupReq->protocolIEs.list.size = elementCnt * sizeof(F1SetupRequestIEs_t *);
 
       /* Initialize the F1Setup members */
       DU_ALLOC(f1SetupReq->protocolIEs.list.array,f1SetupReq->protocolIEs.list.size);
@@ -2468,6 +2470,7 @@ uint8_t fillCellToDeleteItem(struct Served_Cells_To_Delete_ItemIEs *deleteItemIe
    fillBitString(&deleteItem->oldNRCGI.nRCellIdentity, ODU_VALUE_FOUR, ODU_VALUE_FIVE, duCfgParam.sib1Params.cellIdentity);
    return ROK;
 } 
+
 /*******************************************************************
  *
  * @brief Builds ServCellToDeleteList
@@ -2516,6 +2519,56 @@ uint8_t buildServCellToDeleteList(Served_Cells_To_Delete_List_t *cellsToDelete)
       DU_LOG("\nERROR  -->  F1AP: buildServCellToDeleteList(): failed to fill Served_Cells_To_Delete_ItemIEs");
       return RFAILED;
    }
+   return ROK;
+}
+
+/*******************************************************************
+ *
+ * @brief Builds CellsStatusList
+ *
+ * @details
+ *
+ *    Function : buildCellsStatusList
+ *
+ *    Functionality: Builds the Cell Status List
+ *
+ * @params[in] Pointer to Cells_Status_List_t *
+ *
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ *****************************************************************/
+uint8_t buildCellsStatusList(Cells_Status_List_t *cellStatusList)
+{
+   uint8_t elementCnt = 0, idx = 0, ret = ROK;
+   Cells_Status_ItemIEs_t *cellStatusItemIE;
+
+   elementCnt = 1;
+   cellStatusList->list.count = elementCnt;
+   cellStatusList->list.size = elementCnt * sizeof(Cells_Status_ItemIEs_t *);
+   DU_ALLOC(cellStatusList->list.array, cellStatusList->list.size);
+
+   for(idx = 0; idx < elementCnt; idx++)
+   {
+      DU_ALLOC(cellStatusList->list.array[idx], sizeof(Cells_Status_ItemIEs_t));
+      if(!cellStatusList->list.array[idx])
+      {
+         DU_LOG("ERROR  --> F1AP: buildCellsStatusList() memory allocation failure");
+         return RFAILED;
+      }
+   }
+   idx = 0;
+   cellStatusItemIE = (Cells_Status_ItemIEs_t *)cellStatusList->list.array[idx];
+   cellStatusItemIE->id = ProtocolIE_ID_id_Cells_Status_Item;
+   cellStatusItemIE->criticality = Criticality_reject;
+   cellStatusItemIE->value.present = Cells_Status_ItemIEs__value_PR_Cells_Status_Item;
+   ret = BuildNrcgi(&cellStatusItemIE->value.choice.Cells_Status_Item.nRCGI);
+   if(ret == RFAILED)
+   {
+         DU_LOG("ERROR  --> F1AP: buildCellsStatusList() NRCGI failed");
+         return RFAILED;
+   }
+   cellStatusItemIE->value.choice.Cells_Status_Item.service_status.service_state = Service_State_in_service;
    return ROK;
 }
 
@@ -2574,7 +2627,7 @@ uint8_t BuildAndSendDUConfigUpdate(ServCellAction servCellAction)
                                                            InitiatingMessage__value_PR_GNBDUConfigurationUpdate;
       duCfgUpdate = &f1apDuCfg->choice.initiatingMessage->value.\
                     choice.GNBDUConfigurationUpdate;
-      elementCnt = 3;
+      elementCnt = 4;
       duCfgUpdate->protocolIEs.list.count = elementCnt;
       duCfgUpdate->protocolIEs.list.size = \
                                            elementCnt * sizeof(GNBDUConfigurationUpdateIEs_t*);
@@ -2642,6 +2695,20 @@ uint8_t BuildAndSendDUConfigUpdate(ServCellAction servCellAction)
          
       }
       // NOTE :GNB DU SYS INFO:MIB AND SIB1 INFORMATION TO BE BUILT AND FILLED HERE
+      
+      /*Cell Status List*/
+      ieIdx++;
+      duCfgUpdate->protocolIEs.list.array[ieIdx]->id = ProtocolIE_ID_id_Cells_Status_List;
+      duCfgUpdate->protocolIEs.list.array[ieIdx]->criticality = Criticality_reject;
+      duCfgUpdate->protocolIEs.list.array[ieIdx]->value.present = \
+           GNBDUConfigurationUpdateIEs__value_PR_Cells_Status_List;
+      ret = buildCellsStatusList(&duCfgUpdate->protocolIEs.list.array[ieIdx]->value.choice.Cells_Status_List);
+      if(ret == RFAILED)
+      {
+         DU_LOG("ERROR  --> DU APP : BuildAndSendDUConfigUpdate(): Cell Status List building failed");
+         break;
+      }
+
       /*GNB DU ID */
       ieIdx++;
       duCfgUpdate->protocolIEs.list.array[ieIdx]->id = ProtocolIE_ID_id_gNB_DU_ID;
