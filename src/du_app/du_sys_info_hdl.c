@@ -54,11 +54,11 @@
 #include "TDD-UL-DL-ConfigCommon.h"
 #include "ServingCellConfigCommonSIB.h"
 #include "MCC.h"
-#include "BCCH-DL-SCH-Message.h"
 #include "SIB1.h"
 #include "odu_common_codec.h"
-#include "du_sys_info_hdl.h"
+#include "BCCH-DL-SCH-Message.h"
 #include "du_f1ap_conversions.h"
+#include "du_sys_info_hdl.h"
 
 void FreeSib1Msg(SIB1_t *sib1Msg);
 uint8_t FreqInfoUlret = RFAILED;
@@ -3278,10 +3278,18 @@ void FreeBcchDlSchMsg(BCCH_DL_SCH_Message_t bcchMsg)
                FreeSib1Msg(bcchMsg.message.choice.c1->choice.systemInformationBlockType1);
                break;
             }
+            case BCCH_DL_SCH_MessageType__c1_PR_systemInformation:
+               break;
+            case BCCH_DL_SCH_MessageType__c1_PR_NOTHING:
+               break;
          }
          DU_FREE(bcchMsg.message.choice.c1, sizeof(struct BCCH_DL_SCH_MessageType__c1));
          break;
       }
+      case BCCH_DL_SCH_MessageType_PR_messageClassExtension:
+         break;
+      case BCCH_DL_SCH_MessageType_PR_NOTHING:
+         break;
    }
 }
 
