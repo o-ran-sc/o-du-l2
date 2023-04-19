@@ -176,6 +176,10 @@
 #include "ReconfigurationWithSync.h"
 #include "du_sys_info_hdl.h"
 #include "DRX-ConfigRrc.h"
+#include "MeasurementTimingConfigurationRrc.h"
+#include "MeasurementTimingConfigurationRrc-IEs.h"
+#include "MeasTimingList.h"
+#include "MeasTiming.h"
 
 #ifdef O1_ENABLE
 #include "CmInterface.h"
@@ -540,6 +544,7 @@ uint8_t fillNrTddInfo(TDD_Info_t *tddInfo)
 
       freqInfo->freqBandListNr.list.array[freqBandListIdx]->freqBandIndicatorNr = duCfgParam.srvdCellLst[0].duCellInfo.\
       f1Mode.mode.tdd.nrFreqInfo.freqBand[0].nrFreqBand;
+
       freqInfo->freqBandListNr.list.array[freqBandListIdx]->supportedSULBandList.list.count = elementCnt;
       freqInfo->freqBandListNr.list.array[freqBandListIdx]->supportedSULBandList.list.size = freqInfo->freqBandListNr.list.array[freqBandListIdx]->\
       supportedSULBandList.list.count * sizeof(SupportedSULFreqBandItem_t*);
@@ -824,6 +829,186 @@ uint8_t  BuildServedPlmn(ServedPLMNs_List_t *srvplmn)
    }
    return ROK;
 }
+
+/*******************************************************************
+ *
+ * @brief Frees Measurement Timing configuration 
+ *
+ * @details
+ *
+ *    Function : FreeMeasTimingConf
+ *
+ *    Functionality: Frees Timing Configuration
+ *
+ * @params[in] MeasurementTimingConfigurationRrc_t measTimingConfRrc
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+void FreeMeasTimingConf(MeasurementTimingConfigurationRrc_t   measTimingConfRrc)
+{
+   uint8_t measIeIdx = 0;
+   MeasurementTimingConfigurationRrc_IEs_t  *measTimingConfIEs = NULLP;
+
+   if(measTimingConfRrc.criticalExtensions.choice.c1)
+   {
+      if(measTimingConfRrc.criticalExtensions.choice.c1->choice.measTimingConf)
+      {
+         measTimingConfIEs = measTimingConfRrc.criticalExtensions.choice.c1->choice.measTimingConf;
+         if(measTimingConfIEs->measTiming)
+         {
+            if(measTimingConfIEs->measTiming->list.array)
+            {
+               for(measIeIdx = 0; measIeIdx < measTimingConfIEs->measTiming->list.count; measIeIdx++)
+               {
+                  if(measTimingConfIEs->measTiming->list.array[measIeIdx])
+                  {
+                     DU_FREE(measTimingConfIEs->measTiming->list.array[measIeIdx]->frequencyAndTiming, sizeof(struct MeasTiming__frequencyAndTiming));
+                     DU_FREE(measTimingConfIEs->measTiming->list.array[measIeIdx], sizeof(MeasTiming_t));
+                  }
+               }
+               DU_FREE(measTimingConfIEs->measTiming->list.array, measTimingConfIEs->measTiming->list.size);
+            }
+            DU_FREE(measTimingConfIEs->measTiming, sizeof(MeasTimingList_t));
+         }
+         DU_FREE(measTimingConfRrc.criticalExtensions.choice.c1->choice.measTimingConf, sizeof(MeasurementTimingConfigurationRrc_IEs_t));
+      }
+      DU_FREE(measTimingConfRrc.criticalExtensions.choice.c1, sizeof(struct MeasurementTimingConfigurationRrc__criticalExtensions__c1));
+   }
+}
+
+/*******************************************************************
+ *
+ * @brief Builds MEasuerment Timing Configuration
+ *
+ * @details
+ *
+ *    Function : BuildMeasTimingConf
+ *
+ *    Functionality: Building Measurement Timing Configuration
+ *
+ * @params[in] Pointer to octet string to store Measurement timing
+ *             Configuration
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t BuildMeasTimingConf(OCTET_STRING_t *measTimingConf)
+{
+   uint8_t ret = RFAILED;
+   uint8_t elementCnt = 0;
+   uint8_t measIeIdx = 0;
+   asn_enc_rval_t encRetVal;
+   MeasurementTimingConfigurationRrc_t   measTimingConfRrc;
+   MeasurementTimingConfigurationRrc_IEs_t  *measTimingConfIEs = NULLP;
+   struct MeasTiming__frequencyAndTiming  *freqAndTiming = NULLP;
+
+   while(true)
+   {
+      measTimingConfRrc.criticalExtensions.present = MeasurementTimingConfigurationRrc__criticalExtensions_PR_c1;
+      DU_ALLOC(measTimingConfRrc.criticalExtensions.choice.c1, sizeof(struct MeasurementTimingConfigurationRrc__criticalExtensions__c1));
+      if(!measTimingConfRrc.criticalExtensions.choice.c1)
+      {
+         DU_LOG("ERROR  --> DU_APP : BuildMeasTimingConf(): Memory allocation failure for critical extension choice C1");
+         break;
+      }
+      measTimingConfRrc.criticalExtensions.choice.c1->present = MeasurementTimingConfigurationRrc__criticalExtensions__c1_PR_measTimingConf;
+
+      DU_ALLOC(measTimingConfRrc.criticalExtensions.choice.c1->choice.measTimingConf, sizeof(MeasurementTimingConfigurationRrc_IEs_t));
+      if(!measTimingConfRrc.criticalExtensions.choice.c1->choice.measTimingConf)
+      {
+         DU_LOG("ERROR  --> DU_APP : BuildMeasTimingConf(): Memory allocation failure for measTimingConf");
+         break;
+      }
+      measTimingConfIEs = measTimingConfRrc.criticalExtensions.choice.c1->choice.measTimingConf;
+
+      DU_ALLOC(measTimingConfIEs->measTiming, sizeof(MeasTimingList_t));
+      if(!measTimingConfIEs->measTiming)
+      {
+         DU_LOG("ERROR  --> DU_APP : BuildMeasTimingConf(): Memory allocation failure for MeasTimingList");
+         break;
+      }
+
+      elementCnt = 1;  
+      measTimingConfIEs->measTiming->list.count = elementCnt;
+      measTimingConfIEs->measTiming->list.size = elementCnt * sizeof(MeasTiming_t *);
+      DU_ALLOC(measTimingConfIEs->measTiming->list.array, measTimingConfIEs->measTiming->list.size);
+      if(!measTimingConfIEs->measTiming->list.array)
+      {
+         DU_LOG("ERROR  --> DU_APP : BuildMeasTimingConf(): Memory allocation failure for MeasTimingList array");
+         break;
+      }
+
+      for(measIeIdx = 0; measIeIdx < elementCnt; measIeIdx++)
+      {
+         DU_ALLOC(measTimingConfIEs->measTiming->list.array[measIeIdx], sizeof(MeasTiming_t));
+         if(!measTimingConfIEs->measTiming->list.array[measIeIdx])
+         {
+            DU_LOG("ERROR  --> DU_APP : BuildMeasTimingConf(): Memory allocation failure for MeasTimingList array index %d", measIeIdx);
+            break;
+         }
+      }
+      if(measIeIdx < elementCnt)
+      {
+         break;
+      }
+
+      measIeIdx = 0;
+      DU_ALLOC(measTimingConfIEs->measTiming->list.array[measIeIdx]->frequencyAndTiming, sizeof(struct MeasTiming__frequencyAndTiming));
+      if(!measTimingConfIEs->measTiming->list.array[measIeIdx]->frequencyAndTiming)
+      {
+         DU_LOG("ERROR  --> DU_APP : BuildMeasTimingConf(): Memory allocation failure for frequencyAndTiming");
+         break;
+      }
+      freqAndTiming = measTimingConfIEs->measTiming->list.array[measIeIdx]->frequencyAndTiming;
+      freqAndTiming->carrierFreq = MEAS_TIMING_ARFCN;
+      freqAndTiming->ssbSubcarrierSpacing = duCfgParam.macCellCfg.ssbCfg.scsCmn;
+      freqAndTiming->ssb_MeasurementTimingConfiguration.periodicityAndOffset.present = duCfgParam.macCellCfg.ssbCfg.ssbPeriod + 1;
+      freqAndTiming->ssb_MeasurementTimingConfiguration.periodicityAndOffset.choice.sf20 = duCfgParam.macCellCfg.ssbCfg.ssbScOffset;
+      freqAndTiming->ssb_MeasurementTimingConfiguration.duration = duCfgParam.srvdCellLst[0].duCellInfo.measTimeCfgDuration;
+
+      /* Encode the F1SetupRequest type as APER */
+      xer_fprint(stdout, &asn_DEF_MeasurementTimingConfigurationRrc, &measTimingConfRrc);
+
+      memset(encBuf, 0, ENC_BUF_MAX_LEN);
+      encBufSize = 0;
+      encRetVal = uper_encode(&asn_DEF_MeasurementTimingConfigurationRrc, 0, &measTimingConfRrc, PrepFinalEncBuf, encBuf);
+
+      /* Encode results */
+      if(encRetVal.encoded == ENCODE_FAIL)
+      {     
+         DU_LOG("\nERROR  -->  F1AP : Could not encode Measurement Timing Configuration structure (at %s)\n",\
+               encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
+         break;
+      }     
+      else  
+      {     
+         DU_LOG("\nDEBUG   -->  F1AP : Created APER encoded buffer for Measurement Timing Configuration \n");
+#ifdef DEBUG_ASN_PRINT
+         for(measIeIdx=0; measIeIdx< encBufSize; measIeIdx++)
+         {
+            printf("%x",encBuf[measIeIdx]);
+         }
+#endif
+
+         measTimingConf->size = encBufSize;
+         DU_ALLOC(measTimingConf->buf, encBufSize);
+         if(measTimingConf->buf == NULLP)
+         {
+            DU_LOG("\nERROR  -->  F1AP : Memory allocation failed for MeasurementTimingConfiguration buffer");
+            return RFAILED;
+         }
+         memcpy(measTimingConf->buf, &encBuf, encBufSize);
+
+         FreeMeasTimingConf(measTimingConfRrc);
+
+         ret = ROK;
+         break;
+      }
+   }
+   return ret;
+}
+
 /*******************************************************************
  *
  * @brief Builds Served Cell List
@@ -884,36 +1069,30 @@ uint8_t BuildServedCellList(GNB_DU_Served_Cells_List_t *duServedCell)
    srvCellItem->served_Cell_Information.nRPCI = \
 						duCfgParam.srvdCellLst[0].duCellInfo.cellInfo.nrPci;
 
-   /*fiveGS_TAC*/
+   /* fiveGS_TAC */
    BuildFiveGSTacret = BuildFiveGSTac(&srvCellItem->served_Cell_Information);
    if(BuildFiveGSTacret != ROK)
    {
       return RFAILED;
    }
-   /*Served PLMNs*/
+
+   /* Served PLMNs */
    BuildServedPlmnret = BuildServedPlmn(&srvCellItem->served_Cell_Information.servedPLMNs);
    if(BuildServedPlmnret !=ROK)
    {
       return RFAILED;
    }
-   /*nR Mode Info with FDD*/
+
+   /* nR Mode Info with FDD/TDD */
    BuildNrModeret = BuildNrMode(&srvCellItem->served_Cell_Information.nR_Mode_Info);
    if(BuildNrModeret != ROK)
    {
       return RFAILED;
    }
+
    /*Measurement timing Config*/
-   srvCellItem->served_Cell_Information.measurementTimingConfiguration.\
-      size = sizeof(uint8_t);
-   DU_ALLOC(srvCellItem->served_Cell_Information.\
-	 measurementTimingConfiguration.buf,srvCellItem->served_Cell_Information.measurementTimingConfiguration.size);
-   if(srvCellItem->served_Cell_Information.\
-	 measurementTimingConfiguration.buf == NULLP)
-   {
+   if(BuildMeasTimingConf(&srvCellItem->served_Cell_Information.measurementTimingConfiguration) != ROK)
       return RFAILED;
-   }
-   srvCellItem->served_Cell_Information.measurementTimingConfiguration.buf[0] = \
-										duCfgParam.srvdCellLst[0].duCellInfo.measTimeCfg;
 
    /* GNB DU System Information */
    DU_ALLOC(srvCellItem->gNB_DU_System_Information,
@@ -1359,50 +1538,51 @@ void FreeF1SetupReq(F1AP_PDU_t *f1apMsg)
    {
       if(f1apMsg->choice.initiatingMessage != NULLP)
       {
-	 f1SetupReq = &f1apMsg->choice.initiatingMessage->value.choice.F1SetupRequest;
-	 if(f1SetupReq->protocolIEs.list.array != NULLP)
-	 {
-	    for(ieIdx = 0; ieIdx < f1SetupReq->protocolIEs.list.count; ieIdx++)
-	    {
-	       if(f1SetupReq->protocolIEs.list.array[ieIdx] != NULLP)
-	       {
-		  switch(f1SetupReq->protocolIEs.list.array[ieIdx]->id)
-		  {
-		     case ProtocolIE_ID_id_TransactionID:
-			break;
-		     case ProtocolIE_ID_id_gNB_DU_ID:
-			DU_FREE(f1SetupReq->protocolIEs.list.array[ieIdx]->value.choice.GNB_DU_ID.buf,\
-			      f1SetupReq->protocolIEs.list.array[ieIdx]->value.choice.GNB_DU_ID.size);
-			break;
-		     case ProtocolIE_ID_id_gNB_DU_Name:
-			DU_FREE(f1SetupReq->protocolIEs.list.array[ieIdx]->value.choice.GNB_DU_Name.buf,\
-			      strlen((char *)duCfgParam.duName));
-			break;
-		     case ProtocolIE_ID_id_gNB_DU_Served_Cells_List:
-			FreeServedCellList(&f1SetupReq->protocolIEs.list.\
-			      array[ieIdx]->value.choice.GNB_DU_Served_Cells_List);
-			break;
-		     case ProtocolIE_ID_id_GNB_DU_RRC_Version:
-			FreeRrcVer(&f1SetupReq->protocolIEs.list.array[ieIdx]->value.choice.RRC_Version);
-			break;
-		     default:
-			DU_LOG("\nERROR  -->  Invalid Event Type %ld", f1SetupReq->protocolIEs.list.array[ieIdx]->id);
-			break;
-		  }
-	       }
-	    }
-	    for(ieIdx2=0; ieIdx2< ieIdx; ieIdx2++)
-	    {
-	       DU_FREE(f1SetupReq->protocolIEs.list.array[ieIdx2],sizeof(F1SetupRequestIEs_t));
-	    }
-	    DU_FREE(f1SetupReq->protocolIEs.list.array,\
-		  f1SetupReq->protocolIEs.list.size);
-	 }
-	 DU_FREE(f1apMsg->choice.initiatingMessage, sizeof(InitiatingMessage_t));
+         f1SetupReq = &f1apMsg->choice.initiatingMessage->value.choice.F1SetupRequest;
+         if(f1SetupReq->protocolIEs.list.array != NULLP)
+         {
+            for(ieIdx = 0; ieIdx < f1SetupReq->protocolIEs.list.count; ieIdx++)
+            {
+               if(f1SetupReq->protocolIEs.list.array[ieIdx] != NULLP)
+               {
+                  switch(f1SetupReq->protocolIEs.list.array[ieIdx]->id)
+                  {
+                     case ProtocolIE_ID_id_TransactionID:
+                        break;
+                     case ProtocolIE_ID_id_gNB_DU_ID:
+                        DU_FREE(f1SetupReq->protocolIEs.list.array[ieIdx]->value.choice.GNB_DU_ID.buf,\
+                              f1SetupReq->protocolIEs.list.array[ieIdx]->value.choice.GNB_DU_ID.size);
+                        break;
+                     case ProtocolIE_ID_id_gNB_DU_Name:
+                        DU_FREE(f1SetupReq->protocolIEs.list.array[ieIdx]->value.choice.GNB_DU_Name.buf,\
+                              strlen((char *)duCfgParam.duName));
+                        break;
+                     case ProtocolIE_ID_id_gNB_DU_Served_Cells_List:
+                        FreeServedCellList(&f1SetupReq->protocolIEs.list.\
+                              array[ieIdx]->value.choice.GNB_DU_Served_Cells_List);
+                        break;
+                     case ProtocolIE_ID_id_GNB_DU_RRC_Version:
+                        FreeRrcVer(&f1SetupReq->protocolIEs.list.array[ieIdx]->value.choice.RRC_Version);
+                        break;
+                     default:
+                        DU_LOG("\nERROR  -->  Invalid Event Type %ld", f1SetupReq->protocolIEs.list.array[ieIdx]->id);
+                        break;
+                  }
+               }
+            }
+            for(ieIdx2=0; ieIdx2< ieIdx; ieIdx2++)
+            {
+               DU_FREE(f1SetupReq->protocolIEs.list.array[ieIdx2],sizeof(F1SetupRequestIEs_t));
+            }
+            DU_FREE(f1SetupReq->protocolIEs.list.array,\
+                  f1SetupReq->protocolIEs.list.size);
+         }
+         DU_FREE(f1apMsg->choice.initiatingMessage, sizeof(InitiatingMessage_t));
       }
       DU_FREE(f1apMsg, sizeof(F1AP_PDU_t));
    }
 }
+
 /*******************************************************************
  *
  * @brief Builds and Send the F1SetupRequest
@@ -1433,22 +1613,22 @@ uint8_t BuildAndSendF1SetupReq()
       DU_ALLOC(f1apMsg, sizeof(F1AP_PDU_t));
       if(f1apMsg == NULLP)
       {
-	 break;
+         break;
       }
       f1apMsg->present = F1AP_PDU_PR_initiatingMessage;
       DU_ALLOC(f1apMsg->choice.initiatingMessage, sizeof(InitiatingMessage_t));
       if(f1apMsg->choice.initiatingMessage == NULLP)
       {
-	 break;
+         break;
       }
       f1apMsg->choice.initiatingMessage->procedureCode = ProcedureCode_id_F1Setup;
       f1apMsg->choice.initiatingMessage->criticality = Criticality_reject;
       f1apMsg->choice.initiatingMessage->value.present = \
-							 InitiatingMessage__value_PR_F1SetupRequest;
+                                                         InitiatingMessage__value_PR_F1SetupRequest;
 
       f1SetupReq = &f1apMsg->choice.initiatingMessage->value.choice.F1SetupRequest;
 
-      elementCnt = 4;
+      elementCnt = 5;
 
       f1SetupReq->protocolIEs.list.count = elementCnt;
       f1SetupReq->protocolIEs.list.size = elementCnt * sizeof(F1SetupRequestIEs_t );
@@ -1497,7 +1677,6 @@ uint8_t BuildAndSendF1SetupReq()
 
       f1SetupReq->protocolIEs.list.array[ieIdx]->value.choice.GNB_DU_ID.buf[0] =\
                                                                                 duCfgParam.duId;
-#if 0
       /* DU name IE is of type printableString_t which wireshark is unable to decode.
        * However this string is decoded successfully on online decoders.
        * Since this is an optional IE and the value received in it are not
@@ -1518,9 +1697,8 @@ uint8_t BuildAndSendF1SetupReq()
             break;
          }
          strcpy((char*)f1SetupReq->protocolIEs.list.array[ieIdx]->value.choice.GNB_DU_Name.buf,
-               (char*)&duCfgParam.duName);
+               (char*)duCfgParam.duName);
       }
-#endif
 
       /*Served Cell list */
       ieIdx++;
@@ -1535,7 +1713,6 @@ uint8_t BuildAndSendF1SetupReq()
       {
          break;
       }
-
 
       /*RRC Version*/
       ieIdx++;
@@ -2142,15 +2319,8 @@ uint8_t fillServedCellInfo(Served_Cell_Information_t *srvCellInfo)
 #endif
 
    /*Measurement timing Config*/
-   srvCellInfo->measurementTimingConfiguration.size = sizeof(uint8_t);
-   DU_ALLOC(srvCellInfo->measurementTimingConfiguration.\
-         buf,srvCellInfo->measurementTimingConfiguration.size);
-   if(srvCellInfo->measurementTimingConfiguration.buf == NULLP)
-   {
+   if(BuildMeasTimingConf(&srvCellInfo->measurementTimingConfiguration) != ROK)
       return RFAILED;
-   }
-   srvCellInfo->measurementTimingConfiguration.\
-	 buf[0] = duCfgParam.srvdCellLst[0].duCellInfo.measTimeCfg;
 
    return ROK;
 }
