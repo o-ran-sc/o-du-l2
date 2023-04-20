@@ -484,7 +484,7 @@ uint32_t convertFreqToArfcn(uint32_t freq)
 
    for(indexTable = 0; indexTable < 3; indexTable++)
    {
-      if(freq < arfcnFreqTable[indexTable][0])
+      if(freq < (arfcnFreqTable[indexTable][0] * 1000))
       {
          arfcn = arfcnFreqTable[indexTable][3] + ((freq - (arfcnFreqTable[indexTable][2] * 1000)) / (arfcnFreqTable[indexTable][1]));
          return (arfcn);
