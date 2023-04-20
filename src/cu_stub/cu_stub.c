@@ -286,8 +286,8 @@ void initiateInterDuHandover(uint32_t sourceDuId, uint32_t targetDuId, uint32_t 
    {
       ueCb->state = UE_HANDOVER_IN_PROGRESS;
       ueCb->hoInfo.HOType = Inter_DU_HO;
-      ueCb->hoInfo.sourceId = sourceDuId;
-      ueCb->hoInfo.targetId = targetDuId;
+      ueCb->hoInfo.srcNodeId = sourceDuId;
+      ueCb->hoInfo.tgtNodeId = targetDuId;
 
       BuildAndSendUeContextModificationReq(sourceDuId, ueCb, QUERY_CONFIG);
    }
@@ -316,13 +316,13 @@ void initiateInterDuHandover(uint32_t sourceDuId, uint32_t targetDuId, uint32_t 
  *         RFAILED - failure
  *
  * ****************************************************************/
-void initiateInterCuHandover(uint32_t sourceCuId, uint32_t targetCuId, uint32_t cuUeF1apId)
+void initiateInterCuHandover(uint32_t targetCuId, uint32_t cellId, uint32_t cuUeF1apId)
 {
     uint8_t  duIdx, ueIdx;
     CuUeCb   *ueCb = NULLP;
 
-    DU_LOG("\nINFO  --> CU_STUB: Inter-CU Handover Started for ueId [%d] from CU ID [%d] to CU ID [%d]", \
-          cuUeF1apId, sourceCuId, targetCuId);
+    DU_LOG("\nINFO  --> CU_STUB: Inter-CU Handover Started for ueId [%d] to CU ID [%d]", \
+          cuUeF1apId, targetCuId);
 
     for(duIdx = 0; duIdx < cuCb.numDu; duIdx++)
     {
@@ -343,8 +343,11 @@ void initiateInterCuHandover(uint32_t sourceCuId, uint32_t targetCuId, uint32_t 
     {   
        ueCb->state = UE_HANDOVER_IN_PROGRESS;
        ueCb->hoInfo.HOType = Xn_Based_Inter_CU_HO;
-       ueCb->hoInfo.sourceId = sourceCuId;
-       ueCb->hoInfo.targetId = targetCuId;
+       ueCb->hoInfo.srcNodeId = cuCb.cuCfgParams.cuId;
+       ueCb->hoInfo.tgtNodeId = targetCuId;
+       ueCb->hoInfo.tgtCellId = cellId;
+       ueCb->hoInfo.cuUeF1apIdSrc = ueCb->gnbCuUeF1apId;
+
        BuildAndSendUeContextModificationReq(cuCb.duInfo[duIdx].duId, ueCb, QUERY_CONFIG);
     }   
     else
@@ -485,32 +488,32 @@ void *cuConsoleHandler(void *args)
       else if(ch == 'h')
       {
          HandoverType hoType;
-         uint32_t sourceId, targetId, ueId;
+         uint32_t srcNodeId, tgtNodeId, targetCellId, ueId;
 
          DU_LOG("\n\nChoose the type of handover to initiate : \nEnter 1 for Inter-CU Handover over Xn interface\nEnter 2 for Inter-DU Handover\n");
          scanf("%d", &hoType);
 
          if(hoType == Xn_Based_Inter_CU_HO)
          {
-            DU_LOG("\nEnter Source CU ID for Inter-CU Handover : ");
-            scanf("%d", &sourceId);
             DU_LOG("\nEnter Target CU ID for Inter-CU Handover : ");
-            scanf("%d", &targetId);
+            scanf("%d", &tgtNodeId);
+            DU_LOG("\nEnter Target Physical Cell ID for Inter-CU Handover : ");
+            scanf("%d", &targetCellId);
             DU_LOG("\nEnter CU UE F1AP ID to be handed over : ");
             scanf("%d", &ueId);
 
-            initiateInterCuHandover(sourceId, targetId, ueId);
+            initiateInterCuHandover(tgtNodeId, targetCellId, ueId);
          }
          else if(hoType == Inter_DU_HO)
          {
             DU_LOG("\nEnter Source DU ID for Inter-DU Handover : ");
-            scanf("%d", &sourceId);
+            scanf("%d", &srcNodeId);
             DU_LOG("\nEnter Target DU ID for Inter-DU Handover : ");
-            scanf("%d", &targetId);
+            scanf("%d", &tgtNodeId);
             DU_LOG("\nEnter DU UE F1AP ID to be handed over : ");
             scanf("%d", &ueId);
 
-            initiateInterDuHandover(sourceId, targetId, ueId);
+            initiateInterDuHandover(srcNodeId, tgtNodeId, ueId);
          }
       }
       /* Start Idle mode paging when 'p' is received from console input */

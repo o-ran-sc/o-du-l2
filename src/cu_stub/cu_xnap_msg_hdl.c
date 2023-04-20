@@ -21,6 +21,7 @@
 #include "cu_stub_sctp.h"
 #include "cu_stub_egtp.h"
 #include "OCTET_STRING.h"
+#include "F1AP-PDU.h"
 #include "cu_f1ap_msg_hdl.h"
 #include "cu_stub.h"
 
@@ -165,16 +166,18 @@ void XNAPProcXnSetupRsp(uint32_t *destId, Buffer *mBuf)
  * @return void
  *
  ******************************************************************/
-void BuildAndSendHOReq(CuUeCb *ueCb, XnEventType event, char *xnMsg, MsgLen xnMsgLen)
+void BuildAndSendHOReq(CuUeCb *ueCb, char *xnMsg, MsgLen xnMsgLen)
 {
    Buffer *mBuf = NULLP;
 
    if(ODU_GET_MSG_BUF(1, 1, &mBuf) == ROK)
    {
       if(ODU_ADD_POST_MSG_MULT((Data *)xnMsg, xnMsgLen, mBuf) == ROK)
-      {     
-         CMCHKPK(oduUnpackUInt8, event, mBuf);
-         if(sctpSend(XN_INTERFACE, ueCb->hoInfo.targetId, mBuf) != ROK)
+      {  
+         CMCHKPK(oduUnpackUInt8, ueCb->hoInfo.cuUeF1apIdSrc, mBuf);
+         CMCHKPK(oduUnpackUInt32, ueCb->hoInfo.tgtCellId, mBuf);
+         CMCHKPK(oduUnpackUInt8, HO_REQ, mBuf);
+         if(sctpSend(XN_INTERFACE, ueCb->hoInfo.tgtNodeId, mBuf) != ROK)
          {
             DU_LOG("\nERROR  -->  CU_STUB: Failed to send handover request to peer CU");
             ueCb->state = UE_ACTIVE;
@@ -182,6 +185,147 @@ void BuildAndSendHOReq(CuUeCb *ueCb, XnEventType event, char *xnMsg, MsgLen xnMs
          }
       }     
    }
+}
+
+/*******************************************************************
+ *
+ * @brief Process received Handover Request
+ *
+ * @details
+ *
+ *    Function : XNAPProcHandoverReq
+ *
+ *    Functionality:
+ *       1. Unpack Cell Id from msg and find DU to which it belongs
+ *       2. Create UE context for UE in handover and store in DU DB
+ *       3. Decode the F1AP UE context modification msg received in 
+ *          XNAP message buffer and extract UE configurations
+ *       4. Send UE context setup request to DU with these configs 
+ *
+ * @params[in] Pointer to destination Id
+ *             Pointer to message buffer
+ * @return void
+ *
+ ******************************************************************/
+void XNAPProcHandoverReq(uint32_t destId, Buffer *mBuf)
+{
+   uint8_t duIdx, cellIdx;
+   uint8_t cuUeF1apIdSrc;
+   uint32_t cellId;
+   DuDb *duDb;
+   CuCellCb *cellCb;
+
+   DU_LOG("\nINFO  -->  CU STUB : Received Handover Request");
+   
+   /* Find DU Db and Cell Cb from cellId */
+   CMCHKUNPK(oduPackUInt32, &(cellId), mBuf);
+   for(duIdx = 0; duIdx < cuCb.numDu; duIdx++)
+   {
+      duDb = &cuCb.duInfo[duIdx];
+      SEARCH_CELL_DB(cellIdx, duDb, cellId, cellCb)
+      if(cellCb)
+         break;
+   }
+   if(!cellCb)
+   {
+      DU_LOG("\nERROR  -->  CU_STUB: Failed to find Cell Id [%d] received in HO Request", cellId);
+      return;
+   }
+
+   /* Fetch CU UE F1AP ID of UE in handover assigned by source CU */
+   CMCHKUNPK(oduPackUInt8, &(cuUeF1apIdSrc), mBuf);
+
+   /* Filling temporary UE context which will be used to create actual UE context at
+    * CU later */
+   memset(&duDb->tempUeCtxtInHo, 0, sizeof(CuUeCb));
+   duDb->tempUeCtxtInHo.cellCb = cellCb;
+   duDb->tempUeCtxtInHo.gnbCuUeF1apId = ++cuCb.gnbCuUeF1apIdGenerator;
+   duDb->tempUeCtxtInHo.state = UE_HANDOVER_IN_PROGRESS;
+   duDb->tempUeCtxtInHo.hoInfo.HOType = Xn_Based_Inter_CU_HO;
+   duDb->tempUeCtxtInHo.hoInfo.srcNodeId = destId;
+   duDb->tempUeCtxtInHo.hoInfo.tgtNodeId = cuCb.cuCfgParams.cuId;
+   duDb->tempUeCtxtInHo.hoInfo.tgtCellId = cellId;
+   duDb->tempUeCtxtInHo.hoInfo.cuUeF1apIdSrc = cuUeF1apIdSrc;
+   duDb->tempUeCtxtInHo.hoInfo.cuUeF1apIdTgt = duDb->tempUeCtxtInHo.gnbCuUeF1apId;
+
+   /* Decode UE context modification response msg received in Xn Msg */
+   char *recvBuf;
+   MsgLen recvBufLen, copyLen;
+   F1AP_PDU_t *f1apMsg = NULLP;
+   F1AP_PDU_t f1apasnmsg ;
+
+   f1apMsg = &f1apasnmsg;
+   memset(f1apMsg, 0, sizeof(F1AP_PDU_t));
+   if(F1APDecodeMsg(f1apMsg, mBuf, &recvBuf, &recvBufLen) != ROK)
+   {
+      DU_LOG("\nERROR  -->  F1AP : F1AP PDU decode failed");
+      return;
+   }  
+   procUeContextModificationResponse(duDb->duId, &duDb->tempUeCtxtInHo, f1apMsg, recvBuf, recvBufLen);
+}
+
+/*******************************************************************
+ *
+ * @brief Build And send dummy Handover request ack to Peer CU
+ *
+ * @details
+ *
+ *    Function : BuildAndSendHOReqAck
+ *
+ *    Functionality:
+ *       Build And send dummy Handover request ack to Peer CU
+ *
+ * @params[in] Pointer to UE Cb
+ *             Message to be sent
+ *             Message Length
+ * @return void
+ *
+ ******************************************************************/
+void BuildAndSendHOReqAck(CuUeCb *ueCb, char *xnMsg, MsgLen xnMsgLen)
+{
+   Buffer *mBuf = NULLP;
+
+   if(ODU_GET_MSG_BUF(1, 1, &mBuf) == ROK)
+   {   
+      if(ODU_ADD_POST_MSG_MULT((Data *)xnMsg, xnMsgLen, mBuf) == ROK)
+      {   
+         CMCHKPK(oduUnpackUInt8, ueCb->gnbCuUeF1apId, mBuf);
+         CMCHKPK(oduUnpackUInt8, ueCb->hoInfo.cuUeF1apIdSrc, mBuf);
+         CMCHKPK(oduUnpackUInt8, HO_REQ_ACK, mBuf);
+         if(sctpSend(XN_INTERFACE, ueCb->hoInfo.srcNodeId, mBuf) != ROK)
+         {
+            DU_LOG("\nERROR  -->  CU_STUB: Failed to send handover request ack to peer CU");
+         }
+      }
+   }
+}
+
+/*******************************************************************
+ *
+ * @brief Process received Handover Request Ack
+ *
+ * @details
+ *
+ *    Function : XNAPProcHandoverReqAck
+ *
+ *    Functionality:
+ *       1. Unpack CU UE F1AP ID (by SCU) and search for UE CB and
+ *          the corresponding DU DB (SDU)
+ *       2. Unpack CU UE F1AP ID (by TCU) and fill in UEcb->hoInfo
+ *       3. Decode the F1AP UE context setup response msg received in 
+ *          XNAP message buffer and extract UE configurations
+ *       4. Create RRC reconfig msg with these configurations
+ *       5. Send RRC Reconfig msg and Transmission Action = DO NOT TRANSMIT
+ *          in UE context modification request to S DU
+ *
+ * @params[in] Pointer to destination Id
+ *             Pointer to message buffer
+ * @return void
+ *
+ ******************************************************************/
+void XNAPProcHandoverReqAck(uint32_t destId, Buffer *mBuf)
+{
+   DU_LOG("\nINFO  -->  CU STUB : Received Handover Request Acknowledgement");
 }
 
 /*******************************************************************
@@ -223,56 +367,13 @@ void XNAPMsgHdlr(uint32_t *destId, Buffer *mBuf)
 
       case HO_REQ:
          {
-            DU_LOG("\nINFO  -->  CU STUB : Received Handover Request at XNAP");
-
-//Handling of HO Request to be added in next gerrit
-#if 0
-            char *recvBuf;
-            MsgLen copyCnt;
-            MsgLen recvBufLen;
-            F1AP_PDU_t *f1apMsg = NULLP;
-            asn_dec_rval_t rval; /* Decoder return value */
-            F1AP_PDU_t f1apasnmsg ;
-
-            ODU_PRINT_MSG(mBuf, 0,0); 
-
-            /* Copy mBuf into char array to decode it */
-            ODU_GET_MSG_LEN(mBuf, &recvBufLen);
-            CU_ALLOC(recvBuf, (Size)recvBufLen);
-
-            if(recvBuf == NULLP)
-            {
-               DU_LOG("\nERROR  -->  F1AP : Memory allocation failed");
-               return;
-            }
-            if(ODU_COPY_MSG_TO_FIX_BUF(mBuf, 0, recvBufLen, (Data *)recvBuf, &copyCnt) != ROK)
-            {
-               DU_LOG("\nERROR  -->  F1AP : Failed while copying %d", copyCnt);
-               return;
-            }
-
-            DU_LOG("\nDEBUG  -->  F1AP : Received flat buffer to be decoded : ");
-            for(i=0; i< recvBufLen; i++)
-            {
-               DU_LOG("%x",recvBuf[i]);
-            }
-
-            /* Decoding flat buffer into F1AP messsage */
-            f1apMsg = &f1apasnmsg;
-            memset(f1apMsg, 0, sizeof(F1AP_PDU_t));
-            rval = aper_decode(0, &asn_DEF_F1AP_PDU, (void **)&f1apMsg, recvBuf, recvBufLen, 0, 0);
-            CU_FREE(recvBuf, (Size)recvBufLen);
-
-            if(rval.code == RC_FAIL || rval.code == RC_WMORE)
-            {
-               DU_LOG("\nERROR  -->  F1AP : ASN decode failed");
-               return;
-            }
-            DU_LOG("\n");
-            xer_fprint(stdout, &asn_DEF_F1AP_PDU, f1apMsg);
-
-            procUeContextModificationResponse(0, f1apMsg, recvBuf, recvBufLen);      
-#endif            
+            XNAPProcHandoverReq(*destId, mBuf);
+            break;
+         }
+      
+      case HO_REQ_ACK:
+         {
+            XNAPProcHandoverReqAck(*destId, mBuf);
             break;
          }
       default:

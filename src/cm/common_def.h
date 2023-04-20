@@ -145,6 +145,7 @@
 #define ODU_PRINT_MSG SPrntMsg
 #define ODU_REM_PRE_MSG SRemPreMsg
 #define ODU_REM_PRE_MSG_MULT SRemPreMsgMult
+#define ODU_REM_POST_MSG_MULT SRemPstMsgMult
 #define ODU_REG_TMR_MT SRegTmrMt
 #define ODU_SEGMENT_MSG SSegMsg
 #define ODU_CAT_MSG SCatMsg
