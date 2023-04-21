@@ -18,6 +18,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "aff5b778_d9f90880",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 9727,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-04-21T10:20:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5bf42713_244b1e27",
+      "revId": "4638108970ad54dd0d5413ff3ab5c27d96bd51e2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7f4fea06_124f9279",
@@ -31,6 +49,30 @@
       "writtenOn": "2023-04-21T09:19:51Z",
       "side": 1,
       "message": "why are we not sending F1apmsg here to xn then we dont have to do the decoding again in XNAPProcHandoverAck(in future)?",
+      "range": {
+        "startLine": 9779,
+        "startChar": 33,
+        "endLine": 9779,
+        "endChar": 40
+      },
+      "revId": "4638108970ad54dd0d5413ff3ab5c27d96bd51e2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e6906898_1dc86502",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 9779,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-04-21T10:20:55Z",
+      "side": 1,
+      "message": "F1apmsg is structure and to be sent over socket, needs to be encoded into a bit string. Hence directly using the encoded string available to us.",
+      "parentUuid": "7f4fea06_124f9279",
       "range": {
         "startLine": 9779,
         "startChar": 33,
@@ -64,6 +106,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "607e488b_e0ca4660",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 11929,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-04-21T10:20:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cbb71825_394a3b67",
+      "range": {
+        "startLine": 11929,
+        "startChar": 65,
+        "endLine": 11929,
+        "endChar": 75
+      },
+      "revId": "4638108970ad54dd0d5413ff3ab5c27d96bd51e2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "65ba4f97_385fcc13",
@@ -77,6 +143,30 @@
       "writtenOn": "2023-04-21T09:19:51Z",
       "side": 1,
       "message": "why are we not sending F1apmsg here to xn then we dont have to do the F1ap decoding again in XNAPProcHandoverReq(in future)?",
+      "range": {
+        "startLine": 11970,
+        "startChar": 22,
+        "endLine": 11970,
+        "endChar": 39
+      },
+      "revId": "4638108970ad54dd0d5413ff3ab5c27d96bd51e2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "77193d9e_ded53215",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 11970,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-04-21T10:20:55Z",
+      "side": 1,
+      "message": "F1apmsg is structure and to be sent over socket, needs to be encoded into a bit string. Hence directly using the encoded string available to us.",
+      "parentUuid": "65ba4f97_385fcc13",
       "range": {
         "startLine": 11970,
         "startChar": 22,
@@ -121,6 +211,42 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "76a5e047_8c02b291",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 12596,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-04-21T10:20:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "92d38eaf_508c51a1",
+      "revId": "4638108970ad54dd0d5413ff3ab5c27d96bd51e2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a667b76c_d75a2205",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 12596,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-04-21T10:20:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "70941633_3f10f3b8",
+      "revId": "4638108970ad54dd0d5413ff3ab5c27d96bd51e2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9bec8cb9_3c2da243",
@@ -138,6 +264,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bcaa9c67_21a4e67f",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 12744,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-04-21T10:20:55Z",
+      "side": 1,
+      "message": "The recvBuf will be used in case of Handover, hence actual buffer string must be send here instead of NULL",
+      "parentUuid": "9bec8cb9_3c2da243",
+      "revId": "4638108970ad54dd0d5413ff3ab5c27d96bd51e2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a7accc7c_41b60a52",
@@ -151,6 +295,41 @@
       "writtenOn": "2023-04-21T09:19:51Z",
       "side": 1,
       "message": "we can send NULL as 4th and 5gh param",
+      "revId": "4638108970ad54dd0d5413ff3ab5c27d96bd51e2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "eb46f285_3f726521",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 12750,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-04-21T10:20:55Z",
+      "side": 1,
+      "message": "The recvBuf will be used in case of Handover, hence actual buffer string must be send here instead of NULL",
+      "parentUuid": "a7accc7c_41b60a52",
+      "revId": "4638108970ad54dd0d5413ff3ab5c27d96bd51e2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a7e40172_dc65faa7",
+        "filename": "src/cu_stub/cu_xnap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 259,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-04-21T10:20:55Z",
+      "side": 1,
+      "message": "recvBuf free after decoding",
       "revId": "4638108970ad54dd0d5413ff3ab5c27d96bd51e2",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -173,6 +352,76 @@
         "startChar": 3,
         "endLine": 264,
         "endChar": 36
+      },
+      "revId": "4638108970ad54dd0d5413ff3ab5c27d96bd51e2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "56bb60be_6a5df2b2",
+        "filename": "src/cu_stub/cu_xnap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 264,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-04-21T10:20:55Z",
+      "side": 1,
+      "message": "when source DU sends UE context modification response, it sends SRBs, DRBs and other cellGroupConfig related configuration.. I need to store these configuration in UE Cb at target side.. all the code to extract and store the configs are present in procModResponse function as it was used in Inter-DU HO.. Hence I have used the same function rather than writing new one. It will extract config and store in the new context created for UE in handover at target CU side",
+      "parentUuid": "40924df0_f5865359",
+      "range": {
+        "startLine": 264,
+        "startChar": 3,
+        "endLine": 264,
+        "endChar": 36
+      },
+      "revId": "4638108970ad54dd0d5413ff3ab5c27d96bd51e2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "84154579_cda13d0c",
+        "filename": "src/cu_stub/cu_xnap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 264,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-04-21T10:20:55Z",
+      "side": 1,
+      "message": "Sent recvBuf \u003d NULL and recvBufLen \u003d 0 in procUeContextModificationResponse here since recvBuf is of no use anymore.",
+      "range": {
+        "startLine": 264,
+        "startChar": 81,
+        "endLine": 264,
+        "endChar": 88
+      },
+      "revId": "4638108970ad54dd0d5413ff3ab5c27d96bd51e2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "10eb9dff_36832a7e",
+        "filename": "src/cu_stub/cu_xnap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 376,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-04-21T10:20:55Z",
+      "side": 1,
+      "message": "This mBuf is free in the parent function.",
+      "range": {
+        "startLine": 376,
+        "startChar": 44,
+        "endLine": 376,
+        "endChar": 48
       },
       "revId": "4638108970ad54dd0d5413ff3ab5c27d96bd51e2",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
