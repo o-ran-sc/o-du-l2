@@ -1,0 +1,181 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5bf42713_244b1e27",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 9727,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-04-21T09:19:51Z",
+      "side": 1,
+      "message": "inside this else if ((ueCb-\u003estate \u003d\u003d UE_HANDOVER_IN_PROGRESS) we can have nested if for inter_DU_HO and Inter_CU_HO",
+      "revId": "4638108970ad54dd0d5413ff3ab5c27d96bd51e2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7f4fea06_124f9279",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 9779,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-04-21T09:19:51Z",
+      "side": 1,
+      "message": "why are we not sending F1apmsg here to xn then we dont have to do the decoding again in XNAPProcHandoverAck(in future)?",
+      "range": {
+        "startLine": 9779,
+        "startChar": 33,
+        "endLine": 9779,
+        "endChar": 40
+      },
+      "revId": "4638108970ad54dd0d5413ff3ab5c27d96bd51e2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cbb71825_394a3b67",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 11929,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-04-21T09:19:51Z",
+      "side": 1,
+      "message": "cant we extract tempUeCtxt from duId itself?",
+      "range": {
+        "startLine": 11929,
+        "startChar": 65,
+        "endLine": 11929,
+        "endChar": 75
+      },
+      "revId": "4638108970ad54dd0d5413ff3ab5c27d96bd51e2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "65ba4f97_385fcc13",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 11970,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-04-21T09:19:51Z",
+      "side": 1,
+      "message": "why are we not sending F1apmsg here to xn then we dont have to do the F1ap decoding again in XNAPProcHandoverReq(in future)?",
+      "range": {
+        "startLine": 11970,
+        "startChar": 22,
+        "endLine": 11970,
+        "endChar": 39
+      },
+      "revId": "4638108970ad54dd0d5413ff3ab5c27d96bd51e2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "92d38eaf_508c51a1",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 12596,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-04-21T09:19:51Z",
+      "side": 1,
+      "message": "add fn decrp",
+      "revId": "4638108970ad54dd0d5413ff3ab5c27d96bd51e2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "70941633_3f10f3b8",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 12596,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-04-21T09:19:51Z",
+      "side": 1,
+      "message": "add fn desc",
+      "revId": "4638108970ad54dd0d5413ff3ab5c27d96bd51e2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9bec8cb9_3c2da243",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 12744,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-04-21T09:19:51Z",
+      "side": 1,
+      "message": "we can send NULL in 3rd and 4th param",
+      "revId": "4638108970ad54dd0d5413ff3ab5c27d96bd51e2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a7accc7c_41b60a52",
+        "filename": "src/cu_stub/cu_f1ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 12750,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-04-21T09:19:51Z",
+      "side": 1,
+      "message": "we can send NULL as 4th and 5gh param",
+      "revId": "4638108970ad54dd0d5413ff3ab5c27d96bd51e2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "40924df0_f5865359",
+        "filename": "src/cu_stub/cu_xnap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 264,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-04-21T09:19:51Z",
+      "side": 1,
+      "message": "why are we using ModResponse here.. since it is processing of HO req.. why dont we have it as a separate function?",
+      "range": {
+        "startLine": 264,
+        "startChar": 3,
+        "endLine": 264,
+        "endChar": 36
+      },
+      "revId": "4638108970ad54dd0d5413ff3ab5c27d96bd51e2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
