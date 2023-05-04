@@ -9778,7 +9778,7 @@ uint8_t procUeContextSetupResponse(uint32_t duId, F1AP_PDU_t *f1apMsg, char *rec
       }
       else if(ueCb->hoInfo.HOType == Xn_Based_Inter_CU_HO)
       {
-         BuildAndSendHOReqAck(ueCb, recvBuf, recvBufLen);
+         BuildAndSendHOReqAck(ueCb, duToCuRrcContainer->buf, duToCuRrcContainer->size);
       }
    }
 
