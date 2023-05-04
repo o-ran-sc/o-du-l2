@@ -316,23 +316,89 @@ void BuildAndSendHOReqAck(CuUeCb *ueCb, char *xnMsg, MsgLen xnMsgLen)
  *    Function : XNAPProcHandoverReqAck
  *
  *    Functionality:
- *       1. Unpack CU UE F1AP ID (by SCU) and search for UE CB and
+ *       1. Unpack CU UE F1AP ID (by SCU) and fetch UE CB and
  *          the corresponding DU DB (SDU)
  *       2. Unpack CU UE F1AP ID (by TCU) and fill in UEcb->hoInfo
- *       3. Decode the F1AP UE context setup response msg received in 
- *          XNAP message buffer and extract UE configurations
- *       4. Create RRC reconfig msg with these configurations
- *       5. Send RRC Reconfig msg and Transmission Action = DO NOT TRANSMIT
- *          in UE context modification request to S DU
+ *       3. Decode DU to CU RRC Container received in XNAP message 
+ *          buffer and extract UE configurations.
+ *       4. Send UE Context modification response to SDU conatining 
+ *          RRC Reconfig Message and command to stop transmission
+ *          to UE in handover.
  *
- * @params[in] Pointer to destination Id
+ * @params[in] Destination Id
  *             Pointer to message buffer
  * @return void
  *
  ******************************************************************/
 void XNAPProcHandoverReqAck(uint32_t destId, Buffer *mBuf)
 {
+   uint8_t   duIdx, duId, ueIdx;
+   uint8_t   cuUeF1apIdSrc;
+   uint8_t   cuUeF1apIdTgt;
+   DuDb      *duDb;
+   CuUeCb    *ueCb;
+
    DU_LOG("\nINFO  -->  CU STUB : Received Handover Request Acknowledgement");
+   
+   /* Fetch UE CB and DU DB in Source CU for UE under Inter-CU Handover */
+   CMCHKUNPK(oduPackUInt8, &(cuUeF1apIdSrc), mBuf);
+   for(duIdx = 0; duIdx < cuCb.numDu; duIdx++)
+   {
+      for(ueIdx = 0; ueIdx < MAX_NUM_CELL * MAX_NUM_UE; ueIdx++)
+      {
+         if(cuCb.duInfo[duIdx].ueCb[ueIdx].gnbCuUeF1apId == cuUeF1apIdSrc)
+         {
+            duDb = &cuCb.duInfo[duIdx];
+            ueCb = &cuCb.duInfo[duIdx].ueCb[ueIdx];
+            break;
+         }
+      }
+      if(duDb && ueCb)
+         break;
+   }
+   if(!duDb || !ueCb)
+   {
+      DU_LOG("\nERROR  -->  CU STUB : UE CB not found for CU UE F1AP ID [%d]", cuUeF1apIdSrc);
+      return;
+   }
+
+   /* Decode CU UE F1AP ID assigned by Target CU to UE in handover and store 
+    * this in hoInfo block for use during future message exchange between the
+    * two CUs */
+   CMCHKUNPK(oduPackUInt8, &(cuUeF1apIdTgt), mBuf);
+   ueCb->hoInfo.cuUeF1apIdTgt = cuUeF1apIdTgt; 
+
+   /* Decode DU to CU RRC Container received in Xn Msg */
+   OCTET_STRING_t rrcCont;
+   MsgLen copyCnt;
+
+   /* Copy mBuf into char array to decode it */
+   memset(&rrcCont, 0, sizeof(OCTET_STRING_t));
+   ODU_GET_MSG_LEN(mBuf, &rrcCont.size);
+   CU_ALLOC(rrcCont.buf, rrcCont.size);
+   if(rrcCont.buf == NULLP)
+   {
+      DU_LOG("\nERROR  -->  XNAP : Memory allocation failed");
+      return;
+   }
+   if(ODU_COPY_MSG_TO_FIX_BUF(mBuf, 0, rrcCont.size, (Data *)rrcCont.buf, &copyCnt) != ROK)
+   {
+      DU_LOG("\nERROR  -->  F1AP : Failed while copying %d", copyCnt);
+      return;
+   }
+
+   /* Extract DU to CU RRC container information and store in UE CB */
+   extractDuToCuRrcCont(ueCb, rrcCont);
+
+   CU_FREE(rrcCont.buf, rrcCont.size);
+
+   /* Send UE Context Modification request after filling it using the information received in
+    * Xn Handover Request Ack */
+   if(BuildAndSendUeContextModificationReq(duDb->duId, ueCb, STOP_DATA_TX) != ROK)
+   {
+      DU_LOG("\nERROR  ->  F1AP : Failed at BuildAndSendUeContextModificationReq()");
+      return;
+   }
 }
 
 /*******************************************************************

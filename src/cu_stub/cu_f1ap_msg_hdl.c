@@ -9724,7 +9724,7 @@ uint8_t procUeContextSetupResponse(uint32_t duId, F1AP_PDU_t *f1apMsg, char *rec
          return RFAILED;
       }     
    }
-   else if(ueCb->state == UE_HANDOVER_IN_PROGRESS)
+   else
    {
       if(ueCb->hoInfo.HOType == Inter_DU_HO)
       {
@@ -9778,7 +9778,7 @@ uint8_t procUeContextSetupResponse(uint32_t duId, F1AP_PDU_t *f1apMsg, char *rec
       }
       else if(ueCb->hoInfo.HOType == Xn_Based_Inter_CU_HO)
       {
-         BuildAndSendHOReqAck(ueCb, recvBuf, recvBufLen);
+         BuildAndSendHOReqAck(ueCb, duToCuRrcContainer->buf, duToCuRrcContainer->size);
       }
    }
 
@@ -11968,7 +11968,13 @@ uint8_t procUeContextModificationResponse(uint32_t duId, F1AP_PDU_t *f1apMsg, ch
                    duUeF1apId = ueCtxtModRsp->protocolIEs.list.array[idx]->value.choice.GNB_DU_UE_F1AP_ID;
                    ueCb = &duDb->ueCb[duUeF1apId-1];
 
-                   if((ueCb->state == UE_HANDOVER_IN_PROGRESS) && (ueCb->hoInfo.HOType == Xn_Based_Inter_CU_HO))
+                   /* In case UE context modification response is received at source GNB CU from source GNB DU 
+                    * for a UE in handover, send HO request to target GNB only if not sent already.
+                    * If HO Req is already sent to target GNB, and an HO Req Ack is received, then 
+                    * ueCb->hoInfo.cuUeF1apIdTgt will be non-zero
+                    */
+                   if((ueCb->state == UE_HANDOVER_IN_PROGRESS) && (ueCb->hoInfo.HOType == Xn_Based_Inter_CU_HO) && \
+                      (ueCb->hoInfo.cuUeF1apIdTgt == 0))
                    {
                       BuildAndSendHOReq(ueCb, recvBuf, recvBufLen);
                    }
