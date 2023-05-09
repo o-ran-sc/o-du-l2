@@ -9846,29 +9846,36 @@ uint8_t procUlRrcMsg(uint32_t duId, F1AP_PDU_t *f1apMsg)
 
                if(duDb->ueCb[duUeF1apId-1].state == UE_HANDOVER_IN_PROGRESS)
                {
-                  uint8_t ueIdx = 0;
-                  uint8_t srcDuId = duDb->ueCb[duUeF1apId-1].hoInfo.srcNodeId;
-                  DuDb *srcDuDb = NULLP;
+                  if(duDb->ueCb[duUeF1apId-1].hoInfo.HOType == Inter_DU_HO)
+                  {
+                     uint8_t ueIdx = 0;
+                     uint8_t srcDuId = duDb->ueCb[duUeF1apId-1].hoInfo.srcNodeId;
+                     DuDb *srcDuDb = NULLP;
+
+                     /* Release UE context in source DU because the UE is now
+                      * attached to target DU */
+                     SEARCH_DU_DB(duIdx, srcDuId, srcDuDb);
+                     for(ueIdx = 0; ueIdx < srcDuDb->numUe; ueIdx++)
+                     {
+                        if(srcDuDb->ueCb[ueIdx].gnbCuUeF1apId == cuUeF1apId)
+                        {
+                           ret = BuildAndSendUeContextReleaseCommand(srcDuId, srcDuDb->ueCb[ueIdx].gnbCuUeF1apId, srcDuDb->ueCb[ueIdx].gnbDuUeF1apId); 
+                           if(ret != ROK)
+                           {
+                              DU_LOG("\nINFO  -->  F1AP: Failed to build and send UE context release command to source DU Id [%d]", srcDuId);
+                           }
+                           break;
+                        }
+                     }
+                  }
+                  else 
+                  {
+                     BuildAndSendUeContextRelease(&duDb->ueCb[duUeF1apId-1]);
+                  }
 
                   /* In target DU DB, mark UE as active and delete HO info */
                   duDb->ueCb[duUeF1apId-1].state = UE_ACTIVE;
                   memset(&duDb->ueCb[duUeF1apId-1].hoInfo, 0, sizeof(HandoverInfo));
-
-                  /* Release UE context in source DU because the UE is now
-                   * attached to target DU */
-                  SEARCH_DU_DB(duIdx, srcDuId, srcDuDb);
-                  for(ueIdx = 0; ueIdx < srcDuDb->numUe; ueIdx++)
-                  {
-                     if(srcDuDb->ueCb[ueIdx].gnbCuUeF1apId == cuUeF1apId)
-                     {
-                        ret = BuildAndSendUeContextReleaseCommand(srcDuId, srcDuDb->ueCb[ueIdx].gnbCuUeF1apId, srcDuDb->ueCb[ueIdx].gnbDuUeF1apId); 
-                        if(ret != ROK)
-                        {
-                           DU_LOG("\nINFO  -->  F1AP: Failed to build and send UE context release command to source DU Id [%d]", srcDuId);
-                        }
-                        break;
-                     }
-                  }
                   return ret;
                }
                break;

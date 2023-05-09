@@ -117,7 +117,8 @@ typedef enum
    XN_SETUP_REQ,
    XN_SETUP_RSP,
    HO_REQ,
-   HO_REQ_ACK
+   HO_REQ_ACK,
+   UE_CTXT_REL
 }XnEventType;
 
 typedef enum

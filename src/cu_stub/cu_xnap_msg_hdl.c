@@ -403,6 +403,89 @@ void XNAPProcHandoverReqAck(uint32_t destId, Buffer *mBuf)
 
 /*******************************************************************
  *
+ * @brief Build And send dummy UE Context Release to Peer CU
+ *
+ * @details
+ *
+ *    Function : BuildAndSendUeContextRelease
+ *
+ *    Functionality:
+ *       Build And send dummy UE Context Release to Peer CU
+ *
+ * @params[in] Pointer to UE Cb
+ * @return void
+ *
+ ******************************************************************/
+void BuildAndSendUeContextRelease(CuUeCb *ueCb)
+{
+   Buffer *mBuf = NULLP;
+
+   if(ODU_GET_MSG_BUF(1, 1, &mBuf) == ROK)
+   {
+      CMCHKPK(oduUnpackUInt8, ueCb->hoInfo.cuUeF1apIdSrc, mBuf);
+      CMCHKPK(oduUnpackUInt8, UE_CTXT_REL, mBuf);
+      if(sctpSend(XN_INTERFACE, ueCb->hoInfo.srcNodeId, mBuf) != ROK)
+      {
+         DU_LOG("\nERROR  -->  CU_STUB: Failed to send UE context release to peer CU");
+      }
+   }
+
+   return;
+}
+
+/*******************************************************************
+ * @brief Process received UE Context Release
+ *
+ * @details
+ *
+ *    Function : XNAPProcUeContextRel
+ *
+ *    Functionality:
+ *       1. Unpack CU UE F1AP ID (by SCU) and fetch UE CB and
+ *          the corresponding DU DB (SDU)
+ *       2. Send UE Context release command to SDU 
+ *
+ * @params[in] Destination Id
+ *             Pointer to message buffer
+ * @return void
+ *
+ ******************************************************************/
+void XNAPProcUeContextRel(uint32_t destId, Buffer *mBuf)
+{
+   uint8_t   duIdx, duId, ueIdx;
+   uint8_t   cuUeF1apIdSrc;
+   DuDb      *duDb;
+   CuUeCb    *ueCb;
+
+   DU_LOG("\nINFO  -->  CU STUB : Received UE Context Release");
+
+   /* Fetch UE CB and DU DB in Source CU for UE under Inter-CU Handover */
+   CMCHKUNPK(oduPackUInt8, &(cuUeF1apIdSrc), mBuf);
+   for(duIdx = 0; duIdx < cuCb.numDu; duIdx++)
+   {
+      for(ueIdx = 0; ueIdx < MAX_NUM_CELL * MAX_NUM_UE; ueIdx++)
+      {
+         if(cuCb.duInfo[duIdx].ueCb[ueIdx].gnbCuUeF1apId == cuUeF1apIdSrc)
+         {
+            duDb = &cuCb.duInfo[duIdx];
+            ueCb = &duDb->ueCb[ueIdx];
+            break;
+         }
+      }
+      if(duDb && ueCb)
+         break;
+   }
+   if(!duDb || !ueCb)
+   {
+      DU_LOG("\nERROR  -->  CU STUB : UE CB not found for CU UE F1AP ID [%d]", cuUeF1apIdSrc);
+      return;
+   }
+
+   BuildAndSendUeContextReleaseCommand(duDb->duId, ueCb->gnbCuUeF1apId, ueCb->gnbDuUeF1apId);
+}
+
+/*******************************************************************
+ *
  * @brief Handle incoming messages at Xn interface
  *
  * @details
@@ -447,6 +530,11 @@ void XNAPMsgHdlr(uint32_t *destId, Buffer *mBuf)
       case HO_REQ_ACK:
          {
             XNAPProcHandoverReqAck(*destId, mBuf);
+            break;
+         }
+      case UE_CTXT_REL:
+         {
+            XNAPProcUeContextRel(*destId, mBuf);
             break;
          }
       default:
