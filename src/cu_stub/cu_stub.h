@@ -116,7 +116,9 @@ typedef enum
 {
    XN_SETUP_REQ,
    XN_SETUP_RSP,
-   HO_REQ
+   HO_REQ,
+   HO_REQ_ACK,
+   UE_CTXT_REL
 }XnEventType;
 
 typedef enum
@@ -153,8 +155,11 @@ typedef struct cuCfgParams
 typedef struct handoverInfo
 {
    HandoverType HOType;
-   uint32_t sourceId;   /* If Inter_DU HO, this is Source DU ID. In case of Inter CU HO, this is Source CU ID */
-   uint32_t targetId;   /* If Inter_DU HO, this is Taregt DU ID. In case of Inter CU HO, this is Target CU ID */
+   uint32_t srcNodeId;   /* If Inter_DU HO, this is Source DU ID. In case of Inter CU HO, this is Source CU ID */
+   uint32_t tgtNodeId;   /* If Inter_DU HO, this is Taregt DU ID. In case of Inter CU HO, this is Target CU ID */
+   uint32_t tgtCellId;   /* Cell Id in target node to which UE is to be handed over */
+   uint8_t  cuUeF1apIdSrc;  /* Used for Inter-CU HO. CU UE F1AP ID of UE in source CU */
+   uint8_t  cuUeF1apIdTgt;  /* Used for Inter-CU HO. CU UE F1AP ID of UE in target CU */
 }HandoverInfo;
 
 typedef struct dlAmCfg
@@ -352,6 +357,7 @@ typedef struct duDb
    CuCellCb cellCb[MAX_NUM_CELL];  
    uint8_t  numUe;
    CuUeCb   ueCb[MAX_NUM_CELL * MAX_NUM_UE];
+   CuUeCb   *tempUeCtxtInHo;
 }DuDb;
 
 typedef struct cuGlobalCb

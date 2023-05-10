@@ -43,6 +43,7 @@
 #include "PagingCycle.h"
 #include "PCCH-Config.h"
 #include "TimeAlignmentTimer.h"
+#include "BCCH-DL-SCH-Message.h"
 #include "RACH-ConfigGeneric.h"
 #include "PUSCH-TimeDomainResourceAllocation.h"
 #include "PUCCH-ConfigCommon.h"
