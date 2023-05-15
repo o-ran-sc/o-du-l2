@@ -2700,7 +2700,8 @@ uint8_t duUpdateTunnelCfgDb(uint8_t ueId, uint8_t cellId, DuUeCfg *duUeCfg)
 
 uint8_t duUpdateDuUeCbCfg(uint8_t ueId, uint8_t cellId)
 {
-   uint8_t ret = ROK, cellIdx = 0, crnti=0;
+   uint8_t ret = ROK;
+   uint16_t cellIdx = 0, crnti=0;
    DuUeCb *ueCb = NULLP;
 
    GET_CELL_IDX(cellId, cellIdx);
@@ -3149,7 +3150,7 @@ void fillRlcUeRecfg(DuRlcUeCfg *duRlcUeCfg, RlcUeRecfg *rlcUeRecfg)
  *
  * ****************************************************************/
 
-uint8_t duBuildAndSendUeRecfgReqToRlc(uint8_t cellId, uint8_t gnbDuUeF1apId, uint8_t crnti, DuUeCfg *ueCfgDb)
+uint8_t duBuildAndSendUeRecfgReqToRlc(uint16_t cellId, uint8_t gnbDuUeF1apId, uint16_t crnti, DuUeCfg *ueCfgDb)
 {
    uint8_t ret = ROK;
    DuRlcUeCfg *duRlcUeCfg = NULLP;
@@ -3276,7 +3277,7 @@ void fillMacUeRecfg(DuMacUeCfg *duMacUeCfg, MacUeRecfg *macUeRecfg)
  *
  * ****************************************************************/
 
-uint8_t duBuildAndSendUeRecfgReqToMac(uint8_t cellId, uint8_t duUeF1apId, uint8_t crnti, DuUeCfg *ueCfgDb)
+uint8_t duBuildAndSendUeRecfgReqToMac(uint16_t cellId, uint8_t duUeF1apId, uint16_t crnti, DuUeCfg *ueCfgDb)
 {
    uint8_t ret = ROK;
    DuMacUeCfg *duMacUeCfg = NULLP;

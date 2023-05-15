@@ -182,7 +182,7 @@ uint8_t unpackRxData(uint16_t cellId, SlotTimingInfo slotInfo, RxDataIndPdu *rxD
             {
                uint8_t  lcgId         = 0;
                uint8_t  bufferSizeIdx = 0;
-               uint8_t  crnti         = 0;
+               uint16_t  crnti         = 0;
                uint32_t bufferSize    = 0;
 
                pduLen--;
@@ -207,7 +207,7 @@ uint8_t unpackRxData(uint16_t cellId, SlotTimingInfo slotInfo, RxDataIndPdu *rxD
                DataVolInfo dataVolInfo[MAX_NUM_LOGICAL_CHANNEL_GROUPS];
                memset(dataVolInfo, 0,MAX_NUM_LOGICAL_CHANNEL_GROUPS * sizeof(DataVolInfo));
                uint8_t  lcgIdx        = 0;
-               uint8_t  crnti         = 0;
+               uint16_t  crnti         = 0;
                uint8_t  numLcg        = 0;
                uint8_t  lcgIdxPos     = 0;
                pduLen--;

@@ -3287,7 +3287,7 @@ uint8_t BuildRlcConfigAm(AmBearerCfg *amCfg, struct RLC_Config *rlcConfig)
    /* Fill default AM UL configuration if input pointer to DU database is NULL */
    if(amCfg == NULLP)
    {
-      *(rlcConfig->choice.am->ul_AM_RLC.sn_FieldLength) = SN_FIELD_LEN;
+      *(rlcConfig->choice.am->ul_AM_RLC.sn_FieldLength) = SN_FIELD_LEN_12BIT;
       rlcConfig->choice.am->ul_AM_RLC.t_PollRetransmit  = T_POLL_RETRANSMIT;
       rlcConfig->choice.am->ul_AM_RLC.pollPDU           = POLL_PDU;
       rlcConfig->choice.am->ul_AM_RLC.pollByte          = POLL_BYTE;
@@ -3314,7 +3314,7 @@ uint8_t BuildRlcConfigAm(AmBearerCfg *amCfg, struct RLC_Config *rlcConfig)
    /* Fill default AM DL configuration if input pointer to DU database is NULL */
    if(amCfg == NULLP)
    {
-      *(rlcConfig->choice.am->dl_AM_RLC.sn_FieldLength) = SN_FIELD_LEN;
+      *(rlcConfig->choice.am->dl_AM_RLC.sn_FieldLength) = SN_FIELD_LEN_12BIT;
       rlcConfig->choice.am->dl_AM_RLC.t_Reassembly      = T_REASSEMBLY;
       rlcConfig->choice.am->dl_AM_RLC.t_StatusProhibit  = T_STATUS_PROHIBHIT;
    }

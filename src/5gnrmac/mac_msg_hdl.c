@@ -764,7 +764,7 @@ uint8_t macProcLongBsr(uint16_t cellId, uint16_t crnti,uint8_t numLcg,\
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t buildAndSendHarqInd(HarqInfoF0F1 *harqInfo, uint8_t crnti, uint16_t cellIdx, SlotTimingInfo *slotInd)
+uint8_t buildAndSendHarqInd(HarqInfoF0F1 *harqInfo, uint16_t crnti, uint16_t cellIdx, SlotTimingInfo *slotInd)
 {
    uint16_t harqCounter=0;
    Pst pst;
@@ -807,7 +807,7 @@ uint8_t buildAndSendHarqInd(HarqInfoF0F1 *harqInfo, uint8_t crnti, uint16_t cell
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t buildAndSendSrInd(UciInd *macUciInd, uint8_t crnti)
+uint8_t buildAndSendSrInd(UciInd *macUciInd, uint16_t crnti)
 {
    uint16_t cellIdx;
    Pst pst;
