@@ -28,9 +28,9 @@
 #define DU_ID 1
 
 #ifndef O1_ENABLE
-#define DU_IP_V4_ADDR "192.168.130.81"
-#define CU_IP_V4_ADDR "192.168.130.82"
-#define RIC_IP_V4_ADDR "192.168.130.80"
+#define DU_IP_V4_ADDR "192.178.85.20"
+#define CU_IP_V4_ADDR "192.178.85.10"
+#define RIC_IP_V4_ADDR "192.178.85.40"
 
 #define F1_SCTP_PORT 38472  /* As per the spec 38.472, the registered port number for F1AP is 38472 */
 #define E2_SCTP_PORT 36421
@@ -47,8 +47,8 @@
 #ifdef NR_TDD
 #define DUPLEX_MODE DUP_MODE_TDD
 #define NR_NUMEROLOGY 1
-#define NR_DL_ARFCN 623400
-#define NR_UL_ARFCN 623400
+#define NR_DL_ARFCN 630164
+#define NR_UL_ARFCN 630164
 #define NR_FREQ_BAND 78
 #define NR_SCS SCS_30KHZ
 #define NR_BANDWIDTH BANDWIDTH_100MHZ
@@ -234,7 +234,7 @@
 #define IE_EXTENSION_LIST_COUNT 1
 
 /* Macro definitions for MIB/SIB1 */
-#define SYS_FRAME_NUM 0
+#define SYS_FRAME_NUM 240
 #define SPARE 0
 #define SSB_SC_OFFSET 0
 #define DU_RANAC 1
@@ -297,7 +297,7 @@
 #define MAX_RATIO        30
 #define MIN_RATIO        20
 #define DEDICATED_RATIO  10
-#define NUM_OF_SUPPORTED_SLICE  2
+#define NUM_OF_SUPPORTED_SLICE  1
 
 #ifdef NR_DRX
 /* Macros for Drx configuration */

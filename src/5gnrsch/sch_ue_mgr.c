@@ -1174,6 +1174,7 @@ uint8_t SchModUeConfigReq(Pst *pst, SchUeRecfgReq *ueRecfg)
 
    if(cellCb == NULLP)
    {
+      DU_LOG("\nERROR  -->  SCH : SchCellCb not found at SchModUeConfigReq() ");
       SchSendUeRecfgRspToMac(ueRecfg, inst, RSP_NOK, &recfgRsp);
       return RFAILED;
    }
@@ -1537,9 +1538,12 @@ void schUpdateHarqFdbk(SchUeCb *ueCb, uint8_t numHarq, uint8_t *harqPayload, Slo
    else
    {
       node = hqDlMap->hqList.first;
-      hqP = (SchDlHqProcCb*)node->node;
-      cmLListDelFrm(&hqDlMap->hqList, &hqP->ulSlotLnk);
-      schMsg4FeedbackUpdate(hqP, harqPayload[fdbkPos++]);
+      if(node)
+      {
+	      hqP = (SchDlHqProcCb*)node->node;
+	      cmLListDelFrm(&hqDlMap->hqList, &hqP->ulSlotLnk);
+	      schMsg4FeedbackUpdate(hqP, harqPayload[fdbkPos++]);
+      }
    }
 }
 /**********************************************************************

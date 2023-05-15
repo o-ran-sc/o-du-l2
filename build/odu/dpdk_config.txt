@@ -1,0 +1,65 @@
+###############################################################################
+# 
+# Configure dpdk thread ID to map to which logical core
+#
+###############################################################################
+
+hugepage_config_file    "gnb_du_rte_config"
+max_dpdk_core           2
+enable_fronthaul        1
+enable_backhaul         0
+eal_tid                 0
+fronthaul_rx_tid        1
+backhaul_tx_rx_tid      8
+tti_tmr_tid             10
+fh_vlan_tag_pres		0
+mh_vlan_tag_pres		0
+
+###############################################################################
+#
+# Configure the PCI device address for each dpdk ports.
+#
+###############################################################################
+
+pci_address_fronthaul   0000:66:00.0
+pci_address_backhaul    0000:65:00.3
+
+#MAC address to receive and transmit
+#Example: 90:E2:BA:EB:0C:11
+dst_mac_address_fronthaul      0xf8 0xf2 0x1e 0xcd 0xde 0x40
+tgen_src_mac_address_backhaul  0x90 0xe2 0xba 0xeb 0x0c 0x10
+tgen_dst_mac_address_backhaul  0x90 0xe2 0xba 0xeb 0x0c 0x11
+
+#Validate the packet's src MAC address received at uesim 
+du_mac_address_validation  0
+
+###############################################################################
+#
+# Configure the Segments Size
+#
+###############################################################################
+
+enable_jumbo_payload    1
+max_segment_size        8192
+
+enable_crypto_init      0               # it will enable AS security with Intel Crypto libs
+
+max_num_crypto_session  32000           #if null ciphering and non-null integrity then 
+                                        # total no of crypto session = { (2(SRB1) + 2(SRB2)) x no_ue}
+                                        #if non-null ciphering and non-null integrity then 
+                                        # total no of crypto session = { (4(SRB1) + 4(SRB2)) x no_ue}
+                                        
+pci_address             crypto_snow3g   # PCI_ADDRESS crypto_snow3g for NIA1/NEA1, crypto_aesni_mb for NIA2/NEA2, crypto_zuc for NIA3
+      
+                                        
+###############################################################################
+#
+# Configure the UDP port and address for NFAPI P7 communication over DPDK
+# uncomment the below configurations when NFAPI feature is enabled
+#
+###############################################################################
+
+#uesim_udp_port          9876
+#gnb_udp_port            6789
+#uesim_udp_addr          172.27.2.106
+#gnb_udp_addr            172.27.2.112

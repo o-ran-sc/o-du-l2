@@ -26,7 +26,7 @@ export S
 
 #-DSSINT2 -DSS_TICKS_SEC=100 
 # MTSS defines
-SS_FLAGS=-DSS -DSS_MT -DSUNOS -DSS_LINUX -UCONRD -UNOFILESYS -USS_DEBG_MEM_CORRUP_LEVEL1 \
+SS_FLAGS=-DSS -DM32 -DMSSSE3  -DSS_MT -DSUNOS -DSS_LINUX -UCONRD -UNOFILESYS -USS_DEBG_MEM_CORRUP_LEVEL1 \
     -DSS_TICKS_SEC=100 -USSI_DEBUG_LEVEL1 -USS_LICENSE_CHECK -DANSI -D_GNU_SOURCE\
     -D_REENTRANT -D__EXTENSIONS__ -DDEBUGNOEXIT 
 
@@ -67,6 +67,7 @@ ALL_FLAGS=$(SS_FLAGS) $(CMN_FLAGS) $(ENV_FLAGS) $(RVW_FLAGS) $(TENB_FLAGS) $(LNX
 #C_OPTS+=-g -O3 -pipe -pedantic -Wall -Werror -Wno-comment -Wshadow 
 C_OPTS+=-g -pipe -Wall -Wno-comment -Wshadow \
     -Wcast-qual -fno-strict-aliasing -fsigned-char --std=c99
+#-m32 -mssse3
 
 COPTS_WO_WERROR=-g -O3 -pipe -pedantic -Wall -Wno-comment -Wshadow \
     -Wcast-qual -fno-strict-aliasing -fsigned-char --std=c99
