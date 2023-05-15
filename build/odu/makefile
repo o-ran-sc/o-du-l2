@@ -74,11 +74,12 @@ endif
 # macro for output file name and makefile name
 #
 
-PLTFRM_FLAGS= -UMSPD -DODU -DINTEL_FAPI -UODU_MEMORY_DEBUG_LOG -DDEBUG_ASN_PRINT -DDEBUG_PRINT -DERROR_PRINT -USTART_DL_UL_DATA -UNR_DRX -UCALL_FLOW_DEBUG_LOG -UODU_SLOT_IND_DEBUG_LOG
+PLTFRM_FLAGS= -DLONG_MSG -UMSPD -DODU -DINTEL_FAPI -UODU_MEMORY_DEBUG_LOG -DDEBUG_ASN_PRINT -DDEBUG_PRINT -DERROR_PRINT -USTART_DL_UL_DATA -UNR_DRX -UCALL_FLOW_DEBUG_LOG -UODU_SLOT_IND_DEBUG_LOG -DUE_PAL_MODE_TEST
 
 ifeq ($(MODE),TDD)
    PLTFRM_FLAGS += -DNR_TDD
 endif
+
 ifeq ($(CA_ENABLE),YES)
    PLTFRM_FLAGS += -DCA_ENABLE=YES
 endif
@@ -86,6 +87,7 @@ endif
 ifeq ($(NODE),TEST_STUB)
 	PLTFRM_FLAGS+=-DODU_TEST_STUB
 endif
+
 ifeq ($(PHY), INTEL_L1)
 	PLTFRM_FLAGS+=-DSS_USE_WLS_MEM -DINTEL_WLS_MEM -DDEBUG_MODE -DINTEL_L1_V20_03_ONWARDS
 ifeq ($(PHY_MODE),TIMER)
@@ -93,8 +95,16 @@ ifeq ($(PHY_MODE),TIMER)
 endif
 endif
 
+ifeq ($(PHY), UE_SIM)
+   PLTFRM_FLAGS+=-DUE_SIM_TEST -DFAPI_222_10_03
+endif
+
 ifeq ($(O1_ENABLE),YES)
 	PLTFRM_FLAGS+=-DO1_ENABLE
+endif
+
+ifeq ($(DPDK),YES)
+	PLTFRM_FLAGS+=-DDPDK_ENABLE
 endif
 
 # The include options get merged with the options needed by
@@ -109,7 +119,17 @@ export BUILD
 export I_OPTS
 
 # Add to the linker options the platform specific components
-L_OPTS+=-lnsl -lrt -lm -lpthread -lsctp 
+L_OPTS+=-L/root/pborla/5G_UESIM_SRC_NEw/5G_UESIM_SRC/Dependency/dpdkLibs/ -lnsl -lrt -lm -lpthread -lsctp -lrte_gso -lrte_acl -lrte_hash -lrte_bbdev -lrte_ip_frag -lrte_bitratestats -lrte_ipsec        \
+        -lrte_bpf -lrte_jobstats -lrte_telemetry -lrte_kni -lrte_kvargs -lrte_latencystats -lrte_port  -lrte_crypto_aesni_gcm \
+        -lrte_lpm -lrte_power -lrte_mbuf -lrte_rawdev -lrte_member -lrte_cfgfile -lrte_mempool         \
+		  -lrte_cmdline -lrte_rcu -lrte_compressdev -lrte_reorder -lrte_cryptodev -lrte_rib              \
+		  -lrte_distributor -lrte_meter  -lrte_ring -lrte_eal -lrte_metrics -lrte_sched -lrte_efd        \
+		  -lrte_net -lrte_security -lrte_ethdev -lrte_pci -lrte_stack -lrte_eventdev -lrte_pdump         \
+		  -lrte_table -lrte_fib -lrte_pipeline -lrte_timer -lrte_flow_classify -lrte_vhost               \
+        -lrte_gro -lrte_mempool_ring  -lrte_bus_vdev -lrte_hash \
+		          -lrte_acl -lrte_ip_frag -lrte_net_bond -lrte_net_vmxnet3  -lrte_net_virtio  -lrte_net_cxgbe  -lrte_net_enic  \
+					    -lrte_net_i40e  -lrte_net_fm10k  -lrte_net_ixgbe  -lrte_net_e1000  -lrte_net_ring  -lrte_net_af_packet  -lrte_net_null \
+						 -lrte_crypto_aesni_mb -lrte_crypto_snow3g -lrte_crypto_zuc 
 ifeq ($(PHY), INTEL_L1)
 	L_OPTS+=-L/root/Intel-L1-20.11.1/phy/wls_lib/ -lwls                         \
         -lhugetlbfs -lnuma -ldl -L/root/Intel-L1-20.11.1/dpdk-20.11.1/build/lib                        \
@@ -195,10 +215,15 @@ du:
 		$(Q)$(MAKE) -j -f $(COM_BUILD_DIR)/mac.mak OBJ_DIR=$(OBJ_ROOT)/odu LIB_DIR=$(LIB_ROOT)/odu LOG_DIR=$(LOG_ROOT)/odu CC='$(CC1)'
 		$(Q)$(MAKE) -j -f $(COM_BUILD_DIR)/sch.mak OBJ_DIR=$(OBJ_ROOT)/odu LIB_DIR=$(LIB_ROOT)/odu LOG_DIR=$(LOG_ROOT)/odu CC='$(CC1)'
 		$(Q)$(MAKE) -j -f $(COM_BUILD_DIR)/mt.mak OBJ_DIR=$(OBJ_ROOT)/odu LIB_DIR=$(LIB_ROOT)/odu LOG_DIR=$(LOG_ROOT)/odu CC='$(CC1)'
-		
+
+ifneq ($(PHY), UE_SIM)
 ifneq ($(PHY), INTEL_L1)
 		$(Q)$(MAKE) -j -f $(COM_BUILD_DIR)/phy_stub.mak OBJ_DIR=$(OBJ_ROOT)/odu LIB_DIR=$(LIB_ROOT)/odu LOG_DIR=$(LOG_ROOT)/odu CC='$(CC1)'
 endif
+else
+		$(Q)$(MAKE) -j -f $(COM_BUILD_DIR)/fapi_cl.mak OBJ_DIR=$(OBJ_ROOT)/odu LIB_DIR=$(LIB_ROOT)/odu LOG_DIR=$(LOG_ROOT)/odu CC='$(CC1)'
+endif
+
 ifeq ($(O1_ENABLE),YES)
 		$(Q)$(MAKE) -j -f $(COM_BUILD_DIR)/o1.mak OBJ_DIR=$(OBJ_ROOT)/odu LIB_DIR=$(LIB_ROOT)/odu LOG_DIR=$(LOG_ROOT)/odu CC='$(CCPP1)'
 		$(Q)$(MAKE) -j -f $(COM_BUILD_DIR)/ves.mak OBJ_DIR=$(OBJ_ROOT)/odu LIB_DIR=$(LIB_ROOT)/odu LOG_DIR=$(LOG_ROOT)/odu CC='$(CCPP1)'
@@ -220,9 +245,14 @@ clean_odu:
 		$(Q)$(MAKE) -j -f $(COM_BUILD_DIR)/sch.mak clean OBJ_DIR=$(OBJ_ROOT)/odu LIB_DIR=$(LIB_ROOT)/odu LOG_DIR=$(LOG_ROOT)/odu CC='$(CC1)'
 		$(Q)$(MAKE) -j -f $(COM_BUILD_DIR)/mt.mak clean OBJ_DIR=$(OBJ_ROOT)/odu LIB_DIR=$(LIB_ROOT)/odu LOG_DIR=$(LOG_ROOT)/odu CC='$(CC1)'
 		
+ifneq ($(PHY), UE_SIM)
 ifneq ($(PHY), INTEL_L1)
 		$(Q)$(MAKE) -j -f $(COM_BUILD_DIR)/phy_stub.mak clean OBJ_DIR=$(OBJ_ROOT)/odu LIB_DIR=$(LIB_ROOT)/odu LOG_DIR=$(LOG_ROOT)/odu CC='$(CC1)'
 endif
+else
+		$(Q)$(MAKE) -j -f $(COM_BUILD_DIR)/fapi_cl.mak clean OBJ_DIR=$(OBJ_ROOT)/odu LIB_DIR=$(LIB_ROOT)/odu LOG_DIR=$(LOG_ROOT)/odu CC='$(CC1)'
+endif
+
 ifeq ($(O1_ENABLE),YES)
 		$(Q)$(MAKE) -j -f $(COM_BUILD_DIR)/o1.mak clean OBJ_DIR=$(OBJ_ROOT)/odu LIB_DIR=$(LIB_ROOT)/odu LOG_DIR=$(LOG_ROOT)/odu CC='$(CCPP1)'
 		$(Q)$(MAKE) -j -f $(COM_BUILD_DIR)/ves.mak clean OBJ_DIR=$(OBJ_ROOT)/odu LIB_DIR=$(LIB_ROOT)/odu LOG_DIR=$(LOG_ROOT)/odu CC='$(CCPP1)'
@@ -322,6 +352,7 @@ copy_build: link_du
 			$(Q)cp -f ../scripts/start_du_logging.sh $(ROOT_DIR)/bin/odu
 			$(Q)cp -rf ../config/ $(ROOT_DIR)/bin/odu
 			$(Q)cp -f ./lib/odu/*.a $(ROOT_DIR)/libs/
+			$(Q)cp -rf ./dpdk_config.txt $(ROOT_DIR)/bin/
 		   $(Q)echo -e "***** BUILD COMPLETE *****"
 
 odu: prepare_dirs copy_build

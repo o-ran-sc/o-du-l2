@@ -548,6 +548,7 @@ uint8_t fillNrTddInfo(TDD_Info_t *tddInfo)
       freqInfo->freqBandListNr.list.array[freqBandListIdx]->freqBandIndicatorNr = duCfgParam.srvdCellLst[0].duCellInfo.\
       f1Mode.mode.tdd.nrFreqInfo.freqBand[0].nrFreqBand;
 
+#if UE_PAL_MODE_TEST      
       freqInfo->freqBandListNr.list.array[freqBandListIdx]->supportedSULBandList.list.count = elementCnt;
       freqInfo->freqBandListNr.list.array[freqBandListIdx]->supportedSULBandList.list.size = freqInfo->freqBandListNr.list.array[freqBandListIdx]->\
       supportedSULBandList.list.count * sizeof(SupportedSULFreqBandItem_t*);
@@ -573,6 +574,7 @@ uint8_t fillNrTddInfo(TDD_Info_t *tddInfo)
          freqInfo->freqBandListNr.list.array[freqBandListIdx]->supportedSULBandList.list.array[supportedBandIdx]->freqBandIndicatorNr =\
          duCfgParam.srvdCellLst[0].duCellInfo.f1Mode.mode.tdd.nrFreqInfo.freqBand[0].sulBand[0];
       }
+ #endif
    }
 
    tddInfo->transmission_Bandwidth.nRSCS = duCfgParam.srvdCellLst[0].duCellInfo.f1Mode.mode.tdd.nrFreqInfo.sulInfo.sulTxBw.nrScs;
@@ -9096,7 +9098,6 @@ uint8_t BuildAndSendInitialRrcMsgTransfer(uint32_t gnbDuUeF1apId, uint16_t crnti
       initULRRCMsg->protocolIEs.list.array[ieIdx]->value.present =\
 								 InitialULRRCMessageTransferIEs__value_PR_C_RNTI;
       initULRRCMsg->protocolIEs.list.array[ieIdx]->value.choice.C_RNTI = crnti;
-
       /*RRCContainer*/
       ieIdx++;
       initULRRCMsg->protocolIEs.list.array[ieIdx]->id  = \

@@ -2469,6 +2469,7 @@ uint8_t BuildSib1Msg()
       }
       *(sib1Msg->connEstFailureControl->connEstFailOffset) = duCfgParam.sib1Params.connEstFailOffset;
 
+#if UE_PAL_MODE_TEST
       /* SI Scheduling Info */
       DU_ALLOC(sib1Msg->si_SchedulingInfo, sizeof(SI_SchedulingInfo_t));
       if(!sib1Msg->si_SchedulingInfo)
@@ -2499,6 +2500,7 @@ uint8_t BuildSib1Msg()
       {
          break;
       }
+#endif      
 
       xer_fprint(stdout, &asn_DEF_BCCH_DL_SCH_Message, &bcchMsg);
 

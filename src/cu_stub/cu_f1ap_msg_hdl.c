@@ -6364,12 +6364,6 @@ uint8_t BuildRlcBearerToAddModList(CuUeCb *ueCb, struct CellGroupConfigRrc__rlc_
       DU_LOG("INFO  --> F1AP : No  RLC Bearer available to add or modify");
       return ROK;
    }
-   CU_ALLOC(rlcBearerList, sizeof(struct CellGroupConfigRrc__rlc_BearerToAddModList));
-   if(!rlcBearerList)
-   {
-      DU_LOG("\nERROR  -->  F1AP : Memory allocation failure in CellGrpConfig");
-      return RFAILED;
-   }
    rlcBearerList->list.count = elementCnt;
    rlcBearerList->list.size  = elementCnt * sizeof(struct RLC_BearerConfig *);
 
@@ -6719,7 +6713,13 @@ uint8_t fillCellGrpCfg(CuUeCb *ueCb, OCTET_STRING_t *cellGrp, bool updateAllRbCf
       cellGrpCfg.cellGroupId = CELL_GRP_ID;
 
       cellGrpCfg.rlc_BearerToAddModList = NULLP;
-      
+
+      CU_ALLOC(cellGrpCfg.rlc_BearerToAddModList, sizeof(struct CellGroupConfigRrc__rlc_BearerToAddModList));
+      if(!cellGrpCfg.rlc_BearerToAddModList)
+      {
+         DU_LOG("\nERROR  -->  F1AP : Memory allocation failure in CellGrpConfig");
+         break;
+      }
       if(BuildRlcBearerToAddModList(ueCb, cellGrpCfg.rlc_BearerToAddModList, updateAllRbCfg) != ROK)
       {
          DU_LOG("\nERROR  -->  F1AP : fillCellGrpCfg failed");
