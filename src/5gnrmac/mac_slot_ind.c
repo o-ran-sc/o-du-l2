@@ -154,18 +154,20 @@ uint8_t MacProcDlAlloc(Pst *pst, DlSchedInfo *dlSchedInfo)
                      retxTb = fetchTbfromDlHarqProc(currDlSlot->dlInfo.schSlotValue.dlMsgTime, \
                            &macCb.macCell[cellIdx]->ueCb[ueIdx], \
                            dlSchedInfo->dlMsgAlloc[ueIdx]->harqProcNum, txPduLen);
-
-                     /* Store PDU in corresponding DL slot */
-                     MAC_ALLOC(txPdu, txPduLen);
-                     if(!txPdu)
+                     if(retxTb)
                      {
-                        DU_LOG("\nERROR  -->  MAC : Memory allocation failed in MacProcDlAlloc");
-                        return RFAILED;
-                     }   
-                     memcpy(txPdu, retxTb,  txPduLen);
+                        /* Store PDU in corresponding DL slot */
+                        MAC_ALLOC(txPdu, txPduLen);
+                        if(!txPdu)
+                        {
+                           DU_LOG("\nERROR  -->  MAC : Memory allocation failed in MacProcDlAlloc");
+                           return RFAILED;
+                        }
+                        memcpy(txPdu, retxTb,  txPduLen);
 
-                     currDlSlot->dlInfo.dlMsgAlloc[ueIdx]->dlMsgPduLen = txPduLen;
-                     currDlSlot->dlInfo.dlMsgAlloc[ueIdx]->dlMsgPdu = txPdu;
+                        currDlSlot->dlInfo.dlMsgAlloc[ueIdx]->dlMsgPduLen = txPduLen;
+                        currDlSlot->dlInfo.dlMsgAlloc[ueIdx]->dlMsgPdu = txPdu;
+                     }
                   }
                }
             }
