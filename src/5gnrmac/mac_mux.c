@@ -223,7 +223,7 @@ void fillRarPdu(RarInfo *rarInfo)
 
 void fillMsg4DlData(MacDlData *dlData, uint16_t msg4PduLen, uint8_t *msg4Pdu)
 {
-   dlData->pduInfo[dlData->numPdu].lcId = MAC_LCID_CCCH;
+   dlData->pduInfo[dlData->numPdu].lcId = MAC_LCID_DL_CCCH;
    dlData->pduInfo[dlData->numPdu].pduLen = msg4PduLen;
    memcpy(dlData->pduInfo[dlData->numPdu].dlPdu, msg4Pdu, msg4PduLen);
    dlData->numPdu++;
@@ -319,7 +319,7 @@ void macMuxPdu(MacDlData *dlData, MacCeInfo *macCeData, uint8_t *txPdu, uint16_t
       lcid = dlData->pduInfo[pduIdx].lcId;
       switch(lcid)
       {
-         case MAC_LCID_CCCH:
+         case MAC_LCID_DL_CCCH:
          case MAC_LCID_MIN ... MAC_LCID_MAX :
             {
                lenField = dlData->pduInfo[pduIdx].pduLen;

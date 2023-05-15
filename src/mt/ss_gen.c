@@ -218,6 +218,10 @@ Void mtSigUsr2Hndlr()
 */
 S16 SInit(void)
 {
+#ifdef DPDK_ENABLE
+   dpdk_init();
+#endif
+
    S16 ret;
    REG1 S16 i;
    REG2 S16 j;

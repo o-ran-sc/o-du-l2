@@ -1251,7 +1251,7 @@ uint8_t sendUeRecfgReqToMac(MacUeRecfg *macUeRecfg)
    if(macUeRecfg)
    {
       /* Processing one Ue at a time to MAC */
-      DU_LOG("\nDEBUG   -->  DU_APP: Sending Ue Reconfig Request to MAC");
+      DU_LOG("\nDEBUG   -->  DU_APP: Sending Ue Reconfig Request to MAC %d",macUeRecfg->crnti);
       ret = (*packMacUeReconfigReqOpts[pst.selector])(&pst, macUeRecfg);
       if(ret == RFAILED)
       {
@@ -1328,7 +1328,7 @@ uint8_t updateDuMacUeCfg(uint16_t cellId, uint8_t gnbDuUef1apId, uint16_t crnti,
          return RFAILED;
       }
       duMacDb->macUeCfgState = UE_CFG_INPROGRESS;
-      
+
       if(ueCfgDb->cellGrpCfg)
       {
          ret = procUeRecfgCellInfo(duMacUeCfg, duMacDb, ueCfgDb->cellGrpCfg);
@@ -1366,7 +1366,6 @@ uint8_t updateDuMacUeCfg(uint16_t cellId, uint8_t gnbDuUef1apId, uint16_t crnti,
       }
 
 #ifdef NR_DRX
-      
       duMacUeCfg->drxConfigIndicatorRelease = ueCfgDb->drxConfigIndicatorRelease;
 
       if(ueCfgDb->drxCyclePres)
@@ -1456,11 +1455,11 @@ void fillDefaultAmInfo(AmBearerCfg *amCfg)
    amCfg->dlAmCfg.pollRetxTmr = T_POLL_RETRANSMIT_VAL;
    amCfg->dlAmCfg.pollPdu     = POLL_PDU_VAL;
    amCfg->dlAmCfg.pollByte    = POLL_BYTE_VAL;
-   amCfg->dlAmCfg.maxRetxTh   = MAX_RETX_THRESHOLD_VAL;   
- 
+   amCfg->dlAmCfg.maxRetxTh   = MAX_RETX_THRESHOLD_VAL; 
+
    /* UL AM */
    amCfg->ulAmCfg.snLenUl     = AM_SIZE_12;
-   amCfg->ulAmCfg.reAssemTmr  = T_REASSEMBLY_VAL; 
+   amCfg->ulAmCfg.reAssemTmr  = T_REASSEMBLY_VAL;
    amCfg->ulAmCfg.statProhTmr = T_STATUS_PROHIBHIT_VAL;
 }
 
@@ -2700,9 +2699,9 @@ uint8_t duUpdateTunnelCfgDb(uint8_t ueId, uint8_t cellId, DuUeCfg *duUeCfg)
 
 uint8_t duUpdateDuUeCbCfg(uint8_t ueId, uint8_t cellId)
 {
-   uint8_t ret = ROK;
-   uint16_t cellIdx = 0, crnti=0;
-   DuUeCb *ueCb = NULLP;
+   uint8_t   ret = ROK;
+   uint16_t  cellIdx = 0, crnti=0;
+   DuUeCb    *ueCb = NULLP;
 
    GET_CELL_IDX(cellId, cellIdx);
    ueCb = &duCb.actvCellLst[cellIdx]->ueCb[ueId-1];
