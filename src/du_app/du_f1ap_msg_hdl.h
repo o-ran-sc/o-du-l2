@@ -31,7 +31,7 @@ void F1APMsgHdlr(Buffer *mBuf);
 uint8_t BuildAndSendF1SetupReq();
 uint8_t BuildAndSendDUConfigUpdate();
 uint8_t BuildAndSendInitialRrcMsgTransfer(uint32_t gnbDuUeF1apId, uint16_t crnti, uint16_t rrcContSize, 
-          uint8_t *rrcContainer);
+      uint8_t *rrcContainer);
 uint8_t BuildAndSendULRRCMessageTransfer(DuUeCb *ueCb, uint8_t lcId,  uint16_t msgLen, uint8_t *rrcMsg);
 uint8_t procUeRecfgCellInfo(DuMacUeCfg *macUeCfg, DuMacUeCfg *storedMacUeCfg, void *cellGrp);
 void freeUeRecfgCellGrpInfo(DuMacUeCfg *macUeCfg);
@@ -53,5 +53,5 @@ uint8_t BuildAndSendUeContextReleaseComplete(uint16_t cellId, uint32_t  gnbCuUeF
 uint8_t duSendCellDeletReq(uint16_t cellId); 
 uint8_t duProcUeContextReleaseCommand(uint16_t cellId, DuUeCb *duUeCb);
 /**********************************************************************
-         End of file
-**********************************************************************/
+  End of file
+ **********************************************************************/
