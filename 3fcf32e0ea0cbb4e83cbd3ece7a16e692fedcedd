@@ -16,6 +16,24 @@
       "message": "removed?",
       "revId": "3fcf32e0ea0cbb4e83cbd3ece7a16e692fedcedd",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2f6c6dcf_35acf8b0",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 3317,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-05-24T10:22:56Z",
+      "side": 0,
+      "message": "Got removed due to merge conflict. Added again.",
+      "parentUuid": "2eb666dd_e5713d85",
+      "revId": "3fcf32e0ea0cbb4e83cbd3ece7a16e692fedcedd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
   ]
 }
