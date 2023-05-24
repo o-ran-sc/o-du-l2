@@ -9024,14 +9024,17 @@ uint8_t fillCuToDuContainer(CuUeCb *ueCb, CUtoDURRCInformation_t *rrcMsg)
    uint8_t ret = ROK;
    uint8_t idx;
 
-   /* UE Capabulity RAT Container List */
-   CU_ALLOC(rrcMsg->uE_CapabilityRAT_ContainerList, sizeof(UE_CapabilityRAT_ContainerList_t));
-   if(!rrcMsg->uE_CapabilityRAT_ContainerList)
+   if((ueCb->state != UE_HANDOVER_IN_PROGRESS) || ((ueCb->state == UE_HANDOVER_IN_PROGRESS) && (ueCb->hoInfo.HOType == Inter_DU_HO)))
    {
-      DU_LOG("\nERROR  -->  F1AP : Memory allocation for UE capability RAT container list failed");
-      return RFAILED;
+      /* UE Capabulity RAT Container List */
+      CU_ALLOC(rrcMsg->uE_CapabilityRAT_ContainerList, sizeof(UE_CapabilityRAT_ContainerList_t));
+      if(!rrcMsg->uE_CapabilityRAT_ContainerList)
+      {
+         DU_LOG("\nERROR  -->  F1AP : Memory allocation for UE capability RAT container list failed");
+         return RFAILED;
+      }
+      ret = fillUeCapRatContListBuf(rrcMsg->uE_CapabilityRAT_ContainerList);
    }
-   ret = fillUeCapRatContListBuf(rrcMsg->uE_CapabilityRAT_ContainerList);
 
 #if 0
 
@@ -11164,7 +11167,12 @@ uint8_t BuildAndSendUeContextModificationReq(uint32_t duId, void *cuUeCb, UeCtxt
       else if(action == RRC_RECONFIG_COMPLETE_IND)
          elementCnt = 3;
       else if((action == STOP_DATA_TX) || (action == RESTART_DATA_TX)) 
-         elementCnt = 5;
+      {
+         if(ueCb->state != UE_HANDOVER_IN_PROGRESS)
+            elementCnt = 5;
+         else
+            elementCnt = 4;
+      }
       
 #ifdef NR_DRX
       if(DRX_TO_BE_RELEASE && ueCb->drxCfgPresent)
@@ -11309,11 +11317,14 @@ uint8_t BuildAndSendUeContextModificationReq(uint32_t duId, void *cuUeCb, UeCtxt
          }
 
          /* RRC delivery status request */
-         ieIdx++;
-         ueContextModifyReq->protocolIEs.list.array[ieIdx]->id = ProtocolIE_ID_id_RRCDeliveryStatusRequest;
-         ueContextModifyReq->protocolIEs.list.array[ieIdx]->criticality = Criticality_ignore;
-         ueContextModifyReq->protocolIEs.list.array[ieIdx]->value.present = UEContextModificationRequestIEs__value_PR_RRCDeliveryStatusRequest;
-         ueContextModifyReq->protocolIEs.list.array[ieIdx]->value.choice.RRCDeliveryStatusRequest = RRCDeliveryStatusRequest_true;
+         if(ueCb->state != UE_HANDOVER_IN_PROGRESS)
+         {
+            ieIdx++;
+            ueContextModifyReq->protocolIEs.list.array[ieIdx]->id = ProtocolIE_ID_id_RRCDeliveryStatusRequest;
+            ueContextModifyReq->protocolIEs.list.array[ieIdx]->criticality = Criticality_ignore;
+            ueContextModifyReq->protocolIEs.list.array[ieIdx]->value.present = UEContextModificationRequestIEs__value_PR_RRCDeliveryStatusRequest;
+            ueContextModifyReq->protocolIEs.list.array[ieIdx]->value.choice.RRCDeliveryStatusRequest = RRCDeliveryStatusRequest_true;
+         }
       }
 
 #ifdef NR_DRX
