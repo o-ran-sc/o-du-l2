@@ -24,6 +24,7 @@
 #include "lrg.x"
 #include "du_app_mac_inf.h"
 #include "du_app_rlc_inf.h"
+#include "du_e2ap_mgr.h"
 #include "du_cfg.h"
 #include "du_mgr.h"
 #include "du_utils.h"
@@ -599,6 +600,8 @@ uint8_t readCfg()
    MibParams mib;
    Sib1Params sib1;
    F1TaiSliceSuppLst *taiSliceSuppLst;
+
+   duCb.e2apDb.transIdCounter = 0;
 
 #ifndef O1_ENABLE
    /* Note: Added these below variable for local testing*/
