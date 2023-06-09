@@ -330,6 +330,7 @@ typedef struct duCb
    TskInit       init;                      /* DU Init */
    bool          f1Status;                  /* Status of F1 connection */
    bool          e2Status;                  /* Status of E2 connection */
+   E2apDb        e2apDb;                    /* E2AP database */
    uint8_t       numCfgCells;               /* number of configured cells */ 
    DuCellCb*     cfgCellLst[MAX_NUM_CELL];  /* List of cells at DU APP of type DuCellCb */
    uint8_t       numActvCells;              /* Number of active cells */
