@@ -6,7 +6,7 @@
 API-Docs
 **********
 
-This is the API-docs for G release o-du/l2.
+This is the API-docs for H release o-du/l2.
 
 .. contents::
    :depth: 3
@@ -16,7 +16,7 @@ This is the API-docs for G release o-du/l2.
 Introduction
 -----------------
 This document lists the APIs implemented between various modules of ODU-High and their functionality.
-These are in line with ORAN-WG8.AAD-v5.00.00, hereafter referred to as AAD Spec.
+These are in line with ORAN-WG8.AAD-v7.00.00, hereafter referred to as AAD Spec.
 
 Note: DU APP module consist functionality related to F1 Handler and O1 Handler
 
