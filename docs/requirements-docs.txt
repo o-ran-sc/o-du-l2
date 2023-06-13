@@ -3,3 +3,4 @@ sphinx-rtd-theme
 sphinxcontrib-httpdomain
 recommonmark
 lfdocs-conf
+urllib3~=1.26.15
