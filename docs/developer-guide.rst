@@ -26,9 +26,9 @@ O-DU High uses C languages. The coding guidelines followed are:
 
 .. figure:: LicHeader.jpg
   :width: 600
-  :alt: Figure 16 License Header and Footer
+  :alt: Figure 17 License Header and Footer
 
-  Figure 16 : License Header and Footer
+  Figure 17 : License Header and Footer
 
 O-DU High code
 ---------------
@@ -280,9 +280,9 @@ Here,
 
 .. figure:: ModeofCommunication.jpg
    :width: 600
-   :alt: Figure 17 Mode of communication between O-DU High entities
+   :alt: Figure 18 Mode of communication between O-DU High entities
 
-   Figure 17: Mode of communication between O-DU High entities
+   Figure 18: Mode of communication between O-DU High entities
 
 Steps of Communication
 ++++++++++++++++++++++
@@ -344,9 +344,9 @@ Below figure summarized the above steps of intra O-DU High communication
 
 .. figure:: StepsOfCommunication.jpg
    :width: 600
-   :alt: Figure 18 Communication between entities
+   :alt: Figure 19 Communication between entities
 
-   Figure 18: Steps of Communication between O-DU High entities
+   Figure 19: Steps of Communication between O-DU High entities
 
 
 Communication with Intel O-DU Low
@@ -600,6 +600,39 @@ the following APIs for communication.
 
        b. Input - handle of WLS interface
        c. Returns number of available blocks in slave to master queue
+
+New Scheduling Algorithm Integration to 5G NR SCH
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+5G NR SCH module is encapsulated within 5G NR MAC of ODU-High. Any communication to/from SCH will happen only through MAC.
+The scheduler framework in ODU-High provides support to plug-in multiple scheduling algorithms easily.
+
+Design
++++++++
+
+.. figure:: 5G_NR_SCH_Design.PNG
+   :width: 600
+   :alt: 5G NR Scheduler Framework Design
+   
+   Figure 20: 5G NR Scheduler Framework Design
+
+- The code for scheduler has been divided into 2 parts i.e. the common APIs and scheduler-specific APIs. 
+- Any code (structure/API) which is specific to a scheduling algorithm must be within scheduler-specific files such as sch_rr.c and sch_rr.h for round-roubin scheduler.
+- Function pointers are used to identify and call APIs belonging to the scheduling algorithm in use at any given point in time. 
+- All supported scheduling algorithm are listed in SchType enum in sch.h file.
+- All function pointers are declared in SchAllApis structure in sch.h 
+- For each scheduling algorithm, function pointers must be initialised to scheduler-specific APIs during scheduler initialisation. 
+
+Call Flow
++++++++++
+
+- In any call flow, a common API calls the scheduler-specific API using function pointer and its output is returned back to the common API, which will be further processed and communicated to MAC.
+
+.. figure:: Multi_Scheduling_Algorithm_Call_Flow.PNG
+   :width: 600
+   :alt: Call flow example of Multi-Scheduling Algorithm framework
+
+   Figure 21: Example of a call flow in multi-scheduling algorithm framework
 
 Additional Utility Functions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^

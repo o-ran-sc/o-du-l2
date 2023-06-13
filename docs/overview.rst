@@ -94,13 +94,15 @@ on the various logical channels.
 Functions of the 5G NR MAC module are as follows:
 
 - 5G NR MAC is responsible for multiplexing and de-multiplexing of the data on various logical channels.
-
-- 5G NR SCH schedules resources in UL and DL for cell and UE based procedures.
-  5G NR SCH is completely encapsulated within the 5G NR MAC i.e., all interactions of the 5G NR SCH is via the 5G NR MAC.
-
 - Lower MAC interfaces between the MAC and the O-DU Low. It implements all the messages of FAPI
   specification. It has a receiver thread to handle messages from L1.
 
+5G NR SCH
++++++++++
+
+- Schedules resources in UL and DL for cell and UE based procedures.
+- It is completely encapsulated within the 5G NR MAC i.e., all interactions of the 5G NR SCH is via the 5G NR MAC.
+- SCH framework design supports plugging-in new scheduling algorithm easily. Refer to section "New Scheduling Algorithm Integration to 5G NR SCH" in Developer-Guide document for details.
 
 O-DU Utility and Common Functions
 *********************************
@@ -109,7 +111,7 @@ These modules contain platform specific files and support O-DU High functionalit
 
 
 O1 Module
-==========
+*********
 
 .. figure:: ODU-O1-Arch.jpg
   :width: 554
@@ -188,6 +190,8 @@ As shown in Figure 3, O-DU High interfaces with the following modules:
     - E2 Setup
 
     - E2 Node Configuration Update 
+    
+    - E2 Reset
 
   - Near RT RIC Functional Procedures
 		
@@ -316,15 +320,21 @@ The above channels are used to achieve the below messages:
 
   - Registraton Request
 
-  - Security Mode Command
+  - NAS Authentication Request
 
-  - Security Mode Complete
+  - NAS Authentication Response
+
+  - NAS Security Mode Command
+
+  - NAS Security Mode Complete
+
+  - RRC Security Mode Command
+
+  - RRC Security Mode Complete
 
   - Registraton Accept
 
   - Registraton Complete
-
-  - Several NAS Message Exchanges
 
   - RRC Reconfiguration
 
@@ -492,6 +502,72 @@ Assumption: UE is RRC connected with DU and PDU data session is active.
 
 - The source O-DU responds to O-CU with UE CONTEXT RELEASE COMPLETE message.
 
+==============================
+Inter-CU Handover (Xn-Based)
+==============================
+
+This section describes the handling of inter-CU handover of a UE over Xn interface.
+
+.. figure:: Xn_Based_Inter_CU_Handover.png
+   :width: 600
+   :alt: Xn-Based Inter-CU Handover
+ 
+   Figure 11 -  Xn-Based Inter-CU Handover call flow
+
+Terminology:
+
+- Source GNB : GNB to which UE is connected and will be handed over from .
+- Source GNB DU : O-DU in source GNB
+- Source GNB CU : O-CU in source GNB
+- Target GNB : GNB to which UE will be handed over to.
+- Target GNB DU : O-DU in target GNB
+- Target GNB CU : O-CU in target GNB
+- UE : UE in handover from source GNB to target GNB
+
+Assumptions: 
+
+- Xn setup is established between the two GNB 
+- UE is RRC connected with DU 
+- PDU data session is active.
+
+Call Flow :
+
+- UE sends Measurement Report message to source GNB. This message is sent from O-DU to O-CU in the UL RRC MESSAGE TRANSFER message over F1AP interface.
+
+- Based on UE Measurement Report, O-CU makes handover decision to a cell belonging to another GNB. Hereafter, this GNB will be referred to as target GNB.
+
+- Before initiating the handover procedure, source GNB CU sends a UE CONTEXT MODIFICATION REQUEST message to source GNB DU to query the latest configurations.
+
+- The source GNB DU responds with UE CONTEXT MODIFICATION RESPONSE message that includes latest full configuration information.
+
+- To start the handover, source GNB CU sends HANDOVER REQUEST to target GNB CU with UE configuration received from source GNB DU.
+
+- Target GNB CU sends a UE CONTEXT SETUP REQUEST message to target GNB DU to create a UE context and setup one or more data bearers. The UE CONTEXT SETUP REQUEST message includes Hand-overPreparationInformation. At DU, DU APP sends UE Create Request to MAC and RLC layers to create the UE context with radio resources and receives UE Create Response from the respective protocol layers.
+
+- The target GNB DU responds with UE CONTEXT SETUP RESPONSE message if it can admit resources for the handover.
+
+- Consequetively, target GNB CU send HANDOVER REQUEST ACKNOWLEDGE message to source GNB CU to proceed with handover.
+
+- Now source GNB CU sends UE CONTEXT MODIFICATION REQUEST message to source GNB DU, which includes RRCReconfiguration message towards the UE. The CU also indicates the DU to stop the data transmission for the UE.
+
+- Source GNB DU forwards received RRCReconfiguration message to the UE and then sends DOWNLINNK DATA DELIVERY STATUS message to CU to inform about successful delivery of message to UE.
+
+- Source GNB DU also sends UE Reconfiguration Request to MAC/Scheduler and RLC layers to stop data scheduling as requested by CU. Once all layers have responded with UE reconfiguration response, source GNB DU send UE CONTEXT MODIFICATION RESPONSE message to source GNB CU.
+
+- Using the information received in RRC Reconfiguration message, UE triggers Random Access procedure towards target GNB DU. This is a contention free random access if UE receives dedicated RACH resources information in RRC Reconfiguration message.
+
+- Once Random Access procedure with target GNB is complete, UE responds to target GNB DU with a RRCReconfigurationComplete message.
+
+- The target GNB DU sends UL RRC MESSAGE TRANSFER message to CU to convey the received RRCReconfigurationComplete message. This completes the UE attach to target GNB.
+
+- The downlink and uplink data packets are now sent to/from the UE through target GNB.
+
+- Once UE is successfully handed over to target GNB, its CU sends UE CONTEXT RELEASE message to source GNB CU.
+
+- Hence, source GNB CU sends UE CONTEXT RELEASE COMMAND message to the source GNB DU. 
+
+- DU releases UE context at all layers and responds to source GNB CU with UE CONTEXT RELEASE COMPLETE message.
+
 =============================
 Discontinuous reception (DRX)
 =============================
@@ -503,7 +579,7 @@ This section describes the Discontinuous reception (DRX) feature within O-DU Hig
   :width: 600
   :alt: Discontinuous reception flow
 
-  Figure 11 -  Discontinuous reception flow
+  Figure 12 -  Discontinuous reception flow
 
 - The connected mode DRX is used to improve UE's battery power consumption. This allows UE to be active for a certain amount of time to monitor PDCCH. UE shall become active or inactive based on the DRX timers. 
 
@@ -523,7 +599,7 @@ This section describes the Discontinuous reception (DRX) feature within O-DU Hig
   :width: 600
   :alt: onDurationTimer,InactivityTimer,ShortCycleTimer flow
 
-  Figure 12 -  onDurationTimer,InactivityTimer,ShortCycleTimer flow
+  Figure 13 -  onDurationTimer,InactivityTimer,ShortCycleTimer flow
 
 - If HARQ is received/sent, drx-HARQ-RTT-TimerDL or drx-HARQ-RTT-TimerUL is started. On its expiry drx-RetransmissionTimerDL or drx-RetransmissionTimerUL will start. While it is running, UE becomes active for retransmission of data in DL/UL. Refer to figure 13 and 14 below for detailed working of these timers.
 
@@ -531,13 +607,13 @@ This section describes the Discontinuous reception (DRX) feature within O-DU Hig
   :width: 600
   :alt: HARQ-RTT-TimerDL, RetransmissionTimerDL flow
 
-  Figure 13 - DL Harq Retransmission Timers flow
+  Figure 14 - DL Harq Retransmission Timers flow
 
 .. figure:: Drx_Ul_Harq_Retransmission_Timer.png
   :width: 600
   :alt: HARQ-RTT-TimerUL, RetransmissionTimerUL flow
 
-  Figure 14 - UL Harq Retransmission Timers flow
+  Figure 15 - UL Harq Retransmission Timers flow
 
 - If O-DU receives DRX configuration release indicator IE as a part of UE CONTEXT MODIFICATION REQUEST from O-CU, DU APP will forward this indicator to MAC which forwards it to SCH as part of UE reconfiguration request. In this case SCH stops all DRX timers, deletes DRX configuration and marks UE as active by default. 
 
