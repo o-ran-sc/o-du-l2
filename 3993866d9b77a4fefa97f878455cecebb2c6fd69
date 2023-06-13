@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e672c501_7f9f82cc",
+        "filename": "src/du_app/du_e2ap_mgr.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-06-13T10:25:29Z",
+      "side": 1,
+      "message": "here since we are not assigning 0 as transactionId thus we can assign MAX_NUM_TRANSACTION also as transID then only the transaction will range upto MAX_NUM. I think we shld  put check of MAX_NUM_TRANSACTION",
+      "range": {
+        "startLine": 52,
+        "startChar": 36,
+        "endLine": 52,
+        "endChar": 55
+      },
+      "revId": "3993866d9b77a4fefa97f878455cecebb2c6fd69",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d4f43744_98b604ba",
+        "filename": "src/du_app/du_e2ap_mgr.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-06-13T10:25:29Z",
+      "side": 1,
+      "message": "if theres any spec reference to this number please mention",
+      "revId": "3993866d9b77a4fefa97f878455cecebb2c6fd69",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "60f1b411_958ac680",
+        "filename": "src/du_app/du_mgr_main.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 552,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-06-13T10:25:29Z",
+      "side": 1,
+      "message": "pls revert in last patch",
+      "revId": "3993866d9b77a4fefa97f878455cecebb2c6fd69",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
