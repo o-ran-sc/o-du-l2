@@ -24,6 +24,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "86fdd439_c88de917",
+        "filename": "src/du_app/du_e2ap_mgr.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-06-13T11:36:02Z",
+      "side": 1,
+      "message": "As discussed, valid values for transaction id is from 0 to 255.\nThe counter is initiatlized to 0.\nUpdated the algo here to first used the current assigned value and then increment counter for use in next iteration.",
+      "parentUuid": "e672c501_7f9f82cc",
+      "range": {
+        "startLine": 52,
+        "startChar": 36,
+        "endLine": 52,
+        "endChar": 55
+      },
+      "revId": "3993866d9b77a4fefa97f878455cecebb2c6fd69",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d4f43744_98b604ba",
@@ -41,6 +65,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b48af3d2_1711934a",
+        "filename": "src/du_app/du_e2ap_mgr.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-06-13T11:36:02Z",
+      "side": 1,
+      "message": "Added.",
+      "parentUuid": "d4f43744_98b604ba",
+      "revId": "3993866d9b77a4fefa97f878455cecebb2c6fd69",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "60f1b411_958ac680",
@@ -54,6 +96,24 @@
       "writtenOn": "2023-06-13T10:25:29Z",
       "side": 1,
       "message": "pls revert in last patch",
+      "revId": "3993866d9b77a4fefa97f878455cecebb2c6fd69",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2acad385_f8f05485",
+        "filename": "src/du_app/du_mgr_main.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 552,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-06-13T11:36:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "60f1b411_958ac680",
       "revId": "3993866d9b77a4fefa97f878455cecebb2c6fd69",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
