@@ -29,6 +29,7 @@
 #include "du_mgr.h"
 #include "du_mgr_main.h"
 #include "du_utils.h"
+#include "du_tmr.h"
 
 /*******************************************************************
  *

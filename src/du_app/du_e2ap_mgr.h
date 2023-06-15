@@ -19,6 +19,10 @@
 /* This file contains all E2AP message handler related functionality */
 
 #define MAX_NUM_TRANSACTION 256 /* As per, O-RAN WG3 E2AP v3.0, section 9.2.33 */
+#define DU_TIMER_RESOLUTION 1
+#define DU_TQ_SIZE 2
+#define MAX_E2_SETUP_TMR 1
+#define EVENT_E2_SETUP_PROCEDURE 2
 
 typedef enum
 {
@@ -118,6 +122,11 @@ typedef struct e2apDb
    uint8_t     *ricEventTrigger;
    uint32_t     ricActionId;
    uint32_t     ricActionType;
+   CmTqCp       tmrTqCp;               /*!< Timer Task Queue Cntrl Point */
+   CmTqType     tmrTq[DU_TQ_SIZE];    /*!< Timer Task Queue */
+   uint8_t      tmrRes;           /*!< Timer resolution */
+   CmTimer      e2SetupTimer;
+   uint8_t      e2SetupTimerInterval;
 }E2apDb;
 
 uint8_t assignTransactionId();

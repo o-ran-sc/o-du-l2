@@ -55,6 +55,7 @@
 #include "BWP-UplinkCommon.h"
 #include "TDD-UL-DL-ConfigCommon.h"
 #include "du_sys_info_hdl.h"
+#include "du_tmr.h"
 
 #ifdef O1_ENABLE
 #include "CmInterface.h"
@@ -1087,7 +1088,26 @@ uint8_t duReadCfg()
    pst.selector = ODU_SELECTOR_TC;
    pst.pool= DU_POOL;
 
+   /* Initialize the timer blocks */
+   cmInitTimers(&(duCb.e2apDb.e2SetupTimer), 1);
 
+   /* Initialzie the timer queue */   
+   memset(&duCb.e2apDb.tmrTq, 0, sizeof(CmTqType) * DU_TQ_SIZE);
+   
+   /* Initialize the timer control point */
+   memset(&duCb.e2apDb.tmrTqCp, 0, sizeof(CmTqCp));
+   duCb.e2apDb.tmrTqCp.tmrLen = DU_TQ_SIZE;
+   
+   /* Initialize the timer resolution */
+   duCb.e2apDb.tmrRes = DU_TIMER_RESOLUTION;
+   
+   /* Timer Registration request to system services */
+   if (ODU_REG_TMR_MT(pst.srcEnt, pst.srcInst, duCb.e2apDb.tmrRes, duActvTmr) != ROK)
+   {
+      DU_LOG("\nERROR  -->  DU_APP : Failed to register timer");
+      return RFAILED;
+   }   
+              
    if(ODU_GET_MSG_BUF(DFLT_REGION, DU_POOL, &mBuf) != ROK)
    {
       DU_LOG("\nERROR  -->  DU_APP : Memory allocation failed in duReadCfg");
