@@ -19,6 +19,8 @@
 /* This file contains all E2AP message handler related functionality */
 
 #define MAX_NUM_TRANSACTION 256 /* As per, O-RAN WG3 E2AP v3.0, section 9.2.33 */
+#define MAX_E2_SETUP_TMR 1
+#define EVENT_E2_SETUP_TMR 1
 
 typedef enum
 {
@@ -106,11 +108,24 @@ typedef struct
    uint8_t procedureCode;
 }E2TransInfo;
 
+typedef struct e2Transcation
+{
+   uint8_t     transIdCounter;
+   E2TransInfo onGoingTransaction[MAX_NUM_TRANSACTION];
+   /* Any new parameter for transaction handling can be added here in future */
+}E2Transcation;
+
+typedef struct e2Timer
+{
+   CmTimer e2SetupTimer;
+   /* More timers can be added to this structure in future */
+}E2Timer;
+
 typedef struct e2apDb
 {
    uint16_t     ricId;
    uint8_t      transIdCounter;
-   E2TransInfo  onGoingTransaction[MAX_NUM_TRANSACTION];
+   E2Transcation E2TranscationInfo;
    uint8_t      *plmn;
    uint32_t     ricReqId;
    uint32_t     ricInstanceId;
@@ -118,6 +133,8 @@ typedef struct e2apDb
    uint8_t     *ricEventTrigger;
    uint32_t     ricActionId;
    uint32_t     ricActionType;
+   E2Timer      e2Timers;
+   uint8_t      e2SetupTimerInterval;
 }E2apDb;
 
 uint8_t assignTransactionId();

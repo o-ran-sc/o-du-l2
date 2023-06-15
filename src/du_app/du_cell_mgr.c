@@ -18,6 +18,7 @@
 
 /* This file contains message handling functionality for DU cell management */
 #include "common_def.h"
+#include "du_tmr.h"
 #include "lrg.h"
 #include "legtp.h"
 #include "lrg.x"

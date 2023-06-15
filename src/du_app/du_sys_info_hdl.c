@@ -18,6 +18,7 @@
 
 /* This file contains ASN codec for MIB and SIB1 msgs */
 #include "common_def.h"
+#include "du_tmr.h"
 #include "lrg.h"
 #include "lkw.x"
 #include "lrg.x"
