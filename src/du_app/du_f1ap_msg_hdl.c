@@ -18,6 +18,7 @@
 
 /* This file contains F1AP message handler functions */
 #include "common_def.h"
+#include "du_tmr.h"
 #include "ckw.h"
 #include "ckw.x"
 #include "kwu.h"

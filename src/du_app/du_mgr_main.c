@@ -18,6 +18,7 @@
 
 /* This file is the entry point for DU APP */
 #include "common_def.h"
+#include "du_tmr.h"
 #include "lrg.h"
 #include "legtp.h"
 #include "lrg.x"

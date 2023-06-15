@@ -16,13 +16,14 @@
 ################################################################################
 *******************************************************************************/
 #include "common_def.h"
+#include "du_tmr.h"
 #include "lrg.h"
 #include "lkw.x"
 #include "lrg.x"
 #include "legtp.h"
+#include "du_e2ap_mgr.h"
 #include "du_app_mac_inf.h"
 #include "du_app_rlc_inf.h"
-#include "du_e2ap_mgr.h"
 #include "du_e2ap_msg_hdl.h"
 #include "du_cfg.h"
 #include "du_sctp.h"
@@ -49,12 +50,12 @@
  * ****************************************************************/
 uint8_t assignTransactionId()
 {
-   uint8_t currTransId = duCb.e2apDb.transIdCounter;
+   uint8_t currTransId = duCb.e2apDb.e2TransInfo.transIdCounter;
 
    /* Update to next valid value */
-   duCb.e2apDb.transIdCounter++;
-   if(duCb.e2apDb.transIdCounter == MAX_NUM_TRANSACTION)
-      duCb.e2apDb.transIdCounter = 0;
+   duCb.e2apDb.e2TransInfo.transIdCounter++;
+   if(duCb.e2apDb.e2TransInfo.transIdCounter == MAX_NUM_TRANSACTION)
+      duCb.e2apDb.e2TransInfo.transIdCounter = 0;
 
    return currTransId;
 }

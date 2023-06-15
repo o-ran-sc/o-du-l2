@@ -18,6 +18,7 @@
 /* This file contains UE management handling functionality for DU APP */
 #include "common_def.h"
 #include "lrg.h"
+#include "du_tmr.h"
 #include "lrg.x"
 #include "ckw.h"
 #include "ckw.x"

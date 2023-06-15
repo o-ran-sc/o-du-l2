@@ -17,6 +17,7 @@
  *******************************************************************************/
 /* Utility definitions to be used in du app */
 #include "common_def.h"
+#include "du_tmr.h"
 #include "lrg.h"
 #include "lrg.x"
 #include "lkw.x"

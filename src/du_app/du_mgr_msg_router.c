@@ -18,6 +18,7 @@
 /* File : du_mgr_msg_router.c */
 /* This file contains message handling functionality for DU APP */
 #include "common_def.h"
+#include "du_tmr.h"
 #include "lrg.h"
 #include "legtp.h"
 #include "lsctp.h"
