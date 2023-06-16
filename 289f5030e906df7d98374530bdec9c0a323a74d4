@@ -1,0 +1,300 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8f65012d_b323b71d",
+        "filename": "src/du_app/du_e2ap_mgr.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-06-16T11:48:33Z",
+      "side": 1,
+      "message": "Move above 2 macros to du_tmr.h",
+      "revId": "289f5030e906df7d98374530bdec9c0a323a74d4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6da80742_f66e0bf0",
+        "filename": "src/du_app/du_e2ap_mgr.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-06-16T11:48:33Z",
+      "side": 1,
+      "message": "rename EVENT_E2_SETUP_PROCEDURE to EVENT_E2_SETUP_TMR and define as 1.\n\nSince EVENT_E2_SETUP_TMR and MAX_E2_SETUP_TMR will never be used in the same switch case, their values are independent of each other.",
+      "revId": "289f5030e906df7d98374530bdec9c0a323a74d4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5d8da2b3_7f930958",
+        "filename": "src/du_app/du_e2ap_mgr.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-06-16T11:48:33Z",
+      "side": 1,
+      "message": "As defined below for timer structures, can we also change the transaction structure here as :\n\ntypedef struct\n{\n   uint8_t      transIdCounter;\n   E2TransInfo  onGoingTransaction[MAX_NUM_TRANSACTION];\n   /* Any new parameter for transaction handling can be added here in future */\n}E2Transcation;\n\nAdd object of E2Transaction here in E2apDb",
+      "range": {
+        "startLine": 117,
+        "startChar": 3,
+        "endLine": 117,
+        "endChar": 14
+      },
+      "revId": "289f5030e906df7d98374530bdec9c0a323a74d4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4edfadbc_62760bea",
+        "filename": "src/du_app/du_e2ap_mgr.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-06-16T11:48:33Z",
+      "side": 1,
+      "message": "Add all above timer related structures to duDb under one structure\n\ntypedef struct\n{\n   CmTqCp       tmrTqCp;               /*!\u003c Timer Task Queue Cntrl Point */\n   CmTqType     tmrTq[DU_TQ_SIZE];    /*!\u003c Timer Task Queue */\n   uint8_t      tmrRes;           /*!\u003c Timer resolution */\n}DuTimer;\n\nAdd object of this structure to DuDb",
+      "revId": "289f5030e906df7d98374530bdec9c0a323a74d4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "81f63922_740db4a4",
+        "filename": "src/du_app/du_e2ap_mgr.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-06-16T11:48:33Z",
+      "side": 1,
+      "message": "Lets create a structure like :\ntypedef struct\n{\n   CmTimer      e2SetupTimer;\n   /* More timers can be added to this structure in future */\n}E2Timer;\n\n\nAnd add object of E2timer structure in e2apDb here",
+      "revId": "289f5030e906df7d98374530bdec9c0a323a74d4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "22c1e34c_a80a092f",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-06-16T11:48:33Z",
+      "side": 1,
+      "message": "add blank line below",
+      "revId": "289f5030e906df7d98374530bdec9c0a323a74d4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a861bc31_745e2724",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 937,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-06-16T11:48:33Z",
+      "side": 1,
+      "message": "clear entry from onGoingTransaction[] array if transId and procedure code found. \nCheck reset response for reference",
+      "range": {
+        "startLine": 937,
+        "startChar": 15,
+        "endLine": 937,
+        "endChar": 22
+      },
+      "revId": "289f5030e906df7d98374530bdec9c0a323a74d4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a593d296_8657d58a",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 971,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-06-16T11:48:33Z",
+      "side": 1,
+      "message": "remove memset from here and add in transId case above as did in reset response.",
+      "revId": "289f5030e906df7d98374530bdec9c0a323a74d4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "88fd4eb1_cc88f9a4",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1880,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-06-16T11:48:33Z",
+      "side": 1,
+      "message": "clear entry from onGoingTransaction[] array if transId and procedure code found.\nCheck reset response for reference",
+      "revId": "289f5030e906df7d98374530bdec9c0a323a74d4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8d650265_f8b597c0",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1885,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-06-16T11:48:33Z",
+      "side": 1,
+      "message": "Instead of converting enum to value here, lets create a conversion function in a separate file called du_e2ap_conversion. \nCheck F1 files for reference",
+      "revId": "289f5030e906df7d98374530bdec9c0a323a74d4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e1547ac3_236435c0",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1914,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-06-16T11:48:33Z",
+      "side": 1,
+      "message": "do we need to store this value in e2apDb? Can we not pass it directly as a parmeter to duStartTmr function?",
+      "range": {
+        "startLine": 1914,
+        "startChar": 36,
+        "endLine": 1914,
+        "endChar": 56
+      },
+      "revId": "289f5030e906df7d98374530bdec9c0a323a74d4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "52e85b59_693d762b",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1931,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-06-16T11:48:33Z",
+      "side": 1,
+      "message": "remove from here, add to transId switch case",
+      "revId": "289f5030e906df7d98374530bdec9c0a323a74d4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5634fcdc_777188b2",
+        "filename": "src/du_app/du_tmr.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-06-16T11:48:33Z",
+      "side": 1,
+      "message": "move to header file",
+      "revId": "289f5030e906df7d98374530bdec9c0a323a74d4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "97dad7a4_7862ea77",
+        "filename": "src/du_app/du_tmr.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-06-16T11:48:33Z",
+      "side": 1,
+      "message": "Please have a blank line between each new function",
+      "revId": "289f5030e906df7d98374530bdec9c0a323a74d4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7449218d_9de0792d",
+        "filename": "src/du_app/du_tmr.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-06-16T11:48:33Z",
+      "side": 1,
+      "message": "avoid using TAPA structure",
+      "range": {
+        "startLine": 142,
+        "startChar": 24,
+        "endLine": 142,
+        "endChar": 27
+      },
+      "revId": "289f5030e906df7d98374530bdec9c0a323a74d4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e8f0a498_7057d304",
+        "filename": "src/du_app/du_tmr.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-06-16T11:48:33Z",
+      "side": 1,
+      "message": "Add footer \"End of file\" comment",
+      "revId": "289f5030e906df7d98374530bdec9c0a323a74d4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
