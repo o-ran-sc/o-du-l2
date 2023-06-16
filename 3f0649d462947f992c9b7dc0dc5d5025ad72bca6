@@ -3,6 +3,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "34a076a6_a5fe4b46",
+        "filename": "docs/5G_NR_SCH_Design.PNG",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-06-16T11:42:47Z",
+      "side": 1,
+      "message": "Suggestion -\u003e In this picture, some words have red underlined some don\u0027t. \ncan we try to remove those red lines?\nsame Multi_Scheduling_Algorithm_Call_Flow.PNG also.",
+      "revId": "3f0649d462947f992c9b7dc0dc5d5025ad72bca6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "989e3556_b94f7f65",
         "filename": "docs/developer-guide.rst",
         "patchSetId": 2
@@ -66,6 +83,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "88edb5fb_feb2b763",
+        "filename": "docs/overview.rst",
+        "patchSetId": 2
+      },
+      "lineNbr": 329,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-06-16T11:42:47Z",
+      "side": 1,
+      "message": "are you planning to add these msgs also in ue attach call flow?",
+      "range": {
+        "startLine": 329,
+        "startChar": 8,
+        "endLine": 329,
+        "endChar": 16
+      },
+      "revId": "3f0649d462947f992c9b7dc0dc5d5025ad72bca6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8be0e95c_c90c068c",
         "filename": "docs/overview.rst",
         "patchSetId": 2
@@ -77,6 +117,23 @@
       "writtenOn": "2023-06-15T15:27:23Z",
       "side": 1,
       "message": "we can also add xn interface point also below",
+      "revId": "3f0649d462947f992c9b7dc0dc5d5025ad72bca6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "58db657f_0c2611e2",
+        "filename": "docs/overview.rst",
+        "patchSetId": 2
+      },
+      "lineNbr": 549,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-06-16T11:42:47Z",
+      "side": 1,
+      "message": "sends",
       "revId": "3f0649d462947f992c9b7dc0dc5d5025ad72bca6",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
