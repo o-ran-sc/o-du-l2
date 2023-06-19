@@ -24,6 +24,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "920f5ac7_6f1c6918",
+        "filename": "src/du_app/du_e2ap_mgr.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-06-19T12:54:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "195f78b5_2030e665",
+      "range": {
+        "startLine": 127,
+        "startChar": 16,
+        "endLine": 127,
+        "endChar": 30
+      },
+      "revId": "c5aca39ca5d0fa22d0d52312904b63bec5a2387a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "258dad1d_d3b29851",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-06-19T09:40:58Z",
       "side": 1,
       "message": "rename object to e2TransInfo as done for e2Timers",
+      "range": {
+        "startLine": 128,
+        "startChar": 17,
+        "endLine": 128,
+        "endChar": 34
+      },
+      "revId": "c5aca39ca5d0fa22d0d52312904b63bec5a2387a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dbb2d10b_f270fed3",
+        "filename": "src/du_app/du_e2ap_mgr.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-06-19T12:54:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "258dad1d_d3b29851",
       "range": {
         "startLine": 128,
         "startChar": 17,
@@ -70,6 +118,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ed155c56_edaae6c0",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 940,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-06-19T12:54:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a38db498_9188acfc",
+      "range": {
+        "startLine": 940,
+        "startChar": 93,
+        "endLine": 940,
+        "endChar": 100
+      },
+      "revId": "c5aca39ca5d0fa22d0d52312904b63bec5a2387a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b5e43801_cf54311c",
@@ -83,6 +155,24 @@
       "writtenOn": "2023-06-19T09:40:58Z",
       "side": 1,
       "message": "same as above",
+      "revId": "c5aca39ca5d0fa22d0d52312904b63bec5a2387a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ebe9b900_3457ad67",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1889,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-06-19T12:54:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b5e43801_cf54311c",
       "revId": "c5aca39ca5d0fa22d0d52312904b63bec5a2387a",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -110,6 +200,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "135523cd_1d471b2e",
+        "filename": "src/du_app/du_tmr.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-06-19T12:54:36Z",
+      "side": 1,
+      "message": "During the initialization, we set tmrEvnt as -1.\nBecause of that int16_t is used here.",
+      "parentUuid": "369da24a_d560def5",
+      "range": {
+        "startLine": 76,
+        "startChar": 24,
+        "endLine": 76,
+        "endChar": 32
+      },
+      "revId": "c5aca39ca5d0fa22d0d52312904b63bec5a2387a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3b8c578f_ab44933d",
@@ -123,6 +237,30 @@
       "writtenOn": "2023-06-19T09:40:58Z",
       "side": 1,
       "message": "lets use unsigned int if tmrEvt value will always be positive",
+      "range": {
+        "startLine": 126,
+        "startChar": 24,
+        "endLine": 126,
+        "endChar": 32
+      },
+      "revId": "c5aca39ca5d0fa22d0d52312904b63bec5a2387a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0e483b19_a2d03017",
+        "filename": "src/du_app/du_tmr.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-06-19T12:54:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3b8c578f_ab44933d",
       "range": {
         "startLine": 126,
         "startChar": 24,
