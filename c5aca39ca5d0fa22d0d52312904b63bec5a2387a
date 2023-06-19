@@ -1,0 +1,136 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "195f78b5_2030e665",
+        "filename": "src/du_app/du_e2ap_mgr.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-06-19T09:40:58Z",
+      "side": 1,
+      "message": "remove",
+      "range": {
+        "startLine": 127,
+        "startChar": 16,
+        "endLine": 127,
+        "endChar": 30
+      },
+      "revId": "c5aca39ca5d0fa22d0d52312904b63bec5a2387a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "258dad1d_d3b29851",
+        "filename": "src/du_app/du_e2ap_mgr.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-06-19T09:40:58Z",
+      "side": 1,
+      "message": "rename object to e2TransInfo as done for e2Timers",
+      "range": {
+        "startLine": 128,
+        "startChar": 17,
+        "endLine": 128,
+        "endChar": 34
+      },
+      "revId": "c5aca39ca5d0fa22d0d52312904b63bec5a2387a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a38db498_9188acfc",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 940,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-06-19T09:40:58Z",
+      "side": 1,
+      "message": "not just transId, we should also check procedure code before memset\nAdd the same to reset code as well.",
+      "range": {
+        "startLine": 940,
+        "startChar": 93,
+        "endLine": 940,
+        "endChar": 100
+      },
+      "revId": "c5aca39ca5d0fa22d0d52312904b63bec5a2387a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b5e43801_cf54311c",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1889,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-06-19T09:40:58Z",
+      "side": 1,
+      "message": "same as above",
+      "revId": "c5aca39ca5d0fa22d0d52312904b63bec5a2387a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "369da24a_d560def5",
+        "filename": "src/du_app/du_tmr.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-06-19T09:40:58Z",
+      "side": 1,
+      "message": "lets use unsigned int if tmrEvt value will always be positive",
+      "range": {
+        "startLine": 76,
+        "startChar": 24,
+        "endLine": 76,
+        "endChar": 32
+      },
+      "revId": "c5aca39ca5d0fa22d0d52312904b63bec5a2387a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3b8c578f_ab44933d",
+        "filename": "src/du_app/du_tmr.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-06-19T09:40:58Z",
+      "side": 1,
+      "message": "lets use unsigned int if tmrEvt value will always be positive",
+      "range": {
+        "startLine": 126,
+        "startChar": 24,
+        "endLine": 126,
+        "endChar": 32
+      },
+      "revId": "c5aca39ca5d0fa22d0d52312904b63bec5a2387a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
