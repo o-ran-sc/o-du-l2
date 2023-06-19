@@ -18,6 +18,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e05329f1_ab6c658c",
+        "filename": "src/du_app/du_e2ap_mgr.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-06-19T09:40:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8f65012d_b323b71d",
+      "revId": "289f5030e906df7d98374530bdec9c0a323a74d4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6da80742_f66e0bf0",
@@ -31,6 +49,24 @@
       "writtenOn": "2023-06-16T11:48:33Z",
       "side": 1,
       "message": "rename EVENT_E2_SETUP_PROCEDURE to EVENT_E2_SETUP_TMR and define as 1.\n\nSince EVENT_E2_SETUP_TMR and MAX_E2_SETUP_TMR will never be used in the same switch case, their values are independent of each other.",
+      "revId": "289f5030e906df7d98374530bdec9c0a323a74d4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "195358af_c169eb5d",
+        "filename": "src/du_app/du_e2ap_mgr.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-06-19T09:40:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6da80742_f66e0bf0",
       "revId": "289f5030e906df7d98374530bdec9c0a323a74d4",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -58,6 +94,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "03fd64d6_6f6c1c78",
+        "filename": "src/du_app/du_e2ap_mgr.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-06-19T09:40:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5d8da2b3_7f930958",
+      "range": {
+        "startLine": 117,
+        "startChar": 3,
+        "endLine": 117,
+        "endChar": 14
+      },
+      "revId": "289f5030e906df7d98374530bdec9c0a323a74d4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4edfadbc_62760bea",
@@ -71,6 +131,24 @@
       "writtenOn": "2023-06-16T11:48:33Z",
       "side": 1,
       "message": "Add all above timer related structures to duDb under one structure\n\ntypedef struct\n{\n   CmTqCp       tmrTqCp;               /*!\u003c Timer Task Queue Cntrl Point */\n   CmTqType     tmrTq[DU_TQ_SIZE];    /*!\u003c Timer Task Queue */\n   uint8_t      tmrRes;           /*!\u003c Timer resolution */\n}DuTimer;\n\nAdd object of this structure to DuDb",
+      "revId": "289f5030e906df7d98374530bdec9c0a323a74d4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "21495640_462ccf84",
+        "filename": "src/du_app/du_e2ap_mgr.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-06-19T09:40:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4edfadbc_62760bea",
       "revId": "289f5030e906df7d98374530bdec9c0a323a74d4",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -92,6 +170,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e1af86e0_e6b9fa01",
+        "filename": "src/du_app/du_e2ap_mgr.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-06-19T09:40:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "81f63922_740db4a4",
+      "revId": "289f5030e906df7d98374530bdec9c0a323a74d4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "22c1e34c_a80a092f",
@@ -105,6 +201,24 @@
       "writtenOn": "2023-06-16T11:48:33Z",
       "side": 1,
       "message": "add blank line below",
+      "revId": "289f5030e906df7d98374530bdec9c0a323a74d4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "67aa1cff_652dcd50",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-06-19T09:40:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "22c1e34c_a80a092f",
       "revId": "289f5030e906df7d98374530bdec9c0a323a74d4",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -132,6 +246,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "87925a3a_910ad03a",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 937,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-06-19T09:40:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a861bc31_745e2724",
+      "range": {
+        "startLine": 937,
+        "startChar": 15,
+        "endLine": 937,
+        "endChar": 22
+      },
+      "revId": "289f5030e906df7d98374530bdec9c0a323a74d4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a593d296_8657d58a",
@@ -145,6 +283,24 @@
       "writtenOn": "2023-06-16T11:48:33Z",
       "side": 1,
       "message": "remove memset from here and add in transId case above as did in reset response.",
+      "revId": "289f5030e906df7d98374530bdec9c0a323a74d4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4a87070b_558fbfbb",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 971,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-06-19T09:40:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a593d296_8657d58a",
       "revId": "289f5030e906df7d98374530bdec9c0a323a74d4",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -166,6 +322,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fcc86365_90667f73",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1880,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-06-19T09:40:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "88fd4eb1_cc88f9a4",
+      "revId": "289f5030e906df7d98374530bdec9c0a323a74d4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8d650265_f8b597c0",
@@ -179,6 +353,24 @@
       "writtenOn": "2023-06-16T11:48:33Z",
       "side": 1,
       "message": "Instead of converting enum to value here, lets create a conversion function in a separate file called du_e2ap_conversion. \nCheck F1 files for reference",
+      "revId": "289f5030e906df7d98374530bdec9c0a323a74d4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9afeeb5b_3d543171",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1885,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-06-19T09:40:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8d650265_f8b597c0",
       "revId": "289f5030e906df7d98374530bdec9c0a323a74d4",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -206,6 +398,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1e6b88a6_338f8770",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1914,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-06-19T09:40:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e1547ac3_236435c0",
+      "range": {
+        "startLine": 1914,
+        "startChar": 36,
+        "endLine": 1914,
+        "endChar": 56
+      },
+      "revId": "289f5030e906df7d98374530bdec9c0a323a74d4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "52e85b59_693d762b",
@@ -219,6 +435,24 @@
       "writtenOn": "2023-06-16T11:48:33Z",
       "side": 1,
       "message": "remove from here, add to transId switch case",
+      "revId": "289f5030e906df7d98374530bdec9c0a323a74d4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "659867c1_c99ea93e",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1931,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-06-19T09:40:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "52e85b59_693d762b",
       "revId": "289f5030e906df7d98374530bdec9c0a323a74d4",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -240,6 +474,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8e1c212f_89e24069",
+        "filename": "src/du_app/du_tmr.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-06-19T09:40:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5634fcdc_777188b2",
+      "revId": "289f5030e906df7d98374530bdec9c0a323a74d4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "97dad7a4_7862ea77",
@@ -253,6 +505,24 @@
       "writtenOn": "2023-06-16T11:48:33Z",
       "side": 1,
       "message": "Please have a blank line between each new function",
+      "revId": "289f5030e906df7d98374530bdec9c0a323a74d4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5e6bb363_4f627758",
+        "filename": "src/du_app/du_tmr.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-06-19T09:40:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "97dad7a4_7862ea77",
       "revId": "289f5030e906df7d98374530bdec9c0a323a74d4",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -280,6 +550,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "77d39040_a649dc43",
+        "filename": "src/du_app/du_tmr.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-06-19T09:40:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7449218d_9de0792d",
+      "range": {
+        "startLine": 142,
+        "startChar": 24,
+        "endLine": 142,
+        "endChar": 27
+      },
+      "revId": "289f5030e906df7d98374530bdec9c0a323a74d4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e8f0a498_7057d304",
@@ -293,6 +587,24 @@
       "writtenOn": "2023-06-16T11:48:33Z",
       "side": 1,
       "message": "Add footer \"End of file\" comment",
+      "revId": "289f5030e906df7d98374530bdec9c0a323a74d4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "14d7ec60_45d79dc2",
+        "filename": "src/du_app/du_tmr.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-06-19T09:40:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e8f0a498_7057d304",
       "revId": "289f5030e906df7d98374530bdec9c0a323a74d4",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
