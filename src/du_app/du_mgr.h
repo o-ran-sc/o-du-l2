@@ -323,6 +323,13 @@ typedef struct reservedF1apPduInfo
    void *f1apMsg;              /* msg structure */
 }ReservedF1apPduInfo;
 
+typedef struct duTimer
+{
+   CmTqCp       tmrTqCp;               /*!< Timer Task Queue Cntrl Point */
+   CmTqType     tmrTq[DU_TQ_SIZE];    /*!< Timer Task Queue */
+   uint8_t      tmrRes;              /*!< Timer resolution */
+}DuTimers;
+
 /* DU APP DB */
 typedef struct duCb
 {
@@ -330,6 +337,7 @@ typedef struct duCb
    TskInit       init;                      /* DU Init */
    bool          f1Status;                  /* Status of F1 connection */
    bool          e2Status;                  /* Status of E2 connection */
+   E2apDb        e2apDb;                    /* E2AP database */
    uint8_t       numCfgCells;               /* number of configured cells */ 
    DuCellCb*     cfgCellLst[MAX_NUM_CELL];  /* List of cells at DU APP of type DuCellCb */
    uint8_t       numActvCells;              /* Number of active cells */
@@ -340,8 +348,9 @@ typedef struct duCb
    uint8_t       numTeId;                   /* current number of TEIDs configured in the system*/
    UpTnlCfg*     upTnlCfg[MAX_TEID];        /* tunnel info for every Drb */
    CmLListCp     reservedF1apPduList;       /*storing F1AP pdu infomation and transId */
-   SliceCfgState sliceState;
-   F1SetupMsg    f1SetupReqAndRspMsg;
+   SliceCfgState sliceState;                /* Slice status */ 
+   F1SetupMsg    f1SetupReqAndRspMsg;       /* f1 Setup Req And Rsp Msg*/
+   DuTimers      duTimersInfo;              /* Du timers queue */
 }DuCb;
 
 

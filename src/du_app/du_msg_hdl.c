@@ -19,6 +19,7 @@
 /* This file contains message handling functionality for DU APP */
 #include "common_def.h"
 #include "lrg.h"
+#include "du_tmr.h"
 #include "legtp.h"
 #include "lkw.h"
 #include "kwu.h"
@@ -27,6 +28,7 @@
 #include "kwu.x"
 #include "du_app_mac_inf.h"
 #include "du_app_rlc_inf.h"
+#include "du_e2ap_mgr.h"
 #include "du_cfg.h"
 #include "du_app_rlc_inf.h"
 #include "du_mgr.h"

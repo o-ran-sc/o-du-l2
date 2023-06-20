@@ -177,9 +177,7 @@ extern "C" {
 #define maxCellPrep (32)
 #define maxPrivateIEs (65535)
 #define maxProtocolExtensions (65535)
-#define maxProtocolIEs (65535)
 #define maxNRARFCN (3279165)
-#define maxnoofErrors (256)
 #define maxnoofIndividualF1ConnectionsToReset (65536)
 #define maxCellingNBDU (512)
 #define maxnoofSCells (32)
@@ -200,7 +198,13 @@ extern "C" {
 #define maxCellineNB (256)
 #define maxnoofExtendedBPLMNs (6)
 #define maxnoofUEIDs (65536)
-
+#define maxProtocolIEs (65535)
+#define maxnoofErrors (256)
+#define maxofE2nodeComponents (1024)
+#define maxofRANfunctionID (256)
+#define maxofRICactionID (16)
+#define maxofTNLA (32)
+#define maxofRICrequestID (1024)
 #ifdef __cplusplus
 }
 #endif

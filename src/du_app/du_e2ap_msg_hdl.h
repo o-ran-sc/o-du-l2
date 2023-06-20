@@ -20,25 +20,10 @@
 
 #define ENCODE_FAIL -1
 
-uint8_t sctpSend(Buffer *mBuf, uint8_t itfType);
-
-typedef struct e2apDb
-{
-   uint16_t     ricId;                    
-   uint8_t      *plmn;
-   uint32_t     ricReqId;
-   uint32_t     ricInstanceId;
-   uint32_t     ranFuncId;
-   uint8_t     *ricEventTrigger;
-   uint32_t     ricActionId;
-   uint32_t     ricActionType;
-}E2apMsgDb;
-
-E2apMsgDb e2apMsgDb;
-uint8_t BuildAndSendE2SetupReq();
-uint8_t SendE2APMsg(Region , Pool );
-void E2APMsgHdlr(Buffer *mBuf);
-uint8_t BuildAndSendE2NodeConfigUpdate();
+uint8_t  BuildAndSendE2SetupReq();
+uint8_t  BuildAndSendE2NodeConfigUpdate();
+uint8_t BuildAndSendE2ResetRequest(E2CauseType failureType, E2Cause failureCause);
+void     E2APMsgHdlr(Buffer *mBuf);
 /**********************************************************************
   End of file
  **********************************************************************/

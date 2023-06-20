@@ -18,6 +18,7 @@
 
 /* This file contains ASN codec for MIB and SIB1 msgs */
 #include "common_def.h"
+#include "du_tmr.h"
 #include "lrg.h"
 #include "lkw.x"
 #include "lrg.x"
@@ -25,6 +26,7 @@
 #include "du_app_mac_inf.h"
 #include "du_cfg.h"
 #include "du_app_rlc_inf.h"
+#include "du_e2ap_mgr.h"
 #include "du_mgr.h"
 #include "du_utils.h"
 #include "BCCH-BCH-Message.h"
