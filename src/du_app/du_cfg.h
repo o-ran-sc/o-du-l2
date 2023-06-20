@@ -254,7 +254,7 @@
 #define PHR_PROHIBHIT_TMR 0
 #define PHR_PWR_FACTOR_CHANGE 3
 #define PHR_MODE_OTHER_CG 0
-#define SN_FIELD_LEN 1
+#define SN_FIELD_LEN_12BIT 0 /*As per Spec 38.331, The network configures only value size12 in SN-FieldLengthAM for SRB */
 #define T_POLL_RETRANSMIT 8       /* Enum for 45ms */ 
 #define T_POLL_RETRANSMIT_VAL 45  /* Value in ms */
 #define POLL_PDU 0                /* Enum for 4 pdus */

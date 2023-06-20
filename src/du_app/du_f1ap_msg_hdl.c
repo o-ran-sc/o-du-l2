@@ -18,6 +18,7 @@
 
 /* This file contains F1AP message handler functions */
 #include "common_def.h"
+#include "du_tmr.h"
 #include "ckw.h"
 #include "ckw.x"
 #include "kwu.h"
@@ -33,6 +34,8 @@
 #include "du_app_mac_inf.h"
 #include "du_cfg.h"
 #include "du_app_rlc_inf.h"
+#include "du_e2ap_mgr.h"
+#include "du_e2ap_msg_hdl.h"
 #include "du_mgr_main.h"
 #include "du_mgr.h"
 #include "du_utils.h"
@@ -160,7 +163,6 @@
 #include "UPTransportLayerInformation.h"
 #include "GTPTunnel.h"
 #include "SupportedSULFreqBandItem.h"
-#include "du_e2ap_msg_hdl.h"
 #include "du_f1ap_conversions.h"
 #include "CNUEPagingIdentity.h"
 #include "PCCH-Config.h"
@@ -3287,7 +3289,8 @@ uint8_t BuildRlcConfigAm(AmBearerCfg *amCfg, struct RLC_Config *rlcConfig)
    /* Fill default AM UL configuration if input pointer to DU database is NULL */
    if(amCfg == NULLP)
    {
-      *(rlcConfig->choice.am->ul_AM_RLC.sn_FieldLength) = SN_FIELD_LEN;
+      
+      *(rlcConfig->choice.am->ul_AM_RLC.sn_FieldLength) = SN_FIELD_LEN_12BIT; /*As per Spec 38.331, "Network configures only value size12 in SN-FieldLengthAM for SRB"*/
       rlcConfig->choice.am->ul_AM_RLC.t_PollRetransmit  = T_POLL_RETRANSMIT;
       rlcConfig->choice.am->ul_AM_RLC.pollPDU           = POLL_PDU;
       rlcConfig->choice.am->ul_AM_RLC.pollByte          = POLL_BYTE;
@@ -3314,7 +3317,7 @@ uint8_t BuildRlcConfigAm(AmBearerCfg *amCfg, struct RLC_Config *rlcConfig)
    /* Fill default AM DL configuration if input pointer to DU database is NULL */
    if(amCfg == NULLP)
    {
-      *(rlcConfig->choice.am->dl_AM_RLC.sn_FieldLength) = SN_FIELD_LEN;
+      *(rlcConfig->choice.am->dl_AM_RLC.sn_FieldLength) = SN_FIELD_LEN_12BIT; /*As per Spec 38.331, "Network configures only value size12 in SN-FieldLengthAM for SRB"*/
       rlcConfig->choice.am->dl_AM_RLC.t_Reassembly      = T_REASSEMBLY;
       rlcConfig->choice.am->dl_AM_RLC.t_StatusProhibit  = T_STATUS_PROHIBHIT;
    }
@@ -16214,6 +16217,13 @@ void FreeUeContextModResp(F1AP_PDU_t *f1apMsg)
                         break;
                      case ProtocolIE_ID_id_gNB_DU_UE_F1AP_ID:
                         break;
+                     case ProtocolIE_ID_id_DUtoCURRCInformation:
+                        {
+                           DU_FREE(ueContextModifyRes->protocolIEs.list.array[ieIdx]->value.choice.DUtoCURRCInformation.\
+                              cellGroupConfig.buf, ueContextModifyRes->protocolIEs.list.array[ieIdx]->value.choice.\
+                              DUtoCURRCInformation.cellGroupConfig.size);
+                           break;
+                        }
                      case ProtocolIE_ID_id_DRBs_SetupMod_List:
                         {
                             FreeDrbSetupModList(&(ueContextModifyRes->protocolIEs.list.array[ieIdx]->\
@@ -16461,6 +16471,7 @@ uint8_t BuildAndSendUeContextModRsp(DuUeCb *ueCb)
       ret = ROK;
       break;
    }
+
    FreeUeContextModResp(f1apMsg);
    return ret;
 }

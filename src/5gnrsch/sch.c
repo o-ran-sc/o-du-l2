@@ -844,7 +844,7 @@ uint8_t SchProcCellCfgReq(Pst *pst, SchCellCfg *schCellCfg)
    cellCb->maxMsg3Tx = SCH_MAX_NUM_MSG3_TX;
 
    cellCb->schAlgoType = SCH_SLICE_BASED;
-   cellCb->api = &schCb[inst].allApis[cellCb->schAlgoType]; /* APIs for slice based scheduling */
+   cellCb->api = &schCb[inst].allApis[cellCb->schAlgoType]; /* For FCFS */
    cellCb->api->SchCellCfgReq(cellCb);
    
    /* Fill and send Cell config confirm */

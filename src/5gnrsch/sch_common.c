@@ -1691,12 +1691,12 @@ void updateGrantSizeForBoRpt(CmLListCp *lcLL, DlMsgSchInfo *dlMsgAlloc,\
 *    Functionality:
 *       fill DL message information for MSG4 and Dedicated DL Msg
 *
-* @params[in] DlMsgInfo *dlMsgInfo,  uint8_t crnti
+* @params[in] DlMsgInfo *dlMsgInfo,  uint16_t crnti
 * @params[in] bool isRetx, SchDlHqProcCb *hqP
 * @return void
 *
 *******************************************************************/
-void fillDlMsgInfo(DlMsgSchInfo *dlMsgSchInfo, uint8_t crnti, bool isRetx, SchDlHqProcCb *hqP)
+void fillDlMsgInfo(DlMsgSchInfo *dlMsgSchInfo, uint16_t crnti, bool isRetx, SchDlHqProcCb *hqP)
 {
    hqP->tbInfo[0].isEnabled = TRUE;
    hqP->tbInfo[0].state = HQ_TB_WAITING;
