@@ -1,0 +1,8 @@
+Code-Review+2: Ankit Barve <anbarve@radisys.com>
+Verified+1: ORAN Jobbuilder <releng+oran-jobbuilder@linuxfoundation.org>
+Code-Review+1: Matthew Watkins <mwatkins@linuxfoundation.org>
+Submitted-by: Ankit Barve <anbarve@radisys.com>
+Submitted-at: Wed, 21 Jun 2023 16:19:53 +0000
+Reviewed-on: https://gerrit.o-ran-sc.org/r/c/o-du/l2/+/11437
+Project: o-du/l2
+Branch: refs/heads/master
