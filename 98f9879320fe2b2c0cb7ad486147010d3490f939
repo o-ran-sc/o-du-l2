@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3ba30a30_ab184526",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000125
+      },
+      "writtenOn": "2023-06-21T13:02:51Z",
+      "side": 1,
+      "message": "Add the \"Task-ID: ODUHIGH-515\" to commit footer above the \"change-id: ...\" line. Doing that makes the commit history look a lot cleaner.\n\nRef: https://www.conventionalcommits.org/en/v1.0.0/#summary",
+      "range": {
+        "startLine": 7,
+        "startChar": 1,
+        "endLine": 7,
+        "endChar": 21
+      },
+      "revId": "98f9879320fe2b2c0cb7ad486147010d3490f939",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
