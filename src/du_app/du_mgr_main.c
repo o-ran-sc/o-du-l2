@@ -550,7 +550,7 @@ uint8_t commonInit()
       DU_LOG("\nERROR  -->  DU_APP : System Task creation for DU APP failed");
       return RFAILED;
    }
-   ODU_SET_THREAD_AFFINITY(&du_app_stsk, SS_AFFINITY_MODE_EXCL, 16, 0);
+//   ODU_SET_THREAD_AFFINITY(&du_app_stsk, SS_AFFINITY_MODE_EXCL, 16, 0);
 
    /* system task for EGTP */
    if(ODU_CREATE_TASK(PRIOR0, &egtp_stsk) != ROK)
