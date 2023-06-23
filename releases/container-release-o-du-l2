@@ -1,11 +1,11 @@
 ---
 
 distribution_type: container
-container_release_tag: 7.0.4
+container_release_tag: 8.0.1
 container_pull_registry: nexus.o-ran-sc.org:10004
 container_push_registry: nexus.o-ran-sc.org:10002
 project: o-du-l2 
-ref: 835385c065ae59f6e62368c5c2cb452750422461
+ref: 2e1af025a72168244cc7d7697b069a26edd859e0
 containers:
 - name: o-du-l2
-version: 7.0.4
+version: 8.0.1

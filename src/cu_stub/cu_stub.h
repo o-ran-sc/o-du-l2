@@ -35,9 +35,9 @@
 #define XN_SCTP_PORT 38422 /* As per 3GPP TS 38.422, The SCTP Destination Port number value assigned by IANA to be used for XnAP is 38422 */
 #define NUM_XN_ASSOC 0
 #define REMOTE_IP_CU (char*[]){"192.168.130.84"}
-#define LOCAL_NODE_TYPE SERVER
 #endif
 
+#define LOCAL_NODE_TYPE SERVER
 #define F1_EGTP_PORT 2152 /* As per the spec 29.281, the registered port number for GTP-U is 2152 */
 #define RRC_VER 0
 #define EXT_RRC_VER 5
