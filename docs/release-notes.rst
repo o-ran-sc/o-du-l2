@@ -5,7 +5,7 @@
 Release-Notes
 **************
 
-This document provides the release notes for F Release of O-DU-L2.
+This document provides the release notes for H Release of O-DU-L2.
 
 .. contents::
    :depth: 3
@@ -19,11 +19,14 @@ Version history
 | **Date**           | **Ver.**           | **Author**         | **Comment**        |
 |                    |                    |                    |                    |
 +--------------------+--------------------+--------------------+--------------------+
-|2022-12-15          | 7.0.3              | Radisys,           | G release          |
+| 2023-05-15         | 8.0.0              | Radisys            | H release          |
+|                    |                    |                    |                    |
++--------------------+--------------------+--------------------+--------------------+
+| 2022-12-15         | 7.0.3              | Radisys,           | G release          |
 |                    |                    | HCL Technologies   |                    |
 |                    |                    | Ltd.               |                    |
 +--------------------+--------------------+--------------------+--------------------+
-|2022-06-16          | 6.0.0              | Radisys,           | F release          |
+| 2022-06-16         | 6.0.0              | Radisys,           | F release          |
 |                    |                    | HCL Technologies   |                    |
 |                    |                    | Ltd.               |                    |
 +--------------------+--------------------+--------------------+--------------------+
@@ -49,6 +52,25 @@ Version history
 
 Summary
 -------
+
+H- release
+^^^^^^^^^^
+This release contains the following:
+
+ - Multi-Scheduling algorithm framework design
+
+ - Alignment to "O-RAN WG8 AAD v07.00" Specification
+
+ - Mobility mode Support (Inter-CU handover)
+ 
+ - Upgrade to E2AP v3.0 and implementation of E2 messages
+   
+   - E2 Setup failure
+   - Reset Procedure
+
+ - End-to-end integration support
+
+   - Testing with TM500 UE simulator to detect broadcast message
 
 G- release
 ^^^^^^^^^^
@@ -193,19 +215,38 @@ This release contains the following:
 
 Release Data
 ------------
+H release
+^^^^^^^^^^
++--------------------------------------+------------------------------------------+
+| **Project**                          | ODUHIGH                                  |
+|                                      |                                          |   
++--------------------------------------+------------------------------------------+
+| **Repo/commit-ID**                   | o-du/l2/                                 |
+|                                      | I790792e199edecd7932fb7dc89c167b231708a5f|
++--------------------------------------+------------------------------------------+
+| **Release designation**              | H release                                |
+|                                      |                                          |   
++--------------------------------------+------------------------------------------+
+| **Release date**                     | 2023-06-13                               |
+|                                      |                                          |   
++--------------------------------------+------------------------------------------+
+| **Purpose of the delivery**          | H release                                |
+|                                      |                                          |   
++--------------------------------------+------------------------------------------+
+
 G release
 ^^^^^^^^^^
 +--------------------------------------+------------------------------------------+
 | **Project**                          | ODUHIGH                                  |
 |                                      |                                          |   
 +--------------------------------------+------------------------------------------+
-| **Repo/commit-ID**                   |o-du/l2/                                  |
-|                                      |I18c6f314f9a927ae49db92e4f9b0e4a3113f3bdb |
+| **Repo/commit-ID**                   | o-du/l2/                                 |
+|                                      | I18c6f314f9a927ae49db92e4f9b0e4a3113f3bdb|
 +--------------------------------------+------------------------------------------+
 | **Release designation**              | G release                                |
 |                                      |                                          |   
 +--------------------------------------+------------------------------------------+
-| **Release date**                     |2022-12-05                                |
+| **Release date**                     | 2022-12-05                               |
 |                                      |                                          |   
 +--------------------------------------+------------------------------------------+
 | **Purpose of the delivery**          | G release                                |
@@ -218,15 +259,15 @@ F release
 | **Project**                          | ODUHIGH                              |
 |                                      |                                      |   
 +--------------------------------------+--------------------------------------+
-| **Repo/commit-ID**                   |o-du/l2/                              |
-|                                      |Ice63cef7030a5c08820bcced7ea06467e2c88|
-|                                      |20b                                   |
+| **Repo/commit-ID**                   | o-du/l2/                             |
+|                                      | Ice63cef7030a5c08820bcced7ea06467e2c8|
+|                                      | 820b                                 |
 |                                      |                                      |
 +--------------------------------------+--------------------------------------+
 | **Release designation**              | F release                            |
 |                                      |                                      |   
 +--------------------------------------+--------------------------------------+
-| **Release date**                     |2022-06-16                            |
+| **Release date**                     | 2022-06-16                           |
 |                                      |                                      |   
 +--------------------------------------+--------------------------------------+
 | **Purpose of the delivery**          | F release                            |
@@ -342,6 +383,27 @@ Feature Additions
 ------------------
 
 **JIRA BACK-LOG:**
+
+H-release
+^^^^^^^^^^
+
++-----------------------------------------------+-----------------------------------------------+
+| **JIRA REFERENCE**                            | **SLOGAN**                                    |
+|                                               |                                               |
++-----------------------------------------------+-----------------------------------------------+
+| https://jira.o-ran-sc.org/browse/ODUHIGH-463  | Inter-CU Handover                             |
+|                                               |                                               |
++-----------------------------------------------+-----------------------------------------------+
+| https://jira.o-ran-sc.org/browse/ODUHIGH-488  | Alignment to ORAN WG8 AAD v7.0 specification  |
+|                                               | and Enhancement for Multi-scheduling alogrithm|
+|                                               | framework                                     |
++-----------------------------------------------+-----------------------------------------------+
+| https://jira.o-ran-sc.org/browse/ODUHIGH-510  | E2 upgrade to v3.0 and enhancement            |
+|                                               |                                               |
++-----------------------------------------------+-----------------------------------------------+
+| https://jira.o-ran-sc.org/browse/ODUHIGH-475  | Integration of ODU-High with L1               |
+|                                               |                                               |
++-----------------------------------------------+-----------------------------------------------+
 
 G-release
 ^^^^^^^^^^
@@ -573,7 +635,7 @@ System Limitations
 
 - Current code is locally tested to support upto three UEs.
 
-- NR-MAC supports Round Robin scheduling currently.
+- NR-MAC supports Round Robin scheduling currently, however the framework provides support to plug-in any other scheduling algorthim easily.
 
 - Cell broadcast is for SSB and SIB1 only.
 
@@ -630,11 +692,11 @@ O-DU High uses FAPI interface files provided by Intel and therefore, not complet
 
 References
 ----------
-1. ORAN-WG8.AAD.0-v05.00.00
+1. ORAN-WG8.AAD.0-v07.00.00
 
 2. O-RAN.WG5.C.1-v05.00
 
-3. ORAN WG3.E2AP v02.00
+3. ORAN WG3.E2AP v03.00
 
 4. 3GPP 38.473-f60 v15.3
 
