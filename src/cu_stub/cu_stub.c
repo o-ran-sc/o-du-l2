@@ -150,16 +150,16 @@ void readCuCfg()
    }
    
    cmInetAddr((S8*)g_cfg.DU_IPV4_Addr, &ipv4_du);
-   cuCb.cuCfgParams.sctpParams.destCb[0].destIpAddr.ipV4Addr = ipv4_du;
-   cuCb.cuCfgParams.sctpParams.destCb[0].destIpAddr.ipV6Pres = false;
+   cuCb.cuCfgParams.sctpParams.f1SctpInfo.destCb[0].destIpAddr.ipV4Addr = ipv4_du;
+   cuCb.cuCfgParams.sctpParams.f1SctpInfo.destCb[0].destIpAddr.ipV6Pres = false;
    
    cmInetAddr((S8*)g_cfg.CU_IPV4_Addr, &ipv4_cu);
    cuCb.cuCfgParams.sctpParams.localIpAddr.ipV4Addr = ipv4_cu;
    cuCb.cuCfgParams.sctpParams.localIpAddr.ipV6Pres = false;
    
-   cuCb.cuCfgParams.sctpParams.destCb[0].destPort = g_cfg.DU_Port;
-   cuCb.cuCfgParams.sctpParams.f1SctpPort = g_cfg.CU_Port; 
-   cuCb.cuCfgParams.sctpParams.numDestNode = 1;
+   cuCb.cuCfgParams.sctpParams.f1SctpInfo.destCb[0].destPort = g_cfg.DU_Port;
+   cuCb.cuCfgParams.sctpParams.f1SctpInfo.port = g_cfg.CU_Port; 
+   cuCb.cuCfgParams.sctpParams.f1SctpInfo.numDestNode = 1;
    
    cuCb.cuCfgParams.egtpParams.localIp.ipV4Pres = TRUE;
    cuCb.cuCfgParams.egtpParams.localIp.ipV4Addr = ipv4_cu;
