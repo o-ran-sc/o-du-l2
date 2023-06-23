@@ -6,7 +6,7 @@
 API-Docs
 **********
 
-This is the API-docs for G release o-du/l2.
+This is the API-docs for H release o-du/l2.
 
 .. contents::
    :depth: 3
@@ -15,243 +15,199 @@ This is the API-docs for G release o-du/l2.
 
 Introduction
 -----------------
-This document lists the APIs implemented between various modules of ODU-High and their functionality.
-These are in line with ORAN-WG8.AAD-v5.00.00, hereafter referred to as AAD Spec.
+This document tabulates the APIs Aligned(Implemented)/Not Implemented/Additional APIs between various modules of 
+ODU-High and their functionality.
+These are in line with ORAN-WG8.AAD-v7.00.00, hereafter referred to as AAD Spec.
 
 Note: DU APP module consist functionality related to F1 Handler and O1 Handler
 
-API Functions
--------------
-1. RLC-MAC Interface
+API Table
+-----------
++------------+-------------------------------+-----------------+-----------+-----------------------------------------+
+| Interface  |    API                        | Status          | Section   | Remark                                  |
++============+===============================+=================+===========+=========================================+
+|            |Cell Configuration             | Aligned         |11.2.1.1   |                                         |
+|            +-------------------------------+-----------------+-----------+-----------------------------------------+
+|            |Slice Configuration            | Aligned         |11.2.1.2   |                                         |
+|            +-------------------------------+-----------------+-----------+-----------------------------------------+
+|            |Bring Cell Up                  | Additional API  |           |Notify DU to bring specific cell up      |
+|            +-------------------------------+-----------------+-----------+-----------------------------------------+
+|**SMO-OAM** |Bring Cell Down                | Additional API  |           |Notify DU to bring specific cell down    |
+|& **DU APP**+-------------------------------+-----------------+-----------+-----------------------------------------+
+|            |Slice PM                       | Additional API  |           |DU APP sends PM for all Slices every 60s |
+|            +-------------------------------+-----------------+-----------+-----------------------------------------+
+|            |Raise Cell Alarm               | Additional API  |           |DU APP alarms during cell state change   |
+|            +-------------------------------+-----------------+-----------+-----------------------------------------+
+|            |Set the cell operational state | Additional API  |           |DU APP inform cell state[ACTIVE/INACTIVE]|
++------------+-------------------------------+-----------------+-----------+-----------------------------------------+
+|            |DL Transfer                    | Aligned         |11.2.3.1   |                                         |
+|            +-------------------------------+-----------------+-----------+-----------------------------------------+
+|            |UL Transfer                    | Aligned         |11.2.3.2   |                                         |
+| **RLC**    +-------------------------------+-----------------+-----------+-----------------------------------------+
+| & **MAC**  |Schedule Result Reporting(DL)  | Aligned         |11.2.3.3   |                                         |
+|            +-------------------------------+-----------------+-----------+-----------------------------------------+
+|            |Buffer Status Report(UL)       | Aligned         |11.2.3.4   |                                         |
++------------+-------------------------------+-----------------+-----------+-----------------------------------------+
+|            |Air Interface Time             | Aligned         |11.2.4.1.1 |                                         |
+|            +-------------------------------+-----------------+-----------+-----------------------------------------+
+|            |Cell Configuration Request     | Aligned         |11.2.4.2.1 |                                         |
+|            +-------------------------------+-----------------+-----------+-----------------------------------------+
+|            |Cell Delete Request            | Aligned         |11.2.4.2.2 |                                         |
+|            +-------------------------------+-----------------+-----------+-----------------------------------------+
+|            |Slice Configuration Request    | Aligned         |11.2.4.2.3 |                                         |
+|            +-------------------------------+-----------------+-----------+-----------------------------------------+
+|            |Slice Reconfiguration Request  | Aligned         |11.2.4.2.4 |                                         |
+|            +-------------------------------+-----------------+-----------+-----------------------------------------+
+|            |Add UE Configuration Request   | Aligned         |11.2.4.2.5 |                                         |
+|            +-------------------------------+-----------------+-----------+-----------------------------------------+
+|            |UE Reconfiguration Request     | Aligned         |11.2.4.2.6 |                                         |
+|            +-------------------------------+-----------------+-----------+-----------------------------------------+
+|            |Delete UE Request              | Aligned         |11.2.4.2.7 |                                         |
+|            +-------------------------------+-----------------+-----------+-----------------------------------------+
+|            |DL HARQ Indication             | Aligned         |11.2.4.2.8 |                                         |
+|            +-------------------------------+-----------------+-----------+-----------------------------------------+
+|            |UL Harq Indication(CRC)        | Aligned         |11.2.4.2.9 |                                         |
+| **MAC** to +-------------------------------+-----------------+-----------+-----------------------------------------+
+|  **SCH**   |UL Channel Quality Information | Not Implemented |11.2.4.2.10|                                         |
+|            +-------------------------------+-----------------+-----------+-----------------------------------------+
+|            |DL Channel Quality Information | Not Impelemented|11.2.4.2.11|                                         |
+|            +-------------------------------+-----------------+-----------+-----------------------------------------+
+|            |RACH Indication Contents       | Aligned         |11.2.4.2.12|                                         |
+|            +-------------------------------+-----------------+-----------+-----------------------------------------+
+|            |Paging Indication Contents     | Aligned         |11.2.4.2.13|                                         |
+|            +-------------------------------+-----------------+-----------+-----------------------------------------+
+|            |RACH Resource Request          | Aligned         |11.2.4.2.14|                                         |
+|            +-------------------------------+-----------------+-----------+-----------------------------------------+
+|            |RACH Resource Release          | Aligned         |11.2.4.2.15|                                         |
+|            +-------------------------------+-----------------+-----------+-----------------------------------------+
+|            |DL RLC Buffer Status Info      | Aligned         |11.2.4.2.16|                                         |
+|            +-------------------------------+-----------------+-----------+-----------------------------------------+
+|            |Scheduling Request Indication  | Aligned         |11.2.4.2.17|                                         |
+|            +-------------------------------+-----------------+-----------+-----------------------------------------+
+|            |UL Buffer Status Report Ind    | Aligned         |11.2.4.2.18|                                         |
+|            +-------------------------------+-----------------+-----------+-----------------------------------------+
+|            |Power Headroom Indication      | Aligned         |11.2.4.2.19|                                         |
++------------+-------------------------------+-----------------+-----------+-----------------------------------------+
+|            |Cell Configuration Response    | Aligned         |11.2.4.3.1 |                                         |
+|            +-------------------------------+-----------------+-----------+-----------------------------------------+
+|            |Cell Delete Response           | Aligned         |11.2.4.3.2 |                                         |
+|            +-------------------------------+-----------------+-----------+-----------------------------------------+
+|            |Slice Configuration Response   | Aligned         |11.2.4.3.3 |                                         |
+|            +-------------------------------+-----------------+-----------+-----------------------------------------+
+|            |Slice ReConfiguration Response | Aligned         |11.2.4.3.4 |                                         |
+|            +-------------------------------+-----------------+-----------+-----------------------------------------+
+|            |UE Configuration Response      | Aligned         |11.2.4.3.5 |                                         |
+|            +-------------------------------+-----------------+-----------+-----------------------------------------+
+|            |UE ReConfiguration Response    | Aligned         |11.2.4.3.6 |                                         |
+|            +-------------------------------+-----------------+-----------+-----------------------------------------+
+|            |UE Delete Response             | Aligned         |11.2.4.3.7 |                                         |
+|            +-------------------------------+-----------------+-----------+-----------------------------------------+
+| **SCH** to |DL Scheduling Information      | Aligned         |11.2.4.3.8 |                                         |
+|    **MAC** +-------------------------------+-----------------+-----------+-----------------------------------------+
+|            |UL Scheduling Information      | Aligned         |11.2.4.3.9 |                                         |
+|            +-------------------------------+-----------------+-----------+-----------------------------------------+
+|            |RAR Information                | Not Required    |11.2.4.3.10|Included in DL Scheduling Info           |
+|            +-------------------------------+-----------------+-----------+-----------------------------------------+
+|            |Downlink Control Channel Info  | Not Required    |11.2.4.3.11|Included in DL Scheduling Info           |
+|            +-------------------------------+-----------------+-----------+-----------------------------------------+
+|            |Downlink Broadcast Allocation  | Not Required    |11.2.4.3.12|Included in DL Scheduling Info           |
+|            +-------------------------------+-----------------+-----------+-----------------------------------------+
+|            |Downlink Paging Allocation     | Aligned         |11.2.4.3.13|                                         |
+|            +-------------------------------+-----------------+-----------+-----------------------------------------+
+|            |HARQ Process Release           | Additional API  |           |SCH indicates MAC to release a HARQ      |
+|            |                               |                 |           |process in case a positive acknowledement|
+|            |                               |                 |           |is received or achieved maximum retrans. |
+|            +-------------------------------+-----------------+-----------+-----------------------------------------+
+|            |RACH Resource Response         | Additional API  |           |Response to RACH Resource Request for    |
+|            |                               |                 |           |dedicated resource for CF-RA             |
++------------+-------------------------------+-----------------+-----------+-----------------------------------------+
+|            |Cell Start                     | Aligned         |1.1.1.1    |                                         |
+|            +-------------------------------+-----------------+-----------+-----------------------------------------+
+|            |Cell Stop                      | Aligned         |1.1.1.2    |                                         |
+|            +-------------------------------+-----------------+-----------+-----------------------------------------+
+|            |Cell Configuration Request     | Additional API  |           |Configures cell information at MAC.      | 
+|            +-------------------------------+-----------------+-----------+-----------------------------------------+
+|            |Cell Configuration Response    | Additional API  |           |Response to cell Cfg Req from DUAPP      |    
+|            +-------------------------------+-----------------+-----------+-----------------------------------------+
+|            |Cell Delete Request            | Additional API  |           |Deletes cell information at MAC.         | 
+|            +-------------------------------+-----------------+-----------+-----------------------------------------+
+|            |Cell Delete Response           | Additional API  |           |Response to Cell Del request from DU APP | 
+|            +-------------------------------+-----------------+-----------+-----------------------------------------+
+|            |Slice Configuration Request    | Additional API  |           |Configures Slice at MAC                  | 
+|            +-------------------------------+-----------------+-----------+-----------------------------------------+
+|            |Slice ReConfiguration Request  | Additional API  |           |ReConfigures Slice at MAC                | 
+|            +-------------------------------+-----------------+-----------+-----------------------------------------+
+|            |Slice Configuration Response   | Additional API  |           |Response to Slice Cfg req from DU APP    |
+|            +-------------------------------+-----------------+-----------+-----------------------------------------+
+|            |Slice ReConfiguration Response | Additional API  |           |Response to Slice ReCfg req from DU APP  |
+|            +-------------------------------+-----------------+-----------+-----------------------------------------+
+|**DU APP**  |UE Create Request              | Aligned         |1.1.1.3    |                                         | 
+| & **MAC**  +-------------------------------+-----------------+-----------+-----------------------------------------+
+|            |UE Create Response             | Aligned         |1.1.1.4    |                                         | 
+|            +-------------------------------+-----------------+-----------+-----------------------------------------+
+|            |UE Reconfiguration Request     | Aligned         |1.1.1.5    |                                         | 
+|            +-------------------------------+-----------------+-----------+-----------------------------------------+
+|            |UE Reconfiguration Response    | Aligned         |1.1.1.6    |                                         | 
+|            +-------------------------------+-----------------+-----------+-----------------------------------------+
+|            |UE Delete Request              | Aligned         |1.1.1.7    |                                         | 
+|            +-------------------------------+-----------------+-----------+-----------------------------------------+
+|            |UE Delete Response             | Aligned         |1.1.1.8    |                                         | 
+|            +-------------------------------+-----------------+-----------+-----------------------------------------+
+|            |RACH Resource Request          | Aligned         |1.1.1.9    |                                         | 
+|            +-------------------------------+-----------------+-----------+-----------------------------------------+
+|            |RACH Resource Response         | Aligned         |1.1.1.10   |                                         | 
+|            +-------------------------------+-----------------+-----------+-----------------------------------------+
+|            |RACH Resource Release          | Aligned         |1.1.1.11   |                                         | 
+|            +-------------------------------+-----------------+-----------+-----------------------------------------+
+|            |UE Reset Request               | Not Implemented |1.1.1.12   |                                         | 
+|            +-------------------------------+-----------------+-----------+-----------------------------------------+
+|            |UE Reset Response              | Not Implemented |1.1.1.13   |                                         | 
+|            +-------------------------------+-----------------+-----------+-----------------------------------------+
+|            |UE Sync Status Indication      | Not Implemented |1.1.1.14   |                                         | 
+|            +-------------------------------+-----------------+-----------+-----------------------------------------+
+|            |UL CCCH Indication             | Aligned         |1.1.1.15   |                                         | 
+|            +-------------------------------+-----------------+-----------+-----------------------------------------+
+|            |DL CCCH Indication             | Aligned         |1.1.1.16   |                                         | 
+|            +-------------------------------+-----------------+-----------+-----------------------------------------+
+|            |DL PCCH Indication             | Aligned         |1.1.1.17   |                                         | 
+|            +-------------------------------+-----------------+-----------+-----------------------------------------+
+|            |DL Broadcast Request           | Not Implemented |1.1.1.18   |                                         | 
+|            +-------------------------------+-----------------+-----------+-----------------------------------------+
+|            |Slot Indication                | Additional API  |           |Indication about the ongoing SFN and     |
+|            |                               |                 |           | Slot information to DU APP              | 
++------------+-------------------------------+-----------------+-----------+-----------------------------------------+
+|            |UE Create                      | Aligned         |11.2.5.1   |                                         | 
+|            +-------------------------------+-----------------+-----------+-----------------------------------------+
+|            |UE Create Response             | Aligned         |11.2.5.2   |                                         | 
+|            +-------------------------------+-----------------+-----------+-----------------------------------------+
+|            |UE Reconfiguration             | Aligned         |11.2.5.3   |                                         | 
+|            +-------------------------------+-----------------+-----------+-----------------------------------------+
+|            |UE Reconfiguration Response    | Aligned         |11.2.5.4   |                                         | 
+|            +-------------------------------+-----------------+-----------+-----------------------------------------+
+|            |UE Delete                      | Aligned         |11.2.5.5   |                                         | 
+|            +-------------------------------+-----------------+-----------+-----------------------------------------+
+|            |UE Delete Response             | Aligned         |11.2.5.6   |                                         | 
+|            +-------------------------------+-----------------+-----------+-----------------------------------------+
+|            |DL-RRC Message Transfer        | Aligned         |11.2.5.7   |                                         | 
+|            +-------------------------------+-----------------+-----------+-----------------------------------------+
+|            |UL-RRC Message Transfer        | Aligned         |11.2.5.8   |                                         | 
+|**DU APP**  +-------------------------------+-----------------+-----------+-----------------------------------------+
+|  & **RLC** |UL-RRC Message Delivery Report | Aligned         |11.2.5.9   |                                         | 
+|            +-------------------------------+-----------------+-----------+-----------------------------------------+
+|            |RLC Max Retransmission Reached | Not Implemented |11.2.5.10  |                                         | 
+|            +-------------------------------+-----------------+-----------+-----------------------------------------+
+|            |UL-RLC Re-establishment Request| Not Implemented |11.2.5.11  |                                         | 
+|            +-------------------------------+-----------------+-----------+-----------------------------------------+
+|            |UL-RLC Re-establshment Response| Not Implemented |11.2.5.12  |                                         | 
+|            +-------------------------------+-----------------+-----------+-----------------------------------------+
+|            |DL RRC Message Response        | Additional API  |           |Informs DU APP if a DL RRC Message was   |
+|            |                               |                 |           |successfuly procesed at RLC & sent to MAC| 
+|            +-------------------------------+-----------------+-----------+-----------------------------------------+
+|            |DL User Data                   | Additional API  |           |DL user data exchanged from DUAPP to RLC | 
+|            +-------------------------------+-----------------+-----------+-----------------------------------------+
+|            |UL User Data                   | Additional API  |           |UL user data exchanged from RLC to DUAPP | 
+|            +-------------------------------+-----------------+-----------+-----------------------------------------+
+|            |Slice Performance Metrics      | Additional API  |           |Performance Metrics informed to DUAPP    |
+|            |                               |                 |           |every 60sec for every slice configured   | 
++------------+-------------------------------+-----------------+-----------+-----------------------------------------+
 
-   - AAD Spec : section 9.2.2
-
-   A. RLC to MAC
-   
-      a. Data Transfer(DL) : Transfers DL data to MAC as per Section 9.2.2.1 of the AAD Spec
-
-      b. Buffer Status Reporting(DL) : Reports DL data volume pending in the RLC entity, as per Section 9.2.2.4 of the
-         AAD Spec
-
-   B. MAC to RLC
-
-      a. Data Transfer(UL) : Transfers UL data to RLC as per Section 9.2.2.2 of the AAD Spec
-
-      b. Schedule Result Reporting (DL) : Reports DL schedule result to RLC as per Section 9.2.2.3 of the AAD Spec
-
-2. MAC-Scheduler Interface
-
-   - AAD Spec : section 9.2.3
-
-   A. MAC to Scheduler
-
-      a. Air Interface Time : Sends timing information over air interface in terms of SFN and slo, as per Section
-         9.2.3.1.1 of the AAD Spec.
-
-      b. Cell Configuration Request : MAC provides SCH the cell configuration as per Section 9.2.3.2.1 of the AAD Spec.
-
-      c. Add UE Configuration Request : MAC provides SCH the configuration/capabilities of a UE as per Section 9.2.3.2.5 of the AAD Spec.
-
-      d. Modify UE Reconfiguration Request : MAC provides SCH the re-configuration of UE, also used to
-         add/release/modify existing bearers, as per Section 9.2.3.2.6 of the AAD Spec.
-
-      e. RACH Indication : MAC receives the RACH Indication and share the contents with SCH as per Section 9.2.3.2.12 of the AAD Spec.
-
-      f. DL RLC Buffer Status Information : Reports data volume per LC when it is received at MAC as per Section
-         9.2.3.2.16 of the AAD Spec.
-
-      g. UL Buffer Status Report Indication : On reception and decoding of received BSR from the UE, MAC provides SCH
-         buffer status report for UL scheduling, as per Section 9.2.3.2.18 of the AAD Spec.
-
-      h. UE Delete Request : MAC receives UE delete request and forwards the request to SCH as per Section 9.2.3.2.7
-         of the AAD Spec.
-
-      i. Cell Delete Request :  MAC receives UE delete request and forwards the request to SCH as per Section 9.2.3.2.2
-         of the AAD Spec.
-
-      j. Slice Configuration Request : MAC receives Slice Configuration request and forwards the request to SCH as per Section
-         9.2.3.2.3 of the AAD Spec.
-	 
-      k. Slice Reconfiguration Request : MAC receives Slice Reconfiguration request and forwards the request to SCH as per 
-         Section 9.2.3.2.4 of the AAD Spec.
-
-      l. Paging Indication : MAC receives Paging Indication and forwards the trigger to SCH as per Section 9.2.3.2.13 of the AAD Spec.
-
-      m. RACH Resource Request : MAC receives RACH Resource Request for dedicated RACH resource allocation and forwards to SCH as per 
-         Section 9.2.3.2.14 of the AAD Spec.
-
-      n. RACH Resource Release : MAC receives RACH Resource Release from DU APP and forwards to SCH as per Section 9.2.3.2.15 of the
-         AAD Spec.
-
-      o. DL HARQ Indication : MAC receives UCI Indication and forwards any DL HARQ feedback from UE to SCH as per Sectiion 9.2.3.2.8 
-         of the AAD spec.
-
-      p. UL HARQ CRC Indication : MAC receives CRC Indication from PHY and forwards the decoded results to SCH as per Section 
-         9.2.3.2.9 of the AAD Spec.
-
-      q. Scheduling Request Indication : MAC indicates to scheduler through this API when UE has to be scheduled for uplink 
-         grant as per Spec 9.2.3.2.17 of the AAD Spec.
-
-   B. Scheduler to MAC
-
-      a. Cell Configuration Response - Response to cell configuration request from MAC, as per Section 9.2.3.3.1 of the AAD Spec.
-
-      b. UE Reconfiguration Response - Response to UE reconfiguration request from MAC, as per Section 9.2.3.3.6 of the AAD Spec.
-
-      c. DL Scheduling Information - Provides scheduling information for a given slot for downlink data, as per Section
-         9.2.3.3.8 of the AAD spec.
-    
-      d. UL Scheduling Information - Provides scheduled information for MAC to form the UL_TTI.request towards O-DU Low,
-         as per Section 9.2.3.3.9 of the AAD Spec.
-
-      e. RAR Information - Informs MAC of uplink scheduling and Msg3 scheduling information, as per Section 9.2.3.3.10 of the AAD Spec.
-
-      f. Downlink Control Channel Information - Provides DCI scheduling information for a given slot on PDCCH, as per
-         Section 9.2.3.3.11 of the AAD Spec.
-
-      g. Downlink Broadcast Allocation - Provides DCI and DL data scheduling information for SIB1 for a given slot for
-         Broadcast Channel, as per Section 9.2.3.3.12 of the AAD Spec.
-
-      h. UE Delete Response - Response to UE delete request from MAC, as per Section 9.2.3.3.7 of the AAD Spec.
-
-      i. Cell Delete Response - Response to Cell delete request from MAC, as per Section 9.2.3.3.2 of the AAD Spec.
-
-      j. Slice Configuration Response : Response to Slice Configuration request from MAC, as per Section 9.2.3.3.3 of the AAD Spec.
-	 
-      k. Slice Reconfiguration Response : Response to Slice Reconfiguration request from MAC, as per Section 9.2.3.3.4 of the AAD Spec.
-
-      l. Downlink Paging Allocation :  Provides DCI and DL data scheduling information for any Paging queued for a given slot 
-         for Paging Channel, as per Section 9.2.3.3.13 of the AAD Spec.
-
-      m. Ue Configuration Response : Response to UE reconfiguration request from MAC, as per Section 9.2.3.3.5 of the AAD Spec.
-
-3. DU APP - MAC Interface
-
-   - AAD Spec : section 9.2.4
-
-   A. DU APP to MAC
-   
-      a. Cell Start - Commands MAC to start cell at L1 and to start broadcasting system information, as per Section
-         9.2.4.1 of the AAD Spec.
-
-      b. UE Create Request - Adds UE information at MAC as per Section 9.2.4.3 of the AAD Spec.
-
-      c. UE Reconfiguration Request - Reconfigure UE information for a UE already added at MAC, as per Section 9.2.4.5 of the AAD Spec.
-
-      d. DL CCCH Indication - Sends DL CCCH Message to MAC to be sent to UE, as per Section 9.2.4.16 of the AAD Spec.
-
-      e. Cell Stop - Commands MAC to stop cell at L1, as per Section 9.2.4.2 of the AAD spec.
-
-      f. UE Delete Request - Deletes UE information at MAC as per Section 9.2.4.7  of the AAD Spec.
-
-      g. DL PCCH Indication - Sends DL PCCH Message to MAC for any Paging scheduled on a slot, as per Section 9.2.4.17 of the AAD Spec.
-
-      h. RACH Resource Request - Requests for dedicated RACH resources for CF-RA with a UE, as per Section 9.2.4.9 of the AAD Spec.
-
-      i. RACH Resource Release - Releases dedicated RACH resources allocated for a UE for CF-RA, as per Section 9.2.4.11 of the AAD Spec.
-      
-   B. MAC to DU APP
-
-      a. UE Create Response - Response to UE Create Request from DU Manager as per Section 9.2.4.4 of the AAD Spec.
-
-      b. UE Reconfiguration Response - Response to UE Reconfiguration Request from DU APP as per Section 9.2.4.6 of the
-         AAD Spec.
-
-      c. UL-CCCH Indication - Sends the UL CCCH Message received from UE to DU APP as per Section 9.2.4.15 of AAD Spec.
-
-      d. UE Delete Response - Response to UE Delete Request from DU Manager as per Section 9.2.4.8 of the AAD Spec.
-
-      e. RACH Resource Response - Responds with dedicated resources allocated for CF-RA for a UE, as per Section 9.2.4.10 of the AAD Spec.
-      
-4. DU APP - RLC Interface
-   
-   - AAD Spec : section 9.2.5
-
-   A. DU APP to RLC
-
-      a. UE Create - Adds UE associated RLC entity and related information as per Section 9.2.5.1 of the AAD Spec.
-
-      b. UE Reconfiguration - Reconfigures the UE associated RLC entity previously added at RLC, as per Section 9.2.5.3 of the AAD Spec.
-
-      c. DL RRC Message Transfer - Requests RLC to deliver RRC message from CU to the UE, as per Section 9.2.5.7 of the AAD Spec.
-
-      d. UE Delete Request - Deletes UE associated RLC entity and related information as per Section 9.2.5.5 of the  AAD Spec.
-
-   B. RLC to DU APP
-
-      a. UE Create Response - Response to UE Create Request from DU APP, as per Section 9.2.5.2 of the AAD Spec.
-
-      b. UE Reconfiguration Response - Response to UE Recofiguration Request from DU APP, as per Section 9.2.5.4 of the AAD Spec.
-
-      c. UL RRC Message Tranfer - Delivers RRC Message from UE to CU as per Section 9.2.5.8 of the AAD spec.
-
-      d. RRC Message Delivery Report - Informs DU Manager on failed/successful delivery of a DL RRC message to UE, as
-         per Section 9.2.5.9 of the AAD Spec.
-
-      e. UE Delete Response - Response to UE Delete Request from DU APP, as per section 9.2.5.6 of the AAD Spec.
-
-5. SMO-OAM - DU APP
-
-   - AAD Spec: Section 9.2.1
-
-   A. SMO-OAM to DU APP
-
-      a. Cell Configuration - Sends Basic Cell Configurations to DU APP as per Section 9.2.1.1 of the AAD Spec.
-      
-      b. Slice Configuration - Sends Slice Configurations to DU APP as per Section 9.2.1.2 of the AAD Spec.
-
-Additional APIs
-----------------
-
-1. DU APP - MAC Interface
-
-   A. DU APP to MAC
-     
-      a. Cell Configuration Request - Configures cell information at MAC.
-
-      b. Cell Delete Request - Deletes cell information at MAC.
-      
-      c. Slice Configuration Request : Triggers Slice Configuration request once received from O1 towards MAC.
-	 
-      d. Slice Reconfiguration Request : Triggers Slice Reconfiguration request once received from O1 towards MAC. 
-
-   B. MAC to DU APP
-
-      a. Cell Configuration Response - Response to Cell Configuration Request from DU APP
-
-      b. Cell Delete Response - Response to Cell Delet request from DU APP
-      
-      c. Slice Configuration Respone :  Response to Slice Configuration request from DU Manager.
-	 
-      d. Slice Reconfiguration Request : Response to Slice Reconfiguration request from DU Manager.
-
-      e. Slot Indication : Indication about the ongoing SFN and Slot information to DU APP.
-
-2. DU APP - RLC Interface
-
-   A. RLC to DU APP
-
-      a. DL RRC Message Response - Informs DU APP if a DL RRC Message was successfuly processed at RLC and sent to MAC.
-
-      b. Slice Performance Metrics - Sends PM to DU APP every 60sec for every Slice configured.
-
-
-3. DU APP - SMO-OAM
-
-   a. Bring cell up - Informs DU to bring a specific cell up
-
-   b. Bring cell down - Informs DU to bring specific cell up
-
-   c. Set the cell operational state - Sets the cell state to ACTIVE/INACTIVE
-
-   d. Raise a cell alarm - Raise an alarm when the cell is ACTIVE/INACTIVE
-
-   e. Slice PM - DU APP sends PM for all Slices in 60sec duration.
-
-4. MAC - SCH Interface
-
-   A. SCH to MAC
-
-      a. RACH Resource Response : Response to RACH Resource Request for dedicated resource for CF-RA
-
-      b. HARQ Process Release : SCH indicates MAC to release a HARQ process in case a positive acknowledement is received or maximum retransmissions are done already.
