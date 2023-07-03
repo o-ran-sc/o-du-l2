@@ -56,7 +56,7 @@
 	  <sst>1</sst>
 	</pLMNInfoList>
 	<nRPCI>1</nRPCI>
-	<ssbFrequency>1</ssbFrequency>
+	<ssbFrequency>3000000</ssbFrequency>
 	<ssbPeriodicity>20</ssbPeriodicity>
 	<ssbSubCarrierSpacing>15</ssbSubCarrierSpacing>
 	<ssbOffset>0</ssbOffset>
@@ -66,7 +66,7 @@
 	<nRTAC>1</nRTAC>
 	<arfcnDL>428000</arfcnDL>
 	<arfcnUL>390000</arfcnUL>
-	<arfcnSUL>200</arfcnSUL>
+	<arfcnSUL>100</arfcnSUL>
 	<bSChannelBwDL>20</bSChannelBwDL>
 	<bSChannelBwUL>20</bSChannelBwUL>
 	<bSChannelBwSUL>14</bSChannelBwSUL>

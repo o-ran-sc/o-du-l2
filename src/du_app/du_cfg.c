@@ -130,7 +130,7 @@ uint8_t readMacCfg()
    duCfgParam.macCellCfg.cellCfg.cellState  = cellParams.cellState;
    duCfgParam.macCellCfg.cellCfg.phyCellId  = cellParams.nRPCI;
    duCfgParam.macCellCfg.cellCfg.tac        = cellParams.nRTAC;
-   duCfgParam.macCellCfg.cellCfg.ssbFreq    = convertArfcnToFreqKhz(cellParams.ssbFrequency);
+   duCfgParam.macCellCfg.cellCfg.ssbFreq    = cellParams.ssbFrequency;
 #else
    duCfgParam.macCellCfg.cellCfg.opState    = OP_DISABLED; 
    duCfgParam.macCellCfg.cellCfg.adminState = ADMIN_UNLOCKED;
@@ -808,7 +808,7 @@ uint8_t readCfg()
 #ifdef O1_ENABLE      
       duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.f1Mode.mode.tdd.nrFreqInfo.nrArfcn = cellParams.arfcnUL;
       duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.f1Mode.mode.tdd.nrFreqInfo.sulInfo.sulArfcn = cellParams.arfcnSUL;
-      duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.f1Mode.mode.tdd.nrFreqInfo.sulInfo.sulTxBw.nrScs = cellParams.ssbSubCarrierSpacing; 		
+      duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.f1Mode.mode.tdd.nrFreqInfo.sulInfo.sulTxBw.nrScs = convertScsValToScsEnum(cellParams.ssbSubCarrierSpacing); 		
 #else
       duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.f1Mode.mode.tdd.nrFreqInfo.nrArfcn = NR_UL_ARFCN;
       duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.f1Mode.mode.tdd.nrFreqInfo.sulInfo.sulArfcn = SUL_ARFCN;
@@ -831,12 +831,12 @@ uint8_t readCfg()
 #ifdef O1_ENABLE
       duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.f1Mode.mode.fdd.ulNrFreqInfo.nrArfcn = cellParams.arfcnUL;
       duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.f1Mode.mode.fdd.ulNrFreqInfo.sulInfo.sulArfcn = cellParams.arfcnSUL;
-      duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.f1Mode.mode.fdd.ulTxBw.nrScs = cellParams.ssbSubCarrierSpacing;
-      duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.f1Mode.mode.fdd.ulNrFreqInfo.sulInfo.sulTxBw.nrScs = cellParams.ssbSubCarrierSpacing;
+      duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.f1Mode.mode.fdd.ulTxBw.nrScs = convertScsValToScsEnum(cellParams.ssbSubCarrierSpacing);
+      duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.f1Mode.mode.fdd.ulNrFreqInfo.sulInfo.sulTxBw.nrScs = convertScsValToScsEnum(cellParams.ssbSubCarrierSpacing);
       duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.f1Mode.mode.fdd.dlNrFreqInfo.nrArfcn = cellParams.arfcnDL;
       duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.f1Mode.mode.fdd.dlNrFreqInfo.sulInfo.sulArfcn = cellParams.arfcnSUL;
-      duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.f1Mode.mode.fdd.dlNrFreqInfo.sulInfo.sulTxBw.nrScs = cellParams.ssbSubCarrierSpacing;
-      duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.f1Mode.mode.fdd.dlTxBw.nrScs = cellParams.ssbSubCarrierSpacing;
+      duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.f1Mode.mode.fdd.dlNrFreqInfo.sulInfo.sulTxBw.nrScs = convertScsValToScsEnum(cellParams.ssbSubCarrierSpacing);
+      duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.f1Mode.mode.fdd.dlTxBw.nrScs = convertScsValToScsEnum(cellParams.ssbSubCarrierSpacing);
 #else
       duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.f1Mode.mode.fdd.ulNrFreqInfo.nrArfcn = NR_UL_ARFCN;
       duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.f1Mode.mode.fdd.ulNrFreqInfo.sulInfo.sulArfcn = SUL_ARFCN;
