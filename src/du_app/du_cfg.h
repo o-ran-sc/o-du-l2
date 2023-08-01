@@ -46,7 +46,6 @@
 //TODO: while testing for TDD, Mu1 and 100 MHz, this flag must be enabled
 #ifdef NR_TDD
 #define DUPLEX_MODE DUP_MODE_TDD
-#define NR_NUMEROLOGY 1
 #define NR_DL_ARFCN 623400
 #define NR_UL_ARFCN 623400
 #define NR_FREQ_BAND 78
@@ -54,7 +53,6 @@
 #define NR_BANDWIDTH BANDWIDTH_100MHZ
 #else
 #define DUPLEX_MODE DUP_MODE_FDD
-#define NR_NUMEROLOGY 0
 #define NR_DL_ARFCN 428000
 #define NR_UL_ARFCN 390000
 #define NR_FREQ_BAND 1

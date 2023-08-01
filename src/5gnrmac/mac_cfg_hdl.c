@@ -135,7 +135,7 @@ uint8_t SchSendCfgCfm(Pst *pst, RgMngmt  *cfm)
 uint8_t MacProcCellCfgReq(Pst *pst, MacCellCfg *macCellCfg)
 {
    Pst cfmPst;
-   uint16_t cellIdx;
+   uint16_t cellIdx, scsInKhz = 0;
    uint8_t ret = ROK, plmnIdx = 0,sliceIdx = 0;
    MacCellCb     *macCellCb;
 
@@ -152,7 +152,11 @@ uint8_t MacProcCellCfgReq(Pst *pst, MacCellCfg *macCellCfg)
    GET_CELL_IDX(macCellCfg->cellId, cellIdx);
    macCb.macCell[cellIdx] = macCellCb;
    macCb.macCell[cellIdx]->cellId = macCellCfg->cellId;
-   macCb.macCell[cellIdx]->numOfSlots = 10 * (1 << macCellCfg->cellCfg.numerology);
+   scsInKhz = convertScsEnumValToScsVal(macCellCfg->cellCfg.subCarrSpacing);
+   
+   /*Ref : 3GPP 38.211 Table 4.2-1: SCS = (2 ^ numerology * 15kHz)*/
+   macCb.macCell[cellIdx]->numerology = log2(scsInKhz/BASE_SCS);
+   macCb.macCell[cellIdx]->numOfSlots = 10 * (1 << (macCb.macCell[cellIdx]->numerology));
    memcpy(&macCb.macCell[cellIdx]->macCellCfg, macCellCfg, sizeof(MacCellCfg));
 
    MAC_ALLOC(macCb.macCell[cellIdx]->macCellCfg.cellCfg.sib1Cfg.sib1Pdu, \
@@ -268,50 +272,50 @@ uint8_t MacSchCellCfgReq(Pst *pst, MacCellCfg *macCellCfg)
    }
 
    schCellCfg.dupMode = macCellCfg->cellCfg.dupType;
-   schCellCfg.numerology = macCellCfg->cellCfg.numerology;
    schCellCfg.dlBandwidth = macCellCfg->carrCfg.dlBw;
    schCellCfg.ulBandwidth = macCellCfg->carrCfg.ulBw;
 
    schCellCfg.dlCfgCommon.schFreqInfoDlSib.offsetToPointA = macCellCfg->ssbCfg.ssbOffsetPointA;
+   schCellCfg.dlCfgCommon.schFreqInfoDlSib.schSpcCarrier[0].subCarrierSpacing = macCellCfg->ssbCfg.scsCmn;
 
    /* fill initial DL BWP */
-   schCellCfg.dlCfgCommon.schInitialDlBwp.bwp.freqAlloc.startPrb = macCellCfg->initialDlBwp.bwp.firstPrb;
-   schCellCfg.dlCfgCommon.schInitialDlBwp.bwp.freqAlloc.numPrb = macCellCfg->initialDlBwp.bwp.numPrb;
-   schCellCfg.dlCfgCommon.schInitialDlBwp.bwp.scs = macCellCfg->initialDlBwp.bwp.scs;
-   schCellCfg.dlCfgCommon.schInitialDlBwp.bwp.cyclicPrefix = macCellCfg->initialDlBwp.bwp.cyclicPrefix;
+   schCellCfg.dlCfgCommon.schInitialDlBwp.bwp.freqAlloc.startPrb = macCellCfg->cellCfg.initialDlBwp.bwp.firstPrb;
+   schCellCfg.dlCfgCommon.schInitialDlBwp.bwp.freqAlloc.numPrb = macCellCfg->cellCfg.initialDlBwp.bwp.numPrb;
+   schCellCfg.dlCfgCommon.schInitialDlBwp.bwp.scs = macCellCfg->cellCfg.initialDlBwp.bwp.scs;
+   schCellCfg.dlCfgCommon.schInitialDlBwp.bwp.cyclicPrefix = macCellCfg->cellCfg.initialDlBwp.bwp.cyclicPrefix;
    
    schCellCfg.dlCfgCommon.schInitialDlBwp.pdcchCommon.commonSearchSpace.searchSpaceId =
-      macCellCfg->initialDlBwp.pdcchCommon.commonSearchSpace.searchSpaceId;
+      macCellCfg->cellCfg.initialDlBwp.pdcchCommon.commonSearchSpace.searchSpaceId;
    schCellCfg.dlCfgCommon.schInitialDlBwp.pdcchCommon.commonSearchSpace.coresetId =
-      macCellCfg->initialDlBwp.pdcchCommon.commonSearchSpace.coresetId;
+      macCellCfg->cellCfg.initialDlBwp.pdcchCommon.commonSearchSpace.coresetId;
    schCellCfg.dlCfgCommon.schInitialDlBwp.pdcchCommon.commonSearchSpace.monitoringSlot =
-      macCellCfg->initialDlBwp.pdcchCommon.commonSearchSpace.monitoringSlot;
+      macCellCfg->cellCfg.initialDlBwp.pdcchCommon.commonSearchSpace.monitoringSlot;
    schCellCfg.dlCfgCommon.schInitialDlBwp.pdcchCommon.commonSearchSpace.duration =
-      macCellCfg->initialDlBwp.pdcchCommon.commonSearchSpace.duration;
+      macCellCfg->cellCfg.initialDlBwp.pdcchCommon.commonSearchSpace.duration;
    schCellCfg.dlCfgCommon.schInitialDlBwp.pdcchCommon.commonSearchSpace.monitoringSymbol =
-      macCellCfg->initialDlBwp.pdcchCommon.commonSearchSpace.monitoringSymbol;
+      macCellCfg->cellCfg.initialDlBwp.pdcchCommon.commonSearchSpace.monitoringSymbol;
    schCellCfg.dlCfgCommon.schInitialDlBwp.pdcchCommon.commonSearchSpace.candidate.aggLevel1 =
-      macCellCfg->initialDlBwp.pdcchCommon.commonSearchSpace.candidate.aggLevel1;
+      macCellCfg->cellCfg.initialDlBwp.pdcchCommon.commonSearchSpace.candidate.aggLevel1;
    schCellCfg.dlCfgCommon.schInitialDlBwp.pdcchCommon.commonSearchSpace.candidate.aggLevel2 =
-      macCellCfg->initialDlBwp.pdcchCommon.commonSearchSpace.candidate.aggLevel2;
+      macCellCfg->cellCfg.initialDlBwp.pdcchCommon.commonSearchSpace.candidate.aggLevel2;
    schCellCfg.dlCfgCommon.schInitialDlBwp.pdcchCommon.commonSearchSpace.candidate.aggLevel4 =
-      macCellCfg->initialDlBwp.pdcchCommon.commonSearchSpace.candidate.aggLevel4;
+      macCellCfg->cellCfg.initialDlBwp.pdcchCommon.commonSearchSpace.candidate.aggLevel4;
    schCellCfg.dlCfgCommon.schInitialDlBwp.pdcchCommon.commonSearchSpace.candidate.aggLevel8 =
-      macCellCfg->initialDlBwp.pdcchCommon.commonSearchSpace.candidate.aggLevel8;
+      macCellCfg->cellCfg.initialDlBwp.pdcchCommon.commonSearchSpace.candidate.aggLevel8;
    schCellCfg.dlCfgCommon.schInitialDlBwp.pdcchCommon.commonSearchSpace.candidate.aggLevel16 =
-      macCellCfg->initialDlBwp.pdcchCommon.commonSearchSpace.candidate.aggLevel16;
+      macCellCfg->cellCfg.initialDlBwp.pdcchCommon.commonSearchSpace.candidate.aggLevel16;
    
-   schCellCfg.dlCfgCommon.schInitialDlBwp.pdschCommon.numTimeDomAlloc = macCellCfg->initialDlBwp.pdschCommon.numTimeDomAlloc;
-   for(rsrcListIdx = 0; rsrcListIdx<macCellCfg->initialDlBwp.pdschCommon.numTimeDomAlloc; rsrcListIdx++)
+   schCellCfg.dlCfgCommon.schInitialDlBwp.pdschCommon.numTimeDomAlloc = macCellCfg->cellCfg.initialDlBwp.pdschCommon.numTimeDomAlloc;
+   for(rsrcListIdx = 0; rsrcListIdx<macCellCfg->cellCfg.initialDlBwp.pdschCommon.numTimeDomAlloc; rsrcListIdx++)
    {
       schCellCfg.dlCfgCommon.schInitialDlBwp.pdschCommon.timeDomRsrcAllocList[rsrcListIdx].k0 = 
-         macCellCfg->initialDlBwp.pdschCommon.timeDomRsrcAllocList[rsrcListIdx].k0;
+         macCellCfg->cellCfg.initialDlBwp.pdschCommon.timeDomRsrcAllocList[rsrcListIdx].k0;
       schCellCfg.dlCfgCommon.schInitialDlBwp.pdschCommon.timeDomRsrcAllocList[rsrcListIdx].mappingType =
-         macCellCfg->initialDlBwp.pdschCommon.timeDomRsrcAllocList[rsrcListIdx].mappingType;
+         macCellCfg->cellCfg.initialDlBwp.pdschCommon.timeDomRsrcAllocList[rsrcListIdx].mappingType;
       schCellCfg.dlCfgCommon.schInitialDlBwp.pdschCommon.timeDomRsrcAllocList[rsrcListIdx].startSymbol =
-         macCellCfg->initialDlBwp.pdschCommon.timeDomRsrcAllocList[rsrcListIdx].startSymbol;
+         macCellCfg->cellCfg.initialDlBwp.pdschCommon.timeDomRsrcAllocList[rsrcListIdx].startSymbol;
       schCellCfg.dlCfgCommon.schInitialDlBwp.pdschCommon.timeDomRsrcAllocList[rsrcListIdx].lengthSymbol =
-         macCellCfg->initialDlBwp.pdschCommon.timeDomRsrcAllocList[rsrcListIdx].lengthSymbol;
+         macCellCfg->cellCfg.initialDlBwp.pdschCommon.timeDomRsrcAllocList[rsrcListIdx].lengthSymbol;
    }
 
    /* fill SIB1 scheduler parameters */
@@ -323,10 +327,10 @@ uint8_t MacSchCellCfgReq(Pst *pst, MacCellCfg *macCellCfg)
    }
 
    /* fill initial UL BWP */
-   schCellCfg.ulCfgCommon.schInitialUlBwp.bwp.freqAlloc.startPrb = macCellCfg->initialUlBwp.bwp.firstPrb;
-   schCellCfg.ulCfgCommon.schInitialUlBwp.bwp.freqAlloc.numPrb = macCellCfg->initialUlBwp.bwp.numPrb;
-   schCellCfg.ulCfgCommon.schInitialUlBwp.bwp.scs = macCellCfg->initialUlBwp.bwp.scs;
-   schCellCfg.ulCfgCommon.schInitialUlBwp.bwp.cyclicPrefix = macCellCfg->initialUlBwp.bwp.cyclicPrefix;
+   schCellCfg.ulCfgCommon.schInitialUlBwp.bwp.freqAlloc.startPrb = macCellCfg->cellCfg.initialUlBwp.bwp.firstPrb;
+   schCellCfg.ulCfgCommon.schInitialUlBwp.bwp.freqAlloc.numPrb = macCellCfg->cellCfg.initialUlBwp.bwp.numPrb;
+   schCellCfg.ulCfgCommon.schInitialUlBwp.bwp.scs = macCellCfg->cellCfg.initialUlBwp.bwp.scs;
+   schCellCfg.ulCfgCommon.schInitialUlBwp.bwp.cyclicPrefix = macCellCfg->cellCfg.initialUlBwp.bwp.cyclicPrefix;
    /* fill RACH config params */
    schCellCfg.ulCfgCommon.schInitialUlBwp.schRachCfg.prachCfgGeneric.prachCfgIdx   = macCellCfg->prachCfg.prachCfgIdx;
    schCellCfg.ulCfgCommon.schInitialUlBwp.schRachCfg.prachCfgGeneric.msg1Fdm       = macCellCfg->prachCfg.msg1Fdm;
@@ -345,21 +349,21 @@ uint8_t MacSchCellCfgReq(Pst *pst, MacCellCfg *macCellCfg)
                                             macCellCfg->prachCfg.prachSubcSpacing;
 
    schCellCfg.ulCfgCommon.schInitialUlBwp.pucchCommon.pucchResourceCommon = \
-                                                                macCellCfg->initialUlBwp.pucchCommon.pucchResourceCommon;
+                                                                macCellCfg->cellCfg.initialUlBwp.pucchCommon.pucchResourceCommon;
    schCellCfg.ulCfgCommon.schInitialUlBwp.pucchCommon.pucchGroupHopping = \
-                                                                macCellCfg->initialUlBwp.pucchCommon.pucchGroupHopping;
+                                                                macCellCfg->cellCfg.initialUlBwp.pucchCommon.pucchGroupHopping;
    schCellCfg.ulCfgCommon.schInitialUlBwp.puschCommon.numTimeDomRsrcAlloc = \
-                                                                macCellCfg->initialUlBwp.puschCommon.numTimeDomRsrcAlloc;
-   for(rsrcListIdx = 0; rsrcListIdx < macCellCfg->initialUlBwp.puschCommon.numTimeDomRsrcAlloc; rsrcListIdx++)
+                                                                macCellCfg->cellCfg.initialUlBwp.puschCommon.numTimeDomRsrcAlloc;
+   for(rsrcListIdx = 0; rsrcListIdx < macCellCfg->cellCfg.initialUlBwp.puschCommon.numTimeDomRsrcAlloc; rsrcListIdx++)
    {
       schCellCfg.ulCfgCommon.schInitialUlBwp.puschCommon.timeDomRsrcAllocList[rsrcListIdx].k2 = 
-         macCellCfg->initialUlBwp.puschCommon.timeDomRsrcAllocList[rsrcListIdx].k2;
+         macCellCfg->cellCfg.initialUlBwp.puschCommon.timeDomRsrcAllocList[rsrcListIdx].k2;
       schCellCfg.ulCfgCommon.schInitialUlBwp.puschCommon.timeDomRsrcAllocList[rsrcListIdx].mappingType =
-         macCellCfg->initialUlBwp.puschCommon.timeDomRsrcAllocList[rsrcListIdx].mappingType;
+         macCellCfg->cellCfg.initialUlBwp.puschCommon.timeDomRsrcAllocList[rsrcListIdx].mappingType;
       schCellCfg.ulCfgCommon.schInitialUlBwp.puschCommon.timeDomRsrcAllocList[rsrcListIdx].startSymbol =
-         macCellCfg->initialUlBwp.puschCommon.timeDomRsrcAllocList[rsrcListIdx].startSymbol;
+         macCellCfg->cellCfg.initialUlBwp.puschCommon.timeDomRsrcAllocList[rsrcListIdx].startSymbol;
       schCellCfg.ulCfgCommon.schInitialUlBwp.puschCommon.timeDomRsrcAllocList[rsrcListIdx].symbolLength =
-         macCellCfg->initialUlBwp.puschCommon.timeDomRsrcAllocList[rsrcListIdx].symbolLength;
+         macCellCfg->cellCfg.initialUlBwp.puschCommon.timeDomRsrcAllocList[rsrcListIdx].symbolLength;
    }
 
 #ifdef NR_TDD
@@ -371,10 +375,10 @@ uint8_t MacSchCellCfgReq(Pst *pst, MacCellCfg *macCellCfg)
    {
       schCellCfg.ssbPosInBurst[ssbMaskIdx] = macCellCfg->ssbCfg.ssbMask[ssbMaskIdx];
    }
-   schCellCfg.ssbPeriod = ssbPeriodicity[macCellCfg->ssbCfg.ssbPeriod];
+   schCellCfg.ssbPeriod    = ssbPeriodicity[macCellCfg->ssbCfg.ssbPeriod];
    schCellCfg.ssbFrequency = macCellCfg->cellCfg.ssbFreq;
    schCellCfg.dmrsTypeAPos = macCellCfg->ssbCfg.dmrsTypeAPos;
-   schCellCfg.scsCommon = macCellCfg->ssbCfg.scsCmn;
+   schCellCfg.ssbScs       = macCellCfg->cellCfg.subCarrSpacing;
    schCellCfg.pdcchCfgSib1.coresetZeroIndex = macCellCfg->cellCfg.sib1Cfg.pdcchCfgSib1.coresetZeroIndex;
    schCellCfg.pdcchCfgSib1.searchSpaceZeroIndex = macCellCfg->cellCfg.sib1Cfg.pdcchCfgSib1.searchSpaceZeroIndex;
    schCellCfg.ssbPbchPwr = macCellCfg->ssbCfg.ssbPbchPwr;

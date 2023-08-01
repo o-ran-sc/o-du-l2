@@ -4311,12 +4311,12 @@ void fillPuschPdu(fapi_ul_tti_req_pdu_t *ulTtiReqPdu, fapi_vendor_ul_tti_req_pdu
       ulTtiReqPdu->pdu.pusch_pdu.rnti = currUlSlot->ulInfo.crnti;
       /* TODO : Fill handle in raCb when scheduling pusch and access here */
       ulTtiReqPdu->pdu.pusch_pdu.handle = 100;
-      ulTtiReqPdu->pdu.pusch_pdu.bwpSize = macCellCfg->initialUlBwp.bwp.numPrb;
-      ulTtiReqPdu->pdu.pusch_pdu.bwpStart = macCellCfg->initialUlBwp.bwp.firstPrb;
+      ulTtiReqPdu->pdu.pusch_pdu.bwpSize = macCellCfg->cellCfg.initialUlBwp.bwp.numPrb;
+      ulTtiReqPdu->pdu.pusch_pdu.bwpStart = macCellCfg->cellCfg.initialUlBwp.bwp.firstPrb;
       ulTtiReqPdu->pdu.pusch_pdu.subCarrierSpacing = \
-         macCellCfg->initialUlBwp.bwp.scs;
+         macCellCfg->cellCfg.initialUlBwp.bwp.scs;
       ulTtiReqPdu->pdu.pusch_pdu.cyclicPrefix = \
-         macCellCfg->initialUlBwp.bwp.cyclicPrefix;
+         macCellCfg->cellCfg.initialUlBwp.bwp.cyclicPrefix;
       ulTtiReqPdu->pdu.pusch_pdu.targetCodeRate = 308;
       ulTtiReqPdu->pdu.pusch_pdu.qamModOrder = currUlSlot->ulInfo.schPuschInfo.tbInfo.qamOrder;
       ulTtiReqPdu->pdu.pusch_pdu.mcsIndex = currUlSlot->ulInfo.schPuschInfo.tbInfo.mcs;
@@ -4401,10 +4401,10 @@ void fillPucchPdu(fapi_ul_tti_req_pdu_t *ulTtiReqPdu, fapi_vendor_ul_tti_req_pdu
       ulTtiReqPdu->pdu.pucch_pdu.rnti         = currUlSlot->ulInfo.crnti;
       /* TODO : Fill handle in raCb when scheduling pucch and access here */
       ulTtiReqPdu->pdu.pucch_pdu.handle       = 100;
-      ulTtiReqPdu->pdu.pucch_pdu.bwpSize      = macCellCfg->initialUlBwp.bwp.numPrb;
-      ulTtiReqPdu->pdu.pucch_pdu.bwpStart     = macCellCfg->initialUlBwp.bwp.firstPrb;
-      ulTtiReqPdu->pdu.pucch_pdu.subCarrierSpacing = macCellCfg->initialUlBwp.bwp.scs;
-      ulTtiReqPdu->pdu.pucch_pdu.cyclicPrefix = macCellCfg->initialUlBwp.bwp.cyclicPrefix;
+      ulTtiReqPdu->pdu.pucch_pdu.bwpSize      = macCellCfg->cellCfg.initialUlBwp.bwp.numPrb;
+      ulTtiReqPdu->pdu.pucch_pdu.bwpStart     = macCellCfg->cellCfg.initialUlBwp.bwp.firstPrb;
+      ulTtiReqPdu->pdu.pucch_pdu.subCarrierSpacing = macCellCfg->cellCfg.initialUlBwp.bwp.scs;
+      ulTtiReqPdu->pdu.pucch_pdu.cyclicPrefix = macCellCfg->cellCfg.initialUlBwp.bwp.cyclicPrefix;
       ulTtiReqPdu->pdu.pucch_pdu.formatType   = currUlSlot->ulInfo.schPucchInfo.pucchFormat; /* Supporting PUCCH Format 0 */
       ulTtiReqPdu->pdu.pucch_pdu.multiSlotTxIndicator = 0; /* No Multi Slot transmission */
       
