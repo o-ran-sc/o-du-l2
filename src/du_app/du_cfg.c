@@ -169,7 +169,7 @@ uint8_t readMacCfg()
          }
       }
    }
-   duCfgParam.macCellCfg.cellCfg.numerology = NR_NUMEROLOGY;
+   duCfgParam.macCellCfg.cellCfg.subCarrSpacing = NR_SCS;
    duCfgParam.macCellCfg.cellCfg.dupType    = DUPLEX_MODE;
 
    /* SSB configuration */
@@ -248,77 +248,77 @@ uint8_t readMacCfg()
    }
 
    /* fill Intial DL BWP */
-   duCfgParam.macCellCfg.initialDlBwp.bwp.firstPrb = 0;
-   duCfgParam.macCellCfg.initialDlBwp.bwp.numPrb = TOTAL_PRB_20MHZ_MU0; /* configured to total BW */
-   duCfgParam.macCellCfg.initialDlBwp.bwp.scs = duCfgParam.macCellCfg.ssbCfg.scsCmn;
-   duCfgParam.macCellCfg.initialDlBwp.bwp.cyclicPrefix = NORMAL_CYCLIC_PREFIX;
-   duCfgParam.macCellCfg.initialDlBwp.pdcchCommon.commonSearchSpace.searchSpaceId = SEARCHSPACE_1_INDEX;
-   duCfgParam.macCellCfg.initialDlBwp.pdcchCommon.commonSearchSpace.coresetId = CORESET_0_INDEX;
-   duCfgParam.macCellCfg.initialDlBwp.pdcchCommon.commonSearchSpace.monitoringSlot =
+   duCfgParam.macCellCfg.cellCfg.initialDlBwp.bwp.firstPrb = 0;
+   duCfgParam.macCellCfg.cellCfg.initialDlBwp.bwp.numPrb = TOTAL_PRB_20MHZ_MU0; /* configured to total BW */
+   duCfgParam.macCellCfg.cellCfg.initialDlBwp.bwp.scs = duCfgParam.macCellCfg.ssbCfg.scsCmn;
+   duCfgParam.macCellCfg.cellCfg.initialDlBwp.bwp.cyclicPrefix = NORMAL_CYCLIC_PREFIX;
+   duCfgParam.macCellCfg.cellCfg.initialDlBwp.pdcchCommon.commonSearchSpace.searchSpaceId = SEARCHSPACE_1_INDEX;
+   duCfgParam.macCellCfg.cellCfg.initialDlBwp.pdcchCommon.commonSearchSpace.coresetId = CORESET_0_INDEX;
+   duCfgParam.macCellCfg.cellCfg.initialDlBwp.pdcchCommon.commonSearchSpace.monitoringSlot =
       SS_MONITORING_SLOT_SL1; /* sl1 - all slots */
-   duCfgParam.macCellCfg.initialDlBwp.pdcchCommon.commonSearchSpace.duration = 0;
-   duCfgParam.macCellCfg.initialDlBwp.pdcchCommon.commonSearchSpace.monitoringSymbol =
+   duCfgParam.macCellCfg.cellCfg.initialDlBwp.pdcchCommon.commonSearchSpace.duration = 0;
+   duCfgParam.macCellCfg.cellCfg.initialDlBwp.pdcchCommon.commonSearchSpace.monitoringSymbol =
       SS_MONITORING_SYMBOL;
-   duCfgParam.macCellCfg.initialDlBwp.pdcchCommon.commonSearchSpace.
+   duCfgParam.macCellCfg.cellCfg.initialDlBwp.pdcchCommon.commonSearchSpace.
       candidate.aggLevel1	= 8;
-   duCfgParam.macCellCfg.initialDlBwp.pdcchCommon.commonSearchSpace.
+   duCfgParam.macCellCfg.cellCfg.initialDlBwp.pdcchCommon.commonSearchSpace.
       candidate.aggLevel2	= 4;
-   duCfgParam.macCellCfg.initialDlBwp.pdcchCommon.commonSearchSpace.
+   duCfgParam.macCellCfg.cellCfg.initialDlBwp.pdcchCommon.commonSearchSpace.
       candidate.aggLevel4	= 2;
-   duCfgParam.macCellCfg.initialDlBwp.pdcchCommon.commonSearchSpace.
+   duCfgParam.macCellCfg.cellCfg.initialDlBwp.pdcchCommon.commonSearchSpace.
       candidate.aggLevel8	= 1;
-   duCfgParam.macCellCfg.initialDlBwp.pdcchCommon.commonSearchSpace.
+   duCfgParam.macCellCfg.cellCfg.initialDlBwp.pdcchCommon.commonSearchSpace.
       candidate.aggLevel16	= 0;
 
-   duCfgParam.macCellCfg.initialDlBwp.pdschCommon.numTimeDomAlloc = NUM_TIME_DOM_RSRC_ALLOC;
+   duCfgParam.macCellCfg.cellCfg.initialDlBwp.pdschCommon.numTimeDomAlloc = NUM_TIME_DOM_RSRC_ALLOC;
    idx = 0;
-   duCfgParam.macCellCfg.initialDlBwp.pdschCommon.timeDomRsrcAllocList[idx].k0 = PDSCH_K0_CFG1;
-   duCfgParam.macCellCfg.initialDlBwp.pdschCommon.timeDomRsrcAllocList[idx].mappingType = 
+   duCfgParam.macCellCfg.cellCfg.initialDlBwp.pdschCommon.timeDomRsrcAllocList[idx].k0 = PDSCH_K0_CFG1;
+   duCfgParam.macCellCfg.cellCfg.initialDlBwp.pdschCommon.timeDomRsrcAllocList[idx].mappingType = 
       PDSCH_MAPPING_TYPE_A;
-   duCfgParam.macCellCfg.initialDlBwp.pdschCommon.timeDomRsrcAllocList[idx].startSymbol = 
+   duCfgParam.macCellCfg.cellCfg.initialDlBwp.pdschCommon.timeDomRsrcAllocList[idx].startSymbol = 
       PDSCH_START_SYMBOL;
-   duCfgParam.macCellCfg.initialDlBwp.pdschCommon.timeDomRsrcAllocList[idx].lengthSymbol =
+   duCfgParam.macCellCfg.cellCfg.initialDlBwp.pdschCommon.timeDomRsrcAllocList[idx].lengthSymbol =
       PDSCH_LENGTH_SYMBOL;
 
    idx++;
-   duCfgParam.macCellCfg.initialDlBwp.pdschCommon.timeDomRsrcAllocList[idx].k0 = PDSCH_K0_CFG2;
-   duCfgParam.macCellCfg.initialDlBwp.pdschCommon.timeDomRsrcAllocList[idx].mappingType = 
+   duCfgParam.macCellCfg.cellCfg.initialDlBwp.pdschCommon.timeDomRsrcAllocList[idx].k0 = PDSCH_K0_CFG2;
+   duCfgParam.macCellCfg.cellCfg.initialDlBwp.pdschCommon.timeDomRsrcAllocList[idx].mappingType = 
       PDSCH_MAPPING_TYPE_A;
-   duCfgParam.macCellCfg.initialDlBwp.pdschCommon.timeDomRsrcAllocList[idx].startSymbol = 
+   duCfgParam.macCellCfg.cellCfg.initialDlBwp.pdschCommon.timeDomRsrcAllocList[idx].startSymbol = 
       PDSCH_START_SYMBOL;
-   duCfgParam.macCellCfg.initialDlBwp.pdschCommon.timeDomRsrcAllocList[idx].lengthSymbol =
+   duCfgParam.macCellCfg.cellCfg.initialDlBwp.pdschCommon.timeDomRsrcAllocList[idx].lengthSymbol =
       PDSCH_LENGTH_SYMBOL;
 
    /* ra-searchSpace ID is set to 1 */
-   duCfgParam.macCellCfg.initialDlBwp.pdcchCommon.raSearchSpaceId = SEARCHSPACE_1_INDEX;
+   duCfgParam.macCellCfg.cellCfg.initialDlBwp.pdcchCommon.raSearchSpaceId = SEARCHSPACE_1_INDEX;
 
    /* fill Intial UL BWP */
-   duCfgParam.macCellCfg.initialUlBwp.bwp.firstPrb = 0;
-   duCfgParam.macCellCfg.initialUlBwp.bwp.numPrb = TOTAL_PRB_20MHZ_MU0; /* configured to total BW */
-   duCfgParam.macCellCfg.initialUlBwp.bwp.scs = duCfgParam.macCellCfg.ssbCfg.scsCmn;
-   duCfgParam.macCellCfg.initialUlBwp.bwp.cyclicPrefix = NORMAL_CYCLIC_PREFIX;
-   duCfgParam.macCellCfg.initialUlBwp.puschCommon.numTimeDomRsrcAlloc = 2;
-   duCfgParam.macCellCfg.initialUlBwp.puschCommon.timeDomRsrcAllocList[0].k2 = PUSCH_K2_CFG1;
-   duCfgParam.macCellCfg.initialUlBwp.puschCommon.timeDomRsrcAllocList[0].mappingType = 
+   duCfgParam.macCellCfg.cellCfg.initialUlBwp.bwp.firstPrb = 0;
+   duCfgParam.macCellCfg.cellCfg.initialUlBwp.bwp.numPrb = TOTAL_PRB_20MHZ_MU0; /* configured to total BW */
+   duCfgParam.macCellCfg.cellCfg.initialUlBwp.bwp.scs = duCfgParam.macCellCfg.ssbCfg.scsCmn;
+   duCfgParam.macCellCfg.cellCfg.initialUlBwp.bwp.cyclicPrefix = NORMAL_CYCLIC_PREFIX;
+   duCfgParam.macCellCfg.cellCfg.initialUlBwp.puschCommon.numTimeDomRsrcAlloc = 2;
+   duCfgParam.macCellCfg.cellCfg.initialUlBwp.puschCommon.timeDomRsrcAllocList[0].k2 = PUSCH_K2_CFG1;
+   duCfgParam.macCellCfg.cellCfg.initialUlBwp.puschCommon.timeDomRsrcAllocList[0].mappingType = 
       PUSCH_MAPPING_TYPE_A;
-   duCfgParam.macCellCfg.initialUlBwp.puschCommon.timeDomRsrcAllocList[0].startSymbol = 
+   duCfgParam.macCellCfg.cellCfg.initialUlBwp.puschCommon.timeDomRsrcAllocList[0].startSymbol = 
       PUSCH_START_SYMBOL;
-   duCfgParam.macCellCfg.initialUlBwp.puschCommon.timeDomRsrcAllocList[0].symbolLength =
+   duCfgParam.macCellCfg.cellCfg.initialUlBwp.puschCommon.timeDomRsrcAllocList[0].symbolLength =
       PUSCH_LENGTH_SYMBOL;
 
-   duCfgParam.macCellCfg.initialUlBwp.puschCommon.timeDomRsrcAllocList[1].k2 = PUSCH_K2_CFG2;
-   duCfgParam.macCellCfg.initialUlBwp.puschCommon.timeDomRsrcAllocList[1].mappingType = 
+   duCfgParam.macCellCfg.cellCfg.initialUlBwp.puschCommon.timeDomRsrcAllocList[1].k2 = PUSCH_K2_CFG2;
+   duCfgParam.macCellCfg.cellCfg.initialUlBwp.puschCommon.timeDomRsrcAllocList[1].mappingType = 
       PUSCH_MAPPING_TYPE_A;
-   duCfgParam.macCellCfg.initialUlBwp.puschCommon.timeDomRsrcAllocList[1].startSymbol = 
+   duCfgParam.macCellCfg.cellCfg.initialUlBwp.puschCommon.timeDomRsrcAllocList[1].startSymbol = 
       PUSCH_START_SYMBOL;
-   duCfgParam.macCellCfg.initialUlBwp.puschCommon.timeDomRsrcAllocList[1].symbolLength =
+   duCfgParam.macCellCfg.cellCfg.initialUlBwp.puschCommon.timeDomRsrcAllocList[1].symbolLength =
       PUSCH_LENGTH_SYMBOL;
 
    duCfgParam.macCellCfg.ssbCfg.dmrsTypeAPos = DMRS_TYPE_A_POS; 
 
    /* fill PUCCH config common */
-   duCfgParam.macCellCfg.initialUlBwp.pucchCommon.pucchResourceCommon = PUCCH_RSRC_COMMON;
-   duCfgParam.macCellCfg.initialUlBwp.pucchCommon.pucchGroupHopping = PUCCH_GROUP_HOPPING;
+   duCfgParam.macCellCfg.cellCfg.initialUlBwp.pucchCommon.pucchResourceCommon = PUCCH_RSRC_COMMON;
+   duCfgParam.macCellCfg.cellCfg.initialUlBwp.pucchCommon.pucchGroupHopping = PUCCH_GROUP_HOPPING;
 
 
 #ifndef O1_ENABLE
