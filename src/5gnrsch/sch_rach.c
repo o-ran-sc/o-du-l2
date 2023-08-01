@@ -74,7 +74,7 @@ bool schCheckPrachOcc(SchCellCb *cell, SlotTimingInfo prachOccasionTimingInfo)
 
    if((prachOccasionTimingInfo.sfn%x) == y)
    {
-      subFrame = prachOccasionTimingInfo.slot/pow(2, cell->cellCfg.numerology);
+      subFrame = prachOccasionTimingInfo.slot/pow(2, cell->numerology);
 
       /* check for subFrame number */
       if ((1 << subFrame) & prachSubframe)
@@ -561,9 +561,9 @@ bool schProcessRaReq(Inst schInst, SchCellCb *cell, SlotTimingInfo currTime, uin
    if(cell->raReq[ueId-1]->isCFRA == false)
    {
       msg3K2InfoTbl  = &cell->msg3K2InfoTbl;
-      puschMu        = cell->cellCfg.numerology;
+      puschMu        = cell->numerology;
       msg3Delta      = puschDeltaTable[puschMu];
-      msg3MinSchTime = minMsg3SchTime[cell->cellCfg.numerology];
+      msg3MinSchTime = minMsg3SchTime[cell->numerology];
    }
 
    /* Calculating time frame to send DCI for RAR */
@@ -861,7 +861,7 @@ uint8_t SchProcRachInd(Pst *pst, RachIndInfo *rachInd)
    raReq->winStartTime.slot = rachInd->timingInfo.slot;
   
    /* Converting window size from ms to number of slots */
-   slotDuration = (1 / pow(2, cell->cellCfg.numerology));
+   slotDuration = (1 / pow(2, cell->numerology));
    winNumSlots = (float)cell->cellCfg.ulCfgCommon.schInitialUlBwp.schRachCfg.prachCfgGeneric.raRspWindow / slotDuration;
    
    /* Adding window size to window start time to get window end time */

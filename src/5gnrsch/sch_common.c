@@ -1390,7 +1390,7 @@ SchK2TimingInfoTbl *msg3K2InfoTbl, SchK2TimingInfoTbl *k2InfoTbl)
 
                if(msg3K2InfoTbl)
                {
-                   msg3Delta = puschDeltaTable[cell->cellCfg.numerology];
+                   msg3Delta = puschDeltaTable[cell->numerology];
 
                   /* Check for K2 for MSG3 */
                   /* Current slot + k2 should be either UL or FLEXI slot.
@@ -2225,7 +2225,7 @@ bool schGetMsg3K2(SchCellCb *cell, SchUlHqProcCb* msg3HqProc, uint16_t dlTime, S
    SchK2TimingInfoTbl   *msg3K2InfoTbl=NULLP;
    SlotTimingInfo       currTime, msg3TempTime;
    currTime = cell->slotInfo;
-   puschMu = cell->cellCfg.numerology;
+   puschMu = cell->numerology;
 
    if (isRetx)
    {
@@ -2241,7 +2241,7 @@ bool schGetMsg3K2(SchCellCb *cell, SchUlHqProcCb* msg3HqProc, uint16_t dlTime, S
    {
       numK2 = cell->msg3K2InfoTbl.k2TimingInfo[dlTime].numK2;
       msg3K2InfoTbl = &cell->k2InfoTbl;
-      msg3MinSchTime = minMsg3SchTime[cell->cellCfg.numerology];
+      msg3MinSchTime = minMsg3SchTime[cell->numerology];
       msg3Delta = puschDeltaTable[puschMu];
    }
 

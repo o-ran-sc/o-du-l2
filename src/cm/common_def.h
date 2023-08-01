@@ -125,6 +125,7 @@
 #endif
 
 #define MAX_SFN   1024
+#define CENTRAL_NUMEROLOGY 30
 
 /* Defining macros for common utility functions */
 #define ODU_GET_MSG_BUF SGetMsg

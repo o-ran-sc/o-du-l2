@@ -381,7 +381,7 @@ void schInitTddSlotCfg(SchCellCb *cell, SchCellCfg *schCellCfg)
    int8_t slotIdx, symbIdx;
 
    periodicityInMicroSec = schGetPeriodicityInMsec(schCellCfg->tddCfg.tddPeriod);
-   cell->numSlotsInPeriodicity = (periodicityInMicroSec * pow(2, schCellCfg->numerology))/1000;
+   cell->numSlotsInPeriodicity = (periodicityInMicroSec * pow(2, cell->numerology))/1000;
    cell->slotFrmtBitMap = 0;
    schFillSlotConfig(cell, schCellCfg->tddCfg);
    for(slotIdx = cell->numSlotsInPeriodicity-1; slotIdx >= 0; slotIdx--)
@@ -434,7 +434,7 @@ void fillSsbStartSymb(SchCellCb *cellCb)
 {
    uint8_t cnt, scs, symbIdx, ssbStartSymbArr[SCH_MAX_SSB_BEAM];
 
-   scs = cellCb->cellCfg.scsCommon;
+   scs = cellCb->cellCfg.ssbScs;
 
    memset(ssbStartSymbArr, 0, sizeof(SCH_MAX_SSB_BEAM));
    symbIdx = 0;
@@ -506,7 +506,8 @@ uint8_t schInitCellCb(Inst inst, SchCellCfg *schCellCfg)
 
    cell->cellId = schCellCfg->cellId; 
    cell->instIdx = inst;
-   switch(schCellCfg->numerology)
+   cell->numerology = (schCellCfg->ssbScs/CENTRAL_NUMEROLOGY);
+   switch(cell->numerology)
    {
       case SCH_NUMEROLOGY_0:
 	 {
@@ -534,7 +535,7 @@ uint8_t schInitCellCb(Inst inst, SchCellCfg *schCellCfg)
 	 }
 	 break;
       default:
-	 DU_LOG("\nERROR  -->  SCH : Numerology %d not supported", schCellCfg->numerology);
+	 DU_LOG("\nERROR  -->  SCH : Numerology %d not supported", cell->numerology);
    }
 #ifdef NR_TDD
    schInitTddSlotCfg(cell, schCellCfg);   
@@ -795,7 +796,7 @@ uint8_t SchProcCellCfgReq(Pst *pst, SchCellCfg *schCellCfg)
    cellCb->macInst = pst->srcInst;
 
    /* derive the SIB1 config parameters */
-   ret = fillSchSib1Cfg(schCellCfg->numerology, schCellCfg->dlBandwidth, cellCb->numSlots,
+   ret = fillSchSib1Cfg(cellCb->numerology, schCellCfg->dlBandwidth, cellCb->numSlots,
 	 &(schCellCfg->pdcchCfgSib1), &(cellCb->sib1SchCfg), schCellCfg->phyCellId,
 	 schCellCfg->dlCfgCommon.schFreqInfoDlSib.offsetToPointA, schCellCfg->sib1PduLen);
    
