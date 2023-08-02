@@ -3,6 +3,171 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9ea605ca_283f9fcf",
+        "filename": "src/du_app/du_e2ap_mgr.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-08-02T11:24:59Z",
+      "side": 1,
+      "message": "Define MAX_RIC_REQUEST also as mentioned in design document.",
+      "revId": "3ad1a54d04289f87a274caed7ee6b3a2ad6e77ad",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "24545a36_e9deb494",
+        "filename": "src/du_app/du_e2ap_mgr.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-08-02T11:24:59Z",
+      "side": 1,
+      "message": "Call these\nE2_NODE_COMPONENT_ADD\nE2_NODE_COMPONENT_UPDATE",
+      "revId": "3ad1a54d04289f87a274caed7ee6b3a2ad6e77ad",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "54cffc81_cd87e2ed",
+        "filename": "src/du_app/du_e2ap_mgr.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-08-02T11:24:59Z",
+      "side": 1,
+      "message": "Just call this as \"BOTH\"",
+      "revId": "3ad1a54d04289f87a274caed7ee6b3a2ad6e77ad",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b1a15ab3_b70a3356",
+        "filename": "src/du_app/du_e2ap_mgr.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 173,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-08-02T11:24:59Z",
+      "side": 1,
+      "message": "remove the comment",
+      "range": {
+        "startLine": 173,
+        "startChar": 37,
+        "endLine": 173,
+        "endChar": 40
+      },
+      "revId": "3ad1a54d04289f87a274caed7ee6b3a2ad6e77ad",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "28b7c5df_87849462",
+        "filename": "src/du_app/du_e2ap_mgr.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 257,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-08-02T11:24:59Z",
+      "side": 1,
+      "message": "If this parameter is not required in below structure, then remove this definition as well.",
+      "range": {
+        "startLine": 257,
+        "startChar": 1,
+        "endLine": 257,
+        "endChar": 29
+      },
+      "revId": "3ad1a54d04289f87a274caed7ee6b3a2ad6e77ad",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c966a769_41e92a1a",
+        "filename": "src/du_app/du_e2ap_mgr.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 266,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-08-02T11:24:59Z",
+      "side": 1,
+      "message": "As mentioned in comment, please check if this is a mandatory parameter.\nIf yes, then remove the comment.\nIf no, then remove the parameter as well.",
+      "revId": "3ad1a54d04289f87a274caed7ee6b3a2ad6e77ad",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7cbce9cd_1f25b086",
+        "filename": "src/du_app/du_e2ap_mgr.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 375,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-08-02T11:24:59Z",
+      "side": 1,
+      "message": "RAN function must also be configured initially itself before E2 setup procedure starts because it is needed to fill E2 setup request message.",
+      "revId": "3ad1a54d04289f87a274caed7ee6b3a2ad6e77ad",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3a085920_0d6e7142",
+        "filename": "src/du_app/du_e2ap_mgr.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 377,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-08-02T11:24:59Z",
+      "side": 1,
+      "message": "As per initial design, we should have support for multiple TNL assoc.",
+      "revId": "3ad1a54d04289f87a274caed7ee6b3a2ad6e77ad",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b02fe11e_b02fd1c9",
+        "filename": "src/du_app/du_e2ap_mgr.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 379,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-08-02T11:24:59Z",
+      "side": 1,
+      "message": "As discussed, move all timer related things into one structure and add that structure object here.",
+      "revId": "3ad1a54d04289f87a274caed7ee6b3a2ad6e77ad",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "02134e4e_897044d9",
         "filename": "src/du_app/du_e2ap_msg_hdl.c",
         "patchSetId": 3
@@ -38,6 +203,69 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e5398826_3963f564",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-08-02T11:24:59Z",
+      "side": 1,
+      "message": "Update function description.",
+      "range": {
+        "startLine": 106,
+        "startChar": 17,
+        "endLine": 106,
+        "endChar": 31
+      },
+      "revId": "3ad1a54d04289f87a274caed7ee6b3a2ad6e77ad",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7f8ede13_3108fc93",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1068,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-08-02T11:24:59Z",
+      "side": 1,
+      "message": "Add a comment here that ranFunction index will not always be 0.\nUsing RAN function id in ric subscription msg, first we need to search RAN function and then add subscription details to that ran function.\n\nThis can be done later when working of subsciption procedure.",
+      "range": {
+        "startLine": 1068,
+        "startChar": 50,
+        "endLine": 1068,
+        "endChar": 61
+      },
+      "revId": "3ad1a54d04289f87a274caed7ee6b3a2ad6e77ad",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a3f17cbc_a6d66942",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1214,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-08-02T11:24:59Z",
+      "side": 1,
+      "message": "These all changes with respect to subscription request and ric indication are temporary and will be changed. Hence not reviewing in detail.",
+      "revId": "3ad1a54d04289f87a274caed7ee6b3a2ad6e77ad",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "646afaa0_891cd953",
         "filename": "src/du_app/du_f1ap_msg_hdl.c",
         "patchSetId": 3
@@ -67,6 +295,69 @@
       "side": 1,
       "message": "Done",
       "parentUuid": "646afaa0_891cd953",
+      "revId": "3ad1a54d04289f87a274caed7ee6b3a2ad6e77ad",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e7620f83_1443a09f",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1603,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-08-02T11:24:59Z",
+      "side": 1,
+      "message": "update function description",
+      "revId": "3ad1a54d04289f87a274caed7ee6b3a2ad6e77ad",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aea295bf_02bf2943",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1631,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-08-02T11:24:59Z",
+      "side": 1,
+      "message": "since bufString is already a pointer, instead of \u0026bufString, we should pass just bufString in memcpy()",
+      "range": {
+        "startLine": 1631,
+        "startChar": 60,
+        "endLine": 1631,
+        "endChar": 69
+      },
+      "revId": "3ad1a54d04289f87a274caed7ee6b3a2ad6e77ad",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eab41290_f6bdaaf3",
+        "filename": "src/du_app/du_mgr_main.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 553,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-08-02T11:24:59Z",
+      "side": 1,
+      "message": "revert",
+      "range": {
+        "startLine": 553,
+        "startChar": 7,
+        "endLine": 553,
+        "endChar": 30
+      },
       "revId": "3ad1a54d04289f87a274caed7ee6b3a2ad6e77ad",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
