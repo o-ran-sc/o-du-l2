@@ -602,8 +602,6 @@ uint8_t readCfg()
    Sib1Params sib1;
    F1TaiSliceSuppLst *taiSliceSuppLst;
 
-   duCb.e2apDb.e2TransInfo.transIdCounter = 0;
-   memset(duCb.e2apDb.e2TransInfo.onGoingTransaction, 0, MAX_NUM_TRANSACTION * sizeof(E2TransInfo));
 
 #ifndef O1_ENABLE
    /* Note: Added these below variable for local testing*/
@@ -663,6 +661,19 @@ uint8_t readCfg()
    }
    strcpy((char*)duCfgParam.duName,DU_NAME);
 
+   memset(&duCb.e2apDb, 0, sizeof(E2apDb));
+   duCb.e2apDb.e2NodeId =  DU_ID;
+   duCb.e2apDb.e2TransInfo.transIdCounter = 0;
+
+   duCb.e2apDb.tnlAssoc.localIpAddress.ipV4Pres = duCfgParam.sctpParams.duIpAddr.ipV4Pres;
+   duCb.e2apDb.tnlAssoc.localIpAddress.ipV4Addr = duCfgParam.sctpParams.duIpAddr.ipV4Addr;
+   duCb.e2apDb.tnlAssoc.localPort = duCfgParam.sctpParams.duPort[E2_INTERFACE];
+   duCb.e2apDb.tnlAssoc.destIpAddress.ipV4Pres = duCfgParam.sctpParams.ricIpAddr.ipV4Pres;
+   duCb.e2apDb.tnlAssoc.destIpAddress.ipV4Addr = duCfgParam.sctpParams.ricIpAddr.ipV4Addr;
+   duCb.e2apDb.tnlAssoc.destPort = duCfgParam.sctpParams.ricPort;
+   duCb.e2apDb.tnlAssoc.usage = BOTH_FUNCTIONALITY;
+   memset(duCb.e2apDb.e2TransInfo.onGoingTransaction, 0, MAX_NUM_TRANSACTION * sizeof(E2TransInfo));
+   
    /* Mib Params */
    mib.sysFrmNum = SYS_FRAME_NUM;
 #ifdef NR_TDD
