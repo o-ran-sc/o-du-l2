@@ -14,13 +14,58 @@
 #   See the License for the specific language governing permissions and        #
 #   limitations under the License.                                             #
 ################################################################################
-*******************************************************************************/
+ *******************************************************************************/
 
 /* This file contains all E2AP message handler related functionality */
 
 #define MAX_NUM_TRANSACTION 256 /* As per, O-RAN WG3 E2AP v3.0, section 9.2.33 */
 #define MAX_E2_SETUP_TMR 1
 #define EVENT_E2_SETUP_TMR 1
+#define MAX_RAN_FUNCTION 256        /* O-RAN.WG3.E2AP-R003-v03.00 : Section 9.1.2.2 : maxofRANfunctionID */
+#define MAX_E2_NODE_COMPONENT 1024     /* O-RAN.WG3.E2AP-R003-v03.00 : Section 9.1.2.2 : maxofE2nodeComponents */
+#define MAX_TNL_ASSOCIATION 32         /* O-RAN.WG3.E2AP-R003-v03.00 : Section 9.1.2.11 : maxofTNLA */
+#define MAX_RIC_STYLES 64           /* O-RAN.WG3.E2SM-KPM-R003-v03.00 : Section 8.2.2.1 : maxnoofRICstyle */
+#define MAX_MEASUREMENT_INFO 65535     /* O-RAN.WG3.E2SM-KPM-R003-v03.00 : Section 8.2.2.1 : maxnoofMeasurementInfo */
+#define MAX_LABEL_INFO  2147483648     /* O-RAN.WG3.E2SM-KPM-R003-v03.00 : Section 8.2.1.2.1 : maxnoofLabelInfo */
+#define MAX_RIC_ACTION  16          /* O-RAN.WG3.E2AP-R003-v03.00 : Section 9.1.1.1 : maxofRICActionID */
+
+#define STRING_SIZE_150_BYTES 150
+#define STRING_SIZE_1000_BYTES 1000
+
+
+/* O-RAN.WG3.E2AP-R003-v03.00 : Section 9.2.26 */
+typedef enum
+{
+   NG,
+   XN,
+   E1,
+   F1,
+   W1,
+   S1,
+   X2
+}InterfaceType;
+
+typedef enum
+{
+   COMPONENT_ADD_LIST,
+   COMPONENT_UPDATE_LIST
+}ComponentActionType;
+
+/* O-RAN.WG3.E2AP-R003-v03.00 : Section 9.2.30 */
+typedef enum
+{
+   RIC_SERVICE,
+   SUPPORT_FUNCTIONS,
+   BOTH_FUNCTIONALITY
+}AssocUsage;
+
+/* O-RAN.WG3.E2AP-R003-v03.00 : Section 9.2.11 */
+typedef enum
+{
+   INSERT,
+   REPORT,
+   POLICY
+}ActionType;
 
 typedef enum
 {
@@ -121,19 +166,216 @@ typedef struct e2Timer
    /* More timers can be added to this structure in future */
 }E2Timer;
 
-typedef struct e2apDb
+
+/* O-RAN.WG3.E2AP-R003-v03.00 : Section 9.2.4 */
+typedef struct
 {
-   uint16_t      ricId;
-   E2Transcation e2TransInfo;
-   uint8_t       *plmn;
-   uint32_t      ricReqId;
-   uint32_t      ricInstanceId;
-   uint32_t      ranFuncId;
-   uint8_t       *ricEventTrigger;
-   uint32_t      ricActionId;
-   uint32_t      ricActionType;
-   E2Timer       e2Timers;
-   uint8_t       e2SetupTimerInterval;
+   Plmn     plmnId; /* As defined in DU APP DB */
+   uint32_t nearRtRicId;
+}GlobalRicId;
+
+/* O-RAN.WG3.E2SM-R003-v03.00 : Section 6.2.2.1 */
+typedef struct
+{
+   char  shortName[STRING_SIZE_150_BYTES];
+   char  serviceModelOID[STRING_SIZE_1000_BYTES];
+   char  description[STRING_SIZE_150_BYTES];
+}RanFunctionName;
+
+/* O-RAN.WG3.E2SM-R003-v03.00 : Section 6.2.2.2-6.2.2.4 */
+typedef struct
+{
+   uint8_t styleType;
+   char    name[STRING_SIZE_150_BYTES];
+   uint8_t formatType;
+}RicStyle;
+
+/* O-RAN.WG3.E2SM-KPM-R003-v03.00 : Section 8.2.2.1 */
+typedef struct
+{
+   char     measurementTypeName[STRING_SIZE_150_BYTES];
+   uint16_t measurementTypeId;
+}MeasurementInfoForAction;
+
+typedef struct
+{
+   RicStyle       reportStyle;
+   uint16_t       numOfMeasurementInfoSupported;
+   MeasurementInfoForAction   **measurementInfoList;
+}RicReportStyle;
+
+/* O-RAN.WG3.E2AP-R003-v03.00 : Section 9.2.7 */
+typedef struct
+{
+   uint16_t requestorId;
+   uint16_t instanceId;
+}RicRequestId;
+
+/* O-RAN.WG3.E2SM-KPM-R003-v03.00 : Section 8.2.1.1.1 */
+typedef struct
+{
+   uint32_t reportingPeriod;
+}EventTriggerFormat1;
+
+/* O-RAN.WG3.E2SM-KPM-R003-v03.00 : Section 8.2.1.1 */
+typedef struct
+{
+   uint8_t  formatType;
+   union
+   {
+      EventTriggerFormat1 format1;
+      /* More formats can be added in future */
+   }choice;
+}EventTriggerDefinition;
+
+/* O-RAN.WG3.E2SM-KPM-R003-v03.00 : Section 8.3.11 */
+typedef struct
+{
+   /* TODO : To be added when list of KPIs are finalised */
+}LabelInfo;
+
+/* O-RAN.WG3.E2SM-KPM-R003-v03.00 : Section 8.2.1.2.1 */
+typedef struct
+{
+   union
+   {
+      char     measurementTypeName[STRING_SIZE_150_BYTES];
+      uint16_t measurementTypeId;
+   }choice;
+   uint32_t    numOfLabels;
+   LabelInfo   LabelInfoList[MAX_LABEL_INFO];
+}MeasurementInfo;
+
+typedef struct
+{
+   union
+   {
+      char     measurementTypeName[STRING_SIZE_150_BYTES];
+      uint16_t measurementTypeId;
+   }choice;
+   /* TODO : Define bin range definition */
+}DistributionMeasBinRangeInfo;
+
+/* O-RAN.WG3.E2SM-KPM-R003-v03.00 : Section 8.2.1.2.1 */
+typedef struct
+{
+   uint16_t                numOfMeasuermentInfo;
+   MeasurementInfo         **measurementInfoList;
+   uint32_t                granularityPeriod;                     /* In millisecond */
+   uint32_t                numOfDistributionMeasBinRangeInfo;
+   DistributionMeasBinRangeInfo  **distributionMeasBinRangeInfoList;     /* Check in codec if this is mandatory */
+}ActionDefFormat1;
+
+/* O-RAN.WG3.E2SM-KPM-R003-v03.00 : Section 8.2.1.2.2 */
+typedef struct
+{
+   /* TODO : This format will be defined in future if required */
+}ActionDefFormat2;
+
+/* O-RAN.WG3.E2SM-KPM-R003-v03.00 : Section 8.2.1.2.3 */
+typedef struct
+{
+   /* TODO : This format will be defined in future if required */
+}ActionDefFormat3;
+
+/* O-RAN.WG3.E2SM-KPM-R003-v03.00 : Section 8.2.1.2.4 */
+typedef struct
+{
+   /* TODO : This format will be defined in future if required */
+}ActionDefFormat4;
+
+/* O-RAN.WG3.E2SM-KPM-R003-v03.00 : Section 8.2.1.2.5 */
+typedef struct
+{
+   /* TODO : This format will be defined in future if required */
+}ActionDefFormat5;
+
+/* O-RAN.WG3.E2SM-KPM-R003-v03.00 : Section 8.2.1.2 */
+typedef struct
+{
+   uint8_t     styleType;
+   union
+   {
+      ActionDefFormat1  format1;
+      ActionDefFormat2  format2;
+      ActionDefFormat3  format3;
+      ActionDefFormat4  format4;
+      ActionDefFormat5  format5;
+   }choice;
+}ActionDefinition;
+
+/* O-RAN.WG3.E2AP-R003-v03.00 : Section 9.1.1.1 : maxofRICActionID */
+typedef struct
+{
+   uint8_t           id;
+   ActionType        type;
+   ActionDefinition  definition;
+}ActionInfo;
+
+/* O-RAN.WG3.E2AP-R003-v03.00 : Section 9.1.1.1 : maxofRICActionID */
+typedef struct
+{
+   RicRequestId           requestId;
+   EventTriggerDefinition eventTriggerDefinition;
+   uint8_t                numOfActions;
+   ActionInfo             actionSequence[MAX_RIC_ACTION];  
+}RicSubscription;
+
+typedef struct
+{
+   /* O-RAN.WG3.E2SM-KPM-R003-v03.00 : Section 8.2.2.1 */
+   uint16_t         id;
+   RanFunctionName  name;
+   uint16_t         revisionCounter;
+   uint8_t          numOfEventTriggerStyleSupported;
+   RicStyle         eventTriggerStyleList[MAX_RIC_STYLES];
+   uint8_t          numOfReportStyleSupported;
+   RicReportStyle   reportStyleList[MAX_RIC_STYLES];
+   uint8_t          ricIndicationHeaderFormat;
+   uint8_t          ricIndicationMessageFormat;
+   /* O-RAN.WG3.E2AP-R003-v03.00 : Section 9.1.1.1 */
+   CmLListCp        subscriptionList;
+}RanFunction;
+
+/* O-RAN.WG3.E2AP-R003-v03.00 : Section 9.2.26-9.2.27 */
+typedef struct
+{
+   InterfaceType        interfaceType;
+   uint64_t             componentId; 
+   ComponentActionType  componentActionType;
+   uint8_t              reqBufSize;
+   uint8_t              *componentRequestPart;
+   uint8_t              rspBufSize;
+   uint8_t              *componentResponsePart;
+}E2NodeComponent;
+
+typedef struct e2Ipaddr
+{
+   bool     ipV4Pres;
+   uint32_t ipV4Addr;
+}E2IpAddr;
+
+/* O-RAN.WG3.E2AP-R003-v03.00 : Section 9.2.29 */
+typedef struct
+{
+   E2IpAddr    localIpAddress;
+   uint16_t    localPort;
+   E2IpAddr    destIpAddress;
+   uint16_t    destPort;
+   AssocUsage  usage;
+}TNLAssociation;
+
+typedef struct
+{
+   uint64_t         e2NodeId; /* DU ID */
+   GlobalRicId      ricId;
+   E2Transcation    e2TransInfo;
+   uint16_t         numOfRanFunction;
+   RanFunction      ranFunction[MAX_RAN_FUNCTION];  
+   CmLListCp        e2NodeComponentList; 
+   TNLAssociation   tnlAssoc;   
+   E2Timer          e2Timers;
+   uint8_t          e2SetupTimerInterval;
 }E2apDb;
 
 uint8_t assignTransactionId();

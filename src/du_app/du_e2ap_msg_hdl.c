@@ -137,7 +137,22 @@ uint8_t BuildE2NodeConfigAddList(E2nodeComponentConfigAddition_List_t *e2NodeAdd
          return RFAILED;
       }
    }
+   
+   E2NodeComponent *e2NodeComponentInfo;
+   CmLList         *node;
 
+   if(duCb.e2apDb.e2NodeComponentList.count)
+   {
+      CM_LLIST_FIRST_NODE(&duCb.e2apDb.e2NodeComponentList, node);
+      while(node)
+      {
+         e2NodeComponentInfo = (E2NodeComponent*)node->node;
+         if((e2NodeComponentInfo->interfaceType == F1) && (e2NodeComponentInfo->componentActionType == COMPONENT_ADD_LIST))
+            break; 
+         else
+            node = node->next;
+      }
+   }
    arrIdx = 0;
    e2NodeAddItemIe = (E2nodeComponentConfigAddition_ItemIEs_t *) e2NodeAddList->list.array[arrIdx];
    e2NodeAddItemIe->id = ProtocolIE_IDE2_id_E2nodeComponentConfigAddition_Item;
@@ -149,7 +164,7 @@ uint8_t BuildE2NodeConfigAddList(E2nodeComponentConfigAddition_List_t *e2NodeAdd
    e2NodeAddItem->e2nodeComponentInterfaceType = E2nodeComponentInterfaceType_f1;
 
    /* E2 Node Component Request Part */
-   e2NodeAddItem->e2nodeComponentConfiguration.e2nodeComponentRequestPart.size = duCb.f1SetupReqAndRspMsg.f1MsgReqBufSize;
+   e2NodeAddItem->e2nodeComponentConfiguration.e2nodeComponentRequestPart.size = e2NodeComponentInfo->reqBufSize ;
    DU_ALLOC(e2NodeAddItem->e2nodeComponentConfiguration.e2nodeComponentRequestPart.buf,\
    e2NodeAddItem->e2nodeComponentConfiguration.e2nodeComponentRequestPart.size);
    if(e2NodeAddItem->e2nodeComponentConfiguration.e2nodeComponentRequestPart.buf == NULLP)
@@ -159,11 +174,11 @@ uint8_t BuildE2NodeConfigAddList(E2nodeComponentConfigAddition_List_t *e2NodeAdd
    }
 
    memcpy(e2NodeAddItem->e2nodeComponentConfiguration.e2nodeComponentRequestPart.buf,\
-   duCb.f1SetupReqAndRspMsg.f1MsgReqBuf, e2NodeAddItem->e2nodeComponentConfiguration.\
+   e2NodeComponentInfo->componentRequestPart, e2NodeAddItem->e2nodeComponentConfiguration.\
    e2nodeComponentRequestPart.size);
   
    /* E2 Node Component Response Part */
-   e2NodeAddItem->e2nodeComponentConfiguration.e2nodeComponentResponsePart.size = duCb.f1SetupReqAndRspMsg.f1MsgRspBufSize; 
+   e2NodeAddItem->e2nodeComponentConfiguration.e2nodeComponentResponsePart.size = e2NodeComponentInfo->rspBufSize; 
    DU_ALLOC(e2NodeAddItem->e2nodeComponentConfiguration.e2nodeComponentResponsePart.buf, \
    e2NodeAddItem->e2nodeComponentConfiguration.e2nodeComponentResponsePart.size);
    if(e2NodeAddItem->e2nodeComponentConfiguration.e2nodeComponentResponsePart.buf == NULLP)
@@ -172,7 +187,7 @@ uint8_t BuildE2NodeConfigAddList(E2nodeComponentConfigAddition_List_t *e2NodeAdd
       return RFAILED;
    }
    memcpy(e2NodeAddItem->e2nodeComponentConfiguration.e2nodeComponentResponsePart.buf, \
-   duCb.f1SetupReqAndRspMsg.f1MsgRspBuf, e2NodeAddItem->e2nodeComponentConfiguration.\
+   e2NodeComponentInfo->componentResponsePart, e2NodeAddItem->e2nodeComponentConfiguration.\
    e2nodeComponentResponsePart.size);
 
    /* E2 Node Component ID */
@@ -193,7 +208,7 @@ uint8_t BuildE2NodeConfigAddList(E2nodeComponentConfigAddition_List_t *e2NodeAdd
       DU_LOG("\nERROR  -->list.  E2AP: Memory allocation failed for BuildE2NodeConfigAddList %d",__LINE__);
       return RFAILED;
    }
-   e2NodeAddItem->e2nodeComponentID.choice.e2nodeComponentInterfaceTypeF1->gNB_DU_ID.buf[arrIdx]  = duCfgParam.duId;
+   e2NodeAddItem->e2nodeComponentID.choice.e2nodeComponentInterfaceTypeF1->gNB_DU_ID.buf[arrIdx]  = e2NodeComponentInfo->componentId;
    return ROK;
 
 }
@@ -953,15 +968,10 @@ uint8_t procE2SetupRsp(E2AP_PDU_t *e2apMsg)
                /* To store the Ric Id Params */
                recvBufLen = sizeof(e2SetRspMsg->protocolIEs.list.array[arrIdx]->value\
                      .choice.GlobalRIC_ID.pLMN_Identity.size);
-               duCb.e2apDb.plmn = NULLP;
-               DU_ALLOC(duCb.e2apDb.plmn, recvBufLen);
-               if(duCb.e2apDb.plmn)
-               {
-                  memcpy(duCb.e2apDb.plmn, e2SetRspMsg->protocolIEs.list.array[arrIdx]\
+                  memcpy(&duCb.e2apDb.ricId.plmnId, e2SetRspMsg->protocolIEs.list.array[arrIdx]\
                         ->value.choice.GlobalRIC_ID.pLMN_Identity.buf, recvBufLen);
-               }
                bitStringToInt(&e2SetRspMsg->protocolIEs.list.array[arrIdx]->value.choice.GlobalRIC_ID.ric_ID, &duCb.e2apDb.ricId);
-               /*TODO : duCb.e2apDb.plmn memory to be deallocated after the usage */
+               /*TODO : duCb.e2apDb.ricId.plmnId memory to be deallocated after the usage */
                break;
             }
 
@@ -975,9 +985,6 @@ uint8_t procE2SetupRsp(E2AP_PDU_t *e2apMsg)
       }
    }
    freeAperDecodingOfE2SetupRsp(e2SetRspMsg);
-   
-   DU_FREE(duCb.f1SetupReqAndRspMsg.f1MsgReqBuf,duCb.f1SetupReqAndRspMsg.f1MsgReqBufSize);
-   DU_FREE(duCb.f1SetupReqAndRspMsg.f1MsgRspBuf, duCb.f1SetupReqAndRspMsg.f1MsgRspBufSize); 
    
    BuildAndSendE2NodeConfigUpdate();
    return ROK;
@@ -1005,7 +1012,9 @@ uint8_t procRicSubsReq(E2AP_PDU_t *e2apMsg)
    uint8_t ied; 
    uint8_t ret = ROK;
    uint32_t recvBufLen;             
+   CmLList  *ricSubscriptionNode = NULLP;
    RICsubscriptionRequest_t *ricSubsReq;
+   RicSubscription *ricSubscriptionInfo;
    RICaction_ToBeSetup_ItemIEs_t *actionItem;
 
    DU_LOG("\nINFO   -->  E2AP : RIC Subscription request received"); 
@@ -1019,15 +1028,25 @@ uint8_t procRicSubsReq(E2AP_PDU_t *e2apMsg)
          {
             case ProtocolIE_IDE2_id_RICrequestID:
                {
-                  duCb.e2apDb.ricReqId = ricSubsReq->protocolIEs.list.array[idx]->\
-                                         value.choice.RICrequestID.ricRequestorID;
-                  duCb.e2apDb.ricInstanceId = ricSubsReq->protocolIEs.list.array[idx]-> \
-                                              value.choice.RICrequestID.ricInstanceID;
+                  DU_ALLOC(ricSubscriptionInfo, sizeof(RicSubscription));
+                  if(!ricSubscriptionInfo)
+                  {
+                     DU_LOG("\nERROR  -->  E2AP : Memory allocation failed for ricSubscriptionInfo");
+                     return RFAILED;
+                  }
+                  ricSubscriptionInfo->requestId.requestorId = ricSubsReq->protocolIEs.list.array[idx]->value.choice.RICrequestID.ricRequestorID;
+                  ricSubscriptionInfo->requestId.instanceId = ricSubsReq->protocolIEs.list.array[idx]->value.choice.RICrequestID.ricInstanceID;
+                  DU_ALLOC(ricSubscriptionNode, sizeof(CmLList));
+                  if(ricSubscriptionNode)
+                  {
+                     ricSubscriptionNode->node = (PTR) ricSubscriptionInfo;
+                     cmLListAdd2Tail(&duCb.e2apDb.ranFunction[0].subscriptionList,ricSubscriptionNode);
+                  }
                   break;
                }
             case ProtocolIE_IDE2_id_RANfunctionID:
                {
-                  duCb.e2apDb.ranFuncId = ricSubsReq->protocolIEs.list.array[idx]-> \
+                  duCb.e2apDb.ranFunction[0].id = ricSubsReq->protocolIEs.list.array[idx]-> \
                                           value.choice.RANfunctionID; 
                   break;
                }
@@ -1035,15 +1054,16 @@ uint8_t procRicSubsReq(E2AP_PDU_t *e2apMsg)
                {
                   recvBufLen = sizeof(ricSubsReq->protocolIEs.list.array[idx]->value\
                         .choice.RICsubscriptionDetails.ricEventTriggerDefinition.size);
-                  duCb.e2apDb.ricEventTrigger = NULLP;
-                  DU_ALLOC(duCb.e2apDb.ricEventTrigger, recvBufLen);
+                  
+                  //duCb.e2apDb.ricEventTrigger = NULLP;
+                  //DU_ALLOC(duCb.e2apDb.ricEventTrigger, recvBufLen);
                   /*TODO : duCb.e2apDb.ricEventTrigger memory to be deallocated after the usage */
-                  if(duCb.e2apDb.ricEventTrigger)
+                  //if(duCb.e2apDb.ricEventTrigger)
                   {
-                     memcpy(duCb.e2apDb.ricEventTrigger, ricSubsReq->protocolIEs.list.array[idx]\
+                    // memcpy(duCb.e2apDb.ricEventTrigger, ricSubsReq->protocolIEs.list.array[idx]\
                            ->value.choice.RICsubscriptionDetails.ricEventTriggerDefinition.buf, \
                            recvBufLen);
-                     free(ricSubsReq->protocolIEs.list.array[idx]->value.choice.\
+                     //free(ricSubsReq->protocolIEs.list.array[idx]->value.choice.\
                            RICsubscriptionDetails.ricEventTriggerDefinition.buf);
                   }
                   if(ricSubsReq->protocolIEs.list.array[idx]->value.choice.RICsubscriptionDetails.ricAction_ToBeSetup_List.\
@@ -1060,8 +1080,8 @@ uint8_t procRicSubsReq(E2AP_PDU_t *e2apMsg)
                         {
                            case ProtocolIE_IDE2_id_RICaction_ToBeSetup_Item:
                               {
-                                 duCb.e2apDb.ricActionId = actionItem->value.choice.RICaction_ToBeSetup_Item.ricActionID;
-                                 duCb.e2apDb.ricActionType = actionItem->value.choice.RICaction_ToBeSetup_Item.ricActionType;
+                                 ricSubscriptionInfo->actionSequence[0].id  = actionItem->value.choice.RICaction_ToBeSetup_Item.ricActionID;
+                                 ricSubscriptionInfo->actionSequence[0].type = actionItem->value.choice.RICaction_ToBeSetup_Item.ricActionType;
                                  break;
                               }
                            default:
@@ -1086,6 +1106,9 @@ uint8_t procRicSubsReq(E2AP_PDU_t *e2apMsg)
    }
    free(ricSubsReq->protocolIEs.list.array);
    ret = BuildAndSendRicSubscriptionRsp();
+   {
+      BuildAndSendRicIndication(ricSubscriptionInfo);
+   }
 
    return ret;
 }
@@ -1177,7 +1200,7 @@ void FreeRicIndication(E2AP_PDU_t  *e2apMsg)
  *         RFAILED - failure
  *
  ******************************************************************/
-uint8_t FillRicIndication(RICindication_t *ricIndicationMsg)
+uint8_t FillRicIndication(RICindication_t *ricIndicationMsg, RicSubscription *ricSubscriptionInfo)
 {
    uint8_t elementCnt=0;
    uint8_t idx=0;
@@ -1214,34 +1237,29 @@ uint8_t FillRicIndication(RICindication_t *ricIndicationMsg)
 	 ricIndicationMsg->protocolIEs.list.array[idx]->criticality = CriticalityE2_reject;
 	 ricIndicationMsg->protocolIEs.list.array[idx]->value.present = \
 									RICindication_IEs__value_PR_RICrequestID;
-	 ricIndicationMsg->protocolIEs.list.array[idx]->value.choice.RICrequestID.ricRequestorID =\
-												  duCb.e2apDb.ricReqId;
-	 ricIndicationMsg->protocolIEs.list.array[idx]->value.choice.RICrequestID.ricInstanceID =\
-												 duCb.e2apDb.ricInstanceId;
+	 ricIndicationMsg->protocolIEs.list.array[idx]->value.choice.RICrequestID.ricRequestorID =ricSubscriptionInfo->requestId.requestorId;
+	 ricIndicationMsg->protocolIEs.list.array[idx]->value.choice.RICrequestID.ricInstanceID = ricSubscriptionInfo->requestId.instanceId;
 
 	 idx++;
 	 ricIndicationMsg->protocolIEs.list.array[idx]->id = ProtocolIE_IDE2_id_RANfunctionID;
 	 ricIndicationMsg->protocolIEs.list.array[idx]->criticality = CriticalityE2_reject;
 	 ricIndicationMsg->protocolIEs.list.array[idx]->value.present = \
 									RICindication_IEs__value_PR_RANfunctionID;
-	 ricIndicationMsg->protocolIEs.list.array[idx]->value.choice.RANfunctionID =
-	    duCb.e2apDb.ranFuncId;
+	 ricIndicationMsg->protocolIEs.list.array[idx]->value.choice.RANfunctionID = duCb.e2apDb.ranFunction[0].id;
 
 	 idx++;
 	 ricIndicationMsg->protocolIEs.list.array[idx]->id = ProtocolIE_IDE2_id_RICactionID;
 	 ricIndicationMsg->protocolIEs.list.array[idx]->criticality = CriticalityE2_reject;
 	 ricIndicationMsg->protocolIEs.list.array[idx]->value.present = \
 									RICindication_IEs__value_PR_RICactionID;
-	 ricIndicationMsg->protocolIEs.list.array[idx]->value.choice.RICactionID =
-	    duCb.e2apDb.ricActionId;
+	 ricIndicationMsg->protocolIEs.list.array[idx]->value.choice.RICactionID = ricSubscriptionInfo->actionSequence[0].id;
 
 	 idx++;
 	 ricIndicationMsg->protocolIEs.list.array[idx]->id = ProtocolIE_IDE2_id_RICindicationType;
 	 ricIndicationMsg->protocolIEs.list.array[idx]->criticality = CriticalityE2_reject;
 	 ricIndicationMsg->protocolIEs.list.array[idx]->value.present = \
 									RICindication_IEs__value_PR_RICindicationType;
-	 ricIndicationMsg->protocolIEs.list.array[idx]->value.choice.RICindicationType =
-	    duCb.e2apDb.ricActionType;
+	 ricIndicationMsg->protocolIEs.list.array[idx]->value.choice.RICindicationType = ricSubscriptionInfo->actionSequence[0].type;
 
 	 idx++;
 	 ricIndicationMsg->protocolIEs.list.array[idx]->id = ProtocolIE_IDE2_id_RICindicationHeader;
@@ -1303,7 +1321,7 @@ uint8_t FillRicIndication(RICindication_t *ricIndicationMsg)
  *
  ******************************************************************/
 
-uint8_t BuildAndSendRicIndication()
+uint8_t BuildAndSendRicIndication(RicSubscription *ricSubscriptionInfo)
 {
    E2AP_PDU_t                 *e2apMsg = NULLP;
    RICindication_t            *ricIndicationMsg=NULLP;
@@ -1335,7 +1353,7 @@ uint8_t BuildAndSendRicIndication()
 
       ricIndicationMsg = &e2apMsg->choice.initiatingMessage->value.choice.RICindication;
 
-      FillRicIndicationret = FillRicIndication(ricIndicationMsg);
+      FillRicIndicationret = FillRicIndication(ricIndicationMsg, ricSubscriptionInfo);
       if(FillRicIndicationret != ROK)
       {
 	 break;
@@ -2044,10 +2062,7 @@ void E2APMsgHdlr(Buffer *mBuf)
             {
                case InitiatingMessageE2__value_PR_RICsubscriptionRequest: 
                   {
-                     if(procRicSubsReq(e2apMsg) == ROK)
-                     {
-                        BuildAndSendRicIndication();
-                     }
+                     procRicSubsReq(e2apMsg);
                      break;
                   }
                default:
