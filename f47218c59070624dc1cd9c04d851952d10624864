@@ -1,0 +1,107 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "76a6d198_5a6e3147",
+        "filename": "src/du_app/du_e2ap_mgr.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 373,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-08-03T10:51:30Z",
+      "side": 1,
+      "message": "spelling check for transaction",
+      "revId": "f47218c59070624dc1cd9c04d851952d10624864",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "24035c20_8b9ba0d1",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-08-03T10:51:30Z",
+      "side": 1,
+      "message": "since in future we will be also searching for E2NodeComponent for other interfaces also then shld we not also pass this Interface type as input argument to this search function.Here i am assuming that we might be adding  e2node component for interfaces other than F1 as well",
+      "range": {
+        "startLine": 126,
+        "startChar": 34,
+        "endLine": 126,
+        "endChar": 48
+      },
+      "revId": "f47218c59070624dc1cd9c04d851952d10624864",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "633351d6_91e4f774",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 181,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-08-03T10:51:30Z",
+      "side": 1,
+      "message": "please verify that in all the return failure if we are deallocating the memory of e2NodeAddList-\u003elist.array and e2NodeAddList-\u003elist.array[indices]",
+      "range": {
+        "startLine": 181,
+        "startChar": 20,
+        "endLine": 181,
+        "endChar": 21
+      },
+      "revId": "f47218c59070624dc1cd9c04d851952d10624864",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "215053f6_0329f4ca",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 209,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-08-03T10:51:30Z",
+      "side": 1,
+      "message": "here shld we not check that if we even have \"e2NodeComponentInfo-\u003ecomponentResponsePart\" .Because in addition function there can be failure scenario as well.\n\nPlease check as per Line no 180 we are returning failure since we dont have request part.. PLease check if we need to proceed further for this failure case or return from here as above",
+      "revId": "f47218c59070624dc1cd9c04d851952d10624864",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3908d311_33fe8492",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1630,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-08-03T10:51:30Z",
+      "side": 1,
+      "message": "here we shld free e2NodeComponentInfo node allocation also",
+      "range": {
+        "startLine": 1630,
+        "startChar": 26,
+        "endLine": 1630,
+        "endChar": 27
+      },
+      "revId": "f47218c59070624dc1cd9c04d851952d10624864",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
