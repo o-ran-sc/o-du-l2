@@ -1,0 +1,245 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "089c5457_e1ae1b67",
+        "filename": "src/du_app/du_cfg.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 609,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-08-07T04:57:59Z",
+      "side": 1,
+      "message": "Report style name and event trigger style name are 2 different values. \nCheck the comment in du_e2ap_mgr.h for correct values",
+      "range": {
+        "startLine": 609,
+        "startChar": 16,
+        "endLine": 609,
+        "endChar": 27
+      },
+      "revId": "a2ae1bc8d866aa0673b30cedcd5bd7d3166c86c2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f49d593b_51372a08",
+        "filename": "src/du_app/du_cfg.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 609,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-08-07T04:57:59Z",
+      "side": 1,
+      "message": "call this parameter as event_trigger_style_name",
+      "range": {
+        "startLine": 609,
+        "startChar": 8,
+        "endLine": 609,
+        "endChar": 12
+      },
+      "revId": "a2ae1bc8d866aa0673b30cedcd5bd7d3166c86c2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "362cf6ca_d5b4f645",
+        "filename": "src/du_app/du_cfg.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 699,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-08-07T04:57:59Z",
+      "side": 1,
+      "message": "create a macro for Event_trigger_style_type as well and use the macro here",
+      "range": {
+        "startLine": 699,
+        "startChar": 101,
+        "endLine": 699,
+        "endChar": 102
+      },
+      "revId": "a2ae1bc8d866aa0673b30cedcd5bd7d3166c86c2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1c4e9c1f_055a3483",
+        "filename": "src/du_app/du_cfg.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 700,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-08-07T04:57:59Z",
+      "side": 1,
+      "message": "same for Event_trigger_format_type",
+      "range": {
+        "startLine": 700,
+        "startChar": 102,
+        "endLine": 700,
+        "endChar": 103
+      },
+      "revId": "a2ae1bc8d866aa0673b30cedcd5bd7d3166c86c2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "891ad684_0b7dee10",
+        "filename": "src/du_app/du_cfg.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 708,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-08-07T04:57:59Z",
+      "side": 1,
+      "message": "Use macros for these 2 values as well",
+      "range": {
+        "startLine": 708,
+        "startChar": 103,
+        "endLine": 708,
+        "endChar": 104
+      },
+      "revId": "a2ae1bc8d866aa0673b30cedcd5bd7d3166c86c2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "abffc8ed_4c57ac60",
+        "filename": "src/du_app/du_cfg.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 709,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-08-07T04:57:59Z",
+      "side": 1,
+      "message": "you are using same name for both event-trigger syle and report style. This incorrect. Use the values as mentioned in comment in du_e2ap_mgr.h",
+      "range": {
+        "startLine": 709,
+        "startChar": 102,
+        "endLine": 709,
+        "endChar": 106
+      },
+      "revId": "a2ae1bc8d866aa0673b30cedcd5bd7d3166c86c2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8405ec8d_9737d413",
+        "filename": "src/du_app/du_cfg.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 718,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-08-07T04:57:59Z",
+      "side": 1,
+      "message": "This if else condition is not effective if we have many measurement names to support. \nAs given comment in du_e2ap_mgr.h, create a macro array to store list of measurement names. And here in this for loop, copy each measurement name one by one.",
+      "revId": "a2ae1bc8d866aa0673b30cedcd5bd7d3166c86c2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cd11a39a_147b76ee",
+        "filename": "src/du_app/du_cfg.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 742,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-08-07T04:57:59Z",
+      "side": 1,
+      "message": "Use macros for these format types too",
+      "range": {
+        "startLine": 742,
+        "startChar": 72,
+        "endLine": 742,
+        "endChar": 73
+      },
+      "revId": "a2ae1bc8d866aa0673b30cedcd5bd7d3166c86c2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7da8b175_160bd715",
+        "filename": "src/du_app/du_e2ap_mgr.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-08-07T04:57:59Z",
+      "side": 1,
+      "message": "Report_style_name \u003d \"E2 Node Measurement\"\nEvent_trigger_style_name \u003d \"Periodic Report\"",
+      "range": {
+        "startLine": 39,
+        "startChar": 8,
+        "endLine": 39,
+        "endChar": 19
+      },
+      "revId": "a2ae1bc8d866aa0673b30cedcd5bd7d3166c86c2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0ffa159c_33ade2c3",
+        "filename": "src/du_app/du_e2ap_mgr.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-08-07T04:57:59Z",
+      "side": 1,
+      "message": "Create an array for these 2 measurement names so in future we can add more names to the array instead of defining new macro for each measurement name",
+      "revId": "a2ae1bc8d866aa0673b30cedcd5bd7d3166c86c2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "778f45d4_61ea6cfa",
+        "filename": "src/du_app/du_mgr_main.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 561,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-08-07T04:57:59Z",
+      "side": 1,
+      "message": "uncomment",
+      "range": {
+        "startLine": 561,
+        "startChar": 7,
+        "endLine": 561,
+        "endChar": 30
+      },
+      "revId": "a2ae1bc8d866aa0673b30cedcd5bd7d3166c86c2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
