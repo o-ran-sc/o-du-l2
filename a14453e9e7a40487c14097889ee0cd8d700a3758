@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c96a96d0_3768d0c3",
+        "filename": "src/5gnrmac/mac_cfg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 155,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-08-07T11:33:24Z",
+      "side": 1,
+      "message": "Can we use here the standard formula from 3GPP 38.211 Table 4.2-1:\nSCS \u003d (2^numerology)*15KHz",
+      "revId": "a14453e9e7a40487c14097889ee0cd8d700a3758",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
