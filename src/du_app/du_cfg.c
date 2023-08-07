@@ -595,15 +595,19 @@ uint8_t fillServCellCfgCommSib(SrvCellCfgCommSib *srvCellCfgComm)
 
 uint8_t readCfg()
 {
-   uint8_t srvdCellIdx, bandIdx, sliceIdx, plmnIdx;
+   CmLList *node;
+   uint8_t srvdCellIdx, bandIdx, sliceIdx, plmnIdx, ranFuncIdx, eventTriggerStyleIdx, reportStyleIdx, tnlAssocIdx;
    uint8_t brdcstPlmnIdx, freqBandIdx, srvdPlmnIdx;
    uint32_t ipv4_du, ipv4_cu, ipv4_ric;
    MibParams mib;
    Sib1Params sib1;
    F1TaiSliceSuppLst *taiSliceSuppLst;
-
-   duCb.e2apDb.e2TransInfo.transIdCounter = 0;
-   memset(duCb.e2apDb.e2TransInfo.onGoingTransaction, 0, MAX_NUM_TRANSACTION * sizeof(E2TransInfo));
+   uint8_t MeasurementInfoIdx =0, measurementInfoLen=0;
+   char shortName[] = SHORT_NAME;
+   char serviceModelOID[]= SERVICE_MODEL_OID;
+   char  description[] = DESCRIPTION;
+   char event_trigger_style_name[]= EVENT_TRIGGER_STYLE_NAME;
+   char ric_report_style_name[]= REPORT_STYLE_NAME;
 
 #ifndef O1_ENABLE
    /* Note: Added these below variable for local testing*/
@@ -663,6 +667,74 @@ uint8_t readCfg()
    }
    strcpy((char*)duCfgParam.duName,DU_NAME);
 
+   memset(&duCb.e2apDb, 0, sizeof(E2apDb));
+   duCb.e2apDb.e2NodeId =  DU_ID;
+   duCb.e2apDb.e2TransInfo.transIdCounter = 0;
+
+   duCb.e2apDb.numOfTNLAssoc = 1;
+   for(tnlAssocIdx =0; tnlAssocIdx<duCb.e2apDb.numOfTNLAssoc; tnlAssocIdx++)
+   {
+      duCb.e2apDb.tnlAssoc[tnlAssocIdx].localIpAddress.ipV4Pres = duCfgParam.sctpParams.duIpAddr.ipV4Pres;
+      duCb.e2apDb.tnlAssoc[tnlAssocIdx].localIpAddress.ipV4Addr = duCfgParam.sctpParams.duIpAddr.ipV4Addr;
+      duCb.e2apDb.tnlAssoc[tnlAssocIdx].localPort = duCfgParam.sctpParams.duPort[E2_INTERFACE];
+      duCb.e2apDb.tnlAssoc[tnlAssocIdx].destIpAddress.ipV4Pres = duCfgParam.sctpParams.ricIpAddr.ipV4Pres;
+      duCb.e2apDb.tnlAssoc[tnlAssocIdx].destIpAddress.ipV4Addr = duCfgParam.sctpParams.ricIpAddr.ipV4Addr;
+      duCb.e2apDb.tnlAssoc[tnlAssocIdx].destPort = duCfgParam.sctpParams.ricPort;
+      duCb.e2apDb.tnlAssoc[tnlAssocIdx].usage = BOTH_FUNCTIONALITY;
+   }
+   duCb.e2apDb.numOfRanFunction = 1;
+   for(ranFuncIdx =0; ranFuncIdx<duCb.e2apDb.numOfRanFunction; ranFuncIdx++)
+   {
+      duCb.e2apDb.ranFunction[ranFuncIdx].id = ranFuncIdx + 1;
+      memcpy(&duCb.e2apDb.ranFunction[ranFuncIdx].name.shortName, shortName, sizeof(shortName));
+      memcpy(&duCb.e2apDb.ranFunction[ranFuncIdx].name.serviceModelOID, serviceModelOID, sizeof(serviceModelOID));
+      memcpy(&duCb.e2apDb.ranFunction[ranFuncIdx].name.description, description, sizeof(description));
+      duCb.e2apDb.ranFunction[ranFuncIdx].revisionCounter = 0;
+      
+      duCb.e2apDb.ranFunction[ranFuncIdx].numOfEventTriggerStyleSupported  = NUM_OF_EVENT_TRIGGER_STYLE_SUPPORTED;
+      for(eventTriggerStyleIdx=0; eventTriggerStyleIdx<duCb.e2apDb.ranFunction[ranFuncIdx].numOfEventTriggerStyleSupported; eventTriggerStyleIdx++)
+      {
+         duCb.e2apDb.ranFunction[ranFuncIdx].eventTriggerStyleList[eventTriggerStyleIdx].styleType = EVENT_TRIGGER_STYLE_TYPE;
+         duCb.e2apDb.ranFunction[ranFuncIdx].eventTriggerStyleList[eventTriggerStyleIdx].formatType = EVENT_TRIGGER_STYLE_FORMAT_TYPE;
+         memcpy(duCb.e2apDb.ranFunction[ranFuncIdx].eventTriggerStyleList[eventTriggerStyleIdx].name, event_trigger_style_name, sizeof(event_trigger_style_name));
+      }
+      
+      duCb.e2apDb.ranFunction[ranFuncIdx].numOfReportStyleSupported= NUM_OF_RIC_REPORT_STYLE_SUPPORTED;
+      for(reportStyleIdx=0; reportStyleIdx<duCb.e2apDb.ranFunction[ranFuncIdx].numOfReportStyleSupported; reportStyleIdx++)
+      {
+         duCb.e2apDb.ranFunction[ranFuncIdx].reportStyleList[reportStyleIdx].reportStyle.styleType = REPORT_STYLE_TYPE;
+         duCb.e2apDb.ranFunction[ranFuncIdx].reportStyleList[reportStyleIdx].reportStyle.formatType = REPORT_ACTION_FORMAT_TYPE;
+         memcpy(duCb.e2apDb.ranFunction[ranFuncIdx].reportStyleList[reportStyleIdx].reportStyle.name, ric_report_style_name, sizeof(ric_report_style_name));
+         
+         for(MeasurementInfoIdx =0; MeasurementInfoIdx<NUM_OF_MEASUREMENT_INFO_SUPPORTED; MeasurementInfoIdx++)
+         {
+            measurementInfoLen= strlen(MEASUREMENT_TYPE_NAME[MeasurementInfoIdx]);
+            MeasurementInfoForAction *measurementInfoForAction;
+            DU_ALLOC(measurementInfoForAction, sizeof(MeasurementInfoForAction));
+            if(measurementInfoForAction)
+            {
+               measurementInfoForAction->measurementTypeId = MeasurementInfoIdx+1;
+               memcpy(measurementInfoForAction->measurementTypeName, MEASUREMENT_TYPE_NAME[MeasurementInfoIdx], measurementInfoLen+1);
+            }
+            DU_ALLOC(node, sizeof(CmLList));
+            if(node)
+            {
+               node->node = (PTR) measurementInfoForAction;
+               cmLListAdd2Tail(&duCb.e2apDb.ranFunction[ranFuncIdx].reportStyleList[reportStyleIdx].measurementInfoList, node);
+            }
+            else
+            {
+
+               DU_FREE(measurementInfoForAction, sizeof(MeasurementInfoForAction));
+            }
+         }
+      }
+      
+      duCb.e2apDb.ranFunction[ranFuncIdx].ricIndicationHeaderFormat = RIC_INDICATION_HEADER_FORMAT;
+      duCb.e2apDb.ranFunction[ranFuncIdx].ricIndicationMessageFormat = RIC_INDICATION_MESSAGE_FORMAT; 
+   }
+   memset(duCb.e2apDb.e2TransInfo.onGoingTransaction, 0, MAX_NUM_TRANSACTION * sizeof(E2TransInfo));
+   
    /* Mib Params */
    mib.sysFrmNum = SYS_FRAME_NUM;
 #ifdef NR_TDD
@@ -1089,7 +1161,7 @@ uint8_t duReadCfg()
    pst.pool= DU_POOL;
 
    /* Initialize the timer blocks */
-   cmInitTimers(&(duCb.e2apDb.e2Timers.e2SetupTimer), 1);
+   cmInitTimers(&(duCb.e2apDb.e2TimersInfo.e2Timers.e2SetupTimer), 1);
 
    /* Initialzie the timer queue */   
    memset(&(duCb.duTimersInfo.tmrTq), 0, sizeof(CmTqType) * DU_TQ_SIZE);

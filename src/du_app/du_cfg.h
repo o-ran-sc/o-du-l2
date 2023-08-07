@@ -1262,15 +1262,6 @@ typedef struct duCfgParams
    MacSliceCfgReq     tempSliceCfg;
 }DuCfgParams;
 
-typedef struct f1SetupMsg
-{
-   uint8_t f1MsgReqBufSize;
-   char    *f1MsgReqBuf; 
-   uint8_t f1MsgRspBufSize;
-   char    *f1MsgRspBuf;
-}F1SetupMsg;
-
-
 #ifndef O1_ENABLE
 //RRM POLICY STRUCT
 
