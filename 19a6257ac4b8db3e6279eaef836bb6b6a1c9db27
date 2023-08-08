@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e879796f_28504f80",
+        "filename": "src/cm/common_def.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-08-08T06:59:35Z",
+      "side": 1,
+      "message": "since 15kHz is not numerology but scs, I think we can call it base scs.",
+      "range": {
+        "startLine": 128,
+        "startChar": 8,
+        "endLine": 128,
+        "endChar": 24
+      },
+      "revId": "19a6257ac4b8db3e6279eaef836bb6b6a1c9db27",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
