@@ -24,6 +24,8 @@
 #endif
 
 /* MACROS */
+#define GNB_ID  1 /* As per 38.423,Sec 9.2.2.1, gnbId range b/w 0 to 4294967295 */
+
 #define DU_INST 0
 #define DU_ID 1
 

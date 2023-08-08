@@ -335,6 +335,7 @@ typedef struct duCb
 {
    Mem           mem;                       /* Memory configs */
    TskInit       init;                      /* DU Init */
+   uint8_t       gnbId;                     /* gnb Id number */
    bool          f1Status;                  /* Status of F1 connection */
    bool          e2Status;                  /* Status of E2 connection */
    E2apDb        e2apDb;                    /* E2AP database */
