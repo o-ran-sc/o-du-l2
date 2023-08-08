@@ -46,6 +46,7 @@
 
 #define RIC_APP_MEM_REG 1
 #define RIC_POOL 1
+#define MAX_RAN_FUNCTION 256        /* O-RAN.WG3.E2AP-R003-v03.00 : Section 9.1.2.2 : maxofRANfunctionID */
 
 /* allocate and zero out a static buffer */
 #define RIC_ALLOC(_datPtr, _size)                                \
@@ -76,10 +77,38 @@
    }\
 }
 
+/* O-RAN.WG3.E2AP-R003-v03.00 : Section 9.2.26 */
+typedef enum
+{
+   NG,
+   XN,
+   E1,
+   F1,
+   W1,
+   S1,
+   X2
+}InterfaceType;
+
+
+typedef struct
+{
+   uint16_t  id;
+   uint16_t  revisionCounter;
+}RanFunction;
+
+typedef struct
+{
+   InterfaceType   interfaceType;
+   uint64_t        componentId;
+}E2NodeComponent;
+
 typedef struct duDb
 {
-   uint32_t duId;
-   Bool     ricSubscribedToDu;
+   uint32_t        duId;
+   uint16_t        numOfRanFunction;
+   RanFunction     ranFunction[MAX_RAN_FUNCTION];
+   E2NodeComponent e2NodeComponent;
+   Bool            ricSubscribedToDu;
 }DuDb;
 
 typedef struct ricCfgParams
