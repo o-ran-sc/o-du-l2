@@ -40,6 +40,11 @@
 #include "E2nodeComponentInterfaceF1.h"
 #include "E2setupRequest.h"
 #include "du_e2_conversions.h"
+#include "E2SM-KPM-RANfunction-Description.h"
+#include "RANfunction-Name.h"
+#include "RIC-EventTriggerStyle-Item.h"
+#include "RIC-ReportStyle-Item.h"
+#include "MeasurementInfo-Action-Item.h"
 
 /*******************************************************************
  *
@@ -131,6 +136,7 @@ CmLList *searchE2NodeComponentInfo(InterfaceType interfaceType, uint8_t componen
    }
    return node; 
 }
+
 /*******************************************************************
  *
  * @brief Builds E2 node config addition list 
@@ -261,6 +267,314 @@ uint8_t BuildE2NodeConfigAddList(E2nodeComponentConfigAddition_List_t *e2NodeAdd
 
 /*******************************************************************
  *
+ * @brief Builds Ran function add list
+ *
+ * @details
+ *
+ *    Function : BuildRanFunctionAddList 
+ *
+ *    Functionality: Building RAN addition addition list
+ *
+ * @params[in]  RANfunctions_List_t *RANfunctions_List 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ ******************************************************************/
+
+uint8_t BuildRanFunctionAddList(RANfunctions_List_t *ranFunctionsList)
+{
+   asn_enc_rval_t encRetVal;
+   CmLList         *node;
+   uint8_t arrIdx = 0, MeasurementInfoIdx, eventTriggerStyleIdx, eventReportStyleIdx;
+   RANfunction_ItemIEs_t *ranFuncAddItemIe;
+   RANfunction_Item_t  *ranFunAddItem;
+   E2SM_KPM_RANfunction_Description_t *ranFunctionDefinition;
+
+   ranFunctionsList->list.count = duCb.e2apDb.numOfRanFunction;
+   ranFunctionsList->list.size = ranFunctionsList->list.count * sizeof(RANfunction_ItemIEs_t*);
+   DU_ALLOC(ranFunctionsList->list.array, ranFunctionsList->list.size);
+   if(ranFunctionsList->list.array == NULLP)
+   {
+      DU_LOG("\nERROR  --> E2AP: Memory allocation failed for BuildE2NodeConfigAddList %d",__LINE__);
+      return RFAILED;
+   }
+
+   for(arrIdx = 0; arrIdx< ranFunctionsList->list.count; arrIdx++)
+   {
+      DU_ALLOC(ranFunctionsList->list.array[arrIdx], sizeof(RANfunction_ItemIEs_t));
+      if(ranFunctionsList->list.array[arrIdx] == NULLP)
+      {
+         DU_LOG("\nERROR  --> E2AP: Memory allocation failed for BuildE2NodeConfigAddList %d",__LINE__);
+         return RFAILED;
+      }
+
+      ranFuncAddItemIe = (RANfunction_ItemIEs_t *) ranFunctionsList->list.array[arrIdx];
+      ranFuncAddItemIe->id = ProtocolIE_IDE2_id_RANfunction_Item;
+      ranFuncAddItemIe->criticality = CriticalityE2_ignore;
+      ranFuncAddItemIe->value.present = RANfunction_ItemIEs__value_PR_RANfunction_Item;
+      ranFunAddItem = &ranFuncAddItemIe->value.choice.RANfunction_Item;
+
+      ranFunAddItem->ranFunctionID = duCb.e2apDb.ranFunction[arrIdx].id;
+
+      ranFunAddItem->ranFunctionRevision = duCb.e2apDb.ranFunction[arrIdx].revisionCounter;
+
+      ranFunAddItem->ranFunctionOID.size = strlen(duCb.e2apDb.ranFunction[arrIdx].name.serviceModelOID);
+      DU_ALLOC(ranFunAddItem->ranFunctionOID.buf, ranFunAddItem->ranFunctionOID.size);
+      if(ranFunAddItem->ranFunctionOID.buf)
+      {
+         memcpy(ranFunAddItem->ranFunctionOID.buf, duCb.e2apDb.ranFunction[arrIdx].name.serviceModelOID,\
+               ranFunAddItem->ranFunctionOID.size);
+      }
+
+
+      DU_ALLOC(ranFunctionDefinition, sizeof(E2SM_KPM_RANfunction_Description_t));
+      if(ranFunctionDefinition)
+      {
+         ranFunctionDefinition->ranFunction_Name.ranFunction_ShortName.size = strlen(duCb.e2apDb.ranFunction[arrIdx].name.shortName); 
+         DU_ALLOC(ranFunctionDefinition->ranFunction_Name.ranFunction_ShortName.buf,  ranFunctionDefinition->ranFunction_Name.ranFunction_ShortName.size);
+         if(ranFunctionDefinition->ranFunction_Name.ranFunction_ShortName.buf)
+         {
+            memcpy(ranFunctionDefinition->ranFunction_Name.ranFunction_ShortName.buf, duCb.e2apDb.ranFunction[arrIdx].name.shortName,\
+                  strlen(duCb.e2apDb.ranFunction[arrIdx].name.shortName));
+         }
+         else
+         {
+            DU_LOG("\nERROR  --> E2AP: Memory allocation failed in function %s at %d",__func__,__LINE__);
+            return RFAILED;
+         }
+
+         ranFunctionDefinition->ranFunction_Name.ranFunction_E2SM_OID.size = strlen(duCb.e2apDb.ranFunction[arrIdx].name.serviceModelOID);
+         DU_ALLOC(ranFunctionDefinition->ranFunction_Name.ranFunction_E2SM_OID.buf, ranFunctionDefinition->ranFunction_Name.ranFunction_E2SM_OID.size)
+            if(ranFunctionDefinition->ranFunction_Name.ranFunction_E2SM_OID.buf)
+            {
+               memcpy(ranFunctionDefinition->ranFunction_Name.ranFunction_E2SM_OID.buf, duCb.e2apDb.ranFunction[arrIdx].name.serviceModelOID,\
+                     ranFunctionDefinition->ranFunction_Name.ranFunction_E2SM_OID.size);
+            }
+            else
+            {
+               DU_LOG("\nERROR  --> E2AP: Memory allocation failed in function %s at %d",__func__,__LINE__);
+               return RFAILED;
+            }
+
+         ranFunctionDefinition->ranFunction_Name.ranFunction_Description.size = strlen(duCb.e2apDb.ranFunction[arrIdx].name.description);
+         DU_ALLOC(ranFunctionDefinition->ranFunction_Name.ranFunction_Description.buf, ranFunctionDefinition->ranFunction_Name.ranFunction_Description.size)
+            if(ranFunctionDefinition->ranFunction_Name.ranFunction_Description.buf)
+            {
+               memcpy(ranFunctionDefinition->ranFunction_Name.ranFunction_Description.buf, duCb.e2apDb.ranFunction[arrIdx].name.description,\
+                     ranFunctionDefinition->ranFunction_Name.ranFunction_Description.size);
+            }
+            else
+            {
+               DU_LOG("\nERROR  --> E2AP: Memory allocation failed in function %s at %d",__func__,__LINE__);
+               return RFAILED;
+            }
+         /* RIC Event Trigger Style List */
+         DU_ALLOC(ranFunctionDefinition->ric_EventTriggerStyle_List, sizeof(struct E2SM_KPM_RANfunction_Description__ric_EventTriggerStyle_List));
+         if(ranFunctionDefinition->ric_EventTriggerStyle_List)
+         {
+            ranFunctionDefinition->ric_EventTriggerStyle_List->list.count = duCb.e2apDb.ranFunction[arrIdx].numOfEventTriggerStyleSupported;
+            ranFunctionDefinition->ric_EventTriggerStyle_List->list.size = ranFunctionDefinition->ric_EventTriggerStyle_List->list.count*  sizeof(RIC_EventTriggerStyle_Item_t *);
+            DU_ALLOC(ranFunctionDefinition->ric_EventTriggerStyle_List->list.array, ranFunctionDefinition->ric_EventTriggerStyle_List->list.size)
+               if(!ranFunctionDefinition->ric_EventTriggerStyle_List->list.array)
+               {
+                  DU_LOG("\nERROR  --> E2AP: Memory allocation failed for ric_EventTriggerStyle_List %d",__LINE__);
+                  return RFAILED;
+               }
+            for(eventTriggerStyleIdx =0;eventTriggerStyleIdx<ranFunctionDefinition->ric_EventTriggerStyle_List->list.count; eventTriggerStyleIdx++)
+            {
+               DU_ALLOC(ranFunctionDefinition->ric_EventTriggerStyle_List->list.array[eventTriggerStyleIdx], sizeof(RIC_EventTriggerStyle_Item_t ));
+               if(ranFunctionDefinition->ric_EventTriggerStyle_List->list.array[eventTriggerStyleIdx])
+               {
+                  ranFunctionDefinition->ric_EventTriggerStyle_List->list.array[eventTriggerStyleIdx]->ric_EventTriggerStyle_Type =  \
+                                                                                                                                     duCb.e2apDb.ranFunction[arrIdx].eventTriggerStyleList[eventTriggerStyleIdx].styleType;
+
+                  ranFunctionDefinition->ric_EventTriggerStyle_List->list.array[eventTriggerStyleIdx]->ric_EventTriggerFormat_Type =  duCb.e2apDb.ranFunction[arrIdx].eventTriggerStyleList[eventTriggerStyleIdx].formatType;
+
+                  ranFunctionDefinition->ric_EventTriggerStyle_List->list.array[eventTriggerStyleIdx]->ric_EventTriggerStyle_Name.size =  \
+                                                                                                                                          strlen(duCb.e2apDb.ranFunction[arrIdx].eventTriggerStyleList[eventTriggerStyleIdx].name);
+                  DU_ALLOC(ranFunctionDefinition->ric_EventTriggerStyle_List->list.array[eventTriggerStyleIdx]->ric_EventTriggerStyle_Name.buf,\
+                        ranFunctionDefinition->ric_EventTriggerStyle_List->list.array[eventTriggerStyleIdx]->ric_EventTriggerStyle_Name.size);
+                  if(ranFunctionDefinition->ric_EventTriggerStyle_List->list.array[eventTriggerStyleIdx]->ric_EventTriggerStyle_Name.buf)
+                  {
+                     memcpy(ranFunctionDefinition->ric_EventTriggerStyle_List->list.array[eventTriggerStyleIdx]->ric_EventTriggerStyle_Name.buf,\
+                           duCb.e2apDb.ranFunction[arrIdx].eventTriggerStyleList[eventTriggerStyleIdx].name,\
+                           ranFunctionDefinition->ric_EventTriggerStyle_List->list.array[eventTriggerStyleIdx]->ric_EventTriggerStyle_Name.size);
+                  }
+                  else
+                  {
+                     DU_LOG("\nERROR  --> E2AP: Memory allocation failed in function %s at %d",__func__,__LINE__);
+                     return RFAILED;
+                  }
+               }
+               else
+               {
+                  DU_LOG("\nERROR  --> E2AP: Memory allocation failed in function %s at %d",__func__,__LINE__);
+                  return RFAILED;
+               }
+            }
+         }
+         else
+         {
+            DU_LOG("\nERROR  --> E2AP: Memory allocation failed in function %s at %d",__func__,__LINE__);
+            return RFAILED;
+         }
+         /* RIC Report Style List */
+         DU_ALLOC(ranFunctionDefinition->ric_ReportStyle_List, sizeof(struct E2SM_KPM_RANfunction_Description__ric_ReportStyle_List));
+         if(ranFunctionDefinition->ric_ReportStyle_List)
+         {
+            ranFunctionDefinition->ric_ReportStyle_List->list.count = duCb.e2apDb.ranFunction[arrIdx].numOfReportStyleSupported;
+            ranFunctionDefinition->ric_ReportStyle_List->list.size = ranFunctionDefinition->ric_ReportStyle_List->list.count * sizeof(RIC_ReportStyle_Item_t*);
+            DU_ALLOC(ranFunctionDefinition->ric_ReportStyle_List->list.array, ranFunctionDefinition->ric_ReportStyle_List->list.size);
+            if(!ranFunctionDefinition->ric_ReportStyle_List->list.array)
+            {
+               DU_LOG("\nERROR  --> E2AP: Memory allocation failed for ranFunctionDefinition %d",__LINE__);
+               return RFAILED;
+            }
+            for(eventReportStyleIdx =0;eventReportStyleIdx<ranFunctionDefinition->ric_ReportStyle_List->list.count; eventReportStyleIdx++)
+            {
+               DU_ALLOC(ranFunctionDefinition->ric_ReportStyle_List->list.array[eventReportStyleIdx], sizeof(RIC_ReportStyle_Item_t));
+               if(ranFunctionDefinition->ric_ReportStyle_List->list.array[eventReportStyleIdx])
+               {
+                  ranFunctionDefinition->ric_ReportStyle_List->list.array[eventReportStyleIdx]->ric_ReportStyle_Type = \
+                                                                                                                       duCb.e2apDb.ranFunction[arrIdx].reportStyleList[eventReportStyleIdx].reportStyle.styleType;
+
+                  ranFunctionDefinition->ric_ReportStyle_List->list.array[eventReportStyleIdx]->ric_ActionFormat_Type = \
+                                                                                                                        duCb.e2apDb.ranFunction[arrIdx].reportStyleList[eventReportStyleIdx].reportStyle.formatType;
+
+                  ranFunctionDefinition->ric_ReportStyle_List->list.array[eventReportStyleIdx]->ric_ReportStyle_Name.size = \
+                                                                                                                            strlen(duCb.e2apDb.ranFunction[arrIdx].reportStyleList[eventReportStyleIdx].reportStyle.name);
+                  DU_ALLOC(ranFunctionDefinition->ric_ReportStyle_List->list.array[eventReportStyleIdx]->ric_ReportStyle_Name.buf,\
+                        ranFunctionDefinition->ric_ReportStyle_List->list.array[eventReportStyleIdx]->ric_ReportStyle_Name.size);
+                  if(!ranFunctionDefinition->ric_ReportStyle_List->list.array[eventReportStyleIdx]->ric_ReportStyle_Name.buf)
+                  {
+                     DU_LOG("\nERROR  --> E2AP: Memory allocation failed in function %s at %d",__func__,__LINE__);
+                     return RFAILED;
+                  }
+                  else
+                  {
+                     memcpy(ranFunctionDefinition->ric_ReportStyle_List->list.array[eventReportStyleIdx]->ric_ReportStyle_Name.buf,\
+                           duCb.e2apDb.ranFunction[arrIdx].reportStyleList[eventReportStyleIdx].reportStyle.name,\
+                           ranFunctionDefinition->ric_ReportStyle_List->list.array[eventReportStyleIdx]->ric_ReportStyle_Name.size);
+                  }
+
+                  ranFunctionDefinition->ric_ReportStyle_List->list.array[eventReportStyleIdx]->ric_IndicationHeaderFormat_Type =\
+                                                                                                                                 duCb.e2apDb.ranFunction[arrIdx].ricIndicationHeaderFormat;
+
+                  ranFunctionDefinition->ric_ReportStyle_List->list.array[eventReportStyleIdx]->ric_IndicationMessageFormat_Type=\
+                                                                                                                                 duCb.e2apDb.ranFunction[arrIdx].ricIndicationMessageFormat;
+
+                  CmLListCp measurementInfoList = duCb.e2apDb.ranFunction[arrIdx].reportStyleList[eventReportStyleIdx].measurementInfoList;
+                  if(measurementInfoList.count)
+                  {
+                     CM_LLIST_FIRST_NODE(&duCb.e2apDb.ranFunction[arrIdx].reportStyleList[eventReportStyleIdx].measurementInfoList, node);
+                     ranFunctionDefinition->ric_ReportStyle_List->list.array[eventReportStyleIdx]->measInfo_Action_List.list.count = measurementInfoList.count; 
+                     ranFunctionDefinition->ric_ReportStyle_List->list.array[eventReportStyleIdx]->measInfo_Action_List.list.size = \
+                                                                                                                                    ranFunctionDefinition->ric_ReportStyle_List->list.array[eventReportStyleIdx]->measInfo_Action_List.list.count*sizeof(MeasurementInfo_Action_Item_t*);
+                     DU_ALLOC(ranFunctionDefinition->ric_ReportStyle_List->list.array[eventReportStyleIdx]->measInfo_Action_List.list.array,\
+                           ranFunctionDefinition->ric_ReportStyle_List->list.array[eventReportStyleIdx]->measInfo_Action_List.list.size);
+                     if(!ranFunctionDefinition->ric_ReportStyle_List->list.array[eventReportStyleIdx]->measInfo_Action_List.list.array)
+                     {
+                        DU_LOG("\nERROR  --> E2AP: Memory allocation failed in function %s at %d",__func__,__LINE__);
+                        return RFAILED;
+                     }
+                     for(MeasurementInfoIdx=0; MeasurementInfoIdx<ranFunctionDefinition->ric_ReportStyle_List->list.array[eventReportStyleIdx]->measInfo_Action_List.list.count; \
+                           MeasurementInfoIdx++)
+                     {
+                        DU_ALLOC(ranFunctionDefinition->ric_ReportStyle_List->list.array[eventReportStyleIdx]->measInfo_Action_List.list.array[MeasurementInfoIdx],\
+                              sizeof(MeasurementInfo_Action_Item_t));  
+                        if(ranFunctionDefinition->ric_ReportStyle_List->list.array[eventReportStyleIdx]->measInfo_Action_List.list.array[MeasurementInfoIdx])
+                        {
+                           MeasurementInfoForAction *measurementInfoForAction= (MeasurementInfoForAction*)node->node;
+                           DU_ALLOC(ranFunctionDefinition->ric_ReportStyle_List->list.array[eventReportStyleIdx]->measInfo_Action_List.list.array[MeasurementInfoIdx]->measID, sizeof(long));
+                           if(!ranFunctionDefinition->ric_ReportStyle_List->list.array[eventReportStyleIdx]->measInfo_Action_List.list.array[MeasurementInfoIdx]->measID)
+                           {
+                              DU_LOG("\nERROR  --> E2AP: Memory allocation failed in function %s at %d",__func__,__LINE__);
+                              return RFAILED;
+                           }
+                           else
+                           {
+                              memcpy(ranFunctionDefinition->ric_ReportStyle_List->list.array[eventReportStyleIdx]->measInfo_Action_List.list.array[MeasurementInfoIdx]->measID, \
+                                    &measurementInfoForAction->measurementTypeId,sizeof(long));
+                           }
+
+                           ranFunctionDefinition->ric_ReportStyle_List->list.array[eventReportStyleIdx]->measInfo_Action_List.list.array[MeasurementInfoIdx]->measName.size=\
+                                                                                                                                                                            strlen(measurementInfoForAction->measurementTypeName);
+                           DU_ALLOC(ranFunctionDefinition->ric_ReportStyle_List->list.array[eventReportStyleIdx]->measInfo_Action_List.list.array[MeasurementInfoIdx]->measName.buf,\
+                                 ranFunctionDefinition->ric_ReportStyle_List->list.array[eventReportStyleIdx]->measInfo_Action_List.list.array[MeasurementInfoIdx]->measName.size);
+                           if(!ranFunctionDefinition->ric_ReportStyle_List->list.array[eventReportStyleIdx]->measInfo_Action_List.list.array[MeasurementInfoIdx]->measName.size)
+                           {
+                              DU_LOG("\nERROR  --> E2AP: Memory allocation failed in function %s at %d",__func__,__LINE__);
+                              return RFAILED;
+                           }
+                           memcpy(ranFunctionDefinition->ric_ReportStyle_List->list.array[eventReportStyleIdx]->measInfo_Action_List.list.array[MeasurementInfoIdx]->measName.buf, \
+                                 measurementInfoForAction->measurementTypeName,\
+                                 ranFunctionDefinition->ric_ReportStyle_List->list.array[eventReportStyleIdx]->measInfo_Action_List.list.array[MeasurementInfoIdx]->measName.size);
+                           node = node->next;
+                        }
+                        else
+                        {
+                           DU_LOG("\nERROR  --> E2AP: Memory allocation failed in function %s at %d",__func__,__LINE__);
+                           return RFAILED;
+                        }
+                     }
+                  }
+
+               }
+               else
+               {
+                  DU_LOG("\nERROR  --> E2AP: Memory allocation failed in function %s at %d",__func__,__LINE__);
+                  return RFAILED;
+               }
+            }
+         }
+         else
+         {
+            DU_LOG("\nERROR  --> E2AP: Memory allocation failed in function %s at %d",__func__,__LINE__);
+            return RFAILED;
+         }
+      }
+      else
+      {
+         DU_LOG("\nERROR  --> E2AP: Memory allocation failed in function %s at %d",__func__,__LINE__);
+         return RFAILED;
+      }
+      /* Encode the F1SetupRequest type as APER */
+      xer_fprint(stdout, &asn_DEF_E2SM_KPM_RANfunction_Description, ranFunctionDefinition);
+
+      memset(encBuf, 0, ENC_BUF_MAX_LEN);
+      encBufSize = 0;
+      encRetVal = aper_encode(&asn_DEF_E2SM_KPM_RANfunction_Description, 0, ranFunctionDefinition, PrepFinalEncBuf, encBuf);
+
+      /* Encode results */
+      if(encRetVal.encoded == ENCODE_FAIL)
+      {
+         DU_LOG("\nERROR  -->  F1AP : Could not encode RAN function definition  (at %s)\n",\
+               encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
+         break;
+      }
+      else
+      {
+         DU_LOG("\nDEBUG   -->  F1AP : Created APER encoded buffer for RAN function definition \n");
+         for(uint8_t measIeIdx=0; measIeIdx< encBufSize; measIeIdx++)
+         {
+            printf("%x",encBuf[measIeIdx]);
+         }
+
+      }
+      ranFunAddItem->ranFunctionDefinition.size = encBufSize;
+      DU_ALLOC(ranFunAddItem->ranFunctionDefinition.buf, encBufSize);
+      if(ranFunAddItem->ranFunctionDefinition.buf == NULLP)
+      {
+         DU_LOG("\nERROR  -->  F1AP : Memory allocation failed for RAN function definition buffer");
+         return RFAILED;
+      }
+      memcpy(ranFunAddItem->ranFunctionDefinition.buf, &encBuf, encBufSize);
+   }
+   return ROK;
+}
+
+/*******************************************************************
+ *
  * @brief De Allocate E2 Setup Request Message
  *
  * @details
@@ -353,6 +667,8 @@ void FreeE2SetupReq(E2AP_PDU_t *e2apMsg)
                          }
                          break;
                      }
+                     case ProtocolIE_IDE2_id_RANfunctionsAdded:
+                        break;
                      default:
                         DU_LOG("\nERROR  --> E2AP: Invalid event at e2SetupRequet %ld ",\
                               (e2SetupReq->protocolIEs.list.array[arrIdx]->id));
@@ -414,7 +730,7 @@ uint8_t BuildAndSendE2SetupReq()
       e2apMsg->choice.initiatingMessage->value.present = InitiatingMessageE2__value_PR_E2setupRequest;
       e2SetupReq = &e2apMsg->choice.initiatingMessage->value.choice.E2setupRequest;
 
-      elementCnt = 3;
+      elementCnt = 4;
       e2SetupReq->protocolIEs.list.count = elementCnt;
       e2SetupReq->protocolIEs.list.size = elementCnt * sizeof(E2setupRequestIEs_t*);
 
@@ -475,8 +791,19 @@ uint8_t BuildAndSendE2SetupReq()
          }
       }
       
+      /* RAN Functions Added List */
       arrIdx++;
+      e2SetupReq->protocolIEs.list.array[arrIdx]->id = ProtocolIE_IDE2_id_RANfunctionsAdded;
+      e2SetupReq->protocolIEs.list.array[arrIdx]->criticality = CriticalityE2_reject;
+      e2SetupReq->protocolIEs.list.array[arrIdx]->value.present = E2setupRequestIEs__value_PR_RANfunctions_List;
+      if(BuildRanFunctionAddList(&(e2SetupReq->protocolIEs.list.array[arrIdx]->value.choice.RANfunctions_List))!=ROK)
+      {
+         DU_LOG("\nERROR  -->  E2AP : Failed to E2 Node config addition list");
+         break;
+      }
+
       /* E2 Node Component Configuration Addition List */
+      arrIdx++;
       e2SetupReq->protocolIEs.list.array[arrIdx]->id = ProtocolIE_IDE2_id_E2nodeComponentConfigAddition;
       e2SetupReq->protocolIEs.list.array[arrIdx]->criticality = CriticalityE2_reject;
       e2SetupReq->protocolIEs.list.array[arrIdx]->value.present = E2setupRequestIEs__value_PR_E2nodeComponentConfigAddition_List;

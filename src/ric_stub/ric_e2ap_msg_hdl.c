@@ -32,6 +32,11 @@
 #include "E2AP-PDU.h"
 #include "du_log.h"
 #include "E2nodeComponentInterfaceF1.h"
+#include "E2SM-KPM-RANfunction-Description.h"
+#include "RANfunction-Name.h"
+#include "RIC-EventTriggerStyle-Item.h"
+#include "RIC-ReportStyle-Item.h"
+#include "MeasurementInfo-Action-Item.h"
 
 
 /*******************************************************************
@@ -912,6 +917,8 @@ uint8_t ProcE2SetupReq(uint32_t *duId, E2setupRequest_t  *e2SetupReq)
                         }
                         break;
                      }
+                     case ProtocolIE_IDE2_id_RANfunctionsAdded:
+                        break;
                      default:
                         break;
                   }
