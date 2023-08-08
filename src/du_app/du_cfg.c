@@ -602,7 +602,7 @@ uint8_t readCfg()
    MibParams mib;
    Sib1Params sib1;
    F1TaiSliceSuppLst *taiSliceSuppLst;
-   uint8_t MeasurementInfoIdx =0, measurementInfoLen=0;
+   uint8_t measurementInfoIdx =0, measurementInfoLen=0;
    char shortName[] = SHORT_NAME;
    char serviceModelOID[]= SERVICE_MODEL_OID;
    char  description[] = DESCRIPTION;
@@ -635,7 +635,8 @@ uint8_t readCfg()
 #endif
 
    fillDuPort(duCfgParam.sctpParams.duPort);
-
+   
+   duCb.gnbId = GNB_ID;
    /* F1 DU IP Address and Port*/
    duCfgParam.sctpParams.duIpAddr.ipV4Addr = ipv4_du;
 
@@ -706,15 +707,15 @@ uint8_t readCfg()
          duCb.e2apDb.ranFunction[ranFuncIdx].reportStyleList[reportStyleIdx].reportStyle.formatType = REPORT_ACTION_FORMAT_TYPE;
          memcpy(duCb.e2apDb.ranFunction[ranFuncIdx].reportStyleList[reportStyleIdx].reportStyle.name, ric_report_style_name, sizeof(ric_report_style_name));
          
-         for(MeasurementInfoIdx =0; MeasurementInfoIdx<NUM_OF_MEASUREMENT_INFO_SUPPORTED; MeasurementInfoIdx++)
+         for(measurementInfoIdx =0; measurementInfoIdx<NUM_OF_MEASUREMENT_INFO_SUPPORTED; measurementInfoIdx++)
          {
-            measurementInfoLen= strlen(MEASUREMENT_TYPE_NAME[MeasurementInfoIdx]);
+            measurementInfoLen= strlen(MEASUREMENT_TYPE_NAME[measurementInfoIdx]);
             MeasurementInfoForAction *measurementInfoForAction;
             DU_ALLOC(measurementInfoForAction, sizeof(MeasurementInfoForAction));
             if(measurementInfoForAction)
             {
-               measurementInfoForAction->measurementTypeId = MeasurementInfoIdx+1;
-               memcpy(measurementInfoForAction->measurementTypeName, MEASUREMENT_TYPE_NAME[MeasurementInfoIdx], measurementInfoLen+1);
+               measurementInfoForAction->measurementTypeId = measurementInfoIdx+1;
+               memcpy(measurementInfoForAction->measurementTypeName, MEASUREMENT_TYPE_NAME[measurementInfoIdx], measurementInfoLen+1);
             }
             DU_ALLOC(node, sizeof(CmLList));
             if(node)

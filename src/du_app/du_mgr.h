@@ -21,6 +21,8 @@
 #define __DU_MGR_H__
 #define DU_PROC  0
 
+#define GNB_ID  1
+
 /* SAP IDs */
 #define DU_MAC_SUID 0
 #define DU_MAC_SPID 0
@@ -335,6 +337,7 @@ typedef struct duCb
 {
    Mem           mem;                       /* Memory configs */
    TskInit       init;                      /* DU Init */
+   uint8_t       gnbId;                     /* gnb Id number */
    bool          f1Status;                  /* Status of F1 connection */
    bool          e2Status;                  /* Status of E2 connection */
    E2apDb        e2apDb;                    /* E2AP database */
