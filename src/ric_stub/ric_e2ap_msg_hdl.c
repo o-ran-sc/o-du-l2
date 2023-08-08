@@ -32,6 +32,11 @@
 #include "E2AP-PDU.h"
 #include "du_log.h"
 #include "E2nodeComponentInterfaceF1.h"
+#include "E2SM-KPM-RANfunction-Description.h"
+#include "RANfunction-Name.h"
+#include "RIC-EventTriggerStyle-Item.h"
+#include "RIC-ReportStyle-Item.h"
+#include "MeasurementInfo-Action-Item.h"
 
 
 /*******************************************************************
@@ -135,8 +140,12 @@ uint8_t BuildGlobalRicId(GlobalRIC_ID_t *ricId)
  * ****************************************************************/
 void FreeE2SetupRsp(E2AP_PDU_t *e2apMsg)
 {
-   uint8_t arrIdx = 0;
+   uint8_t arrIdx = 0, e2NodeConfigIdx=0, ranFuncIdx=0;
+   RANfunctionsID_List_t *ranFuncAddedList;
    E2setupResponse_t  *e2SetupRsp;
+   E2nodeComponentConfigAdditionAck_ItemIEs_t *e2NodeAddAckItemIe;
+   E2nodeComponentConfigAdditionAck_List_t *e2NodeConfigAdditionAckList;
+   E2nodeComponentConfigAdditionAck_Item_t *e2NodeConfigAdditionAckItem;
 
    if(e2apMsg)
    {
@@ -147,6 +156,51 @@ void FreeE2SetupRsp(E2AP_PDU_t *e2apMsg)
          {
             for(arrIdx=0; arrIdx<e2SetupRsp->protocolIEs.list.count; arrIdx++)
             {
+               switch(e2SetupRsp->protocolIEs.list.array[arrIdx]->id)
+               {
+                  case ProtocolIE_IDE2_id_RANfunctionsAccepted:
+                  {
+                     ranFuncAddedList= &e2SetupRsp->protocolIEs.list.array[arrIdx]->value.choice.RANfunctionsID_List;
+                     if(ranFuncAddedList->list.array)
+                     {
+                        for(ranFuncIdx=0;ranFuncIdx<ranFuncAddedList->list.count; ranFuncIdx++)
+                        {
+                           if(ranFuncAddedList->list.array[arrIdx])
+                           {
+                              RIC_FREE(ranFuncAddedList->list.array[arrIdx], sizeof(RANfunction_ItemIEs_t));
+                           }
+                        }
+                        RIC_FREE(ranFuncAddedList->list.array, ranFuncAddedList->list.size);
+                     }
+                     break;
+                  }
+                  case ProtocolIE_IDE2_id_E2nodeComponentConfigAdditionAck:
+                  {
+                     e2NodeConfigAdditionAckList =&e2SetupRsp->protocolIEs.list.array[arrIdx]->value.choice.E2nodeComponentConfigAdditionAck_List;
+                     if(e2NodeConfigAdditionAckList->list.count)
+                     {
+                        for(e2NodeConfigIdx=0; e2NodeConfigIdx<e2NodeConfigAdditionAckList->list.count; e2NodeConfigIdx++)
+                        {
+                           e2NodeAddAckItemIe = (E2nodeComponentConfigAdditionAck_ItemIEs_t*) e2NodeConfigAdditionAckList->list.array[e2NodeConfigIdx];
+                           if(e2NodeAddAckItemIe)
+                           {
+                              e2NodeConfigAdditionAckItem = &e2NodeAddAckItemIe->value.choice.E2nodeComponentConfigAdditionAck_Item; 
+                              if(e2NodeConfigAdditionAckItem->e2nodeComponentID.choice.e2nodeComponentInterfaceTypeF1)
+                              {
+
+                                 RIC_FREE(e2NodeConfigAdditionAckItem->e2nodeComponentID.choice.e2nodeComponentInterfaceTypeF1->gNB_DU_ID.buf,\
+                                       e2NodeConfigAdditionAckItem->e2nodeComponentID.choice.e2nodeComponentInterfaceTypeF1->gNB_DU_ID.size);
+                                 RIC_FREE(e2NodeConfigAdditionAckItem->e2nodeComponentID.choice.e2nodeComponentInterfaceTypeF1,\
+                                       sizeof(E2nodeComponentInterfaceF1_t));
+                              }
+                              RIC_FREE(e2NodeAddAckItemIe, sizeof(E2nodeComponentConfigAdditionAck_ItemIEs_t));
+                           }
+                        }
+                        RIC_FREE(e2NodeConfigAdditionAckList->list.array, e2NodeConfigAdditionAckList->list.size);
+                     }
+                     break;
+                  }
+               }
                RIC_FREE(e2SetupRsp->protocolIEs.list.array[arrIdx], sizeof(E2setupResponseIEs_t)); 
             }
             RIC_FREE(e2SetupRsp->protocolIEs.list.array, e2SetupRsp->protocolIEs.list.size);
@@ -173,7 +227,8 @@ void FreeE2SetupRsp(E2AP_PDU_t *e2apMsg)
  * @return ROK - success
  *         RFAILED - failure
  * ****************************************************************/
-uint8_t BuildE2nodeComponentConfigAdditionAck(E2nodeComponentConfigAdditionAck_List_t *e2NodeConfigAdditionAckList, uint8_t duId)
+
+uint8_t BuildE2nodeComponentConfigAdditionAck(E2nodeComponentConfigAdditionAck_List_t *e2NodeConfigAdditionAckList, DuDb *duDb)
 {
    uint8_t arrIdx = 0;
    E2nodeComponentConfigAdditionAck_ItemIEs_t *e2NodeAddAckItem;
@@ -200,7 +255,7 @@ uint8_t BuildE2nodeComponentConfigAdditionAck(E2nodeComponentConfigAdditionAck_L
    e2NodeAddAckItem->id = ProtocolIE_IDE2_id_E2nodeComponentConfigAdditionAck_Item;
    e2NodeAddAckItem->criticality = CriticalityE2_reject;
    e2NodeAddAckItem->value.present = E2nodeComponentConfigAdditionAck_ItemIEs__value_PR_E2nodeComponentConfigAdditionAck_Item;
-   e2NodeAddAckItem->value.choice.E2nodeComponentConfigAdditionAck_Item.e2nodeComponentInterfaceType = E2nodeComponentInterfaceType_f1;
+   e2NodeAddAckItem->value.choice.E2nodeComponentConfigAdditionAck_Item.e2nodeComponentInterfaceType = duDb->e2NodeComponent.interfaceType;
 
    /* >E2 Node Component ID */
    e2NodeAddAckItem->value.choice.E2nodeComponentConfigAdditionAck_Item.e2nodeComponentID.present = E2nodeComponentID_PR_e2nodeComponentInterfaceTypeF1;
@@ -220,7 +275,7 @@ uint8_t BuildE2nodeComponentConfigAdditionAck(E2nodeComponentConfigAdditionAck_L
       DU_LOG("\nERROR  -->list.  E2AP: Memory allocation failed for BuildE2nodeComponentConfigAdditionAck %d",__LINE__);
       return RFAILED;
    }
-   e2NodeAddAckItem->value.choice.E2nodeComponentConfigAdditionAck_Item.e2nodeComponentID.choice.e2nodeComponentInterfaceTypeF1->gNB_DU_ID.buf[0]  = duId;
+   e2NodeAddAckItem->value.choice.E2nodeComponentConfigAdditionAck_Item.e2nodeComponentID.choice.e2nodeComponentInterfaceTypeF1->gNB_DU_ID.buf[0]  = duDb->e2NodeComponent.componentId;
    
    /* >E2 Node Component Configuration Acknowledge*/
    e2NodeAddAckItem->value.choice.E2nodeComponentConfigAdditionAck_Item.e2nodeComponentConfigurationAck.updateOutcome = \
@@ -228,6 +283,57 @@ uint8_t BuildE2nodeComponentConfigAdditionAck(E2nodeComponentConfigAdditionAck_L
    
    return ROK;  
 }
+
+/*******************************************************************
+ *
+ * @brief Build RAN function added list
+ *
+ * @details
+ *
+ *    Function : BuildRanFunctionAddedList
+ *
+ *    Functionality: Build RAN function added list 
+ *
+ * @params[in] DuDb *duDb, RANfunctionsID_List_t *ranFuncAddedList 
+ *
+ * @return ROK - success
+ *         RFAILED - failure
+ * ****************************************************************/
+
+uint8_t BuildRanFunctionAddedList(DuDb *duDb, RANfunctionsID_List_t *ranFuncAddedList)
+{
+   uint8_t ranFuncIdx = 0;
+   RANfunctionID_ItemIEs_t *ranFuncAddedItemIe;
+
+   ranFuncAddedList->list.count = duDb->numOfRanFunction;
+   ranFuncAddedList->list.size = ranFuncAddedList->list.count*sizeof(RANfunctionID_ItemIEs_t*);
+   RIC_ALLOC(ranFuncAddedList->list.array, ranFuncAddedList->list.size);
+   if(ranFuncAddedList->list.array)
+   {
+      for(ranFuncIdx = 0; ranFuncIdx< ranFuncAddedList->list.count; ranFuncIdx++)
+      {
+         RIC_ALLOC(ranFuncAddedList->list.array[ranFuncIdx], sizeof(RANfunction_ItemIEs_t));
+         if(ranFuncAddedList->list.array[ranFuncIdx] == NULLP)
+         {
+            DU_LOG("\nERROR  -->  E2AP : Memory allocation for RAN function added list array item");
+            return RFAILED;
+         }
+         ranFuncAddedItemIe = (RANfunctionID_ItemIEs_t*)ranFuncAddedList->list.array[ranFuncIdx];
+         ranFuncAddedItemIe->id = ProtocolIE_IDE2_id_RANfunctionID_Item;
+         ranFuncAddedItemIe->criticality= CriticalityE2_ignore;
+         ranFuncAddedItemIe->value.present = RANfunctionID_ItemIEs__value_PR_RANfunctionID_Item;
+         ranFuncAddedItemIe->value.choice.RANfunctionID_Item.ranFunctionID =duDb->ranFunction[ranFuncIdx].id;
+         ranFuncAddedItemIe->value.choice.RANfunctionID_Item.ranFunctionRevision=duDb->ranFunction[ranFuncIdx].revisionCounter;
+      }
+   }
+   else
+   {
+      DU_LOG("\nERROR  -->  E2AP : Memory allocation for RAN function added list array");
+      return RFAILED;
+   }
+   return ROK;
+}
+
 /*******************************************************************
  *
  * @brief Builds and sends the E2SetupResponse
@@ -246,7 +352,7 @@ uint8_t BuildE2nodeComponentConfigAdditionAck(E2nodeComponentConfigAdditionAck_L
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t BuildAndSendE2SetupRsp(uint32_t duId, uint8_t transId)
+uint8_t BuildAndSendE2SetupRsp(DuDb *duDb, uint8_t transId)
 {
    E2AP_PDU_t         *e2apMsg = NULL;
    E2setupResponse_t  *e2SetupRsp;
@@ -278,7 +384,7 @@ uint8_t BuildAndSendE2SetupRsp(uint32_t duId, uint8_t transId)
                                                          SuccessfulOutcomeE2__value_PR_E2setupResponse;
       e2SetupRsp = &e2apMsg->choice.successfulOutcome->value.choice.E2setupResponse;
 
-      elementCnt = 3;
+      elementCnt = 4;
       e2SetupRsp->protocolIEs.list.count = elementCnt;
       e2SetupRsp->protocolIEs.list.size  = elementCnt * sizeof(E2setupResponseIEs_t*);
 
@@ -327,11 +433,22 @@ uint8_t BuildAndSendE2SetupRsp(uint32_t duId, uint8_t transId)
       
       /* E2 Node Component Configuration Addition Acknowledge List*/
       idx++;
+      e2SetupRsp->protocolIEs.list.array[idx]->id = ProtocolIE_IDE2_id_RANfunctionsAccepted;
+      e2SetupRsp->protocolIEs.list.array[idx]->criticality = CriticalityE2_reject;
+      e2SetupRsp->protocolIEs.list.array[idx]->value.present = E2setupResponseIEs__value_PR_RANfunctionsID_List;
+      if(BuildRanFunctionAddedList(duDb, &e2SetupRsp->protocolIEs.list.array[idx]->value.choice.RANfunctionsID_List)!=ROK)
+      {
+         DU_LOG("\nERROR  -->  E2AP : Failed to build Ran function added list");
+         break;         
+      }
+
+      /* E2 Node Component Configuration Addition Acknowledge List*/
+      idx++;
       e2SetupRsp->protocolIEs.list.array[idx]->id = ProtocolIE_IDE2_id_E2nodeComponentConfigAdditionAck;
       e2SetupRsp->protocolIEs.list.array[idx]->criticality = CriticalityE2_reject;
       e2SetupRsp->protocolIEs.list.array[idx]->value.present = \
       E2setupResponseIEs__value_PR_E2nodeComponentConfigAdditionAck_List;
-      if(BuildE2nodeComponentConfigAdditionAck(&e2SetupRsp->protocolIEs.list.array[idx]->value.choice.E2nodeComponentConfigAdditionAck_List, duId)!=ROK)
+      if(BuildE2nodeComponentConfigAdditionAck(&e2SetupRsp->protocolIEs.list.array[idx]->value.choice.E2nodeComponentConfigAdditionAck_List, duDb)!=ROK)
       {
          DU_LOG("\nERROR  -->  E2AP : Failed to build E2Node Component config addition ack list");
          break;
@@ -358,7 +475,7 @@ uint8_t BuildAndSendE2SetupRsp(uint32_t duId, uint8_t transId)
          } 
       }
 
-      if(SendE2APMsg(RIC_APP_MEM_REG, RIC_POOL, duId) != ROK)
+      if(SendE2APMsg(RIC_APP_MEM_REG, RIC_POOL, duDb->duId) != ROK)
       {
          DU_LOG("\nERROR  -->  E2AP : Sending E2 Setup Response failed");      
          break;   
@@ -367,7 +484,7 @@ uint8_t BuildAndSendE2SetupRsp(uint32_t duId, uint8_t transId)
    }
 
    FreeE2SetupRsp(e2apMsg);
-   BuildAndSendRicSubscriptionReq(duId);
+   BuildAndSendRicSubscriptionReq(duDb->duId);
    return ROK;
 }
 
@@ -853,24 +970,61 @@ uint8_t BuildAndSendE2SetupFailure(uint32_t duId, uint8_t transId)
 
 uint8_t ProcE2SetupReq(uint32_t *duId, E2setupRequest_t  *e2SetupReq)
 {
-   uint8_t arrIdx = 0, e2NodeAddListIdx =0, duIdx = 0, transId =0;
+   uint8_t arrIdx = 0, e2NodeAddListIdx =0, duIdx = 0, transId =0, ranFuncIdx;
    DuDb    *duDb = NULLP;
    E2nodeComponentConfigAddition_List_t *e2NodeAddList;
    E2nodeComponentConfigAddition_ItemIEs_t *e2NodeAddItem;
+   RANfunction_ItemIEs_t *ranFuncItemIe;
+   RANfunction_Item_t  *ranFunItem;
+   RANfunctions_List_t *ranFunctionsList;
 
    if(e2SetupReq)
    {
-        if(e2SetupReq->protocolIEs.list.array)      
-        {
-            for(arrIdx=0; arrIdx<e2SetupReq->protocolIEs.list.count; arrIdx++)
+      if(e2SetupReq->protocolIEs.list.array)      
+      {
+         for(arrIdx=0; arrIdx<e2SetupReq->protocolIEs.list.count; arrIdx++)
+         {
+            if(e2SetupReq->protocolIEs.list.array[arrIdx])
             {
-               if(e2SetupReq->protocolIEs.list.array[arrIdx])
+               switch(e2SetupReq->protocolIEs.list.array[arrIdx]->id)
                {
-                  switch(e2SetupReq->protocolIEs.list.array[arrIdx]->id)
-                  {
-                     case ProtocolIE_IDE2_id_TransactionID:
+                  case ProtocolIE_IDE2_id_TransactionID:
                      {
                         transId = e2SetupReq->protocolIEs.list.array[arrIdx]->value.choice.TransactionID; 
+                        break;
+                     }
+                  case ProtocolIE_IDE2_id_GlobalE2node_ID:
+                     {
+                        if(e2SetupReq->protocolIEs.list.array[arrIdx]->value.choice.GlobalE2node_ID.choice.gNB->gNB_DU_ID)
+                        {
+                            *duId =e2SetupReq->protocolIEs.list.array[arrIdx]->value.choice.GlobalE2node_ID.choice.gNB->gNB_DU_ID->buf[0];
+
+                            SEARCH_DU_DB(duIdx, duId, duDb); 
+                            if(duDb == NULLP)
+                            {
+                               duDb = &ricCb.duInfo[ricCb.numDu];
+                               ricCb.numDu++;
+                            }
+                            memset(duDb, 0, sizeof(DuDb));
+                            duDb->duId = *duId;
+                        }
+                        break;
+                     }
+                     case ProtocolIE_IDE2_id_RANfunctionsAdded:
+                     {
+                        ranFunctionsList = &e2SetupReq->protocolIEs.list.array[arrIdx]->value.choice.RANfunctions_List;
+
+                        if(ranFunctionsList->list.array)
+                        {
+                           for(ranFuncIdx=0;ranFuncIdx<ranFunctionsList->list.count; ranFuncIdx++)
+                           {
+                              ranFuncItemIe = (RANfunction_ItemIEs_t *) ranFunctionsList->list.array[ranFuncIdx]; 
+                              ranFunItem = &ranFuncItemIe->value.choice.RANfunction_Item;
+                              duDb->ranFunction[duDb->numOfRanFunction].id =  ranFunItem->ranFunctionID; 
+                              duDb->ranFunction[ duDb->numOfRanFunction].revisionCounter =  ranFunItem->ranFunctionRevision; 
+                              duDb->numOfRanFunction++;
+                           }
+                        }
                         break;
                      }
                      case ProtocolIE_IDE2_id_E2nodeComponentConfigAddition:
@@ -884,28 +1038,10 @@ uint8_t ProcE2SetupReq(uint32_t *duId, E2setupRequest_t  *e2SetupReq)
                               {
                                  e2NodeAddItem = (E2nodeComponentConfigAddition_ItemIEs_t *) e2NodeAddList->list.array[e2NodeAddListIdx];
                                  if(e2NodeAddItem->value.choice.E2nodeComponentConfigAddition_Item.e2nodeComponentID.choice.\
-                                    e2nodeComponentInterfaceTypeF1)
+                                       e2nodeComponentInterfaceTypeF1)
                                  {
-                                    if(e2NodeAddItem->value.choice.E2nodeComponentConfigAddition_Item.e2nodeComponentID.choice.\
-                                       e2nodeComponentInterfaceTypeF1->gNB_DU_ID.buf)
-                                    {
-                                       *duId = e2NodeAddItem->value.choice.E2nodeComponentConfigAddition_Item.e2nodeComponentID.\
-                                               choice.e2nodeComponentInterfaceTypeF1->gNB_DU_ID.buf[0];
-                                       SEARCH_DU_DB(duIdx, duId, duDb); 
-                                       if(duDb == NULLP)
-                                       {
-                                          duDb = &ricCb.duInfo[ricCb.numDu];
-                                          ricCb.numDu++;
-                                       }
-                                       memset(duDb, 0, sizeof(DuDb));
-                                       duDb->duId = *duId;
-
-                                       if(BuildAndSendE2SetupRsp(*duId, transId) !=ROK)
-                                       {
-                                           DU_LOG("\nERROR  -->  E2AP : Failed to build and send E2 setup response");
-                                           return RFAILED;
-                                       }
-                                    }
+                                    duDb->e2NodeComponent.interfaceType = F1; 
+                                    duDb->e2NodeComponent.componentId = e2NodeAddItem->value.choice.E2nodeComponentConfigAddition_Item.e2nodeComponentID.choice.e2nodeComponentInterfaceTypeF1->gNB_DU_ID.buf[0]; 
                                  }
                               }
                            }
@@ -918,6 +1054,11 @@ uint8_t ProcE2SetupReq(uint32_t *duId, E2setupRequest_t  *e2SetupReq)
                }
             }
         }
+   }
+   if(BuildAndSendE2SetupRsp(duDb, transId) !=ROK)
+   {
+      DU_LOG("\nERROR  -->  E2AP : Failed to build and send E2 setup response");
+      return RFAILED;
    }
    return ROK;   
 }
