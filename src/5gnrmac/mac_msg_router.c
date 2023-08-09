@@ -187,6 +187,12 @@ void MacHdlDuappEvents(Pst *pst, Buffer *mBuf)
             break;
          }
 
+      case EVENT_MAC_STATISTICS_REQ:
+         {
+            /* Process Statistics Request */
+            unpackMacStatsReq(MacProcStatsReq, pst, mBuf);
+         }
+
       default:
          RG_FREE_MSG(mBuf);
          break;
@@ -337,6 +343,9 @@ void callFlowMacActvTsk(Pst *pst)
                case EVENT_MAC_SLICE_RECFG_REQ:
                   strcpy(message,"EVENT_MAC_SLICE_RECFG_REQ");
                   break;
+               case EVENT_MAC_STATISTICS_REQ:
+                  strcpy(message,"EVENT_MAC_STATISTICS_REQ");
+                  break;
                default:
                   strcpy(message,"Invalid Event");
                   break;
@@ -464,6 +473,16 @@ void callFlowMacActvTsk(Pst *pst)
                   case EVENT_DL_REL_HQ_PROC:
                      {
                         strcpy(message,"EVENT_DL_REL_HQ_PROC");
+                        break;
+                     }
+                  case EVENT_STATISTICS_RSP_TO_MAC:
+                     {
+                        strcpy(message,"EVENT_STATISTICS_RSP_TO_MAC");
+                        break;
+                     }
+                  case EVENT_STATISTICS_IND_TO_MAC:
+                     {
+                        strcpy(message,"EVENT_STATISTICS_IND_TO_MAC");
                         break;
                      }
                   default:
@@ -608,6 +627,16 @@ uint8_t MacMessageRouter(Pst *pst, void *msg)
       case EVENT_DL_REL_HQ_PROC: 
          {
             MacSchReleaseDlHarqProc(pst, (SchRlsHqInfo *)msg);
+            break;
+         }
+      case EVENT_STATISTICS_RSP_TO_MAC:
+         {
+            MacProcSchStatsRsp(pst, (SchStatsRsp *)msg);
+            break;
+         }
+      case EVENT_STATISTICS_IND_TO_MAC:
+         {
+            MacProcSchStatsInd(pst, (SchStatsInd *)msg);
             break;
          }
       default:
