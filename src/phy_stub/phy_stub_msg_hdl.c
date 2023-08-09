@@ -1230,6 +1230,7 @@ S16 l1HdlUlTtiReq(uint16_t msgLen, void *msg)
       {
          DU_LOG("\nINFO   -->  PHY STUB: PRACH PDU");
 
+#if 0
          /* Send RACH Ind to L2 for first UE */
          if(phyDb.ueDb.ueCb[UE_IDX_0].rachIndSent == false)
          {
@@ -1238,7 +1239,6 @@ S16 l1HdlUlTtiReq(uint16_t msgLen, void *msg)
             l1BuildAndSendRachInd(ulTtiReq->slot, ulTtiReq->sfn, CB_RA_PREAMBLE_IDX);
             phyDb.ueDb.numActvUe++;
          }
-#if 0
          /* Send RACH Ind to L2 for second UE */
          if(phyDb.ueDb.ueCb[UE_IDX_1].rachIndSent == false && phyDb.ueDb.ueCb[UE_IDX_0].msgRrcReconfigComp == true)
          {

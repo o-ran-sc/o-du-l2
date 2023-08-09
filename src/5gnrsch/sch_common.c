@@ -41,6 +41,7 @@ File:     sch_common.c
 #include "du_app_mac_inf.h"
 #include "mac_sch_interface.h"
 #include "sch.h"
+#include "sch_tmr.h"
 #include "sch_utils.h"
 
 /**
@@ -535,13 +536,21 @@ uint8_t schUlResAlloc(SchCellCb *cell, Inst schInst)
       memset(&schUlSlotInfo->schPucchInfo, 0, sizeof(SchPucchInfo));
    }
 
-   //send msg to MAC
+   /* Send msg to MAC */
    ret = sendUlSchInfoToMac(&ulSchedInfo, schInst);
    if(ret != ROK)
    {
       DU_LOG("\nERROR  -->  SCH : Sending UL Sch info from SCH to MAC failed");
    }
 
+   /* Update UL statistics */
+   if(schCb[schInst].statistics.ulTotalPrbUsage)
+   {
+      schCb[schInst].statistics.ulTotalPrbUsage->numPrbUsedForTx += schUlSlotInfo->prbAlloc.numPrbAlloc; 
+      schCb[schInst].statistics.ulTotalPrbUsage->totalPrbAvailForTx += MAX_NUM_RB;
+   }
+
+   /* Re-initialize UL Slot */
    schInitUlSlot(schUlSlotInfo);
    return ret;
 }

@@ -38,6 +38,14 @@
 
 MacCb  macCb;
 
+MacDuStatsIndFunc macDuStatsIndOpts[] =
+{
+   packDuMacStatsInd,   /* packing for loosely coupled */
+   DuProcMacStatsInd,   /* packing for tightly coupled */
+   packDuMacStatsInd   /* packing for light weight loosly coupled */
+};
+
+
 /*******************************************************************
  *
  * @brief Sends DL BO Info to SCH
@@ -1055,6 +1063,66 @@ uint8_t MacProcSliceRecfgReq(Pst *pst, MacSliceRecfgReq *macSliceRecfgReq)
       DU_LOG("\nINFO  -->  MAC : Received MacSliceRecfgReq is NULL");
    }
    return ret;
+}
+
+/**
+ * @brief Mac process the statistics indication received from sch.
+ *
+ * @details
+ *
+ *     Function : MacProcSchStatsInd
+ *
+ *     This function process the statistics indication received from sch
+ *
+ *  @param[in]  Pst           *pst
+ *  @param[in]  SchStatsInd   *schStatsInd
+ *  @return  int
+ *      -# ROK
+ **/
+uint8_t MacProcSchStatsInd(Pst *pst, SchStatsInd *schStatsInd)
+{
+   Pst indPst;
+   MacStatsInd *macStatsInd;
+
+   DU_LOG("\nINFO  -->  MAC : MacProcSchStatsInd: Received Statistics Indication from SCH");
+
+   if(schStatsInd == NULLP)
+   {
+      DU_LOG("\nERROR  -->  MAC : MacProcSchStatsInd: NULL pointer :schStatsInd");
+      return RFAILED;
+   }
+
+   MAC_ALLOC_SHRABL_BUF(macStatsInd, sizeof(MacStatsInd));
+   if(macStatsInd == NULLP)
+   {
+      DU_LOG("\nERROR  -->  MAC : Failed to allocate memory in MacProcSchStatsInd");
+      return RFAILED;
+   }
+
+   switch(schStatsInd->type)
+   {
+      case SCH_DL_TOTAL_PRB_USAGE:
+         {
+            macStatsInd->type = MAC_DL_TOTAL_PRB_USAGE;
+            break;
+         }
+      case SCH_UL_TOTAL_PRB_USAGE:
+         {
+            macStatsInd->type = MAC_UL_TOTAL_PRB_USAGE;
+            break;
+         }
+      default:
+         {
+            DU_LOG("\nERROR  -->  MAC : MacProcSchStatsInd: Invalud measurement type [%d]", schStatsInd->type);
+            MAC_FREE_SHRABL_BUF(MAC_MEM_REGION, MAC_POOL, macStatsInd, sizeof(MacStatsInd));
+            return RFAILED;
+         }
+   }
+   macStatsInd->value = schStatsInd->value;
+
+   memset(&indPst, 0, sizeof(Pst));
+   FILL_PST_MAC_TO_DUAPP(indPst, EVENT_MAC_STATISTICS_IND);
+   return (*macDuStatsIndOpts[indPst.selector])(&indPst, macStatsInd);
 }
 
 /**********************************************************************

@@ -63,6 +63,14 @@ MacDuSliceRecfgRspFunc macDuSliceRecfgRspOpts[] =
    packDuMacSliceRecfgRsp    /* packing for light weight loosly coupled */
 };
 
+MacDuStatsRspFunc macDuStatsRspOpts[] =
+{
+   packDuMacStatsRsp,   /* packing for loosely coupled */
+   DuProcMacStatsRsp,   /* packing for tightly coupled */
+   packDuMacStatsRsp   /* packing for light weight loosly coupled */
+};
+
+
 /**
  * @brief Layer Manager  Configuration request handler for Scheduler
  *
@@ -1014,6 +1022,166 @@ uint8_t MacProcDlBroadcastReq(Pst *pst, MacDlBroadcastReq *dlBroadcastReq)
    }
    return ret;
 }
+
+/**
+ * @brief Mac process the statistics Req received from DUAPP
+ *
+ * @details
+ *
+ *     Function : MacProcStatsReq
+ *
+ *     This function process the statistics request from duapp
+ *
+ *  @param[in]  Pst      *pst
+ *  @param[in]  StatsReq *statsReq
+ *  @return  int
+ *      -# ROK
+ **/
+uint8_t MacProcStatsReq(Pst *pst, MacStatsReq *macStatsReq)
+{
+   uint8_t   macStatsIdx = 0, schStatsIdx = 0;
+   uint8_t   ret = RFAILED;
+   bool      measTypeInvalid = false;
+   Pst       schPst;
+   SchStatsReq  *schStatsReq = NULLP;
+   CauseOfResult cause;
+
+   if(macStatsReq)
+   {
+      DU_LOG("\nINFO   -->  MAC : Received Statistics Request from DU_APP");
+
+      MAC_ALLOC(schStatsReq, sizeof(SchStatsReq));
+      if(schStatsReq == NULLP)
+      {
+         DU_LOG("\nERROR  -->  MAC : MacProcStatsReq: Failed to allocate memory");
+         cause = RESOURCE_UNAVAILABLE;
+      }
+      else
+      {
+         schStatsReq->numStats = 0;
+         for(macStatsIdx=0; macStatsIdx < macStatsReq->numStats; macStatsIdx++)
+         {
+            /* Checking each measurement type to send only SCH related
+             * measurement config to SCH
+             * This will be useful in future when some measurement type will
+             * be configured for SCH and rest for only MAC */
+            switch(macStatsReq->statsList[macStatsIdx].type)
+            {
+               case MAC_DL_TOTAL_PRB_USAGE:
+                  {
+                     schStatsReq->statsList[schStatsIdx].type = SCH_DL_TOTAL_PRB_USAGE;
+                     break;
+                  }
+               case MAC_UL_TOTAL_PRB_USAGE:
+                  {
+                     schStatsReq->statsList[schStatsIdx].type = SCH_UL_TOTAL_PRB_USAGE;
+                     break;
+                  }
+               default:
+                  {
+                     DU_LOG("\nERROR  -->  MAC : MacProcStatsReq: Invalid measurement type [%d]", \
+                        macStatsReq->statsList[macStatsIdx].type);
+                     measTypeInvalid = true;
+                  }
+            }
+
+            if(!measTypeInvalid)
+            {
+               schStatsReq->statsList[schStatsIdx].periodicity = macStatsReq->statsList[macStatsIdx].periodicity;
+               schStatsIdx++;
+               measTypeInvalid = false;
+            }
+         }
+         schStatsReq->numStats = schStatsIdx;
+
+         /* If no measurement types are valid, it is failure scenario.
+          * Even if one measurement type is value, send to SCH */
+         if(schStatsReq->numStats)
+         {
+            FILL_PST_MAC_TO_SCH(schPst, EVENT_STATISTICS_REQ_TO_SCH);
+            ret = SchMessageRouter(&schPst, (void *)schStatsReq);
+         }
+         else
+         {
+            cause = PARAM_INVALID;
+         }
+      }
+      MAC_FREE_SHRABL_BUF(pst->region, pst->pool, macStatsReq, sizeof(MacStatsReq));
+   }
+   else
+   {
+      DU_LOG("\nERROR  -->  MAC : MacProcStatsReq(): Received Null pointer");
+      cause = PARAM_INVALID;
+   }
+
+   if(ret == RFAILED)
+   {
+      /* Send negative acknowledgment to DU APP */
+      Pst  rspPst;
+      MacStatsRsp *macStatsRsp = NULLP;
+
+      MAC_ALLOC_SHRABL_BUF(macStatsRsp, sizeof(MacStatsRsp));
+      if(macStatsRsp == NULLP)
+      {
+         DU_LOG("\nERROR  -->  MAC : Failed to allocate memory in MacProcSchStatsRsp");
+         return RFAILED;
+      }
+      macStatsRsp->rsp = MAC_DU_APP_RSP_NOK;
+      macStatsRsp->cause = cause;
+
+      memset(&rspPst, 0, sizeof(Pst));
+      FILL_PST_MAC_TO_DUAPP(rspPst, EVENT_MAC_STATISTICS_RSP);
+      return (*macDuStatsRspOpts[rspPst.selector])(&rspPst, macStatsRsp);
+   }
+   return ret;
+}
+
+/**
+ * @brief Mac process the statistics rsp received from sch.
+ *
+ * @details
+ *
+ *     Function : MacProcSchStatsRsp
+ *
+ *     This function  process the statistics response received from sch
+ *
+ *  @param[in]  Pst           *pst
+ *  @param[in]  SchStatsRsp *schStatsRsp
+ *  @return  int
+ *      -# ROK
+ **/
+uint8_t MacProcSchStatsRsp(Pst *pst, SchStatsRsp *schStatsRsp)
+{
+   Pst  rspPst;
+   MacStatsRsp *macStatsRsp = NULLP;
+
+   if(schStatsRsp)
+   {
+      MAC_ALLOC_SHRABL_BUF(macStatsRsp, sizeof(MacStatsRsp));
+      if(macStatsRsp == NULLP)
+      {
+          DU_LOG("\nERROR  -->  MAC : Failed to allocate memory in MacProcSchStatsRsp");
+          return RFAILED;
+      }
+      if(schStatsRsp->rsp == RSP_OK)
+         macStatsRsp->rsp = MAC_DU_APP_RSP_OK;
+      else
+      {
+         macStatsRsp->rsp = MAC_DU_APP_RSP_NOK;
+      }
+      macStatsRsp->cause = schStatsRsp->cause;
+
+    memset(&rspPst, 0, sizeof(Pst));
+    FILL_PST_MAC_TO_DUAPP(rspPst, EVENT_MAC_STATISTICS_RSP);
+    (*macDuStatsRspOpts[rspPst.selector])(&rspPst, macStatsRsp);
+
+     MAC_FREE(schStatsRsp, sizeof(SchStatsRsp));
+     return ROK;
+   }
+
+   return RFAILED;
+}
+
 /**********************************************************************
   End of file
  **********************************************************************/

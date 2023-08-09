@@ -1652,6 +1652,9 @@ uint8_t procRicSubsReq(E2AP_PDU_t *e2apMsg)
                      }
                      free(ricSubsReq->protocolIEs.list.array[idx]->value.choice.RICsubscriptionDetails.ricAction_ToBeSetup_List.\
                            list.array);
+
+                     ricSubscriptionInfo->actionSequence[0].definition.styleType = 1;
+                     BuildAndSendStatsReq(ricSubscriptionInfo->actionSequence[0].definition);
                   }
                   break;
                }

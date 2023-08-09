@@ -353,7 +353,6 @@ typedef struct duCb
    DuTimers      duTimersInfo;              /* Du timers queue */
 }DuCb;
 
-
 typedef struct duLSapCfg
 {
    SuId        suId;
@@ -371,6 +370,15 @@ typedef struct duLSapCfg
    TmrCfg      bndTmr;
    TmrCfg      connTmr;
 }DuLSapCfg;
+
+/* Statistics Reported */
+typedef struct statistics
+{
+   //DuAppStats   duAppStats;
+   //RlcStatsReq  rlcStatsReq;
+
+   MacStatsReq    macStatsReq;
+}Statistics;
 
 /* global variables */
 DuCb duCb;

@@ -46,6 +46,7 @@
 #include "rg_sch_inf.x"         /* typedefs for Scheduler */
 #include "mac_sch_interface.h"
 #include "sch.h"
+#include "sch_tmr.h"
 #include "sch_utils.h"
 #include "sch_fcfs.h"
 #include "sch_slice_based.h"
@@ -150,22 +151,22 @@ uint8_t SchInstCfg(RgCfg *cfg, Inst  dInst)
 
    schCb[inst].schInit.region = cfg->s.schInstCfg.genCfg.mem.region;
    schCb[inst].schInit.pool = cfg->s.schInstCfg.genCfg.mem.pool;
-   schCb[inst].genCfg.tmrRes = cfg->s.schInstCfg.genCfg.tmrRes;
 #ifdef LTE_ADV
    schCb[inst].genCfg.forceCntrlSrbBoOnPCel =  cfg->s.schInstCfg.genCfg.forceCntrlSrbBoOnPCel;
    schCb[inst].genCfg.isSCellActDeactAlgoEnable =  cfg->s.schInstCfg.genCfg.isSCellActDeactAlgoEnable;
 #endif
    schCb[inst].genCfg.startCellId    = cfg->s.schInstCfg.genCfg.startCellId;
 
+   schCb[inst].schTimersInfo.tmrRes = cfg->s.schInstCfg.genCfg.tmrRes;
    /* Initialzie the timer queue */   
-   memset(&schCb[inst].tmrTq, 0, sizeof(CmTqType) * SCH_TQ_SIZE);
+   memset(&schCb[inst].schTimersInfo.tmrTq, 0, sizeof(CmTqType) * SCH_TQ_SIZE);
    /* Initialize the timer control point */
-   memset(&schCb[inst].tmrTqCp, 0, sizeof(CmTqCp));
-   schCb[inst].tmrTqCp.tmrLen = RGSCH_TQ_SIZE;
+   memset(&schCb[inst].schTimersInfo.tmrTqCp, 0, sizeof(CmTqCp));
+   schCb[inst].schTimersInfo.tmrTqCp.tmrLen = SCH_TQ_SIZE;
 
    /* SS_MT_TMR needs to be enabled as schActvTmr needs instance information */
    /* Timer Registration request to system services */
-   if (ODU_REG_TMR_MT(schCb[inst].schInit.ent, dInst, (int)schCb[inst].genCfg.tmrRes, schActvTmr) != ROK)
+   if (ODU_REG_TMR_MT(schCb[inst].schInit.ent, dInst, (int)schCb[inst].schTimersInfo.tmrRes, schActvTmr) != ROK)
    {
       DU_LOG("\nERROR  -->  SCH : SchInstCfg(): Failed to "
 	    "register timer.");
@@ -1422,6 +1423,10 @@ uint8_t allocatePrbDl(SchCellCb *cell, SlotTimingInfo slotTime, \
          return RFAILED;
       }
    }
+   
+   /* Update statistics of PRB usage if stats calculation is enabled */
+   if(schCb[cell->instIdx].statistics.dlTotalPrbUsage)
+      prbAlloc->numPrbAlloc += numPrb;
 
    /* Update the remaining number for free PRBs */
    removeAllocatedPrbFromFreePrbList(&prbAlloc->freePrbBlockList, freePrbNode, *startPrb, numPrb);
@@ -1555,6 +1560,10 @@ uint8_t allocatePrbUl(SchCellCb *cell, SlotTimingInfo slotTime, \
          return RFAILED;
       }
    }
+
+   /* Update statistics of PRB usage if stats calculation is enabled */
+   if(schCb[cell->instIdx].statistics.ulTotalPrbUsage)
+      prbAlloc->numPrbAlloc += numPrb;
 
    /* Update the remaining number for free PRBs */
    removeAllocatedPrbFromFreePrbList(&prbAlloc->freePrbBlockList, freePrbNode, *startPrb, numPrb);
@@ -2533,6 +2542,231 @@ uint8_t SchProcPhrInd(Pst *pst, SchPwrHeadroomInd *schPhrInd)
    }
    return ret;
 }
+
+/*******************************************************************
+ *
+ * @brief Fill and send statistics response to MAC
+ *
+ * @details
+ *
+ *    Function :  SchSendStatsRspToMac
+ *
+ *    Functionality: Fill and send statistics response to MAC
+ *
+ * @params[in]  Inst inst, SchMacRsp result
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t SchSendStatsRspToMac(Inst inst, SchMacRsp result, CauseOfResult cause)
+{
+   Pst rspPst;
+   uint8_t ret = ROK;
+   SchStatsRsp  *statsRsp;
+
+   DU_LOG("\nINFO   --> SCH : Filling statistics response");
+   SCH_ALLOC(statsRsp, sizeof(SchStatsRsp));
+   memset(statsRsp, 0, sizeof(SchStatsRsp));
+   statsRsp->rsp = result;
+   statsRsp->cause = cause;
+
+   /* Filling response post */
+   memset(&rspPst, 0, sizeof(Pst));
+   FILL_PST_SCH_TO_MAC(rspPst, inst);
+   rspPst.event = EVENT_STATISTICS_RSP_TO_MAC;
+
+   ret = MacMessageRouter(&rspPst, (void *)statsRsp);
+   if(ret == RFAILED)
+   {
+      DU_LOG("\nERROR  -->  SCH : SchSendStatsRspToMac(): Failed to send Statistics Response");
+      return ret;
+   }
+   return ret;
+}
+
+/*******************************************************************
+ *
+ * @brief Processes Statistics Request from MAC
+ *
+ * @details
+ *
+ *    Function : SchProcStatsReq
+ *
+ *    Functionality:
+ *       Processes Statistics Request from MAC
+ *
+ * @params[in] 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t SchProcStatsReq(Pst *pst, SchStatsReq *statsReq)
+{
+   uint8_t idx;
+   Inst    inst = pst->dstInst - SCH_INST_START;
+   SchMacRsp     rsp = RSP_OK;
+   CauseOfResult cause = SUCCESSFUL;
+   bool isDlTotlPrbUseCfgd = false, isUlTotlPrbUseCfgd = false;
+
+   DU_LOG("\nINFO   -->  SCH : Received Statistics Request from MAC");
+
+   for(idx=0; idx < statsReq->numStats; idx++)
+   {
+      switch(statsReq->statsList[idx].type)
+      {
+         case SCH_DL_TOTAL_PRB_USAGE:
+            {
+               /* Check if duplicate configuration */
+               if(schCb[inst].statistics.dlTotalPrbUsage)
+               {
+                  DU_LOG("\nERROR   -->  SCH : SCH_DL_TOTAL_PRB_USAGE stats already configured");
+                  rsp = RSP_NOK;
+                  cause = DUPLICATE_ENTRY;
+               }
+
+               /* Allocate memory */
+               SCH_ALLOC(schCb[inst].statistics.dlTotalPrbUsage, sizeof(TotalPrbUsage));
+               if(!schCb[inst].statistics.dlTotalPrbUsage)
+               {
+                  DU_LOG("\nERROR   -->  SCH : Memory allocation failed for dlTotalPrbUsage in \
+                        SchProcStatsReq()");
+                  rsp = RSP_NOK;
+                  cause = RESOURCE_UNAVAILABLE;
+                  break;
+               }
+
+               /* Initialize */
+               memset(schCb[inst].statistics.dlTotalPrbUsage, 0, sizeof(TotalPrbUsage));
+
+               /* Configure */
+               schCb[inst].statistics.dlTotalPrbUsage->schInst = inst;
+               schCb[inst].statistics.dlTotalPrbUsage->periodicity = statsReq->statsList[idx].periodicity;
+
+               /* Start timer */
+               schStartTmr(&schCb[inst], (PTR)(schCb[inst].statistics.dlTotalPrbUsage), \
+                     EVENT_DL_TOTAL_PRB_USAGE_TMR, schCb[inst].statistics.dlTotalPrbUsage->periodicity);
+
+               isDlTotlPrbUseCfgd = true;
+               break;
+            }
+
+         case SCH_UL_TOTAL_PRB_USAGE:
+            {
+               /* Check if duplicate configuration */
+               if(schCb[inst].statistics.ulTotalPrbUsage)
+               {
+                  DU_LOG("\nERROR   -->  SCH : SCH_UL_TOTAL_PRB_USAGE stats already configured");
+                  rsp = RSP_NOK;
+                  cause = DUPLICATE_ENTRY;
+               }
+
+               /* Allocate memory */
+               SCH_ALLOC(schCb[inst].statistics.ulTotalPrbUsage, sizeof(TotalPrbUsage));
+               if(!schCb[inst].statistics.ulTotalPrbUsage)
+               {
+                  DU_LOG("\nERROR   -->  SCH : Memory allocation failed for ulTotalPrbUsage in \
+                        SchProcStatsReq()");
+                  rsp = RSP_NOK;
+                  cause = RESOURCE_UNAVAILABLE;
+                  break;
+               }
+
+               /* Initialize */
+               memset(schCb[inst].statistics.ulTotalPrbUsage, 0, sizeof(TotalPrbUsage));
+
+               /* Configure */
+               schCb[inst].statistics.ulTotalPrbUsage->schInst = inst;
+               schCb[inst].statistics.ulTotalPrbUsage->periodicity = statsReq->statsList[idx].periodicity;
+
+               /* Start timer */
+               schStartTmr(&schCb[inst], (PTR)(schCb[inst].statistics.ulTotalPrbUsage), \
+                     EVENT_UL_TOTAL_PRB_USAGE_TMR, schCb[inst].statistics.ulTotalPrbUsage->periodicity);
+
+               isUlTotlPrbUseCfgd = true;
+               break;
+            }
+         default:
+            {
+               DU_LOG("\nERROR   -->  SCH : Invalid statistics type [%d]", statsReq->statsList[idx].type);
+               rsp = RSP_NOK;
+               cause = PARAM_INVALID;
+            }
+      } /* End of switch */
+
+      if(rsp == RSP_NOK)
+      {
+         /* If failed to configure any KPI, then clear configuration of other
+          * KPIs that were configured successfully as part of this statsReq */
+         if(isDlTotlPrbUseCfgd)
+         {
+            if((schChkTmr((PTR)(schCb[inst].statistics.dlTotalPrbUsage), EVENT_DL_TOTAL_PRB_USAGE_TMR)) == FALSE)
+            {
+               schStopTmr(&schCb[inst], (PTR)(schCb[inst].statistics.dlTotalPrbUsage), EVENT_DL_TOTAL_PRB_USAGE_TMR);
+            }
+            SCH_FREE(schCb[inst].statistics.dlTotalPrbUsage, sizeof(TotalPrbUsage));
+         }
+
+         if(isUlTotlPrbUseCfgd)
+         {
+            if((schChkTmr((PTR)(schCb[inst].statistics.ulTotalPrbUsage), EVENT_UL_TOTAL_PRB_USAGE_TMR)) == FALSE)
+            {
+               schStopTmr(&schCb[inst], (PTR)(schCb[inst].statistics.ulTotalPrbUsage), EVENT_UL_TOTAL_PRB_USAGE_TMR);
+            }
+            SCH_FREE(schCb[inst].statistics.ulTotalPrbUsage, sizeof(TotalPrbUsage));
+         }
+         break;
+      }
+   } /* End of FOR */
+
+   SCH_FREE(statsReq, sizeof(SchStatsReq));
+
+   SchSendStatsRspToMac(inst, rsp, cause);
+
+   return ROK;
+} /* End of SchProcStatsReq */
+
+/*******************************************************************
+ *
+ * @brief Fill and send statistics indication to MAC
+ *
+ * @details
+ *
+ *    Function :  SchSendStatsIndToMac
+ *
+ *    Functionality: Fill and send statistics indication to MAC
+ *
+ * @params[in]  SCH Instance
+ *              Measurement Type
+ *              Measurement Value
+ *              Size of value parameter
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t SchSendStatsIndToMac(Inst inst, SchMeasurementType measType, uint32_t value)
+{
+   Pst pst;
+   uint8_t ret = ROK;
+   SchStatsInd  statsInd;
+
+   DU_LOG("\nINFO   --> SCH : Filling statistics indication");
+   memset(&statsInd, 0, sizeof(SchStatsInd));
+   statsInd.type = measType;
+   statsInd.value = value;
+
+   /* Filling post structure */
+   memset(&pst, 0, sizeof(Pst));
+   FILL_PST_SCH_TO_MAC(pst, inst);
+   pst.event = EVENT_STATISTICS_RSP_TO_MAC;
+
+   ret = MacMessageRouter(&pst, (void *)&statsInd);
+   if(ret == RFAILED)
+   {
+      DU_LOG("\nERROR  -->  SCH : SchSendStatsIndToMac(): Failed to send Statistics Indication");
+   }
+   return ret;
+}
+
 
 /**********************************************************************
   End of file

@@ -40,6 +40,7 @@ File:     sch_slot_ind.c
 #include "du_app_mac_inf.h"
 #include "mac_sch_interface.h"
 #include "sch.h"
+#include "sch_tmr.h"
 #include "sch_utils.h"
 #ifdef NR_DRX 
 #include "sch_drx.h"
@@ -749,11 +750,23 @@ uint8_t SchProcSlotInd(Pst *pst, SlotTimingInfo *slotInd)
       return (ret);
    }
 
+   /* Update DL statistics */
+   if(schCb[schInst].statistics.dlTotalPrbUsage)
+   {
+      schCb[schInst]. statistics.dlTotalPrbUsage->numPrbUsedForTx += cell->schUlSlotInfo[slot]->prbAlloc.numPrbAlloc; 
+      schCb[schInst].statistics.dlTotalPrbUsage->totalPrbAvailForTx += MAX_NUM_RB;
+   }
+   
+   /* Re-initialize DL slot */
    schInitDlSlot(cell->schDlSlotInfo[slot]);
+
+   /* Send UL Resource allocation to MAC */
    schUlResAlloc(cell, schInst);
+
 #ifdef NR_DRX 
    schHandleExpiryDrxTimer(cell);
 #endif   
+
    return ret;
 }
 

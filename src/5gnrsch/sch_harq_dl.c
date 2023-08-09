@@ -24,6 +24,7 @@
 #include "du_app_mac_inf.h"
 #include "mac_sch_interface.h"
 #include "sch.h"
+#include "sch_tmr.h"
 #include "sch_utils.h"
 #include "cm_llist.h"
 #ifdef NR_DRX
