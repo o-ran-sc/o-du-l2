@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6d8ad6e6_adc74e23",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-08-09T07:10:55Z",
+      "side": 1,
+      "message": "As per 38.423,Sec 9.2.2.1, gnbId \u003d  Equal to the leftmost bits of the NR Cell Identity IE contained in the NR CGI IE. , we can make it equal to duCfgParam.sib1Params.cellIdentity which is filled as nrCgi in f1 setup req",
+      "range": {
+        "startLine": 98,
+        "startChar": 85,
+        "endLine": 98,
+        "endChar": 90
+      },
+      "revId": "b69ca79735df5986fe539bc83e03785bd26029d6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "14117cc1_7575d88f",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 307,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-08-09T07:10:55Z",
+      "side": 1,
+      "message": "variables start with small letters. make M as m",
+      "range": {
+        "startLine": 307,
+        "startChar": 54,
+        "endLine": 307,
+        "endChar": 72
+      },
+      "revId": "b69ca79735df5986fe539bc83e03785bd26029d6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "809ba777_33f9f81b",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 404,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-08-09T07:10:55Z",
+      "side": 1,
+      "message": "variables shld start with small letters",
+      "revId": "b69ca79735df5986fe539bc83e03785bd26029d6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "98e6001e_f329d0e6",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 689,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-08-09T07:10:55Z",
+      "side": 1,
+      "message": "i think name of the func shld be functionDefinition",
+      "range": {
+        "startLine": 689,
+        "startChar": 3,
+        "endLine": 689,
+        "endChar": 36
+      },
+      "revId": "b69ca79735df5986fe539bc83e03785bd26029d6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
