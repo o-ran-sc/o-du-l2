@@ -89,6 +89,7 @@
 #define EVENT_MAC_UE_RESET_RSP       226
 #define EVENT_MAC_UE_SYNC_STATUS_IND 227
 #define EVENT_MAC_DL_BROADCAST_REQ   228
+#define EVENT_MAC_STATISTICS_REQ     229
 
 #define BSR_PERIODIC_TIMER_SF_10 10
 #define BSR_RETX_TIMER_SF_320 320
@@ -97,6 +98,10 @@
 #define PAGING_SCHED_DELTA  4
 #define MAX_PLMN 2
 
+/********************* Global Variable ********************/
+uint64_t ueBitMapPerCell[MAX_NUM_CELL]; /* Bit Map to store used/free UE-IDX per Cell */
+
+/********************* Interface structure definition ********************/
 typedef enum
 {
    SIB_TYPE2,
@@ -577,6 +582,13 @@ typedef enum
    STOP_TRANSMISSION,
    RESTART_TRANSMISSION
 }DataTransmissionAction;
+
+/* Performance measurements from 3GPP TS 28.552 Release 15 */
+typedef enum
+{
+   MAC_DL_TOTAL_PRB_USAGE,
+   MAC_UL_TOTAL_PRB_USAGE
+}MacMeasurementType;
 
 typedef struct failureCause 
 {
@@ -1841,6 +1853,20 @@ typedef struct macDlBroadcastReq
     SiSchedulingInfo **siSchedulingInfo;
 }MacDlBroadcastReq;
 
+typedef struct macStatsInfo
+{
+   MacMeasurementType type;
+   uint16_t           periodicity;  /* In milliseconds */
+}MacStatsInfo;
+
+typedef struct macStatsReq
+{
+   uint8_t   numStats;
+   MacStatsInfo statsList[MAX_NUM_STATS];
+}MacStatsReq;
+
+/****************** FUNCTION POINTERS ********************************/
+
 /* DL broadcast req from DU APP to MAC*/
 typedef uint8_t (*DuMacDlBroadcastReq) ARGS((
          Pst           *pst,
@@ -1993,8 +2019,12 @@ typedef uint8_t (*MacDuUeSyncStatusIndFunc) ARGS((
         Pst            *pst,
         MacUeSyncStatusInd *syncStatusInd));
 
-uint64_t ueBitMapPerCell[MAX_NUM_CELL]; /* Bit Map to store used/free UE-IDX per Cell */
+/* Statitics Request from DU APP to MAC */
+typedef uint8_t (*DuMacStatsReqFunc) ARGS((
+      Pst *pst,
+      MacStatsReq *statsReq));
 
+/******************** FUNCTION DECLARATIONS ********************************/
 uint8_t packMacCellUpInd(Pst *pst, OduCellId *cellId);
 uint8_t unpackMacCellUpInd(DuMacCellUpInd func, Pst *pst, Buffer *mBuf);
 uint8_t duHandleCellUpInd(Pst *pst, OduCellId *cellId);
@@ -2085,6 +2115,10 @@ uint8_t unpackDuMacUeSyncStatusInd(MacDuUeSyncStatusIndFunc func, Pst *pst, Buff
 uint8_t packDuMacDlBroadcastReq(Pst *pst, MacDlBroadcastReq *dlBroadcastReq);
 uint8_t MacProcDlBroadcastReq(Pst *pst,  MacDlBroadcastReq *dlBroadcastReq);
 uint8_t unpackMacDlBroadcastReq(DuMacDlBroadcastReq func, Pst *pst, Buffer *mBuf);
+
+uint8_t packDuMacStatsReq(Pst *pst, MacStatsReq *statsReq);
+uint8_t MacProcStatsReq(Pst *pst, MacStatsReq *statsReq);
+uint8_t unpackMacStatsReq(DuMacStatsReqFunc func, Pst *pst, Buffer *mBuf);
 #endif
 
 

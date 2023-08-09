@@ -60,6 +60,7 @@
  * @brief RLC Timer Module
 */
 
+#if 0
 /**
  * @def RLC_TMR_CALCUATE_WAIT
  *
@@ -81,6 +82,7 @@
       (_wait) = 1;                                            \
    }                                                          \
 }
+#endif
 
 /* private function declarations */
 static Void rlcBndTmrExpiry(PTR cb);
@@ -113,7 +115,7 @@ void rlcStartTmr(RlcCb *gCb, PTR cb, int16_t tmrEvnt)
       {
          RlcUmUl* umUl = &(((RlcUlRbCb *)cb)->m.umUl);
          /* kw005.201 Changed wait calculation ccpu00117634*/ 
-         RLC_TMR_CALCUATE_WAIT(arg.wait, umUl->reAsmblTmrInt, gCb->genCfg.timeRes);
+         TMR_CALCUATE_WAIT(arg.wait, umUl->reAsmblTmrInt, gCb->genCfg.timeRes);
 
          arg.timers = &umUl->reAsmblTmr;
          arg.max = RLC_MAX_UM_TMR;
@@ -123,7 +125,7 @@ void rlcStartTmr(RlcCb *gCb, PTR cb, int16_t tmrEvnt)
       {
          RlcAmUl* amUl = &(((RlcUlRbCb *)cb)->m.amUl);
          /* kw005.201 Changed wait calculation ccpu00117634*/ 
-         RLC_TMR_CALCUATE_WAIT(arg.wait, amUl->reAsmblTmrInt, gCb->genCfg.timeRes);         
+         TMR_CALCUATE_WAIT(arg.wait, amUl->reAsmblTmrInt, gCb->genCfg.timeRes);         
 
          arg.timers = &amUl->reAsmblTmr;
          arg.max = RLC_MAX_AM_TMR;
@@ -133,7 +135,7 @@ void rlcStartTmr(RlcCb *gCb, PTR cb, int16_t tmrEvnt)
       {
          RlcAmUl* amUl = &(((RlcUlRbCb *)cb)->m.amUl);
          /* kw005.201 Changed wait calculation ccpu00117634*/ 
-         RLC_TMR_CALCUATE_WAIT(arg.wait,
+         TMR_CALCUATE_WAIT(arg.wait,
                               amUl->staProhTmrInt,
                               gCb->genCfg.timeRes);                  
 
@@ -145,7 +147,7 @@ void rlcStartTmr(RlcCb *gCb, PTR cb, int16_t tmrEvnt)
       {
          RlcAmDl* amDl = &(((RlcDlRbCb *)cb)->m.amDl);
          /* kw005.201 Changed wait calculation ccpu00117634*/ 
-         RLC_TMR_CALCUATE_WAIT(arg.wait, 
+         TMR_CALCUATE_WAIT(arg.wait, 
                               amDl->pollRetxTmrInt, 
                               gCb->genCfg.timeRes);                  
 
@@ -157,7 +159,7 @@ void rlcStartTmr(RlcCb *gCb, PTR cb, int16_t tmrEvnt)
       {
          RlcRguSapCb* rguSap = (RlcRguSapCb *)cb;
          /* kw005.201 Changed wait calculation ccpu00117634*/ 
-         RLC_TMR_CALCUATE_WAIT(arg.wait, rguSap->bndTmrInt, gCb->genCfg.timeRes);                  
+         TMR_CALCUATE_WAIT(arg.wait, rguSap->bndTmrInt, gCb->genCfg.timeRes);                  
 
          arg.timers = &rguSap->bndTmr;
          arg.max = RLC_MAX_RGUSAP_TMR;
@@ -169,7 +171,7 @@ void rlcStartTmr(RlcCb *gCb, PTR cb, int16_t tmrEvnt)
       {
          measEvtCb = (RlcL2MeasEvtCb *)cb;
          /* kw005.201 Changed wait calculation ccpu00117634*/ 
-         RLC_TMR_CALCUATE_WAIT(arg.wait, 
+         TMR_CALCUATE_WAIT(arg.wait, 
                               measEvtCb->l2TmrCfg.val, 
                               gCb->genCfg.timeRes);                  
 
@@ -181,7 +183,7 @@ void rlcStartTmr(RlcCb *gCb, PTR cb, int16_t tmrEvnt)
       case EVENT_RLC_UE_THROUGHPUT_TMR:
       {
          RlcThpt *thptCb = (RlcThpt *)cb;
-         RLC_TMR_CALCUATE_WAIT(arg.wait, ODU_UE_THROUGHPUT_PRINT_TIME_INTERVAL, gCb->genCfg.timeRes);
+         TMR_CALCUATE_WAIT(arg.wait, ODU_UE_THROUGHPUT_PRINT_TIME_INTERVAL, gCb->genCfg.timeRes);
          arg.timers = &thptCb->ueTputInfo.ueThptTmr;
          arg.max = RLC_MAX_THPT_TMR; 
          break;
@@ -189,7 +191,7 @@ void rlcStartTmr(RlcCb *gCb, PTR cb, int16_t tmrEvnt)
       case EVENT_RLC_UE_DELETE_TMR:
       {
          RlcUlUeCb *ulUeCb = (RlcUlUeCb*)cb;
-         RLC_TMR_CALCUATE_WAIT(arg.wait, RLC_UE_DELETE_WAIT_TIME, gCb->genCfg.timeRes);
+         TMR_CALCUATE_WAIT(arg.wait, RLC_UE_DELETE_WAIT_TIME, gCb->genCfg.timeRes);
          arg.timers = &ulUeCb->ueDeleteInfo.ueDelTmr;
          arg.max = RLC_MAX_UE_TMR;
          break;
@@ -197,7 +199,7 @@ void rlcStartTmr(RlcCb *gCb, PTR cb, int16_t tmrEvnt)
       case EVENT_RLC_SNSSAI_THROUGHPUT_TMR:
       {
          RlcThpt *thptCb = (RlcThpt *)cb;
-         RLC_TMR_CALCUATE_WAIT(arg.wait, ODU_SNSSAI_THROUGHPUT_PRINT_TIME_INTERVAL, gCb->genCfg.timeRes);
+         TMR_CALCUATE_WAIT(arg.wait, ODU_SNSSAI_THROUGHPUT_PRINT_TIME_INTERVAL, gCb->genCfg.timeRes);
          arg.timers = &thptCb->snssaiTputInfo.snssaiThptTmr;
          arg.max = RLC_MAX_THPT_TMR; 
          break;

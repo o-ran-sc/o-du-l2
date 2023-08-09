@@ -47,7 +47,6 @@
 #define NUM_DMRS_SYMBOLS 1
 #define DMRS_ADDITIONAL_POS 0
 #define SCH_DEFAULT_K1 1
-#define SCH_TQ_SIZE 10
 #define SSB_IDX_SUPPORTED 1
 
 #define CRC_FAILED 0
@@ -79,6 +78,8 @@
 #endif
 
 #define NUM_SCH_TYPE 2  /*Supported number of Scheduler Algorithm types*/
+
+#define SCH_TQ_SIZE 10
 
 typedef struct schDlHqProcCb SchDlHqProcCb;
 typedef struct schUlHqEnt SchUlHqEnt;
@@ -279,7 +280,6 @@ struct schDlHqEnt
  */
 typedef struct schGenCb
 {
-   uint8_t         tmrRes;           /*!< Timer resolution */
    uint8_t         startCellId;      /*!< Starting Cell Id */
 #ifdef LTE_ADV
    bool            forceCntrlSrbBoOnPCel; /*!< value 1 means force scheduling
@@ -304,6 +304,7 @@ typedef struct schPrbAlloc
 {
    CmLListCp freePrbBlockList;           /*!< List of continuous blocks for available PRB */
    uint64_t  prbBitMap[ MAX_SYMB_PER_SLOT][PRB_BITMAP_MAX_IDX];  /*!< BitMap to store the allocated PRBs */
+   uint16_t  numPrbAlloc;
 }SchPrbAlloc;
 
 /**
@@ -601,6 +602,21 @@ typedef struct
    PdschCfg  sib1PdschCfg;
 }SchSib1Cfg;
 
+typedef struct dlTotalPrbUsage
+{
+   Inst     schInst;
+   uint16_t numPrbUsedForTx;
+   uint16_t totalPrbAvailForTx;
+   uint16_t periodicity;
+   CmTimer  periodTimer;
+}TotalPrbUsage;
+
+typedef struct schStatistics
+{
+   TotalPrbUsage *dlTotalPrbUsage;
+   TotalPrbUsage *ulTotalPrbUsage;
+}SchStatistics;
+
 /**
  * @brief
  * Cell Control block per cell.
@@ -646,6 +662,12 @@ typedef struct schCellCb
    uint8_t              maxMsg3Tx;         /* MAximum num of msg3 tx*/
 }SchCellCb;
 
+typedef struct schTimer
+{
+   CmTqCp       tmrTqCp;               /*!< Timer Task Queue Cntrl Point */
+   CmTqType     tmrTq[SCH_TQ_SIZE];    /*!< Timer Task Queue */
+   uint8_t      tmrRes;              /*!< Timer resolution */
+}SchTimer;
 
 /**
  * @brief
@@ -655,11 +677,11 @@ typedef struct schCb
 {
    TskInit                schInit;               /*!< Task Init info */
    SchGenCb               genCfg;                /*!< General Config info */
-   CmTqCp                 tmrTqCp;               /*!< Timer Task Queue Cntrl Point */
-   CmTqType               tmrTq[SCH_TQ_SIZE];    /*!< Timer Task Queue */
+   SchTimer               schTimersInfo;         /*!< Sch timer queues and resolution */
    SchAllApis             allApis[NUM_SCH_TYPE]; /*!<List of All Scheduler Type dependent Function pointers*/
    SchCellCb              *cells[MAX_NUM_CELL];  /* Array to store cellCb ptr */
    CmLListCp              sliceCfg;              /* Linklist to Store Slice configuration */
+   SchStatistics          statistics;
 }SchCb;
 
 /* Declaration for scheduler control blocks */
@@ -773,6 +795,10 @@ void schUpdateHarqFdbk(SchUeCb *ueCb, uint8_t numHarq, uint8_t *harqPayload,Slot
 uint8_t schFillUlDciForMsg3Retx(SchRaCb *raCb, SchPuschInfo *puschInfo, DciInfo *dciInfo);
 bool schGetMsg3K2(SchCellCb *cell, SchUlHqProcCb* msg3HqProc, uint16_t dlTime, SlotTimingInfo *msg3Time, bool isRetx);
 void schMsg4Complete(SchUeCb *ueCb);
+
+/* Statistics Function */
+uint8_t SchProcStatsReq(Pst *pst, SchStatsReq *statsReq);
+
 /**********************************************************************
   End of file
  **********************************************************************/
