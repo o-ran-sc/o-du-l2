@@ -246,7 +246,8 @@ typedef struct
 /* O-RAN.WG3.E2SM-KPM-R003-v03.00 : Section 8.3.11 */
 typedef struct
 {
-   /* TODO : To be added when list of KPIs are finalised */
+   /* TODO : To be added in future when subcounters for any
+    * measurment type is required */
 }LabelInfo;
 
 /* O-RAN.WG3.E2SM-KPM-R003-v03.00 : Section 8.2.1.2.1 */
@@ -257,16 +258,18 @@ typedef struct
       char     measurementTypeName[STRING_SIZE_150_BYTES];
       uint16_t measurementTypeId;
    }choice;
-   uint32_t    numOfLabels;
-   LabelInfo   LabelInfoList[MAX_LABEL_INFO];
+
+   //uint32_t    numOfLabels;
+   //LabelInfo   LabelInfoList[MAX_LABEL_INFO];
+   
+   CmLListCp   measuredValue;  /* To be filled when numOfLabels is 0, else values are calculated per Label */
 }MeasurementInfo;
 
 /* O-RAN.WG3.E2SM-KPM-R003-v03.00 : Section 8.2.1.2.1 */
 typedef struct
 {
-   uint16_t                numOfMeasuermentInfo;
-   MeasurementInfo         **measurementInfoList;
-   uint32_t                granularityPeriod;                     /* In millisecond */
+   CmLListCp               measurementInfoList;    /* Each node corresponds to MeasurementInfo */
+   uint32_t                granularityPeriod;      /* In millisecond */
 }ActionDefFormat1;
 
 /* O-RAN.WG3.E2SM-KPM-R003-v03.00 : Section 8.2.1.2.2 */
@@ -313,6 +316,7 @@ typedef struct
    uint8_t           id;
    ActionType        type;
    ActionDefinition  definition;
+   ConfigType        action;
 }ActionInfo;
 
 /* O-RAN.WG3.E2AP-R003-v03.00 : Section 9.1.1.1 : maxofRICActionID */

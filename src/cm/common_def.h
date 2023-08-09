@@ -129,6 +129,8 @@
 /*First SCS in kHz as per 3gpp spec 38.211 Table 4.2-1 */
 #define BASE_SCS 15
 
+#define MAX_NUM_STATS 10
+
 /* Defining macros for common utility functions */
 #define ODU_GET_MSG_BUF SGetMsg
 #define ODU_PUT_MSG_BUF SPutMsg
@@ -224,6 +226,28 @@
 #define CHECK_LCID(_lcId, _isLcidValid)      \
 {\
    _isLcidValid = ((_lcId >= SRB0_LCID && _lcId <= MAX_DRB_LCID) ? 1 : 0);\
+}
+
+/**
+ * @def TMR_CALCUATE_WAIT
+ *
+ *    This macro calculates and assigns wait time based on the value of the
+ *    timer and the timer resolution. Timer value of 0 signifies that the
+ *    timer is not configured
+ *
+ * @param[out] _wait   Time for which to arm the timer changed to proper
+ *                     value according to the resolution
+ * @param[in] _tmrVal   Value of the timer
+ * @param[in] _timerRes   Resolution of the timer
+ *
+*/
+#define TMR_CALCUATE_WAIT(_wait, _tmrVal, _timerRes)          \
+{                                                             \
+   (_wait) = ((_tmrVal) * SS_TICKS_SEC)/((_timerRes) * 1000); \
+   if((0 != (_tmrVal)) && (0 == (_wait)))                     \
+   {                                                          \
+      (_wait) = 1;                                            \
+   }                                                          \
 }
 
 typedef enum

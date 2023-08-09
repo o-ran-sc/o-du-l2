@@ -51,6 +51,8 @@
 #define EVENT_DL_CQI_TO_SCH          32
 #define EVENT_UL_CQI_TO_SCH          33
 #define EVENT_PHR_IND_TO_SCH         34
+#define EVENT_STATISTICS_REQ_TO_SCH  35
+
 /*macros*/
 #define MAX_SSB_IDX 1 /* forcing it as 1 for now. Right value is 64 */
 #define SCH_SSB_MASK_SIZE   1
@@ -447,6 +449,13 @@ typedef enum
    CQI_PUCCH = 1,
    CQI_PUSCH
 }CqiUlReportType;
+
+/* Performance measurements from 3GPP TS 28.552 Release 15 */
+typedef enum
+{
+   SCH_DL_TOTAL_PRB_USAGE,
+   SCH_UL_TOTAL_PRB_USAGE
+}SchMeasurementType;
 
 /*structures*/
 typedef struct timeDomainAlloc
@@ -2236,6 +2245,18 @@ typedef struct schRlsHqInfo
    uint8_t      numUes;
    SchUeHqInfo  *ueHqInfo;
 }SchRlsHqInfo;
+
+typedef struct schStatsInfo
+{
+   SchMeasurementType type;
+   uint16_t           periodicity;  /* In milliseconds */
+}SchStatsInfo;
+
+typedef struct schStatsReq
+{
+   uint8_t   numStats;
+   SchStatsInfo statsList[MAX_NUM_STATS];
+}SchStatsReq;
 
 /* function declarations */
 uint8_t schActvInit(Ent entity, Inst instId, Region region, Reason reason);

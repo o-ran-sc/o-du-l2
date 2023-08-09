@@ -41,6 +41,7 @@
 #include "lrg.x"           /* layer management typedefs for MAC */
 #include "rgr.x"           /* layer management typedefs for MAC */
 #include "rg_sch_inf.x"         /* typedefs for Scheduler */
+#include "sch_tmr.h"
 #include "sch.h"
 
 #ifdef CALL_FLOW_DEBUG_LOG
@@ -176,6 +177,11 @@ void callFlowSchMsgRouter(Pst *pst)
             strcpy(message,"EVENT_DL_HARQ_IND_TO_SCH");
             break;
          }
+      case EVENT_STATISTICS_REQ_TO_SCH:
+         {
+            strcpy(message,"EVENT_STATISTICS_REQ_TO_SCH");
+            break;
+         }
       default:
          strcpy(message,"Invalid Event");
          break;
@@ -296,6 +302,11 @@ uint8_t SchMessageRouter(Pst *pst, void *msg)
       case EVENT_DL_HARQ_IND_TO_SCH:
       {
          SchProcDlHarqInd(pst, (DlHarqInd *)msg);
+         break;
+      }
+      case EVENT_STATISTICS_REQ_TO_SCH:
+      {
+         SchProcStatsReq(pst, (SchStatsReq *)msg);
          break;
       }
       default:

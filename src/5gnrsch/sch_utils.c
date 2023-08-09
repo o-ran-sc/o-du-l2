@@ -40,6 +40,7 @@
 #include "tfu.x"           /* TFU types */
 #include "lrg.x"           /* layer management typedefs for MAC */
 #include "mac_sch_interface.h"
+#include "sch_tmr.h"
 #include "sch.h"
 #include "sch_utils.h"
 #include "math.h"

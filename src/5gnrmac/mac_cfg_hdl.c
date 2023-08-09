@@ -1014,6 +1014,71 @@ uint8_t MacProcDlBroadcastReq(Pst *pst, MacDlBroadcastReq *dlBroadcastReq)
    }
    return ret;
 }
+
+/**
+ * @brief Mac process the statistics Req received from DUAPP
+ *
+ * @details
+ *
+ *     Function : MacProcStatsReq
+ *
+ *     This function process the statistics request from duapp
+ *
+ *  @param[in]  Pst      *pst
+ *  @param[in]  StatsReq *statsReq
+ *  @return  int
+ *      -# ROK
+ **/
+uint8_t MacProcStatsReq(Pst *pst, MacStatsReq *macStatsReq)
+{
+   uint8_t   macStatsIdx = 0, schStatsIdx = 0;
+   uint8_t   ret = RFAILED;
+   Pst       schPst;
+   SchStatsReq  *schStatsReq = NULLP;
+
+   if(macStatsReq)
+   {
+      DU_LOG("\nINFO   -->  MAC : Received Statistics Request from DU_APP");
+
+      MAC_ALLOC(schStatsReq, sizeof(SchStatsReq));
+      if(schStatsReq == NULLP)
+      {
+         DU_LOG("\nERROR  -->  MAC : MacProcStatsReq: Failed to allocate memory");
+      }
+      else
+      {
+         schStatsReq->numStats = 0;
+         for(macStatsIdx=0; macStatsIdx < macStatsReq->numStats; macStatsIdx++)
+         {
+            /* Checking each measurement type to send only SCH related
+             * measurement config to SCH
+             * This will be useful in future when some measurement type will
+             * be configured for SCH and rest for only MAC */
+            switch(macStatsReq->statsList[macStatsIdx].type)
+            {
+               case MAC_DL_TOTAL_PRB_USAGE:
+               case MAC_UL_TOTAL_PRB_USAGE:
+               {
+                  schStatsReq->statsList[schStatsIdx].type = macStatsReq->statsList[macStatsIdx].type;
+                  schStatsReq->statsList[schStatsIdx].periodicity = macStatsReq->statsList[macStatsIdx].periodicity;
+                  schStatsIdx++;
+               }
+            }
+         }
+         schStatsReq->numStats = schStatsIdx;
+
+         FILL_PST_MAC_TO_SCH(schPst, EVENT_STATISTICS_REQ_TO_SCH);
+         ret = SchMessageRouter(&schPst, (void *)schStatsReq);
+      }
+      MAC_FREE_SHRABL_BUF(pst->region, pst->pool, macStatsReq, sizeof(MacStatsReq));
+   }
+   else
+   {
+      DU_LOG("\nERROR  -->  MAC : MacProcStatsReq(): Received Null pointer");
+   }
+   return ret;
+}
+
 /**********************************************************************
   End of file
  **********************************************************************/
