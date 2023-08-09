@@ -24,6 +24,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4bb723eb_910447f1",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-08-09T13:37:54Z",
+      "side": 1,
+      "message": "I have created a new parameter for gnbId and used in this function.",
+      "parentUuid": "6d8ad6e6_adc74e23",
+      "range": {
+        "startLine": 98,
+        "startChar": 85,
+        "endLine": 98,
+        "endChar": 90
+      },
+      "revId": "b69ca79735df5986fe539bc83e03785bd26029d6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "14117cc1_7575d88f",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-08-09T07:10:55Z",
       "side": 1,
       "message": "variables start with small letters. make M as m",
+      "range": {
+        "startLine": 307,
+        "startChar": 54,
+        "endLine": 307,
+        "endChar": 72
+      },
+      "revId": "b69ca79735df5986fe539bc83e03785bd26029d6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4a1d4f55_eab1aa0c",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 307,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-08-09T13:37:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "14117cc1_7575d88f",
       "range": {
         "startLine": 307,
         "startChar": 54,
@@ -64,6 +112,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c38feead_ae204806",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 404,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-08-09T13:37:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "809ba777_33f9f81b",
+      "revId": "b69ca79735df5986fe539bc83e03785bd26029d6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "61c0b678_163dafbd",
@@ -77,6 +143,30 @@
       "writtenOn": "2023-08-09T08:29:37Z",
       "side": 1,
       "message": "call this ranFuncItemIe",
+      "range": {
+        "startLine": 405,
+        "startChar": 26,
+        "endLine": 405,
+        "endChar": 42
+      },
+      "revId": "b69ca79735df5986fe539bc83e03785bd26029d6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "311de34f_afb66710",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 405,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-08-09T13:37:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "61c0b678_163dafbd",
       "range": {
         "startLine": 405,
         "startChar": 26,
@@ -110,6 +200,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "110ae0d5_6891c4ac",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 406,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-08-09T13:37:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b97c78d8_2b54de39",
+      "range": {
+        "startLine": 406,
+        "startChar": 24,
+        "endLine": 406,
+        "endChar": 37
+      },
+      "revId": "b69ca79735df5986fe539bc83e03785bd26029d6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2fec6ab5_6440a3ed",
@@ -123,6 +237,30 @@
       "writtenOn": "2023-08-09T08:29:37Z",
       "side": 1,
       "message": "function name incorrect",
+      "range": {
+        "startLine": 414,
+        "startChar": 62,
+        "endLine": 414,
+        "endChar": 86
+      },
+      "revId": "b69ca79735df5986fe539bc83e03785bd26029d6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "10eade23_cf5534f3",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 414,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-08-09T13:37:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2fec6ab5_6440a3ed",
       "range": {
         "startLine": 414,
         "startChar": 62,
@@ -156,6 +294,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0298c167_bfcae81e",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 418,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-08-09T13:37:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "64bf86a5_998d236c",
+      "range": {
+        "startLine": 418,
+        "startChar": 7,
+        "endLine": 418,
+        "endChar": 13
+      },
+      "revId": "b69ca79735df5986fe539bc83e03785bd26029d6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b6a8ac11_497dee9c",
@@ -169,6 +331,30 @@
       "writtenOn": "2023-08-09T08:29:37Z",
       "side": 1,
       "message": "function name incorrect",
+      "range": {
+        "startLine": 423,
+        "startChar": 65,
+        "endLine": 423,
+        "endChar": 89
+      },
+      "revId": "b69ca79735df5986fe539bc83e03785bd26029d6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "047a25c4_07d11e98",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 423,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-08-09T13:37:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b6a8ac11_497dee9c",
       "range": {
         "startLine": 423,
         "startChar": 65,
@@ -202,6 +388,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "af70d836_221cc0ad",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 439,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-08-09T13:37:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3781f984_9b2e0c76",
+      "range": {
+        "startLine": 439,
+        "startChar": 9,
+        "endLine": 439,
+        "endChar": 42
+      },
+      "revId": "b69ca79735df5986fe539bc83e03785bd26029d6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fa8848dd_232fb6f7",
@@ -219,6 +429,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "415b174d_846a993e",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 447,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-08-09T13:37:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fa8848dd_232fb6f7",
+      "revId": "b69ca79735df5986fe539bc83e03785bd26029d6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "265bd491_2416c6d4",
@@ -232,6 +460,24 @@
       "writtenOn": "2023-08-09T08:29:37Z",
       "side": 1,
       "message": "Same as above\nHave negative check in if(), return RFAILED.\nRest code keep outside of if.\n\nThis will keep the code clean as it decreases indentation.\nCode becomes more readable and less error prone.",
+      "revId": "b69ca79735df5986fe539bc83e03785bd26029d6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "91390995_6068fc22",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 489,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-08-09T13:37:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "265bd491_2416c6d4",
       "revId": "b69ca79735df5986fe539bc83e03785bd26029d6",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -259,6 +505,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e738307b_1ecac8da",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 689,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-08-09T13:37:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "98e6001e_f329d0e6",
+      "range": {
+        "startLine": 689,
+        "startChar": 3,
+        "endLine": 689,
+        "endChar": 36
+      },
+      "revId": "b69ca79735df5986fe539bc83e03785bd26029d6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "19bd7cfe_69b3b25e",
@@ -272,6 +542,24 @@
       "writtenOn": "2023-08-09T08:29:37Z",
       "side": 1,
       "message": "Fix in error msg : \"Failed to create RAN Function list\"",
+      "revId": "b69ca79735df5986fe539bc83e03785bd26029d6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "97f20831_ca3da391",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 946,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-08-09T13:37:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "19bd7cfe_69b3b25e",
       "revId": "b69ca79735df5986fe539bc83e03785bd26029d6",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
