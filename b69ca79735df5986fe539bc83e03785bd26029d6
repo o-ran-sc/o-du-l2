@@ -66,6 +66,178 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "61c0b678_163dafbd",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 405,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-08-09T08:29:37Z",
+      "side": 1,
+      "message": "call this ranFuncItemIe",
+      "range": {
+        "startLine": 405,
+        "startChar": 26,
+        "endLine": 405,
+        "endChar": 42
+      },
+      "revId": "b69ca79735df5986fe539bc83e03785bd26029d6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b97c78d8_2b54de39",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 406,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-08-09T08:29:37Z",
+      "side": 1,
+      "message": "ranFuncItem",
+      "range": {
+        "startLine": 406,
+        "startChar": 24,
+        "endLine": 406,
+        "endChar": 37
+      },
+      "revId": "b69ca79735df5986fe539bc83e03785bd26029d6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2fec6ab5_6440a3ed",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 414,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-08-09T08:29:37Z",
+      "side": 1,
+      "message": "function name incorrect",
+      "range": {
+        "startLine": 414,
+        "startChar": 62,
+        "endLine": 414,
+        "endChar": 86
+      },
+      "revId": "b69ca79735df5986fe539bc83e03785bd26029d6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "64bf86a5_998d236c",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 418,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-08-09T08:29:37Z",
+      "side": 1,
+      "message": "rename to ranFuncIdx",
+      "range": {
+        "startLine": 418,
+        "startChar": 7,
+        "endLine": 418,
+        "endChar": 13
+      },
+      "revId": "b69ca79735df5986fe539bc83e03785bd26029d6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b6a8ac11_497dee9c",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 423,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-08-09T08:29:37Z",
+      "side": 1,
+      "message": "function name incorrect",
+      "range": {
+        "startLine": 423,
+        "startChar": 65,
+        "endLine": 423,
+        "endChar": 89
+      },
+      "revId": "b69ca79735df5986fe539bc83e03785bd26029d6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3781f984_9b2e0c76",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 439,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-08-09T08:29:37Z",
+      "side": 1,
+      "message": "return if null",
+      "range": {
+        "startLine": 439,
+        "startChar": 9,
+        "endLine": 439,
+        "endChar": 42
+      },
+      "revId": "b69ca79735df5986fe539bc83e03785bd26029d6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fa8848dd_232fb6f7",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 447,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-08-09T08:29:37Z",
+      "side": 1,
+      "message": "its not a good practice to have such big if conditions.\nInstead, have a null check in if condition. Return from here if pointer is null.\nIf not null, then outside if condition fill the whole structure.",
+      "revId": "b69ca79735df5986fe539bc83e03785bd26029d6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "265bd491_2416c6d4",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 489,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-08-09T08:29:37Z",
+      "side": 1,
+      "message": "Same as above\nHave negative check in if(), return RFAILED.\nRest code keep outside of if.\n\nThis will keep the code clean as it decreases indentation.\nCode becomes more readable and less error prone.",
+      "revId": "b69ca79735df5986fe539bc83e03785bd26029d6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "98e6001e_f329d0e6",
         "filename": "src/du_app/du_e2ap_msg_hdl.c",
         "patchSetId": 2
@@ -83,6 +255,23 @@
         "endLine": 689,
         "endChar": 36
       },
+      "revId": "b69ca79735df5986fe539bc83e03785bd26029d6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "19bd7cfe_69b3b25e",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 946,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-08-09T08:29:37Z",
+      "side": 1,
+      "message": "Fix in error msg : \"Failed to create RAN Function list\"",
       "revId": "b69ca79735df5986fe539bc83e03785bd26029d6",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
