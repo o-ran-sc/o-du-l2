@@ -321,7 +321,7 @@ uint8_t fillSchUeCbFrmCfgReq(Inst inst, SchUeCb *ueCb, SchUeCfgReq *ueCfg)
                schInitDrxHarqCb(&ueCb->ulHqEnt.procs[idx].ulDrxHarqCb);
             }
             /* convert all the drx configuration recived in ms/subms into number of slots and store into the drxUeCb */
-            schFillDrxUeCb(ueCb->cellCb->cellCfg.numerology, ueCfg->macCellGrpCfg.drxCfg, &ueCb->drxUeCb);
+            schFillDrxUeCb(ueCb->cellCb->numerology, ueCfg->macCellGrpCfg.drxCfg, &ueCb->drxUeCb);
             /* Calculate the onduration timer and short cycle timer (if shortcycle configuration is present) as soon as we 
              * recived ueCfg request */
             schAddUeInOndurationList(ueCb->cellCb, ueCb, 0);
@@ -331,7 +331,7 @@ uint8_t fillSchUeCbFrmCfgReq(Inst inst, SchUeCb *ueCb, SchUeCfgReq *ueCfg)
          {
             /* convert all the drx configuration recived in ms/subms into number
              * of slots and store into the drxUeCb */
-            schFillDrxUeCb(ueCb->cellCb->cellCfg.numerology, ueCfg->macCellGrpCfg.drxCfg, &ueCb->drxUeCb);
+            schFillDrxUeCb(ueCb->cellCb->numerology, ueCfg->macCellGrpCfg.drxCfg, &ueCb->drxUeCb);
 
             /* Recalculate/Restart timer based on their presence */
             schDrxUeReCfgTimer(ueCb->cellCb, ueCb);
@@ -488,7 +488,7 @@ uint8_t fillSchUeCbFrmRecfgReq(Inst inst, SchUeCb *ueCb, SchUeRecfgReq *ueRecfg)
                schInitDrxHarqCb(&ueCb->ulHqEnt.procs[idx].ulDrxHarqCb);
             }
             /* convert all the drx configuration recived in ms/subms into number of slots and store into the drxUeCb */
-            schFillDrxUeCb(ueCb->cellCb->cellCfg.numerology, ueRecfg->macCellGrpRecfg.drxCfg, &ueCb->drxUeCb);
+            schFillDrxUeCb(ueCb->cellCb->numerology, ueRecfg->macCellGrpRecfg.drxCfg, &ueCb->drxUeCb);
             /* Calculate the onduration timer and short cycle timer (if shortcycle configuration is present) as soon as we 
              * recived ueCfg request */
             schAddUeInOndurationList(ueCb->cellCb, ueCb, 0);
@@ -498,7 +498,7 @@ uint8_t fillSchUeCbFrmRecfgReq(Inst inst, SchUeCb *ueCb, SchUeRecfgReq *ueRecfg)
          {
             /* convert all the drx configuration recived in ms/subms into number
              * of slots and store into the drxUeCb */
-            schFillDrxUeCb(ueCb->cellCb->cellCfg.numerology, ueRecfg->macCellGrpRecfg.drxCfg, &ueCb->drxUeCb);
+            schFillDrxUeCb(ueCb->cellCb->numerology, ueRecfg->macCellGrpRecfg.drxCfg, &ueCb->drxUeCb);
 
             /* Recalculate/Restart timer based on their presence */
             schDrxUeReCfgTimer(ueCb->cellCb, ueCb);

@@ -1092,7 +1092,7 @@ SchPdschConfig pdschDedCfg, uint8_t ulAckListCount, uint8_t *UlAckTbl)
       /* Initialization the K0K1 structure, total num of slot and calculating the slot pattern length. */
       memset(k0K1InfoTbl, 0, sizeof(SchK0K1TimingInfoTbl));
       k0K1InfoTbl->tblSize = cell->numSlots;
-      totalCfgSlot = calculateSlotPatternLength(cell->cellCfg.scsCommon, cell->cellCfg.tddCfg.tddPeriod);
+      totalCfgSlot = calculateSlotPatternLength(cell->cellCfg.ssbScs, cell->cellCfg.tddCfg.tddPeriod);
       
       /* Storing time domain resource allocation list based on common or 
        * dedicated configuration availability. */
@@ -1322,7 +1322,7 @@ SchK2TimingInfoTbl *msg3K2InfoTbl, SchK2TimingInfoTbl *k2InfoTbl)
       k2InfoTbl->tblSize = cell->numSlots;
       if(msg3K2InfoTbl)
          msg3K2InfoTbl->tblSize = cell->numSlots;
-      totalCfgSlot = calculateSlotPatternLength(cell->cellCfg.scsCommon, cell->cellCfg.tddCfg.tddPeriod);
+      totalCfgSlot = calculateSlotPatternLength(cell->cellCfg.ssbScs, cell->cellCfg.tddCfg.tddPeriod);
 
       /* Checking all possible indexes for K2. */
       for(slotIdx = 0; slotIdx < cell->numSlots; slotIdx++)
@@ -1340,7 +1340,7 @@ SchK2TimingInfoTbl *msg3K2InfoTbl, SchK2TimingInfoTbl *k2InfoTbl)
                k2Val = timeDomRsrcAllocList[k2Index].k2;
                if(!k2Val)
                {
-                  switch(cell->cellCfg.scsCommon)
+                  switch(cell->cellCfg.ssbScs)
                   {
                      case SCS_15KHZ:
                         k2Val = DEFAULT_K2_VALUE_FOR_SCS15;
@@ -1390,7 +1390,7 @@ SchK2TimingInfoTbl *msg3K2InfoTbl, SchK2TimingInfoTbl *k2InfoTbl)
 
                if(msg3K2InfoTbl)
                {
-                   msg3Delta = puschDeltaTable[cell->cellCfg.numerology];
+                   msg3Delta = puschDeltaTable[cell->numerology];
 
                   /* Check for K2 for MSG3 */
                   /* Current slot + k2 should be either UL or FLEXI slot.
@@ -2225,7 +2225,7 @@ bool schGetMsg3K2(SchCellCb *cell, SchUlHqProcCb* msg3HqProc, uint16_t dlTime, S
    SchK2TimingInfoTbl   *msg3K2InfoTbl=NULLP;
    SlotTimingInfo       currTime, msg3TempTime;
    currTime = cell->slotInfo;
-   puschMu = cell->cellCfg.numerology;
+   puschMu = cell->numerology;
 
    if (isRetx)
    {
@@ -2241,7 +2241,7 @@ bool schGetMsg3K2(SchCellCb *cell, SchUlHqProcCb* msg3HqProc, uint16_t dlTime, S
    {
       numK2 = cell->msg3K2InfoTbl.k2TimingInfo[dlTime].numK2;
       msg3K2InfoTbl = &cell->k2InfoTbl;
-      msg3MinSchTime = minMsg3SchTime[cell->cellCfg.numerology];
+      msg3MinSchTime = minMsg3SchTime[cell->numerology];
       msg3Delta = puschDeltaTable[puschMu];
    }
 
