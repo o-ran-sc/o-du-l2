@@ -97,10 +97,18 @@ DuMacSliceCfgReq packMacSliceCfgReqOpts[] =
 
 DuMacSliceRecfgReq packMacSliceRecfgReqOpts[] =
 {
-   packDuMacSliceRecfgReq,       /* Loose coupling */
-   MacProcSliceRecfgReq,         /* TIght coupling */
-   packDuMacSliceRecfgReq        /* Light weight-loose coupling */
+   packDuMacSliceRecfgReq,     /* Loose coupling */
+   MacProcSliceRecfgReq,       /* TIght coupling */
+   packDuMacSliceRecfgReq      /* Light weight-loose coupling */
 };
+
+DuMacStatsReqFunc packMacStatsReqOpts[]=
+{
+   packDuMacStatsReq,          /* Loose Coupling */
+   MacProcStatsReq,            /* Tight Coupling */
+   packDuMacStatsReq           /* Light weight-loose coupling */
+};
+
 /**************************************************************************
  * @brief Function to fill configs required by RLC
  *
@@ -726,7 +734,7 @@ uint8_t duBuildMacGenCfg()
    /*----------- Fill General Configuration Parameters ---------*/
    genCfg->mem.region = MAC_MEM_REGION;
    genCfg->mem.pool   = MAC_POOL;
-   genCfg->tmrRes     = 10;
+   genCfg->tmrRes     = 1;
    genCfg->numRguSaps = 2;
 
    genCfg->lmPst.dstProcId = DU_PROC;
@@ -1299,7 +1307,7 @@ uint8_t duSendSchCfg()
    /* Filling of Gen config */
    cfg->genCfg.mem.region = MAC_MEM_REGION;
    cfg->genCfg.mem.pool = MAC_POOL;
-   cfg->genCfg.tmrRes = 10;
+   cfg->genCfg.tmrRes = 1;
 
 #ifdef LTE_ADV
    cfg->genCfg.forceCntrlSrbBoOnPCel = FALSE;
@@ -2064,6 +2072,103 @@ uint8_t DuProcRlcSliceMetrics(Pst *pst, SlicePmList *sliceStats)
 
    DU_FREE_SHRABL_BUF(pst->region, pst->pool,sliceStats->sliceRecord, (sliceStats->numSlice) * (sizeof(SlicePm)));
    DU_FREE_SHRABL_BUF(pst->region, pst->pool,sliceStats, sizeof(SlicePmList));
+
+   return ROK;
+}
+
+
+/*******************************************************************
+ *
+ * @brief Send Statistics request to MAC
+ *
+ * @details
+ *
+ *    Function : BuildAndSendStatsReqToMac()
+ *
+ *    Functionality: SendStatisticsRequestToMac() 
+ *
+ * @params[in]
+ *             
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t BuildAndSendStatsReqToMac()
+{
+   uint8_t idx;
+   Pst pst;
+   StatsReq *macStatsReq = NULLP;
+   
+   DU_LOG("\nINFO  --> DU_APP : Builds Statistics Request to send to MAC");
+
+   DU_ALLOC_SHRABL_BUF(macStatsReq, sizeof(StatsReq));
+   if(macStatsReq == NULLP)
+   {
+      DU_LOG("\nERROR  -->  DU_APP : Memory allocation failed for macStatsReq in BuildAndSendStatsReqToMac");
+      return RFAILED;
+   }
+   else
+   {
+      macStatsReq->numStats = 0;
+      
+      for(idx = 0; idx < duCb.statistics.macStats.numStats; idx++)
+      {
+         if(duCb.statistics.macStats.statsList[idx].statInfo.action == CONFIG_ADD)
+         {
+            memcpy(&macStatsReq->statsList[macStatsReq->numStats], &duCb.statistics.macStats.statsList[idx].statInfo,
+               sizeof(StatsInfo));
+            macStatsReq->numStats++;
+            duCb.statistics.macStats.statsList[idx].statInfo.action = CONFIG_UNKNOWN;
+         }
+      }
+ 
+      FILL_PST_DUAPP_TO_MAC(pst, EVENT_MAC_STATISTICS_REQ);
+
+      DU_LOG("\nDEBUG  -->  DU_APP: Sending Statistics Request to MAC ");
+      if( (*packMacStatsReqOpts[pst.selector])(&pst, macStatsReq) == RFAILED)
+      {
+         DU_LOG("\nERROR  -->  DU_APP: Failed to send Statistics Request to MAC");
+         DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, macStatsReq, sizeof(StatsReq));
+      }
+   }
+   return ROK;  
+}
+
+/*******************************************************************
+ *
+ * @brief Send Statistics request to DU layers
+ *
+ * @details
+ *
+ *    Function : BuildAndSendStatsReq()
+ *
+ *    Functionality: Check if there is an update in statistics 
+ *       reporting configuration. If so, send the update to 
+ *       respective layer.
+ *
+ * @params[in]
+ *             
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t BuildAndSendStatsReq()
+{
+   if(BuildAndSendStatsReqToMac() != ROK)
+   {
+      DU_LOG("\nERROR  -->  DU_APP : Failed at BuildAndSendStatsReqToMac()");
+      return RFAILED;   
+   }
+
+/* TODO : When KPI collection from RLC will be supported, this function will be 
+ * called to configure KPIs to be colled */
+#if 0
+   if(BuildAndSendStatsReqToRlc() != ROK)
+   {
+       DU_LOG("\nERROR  -->  DU_APP : Failed at BuildAndSendStatsReqToRlc()");
+       return RFAILED;
+   }
+#endif
 
    return ROK;
 }

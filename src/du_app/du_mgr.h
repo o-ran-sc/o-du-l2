@@ -330,6 +330,48 @@ typedef struct duTimer
    uint8_t      tmrRes;              /*!< Timer resolution */
 }DuTimers;
 
+/* As per 3GPP TS 28.552, following KPIs can be collected 
+ *
+ * From DU APP
+ * uint8_t   dlF1UPacketLossRate; (Fraction of PDCP SDU packets which are not successfully, 
+ *                                 received at the gNB-DU on F1-U interface)
+ * uint8_t   gnbDuInitUeCtxtReleaseReq; ( Number of GNB-DU Inititated UE Context Release Request)
+ *
+ * From MAC 
+ * uint8_t   dlTotalPrbUsage; (Total usage (in percentage) of PRBs in DL)
+ * uint8_t   ulTotalPrbUsage; (Total usage (in percentage) of PRBs in UL)
+ * uint16_t  avgDlUeThroughput; (Average UE throughput in downlink)
+ * uint16_t  avgUlUeThroughput; (Avergae UE throughput in uplink)
+ *
+ * From RLC
+ * uint8_t   dlPacketDropRate; (Fraction of RLC SDU packets which are dropped in DL)
+ * uint8_t   avgDelayDl; (Average (arithmetic mean) RLC SDU delay (in ms) on DL within the gNB-DU, 
+ *                        for initial transmission of all RLC packets)
+ * uint8_t   ipLatencyDl; (Average IP Latency in DL (arithmetic mean)                   
+ *
+ * As of now only dlTotalPrbUsage and ulTotalPrbUsage is supported. 
+ */
+typedef struct statsReport
+{
+   StatsInfo statInfo;
+   void      *value;
+}StatsReport;
+
+/* Statistics report */
+typedef struct statsPerLayer
+{
+   uint8_t      numStats;
+   StatsReport  statsList[MAX_NUM_STATS];
+}StatsPerLayer;
+
+/* Statistics Reported */
+typedef struct statistics
+{
+   StatsPerLayer  duStats;
+   StatsPerLayer  macStats;
+   StatsPerLayer  rlcStats;
+}Statistics;
+
 /* DU APP DB */
 typedef struct duCb
 {
@@ -350,6 +392,7 @@ typedef struct duCb
    CmLListCp     reservedF1apPduList;       /*storing F1AP pdu infomation and transId */
    SliceCfgState sliceState;                /* Slice status */ 
    DuTimers      duTimersInfo;              /* Du timers queue */
+   Statistics    statistics;
 }DuCb;
 
 

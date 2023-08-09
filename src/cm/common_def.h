@@ -129,6 +129,8 @@
 /*First SCS in kHz as per 3gpp spec 38.211 Table 4.2-1 */
 #define BASE_SCS 15
 
+#define MAX_NUM_STATS 10
+
 /* Defining macros for common utility functions */
 #define ODU_GET_MSG_BUF SGetMsg
 #define ODU_PUT_MSG_BUF SPutMsg
@@ -226,6 +228,28 @@
    _isLcidValid = ((_lcId >= SRB0_LCID && _lcId <= MAX_DRB_LCID) ? 1 : 0);\
 }
 
+/**
+ * @def TMR_CALCUATE_WAIT
+ *
+ *    This macro calculates and assigns wait time based on the value of the
+ *    timer and the timer resolution. Timer value of 0 signifies that the
+ *    timer is not configured
+ *
+ * @param[out] _wait   Time for which to arm the timer changed to proper
+ *                     value according to the resolution
+ * @param[in] _tmrVal   Value of the timer
+ * @param[in] _timerRes   Resolution of the timer
+ *
+*/
+#define TMR_CALCUATE_WAIT(_wait, _tmrVal, _timerRes)          \
+{                                                             \
+   (_wait) = ((_tmrVal) * SS_TICKS_SEC)/((_timerRes) * 1000); \
+   if((0 != (_tmrVal)) && (0 == (_wait)))                     \
+   {                                                          \
+      (_wait) = 1;                                            \
+   }                                                          \
+}
+
 typedef enum
 {
    SUCCESSFUL, 
@@ -311,6 +335,23 @@ typedef enum
    TRAVERSE_ALL
 }ActionTypeLL;
 
+/* Performance measurements from 3GPP TS 28.552 Release 15 */
+typedef enum
+{
+   DL_TOTAL_PRB_USAGE,
+   UL_TOTAL_PRB_USAGE
+
+#if 0 /* TODO : To be supported in future */  
+   AVERAGE_DL_UE_THROUGHPUT_IN_GNB,
+   AVERAGE_UL_UE_THROUGHPUT_IN_GNB,
+   DL_F1_U_PACKET_LOSS_RATE,
+   DL_PACKET_DROP_RATE_IN_GNBDU,
+   AVERAGE_DELAY_DL_IN_GNBDU,
+   IP_LATENCY_DL_IN_GNBDU,
+   GNBDU_INITITATED_UE_CONTEXT_RELEASE_REQUEST
+#endif   
+}MeasurementType;
+
 typedef struct slotTimingInfo
 {
    uint16_t cellId;
@@ -345,6 +386,20 @@ typedef struct tddCfg
    uint8_t            nrOfUlSymbols; /*No. of consecutive UL symbols in the end of the slot before the first full UL slot*/
 }TDDCfg;
 #endif
+
+typedef struct statsInfo
+{
+   MeasurementType type;
+   ConfigType      action;
+   uint16_t        periodicity;  /* In milliseconds */
+}StatsInfo;
+
+typedef struct statsReq
+{
+   uint8_t   numStats;
+   StatsInfo statsList[MAX_NUM_STATS];
+}StatsReq;
+
 
 OduCellStatus gCellStatus;
 uint64_t gSlotCount;

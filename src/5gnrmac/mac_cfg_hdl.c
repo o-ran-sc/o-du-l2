@@ -1014,6 +1014,52 @@ uint8_t MacProcDlBroadcastReq(Pst *pst, MacDlBroadcastReq *dlBroadcastReq)
    }
    return ret;
 }
+
+/**
+ * @brief Mac process the statistics Req received from DUAPP
+ *
+ * @details
+ *
+ *     Function : MacProcStatsReq
+ *
+ *     This function process the statistics request from duapp
+ *
+ *  @param[in]  Pst      *pst
+ *  @param[in]  StatsReq *statsReq
+ *  @return  int
+ *      -# ROK
+ **/
+uint8_t MacProcStatsReq(Pst *pst, StatsReq *macStatsReq)
+{
+   uint8_t   ret = RFAILED;
+   Pst       schPst;
+   StatsReq  *schStatsReq = NULLP;
+
+   if(macStatsReq)
+   {
+      DU_LOG("\nINFO   -->  MAC : Received Statistics Request from DU_APP");
+
+      MAC_ALLOC(schStatsReq, sizeof(StatsReq));
+      if(schStatsReq == NULLP)
+      {
+         DU_LOG("\nERROR  -->  MAC : MacProcStatsReq: Failed to allocate memory");
+      }
+      else
+      {
+         memcpy(schStatsReq, macStatsReq, sizeof(StatsReq));
+
+         FILL_PST_MAC_TO_SCH(schPst, EVENT_STATISTICS_REQ_TO_SCH);
+         ret = SchMessageRouter(&schPst, (void *)schStatsReq);
+      }
+      MAC_FREE_SHRABL_BUF(pst->region, pst->pool, macStatsReq, sizeof(StatsReq));
+   }
+   else
+   {
+      DU_LOG("\nERROR  -->  MAC : MacProcStatsReq(): Received Null pointer");
+   }
+   return ret;
+}
+
 /**********************************************************************
   End of file
  **********************************************************************/

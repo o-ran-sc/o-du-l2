@@ -16,37 +16,16 @@
 ################################################################################
 *******************************************************************************/
 
-#define DU_TIMER_RESOLUTION 1
-#define DU_TQ_SIZE 2
+#define SCH_TQ_SIZE 10
+#define MAX_TOTAL_PRB_USAGE_TMR 2
 
-#if 0
-/**
- * @def DU_TMR_CALCUATE_WAIT
- *
- *    This macro calculates and assigns wait time based on the value of the
- *    timer and the timer resolution. Timer value of 0 signifies that the
- *    timer is not configured
- *
- * @param[out] _wait   Time for which to arm the timer changed to proper
- *                     value according to the resolution
- * @param[in] _tmrVal   Value of the timer
- * @param[in] _timerRes   Resolution of the timer
- *
-*/
-#define DU_TMR_CALCUATE_WAIT(_wait, _tmrVal, _timerRes)       \
-{                                                             \
-   (_wait) = ((_tmrVal) * SS_TICKS_SEC)/((_timerRes) * 1000); \
-   if((0 != (_tmrVal)) && (0 == (_wait)))                     \
-   {                                                          \
-      (_wait) = 1;                                            \
-   }                                                          \
-}
-#endif
+#define EVENT_DL_TOTAL_PRB_USAGE_TMR 1
+#define EVENT_UL_TOTAL_PRB_USAGE_TMR 2
 
-short int duActvTmr(Ent ent,Inst inst); 
-bool duChkTmr(PTR cb, int16_t tmrEvnt);
-void duStartTmr(PTR cb, int16_t tmrEvnt, uint8_t timerValue);
+bool schChkTmr(PTR cb, int16_t tmrEvnt);
+void schStartTmr(Inst inst, PTR cb, int16_t tmrEvnt, uint8_t timerValue);
 
 /**********************************************************************
   End of file
  **********************************************************************/
+

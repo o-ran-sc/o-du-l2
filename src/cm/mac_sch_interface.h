@@ -51,6 +51,8 @@
 #define EVENT_DL_CQI_TO_SCH          32
 #define EVENT_UL_CQI_TO_SCH          33
 #define EVENT_PHR_IND_TO_SCH         34
+#define EVENT_STATISTICS_REQ_TO_SCH  35
+
 /*macros*/
 #define MAX_SSB_IDX 1 /* forcing it as 1 for now. Right value is 64 */
 #define SCH_SSB_MASK_SIZE   1
