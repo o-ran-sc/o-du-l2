@@ -673,6 +673,8 @@ uint8_t readCfg()
    memset(&duCb.e2apDb, 0, sizeof(E2apDb));
    duCb.e2apDb.e2NodeId =  DU_ID;
    duCb.e2apDb.e2TransInfo.transIdCounter = 0;
+   memset(duCb.e2apDb.e2TransInfo.e2InitTransaction, 0, MAX_NUM_TRANSACTION * sizeof(E2TransInfo));
+   memset(duCb.e2apDb.e2TransInfo.ricInitTransaction, 0, MAX_NUM_TRANSACTION * sizeof(E2TransInfo));
 
    duCb.e2apDb.numOfTNLAssoc = 1;
    for(tnlAssocIdx =0; tnlAssocIdx<duCb.e2apDb.numOfTNLAssoc; tnlAssocIdx++)
@@ -708,8 +710,7 @@ uint8_t readCfg()
          duCb.e2apDb.ranFunction[ranFuncIdx].reportStyleList[reportStyleIdx].reportStyle.styleType = REPORT_STYLE_TYPE;
          duCb.e2apDb.ranFunction[ranFuncIdx].reportStyleList[reportStyleIdx].reportStyle.formatType = REPORT_ACTION_FORMAT_TYPE;
          memcpy(duCb.e2apDb.ranFunction[ranFuncIdx].reportStyleList[reportStyleIdx].reportStyle.name, ric_report_style_name, sizeof(ric_report_style_name));
-         
-         for(measurementInfoIdx =0; measurementInfoIdx<NUM_OF_MEASUREMENT_INFO_SUPPORTED; measurementInfoIdx++)
+         for(measurementInfoIdx =0; measurementInfoIdx<NUM_OF_MEASUREMENT_INFO_SUPPORTED(CONFIG_ADD); measurementInfoIdx++)
          {
             measurementInfoLen= strlen(MEASUREMENT_TYPE_NAME[measurementInfoIdx]);
             MeasurementInfoForAction *measurementInfoForAction;
@@ -736,7 +737,6 @@ uint8_t readCfg()
       duCb.e2apDb.ranFunction[ranFuncIdx].ricIndicationHeaderFormat = RIC_INDICATION_HEADER_FORMAT;
       duCb.e2apDb.ranFunction[ranFuncIdx].ricIndicationMessageFormat = RIC_INDICATION_MESSAGE_FORMAT; 
    }
-   memset(duCb.e2apDb.e2TransInfo.onGoingTransaction, 0, MAX_NUM_TRANSACTION * sizeof(E2TransInfo));
    
    /* Mib Params */
    mib.sysFrmNum = SYS_FRAME_NUM;
@@ -1165,6 +1165,7 @@ uint8_t duReadCfg()
 
    /* Initialize the timer blocks */
    cmInitTimers(&(duCb.e2apDb.e2TimersInfo.e2Timers.e2SetupTimer), 1);
+   cmInitTimers(&(duCb.e2apDb.e2TimersInfo.e2Timers.ricServiceUpdateInfo.ricServiceUpdate), 1);
 
    /* Initialzie the timer queue */   
    memset(&(duCb.duTimersInfo.tmrTq), 0, sizeof(CmTqType) * DU_TQ_SIZE);
