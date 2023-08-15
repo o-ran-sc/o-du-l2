@@ -47,6 +47,7 @@
 #define RIC_APP_MEM_REG 1
 #define RIC_POOL 1
 #define MAX_RAN_FUNCTION 256        /* O-RAN.WG3.E2AP-R003-v03.00 : Section 9.1.2.2 : maxofRANfunctionID */
+#define MAX_NUM_TRANSACTION 256     /* As per, O-RAN WG3 E2AP v3.0, section 9.2.33 */
 
 /* allocate and zero out a static buffer */
 #define RIC_ALLOC(_datPtr, _size)                                \
@@ -102,9 +103,23 @@ typedef struct
    uint64_t        componentId;
 }E2NodeComponent;
 
+typedef struct
+{
+   uint8_t transactionId;
+   uint8_t procedureCode;
+}E2TransInfo;
+
+typedef struct e2Transcation
+{
+   uint8_t     transIdCounter;
+   E2TransInfo onGoingTransaction[MAX_NUM_TRANSACTION];
+   /* Any new parameter for transaction handling can be added here in future */
+}E2Transaction;
+
 typedef struct duDb
 {
    uint32_t        duId;
+   E2Transaction   e2TransInfo;
    uint16_t        numOfRanFunction;
    RanFunction     ranFunction[MAX_RAN_FUNCTION];
    E2NodeComponent e2NodeComponent;
