@@ -28,6 +28,8 @@
 #include "lrg.x"
 #include "lkw.x"
 #include "kwu.x"
+#include "RANfunctions-List.h"
+#include "RANfunctionsID-List.h"
 #include "du_app_mac_inf.h"
 #include "du_app_rlc_inf.h"
 #include "du_e2ap_mgr.h"
