@@ -24,11 +24,11 @@
 #include "du_app_mac_inf.h"
 #include "du_app_rlc_inf.h"
 #include "du_e2ap_mgr.h"
-#include "du_e2ap_msg_hdl.h"
 #include "du_cfg.h"
 #include "du_mgr.h"
 #include "du_mgr_main.h"
 #include "du_utils.h"
+#include "du_e2ap_msg_hdl.h"
 #include "GlobalE2node-gNB-ID.h"
 #include "ProtocolIE-FieldE2.h"
 #include "E2setupRequest.h"
@@ -45,6 +45,34 @@
 #include "RIC-EventTriggerStyle-Item.h"
 #include "RIC-ReportStyle-Item.h"
 #include "MeasurementInfo-Action-Item.h"
+#include "RANfunctions-List.h"
+
+/*******************************************************************
+ *
+ * @brief Assigns new RAN Function Revision
+ *
+ * @details
+ *
+ *    Function : assignRanFuncRevisionId
+ *
+ *    Functionality: Assigns new RAN Function Revision 
+ *
+ * @params[in] 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t assignRanFuncRevisionId(RanFunction *ranFuncDb)
+{
+   uint8_t currId = ranFuncDb->revisionCounter;
+
+   /* Update to next valid value */
+   ranFuncDb->revisionCounter++;
+   if(ranFuncDb->revisionCounter == MAX_RAN_FUNCTION_REVISION)
+      ranFuncDb->revisionCounter = 0;
+
+   return currId;
+}
 
 /*******************************************************************
  *
@@ -394,9 +422,9 @@ void freeE2smKpmRanFunctionDefinition(E2SM_KPM_RANfunction_Description_t *ranFun
  *         RFAILED - failure
  *
  ******************************************************************/
-uint8_t fillRicReportStyle(RanFunction *ranFuncDb, struct E2SM_KPM_RANfunction_Description__ric_ReportStyle_List *ricReportStyle)
+uint8_t fillRicReportStyle(RanFunction *ranFuncDb, struct E2SM_KPM_RANfunction_Description__ric_ReportStyle_List *ricReportStyle, RanFunctionAction action)
 {
-   uint8_t styleIdx, measInfoIdx;
+   uint8_t styleIdx, measInfoIdx, measurmentCount;
    MeasurementInfo_Action_List_t *measInfo;
    CmLList  *node;
    
@@ -451,9 +479,14 @@ uint8_t fillRicReportStyle(RanFunction *ranFuncDb, struct E2SM_KPM_RANfunction_D
 
       CM_LLIST_FIRST_NODE(&ranFuncDb->reportStyleList[styleIdx].measurementInfoList, node);
       measInfo = &ricReportStyle->list.array[styleIdx]->measInfo_Action_List;
+      
+      if(action == RAN_FUNCTION_ADD)
+         measurmentCount = measInfoList.count - 1; 
+      else
+         measurmentCount = measInfoList.count;
 
-      measInfo->list.count = measInfoList.count; 
-      measInfo->list.size =  measInfoList.count*sizeof(MeasurementInfo_Action_Item_t*);
+      measInfo->list.count = measurmentCount; 
+      measInfo->list.size =  measurmentCount *sizeof(MeasurementInfo_Action_Item_t*);
       DU_ALLOC(measInfo->list.array, measInfo->list.size);
       if(!measInfo->list.array)
       {
@@ -562,7 +595,7 @@ uint8_t fillRicEventTriggerStyle(RanFunction *ranFuncDb, struct E2SM_KPM_RANfunc
  *
  * @details
  *
- *    Function : BuildRanFunctionAddList 
+ *    Function : BuildRanFunctionAddOrModifyList 
  *
  *    Functionality: Building RAN addition addition list
  *
@@ -572,7 +605,7 @@ uint8_t fillRicEventTriggerStyle(RanFunction *ranFuncDb, struct E2SM_KPM_RANfunc
  *
  ******************************************************************/
 
-uint8_t BuildRanFunctionAddList(RANfunctions_List_t *ranFunctionsList)
+uint8_t BuildRanFunctionAddOrModifyList(RANfunctions_List_t *ranFunctionsList, RanFunctionAction action)
 {
    asn_enc_rval_t encRetVal;
    RanFunction *ranFuncDb;
@@ -610,7 +643,7 @@ uint8_t BuildRanFunctionAddList(RANfunctions_List_t *ranFunctionsList)
       ranFuncItem->ranFunctionID = ranFuncDb->id;
       
       /* RAN Function Revision*/
-      ranFuncItem->ranFunctionRevision = ranFuncDb->revisionCounter;
+      ranFuncItem->ranFunctionRevision = assignRanFuncRevisionId(ranFuncDb);
       
       /* RAN function OID*/
       ranFuncItem->ranFunctionOID.size = strlen(ranFuncDb->name.serviceModelOID);
@@ -684,7 +717,7 @@ uint8_t BuildRanFunctionAddList(RANfunctions_List_t *ranFunctionsList)
          DU_LOG("\nERROR  --> E2AP: Memory allocation failed in function %s at %d",__func__,__LINE__);
          return RFAILED;
       }
-      if(fillRicReportStyle(ranFuncDb, ranFuncDefinition->ric_ReportStyle_List) != ROK)
+      if(fillRicReportStyle(ranFuncDb, ranFuncDefinition->ric_ReportStyle_List, action) != ROK)
       {
          DU_LOG("\nERROR  --> E2AP: failed to fill ric report style");
          return RFAILED;
@@ -885,7 +918,7 @@ uint8_t BuildAndSendE2SetupReq()
 {
    uint8_t arrIdx = 0, elementCnt=0;
    uint8_t transId = 0, ret = ROK;
-   bool memAllocFailed;
+   bool memAllocFailed = false;
    E2AP_PDU_t        *e2apMsg = NULLP;
    E2setupRequest_t  *e2SetupReq = NULLP;
    asn_enc_rval_t     encRetVal;       /* Encoder return value */
@@ -977,7 +1010,7 @@ uint8_t BuildAndSendE2SetupReq()
       e2SetupReq->protocolIEs.list.array[arrIdx]->id = ProtocolIE_IDE2_id_RANfunctionsAdded;
       e2SetupReq->protocolIEs.list.array[arrIdx]->criticality = CriticalityE2_reject;
       e2SetupReq->protocolIEs.list.array[arrIdx]->value.present = E2setupRequestIEs__value_PR_RANfunctions_List;
-      if(BuildRanFunctionAddList(&(e2SetupReq->protocolIEs.list.array[arrIdx]->value.choice.RANfunctions_List))!=ROK)
+      if(BuildRanFunctionAddOrModifyList(&(e2SetupReq->protocolIEs.list.array[arrIdx]->value.choice.RANfunctions_List), RAN_FUNCTION_ADD)!=ROK)
       {
          DU_LOG("\nERROR  -->  E2AP : Failed to create RAN Function");
          break;
@@ -1534,6 +1567,8 @@ uint8_t procE2SetupRsp(E2AP_PDU_t *e2apMsg)
          case ProtocolIE_IDE2_id_E2nodeComponentConfigAdditionAck:
             break;
 
+         case ProtocolIE_IDE2_id_RANfunctionsAccepted:
+            break;
          default:
             DU_LOG("\nERROR  -->  E2AP : Invalid IE received in E2SetupRsp:%ld",
                   e2SetRspMsg->protocolIEs.list.array[arrIdx]->id);
@@ -1949,7 +1984,9 @@ uint8_t BuildAndSendRicIndication(RicSubscription *ricSubscriptionInfo)
       ret = ROK;
       break;
    }
-   FreeRicIndication(e2apMsg);	
+   FreeRicIndication(e2apMsg);
+   BuildAndSendRicServiceUpdate();
+   //updateRanFuncs();
    return ret;
 }
 
@@ -2495,6 +2532,361 @@ void procE2SetupFailure(E2AP_PDU_t *e2apMsg)
 
    freeAperDecodingOfE2SetupFailure(e2SetupFailure);
 }
+
+/******************************************************************
+ *
+ * @brief Deallocation of memory allocated bu aper decoder for RIC service update failure
+ *
+ * @details
+ *
+ *    Function : freeAperDecodingOfRicServiceUpdateFailure
+ *
+ *    Functionality: Deallocation of memory allocated bu aper decoder for RIC
+ *    service update failure
+ *
+ * @params[in] RICserviceUpdateFailure_t *ricServiceFailure;
+ * @return void
+ *
+ * ****************************************************************/
+
+void freeAperDecodingOfRicServiceUpdateFailure(RICserviceUpdateFailure_t *ricServiceFailure)
+{
+   uint8_t arrIdx;
+
+   if(ricServiceFailure)
+   {
+      if(ricServiceFailure->protocolIEs.list.array)
+      {
+         for(arrIdx=0; arrIdx<ricServiceFailure->protocolIEs.list.count; arrIdx++)
+         {
+            if(ricServiceFailure->protocolIEs.list.array[arrIdx])
+            {
+               free(ricServiceFailure->protocolIEs.list.array[arrIdx]);  
+            }
+         }
+         free(ricServiceFailure->protocolIEs.list.array);
+      }
+   }
+}
+
+/******************************************************************
+ *
+ * @brief Processes RIC service update failure sent by RIC
+ *
+ * @details
+ *
+ *    Function : procRicServiceUpdateFailure
+ *
+ *    Functionality: Processes RIC service update failure sent by RIC
+ *
+ * @params[in] E2AP_PDU_t ASN decoded E2AP message
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+
+void procRicServiceUpdateFailure(E2AP_PDU_t *e2apMsg)
+{
+   uint8_t arrIdx =0, transId =0, timerValue=0; 
+   RICserviceUpdateFailure_t *ricServiceFailure;
+
+   DU_LOG("\nINFO   -->  E2AP : RIC service update failure received"); 
+   ricServiceFailure = &e2apMsg->choice.unsuccessfulOutcome->value.choice.RICserviceUpdateFailure;
+
+   for(arrIdx=0; arrIdx<ricServiceFailure->protocolIEs.list.count; arrIdx++)
+   {
+      switch(ricServiceFailure->protocolIEs.list.array[arrIdx]->id)
+      {
+         case ProtocolIE_IDE2_id_TransactionID:
+         {
+            transId = ricServiceFailure->protocolIEs.list.array[arrIdx]->value.choice.TransactionID;
+            if((duCb.e2apDb.e2TransInfo.onGoingTransaction[transId].transactionId == transId) &&\
+            (duCb.e2apDb.e2TransInfo.onGoingTransaction[transId].procedureCode == e2apMsg->choice.unsuccessfulOutcome->procedureCode))
+              memset(&duCb.e2apDb.e2TransInfo.onGoingTransaction[transId], 0, sizeof(E2TransInfo));
+            else
+            {
+               DU_LOG("\nERROR  -->  E2AP : Invalid transaction id [%d]", transId);
+               return ;
+            }
+            break;
+         }
+         case ProtocolIE_IDE2_id_TimeToWaitE2:
+            {
+               timerValue = covertE2WaitTimerEnumToValue(ricServiceFailure->protocolIEs.list.array[arrIdx]->value.choice.TimeToWaitE2);
+               if((duChkTmr((PTR)&(duCb.e2apDb), EVENT_RIC_SERVICE_TMR)) == FALSE)
+               {
+                  duStartTmr((PTR)&(duCb.e2apDb), EVENT_RIC_SERVICE_TMR, timerValue);
+               }
+               else
+               {
+                  DU_LOG("\nERROR   -->  E2AP : EVENT_E2_SETUP_TMR timer is already running");
+                  return;
+               }
+               break; 
+            }
+      }
+   }
+
+   freeAperDecodingOfRicServiceUpdateFailure(ricServiceFailure);
+}
+
+/*******************************************************************
+ *
+ * @brief De Allocate E2 Setup Request Message
+ *
+ * @details
+ *
+ *    Function : FreeE2SetupReq
+ *
+ *    Functionality: De-Allocating E2 Setup request Message
+ *
+ * @params[in] E2AP_PDU_t *e2apMsg
+ 
+ * @return void
+ *
+ * ****************************************************************/
+
+void FreeRicServiceUpdate(E2AP_PDU_t *e2apMsg)
+{
+   uint8_t arrIdx = 0;
+   uint8_t ranFuncAddListIdx;
+   RICserviceUpdate_t *ricServiceUpdate;
+   RANfunctions_List_t *ranFunctionsList;
+   RANfunction_ItemIEs_t *ranFuncItemIe;
+   RANfunction_Item_t  *ranFunItem;
+
+   /* De-allocating Memory */
+   if(e2apMsg != NULLP)
+   {
+      if(e2apMsg->choice.initiatingMessage != NULLP)
+      {
+         ricServiceUpdate = &e2apMsg->choice.initiatingMessage->value.choice.RICserviceUpdate; 
+         if(ricServiceUpdate->protocolIEs.list.array != NULLP)
+         {
+            for(arrIdx = 0; arrIdx < ricServiceUpdate->protocolIEs.list.count; arrIdx++)
+            {
+               if(ricServiceUpdate->protocolIEs.list.array[arrIdx] != NULLP)
+               {
+                  switch(ricServiceUpdate->protocolIEs.list.array[arrIdx]->id)
+                  {
+                     case ProtocolIE_IDE2_id_TransactionID:
+                        break;
+                     case ProtocolIE_IDE2_id_RANfunctionsModified:
+                        {
+                           ranFunctionsList = &(ricServiceUpdate->protocolIEs.list.array[arrIdx]->value.choice.RANfunctions_List);  
+                           if(ranFunctionsList->list.array)
+                           {  
+                              for(ranFuncAddListIdx= 0; ranFuncAddListIdx< ranFunctionsList->list.count; ranFuncAddListIdx++)
+                              {
+                                 if(ranFunctionsList->list.array[ranFuncAddListIdx])
+                                 {
+                                    ranFuncItemIe = (RANfunction_ItemIEs_t *) ranFunctionsList->list.array[ranFuncAddListIdx];
+                                    ranFunItem = &ranFuncItemIe->value.choice.RANfunction_Item;
+                                    DU_FREE(ranFunItem->ranFunctionOID.buf, ranFunItem->ranFunctionOID.size);
+                                    DU_FREE(ranFunItem->ranFunctionDefinition.buf, ranFunItem->ranFunctionDefinition.size);
+                                    DU_FREE(ranFunctionsList->list.array[ranFuncAddListIdx], sizeof(RANfunction_ItemIEs_t));
+                                 }
+                              }
+                              DU_FREE(ranFunctionsList->list.array, ranFunctionsList->list.size);
+                           }
+                           break;
+                        }
+
+                     default:
+                        DU_LOG("\nERROR  --> E2AP: Invalid event at ricServiceUpdate %ld ",\
+                              (ricServiceUpdate->protocolIEs.list.array[arrIdx]->id));
+                        break;
+                  }
+                  DU_FREE(ricServiceUpdate->protocolIEs.list.array[arrIdx], sizeof(RICserviceUpdate_IEs_t));
+               }
+            }
+            DU_FREE(ricServiceUpdate->protocolIEs.list.array, ricServiceUpdate->protocolIEs.list.size);
+         }
+         DU_FREE(e2apMsg->choice.initiatingMessage, sizeof(InitiatingMessageE2_t));
+      }
+      DU_FREE(e2apMsg, sizeof(E2AP_PDU_t));
+   }
+}
+
+/*******************************************************************
+ *
+ * @brief Builds and Send the RicServiceUpdateuest
+ *
+ * @details
+ *
+ *    Function : BuildAndSendRicServiceUpdate
+ *
+ * Functionality:Fills the RicServiceUpdateuest
+ *
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ ******************************************************************/
+
+uint8_t BuildAndSendRicServiceUpdate()
+{
+   uint8_t arrIdx = 0, elementCnt=0;
+   uint8_t transId = 0, ret = ROK;
+   bool memAllocFailed =false;
+   E2AP_PDU_t        *e2apMsg = NULLP;
+   RICserviceUpdate_t  *ricServiceUpdate = NULLP;
+   asn_enc_rval_t     encRetVal;       /* Encoder return value */
+
+   DU_LOG("\nINFO   -->  E2AP : Building Ric Service Update\n");
+   do
+   {
+      DU_ALLOC(e2apMsg, sizeof(E2AP_PDU_t));
+      if(e2apMsg == NULLP)
+      {
+         DU_LOG("\nERROR  -->  E2AP : Memory allocation for E2AP-PDU failed");
+         break;
+      }
+      e2apMsg->present = E2AP_PDU_PR_initiatingMessage;
+      DU_ALLOC(e2apMsg->choice.initiatingMessage, sizeof(InitiatingMessageE2_t));
+      if(e2apMsg->choice.initiatingMessage == NULLP)
+      {
+         DU_LOG("\nERROR  -->  E2AP : Memory allocation for E2AP-PDU failed");
+         break;
+      }
+      e2apMsg->choice.initiatingMessage->criticality = CriticalityE2_reject;
+      e2apMsg->choice.initiatingMessage->procedureCode = ProcedureCodeE2_id_RICserviceUpdate;
+      e2apMsg->choice.initiatingMessage->value.present = InitiatingMessageE2__value_PR_RICserviceUpdate;
+      ricServiceUpdate = &e2apMsg->choice.initiatingMessage->value.choice.RICserviceUpdate;
+
+      elementCnt = 2;
+      ricServiceUpdate->protocolIEs.list.count = elementCnt;
+      ricServiceUpdate->protocolIEs.list.size = elementCnt * sizeof(RICserviceUpdate_IEs_t*);
+
+      /* Initialize the E2Setup members */
+      DU_ALLOC(ricServiceUpdate->protocolIEs.list.array, \
+            ricServiceUpdate->protocolIEs.list.size);
+      if(ricServiceUpdate->protocolIEs.list.array == NULLP)
+      {
+         DU_LOG("\nERROR  -->  E2AP : Memory allocation failed for array elements");
+         break;
+      }
+      for(arrIdx = 0; arrIdx < elementCnt; (arrIdx)++)
+      {
+         DU_ALLOC(ricServiceUpdate->protocolIEs.list.array[arrIdx],\
+               sizeof(RICserviceUpdate_IEs_t));
+         if(ricServiceUpdate->protocolIEs.list.array[arrIdx] == NULLP)
+         {
+            memAllocFailed = true;
+            DU_LOG("\nERROR  -->  E2AP : Memory allocation failed for arrayarrIdx [%d]", arrIdx);
+            break;
+         }
+      }
+      if(memAllocFailed == true)
+         break;
+
+      arrIdx = 0;
+
+      /* TransactionID */
+      ricServiceUpdate->protocolIEs.list.array[arrIdx]->id = ProtocolIE_IDE2_id_TransactionID;
+      ricServiceUpdate->protocolIEs.list.array[arrIdx]->criticality = CriticalityE2_reject;
+      ricServiceUpdate->protocolIEs.list.array[arrIdx]->value.present = E2setupRequestIEs__value_PR_TransactionID;
+      transId = assignTransactionId();
+      ricServiceUpdate->protocolIEs.list.array[arrIdx]->value.choice.TransactionID = transId;
+      
+      arrIdx++;
+      ricServiceUpdate->protocolIEs.list.array[arrIdx]->id = ProtocolIE_IDE2_id_RANfunctionsModified;
+      ricServiceUpdate->protocolIEs.list.array[arrIdx]->criticality = CriticalityE2_reject;
+      ricServiceUpdate->protocolIEs.list.array[arrIdx]->value.present = RICserviceUpdate_IEs__value_PR_RANfunctions_List;
+      if(BuildRanFunctionAddOrModifyList(&ricServiceUpdate->protocolIEs.list.array[arrIdx]->value.choice.RANfunctions_List, RAN_FUNCTION_MODIFY) !=ROK)
+      {
+         DU_LOG("\nERROR  -->  E2AP : Failed to modify the ran function");
+         break;
+      }
+      
+      /* Prints the Msg formed */
+      xer_fprint(stdout, &asn_DEF_E2AP_PDU, e2apMsg);
+
+      memset(encBuf, 0, ENC_BUF_MAX_LEN);
+      encBufSize = 0;
+      encRetVal = aper_encode(&asn_DEF_E2AP_PDU, 0, e2apMsg, PrepFinalEncBuf,\
+            encBuf);
+      if(encRetVal.encoded == ENCODE_FAIL)
+      {
+         DU_LOG("\nERROR  -->  E2AP : Could not encode RicServiceUpdateuest structure (at %s)\n",\
+               encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
+         break;
+      }
+      else
+      {
+         DU_LOG("\nDEBUG   -->  E2AP : Created APER encoded buffer for RicServiceUpdateuest\n");
+#ifdef DEBUG_ASN_PRINT
+         for(int i=0; i< encBufSize; i++)
+         {
+            printf("%x",encBuf[i]);
+         }
+#endif
+      }
+      if(SendE2APMsg(DU_APP_MEM_REGION, DU_POOL, encBuf, encBufSize) != ROK)
+      {
+         DU_LOG("\nERROR  -->  E2AP : Sending E2 Setup request failed");
+      }
+      break;
+   }while(true);
+
+   duCb.e2apDb.e2TransInfo.onGoingTransaction[transId].transactionId = transId;
+   duCb.e2apDb.e2TransInfo.onGoingTransaction[transId].procedureCode = e2apMsg->choice.initiatingMessage->procedureCode;
+   
+   FreeRicServiceUpdate(e2apMsg);
+   return ret;
+}
+
+/*******************************************************************
+ *
+ * @brief update the E2DB the RAN function information
+ *
+ * @details
+ *
+ *    Function : updateRanFuncs
+ *
+ * Functionality : update the E2DB the RAN function information 
+ *
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ ******************************************************************/
+
+uint8_t updateRanFuncs()
+{
+   CmLList *node;
+   uint8_t ranFuncIdx, reportStyleIdx,  measurementInfoLen, measurementInfoIdx=NUM_OF_MEASUREMENT_INFO_SUPPORTED-1;
+   MeasurementInfoForAction *measurementInfoForAction;
+
+   for(ranFuncIdx =0; ranFuncIdx<duCb.e2apDb.numOfRanFunction; ranFuncIdx++)
+   {
+      duCb.e2apDb.ranFunction[ranFuncIdx].revisionCounter = 1;
+      for(reportStyleIdx=0; reportStyleIdx<duCb.e2apDb.ranFunction[ranFuncIdx].numOfReportStyleSupported; reportStyleIdx++)
+      {
+         measurementInfoLen= strlen(MEASUREMENT_TYPE_NAME[measurementInfoIdx]);
+         DU_ALLOC(measurementInfoForAction, sizeof(MeasurementInfoForAction));
+         if(measurementInfoForAction)
+         {
+            measurementInfoForAction->measurementTypeId = measurementInfoIdx+1;
+            memcpy(measurementInfoForAction->measurementTypeName, MEASUREMENT_TYPE_NAME[measurementInfoIdx], measurementInfoLen+1);
+         }
+         DU_ALLOC(node, sizeof(CmLList));
+         if(node)
+         {
+            node->node = (PTR) measurementInfoForAction;
+            cmLListAdd2Tail(&duCb.e2apDb.ranFunction[ranFuncIdx].reportStyleList[reportStyleIdx].measurementInfoList, node);
+         }
+         else
+         {
+            DU_LOG("\nERROR  -->  E2AP : Memory allocation for measurementInfoList node");
+            DU_FREE(measurementInfoForAction, sizeof(MeasurementInfoForAction));
+            return RFAILED;
+         }
+
+      }
+   }
+   BuildAndSendRicServiceUpdate();
+   return ROK;
+}
+
 /*******************************************************************
  *
  * @brief Handles received E2AP message and sends back response  
@@ -2574,6 +2966,10 @@ void E2APMsgHdlr(Buffer *mBuf)
                      procE2SetupFailure(e2apMsg);
                      break;
                   }
+               case UnsuccessfulOutcomeE2__value_PR_RICserviceUpdateFailure:
+                  {
+                     break;
+                  }
                default:
                   {
                      DU_LOG("\nERROR  -->  E2AP : Invalid type of E2AP_PDU_PR_unsuccessfulOutcome  [%d]",\
@@ -2603,6 +2999,10 @@ void E2APMsgHdlr(Buffer *mBuf)
                case SuccessfulOutcomeE2__value_PR_ResetResponseE2:
                   {
                      procResetResponse(e2apMsg);
+                     break;
+                  }
+               case SuccessfulOutcomeE2__value_PR_RICserviceUpdateAcknowledge:
+                  {
                      break;
                   }
                default:
