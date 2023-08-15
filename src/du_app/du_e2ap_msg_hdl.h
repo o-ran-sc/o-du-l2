@@ -25,6 +25,8 @@ uint8_t  BuildAndSendE2NodeConfigUpdate();
 uint8_t BuildAndSendE2ResetRequest(E2CauseType failureType, E2Cause failureCause);
 void     E2APMsgHdlr(Buffer *mBuf);
 uint8_t BuildAndSendRicIndication(RicSubscription *ricSubscriptionInfo);
+uint8_t updateRanFuncs();
+//uint8_t BuildRanFunctionAddList(RANfunctions_List_t *ranFunctionsList);
 /**********************************************************************
   End of file
  **********************************************************************/

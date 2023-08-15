@@ -709,7 +709,7 @@ uint8_t readCfg()
          duCb.e2apDb.ranFunction[ranFuncIdx].reportStyleList[reportStyleIdx].reportStyle.formatType = REPORT_ACTION_FORMAT_TYPE;
          memcpy(duCb.e2apDb.ranFunction[ranFuncIdx].reportStyleList[reportStyleIdx].reportStyle.name, ric_report_style_name, sizeof(ric_report_style_name));
          
-         for(measurementInfoIdx =0; measurementInfoIdx<NUM_OF_MEASUREMENT_INFO_SUPPORTED; measurementInfoIdx++)
+         for(measurementInfoIdx =0; measurementInfoIdx<NUM_OF_MEASUREMENT_INFO_SUPPORTED-1; measurementInfoIdx++)
          {
             measurementInfoLen= strlen(MEASUREMENT_TYPE_NAME[measurementInfoIdx]);
             MeasurementInfoForAction *measurementInfoForAction;

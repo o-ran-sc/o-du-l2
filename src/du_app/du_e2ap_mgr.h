@@ -21,6 +21,8 @@
 #define MAX_NUM_TRANSACTION 256 /* As per, O-RAN WG3 E2AP v3.0, section 9.2.33 */
 #define MAX_E2_SETUP_TMR 1
 #define EVENT_E2_SETUP_TMR 1
+#define MAX_RIC_SERVICE_UPDATE_TMR 1
+#define EVENT_RIC_SERVICE_TMR 2
 #define MAX_RAN_FUNCTION 256        /* O-RAN.WG3.E2AP-R003-v03.00 : Section 9.1.2.2 : maxofRANfunctionID */
 #define MAX_E2_NODE_COMPONENT 1024     /* O-RAN.WG3.E2AP-R003-v03.00 : Section 9.1.2.2 : maxofE2nodeComponents */
 #define MAX_TNL_ASSOCIATION 32         /* O-RAN.WG3.E2AP-R003-v03.00 : Section 9.1.2.11 : maxofTNLA */
@@ -44,8 +46,8 @@
 #define REPORT_STYLE_NAME "E2 Node Measurement"
 #define REPORT_STYLE_TYPE 1
 #define REPORT_ACTION_FORMAT_TYPE 1
-#define NUM_OF_MEASUREMENT_INFO_SUPPORTED 2
-#define MEASUREMENT_TYPE_NAME (char*[]) {"RRU.PrbTotDl", "RRU.PrbTotUl"}
+#define NUM_OF_MEASUREMENT_INFO_SUPPORTED 3
+#define MEASUREMENT_TYPE_NAME (char*[]) {"RRU.PrbTotDl", "RRU.PrbTotUl", "UECNTX.RelReq"}
 #define RIC_INDICATION_HEADER_FORMAT 1
 #define RIC_INDICATION_MESSAGE_FORMAT 1
 
@@ -179,6 +181,7 @@ typedef struct e2Transcation
 typedef struct e2Timer
 {
    CmTimer e2SetupTimer;
+   CmTimer ricServiceUpdate;
    /* More timers can be added to this structure in future */
 }E2Timer;
 
