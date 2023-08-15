@@ -46,18 +46,29 @@ bool duChkTmr(PTR cb, int16_t tmrEvnt)
    switch (tmrEvnt)
    {
       case EVENT_E2_SETUP_TMR:
-      {
-         if(((E2apDb *)cb)->e2TimersInfo.e2Timers.e2SetupTimer.tmrEvnt == EVENT_E2_SETUP_TMR)
          {
-             DU_LOG("\nERROR  -->  DU_APP : duChkTmr: Invalid tmr Evnt [%d]", tmrEvnt);
-             return TRUE;
+            if(((E2apDb *)cb)->e2TimersInfo.e2Timers.e2SetupTimer.tmrEvnt == EVENT_E2_SETUP_TMR)
+            {
+               DU_LOG("\nERROR  -->  DU_APP : duChkTmr: Invalid tmr Evnt [%d]", tmrEvnt);
+               return TRUE;
+            }
+            break;
          }
-      }
-      
+
+      case EVENT_RIC_SERVICE_TMR:
+         {
+            if(((E2apDb *)cb)->e2TimersInfo.e2Timers.ricServiceUpdate.tmrEvnt == EVENT_RIC_SERVICE_TMR)
+            {
+               DU_LOG("\nERROR  -->  DU_APP : duChkTmr: Invalid tmr Evnt [%d]", tmrEvnt);
+               return TRUE;
+            }
+            break;
+         }
+
       default:
-      {
-         DU_LOG("\nERROR  -->  DU_APP : duChkTmr: Invalid tmr Evnt [%d]", tmrEvnt);
-      }
+         {
+            DU_LOG("\nERROR  -->  DU_APP : duChkTmr: Invalid tmr Evnt [%d]", tmrEvnt);
+         }
    }
 
    return FALSE;
@@ -82,18 +93,29 @@ void duStartTmr(PTR cb, int16_t tmrEvnt, uint8_t timerValue)
    switch (tmrEvnt)
    {
       case EVENT_E2_SETUP_TMR:
-      {
-         e2apDb = ((E2apDb *)cb);
-         DU_TMR_CALCUATE_WAIT(arg.wait, timerValue, duCb.duTimersInfo.tmrRes);
+         {
+            e2apDb = ((E2apDb *)cb);
+            DU_TMR_CALCUATE_WAIT(arg.wait, timerValue, duCb.duTimersInfo.tmrRes);
 
-         arg.timers = &e2apDb->e2TimersInfo.e2Timers.e2SetupTimer;
-         arg.max = MAX_E2_SETUP_TMR;
-         break;
-      }
+            arg.timers = &e2apDb->e2TimersInfo.e2Timers.e2SetupTimer;
+            arg.max = MAX_E2_SETUP_TMR;
+            break;
+         }
+
+      case EVENT_RIC_SERVICE_TMR:
+         {
+            e2apDb = ((E2apDb *)cb);
+            DU_TMR_CALCUATE_WAIT(arg.wait, timerValue, duCb.duTimersInfo.tmrRes);
+
+            arg.timers = &e2apDb->e2TimersInfo.e2Timers.ricServiceUpdate;
+            arg.max = MAX_RIC_SERVICE_UPDATE_TMR;
+            break;
+         }
+
       default:
-      {
-         DU_LOG("\nERROR  -->  DU : duStartTmr: Invalid tmr Evnt [%d]", tmrEvnt);
-      }
+         {
+            DU_LOG("\nERROR  -->  DU : duStartTmr: Invalid tmr Evnt [%d]", tmrEvnt);
+         }
    }
 
    if(arg.wait != 0)
@@ -125,13 +147,21 @@ void duStartTmr(PTR cb, int16_t tmrEvnt, uint8_t timerValue)
 
 void duTmrExpiry(PTR cb,int16_t tmrEvnt)
 {
-   switch (tmrEvnt)
+   switch(tmrEvnt)
    {
+
       case EVENT_E2_SETUP_TMR:
-      {
-         BuildAndSendE2SetupReq();
-         break;
-      }
+         {
+            BuildAndSendE2SetupReq();
+            break;
+         }
+      
+      case EVENT_RIC_SERVICE_TMR:
+         {
+            BuildAndSendRicServiceUpdate();
+            break;
+         }
+
       default:
       {
          DU_LOG("\nERROR  -->  DU : duStartTmr: Invalid tmr Evnt [%d]", tmrEvnt);
