@@ -52,10 +52,10 @@
 
 
 void E2APMsgHdlr(uint32_t *duId, Buffer *mBuf);
-uint8_t BuildAndSendE2SetupRsp(DuDb *duDb, uint8_t transId);
+uint8_t BuildAndSendE2SetupRsp(DuDb *duDb, uint8_t transId, RicTmpRanFunList ricRanFuncList);
 uint8_t BuildAndSendRicSubscriptionReq(uint32_t duId);
 uint8_t SendE2APMsg(Region region, Pool pool, uint32_t duId);
-
+uint8_t BuildAndSendRicServiceQuery(DuDb *duDb);
 /**********************************************************************
          End of file
 **********************************************************************/

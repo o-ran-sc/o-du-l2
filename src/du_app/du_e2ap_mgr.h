@@ -18,9 +18,14 @@
 
 /* This file contains all E2AP message handler related functionality */
 
-#define MAX_NUM_TRANSACTION 256 /* As per, O-RAN WG3 E2AP v3.0, section 9.2.33 */
 #define MAX_E2_SETUP_TMR 1
+#define MAX_RIC_SERVICE_UPDATE_TMR 1
+
 #define EVENT_E2_SETUP_TMR 1
+#define EVENT_RIC_SERVICE_UPDATE_TMR 2
+
+#define MAX_NUM_TRANSACTION 256 /* As per, O-RAN WG3 E2AP v3.0, section 9.2.33 */
+#define MAX_RAN_FUNCTION_REVISION 4095 /*  O-RAN.WG3.E2AP-R003-v03.00 : Section 9.2.24 RAN Function Revision */
 #define MAX_RAN_FUNCTION 256        /* O-RAN.WG3.E2AP-R003-v03.00 : Section 9.1.2.2 : maxofRANfunctionID */
 #define MAX_E2_NODE_COMPONENT 1024     /* O-RAN.WG3.E2AP-R003-v03.00 : Section 9.1.2.2 : maxofE2nodeComponents */
 #define MAX_TNL_ASSOCIATION 32         /* O-RAN.WG3.E2AP-R003-v03.00 : Section 9.1.2.11 : maxofTNLA */
@@ -44,10 +49,18 @@
 #define REPORT_STYLE_NAME "E2 Node Measurement"
 #define REPORT_STYLE_TYPE 1
 #define REPORT_ACTION_FORMAT_TYPE 1
-#define NUM_OF_MEASUREMENT_INFO_SUPPORTED 2
-#define MEASUREMENT_TYPE_NAME (char*[]) {"RRU.PrbTotDl", "RRU.PrbTotUl"}
+
+/* In case of initial configuration we are supporting only 2 measurement
+ * information RRU.PrbTotDl and RRU.PrbTotUl.
+ * In case of configuration modification we are supporting 3 measurement
+ * information RRU.PrbTotDl, RRU.PrbTotUl and UECNTX.RelReq */
+#define NUM_OF_MEASUREMENT_INFO_SUPPORTED(_configType) \
+   ((_configType == CONFIG_ADD) ? 2 :3)
+
+#define MEASUREMENT_TYPE_NAME (char*[]) {"RRU.PrbTotDl", "RRU.PrbTotUl", "UECNTX.RelReq"}
 #define RIC_INDICATION_HEADER_FORMAT 1
 #define RIC_INDICATION_MESSAGE_FORMAT 1
+
 
 /* O-RAN.WG3.E2AP-R003-v03.00 : Section 9.2.26 */
 typedef enum
@@ -172,13 +185,27 @@ typedef struct
 typedef struct e2Transcation
 {
    uint8_t     transIdCounter;
-   E2TransInfo onGoingTransaction[MAX_NUM_TRANSACTION];
-   /* Any new parameter for transaction handling can be added here in future */
+   E2TransInfo e2InitTransaction[MAX_NUM_TRANSACTION];  /* Storing E2-initiated transactions information */
+   E2TransInfo ricInitTransaction[MAX_NUM_TRANSACTION]; /* Storing RIC-initiated transactions information */
 }E2Transaction;
+
+typedef struct ricServiceUpdate
+{
+   E2ProcedureDirection dir;
+   uint8_t transId;
+   void    *recvRanFuncList;
+}RicServiceUpdate;
+
+typedef struct ricServiceUpdateTimer
+{
+   RicServiceUpdate ricService;
+   CmTimer          timer;
+}RicServiceUpdateTimer;
 
 typedef struct e2Timer
 {
    CmTimer e2SetupTimer;
+   RicServiceUpdateTimer ricServiceUpdateInfo;
    /* More timers can be added to this structure in future */
 }E2Timer;
 
@@ -392,6 +419,22 @@ typedef struct
    TNLAssociation   tnlAssoc[MAX_TNL_ASSOCIATION];
    E2TimersInfo     e2TimersInfo;
 }E2apDb;
+
+typedef struct
+{
+   uint16_t   id;
+   uint16_t   revisionCounter;
+}RanFuncInfo;
+
+typedef struct
+{
+   uint8_t addCount;
+   uint8_t addArr[MAX_RAN_FUNCTION];
+   uint8_t modCount;
+   uint8_t modArr[MAX_RAN_FUNCTION];
+   uint8_t delCount;
+   RanFuncInfo delArr[MAX_RAN_FUNCTION];
+}E2TmpRanFunList;
 
 uint8_t assignTransactionId();
 uint8_t ResetE2Request(E2ProcedureDirection dir, E2CauseType type, E2Cause cause);
