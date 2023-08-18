@@ -1590,6 +1590,91 @@ void FreeF1SetupReq(F1AP_PDU_t *f1apMsg)
 
 /*******************************************************************
  *
+ * @brief add or modify E2NodeComponent list
+ *
+ * @details
+ *
+ *    Function : addOrModifyE2NodeComponent 
+ *
+ * Functionality: add or modify E2NodeComponent list 
+ *
+ * @parameter uint8_t componentactiontype, bool reqPart, uint8_t bufSize, char *bufString
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ ******************************************************************/
+uint8_t addOrModifyE2NodeComponent(uint8_t action, bool reqPart, uint8_t bufSize, char *bufString)
+{
+   E2NodeComponent *e2NodeComponentInfo;
+   CmLList  *node = NULLP;
+   
+   if(action == E2_NODE_COMPONENT_ADD)
+   {
+      if(reqPart == true)
+      {
+         DU_ALLOC(e2NodeComponentInfo, sizeof(E2NodeComponent));
+         if(!e2NodeComponentInfo)
+         {
+            DU_LOG("\nERROR  -->  F1AP : Memory allocation failed for e2NodeComponentInfo in %s",__func__);
+            return RFAILED;
+         }
+         e2NodeComponentInfo->interfaceType =F1;
+         e2NodeComponentInfo->componentId=duCfgParam.duId;
+         e2NodeComponentInfo->componentActionType = action;
+         e2NodeComponentInfo->reqBufSize = bufSize;
+
+         DU_ALLOC(e2NodeComponentInfo->componentRequestPart, bufSize);
+         if(e2NodeComponentInfo->componentRequestPart == NULLP)
+         {
+            DU_LOG("\nERROR  -->  F1AP : Memory allocation failed for componentRequestPart");
+            DU_FREE(e2NodeComponentInfo, sizeof(E2NodeComponent));
+            return RFAILED;
+         }
+         memcpy(e2NodeComponentInfo->componentRequestPart, bufString, e2NodeComponentInfo->reqBufSize);
+         DU_ALLOC(node, sizeof(CmLList));
+         if(node)
+         {
+            node->node = (PTR) e2NodeComponentInfo;
+            cmLListAdd2Tail(&duCb.e2apDb.e2NodeComponentList, node);
+         }
+         else
+         {
+            DU_LOG("\nERROR  -->  F1AP : Memory allocation failed for e2NodeComponentList node");
+            DU_FREE(e2NodeComponentInfo->componentRequestPart, bufSize);
+            DU_FREE(e2NodeComponentInfo, sizeof(E2NodeComponent));
+            return RFAILED;
+         }
+      }
+      else
+      {
+         if(duCb.e2apDb.e2NodeComponentList.count)
+         {
+            CM_LLIST_FIRST_NODE(&duCb.e2apDb.e2NodeComponentList, node);
+            while(node)
+            {
+               e2NodeComponentInfo = (E2NodeComponent*)node->node;
+               if((e2NodeComponentInfo->interfaceType == F1) && (e2NodeComponentInfo->componentActionType == action))
+               {
+                  e2NodeComponentInfo->rspBufSize = bufSize;
+
+                  DU_ALLOC(e2NodeComponentInfo->componentResponsePart, bufSize);
+                  if(e2NodeComponentInfo->componentResponsePart == NULLP)
+                  {
+                     DU_LOG("\nERROR  -->  F1AP : Memory allocation failed to store the encoding of f1setup rsp");
+                     return RFAILED;
+                  }
+                  memcpy(e2NodeComponentInfo->componentResponsePart, bufString, e2NodeComponentInfo->rspBufSize);
+                  break;
+               }
+               node = node->next;
+            }
+         } 
+      }
+   }
+   return ROK;
+}
+/*******************************************************************
+ *
  * @brief Builds and Send the F1SetupRequest
  *
  * @details
@@ -1756,17 +1841,10 @@ uint8_t BuildAndSendF1SetupReq()
             printf("%x",encBuf[ieIdx]);
          }
 #endif
+         
 
-         duCb.f1SetupReqAndRspMsg.f1MsgReqBufSize = encBufSize;
-         DU_ALLOC(duCb.f1SetupReqAndRspMsg.f1MsgReqBuf, encBufSize);
-         if(duCb.f1SetupReqAndRspMsg.f1MsgReqBuf == NULLP)
-         {
-            DU_LOG("\nERROR  -->  F1AP : Memory allocation failed to store the encoding of f1setup req");
-            return RFAILED;
-         }
-         memcpy(duCb.f1SetupReqAndRspMsg.f1MsgReqBuf, &encBuf, duCb.f1SetupReqAndRspMsg.f1MsgReqBufSize);
       }
-
+      addOrModifyE2NodeComponent(E2_NODE_COMPONENT_ADD, true, encBufSize, encBuf);
       /* Sending msg */
       if(sendF1APMsg() != ROK)
       {
@@ -15549,15 +15627,8 @@ uint8_t procF1SetupRsp(F1AP_PDU_t *f1apMsg, MsgLen recvBufLen, char *recvBuf)
    
    duProcF1SetupRsp();
    freeAperDecodeF1SetupRsp(f1SetRspMsg);
-
-   duCb.f1SetupReqAndRspMsg.f1MsgRspBufSize = recvBufLen;
-   DU_ALLOC(duCb.f1SetupReqAndRspMsg.f1MsgRspBuf, duCb.f1SetupReqAndRspMsg.f1MsgRspBufSize);
-   if(duCb.f1SetupReqAndRspMsg.f1MsgReqBuf == NULLP)
-   {
-      DU_LOG("\nERROR  -->  F1AP : Memory allocation failed to store the buf of F1setup response");
-      return RFAILED;
-   }
-   memcpy(duCb.f1SetupReqAndRspMsg.f1MsgRspBuf, recvBuf, recvBufLen);
+   
+   addOrModifyE2NodeComponent(E2_NODE_COMPONENT_ADD, false, recvBufLen, recvBuf);
 
    if(BuildAndSendE2SetupReq() != ROK)
    {

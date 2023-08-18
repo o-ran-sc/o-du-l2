@@ -241,6 +241,7 @@ struct macCellCb
    MacUeRecfg      *ueRecfgTmpData[MAX_NUM_UE];
    MacUeCb         ueCb[MAX_NUM_UE];
    MacCellCfg      macCellCfg;
+   uint8_t         numerology;
    SlotTimingInfo  currTime;
 };
 

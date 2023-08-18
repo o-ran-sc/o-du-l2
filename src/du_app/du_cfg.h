@@ -24,6 +24,8 @@
 #endif
 
 /* MACROS */
+#define GNB_ID  1 /* As per 38.423,Sec 9.2.2.1, gnbId range b/w 0 to 4294967295 */
+
 #define DU_INST 0
 #define DU_ID 1
 
@@ -46,7 +48,6 @@
 //TODO: while testing for TDD, Mu1 and 100 MHz, this flag must be enabled
 #ifdef NR_TDD
 #define DUPLEX_MODE DUP_MODE_TDD
-#define NR_NUMEROLOGY 1
 #define NR_DL_ARFCN 623400
 #define NR_UL_ARFCN 623400
 #define NR_FREQ_BAND 78
@@ -54,7 +55,6 @@
 #define NR_BANDWIDTH BANDWIDTH_100MHZ
 #else
 #define DUPLEX_MODE DUP_MODE_FDD
-#define NR_NUMEROLOGY 0
 #define NR_DL_ARFCN 428000
 #define NR_UL_ARFCN 390000
 #define NR_FREQ_BAND 1
@@ -1261,15 +1261,6 @@ typedef struct duCfgParams
    Sib1Params         sib1Params;                 /* SIB1 Params */
    MacSliceCfgReq     tempSliceCfg;
 }DuCfgParams;
-
-typedef struct f1SetupMsg
-{
-   uint8_t f1MsgReqBufSize;
-   char    *f1MsgReqBuf; 
-   uint8_t f1MsgRspBufSize;
-   char    *f1MsgRspBuf;
-}F1SetupMsg;
-
 
 #ifndef O1_ENABLE
 //RRM POLICY STRUCT

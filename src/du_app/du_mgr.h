@@ -335,6 +335,7 @@ typedef struct duCb
 {
    Mem           mem;                       /* Memory configs */
    TskInit       init;                      /* DU Init */
+   uint8_t       gnbId;                     /* gnb Id number */
    bool          f1Status;                  /* Status of F1 connection */
    bool          e2Status;                  /* Status of E2 connection */
    E2apDb        e2apDb;                    /* E2AP database */
@@ -349,7 +350,6 @@ typedef struct duCb
    UpTnlCfg*     upTnlCfg[MAX_TEID];        /* tunnel info for every Drb */
    CmLListCp     reservedF1apPduList;       /*storing F1AP pdu infomation and transId */
    SliceCfgState sliceState;                /* Slice status */ 
-   F1SetupMsg    f1SetupReqAndRspMsg;       /* f1 Setup Req And Rsp Msg*/
    DuTimers      duTimersInfo;              /* Du timers queue */
 }DuCb;
 

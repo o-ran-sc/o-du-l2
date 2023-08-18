@@ -126,6 +126,9 @@
 
 #define MAX_SFN   1024
 
+/*First SCS in kHz as per 3gpp spec 38.211 Table 4.2-1 */
+#define BASE_SCS 15
+
 /* Defining macros for common utility functions */
 #define ODU_GET_MSG_BUF SGetMsg
 #define ODU_PUT_MSG_BUF SPutMsg

@@ -205,6 +205,21 @@ extern "C" {
 #define maxofRICactionID (16)
 #define maxofTNLA (32)
 #define maxofRICrequestID (1024)
+#define maxE1APid (65535)
+#define maxF1APid (4)
+#define maxnoofCells (16384)
+#define maxnoofRICStyles (63)
+#define maxnoofMeasurementInfo (65535)
+#define maxnoofLabelInfo (2147483647)
+#define maxnoofMeasurementRecord (65535)
+#define maxnoofMeasurementValue (2147483647)
+#define maxnoofConditionInfo (32768)
+#define maxnoofUEID (65535)
+#define maxnoofConditionInfoPerSub (32768)
+#define maxnoofUEIDPerSub (65535)
+#define maxnoofUEMeasReport (65535)
+#define maxnoofBin (65535)
+
 #ifdef __cplusplus
 }
 #endif
