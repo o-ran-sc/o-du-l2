@@ -169,6 +169,44 @@ void SchFcfsModUeConfigReq(SchUeCb *ueCb)
 
 /*******************************************************************
  *
+ * @brief Handles Slice configuration request
+ *
+ * @details
+ *
+ *    Function : schFcfsSliceCfgReq
+ *
+ *    Functionality: 
+ *
+ * @params[in] Pointer to Cell control block
+ * @return void
+ *
+ * ****************************************************************/
+void schFcfsSliceCfgReq(SchCellCb *cellCb)
+{
+   return;
+}
+
+/*******************************************************************
+ *
+ * @brief Handles Slice Reconfiguration request
+ *
+ * @details
+ *
+ *    Function : schFcfsSliceRecfgReq
+ *
+ *    Functionality: 
+ *
+ * @params[in] Pointer to Cell control block
+ * @return void
+ *
+ * ****************************************************************/
+void schFcfsSliceRecfgReq(SchCellCb *cellCb)
+{
+   return;
+}
+
+/*******************************************************************
+ *
  * @brief Handles UE Delete Request
  *
  * @details
@@ -1356,6 +1394,8 @@ void schFcfsAllApisInit(SchAllApis *allFcfsApi)
     allFcfsApi->SchDlRlcBoInfo = schFcfsDlRlcBoInfo;
     allFcfsApi->SchSrUciInd = schFcfsSrUciInd;
     allFcfsApi->SchBsr = schFcfsBsr;
+    allFcfsApi->SchSliceCfgReq = schFcfsSliceCfgReq;
+    allFcfsApi->SchSliceRecfgReq = schFcfsSliceRecfgReq;
 
     /* Internal API function pointers */
     allFcfsApi->SchAddToDlHqRetxList = schFcfsAddToDlHqRetxList;
