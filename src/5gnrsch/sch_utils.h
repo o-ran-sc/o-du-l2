@@ -34,6 +34,7 @@
 #define DEFAULT_UL_ACK_LIST_COUNT 8 /* Max number of pusch time domain uplink allocation */
 #define MASK_BIT64_ON 0xFFFFFFFFFFFFFFFF
 #define MIN_PRB 1
+#define MAX_5QI_TABLE_IDX 27
 
 #define SET_BITS_MSB(_startBit, _numBits, _byte) \
 {                                                \
@@ -108,6 +109,8 @@ uint8_t puschDeltaTable[MAX_MU_PUSCH];
 uint16_t prachCfgIdxTable[MAX_PRACH_CONFIG_IDX][8];
 uint16_t numRbForPrachTable[MAX_RACH_NUM_RB_IDX][5];
 uint8_t schCmnDlRvTbl[4];
+uint16_t fiveQiTable[MAX_5QI_TABLE_IDX][3];
+
 /* Functions declarations : Linked list handler */
 uint8_t addNodeToLList(CmLListCp *llist, void *blockToAdd, CmLList *currNode);
 uint8_t deleteNodeFromLList(CmLListCp *llist, CmLList *node);
