@@ -35,6 +35,7 @@
 #include "phy_stub.h"
 #include "phy_stub_utils.h"
 #include "lwr_mac_phy_stub_inf.h"
+#include "time.h"
 
 /*******************************************************************
  *
@@ -1077,7 +1078,21 @@ uint8_t fillPucchF0F1PduInfo(fapi_uci_o_pucch_f0f1_t *pduInfo, fapi_ul_pucch_pdu
       pduInfo->harqInfo.harqConfidenceLevel = CONFDC_LEVEL_GOOD;
       for(idx = 0; idx < pduInfo->harqInfo.numHarq; idx++)
       {
-         pduInfo->harqInfo.harqValue[idx] = result[ind%50];
+         /*Start triggering retransmission after UE finishes UE attachment.*/
+         if(ind < 10)
+         {
+            pduInfo->harqInfo.harqValue[idx] = result[ind%50];
+         }
+         else
+         {
+            /*NTUST Bimo: Get the current time as the seed.*/
+            struct timespec ts;
+            clock_gettime(CLOCK_REALTIME, &ts);
+            srand((unsigned int)(ts.tv_nsec / 1000000));
+
+            uint8_t random_seed = rand()%(100);
+            pduInfo->harqInfo.harqValue[idx] = (70 >= random_seed)?HARQ_PASS:HARQ_FAIL;
+         }
          ind++;
          /*TBD: To use harq ind with random number and percentage*/
          //pduInfo->harqInfo.harqValue[idx] = (dlHqPassPer >= rand()%(100))?HARQ_PASS:HARQ_FAIL;

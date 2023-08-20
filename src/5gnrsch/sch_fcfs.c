@@ -169,6 +169,44 @@ void SchFcfsModUeConfigReq(SchUeCb *ueCb)
 
 /*******************************************************************
  *
+ * @brief Handles Slice configuration request
+ *
+ * @details
+ *
+ *    Function : schFcfsSliceCfgReq
+ *
+ *    Functionality: 
+ *
+ * @params[in] Pointer to Cell control block
+ * @return void
+ *
+ * ****************************************************************/
+void schFcfsSliceCfgReq(SchCellCb *cellCb)
+{
+   return;
+}
+
+/*******************************************************************
+ *
+ * @brief Handles Slice Reconfiguration request
+ *
+ * @details
+ *
+ *    Function : schFcfsSliceRecfgReq
+ *
+ *    Functionality: 
+ *
+ * @params[in] Pointer to Cell control block
+ * @return void
+ *
+ * ****************************************************************/
+void schFcfsSliceRecfgReq(SchCellCb *cellCb)
+{
+   return;
+}
+
+/*******************************************************************
+ *
  * @brief Handles UE Delete Request
  *
  * @details
@@ -1122,6 +1160,10 @@ uint32_t schFcfsScheduleDlLc(SlotTimingInfo pdcchTime, SlotTimingInfo pdschTime,
       /* Not Freeing dlMsgAlloc as ZERO BO REPORT to be sent to RLC so that
        * Allocation can be done in next slot*/
       accumalatedSize = 0;
+
+      /*Release schDlSlotInfo if resource crunch. */
+      SCH_FREE(dciSlotAlloc, sizeof(DlMsgSchInfo));
+      (*hqP)->hqEnt->cell->schDlSlotInfo[pdcchTime.slot]->dlMsgAlloc[ueCb->ueId -1] = NULL;
    }
 
    return accumalatedSize;
@@ -1356,6 +1398,8 @@ void schFcfsAllApisInit(SchAllApis *allFcfsApi)
     allFcfsApi->SchDlRlcBoInfo = schFcfsDlRlcBoInfo;
     allFcfsApi->SchSrUciInd = schFcfsSrUciInd;
     allFcfsApi->SchBsr = schFcfsBsr;
+    allFcfsApi->SchSliceCfgReq = schFcfsSliceCfgReq;
+    allFcfsApi->SchSliceRecfgReq = schFcfsSliceRecfgReq;
 
     /* Internal API function pointers */
     allFcfsApi->SchAddToDlHqRetxList = schFcfsAddToDlHqRetxList;

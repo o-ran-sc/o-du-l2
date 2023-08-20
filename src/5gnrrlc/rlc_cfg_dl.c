@@ -416,6 +416,13 @@ static S16 rlcCfgFillDlRbCb(RlcCb *gCb,RlcDlRbCb *rbCb,RlcDlUeCb *ueCb,RlcEntCfg
       {
          DU_LOG("\nERROR  --> RLC_DL : rlcCfgFillDlRbCb(): SNSSAI insertion in Tput list failed");
       }
+
+      /*Initialize the drbTput data structure*/
+      if(rlcHandleDrbTputlist(gCb, rbCb->snssai, rbCb->rlcId.ueId, \
+                              rbCb->lch.lChId, CREATE, DIR_DL) == NULLP)
+      {
+         DU_LOG("\nERROR  --> RLC_DL : rlcCfgFillDlRbCb(): DRB insertion in Tput list failed");
+      }
    }
    rbCb->mode = entCfg->entMode;
    rbCb->discTmrInt = entCfg->discardTmr;

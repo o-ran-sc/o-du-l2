@@ -124,7 +124,21 @@ void fillSchDlLcCtxt(SchDlLcCtxt *ueCbLcCfg, SchLcCfg *lcCfg)
    if(lcCfg->drbQos)
    {
      ueCbLcCfg->pduSessionId = lcCfg->drbQos->pduSessionId;
+
+     if(lcCfg->drbQos->fiveQiType == SCH_QOS_NON_DYNAMIC) /* Non-Dynamic 5QI */
+     {
+         ueCbLcCfg->fiveQi = lcCfg->drbQos->u.nonDyn5Qi.fiveQi;
+     }
+     else /* Dynamic 5QI */
+     {
+         ueCbLcCfg->fiveQi = lcCfg->drbQos->u.dyn5Qi.fiveQi;
+     }
    }
+   else /* DRB has no 5QI */
+   {
+      ueCbLcCfg->fiveQi = 0;
+   }
+
    if(lcCfg->snssai)
    {
      if(ueCbLcCfg->snssai == NULLP)/*In CONFIG_MOD case, no need to allocate SNSSAI memory*/
@@ -212,8 +226,9 @@ uint8_t updateDedLcInfo(Inst inst, Snssai *snssai, uint16_t *rsvdDedicatedPRB, b
          *rsvdDedicatedPRB = \
                              (uint16_t)(((rrmPolicyOfSlices->rrmPolicyRatioInfo.dedicatedRatio)*(MAX_NUM_RB))/100);
          *isDedicated = TRUE;
-         DU_LOG("\nINFO  -->  SCH : Updated RRM policy, reservedPOOL:%d",*rsvdDedicatedPRB);
+         DU_LOG("\nINFO  -->  SCH : Updated RRM policy, reservedPOOL:%d",*rsvdDedicatedPRB); 
          break;
+
       }
       sliceCfg = sliceCfg->next;
    }
@@ -402,7 +417,7 @@ uint8_t fillSchUeCbFrmCfgReq(Inst inst, SchUeCb *ueCb, SchUeCfgReq *ueCfg)
       CHECK_LCID(ueLcIdx, isLcIdValid);
       if(isLcIdValid == FALSE)
       {
-         DU_LOG("ERROR --> SCH: LCID:%d is not Valid",ueLcIdx);
+         DU_LOG("\nERROR --> SCH: LCID:%d is not Valid",ueLcIdx);
          continue;
       }
       fillSchUlLcCtxt(&ueCb->ulInfo.ulLcCtxt[ueLcIdx], &ueCfg->schLcCfg[lcIdx]);
@@ -1203,6 +1218,7 @@ uint8_t SchModUeConfigReq(Pst *pst, SchUeRecfgReq *ueRecfg)
          SchSendUeRecfgRspToMac(ueRecfg, inst, RSP_OK, &recfgRsp);
       }
    }
+   cellCb->api->SchModUeConfigReq(ueCb);
    return ret;
 }
 
