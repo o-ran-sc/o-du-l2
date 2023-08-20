@@ -367,6 +367,7 @@ typedef struct schLcCtxt
 {
    uint8_t lcId;     // logical Channel ID
    uint8_t lcp;      // logical Channel Prioritization
+   uint16_t   fiveQi; // 5QI
    SchLcState lcState;
    uint32_t bo;
    uint16_t   pduSessionId; /*Pdu Session Id*/
@@ -565,6 +566,8 @@ typedef struct schAllApis
    void (* SchDlRlcBoInfo)(SchCellCb *cellCb, uint16_t ueId);
    void (* SchSrUciInd)(SchCellCb *cellCb, uint16_t ueId);
    void (* SchBsr)(SchCellCb *cellCb, uint16_t ueId);
+   void (* SchSliceCfgReq)(SchCellCb *cellCb);
+   void (* SchSliceRecfgReq)(SchCellCb *cellCb);
    void (* SchHandleLcList)(void *ptr, CmLList *node, ActionTypeLL action);
    void (* SchAddToDlHqRetxList)(SchDlHqProcCb *hqP);
    void (* SchAddToUlHqRetxList)(SchUlHqProcCb *hqP);

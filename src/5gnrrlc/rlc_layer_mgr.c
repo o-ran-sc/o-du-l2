@@ -178,6 +178,7 @@ static S16 rlcLmmGenCfg(RlcCb  *gCb,RlcGenCfg *cfg)
    memset(gCb->rlcThpt.ueTputInfo.thptPerUe, 0, MAX_NUM_UE * sizeof(RlcThptPerUe));
 
    gCb->rlcThpt.snssaiTputInfo.snssaiThptTmr.tmrEvnt = TMR_NONE;
+   gCb->rlcThpt.drbTputInfo.drbThptTmr.tmrEvnt = TMR_NONE;
    
    if(gCb->genCfg.rlcMode == LKW_RLC_MODE_DL)
    {
@@ -409,6 +410,12 @@ static S16 rlcLmmGenCfg(RlcCb  *gCb,RlcGenCfg *cfg)
          rlcStartTmr(gCb, (PTR)(&gCb->rlcThpt), EVENT_RLC_SNSSAI_THROUGHPUT_TMR);
       }
 
+      /* Starting timer to print DRB throughput */
+      if((rlcChkTmr(gCb, (PTR)(&gCb->rlcThpt), EVENT_RLC_DRB_THROUGHPUT_TMR)) == FALSE)
+      {
+         DU_LOG("\nINFO    --> RLC_DL : Starting DRB Throughput timer");
+         rlcStartTmr(gCb, (PTR)(&gCb->rlcThpt), EVENT_RLC_DRB_THROUGHPUT_TMR);
+      }
    
    return (LCM_REASON_NOT_APPL);
 } 

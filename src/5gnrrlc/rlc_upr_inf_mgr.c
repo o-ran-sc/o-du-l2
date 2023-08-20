@@ -1074,16 +1074,16 @@ uint8_t rlcCalculateTputPerSnssai(CmLListCp *snssaiList, Direction dir)
    while(node)
    {
       snssaiNode = (RlcTptPerSnssai *)node->node;
-      snssaiNode->tpt =  (double)(snssaiNode->dataVol * 8)/(double)(ODU_SNSSAI_THROUGHPUT_PRINT_TIME_INTERVAL * 0.001);
+      snssaiNode->tpt =  (double)(snssaiNode->dataVol * 8)/(double)(ODU_SNSSAI_THROUGHPUT_PRINT_TIME_INTERVAL);
      
       if(dir == DIR_DL)
       {
-         DU_LOG("\nDEBUG  -->  RLC_DL: SNSSAI(sst:%d,sd [%d,%d, %d]), DL Tpt : %.5lf", snssaiNode->snssai->sst,\
+         DU_LOG("\nDEBUG  -->  RLC_DL: SNSSAI(sst:%d,sd [%d,%d, %d]), DL Tpt : %.5lf (kbps)", snssaiNode->snssai->sst,\
                snssaiNode->snssai->sd[0], snssaiNode->snssai->sd[1],snssaiNode->snssai->sd[2] , snssaiNode->tpt);
       }
       if(dir == DIR_UL)
       {
-         DU_LOG("\nDEBUG  -->  RLC_UL: SNSSAI(sst:%d,sd [%d,%d, %d]), UL Tpt : %.5lf", snssaiNode->snssai->sst,\
+         DU_LOG("\nDEBUG  -->  RLC_UL: SNSSAI(sst:%d,sd [%d,%d, %d]), UL Tpt : %.5lf (kbps)", snssaiNode->snssai->sst,\
                snssaiNode->snssai->sd[0], snssaiNode->snssai->sd[1],snssaiNode->snssai->sd[2] , snssaiNode->tpt);
       }
 
@@ -1094,6 +1094,257 @@ uint8_t rlcCalculateTputPerSnssai(CmLListCp *snssaiList, Direction dir)
    return(snssaiCnt);
 }
 
+/**
+ * @brief 
+ *    Handler for Creating, Searching or Deleting DrbTput List. 
+ *
+ * @details
+ *    This function is called whenever a new LC is configured with a snssai.
+ *
+ * @param[in] gCb            RlcCb 
+ * @param[in] snssai         Snssai to be handled
+ * @param[in] ueId           UE ID
+ * @param[in] lcId           LC ID
+ * @param[in] Action         Type of action to be handled(Create,Search,Delete)
+ *
+ * @return  RlcTptPerSnssai
+ *    -# Snssai Node
+ *   
+ */
+RlcTptPerDrb* rlcHandleDrbTputlist(RlcCb *gCb, Snssai *snssai, uint8_t ueId, uint8_t lcId, ActionTypeLL action, Direction dir)
+{
+   CmLListCp *drbList = NULLP;
+   CmLList  *node = NULLP;
+   RlcTptPerDrb *drbNode = NULLP;
+   bool found = FALSE;
+
+   if(dir == DIR_DL)
+   {
+      drbList = gCb->rlcThpt.drbTputInfo.dlTputPerDrbList[ueId-1];
+      if(action == CREATE)
+      {
+         if(drbList == NULLP)
+         {
+            RLC_ALLOC(gCb, gCb->rlcThpt.drbTputInfo.dlTputPerDrbList[ueId-1], sizeof(CmLListCp));
+            drbList = gCb->rlcThpt.drbTputInfo.dlTputPerDrbList[ueId-1];
+            cmLListInit(drbList);
+         }
+      }
+      else
+      {
+         if(drbList == NULLP)
+         {
+            DU_LOG("\nERROR --> RLC: DRB DL list doesnt exist!");
+            return NULLP;
+         }
+      }
+   }
+   else
+   {
+      DU_LOG("\nERROR  -->  RLC : Direction:%d is invalid", dir);
+      return NULLP;
+   }
+
+   node = drbList->first;
+
+   /*Traversing the LC LinkList*/
+   while(node)
+   {
+      drbNode = (RlcTptPerDrb *)node->node;
+      if(drbNode->lcId == lcId)
+      { 
+         //DU_LOG("\nDEBUG  -->  RLC : LC ID found in LL");
+         found = TRUE;
+         break;
+      }
+      node = node->next;
+   }//end of while
+
+   switch(action)
+   {
+      case SEARCH:
+         {
+            if(!found)
+            {
+               drbNode = NULLP;
+            }
+            return (drbNode);
+         }
+
+      case CREATE:
+         {
+            if(found)
+               return (drbNode);
+
+            drbNode = NULLP;
+            /*Allocate the List*/
+            RLC_ALLOC(gCb, drbNode, sizeof(RlcTptPerDrb));
+            if(drbNode)
+            {
+               RLC_ALLOC(gCb, drbNode->snssai, sizeof(Snssai));
+               if(drbNode->snssai == NULLP)
+               {
+                 DU_LOG("\nERROR  --> RLC : Allocation of DRB node failed");
+                 return NULLP;
+               }
+               memcpy(drbNode->snssai,snssai,sizeof(Snssai));
+               drbNode->lcId = lcId;
+               drbNode->ueId = ueId;
+               drbNode->dataVol = 0;
+            }
+            else
+            {
+               DU_LOG("\nERROR  --> RLC : Allocation of DRB node failed");
+               return NULLP;
+            }
+
+            node = NULLP;
+            RLC_ALLOC(gCb, node, sizeof(CmLList));
+            if(node)
+            {
+               node->node = (PTR)drbNode;
+               cmLListAdd2Tail(drbList, node);
+            }
+            else
+            {
+               DU_LOG("\nERROR  --> RLC : Allocation of DRB node failed");
+               return NULLP;
+            }
+            DU_LOG("\nDEBUG  --> RLC : DRB node added successfully");
+            return (drbNode);
+         }
+
+      case DELETE:
+         {
+            if(found && node)
+            {
+               node = cmLListDelFrm(drbList, node);
+               RLC_FREE(gCb, node, sizeof(CmLList));
+               RLC_FREE(gCb, drbNode, sizeof(RlcTptPerDrb));
+               DU_LOG("\nDEBUG  --> RLC : DRB node found and deletion performed");
+
+               if(drbList->count == 0)
+               {
+                  RLC_FREE(gCb, drbList, sizeof(CmLListCp));
+                  DU_LOG("\nINFO   --> RLC : This DRB was last in the list thus freeing the list also");
+               }
+            }
+            else
+            {
+               DU_LOG("\nERROR  --> RLC : DRB node not found in List thus no deletion performed");
+            }
+            return NULLP;
+         }
+       case PRINT:
+       case TRAVERSE_ALL:
+         {
+            break;
+         }
+       default:
+         {
+            DU_LOG("\nERROR  -> RLC: Incorrect ActionType:%d",action);
+            break;
+         }
+   }
+   return (drbNode);
+}
+
+/**
+ * @brief 
+ *    Handler for Deleting DrbTput List. 
+ *
+ * @details
+ *    This function is called during Shutdown to remove all the DRB entries
+ *    and deallocate the DRB tput list as well
+ *
+ * @param[in] gCb            RlcCb 
+ *
+ * @return uint_8 (ROK/RFAILED)
+ *   
+ */
+uint8_t rlcDelTputDrbList(RlcCb *gCb, Direction dir)
+{
+   CmLListCp *drbList = NULLP;
+   CmLList  *node = NULLP, *next = NULLP;
+   RlcTptPerSnssai *drbNode = NULLP;
+   if(dir == DIR_DL)
+   {
+      drbList = gCb->rlcThpt.drbTputInfo.dlTputPerDrbList;
+   }
+   else
+   {
+      DU_LOG("\nERROR  -->  RLC: Invalid direction:%d",dir);
+      return RFAILED;
+   }
+   if(drbList == NULLP)
+   {
+      DU_LOG("\nERROR -->  RLC: DrbList not exist");
+      return RFAILED;
+   }
+   node = drbList->first;
+
+   /*Traversing the LC LinkList*/
+   while(node)
+   {
+      drbNode = (RlcTptPerDrb *)node->node;
+      next = node->next;
+      node = cmLListDelFrm(drbList, node);
+      RLC_FREE(gCb, node, sizeof(CmLList));
+      RLC_FREE(gCb, drbNode, sizeof(RlcTptPerDrb));
+      node = next;
+   }
+   if(drbList->count == 0)
+   {
+      RLC_FREE(gCb, drbList, sizeof(CmLListCp));
+      DU_LOG("\nDEBUG   -->  RLC : This DRB node was last in the list thus freeing the list also");
+   }
+   return ROK;
+}
+
+/**
+ * @brief 
+ *    Handler for calculating the Tput for each DRB in Tput list after expiry. 
+ *
+ * @details
+ *    This function is called whenever DRB Tput timer expires and calculate
+ *    Tput for each DRB in list
+ *
+ * @param[in] DRBList     A list of DRB
+ *
+ * @return void 
+ *   
+ */
+uint8_t rlcCalculateTputPerDrb(CmLListCp *drbList, Direction dir)
+{
+   CmLList  *node = NULLP;
+   RlcTptPerDrb *drbNode = NULLP;
+   uint8_t drbCnt = 0;
+
+   node = drbList->first;
+   if(node == NULLP)
+   {
+      DU_LOG("\n No DRB in list");
+      return(drbCnt);
+   }
+   /*Traversing the LC LinkList*/
+   while(node)
+   {
+      drbNode = (RlcTptPerDrb *)node->node;
+      drbNode->tpt =  (double)(drbNode->dataVol * 8)/(double)(ODU_DRB_THROUGHPUT_PRINT_TIME_INTERVAL);
+     
+      if(dir == DIR_DL)
+      {
+         DU_LOG("\nDEBUG  -->  Tput per DRB: UE ID: %d, LC ID: %d, SNSSAI(sst:%d,sd [%d,%d,%d]), DL Tpt : %.5lf (kbps)", \
+         drbNode->ueId, drbNode->lcId, drbNode->snssai->sst, drbNode->snssai->sd[0], drbNode->snssai->sd[1], \
+         drbNode->snssai->sd[2] , drbNode->tpt);
+      }
+
+      drbNode->dataVol = 0;
+      node = node->next;
+      drbCnt++;
+   }
+   return(drbCnt);
+}
 /********************************************************************30**
          End of file
 **********************************************************************/
