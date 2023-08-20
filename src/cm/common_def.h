@@ -112,8 +112,9 @@
 #define MAX_NUM_RB TOTAL_PRB_20MHZ_MU0 /* value for numerology 0, 20 MHz */
 #endif
 
-#define ODU_UE_THROUGHPUT_PRINT_TIME_INTERVAL      5     /* in milliseconds */
-#define ODU_SNSSAI_THROUGHPUT_PRINT_TIME_INTERVAL  60000 /* in milliseconds */
+#define ODU_UE_THROUGHPUT_PRINT_TIME_INTERVAL      500     /* in milliseconds */
+#define ODU_SNSSAI_THROUGHPUT_PRINT_TIME_INTERVAL  500     /* in milliseconds */
+#define ODU_DRB_THROUGHPUT_PRINT_TIME_INTERVAL     500      /* in milliseconds */
 
 /*Spec 38.331 Sec 6.4: Maximum number of paging occasion per paging frame*/
 #define MAX_PO_PER_PF 4
