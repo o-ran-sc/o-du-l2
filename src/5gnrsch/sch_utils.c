@@ -765,6 +765,37 @@ uint8_t pucchResourceSet[MAX_PUCCH_RES_SET_IDX][4] = {
 { 1,   0, 14,  0 }, /* index 15 */
 };
 
+/* 3GPP TS 23.501 Table 5.7.4-1: Standardized 5QI to QoS characteristics mapping */
+/* Resource type(0 = GBR, 1 = Non-GBR, 2 = delay critical GBR) ,  Default Priority Level */
+uint16_t fiveQiTable[MAX_5QI_TABLE_IDX][3] = {
+      {1,   0,   20},
+      {2,   0,   40},
+      {3,   0,   30},
+      {4,   0,   50},
+      {65,  0,   7},
+      {66,  0,   20},
+      {67,  0,   15},
+      {75,  0,   0}, /* 5QI Value = 75 doesn't define default priority level */
+      {71,  0,   56},
+      {72,  0,   56},
+      {73,  0,   56},
+      {74,  0,   56},
+      {76,  0,   56},
+      {5,   1,   10},
+      {6,   1,   60},
+      {7,   1,   70},
+      {8,   1,   80},
+      {9,   1,   90},
+      {69,  1,   5},
+      {70,  1,   55},
+      {79,  1,   65},
+      {80,  1,   68},
+      {82,  2,   19},
+      {83,  2,   22},
+      {84,  2,   24},
+      {85,  2,   21},
+      {86,  2,   18}
+};
 /* Minimum Msg3 scheduling time should be calculated based on N1+N2+NTAmax+0.5
  * ms formula.
  * Refer spec 38.213 section 8.3.
@@ -1559,7 +1590,10 @@ uint32_t calculateEstimateTBSize(uint32_t reqBO, uint16_t mcsIdx, uint8_t numSym
        * So to convert it into Bytes , we right shift by 3. 
        * Eg: tbs=128 bits(1000 0000) ; Right Shift by 3: Tbs = 0001 0000(16 bytes)*/
       tbs = tbs >> 3;
-      *estPrb += 1;
+      if(maxPRB > MIN_PRB)
+      {
+         *estPrb +=1;
+      }
    }while((tbs < reqBO) && (*estPrb < maxPRB));
 
    /*Effective BO is the Grant which can be provided for this LC.

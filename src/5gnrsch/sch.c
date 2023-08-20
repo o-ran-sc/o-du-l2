@@ -1884,8 +1884,10 @@ void freeSchSliceCfgReq(SchSliceCfgReq *sliceCfgReq)
 uint8_t SchProcSliceCfgReq(Pst *pst, SchSliceCfgReq *schSliceCfgReq)
 {
    uint8_t ret = ROK;
+   SchCellCb *cellCb;
    Inst   inst = pst->dstInst - SCH_INST_START;
 
+   cellCb = schCb[inst].cells[0];
    DU_LOG("\nINFO  -->  SCH : Received Slice Cfg request from MAC");
    if(schSliceCfgReq)
    {
@@ -1896,6 +1898,10 @@ uint8_t SchProcSliceCfgReq(Pst *pst, SchSliceCfgReq *schSliceCfgReq)
          {
             DU_LOG("\nERROR  -->  SCH : Failed to fill the slice cfg rsp");
             ret = RFAILED;
+         }
+         else
+         {
+            cellCb->api->SchSliceCfgReq(cellCb);
          }
          freeSchSliceCfgReq(schSliceCfgReq);
       }
@@ -1955,11 +1961,13 @@ void SchSendSliceRecfgRspToMac(Inst inst, SchSliceRecfgRsp schSliceRecfgRsp)
 
 uint8_t fillSliceRecfgRsp(Inst inst, CmLListCp *storedSliceCfg, SchSliceRecfgReq *schSliceRecfgReq)
 {
+   SchCellCb *cellCb;
    SchMacRsp sliceFound;
    uint8_t cfgIdx = 0;
    SchRrmPolicyOfSlice *rrmPolicyOfSlices;
    SchSliceRecfgRsp schSliceRecfgRsp;
-
+   cellCb = schCb[inst].cells[inst];
+   
    for(cfgIdx = 0; cfgIdx<schSliceRecfgReq->numOfConfiguredSlice; cfgIdx++)
    {
       sliceFound = RSP_NOK;
@@ -1969,12 +1977,11 @@ uint8_t fillSliceRecfgRsp(Inst inst, CmLListCp *storedSliceCfg, SchSliceRecfgReq
       while(sliceCfg)
       {
          rrmPolicyOfSlices = (SchRrmPolicyOfSlice*)sliceCfg->node;
-         
-         if(rrmPolicyOfSlices && (memcmp(&schSliceRecfgReq->listOfSlices[cfgIdx]->snssai, &(rrmPolicyOfSlices->snssai), sizeof(Snssai)) == 0))
+        if(rrmPolicyOfSlices && (memcmp(&schSliceRecfgReq->listOfSlices[cfgIdx]->snssai, &(rrmPolicyOfSlices->snssai), sizeof(Snssai)) == 0))
          {
             memcpy(&rrmPolicyOfSlices->rrmPolicyRatioInfo, &schSliceRecfgReq->listOfSlices[cfgIdx]->rrmPolicyRatioInfo, sizeof(SchRrmPolicyRatio));
             sliceFound = RSP_OK;
-            break;
+           break;
          }
          sliceCfg = sliceCfg->next;
       }
@@ -2011,7 +2018,9 @@ uint8_t SchProcSliceRecfgReq(Pst *pst, SchSliceRecfgReq *schSliceRecfgReq)
 {
    uint8_t ret = ROK;
    Inst   inst = pst->dstInst - SCH_INST_START;
+   SchCellCb *cellCb;
 
+   cellCb = schCb[inst].cells[0];
    DU_LOG("\nINFO  -->  SCH : Received Slice ReCfg request from MAC");
    if(schSliceRecfgReq)
    {
