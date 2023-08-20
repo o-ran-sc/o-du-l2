@@ -700,22 +700,24 @@ References
 
 4. 3GPP 38.473-f60 v15.3
 
-5. 3GPP TS 38.211 v15.3
+5. 3GPP TS 23.501 v16.6
 
-6. 3GPP TS 38.212 v15.3
+6. 3GPP TS 38.211 v15.3
 
-7. 3GPP TS 38.213 v15.3
+7. 3GPP TS 38.212 v15.3
 
-8. 3GPP TS 38.214 v15.3
+8. 3GPP TS 38.213 v15.3
 
-9. 3GPP TS 38.321 v15.3
+9. 3GPP TS 38.214 v15.3
 
-10. 3GPP TS 38.331 v15.3
+10. 3GPP TS 38.321 v15.3
 
-11. 5G PHY FAPI Specification v1.0.5
+11. 3GPP TS 38.331 v15.3
 
-12. 3GPP TS 28.541 Specfication V16.6
+12. 5G PHY FAPI Specification v1.0.5
 
-13. O-RAN WG1.O1-Interface v04.00
+13. 3GPP TS 28.541 Specfication V16.6
 
-14. O-RAN WG1.OAM-Architecture v04.00
+14. O-RAN WG1.O1-Interface v04.00
+
+15. O-RAN WG1.OAM-Architecture v04.00
