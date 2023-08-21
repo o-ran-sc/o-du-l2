@@ -46,50 +46,10 @@
 #include "rg_sch_inf.x"         /* typedefs for Scheduler */
 #include "mac_sch_interface.h"
 #include "sch.h"
+#include "sch_tmr.h"
 #include "sch_utils.h"
 #include "sch_fcfs.h"
 #include "sch_slice_based.h"
-
-/**
- * @brief Task Initiation function. 
- *
- * @details
- *
- *     Function : schActvInit
- *     
- *     This function is supplied as one of parameters during MAC's 
- *     task registration. MAC will invoke this function once, after
- *     it creates and attaches this TAPA Task to a system task.
- *     
- *  @param[in]  Ent Entity, the entity ID of this task.     
- *  @param[in]  Inst Inst, the instance ID of this task.
- *  @param[in]  Region Region, the region ID registered for memory 
- *              usage of this task.
- *  @param[in]  Reason Reason.
- *  @return  int
- *      -# ROK
- **/
-uint8_t schActvInit(Ent entity, Inst instId, Region region, Reason reason)
-{
-   Inst inst = (instId  - SCH_INST_START);
-
-   /* Initialize the MAC TskInit structure to zero */
-   memset ((uint8_t *)&schCb[inst], 0, sizeof(schCb));
-
-   /* Initialize the MAC TskInit with received values */
-   schCb[inst].schInit.ent = entity;
-   schCb[inst].schInit.inst = inst;
-   schCb[inst].schInit.region = region;
-   schCb[inst].schInit.pool = 0;
-   schCb[inst].schInit.reason = reason;
-   schCb[inst].schInit.cfgDone = FALSE;
-   schCb[inst].schInit.acnt = FALSE;
-   schCb[inst].schInit.usta = FALSE;
-   schCb[inst].schInit.trc = FALSE;
-   schCb[inst].schInit.procId = ODU_GET_PROCID();
-
-   return ROK;
-} /* schActvInit */
 
 /**
  * @brief Scheduler All Apis initialized. 
@@ -150,28 +110,27 @@ uint8_t SchInstCfg(RgCfg *cfg, Inst  dInst)
 
    schCb[inst].schInit.region = cfg->s.schInstCfg.genCfg.mem.region;
    schCb[inst].schInit.pool = cfg->s.schInstCfg.genCfg.mem.pool;
-   schCb[inst].genCfg.tmrRes = cfg->s.schInstCfg.genCfg.tmrRes;
 #ifdef LTE_ADV
    schCb[inst].genCfg.forceCntrlSrbBoOnPCel =  cfg->s.schInstCfg.genCfg.forceCntrlSrbBoOnPCel;
    schCb[inst].genCfg.isSCellActDeactAlgoEnable =  cfg->s.schInstCfg.genCfg.isSCellActDeactAlgoEnable;
 #endif
    schCb[inst].genCfg.startCellId    = cfg->s.schInstCfg.genCfg.startCellId;
 
+   schCb[inst].schTimersInfo.tmrRes = cfg->s.schInstCfg.genCfg.tmrRes;
    /* Initialzie the timer queue */   
-   memset(&schCb[inst].tmrTq, 0, sizeof(CmTqType) * SCH_TQ_SIZE);
+   memset(&schCb[inst].schTimersInfo.tmrTq, 0, sizeof(CmTqType) * SCH_TQ_SIZE);
    /* Initialize the timer control point */
-   memset(&schCb[inst].tmrTqCp, 0, sizeof(CmTqCp));
-   schCb[inst].tmrTqCp.tmrLen = RGSCH_TQ_SIZE;
+   memset(&schCb[inst].schTimersInfo.tmrTqCp, 0, sizeof(CmTqCp));
+   schCb[inst].schTimersInfo.tmrTqCp.tmrLen = SCH_TQ_SIZE;
 
    /* SS_MT_TMR needs to be enabled as schActvTmr needs instance information */
    /* Timer Registration request to system services */
-   if (ODU_REG_TMR_MT(schCb[inst].schInit.ent, dInst, (int)schCb[inst].genCfg.tmrRes, schActvTmr) != ROK)
+   if (ODU_REG_TMR_MT(schCb[inst].schInit.ent, dInst, (int)schCb[inst].schTimersInfo.tmrRes, schActvTmr) != ROK)
    {
-      DU_LOG("\nERROR  -->  SCH : SchInstCfg(): Failed to "
-	    "register timer.");
+      DU_LOG("\nERROR  -->  SCH : SchInstCfg(): Failed to register timer.");
       return (LCM_REASON_MEM_NOAVAIL);
    }   
-              
+
    /* Set Config done in TskInit */
    schCb[inst].schInit.cfgDone = TRUE;
    DU_LOG("\nINFO   -->  SCH : Scheduler gen config done");
@@ -1422,6 +1381,10 @@ uint8_t allocatePrbDl(SchCellCb *cell, SlotTimingInfo slotTime, \
          return RFAILED;
       }
    }
+   
+   /* Update statistics of PRB usage if stats calculation is enabled */
+   if(schCb[cell->instIdx].statistics.dlTotalPrbUsage)
+      prbAlloc->numPrbAlloc += numPrb;
 
    /* Update the remaining number for free PRBs */
    removeAllocatedPrbFromFreePrbList(&prbAlloc->freePrbBlockList, freePrbNode, *startPrb, numPrb);
@@ -1555,6 +1518,10 @@ uint8_t allocatePrbUl(SchCellCb *cell, SlotTimingInfo slotTime, \
          return RFAILED;
       }
    }
+
+   /* Update statistics of PRB usage if stats calculation is enabled */
+   if(schCb[cell->instIdx].statistics.ulTotalPrbUsage)
+      prbAlloc->numPrbAlloc += numPrb;
 
    /* Update the remaining number for free PRBs */
    removeAllocatedPrbFromFreePrbList(&prbAlloc->freePrbBlockList, freePrbNode, *startPrb, numPrb);
@@ -2533,6 +2500,150 @@ uint8_t SchProcPhrInd(Pst *pst, SchPwrHeadroomInd *schPhrInd)
    }
    return ret;
 }
+
+/*******************************************************************
+ *
+ * @brief Processes Statistics Request from MAC
+ *
+ * @details
+ *
+ *    Function : SchProcStatsReq
+ *
+ *    Functionality:
+ *       Processes Statistics Request from MAC
+ *
+ * @params[in] 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t SchProcStatsReq(Pst *pst, SchStatsReq *statsReq)
+{
+   uint8_t idx;
+   Inst    inst = pst->dstInst - SCH_INST_START;
+   SchMacRsp     rsp = RSP_OK;
+   CauseOfResult cause = SUCCESSFUL;
+   bool isDlTotlPrbUseCfgd = false, isUlTotlPrbUseCfgd = false;
+
+   DU_LOG("\nINFO   -->  SCH : Received Statistics Request from MAC");
+
+   for(idx=0; idx < statsReq->numStats; idx++)
+   {
+      switch(statsReq->statsList[idx].type)
+      {
+         case SCH_DL_TOTAL_PRB_USAGE:
+            {
+               /* Check if duplicate configuration */
+               if(schCb[inst].statistics.dlTotalPrbUsage)
+               {
+                  DU_LOG("\nERROR   -->  SCH : SCH_DL_TOTAL_PRB_USAGE stats already configured");
+                  rsp = RSP_NOK;
+                  cause = DUPLICATE_ENTRY;
+               }
+
+               /* Allocate memory */
+               SCH_ALLOC(schCb[inst].statistics.dlTotalPrbUsage, sizeof(TotalPrbUsage));
+               if(!schCb[inst].statistics.dlTotalPrbUsage)
+               {
+                  DU_LOG("\nERROR   -->  SCH : Memory allocation failed for dlTotalPrbUsage in \
+                        SchProcStatsReq()");
+                  rsp = RSP_NOK;
+                  cause = RESOURCE_UNAVAILABLE;
+                  break;
+               }
+
+               /* Initialize */
+               memset(schCb[inst].statistics.dlTotalPrbUsage, 0, sizeof(TotalPrbUsage));
+
+               /* Configure */
+               schCb[inst].statistics.dlTotalPrbUsage->schInst = inst;
+               schCb[inst].statistics.dlTotalPrbUsage->periodicity = statsReq->statsList[idx].periodicity;
+               cmInitTimers(&(schCb[inst].statistics.dlTotalPrbUsage->periodTimer), 1);
+
+               /* Start timer */
+               schStartTmr(&schCb[inst], (PTR)(schCb[inst].statistics.dlTotalPrbUsage), \
+                     EVENT_DL_TOTAL_PRB_USAGE_TMR, schCb[inst].statistics.dlTotalPrbUsage->periodicity);
+
+               isDlTotlPrbUseCfgd = true;
+               break;
+            }
+
+         case SCH_UL_TOTAL_PRB_USAGE:
+            {
+               /* Check if duplicate configuration */
+               if(schCb[inst].statistics.ulTotalPrbUsage)
+               {
+                  DU_LOG("\nERROR   -->  SCH : SCH_UL_TOTAL_PRB_USAGE stats already configured");
+                  rsp = RSP_NOK;
+                  cause = DUPLICATE_ENTRY;
+               }
+
+               /* Allocate memory */
+               SCH_ALLOC(schCb[inst].statistics.ulTotalPrbUsage, sizeof(TotalPrbUsage));
+               if(!schCb[inst].statistics.ulTotalPrbUsage)
+               {
+                  DU_LOG("\nERROR   -->  SCH : Memory allocation failed for ulTotalPrbUsage in \
+                        SchProcStatsReq()");
+                  rsp = RSP_NOK;
+                  cause = RESOURCE_UNAVAILABLE;
+                  break;
+               }
+
+               /* Initialize */
+               memset(schCb[inst].statistics.ulTotalPrbUsage, 0, sizeof(TotalPrbUsage));
+
+               /* Configure */
+               schCb[inst].statistics.ulTotalPrbUsage->schInst = inst;
+               schCb[inst].statistics.ulTotalPrbUsage->periodicity = statsReq->statsList[idx].periodicity;
+               cmInitTimers(&(schCb[inst].statistics.ulTotalPrbUsage->periodTimer), 1);
+
+               /* Start timer */
+               schStartTmr(&schCb[inst], (PTR)(schCb[inst].statistics.ulTotalPrbUsage), \
+                     EVENT_UL_TOTAL_PRB_USAGE_TMR, schCb[inst].statistics.ulTotalPrbUsage->periodicity);
+
+               isUlTotlPrbUseCfgd = true;
+               break;
+            }
+         default:
+            {
+               DU_LOG("\nERROR   -->  SCH : Invalid statistics type [%d]", statsReq->statsList[idx].type);
+               rsp = RSP_NOK;
+               cause = PARAM_INVALID;
+            }
+      } /* End of switch */
+
+      if(rsp == RSP_NOK)
+      {
+         /* If failed to configure any KPI, then clear configuration of other
+          * KPIs that were configured successfully as part of this statsReq */
+         if(isDlTotlPrbUseCfgd)
+         {
+            if((schChkTmr((PTR)(schCb[inst].statistics.dlTotalPrbUsage), EVENT_DL_TOTAL_PRB_USAGE_TMR)) == FALSE)
+            {
+               schStopTmr(&schCb[inst], (PTR)(schCb[inst].statistics.dlTotalPrbUsage), EVENT_DL_TOTAL_PRB_USAGE_TMR);
+            }
+            SCH_FREE(schCb[inst].statistics.dlTotalPrbUsage, sizeof(TotalPrbUsage));
+         }
+
+         if(isUlTotlPrbUseCfgd)
+         {
+            if((schChkTmr((PTR)(schCb[inst].statistics.ulTotalPrbUsage), EVENT_UL_TOTAL_PRB_USAGE_TMR)) == FALSE)
+            {
+               schStopTmr(&schCb[inst], (PTR)(schCb[inst].statistics.ulTotalPrbUsage), EVENT_UL_TOTAL_PRB_USAGE_TMR);
+            }
+            SCH_FREE(schCb[inst].statistics.ulTotalPrbUsage, sizeof(TotalPrbUsage));
+         }
+         break;
+      }
+   } /* End of FOR */
+
+   SCH_FREE(statsReq, sizeof(SchStatsReq));
+
+   /* TODO : in next gerrit */
+   //SchSendStatsRspToMac(inst, rsp, cause);
+
+   return ROK;
+} /* End of SchProcStatsReq */
 
 /**********************************************************************
   End of file

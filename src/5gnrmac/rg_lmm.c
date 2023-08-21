@@ -169,9 +169,6 @@ Reason reason          /* reason */
    SAttachSRngBuf(SS_RNG_BUF_ULMAC_TO_ULRLC, SS_RBUF_ENT_ULRLC,SS_RNG_RX);
 #endif
 
-   /* Initialize Scheduler as well */
-   schActvInit(ENTMAC, SCH_INST_START, DFLT_REGION, PWR_UP);
-
    /* Initialize lower mac */
    lwrMacLayerInit(region, 0);
 

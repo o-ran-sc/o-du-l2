@@ -2318,6 +2318,85 @@ void unsetBitInUeBitMap(uint16_t cellId, uint8_t bitPos)
    UNSET_ONE_BIT(bitPos, ueBitMapPerCell[cellIdx]);
 }
 
+/*******************************************************************
+*
+* @brief Packs and Sends Statistics Request from DUAPP to MAC
+*
+* @details
+*
+*    Function : packDuMacStatsReq
+*
+*    Functionality:
+*       Packs and Sends statistics request from DUAPP to MAC
+*
+*
+* @params[in] Post structure pointer
+*             StatsReq pointer
+* @return ROK     - success
+*         RFAILED - failure
+*
+* ****************************************************************/
+uint8_t packDuMacStatsReq(Pst *pst, MacStatsReq *statsReq)
+{
+    Buffer *mBuf = NULLP;
+
+    if(pst->selector == ODU_SELECTOR_LWLC)
+    {
+       if (ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf) != ROK)
+       {
+          DU_LOG("\nERROR  --> MAC : Memory allocation failed at packDuMacStatsReq");
+          return RFAILED;
+       }
+       /* pack the address of the structure */
+       CMCHKPK(oduPackPointer,(PTR)statsReq, mBuf);
+    }
+    else
+    {
+       DU_LOG("\nERROR  -->  MAC: Only LWLC supported for packDuMacStatsReq");
+       return RFAILED;
+    }
+    return ODU_POST_TASK(pst,mBuf);
+}
+
+/*******************************************************************
+*
+* @brief Unpacks Statistics Request received from DU APP
+*
+* @details
+*
+*    Function : unpackMacStatsReq 
+*
+*    Functionality:
+*         Unpacks Statistics Request received from DU APP
+*
+* @params[in] Pointer to Handler
+*             Post structure pointer
+*             Message Buffer
+* @return ROK     - success
+*         RFAILED - failure
+*
+* ****************************************************************/
+uint8_t unpackMacStatsReq(DuMacStatsReqFunc func, Pst *pst, Buffer *mBuf)
+{
+    if(pst->selector == ODU_SELECTOR_LWLC)
+    {
+       MacStatsReq *statsReq;
+
+       /* unpack the address of the structure */
+       CMCHKUNPK(oduUnpackPointer, (PTR *)&statsReq, mBuf);
+       ODU_PUT_MSG_BUF(mBuf);
+       return (*func)(pst, statsReq);
+    }
+    else
+    {
+       /* Nothing to do for other selectors */
+       DU_LOG("\nERROR  -->  DU APP : Only LWLC supported for Statistics Request ");
+       ODU_PUT_MSG_BUF(mBuf);
+    }
+
+    return RFAILED;
+}
+
 /**********************************************************************
   End of file
  **********************************************************************/
