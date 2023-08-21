@@ -187,6 +187,12 @@ void MacHdlDuappEvents(Pst *pst, Buffer *mBuf)
             break;
          }
 
+      case EVENT_MAC_STATISTICS_REQ:
+         {
+            /* Process Statistics Request */
+            unpackMacStatsReq(MacProcStatsReq, pst, mBuf);
+         }
+
       default:
          RG_FREE_MSG(mBuf);
          break;
@@ -336,6 +342,9 @@ void callFlowMacActvTsk(Pst *pst)
                   break;
                case EVENT_MAC_SLICE_RECFG_REQ:
                   strcpy(message,"EVENT_MAC_SLICE_RECFG_REQ");
+                  break;
+               case EVENT_MAC_STATISTICS_REQ:
+                  strcpy(message,"EVENT_MAC_STATISTICS_REQ");
                   break;
                default:
                   strcpy(message,"Invalid Event");

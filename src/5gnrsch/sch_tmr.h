@@ -16,16 +16,16 @@
 ################################################################################
 *******************************************************************************/
 
-/* This file contains all E2AP message handler related functionality */
+#define MAX_TOTAL_PRB_USAGE_TMR 1
 
-#define ENCODE_FAIL -1
+#define EVENT_DL_TOTAL_PRB_USAGE_TMR 1
+#define EVENT_UL_TOTAL_PRB_USAGE_TMR 2
 
-uint8_t  BuildAndSendE2SetupReq();
-uint8_t  BuildAndSendE2NodeConfigUpdate();
-uint8_t BuildAndSendE2ResetRequest(E2CauseType failureType, E2Cause failureCause);
-void     E2APMsgHdlr(Buffer *mBuf);
-uint8_t BuildAndSendRicIndication(RicSubscription *ricSubscriptionInfo);
-uint8_t BuildAndSendStatsReq(ActionDefinition subscribedAction);
+bool schChkTmr(PTR cb, int16_t tmrEvnt);
+void schStartTmr(SchCb *gCb, PTR cb, int16_t tmrEvnt, uint8_t timerValue);
+void schStopTmr(SchCb *gCb, PTR cb, uint8_t tmrType);
+
 /**********************************************************************
   End of file
  **********************************************************************/
+

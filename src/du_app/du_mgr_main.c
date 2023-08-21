@@ -46,6 +46,8 @@ uint8_t rlcDlActvTsk (Pst *, Buffer *);
 uint8_t rlcDlActvInit (Ent, Inst, Region, Reason);
 uint8_t macActvTsk (Pst *, Buffer *);
 uint8_t macActvInit (Ent, Inst, Region, Reason);
+uint8_t schActvTsk (Pst *, Buffer *);
+uint8_t schActvInit(Ent, Inst, Region, Reason);
 uint8_t lwrMacActvTsk(Pst *, Buffer *);
 uint8_t lwrMacActvInit(Ent, Inst, Region, Reason);
 #ifndef INTEL_WLS_MEM
@@ -364,6 +366,7 @@ uint8_t sctpInit(SSTskId sysTskId)
          sysTskId);
    return ROK;
 }
+
 /*******************************************************************
  *
  * @brief Initializes RLC DL, MAC TAPA task
@@ -405,9 +408,41 @@ uint8_t rlcDlInit(SSTskId sysTskId)
    {
       return RFAILED;
    }
+ }
 
-   DU_LOG("\nINFO   -->  DU_APP : RLC DL and MAC TAPA task created and registered to \
-   %d sys task", sysTskId);
+/*******************************************************************
+ *
+ * @brief Initializes SCH TAPA task
+ *
+ * @details
+ *
+ *    Function : schInit
+ *
+ *    Functionality:
+ *       - Registers and attaches TAPA tasks for SCH
+ *
+ * @params[in] system task ID
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+ uint8_t schInit(SSTskId sysTskId)
+ {
+   /* Register SCH TAPA Task */
+   if(ODU_REG_TTSK((Ent)ENTMAC, (Inst)1, (Ttype)TTNORM, (Prior)PRIOR0,
+            schActvInit, (ActvTsk)schActvTsk) != ROK)
+   {
+      return RFAILED;
+   }
+   /* Attach SCH Task */
+   if (ODU_ATTACH_TTSK((Ent)ENTMAC, (Inst)1, sysTskId)!= ROK)
+   {
+      return RFAILED;
+   }
+
+
+   DU_LOG("\nINFO   -->  DU_APP : SCH TAPA task created and registered to \
+         %d sys task", sysTskId);
    return ROK;
 }
 
@@ -537,7 +572,7 @@ uint8_t phyStubInit(SSTskId sysTskId)
 uint8_t commonInit()
 {
    /* Declare system task Ids */
-   SSTskId du_app_stsk, egtp_stsk, sctp_stsk, rlc_ul_stsk, rlc_mac_cl_stsk, lwr_mac_stsk, phy_stub_slot_ind_stsk;
+   SSTskId du_app_stsk, egtp_stsk, sctp_stsk, rlc_ul_stsk, rlc_mac_cl_stsk, sch_stsk, lwr_mac_stsk, phy_stub_slot_ind_stsk;
 
    pthread_attr_t attr;
 
@@ -577,6 +612,14 @@ uint8_t commonInit()
       return RFAILED;
    }
    ODU_SET_THREAD_AFFINITY(&rlc_ul_stsk, SS_AFFINITY_MODE_EXCL, 22, 0);
+   
+   /* system task for SCH */
+   if(ODU_CREATE_TASK(PRIOR1, &sch_stsk) != ROK)
+   {
+      DU_LOG("\nERROR  -->  DU_APP : System Task creation for SCH failed");
+      return RFAILED;
+   }
+   ODU_SET_THREAD_AFFINITY(&sch_stsk, SS_AFFINITY_MODE_EXCL, 22, 0);
 
    /* system task for SCTP receiver thread */
    if(ODU_CREATE_TASK(PRIOR0, &sctp_stsk) != ROK)
@@ -634,6 +677,12 @@ uint8_t commonInit()
      DU_LOG("\nERROR  -->  DU_APP : RLC UL Tapa Task initialization failed");
      return RFAILED;
    } 
+
+   if(schInit(sch_stsk) != ROK)
+   {
+      DU_LOG("\nERROR  -->  DU_APP : SCH Tapa Task initialization failed");
+      return RFAILED;
+   }
 
    if(lwrMacInit(lwr_mac_stsk) != ROK)
    {

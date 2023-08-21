@@ -64,7 +64,7 @@
 #endif
 #else 
 #ifndef INTEL_WLS_MEM
-#define SS_MAX_STSKS                    8
+#define SS_MAX_STSKS                    9
 #else
 #define SS_MAX_STSKS                    7 
 #endif
@@ -94,7 +94,7 @@
 #ifdef SS_MULTICORE_SUPPORT
 #define SS_MAX_REGS SS_MAX_STSKS
 #else
-#define SS_MAX_REGS  7
+#define SS_MAX_REGS  8
 #endif
 
 #ifdef CMM_MAX_BKT_ENT
