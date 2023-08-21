@@ -84,7 +84,7 @@ void duStartTmr(PTR cb, int16_t tmrEvnt, uint8_t timerValue)
       case EVENT_E2_SETUP_TMR:
       {
          e2apDb = ((E2apDb *)cb);
-         DU_TMR_CALCUATE_WAIT(arg.wait, timerValue, duCb.duTimersInfo.tmrRes);
+         TMR_CALCUATE_WAIT(arg.wait, timerValue, duCb.duTimersInfo.tmrRes);
 
          arg.timers = &e2apDb->e2TimersInfo.e2Timers.e2SetupTimer;
          arg.max = MAX_E2_SETUP_TMR;
