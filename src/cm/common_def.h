@@ -53,6 +53,9 @@
 #include "cm_lib.x"
 #include "du_log.h"
 
+#define SCH_INST_START 1
+#define SCH_MAX_INST 1
+
 #define RADIO_FRAME_DURATION 10 /* Time duration of a radio frame in ms */
 /* MAX values */
 #define MAX_NUM_CELL 2 /* Changed to 2 to support cell Id 2 even if there is only one cell in DU */
@@ -128,6 +131,8 @@
 
 /*First SCS in kHz as per 3gpp spec 38.211 Table 4.2-1 */
 #define BASE_SCS 15
+
+#define MAX_NUM_STATS 10
 
 /* Defining macros for common utility functions */
 #define ODU_GET_MSG_BUF SGetMsg
@@ -226,6 +231,28 @@
    _isLcidValid = ((_lcId >= SRB0_LCID && _lcId <= MAX_DRB_LCID) ? 1 : 0);\
 }
 
+/**
+ * @def TMR_CALCUATE_WAIT
+ *
+ *    This macro calculates and assigns wait time based on the value of the
+ *    timer and the timer resolution. Timer value of 0 signifies that the
+ *    timer is not configured
+ *
+ * @param[out] _wait   Time for which to arm the timer changed to proper
+ *                     value according to the resolution
+ * @param[in] _tmrVal   Value of the timer
+ * @param[in] _timerRes   Resolution of the timer
+ *
+*/
+#define TMR_CALCUATE_WAIT(_wait, _tmrVal, _timerRes)          \
+{                                                             \
+   (_wait) = ((_tmrVal) * SS_TICKS_SEC)/((_timerRes) * 1000); \
+   if((0 != (_tmrVal)) && (0 == (_wait)))                     \
+   {                                                          \
+      (_wait) = 1;                                            \
+   }                                                          \
+}
+
 typedef enum
 {
    SUCCESSFUL, 
@@ -233,6 +260,8 @@ typedef enum
    UEID_INVALID, 
    RESOURCE_UNAVAILABLE,  
    SLICE_NOT_FOUND,
+   DUPLICATE_ENTRY,
+   PARAM_INVALID
 }CauseOfResult ;
 
 typedef enum
