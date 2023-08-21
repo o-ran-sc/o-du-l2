@@ -89,6 +89,7 @@
 #define EVENT_MAC_UE_RESET_RSP       226
 #define EVENT_MAC_UE_SYNC_STATUS_IND 227
 #define EVENT_MAC_DL_BROADCAST_REQ   228
+#define EVENT_MAC_STATISTICS_REQ     229
 
 #define BSR_PERIODIC_TIMER_SF_10 10
 #define BSR_RETX_TIMER_SF_320 320
@@ -97,6 +98,10 @@
 #define PAGING_SCHED_DELTA  4
 #define MAX_PLMN 2
 
+/********************* Global Variable ********************/
+uint64_t ueBitMapPerCell[MAX_NUM_CELL]; /* Bit Map to store used/free UE-IDX per Cell */
+
+/********************* Interface structure definition ********************/
 typedef enum
 {
    SIB_TYPE2,
@@ -577,6 +582,13 @@ typedef enum
    STOP_TRANSMISSION,
    RESTART_TRANSMISSION
 }DataTransmissionAction;
+
+/* Performance measurements from 3GPP TS 28.552 Release 15 */
+typedef enum
+{
+   MAC_DL_TOTAL_PRB_USAGE,
+   MAC_UL_TOTAL_PRB_USAGE
+}MacMeasurementType;
 
 typedef struct failureCause 
 {
@@ -1841,6 +1853,20 @@ typedef struct macDlBroadcastReq
     SiSchedulingInfo **siSchedulingInfo;
 }MacDlBroadcastReq;
 
+typedef struct macStatsInfo
+{
+   MacMeasurementType type;
+   uint16_t           periodicity;  /* In milliseconds */
+}MacStatsInfo;
+
+typedef struct macStatsReq
+{
+   uint8_t   numStats;
+   MacStatsInfo statsList[MAX_NUM_STATS];
+}MacStatsReq;
+
+/****************** FUNCTION POINTERS ********************************/
+
 /* DL broadcast req from DU APP to MAC*/
 typedef uint8_t (*DuMacDlBroadcastReq) ARGS((
          Pst           *pst,
@@ -1993,98 +2019,136 @@ typedef uint8_t (*MacDuUeSyncStatusIndFunc) ARGS((
         Pst            *pst,
         MacUeSyncStatusInd *syncStatusInd));
 
-uint64_t ueBitMapPerCell[MAX_NUM_CELL]; /* Bit Map to store used/free UE-IDX per Cell */
+/* Statitics Request from DU APP to MAC */
+typedef uint8_t (*DuMacStatsReqFunc) ARGS((
+      Pst *pst,
+      MacStatsReq *statsReq));
 
+/******************** FUNCTION DECLARATIONS ********************************/
 uint8_t packMacCellUpInd(Pst *pst, OduCellId *cellId);
 uint8_t unpackMacCellUpInd(DuMacCellUpInd func, Pst *pst, Buffer *mBuf);
 uint8_t duHandleCellUpInd(Pst *pst, OduCellId *cellId);
+
 uint8_t packMacCellStart(Pst *pst, CellStartInfo *cellStartInfo);
 uint8_t unpackMacCellStart(DuMacCellStart func, Pst *pst, Buffer *mBuf);
 uint8_t MacProcCellStart(Pst *pst, CellStartInfo *cellStartInfo);
+
 uint8_t packMacCellStop(Pst *pst, CellStopInfo *cellStopInfo);
 uint8_t unpackMacCellStop(DuMacCellStop func, Pst *pst, Buffer *mBuf);
 uint8_t MacProcCellStop(Pst *pst, CellStopInfo *cellStopInfo);
+
 uint8_t packMacCellCfg(Pst *pst, MacCellCfg *macCellCfg);
 uint8_t unpackDuMacCellCfg(DuMacCellCfgReq func,  Pst *pst,  Buffer *mBuf);
 uint8_t MacProcCellCfgReq(Pst *pst, MacCellCfg *macCellCfg);
+
 uint8_t packMacCellCfgCfm(Pst *pst, MacCellCfgCfm *macCellCfgCfm);
 uint8_t unpackMacCellCfgCfm(DuMacCellCfgCfm func, Pst *pst, Buffer *mBuf);
 uint8_t duHandleMacCellCfgCfm(Pst *pst, MacCellCfgCfm *macCellCfgCfm);
+
 uint8_t packMacStopInd(Pst *pst, OduCellId *cellId);
 uint8_t unpackMacStopInd(DuMacStopInd func, Pst *pst, Buffer *mBuf);
 uint8_t duHandleStopInd(Pst *pst, OduCellId *cellId);
+uint8_t sendStopIndMacToDuApp(uint16_t cellId);
+
 uint8_t packMacUlCcchInd(Pst *pst, UlCcchIndInfo *ulCcchIndInfo);
 uint8_t unpackMacUlCcchInd(DuMacUlCcchInd func, Pst *pst, Buffer *mBuf);
 uint8_t duHandleUlCcchInd(Pst *pst, UlCcchIndInfo *ulCcchIndInfo);
+
 uint8_t packMacDlCcchInd(Pst *pst, DlCcchIndInfo *dlCcchIndInfo);
 uint8_t unpackMacDlCcchInd(DuMacDlCcchInd func, Pst *pst, Buffer *mBuf);
 uint8_t MacProcDlCcchInd(Pst *pst, DlCcchIndInfo *dlCcchIndInfo);
+
 uint8_t packDuMacUeCreateReq(Pst *pst, MacUeCreateReq *ueCfg);
 uint8_t unpackMacUeCreateReq(DuMacUeCreateReq func, Pst *pst, Buffer *mBuf);
 uint8_t MacProcUeCreateReq(Pst *pst, MacUeCreateReq *ueCfg);
-uint8_t sendStopIndMacToDuApp(uint16_t cellId);
+
 uint8_t packDuMacUeCreateRsp(Pst *pst, MacUeCreateRsp *cfgRsp);
 uint8_t unpackDuMacUeCreateRsp(MacDuUeCreateRspFunc func, Pst *pst, Buffer *mBuf);
 uint8_t DuProcMacUeCreateRsp(Pst *pst, MacUeCreateRsp *cfgRsp);
+
 uint8_t packDuMacUeReconfigReq(Pst *pst, MacUeRecfg *ueRecfg);
 uint8_t unpackMacUeReconfigReq(DuMacUeReconfigReq func, Pst *pst, Buffer *mBuf);
 uint8_t MacProcUeReconfigReq(Pst *pst, MacUeRecfg *ueRecfg);
+
 uint8_t packDuMacUeRecfgRsp(Pst *pst, MacUeRecfgRsp *recfgRsp);
 uint8_t unpackDuMacUeRecfgRsp(MacDuUeRecfgRspFunc func, Pst *pst, Buffer *mBuf);
 uint8_t DuProcMacUeRecfgRsp(Pst *pst, MacUeRecfgRsp *recfgRsp);
+
 uint8_t packDuMacRachRsrcReq(Pst *pst, MacRachRsrcReq *rachRsrcReq);
 uint8_t unpackMacRachRsrcReq(DuMacRachRsrcReq func, Pst *pst, Buffer *mBuf);
 uint8_t MacProcRachRsrcReq(Pst *pst, MacRachRsrcReq *rachRsrcReq);
+
 uint8_t packDuMacRachRsrcRsp(Pst *pst, MacRachRsrcRsp *rachRsrcRsp);
 uint8_t unpackDuMacRachRsrcRsp(MacDuRachRsrcRspFunc func, Pst *pst, Buffer *mBuf);
 uint8_t DuProcMacRachRsrcRsp(Pst *pst, MacRachRsrcRsp *rachRsrcRsp);
+
 uint8_t packDuMacRachRsrcRel(Pst *pst, MacRachRsrcRel *rachRsrcRel);
 uint8_t unpackMacRachRsrcRel(DuMacRachRsrcRel func, Pst *pst, Buffer *mBuf);
 uint8_t MacProcRachRsrcRel(Pst *pst, MacRachRsrcRel *rachRsrcRel);
+
 uint8_t packDuMacUeDeleteReq(Pst *pst, MacUeDelete *ueDelete);
 uint8_t MacProcUeDeleteReq(Pst *pst,  MacUeDelete *ueDelete);
 uint8_t unpackMacUeDeleteReq(DuMacUeDeleteReq func, Pst *pst, Buffer *mBuf);
+
 uint8_t packDuMacUeDeleteRsp(Pst *pst, MacUeDeleteRsp *deleteRsp);
 uint8_t DuProcMacUeDeleteRsp(Pst *pst, MacUeDeleteRsp *deleteRsp);
 uint8_t unpackDuMacUeDeleteRsp(MacDuUeDeleteRspFunc func, Pst *pst, Buffer *mBuf);
+
 uint8_t packDuMacCellDeleteReq(Pst *pst, MacCellDeleteReq *cellDelete);
 uint8_t MacProcCellDeleteReq(Pst *pst, MacCellDeleteReq *cellDelete);
 uint8_t unpackMacCellDeleteReq(DuMacCellDeleteReq func, Pst *pst, Buffer *mBuf);
+
 uint8_t packDuMacCellDeleteRsp(Pst *pst, MacCellDeleteRsp *cellDeleteRsp);
 uint8_t DuProcMacCellDeleteRsp(Pst *pst, MacCellDeleteRsp *cellDeleteRsp);
 uint8_t unpackDuMacCellDeleteRsp(MacDuCellDeleteRspFunc func, Pst *pst, Buffer *mBuf);
+
 uint8_t packDuMacSliceCfgReq(Pst *pst, MacSliceCfgReq *sliceCfgReq);
 uint8_t MacProcSliceCfgReq(Pst *pst, MacSliceCfgReq *sliceCfgReq);
 uint8_t unpackMacSliceCfgReq(DuMacSliceCfgReq func, Pst *pst, Buffer *mBuf);
+
 uint8_t DuProcMacSliceCfgRsp(Pst *pst,  MacSliceCfgRsp *cfgRsp);
 uint8_t packDuMacSliceCfgRsp(Pst *pst, MacSliceCfgRsp *cfgRsp);
 uint8_t unpackDuMacSliceCfgRsp(MacDuSliceCfgRspFunc func, Pst *pst, Buffer *mBuf);
+
 uint8_t packDuMacSliceRecfgReq(Pst *pst, MacSliceRecfgReq *sliceRecfgReq);
 uint8_t MacProcSliceRecfgReq(Pst *pst, MacSliceRecfgReq *sliceRecfgReq);
 uint8_t unpackMacSliceRecfgReq(DuMacSliceRecfgReq func, Pst *pst, Buffer *mBuf);
+
 uint8_t DuProcMacSliceRecfgRsp(Pst *pst,  MacSliceRecfgRsp *sliceRecfgRsp);
 uint8_t packDuMacSliceRecfgRsp(Pst *pst, MacSliceRecfgRsp *sliceRecfgRsp);
 uint8_t unpackDuMacSliceRecfgRsp(MacDuSliceRecfgRspFunc func, Pst *pst, Buffer *mBuf);
+
 uint8_t duHandleSlotInd(Pst *pst, SlotTimingInfo *slotIndInfo);
 uint8_t packMacSlotInd(Pst *pst, SlotTimingInfo *slotIndInfo);
 uint8_t unpackDuMacSlotInd(DuMacSlotInd func, Pst *pst, Buffer *mBuf);
+
 uint8_t packDuMacDlPcchInd(Pst *pst, DlPcchInd *pcchInd);
 uint8_t MacProcDlPcchInd(Pst *pst, DlPcchInd *pcchInd);
 uint8_t unpackMacDlPcchInd(DuMacDlPcchInd func, Pst *pst, Buffer *mBuf);
+
 int8_t getFreeBitFromUeBitMap(uint16_t cellId);
 void unsetBitInUeBitMap(uint16_t cellId, uint8_t bitPos);
+
 uint8_t packDuMacUeResetReq(Pst *pst, MacUeResetReq *ueReset);
 uint8_t MacProcUeResetReq(Pst *pst,  MacUeResetReq *ueReset);
 uint8_t unpackMacUeResetReq(DuMacUeResetReq func, Pst *pst, Buffer *mBuf);
+
 uint8_t packDuMacUeResetRsp(Pst *pst, MacUeResetRsp *resetRsp);
 uint8_t DuProcMacUeResetRsp(Pst *pst, MacUeResetRsp *resetRsp);
 uint8_t unpackDuMacUeResetRsp(MacDuUeResetRspFunc func, Pst *pst, Buffer *mBuf);
+
 uint8_t packDuMacUeSyncStatusInd(Pst *pst, MacUeSyncStatusInd *ueSyncStatusInd);
 uint8_t DuProcMacUeSyncStatusInd(Pst *pst, MacUeSyncStatusInd *ueSyncStatusInd);
 uint8_t unpackDuMacUeSyncStatusInd(MacDuUeSyncStatusIndFunc func, Pst *pst, Buffer *mBuf);
+
 uint8_t packDuMacDlBroadcastReq(Pst *pst, MacDlBroadcastReq *dlBroadcastReq);
 uint8_t MacProcDlBroadcastReq(Pst *pst,  MacDlBroadcastReq *dlBroadcastReq);
 uint8_t unpackMacDlBroadcastReq(DuMacDlBroadcastReq func, Pst *pst, Buffer *mBuf);
+
+uint8_t packDuMacStatsReq(Pst *pst, MacStatsReq *statsReq);
+uint8_t MacProcStatsReq(Pst *pst, MacStatsReq *statsReq);
+uint8_t unpackMacStatsReq(DuMacStatsReqFunc func, Pst *pst, Buffer *mBuf);
+
 #endif
 
 

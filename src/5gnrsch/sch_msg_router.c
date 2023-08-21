@@ -42,6 +42,74 @@
 #include "rgr.x"           /* layer management typedefs for MAC */
 #include "rg_sch_inf.x"         /* typedefs for Scheduler */
 #include "sch.h"
+#include "sch_tmr.h"
+
+/**
+ * @brief Task Initiation function. 
+ *
+ * @details
+ *
+ *     Function : schActvInit
+ *     
+ *     This function is supplied as one of parameters during MAC's 
+ *     task registration. MAC will invoke this function once, after
+ *     it creates and attaches this TAPA Task to a system task.
+ *     
+ *  @param[in]  Ent Entity, the entity ID of this task.     
+ *  @param[in]  Inst Inst, the instance ID of this task.
+ *  @param[in]  Region Region, the region ID registered for memory 
+ *              usage of this task.
+ *  @param[in]  Reason Reason.
+ *  @return  int
+ *      -# ROK
+ **/
+uint8_t schActvInit(Ent entity, Inst instId, Region region, Reason reason)
+{
+   Inst inst = (instId  - SCH_INST_START);
+
+   /* Initialize the MAC TskInit structure to zero */
+   memset ((uint8_t *)&schCb[inst], 0, sizeof(schCb));
+
+   /* Initialize the MAC TskInit with received values */
+   schCb[inst].schInit.ent = entity;
+   schCb[inst].schInit.inst = inst;
+   schCb[inst].schInit.region = region;
+   schCb[inst].schInit.pool = 0;
+   schCb[inst].schInit.reason = reason;
+   schCb[inst].schInit.cfgDone = FALSE;
+   schCb[inst].schInit.acnt = FALSE;
+   schCb[inst].schInit.usta = FALSE;
+   schCb[inst].schInit.trc = FALSE;
+   schCb[inst].schInit.procId = ODU_GET_PROCID();
+
+   return ROK;
+} /* schActvInit */
+
+/**
+ * @brief Task Activation callback function.
+ *
+ * @details
+ *
+ *     Function : schActvTsk
+ *
+ *     Primitives invoked by SCH's users/providers through
+ *     a loosely coupled interface arrive here by means of
+ *     SSI's message handling. This API is registered with
+ *     SSI during the Task Registration of SCH.
+ *
+ *  @param[in]  Pst     *pst, Post structure of the primitive.
+ *  @param[in]  Buffer *mBuf, Packed primitive parameters in the buffer.
+ *  @param[in]  Reason reason.
+ *  @return  uint8_t
+ *      -# ROK
+ **/
+uint8_t schActvTsk(Pst *pst, Buffer *mBuf)
+{
+   SchMessageRouter(pst, (void *)mBuf);
+
+   ODU_EXIT_TASK();
+   return ROK;
+}
 
 #ifdef CALL_FLOW_DEBUG_LOG
 /**
@@ -176,6 +244,11 @@ void callFlowSchMsgRouter(Pst *pst)
             strcpy(message,"EVENT_DL_HARQ_IND_TO_SCH");
             break;
          }
+      case EVENT_STATISTICS_REQ_TO_SCH:
+         {
+            strcpy(message,"EVENT_STATISTICS_REQ_TO_SCH");
+            break;
+         }
       default:
          strcpy(message,"Invalid Event");
          break;
@@ -296,6 +369,11 @@ uint8_t SchMessageRouter(Pst *pst, void *msg)
       case EVENT_DL_HARQ_IND_TO_SCH:
       {
          SchProcDlHarqInd(pst, (DlHarqInd *)msg);
+         break;
+      }
+      case EVENT_STATISTICS_REQ_TO_SCH:
+      {
+         SchProcStatsReq(pst, (SchStatsReq *)msg);
          break;
       }
       default:
