@@ -24,6 +24,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9cc94fea_514470cb",
+        "filename": "src/5gnrmac/mac_cfg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1090,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-08-22T11:35:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "44271e9b_6b3b12f0",
+      "range": {
+        "startLine": 1090,
+        "startChar": 44,
+        "endLine": 1090,
+        "endChar": 49
+      },
+      "revId": "21035a1f6164fea84f774081cbe27b3ac3892e2e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "860c75f1_e7f3cbc0",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-08-22T07:39:47Z",
       "side": 1,
       "message": "when do we free this? like is there a scenario where there is a case of again reconfiguring other than shutdown of sch",
+      "range": {
+        "startLine": 2537,
+        "startChar": 41,
+        "endLine": 2537,
+        "endChar": 56
+      },
+      "revId": "21035a1f6164fea84f774081cbe27b3ac3892e2e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ddef2f62_1e6f201f",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2537,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-08-22T11:35:47Z",
+      "side": 1,
+      "message": "yes, there are E2AP msgs which will lead to reconfiguring and even deletion of these if required by RIC. They will be implemented later.\nOtherwise, it will be freed during shutdown of SCH.",
+      "parentUuid": "860c75f1_e7f3cbc0",
       "range": {
         "startLine": 2537,
         "startChar": 41,
@@ -64,6 +112,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4250774e_e46993b0",
+        "filename": "src/5gnrsch/sch.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 684,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-08-22T11:35:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "df361dcc_174cd069",
+      "revId": "21035a1f6164fea84f774081cbe27b3ac3892e2e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7badc7b8_546d14c8",
@@ -81,6 +147,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9ef26b34_0355d1ed",
+        "filename": "src/du_app/du_mgr.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 379,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-08-22T11:35:47Z",
+      "side": 1,
+      "message": "This is just a temporary variable, hence not making it a pointer.",
+      "parentUuid": "7badc7b8_546d14c8",
+      "revId": "21035a1f6164fea84f774081cbe27b3ac3892e2e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "45c3af43_1828ff6b",
@@ -94,6 +178,30 @@
       "writtenOn": "2023-08-22T07:39:47Z",
       "side": 1,
       "message": "why cant we have a separate SCH entity",
+      "range": {
+        "startLine": 432,
+        "startChar": 24,
+        "endLine": 432,
+        "endChar": 30
+      },
+      "revId": "21035a1f6164fea84f774081cbe27b3ac3892e2e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7e6ef9b1_4ff01d4a",
+        "filename": "src/du_app/du_mgr_main.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 432,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-08-22T11:35:47Z",
+      "side": 1,
+      "message": "As per WG8 spec, SCH is a part of MAC. Hence this was a design decision taking during initial phase of the project to not have SCH as separate entity and to consider it another instance of MAC.\nThat\u0027s why in SCH we use inst \u003d 1.",
+      "parentUuid": "45c3af43_1828ff6b",
       "range": {
         "startLine": 432,
         "startChar": 24,
@@ -127,6 +235,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "905b6a42_8f3951f2",
+        "filename": "src/du_app/du_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2111,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-08-22T11:35:47Z",
+      "side": 1,
+      "message": "In order to separate the working of FetchStatsFromActionDefFormat1 and BuildAndSendStatsReqToMac, I have done it this way.\nHere BuildAndSendStatsReqToMac is solely responsible for creation, allocation and sending of any stats req to MAC. Otherwise the functionality will be split in 2 functions.\n\nActual implementation of FetchStatsFromActionDefFormat1 is pending to be done in next gerrit. Lets see how that turns out and we can decide if we can eliminate the memcpy.",
+      "parentUuid": "c1ef28be_07d7e2f2",
+      "range": {
+        "startLine": 2111,
+        "startChar": 13,
+        "endLine": 2111,
+        "endChar": 24
+      },
+      "revId": "21035a1f6164fea84f774081cbe27b3ac3892e2e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "97219b98_b66bce26",
@@ -140,6 +272,30 @@
       "writtenOn": "2023-08-22T07:39:47Z",
       "side": 1,
       "message": "wrong name in description",
+      "range": {
+        "startLine": 2131,
+        "startChar": 17,
+        "endLine": 2131,
+        "endChar": 37
+      },
+      "revId": "21035a1f6164fea84f774081cbe27b3ac3892e2e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "13ee3c9d_fa4f2b5a",
+        "filename": "src/du_app/du_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2131,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-08-22T11:35:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "97219b98_b66bce26",
       "range": {
         "startLine": 2131,
         "startChar": 17,
@@ -173,6 +329,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d3c9e8bf_30d5938d",
+        "filename": "src/du_app/du_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2187,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-08-22T11:35:47Z",
+      "side": 1,
+      "message": "Since we are supporting only RIC reporting style \u003d 1 i.e. E2 node measurement (cell-level measurements), it uses Action definition Format 1.\n\nReference : O-RAN.WG3.E2SM-KPM-R003-v03.00 : section 7.4.2",
+      "parentUuid": "f3a33d13_0e706d36",
+      "range": {
+        "startLine": 2187,
+        "startChar": 40,
+        "endLine": 2187,
+        "endChar": 41
+      },
+      "revId": "21035a1f6164fea84f774081cbe27b3ac3892e2e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "12a6b318_580da7c5",
@@ -186,6 +366,30 @@
       "writtenOn": "2023-08-22T07:39:47Z",
       "side": 1,
       "message": "Can we make it (SS_MAX_STSKS - 1) if thats what is the relationship between SS_MAX_STSKS and SS_MAX_REGS.",
+      "range": {
+        "startLine": 97,
+        "startChar": 21,
+        "endLine": 97,
+        "endChar": 22
+      },
+      "revId": "21035a1f6164fea84f774081cbe27b3ac3892e2e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "385d16ae_fd689b85",
+        "filename": "src/mt/mt_ss.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-08-22T11:35:47Z",
+      "side": 1,
+      "message": "It is not considered a good practice to make any change in the legacy code since we are not fully aware that what dependencies will be impacted.",
+      "parentUuid": "12a6b318_580da7c5",
       "range": {
         "startLine": 97,
         "startChar": 21,
