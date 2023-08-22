@@ -1,0 +1,199 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "44271e9b_6b3b12f0",
+        "filename": "src/5gnrmac/mac_cfg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1090,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-08-22T07:39:47Z",
+      "side": 1,
+      "message": "valid",
+      "range": {
+        "startLine": 1090,
+        "startChar": 44,
+        "endLine": 1090,
+        "endChar": 49
+      },
+      "revId": "21035a1f6164fea84f774081cbe27b3ac3892e2e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "860c75f1_e7f3cbc0",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2537,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-08-22T07:39:47Z",
+      "side": 1,
+      "message": "when do we free this? like is there a scenario where there is a case of again reconfiguring other than shutdown of sch",
+      "range": {
+        "startLine": 2537,
+        "startChar": 41,
+        "endLine": 2537,
+        "endChar": 56
+      },
+      "revId": "21035a1f6164fea84f774081cbe27b3ac3892e2e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "df361dcc_174cd069",
+        "filename": "src/5gnrsch/sch.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 684,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-08-22T07:39:47Z",
+      "side": 1,
+      "message": "pls add variable descrp",
+      "revId": "21035a1f6164fea84f774081cbe27b3ac3892e2e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7badc7b8_546d14c8",
+        "filename": "src/du_app/du_mgr.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 379,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-08-22T07:39:47Z",
+      "side": 1,
+      "message": "At a part point of time, it can happen we have only one or two of the stats to send. It is better to have pointer and directly allocate the sharable memory accordingly when part stats needs to be sent",
+      "revId": "21035a1f6164fea84f774081cbe27b3ac3892e2e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "45c3af43_1828ff6b",
+        "filename": "src/du_app/du_mgr_main.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 432,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-08-22T07:39:47Z",
+      "side": 1,
+      "message": "why cant we have a separate SCH entity",
+      "range": {
+        "startLine": 432,
+        "startChar": 24,
+        "endLine": 432,
+        "endChar": 30
+      },
+      "revId": "21035a1f6164fea84f774081cbe27b3ac3892e2e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c1ef28be_07d7e2f2",
+        "filename": "src/du_app/du_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2111,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-08-22T07:39:47Z",
+      "side": 1,
+      "message": "we can avoid this memcpy if we make macStatsREq vriable inside Statistics str as pointer and allocate the sharable memory in FetchStatsFromActionDefFormat1",
+      "range": {
+        "startLine": 2111,
+        "startChar": 13,
+        "endLine": 2111,
+        "endChar": 24
+      },
+      "revId": "21035a1f6164fea84f774081cbe27b3ac3892e2e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "97219b98_b66bce26",
+        "filename": "src/du_app/du_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2131,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-08-22T07:39:47Z",
+      "side": 1,
+      "message": "wrong name in description",
+      "range": {
+        "startLine": 2131,
+        "startChar": 17,
+        "endLine": 2131,
+        "endChar": 37
+      },
+      "revId": "21035a1f6164fea84f774081cbe27b3ac3892e2e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f3a33d13_0e706d36",
+        "filename": "src/du_app/du_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2187,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-08-22T07:39:47Z",
+      "side": 1,
+      "message": "wanted to understand why we selected format 1 because i checked format 3 also has granularity period.",
+      "range": {
+        "startLine": 2187,
+        "startChar": 40,
+        "endLine": 2187,
+        "endChar": 41
+      },
+      "revId": "21035a1f6164fea84f774081cbe27b3ac3892e2e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "12a6b318_580da7c5",
+        "filename": "src/mt/mt_ss.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-08-22T07:39:47Z",
+      "side": 1,
+      "message": "Can we make it (SS_MAX_STSKS - 1) if thats what is the relationship between SS_MAX_STSKS and SS_MAX_REGS.",
+      "range": {
+        "startLine": 97,
+        "startChar": 21,
+        "endLine": 97,
+        "endChar": 22
+      },
+      "revId": "21035a1f6164fea84f774081cbe27b3ac3892e2e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
