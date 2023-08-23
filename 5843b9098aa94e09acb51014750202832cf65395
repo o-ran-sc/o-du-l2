@@ -39,6 +39,24 @@
       "message": "FreeRicServiceQuery",
       "revId": "5843b9098aa94e09acb51014750202832cf65395",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bf663f82_af3613f2",
+        "filename": "src/ric_stub/ric_e2ap_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1926,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-08-23T12:12:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "08959cf6_60de51d4",
+      "revId": "5843b9098aa94e09acb51014750202832cf65395",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
   ]
 }

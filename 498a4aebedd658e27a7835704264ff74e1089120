@@ -147,6 +147,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6405bf3b_24c77a4f",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 486,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-08-23T12:12:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bb473414_da81d88e",
+      "revId": "498a4aebedd658e27a7835704264ff74e1089120",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ff90c375_c50ead37",
@@ -304,6 +322,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "39d5e20a_da61d1d4",
+        "filename": "src/ric_stub/ric_e2ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-08-23T12:12:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4297a1ff_4e0dcbed",
+      "revId": "498a4aebedd658e27a7835704264ff74e1089120",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a20499fd_cc732214",
@@ -438,6 +474,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "87f82b42_396a2320",
+        "filename": "src/ric_stub/ric_e2ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1787,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-08-23T12:12:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "056b604b_fccf714e",
+      "revId": "498a4aebedd658e27a7835704264ff74e1089120",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fecc3c27_4e169d01",
@@ -498,6 +552,30 @@
       "writtenOn": "2023-08-17T09:40:54Z",
       "side": 1,
       "message": "this failure should be called only after all ranFunctionId in the list are checked but none of them match.\u0027\n\nAlso in failure case, after sending ric service update failure, return from here.\nElse below code will get executed.",
+      "range": {
+        "startLine": 1896,
+        "startChar": 27,
+        "endLine": 1896,
+        "endChar": 62
+      },
+      "revId": "498a4aebedd658e27a7835704264ff74e1089120",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cb541127_8ff47348",
+        "filename": "src/ric_stub/ric_e2ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1896,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-08-23T12:12:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "906fca3b_c1dd07ac",
       "range": {
         "startLine": 1896,
         "startChar": 27,
