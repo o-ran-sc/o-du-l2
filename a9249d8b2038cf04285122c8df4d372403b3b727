@@ -1,0 +1,175 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d67352a4_67a96f6d",
+        "filename": "src/du_app/du_e2ap_mgr.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-08-23T15:01:27Z",
+      "side": 1,
+      "message": "Add explanation here\nand also in Jira ticket",
+      "revId": "a9249d8b2038cf04285122c8df4d372403b3b727",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7ff7a2d6_17d42c00",
+        "filename": "src/du_app/du_e2ap_mgr.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 185,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-08-23T15:01:27Z",
+      "side": 1,
+      "message": "Add comment explaining that first array is to tract E2-initiated transactions and 2nd one for RIC-Initiated transactions.\n\nAnd the reason for having 2 arrays can be explained in JIRa ticket",
+      "revId": "a9249d8b2038cf04285122c8df4d372403b3b727",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3dc8ed21_6d26122b",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 2756,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-08-23T15:01:27Z",
+      "side": 1,
+      "message": "failed\n\nApplicable to all log prints",
+      "range": {
+        "startLine": 2756,
+        "startChar": 68,
+        "endLine": 2756,
+        "endChar": 76
+      },
+      "revId": "a9249d8b2038cf04285122c8df4d372403b3b727",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4f3cc510_3f854d75",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 2905,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-08-23T15:01:27Z",
+      "side": 1,
+      "message": "How do we know here if we need to send RICFunctionAdd, Mod or delete list or none.\n\nBefore counting element cnt we must check following conditions:\n\n1. If Ran function list is not received, then send all ran function detail from E2DB in to RAN function added  list.\n2. If all ran func id are present in E2DB and revision counter values are same then no list will be sent.\n2. If any ran func id is present in E2 DB which is not in received list, then we must send this ran func id in RAN function Add list.\n3. If any ran func id is present in E2 DB and in received list but their revision counter do not match, then we must send this in ran func Modified list\n4. If any ran func id not present in E2 DB but present in received list, then it should be send in ran func deleted list",
+      "revId": "a9249d8b2038cf04285122c8df4d372403b3b727",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d907a765_ec20f90a",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 3024,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-08-23T15:01:27Z",
+      "side": 1,
+      "message": "Instead of storing all this info and again building ric service update message in case of failure, we can just store the built message and send it again on timer expiry\n\nWe can do the same for E2 setup also.",
+      "revId": "a9249d8b2038cf04285122c8df4d372403b3b727",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a5f76241_741debcf",
+        "filename": "src/du_app/du_mgr_msg_router.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-08-23T15:01:27Z",
+      "side": 1,
+      "message": "we must not include E2ap Codec header files in any file other than e2ap_msg_hdl.c\n\nTry to remove the dependency due to which this is being added.\n\nApplicable to all files",
+      "revId": "a9249d8b2038cf04285122c8df4d372403b3b727",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ba638b4b_bfae9f88",
+        "filename": "src/du_app/du_tmr.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-08-23T15:01:27Z",
+      "side": 1,
+      "message": "When starting EVENT_RIC_SERVICE_UPDATE_TMR, lets pass cb as \u0026e2apDb-\u003ee2TimersInfo.e2Timers.ricServiceUpdateInfo, so that we do not need to extract it from e2apDb on expiry.",
+      "range": {
+        "startLine": 163,
+        "startChar": 32,
+        "endLine": 163,
+        "endChar": 34
+      },
+      "revId": "a9249d8b2038cf04285122c8df4d372403b3b727",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d7dfa708_6647c04f",
+        "filename": "src/du_app/du_tmr.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 166,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-08-23T15:01:27Z",
+      "side": 1,
+      "message": "Instead of passing all parameter, can we not just pass ricServiceUpdate?",
+      "revId": "a9249d8b2038cf04285122c8df4d372403b3b727",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bc1d8525_96a4717b",
+        "filename": "src/ric_stub/ric_e2ap_msg_hdl.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 1950,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-08-23T15:01:27Z",
+      "side": 1,
+      "message": "This will always give error if ran fuction id is not found at storeRanFunIdx \u003d 0.\n\nIt should complete the whole for loop of storeRanFunIdx and if id is not found after going through complete list of stored ran function, then its an error case !",
+      "range": {
+        "startLine": 1950,
+        "startChar": 27,
+        "endLine": 1950,
+        "endChar": 33
+      },
+      "revId": "a9249d8b2038cf04285122c8df4d372403b3b727",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
