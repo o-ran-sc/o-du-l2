@@ -18,6 +18,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6dc58f83_aa2ae276",
+        "filename": "src/5gnrsch/sch_slot_ind.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 756,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-08-23T09:40:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fb6de005_9cbad714",
+      "revId": "24098e901c2d28a4c40ba7456dbf05bc3ceb59e6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ec123054_a1415a2a",
@@ -31,6 +49,30 @@
       "writtenOn": "2023-08-23T09:23:04Z",
       "side": 1,
       "message": "Since we avoid creating global variables. Can\u0027t we store it in cb?",
+      "range": {
+        "startLine": 102,
+        "startChar": 9,
+        "endLine": 102,
+        "endChar": 24
+      },
+      "revId": "24098e901c2d28a4c40ba7456dbf05bc3ceb59e6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6b37deb1_41ea1008",
+        "filename": "src/cm/du_app_mac_inf.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-08-23T09:40:27Z",
+      "side": 1,
+      "message": "This is a common parameter between DU APP and MAC. Hence it is defined in interface file. \nSince interface do not have a global cb, we cannot place it in cb.",
+      "parentUuid": "ec123054_a1415a2a",
       "range": {
         "startLine": 102,
         "startChar": 9,
@@ -58,6 +100,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "70902600_845cf212",
+        "filename": "src/du_app/du_mgr_main.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 432,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-08-23T09:40:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f13987fa_45904d81",
+      "revId": "24098e901c2d28a4c40ba7456dbf05bc3ceb59e6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5d43c3f0_70d3ff15",
@@ -81,6 +141,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "516b727b_04d31553",
+        "filename": "src/du_app/du_mgr_main.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 438,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-08-23T09:40:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5d43c3f0_70d3ff15",
+      "range": {
+        "startLine": 438,
+        "startChar": 42,
+        "endLine": 438,
+        "endChar": 43
+      },
+      "revId": "24098e901c2d28a4c40ba7456dbf05bc3ceb59e6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9715dae3_eadc7649",
@@ -94,6 +178,30 @@
       "writtenOn": "2023-08-23T09:23:04Z",
       "side": 1,
       "message": "return RFAILED;",
+      "range": {
+        "startLine": 2119,
+        "startChar": 27,
+        "endLine": 2119,
+        "endChar": 28
+      },
+      "revId": "24098e901c2d28a4c40ba7456dbf05bc3ceb59e6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d8d57a01_ff04ac49",
+        "filename": "src/du_app/du_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2119,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-08-23T09:40:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9715dae3_eadc7649",
       "range": {
         "startLine": 2119,
         "startChar": 27,
