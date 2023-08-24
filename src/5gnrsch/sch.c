@@ -2503,6 +2503,47 @@ uint8_t SchProcPhrInd(Pst *pst, SchPwrHeadroomInd *schPhrInd)
 
 /*******************************************************************
  *
+ * @brief Fill and send statistics response to MAC
+ *
+ * @details
+ *
+ *    Function :  SchSendStatsRspToMac
+ *
+ *    Functionality: Fill and send statistics response to MAC
+ *
+ * @params[in]  Inst inst, SchMacRsp result
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t SchSendStatsRspToMac(Inst inst, SchMacRsp result, CauseOfResult cause)
+{
+   Pst rspPst;
+   uint8_t ret = ROK;
+   SchStatsRsp  *statsRsp;
+
+   DU_LOG("\nINFO   --> SCH : Filling statistics response");
+   SCH_ALLOC(statsRsp, sizeof(SchStatsRsp));
+   memset(statsRsp, 0, sizeof(SchStatsRsp));
+   statsRsp->rsp = result;
+   statsRsp->cause = cause;
+
+   /* Filling response post */
+   memset(&rspPst, 0, sizeof(Pst));
+   FILL_PST_SCH_TO_MAC(rspPst, inst);
+   rspPst.event = EVENT_STATISTICS_RSP_TO_MAC;
+
+   ret = MacMessageRouter(&rspPst, (void *)statsRsp);
+   if(ret == RFAILED)
+   {
+      DU_LOG("\nERROR  -->  SCH : SchSendStatsRspToMac(): Failed to send Statistics Response");
+      return ret;
+   }
+   return ret;
+}
+
+/*******************************************************************
+ *
  * @brief Processes Statistics Request from MAC
  *
  * @details
@@ -2639,8 +2680,7 @@ uint8_t SchProcStatsReq(Pst *pst, SchStatsReq *statsReq)
 
    SCH_FREE(statsReq, sizeof(SchStatsReq));
 
-   /* TODO : in next gerrit */
-   //SchSendStatsRspToMac(inst, rsp, cause);
+   SchSendStatsRspToMac(inst, rsp, cause);
 
    return ROK;
 } /* End of SchProcStatsReq */

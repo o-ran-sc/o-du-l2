@@ -63,6 +63,14 @@ MacDuSliceRecfgRspFunc macDuSliceRecfgRspOpts[] =
    packDuMacSliceRecfgRsp    /* packing for light weight loosly coupled */
 };
 
+MacDuStatsRspFunc macDuStatsRspOpts[] =
+{
+   packDuMacStatsRsp,   /* packing for loosely coupled */
+   DuProcMacStatsRsp,   /* packing for tightly coupled */
+   packDuMacStatsRsp   /* packing for light weight loosly coupled */
+};
+
+
 /**
  * @brief Layer Manager  Configuration request handler for Scheduler
  *
@@ -1108,9 +1116,70 @@ uint8_t MacProcStatsReq(Pst *pst, MacStatsReq *macStatsReq)
 
    if(ret == RFAILED)
    {
-      /* Send negative acknowledgment to DU APP. TBD in next gerrit */
+      /* Send negative acknowledgment to DU APP */
+      Pst  rspPst;
+      MacStatsRsp *macStatsRsp = NULLP;
+
+      MAC_ALLOC_SHRABL_BUF(macStatsRsp, sizeof(MacStatsRsp));
+      if(macStatsRsp == NULLP)
+      {
+         DU_LOG("\nERROR  -->  MAC : Failed to allocate memory in MacProcSchStatsRsp");
+         return RFAILED;
+      }
+      macStatsRsp->rsp = MAC_DU_APP_RSP_NOK;
+      macStatsRsp->cause = cause;
+
+      memset(&rspPst, 0, sizeof(Pst));
+      FILL_PST_MAC_TO_DUAPP(rspPst, EVENT_MAC_STATISTICS_RSP);
+      return (*macDuStatsRspOpts[rspPst.selector])(&rspPst, macStatsRsp);
    }
    return ret;
+}
+
+/**
+ * @brief Mac process the statistics rsp received from sch.
+ *
+ * @details
+ *
+ *     Function : MacProcSchStatsRsp
+ *
+ *     This function  process the statistics response received from sch
+ *
+ *  @param[in]  Pst           *pst
+ *  @param[in]  SchStatsRsp *schStatsRsp
+ *  @return  int
+ *      -# ROK
+ **/
+uint8_t MacProcSchStatsRsp(Pst *pst, SchStatsRsp *schStatsRsp)
+{
+   Pst  rspPst;
+   MacStatsRsp *macStatsRsp = NULLP;
+
+   if(schStatsRsp)
+   {
+      MAC_ALLOC_SHRABL_BUF(macStatsRsp, sizeof(MacStatsRsp));
+      if(macStatsRsp == NULLP)
+      {
+          DU_LOG("\nERROR  -->  MAC : Failed to allocate memory in MacProcSchStatsRsp");
+          return RFAILED;
+      }
+      if(schStatsRsp->rsp == RSP_OK)
+         macStatsRsp->rsp = MAC_DU_APP_RSP_OK;
+      else
+      {
+         macStatsRsp->rsp = MAC_DU_APP_RSP_NOK;
+      }
+      macStatsRsp->cause = schStatsRsp->cause;
+
+    memset(&rspPst, 0, sizeof(Pst));
+    FILL_PST_MAC_TO_DUAPP(rspPst, EVENT_MAC_STATISTICS_RSP);
+    (*macDuStatsRspOpts[rspPst.selector])(&rspPst, macStatsRsp);
+
+     MAC_FREE(schStatsRsp, sizeof(SchStatsRsp));
+     return ROK;
+   }
+
+   return RFAILED;
 }
 
 /**********************************************************************
