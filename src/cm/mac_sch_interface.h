@@ -52,6 +52,7 @@
 #define EVENT_UL_CQI_TO_SCH          33
 #define EVENT_PHR_IND_TO_SCH         34
 #define EVENT_STATISTICS_REQ_TO_SCH  35
+#define EVENT_STATISTICS_RSP_TO_MAC  36
 
 /*macros*/
 #define MAX_SSB_IDX 1 /* forcing it as 1 for now. Right value is 64 */
@@ -2257,6 +2258,12 @@ typedef struct schStatsReq
    uint8_t   numStats;
    SchStatsInfo statsList[MAX_NUM_STATS];
 }SchStatsReq;
+
+typedef struct schStatsRsp
+{
+   SchMacRsp rsp; 
+   CauseOfResult cause;
+}SchStatsRsp;
 
 /* function declarations */
 uint8_t MacMessageRouter(Pst *pst, void *msg);

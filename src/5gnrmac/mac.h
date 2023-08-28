@@ -287,6 +287,8 @@ uint8_t MacProcUlSchInfo(Pst *pst, UlSchedInfo *ulSchedInfo);
 uint8_t MacProcSchRachRsrcRsp(Pst *pst, SchRachRsrcRsp *schRachRsrcRsp);
 uint8_t MacProcDlPageAlloc(Pst *pst, DlPageAlloc *dlPageAlloc);
 uint8_t MacProcSchCellDeleteRsp(Pst *pst, SchCellDeleteRsp *schCellDeleteRsp);
+
+uint8_t MacProcSchStatsRsp(Pst *pst, SchStatsRsp *schStatsRsp);
 #endif
 /**********************************************************************
   End of file
