@@ -90,6 +90,7 @@
 #define EVENT_MAC_UE_SYNC_STATUS_IND 227
 #define EVENT_MAC_DL_BROADCAST_REQ   228
 #define EVENT_MAC_STATISTICS_REQ     229
+#define EVENT_MAC_STATISTICS_RSP     230
 
 #define BSR_PERIODIC_TIMER_SF_10 10
 #define BSR_RETX_TIMER_SF_320 320
@@ -1865,6 +1866,12 @@ typedef struct macStatsReq
    MacStatsInfo statsList[MAX_NUM_STATS];
 }MacStatsReq;
 
+typedef struct macStatsRsp
+{
+   MacRsp  rsp;
+   CauseOfResult cause;
+}MacStatsRsp;
+
 /****************** FUNCTION POINTERS ********************************/
 
 /* DL broadcast req from DU APP to MAC*/
@@ -2024,6 +2031,11 @@ typedef uint8_t (*DuMacStatsReqFunc) ARGS((
       Pst *pst,
       MacStatsReq *statsReq));
 
+/* Statistics Response from MAC to DU APP */
+typedef uint8_t (*MacDuStatsRspFunc) ARGS((
+      Pst *pst,
+      MacStatsRsp *statsRsp));
+
 /******************** FUNCTION DECLARATIONS ********************************/
 uint8_t packMacCellUpInd(Pst *pst, OduCellId *cellId);
 uint8_t unpackMacCellUpInd(DuMacCellUpInd func, Pst *pst, Buffer *mBuf);
@@ -2148,6 +2160,10 @@ uint8_t unpackMacDlBroadcastReq(DuMacDlBroadcastReq func, Pst *pst, Buffer *mBuf
 uint8_t packDuMacStatsReq(Pst *pst, MacStatsReq *statsReq);
 uint8_t MacProcStatsReq(Pst *pst, MacStatsReq *statsReq);
 uint8_t unpackMacStatsReq(DuMacStatsReqFunc func, Pst *pst, Buffer *mBuf);
+
+uint8_t packDuMacStatsRsp(Pst *pst, MacStatsRsp *statsRsp);
+uint8_t DuProcMacStatsRsp(Pst *pst, MacStatsRsp *statsRsp);
+uint8_t unpackDuMacStatsRsp(MacDuStatsRspFunc func, Pst *pst, Buffer *mBuf);
 
 #endif
 

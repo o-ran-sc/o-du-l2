@@ -250,13 +250,6 @@ uint8_t SchProcUlTotalPrbUsageTmrExp(TotalPrbUsage *ulTotalPrbUsage)
  **/
 uint8_t schTmrExpiry(PTR cb, uint8_t tmrEvnt)
 {
-   DU_LOG("\nINFO   -->  SCH : Timer Event [%d] expired", tmrEvnt);
-
-   struct timeval tp;
-   gettimeofday(&tp, 0);
-   time_t curtime = tp.tv_sec;
-   struct tm *t = localtime(&curtime);
-
    switch (tmrEvnt)
    {
       case EVENT_DL_TOTAL_PRB_USAGE_TMR:

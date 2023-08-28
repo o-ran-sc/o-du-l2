@@ -63,6 +63,14 @@ MacDuSliceRecfgRspFunc macDuSliceRecfgRspOpts[] =
    packDuMacSliceRecfgRsp    /* packing for light weight loosly coupled */
 };
 
+MacDuStatsRspFunc macDuStatsRspOpts[] =
+{
+   packDuMacStatsRsp,   /* packing for loosely coupled */
+   DuProcMacStatsRsp,   /* packing for tightly coupled */
+   packDuMacStatsRsp   /* packing for light weight loosly coupled */
+};
+
+
 /**
  * @brief Layer Manager  Configuration request handler for Scheduler
  *
@@ -1016,6 +1024,57 @@ uint8_t MacProcDlBroadcastReq(Pst *pst, MacDlBroadcastReq *dlBroadcastReq)
 }
 
 /**
+ * @brief Fill and send statistics response to DU APP
+ *
+ * @details
+ *
+ *     Function : MacSendStatsRspToDuApp
+ *
+ *     Fill and send statistics response to DU APP
+ *
+ *  @param[in]  Response
+ *  @param[in]  Cause of response
+ *  @return  int
+ *      -# ROK
+ **/
+uint8_t MacSendStatsRspToDuApp(MacRsp rsp, CauseOfResult cause)
+{
+   uint8_t ret = ROK;
+   Pst  pst;
+   MacStatsRsp *macStatsRsp = NULLP;
+
+   /* Workaround : To skip corrupted memory, allocating a pointer that will
+    * remain unused */
+   uint8_t *dummyPtr = NULLP;
+   MAC_ALLOC_SHRABL_BUF(dummyPtr, sizeof(uint8_t));
+
+   MAC_ALLOC_SHRABL_BUF(macStatsRsp, sizeof(MacStatsRsp));
+   if(macStatsRsp == NULLP)
+   {
+      DU_LOG("\nERROR  -->  MAC : Failed to allocate memory in MacProcSchStatsRsp");
+      ret = RFAILED;
+   }
+   else
+   {
+      macStatsRsp->rsp = rsp;
+      macStatsRsp->cause = cause;
+
+      memset(&pst, 0, sizeof(Pst));
+      FILL_PST_MAC_TO_DUAPP(pst, EVENT_MAC_STATISTICS_RSP);
+      if(((*macDuStatsRspOpts[pst.selector])(&pst, macStatsRsp))!= ROK)
+      {
+         DU_LOG("\nERROR  -->  MAC : Failed to send statistics response to DU APP");
+         MAC_FREE_SHRABL_BUF(MAC_MEM_REGION, MAC_POOL, macStatsRsp, sizeof(MacStatsRsp));
+         ret = RFAILED;
+      }
+   }
+
+   /* Workaround : Freeing the dummy pointer */
+   MAC_FREE_SHRABL_BUF(MAC_MEM_REGION, MAC_POOL, dummyPtr, sizeof(uint8_t));
+   return ret;
+}
+
+/**
  * @brief Mac process the statistics Req received from DUAPP
  *
  * @details
@@ -1108,7 +1167,37 @@ uint8_t MacProcStatsReq(Pst *pst, MacStatsReq *macStatsReq)
 
    if(ret == RFAILED)
    {
-      /* Send negative acknowledgment to DU APP. TBD in next gerrit */
+      MacSendStatsRspToDuApp(MAC_DU_APP_RSP_NOK, cause);
+   }
+   return ret;
+}
+
+/**
+ * @brief Mac process the statistics rsp received from sch.
+ *
+ * @details
+ *
+ *     Function : MacProcSchStatsRsp
+ *
+ *     This function  process the statistics response received from sch
+ *
+ *  @param[in]  Pst           *pst
+ *  @param[in]  SchStatsRsp *schStatsRsp
+ *  @return  int
+ *      -# ROK
+ **/
+uint8_t MacProcSchStatsRsp(Pst *pst, SchStatsRsp *schStatsRsp)
+{
+   uint8_t ret = RFAILED;
+
+   if(schStatsRsp)
+   {
+      if(schStatsRsp->rsp == RSP_OK)
+         ret = MacSendStatsRspToDuApp(MAC_DU_APP_RSP_OK, schStatsRsp->cause);
+      else
+         ret = MacSendStatsRspToDuApp(MAC_DU_APP_RSP_NOK, schStatsRsp->cause);
+
+      MAC_FREE(schStatsRsp, sizeof(SchStatsRsp));
    }
    return ret;
 }

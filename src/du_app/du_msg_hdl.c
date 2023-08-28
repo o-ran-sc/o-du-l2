@@ -2217,6 +2217,47 @@ uint8_t BuildAndSendStatsReq(ActionDefinition subscribedAction)
    return ROK;
 }
 
+/*******************************************************************
+ *
+ * @brief Process statistics response from MAC
+ *
+ * @details
+ *
+ *    Function : DuProcMacStatsRsp
+ *
+ *    Functionality: Processes statistics configuration response
+ *       from MAC. If configuration is succsessful, DUAPP starts
+ *       reporting period timer for this subscription request 
+ *       from RIC
+ *
+ * @params[in]
+ *
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t DuProcMacStatsRsp(Pst *pst, MacStatsRsp *statsRsp)
+{
+   if(statsRsp)
+   {
+      if(statsRsp->rsp == MAC_DU_APP_RSP_OK)
+      {
+         DU_LOG("\nINFO  -->  DU_APP : Statistics configured successfully");
+         /* TODO : Start Reporting period timer for this subscription request
+          * To be handled in next gerrit */
+      }
+      else
+      {
+         DU_LOG("\nERROR  -->  DU_APP : Statistics configuration failed with cause [%d]", statsRsp->cause);
+      }
+      DU_FREE_SHRABL_BUF(pst->region, pst->pool, statsRsp, sizeof(MacStatsRsp));
+      return ROK;
+   }
+
+   DU_LOG("\nINFO  -->  DU_APP : DuProcMacStatsRsp: Received NULL Pointer");
+   return RFAILED;
+}
+
 /**********************************************************************
   End of file
  **********************************************************************/
