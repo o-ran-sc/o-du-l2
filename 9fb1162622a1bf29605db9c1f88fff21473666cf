@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e001c60e_c7eb03e7",
+        "filename": "src/5gnrmac/mac_cfg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1047,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-08-29T07:27:45Z",
+      "side": 1,
+      "message": "as discussed, can we add free part for statsRsp?",
+      "range": {
+        "startLine": 1047,
+        "startChar": 19,
+        "endLine": 1047,
+        "endChar": 28
+      },
+      "revId": "9fb1162622a1bf29605db9c1f88fff21473666cf",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4c4aba61_89ac8175",
+        "filename": "src/5gnrmac/mac_cfg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1065,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-08-29T07:27:45Z",
+      "side": 1,
+      "message": "dont we need to free macStatsRsp in failure case?",
+      "range": {
+        "startLine": 1065,
+        "startChar": 35,
+        "endLine": 1065,
+        "endChar": 42
+      },
+      "revId": "9fb1162622a1bf29605db9c1f88fff21473666cf",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c2ccdb27_78922a04",
+        "filename": "src/5gnrmac/mac_cfg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1188,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-08-29T07:27:45Z",
+      "side": 1,
+      "message": "since it has a return value of OK/failure. Can we take return value of this, and use it to return the same",
+      "range": {
+        "startLine": 1188,
+        "startChar": 9,
+        "endLine": 1188,
+        "endChar": 31
+      },
+      "revId": "9fb1162622a1bf29605db9c1f88fff21473666cf",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4d3c9174_6825fc0e",
+        "filename": "src/cm/du_app_mac_inf.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 1863,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-08-29T07:27:45Z",
+      "side": 1,
+      "message": "cosmetic comment: can we put response after req for readability purpose",
+      "range": {
+        "startLine": 1863,
+        "startChar": 15,
+        "endLine": 1863,
+        "endChar": 26
+      },
+      "revId": "9fb1162622a1bf29605db9c1f88fff21473666cf",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d3826708_7d431348",
+        "filename": "src/du_app/du_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2253,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-08-29T07:27:45Z",
+      "side": 1,
+      "message": "since statsRsp is received from MAC, dont we need to use MAC\u0027s region/pool or pst-\u003eregion/pool?",
+      "range": {
+        "startLine": 2253,
+        "startChar": 25,
+        "endLine": 2253,
+        "endChar": 42
+      },
+      "revId": "9fb1162622a1bf29605db9c1f88fff21473666cf",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
