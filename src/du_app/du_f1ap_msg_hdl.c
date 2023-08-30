@@ -1608,68 +1608,65 @@ uint8_t addOrModifyE2NodeComponent(uint8_t action, bool reqPart, uint8_t bufSize
    E2NodeComponent *e2NodeComponentInfo;
    CmLList  *node = NULLP;
    
-   if(action == E2_NODE_COMPONENT_ADD)
+   if(reqPart == true)
    {
-      if(reqPart == true)
+      DU_ALLOC(e2NodeComponentInfo, sizeof(E2NodeComponent));
+      if(!e2NodeComponentInfo)
       {
-         DU_ALLOC(e2NodeComponentInfo, sizeof(E2NodeComponent));
-         if(!e2NodeComponentInfo)
-         {
-            DU_LOG("\nERROR  -->  F1AP : Memory allocation failed for e2NodeComponentInfo in %s",__func__);
-            return RFAILED;
-         }
-         e2NodeComponentInfo->interfaceType =F1;
-         e2NodeComponentInfo->componentId=duCfgParam.duId;
-         e2NodeComponentInfo->componentActionType = action;
-         e2NodeComponentInfo->reqBufSize = bufSize;
+         DU_LOG("\nERROR  -->  F1AP : Memory allocation failed for e2NodeComponentInfo in %s",__func__);
+         return RFAILED;
+      }
+      e2NodeComponentInfo->interfaceType =F1;
+      e2NodeComponentInfo->componentId=duCfgParam.duId;
+      e2NodeComponentInfo->componentActionType = action;
+      e2NodeComponentInfo->reqBufSize = bufSize;
 
-         DU_ALLOC(e2NodeComponentInfo->componentRequestPart, bufSize);
-         if(e2NodeComponentInfo->componentRequestPart == NULLP)
-         {
-            DU_LOG("\nERROR  -->  F1AP : Memory allocation failed for componentRequestPart");
-            DU_FREE(e2NodeComponentInfo, sizeof(E2NodeComponent));
-            return RFAILED;
-         }
-         memcpy(e2NodeComponentInfo->componentRequestPart, bufString, e2NodeComponentInfo->reqBufSize);
-         DU_ALLOC(node, sizeof(CmLList));
-         if(node)
-         {
-            node->node = (PTR) e2NodeComponentInfo;
-            cmLListAdd2Tail(&duCb.e2apDb.e2NodeComponentList, node);
-         }
-         else
-         {
-            DU_LOG("\nERROR  -->  F1AP : Memory allocation failed for e2NodeComponentList node");
-            DU_FREE(e2NodeComponentInfo->componentRequestPart, bufSize);
-            DU_FREE(e2NodeComponentInfo, sizeof(E2NodeComponent));
-            return RFAILED;
-         }
+      DU_ALLOC(e2NodeComponentInfo->componentRequestPart, bufSize);
+      if(e2NodeComponentInfo->componentRequestPart == NULLP)
+      {
+         DU_LOG("\nERROR  -->  F1AP : Memory allocation failed for componentRequestPart");
+         DU_FREE(e2NodeComponentInfo, sizeof(E2NodeComponent));
+         return RFAILED;
+      }
+      memcpy(e2NodeComponentInfo->componentRequestPart, bufString, e2NodeComponentInfo->reqBufSize);
+      DU_ALLOC(node, sizeof(CmLList));
+      if(node)
+      {
+         node->node = (PTR) e2NodeComponentInfo;
+         cmLListAdd2Tail(&duCb.e2apDb.e2NodeComponentList, node);
       }
       else
       {
-         if(duCb.e2apDb.e2NodeComponentList.count)
-         {
-            CM_LLIST_FIRST_NODE(&duCb.e2apDb.e2NodeComponentList, node);
-            while(node)
-            {
-               e2NodeComponentInfo = (E2NodeComponent*)node->node;
-               if((e2NodeComponentInfo->interfaceType == F1) && (e2NodeComponentInfo->componentActionType == action))
-               {
-                  e2NodeComponentInfo->rspBufSize = bufSize;
-
-                  DU_ALLOC(e2NodeComponentInfo->componentResponsePart, bufSize);
-                  if(e2NodeComponentInfo->componentResponsePart == NULLP)
-                  {
-                     DU_LOG("\nERROR  -->  F1AP : Memory allocation failed to store the encoding of f1setup rsp");
-                     return RFAILED;
-                  }
-                  memcpy(e2NodeComponentInfo->componentResponsePart, bufString, e2NodeComponentInfo->rspBufSize);
-                  break;
-               }
-               node = node->next;
-            }
-         } 
+         DU_LOG("\nERROR  -->  F1AP : Memory allocation failed for e2NodeComponentList node");
+         DU_FREE(e2NodeComponentInfo->componentRequestPart, bufSize);
+         DU_FREE(e2NodeComponentInfo, sizeof(E2NodeComponent));
+         return RFAILED;
       }
+   }
+   else
+   {
+      if(duCb.e2apDb.e2NodeComponentList.count)
+      {
+         CM_LLIST_FIRST_NODE(&duCb.e2apDb.e2NodeComponentList, node);
+         while(node)
+         {
+            e2NodeComponentInfo = (E2NodeComponent*)node->node;
+            if((e2NodeComponentInfo->interfaceType == F1) && (e2NodeComponentInfo->componentActionType == action))
+            {
+               e2NodeComponentInfo->rspBufSize = bufSize;
+
+               DU_ALLOC(e2NodeComponentInfo->componentResponsePart, bufSize);
+               if(e2NodeComponentInfo->componentResponsePart == NULLP)
+               {
+                  DU_LOG("\nERROR  -->  F1AP : Memory allocation failed to store the encoding of f1setup rsp");
+                  return RFAILED;
+               }
+               memcpy(e2NodeComponentInfo->componentResponsePart, bufString, e2NodeComponentInfo->rspBufSize);
+               break;
+            }
+            node = node->next;
+         }
+      } 
    }
    return ROK;
 }
@@ -2843,6 +2840,7 @@ uint8_t BuildAndSendDUConfigUpdate(ServCellAction servCellAction)
          }
 #endif
       }
+      addOrModifyE2NodeComponent(E2_NODE_COMPONENT_UPDATE, true, encBufSize, encBuf);
       /* Sending msg */
       if(sendF1APMsg() != ROK)
       {
@@ -15853,6 +15851,7 @@ uint8_t procF1GNBDUCfgUpdAck(F1AP_PDU_t *f1apMsg)
 #endif
 
    freeAperDecodeGnbDuAck(gnbDuAck);
+   addOrModifyE2NodeComponent(E2_NODE_COMPONENT_UPDATE, false, encBufSize, encBuf);
    return ROK;
 }
 /******************************************************************
