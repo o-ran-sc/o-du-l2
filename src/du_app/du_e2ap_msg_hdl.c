@@ -52,6 +52,102 @@
 #include "MeasurementInfoItem.h"
 #include "RANfunctionsIDcause-List.h"
 
+/******************************************************************
+ *
+ * @brief Deallocation of memory allocated bu aper decoder for e2 Config Update Failure
+ *
+ * @details
+ *
+ *    Function : freeAperDecodingOfE2Node Config UpdateFailure
+ *
+ *    Functionality: Deallocation of memory allocated bu aper decoder for e2
+ *    Config Update Failure
+ *
+ * @params[in] E2nodeConfigurationUpdateFailure_t *e2NodeCfgUpdFail;
+ * @return void
+ *
+ * ****************************************************************/
+
+void freeAperDecodingOfE2NodeConfigUpdateFailure(E2nodeConfigurationUpdateFailure_t *e2NodeCfgUpdFail)
+{
+   uint8_t arrIdx;
+
+   if(e2NodeCfgUpdFail)
+   {
+      if(e2NodeCfgUpdFail->protocolIEs.list.array)
+      {
+         for(arrIdx=0; arrIdx<e2NodeCfgUpdFail->protocolIEs.list.count; arrIdx++)
+         {
+            if(e2NodeCfgUpdFail->protocolIEs.list.array[arrIdx])
+            {
+               free(e2NodeCfgUpdFail->protocolIEs.list.array[arrIdx]);
+            }
+         }
+         free(e2NodeCfgUpdFail->protocolIEs.list.array);
+      }
+   }
+}
+
+/******************************************************************
+ *
+ * @brief Processes E2 Node Config Update Failure sent by RIC
+ *
+ * @details
+ *
+ *    Function : procE2NodeConfigUpdateFailure
+ *
+ *    Functionality: Processes E2 Node Config Update failure sent by RIC
+ *
+ * @params[in] E2AP_PDU_t ASN decoded E2AP message
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+
+void procE2NodeConfigUpdateFailure(E2AP_PDU_t *e2apMsg)
+{
+   uint8_t arrIdx =0, transId =0, timerValue=0;
+   E2nodeConfigurationUpdateFailure_t *e2NodeCfgUpdFail;
+
+   DU_LOG("\nINFO   -->  E2AP : E2 Node Config Update failure received");
+   e2NodeCfgUpdFail = &e2apMsg->choice.unsuccessfulOutcome->value.choice.E2nodeConfigurationUpdateFailure;
+
+   for(arrIdx=0; arrIdx<e2NodeCfgUpdFail->protocolIEs.list.count; arrIdx++)
+   {
+      switch(e2NodeCfgUpdFail->protocolIEs.list.array[arrIdx]->id)
+      {
+         case ProtocolIE_IDE2_id_TransactionID:
+            {
+               transId = e2NodeCfgUpdFail->protocolIEs.list.array[arrIdx]->value.choice.TransactionID;
+               if((duCb.e2apDb.e2TransInfo.e2InitTransaction[transId].transactionId == transId) &&\
+                     (duCb.e2apDb.e2TransInfo.e2InitTransaction[transId].procedureCode == e2apMsg->choice.unsuccessfulOutcome->procedureCode))
+               {
+                  memset(&duCb.e2apDb.e2TransInfo.e2InitTransaction[transId], 0, sizeof(E2TransInfo));
+               }
+               else
+               {
+                  DU_LOG("\nERROR  -->  E2AP : Invalid transaction id [%d]", transId);
+               }
+               break;
+         }
+         case ProtocolIE_IDE2_id_TimeToWaitE2:
+            {
+               timerValue = convertE2WaitTimerEnumToValue(e2NodeCfgUpdFail->protocolIEs.list.array[arrIdx]->value.choice.TimeToWaitE2);
+               if((duChkTmr((PTR)&(duCb.e2apDb), EVENT_E2_NODE_CONFIG_UPDATE_TMR)) == FALSE)
+               {
+                  duStartTmr((PTR)&(duCb.e2apDb), EVENT_E2_NODE_CONFIG_UPDATE_TMR, timerValue);
+               }
+               else
+               {
+                  DU_LOG("\nERROR   -->  E2AP : EVENT_E2_NODE_CONFIG_UPDATE_TMR timer is already running");
+               }
+               break;
+            }
+      }
+   }
+
+   freeAperDecodingOfE2NodeConfigUpdateFailure(e2NodeCfgUpdFail);
+}
 /*******************************************************************
  *
  * @brief Builds Global gNodeB Params
@@ -289,6 +385,133 @@ uint8_t BuildE2NodeConfigAddList(E2nodeComponentConfigAddition_List_t *e2NodeAdd
       return RFAILED;
    }
    e2NodeAddItem->e2nodeComponentID.choice.e2nodeComponentInterfaceTypeF1->gNB_DU_ID.buf[arrIdx]  = e2NodeComponentInfo->componentId;
+   return ROK;
+
+}
+/*******************************************************************
+ *
+ * @brief Builds E2 node config update list 
+ *
+ * @details
+ *
+ *    Function : BuildE2NodeConfigUpdateList
+ *
+ *    Functionality: Building E2 node config update list
+ *
+ * @params[in] E2nodeComponentConfigUpdate_List_t *e2NodeUpdateList 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ ******************************************************************/
+
+uint8_t BuildE2NodeConfigUpdateList(E2nodeComponentConfigUpdate_List_t *e2NodeUpdateList)
+{
+   uint8_t arrIdx = 0;
+   CmLList         *node;
+   E2NodeComponent *e2NodeComponentInfo;
+   E2nodeComponentConfigUpdate_ItemIEs_t *e2NodeUpdateItemIe;
+   E2nodeComponentConfigUpdate_Item_t *e2NodeUpdateItem;
+
+   e2NodeUpdateList->list.count = 1;
+   e2NodeUpdateList->list.size = e2NodeUpdateList->list.count * sizeof(E2nodeComponentConfigUpdate_ItemIEs_t *);
+   DU_ALLOC(e2NodeUpdateList->list.array, e2NodeUpdateList->list.size);
+   if(e2NodeUpdateList->list.array == NULLP)
+   {
+       DU_LOG("\nERROR  --> E2AP: Memory allocation failed for BuildE2NodeConfigUpdateList %d",__LINE__);
+       return RFAILED;
+   }
+
+   for(arrIdx = 0; arrIdx< e2NodeUpdateList->list.count; arrIdx++)
+   {
+      DU_ALLOC(e2NodeUpdateList->list.array[arrIdx], sizeof(E2nodeComponentConfigUpdate_ItemIEs_t));
+      if(e2NodeUpdateList->list.array[arrIdx] == NULLP)
+      {
+         DU_LOG("\nERROR  --> E2AP: Memory allocation failed for BuildE2NodeConfigUpdateList %d",__LINE__);
+         return RFAILED;
+      }
+   }
+   
+   node = searchE2NodeComponentInfo(F1, E2_NODE_COMPONENT_UPDATE);
+   if(!node)
+   {
+      DU_LOG("\nERROR  --> E2AP : Received e2NodeComponentInfo is null");
+      return RFAILED;
+   }
+   e2NodeComponentInfo = (E2NodeComponent*)node->node;
+   
+   arrIdx = 0;
+   e2NodeUpdateItemIe = (E2nodeComponentConfigUpdate_ItemIEs_t *) e2NodeUpdateList->list.array[arrIdx];
+   e2NodeUpdateItemIe->id = ProtocolIE_IDE2_id_E2nodeComponentConfigUpdate_Item;
+   e2NodeUpdateItemIe->criticality = CriticalityE2_reject;
+   e2NodeUpdateItemIe->value.present = E2nodeComponentConfigUpdate_ItemIEs__value_PR_E2nodeComponentConfigUpdate_Item;
+   e2NodeUpdateItem = &e2NodeUpdateItemIe->value.choice.E2nodeComponentConfigUpdate_Item;
+   
+   /* E2nodeComponentInterfaceType */
+   e2NodeUpdateItem->e2nodeComponentInterfaceType = E2nodeComponentInterfaceType_f1;
+
+   /* E2 Node Component Request Part */
+   if(e2NodeComponentInfo->componentRequestPart)
+   {
+      e2NodeUpdateItem->e2nodeComponentConfiguration.e2nodeComponentRequestPart.size = e2NodeComponentInfo->reqBufSize ;
+      DU_ALLOC(e2NodeUpdateItem->e2nodeComponentConfiguration.e2nodeComponentRequestPart.buf,\
+            e2NodeUpdateItem->e2nodeComponentConfiguration.e2nodeComponentRequestPart.size);
+      if(e2NodeUpdateItem->e2nodeComponentConfiguration.e2nodeComponentRequestPart.buf == NULLP)
+      {
+         DU_LOG("\nERROR  --> E2AP: Memory allocation failed for BuildE2NodeConfigUpdateList %d",__LINE__);
+         return RFAILED;
+      }
+
+      memcpy(e2NodeUpdateItem->e2nodeComponentConfiguration.e2nodeComponentRequestPart.buf,\
+            e2NodeComponentInfo->componentRequestPart, e2NodeUpdateItem->e2nodeComponentConfiguration.\
+            e2nodeComponentRequestPart.size);
+   }
+   else
+   {
+      DU_LOG("\nERROR  --> E2AP: componentRequestPart is null ");
+      return RFAILED;
+   }
+
+
+   /* E2 Node Component Response Part */
+   if(e2NodeComponentInfo->componentResponsePart)
+   {
+      e2NodeUpdateItem->e2nodeComponentConfiguration.e2nodeComponentResponsePart.size = e2NodeComponentInfo->rspBufSize; 
+      DU_ALLOC(e2NodeUpdateItem->e2nodeComponentConfiguration.e2nodeComponentResponsePart.buf, \
+            e2NodeUpdateItem->e2nodeComponentConfiguration.e2nodeComponentResponsePart.size);
+      if(e2NodeUpdateItem->e2nodeComponentConfiguration.e2nodeComponentResponsePart.buf == NULLP)
+      {
+         DU_LOG("\nERROR  --> E2AP: Memory allocation failed for BuildE2NodeConfigUpdateList %d",__LINE__);
+         return RFAILED;
+      }
+      memcpy(e2NodeUpdateItem->e2nodeComponentConfiguration.e2nodeComponentResponsePart.buf, \
+            e2NodeComponentInfo->componentResponsePart, e2NodeUpdateItem->e2nodeComponentConfiguration.\
+            e2nodeComponentResponsePart.size);
+   }
+   else
+   {
+      DU_LOG("\nERROR  --> E2AP: componentResponsePart is null");
+      return RFAILED;
+   }
+   
+   /* E2 Node Component ID */
+   e2NodeUpdateItem->e2nodeComponentID.present = E2nodeComponentID_PR_e2nodeComponentInterfaceTypeF1;
+   DU_ALLOC(e2NodeUpdateItem->e2nodeComponentID.choice.e2nodeComponentInterfaceTypeF1,\
+   sizeof(E2nodeComponentInterfaceF1_t));
+   if(e2NodeUpdateItem->e2nodeComponentID.choice.e2nodeComponentInterfaceTypeF1 == NULLP)
+   {
+       DU_LOG("\nERROR  --> E2AP: Memory allocation failed for BuildE2NodeConfigUpdateList %d",__LINE__);
+       return RFAILED;
+   }
+   e2NodeUpdateItem->e2nodeComponentID.choice.e2nodeComponentInterfaceTypeF1->gNB_DU_ID.size = sizeof(uint8_t);
+   DU_ALLOC(e2NodeUpdateItem->e2nodeComponentID.choice.e2nodeComponentInterfaceTypeF1->gNB_DU_ID.buf,\
+   e2NodeUpdateItem->e2nodeComponentID.choice.e2nodeComponentInterfaceTypeF1->gNB_DU_ID.size);
+
+   if(e2NodeUpdateItem->e2nodeComponentID.choice.e2nodeComponentInterfaceTypeF1->gNB_DU_ID.buf == NULLP)
+   {
+      DU_LOG("\nERROR  -->list.  E2AP: Memory allocation failed for BuildE2NodeConfigUpdateList %d",__LINE__);
+      return RFAILED;
+   }
+   e2NodeUpdateItem->e2nodeComponentID.choice.e2nodeComponentInterfaceTypeF1->gNB_DU_ID.buf[arrIdx]  = e2NodeComponentInfo->componentId;
    return ROK;
 
 }
@@ -2579,8 +2802,10 @@ uint8_t BuildAndSendRicIndication(RicSubscription *ricSubscriptionInfo)
  * ****************************************************************/
 void FreeE2NodeConfigUpdate(E2AP_PDU_t *e2apMsg)
 {
-   uint8_t arrIdx =0;
+   uint8_t arrIdx =0, e2NodeUpdateListIdx=0;
    E2nodeConfigurationUpdate_t *e2NodeConfigUpdate;
+   E2nodeComponentConfigUpdate_List_t *e2NodeUpdateList;
+   E2nodeComponentConfigUpdate_ItemIEs_t *e2NodeUpdateItem;
 
    if(e2apMsg != NULLP)
    {
@@ -2591,7 +2816,53 @@ void FreeE2NodeConfigUpdate(E2AP_PDU_t *e2apMsg)
          {
             for(arrIdx = 0; arrIdx < e2NodeConfigUpdate->protocolIEs.list.count; arrIdx++)
             {
-               DU_FREE(e2NodeConfigUpdate->protocolIEs.list.array[arrIdx], sizeof(E2nodeConfigurationUpdate_IEs_t));
+               if(e2NodeConfigUpdate->protocolIEs.list.array[arrIdx])
+               {
+
+                  switch(e2NodeConfigUpdate->protocolIEs.list.array[arrIdx]->id)
+                  {
+                     case ProtocolIE_IDE2_id_TransactionID:
+                        break;
+
+                     case ProtocolIE_IDE2_id_E2nodeComponentConfigUpdate:
+                        {
+                           e2NodeUpdateList = &e2NodeConfigUpdate->protocolIEs.list.array[arrIdx]->value.choice.E2nodeComponentConfigUpdate_List;
+                           if(e2NodeUpdateList->list.array)
+                           {
+                              for(e2NodeUpdateListIdx = 0; e2NodeUpdateListIdx< e2NodeUpdateList->list.count; e2NodeUpdateListIdx++)
+                              {
+                                 e2NodeUpdateItem = (E2nodeComponentConfigUpdate_ItemIEs_t *) e2NodeUpdateList->list.array[e2NodeUpdateListIdx];
+
+                                 /* Free E2 Node Component Request Part */
+                                 DU_FREE(e2NodeUpdateItem->value.choice.E2nodeComponentConfigUpdate_Item.e2nodeComponentConfiguration.e2nodeComponentRequestPart.buf,\
+                                       e2NodeUpdateItem->value.choice.E2nodeComponentConfigUpdate_Item.e2nodeComponentConfiguration.e2nodeComponentRequestPart.size);
+
+                                 /* Free E2 Node Component Response Part */
+                                 DU_FREE(e2NodeUpdateItem->value.choice.E2nodeComponentConfigUpdate_Item.e2nodeComponentConfiguration.\
+                                       e2nodeComponentResponsePart.buf, \
+                                       e2NodeUpdateItem->value.choice.E2nodeComponentConfigUpdate_Item.e2nodeComponentConfiguration.e2nodeComponentResponsePart.size);
+
+                                 /* Free E2 Node Component ID */
+                                 if(e2NodeUpdateItem->value.choice.E2nodeComponentConfigUpdate_Item.e2nodeComponentID.choice.e2nodeComponentInterfaceTypeF1)
+                                 {
+                                    DU_FREE(e2NodeUpdateItem->value.choice.E2nodeComponentConfigUpdate_Item.e2nodeComponentID.choice.\
+                                          e2nodeComponentInterfaceTypeF1->gNB_DU_ID.buf,\
+                                          e2NodeUpdateItem->value.choice.E2nodeComponentConfigUpdate_Item.e2nodeComponentID.choice.\
+                                          e2nodeComponentInterfaceTypeF1->gNB_DU_ID.size);
+                                    DU_FREE(e2NodeUpdateItem->value.choice.E2nodeComponentConfigUpdate_Item.e2nodeComponentID.choice.e2nodeComponentInterfaceTypeF1,\
+                                          sizeof(E2nodeComponentInterfaceF1_t));
+                                 }
+                                 DU_FREE(e2NodeUpdateList->list.array[e2NodeUpdateListIdx], sizeof(E2nodeComponentConfigUpdate_ItemIEs_t));
+                              }
+                           }
+                           break;
+                        }
+                           
+                     default:
+                        break;
+                  }
+                  DU_FREE(e2NodeConfigUpdate->protocolIEs.list.array[arrIdx], sizeof(E2nodeConfigurationUpdate_IEs_t));
+               }
             }
             DU_FREE(e2NodeConfigUpdate->protocolIEs.list.array, e2NodeConfigUpdate->protocolIEs.list.size);
          }
@@ -2620,8 +2891,8 @@ void FreeE2NodeConfigUpdate(E2AP_PDU_t *e2apMsg)
 
 uint8_t BuildAndSendE2NodeConfigUpdate()
 {
-   uint8_t arrIdx = 0,elementCnt = 1;
-   uint8_t ret = ROK;
+   uint8_t arrIdx = 0,elementCnt = 0, transId=0;
+   uint8_t ret = RFAILED;
    E2AP_PDU_t        *e2apMsg = NULLP;
    E2nodeConfigurationUpdate_t *e2NodeConfigUpdate = NULLP;
    asn_enc_rval_t     encRetVal;       /* Encoder return value */
@@ -2635,25 +2906,24 @@ uint8_t BuildAndSendE2NodeConfigUpdate()
          DU_LOG("\nERROR  -->  E2AP : Memory allocation for E2AP-PDU failed");
          break;
       }
+
       e2apMsg->present = E2AP_PDU_PR_initiatingMessage;
       DU_ALLOC(e2apMsg->choice.initiatingMessage, sizeof(InitiatingMessageE2_t));
       if(e2apMsg->choice.initiatingMessage == NULLP)
       {
          DU_LOG("\nERROR  -->  E2AP : Memory allocation for E2AP-PDU failed");
-         DU_FREE(e2apMsg, sizeof(E2AP_PDU_t));
-         return RFAILED;
+         break;
       }
       e2apMsg->choice.initiatingMessage->criticality = CriticalityE2_reject;
       e2apMsg->choice.initiatingMessage->procedureCode = ProcedureCodeE2_id_E2nodeConfigurationUpdate;
       e2apMsg->choice.initiatingMessage->value.present = \
       InitiatingMessageE2__value_PR_E2nodeConfigurationUpdate;
       e2NodeConfigUpdate = &e2apMsg->choice.initiatingMessage->value.choice.E2nodeConfigurationUpdate;
-
+      
+      elementCnt =2;
       e2NodeConfigUpdate->protocolIEs.list.count = elementCnt;
       e2NodeConfigUpdate->protocolIEs.list.size  = elementCnt * sizeof(E2nodeConfigurationUpdate_IEs_t*);
-      /* Initialize the Ric Indication members */
-      DU_ALLOC(e2NodeConfigUpdate->protocolIEs.list.array, \
-            e2NodeConfigUpdate->protocolIEs.list.size);
+      DU_ALLOC(e2NodeConfigUpdate->protocolIEs.list.array, e2NodeConfigUpdate->protocolIEs.list.size);
       if(e2NodeConfigUpdate->protocolIEs.list.array == NULLP)
       {
          DU_LOG("\nERROR  -->  E2AP : Memory allocation for e2NodeConfigUpdate failed");
@@ -2670,14 +2940,28 @@ uint8_t BuildAndSendE2NodeConfigUpdate()
             break;
          }
       }
+      
+      if(arrIdx<elementCnt)
+         break;
 
       arrIdx = 0;
       /* TransactionID */
       e2NodeConfigUpdate->protocolIEs.list.array[arrIdx]->id = ProtocolIE_IDE2_id_TransactionID;
       e2NodeConfigUpdate->protocolIEs.list.array[arrIdx]->criticality = CriticalityE2_reject;
       e2NodeConfigUpdate->protocolIEs.list.array[arrIdx]->value.present = E2nodeConfigurationUpdate_IEs__value_PR_TransactionID;
-      e2NodeConfigUpdate->protocolIEs.list.array[arrIdx]->value.choice.TransactionID = TRANS_ID;
+      transId = assignTransactionId();
+      e2NodeConfigUpdate->protocolIEs.list.array[arrIdx]->value.choice.TransactionID = transId;
 
+      arrIdx++;
+      e2NodeConfigUpdate->protocolIEs.list.array[arrIdx]->id = ProtocolIE_IDE2_id_E2nodeComponentConfigUpdate;
+      e2NodeConfigUpdate->protocolIEs.list.array[arrIdx]->criticality = CriticalityE2_reject;
+      e2NodeConfigUpdate->protocolIEs.list.array[arrIdx]->value.present = E2nodeConfigurationUpdate_IEs__value_PR_E2nodeComponentConfigUpdate_List;
+      if(BuildE2NodeConfigUpdateList(&e2NodeConfigUpdate->protocolIEs.list.array[arrIdx]->value.choice.E2nodeComponentConfigUpdate_List) != ROK)
+      {
+         
+         DU_LOG("\nERROR  -->  E2AP : Failed to update the E2 node configuration");
+         break;
+      }
 
       /* Prints the Msg formed */
       xer_fprint(stdout, &asn_DEF_E2AP_PDU, e2apMsg);
@@ -2705,9 +2989,12 @@ uint8_t BuildAndSendE2NodeConfigUpdate()
       if(SendE2APMsg(DU_APP_MEM_REGION, DU_POOL, encBuf, encBufSize))
       {
          DU_LOG("\nERROR  -->  E2AP : Sending E2 node config update failed");
-         return RFAILED;
+         break;
       }
 
+      duCb.e2apDb.e2TransInfo.e2InitTransaction[transId].transactionId = transId;
+      duCb.e2apDb.e2TransInfo.e2InitTransaction[transId].procedureCode = e2apMsg->choice.initiatingMessage->procedureCode;
+      ret = ROK;
       break;
    }while(true);
    
@@ -3090,7 +3377,7 @@ void procE2SetupFailure(E2AP_PDU_t *e2apMsg)
          }
          case ProtocolIE_IDE2_id_TimeToWaitE2:
             {
-               timerValue = covertE2WaitTimerEnumToValue(e2SetupFailure->protocolIEs.list.array[arrIdx]->value.choice.TimeToWaitE2);
+               timerValue = convertE2WaitTimerEnumToValue(e2SetupFailure->protocolIEs.list.array[arrIdx]->value.choice.TimeToWaitE2);
                if((duChkTmr((PTR)&(duCb.e2apDb.e2TimersInfo.e2Timers.e2SetupTimer), EVENT_E2_SETUP_TMR)) == FALSE)
                {
                   duStartTmr((PTR)&(duCb.e2apDb.e2TimersInfo.e2Timers.e2SetupTimer), EVENT_E2_SETUP_TMR, timerValue);
@@ -3812,7 +4099,7 @@ void procRicServiceUpdateFailure(E2AP_PDU_t *e2apMsg)
             }
          case ProtocolIE_IDE2_id_TimeToWaitE2:
             {
-               timerValue = covertE2WaitTimerEnumToValue(ricServiceFailure->protocolIEs.list.array[arrIdx]->value.choice.TimeToWaitE2);
+               timerValue = convertE2WaitTimerEnumToValue(ricServiceFailure->protocolIEs.list.array[arrIdx]->value.choice.TimeToWaitE2);
                if((duChkTmr((PTR)&(duCb.e2apDb.e2TimersInfo.e2Timers.ricServiceUpdateTimer), EVENT_RIC_SERVICE_UPDATE_TMR)) == FALSE)
                {
                   duStartTmr((PTR)&(duCb.e2apDb.e2TimersInfo.e2Timers.ricServiceUpdateTimer), EVENT_RIC_SERVICE_UPDATE_TMR, timerValue);
@@ -3911,6 +4198,11 @@ void E2APMsgHdlr(Buffer *mBuf)
                case UnsuccessfulOutcomeE2__value_PR_E2setupFailure:
                   {
                      procE2SetupFailure(e2apMsg);
+                     break;
+                  }
+               case UnsuccessfulOutcomeE2__value_PR_E2nodeConfigurationUpdateFailure:
+                  {
+                     procE2NodeConfigUpdateFailure(e2apMsg);
                      break;
                   }
                case UnsuccessfulOutcomeE2__value_PR_RICserviceUpdateFailure:

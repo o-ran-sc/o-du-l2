@@ -28,7 +28,7 @@
  *
  * @details
  *
- *    Function : covertE2WaitTimerEnumToValue
+ *    Function : convertE2WaitTimerEnumToValue
  *
  *    Functionality: Converts enum values into actual value of E2 wait timer 
  *
@@ -37,7 +37,7 @@
  *
  * **********************************************************************/
 
-uint8_t covertE2WaitTimerEnumToValue(uint8_t timerToWait)
+uint8_t convertE2WaitTimerEnumToValue(uint8_t timerToWait)
 {
    switch(timerToWait)
    {
