@@ -656,6 +656,138 @@ void e2ProcStatsInd(MacStatsInd *statsInd)
    }
 }
 
+/******************************************************************
+ *
+ * @brief Search E2 node component with the help of action type
+ *
+ * @details
+ *
+ *    Function : fetchE2NodeComponentInfo 
+ *
+ *    Functionality: Search E2 node component with the help of action type 
+ *
+ * @params[in] 
+ *       Type of interface 
+ *       Component action type
+ *       Pointer to E2 component node to be searched 
+ * @return CmLList
+ *
+ * ****************************************************************/
+
+E2NodeComponent *fetchE2NodeComponentInfo(InterfaceType interfaceType, uint8_t componentActionType, CmLList **e2ComponentNode)
+{
+   E2NodeComponent *e2NodeComponentInfo=NULLP;
+
+   if(duCb.e2apDb.e2NodeComponentList.count)
+   {
+      CM_LLIST_FIRST_NODE(&duCb.e2apDb.e2NodeComponentList, *e2ComponentNode);
+      while(*e2ComponentNode)
+      {
+         e2NodeComponentInfo = (E2NodeComponent*)((*e2ComponentNode)->node);
+         if((e2NodeComponentInfo->interfaceType == interfaceType) && (e2NodeComponentInfo->componentActionType == componentActionType))
+         {
+            
+            break;
+         }
+         
+         *e2ComponentNode = (*e2ComponentNode)->next;
+         e2NodeComponentInfo = NULLP;
+      }
+   }
+   return e2NodeComponentInfo; 
+}
+
+/*******************************************************************
+ *
+ * @brief add or modify E2NodeComponent list
+ *
+ * @details
+ *
+ *    Function : addOrModifyE2NodeComponent 
+ *
+ * Functionality: add or modify E2NodeComponent list 
+ *
+ * @parameter
+ *       Type of interface 
+ *       Component action type
+ *       boolean variable to check req or rsp msg type
+ *       Size of buffer which needs to be store
+ *       buffer string which needs to be store 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ ******************************************************************/
+
+uint8_t addOrModifyE2NodeComponent(InterfaceType interfaceType, uint8_t action, bool reqPart, uint8_t bufSize, char *bufString)
+{
+   E2NodeComponent *e2NodeComponentInfo= NULL;
+   CmLList  *node = NULLP;
+   
+   if(reqPart == true)
+   {
+      DU_ALLOC(e2NodeComponentInfo, sizeof(E2NodeComponent));
+      if(!e2NodeComponentInfo)
+      {
+         DU_LOG("\nERROR  -->  E2AP : Memory allocation failed for e2NodeComponentInfo in %s",__func__);
+         return RFAILED;
+      }
+      e2NodeComponentInfo->interfaceType =interfaceType;
+      e2NodeComponentInfo->componentId=duCfgParam.duId;
+      e2NodeComponentInfo->componentActionType = action;
+      e2NodeComponentInfo->reqBufSize = bufSize;
+
+      DU_ALLOC(e2NodeComponentInfo->componentRequestPart, bufSize);
+      if(e2NodeComponentInfo->componentRequestPart == NULLP)
+      {
+         DU_LOG("\nERROR  -->  E2AP : Memory allocation failed for componentRequestPart");
+         DU_FREE(e2NodeComponentInfo, sizeof(E2NodeComponent));
+         return RFAILED;
+      }
+      memcpy(e2NodeComponentInfo->componentRequestPart, bufString, e2NodeComponentInfo->reqBufSize);
+      DU_ALLOC(node, sizeof(CmLList));
+      if(node)
+      {
+         node->node = (PTR) e2NodeComponentInfo;
+         cmLListAdd2Tail(&duCb.e2apDb.e2NodeComponentList, node);
+      }
+      else
+      {
+         DU_LOG("\nERROR  -->  E2AP : Memory allocation failed for e2NodeComponentList node");
+         DU_FREE(e2NodeComponentInfo->componentRequestPart, bufSize);
+         DU_FREE(e2NodeComponentInfo, sizeof(E2NodeComponent));
+         return RFAILED;
+      }
+   }
+   else
+   {
+      if(duCb.e2apDb.e2NodeComponentList.count)
+      {
+         e2NodeComponentInfo = fetchE2NodeComponentInfo(interfaceType, action, &node);
+         if(e2NodeComponentInfo->componentRequestPart== NULLP)
+         {
+            DU_LOG("\nERROR  -->  E2AP : E2 node Component request part is not present");
+            return RFAILED;
+         }
+         
+         e2NodeComponentInfo->rspBufSize = bufSize;
+         DU_ALLOC(e2NodeComponentInfo->componentResponsePart, bufSize);
+         if(e2NodeComponentInfo->componentResponsePart == NULLP)
+         {
+            DU_LOG("\nERROR  -->  E2AP : Memory allocation failed to store the encoding of rsp");
+            return RFAILED;
+         }
+         memcpy(e2NodeComponentInfo->componentResponsePart, bufString, e2NodeComponentInfo->rspBufSize);
+         return ROK;
+      }
+      else
+      {
+         DU_LOG("\nERROR  -->  E2AP : Unable to find the node");
+         return RFAILED;
+      }
+   } 
+   return ROK;
+}
+
 /**********************************************************************
   End of file
  **********************************************************************/

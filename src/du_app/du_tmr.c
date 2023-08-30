@@ -52,6 +52,7 @@ bool duChkTmr(PTR cb, int16_t tmrEvnt)
              DU_LOG("\nERROR  -->  DU_APP : duChkTmr: Invalid tmr Evnt [%d]", tmrEvnt);
              return TRUE;
          }
+         break;
       }
       case EVENT_RIC_SERVICE_UPDATE_TMR:
       {
@@ -62,6 +63,15 @@ bool duChkTmr(PTR cb, int16_t tmrEvnt)
          }
          break;
       }      
+      case EVENT_E2_NODE_CONFIG_UPDATE_TMR:
+      {
+         if(((E2NodeConfigUpdateTimer *)cb)->timer.tmrEvnt == EVENT_E2_NODE_CONFIG_UPDATE_TMR)
+         {
+             DU_LOG("\nERROR  -->  DU_APP : duChkTmr: Invalid tmr Evnt [%d]", tmrEvnt);
+             return TRUE;
+         }
+         break;
+      }
       default:
       {
          DU_LOG("\nERROR  -->  DU_APP : duChkTmr: Invalid tmr Evnt [%d]", tmrEvnt);
@@ -106,6 +116,16 @@ void duStartTmr(PTR cb, int16_t tmrEvnt, uint8_t timerValue)
 
          arg.timers = &ricServiceUpdateTimer->timer;
          arg.max = MAX_RIC_SERVICE_UPDATE_TMR;
+         break;
+      }
+      case EVENT_E2_NODE_CONFIG_UPDATE_TMR:
+      {
+         E2NodeConfigUpdateTimer *cfgUpdateTimer;
+         cfgUpdateTimer = ((E2NodeConfigUpdateTimer*)cb);
+         TMR_CALCUATE_WAIT(arg.wait, timerValue, duCb.duTimersInfo.tmrRes);
+
+         arg.timers = &cfgUpdateTimer->timer;
+         arg.max = MAX_E2_NODE_CONFIG_UPDATE_TMR;
          break;
       }
       default:
@@ -156,6 +176,14 @@ void duTmrExpiry(PTR cb,int16_t tmrEvnt)
          
          ricServiceUpdateTimer= ((RicServiceUpdateTimer*)cb);
          BuildAndSendRicServiceUpdate(ricServiceUpdateTimer->ricService);
+         break;
+      }
+      case EVENT_E2_NODE_CONFIG_UPDATE_TMR:
+      {
+         E2NodeConfigUpdateTimer *cfgUpdateTimer;
+         
+         cfgUpdateTimer = ((E2NodeConfigUpdateTimer*)cb);
+         BuildAndSendE2NodeConfigUpdate(&cfgUpdateTimer->configList);
          break;
       }
       default:
