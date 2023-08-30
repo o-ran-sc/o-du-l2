@@ -58,6 +58,8 @@ uint8_t BuildAndSendE2SetupRsp(DuDb *duDb, uint8_t transId);
 uint8_t BuildAndSendRicSubscriptionReq(DuDb *duDb);
 uint8_t SendE2APMsg(Region region, Pool pool, uint32_t duId);
 uint8_t BuildAndSendRicServiceQuery(DuDb *duDb);
+uint8_t BuildAndSendE2NodeConfigUpdateAck(DuDb *duDb, uint8_t transId);
+
 /**********************************************************************
          End of file
 **********************************************************************/

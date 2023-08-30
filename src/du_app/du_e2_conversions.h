@@ -18,7 +18,8 @@
 
 /* This file contains definitions of E2 conversion functions */
 
-uint8_t covertE2WaitTimerEnumToValue(uint8_t timerToWait);
+uint8_t convertInterfaceToE2ComponentInterfaceType(uint8_t interface);
+uint8_t convertE2WaitTimerEnumToValue(uint8_t timerToWait);
 
 /**********************************************************************
   End of file

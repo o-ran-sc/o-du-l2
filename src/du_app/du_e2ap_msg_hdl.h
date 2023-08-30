@@ -23,7 +23,7 @@
 void    E2APMsgHdlr(Buffer *mBuf);
 uint8_t BuildAndSendE2SetupReq();
 uint8_t BuildAndSendE2ResetRequest(E2FailureCause resetCause);
-uint8_t BuildAndSendE2NodeConfigUpdate();
+uint8_t BuildAndSendE2NodeConfigUpdate(E2NodeConfigList *recvList);
 uint8_t BuildAndSendRicServiceUpdate(RicServiceUpdate serviceUpdate);
 
 uint8_t BuildAndSendStatsReq(uint16_t ranFuncId, RicSubscription *ricSubscriptionInfo);
