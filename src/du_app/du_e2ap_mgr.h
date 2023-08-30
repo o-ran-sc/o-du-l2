@@ -18,10 +18,12 @@
 
 /* This file contains all E2AP message handler related functionality */
 #define MAX_E2_SETUP_TMR 1
+#define MAX_E2_NODE_CONFIG_UPDATE_TMR 1
 #define MAX_RIC_SERVICE_UPDATE_TMR 1
 
 #define EVENT_E2_SETUP_TMR 1
 #define EVENT_RIC_SERVICE_UPDATE_TMR 2
+#define EVENT_E2_NODE_CONFIG_UPDATE_TMR 3
 
 #define MAX_NUM_TRANSACTION 256 /* As per, O-RAN WG3 E2AP v3.0, section 9.2.33 */
 #define MAX_RAN_FUNCTION 256        /* O-RAN.WG3.E2AP-R003-v03.00 : Section 9.1.2.2 : maxofRANfunctionID */
@@ -69,6 +71,23 @@ typedef enum
    E2_NODE_COMPONENT_ADD,
    E2_NODE_COMPONENT_UPDATE
 }ComponentActionType;
+
+
+typedef struct e2NodeCfgItem
+{
+   InterfaceType interface;
+   ComponentActionType actionType;
+}E2NodeConfigItem;
+
+typedef struct e2NodeCfgList
+{
+   uint16_t addE2NodeCount;
+   E2NodeConfigItem addE2Node[MAX_E2_NODE_COMPONENT];
+   uint16_t updateE2NodeCount;
+   E2NodeConfigItem updateE2Node[MAX_E2_NODE_COMPONENT];
+   uint16_t removeE2NodeCount;
+   E2NodeConfigItem removeE2Node[MAX_E2_NODE_COMPONENT];
+}E2NodeConfigList;
 
 /* O-RAN.WG3.E2AP-R003-v03.00 : Section 9.2.30 */
 typedef enum
@@ -216,6 +235,7 @@ typedef struct
 
 typedef struct e2Timer
 {
+   CmTimer e2NodeConfigUpdate;
    CmTimer e2SetupTimer;
    RicServiceUpdateTimer ricServiceUpdateTimer;
    /* More timers can be added to this structure in future */
