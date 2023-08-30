@@ -23,6 +23,7 @@
 #include "TimeToWaitE2.h"
 #include "du_app_mac_inf.h"
 #include "du_e2ap_mgr.h"
+#include "E2nodeComponentInterfaceType.h"
 
 /************************************************************************
  *
@@ -30,7 +31,7 @@
  *
  * @details
  *
- *    Function : covertE2WaitTimerEnumToValue
+ *    Function : convertE2WaitTimerEnumToValue
  *
  *    Functionality: Converts enum values into actual value of E2 wait timer 
  *
@@ -39,7 +40,7 @@
  *
  * **********************************************************************/
 
-uint8_t covertE2WaitTimerEnumToValue(uint8_t timerToWait)
+uint8_t convertE2WaitTimerEnumToValue(uint8_t timerToWait)
 {
    switch(timerToWait)
    {
@@ -108,6 +109,50 @@ void convertDuCauseToE2Cause(CauseOfResult l2Cause, E2FailureCause *failureCause
             break;
          }
    }
+}
+
+/************************************************************************
+ *
+ * @brief Converts InterfaceType into E2nodeComponentInterfaceType value 
+ *
+ * @details
+ *
+ *    Function : convertInterfaceToE2ComponentInterfaceType
+ *
+ *    Functionality: Convert InterfaceType into E2nodeComponentInterfaceType
+ *    value
+ *
+ * @params[in] Actual value of interface
+ * @return Enum value of e2 interface
+ *
+ * **********************************************************************/
+
+uint8_t convertInterfaceToE2ComponentInterfaceType(uint8_t interface)
+{
+   switch(interface)
+   {
+      case NG:
+         return E2nodeComponentInterfaceType_ng;
+
+      case XN:
+         return E2nodeComponentInterfaceType_xn;
+
+      case E1:
+         return E2nodeComponentInterfaceType_e1;
+
+      case F1:
+         return E2nodeComponentInterfaceType_f1;
+
+      case W1:
+         return E2nodeComponentInterfaceType_w1;
+
+      case S1:
+         return E2nodeComponentInterfaceType_s1;
+
+      case X2:
+         return E2nodeComponentInterfaceType_x2;
+   }
+   return RFAILED;
 }
 
 /**********************************************************************
