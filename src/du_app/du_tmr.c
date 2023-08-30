@@ -45,6 +45,15 @@ bool duChkTmr(PTR cb, int16_t tmrEvnt)
 {
    switch (tmrEvnt)
    {
+      case EVENT_E2_NODE_CONFIG_UPDATE_TMR:
+      {
+         if(((E2apDb *)cb)->e2TimersInfo.e2Timers.e2NodeConfigUpdate.tmrEvnt == EVENT_E2_NODE_CONFIG_UPDATE_TMR)
+         {
+             DU_LOG("\nERROR  -->  DU_APP : duChkTmr: Invalid tmr Evnt [%d]", tmrEvnt);
+             return TRUE;
+         }
+      }
+      
       case EVENT_E2_SETUP_TMR:
       {
          if(((E2apDb *)cb)->e2TimersInfo.e2Timers.e2SetupTimer.tmrEvnt == EVENT_E2_SETUP_TMR)
@@ -81,6 +90,16 @@ void duStartTmr(PTR cb, int16_t tmrEvnt, uint8_t timerValue)
    
    switch (tmrEvnt)
    {
+      case EVENT_E2_NODE_CONFIG_UPDATE_TMR:
+      {
+         e2apDb = ((E2apDb *)cb);
+         DU_TMR_CALCUATE_WAIT(arg.wait, timerValue, duCb.duTimersInfo.tmrRes);
+
+         arg.timers = &e2apDb->e2TimersInfo.e2Timers.e2NodeConfigUpdate;
+         arg.max = MAX_E2_NODE_CONFIG_UPDATE_TMR;
+         break;
+      }
+      
       case EVENT_E2_SETUP_TMR:
       {
          e2apDb = ((E2apDb *)cb);
@@ -127,6 +146,11 @@ void duTmrExpiry(PTR cb,int16_t tmrEvnt)
 {
    switch (tmrEvnt)
    {
+      case EVENT_E2_NODE_CONFIG_UPDATE_TMR:
+      {
+         BuildAndSendE2NodeConfigUpdate();
+         break;
+      }
       case EVENT_E2_SETUP_TMR:
       {
          BuildAndSendE2SetupReq();
