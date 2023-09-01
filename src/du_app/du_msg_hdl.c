@@ -2258,6 +2258,46 @@ uint8_t DuProcMacStatsRsp(Pst *pst, MacStatsRsp *statsRsp)
    return RFAILED;
 }
 
+/*******************************************************************
+ *
+ * @brief Process statistics indication from MAC
+ *
+ * @details
+ *
+ *    Function : DuProcMacStatsInd
+ *
+ *    Functionality: Processes statistics indication from MAC.
+ *
+ * @params[in]
+ *
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t DuProcMacStatsInd(Pst *pst, MacStatsInd *statsInd)
+{
+   if(statsInd)
+   {
+#ifdef DEBUG_PRINT   
+      DU_LOG("\nDEBUG  -->  DU_APP : DuProcMacStatsInd: Received Statistics Indication");
+      DU_LOG("\nMeasurement type [%d]  Measurement Value [%lf]", statsInd->type, statsInd->value);
+#endif      
+
+      /* TODO : When stats indication is received
+       * DU APP searches for the message type in E2AP RIC subscription database
+       * and stores in the value in the list of subscribed measurements
+       *
+       * This will be implemented in next gerrit.
+       */
+
+      DU_FREE_SHRABL_BUF(pst->region, pst->pool, statsInd, sizeof(MacStatsInd));
+      return ROK;
+   }
+   
+   DU_LOG("\nINFO  -->  DU_APP : DuProcMacStatsInd: Received NULL Pointer");
+   return RFAILED;
+}
+
 /**********************************************************************
   End of file
  **********************************************************************/

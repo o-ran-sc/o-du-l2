@@ -796,6 +796,7 @@ void schMsg4Complete(SchUeCb *ueCb);
 
 /* Statistics Function */
 uint8_t SchProcStatsReq(Pst *pst, SchStatsReq *statsReq);
+uint8_t SchSendStatsIndToMac(Inst inst, SchMeasurementType measType, double value);
 
 /**********************************************************************
   End of file

@@ -82,8 +82,10 @@ void schStartTmr(SchCb *gCb, PTR cb, int16_t tmrEvnt, uint8_t timerValue)
 
    arg.wait = 0;
 
-   DU_LOG("\nINFO   -->  SCH : Starting Timer Event [%d] with Wait Time [%d] ms", \
+#ifdef DEBUG_PRINT
+   DU_LOG("\nDEBUG   -->  SCH : Starting Timer Event [%d] with Wait Time [%d] ms", \
       tmrEvnt, timerValue);
+#endif      
    
    switch (tmrEvnt)
    {
@@ -140,7 +142,9 @@ void schStopTmr(SchCb *gCb, PTR cb, uint8_t tmrType)
 
    arg.timers = NULLP;
 
-   DU_LOG("\nINFO   -->  SCH : Stopping Timer Event [%d]", tmrType);
+#ifdef DEBUG_PRINT
+   DU_LOG("\nDEBUG   -->  SCH : Stopping Timer Event [%d]", tmrType);
+#endif   
 
    switch (tmrType)
    {
@@ -190,11 +194,11 @@ void schStopTmr(SchCb *gCb, PTR cb, uint8_t tmrType)
 */
 uint8_t SchProcDlTotalPrbUsageTmrExp(TotalPrbUsage *dlTotalPrbUsage)
 {
-   uint8_t percentageOfTotalPrbUsed = 0;
+   double percentageOfTotalPrbUsed = 0;
 
    if(dlTotalPrbUsage->totalPrbAvailForTx)
-      percentageOfTotalPrbUsed = ((dlTotalPrbUsage->numPrbUsedForTx * 100) / dlTotalPrbUsage->totalPrbAvailForTx);
-   //SchSendStatsIndToMac(dlTotalPrbUsage->schInst, SCH_DL_TOTAL_PRB_USAGE, percentageOfTotalPrbUsed);
+      percentageOfTotalPrbUsed = ((100.0 * dlTotalPrbUsage->numPrbUsedForTx) / dlTotalPrbUsage->totalPrbAvailForTx);
+   SchSendStatsIndToMac(dlTotalPrbUsage->schInst, SCH_DL_TOTAL_PRB_USAGE, percentageOfTotalPrbUsed);
    
    /* Restart Timer */
    dlTotalPrbUsage->numPrbUsedForTx = 0;
@@ -217,11 +221,11 @@ uint8_t SchProcDlTotalPrbUsageTmrExp(TotalPrbUsage *dlTotalPrbUsage)
 */
 uint8_t SchProcUlTotalPrbUsageTmrExp(TotalPrbUsage *ulTotalPrbUsage)
 {
-   uint8_t percentageOfTotalPrbUsed = 0;
+   double percentageOfTotalPrbUsed = 0;
 
    if(ulTotalPrbUsage->totalPrbAvailForTx)
-      percentageOfTotalPrbUsed = ((ulTotalPrbUsage->numPrbUsedForTx * 100) / ulTotalPrbUsage->totalPrbAvailForTx);
-   //SchSendStatsIndToMac(ulTotalPrbUsage->schInst, SCH_UL_TOTAL_PRB_USAGE, percentageOfTotalPrbUsed);
+      percentageOfTotalPrbUsed = ((100.0 * ulTotalPrbUsage->numPrbUsedForTx) / ulTotalPrbUsage->totalPrbAvailForTx);
+   SchSendStatsIndToMac(ulTotalPrbUsage->schInst, SCH_UL_TOTAL_PRB_USAGE, percentageOfTotalPrbUsed);
 
    /* Restart Timer */
    ulTotalPrbUsage->numPrbUsedForTx = 0;
@@ -250,6 +254,10 @@ uint8_t SchProcUlTotalPrbUsageTmrExp(TotalPrbUsage *ulTotalPrbUsage)
  **/
 uint8_t schTmrExpiry(PTR cb, uint8_t tmrEvnt)
 {
+#ifdef DEBUG_PRINT
+   DU_LOG("\nDEBUG   -->  SCH : Timer Expired. Event [%d]", tmrEvnt);
+#endif
+
    switch (tmrEvnt)
    {
       case EVENT_DL_TOTAL_PRB_USAGE_TMR:

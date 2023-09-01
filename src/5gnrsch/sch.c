@@ -2690,6 +2690,52 @@ uint8_t SchProcStatsReq(Pst *pst, SchStatsReq *statsReq)
    return ROK;
 } /* End of SchProcStatsReq */
 
+/*******************************************************************
+ *
+ * @brief Fill and send statistics indication to MAC
+ *
+ * @details
+ *
+ *    Function :  SchSendStatsIndToMac
+ *
+ *    Functionality: Fill and send statistics indication to MAC
+ *
+ * @params[in]  SCH Instance
+ *              Measurement Type
+ *              Measurement Value
+ *              Size of value parameter
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t SchSendStatsIndToMac(Inst inst, SchMeasurementType measType, double value)
+{
+   Pst pst;
+   uint8_t ret = ROK;
+   SchStatsInd  statsInd;
+
+#ifdef DEBUG_PRINT
+   DU_LOG("\nDEBUG  --> SCH : Filling statistics indication");
+#endif
+
+   memset(&statsInd, 0, sizeof(SchStatsInd));
+   statsInd.type = measType;
+   statsInd.value = value;
+
+   /* Filling post structure */
+   memset(&pst, 0, sizeof(Pst));
+   FILL_PST_SCH_TO_MAC(pst, inst);
+   pst.event = EVENT_STATISTICS_IND_TO_MAC;
+
+   ret = MacMessageRouter(&pst, (void *)&statsInd);
+   if(ret == RFAILED)
+   {
+      DU_LOG("\nERROR  -->  SCH : SchSendStatsIndToMac(): Failed to send Statistics Indication");
+   }
+   return ret;
+}
+
+
 /**********************************************************************
   End of file
  **********************************************************************/
