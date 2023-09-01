@@ -753,7 +753,7 @@ uint8_t SchProcSlotInd(Pst *pst, SlotTimingInfo *slotInd)
    /* Update DL statistics */
    if(schCb[schInst].statistics.dlTotalPrbUsage)
    {
-      schCb[schInst].statistics.dlTotalPrbUsage->numPrbUsedForTx += cell->schUlSlotInfo[slot]->prbAlloc.numPrbAlloc; 
+      schCb[schInst].statistics.dlTotalPrbUsage->numPrbUsedForTx += cell->schDlSlotInfo[slot]->prbAlloc.numPrbAlloc; 
       schCb[schInst].statistics.dlTotalPrbUsage->totalPrbAvailForTx += MAX_NUM_RB;
    }
    

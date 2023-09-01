@@ -480,6 +480,11 @@ void callFlowMacActvTsk(Pst *pst)
                         strcpy(message,"EVENT_STATISTICS_RSP_TO_MAC");
                         break;
                      }
+                  case EVENT_STATISTICS_IND_TO_MAC:
+                     {
+                        strcpy(message,"EVENT_STATISTICS_IND_TO_MAC");
+                        break;
+                     }
                   default:
                      strcpy(message,"Invalid Event");
                      break;
@@ -627,6 +632,11 @@ uint8_t MacMessageRouter(Pst *pst, void *msg)
       case EVENT_STATISTICS_RSP_TO_MAC:
          {
             MacProcSchStatsRsp(pst, (SchStatsRsp *)msg);
+            break;
+         }
+      case EVENT_STATISTICS_IND_TO_MAC:
+         {
+            MacProcSchStatsInd(pst, (SchStatsInd *)msg);
             break;
          }
       default:
