@@ -18,6 +18,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "46c40e89_d83a98f2",
+        "filename": "src/5gnrmac/mac_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1118,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-04T10:18:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9aa12e9a_b76bd296",
+      "revId": "441684ab1fa97bc0cb7fbc1ad8fe02f6cac9c555",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bf503544_a91af85f",
@@ -41,6 +59,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "644e6f8f_302ccd72",
+        "filename": "src/5gnrsch/sch.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 799,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-04T10:18:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bf503544_a91af85f",
+      "range": {
+        "startLine": 799,
+        "startChar": 69,
+        "endLine": 799,
+        "endChar": 78
+      },
+      "revId": "441684ab1fa97bc0cb7fbc1ad8fe02f6cac9c555",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "50d7ca35_0af631f0",
@@ -54,6 +96,30 @@
       "writtenOn": "2023-09-04T09:27:22Z",
       "side": 1,
       "message": "this can be floating value right?",
+      "range": {
+        "startLine": 200,
+        "startChar": 6,
+        "endLine": 200,
+        "endChar": 30
+      },
+      "revId": "441684ab1fa97bc0cb7fbc1ad8fe02f6cac9c555",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8e154a17_1e7452a3",
+        "filename": "src/5gnrsch/sch_tmr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 200,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-04T10:18:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "50d7ca35_0af631f0",
       "range": {
         "startLine": 200,
         "startChar": 6,
