@@ -47,7 +47,7 @@ bool duChkTmr(PTR cb, int16_t tmrEvnt)
    {
       case EVENT_E2_SETUP_TMR:
       {
-         if(((E2apDb *)cb)->e2TimersInfo.e2Timers.e2SetupTimer.tmrEvnt == EVENT_E2_SETUP_TMR)
+         if(((CmTimer *)cb)->tmrEvnt == EVENT_E2_SETUP_TMR)
          {
              DU_LOG("\nERROR  -->  DU_APP : duChkTmr: Invalid tmr Evnt [%d]", tmrEvnt);
              return TRUE;
@@ -75,7 +75,6 @@ bool duChkTmr(PTR cb, int16_t tmrEvnt)
 
 void duStartTmr(PTR cb, int16_t tmrEvnt, uint8_t timerValue)
 {
-   E2apDb *e2apDb;
    CmTmrArg arg;
    arg.wait = 0;
    
@@ -83,10 +82,11 @@ void duStartTmr(PTR cb, int16_t tmrEvnt, uint8_t timerValue)
    {
       case EVENT_E2_SETUP_TMR:
       {
-         e2apDb = ((E2apDb *)cb);
+         CmTimer *e2SetupTimer;
+         e2SetupTimer = ((CmTimer *)cb);
          TMR_CALCUATE_WAIT(arg.wait, timerValue, duCb.duTimersInfo.tmrRes);
 
-         arg.timers = &e2apDb->e2TimersInfo.e2Timers.e2SetupTimer;
+         arg.timers = e2SetupTimer;
          arg.max = MAX_E2_SETUP_TMR;
          break;
       }

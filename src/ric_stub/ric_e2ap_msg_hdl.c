@@ -38,6 +38,35 @@
 #include "RIC-ReportStyle-Item.h"
 #include "MeasurementInfo-Action-Item.h"
 
+/*******************************************************************
+ *
+ * @brief Assigns new transaction id to RIC initiated procedure
+ *
+ * @details
+ *
+ *    Function : assignTransactionId
+ *
+ *    Functionality: Assigns new transaction id to a RIC initiated
+ *       procedure
+ *
+ * @params[in] Region region
+ *             Pool pool
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+
+uint8_t assignTransactionId(DuDb *duDb)
+{
+   uint8_t currTransId = duDb->ricTransIdCounter;
+
+   /* Update to next valid value */
+   duDb->ricTransIdCounter++;
+   if(duDb->ricTransIdCounter == MAX_NUM_TRANSACTION)
+      duDb->ricTransIdCounter = 0;
+
+   return currTransId;
+}
 
 /*******************************************************************
 *
@@ -165,9 +194,9 @@ void FreeE2SetupRsp(E2AP_PDU_t *e2apMsg)
                      {
                         for(ranFuncIdx=0;ranFuncIdx<ranFuncAddedList->list.count; ranFuncIdx++)
                         {
-                           if(ranFuncAddedList->list.array[arrIdx])
+                           if(ranFuncAddedList->list.array[ranFuncIdx])
                            {
-                              RIC_FREE(ranFuncAddedList->list.array[arrIdx], sizeof(RANfunction_ItemIEs_t));
+                              RIC_FREE(ranFuncAddedList->list.array[ranFuncIdx], sizeof(RANfunction_ItemIEs_t));
                            }
                         }
                         RIC_FREE(ranFuncAddedList->list.array, ranFuncAddedList->list.size);
@@ -290,19 +319,28 @@ uint8_t BuildE2nodeComponentConfigAdditionAck(E2nodeComponentConfigAdditionAck_L
  *    Function : BuildRanFunctionAddedList
  *
  *    Functionality: Build RAN function added list 
+ *     ->For ProcedureCodeE2_id_E2setup or ProcedureCodeE2_id_RICserviceQuery  
+ *     we add all the RAN Function list which is present in RIC database.
+ *     ->For any other procedures, we just fill the RAN functions whose ID 
+ *     is present in the recvList
  *
- * @params[in] DuDb *duDb, RANfunctionsID_List_t *ranFuncAddedList 
+ * @params[in] DuDb *duDb, uint8_t count, RanFunction *ranFunToBeAdded, 
+ * RANfunctionsID_List_t *ranFuncAddedList,  uint8_t procedureCode 
  *
  * @return ROK - success
  *         RFAILED - failure
  * ****************************************************************/
 
-uint8_t BuildRanFunctionAddedList(DuDb *duDb, RANfunctionsID_List_t *ranFuncAddedList)
+uint8_t BuildRanFunctionAddedList(DuDb *duDb, uint8_t count, RanFunction *ranFunToBeAdded, RANfunctionsID_List_t *ranFuncAddedList, uint8_t procedureCode)
 {
    uint8_t ranFuncIdx = 0;
    RANfunctionID_ItemIEs_t *ranFuncAddedItemIe;
 
-   ranFuncAddedList->list.count = duDb->numOfRanFunction;
+   if((procedureCode == ProcedureCodeE2_id_RICserviceQuery)||(procedureCode == ProcedureCodeE2_id_E2setup))
+      ranFuncAddedList->list.count = duDb->numOfRanFunction;
+   else
+      ranFuncAddedList->list.count = count;
+   
    ranFuncAddedList->list.size = ranFuncAddedList->list.count*sizeof(RANfunctionID_ItemIEs_t*);
    RIC_ALLOC(ranFuncAddedList->list.array, ranFuncAddedList->list.size);
    if(ranFuncAddedList->list.array)
@@ -319,8 +357,16 @@ uint8_t BuildRanFunctionAddedList(DuDb *duDb, RANfunctionsID_List_t *ranFuncAdde
          ranFuncAddedItemIe->id = ProtocolIE_IDE2_id_RANfunctionID_Item;
          ranFuncAddedItemIe->criticality= CriticalityE2_ignore;
          ranFuncAddedItemIe->value.present = RANfunctionID_ItemIEs__value_PR_RANfunctionID_Item;
-         ranFuncAddedItemIe->value.choice.RANfunctionID_Item.ranFunctionID =duDb->ranFunction[ranFuncIdx].id;
-         ranFuncAddedItemIe->value.choice.RANfunctionID_Item.ranFunctionRevision=duDb->ranFunction[ranFuncIdx].revisionCounter;
+         if((procedureCode == ProcedureCodeE2_id_RICserviceQuery)||(procedureCode == ProcedureCodeE2_id_E2setup))
+         {
+            ranFuncAddedItemIe->value.choice.RANfunctionID_Item.ranFunctionID = duDb->ranFunction[ranFuncIdx].id;
+            ranFuncAddedItemIe->value.choice.RANfunctionID_Item.ranFunctionRevision= duDb->ranFunction[ranFuncIdx].revisionCounter;
+         }
+         else
+         {
+            ranFuncAddedItemIe->value.choice.RANfunctionID_Item.ranFunctionID = ranFunToBeAdded[ranFuncIdx].id;
+            ranFuncAddedItemIe->value.choice.RANfunctionID_Item.ranFunctionRevision= ranFunToBeAdded[ranFuncIdx].revisionCounter;
+         }
       }
    }
    else
@@ -349,6 +395,7 @@ uint8_t BuildRanFunctionAddedList(DuDb *duDb, RANfunctionsID_List_t *ranFuncAdde
  *         RFAILED - failure
  *
  * ****************************************************************/
+
 uint8_t BuildAndSendE2SetupRsp(DuDb *duDb, uint8_t transId)
 {
    E2AP_PDU_t         *e2apMsg = NULL;
@@ -381,7 +428,11 @@ uint8_t BuildAndSendE2SetupRsp(DuDb *duDb, uint8_t transId)
                                                          SuccessfulOutcomeE2__value_PR_E2setupResponse;
       e2SetupRsp = &e2apMsg->choice.successfulOutcome->value.choice.E2setupResponse;
 
-      elementCnt = 4;
+      elementCnt = 3;
+      /* Fill Accepted RAN function IE If Ran function information is stored in databse */
+      if(duDb->numOfRanFunction)
+         elementCnt++;
+
       e2SetupRsp->protocolIEs.list.count = elementCnt;
       e2SetupRsp->protocolIEs.list.size  = elementCnt * sizeof(E2setupResponseIEs_t*);
 
@@ -428,15 +479,18 @@ uint8_t BuildAndSendE2SetupRsp(DuDb *duDb, uint8_t transId)
          break;
       }
       
-      /* Accepted RAN function Id */
-      idx++;
-      e2SetupRsp->protocolIEs.list.array[idx]->id = ProtocolIE_IDE2_id_RANfunctionsAccepted;
-      e2SetupRsp->protocolIEs.list.array[idx]->criticality = CriticalityE2_reject;
-      e2SetupRsp->protocolIEs.list.array[idx]->value.present = E2setupResponseIEs__value_PR_RANfunctionsID_List;
-      if(BuildRanFunctionAddedList(duDb, &e2SetupRsp->protocolIEs.list.array[idx]->value.choice.RANfunctionsID_List)!=ROK)
+      if(duDb->numOfRanFunction)
       {
-         DU_LOG("\nERROR  -->  E2AP : Failed to build Ran function added list");
-         break;         
+         /* Accepted RAN function Id */
+         idx++;
+         e2SetupRsp->protocolIEs.list.array[idx]->id = ProtocolIE_IDE2_id_RANfunctionsAccepted;
+         e2SetupRsp->protocolIEs.list.array[idx]->criticality = CriticalityE2_reject;
+         e2SetupRsp->protocolIEs.list.array[idx]->value.present = E2setupResponseIEs__value_PR_RANfunctionsID_List;
+         if(BuildRanFunctionAddedList(duDb, 0, NULL, &e2SetupRsp->protocolIEs.list.array[idx]->value.choice.RANfunctionsID_List, ProcedureCodeE2_id_E2setup)!=ROK)
+         {
+            DU_LOG("\nERROR  -->  E2AP : Failed to build Ran function added list");
+            break;         
+         }
       }
 
       /* E2 Node Component Configuration Addition Acknowledge List*/
@@ -996,7 +1050,7 @@ uint8_t ProcE2SetupReq(uint32_t *duId, E2setupRequest_t  *e2SetupReq)
                         {
                             *duId =e2SetupReq->protocolIEs.list.array[arrIdx]->value.choice.GlobalE2node_ID.choice.gNB->gNB_DU_ID->buf[0];
 
-                            SEARCH_DU_DB(duIdx, duId, duDb); 
+                            SEARCH_DU_DB(duIdx, *duId, duDb); 
                             if(duDb == NULLP)
                             {
                                duDb = &ricCb.duInfo[ricCb.numDu];
@@ -1009,6 +1063,7 @@ uint8_t ProcE2SetupReq(uint32_t *duId, E2setupRequest_t  *e2SetupReq)
                      }
                      case ProtocolIE_IDE2_id_RANfunctionsAdded:
                      {
+                                                               
                         ranFunctionsList = &e2SetupReq->protocolIEs.list.array[arrIdx]->value.choice.RANfunctions_List;
 
                         if(ranFunctionsList->list.array)
@@ -1017,8 +1072,8 @@ uint8_t ProcE2SetupReq(uint32_t *duId, E2setupRequest_t  *e2SetupReq)
                            {
                               ranFuncItemIe = (RANfunction_ItemIEs_t *) ranFunctionsList->list.array[ranFuncIdx]; 
                               ranFunItem = &ranFuncItemIe->value.choice.RANfunction_Item;
-                              duDb->ranFunction[duDb->numOfRanFunction].id =  ranFunItem->ranFunctionID; 
-                              duDb->ranFunction[ duDb->numOfRanFunction].revisionCounter =  ranFunItem->ranFunctionRevision; 
+                              duDb->ranFunction[ranFunItem->ranFunctionID-1].id = ranFunItem->ranFunctionID;
+                              duDb->ranFunction[ranFunItem->ranFunctionID-1].revisionCounter = ranFunItem->ranFunctionRevision;
                               duDb->numOfRanFunction++;
                            }
                         }
@@ -1052,6 +1107,7 @@ uint8_t ProcE2SetupReq(uint32_t *duId, E2setupRequest_t  *e2SetupReq)
             }
         }
    }
+   
    if(BuildAndSendE2SetupRsp(duDb, transId) !=ROK)
    {
       DU_LOG("\nERROR  -->  E2AP : Failed to build and send E2 setup response");
@@ -1432,6 +1488,203 @@ uint8_t ProcE2ResetReq(uint32_t duId, ResetRequestE2_t  *resetReq)
    }
    BuildAndSendResetResponse(duId, transId);
    return ROK;
+}
+
+/*******************************************************************
+ *
+ * @brief deallocate the memory allocated in building the
+ *    Service Query message
+ *
+ * @details
+ *
+ *    Function : FreeRicServiceQuery 
+ *
+ *    Functionality: deallocate the memory allocated in building
+ *    Ric Service Query message
+ *
+ * @params[in] E2AP_PDU_t *e2apMsg
+ *
+ * @return void
+ * ****************************************************************/
+
+void FreeRicServiceQuery(E2AP_PDU_t *e2apMsg)
+{
+   uint8_t arrIdx = 0, ranFuncIdx=0;
+   RANfunctionsID_List_t *ranFuncAddedList;
+   RICserviceQuery_t *ricServiceQuery;
+   
+   if(e2apMsg)
+   {
+      if(e2apMsg->choice.initiatingMessage)
+      {
+         ricServiceQuery = &e2apMsg->choice.initiatingMessage->value.choice.RICserviceQuery;
+         if(ricServiceQuery->protocolIEs.list.array)
+         {
+            for(arrIdx=0; arrIdx<ricServiceQuery->protocolIEs.list.count; arrIdx++)
+            {
+               if(ricServiceQuery->protocolIEs.list.array[arrIdx])
+               {
+                  switch(ricServiceQuery->protocolIEs.list.array[arrIdx]->id)
+                  {
+                     case ProtocolIE_IDE2_id_RANfunctionsAccepted:
+                        {
+                           ranFuncAddedList= &ricServiceQuery->protocolIEs.list.array[arrIdx]->value.choice.RANfunctionsID_List;
+                           if(ranFuncAddedList->list.array)
+                           {
+                              for(ranFuncIdx=0;ranFuncIdx<ranFuncAddedList->list.count; ranFuncIdx++)
+                              {
+                                 RIC_FREE(ranFuncAddedList->list.array[ranFuncIdx], sizeof(RANfunction_ItemIEs_t));
+                              }
+                              RIC_FREE(ranFuncAddedList->list.array, ranFuncAddedList->list.size);
+                           }
+                           break;
+                        }
+                     case RICserviceQuery_IEs__value_PR_TransactionID:
+                        {
+                           break;
+                        }
+                  }
+                  RIC_FREE(ricServiceQuery->protocolIEs.list.array[arrIdx], sizeof(RICserviceQuery_IEs_t)); 
+               }
+            }
+            RIC_FREE(ricServiceQuery->protocolIEs.list.array, ricServiceQuery->protocolIEs.list.size);
+         }
+         RIC_FREE(e2apMsg->choice.initiatingMessage, sizeof(InitiatingMessageE2_t));
+      }
+      RIC_FREE(e2apMsg, sizeof(E2AP_PDU_t));
+   }
+}
+
+/*******************************************************************
+ *
+ * @brief build and send the ric service Query 
+ *
+ * @details
+ *
+ *    Function : BuildAndSendRicServiceQuery
+ *
+ * Functionality: build and send the ric service Query 
+ * @return ROK     - success
+ *         RFAILED - Acknowledge
+ *
+ ******************************************************************/
+
+uint8_t BuildAndSendRicServiceQuery(DuDb *duDb)
+{
+   uint8_t arrIdx;
+   uint8_t elementCnt;
+   uint8_t ret = RFAILED;
+   bool  memAllocFailed = false;
+   E2AP_PDU_t     *e2apMsg = NULL;
+   asn_enc_rval_t encRetVal;
+   RICserviceQuery_t *ricServiceQuery;
+
+   DU_LOG("\nINFO   -->  E2AP : Building Ric service Query\n");
+   while(true)
+   {
+      RIC_ALLOC(e2apMsg, sizeof(E2AP_PDU_t));
+      if(e2apMsg == NULLP)
+      {
+         DU_LOG("\nERROR  -->  E2AP : Memory allocation for E2AP-PDU failed");
+         break;
+      }
+      e2apMsg->present =  E2AP_PDU_PR_initiatingMessage;
+      RIC_ALLOC(e2apMsg->choice.initiatingMessage , sizeof(struct InitiatingMessageE2));
+      if(e2apMsg->choice.initiatingMessage == NULLP)
+      {
+         DU_LOG("\nERROR  -->  E2AP : Memory allocation for E2AP-PDU failed");
+         break;
+      }
+
+      e2apMsg->choice.initiatingMessage->procedureCode = ProcedureCodeE2_id_RICserviceQuery;
+      e2apMsg->choice.initiatingMessage->criticality = CriticalityE2_reject;
+      e2apMsg->choice.initiatingMessage->value.present = InitiatingMessageE2__value_PR_RICserviceQuery;
+      ricServiceQuery = &e2apMsg->choice.initiatingMessage->value.choice.RICserviceQuery;
+
+      elementCnt = 1;
+      /* Fill Accepted RAN function IE If Ran function information is stored in databse */
+      if(duDb->numOfRanFunction)
+         elementCnt++;
+
+      ricServiceQuery->protocolIEs.list.count = elementCnt;
+      ricServiceQuery->protocolIEs.list.size  = elementCnt * sizeof(RICserviceQuery_IEs_t*);
+
+      RIC_ALLOC(ricServiceQuery->protocolIEs.list.array, ricServiceQuery->protocolIEs.list.size);
+      if(ricServiceQuery->protocolIEs.list.array == NULLP)
+      {
+         DU_LOG("\nERROR  -->  E2AP : Memory allocation for ricServiceQueryIEs failed");
+         break;
+      }
+
+      for(arrIdx=0; arrIdx<elementCnt; arrIdx++)
+      {
+         RIC_ALLOC(ricServiceQuery->protocolIEs.list.array[arrIdx], sizeof(RICserviceQuery_IEs_t));
+         if(ricServiceQuery->protocolIEs.list.array[arrIdx] == NULLP)
+         {
+            DU_LOG("\nERROR  -->  E2AP : Memory allocation for ricServiceQueryIEs failed");
+            memAllocFailed = true;
+            break;
+         }
+      }
+      if(memAllocFailed == true)
+      {
+         DU_LOG("\nERROR  -->  E2AP : Memory allocation for ricServiceQueryIEs failed");
+         break;
+      }
+
+      /* Trans Id */
+      arrIdx = 0;
+      ricServiceQuery->protocolIEs.list.array[arrIdx]->id = ProtocolIE_IDE2_id_TransactionID;
+      ricServiceQuery->protocolIEs.list.array[arrIdx]->criticality = CriticalityE2_reject;
+      ricServiceQuery->protocolIEs.list.array[arrIdx]->value.present = RICserviceQuery_IEs__value_PR_TransactionID;
+      ricServiceQuery->protocolIEs.list.array[arrIdx]->value.choice.TransactionID  = assignTransactionId(duDb);
+      
+      if(duDb->numOfRanFunction)
+      {
+         /* Accepted RAN function Id */
+         arrIdx++;
+         ricServiceQuery->protocolIEs.list.array[arrIdx]->id = ProtocolIE_IDE2_id_RANfunctionsAccepted;
+         ricServiceQuery->protocolIEs.list.array[arrIdx]->criticality = CriticalityE2_reject;
+         ricServiceQuery->protocolIEs.list.array[arrIdx]->value.present = RICserviceQuery_IEs__value_PR_RANfunctionsID_List;
+         if(BuildRanFunctionAddedList(duDb, 0, NULL, &ricServiceQuery->protocolIEs.list.array[arrIdx]->value.choice.RANfunctionsID_List, ProcedureCodeE2_id_RICserviceQuery)!=ROK)
+         {
+            DU_LOG("\nERROR  -->  E2AP : Failed to build Ran function added list");
+            break;         
+         }
+      }
+      
+      xer_fprint(stdout, &asn_DEF_E2AP_PDU, e2apMsg);
+      memset(encBuf, 0, ENC_BUF_MAX_LEN);
+      encBufSize = 0;
+      encRetVal = aper_encode(&asn_DEF_E2AP_PDU, 0, e2apMsg, PrepFinalEncBuf, encBuf);
+
+      /* Check encode results */
+      if(encRetVal.encoded == ENCODE_FAIL)
+      {
+         DU_LOG("\nERROR  -->  E2AP : Could not encode RIC service Query structure (at %s)\n",\
+               encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
+         break;
+      }
+      else
+      {
+         DU_LOG("\nDEBUG  -->  E2AP : Created APER encoded buffer for RIC service Query\n");
+         for(int i=0; i< encBufSize; i++)
+         {
+            DU_LOG("%x",encBuf[i]);
+         }
+      }
+
+      if(SendE2APMsg(RIC_APP_MEM_REG, RIC_POOL, duDb->duId) != ROK)
+      {
+         DU_LOG("\nERROR  -->  E2AP : Sending of RIC service  Query failed");
+         break;
+      }
+
+      ret =ROK;
+      break;
+   }
+   FreeRicServiceQuery(e2apMsg);
+   return ret;
 }
 
 /*******************************************************************

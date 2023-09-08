@@ -317,6 +317,13 @@
 #define DRX_SLOT_OFFSET 0
 #endif
 
+/* In case of initial configuration we are supporting only 2 measurement
+ * information RRU.PrbTotDl and RRU.PrbTotUl.
+ * In case of configuration modification we are supporting 3 measurement
+ * information RRU.PrbTotDl, RRU.PrbTotUl and UECNTX.RelReq */
+#define NUM_OF_MEASUREMENT_INFO_SUPPORTED(_configType) \
+   ((_configType == CONFIG_ADD) ? 2 :3)
+
 typedef enum
 {
    GNBDU,
