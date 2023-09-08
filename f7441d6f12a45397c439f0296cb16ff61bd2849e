@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c0ece0e7_34a49192",
+        "filename": "src/ric_stub/ric_e2ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-09-08T09:06:30Z",
+      "side": 1,
+      "message": "added for testing purpose will remove it in next patch.",
+      "revId": "f7441d6f12a45397c439f0296cb16ff61bd2849e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "51c81547_a461e73b",
+        "filename": "src/ric_stub/ric_e2ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1092,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-09-08T09:06:30Z",
+      "side": 1,
+      "message": "added for testing purpose. Will remove it in next patch.",
+      "revId": "f7441d6f12a45397c439f0296cb16ff61bd2849e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
