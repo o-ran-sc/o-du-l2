@@ -558,6 +558,147 @@ uint8_t fillRicEventTriggerStyle(RanFunction *ranFuncDb, struct E2SM_KPM_RANfunc
 
 /*******************************************************************
  *
+ * @brief Builds Ran function item
+ *
+ * @details
+ *
+ *    Function : BuildRanFunctionItem  
+ *
+ *    Functionality: Building RAN function item
+ *
+ * @params[in] RANfunction_Item_t *ranFuncItem, RanFunction *ranFuncDb 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ ******************************************************************/
+
+uint8_t BuildRanFunctionItem(RANfunction_Item_t *ranFuncItem, RanFunction *ranFuncDb)
+{
+   RANfunctionDefinition_t  *ranFunctionDefinition;
+   RANfunction_Name_t *ranFuncName;
+   asn_enc_rval_t encRetVal;
+   E2SM_KPM_RANfunction_Description_t *ranFuncDefinition;
+   
+   /* RAN function Id*/
+   ranFuncItem->ranFunctionID = ranFuncDb->id;
+
+   /* RAN Function Revision*/
+   ranFuncItem->ranFunctionRevision = ranFuncDb->revisionCounter;
+
+   /* RAN function OID*/
+   ranFuncItem->ranFunctionOID.size = strlen(ranFuncDb->name.serviceModelOID);
+   DU_ALLOC(ranFuncItem->ranFunctionOID.buf, ranFuncItem->ranFunctionOID.size);
+   if(!ranFuncItem->ranFunctionOID.buf)
+   {
+      DU_LOG("\nERROR  --> E2AP: Memory allocation failed in function %s at %d",__func__,__LINE__);
+      return RFAILED;
+   }
+   memcpy(ranFuncItem->ranFunctionOID.buf, ranFuncDb->name.serviceModelOID, ranFuncItem->ranFunctionOID.size);
+
+   /* RAN function Definition */
+   DU_ALLOC(ranFuncDefinition, sizeof(E2SM_KPM_RANfunction_Description_t));
+   if(!ranFuncDefinition)
+   {
+      DU_LOG("\nERROR  --> E2AP: Memory allocation failed in function %s at %d",__func__,__LINE__);
+      return RFAILED;
+   }
+
+   /* RAN function Name */
+   ranFuncName = &ranFuncDefinition->ranFunction_Name;
+
+   /* RAN function ShortName */
+   ranFuncName->ranFunction_ShortName.size = strlen(ranFuncDb->name.shortName); 
+   DU_ALLOC(ranFuncName->ranFunction_ShortName.buf,  ranFuncName->ranFunction_ShortName.size);
+   if(!ranFuncName->ranFunction_ShortName.buf)
+   {
+      DU_LOG("\nERROR  --> E2AP: Memory allocation failed in function %s at %d",__func__,__LINE__);
+      return RFAILED;
+   }
+   memcpy(ranFuncName->ranFunction_ShortName.buf, ranFuncDb->name.shortName, strlen(ranFuncDb->name.shortName));
+
+   /* RAN function E2SM_OID */
+   ranFuncName->ranFunction_E2SM_OID.size = strlen(ranFuncDb->name.serviceModelOID);
+   DU_ALLOC(ranFuncName->ranFunction_E2SM_OID.buf, ranFuncName->ranFunction_E2SM_OID.size);
+   if(!ranFuncName->ranFunction_E2SM_OID.buf)
+   {
+      DU_LOG("\nERROR  --> E2AP: Memory allocation failed in function %s at %d",__func__,__LINE__);
+      return RFAILED;
+   }
+   memcpy(ranFuncName->ranFunction_E2SM_OID.buf, ranFuncDb->name.serviceModelOID, ranFuncName->ranFunction_E2SM_OID.size);
+
+   /* RAN function Description */
+   ranFuncName->ranFunction_Description.size = strlen(ranFuncDb->name.description);
+   DU_ALLOC(ranFuncName->ranFunction_Description.buf, ranFuncName->ranFunction_Description.size);
+   if(!ranFuncName->ranFunction_Description.buf)
+   {
+      DU_LOG("\nERROR  --> E2AP: Memory allocation failed in function %s at %d",__func__,__LINE__);
+      return RFAILED;
+   }
+   memcpy(ranFuncName->ranFunction_Description.buf, ranFuncDb->name.description, ranFuncName->ranFunction_Description.size);
+
+   /* RIC Event Trigger Style List */
+   DU_ALLOC(ranFuncDefinition->ric_EventTriggerStyle_List, sizeof(struct E2SM_KPM_RANfunction_Description__ric_EventTriggerStyle_List));
+   if(!ranFuncDefinition->ric_EventTriggerStyle_List)
+   {
+      DU_LOG("\nERROR  --> E2AP: Memory allocation failed in function %s at %d",__func__,__LINE__);
+      return RFAILED;
+   }
+
+   if(fillRicEventTriggerStyle(ranFuncDb, ranFuncDefinition->ric_EventTriggerStyle_List)!=ROK)
+   {
+      DU_LOG("\nERROR  --> E2AP: failed to fill ric event trigger style");
+      return RFAILED;
+   }
+
+   /* RIC Report Style List */
+   DU_ALLOC(ranFuncDefinition->ric_ReportStyle_List, sizeof(struct E2SM_KPM_RANfunction_Description__ric_ReportStyle_List));
+   if(!ranFuncDefinition->ric_ReportStyle_List)
+   {
+      DU_LOG("\nERROR  --> E2AP: Memory allocation failed in function %s at %d",__func__,__LINE__);
+      return RFAILED;
+   }
+   if(fillRicReportStyle(ranFuncDb, ranFuncDefinition->ric_ReportStyle_List) != ROK)
+   {
+      DU_LOG("\nERROR  --> E2AP: failed to fill ric report style");
+      return RFAILED;
+   }
+
+   /* Encode the F1SetupRequest type as APER */
+   xer_fprint(stdout, &asn_DEF_E2SM_KPM_RANfunction_Description, ranFuncDefinition);
+
+   memset(encBuf, 0, ENC_BUF_MAX_LEN);
+   encBufSize = 0;
+   encRetVal = aper_encode(&asn_DEF_E2SM_KPM_RANfunction_Description, 0, ranFuncDefinition, PrepFinalEncBuf, encBuf);
+
+   /* Encode results */
+   if(encRetVal.encoded == ENCODE_FAIL)
+   {
+      DU_LOG("\nERROR  -->  F1AP : Could not encode RAN function definition  (at %s)\n",\
+            encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
+   }
+   else
+   {
+      DU_LOG("\nDEBUG   -->  F1AP : Created APER encoded buffer for RAN function definition \n");
+      for(uint8_t measIeIdx=0; measIeIdx< encBufSize; measIeIdx++)
+      {
+         printf("%x",encBuf[measIeIdx]);
+      }
+      ranFunctionDefinition = &ranFuncItem->ranFunctionDefinition; 
+      ranFunctionDefinition->size = encBufSize;
+      DU_ALLOC(ranFunctionDefinition->buf, encBufSize);
+      if(ranFunctionDefinition->buf == NULLP)
+      {
+         DU_LOG("\nERROR  -->  F1AP : Memory allocation failed for RAN function definition buffer");
+         return RFAILED;
+      }
+      memcpy(ranFunctionDefinition->buf, &encBuf, encBufSize);
+   }
+   freeE2smKpmRanFunctionDefinition(ranFuncDefinition);
+   return ROK;
+}
+
+/*******************************************************************
+ *
  * @brief Builds Ran function add list
  *
  * @details
@@ -566,23 +707,31 @@ uint8_t fillRicEventTriggerStyle(RanFunction *ranFuncDb, struct E2SM_KPM_RANfunc
  *
  *    Functionality: Building RAN addition addition list
  *
- * @params[in]  RANfunctions_List_t *RANfunctions_List 
+ * @params[in] RANfunctions_List_t *ranFunctionsList, 
+ *             uint8_t procedureCode 
+ * in case of ProcedureCodeE2_id_E2setup we add all the RAN Function list
+ * which is present in E2 database.
+ * In the case of other procedures, we just fill the RAN functions whose ID is
+ * contained in recvList
+ *             uint8_t count, 
+ *             uint8_t *recvList 
  * @return ROK     - success
  *         RFAILED - failure
  *
  ******************************************************************/
 
-uint8_t BuildRanFunctionAddList(RANfunctions_List_t *ranFunctionsList)
+uint8_t BuildRanFunctionAddList(RANfunctions_List_t *ranFunctionsList, uint8_t procedureCode, uint8_t count, uint8_t *recvList)
 {
-   asn_enc_rval_t encRetVal;
+   uint16_t id;
    RanFunction *ranFuncDb;
-   RANfunction_Name_t *ranFuncName;
    uint8_t ranFuncIdx;
    RANfunction_ItemIEs_t *ranFuncItemIe;
-   RANfunction_Item_t  *ranFuncItem;
-   E2SM_KPM_RANfunction_Description_t *ranFuncDefinition;
 
-   ranFunctionsList->list.count = duCb.e2apDb.numOfRanFunction;
+   if(procedureCode == ProcedureCodeE2_id_E2setup)
+      ranFunctionsList->list.count = count;
+   else
+      ranFunctionsList->list.count = duCb.e2apDb.numOfRanFunction;
+
    ranFunctionsList->list.size = ranFunctionsList->list.count * sizeof(RANfunction_ItemIEs_t*);
    DU_ALLOC(ranFunctionsList->list.array, ranFunctionsList->list.size);
    if(ranFunctionsList->list.array == NULLP)
@@ -599,132 +748,23 @@ uint8_t BuildRanFunctionAddList(RANfunctions_List_t *ranFunctionsList)
          DU_LOG("\nERROR  --> E2AP: Memory allocation failed in %s at %d",__func__, __LINE__);
          return RFAILED;
       }
-
+      if(procedureCode == ProcedureCodeE2_id_E2setup) 
+      {
+         ranFuncDb = &duCb.e2apDb.ranFunction[ranFuncIdx];
+      }
+      else
+      {
+         id =recvList[ranFuncIdx];
+         ranFuncDb = &duCb.e2apDb.ranFunction[id-1];
+      }
       ranFuncItemIe = (RANfunction_ItemIEs_t *) ranFunctionsList->list.array[ranFuncIdx];
       ranFuncItemIe->id = ProtocolIE_IDE2_id_RANfunction_Item;
       ranFuncItemIe->criticality = CriticalityE2_ignore;
       ranFuncItemIe->value.present = RANfunction_ItemIEs__value_PR_RANfunction_Item;
-      ranFuncItem = &ranFuncItemIe->value.choice.RANfunction_Item;
-      ranFuncDb = &duCb.e2apDb.ranFunction[ranFuncIdx];   
-      /* RAN function Id*/
-      ranFuncItem->ranFunctionID = ranFuncDb->id;
-      
-      /* RAN Function Revision*/
-      ranFuncItem->ranFunctionRevision = ranFuncDb->revisionCounter;
-      
-      /* RAN function OID*/
-      ranFuncItem->ranFunctionOID.size = strlen(ranFuncDb->name.serviceModelOID);
-      DU_ALLOC(ranFuncItem->ranFunctionOID.buf, ranFuncItem->ranFunctionOID.size);
-      if(!ranFuncItem->ranFunctionOID.buf)
-      {
-         DU_LOG("\nERROR  --> E2AP: Memory allocation failed in function %s at %d",__func__,__LINE__);
-         return RFAILED;
-      }
-      memcpy(ranFuncItem->ranFunctionOID.buf, ranFuncDb->name.serviceModelOID, ranFuncItem->ranFunctionOID.size);
-
-      /* RAN function Definition */
-      DU_ALLOC(ranFuncDefinition, sizeof(E2SM_KPM_RANfunction_Description_t));
-      if(!ranFuncDefinition)
-      {
-         DU_LOG("\nERROR  --> E2AP: Memory allocation failed in function %s at %d",__func__,__LINE__);
-         return RFAILED;
-      }
-      
-      /* RAN function Name */
-      ranFuncName = &ranFuncDefinition->ranFunction_Name;
-      
-      /* RAN function ShortName */
-      ranFuncName->ranFunction_ShortName.size = strlen(ranFuncDb->name.shortName); 
-      DU_ALLOC(ranFuncName->ranFunction_ShortName.buf,  ranFuncName->ranFunction_ShortName.size);
-      if(!ranFuncName->ranFunction_ShortName.buf)
-      {
-         DU_LOG("\nERROR  --> E2AP: Memory allocation failed in function %s at %d",__func__,__LINE__);
-         return RFAILED;
-      }
-      memcpy(ranFuncName->ranFunction_ShortName.buf, ranFuncDb->name.shortName, strlen(ranFuncDb->name.shortName));
-      
-      /* RAN function E2SM_OID */
-      ranFuncName->ranFunction_E2SM_OID.size = strlen(ranFuncDb->name.serviceModelOID);
-      DU_ALLOC(ranFuncName->ranFunction_E2SM_OID.buf, ranFuncName->ranFunction_E2SM_OID.size);
-      if(!ranFuncName->ranFunction_E2SM_OID.buf)
-      {
-         DU_LOG("\nERROR  --> E2AP: Memory allocation failed in function %s at %d",__func__,__LINE__);
-         return RFAILED;
-      }
-      memcpy(ranFuncName->ranFunction_E2SM_OID.buf, ranFuncDb->name.serviceModelOID, ranFuncName->ranFunction_E2SM_OID.size);
-
-      /* RAN function Description */
-      ranFuncName->ranFunction_Description.size = strlen(ranFuncDb->name.description);
-      DU_ALLOC(ranFuncName->ranFunction_Description.buf, ranFuncName->ranFunction_Description.size);
-      if(!ranFuncName->ranFunction_Description.buf)
-      {
-         DU_LOG("\nERROR  --> E2AP: Memory allocation failed in function %s at %d",__func__,__LINE__);
-         return RFAILED;
-      }
-      memcpy(ranFuncName->ranFunction_Description.buf, ranFuncDb->name.description, ranFuncName->ranFunction_Description.size);
-      
-      /* RIC Event Trigger Style List */
-      DU_ALLOC(ranFuncDefinition->ric_EventTriggerStyle_List, sizeof(struct E2SM_KPM_RANfunction_Description__ric_EventTriggerStyle_List));
-      if(!ranFuncDefinition->ric_EventTriggerStyle_List)
-      {
-         DU_LOG("\nERROR  --> E2AP: Memory allocation failed in function %s at %d",__func__,__LINE__);
-         return RFAILED;
-      }
-      
-      if(fillRicEventTriggerStyle(ranFuncDb, ranFuncDefinition->ric_EventTriggerStyle_List)!=ROK)
-      {
-         DU_LOG("\nERROR  --> E2AP: failed to fill ric event trigger style");
-         return RFAILED;
-      }
-
-      /* RIC Report Style List */
-      DU_ALLOC(ranFuncDefinition->ric_ReportStyle_List, sizeof(struct E2SM_KPM_RANfunction_Description__ric_ReportStyle_List));
-      if(!ranFuncDefinition->ric_ReportStyle_List)
-      {
-         DU_LOG("\nERROR  --> E2AP: Memory allocation failed in function %s at %d",__func__,__LINE__);
-         return RFAILED;
-      }
-      if(fillRicReportStyle(ranFuncDb, ranFuncDefinition->ric_ReportStyle_List) != ROK)
-      {
-         DU_LOG("\nERROR  --> E2AP: failed to fill ric report style");
-         return RFAILED;
-      }
-
-      /* Encode the F1SetupRequest type as APER */
-      xer_fprint(stdout, &asn_DEF_E2SM_KPM_RANfunction_Description, ranFuncDefinition);
-
-      memset(encBuf, 0, ENC_BUF_MAX_LEN);
-      encBufSize = 0;
-      encRetVal = aper_encode(&asn_DEF_E2SM_KPM_RANfunction_Description, 0, ranFuncDefinition, PrepFinalEncBuf, encBuf);
-
-      /* Encode results */
-      if(encRetVal.encoded == ENCODE_FAIL)
-      {
-         DU_LOG("\nERROR  -->  F1AP : Could not encode RAN function definition  (at %s)\n",\
-               encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
-         break;
-      }
-      else
-      {
-         DU_LOG("\nDEBUG   -->  F1AP : Created APER encoded buffer for RAN function definition \n");
-         for(uint8_t measIeIdx=0; measIeIdx< encBufSize; measIeIdx++)
-         {
-            printf("%x",encBuf[measIeIdx]);
-         }
-
-      }
-      ranFuncItem->ranFunctionDefinition.size = encBufSize;
-      DU_ALLOC(ranFuncItem->ranFunctionDefinition.buf, encBufSize);
-      if(ranFuncItem->ranFunctionDefinition.buf == NULLP)
-      {
-         DU_LOG("\nERROR  -->  F1AP : Memory allocation failed for RAN function definition buffer");
-         return RFAILED;
-      }
-      memcpy(ranFuncItem->ranFunctionDefinition.buf, &encBuf, encBufSize);
+      BuildRanFunctionItem(&ranFuncItemIe->value.choice.RANfunction_Item, ranFuncDb);
    }
-   freeE2smKpmRanFunctionDefinition(ranFuncDefinition);
    return ROK;
-}
+}   
 
 /*******************************************************************
  *
@@ -977,7 +1017,7 @@ uint8_t BuildAndSendE2SetupReq()
       e2SetupReq->protocolIEs.list.array[arrIdx]->id = ProtocolIE_IDE2_id_RANfunctionsAdded;
       e2SetupReq->protocolIEs.list.array[arrIdx]->criticality = CriticalityE2_reject;
       e2SetupReq->protocolIEs.list.array[arrIdx]->value.present = E2setupRequestIEs__value_PR_RANfunctions_List;
-      if(BuildRanFunctionAddList(&(e2SetupReq->protocolIEs.list.array[arrIdx]->value.choice.RANfunctions_List))!=ROK)
+      if(BuildRanFunctionAddList(&(e2SetupReq->protocolIEs.list.array[arrIdx]->value.choice.RANfunctions_List), ProcedureCodeE2_id_E2setup, 0, NULL)!=ROK)      
       {
          DU_LOG("\nERROR  -->  E2AP : Failed to create RAN Function");
          break;
@@ -1026,8 +1066,8 @@ uint8_t BuildAndSendE2SetupReq()
       break;
    }while(true);
 
-   duCb.e2apDb.e2TransInfo.onGoingTransaction[transId].transactionId = transId;
-   duCb.e2apDb.e2TransInfo.onGoingTransaction[transId].procedureCode = e2apMsg->choice.initiatingMessage->procedureCode;
+   duCb.e2apDb.e2TransInfo.e2InitTransaction[transId].transactionId = transId;
+   duCb.e2apDb.e2TransInfo.e2InitTransaction[transId].procedureCode = e2apMsg->choice.initiatingMessage->procedureCode;
    
    FreeE2SetupReq(e2apMsg);
    return ret;
@@ -1508,9 +1548,9 @@ uint8_t procE2SetupRsp(E2AP_PDU_t *e2apMsg)
          case ProtocolIE_IDE2_id_TransactionID:
             {
                transId = e2SetRspMsg->protocolIEs.list.array[arrIdx]->value.choice.TransactionID;
-               if((duCb.e2apDb.e2TransInfo.onGoingTransaction[transId].transactionId == transId) &&\
-                     (duCb.e2apDb.e2TransInfo.onGoingTransaction[transId].procedureCode == e2apMsg->choice.successfulOutcome->procedureCode))
-                  memset(&duCb.e2apDb.e2TransInfo.onGoingTransaction[transId], 0, sizeof(E2TransInfo));
+               if((duCb.e2apDb.e2TransInfo.e2InitTransaction[transId].transactionId == transId) &&\
+                     (duCb.e2apDb.e2TransInfo.e2InitTransaction[transId].procedureCode == e2apMsg->choice.successfulOutcome->procedureCode))
+                  memset(&duCb.e2apDb.e2TransInfo.e2InitTransaction[transId], 0, sizeof(E2TransInfo));
                else
                {
                   DU_LOG("\nERROR  -->  E2AP : Invalid transaction id [%d]", transId);
@@ -2296,8 +2336,8 @@ uint8_t BuildAndSendE2ResetRequest(E2CauseType failureType, E2Cause failureCause
 
       /* In case the message is sent successfully, store the transaction info to
        * be used when response is received */
-      duCb.e2apDb.e2TransInfo.onGoingTransaction[transId].transactionId = transId;
-      duCb.e2apDb.e2TransInfo.onGoingTransaction[transId].procedureCode = e2apMsg->choice.initiatingMessage->procedureCode;
+      duCb.e2apDb.e2TransInfo.e2InitTransaction[transId].transactionId = transId;
+      duCb.e2apDb.e2TransInfo.e2InitTransaction[transId].procedureCode = e2apMsg->choice.initiatingMessage->procedureCode;
 
       ret = ROK;
       break;
@@ -2380,9 +2420,9 @@ uint8_t procResetResponse(E2AP_PDU_t *e2apMsg)
       {
          case ProtocolIE_IDE2_id_TransactionID:
             transId = resetResponse->protocolIEs.list.array[ieIdx]->value.choice.TransactionID;
-            if((duCb.e2apDb.e2TransInfo.onGoingTransaction[transId].transactionId == transId) && \
-                  (duCb.e2apDb.e2TransInfo.onGoingTransaction[transId].procedureCode == e2apMsg->choice.successfulOutcome->procedureCode))
-              memset(&duCb.e2apDb.e2TransInfo.onGoingTransaction[transId], 0, sizeof(E2TransInfo));
+            if((duCb.e2apDb.e2TransInfo.e2InitTransaction[transId].transactionId == transId) && \
+                  (duCb.e2apDb.e2TransInfo.e2InitTransaction[transId].procedureCode == e2apMsg->choice.successfulOutcome->procedureCode))
+              memset(&duCb.e2apDb.e2TransInfo.e2InitTransaction[transId], 0, sizeof(E2TransInfo));
             else
             {
                DU_LOG("\nERROR  -->  E2AP : Invalid transaction id [%d]", transId);
@@ -2473,9 +2513,9 @@ void procE2SetupFailure(E2AP_PDU_t *e2apMsg)
          case ProtocolIE_IDE2_id_TransactionID:
          {
             transId = e2SetupFailure->protocolIEs.list.array[arrIdx]->value.choice.TransactionID;
-            if((duCb.e2apDb.e2TransInfo.onGoingTransaction[transId].transactionId == transId) &&\
-            (duCb.e2apDb.e2TransInfo.onGoingTransaction[transId].procedureCode == e2apMsg->choice.unsuccessfulOutcome->procedureCode))
-              memset(&duCb.e2apDb.e2TransInfo.onGoingTransaction[transId], 0, sizeof(E2TransInfo));
+            if((duCb.e2apDb.e2TransInfo.e2InitTransaction[transId].transactionId == transId) &&\
+            (duCb.e2apDb.e2TransInfo.e2InitTransaction[transId].procedureCode == e2apMsg->choice.unsuccessfulOutcome->procedureCode))
+              memset(&duCb.e2apDb.e2TransInfo.e2InitTransaction[transId], 0, sizeof(E2TransInfo));
             else
             {
                DU_LOG("\nERROR  -->  E2AP : Invalid transaction id [%d]", transId);
@@ -2486,9 +2526,9 @@ void procE2SetupFailure(E2AP_PDU_t *e2apMsg)
          case ProtocolIE_IDE2_id_TimeToWaitE2:
             {
                timerValue = covertE2WaitTimerEnumToValue(e2SetupFailure->protocolIEs.list.array[arrIdx]->value.choice.TimeToWaitE2);
-               if((duChkTmr((PTR)&(duCb.e2apDb), EVENT_E2_SETUP_TMR)) == FALSE)
+               if((duChkTmr((PTR)&(duCb.e2apDb.e2TimersInfo.e2Timers.e2SetupTimer), EVENT_E2_SETUP_TMR)) == FALSE)
                {
-                  duStartTmr((PTR)&(duCb.e2apDb), EVENT_E2_SETUP_TMR, timerValue);
+                  duStartTmr((PTR)&(duCb.e2apDb.e2TimersInfo.e2Timers.e2SetupTimer), EVENT_E2_SETUP_TMR, timerValue);
                }
                else
                {
