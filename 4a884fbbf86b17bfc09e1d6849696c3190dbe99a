@@ -1,0 +1,368 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7395fa65_3408952e",
+        "filename": "src/du_app/du_cfg.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 739,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-11T07:43:26Z",
+      "side": 1,
+      "message": "memset ricInitTransaction as well",
+      "revId": "4a884fbbf86b17bfc09e1d6849696c3190dbe99a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bab519e7_de2882eb",
+        "filename": "src/du_app/du_e2ap_mgr.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-11T07:43:26Z",
+      "side": 1,
+      "message": "move to du cfg.h",
+      "revId": "4a884fbbf86b17bfc09e1d6849696c3190dbe99a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8fed21cd_731c12bb",
+        "filename": "src/du_app/du_e2ap_mgr.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 181,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-11T07:43:26Z",
+      "side": 1,
+      "message": "add comment for this as well",
+      "revId": "4a884fbbf86b17bfc09e1d6849696c3190dbe99a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e805c215_095791cd",
+        "filename": "src/du_app/du_e2ap_mgr.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 416,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-11T07:43:26Z",
+      "side": 1,
+      "message": "Purpose of this structure?",
+      "range": {
+        "startLine": 416,
+        "startChar": 1,
+        "endLine": 416,
+        "endChar": 16
+      },
+      "revId": "4a884fbbf86b17bfc09e1d6849696c3190dbe99a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0fceaccd_51dcb4c2",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 629,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-11T07:43:26Z",
+      "side": 1,
+      "message": "This is confusing. Lets call it \"RAN Function Name Description\"",
+      "revId": "4a884fbbf86b17bfc09e1d6849696c3190dbe99a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d735914b_3aca0392",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 695,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-11T07:43:26Z",
+      "side": 1,
+      "message": "In all the failure case before this line, function will return without freeing already allocated memory i.e. freeE2smKpmRanFunctionDefinition() will not get called.\n\nLets implement using while loop. While loop will break at any failure. And freeE2smKpmRanFunctionDefinition will be called before returning.",
+      "revId": "4a884fbbf86b17bfc09e1d6849696c3190dbe99a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d68f5158_7df59b52",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 714,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-11T07:43:26Z",
+      "side": 1,
+      "message": "Move this description above in functionality rather than keeping as part of input Param list.\n\nAlso explain in the functionality part that what this function is doing in various scenarios/procedure code\n\nIn input param, just write:\nRAN Function list\nProcedure code\nCount of ran functions to be added in the list\nReceived list of RAN functions.",
+      "revId": "4a884fbbf86b17bfc09e1d6849696c3190dbe99a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1d7f8bf4_f24997b6",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 717,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-11T07:43:26Z",
+      "side": 1,
+      "message": "This is a generic comment to be followed always when adding any function descriptor.\n\nJust copying the input params here is not enough,\nThis part should explain what each input param means.\nHence, instead of writing \"uint8_t count\", write \"Count of ran functions to be added in the list\"",
+      "revId": "4a884fbbf86b17bfc09e1d6849696c3190dbe99a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b16f3d27_5f37b06f",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 722,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-11T07:43:26Z",
+      "side": 1,
+      "message": "Add comments in this function at various steps for better understanding.\nMake sure to add sufficient comments in any function that you write.",
+      "revId": "4a884fbbf86b17bfc09e1d6849696c3190dbe99a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3e34c50f_f896a462",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 731,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-11T07:43:26Z",
+      "side": 1,
+      "message": "In function descriptor, it is written that:\n\"in case of ProcedureCodeE2_id_E2setup we add all the RAN Function list which is present in E2 database.\"\n\nHowever, here we are setting list.count \u003d count.\nHere value of count is 0 when BuildRanFunctionAddList() is called from BuildAndSendE2SetupReq.\n\nI think following is expected implementation:\nIn case procedure code is E2 setup:\n    ranFunctionsList-\u003elist.count \u003d duCb.e2apDb.numOfRanFunction;\nElse\n    ranFunctionsList-\u003elist.count \u003d count;",
+      "revId": "4a884fbbf86b17bfc09e1d6849696c3190dbe99a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d41efc5b_233f1113",
+        "filename": "src/du_app/du_mgr_main.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 588,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-11T07:43:26Z",
+      "side": 1,
+      "message": "revert",
+      "range": {
+        "startLine": 588,
+        "startChar": 5,
+        "endLine": 588,
+        "endChar": 28
+      },
+      "revId": "4a884fbbf86b17bfc09e1d6849696c3190dbe99a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e1a7e392_ae895108",
+        "filename": "src/ric_stub/ric_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 484,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-11T07:43:26Z",
+      "side": 1,
+      "message": "Inside BuildRanFunctionAddedList(), we are first filling RAN function added list for E2 setup response and then storing the RAN Function info in DU DB.\nWhy so?\n\nWe should be filling RAN function info in DU DB while processing e2 setup request itself.\nAnd then whatever ran functions were successfully stored, should be fetched and used to fill ran function added list in E2 setup response.",
+      "revId": "4a884fbbf86b17bfc09e1d6849696c3190dbe99a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d84f90ce_4200d088",
+        "filename": "src/ric_stub/ric_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1573,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-11T07:43:26Z",
+      "side": 1,
+      "message": "declare variable at the beginning.\nIt is not our convention to declare counters within for loop.\nAlso add appropriate spaces between words.",
+      "range": {
+        "startLine": 1573,
+        "startChar": 7,
+        "endLine": 1573,
+        "endChar": 10
+      },
+      "revId": "4a884fbbf86b17bfc09e1d6849696c3190dbe99a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "951f9a05_7b358ee0",
+        "filename": "src/ric_stub/ric_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1581,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-11T07:43:26Z",
+      "side": 1,
+      "message": "In later gerrits, are we planning to fill modification and deletion list also in this function ?",
+      "revId": "4a884fbbf86b17bfc09e1d6849696c3190dbe99a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "50745741_7ca8797e",
+        "filename": "src/ric_stub/ric_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1633,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-11T07:43:26Z",
+      "side": 1,
+      "message": "Add comment explaining the purpose of this condition and its action",
+      "revId": "4a884fbbf86b17bfc09e1d6849696c3190dbe99a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2460dcc0_4f9c2434",
+        "filename": "src/ric_stub/ric_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1634,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-11T07:43:26Z",
+      "side": 1,
+      "message": "indentation",
+      "revId": "4a884fbbf86b17bfc09e1d6849696c3190dbe99a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "883103ad_b78782f3",
+        "filename": "src/ric_stub/ric_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1711,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-11T07:43:26Z",
+      "side": 1,
+      "message": "this function return type is uint8_t. \n\nInitialise ret \u003d RFAILED\nmark ret\u003dROK if execution reaches end of while loop.\nreturn ret at the end of this function.",
+      "revId": "4a884fbbf86b17bfc09e1d6849696c3190dbe99a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "351594ca_9f3b142c",
+        "filename": "src/ric_stub/ric_stub.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-11T07:43:26Z",
+      "side": 1,
+      "message": "RanFunction structure is already present. Reuse the same.",
+      "range": {
+        "startLine": 137,
+        "startChar": 1,
+        "endLine": 137,
+        "endChar": 12
+      },
+      "revId": "4a884fbbf86b17bfc09e1d6849696c3190dbe99a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "feb28717_af4410f5",
+        "filename": "src/ric_stub/ric_stub.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-11T07:43:26Z",
+      "side": 1,
+      "message": "addArr, modArr, delArr... all these names are not descriptive enough.\nParam name should be descriptive so that when used in code, we are able to understand its use.",
+      "revId": "4a884fbbf86b17bfc09e1d6849696c3190dbe99a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f4142367_5d7511b9",
+        "filename": "src/ric_stub/ric_stub.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-11T07:43:26Z",
+      "side": 1,
+      "message": "Currently, this structure is used in E2 setup request and RIC service query. At both places, all RAN functions in DU DB should be copied into RAN function added list.\nThis can be copied directly instead of doing it via temp ran func list. I would suggest you to do it directly in these cases. Using this tmp list is only increasing execution time.\n\nSo my question is that do we really need this structure?\nIf it is absolutely needed for future gerrits, lets discuss and make sure it is used only where it is needed.",
+      "revId": "4a884fbbf86b17bfc09e1d6849696c3190dbe99a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
