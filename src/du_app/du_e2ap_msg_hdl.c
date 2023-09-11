@@ -1658,7 +1658,9 @@ uint8_t procRicSubsReq(E2AP_PDU_t *e2apMsg)
                       * will be sent when RIC subscription request is received
                       * from RIC */
                      ricSubscriptionInfo->actionSequence[0].definition.styleType = 1;
+#ifdef KPI_CALCULATION 
                      BuildAndSendStatsReq(ricSubscriptionInfo->actionSequence[0].definition);
+#endif
                   }
                   break;
                }
