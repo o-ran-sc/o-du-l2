@@ -1653,12 +1653,14 @@ uint8_t procRicSubsReq(E2AP_PDU_t *e2apMsg)
                      free(ricSubsReq->protocolIEs.list.array[idx]->value.choice.RICsubscriptionDetails.ricAction_ToBeSetup_List.\
                            list.array);
 
+#ifdef KPI_CALCULATION 
                      /* This is a dummy trigger for statistics request. It will
                       * be removed in next gerrit and actual statistics request
                       * will be sent when RIC subscription request is received
                       * from RIC */
                      ricSubscriptionInfo->actionSequence[0].definition.styleType = 1;
                      BuildAndSendStatsReq(ricSubscriptionInfo->actionSequence[0].definition);
+#endif
                   }
                   break;
                }
