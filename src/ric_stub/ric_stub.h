@@ -26,11 +26,11 @@
 #define RIC_IP_V6_ADDR "0000:0000:0000:0000:0000:0000:0000:0011"
 
 #ifndef O1_ENABLE
-#define LOCAL_IP_RIC "192.168.130.80"
+#define LOCAL_IP_RIC "192.168.130.70"
 
 #define E2_SCTP_PORT 36421
 #define NUM_E2_ASSOC 1 
-#define REMOTE_IP_DU (char*[]){"192.168.130.81", "192.168.130.83"}
+#define REMOTE_IP_DU (char*[]){"192.168.130.71", "192.168.130.83"}
 #endif
 
 #define RRC_VER 0

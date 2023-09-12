@@ -485,6 +485,9 @@ uint8_t schUlResAlloc(SchCellCb *cell, Inst schInst)
    UlSchedInfo ulSchedInfo;
    SchUlSlotInfo  *schUlSlotInfo = NULLP;
    SlotTimingInfo ulTimingInfo;
+   CmLList        *node = NULLP;
+   TotalPrbUsage  *ulTotalPrbUsage = NULLP;
+
    memset(&ulSchedInfo, 0, sizeof(UlSchedInfo));
 
    /* add PHY delta */
@@ -544,10 +547,13 @@ uint8_t schUlResAlloc(SchCellCb *cell, Inst schInst)
    }
 
    /* Update UL statistics */
-   if(schCb[schInst].statistics.ulTotalPrbUsage)
+   node = cmLListFirst(&schCb[schInst].statistics.activeKpiList.ulTotPrbUseList);
+   while(node)
    {
-      schCb[schInst].statistics.ulTotalPrbUsage->numPrbUsedForTx += schUlSlotInfo->prbAlloc.numPrbAlloc; 
-      schCb[schInst].statistics.ulTotalPrbUsage->totalPrbAvailForTx += MAX_NUM_RB;
+      ulTotalPrbUsage = (TotalPrbUsage *)node->node;
+      ulTotalPrbUsage->numPrbUsedForTx += schUlSlotInfo->prbAlloc.numPrbAlloc;
+      ulTotalPrbUsage->totalPrbAvailForTx += MAX_NUM_RB;
+      node = node->next;
    }
 
    /* Re-initialize UL Slot */

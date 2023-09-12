@@ -131,6 +131,11 @@ uint8_t SchInstCfg(RgCfg *cfg, Inst  dInst)
       return (LCM_REASON_MEM_NOAVAIL);
    }   
 
+   /* Initialize statistics related configurations */
+   memset(&schCb[inst].statistics, 0, sizeof(SchStatistics));
+   cmLListInit(&schCb[inst].statistics.activeKpiList.dlTotPrbUseList);
+   cmLListInit(&schCb[inst].statistics.activeKpiList.ulTotPrbUseList);
+
    /* Set Config done in TskInit */
    schCb[inst].schInit.cfgDone = TRUE;
    DU_LOG("\nINFO   -->  SCH : Scheduler gen config done");
@@ -1383,7 +1388,7 @@ uint8_t allocatePrbDl(SchCellCb *cell, SlotTimingInfo slotTime, \
    }
    
    /* Update statistics of PRB usage if stats calculation is enabled */
-   if(schCb[cell->instIdx].statistics.dlTotalPrbUsage)
+   if(schCb[cell->instIdx].statistics.activeKpiList.dlTotPrbUseList.count)
       prbAlloc->numPrbAlloc += numPrb;
 
    /* Update the remaining number for free PRBs */
@@ -1520,7 +1525,7 @@ uint8_t allocatePrbUl(SchCellCb *cell, SlotTimingInfo slotTime, \
    }
 
    /* Update statistics of PRB usage if stats calculation is enabled */
-   if(schCb[cell->instIdx].statistics.ulTotalPrbUsage)
+   if(schCb[cell->instIdx].statistics.activeKpiList.ulTotPrbUseList.count)
       prbAlloc->numPrbAlloc += numPrb;
 
    /* Update the remaining number for free PRBs */
@@ -2516,35 +2521,85 @@ uint8_t SchProcPhrInd(Pst *pst, SchPwrHeadroomInd *schPhrInd)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t SchSendStatsRspToMac(Inst inst, SchMacRsp result, CauseOfResult cause)
+uint8_t SchSendStatsRspToMac(SchStatsRsp *statsRsp)
 {
    Pst rspPst;
    uint8_t ret = ROK;
-   SchStatsRsp  *statsRsp;
+   SchStatsRsp  *schStatsRsp;
 
    DU_LOG("\nINFO   --> SCH : Filling statistics response");
-   SCH_ALLOC(statsRsp, sizeof(SchStatsRsp));
-   if(statsRsp == NULLP)
+   SCH_ALLOC(schStatsRsp, sizeof(SchStatsRsp));
+   if(schStatsRsp == NULLP)
    {
       DU_LOG("\nERROR  --> SCH : Failed to allocate memory in SchSendStatsRspToMac()");
       return RFAILED;
    }
+ 
+   memcpy(schStatsRsp, statsRsp, sizeof(SchStatsRsp));
    memset(statsRsp, 0, sizeof(SchStatsRsp));
-   statsRsp->rsp = result;
-   statsRsp->cause = cause;
 
    /* Filling response post */
    memset(&rspPst, 0, sizeof(Pst));
    FILL_PST_SCH_TO_MAC(rspPst, inst);
    rspPst.event = EVENT_STATISTICS_RSP_TO_MAC;
 
-   ret = MacMessageRouter(&rspPst, (void *)statsRsp);
+   ret = MacMessageRouter(&rspPst, (void *)schStatsRsp);
    if(ret == RFAILED)
    {
       DU_LOG("\nERROR  -->  SCH : SchSendStatsRspToMac(): Failed to send Statistics Response");
       return ret;
    }
    return ret;
+}
+
+uint8_t SchRejectAllStats(SchStatsReq *schStatsReq, CauseOfResult cause)
+{
+   uint8_t reqGrpIdx = 0, rspGrpIdx = 0;
+   SchStatsRsp schStatsRsp;
+
+   memset(&schStatsRsp, 0, sizeof(SchStatsRsp));
+
+   /* Copying all stats group from stats request to stats response */
+   schStatsRsp.transId = schStatsReq->transId;
+   for(reqGrpIdx = 0; reqGrpIdx < schStatsReq->numStatsGroup; reqGrpIdx++)
+   {
+      schStatsRsp.statsGrpRejectedList[rspGrpIdx].groupId = schStatsReq->statsGrpList[reqGrpIdx].groupId;
+      schStatsRsp.statsGrpRejectedList[rspGrpIdx].cause = cause;
+      rspGrpIdx++;
+   }
+   schStatsRsp.numGrpRejected = rspGrpIdx;
+
+   return SchSendStatsRspToMac(&schStatsRsp);
+}
+
+uint8_t schAddToKpiActiveList(Inst inst, SchStatsGrp *grpInfo)
+{
+   CmLList  *node = NULLP;
+
+   /* If DL Total PRB Usage configured, add to list */
+   if(grpInfo->kpiStats.dlTotalPrbUsage)
+   {
+      SCH_ALLOC(node, sizeof(CmLList));
+      if(node)
+      {
+         node->node = (PTR)grpInfo->kpiStats.dlTotalPrbUsage; 
+         cmLListAdd2Tail(&schCb[inst].statistics.activeKpiList.dlTotPrbUseList, node);
+      }
+   }
+
+   /* If UL Total PRB Usage configured, add to list */
+   node = NULLP;
+   if(grpInfo->kpiStats.ulTotalPrbUsage)
+   {
+      SCH_ALLOC(node, sizeof(CmLList));
+      if(node)
+      {
+         node->node = (PTR)grpInfo->kpiStats.ulTotalPrbUsage; 
+         cmLListAdd2Tail(&schCb[inst].statistics.activeKpiList.ulTotPrbUseList, node);
+      }
+   }
+
+   return ROK;
 }
 
 /*******************************************************************
@@ -2565,128 +2620,129 @@ uint8_t SchSendStatsRspToMac(Inst inst, SchMacRsp result, CauseOfResult cause)
  * ****************************************************************/
 uint8_t SchProcStatsReq(Pst *pst, SchStatsReq *statsReq)
 {
-   uint8_t idx;
+   uint8_t grpIdx = 0, reqGrpIdx = 0, measIdx = 0, reqMeasIdx = 0;
    Inst    inst = pst->dstInst - SCH_INST_START;
-   SchMacRsp     rsp = RSP_OK;
-   CauseOfResult cause = SUCCESSFUL;
-   bool isDlTotlPrbUseCfgd = false, isUlTotlPrbUseCfgd = false;
+   bool    measTypeInvalid;
+   CauseOfResult cause;
+   SchStatsInfo  *statsInfo = NULLP;
+   SchStatsGrpInfo *grpInfo = NULLP;
+   SchStatsGrp *grpInfoDb = NULLP;
+   SchStatsRsp schStatsRsp;
 
    DU_LOG("\nINFO   -->  SCH : Received Statistics Request from MAC");
 
-   for(idx=0; idx < statsReq->numStats; idx++)
+   if(statsReq == NULLP)
    {
-      switch(statsReq->statsList[idx].type)
-      {
-         case SCH_DL_TOTAL_PRB_USAGE:
-            {
-               /* Check if duplicate configuration */
-               if(schCb[inst].statistics.dlTotalPrbUsage)
-               {
-                  DU_LOG("\nERROR   -->  SCH : SCH_DL_TOTAL_PRB_USAGE stats already configured");
-                  rsp = RSP_NOK;
-                  cause = DUPLICATE_ENTRY;
-               }
+      DU_LOG("\nERROR  -->  SCH : SchProcStatsReq(): Received Null pointer");
+      return RFAILED;
+   }
 
-               /* Allocate memory */
-               SCH_ALLOC(schCb[inst].statistics.dlTotalPrbUsage, sizeof(TotalPrbUsage));
-               if(!schCb[inst].statistics.dlTotalPrbUsage)
-               {
-                  DU_LOG("\nERROR   -->  SCH : Memory allocation failed for dlTotalPrbUsage in \
-                        SchProcStatsReq()");
-                  rsp = RSP_NOK;
-                  cause = RESOURCE_UNAVAILABLE;
-                  break;
-               }
+   if(schCb[inst].statistics.numOfStatsCfgd >= MAX_NUM_STATS_CFG)
+   {
+      DU_LOG("\nERROR  -->  SCH : SchProcStatsReq: Maximum number of statistics configured. \
+            Cannot process new request.");
+      SchRejectAllStats(statsReq, RESOURCE_UNAVAILABLE);
+      SCH_FREE(statsReq, sizeof(SchStatsReq));
+      return RFAILED;
+   }
 
-               /* Initialize */
-               memset(schCb[inst].statistics.dlTotalPrbUsage, 0, sizeof(TotalPrbUsage));
+   memset(&schStatsRsp, 0, sizeof(SchStatsRsp));
 
-               /* Configure */
-               schCb[inst].statistics.dlTotalPrbUsage->schInst = inst;
-               schCb[inst].statistics.dlTotalPrbUsage->periodicity = statsReq->statsList[idx].periodicity;
-               cmInitTimers(&(schCb[inst].statistics.dlTotalPrbUsage->periodTimer), 1);
+   statsInfo = &schCb[inst].statistics.statsInfoList[schCb[inst].statistics.numOfStatsCfgd];
+   statsInfo->numStatsGroup = 0;
+   for(reqGrpIdx=0; reqGrpIdx < statsReq->numStatsGroup; reqGrpIdx++)
+   {
+       measIdx = 0;
+       measTypeInvalid = false;
+       grpInfo = &statsReq->statsGrpList[reqGrpIdx];
+       grpInfoDb = &statsInfo->statsGrpList[grpIdx];
+       for(reqMeasIdx = 0; reqMeasIdx < grpInfo->numStats; reqMeasIdx++)
+       {
+          switch(grpInfo->statsList[reqMeasIdx])
+          {
+             case SCH_DL_TOTAL_PRB_USAGE:
+                {
+                   /* Allocate memory */
+                   SCH_ALLOC(grpInfoDb->kpiStats.dlTotalPrbUsage, sizeof(TotalPrbUsage));
+                   if(!grpInfoDb->kpiStats.dlTotalPrbUsage)
+                   {
+                      DU_LOG("\nERROR   -->  SCH : Memory allocation failed for dlTotalPrbUsage in \
+                            SchProcStatsReq()");
+                      measTypeInvalid = true;
+                      cause = RESOURCE_UNAVAILABLE;
+                   }
+                   break;
+                }
 
-               /* Start timer */
-               schStartTmr(&schCb[inst], (PTR)(schCb[inst].statistics.dlTotalPrbUsage), \
-                     EVENT_DL_TOTAL_PRB_USAGE_TMR, schCb[inst].statistics.dlTotalPrbUsage->periodicity);
+             case SCH_UL_TOTAL_PRB_USAGE:
+                {
+                   /* Allocate memory */
+                   SCH_ALLOC(grpInfoDb->kpiStats.ulTotalPrbUsage, sizeof(TotalPrbUsage));
+                   if(!grpInfoDb->kpiStats.ulTotalPrbUsage)
+                   {
+                      DU_LOG("\nERROR   -->  SCH : Memory allocation failed for dlTotalPrbUsage in \
+                            SchProcStatsReq()");
+                      measTypeInvalid = true;
+                      cause = RESOURCE_UNAVAILABLE;
+                   }
+                   break;
+                }
 
-               isDlTotlPrbUseCfgd = true;
-               break;
-            }
+             default:
+                {
+                   DU_LOG("\nERROR  -->  SCH : SchProcStatsReq: Invalid measurement type [%d]", \
+                         grpInfo->statsList[reqMeasIdx]);
+                   measTypeInvalid = true;
+                   cause = PARAM_INVALID;
+                   break;
+                }
+          }
 
-         case SCH_UL_TOTAL_PRB_USAGE:
-            {
-               /* Check if duplicate configuration */
-               if(schCb[inst].statistics.ulTotalPrbUsage)
-               {
-                  DU_LOG("\nERROR   -->  SCH : SCH_UL_TOTAL_PRB_USAGE stats already configured");
-                  rsp = RSP_NOK;
-                  cause = DUPLICATE_ENTRY;
-               }
+          if(measTypeInvalid)
+          {
+             SCH_FREE(grpInfoDb->kpiStats.dlTotalPrbUsage, sizeof(TotalPrbUsage));
+             SCH_FREE(grpInfoDb->kpiStats.ulTotalPrbUsage, sizeof(TotalPrbUsage));
+             memset(grpInfoDb, 0, sizeof(SchStatsGrp));   
+             break;
+          }
 
-               /* Allocate memory */
-               SCH_ALLOC(schCb[inst].statistics.ulTotalPrbUsage, sizeof(TotalPrbUsage));
-               if(!schCb[inst].statistics.ulTotalPrbUsage)
-               {
-                  DU_LOG("\nERROR   -->  SCH : Memory allocation failed for ulTotalPrbUsage in \
-                        SchProcStatsReq()");
-                  rsp = RSP_NOK;
-                  cause = RESOURCE_UNAVAILABLE;
-                  break;
-               }
+          measIdx++;
+       }
+   
+       if(!measTypeInvalid)
+       {
+          grpInfoDb->schInst = inst;
+          grpInfoDb->transId = statsReq->transId;
+          grpInfoDb->groupId = grpInfo->groupId;
+          grpInfoDb->periodicity = grpInfo->periodicity;
 
-               /* Initialize */
-               memset(schCb[inst].statistics.ulTotalPrbUsage, 0, sizeof(TotalPrbUsage));
+          /* Add this group's configured KPIs to list of Active KPIs */
+          schAddToKpiActiveList(inst, grpInfoDb);
 
-               /* Configure */
-               schCb[inst].statistics.ulTotalPrbUsage->schInst = inst;
-               schCb[inst].statistics.ulTotalPrbUsage->periodicity = statsReq->statsList[idx].periodicity;
-               cmInitTimers(&(schCb[inst].statistics.ulTotalPrbUsage->periodTimer), 1);
+          /* Start timer */
+          //cmInitTimers(&(grpInfoDb->periodTimer), MAX_STATISTICS_TMR);
+          cmInitTimers(&(grpInfoDb->periodTimer), 1);
+          schStartTmr(&schCb[inst], (PTR)(grpInfoDb), EVENT_STATISTICS_TMR, grpInfoDb->periodicity);
 
-               /* Start timer */
-               schStartTmr(&schCb[inst], (PTR)(schCb[inst].statistics.ulTotalPrbUsage), \
-                     EVENT_UL_TOTAL_PRB_USAGE_TMR, schCb[inst].statistics.ulTotalPrbUsage->periodicity);
+          schStatsRsp.statsGrpAcceptedList[schStatsRsp.numGrpAccepted] = grpInfo->groupId;
+          schStatsRsp.numGrpAccepted++;
+          grpIdx++;
+       }
+       else
+       {
+          schStatsRsp.statsGrpRejectedList[schStatsRsp.numGrpRejected].groupId = grpInfo->groupId;
+          schStatsRsp.statsGrpRejectedList[schStatsRsp.numGrpRejected].cause = cause;
+          schStatsRsp.numGrpRejected++;
+       }
+   }
+   statsInfo->numStatsGroup = grpIdx;
 
-               isUlTotlPrbUseCfgd = true;
-               break;
-            }
-         default:
-            {
-               DU_LOG("\nERROR   -->  SCH : Invalid statistics type [%d]", statsReq->statsList[idx].type);
-               rsp = RSP_NOK;
-               cause = PARAM_INVALID;
-            }
-      } /* End of switch */
-
-      if(rsp == RSP_NOK)
-      {
-         /* If failed to configure any KPI, then clear configuration of other
-          * KPIs that were configured successfully as part of this statsReq */
-         if(isDlTotlPrbUseCfgd)
-         {
-            if((schChkTmr((PTR)(schCb[inst].statistics.dlTotalPrbUsage), EVENT_DL_TOTAL_PRB_USAGE_TMR)) == FALSE)
-            {
-               schStopTmr(&schCb[inst], (PTR)(schCb[inst].statistics.dlTotalPrbUsage), EVENT_DL_TOTAL_PRB_USAGE_TMR);
-            }
-            SCH_FREE(schCb[inst].statistics.dlTotalPrbUsage, sizeof(TotalPrbUsage));
-         }
-
-         if(isUlTotlPrbUseCfgd)
-         {
-            if((schChkTmr((PTR)(schCb[inst].statistics.ulTotalPrbUsage), EVENT_UL_TOTAL_PRB_USAGE_TMR)) == FALSE)
-            {
-               schStopTmr(&schCb[inst], (PTR)(schCb[inst].statistics.ulTotalPrbUsage), EVENT_UL_TOTAL_PRB_USAGE_TMR);
-            }
-            SCH_FREE(schCb[inst].statistics.ulTotalPrbUsage, sizeof(TotalPrbUsage));
-         }
-         break;
-      }
-   } /* End of FOR */
+   schStatsRsp.transId = statsReq->transId;
 
    SCH_FREE(statsReq, sizeof(SchStatsReq));
 
-   SchSendStatsRspToMac(inst, rsp, cause);
-
+   schCb[inst].statistics.numOfStatsCfgd++;
+   SchSendStatsRspToMac(&schStatsRsp);
    return ROK;
 } /* End of SchProcStatsReq */
 
@@ -2708,26 +2764,21 @@ uint8_t SchProcStatsReq(Pst *pst, SchStatsReq *statsReq)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t SchSendStatsIndToMac(Inst inst, SchMeasurementType measType, double value)
+uint8_t SchSendStatsIndToMac(Inst inst, SchStatsInd  *statsInd)
 {
    Pst pst;
    uint8_t ret = ROK;
-   SchStatsInd  statsInd;
 
 #ifdef DEBUG_PRINT
    DU_LOG("\nDEBUG  --> SCH : Filling statistics indication");
 #endif
-
-   memset(&statsInd, 0, sizeof(SchStatsInd));
-   statsInd.type = measType;
-   statsInd.value = value;
 
    /* Filling post structure */
    memset(&pst, 0, sizeof(Pst));
    FILL_PST_SCH_TO_MAC(pst, inst);
    pst.event = EVENT_STATISTICS_IND_TO_MAC;
 
-   ret = MacMessageRouter(&pst, (void *)&statsInd);
+   ret = MacMessageRouter(&pst, (void *)statsInd);
    if(ret == RFAILED)
    {
       DU_LOG("\nERROR  -->  SCH : SchSendStatsIndToMac(): Failed to send Statistics Indication");
@@ -2735,6 +2786,77 @@ uint8_t SchSendStatsIndToMac(Inst inst, SchMeasurementType measType, double valu
    return ret;
 }
 
+/**
+ * @brief Handler to process Timer expiry of DL Total PRB Usage calculation 
+ *
+ * @param[in] cb        Control block depending on the type of the timer event.
+ * @param[in] tmrEvnt   Timer event to be started
+ *
+ * @return  Bool indicating whether the timer is running or not
+ *      -# ROK
+ *      -# RFAILED
+*/
+double calcDlTotalPrbUsage(TotalPrbUsage *dlTotalPrbUsage)
+{
+   double percentageOfTotalPrbUsed = 0;
+
+   if(dlTotalPrbUsage->totalPrbAvailForTx)
+      percentageOfTotalPrbUsed = ((100.0 * dlTotalPrbUsage->numPrbUsedForTx) / dlTotalPrbUsage->totalPrbAvailForTx);
+   
+   memset(dlTotalPrbUsage, 0, sizeof(TotalPrbUsage));
+
+   return percentageOfTotalPrbUsed;
+}
+
+/**
+ * @brief Handler to check if the timer is running
+ *
+ * @param[in] cb        Control block depending on the type of the timer event.
+ * @param[in] tmrEvnt   Timer event to be started
+ *
+ * @return  Bool indicating whether the timer is running or not
+ *      -# ROK
+ *      -# RFAILED
+*/
+uint8_t calcUlTotalPrbUsage(TotalPrbUsage *ulTotalPrbUsage)
+{
+   double percentageOfTotalPrbUsed = 0;
+
+   if(ulTotalPrbUsage->totalPrbAvailForTx)
+      percentageOfTotalPrbUsed = ((100.0 * ulTotalPrbUsage->numPrbUsedForTx) / ulTotalPrbUsage->totalPrbAvailForTx);
+
+   memset(ulTotalPrbUsage, 0, sizeof(TotalPrbUsage));
+
+   return percentageOfTotalPrbUsed;
+}
+
+uint8_t schCalcAndSendGrpStats(SchStatsGrp *grpInfo)
+{
+   uint8_t idx = 0;
+   SchStatsInd  statsInd;
+
+   memset(&statsInd, 0, sizeof(SchStatsInd));
+   statsInd.transId = grpInfo->transId;
+   statsInd.groupId = grpInfo->groupId;
+
+   if(grpInfo->kpiStats.dlTotalPrbUsage)
+   {
+      statsInd.measuredStatsList[idx].type = SCH_DL_TOTAL_PRB_USAGE;  
+      statsInd.measuredStatsList[idx].value = calcDlTotalPrbUsage(grpInfo->kpiStats.dlTotalPrbUsage);   
+      idx++;
+   }
+   
+   if(grpInfo->kpiStats.ulTotalPrbUsage)
+   {
+      statsInd.measuredStatsList[idx].type = SCH_UL_TOTAL_PRB_USAGE;  
+      statsInd.measuredStatsList[idx].value = calcUlTotalPrbUsage(grpInfo->kpiStats.ulTotalPrbUsage);   
+      idx++;
+   }
+   
+   statsInd.numStats = idx;
+
+   return SchSendStatsIndToMac(grpInfo->schInst, &statsInd);
+}
 
 /**********************************************************************
   End of file

@@ -35,34 +35,6 @@
 */
 bool schChkTmr(PTR cb, int16_t tmrEvnt)
 {
-   switch (tmrEvnt)
-   {
-      case EVENT_DL_TOTAL_PRB_USAGE_TMR:
-      {
-         if(((TotalPrbUsage *)cb)->periodTimer.tmrEvnt == EVENT_DL_TOTAL_PRB_USAGE_TMR)
-         {
-             DU_LOG("\nDEBUG  -->  SCH : schChkTmr: Timer Evnt [%d] already running", tmrEvnt);
-             return TRUE;
-         }
-         break;
-      }
-
-      case EVENT_UL_TOTAL_PRB_USAGE_TMR:
-      {
-         if(((TotalPrbUsage *)cb)->periodTimer.tmrEvnt == EVENT_UL_TOTAL_PRB_USAGE_TMR)
-         {
-             DU_LOG("\nDEBUG  -->  SCH : schChkTmr: Timer Evnt [%d] already running", tmrEvnt);
-             return TRUE;
-         }
-         break;
-      }
-
-      default:
-      {
-         DU_LOG("\nERROR  -->  SCH : schChkTmr: Invalid tmr Evnt [%d]", tmrEvnt);
-      }
-   }
-
    return FALSE;
 }
 
@@ -74,10 +46,9 @@ bool schChkTmr(PTR cb, int16_t tmrEvnt)
  *
  * @return  Void
 */
-void schStartTmr(SchCb *gCb, PTR cb, int16_t tmrEvnt, uint8_t timerValue)
+void schStartTmr(SchCb *gCb, PTR cb, int16_t tmrEvnt, uint16_t timerValue)
 {
-   TotalPrbUsage *dlTotalPrbUsage;
-   TotalPrbUsage *ulTotalPrbUsage;
+   SchStatsGrp *statsGrp = NULLP;
    CmTmrArg arg;
 
    arg.wait = 0;
@@ -89,25 +60,16 @@ void schStartTmr(SchCb *gCb, PTR cb, int16_t tmrEvnt, uint8_t timerValue)
    
    switch (tmrEvnt)
    {
-      case EVENT_DL_TOTAL_PRB_USAGE_TMR:
+      case EVENT_STATISTICS_TMR:
       {
-         dlTotalPrbUsage = ((TotalPrbUsage *)cb);
+         statsGrp = ((SchStatsGrp *)cb);
          TMR_CALCUATE_WAIT(arg.wait, timerValue, gCb->schTimersInfo.tmrRes);
 
-         arg.timers = &dlTotalPrbUsage->periodTimer;
-         arg.max = MAX_TOTAL_PRB_USAGE_TMR;
+         arg.timers = &statsGrp->periodTimer;
+         arg.max = MAX_STATISTICS_TMR;
          break;
       }
 
-      case EVENT_UL_TOTAL_PRB_USAGE_TMR:
-      {
-         ulTotalPrbUsage = ((TotalPrbUsage *)cb);
-         TMR_CALCUATE_WAIT(arg.wait, timerValue, gCb->schTimersInfo.tmrRes);
-
-         arg.timers = &ulTotalPrbUsage->periodTimer;
-         arg.max = MAX_TOTAL_PRB_USAGE_TMR;
-         break;
-      }
       default:
       {
          DU_LOG("\nERROR  -->  SCH : schStartTmr: Invalid tmr Evnt [%d]", tmrEvnt);
@@ -148,16 +110,10 @@ void schStopTmr(SchCb *gCb, PTR cb, uint8_t tmrType)
 
    switch (tmrType)
    {
-      case EVENT_DL_TOTAL_PRB_USAGE_TMR:
+      case EVENT_STATISTICS_TMR:
          {
-            arg.timers  = &((TotalPrbUsage *)cb)->periodTimer;
-            arg.max = MAX_TOTAL_PRB_USAGE_TMR;
-            break;
-         }
-         case EVENT_UL_TOTAL_PRB_USAGE_TMR:
-         {
-            arg.timers  = &((TotalPrbUsage *)cb)->periodTimer;
-            arg.max = MAX_TOTAL_PRB_USAGE_TMR;
+            arg.timers  = &((SchStatsGrp *)cb)->periodTimer;
+            arg.max = MAX_STATISTICS_TMR;
             break;
          }
 
@@ -182,57 +138,10 @@ void schStopTmr(SchCb *gCb, PTR cb, uint8_t tmrType)
    return;
 }
 
-/**
- * @brief Handler to process Timer expiry of DL Total PRB Usage calculation 
- *
- * @param[in] cb        Control block depending on the type of the timer event.
- * @param[in] tmrEvnt   Timer event to be started
- *
- * @return  Bool indicating whether the timer is running or not
- *      -# ROK
- *      -# RFAILED
-*/
-uint8_t SchProcDlTotalPrbUsageTmrExp(TotalPrbUsage *dlTotalPrbUsage)
+uint8_t SchProcStatisticsGrpTmrExp(SchStatsGrp *cb)
 {
-   double percentageOfTotalPrbUsed = 0;
-
-   if(dlTotalPrbUsage->totalPrbAvailForTx)
-      percentageOfTotalPrbUsed = ((100.0 * dlTotalPrbUsage->numPrbUsedForTx) / dlTotalPrbUsage->totalPrbAvailForTx);
-   SchSendStatsIndToMac(dlTotalPrbUsage->schInst, SCH_DL_TOTAL_PRB_USAGE, percentageOfTotalPrbUsed);
-   
-   /* Restart Timer */
-   dlTotalPrbUsage->numPrbUsedForTx = 0;
-   dlTotalPrbUsage->totalPrbAvailForTx = 0;
-   schStartTmr(&schCb[dlTotalPrbUsage->schInst], (PTR)(dlTotalPrbUsage), EVENT_DL_TOTAL_PRB_USAGE_TMR, \
-      dlTotalPrbUsage->periodicity);
-
-   return ROK;
-}
-
-/**
- * @brief Handler to check if the timer is running
- *
- * @param[in] cb        Control block depending on the type of the timer event.
- * @param[in] tmrEvnt   Timer event to be started
- *
- * @return  Bool indicating whether the timer is running or not
- *      -# ROK
- *      -# RFAILED
-*/
-uint8_t SchProcUlTotalPrbUsageTmrExp(TotalPrbUsage *ulTotalPrbUsage)
-{
-   double percentageOfTotalPrbUsed = 0;
-
-   if(ulTotalPrbUsage->totalPrbAvailForTx)
-      percentageOfTotalPrbUsed = ((100.0 * ulTotalPrbUsage->numPrbUsedForTx) / ulTotalPrbUsage->totalPrbAvailForTx);
-   SchSendStatsIndToMac(ulTotalPrbUsage->schInst, SCH_UL_TOTAL_PRB_USAGE, percentageOfTotalPrbUsed);
-
-   /* Restart Timer */
-   ulTotalPrbUsage->numPrbUsedForTx = 0;
-   ulTotalPrbUsage->totalPrbAvailForTx = 0;
-   schStartTmr(&schCb[ulTotalPrbUsage->schInst], (PTR)(ulTotalPrbUsage), EVENT_UL_TOTAL_PRB_USAGE_TMR, \
-      ulTotalPrbUsage->periodicity);
-
+   schCalcAndSendGrpStats(cb);
+   schStartTmr(&schCb[cb->schInst], (PTR)(cb), EVENT_STATISTICS_TMR, cb->periodicity);
    return ROK;
 }
 
@@ -260,14 +169,13 @@ uint8_t schTmrExpiry(PTR cb, uint8_t tmrEvnt)
 
    switch (tmrEvnt)
    {
-      case EVENT_DL_TOTAL_PRB_USAGE_TMR:
+      case EVENT_STATISTICS_TMR:
          {
-            SchProcDlTotalPrbUsageTmrExp((TotalPrbUsage*)cb);
-            break;
-         }
-      case EVENT_UL_TOTAL_PRB_USAGE_TMR:
-         {
-            SchProcUlTotalPrbUsageTmrExp((TotalPrbUsage*)cb);
+#ifdef DEBUG_PRINT
+   DU_LOG("\nDEBUG   -->  SCH : Statistics Timer Expired for TransId [%d] GroupId [%d]", \
+   ((SchStatsGrp*)cb)->transId, ((SchStatsGrp*)cb)->groupId);
+#endif
+            SchProcStatisticsGrpTmrExp((SchStatsGrp*)cb);
             break;
          }
       default:

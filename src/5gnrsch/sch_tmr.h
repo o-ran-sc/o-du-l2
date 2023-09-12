@@ -16,13 +16,12 @@
 ################################################################################
 *******************************************************************************/
 
-#define MAX_TOTAL_PRB_USAGE_TMR 1
+#define MAX_STATISTICS_TMR MAX_NUM_STATS_CFG*MAX_NUM_STATS_GRP
 
-#define EVENT_DL_TOTAL_PRB_USAGE_TMR 1
-#define EVENT_UL_TOTAL_PRB_USAGE_TMR 2
+#define EVENT_STATISTICS_TMR 1
 
 bool schChkTmr(PTR cb, int16_t tmrEvnt);
-void schStartTmr(SchCb *gCb, PTR cb, int16_t tmrEvnt, uint8_t timerValue);
+void schStartTmr(SchCb *gCb, PTR cb, int16_t tmrEvnt, uint16_t timerValue);
 void schStopTmr(SchCb *gCb, PTR cb, uint8_t tmrType);
 
 /**********************************************************************

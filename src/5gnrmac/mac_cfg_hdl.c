@@ -1037,11 +1037,13 @@ uint8_t MacProcDlBroadcastReq(Pst *pst, MacDlBroadcastReq *dlBroadcastReq)
  *  @return  int
  *      -# ROK
  **/
-uint8_t MacSendStatsRspToDuApp(MacRsp rsp, CauseOfResult cause)
+uint8_t MacSendStatsRspToDuApp(MacStatsRsp *statsRsp)
 {
    uint8_t ret = ROK;
    Pst  pst;
    MacStatsRsp *macStatsRsp = NULLP;
+
+    DU_LOG("\nINFO  -->  MAC : MacSendStatsRspToDuApp: Sending Statistics Response to DU APP");
 
    /* Workaround : To skip corrupted memory, allocating a pointer that will
     * remain unused */
@@ -1056,8 +1058,8 @@ uint8_t MacSendStatsRspToDuApp(MacRsp rsp, CauseOfResult cause)
    }
    else
    {
-      macStatsRsp->rsp = rsp;
-      macStatsRsp->cause = cause;
+      memcpy(macStatsRsp, statsRsp, sizeof(MacStatsRsp));
+      memset(statsRsp, 0, sizeof(MacStatsRsp));
 
       memset(&pst, 0, sizeof(Pst));
       FILL_PST_MAC_TO_DUAPP(pst, EVENT_MAC_STATISTICS_RSP);
@@ -1074,6 +1076,26 @@ uint8_t MacSendStatsRspToDuApp(MacRsp rsp, CauseOfResult cause)
    return ret;
 }
 
+uint8_t MacRejectAllStats(MacStatsReq *macStatsReq, CauseOfResult cause)
+{
+   uint8_t reqGrpIdx = 0, rspGrpIdx = 0;
+   MacStatsRsp macStatsRsp;
+
+   memset(&macStatsRsp, 0, sizeof(MacStatsRsp));
+
+   /* Copying all stats group from stats request to stats response */
+   macStatsRsp.transId = macStatsReq->transId;
+   for(reqGrpIdx = 0; reqGrpIdx < macStatsReq->numStatsGroup; reqGrpIdx++)
+   {
+      macStatsRsp.statsGrpRejectedList[rspGrpIdx].groupId = macStatsReq->statsGrpList[reqGrpIdx].groupId;
+      macStatsRsp.statsGrpRejectedList[rspGrpIdx].cause = cause;
+      rspGrpIdx++;
+   }
+   macStatsRsp.numGrpRejected = rspGrpIdx;
+
+   return MacSendStatsRspToDuApp(&macStatsRsp);
+}
+
 /**
  * @brief Mac process the statistics Req received from DUAPP
  *
@@ -1081,7 +1103,20 @@ uint8_t MacSendStatsRspToDuApp(MacRsp rsp, CauseOfResult cause)
  *
  *     Function : MacProcStatsReq
  *
- *     This function process the statistics request from duapp
+ *     This function process the statistics request from duapp:
+ *     [Step 1] Basic validation. If fails, all stats group in stats request are
+ *     rejected.
+ *     [Step 2] If basic validations passed, traverse all stats group and
+ *     validate each measurement types in each group.
+ *     [Step 3] If any measurement type validation fails in a group, that group 
+ *     is not configured and it is added to stats-group-rejected-list in
+ *     mac-stats-response message.
+ *     [Step 4] Even if one group passes all validation, it is sent to SCH in
+ *     statistics request. The mac-stats-response message is added to
+ *     pending-response list. This will be sent to DU APP after stats response
+ *     is received from SCH.
+ *     [Step 5] If none of the groups passes all validation, mac-stats-response
+ *     is sent to du app with all group as part of stats-group-rejected-list.
  *
  *  @param[in]  Pst      *pst
  *  @param[in]  StatsReq *statsReq
@@ -1090,85 +1125,133 @@ uint8_t MacSendStatsRspToDuApp(MacRsp rsp, CauseOfResult cause)
  **/
 uint8_t MacProcStatsReq(Pst *pst, MacStatsReq *macStatsReq)
 {
-   uint8_t   macStatsIdx = 0, schStatsIdx = 0;
-   uint8_t   ret = RFAILED;
-   bool      measTypeInvalid = false;
-   Pst       schPst;
-   SchStatsReq  *schStatsReq = NULLP;
-   CauseOfResult cause;
+   uint8_t       macStatsGrpIdx = 0, macStatsIdx = 0, schStatsGrpIdx = 0, schStatsIdx = 0;
+   uint8_t       ret = RFAILED;
+   bool          measTypeInvalid = false;
+   Pst           schPst;
+   MacStatsGrpInfo *macStatsGrp = NULLP;
+   SchStatsReq     *schStatsReq = NULLP;
+   MacStatsRsp     *macStatsRsp = NULLP;
 
-   if(macStatsReq)
+   DU_LOG("\nINFO   -->  MAC : Received Statistics Request from DU_APP");
+
+   if(macStatsReq == NULLP)
    {
-      DU_LOG("\nINFO   -->  MAC : Received Statistics Request from DU_APP");
+      DU_LOG("\nERROR  -->  MAC : MacProcStatsReq(): Received Null pointer");
+      return RFAILED;
+   }
+   
+   /* [Step 1] Basic validation. If fails, statistics response is sent to DU APP
+    * that rejectes all stats */
 
-      MAC_ALLOC(schStatsReq, sizeof(SchStatsReq));
-      if(schStatsReq == NULLP)
+   /* If number of statistics request for which response is still pending
+    * towards DU APP has reached its maximum limit */
+   if(macCb.statistics.numPendingStatsRsp >= MAX_PENDING_STATS_RSP)
+   {
+      DU_LOG("\nERROR  -->  MAC : MacProcStatsReq: Maximum number of statistics response is pending. \
+         Cannot process new request."); 
+      MacRejectAllStats(macStatsReq, RESOURCE_UNAVAILABLE);
+      MAC_FREE_SHRABL_BUF(pst->region, pst->pool, macStatsReq, sizeof(MacStatsReq));
+      return RFAILED;
+   }
+
+   /* If memory resources are unavailable */
+   MAC_ALLOC(schStatsReq, sizeof(SchStatsReq));
+   if(schStatsReq == NULLP)
+   {
+      DU_LOG("\nERROR  -->  MAC : MacProcStatsReq: Failed to allocate memory");
+      MacRejectAllStats(macStatsReq, RESOURCE_UNAVAILABLE);
+      MAC_FREE_SHRABL_BUF(pst->region, pst->pool, macStatsReq, sizeof(MacStatsReq));
+      return RFAILED;
+   }
+
+   /* Add stats response to pending response list */ 
+   macStatsRsp = &macCb.statistics.pendingStatsRsp[macCb.statistics.numPendingStatsRsp];
+
+   /* [Step 2] Traverse all stats group and validate each measurement types in each group */
+   schStatsReq->transId = macStatsReq->transId;
+   schStatsReq->numStatsGroup = 0;
+   for(macStatsGrpIdx = 0; macStatsGrpIdx < macStatsReq->numStatsGroup; macStatsGrpIdx++)
+   {
+      measTypeInvalid = false;
+      schStatsIdx = 0;
+      macStatsGrp = &macStatsReq->statsGrpList[macStatsGrpIdx];
+
+      for(macStatsIdx=0; macStatsIdx < macStatsGrp->numStats; macStatsIdx++)
       {
-         DU_LOG("\nERROR  -->  MAC : MacProcStatsReq: Failed to allocate memory");
-         cause = RESOURCE_UNAVAILABLE;
+         /* Validate each measurement type */
+         switch(macStatsGrp->statsList[macStatsIdx])
+         {
+            case MAC_DL_TOTAL_PRB_USAGE:
+               {
+                  schStatsReq->statsGrpList[schStatsGrpIdx].statsList[schStatsIdx] = SCH_DL_TOTAL_PRB_USAGE;
+                  break;
+               }
+            case MAC_UL_TOTAL_PRB_USAGE:
+               {
+                  schStatsReq->statsGrpList[schStatsGrpIdx].statsList[schStatsIdx] = SCH_UL_TOTAL_PRB_USAGE;
+                  break;
+               }
+            default:
+               {
+                  DU_LOG("\nERROR  -->  MAC : MacProcStatsReq: Invalid measurement type [%d]", \
+                     macStatsGrp->statsList[macStatsIdx]);
+                  measTypeInvalid = true;
+               }
+         }
+
+         /* Even if one measurement type is invalid, this group is rejected */
+         if(measTypeInvalid)
+         {
+            memset(&schStatsReq->statsGrpList[schStatsGrpIdx], 0, sizeof(SchStatsGrpInfo));
+            break;
+         }
+         
+         schStatsIdx++;
+      }
+
+      /* If all measurement type is valid, add group info to send to SCH */
+      if(!measTypeInvalid)
+      {
+         schStatsReq->statsGrpList[schStatsGrpIdx].groupId = macStatsGrp->groupId;
+         schStatsReq->statsGrpList[schStatsGrpIdx].periodicity = macStatsGrp->periodicity;
+         schStatsReq->statsGrpList[schStatsGrpIdx].numStats = schStatsIdx;
+         schStatsGrpIdx++;
       }
       else
       {
-         schStatsReq->numStats = 0;
-         for(macStatsIdx=0; macStatsIdx < macStatsReq->numStats; macStatsIdx++)
-         {
-            /* Checking each measurement type to send only SCH related
-             * measurement config to SCH
-             * This will be useful in future when some measurement type will
-             * be configured for SCH and rest for only MAC */
-            switch(macStatsReq->statsList[macStatsIdx].type)
-            {
-               case MAC_DL_TOTAL_PRB_USAGE:
-                  {
-                     schStatsReq->statsList[schStatsIdx].type = SCH_DL_TOTAL_PRB_USAGE;
-                     break;
-                  }
-               case MAC_UL_TOTAL_PRB_USAGE:
-                  {
-                     schStatsReq->statsList[schStatsIdx].type = SCH_UL_TOTAL_PRB_USAGE;
-                     break;
-                  }
-               default:
-                  {
-                     DU_LOG("\nERROR  -->  MAC : MacProcStatsReq: Invalid measurement type [%d]", \
-                        macStatsReq->statsList[macStatsIdx].type);
-                     measTypeInvalid = true;
-                  }
-            }
-
-            if(!measTypeInvalid)
-            {
-               schStatsReq->statsList[schStatsIdx].periodicity = macStatsReq->statsList[macStatsIdx].periodicity;
-               schStatsIdx++;
-               measTypeInvalid = false;
-            }
-         }
-         schStatsReq->numStats = schStatsIdx;
-
-         /* If no measurement types are valid, it is failure scenario.
-          * Even if one measurement type is valid, send to SCH */
-         if(schStatsReq->numStats)
-         {
-            FILL_PST_MAC_TO_SCH(schPst, EVENT_STATISTICS_REQ_TO_SCH);
-            ret = SchMessageRouter(&schPst, (void *)schStatsReq);
-         }
-         else
-         {
-            cause = PARAM_INVALID;
-         }
+         /* [Step 3] If any measurement type validation fails in a group, that group 
+          * is not configured and it is added to stats-group-rejected-list in
+          * mac-stats-response message */
+         macStatsRsp->statsGrpRejectedList[macStatsRsp->numGrpRejected].groupId = macStatsGrp->groupId;
+         macStatsRsp->statsGrpRejectedList[macStatsRsp->numGrpRejected].cause = PARAM_INVALID;
+         macStatsRsp->numGrpRejected++;
       }
-      MAC_FREE_SHRABL_BUF(pst->region, pst->pool, macStatsReq, sizeof(MacStatsReq));
+   }
+   schStatsReq->numStatsGroup = schStatsGrpIdx;
+
+   macStatsRsp->transId = macStatsReq->transId;
+
+   if(schStatsReq->numStatsGroup)
+   {
+      /* [Step 4] Even if one group passes all validation, it is sent to SCH in
+       * statistics request. The mac-stats-response message is added to
+       * pending-response list. */     
+      macCb.statistics.numPendingStatsRsp++;
+
+      FILL_PST_MAC_TO_SCH(schPst, EVENT_STATISTICS_REQ_TO_SCH);
+      ret = SchMessageRouter(&schPst, (void *)schStatsReq);
    }
    else
    {
-      DU_LOG("\nERROR  -->  MAC : MacProcStatsReq(): Received Null pointer");
-      cause = PARAM_INVALID;
+      /* [Step 5] If none of the groups passes all validation, mac-stats-response
+       * is sent to du app with all group as part of stats-group-rejected-list. */
+      DU_LOG("\nERROR  -->  MAC : MacProcStatsReq: All statistics group found invalid");
+      MAC_FREE(schStatsReq, sizeof(SchStatsReq));
+      MacSendStatsRspToDuApp(macStatsRsp);
    }
 
-   if(ret == RFAILED)
-   {
-      MacSendStatsRspToDuApp(MAC_DU_APP_RSP_NOK, cause);
-   }
+   MAC_FREE_SHRABL_BUF(pst->region, pst->pool, macStatsReq, sizeof(MacStatsReq));
    return ret;
 }
 
@@ -1188,17 +1271,44 @@ uint8_t MacProcStatsReq(Pst *pst, MacStatsReq *macStatsReq)
  **/
 uint8_t MacProcSchStatsRsp(Pst *pst, SchStatsRsp *schStatsRsp)
 {
+   uint8_t idx = 0, accptdIdx = 0, rjctdIdx = 0;
    uint8_t ret = RFAILED;
+   MacStatsRsp *macStatsRsp = NULLP;
 
    if(schStatsRsp)
    {
-      if(schStatsRsp->rsp == RSP_OK)
-         ret = MacSendStatsRspToDuApp(MAC_DU_APP_RSP_OK, schStatsRsp->cause);
-      else
-         ret = MacSendStatsRspToDuApp(MAC_DU_APP_RSP_NOK, schStatsRsp->cause);
+      for(idx = 0; idx < macCb.statistics.numPendingStatsRsp; idx++)
+      {
+         if(macCb.statistics.pendingStatsRsp[idx].transId == schStatsRsp->transId)
+         {
+            macStatsRsp = &macCb.statistics.pendingStatsRsp[idx];
+            break;
+         }
+      }
 
-      MAC_FREE(schStatsRsp, sizeof(SchStatsRsp));
+      if(macStatsRsp == NULLP)
+      {
+         MAC_FREE(schStatsRsp, sizeof(SchStatsRsp));
+         return RFAILED;
+      }
+      
+      for(accptdIdx = 0; accptdIdx < schStatsRsp->numGrpAccepted; accptdIdx++)
+      {
+         macStatsRsp->statsGrpAcceptedList[macStatsRsp->numGrpAccepted++] = schStatsRsp->statsGrpAcceptedList[accptdIdx];
+      }
+
+      for(rjctdIdx = 0; rjctdIdx < schStatsRsp->numGrpRejected; rjctdIdx++)
+      {
+         macStatsRsp->statsGrpRejectedList[macStatsRsp->numGrpRejected].groupId = \
+            schStatsRsp->statsGrpRejectedList[rjctdIdx].groupId;
+         macStatsRsp->statsGrpRejectedList[macStatsRsp->numGrpRejected].cause = \
+            schStatsRsp->statsGrpRejectedList[rjctdIdx].cause;
+         macStatsRsp->numGrpRejected++;
+      }
+
+      ret = MacSendStatsRspToDuApp(macStatsRsp);
    }
+   MAC_FREE(schStatsRsp, sizeof(SchStatsRsp));
    return ret;
 }
 

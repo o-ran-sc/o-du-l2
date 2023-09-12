@@ -2150,12 +2150,27 @@ Statistics FetchStatsFromActionDefFormat1(ActionDefFormat1 format1)
 
    /* Hardcoding values for now for testing purpose 
     * Will be removed in next gerrit */
-   stats.macStatsReq.numStats = 2;
-   stats.macStatsReq.statsList[0].type = MAC_DL_TOTAL_PRB_USAGE;
-   stats.macStatsReq.statsList[0].periodicity = 100;
-   stats.macStatsReq.statsList[1].type = MAC_UL_TOTAL_PRB_USAGE;
-   stats.macStatsReq.statsList[1].periodicity = 100;
+   stats.macStatsReq.transId = 1;
+   stats.macStatsReq.numStatsGroup = 2;
+   stats.macStatsReq.statsGrpList[0].groupId = 1;
+   stats.macStatsReq.statsGrpList[0].periodicity = 100;
+   stats.macStatsReq.statsGrpList[0].numStats = 2;
+   stats.macStatsReq.statsGrpList[0].statsList[0] = MAC_DL_TOTAL_PRB_USAGE;
+   stats.macStatsReq.statsGrpList[0].statsList[1] = MAC_UL_TOTAL_PRB_USAGE;
 
+   stats.macStatsReq.statsGrpList[1].groupId = 2;
+   stats.macStatsReq.statsGrpList[1].periodicity = 500;
+   stats.macStatsReq.statsGrpList[1].numStats = 2;
+   stats.macStatsReq.statsGrpList[1].statsList[0] = MAC_DL_TOTAL_PRB_USAGE;
+   stats.macStatsReq.statsGrpList[1].statsList[1] = MAC_UL_TOTAL_PRB_USAGE;
+
+#if HLAL
+   stats.macStatsReq.statsGrpList[2].groupId = 3;
+   stats.macStatsReq.statsGrpList[2].periodicity = 100;
+   stats.macStatsReq.statsGrpList[2].numStats = 2;
+   stats.macStatsReq.statsGrpList[2].statsList[0] = MAC_DL_TOTAL_PRB_USAGE;
+   stats.macStatsReq.statsGrpList[2].statsList[1] = MAC_UL_TOTAL_PRB_USAGE;
+#endif   
    return stats;
 }
 
@@ -2238,23 +2253,31 @@ uint8_t BuildAndSendStatsReq(ActionDefinition subscribedAction)
  * ****************************************************************/
 uint8_t DuProcMacStatsRsp(Pst *pst, MacStatsRsp *statsRsp)
 {
+   uint8_t idx = 0;
+
+   DU_LOG("\nINFO  -->  DU_APP : DuProcMacStatsRsp: Received Statistics Response from MAC");
+
    if(statsRsp)
    {
-      if(statsRsp->rsp == MAC_DU_APP_RSP_OK)
+      DU_LOG("\n  Trans Id [%d]", statsRsp->transId);
+
+      DU_LOG("\n  Number of Accepted Groups [%d]", statsRsp->numGrpAccepted);
+      for(idx=0; idx<statsRsp->numGrpAccepted; idx++)
       {
-         DU_LOG("\nINFO  -->  DU_APP : Statistics configured successfully");
-         /* TODO : Start Reporting period timer for this subscription request
-          * To be handled in next gerrit */
+         DU_LOG("\n    Group Id [%d]", statsRsp->statsGrpAcceptedList[idx]);
       }
-      else
+
+      DU_LOG("\n  Number of Rejected Groups [%d]", statsRsp->numGrpRejected);
+      for(idx=0; idx<statsRsp->numGrpRejected; idx++)
       {
-         DU_LOG("\nERROR  -->  DU_APP : Statistics configuration failed with cause [%d]", statsRsp->cause);
+         DU_LOG("\n    Group Id [%d]", statsRsp->statsGrpRejectedList[idx]);
       }
+
       DU_FREE_SHRABL_BUF(pst->region, pst->pool, statsRsp, sizeof(MacStatsRsp));
       return ROK;
    }
 
-   DU_LOG("\nINFO  -->  DU_APP : DuProcMacStatsRsp: Received NULL Pointer");
+   DU_LOG("\nERROR  -->  DU_APP : DuProcMacStatsRsp: Received NULL Pointer");
    return RFAILED;
 }
 
@@ -2280,8 +2303,15 @@ uint8_t DuProcMacStatsInd(Pst *pst, MacStatsInd *statsInd)
    {
 #ifdef DEBUG_PRINT   
       DU_LOG("\nDEBUG  -->  DU_APP : DuProcMacStatsInd: Received Statistics Indication");
-      DU_LOG("\nMeasurement type [%d]  Measurement Value [%lf]", statsInd->type, statsInd->value);
 #endif      
+      DU_LOG("\n  Trans Id [%d]", statsInd->transId);
+      DU_LOG("\n  Group Id [%d]", statsInd->groupId);
+      for(int idx = 0; idx < statsInd->numStats; idx++)
+      {
+         DU_LOG("\n  Meas type [%d] Meas Value [%lf]", statsInd->measuredStatsList[idx].type,\
+            statsInd->measuredStatsList[idx].value);
+      }
+
 
       /* TODO : When stats indication is received
        * DU APP searches for the message type in E2AP RIC subscription database

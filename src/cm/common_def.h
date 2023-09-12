@@ -132,7 +132,9 @@
 /*First SCS in kHz as per 3gpp spec 38.211 Table 4.2-1 */
 #define BASE_SCS 15
 
-#define MAX_NUM_STATS 10
+#define MAX_NUM_STATS_CFG 2 /* Max number of statistics configuration/Subscription supported */
+#define MAX_NUM_STATS_GRP 5 /* Max number of statistics group per configuration request */
+#define MAX_NUM_STATS 10    /* Max number of statistics per group */
 
 /* Defining macros for common utility functions */
 #define ODU_GET_MSG_BUF SGetMsg
