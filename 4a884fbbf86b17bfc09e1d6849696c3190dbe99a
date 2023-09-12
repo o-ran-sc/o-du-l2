@@ -18,6 +18,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7714b124_d416e3a9",
+        "filename": "src/du_app/du_cfg.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 739,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-09-12T10:38:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7395fa65_3408952e",
+      "revId": "4a884fbbf86b17bfc09e1d6849696c3190dbe99a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bab519e7_de2882eb",
@@ -35,6 +53,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "913f7a06_b1c7c5f3",
+        "filename": "src/du_app/du_e2ap_mgr.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-09-12T10:38:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bab519e7_de2882eb",
+      "revId": "4a884fbbf86b17bfc09e1d6849696c3190dbe99a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8fed21cd_731c12bb",
@@ -48,6 +84,24 @@
       "writtenOn": "2023-09-11T07:43:26Z",
       "side": 1,
       "message": "add comment for this as well",
+      "revId": "4a884fbbf86b17bfc09e1d6849696c3190dbe99a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5c751119_673f3052",
+        "filename": "src/du_app/du_e2ap_mgr.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 181,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-09-12T10:38:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8fed21cd_731c12bb",
       "revId": "4a884fbbf86b17bfc09e1d6849696c3190dbe99a",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -75,6 +129,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f01d3d51_f5e6a1d8",
+        "filename": "src/du_app/du_e2ap_mgr.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 416,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-09-12T10:38:06Z",
+      "side": 1,
+      "message": "This structure is going to be used in the upcoming Gerrit.\nI will rename the variables in another Gerrit.",
+      "parentUuid": "e805c215_095791cd",
+      "range": {
+        "startLine": 416,
+        "startChar": 1,
+        "endLine": 416,
+        "endChar": 16
+      },
+      "revId": "4a884fbbf86b17bfc09e1d6849696c3190dbe99a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0fceaccd_51dcb4c2",
@@ -88,6 +166,24 @@
       "writtenOn": "2023-09-11T07:43:26Z",
       "side": 1,
       "message": "This is confusing. Lets call it \"RAN Function Name Description\"",
+      "revId": "4a884fbbf86b17bfc09e1d6849696c3190dbe99a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a5e2a3ee_574c6f4c",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 629,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-09-12T10:38:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0fceaccd_51dcb4c2",
       "revId": "4a884fbbf86b17bfc09e1d6849696c3190dbe99a",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -109,6 +205,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "696bc243_9a4236d6",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 695,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-09-12T10:38:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d735914b_3aca0392",
+      "revId": "4a884fbbf86b17bfc09e1d6849696c3190dbe99a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d68f5158_7df59b52",
@@ -122,6 +236,24 @@
       "writtenOn": "2023-09-11T07:43:26Z",
       "side": 1,
       "message": "Move this description above in functionality rather than keeping as part of input Param list.\n\nAlso explain in the functionality part that what this function is doing in various scenarios/procedure code\n\nIn input param, just write:\nRAN Function list\nProcedure code\nCount of ran functions to be added in the list\nReceived list of RAN functions.",
+      "revId": "4a884fbbf86b17bfc09e1d6849696c3190dbe99a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ad9fb871_058b7f5b",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 714,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-09-12T10:38:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d68f5158_7df59b52",
       "revId": "4a884fbbf86b17bfc09e1d6849696c3190dbe99a",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -143,6 +275,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "50daaf1a_2ef787c3",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 717,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-09-12T10:38:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1d7f8bf4_f24997b6",
+      "revId": "4a884fbbf86b17bfc09e1d6849696c3190dbe99a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b16f3d27_5f37b06f",
@@ -160,6 +310,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "95fd110c_5eddb6dd",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 722,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-09-12T10:38:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b16f3d27_5f37b06f",
+      "revId": "4a884fbbf86b17bfc09e1d6849696c3190dbe99a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3e34c50f_f896a462",
@@ -173,6 +341,24 @@
       "writtenOn": "2023-09-11T07:43:26Z",
       "side": 1,
       "message": "In function descriptor, it is written that:\n\"in case of ProcedureCodeE2_id_E2setup we add all the RAN Function list which is present in E2 database.\"\n\nHowever, here we are setting list.count \u003d count.\nHere value of count is 0 when BuildRanFunctionAddList() is called from BuildAndSendE2SetupReq.\n\nI think following is expected implementation:\nIn case procedure code is E2 setup:\n    ranFunctionsList-\u003elist.count \u003d duCb.e2apDb.numOfRanFunction;\nElse\n    ranFunctionsList-\u003elist.count \u003d count;",
+      "revId": "4a884fbbf86b17bfc09e1d6849696c3190dbe99a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "98f6242d_00508d28",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 731,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-09-12T10:38:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3e34c50f_f896a462",
       "revId": "4a884fbbf86b17bfc09e1d6849696c3190dbe99a",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -200,6 +386,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6ceb1575_de4caf9c",
+        "filename": "src/du_app/du_mgr_main.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 588,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-09-12T10:38:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d41efc5b_233f1113",
+      "range": {
+        "startLine": 588,
+        "startChar": 5,
+        "endLine": 588,
+        "endChar": 28
+      },
+      "revId": "4a884fbbf86b17bfc09e1d6849696c3190dbe99a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e1a7e392_ae895108",
@@ -213,6 +423,24 @@
       "writtenOn": "2023-09-11T07:43:26Z",
       "side": 1,
       "message": "Inside BuildRanFunctionAddedList(), we are first filling RAN function added list for E2 setup response and then storing the RAN Function info in DU DB.\nWhy so?\n\nWe should be filling RAN function info in DU DB while processing e2 setup request itself.\nAnd then whatever ran functions were successfully stored, should be fetched and used to fill ran function added list in E2 setup response.",
+      "revId": "4a884fbbf86b17bfc09e1d6849696c3190dbe99a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "74e3fe9a_ca33e2a9",
+        "filename": "src/ric_stub/ric_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 484,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-09-12T10:38:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e1a7e392_ae895108",
       "revId": "4a884fbbf86b17bfc09e1d6849696c3190dbe99a",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -240,6 +468,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "514483aa_11c152c8",
+        "filename": "src/ric_stub/ric_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1573,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-09-12T10:38:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d84f90ce_4200d088",
+      "range": {
+        "startLine": 1573,
+        "startChar": 7,
+        "endLine": 1573,
+        "endChar": 10
+      },
+      "revId": "4a884fbbf86b17bfc09e1d6849696c3190dbe99a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "951f9a05_7b358ee0",
@@ -253,6 +505,24 @@
       "writtenOn": "2023-09-11T07:43:26Z",
       "side": 1,
       "message": "In later gerrits, are we planning to fill modification and deletion list also in this function ?",
+      "revId": "4a884fbbf86b17bfc09e1d6849696c3190dbe99a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4a6e723e_ae802c7f",
+        "filename": "src/ric_stub/ric_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1581,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-09-12T10:38:06Z",
+      "side": 1,
+      "message": "I removed this function for now. If I need this in part will add it again.",
+      "parentUuid": "951f9a05_7b358ee0",
       "revId": "4a884fbbf86b17bfc09e1d6849696c3190dbe99a",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -274,6 +544,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fcded8c8_e136f846",
+        "filename": "src/ric_stub/ric_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1633,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-09-12T10:38:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "50745741_7ca8797e",
+      "revId": "4a884fbbf86b17bfc09e1d6849696c3190dbe99a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2460dcc0_4f9c2434",
@@ -291,6 +579,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9fa5a014_552fe3e8",
+        "filename": "src/ric_stub/ric_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1634,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-09-12T10:38:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2460dcc0_4f9c2434",
+      "revId": "4a884fbbf86b17bfc09e1d6849696c3190dbe99a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "883103ad_b78782f3",
@@ -304,6 +610,24 @@
       "writtenOn": "2023-09-11T07:43:26Z",
       "side": 1,
       "message": "this function return type is uint8_t. \n\nInitialise ret \u003d RFAILED\nmark ret\u003dROK if execution reaches end of while loop.\nreturn ret at the end of this function.",
+      "revId": "4a884fbbf86b17bfc09e1d6849696c3190dbe99a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "54fc01e4_b6fc477c",
+        "filename": "src/ric_stub/ric_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1711,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-09-12T10:38:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "883103ad_b78782f3",
       "revId": "4a884fbbf86b17bfc09e1d6849696c3190dbe99a",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -331,6 +655,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7287a783_5e80f30e",
+        "filename": "src/ric_stub/ric_stub.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-09-12T10:38:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "351594ca_9f3b142c",
+      "range": {
+        "startLine": 137,
+        "startChar": 1,
+        "endLine": 137,
+        "endChar": 12
+      },
+      "revId": "4a884fbbf86b17bfc09e1d6849696c3190dbe99a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "feb28717_af4410f5",
@@ -348,6 +696,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b92b16c7_2f6abf49",
+        "filename": "src/ric_stub/ric_stub.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-09-12T10:38:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "feb28717_af4410f5",
+      "revId": "4a884fbbf86b17bfc09e1d6849696c3190dbe99a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f4142367_5d7511b9",
@@ -361,6 +727,24 @@
       "writtenOn": "2023-09-11T07:43:26Z",
       "side": 1,
       "message": "Currently, this structure is used in E2 setup request and RIC service query. At both places, all RAN functions in DU DB should be copied into RAN function added list.\nThis can be copied directly instead of doing it via temp ran func list. I would suggest you to do it directly in these cases. Using this tmp list is only increasing execution time.\n\nSo my question is that do we really need this structure?\nIf it is absolutely needed for future gerrits, lets discuss and make sure it is used only where it is needed.",
+      "revId": "4a884fbbf86b17bfc09e1d6849696c3190dbe99a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9dc7e0d9_9d41c383",
+        "filename": "src/ric_stub/ric_stub.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-09-12T10:38:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f4142367_5d7511b9",
       "revId": "4a884fbbf86b17bfc09e1d6849696c3190dbe99a",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
