@@ -651,6 +651,8 @@ uint8_t SchProcSlotInd(Pst *pst, SlotTimingInfo *slotInd)
    DlBrdcstAlloc  *dlBrdcstAlloc = NULLP;
    SchCellCb      *cell = NULLP;
    Inst           schInst = pst->dstInst-SCH_INST_START;
+   CmLList        *node = NULLP;
+   TotalPrbUsage  *dlTotalPrbUsage = NULLP;
 
    cell = schCb[schInst].cells[schInst];
    if(cell == NULLP)
@@ -750,11 +752,14 @@ uint8_t SchProcSlotInd(Pst *pst, SlotTimingInfo *slotInd)
       return (ret);
    }
 
-   /* Update DL statistics */
-   if(schCb[schInst].statistics.dlTotalPrbUsage)
+   /* Update DL PRB Usage for all stats group which requested for DL Total PRB Usage */
+   node = cmLListFirst(&schCb[schInst].statistics.activeKpiList.dlTotPrbUseList);
+   while(node)
    {
-      schCb[schInst].statistics.dlTotalPrbUsage->numPrbUsedForTx += cell->schDlSlotInfo[slot]->prbAlloc.numPrbAlloc; 
-      schCb[schInst].statistics.dlTotalPrbUsage->totalPrbAvailForTx += MAX_NUM_RB;
+      dlTotalPrbUsage = (TotalPrbUsage *)node->node;
+      dlTotalPrbUsage->numPrbUsedForTx += cell->schDlSlotInfo[slot]->prbAlloc.numPrbAlloc;
+      dlTotalPrbUsage->totalPrbAvailForTx += MAX_NUM_RB;
+      node = node->next;
    }
    
    /* Re-initialize DL slot */

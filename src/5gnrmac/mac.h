@@ -26,6 +26,7 @@
 #define MAX_ZERO_CORR_CFG_IDX 16 /* max zero correlation config index */
 #define MAC_TQ_SIZE    10        /* Timing Queue Size */
 #define MAX_NUM_TIMER  1         /* MAX number of MAC timers */
+#define MAX_PENDING_STATS_RSP  5      /* Maximum number of statistics request for which response is pending */
 
 #define DEFAULT_CELLS 1
 #define SI_RNTI 0xFFFF
@@ -59,6 +60,7 @@
 #define LC_ID_SIZE 6
 #define TIMING_ADVANCE_SIZE 12
 #define T_CRNTI_SIZE 16
+
 /*  UL Grant is of size = 27 bits. Refer to Spec 38.213, Table 8.2-1 for
  *  contents of UL grant in RAR */
 #define FREQ_HOP_FLAG_SIZE 1
@@ -245,6 +247,15 @@ struct macCellCb
    SlotTimingInfo  currTime;
 };
 
+typedef struct macStatistics
+{
+   uint8_t      numPendingStatsRsp;
+   MacStatsRsp  pendingStatsRsp[MAX_PENDING_STATS_RSP];
+
+   /* This structure can be developed in future to add details of
+    * the statistics to be calculated at MAC */
+}MacStatistics;
+
 typedef struct macCb
 {
    Inst        macInst;
@@ -254,6 +265,7 @@ typedef struct macCb
    CmTqType    tmrTq[MAC_TQ_SIZE];        /*!< Timer Task Queue */
    CmTimer     tmrBlk[MAX_NUM_TIMER];     /*!< Timer Block */
    MacCellCb   *macCell[MAX_NUM_CELL];
+   MacStatistics  statistics;
 }MacCb;
 
 /* global variable */
