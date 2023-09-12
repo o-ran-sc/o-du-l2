@@ -1855,28 +1855,48 @@ typedef struct macDlBroadcastReq
     SiSchedulingInfo **siSchedulingInfo;
 }MacDlBroadcastReq;
 
-typedef struct macStatsInfo
+typedef struct macStatsGrpInfo
 {
-   MacMeasurementType type;
-   uint16_t           periodicity;  /* In milliseconds */
-}MacStatsInfo;
+   uint8_t   groupId;
+   uint16_t  periodicity;  /* In milliseconds */
+   uint8_t   numStats;
+   MacMeasurementType statsList[MAX_NUM_STATS];
+}MacStatsGrpInfo;
 
 typedef struct macStatsReq
 {
-   uint8_t   numStats;
-   MacStatsInfo statsList[MAX_NUM_STATS];
+   uint64_t          subscriptionId;
+   uint8_t           numStatsGroup;
+   MacStatsGrpInfo   statsGrpList[MAX_NUM_STATS_GRP];
 }MacStatsReq;
+
+typedef struct macStatsGrpRejected
+{
+   uint8_t  groupId;
+   CauseOfResult cause;
+}MacStatsGrpRejected;
 
 typedef struct macStatsRsp
 {
-   MacRsp  rsp;
-   CauseOfResult cause;
+   uint64_t             subscriptionId;
+   uint8_t              numGrpAccepted;
+   uint8_t              statsGrpAcceptedList[MAX_NUM_STATS_GRP];
+   uint8_t              numGrpRejected;
+   MacStatsGrpRejected  statsGrpRejectedList[MAX_NUM_STATS_GRP];
 }MacStatsRsp;
 
-typedef struct macStatsInd
+typedef struct macStats
 {
    MacMeasurementType type;
    double value;
+}MacStats;
+
+typedef struct macStatsInd
+{
+   uint64_t    subscriptionId;
+   uint8_t     groupId;
+   uint8_t     numStats;
+   MacStats    measuredStatsList[MAX_NUM_STATS];
 }MacStatsInd;
 
 /****************** FUNCTION POINTERS ********************************/

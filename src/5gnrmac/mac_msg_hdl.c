@@ -1081,6 +1081,7 @@ uint8_t MacProcSliceRecfgReq(Pst *pst, MacSliceRecfgReq *macSliceRecfgReq)
  **/
 uint8_t MacProcSchStatsInd(Pst *pst, SchStatsInd *schStatsInd)
 {
+   uint8_t statsIdx = 0;
    Pst indPst;
    MacStatsInd *macStatsInd;
 
@@ -1101,26 +1102,34 @@ uint8_t MacProcSchStatsInd(Pst *pst, SchStatsInd *schStatsInd)
       return RFAILED;
    }
 
-   switch(schStatsInd->type)
+   macStatsInd->subscriptionId = schStatsInd->subscriptionId;
+   macStatsInd->groupId = schStatsInd->groupId;
+
+   for(statsIdx = 0; statsIdx < schStatsInd->numStats; statsIdx++)
    {
-      case SCH_DL_TOTAL_PRB_USAGE:
-         {
-            macStatsInd->type = MAC_DL_TOTAL_PRB_USAGE;
-            break;
-         }
-      case SCH_UL_TOTAL_PRB_USAGE:
-         {
-            macStatsInd->type = MAC_UL_TOTAL_PRB_USAGE;
-            break;
-         }
-      default:
-         {
-            DU_LOG("\nERROR  -->  MAC : MacProcSchStatsInd: Invalid measurement type [%d]", schStatsInd->type);
-            MAC_FREE_SHRABL_BUF(MAC_MEM_REGION, MAC_POOL, macStatsInd, sizeof(MacStatsInd));
-            return RFAILED;
-         }
+      switch(schStatsInd->measuredStatsList[statsIdx].type)
+      {
+         case SCH_DL_TOTAL_PRB_USAGE:
+            {
+               macStatsInd->measuredStatsList[statsIdx].type = MAC_DL_TOTAL_PRB_USAGE;
+               break;
+            }
+         case SCH_UL_TOTAL_PRB_USAGE:
+            {
+               macStatsInd->measuredStatsList[statsIdx].type = MAC_UL_TOTAL_PRB_USAGE;
+               break;
+            }
+         default:
+            {
+               DU_LOG("\nERROR  -->  MAC : MacProcSchStatsInd: Invalid measurement type [%d]", \
+                     schStatsInd->measuredStatsList[statsIdx].type);
+               MAC_FREE_SHRABL_BUF(MAC_MEM_REGION, MAC_POOL, macStatsInd, sizeof(MacStatsInd));
+               return RFAILED;
+            }
+      }
+      macStatsInd->measuredStatsList[statsIdx].value = schStatsInd->measuredStatsList[statsIdx].value;
    }
-   macStatsInd->value = schStatsInd->value;
+   macStatsInd->numStats = schStatsInd->numStats;
 
    memset(&indPst, 0, sizeof(Pst));
    FILL_PST_MAC_TO_DUAPP(indPst, EVENT_MAC_STATISTICS_IND);
