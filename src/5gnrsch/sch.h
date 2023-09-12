@@ -602,17 +602,43 @@ typedef struct
 
 typedef struct dlTotalPrbUsage
 {
-   Inst     schInst;
    uint16_t numPrbUsedForTx;
    uint16_t totalPrbAvailForTx;
-   uint16_t periodicity;
-   CmTimer  periodTimer;
 }TotalPrbUsage;
 
-typedef struct schStatistics
+typedef struct 
 {
    TotalPrbUsage *dlTotalPrbUsage;
    TotalPrbUsage *ulTotalPrbUsage;
+}SchKpiSupported;
+
+typedef struct
+{
+   CmLListCp  dlTotPrbUseList;
+   CmLListCp  ulTotPrbUseList;
+}SchKpiActive;
+
+typedef struct schStatsGrp
+{
+   Inst       schInst;
+   uint64_t   subscriptionId;
+   uint8_t    groupId;
+   uint16_t   periodicity;  /* In milliseconds */
+   CmTimer    periodTimer;
+   SchKpiSupported kpiStats;
+}SchStatsGrp;
+
+typedef struct schStatsInfo
+{
+   uint8_t     numStatsGroup;
+   SchStatsGrp statsGrpList[MAX_NUM_STATS_GRP];
+}SchStatsInfo;
+
+typedef struct schStatistics
+{
+   uint16_t      numOfStatsCfgd;
+   SchStatsInfo  statsInfoList[MAX_NUM_STATS_CFG];
+   SchKpiActive  activeKpiList;
 }SchStatistics;
 
 /**
@@ -796,7 +822,8 @@ void schMsg4Complete(SchUeCb *ueCb);
 
 /* Statistics Function */
 uint8_t SchProcStatsReq(Pst *pst, SchStatsReq *statsReq);
-uint8_t SchSendStatsIndToMac(Inst inst, SchMeasurementType measType, double value);
+uint8_t SchSendStatsIndToMac(Inst inst, SchStatsInd  *statsInd);
+uint8_t schCalcAndSendGrpStats(SchStatsGrp *grpInfo);
 
 /**********************************************************************
   End of file

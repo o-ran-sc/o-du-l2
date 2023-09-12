@@ -2248,29 +2248,53 @@ typedef struct schRlsHqInfo
    SchUeHqInfo  *ueHqInfo;
 }SchRlsHqInfo;
 
-typedef struct schStatsInfo
+/* Statistics Request from MAC to SCH */
+typedef struct schStatsGrpInfo
 {
-   SchMeasurementType type;
-   uint16_t           periodicity;  /* In milliseconds */
-}SchStatsInfo;
+   uint8_t   groupId;
+   uint16_t  periodicity;  /* In milliseconds */
+   uint8_t   numStats;
+   SchMeasurementType statsList[MAX_NUM_STATS];
+}SchStatsGrpInfo;
 
 typedef struct schStatsReq
 {
-   uint8_t   numStats;
-   SchStatsInfo statsList[MAX_NUM_STATS];
+   uint64_t  subscriptionId;
+   uint8_t   numStatsGroup;
+   SchStatsGrpInfo   statsGrpList[MAX_NUM_STATS_GRP];
 }SchStatsReq;
+
+/* Statistics Response from SCH to MAC */
+typedef struct schStatsGrpRejected
+{
+   uint8_t   groupId;
+   CauseOfResult cause;
+}SchStatsGrpRejected;
 
 typedef struct schStatsRsp
 {
-   SchMacRsp rsp; 
-   CauseOfResult cause;
+   uint64_t             subscriptionId;
+   uint8_t              numGrpAccepted;
+   uint8_t              statsGrpAcceptedList[MAX_NUM_STATS_GRP];
+   uint8_t              numGrpRejected;
+   SchStatsGrpRejected  statsGrpRejectedList[MAX_NUM_STATS_GRP];
 }SchStatsRsp;
 
-typedef struct schStatsInd
+/* Statistics Indication from SCH to MAC */
+typedef struct schStats
 {
    SchMeasurementType type;
    double value;
+}SchStats;
+
+typedef struct schStatsInd
+{
+   uint64_t    subscriptionId;
+   uint8_t     groupId;
+   uint8_t     numStats;
+   SchStats    measuredStatsList[MAX_NUM_STATS];
 }SchStatsInd;
+
 
 /* function declarations */
 uint8_t MacMessageRouter(Pst *pst, void *msg);
