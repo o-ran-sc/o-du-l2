@@ -17,10 +17,13 @@
  *******************************************************************************/
 
 /* This file contains all E2AP message handler related functionality */
+#define MAX_E2_SETUP_TMR 1
+#define MAX_RIC_SERVICE_UPDATE_TMR 1
+
+#define EVENT_E2_SETUP_TMR 1
+#define EVENT_RIC_SERVICE_UPDATE_TMR 2
 
 #define MAX_NUM_TRANSACTION 256 /* As per, O-RAN WG3 E2AP v3.0, section 9.2.33 */
-#define MAX_E2_SETUP_TMR 1
-#define EVENT_E2_SETUP_TMR 1
 #define MAX_RAN_FUNCTION 256        /* O-RAN.WG3.E2AP-R003-v03.00 : Section 9.1.2.2 : maxofRANfunctionID */
 #define MAX_E2_NODE_COMPONENT 1024     /* O-RAN.WG3.E2AP-R003-v03.00 : Section 9.1.2.2 : maxofE2nodeComponents */
 #define MAX_TNL_ASSOCIATION 32         /* O-RAN.WG3.E2AP-R003-v03.00 : Section 9.1.2.11 : maxofTNLA */
@@ -175,9 +178,39 @@ typedef struct e2Transcation
    E2TransInfo ricInitTransaction[MAX_NUM_TRANSACTION]; /* Storing RIC-initiated transactions information */
 }E2Transaction;
 
+typedef struct
+{
+   uint16_t   id;
+   uint16_t   revisionCounter;
+}RanFuncInfo;
+
+typedef struct
+{
+   uint8_t     numOfRanFunToBeAdded;
+   RanFuncInfo ranFunToBeAdded[MAX_RAN_FUNCTION];
+   uint8_t     numOfRanFunToBeModified;
+   RanFuncInfo ranFunToBeModified[MAX_RAN_FUNCTION];
+   uint8_t     numOfRanFunToBeDeleted;
+   RanFuncInfo ranFunToBeDeleted[MAX_RAN_FUNCTION];
+}E2TmpRanFunList;
+
+typedef struct ricServiceUpdate
+{
+   E2ProcedureDirection dir;
+   uint8_t              transId;
+   E2TmpRanFunList      recvRanFuncList;
+}RicServiceUpdate;
+
+typedef struct 
+{
+   RicServiceUpdate ricService;
+   CmTimer          ricServiceUpdateTimer;
+}RicServiceUpdateTimer;
+
 typedef struct e2Timer
 {
    CmTimer e2SetupTimer;
+   RicServiceUpdateTimer ricServiceUpdateTimer;
    /* More timers can be added to this structure in future */
 }E2Timer;
 
@@ -392,21 +425,6 @@ typedef struct
    E2TimersInfo     e2TimersInfo;
 }E2apDb;
 
-typedef struct
-{
-   uint16_t   id;
-   uint16_t   revisionCounter;
-}RanFuncInfo;
-
-typedef struct
-{
-   uint8_t addCount;
-   uint8_t addArr[MAX_RAN_FUNCTION];
-   uint8_t modCount;
-   uint8_t modArr[MAX_RAN_FUNCTION];
-   uint8_t delCount;
-   RanFuncInfo delArr[MAX_RAN_FUNCTION];
-}E2TmpRanFunList;
 
 uint8_t assignTransactionId();
 uint8_t ResetE2Request(E2ProcedureDirection dir, E2CauseType type, E2Cause cause);

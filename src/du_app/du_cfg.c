@@ -1166,6 +1166,7 @@ uint8_t duReadCfg()
 
    /* Initialize the timer blocks */
    cmInitTimers(&(duCb.e2apDb.e2TimersInfo.e2Timers.e2SetupTimer), 1);
+   cmInitTimers(&(duCb.e2apDb.e2TimersInfo.e2Timers.ricServiceUpdateTimer), 1);
 
    /* Initialzie the timer queue */   
    memset(&(duCb.duTimersInfo.tmrTq), 0, sizeof(CmTqType) * DU_TQ_SIZE);
