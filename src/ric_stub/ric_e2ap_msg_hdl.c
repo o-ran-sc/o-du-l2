@@ -1794,6 +1794,12 @@ void E2APMsgHdlr(uint32_t *duId, Buffer *mBuf)
                      DU_LOG("\nINFO  -->  E2AP : RIC Indication Acknowledged");
                      break;
                   }
+               case InitiatingMessageE2__value_PR_RICserviceUpdate:
+                  {
+                     DU_LOG("\nINFO  -->  E2AP : RIC Service update received");
+                     break;
+                  }
+
                default:
                   {
                      DU_LOG("\nERROR  -->  E2AP : Invalid type of intiating message [%d]",e2apMsg->choice.initiatingMessage->value.present);
