@@ -3,6 +3,103 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6459ffa8_14fd74b5",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 680,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-09-13T05:33:54Z",
+      "side": 1,
+      "message": "break is missing, will return in while loop",
+      "revId": "e36b01fb9916bcd93f41c3f9f150f6783ad7f30b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f523e846_b714a6c2",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 743,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-09-13T05:33:54Z",
+      "side": 1,
+      "message": "In what E2 procedure we will again use AddList other than E2 setup procesdure?",
+      "range": {
+        "startLine": 743,
+        "startChar": 23,
+        "endLine": 743,
+        "endChar": 49
+      },
+      "revId": "e36b01fb9916bcd93f41c3f9f150f6783ad7f30b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b2a30def_ebde74de",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1569,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-09-13T05:33:54Z",
+      "side": 1,
+      "message": "please put the condition statement always inside curly brackets. i.e. Line no 1569 (memset) to be inside a curly braces which will define the start and end of the if\u0027s conditional statement",
+      "range": {
+        "startLine": 1569,
+        "startChar": 26,
+        "endLine": 1569,
+        "endChar": 30
+      },
+      "revId": "e36b01fb9916bcd93f41c3f9f150f6783ad7f30b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7f51736a_8f505795",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2441,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-09-13T05:33:54Z",
+      "side": 1,
+      "message": "same as above",
+      "revId": "e36b01fb9916bcd93f41c3f9f150f6783ad7f30b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c86cf975_b9e4d820",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2534,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-09-13T05:33:54Z",
+      "side": 1,
+      "message": "same as above",
+      "revId": "e36b01fb9916bcd93f41c3f9f150f6783ad7f30b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d3df82c3_9518334d",
         "filename": "src/ric_stub/ric_e2ap_msg_hdl.c",
         "patchSetId": 3
