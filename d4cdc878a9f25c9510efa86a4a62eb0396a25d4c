@@ -18,6 +18,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9e8a73a9_cbeb1b86",
+        "filename": "src/5gnrmac/mac.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-13T12:18:02Z",
+      "side": 1,
+      "message": "No, just a small random number.",
+      "parentUuid": "b956a530_5eef888e",
+      "revId": "d4cdc878a9f25c9510efa86a4a62eb0396a25d4c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b7c15acf_fcb31a93",
@@ -31,6 +49,24 @@
       "writtenOn": "2023-09-13T09:54:27Z",
       "side": 1,
       "message": "since we are always rejecting all the stats because of same cause : RESOURCE_UNAVIALABLE. do we need this as input argument?",
+      "revId": "d4cdc878a9f25c9510efa86a4a62eb0396a25d4c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4f7618cc_c8bbf9dd",
+        "filename": "src/5gnrmac/mac_cfg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1097,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-13T12:18:02Z",
+      "side": 1,
+      "message": "For now, the only conditions in which all groups are rejected is when resource is available. \nI am unable to think of any other reason as of now. But I think we should keep this robust to be able to use it in future for any other failure conditions that comes up.",
+      "parentUuid": "b7c15acf_fcb31a93",
       "revId": "d4cdc878a9f25c9510efa86a4a62eb0396a25d4c",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -75,6 +111,48 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e1c259a8_8fefbded",
+        "filename": "src/5gnrmac/mac_cfg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1099,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-13T12:18:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3f0baec7_494bce76",
+      "revId": "d4cdc878a9f25c9510efa86a4a62eb0396a25d4c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b047d20f_154f1ea0",
+        "filename": "src/5gnrmac/mac_cfg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1099,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-13T12:18:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "50ed49e1_626a836d",
+      "range": {
+        "startLine": 1099,
+        "startChar": 26,
+        "endLine": 1099,
+        "endChar": 36
+      },
+      "revId": "d4cdc878a9f25c9510efa86a4a62eb0396a25d4c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "938af0d8_ce462ca2",
@@ -92,6 +170,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fec29f32_03065e00",
+        "filename": "src/5gnrmac/mac_cfg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1188,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-13T12:18:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "938af0d8_ce462ca2",
+      "revId": "d4cdc878a9f25c9510efa86a4a62eb0396a25d4c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "10b550af_e8c43a37",
@@ -105,6 +201,24 @@
       "writtenOn": "2023-09-13T10:04:30Z",
       "side": 1,
       "message": "check the return value of MacSendStatsRspToDuApp function.",
+      "revId": "d4cdc878a9f25c9510efa86a4a62eb0396a25d4c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0bd9f7aa_f45a7bac",
+        "filename": "src/5gnrmac/mac_cfg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1269,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-13T12:18:02Z",
+      "side": 1,
+      "message": "storing return value in ret.\nNot printing error here since it is already getting printed inside MacSendStatsRspToDuApp",
+      "parentUuid": "10b550af_e8c43a37",
       "revId": "d4cdc878a9f25c9510efa86a4a62eb0396a25d4c",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -132,6 +246,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7dcc8818_c2e53eb7",
+        "filename": "src/5gnrmac/mac_cfg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1316,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-13T12:18:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d0ec516b_aeda1b48",
+      "range": {
+        "startLine": 1316,
+        "startChar": 64,
+        "endLine": 1316,
+        "endChar": 65
+      },
+      "revId": "d4cdc878a9f25c9510efa86a4a62eb0396a25d4c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4fe7971d_7ec9f6e0",
@@ -145,6 +283,24 @@
       "writtenOn": "2023-09-13T09:54:27Z",
       "side": 1,
       "message": "can we please have a check for macStatsRsp-\u003enumGrpRejected \u003c MAX_NUM_STATS_GRP",
+      "revId": "d4cdc878a9f25c9510efa86a4a62eb0396a25d4c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "38854586_1539118f",
+        "filename": "src/5gnrmac/mac_cfg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1322,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-13T12:18:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4fe7971d_7ec9f6e0",
       "revId": "d4cdc878a9f25c9510efa86a4a62eb0396a25d4c",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -166,6 +322,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c8c882db_238a4698",
+        "filename": "src/5gnrmac/mac_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1084,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-13T12:18:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "def47bf9_892c7abe",
+      "revId": "d4cdc878a9f25c9510efa86a4a62eb0396a25d4c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "17ff84e6_f4a97942",
@@ -179,6 +353,30 @@
       "writtenOn": "2023-09-13T09:54:27Z",
       "side": 1,
       "message": "cause is always same, do we need this as input param?",
+      "range": {
+        "startLine": 2573,
+        "startChar": 8,
+        "endLine": 2573,
+        "endChar": 25
+      },
+      "revId": "d4cdc878a9f25c9510efa86a4a62eb0396a25d4c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "11eb9a09_18a856bd",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2573,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-13T12:18:02Z",
+      "side": 1,
+      "message": "For now, the only conditions in which all groups are rejected is when resource is available. \nI am unable to think of any other reason as of now. But I think we should keep this robust to be able to use it in future for any other failure conditions that comes up.",
+      "parentUuid": "17ff84e6_f4a97942",
       "range": {
         "startLine": 2573,
         "startChar": 8,
@@ -212,6 +410,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "599eaa81_2a24e9c8",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2575,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-13T12:18:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0031f46f_ce8fadb3",
+      "range": {
+        "startLine": 2575,
+        "startChar": 11,
+        "endLine": 2575,
+        "endChar": 21
+      },
+      "revId": "d4cdc878a9f25c9510efa86a4a62eb0396a25d4c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "48f43ad3_aec5c054",
@@ -225,6 +447,24 @@
       "writtenOn": "2023-09-13T09:54:27Z",
       "side": 1,
       "message": "can we also have a check for grpIdx \u003c MAX_NUM_STATS",
+      "revId": "d4cdc878a9f25c9510efa86a4a62eb0396a25d4c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ce8f0efb_c2006719",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2712,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-13T12:18:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "48f43ad3_aec5c054",
       "revId": "d4cdc878a9f25c9510efa86a4a62eb0396a25d4c",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -252,6 +492,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b46a5bcc_7c7c5188",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2714,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-13T12:18:02Z",
+      "side": 1,
+      "message": "Removed.",
+      "parentUuid": "33573aaa_bb5a202c",
+      "range": {
+        "startLine": 2714,
+        "startChar": 7,
+        "endLine": 2714,
+        "endChar": 15
+      },
+      "revId": "d4cdc878a9f25c9510efa86a4a62eb0396a25d4c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d07173d1_909eeffd",
@@ -265,6 +529,24 @@
       "writtenOn": "2023-09-13T09:54:27Z",
       "side": 1,
       "message": "why do we need to store same transId for every group.. This transId is for statsReq/response. How can we use same transId for statsInd as well? Also, because we will be sending same transId for diffrerent statsInd as those groups belonged to same transId?",
+      "revId": "d4cdc878a9f25c9510efa86a4a62eb0396a25d4c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "49375f64_21851fa2",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2779,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-13T12:18:02Z",
+      "side": 1,
+      "message": "TransId is a combination of RIC-Reuqest-ID and RAN-Function-ID received from RIC in RIC subscription request. The same IDs need to be sent back in RIC subscription response and RIC indication when sending report about the subscribed actions to RIC.\n\nIn order to map the list of actions/groups/KPIs with the subscription they belong to, we need to store this id and use it across all APIs.\n\nRenaming it for clarity.",
+      "parentUuid": "d07173d1_909eeffd",
       "revId": "d4cdc878a9f25c9510efa86a4a62eb0396a25d4c",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -286,6 +568,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "04cda07d_96f7de3f",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2784,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-13T12:18:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0cfc7c9f_85a10b90",
+      "revId": "d4cdc878a9f25c9510efa86a4a62eb0396a25d4c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "670f6ae1_a2a1f59f",
@@ -303,6 +603,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "92db8f3e_4520cee7",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2804,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-13T12:18:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "670f6ae1_a2a1f59f",
+      "revId": "d4cdc878a9f25c9510efa86a4a62eb0396a25d4c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "dae7b514_d602791e",
@@ -316,6 +634,30 @@
       "writtenOn": "2023-09-13T09:54:27Z",
       "side": 1,
       "message": "please rename it to measStatsIdx",
+      "range": {
+        "startLine": 2912,
+        "startChar": 11,
+        "endLine": 2912,
+        "endChar": 15
+      },
+      "revId": "d4cdc878a9f25c9510efa86a4a62eb0396a25d4c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "425067bb_950ba1f4",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2912,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-13T12:18:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dae7b514_d602791e",
       "range": {
         "startLine": 2912,
         "startChar": 11,
@@ -349,6 +691,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9c72642e_d4e0842d",
+        "filename": "src/5gnrsch/sch.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 626,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-13T12:18:02Z",
+      "side": 1,
+      "message": "Comment added for clarity of unit of periodicity.\nDoesn\u0027t require comment for all other variables",
+      "parentUuid": "03d11349_b5e681cb",
+      "range": {
+        "startLine": 626,
+        "startChar": 34,
+        "endLine": 626,
+        "endChar": 46
+      },
+      "revId": "d4cdc878a9f25c9510efa86a4a62eb0396a25d4c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "583eb2cb_1120d7b0",
@@ -362,6 +728,30 @@
       "writtenOn": "2023-09-13T10:04:30Z",
       "side": 1,
       "message": "check the return type and then start schStartTmr",
+      "range": {
+        "startLine": 175,
+        "startChar": 3,
+        "endLine": 175,
+        "endChar": 25
+      },
+      "revId": "d4cdc878a9f25c9510efa86a4a62eb0396a25d4c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8b8fb247_2d23d668",
+        "filename": "src/5gnrsch/sch_tmr.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 175,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-13T12:18:02Z",
+      "side": 1,
+      "message": "Error will be printed in case this func returns failure.\nHowever timer will be started again in any case.",
+      "parentUuid": "583eb2cb_1120d7b0",
       "range": {
         "startLine": 175,
         "startChar": 3,
@@ -389,6 +779,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "144cbf45_4eaa5a7c",
+        "filename": "src/5gnrsch/sch_tmr.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 210,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-13T12:18:02Z",
+      "side": 1,
+      "message": "this will always return OK",
+      "parentUuid": "a8cca583_17aa90ab",
+      "revId": "d4cdc878a9f25c9510efa86a4a62eb0396a25d4c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0e33d589_2832dd7f",
@@ -402,6 +810,24 @@
       "writtenOn": "2023-09-13T08:49:47Z",
       "side": 1,
       "message": "uint8_t",
+      "revId": "d4cdc878a9f25c9510efa86a4a62eb0396a25d4c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "26f08132_4e0d1abe",
+        "filename": "src/cm/du_app_mac_inf.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 1860,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-13T12:18:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0e33d589_2832dd7f",
       "revId": "d4cdc878a9f25c9510efa86a4a62eb0396a25d4c",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -423,6 +849,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "dfae39e5_bd9084ea",
+        "filename": "src/cm/du_app_mac_inf.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 1861,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-13T12:18:02Z",
+      "side": 1,
+      "message": "As discussed, this commented is added for clarify of unit of periodicity.\nNeed to add comments to all variables",
+      "parentUuid": "54e55453_791f6500",
+      "revId": "d4cdc878a9f25c9510efa86a4a62eb0396a25d4c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cf3067ce_a73718bb",
@@ -440,6 +884,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "821cd0dd_1ed3a603",
+        "filename": "src/cm/du_app_mac_inf.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 1868,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-13T12:18:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cf3067ce_a73718bb",
+      "revId": "d4cdc878a9f25c9510efa86a4a62eb0396a25d4c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8001509e_4cf9262c",
@@ -453,6 +915,24 @@
       "writtenOn": "2023-09-13T10:04:30Z",
       "side": 1,
       "message": "either add comment in every structure or remove the comment from this parameter.",
+      "revId": "d4cdc878a9f25c9510efa86a4a62eb0396a25d4c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1c6642da_5a801c3a",
+        "filename": "src/cm/mac_sch_interface.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 2255,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-13T12:18:02Z",
+      "side": 1,
+      "message": "As discussed, this commented is added for clarify of unit of periodicity.\nNeed to add comments to all variables",
+      "parentUuid": "8001509e_4cf9262c",
       "revId": "d4cdc878a9f25c9510efa86a4a62eb0396a25d4c",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
