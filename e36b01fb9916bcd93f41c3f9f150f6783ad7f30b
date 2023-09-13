@@ -18,6 +18,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2556392c_cbe0714c",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 680,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-09-13T07:24:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6459ffa8_14fd74b5",
+      "revId": "e36b01fb9916bcd93f41c3f9f150f6783ad7f30b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f523e846_b714a6c2",
@@ -31,6 +49,30 @@
       "writtenOn": "2023-09-13T05:33:54Z",
       "side": 1,
       "message": "In what E2 procedure we will again use AddList other than E2 setup procesdure?",
+      "range": {
+        "startLine": 743,
+        "startChar": 23,
+        "endLine": 743,
+        "endChar": 49
+      },
+      "revId": "e36b01fb9916bcd93f41c3f9f150f6783ad7f30b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "12fe5fe4_4001fe38",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 743,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-09-13T07:24:51Z",
+      "side": 1,
+      "message": "Ric service update procedure.\nIf there is any New ran function gets added after this message. then we will send add list to RIC_STUB through ric service update msg.",
+      "parentUuid": "f523e846_b714a6c2",
       "range": {
         "startLine": 743,
         "startChar": 23,
@@ -64,6 +106,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "572c3760_c330fc0e",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1569,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-09-13T07:24:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b2a30def_ebde74de",
+      "range": {
+        "startLine": 1569,
+        "startChar": 26,
+        "endLine": 1569,
+        "endChar": 30
+      },
+      "revId": "e36b01fb9916bcd93f41c3f9f150f6783ad7f30b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7f51736a_8f505795",
@@ -77,6 +143,24 @@
       "writtenOn": "2023-09-13T05:33:54Z",
       "side": 1,
       "message": "same as above",
+      "revId": "e36b01fb9916bcd93f41c3f9f150f6783ad7f30b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a376e24c_092cd36f",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2441,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-09-13T07:24:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7f51736a_8f505795",
       "revId": "e36b01fb9916bcd93f41c3f9f150f6783ad7f30b",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -98,6 +182,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "286963b6_4f17c81b",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2534,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-09-13T07:24:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c86cf975_b9e4d820",
+      "revId": "e36b01fb9916bcd93f41c3f9f150f6783ad7f30b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d3df82c3_9518334d",
@@ -111,6 +213,24 @@
       "writtenOn": "2023-09-12T13:19:37Z",
       "side": 1,
       "message": "As mentioned in last patch, instead of just listing down input params, add one line description of each param for understanding\n\nNOTE : Please apply this always.",
+      "revId": "e36b01fb9916bcd93f41c3f9f150f6783ad7f30b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "17cccc1a_66500efd",
+        "filename": "src/ric_stub/ric_e2ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 328,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-09-13T07:24:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d3df82c3_9518334d",
       "revId": "e36b01fb9916bcd93f41c3f9f150f6783ad7f30b",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -138,6 +258,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "141cb4ee_50c91fb9",
+        "filename": "src/ric_stub/ric_e2ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 334,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-09-13T07:24:51Z",
+      "side": 1,
+      "message": "This is going to be used in the processing of ric service update msg.",
+      "parentUuid": "d25a1d10_715553c9",
+      "range": {
+        "startLine": 334,
+        "startChar": 74,
+        "endLine": 334,
+        "endChar": 89
+      },
+      "revId": "e36b01fb9916bcd93f41c3f9f150f6783ad7f30b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2a13afad_ba9de64a",
@@ -151,6 +295,30 @@
       "writtenOn": "2023-09-12T13:19:37Z",
       "side": 1,
       "message": "Is this needed in future?",
+      "range": {
+        "startLine": 141,
+        "startChar": 1,
+        "endLine": 141,
+        "endChar": 17
+      },
+      "revId": "e36b01fb9916bcd93f41c3f9f150f6783ad7f30b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a12e926c_4c2bfbec",
+        "filename": "src/ric_stub/ric_stub.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-09-13T07:24:51Z",
+      "side": 1,
+      "message": "yes",
+      "parentUuid": "2a13afad_ba9de64a",
       "range": {
         "startLine": 141,
         "startChar": 1,
