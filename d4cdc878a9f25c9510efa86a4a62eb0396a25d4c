@@ -3,6 +3,263 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b956a530_5eef888e",
+        "filename": "src/5gnrmac/mac.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-09-13T09:54:27Z",
+      "side": 1,
+      "message": "any reason/reference for this number?",
+      "revId": "d4cdc878a9f25c9510efa86a4a62eb0396a25d4c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b7c15acf_fcb31a93",
+        "filename": "src/5gnrmac/mac_cfg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1097,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-09-13T09:54:27Z",
+      "side": 1,
+      "message": "since we are always rejecting all the stats because of same cause : RESOURCE_UNAVIALABLE. do we need this as input argument?",
+      "revId": "d4cdc878a9f25c9510efa86a4a62eb0396a25d4c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "50ed49e1_626a836d",
+        "filename": "src/5gnrmac/mac_cfg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1099,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-09-13T09:54:27Z",
+      "side": 1,
+      "message": "i dont see any difference between rspGrpidx and reqGrpIdx.. \n If this is correct we can use one variable called grpIdx for both req and rsp cases.",
+      "range": {
+        "startLine": 1099,
+        "startChar": 26,
+        "endLine": 1099,
+        "endChar": 36
+      },
+      "revId": "d4cdc878a9f25c9510efa86a4a62eb0396a25d4c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "938af0d8_ce462ca2",
+        "filename": "src/5gnrmac/mac_cfg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1188,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-09-13T09:54:27Z",
+      "side": 1,
+      "message": "can we memset the macStatsRsp here once just to avoid any residual of previous transaction?",
+      "revId": "d4cdc878a9f25c9510efa86a4a62eb0396a25d4c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d0ec516b_aeda1b48",
+        "filename": "src/5gnrmac/mac_cfg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1316,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-09-13T09:54:27Z",
+      "side": 1,
+      "message": "can we please have a check for macStatsRsp-\u003enumGrpAccepted \u003c MAX_NUM_STATS_GRP",
+      "range": {
+        "startLine": 1316,
+        "startChar": 64,
+        "endLine": 1316,
+        "endChar": 65
+      },
+      "revId": "d4cdc878a9f25c9510efa86a4a62eb0396a25d4c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4fe7971d_7ec9f6e0",
+        "filename": "src/5gnrmac/mac_cfg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1322,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-09-13T09:54:27Z",
+      "side": 1,
+      "message": "can we please have a check for macStatsRsp-\u003enumGrpRejected \u003c MAX_NUM_STATS_GRP",
+      "revId": "d4cdc878a9f25c9510efa86a4a62eb0396a25d4c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "17ff84e6_f4a97942",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2573,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-09-13T09:54:27Z",
+      "side": 1,
+      "message": "cause is always same, do we need this as input param?",
+      "range": {
+        "startLine": 2573,
+        "startChar": 8,
+        "endLine": 2573,
+        "endChar": 25
+      },
+      "revId": "d4cdc878a9f25c9510efa86a4a62eb0396a25d4c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0031f46f_ce8fadb3",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2575,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-09-13T09:54:27Z",
+      "side": 1,
+      "message": "same comment as MacRejectAllStats(). we can have a commonIdx for request/response",
+      "range": {
+        "startLine": 2575,
+        "startChar": 11,
+        "endLine": 2575,
+        "endChar": 21
+      },
+      "revId": "d4cdc878a9f25c9510efa86a4a62eb0396a25d4c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "48f43ad3_aec5c054",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2712,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-09-13T09:54:27Z",
+      "side": 1,
+      "message": "can we also have a check for grpIdx \u003c MAX_NUM_STATS",
+      "revId": "d4cdc878a9f25c9510efa86a4a62eb0396a25d4c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "33573aaa_bb5a202c",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2714,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-09-13T09:54:27Z",
+      "side": 1,
+      "message": "we are not using this variable. why do we need this?",
+      "range": {
+        "startLine": 2714,
+        "startChar": 7,
+        "endLine": 2714,
+        "endChar": 15
+      },
+      "revId": "d4cdc878a9f25c9510efa86a4a62eb0396a25d4c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d07173d1_909eeffd",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2779,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-09-13T09:54:27Z",
+      "side": 1,
+      "message": "why do we need to store same transId for every group.. This transId is for statsReq/response. How can we use same transId for statsInd as well? Also, because we will be sending same transId for diffrerent statsInd as those groups belonged to same transId?",
+      "revId": "d4cdc878a9f25c9510efa86a4a62eb0396a25d4c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "670f6ae1_a2a1f59f",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2804,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-09-13T09:54:27Z",
+      "side": 1,
+      "message": "we shld only increment (numOfStatsCfgd) when we have atleast one accepted list i.e. (statsInfo-\u003enumStatsGroup \u003e 0)",
+      "revId": "d4cdc878a9f25c9510efa86a4a62eb0396a25d4c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dae7b514_d602791e",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2912,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-09-13T09:54:27Z",
+      "side": 1,
+      "message": "please rename it to measStatsIdx",
+      "range": {
+        "startLine": 2912,
+        "startChar": 11,
+        "endLine": 2912,
+        "endChar": 15
+      },
+      "revId": "d4cdc878a9f25c9510efa86a4a62eb0396a25d4c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "0e33d589_2832dd7f",
         "filename": "src/cm/du_app_mac_inf.h",
         "patchSetId": 2
