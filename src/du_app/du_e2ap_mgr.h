@@ -44,7 +44,6 @@
 #define REPORT_STYLE_NAME "E2 Node Measurement"
 #define REPORT_STYLE_TYPE 1
 #define REPORT_ACTION_FORMAT_TYPE 1
-#define NUM_OF_MEASUREMENT_INFO_SUPPORTED 2
 #define MEASUREMENT_TYPE_NAME (char*[]) {"RRU.PrbTotDl", "RRU.PrbTotUl"}
 #define RIC_INDICATION_HEADER_FORMAT 1
 #define RIC_INDICATION_MESSAGE_FORMAT 1
@@ -171,9 +170,9 @@ typedef struct
 
 typedef struct e2Transcation
 {
-   uint8_t     transIdCounter;
-   E2TransInfo onGoingTransaction[MAX_NUM_TRANSACTION];
-   /* Any new parameter for transaction handling can be added here in future */
+   uint8_t     transIdCounter; /* counting the total number of DU initiated transaction */
+   E2TransInfo e2InitTransaction[MAX_NUM_TRANSACTION]; /* Storing DU-initiated transactions information */
+   E2TransInfo ricInitTransaction[MAX_NUM_TRANSACTION]; /* Storing RIC-initiated transactions information */
 }E2Transaction;
 
 typedef struct e2Timer
@@ -392,6 +391,22 @@ typedef struct
    TNLAssociation   tnlAssoc[MAX_TNL_ASSOCIATION];
    E2TimersInfo     e2TimersInfo;
 }E2apDb;
+
+typedef struct
+{
+   uint16_t   id;
+   uint16_t   revisionCounter;
+}RanFuncInfo;
+
+typedef struct
+{
+   uint8_t addCount;
+   uint8_t addArr[MAX_RAN_FUNCTION];
+   uint8_t modCount;
+   uint8_t modArr[MAX_RAN_FUNCTION];
+   uint8_t delCount;
+   RanFuncInfo delArr[MAX_RAN_FUNCTION];
+}E2TmpRanFunList;
 
 uint8_t assignTransactionId();
 uint8_t ResetE2Request(E2ProcedureDirection dir, E2CauseType type, E2Cause cause);
