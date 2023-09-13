@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0e33d589_2832dd7f",
+        "filename": "src/cm/du_app_mac_inf.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 1860,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-13T08:49:47Z",
+      "side": 1,
+      "message": "uint8_t",
+      "revId": "d4cdc878a9f25c9510efa86a4a62eb0396a25d4c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cf3067ce_a73718bb",
+        "filename": "src/cm/du_app_mac_inf.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 1868,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-13T08:49:47Z",
+      "side": 1,
+      "message": "uint64_t",
+      "revId": "d4cdc878a9f25c9510efa86a4a62eb0396a25d4c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
