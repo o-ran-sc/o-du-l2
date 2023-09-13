@@ -60,6 +60,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3f0baec7_494bce76",
+        "filename": "src/5gnrmac/mac_cfg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1099,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-09-13T10:04:30Z",
+      "side": 1,
+      "message": "use reqGrpIdx in place of rspGrpIdx.",
+      "revId": "d4cdc878a9f25c9510efa86a4a62eb0396a25d4c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "938af0d8_ce462ca2",
         "filename": "src/5gnrmac/mac_cfg_hdl.c",
         "patchSetId": 2
@@ -71,6 +88,23 @@
       "writtenOn": "2023-09-13T09:54:27Z",
       "side": 1,
       "message": "can we memset the macStatsRsp here once just to avoid any residual of previous transaction?",
+      "revId": "d4cdc878a9f25c9510efa86a4a62eb0396a25d4c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "10b550af_e8c43a37",
+        "filename": "src/5gnrmac/mac_cfg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1269,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-09-13T10:04:30Z",
+      "side": 1,
+      "message": "check the return value of MacSendStatsRspToDuApp function.",
       "revId": "d4cdc878a9f25c9510efa86a4a62eb0396a25d4c",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -111,6 +145,23 @@
       "writtenOn": "2023-09-13T09:54:27Z",
       "side": 1,
       "message": "can we please have a check for macStatsRsp-\u003enumGrpRejected \u003c MAX_NUM_STATS_GRP",
+      "revId": "d4cdc878a9f25c9510efa86a4a62eb0396a25d4c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "def47bf9_892c7abe",
+        "filename": "src/5gnrmac/mac_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1084,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-09-13T10:04:30Z",
+      "side": 1,
+      "message": "in place of using the multiple variable, we can complete the processing with one variable.",
       "revId": "d4cdc878a9f25c9510efa86a4a62eb0396a25d4c",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -220,6 +271,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0cfc7c9f_85a10b90",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2784,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-09-13T10:04:30Z",
+      "side": 1,
+      "message": "check the return.",
+      "revId": "d4cdc878a9f25c9510efa86a4a62eb0396a25d4c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "670f6ae1_a2a1f59f",
         "filename": "src/5gnrsch/sch.c",
         "patchSetId": 2
@@ -260,6 +328,69 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "03d11349_b5e681cb",
+        "filename": "src/5gnrsch/sch.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 626,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-09-13T10:04:30Z",
+      "side": 1,
+      "message": "same.",
+      "range": {
+        "startLine": 626,
+        "startChar": 34,
+        "endLine": 626,
+        "endChar": 46
+      },
+      "revId": "d4cdc878a9f25c9510efa86a4a62eb0396a25d4c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "583eb2cb_1120d7b0",
+        "filename": "src/5gnrsch/sch_tmr.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 175,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-09-13T10:04:30Z",
+      "side": 1,
+      "message": "check the return type and then start schStartTmr",
+      "range": {
+        "startLine": 175,
+        "startChar": 3,
+        "endLine": 175,
+        "endChar": 25
+      },
+      "revId": "d4cdc878a9f25c9510efa86a4a62eb0396a25d4c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a8cca583_17aa90ab",
+        "filename": "src/5gnrsch/sch_tmr.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 210,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-09-13T10:04:30Z",
+      "side": 1,
+      "message": "check the return type.",
+      "revId": "d4cdc878a9f25c9510efa86a4a62eb0396a25d4c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "0e33d589_2832dd7f",
         "filename": "src/cm/du_app_mac_inf.h",
         "patchSetId": 2
@@ -277,6 +408,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "54e55453_791f6500",
+        "filename": "src/cm/du_app_mac_inf.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 1861,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-09-13T10:04:30Z",
+      "side": 1,
+      "message": "Either remove this or add it everywhere.",
+      "revId": "d4cdc878a9f25c9510efa86a4a62eb0396a25d4c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "cf3067ce_a73718bb",
         "filename": "src/cm/du_app_mac_inf.h",
         "patchSetId": 2
@@ -288,6 +436,23 @@
       "writtenOn": "2023-09-13T08:49:47Z",
       "side": 1,
       "message": "uint64_t",
+      "revId": "d4cdc878a9f25c9510efa86a4a62eb0396a25d4c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8001509e_4cf9262c",
+        "filename": "src/cm/mac_sch_interface.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 2255,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-09-13T10:04:30Z",
+      "side": 1,
+      "message": "either add comment in every structure or remove the comment from this parameter.",
       "revId": "d4cdc878a9f25c9510efa86a4a62eb0396a25d4c",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
