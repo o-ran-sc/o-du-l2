@@ -16,6 +16,24 @@
       "message": "what abt the ones which has to be added..  will it come here or like how/where the numOfRanFunToBeAdded will be incremented?",
       "revId": "063634b685eca86c558c22054d24aa0769735773",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "98ee7886_cc5aec6b",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 3014,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-09-14T12:00:02Z",
+      "side": 1,
+      "message": "Yes, It should be increment in this function only. I have added the support for the added list scenario.",
+      "parentUuid": "ea01066a_88847600",
+      "revId": "063634b685eca86c558c22054d24aa0769735773",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
   ]
 }
