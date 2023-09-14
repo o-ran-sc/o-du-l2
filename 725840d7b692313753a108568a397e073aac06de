@@ -1,0 +1,260 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3e755a78_7c879a23",
+        "filename": "src/du_app/du_e2ap_mgr.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 207,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-14T08:21:35Z",
+      "side": 1,
+      "message": "can we call this just \"timer\"",
+      "range": {
+        "startLine": 207,
+        "startChar": 20,
+        "endLine": 207,
+        "endChar": 41
+      },
+      "revId": "725840d7b692313753a108568a397e073aac06de",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5effbbac_fb74fb2e",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2791,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-14T08:21:35Z",
+      "side": 1,
+      "message": "initialize ret to RFAILED",
+      "revId": "725840d7b692313753a108568a397e073aac06de",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "54c60305_3f86dfb8",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2820,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-14T08:21:35Z",
+      "side": 1,
+      "message": "club all comment related to elementCnt into one comment and keep at line 2818",
+      "range": {
+        "startLine": 2820,
+        "startChar": 9,
+        "endLine": 2820,
+        "endChar": 19
+      },
+      "revId": "725840d7b692313753a108568a397e073aac06de",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5154f0f3_9f8a1533",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2834,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-14T08:21:35Z",
+      "side": 1,
+      "message": "we should break any line into 2 only if the total number of characters are more than 120",
+      "revId": "725840d7b692313753a108568a397e073aac06de",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "67228b0b_3e68b925",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2841,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-14T08:21:35Z",
+      "side": 1,
+      "message": "remove this comment",
+      "revId": "725840d7b692313753a108568a397e073aac06de",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1b13f4b5_c8d19af1",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2844,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-14T08:21:35Z",
+      "side": 1,
+      "message": "do we need to break this line.\n Check this at all places.",
+      "revId": "725840d7b692313753a108568a397e073aac06de",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4d2561ff_bf8dc1ff",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2849,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-14T08:21:35Z",
+      "side": 1,
+      "message": "arrayIdx",
+      "revId": "725840d7b692313753a108568a397e073aac06de",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6ac77254_7bf9e8ae",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2862,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-14T08:21:35Z",
+      "side": 1,
+      "message": "where is this direction set when RIC service query is received",
+      "revId": "725840d7b692313753a108568a397e073aac06de",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ad767a1d_5cc0b3bf",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2910,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-14T08:21:35Z",
+      "side": 1,
+      "message": "no line break needed",
+      "revId": "725840d7b692313753a108568a397e073aac06de",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2d0992f4_a594b252",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2930,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-14T08:21:35Z",
+      "side": 1,
+      "message": "break if failure",
+      "revId": "725840d7b692313753a108568a397e073aac06de",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ab644d6d_a3bec5b7",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2932,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-14T08:21:35Z",
+      "side": 1,
+      "message": "set ret\u003dROK before breaking here",
+      "revId": "725840d7b692313753a108568a397e073aac06de",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f0309567_9359ac3d",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2946,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-14T08:21:35Z",
+      "side": 1,
+      "message": "line 2935 to 2946 : Should we do all this even if any failure happens?",
+      "revId": "725840d7b692313753a108568a397e073aac06de",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8e61ce81_ed0982b1",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 3003,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-14T08:21:35Z",
+      "side": 1,
+      "message": "I dont think we need this for loop.\nRan functions are stored at ranFunction[ranFuncId -1]\n\nSo we can directly check \nif (ranFunction[id -1].id \u003d\u003d id\n    then modify\nelse\n     add to delete list",
+      "range": {
+        "startLine": 3003,
+        "startChar": 21,
+        "endLine": 3003,
+        "endChar": 24
+      },
+      "revId": "725840d7b692313753a108568a397e073aac06de",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5782664c_c6378c94",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 3024,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-14T08:21:35Z",
+      "side": 1,
+      "message": "we should memset these lists once its use is over.",
+      "revId": "725840d7b692313753a108568a397e073aac06de",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
