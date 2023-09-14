@@ -2093,34 +2093,93 @@ uint8_t DuProcRlcSliceMetrics(Pst *pst, SlicePmList *sliceStats)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t BuildAndSendStatsReqToMac(MacStatsReq duMacStatsReq)
+uint8_t BuildAndSendStatsReqToMac(uint64_t subscriptionId, RicSubscription *ricSubscriptionInfo)
 {
    Pst pst;
+   uint8_t    actionIdx = 0, grpIdx = 0, statsIdx = 0;
+   ActionInfo *actionDb = NULLP;
+   ActionDefFormat1 *format1Action = NULLP;
    MacStatsReq *macStatsReq = NULLP;
-   
-   DU_LOG("\nINFO  --> DU_APP : Builds Statistics Request to send to MAC");
 
+   /* Fill MAC statistics request */
    DU_ALLOC_SHRABL_BUF(macStatsReq, sizeof(MacStatsReq));
    if(macStatsReq == NULLP)
    {
       DU_LOG("\nERROR  -->  DU_APP : Memory allocation failed for macStatsReq in BuildAndSendStatsReqToMac");
       return RFAILED;
    }
-   else
+
+   macStatsReq->subscriptionId = subscriptionId;
+   for(actionIdx = 0; actionIdx < ricSubscriptionInfo->numOfActions; actionIdx++)
    {
-      memcpy(macStatsReq, &duMacStatsReq, sizeof(MacStatsReq));
-
-      FILL_PST_DUAPP_TO_MAC(pst, EVENT_MAC_STATISTICS_REQ);
-
-      DU_LOG("\nDEBUG  -->  DU_APP: Sending Statistics Request to MAC ");
-      if( (*packMacStatsReqOpts[pst.selector])(&pst, macStatsReq) == RFAILED)
+      if(ricSubscriptionInfo->actionSequence[actionIdx].action == CONFIG_ADD)
       {
-         DU_LOG("\nERROR  -->  DU_APP: Failed to send Statistics Request to MAC");
-         DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, macStatsReq, sizeof(MacStatsReq));
-         return RFAILED;
+         actionDb = &ricSubscriptionInfo->actionSequence[actionIdx];
+         macStatsReq->statsGrpList[grpIdx].groupId = actionDb->id;
+         switch(actionDb->definition.formatType)
+         {
+            case 1:
+               {
+                  format1Action = &actionDb->definition.choice.format1;
+                  macStatsReq->statsGrpList[grpIdx].periodicity = format1Action->granularityPeriod;
+
+                  CmLList *node = NULLP;
+                  MeasurementInfo *measInfo = NULLP;
+                  statsIdx = 0;
+                  /* Update DL PRB Usage for all stats group which requested for DL Total PRB Usage */
+                  node = cmLListFirst(&format1Action->measurementInfoList);
+                  while(node)
+                  {
+                     measInfo = (MeasurementInfo *)(node->node);
+                     switch(measInfo->measurementTypeId)
+                     {
+                        case 1:
+                           {
+                              macStatsReq->statsGrpList[grpIdx].statsList[statsIdx++] = MAC_DL_TOTAL_PRB_USAGE;
+                              break;
+                           }
+                        case 2:
+                           {
+                              macStatsReq->statsGrpList[grpIdx].statsList[statsIdx++] = MAC_UL_TOTAL_PRB_USAGE;
+                              break;
+                           }
+                        default:
+                           {
+                              DU_LOG("\nERROR  -->  DU_APP : Invalid measurement name BuildAndSendStatsReqToMac");
+                              break;
+                           }
+                     }
+                     node = node->next;
+                  }
+                  macStatsReq->statsGrpList[grpIdx].numStats = statsIdx;
+                  break;
+               }
+            default:
+               {
+                  DU_LOG("\nERROR  -->  DU_APP : BuildAndSendStatsReqToMac: Only Action Definition Format 1 supported");
+                  break;
+               }
+         }
+         if(macStatsReq->statsGrpList[grpIdx].numStats)
+            grpIdx++;
       }
    }
-   return ROK;  
+   macStatsReq->numStatsGroup = grpIdx;
+
+   if(macStatsReq->numStatsGroup)
+   {
+      DU_LOG("\nDEBUG  -->  DU_APP: Sending Statistics Request to MAC ");
+      FILL_PST_DUAPP_TO_MAC(pst, EVENT_MAC_STATISTICS_REQ);
+
+      if( (*packMacStatsReqOpts[pst.selector])(&pst, macStatsReq) == ROK)
+         return ROK;
+
+      DU_LOG("\nERROR  -->  DU_APP: Failed to send Statistics Request to MAC");
+   }
+
+   DU_LOG("\nERROR  -->  DU_APP: No Statistics group found valid. Hence statistics request is not sent to MAC");
+   DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, macStatsReq, sizeof(MacStatsReq));
+   return RFAILED;
 }
 
 /*******************************************************************
@@ -2173,29 +2232,28 @@ Statistics FetchStatsFromActionDefFormat1(ActionDefFormat1 format1)
  *       reporting configuration. If so, send the update to 
  *       respective layer.
  *
- * @params[in]
+ * @params[in] Subscription Info
  *             
  * @return ROK     - success
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t BuildAndSendStatsReq(ActionDefinition subscribedAction)
+uint8_t BuildAndSendStatsReq(uint16_t ranFuncId, RicSubscription *ricSubscriptionInfo)
 {
-   Statistics stats;
+   uint64_t   subscriptionId = 0; 
 
-   switch(subscribedAction.styleType)
-   {
-      case 1:
-         stats = FetchStatsFromActionDefFormat1(subscribedAction.choice.format1);
-      case 2:
-      case 3:
-      case 4:
-      case 5:
-      default:
-         break;
-   }
+   /* Calculate 64 bit subscription-ID :
+    *  First 16 MSB is unused
+    *  Next 16 MSB = RAN-Function-ID
+    *  Next 16 MSB = Requestor-ID in RIC-Request-ID
+    *  Last 16 LSB = Instance-ID in RIC-Request-ID
+    */
+   subscriptionId = ricSubscriptionInfo->requestId.instanceId;
+   subscriptionId |= ((uint64_t)ricSubscriptionInfo->requestId.requestorId << 16);
+   subscriptionId |= ((uint64_t)ranFuncId << 32);
 
-   if(BuildAndSendStatsReqToMac(stats.macStatsReq) != ROK)
+   /* Build and sent subscription information to MAC in Statistics Request */
+   if(BuildAndSendStatsReqToMac(subscriptionId, ricSubscriptionInfo) != ROK)
    {
       DU_LOG("\nERROR  -->  DU_APP : Failed at BuildAndSendStatsReqToMac()");
       return RFAILED;   
@@ -2204,17 +2262,12 @@ uint8_t BuildAndSendStatsReq(ActionDefinition subscribedAction)
 /* TODO : When KPI collection from RLC will be supported, this function will be 
  * called to configure KPIs to be colled */
 #if 0
-   if(BuildAndSendStatsReqToRlc(macStatsReq->rlcStatsReq) != ROK)
+   if(BuildAndSendStatsReqToRlc() != ROK)
    {
-       DU_LOG("\nERROR  -->  DU_APP : Failed at BuildAndSendStatsReqToRlc()");
-       return RFAILED;
+      DU_LOG("\nERROR  -->  DU_APP : Failed at BuildAndSendStatsReqToRlc()");
+      return RFAILED;
    }
 #endif
-
-   /* TODO : In the caller of this function, change ActionDefinition->action
-    * from CONFIG_ADD to CONFIG_UNKNOWN once configuration is sent 
-    * To be done in next gerrit*/
-    
 
    return ROK;
 }
@@ -2240,13 +2293,12 @@ uint8_t BuildAndSendStatsReq(ActionDefinition subscribedAction)
  * ****************************************************************/
 uint8_t DuProcMacStatsRsp(Pst *pst, MacStatsRsp *statsRsp)
 {
-   uint8_t idx = 0;
-
    DU_LOG("\nINFO  -->  DU_APP : DuProcMacStatsRsp: Received Statistics Response from MAC");
 
    if(statsRsp)
    {
 #ifdef DEBUG_PRINT   
+      uint8_t idx = 0;
       DU_LOG("\n  Subscription Id [%ld]", statsRsp->subscriptionId);
 
       DU_LOG("\n  Number of Accepted Groups [%d]", statsRsp->numGrpAccepted);
@@ -2261,6 +2313,20 @@ uint8_t DuProcMacStatsRsp(Pst *pst, MacStatsRsp *statsRsp)
          DU_LOG("\n    Group Id [%d]", statsRsp->statsGrpRejectedList[idx]);
       }
 #endif      
+     
+      /* TODO :
+       * For accepted groups:
+       *    Mark scubscrbed-action's -> action = CONFIG_UNKNOWN
+       *    Add action ID to accpeted-action-list in Subscription response
+       *
+       * For rejected groups:
+       *    Remove entry from DU's RAN Function->subscription->actionList
+       *    Add Rejected action Id to reject-action-list created by DU APP while
+       *     processing of subscription request.
+       *
+       * Send subscription response with accepted and rejected action lists to
+       * RIC
+       */
 
       DU_FREE_SHRABL_BUF(pst->region, pst->pool, statsRsp, sizeof(MacStatsRsp));
       return ROK;

@@ -45,6 +45,11 @@
 #include "RIC-EventTriggerStyle-Item.h"
 #include "RIC-ReportStyle-Item.h"
 #include "MeasurementInfo-Action-Item.h"
+#include "E2SM-KPM-EventTriggerDefinition.h"
+#include "E2SM-KPM-EventTriggerDefinition-Format1.h"
+#include "E2SM-KPM-ActionDefinition.h"
+#include "E2SM-KPM-ActionDefinition-Format1.h"
+#include "MeasurementInfoItem.h"
 
 /*******************************************************************
  *
@@ -1623,6 +1628,526 @@ uint8_t procE2SetupRsp(E2AP_PDU_t *e2apMsg)
    return ROK;
 }
 
+/*******************************************************************
+ *
+ * @brief Free RIC Subscription Request
+ *
+ * @details
+ *
+ *    Function : freeAperDecodingOfRicSubsReq
+ *
+ * Functionality : Free RIC Subscription Request
+ *
+ * @return void
+ *
+ ******************************************************************/
+void freeAperDecodingOfRicSubsReq(RICsubscriptionRequest_t *ricSubscriptionReq)
+{
+   uint8_t idx = 0;
+   uint8_t elementIdx = 0;
+   RICsubscriptionDetails_t *subsDetails = NULLP;
+   RICaction_ToBeSetup_ItemIEs_t *actionItem = NULLP;
+
+   if(ricSubscriptionReq->protocolIEs.list.array)
+   {
+      for(idx=0; idx < ricSubscriptionReq->protocolIEs.list.count; idx++)
+      {
+         switch(ricSubscriptionReq->protocolIEs.list.array[idx]->id)
+         {
+            case ProtocolIE_IDE2_id_RICsubscriptionDetails:
+               {
+                  subsDetails = &(ricSubscriptionReq->protocolIEs.list.array[idx]->value.choice.RICsubscriptionDetails);
+                  free(subsDetails->ricEventTriggerDefinition.buf);
+
+                  if(subsDetails->ricAction_ToBeSetup_List.list.array)
+                  {
+                     for(elementIdx = 0; elementIdx < subsDetails->ricAction_ToBeSetup_List.list.count; elementIdx++)
+                     {
+                        if(subsDetails->ricAction_ToBeSetup_List.list.array[elementIdx])
+                        {
+                           actionItem = (RICaction_ToBeSetup_ItemIEs_t *)subsDetails->ricAction_ToBeSetup_List.\
+                              list.array[elementIdx];
+                           if(actionItem->value.choice.RICaction_ToBeSetup_Item.ricActionDefinition)
+                           {
+                              free(actionItem->value.choice.RICaction_ToBeSetup_Item.ricActionDefinition->buf);
+                              free(actionItem->value.choice.RICaction_ToBeSetup_Item.ricActionDefinition);
+                           }
+                           free(subsDetails->ricAction_ToBeSetup_List.list.array[elementIdx]);
+                        }
+                     }
+                     free(subsDetails->ricAction_ToBeSetup_List.list.array);
+                  }
+                  break;
+               }
+         }
+         free(ricSubscriptionReq->protocolIEs.list.array[idx]);
+      }
+      free(ricSubscriptionReq->protocolIEs.list.array);
+   }
+}
+
+/*******************************************************************
+ *
+ * @brief Free Event Trigger Definition
+ *
+ * @details
+ *
+ *    Function : freeAperDecodingOfEventTriggerDef
+ *
+ *    Functionality: Free Event Trigger Definition
+ *
+ * @params[in] E2SM-KPM Event Trigger Definition
+ * @return void
+ *
+ * ****************************************************************/
+void  freeAperDecodingOfEventTriggerDef(E2SM_KPM_EventTriggerDefinition_t *eventTiggerDef)
+{
+   if(eventTiggerDef)
+   {
+      switch(eventTiggerDef->eventDefinition_formats.present)
+      {
+         case E2SM_KPM_EventTriggerDefinition__eventDefinition_formats_PR_NOTHING:
+            break;
+
+         case E2SM_KPM_EventTriggerDefinition__eventDefinition_formats_PR_eventDefinition_Format1:
+            free(eventTiggerDef->eventDefinition_formats.choice.eventDefinition_Format1);
+            break;
+      }
+   }
+}
+
+/*******************************************************************
+ *
+ * @brief Extract E2SM-KPM Event trigger definition
+ *
+ * @details
+ *
+ *    Function : extractEventTriggerDef
+ *
+ * Functionality : This function :
+ *     - Decodes E2SM-KPM Event Trigger Definition
+ *     - Validates that even trigger style is supported by E2 node
+ *     - Stores event trigger details in local DB
+ *
+ * @params[in] RAN Function Database structure
+ *             RIC Subscription Info to be added to RAN function
+ *             RIC Event Trigger Definition buffer received from RIC
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ ******************************************************************/
+uint8_t extractEventTriggerDef(RanFunction *ranFuncDb, RicSubscription *ricSubscriptionInfo, RICeventTriggerDefinition_t *ricEventTriggerDef)
+{
+   uint8_t ret = RFAILED;
+   uint8_t eventIdx = 0;
+   asn_dec_rval_t rval ={0};
+   E2SM_KPM_EventTriggerDefinition_t eventTiggerDef, *eventTiggerDefPtr = NULLP;
+
+   /* Decoding E2SM-KPM Even Trigger Definition */
+   eventTiggerDefPtr = &eventTiggerDef;
+   memset(eventTiggerDefPtr, 0, sizeof(E2SM_KPM_EventTriggerDefinition_t));
+
+   rval = aper_decode(0, &asn_DEF_E2SM_KPM_EventTriggerDefinition, (void **)&eventTiggerDefPtr, ricEventTriggerDef->buf,\
+         ricEventTriggerDef->size, 0, 0);
+   if(rval.code == RC_FAIL || rval.code == RC_WMORE)
+   {
+      DU_LOG("\nERROR  -->  E2AP : ASN decode failed for E2SM-KPM Event Trigger Definition");
+      return RFAILED;
+   }
+   printf("\n");
+   xer_fprint(stdout, &asn_DEF_E2SM_KPM_EventTriggerDefinition, eventTiggerDefPtr);
+
+   /* Validating the received event trigger definition format */
+   for(eventIdx = 0; eventIdx < ranFuncDb->numOfEventTriggerStyleSupported; eventIdx++)
+   {
+      if(eventTiggerDefPtr->eventDefinition_formats.present == ranFuncDb->eventTriggerStyleList[eventIdx].formatType)
+      {
+         ricSubscriptionInfo->eventTriggerDefinition.formatType = ranFuncDb->eventTriggerStyleList[eventIdx].formatType;
+         ricSubscriptionInfo->eventTriggerDefinition.choice.format1.reportingPeriod = \
+            eventTiggerDefPtr->eventDefinition_formats.choice.eventDefinition_Format1->reportingPeriod;
+
+         ret = ROK;
+         break;
+      }
+   }
+
+   /* Free E2SM_KPM_EventTriggerDefinition_t */
+   freeAperDecodingOfEventTriggerDef(eventTiggerDefPtr);
+   return ret;
+}
+
+/*******************************************************************
+ *
+ * @brief Free RIC Action Definition
+ *
+ * @details
+ *
+ *    Function :  freeAperDecodingOfRicActionDefinition
+ *
+ *    Functionality: Free RIC Action Definition
+ *
+ * @params[in] E2SM-KPM Action definition
+ * @return void
+ *
+ * ****************************************************************/
+void  freeAperDecodingOfRicActionDefinition(E2SM_KPM_ActionDefinition_t *actionDef)
+{
+   uint8_t  elementIdx = 0;
+   E2SM_KPM_ActionDefinition_Format1_t *actionFormat1 = NULLP;
+   MeasurementInfoItem_t *measItem = NULLP;
+
+   switch(actionDef->actionDefinition_formats.present)
+   {
+      case E2SM_KPM_ActionDefinition__actionDefinition_formats_PR_actionDefinition_Format1:
+         {
+            if(actionDef->actionDefinition_formats.choice.actionDefinition_Format1)
+            {
+               actionFormat1 = actionDef->actionDefinition_formats.choice.actionDefinition_Format1;
+               if(actionFormat1->measInfoList.list.array)
+               {
+                  for(elementIdx = 0; elementIdx < actionFormat1->measInfoList.list.count; elementIdx++)
+                  {
+                     if(actionFormat1->measInfoList.list.array[elementIdx])
+                     {
+                        measItem = actionFormat1->measInfoList.list.array[elementIdx];
+                        switch(measItem->measType.present)
+                        {
+                           case MeasurementType_PR_NOTHING:
+                              break;
+
+                           case MeasurementType_PR_measName:
+                           {
+                              free(measItem->measType.choice.measName.buf);
+                              break;
+                           }
+
+                           case MeasurementType_PR_measID:
+                              break;
+                        }
+                        free(measItem);
+                     }
+                  }
+                  free(actionFormat1->measInfoList.list.array);
+               }
+               free(actionFormat1);
+            }
+            break;
+         }
+      case E2SM_KPM_ActionDefinition__actionDefinition_formats_PR_actionDefinition_Format2:
+      case E2SM_KPM_ActionDefinition__actionDefinition_formats_PR_actionDefinition_Format3:
+      case E2SM_KPM_ActionDefinition__actionDefinition_formats_PR_actionDefinition_Format4:
+      case E2SM_KPM_ActionDefinition__actionDefinition_formats_PR_actionDefinition_Format5:
+      default:
+         break;   
+   }
+}
+
+/*******************************************************************
+ *
+ * @brief Extract Measurement Info list from action definition
+ *
+ * @details
+ *
+ *    Function : extractMeasInfoList
+ *
+ * Functionality : This function :
+ *     - Traverses Measurement-to-be-subscribed list
+ *     - Validates that each measurement in Measurement-to-be-subscribed
+ *       list is supported in RAN-Function->Measurement-supported list.
+ *     - If all measurements in an action is supported by RAN function,
+ *       it is added to measurement-subscribed list in local DB
+ *
+ * @params[in] Measurement Info supported list by RAN function
+ *             Measurement Info to be subscribed as requested by RIC
+ *             Measurement Info finally subscribed
+ *             Memory failure indicator
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ ******************************************************************/
+uint8_t extractMeasInfoList(CmLListCp *measInfoSupportedList, MeasurementInfoList_t *measInfoToBeSubscribedList, \
+   CmLListCp *measInfoSubscribedList, bool *memFailure)
+{
+   uint8_t elementIdx = 0;
+   MeasurementInfoForAction *measInfoSupportedDb = NULLP;
+   MeasurementInfo *measInfoSubscribedDb = NULLP, *measInfoToDel = NULLP;
+   CmLList *supportedMeasNode = NULLP, *measToAddNode = NULLP, *measToDelNode = NULLP;;
+   MeasurementInfoItem_t *measItem = NULLP;
+
+   /* Validate Measurement list is supported by E2 node. 
+    *
+    * Traverse and compare the Measurement-Supported List in E2
+    * node with Measurement-to-be-subscribed list received from RIC.
+    * If a match is found, add it to measurement-subscription list.
+    */
+   for(elementIdx = 0; elementIdx < measInfoToBeSubscribedList->list.count; elementIdx++)
+   {
+      measInfoSubscribedDb = NULLP;
+      measToAddNode = NULLP;
+      measItem = measInfoToBeSubscribedList->list.array[elementIdx];
+
+      CM_LLIST_FIRST_NODE(measInfoSupportedList, supportedMeasNode);
+      while(supportedMeasNode)
+      {
+         measInfoSupportedDb = (MeasurementInfoForAction*)supportedMeasNode->node;
+         switch(measItem->measType.present)
+         {
+            case MeasurementType_PR_measName:
+               {
+                  if(!strcmp(measInfoSupportedDb->measurementTypeName, (char *)measItem->measType.choice.measName.buf))
+                  {
+                     DU_ALLOC(measInfoSubscribedDb, sizeof(MeasurementInfo));
+                  }
+                  break;
+               }
+
+            case MeasurementType_PR_measID:
+               {
+                  if(measInfoSupportedDb->measurementTypeId == measItem->measType.choice.measID)
+                  {
+                     DU_ALLOC(measInfoSubscribedDb, sizeof(MeasurementInfo));
+                  }
+                  break;
+               }
+
+            default:
+               {
+                  DU_LOG("\nERROR  ->  DUAPP: Invalid Measurement-type identifier in \
+                        E2SM-KPM Action Definition Format");
+                  break;
+               }
+         } /* End of switch, for measurement type identifier */
+
+         /* If measurement type is supported, add to measurement-subscription list */
+         if(measInfoSubscribedDb)
+         {
+            measInfoSubscribedDb->measurementTypeId = measInfoSupportedDb->measurementTypeId;
+            memcpy(measInfoSubscribedDb->measurementTypeName, measInfoSupportedDb->measurementTypeName, \
+                  strlen(measInfoSupportedDb->measurementTypeName));
+
+            DU_ALLOC(measToAddNode, sizeof(CmLList));
+            if(measToAddNode)
+            {
+               measToAddNode->node = (PTR) measInfoSubscribedDb;
+               cmLListAdd2Tail(measInfoSubscribedList, measToAddNode);
+
+               /* Break out of while loop if measurement info is found in measurement-supported list  */
+               break;
+            }
+            else
+            {
+               DU_FREE(measInfoSubscribedDb, sizeof(MeasurementInfo));
+               measInfoSubscribedDb = NULLP;
+               *memFailure = true;
+               break;
+            }
+         }
+
+         supportedMeasNode = supportedMeasNode->next;  
+
+      } /* End of while for traversing measurement-supported list in a report style */
+
+      /* If a measurement-to-be-subscribed is not found in measurement-supported list in this report style
+       * Then :
+       * Delete all entries from measurement-subscription list and
+       * Break out of for loop to search in next report style */
+      if(!measInfoSubscribedDb)
+      {
+         while(measInfoSubscribedList->count)
+         {
+            measToDelNode = cmLListDelFrm(measInfoSubscribedList, measInfoSubscribedList->first);
+            measInfoToDel = (MeasurementInfo*)measToDelNode->node;
+            DU_FREE(measInfoToDel, sizeof(MeasurementInfo));
+            DU_FREE(measToDelNode, sizeof(CmLList));
+         }
+         break;
+      }
+
+   } /* End of for loop , traversing measurement-to-be-subscribed list */
+
+   /* If all measurement-to-be-subscribed was found in measurement-supported list and 
+    * was added to measurement-subscription list successfully, return from here */
+   if(measInfoToBeSubscribedList->list.count == measInfoSubscribedList->count)
+      return ROK;
+
+   return RFAILED;
+}
+
+/*******************************************************************
+ *
+ * @brief Extract E2SM-KPM Action definition
+ *
+ * @details
+ *
+ *    Function : extractRicActionDef
+ *
+ * Functionality : This function :
+ *     - Decodes E2SM-KPM Action Definition
+ *     - Validates that action is supported by E2 node
+ *     - Stores action details in local DB
+ *
+ * @params[in] RAN Function Database structure
+ *             RIC subscription's Action definition to be added to 
+ *                RAN function
+ *             RIC Action Definition buffer received from RIC
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ ******************************************************************/
+uint8_t extractRicActionDef(RanFunction *ranFuncDb, ActionDefinition *actionDefDb, RICactionDefinition_t *ricActionDef)
+{
+   bool memFailure = false;
+   uint8_t styleIdx = 0;
+   asn_dec_rval_t rval ={0};
+
+   E2SM_KPM_ActionDefinition_t actionDef, *actionDefPtr = NULLP;
+   E2SM_KPM_ActionDefinition_Format1_t *actionFormat1 = NULLP;
+   CmLListCp *measInfoSupportedList = NULLP;
+   CmLListCp *measInfoSubscribedList = NULLP;
+
+   /* Decoding E2SM-KPM Action Definition */
+   actionDefPtr = &actionDef;
+   memset(actionDefPtr, 0, sizeof(E2SM_KPM_EventTriggerDefinition_t));
+
+   rval = aper_decode(0, &asn_DEF_E2SM_KPM_ActionDefinition, (void **)&actionDefPtr, ricActionDef->buf,\
+         ricActionDef->size, 0, 0);
+   if(rval.code == RC_FAIL || rval.code == RC_WMORE)
+   {
+      DU_LOG("\nERROR  -->  E2AP : ASN decode failed for E2SM-KPM Action Definition");
+      return RFAILED;
+   }
+   printf("\n");
+   xer_fprint(stdout, &asn_DEF_E2SM_KPM_ActionDefinition, actionDefPtr);
+
+
+   /* Validate if Report style to subscribe is supported by E2 Node */
+   for(styleIdx= 0; styleIdx < ranFuncDb->numOfReportStyleSupported; styleIdx++)
+   {
+      /* Validate Report style type and report style format type is supported by E2 Node */
+      if((ranFuncDb->reportStyleList[styleIdx].reportStyle.styleType == actionDefPtr->ric_Style_Type) &&
+            (ranFuncDb->reportStyleList[styleIdx].reportStyle.formatType == actionDefPtr->actionDefinition_formats.present))
+      {
+         /* Fetch Report stype type and format type */
+         actionDefDb->styleType = actionDefPtr->ric_Style_Type;
+         actionDefDb->formatType = actionDefPtr->actionDefinition_formats.present;
+
+         switch(actionDefPtr->actionDefinition_formats.present)
+         {
+            case E2SM_KPM_ActionDefinition__actionDefinition_formats_PR_actionDefinition_Format1:
+               {
+                  actionFormat1 = actionDefPtr->actionDefinition_formats.choice.actionDefinition_Format1; 
+
+                  /* Fetch granularity period */
+                  actionDefDb->choice.format1.granularityPeriod = actionFormat1->granulPeriod;
+
+                  /* Validate and add the Measurement to subscription list */
+                  measInfoSupportedList = &ranFuncDb->reportStyleList[styleIdx].measurementInfoList;
+                  measInfoSubscribedList = &actionDefDb->choice.format1.measurementInfoList;
+                  if(extractMeasInfoList(measInfoSupportedList, &actionFormat1->measInfoList, \
+                     measInfoSubscribedList, &memFailure) == ROK)
+                  {
+                     if(!memFailure)
+                     {
+                        /* Free E2SM_KPM_ActionDefinition_t */
+                        freeAperDecodingOfRicActionDefinition(actionDefPtr);
+                        return ROK;
+                     }
+                  }
+
+                  break;  /* End of E2SM-KPM Action definition format 1 case */
+               }
+
+            default :
+               {
+                  DU_LOG("\nERROR  ->  DUAPP: Only E2SM-KPM Action Definition Format 1 is supported");
+                  break;
+               }
+         } /* End of switch for E2SM-KPM Action definition formats */
+      }
+
+      if(memFailure)
+         break;
+   } /* End of for loop, traversing Report-styles-supported list in E2 node */
+
+   /* Memset action Db and Free E2SM_KPM_ActionDefinition_t */
+   memset(actionDefDb, 0, sizeof(ActionDefinition));
+   freeAperDecodingOfRicActionDefinition(actionDefPtr);
+   return RFAILED;
+}
+
+/*******************************************************************
+ *
+ * @brief Extract RIC Action to be setup
+ *
+ * @details
+ *
+ *    Function : extractRicActionToBeSetup
+ *
+ * Functionality : This function :
+ *     - Validates that each action-to-be-setup is supported by E2 node
+ *     - Stores event trigger details in local DB
+ *
+ * @params[in] RAN Function Database structure
+ *             RIC Subscription Info to be added to RAN function
+ *             RIC Action To Be Setup List received from RIC
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ ******************************************************************/
+uint8_t extractRicActionToBeSetup(RanFunction *ranFuncDb, RicSubscription *ricSubscriptionInfo, RICactions_ToBeSetup_List_t *actionList)
+{
+   uint8_t actionIdx = 0;
+   uint8_t ricActionId = 0;
+   RICaction_ToBeSetup_ItemIEs_t *actionItem = NULLP;
+
+   if(actionList->list.array)
+   {
+      for(actionIdx = 0; actionIdx < actionList->list.count; actionIdx++)
+      {
+         actionItem =(RICaction_ToBeSetup_ItemIEs_t *)actionList->list.array[actionIdx];
+         switch(actionItem->id)
+         {
+            case ProtocolIE_IDE2_id_RICaction_ToBeSetup_Item:
+               {
+                  /* If Action type is REPORT and 
+                   * If RIC action definition's extraction and validation passes, 
+                   * Then : 
+                   * This action is added to action sequence list of subscription info */
+                  if(actionItem->value.choice.RICaction_ToBeSetup_Item.ricActionType == RICactionType_report)
+                  {
+                     ricActionId = actionItem->value.choice.RICaction_ToBeSetup_Item.ricActionID;
+                     ricSubscriptionInfo->actionSequence[ricActionId-1].id = ricActionId;
+                     ricSubscriptionInfo->actionSequence[ricActionId-1].type = REPORT;
+
+                     if(extractRicActionDef(ranFuncDb, &ricSubscriptionInfo->actionSequence[ricActionId-1].definition, \
+                        actionItem->value.choice.RICaction_ToBeSetup_Item.ricActionDefinition) == ROK)
+                     {
+                        ricSubscriptionInfo->actionSequence[ricActionId-1].action = CONFIG_ADD;
+                        ricSubscriptionInfo->numOfActions++;
+                     }
+                     else
+                     {
+                        memset(&ricSubscriptionInfo->actionSequence[ricActionId-1], 0, sizeof(ActionInfo));
+                        /* TODO : Since this action addition failed, add to
+                         * reject-action-list in subscription response */
+                     }
+                  }
+                  break;
+               }
+            default:
+               DU_LOG("\nERROR  -->  E2AP : Invalid IE received in RicSetupLst:%ld",actionItem->id);
+               break;
+         }
+      }
+   }
+
+   /* If there is even 1 action that can be added, return ROK */
+   if(ricSubscriptionInfo->numOfActions)
+      return ROK;
+
+   return RFAILED;
+}
+
 /******************************************************************
  *
  * @brief Processes RIC Subscription Req sent by RIC
@@ -1641,13 +2166,14 @@ uint8_t procE2SetupRsp(E2AP_PDU_t *e2apMsg)
 
 uint8_t procRicSubsReq(E2AP_PDU_t *e2apMsg)
 {
-   uint8_t idx; 
-   uint8_t ied; 
+   uint8_t idx = 0; 
    uint8_t ret = ROK;
+   uint16_t ranFuncId = 0;
    CmLList  *ricSubscriptionNode = NULLP;
-   RICsubscriptionRequest_t *ricSubsReq;
-   RicSubscription *ricSubscriptionInfo;
-   RICaction_ToBeSetup_ItemIEs_t *actionItem;
+   RanFunction *ranFuncDb = NULLP;
+   RICsubscriptionRequest_t *ricSubsReq = NULLP;
+   RICsubscriptionDetails_t *subsDetails = NULLP;
+   RicSubscription *ricSubscriptionInfo = NULLP;
 
    DU_LOG("\nINFO   -->  E2AP : RIC Subscription request received"); 
    ricSubsReq = &e2apMsg->choice.initiatingMessage->value.choice.RICsubscriptionRequest;
@@ -1660,84 +2186,93 @@ uint8_t procRicSubsReq(E2AP_PDU_t *e2apMsg)
          {
             case ProtocolIE_IDE2_id_RICrequestID:
                {
-                  /* TODO :- ricSubscriptionInfo details will be stored based on
-                   * RAN function id, so first we need to search RAN function and then add
-                   * subscription details to that ran function */
                   DU_ALLOC(ricSubscriptionInfo, sizeof(RicSubscription));
                   if(!ricSubscriptionInfo)
                   {
                      DU_LOG("\nERROR  -->  E2AP : Memory allocation failed for ricSubscriptionInfo");
-                     return RFAILED;
+                     ret = RFAILED;
+                     break;
                   }
                   ricSubscriptionInfo->requestId.requestorId = ricSubsReq->protocolIEs.list.array[idx]->value.choice.RICrequestID.ricRequestorID;
                   ricSubscriptionInfo->requestId.instanceId = ricSubsReq->protocolIEs.list.array[idx]->value.choice.RICrequestID.ricInstanceID;
-                  DU_ALLOC(ricSubscriptionNode, sizeof(CmLList));
-                  if(ricSubscriptionNode)
-                  {
-                     ricSubscriptionNode->node = (PTR) ricSubscriptionInfo;
-                     cmLListAdd2Tail(&duCb.e2apDb.ranFunction[0].subscriptionList,ricSubscriptionNode);
-                  }
+
                   break;
                }
+
             case ProtocolIE_IDE2_id_RANfunctionID:
                {
-                  duCb.e2apDb.ranFunction[0].id = ricSubsReq->protocolIEs.list.array[idx]-> \
-                                          value.choice.RANfunctionID; 
-                  break;
-               }
-            case ProtocolIE_IDE2_id_RICsubscriptionDetails:
-               {
-                  if(ricSubsReq->protocolIEs.list.array[idx]->value.choice.RICsubscriptionDetails.ricAction_ToBeSetup_List.\
-                        list.array)
+                  ranFuncId = ricSubsReq->protocolIEs.list.array[idx]->value.choice.RANfunctionID; 
+
+                  /* Validating RAN Function id */
+                  if(duCb.e2apDb.ranFunction[ranFuncId-1].id == ranFuncId)
                   {
-                     actionItem =(RICaction_ToBeSetup_ItemIEs_t *)ricSubsReq->protocolIEs.list\
-                                 .array[idx]->value.choice.RICsubscriptionDetails.ricAction_ToBeSetup_List\
-                                 .list.array[0];
-
-                     for(ied = 0; ied < ricSubsReq->protocolIEs.list.array[idx]->value.choice.\
-                           RICsubscriptionDetails.ricAction_ToBeSetup_List.list.count; ied++)
-                     {
-                        switch(actionItem->id)
-                        {
-                           case ProtocolIE_IDE2_id_RICaction_ToBeSetup_Item:
-                              {
-                                 ricSubscriptionInfo->actionSequence[0].id  = actionItem->value.choice.RICaction_ToBeSetup_Item.ricActionID;
-                                 ricSubscriptionInfo->actionSequence[0].type = actionItem->value.choice.RICaction_ToBeSetup_Item.ricActionType;
-                                 break;
-                              }
-                           default:
-                              DU_LOG("\nERROR  -->  E2AP : Invalid IE received in RicSetupLst:%ld",actionItem->id);
-                              break;
-                        }
-                        free(actionItem);
-                     }
-                     free(ricSubsReq->protocolIEs.list.array[idx]->value.choice.RICsubscriptionDetails.ricAction_ToBeSetup_List.\
-                           list.array);
-
-#ifdef KPI_CALCULATION 
-                     /* This is a dummy trigger for statistics request. It will
-                      * be removed in next gerrit and actual statistics request
-                      * will be sent when RIC subscription request is received
-                      * from RIC */
-                     ricSubscriptionInfo->actionSequence[0].definition.styleType = 1;
-                     BuildAndSendStatsReq(ricSubscriptionInfo->actionSequence[0].definition);
-#endif
+                     ranFuncDb = &duCb.e2apDb.ranFunction[ranFuncId-1];
+                  }
+                  else
+                  {
+                     /* TODO : Send RAN Subcription Failure */
+                     ret = RFAILED;
                   }
                   break;
                }
+
+            case ProtocolIE_IDE2_id_RICsubscriptionDetails:
+               {
+                  subsDetails = &ricSubsReq->protocolIEs.list.array[idx]->value.choice.RICsubscriptionDetails;
+
+                  /* Decode, Validate and record Event Trigger Definition */
+                  if(extractEventTriggerDef(ranFuncDb, ricSubscriptionInfo, &subsDetails->ricEventTriggerDefinition) != ROK)
+                  {
+                     /* TODO : Send RAN Subcription Failure */
+                     ret = RFAILED;
+                     break;
+                  }
+
+                  /* Decode, Validate and record RIC actions */
+                  if(extractRicActionToBeSetup(ranFuncDb, ricSubscriptionInfo, &subsDetails->ricAction_ToBeSetup_List) != ROK)
+                  {
+                     /* TODO : Send RAN Subcription Failure */
+                     ret = RFAILED;
+                     break;
+                  }
+               }
+               break;
 
             default:
                DU_LOG("\nERROR  -->  E2AP : Invalid IE received in RIC SubsReq:%ld",
                      ricSubsReq->protocolIEs.list.array[idx]->id);
                break;
          }
-         free(ricSubsReq->protocolIEs.list.array[idx]);
+
+         if(ret == RFAILED)
+            break;
       }
    }
-   free(ricSubsReq->protocolIEs.list.array);
-   ret = BuildAndSendRicSubscriptionRsp();
+
+   freeAperDecodingOfRicSubsReq(ricSubsReq);
+
+   if(ret == ROK)
    {
-      BuildAndSendRicIndication(ricSubscriptionInfo);
+      /* Add RAN subcription detail to RAN function */
+      DU_ALLOC(ricSubscriptionNode, sizeof(CmLList));
+      if(ricSubscriptionNode)
+      {
+         ricSubscriptionNode->node = (PTR) ricSubscriptionInfo;
+         cmLListAdd2Tail(&ranFuncDb->subscriptionList, ricSubscriptionNode);
+      }
+
+#ifdef KPI_CALCULATION
+      /* Send statistics request to other DU entities */
+      BuildAndSendStatsReq(ranFuncId, ricSubscriptionInfo);
+#endif      
+
+      /* TODO : Trigger RIC subscription response once statistics response is
+       * received from MAC . 
+       * TBD in next gerrit */
+      ret = BuildAndSendRicSubscriptionRsp();
+      {
+         BuildAndSendRicIndication(ricSubscriptionInfo);
+      }
    }
 
    return ret;
@@ -1759,63 +2294,63 @@ uint8_t procRicSubsReq(E2AP_PDU_t *e2apMsg)
  ******************************************************************/
 void FreeRicIndication(E2AP_PDU_t  *e2apMsg) 
 {
-   uint8_t idx=0;
+   uint8_t idx = 0;
    RICindication_t *ricIndicationMsg= NULLP;
-
 
    if(e2apMsg != NULLP)
    {
       if(e2apMsg->choice.initiatingMessage != NULLP)
       {
-	 ricIndicationMsg = &e2apMsg->choice.initiatingMessage->value.choice.RICindication;
-	 if(ricIndicationMsg!= NULLP)
-	 {
-	    if(ricIndicationMsg->protocolIEs.list.array != NULLP)
-	    {
-	       for(idx=0; idx<ricIndicationMsg->protocolIEs.list.count; idx++)
-	       {
-		  if(ricIndicationMsg->protocolIEs.list.array[idx] != NULLP)
-		  {
-		     switch(ricIndicationMsg->protocolIEs.list.array[idx]->id)
-		     {
-			case ProtocolIE_IDE2_id_RICrequestID:
-			   break;
+         ricIndicationMsg = &e2apMsg->choice.initiatingMessage->value.choice.RICindication;
+         if(ricIndicationMsg!= NULLP)
+         {
+            if(ricIndicationMsg->protocolIEs.list.array != NULLP)
+            {
+               for(idx=0; idx<ricIndicationMsg->protocolIEs.list.count; idx++)
+               {
+                  if(ricIndicationMsg->protocolIEs.list.array[idx] != NULLP)
+                  {
+                     switch(ricIndicationMsg->protocolIEs.list.array[idx]->id)
+                     {
+                        case ProtocolIE_IDE2_id_RICrequestID:
+                           break;
 
-			case ProtocolIE_IDE2_id_RANfunctionID:
-			   break;
+                        case ProtocolIE_IDE2_id_RANfunctionID:
+                           break;
 
-			case ProtocolIE_IDE2_id_RICactionID:
-			   break;
+                        case ProtocolIE_IDE2_id_RICactionID:
+                           break;
 
-			case ProtocolIE_IDE2_id_RICindicationType:
-			   break;
+                        case ProtocolIE_IDE2_id_RICindicationType:
+                           break;
 
-			case ProtocolIE_IDE2_id_RICindicationHeader:
-			   {
-			      DU_FREE(ricIndicationMsg->protocolIEs.list.array[idx]->value.choice.RICindicationHeader.buf,\
-				    ricIndicationMsg->protocolIEs.list.array[idx]->value.choice.RICindicationHeader.size);
-			      break;
-			   }
-			case ProtocolIE_IDE2_id_RICindicationMessage:
-			   {
-			      DU_FREE(ricIndicationMsg->protocolIEs.list.array[idx]->value.choice.RICindicationMessage.buf,\
-				    ricIndicationMsg->protocolIEs.list.array[idx]->value.choice.RICindicationMessage.size);
-			      break;
-			   }
-			default:
-			   break;
-		     }
-		     DU_FREE(ricIndicationMsg->protocolIEs.list.array[idx],sizeof(RICindication_IEs_t));
-		  }
-	       }
-	       DU_FREE(ricIndicationMsg->protocolIEs.list.array,ricIndicationMsg->protocolIEs.list.size);
-	    }
-	 }
-	 DU_FREE(e2apMsg->choice.initiatingMessage, sizeof(InitiatingMessageE2_t));
+                        case ProtocolIE_IDE2_id_RICindicationHeader:
+                           {
+                              DU_FREE(ricIndicationMsg->protocolIEs.list.array[idx]->value.choice.RICindicationHeader.buf,\
+                                    ricIndicationMsg->protocolIEs.list.array[idx]->value.choice.RICindicationHeader.size);
+                              break;
+                           }
+                        case ProtocolIE_IDE2_id_RICindicationMessage:
+                           {
+                              DU_FREE(ricIndicationMsg->protocolIEs.list.array[idx]->value.choice.RICindicationMessage.buf,\
+                                    ricIndicationMsg->protocolIEs.list.array[idx]->value.choice.RICindicationMessage.size);
+                              break;
+                           }
+                        default:
+                           break;
+                     }
+                     DU_FREE(ricIndicationMsg->protocolIEs.list.array[idx],sizeof(RICindication_IEs_t));
+                  }
+               }
+               DU_FREE(ricIndicationMsg->protocolIEs.list.array,ricIndicationMsg->protocolIEs.list.size);
+            }
+         }
+         DU_FREE(e2apMsg->choice.initiatingMessage, sizeof(InitiatingMessageE2_t));
       }
       DU_FREE(e2apMsg, sizeof(E2AP_PDU_t));
    }
 }
+
 /*******************************************************************
  *
  * brief Fill the RicIndication Message
