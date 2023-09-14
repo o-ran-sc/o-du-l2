@@ -37,6 +37,12 @@
 #include "RIC-EventTriggerStyle-Item.h"
 #include "RIC-ReportStyle-Item.h"
 #include "MeasurementInfo-Action-Item.h"
+#include "MeasurementInfoItem.h"
+#include "E2SM-KPM-ActionDefinition-Format1.h"
+#include "E2SM-KPM-ActionDefinition.h"
+#include "E2SM-KPM-EventTriggerDefinition-Format1.h"
+#include "E2SM-KPM-EventTriggerDefinition.h"
+
 
 /*******************************************************************
  *
@@ -482,8 +488,7 @@ uint8_t BuildAndSendE2SetupRsp(DuDb *duDb, uint8_t transId)
       idx++;
       e2SetupRsp->protocolIEs.list.array[idx]->id = ProtocolIE_IDE2_id_GlobalRIC_ID;
       e2SetupRsp->protocolIEs.list.array[idx]->criticality = CriticalityE2_reject;
-      e2SetupRsp->protocolIEs.list.array[idx]->value.present = \
-                                                               E2setupResponseIEs__value_PR_GlobalRIC_ID;
+      e2SetupRsp->protocolIEs.list.array[idx]->value.present = E2setupResponseIEs__value_PR_GlobalRIC_ID;
 
       if(BuildGlobalRicId(&(e2SetupRsp->protocolIEs.list.array[idx]->value.choice.GlobalRIC_ID))!=ROK)
       {
@@ -510,8 +515,9 @@ uint8_t BuildAndSendE2SetupRsp(DuDb *duDb, uint8_t transId)
       e2SetupRsp->protocolIEs.list.array[idx]->id = ProtocolIE_IDE2_id_E2nodeComponentConfigAdditionAck;
       e2SetupRsp->protocolIEs.list.array[idx]->criticality = CriticalityE2_reject;
       e2SetupRsp->protocolIEs.list.array[idx]->value.present = \
-      E2setupResponseIEs__value_PR_E2nodeComponentConfigAdditionAck_List;
-      if(BuildE2nodeComponentConfigAdditionAck(&e2SetupRsp->protocolIEs.list.array[idx]->value.choice.E2nodeComponentConfigAdditionAck_List, duDb)!=ROK)
+         E2setupResponseIEs__value_PR_E2nodeComponentConfigAdditionAck_List;
+      if(BuildE2nodeComponentConfigAdditionAck(&e2SetupRsp->protocolIEs.list.array[idx]->\
+         value.choice.E2nodeComponentConfigAdditionAck_List, duDb) != ROK)
       {
          DU_LOG("\nERROR  -->  E2AP : Failed to build E2Node Component config addition ack list");
          break;
@@ -547,8 +553,95 @@ uint8_t BuildAndSendE2SetupRsp(DuDb *duDb, uint8_t transId)
    }
 
    FreeE2SetupRsp(e2apMsg);
-   BuildAndSendRicSubscriptionReq(duDb->duId);
+   BuildAndSendRicSubscriptionReq(duDb);
    return ROK;
+}
+
+/*******************************************************************
+ *
+ * @brief Free RIC Subscription Details
+ *
+ * @details
+ *
+ *    Function : FreeRicSubsDetails
+ *
+ *    Functionality: Free the RIC Subscription Details
+ *
+ * @params[in] RICsubscriptionDetails_t *subsDetails
+ * @return void
+ *
+ * ****************************************************************/
+void FreeRicSubsDetails(RICsubscriptionDetails_t *subsDetails)
+{
+   uint8_t elementIdx = 0;
+   RICaction_ToBeSetup_ItemIEs_t *actionItem = NULLP;
+
+   RIC_FREE(subsDetails->ricEventTriggerDefinition.buf, subsDetails->ricEventTriggerDefinition.size);
+
+   if(subsDetails->ricAction_ToBeSetup_List.list.array)
+   {
+      for(elementIdx = 0; elementIdx < subsDetails->ricAction_ToBeSetup_List.list.count; elementIdx++)
+      {
+         if(subsDetails->ricAction_ToBeSetup_List.list.array[elementIdx])
+         {
+            actionItem = (RICaction_ToBeSetup_ItemIEs_t *)subsDetails->ricAction_ToBeSetup_List.list.array[elementIdx];
+            if(actionItem->value.choice.RICaction_ToBeSetup_Item.ricActionDefinition)
+            {
+               RIC_FREE(actionItem->value.choice.RICaction_ToBeSetup_Item.ricActionDefinition->buf, \
+                  actionItem->value.choice.RICaction_ToBeSetup_Item.ricActionDefinition->size);
+               RIC_FREE(actionItem->value.choice.RICaction_ToBeSetup_Item.ricActionDefinition, sizeof(RICactionDefinition_t));
+            }
+            RIC_FREE(subsDetails->ricAction_ToBeSetup_List.list.array[elementIdx], sizeof(RICaction_ToBeSetup_ItemIEs_t))
+         }
+      }
+      RIC_FREE(subsDetails->ricAction_ToBeSetup_List.list.array, subsDetails->ricAction_ToBeSetup_List.list.size);
+   }
+}
+
+/*******************************************************************
+ *
+ * @brief Free RIC Subscription Request
+ *
+ * @details
+ *
+ *    Function : FreeRicSubscriptionReq
+ *
+ * Functionality : Free RIC Subscription Request
+ *
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ ******************************************************************/
+void FreeRicSubscriptionReq(E2AP_PDU_t *e2apRicMsg)
+{
+   uint8_t idx = 0;
+   RICsubscriptionRequest_t   *ricSubscriptionReq;
+
+   if(e2apRicMsg)
+   {
+      if(e2apRicMsg->choice.initiatingMessage)
+      {
+         ricSubscriptionReq = &e2apRicMsg->choice.initiatingMessage->value.choice.RICsubscriptionRequest;
+         if(ricSubscriptionReq->protocolIEs.list.array)
+         {
+            for(idx=0; idx < ricSubscriptionReq->protocolIEs.list.count; idx++)
+            {
+               switch(ricSubscriptionReq->protocolIEs.list.array[idx]->id)
+               {
+                  case ProtocolIE_IDE2_id_RICsubscriptionDetails:
+                     {
+                        FreeRicSubsDetails(&(ricSubscriptionReq->protocolIEs.list.array[idx]->value.choice.RICsubscriptionDetails));
+                        break;
+                     }
+               }               
+               RIC_FREE(ricSubscriptionReq->protocolIEs.list.array[idx], sizeof(RICsubscriptionRequest_IEs_t));
+            }
+            RIC_FREE(ricSubscriptionReq->protocolIEs.list.array, ricSubscriptionReq->protocolIEs.list.size);
+         }
+         RIC_FREE(e2apRicMsg->choice.initiatingMessage, sizeof(InitiatingMessageE2_t));
+      }
+      RIC_FREE(e2apRicMsg, sizeof(E2AP_PDU_t));
+   }
 }
 
 /*******************************************************************
@@ -557,79 +650,370 @@ uint8_t BuildAndSendE2SetupRsp(DuDb *duDb, uint8_t transId)
  *
  * @details
  *
- *    Function : BuildRicRequestId
+ *    Function : BuildNewRicRequestId
  *
- *    Functionality: Building the Ric Request Id
+ *    Functionality: Assign new Ric Request ID
  *
- * @params[in] RICrequestID_t *ricReqId
+ * @params[in] RIC request ID to be sent
+ *             RIC request ID stored in DB
  * @return ROK     - success
  *         RFAILED - failure
  *
  * ****************************************************************/
 
-uint8_t BuildRicRequestId(RICrequestID_t *ricReqId)
+uint8_t BuildNewRicRequestId(RICrequestID_t *ricReqId, RicRequestId *reqIdDb)
 {
+   static uint16_t requestorId = 0;
+   static uint16_t instanceId = 0;
 
    if(ricReqId != NULLP)
    {
-      ricReqId->ricRequestorID = 1;
-      ricReqId->ricInstanceID  = 1;
+      ricReqId->ricRequestorID = ++requestorId;
+      ricReqId->ricInstanceID  = ++instanceId;
+
+      reqIdDb->requestorId = ricReqId->ricRequestorID;
+      reqIdDb->instanceId = ricReqId->ricInstanceID;
    }
    return ROK;
 }
 
 /*******************************************************************
  *
- * @brief Fills Ric Action To be Setup Item
+ * @brief Free RIC Action Definition
  *
  * @details
  *
- *    Function : fillSetupItems
+ *    Function : FreeRicActionDefinition
  *
- *    Functionality: Filling ricAction Id, RicActionType
+ *    Functionality: Free RIC Action Definition
  *
- * @params[in] RICaction_ToBeSetup_Item_t *setupItems
- * @return pointer of type RICaction_ToBeSetup_Item_t
+ * @params[in] E2SM-KPM Action definition
+ * @return void
  *
  * ****************************************************************/
-
-RICaction_ToBeSetup_Item_t* fillSetupItems(RICaction_ToBeSetup_Item_t *setupItems)
+void  FreeRicActionDefinition(E2SM_KPM_ActionDefinition_t actionDef)
 {
-   if(setupItems != NULLP)
-   {
-      setupItems->ricActionID = 0;
-      setupItems->ricActionType = RICactionType_report;
-   }
+   uint8_t  elementIdx = 0;
+   E2SM_KPM_ActionDefinition_Format1_t *actionFormat1 = NULLP;
+   MeasurementInfoItem_t *measItem = NULLP;
 
-   return (setupItems);
+   switch(actionDef.actionDefinition_formats.present)
+   {
+      case E2SM_KPM_ActionDefinition__actionDefinition_formats_PR_actionDefinition_Format1:
+         {
+            if(actionDef.actionDefinition_formats.choice.actionDefinition_Format1)
+            {
+               actionFormat1 = actionDef.actionDefinition_formats.choice.actionDefinition_Format1;
+               if(actionFormat1->measInfoList.list.array)
+               {
+                  for(elementIdx = 0; elementIdx < actionFormat1->measInfoList.list.count; elementIdx++)
+                  {
+                     if(actionFormat1->measInfoList.list.array[elementIdx])
+                     {
+                        measItem = actionFormat1->measInfoList.list.array[elementIdx];
+                        switch(measItem->measType.present)
+                        {
+                           case MeasurementType_PR_NOTHING:
+                           case MeasurementType_PR_measID:
+                              break;
+                           case MeasurementType_PR_measName:
+                           {
+                              RIC_FREE(measItem->measType.choice.measName.buf, measItem->measType.choice.measName.size)
+                              break;
+                           }
+                        }
+                        RIC_FREE(measItem, sizeof(MeasurementInfoItem_t));
+                     }
+                  }
+                  RIC_FREE(actionFormat1->measInfoList.list.array, actionFormat1->measInfoList.list.size);
+               }
+               RIC_FREE(actionFormat1, sizeof(E2SM_KPM_ActionDefinition_Format1_t));
+            }
+            break;
+         }
+
+      case E2SM_KPM_ActionDefinition__actionDefinition_formats_PR_actionDefinition_Format2:
+      case E2SM_KPM_ActionDefinition__actionDefinition_formats_PR_actionDefinition_Format3:
+      case E2SM_KPM_ActionDefinition__actionDefinition_formats_PR_actionDefinition_Format4:
+      case E2SM_KPM_ActionDefinition__actionDefinition_formats_PR_actionDefinition_Format5:
+      case E2SM_KPM_ActionDefinition__actionDefinition_formats_PR_NOTHING:
+         break;
+   }
 }
 
 /*******************************************************************
  *
- * @brief Fills RIC Subscription Details Item List
+ * @brief Fill RIC Action Definition
  *
  * @details
  *
- *    Function : fillSubsDetails
+ *    Function : fillRicActionDef
  *
- *    Functionality: Fill the RIC Subscription Details Items List
+ *    Functionality: Fill RIC Action Definition
+ *
+ * @params[in] RIC Action definition
+ * @return ROK 
+ *         RFAILED
+ *
+ * ****************************************************************/
+uint8_t fillRicActionDef(RICactionDefinition_t *ricActionDef)
+{
+   uint8_t ret = RFAILED;
+   asn_enc_rval_t  encRetVal;
+   uint8_t elementCnt = 0, elementIdx = 0;
+   char    *measurementTypeName[] = {"RRU.PrbTotDl", "RRU.PrbTotUl"};
+   E2SM_KPM_ActionDefinition_t actionDef;
+   E2SM_KPM_ActionDefinition_Format1_t *actionFormat1 = NULLP;
+   MeasurementInfoItem_t *measItem = NULLP;
+   
+   while(true)
+   {
+      /* Fill E2SM-KPM Action Definition Format 1 */
+
+      /* RIC Stype Type */
+      actionDef.ric_Style_Type = RIC_STYLE_TYPE;
+
+      /* RIC Action Definition Format 1 */
+      actionDef.actionDefinition_formats.present = \
+           E2SM_KPM_ActionDefinition__actionDefinition_formats_PR_actionDefinition_Format1;
+
+      RIC_ALLOC(actionDef.actionDefinition_formats.choice.actionDefinition_Format1, \
+            sizeof(E2SM_KPM_ActionDefinition_Format1_t));
+      if(actionDef.actionDefinition_formats.choice.actionDefinition_Format1 == NULLP)
+      {
+         DU_LOG("\nERROR  -->  E2AP : Memory allocation failed at [%s] : line [%d]", __func__, __LINE__);
+         break;
+      }
+      actionFormat1 = actionDef.actionDefinition_formats.choice.actionDefinition_Format1;
+
+      /* Measurement Info List */
+      elementCnt = 2;
+      actionFormat1->measInfoList.list.count = elementCnt;
+      actionFormat1->measInfoList.list.size = elementCnt * sizeof(MeasurementInfoItem_t *);
+      RIC_ALLOC(actionFormat1->measInfoList.list.array, actionFormat1->measInfoList.list.size);
+      if(actionFormat1->measInfoList.list.array == NULL)
+      {
+         DU_LOG("\nERROR  -->  E2AP : Memory allocation failed at [%s] : line [%d]", __func__, __LINE__);
+         break;
+      }
+
+      for(elementIdx = 0; elementIdx < elementCnt; elementIdx++)
+      {
+         RIC_ALLOC(actionFormat1->measInfoList.list.array[elementIdx], sizeof(MeasurementInfoItem_t));
+         if(actionFormat1->measInfoList.list.array[elementIdx] == NULLP)
+         {
+            DU_LOG("\nERROR  -->  E2AP : Memory allocation failed at [%s] : line [%d]", __func__, __LINE__);
+            break;
+         }
+
+         measItem = actionFormat1->measInfoList.list.array[elementIdx];
+         measItem->measType.present = MeasurementType_PR_measName;
+
+         measItem->measType.choice.measName.size = strlen(measurementTypeName[elementIdx]);
+         RIC_ALLOC(measItem->measType.choice.measName.buf, measItem->measType.choice.measName.size);
+         if(measItem->measType.choice.measName.buf == NULLP)
+         {
+            DU_LOG("\nERROR  -->  E2AP : Memory allocation failed at [%s] : line [%d]", __func__, __LINE__);
+            break;
+         }
+         memcpy(measItem->measType.choice.measName.buf, measurementTypeName[elementIdx], measItem->measType.choice.measName.size);
+      }
+      if(elementIdx < elementCnt)
+         break;
+
+      /* Granularity Period */
+      actionFormat1->granulPeriod = RIC_ACTION_GRANULARITY_PERIOD; /* In ms */
+
+      /* Prints the Msg formed */
+      xer_fprint(stdout, &asn_DEF_E2SM_KPM_ActionDefinition, &actionDef);
+
+      /* Encode E2SM-KPM RIC Action Definition */
+      memset(encBuf, 0, ENC_BUF_MAX_LEN);
+      encBufSize = 0;
+      encRetVal = aper_encode(&asn_DEF_E2SM_KPM_ActionDefinition, 0, &actionDef, PrepFinalEncBuf, encBuf);
+      if(encRetVal.encoded == ENCODE_FAIL)
+      {
+         DU_LOG("\nERROR  -->  E2AP : Could not encode E2SM-KPM action definition structure (at %s)\n",\
+               encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
+         break;
+      }
+
+      /* Copty encoded E2SM-KPM RIC action definition to E2AP octet string buffer */
+      ricActionDef->size = encBufSize;
+      RIC_ALLOC(ricActionDef->buf, encBufSize);
+      if(ricActionDef->buf == NULLP)
+      {
+         DU_LOG("\nERROR  -->  E2AP : Memory allocation failed at [%s] : line [%d]", __func__, __LINE__);
+         break;
+      }
+      memcpy(ricActionDef->buf, encBuf, encBufSize);
+
+      ret = ROK;
+      break;
+   }
+
+   FreeRicActionDefinition(actionDef);
+   return ret;
+}
+
+/*******************************************************************
+ *
+ * @brief Fills RIC Action To Be Setup Item
+ *
+ * @details
+ *
+ *    Function : fillActionToBeSetup
+ *
+ *    Functionality: Fill the RIC Action To Be Setup Ite,
+ *                   RIC subscription DB
  *
  * @params[in] RICaction_ToBeSetup_ItemIEs_t *items
  * @return ROK     - success
  *         RFAILED - failure
  *
  * ****************************************************************/
-
-uint8_t fillSubsDetails(RICaction_ToBeSetup_ItemIEs_t *items)
+uint8_t fillActionToBeSetup(RICaction_ToBeSetup_ItemIEs_t *actionItem, RicSubscription *ricSubsDb)
 {
-   if(items != NULLP)
+   static uint8_t ricActionId = 0;
+
+   if(actionItem == NULLP)
    {
-      items->id = ProtocolIE_IDE2_id_RICaction_ToBeSetup_Item;
-      items->criticality   =  CriticalityE2_ignore;
-      items->value.present =  RICaction_ToBeSetup_ItemIEs__value_PR_RICaction_ToBeSetup_Item;
-      fillSetupItems(&(items->value.choice.RICaction_ToBeSetup_Item));
+      DU_LOG("\nERROR  -->  E2AP : Failed at [%s] : line [%d]", __func__, __LINE__);
+      return RFAILED;
    }
-   return ROK;
+
+   while(true)
+   {
+      actionItem->id = ProtocolIE_IDE2_id_RICaction_ToBeSetup_Item;
+      actionItem->criticality   =  CriticalityE2_ignore;
+      actionItem->value.present =  RICaction_ToBeSetup_ItemIEs__value_PR_RICaction_ToBeSetup_Item;
+      
+      /* RIC Action ID */
+      actionItem->value.choice.RICaction_ToBeSetup_Item.ricActionID = ++ricActionId;
+      ricSubsDb->actionSequence[ricSubsDb->numOfActions].id = \
+         actionItem->value.choice.RICaction_ToBeSetup_Item.ricActionID;
+
+      /* RIC Action Type */
+      actionItem->value.choice.RICaction_ToBeSetup_Item.ricActionType = RICactionType_report;
+
+      /* RIC Action Definition */
+      RIC_ALLOC(actionItem->value.choice.RICaction_ToBeSetup_Item.ricActionDefinition, sizeof(RICactionDefinition_t));
+      if(!actionItem->value.choice.RICaction_ToBeSetup_Item.ricActionDefinition)
+      {
+         DU_LOG("\nERROR  -->  E2AP : Memory allocation failed at [%s] : line [%d]", __func__, __LINE__);
+         break;
+      }
+      if(fillRicActionDef(actionItem->value.choice.RICaction_ToBeSetup_Item.ricActionDefinition) != ROK)
+      {
+         DU_LOG("\nERROR  -->  E2AP : Failed at [%s] : line [%d]", __func__, __LINE__);
+         break;
+      }
+      
+      ricSubsDb->numOfActions++;
+      return ROK;
+   }
+
+   memset(&ricSubsDb->actionSequence[ricSubsDb->numOfActions], 0, sizeof(ActionInfo));
+   return RFAILED;
+}
+
+/*******************************************************************
+ *
+ * @brief Free Event Trigger Definition
+ *
+ * @details
+ *
+ *    Function : FreeEventTriggerDef
+ *
+ *    Functionality: Free Event Trigger Definition
+ *
+ * @params[in] E2SM-KPM Event Trigger Definition
+ * @return void
+ *
+ * ****************************************************************/
+void  FreeEventTriggerDef(E2SM_KPM_EventTriggerDefinition_t *eventTiggerDef)
+{
+   if(eventTiggerDef)
+   {
+      switch(eventTiggerDef->eventDefinition_formats.present)
+      {
+         case E2SM_KPM_EventTriggerDefinition__eventDefinition_formats_PR_NOTHING:
+            break;
+         case E2SM_KPM_EventTriggerDefinition__eventDefinition_formats_PR_eventDefinition_Format1: 
+            RIC_FREE(eventTiggerDef->eventDefinition_formats.choice.eventDefinition_Format1, \
+                  sizeof(E2SM_KPM_EventTriggerDefinition_Format1_t));
+            break;                  
+      }         
+   }
+}
+
+/*******************************************************************
+ *
+ * @brief Fill Event Trigger Definition
+ *
+ * @details
+ *
+ *    Function : fillEventTriggerDef
+ *
+ *    Functionality: Fill Event Trigger Definition
+ *
+ * @params[in] RIC Event Trigger Definition
+ * @return ROK
+ *         RFAILED
+ *
+ * ****************************************************************/
+uint8_t fillEventTriggerDef(RICeventTriggerDefinition_t *ricEventTriggerDef)
+{
+   uint8_t ret = RFAILED;
+   asn_enc_rval_t  encRetVal;
+   E2SM_KPM_EventTriggerDefinition_t eventTiggerDef;
+
+   while(true)
+   {
+      /* Fill E2SM-KPM Event Trigger Definition Format 1 */
+      eventTiggerDef.eventDefinition_formats.present = \
+       E2SM_KPM_EventTriggerDefinition__eventDefinition_formats_PR_eventDefinition_Format1;
+
+      RIC_ALLOC(eventTiggerDef.eventDefinition_formats.choice.eventDefinition_Format1, \
+            sizeof(E2SM_KPM_EventTriggerDefinition_Format1_t));
+      if(eventTiggerDef.eventDefinition_formats.choice.eventDefinition_Format1 == NULLP)
+      {
+         DU_LOG("\nERROR  -->  E2AP : Memory allocation failed at [%s] : line [%d]", __func__, __LINE__);
+         break;
+      }
+
+      eventTiggerDef.eventDefinition_formats.choice.eventDefinition_Format1->reportingPeriod = 1000; /* In ms */
+
+      /* Prints the Msg formed */
+      xer_fprint(stdout, &asn_DEF_E2SM_KPM_EventTriggerDefinition, &eventTiggerDef);
+
+      /* Encode E2SM-KPM Event Trigger Definition */
+      memset(encBuf, 0, ENC_BUF_MAX_LEN);
+      encBufSize = 0;
+      encRetVal = aper_encode(&asn_DEF_E2SM_KPM_EventTriggerDefinition, 0, &eventTiggerDef, PrepFinalEncBuf, encBuf);
+      if(encRetVal.encoded == ENCODE_FAIL)
+      {
+         DU_LOG("\nERROR  -->  E2AP : Could not encode E2SM-KPM event trigger definition structure (at %s)\n",\
+               encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
+         break;
+      }
+
+      /* Copy encoded E2SM-KPM event trigger definition to E2AP octet string buffer */
+      ricEventTriggerDef->size = encBufSize;
+      RIC_ALLOC(ricEventTriggerDef->buf, encBufSize);
+      if(ricEventTriggerDef->buf == NULLP)
+      {
+         DU_LOG("\nERROR  -->  E2AP : Memory allocation failed at [%s] : line [%d]", __func__, __LINE__);
+         break;
+      }
+      memcpy(ricEventTriggerDef->buf, encBuf, encBufSize);
+
+      ret = ROK;
+      break;
+   }
+
+   FreeEventTriggerDef(&eventTiggerDef);
+   return ret;
 }
 
 /*******************************************************************
@@ -642,41 +1026,67 @@ uint8_t fillSubsDetails(RICaction_ToBeSetup_ItemIEs_t *items)
  *
  *    Functionality: Builds the RIC Subscription Details
  *
- * @params[in] RICsubscriptionDetails_t *subsDetails
+ * @params[in] RIC Subscription details to be filled
+ *             RIC subscriotion DB
  * @return ROK     - success
  *         RFAILED - failure
  *
  * ****************************************************************/
 
-uint8_t BuildRicSubsDetails(RICsubscriptionDetails_t *subsDetails)
+uint8_t BuildRicSubsDetails(RICsubscriptionDetails_t *subsDetails, RicSubscription *ricSubsDb)
 {
+   uint8_t elementCnt = 0;
+   uint8_t elementIdx = 0;
 
-   uint8_t elementCnt;
-
-   if(subsDetails != NULLP)
+   if(subsDetails == NULLP)
    {
-      /* Octet string to be build here */
-      /* Sending PLMN as Octect string */
-      uint8_t byteSize = 3;
-      subsDetails->ricEventTriggerDefinition.size = byteSize * sizeof(uint8_t);
-      RIC_ALLOC(subsDetails->ricEventTriggerDefinition.buf,  subsDetails->ricEventTriggerDefinition.size);
-      buildPlmnId(ricCb.ricCfgParams.plmn, subsDetails->ricEventTriggerDefinition.buf);
+      DU_LOG("\nERROR  -->  E2AP : Failed at [%s] : line [%d]", __func__, __LINE__);
+      return RFAILED;
+   }
+
+   while(true)
+   {
+      /* RIC Event Trigger Definition */
+      if(fillEventTriggerDef(&subsDetails->ricEventTriggerDefinition) != ROK)
+      {
+         DU_LOG("\nERROR  -->  E2AP : Failed at [%s] : line [%d]", __func__, __LINE__);
+         break;
+      }
+
+      /* RIC Actions To Be Setup List */
       elementCnt = 1;
       subsDetails->ricAction_ToBeSetup_List.list.count = elementCnt;
-      subsDetails->ricAction_ToBeSetup_List.list.size = \
-                      elementCnt * sizeof(RICaction_ToBeSetup_ItemIEs_t);
-      RIC_ALLOC(subsDetails->ricAction_ToBeSetup_List.list.array, \
-                subsDetails->ricAction_ToBeSetup_List.list.size);
+      subsDetails->ricAction_ToBeSetup_List.list.size = elementCnt * sizeof(RICaction_ToBeSetup_ItemIEs_t *);
+      RIC_ALLOC(subsDetails->ricAction_ToBeSetup_List.list.array, subsDetails->ricAction_ToBeSetup_List.list.size);
       if(subsDetails->ricAction_ToBeSetup_List.list.array  == NULLP)
       {
          DU_LOG("\nERROR  -->  E2AP : Memory allocation for RICactionToBeSetup Items failed");
-         return RFAILED;
+         break;
       } 
-      RIC_ALLOC(subsDetails->ricAction_ToBeSetup_List.list.array[0],\
-                   sizeof(RICaction_ToBeSetup_ItemIEs_t));
-      fillSubsDetails(subsDetails->ricAction_ToBeSetup_List.list.array[0]);
+
+      for(elementIdx = 0; elementIdx < elementCnt; elementIdx++)
+      {
+         RIC_ALLOC(subsDetails->ricAction_ToBeSetup_List.list.array[elementIdx], sizeof(RICaction_ToBeSetup_ItemIEs_t));
+         if(!subsDetails->ricAction_ToBeSetup_List.list.array[elementIdx])
+         {
+            DU_LOG("\nERROR  -->  E2AP : Memory allocation failed at [%s] : line [%d]", __func__, __LINE__);
+            break;
+         }
+      }
+      if(elementIdx < elementCnt)
+         break;
+
+      elementIdx = 0;
+      if(fillActionToBeSetup((RICaction_ToBeSetup_ItemIEs_t *)subsDetails->ricAction_ToBeSetup_List.list.array[elementIdx], \
+         ricSubsDb) != ROK)
+      {
+         DU_LOG("\nERROR  -->  E2AP : Failed at [%s] : line [%d]", __func__, __LINE__);
+         break;
+      }
+
+      return ROK;
    }
-   return ROK;
+   return RFAILED;
 }
 
 /*******************************************************************
@@ -693,137 +1103,137 @@ uint8_t BuildRicSubsDetails(RICsubscriptionDetails_t *subsDetails)
  *         RFAILED - failure
  *
  ******************************************************************/
-
-uint8_t BuildAndSendRicSubscriptionReq(uint32_t duId)
+uint8_t BuildAndSendRicSubscriptionReq(DuDb *duDb)
 {
-
+   uint8_t         ret = RFAILED;
    E2AP_PDU_t                 *e2apRicMsg = NULL;
    RICsubscriptionRequest_t   *ricSubscriptionReq;
    uint8_t         elementCnt;
    uint8_t         idx;
    uint8_t         ieId;
-   uint8_t         ret; 
    asn_enc_rval_t  encRetVal;        /* Encoder return value */
+   RanFunction     *ranFuncDb = &duDb->ranFunction[0];
 
    DU_LOG("\nINFO   -->  E2AP : Building RIC Subscription Request\n");
 
-   RIC_ALLOC(e2apRicMsg, sizeof(E2AP_PDU_t));
-   if(e2apRicMsg == NULLP)
+   while(true)
    {
-      DU_LOG("\nERROR  -->  E2AP : Memory allocation for E2AP-PDU failed");
-      return RFAILED;
-   }
-
-   e2apRicMsg->present = E2AP_PDU_PR_initiatingMessage;
-   RIC_ALLOC(e2apRicMsg->choice.initiatingMessage, sizeof(InitiatingMessageE2_t));
-   if(e2apRicMsg->choice.initiatingMessage == NULLP)
-   {
-      DU_LOG("\nERROR  -->  E2AP : Memory allocation for E2AP-PDU failed");
-      RIC_FREE(e2apRicMsg, sizeof(E2AP_PDU_t));
-      return RFAILED;
-   }
-   e2apRicMsg->choice.initiatingMessage->procedureCode = ProcedureCodeE2_id_RICsubscription;
-   e2apRicMsg->choice.initiatingMessage->criticality = CriticalityE2_reject;
-   e2apRicMsg->choice.initiatingMessage->value.present = InitiatingMessageE2__value_PR_RICsubscriptionRequest;
-   
-   RIC_ALLOC(ricSubscriptionReq, sizeof(RICsubscriptionRequest_t));
-   ricSubscriptionReq = &e2apRicMsg->choice.initiatingMessage->value.choice.RICsubscriptionRequest;
-   
-   elementCnt = 3;
-   ricSubscriptionReq->protocolIEs.list.count = elementCnt;
-   ricSubscriptionReq->protocolIEs.list.size  = elementCnt * sizeof(RICsubscriptionRequest_IEs_t);
-
-   /* Initialize the subscription members */
-   RIC_ALLOC(ricSubscriptionReq->protocolIEs.list.array, \
-              ricSubscriptionReq->protocolIEs.list.size);
-   if(ricSubscriptionReq->protocolIEs.list.array == NULLP)
-   {
-      DU_LOG("\nERROR  -->  E2AP : Memory allocation for RICSubscriptionRequestIEs failed");
-      RIC_FREE(e2apRicMsg->choice.initiatingMessage, sizeof(InitiatingMessageE2_t));
-      RIC_FREE(e2apRicMsg, (Size)sizeof(E2AP_PDU_t));
-      return RFAILED;
-   }
-   
-   for(idx=0; idx<elementCnt; idx++)
-   {
-      RIC_ALLOC(ricSubscriptionReq->protocolIEs.list.array[idx],\
-            sizeof(RICsubscriptionRequest_IEs_t));
-      if(ricSubscriptionReq->protocolIEs.list.array[idx] == NULLP)
+      RIC_ALLOC(e2apRicMsg, sizeof(E2AP_PDU_t));
+      if(e2apRicMsg == NULLP)
       {
-         for(ieId=0; ieId<idx; ieId++)
-         {
-            RIC_FREE(ricSubscriptionReq->protocolIEs.list.array[ieId],\
-                  sizeof(RICsubscriptionRequest_IEs_t));
-         }
-         RIC_FREE(ricSubscriptionReq->protocolIEs.list.array,\
-                  ricSubscriptionReq->protocolIEs.list.size);
-         RIC_FREE(e2apRicMsg->choice.initiatingMessage, \
-               sizeof(InitiatingMessageE2_t));
-         RIC_FREE(e2apRicMsg, sizeof(E2AP_PDU_t));
-         return RFAILED;
+         DU_LOG("\nERROR  -->  E2AP : Memory allocation failed at [%s] : line [%d]", __func__, __LINE__);
+         break;
       }
-   }
 
-   /* Filling RIC Request Id */
-   idx = 0;
-   ricSubscriptionReq->protocolIEs.list.array[idx]->id = ProtocolIE_IDE2_id_RICrequestID;
-   ricSubscriptionReq->protocolIEs.list.array[idx]->criticality = CriticalityE2_reject;
-   ricSubscriptionReq->protocolIEs.list.array[idx]->value.present =\
-                                    RICsubscriptionRequest_IEs__value_PR_RICrequestID;
- 
-   BuildRicRequestId(&ricSubscriptionReq->protocolIEs.list.array[idx]->value.choice.RICrequestID);
-
-
-   /* Filling RAN Function Id */
-   idx++;
-   ricSubscriptionReq->protocolIEs.list.array[idx]->id = ProtocolIE_IDE2_id_RANfunctionID;
-   ricSubscriptionReq->protocolIEs.list.array[idx]->criticality = CriticalityE2_reject;
-   ricSubscriptionReq->protocolIEs.list.array[idx]->value.present =\
-                                    RICsubscriptionRequest_IEs__value_PR_RANfunctionID;
-   ricSubscriptionReq->protocolIEs.list.array[idx]->value.choice.RANfunctionID = 1;
-
-
-   /* Filling RIC Subscription Details */
-   idx++;
-   ricSubscriptionReq->protocolIEs.list.array[idx]->id = ProtocolIE_IDE2_id_RICsubscriptionDetails;
-   ricSubscriptionReq->protocolIEs.list.array[idx]->criticality = CriticalityE2_reject;
-   ricSubscriptionReq->protocolIEs.list.array[idx]->value.present =\
-                                    RICsubscriptionRequest_IEs__value_PR_RICsubscriptionDetails;
-
-   BuildRicSubsDetails(&(ricSubscriptionReq->protocolIEs.list.array[idx]->value.choice.RICsubscriptionDetails));
-
-
-   /* Prints the Msg formed */
-   xer_fprint(stdout, &asn_DEF_E2AP_PDU, e2apRicMsg);
-
-   memset(encBuf, 0, ENC_BUF_MAX_LEN);
-   encBufSize = 0;
-   encRetVal = aper_encode(&asn_DEF_E2AP_PDU, 0, e2apRicMsg, PrepFinalEncBuf,\
-               encBuf);
-   if(encRetVal.encoded == ENCODE_FAIL)
-   {
-      DU_LOG("\nERROR  -->  E2AP : Could not encode RicSubscriptionRequest structure (at %s)\n",\
-      encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
-      return RFAILED;
-   }
-   else
-   {
-      DU_LOG("\nDEBUG  -->  E2AP : Created APER encoded buffer for RicSubscriptionRequest\n");
-      for(int i=0; i< encBufSize; i++)
+      e2apRicMsg->present = E2AP_PDU_PR_initiatingMessage;
+      RIC_ALLOC(e2apRicMsg->choice.initiatingMessage, sizeof(InitiatingMessageE2_t));
+      if(e2apRicMsg->choice.initiatingMessage == NULLP)
       {
-          DU_LOG("%x",encBuf[i]);
-      } 
+         DU_LOG("\nERROR  -->  E2AP : Memory allocation failed at [%s] : line [%d]", __func__, __LINE__);
+         break;
+      }
+      e2apRicMsg->choice.initiatingMessage->procedureCode = ProcedureCodeE2_id_RICsubscription;
+      e2apRicMsg->choice.initiatingMessage->criticality = CriticalityE2_reject;
+      e2apRicMsg->choice.initiatingMessage->value.present = InitiatingMessageE2__value_PR_RICsubscriptionRequest;
+
+      ricSubscriptionReq = &e2apRicMsg->choice.initiatingMessage->value.choice.RICsubscriptionRequest;
+
+      elementCnt = 3;
+      ricSubscriptionReq->protocolIEs.list.count = elementCnt;
+      ricSubscriptionReq->protocolIEs.list.size  = elementCnt * sizeof(RICsubscriptionRequest_IEs_t);
+
+      /* Initialize the subscription members */
+      RIC_ALLOC(ricSubscriptionReq->protocolIEs.list.array, ricSubscriptionReq->protocolIEs.list.size);
+      if(ricSubscriptionReq->protocolIEs.list.array == NULLP)
+      {
+         DU_LOG("\nERROR  -->  E2AP : Memory allocation failed at [%s] : line [%d]", __func__, __LINE__);
+         break;
+      }
+
+      for(idx=0; idx<elementCnt; idx++)
+      {
+         RIC_ALLOC(ricSubscriptionReq->protocolIEs.list.array[idx], sizeof(RICsubscriptionRequest_IEs_t));
+         if(ricSubscriptionReq->protocolIEs.list.array[idx] == NULLP)
+         {
+            DU_LOG("\nERROR  -->  E2AP : Memory allocation failed at [%s] : line [%d]", __func__, __LINE__);
+            break;
+         }
+      }
+      if(idx < elementCnt)
+         break;
+
+      /* Filling RIC Request Id */
+      idx = 0;
+      ricSubscriptionReq->protocolIEs.list.array[idx]->id = ProtocolIE_IDE2_id_RICrequestID;
+      ricSubscriptionReq->protocolIEs.list.array[idx]->criticality = CriticalityE2_reject;
+      ricSubscriptionReq->protocolIEs.list.array[idx]->value.present =\
+                                                                      RICsubscriptionRequest_IEs__value_PR_RICrequestID;
+      if(BuildNewRicRequestId(&ricSubscriptionReq->protocolIEs.list.array[idx]->value.choice.RICrequestID, \
+         &ranFuncDb->subscriptionList[ranFuncDb->numOfSubscription].requestId) != ROK)
+      {
+         DU_LOG("\nERROR  -->  E2AP : Failed at [%d] : Line [%d]", __func__, __LINE__);
+         break;
+      }
+
+
+      /* Filling RAN Function Id */
+      idx++;
+      ricSubscriptionReq->protocolIEs.list.array[idx]->id = ProtocolIE_IDE2_id_RANfunctionID;
+      ricSubscriptionReq->protocolIEs.list.array[idx]->criticality = CriticalityE2_reject;
+      ricSubscriptionReq->protocolIEs.list.array[idx]->value.present =\
+                                                                      RICsubscriptionRequest_IEs__value_PR_RANfunctionID;
+      ricSubscriptionReq->protocolIEs.list.array[idx]->value.choice.RANfunctionID = ranFuncDb->id;
+
+      /* Filling RIC Subscription Details */
+      idx++;
+      ricSubscriptionReq->protocolIEs.list.array[idx]->id = ProtocolIE_IDE2_id_RICsubscriptionDetails;
+      ricSubscriptionReq->protocolIEs.list.array[idx]->criticality = CriticalityE2_reject;
+      ricSubscriptionReq->protocolIEs.list.array[idx]->value.present =\
+                                                                      RICsubscriptionRequest_IEs__value_PR_RICsubscriptionDetails;
+      if(BuildRicSubsDetails(&(ricSubscriptionReq->protocolIEs.list.array[idx]->value.choice.RICsubscriptionDetails),\
+         &ranFuncDb->subscriptionList[ranFuncDb->numOfSubscription]) != ROK)
+      {
+         DU_LOG("\nERROR  -->  E2AP : Failed at [%d] : Line [%d]", __func__, __LINE__);
+         break;
+      }
+
+      /* Prints the Msg formed */
+      xer_fprint(stdout, &asn_DEF_E2AP_PDU, e2apRicMsg);
+
+      memset(encBuf, 0, ENC_BUF_MAX_LEN);
+      encBufSize = 0;
+      encRetVal = aper_encode(&asn_DEF_E2AP_PDU, 0, e2apRicMsg, PrepFinalEncBuf, encBuf);
+      if(encRetVal.encoded == ENCODE_FAIL)
+      {
+         DU_LOG("\nERROR  -->  E2AP : Could not encode RicSubscriptionRequest structure (at %s)\n",\
+               encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
+         break;               
+      }
+      else
+      {
+         DU_LOG("\nDEBUG  -->  E2AP : Created APER encoded buffer for RicSubscriptionRequest\n");
+         for(int i=0; i< encBufSize; i++)
+         {
+            DU_LOG("%x",encBuf[i]);
+         } 
+      }
+
+      /* Sending msg */
+      if(SendE2APMsg(RIC_APP_MEM_REG, RIC_POOL, duDb->duId) != ROK)
+      {
+         DU_LOG("\nERROR  -->  E2AP : Sending RIC subscription Request failed");
+         break;
+      }
+
+      ranFuncDb->numOfSubscription++;
+      ret = ROK;
+      break;
    }
 
-
-   /* Sending msg */
-   if(SendE2APMsg(RIC_APP_MEM_REG, RIC_POOL, duId) != ROK)
-   {
-      DU_LOG("\nERROR  -->  E2AP : Sending RIC subscription Request failed");
-      return RFAILED;
-   }
-
-   return ROK;
+   if(ret == RFAILED)
+      memset(&ranFuncDb->subscriptionList[ranFuncDb->numOfSubscription], 0, sizeof(RicSubscription));
+   FreeRicSubscriptionReq(e2apRicMsg);
+   return ret;
 }
 
 /*******************************************************************
@@ -1075,7 +1485,6 @@ uint8_t ProcE2SetupReq(uint32_t *duId, E2setupRequest_t  *e2SetupReq)
                      }
                      case ProtocolIE_IDE2_id_RANfunctionsAdded:
                      {
-                                                               
                         ranFunctionsList = &e2SetupReq->protocolIEs.list.array[arrIdx]->value.choice.RANfunctions_List;
 
                         if(ranFunctionsList->list.array)
@@ -1084,8 +1493,8 @@ uint8_t ProcE2SetupReq(uint32_t *duId, E2setupRequest_t  *e2SetupReq)
                            {
                               ranFuncItemIe = (RANfunction_ItemIEs_t *) ranFunctionsList->list.array[ranFuncIdx]; 
                               ranFunItem = &ranFuncItemIe->value.choice.RANfunction_Item;
-                              duDb->ranFunction[ranFunItem->ranFunctionID-1].id = ranFunItem->ranFunctionID;
-                              duDb->ranFunction[ranFunItem->ranFunctionID-1].revisionCounter = ranFunItem->ranFunctionRevision;
+                              duDb->ranFunction[duDb->numOfRanFunction].id = ranFunItem->ranFunctionID; 
+                              duDb->ranFunction[duDb->numOfRanFunction].revisionCounter = ranFunItem->ranFunctionRevision; 
                               duDb->numOfRanFunction++;
                            }
                         }
@@ -1100,12 +1509,15 @@ uint8_t ProcE2SetupReq(uint32_t *duId, E2setupRequest_t  *e2SetupReq)
                            {
                               if(e2NodeAddList->list.array[e2NodeAddListIdx])
                               {
-                                 e2NodeAddItem = (E2nodeComponentConfigAddition_ItemIEs_t *) e2NodeAddList->list.array[e2NodeAddListIdx];
-                                 if(e2NodeAddItem->value.choice.E2nodeComponentConfigAddition_Item.e2nodeComponentID.choice.\
-                                       e2nodeComponentInterfaceTypeF1)
+                                 e2NodeAddItem = \
+                                    (E2nodeComponentConfigAddition_ItemIEs_t *)e2NodeAddList->list.array[e2NodeAddListIdx];
+                                 if(e2NodeAddItem->value.choice.E2nodeComponentConfigAddition_Item.e2nodeComponentID.\
+                                    choice.e2nodeComponentInterfaceTypeF1)
                                  {
                                     duDb->e2NodeComponent.interfaceType = F1; 
-                                    duDb->e2NodeComponent.componentId = e2NodeAddItem->value.choice.E2nodeComponentConfigAddition_Item.e2nodeComponentID.choice.e2nodeComponentInterfaceTypeF1->gNB_DU_ID.buf[0]; 
+                                    duDb->e2NodeComponent.componentId = \
+                                       e2NodeAddItem->value.choice.E2nodeComponentConfigAddition_Item.e2nodeComponentID.\
+                                       choice.e2nodeComponentInterfaceTypeF1->gNB_DU_ID.buf[0]; 
                                  }
                               }
                            }

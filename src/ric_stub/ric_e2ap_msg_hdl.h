@@ -22,14 +22,16 @@
 #define TRANS_ID 1
 #define RRC_SIZE 1
 #define ENC_BUF_MAX_LEN 100
-#define SUL_BAND_COUNT 0
+#define SUL_BAND_COUNT  0
 #define UL_SRBID        1
 #define DL_SRBID        0
 #define DU_ID           1
-#define RIC_ID           1
+#define RIC_ID          1
 #define CRNTI           17017
 #define CELL_INDEX      0
 
+#define RIC_STYLE_TYPE  1
+#define RIC_ACTION_GRANULARITY_PERIOD 100
 /* allocate and zero out a static buffer */
 #define RIC_ALLOC(_datPtr, _size)                                \
 {                                                               \
@@ -53,7 +55,7 @@
 
 void E2APMsgHdlr(uint32_t *duId, Buffer *mBuf);
 uint8_t BuildAndSendE2SetupRsp(DuDb *duDb, uint8_t transId);
-uint8_t BuildAndSendRicSubscriptionReq(uint32_t duId);
+uint8_t BuildAndSendRicSubscriptionReq(DuDb *duDb);
 uint8_t SendE2APMsg(Region region, Pool pool, uint32_t duId);
 uint8_t BuildAndSendRicServiceQuery(DuDb *duDb);
 /**********************************************************************
