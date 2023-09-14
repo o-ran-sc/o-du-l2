@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ea01066a_88847600",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 3014,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-09-14T10:37:51Z",
+      "side": 1,
+      "message": "what abt the ones which has to be added..  will it come here or like how/where the numOfRanFunToBeAdded will be incremented?",
+      "revId": "063634b685eca86c558c22054d24aa0769735773",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
