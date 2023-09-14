@@ -80,8 +80,8 @@ typedef enum
 /* O-RAN.WG3.E2AP-R003-v03.00 : Section 9.2.11 */
 typedef enum
 {
-   INSERT,
    REPORT,
+   INSERT,
    POLICY
 }ActionType;
 
@@ -261,7 +261,7 @@ typedef struct
 /* O-RAN.WG3.E2SM-KPM-R003-v03.00 : Section 8.2.1.1.1 */
 typedef struct
 {
-   uint32_t reportingPeriod;
+   uint32_t reportingPeriod; /* In milliseconds */
 }EventTriggerFormat1;
 
 /* O-RAN.WG3.E2SM-KPM-R003-v03.00 : Section 8.2.1.1 */
@@ -285,16 +285,13 @@ typedef struct
 /* O-RAN.WG3.E2SM-KPM-R003-v03.00 : Section 8.2.1.2.1 */
 typedef struct
 {
-   union
-   {
-      char     measurementTypeName[STRING_SIZE_150_BYTES];
-      uint16_t measurementTypeId;
-   }choice;
+   char     measurementTypeName[STRING_SIZE_150_BYTES];
+   uint16_t measurementTypeId;
 
    /* As of now Labels are not used, hence it is not implemented completely */
    //uint32_t    numOfLabels;
    //LabelInfo   LabelInfoList[MAX_LABEL_INFO];
-   
+
    CmLListCp   measuredValue;  /* To be filled when numOfLabels is 0, else values are calculated per Label */
 }MeasurementInfo;
 
@@ -333,6 +330,7 @@ typedef struct
 typedef struct
 {
    uint8_t     styleType;
+   uint8_t     formatType;
    union
    {
       ActionDefFormat1  format1;
