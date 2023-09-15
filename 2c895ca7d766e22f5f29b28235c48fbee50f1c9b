@@ -1,0 +1,249 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "812e652b_9aa7300a",
+        "filename": "src/du_app/du_e2ap_mgr.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 231,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-09-15T10:56:32Z",
+      "side": 1,
+      "message": "can we mention the unit of this perios(millisecond)",
+      "revId": "2c895ca7d766e22f5f29b28235c48fbee50f1c9b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "07e5b456_3d205fa4",
+        "filename": "src/du_app/du_e2ap_mgr.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 317,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-09-15T10:56:32Z",
+      "side": 1,
+      "message": "i dont see this in O-RAN.WG3.E2AP-R003-v03.00 9.1.1.1. what is the purpose?",
+      "range": {
+        "startLine": 317,
+        "startChar": 21,
+        "endLine": 317,
+        "endChar": 27
+      },
+      "revId": "2c895ca7d766e22f5f29b28235c48fbee50f1c9b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5de8c467_3bf8a9de",
+        "filename": "src/du_app/du_e2ap_mgr.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 324,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-09-15T10:56:32Z",
+      "side": 1,
+      "message": "just for knowledge, where does this event used bcz I can see that action is used when sending StatsReq to mac",
+      "revId": "2c895ca7d766e22f5f29b28235c48fbee50f1c9b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fbbb1b98_00520a8f",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1760,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-09-15T10:56:32Z",
+      "side": 1,
+      "message": "i know we have only 1 format but we shld check for format type. because as per \"E2SM-KPM-EventTriggerDefinition.h\" it can have two values NOTHING and FORMAT1. for nothing we should return the function\n\ntypedef enum E2SM_KPM_EventTriggerDefinition__eventDefinition_formats_PR {\n        E2SM_KPM_EventTriggerDefinition__eventDefinition_formats_PR_NOTHING,    /* No components present */\n        E2SM_KPM_EventTriggerDefinition__eventDefinition_formats_PR_eventDefinition_Format1\n        /* Extensions may appear below */\n\n} E2SM_KPM_EventTriggerDefinition__eventDefinition_formats_PR;",
+      "revId": "2c895ca7d766e22f5f29b28235c48fbee50f1c9b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c25d9100_01ca6be4",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1764,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-09-15T10:56:32Z",
+      "side": 1,
+      "message": "to avoid repeatition of lines, we can put a break and execute link 1770 once and set the return value accordingly",
+      "range": {
+        "startLine": 1764,
+        "startChar": 12,
+        "endLine": 1764,
+        "endChar": 17
+      },
+      "revId": "2c895ca7d766e22f5f29b28235c48fbee50f1c9b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f5103fdf_ff7383fa",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1909,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-09-15T10:56:32Z",
+      "side": 1,
+      "message": "can we break this two validation ie. ReportStyle and measurement validation into two if possible..",
+      "revId": "2c895ca7d766e22f5f29b28235c48fbee50f1c9b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "22f350bd_18aad03c",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1965,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-09-15T10:56:32Z",
+      "side": 1,
+      "message": "here allocation issue is there so we shld exit from the function because some system failure must exist",
+      "revId": "2c895ca7d766e22f5f29b28235c48fbee50f1c9b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a5f61646_4004cd23",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2135,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-09-15T10:56:32Z",
+      "side": 1,
+      "message": "this is kind of system failure case, breaking from here will only break from switch case but for will go on.. i think we must immediately return from here",
+      "range": {
+        "startLine": 2135,
+        "startChar": 21,
+        "endLine": 2135,
+        "endChar": 26
+      },
+      "revId": "2c895ca7d766e22f5f29b28235c48fbee50f1c9b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "26e5f41f_6181b513",
+        "filename": "src/du_app/du_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2115,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-09-15T10:56:32Z",
+      "side": 1,
+      "message": "what is the meaning of this i dont see in O-RAN.WG3.E2AP-R003-v03.00 9.1.1.1",
+      "range": {
+        "startLine": 2115,
+        "startChar": 66,
+        "endLine": 2115,
+        "endChar": 76
+      },
+      "revId": "2c895ca7d766e22f5f29b28235c48fbee50f1c9b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3b9afdc8_91a09d3f",
+        "filename": "src/du_app/du_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2149,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-09-15T10:56:32Z",
+      "side": 1,
+      "message": "in failure case of measurement type, that part measurementType will added to negative response in subscription response?",
+      "revId": "2c895ca7d766e22f5f29b28235c48fbee50f1c9b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "54eb73a2_720c8faf",
+        "filename": "src/du_app/du_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2160,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-09-15T10:56:32Z",
+      "side": 1,
+      "message": "same as above",
+      "revId": "2c895ca7d766e22f5f29b28235c48fbee50f1c9b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "749fbe5e_8637a984",
+        "filename": "src/du_app/du_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2163,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-09-15T10:56:32Z",
+      "side": 1,
+      "message": "before incrementing the grpIdx, shld we not check whether we have positive value of statsIdx?",
+      "revId": "2c895ca7d766e22f5f29b28235c48fbee50f1c9b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d98e0300_9e7a7557",
+        "filename": "src/du_app/du_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2167,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-09-15T10:56:32Z",
+      "side": 1,
+      "message": "before sending please check whether we have atleast 1 group",
+      "revId": "2c895ca7d766e22f5f29b28235c48fbee50f1c9b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
