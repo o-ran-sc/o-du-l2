@@ -18,6 +18,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ee4be72f_827c38a0",
+        "filename": "src/du_app/du_e2ap_mgr.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 231,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-20T17:40:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "812e652b_9aa7300a",
+      "revId": "2c895ca7d766e22f5f29b28235c48fbee50f1c9b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "07e5b456_3d205fa4",
@@ -41,6 +59,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1020431a_6e09d858",
+        "filename": "src/du_app/du_e2ap_mgr.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 317,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-20T17:40:06Z",
+      "side": 1,
+      "message": "This parameter is not part of spec. This is for internal use to mark this actionInfo to be ADDED at all layers.\nOnce successfully configured, action is marked as UNKNOWN (i.e. no action required).\n\nSimilarly when reconfiguring, the action is marked to be MODIFY and when modification is complete at all layers, action is marked as UNKNOWN (i.e. no action required).",
+      "parentUuid": "07e5b456_3d205fa4",
+      "range": {
+        "startLine": 317,
+        "startChar": 21,
+        "endLine": 317,
+        "endChar": 27
+      },
+      "revId": "2c895ca7d766e22f5f29b28235c48fbee50f1c9b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5de8c467_3bf8a9de",
@@ -54,6 +96,24 @@
       "writtenOn": "2023-09-15T10:56:32Z",
       "side": 1,
       "message": "just for knowledge, where does this event used bcz I can see that action is used when sending StatsReq to mac",
+      "revId": "2c895ca7d766e22f5f29b28235c48fbee50f1c9b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0ff1de50_935c3988",
+        "filename": "src/du_app/du_e2ap_mgr.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 324,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-20T17:40:06Z",
+      "side": 1,
+      "message": "This is using at E2 interface only. It tells when will an action be triggered.\nIn E2SM-KPM only periodic reporting is supported.",
+      "parentUuid": "5de8c467_3bf8a9de",
       "revId": "2c895ca7d766e22f5f29b28235c48fbee50f1c9b",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -98,6 +158,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8b48b226_096618f4",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1764,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-20T17:40:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c25d9100_01ca6be4",
+      "range": {
+        "startLine": 1764,
+        "startChar": 12,
+        "endLine": 1764,
+        "endChar": 17
+      },
+      "revId": "2c895ca7d766e22f5f29b28235c48fbee50f1c9b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f5103fdf_ff7383fa",
@@ -111,6 +195,24 @@
       "writtenOn": "2023-09-15T10:56:32Z",
       "side": 1,
       "message": "can we break this two validation ie. ReportStyle and measurement validation into two if possible..",
+      "revId": "2c895ca7d766e22f5f29b28235c48fbee50f1c9b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "47cbd957_8e882058",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1909,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-20T17:40:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f5103fdf_ff7383fa",
       "revId": "2c895ca7d766e22f5f29b28235c48fbee50f1c9b",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -132,6 +234,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e3cc3381_793032ab",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1965,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-20T17:40:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "22f350bd_18aad03c",
+      "revId": "2c895ca7d766e22f5f29b28235c48fbee50f1c9b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a5f61646_4004cd23",
@@ -145,6 +265,30 @@
       "writtenOn": "2023-09-15T10:56:32Z",
       "side": 1,
       "message": "this is kind of system failure case, breaking from here will only break from switch case but for will go on.. i think we must immediately return from here",
+      "range": {
+        "startLine": 2135,
+        "startChar": 21,
+        "endLine": 2135,
+        "endChar": 26
+      },
+      "revId": "2c895ca7d766e22f5f29b28235c48fbee50f1c9b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "76851f6a_640d6fd2",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2135,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-20T17:40:06Z",
+      "side": 1,
+      "message": "After breaking from switch, ret is checked.\nIf ret \u003d\u003d failure, the for loop breaks too.",
+      "parentUuid": "a5f61646_4004cd23",
       "range": {
         "startLine": 2135,
         "startChar": 21,
@@ -178,6 +322,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "396d4c30_7b2e04d9",
+        "filename": "src/du_app/du_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2115,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-20T17:40:06Z",
+      "side": 1,
+      "message": "Explained in comment in du_e2ap_mgr.h",
+      "parentUuid": "26e5f41f_6181b513",
+      "range": {
+        "startLine": 2115,
+        "startChar": 66,
+        "endLine": 2115,
+        "endChar": 76
+      },
+      "revId": "2c895ca7d766e22f5f29b28235c48fbee50f1c9b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3b9afdc8_91a09d3f",
@@ -191,6 +359,24 @@
       "writtenOn": "2023-09-15T10:56:32Z",
       "side": 1,
       "message": "in failure case of measurement type, that part measurementType will added to negative response in subscription response?",
+      "revId": "2c895ca7d766e22f5f29b28235c48fbee50f1c9b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6fe19e50_46fa0300",
+        "filename": "src/du_app/du_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2149,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-20T17:40:06Z",
+      "side": 1,
+      "message": "If a measurement type fails, the action to which this measurement belong, that whole action will be added to rejected-action_list in subscription response in future gerrit.",
+      "parentUuid": "3b9afdc8_91a09d3f",
       "revId": "2c895ca7d766e22f5f29b28235c48fbee50f1c9b",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -212,6 +398,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8a49a907_6d8db701",
+        "filename": "src/du_app/du_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2160,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-20T17:40:06Z",
+      "side": 1,
+      "message": "If a failure happens here, the action to which this measurement belong, that whole action will be added to rejected-action_list in subscription response in future gerrit.",
+      "parentUuid": "54eb73a2_720c8faf",
+      "revId": "2c895ca7d766e22f5f29b28235c48fbee50f1c9b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "749fbe5e_8637a984",
@@ -229,6 +433,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2d77ce4e_4c9cd489",
+        "filename": "src/du_app/du_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2163,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-20T17:40:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "749fbe5e_8637a984",
+      "revId": "2c895ca7d766e22f5f29b28235c48fbee50f1c9b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d98e0300_9e7a7557",
@@ -242,6 +464,24 @@
       "writtenOn": "2023-09-15T10:56:32Z",
       "side": 1,
       "message": "before sending please check whether we have atleast 1 group",
+      "revId": "2c895ca7d766e22f5f29b28235c48fbee50f1c9b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7a31172c_d3495758",
+        "filename": "src/du_app/du_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2167,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-20T17:40:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d98e0300_9e7a7557",
       "revId": "2c895ca7d766e22f5f29b28235c48fbee50f1c9b",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
