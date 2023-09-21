@@ -35,6 +35,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "10937632_e8d87da6",
+        "filename": "src/ric_stub/ric_e2ap_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 757,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-21T11:40:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a3595c5b_ef5ec1e3",
+      "revId": "2eb4e59ba22b9516a030920bd99f4027eed4c707",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "04194549_e7bc5b70",
@@ -48,6 +66,24 @@
       "writtenOn": "2023-09-21T04:57:27Z",
       "side": 1,
       "message": "same as above",
+      "revId": "2eb4e59ba22b9516a030920bd99f4027eed4c707",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3e42e9f4_47d2049d",
+        "filename": "src/ric_stub/ric_e2ap_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 808,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-21T11:40:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "04194549_e7bc5b70",
       "revId": "2eb4e59ba22b9516a030920bd99f4027eed4c707",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -69,6 +105,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "062e005d_5380829c",
+        "filename": "src/ric_stub/ric_e2ap_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 874,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-21T11:40:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "127e166f_e4532f79",
+      "revId": "2eb4e59ba22b9516a030920bd99f4027eed4c707",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d8302ca5_8c433f38",
@@ -82,6 +136,24 @@
       "writtenOn": "2023-09-21T04:57:27Z",
       "side": 1,
       "message": "are we not going to store any subscription related infromation in ric db?",
+      "revId": "2eb4e59ba22b9516a030920bd99f4027eed4c707",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5b476b81_29a59893",
+        "filename": "src/ric_stub/ric_e2ap_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1079,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-21T11:40:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d8302ca5_8c433f38",
       "revId": "2eb4e59ba22b9516a030920bd99f4027eed4c707",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -103,6 +175,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d470ea26_ab48769e",
+        "filename": "src/ric_stub/ric_e2ap_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1081,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-21T11:40:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9591888b_3dc6f08b",
+      "revId": "2eb4e59ba22b9516a030920bd99f4027eed4c707",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1e51107b_16119d37",
@@ -116,6 +206,24 @@
       "writtenOn": "2023-09-21T04:57:27Z",
       "side": 1,
       "message": "i think its better to store the information based on ran function id index, rather than number of ran function.",
+      "revId": "2eb4e59ba22b9516a030920bd99f4027eed4c707",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "59a7a791_27512b9f",
+        "filename": "src/ric_stub/ric_e2ap_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1462,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-21T11:40:21Z",
+      "side": 1,
+      "message": "As discussed, this will be taken care when making changes for E2 setup failure",
+      "parentUuid": "1e51107b_16119d37",
       "revId": "2eb4e59ba22b9516a030920bd99f4027eed4c707",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
