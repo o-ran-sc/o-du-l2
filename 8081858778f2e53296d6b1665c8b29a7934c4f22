@@ -1,0 +1,174 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "440355d2_63cabf77",
+        "filename": "src/du_app/du_mgr_main.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 588,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-21T12:31:10Z",
+      "side": 1,
+      "message": "revert",
+      "revId": "8081858778f2e53296d6b1665c8b29a7934c4f22",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a62f116c_c7ea1cb0",
+        "filename": "src/ric_stub/ric_e2ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1807,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-21T12:31:10Z",
+      "side": 1,
+      "message": "initialise all",
+      "revId": "8081858778f2e53296d6b1665c8b29a7934c4f22",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a9a77e80_266c15e7",
+        "filename": "src/ric_stub/ric_e2ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2006,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-21T12:31:10Z",
+      "side": 1,
+      "message": "initialise",
+      "revId": "8081858778f2e53296d6b1665c8b29a7934c4f22",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "09c3a964_bdb13fec",
+        "filename": "src/ric_stub/ric_e2ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2012,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-21T12:31:10Z",
+      "side": 1,
+      "message": "have null check here instead of if-else\nIf null, return",
+      "revId": "8081858778f2e53296d6b1665c8b29a7934c4f22",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "172ec3b1_f33f551d",
+        "filename": "src/ric_stub/ric_e2ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2027,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-21T12:31:10Z",
+      "side": 1,
+      "message": "2026 and 2027 are same lines",
+      "revId": "8081858778f2e53296d6b1665c8b29a7934c4f22",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eb03a644_e48fd280",
+        "filename": "src/ric_stub/ric_e2ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2059,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-21T12:31:10Z",
+      "side": 1,
+      "message": "Initialise all params",
+      "revId": "8081858778f2e53296d6b1665c8b29a7934c4f22",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d21ae72b_9b49a74d",
+        "filename": "src/ric_stub/ric_e2ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2213,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-21T12:31:10Z",
+      "side": 1,
+      "message": "initialise all to null",
+      "revId": "8081858778f2e53296d6b1665c8b29a7934c4f22",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "11aa4f02_ec248635",
+        "filename": "src/ric_stub/ric_e2ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2342,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-21T12:31:10Z",
+      "side": 1,
+      "message": "reduce duDb-\u003enumOfRanFunction by 1",
+      "revId": "8081858778f2e53296d6b1665c8b29a7934c4f22",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f8dc0e7e_6a6c5864",
+        "filename": "src/ric_stub/ric_stub.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-21T12:31:10Z",
+      "side": 1,
+      "message": "accepted list",
+      "revId": "8081858778f2e53296d6b1665c8b29a7934c4f22",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a8053f8b_87fd5f9c",
+        "filename": "src/ric_stub/ric_stub.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-21T12:31:10Z",
+      "side": 1,
+      "message": "remove mod list",
+      "revId": "8081858778f2e53296d6b1665c8b29a7934c4f22",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
