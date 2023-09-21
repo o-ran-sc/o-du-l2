@@ -50,6 +50,7 @@
 #include "E2SM-KPM-ActionDefinition.h"
 #include "E2SM-KPM-ActionDefinition-Format1.h"
 #include "MeasurementInfoItem.h"
+#include "RANfunctionsIDcause-List.h"
 
 /*******************************************************************
  *
@@ -3482,6 +3483,7 @@ uint8_t BuildAndSendRicServiceUpdate(RicServiceUpdate serviceUpdate)
       }
       duCb.e2apDb.e2TimersInfo.e2Timers.ricServiceUpdateTimer.ricService.dir = serviceUpdate.dir;
       duCb.e2apDb.e2TimersInfo.e2Timers.ricServiceUpdateTimer.ricService.transId =transId;
+      memcpy(&duCb.e2apDb.e2TimersInfo.e2Timers.ricServiceUpdateTimer.ricService.recvRanFuncList, &serviceUpdate.recvRanFuncList, sizeof(E2TmpRanFunList));
    }
    FreeRicServiceUpdate(e2apMsg);
    return ret;
@@ -3597,6 +3599,240 @@ void procRicServiceQuery(E2AP_PDU_t *e2apMsg)
    freeAperDecodingOfRicServiceQuery(ricServiceQuery);
 }
 
+/******************************************************************
+ *
+ * @brief Deallocation of memory allocated by aper decoder for 
+ *    RIC service update ack
+ *
+ * @details
+ *
+ *    Function : freeAperDecodingOfRicServiceUpdateAck
+ *
+ *    Functionality: Deallocation of memory allocated by aper decoder 
+ *    for RIC service update ack
+ *
+ * @params[in] RICserviceUpdateAck_t *ricServiceAck;
+ * @return void
+ *
+ * ****************************************************************/
+
+void freeAperDecodingOfRicServiceUpdateAck(RICserviceUpdateAcknowledge_t *ricServiceAck)
+{
+   uint8_t arrIdx=0,ranFuncIdx=0;
+   RANfunctionsID_List_t *ranFuncAddedList=NULL;
+
+   if(ricServiceAck)
+   {
+      if(ricServiceAck->protocolIEs.list.array)
+      {
+         for(arrIdx=0; arrIdx<ricServiceAck->protocolIEs.list.count; arrIdx++)
+         {
+            if(ricServiceAck->protocolIEs.list.array[arrIdx])
+            {
+               switch(ricServiceAck->protocolIEs.list.array[arrIdx]->id)
+               {
+                  case ProtocolIE_IDE2_id_RANfunctionsAccepted:
+                  {
+                     ranFuncAddedList= &ricServiceAck->protocolIEs.list.array[arrIdx]->value.choice.RANfunctionsID_List;
+                     if(ranFuncAddedList->list.array)
+                     {
+                        for(ranFuncIdx=0;ranFuncIdx<ranFuncAddedList->list.count; ranFuncIdx++)
+                        {
+                           free(ranFuncAddedList->list.array[ranFuncIdx]);
+                        }
+                        free(ranFuncAddedList->list.array);
+                     }
+                     break;
+                  }
+                  default:
+                     break;
+               }
+               free(ricServiceAck->protocolIEs.list.array[arrIdx]);  
+            }
+         }
+         free(ricServiceAck->protocolIEs.list.array);
+      }
+   }
+}
+
+/******************************************************************
+ *
+ * @brief Processes RIC service update ack sent by RIC
+ *
+ * @details
+ *
+ *    Function : procRicServiceUpdateAck
+ *
+ *    Functionality: Processes RIC service update ack sent by RIC
+ *
+ * @params[in] E2AP_PDU_t ASN decoded E2AP message
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+
+void procRicServiceUpdateAck(E2AP_PDU_t *e2apMsg)
+{
+   uint8_t arrIdx =0, transId =0; 
+   uint16_t id =0, tmpIdx=0, ranFuncIdx=0;
+   RicServiceUpdate serviceUpdate;
+   RANfunctionsIDcause_List_t *rejectedList=NULL;
+   RICserviceUpdateAcknowledge_t *ricServiceAck=NULL;
+   RANfunctionIDcause_ItemIEs_t *ranFuncRejectedItemIe=NULL;
+   
+   DU_LOG("\nINFO   -->  E2AP : RIC service update ack received"); 
+   memset(&serviceUpdate, 0, sizeof(RicServiceUpdate));
+   ricServiceAck = &e2apMsg->choice.successfulOutcome->value.choice.RICserviceUpdateAcknowledge;
+   
+   for(arrIdx=0; arrIdx<ricServiceAck->protocolIEs.list.count; arrIdx++)
+   {
+      switch(ricServiceAck->protocolIEs.list.array[arrIdx]->id)
+      {
+         case ProtocolIE_IDE2_id_TransactionID:
+         {
+            transId = ricServiceAck->protocolIEs.list.array[arrIdx]->value.choice.TransactionID;
+            if((duCb.e2apDb.e2TransInfo.e2InitTransaction[transId].transactionId == transId) &&\
+            (duCb.e2apDb.e2TransInfo.e2InitTransaction[transId].procedureCode == e2apMsg->choice.unsuccessfulOutcome->procedureCode))
+            {
+              memset(&duCb.e2apDb.e2TransInfo.e2InitTransaction[transId], 0, sizeof(E2TransInfo));
+            }
+            else if((duCb.e2apDb.e2TransInfo.ricInitTransaction[transId].transactionId == transId) &&\
+            (duCb.e2apDb.e2TransInfo.ricInitTransaction[transId].procedureCode == e2apMsg->choice.unsuccessfulOutcome->procedureCode))
+            {
+              memset(&duCb.e2apDb.e2TransInfo.ricInitTransaction[transId], 0, sizeof(E2TransInfo));
+            }
+            else
+            {
+               DU_LOG("\nERROR  -->  E2AP : Invalid transaction id [%d]", transId);
+               return ;
+            }
+            break;
+         }
+         
+         case ProtocolIE_IDE2_id_RANfunctionsAccepted:
+            break;
+
+         case ProtocolIE_IDE2_id_RANfunctionsRejected:
+         {
+            rejectedList= &ricServiceAck->protocolIEs.list.array[arrIdx]->value.choice.RANfunctionsIDcause_List;
+            if(rejectedList->list.array)
+            {
+               for(ranFuncIdx=0;ranFuncIdx<rejectedList->list.count; ranFuncIdx++)
+               {
+                  ranFuncRejectedItemIe =  (RANfunctionIDcause_ItemIEs_t*)rejectedList->list.array[ranFuncIdx];
+                  id = ranFuncRejectedItemIe->value.choice.RANfunctionIDcause_Item.ranFunctionID;
+                  tmpIdx= serviceUpdate.recvRanFuncList.numOfRanFunToBeAdded;
+                  serviceUpdate.recvRanFuncList.ranFunToBeAdded[tmpIdx].id = duCb.e2apDb.ranFunction[id-1].id;
+                  serviceUpdate.recvRanFuncList.ranFunToBeAdded[tmpIdx].revisionCounter = duCb.e2apDb.ranFunction[id-1].revisionCounter;
+                  serviceUpdate.recvRanFuncList.numOfRanFunToBeAdded++;
+               }
+            }
+            break;
+         }
+
+      }
+   }
+
+   if(serviceUpdate.recvRanFuncList.numOfRanFunToBeAdded)
+   {
+      serviceUpdate.dir = E2_NODE_INITIATED;
+      BuildAndSendRicServiceUpdate(serviceUpdate);
+   }
+   freeAperDecodingOfRicServiceUpdateAck(ricServiceAck);
+}
+
+/******************************************************************
+ *
+ * @brief Deallocation of memory allocated bu aper decoder for 
+ *       RIC service update failure
+ *
+ * @details
+ *
+ *    Function : freeAperDecodingOfRicServiceUpdateFailure
+ *
+ *    Functionality: Deallocation of memory allocated bu aper decoder 
+ *    for RIC service update failure
+ *
+ * @params[in] RICserviceUpdateFailure_t *ricServiceFailure;
+ * @return void
+ *
+ * ****************************************************************/
+
+void freeAperDecodingOfRicServiceUpdateFailure(RICserviceUpdateFailure_t *ricServiceFailure)
+{
+   uint8_t arrIdx=0;
+
+   if(ricServiceFailure)
+   {
+      if(ricServiceFailure->protocolIEs.list.array)
+      {
+         for(arrIdx=0; arrIdx<ricServiceFailure->protocolIEs.list.count; arrIdx++)
+         {
+            if(ricServiceFailure->protocolIEs.list.array[arrIdx])
+            {
+               free(ricServiceFailure->protocolIEs.list.array[arrIdx]);  
+            }
+         }
+         free(ricServiceFailure->protocolIEs.list.array);
+      }
+   }
+}
+
+/******************************************************************
+ *
+ * @brief Processes RIC service update failure sent by RIC
+ *
+ * @details
+ *
+ *    Function : procRicServiceUpdateFailure
+ *
+ *    Functionality: Processes RIC service update failure sent by RIC
+ *
+ * @params[in] E2AP_PDU_t ASN decoded E2AP message
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+
+void procRicServiceUpdateFailure(E2AP_PDU_t *e2apMsg)
+{
+   uint8_t arrIdx =0, timerValue=0; 
+   RICserviceUpdateFailure_t *ricServiceFailure=NULL;
+
+   DU_LOG("\nINFO   -->  E2AP : RIC service update failure received"); 
+   ricServiceFailure = &e2apMsg->choice.unsuccessfulOutcome->value.choice.RICserviceUpdateFailure;
+
+   for(arrIdx=0; arrIdx<ricServiceFailure->protocolIEs.list.count; arrIdx++)
+   {
+      switch(ricServiceFailure->protocolIEs.list.array[arrIdx]->id)
+      {
+         case ProtocolIE_IDE2_id_TransactionID:
+            {
+               break;
+            }
+         case ProtocolIE_IDE2_id_TimeToWaitE2:
+            {
+               timerValue = covertE2WaitTimerEnumToValue(ricServiceFailure->protocolIEs.list.array[arrIdx]->value.choice.TimeToWaitE2);
+               if((duChkTmr((PTR)&(duCb.e2apDb.e2TimersInfo.e2Timers.ricServiceUpdateTimer), EVENT_RIC_SERVICE_UPDATE_TMR)) == FALSE)
+               {
+                  duStartTmr((PTR)&(duCb.e2apDb.e2TimersInfo.e2Timers.ricServiceUpdateTimer), EVENT_RIC_SERVICE_UPDATE_TMR, timerValue);
+               }
+               else
+               {
+                  DU_LOG("\nERROR   -->  E2AP : EVENT_RIC_SERVICE_UPDATE_TMR  timer is already running");
+                  return;
+               }
+               break; 
+            }
+         case ProtocolIE_IDE2_id_CauseE2:
+            {
+               break;
+            }
+      }
+   }
+
+   freeAperDecodingOfRicServiceUpdateFailure(ricServiceFailure);
+}
 
 /*******************************************************************
  *
@@ -3677,6 +3913,11 @@ void E2APMsgHdlr(Buffer *mBuf)
                      procE2SetupFailure(e2apMsg);
                      break;
                   }
+               case UnsuccessfulOutcomeE2__value_PR_RICserviceUpdateFailure:
+                  {
+                     procRicServiceUpdateFailure(e2apMsg);
+                     break;
+                  }
                default:
                   {
                      DU_LOG("\nERROR  -->  E2AP : Invalid type of E2AP_PDU_PR_unsuccessfulOutcome  [%d]",\
@@ -3708,6 +3949,13 @@ void E2APMsgHdlr(Buffer *mBuf)
                      procResetResponse(e2apMsg);
                      break;
                   }
+               case SuccessfulOutcomeE2__value_PR_RICserviceUpdateAcknowledge:
+                  {
+                     procRicServiceUpdateAck(e2apMsg);
+                     break;
+                  }
+
+
                default:
                   {
                      DU_LOG("\nERROR  -->  E2AP : Invalid type of E2AP_PDU_PR_successfulOutcome  [%d]",\
