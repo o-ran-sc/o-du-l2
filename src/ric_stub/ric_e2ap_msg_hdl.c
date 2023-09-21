@@ -1493,8 +1493,8 @@ uint8_t ProcE2SetupReq(uint32_t *duId, E2setupRequest_t  *e2SetupReq)
                            {
                               ranFuncItemIe = (RANfunction_ItemIEs_t *) ranFunctionsList->list.array[ranFuncIdx]; 
                               ranFunItem = &ranFuncItemIe->value.choice.RANfunction_Item;
-                              duDb->ranFunction[duDb->numOfRanFunction].id = ranFunItem->ranFunctionID; 
-                              duDb->ranFunction[duDb->numOfRanFunction].revisionCounter = ranFunItem->ranFunctionRevision; 
+                              duDb->ranFunction[ranFunItem->ranFunctionID-1].id = ranFunItem->ranFunctionID; 
+                              duDb->ranFunction[ranFunItem->ranFunctionID-1].revisionCounter = ranFunItem->ranFunctionRevision; 
                               duDb->numOfRanFunction++;
                            }
                         }
@@ -2779,6 +2779,95 @@ void ProcRicServiceUpdate(uint32_t duId, RICserviceUpdate_t *ricServiceUpdate)
    }
 }
 
+/*******************************************************************
+ *
+ * @brief Processing RIC subscription failure from DU
+ *
+ * @details
+ *
+ *    Function : ProcRicSubscriptionFailure
+ *
+ * Functionality: Processing RIC subscription failure from DU
+ *
+ * @param  ID of DU from which message was sent
+ *         RIC Subscription failure message
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ ******************************************************************/
+uint8_t ProcRicSubscriptionFailure(uint32_t duId, RICsubscriptionFailure_t *ricSubscriptionFailure)
+{
+   uint8_t ieIdx = 0, duIdx = 0, subsIdx = 0;
+   uint8_t ranFuncId = 0;
+   bool   ricReqIdDecoded = false;
+   DuDb    *duDb = NULLP;
+   RanFunction *ranFuncDb = NULLP;
+   RicRequestId ricReqId;
+   RICsubscriptionFailure_IEs_t *ricSubsFailIe = NULLP;
+
+   DU_LOG("\nINFO  -->  E2AP : Received RIC subscription failure");
+
+   SEARCH_DU_DB(duIdx, duId, duDb);
+   if(duDb == NULLP)
+   {
+      DU_LOG("\nERROR  -->  E2AP : duDb is not present for duId %d",duId);
+      return;
+   }
+
+   memset(&ricReqId, 0, sizeof(RicRequestId));
+   if(ricSubscriptionFailure)
+   {
+      if(ricSubscriptionFailure->protocolIEs.list.array)
+      {
+         for(ieIdx=0; ieIdx<ricSubscriptionFailure->protocolIEs.list.count; ieIdx++)
+         {
+            if(ricSubscriptionFailure->protocolIEs.list.array[ieIdx])
+            {
+               ricSubsFailIe = ricSubscriptionFailure->protocolIEs.list.array[ieIdx];
+               switch(ricSubscriptionFailure->protocolIEs.list.array[ieIdx]->id)
+               {
+                  case ProtocolIE_IDE2_id_RICrequestID:
+                  {
+                     ricReqId.requestorId = ricSubsFailIe->value.choice.RICrequestID.ricRequestorID;
+                     ricReqId.instanceId = ricSubsFailIe->value.choice.RICrequestID.ricInstanceID;
+                     ricReqIdDecoded = true;
+                     break;
+                  }
+                  case ProtocolIE_IDE2_id_RANfunctionID:
+                  {
+                     ranFuncId = ricSubsFailIe->value.choice.RANfunctionID;
+                     if(duDb->ranFunction[ranFuncId-1].id == ranFuncId)
+                     {
+                        ranFuncDb = &duDb->ranFunction[ranFuncId-1];
+                     }
+                     break; 
+                  }
+                  case ProtocolIE_IDE2_id_CauseE2:
+                  default:
+                     /* No handling required as of now since this is a stub */
+                     break;
+
+               }
+            }
+         }
+
+         /* Remove subscription entry from RAN Function */
+         if(ranFuncDb && ricReqIdDecoded)
+         {
+            for(subsIdx = 0; subsIdx < ranFuncDb->numOfSubscription; subsIdx++)
+            {
+               if((ranFuncDb->subscriptionList[subsIdx].requestId.requestorId == ricReqId.requestorId) &&
+                     (ranFuncDb->subscriptionList[subsIdx].requestId.instanceId == ricReqId.instanceId))
+               {
+                  memset(&ranFuncDb->subscriptionList[subsIdx], 0, sizeof(RicSubscription));
+                  break;
+               }
+            }
+         }
+      }
+   }
+   return ROK;
+}
 
 /*******************************************************************
 *
@@ -2907,6 +2996,25 @@ void E2APMsgHdlr(uint32_t *duId, Buffer *mBuf)
                   break;
             }
             break; 
+         }
+         case E2AP_PDU_PR_unsuccessfulOutcome:
+         {
+            switch(e2apMsg->choice.successfulOutcome->value.present)
+            {
+               case UnsuccessfulOutcomeE2__value_PR_RICsubscriptionFailure:
+                  {
+                     ProcRicSubscriptionFailure(*duId, \
+                        &e2apMsg->choice.unsuccessfulOutcome->value.choice.RICsubscriptionFailure);
+                     break;
+                  }
+               default:
+                  {
+                     DU_LOG("\nERROR  -->  E2AP : Invalid type of unsuccessfulOutcome message [%d]", \
+                        e2apMsg->choice.unsuccessfulOutcome->value.present);
+                     return;
+                  }
+            }
+            break;
          }
       default:
          {
