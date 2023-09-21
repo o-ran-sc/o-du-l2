@@ -24,6 +24,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8d02e098_a4039f63",
+        "filename": "src/ric_stub/ric_e2ap_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 657,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-21T13:39:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6979ce03_f4b73e57",
+      "range": {
+        "startLine": 657,
+        "startChar": 31,
+        "endLine": 657,
+        "endChar": 39
+      },
+      "revId": "aac6b928dbe762c2ddadb8006c03cc1bd7263841",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "484a1d4e_15962942",
@@ -41,6 +65,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6bf264ee_e4d7930d",
+        "filename": "src/ric_stub/ric_e2ap_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 668,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-21T13:39:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "484a1d4e_15962942",
+      "revId": "aac6b928dbe762c2ddadb8006c03cc1bd7263841",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a73b191a_04edc777",
@@ -54,6 +96,24 @@
       "writtenOn": "2023-09-21T12:39:31Z",
       "side": 1,
       "message": "update",
+      "revId": "aac6b928dbe762c2ddadb8006c03cc1bd7263841",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "72ae9764_b42c34d3",
+        "filename": "src/ric_stub/ric_e2ap_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 865,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-21T13:39:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a73b191a_04edc777",
       "revId": "aac6b928dbe762c2ddadb8006c03cc1bd7263841",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -81,6 +141,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "70cecab7_20b28ed2",
+        "filename": "src/ric_stub/ric_e2ap_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 872,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-21T13:39:46Z",
+      "side": 1,
+      "message": "static in itself mean that every time this function gets called, it will use its previously updated value and not 0.\nThis is tested and working.",
+      "parentUuid": "04a1c193_4d0b1cfb",
+      "range": {
+        "startLine": 872,
+        "startChar": 3,
+        "endLine": 872,
+        "endChar": 9
+      },
+      "revId": "aac6b928dbe762c2ddadb8006c03cc1bd7263841",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5c03f7ab_ad790426",
@@ -94,6 +178,24 @@
       "writtenOn": "2023-09-21T12:39:31Z",
       "side": 1,
       "message": "update",
+      "revId": "aac6b928dbe762c2ddadb8006c03cc1bd7263841",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "51e302f3_5d4a99f9",
+        "filename": "src/ric_stub/ric_e2ap_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1024,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-21T13:39:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5c03f7ab_ad790426",
       "revId": "aac6b928dbe762c2ddadb8006c03cc1bd7263841",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
