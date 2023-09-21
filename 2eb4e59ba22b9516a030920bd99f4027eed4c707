@@ -18,6 +18,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "11111e79_99019714",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 2052,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-21T11:43:20Z",
+      "side": 1,
+      "message": "This is success scenario. ActionDefDb must not be memset here",
+      "parentUuid": "f9a2015a_f5b8256c",
+      "revId": "2eb4e59ba22b9516a030920bd99f4027eed4c707",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a3595c5b_ef5ec1e3",
