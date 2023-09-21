@@ -2436,7 +2436,7 @@ uint8_t BuildRanFunctionRejectedList(uint8_t count, RanFunction *ranFunRejectedL
          return RFAILED;
       }
       ranFuncRejectedItemIe = (RANfunctionIDcause_ItemIEs_t*)ranFuncRejectedList->list.array[ranFuncIdx];
-      ranFuncRejectedItemIe->id = ProtocolIE_IDE2_id_RANfunctionID_Item;
+      ranFuncRejectedItemIe->id = ProtocolIE_IDE2_id_RANfunctionIEcause_Item;
       ranFuncRejectedItemIe->criticality= CriticalityE2_ignore;
       ranFuncRejectedItemIe->value.present = RANfunctionIDcause_ItemIEs__value_PR_RANfunctionIDcause_Item;
       ranFuncRejectedItemIe->value.choice.RANfunctionIDcause_Item.ranFunctionID = ranFunRejectedList[ranFuncIdx].id;
