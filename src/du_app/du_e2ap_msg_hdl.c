@@ -53,6 +53,62 @@
 
 /*******************************************************************
  *
+ * @brief Fill E2 Failure Cause
+ *
+ * @details
+ *
+ *    Function : fillE2Cause
+ *
+ *    Functionality: Fill E2 Failure Cause
+ *
+ * @params[in] E2 Cause pointer to be filled in
+ *             E2 Cause to be filled from 
+ * @return void
+ *
+ ******************************************************************/
+void fillE2Cause(CauseE2_t *e2Cause, E2FailureCause failureCause)
+{
+   e2Cause->present = failureCause.causeType;
+   switch(e2Cause->present)
+   {
+      case CauseE2_PR_ricRequest:
+         {
+            e2Cause->choice.ricRequest = failureCause.cause;
+            break;
+         }
+      case CauseE2_PR_ricService:
+         {
+            e2Cause->choice.ricService = failureCause.cause;
+            break;
+         }
+      case CauseE2_PR_e2Node:
+         {
+            e2Cause->choice.e2Node = failureCause.cause;
+            break;
+         }
+      case CauseE2_PR_transport:
+         {
+            e2Cause->choice.transport = failureCause.cause;
+            break;
+         }
+      case CauseE2_PR_protocol:
+         {
+            e2Cause->choice.protocol = failureCause.cause;
+            break;
+         }
+      case CauseE2_PR_misc:
+         {
+            e2Cause->choice.misc = failureCause.cause;
+            break;
+         }
+      case CauseE2_PR_NOTHING:
+      default:
+         break;
+   }
+}
+
+/*******************************************************************
+ *
  * @brief Builds Global gNodeB Params
  *
  * @details
@@ -1736,7 +1792,8 @@ void  freeAperDecodingOfEventTriggerDef(E2SM_KPM_EventTriggerDefinition_t *event
  *         RFAILED - failure
  *
  ******************************************************************/
-uint8_t extractEventTriggerDef(RanFunction *ranFuncDb, RicSubscription *ricSubscriptionInfo, RICeventTriggerDefinition_t *ricEventTriggerDef)
+uint8_t extractEventTriggerDef(RanFunction *ranFuncDb, RicSubscription *ricSubscriptionInfo, \
+   RICeventTriggerDefinition_t *ricEventTriggerDef, E2FailureCause *failureCause)
 {
    uint8_t ret = RFAILED;
    uint8_t eventIdx = 0;
@@ -1752,6 +1809,8 @@ uint8_t extractEventTriggerDef(RanFunction *ranFuncDb, RicSubscription *ricSubsc
    if(rval.code == RC_FAIL || rval.code == RC_WMORE)
    {
       DU_LOG("\nERROR  -->  E2AP : ASN decode failed for E2SM-KPM Event Trigger Definition");
+      failureCause->causeType = E2_PROTOCOL; 
+      failureCause->cause = E2_ABSTRACT_SYNTAX_ERROR_FALSELY_CONSTRUCTED_MESSAGE;
       return RFAILED;
    }
    printf("\n");
@@ -1773,6 +1832,11 @@ uint8_t extractEventTriggerDef(RanFunction *ranFuncDb, RicSubscription *ricSubsc
       }
    }
 
+   if(ret == RFAILED)
+   {
+      failureCause->causeType = E2_RIC_REQUEST;
+      failureCause->cause = E2_EVENT_TRIGGER_NOT_SUPPORTED;
+   }
    /* Free E2SM_KPM_EventTriggerDefinition_t */
    freeAperDecodingOfEventTriggerDef(eventTiggerDefPtr);
    return ret;
@@ -1996,7 +2060,8 @@ uint8_t extractMeasInfoList(CmLListCp *measInfoSupportedList, MeasurementInfoLis
  *         RFAILED - failure
  *
  ******************************************************************/
-uint8_t extractRicActionDef(RanFunction *ranFuncDb, ActionDefinition *actionDefDb, RICactionDefinition_t *ricActionDef)
+uint8_t extractRicActionDef(RanFunction *ranFuncDb, ActionDefinition *actionDefDb, RICactionDefinition_t *ricActionDef,\
+   E2FailureCause *failureCause)
 {
    bool memFailure = false;
    uint8_t styleIdx = 0;
@@ -2016,6 +2081,8 @@ uint8_t extractRicActionDef(RanFunction *ranFuncDb, ActionDefinition *actionDefD
    if(rval.code == RC_FAIL || rval.code == RC_WMORE)
    {
       DU_LOG("\nERROR  -->  E2AP : ASN decode failed for E2SM-KPM Action Definition");
+      failureCause->causeType = E2_PROTOCOL;
+      failureCause->cause = E2_ABSTRACT_SYNTAX_ERROR_FALSELY_CONSTRUCTED_MESSAGE;
       return RFAILED;
    }
    printf("\n");
@@ -2068,12 +2135,22 @@ uint8_t extractRicActionDef(RanFunction *ranFuncDb, ActionDefinition *actionDefD
       }
 
       if(memFailure)
+      {
+         failureCause->causeType = E2_MISCELLANEOUS;
+         failureCause->cause = E2_MISCELLANEOUS_CAUSE_UNSPECIFIED; 
          break;
+      }
    } /* End of for loop, traversing Report-styles-supported list in E2 node */
 
    /* Memset action Db and Free E2SM_KPM_ActionDefinition_t */
    memset(actionDefDb, 0, sizeof(ActionDefinition));
    freeAperDecodingOfRicActionDefinition(actionDefPtr);
+
+   if(failureCause->causeType == E2_NOTHING)
+   {
+      failureCause->causeType = E2_RIC_REQUEST;
+      failureCause->cause = E2_ACTION_NOT_SUPPORTED;
+   }
    return RFAILED;
 }
 
@@ -2096,7 +2173,8 @@ uint8_t extractRicActionDef(RanFunction *ranFuncDb, ActionDefinition *actionDefD
  *         RFAILED - failure
  *
  ******************************************************************/
-uint8_t extractRicActionToBeSetup(RanFunction *ranFuncDb, RicSubscription *ricSubscriptionInfo, RICactions_ToBeSetup_List_t *actionList)
+uint8_t extractRicActionToBeSetup(RanFunction *ranFuncDb, RicSubscription *ricSubscriptionInfo, \
+   RICactions_ToBeSetup_List_t *actionList, E2FailureCause *failureCause)
 {
    uint8_t actionIdx = 0;
    uint8_t ricActionId = 0;
@@ -2122,7 +2200,7 @@ uint8_t extractRicActionToBeSetup(RanFunction *ranFuncDb, RicSubscription *ricSu
                      ricSubscriptionInfo->actionSequence[ricActionId-1].type = REPORT;
 
                      if(extractRicActionDef(ranFuncDb, &ricSubscriptionInfo->actionSequence[ricActionId-1].definition, \
-                        actionItem->value.choice.RICaction_ToBeSetup_Item.ricActionDefinition) == ROK)
+                        actionItem->value.choice.RICaction_ToBeSetup_Item.ricActionDefinition, failureCause) == ROK)
                      {
                         ricSubscriptionInfo->actionSequence[ricActionId-1].action = CONFIG_ADD;
                         ricSubscriptionInfo->numOfActions++;
@@ -2147,6 +2225,11 @@ uint8_t extractRicActionToBeSetup(RanFunction *ranFuncDb, RicSubscription *ricSu
    if(ricSubscriptionInfo->numOfActions)
       return ROK;
 
+   if(failureCause->causeType == E2_NOTHING)
+   {
+      failureCause->causeType = E2_RIC_REQUEST;
+      failureCause->cause = E2_ACTION_NOT_SUPPORTED;
+   }
    return RFAILED;
 }
 
@@ -2156,30 +2239,34 @@ uint8_t extractRicActionToBeSetup(RanFunction *ranFuncDb, RicSubscription *ricSu
  *
  * @details
  *
- *    Function : procRicSubsReq
+ *    Function : procRicSubscriptionRequest
  *
- *    Functionality: Processes E2 Setup Response sent by CU
+ *    Functionality: Processes RIC Subscription Request from RIC
  *
  * @params[in] E2AP_PDU_t ASN decoded E2AP message
  * @return ROK     - success
  *         RFAILED - failure
  *
  * ****************************************************************/
-
-uint8_t procRicSubsReq(E2AP_PDU_t *e2apMsg)
+uint8_t procRicSubscriptionRequest(E2AP_PDU_t *e2apMsg)
 {
    uint8_t idx = 0; 
    uint8_t ret = ROK;
    uint16_t ranFuncId = 0;
+   RicRequestId ricReqId;
    CmLList  *ricSubscriptionNode = NULLP;
    RanFunction *ranFuncDb = NULLP;
    RICsubscriptionRequest_t *ricSubsReq = NULLP;
    RICsubscriptionDetails_t *subsDetails = NULLP;
    RicSubscription *ricSubscriptionInfo = NULLP;
+   E2FailureCause failureCause;
 
    DU_LOG("\nINFO   -->  E2AP : RIC Subscription request received"); 
-   ricSubsReq = &e2apMsg->choice.initiatingMessage->value.choice.RICsubscriptionRequest;
 
+   memset(&failureCause, 0, sizeof(E2FailureCause));
+   memset(&ricReqId, 0, sizeof(RicRequestId));
+
+   ricSubsReq = &e2apMsg->choice.initiatingMessage->value.choice.RICsubscriptionRequest;
    for(idx=0; idx<ricSubsReq->protocolIEs.list.count; idx++)
    {
       if(ricSubsReq->protocolIEs.list.array[idx])
@@ -2188,15 +2275,8 @@ uint8_t procRicSubsReq(E2AP_PDU_t *e2apMsg)
          {
             case ProtocolIE_IDE2_id_RICrequestID:
                {
-                  DU_ALLOC(ricSubscriptionInfo, sizeof(RicSubscription));
-                  if(!ricSubscriptionInfo)
-                  {
-                     DU_LOG("\nERROR  -->  E2AP : Memory allocation failed for ricSubscriptionInfo");
-                     ret = RFAILED;
-                     break;
-                  }
-                  ricSubscriptionInfo->requestId.requestorId = ricSubsReq->protocolIEs.list.array[idx]->value.choice.RICrequestID.ricRequestorID;
-                  ricSubscriptionInfo->requestId.instanceId = ricSubsReq->protocolIEs.list.array[idx]->value.choice.RICrequestID.ricInstanceID;
+                  ricReqId.requestorId = ricSubsReq->protocolIEs.list.array[idx]->value.choice.RICrequestID.ricRequestorID;
+                  ricReqId.instanceId  = ricSubsReq->protocolIEs.list.array[idx]->value.choice.RICrequestID.ricInstanceID;
 
                   break;
                }
@@ -2209,10 +2289,23 @@ uint8_t procRicSubsReq(E2AP_PDU_t *e2apMsg)
                   if(duCb.e2apDb.ranFunction[ranFuncId-1].id == ranFuncId)
                   {
                      ranFuncDb = &duCb.e2apDb.ranFunction[ranFuncId-1];
+
+                     DU_ALLOC(ricSubscriptionInfo, sizeof(RicSubscription));
+                     if(!ricSubscriptionInfo)
+                     {
+                        DU_LOG("\nERROR  -->  E2AP : Memory allocation failed for ricSubscriptionInfo");
+                        failureCause.causeType = E2_MISCELLANEOUS;
+                        failureCause.cause = E2_MISCELLANEOUS_CAUSE_UNSPECIFIED;
+                        ret = RFAILED;
+                        break;
+                     }
+                     ricSubscriptionInfo->requestId.requestorId = ricReqId.requestorId;
+                     ricSubscriptionInfo->requestId.instanceId = ricReqId.instanceId;
                   }
                   else
                   {
-                     /* TODO : Send RAN Subcription Failure */
+                     failureCause.causeType = E2_RIC_REQUEST;
+                     failureCause.cause = E2_RAN_FUNCTION_ID_INVALID;
                      ret = RFAILED;
                   }
                   break;
@@ -2223,17 +2316,17 @@ uint8_t procRicSubsReq(E2AP_PDU_t *e2apMsg)
                   subsDetails = &ricSubsReq->protocolIEs.list.array[idx]->value.choice.RICsubscriptionDetails;
 
                   /* Decode, Validate and record Event Trigger Definition */
-                  if(extractEventTriggerDef(ranFuncDb, ricSubscriptionInfo, &subsDetails->ricEventTriggerDefinition) != ROK)
+                  if(extractEventTriggerDef(ranFuncDb, ricSubscriptionInfo, &subsDetails->ricEventTriggerDefinition, \
+                     &failureCause) != ROK)
                   {
-                     /* TODO : Send RAN Subcription Failure */
                      ret = RFAILED;
                      break;
                   }
 
                   /* Decode, Validate and record RIC actions */
-                  if(extractRicActionToBeSetup(ranFuncDb, ricSubscriptionInfo, &subsDetails->ricAction_ToBeSetup_List) != ROK)
+                  if(extractRicActionToBeSetup(ranFuncDb, ricSubscriptionInfo, &subsDetails->ricAction_ToBeSetup_List, \
+                     &failureCause) != ROK)
                   {
-                     /* TODO : Send RAN Subcription Failure */
                      ret = RFAILED;
                      break;
                   }
@@ -2276,7 +2369,183 @@ uint8_t procRicSubsReq(E2AP_PDU_t *e2apMsg)
          BuildAndSendRicIndication(ricSubscriptionInfo);
       }
    }
+   else
+   {
+      DU_FREE(ricSubscriptionInfo, sizeof(RicSubscription));
 
+      /* Send RIC Subcription Failure */
+      BuildAndSendRicSubscriptionFailure(ricReqId, ranFuncId, failureCause);
+   }
+
+   return ret;
+}
+
+/******************************************************************
+ *
+ * @brief Free RIC Subscription Failure
+ *
+ * @details
+ *
+ *    Function : FreeRicSubscriptionFailure
+ *
+ *    Functionality: Free RIC Subscription Failure
+ *
+ * @params[in] E2AP PDU
+ * @return void
+ *
+ * ****************************************************************/
+void FreeRicSubscriptionFailure(E2AP_PDU_t *e2apMsg)
+{
+   uint8_t elemIdx = 0;
+   RICsubscriptionFailure_t *ricSubscriptionFailure = NULLP;
+
+   if(e2apMsg)
+   {
+      if(e2apMsg->choice.unsuccessfulOutcome)
+      {
+         ricSubscriptionFailure = &e2apMsg->choice.unsuccessfulOutcome->value.choice.RICsubscriptionFailure;
+         if(ricSubscriptionFailure->protocolIEs.list.array)
+         {
+            for(elemIdx = 0; elemIdx < ricSubscriptionFailure->protocolIEs.list.count; elemIdx++)
+            {
+               DU_ALLOC(ricSubscriptionFailure->protocolIEs.list.array[elemIdx], sizeof(RICsubscriptionFailure_IEs_t));
+            }
+            DU_ALLOC(ricSubscriptionFailure->protocolIEs.list.array, ricSubscriptionFailure->protocolIEs.list.size);
+         }
+         DU_ALLOC(e2apMsg->choice.unsuccessfulOutcome, sizeof(UnsuccessfulOutcomeE2_t));
+      }
+      DU_ALLOC(e2apMsg, sizeof(E2AP_PDU_t));
+   }
+}
+
+/******************************************************************
+ *
+ * @brief Fill and Send RIC Subscription Failure to RIC
+ *
+ * @details
+ *
+ *    Function : BuildAndSendRicSubscriptionFailure
+ *
+ *    Functionality: Fill and Send RIC Subscription Failure to RIC
+ *
+ * @params[in] RIC Request ID
+ *             RAN Function ID
+ *             Cause of Failure
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t BuildAndSendRicSubscriptionFailure(RicRequestId ricReqId, uint16_t ranFuncId, E2FailureCause failureCause)
+{
+   uint8_t          ret = RFAILED;
+   uint8_t          elementCnt = 0, elemIdx = 0;
+   E2AP_PDU_t       *e2apMsg = NULLP;
+   asn_enc_rval_t   encRetVal;        /* Encoder return value */
+   RICsubscriptionFailure_t *ricSubscriptionFailure = NULLP;
+   RICsubscriptionFailure_IEs_t *ricSubsFailIe = NULLP;
+
+   while(true)
+   {
+      DU_LOG("\nINFO   -->  E2AP : Building RIC Subscription Failure\n");
+
+      DU_ALLOC(e2apMsg, sizeof(E2AP_PDU_t));
+      if(e2apMsg == NULLP)
+      {
+         DU_LOG("\nERROR  -->  E2AP : Memory allocation at [%s] : Line [%d]", __func__, __LINE__); 
+         break;
+      }
+
+      e2apMsg->present = E2AP_PDU_PR_unsuccessfulOutcome;
+      DU_ALLOC(e2apMsg->choice.unsuccessfulOutcome, sizeof(UnsuccessfulOutcomeE2_t));
+      if(e2apMsg->choice.unsuccessfulOutcome == NULLP)
+      {
+         DU_LOG("\nERROR  -->  E2AP : Memory allocation at [%s] : Line [%d]", __func__, __LINE__); 
+         break;
+      }
+      e2apMsg->choice.unsuccessfulOutcome->procedureCode = ProcedureCodeE2_id_RICsubscription;
+      e2apMsg->choice.unsuccessfulOutcome->criticality = CriticalityE2_reject;
+      e2apMsg->choice.unsuccessfulOutcome->value.present = UnsuccessfulOutcomeE2__value_PR_RICsubscriptionFailure;
+
+      ricSubscriptionFailure = &e2apMsg->choice.unsuccessfulOutcome->value.choice.RICsubscriptionFailure;
+
+      elementCnt = 3;
+      ricSubscriptionFailure->protocolIEs.list.count = elementCnt;
+      ricSubscriptionFailure->protocolIEs.list.size = elementCnt * sizeof(RICsubscriptionFailure_IEs_t *);
+      DU_ALLOC(ricSubscriptionFailure->protocolIEs.list.array, ricSubscriptionFailure->protocolIEs.list.size);
+      if(!ricSubscriptionFailure->protocolIEs.list.array)
+      {
+         DU_LOG("\nERROR  -->  E2AP : Memory allocation at [%s] : Line [%d]", __func__, __LINE__); 
+         break;
+      }
+
+      for(elemIdx = 0; elemIdx < elementCnt; elemIdx++)
+      {
+         DU_ALLOC(ricSubscriptionFailure->protocolIEs.list.array[elemIdx], sizeof(RICsubscriptionFailure_IEs_t));
+         if(!ricSubscriptionFailure->protocolIEs.list.array[elemIdx])
+         {
+            DU_LOG("\nERROR  -->  E2AP : Memory allocation at [%s] : Line [%d] for IE at index [%d]", \
+               __func__, __LINE__, elemIdx);
+            break;
+         }
+      }
+      if(elemIdx < elementCnt)
+         break;
+
+      elemIdx = 0;
+
+      /* RIC Request ID */
+      ricSubsFailIe = ricSubscriptionFailure->protocolIEs.list.array[elemIdx++];
+      ricSubsFailIe->id = ProtocolIE_IDE2_id_RICrequestID;
+      ricSubsFailIe->criticality = CriticalityE2_reject;
+      ricSubsFailIe->value.present = RICsubscriptionFailure_IEs__value_PR_RICrequestID;
+      ricSubsFailIe->value.choice.RICrequestID.ricRequestorID = ricReqId.requestorId;
+      ricSubsFailIe->value.choice.RICrequestID.ricInstanceID = ricReqId.instanceId;
+
+      /* RAN Function ID */
+      ricSubsFailIe = ricSubscriptionFailure->protocolIEs.list.array[elemIdx++];
+      ricSubsFailIe->id = ProtocolIE_IDE2_id_RANfunctionID;
+      ricSubsFailIe->criticality = CriticalityE2_reject;
+      ricSubsFailIe->value.present = RICsubscriptionFailure_IEs__value_PR_RANfunctionID;
+      ricSubsFailIe->value.choice.RANfunctionID = ranFuncId;
+
+      /* Cause */
+      ricSubsFailIe = ricSubscriptionFailure->protocolIEs.list.array[elemIdx++];
+      ricSubsFailIe->id = ProtocolIE_IDE2_id_CauseE2;
+      ricSubsFailIe->criticality = CriticalityE2_reject;
+      ricSubsFailIe->value.present = RICsubscriptionFailure_IEs__value_PR_CauseE2;
+      fillE2Cause(&ricSubsFailIe->value.choice.CauseE2, failureCause);
+
+      /* Prints the Msg formed */
+      xer_fprint(stdout, &asn_DEF_E2AP_PDU, e2apMsg);
+      memset(encBuf, 0, ENC_BUF_MAX_LEN);
+      encBufSize = 0;
+      encRetVal = aper_encode(&asn_DEF_E2AP_PDU, 0, e2apMsg, PrepFinalEncBuf, encBuf);
+      if(encRetVal.encoded == ENCODE_FAIL)
+      {
+         DU_LOG("\nERROR  -->  E2AP : Could not encode RIC Subscription Failure Message (at %s)\n",\
+               encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
+         break;
+      }
+      else
+      {
+         DU_LOG("\nDEBUG  -->  E2AP : Created APER encoded buffer for RIC Subscription Failure Message \n");
+#ifdef DEBUG_ASN_PRINT
+         for(int i=0; i< encBufSize; i++)
+         {
+            printf("%x",encBuf[i]);
+         }
+#endif
+      }
+
+      if(SendE2APMsg(DU_APP_MEM_REGION, DU_POOL, encBuf, encBufSize) != ROK)
+      {
+         DU_LOG("\nINFO   -->  E2AP : Sending RIC Subscription Failure");
+
+      }
+      ret = ROK;
+      break;
+   }
+   FreeRicSubscriptionFailure(e2apMsg);
    return ret;
 }
 
@@ -2770,7 +3039,7 @@ void FreeE2ResetRequest(E2AP_PDU_t *e2apMsg)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t BuildAndSendE2ResetRequest(E2CauseType failureType, E2Cause failureCause)
+uint8_t BuildAndSendE2ResetRequest(E2FailureCause resetCause)
 {
    uint8_t ieIdx = 0, elementCnt = 0, transId = 0;
    uint8_t ret = RFAILED;
@@ -2840,30 +3109,7 @@ uint8_t BuildAndSendE2ResetRequest(E2CauseType failureType, E2Cause failureCause
       resetReq->protocolIEs.list.array[ieIdx]->id = ProtocolIE_IDE2_id_CauseE2;
       resetReq->protocolIEs.list.array[ieIdx]->criticality = CriticalityE2_ignore;
       resetReq->protocolIEs.list.array[ieIdx]->value.present = ResetRequestIEs__value_PR_CauseE2;
-      resetReq->protocolIEs.list.array[ieIdx]->value.choice.CauseE2.present = failureType;
-      switch(resetReq->protocolIEs.list.array[ieIdx]->value.choice.CauseE2.present)
-      {
-         case CauseE2_PR_NOTHING:
-            break;
-         case CauseE2_PR_ricRequest:
-            resetReq->protocolIEs.list.array[ieIdx]->value.choice.CauseE2.choice.ricRequest = failureCause;
-            break;
-         case CauseE2_PR_ricService:
-            resetReq->protocolIEs.list.array[ieIdx]->value.choice.CauseE2.choice.ricService = failureCause;
-            break;
-         case CauseE2_PR_e2Node:
-            resetReq->protocolIEs.list.array[ieIdx]->value.choice.CauseE2.choice.e2Node = failureCause;
-            break;
-         case CauseE2_PR_transport:
-            resetReq->protocolIEs.list.array[ieIdx]->value.choice.CauseE2.choice.transport = failureCause;
-            break;
-         case CauseE2_PR_protocol:
-            resetReq->protocolIEs.list.array[ieIdx]->value.choice.CauseE2.choice.protocol = failureCause;
-            break;
-         case CauseE2_PR_misc:
-            resetReq->protocolIEs.list.array[ieIdx]->value.choice.CauseE2.choice.misc = failureCause;
-            break;
-      }
+      fillE2Cause(&resetReq->protocolIEs.list.array[ieIdx]->value.choice.CauseE2, resetCause);
 
       /* Prints the Msg formed */
       xer_fprint(stdout, &asn_DEF_E2AP_PDU, e2apMsg);
@@ -3725,7 +3971,7 @@ void E2APMsgHdlr(Buffer *mBuf)
             {
                case InitiatingMessageE2__value_PR_RICsubscriptionRequest: 
                   {
-                     procRicSubsReq(e2apMsg);
+                     procRicSubscriptionRequest(e2apMsg);
                      break;
                   }
                case InitiatingMessageE2__value_PR_RICserviceQuery:

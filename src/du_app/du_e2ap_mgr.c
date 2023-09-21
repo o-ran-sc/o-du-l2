@@ -135,12 +135,12 @@ uint8_t SendE2APMsg(Region region, Pool pool, char *encBuf, int encBufSize)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t ResetE2Request(E2ProcedureDirection dir, E2CauseType type, E2Cause cause)
+uint8_t ResetE2Request(E2ProcedureDirection dir, E2FailureCause resetCause)
 {
    /* Send Reset Request to RIC if DU detects any abnormal failure */
    if(dir == E2_NODE_INITIATED)
    {
-      if(BuildAndSendE2ResetRequest(type, cause) != ROK)
+      if(BuildAndSendE2ResetRequest(resetCause) != ROK)
       {
          DU_LOG("\nERROR  -->  E2AP : BuildAndSendE2ResetRequest failed");
          return RFAILED;
