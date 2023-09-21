@@ -2274,6 +2274,90 @@ uint8_t BuildAndSendStatsReq(uint16_t ranFuncId, RicSubscription *ricSubscriptio
 
 /*******************************************************************
  *
+ * @brief Converts DU specific failure cause to E2 interface
+ *        failure cause
+ *
+ * @details
+ *
+ *    Function : convertL2CauseToE2Cause
+ *
+ *    Functionality: Converts DU specific failure cause to E2 
+ *       interface failure cause
+ *
+ * @params[in] DU specific failure cause
+ *             E2 specific failure cause
+ *
+ * @return void
+ *
+ * ****************************************************************/
+void convertL2CauseToE2Cause(CauseOfResult l2Cause, E2FailureCause *failureCause)
+{
+   switch(l2Cause)
+   {
+      case PARAM_INVALID:
+         {
+            failureCause->causeType = E2_RIC_REQUEST;
+            failureCause->cause = E2_ACTION_NOT_SUPPORTED;
+            break;
+         }
+      case RESOURCE_UNAVAILABLE:
+         {
+            failureCause->causeType = E2_RIC_REQUEST;
+            failureCause->cause = E2_FUNCTION_RESOURCE_LIMIT;
+            break;
+         }
+      default:
+         {
+            failureCause->causeType = E2_RIC_REQUEST;
+            failureCause->cause = E2_RIC_REQUEST_CAUSE_UNSPECIFIED;
+            break;
+         }
+   }
+}
+
+/*******************************************************************
+ *
+ * @brief Rejects all actions received in a subscription request
+ *
+ * @details
+ *
+ *    Function : duRejectAllStatsGroup
+ *
+ *    Functionality: Rejects all actions received in a subscription
+ *       request by :
+ *       a. Removing the subscription entry from RAN function
+ *       b. Sending RIC Subscription Failure to RIC with appropriate
+ *          cause of failure
+ *
+ * @params[in] RAN Function DB
+ *             Subscription entry in RAN Function subscription list
+ *             Statistics Response from MAC
+ *
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t duRejectAllStatsGroup(RanFunction *ranFuncDb, CmLList *ricSubscriptionNode, MacStatsRsp *statsRsp)
+{
+   uint8_t ret = ROK;
+   RicRequestId  requestId;
+   E2FailureCause failureCause;
+
+   /* Delete subcription from RAN Function */
+   memcpy(&requestId, &((RicSubscription *)ricSubscriptionNode->node)->requestId, sizeof(RicRequestId));
+   cmLListDelFrm(&ranFuncDb->subscriptionList, ricSubscriptionNode);
+   DU_FREE(ricSubscriptionNode->node, sizeof(RicSubscription));
+   DU_FREE(ricSubscriptionNode, sizeof(CmLList));
+
+   convertL2CauseToE2Cause(statsRsp->statsGrpRejectedList[0].cause, &failureCause);
+
+   /* Send RIC subscription failure to RIC */
+   ret = BuildAndSendRicSubscriptionFailure(requestId, ranFuncDb->id, failureCause);
+   return ret;
+}
+
+/*******************************************************************
+ *
  * @brief Process statistics response from MAC
  *
  * @details
@@ -2293,12 +2377,19 @@ uint8_t BuildAndSendStatsReq(uint16_t ranFuncId, RicSubscription *ricSubscriptio
  * ****************************************************************/
 uint8_t DuProcMacStatsRsp(Pst *pst, MacStatsRsp *statsRsp)
 {
+   uint8_t idx = 0;
+   uint16_t ranFuncId = 0;
+   RicRequestId ricReqId;
+   RanFunction *ranFuncDb = NULLP;
+   CmLList *ricSubscriptionNode = NULLP;
+   RicSubscription *ricSubscriptionInfo = NULLP;
+   E2FailureCause failureCause;
+
    DU_LOG("\nINFO  -->  DU_APP : DuProcMacStatsRsp: Received Statistics Response from MAC");
 
    if(statsRsp)
    {
 #ifdef DEBUG_PRINT   
-      uint8_t idx = 0;
       DU_LOG("\n  Subscription Id [%ld]", statsRsp->subscriptionId);
 
       DU_LOG("\n  Number of Accepted Groups [%d]", statsRsp->numGrpAccepted);
@@ -2313,8 +2404,62 @@ uint8_t DuProcMacStatsRsp(Pst *pst, MacStatsRsp *statsRsp)
          DU_LOG("\n    Group Id [%d]", statsRsp->statsGrpRejectedList[idx]);
       }
 #endif      
-     
+
+      /* Extract following from 64 bit subscription-ID :
+       *  First 16 MSB is unused
+       *  Next 16 MSB = RAN-Function-ID
+       *  Next 16 MSB = Requestor-ID in RIC-Request-ID
+       *  Last 16 LSB = Instance-ID in RIC-Request-ID
+       */
+      ricReqId.instanceId = statsRsp->subscriptionId & 0xFFFF;
+      ricReqId.requestorId = (statsRsp->subscriptionId >> 16) & 0xFFFF;
+      ranFuncId = (statsRsp->subscriptionId >> 32) & 0xFFFF;
+
+      /* Fetch RAN Function DB */
+      if(duCb.e2apDb.ranFunction[ranFuncId-1].id == ranFuncId)
+      {
+         ranFuncDb = &duCb.e2apDb.ranFunction[ranFuncId-1];
+      }
+      else
+      {
+         DU_LOG("\nERROR  -->  DU_APP : DuProcMacStatsRsp: Invalid RAN Function ID[%d]  with Subscription ID [%d]", \
+            ranFuncId, statsRsp->subscriptionId);
+         DU_FREE_SHRABL_BUF(pst->region, pst->pool, statsRsp, sizeof(MacStatsRsp));
+         return RFAILED;
+      }
+
+      /* Fetch subscription detail in RAN Function DB */
+      CM_LLIST_FIRST_NODE(&ranFuncDb->subscriptionList, ricSubscriptionNode);
+      while(ricSubscriptionNode)
+      {
+         ricSubscriptionInfo = (RicSubscription *)ricSubscriptionNode->node;
+         if(ricSubscriptionInfo && (ricSubscriptionInfo->requestId.requestorId == ricReqId.requestorId) &&
+            (ricSubscriptionInfo->requestId.instanceId == ricReqId.instanceId))
+         {
+            break;
+         }
+         ricSubscriptionNode = ricSubscriptionNode->next;
+      }
+
+      if(ricSubscriptionNode == NULLP)
+      {
+         DU_LOG("\nERROR  -->  DU_APP : DuProcMacStatsRsp: Subscription not found for Requestor ID [%d] Instance ID [%d]",\
+            ricReqId.requestorId, ricReqId.instanceId);
+         DU_FREE_SHRABL_BUF(pst->region, pst->pool, statsRsp, sizeof(MacStatsRsp));
+         return RFAILED;
+      }
+
+      /* If no action is accepted
+       *  a. Remove subcription entry from RAN Function
+       *  b. Send RIC subscription failure */
+      if(statsRsp->numGrpAccepted == 0)
+      {
+         duRejectAllStatsGroup(ranFuncDb, ricSubscriptionNode, statsRsp);
+      }
+
       /* TODO :
+       * If even 1 action is accepted :
+       *
        * For accepted groups:
        *    Mark scubscrbed-action's -> action = CONFIG_UNKNOWN
        *    Add action ID to accpeted-action-list in Subscription response
