@@ -2436,7 +2436,7 @@ uint8_t BuildRanFunctionRejectedList(uint8_t count, RanFunction *ranFunRejectedL
          return RFAILED;
       }
       ranFuncRejectedItemIe = (RANfunctionIDcause_ItemIEs_t*)ranFuncRejectedList->list.array[ranFuncIdx];
-      ranFuncRejectedItemIe->id = ProtocolIE_IDE2_id_RANfunctionID_Item;
+      ranFuncRejectedItemIe->id = ProtocolIE_IDE2_id_RANfunctionIEcause_Item;
       ranFuncRejectedItemIe->criticality= CriticalityE2_ignore;
       ranFuncRejectedItemIe->value.present = RANfunctionIDcause_ItemIEs__value_PR_RANfunctionIDcause_Item;
       ranFuncRejectedItemIe->value.choice.RANfunctionIDcause_Item.ranFunctionID = ranFunRejectedList[ranFuncIdx].id;
@@ -2738,16 +2738,7 @@ void ProcRicServiceUpdate(uint32_t duId, RICserviceUpdate_t *ricServiceUpdate)
                   {
                      delRanFuncItem  = (RANfunctionID_ItemIEs_t*) deleteList->list.array[ranFuncIdx];
                      ranFuncIdItem = &delRanFuncItem->value.choice.RANfunctionID_Item;
-                     if(duDb->ranFunction[ranFuncIdItem->ranFunctionID-1].id != ranFuncIdItem->ranFunctionID)
-                     {
-                        /* Calculating total number of ran fuctions which are not present */
-                        failedRanFuncCount++;
-
-                        /* Adding the ran function in temporary list */
-                        ricRanFuncList.ranFunRejectedList[ricRanFuncList.numOfRanFuneRejected].id =  ranFuncItem->ranFunctionID; 
-                        ricRanFuncList.numOfRanFuneRejected++;
-                     }
-                     else
+                     if(duDb->ranFunction[ranFuncIdItem->ranFunctionID-1].id == ranFuncIdItem->ranFunctionID)
                      {
                         memset(&duDb->ranFunction[ranFuncIdItem->ranFunctionID-1], 0, sizeof(RanFunction));
                         duDb->numOfRanFunction--; 
