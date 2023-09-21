@@ -2968,7 +2968,7 @@ uint8_t BuildAndSendRicServiceUpdate(RicServiceUpdate serviceUpdate)
 void procRicServiceQuery(E2AP_PDU_t *e2apMsg)
 {
    ConfigType action;
-   uint8_t arrIdx =0, ranFuncIdx=0,tmpIdx=0;
+   uint16_t arrIdx =0, ranFuncIdx=0,tmpIdx=0;
    uint16_t id,revisionCcounter;
    bool tmpArray[MAX_RAN_FUNCTION] = {false};
    RICserviceQuery_t *ricServiceQuery=NULL;
@@ -3051,6 +3051,7 @@ void procRicServiceQuery(E2AP_PDU_t *e2apMsg)
          ricUpdate.recvRanFuncList.numOfRanFunToBeAdded++;
       }
    }
+
    if(BuildAndSendRicServiceUpdate(ricUpdate)!= ROK)
    {
       DU_LOG("\nERROR  -->  E2AP : Failed to build and send ric service update message");

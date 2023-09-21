@@ -136,8 +136,8 @@ typedef struct
    RanFunction ranFunToBeAdded[MAX_RAN_FUNCTION];
    uint8_t numOfRanFunToBeModified;
    RanFunction ranFunToBeModified[MAX_RAN_FUNCTION];
-   uint8_t numOfRanFunTodeleted;
-   RanFunction ranFunToBeDeleted[MAX_RAN_FUNCTION];
+   uint8_t numOfRanFunToBeRejected;
+   RanFunction ranFunToBeRejected[MAX_RAN_FUNCTION];
 }RicTmpRanFunList;
 
 void readRicCfg();
