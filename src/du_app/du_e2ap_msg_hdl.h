@@ -25,7 +25,7 @@ uint8_t  BuildAndSendE2NodeConfigUpdate();
 uint8_t BuildAndSendE2ResetRequest(E2CauseType failureType, E2Cause failureCause);
 void     E2APMsgHdlr(Buffer *mBuf);
 uint8_t BuildAndSendRicIndication(RicSubscription *ricSubscriptionInfo);
-
+uint8_t BuildAndSendRicServiceUpdate(RicServiceUpdate serviceUpdate);
 uint8_t BuildAndSendStatsReq(uint16_t ranFuncId, RicSubscription *ricSubscriptionInfo);
 /**********************************************************************
   End of file
