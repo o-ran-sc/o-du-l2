@@ -1,0 +1,124 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0b248efe_278e1b36",
+        "filename": "src/ric_stub/ric_e2ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2210,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-09-21T06:26:51Z",
+      "side": 1,
+      "message": "i think this shld be uint16_t because max_num_of_ran_func is 255 to exit the ranFuncIdx must reach till 256 and uint8_t doesnt support that",
+      "range": {
+        "startLine": 2210,
+        "startChar": 23,
+        "endLine": 2210,
+        "endChar": 34
+      },
+      "revId": "935b908e49330ae06acc026571f0d53c3b4f3223",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4754c2bb_08917b81",
+        "filename": "src/ric_stub/ric_e2ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2291,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-09-21T06:26:51Z",
+      "side": 1,
+      "message": "hey we shld increment such func in  ricRanFuncList.numOfRanFunToBeRejected instead of  ricRanFuncList.numOfRanFunToBeAdded",
+      "revId": "935b908e49330ae06acc026571f0d53c3b4f3223",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "25dd3fea_ea6f3b4f",
+        "filename": "src/ric_stub/ric_e2ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2297,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-09-21T06:26:51Z",
+      "side": 1,
+      "message": "this line  ricRanFuncList.numOfRanFunToBeAdded shld be in elase case of ranFailure",
+      "revId": "935b908e49330ae06acc026571f0d53c3b4f3223",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1ef2886b_d549953c",
+        "filename": "src/ric_stub/ric_e2ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2333,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-09-21T06:26:51Z",
+      "side": 1,
+      "message": "As discussed, here instead of returning, we can send a negative response provided we have transId decoded with us. This is because as per Spec WG3.E2AP, 9.1.2.9: till transID decoding is mandatory so after that if any other ie is not decoded we can send a ric servce update failure",
+      "range": {
+        "startLine": 2333,
+        "startChar": 15,
+        "endLine": 2333,
+        "endChar": 21
+      },
+      "revId": "935b908e49330ae06acc026571f0d53c3b4f3223",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0ce688a4_86abef2f",
+        "filename": "src/ric_stub/ric_e2ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2341,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-09-21T06:26:51Z",
+      "side": 1,
+      "message": "in the case when theres even a single  \"ProtocolIE_IDE2_id_RANfunctionsAdded\": i.e. a new ranfun to be added then we shld not send a failure even though all the modified and deleted ranFunc are failed i.e.(recvdRanFuncCount \u003d\u003d failedRanFuncCount). \nI suggest increment recvdRanFuncCount in \"ProtocolIE_IDE2_id_RANfunctionsAdded\" also",
+      "range": {
+        "startLine": 2341,
+        "startChar": 35,
+        "endLine": 2341,
+        "endChar": 52
+      },
+      "revId": "935b908e49330ae06acc026571f0d53c3b4f3223",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "28f680a3_298a815d",
+        "filename": "src/ric_stub/ric_e2ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2349,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-09-21T06:26:51Z",
+      "side": 1,
+      "message": "As discussed please add a comment that when \nrecvdRanFuncCount \u003d\u003d failedRanFuncCount then it means that all the ranFunctions received is failed thus sending ricServiceUpdate Failure",
+      "revId": "935b908e49330ae06acc026571f0d53c3b4f3223",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
