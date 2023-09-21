@@ -423,9 +423,14 @@ typedef struct
    E2TimersInfo     e2TimersInfo;
 }E2apDb;
 
+typedef struct e2FailureCause
+{
+   E2CauseType causeType;
+   uint8_t     cause;
+}E2FailureCause;
 
 uint8_t assignTransactionId();
-uint8_t ResetE2Request(E2ProcedureDirection dir, E2CauseType type, E2Cause cause);
+uint8_t ResetE2Request(E2ProcedureDirection dir, E2FailureCause resetCause);
 uint8_t SendE2APMsg(Region region, Pool pool, char *encBuf, int encBufSize);
 /**********************************************************************
   End of file
