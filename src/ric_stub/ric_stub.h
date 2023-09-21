@@ -132,12 +132,10 @@ RicGlobalCb ricCb;
 
 typedef struct
 {
-   uint8_t numOfRanFunToBeAdded;
-   RanFunction ranFunToBeAdded[MAX_RAN_FUNCTION];
-   uint8_t numOfRanFunToBeModified;
-   RanFunction ranFunToBeModified[MAX_RAN_FUNCTION];
-   uint8_t numOfRanFunTodeleted;
-   RanFunction ranFunToBeDeleted[MAX_RAN_FUNCTION];
+   uint8_t numOfRanFunAccepted;
+   RanFunction ranFunAcceptedList[MAX_RAN_FUNCTION];
+   uint8_t numOfRanFuneRejected;
+   RanFunction ranFunRejectedList[MAX_RAN_FUNCTION];
 }RicTmpRanFunList;
 
 void readRicCfg();
