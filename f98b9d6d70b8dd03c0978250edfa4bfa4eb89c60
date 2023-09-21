@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5f3f353a_87f80791",
+        "filename": "src/ric_stub/ric_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2354,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-09-21T11:00:41Z",
+      "side": 1,
+      "message": "is not supported",
+      "revId": "f98b9d6d70b8dd03c0978250edfa4bfa4eb89c60",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8881b3e6_c78aa1ac",
+        "filename": "src/ric_stub/ric_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2362,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-09-21T11:00:41Z",
+      "side": 1,
+      "message": "here check of transID seems that the value beyond this range i.e. if transId\u003c0 or transId \u003e 255 will go to  else case which is wrong. If we want to put the transId check then before proceeding to this if case, we shld have a separate if case for validating transId and if thats not valid we shld return.",
+      "revId": "f98b9d6d70b8dd03c0978250edfa4bfa4eb89c60",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
