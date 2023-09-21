@@ -1,0 +1,106 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a3595c5b_ef5ec1e3",
+        "filename": "src/ric_stub/ric_e2ap_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 757,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-09-21T04:57:27Z",
+      "side": 1,
+      "message": "please create macros.",
+      "revId": "2eb4e59ba22b9516a030920bd99f4027eed4c707",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "04194549_e7bc5b70",
+        "filename": "src/ric_stub/ric_e2ap_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 808,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-09-21T04:57:27Z",
+      "side": 1,
+      "message": "same as above",
+      "revId": "2eb4e59ba22b9516a030920bd99f4027eed4c707",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "127e166f_e4532f79",
+        "filename": "src/ric_stub/ric_e2ap_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 874,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-09-21T04:57:27Z",
+      "side": 1,
+      "message": "right now we are filing only one RIC action information. but in future, we may have multiple RIC actiIDsids. I think we need to have different IDs everytime.",
+      "revId": "2eb4e59ba22b9516a030920bd99f4027eed4c707",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d8302ca5_8c433f38",
+        "filename": "src/ric_stub/ric_e2ap_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1079,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-09-21T04:57:27Z",
+      "side": 1,
+      "message": "are we not going to store any subscription related infromation in ric db?",
+      "revId": "2eb4e59ba22b9516a030920bd99f4027eed4c707",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9591888b_3dc6f08b",
+        "filename": "src/ric_stub/ric_e2ap_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1081,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-09-21T04:57:27Z",
+      "side": 1,
+      "message": "Suggestion- we are always resolving the ODU warning.\nLet\u0027s check the Ric_Stub warning as well.\nplease check if there is any ric subscription-related warning present or not.",
+      "revId": "2eb4e59ba22b9516a030920bd99f4027eed4c707",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1e51107b_16119d37",
+        "filename": "src/ric_stub/ric_e2ap_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1462,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-09-21T04:57:27Z",
+      "side": 1,
+      "message": "i think its better to store the information based on ran function id index, rather than number of ran function.",
+      "revId": "2eb4e59ba22b9516a030920bd99f4027eed4c707",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
