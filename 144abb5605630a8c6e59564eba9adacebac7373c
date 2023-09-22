@@ -1,0 +1,89 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "73eae9a5_1e85653c",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2244,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-09-22T08:56:31Z",
+      "side": 1,
+      "message": "update",
+      "revId": "144abb5605630a8c6e59564eba9adacebac7373c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a8669374_f0c3434c",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2256,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-09-22T08:56:31Z",
+      "side": 1,
+      "message": "memset it before using.\nmemset at line 2267.",
+      "revId": "144abb5605630a8c6e59564eba9adacebac7373c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fd305b84_f4ada96f",
+        "filename": "src/du_app/du_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2293,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-09-22T08:56:31Z",
+      "side": 1,
+      "message": "in place of L2 can\u0027t we use anything else?",
+      "revId": "144abb5605630a8c6e59564eba9adacebac7373c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4db201be_8753b605",
+        "filename": "src/ric_stub/ric_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2800,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-09-22T08:56:31Z",
+      "side": 1,
+      "message": "correct this.",
+      "revId": "144abb5605630a8c6e59564eba9adacebac7373c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "af5910c6_2717f86c",
+        "filename": "src/ric_stub/ric_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2812,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-09-22T08:56:31Z",
+      "side": 1,
+      "message": "memset this before using.",
+      "revId": "144abb5605630a8c6e59564eba9adacebac7373c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
