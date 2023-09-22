@@ -22,6 +22,30 @@
       },
       "revId": "91fd4a7628039ee5703b359f910352e260d3f399",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4980c4ba_b57bde73",
+        "filename": "src/du_app/du_e2ap_msg_hdl.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-22T12:00:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9771c6b1_7f771ab5",
+      "range": {
+        "startLine": 31,
+        "startChar": 8,
+        "endLine": 31,
+        "endChar": 42
+      },
+      "revId": "91fd4a7628039ee5703b359f910352e260d3f399",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
   ]
 }
