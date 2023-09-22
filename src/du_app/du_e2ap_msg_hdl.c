@@ -1156,121 +1156,111 @@ uint8_t BuildAndSendE2SetupReq()
 
 /*******************************************************************
  *
- * @brief Builds Ric Request Id
+ * @brief Builds RIC Action Admitted List
  *
  * @details
  *
- *    Function : BuildRicRequestId
+ *    Function : BuildRicActionAdmitList
  *
- *    Functionality: Building the Ric Request Id
+ *    Functionality: Builds RIC Action Admitted List
  *
- * @params[in] RICrequestID_t *ricReqId
+ * @params[in] Pointer to RIC Action Admitted List to be filled
+ *             Subscription Response information
  * @return ROK     - success
  *         RFAILED - failure
  *
  * ****************************************************************/
-
-uint8_t BuildRicRequestId(RICrequestID_t *ricReqId)
+uint8_t BuildRicActionAdmitList(RICaction_Admitted_List_t *admitList, PendingSubsRspInfo *subsRspInfo)
 {
-   if(ricReqId == NULLP)
+   uint8_t idx = 0;
+   uint8_t elementCnt = 0;  
+   RICaction_Admitted_ItemIEs_t *admitItem = NULLP;
+
+   elementCnt = subsRspInfo->numOfAcceptedActions;
+
+   admitList->list.count = elementCnt;
+   admitList->list.size  = elementCnt * sizeof(RICaction_Admitted_ItemIEs_t *);
+
+   DU_ALLOC(admitList->list.array, admitList->list.size);
+   if(admitList->list.array == NULLP)
    {
+      DU_LOG("\nERROR  -->  E2AP : Memory allocation failed at [%s] : line [%d]", __func__, __LINE__);
       return RFAILED;
    }
 
-   ricReqId->ricRequestorID = 1;
-   ricReqId->ricInstanceID  = 1;
+   for(idx=0; idx<elementCnt; idx++)
+   {
+      DU_ALLOC(admitList->list.array[idx], sizeof(RICaction_Admitted_ItemIEs_t));
+      if(admitList->list.array[idx] == NULLP)
+      {
+         DU_LOG("\nERROR  -->  E2AP : Memory allocation failed at [%s] : line [%d]", __func__, __LINE__);
+         return RFAILED;
+      }
+
+      admitItem = (RICaction_Admitted_ItemIEs_t *)admitList->list.array[idx];
+      admitItem->id = ProtocolIE_IDE2_id_RICaction_Admitted_Item;
+      admitItem->criticality = CriticalityE2_reject;
+      admitItem->value.present = RICaction_Admitted_ItemIEs__value_PR_RICaction_Admitted_Item;
+      admitItem->value.choice.RICaction_Admitted_Item.ricActionID = subsRspInfo->acceptedActionList[idx]; 
+   }
    return ROK;
 }
 
 /*******************************************************************
  *
- * @brief Fills the mandatory RicAdmitted List Items
+ * @brief Builds RIC Action Not Admitted List
  *
  * @details
  *
- *    Function : fillRicAdmitList
+ *    Function : BuildRicActionNotAdmitList
  *
- *    Functionality: Fills the mandatory Ric Admitted List Items
+ *    Functionality: Builds RIC Action Not Admitted List
  *
- * @params[in] RICaction_Admitted_ItemIEs_t *ricAdmitItems
+ * @params[in] Pointer to RIC Action Not Admitted List to be filled
+ *             Subscription Response information
  * @return ROK     - success
  *         RFAILED - failure
  *
  * ****************************************************************/
-
-uint8_t fillRicAdmitList(RICaction_Admitted_ItemIEs_t *ricAdmitItems)
+uint8_t BuildRicActionNotAdmitList(RICaction_NotAdmitted_List_t *notAdmitList, PendingSubsRspInfo *subsRspInfo)
 {
+   uint8_t idx = 0;
+   uint8_t elementCnt = 0;  
+   RICaction_NotAdmitted_ItemIEs_t *notAdmitItem = NULLP;
 
-   if(ricAdmitItems != NULLP)
+   elementCnt = subsRspInfo->numOfRejectedActions;
+
+   notAdmitList->list.count = elementCnt;
+   notAdmitList->list.size  = elementCnt * sizeof(RICaction_NotAdmitted_ItemIEs_t *);
+
+   DU_ALLOC(notAdmitList->list.array, notAdmitList->list.size);
+   if(notAdmitList->list.array == NULLP)
    {
-      ricAdmitItems->id = ProtocolIE_IDE2_id_RICaction_Admitted_Item;
-      ricAdmitItems->criticality = CriticalityE2_reject;
-      ricAdmitItems->value.present = RICaction_Admitted_ItemIEs__value_PR_RICaction_Admitted_Item;
-      ricAdmitItems->value.choice.RICaction_Admitted_Item.ricActionID = 1; 
-   }
-   else
-   {
+      DU_LOG("\nERROR  -->  E2AP : Memory allocation failed at [%s] : line [%d]", __func__, __LINE__);
       return RFAILED;
+   }
+
+   for(idx=0; idx<elementCnt; idx++)
+   {
+      DU_ALLOC(notAdmitList->list.array[idx], sizeof(RICaction_NotAdmitted_ItemIEs_t));
+      if(notAdmitList->list.array[idx] == NULLP)
+      {
+         DU_LOG("\nERROR  -->  E2AP : Memory allocation failed at [%s] : line [%d]", __func__, __LINE__);
+         return RFAILED;
+      }
+
+      notAdmitItem = (RICaction_NotAdmitted_ItemIEs_t *)notAdmitList->list.array[idx];
+      notAdmitItem->id = ProtocolIE_IDE2_id_RICaction_NotAdmitted_Item;
+      notAdmitItem->criticality = CriticalityE2_reject;
+      notAdmitItem->value.present = RICaction_NotAdmitted_ItemIEs__value_PR_RICaction_NotAdmitted_Item;
+      notAdmitItem->value.choice.RICaction_NotAdmitted_Item.ricActionID = \
+         subsRspInfo->rejectedActionList[idx].id; 
+      fillE2Cause(&notAdmitItem->value.choice.RICaction_NotAdmitted_Item.cause, \
+         subsRspInfo->rejectedActionList[idx].failureCause);
    }
    return ROK;
 }
-/*******************************************************************
- *
- * @brief Builds the mandatory RicAdmitted List Params
- *
- * @details
- *
- *    Function : BuildRicAdmitList
- *
- *    Functionality: Builds the mandatory Ric Admitted List Params
- *
- * @params[in] RICaction_Admitted_List_t *admitListPtr
- * @return ROK     - success
- *         RFAILED - failure
- *
- * ****************************************************************/
 
-uint8_t BuildRicAdmitList(RICaction_Admitted_List_t *admitListPtr)
-{
-   uint8_t idx ;
-   uint8_t elementCnt;  
-   uint8_t ret= ROK;
-   elementCnt = 1;
-
-   if(admitListPtr == NULLP)
-   {
-      DU_LOG("\nERROR  -->  E2AP : Memory allocation for RIC Admit List failed");
-      ret = RFAILED;
-   }
-   else
-   {
-      admitListPtr->list.count = elementCnt;
-      admitListPtr->list.size  = elementCnt * sizeof(RICaction_Admitted_ItemIEs_t);
-      DU_ALLOC(admitListPtr->list.array, admitListPtr->list.size);
-      if(admitListPtr->list.array == NULLP)
-      {
-	 DU_LOG("\nERROR  -->  E2AP : Memory allocation for RIC Admit List failed");
-	 ret = RFAILED;
-      }
-      else
-      {
-	 for(idx=0 ; idx<elementCnt ; idx++ )
-	 {
-	    DU_ALLOC(admitListPtr->list.array[idx], sizeof(RICaction_Admitted_ItemIEs_t));
-	    if(admitListPtr->list.array[idx] == NULLP)
-	    {
-	       ret = RFAILED;
-	    }
-	 }
-	 if(ret != RFAILED)
-	 {
-	    idx=0;
-	    fillRicAdmitList((RICaction_Admitted_ItemIEs_t *)admitListPtr->list.array[idx]);
-	 }
-      }
-   }	
-   return ret;
-}
 /*******************************************************************
  *
  * @breif Deallocation of BuildAndSendRicSubscriptionRsp memory
@@ -1285,152 +1275,166 @@ uint8_t BuildRicAdmitList(RICaction_Admitted_List_t *admitListPtr)
  *
  * @return void
  *      
- *
  ******************************************************************/
 void FreeRicSubscriptionRsp(E2AP_PDU_t  *e2apRicMsg)
 {
    RICsubscriptionResponse_t  *ricSubscriptionRsp= NULLP;
    uint8_t idx=0;
-   uint8_t idx1=0;
-   RICaction_Admitted_List_t *admitListPtr;
+   uint8_t listIdx=0;
+   RICaction_Admitted_List_t *admitList = NULLP;
+   RICaction_NotAdmitted_List_t *notAdmitList = NULLP;
 
    if(e2apRicMsg != NULLP)
    {
       if(e2apRicMsg->choice.successfulOutcome != NULLP)
       {
-	 ricSubscriptionRsp = &e2apRicMsg->choice.successfulOutcome->value.choice.RICsubscriptionResponse;
-	 if(ricSubscriptionRsp)
-	 {
-	    if(ricSubscriptionRsp->protocolIEs.list.array != NULLP)
-	    {
-	       for(idx=0; idx<ricSubscriptionRsp->protocolIEs.list.count; idx++)
-	       {
-		  if(ricSubscriptionRsp->protocolIEs.list.array[idx] != NULLP)
-		  {
-		     switch(ricSubscriptionRsp->protocolIEs.list.array[idx]->id)
-		     {
-			case ProtocolIE_IDE2_id_RICrequestID:
-			   break;
-
-			case ProtocolIE_IDE2_id_RANfunctionID:
-			   break;
-
-			case ProtocolIE_IDE2_id_RICactions_Admitted:
-			   {
-			      admitListPtr = &ricSubscriptionRsp->protocolIEs.list.\
-					     array[idx]->value.choice.RICaction_Admitted_List;
-			      if(admitListPtr->list.array != NULLP)
-			      {
-				 for(idx1=0 ; idx1<admitListPtr->list.count; idx1++ )
-				 {
-				    if(admitListPtr->list.array[idx1] != NULLP)
-				    {
-				       DU_FREE(admitListPtr->list.array[idx1],
-					     sizeof(RICaction_Admitted_ItemIEs_t));
-				    }
-				 }
-				 DU_FREE(admitListPtr->list.array, admitListPtr->list.size);	 
-			      }
-			      break;
-			   }
-			default:
-			   break;
-		     }
-		     DU_FREE(ricSubscriptionRsp->protocolIEs.list.array[idx], \
-			   sizeof(RICsubscriptionResponse_IEs_t));
-		  }
-	       }
-	       DU_FREE(ricSubscriptionRsp->protocolIEs.list.array, \
-		     ricSubscriptionRsp->protocolIEs.list.size);
-	    }
-	 }   
-	 DU_FREE(e2apRicMsg->choice.successfulOutcome, sizeof(SuccessfulOutcomeE2_t));
+         ricSubscriptionRsp = &e2apRicMsg->choice.successfulOutcome->value.choice.RICsubscriptionResponse;
+         if(ricSubscriptionRsp)
+         {
+            if(ricSubscriptionRsp->protocolIEs.list.array != NULLP)
+            {
+               for(idx=0; idx<ricSubscriptionRsp->protocolIEs.list.count; idx++)
+               {
+                  if(ricSubscriptionRsp->protocolIEs.list.array[idx] != NULLP)
+                  {
+                     switch(ricSubscriptionRsp->protocolIEs.list.array[idx]->id)
+                     {
+                        case ProtocolIE_IDE2_id_RICactions_Admitted:
+                           {
+                              admitList = &ricSubscriptionRsp->protocolIEs.list.\
+                                             array[idx]->value.choice.RICaction_Admitted_List;
+                              if(admitList->list.array != NULLP)
+                              {
+                                 for(listIdx=0 ; listIdx < admitList->list.count; listIdx++)
+                                 {
+                                    DU_FREE(admitList->list.array[listIdx], sizeof(RICaction_Admitted_ItemIEs_t));
+                                 }
+                                 DU_FREE(admitList->list.array, admitList->list.size);	 
+                              }
+                              break;
+                           }
+                        case ProtocolIE_IDE2_id_RICactions_NotAdmitted:
+                           {
+                              notAdmitList = &ricSubscriptionRsp->protocolIEs.list.\
+                                             array[idx]->value.choice.RICaction_NotAdmitted_List;
+                              if(notAdmitList->list.array != NULLP)
+                              {
+                                 for(listIdx=0 ; listIdx < notAdmitList->list.count; listIdx++)
+                                 {
+                                    DU_FREE(notAdmitList->list.array[listIdx], sizeof(RICaction_NotAdmitted_ItemIEs_t));
+                                 }
+                                 DU_FREE(notAdmitList->list.array, notAdmitList->list.size);	 
+                              }
+                              break;
+                           }
+                        default:
+                           break;
+                     }
+                     DU_FREE(ricSubscriptionRsp->protocolIEs.list.array[idx], sizeof(RICsubscriptionResponse_IEs_t));
+                  }
+               }
+               DU_FREE(ricSubscriptionRsp->protocolIEs.list.array, ricSubscriptionRsp->protocolIEs.list.size);
+            }
+         }   
+         DU_FREE(e2apRicMsg->choice.successfulOutcome, sizeof(SuccessfulOutcomeE2_t));
       }		
       DU_FREE(e2apRicMsg, sizeof(E2AP_PDU_t));	      
    }
 }
+
 /*******************************************************************
  *
- * @brief Builds and Send the RicSubscriptionRsp
+ * @brief Fill RIC Subscription Response IEs
  *
  * @details
  *
- *    Function : BuildAndSendRicSubscriptionRsp
+ *    Function : fillRicSubscriptionRsp
  *
- * functionality:Fills the RicSubscriptionRsp
+ * functionality: Fill RIC Subscription Response IEs
  *
+ * @param  Pointer to RIC subscription response
+ *         Subscription response information
  * @return ROK     - success
  *         RFAILED - failure
  *
  ******************************************************************/
-uint8_t  FillRicSubscriptionRsp(RICsubscriptionResponse_t  *ricSubscriptionRsp )
+uint8_t fillRicSubscriptionRsp(RICsubscriptionResponse_t *ricSubscriptionRsp, PendingSubsRspInfo *subsRspInfo)
 {
-   uint8_t idx=0;
-   uint8_t ret = ROK;
+   uint8_t ieIdx = 0;
    uint8_t elementCnt = 0;
-   uint8_t BuildRicRequestIdret=ROK;
-   uint8_t BuildRicAdmitListret=ROK;
+   RICsubscriptionResponse_IEs_t *subsRspIe = NULLP;
 
-   elementCnt=3;
+   elementCnt = 3;
+   if(subsRspInfo->numOfRejectedActions)
+      elementCnt++;
+
    ricSubscriptionRsp->protocolIEs.list.count = elementCnt;
    ricSubscriptionRsp->protocolIEs.list.size  = elementCnt * sizeof(RICsubscriptionResponse_IEs_t);
-   DU_ALLOC(ricSubscriptionRsp->protocolIEs.list.array, \
-	 ricSubscriptionRsp->protocolIEs.list.size);
+   DU_ALLOC(ricSubscriptionRsp->protocolIEs.list.array, ricSubscriptionRsp->protocolIEs.list.size);
    if(ricSubscriptionRsp->protocolIEs.list.array == NULLP)
    {
-      DU_LOG("\nERROR  -->  E2AP : Memory allocation for FillRicSubscriptionRsp  failed");
-      ret = RFAILED;
+      DU_LOG("\nERROR  -->  E2AP : Memory allocation failed at %s : line %d", __func__, __LINE__);
+      return RFAILED;
    }
-   else
+
+   for(ieIdx=0; ieIdx<ricSubscriptionRsp->protocolIEs.list.count; ieIdx++)
    {
-      for(idx=0; idx<ricSubscriptionRsp->protocolIEs.list.count; idx++)
+      DU_ALLOC(ricSubscriptionRsp->protocolIEs.list.array[ieIdx], sizeof(RICsubscriptionResponse_IEs_t));
+      if(ricSubscriptionRsp->protocolIEs.list.array[ieIdx] == NULLP)
       {
-	 DU_ALLOC(ricSubscriptionRsp->protocolIEs.list.array[idx], \
-	       sizeof(RICsubscriptionResponse_IEs_t));
-	 if(ricSubscriptionRsp->protocolIEs.list.array[idx] == NULLP)
-	 {
-	    ret = RFAILED;
-	 }
+         DU_LOG("\nERROR  -->  E2AP : Memory allocation failed at [%s] : line [%d] : ieIdx [%d]", __func__, __LINE__,ieIdx);
+         return RFAILED;
       }
-      if(ret != RFAILED)
+   }
+
+   /* RIC Request ID */
+   ieIdx=0;
+   subsRspIe = ricSubscriptionRsp->protocolIEs.list.array[ieIdx];
+   subsRspIe->id = ProtocolIE_IDE2_id_RICrequestID;
+   subsRspIe->criticality = CriticalityE2_reject;
+   subsRspIe->value.present = RICsubscriptionRequest_IEs__value_PR_RICrequestID;
+   subsRspIe->value.choice.RICrequestID.ricRequestorID = subsRspInfo->requestId.requestorId;
+   subsRspIe->value.choice.RICrequestID.ricInstanceID = subsRspInfo->requestId.instanceId;
+
+   /* RAN Function ID */
+   ieIdx++;
+   subsRspIe = ricSubscriptionRsp->protocolIEs.list.array[ieIdx];
+   subsRspIe->id = ProtocolIE_IDE2_id_RANfunctionID;
+   subsRspIe->criticality = CriticalityE2_reject;
+   subsRspIe->value.present = RICsubscriptionRequest_IEs__value_PR_RANfunctionID;
+   subsRspIe->value.choice.RANfunctionID = subsRspInfo->ranFuncId;
+
+   /* RIC Action Admitted List */
+   ieIdx++;
+   subsRspIe = ricSubscriptionRsp->protocolIEs.list.array[ieIdx];
+   subsRspIe->id = ProtocolIE_IDE2_id_RICactions_Admitted;
+   subsRspIe->criticality = CriticalityE2_reject;
+   subsRspIe->value.present = RICsubscriptionResponse_IEs__value_PR_RICaction_Admitted_List;
+   if(BuildRicActionAdmitList(&subsRspIe->value.choice.RICaction_Admitted_List, subsRspInfo) != ROK)
+   {
+      DU_LOG("\nERROR  -->  E2AP : Failed to fill RIC Action Admitted List in RIC Subscription Response");
+      return RFAILED;
+   }
+
+   /* RIC Action Not Admitted List */
+   if(subsRspInfo->numOfRejectedActions)
+   {
+      ieIdx++;
+      subsRspIe = ricSubscriptionRsp->protocolIEs.list.array[ieIdx];
+      subsRspIe->id = ProtocolIE_IDE2_id_RICactions_NotAdmitted;
+      subsRspIe->criticality = CriticalityE2_reject;
+      subsRspIe->criticality = CriticalityE2_reject;
+      subsRspIe->value.present = RICsubscriptionResponse_IEs__value_PR_RICaction_NotAdmitted_List;
+      if(BuildRicActionNotAdmitList(&subsRspIe->value.choice.RICaction_NotAdmitted_List, subsRspInfo) != ROK)
       {
-
-	 idx=0;
-	 ricSubscriptionRsp->protocolIEs.list.array[idx]->id = ProtocolIE_IDE2_id_RICrequestID;
-	 ricSubscriptionRsp->protocolIEs.list.array[idx]->criticality = CriticalityE2_reject;
-	 ricSubscriptionRsp->protocolIEs.list.array[idx]->value.present =\
-									 RICsubscriptionRequest_IEs__value_PR_RICrequestID;
-	 BuildRicRequestIdret =
-	    BuildRicRequestId(&ricSubscriptionRsp->protocolIEs.list.array[idx]->value.choice.RICrequestID);
-	 if(BuildRicRequestIdret != ROK)
-	 {
-	    ret = RFAILED;
-	 }
-	 else
-	 {
-	    idx++;
-	    ricSubscriptionRsp->protocolIEs.list.array[idx]->id = ProtocolIE_IDE2_id_RANfunctionID;
-	    ricSubscriptionRsp->protocolIEs.list.array[idx]->criticality = CriticalityE2_reject;
-	    ricSubscriptionRsp->protocolIEs.list.array[idx]->value.present =\
-									    RICsubscriptionRequest_IEs__value_PR_RANfunctionID;
-	    ricSubscriptionRsp->protocolIEs.list.array[idx]->value.choice.RANfunctionID = 1;
-
-	    idx++;
-	    ricSubscriptionRsp->protocolIEs.list.array[idx]->id = ProtocolIE_IDE2_id_RICactions_Admitted;
-	    ricSubscriptionRsp->protocolIEs.list.array[idx]->criticality = CriticalityE2_reject;
-	    ricSubscriptionRsp->protocolIEs.list.array[idx]->value.present =\
-									    RICsubscriptionResponse_IEs__value_PR_RICaction_Admitted_List;
-	    BuildRicAdmitListret =
-	       BuildRicAdmitList(&ricSubscriptionRsp->protocolIEs.list.array[idx]->value.choice.RICaction_Admitted_List);
-	    if(BuildRicAdmitListret != ROK)
-	    {
-	       ret = RFAILED;
-	    }
-	 }
+         DU_LOG("\nERROR  -->  E2AP : Failed to fill RIC Action Not Admitted List in RIC Subscription Response");
+         return RFAILED;
       }
-   }	
-   return ret;
+   }
+
+   return ROK;
 }
+
 /*******************************************************************
  *
  * @brief Builds and Send the RicSubscriptionRsp
@@ -1446,14 +1450,12 @@ uint8_t  FillRicSubscriptionRsp(RICsubscriptionResponse_t  *ricSubscriptionRsp )
  *
  ******************************************************************/
 
-uint8_t BuildAndSendRicSubscriptionRsp()
+uint8_t BuildAndSendRicSubscriptionRsp(PendingSubsRspInfo *subsRspInfo)
 {
-
-   E2AP_PDU_t         *e2apRicMsg = NULLP;
+   uint8_t      ret = RFAILED;
+   E2AP_PDU_t   *e2apRicMsg = NULLP;
    RICsubscriptionResponse_t  *ricSubscriptionRsp=NULLP;
-   asn_enc_rval_t     encRetVal; 
-   uint8_t ret = RFAILED;
-   uint8_t FillRicricSubscriptionRspret;
+   asn_enc_rval_t encRetVal; 
 
    while(true)
    {
@@ -1462,28 +1464,28 @@ uint8_t BuildAndSendRicSubscriptionRsp()
       DU_ALLOC(e2apRicMsg, sizeof(E2AP_PDU_t)); 
       if(e2apRicMsg == NULLP)
       {
-	 DU_LOG("\nERROR  -->  E2AP : Memory allocation for E2AP-PDU failed");
-	 break;
+         DU_LOG("\nERROR  -->  E2AP : Memory allocation for E2AP-PDU failed");
+         break;
       }
+
       e2apRicMsg->present =  E2AP_PDU_PR_successfulOutcome;
       DU_ALLOC(e2apRicMsg->choice.successfulOutcome, sizeof(SuccessfulOutcomeE2_t));
       if(e2apRicMsg->choice.successfulOutcome == NULLP)
       {
-	 DU_LOG("\nERROR  -->  E2AP : Memory allocation for RIC subscription Response failed");
-	 break;
+         DU_LOG("\nERROR  -->  E2AP : Memory allocation for RIC subscription Response failed");
+         break;
       }
 
       e2apRicMsg->choice.successfulOutcome->procedureCode = ProcedureCodeE2_id_RICsubscription;
       e2apRicMsg->choice.successfulOutcome->criticality = CriticalityE2_reject;
-      e2apRicMsg->choice.successfulOutcome->value.present = \
-							    SuccessfulOutcomeE2__value_PR_RICsubscriptionResponse;
+      e2apRicMsg->choice.successfulOutcome->value.present = SuccessfulOutcomeE2__value_PR_RICsubscriptionResponse;
+
       ricSubscriptionRsp = &e2apRicMsg->choice.successfulOutcome->value.choice.RICsubscriptionResponse;
 
-      FillRicricSubscriptionRspret = FillRicSubscriptionRsp(ricSubscriptionRsp);
-      if(FillRicricSubscriptionRspret != ROK)
+      if(fillRicSubscriptionRsp(ricSubscriptionRsp, subsRspInfo) != ROK)
       {
-	 DU_LOG("\nERROR  -->  E2AP : Memory allocation for RICsubscriptionResponseIE failed");
-	 break;
+         DU_LOG("\nERROR  -->  E2AP : Memory allocation for RICsubscriptionResponseIE failed");
+         break;
       }
 
       /* Prints the Msg formed */
@@ -1491,37 +1493,36 @@ uint8_t BuildAndSendRicSubscriptionRsp()
 
       memset(encBuf, 0, ENC_BUF_MAX_LEN);
       encBufSize = 0;
-      encRetVal = aper_encode(&asn_DEF_E2AP_PDU, 0, e2apRicMsg, PrepFinalEncBuf,\
-	    encBuf);
+      encRetVal = aper_encode(&asn_DEF_E2AP_PDU, 0, e2apRicMsg, PrepFinalEncBuf, encBuf);
       if(encRetVal.encoded == ENCODE_FAIL)
       {
-	 DU_LOG("\nERROR  -->  E2AP : Could not encode RIC Subscription Response structure (at %s)\n",\
-	       encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
-	 break;
+         DU_LOG("\nERROR  -->  E2AP : Could not encode RIC Subscription Response structure (at %s)\n",\
+               encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
+         break;
       }
       else
       {
-	 DU_LOG("\nDEBUG   -->  E2AP : Created APER encoded buffer for RIC subscription response \n");
+         DU_LOG("\nDEBUG   -->  E2AP : Created APER encoded buffer for RIC subscription response \n");
 #ifdef DEBUG_ASN_PRINT
-	 for(int i=0; i< encBufSize; i++)
-	 {
-	    printf("%x",encBuf[i]);
-	 } 
+         for(int i=0; i< encBufSize; i++)
+         {
+            printf("%x",encBuf[i]);
+         } 
 #endif
       } 
 
       if(SendE2APMsg(DU_APP_MEM_REGION, DU_POOL, encBuf, encBufSize) != ROK)
       {
-	 DU_LOG("\nERROR  -->  E2AP : Sending RIC Subscription Response failed");      
-	 break;
+         DU_LOG("\nERROR  -->  E2AP : Sending RIC Subscription Response failed");      
+         break;
       }
 
       ret = ROK;
       break;
 
    }
-   FreeRicSubscriptionRsp(e2apRicMsg);
 
+   FreeRicSubscriptionRsp(e2apRicMsg);
    return ret;
 }
 
@@ -1722,8 +1723,7 @@ void freeAperDecodingOfRicSubsReq(RICsubscriptionRequest_t *ricSubscriptionReq)
                      {
                         if(subsDetails->ricAction_ToBeSetup_List.list.array[elementIdx])
                         {
-                           actionItem = (RICaction_ToBeSetup_ItemIEs_t *)subsDetails->ricAction_ToBeSetup_List.\
-                              list.array[elementIdx];
+                           actionItem = (RICaction_ToBeSetup_ItemIEs_t *)subsDetails->ricAction_ToBeSetup_List.list.array[elementIdx];
                            if(actionItem->value.choice.RICaction_ToBeSetup_Item.ricActionDefinition)
                            {
                               free(actionItem->value.choice.RICaction_ToBeSetup_Item.ricActionDefinition->buf);
@@ -2175,7 +2175,7 @@ uint8_t extractRicActionDef(RanFunction *ranFuncDb, ActionDefinition *actionDefD
  *
  ******************************************************************/
 uint8_t extractRicActionToBeSetup(RanFunction *ranFuncDb, RicSubscription *ricSubscriptionInfo, \
-   RICactions_ToBeSetup_List_t *actionList, E2FailureCause *failureCause)
+   RICactions_ToBeSetup_List_t *actionList, E2FailureCause *failureCause, PendingSubsRspInfo *subsRsp)
 {
    uint8_t actionIdx = 0;
    uint8_t ricActionId = 0;
@@ -2194,9 +2194,10 @@ uint8_t extractRicActionToBeSetup(RanFunction *ranFuncDb, RicSubscription *ricSu
                    * If RIC action definition's extraction and validation passes, 
                    * Then : 
                    * This action is added to action sequence list of subscription info */
+                  ricActionId = actionItem->value.choice.RICaction_ToBeSetup_Item.ricActionID;
+
                   if(actionItem->value.choice.RICaction_ToBeSetup_Item.ricActionType == RICactionType_report)
                   {
-                     ricActionId = actionItem->value.choice.RICaction_ToBeSetup_Item.ricActionID;
                      ricSubscriptionInfo->actionSequence[ricActionId-1].id = ricActionId;
                      ricSubscriptionInfo->actionSequence[ricActionId-1].type = REPORT;
 
@@ -2205,14 +2206,22 @@ uint8_t extractRicActionToBeSetup(RanFunction *ranFuncDb, RicSubscription *ricSu
                      {
                         ricSubscriptionInfo->actionSequence[ricActionId-1].action = CONFIG_ADD;
                         ricSubscriptionInfo->numOfActions++;
-                     }
-                     else
-                     {
-                        memset(&ricSubscriptionInfo->actionSequence[ricActionId-1], 0, sizeof(ActionInfo));
-                        /* TODO : Since this action addition failed, add to
-                         * reject-action-list in subscription response */
+                        break;
                      }
                   }
+
+                  /* In case of any failure, action is rejected
+                   * Added to rejected-action-list in subscription response */
+                  memset(&ricSubscriptionInfo->actionSequence[ricActionId-1], 0, sizeof(ActionInfo));
+                  subsRsp->rejectedActionList[subsRsp->numOfRejectedActions].id = ricActionId;
+                  if(failureCause->causeType == E2_NOTHING)
+                  {
+                     failureCause->causeType = E2_RIC_REQUEST;
+                     failureCause->cause = E2_ACTION_NOT_SUPPORTED;
+                  }
+                  memcpy(&subsRsp->rejectedActionList[subsRsp->numOfRejectedActions].failureCause, \
+                        failureCause, sizeof(E2FailureCause));
+                  subsRsp->numOfRejectedActions++;
                   break;
                }
             default:
@@ -2291,6 +2300,14 @@ uint8_t procRicSubscriptionRequest(E2AP_PDU_t *e2apMsg)
                   {
                      ranFuncDb = &duCb.e2apDb.ranFunction[ranFuncId-1];
 
+                     if(ranFuncDb->numPendingSubsRsp >= MAX_PENDING_SUBSCRIPTION_RSP)
+                     {
+                        failureCause.causeType = E2_RIC_REQUEST;
+                        failureCause.cause = E2_FUNCTION_RESOURCE_LIMIT; 
+                        ret = RFAILED;
+                        break;
+                     }
+
                      DU_ALLOC(ricSubscriptionInfo, sizeof(RicSubscription));
                      if(!ricSubscriptionInfo)
                      {
@@ -2302,6 +2319,11 @@ uint8_t procRicSubscriptionRequest(E2AP_PDU_t *e2apMsg)
                      }
                      ricSubscriptionInfo->requestId.requestorId = ricReqId.requestorId;
                      ricSubscriptionInfo->requestId.instanceId = ricReqId.instanceId;
+
+                     memset(&ranFuncDb->pendingSubsRspInfo[ranFuncDb->numPendingSubsRsp], 0, sizeof(PendingSubsRspInfo));
+                     memcpy(&ranFuncDb->pendingSubsRspInfo[ranFuncDb->numPendingSubsRsp].requestId, 
+                     &ricReqId, sizeof(RicRequestId));
+                     ranFuncDb->pendingSubsRspInfo[ranFuncDb->numPendingSubsRsp].ranFuncId = ranFuncId;
                   }
                   else
                   {
@@ -2326,7 +2348,7 @@ uint8_t procRicSubscriptionRequest(E2AP_PDU_t *e2apMsg)
 
                   /* Decode, Validate and record RIC actions */
                   if(extractRicActionToBeSetup(ranFuncDb, ricSubscriptionInfo, &subsDetails->ricAction_ToBeSetup_List, \
-                     &failureCause) != ROK)
+                     &failureCause, &ranFuncDb->pendingSubsRspInfo[ranFuncDb->numPendingSubsRsp]) != ROK)
                   {
                      ret = RFAILED;
                      break;
@@ -2357,22 +2379,26 @@ uint8_t procRicSubscriptionRequest(E2AP_PDU_t *e2apMsg)
          cmLListAdd2Tail(&ranFuncDb->subscriptionList, ricSubscriptionNode);
       }
 
+      ranFuncDb->numPendingSubsRsp++;
+
 #ifdef KPI_CALCULATION
       /* Send statistics request to other DU entities */
       BuildAndSendStatsReq(ranFuncId, ricSubscriptionInfo);
 #endif      
 
-      /* TODO : Trigger RIC subscription response once statistics response is
+      /* TODO : Trigger RIC Indication once statistics indication is
        * received from MAC . 
-       * TBD in next gerrit */
-      ret = BuildAndSendRicSubscriptionRsp();
-      {
-         BuildAndSendRicIndication(ricSubscriptionInfo);
-      }
+       * TBD in future gerrit */
+       //BuildAndSendRicIndication(ricSubscriptionInfo);
    }
    else
    {
       DU_FREE(ricSubscriptionInfo, sizeof(RicSubscription));
+
+      if(ranFuncDb)
+      {
+         memset(&ranFuncDb->pendingSubsRspInfo[ranFuncDb->numPendingSubsRsp], 0, sizeof(PendingSubsRspInfo));
+      }
 
       /* Send RIC Subcription Failure */
       BuildAndSendRicSubscriptionFailure(ricReqId, ranFuncId, failureCause);
@@ -4157,11 +4183,6 @@ void E2APMsgHdlr(Buffer *mBuf)
                case UnsuccessfulOutcomeE2__value_PR_E2setupFailure:
                   {
                      procE2SetupFailure(e2apMsg);
-                     break;
-                  }
-               case UnsuccessfulOutcomeE2__value_PR_RICserviceUpdateFailure:
-                  {
-                     procRicServiceUpdateFailure(e2apMsg);
                      break;
                   }
                default:

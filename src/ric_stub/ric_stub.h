@@ -133,7 +133,6 @@ typedef struct duDb
    uint16_t        numOfRanFunction;
    RanFunction     ranFunction[MAX_RAN_FUNCTION];
    E2NodeComponent e2NodeComponent;
-   Bool            ricSubscribedToDu;
 }DuDb;
 
 typedef struct ricCfgParams

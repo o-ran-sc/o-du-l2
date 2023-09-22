@@ -20,14 +20,17 @@
 
 #define ENCODE_FAIL -1
 
-uint8_t  BuildAndSendE2SetupReq();
-uint8_t  BuildAndSendE2NodeConfigUpdate();
+void    E2APMsgHdlr(Buffer *mBuf);
+uint8_t BuildAndSendE2SetupReq();
 uint8_t BuildAndSendE2ResetRequest(E2FailureCause resetCause);
-void     E2APMsgHdlr(Buffer *mBuf);
-uint8_t BuildAndSendRicIndication(RicSubscription *ricSubscriptionInfo);
+uint8_t BuildAndSendE2NodeConfigUpdate();
 uint8_t BuildAndSendRicServiceUpdate(RicServiceUpdate serviceUpdate);
+
 uint8_t BuildAndSendStatsReq(uint16_t ranFuncId, RicSubscription *ricSubscriptionInfo);
+uint8_t BuildAndSendRicSubscriptionRsp(PendingSubsRspInfo *subsRspInfo);
 uint8_t BuildAndSendRicSubscriptionFailure(RicRequestId ricReqId, uint16_t ranFuncId, E2FailureCause failureCause);
+uint8_t BuildAndSendRicIndication(RicSubscription *ricSubscriptionInfo);
+
 /**********************************************************************
   End of file
  **********************************************************************/
