@@ -1,0 +1,204 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "868d631b_9ac6536b",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 3598,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-22T07:32:03Z",
+      "side": 1,
+      "message": "add a blank line before starting next function",
+      "revId": "a1d4082b6bd7207f1d864b8930354633aad7d37c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3d5bce58_a2f760b1",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 3601,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-22T07:32:03Z",
+      "side": 1,
+      "message": "by",
+      "range": {
+        "startLine": 3601,
+        "startChar": 43,
+        "endLine": 3601,
+        "endChar": 45
+      },
+      "revId": "a1d4082b6bd7207f1d864b8930354633aad7d37c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "08c8c226_1ff7fd9f",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 3601,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-22T07:32:03Z",
+      "side": 1,
+      "message": "keep the length of text equal to or less than the length of line 3599",
+      "revId": "a1d4082b6bd7207f1d864b8930354633aad7d37c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0b77ae20_2b8415f7",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 3607,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-22T07:32:03Z",
+      "side": 1,
+      "message": "by",
+      "range": {
+        "startLine": 3607,
+        "startChar": 54,
+        "endLine": 3607,
+        "endChar": 56
+      },
+      "revId": "a1d4082b6bd7207f1d864b8930354633aad7d37c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a3630c7e_d99722f5",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 3656,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-22T07:32:03Z",
+      "side": 1,
+      "message": "ack",
+      "range": {
+        "startLine": 3656,
+        "startChar": 39,
+        "endLine": 3656,
+        "endChar": 46
+      },
+      "revId": "a1d4082b6bd7207f1d864b8930354633aad7d37c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b74e532b_1ed7b2fe",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 3662,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-22T07:32:03Z",
+      "side": 1,
+      "message": "ack",
+      "range": {
+        "startLine": 3662,
+        "startChar": 50,
+        "endLine": 3662,
+        "endChar": 57
+      },
+      "revId": "a1d4082b6bd7207f1d864b8930354633aad7d37c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "53f31c04_5c7395ce",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 3734,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-22T07:32:03Z",
+      "side": 1,
+      "message": "since transId is cleared but at like 3686, are we assigning new transid and storing in e2 init transaction list inside of BuildAndSendRicServiceUpdate?",
+      "revId": "a1d4082b6bd7207f1d864b8930354633aad7d37c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3bd3187e_10216985",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 3741,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-22T07:32:03Z",
+      "side": 1,
+      "message": "same comment as line 3601",
+      "revId": "a1d4082b6bd7207f1d864b8930354633aad7d37c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ce316d71_481fafcd",
+        "filename": "src/du_app/du_mgr_main.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 588,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-22T07:32:03Z",
+      "side": 1,
+      "message": "revert",
+      "revId": "a1d4082b6bd7207f1d864b8930354633aad7d37c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "532b7f4b_89733a17",
+        "filename": "src/du_app/du_tmr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-22T07:32:03Z",
+      "side": 1,
+      "message": "are we using the same transId here which was used in failure case?",
+      "range": {
+        "startLine": 158,
+        "startChar": 9,
+        "endLine": 158,
+        "endChar": 37
+      },
+      "revId": "a1d4082b6bd7207f1d864b8930354633aad7d37c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
