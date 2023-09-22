@@ -1110,7 +1110,6 @@ uint8_t BuildAndSendRicSubscriptionReq(DuDb *duDb)
    RICsubscriptionRequest_t   *ricSubscriptionReq;
    uint8_t         elementCnt;
    uint8_t         idx;
-   uint8_t         ieId;
    asn_enc_rval_t  encRetVal;        /* Encoder return value */
    RanFunction     *ranFuncDb = &duDb->ranFunction[0];
 
@@ -1171,7 +1170,7 @@ uint8_t BuildAndSendRicSubscriptionReq(DuDb *duDb)
       if(BuildNewRicRequestId(&ricSubscriptionReq->protocolIEs.list.array[idx]->value.choice.RICrequestID, \
          &ranFuncDb->subscriptionList[ranFuncDb->numOfSubscription].requestId) != ROK)
       {
-         DU_LOG("\nERROR  -->  E2AP : Failed at [%d] : Line [%d]", __func__, __LINE__);
+         DU_LOG("\nERROR  -->  E2AP : Failed at [%s] : Line [%d]", __func__, __LINE__);
          break;
       }
 
@@ -1193,7 +1192,7 @@ uint8_t BuildAndSendRicSubscriptionReq(DuDb *duDb)
       if(BuildRicSubsDetails(&(ricSubscriptionReq->protocolIEs.list.array[idx]->value.choice.RICsubscriptionDetails),\
          &ranFuncDb->subscriptionList[ranFuncDb->numOfSubscription]) != ROK)
       {
-         DU_LOG("\nERROR  -->  E2AP : Failed at [%d] : Line [%d]", __func__, __LINE__);
+         DU_LOG("\nERROR  -->  E2AP : Failed at [%s] : Line [%d]", __func__, __LINE__);
          break;
       }
 
@@ -1255,7 +1254,7 @@ void ProcRicSubscriptionResponse(uint32_t duId)
    uint8_t duIdx = 0;
    DuDb *duDb;
 
-   DU_LOG("\nINFO  -->  E2AP : RICsubscriptionResponse Msg Acknowledged");
+   DU_LOG("\nINFO  -->  E2AP : RIC Subscription Response received");
 
    SEARCH_DU_DB(duIdx, duId, duDb);
    if(duDb)
@@ -2811,7 +2810,7 @@ uint8_t ProcRicSubscriptionFailure(uint32_t duId, RICsubscriptionFailure_t *ricS
    if(duDb == NULLP)
    {
       DU_LOG("\nERROR  -->  E2AP : duDb is not present for duId %d",duId);
-      return;
+      return RFAILED;
    }
 
    memset(&ricReqId, 0, sizeof(RicRequestId));

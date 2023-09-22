@@ -32,6 +32,7 @@
 #define MAX_LABEL_INFO  2147483648     /* O-RAN.WG3.E2SM-KPM-R003-v03.00 : Section 8.2.1.2.1 : maxnoofLabelInfo */
 #define MAX_RIC_ACTION  16          /* O-RAN.WG3.E2AP-R003-v03.00 : Section 9.1.1.1 : maxofRICActionID */
 #define MAX_RIC_REQUEST 65535       /* O-RAN.WG3.E2AP-R003-v03.00 : Section 9.2.7 */
+#define MAX_PENDING_SUBSCRIPTION_RSP 5  /* Number of statistics request in processing */
 
 #define STRING_SIZE_150_BYTES 150
 #define STRING_SIZE_1000_BYTES 1000
@@ -164,6 +165,12 @@ typedef enum
 }E2CauseType;
 
 typedef uint8_t E2Cause;
+
+typedef struct e2FailureCause
+{
+   E2CauseType causeType;
+   uint8_t     cause;
+}E2FailureCause;
 
 typedef struct
 {
@@ -359,6 +366,22 @@ typedef struct
    ActionInfo             actionSequence[MAX_RIC_ACTION];  
 }RicSubscription;
 
+typedef struct rejectedAction
+{
+   uint8_t id;
+   E2FailureCause failureCause;
+}RejectedAction;
+
+typedef struct pendingSubsRspInfo
+{
+   RicRequestId    requestId;
+   uint16_t        ranFuncId;
+   uint8_t         numOfAcceptedActions;
+   uint8_t         acceptedActionList[MAX_RIC_ACTION];
+   uint8_t         numOfRejectedActions;
+   RejectedAction  rejectedActionList[MAX_RIC_ACTION];
+}PendingSubsRspInfo;
+
 typedef struct
 {
    /* O-RAN.WG3.E2SM-KPM-R003-v03.00 : Section 8.2.2.1 */
@@ -373,6 +396,8 @@ typedef struct
    uint8_t          ricIndicationMessageFormat;
    /* O-RAN.WG3.E2AP-R003-v03.00 : Section 9.1.1.1 */
    CmLListCp        subscriptionList;
+   uint8_t          numPendingSubsRsp;
+   PendingSubsRspInfo pendingSubsRspInfo[MAX_PENDING_SUBSCRIPTION_RSP];
 }RanFunction;
 
 /* O-RAN.WG3.E2AP-R003-v03.00 : Section 9.2.26-9.2.27 */
@@ -422,12 +447,6 @@ typedef struct
    TNLAssociation   tnlAssoc[MAX_TNL_ASSOCIATION];
    E2TimersInfo     e2TimersInfo;
 }E2apDb;
-
-typedef struct e2FailureCause
-{
-   E2CauseType causeType;
-   uint8_t     cause;
-}E2FailureCause;
 
 uint8_t assignTransactionId();
 uint8_t ResetE2Request(E2ProcedureDirection dir, E2FailureCause resetCause);

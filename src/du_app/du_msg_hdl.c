@@ -2378,18 +2378,20 @@ uint8_t duRejectAllStatsGroup(RanFunction *ranFuncDb, CmLList *ricSubscriptionNo
  * ****************************************************************/
 uint8_t DuProcMacStatsRsp(Pst *pst, MacStatsRsp *statsRsp)
 {
+   uint8_t idx = 0;
+   uint8_t actionId = 0;
    uint16_t ranFuncId = 0;
    RicRequestId ricReqId;
    RanFunction *ranFuncDb = NULLP;
    CmLList *ricSubscriptionNode = NULLP;
    RicSubscription *ricSubscriptionInfo = NULLP;
+   PendingSubsRspInfo *pendingSubsRsp = NULLP;
 
    DU_LOG("\nINFO  -->  DU_APP : DuProcMacStatsRsp: Received Statistics Response from MAC");
 
    if(statsRsp)
    {
 #ifdef DEBUG_PRINT   
-      uint8_t idx = 0;
       DU_LOG("\n  Subscription Id [%ld]", statsRsp->subscriptionId);
 
       DU_LOG("\n  Number of Accepted Groups [%d]", statsRsp->numGrpAccepted);
@@ -2401,7 +2403,7 @@ uint8_t DuProcMacStatsRsp(Pst *pst, MacStatsRsp *statsRsp)
       DU_LOG("\n  Number of Rejected Groups [%d]", statsRsp->numGrpRejected);
       for(idx=0; idx<statsRsp->numGrpRejected; idx++)
       {
-         DU_LOG("\n    Group Id [%d]", statsRsp->statsGrpRejectedList[idx]);
+         DU_LOG("\n    Group Id [%d]", statsRsp->statsGrpRejectedList[idx].groupId);
       }
 #endif      
 
@@ -2449,6 +2451,17 @@ uint8_t DuProcMacStatsRsp(Pst *pst, MacStatsRsp *statsRsp)
          return RFAILED;
       }
 
+      /* Fetch pre-stored statistics response info by DU APP */
+      for(idx=0; idx<ranFuncDb->numPendingSubsRsp; idx++)
+      {
+         if((ranFuncDb->pendingSubsRspInfo[idx].requestId.requestorId == ricReqId.requestorId) &&
+            (ricSubscriptionInfo->requestId.instanceId == ricReqId.instanceId))
+         {
+            pendingSubsRsp = &ranFuncDb->pendingSubsRspInfo[idx];
+            break;
+         }
+      }
+
       /* If no action is accepted
        *  a. Remove subcription entry from RAN Function
        *  b. Send RIC subscription failure */
@@ -2456,23 +2469,51 @@ uint8_t DuProcMacStatsRsp(Pst *pst, MacStatsRsp *statsRsp)
       {
          duRejectAllStatsGroup(ranFuncDb, ricSubscriptionNode, statsRsp);
       }
+      else
+      {
+         /* If even 1 action is accepted :
+          *
+          * For accepted groups:
+          *    Mark subscribed-action's -> action = CONFIG_UNKNOWN
+          *    Add to accepted-action-list of subscription response
+          */
+         for(idx=0; idx<statsRsp->numGrpAccepted; idx++)
+         {
+            actionId = statsRsp->statsGrpAcceptedList[idx];
+            if((ricSubscriptionInfo->actionSequence[actionId-1].id == actionId) &&
+               (ricSubscriptionInfo->actionSequence[actionId-1].action == CONFIG_ADD))
+            {
+               ricSubscriptionInfo->actionSequence[actionId-1].action = CONFIG_UNKNOWN;
 
-      /* TODO :
-       * If even 1 action is accepted :
-       *
-       * For accepted groups:
-       *    Mark scubscrbed-action's -> action = CONFIG_UNKNOWN
-       *    Add action ID to accpeted-action-list in Subscription response
-       *
-       * For rejected groups:
-       *    Remove entry from DU's RAN Function->subscription->actionList
-       *    Add Rejected action Id to reject-action-list created by DU APP while
-       *     processing of subscription request.
-       *
-       * Send subscription response with accepted and rejected action lists to
-       * RIC
-       */
+               pendingSubsRsp->acceptedActionList[pendingSubsRsp->numOfAcceptedActions++] = actionId;
+            }
+         }
 
+         /* For rejected groups:
+          *    Remove entry from DU's RAN Function->subscription->actionList
+          *    Add to rejected-action-list in subscription response
+          */
+         for(idx=0; idx<statsRsp->numGrpRejected; idx++)
+         {
+            actionId = statsRsp->statsGrpRejectedList[idx].groupId;
+            if(ricSubscriptionInfo->actionSequence[actionId-1].id == actionId)
+            {
+               memset(&ricSubscriptionInfo->actionSequence[actionId-1], 0, sizeof(ActionInfo));
+               ricSubscriptionInfo->numOfActions--;
+
+               pendingSubsRsp->rejectedActionList[pendingSubsRsp->numOfRejectedActions].id = actionId;
+               convertDuCauseToE2Cause(statsRsp->statsGrpRejectedList[idx].cause, \
+                  &pendingSubsRsp->rejectedActionList[pendingSubsRsp->numOfRejectedActions].failureCause);
+               pendingSubsRsp->numOfRejectedActions++;
+            }
+         }
+         
+         /* Send subscription response with accepted and rejected action lists to
+          * RIC */
+         BuildAndSendRicSubscriptionRsp(pendingSubsRsp);
+      }
+
+      memset(pendingSubsRsp, 0, sizeof(PendingSubsRspInfo));
       DU_FREE_SHRABL_BUF(pst->region, pst->pool, statsRsp, sizeof(MacStatsRsp));
       return ROK;
    }
