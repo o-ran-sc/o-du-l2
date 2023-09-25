@@ -2094,12 +2094,9 @@ uint8_t DuProcRlcSliceMetrics(Pst *pst, SlicePmList *sliceStats)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t BuildAndSendStatsReqToMac(uint64_t subscriptionId, RicSubscription *ricSubscriptionInfo)
+uint8_t BuildAndSendStatsReqToMac(uint16_t ranFuncId, RicSubscription *ricSubscriptionInfo)
 {
    Pst pst;
-   uint8_t    actionIdx = 0, grpIdx = 0, statsIdx = 0;
-   ActionInfo *actionDb = NULLP;
-   ActionDefFormat1 *format1Action = NULLP;
    MacStatsReq *macStatsReq = NULLP;
 
    /* Fill MAC statistics request */
@@ -2110,64 +2107,8 @@ uint8_t BuildAndSendStatsReqToMac(uint64_t subscriptionId, RicSubscription *ricS
       return RFAILED;
    }
 
-   macStatsReq->subscriptionId = subscriptionId;
-   for(actionIdx = 0; actionIdx < ricSubscriptionInfo->numOfActions; actionIdx++)
-   {
-      if(ricSubscriptionInfo->actionSequence[actionIdx].action == CONFIG_ADD)
-      {
-         actionDb = &ricSubscriptionInfo->actionSequence[actionIdx];
-         macStatsReq->statsGrpList[grpIdx].groupId = actionDb->id;
-         switch(actionDb->definition.formatType)
-         {
-            case 1:
-               {
-                  format1Action = &actionDb->definition.choice.format1;
-                  macStatsReq->statsGrpList[grpIdx].periodicity = format1Action->granularityPeriod;
-
-                  CmLList *node = NULLP;
-                  MeasurementInfo *measInfo = NULLP;
-                  statsIdx = 0;
-                  /* Update DL PRB Usage for all stats group which requested for DL Total PRB Usage */
-                  node = cmLListFirst(&format1Action->measurementInfoList);
-                  while(node)
-                  {
-                     measInfo = (MeasurementInfo *)(node->node);
-                     switch(measInfo->measurementTypeId)
-                     {
-                        case 1:
-                           {
-                              macStatsReq->statsGrpList[grpIdx].statsList[statsIdx++] = MAC_DL_TOTAL_PRB_USAGE;
-                              break;
-                           }
-                        case 2:
-                           {
-                              macStatsReq->statsGrpList[grpIdx].statsList[statsIdx++] = MAC_UL_TOTAL_PRB_USAGE;
-                              break;
-                           }
-                        default:
-                           {
-                              DU_LOG("\nERROR  -->  DU_APP : Invalid measurement name BuildAndSendStatsReqToMac");
-                              break;
-                           }
-                     }
-                     node = node->next;
-                  }
-                  macStatsReq->statsGrpList[grpIdx].numStats = statsIdx;
-                  break;
-               }
-            default:
-               {
-                  DU_LOG("\nERROR  -->  DU_APP : BuildAndSendStatsReqToMac: Only Action Definition Format 1 supported");
-                  break;
-               }
-         }
-         if(macStatsReq->statsGrpList[grpIdx].numStats)
-            grpIdx++;
-      }
-   }
-   macStatsReq->numStatsGroup = grpIdx;
-
-   if(macStatsReq->numStatsGroup)
+   /* Fill E2 Subscription Info in MAC Statistics Request and send to MAC */
+   if(fillRicSubsInMacStatsReq(macStatsReq, ranFuncId, ricSubscriptionInfo) == ROK)
    {
       DU_LOG("\nDEBUG  -->  DU_APP: Sending Statistics Request to MAC ");
       FILL_PST_DUAPP_TO_MAC(pst, EVENT_MAC_STATISTICS_REQ);
@@ -2181,44 +2122,6 @@ uint8_t BuildAndSendStatsReqToMac(uint64_t subscriptionId, RicSubscription *ricS
    DU_LOG("\nERROR  -->  DU_APP: No Statistics group found valid. Hence statistics request is not sent to MAC");
    DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, macStatsReq, sizeof(MacStatsReq));
    return RFAILED;
-}
-
-/*******************************************************************
- *
- * @brief Fetch statistics details from Action Definition Format 1
- *
- * @details
- *
- *    Function : FetchStatsFromActionDefFormat1()
- *
- *    Functionality: Fetch statistics details from Action 
- *       Definition Format 1 received in an E2 message from 
- *       RIC.
- *
- * @params[in] ActionDefFormat1
- *
- * @return Statistics
- *
- * ****************************************************************/
-Statistics FetchStatsFromActionDefFormat1(ActionDefFormat1 format1)
-{
-   Statistics stats;
-
-   /* TODO : When E2AP subscription procedure is implemented:
-    * Measurement info list is traveresed 
-    * Based on KPI type, stats.macStatsReq or stats.rlcstatsReq is filled */
-
-   /* Hardcoding values for now for testing purpose 
-    * Will be removed in next gerrit */
-   stats.macStatsReq.subscriptionId = 1;
-   stats.macStatsReq.numStatsGroup = 1;
-   stats.macStatsReq.statsGrpList[0].groupId = 1;
-   stats.macStatsReq.statsGrpList[0].periodicity = 100;
-   stats.macStatsReq.statsGrpList[0].numStats = 2;
-   stats.macStatsReq.statsGrpList[0].statsList[0] = MAC_DL_TOTAL_PRB_USAGE;
-   stats.macStatsReq.statsGrpList[0].statsList[1] = MAC_UL_TOTAL_PRB_USAGE;
-
-   return stats;
 }
 
 /*******************************************************************
@@ -2241,20 +2144,8 @@ Statistics FetchStatsFromActionDefFormat1(ActionDefFormat1 format1)
  * ****************************************************************/
 uint8_t BuildAndSendStatsReq(uint16_t ranFuncId, RicSubscription *ricSubscriptionInfo)
 {
-   uint64_t   subscriptionId = 0; 
-
-   /* Calculate 64 bit subscription-ID :
-    *  First 16 MSB is unused
-    *  Next 16 MSB = RAN-Function-ID
-    *  Next 16 MSB = Requestor-ID in RIC-Request-ID
-    *  Last 16 LSB = Instance-ID in RIC-Request-ID
-    */
-   subscriptionId = ricSubscriptionInfo->requestId.instanceId;
-   subscriptionId |= ((uint64_t)ricSubscriptionInfo->requestId.requestorId << 16);
-   subscriptionId |= ((uint64_t)ranFuncId << 32);
-
    /* Build and sent subscription information to MAC in Statistics Request */
-   if(BuildAndSendStatsReqToMac(subscriptionId, ricSubscriptionInfo) != ROK)
+   if(BuildAndSendStatsReqToMac(ranFuncId, ricSubscriptionInfo) != ROK)
    {
       DU_LOG("\nERROR  -->  DU_APP : Failed at BuildAndSendStatsReqToMac()");
       return RFAILED;   
@@ -2271,90 +2162,6 @@ uint8_t BuildAndSendStatsReq(uint16_t ranFuncId, RicSubscription *ricSubscriptio
 #endif
 
    return ROK;
-}
-
-/*******************************************************************
- *
- * @brief Converts DU specific failure cause to E2 interface
- *        failure cause
- *
- * @details
- *
- *    Function : convertDuCauseToE2Cause
- *
- *    Functionality: Converts DU specific failure cause to E2 
- *       interface failure cause
- *
- * @params[in] DU specific failure cause
- *             E2 specific failure cause
- *
- * @return void
- *
- * ****************************************************************/
-void convertDuCauseToE2Cause(CauseOfResult l2Cause, E2FailureCause *failureCause)
-{
-   switch(l2Cause)
-   {
-      case PARAM_INVALID:
-         {
-            failureCause->causeType = E2_RIC_REQUEST;
-            failureCause->cause = E2_ACTION_NOT_SUPPORTED;
-            break;
-         }
-      case RESOURCE_UNAVAILABLE:
-         {
-            failureCause->causeType = E2_RIC_REQUEST;
-            failureCause->cause = E2_FUNCTION_RESOURCE_LIMIT;
-            break;
-         }
-      default:
-         {
-            failureCause->causeType = E2_RIC_REQUEST;
-            failureCause->cause = E2_RIC_REQUEST_CAUSE_UNSPECIFIED;
-            break;
-         }
-   }
-}
-
-/*******************************************************************
- *
- * @brief Rejects all actions received in a subscription request
- *
- * @details
- *
- *    Function : duRejectAllStatsGroup
- *
- *    Functionality: Rejects all actions received in a subscription
- *       request by :
- *       a. Removing the subscription entry from RAN function
- *       b. Sending RIC Subscription Failure to RIC with appropriate
- *          cause of failure
- *
- * @params[in] RAN Function DB
- *             Subscription entry in RAN Function subscription list
- *             Statistics Response from MAC
- *
- * @return ROK     - success
- *         RFAILED - failure
- *
- * ****************************************************************/
-uint8_t duRejectAllStatsGroup(RanFunction *ranFuncDb, CmLList *ricSubscriptionNode, MacStatsRsp *statsRsp)
-{
-   uint8_t ret = ROK;
-   RicRequestId  requestId;
-   E2FailureCause failureCause;
-
-   /* Delete subcription from RAN Function */
-   memcpy(&requestId, &((RicSubscription *)ricSubscriptionNode->node)->requestId, sizeof(RicRequestId));
-   cmLListDelFrm(&ranFuncDb->subscriptionList, ricSubscriptionNode);
-   DU_FREE(ricSubscriptionNode->node, sizeof(RicSubscription));
-   DU_FREE(ricSubscriptionNode, sizeof(CmLList));
-
-   convertDuCauseToE2Cause(statsRsp->statsGrpRejectedList[0].cause, &failureCause);
-
-   /* Send RIC subscription failure to RIC */
-   ret = BuildAndSendRicSubscriptionFailure(requestId, ranFuncDb->id, failureCause);
-   return ret;
 }
 
 /*******************************************************************
@@ -2378,20 +2185,12 @@ uint8_t duRejectAllStatsGroup(RanFunction *ranFuncDb, CmLList *ricSubscriptionNo
  * ****************************************************************/
 uint8_t DuProcMacStatsRsp(Pst *pst, MacStatsRsp *statsRsp)
 {
-   uint8_t idx = 0;
-   uint8_t actionId = 0;
-   uint16_t ranFuncId = 0;
-   RicRequestId ricReqId;
-   RanFunction *ranFuncDb = NULLP;
-   CmLList *ricSubscriptionNode = NULLP;
-   RicSubscription *ricSubscriptionInfo = NULLP;
-   PendingSubsRspInfo *pendingSubsRsp = NULLP;
-
    DU_LOG("\nINFO  -->  DU_APP : DuProcMacStatsRsp: Received Statistics Response from MAC");
 
    if(statsRsp)
    {
 #ifdef DEBUG_PRINT   
+      uint8_t idx = 0;
       DU_LOG("\n  Subscription Id [%ld]", statsRsp->subscriptionId);
 
       DU_LOG("\n  Number of Accepted Groups [%d]", statsRsp->numGrpAccepted);
@@ -2407,113 +2206,10 @@ uint8_t DuProcMacStatsRsp(Pst *pst, MacStatsRsp *statsRsp)
       }
 #endif      
 
-      /* Extract following from 64 bit subscription-ID :
-       *  First 16 MSB is unused
-       *  Next 16 MSB = RAN-Function-ID
-       *  Next 16 MSB = Requestor-ID in RIC-Request-ID
-       *  Last 16 LSB = Instance-ID in RIC-Request-ID
-       */
-      ricReqId.instanceId = statsRsp->subscriptionId & 0xFFFF;
-      ricReqId.requestorId = (statsRsp->subscriptionId >> 16) & 0xFFFF;
-      ranFuncId = (statsRsp->subscriptionId >> 32) & 0xFFFF;
+      /* Check the list of accepted and rejected statistics group and send
+       * Ric subscription response/failure accordingly */
+      e2ProcStatsRsp(statsRsp);
 
-      /* Fetch RAN Function DB */
-      if(duCb.e2apDb.ranFunction[ranFuncId-1].id == ranFuncId)
-      {
-         ranFuncDb = &duCb.e2apDb.ranFunction[ranFuncId-1];
-      }
-      else
-      {
-         DU_LOG("\nERROR  -->  DU_APP : DuProcMacStatsRsp: Invalid RAN Function ID[%d]  with Subscription ID [%ld]", \
-            ranFuncId, statsRsp->subscriptionId);
-         DU_FREE_SHRABL_BUF(pst->region, pst->pool, statsRsp, sizeof(MacStatsRsp));
-         return RFAILED;
-      }
-
-      /* Fetch subscription detail in RAN Function DB */
-      CM_LLIST_FIRST_NODE(&ranFuncDb->subscriptionList, ricSubscriptionNode);
-      while(ricSubscriptionNode)
-      {
-         ricSubscriptionInfo = (RicSubscription *)ricSubscriptionNode->node;
-         if(ricSubscriptionInfo && (ricSubscriptionInfo->requestId.requestorId == ricReqId.requestorId) &&
-            (ricSubscriptionInfo->requestId.instanceId == ricReqId.instanceId))
-         {
-            break;
-         }
-         ricSubscriptionNode = ricSubscriptionNode->next;
-      }
-
-      if(ricSubscriptionNode == NULLP)
-      {
-         DU_LOG("\nERROR  -->  DU_APP : DuProcMacStatsRsp: Subscription not found for Requestor ID [%d] Instance ID [%d]",\
-            ricReqId.requestorId, ricReqId.instanceId);
-         DU_FREE_SHRABL_BUF(pst->region, pst->pool, statsRsp, sizeof(MacStatsRsp));
-         return RFAILED;
-      }
-
-      /* Fetch pre-stored statistics response info by DU APP */
-      for(idx=0; idx<ranFuncDb->numPendingSubsRsp; idx++)
-      {
-         if((ranFuncDb->pendingSubsRspInfo[idx].requestId.requestorId == ricReqId.requestorId) &&
-            (ricSubscriptionInfo->requestId.instanceId == ricReqId.instanceId))
-         {
-            pendingSubsRsp = &ranFuncDb->pendingSubsRspInfo[idx];
-            break;
-         }
-      }
-
-      /* If no action is accepted
-       *  a. Remove subcription entry from RAN Function
-       *  b. Send RIC subscription failure */
-      if(statsRsp->numGrpAccepted == 0)
-      {
-         duRejectAllStatsGroup(ranFuncDb, ricSubscriptionNode, statsRsp);
-      }
-      else
-      {
-         /* If even 1 action is accepted :
-          *
-          * For accepted groups:
-          *    Mark subscribed-action's -> action = CONFIG_UNKNOWN
-          *    Add to accepted-action-list of subscription response
-          */
-         for(idx=0; idx<statsRsp->numGrpAccepted; idx++)
-         {
-            actionId = statsRsp->statsGrpAcceptedList[idx];
-            if((ricSubscriptionInfo->actionSequence[actionId-1].id == actionId) &&
-               (ricSubscriptionInfo->actionSequence[actionId-1].action == CONFIG_ADD))
-            {
-               ricSubscriptionInfo->actionSequence[actionId-1].action = CONFIG_UNKNOWN;
-
-               pendingSubsRsp->acceptedActionList[pendingSubsRsp->numOfAcceptedActions++] = actionId;
-            }
-         }
-
-         /* For rejected groups:
-          *    Remove entry from DU's RAN Function->subscription->actionList
-          *    Add to rejected-action-list in subscription response
-          */
-         for(idx=0; idx<statsRsp->numGrpRejected; idx++)
-         {
-            actionId = statsRsp->statsGrpRejectedList[idx].groupId;
-            if(ricSubscriptionInfo->actionSequence[actionId-1].id == actionId)
-            {
-               memset(&ricSubscriptionInfo->actionSequence[actionId-1], 0, sizeof(ActionInfo));
-               ricSubscriptionInfo->numOfActions--;
-
-               pendingSubsRsp->rejectedActionList[pendingSubsRsp->numOfRejectedActions].id = actionId;
-               convertDuCauseToE2Cause(statsRsp->statsGrpRejectedList[idx].cause, \
-                  &pendingSubsRsp->rejectedActionList[pendingSubsRsp->numOfRejectedActions].failureCause);
-               pendingSubsRsp->numOfRejectedActions++;
-            }
-         }
-         
-         /* Send subscription response with accepted and rejected action lists to
-          * RIC */
-         BuildAndSendRicSubscriptionRsp(pendingSubsRsp);
-      }
-
-      memset(pendingSubsRsp, 0, sizeof(PendingSubsRspInfo));
       DU_FREE_SHRABL_BUF(pst->region, pst->pool, statsRsp, sizeof(MacStatsRsp));
       return ROK;
    }
@@ -2553,13 +2249,10 @@ uint8_t DuProcMacStatsInd(Pst *pst, MacStatsInd *statsInd)
       }
 #endif      
 
-      /* TODO : When stats indication is received
-       * DU APP searches for the message type in E2AP RIC subscription database
-       * and stores in the value in the list of subscribed measurements
-       *
-       * This will be implemented in next gerrit.
-       */
+      /* Extract statistics from statistics indication message and store in E2 DB */
+      e2ProcStatsInd(statsInd);
 
+      /* Free statistics indication */
       DU_FREE_SHRABL_BUF(pst->region, pst->pool, statsInd, sizeof(MacStatsInd));
       return ROK;
    }
