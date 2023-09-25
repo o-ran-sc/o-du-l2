@@ -2296,41 +2296,40 @@ uint8_t procRicSubscriptionRequest(E2AP_PDU_t *e2apMsg)
                   ranFuncId = ricSubsReq->protocolIEs.list.array[idx]->value.choice.RANfunctionID; 
 
                   /* Validating RAN Function id */
-                  if(duCb.e2apDb.ranFunction[ranFuncId-1].id == ranFuncId)
-                  {
-                     ranFuncDb = &duCb.e2apDb.ranFunction[ranFuncId-1];
+                  ranFuncDb = fetchRanFuncFromRanFuncId(ranFuncId);
 
-                     if(ranFuncDb->numPendingSubsRsp >= MAX_PENDING_SUBSCRIPTION_RSP)
-                     {
-                        failureCause.causeType = E2_RIC_REQUEST;
-                        failureCause.cause = E2_FUNCTION_RESOURCE_LIMIT; 
-                        ret = RFAILED;
-                        break;
-                     }
-
-                     DU_ALLOC(ricSubscriptionInfo, sizeof(RicSubscription));
-                     if(!ricSubscriptionInfo)
-                     {
-                        DU_LOG("\nERROR  -->  E2AP : Memory allocation failed for ricSubscriptionInfo");
-                        failureCause.causeType = E2_MISCELLANEOUS;
-                        failureCause.cause = E2_MISCELLANEOUS_CAUSE_UNSPECIFIED;
-                        ret = RFAILED;
-                        break;
-                     }
-                     ricSubscriptionInfo->requestId.requestorId = ricReqId.requestorId;
-                     ricSubscriptionInfo->requestId.instanceId = ricReqId.instanceId;
-
-                     memset(&ranFuncDb->pendingSubsRspInfo[ranFuncDb->numPendingSubsRsp], 0, sizeof(PendingSubsRspInfo));
-                     memcpy(&ranFuncDb->pendingSubsRspInfo[ranFuncDb->numPendingSubsRsp].requestId, 
-                     &ricReqId, sizeof(RicRequestId));
-                     ranFuncDb->pendingSubsRspInfo[ranFuncDb->numPendingSubsRsp].ranFuncId = ranFuncId;
-                  }
-                  else
+                  if(!ranFuncDb)
                   {
                      failureCause.causeType = E2_RIC_REQUEST;
                      failureCause.cause = E2_RAN_FUNCTION_ID_INVALID;
                      ret = RFAILED;
+                     break;
                   }
+
+                  if(ranFuncDb->numPendingSubsRsp >= MAX_PENDING_SUBSCRIPTION_RSP)
+                  {
+                     failureCause.causeType = E2_RIC_REQUEST;
+                     failureCause.cause = E2_FUNCTION_RESOURCE_LIMIT; 
+                     ret = RFAILED;
+                     break;
+                  }
+
+                  DU_ALLOC(ricSubscriptionInfo, sizeof(RicSubscription));
+                  if(!ricSubscriptionInfo)
+                  {
+                     DU_LOG("\nERROR  -->  E2AP : Memory allocation failed for ricSubscriptionInfo");
+                     failureCause.causeType = E2_MISCELLANEOUS;
+                     failureCause.cause = E2_MISCELLANEOUS_CAUSE_UNSPECIFIED;
+                     ret = RFAILED;
+                     break;
+                  }
+                  ricSubscriptionInfo->requestId.requestorId = ricReqId.requestorId;
+                  ricSubscriptionInfo->requestId.instanceId = ricReqId.instanceId;
+
+                  memset(&ranFuncDb->pendingSubsRspInfo[ranFuncDb->numPendingSubsRsp], 0, sizeof(PendingSubsRspInfo));
+                  memcpy(&ranFuncDb->pendingSubsRspInfo[ranFuncDb->numPendingSubsRsp].requestId, 
+                        &ricReqId, sizeof(RicRequestId));
+                  ranFuncDb->pendingSubsRspInfo[ranFuncDb->numPendingSubsRsp].ranFuncId = ranFuncId;
                   break;
                }
 

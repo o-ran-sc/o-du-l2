@@ -408,6 +408,7 @@ uint8_t rlcDlInit(SSTskId sysTskId)
    {
       return RFAILED;
    }
+   return ROK;
  }
 
 /*******************************************************************
