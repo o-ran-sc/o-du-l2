@@ -21,6 +21,8 @@
 
 #include "common_def.h"
 #include "TimeToWaitE2.h"
+#include "du_app_mac_inf.h"
+#include "du_e2ap_mgr.h"
 
 /************************************************************************
  *
@@ -63,6 +65,49 @@ uint8_t covertE2WaitTimerEnumToValue(uint8_t timerToWait)
          DU_LOG("\nERROR  -->  F1AP: Invalid value of E2 Wait timer");
    }
    return RFAILED;
+}
+
+/*******************************************************************
+ *
+ * @brief Converts DU specific failure cause to E2 interface
+ *        failure cause
+ *
+ * @details
+ *
+ *    Function : convertDuCauseToE2Cause
+ *
+ *    Functionality: Converts DU specific failure cause to E2 
+ *       interface failure cause
+ *
+ * @params[in] DU specific failure cause
+ *             E2 specific failure cause
+ *
+ * @return void
+ *
+ * ****************************************************************/
+void convertDuCauseToE2Cause(CauseOfResult l2Cause, E2FailureCause *failureCause)
+{
+   switch(l2Cause)
+   {
+      case PARAM_INVALID:
+         {
+            failureCause->causeType = E2_RIC_REQUEST;
+            failureCause->cause = E2_ACTION_NOT_SUPPORTED;
+            break;
+         }
+      case RESOURCE_UNAVAILABLE:
+         {
+            failureCause->causeType = E2_RIC_REQUEST;
+            failureCause->cause = E2_FUNCTION_RESOURCE_LIMIT;
+            break;
+         }
+      default:
+         {
+            failureCause->causeType = E2_RIC_REQUEST;
+            failureCause->cause = E2_RIC_REQUEST_CAUSE_UNSPECIFIED;
+            break;
+         }
+   }
 }
 
 /**********************************************************************

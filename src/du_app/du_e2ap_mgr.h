@@ -449,8 +449,19 @@ typedef struct
 }E2apDb;
 
 uint8_t assignTransactionId();
+ActionInfo *fetchActionInfoFromActionId(uint8_t actionId, RicSubscription *ricSubscriptionInfo);
+RicSubscription *fetchSubsInfoFromRicReqId(RicRequestId ricReqId, RanFunction *ranFuncDb, CmLList **ricSubscriptionNode);
+RanFunction *fetchRanFuncFromRanFuncId(uint16_t ranFuncId);
+uint8_t fetchSubsInfoFromSubsId(uint64_t subscriptionId, RanFunction **ranFuncDb, CmLList **ricSubscriptionNode, \
+   RicSubscription **ricSubscriptionInfo);
+
+uint8_t fillRicSubsInMacStatsReq(MacStatsReq *macStatsReq, uint16_t ranFuncId, RicSubscription* ricSubscriptionInfo);
+void e2ProcStatsRsp(MacStatsRsp *statsRsp);
+void e2ProcStatsInd(MacStatsInd *statsInd);
+
 uint8_t ResetE2Request(E2ProcedureDirection dir, E2FailureCause resetCause);
 uint8_t SendE2APMsg(Region region, Pool pool, char *encBuf, int encBufSize);
+
 /**********************************************************************
   End of file
  **********************************************************************/
