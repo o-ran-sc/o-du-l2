@@ -1,0 +1,113 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fe26c484_81fbae4c",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 510,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-26T13:47:03Z",
+      "side": 1,
+      "message": "mention that its line number that we are printing",
+      "revId": "ebc8ad64e9b0b5965a0b7ad3ce4dc7710c6645f6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5d8621b7_f61f5573",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 577,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-26T13:47:03Z",
+      "side": 1,
+      "message": "same as above",
+      "range": {
+        "startLine": 577,
+        "startChar": 75,
+        "endLine": 577,
+        "endChar": 76
+      },
+      "revId": "ebc8ad64e9b0b5965a0b7ad3ce4dc7710c6645f6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "180c9db8_272e426f",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 647,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-26T13:47:03Z",
+      "side": 1,
+      "message": "same as above",
+      "range": {
+        "startLine": 647,
+        "startChar": 75,
+        "endLine": 647,
+        "endChar": 76
+      },
+      "revId": "ebc8ad64e9b0b5965a0b7ad3ce4dc7710c6645f6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "614a1aab_1d4e99ff",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 1988,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-26T13:47:03Z",
+      "side": 1,
+      "message": "same as above",
+      "range": {
+        "startLine": 1988,
+        "startChar": 93,
+        "endLine": 1988,
+        "endChar": 94
+      },
+      "revId": "ebc8ad64e9b0b5965a0b7ad3ce4dc7710c6645f6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "443c9263_a57ad69b",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 2016,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-26T13:47:03Z",
+      "side": 1,
+      "message": "shouldnt we add this trigger when GNB-DU Cfg update happens?",
+      "range": {
+        "startLine": 2016,
+        "startChar": 6,
+        "endLine": 2016,
+        "endChar": 37
+      },
+      "revId": "ebc8ad64e9b0b5965a0b7ad3ce4dc7710c6645f6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
