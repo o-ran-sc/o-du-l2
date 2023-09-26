@@ -22,6 +22,30 @@
       },
       "revId": "9fd724073e872e884d91b25595ebfcf16447f516",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "65102a01_876c9fb0",
+        "filename": "src/du_app/du_e2ap_mgr.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 275,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-26T11:55:31Z",
+      "side": 1,
+      "message": "yes this was supposed to be removed.",
+      "parentUuid": "6589363d_b0e47b94",
+      "range": {
+        "startLine": 275,
+        "startChar": 3,
+        "endLine": 275,
+        "endChar": 11
+      },
+      "revId": "9fd724073e872e884d91b25595ebfcf16447f516",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
   ]
 }
