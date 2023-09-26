@@ -18,6 +18,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5eae9c0d_ddbbf745",
+        "filename": "src/du_app/du_e2ap_mgr.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 197,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-09-26T13:41:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f1969772_02d4772b",
+      "revId": "9b62322bb34b8a6cd1069b3ca1de5b266426f2b8",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "045120a4_cf352220",
@@ -31,6 +49,30 @@
       "writtenOn": "2023-09-26T12:19:10Z",
       "side": 1,
       "message": "E2AP. \n\nMake this change for all prints in this function.",
+      "range": {
+        "startLine": 238,
+        "startChar": 31,
+        "endLine": 238,
+        "endChar": 36
+      },
+      "revId": "9b62322bb34b8a6cd1069b3ca1de5b266426f2b8",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2ed84948_5d9afeaf",
+        "filename": "src/du_app/du_e2ap_mgr.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 238,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-09-26T13:41:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "045120a4_cf352220",
       "range": {
         "startLine": 238,
         "startChar": 31,
@@ -58,6 +100,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ff71b195_12f0a726",
+        "filename": "src/du_app/du_e2ap_mgr.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 481,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-09-26T13:41:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "00af1c37_b34346b5",
+      "revId": "9b62322bb34b8a6cd1069b3ca1de5b266426f2b8",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d15213a1_23942f1b",
@@ -71,6 +131,24 @@
       "writtenOn": "2023-09-26T12:19:10Z",
       "side": 1,
       "message": "use switch case instead of nested  if..else",
+      "revId": "9b62322bb34b8a6cd1069b3ca1de5b266426f2b8",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9cb9e34e_1e4521a9",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 315,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-09-26T13:41:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d15213a1_23942f1b",
       "revId": "9b62322bb34b8a6cd1069b3ca1de5b266426f2b8",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
