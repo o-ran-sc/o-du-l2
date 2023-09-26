@@ -18,6 +18,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fed8977b_e28f7f84",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 510,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-09-26T13:56:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fe26c484_81fbae4c",
+      "revId": "ebc8ad64e9b0b5965a0b7ad3ce4dc7710c6645f6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5d8621b7_f61f5573",
@@ -31,6 +49,30 @@
       "writtenOn": "2023-09-26T13:47:03Z",
       "side": 1,
       "message": "same as above",
+      "range": {
+        "startLine": 577,
+        "startChar": 75,
+        "endLine": 577,
+        "endChar": 76
+      },
+      "revId": "ebc8ad64e9b0b5965a0b7ad3ce4dc7710c6645f6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "55d0c565_632c1dee",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 577,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-09-26T13:56:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5d8621b7_f61f5573",
       "range": {
         "startLine": 577,
         "startChar": 75,
@@ -64,6 +106,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "78af5c37_eb6a0f7d",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 647,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-09-26T13:56:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "180c9db8_272e426f",
+      "range": {
+        "startLine": 647,
+        "startChar": 75,
+        "endLine": 647,
+        "endChar": 76
+      },
+      "revId": "ebc8ad64e9b0b5965a0b7ad3ce4dc7710c6645f6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "614a1aab_1d4e99ff",
@@ -87,6 +153,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "54c38422_6c3c9396",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 1988,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-09-26T13:56:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "614a1aab_1d4e99ff",
+      "range": {
+        "startLine": 1988,
+        "startChar": 93,
+        "endLine": 1988,
+        "endChar": 94
+      },
+      "revId": "ebc8ad64e9b0b5965a0b7ad3ce4dc7710c6645f6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "443c9263_a57ad69b",
@@ -100,6 +190,30 @@
       "writtenOn": "2023-09-26T13:47:03Z",
       "side": 1,
       "message": "shouldnt we add this trigger when GNB-DU Cfg update happens?",
+      "range": {
+        "startLine": 2016,
+        "startChar": 6,
+        "endLine": 2016,
+        "endChar": 37
+      },
+      "revId": "ebc8ad64e9b0b5965a0b7ad3ce4dc7710c6645f6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0fd4bbdf_26ecdbd1",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 2016,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-09-26T13:56:00Z",
+      "side": 1,
+      "message": "GNB-DU Cfg update ack comes before e2 setup req and after e2 setup rsp. E2 will send the e2 node config update msg afte the r setup gets completed. so that\u0027s why added the trigger at this place.",
+      "parentUuid": "443c9263_a57ad69b",
       "range": {
         "startLine": 2016,
         "startChar": 6,
