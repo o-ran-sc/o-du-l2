@@ -1,0 +1,528 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d0942dec_596aa9ae",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 302,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-26T10:04:10Z",
+      "side": 1,
+      "message": "move this function to du_e2ap_mgr.c\nAlso rename to fetchE2NodeComponentInfo because I have created similar functions for fetching RAN function, RIC Subscription, Action Info etc.",
+      "revId": "bed4577cf583bb264cd3bf158c74eaeec64fcdbd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "182fe83a_019cadd2",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 319,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-26T10:04:10Z",
+      "side": 1,
+      "message": "return e2NodeComponentInfo from here.\nPass double pointer of E2NodeComponent as input and fill node in this double pointer.\n\nThis way, in parent function, both e2NodeComponentInfo and node will be known\n\nRefer to fetchSubsInfoFromRicReqId",
+      "revId": "bed4577cf583bb264cd3bf158c74eaeec64fcdbd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2fb42429_55efc385",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 379,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-26T10:04:10Z",
+      "side": 1,
+      "message": "Instead mention that this is deletion case hence returning from here",
+      "revId": "bed4577cf583bb264cd3bf158c74eaeec64fcdbd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7fc64115_e54c5e84",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 441,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-26T10:04:10Z",
+      "side": 1,
+      "message": "Give 1 line description of all params\nCheck all func descriptors",
+      "revId": "bed4577cf583bb264cd3bf158c74eaeec64fcdbd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ac61f7a9_0c15c8c1",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 448,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-26T10:04:10Z",
+      "side": 1,
+      "message": "rename",
+      "range": {
+        "startLine": 448,
+        "startChar": 143,
+        "endLine": 448,
+        "endChar": 151
+      },
+      "revId": "bed4577cf583bb264cd3bf158c74eaeec64fcdbd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "737009af_f47b9692",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 494,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-26T10:04:10Z",
+      "side": 1,
+      "message": "if node is null, return failure\nelse fetch e2NodeComponentInfo  from node-\u003enode\n\nApplicable to all 3 functions",
+      "revId": "bed4577cf583bb264cd3bf158c74eaeec64fcdbd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "18b55c9d_16f99713",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 510,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-26T10:04:10Z",
+      "side": 1,
+      "message": "must be removed",
+      "range": {
+        "startLine": 510,
+        "startChar": 6,
+        "endLine": 510,
+        "endChar": 13
+      },
+      "revId": "bed4577cf583bb264cd3bf158c74eaeec64fcdbd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "73d04f03_630d2b61",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 517,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-26T10:04:10Z",
+      "side": 1,
+      "message": "Change last param from bool to type of action(add/upda/del)\nInstead of passing first 3 params, just pass (void *)e2NodeAddItem\nAnd typecast it back to its original datatype based on action in fillE2NodeConfig",
+      "revId": "bed4577cf583bb264cd3bf158c74eaeec64fcdbd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b0847cd4_6e09007b",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 580,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-26T10:04:10Z",
+      "side": 1,
+      "message": "must be removed",
+      "range": {
+        "startLine": 580,
+        "startChar": 6,
+        "endLine": 580,
+        "endChar": 13
+      },
+      "revId": "bed4577cf583bb264cd3bf158c74eaeec64fcdbd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e36c50c8_d22a8193",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 653,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-26T10:04:10Z",
+      "side": 1,
+      "message": "remove",
+      "range": {
+        "startLine": 653,
+        "startChar": 0,
+        "endLine": 653,
+        "endChar": 17
+      },
+      "revId": "bed4577cf583bb264cd3bf158c74eaeec64fcdbd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9f494ecb_bd0db019",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 1936,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-26T10:04:10Z",
+      "side": 1,
+      "message": "initialize to 0",
+      "revId": "bed4577cf583bb264cd3bf158c74eaeec64fcdbd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f9822b70_e1ac8489",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 1985,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-26T10:04:10Z",
+      "side": 1,
+      "message": "use switch case",
+      "revId": "bed4577cf583bb264cd3bf158c74eaeec64fcdbd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bfe1ab0a_58d4c691",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 3233,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-26T10:04:10Z",
+      "side": 1,
+      "message": "Node",
+      "revId": "bed4577cf583bb264cd3bf158c74eaeec64fcdbd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7f1507d2_11ead080",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 3298,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-26T10:04:10Z",
+      "side": 1,
+      "message": "Free e2NodeAddList[idx]",
+      "revId": "bed4577cf583bb264cd3bf158c74eaeec64fcdbd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1839b71e_3ab2b3ed",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 3299,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-26T10:04:10Z",
+      "side": 1,
+      "message": "free e2NodeAddList-\u003elist.array after for loop",
+      "revId": "bed4577cf583bb264cd3bf158c74eaeec64fcdbd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cc8470cc_36302061",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 3315,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-26T10:04:10Z",
+      "side": 1,
+      "message": "e2NodeUpdateList-\u003elist.array",
+      "revId": "bed4577cf583bb264cd3bf158c74eaeec64fcdbd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "39dd8ab8_3cdf193d",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 3330,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-26T10:04:10Z",
+      "side": 1,
+      "message": "e2NodeRemovalList-\u003elist.array",
+      "revId": "bed4577cf583bb264cd3bf158c74eaeec64fcdbd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6bc850ee_8343e491",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 3366,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-26T10:04:10Z",
+      "side": 1,
+      "message": "Add trigger",
+      "range": {
+        "startLine": 3366,
+        "startChar": 8,
+        "endLine": 3366,
+        "endChar": 38
+      },
+      "revId": "bed4577cf583bb264cd3bf158c74eaeec64fcdbd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "29d6522b_9033eeed",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 3366,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-26T10:04:10Z",
+      "side": 1,
+      "message": "e2NodeList",
+      "range": {
+        "startLine": 3366,
+        "startChar": 57,
+        "endLine": 3366,
+        "endChar": 65
+      },
+      "revId": "bed4577cf583bb264cd3bf158c74eaeec64fcdbd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8a7e6663_bd065db0",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 1606,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-26T10:04:10Z",
+      "side": 1,
+      "message": "Since this is E2 specific function, move it to du_e2ap_mgr.c and pass interface type as one of the input params",
+      "range": {
+        "startLine": 1606,
+        "startChar": 8,
+        "endLine": 1606,
+        "endChar": 34
+      },
+      "revId": "bed4577cf583bb264cd3bf158c74eaeec64fcdbd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b1a03b0f_31b2db62",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 1651,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-26T10:04:10Z",
+      "side": 1,
+      "message": "Use searchE2NodeComponentInfo for searching",
+      "revId": "bed4577cf583bb264cd3bf158c74eaeec64fcdbd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f64a0742_456d9fa8",
+        "filename": "src/du_app/du_tmr.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-26T10:04:10Z",
+      "side": 1,
+      "message": "Add this case below EVENT_RIC_SERVICE_UPDATE_TMR",
+      "revId": "bed4577cf583bb264cd3bf158c74eaeec64fcdbd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a0948e2d_12258e48",
+        "filename": "src/du_app/du_tmr.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-26T10:04:10Z",
+      "side": 1,
+      "message": "break after if",
+      "revId": "bed4577cf583bb264cd3bf158c74eaeec64fcdbd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4ff49035_b3a650fa",
+        "filename": "src/du_app/du_tmr.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-26T10:04:10Z",
+      "side": 1,
+      "message": "break after if",
+      "revId": "bed4577cf583bb264cd3bf158c74eaeec64fcdbd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "edffea74_3b7586c0",
+        "filename": "src/du_app/du_tmr.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-26T10:04:10Z",
+      "side": 1,
+      "message": "move this case below",
+      "revId": "bed4577cf583bb264cd3bf158c74eaeec64fcdbd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "33d70875_eabe8f62",
+        "filename": "src/du_app/du_tmr.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 168,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-26T10:04:10Z",
+      "side": 1,
+      "message": "same as above",
+      "revId": "bed4577cf583bb264cd3bf158c74eaeec64fcdbd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a8ae8e43_d23c43ec",
+        "filename": "src/ric_stub/ric_e2ap_msg_hdl.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 182,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-26T10:04:10Z",
+      "side": 1,
+      "message": "check if declaration of this function is to be added in header file",
+      "range": {
+        "startLine": 182,
+        "startChar": 8,
+        "endLine": 182,
+        "endChar": 45
+      },
+      "revId": "bed4577cf583bb264cd3bf158c74eaeec64fcdbd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "974c149e_4087fb58",
+        "filename": "src/ric_stub/ric_e2ap_msg_hdl.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 318,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-26T10:04:10Z",
+      "side": 1,
+      "message": "Initialize all to null",
+      "revId": "bed4577cf583bb264cd3bf158c74eaeec64fcdbd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
