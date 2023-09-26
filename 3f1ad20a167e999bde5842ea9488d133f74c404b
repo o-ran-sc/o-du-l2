@@ -18,6 +18,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f3209098_4b20f149",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-09-26T09:03:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f9fd3613_8ecb7726",
+      "revId": "3f1ad20a167e999bde5842ea9488d133f74c404b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8e29fefd_e732dbf4",
@@ -31,6 +49,30 @@
       "writtenOn": "2023-09-12T09:54:20Z",
       "side": 1,
       "message": "if we return from here then we are not freeing the e2NodeCfgUpdFail?",
+      "range": {
+        "startLine": 122,
+        "startChar": 15,
+        "endLine": 122,
+        "endChar": 22
+      },
+      "revId": "3f1ad20a167e999bde5842ea9488d133f74c404b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "46d78368_bdb182f5",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-09-26T09:03:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8e29fefd_e732dbf4",
       "range": {
         "startLine": 122,
         "startChar": 15,
@@ -64,6 +106,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4858e306_e390c72d",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-09-26T09:03:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3532ac7b_e12e145e",
+      "range": {
+        "startLine": 128,
+        "startChar": 28,
+        "endLine": 128,
+        "endChar": 56
+      },
+      "revId": "3f1ad20a167e999bde5842ea9488d133f74c404b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b37ae7a4_9cdb4ab6",
@@ -77,6 +143,30 @@
       "writtenOn": "2023-09-12T09:54:20Z",
       "side": 1,
       "message": "same as above",
+      "range": {
+        "startLine": 136,
+        "startChar": 18,
+        "endLine": 136,
+        "endChar": 24
+      },
+      "revId": "3f1ad20a167e999bde5842ea9488d133f74c404b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8c3f8670_5fd189a7",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-09-26T09:03:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b37ae7a4_9cdb4ab6",
       "range": {
         "startLine": 136,
         "startChar": 18,
@@ -110,6 +200,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "12e88756_e0be59b5",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2293,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-09-26T09:03:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "53f46637_535ec28e",
+      "range": {
+        "startLine": 2293,
+        "startChar": 22,
+        "endLine": 2293,
+        "endChar": 33
+      },
+      "revId": "3f1ad20a167e999bde5842ea9488d133f74c404b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a15ec7d1_55aa3d0b",
@@ -123,6 +237,24 @@
       "writtenOn": "2023-09-12T09:54:20Z",
       "side": 1,
       "message": "instead of return we can put break so that FreeE2NodeConfigUpdate can be executed",
+      "revId": "3f1ad20a167e999bde5842ea9488d133f74c404b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a6a3f2f1_1d471f28",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2384,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-09-26T09:03:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a15ec7d1_55aa3d0b",
       "revId": "3f1ad20a167e999bde5842ea9488d133f74c404b",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -150,6 +282,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "de163a62_5c1e90ce",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2387,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-09-26T09:03:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "38608833_564d613a",
+      "range": {
+        "startLine": 2387,
+        "startChar": 30,
+        "endLine": 2387,
+        "endChar": 48
+      },
+      "revId": "3f1ad20a167e999bde5842ea9488d133f74c404b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "aa6d769f_96a9c260",
@@ -163,6 +319,24 @@
       "writtenOn": "2023-09-12T09:54:20Z",
       "side": 1,
       "message": "since this func has a return , how are we going to use the failure part in its parent functions.",
+      "revId": "3f1ad20a167e999bde5842ea9488d133f74c404b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6f251617_5593754a",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1606,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-09-26T09:03:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "aa6d769f_96a9c260",
       "revId": "3f1ad20a167e999bde5842ea9488d133f74c404b",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -184,6 +358,42 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5957596d_6325bba5",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1653,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-09-26T09:03:59Z",
+      "side": 1,
+      "message": "once we get the successful response",
+      "parentUuid": "dddc17c4_8d1bcd71",
+      "revId": "3f1ad20a167e999bde5842ea9488d133f74c404b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "60e8dad4_980547b2",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1653,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-09-26T09:03:59Z",
+      "side": 1,
+      "message": "we delete this node once we get the succsessful response",
+      "parentUuid": "dddc17c4_8d1bcd71",
+      "revId": "3f1ad20a167e999bde5842ea9488d133f74c404b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "67667821_5209ae0b",
@@ -201,6 +411,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9bcc174b_4b54ac0d",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1669,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-09-26T09:03:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "67667821_5209ae0b",
+      "revId": "3f1ad20a167e999bde5842ea9488d133f74c404b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2b8de545_e5d5afa5",
@@ -214,6 +442,30 @@
       "writtenOn": "2023-09-12T09:54:20Z",
       "side": 1,
       "message": "what are we passing here? since its a common buffer it can contain any buffer correct?",
+      "range": {
+        "startLine": 15854,
+        "startChar": 0,
+        "endLine": 15854,
+        "endChar": 83
+      },
+      "revId": "3f1ad20a167e999bde5842ea9488d133f74c404b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f2cb7586_75c5ee0b",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 15854,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-09-26T09:03:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2b8de545_e5d5afa5",
       "range": {
         "startLine": 15854,
         "startChar": 0,
