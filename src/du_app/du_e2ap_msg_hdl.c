@@ -4654,7 +4654,7 @@ uint8_t duSendE2NodeConfigurationUpdate()
                {
                   e2NodeList.addE2Node[e2NodeList.addE2NodeCount].interface = e2NodeComponentInfo->interfaceType;
                   e2NodeList.addE2Node[e2NodeList.addE2NodeCount].actionType = e2NodeComponentInfo->componentActionType;
-                  e2NodeList.removeE2NodeCount++;
+                  e2NodeList.addE2NodeCount++;
                   break;
                }
             case E2_NODE_COMPONENT_UPDATE:
@@ -4684,6 +4684,346 @@ uint8_t duSendE2NodeConfigurationUpdate()
    }
    return ROK;
 }
+
+/*******************************************************************
+ *
+ * @brief Deallocate the memory allocated for E2nodeConfigurationUpdate msg
+ *
+ * @details
+ *
+ *    Function : freeAperDecodingOfE2NodeConfigItem
+ *
+ *    Functionality:
+ *       - freeing the memory allocated for E2nodeConfigurationUpdate
+ *
+ * @params[in] E2AP_PDU_t *e2apMsg
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+void freeAperDecodingOfE2NodeConfigItem(uint8_t protocolIe, PTR e2NodeCfg)
+{
+   E2nodeComponentConfigurationAck_t *cfgAck =NULLP;
+   E2nodeComponentInterfaceF1_t *f1InterfaceInfo=NULLP;
+   E2nodeComponentConfigAdditionAck_Item_t *e2NodeupdateAddItemIe=NULLP;
+   E2nodeComponentConfigRemovalAck_Item_t *e2NodeRemovalAckItemIe=NULLP;
+   E2nodeComponentConfigUpdateAck_Item_t *e2NodeupdateAckItemIe=NULLP;
+   switch(protocolIe)
+   {
+      case ProtocolIE_IDE2_id_E2nodeComponentConfigAdditionAck:
+      {
+         e2NodeupdateAddItemIe= (E2nodeComponentConfigAdditionAck_Item_t*)e2NodeCfg;
+         f1InterfaceInfo = e2NodeupdateAddItemIe->e2nodeComponentID.choice.e2nodeComponentInterfaceTypeF1;
+         cfgAck = &e2NodeupdateAddItemIe->e2nodeComponentConfigurationAck;
+      }
+      
+      case ProtocolIE_IDE2_id_E2nodeComponentConfigUpdateAck:
+      {
+         e2NodeupdateAckItemIe = (E2nodeComponentConfigUpdateAck_Item_t*)e2NodeCfg;
+         f1InterfaceInfo = e2NodeupdateAckItemIe->e2nodeComponentID.choice.e2nodeComponentInterfaceTypeF1;
+         cfgAck = &e2NodeupdateAckItemIe->e2nodeComponentConfigurationAck;
+      }
+
+      case ProtocolIE_IDE2_id_E2nodeComponentConfigRemovalAck:
+      {
+         e2NodeRemovalAckItemIe= (E2nodeComponentConfigRemovalAck_Item_t*)e2NodeCfg;
+         f1InterfaceInfo = e2NodeRemovalAckItemIe->e2nodeComponentID.choice.e2nodeComponentInterfaceTypeF1;
+         cfgAck = &e2NodeRemovalAckItemIe->e2nodeComponentConfigurationAck;
+      }
+   }
+   
+   if(f1InterfaceInfo)
+   {
+      free(f1InterfaceInfo->gNB_DU_ID.buf);
+      free(f1InterfaceInfo);
+   }
+    
+   switch(cfgAck->updateOutcome)
+   {
+      case E2nodeComponentConfigurationAck__updateOutcome_success:
+         break;
+      case E2nodeComponentConfigurationAck__updateOutcome_failure:
+         {
+            free(cfgAck->failureCauseE2);
+            break;
+         }
+   }
+
+}
+/*******************************************************************
+ *
+ * @brief Deallocate the memory allocated for E2nodeConfigurationUpdate msg
+ *
+ * @details
+ *
+ *    Function : freeAperDecodingOfE2NodeConfigUpdateAck 
+ *
+ *    Functionality:
+ *       - freeing the memory allocated for E2nodeConfigurationUpdate
+ *
+ * @params[in] E2AP_PDU_t *e2apMsg
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+
+void freeAperDecodingOfE2NodeConfigUpdateAck(E2nodeConfigurationUpdateAcknowledge_t *e2NodeConfigUpdateAck)
+{
+   uint8_t arrIdx =0, e2NodeConfigIdx=0;
+   E2nodeComponentConfigUpdateAck_ItemIEs_t *e2NodeupdateAckItemIe=NULLP;
+   E2nodeComponentConfigUpdateAck_List_t *e2NodeConfigUpdateAckList=NULLP;
+   E2nodeComponentConfigRemovalAck_ItemIEs_t *e2NodeRemovalAckItemIe=NULLP;
+   E2nodeComponentConfigRemovalAck_List_t *e2NodeConfigRemovalAckList=NULLP;
+   E2nodeComponentConfigAdditionAck_ItemIEs_t *e2NodeupdateAddItemIe=NULLP;
+   E2nodeComponentConfigAdditionAck_List_t *e2NodeConfigAdditionAckList=NULLP;
+
+   if(e2NodeConfigUpdateAck->protocolIEs.list.array != NULLP)
+   {
+      for(arrIdx = 0; arrIdx < e2NodeConfigUpdateAck->protocolIEs.list.count; arrIdx++)
+      {
+         if(e2NodeConfigUpdateAck->protocolIEs.list.array[arrIdx])
+         {
+            switch(e2NodeConfigUpdateAck->protocolIEs.list.array[arrIdx]->id)
+            {
+               case ProtocolIE_IDE2_id_E2nodeComponentConfigAdditionAck:
+                  {
+                     e2NodeConfigAdditionAckList =&e2NodeConfigUpdateAck->protocolIEs.list.array[arrIdx]->value.choice.E2nodeComponentConfigAdditionAck_List;
+                     if(e2NodeConfigAdditionAckList->list.count)
+                     {
+                        for(e2NodeConfigIdx=0; e2NodeConfigIdx<e2NodeConfigAdditionAckList->list.count; e2NodeConfigIdx++)
+                        {
+                           e2NodeupdateAddItemIe = (E2nodeComponentConfigAdditionAck_ItemIEs_t*) e2NodeConfigAdditionAckList->list.array[e2NodeConfigIdx];
+                           freeAperDecodingOfE2NodeConfigItem(ProtocolIE_IDE2_id_E2nodeComponentConfigAdditionAck, (PTR)&e2NodeupdateAddItemIe->value.choice.E2nodeComponentConfigAdditionAck_Item);
+                           free(e2NodeupdateAddItemIe);
+                        }
+                        free(e2NodeConfigAdditionAckList->list.array); 
+                     }
+                     break;
+                  }
+               case ProtocolIE_IDE2_id_E2nodeComponentConfigUpdateAck:
+                  {
+                     e2NodeConfigUpdateAckList =&e2NodeConfigUpdateAck->protocolIEs.list.array[arrIdx]->value.choice.E2nodeComponentConfigUpdateAck_List;
+                     if(e2NodeConfigUpdateAckList->list.count)
+                     {
+                        for(e2NodeConfigIdx=0; e2NodeConfigIdx<e2NodeConfigUpdateAckList->list.count; e2NodeConfigIdx++)
+                        {
+                           e2NodeupdateAckItemIe = (E2nodeComponentConfigUpdateAck_ItemIEs_t*) e2NodeConfigUpdateAckList->list.array[e2NodeConfigIdx];
+                           freeAperDecodingOfE2NodeConfigItem(ProtocolIE_IDE2_id_E2nodeComponentConfigUpdateAck, (PTR)&e2NodeupdateAckItemIe->value.choice.E2nodeComponentConfigUpdateAck_Item);
+                           free(e2NodeupdateAckItemIe);
+                        }
+                        free(e2NodeConfigUpdateAckList->list.array);
+                     }
+                     break;
+                  }
+               case ProtocolIE_IDE2_id_E2nodeComponentConfigRemovalAck:
+                  {
+                     e2NodeConfigRemovalAckList =&e2NodeConfigUpdateAck->protocolIEs.list.array[arrIdx]->value.choice.E2nodeComponentConfigRemovalAck_List;
+                     if(e2NodeConfigRemovalAckList->list.count)
+                     {
+                        for(e2NodeConfigIdx=0; e2NodeConfigIdx<e2NodeConfigRemovalAckList->list.count; e2NodeConfigIdx++)
+                        {
+                           e2NodeRemovalAckItemIe = (E2nodeComponentConfigRemovalAck_ItemIEs_t*) e2NodeConfigRemovalAckList->list.array[e2NodeConfigIdx];
+                           freeAperDecodingOfE2NodeConfigItem(ProtocolIE_IDE2_id_E2nodeComponentConfigRemovalAck, (PTR)&e2NodeRemovalAckItemIe->value.choice.E2nodeComponentConfigRemovalAck_Item);
+                           free(e2NodeRemovalAckItemIe);
+                        }
+                        free(e2NodeConfigRemovalAckList->list.array);
+                     }
+                     break;
+                  }
+            }
+            free(e2NodeConfigUpdateAck->protocolIEs.list.array[arrIdx]);
+         }
+      }
+      free(e2NodeConfigUpdateAck->protocolIEs.list.array);
+   }
+}
+
+/******************************************************************
+ *
+ * @brief remove E2 node from the database
+ *
+ * @details
+ *
+ *    Function : removeE2Node
+ *
+ *    Functionality: remove E2 node from the database
+ *
+ * @params[in] E2AP_PDU_t ASN decoded E2AP message
+ * @return ROK     - success
+ *         RFAILED - Ack
+ *
+ * ****************************************************************/
+
+void removeE2Node(E2nodeComponentID_PR present, ComponentActionType actionType)
+{
+   CmLList *node=NULL;
+   E2NodeComponent *e2NodeComponentInfo =NULL;
+   
+   switch(present)
+   {
+      case E2nodeComponentID_PR_e2nodeComponentInterfaceTypeF1:
+         {
+            e2NodeComponentInfo = fetchE2NodeComponentInfo(F1, actionType, &node);
+            if(!e2NodeComponentInfo)
+            {
+               DU_LOG("\nERROR  --> E2AP : Received null e2NodeComponentInfo at line number %d",__LINE__);
+               return RFAILED;
+            }
+            else
+            {
+               cmLListDelFrm(&duCb.e2apDb.e2NodeComponentList, node);
+               DU_FREE(e2NodeComponentInfo->componentRequestPart, e2NodeComponentInfo->reqBufSize);
+               DU_FREE(e2NodeComponentInfo->componentResponsePart, e2NodeComponentInfo->rspBufSize);
+               DU_FREE(e2NodeComponentInfo, sizeof(E2NodeComponent));
+               DU_FREE(node, sizeof(CmLList));
+            }
+            break;
+         }
+      case E2nodeComponentID_PR_e2nodeComponentInterfaceTypeNG:
+      case E2nodeComponentID_PR_e2nodeComponentInterfaceTypeXn:
+      case E2nodeComponentID_PR_e2nodeComponentInterfaceTypeE1:
+      case E2nodeComponentID_PR_e2nodeComponentInterfaceTypeW1:
+      case E2nodeComponentID_PR_e2nodeComponentInterfaceTypeS1:
+      case E2nodeComponentID_PR_e2nodeComponentInterfaceTypeX2:
+      case E2nodeComponentID_PR_NOTHING:
+         break;
+   }
+
+}
+
+/******************************************************************
+ *
+ * @brief Processes E2 Node Config Update Ack sent by RIC
+ *
+ * @details
+ *
+ *    Function : procE2NodeConfigUpdateAck
+ *
+ *    Functionality: Processes E2 Node Config Update Ack sent by RIC
+ *
+ * @params[in] E2AP_PDU_t ASN decoded E2AP message
+ * @return ROK     - success
+ *         RFAILED - Ack
+ *
+ * ****************************************************************/
+
+void procE2NodeConfigUpdateAck(E2AP_PDU_t *e2apMsg)
+{
+   E2nodeComponentConfigAdditionAck_ItemIEs_t *e2NodeAddAckItem;
+   E2nodeComponentConfigAdditionAck_List_t *e2NodeCfgAckList;
+   E2NodeConfigList e2NodeList;
+   uint8_t arrIdx =0, transId =0, e2NodeConfigIdx=0;
+   E2nodeConfigurationUpdateAcknowledge_t  *e2NodeCfgUpdAck;
+   E2nodeComponentConfigUpdateAck_ItemIEs_t *e2NodeUpdateAckItemIe;
+   E2nodeComponentConfigUpdateAck_List_t *e2NodeConfigUpdateAckList;
+   E2nodeComponentConfigRemovalAck_ItemIEs_t *e2NodeRemovalAckItemIe;
+   E2nodeComponentConfigRemovalAck_List_t *e2NodeConfigRemovalAckList;
+
+   DU_LOG("\nINFO   -->  E2AP : E2 Node Config Update Ack received");
+   memset(&e2NodeList, 0, sizeof(E2NodeConfigList));
+   e2NodeCfgUpdAck = &e2apMsg->choice.successfulOutcome->value.choice.E2nodeConfigurationUpdateAcknowledge;
+
+   for(arrIdx=0; arrIdx<e2NodeCfgUpdAck->protocolIEs.list.count; arrIdx++)
+   {
+      switch(e2NodeCfgUpdAck->protocolIEs.list.array[arrIdx]->id)
+      {
+         case ProtocolIE_IDE2_id_TransactionID:
+            {
+               transId = e2NodeCfgUpdAck->protocolIEs.list.array[arrIdx]->value.choice.TransactionID;
+               if((duCb.e2apDb.e2TransInfo.e2InitTransaction[transId].transactionId == transId) &&\
+                     (duCb.e2apDb.e2TransInfo.e2InitTransaction[transId].procedureCode == e2apMsg->choice.unsuccessfulOutcome->procedureCode))
+               {
+                  memset(&duCb.e2apDb.e2TransInfo.e2InitTransaction[transId], 0, sizeof(E2TransInfo));
+               }
+               else
+               {
+                  DU_LOG("\nERROR  -->  E2AP : Invalid transaction id [%d]", transId);
+               }
+               break;
+            }
+
+         case ProtocolIE_IDE2_id_E2nodeComponentConfigAdditionAck:
+            {
+               e2NodeCfgAckList = &e2NodeCfgUpdAck->protocolIEs.list.array[arrIdx]->value.choice.E2nodeComponentConfigAdditionAck_List;
+               for(e2NodeConfigIdx=0; e2NodeConfigIdx<e2NodeCfgAckList->list.count; e2NodeConfigIdx++)
+               {
+                  e2NodeAddAckItem = (E2nodeComponentConfigAdditionAck_ItemIEs_t*) e2NodeCfgAckList->list.array[e2NodeConfigIdx];
+                  removeE2Node(e2NodeAddAckItem->value.choice.E2nodeComponentConfigAdditionAck_Item.e2nodeComponentID.present, E2_NODE_COMPONENT_ADD);
+               }
+               break;
+            }
+
+         case ProtocolIE_IDE2_id_E2nodeComponentConfigUpdateAck:
+            {
+               e2NodeConfigUpdateAckList= &e2NodeCfgUpdAck->protocolIEs.list.array[arrIdx]->value.choice.E2nodeComponentConfigUpdateAck_List;
+               if(e2NodeConfigUpdateAckList->list.count)
+               {
+                  for(e2NodeConfigIdx=0; e2NodeConfigIdx<e2NodeConfigUpdateAckList->list.count; e2NodeConfigIdx++)
+                  {
+                     e2NodeUpdateAckItemIe = (E2nodeComponentConfigUpdateAck_ItemIEs_t*) e2NodeConfigUpdateAckList->list.array[e2NodeConfigIdx];
+                     if(e2NodeUpdateAckItemIe)
+                     {
+                        switch(e2NodeUpdateAckItemIe->value.choice.E2nodeComponentConfigUpdateAck_Item.e2nodeComponentConfigurationAck.updateOutcome)
+                        {
+                           case E2nodeComponentConfigurationAck__updateOutcome_failure:
+                              {
+                                 e2NodeList.addE2Node[e2NodeList.addE2NodeCount].interface = e2NodeUpdateAckItemIe->value.choice.E2nodeComponentConfigUpdateAck_Item.e2nodeComponentInterfaceType;
+                                 e2NodeList.addE2Node[e2NodeList.addE2NodeCount].actionType = E2_NODE_COMPONENT_ADD;
+                                 e2NodeList.addE2NodeCount++;
+                                 break;
+                              }
+                           case E2nodeComponentConfigurationAck__updateOutcome_success:
+                              {
+                                 removeE2Node(e2NodeUpdateAckItemIe->value.choice.E2nodeComponentConfigUpdateAck_Item.e2nodeComponentID.present, E2_NODE_COMPONENT_UPDATE);
+                                 break;
+                              }
+                        }
+                     }
+                  }
+               }
+               break;
+            }
+
+         case ProtocolIE_IDE2_id_E2nodeComponentConfigRemovalAck:
+            {
+               e2NodeConfigRemovalAckList= &e2NodeCfgUpdAck->protocolIEs.list.array[arrIdx]->value.choice.E2nodeComponentConfigRemovalAck_List;
+               if(e2NodeConfigRemovalAckList->list.count)
+               {
+                  for(e2NodeConfigIdx=0; e2NodeConfigIdx<e2NodeConfigRemovalAckList->list.count; e2NodeConfigIdx++)
+                  {
+                     e2NodeRemovalAckItemIe = (E2nodeComponentConfigRemovalAck_ItemIEs_t*) e2NodeConfigRemovalAckList->list.array[e2NodeConfigIdx];
+                     if(e2NodeRemovalAckItemIe)
+                     {
+                        switch(e2NodeRemovalAckItemIe->value.choice.E2nodeComponentConfigRemovalAck_Item.e2nodeComponentConfigurationAck.updateOutcome)
+                        {
+                           case E2nodeComponentConfigurationAck__updateOutcome_failure:
+                              {
+                                 break;
+                              }
+                           case E2nodeComponentConfigurationAck__updateOutcome_success:
+                              {
+                                 removeE2Node(e2NodeRemovalAckItemIe->value.choice.E2nodeComponentConfigRemovalAck_Item.e2nodeComponentID.present, E2_NODE_COMPONENT_DEL);
+                                 break;
+                              }
+                        }
+                     }
+                  }
+               }
+               break;
+            }
+      }
+   }
+
+   if(e2NodeList.addE2NodeCount)
+   {
+      if(BuildAndSendE2NodeConfigUpdate(&e2NodeList) !=ROK)
+      {
+         DU_LOG("\nERROR  -->  E2AP : Failed to build and send e2 node config update message to RIC_stub");
+      }
+   }
+   freeAperDecodingOfE2NodeConfigUpdateAck(e2NodeCfgUpdAck);
+}
+
 /*******************************************************************
  *
  * @brief Handles received E2AP message and sends back response  
@@ -4797,6 +5137,7 @@ void E2APMsgHdlr(Buffer *mBuf)
                case SuccessfulOutcomeE2__value_PR_E2nodeConfigurationUpdateAcknowledge:
                   {
                      DU_LOG("\nDEBUG   -->  E2AP : E2 node Config update ack message recevied");
+                     procE2NodeConfigUpdateAck(e2apMsg);
                      break;
                   }
                case SuccessfulOutcomeE2__value_PR_ResetResponseE2:

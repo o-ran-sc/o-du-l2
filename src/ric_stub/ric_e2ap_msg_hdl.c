@@ -43,6 +43,138 @@
 #include "E2SM-KPM-EventTriggerDefinition-Format1.h"
 #include "E2SM-KPM-EventTriggerDefinition.h"
 
+/*******************************************************************
+ *
+ * @brief fill E2 failure cause 
+ *
+ * @details
+ *
+ *    Function : fillE2FailureCause
+ *
+ * Functionality: fill E2 failure cause
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ ******************************************************************/
+
+void fillE2FailureCause(CauseE2_t *cause, CauseE2_PR causePresent, uint8_t reason)
+{
+   cause->present = causePresent;
+
+   switch(cause->present)
+   {
+      case CauseE2_PR_ricRequest:
+         cause->choice.ricRequest = reason;
+         break;
+      case CauseE2_PR_ricService:
+         cause->choice.ricService = reason;
+         break;
+      case CauseE2_PR_e2Node:
+         cause->choice.e2Node = reason;
+         break;
+      case CauseE2_PR_transport:
+         cause->choice.transport = reason;
+         break;
+      case CauseE2_PR_protocol:
+         cause->choice.protocol = reason;
+         break;
+      case CauseE2_PR_misc:
+         cause->choice.misc = reason;
+         break;
+      default:
+         cause->choice.misc = CauseE2Misc_unspecified;
+         break;
+   }
+}
+
+/************************************************************************
+ *
+ * @brief Converts E2nodeComponentInterfaceType value into enum
+ *
+ * @details
+ *
+ *    Function : convertE2ComponentInterfaceTypeToEnum
+ *
+ *    Functionality: Convert E2nodeComponentInterfaceType into enum
+ *    value
+ *
+ * @params[in] e_E2nodeComponentInterfaceType value of interface
+ * @return Enum value of e2 interface
+ *
+ * **********************************************************************/
+
+uint8_t convertE2ComponentInterfaceTypeToEnum(e_E2nodeComponentInterfaceType interface)
+{
+   switch(interface)
+   {
+      case E2nodeComponentInterfaceType_ng:
+         return NG;
+
+      case E2nodeComponentInterfaceType_xn:
+         return XN;
+
+      case E2nodeComponentInterfaceType_e1:
+         return E1;
+
+      case E2nodeComponentInterfaceType_f1:
+         return F1;
+
+      case E2nodeComponentInterfaceType_w1:
+         return W1;
+
+      case E2nodeComponentInterfaceType_s1:
+         return S1;
+
+      case E2nodeComponentInterfaceType_x2:
+         return X2;
+   }
+
+   return RFAILED;
+}
+
+/************************************************************************
+ *
+ * @brief Converts InterfaceType into E2nodeComponentInterfaceType value
+ *
+ * @details
+ *
+ *    Function : convertInterfaceToE2ComponentInterfaceType
+ *
+ *    Functionality: Convert InterfaceType into E2nodeComponentInterfaceType
+ *    value
+ *
+ * @params[in] Actual value of interface
+ * @return Enum value of e2 interface
+ *
+ * **********************************************************************/
+
+uint8_t convertInterfaceToE2ComponentInterfaceType(uint8_t interface)
+{
+   switch(interface)
+   {
+      case NG:
+         return E2nodeComponentInterfaceType_ng;
+
+      case XN:
+         return E2nodeComponentInterfaceType_xn;
+
+      case E1:
+         return E2nodeComponentInterfaceType_e1;
+
+      case F1:
+         return E2nodeComponentInterfaceType_f1;
+
+      case W1:
+         return E2nodeComponentInterfaceType_w1;
+
+      case S1:
+         return E2nodeComponentInterfaceType_s1;
+
+      case X2:
+         return E2nodeComponentInterfaceType_x2;
+   }
+   return RFAILED;
+}
 
 /*******************************************************************
  *
@@ -295,6 +427,701 @@ uint8_t BuildAndSendE2NodeConfigUpdateFailure(uint32_t duId, uint8_t transId, ui
 
 /*******************************************************************
  *
+ * @brief Deallocate memory allocated for E2nodeConfigurationUpdate 
+ *
+ * @details
+ *
+ *    Function : freeE2NodeConfigItem 
+ *
+ *    Functionality:
+ *       - freeing the memory allocated for E2nodeConfigurationUpdate
+ *
+ * @params[in]
+ *       uint8_t protocolIe
+ *       PTR e2NodeCfg 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+
+void freeE2NodeConfigItem(uint8_t protocolIe, PTR e2NodeCfg)
+{
+   E2nodeComponentConfigurationAck_t *cfgAck =NULLP;
+   E2nodeComponentInterfaceF1_t *f1InterfaceInfo=NULLP;
+   E2nodeComponentConfigAdditionAck_Item_t *e2NodeupdateAddItemIe=NULLP;
+   E2nodeComponentConfigRemovalAck_Item_t *e2NodeRemovalAckItemIe=NULLP;
+   E2nodeComponentConfigUpdateAck_Item_t *e2NodeupdateAckItemIe=NULLP;
+   switch(protocolIe)
+   {
+      case ProtocolIE_IDE2_id_E2nodeComponentConfigAdditionAck:
+      {
+         e2NodeupdateAddItemIe= (E2nodeComponentConfigAdditionAck_Item_t*)e2NodeCfg;
+         f1InterfaceInfo = e2NodeupdateAddItemIe->e2nodeComponentID.choice.e2nodeComponentInterfaceTypeF1;
+         cfgAck = &e2NodeupdateAddItemIe->e2nodeComponentConfigurationAck;
+      }
+
+      case ProtocolIE_IDE2_id_E2nodeComponentConfigUpdateAck:
+      {
+         e2NodeupdateAckItemIe = (E2nodeComponentConfigUpdateAck_Item_t*)e2NodeCfg;
+         f1InterfaceInfo = e2NodeupdateAckItemIe->e2nodeComponentID.choice.e2nodeComponentInterfaceTypeF1;
+         cfgAck = &e2NodeupdateAckItemIe->e2nodeComponentConfigurationAck;
+      }
+
+      case ProtocolIE_IDE2_id_E2nodeComponentConfigRemovalAck:
+      {
+         e2NodeRemovalAckItemIe= (E2nodeComponentConfigRemovalAck_Item_t*)e2NodeCfg;
+         f1InterfaceInfo = e2NodeRemovalAckItemIe->e2nodeComponentID.choice.e2nodeComponentInterfaceTypeF1;
+         cfgAck = &e2NodeRemovalAckItemIe->e2nodeComponentConfigurationAck;
+      }
+   }
+
+   if(f1InterfaceInfo)
+   {
+      RIC_FREE(f1InterfaceInfo->gNB_DU_ID.buf, f1InterfaceInfo->gNB_DU_ID.size);
+      RIC_FREE(f1InterfaceInfo, sizeof(E2nodeComponentInterfaceF1_t));
+   }
+
+   switch(cfgAck->updateOutcome)
+   {
+      case E2nodeComponentConfigurationAck__updateOutcome_success:
+         break;
+      case E2nodeComponentConfigurationAck__updateOutcome_failure:
+         {
+            RIC_FREE(cfgAck->failureCauseE2, sizeof(CauseE2_t));
+            break;
+         }
+   }
+
+}
+
+/*******************************************************************
+ *
+ * @brief Deallocate the memory allocated for E2nodeConfigurationUpdate msg 
+ *
+ * @details
+ *
+ *    Function : FreeE2NodeConfigUpdate 
+ *
+ *    Functionality:
+ *       - freeing the memory allocated for E2nodeConfigurationUpdate
+ *
+ * @params[in] E2AP_PDU_t *e2apMsg 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+
+void FreeE2NodeConfigUpdateAck(E2AP_PDU_t *e2apMsg)
+{
+   uint8_t arrIdx =0, e2NodeConfigIdx=0;
+   E2nodeConfigurationUpdateAcknowledge_t *e2NodeConfigUpdateAck=NULL;
+   E2nodeComponentConfigUpdateAck_ItemIEs_t *e2NodeupdateAckItemIe=NULL;
+   E2nodeComponentConfigUpdateAck_List_t *e2NodeConfigUpdateAckList=NULL;
+   E2nodeComponentConfigRemovalAck_ItemIEs_t *e2NodeRemovalAckItemIe=NULL;
+   E2nodeComponentConfigRemovalAck_List_t *e2NodeConfigRemovalAckList=NULL;
+   E2nodeComponentConfigAdditionAck_ItemIEs_t *e2NodeupdateAddItemIe=NULL;
+   E2nodeComponentConfigAdditionAck_List_t *e2NodeConfigAdditionAckList=NULL;
+
+   if(e2apMsg != NULLP)
+   {
+      if(e2apMsg->choice.successfulOutcome != NULLP)
+      {
+         e2NodeConfigUpdateAck = &e2apMsg->choice.successfulOutcome->value.choice.E2nodeConfigurationUpdateAcknowledge;
+         if(e2NodeConfigUpdateAck->protocolIEs.list.array != NULLP)
+         {
+            for(arrIdx = 0; arrIdx < e2NodeConfigUpdateAck->protocolIEs.list.count; arrIdx++)
+            {
+               if(e2NodeConfigUpdateAck->protocolIEs.list.array[arrIdx])
+               {
+                  switch(e2NodeConfigUpdateAck->protocolIEs.list.array[arrIdx]->id)
+                  {
+                     case ProtocolIE_IDE2_id_E2nodeComponentConfigAdditionAck:
+                        {
+                           e2NodeConfigAdditionAckList =&e2NodeConfigUpdateAck->protocolIEs.list.array[arrIdx]->value.choice.E2nodeComponentConfigAdditionAck_List;
+                           if(e2NodeConfigAdditionAckList->list.count)
+                           {
+                              for(e2NodeConfigIdx=0; e2NodeConfigIdx<e2NodeConfigAdditionAckList->list.count; e2NodeConfigIdx++)
+                              {
+                                 e2NodeupdateAddItemIe = (E2nodeComponentConfigAdditionAck_ItemIEs_t*) e2NodeConfigAdditionAckList->list.array[e2NodeConfigIdx];
+                                 if(e2NodeupdateAddItemIe)
+                                 {
+                                    freeE2NodeConfigItem(ProtocolIE_IDE2_id_E2nodeComponentConfigAdditionAck, (PTR)&e2NodeupdateAddItemIe->value.choice.E2nodeComponentConfigAdditionAck_Item);
+                                    RIC_FREE(e2NodeupdateAddItemIe, sizeof(E2nodeComponentConfigAdditionAck_ItemIEs_t));
+                                 }
+                              }
+                              RIC_FREE(e2NodeConfigAdditionAckList->list.array, e2NodeConfigAdditionAckList->list.size);
+                           }
+                           break;
+                        }
+                     case ProtocolIE_IDE2_id_E2nodeComponentConfigUpdateAck:
+                        {
+                           e2NodeConfigUpdateAckList =&e2NodeConfigUpdateAck->protocolIEs.list.array[arrIdx]->value.choice.E2nodeComponentConfigUpdateAck_List;
+                           if(e2NodeConfigUpdateAckList->list.count)
+                           {
+                              for(e2NodeConfigIdx=0; e2NodeConfigIdx<e2NodeConfigUpdateAckList->list.count; e2NodeConfigIdx++)
+                              {
+                                 e2NodeupdateAckItemIe = (E2nodeComponentConfigUpdateAck_ItemIEs_t*) e2NodeConfigUpdateAckList->list.array[e2NodeConfigIdx];
+                                 if(e2NodeupdateAckItemIe)
+                                 {
+                                    freeE2NodeConfigItem(ProtocolIE_IDE2_id_E2nodeComponentConfigUpdateAck, (PTR)&e2NodeupdateAckItemIe->value.choice.E2nodeComponentConfigUpdateAck_Item);
+                                    RIC_FREE(e2NodeupdateAckItemIe, sizeof(E2nodeComponentConfigUpdateAck_ItemIEs_t));
+                                 }
+                              }
+                              RIC_FREE(e2NodeConfigUpdateAckList->list.array, e2NodeConfigUpdateAckList->list.size);
+                           }
+                           break;
+                        }
+                     case ProtocolIE_IDE2_id_E2nodeComponentConfigRemovalAck:
+                        {
+                           e2NodeConfigRemovalAckList =&e2NodeConfigUpdateAck->protocolIEs.list.array[arrIdx]->value.choice.E2nodeComponentConfigRemovalAck_List;
+                           if(e2NodeConfigRemovalAckList->list.count)
+                           {
+                              for(e2NodeConfigIdx=0; e2NodeConfigIdx<e2NodeConfigRemovalAckList->list.count; e2NodeConfigIdx++)
+                              {
+                                 e2NodeRemovalAckItemIe = (E2nodeComponentConfigRemovalAck_ItemIEs_t*) e2NodeConfigRemovalAckList->list.array[e2NodeConfigIdx];
+                                 if(e2NodeRemovalAckItemIe)
+                                 {
+                                    freeE2NodeConfigItem(ProtocolIE_IDE2_id_E2nodeComponentConfigRemovalAck, (PTR)&e2NodeRemovalAckItemIe->value.choice.E2nodeComponentConfigRemovalAck_Item);
+                                    RIC_FREE(e2NodeRemovalAckItemIe, sizeof(E2nodeComponentConfigRemovalAck_ItemIEs_t));
+                                 }
+                              }
+                              RIC_FREE(e2NodeConfigRemovalAckList->list.array, e2NodeConfigRemovalAckList->list.size);
+                           }
+                           break;
+                        }
+                  }
+                  RIC_FREE(e2NodeConfigUpdateAck->protocolIEs.list.array[arrIdx], sizeof(E2nodeConfigurationUpdate_t));
+               }
+            }
+            RIC_FREE(e2NodeConfigUpdateAck->protocolIEs.list.array, e2NodeConfigUpdateAck->protocolIEs.list.size);
+         }
+         RIC_FREE(e2apMsg->choice.successfulOutcome, sizeof(SuccessfulOutcomeE2_t));
+      }
+      RIC_FREE(e2apMsg, sizeof(E2AP_PDU_t));
+   }
+}
+
+/*******************************************************************
+ *
+ * @brief fill e2 node configuration for ack msg 
+ *
+ * @details
+ *
+ *    Function : fillE2NodeCOnfigAck
+ *
+ *    Functionality:
+ *       - fill e2 node configuration for ack msg
+ *
+ * @params[in] 
+ *    Pointer to e2NodeCfg to be filled
+ *    E2 Node Component information
+ *    Type of configuration
+ *    Is successful or failure response
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+
+uint8_t fillE2NodeCOnfigAck(PTR e2NodeCfg, uint8_t procedureCode, E2NodeComponent componentInfo, bool isSuccessful)
+{
+	E2nodeComponentID_t	 *e2nodeComponentID=NULLP;
+	E2nodeComponentInterfaceType_t	 *e2nodeComponentInterfaceType=NULLP;
+	E2nodeComponentConfigurationAck_t	 *e2nodeComponentConfigurationAck=NULLP;
+   E2nodeComponentConfigRemovalAck_Item_t *removalAckItem=NULLP;
+   E2nodeComponentConfigUpdateAck_Item_t *updateAckItem=NULLP;
+   E2nodeComponentConfigAdditionAck_Item_t *addAckItem=NULLP;
+
+   switch(procedureCode)
+   {
+      case ProtocolIE_IDE2_id_E2nodeComponentConfigAdditionAck:
+      {
+         addAckItem = (E2nodeComponentConfigAdditionAck_Item_t *)e2NodeCfg;
+         e2nodeComponentInterfaceType = &addAckItem->e2nodeComponentInterfaceType;
+         e2nodeComponentID = &addAckItem->e2nodeComponentID;
+         e2nodeComponentConfigurationAck = &addAckItem->e2nodeComponentConfigurationAck;
+         break;
+      }
+      case ProtocolIE_IDE2_id_E2nodeComponentConfigUpdateAck:
+      {
+         updateAckItem = (E2nodeComponentConfigUpdateAck_Item_t*) e2NodeCfg;
+         e2nodeComponentInterfaceType = &updateAckItem->e2nodeComponentInterfaceType;
+         e2nodeComponentID = &updateAckItem->e2nodeComponentID;
+         e2nodeComponentConfigurationAck = &updateAckItem->e2nodeComponentConfigurationAck;
+         break;
+      }
+      case  ProtocolIE_IDE2_id_E2nodeComponentConfigRemovalAck:
+      {
+         removalAckItem= (E2nodeComponentConfigRemovalAck_Item_t*)e2NodeCfg;
+         e2nodeComponentInterfaceType = &removalAckItem->e2nodeComponentInterfaceType;
+         e2nodeComponentID = &removalAckItem->e2nodeComponentID;
+         e2nodeComponentConfigurationAck = &removalAckItem->e2nodeComponentConfigurationAck;
+         break;
+      }
+   }
+   
+  *e2nodeComponentInterfaceType = convertInterfaceToE2ComponentInterfaceType(componentInfo.interfaceType);
+
+   if(*e2nodeComponentInterfaceType == E2nodeComponentInterfaceType_f1)
+   {
+      /* >E2 Node Component ID */
+      e2nodeComponentID->present = E2nodeComponentID_PR_e2nodeComponentInterfaceTypeF1;
+      RIC_ALLOC(e2nodeComponentID->choice.e2nodeComponentInterfaceTypeF1, sizeof(E2nodeComponentInterfaceF1_t));
+      if(e2nodeComponentID->choice.e2nodeComponentInterfaceTypeF1 == NULLP)
+      {
+         DU_LOG("\nERROR  --> E2AP: Memory allocation failed for BuildE2nodeComponentConfigUpdateAck %d",__LINE__);
+         return RFAILED;
+      }
+      e2nodeComponentID->choice.e2nodeComponentInterfaceTypeF1->gNB_DU_ID.size = sizeof(uint8_t);
+      RIC_ALLOC(e2nodeComponentID->choice.e2nodeComponentInterfaceTypeF1->gNB_DU_ID.buf, e2nodeComponentID->choice.e2nodeComponentInterfaceTypeF1->gNB_DU_ID.size);
+
+      if(e2nodeComponentID->choice.e2nodeComponentInterfaceTypeF1->gNB_DU_ID.buf == NULLP)
+      {
+         DU_LOG("\nERROR  -->list.  E2AP: Memory allocation failed for BuildE2nodeComponentConfigUpdateAck %d",__LINE__);
+         return RFAILED;
+      }
+      e2nodeComponentID->choice.e2nodeComponentInterfaceTypeF1->gNB_DU_ID.buf[0]  = componentInfo.componentId;
+   }
+
+   if(isSuccessful)
+   {
+      /* >E2 Node Component Configuration Acknowledge*/
+      e2nodeComponentConfigurationAck->updateOutcome = E2nodeComponentConfigurationAck__updateOutcome_success;
+   }
+   else
+   {
+      /* >E2 Node Component Configuration Acknowledge*/
+      e2nodeComponentConfigurationAck->updateOutcome = E2nodeComponentConfigurationAck__updateOutcome_failure;
+      RIC_ALLOC(e2nodeComponentConfigurationAck->failureCauseE2, sizeof(struct CauseE2));
+      if(e2nodeComponentConfigurationAck->failureCauseE2)
+      {
+         fillE2FailureCause(e2nodeComponentConfigurationAck->failureCauseE2, CauseE2_PR_e2Node, CauseE2node_e2node_component_unknown);
+      }
+      else
+      {
+         DU_LOG("\nERROR  --> E2AP: Memory allocation failed for BuildE2nodeComponentConfigUpdateAck %d",__LINE__);
+         return RFAILED;
+      }
+   }
+   return ROK;
+}
+
+/*******************************************************************
+ *
+ * @brief Build E2node Component config Removal ack list
+ *
+ * @details
+ *
+ *    Function :  BuildE2nodeComponentConfigRemovalAck
+ *
+ *    Functionality: deallocate the memory allocated in E2SetupResponse 
+ *
+ * @params[in] E2nodeComponentConfigRemovalAck_List_t
+ * *e2NodeConfigRemovalAckList
+ *
+ * @return ROK - success
+ *         RFAILED - failure
+ * ****************************************************************/
+
+uint8_t BuildE2nodeComponentConfigRemovalAck(E2nodeComponentConfigRemovalAck_List_t *e2NodeConfigRemovalAckList, uint16_t removaldE2NodeCount, E2NodeConfigItem *removaldE2Node)
+{
+   uint8_t arrIdx = 0;
+   E2nodeComponentConfigRemovalAck_ItemIEs_t *e2NodeRemovalAckItem=NULL;
+   
+   e2NodeConfigRemovalAckList->list.count = removaldE2NodeCount;
+   e2NodeConfigRemovalAckList->list.size = e2NodeConfigRemovalAckList->list.count * sizeof(E2nodeComponentConfigRemovalAck_ItemIEs_t*);
+   RIC_ALLOC(e2NodeConfigRemovalAckList->list.array, e2NodeConfigRemovalAckList->list.size);
+   if(e2NodeConfigRemovalAckList->list.array == NULLP)
+   {
+      DU_LOG("\nERROR  --> E2AP: Memory allocation failed for BuildE2nodeComponentConfigRemovalAck %d",__LINE__);
+      return RFAILED;
+   }
+
+   for(arrIdx = 0; arrIdx< e2NodeConfigRemovalAckList->list.count; arrIdx++)
+   {
+      RIC_ALLOC(e2NodeConfigRemovalAckList->list.array[arrIdx], sizeof(E2nodeComponentConfigRemovalAck_ItemIEs_t));
+      if(e2NodeConfigRemovalAckList->list.array[arrIdx] == NULLP)
+      {
+         DU_LOG("\nERROR  --> E2AP: Memory allocation failed for BuildE2nodeComponentConfigRemovalAck %d",__LINE__);
+         return RFAILED;
+      }
+      e2NodeRemovalAckItem = (E2nodeComponentConfigRemovalAck_ItemIEs_t*) e2NodeConfigRemovalAckList->list.array[arrIdx];
+      e2NodeRemovalAckItem->id = ProtocolIE_IDE2_id_E2nodeComponentConfigRemovalAck_Item;
+      e2NodeRemovalAckItem->criticality = CriticalityE2_reject;
+      e2NodeRemovalAckItem->value.present = E2nodeComponentConfigRemovalAck_ItemIEs__value_PR_E2nodeComponentConfigRemovalAck_Item;
+      fillE2NodeCOnfigAck((PTR)&e2NodeRemovalAckItem->value.choice.E2nodeComponentConfigRemovalAck_Item, ProtocolIE_IDE2_id_E2nodeComponentConfigRemovalAck,\
+      removaldE2Node[arrIdx].componentInfo, removaldE2Node[arrIdx].isSuccessful);
+   }
+   return ROK;  
+}
+
+/*******************************************************************
+ *
+ * @brief Build E2node Component config update ack list
+ *
+ * @details
+ *
+ *    Function :  BuildE2nodeComponentConfigUpdateAck
+ *
+ *    Functionality: deallocate the memory allocated in E2SetupResponse 
+ *
+ * @params[in] E2nodeComponentConfigUpdateAck_List_t
+ * *e2NodeConfigUpdateAckList
+ *
+ * @return ROK - success
+ *         RFAILED - failure
+ * ****************************************************************/
+
+uint8_t BuildE2nodeComponentConfigUpdateAck(E2nodeComponentConfigUpdateAck_List_t *e2NodeConfigUpdateAckList, uint16_t updatedE2NodeCount, E2NodeConfigItem *updatedE2Node)
+{
+   uint8_t arrIdx = 0;
+   E2nodeComponentConfigUpdateAck_ItemIEs_t *e2NodeUpdateAckItem=NULL;
+   
+   e2NodeConfigUpdateAckList->list.count = updatedE2NodeCount;
+   e2NodeConfigUpdateAckList->list.size = e2NodeConfigUpdateAckList->list.count * sizeof(E2nodeComponentConfigUpdateAck_ItemIEs_t*);
+   RIC_ALLOC(e2NodeConfigUpdateAckList->list.array, e2NodeConfigUpdateAckList->list.size);
+   if(e2NodeConfigUpdateAckList->list.array == NULLP)
+   {
+      DU_LOG("\nERROR  --> E2AP: Memory allocation failed for BuildE2nodeComponentConfigUpdateAck %d",__LINE__);
+      return RFAILED;
+   }
+
+   for(arrIdx = 0; arrIdx< e2NodeConfigUpdateAckList->list.count; arrIdx++)
+   {
+      RIC_ALLOC(e2NodeConfigUpdateAckList->list.array[arrIdx], sizeof(E2nodeComponentConfigUpdateAck_ItemIEs_t));
+      if(e2NodeConfigUpdateAckList->list.array[arrIdx] == NULLP)
+      {
+         DU_LOG("\nERROR  --> E2AP: Memory allocation failed for BuildE2nodeComponentConfigUpdateAck %d",__LINE__);
+         return RFAILED;
+      }
+      e2NodeUpdateAckItem = (E2nodeComponentConfigUpdateAck_ItemIEs_t*) e2NodeConfigUpdateAckList->list.array[arrIdx];
+      e2NodeUpdateAckItem->id = ProtocolIE_IDE2_id_E2nodeComponentConfigUpdateAck_Item;
+      e2NodeUpdateAckItem->criticality = CriticalityE2_reject;
+      e2NodeUpdateAckItem->value.present = E2nodeComponentConfigUpdateAck_ItemIEs__value_PR_E2nodeComponentConfigUpdateAck_Item;
+      
+      fillE2NodeCOnfigAck((PTR)&e2NodeUpdateAckItem->value.choice.E2nodeComponentConfigUpdateAck_Item, ProtocolIE_IDE2_id_E2nodeComponentConfigUpdateAck,\
+      updatedE2Node[arrIdx].componentInfo, updatedE2Node[arrIdx].isSuccessful);
+
+   }
+   return ROK;  
+}
+
+/*******************************************************************
+ *
+ * @brief Build E2node Component config addition ack list
+ *
+ * @details
+ *
+ *    Function :  BuildE2nodeComponentConfigAdditionAck
+ *
+ *    Functionality: deallocate the memory allocated in E2SetupResponse 
+ *
+ * @params[in] E2nodeComponentConfigAdditionAck_List_t
+ * *e2NodeConfigAdditionAckList
+ *
+ * @return ROK - success
+ *         RFAILED - failure
+ * ****************************************************************/
+
+uint8_t BuildE2nodeComponentConfigAdditionAck(E2nodeComponentConfigAdditionAck_List_t *e2NodeConfigAdditionAckList, DuDb *duDb,  uint16_t addedE2NodeCount, E2NodeConfigItem *addedE2Node, uint8_t procedureCode)
+{
+   uint8_t arrIdx = 0;
+   E2nodeComponentConfigAdditionAck_ItemIEs_t *e2NodeAddAckItem=NULLP;
+  
+   if(procedureCode == ProcedureCodeE2_id_E2setup)
+   { 
+      e2NodeConfigAdditionAckList->list.count = duDb->numOfE2NodeComponent;
+   }
+   else
+   { 
+      e2NodeConfigAdditionAckList->list.count = addedE2NodeCount;
+   }
+   
+   e2NodeConfigAdditionAckList->list.size = e2NodeConfigAdditionAckList->list.count * sizeof(E2nodeComponentConfigAdditionAck_ItemIEs_t*);
+   RIC_ALLOC(e2NodeConfigAdditionAckList->list.array, e2NodeConfigAdditionAckList->list.size);
+   if(e2NodeConfigAdditionAckList->list.array == NULLP)
+   {
+      DU_LOG("\nERROR  --> E2AP: Memory allocation failed for BuildE2nodeComponentConfigAdditionAck %d",__LINE__);
+      return RFAILED;
+   }
+
+   for(arrIdx = 0; arrIdx< e2NodeConfigAdditionAckList->list.count; arrIdx++)
+   {
+      RIC_ALLOC(e2NodeConfigAdditionAckList->list.array[arrIdx], sizeof(E2nodeComponentConfigAdditionAck_ItemIEs_t));
+      if(e2NodeConfigAdditionAckList->list.array[arrIdx] == NULLP)
+      {
+         DU_LOG("\nERROR  --> E2AP: Memory allocation failed for BuildE2nodeComponentConfigAdditionAck %d",__LINE__);
+         return RFAILED;
+      }
+      e2NodeAddAckItem = (E2nodeComponentConfigAdditionAck_ItemIEs_t*) e2NodeConfigAdditionAckList->list.array[arrIdx];
+      e2NodeAddAckItem->id = ProtocolIE_IDE2_id_E2nodeComponentConfigAdditionAck_Item;
+      e2NodeAddAckItem->criticality = CriticalityE2_reject;
+      e2NodeAddAckItem->value.present = E2nodeComponentConfigAdditionAck_ItemIEs__value_PR_E2nodeComponentConfigAdditionAck_Item;
+      if(procedureCode == ProcedureCodeE2_id_E2setup)
+      {
+         fillE2NodeCOnfigAck((PTR)&e2NodeAddAckItem->value.choice.E2nodeComponentConfigAdditionAck_Item, ProtocolIE_IDE2_id_E2nodeComponentConfigAdditionAck,\
+         duDb->e2NodeComponent[arrIdx], true);
+      }
+      else
+      {
+         fillE2NodeCOnfigAck((PTR)&e2NodeAddAckItem->value.choice.E2nodeComponentConfigAdditionAck_Item, ProtocolIE_IDE2_id_E2nodeComponentConfigAdditionAck,\
+         addedE2Node[arrIdx].componentInfo, addedE2Node[arrIdx].isSuccessful);
+      }
+   }
+   return ROK;  
+}
+
+/*******************************************************************
+ *
+ * @brief Buld and send the E2 node config update msg 
+ *
+ * @details
+ *
+ *    Function : BuildAndSendE2NodeConfigUpdate
+ *
+ *    Functionality:
+ *         - Buld and send the E2 node config update msg
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+
+uint8_t BuildAndSendE2NodeConfigUpdateAck(DuDb *duDb, uint8_t transId,  E2NodeConfigList *e2NodeList)
+{
+   uint8_t arrIdx = 0,elementCnt = 0;
+   uint8_t ret = ROK;
+   E2AP_PDU_t        *e2apMsg = NULLP;
+   E2nodeConfigurationUpdateAcknowledge_t *e2NodeConfigUpdateAck = NULLP;
+   asn_enc_rval_t     encRetVal;       /* Encoder return value */
+
+   DU_LOG("\nINFO   -->  E2AP : Building E2 Node config update Ack Message\n");
+   do
+   {
+      RIC_ALLOC(e2apMsg, sizeof(E2AP_PDU_t));
+      if(e2apMsg == NULLP)
+      {
+         DU_LOG("\nERROR  -->  E2AP : Memory allocation for E2AP-PDU failed");
+         break;
+      }
+      e2apMsg->present = E2AP_PDU_PR_successfulOutcome;
+      RIC_ALLOC(e2apMsg->choice.successfulOutcome, sizeof(SuccessfulOutcomeE2_t));
+      if(e2apMsg->choice.successfulOutcome == NULLP)
+      {
+         DU_LOG("\nERROR  -->  E2AP : Memory allocation for E2AP-PDU failed");
+         RIC_FREE(e2apMsg, sizeof(E2AP_PDU_t));
+         return RFAILED;
+      }
+      
+      e2apMsg->choice.successfulOutcome->criticality = CriticalityE2_reject;
+      e2apMsg->choice.successfulOutcome->procedureCode = ProcedureCodeE2_id_E2nodeConfigurationUpdate;
+      e2apMsg->choice.successfulOutcome->value.present = SuccessfulOutcomeE2__value_PR_E2nodeConfigurationUpdateAcknowledge;
+      e2NodeConfigUpdateAck = &e2apMsg->choice.successfulOutcome->value.choice.E2nodeConfigurationUpdateAcknowledge;
+      
+      elementCnt =1;
+      if(e2NodeList->addedE2NodeCount)
+         elementCnt++;
+      if(e2NodeList->updatedE2NodeCount)
+         elementCnt++;
+      if(e2NodeList->removedE2NodeCount)
+         elementCnt++;
+
+      e2NodeConfigUpdateAck->protocolIEs.list.count = elementCnt;
+      e2NodeConfigUpdateAck->protocolIEs.list.size  = elementCnt * sizeof(E2nodeConfigurationUpdateAcknowledge_IEs_t*);
+      RIC_ALLOC(e2NodeConfigUpdateAck->protocolIEs.list.array, e2NodeConfigUpdateAck->protocolIEs.list.size);
+      if(e2NodeConfigUpdateAck->protocolIEs.list.array == NULLP)
+      {
+         DU_LOG("\nERROR  -->  E2AP : Memory allocation for e2NodeConfigUpdateAck failed");
+         break;
+      }
+      
+      for(arrIdx =0; arrIdx<elementCnt; arrIdx++)
+      {
+         RIC_ALLOC(e2NodeConfigUpdateAck->protocolIEs.list.array[arrIdx], sizeof(E2nodeConfigurationUpdateAcknowledge_IEs_t));
+         if(e2NodeConfigUpdateAck->protocolIEs.list.array[arrIdx] == NULLP)
+         {
+            
+            DU_LOG("\nERROR  -->  E2AP : Memory allocation for e2NodeConfigUpdateAck failed");
+            break;
+         }
+      }
+
+      arrIdx = 0;
+      e2NodeConfigUpdateAck->protocolIEs.list.array[arrIdx]->id = ProtocolIE_IDE2_id_TransactionID;
+      e2NodeConfigUpdateAck->protocolIEs.list.array[arrIdx]->criticality = CriticalityE2_reject;
+      e2NodeConfigUpdateAck->protocolIEs.list.array[arrIdx]->value.present = E2nodeConfigurationUpdateAcknowledge_IEs__value_PR_TransactionID;
+      e2NodeConfigUpdateAck->protocolIEs.list.array[arrIdx]->value.choice.TransactionID = transId;
+      
+      if(e2NodeList->addedE2NodeCount)
+      {
+         arrIdx++;
+         e2NodeConfigUpdateAck->protocolIEs.list.array[arrIdx]->id = ProtocolIE_IDE2_id_E2nodeComponentConfigAdditionAck;
+         e2NodeConfigUpdateAck->protocolIEs.list.array[arrIdx]->criticality = CriticalityE2_reject;
+         e2NodeConfigUpdateAck->protocolIEs.list.array[arrIdx]->value.present = E2nodeConfigurationUpdateAcknowledge_IEs__value_PR_E2nodeComponentConfigUpdateAck_List;
+         if(BuildE2nodeComponentConfigAdditionAck(&e2NodeConfigUpdateAck->protocolIEs.list.array[arrIdx]->value.choice.E2nodeComponentConfigAdditionAck_List, NULL,\
+                  e2NodeList->addedE2NodeCount, e2NodeList->addedE2Node, ProcedureCodeE2_id_E2nodeConfigurationUpdate)!=ROK)
+
+         {
+            DU_LOG("\nERROR  -->  E2AP : Failed to build E2Node Component config addition ack list");
+            break;
+         }
+      }
+      if(e2NodeList->updatedE2NodeCount)
+      {
+         arrIdx++;
+         e2NodeConfigUpdateAck->protocolIEs.list.array[arrIdx]->id = ProtocolIE_IDE2_id_E2nodeComponentConfigUpdateAck;
+         e2NodeConfigUpdateAck->protocolIEs.list.array[arrIdx]->criticality = CriticalityE2_reject;
+         e2NodeConfigUpdateAck->protocolIEs.list.array[arrIdx]->value.present = E2nodeConfigurationUpdateAcknowledge_IEs__value_PR_E2nodeComponentConfigUpdateAck_List;
+         if(BuildE2nodeComponentConfigUpdateAck(&e2NodeConfigUpdateAck->protocolIEs.list.array[arrIdx]->value.choice.E2nodeComponentConfigUpdateAck_List,\
+                  e2NodeList->updatedE2NodeCount, e2NodeList->updatedE2Node)!=ROK)
+
+         {
+            DU_LOG("\nERROR  -->  E2AP : Failed to build E2Node Component config addition ack list");
+            break;
+         }
+      }
+      if(e2NodeList->removedE2NodeCount)
+      {
+         arrIdx++;
+         e2NodeConfigUpdateAck->protocolIEs.list.array[arrIdx]->id = ProtocolIE_IDE2_id_E2nodeComponentConfigRemovalAck;
+         e2NodeConfigUpdateAck->protocolIEs.list.array[arrIdx]->criticality = CriticalityE2_reject;
+         e2NodeConfigUpdateAck->protocolIEs.list.array[arrIdx]->value.present = E2nodeConfigurationUpdateAcknowledge_IEs__value_PR_E2nodeComponentConfigUpdateAck_List;
+         if(BuildE2nodeComponentConfigRemovalAck(&e2NodeConfigUpdateAck->protocolIEs.list.array[arrIdx]->value.choice.E2nodeComponentConfigRemovalAck_List,\
+                  e2NodeList->removedE2NodeCount, e2NodeList->removedE2Node)!=ROK)
+
+         {
+            DU_LOG("\nERROR  -->  E2AP : Failed to build E2Node Component config addition ack list");
+            break;
+         }
+      }      
+      xer_fprint(stdout, &asn_DEF_E2AP_PDU, e2apMsg);
+
+      memset(encBuf, 0, ENC_BUF_MAX_LEN);
+      encBufSize = 0;
+      encRetVal = aper_encode(&asn_DEF_E2AP_PDU, 0, e2apMsg, PrepFinalEncBuf,\
+            encBuf);
+      if(encRetVal.encoded == ENCODE_FAIL)
+      {
+         DU_LOG("\nERROR  -->  E2AP : Could not encode E2 Node config update ack structure (at %s)\n",\
+               encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
+         return RFAILED;
+      }
+      else
+      {
+         DU_LOG("\nDEBUG  -->  E2AP : Created APER encoded buffer for E2 Node config update ack \n");
+         for(int i=0; i< encBufSize; i++)
+         {
+            DU_LOG("%x",encBuf[i]);
+         } 
+      }
+
+
+      /* Sending msg */
+      if(SendE2APMsg(RIC_APP_MEM_REG, RIC_POOL, duDb->duId) != ROK)
+      {
+         DU_LOG("\nERROR  -->  E2AP : Failed to send E2 Node config update ack ");
+         return RFAILED;
+      }
+
+      break;
+   }while(true);
+   
+   FreeE2NodeConfigUpdateAck(e2apMsg);
+   return ret;
+}
+
+/*******************************************************************
+ *
+ * @brief get Component ID And Interface Info 
+ *
+ * @details
+ *
+ *    Function : getComponentIDAndInterfaceInfo
+ *
+ *    Functionality:
+ *         - get Component ID And Interface Info 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+
+void getComponentIDAndInterfaceInfo(DuDb *duDb, PTR e2NodeCfg, uint8_t protocolId, E2NodeConfigItem *storeCfg)
+{
+   uint8_t idx=0;
+   bool configFound;
+   E2nodeComponentID_t componentId;
+   E2nodeComponentInterfaceType_t interface;
+   E2nodeComponentConfigAddition_Item_t *addCfg=NULL;
+   E2nodeComponentConfigUpdate_Item_t *updateCfg=NULL;
+   E2nodeComponentConfigRemoval_Item_t *removeCfg=NULL;
+
+   switch(protocolId)
+   {
+      case ProtocolIE_IDE2_id_E2nodeComponentConfigAddition:
+         {
+            addCfg = (E2nodeComponentConfigAddition_Item_t *)e2NodeCfg;
+            interface = addCfg->e2nodeComponentInterfaceType;
+            componentId = addCfg->e2nodeComponentID;
+            break;
+         }
+      case ProtocolIE_IDE2_id_E2nodeComponentConfigUpdate:
+         {
+            updateCfg = (E2nodeComponentConfigUpdate_Item_t *)e2NodeCfg;
+            interface = updateCfg->e2nodeComponentInterfaceType;
+            componentId = updateCfg->e2nodeComponentID;
+            break;
+         }
+      case ProtocolIE_IDE2_id_E2nodeComponentConfigRemoval:
+         {
+            removeCfg = (E2nodeComponentConfigRemoval_Item_t*)e2NodeCfg;
+            interface = removeCfg->e2nodeComponentInterfaceType;
+            componentId = removeCfg->e2nodeComponentID;
+            break;
+         }
+   }
+   
+   storeCfg->componentInfo.interfaceType = convertE2ComponentInterfaceTypeToEnum(interface);
+   switch(componentId.present)
+   {
+      case E2nodeComponentID_PR_e2nodeComponentInterfaceTypeF1:
+         {
+            if(componentId.choice.e2nodeComponentInterfaceTypeF1)
+            {
+               storeCfg->componentInfo.componentId = componentId.choice.e2nodeComponentInterfaceTypeF1->gNB_DU_ID.buf[0];
+            }
+            break;
+         }
+      default:
+         {
+            break;
+         }
+   }
+
+   if(protocolId != ProtocolIE_IDE2_id_E2nodeComponentConfigAddition)
+   {
+      for(idx =0;idx< duDb->numOfE2NodeComponent; idx++)
+      {
+         if(duDb->e2NodeComponent[idx].interfaceType == storeCfg->componentInfo.interfaceType  && protocolId == ProtocolIE_IDE2_id_E2nodeComponentConfigUpdate)
+         {
+            duDb->e2NodeComponent[idx].componentId = storeCfg->componentInfo.componentId;
+            configFound = true;
+            break;
+         }
+         else if(duDb->e2NodeComponent[idx].interfaceType == storeCfg->componentInfo.interfaceType && protocolId == ProtocolIE_IDE2_id_E2nodeComponentConfigRemoval)
+         {
+            memset(&duDb->e2NodeComponent[idx], 0, sizeof(E2NodeComponent));
+            configFound = true;
+            break;
+         }
+      }
+      
+      if(configFound == true)
+         storeCfg->isSuccessful = true;
+      else
+         storeCfg->isSuccessful = false;
+   }
+}
+
+/*******************************************************************
+ *
  * @brief process the E2 node configuration update
  *
  * @details
@@ -310,35 +1137,135 @@ uint8_t BuildAndSendE2NodeConfigUpdateFailure(uint32_t duId, uint8_t transId, ui
 
 void ProcE2NodeConfigUpdate(uint32_t duId, E2nodeConfigurationUpdate_t *e2NodeConfigUpdate)
 {
-   uint8_t ieIdx = 0, duIdx = 0;
-   uint8_t transId = 0, e2NodeUpdateListIdx=0;
+   E2NodeConfigList tmpE2NodeList;
+   uint8_t ieIdx = 0, duIdx = 0, arrIdx=0,elementCnt=0;
+   uint8_t transId = 0;
    DuDb    *duDb = NULLP;
+   E2nodeComponentConfigAddition_List_t *e2NodeAddList=NULL;
+   E2nodeComponentConfigAddition_ItemIEs_t *e2NodeAddItemIe=NULL;
+   E2nodeComponentConfigAddition_Item_t *e2NodeAddItem=NULL;
    E2nodeComponentConfigUpdate_List_t *e2NodeUpdateList=NULLP;
    E2nodeComponentConfigUpdate_ItemIEs_t *e2NodeUpdateItemIe=NULLP;
    E2nodeComponentConfigUpdate_Item_t *e2NodeUpdateItem =NULLP;
+   E2nodeComponentConfigRemoval_List_t *e2NodeRemoveList=NULL;
+   E2nodeComponentConfigRemoval_ItemIEs_t *e2NodeRemovalItemIe=NULL;
+   E2nodeComponentConfigRemoval_Item_t *e2NodeRemovalItem=NULL;
 
-   if(e2NodeConfigUpdate)
+   SEARCH_DU_DB(duIdx, duId, duDb);
+   if(duDb == NULLP)
    {
-      if(e2NodeConfigUpdate->protocolIEs.list.array)
+      DU_LOG("\nERROR  -->  E2AP : duDb is not present for duId %d",duId);
+      return;
+   }
+   
+   memset(&tmpE2NodeList, 0, sizeof(E2NodeConfigList));
+   if(!e2NodeConfigUpdate)
+   {
+      DU_LOG("\nERROR  -->  E2AP : e2NodeConfigUpdate pointer is null");
+      return;
+   }
+   if(!e2NodeConfigUpdate->protocolIEs.list.array)
+   {
+       DU_LOG("\nERROR  -->  E2AP : e2NodeConfigUpdate array pointer is null");
+      return;
+   }
+   
+   elementCnt = e2NodeConfigUpdate->protocolIEs.list.count;
+   for(ieIdx=0; ieIdx < e2NodeConfigUpdate->protocolIEs.list.count; ieIdx++)
+   {
+      if(!e2NodeConfigUpdate->protocolIEs.list.array[ieIdx])
       {
-         for(ieIdx=0; ieIdx < e2NodeConfigUpdate->protocolIEs.list.count; ieIdx++)
-         {
-            if(e2NodeConfigUpdate->protocolIEs.list.array[ieIdx])
+         DU_LOG("\nERROR  -->  E2AP : e2NodeConfigUpdate array idx %d pointer is null",arrIdx);
+         break;
+      }
+      
+      switch(e2NodeConfigUpdate->protocolIEs.list.array[ieIdx]->id)
+      {
+         case ProtocolIE_IDE2_id_TransactionID:
             {
-               switch(e2NodeConfigUpdate->protocolIEs.list.array[ieIdx]->id)
+               transId = e2NodeConfigUpdate->protocolIEs.list.array[ieIdx]->value.choice.TransactionID;
+               if(transId < 0 || transId > 255)
                {
-                  case ProtocolIE_IDE2_id_TransactionID:
-                     transId = e2NodeConfigUpdate->protocolIEs.list.array[ieIdx]->value.choice.TransactionID;
-                     break;
-                  
-                  default:
+                  DU_LOG("\nERROR  -->  E2AP : Received invalid transId %d",transId);
+                  return;
+               }
+               break;
+            }
+
+         case ProtocolIE_IDE2_id_E2nodeComponentConfigAddition:
+            {
+               e2NodeAddList =&e2NodeConfigUpdate->protocolIEs.list.array[ieIdx]->value.choice.E2nodeComponentConfigAddition_List;
+               if(e2NodeAddList->list.array)
+               {
+                  for(arrIdx = 0; arrIdx< e2NodeAddList->list.count; arrIdx++)
                   {
-                     /*TODO - Other IEs will be handling in next gerrit*/
-                     break;
+                     e2NodeAddItemIe = (E2nodeComponentConfigAddition_ItemIEs_t *) e2NodeAddList->list.array[arrIdx];
+                     e2NodeAddItem =  &e2NodeAddItemIe->value.choice.E2nodeComponentConfigAddition_Item;
+                     getComponentIDAndInterfaceInfo(duDb, (PTR)e2NodeAddItem, ProtocolIE_IDE2_id_E2nodeComponentConfigAddition, &tmpE2NodeList.addedE2Node[tmpE2NodeList.addedE2NodeCount++]);
+                     
+                     /* Adding the new ran function in DB*/
+                     duDb->e2NodeComponent[duDb->numOfE2NodeComponent].interfaceType = tmpE2NodeList.addedE2Node[tmpE2NodeList.addedE2NodeCount-1].componentInfo.interfaceType;
+                     duDb->e2NodeComponent[duDb->numOfE2NodeComponent].componentId   = tmpE2NodeList.addedE2Node[tmpE2NodeList.addedE2NodeCount-1].componentInfo.componentId;
+                     duDb->numOfE2NodeComponent++;
+
                   }
                }
+               break;
             }
-         }
+
+         case ProtocolIE_IDE2_id_E2nodeComponentConfigUpdate:
+            {
+               e2NodeUpdateList =&e2NodeConfigUpdate->protocolIEs.list.array[ieIdx]->value.choice.E2nodeComponentConfigUpdate_List;
+               if(e2NodeUpdateList->list.array)
+               {
+                  for(arrIdx = 0; arrIdx< e2NodeUpdateList->list.count; arrIdx++)
+                  {
+                     e2NodeUpdateItemIe = (E2nodeComponentConfigUpdate_ItemIEs_t*) e2NodeUpdateList->list.array[arrIdx];
+                     e2NodeUpdateItem =  &e2NodeUpdateItemIe->value.choice.E2nodeComponentConfigUpdate_Item;
+                     
+                     getComponentIDAndInterfaceInfo(duDb, (PTR)e2NodeUpdateItem, ProtocolIE_IDE2_id_E2nodeComponentConfigUpdate, &tmpE2NodeList.updatedE2Node[tmpE2NodeList.updatedE2NodeCount++]);
+                  }
+               }
+               break;
+            }
+
+         case ProtocolIE_IDE2_id_E2nodeComponentConfigRemoval:
+            {
+               e2NodeRemoveList = &e2NodeConfigUpdate->protocolIEs.list.array[ieIdx]->value.choice.E2nodeComponentConfigRemoval_List;
+               if(e2NodeRemoveList->list.array)
+               {
+                  for(arrIdx = 0; arrIdx< e2NodeRemoveList->list.count; arrIdx++)
+                  {
+                     e2NodeRemovalItemIe = (E2nodeComponentConfigRemoval_ItemIEs_t *) e2NodeRemoveList->list.array[arrIdx];
+                     e2NodeRemovalItem =  &e2NodeRemovalItemIe->value.choice.E2nodeComponentConfigRemoval_Item;
+                     
+                     getComponentIDAndInterfaceInfo(duDb, (PTR)e2NodeRemovalItem, ProtocolIE_IDE2_id_E2nodeComponentConfigRemoval, &tmpE2NodeList.removedE2Node[tmpE2NodeList.removedE2NodeCount++]);
+
+                  }
+               }
+               break;
+            }
+
+         default:
+            {
+               break;
+            }
+      }
+   }
+   if(elementCnt == ieIdx)
+   {
+      if(BuildAndSendE2NodeConfigUpdateAck(duDb, transId, &tmpE2NodeList) !=ROK)
+      {
+         DU_LOG("\nERROR  -->  E2AP : Failed to build and send E2 node config ack");
+         return;
+      }
+   }
+   else
+   {
+      if(BuildAndSendE2NodeConfigUpdateFailure(duDb->duId, transId, CauseE2_PR_misc, CauseE2Misc_unspecified) != ROK)
+      {
+         DU_LOG("\nERROR  -->  E2AP : Failed to build and send E2 node config Failure");
+         return;
       }
    }
 }
@@ -459,79 +1386,6 @@ void FreeE2SetupRsp(E2AP_PDU_t *e2apMsg)
       }
       RIC_FREE(e2apMsg, sizeof(E2AP_PDU_t));
    }
-}
-
-/*******************************************************************
- *
- * @brief Build E2node Component config addition ack list
- *
- * @details
- *
- *    Function :  BuildE2nodeComponentConfigAdditionAck
- *
- *    Functionality: deallocate the memory allocated in E2SetupResponse 
- *
- * @params[in] E2nodeComponentConfigAdditionAck_List_t
- * *e2NodeConfigAdditionAckList
- *
- * @return ROK - success
- *         RFAILED - failure
- * ****************************************************************/
-
-uint8_t BuildE2nodeComponentConfigAdditionAck(E2nodeComponentConfigAdditionAck_List_t *e2NodeConfigAdditionAckList, DuDb *duDb)
-{
-   uint8_t arrIdx = 0;
-   E2nodeComponentConfigAdditionAck_ItemIEs_t *e2NodeAddAckItem;
-   
-   e2NodeConfigAdditionAckList->list.count = 1;
-   e2NodeConfigAdditionAckList->list.size = e2NodeConfigAdditionAckList->list.count * sizeof(E2nodeComponentConfigAdditionAck_ItemIEs_t*);
-   RIC_ALLOC(e2NodeConfigAdditionAckList->list.array, e2NodeConfigAdditionAckList->list.size);
-   if(e2NodeConfigAdditionAckList->list.array == NULLP)
-   {
-      DU_LOG("\nERROR  --> E2AP: Memory allocation failed for BuildE2nodeComponentConfigAdditionAck %d",__LINE__);
-      return RFAILED;
-   }
-
-   for(arrIdx = 0; arrIdx< e2NodeConfigAdditionAckList->list.count; arrIdx++)
-   {
-      RIC_ALLOC(e2NodeConfigAdditionAckList->list.array[arrIdx], sizeof(E2nodeComponentConfigAdditionAck_ItemIEs_t));
-      if(e2NodeConfigAdditionAckList->list.array[arrIdx] == NULLP)
-      {
-         DU_LOG("\nERROR  --> E2AP: Memory allocation failed for BuildE2nodeComponentConfigAdditionAck %d",__LINE__);
-         return RFAILED;
-      }
-   }
-   e2NodeAddAckItem = (E2nodeComponentConfigAdditionAck_ItemIEs_t*) e2NodeConfigAdditionAckList->list.array[0];
-   e2NodeAddAckItem->id = ProtocolIE_IDE2_id_E2nodeComponentConfigAdditionAck_Item;
-   e2NodeAddAckItem->criticality = CriticalityE2_reject;
-   e2NodeAddAckItem->value.present = E2nodeComponentConfigAdditionAck_ItemIEs__value_PR_E2nodeComponentConfigAdditionAck_Item;
-   e2NodeAddAckItem->value.choice.E2nodeComponentConfigAdditionAck_Item.e2nodeComponentInterfaceType = duDb->e2NodeComponent.interfaceType;
-
-   /* >E2 Node Component ID */
-   e2NodeAddAckItem->value.choice.E2nodeComponentConfigAdditionAck_Item.e2nodeComponentID.present = E2nodeComponentID_PR_e2nodeComponentInterfaceTypeF1;
-   RIC_ALLOC(e2NodeAddAckItem->value.choice.E2nodeComponentConfigAdditionAck_Item.e2nodeComponentID.choice.e2nodeComponentInterfaceTypeF1,\
-         sizeof(E2nodeComponentInterfaceF1_t));
-   if(e2NodeAddAckItem->value.choice.E2nodeComponentConfigAdditionAck_Item.e2nodeComponentID.choice.e2nodeComponentInterfaceTypeF1 == NULLP)
-   {
-      DU_LOG("\nERROR  --> E2AP: Memory allocation failed for BuildE2nodeComponentConfigAdditionAck %d",__LINE__);
-      return RFAILED;
-   }
-   e2NodeAddAckItem->value.choice.E2nodeComponentConfigAdditionAck_Item.e2nodeComponentID.choice.e2nodeComponentInterfaceTypeF1->gNB_DU_ID.size = sizeof(uint8_t);
-   RIC_ALLOC(e2NodeAddAckItem->value.choice.E2nodeComponentConfigAdditionAck_Item.e2nodeComponentID.choice.e2nodeComponentInterfaceTypeF1->gNB_DU_ID.buf,\
-         e2NodeAddAckItem->value.choice.E2nodeComponentConfigAdditionAck_Item.e2nodeComponentID.choice.e2nodeComponentInterfaceTypeF1->gNB_DU_ID.size);
-
-   if(e2NodeAddAckItem->value.choice.E2nodeComponentConfigAdditionAck_Item.e2nodeComponentID.choice.e2nodeComponentInterfaceTypeF1->gNB_DU_ID.buf == NULLP)
-   {
-      DU_LOG("\nERROR  -->list.  E2AP: Memory allocation failed for BuildE2nodeComponentConfigAdditionAck %d",__LINE__);
-      return RFAILED;
-   }
-   e2NodeAddAckItem->value.choice.E2nodeComponentConfigAdditionAck_Item.e2nodeComponentID.choice.e2nodeComponentInterfaceTypeF1->gNB_DU_ID.buf[0]  = duDb->e2NodeComponent.componentId;
-   
-   /* >E2 Node Component Configuration Acknowledge*/
-   e2NodeAddAckItem->value.choice.E2nodeComponentConfigAdditionAck_Item.e2nodeComponentConfigurationAck.updateOutcome = \
-   E2nodeComponentConfigurationAck__updateOutcome_success;
-   
-   return ROK;  
 }
 
 /*******************************************************************
@@ -735,7 +1589,7 @@ uint8_t BuildAndSendE2SetupRsp(DuDb *duDb, uint8_t transId)
       e2SetupRsp->protocolIEs.list.array[idx]->value.present = \
          E2setupResponseIEs__value_PR_E2nodeComponentConfigAdditionAck_List;
       if(BuildE2nodeComponentConfigAdditionAck(&e2SetupRsp->protocolIEs.list.array[idx]->\
-         value.choice.E2nodeComponentConfigAdditionAck_List, duDb) != ROK)
+         value.choice.E2nodeComponentConfigAdditionAck_List, duDb, 0, NULL, ProcedureCodeE2_id_E2setup) != ROK)
       {
          DU_LOG("\nERROR  -->  E2AP : Failed to build E2Node Component config addition ack list");
          break;
@@ -1616,11 +2470,12 @@ void FreeE2SetupFailure(E2AP_PDU_t *e2apMsg)
 
 uint8_t BuildAndSendE2SetupFailure(uint32_t duId, uint8_t transId)
 {
+   uint8_t  ret= RFAILED;
    E2AP_PDU_t         *e2apMsg = NULL;
-   E2setupFailure_t   *e2SetupFailure;
+   E2setupFailure_t   *e2SetupFailure=NULL;
    asn_enc_rval_t     encRetVal;
-   uint8_t            arrIdx;
-   uint8_t            elementCnt;
+   uint8_t            arrIdx=0;
+   uint8_t            elementCnt=0;
    bool  memAllocFailed = false;
 
    DU_LOG("\nINFO   -->  E2AP : Building E2 Setup failure\n");
@@ -1719,10 +2574,12 @@ uint8_t BuildAndSendE2SetupFailure(uint32_t duId, uint8_t transId)
          DU_LOG("\nERROR  -->  E2AP : Sending E2 Setup Failure failed");
          break;
       }
+      ret =ROK;
       break;
    }
 
    FreeE2SetupFailure(e2apMsg);
+   return ret;
 }
 
 /*******************************************************************
@@ -1813,10 +2670,11 @@ uint8_t ProcE2SetupReq(uint32_t *duId, E2setupRequest_t  *e2SetupReq)
                                  if(e2NodeAddItem->value.choice.E2nodeComponentConfigAddition_Item.e2nodeComponentID.\
                                     choice.e2nodeComponentInterfaceTypeF1)
                                  {
-                                    duDb->e2NodeComponent.interfaceType = F1; 
-                                    duDb->e2NodeComponent.componentId = \
+                                    duDb->e2NodeComponent[duDb->numOfE2NodeComponent].interfaceType = F1; 
+                                    duDb->e2NodeComponent[duDb->numOfE2NodeComponent].componentId = \
                                        e2NodeAddItem->value.choice.E2nodeComponentConfigAddition_Item.e2nodeComponentID.\
                                        choice.e2nodeComponentInterfaceTypeF1->gNB_DU_ID.buf[0]; 
+                                    duDb->numOfE2NodeComponent++;
                                  }
                               }
                            }
@@ -2293,50 +3151,6 @@ void FreeRicServiceUpdateFailure(E2AP_PDU_t *e2apMsg)
          RIC_FREE(e2apMsg->choice.unsuccessfulOutcome, sizeof(UnsuccessfulOutcomeE2_t));
       }
       RIC_FREE(e2apMsg, sizeof(E2AP_PDU_t));
-   }
-}
-
-/*******************************************************************
- *
- * @brief fill E2 failure cause 
- *
- * @details
- *
- *    Function : fillE2FailureCause
- *
- * Functionality: fill E2 failure cause
- * @return ROK     - success
- *         RFAILED - failure
- *
- ******************************************************************/
-
-void fillE2FailureCause(CauseE2_t *cause, CauseE2_PR causePresent, uint8_t reason)
-{
-   cause->present = causePresent;
-
-   switch(cause->present)
-   {
-      case CauseE2_PR_ricRequest:
-         cause->choice.ricRequest = reason;
-         break;
-      case CauseE2_PR_ricService:
-         cause->choice.ricService = reason;
-         break;
-      case CauseE2_PR_e2Node:
-         cause->choice.e2Node = reason;
-         break;
-      case CauseE2_PR_transport:
-         cause->choice.transport = reason;
-         break;
-      case CauseE2_PR_protocol:
-         cause->choice.protocol = reason;
-         break;
-      case CauseE2_PR_misc:
-         cause->choice.misc = reason;
-         break;
-      default:
-         cause->choice.misc = CauseE2Misc_unspecified;
-         break;
    }
 }
 

@@ -48,7 +48,7 @@
 #define RIC_POOL 1
 #define MAX_RAN_FUNCTION 256        /* O-RAN.WG3.E2AP-R003-v03.00 : Section 9.1.2.2 : maxofRANfunctionID */
 #define MAX_NUM_TRANSACTION 256     /* As per, O-RAN WG3 E2AP v3.0, section 9.2.33 */
-
+#define MAX_E2_NODE_COMPONENT 1024     /* O-RAN.WG3.E2AP-R003-v03.00 : Section 9.1.2.2 : maxofE2nodeComponents */
 #define MAX_RIC_ACTION  16          /* O-RAN.WG3.E2AP-R003-v03.00 : Section 9.1.1.1 : maxofRICActionID */
 #define MAX_RIC_REQUEST 5           /* As per O-RAN.WG3.E2AP-R003-v03.00 : Section 9.2.7, max request is 65535. \
                                      * But for our internal testing purpose, keeping it to 5 for now */
@@ -132,7 +132,8 @@ typedef struct duDb
    uint8_t         ricTransIdCounter;
    uint16_t        numOfRanFunction;
    RanFunction     ranFunction[MAX_RAN_FUNCTION];
-   E2NodeComponent e2NodeComponent;
+   uint8_t         numOfE2NodeComponent;
+   E2NodeComponent e2NodeComponent[MAX_E2_NODE_COMPONENT];
 }DuDb;
 
 typedef struct ricCfgParams
@@ -159,6 +160,23 @@ typedef struct
    uint8_t numOfRanFuneRejected;
    RanFunction ranFunRejectedList[MAX_RAN_FUNCTION];
 }RicTmpRanFunList;
+
+typedef struct e2NodeCfgItem
+{
+   E2NodeComponent componentInfo;
+   bool           isSuccessful;
+}E2NodeConfigItem;
+
+typedef struct e2NodeCfgList
+{
+   uint16_t addedE2NodeCount;
+   E2NodeConfigItem addedE2Node[MAX_E2_NODE_COMPONENT];
+   uint16_t updatedE2NodeCount;
+   E2NodeConfigItem updatedE2Node[MAX_E2_NODE_COMPONENT];
+   uint16_t removedE2NodeCount;
+   E2NodeConfigItem removedE2Node[MAX_E2_NODE_COMPONENT];
+}E2NodeConfigList;
+
 
 void readRicCfg();
 void cuAppInmsgHdlr(Buffer *mBuf);
