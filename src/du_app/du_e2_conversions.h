@@ -21,6 +21,7 @@
 void convertDuCauseToE2Cause(CauseOfResult l2Cause, E2FailureCause *failureCause);
 uint8_t convertInterfaceToE2ComponentInterfaceType(uint8_t interface);
 uint8_t convertE2WaitTimerEnumToValue(uint8_t timerToWait);
+uint8_t convertE2ComponentInterfaceTypeToEnum(uint8_t interface);
 
 /**********************************************************************
   End of file

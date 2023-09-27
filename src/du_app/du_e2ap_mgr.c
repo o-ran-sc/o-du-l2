@@ -788,6 +788,60 @@ uint8_t addOrModifyE2NodeComponent(InterfaceType interfaceType, uint8_t action, 
    return ROK;
 }
 
+/******************************************************************
+ *
+ * @brief remove E2 node from the database
+ *
+ * @details
+ *
+ *    Function : removeE2Node
+ *
+ *    Functionality: remove E2 node from the database
+ *
+ * @params[in]
+ *    Interface Type 
+ *    Component action type
+ * @return ROK     - success
+ *         RFAILED - Ack
+ *
+ * ****************************************************************/
+
+void removeE2Node(InterfaceType interface, ComponentActionType actionType)
+{
+   CmLList *node=NULL;
+   E2NodeComponent *e2NodeComponentInfo =NULL;
+   
+   switch(interface)
+   {
+      case F1:
+         {
+            e2NodeComponentInfo = fetchE2NodeComponentInfo(F1, actionType, &node);
+            if(!e2NodeComponentInfo)
+            {
+               DU_LOG("\nERROR  --> E2AP : Received null e2NodeComponentInfo at line number %d",__LINE__);
+               return RFAILED;
+            }
+            else
+            {
+               cmLListDelFrm(&duCb.e2apDb.e2NodeComponentList, node);
+               DU_FREE(e2NodeComponentInfo->componentRequestPart, e2NodeComponentInfo->reqBufSize);
+               DU_FREE(e2NodeComponentInfo->componentResponsePart, e2NodeComponentInfo->rspBufSize);
+               DU_FREE(e2NodeComponentInfo, sizeof(E2NodeComponent));
+               DU_FREE(node, sizeof(CmLList));
+            }
+            break;
+         }
+
+      case NG:
+      case XN:
+      case E1:
+      case W1:
+      case S1:
+      case X2:
+         break;
+   }
+}
+
 /**********************************************************************
   End of file
  **********************************************************************/

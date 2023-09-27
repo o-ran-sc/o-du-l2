@@ -21,10 +21,9 @@
 
 #include "common_def.h"
 #include "TimeToWaitE2.h"
+#include "E2nodeComponentInterfaceType.h"
 #include "du_app_mac_inf.h"
 #include "du_e2ap_mgr.h"
-#include "E2nodeComponentInterfaceType.h"
-
 /************************************************************************
  *
  * @brief Converts enum values into actual value of E2 wait timer
@@ -152,6 +151,52 @@ uint8_t convertInterfaceToE2ComponentInterfaceType(uint8_t interface)
       case X2:
          return E2nodeComponentInterfaceType_x2;
    }
+   return RFAILED;
+}
+
+/************************************************************************
+ *
+ * @brief Converts E2nodeComponentInterfaceType value into enum
+ *
+ * @details
+ *
+ *    Function : convertE2ComponentInterfaceTypeToEnum
+ *
+ *    Functionality: Convert E2nodeComponentInterfaceType into enum
+ *    value
+ *
+ * @params[in] 
+ *    value of interface
+ * @return Enum value of e2 interface
+ *
+ * **********************************************************************/
+
+uint8_t convertE2ComponentInterfaceTypeToEnum(uint8_t interface)
+{
+   switch(interface)
+   {
+      case E2nodeComponentInterfaceType_ng:
+         return NG;
+
+      case E2nodeComponentInterfaceType_xn:
+         return XN;
+
+      case E2nodeComponentInterfaceType_e1:
+         return E1;
+
+      case E2nodeComponentInterfaceType_f1:
+         return F1;
+
+      case E2nodeComponentInterfaceType_w1:
+         return W1;
+
+      case E2nodeComponentInterfaceType_s1:
+         return S1;
+
+      case E2nodeComponentInterfaceType_x2:
+         return X2;
+   }
+
    return RFAILED;
 }
 
