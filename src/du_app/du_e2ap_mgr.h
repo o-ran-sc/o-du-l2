@@ -508,6 +508,8 @@ void deleteRicSubscriptionNode(CmLList *ricSubscriptionInfo);
 void deleteMeasurementInfoList(CmLListCp *measInfoList);
 void deleteActionSequence(ActionInfo *action);
 void deleteMeasuredValueList(CmLListCp *measuredValueList);
+void removeE2Node(InterfaceType interface, ComponentActionType actionType);
+
 /**********************************************************************
   End of file
  **********************************************************************/
