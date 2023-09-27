@@ -502,6 +502,7 @@ uint8_t ResetE2Request(E2ProcedureDirection dir, E2FailureCause resetCause);
 uint8_t SendE2APMsg(Region region, Pool pool, char *encBuf, int encBufSize);
 E2NodeComponent *fetchE2NodeComponentInfo(InterfaceType interfaceType, uint8_t componentActionType, CmLList **e2ComponentNode);
 uint8_t addOrModifyE2NodeComponent(InterfaceType interfaceType, uint8_t action, bool reqPart, uint8_t bufSize, char *bufString);
+void removeE2Node(InterfaceType interface, ComponentActionType actionType);
 
 /**********************************************************************
   End of file

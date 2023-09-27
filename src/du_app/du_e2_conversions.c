@@ -21,10 +21,9 @@
 
 #include "common_def.h"
 #include "TimeToWaitE2.h"
+#include "E2nodeComponentInterfaceType.h"
 #include "du_app_mac_inf.h"
 #include "du_e2ap_mgr.h"
-#include "E2nodeComponentInterfaceType.h"
-
 /************************************************************************
  *
  * @brief Converts enum values into actual value of E2 wait timer
@@ -198,6 +197,78 @@ uint8_t convertMacMeasTypeToE2MeasType(MacMeasurementType macMeasName, char *e2M
          }
    }
    return ROK;
+}
+
+/************************************************************************
+ *
+ * @brief Converts E2nodeComponentInterfaceType value into enum
+ *
+ * @details
+ *
+ *    Function : convertE2ComponentInterfaceTypeToEnum
+ *
+ *    Functionality: Convert E2nodeComponentInterfaceType into enum
+ *    value
+ *
+ * @params[in] 
+ *    value of interface
+ * @return Enum value of e2 interface
+ *
+ * **********************************************************************/
+
+uint8_t convertE2ComponentInterfaceTypeToEnum(uint8_t interface)
+{
+   InterfaceType interfaceType;
+
+   switch(interface)
+   {
+      case E2nodeComponentInterfaceType_ng:
+         {
+            interfaceType = NG;
+            break;
+         }
+      case E2nodeComponentInterfaceType_xn:
+         {
+            interfaceType = XN;
+            break;
+         }
+
+      case E2nodeComponentInterfaceType_e1:
+         {
+            interfaceType = E1;
+            break;
+         }
+
+      case E2nodeComponentInterfaceType_f1:
+         {
+            interfaceType = F1;
+            break;
+         }
+
+      case E2nodeComponentInterfaceType_w1:
+         {
+            interfaceType = W1;
+            break;
+         }
+
+      case E2nodeComponentInterfaceType_s1:
+         {
+            interfaceType = S1;
+            break;
+         }
+
+      case E2nodeComponentInterfaceType_x2:
+         {
+            interfaceType = X2;
+            break;
+         }
+      default:
+         {
+            DU_LOG("\nERROR  -->  F1AP: Invalid value of interface received");
+         }
+   }
+
+   return interfaceType;
 }
 
 /**********************************************************************
