@@ -2094,7 +2094,7 @@ uint8_t DuProcRlcSliceMetrics(Pst *pst, SlicePmList *sliceStats)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t BuildAndSendStatsReqToMac(uint16_t ranFuncId, RicSubscription *ricSubscriptionInfo)
+uint8_t BuildAndSendStatsReqToMac(RicSubscription *ricSubscriptionInfo)
 {
    Pst pst;
    MacStatsReq *macStatsReq = NULLP;
@@ -2108,7 +2108,7 @@ uint8_t BuildAndSendStatsReqToMac(uint16_t ranFuncId, RicSubscription *ricSubscr
    }
 
    /* Fill E2 Subscription Info in MAC Statistics Request and send to MAC */
-   if(fillRicSubsInMacStatsReq(macStatsReq, ranFuncId, ricSubscriptionInfo) == ROK)
+   if(fillRicSubsInMacStatsReq(macStatsReq, ricSubscriptionInfo) == ROK)
    {
       DU_LOG("\nDEBUG  -->  DU_APP: Sending Statistics Request to MAC ");
       FILL_PST_DUAPP_TO_MAC(pst, EVENT_MAC_STATISTICS_REQ);
@@ -2142,10 +2142,10 @@ uint8_t BuildAndSendStatsReqToMac(uint16_t ranFuncId, RicSubscription *ricSubscr
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t BuildAndSendStatsReq(uint16_t ranFuncId, RicSubscription *ricSubscriptionInfo)
+uint8_t BuildAndSendStatsReq(RicSubscription *ricSubscriptionInfo)
 {
    /* Build and sent subscription information to MAC in Statistics Request */
-   if(BuildAndSendStatsReqToMac(ranFuncId, ricSubscriptionInfo) != ROK)
+   if(BuildAndSendStatsReqToMac(ricSubscriptionInfo) != ROK)
    {
       DU_LOG("\nERROR  -->  DU_APP : Failed at BuildAndSendStatsReqToMac()");
       return RFAILED;   
