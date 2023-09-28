@@ -1107,8 +1107,8 @@ uint8_t fillActionToBeSetup(RICaction_ToBeSetup_ItemIEs_t *actionItem, RicSubscr
       actionItem->value.present =  RICaction_ToBeSetup_ItemIEs__value_PR_RICaction_ToBeSetup_Item;
       
       /* RIC Action ID */
-      actionItem->value.choice.RICaction_ToBeSetup_Item.ricActionID = ++ricActionId;
-      ricSubsDb->actionSequence[ricActionId-1].id = \
+      actionItem->value.choice.RICaction_ToBeSetup_Item.ricActionID = ricActionId++;
+      ricSubsDb->actionSequence[ricActionId].actionId = \
          actionItem->value.choice.RICaction_ToBeSetup_Item.ricActionID;
 
       /* RIC Action Type */
@@ -1131,7 +1131,8 @@ uint8_t fillActionToBeSetup(RICaction_ToBeSetup_ItemIEs_t *actionItem, RicSubscr
       return ROK;
    }
 
-   memset(&ricSubsDb->actionSequence[ricActionId-1], 0, sizeof(ActionInfo));
+   memset(&ricSubsDb->actionSequence[ricActionId], 0, sizeof(ActionInfo));
+   ricSubsDb->actionSequence[ricActionId].actionId = -1;
    return RFAILED;
 }
 
@@ -1253,6 +1254,7 @@ uint8_t fillEventTriggerDef(RICeventTriggerDefinition_t *ricEventTriggerDef)
 
 uint8_t BuildRicSubsDetails(RICsubscriptionDetails_t *subsDetails, RicSubscription *ricSubsDb)
 {
+   uint8_t actionIdx = 0;
    uint8_t elementCnt = 0;
    uint8_t elementIdx = 0;
 
@@ -1293,6 +1295,11 @@ uint8_t BuildRicSubsDetails(RICsubscriptionDetails_t *subsDetails, RicSubscripti
       }
       if(elementIdx < elementCnt)
          break;
+
+      for(actionIdx = 0; actionIdx < MAX_RIC_ACTION; actionIdx++)
+      {
+         ricSubsDb->actionSequence[actionIdx].actionId = -1;
+      }
 
       elementIdx = 0;
       if(fillActionToBeSetup((RICaction_ToBeSetup_ItemIEs_t *)subsDetails->ricAction_ToBeSetup_List.list.array[elementIdx], \
@@ -1542,10 +1549,11 @@ void ProcRicSubscriptionResponse(uint32_t duId, RICsubscriptionResponse_t  *ricS
                                  if((ranFuncDb->subscriptionList[subsIdx].requestId.requestorId == ricReqId.requestorId) &&
                                        (ranFuncDb->subscriptionList[subsIdx].requestId.instanceId == ricReqId.instanceId))
                                  {
-                                    if(ranFuncDb->subscriptionList[subsIdx].actionSequence[actionId-1].id == actionId)
+                                    if(ranFuncDb->subscriptionList[subsIdx].actionSequence[actionId].actionId == actionId)
                                     {
-                                       memset(&ranFuncDb->subscriptionList[subsIdx].actionSequence[actionId-1], 0, \
+                                       memset(&ranFuncDb->subscriptionList[subsIdx].actionSequence[actionId], 0, \
                                           sizeof(ActionInfo));
+                                       ranFuncDb->subscriptionList[subsIdx].actionSequence[actionId].actionId = -1;
                                        ranFuncDb->subscriptionList[subsIdx].numOfActions--;
                                        break;
                                     }
@@ -3302,7 +3310,7 @@ void E2APMsgHdlr(uint32_t *duId, Buffer *mBuf)
                   }
                case InitiatingMessageE2__value_PR_RICindication:
                   {
-                     DU_LOG("\nINFO  -->  E2AP : RIC Indication Acknowledged");
+                     DU_LOG("\nINFO  -->  E2AP : RIC Indication received");
                      break;
                   }
                case InitiatingMessageE2__value_PR_RICserviceUpdate:

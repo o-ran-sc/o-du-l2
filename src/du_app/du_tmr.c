@@ -72,6 +72,15 @@ bool duChkTmr(PTR cb, int16_t tmrEvnt)
          }
          break;
       }
+      case EVENT_RIC_SUBSCRIPTION_REPORTING_TMR:
+      {
+         if(((RicSubscription *)cb)->ricSubsReportTimer.tmrEvnt == EVENT_RIC_SUBSCRIPTION_REPORTING_TMR)
+         {
+             DU_LOG("\nERROR  -->  DU_APP : duChkTmr: Timer already running for event [%d]", tmrEvnt);
+             return TRUE;
+         }
+         break;
+      }
       default:
       {
          DU_LOG("\nERROR  -->  DU_APP : duChkTmr: Invalid tmr Evnt [%d]", tmrEvnt);
@@ -91,7 +100,7 @@ bool duChkTmr(PTR cb, int16_t tmrEvnt)
  * @return  Void
 */
 
-void duStartTmr(PTR cb, int16_t tmrEvnt, uint8_t timerValue)
+void duStartTmr(PTR cb, int16_t tmrEvnt, uint32_t timerValue)
 {
    CmTmrArg arg;
    arg.wait = 0;
@@ -100,7 +109,7 @@ void duStartTmr(PTR cb, int16_t tmrEvnt, uint8_t timerValue)
    {
       case EVENT_E2_SETUP_TMR:
       {
-         CmTimer *e2SetupTimer;
+         CmTimer *e2SetupTimer = NULLP;
          e2SetupTimer = ((CmTimer *)cb);
          TMR_CALCUATE_WAIT(arg.wait, timerValue, duCb.duTimersInfo.tmrRes);
 
@@ -110,7 +119,7 @@ void duStartTmr(PTR cb, int16_t tmrEvnt, uint8_t timerValue)
       }
       case EVENT_RIC_SERVICE_UPDATE_TMR:
       {
-         RicServiceUpdateTimer *ricServiceUpdateTimer;
+         RicServiceUpdateTimer *ricServiceUpdateTimer = NULLP;
          ricServiceUpdateTimer= ((RicServiceUpdateTimer*)cb);
          TMR_CALCUATE_WAIT(arg.wait, timerValue, duCb.duTimersInfo.tmrRes);
 
@@ -128,9 +137,20 @@ void duStartTmr(PTR cb, int16_t tmrEvnt, uint8_t timerValue)
          arg.max = MAX_E2_NODE_CONFIG_UPDATE_TMR;
          break;
       }
+      case EVENT_RIC_SUBSCRIPTION_REPORTING_TMR:
+      {
+         RicSubscription *ricSubscription = NULLP;
+         ricSubscription = ((RicSubscription*)cb);
+         TMR_CALCUATE_WAIT(arg.wait, timerValue, duCb.duTimersInfo.tmrRes);
+
+         arg.timers = &ricSubscription->ricSubsReportTimer;
+         arg.max = MAX_RIC_SUBSCRIPTION_REPORTING_TMR;
+         break;
+      }
       default:
       {
          DU_LOG("\nERROR  -->  DU : duStartTmr: Invalid tmr Evnt [%d]", tmrEvnt);
+         return;
       }
    }
 
@@ -184,6 +204,14 @@ void duTmrExpiry(PTR cb,int16_t tmrEvnt)
          
          cfgUpdateTimer = ((E2NodeConfigUpdateTimer*)cb);
          BuildAndSendE2NodeConfigUpdate(&cfgUpdateTimer->configList);
+         break;
+      }
+      case EVENT_RIC_SUBSCRIPTION_REPORTING_TMR:
+      {
+         RicSubscription *ricSubscription = NULLP;
+
+         ricSubscription = ((RicSubscription *)cb);
+         E2apHdlRicSubsReportTmrExp(ricSubscription);
          break;
       }
       default:

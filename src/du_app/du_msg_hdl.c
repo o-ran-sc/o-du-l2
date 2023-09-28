@@ -2094,7 +2094,7 @@ uint8_t DuProcRlcSliceMetrics(Pst *pst, SlicePmList *sliceStats)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t BuildAndSendStatsReqToMac(uint16_t ranFuncId, RicSubscription *ricSubscriptionInfo)
+uint8_t BuildAndSendStatsReqToMac(RicSubscription *ricSubscriptionInfo)
 {
    Pst pst;
    MacStatsReq *macStatsReq = NULLP;
@@ -2108,7 +2108,7 @@ uint8_t BuildAndSendStatsReqToMac(uint16_t ranFuncId, RicSubscription *ricSubscr
    }
 
    /* Fill E2 Subscription Info in MAC Statistics Request and send to MAC */
-   if(fillRicSubsInMacStatsReq(macStatsReq, ranFuncId, ricSubscriptionInfo) == ROK)
+   if(fillRicSubsInMacStatsReq(macStatsReq, ricSubscriptionInfo) == ROK)
    {
       DU_LOG("\nDEBUG  -->  DU_APP: Sending Statistics Request to MAC ");
       FILL_PST_DUAPP_TO_MAC(pst, EVENT_MAC_STATISTICS_REQ);
@@ -2142,10 +2142,10 @@ uint8_t BuildAndSendStatsReqToMac(uint16_t ranFuncId, RicSubscription *ricSubscr
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t BuildAndSendStatsReq(uint16_t ranFuncId, RicSubscription *ricSubscriptionInfo)
+uint8_t BuildAndSendStatsReq(RicSubscription *ricSubscriptionInfo)
 {
    /* Build and sent subscription information to MAC in Statistics Request */
-   if(BuildAndSendStatsReqToMac(ranFuncId, ricSubscriptionInfo) != ROK)
+   if(BuildAndSendStatsReqToMac(ricSubscriptionInfo) != ROK)
    {
       DU_LOG("\nERROR  -->  DU_APP : Failed at BuildAndSendStatsReqToMac()");
       return RFAILED;   
@@ -2185,6 +2185,7 @@ uint8_t BuildAndSendStatsReq(uint16_t ranFuncId, RicSubscription *ricSubscriptio
  * ****************************************************************/
 uint8_t DuProcMacStatsRsp(Pst *pst, MacStatsRsp *statsRsp)
 {
+   uint8_t ret = RFAILED;
    DU_LOG("\nINFO  -->  DU_APP : DuProcMacStatsRsp: Received Statistics Response from MAC");
 
    if(statsRsp)
@@ -2208,14 +2209,18 @@ uint8_t DuProcMacStatsRsp(Pst *pst, MacStatsRsp *statsRsp)
 
       /* Check the list of accepted and rejected statistics group and send
        * Ric subscription response/failure accordingly */
-      e2ProcStatsRsp(statsRsp);
+      if((ret = e2ProcStatsRsp(statsRsp)) != ROK)
+      {
+         DU_LOG("\nERROR  -->  DU_APP : DuProcMacStatsRsp: Failed in %s at line %d", __func__, __LINE__);
+      }
 
       DU_FREE_SHRABL_BUF(pst->region, pst->pool, statsRsp, sizeof(MacStatsRsp));
-      return ROK;
    }
-
-   DU_LOG("\nERROR  -->  DU_APP : DuProcMacStatsRsp: Received NULL Pointer");
-   return RFAILED;
+   else
+   {
+      DU_LOG("\nERROR  -->  DU_APP : DuProcMacStatsRsp: Received NULL Pointer");
+   }
+   return ret;
 }
 
 /*******************************************************************
@@ -2236,6 +2241,8 @@ uint8_t DuProcMacStatsRsp(Pst *pst, MacStatsRsp *statsRsp)
  * ****************************************************************/
 uint8_t DuProcMacStatsInd(Pst *pst, MacStatsInd *statsInd)
 {
+   uint8_t ret = RFAILED;
+
    if(statsInd)
    {
 #ifdef DEBUG_PRINT   
@@ -2250,15 +2257,19 @@ uint8_t DuProcMacStatsInd(Pst *pst, MacStatsInd *statsInd)
 #endif      
 
       /* Extract statistics from statistics indication message and store in E2 DB */
-      e2ProcStatsInd(statsInd);
+      if((ret = e2ProcStatsInd(statsInd)) != ROK)
+      {
+          DU_LOG("\nINFO  -->  DU_APP : Failed in %s at line %d", __func__, __LINE__);
+      }
 
       /* Free statistics indication */
       DU_FREE_SHRABL_BUF(pst->region, pst->pool, statsInd, sizeof(MacStatsInd));
-      return ROK;
    }
-   
-   DU_LOG("\nINFO  -->  DU_APP : DuProcMacStatsInd: Received NULL Pointer");
-   return RFAILED;
+   else
+   {
+      DU_LOG("\nINFO  -->  DU_APP : DuProcMacStatsInd: Received NULL Pointer");
+   }
+   return ret;
 }
 
 /**********************************************************************

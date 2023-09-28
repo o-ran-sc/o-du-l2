@@ -21,7 +21,7 @@
 
 short int duActvTmr(Ent ent,Inst inst); 
 bool duChkTmr(PTR cb, int16_t tmrEvnt);
-void duStartTmr(PTR cb, int16_t tmrEvnt, uint8_t timerValue);
+void duStartTmr(PTR cb, int16_t tmrEvnt, uint32_t timerValue);
 
 /**********************************************************************
   End of file

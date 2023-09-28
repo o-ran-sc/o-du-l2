@@ -16,6 +16,7 @@
 ################################################################################
 *******************************************************************************/
 #include "common_def.h"
+#include <sys/time.h>
 #include "du_tmr.h"
 #include "lrg.h"
 #include "lkw.x"
@@ -123,6 +124,72 @@ void encodeSubscriptionId(uint64_t *subscriptionId, uint16_t ranFuncId, RicReque
 
 /*******************************************************************
  *
+ * @brief Stores the current time at the start of reporting period
+ *
+ * @details
+ *
+ *    Function : storeReportStartTime
+ *
+ *    Functionality: Stores the current time at the start of 
+ *       reporting period
+ *
+ * @params[in] Start Timer to be stored
+ * @return Void
+ *
+ * ****************************************************************/
+void storeReportStartTime(ReportStartTime *startTime)
+{
+   struct timeval tv;
+
+   gettimeofday(&tv, NULL); 
+   startTime->timeInSec = tv.tv_sec;
+   startTime->timeInMilliSec = (tv.tv_usec/1000);
+}
+
+
+/*******************************************************************
+ *
+ * @brief Fetch Measurement Info using measurement type name
+ *
+ * @details
+ *
+ *    Function : fetchMeasInfoFromMeasTypeName
+ *
+ *    Functionality: Fetch Measurement Info using measurement type name
+ *
+ * @params[in] Measurement type name to search
+ *             Measurement Info list to search from
+ *             Measurement Info node found from list
+ * @return Measurement Info DB
+ *
+ * ****************************************************************/
+MeasurementInfo *fetchMeasInfoFromMeasTypeName(char *e2MeasTypeName, CmLListCp *measInfoList, CmLList **measInfoNode)
+{
+   MeasurementInfo *measInfo = NULLP;
+
+   /* Fetch subscription detail in RAN Function DB */
+   CM_LLIST_FIRST_NODE(measInfoList, *measInfoNode);
+   while(*measInfoNode)
+   {
+      measInfo = (MeasurementInfo *)((*measInfoNode)->node);
+      if(measInfo && !strcmp(e2MeasTypeName, measInfo->measurementTypeName))
+      {
+         break;
+      }
+      *measInfoNode = (*measInfoNode)->next;
+      measInfo = NULLP;
+   }
+
+   if(!measInfo)
+   {
+      DU_LOG("\nERROR  -->  E2AP : fetchMeasInfoFromMeasTypeName: Measurement [%s] not found", e2MeasTypeName);
+   }
+
+   return measInfo;
+}
+
+/*******************************************************************
+ *
  * @brief Fetch Action details
  *
  * @details
@@ -141,13 +208,13 @@ void encodeSubscriptionId(uint64_t *subscriptionId, uint16_t ranFuncId, RicReque
 ActionInfo *fetchActionInfoFromActionId(uint8_t actionId, RicSubscription *ricSubscriptionInfo)
 {
    ActionInfo *actionInfoDb = NULLP;
-   if(ricSubscriptionInfo->actionSequence[actionId-1].id == actionId)
+   if(ricSubscriptionInfo->actionSequence[actionId].actionId == actionId)
    {
-      actionInfoDb = &ricSubscriptionInfo->actionSequence[actionId-1];
+      actionInfoDb = &ricSubscriptionInfo->actionSequence[actionId];
    }
    else
    {
-      DU_LOG("\nERROR  -->  DU_APP : fetchActionInfoFromActionId: Action Id [%d] not found in \
+      DU_LOG("\nERROR  -->  E2AP : fetchActionInfoFromActionId: Action Id [%d] not found in \
          subscription info [Requestor id : %d] [Instance Id : %d]", actionId,\
          ricSubscriptionInfo->requestId.requestorId, ricSubscriptionInfo->requestId.instanceId);
 
@@ -193,7 +260,7 @@ RicSubscription *fetchSubsInfoFromRicReqId(RicRequestId ricReqId, RanFunction *r
 
    if(!ricSubscriptionInfo)
    {
-      DU_LOG("\nERROR  -->  DU_APP : fetchSubsInfoFromRicReqId: Subscription not found for Requestor ID [%d] \
+      DU_LOG("\nERROR  -->  E2AP : fetchSubsInfoFromRicReqId: Subscription not found for Requestor ID [%d] \
          Instance ID [%d] in RAN Function ID [%d]", ricReqId.requestorId, ricReqId.instanceId, ranFuncDb->id);
    }
 
@@ -227,7 +294,7 @@ RanFunction *fetchRanFuncFromRanFuncId(uint16_t ranFuncId)
    }
    else
    {
-      DU_LOG("\nERROR  -->  DU_APP : fetchRanFuncFromRanFuncId: Invalid RAN Function ID[%d]", ranFuncId);
+      DU_LOG("\nERROR  -->  E2AP : fetchRanFuncFromRanFuncId: Invalid RAN Function ID[%d]", ranFuncId);
    }
 
    return ranFuncDb;
@@ -396,14 +463,13 @@ uint8_t ResetE2Request(E2ProcedureDirection dir, E2FailureCause resetCause)
  *       Request
  *
  * @params[in] MAC Statistics Request to be filled
- *             RAN Function ID
  *             RIC Subscription Info
  *
  * @return ROK     - success
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t fillRicSubsInMacStatsReq(MacStatsReq *macStatsReq, uint16_t ranFuncId, RicSubscription* ricSubscriptionInfo)
+uint8_t fillRicSubsInMacStatsReq(MacStatsReq *macStatsReq, RicSubscription* ricSubscriptionInfo)
 {
    uint8_t    actionIdx = 0, grpIdx = 0, statsIdx = 0;
    uint64_t   subscriptionId = 0;
@@ -411,15 +477,15 @@ uint8_t fillRicSubsInMacStatsReq(MacStatsReq *macStatsReq, uint16_t ranFuncId, R
    ActionDefFormat1 *format1Action = NULLP;
 
    /* Generate subscription ID using RIC Request ID and RAN Function ID */
-   encodeSubscriptionId(&subscriptionId, ranFuncId, ricSubscriptionInfo->requestId);
+   encodeSubscriptionId(&subscriptionId, ricSubscriptionInfo->ranFuncId, ricSubscriptionInfo->requestId);
 
    macStatsReq->subscriptionId = subscriptionId;
-   for(actionIdx = 0; actionIdx < ricSubscriptionInfo->numOfActions; actionIdx++)
+   for(actionIdx = 0; actionIdx < MAX_RIC_ACTION; actionIdx++)
    {
       if(ricSubscriptionInfo->actionSequence[actionIdx].action == CONFIG_ADD)
       {
          actionDb = &ricSubscriptionInfo->actionSequence[actionIdx];
-         macStatsReq->statsGrpList[grpIdx].groupId = actionDb->id;
+         macStatsReq->statsGrpList[grpIdx].groupId = actionDb->actionId;
          switch(actionDb->definition.formatType)
          {
             case 1:
@@ -449,7 +515,7 @@ uint8_t fillRicSubsInMacStatsReq(MacStatsReq *macStatsReq, uint16_t ranFuncId, R
                            }
                         default:
                            {
-                              DU_LOG("\nERROR  -->  DU_APP : Invalid measurement name");
+                              DU_LOG("\nERROR  -->  E2AP : Invalid measurement name");
                               break;
                            }
                      }
@@ -460,7 +526,7 @@ uint8_t fillRicSubsInMacStatsReq(MacStatsReq *macStatsReq, uint16_t ranFuncId, R
                }
             default:
                {
-                  DU_LOG("\nERROR  -->  DU_APP : BuildAndSendStatsReqToMac: Only Action Definition Format 1 supported");
+                  DU_LOG("\nERROR  -->  E2AP : fillRicSubsInMacStatsReq: Only Action Definition Format 1 supported");
                   break;
                }
          }
@@ -531,16 +597,17 @@ uint8_t rejectAllStatsGroup(RanFunction *ranFuncDb, CmLList *ricSubscriptionNode
  *       reporting period timer for this subscription request
  *       from RIC
  *
- * @params[in]
+ * @params[in] Statistics response received from MAC
  *
  * @return ROK     - success
  *         RFAILED - failure
  *
  * ****************************************************************/
-void e2ProcStatsRsp(MacStatsRsp *statsRsp)
+uint8_t e2ProcStatsRsp(MacStatsRsp *statsRsp)
 {
    uint8_t idx = 0;
    uint8_t actionId = 0;
+   uint32_t reportingPeriod = 0;
    RanFunction *ranFuncDb = NULLP;
    CmLList *ricSubscriptionNode = NULLP;
    RicSubscription *ricSubscriptionInfo = NULLP;
@@ -550,8 +617,8 @@ void e2ProcStatsRsp(MacStatsRsp *statsRsp)
    /* Fetch RAN Function and Subscription DB using subscription Id received in statistics response */
    if(fetchSubsInfoFromSubsId(statsRsp->subscriptionId, &ranFuncDb, &ricSubscriptionNode, &ricSubscriptionInfo) != ROK)
    {
-      DU_LOG("\nERROR  -->  DU_APP : DuProcMacStatsRsp: Failed to fetch subscriprtion details");
-      return;
+      DU_LOG("\nERROR  -->  E2AP : DuProcMacStatsRsp: Failed to fetch subscriprtion details");
+      return RFAILED;
    }
 
    /* Fetch pre-stored statistics response info by DU APP */
@@ -574,6 +641,34 @@ void e2ProcStatsRsp(MacStatsRsp *statsRsp)
    }
    else
    {
+      /* Start RIC Subscription reporting timer */
+      switch(ricSubscriptionInfo->eventTriggerDefinition.formatType)
+      {
+         case 1:
+            {
+               reportingPeriod = ricSubscriptionInfo->eventTriggerDefinition.choice.format1.reportingPeriod;
+
+               /* Save the start time of reporting period */
+               storeReportStartTime(&ricSubscriptionInfo->eventTriggerDefinition.choice.format1.startTime);
+               break;
+            }
+         default:
+         {
+            DU_LOG("\nERROR  -->  E2AP : Invalid event trigger format of RIC subscription");
+            return RFAILED;
+         }
+      }
+      if(duChkTmr((PTR)ricSubscriptionInfo, EVENT_RIC_SUBSCRIPTION_REPORTING_TMR) != true)
+      {
+         duStartTmr((PTR)ricSubscriptionInfo, EVENT_RIC_SUBSCRIPTION_REPORTING_TMR, reportingPeriod);
+      }
+      else
+      {
+         DU_LOG("\nERROR  -->  E2AP : RIC Subscription reporting timer already running for RIC Subscription");  
+         return RFAILED;
+      }
+
+
       /* If even 1 action is accepted :
        *
        * For accepted groups:
@@ -600,9 +695,9 @@ void e2ProcStatsRsp(MacStatsRsp *statsRsp)
       for(idx=0; idx<statsRsp->numGrpRejected; idx++)
       {
          actionId = statsRsp->statsGrpRejectedList[idx].groupId;
-         if(ricSubscriptionInfo->actionSequence[actionId-1].id == actionId)
+         if(ricSubscriptionInfo->actionSequence[actionId].actionId == actionId)
          {
-            memset(&ricSubscriptionInfo->actionSequence[actionId-1], 0, sizeof(ActionInfo));
+            memset(&ricSubscriptionInfo->actionSequence[actionId], 0, sizeof(ActionInfo));
             ricSubscriptionInfo->numOfActions--;
 
             pendingSubsRsp->rejectedActionList[pendingSubsRsp->numOfRejectedActions].id = actionId;
@@ -616,6 +711,7 @@ void e2ProcStatsRsp(MacStatsRsp *statsRsp)
       BuildAndSendRicSubscriptionRsp(pendingSubsRsp);
    }
    memset(pendingSubsRsp, 0, sizeof(PendingSubsRspInfo));
+   return ROK;
 }
 
 /*******************************************************************
@@ -631,14 +727,23 @@ void e2ProcStatsRsp(MacStatsRsp *statsRsp)
  *       action
  *
  * @params[in] Statistics Indication message received from MAC
- * @return void
+ * @return ROK-success
+ *         RFAILED-failure
  *
  * ****************************************************************/
-void e2ProcStatsInd(MacStatsInd *statsInd)
+uint8_t e2ProcStatsInd(MacStatsInd *statsInd)
 {
+   uint8_t statsIdx = 0;
    RanFunction *ranFuncDb = NULLP;
    CmLList *ricSubscriptionNode = NULLP;
    RicSubscription *ricSubscriptionInfo = NULLP;
+   ActionInfo *actionInfo = NULLP;
+   ActionDefFormat1 *actionFormat = NULLP;
+   char e2MeasTypeName[STRING_SIZE_150_BYTES] = "";
+   MeasurementInfo *measInfo = NULLP;
+   CmLList *measInfoNode = NULLP;
+   double *measValue = NULLP;
+   CmLList *measValueNode = NULLP;
 
    /* TODO : When stats indication is received
     * DU APP searches for the message type in E2AP RIC subscription
@@ -651,7 +756,128 @@ void e2ProcStatsInd(MacStatsInd *statsInd)
     * in statistics response */
    if(fetchSubsInfoFromSubsId(statsInd->subscriptionId, &ranFuncDb, &ricSubscriptionNode, &ricSubscriptionInfo) != ROK)
    {
-      DU_LOG("\nERROR  -->  DU_APP : extractStatsMeasurement: Failed to fetch subscriprtion details");
+      DU_LOG("\nERROR  -->  E2AP : extractStatsMeasurement: Failed to fetch subscriprtion details");
+      return RFAILED;
+   }
+
+   /* Fetch RIC subscription's action DB */
+   actionInfo = fetchActionInfoFromActionId(statsInd->groupId, ricSubscriptionInfo);
+   if(actionInfo == NULLP)
+   {
+      DU_LOG("\nERROR  -->  E2AP : extractStatsMeasurement: Failed to fetch action ID [%d]", statsInd->groupId);
+      return RFAILED;
+   }
+
+   /* Check Action format */
+   switch(actionInfo->definition.formatType)
+   {
+      case 1:
+         {
+            actionFormat = &actionInfo->definition.choice.format1;
+            break;
+         }
+      default:
+         {
+            DU_LOG("\nERROR  -->  E2AP : extractStatsMeasurement: Action Format [%d] is not supported", \
+                  actionInfo->definition.formatType);
+            return RFAILED;
+         }
+   }
+
+   /* Fetch each Measurement info from action info and store its reported value in DB */
+   for(statsIdx = 0; statsIdx < statsInd->numStats; statsIdx++)
+   {
+      memset(e2MeasTypeName, 0, STRING_SIZE_150_BYTES);
+      measInfo = NULLP;
+      measInfoNode = NULLP;
+
+      /* Convert Measurement type from MAC-supported format to E2-supported format */
+      if(convertMacMeasTypeToE2MeasType(statsInd->measuredStatsList[statsIdx].type, e2MeasTypeName) != ROK)
+      {
+         DU_LOG("\nERROR  -->  E2AP : extractStatsMeasurement: Failed to convert measurement type from MAC-supported\
+            MAC-supported format to E2-supported format");
+         continue;
+      }
+      
+      /* Fetch Measurement Info using E2-supported measurement type name */
+      measInfo = fetchMeasInfoFromMeasTypeName(e2MeasTypeName, &actionFormat->measurementInfoList, &measInfoNode); 
+      if(measInfo == NULLP)
+      {
+         DU_LOG("\nERROR  -->  E2AP : extractStatsMeasurement: Measurement Type Name [%s] not found", e2MeasTypeName); 
+         continue;
+      }
+      
+      /* Store the measurement value in the measurement info DB fetched */
+      DU_ALLOC(measValue, sizeof(double));
+      if(!measValue)
+      {
+         DU_LOG("\nERROR  -->  E2AP : extractStatsMeasurement: Memory allocation failed at line [%d]", __LINE__);
+         return RFAILED; 
+      }
+      *measValue = statsInd->measuredStatsList[statsIdx].value;
+
+      DU_ALLOC(measValueNode, sizeof(CmLList));
+      if(!measValueNode)
+      {
+         DU_LOG("\nERROR  -->  E2AP : extractStatsMeasurement: Memory allocation failed at line [%d]", __LINE__);
+         DU_FREE(measValue, sizeof(double));
+         return RFAILED; 
+      }
+      measValueNode->node = (PTR) measValue;
+      cmLListAdd2Tail(&measInfo->measuredValue, measValueNode);
+   }
+   return ROK;
+}
+
+/*******************************************************************
+ *
+ * @brief Handle RIC Subscription reporting timer expry
+ *
+ * @details
+ *
+ *    Function : E2apHdlRicSubsReportTmrExp
+ *
+ *    Functionality: On expiry of RIC subscription reporting
+ *       timer expiry, RIC indication is sent for all actions
+ *       in RIC subscription
+ *
+ * @params[in] RIC subscription DB
+ * @return void
+ *
+ * ****************************************************************/
+void E2apHdlRicSubsReportTmrExp(RicSubscription *ricSubscription)
+{
+   uint8_t actionIdx = 0;
+   uint32_t reportingPeriod = 0;
+
+   for(actionIdx = 0; actionIdx < MAX_RIC_ACTION; actionIdx++)
+   {
+      if(ricSubscription->actionSequence[actionIdx].actionId >= 0)
+      {
+         BuildAndSendRicIndication(ricSubscription, &ricSubscription->actionSequence[actionIdx]);  
+      }
+   }
+
+   /* Start RIC Subscription reporting timer again */
+   switch(ricSubscription->eventTriggerDefinition.formatType)
+   {
+      case 1:
+         {
+            reportingPeriod = ricSubscription->eventTriggerDefinition.choice.format1.reportingPeriod;
+            /* Save the start time of reporting period */
+            storeReportStartTime(&ricSubscription->eventTriggerDefinition.choice.format1.startTime);
+            break;
+         }
+      default:
+         return;
+   }
+   if(duChkTmr((PTR)ricSubscription, EVENT_RIC_SUBSCRIPTION_REPORTING_TMR) != true)
+   {
+      duStartTmr((PTR)ricSubscription, EVENT_RIC_SUBSCRIPTION_REPORTING_TMR, reportingPeriod);
+   }
+   else
+   {
+      DU_LOG("\nERROR  -->  E2AP : Failed in %s at line %d", __func__, __LINE__);
       return;
    }
 }

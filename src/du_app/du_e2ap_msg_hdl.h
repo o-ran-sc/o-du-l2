@@ -27,10 +27,10 @@ uint8_t BuildAndSendE2NodeConfigUpdate(E2NodeConfigList *recvList);
 uint8_t BuildAndSendRicServiceUpdate(RicServiceUpdate serviceUpdate);
 uint8_t duSendE2NodeConfigurationUpdate();
 
-uint8_t BuildAndSendStatsReq(uint16_t ranFuncId, RicSubscription *ricSubscriptionInfo);
+uint8_t BuildAndSendStatsReq(RicSubscription *ricSubscriptionInfo);
 uint8_t BuildAndSendRicSubscriptionRsp(PendingSubsRspInfo *subsRspInfo);
 uint8_t BuildAndSendRicSubscriptionFailure(RicRequestId ricReqId, uint16_t ranFuncId, E2FailureCause failureCause);
-uint8_t BuildAndSendRicIndication(RicSubscription *ricSubscriptionInfo);
+uint8_t BuildAndSendRicIndication(RicSubscription *ricSubscriptionInfo, ActionInfo *actionInfo);
 
 /**********************************************************************
   End of file

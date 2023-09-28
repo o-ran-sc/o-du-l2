@@ -51,6 +51,15 @@
 #include "E2SM-KPM-ActionDefinition-Format1.h"
 #include "MeasurementInfoItem.h"
 #include "RANfunctionsIDcause-List.h"
+#include "MeasurementRecord.h"
+#include "MeasurementData.h"
+#include "MeasurementRecordItem.h"
+#include "MeasurementDataItem.h"
+#include "E2SM-KPM-IndicationMessage-Format1.h"
+#include "E2SM-KPM-IndicationMessage.h"
+#include "E2SM-KPM-IndicationHeader.h"
+#include "E2SM-KPM-IndicationHeader-Format1.h"
+#include "LabelInfoItem.h"
 
 /*******************************************************************
  *
@@ -2729,13 +2738,13 @@ uint8_t extractRicActionToBeSetup(RanFunction *ranFuncDb, RicSubscription *ricSu
 
                   if(actionItem->value.choice.RICaction_ToBeSetup_Item.ricActionType == RICactionType_report)
                   {
-                     ricSubscriptionInfo->actionSequence[ricActionId-1].id = ricActionId;
-                     ricSubscriptionInfo->actionSequence[ricActionId-1].type = REPORT;
+                     ricSubscriptionInfo->actionSequence[ricActionId].actionId = ricActionId;
+                     ricSubscriptionInfo->actionSequence[ricActionId].type = REPORT;
 
-                     if(extractRicActionDef(ranFuncDb, &ricSubscriptionInfo->actionSequence[ricActionId-1].definition, \
+                     if(extractRicActionDef(ranFuncDb, &ricSubscriptionInfo->actionSequence[ricActionId].definition, \
                         actionItem->value.choice.RICaction_ToBeSetup_Item.ricActionDefinition, failureCause) == ROK)
                      {
-                        ricSubscriptionInfo->actionSequence[ricActionId-1].action = CONFIG_ADD;
+                        ricSubscriptionInfo->actionSequence[ricActionId].action = CONFIG_ADD;
                         ricSubscriptionInfo->numOfActions++;
                         break;
                      }
@@ -2743,7 +2752,9 @@ uint8_t extractRicActionToBeSetup(RanFunction *ranFuncDb, RicSubscription *ricSu
 
                   /* In case of any failure, action is rejected
                    * Added to rejected-action-list in subscription response */
-                  memset(&ricSubscriptionInfo->actionSequence[ricActionId-1], 0, sizeof(ActionInfo));
+                  memset(&ricSubscriptionInfo->actionSequence[ricActionId], 0, sizeof(ActionInfo));
+                  ricSubscriptionInfo->actionSequence[ricActionId].actionId = -1;
+
                   subsRsp->rejectedActionList[subsRsp->numOfRejectedActions].id = ricActionId;
                   if(failureCause->causeType == E2_NOTHING)
                   {
@@ -2791,7 +2802,7 @@ uint8_t extractRicActionToBeSetup(RanFunction *ranFuncDb, RicSubscription *ricSu
  * ****************************************************************/
 uint8_t procRicSubscriptionRequest(E2AP_PDU_t *e2apMsg)
 {
-   uint8_t idx = 0; 
+   uint8_t idx = 0, actionIdx = 0; 
    uint8_t ret = ROK;
    uint16_t ranFuncId = 0;
    RicRequestId ricReqId;
@@ -2856,6 +2867,12 @@ uint8_t procRicSubscriptionRequest(E2AP_PDU_t *e2apMsg)
                   }
                   ricSubscriptionInfo->requestId.requestorId = ricReqId.requestorId;
                   ricSubscriptionInfo->requestId.instanceId = ricReqId.instanceId;
+                  ricSubscriptionInfo->ranFuncId = ranFuncId;
+
+                  for(actionIdx = 0; actionIdx < MAX_RIC_ACTION; actionIdx++)
+                  {
+                     ricSubscriptionInfo->actionSequence[actionIdx].actionId = -1;
+                  }
 
                   memset(&ranFuncDb->pendingSubsRspInfo[ranFuncDb->numPendingSubsRsp], 0, sizeof(PendingSubsRspInfo));
                   memcpy(&ranFuncDb->pendingSubsRspInfo[ranFuncDb->numPendingSubsRsp].requestId, 
@@ -2901,6 +2918,8 @@ uint8_t procRicSubscriptionRequest(E2AP_PDU_t *e2apMsg)
 
    if(ret == ROK)
    {
+      cmInitTimers(&(ricSubscriptionInfo->ricSubsReportTimer), 1);
+
       /* Add RAN subcription detail to RAN function */
       DU_ALLOC(ricSubscriptionNode, sizeof(CmLList));
       if(ricSubscriptionNode)
@@ -2913,13 +2932,8 @@ uint8_t procRicSubscriptionRequest(E2AP_PDU_t *e2apMsg)
 
 #ifdef KPI_CALCULATION
       /* Send statistics request to other DU entities */
-      BuildAndSendStatsReq(ranFuncId, ricSubscriptionInfo);
+      BuildAndSendStatsReq(ricSubscriptionInfo);
 #endif      
-
-      /* TODO : Trigger RIC Indication once statistics indication is
-       * received from MAC . 
-       * TBD in future gerrit */
-       //BuildAndSendRicIndication(ricSubscriptionInfo);
    }
    else
    {
@@ -3141,14 +3155,8 @@ void FreeRicIndication(E2AP_PDU_t  *e2apMsg)
                      switch(ricIndicationMsg->protocolIEs.list.array[idx]->id)
                      {
                         case ProtocolIE_IDE2_id_RICrequestID:
-                           break;
-
                         case ProtocolIE_IDE2_id_RANfunctionID:
-                           break;
-
                         case ProtocolIE_IDE2_id_RICactionID:
-                           break;
-
                         case ProtocolIE_IDE2_id_RICindicationType:
                            break;
 
@@ -3181,121 +3189,786 @@ void FreeRicIndication(E2AP_PDU_t  *e2apMsg)
 
 /*******************************************************************
  *
- * brief Fill the RicIndication Message
+ * @brief Free measurement record
  *
  * @details
  *
- *    Function : FillRicIndication
+ *    Function : freeMeasRecord
  *
- * Functionality:Fills the RicIndication Message
+ * Functionality: Free all measurement recorded for a measurement
+ *    within an action in a RIC subscription
  *
+ * @param  Measurement data to be freed
+ * @return void
+ *
+ ******************************************************************/
+void freeMeasData(MeasurementData_t *measData)
+{
+   uint8_t measIdx = 0, measRecIdx = 0;
+   MeasurementRecord_t *measRecord = NULLP;
+
+   if(measData->list.array)
+   {
+      for(measIdx = 0; measIdx < measData->list.count; measIdx++)
+      {
+         if(measData->list.array[measIdx])
+         {
+            measRecord = &measData->list.array[measIdx]->measRecord;
+            if(measRecord->list.array)
+            {
+               for(measRecIdx = 0; measRecIdx < measRecord->list.count; measRecIdx++)
+               {
+                  DU_FREE(measRecord->list.array[measRecIdx], sizeof(MeasurementRecordItem_t));
+               }
+               DU_FREE(measRecord->list.array, measRecord->list.size);
+            }
+            DU_FREE(measData->list.array[measIdx], sizeof(MeasurementDataItem_t));
+         }
+      }
+      DU_FREE(measData->list.array, measData->list.size);
+   }
+}
+
+/*******************************************************************
+ *
+ * @brief Fill measurement info list
+ *
+ * @details
+ *
+ *    Function : freeMeasInfoList
+ *
+ * Functionality: Fills all measurement info within an action 
+ *    in a RIC subscription
+ *
+ * @param  Measurement Info list to be freed
+ * @return void
+ *
+ ******************************************************************/
+void freeMeasInfoList(MeasurementInfoList_t *measInfoList)
+{
+   uint8_t measInfoIdx = 0;
+
+   if(measInfoList->list.array)
+   {
+      for(measInfoIdx = 0; measInfoIdx < measInfoList->list.count; measInfoIdx++)
+      {
+         if(measInfoList->list.array[measInfoIdx])
+         {
+            DU_FREE(measInfoList->list.array[measInfoIdx]->measType.choice.measName.buf, \
+                  measInfoList->list.array[measInfoIdx]->measType.choice.measName.size);
+
+            DU_FREE(measInfoList->list.array[measInfoIdx], measInfoList->list.size);
+         }
+      }
+      DU_FREE(measInfoList->list.array, measInfoList->list.size);
+   }
+}
+
+/*******************************************************************
+ *
+ * @brief Free E2SM-KPM Indication Message
+ *
+ * @details
+ *
+ *    Function : FreeE2smKpmIndicationMessage
+ *
+ * Functionality: Free E2SM-KPM Indication Message
+ *
+ * @param  E2SM-KPM Indication message to be freed
+ * @return void
+ *
+ ******************************************************************/
+void FreeE2smKpmIndicationMessage(E2SM_KPM_IndicationMessage_t *e2smKpmIndMsg)
+{
+   E2SM_KPM_IndicationMessage_Format1_t *format1Msg = NULLP;
+
+   switch(e2smKpmIndMsg->indicationMessage_formats.present)
+   {
+      case E2SM_KPM_IndicationMessage__indicationMessage_formats_PR_indicationMessage_Format1:
+         {
+            if(e2smKpmIndMsg->indicationMessage_formats.choice.indicationMessage_Format1)
+            {
+               format1Msg = e2smKpmIndMsg->indicationMessage_formats.choice.indicationMessage_Format1;
+               
+               /* Measurement Data */
+               freeMeasData(&format1Msg->measData);
+
+               /* Measurement Info List */
+               if(format1Msg->measInfoList)
+               {
+                  freeMeasInfoList(format1Msg->measInfoList);
+                  DU_FREE(format1Msg->measInfoList, sizeof(MeasurementInfoList_t));
+               }
+
+               /* Granularity Period */
+               DU_FREE(format1Msg->granulPeriod, sizeof(GranularityPeriod_t));
+
+               DU_FREE(format1Msg, sizeof(E2SM_KPM_IndicationMessage_Format1_t));
+            }
+            break;
+         }
+
+      case E2SM_KPM_IndicationMessage__indicationMessage_formats_PR_NOTHING:
+      case E2SM_KPM_IndicationMessage__indicationMessage_formats_PR_indicationMessage_Format2:
+      default:
+         break;
+   }
+}
+
+/*******************************************************************
+ *
+ * @brief Fill measurement record
+ *
+ * @details
+ *
+ *    Function : fillMeasRecord
+ *
+ * Functionality: Fills all measurement value for a measurement
+ *    within an action in a RIC subscription
+ *
+ * @param  Measurement record to be filled
+ *         Measurement database with measurement records
  * @return ROK     - success
  *         RFAILED - failure
  *
  ******************************************************************/
-uint8_t FillRicIndication(RICindication_t *ricIndicationMsg, RicSubscription *ricSubscriptionInfo)
+uint8_t fillMeasRecord(MeasurementRecord_t *measRecord, MeasurementInfo *measInfoDb)
 {
-   uint8_t elementCnt=0;
-   uint8_t idx=0;
+   uint8_t measRecIdx = 0;
+   CmLList *measValNode = NULLP;
+   double  measVal = 0;
+
+   measRecord->list.count = measInfoDb->measuredValue.count;
+   measRecord->list.size = measRecord->list.count * sizeof(MeasurementRecordItem_t *);
+
+   DU_ALLOC(measRecord->list.array, measRecord->list.size);
+   if(!measRecord->list.array)
+   {
+      DU_LOG("\nERROR  -->  E2AP : Memory allocation in [%s] at line [%d]", __func__, __LINE__);
+      return RFAILED;
+   }
+
+   for(measRecIdx = 0; measRecIdx < measRecord->list.count; measRecIdx++)
+   {
+      DU_ALLOC(measRecord->list.array[measRecIdx], sizeof(MeasurementRecordItem_t));
+      if(!measRecord->list.array[measRecIdx])
+      {
+         DU_LOG("\nERROR  -->  E2AP : Memory allocation in [%s] at line [%d]", __func__, __LINE__);
+         return RFAILED;
+      }
+   }
+
+   measRecIdx = 0;
+   CM_LLIST_FIRST_NODE(&measInfoDb->measuredValue, measValNode);
+   while(measValNode)
+   {
+     measVal = *(double *)measValNode->node;
+     if(measVal == (int)measVal)
+     {
+        measRecord->list.array[measRecIdx]->present = MeasurementRecordItem_PR_integer;
+        measRecord->list.array[measRecIdx]->choice.integer = (int)measVal;
+     }
+     else
+     {
+         measRecord->list.array[measRecIdx]->present = MeasurementRecordItem_PR_real;
+         measRecord->list.array[measRecIdx]->choice.real = measVal;
+     }
+     measRecIdx++;
+
+     /* Once the measurement record is added to the message, delete it from DB */
+     cmLListDelFrm(&measInfoDb->measuredValue, measValNode);
+     DU_FREE(measValNode->node, sizeof(double));
+     DU_FREE(measValNode, sizeof(CmLList));
+
+     CM_LLIST_FIRST_NODE(&measInfoDb->measuredValue, measValNode);
+     measVal = 0;
+   }
+
+   return ROK;
+}
+
+/*******************************************************************
+ *
+ * @brief Fills measuerement data
+ *
+ * @details
+ *
+ *    Function : fillMeasData
+ *
+ * Functionality: Fill all measurement recorded for all measurements
+ *    in an action in a RIC subscription
+ *
+ * @param  Measurement data to be filled
+ *         Measurement info list from an action DB
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ ******************************************************************/
+uint8_t fillMeasData(MeasurementData_t *measData, CmLListCp *measInfoListDb)
+{
+  uint8_t measIdx = 0;
+  CmLList *measInfoNode = NULLP;
+  MeasurementInfo *measInfoDb = NULLP;
+  MeasurementRecord_t *measRecord = NULLP;
+
+  measData->list.count = measInfoListDb->count;
+  measData->list.size = measData->list.count * sizeof(MeasurementDataItem_t *);
+
+  DU_ALLOC(measData->list.array, measData->list.size);
+  if(!measData->list.array)
+  {
+     DU_LOG("\nERROR  -->  E2AP : Memory allocation in [%s] at line [%d]", __func__, __LINE__);
+     return RFAILED;
+  }
+
+  measIdx = 0;
+  CM_LLIST_FIRST_NODE(measInfoListDb, measInfoNode);
+  while(measInfoNode)
+  {
+     measInfoDb = (MeasurementInfo *)measInfoNode->node;
+     if(measInfoDb)
+     {
+        DU_ALLOC(measData->list.array[measIdx], sizeof(MeasurementDataItem_t));
+        if(!measData->list.array[measIdx])
+        {
+           DU_LOG("\nERROR  -->  E2AP : Memory allocation in [%s] at line [%d]", __func__, __LINE__);
+           return RFAILED;
+        }
+
+        measRecord = &measData->list.array[measIdx]->measRecord;
+        if(fillMeasRecord(measRecord, measInfoDb) != ROK)
+        {
+           DU_LOG("\nERROR  -->  E2AP : Failed to fill measurement record");
+           return RFAILED;
+        }
+        measIdx++;
+     }
+     measInfoNode = measInfoNode->next;
+  }
+
+  return ROK;
+}
+
+/*******************************************************************
+ *
+ * @brief Fill all measurement info
+ *
+ * @details
+ *
+ *    Function : fillMeasInfoList
+ *
+ * Functionality: Fills all measurement info belonging to an action
+ *  in a RIC subscription
+ *
+ * @param   Measurement Info list to be filled
+ *          Measurement Info list from E2AP DB
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ ******************************************************************/
+uint8_t fillMeasInfoList(MeasurementInfoList_t *measInfoList, CmLListCp *measInfoListDb)
+{
+   uint8_t measInfoIdx = 0;
+   CmLList *measInfoNode = NULLP;
+   MeasurementInfo *measInfoDb = NULLP;
+   MeasurementInfoItem_t *measInfoItem = NULLP;
+
+   measInfoList->list.count = measInfoListDb->count;
+   measInfoList->list.size = measInfoList->list.count * sizeof(MeasurementInfoItem_t *);
+
+   DU_ALLOC(measInfoList->list.array, measInfoList->list.size);
+   if(!measInfoList->list.array)
+   {
+      DU_LOG("\nERROR  -->  E2AP : Memory allocation in [%s] at line [%d]", __func__, __LINE__);
+      return RFAILED;
+   }
+
+   measInfoIdx = 0;
+   CM_LLIST_FIRST_NODE(measInfoListDb, measInfoNode);
+   while(measInfoNode)
+   {
+      DU_ALLOC(measInfoList->list.array[measInfoIdx], sizeof(MeasurementInfoItem_t));
+      if(!measInfoList->list.array[measInfoIdx])
+      {
+         DU_LOG("\nERROR  -->  E2AP : Memory allocation in [%s] at line [%d]", __func__, __LINE__);
+         return RFAILED;
+      }
+
+      measInfoItem = measInfoList->list.array[measInfoIdx];
+      measInfoDb = (MeasurementInfo *)measInfoNode->node;
+      if(measInfoDb)
+      {
+         /* Measurement Type */
+         measInfoItem->measType.present = MeasurementType_PR_measName;
+         measInfoItem->measType.choice.measName.size = strlen(measInfoDb->measurementTypeName);
+
+         DU_ALLOC(measInfoItem->measType.choice.measName.buf, measInfoItem->measType.choice.measName.size);
+         if(!measInfoItem->measType.choice.measName.buf)
+         {
+            DU_LOG("\nERROR  -->  E2AP : Memory allocation in [%s] at line [%d]", __func__, __LINE__);
+            return RFAILED;
+         }
+
+         memcpy(measInfoItem->measType.choice.measName.buf, measInfoDb->measurementTypeName,\
+            measInfoItem->measType.choice.measName.size);
+
+         measInfoIdx++;
+      }
+      measInfoNode = measInfoNode->next;
+      measInfoDb = NULLP;
+   }
+
+   return ROK;
+}
+
+ /*******************************************************************
+ *
+ * @brief Fill E2SM-KPM Indication Message Format 1
+ *
+ * @details
+ *
+ *    Function : fillE2smKpmIndMsgFormat1
+ *
+ * Functionality: Fill E2SM-KPM Indication Message Format 1
+ *
+ * @param  Format 1 Message to be filled
+ *         Action Definition format 1 from E2AP DB
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ ******************************************************************/
+uint8_t fillE2smKpmIndMsgFormat1(E2SM_KPM_IndicationMessage_Format1_t *format1Msg, ActionDefFormat1 *format1)
+{
+  /* Measurement Data */
+  if(fillMeasData(&format1Msg->measData, &format1->measurementInfoList) != ROK)
+  {
+     DU_LOG("\nERROR  -->  E2AP : Failed to fill measurement data");
+     return RFAILED;
+  }
+
+  /* Measurement Information */
+  DU_ALLOC(format1Msg->measInfoList, sizeof(MeasurementInfoList_t));
+  if(!format1Msg->measInfoList)
+  {
+     DU_LOG("\nERROR  -->  E2AP : Memory allocation in [%s] at line [%d]", __func__, __LINE__);
+     return RFAILED;
+  }
+
+  if(fillMeasInfoList(format1Msg->measInfoList, &format1->measurementInfoList) != ROK)
+  {
+     DU_LOG("\nERROR  -->  E2AP : Failed to fill measurement information list");
+     return RFAILED;
+  }
+
+  /* Granularity Period */
+  DU_ALLOC(format1Msg->granulPeriod, sizeof(GranularityPeriod_t));
+  if(!format1Msg->granulPeriod)
+  {
+     DU_LOG("\nERROR  -->  E2AP : Memory allocation in [%s] at line [%d]", __func__, __LINE__);
+     return RFAILED;
+  }
+  *(format1Msg->granulPeriod) = format1->granularityPeriod;
+
+  return ROK;
+}
+
+/*******************************************************************
+ *
+ * @brief Fill RIC Indication Message buffer
+ *
+ * @details
+ *
+ *    Function : fillRicIndMsgBuf
+ *
+ * Functionality: Fill E2SM-KPM Indication Message
+ *    Encode this message and copy to RIC Indication Message buffer
+ * 
+ * @param  RIC Indication Message buffer to be filled
+ *         Source action info from E2AP DB
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ ******************************************************************/
+uint8_t fillRicIndMsgBuf(RICindicationMessage_t *ricIndMsgBuf, ActionInfo *actionInfo)
+{
+   uint8_t ret = RFAILED;
+   bool failedInFormat = false;
+   E2SM_KPM_IndicationMessage_t e2smKpmIndMsg;
+   asn_enc_rval_t   encRetVal;        /* Encoder return value */
+
+   memset(&e2smKpmIndMsg, 0, sizeof(E2SM_KPM_IndicationMessage_t));
+
+   while(true)
+   {
+      /* E2SM-KPM Indication message format type */
+      e2smKpmIndMsg.indicationMessage_formats.present = actionInfo->definition.formatType;
+      switch(e2smKpmIndMsg.indicationMessage_formats.present)
+      {
+         case E2SM_KPM_IndicationMessage__indicationMessage_formats_PR_indicationMessage_Format1:
+            {
+               /* E2SM-KPM Indication message format 1 */
+               DU_ALLOC(e2smKpmIndMsg.indicationMessage_formats.choice.indicationMessage_Format1, \
+                     sizeof(E2SM_KPM_IndicationMessage_Format1_t));
+               if(!e2smKpmIndMsg.indicationMessage_formats.choice.indicationMessage_Format1)
+               {
+                  DU_LOG("\nERROR  -->  E2AP : Memory allocation in [%s] at line [%d]", __func__, __LINE__);
+                  failedInFormat = true;
+                  break;
+               }
+
+               if(fillE2smKpmIndMsgFormat1(e2smKpmIndMsg.indicationMessage_formats.choice.indicationMessage_Format1, \
+                  &actionInfo->definition.choice.format1) != ROK)
+               {
+                  DU_LOG("\nERROR  -->  E2AP : Failed to fill E2SM-KPM Indication message format 1");
+                  failedInFormat = true;
+                  break;
+               }
+               break;
+            }
+
+         case E2SM_KPM_IndicationMessage__indicationMessage_formats_PR_NOTHING:
+         case E2SM_KPM_IndicationMessage__indicationMessage_formats_PR_indicationMessage_Format2:
+         default:
+            {
+               DU_LOG("\nERROR  -->  E2AP : fillRicIndMsgBuf: Only Format 1 supported");
+               failedInFormat = true;
+               break;
+            }
+      }
+
+      if(failedInFormat)
+         break;
+
+      /* Encode E2SM-KPM Indication Message */
+      xer_fprint(stdout, &asn_DEF_E2SM_KPM_IndicationMessage, &e2smKpmIndMsg);
+      memset(encBuf, 0, ENC_BUF_MAX_LEN);
+      encBufSize = 0;
+      encRetVal = aper_encode(&asn_DEF_E2SM_KPM_IndicationMessage, 0, &e2smKpmIndMsg, PrepFinalEncBuf, encBuf);
+      if(encRetVal.encoded == ENCODE_FAIL)
+      {
+         DU_LOG("\nERROR  -->  E2AP : Could not encode E2SM-KPM Indication Message (at %s)\n",\
+               encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
+         break;
+      }
+      else
+      {
+         DU_LOG("\nDEBUG  -->  E2AP : Created APER encoded buffer for E2SM-KPM Indication Message \n");
+#ifdef DEBUG_ASN_PRINT
+         for(int i=0; i< encBufSize; i++)
+         {
+            printf("%x",encBuf[i]);
+         } 
+#endif
+      }
+
+      /* Copy encoded string to RIC Indication Message buffer */
+      ricIndMsgBuf->size = encBufSize;
+      DU_ALLOC(ricIndMsgBuf->buf, ricIndMsgBuf->size);
+      if(!ricIndMsgBuf->buf)
+      {
+         DU_LOG("\nERROR  -->  E2AP : Memory allocation in [%s] at line [%d]", __func__, __LINE__);
+         break;
+      }
+      memset(ricIndMsgBuf->buf, 0, ricIndMsgBuf->size);
+      memcpy(ricIndMsgBuf->buf, encBuf, encBufSize);
+
+      ret = ROK;
+      break;
+   }
+
+   /* Free E2SM-KPM Indication Message */
+   FreeE2smKpmIndicationMessage(&e2smKpmIndMsg);
+
+   return ret;
+}
+
+/*******************************************************************
+ *
+ * @brief Free E2SM-KPM Indication Header
+ *
+ * @details
+ *
+ *    Function : FreeE2smKpmIndicationHeader
+ *
+ * Functionality: Free E2SM-KPM Indication Header
+ * 
+ * @param  E2SM-KPM Indication Header to be free
+ * @return void
+ *
+ ******************************************************************/
+void FreeE2smKpmIndicationHeader(E2SM_KPM_IndicationHeader_t *e2smKpmIndHdr)
+{
+   E2SM_KPM_IndicationHeader_Format1_t *format1 = NULLP;
+
+   if(e2smKpmIndHdr)
+   {
+      switch(e2smKpmIndHdr->indicationHeader_formats.present)
+      {
+         case E2SM_KPM_IndicationHeader__indicationHeader_formats_PR_indicationHeader_Format1:
+            {
+               if(e2smKpmIndHdr->indicationHeader_formats.choice.indicationHeader_Format1)
+               {
+                  format1 = e2smKpmIndHdr->indicationHeader_formats.choice.indicationHeader_Format1;
+
+                  DU_FREE(format1->colletStartTime.buf, format1->colletStartTime.size);
+                  DU_FREE(format1, sizeof(E2SM_KPM_IndicationHeader_Format1_t));
+               }
+               break;
+            }
+         case E2SM_KPM_IndicationHeader__indicationHeader_formats_PR_NOTHING:
+         default:
+            break;
+      }
+   }
+}
+
+/*******************************************************************
+ *
+ * @brief Fill RIC Indication Header buffer
+ *
+ * @details
+ *
+ *    Function : fillRicIndHeader
+ *
+ * Functionality: Fill E2SM-KPM Indication Header
+ *    Encode this message and copy to RIC Indication Header buffer
+ * 
+ * @param  RIC Indication Header buffer to be filled
+ *         Source RIC subscription info from E2AP DB
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ ******************************************************************/
+uint8_t fillRicIndHeader(RICindicationHeader_t *ricIndHdr, RicSubscription *ricSubsInfo)
+{
+   uint8_t ret = RFAILED;
+   uint8_t secBufIdx = 0, milliSecBufIdx = 0;
+   int8_t byteIdx = 0;
+   bool formatFailure = false;
+   RanFunction *ranFunc = NULLP;
+   ReportStartTime *startTime = NULLP;
+   E2SM_KPM_IndicationHeader_t e2smKpmIndHdr;
+   E2SM_KPM_IndicationHeader_Format1_t *format1 = NULLP;
+   asn_enc_rval_t   encRetVal;        /* Encoder return value */
+
+   while(true)
+   {
+      ranFunc = fetchRanFuncFromRanFuncId(ricSubsInfo->ranFuncId);
+      if(ranFunc == NULLP)
+      {
+         DU_LOG("\nERROR  -->  E2AP : RAN Function ID [%d] not found", ricSubsInfo->ranFuncId);
+         break;
+      }
+
+      memset(&e2smKpmIndHdr, 0, sizeof(E2SM_KPM_IndicationHeader_t));
+
+      e2smKpmIndHdr.indicationHeader_formats.present = ranFunc->ricIndicationHeaderFormat;
+      switch(e2smKpmIndHdr.indicationHeader_formats.present)
+      {
+         case E2SM_KPM_IndicationHeader__indicationHeader_formats_PR_indicationHeader_Format1:
+            {
+               DU_ALLOC(e2smKpmIndHdr.indicationHeader_formats.choice.indicationHeader_Format1, \
+                     sizeof(E2SM_KPM_IndicationHeader_Format1_t));
+               if(!e2smKpmIndHdr.indicationHeader_formats.choice.indicationHeader_Format1)
+               {
+                  DU_LOG("\nERROR  -->  E2AP : Memory allocation in [%s] at line [%d]", __func__, __LINE__);
+                  formatFailure = true;
+                  break;
+               }
+               format1 = e2smKpmIndHdr.indicationHeader_formats.choice.indicationHeader_Format1;
+
+               /* Fetch reporting period start time from DB */
+               switch(ricSubsInfo->eventTriggerDefinition.formatType)
+               {
+                  case 1:
+                  {
+                     startTime = &ricSubsInfo->eventTriggerDefinition.choice.format1.startTime;
+                  }
+               }
+
+               format1->colletStartTime.size = 8 * sizeof(uint8_t);
+               DU_ALLOC(format1->colletStartTime.buf, format1->colletStartTime.size);
+               if(!format1->colletStartTime.buf)
+               {
+                  DU_LOG("\nERROR  -->  E2AP : Memory allocation in [%s] at line [%d]", __func__, __LINE__);
+                  formatFailure = true;
+                  break;
+               }
+
+               /* As per O-RAN.WG3.E2SM-KPM-R003-v03.00, section 8.3.12 and
+                * RFC 5905, section 6 :
+                * Time stamp has a 64-bit format where first 32-bit is seconds
+                * and next 32-bit is fraction in picosecond-level.
+                * This fraction has been rounded in microseconds.
+                *
+                * Hence,
+                * Storing 32-bit seconds at MSB 0-3 and
+                * 32-bit milliseconds at next 4 bytes i.e. bytes 4-7
+                */
+               secBufIdx = 0;
+               milliSecBufIdx = 4;
+               for(byteIdx = 3; byteIdx >= 0; byteIdx--)
+               {
+                  format1->colletStartTime.buf[secBufIdx++] = startTime->timeInSec >> (8*byteIdx);
+                  format1->colletStartTime.buf[milliSecBufIdx++] = startTime->timeInMilliSec >> (8*byteIdx);
+               }
+               break;
+            }
+
+         case E2SM_KPM_IndicationHeader__indicationHeader_formats_PR_NOTHING:
+         default:
+         {
+             DU_LOG("\nERROR  -->  E2AP : Only E2SM-KPM Indication Header Format 1 supported");
+             formatFailure = true;
+             break;
+         }
+      }
+
+      if(formatFailure)
+         break;
+
+      /* Encode E2SM-KPM Indication Header */
+      xer_fprint(stdout, &asn_DEF_E2SM_KPM_IndicationHeader, &e2smKpmIndHdr);
+      memset(encBuf, 0, ENC_BUF_MAX_LEN);
+      encBufSize = 0;
+      encRetVal = aper_encode(&asn_DEF_E2SM_KPM_IndicationHeader, 0, &e2smKpmIndHdr, PrepFinalEncBuf, encBuf);
+      if(encRetVal.encoded == ENCODE_FAIL)
+      {
+         DU_LOG("\nERROR  -->  E2AP : Could not encode E2SM-KPM Indication Header (at %s)\n",\
+               encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
+         break;
+      }
+      else
+      {
+         DU_LOG("\nDEBUG  -->  E2AP : Created APER encoded buffer for E2SM-KPM Indication Header \n");
+#ifdef DEBUG_ASN_PRINT
+         for(int i=0; i< encBufSize; i++)
+         {
+            printf("%x",encBuf[i]);
+         } 
+#endif
+      }
+
+      /* Copy encoded string to RIC Indication Header buffer */
+      ricIndHdr->size = encBufSize;
+      DU_ALLOC(ricIndHdr->buf, ricIndHdr->size);
+      if(!ricIndHdr->buf)
+      {
+         DU_LOG("\nERROR  -->  E2AP : Memory allocation in [%s] at line [%d]", __func__, __LINE__);
+         break;
+      }
+      memset(ricIndHdr->buf, 0, ricIndHdr->size);
+      memcpy(ricIndHdr->buf, encBuf, encBufSize);
+      ret = ROK;
+      break;
+   }
+
+   /* Free E2SM-KPM Indication Header */
+   FreeE2smKpmIndicationHeader(&e2smKpmIndHdr);
+
+   return ret;
+}
+
+/*******************************************************************
+ *
+ * brief Fill the RIC Indication Message
+ *
+ * @details
+ *
+ *    Function : fillRicIndication
+ *
+ * Functionality: Fills the RIC Indication Message
+ *
+ * @param  RIC Indication Message to be filled
+ *         RIC Subscription DB
+ *         Action DB
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ ******************************************************************/
+uint8_t fillRicIndication(RICindication_t *ricIndicationMsg, RicSubscription *ricSubscriptionInfo, ActionInfo *actionInfo)
+{
+   uint8_t elementCnt = 0, idx = 0;
    uint8_t ret = ROK;
+
    elementCnt = 6;
 
    ricIndicationMsg->protocolIEs.list.count = elementCnt;
-   ricIndicationMsg->protocolIEs.list.size  = elementCnt * sizeof(RICindication_t);
+   ricIndicationMsg->protocolIEs.list.size  = elementCnt * sizeof(RICindication_IEs_t *);
+
    /* Initialize the Ric Indication members */
-   DU_ALLOC(ricIndicationMsg->protocolIEs.list.array, \
-	 ricIndicationMsg->protocolIEs.list.size);
+   DU_ALLOC(ricIndicationMsg->protocolIEs.list.array, ricIndicationMsg->protocolIEs.list.size);
    if(ricIndicationMsg->protocolIEs.list.array == NULLP)
    {
-      DU_LOG("\nERROR  -->  E2AP : Memory allocation for RICindicationIEs failed");
-      ret = RFAILED;
+      DU_LOG("\nERROR  -->  E2AP : Memory allocation in [%s] at line [%d]", __func__, __LINE__);
+      return RFAILED;
    }
-   else
+
+   for(idx=0; idx<elementCnt; idx++)
    {
-      for(idx=0; idx<elementCnt; idx++)
+      DU_ALLOC(ricIndicationMsg->protocolIEs.list.array[idx], sizeof(RICindication_IEs_t));
+      if(ricIndicationMsg->protocolIEs.list.array[idx] == NULLP)
       {
-	 DU_ALLOC(ricIndicationMsg->protocolIEs.list.array[idx],\
-	       sizeof(RICindication_IEs_t));
-	 if(ricIndicationMsg->protocolIEs.list.array[idx] == NULLP)
-	 {
-	    DU_LOG("\nERROR  -->  E2AP : Memory allocation for RICindicationIEs failed");
-	    ret = RFAILED;
-	 }
-      }
-      if(ret != RFAILED)
-      {
-	 idx = 0;
-
-	 ricIndicationMsg->protocolIEs.list.array[idx]->id = ProtocolIE_IDE2_id_RICrequestID;
-	 ricIndicationMsg->protocolIEs.list.array[idx]->criticality = CriticalityE2_reject;
-	 ricIndicationMsg->protocolIEs.list.array[idx]->value.present = \
-									RICindication_IEs__value_PR_RICrequestID;
-	 ricIndicationMsg->protocolIEs.list.array[idx]->value.choice.RICrequestID.ricRequestorID =ricSubscriptionInfo->requestId.requestorId;
-	 ricIndicationMsg->protocolIEs.list.array[idx]->value.choice.RICrequestID.ricInstanceID = ricSubscriptionInfo->requestId.instanceId;
-
-	 idx++;
-	 ricIndicationMsg->protocolIEs.list.array[idx]->id = ProtocolIE_IDE2_id_RANfunctionID;
-	 ricIndicationMsg->protocolIEs.list.array[idx]->criticality = CriticalityE2_reject;
-	 ricIndicationMsg->protocolIEs.list.array[idx]->value.present = \
-									RICindication_IEs__value_PR_RANfunctionID;
-	 ricIndicationMsg->protocolIEs.list.array[idx]->value.choice.RANfunctionID = duCb.e2apDb.ranFunction[0].id;
-
-	 idx++;
-	 ricIndicationMsg->protocolIEs.list.array[idx]->id = ProtocolIE_IDE2_id_RICactionID;
-	 ricIndicationMsg->protocolIEs.list.array[idx]->criticality = CriticalityE2_reject;
-	 ricIndicationMsg->protocolIEs.list.array[idx]->value.present = \
-									RICindication_IEs__value_PR_RICactionID;
-	 ricIndicationMsg->protocolIEs.list.array[idx]->value.choice.RICactionID = ricSubscriptionInfo->actionSequence[0].id;
-
-	 idx++;
-	 ricIndicationMsg->protocolIEs.list.array[idx]->id = ProtocolIE_IDE2_id_RICindicationType;
-	 ricIndicationMsg->protocolIEs.list.array[idx]->criticality = CriticalityE2_reject;
-	 ricIndicationMsg->protocolIEs.list.array[idx]->value.present = \
-									RICindication_IEs__value_PR_RICindicationType;
-	 ricIndicationMsg->protocolIEs.list.array[idx]->value.choice.RICindicationType = ricSubscriptionInfo->actionSequence[0].type;
-
-	 idx++;
-	 ricIndicationMsg->protocolIEs.list.array[idx]->id = ProtocolIE_IDE2_id_RICindicationHeader;
-	 ricIndicationMsg->protocolIEs.list.array[idx]->criticality = CriticalityE2_reject;
-	 ricIndicationMsg->protocolIEs.list.array[idx]->value.present = \
-									RICindication_IEs__value_PR_RICindicationHeader;
-	 ricIndicationMsg->protocolIEs.list.array[idx]->value.choice.RICindicationHeader.size = 3 *
-	    sizeof(uint8_t);
-	 DU_ALLOC(ricIndicationMsg->protocolIEs.list.array[idx]->value.choice.RICindicationHeader.buf ,\
-	       ricIndicationMsg->protocolIEs.list.array[idx]->value.choice.RICindicationHeader.size);
-	 if(ricIndicationMsg->protocolIEs.list.array[idx]->value.choice.RICindicationHeader.buf == NULLP)
-	 {
-	    DU_LOG("\nERROR  -->  E2AP : Memory allocation for RICindicationIEs failed");
-	    ret = RFAILED;
-	 }
-	 else
-	 {
-	    buildPlmnId(duCfgParam.srvdCellLst[0].duCellInfo.cellInfo.nrCgi.plmn, \
-		  ricIndicationMsg->protocolIEs.list.array[idx]->value.choice.RICindicationHeader.buf);
-	    idx++;
-	    /* TO BE CHANGED: RIC INDICATION DATA */
-	    /* For now filling a dummy octect data, need to tested with PRBs*/
-	    ricIndicationMsg->protocolIEs.list.array[idx]->id = ProtocolIE_IDE2_id_RICindicationMessage;
-	    ricIndicationMsg->protocolIEs.list.array[idx]->criticality = CriticalityE2_reject;
-	    ricIndicationMsg->protocolIEs.list.array[idx]->value.present = \
-									   RICindication_IEs__value_PR_RICindicationMessage;
-	    ricIndicationMsg->protocolIEs.list.array[idx]->value.choice.RICindicationMessage.size = 3 *
-	       sizeof(uint8_t);
-	    DU_ALLOC(ricIndicationMsg->protocolIEs.list.array[idx]->value.choice.RICindicationMessage.buf ,\
-		  ricIndicationMsg->protocolIEs.list.array[idx]->value.choice.RICindicationMessage.size);
-	    if(ricIndicationMsg->protocolIEs.list.array[idx]->value.choice.RICindicationMessage.buf == NULLP)
-	    {
-	       DU_LOG("\nERROR  -->  E2AP : Memory allocation for RICindicationIEs failed");
-	       ret = RFAILED;
-	    }
-	    else
-	    {
-	       buildPlmnId(duCfgParam.srvdCellLst[0].duCellInfo.cellInfo.nrCgi.plmn, \
-		     ricIndicationMsg->protocolIEs.list.array[idx]->value.choice.RICindicationMessage.buf);
-	    }
-	 }
+         DU_LOG("\nERROR  -->  E2AP : Memory allocation in [%s] at line [%d]", __func__, __LINE__);
+         return RFAILED;
       }
    }
+
+   /* RIC Request ID */
+   idx = 0;
+   ricIndicationMsg->protocolIEs.list.array[idx]->id = ProtocolIE_IDE2_id_RICrequestID;
+   ricIndicationMsg->protocolIEs.list.array[idx]->criticality = CriticalityE2_reject;
+   ricIndicationMsg->protocolIEs.list.array[idx]->value.present = RICindication_IEs__value_PR_RICrequestID;
+   ricIndicationMsg->protocolIEs.list.array[idx]->value.choice.RICrequestID.ricRequestorID = \
+      ricSubscriptionInfo->requestId.requestorId;
+   ricIndicationMsg->protocolIEs.list.array[idx]->value.choice.RICrequestID.ricInstanceID = \
+      ricSubscriptionInfo->requestId.instanceId;
+
+   /* RAN Function ID */
+   idx++;
+   ricIndicationMsg->protocolIEs.list.array[idx]->id = ProtocolIE_IDE2_id_RANfunctionID;
+   ricIndicationMsg->protocolIEs.list.array[idx]->criticality = CriticalityE2_reject;
+   ricIndicationMsg->protocolIEs.list.array[idx]->value.present = RICindication_IEs__value_PR_RANfunctionID;
+   ricIndicationMsg->protocolIEs.list.array[idx]->value.choice.RANfunctionID = ricSubscriptionInfo->ranFuncId;
+
+   /* RIC Action ID */
+   idx++;
+   ricIndicationMsg->protocolIEs.list.array[idx]->id = ProtocolIE_IDE2_id_RICactionID;
+   ricIndicationMsg->protocolIEs.list.array[idx]->criticality = CriticalityE2_reject;
+   ricIndicationMsg->protocolIEs.list.array[idx]->value.present = RICindication_IEs__value_PR_RICactionID;
+   ricIndicationMsg->protocolIEs.list.array[idx]->value.choice.RICactionID = actionInfo->actionId;
+
+   /* RIC Indication Type */
+   idx++;
+   ricIndicationMsg->protocolIEs.list.array[idx]->id = ProtocolIE_IDE2_id_RICindicationType;
+   ricIndicationMsg->protocolIEs.list.array[idx]->criticality = CriticalityE2_reject;
+   ricIndicationMsg->protocolIEs.list.array[idx]->value.present = RICindication_IEs__value_PR_RICindicationType;
+   ricIndicationMsg->protocolIEs.list.array[idx]->value.choice.RICindicationType = actionInfo->type;
+
+   /* RIC Indication Header */
+   idx++;
+   ricIndicationMsg->protocolIEs.list.array[idx]->id = ProtocolIE_IDE2_id_RICindicationHeader;
+   ricIndicationMsg->protocolIEs.list.array[idx]->criticality = CriticalityE2_reject;
+   ricIndicationMsg->protocolIEs.list.array[idx]->value.present = RICindication_IEs__value_PR_RICindicationHeader;
+   if(fillRicIndHeader(&ricIndicationMsg->protocolIEs.list.array[idx]->value.choice.RICindicationHeader, \
+      ricSubscriptionInfo) != ROK)
+   {
+      DU_LOG("\nERROR  -->  E2AP : Failed to fill RIC Indication header");
+      return RFAILED;
+   }
+
+   /* RIC Indication Message */
+   idx++;
+   ricIndicationMsg->protocolIEs.list.array[idx]->id = ProtocolIE_IDE2_id_RICindicationMessage;
+   ricIndicationMsg->protocolIEs.list.array[idx]->criticality = CriticalityE2_reject;
+   ricIndicationMsg->protocolIEs.list.array[idx]->value.present = RICindication_IEs__value_PR_RICindicationMessage;
+   if(fillRicIndMsgBuf(&ricIndicationMsg->protocolIEs.list.array[idx]->value.choice.RICindicationMessage, \
+      actionInfo) != ROK)
+   {
+      DU_LOG("\nERROR  -->  E2AP : Failed to fill RIC Indication Message");
+      return RFAILED;
+   }
+
    return ret;
 }
 
@@ -3314,13 +3987,12 @@ uint8_t FillRicIndication(RICindication_t *ricIndicationMsg, RicSubscription *ri
  *
  ******************************************************************/
 
-uint8_t BuildAndSendRicIndication(RicSubscription *ricSubscriptionInfo)
+uint8_t BuildAndSendRicIndication(RicSubscription *ricSubscriptionInfo, ActionInfo *actionInfo)
 {
-   E2AP_PDU_t                 *e2apMsg = NULLP;
-   RICindication_t            *ricIndicationMsg=NULLP;
-   asn_enc_rval_t             encRetVal;        /* Encoder return value */
-   uint8_t ret = RFAILED; 
-   uint8_t FillRicIndicationret = ROK;
+   uint8_t          ret = RFAILED; 
+   E2AP_PDU_t       *e2apMsg = NULLP;
+   RICindication_t  *ricIndicationMsg = NULLP;
+   asn_enc_rval_t   encRetVal;        /* Encoder return value */
 
    while(true)
    {
@@ -3329,16 +4001,16 @@ uint8_t BuildAndSendRicIndication(RicSubscription *ricSubscriptionInfo)
       DU_ALLOC(e2apMsg, sizeof(E2AP_PDU_t));
       if(e2apMsg == NULLP)
       {
-	 DU_LOG("\nERROR  -->  E2AP : Memory allocation for E2AP-PDU failed");
-	 break;
+         DU_LOG("\nERROR  -->  E2AP : Memory allocation for E2AP-PDU failed");
+         break;
       }
 
       e2apMsg->present = E2AP_PDU_PR_initiatingMessage;
       DU_ALLOC(e2apMsg->choice.initiatingMessage, sizeof(InitiatingMessageE2_t));
       if(e2apMsg->choice.initiatingMessage == NULLP)
       {
-	 DU_LOG("\nERROR  -->  E2AP : Memory allocation for E2AP-PDU failed");
-	 break;
+         DU_LOG("\nERROR  -->  E2AP : Memory allocation for E2AP-PDU failed");
+         break;
       }
       e2apMsg->choice.initiatingMessage->procedureCode = ProcedureCodeE2_id_RICindication;
       e2apMsg->choice.initiatingMessage->criticality = CriticalityE2_reject;
@@ -3346,37 +4018,38 @@ uint8_t BuildAndSendRicIndication(RicSubscription *ricSubscriptionInfo)
 
       ricIndicationMsg = &e2apMsg->choice.initiatingMessage->value.choice.RICindication;
 
-      FillRicIndicationret = FillRicIndication(ricIndicationMsg, ricSubscriptionInfo);
-      if(FillRicIndicationret != ROK)
+      if(fillRicIndication(ricIndicationMsg, ricSubscriptionInfo, actionInfo) != ROK)
       {
-	 break;
+         DU_LOG("\nERROR  -->  E2AP : Failed to fill RIC Indication message");
+         break;
       }
+
       /* Prints the Msg formed */
       xer_fprint(stdout, &asn_DEF_E2AP_PDU, e2apMsg);
       memset(encBuf, 0, ENC_BUF_MAX_LEN);
       encBufSize = 0;
       encRetVal = aper_encode(&asn_DEF_E2AP_PDU, 0, e2apMsg, PrepFinalEncBuf,\
-	    encBuf);
+            encBuf);
       if(encRetVal.encoded == ENCODE_FAIL)
       {
-	 DU_LOG("\nERROR  -->  E2AP : Could not encode RIC Indication Message (at %s)\n",\
-	       encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
-	 break;
+         DU_LOG("\nERROR  -->  E2AP : Could not encode RIC Indication Message (at %s)\n",\
+               encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
+         break;
       }
       else
       {
-	 DU_LOG("\nDEBUG  -->  E2AP : Created APER encoded buffer for RIC Indication Message \n");
+         DU_LOG("\nDEBUG  -->  E2AP : Created APER encoded buffer for RIC Indication Message \n");
 #ifdef DEBUG_ASN_PRINT
-	 for(int i=0; i< encBufSize; i++)
-	 {
-	    printf("%x",encBuf[i]);
-	 } 
+         for(int i=0; i< encBufSize; i++)
+         {
+            printf("%x",encBuf[i]);
+         } 
 #endif
       }
 
       if(SendE2APMsg(DU_APP_MEM_REGION, DU_POOL, encBuf, encBufSize) != ROK)
       {
-	 DU_LOG("\nINFO   -->  E2AP : Sending RIC Indication Message");      
+         DU_LOG("\nINFO   -->  E2AP : Sending RIC Indication Message");      
 
       }
       ret = ROK;
