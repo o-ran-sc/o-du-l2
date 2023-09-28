@@ -102,7 +102,7 @@ typedef struct
 
 typedef struct
 {
-   uint8_t           id;
+   int8_t           id;
 }ActionInfo;
 
 typedef struct ricSubscription
