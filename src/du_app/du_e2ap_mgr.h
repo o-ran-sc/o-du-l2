@@ -20,10 +20,12 @@
 #define MAX_E2_SETUP_TMR 1
 #define MAX_E2_NODE_CONFIG_UPDATE_TMR 1
 #define MAX_RIC_SERVICE_UPDATE_TMR 1
+#define MAX_RIC_SUBSCRIPTION_REPORTING_TMR 1
 
 #define EVENT_E2_SETUP_TMR 1
 #define EVENT_RIC_SERVICE_UPDATE_TMR 2
 #define EVENT_E2_NODE_CONFIG_UPDATE_TMR 3
+#define EVENT_RIC_SUBSCRIPTION_REPORTING_TMR 4
 
 #define MAX_NUM_TRANSACTION 256 /* As per, O-RAN WG3 E2AP v3.0, section 9.2.33 */
 #define MAX_RAN_FUNCTION 256        /* O-RAN.WG3.E2AP-R003-v03.00 : Section 9.1.2.2 : maxofRANfunctionID */
@@ -378,7 +380,7 @@ typedef struct
 /* O-RAN.WG3.E2AP-R003-v03.00 : Section 9.1.1.1 : maxofRICActionID */
 typedef struct
 {
-   uint8_t           id;
+   int8_t            id;         /* O-RAN.WG3.E2AP-R003-v03.00 Section 9.2.10. Valid action id range = 0..255 */
    ActionType        type;
    ActionDefinition  definition;
    ConfigType        action;
@@ -388,9 +390,11 @@ typedef struct
 typedef struct
 {
    RicRequestId           requestId;
+   uint16_t               ranFuncId;
    EventTriggerDefinition eventTriggerDefinition;
    uint8_t                numOfActions;
    ActionInfo             actionSequence[MAX_RIC_ACTION];  
+   CmTimer                ricSubsReportTimer;
 }RicSubscription;
 
 typedef struct rejectedAction
@@ -482,9 +486,10 @@ RanFunction *fetchRanFuncFromRanFuncId(uint16_t ranFuncId);
 uint8_t fetchSubsInfoFromSubsId(uint64_t subscriptionId, RanFunction **ranFuncDb, CmLList **ricSubscriptionNode, \
    RicSubscription **ricSubscriptionInfo);
 
-uint8_t fillRicSubsInMacStatsReq(MacStatsReq *macStatsReq, uint16_t ranFuncId, RicSubscription* ricSubscriptionInfo);
+uint8_t fillRicSubsInMacStatsReq(MacStatsReq *macStatsReq, RicSubscription* ricSubscriptionInfo);
 void e2ProcStatsRsp(MacStatsRsp *statsRsp);
 void e2ProcStatsInd(MacStatsInd *statsInd);
+void E2apHdlRicSubsReportTmrExp(RicSubscription *ricSubscription);
 
 uint8_t ResetE2Request(E2ProcedureDirection dir, E2FailureCause resetCause);
 uint8_t SendE2APMsg(Region region, Pool pool, char *encBuf, int encBufSize);
