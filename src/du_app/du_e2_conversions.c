@@ -155,6 +155,51 @@ uint8_t convertInterfaceToE2ComponentInterfaceType(uint8_t interface)
    return RFAILED;
 }
 
+/*******************************************************************
+ *
+ * @brief Converts MAC-specific Measurement type to E2 interface
+ *        specific measurement type
+ *
+ * @details
+ *
+ *    Function : convertMacMeasTypeToE2MeasType
+ *
+ *    Functionality: Converts MAC-specific Measurement type to E2 
+ *       interface specific measurement type
+ *
+ * @params[in] MAC specific measurement type
+ *             E2 interface specific measurement type
+ *
+ * @return uint8_t
+ *
+ * ****************************************************************/
+uint8_t convertMacMeasTypeToE2MeasType(MacMeasurementType macMeasName, char *e2MeasName)
+{
+   uint8_t measNameLen = 0;
+
+   switch(macMeasName)
+   {
+      case MAC_DL_TOTAL_PRB_USAGE:
+         {
+            measNameLen = strlen("RRU.PrbTotDl");
+            memcpy(e2MeasName, "RRU.PrbTotDl", measNameLen+1);
+            break;
+         }
+      case MAC_UL_TOTAL_PRB_USAGE:
+         {
+            measNameLen = strlen("RRU.PrbTotUl");
+            memcpy(e2MeasName, "RRU.PrbTotUl", measNameLen+1);
+            break;
+         }
+      default:
+         {
+             DU_LOG("\nERROR  -->  E2AP : MAC mesurement type [%d] not supported", macMeasName);
+             return RFAILED;
+         }
+   }
+   return ROK;
+}
+
 /**********************************************************************
   End of file
  **********************************************************************/
