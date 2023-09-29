@@ -1,0 +1,158 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6b9d16ef_3630e66c",
+        "filename": "src/du_app/du_e2ap_mgr.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 658,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-09-29T09:57:38Z",
+      "side": 1,
+      "message": "I think we generally check the timer before starting the timer.\nAre we not going to do the same here?",
+      "range": {
+        "startLine": 658,
+        "startChar": 6,
+        "endLine": 658,
+        "endChar": 16
+      },
+      "revId": "f828a9a9ec2861d444e417ba3dff0b2dad0670da",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9ccc8fec_9b430d63",
+        "filename": "src/du_app/du_e2ap_mgr.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 721,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-09-29T09:57:38Z",
+      "side": 1,
+      "message": "we can change the data type of the function becz this function may return RFAILED for memory allocation.",
+      "revId": "f828a9a9ec2861d444e417ba3dff0b2dad0670da",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "21319025_ee91df09",
+        "filename": "src/du_app/du_e2ap_mgr.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 729,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-09-29T09:57:38Z",
+      "side": 1,
+      "message": "I am not sure this is the right way to initialize a character array but we can use memset in place of this.\nmemset(\u0026e2MeasTypeName, \u0027\\0\u0027, sizeof(char)*STRING_SIZE_150_BYTES);",
+      "revId": "f828a9a9ec2861d444e417ba3dff0b2dad0670da",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e3258bd5_93495169",
+        "filename": "src/du_app/du_e2ap_mgr.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 770,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-09-29T09:57:38Z",
+      "side": 1,
+      "message": "why are we not returning RFAILED from this function?",
+      "range": {
+        "startLine": 770,
+        "startChar": 12,
+        "endLine": 770,
+        "endChar": 18
+      },
+      "revId": "f828a9a9ec2861d444e417ba3dff0b2dad0670da",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6a722e4d_3080a355",
+        "filename": "src/du_app/du_e2ap_mgr.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 802,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-09-29T09:57:38Z",
+      "side": 1,
+      "message": "same as above?",
+      "range": {
+        "startLine": 802,
+        "startChar": 16,
+        "endLine": 802,
+        "endChar": 17
+      },
+      "revId": "f828a9a9ec2861d444e417ba3dff0b2dad0670da",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c4d1928c_ed033aac",
+        "filename": "src/du_app/du_e2ap_mgr.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 860,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-09-29T09:57:38Z",
+      "side": 1,
+      "message": "No need to check timer here?",
+      "revId": "f828a9a9ec2861d444e417ba3dff0b2dad0670da",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9650a098_dcbb319f",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 3452,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-09-29T09:57:38Z",
+      "side": 1,
+      "message": "suggestion- I think we don\u0027t need two different loops here one for allocation and another one for fetching the values from the list.\nI think we can fill this in one loop also.",
+      "revId": "f828a9a9ec2861d444e417ba3dff0b2dad0670da",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "af6a7145_41036ded",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 3499,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-09-29T09:57:38Z",
+      "side": 1,
+      "message": "same as above.\nMemory allocation and filling can be done in a single loop.",
+      "revId": "f828a9a9ec2861d444e417ba3dff0b2dad0670da",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
