@@ -1,0 +1,164 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ed11e5da_39df5fae",
+        "filename": "src/du_app/du_e2_conversions.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 197,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-09-29T13:36:01Z",
+      "side": 1,
+      "message": "add a default case",
+      "revId": "a77600e16b5f9fdf156c16380704f9a3812ce704",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "166a45bb_0a1ce0e8",
+        "filename": "src/du_app/du_e2_conversions.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 200,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-09-29T13:36:01Z",
+      "side": 1,
+      "message": "here value of RFAILED \u003d 1, which is value of XN, is  that expected",
+      "range": {
+        "startLine": 200,
+        "startChar": 10,
+        "endLine": 200,
+        "endChar": 17
+      },
+      "revId": "a77600e16b5f9fdf156c16380704f9a3812ce704",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "84db383b_bdda3b3a",
+        "filename": "src/du_app/du_e2ap_mgr.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 822,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-09-29T13:36:01Z",
+      "side": 1,
+      "message": "return for this function is void,please correct that",
+      "range": {
+        "startLine": 822,
+        "startChar": 21,
+        "endLine": 822,
+        "endChar": 22
+      },
+      "revId": "a77600e16b5f9fdf156c16380704f9a3812ce704",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c96ecaab_e2a78764",
+        "filename": "src/du_app/du_e2ap_mgr.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 841,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-09-29T13:36:01Z",
+      "side": 1,
+      "message": "pls always add a default case for a switch condition",
+      "revId": "a77600e16b5f9fdf156c16380704f9a3812ce704",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7e6d95f9_8da3369c",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 4962,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-09-29T13:36:01Z",
+      "side": 1,
+      "message": "dont we need to remove that component from du\u0027s e2db although ric has not been successful but we shld remove it from our db right?",
+      "revId": "a77600e16b5f9fdf156c16380704f9a3812ce704",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "65e90a6a_8b0936b0",
+        "filename": "src/ric_stub/ric_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-09-29T13:36:01Z",
+      "side": 1,
+      "message": "RFAILED value is 1 thus in failure case it will return XN value..is that expected",
+      "range": {
+        "startLine": 136,
+        "startChar": 10,
+        "endLine": 136,
+        "endChar": 17
+      },
+      "revId": "a77600e16b5f9fdf156c16380704f9a3812ce704",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c807a1f9_4a5129cd",
+        "filename": "src/ric_stub/ric_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 180,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-09-29T13:36:01Z",
+      "side": 1,
+      "message": "same as above",
+      "revId": "a77600e16b5f9fdf156c16380704f9a3812ce704",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b163e6fc_636f0441",
+        "filename": "src/ric_stub/ric_stub.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-09-29T13:36:01Z",
+      "side": 1,
+      "message": "since MAX_E2_NODE_COMPONENT range can go till 1024 will uint8_t suffice for numOfE2Component?",
+      "range": {
+        "startLine": 135,
+        "startChar": 19,
+        "endLine": 135,
+        "endChar": 39
+      },
+      "revId": "a77600e16b5f9fdf156c16380704f9a3812ce704",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
