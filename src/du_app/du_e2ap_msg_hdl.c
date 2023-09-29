@@ -52,6 +52,253 @@
 #include "MeasurementInfoItem.h"
 #include "RANfunctionsIDcause-List.h"
 
+/*******************************************************************
+ *
+ * @brief Fill E2 Failure Cause
+ *
+ * @details
+ *
+ *    Function : fillE2Cause
+ *
+ *    Functionality: Fill E2 Failure Cause
+ *
+ * @params[in] E2 Cause pointer to be filled in
+ *             E2 Cause to be filled from 
+ * @return void
+ *
+ ******************************************************************/
+void fillE2Cause(CauseE2_t *e2Cause, E2FailureCause failureCause)
+{
+   e2Cause->present = failureCause.causeType;
+   switch(e2Cause->present)
+   {
+      case CauseE2_PR_ricRequest:
+         {
+            e2Cause->choice.ricRequest = failureCause.cause;
+            break;
+         }
+      case CauseE2_PR_ricService:
+         {
+            e2Cause->choice.ricService = failureCause.cause;
+            break;
+         }
+      case CauseE2_PR_e2Node:
+         {
+            e2Cause->choice.e2Node = failureCause.cause;
+            break;
+         }
+      case CauseE2_PR_transport:
+         {
+            e2Cause->choice.transport = failureCause.cause;
+            break;
+         }
+      case CauseE2_PR_protocol:
+         {
+            e2Cause->choice.protocol = failureCause.cause;
+            break;
+         }
+      case CauseE2_PR_misc:
+         {
+            e2Cause->choice.misc = failureCause.cause;
+            break;
+         }
+      case CauseE2_PR_NOTHING:
+      default:
+         break;
+   }
+}
+
+/*******************************************************************
+ *
+ * @brief Free the ErrorIndication Message
+ *
+ * @details
+ *
+ *    Function : FreeRicIndication
+ *
+ * Functionality: Free the ErrorIndication Message
+ *
+ * @params[in] 
+ *    E2AP_PDU is to freed
+ * @return void
+ *
+ ******************************************************************/
+void FreeErrorIndication(E2AP_PDU_t  *e2apMsg) 
+{
+   uint8_t arrIdx = 0;
+   ErrorIndicationE2_t *errorIndicationMsg= NULLP;
+
+   if(e2apMsg != NULLP)
+   {
+      if(e2apMsg->choice.initiatingMessage != NULLP)
+      {
+         errorIndicationMsg = &e2apMsg->choice.initiatingMessage->value.choice.ErrorIndicationE2;
+         if(errorIndicationMsg!= NULLP)
+         {
+            if(errorIndicationMsg->protocolIEs.list.array != NULLP)
+            {
+               for(arrIdx=0; arrIdx<errorIndicationMsg->protocolIEs.list.count; arrIdx++)
+               {
+                  if(errorIndicationMsg->protocolIEs.list.array[arrIdx] != NULLP)
+                  {
+                     DU_FREE(errorIndicationMsg->protocolIEs.list.array[arrIdx],sizeof(ErrorIndicationE2_t));
+                  }
+               }
+               DU_FREE(errorIndicationMsg->protocolIEs.list.array,errorIndicationMsg->protocolIEs.list.size);
+            }
+         }
+         DU_FREE(e2apMsg->choice.initiatingMessage, sizeof(InitiatingMessageE2_t));
+      }
+      DU_FREE(e2apMsg, sizeof(E2AP_PDU_t));
+   }
+}
+
+/*******************************************************************
+ *
+ * @brief Builds and Send the ErrorIndication Message
+ *
+ * @details
+ *
+ *    Function : BuildAndSendErrorIndication
+ *
+ * Functionality:Fills the ErrorIndication Message
+ *
+ * @params[in] 
+ *    Trans id
+ *    Ric req id
+ *    Ran function id
+ *    Cause of failure
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ ******************************************************************/
+
+uint8_t BuildAndSendErrorIndication(int8_t transId, RicRequestId requestId, uint16_t ranFuncId,  E2FailureCause failureCause)
+{
+   uint8_t elementCnt =0, arrIdx;
+   E2AP_PDU_t         *e2apMsg = NULLP;
+   ErrorIndicationE2_t *errorIndicationMsg=NULLP;
+   asn_enc_rval_t     encRetVal;        /* Encoder return value */
+   uint8_t ret = RFAILED; 
+
+   while(true)
+   {
+      DU_LOG("\nINFO   -->  E2AP : Building Error Indication Message\n");
+
+      DU_ALLOC(e2apMsg, sizeof(E2AP_PDU_t));
+      if(e2apMsg == NULLP)
+      {
+         DU_LOG("\nERROR  -->  E2AP : Memory allocation for E2AP-PDU failed");
+         break;
+      }
+
+      e2apMsg->present = E2AP_PDU_PR_initiatingMessage;
+      DU_ALLOC(e2apMsg->choice.initiatingMessage, sizeof(InitiatingMessageE2_t));
+      if(e2apMsg->choice.initiatingMessage == NULLP)
+      {
+         DU_LOG("\nERROR  -->  E2AP : Memory allocation for E2AP-PDU failed");
+         break;
+      }
+      e2apMsg->choice.initiatingMessage->procedureCode = ProcedureCodeE2_id_ErrorIndicationE2;
+      e2apMsg->choice.initiatingMessage->criticality = CriticalityE2_reject;
+      e2apMsg->choice.initiatingMessage->value.present = InitiatingMessageE2__value_PR_ErrorIndicationE2;
+
+      errorIndicationMsg = &e2apMsg->choice.initiatingMessage->value.choice.ErrorIndicationE2;
+      
+      elementCnt = 3;
+      
+      errorIndicationMsg->protocolIEs.list.count = elementCnt;
+      errorIndicationMsg->protocolIEs.list.size = elementCnt * sizeof(ErrorIndicationE2_IEs_t*);
+
+      /* Initialize the E2Setup members */
+      DU_ALLOC(errorIndicationMsg->protocolIEs.list.array, errorIndicationMsg->protocolIEs.list.size);
+      if(errorIndicationMsg->protocolIEs.list.array == NULLP)
+      {
+         DU_LOG("\nERROR  -->  E2AP : Memory allocation failed for array elements");
+         break;
+      }
+      for(arrIdx = 0; arrIdx < elementCnt; (arrIdx)++)
+      {
+         DU_ALLOC(errorIndicationMsg->protocolIEs.list.array[arrIdx], sizeof(ErrorIndicationE2_IEs_t));
+         if(errorIndicationMsg->protocolIEs.list.array[arrIdx] == NULLP)
+         {
+            DU_LOG("\nERROR  -->  E2AP : Memory allocation failed for arrayarrIdx [%d]", arrIdx);
+            break;
+         }
+      }
+      if(arrIdx < elementCnt)
+         break;
+
+      arrIdx = 0;
+
+      if(transId >=0 && transId<=255)
+      {
+         /* TransactionID */
+         errorIndicationMsg->protocolIEs.list.array[arrIdx]->id = ProtocolIE_IDE2_id_TransactionID;
+         errorIndicationMsg->protocolIEs.list.array[arrIdx]->criticality = CriticalityE2_reject;
+         errorIndicationMsg->protocolIEs.list.array[arrIdx]->value.present = ErrorIndicationE2_IEs__value_PR_TransactionID;
+         errorIndicationMsg->protocolIEs.list.array[arrIdx]->value.choice.TransactionID = transId;
+      }
+      else
+      {
+         /* RICrequestID */
+         errorIndicationMsg->protocolIEs.list.array[arrIdx]->id = ProtocolIE_IDE2_id_RICrequestID;
+         errorIndicationMsg->protocolIEs.list.array[arrIdx]->criticality = CriticalityE2_reject;
+         errorIndicationMsg->protocolIEs.list.array[arrIdx]->value.present = ErrorIndicationE2_IEs__value_PR_RICrequestID;
+         errorIndicationMsg->protocolIEs.list.array[arrIdx]->value.choice.RICrequestID.ricRequestorID = requestId.requestorId;
+         errorIndicationMsg->protocolIEs.list.array[arrIdx]->value.choice.RICrequestID.ricInstanceID = requestId.instanceId;
+      }
+      
+      /* RAN Function ID */
+      arrIdx++;
+      errorIndicationMsg->protocolIEs.list.array[arrIdx]->id = ProtocolIE_IDE2_id_RANfunctionID;
+      errorIndicationMsg->protocolIEs.list.array[arrIdx]->criticality = CriticalityE2_reject;
+      errorIndicationMsg->protocolIEs.list.array[arrIdx]->value.present = ErrorIndicationE2_IEs__value_PR_RANfunctionID;
+      errorIndicationMsg->protocolIEs.list.array[arrIdx]->value.choice.RANfunctionID = ranFuncId;
+      
+      /* RAN Function ID */
+      arrIdx++;
+      errorIndicationMsg->protocolIEs.list.array[arrIdx]->id = ProtocolIE_IDE2_id_RANfunctionID;
+      errorIndicationMsg->protocolIEs.list.array[arrIdx]->criticality = CriticalityE2_reject;
+      errorIndicationMsg->protocolIEs.list.array[arrIdx]->value.present = ErrorIndicationE2_IEs__value_PR_CauseE2;
+      fillE2Cause(&errorIndicationMsg->protocolIEs.list.array[arrIdx]->value.choice.CauseE2, failureCause);
+
+
+      /* Prints the Msg formed */
+      xer_fprint(stdout, &asn_DEF_E2AP_PDU, e2apMsg);
+      memset(encBuf, 0, ENC_BUF_MAX_LEN);
+      encBufSize = 0;
+      encRetVal = aper_encode(&asn_DEF_E2AP_PDU, 0, e2apMsg, PrepFinalEncBuf,\
+            encBuf);
+      if(encRetVal.encoded == ENCODE_FAIL)
+      {
+         DU_LOG("\nERROR  -->  E2AP : Could not encode Error Indication Message (at %s)\n",\
+               encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
+         break;
+      }
+      else
+      {
+         DU_LOG("\nDEBUG  -->  E2AP : Created APER encoded buffer for Error Indication Message \n");
+#ifdef DEBUG_ASN_PRINT
+         for(int i=0; i< encBufSize; i++)
+         {
+            printf("%x",encBuf[i]);
+         } 
+#endif
+      }
+
+      if(SendE2APMsg(DU_APP_MEM_REGION, DU_POOL, encBuf, encBufSize) != ROK)
+      {
+         DU_LOG("\nINFO   -->  E2AP : Sending Error Indication Message");      
+
+      }
+      ret = ROK;
+      break;
+   }
+   FreeErrorIndication(e2apMsg);	
+   return ret;
+}
+
 /******************************************************************
  *
  * @brief Deallocation of memory allocated by aper decoder for e2 
@@ -148,62 +395,6 @@ void procE2NodeConfigUpdateFailure(E2AP_PDU_t *e2apMsg)
    }
 
    freeAperDecodingOfE2NodeConfigUpdateFailure(e2NodeCfgUpdFail);
-}
-
-/*******************************************************************
- *
- * @brief Fill E2 Failure Cause
- *
- * @details
- *
- *    Function : fillE2Cause
- *
- *    Functionality: Fill E2 Failure Cause
- *
- * @params[in] E2 Cause pointer to be filled in
- *             E2 Cause to be filled from 
- * @return void
- *
- ******************************************************************/
-void fillE2Cause(CauseE2_t *e2Cause, E2FailureCause failureCause)
-{
-   e2Cause->present = failureCause.causeType;
-   switch(e2Cause->present)
-   {
-      case CauseE2_PR_ricRequest:
-         {
-            e2Cause->choice.ricRequest = failureCause.cause;
-            break;
-         }
-      case CauseE2_PR_ricService:
-         {
-            e2Cause->choice.ricService = failureCause.cause;
-            break;
-         }
-      case CauseE2_PR_e2Node:
-         {
-            e2Cause->choice.e2Node = failureCause.cause;
-            break;
-         }
-      case CauseE2_PR_transport:
-         {
-            e2Cause->choice.transport = failureCause.cause;
-            break;
-         }
-      case CauseE2_PR_protocol:
-         {
-            e2Cause->choice.protocol = failureCause.cause;
-            break;
-         }
-      case CauseE2_PR_misc:
-         {
-            e2Cause->choice.misc = failureCause.cause;
-            break;
-         }
-      case CauseE2_PR_NOTHING:
-      default:
-         break;
-   }
 }
 
 /*******************************************************************
@@ -4834,6 +5025,11 @@ void E2APMsgHdlr(Buffer *mBuf)
                case InitiatingMessageE2__value_PR_RICserviceQuery:
                   {
                      procRicServiceQuery(e2apMsg);
+                     break;
+                  }
+               case ProcedureCodeE2_id_ErrorIndicationE2:
+                  {
+                     DU_LOG("\nINFO  -->  E2AP : Error indication received");
                      break;
                   }
                default:
