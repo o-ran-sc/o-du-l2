@@ -3,6 +3,52 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2e068acc_e2cfef25",
+        "filename": "src/du_app/du_e2ap_mgr.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 166,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-09-29T10:44:42Z",
+      "side": 1,
+      "message": "we can make measInfoNode as local variable here",
+      "range": {
+        "startLine": 166,
+        "startChar": 104,
+        "endLine": 166,
+        "endChar": 116
+      },
+      "revId": "f828a9a9ec2861d444e417ba3dff0b2dad0670da",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4e36ac4e_c7ffa1b2",
+        "filename": "src/du_app/du_e2ap_mgr.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 529,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-09-29T10:44:42Z",
+      "side": 1,
+      "message": "please correct the func name",
+      "range": {
+        "startLine": 529,
+        "startChar": 47,
+        "endLine": 529,
+        "endChar": 72
+      },
+      "revId": "f828a9a9ec2861d444e417ba3dff0b2dad0670da",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6b9d16ef_3630e66c",
         "filename": "src/du_app/du_e2ap_mgr.c",
         "patchSetId": 4
@@ -83,6 +129,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "70499a7c_3254ff61",
+        "filename": "src/du_app/du_e2ap_mgr.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 790,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-09-29T10:44:42Z",
+      "side": 1,
+      "message": "we dont need measInfoNode i guess here",
+      "range": {
+        "startLine": 790,
+        "startChar": 17,
+        "endLine": 790,
+        "endChar": 46
+      },
+      "revId": "f828a9a9ec2861d444e417ba3dff0b2dad0670da",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6a722e4d_3080a355",
         "filename": "src/du_app/du_e2ap_mgr.c",
         "patchSetId": 4
@@ -123,6 +192,40 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b802aca4_a4ff0f30",
+        "filename": "src/du_app/du_e2ap_mgr.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 390,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-09-29T10:44:42Z",
+      "side": 1,
+      "message": "range of int8 will be -127 to 127. so we shld use int16",
+      "revId": "f828a9a9ec2861d444e417ba3dff0b2dad0670da",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d0b18ac9_5d8372b5",
+        "filename": "src/du_app/du_e2ap_mgr.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 390,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-09-29T10:44:42Z",
+      "side": 1,
+      "message": "can we rename it to ricActionId because while understanding the code, we get confused",
+      "revId": "f828a9a9ec2861d444e417ba3dff0b2dad0670da",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "9650a098_dcbb319f",
         "filename": "src/du_app/du_e2ap_msg_hdl.c",
         "patchSetId": 4
@@ -151,6 +254,29 @@
       "writtenOn": "2023-09-29T09:57:38Z",
       "side": 1,
       "message": "same as above.\nMemory allocation and filling can be done in a single loop.",
+      "revId": "f828a9a9ec2861d444e417ba3dff0b2dad0670da",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5b4f89e0_e843de59",
+        "filename": "src/ric_stub/ric_stub.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-09-29T10:44:42Z",
+      "side": 1,
+      "message": "int8 will have range from -127 to 127. pls check\nand also renaming the variable to ricActionId for convenience of reading the code",
+      "range": {
+        "startLine": 105,
+        "startChar": 9,
+        "endLine": 105,
+        "endChar": 20
+      },
       "revId": "f828a9a9ec2861d444e417ba3dff0b2dad0670da",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
