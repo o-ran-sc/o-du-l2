@@ -228,6 +228,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ac9a322a_07d6da22",
+        "filename": "src/du_app/du_mgr_main.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 589,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-09-29T07:58:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f855b010_80846d04",
+      "revId": "fdf9574ca3ce7fb8ed5843db880e6e244fe636f9",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "271786b2_db9a0d70",
