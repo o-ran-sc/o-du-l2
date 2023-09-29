@@ -24,6 +24,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5ae93969_ffc6fe3c",
+        "filename": "src/du_app/du_e2ap_mgr.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 166,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-29T14:50:33Z",
+      "side": 1,
+      "message": "This is intentional.\nIn deletion scenarios, we would require both measurement info and the node to free them.",
+      "parentUuid": "2e068acc_e2cfef25",
+      "range": {
+        "startLine": 166,
+        "startChar": 104,
+        "endLine": 166,
+        "endChar": 116
+      },
+      "revId": "f828a9a9ec2861d444e417ba3dff0b2dad0670da",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4e36ac4e_c7ffa1b2",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-09-29T10:44:42Z",
       "side": 1,
       "message": "please correct the func name",
+      "range": {
+        "startLine": 529,
+        "startChar": 47,
+        "endLine": 529,
+        "endChar": 72
+      },
+      "revId": "f828a9a9ec2861d444e417ba3dff0b2dad0670da",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4120ab00_294ab8bb",
+        "filename": "src/du_app/du_e2ap_mgr.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 529,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-29T14:50:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4e36ac4e_c7ffa1b2",
       "range": {
         "startLine": 529,
         "startChar": 47,
@@ -70,6 +118,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "07f6f1f6_f3bddb1b",
+        "filename": "src/du_app/du_e2ap_mgr.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 658,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-29T14:50:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6b9d16ef_3630e66c",
+      "range": {
+        "startLine": 658,
+        "startChar": 6,
+        "endLine": 658,
+        "endChar": 16
+      },
+      "revId": "f828a9a9ec2861d444e417ba3dff0b2dad0670da",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9ccc8fec_9b430d63",
@@ -83,6 +155,24 @@
       "writtenOn": "2023-09-29T09:57:38Z",
       "side": 1,
       "message": "we can change the data type of the function becz this function may return RFAILED for memory allocation.",
+      "revId": "f828a9a9ec2861d444e417ba3dff0b2dad0670da",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "235447c7_3f10c640",
+        "filename": "src/du_app/du_e2ap_mgr.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 721,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-29T14:50:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9ccc8fec_9b430d63",
       "revId": "f828a9a9ec2861d444e417ba3dff0b2dad0670da",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -104,6 +194,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7ce869a1_23571fc0",
+        "filename": "src/du_app/du_e2ap_mgr.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 729,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-29T14:50:33Z",
+      "side": 1,
+      "message": "We can initialize string this way as well.",
+      "parentUuid": "21319025_ee91df09",
+      "revId": "f828a9a9ec2861d444e417ba3dff0b2dad0670da",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e3258bd5_93495169",
@@ -117,6 +225,30 @@
       "writtenOn": "2023-09-29T09:57:38Z",
       "side": 1,
       "message": "why are we not returning RFAILED from this function?",
+      "range": {
+        "startLine": 770,
+        "startChar": 12,
+        "endLine": 770,
+        "endChar": 18
+      },
+      "revId": "f828a9a9ec2861d444e417ba3dff0b2dad0670da",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9b13b0d6_beb7e549",
+        "filename": "src/du_app/du_e2ap_mgr.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 770,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-29T14:50:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e3258bd5_93495169",
       "range": {
         "startLine": 770,
         "startChar": 12,
@@ -150,6 +282,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "042a552a_659722cf",
+        "filename": "src/du_app/du_e2ap_mgr.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 790,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-29T14:50:33Z",
+      "side": 1,
+      "message": "Yes here its not needed. However, this function is common and node will be required when calling this function in case of deletion",
+      "parentUuid": "70499a7c_3254ff61",
+      "range": {
+        "startLine": 790,
+        "startChar": 17,
+        "endLine": 790,
+        "endChar": 46
+      },
+      "revId": "f828a9a9ec2861d444e417ba3dff0b2dad0670da",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6a722e4d_3080a355",
@@ -173,6 +329,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b3c12a90_b66d3e29",
+        "filename": "src/du_app/du_e2ap_mgr.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 802,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-29T14:50:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6a722e4d_3080a355",
+      "range": {
+        "startLine": 802,
+        "startChar": 16,
+        "endLine": 802,
+        "endChar": 17
+      },
+      "revId": "f828a9a9ec2861d444e417ba3dff0b2dad0670da",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c4d1928c_ed033aac",
@@ -186,6 +366,24 @@
       "writtenOn": "2023-09-29T09:57:38Z",
       "side": 1,
       "message": "No need to check timer here?",
+      "revId": "f828a9a9ec2861d444e417ba3dff0b2dad0670da",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7d7dc67e_d633a633",
+        "filename": "src/du_app/du_e2ap_mgr.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 860,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-29T14:50:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c4d1928c_ed033aac",
       "revId": "f828a9a9ec2861d444e417ba3dff0b2dad0670da",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -224,6 +422,42 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f62d4562_947d6c7f",
+        "filename": "src/du_app/du_e2ap_mgr.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 390,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-29T14:50:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d0b18ac9_5d8372b5",
+      "revId": "f828a9a9ec2861d444e417ba3dff0b2dad0670da",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a8a7ef48_45a75976",
+        "filename": "src/du_app/du_e2ap_mgr.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 390,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-29T14:50:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b802aca4_a4ff0f30",
+      "revId": "f828a9a9ec2861d444e417ba3dff0b2dad0670da",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9650a098_dcbb319f",
@@ -237,6 +471,24 @@
       "writtenOn": "2023-09-29T09:57:38Z",
       "side": 1,
       "message": "suggestion- I think we don\u0027t need two different loops here one for allocation and another one for fetching the values from the list.\nI think we can fill this in one loop also.",
+      "revId": "f828a9a9ec2861d444e417ba3dff0b2dad0670da",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "579d2245_6d5d3c0f",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 3452,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-29T14:50:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9650a098_dcbb319f",
       "revId": "f828a9a9ec2861d444e417ba3dff0b2dad0670da",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -258,6 +510,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ff736e1f_470fba43",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 3499,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-29T14:50:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "af6a7145_41036ded",
+      "revId": "f828a9a9ec2861d444e417ba3dff0b2dad0670da",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5b4f89e0_e843de59",
@@ -271,6 +541,30 @@
       "writtenOn": "2023-09-29T10:44:42Z",
       "side": 1,
       "message": "int8 will have range from -127 to 127. pls check\nand also renaming the variable to ricActionId for convenience of reading the code",
+      "range": {
+        "startLine": 105,
+        "startChar": 9,
+        "endLine": 105,
+        "endChar": 20
+      },
+      "revId": "f828a9a9ec2861d444e417ba3dff0b2dad0670da",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "596f4a50_966c5f9a",
+        "filename": "src/ric_stub/ric_stub.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-09-29T14:50:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5b4f89e0_e843de59",
       "range": {
         "startLine": 105,
         "startChar": 9,
