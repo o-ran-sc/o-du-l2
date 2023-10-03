@@ -160,6 +160,16 @@ typedef struct
    RanFunction ranFunRejectedList[MAX_RAN_FUNCTION];
 }RicTmpRanFunList;
 
+typedef struct
+{
+   uint8_t numActionModifed;
+   uint8_t actionModifiedList[MAX_RIC_ACTION];
+   uint8_t numActionModFailed;
+   uint8_t actionModFailedList[MAX_RIC_ACTION];
+   uint8_t numActionRemoved;
+   uint8_t actionRemovedList[MAX_RIC_ACTION];
+}RicTmpActionList;
+
 void readRicCfg();
 void cuAppInmsgHdlr(Buffer *mBuf);
 void sctpNtfyInd(CmInetSctpNotification *ntfy);
