@@ -391,6 +391,7 @@ typedef struct
    ActionType        type;
    ActionDefinition  definition;
    ConfigType        action;
+   E2FailureCause    failureCause; /* Used only when an action is required to be deleted */
 }ActionInfo;
 
 /* O-RAN.WG3.E2AP-R003-v03.00 : Section 9.1.1.1 : maxofRICActionID */
