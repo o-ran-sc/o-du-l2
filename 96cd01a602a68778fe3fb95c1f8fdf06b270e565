@@ -18,6 +18,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5ba9d56a_ad30be58",
+        "filename": "src/ric_stub/ric_e2ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 3272,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-10-04T12:02:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1ce332c8_e66b92c0",
+      "revId": "96cd01a602a68778fe3fb95c1f8fdf06b270e565",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0208bdd4_5daec50d",
@@ -35,6 +53,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f40d5b54_0284b58d",
+        "filename": "src/ric_stub/ric_e2ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 3277,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-10-04T12:02:37Z",
+      "side": 1,
+      "message": "Need this parameter for assignTransactionId function",
+      "parentUuid": "0208bdd4_5daec50d",
+      "revId": "96cd01a602a68778fe3fb95c1f8fdf06b270e565",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b93fed33_75a90364",
@@ -48,6 +84,24 @@
       "writtenOn": "2023-10-04T11:45:01Z",
       "side": 1,
       "message": "print func and line number.\nThis is a repeated comment. Please make sure to follow this format for all failures in all future gerrits.",
+      "revId": "96cd01a602a68778fe3fb95c1f8fdf06b270e565",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ec2e1532_a0085432",
+        "filename": "src/ric_stub/ric_e2ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 3292,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-10-04T12:02:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b93fed33_75a90364",
       "revId": "96cd01a602a68778fe3fb95c1f8fdf06b270e565",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
