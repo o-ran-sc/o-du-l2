@@ -3219,6 +3219,176 @@ uint8_t BuildAndSendErrorIndication(uint32_t duId, int8_t transId, RicRequestId 
 }
 
 /*******************************************************************
+ *
+ * @brief Deallocate the memory allocated for ResetRequest msg
+ *
+ * @details
+ *
+ *    Function : FreeResetRequest
+ *
+ *    Functionality:
+ *       - freeing the memory allocated for ResetRequest
+ *
+ * @params[in] E2AP_PDU_t *e2apMsg
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+void FreeResetRequest(E2AP_PDU_t *e2apMsg)
+{
+   uint8_t ieIdx =0;
+   ResetRequestE2_t  *resetReq = NULLP;
+
+   if(e2apMsg != NULLP)
+   {
+      if(e2apMsg->choice.initiatingMessage != NULLP)
+      {
+         resetReq = &e2apMsg->choice.initiatingMessage->value.choice.ResetRequestE2;
+         if(resetReq->protocolIEs.list.array)
+         {
+            for(ieIdx = 0; ieIdx < resetReq->protocolIEs.list.count; ieIdx++)
+            {
+               RIC_FREE(resetReq->protocolIEs.list.array[ieIdx], sizeof(ResetRequestIEs_t));
+            }
+            RIC_FREE(resetReq->protocolIEs.list.array, resetReq->protocolIEs.list.size);
+         }
+         RIC_FREE(e2apMsg->choice.initiatingMessage, sizeof(InitiatingMessageE2_t));
+      }
+      RIC_FREE(e2apMsg, sizeof(E2AP_PDU_t));
+   }
+}
+
+/*******************************************************************
+ *
+ * @brief Build and send the reset request msg
+ *
+ * @details
+ *
+ *    Function : BuildAndSendResetRequest
+ *
+ *    Functionality:
+ *         - Buld and send the reset request msg to E2 node
+ *
+ * @params[in]
+ *    DU database
+ *    Type of failure 
+ *    Cause of failure
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t BuildAndSendResetRequest(DuDb *duDb, CauseE2_PR causePresent, uint8_t reason)
+{
+   uint8_t ieIdx = 0, elementCnt = 0, transId = 0;
+   uint8_t ret = RFAILED;
+   E2AP_PDU_t        *e2apMsg = NULLP;
+   ResetRequestE2_t  *resetReq = NULLP;
+   asn_enc_rval_t     encRetVal;       /* Encoder return value */
+
+   DU_LOG("\nINFO   -->  E2AP : Building Reset Request\n");
+
+   do
+   {
+      RIC_ALLOC(e2apMsg, sizeof(E2AP_PDU_t));
+      if(e2apMsg == NULLP)
+      {
+         DU_LOG("\nERROR  -->  E2AP : BuildAndSendResetRequest(): Memory allocation for E2AP-PDU failed");
+         break;
+      }
+
+      e2apMsg->present = E2AP_PDU_PR_initiatingMessage;
+      RIC_ALLOC(e2apMsg->choice.initiatingMessage, sizeof(InitiatingMessageE2_t));
+      if(e2apMsg->choice.initiatingMessage == NULLP)
+      {
+         DU_LOG("\nERROR  -->  E2AP : BuildAndSendResetRequest(): Memory allocation for initiatingMessage");
+         break;
+      }
+
+      e2apMsg->choice.initiatingMessage->procedureCode = ProcedureCodeE2_id_Reset;
+      e2apMsg->choice.initiatingMessage->criticality = CriticalityE2_reject;
+      e2apMsg->choice.initiatingMessage->value.present = InitiatingMessageE2__value_PR_ResetRequestE2;
+      resetReq = &e2apMsg->choice.initiatingMessage->value.choice.ResetRequestE2;
+
+      elementCnt = 2;
+      resetReq->protocolIEs.list.count = elementCnt;
+      resetReq->protocolIEs.list.size = elementCnt * sizeof(ResetRequestIEs_t *);
+
+      RIC_ALLOC(resetReq->protocolIEs.list.array, resetReq->protocolIEs.list.size);
+      if(!resetReq->protocolIEs.list.array)
+      {
+         DU_LOG("\nERROR  -->  E2AP : BuildAndSendResetRequest(): Memory allocation failed for \
+               Reset Request IE array");
+         break;
+      }
+
+      for(ieIdx = 0; ieIdx < elementCnt; ieIdx++)
+      {
+         RIC_ALLOC(resetReq->protocolIEs.list.array[ieIdx], sizeof(ResetRequestIEs_t));
+         if(!resetReq->protocolIEs.list.array[ieIdx])
+         {
+            DU_LOG("\nERROR  -->  E2AP : BuildAndSendResetRequest(): Memory allocation failed for \
+                  Reset Request IE array element");
+            break;
+         }
+      }
+
+      /* In case of failure */
+      if(ieIdx < elementCnt)
+         break;
+
+      ieIdx = 0;
+      resetReq->protocolIEs.list.array[ieIdx]->id = ProtocolIE_IDE2_id_TransactionID;
+      resetReq->protocolIEs.list.array[ieIdx]->criticality = CriticalityE2_reject;
+      resetReq->protocolIEs.list.array[ieIdx]->value.present = ResetRequestIEs__value_PR_TransactionID;
+      transId = assignTransactionId(duDb);
+      resetReq->protocolIEs.list.array[ieIdx]->value.choice.TransactionID = transId;
+
+      ieIdx++;
+      resetReq->protocolIEs.list.array[ieIdx]->id = ProtocolIE_IDE2_id_CauseE2;
+      resetReq->protocolIEs.list.array[ieIdx]->criticality = CriticalityE2_ignore;
+      resetReq->protocolIEs.list.array[ieIdx]->value.present = ResetRequestIEs__value_PR_CauseE2;
+      fillE2FailureCause(&resetReq->protocolIEs.list.array[ieIdx]->value.choice.CauseE2, causePresent, reason);
+
+      /* Prints the Msg formed */
+      xer_fprint(stdout, &asn_DEF_E2AP_PDU, e2apMsg);
+
+      memset(encBuf, 0, ENC_BUF_MAX_LEN);
+      encBufSize = 0;
+      encRetVal = aper_encode(&asn_DEF_E2AP_PDU, 0, e2apMsg, PrepFinalEncBuf,\
+            encBuf);
+      if(encRetVal.encoded == ENCODE_FAIL)
+      {
+         DU_LOG("\nERROR  -->  E2AP : Could not encode reset request structure (at %s)\n",\
+               encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
+         break;
+      }
+      else
+      {
+         DU_LOG("\nDEBUG   -->  E2AP : Created APER encoded buffer for reset request\n");
+#ifdef DEBUG_ASN_PRINT
+         for(int i=0; i< encBufSize; i++)
+         {
+            printf("%x",encBuf[i]);
+         }
+#endif
+      }
+      if(SendE2APMsg(RIC_APP_MEM_REG, RIC_POOL, duDb->duId) != ROK)
+      {
+         DU_LOG("\nERROR  -->  E2AP : Sending reset request failed");
+         break;
+      }
+
+
+      ret = ROK;
+      break;
+   }while(true);
+
+   /* Free all memory */
+   FreeResetRequest(e2apMsg);
+   return ret;
+}
+
+/*******************************************************************
 *
 * @brief Handles received E2AP message and sends back response  
 *
