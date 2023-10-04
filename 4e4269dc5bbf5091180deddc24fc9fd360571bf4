@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5be811ba_510d13cd",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 5556,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-10-04T05:56:05Z",
+      "side": 1,
+      "message": "please add the description",
+      "revId": "4e4269dc5bbf5091180deddc24fc9fd360571bf4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a3397e90_89590542",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 5557,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-10-04T05:56:05Z",
+      "side": 1,
+      "message": "please rename it to FreeRicSubsModReq",
+      "range": {
+        "startLine": 5557,
+        "startChar": 5,
+        "endLine": 5557,
+        "endChar": 23
+      },
+      "revId": "4e4269dc5bbf5091180deddc24fc9fd360571bf4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "06ab675a_58900d50",
+        "filename": "src/ric_stub/ric_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 3201,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-10-04T05:56:05Z",
+      "side": 1,
+      "message": "I understand putting of return RFAILED here but when we look at first glance, it seems like this case is always returned with failure. Can we put this return inside if and else above and instead put a break here?",
+      "revId": "4e4269dc5bbf5091180deddc24fc9fd360571bf4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
