@@ -709,6 +709,7 @@ uint8_t e2ProcStatsRsp(MacStatsRsp *statsRsp)
 
       /* Send subscription response with accepted and rejected action lists to RIC */
       BuildAndSendRicSubscriptionRsp(pendingSubsRsp);
+      BuildAndSendRicSubsModRequired(ricSubscriptionInfo);
    }
    memset(pendingSubsRsp, 0, sizeof(PendingSubsRspInfo));
    return ROK;
