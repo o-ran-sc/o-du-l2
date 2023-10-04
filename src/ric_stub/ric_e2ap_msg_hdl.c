@@ -3121,6 +3121,537 @@ uint8_t ProcRicSubscriptionFailure(uint32_t duId, RICsubscriptionFailure_t *ricS
 
 /*******************************************************************
  *
+ * @brief Free memory for RIC Subscription Modification Confirm
+ *
+ * @details
+ *
+ *    Function : FreeRicSubsModConfirm
+ *
+ * Functionality: Free memory for RIC subscription modification
+ *    confirm
+ *
+ * @param E2AP Message PDU to be freed
+ * @return Void
+ *
+ ******************************************************************/
+void FreeRicSubsModConfirm(E2AP_PDU_t *e2apMsg)
+{
+   uint8_t ieIdx = 0, arrIdx=0;
+   RICsubscriptionModificationConfirm_t *ricSubsModCfm = NULLP;
+   RICsubscriptionModificationConfirm_IEs_t *ricSubsModCfmIe = NULLP;
+   RICactions_ConfirmedForModification_List_t *modCfmList = NULLP;
+   RICactions_RefusedToBeModified_List_t *modRefusedList = NULLP;
+   RICactions_ConfirmedForRemoval_List_t *rmvCfmList = NULLP;
+   RICactions_RefusedToBeRemoved_List_t *rmvFailList = NULLP;
+
+   if(e2apMsg)
+   {
+      if(e2apMsg->choice.successfulOutcome)
+      {
+         ricSubsModCfm = &e2apMsg->choice.successfulOutcome->value.choice.RICsubscriptionModificationConfirm;
+         if(ricSubsModCfm->protocolIEs.list.array)
+         {
+            for(ieIdx = 0; ieIdx < ricSubsModCfm->protocolIEs.list.count; ieIdx++)
+            {
+               if(ricSubsModCfm->protocolIEs.list.array[ieIdx])
+               {
+                  ricSubsModCfmIe = ricSubsModCfm->protocolIEs.list.array[ieIdx];
+                  switch(ricSubsModCfmIe->id)
+                  {
+                     case ProtocolIE_IDE2_id_RICactionsConfirmedForModification_List:
+                        {
+                           modCfmList = &ricSubsModCfmIe->value.choice.RICactions_ConfirmedForModification_List;
+                           if(modCfmList->list.array)
+                           {
+                              for(arrIdx = 0; arrIdx < modCfmList->list.count; arrIdx++)
+                              {
+                                 RIC_FREE(modCfmList->list.array[arrIdx], \
+                                    sizeof(RICaction_ConfirmedForModification_ItemIEs_t));
+                              }
+                              RIC_FREE(modCfmList->list.array,  modCfmList->list.size);
+                           }
+                           break;
+                        }
+
+                     case ProtocolIE_IDE2_id_RICactionsRefusedToBeModified_List:
+                        {
+                           modRefusedList = &ricSubsModCfmIe->value.choice.RICactions_RefusedToBeModified_List;
+                           if(modRefusedList->list.array)
+                           {
+                              for(arrIdx = 0; arrIdx < modRefusedList->list.count; arrIdx++)
+                              {
+                                 RIC_FREE(modRefusedList->list.array[arrIdx], \
+                                       sizeof(RICaction_RefusedToBeModified_ItemIEs_t));
+                              }
+                              RIC_FREE(modRefusedList->list.array,  modRefusedList->list.size);
+                           }
+                           break;
+                        }
+
+                     case ProtocolIE_IDE2_id_RICactionsConfirmedForRemoval_List:
+                        {
+                           rmvCfmList = &ricSubsModCfmIe->value.choice.RICactions_ConfirmedForRemoval_List;
+                           if(rmvCfmList->list.array)
+                           {
+                              for(arrIdx = 0; arrIdx < rmvCfmList->list.count; arrIdx++)
+                              {
+                                 RIC_FREE(rmvCfmList->list.array[arrIdx], \
+                                       sizeof(RICaction_ConfirmedForRemoval_ItemIEs_t));
+                              }
+                              RIC_FREE(rmvCfmList->list.array,  rmvCfmList->list.size);
+                           }
+                           break;
+                        }
+
+                     case ProtocolIE_IDE2_id_RICactionsRefusedToBeRemoved_List:
+                        {
+                           rmvFailList = &ricSubsModCfmIe->value.choice.RICactions_RefusedToBeRemoved_List;
+                           if(rmvFailList->list.array)
+                           {
+                              for(arrIdx = 0; arrIdx < rmvFailList->list.count; arrIdx++)
+                              {
+                                 RIC_ALLOC(rmvFailList->list.array[arrIdx], \
+                                    sizeof(RICaction_RefusedToBeRemoved_ItemIEs_t));
+                              }
+                              RIC_FREE(rmvFailList->list.array,  rmvFailList->list.size);
+                           }
+                           break;
+                        }
+
+                     default:
+                        break;
+
+                  }
+                  RIC_FREE(ricSubsModCfmIe, sizeof(RICsubscriptionModificationConfirm_IEs_t));
+               }
+            }
+            RIC_FREE(ricSubsModCfm->protocolIEs.list.array, ricSubsModCfm->protocolIEs.list.size);
+         }
+         RIC_FREE(e2apMsg->choice.successfulOutcome , sizeof(SuccessfulOutcomeE2_t));
+      }
+      RIC_FREE(e2apMsg, sizeof(E2AP_PDU_t));
+   }
+}
+
+/*******************************************************************
+ *
+ * @brief Fill the list of actions confirmed for modification
+ *
+ * @details
+ *
+ *    Function : fillActionModConfirmedList
+ *
+ * Functionality: Fill the list of actions confirmed for modification
+ *
+ * @param List to be filled
+ *        Number of actions
+ *        Source list of actions
+ * @return ROK - success
+ *         RFAILED - failure
+ *
+ ******************************************************************/
+uint8_t fillActionModConfirmedList(RICactions_ConfirmedForModification_List_t *modCfmList, uint8_t numActions, \
+   uint8_t *actionModifiedList)
+{
+   uint8_t arrIdx = 0;
+   RICaction_ConfirmedForModification_ItemIEs_t *modCfmListItem = NULLP;
+
+   modCfmList->list.count = numActions;
+   modCfmList->list.size = numActions * sizeof(RICaction_ConfirmedForModification_ItemIEs_t *);
+   RIC_ALLOC(modCfmList->list.array,  modCfmList->list.size);
+   if(!modCfmList->list.array)
+   {
+      DU_LOG("\nERROR  -->  E2AP : Memory allocation failed for %s at line %d", __func__, __LINE__);
+      return RFAILED;
+   }
+
+   for(arrIdx = 0; arrIdx < modCfmList->list.count; arrIdx++)
+   {
+      RIC_ALLOC(modCfmList->list.array[arrIdx], sizeof(RICaction_ConfirmedForModification_ItemIEs_t));
+      if(!modCfmList->list.array[arrIdx])
+      {
+         DU_LOG("\nERROR  -->  E2AP : Memory allocation failed for %s at line %d", __func__, __LINE__);
+         return RFAILED;
+      }
+
+      modCfmListItem = (RICaction_ConfirmedForModification_ItemIEs_t *)modCfmList->list.array[arrIdx];
+      modCfmListItem->id = ProtocolIE_IDE2_id_RICaction_ConfirmedForModification_Item;
+      modCfmListItem->criticality = CriticalityE2_ignore;
+      modCfmListItem->value.present = \
+         RICaction_ConfirmedForModification_ItemIEs__value_PR_RICaction_ConfirmedForModification_Item;
+      modCfmListItem->value.choice.RICaction_ConfirmedForModification_Item.ricActionID = actionModifiedList[arrIdx];
+   }
+
+   return ROK;
+}
+
+/*******************************************************************
+ *
+ * @brief Fill the list of actions refused to be modified
+ *
+ * @details
+ *
+ *    Function : fillActionModRefusedList
+ *
+ * Functionality: Fill the list of actions refused to be modified
+ *
+ * @param List to be filled
+ *        Number of list
+ *        Source list of actions refused tobe modified
+ * @return ROK - success
+ *         RFAILED - failure
+ *
+ ******************************************************************/
+uint8_t fillActionModRefusedList(RICactions_RefusedToBeModified_List_t *modRefusedList, uint8_t numActions, \
+   ActionFailed *actionModFailedList)
+{
+   uint8_t arrIdx = 0;
+   RICaction_RefusedToBeModified_ItemIEs_t *modRefusedListItem = NULLP;
+
+   modRefusedList->list.count = numActions;
+   modRefusedList->list.size = numActions * sizeof(RICaction_RefusedToBeModified_ItemIEs_t *);
+   RIC_ALLOC(modRefusedList->list.array,  modRefusedList->list.size);
+   if(!modRefusedList->list.array)
+   {
+      DU_LOG("\nERROR  -->  E2AP : Memory allocation failed for %s at line %d", __func__, __LINE__);
+      return RFAILED;
+   }
+
+   for(arrIdx = 0; arrIdx < modRefusedList->list.count; arrIdx++)
+   {
+      RIC_ALLOC(modRefusedList->list.array[arrIdx], sizeof(RICaction_RefusedToBeModified_ItemIEs_t));
+      if(!modRefusedList->list.array[arrIdx])
+      {
+         DU_LOG("\nERROR  -->  E2AP : Memory allocation failed for %s at line %d", __func__, __LINE__);
+         return RFAILED;
+      }
+
+      modRefusedListItem = (RICaction_RefusedToBeModified_ItemIEs_t *)modRefusedList->list.array[arrIdx];
+      modRefusedListItem->id = ProtocolIE_IDE2_id_RICaction_RefusedToBeModified_Item;
+      modRefusedListItem->criticality = CriticalityE2_ignore;
+      modRefusedListItem->value.present = \
+         RICaction_RefusedToBeModified_ItemIEs__value_PR_RICaction_RefusedToBeModified_Item;
+      modRefusedListItem->value.choice.RICaction_RefusedToBeModified_Item.ricActionID = \
+         actionModFailedList[arrIdx].actionId;
+      fillE2FailureCause(&modRefusedListItem->value.choice.RICaction_RefusedToBeModified_Item.cause, \
+         actionModFailedList[arrIdx].failureType, actionModFailedList[arrIdx].cause);
+   }
+
+   return ROK;
+}
+
+/*******************************************************************
+ *
+ * @brief Fill the list of action confirmed for removal
+ *
+ * @details
+ *
+ *    Function : fillActionRemovalConfirmedList
+ *
+ * Functionality: Fill the list of action confirmed for removal
+ *
+ * @param List to be filled
+ *        Number of actions
+ *        Source list of actions removed
+ * @return ROK - success
+ *         RFAILED - failure
+ *
+ ******************************************************************/
+uint8_t fillActionRemovalConfirmedList(RICactions_ConfirmedForRemoval_List_t *rmvCfmList, uint8_t numActions, \
+   uint8_t *actionRemovedList)
+{
+   uint8_t arrIdx = 0;
+   RICaction_ConfirmedForRemoval_ItemIEs_t *rmvCfmListItem = NULLP;
+
+   rmvCfmList->list.count = numActions;
+   rmvCfmList->list.size = numActions * sizeof(RICaction_ConfirmedForRemoval_ItemIEs_t *);
+   RIC_ALLOC(rmvCfmList->list.array,  rmvCfmList->list.size);
+   if(!rmvCfmList->list.array)
+   {
+      DU_LOG("\nERROR  -->  E2AP : Memory allocation failed for %s at line %d", __func__, __LINE__);
+      return RFAILED;
+   }
+
+   for(arrIdx = 0; arrIdx < rmvCfmList->list.count; arrIdx++)
+   {
+      RIC_ALLOC(rmvCfmList->list.array[arrIdx], sizeof(RICaction_ConfirmedForRemoval_ItemIEs_t));
+      if(!rmvCfmList->list.array[arrIdx])
+      {
+         DU_LOG("\nERROR  -->  E2AP : Memory allocation failed for %s at line %d", __func__, __LINE__);
+         return RFAILED;
+      }
+
+      rmvCfmListItem = (RICaction_ConfirmedForRemoval_ItemIEs_t *)rmvCfmList->list.array[arrIdx];
+      rmvCfmListItem->id = ProtocolIE_IDE2_id_RICaction_ConfirmedForRemoval_Item;
+      rmvCfmListItem->criticality = CriticalityE2_ignore;
+      rmvCfmListItem->value.present = \
+         RICaction_ConfirmedForRemoval_ItemIEs__value_PR_RICaction_ConfirmedForRemoval_Item;
+      rmvCfmListItem->value.choice.RICaction_ConfirmedForRemoval_Item.ricActionID = actionRemovedList[arrIdx];
+   }
+
+   return ROK;
+}
+
+/*******************************************************************
+ *
+ * @brief Fill the list of actions refused to be removed
+ *
+ * @details
+ *
+ *    Function : fillActionRemovalRefusedList
+ *
+ * Functionality: Fill the list of actions refused to be removed
+ *
+ * @param List to be filled
+ *        Number of list
+ *        Source list of actions refused to be removed
+ * @return ROK - success
+ *         RFAILED - failure
+ *
+ ******************************************************************/
+uint8_t fillActionRemovalRefusedList(RICactions_RefusedToBeRemoved_List_t *rmvFailList, \
+   uint8_t numActions, ActionFailed *actionRmvlFailList)
+{
+   uint8_t arrIdx = 0;
+   RICaction_RefusedToBeRemoved_ItemIEs_t *rmvFailListItem = NULLP;
+
+   rmvFailList->list.count = numActions;
+   rmvFailList->list.size = numActions * sizeof(RICaction_RefusedToBeRemoved_ItemIEs_t *);
+   RIC_ALLOC(rmvFailList->list.array,  rmvFailList->list.size);
+   if(!rmvFailList->list.array)
+   {
+      DU_LOG("\nERROR  -->  E2AP : Memory allocation failed for %s at line %d", __func__, __LINE__);
+      return RFAILED;
+   }
+
+   for(arrIdx = 0; arrIdx < rmvFailList->list.count; arrIdx++)
+   {
+      RIC_ALLOC(rmvFailList->list.array[arrIdx], sizeof(RICaction_RefusedToBeRemoved_ItemIEs_t));
+      if(!rmvFailList->list.array[arrIdx])
+      {
+         DU_LOG("\nERROR  -->  E2AP : Memory allocation failed for %s at line %d", __func__, __LINE__);
+         return RFAILED;
+      }
+
+      rmvFailListItem = (RICaction_RefusedToBeRemoved_ItemIEs_t *)rmvFailList->list.array[arrIdx];
+      rmvFailListItem->id = ProtocolIE_IDE2_id_RICaction_RefusedToBeRemoved_Item;
+      rmvFailListItem->criticality = CriticalityE2_ignore;
+      rmvFailListItem->value.present = \
+         RICaction_RefusedToBeRemoved_ItemIEs__value_PR_RICaction_RefusedToBeRemoved_Item;
+      rmvFailListItem->value.choice.RICaction_RefusedToBeRemoved_Item.ricActionID = actionRmvlFailList[arrIdx].actionId;
+      fillE2FailureCause(&rmvFailListItem->value.choice.RICaction_RefusedToBeRemoved_Item.cause, \
+         actionRmvlFailList[arrIdx].failureType, actionRmvlFailList[arrIdx].cause);
+   }
+
+   return ROK;
+
+}
+
+/*******************************************************************
+ *
+ * @brief Build And Send RIC Subscription Modification Refuse
+ *
+ * @details
+ *
+ *    Function : BuildAndSendRicSubsModRefuse
+ *
+ * Functionality: Build And Send RIC Subscription Modification Refuse
+ *
+ * @param DU ID
+ *        RIC Request ID of subscription
+ *        RAN Function ID
+ *        Type of failure
+ *        Cause of failure
+ * @return ROK - success
+ *         RFAILED - failure
+ *
+ ******************************************************************/
+uint8_t BuildAndSendRicSubsModConfirm(uint32_t duId, RicRequestId ricReqId, uint16_t ranFuncId, RicTmpActionList tmpActionList)
+{
+   uint8_t ieIdx = 0, elementCnt = 0;
+   uint8_t ret = RFAILED;
+   E2AP_PDU_t *e2apMsg = NULLP;
+   asn_enc_rval_t encRetVal;
+   RICsubscriptionModificationConfirm_t *ricSubsModCfm = NULLP;
+   RICsubscriptionModificationConfirm_IEs_t *ricSubsModCfmIe = NULLP;
+
+   DU_LOG("\nINFO   -->  E2AP : Building RIC Subscription Modification Confirm\n");
+   while(true)
+   {
+      RIC_ALLOC(e2apMsg, sizeof(E2AP_PDU_t));
+      if(e2apMsg == NULLP)
+      {
+         DU_LOG("\nERROR  -->  E2AP : Memory allocation failed for %s at line %d", __func__, __LINE__);
+         break;
+      }
+
+      /* Successful Outcome */
+      e2apMsg->present =  E2AP_PDU_PR_successfulOutcome;
+      RIC_ALLOC(e2apMsg->choice.successfulOutcome , sizeof(SuccessfulOutcomeE2_t));
+      if(e2apMsg->choice.successfulOutcome == NULLP)
+      {
+         DU_LOG("\nERROR  -->  E2AP : Memory allocation failed for %s at line %d", __func__, __LINE__);
+         break;
+      }
+
+      e2apMsg->choice.successfulOutcome->procedureCode = ProcedureCodeE2_id_RICsubscriptionModificationRequired;
+      e2apMsg->choice.successfulOutcome->criticality = CriticalityE2_reject;
+      e2apMsg->choice.successfulOutcome->value.present = \
+         SuccessfulOutcomeE2__value_PR_RICsubscriptionModificationConfirm;
+      ricSubsModCfm = &e2apMsg->choice.successfulOutcome->value.choice.RICsubscriptionModificationConfirm;
+
+      elementCnt = 2;
+      if(tmpActionList.numActionModified)
+         elementCnt++;
+      if(tmpActionList.numActionModFailed)
+         elementCnt++;
+      if(tmpActionList.numActionRemoved)
+         elementCnt++;
+      if(tmpActionList.numActionRemovalFailed)
+         elementCnt++;
+
+      ricSubsModCfm->protocolIEs.list.count = elementCnt;
+      ricSubsModCfm->protocolIEs.list.size = elementCnt * sizeof(RICsubscriptionModificationConfirm_IEs_t *);
+      RIC_ALLOC(ricSubsModCfm->protocolIEs.list.array, ricSubsModCfm->protocolIEs.list.size);
+      if(!ricSubsModCfm->protocolIEs.list.array)
+      {
+         DU_LOG("\nERROR  -->  E2AP : Memory allocation failed for %s at line %d", __func__, __LINE__);
+         break;
+      }
+
+      for(ieIdx = 0; ieIdx < elementCnt; ieIdx++)
+      {
+         RIC_ALLOC(ricSubsModCfm->protocolIEs.list.array[ieIdx], sizeof(RICsubscriptionModificationConfirm_IEs_t));
+         if(!ricSubsModCfm->protocolIEs.list.array[ieIdx])
+         {
+            DU_LOG("\nERROR  -->  E2AP : Memory allocation failed for %s at line %d", __func__, __LINE__);
+            break;
+         }
+      }
+      
+      /* RIC Request ID */
+      ieIdx = 0;
+      ricSubsModCfmIe = ricSubsModCfm->protocolIEs.list.array[ieIdx];
+      ricSubsModCfmIe->id = ProtocolIE_IDE2_id_RICrequestID;
+      ricSubsModCfmIe->criticality = CriticalityE2_reject;
+      ricSubsModCfmIe->value.present = RICsubscriptionModificationConfirm_IEs__value_PR_RICrequestID;
+      ricSubsModCfmIe->value.choice.RICrequestID.ricRequestorID = ricReqId.requestorId;
+      ricSubsModCfmIe->value.choice.RICrequestID.ricInstanceID = ricReqId.instanceId;
+
+      /* RAN Function ID */
+      ieIdx++;
+      ricSubsModCfmIe = ricSubsModCfm->protocolIEs.list.array[ieIdx];
+      ricSubsModCfmIe->id = ProtocolIE_IDE2_id_RANfunctionID;
+      ricSubsModCfmIe->criticality = CriticalityE2_reject;
+      ricSubsModCfmIe->value.present = RICsubscriptionModificationConfirm_IEs__value_PR_RANfunctionID;
+      ricSubsModCfmIe->value.choice.RANfunctionID = ranFuncId;
+
+      /* RIC Actions List confirmed for modification */
+      if(tmpActionList.numActionModified)
+      {
+         ieIdx++;
+         ricSubsModCfmIe = ricSubsModCfm->protocolIEs.list.array[ieIdx];
+         ricSubsModCfmIe->id = ProtocolIE_IDE2_id_RICactionsConfirmedForModification_List;
+         ricSubsModCfmIe->criticality = CriticalityE2_ignore;
+         ricSubsModCfmIe->value.present = \
+            RICsubscriptionModificationConfirm_IEs__value_PR_RICactions_ConfirmedForModification_List;
+         if(fillActionModConfirmedList(&ricSubsModCfmIe->value.choice.RICactions_ConfirmedForModification_List, \
+            tmpActionList.numActionModified, tmpActionList.actionModifiedList) != ROK)
+         {
+            DU_LOG("\nERROR  -->  E2AP : %s: Failed to fill RIC Actions Confirmed for Modification List", __func__);
+            break;
+         }
+      }
+
+      /* RIC Actions List refured to be modified */
+      if(tmpActionList.numActionModFailed)
+      {
+         ieIdx++;
+         ricSubsModCfmIe = ricSubsModCfm->protocolIEs.list.array[ieIdx];
+         ricSubsModCfmIe->id = ProtocolIE_IDE2_id_RICactionsRefusedToBeModified_List;
+         ricSubsModCfmIe->criticality = CriticalityE2_ignore;
+         ricSubsModCfmIe->value.present = \
+            RICsubscriptionModificationConfirm_IEs__value_PR_RICactions_RefusedToBeModified_List;
+         if(fillActionModRefusedList(&ricSubsModCfmIe->value.choice.RICactions_RefusedToBeModified_List, \
+            tmpActionList.numActionModFailed, tmpActionList.actionModFailedList) != ROK)
+         {
+            DU_LOG("\nERROR  -->  E2AP : %s: Failed to fill RIC Actions Refused to be Modified List", __func__);
+            break;
+         }
+      }
+
+      /* RIC Actions List confirmed for removal */
+      if(tmpActionList.numActionRemoved)
+      {
+         ieIdx++;
+         ricSubsModCfmIe = ricSubsModCfm->protocolIEs.list.array[ieIdx];
+         ricSubsModCfmIe->id = ProtocolIE_IDE2_id_RICactionsConfirmedForRemoval_List;
+         ricSubsModCfmIe->criticality = CriticalityE2_ignore;
+         ricSubsModCfmIe->value.present = \
+            RICsubscriptionModificationConfirm_IEs__value_PR_RICactions_ConfirmedForRemoval_List;
+         if(fillActionRemovalConfirmedList(&ricSubsModCfmIe->value.choice.RICactions_ConfirmedForRemoval_List, \
+            tmpActionList.numActionRemoved, tmpActionList.actionRemovedList) != ROK)
+         {
+            DU_LOG("\nERROR  -->  E2AP : %s: Failed to fill RIC Actions Confirmed for Removal List", __func__);
+            break;
+         }
+      }
+
+      /* RIC Actions List Refused to be removed */
+      if(tmpActionList.numActionRemovalFailed)
+      {
+         ieIdx++;
+         ricSubsModCfmIe = ricSubsModCfm->protocolIEs.list.array[ieIdx];
+         ricSubsModCfmIe->id = ProtocolIE_IDE2_id_RICactionsRefusedToBeRemoved_List;
+         ricSubsModCfmIe->criticality = CriticalityE2_ignore;
+         ricSubsModCfmIe->value.present = \
+            RICsubscriptionModificationConfirm_IEs__value_PR_RICactions_RefusedToBeRemoved_List;
+         if(fillActionRemovalRefusedList(&ricSubsModCfmIe->value.choice.RICactions_RefusedToBeRemoved_List, \
+            tmpActionList.numActionRemovalFailed, tmpActionList.actionRemovalFailedList) != ROK)
+         {
+            DU_LOG("\nERROR  -->  E2AP : %s: Failed to fill RIC Actions Failed to be Removed List", __func__);
+            break;
+         }
+      }
+
+      /* Print and encode E2AP Message PDU */
+      xer_fprint(stdout, &asn_DEF_E2AP_PDU, e2apMsg);
+      memset(encBuf, 0, ENC_BUF_MAX_LEN);
+      encBufSize = 0;
+      encRetVal = aper_encode(&asn_DEF_E2AP_PDU, 0, e2apMsg, PrepFinalEncBuf, encBuf);
+
+      /* Check encode results */
+      if(encRetVal.encoded == ENCODE_FAIL)
+      {
+         DU_LOG("\nERROR  -->  E2AP : Could not encode RIC subscription modification confirm (at %s)\n",\
+               encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
+         break;
+      }
+      else
+      {
+         DU_LOG("\nDEBUG  -->  E2AP : Created APER encoded buffer for RIC subscription modification confirm\n");
+         for(int i=0; i< encBufSize; i++)
+         {
+            DU_LOG("%x",encBuf[i]);
+         }
+      }
+
+      if(SendE2APMsg(RIC_APP_MEM_REG, RIC_POOL, duId) != ROK)
+      {
+         DU_LOG("\nERROR  -->  E2AP : Failed to send RIC Subscription Modification Confirm");
+         break;
+      }
+
+      ret =ROK;
+      break;
+   }
+
+   FreeRicSubsModConfirm(e2apMsg);
+   return ret;
+}
+
+/*******************************************************************
+ *
  * @brief Processing of RIC Subscription Modification Required
  *
  * @details
@@ -3211,11 +3742,16 @@ uint8_t ProcRicSubsModReqd(uint32_t duId, RICsubscriptionModificationRequired_t 
                   if(action)
                   {
                      /* No modification required as of now, hence directly adding to the list */
-                     tmpActionList.actionModifiedList[tmpActionList.numActionModifed++] = actionId;
+                     tmpActionList.actionModifiedList[tmpActionList.numActionModified++] = actionId;
                   }
                   else
                   {
-                     tmpActionList.actionModFailedList[tmpActionList.numActionModFailed++] = actionId;
+                     tmpActionList.actionModFailedList[tmpActionList.numActionModFailed].actionId = actionId;
+                     tmpActionList.actionModFailedList[tmpActionList.numActionModFailed].failureType = \
+                        CauseE2_PR_ricRequest;
+                     tmpActionList.actionModFailedList[tmpActionList.numActionModFailed].cause = \
+                        CauseE2RICrequest_action_not_supported;
+                     tmpActionList.numActionModFailed++;
                   }
                }
                break;
@@ -3233,6 +3769,7 @@ uint8_t ProcRicSubsModReqd(uint32_t duId, RICsubscriptionModificationRequired_t 
                      tmpActionList.actionRemovedList[tmpActionList.numActionRemoved++] = actionId;
                      memset(action, 0, sizeof(ActionInfo));
                      action->actionId = -1;
+                     ricSubs->numOfActions--;
                   }
                }
                break;
@@ -3247,14 +3784,17 @@ uint8_t ProcRicSubsModReqd(uint32_t duId, RICsubscriptionModificationRequired_t 
     * Else
     *   send RIC Subscription Modification Confirm
     */
-   // TO BE DONE IN FUTURE GERRITS
-   /*
-   if(tmpActionList.numActionModifed || tmpActionList.numActionRemoved)
+   if(tmpActionList.numActionModified || tmpActionList.numActionRemoved)
+   {
       BuildAndSendRicSubsModConfirm(duId, ricReqId, ranFuncId, tmpActionList);
+   }
    else
-      BuildAndSendRicSubsModRefuse(duId, ricReqId, ranFuncId, CauseE2_PR_ricRequest, \
+   {
+      // TO BE DONE IN FUTURE GERRITS
+      //BuildAndSendRicSubsModRefuse(duId, ricReqId, ranFuncId, CauseE2_PR_ricRequest, \
       CauseE2RICrequest_action_not_supported);
-   */
+   }
+   
    return ROK;
 }
 
