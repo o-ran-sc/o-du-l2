@@ -5635,6 +5635,12 @@ void FreeRicSubsModRequired(E2AP_PDU_t *e2apMsg)
    }
 }
 
+/* A RIC Subscription includes RIC subsequenct action only for RIC Insert service.
+ * However, E2SM-KPM supports only RIC Report service.
+ * Hence there is no subsequent action in RIC subscription that may require modification.
+ * So commenting the action-modification IEs for the time being
+ */
+#if 0
 /*******************************************************************
  *
  * @brief Fill Action required to be modified list
@@ -5694,6 +5700,7 @@ uint8_t FillActionReqdToBeModList(RICactions_RequiredToBeModified_List_t *action
 
    return ROK;
 }
+#endif
 
 /*******************************************************************
  *
@@ -5832,6 +5839,12 @@ uint8_t FillRicSubsModRequired(RICsubscriptionModificationRequired_t *ricSubsMod
    ricSubsModReqdIe->value.present = RICsubscriptionModificationRequired_IEs__value_PR_RANfunctionID;
    ricSubsModReqdIe->value.choice.RANfunctionID = ricSubscription->ranFuncId;
 
+/* A RIC Subscription includes RIC subsequenct action only for RIC Insert service.
+ * However, E2SM-KPM supports only RIC Report service.
+ * Hence there is no subsequent action in RIC subscription that may require modification.
+ * So commenting the action-modification IEs for the time being
+ */
+#if 0
    /* RIC Actions Required to be Modified */
    if(numActionsMod)
    {
@@ -5849,6 +5862,7 @@ uint8_t FillRicSubsModRequired(RICsubscriptionModificationRequired_t *ricSubsMod
          return RFAILED;
       }
    }
+#endif
 
    /* RIC Actions Required to be removed */
    if(numActionsRmv)
@@ -5962,6 +5976,337 @@ uint8_t BuildAndSendRicSubsModRequired(RicSubscription *ricSubscription)
 
 /*******************************************************************
  *
+ * @brief Free APER decoding of RIC Subscription Modification Confirm
+ *
+ * @details
+ *
+ *    Function : freeAperDecodingOfRicSubsModConfirm
+ *
+ * Functionality:  Free APER decoding of RIC Subscription 
+ *   Modification Confirm
+ *
+ * @param  E2AP Message PDU
+ * @return void
+ *
+ ******************************************************************/
+void freeAperDecodingOfRicSubsModConfirm(E2AP_PDU_t *e2apMsg)
+{
+   uint8_t ieIdx = 0, arrIdx=0;
+   RICsubscriptionModificationConfirm_t *ricSubsModCfm = NULLP;
+   RICsubscriptionModificationConfirm_IEs_t *ricSubsModCfmIe = NULLP;
+   RICactions_ConfirmedForModification_List_t *modCfmList = NULLP;
+   RICactions_RefusedToBeModified_List_t *modRefusedList = NULLP;
+   RICactions_ConfirmedForRemoval_List_t *rmvCfmList = NULLP;
+   RICactions_RefusedToBeRemoved_List_t *rmvFailList = NULLP;
+
+   if(e2apMsg && e2apMsg->choice.successfulOutcome)
+   {
+      ricSubsModCfm = &e2apMsg->choice.successfulOutcome->value.choice.RICsubscriptionModificationConfirm;
+      if(ricSubsModCfm->protocolIEs.list.array)
+      {
+         for(ieIdx = 0; ieIdx < ricSubsModCfm->protocolIEs.list.count; ieIdx++)
+         {
+            if(ricSubsModCfm->protocolIEs.list.array[ieIdx])
+            {
+               ricSubsModCfmIe = ricSubsModCfm->protocolIEs.list.array[ieIdx];
+               switch(ricSubsModCfmIe->id)
+               {
+                  case ProtocolIE_IDE2_id_RICactionsConfirmedForModification_List:
+                     {
+                        modCfmList = &ricSubsModCfmIe->value.choice.RICactions_ConfirmedForModification_List;
+                        if(modCfmList->list.array)
+                        {
+                           for(arrIdx = 0; arrIdx < modCfmList->list.count; arrIdx++)
+                           {
+                              if(modCfmList->list.array[arrIdx])
+                                 free(modCfmList->list.array[arrIdx]);
+                           }
+                           free(modCfmList->list.array);
+                        }
+                        break;
+                     }
+
+                  case ProtocolIE_IDE2_id_RICactionsRefusedToBeModified_List:
+                     {
+                        modRefusedList = &ricSubsModCfmIe->value.choice.RICactions_RefusedToBeModified_List;
+                        if(modRefusedList->list.array)
+                        {
+                           for(arrIdx = 0; arrIdx < modRefusedList->list.count; arrIdx++)
+                           {
+                              if(modRefusedList->list.array[arrIdx])
+                                 free(modRefusedList->list.array[arrIdx]);
+                           }
+                           free(modRefusedList->list.array);
+                        }
+                        break;
+                     }
+
+                  case ProtocolIE_IDE2_id_RICactionsConfirmedForRemoval_List:
+                     {
+                        rmvCfmList = &ricSubsModCfmIe->value.choice.RICactions_ConfirmedForRemoval_List;
+                        if(rmvCfmList->list.array)
+                        {
+                           for(arrIdx = 0; arrIdx < rmvCfmList->list.count; arrIdx++)
+                           {
+                              if(rmvCfmList->list.array[arrIdx])
+                                 free(rmvCfmList->list.array[arrIdx]);
+                           }
+                           free(rmvCfmList->list.array);
+                        }
+                        break;
+                     }
+
+                  case ProtocolIE_IDE2_id_RICactionsRefusedToBeRemoved_List:
+                     {
+                        rmvFailList = &ricSubsModCfmIe->value.choice.RICactions_RefusedToBeRemoved_List;
+                        if(rmvFailList->list.array)
+                        {
+                           for(arrIdx = 0; arrIdx < rmvFailList->list.count; arrIdx++)
+                           {
+                              if(rmvFailList->list.array[arrIdx])
+                                 free(rmvFailList->list.array[arrIdx]);
+                           }
+                           free(rmvFailList->list.array);
+                        }
+                        break;
+                     }
+
+                  default:
+                     break;
+
+               }
+               free(ricSubsModCfmIe);
+            }
+         }
+         free(ricSubsModCfm->protocolIEs.list.array);
+      }
+   }
+}
+
+/*******************************************************************
+ *
+ * @brief Process RIC Subscription Modification Confirm Message
+ *
+ * @details
+ *
+ *    Function : procRicSubscriptionModificationConfirm
+ *
+ * Functionality:  Process RIC Subscription Modification Confirm
+ *    Message received from RIC. 
+ *
+ * @param  E2AP Message PDU
+ * @return void
+ *
+ ******************************************************************/
+void procRicSubscriptionModificationConfirm(E2AP_PDU_t *e2apMsg)
+{
+   uint8_t actionId = 0, ieIdx = 0, arrIdx = 0;
+   uint16_t ranFuncId = 0;
+   bool procFailure = false;
+   RicRequestId ricReqId;
+   RanFunction *ranFuncDb = NULLP;
+   CmLList *ricSubsNode = NULLP;
+   RicSubscription *ricSubsDb = NULLP;
+   ActionInfo *actionDb = NULLP;
+
+   RICsubscriptionModificationConfirm_t *ricSubsModCfm = NULLP;
+   RICsubscriptionModificationConfirm_IEs_t *ricSubsModCfmIe = NULLP;
+
+   RICactions_ConfirmedForModification_List_t *modCfmList = NULLP;
+   RICaction_ConfirmedForModification_ItemIEs_t *modCfmListItem = NULLP;
+
+   RICactions_RefusedToBeModified_List_t *modRefusedList = NULLP;
+   RICaction_RefusedToBeModified_ItemIEs_t *modRefusedListItem = NULLP;
+
+   RICactions_ConfirmedForRemoval_List_t *rmvCfmList = NULLP;
+   RICaction_ConfirmedForRemoval_ItemIEs_t *rmvCfmListItem = NULLP;
+
+   RICactions_RefusedToBeRemoved_List_t *rmvFailList = NULLP;
+   RICaction_RefusedToBeRemoved_ItemIEs_t *rmvFailListItem = NULLP;
+
+   DU_LOG("\nINFO   -->  E2AP : %s: Received RIC Subscription Modification Confirm", __func__);
+
+   do{
+      if(!e2apMsg)
+      {
+         DU_LOG("\nERROR  -->  E2AP : %s: E2AP Message is NULL", __func__);
+         break;
+      }
+
+      if(!e2apMsg->choice.successfulOutcome)
+      {
+         DU_LOG("\nERROR  -->  E2AP : %s: Successful Outcome in E2AP message is NULL", __func__);
+         break;
+      }
+
+      ricSubsModCfm = &e2apMsg->choice.successfulOutcome->value.choice.RICsubscriptionModificationConfirm;
+      if(!ricSubsModCfm->protocolIEs.list.array)
+      {
+         DU_LOG("\nERROR  -->  E2AP : %s: Array conatining E2AP message IEs is null", __func__);
+         break;
+      }
+
+      for(ieIdx = 0; ieIdx < ricSubsModCfm->protocolIEs.list.count; ieIdx++)
+      {
+         if(!ricSubsModCfm->protocolIEs.list.array[ieIdx])
+         {
+            DU_LOG("\nERROR  -->  E2AP : %s: IE at index [%d] in E2AP message IEs list is null", __func__, ieIdx);
+            break;
+         }
+
+         ricSubsModCfmIe = ricSubsModCfm->protocolIEs.list.array[ieIdx];
+         switch(ricSubsModCfmIe->id)
+         {
+            case ProtocolIE_IDE2_id_RICrequestID:
+               {
+                  memset(&ricReqId, 0, sizeof(RicRequestId));
+                  ricReqId.requestorId = ricSubsModCfmIe->value.choice.RICrequestID.ricRequestorID;
+                  ricReqId.instanceId = ricSubsModCfmIe->value.choice.RICrequestID.ricInstanceID;
+                  break;
+               }
+
+            case ProtocolIE_IDE2_id_RANfunctionID:
+               {
+                  ranFuncId = ricSubsModCfmIe->value.choice.RANfunctionID;
+                  ranFuncDb = fetchRanFuncFromRanFuncId(ranFuncId);
+                  if(!ranFuncDb)
+                  {
+                     DU_LOG("\nERROR  -->  E2AP : %s: RAN Function ID [%d] not found", __func__, ranFuncId);
+                     procFailure = true;
+                     break;
+                  }
+
+                  ricSubsDb = fetchSubsInfoFromRicReqId(ricReqId, ranFuncDb, &ricSubsNode); 
+                  if(!ricSubsDb)
+                  {
+                     DU_LOG("\nERROR  -->  E2AP : %s: RIC Subscription not found for Requestor_ID [%d] Instance_ID [%d]",\
+                           __func__, ricReqId.requestorId, ricReqId.instanceId);
+                     procFailure = true;
+                     break;
+                  }
+
+                  break;
+               }
+
+/* A RIC Subscription includes RIC subsequenct action only for RIC Insert service. 
+ * However, E2SM-KPM supports only RIC Report service. 
+ * Hence there is no subsequent action in RIC subscription that may require modification. 
+ * So commenting the action-modification IEs for the time being 
+ */
+#if 0
+            case ProtocolIE_IDE2_id_RICactionsConfirmedForModification_List:
+               {
+                  modCfmList = &ricSubsModCfmIe->value.choice.RICactions_ConfirmedForModification_List;
+                  for(arrIdx = 0; arrIdx < modCfmList->list.count; arrIdx++)
+                  {
+                     modCfmListItem = (RICaction_ConfirmedForModification_ItemIEs_t *)modCfmList->list.array[arrIdx];
+                     actionId = modCfmListItem->value.choice.RICaction_ConfirmedForModification_Item.ricActionID;
+
+                     actionDb = fetchActionInfoFromActionId(actionId, ricSubsDb);
+                     if(!actionDb)
+                     {
+                        DU_LOG("\nERROR  -->  E2AP : %s: Action ID [%d] not found", __func__, actionId);
+                     }
+                     else
+                     {
+                        actionDb->action = CONFIG_UNKNOWN;
+                        /* Further handling can be added here in future once the
+                         * use case of this procedure is identified */
+                     }
+                     actionDb = NULLP;
+                  }
+                  break;
+               }
+
+            case ProtocolIE_IDE2_id_RICactionsRefusedToBeModified_List:
+               {
+                  modRefusedList = &ricSubsModCfmIe->value.choice.RICactions_RefusedToBeModified_List;
+                  for(arrIdx = 0; arrIdx < modRefusedList->list.count; arrIdx++)
+                  {
+                    modRefusedListItem = (RICaction_RefusedToBeModified_ItemIEs_t *)modRefusedList->list.array[arrIdx];
+                    actionId = modRefusedListItem->value.choice.RICaction_RefusedToBeModified_Item.ricActionID;
+                    actionDb = fetchActionInfoFromActionId(actionId, ricSubsDb);
+                    if(!actionDb)
+                    {
+                       DU_LOG("\nERROR  -->  E2AP : %s: Action ID [%d] not found", __func__, actionId);
+                    }
+                    else
+                    {
+                       /* Spec doesnt mention if in case of failure, DU should retry for modify action 
+                        * Hence, chaging the action from CONFIG_MOD to CONFIG_UNKNOWN
+                        */
+                        actionDb->action = CONFIG_UNKNOWN;
+                    }
+                    actionDb = NULLP;
+                  }
+                  break;
+               }
+#endif
+
+            case ProtocolIE_IDE2_id_RICactionsConfirmedForRemoval_List:
+               {
+                  rmvCfmList = &ricSubsModCfmIe->value.choice.RICactions_ConfirmedForRemoval_List;
+                  for(arrIdx = 0; arrIdx < rmvCfmList->list.count; arrIdx++)
+                  {
+                     rmvCfmListItem = (RICaction_ConfirmedForRemoval_ItemIEs_t *)rmvCfmList->list.array[arrIdx];
+                     actionId = rmvCfmListItem->value.choice.RICaction_ConfirmedForRemoval_Item.ricActionID;
+                     actionDb = fetchActionInfoFromActionId(actionId, ricSubsDb);
+                     if(!actionDb)
+                     {
+                        DU_LOG("\nERROR  -->  E2AP : %s: Action ID [%d] not found", __func__, actionId);
+                     }
+                     else
+                     {
+                        memset(actionDb, 0, sizeof(ActionInfo));
+                        actionDb->actionId = -1;
+                        ricSubsDb->numOfActions--;
+                        /* Further handling can include :
+                         * Deletion of this action from all DU layers 
+                         */
+                     }
+                     actionDb = NULLP;
+                  }
+                  break;
+               }
+
+            case ProtocolIE_IDE2_id_RICactionsRefusedToBeRemoved_List:
+               {
+                  rmvFailList = &ricSubsModCfmIe->value.choice.RICactions_RefusedToBeRemoved_List;
+                  for(arrIdx = 0; arrIdx < rmvFailList->list.count; arrIdx++)
+                  {
+                     rmvFailListItem = (RICaction_RefusedToBeRemoved_ItemIEs_t *)rmvFailList->list.array[arrIdx];
+                     actionId = rmvFailListItem->value.choice.RICaction_RefusedToBeRemoved_Item.ricActionID;
+                     actionDb = fetchActionInfoFromActionId(actionId, ricSubsDb);
+                     if(!actionDb)
+                     {
+                        DU_LOG("\nERROR  -->  E2AP : %s: Action ID [%d] not found", __func__, actionId);
+                     }
+                     else
+                     {
+                        actionDb->action = CONFIG_UNKNOWN;
+                     }
+                     actionDb = NULLP;
+                  }
+                  break;
+               }
+
+            default:
+               break;
+         } /* End of switch for Protocol IE Id */
+
+         if(procFailure)
+            break;
+      } /* End of for loop for Protocol IE list */
+
+      break;
+   }while(true);
+
+   freeAperDecodingOfRicSubsModConfirm(e2apMsg);
+   return;
+}
+
+/*******************************************************************
+ *
  * @brief Handles received E2AP message and sends back response  
  *
  * @details
@@ -6056,6 +6401,7 @@ void E2APMsgHdlr(Buffer *mBuf)
                      return;
                   }
             }
+            free(e2apMsg->choice.unsuccessfulOutcome);
             break;
          }
       case E2AP_PDU_PR_successfulOutcome:
@@ -6085,7 +6431,11 @@ void E2APMsgHdlr(Buffer *mBuf)
                      procRicServiceUpdateAck(e2apMsg);
                      break;
                   }
-
+               case SuccessfulOutcomeE2__value_PR_RICsubscriptionModificationConfirm:
+                  {
+                     procRicSubscriptionModificationConfirm(e2apMsg);
+                     break;
+                  }
 
                default:
                   {
