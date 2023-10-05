@@ -18,6 +18,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0246ad0f_0173ca55",
+        "filename": "src/du_app/du_e2ap_mgr.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1017,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-10-05T14:38:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "258010b3_016967d7",
+      "revId": "cae9414b7478cf4fcfd3c7bcb71e4f300b3f25ea",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8a6dacf6_d72138fc",
@@ -31,6 +49,30 @@
       "writtenOn": "2023-10-05T13:55:30Z",
       "side": 1,
       "message": "Create a separate function for action deletion",
+      "range": {
+        "startLine": 1105,
+        "startChar": 9,
+        "endLine": 1105,
+        "endChar": 19
+      },
+      "revId": "cae9414b7478cf4fcfd3c7bcb71e4f300b3f25ea",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "553a5ffd_3503bdad",
+        "filename": "src/du_app/du_e2ap_mgr.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1105,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-10-05T14:38:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8a6dacf6_d72138fc",
       "range": {
         "startLine": 1105,
         "startChar": 9,
@@ -58,6 +100,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f5cd907f_82e86f87",
+        "filename": "src/du_app/du_e2ap_mgr.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1106,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-10-05T14:38:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "713d6217_d286a1d6",
+      "revId": "cae9414b7478cf4fcfd3c7bcb71e4f300b3f25ea",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ad5c291f_580c5722",
@@ -71,6 +131,30 @@
       "writtenOn": "2023-10-05T13:48:12Z",
       "side": 1,
       "message": "Delete subscriptionNode from list before freeing it.\nBelow line will give the same node address back it is not deleted from list",
+      "range": {
+        "startLine": 1150,
+        "startChar": 14,
+        "endLine": 1150,
+        "endChar": 30
+      },
+      "revId": "cae9414b7478cf4fcfd3c7bcb71e4f300b3f25ea",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2a1f7f5f_1be3a676",
+        "filename": "src/du_app/du_e2ap_mgr.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1150,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-10-05T14:38:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ad5c291f_580c5722",
       "range": {
         "startLine": 1150,
         "startChar": 14,
