@@ -1,0 +1,95 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "062fda04_8f3132d2",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 6159,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-10-05T05:54:17Z",
+      "side": 1,
+      "message": "This IE will not have any significance in KPM model (reporting type), as discussed we can disable it for time being as we are only focusing on procedures affection E2SM-KPM reporting models.",
+      "range": {
+        "startLine": 6159,
+        "startChar": 17,
+        "endLine": 6159,
+        "endChar": 75
+      },
+      "revId": "37013af8c6180ec6a8632bdd6a1663ef8090f38e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "74159f9a_e77a9a27",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 6183,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-10-05T05:54:17Z",
+      "side": 1,
+      "message": "same as above",
+      "revId": "37013af8c6180ec6a8632bdd6a1663ef8090f38e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f060dc4e_6f3337e5",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 6198,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-10-05T05:54:17Z",
+      "side": 1,
+      "message": "I guess even here we shld mark action as UNKNOWN because Spec doesnt specify/provide any wait time to retrigger this procedure.",
+      "revId": "37013af8c6180ec6a8632bdd6a1663ef8090f38e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d6a75b2a_88072613",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 6227,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-10-05T05:54:17Z",
+      "side": 1,
+      "message": "Here we will have one more case of \"ProtocolIE_IDE2_id_RICactionsRefusedToBeRemoved_List\" . Please add the handling of that case.",
+      "revId": "37013af8c6180ec6a8632bdd6a1663ef8090f38e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "61e546b4_5f659e1c",
+        "filename": "src/ric_stub/ric_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 3438,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-10-05T05:54:17Z",
+      "side": 1,
+      "message": "here we need to also consider those actions whose removal has been refused",
+      "revId": "37013af8c6180ec6a8632bdd6a1663ef8090f38e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
