@@ -18,6 +18,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7cb66aba_49973800",
+        "filename": "src/du_app/du_e2ap_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1035,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-10-05T13:42:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4ea98383_2fcf37fa",
+      "revId": "d2781f0b76651219f1c07bc7b0753323d35761f5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a68d22a9_3ed7a083",
@@ -31,6 +49,24 @@
       "writtenOn": "2023-10-05T11:59:56Z",
       "side": 1,
       "message": "Add a comment here that before removing subscription from DU APP, delete request for these must also be sent to MAC/SCH.",
+      "revId": "d2781f0b76651219f1c07bc7b0753323d35761f5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "733b6a9b_4d55743a",
+        "filename": "src/du_app/du_e2ap_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1049,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-10-05T13:42:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a68d22a9_3ed7a083",
       "revId": "d2781f0b76651219f1c07bc7b0753323d35761f5",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -58,6 +94,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e32510a2_46cc9b88",
+        "filename": "src/du_app/du_e2ap_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1050,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-10-05T13:42:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "02e141d5_5917ef7b",
+      "range": {
+        "startLine": 1050,
+        "startChar": 6,
+        "endLine": 1050,
+        "endChar": 12
+      },
+      "revId": "d2781f0b76651219f1c07bc7b0753323d35761f5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d21daef8_f4fd43eb",
@@ -71,6 +131,30 @@
       "writtenOn": "2023-10-05T11:59:56Z",
       "side": 1,
       "message": "this loop will run for all actions i.e. MAX_RIC_ACTION because we store action at actionId index.\nActiondId starts from 0.\nSo if actionDn-\u003eaction \u003e -1, then it needs to be deleted",
+      "range": {
+        "startLine": 1051,
+        "startChar": 58,
+        "endLine": 1051,
+        "endChar": 70
+      },
+      "revId": "d2781f0b76651219f1c07bc7b0753323d35761f5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "50fd1dce_c337e60e",
+        "filename": "src/du_app/du_e2ap_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1051,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-10-05T13:42:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d21daef8_f4fd43eb",
       "range": {
         "startLine": 1051,
         "startChar": 58,
@@ -121,6 +205,48 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "09697f84_29873c2b",
+        "filename": "src/du_app/du_e2ap_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1054,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-10-05T13:42:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a137df68_fe7f7355",
+      "range": {
+        "startLine": 1054,
+        "startChar": 9,
+        "endLine": 1054,
+        "endChar": 30
+      },
+      "revId": "d2781f0b76651219f1c07bc7b0753323d35761f5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "095a9cc0_35441f49",
+        "filename": "src/du_app/du_e2ap_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1054,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-10-05T13:42:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d87998d3_b2533d9d",
+      "revId": "d2781f0b76651219f1c07bc7b0753323d35761f5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6847af4e_2bf31be2",
@@ -134,6 +260,30 @@
       "writtenOn": "2023-10-05T11:59:56Z",
       "side": 1,
       "message": "not supportedMeasNode, its subscribed measurement node",
+      "range": {
+        "startLine": 1055,
+        "startChar": 52,
+        "endLine": 1055,
+        "endChar": 69
+      },
+      "revId": "d2781f0b76651219f1c07bc7b0753323d35761f5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "32bb21c3_07c36ee5",
+        "filename": "src/du_app/du_e2ap_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1055,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-10-05T13:42:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6847af4e_2bf31be2",
       "range": {
         "startLine": 1055,
         "startChar": 52,
@@ -190,6 +340,54 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "89994400_f13393b7",
+        "filename": "src/du_app/du_e2ap_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1058,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-10-05T13:42:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1e6d8991_940a14b8",
+      "range": {
+        "startLine": 1058,
+        "startChar": 35,
+        "endLine": 1058,
+        "endChar": 59
+      },
+      "revId": "d2781f0b76651219f1c07bc7b0753323d35761f5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6a445fd5_35f94fea",
+        "filename": "src/du_app/du_e2ap_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1058,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-10-05T13:42:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "31474a10_64106d03",
+      "range": {
+        "startLine": 1058,
+        "startChar": 12,
+        "endLine": 1058,
+        "endChar": 31
+      },
+      "revId": "d2781f0b76651219f1c07bc7b0753323d35761f5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e9fd5fa7_6beb75ea",
@@ -207,6 +405,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "35a76acc_64f12ec2",
+        "filename": "src/du_app/du_e2ap_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1059,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-10-05T13:42:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e9fd5fa7_6beb75ea",
+      "revId": "d2781f0b76651219f1c07bc7b0753323d35761f5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c18dd2b0_fb7f5fa2",
@@ -220,6 +436,24 @@
       "writtenOn": "2023-10-05T11:59:56Z",
       "side": 1,
       "message": "within each MeasurementInfo, there is another list for measuredValue. Please free that as well",
+      "revId": "d2781f0b76651219f1c07bc7b0753323d35761f5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ee84e791_5e45b979",
+        "filename": "src/du_app/du_e2ap_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1061,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-10-05T13:42:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c18dd2b0_fb7f5fa2",
       "revId": "d2781f0b76651219f1c07bc7b0753323d35761f5",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -249,6 +483,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "4939d8ef_6f801739",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 6488,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-10-05T13:42:37Z",
+      "side": 1,
+      "message": "added check at line 6486",
+      "parentUuid": "3407c57c_e6ec254e",
+      "range": {
+        "startLine": 6488,
+        "startChar": 15,
+        "endLine": 6488,
+        "endChar": 19
+      },
+      "revId": "d2781f0b76651219f1c07bc7b0753323d35761f5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1a8abc62_9856704b",
         "filename": "src/du_app/du_e2ap_msg_hdl.c",
         "patchSetId": 1
@@ -260,6 +518,24 @@
       "writtenOn": "2023-10-05T11:59:56Z",
       "side": 1,
       "message": "Instead of for loop, we can just write\nmemset(\u0026(duCb.e2apDb.ranFunction[ranFuncIdx].pendingSubsRspInfo), 0, MAX_PENDING_SUBSCRIPTION_RSP*sizeof(PendingSubsRspInfo));",
+      "revId": "d2781f0b76651219f1c07bc7b0753323d35761f5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5b0eba83_9777f824",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 6540,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-10-05T13:42:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a8abc62_9856704b",
       "revId": "d2781f0b76651219f1c07bc7b0753323d35761f5",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
