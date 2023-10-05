@@ -24,6 +24,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ac266c53_7dd6640e",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 6159,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-10-05T08:55:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "062fda04_8f3132d2",
+      "range": {
+        "startLine": 6159,
+        "startChar": 17,
+        "endLine": 6159,
+        "endChar": 75
+      },
+      "revId": "37013af8c6180ec6a8632bdd6a1663ef8090f38e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "74159f9a_e77a9a27",
@@ -37,6 +61,24 @@
       "writtenOn": "2023-10-05T05:54:17Z",
       "side": 1,
       "message": "same as above",
+      "revId": "37013af8c6180ec6a8632bdd6a1663ef8090f38e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7f321eee_64cb378e",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 6183,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-10-05T08:55:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "74159f9a_e77a9a27",
       "revId": "37013af8c6180ec6a8632bdd6a1663ef8090f38e",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -58,6 +100,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "01a0ae69_35e1d945",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 6198,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-10-05T08:55:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f060dc4e_6f3337e5",
+      "revId": "37013af8c6180ec6a8632bdd6a1663ef8090f38e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d6a75b2a_88072613",
@@ -75,6 +135,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b870fdd3_e4242bbf",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 6227,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-10-05T08:55:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d6a75b2a_88072613",
+      "revId": "37013af8c6180ec6a8632bdd6a1663ef8090f38e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "61e546b4_5f659e1c",
@@ -88,6 +166,24 @@
       "writtenOn": "2023-10-05T05:54:17Z",
       "side": 1,
       "message": "here we need to also consider those actions whose removal has been refused",
+      "revId": "37013af8c6180ec6a8632bdd6a1663ef8090f38e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9951a0bb_a7bb13af",
+        "filename": "src/ric_stub/ric_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 3438,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-10-05T08:55:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "61e546b4_5f659e1c",
       "revId": "37013af8c6180ec6a8632bdd6a1663ef8090f38e",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
