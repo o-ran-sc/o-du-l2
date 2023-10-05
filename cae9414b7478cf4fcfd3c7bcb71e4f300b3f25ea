@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ad5c291f_580c5722",
+        "filename": "src/du_app/du_e2ap_mgr.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1150,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-10-05T13:48:12Z",
+      "side": 1,
+      "message": "Delete subscriptionNode from list before freeing it.\nBelow line will give the same node address back it is not deleted from list",
+      "range": {
+        "startLine": 1150,
+        "startChar": 14,
+        "endLine": 1150,
+        "endChar": 30
+      },
+      "revId": "cae9414b7478cf4fcfd3c7bcb71e4f300b3f25ea",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
