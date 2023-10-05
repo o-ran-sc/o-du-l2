@@ -6307,6 +6307,172 @@ void procRicSubscriptionModificationConfirm(E2AP_PDU_t *e2apMsg)
 
 /*******************************************************************
  *
+ * @brief Free APER decoding of RIC Subscription Modification Refuse
+ *
+ * @details
+ *
+ *    Function : freeAperDecodingOfRicSubsModRefuse
+ *
+ * Functionality:  Free APER decoding of RIC Subscription 
+ *   Modification Refuse
+ *
+ * @param  E2AP Message PDU
+ * @return void
+ *
+ ******************************************************************/
+void freeAperDecodingOfRicSubsModRefuse(E2AP_PDU_t *e2apMsg)
+{
+   uint8_t ieIdx =0;
+   RICsubscriptionModificationRefuse_t *ricSubsModRefuse = NULLP;
+
+   if(e2apMsg && e2apMsg->choice.unsuccessfulOutcome)
+   {
+      ricSubsModRefuse = &e2apMsg->choice.unsuccessfulOutcome->value.choice.RICsubscriptionModificationRefuse;
+      if(ricSubsModRefuse->protocolIEs.list.array)
+      {
+         for(ieIdx = 0; ieIdx < ricSubsModRefuse->protocolIEs.list.count; ieIdx++)
+         {
+            if(ricSubsModRefuse->protocolIEs.list.array[ieIdx])
+               free(ricSubsModRefuse->protocolIEs.list.array[ieIdx]);
+         }
+         free(ricSubsModRefuse->protocolIEs.list.array);
+      }
+   }
+}
+
+/*******************************************************************
+ *
+ * @brief Process RIC Subscription Modification Refuse Message
+ *
+ * @details
+ *
+ *    Function : procRicSubscriptionModificationRefuse
+ *
+ * Functionality:  Process RIC Subscription Modification Refuse
+ *    Message received from RIC. 
+ *
+ * @param  E2AP Message PDU
+ * @return void
+ *
+ ******************************************************************/
+void procRicSubscriptionModificationRefuse(E2AP_PDU_t *e2apMsg)
+{
+   uint8_t ieIdx = 0;
+   uint16_t ranFuncId = 0;
+   RicRequestId ricReqId;
+   RICsubscriptionModificationRefuse_t *ricSubsModRefuse = NULLP;
+   RICsubscriptionModificationRefuse_IEs_t *ricSubsModRefuseIe = NULLP;
+   CauseE2_t *cause = NULLP;
+
+   DU_LOG("\nINFO   -->  E2AP : %s: Received RIC Subscription Modification Refuse", __func__);
+
+   do{
+      if(!e2apMsg)
+      {
+         DU_LOG("\nERROR  -->  E2AP : %s: E2AP Message is NULL", __func__);
+         break;
+      }
+
+      if(!e2apMsg->choice.unsuccessfulOutcome)
+      {
+         DU_LOG("\nERROR  -->  E2AP : %s: Unsuccessful Outcome in E2AP message is NULL", __func__);
+         break;
+      }
+
+      ricSubsModRefuse = &e2apMsg->choice.unsuccessfulOutcome->value.choice.RICsubscriptionModificationRefuse;
+      if(!ricSubsModRefuse->protocolIEs.list.array)
+      {
+         DU_LOG("\nERROR  -->  E2AP : %s: Array conatining E2AP message IEs is null", __func__);
+         break;
+      }
+
+      for(ieIdx = 0; ieIdx < ricSubsModRefuse->protocolIEs.list.count; ieIdx++)
+      {
+         if(!ricSubsModRefuse->protocolIEs.list.array[ieIdx])
+         {
+            DU_LOG("\nERROR  -->  E2AP : %s: IE at index [%d] in E2AP message IEs list is null", __func__, ieIdx);
+            break;
+         }
+
+         ricSubsModRefuseIe = ricSubsModRefuse->protocolIEs.list.array[ieIdx];
+         switch(ricSubsModRefuseIe->id)
+         {
+            case ProtocolIE_IDE2_id_RICrequestID:
+               {
+                  memset(&ricReqId, 0, sizeof(RicRequestId));
+                  ricReqId.requestorId = ricSubsModRefuseIe->value.choice.RICrequestID.ricRequestorID;
+                  ricReqId.instanceId = ricSubsModRefuseIe->value.choice.RICrequestID.ricInstanceID;
+                  break;
+               }
+
+            case ProtocolIE_IDE2_id_RANfunctionID:
+               {
+                  ranFuncId = ricSubsModRefuseIe->value.choice.RANfunctionID;
+                  break;
+               }
+
+            case ProtocolIE_IDE2_id_CauseE2:
+               {
+                  DU_LOG("\nDEBUG  -->  E2AP : %s: RIC subscriptiom modification refused for RIC_Requestor_ID [%d] \
+                        RIC_Instance_ID [%d] RAN_Function_ID [%d] ", __func__, ricReqId.requestorId, \
+                        ricReqId.instanceId, ranFuncId);
+
+                  cause = &ricSubsModRefuseIe->value.choice.CauseE2;
+                  switch(cause->present)
+                  {
+                     case CauseE2_PR_ricRequest:
+                        {
+                           DU_LOG("Failure_Type [%s] Cause [%ld]", "RIC_Request", cause->choice.ricRequest);
+                           break;
+                        }
+                     case CauseE2_PR_ricService:
+                        {
+                           DU_LOG("Failure_Type [%s] Cause [%ld]", "RIC_Service", cause->choice.ricService);
+                           break;
+                        }
+                     case CauseE2_PR_e2Node:
+                        {
+                           DU_LOG("Failure_Type [%s] Cause [%ld]", "E2_Node", cause->choice.e2Node);
+                           break;
+                        }
+                     case CauseE2_PR_transport:
+                        {
+                           DU_LOG("Failure_Type [%s] Cause [%ld]", "Transport", cause->choice.transport);
+                           break;
+                        }
+                     case CauseE2_PR_protocol:
+                        {
+                           DU_LOG("Failure_Type [%s] Cause [%ld]", "Protocol", cause->choice.protocol);
+                           break;
+                        }
+                     case CauseE2_PR_misc:
+                        {
+                           DU_LOG("Failure_Type [%s] Cause [%ld]", "Miscellaneous", cause->choice.misc);
+                           break;
+                        }
+                     default:
+                        {
+                           DU_LOG("Failure_Type and Cause unknown");
+                        }
+                        break;
+                  }
+                  break;
+               } /* End of Protocol IE case for E2 Cause */
+
+            default:
+               break;
+         } /* End of switch for Protocol IE Id */
+      } /* End of for loop for Protocol IE list */
+
+      break;
+   }while(true);
+
+   freeAperDecodingOfRicSubsModRefuse(e2apMsg);
+   return;
+}
+
+/*******************************************************************
+ *
  * @brief Handles received E2AP message and sends back response  
  *
  * @details
@@ -6392,6 +6558,11 @@ void E2APMsgHdlr(Buffer *mBuf)
                case UnsuccessfulOutcomeE2__value_PR_RICserviceUpdateFailure:
                   {
                      procRicServiceUpdateFailure(e2apMsg);
+                     break;
+                  }
+               case UnsuccessfulOutcomeE2__value_PR_RICsubscriptionModificationRefuse:
+                  {
+                     procRicSubscriptionModificationRefuse(e2apMsg);
                      break;
                   }
                default:
