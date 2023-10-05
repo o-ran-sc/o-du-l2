@@ -503,7 +503,11 @@ uint8_t ResetE2Request(E2ProcedureDirection dir, E2FailureCause resetCause);
 uint8_t SendE2APMsg(Region region, Pool pool, char *encBuf, int encBufSize);
 E2NodeComponent *fetchE2NodeComponentInfo(InterfaceType interfaceType, uint8_t componentActionType, CmLList **e2ComponentNode);
 uint8_t addOrModifyE2NodeComponent(InterfaceType interfaceType, uint8_t action, bool reqPart, uint8_t bufSize, char *bufString);
-
+void deleteRicSubscriptionList(CmLListCp *subscriptionList);
+void deleteRicSubscriptionNode(CmLList *ricSubscriptionInfo);
+void deleteMeasurementInfoList(CmLListCp *measInfoList);
+void deleteActionSequence(ActionInfo *action);
+void deleteMeasuredValueList(CmLListCp *measuredValueList);
 /**********************************************************************
   End of file
  **********************************************************************/
