@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8fdf0257_ba958cd2",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 6450,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-10-05T11:13:54Z",
+      "side": 1,
+      "message": "Can we have a separate function to print the failure reason based on the type of failure?\nNew function we can call in new parts as well.",
+      "revId": "e118bb17b722fb12ccfb5bab7a3fc4eee516881a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
