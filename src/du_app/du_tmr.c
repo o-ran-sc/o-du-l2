@@ -225,6 +225,79 @@ void duTmrExpiry(PTR cb,int16_t tmrEvnt)
 }
 
 /**
+ * @brief Handler to stop timer
+ *
+ * @param[in] cb        Control block depending on the type of the timer event.
+ * @param[in] tmrEvnt   Timer event to be stopped
+ *
+ * @return  Void
+*/
+
+void duStopTmr(PTR cb, uint8_t tmrType)
+{
+   CmTmrArg   arg;
+   arg.timers = NULLP;
+
+   switch (tmrType)
+   {
+      case EVENT_E2_SETUP_TMR:
+      {
+         CmTimer *e2SetupTimer = NULLP;
+         
+         e2SetupTimer = ((CmTimer *)cb);
+         arg.timers = e2SetupTimer;
+         arg.max = MAX_E2_SETUP_TMR;
+         break;
+      }
+      case EVENT_RIC_SERVICE_UPDATE_TMR:
+      {
+         RicServiceUpdateTimer *ricServiceUpdateTimer = NULLP;
+         
+         ricServiceUpdateTimer= ((RicServiceUpdateTimer*)cb);
+         arg.timers = &ricServiceUpdateTimer->timer;
+         arg.max = MAX_RIC_SERVICE_UPDATE_TMR;
+         break;
+      }
+      case EVENT_E2_NODE_CONFIG_UPDATE_TMR:
+      {
+         E2NodeConfigUpdateTimer *cfgUpdateTimer;
+         
+         cfgUpdateTimer = ((E2NodeConfigUpdateTimer*)cb);
+         arg.timers = &cfgUpdateTimer->timer;
+         arg.max = MAX_E2_NODE_CONFIG_UPDATE_TMR;
+         break;
+      }
+      case EVENT_RIC_SUBSCRIPTION_REPORTING_TMR:
+      {
+         RicSubscription *ricSubscription = NULLP;
+         
+         ricSubscription = ((RicSubscription*)cb);
+         arg.timers = &ricSubscription->ricSubsReportTimer;
+         arg.max = MAX_RIC_SUBSCRIPTION_REPORTING_TMR;
+         break;
+      }
+      default:
+      {
+         DU_LOG("\nERROR  -->  RLC : rlcStopTmr: Invalid tmr Evnt[%d]", tmrType);
+         break;
+      }
+   }
+
+   if (tmrType != TMR0)
+   {
+      arg.tqCp   = &(duCb.duTimersInfo.tmrTqCp);
+      arg.tq     = duCb.duTimersInfo.tmrTq;
+      arg.cb     = cb;
+      arg.evnt   = tmrType;
+      arg.wait   = 0;
+      arg.tNum   = 0;
+      cmRmvCbTq(&arg);
+   }
+
+   return;
+}
+
+/**
  * @brief DU instance timer call back function registered with system services.
  *
  * @details

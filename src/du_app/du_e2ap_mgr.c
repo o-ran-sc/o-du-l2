@@ -1014,6 +1014,144 @@ uint8_t addOrModifyE2NodeComponent(InterfaceType interfaceType, uint8_t action, 
    return ROK;
 }
 
+/******************************************************************
+ *
+ * @brief Delete measured Value list
+ *
+ * @details
+ *
+ *    Function : deleteMeasuredValue
+ *
+ *    Functionality: Delete measured Value list
+ *
+ * @params[in] List of measured Value
+ *          
+ * @return void 
+ *
+ * ****************************************************************/
+void deleteMeasuredValue(CmLListCp *measuredValueList)
+{
+   CmLList *measValNode = NULLP;
+
+   CM_LLIST_FIRST_NODE(measuredValueList, measValNode);
+
+   while(measValNode)
+   {
+      cmLListDelFrm(measuredValueList, measValNode);
+      DU_FREE(measValNode->node, sizeof(double));
+      DU_FREE(measValNode, sizeof(CmLList));
+      CM_LLIST_FIRST_NODE(measuredValueList, measValNode);
+   }
+}
+
+/******************************************************************
+ *
+ * @brief Delete Measurement Info List 
+ *
+ * @details
+ *
+ *    Function : deleteMeasurementInfoList
+ *
+ *    Functionality: Delete Measurement Info List 
+ *
+ * @params[in] List of Measurement Info List
+ *          
+ * @return void 
+ *
+ * ****************************************************************/
+
+void deleteMeasurementInfoList(CmLListCp *measInfoList)
+{
+   CmLList *measInfoNode = NULLP;
+   MeasurementInfo *measInfo = NULLP;
+
+   CM_LLIST_FIRST_NODE(measInfoList, measInfoNode);
+   while(measInfoNode)
+   {
+      measInfo = (MeasurementInfo *)measInfoNode->node;
+      cmLListDelFrm(measInfoList, measInfoNode);
+      deleteMeasuredValue(&measInfo->measuredValue);
+      DU_FREE(measInfo, sizeof(MeasurementInfo));
+      DU_FREE(measInfoNode, sizeof(CmLList));
+      CM_LLIST_FIRST_NODE(measInfoList, measInfoNode);
+   }
+}
+
+/******************************************************************
+ *
+ * @brief Delete Ric subscription node 
+ *
+ * @details
+ *
+ *    Function : deleteRicSubscriptionNode
+ *
+ *    Functionality: Delete Ric subscription node 
+ *
+ * @params[in] Ric subscription info 
+ *          
+ * @return void 
+ *
+ * ****************************************************************/
+
+void deleteRicSubscriptionNode(RicSubscription *ricSubscriptionInfo)
+{
+   uint8_t actionIdx=0;
+   ActionDefinition *definition=NULLP;
+
+   for(actionIdx = 0; actionIdx < MAX_RIC_ACTION; actionIdx++)
+   {
+      if(ricSubscriptionInfo->actionSequence[actionIdx].actionId > -1)
+      {
+         definition= & ricSubscriptionInfo->actionSequence[actionIdx].definition;       
+         if(definition->formatType == 1)
+         {
+            deleteMeasurementInfoList(&definition->choice.format1.measurementInfoList);
+         }
+      }
+   }
+
+   if(duChkTmr((PTR)ricSubscriptionInfo, EVENT_RIC_SUBSCRIPTION_REPORTING_TMR) == TRUE)
+   {
+      duStopTmr((PTR)ricSubscriptionInfo, EVENT_RIC_SUBSCRIPTION_REPORTING_TMR);
+   }
+   memset(ricSubscriptionInfo, 0, sizeof(RicSubscription));
+}
+
+/******************************************************************
+ *
+ * @brief Delete ric subscription list from the database
+ *
+ * @details
+ *
+ *    Function : deleteRicSubscriptionList
+ *
+ *    Functionality: Delete ric subscription list 
+ *
+ * @params[in]
+ *    Subscription List to be deleted 
+
+ * @return void 
+ *
+ * ****************************************************************/
+
+
+void deleteRicSubscriptionList(CmLListCp *subscriptionList)
+{
+   CmLList *subscriptionNode=NULLP;
+   RicSubscription *ricSubscriptionInfo=NULLP;
+   
+   CM_LLIST_FIRST_NODE(subscriptionList, subscriptionNode);
+   while(subscriptionNode)
+   {
+      /* TODO - Remove subscription information from MAC and SCH as well */ 
+      ricSubscriptionInfo = (RicSubscription*)subscriptionNode->node;    
+      deleteRicSubscriptionNode(ricSubscriptionInfo);
+      DU_FREE(subscriptionNode->node, sizeof(RicSubscription));
+      DU_FREE(subscriptionNode, sizeof(CmLList));
+      CM_LLIST_FIRST_NODE(subscriptionList, subscriptionNode);
+   }
+}
+
 /**********************************************************************
   End of file
  **********************************************************************/
