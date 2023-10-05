@@ -1,0 +1,267 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4ea98383_2fcf37fa",
+        "filename": "src/du_app/du_e2ap_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1035,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-10-05T11:59:56Z",
+      "side": 1,
+      "message": "Do not do all free within this function,\nThis function should handle only subscription free\nfrom here call separate function for action free\nWith action, call separate function to free measurement info list\nWith measurement infor list, call separate function to free measured Value list for each measurement.\n\nBreaking it down will be useful when we will need to free only any one part, then that specific function can be called.\n\nOnce these functions are created, we will need to call it at many places in code where we are writing the whole code to free as of now.",
+      "revId": "d2781f0b76651219f1c07bc7b0753323d35761f5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a68d22a9_3ed7a083",
+        "filename": "src/du_app/du_e2ap_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1049,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-10-05T11:59:56Z",
+      "side": 1,
+      "message": "Add a comment here that before removing subscription from DU APP, delete request for these must also be sent to MAC/SCH.",
+      "revId": "d2781f0b76651219f1c07bc7b0753323d35761f5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "02e141d5_5917ef7b",
+        "filename": "src/du_app/du_e2ap_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1050,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-10-05T11:59:56Z",
+      "side": 1,
+      "message": "this line is not needed.\nMemset at 1067 will take care of it",
+      "range": {
+        "startLine": 1050,
+        "startChar": 6,
+        "endLine": 1050,
+        "endChar": 12
+      },
+      "revId": "d2781f0b76651219f1c07bc7b0753323d35761f5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d21daef8_f4fd43eb",
+        "filename": "src/du_app/du_e2ap_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1051,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-10-05T11:59:56Z",
+      "side": 1,
+      "message": "this loop will run for all actions i.e. MAX_RIC_ACTION because we store action at actionId index.\nActiondId starts from 0.\nSo if actionDn-\u003eaction \u003e -1, then it needs to be deleted",
+      "range": {
+        "startLine": 1051,
+        "startChar": 58,
+        "endLine": 1051,
+        "endChar": 70
+      },
+      "revId": "d2781f0b76651219f1c07bc7b0753323d35761f5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a137df68_fe7f7355",
+        "filename": "src/du_app/du_e2ap_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1054,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-10-05T11:59:56Z",
+      "side": 1,
+      "message": "this is not measurementInfoSupported list, this is measurement subscribed list",
+      "range": {
+        "startLine": 1054,
+        "startChar": 9,
+        "endLine": 1054,
+        "endChar": 30
+      },
+      "revId": "d2781f0b76651219f1c07bc7b0753323d35761f5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d87998d3_b2533d9d",
+        "filename": "src/du_app/du_e2ap_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1054,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-10-05T11:59:56Z",
+      "side": 1,
+      "message": "Check that action definitions format1, if it is 1 then only access format1",
+      "revId": "d2781f0b76651219f1c07bc7b0753323d35761f5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6847af4e_2bf31be2",
+        "filename": "src/du_app/du_e2ap_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1055,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-10-05T11:59:56Z",
+      "side": 1,
+      "message": "not supportedMeasNode, its subscribed measurement node",
+      "range": {
+        "startLine": 1055,
+        "startChar": 52,
+        "endLine": 1055,
+        "endChar": 69
+      },
+      "revId": "d2781f0b76651219f1c07bc7b0753323d35761f5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1e6d8991_940a14b8",
+        "filename": "src/du_app/du_e2ap_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1058,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-10-05T11:59:56Z",
+      "side": 1,
+      "message": "this is not MeasurementInfoForAction, its MeasurementInfo",
+      "range": {
+        "startLine": 1058,
+        "startChar": 35,
+        "endLine": 1058,
+        "endChar": 59
+      },
+      "revId": "d2781f0b76651219f1c07bc7b0753323d35761f5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "31474a10_64106d03",
+        "filename": "src/du_app/du_e2ap_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1058,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-10-05T11:59:56Z",
+      "side": 1,
+      "message": "measInfoSubscribedDb",
+      "range": {
+        "startLine": 1058,
+        "startChar": 12,
+        "endLine": 1058,
+        "endChar": 31
+      },
+      "revId": "d2781f0b76651219f1c07bc7b0753323d35761f5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e9fd5fa7_6beb75ea",
+        "filename": "src/du_app/du_e2ap_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1059,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-10-05T11:59:56Z",
+      "side": 1,
+      "message": "when we add anything to cmLlist, we allocate memory to the node (of type CmLList) and node-\u003enode as well.\nSo here, you must free memory for subscribedMeasNode and measInfoSubscribedDb",
+      "revId": "d2781f0b76651219f1c07bc7b0753323d35761f5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c18dd2b0_fb7f5fa2",
+        "filename": "src/du_app/du_e2ap_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1061,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-10-05T11:59:56Z",
+      "side": 1,
+      "message": "within each MeasurementInfo, there is another list for measuredValue. Please free that as well",
+      "revId": "d2781f0b76651219f1c07bc7b0753323d35761f5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3407c57c_e6ec254e",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 6488,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-10-05T11:59:56Z",
+      "side": 1,
+      "message": "free function doesnt by default check if pointer is null\nSo add null check before free",
+      "range": {
+        "startLine": 6488,
+        "startChar": 15,
+        "endLine": 6488,
+        "endChar": 19
+      },
+      "revId": "d2781f0b76651219f1c07bc7b0753323d35761f5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1a8abc62_9856704b",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 6540,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-10-05T11:59:56Z",
+      "side": 1,
+      "message": "Instead of for loop, we can just write\nmemset(\u0026(duCb.e2apDb.ranFunction[ranFuncIdx].pendingSubsRspInfo), 0, MAX_PENDING_SUBSCRIPTION_RSP*sizeof(PendingSubsRspInfo));",
+      "revId": "d2781f0b76651219f1c07bc7b0753323d35761f5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
