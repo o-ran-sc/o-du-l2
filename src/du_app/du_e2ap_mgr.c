@@ -574,9 +574,7 @@ uint8_t rejectAllStatsGroup(RanFunction *ranFuncDb, CmLList *ricSubscriptionNode
    /* Delete subcription from RAN Function */
    memcpy(&requestId, &((RicSubscription *)ricSubscriptionNode->node)->requestId, sizeof(RicRequestId));
    cmLListDelFrm(&ranFuncDb->subscriptionList, ricSubscriptionNode);
-   DU_FREE(ricSubscriptionNode->node, sizeof(RicSubscription));
-   DU_FREE(ricSubscriptionNode, sizeof(CmLList));
-
+   deleteRicSubscriptionNode(ricSubscriptionNode);
    convertDuCauseToE2Cause(statsRsp->statsGrpRejectedList[0].cause, &failureCause);
 
    /* Send RIC subscription failure to RIC */
@@ -1012,6 +1010,181 @@ uint8_t addOrModifyE2NodeComponent(InterfaceType interfaceType, uint8_t action, 
       }
    } 
    return ROK;
+}
+
+/******************************************************************
+ *
+ * @brief Delete measured Value list
+ *
+ * @details
+ *
+ *    Function : deleteMeasuredValueList
+ *
+ *    Functionality: Delete measured Value list
+ *
+ * @params[in] List of measured Value
+ *          
+ * @return void 
+ *
+ * ****************************************************************/
+void deleteMeasuredValueList(CmLListCp *measuredValueList)
+{
+   CmLList *measValNode = NULLP;
+
+   CM_LLIST_FIRST_NODE(measuredValueList, measValNode);
+
+   while(measValNode)
+   {
+      cmLListDelFrm(measuredValueList, measValNode);
+      DU_FREE(measValNode->node, sizeof(double));
+      DU_FREE(measValNode, sizeof(CmLList));
+      CM_LLIST_FIRST_NODE(measuredValueList, measValNode);
+   }
+}
+
+/******************************************************************
+ *
+ * @brief Delete Measurement Info List 
+ *
+ * @details
+ *
+ *    Function : deleteMeasurementInfoList
+ *
+ *    Functionality: Delete Measurement Info List 
+ *
+ * @params[in] List of Measurement Info List
+ *          
+ * @return void 
+ *
+ * ****************************************************************/
+
+void deleteMeasurementInfoList(CmLListCp *measInfoList)
+{
+   CmLList *measInfoNode = NULLP;
+   MeasurementInfo *measInfo = NULLP;
+
+   CM_LLIST_FIRST_NODE(measInfoList, measInfoNode);
+   while(measInfoNode)
+   {
+      measInfo = (MeasurementInfo *)measInfoNode->node;
+      cmLListDelFrm(measInfoList, measInfoNode);
+      deleteMeasuredValueList(&measInfo->measuredValue);
+      DU_FREE(measInfo, sizeof(MeasurementInfo));
+      DU_FREE(measInfoNode, sizeof(CmLList));
+      CM_LLIST_FIRST_NODE(measInfoList, measInfoNode);
+   }
+}
+
+/******************************************************************
+ *
+ * @brief Delete Ric subscription action 
+ *
+ * @details
+ *
+ *    Function : deleteActionSequence
+ *
+ *    Functionality: Delete Ric subscription action 
+ *
+ * @params[in] Action info 
+ *          
+ * @return void 
+ *
+ * ****************************************************************/
+void deleteActionSequence(ActionInfo *action)
+{
+   ActionDefinition *definition=NULLP;
+   definition= &action->definition;       
+   
+   switch(definition->formatType)
+   {
+      case 1:
+         {
+            deleteMeasurementInfoList(&definition->choice.format1.measurementInfoList);
+            break;
+         }
+
+      case 2:
+      case 3:
+      case 4:
+      case 5:
+      default:
+      {
+         DU_LOG("\nERROR  -->  E2AP : Format %d does not supported", definition->formatType);
+         break;
+      }
+   }
+}
+/******************************************************************
+ *
+ * @brief Delete Ric subscription node 
+ *
+ * @details
+ *
+ *    Function : deleteRicSubscriptionNode
+ *
+ *    Functionality: Delete Ric subscription node 
+ *
+ * @params[in] Ric subscription info 
+ *          
+ * @return void 
+ *
+ * ****************************************************************/
+
+void deleteRicSubscriptionNode(CmLList *subscriptionNode)
+{
+   uint8_t actionIdx=0;
+   RicSubscription *ricSubscriptionInfo = NULLP;
+
+   ricSubscriptionInfo = (RicSubscription*)subscriptionNode->node;    
+
+   for(actionIdx = 0; actionIdx < MAX_RIC_ACTION; actionIdx++)
+   {
+      if(ricSubscriptionInfo->actionSequence[actionIdx].actionId > -1)
+      {
+         deleteActionSequence(&ricSubscriptionInfo->actionSequence[actionIdx]);
+      }
+   }
+
+   if(duChkTmr((PTR)ricSubscriptionInfo, EVENT_RIC_SUBSCRIPTION_REPORTING_TMR) == TRUE)
+   {
+      duStopTmr((PTR)ricSubscriptionInfo, EVENT_RIC_SUBSCRIPTION_REPORTING_TMR);
+   }
+
+   memset(ricSubscriptionInfo, 0, sizeof(RicSubscription));
+   DU_FREE(subscriptionNode->node, sizeof(RicSubscription));
+   DU_FREE(subscriptionNode, sizeof(CmLList));
+}
+
+/******************************************************************
+ *
+ * @brief Delete ric subscription list from the database
+ *
+ * @details
+ *
+ *    Function : deleteRicSubscriptionList
+ *
+ *    Functionality: Delete ric subscription list 
+ *
+ * @params[in]
+ *    Subscription List to be deleted 
+
+ * @return void 
+ *
+ * ****************************************************************/
+
+
+void deleteRicSubscriptionList(CmLListCp *subscriptionList)
+{
+   CmLList *subscriptionNode=NULLP;
+   
+   CM_LLIST_FIRST_NODE(subscriptionList, subscriptionNode);
+   while(subscriptionNode)
+   {
+      /* TODO - Remove subscription information from MAC and SCH as well */ 
+      cmLListDelFrm(subscriptionList, subscriptionNode);
+      deleteRicSubscriptionNode(subscriptionNode);
+      CM_LLIST_FIRST_NODE(subscriptionList, subscriptionNode);
+   }
 }
 
 /**********************************************************************

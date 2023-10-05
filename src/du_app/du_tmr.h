@@ -22,7 +22,7 @@
 short int duActvTmr(Ent ent,Inst inst); 
 bool duChkTmr(PTR cb, int16_t tmrEvnt);
 void duStartTmr(PTR cb, int16_t tmrEvnt, uint32_t timerValue);
-
+void duStopTmr(PTR cb, uint8_t tmrType);
 /**********************************************************************
   End of file
  **********************************************************************/
