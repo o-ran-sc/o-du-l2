@@ -6305,6 +6305,252 @@ void procRicSubscriptionModificationConfirm(E2AP_PDU_t *e2apMsg)
    return;
 }
 
+/******************************************************************
+* @brief Deallocate the memory allocated for E2 Reset Response
+*
+* @details
+*
+*    Function : FreeE2ResetResponse
+*
+*    Functionality:
+*       - freeing the memory allocated for E2ResetResponse
+*
+* @params[in] E2AP_PDU_t *e2apMsg
+* @return ROK     - success
+*         RFAILED - failure
+*
+* ****************************************************************/
+void FreeE2ResetResponse(E2AP_PDU_t *e2apMsg)
+{
+   uint8_t ieIdx =0;
+   ResetResponseE2_t *resetResponse;
+
+   if(e2apMsg != NULLP)
+   {
+      if(e2apMsg->choice.successfulOutcome != NULLP)
+      {
+         resetResponse = &e2apMsg->choice.successfulOutcome->value.choice.ResetResponseE2;
+         if(resetResponse->protocolIEs.list.array)
+         {
+            for(ieIdx=0; ieIdx < resetResponse->protocolIEs.list.count; ieIdx++)
+            {
+               if(resetResponse->protocolIEs.list.array[ieIdx])
+               {
+                  DU_FREE(resetResponse->protocolIEs.list.array[ieIdx], sizeof(ResetResponseIEs_t));
+               }
+            }
+            DU_FREE(resetResponse->protocolIEs.list.array, resetResponse->protocolIEs.list.size);
+         }
+
+         DU_FREE(e2apMsg->choice.successfulOutcome, sizeof(SuccessfulOutcomeE2_t));
+      }
+      DU_FREE(e2apMsg, sizeof(E2AP_PDU_t));
+   }
+}
+
+/*******************************************************************
+ *
+ * @brief Buld and send the E2 Reset Response msg
+ *
+ * @details
+ *
+ *    Function : BuildAndSendE2ResetResponse
+ *
+ *    Functionality:
+ *         - Buld and send the E2 Reset Response Message
+ *
+ * @params[in] Trans Id
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t BuildAndSendResetResponse(uint8_t transId)
+{
+   uint8_t           ieIdx = 0, elementCnt = 0;
+   uint8_t           ret = RFAILED;
+   E2AP_PDU_t        *e2apMsg = NULLP;
+   ResetResponseE2_t *resetResponse;
+   asn_enc_rval_t    encRetVal;       /* Encoder return value */
+
+   DU_LOG("\nINFO   -->  E2AP : Building E2 Reset Response Message\n");
+   do
+   {
+      DU_ALLOC(e2apMsg, sizeof(E2AP_PDU_t));
+      if(e2apMsg == NULLP)
+      {
+         DU_LOG("\nERROR  -->  E2AP : BuildAndSendResetResponse(): Memory allocation for E2AP-PDU failed");
+         break;
+      }
+      e2apMsg->present = E2AP_PDU_PR_successfulOutcome;
+
+      DU_ALLOC(e2apMsg->choice.successfulOutcome, sizeof(SuccessfulOutcomeE2_t));
+      if(e2apMsg->choice.successfulOutcome == NULLP)
+      {
+         DU_LOG("\nERROR  -->  E2AP : BuildAndSendResetResponse: Memory allocation failed for successfulOutcome");
+         break;
+      }
+
+      e2apMsg->choice.successfulOutcome->procedureCode = ProcedureCodeE2_id_Reset;
+      e2apMsg->choice.successfulOutcome->criticality = CriticalityE2_reject;
+      e2apMsg->choice.successfulOutcome->value.present = SuccessfulOutcomeE2__value_PR_ResetResponseE2;
+      resetResponse = &e2apMsg->choice.successfulOutcome->value.choice.ResetResponseE2;
+
+      elementCnt = 1;
+      resetResponse->protocolIEs.list.count = elementCnt;
+      resetResponse->protocolIEs.list.size = elementCnt * sizeof(ResetResponseIEs_t *);
+      DU_ALLOC(resetResponse->protocolIEs.list.array, resetResponse->protocolIEs.list.size);
+      if(!resetResponse->protocolIEs.list.array)
+      {
+         DU_LOG("\nERROR  -->  E2AP : BuildAndSendResetResponse: Memory allocation failed for protocol IE array");
+         break;
+      }
+
+      for(ieIdx=0; ieIdx < elementCnt; ieIdx++)
+      {
+         DU_ALLOC(resetResponse->protocolIEs.list.array[ieIdx], sizeof(ResetResponseIEs_t));
+         if(!resetResponse->protocolIEs.list.array[ieIdx])
+         {
+            DU_LOG("\nERROR  -->  E2AP : BuildAndSendResetResponse: Memory allocation failed for protocol IE array element");
+            break;
+         }
+      }
+      if(ieIdx < elementCnt)
+         break;
+
+      ieIdx = 0;
+      resetResponse->protocolIEs.list.array[ieIdx]->id =  ProtocolIE_IDE2_id_TransactionID;
+      resetResponse->protocolIEs.list.array[ieIdx]->criticality = CriticalityE2_reject;
+      resetResponse->protocolIEs.list.array[ieIdx]->value.present = ResetResponseIEs__value_PR_TransactionID;
+      resetResponse->protocolIEs.list.array[ieIdx]->value.choice.TransactionID = transId;
+
+      xer_fprint(stdout, &asn_DEF_E2AP_PDU, e2apMsg);
+
+      memset(encBuf, 0, ENC_BUF_MAX_LEN);
+      encBufSize = 0;
+      encRetVal = aper_encode(&asn_DEF_E2AP_PDU, 0, e2apMsg, PrepFinalEncBuf, encBuf);
+      if(encRetVal.encoded == ENCODE_FAIL)
+      {
+         DU_LOG("\nERROR  -->  E2AP : Could not encode E2 reset response structure (at %s)\n",\
+               encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
+         break;
+      }
+      else
+      {
+         DU_LOG("\nDEBUG  -->  E2AP : Created APER encoded buffer for E2 Reset Response \n");
+         for(int i=0; i< encBufSize; i++)
+         {
+            DU_LOG("%x",encBuf[i]);
+         }
+      }
+
+      /* Sending msg */
+      if(SendE2APMsg(DU_APP_MEM_REGION, DU_POOL, encBuf, encBufSize) != ROK)
+      {
+         DU_LOG("\nERROR  -->  E2AP : Failed to send E2 Reset Response");
+         break;
+      }
+
+      ret = ROK;
+      break;
+   }while(true);
+
+   FreeE2ResetResponse(e2apMsg);
+   return ret;
+}
+
+/******************************************************************
+ *
+ * @brief Deallocation of memory allocated by aper decoder for reset req
+ *
+ * @details
+ *
+ *    Function : freeAperDecodingOfE2ResetReq
+ *
+ *    Functionality: Deallocation of memory allocated by aper decoder for
+ *    reset req
+ *
+ * @params[in] Pointer to resetReq
+ * @return void
+ *
+ * ****************************************************************/
+void freeAperDecodingOfE2ResetReq(ResetRequestE2_t *resetReq)
+{
+   uint8_t arrIdx=0;
+
+   if(resetReq)
+   {
+      if(resetReq->protocolIEs.list.array)
+      {
+         for(arrIdx=0; arrIdx<resetReq->protocolIEs.list.count; arrIdx++)
+         {
+            if(resetReq->protocolIEs.list.array[arrIdx])
+            {
+               free(resetReq->protocolIEs.list.array[arrIdx]);
+            }
+         }
+         free(resetReq->protocolIEs.list.array);
+      }
+   }
+}
+
+/*******************************************************************
+ *
+ * @brief Process reset req received from RIC
+ *
+ * @details
+ *
+ *    Function : procE2ResetRequest
+ *
+ * Functionality: Process reset req received from RIC
+ *
+ * @param  E2AP_PDU_t  *e2apMsg
+ * @return void
+ *
+ ******************************************************************/
+
+void procE2ResetRequest(E2AP_PDU_t  *e2apMsg)
+{
+   uint16_t ranFuncIdx=0;
+   uint8_t arrIdx =0, transId =0, pendingSubsRspIdx=0;
+   ResetRequestE2_t *resetReq;
+
+   DU_LOG("\nINFO   -->  E2AP : E2 Reset request received");
+   resetReq = &e2apMsg->choice.initiatingMessage->value.choice.ResetRequestE2;
+
+   for(arrIdx=0; arrIdx<resetReq->protocolIEs.list.count; arrIdx++)
+   {
+      switch(resetReq->protocolIEs.list.array[arrIdx]->id)
+      {
+         case ProtocolIE_IDE2_id_TransactionID:
+            {
+               transId = resetReq->protocolIEs.list.array[arrIdx]->value.choice.TransactionID;
+               break;
+            }
+
+         case ProtocolIE_IDE2_id_CauseE2:
+            {
+               for(ranFuncIdx=0; ranFuncIdx<MAX_RAN_FUNCTION; ranFuncIdx++)
+               {
+                  if(duCb.e2apDb.ranFunction[ranFuncIdx].id >0)
+                  {
+                     deleteRicSubscriptionList(&(duCb.e2apDb.ranFunction[ranFuncIdx].subscriptionList));
+                     for(pendingSubsRspIdx=0; pendingSubsRspIdx<duCb.e2apDb.ranFunction[ranFuncIdx].numPendingSubsRsp; pendingSubsRspIdx++)
+                     {
+                        memset(&(duCb.e2apDb.ranFunction[ranFuncIdx].pendingSubsRspInfo), 0, sizeof(PendingSubsRspInfo));
+                     }
+                  }
+               }
+               break;
+            }
+      }
+   }
+   if(BuildAndSendResetResponse(transId) != ROK)
+   {
+      DU_LOG("\nERROR  -->  E2AP : Failed to build and send reset response");
+   }
+   freeAperDecodingOfE2ResetReq(resetReq);
+}
+
 /*******************************************************************
  *
  * @brief Handles received E2AP message and sends back response  

@@ -1014,6 +1014,60 @@ uint8_t addOrModifyE2NodeComponent(InterfaceType interfaceType, uint8_t action, 
    return ROK;
 }
 
+/******************************************************************
+ *
+ * @brief Delete ric subscription information from the database
+ *
+ * @details
+ *
+ *    Function : deleteRicSubscriptionList
+ *
+ *    Functionality: Delete ric subscription information
+ *
+ * @params[in]
+ *    Subscription List to be deleted 
+
+ * @return void 
+ *
+ * ****************************************************************/
+
+
+void deleteRicSubscriptionList(CmLListCp *subscriptionList)
+{
+   uint8_t actionIdx;
+   ActionDefinition *definition;
+   CmLList *subscriptionNode;
+   RicSubscription *ricSubscriptionInfo;
+   CmLListCp *measInfoSupportedList;
+   CmLList *supportedMeasNode = NULLP;
+   MeasurementInfoForAction *measInfoSupportedDb;
+   
+   CM_LLIST_FIRST_NODE(subscriptionList, subscriptionNode);
+   while(subscriptionNode)
+   {
+      ricSubscriptionInfo = (RicSubscription*)subscriptionNode->node;     
+      
+      memset(&ricSubscriptionInfo->eventTriggerDefinition, 0, sizeof(EventTriggerDefinition));
+      for(actionIdx = 0; actionIdx < ricSubscriptionInfo->numOfActions; actionIdx++)
+      {
+         definition= & ricSubscriptionInfo->actionSequence[actionIdx].definition;        
+         measInfoSupportedList = &definition->choice.format1.measurementInfoList;
+         CM_LLIST_FIRST_NODE(measInfoSupportedList, supportedMeasNode);
+         while(supportedMeasNode)
+         {
+            measInfoSupportedDb = (MeasurementInfoForAction*)supportedMeasNode->node;
+            memset(&measInfoSupportedDb, 0, sizeof(MeasurementInfoForAction));
+         }
+      }
+      
+      if(duChkTmr((PTR)ricSubscriptionInfo, EVENT_RIC_SUBSCRIPTION_REPORTING_TMR) == TRUE)
+      {
+         duStopTmr((PTR)ricSubscriptionInfo, EVENT_RIC_SUBSCRIPTION_REPORTING_TMR);
+      }
+      memset(ricSubscriptionInfo, 0, sizeof(RicSubscription));
+   }
+}
+
 /**********************************************************************
   End of file
  **********************************************************************/
