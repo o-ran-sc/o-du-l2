@@ -641,6 +641,9 @@ uint8_t e2ProcStatsRsp(MacStatsRsp *statsRsp)
    }
    else
    {
+      /* Once RIC subscription is successful, mark the config action as unknown */
+      ricSubscriptionInfo->action = CONFIG_UNKNOWN;
+
       /* Start RIC Subscription reporting timer */
       switch(ricSubscriptionInfo->eventTriggerDefinition.formatType)
       {
@@ -1012,6 +1015,28 @@ uint8_t addOrModifyE2NodeComponent(InterfaceType interfaceType, uint8_t action, 
       }
    } 
    return ROK;
+}
+
+void fetchRicSubsToBeDeleted(CmLListCp *ricSubsToBeDelList)
+{
+   uint8_t ranFuncIdx = 0;
+   CmLList *subsNode = NULLP;
+
+   for(ranFuncIdx = 0; ranFuncIdx < MAX_RAN_FUNCTION; ranFuncIdx++)
+   {
+      if(duCb.e2apDb.ranFunction[ranFuncIdx].id > 0)
+      {
+         CM_LLIST_FIRST_NODE(&duCb.e2apDb.ranFunction[ranFuncIdx].subscriptionList, subsNode);
+         while(subsNode)
+         {
+            if(((RicSubscription *)subsNode->node)->action == CONFIG_DEL)
+            {
+               cmLListAdd2Tail(ricSubsToBeDelList, subsNode);
+            }
+            subsNode = subsNode->next;
+         }
+      }
+   }
 }
 
 /**********************************************************************

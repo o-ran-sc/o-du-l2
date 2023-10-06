@@ -403,6 +403,8 @@ typedef struct
    uint8_t                numOfActions;
    ActionInfo             actionSequence[MAX_RIC_ACTION];  
    CmTimer                ricSubsReportTimer;
+   ConfigType             action;
+   E2FailureCause         failureCause; /* Used only when a subscription is required to be deleted */
 }RicSubscription;
 
 typedef struct rejectedAction
