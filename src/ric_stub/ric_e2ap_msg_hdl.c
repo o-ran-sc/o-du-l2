@@ -127,6 +127,170 @@ uint8_t SendE2APMsg(Region region, Pool pool, uint32_t duId)
 
 /*******************************************************************
  *
+ * @brief Deallocate the memory allocated for RemovalRequest msg
+ *
+ * @details
+ *
+ *    Function : FreeRemovalRequest
+ *
+ *    Functionality:
+ *       - freeing the memory allocated for RemovalRequest
+ *
+ * @params[in] E2AP_PDU_t *e2apMsg
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+void FreeRemovalRequest(E2AP_PDU_t *e2apMsg)
+{
+   uint8_t ieIdx =0;
+   E2RemovalRequest_t  *removalReq = NULLP;
+
+   if(e2apMsg != NULLP)
+   {
+      if(e2apMsg->choice.initiatingMessage != NULLP)
+      {
+         removalReq = &e2apMsg->choice.initiatingMessage->value.choice.E2RemovalRequest;
+         if(removalReq->protocolIEs.list.array)
+         {
+            for(ieIdx = 0; ieIdx < removalReq->protocolIEs.list.count; ieIdx++)
+            {
+               RIC_FREE(removalReq->protocolIEs.list.array[ieIdx], sizeof(E2RemovalRequestIEs_t));
+            }
+            RIC_FREE(removalReq->protocolIEs.list.array, removalReq->protocolIEs.list.size);
+         }
+         RIC_FREE(e2apMsg->choice.initiatingMessage, sizeof(InitiatingMessageE2_t));
+      }
+      RIC_FREE(e2apMsg, sizeof(E2AP_PDU_t));
+   }
+}
+
+/*******************************************************************
+ *
+ * @brief Build and send the removal request msg
+ *
+ * @details
+ *
+ *    Function : BuildAndSendRemovalRequest
+ *
+ *    Functionality:
+ *         - Buld and send the removal request msg to E2 node
+ *
+ * @params[in]
+ *    DU database
+ *    Type of failure
+ *    Cause of failure
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t BuildAndSendRemovalRequest(DuDb *duDb)
+{
+   uint8_t ieIdx = 0, elementCnt = 0, transId = 0;
+   uint8_t ret = RFAILED;
+   E2AP_PDU_t        *e2apMsg = NULLP;
+   E2RemovalRequest_t  *removalReq = NULLP;
+   asn_enc_rval_t     encRetVal;       /* Encoder return value */
+
+   DU_LOG("\nINFO   -->  E2AP : Building Removal Request\n");
+
+   do
+   {
+      RIC_ALLOC(e2apMsg, sizeof(E2AP_PDU_t));
+      if(e2apMsg == NULLP)
+      {
+         DU_LOG("\nERROR  -->  E2AP : BuildAndSendRemovalRequest(): Memory allocation for E2AP-PDU failed");
+         break;
+      }
+
+      e2apMsg->present = E2AP_PDU_PR_initiatingMessage;
+      RIC_ALLOC(e2apMsg->choice.initiatingMessage, sizeof(InitiatingMessageE2_t));
+      if(e2apMsg->choice.initiatingMessage == NULLP)
+      {
+         DU_LOG("\nERROR  -->  E2AP : BuildAndSendRemovalRequest(): Memory allocation for initiatingMessage");
+         break;
+      }
+
+      e2apMsg->choice.initiatingMessage->procedureCode = ProcedureCodeE2_id_E2removal;
+      e2apMsg->choice.initiatingMessage->criticality = CriticalityE2_reject;
+      e2apMsg->choice.initiatingMessage->value.present = InitiatingMessageE2__value_PR_E2RemovalRequest;
+      removalReq = &e2apMsg->choice.initiatingMessage->value.choice.E2RemovalRequest;
+
+      elementCnt = 1;
+      removalReq->protocolIEs.list.count = elementCnt;
+      removalReq->protocolIEs.list.size = elementCnt * sizeof(E2RemovalRequestIEs_t *);
+
+      RIC_ALLOC(removalReq->protocolIEs.list.array, removalReq->protocolIEs.list.size);
+      if(!removalReq->protocolIEs.list.array)
+      {
+         DU_LOG("\nERROR  -->  E2AP : BuildAndSendRemovalRequest(): Memory allocation failed for \
+               Removal Request IE array");
+         break;
+      }
+
+      for(ieIdx = 0; ieIdx < elementCnt; ieIdx++)
+      {
+         RIC_ALLOC(removalReq->protocolIEs.list.array[ieIdx], sizeof(E2RemovalRequestIEs_t));
+         if(!removalReq->protocolIEs.list.array[ieIdx])
+         {
+            DU_LOG("\nERROR  -->  E2AP : BuildAndSendRemovalRequest(): Memory allocation failed for \
+                  Removal Request IE array element");
+            break;
+         }
+      }
+
+      /* In case of failure */
+      if(ieIdx < elementCnt)
+         break;
+
+      ieIdx = 0;
+      removalReq->protocolIEs.list.array[ieIdx]->id = ProtocolIE_IDE2_id_TransactionID;
+      removalReq->protocolIEs.list.array[ieIdx]->criticality = CriticalityE2_reject;
+      removalReq->protocolIEs.list.array[ieIdx]->value.present = E2RemovalRequestIEs__value_PR_TransactionID;
+      transId = assignTransactionId(duDb);
+      removalReq->protocolIEs.list.array[ieIdx]->value.choice.TransactionID = transId;
+
+      /* Prints the Msg formed */
+      xer_fprint(stdout, &asn_DEF_E2AP_PDU, e2apMsg);
+
+      memset(encBuf, 0, ENC_BUF_MAX_LEN);
+      encBufSize = 0;
+      encRetVal = aper_encode(&asn_DEF_E2AP_PDU, 0, e2apMsg, PrepFinalEncBuf,\
+            encBuf);
+      if(encRetVal.encoded == ENCODE_FAIL)
+      {
+         DU_LOG("\nERROR  -->  E2AP : Could not encode removal request structure (at %s)\n",\
+               encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
+         break;
+      }
+      else
+      {
+         DU_LOG("\nDEBUG   -->  E2AP : Created APER encoded buffer for removal request\n");
+#ifdef DEBUG_ASN_PRINT
+         for(int i=0; i< encBufSize; i++)
+         {
+            printf("%x",encBuf[i]);
+         }
+#endif
+      }
+      if(SendE2APMsg(RIC_APP_MEM_REG, RIC_POOL, duDb->duId) != ROK)
+      {
+         DU_LOG("\nERROR  -->  E2AP : Sending removal request failed");
+         break;
+      }
+
+
+      ret = ROK;
+      break;
+   }while(true);
+
+   /* Free all memory */
+   FreeRemovalRequest(e2apMsg);
+   return ret;
+}
+
+/*******************************************************************
+ *
  * @brief Fetches RAN Function DB
  *
  * @details
