@@ -24,6 +24,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "201d2fc4_e8417237",
+        "filename": "src/du_app/du_e2ap_mgr.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1163,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-10-06T07:36:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bc627ef6_f62367eb",
+      "range": {
+        "startLine": 1163,
+        "startChar": 9,
+        "endLine": 1163,
+        "endChar": 36
+      },
+      "revId": "16c0a7f7dcc49ec2ce986d37d8f3fb2963ee5358",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "478fb638_8c2538be",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-10-06T07:23:02Z",
       "side": 1,
       "message": "pass subscriptionNode to deleteRicSubscriptionNode and free node \u0026 node-\u003enode inside the function",
+      "range": {
+        "startLine": 1205,
+        "startChar": 6,
+        "endLine": 1205,
+        "endChar": 13
+      },
+      "revId": "16c0a7f7dcc49ec2ce986d37d8f3fb2963ee5358",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "28ec8798_1e8ef9b4",
+        "filename": "src/du_app/du_e2ap_mgr.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1205,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-10-06T07:36:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "478fb638_8c2538be",
       "range": {
         "startLine": 1205,
         "startChar": 6,
@@ -64,6 +112,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a6b4c254_8e1bfaf6",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2750,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-10-06T07:36:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a335faa2_188aff45",
+      "revId": "16c0a7f7dcc49ec2ce986d37d8f3fb2963ee5358",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bd2872aa_8272b286",
@@ -81,6 +147,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2f229810_a5ab9f33",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 3373,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-10-06T07:36:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bd2872aa_8272b286",
+      "revId": "16c0a7f7dcc49ec2ce986d37d8f3fb2963ee5358",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7fa896a9_126853a4",
@@ -94,6 +178,24 @@
       "writtenOn": "2023-10-06T07:23:02Z",
       "side": 1,
       "message": "Use delete action function here",
+      "revId": "16c0a7f7dcc49ec2ce986d37d8f3fb2963ee5358",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b75c4f54_aaa37042",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 6252,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-10-06T07:36:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7fa896a9_126853a4",
       "revId": "16c0a7f7dcc49ec2ce986d37d8f3fb2963ee5358",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
