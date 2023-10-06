@@ -4667,8 +4667,9 @@ void freeAperDecodingOfE2ResetRsp(ResetResponseE2_t *resetResponse)
  * ****************************************************************/
 uint8_t procResetResponse(E2AP_PDU_t *e2apMsg)
 {
-   uint8_t ieIdx =0, transId;
-   ResetResponseE2_t *resetResponse;
+   uint8_t ieIdx =0, transId =0;
+   uint16_t ranFuncIdx=0;
+   ResetResponseE2_t *resetResponse =NULLP;
 
    DU_LOG("\nINFO   -->  E2AP : E2 Reset Response received");
    resetResponse = &e2apMsg->choice.successfulOutcome->value.choice.ResetResponseE2;;
@@ -4678,27 +4679,32 @@ uint8_t procResetResponse(E2AP_PDU_t *e2apMsg)
       switch(resetResponse->protocolIEs.list.array[ieIdx]->id)
       {
          case ProtocolIE_IDE2_id_TransactionID:
-            transId = resetResponse->protocolIEs.list.array[ieIdx]->value.choice.TransactionID;
-            if((duCb.e2apDb.e2TransInfo.e2InitTransaction[transId].transactionId == transId) && \
-                  (duCb.e2apDb.e2TransInfo.e2InitTransaction[transId].procedureCode == e2apMsg->choice.successfulOutcome->procedureCode))
             {
-               memset(&duCb.e2apDb.e2TransInfo.e2InitTransaction[transId], 0, sizeof(E2TransInfo));
+               transId = resetResponse->protocolIEs.list.array[ieIdx]->value.choice.TransactionID;
+               if((duCb.e2apDb.e2TransInfo.e2InitTransaction[transId].transactionId == transId) && \
+                     (duCb.e2apDb.e2TransInfo.e2InitTransaction[transId].procedureCode == e2apMsg->choice.successfulOutcome->procedureCode))
+               {
+                  memset(&duCb.e2apDb.e2TransInfo.e2InitTransaction[transId], 0, sizeof(E2TransInfo));
+               }
+               else
+               {
+                  DU_LOG("\nERROR  -->  E2AP : Invalid transaction id [%d]", transId);
+                  return RFAILED;
+               }
+               break;
             }
-            else
-            {
-               DU_LOG("\nERROR  -->  E2AP : Invalid transaction id [%d]", transId);
-               return RFAILED;
-            }
-            break;
          case ProtocolIE_IDE2_id_CriticalityDiagnosticsE2:
-            /* As per ORAN WG3 E2AP spec v3.0, section 9.2.2
-               Criticality Diagnostics IE is sent by Near-RT RIC when parts of a received message i.e. 
-               Reset Request in this case, have not been comprehended or were missing, or if the message 
-               contained logical errors.
-
-               Processing of this ID should be implemented when negative call flows are to be supported.
-             */
-            break;
+            {
+               for(ranFuncIdx=0; ranFuncIdx<MAX_RAN_FUNCTION; ranFuncIdx++)
+               {
+                  if(duCb.e2apDb.ranFunction[ranFuncIdx].id >0)
+                  {
+                     deleteRicSubscriptionList(&(duCb.e2apDb.ranFunction[ranFuncIdx].subscriptionList));
+                     memset(&(duCb.e2apDb.ranFunction[ranFuncIdx].pendingSubsRspInfo), 0, MAX_PENDING_SUBSCRIPTION_RSP*sizeof(PendingSubsRspInfo));
+                  }
+               }
+               break;
+            }
          default:
             DU_LOG("\nERROR  -->  E2AP : Invalid IE received in E2 Reset Response : %ld",
                   resetResponse->protocolIEs.list.array[ieIdx]->id);
