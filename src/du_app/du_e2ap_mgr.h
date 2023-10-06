@@ -403,6 +403,8 @@ typedef struct
    uint8_t                numOfActions;
    ActionInfo             actionSequence[MAX_RIC_ACTION];  
    CmTimer                ricSubsReportTimer;
+   ConfigType             action;
+   E2FailureCause         failureCause; /* Used only when a subscription is required to be deleted */
 }RicSubscription;
 
 typedef struct rejectedAction
@@ -493,6 +495,7 @@ RicSubscription *fetchSubsInfoFromRicReqId(RicRequestId ricReqId, RanFunction *r
 RanFunction *fetchRanFuncFromRanFuncId(uint16_t ranFuncId);
 uint8_t fetchSubsInfoFromSubsId(uint64_t subscriptionId, RanFunction **ranFuncDb, CmLList **ricSubscriptionNode, \
    RicSubscription **ricSubscriptionInfo);
+void fetchRicSubsToBeDeleted(CmLListCp *ricSubsToBeDelList);
 
 uint8_t fillRicSubsInMacStatsReq(MacStatsReq *macStatsReq, RicSubscription* ricSubscriptionInfo);
 uint8_t e2ProcStatsRsp(MacStatsRsp *statsRsp);

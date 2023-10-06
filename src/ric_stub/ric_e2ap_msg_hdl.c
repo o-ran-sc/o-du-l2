@@ -176,20 +176,30 @@ RanFunction *fetchRanFuncFromRanFuncId(DuDb *duDb, uint16_t ranFuncId)
  *         NULL, in case of failure
  *
  * ****************************************************************/
-RicSubscription *fetchSubsInfoFromRicReqId(RicRequestId ricReqId, RanFunction *ranFuncDb)
+RicSubscription *fetchSubsInfoFromRicReqId(RicRequestId ricReqId, RanFunction *ranFuncDb, CmLList **ricSubscriptionNode)
 {
-   uint8_t subsIdx = 0;
    RicSubscription *ricSubscriptionInfo = NULLP;
 
-   for(subsIdx = 0; subsIdx < ranFuncDb->numOfSubscription; subsIdx++)
+   /* Fetch subscription detail in RAN Function DB */
+   CM_LLIST_FIRST_NODE(&ranFuncDb->subscriptionList, *ricSubscriptionNode);
+   while(*ricSubscriptionNode)
    {
-      if((ranFuncDb->subscriptionList[subsIdx].requestId.requestorId == ricReqId.requestorId) &&
-            (ranFuncDb->subscriptionList[subsIdx].requestId.instanceId == ricReqId.instanceId))
+      ricSubscriptionInfo = (RicSubscription *)((*ricSubscriptionNode)->node);
+      if(ricSubscriptionInfo && (ricSubscriptionInfo->requestId.requestorId == ricReqId.requestorId) &&
+            (ricSubscriptionInfo->requestId.instanceId == ricReqId.instanceId))
       {
-         ricSubscriptionInfo = &ranFuncDb->subscriptionList[subsIdx];
          break;
       }
+      *ricSubscriptionNode = (*ricSubscriptionNode)->next;
+      ricSubscriptionInfo = NULLP;
    }
+
+   if(!ricSubscriptionInfo)
+   {
+      DU_LOG("\nERROR  -->  E2AP : fetchSubsInfoFromRicReqId: Subscription not found for Requestor ID [%d] \
+         Instance ID [%d] in RAN Function ID [%d]", ricReqId.requestorId, ricReqId.instanceId, ranFuncDb->id);
+   }
+
    return ricSubscriptionInfo;
 }
 
@@ -1354,9 +1364,8 @@ uint8_t fillEventTriggerDef(RICeventTriggerDefinition_t *ricEventTriggerDef)
  *
  * ****************************************************************/
 
-uint8_t BuildRicSubsDetails(RICsubscriptionDetails_t *subsDetails, RicSubscription *ricSubsDb)
+uint8_t BuildRicSubsDetails(RICsubscriptionDetails_t *subsDetails, RicSubscription *ricSubsInfo)
 {
-   uint8_t actionIdx = 0;
    uint8_t elementCnt = 0;
    uint8_t elementIdx = 0;
 
@@ -1398,14 +1407,10 @@ uint8_t BuildRicSubsDetails(RICsubscriptionDetails_t *subsDetails, RicSubscripti
       if(elementIdx < elementCnt)
          break;
 
-      for(actionIdx = 0; actionIdx < MAX_RIC_ACTION; actionIdx++)
-      {
-         ricSubsDb->actionSequence[actionIdx].actionId = -1;
-      }
 
       elementIdx = 0;
       if(fillActionToBeSetup((RICaction_ToBeSetup_ItemIEs_t *)subsDetails->ricAction_ToBeSetup_List.list.array[elementIdx], \
-         ricSubsDb) != ROK)
+         ricSubsInfo) != ROK)
       {
          DU_LOG("\nERROR  -->  E2AP : Failed at [%s] : line [%d]", __func__, __LINE__);
          break;
@@ -1433,14 +1438,29 @@ uint8_t BuildRicSubsDetails(RICsubscriptionDetails_t *subsDetails, RicSubscripti
 uint8_t BuildAndSendRicSubscriptionReq(DuDb *duDb)
 {
    uint8_t         ret = RFAILED;
+   uint8_t         elementCnt = 0;
+   uint8_t         idx = 0;
+   uint8_t         actionIdx = 0;
+   asn_enc_rval_t  encRetVal;        /* Encoder return value */
    E2AP_PDU_t                 *e2apRicMsg = NULL;
    RICsubscriptionRequest_t   *ricSubscriptionReq;
-   uint8_t         elementCnt;
-   uint8_t         idx;
-   asn_enc_rval_t  encRetVal;        /* Encoder return value */
-   RanFunction     *ranFuncDb = &duDb->ranFunction[0];
+   RanFunction  *ranFuncDb = &duDb->ranFunction[0];
+   CmLList *ricSubsNode = NULLP;
+   RicSubscription *ricSubsInfo = NULLP;
 
    DU_LOG("\nINFO   -->  E2AP : Building RIC Subscription Request\n");
+
+   /* Allocate memory to store RIC subscription info in RIC DB */
+   RIC_ALLOC(ricSubsInfo, sizeof(RicSubscription));
+   if(!ricSubsInfo)
+   {
+      DU_LOG("\nERROR  -->  E2AP : Memory allocation failed at [%s] : line [%d]", __func__, __LINE__);
+      return RFAILED;
+   }
+   for(actionIdx = 0; actionIdx < MAX_RIC_ACTION; actionIdx++)
+   {
+      ricSubsInfo->actionSequence[actionIdx].actionId = -1;
+   }
 
    while(true)
    {
@@ -1495,7 +1515,7 @@ uint8_t BuildAndSendRicSubscriptionReq(DuDb *duDb)
       ricSubscriptionReq->protocolIEs.list.array[idx]->value.present =\
                                                                       RICsubscriptionRequest_IEs__value_PR_RICrequestID;
       if(BuildNewRicRequestId(&ricSubscriptionReq->protocolIEs.list.array[idx]->value.choice.RICrequestID, \
-         &ranFuncDb->subscriptionList[ranFuncDb->numOfSubscription].requestId) != ROK)
+         &ricSubsInfo->requestId) != ROK)
       {
          DU_LOG("\nERROR  -->  E2AP : Failed at [%s] : Line [%d]", __func__, __LINE__);
          break;
@@ -1517,7 +1537,7 @@ uint8_t BuildAndSendRicSubscriptionReq(DuDb *duDb)
       ricSubscriptionReq->protocolIEs.list.array[idx]->value.present =\
                                                                       RICsubscriptionRequest_IEs__value_PR_RICsubscriptionDetails;
       if(BuildRicSubsDetails(&(ricSubscriptionReq->protocolIEs.list.array[idx]->value.choice.RICsubscriptionDetails),\
-         &ranFuncDb->subscriptionList[ranFuncDb->numOfSubscription]) != ROK)
+         ricSubsInfo) != ROK)
       {
          DU_LOG("\nERROR  -->  E2AP : Failed at [%s] : Line [%d]", __func__, __LINE__);
          break;
@@ -1551,13 +1571,26 @@ uint8_t BuildAndSendRicSubscriptionReq(DuDb *duDb)
          break;
       }
 
-      ranFuncDb->numOfSubscription++;
+      /* Add RIC Subscription Info to RAN Function's RIC Subscription List */
+      RIC_ALLOC(ricSubsNode , sizeof(CmLList));
+      if(!ricSubsNode)
+      {
+         DU_LOG("\nERROR  -->  E2AP : Memory allocation failed at [%s] : line [%d]", __func__, __LINE__);
+         break;
+      }
+      ricSubsNode->node = (PTR)ricSubsInfo;
+      cmLListAdd2Tail(&ranFuncDb->subscriptionList, ricSubsNode);
+
       ret = ROK;
       break;
    }
 
    if(ret == RFAILED)
-      memset(&ranFuncDb->subscriptionList[ranFuncDb->numOfSubscription], 0, sizeof(RicSubscription));
+   {
+      RIC_FREE(ricSubsInfo, sizeof(RicSubscription));
+      RIC_FREE(ricSubsNode , sizeof(CmLList));
+   }
+
    FreeRicSubscriptionReq(e2apRicMsg);
    return ret;
 }
@@ -1585,6 +1618,7 @@ void ProcRicSubscriptionResponse(uint32_t duId, RICsubscriptionResponse_t  *ricS
    RicRequestId ricReqId;
    RanFunction  *ranFuncDb = NULLP;
    RicSubscription *ricSubs = NULLP;
+   CmLList *ricSubsNode = NULLP;
    ActionInfo *action = NULLP;
    RICsubscriptionResponse_IEs_t *ricSubsRspIe = NULLP;
    RICaction_NotAdmitted_List_t *notAdmitList = NULLP;
@@ -1645,7 +1679,7 @@ void ProcRicSubscriptionResponse(uint32_t duId, RICsubscriptionResponse_t  *ricS
                               value.choice.RICaction_NotAdmitted_Item.ricActionID;
 
                            /* Remove action from RAN Function's subscription list */
-                           ricSubs = fetchSubsInfoFromRicReqId(ricReqId, ranFuncDb);
+                           ricSubs = fetchSubsInfoFromRicReqId(ricReqId, ranFuncDb, &ricSubsNode);
                            if(ricSubs)
                            {
                               action = fetchActionInfoFromActionId(actionId, ricSubs);
@@ -1903,6 +1937,7 @@ uint8_t ProcE2SetupReq(uint32_t *duId, E2setupRequest_t  *e2SetupReq)
                               ranFunItem = &ranFuncItemIe->value.choice.RANfunction_Item;
                               duDb->ranFunction[ranFunItem->ranFunctionID-1].id = ranFunItem->ranFunctionID; 
                               duDb->ranFunction[ranFunItem->ranFunctionID-1].revisionCounter = ranFunItem->ranFunctionRevision; 
+                              cmLListInit(&duDb->ranFunction[ranFunItem->ranFunctionID-1].subscriptionList);
                               duDb->numOfRanFunction++;
                            }
                         }
@@ -2987,11 +3022,12 @@ void ProcRicServiceUpdate(uint32_t duId, RICserviceUpdate_t *ricServiceUpdate)
  ******************************************************************/
 uint8_t ProcRicSubscriptionFailure(uint32_t duId, RICsubscriptionFailure_t *ricSubscriptionFailure)
 {
-   uint8_t ieIdx = 0, duIdx = 0, subsIdx = 0;
+   uint8_t ieIdx = 0, duIdx = 0;
    uint8_t ranFuncId = 0;
    DuDb    *duDb = NULLP;
    RanFunction *ranFuncDb = NULLP;
    RicSubscription *ricSubs = NULLP;
+   CmLList *ricSubsNode = NULLP;
    RicRequestId ricReqId;
    RICsubscriptionFailure_IEs_t *ricSubsFailIe = NULLP;
 
@@ -3034,10 +3070,11 @@ uint8_t ProcRicSubscriptionFailure(uint32_t duId, RICsubscriptionFailure_t *ricS
                      else
                      {
                         /* Remove subscription entry from RAN Function */
-                        ricSubs = fetchSubsInfoFromRicReqId(ricReqId, ranFuncDb);
+                        ricSubs = fetchSubsInfoFromRicReqId(ricReqId, ranFuncDb, &ricSubsNode);
                         if(ricSubs)
                         {
-                           memset(&ranFuncDb->subscriptionList[subsIdx], 0, sizeof(RicSubscription));
+                           cmLListDelFrm(&ranFuncDb->subscriptionList, ricSubsNode);
+                           deleteRicSubscriptionNode(ricSubsNode);
                         }
                      }
                      break; 
@@ -3781,6 +3818,7 @@ uint8_t ProcRicSubsModReqd(uint32_t duId, RICsubscriptionModificationRequired_t 
    RicRequestId ricReqId;
    RanFunction *ranFuncDb = NULLP;
    RicSubscription *ricSubs = NULLP;
+   CmLList *ricSubsNode = NULLP;
    ActionInfo *action = NULLP;
    RICsubscriptionModificationRequired_IEs_t *ricSubsModReqdIe = NULLP;
    RICactions_RequiredToBeModified_List_t *actionToBeModList = NULLP;
@@ -3823,7 +3861,7 @@ uint8_t ProcRicSubsModReqd(uint32_t duId, RICsubscriptionModificationRequired_t 
                   return RFAILED;
                }
 
-               ricSubs = fetchSubsInfoFromRicReqId(ricReqId, ranFuncDb);
+               ricSubs = fetchSubsInfoFromRicReqId(ricReqId, ranFuncDb, &ricSubsNode);
                if(!ricSubs)
                {
                   /* If RAN Function not found, send RIC Subscription modification refuse to DU */
@@ -4265,36 +4303,65 @@ uint8_t BuildAndSendResetRequest(DuDb *duDb, CauseE2_PR causePresent, uint8_t re
    return ret;
 }
 
-
-/*******************************************************************
+/******************************************************************
  *
- * @brief delete ric subscription information 
+ * @brief Delete Ric subscription node
  *
  * @details
  *
- *    Function : deleteRicSubscription 
+ *    Function : deleteRicSubscriptionNode
  *
- * Functionality: Process ric subscription information
+ *    Functionality: Delete Ric subscription node
  *
- * @params[in] 
- *       Pointer to DU database 
+ * @params[in] Ric subscription info
+ *
+ * @return void
+ *
+ * ****************************************************************/
+void deleteRicSubscriptionNode(CmLList *subscriptionNode)
+{
+   uint8_t actionIdx=0;
+   RicSubscription *ricSubscriptionInfo = NULLP;
+
+   ricSubscriptionInfo = (RicSubscription*)subscriptionNode->node;
+
+   for(actionIdx = 0; actionIdx < MAX_RIC_ACTION; actionIdx++)
+   {
+      if(ricSubscriptionInfo->actionSequence[actionIdx].actionId > -1)
+      {
+         memset(&ricSubscriptionInfo->actionSequence[actionIdx], 0, sizeof(ActionInfo));
+      }
+   }
+   memset(ricSubscriptionInfo, 0, sizeof(RicSubscription));
+   RIC_FREE(subscriptionNode->node, sizeof(RicSubscription));
+   RIC_FREE(subscriptionNode, sizeof(CmLList));
+}
+
+/*******************************************************************
+ *
+ * @brief Delete RIC subscription List
+ *
+ * @details
+ *
+ *    Function : deleteRicSubscriptionList 
+ *
+ * Functionality: Delete RIC subscription list
+ *
+ * @params[in] RIC Subscription list
  * @return void
 
  *
  ******************************************************************/
-void deleteRicSubscription(DuDb **duDb)
+void deleteRicSubscriptionList(CmLListCp *subscriptionList)
 {
-   RanFunction *ranFuncDb = NULLP;
-   uint16_t ranFuncIdx=0;
-   
-   for(ranFuncIdx =0; ranFuncIdx<MAX_RAN_FUNCTION; ranFuncIdx++)
+   CmLList *subscriptionNode = NULLP;
+
+   CM_LLIST_FIRST_NODE(subscriptionList, subscriptionNode);
+   while(subscriptionNode)
    {
-      ranFuncDb = &(*duDb)->ranFunction[ranFuncIdx];
-      if(ranFuncDb->id > 0)
-      {
-         memset(&ranFuncDb->subscriptionList, 0,MAX_RIC_REQUEST*sizeof(RicSubscription));
-         ranFuncDb->numOfSubscription =0;
-      }
+      cmLListDelFrm(subscriptionList, subscriptionNode);
+      deleteRicSubscriptionNode(subscriptionNode);
+      CM_LLIST_FIRST_NODE(subscriptionList, subscriptionNode);
    }
 }
 
@@ -4319,6 +4386,8 @@ void ProcResetResponse(uint32_t duId, ResetResponseE2_t *resetRsp)
 {
    uint8_t ieIdx = 0, duIdx =0;
    DuDb *duDb = NULLP;
+   RanFunction *ranFuncDb = NULLP;
+   uint16_t ranFuncIdx = 0;
 
    SEARCH_DU_DB(duIdx, duId, duDb); 
    if(duDb == NULLP)
@@ -4347,7 +4416,14 @@ void ProcResetResponse(uint32_t duId, ResetResponseE2_t *resetRsp)
          {
             case ProtocolIE_IDE2_id_TransactionID:
                {
-                  deleteRicSubscription(&duDb);
+                  for(ranFuncIdx = 0; ranFuncIdx < MAX_RAN_FUNCTION; ranFuncIdx++)
+                  {
+                     ranFuncDb = &duDb->ranFunction[ranFuncIdx];
+                     if(ranFuncDb->id > 0)
+                     {
+                        deleteRicSubscriptionList(&ranFuncDb->subscriptionList);
+                     }
+                  }
                   break;
                }
             case ProtocolIE_IDE2_id_CriticalityDiagnosticsE2:
@@ -4381,6 +4457,8 @@ void ProcResetRequest(uint32_t duId, ResetRequestE2_t *resetReq)
 {
    uint8_t ieIdx = 0, duIdx =0, transId=0;
    DuDb *duDb = NULLP;
+   RanFunction *ranFuncDb = NULLP;
+   uint16_t ranFuncIdx = 0;
 
    SEARCH_DU_DB(duIdx, duId, duDb); 
    if(duDb == NULLP)
@@ -4414,7 +4492,14 @@ void ProcResetRequest(uint32_t duId, ResetRequestE2_t *resetReq)
                }
             case ProtocolIE_IDE2_id_CauseE2:
                {
-                  deleteRicSubscription(&duDb);
+                  for(ranFuncIdx = 0; ranFuncIdx < MAX_RAN_FUNCTION; ranFuncIdx++)
+                  {
+                     ranFuncDb = &duDb->ranFunction[ranFuncIdx];
+                     if(ranFuncDb->id > 0)
+                     {
+                        deleteRicSubscriptionList(&ranFuncDb->subscriptionList);
+                     }
+                  }
                   break;
                }
          }
@@ -4426,6 +4511,90 @@ void ProcResetRequest(uint32_t duId, ResetRequestE2_t *resetReq)
       DU_LOG("\nERROR  -->  E2AP : Failed to build and send reset response");
    }
 }
+/*******************************************************************
+ *
+ * @brief Processing of RIC Subscription Delete Required
+ *
+ * @details
+ *
+ *    Function : ProcRicSubsDeleteReqd
+ *
+ * Functionality: Processing of RIC Subscription Delete Required
+ *    When received, RIC stub will initiate the RIC subscription
+ *    deletion procedure towards DU
+ *
+ * @param  DU ID
+ *         RIC Subscription Delete Required IEs
+ * @return ROK-success
+ *         RFAILED-failure
+ *
+ ******************************************************************/
+uint8_t ProcRicSubsDeleteReqd(uint32_t duId, RICsubscriptionDeleteRequired_t *ricSubsDelRqd)
+{
+   uint8_t ieIdx = 0, arrIdx = 0, duIdx = 0;
+   DuDb *duDb = NULLP;
+   RicRequestId ricReqId;
+   RanFunction *ranFuncDb = NULLP;
+   RicSubscription *subsDb = NULLP;
+   CmLList *ricSubsNode = NULLP;
+   RICsubscriptionDeleteRequired_IEs_t *ricSubsDelRqdIe = NULLP;
+   RICsubscription_List_withCause_t *ricSubsList = NULLP;
+   RICsubscription_withCause_Item_t *subsItem = NULLP;
+
+   memset(&ricReqId, 0, sizeof(RicRequestId));
+
+   SEARCH_DU_DB(duIdx, duId, duDb);
+   if(duDb == NULLP)
+   {
+      DU_LOG("\nERROR  -->  E2AP : duDb is not present for duId %d",duId);
+      return RFAILED;
+   }
+
+   for(ieIdx = 0; ieIdx < ricSubsDelRqd->protocolIEs.list.count; ieIdx++)
+   {
+      ricSubsDelRqdIe = ricSubsDelRqd->protocolIEs.list.array[ieIdx];
+      switch(ricSubsDelRqdIe->id)
+      {
+         case ProtocolIE_IDE2_id_RICsubscriptionToBeRemoved:
+         {
+            ricSubsList = &ricSubsDelRqdIe->value.choice.RICsubscription_List_withCause;
+            for(arrIdx = 0; arrIdx < ricSubsList->list.count; arrIdx++)
+            {
+               subsItem = &(((RICsubscription_withCause_ItemIEs_t *)ricSubsList->list.array[ieIdx])->\
+                  value.choice.RICsubscription_withCause_Item);
+               ranFuncDb = fetchRanFuncFromRanFuncId(duDb, subsItem->ranFunctionID);
+               if(!ranFuncDb)
+               {
+                  DU_LOG("\nERROR  -->  E2AP : %s: RAN Function ID [%ld] not found", __func__, subsItem->ranFunctionID);
+                  return RFAILED;
+               }
+               
+               ricReqId.requestorId = subsItem->ricRequestID.ricRequestorID;
+               ricReqId.instanceId = subsItem->ricRequestID.ricInstanceID;
+               subsDb = fetchSubsInfoFromRicReqId(ricReqId, ranFuncDb, &ricSubsNode);
+               if(!subsDb)
+               {
+                  DU_LOG("\nERROR  -->  E2AP : %s: RIC Subscription not found for Requestor_ID [%ld] Instance_ID [%ld]", \
+                     __func__, subsItem->ricRequestID.ricRequestorID, subsItem->ricRequestID.ricInstanceID);
+                  return RFAILED;
+               }
+               
+               /* Delete RIC Subcription from RAN Function */
+               cmLListDelFrm(&ranFuncDb->subscriptionList, ricSubsNode);
+               deleteRicSubscriptionNode(ricSubsNode);
+            }
+            
+            break;
+         }
+         default:
+            break;
+      }
+   }  
+   
+   //BuildAndSendRicSubsDeleteRequest();
+   return ROK;
+}
+
 /*******************************************************************
 *
 * @brief Handles received E2AP message and sends back response  
@@ -4533,6 +4702,13 @@ void E2APMsgHdlr(uint32_t *duId, Buffer *mBuf)
                      ProcRicSubsModReqd(*duId, \
                            &e2apMsg->choice.initiatingMessage->value.choice.RICsubscriptionModificationRequired);
                      break;
+                  }
+               case InitiatingMessageE2__value_PR_RICsubscriptionDeleteRequired:
+                  {
+                      DU_LOG("\nINFO  -->  E2AP : RIC Subscription Delete Required");
+                      ProcRicSubsDeleteReqd(*duId, \
+                         &e2apMsg->choice.initiatingMessage->value.choice.RICsubscriptionDeleteRequired);
+                      break;
                   }
 
                case InitiatingMessageE2__value_PR_ErrorIndicationE2:

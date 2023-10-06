@@ -640,6 +640,9 @@ uint8_t e2ProcStatsRsp(MacStatsRsp *statsRsp)
    }
    else
    {
+      /* Once RIC subscription is successful, mark the config action as unknown */
+      ricSubscriptionInfo->action = CONFIG_UNKNOWN;
+
       /* Start RIC Subscription reporting timer */
       switch(ricSubscriptionInfo->eventTriggerDefinition.formatType)
       {
@@ -1058,7 +1061,6 @@ void deleteMeasuredValueList(CmLListCp *measuredValueList)
  * @return void 
  *
  * ****************************************************************/
-
 void deleteMeasurementInfoList(CmLListCp *measInfoList)
 {
    CmLList *measInfoNode = NULLP;
@@ -1117,6 +1119,7 @@ void deleteActionSequence(ActionInfo *action)
    memset(action, 0, sizeof(ActionInfo));
    action->actionId = -1;
 }
+
 /******************************************************************
  *
  * @brief Delete Ric subscription node 
@@ -1132,7 +1135,6 @@ void deleteActionSequence(ActionInfo *action)
  * @return void 
  *
  * ****************************************************************/
-
 void deleteRicSubscriptionNode(CmLList *subscriptionNode)
 {
    uint8_t actionIdx=0;
@@ -1174,8 +1176,6 @@ void deleteRicSubscriptionNode(CmLList *subscriptionNode)
  * @return void 
  *
  * ****************************************************************/
-
-
 void deleteRicSubscriptionList(CmLListCp *subscriptionList)
 {
    CmLList *subscriptionNode=NULLP;
@@ -1187,6 +1187,44 @@ void deleteRicSubscriptionList(CmLListCp *subscriptionList)
       cmLListDelFrm(subscriptionList, subscriptionNode);
       deleteRicSubscriptionNode(subscriptionNode);
       CM_LLIST_FIRST_NODE(subscriptionList, subscriptionNode);
+   }
+}
+
+/*******************************************************************
+ *
+ * @brief Find all RIC subscriptions to be deleted in all RAN
+ *    Functions
+ *
+ * @details
+ *
+ *    Function : fetchRicSubsToBeDeleted
+ *
+ * Functionality: Find all RIC subscriptions to be deleted in all
+ *    RAN functions and store in a temporary list
+ *
+ * @parameter Temporary list to store subscriptions to be deleted
+ * @return void
+ *
+ ******************************************************************/
+void fetchRicSubsToBeDeleted(CmLListCp *ricSubsToBeDelList)
+{
+   uint16_t ranFuncIdx = 0;
+   CmLList *subsNode = NULLP;
+
+   for(ranFuncIdx = 0; ranFuncIdx < MAX_RAN_FUNCTION; ranFuncIdx++)
+   {
+      if(duCb.e2apDb.ranFunction[ranFuncIdx].id > 0)
+      {
+         CM_LLIST_FIRST_NODE(&duCb.e2apDb.ranFunction[ranFuncIdx].subscriptionList, subsNode);
+         while(subsNode)
+         {
+            if(((RicSubscription *)subsNode->node)->action == CONFIG_DEL)
+            {
+               cmLListAdd2Tail(ricSubsToBeDelList, subsNode);
+            }
+            subsNode = subsNode->next;
+         }
+      }
    }
 }
 
