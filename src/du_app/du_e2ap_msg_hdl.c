@@ -2182,13 +2182,13 @@ void freeAperDecodingOfE2SetupRsp(E2setupResponse_t *e2SetRspMsg)
  *    Functionality: Processes E2 Setup Response sent by RIC
  *
  * @params[in] E2AP_PDU_t ASN decoded E2AP message
- * @return ROK     - success
- *         RFAILED - failure
+ * @return void
  *
  * ****************************************************************/
 
-uint8_t procE2SetupRsp(E2AP_PDU_t *e2apMsg)
+void procE2SetupRsp(E2AP_PDU_t *e2apMsg)
 {
+   bool invalidTransId = false;
    uint8_t arrIdx =0, transId=0, idx=0; 
    uint32_t recvBufLen;             
    E2setupResponse_t *e2SetRspMsg=NULL;
@@ -2216,7 +2216,7 @@ uint8_t procE2SetupRsp(E2AP_PDU_t *e2apMsg)
                else
                {
                   DU_LOG("\nERROR  -->  E2AP : Invalid transaction id [%d]", transId);
-                  return RFAILED;
+                  invalidTransId = true;
                }
                break;
             }
@@ -2226,60 +2226,67 @@ uint8_t procE2SetupRsp(E2AP_PDU_t *e2apMsg)
                /* To store the Ric Id Params */
                recvBufLen = sizeof(e2SetRspMsg->protocolIEs.list.array[arrIdx]->value\
                      .choice.GlobalRIC_ID.pLMN_Identity.size);
-                  memcpy(&duCb.e2apDb.ricId.plmnId, e2SetRspMsg->protocolIEs.list.array[arrIdx]\
-                        ->value.choice.GlobalRIC_ID.pLMN_Identity.buf, recvBufLen);
+               memcpy(&duCb.e2apDb.ricId.plmnId, e2SetRspMsg->protocolIEs.list.array[arrIdx]\
+                     ->value.choice.GlobalRIC_ID.pLMN_Identity.buf, recvBufLen);
                bitStringToInt(&e2SetRspMsg->protocolIEs.list.array[arrIdx]->value.choice.GlobalRIC_ID.ric_ID, &duCb.e2apDb.ricId);
                /*TODO : duCb.e2apDb.ricId.plmnId memory to be deallocated after the usage */
                break;
             }
 
          case ProtocolIE_IDE2_id_E2nodeComponentConfigAdditionAck:
-         {
-            e2NodeCfgAckList = &e2SetRspMsg->protocolIEs.list.array[arrIdx]->value.choice.E2nodeComponentConfigAdditionAck_List;
-            for(idx =0; idx <e2NodeCfgAckList->list.count; idx++)
             {
-               e2NodeAddAckItem = (E2nodeComponentConfigAdditionAck_ItemIEs_t*) e2NodeCfgAckList->list.array[idx];
-               switch(e2NodeAddAckItem->value.choice.E2nodeComponentConfigAdditionAck_Item.e2nodeComponentID.present)
+               e2NodeCfgAckList = &e2SetRspMsg->protocolIEs.list.array[arrIdx]->value.choice.E2nodeComponentConfigAdditionAck_List;
+               for(idx =0; idx <e2NodeCfgAckList->list.count; idx++)
                {
-                  case E2nodeComponentID_PR_e2nodeComponentInterfaceTypeF1:
-                     {
-                        e2NodeComponentInfo = fetchE2NodeComponentInfo(F1, E2_NODE_COMPONENT_ADD, &node);
-                        if(!e2NodeComponentInfo)
+                  e2NodeAddAckItem = (E2nodeComponentConfigAdditionAck_ItemIEs_t*) e2NodeCfgAckList->list.array[idx];
+                  switch(e2NodeAddAckItem->value.choice.E2nodeComponentConfigAdditionAck_Item.e2nodeComponentID.present)
+                  {
+                     case E2nodeComponentID_PR_e2nodeComponentInterfaceTypeF1:
                         {
-                           DU_LOG("\nERROR  --> E2AP : Received null e2NodeComponentInfo at line number %d",__LINE__);
-                           return RFAILED;
+                           e2NodeComponentInfo = fetchE2NodeComponentInfo(F1, E2_NODE_COMPONENT_ADD, &node);
+                           if(!e2NodeComponentInfo)
+                           {
+                              DU_LOG("\nERROR  --> E2AP : Received null e2NodeComponentInfo at line number %d",__LINE__);
+                           }
+                           else
+                           {
+                              cmLListDelFrm(&duCb.e2apDb.e2NodeComponentList, node);
+                              DU_FREE(e2NodeComponentInfo->componentRequestPart, e2NodeComponentInfo->reqBufSize);
+                              DU_FREE(e2NodeComponentInfo->componentResponsePart, e2NodeComponentInfo->rspBufSize);
+                              DU_FREE(e2NodeComponentInfo, sizeof(E2NodeComponent));
+                              DU_FREE(node, sizeof(CmLList));
+                           }
+                           break;
                         }
-                        else
-                        {
-                           cmLListDelFrm(&duCb.e2apDb.e2NodeComponentList, node);
-                           DU_FREE(e2NodeComponentInfo->componentRequestPart, e2NodeComponentInfo->reqBufSize);
-                           DU_FREE(e2NodeComponentInfo->componentResponsePart, e2NodeComponentInfo->rspBufSize);
-                           DU_FREE(e2NodeComponentInfo, sizeof(E2NodeComponent));
-                           DU_FREE(node, sizeof(CmLList));
-                        }
+                     default:
                         break;
-                     }
-                  default:
-                     break;
+                  }
                }
+               break;
             }
-            break;
-         }
 
          default:
-            DU_LOG("\nERROR  -->  E2AP : Invalid IE received in E2SetupRsp:%ld",
-                  e2SetRspMsg->protocolIEs.list.array[arrIdx]->id);
-            break;
+            {
+               DU_LOG("\nERROR  -->  E2AP : Invalid IE received in E2SetupRsp:%ld",
+                     e2SetRspMsg->protocolIEs.list.array[arrIdx]->id);
+               break;
+            }
+      }
+
+      if(invalidTransId == true)
+      {
+         break;
       }
    }
    freeAperDecodingOfE2SetupRsp(e2SetRspMsg);
 
-   if(duSendE2NodeConfigurationUpdate() != ROK)
+   if(invalidTransId == false)
    {
-      DU_LOG("\nERROR  -->  E2AP : Failed to send E2 node config update");
-      return RFAILED;
+      if(duSendE2NodeConfigurationUpdate() != ROK)
+      {
+         DU_LOG("\nERROR  -->  E2AP : Failed to send E2 node config update");
+      }
    }
-   return ROK;
 }
 
 /*******************************************************************
@@ -4488,6 +4495,7 @@ void FreeE2ResetRequest(E2AP_PDU_t *e2apMsg)
  *         - Buld and send the E2 reset request msg to RIC
  *
  * @params[in]
+ *    Reset cause
  * @return ROK     - success
  *         RFAILED - failure
  *
@@ -4573,13 +4581,13 @@ uint8_t BuildAndSendE2ResetRequest(E2FailureCause resetCause)
             encBuf);
       if(encRetVal.encoded == ENCODE_FAIL)
       {
-         DU_LOG("\nERROR  -->  E2AP : Could not encode E2SetupRequest structure (at %s)\n",\
+         DU_LOG("\nERROR  -->  E2AP : Could not encode reset request structure (at %s)\n",\
                encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
          break;
       }
       else
       {
-         DU_LOG("\nDEBUG   -->  E2AP : Created APER encoded buffer for E2SetupRequest\n");
+         DU_LOG("\nDEBUG   -->  E2AP : Created APER encoded buffer for reset request\n");
 #ifdef DEBUG_ASN_PRINT
          for(int i=0; i< encBufSize; i++)
          {
@@ -4661,14 +4669,15 @@ void freeAperDecodingOfE2ResetRsp(ResetResponseE2_t *resetResponse)
  *    Functionality: Processes E2 Reset Response sent by RIC
  *
  * @params[in] E2AP_PDU_t ASN decoded E2AP message
- * @return ROK     - success
- *         RFAILED - failure
+ * @return void
  *
  * ****************************************************************/
-uint8_t procResetResponse(E2AP_PDU_t *e2apMsg)
+void procResetResponse(E2AP_PDU_t *e2apMsg)
 {
-   uint8_t ieIdx =0, transId;
-   ResetResponseE2_t *resetResponse;
+   bool invalidTransId=false;
+   uint8_t ieIdx =0, transId =0;
+   uint16_t ranFuncIdx=0;
+   ResetResponseE2_t *resetResponse =NULLP;
 
    DU_LOG("\nINFO   -->  E2AP : E2 Reset Response received");
    resetResponse = &e2apMsg->choice.successfulOutcome->value.choice.ResetResponseE2;;
@@ -4678,36 +4687,47 @@ uint8_t procResetResponse(E2AP_PDU_t *e2apMsg)
       switch(resetResponse->protocolIEs.list.array[ieIdx]->id)
       {
          case ProtocolIE_IDE2_id_TransactionID:
-            transId = resetResponse->protocolIEs.list.array[ieIdx]->value.choice.TransactionID;
-            if((duCb.e2apDb.e2TransInfo.e2InitTransaction[transId].transactionId == transId) && \
-                  (duCb.e2apDb.e2TransInfo.e2InitTransaction[transId].procedureCode == e2apMsg->choice.successfulOutcome->procedureCode))
             {
-               memset(&duCb.e2apDb.e2TransInfo.e2InitTransaction[transId], 0, sizeof(E2TransInfo));
+               transId = resetResponse->protocolIEs.list.array[ieIdx]->value.choice.TransactionID;
+               if((duCb.e2apDb.e2TransInfo.e2InitTransaction[transId].transactionId == transId) && \
+                     (duCb.e2apDb.e2TransInfo.e2InitTransaction[transId].procedureCode == e2apMsg->choice.successfulOutcome->procedureCode))
+               {
+                  memset(&duCb.e2apDb.e2TransInfo.e2InitTransaction[transId], 0, sizeof(E2TransInfo));
+               }
+               else
+               {
+                  DU_LOG("\nERROR  -->  E2AP : Invalid transaction id [%d]", transId);
+                  invalidTransId = true;
+               }
+               break;
             }
-            else
-            {
-               DU_LOG("\nERROR  -->  E2AP : Invalid transaction id [%d]", transId);
-               return RFAILED;
-            }
-            break;
          case ProtocolIE_IDE2_id_CriticalityDiagnosticsE2:
-            /* As per ORAN WG3 E2AP spec v3.0, section 9.2.2
-               Criticality Diagnostics IE is sent by Near-RT RIC when parts of a received message i.e. 
-               Reset Request in this case, have not been comprehended or were missing, or if the message 
-               contained logical errors.
-
-               Processing of this ID should be implemented when negative call flows are to be supported.
-             */
-            break;
+            {
+               for(ranFuncIdx=0; ranFuncIdx<MAX_RAN_FUNCTION; ranFuncIdx++)
+               {
+                  if(duCb.e2apDb.ranFunction[ranFuncIdx].id >0)
+                  {
+                     deleteRicSubscriptionList(&(duCb.e2apDb.ranFunction[ranFuncIdx].subscriptionList));
+                     memset(&(duCb.e2apDb.ranFunction[ranFuncIdx].pendingSubsRspInfo), 0, MAX_PENDING_SUBSCRIPTION_RSP*sizeof(PendingSubsRspInfo));
+                  }
+               }
+               break;
+            }
          default:
-            DU_LOG("\nERROR  -->  E2AP : Invalid IE received in E2 Reset Response : %ld",
-                  resetResponse->protocolIEs.list.array[ieIdx]->id);
-            break;
+            {
+               DU_LOG("\nERROR  -->  E2AP : Invalid IE received in E2 Reset Response : %ld",
+                     resetResponse->protocolIEs.list.array[ieIdx]->id);
+               break;
+            }
+      }
+
+      if(invalidTransId == true)
+      {
+         break;
       }
    }
 
    freeAperDecodingOfE2ResetRsp(resetResponse);
-   return ROK;
 }
 
 /******************************************************************

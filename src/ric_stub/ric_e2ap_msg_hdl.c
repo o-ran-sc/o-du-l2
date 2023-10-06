@@ -1966,7 +1966,7 @@ uint8_t ProcE2SetupReq(uint32_t *duId, E2setupRequest_t  *e2SetupReq)
 void FreeE2ResetResponse(E2AP_PDU_t *e2apMsg)
 {
    uint8_t ieIdx =0;
-   ResetResponseE2_t *resetResponse;
+   ResetResponseE2_t *resetResponse =NULLP;
 
    if(e2apMsg != NULLP)
    {
@@ -1992,14 +1992,18 @@ void FreeE2ResetResponse(E2AP_PDU_t *e2apMsg)
 
 /*******************************************************************
  *
- * @brief Buld and send the E2 Reset Response msg
+ * @brief Buld and send the Reset Response msg
  *
  * @details
  *
- *    Function : BuildAndSendE2ResetResponse
+ *    Function : BuildAndSendResetResponse 
  *
  *    Functionality:
- *         - Buld and send the E2 Reset Response Message
+ *         - Buld and send the Reset Response Message
+ *
+ * @params[in] 
+ *    DU id
+ *    TransId Id
  * @return ROK     - success
  *         RFAILED - failure
  *
@@ -2009,7 +2013,7 @@ uint8_t BuildAndSendResetResponse(uint32_t duId, uint8_t transId)
    uint8_t           ieIdx = 0, elementCnt = 0;
    uint8_t           ret = RFAILED;
    E2AP_PDU_t        *e2apMsg = NULLP;
-   ResetResponseE2_t *resetResponse;
+   ResetResponseE2_t *resetResponse=NULL;
    asn_enc_rval_t    encRetVal;       /* Encoder return value */
 
    DU_LOG("\nINFO   -->  E2AP : Building E2 Reset Response Message\n");
@@ -2096,75 +2100,6 @@ uint8_t BuildAndSendResetResponse(uint32_t duId, uint8_t transId)
 
    FreeE2ResetResponse(e2apMsg);
    return ret;
-}
-
-/*******************************************************************
- *
- * @brief process the E2 Reset Request
- *
- * @details
- *
- *    Function : ProcE2ResetReq
- *
- * Functionality: Process E2 Reset Request
- *
- * @return ROK     - success
- *         RFAILED - failure
- *
- ******************************************************************/
-
-uint8_t ProcE2ResetReq(uint32_t duId, ResetRequestE2_t  *resetReq)
-{
-   uint8_t ieIdx = 0;
-   uint8_t transId = 0, cause = 0;
-
-   if(resetReq)
-   {
-      if(resetReq->protocolIEs.list.array)
-      {
-         for(ieIdx=0; ieIdx < resetReq->protocolIEs.list.count; ieIdx++)
-         {
-            if(resetReq->protocolIEs.list.array[ieIdx])
-            {
-               switch(resetReq->protocolIEs.list.array[ieIdx]->id)
-               {
-                  case ProtocolIE_IDE2_id_TransactionID:
-                     transId = resetReq->protocolIEs.list.array[ieIdx]->value.choice.TransactionID;
-                     break;
-                  case ProtocolIE_IDE2_id_CauseE2:
-                     DU_LOG("\nDEBUG  -->  E2AP : Reset reason %d", resetReq->protocolIEs.list.array[ieIdx]->value.choice.CauseE2.present);
-                     switch(resetReq->protocolIEs.list.array[ieIdx]->value.choice.CauseE2.present)
-                     {
-                        case CauseE2_PR_NOTHING:
-                           break;
-                        case CauseE2_PR_ricRequest:
-                           cause = resetReq->protocolIEs.list.array[ieIdx]->value.choice.CauseE2.choice.ricRequest;
-                           break;
-                        case CauseE2_PR_ricService:
-                           cause = resetReq->protocolIEs.list.array[ieIdx]->value.choice.CauseE2.choice.ricService;
-                           break;
-                        case CauseE2_PR_e2Node:
-                           cause = resetReq->protocolIEs.list.array[ieIdx]->value.choice.CauseE2.choice.e2Node;
-                           break;
-                        case CauseE2_PR_transport:
-                           cause = resetReq->protocolIEs.list.array[ieIdx]->value.choice.CauseE2.choice.transport;
-                           break;
-                        case CauseE2_PR_protocol:
-                           cause = resetReq->protocolIEs.list.array[ieIdx]->value.choice.CauseE2.choice.protocol;
-                           break;
-                        case CauseE2_PR_misc:
-                           cause = resetReq->protocolIEs.list.array[ieIdx]->value.choice.CauseE2.choice.misc;
-                           break;
-                     }
-                     DU_LOG("\nDEBUG  -->  E2AP : Reset cause %d", cause);
-                     break;
-               }
-            }
-         }
-      }
-   }
-   BuildAndSendResetResponse(duId, transId);
-   return ROK;
 }
 
 /*******************************************************************
@@ -4330,6 +4265,167 @@ uint8_t BuildAndSendResetRequest(DuDb *duDb, CauseE2_PR causePresent, uint8_t re
    return ret;
 }
 
+
+/*******************************************************************
+ *
+ * @brief delete ric subscription information 
+ *
+ * @details
+ *
+ *    Function : deleteRicSubscription 
+ *
+ * Functionality: Process ric subscription information
+ *
+ * @params[in] 
+ *       Pointer to DU database 
+ * @return void
+
+ *
+ ******************************************************************/
+void deleteRicSubscription(DuDb **duDb)
+{
+   RanFunction *ranFuncDb = NULLP;
+   uint16_t ranFuncIdx=0;
+   
+   for(ranFuncIdx =0; ranFuncIdx<MAX_RAN_FUNCTION; ranFuncIdx++)
+   {
+      ranFuncDb = &(*duDb)->ranFunction[ranFuncIdx];
+      if(ranFuncDb->id > 0)
+      {
+         memset(&ranFuncDb->subscriptionList, 0,MAX_RIC_REQUEST*sizeof(RicSubscription));
+         ranFuncDb->numOfSubscription =0;
+      }
+   }
+}
+
+/*******************************************************************
+ *
+ * @brief process the E2 Reset Response
+ *
+ * @details
+ *
+ *    Function : ProcResetResponse 
+ *
+ * Functionality: Process E2 Reset Response 
+ *
+ * @params[in] 
+ *       du Id
+ *       Pointer to reset response 
+ * @return void
+ *
+ ******************************************************************/
+
+void ProcResetResponse(uint32_t duId, ResetResponseE2_t *resetRsp)
+{
+   uint8_t ieIdx = 0, duIdx =0;
+   DuDb *duDb = NULLP;
+
+   SEARCH_DU_DB(duIdx, duId, duDb); 
+   if(duDb == NULLP)
+   {
+      DU_LOG("\nERROR  -->  E2AP : duDb is not present for duId %d",duId);
+      return;
+   }
+   
+   if(!resetRsp)
+   {
+      DU_LOG("\nERROR  -->  E2AP : resetRsp pointer is null"); 
+      return;
+   }
+
+   if(!resetRsp->protocolIEs.list.array)      
+   {
+      DU_LOG("\nERROR  -->  E2AP : resetRsp array pointer is null");
+      return;
+   }
+   
+   for(ieIdx=0; ieIdx < resetRsp->protocolIEs.list.count; ieIdx++)
+   {
+      if(resetRsp->protocolIEs.list.array[ieIdx])
+      {
+         switch(resetRsp->protocolIEs.list.array[ieIdx]->id)
+         {
+            case ProtocolIE_IDE2_id_TransactionID:
+               {
+                  deleteRicSubscription(&duDb);
+                  break;
+               }
+            case ProtocolIE_IDE2_id_CriticalityDiagnosticsE2:
+               {
+                  break;
+               }
+         }
+      }
+   }
+}
+
+
+/*******************************************************************
+ *
+ * @brief process the E2 Reset Request
+ *
+ * @details
+ *
+ *    Function : ProcResetRequest 
+ *
+ * Functionality: Process E2 Reset Request 
+ *
+ * @params[in] 
+ *       du Id
+ *       Pointer to reset response 
+ * @return void
+ *
+ ******************************************************************/
+
+void ProcResetRequest(uint32_t duId, ResetRequestE2_t *resetReq)
+{
+   uint8_t ieIdx = 0, duIdx =0, transId=0;
+   DuDb *duDb = NULLP;
+
+   SEARCH_DU_DB(duIdx, duId, duDb); 
+   if(duDb == NULLP)
+   {
+      DU_LOG("\nERROR  -->  E2AP : duDb is not present for duId %d",duId);
+      return;
+   }
+   
+   if(!resetReq)
+   {
+      DU_LOG("\nERROR  -->  E2AP : resetReq pointer is null"); 
+      return;
+   }
+
+   if(!resetReq->protocolIEs.list.array)      
+   {
+      DU_LOG("\nERROR  -->  E2AP : resetReq array pointer is null");
+      return;
+   }
+   
+   for(ieIdx=0; ieIdx < resetReq->protocolIEs.list.count; ieIdx++)
+   {
+      if(resetReq->protocolIEs.list.array[ieIdx])
+      {
+         switch(resetReq->protocolIEs.list.array[ieIdx]->id)
+         {
+            case ProtocolIE_IDE2_id_TransactionID:
+               {
+                  transId = resetReq->protocolIEs.list.array[ieIdx]->value.choice.TransactionID;
+                  break;
+               }
+            case ProtocolIE_IDE2_id_CauseE2:
+               {
+                  deleteRicSubscription(&duDb);
+                  break;
+               }
+         }
+      }
+   }
+
+   if(BuildAndSendResetResponse(duId, transId) !=ROK)
+   {
+      DU_LOG("\nERROR  -->  E2AP : Failed to build and send reset response");
+   }
+}
 /*******************************************************************
 *
 * @brief Handles received E2AP message and sends back response  
@@ -4417,7 +4513,7 @@ void E2APMsgHdlr(uint32_t *duId, Buffer *mBuf)
                case InitiatingMessageE2__value_PR_ResetRequestE2:
                   {
                      DU_LOG("\nINFO  -->  E2AP : E2 Reset Request received");
-                     ProcE2ResetReq(*duId,  &e2apMsg->choice.initiatingMessage->value.choice.ResetRequestE2);
+                     ProcResetRequest(*duId,  &e2apMsg->choice.initiatingMessage->value.choice.ResetRequestE2);
                      break;
                   }
                case InitiatingMessageE2__value_PR_RICindication:
@@ -4457,6 +4553,12 @@ void E2APMsgHdlr(uint32_t *duId, Buffer *mBuf)
          {
             switch(e2apMsg->choice.successfulOutcome->value.present)
             {
+               case SuccessfulOutcomeE2__value_PR_ResetResponseE2:
+                  {
+                     DU_LOG("\nINFO  -->  E2AP : Reset response received");
+                     ProcResetResponse(*duId,  &e2apMsg->choice.successfulOutcome->value.choice.ResetResponseE2);
+                     break;
+                  }
                case SuccessfulOutcomeE2__value_PR_RICsubscriptionResponse:  
                   {
                      ProcRicSubscriptionResponse(*duId, \
