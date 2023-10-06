@@ -3121,6 +3121,175 @@ uint8_t ProcRicSubscriptionFailure(uint32_t duId, RICsubscriptionFailure_t *ricS
 
 /*******************************************************************
  *
+ * @brief Free RIC Subscription Modification Refuse
+ *
+ * @details
+ *
+ *    Function : FreeRicSubsModRefuse
+ *
+ * Functionality: Free RIC Subscription Modification Refuse
+ *
+ * @param  E2AP Message PDU to be freed
+ * @return void
+ *
+ ******************************************************************/
+void FreeRicSubsModRefuse(E2AP_PDU_t *e2apMsg)
+{
+   uint8_t ieIdx =0;
+   RICsubscriptionModificationRefuse_t *ricSubsModRefuse = NULLP;
+
+   if(e2apMsg)
+   {
+      if(e2apMsg->choice.unsuccessfulOutcome)
+      {
+         ricSubsModRefuse = &e2apMsg->choice.unsuccessfulOutcome->value.choice.RICsubscriptionModificationRefuse;
+         if(ricSubsModRefuse->protocolIEs.list.array)
+         {
+            for(ieIdx = 0; ieIdx < ricSubsModRefuse->protocolIEs.list.count; ieIdx++)
+            {
+               RIC_FREE(ricSubsModRefuse->protocolIEs.list.array[ieIdx], sizeof(RICsubscriptionModificationRefuse_IEs_t));
+            }
+            RIC_FREE(ricSubsModRefuse->protocolIEs.list.array, ricSubsModRefuse->protocolIEs.list.size);
+         }
+         RIC_FREE(e2apMsg->choice.unsuccessfulOutcome , sizeof(UnsuccessfulOutcomeE2_t));
+      }
+      RIC_FREE(e2apMsg, sizeof(E2AP_PDU_t));
+   }
+}
+
+/*******************************************************************
+ *
+ * @brief Build And Send RIC Subscription Modification Refuse
+ *
+ * @details
+ *
+ *    Function : BuildAndSendRicSubsModRefuse
+ *
+ * Functionality: Build And Send RIC Subscription Modification Refuse
+ *
+ * @param DU ID
+ *        RIC Request ID of subscription
+ *        RAN Function ID
+ *        Type of failure
+ *        Cause of failure
+ * @return ROK - success
+ *         RFAILED - failure
+ *
+ ******************************************************************/
+uint8_t BuildAndSendRicSubsModRefuse(uint32_t duId, RicRequestId ricReqId, uint16_t ranFuncId, CauseE2_PR causeType, \
+   uint8_t cause)
+{
+   uint8_t ieIdx = 0, elementCnt = 0;
+   uint8_t ret = RFAILED;
+   E2AP_PDU_t *e2apMsg = NULL;
+   asn_enc_rval_t encRetVal;
+   RICsubscriptionModificationRefuse_t *ricSubsModRefuse = NULLP;
+   RICsubscriptionModificationRefuse_IEs_t *ricSubsModRefuseIe = NULLP;
+
+   DU_LOG("\nINFO   -->  E2AP : Building RIC Subscription Modification Refuse\n");
+   while(true)
+   {
+      RIC_ALLOC(e2apMsg, sizeof(E2AP_PDU_t));
+      if(e2apMsg == NULLP)
+      {
+         DU_LOG("\nERROR  -->  E2AP : Memory allocation failed for %s at line %d", __func__, __LINE__);
+         break;
+      }
+      e2apMsg->present =  E2AP_PDU_PR_unsuccessfulOutcome;
+      RIC_ALLOC(e2apMsg->choice.unsuccessfulOutcome , sizeof(UnsuccessfulOutcomeE2_t));
+      if(e2apMsg->choice.unsuccessfulOutcome == NULLP)
+      {
+         DU_LOG("\nERROR  -->  E2AP : Memory allocation failed for %s at line %d", __func__, __LINE__);
+         break;
+      }
+
+      e2apMsg->choice.unsuccessfulOutcome->procedureCode = ProcedureCodeE2_id_RICsubscriptionModificationRequired;
+      e2apMsg->choice.unsuccessfulOutcome->criticality = CriticalityE2_reject;
+      e2apMsg->choice.unsuccessfulOutcome->value.present = \
+         UnsuccessfulOutcomeE2__value_PR_RICsubscriptionModificationRefuse;
+      ricSubsModRefuse = &e2apMsg->choice.unsuccessfulOutcome->value.choice.RICsubscriptionModificationRefuse;
+
+      elementCnt = 3;
+      ricSubsModRefuse->protocolIEs.list.count = elementCnt;
+      ricSubsModRefuse->protocolIEs.list.size = elementCnt * sizeof(RICsubscriptionModificationRefuse_IEs_t *);
+      RIC_ALLOC(ricSubsModRefuse->protocolIEs.list.array, ricSubsModRefuse->protocolIEs.list.size);
+      if(!ricSubsModRefuse->protocolIEs.list.array)
+      {
+         DU_LOG("\nERROR  -->  E2AP : Memory allocation failed for %s at line %d", __func__, __LINE__);
+         break;
+      }
+
+      for(ieIdx = 0; ieIdx < elementCnt; ieIdx++)
+      {
+         RIC_ALLOC(ricSubsModRefuse->protocolIEs.list.array[ieIdx], sizeof(RICsubscriptionModificationRefuse_IEs_t));
+         if(!ricSubsModRefuse->protocolIEs.list.array[ieIdx])
+         {
+            DU_LOG("\nERROR  -->  E2AP : Memory allocation failed for %s at line %d", __func__, __LINE__);
+            break;
+         }
+      }
+      
+      /* RIC Request ID */
+      ieIdx = 0;
+      ricSubsModRefuseIe = ricSubsModRefuse->protocolIEs.list.array[ieIdx];
+      ricSubsModRefuseIe->id = ProtocolIE_IDE2_id_RICrequestID;
+      ricSubsModRefuseIe->criticality = CriticalityE2_reject;
+      ricSubsModRefuseIe->value.present = RICsubscriptionModificationRefuse_IEs__value_PR_RICrequestID;
+      ricSubsModRefuseIe->value.choice.RICrequestID.ricRequestorID = ricReqId.requestorId;
+      ricSubsModRefuseIe->value.choice.RICrequestID.ricInstanceID = ricReqId.instanceId;
+
+      /* RAN Function ID */
+      ieIdx++;
+      ricSubsModRefuseIe = ricSubsModRefuse->protocolIEs.list.array[ieIdx];
+      ricSubsModRefuseIe->id = ProtocolIE_IDE2_id_RANfunctionID;
+      ricSubsModRefuseIe->criticality = CriticalityE2_reject;
+      ricSubsModRefuseIe->value.present = RICsubscriptionModificationRefuse_IEs__value_PR_RANfunctionID;
+      ricSubsModRefuseIe->value.choice.RANfunctionID = ranFuncId;
+
+      /* Cause */
+      ieIdx++;
+      ricSubsModRefuseIe = ricSubsModRefuse->protocolIEs.list.array[ieIdx];
+      ricSubsModRefuseIe->id = ProtocolIE_IDE2_id_CauseE2;
+      ricSubsModRefuseIe->criticality = CriticalityE2_reject;
+      ricSubsModRefuseIe->value.present = RICsubscriptionModificationRefuse_IEs__value_PR_CauseE2;
+      fillE2FailureCause(&ricSubsModRefuseIe->value.choice.CauseE2, causeType, cause); 
+
+      xer_fprint(stdout, &asn_DEF_E2AP_PDU, e2apMsg);
+      memset(encBuf, 0, ENC_BUF_MAX_LEN);
+      encBufSize = 0;
+      encRetVal = aper_encode(&asn_DEF_E2AP_PDU, 0, e2apMsg, PrepFinalEncBuf, encBuf);
+
+      /* Check encode results */
+      if(encRetVal.encoded == ENCODE_FAIL)
+      {
+         DU_LOG("\nERROR  -->  E2AP : Could not encode RIC subscription modification refuse (at %s)\n",\
+               encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
+         break;
+      }
+      else
+      {
+         DU_LOG("\nDEBUG  -->  E2AP : Created APER encoded buffer for RIC subscription modification refuse\n");
+         for(int i=0; i< encBufSize; i++)
+         {
+            DU_LOG("%x",encBuf[i]);
+         }
+      }
+
+      if(SendE2APMsg(RIC_APP_MEM_REG, RIC_POOL, duId) != ROK)
+      {
+         DU_LOG("\nERROR  -->  E2AP : Failed to send RIC Subscription Modification Refused");
+         break;
+      }
+
+      ret =ROK;
+      break;
+   }
+   FreeRicSubsModRefuse(e2apMsg);
+   return ret;
+}
+
+/*******************************************************************
+ *
  * @brief Free memory for RIC Subscription Modification Confirm
  *
  * @details
@@ -3449,19 +3618,18 @@ uint8_t fillActionRemovalRefusedList(RICactions_RefusedToBeRemoved_List_t *rmvFa
 
 /*******************************************************************
  *
- * @brief Build And Send RIC Subscription Modification Refuse
+ * @brief Build And Send RIC Subscription Modification Confirm
  *
  * @details
  *
- *    Function : BuildAndSendRicSubsModRefuse
+ *    Function : BuildAndSendRicSubsModConfirm
  *
- * Functionality: Build And Send RIC Subscription Modification Refuse
+ * Functionality: Build And Send RIC Subscription Modification Confirm
  *
  * @param DU ID
  *        RIC Request ID of subscription
  *        RAN Function ID
- *        Type of failure
- *        Cause of failure
+ *        Temporary source action list
  * @return ROK - success
  *         RFAILED - failure
  *
@@ -3715,8 +3883,8 @@ uint8_t ProcRicSubsModReqd(uint32_t duId, RICsubscriptionModificationRequired_t 
                {
                   /* If RIC Subscription not found, send RIC Subscription modification refuse to DU */
                   DU_LOG("\nERROR  -->  E2AP : ProcRicSubsModReqd: RIC Subscription not found");
-                  //BuildAndSendRicSubsModRefuse(duId, ricReqId, ranFuncId, CauseE2_PR_ricRequest, \
-                     CauseE2RICrequest_request_id_unknown);
+                  BuildAndSendRicSubsModRefuse(duId, ricReqId, ranFuncId, CauseE2_PR_ricRequest, \
+                     CauseE2RICrequest_ran_function_id_invalid);
                   return RFAILED;
                }
 
@@ -3725,8 +3893,8 @@ uint8_t ProcRicSubsModReqd(uint32_t duId, RICsubscriptionModificationRequired_t 
                {
                   /* If RAN Function not found, send RIC Subscription modification refuse to DU */
                   DU_LOG("\nERROR  -->  E2AP : ProcRicSubsModReqd: RAN Function ID [%d] not found",ranFuncId);
-                  //BuildAndSendRicSubsModRefuse(duId, ricReqId, ranFuncId, \
-                     CauseE2_PR_ricRequest, CauseE2RICrequest_ran_function_id_invalid);
+                  BuildAndSendRicSubsModRefuse(duId, ricReqId, ranFuncId, \
+                     CauseE2_PR_ricRequest, CauseE2RICrequest_request_id_unknown);
                   return RFAILED; 
                }
                break;
@@ -3790,9 +3958,8 @@ uint8_t ProcRicSubsModReqd(uint32_t duId, RICsubscriptionModificationRequired_t 
    }
    else
    {
-      // TO BE DONE IN FUTURE GERRITS
-      //BuildAndSendRicSubsModRefuse(duId, ricReqId, ranFuncId, CauseE2_PR_ricRequest, \
-      CauseE2RICrequest_action_not_supported);
+      BuildAndSendRicSubsModRefuse(duId, ricReqId, ranFuncId, CauseE2_PR_ricRequest, \
+            CauseE2RICrequest_action_not_supported);
    }
    
    return ROK;
