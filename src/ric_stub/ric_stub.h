@@ -116,8 +116,7 @@ typedef struct
 {
    uint16_t  id;
    uint16_t  revisionCounter;
-   uint8_t   numOfSubscription;
-   RicSubscription subscriptionList[MAX_RIC_REQUEST];
+   CmLListCp  subscriptionList;
 }RanFunction;
 
 typedef struct
