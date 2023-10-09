@@ -56,6 +56,23 @@
       "message": "we should increment ieIdx here?",
       "revId": "fc273e88e566144ce22a304454f7a869619067b7",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dcc1ab1f_698c1eab",
+        "filename": "src/ric_stub/ric_e2ap_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 4552,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-10-09T12:09:28Z",
+      "side": 1,
+      "message": "please add a check for ricSubsDelRqd as well if it is not present then return from here.",
+      "revId": "fc273e88e566144ce22a304454f7a869619067b7",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
   ]
 }
