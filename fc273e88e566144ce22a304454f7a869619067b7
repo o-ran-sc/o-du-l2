@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "13f266e6_15fd3af6",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 6829,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-10-09T11:50:59Z",
+      "side": 1,
+      "message": "here ieIdx shouldnt be uint16_t, because it can be as many as MAX_RAN_FUNCTIONS right?",
+      "range": {
+        "startLine": 6829,
+        "startChar": 11,
+        "endLine": 6829,
+        "endChar": 16
+      },
+      "revId": "fc273e88e566144ce22a304454f7a869619067b7",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "18302aad_67e71e82",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 6845,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-10-09T11:50:59Z",
+      "side": 1,
+      "message": "we can have check for ieIdx with the ricSubsList-\u003elist.count as mem safety checks",
+      "revId": "fc273e88e566144ce22a304454f7a869619067b7",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "806fa4e5_814287d5",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 6866,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-10-09T11:50:59Z",
+      "side": 1,
+      "message": "we should increment ieIdx here?",
+      "revId": "fc273e88e566144ce22a304454f7a869619067b7",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
