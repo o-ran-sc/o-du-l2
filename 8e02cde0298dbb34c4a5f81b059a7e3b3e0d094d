@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5eb7ae90_de8cf598",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 4693,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-10-09T06:38:46Z",
+      "side": 1,
+      "message": "we cannot return from here.\nIn failure or success flow, freeAperDecodingOfE2ResetRsp must be called before returning.\nAs of now it is only called in case of success",
+      "range": {
+        "startLine": 4693,
+        "startChar": 18,
+        "endLine": 4693,
+        "endChar": 25
+      },
+      "revId": "8e02cde0298dbb34c4a5f81b059a7e3b3e0d094d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a47f7975_4d342fc0",
+        "filename": "src/ric_stub/ric_e2ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 4296,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-10-09T06:38:46Z",
+      "side": 1,
+      "message": "check if we are setting all actionId \u003d -1 within subscription when subscription is being created,",
+      "range": {
+        "startLine": 4296,
+        "startChar": 9,
+        "endLine": 4296,
+        "endChar": 18
+      },
+      "revId": "8e02cde0298dbb34c4a5f81b059a7e3b3e0d094d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
