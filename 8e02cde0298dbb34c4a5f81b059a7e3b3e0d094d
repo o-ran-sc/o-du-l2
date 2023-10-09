@@ -24,6 +24,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8e7d97db_74c69e98",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 4693,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-10-09T07:00:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5eb7ae90_de8cf598",
+      "range": {
+        "startLine": 4693,
+        "startChar": 18,
+        "endLine": 4693,
+        "endChar": 25
+      },
+      "revId": "8e02cde0298dbb34c4a5f81b059a7e3b3e0d094d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a47f7975_4d342fc0",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-10-09T06:38:46Z",
       "side": 1,
       "message": "check if we are setting all actionId \u003d -1 within subscription when subscription is being created,",
+      "range": {
+        "startLine": 4296,
+        "startChar": 9,
+        "endLine": 4296,
+        "endChar": 18
+      },
+      "revId": "8e02cde0298dbb34c4a5f81b059a7e3b3e0d094d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f463f1f3_2b67d8cc",
+        "filename": "src/ric_stub/ric_e2ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 4296,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-10-09T07:00:45Z",
+      "side": 1,
+      "message": "yes we are setting -1.",
+      "parentUuid": "a47f7975_4d342fc0",
       "range": {
         "startLine": 4296,
         "startChar": 9,
