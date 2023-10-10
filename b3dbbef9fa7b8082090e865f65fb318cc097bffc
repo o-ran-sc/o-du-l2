@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "acdfa8f2_98f41b0c",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 6841,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-10-10T09:33:19Z",
+      "side": 1,
+      "message": "same as  below",
+      "revId": "b3dbbef9fa7b8082090e865f65fb318cc097bffc",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "68264451_f6ea2b28",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 6845,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-10-10T09:33:19Z",
+      "side": 1,
+      "message": "here regarding ieIdx, i was saying if we can have a check on index getting incremented as in Line no 6836, we have allocated the size for \" ricSubsList-\u003elist.count\" indices.\n\nAlso Alloc in Line No 6848 should not exceed \" ricSubsList-\u003elist.count\" so for thsi reason as well",
+      "revId": "b3dbbef9fa7b8082090e865f65fb318cc097bffc",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6ed586be_a738e208",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 6852,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-10-10T09:33:19Z",
+      "side": 1,
+      "message": "in case of failure, are we not missing the release of ricSubsToBeDelList.\nI would suggest that we can add the deletion of ricSubToBeDelList in the parent function as it needs to be deleted in all cases once the function ends",
+      "revId": "b3dbbef9fa7b8082090e865f65fb318cc097bffc",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
