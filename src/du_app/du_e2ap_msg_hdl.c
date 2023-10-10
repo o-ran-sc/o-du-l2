@@ -7028,6 +7028,154 @@ uint8_t BuildAndSendRicSubscriptionDeleteRequired()
 
 /*******************************************************************
  *
+ * @brief Free RIC Subscription Delete Request Message
+ *
+ * @details
+ *
+ *    Function : freeAperDecodingOfRicSubsDeleteReq
+ *
+ * Functionality:  Free RIC Subscription Delete Request
+ *
+ * @param  E2AP Message PDU
+ * @return void
+ *
+ ******************************************************************/
+void freeAperDecodingOfRicSubsDeleteReq(E2AP_PDU_t *e2apMsg)
+{
+   uint8_t ieIdx = 0;
+   RICsubscriptionDeleteRequest_t *ricSubsDelReq = NULLP;
+
+   if(e2apMsg)
+   {
+      if(e2apMsg->choice.initiatingMessage)
+      {
+         ricSubsDelReq = &e2apMsg->choice.initiatingMessage->value.choice.RICsubscriptionDeleteRequest;
+         if(ricSubsDelReq->protocolIEs.list.array)
+         {
+            for(ieIdx = 0; ieIdx < ricSubsDelReq->protocolIEs.list.count; ieIdx++)
+            {
+               if(ricSubsDelReq->protocolIEs.list.array[ieIdx])
+               {
+                  free(ricSubsDelReq->protocolIEs.list.array[ieIdx]);
+               }
+            }
+            free(ricSubsDelReq->protocolIEs.list.array);
+         }
+      }
+   }
+}
+
+/*******************************************************************
+ *
+ * @brief Process RIC Subscription delete request
+ *
+ * @details
+ *
+ *    Function : procRicSubscriptionDeleteRequest
+ *
+ * Functionality: Process RIC subscription delete request.
+ *    Fetch RAN Function and RIC subscription to be deleted. 
+ *    Send statistics delete request to MAC for all action sequence
+ *    within this RIC subscription.
+ *
+ * @params[in] E2AP PDU
+ * @return void
+ *
+ ******************************************************************/
+void procRicSubscriptionDeleteRequest(E2AP_PDU_t *e2apMsg)
+{
+   uint8_t ieIdx = 0;
+   uint16_t ranFuncId = 0;
+   bool procFailure = false;
+   RicRequestId ricReqId;
+   RanFunction *ranFuncDb = NULLP;
+   CmLList *ricSubsNode = NULLP;
+   RicSubscription *ricSubsDb = NULLP;
+   RICsubscriptionDeleteRequest_t *ricSubsDelReq = NULLP;
+   RICsubscriptionDeleteRequest_IEs_t *ricSubsDelReqIe = NULLP;
+
+   DU_LOG("\nINFO   -->  E2AP : %s: Received RIC Subscription Delete Request", __func__);
+
+   do{
+      if(!e2apMsg)
+      {
+         DU_LOG("\nERROR  -->  E2AP : %s: E2AP Message is NULL", __func__);
+         break;
+      }
+
+      if(!e2apMsg->choice.initiatingMessage)
+      {
+         DU_LOG("\nERROR  -->  E2AP : %s: Initiating Message in E2AP PDU is NULL", __func__);
+         break;
+      }
+
+      ricSubsDelReq = &e2apMsg->choice.initiatingMessage->value.choice.RICsubscriptionDeleteRequest;
+      if(!ricSubsDelReq->protocolIEs.list.array)
+      {
+         DU_LOG("\nERROR  -->  E2AP : %s: Array conatining E2AP message IEs is null", __func__);
+         break;
+      }
+
+      for(ieIdx = 0; ieIdx < ricSubsDelReq->protocolIEs.list.count; ieIdx++)
+      {
+         if(!ricSubsDelReq->protocolIEs.list.array[ieIdx])
+         {
+            DU_LOG("\nERROR  -->  E2AP : %s: IE at index [%d] in E2AP message IEs list is null", __func__, ieIdx);
+            break;
+         }
+
+         ricSubsDelReqIe = ricSubsDelReq->protocolIEs.list.array[ieIdx];
+         switch(ricSubsDelReqIe->id)
+         {
+            case ProtocolIE_IDE2_id_RICrequestID:
+               {
+                  memset(&ricReqId, 0, sizeof(RicRequestId));
+                  ricReqId.requestorId = ricSubsDelReqIe->value.choice.RICrequestID.ricRequestorID;
+                  ricReqId.instanceId = ricSubsDelReqIe->value.choice.RICrequestID.ricInstanceID;
+                  break;
+               }
+
+            case ProtocolIE_IDE2_id_RANfunctionID:
+               {
+                  ranFuncId = ricSubsDelReqIe->value.choice.RANfunctionID;
+                  ranFuncDb = fetchRanFuncFromRanFuncId(ranFuncId);
+                  if(!ranFuncDb)
+                  {
+                     DU_LOG("\nERROR  -->  E2AP : %s: RAN Function ID [%d] not found", __func__, ranFuncId);
+                     procFailure = true;
+                     break;
+                  }
+
+                  ricSubsDb = fetchSubsInfoFromRicReqId(ricReqId, ranFuncDb, &ricSubsNode); 
+                  if(!ricSubsDb)
+                  {
+                     DU_LOG("\nERROR  -->  E2AP : %s: RIC Subscription not found for Requestor_ID [%d] Instance_ID [%d]",\
+                           __func__, ricReqId.requestorId, ricReqId.instanceId);
+                     procFailure = true;
+                     break;
+                  }
+
+                  //TODO : Send statistics delete request to MAC 
+                  break;
+               }
+
+            default:
+               break;
+         } /* End of switch for Protocol IE Id */
+         
+         if(procFailure)
+            break;
+      } /* End of for loop for Protocol IE list */
+
+      break;
+   }while(true);
+
+   freeAperDecodingOfRicSubsDeleteReq(e2apMsg);
+   return;
+}
+
+/*******************************************************************
+ *
  * @brief Handles received E2AP message and sends back response  
  *
  * @details
@@ -7197,6 +7345,12 @@ void E2APMsgHdlr(Buffer *mBuf)
                   {
                      DU_LOG("\nINFO  -->  E2AP : Error indication received");
                      procE2ResetRequest(e2apMsg);
+                     break;
+                  }
+               case InitiatingMessageE2__value_PR_RICsubscriptionDeleteRequest:
+                  {
+                     DU_LOG("\nINFO  -->  E2AP : RIC Subscription Delete Request received");
+                     procRicSubscriptionDeleteRequest(e2apMsg);
                      break;
                   }
                default:
