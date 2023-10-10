@@ -59,7 +59,9 @@ uint8_t BuildAndSendRicSubscriptionReq(DuDb *duDb);
 uint8_t SendE2APMsg(Region region, Pool pool, uint32_t duId);
 uint8_t BuildAndSendRicServiceQuery(DuDb *duDb);
 uint8_t BuildAndSendE2NodeConfigUpdateFailure(uint32_t duId, uint8_t transId, uint8_t causeInfo, uint8_t causeReason);
-
+uint8_t fillE2NodeConfigAck(PTR e2NodeCfg, uint8_t procedureCode, E2NodeComponent *componentInfo, bool isSuccessful);
+E2NodeComponent *fetchE2NodeComponentInfo(DuDb *duDb, InterfaceType interfaceType,CmLList **e2ComponentNode);
+uint8_t handleE2NodeComponentAction(DuDb *duDb, PTR e2NodeCfg, uint8_t protocolId, E2NodeConfigItem *storeCfg);
 /**********************************************************************
          End of file
 **********************************************************************/
