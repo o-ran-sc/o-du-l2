@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4c353637_103a3daa",
+        "filename": "src/ric_stub/ric_e2ap_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 2139,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-10-14T07:40:09Z",
+      "side": 1,
+      "message": "At the beginning of this file, you can see all common functions like fetch-RAN-function, fetch-subscirption-function etc have been put.\nThere itself move these common functions also : fetchE2NodeComponentInfo, updateE2NodeConfigList and handleE2NodeComponentAction.\n\nPlease make sure to have all same type of functions at one place.\nFor example, here the functions of e2 setup request and e2 setup response were together earlier. But adding these common functions here has split these two E2 setup functions apart.\n\nWe MUST NOT place any function anywhere randomly in the file. This is not good coding practice.",
+      "revId": "6ac685e3cdfea9f4ddca10c8392437b7b3f6a1c9",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c3945d2e_2534972e",
+        "filename": "src/ric_stub/ric_e2ap_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 2228,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-10-14T07:40:09Z",
+      "side": 1,
+      "message": "if we return from here,  then how will be tell in ack that this e2 node component was not accepted?",
+      "range": {
+        "startLine": 2228,
+        "startChar": 15,
+        "endLine": 2228,
+        "endChar": 22
+      },
+      "revId": "6ac685e3cdfea9f4ddca10c8392437b7b3f6a1c9",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "25a44ef5_4d31bf97",
+        "filename": "src/ric_stub/ric_e2ap_msg_hdl.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 2242,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-10-14T07:40:09Z",
+      "side": 1,
+      "message": "same as above?\nAre we properly handling all negative cases where E2 node add/update/remove is not accepted. Check for both E2 Setup procedure and E2 Node config update procedure",
+      "range": {
+        "startLine": 2242,
+        "startChar": 15,
+        "endLine": 2242,
+        "endChar": 22
+      },
+      "revId": "6ac685e3cdfea9f4ddca10c8392437b7b3f6a1c9",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
