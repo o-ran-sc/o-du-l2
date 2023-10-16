@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3a204f1e_4ac63703",
+        "filename": "src/ric_stub/ric_e2ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1013,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-10-16T13:06:15Z",
+      "side": 1,
+      "message": "instead of 0 \u0026 6, lets use the enum from codec",
+      "range": {
+        "startLine": 1013,
+        "startChar": 72,
+        "endLine": 1013,
+        "endChar": 73
+      },
+      "revId": "bf46029f8a9336ff610c240e22874a2896a5d5ac",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
