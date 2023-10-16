@@ -62,6 +62,8 @@ uint8_t BuildAndSendE2NodeConfigUpdateFailure(uint32_t duId, uint8_t transId, ui
 uint8_t fillE2NodeConfigAck(PTR e2NodeCfg, uint8_t procedureCode, E2NodeComponent *componentInfo, bool isSuccessful);
 E2NodeComponent *fetchE2NodeComponentInfo(DuDb *duDb, InterfaceType interfaceType,CmLList **e2ComponentNode);
 uint8_t handleE2NodeComponentAction(DuDb *duDb, PTR e2NodeCfg, uint8_t protocolId, E2NodeConfigItem *storeCfg);
+uint8_t BuildAndSendE2NodeConfigUpdateAck(DuDb *duDb, uint8_t transId,  E2NodeConfigList *e2NodeList);
+
 /**********************************************************************
          End of file
 **********************************************************************/

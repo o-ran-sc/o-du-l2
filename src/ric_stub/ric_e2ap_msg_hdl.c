@@ -816,13 +816,11 @@ void ProcE2NodeConfigUpdate(uint32_t duId, E2nodeConfigurationUpdate_t *e2NodeCo
     * else we will be sendinf e2 node config update failure */
    if(elementCnt == ieIdx)
    {
-      /* TODO - Raising review next gerrit
      if(BuildAndSendE2NodeConfigUpdateAck(duDb, transId, &tmpE2NodeList) !=ROK)
       {
          DU_LOG("\nERROR  -->  E2AP : Failed to build and send E2 node config ack");
          return;
       }
-      */
    }
    else
    {
@@ -1012,7 +1010,7 @@ uint8_t fillE2NodeConfigAck(PTR e2NodeCfg, uint8_t procedureCode, E2NodeComponen
    }
 
    /* >E2 Node Component interface type */
-   if(componentInfo->interfaceType>= 0 && componentInfo->interfaceType<=6)
+   if(componentInfo->interfaceType>=NG && componentInfo->interfaceType<=X2)
    {
       *e2nodeComponentInterfaceType = componentInfo->interfaceType;
    }
@@ -5210,6 +5208,498 @@ uint8_t ProcRicSubsDeleteReqd(uint32_t duId, RICsubscriptionDeleteRequired_t *ri
    }  
    
    return ROK;
+}
+
+/*******************************************************************
+ *
+ * @brief Deallocate memory allocated for E2nodeConfigurationUpdate 
+ *
+ * @details
+ *
+ *    Function : freeE2NodeConfigItem 
+ *
+ *    Functionality:
+ *       - freeing the memory allocated for E2nodeConfigurationUpdate
+ *
+ * @params[in]
+ *       uint8_t protocolIe
+ *       PTR to e2NodeCfg which is to be freed
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+
+void freeE2NodeConfigItem(uint8_t protocolIe, PTR e2NodeCfg)
+{
+   E2nodeComponentConfigurationAck_t *cfgAck =NULLP;
+   E2nodeComponentInterfaceF1_t *f1InterfaceInfo=NULLP;
+   E2nodeComponentConfigAdditionAck_Item_t *e2NodeAdditionAckItemIe=NULLP;
+   E2nodeComponentConfigRemovalAck_Item_t *e2NodeRemovalAckItemIe=NULLP;
+   E2nodeComponentConfigUpdateAck_Item_t *e2NodeUpdateAckItemIe=NULLP;
+   
+    /* Extracting the component interface and configuration ack information from
+     * e2NodeCfg based on the protocol id */
+   switch(protocolIe)
+   {
+      case ProtocolIE_IDE2_id_E2nodeComponentConfigAdditionAck:
+      {
+         e2NodeAdditionAckItemIe= (E2nodeComponentConfigAdditionAck_Item_t*)e2NodeCfg;
+         switch(e2NodeAdditionAckItemIe->e2nodeComponentInterfaceType)
+         {
+            case E2nodeComponentInterfaceType_f1:
+               {
+                  f1InterfaceInfo = e2NodeAdditionAckItemIe->e2nodeComponentID.choice.e2nodeComponentInterfaceTypeF1;
+                  break;
+               }
+            default:
+               {
+                  break;
+               }
+
+         }
+         cfgAck = &e2NodeAdditionAckItemIe->e2nodeComponentConfigurationAck;
+      }
+
+      case ProtocolIE_IDE2_id_E2nodeComponentConfigUpdateAck:
+      {
+         e2NodeUpdateAckItemIe = (E2nodeComponentConfigUpdateAck_Item_t*)e2NodeCfg;
+         switch(e2NodeUpdateAckItemIe->e2nodeComponentInterfaceType)
+         {
+            case E2nodeComponentInterfaceType_f1:
+               {
+                  f1InterfaceInfo = e2NodeUpdateAckItemIe->e2nodeComponentID.choice.e2nodeComponentInterfaceTypeF1;
+                  break;
+               }
+            default:
+               {
+                  break;
+               }
+         }
+         cfgAck = &e2NodeUpdateAckItemIe->e2nodeComponentConfigurationAck;
+      }
+
+      case ProtocolIE_IDE2_id_E2nodeComponentConfigRemovalAck:
+      {
+         e2NodeRemovalAckItemIe= (E2nodeComponentConfigRemovalAck_Item_t*)e2NodeCfg;
+         switch(e2NodeRemovalAckItemIe->e2nodeComponentInterfaceType)
+         {
+            case E2nodeComponentInterfaceType_f1:
+               {
+                  f1InterfaceInfo = e2NodeRemovalAckItemIe->e2nodeComponentID.choice.e2nodeComponentInterfaceTypeF1;
+                  break;
+               }
+            default:
+               {
+                  break;
+               }
+         }
+         cfgAck = &e2NodeRemovalAckItemIe->e2nodeComponentConfigurationAck;
+      }
+   }
+   
+   /* Freeing the memory allocated to component interface and configuration ack */
+   if(f1InterfaceInfo)
+   {
+      RIC_FREE(f1InterfaceInfo->gNB_DU_ID.buf, f1InterfaceInfo->gNB_DU_ID.size);
+      RIC_FREE(f1InterfaceInfo, sizeof(E2nodeComponentInterfaceF1_t));
+   }
+
+   switch(cfgAck->updateOutcome)
+   {
+      case E2nodeComponentConfigurationAck__updateOutcome_success:
+         break;
+      case E2nodeComponentConfigurationAck__updateOutcome_failure:
+         {
+            RIC_FREE(cfgAck->failureCauseE2, sizeof(CauseE2_t));
+            break;
+         }
+   }
+
+}
+
+/*******************************************************************
+ *
+ * @brief Deallocate the memory allocated for E2nodeConfigurationUpdate msg 
+ *
+ * @details
+ *
+ *    Function : FreeE2NodeConfigUpdate 
+ *
+ *    Functionality:
+ *       - freeing the memory allocated for E2nodeConfigurationUpdate
+ *
+ * @params[in] E2AP_PDU_t *e2apMsg 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+
+void FreeE2NodeConfigUpdateAck(E2AP_PDU_t *e2apMsg)
+{
+   uint8_t arrIdx =0, e2NodeConfigIdx=0;
+   E2nodeConfigurationUpdateAcknowledge_t *updateAckMsg=NULL;
+   E2nodeComponentConfigUpdateAck_ItemIEs_t *updateAckItemIe=NULL;
+   E2nodeComponentConfigUpdateAck_List_t *updateAckList=NULL;
+   E2nodeComponentConfigRemovalAck_ItemIEs_t *removalAckItemIe=NULL;
+   E2nodeComponentConfigRemovalAck_List_t *removalAckList=NULL;
+   E2nodeComponentConfigAdditionAck_ItemIEs_t *additionAckItemIte=NULL;
+   E2nodeComponentConfigAdditionAck_List_t *additionAckList=NULL;
+
+   if(e2apMsg != NULLP)
+   {
+      if(e2apMsg->choice.successfulOutcome != NULLP)
+      {
+         updateAckMsg = &e2apMsg->choice.successfulOutcome->value.choice.E2nodeConfigurationUpdateAcknowledge;
+         if(updateAckMsg->protocolIEs.list.array != NULLP)
+         {
+            for(arrIdx = 0; arrIdx < updateAckMsg->protocolIEs.list.count; arrIdx++)
+            {
+               if(updateAckMsg->protocolIEs.list.array[arrIdx])
+               {
+                  switch(updateAckMsg->protocolIEs.list.array[arrIdx]->id)
+                  {
+                     case ProtocolIE_IDE2_id_E2nodeComponentConfigAdditionAck:
+                        {
+                           additionAckList =&updateAckMsg->protocolIEs.list.array[arrIdx]->value.choice.E2nodeComponentConfigAdditionAck_List;
+                           if(additionAckList->list.array)
+                           {
+                              for(e2NodeConfigIdx=0; e2NodeConfigIdx<additionAckList->list.count; e2NodeConfigIdx++)
+                              {
+                                 additionAckItemIte = (E2nodeComponentConfigAdditionAck_ItemIEs_t*) additionAckList->list.array[e2NodeConfigIdx];
+                                 if(additionAckItemIte)
+                                 {
+                                    freeE2NodeConfigItem(ProtocolIE_IDE2_id_E2nodeComponentConfigAdditionAck,\
+                                    (PTR)&additionAckItemIte->value.choice.E2nodeComponentConfigAdditionAck_Item);
+                                    RIC_FREE(additionAckItemIte, sizeof(E2nodeComponentConfigAdditionAck_ItemIEs_t));
+                                 }
+                              }
+                              RIC_FREE(additionAckList->list.array, additionAckList->list.size);
+                           }
+                           break;
+                        }
+                     case ProtocolIE_IDE2_id_E2nodeComponentConfigUpdateAck:
+                        {
+                           updateAckList =&updateAckMsg->protocolIEs.list.array[arrIdx]->value.choice.E2nodeComponentConfigUpdateAck_List;
+                           if(updateAckList->list.array)
+                           {
+                              for(e2NodeConfigIdx=0; e2NodeConfigIdx<updateAckList->list.count; e2NodeConfigIdx++)
+                              {
+                                 updateAckItemIe = (E2nodeComponentConfigUpdateAck_ItemIEs_t*) updateAckList->list.array[e2NodeConfigIdx];
+                                 if(updateAckItemIe)
+                                 {
+                                    freeE2NodeConfigItem(ProtocolIE_IDE2_id_E2nodeComponentConfigUpdateAck,\
+                                    (PTR)&updateAckItemIe->value.choice.E2nodeComponentConfigUpdateAck_Item);
+                                    RIC_FREE(updateAckItemIe, sizeof(E2nodeComponentConfigUpdateAck_ItemIEs_t));
+                                 }
+                              }
+                              RIC_FREE(updateAckList->list.array, updateAckList->list.size);
+                           }
+                           break;
+                        }
+                     case ProtocolIE_IDE2_id_E2nodeComponentConfigRemovalAck:
+                        {
+                           removalAckList =&updateAckMsg->protocolIEs.list.array[arrIdx]->value.choice.E2nodeComponentConfigRemovalAck_List;
+                           if(removalAckList->list.array)
+                           {
+                              for(e2NodeConfigIdx=0; e2NodeConfigIdx<removalAckList->list.count; e2NodeConfigIdx++)
+                              {
+                                 removalAckItemIe = (E2nodeComponentConfigRemovalAck_ItemIEs_t*) removalAckList->list.array[e2NodeConfigIdx];
+                                 if(removalAckItemIe)
+                                 {
+                                    freeE2NodeConfigItem(ProtocolIE_IDE2_id_E2nodeComponentConfigRemovalAck,\
+                                    (PTR)&removalAckItemIe->value.choice.E2nodeComponentConfigRemovalAck_Item);
+                                    RIC_FREE(removalAckItemIe, sizeof(E2nodeComponentConfigRemovalAck_ItemIEs_t));
+                                 }
+                              }
+                              RIC_FREE(removalAckList->list.array, removalAckList->list.size);
+                           }
+                           break;
+                        }
+                  }
+                  RIC_FREE(updateAckMsg->protocolIEs.list.array[arrIdx], sizeof(E2nodeConfigurationUpdateAcknowledge_IEs_t));
+               }
+            }
+            RIC_FREE(updateAckMsg->protocolIEs.list.array, updateAckMsg->protocolIEs.list.size);
+         }
+         RIC_FREE(e2apMsg->choice.successfulOutcome, sizeof(SuccessfulOutcomeE2_t));
+      }
+      RIC_FREE(e2apMsg, sizeof(E2AP_PDU_t));
+   }
+}
+
+/*******************************************************************
+ *
+ * @brief Build E2node Component config Removal ack list
+ *
+ * @details
+ *
+ *    Function :  BuildE2nodeComponentConfigRemovalAck
+ *
+ *    Functionality: Build the e2 node remove ack 
+ *
+ * @params[in] 
+ *    E2nodeComponentConfigRemovalAck_List_t to be filled
+ *    Count of e2 node to be removed
+ *    list of e2 node cfg to be removed
+ *
+ * @return ROK - success
+ *         RFAILED - failure
+ * ****************************************************************/
+
+uint8_t BuildE2nodeComponentConfigRemovalAck(E2nodeComponentConfigRemovalAck_List_t *e2NodeConfigRemovalAckList,\
+uint16_t removalE2NodeCount, E2NodeConfigItem *removaldE2Node)
+{
+   uint8_t arrIdx = 0;
+   E2nodeComponentConfigRemovalAck_ItemIEs_t *e2NodeRemovalAckItem=NULL;
+   
+   /* Filling the e2 node config removal ack list */
+   e2NodeConfigRemovalAckList->list.count = removalE2NodeCount;
+   e2NodeConfigRemovalAckList->list.size = e2NodeConfigRemovalAckList->list.count * sizeof(E2nodeComponentConfigRemovalAck_ItemIEs_t*);
+   RIC_ALLOC(e2NodeConfigRemovalAckList->list.array, e2NodeConfigRemovalAckList->list.size);
+   if(e2NodeConfigRemovalAckList->list.array == NULLP)
+   {
+      DU_LOG("\nERROR  --> E2AP: Memory allocation failed for BuildE2nodeComponentConfigRemovalAck %d",__LINE__);
+      return RFAILED;
+   }
+
+   for(arrIdx = 0; arrIdx< e2NodeConfigRemovalAckList->list.count; arrIdx++)
+   {
+      RIC_ALLOC(e2NodeConfigRemovalAckList->list.array[arrIdx], sizeof(E2nodeComponentConfigRemovalAck_ItemIEs_t));
+      if(e2NodeConfigRemovalAckList->list.array[arrIdx] == NULLP)
+      {
+         DU_LOG("\nERROR  --> E2AP: Memory allocation failed for BuildE2nodeComponentConfigRemovalAck %d",__LINE__);
+         return RFAILED;
+      }
+      e2NodeRemovalAckItem = (E2nodeComponentConfigRemovalAck_ItemIEs_t*) e2NodeConfigRemovalAckList->list.array[arrIdx];
+      e2NodeRemovalAckItem->id = ProtocolIE_IDE2_id_E2nodeComponentConfigRemovalAck_Item;
+      e2NodeRemovalAckItem->criticality = CriticalityE2_reject;
+      e2NodeRemovalAckItem->value.present = E2nodeComponentConfigRemovalAck_ItemIEs__value_PR_E2nodeComponentConfigRemovalAck_Item;
+      
+      /* Filling the e2 node config removal ack item */
+      fillE2NodeConfigAck((PTR)&e2NodeRemovalAckItem->value.choice.E2nodeComponentConfigRemovalAck_Item, ProtocolIE_IDE2_id_E2nodeComponentConfigRemovalAck,\
+      &removaldE2Node[arrIdx].componentInfo, removaldE2Node[arrIdx].isSuccessful);
+   }
+   return ROK;  
+}
+
+/*******************************************************************
+ *
+ * @brief Build E2node Component config update ack list
+ *
+ * @details
+ *
+ *    Function :  BuildE2nodeComponentConfigUpdateAck
+ *
+ *    Functionality: Build E2node Component config update ack list 
+ *
+ * @params[in] 
+ *    E2nodeComponentConfigUpdateAck_List to be filled
+ *    Count of e2 node to be update
+ *    list of e2 node cfg to be update
+ *
+ * @return ROK - success
+ *         RFAILED - failure
+ * ****************************************************************/
+
+uint8_t BuildE2nodeComponentConfigUpdateAck(E2nodeComponentConfigUpdateAck_List_t *e2NodeConfigUpdateAckList,\
+uint16_t updatedE2NodeCount, E2NodeConfigItem *updatedE2Node)
+{
+   uint8_t arrIdx = 0;
+   E2nodeComponentConfigUpdateAck_ItemIEs_t *e2NodeUpdateAckItem=NULL;
+   
+   /* Filling the e2 node config update ack list */
+   e2NodeConfigUpdateAckList->list.count = updatedE2NodeCount;
+   e2NodeConfigUpdateAckList->list.size = e2NodeConfigUpdateAckList->list.count * sizeof(E2nodeComponentConfigUpdateAck_ItemIEs_t*);
+   RIC_ALLOC(e2NodeConfigUpdateAckList->list.array, e2NodeConfigUpdateAckList->list.size);
+   if(e2NodeConfigUpdateAckList->list.array == NULLP)
+   {
+      DU_LOG("\nERROR  --> E2AP: Memory allocation failed for BuildE2nodeComponentConfigUpdateAck %d",__LINE__);
+      return RFAILED;
+   }
+
+   for(arrIdx = 0; arrIdx< e2NodeConfigUpdateAckList->list.count; arrIdx++)
+   {
+      RIC_ALLOC(e2NodeConfigUpdateAckList->list.array[arrIdx], sizeof(E2nodeComponentConfigUpdateAck_ItemIEs_t));
+      if(e2NodeConfigUpdateAckList->list.array[arrIdx] == NULLP)
+      {
+         DU_LOG("\nERROR  --> E2AP: Memory allocation failed for BuildE2nodeComponentConfigUpdateAck %d",__LINE__);
+         return RFAILED;
+      }
+      e2NodeUpdateAckItem = (E2nodeComponentConfigUpdateAck_ItemIEs_t*) e2NodeConfigUpdateAckList->list.array[arrIdx];
+      e2NodeUpdateAckItem->id = ProtocolIE_IDE2_id_E2nodeComponentConfigUpdateAck_Item;
+      e2NodeUpdateAckItem->criticality = CriticalityE2_reject;
+      e2NodeUpdateAckItem->value.present = E2nodeComponentConfigUpdateAck_ItemIEs__value_PR_E2nodeComponentConfigUpdateAck_Item;
+      
+      /* Filling the e2 node config update ack item */
+      fillE2NodeConfigAck((PTR)&e2NodeUpdateAckItem->value.choice.E2nodeComponentConfigUpdateAck_Item, ProtocolIE_IDE2_id_E2nodeComponentConfigUpdateAck,\
+      &updatedE2Node[arrIdx].componentInfo, updatedE2Node[arrIdx].isSuccessful);
+
+   }
+   return ROK;  
+}
+
+/*******************************************************************
+ *
+ * @brief Buld and send the E2 node config update ack msg 
+ *
+ * @details
+ *
+ *    Function : BuildAndSendE2NodeConfigUpdateAck 
+ *
+ *    Functionality:
+ *         - Buld and send the E2 node config update ack msg
+ * @params[in] 
+ *    DU databse 
+ *    transId 
+ *    list of E2 node cfg which needs to fill in IEs
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+
+uint8_t BuildAndSendE2NodeConfigUpdateAck(DuDb *duDb, uint8_t transId,  E2NodeConfigList *e2NodeList)
+{
+   uint8_t ret = RFAILED;
+   uint8_t arrIdx = 0,elementCnt = 0;
+   E2AP_PDU_t        *e2apMsg = NULLP;
+   asn_enc_rval_t     encRetVal;       
+   E2nodeConfigurationUpdateAcknowledge_t *e2NodeConfigUpdateAck = NULLP;
+
+   DU_LOG("\nINFO   -->  E2AP : Building E2 Node config update Ack Message\n");
+   do
+   {
+      RIC_ALLOC(e2apMsg, sizeof(E2AP_PDU_t));
+      if(e2apMsg == NULLP)
+      {
+         DU_LOG("\nERROR  -->  E2AP : Memory allocation failed in %s at line %d", __func__,__LINE__);
+         break;
+      }
+      e2apMsg->present = E2AP_PDU_PR_successfulOutcome;
+      RIC_ALLOC(e2apMsg->choice.successfulOutcome, sizeof(SuccessfulOutcomeE2_t));
+      if(e2apMsg->choice.successfulOutcome == NULLP)
+      {
+         DU_LOG("\nERROR  -->  E2AP : Memory allocation failed in %s at line %d", __func__,__LINE__);
+         break;
+      }
+      
+      e2apMsg->choice.successfulOutcome->criticality = CriticalityE2_reject;
+      e2apMsg->choice.successfulOutcome->procedureCode = ProcedureCodeE2_id_E2nodeConfigurationUpdate;
+      e2apMsg->choice.successfulOutcome->value.present = SuccessfulOutcomeE2__value_PR_E2nodeConfigurationUpdateAcknowledge;
+      e2NodeConfigUpdateAck = &e2apMsg->choice.successfulOutcome->value.choice.E2nodeConfigurationUpdateAcknowledge;
+      
+      elementCnt =1;
+      if(e2NodeList->addedE2NodeCount)
+         elementCnt++;
+      if(e2NodeList->updatedE2NodeCount)
+         elementCnt++;
+      if(e2NodeList->removedE2NodeCount)
+         elementCnt++;
+
+      e2NodeConfigUpdateAck->protocolIEs.list.count = elementCnt;
+      e2NodeConfigUpdateAck->protocolIEs.list.size  = elementCnt * sizeof(E2nodeConfigurationUpdateAcknowledge_IEs_t*);
+      RIC_ALLOC(e2NodeConfigUpdateAck->protocolIEs.list.array, e2NodeConfigUpdateAck->protocolIEs.list.size);
+      if(e2NodeConfigUpdateAck->protocolIEs.list.array == NULLP)
+      {
+         DU_LOG("\nERROR  -->  E2AP : Memory allocation failed in %s at line %d", __func__,__LINE__);
+         break;
+      }
+      
+      for(arrIdx =0; arrIdx<elementCnt; arrIdx++)
+      {
+         RIC_ALLOC(e2NodeConfigUpdateAck->protocolIEs.list.array[arrIdx], sizeof(E2nodeConfigurationUpdateAcknowledge_IEs_t));
+         if(e2NodeConfigUpdateAck->protocolIEs.list.array[arrIdx] == NULLP)
+         {
+            
+            DU_LOG("\nERROR  -->  E2AP : Memory allocation failed in %s at line %d", __func__,__LINE__);
+            break;
+         }
+      }
+      
+      if(arrIdx<elementCnt)
+         break;
+
+      arrIdx = 0;
+      e2NodeConfigUpdateAck->protocolIEs.list.array[arrIdx]->id = ProtocolIE_IDE2_id_TransactionID;
+      e2NodeConfigUpdateAck->protocolIEs.list.array[arrIdx]->criticality = CriticalityE2_reject;
+      e2NodeConfigUpdateAck->protocolIEs.list.array[arrIdx]->value.present = E2nodeConfigurationUpdateAcknowledge_IEs__value_PR_TransactionID;
+      e2NodeConfigUpdateAck->protocolIEs.list.array[arrIdx]->value.choice.TransactionID = transId;
+      
+      if(e2NodeList->addedE2NodeCount)
+      {
+         arrIdx++;
+         e2NodeConfigUpdateAck->protocolIEs.list.array[arrIdx]->id = ProtocolIE_IDE2_id_E2nodeComponentConfigAdditionAck;
+         e2NodeConfigUpdateAck->protocolIEs.list.array[arrIdx]->criticality = CriticalityE2_reject;
+         e2NodeConfigUpdateAck->protocolIEs.list.array[arrIdx]->value.present = E2nodeConfigurationUpdateAcknowledge_IEs__value_PR_E2nodeComponentConfigAdditionAck_List;
+         if(BuildE2nodeComponentConfigAdditionAck(&e2NodeConfigUpdateAck->protocolIEs.list.array[arrIdx]->value.choice.E2nodeComponentConfigAdditionAck_List,\
+                  e2NodeList->addedE2NodeCount, e2NodeList->addedE2Node)!=ROK)
+
+         {
+            DU_LOG("\nERROR  -->  E2AP : Failed to build E2Node Component config addition ack list");
+            break;
+         }
+      }
+      if(e2NodeList->updatedE2NodeCount)
+      {
+         arrIdx++;
+         e2NodeConfigUpdateAck->protocolIEs.list.array[arrIdx]->id = ProtocolIE_IDE2_id_E2nodeComponentConfigUpdateAck;
+         e2NodeConfigUpdateAck->protocolIEs.list.array[arrIdx]->criticality = CriticalityE2_reject;
+         e2NodeConfigUpdateAck->protocolIEs.list.array[arrIdx]->value.present = E2nodeConfigurationUpdateAcknowledge_IEs__value_PR_E2nodeComponentConfigUpdateAck_List;
+         if(BuildE2nodeComponentConfigUpdateAck(&e2NodeConfigUpdateAck->protocolIEs.list.array[arrIdx]->value.choice.E2nodeComponentConfigUpdateAck_List,\
+                  e2NodeList->updatedE2NodeCount, e2NodeList->updatedE2Node)!=ROK)
+
+         {
+            DU_LOG("\nERROR  -->  E2AP : Failed to build E2Node Component config update ack list");
+            break;
+         }
+      }
+      if(e2NodeList->removedE2NodeCount)
+      {
+         arrIdx++;
+         e2NodeConfigUpdateAck->protocolIEs.list.array[arrIdx]->id = ProtocolIE_IDE2_id_E2nodeComponentConfigRemovalAck;
+         e2NodeConfigUpdateAck->protocolIEs.list.array[arrIdx]->criticality = CriticalityE2_reject;
+         e2NodeConfigUpdateAck->protocolIEs.list.array[arrIdx]->value.present = E2nodeConfigurationUpdateAcknowledge_IEs__value_PR_E2nodeComponentConfigRemovalAck_List;
+         if(BuildE2nodeComponentConfigRemovalAck(&e2NodeConfigUpdateAck->protocolIEs.list.array[arrIdx]->value.choice.E2nodeComponentConfigRemovalAck_List,\
+                  e2NodeList->removedE2NodeCount, e2NodeList->removedE2Node)!=ROK)
+
+         {
+            DU_LOG("\nERROR  -->  E2AP : Failed to build E2Node Component config removal ack list");
+            break;
+         }
+      }      
+      xer_fprint(stdout, &asn_DEF_E2AP_PDU, e2apMsg);
+
+      memset(encBuf, 0, ENC_BUF_MAX_LEN);
+      encBufSize = 0;
+      encRetVal = aper_encode(&asn_DEF_E2AP_PDU, 0, e2apMsg, PrepFinalEncBuf,\
+            encBuf);
+      if(encRetVal.encoded == ENCODE_FAIL)
+      {
+         DU_LOG("\nERROR  -->  E2AP : Could not encode E2 Node config update ack structure (at %s)\n",\
+               encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
+         break;
+      }
+      else
+      {
+         DU_LOG("\nDEBUG  -->  E2AP : Created APER encoded buffer for E2 Node config update ack \n");
+         for(int i=0; i< encBufSize; i++)
+         {
+            DU_LOG("%x",encBuf[i]);
+         } 
+      }
+
+
+      /* Sending msg */
+      if(SendE2APMsg(RIC_APP_MEM_REG, RIC_POOL, duDb->duId) != ROK)
+      {
+         DU_LOG("\nERROR  -->  E2AP : Failed to send E2 Node config update ack ");
+         break;
+      }
+      ret = ROK;
+      break;
+   }while(true);
+   
+   FreeE2NodeConfigUpdateAck(e2apMsg);
+   return ret;
 }
 
 /*******************************************************************
