@@ -22,6 +22,30 @@
       },
       "revId": "5d37f7efcd24f20063e8a4d29d3fbf8c33823c95",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "55b665ec_3d5402c1",
+        "filename": "src/du_app/du_mgr_main.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 589,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-10-16T09:02:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d9585f88_9511576a",
+      "range": {
+        "startLine": 589,
+        "startChar": 5,
+        "endLine": 589,
+        "endChar": 28
+      },
+      "revId": "5d37f7efcd24f20063e8a4d29d3fbf8c33823c95",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
   ]
 }
