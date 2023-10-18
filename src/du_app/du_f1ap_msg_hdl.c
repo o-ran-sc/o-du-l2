@@ -1759,7 +1759,7 @@ uint8_t BuildAndSendF1SetupReq()
          
 
       }
-      if(addOrModifyE2NodeComponent(F1, E2_NODE_COMPONENT_ADD, true, encBufSize, encBuf) !=ROK)
+      if(fillE2NodeComponentReqInfo(F1, E2_NODE_COMPONENT_ADD, encBufSize, encBuf) !=ROK)
       {
          DU_LOG("\nERROR  -->  F1AP : Failed to add the e2 node in the list");
          break;
@@ -2762,7 +2762,7 @@ uint8_t BuildAndSendDUConfigUpdate(ServCellAction servCellAction)
          }
 #endif
       }
-      if(addOrModifyE2NodeComponent(F1, E2_NODE_COMPONENT_UPDATE, true, encBufSize, encBuf)!=ROK)
+      if(fillE2NodeComponentReqInfo(F1, E2_NODE_COMPONENT_UPDATE, encBufSize, encBuf)!=ROK)
       {
          DU_LOG("\nERROR  -->  F1AP : Failed to update the e2 node in the list");
          break;
@@ -15552,7 +15552,7 @@ uint8_t procF1SetupRsp(F1AP_PDU_t *f1apMsg, MsgLen recvBufLen, char *recvBuf)
    duProcF1SetupRsp();
    freeAperDecodeF1SetupRsp(f1SetRspMsg);
    
-   if(addOrModifyE2NodeComponent(F1, E2_NODE_COMPONENT_ADD, false, recvBufLen, recvBuf) !=ROK)
+   if(fillE2NodeComponentRspInfo(F1, E2_NODE_COMPONENT_ADD, recvBufLen, recvBuf) !=ROK)
    {
       DU_LOG("\nERROR  -->  F1AP : Failed to add the e2 node in the list");
       return RFAILED;
@@ -15781,7 +15781,7 @@ uint8_t procF1GNBDUCfgUpdAck(F1AP_PDU_t *f1apMsg, MsgLen recvBufLen, char *recvB
    }
 #endif
 
-   if(addOrModifyE2NodeComponent(F1, E2_NODE_COMPONENT_UPDATE, false, recvBufLen, recvBuf) !=ROK)
+   if(fillE2NodeComponentRspInfo(F1, E2_NODE_COMPONENT_UPDATE, recvBufLen, recvBuf) !=ROK)
    {
       DU_LOG("\nERROR  -->  F1AP : Failed to update the e2 node in the list");
       return RFAILED;
