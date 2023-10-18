@@ -444,13 +444,19 @@ typedef struct
 /* O-RAN.WG3.E2AP-R003-v03.00 : Section 9.2.26-9.2.27 */
 typedef struct
 {
-   InterfaceType        interfaceType;
-   uint64_t             componentId; 
-   ComponentActionType  componentActionType;
-   uint8_t              reqBufSize;
-   uint8_t              *componentRequestPart;
-   uint8_t              rspBufSize;
-   uint8_t              *componentResponsePart;
+   uint8_t    reqBufSize;
+   uint8_t    *componentRequestPart;
+   uint8_t    rspBufSize;
+   uint8_t    *componentResponsePart;
+}E2NodeConfig;
+
+typedef struct
+{
+   InterfaceType interfaceType;
+   uint64_t      componentId; 
+   E2NodeConfig  *addConfiguration;
+   E2NodeConfig  *updateConfiguration;
+   E2NodeConfig  *deleteConfiguration;
 }E2NodeComponent;
 
 /* O-RAN.WG3.E2AP-R003-v03.00 : Section 9.2.29 */
@@ -504,8 +510,9 @@ void E2apHdlRicSubsReportTmrExp(RicSubscription *ricSubscription);
 
 uint8_t ResetE2Request(E2ProcedureDirection dir, E2FailureCause resetCause);
 uint8_t SendE2APMsg(Region region, Pool pool, char *encBuf, int encBufSize);
-E2NodeComponent *fetchE2NodeComponentInfo(InterfaceType interfaceType, uint8_t componentActionType, CmLList **e2ComponentNode);
-uint8_t addOrModifyE2NodeComponent(InterfaceType interfaceType, uint8_t action, bool reqPart, uint8_t bufSize, char *bufString);
+E2NodeComponent *fetchE2NodeComponentInfo(InterfaceType interfaceType, CmLList **e2ComponentNode);
+uint8_t fillE2NodeComponentReqInfo(InterfaceType interfaceType, uint8_t action, uint8_t bufSize, char *bufString);
+uint8_t fillE2NodeComponentRspInfo(InterfaceType interfaceType, uint8_t action, uint8_t bufSize, char *bufString);
 void deleteRicSubscriptionList(CmLListCp *subscriptionList);
 void deleteRicSubscriptionNode(CmLList *ricSubscriptionInfo);
 void deleteMeasurementInfoList(CmLListCp *measInfoList);
