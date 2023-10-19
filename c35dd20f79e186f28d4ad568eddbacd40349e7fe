@@ -18,6 +18,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "73af2497_603c8990",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 416,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-10-19T16:18:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "012fb150_ce3788e6",
+      "revId": "c35dd20f79e186f28d4ad568eddbacd40349e7fe",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8b27143e_be6bb679",
@@ -31,6 +49,24 @@
       "writtenOn": "2023-10-19T15:47:54Z",
       "side": 1,
       "message": "Here there is no action being taken when E2 removal request is received.\nIs there no action required?",
+      "revId": "c35dd20f79e186f28d4ad568eddbacd40349e7fe",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ef39f987_683e9ee4",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 555,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-10-19T16:18:58Z",
+      "side": 1,
+      "message": "Action will be performed after sending the response.\nThat part i will be adding as part of upcoming gerrit",
+      "parentUuid": "8b27143e_be6bb679",
       "revId": "c35dd20f79e186f28d4ad568eddbacd40349e7fe",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -52,6 +88,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4cf93359_1cc527f8",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 557,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-10-19T16:18:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4ceb0e86_019f9d12",
+      "revId": "c35dd20f79e186f28d4ad568eddbacd40349e7fe",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a7d97346_c4730dd7",
@@ -65,6 +119,30 @@
       "writtenOn": "2023-10-19T15:26:43Z",
       "side": 1,
       "message": "Since we are running the for loop till the \u0027count\u0027 value in any case, arrIdx \u003d\u003d count.\n\nI think u shld may be have a bool variable validTransIdRecv to set in case of transId received.",
+      "range": {
+        "startLine": 561,
+        "startChar": 13,
+        "endLine": 561,
+        "endChar": 14
+      },
+      "revId": "c35dd20f79e186f28d4ad568eddbacd40349e7fe",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3bea0523_9f064571",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 561,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-10-19T16:18:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a7d97346_c4730dd7",
       "range": {
         "startLine": 561,
         "startChar": 13,
@@ -100,6 +178,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b9d5cd98_d6870983",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 571,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-10-19T16:18:58Z",
+      "side": 1,
+      "message": "There is no cause mentioned for transaction failure. Please suggest me what else i can use for cause.",
+      "parentUuid": "269dd670_765a6efb",
+      "range": {
+        "startLine": 571,
+        "startChar": 27,
+        "endLine": 571,
+        "endChar": 61
+      },
+      "revId": "c35dd20f79e186f28d4ad568eddbacd40349e7fe",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8371da43_bbc058f4",
         "filename": "src/ric_stub/ric_e2ap_msg_hdl.c",
         "patchSetId": 2
@@ -111,6 +213,24 @@
       "writtenOn": "2023-10-19T15:47:54Z",
       "side": 1,
       "message": "in case E2 removal procedure, we do not need to remove anything from RIC DB?\nIf yes, then check if it to be removed when sending request or after receiving response?",
+      "revId": "c35dd20f79e186f28d4ad568eddbacd40349e7fe",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c7643ed0_ba12c781",
+        "filename": "src/ric_stub/ric_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 231,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-10-19T16:18:58Z",
+      "side": 1,
+      "message": "yes,we will be removing the information once we will get successful response.\nThat handling I will be doing in next gerrit.",
+      "parentUuid": "8371da43_bbc058f4",
       "revId": "c35dd20f79e186f28d4ad568eddbacd40349e7fe",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -128,6 +248,24 @@
       "writtenOn": "2023-10-19T15:47:54Z",
       "side": 1,
       "message": "Add receival of E2 removal response and failure.",
+      "revId": "c35dd20f79e186f28d4ad568eddbacd40349e7fe",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "701bb0ea_6521aa17",
+        "filename": "src/ric_stub/ric_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 5935,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-10-19T16:18:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "307ee4fa_63664db1",
       "revId": "c35dd20f79e186f28d4ad568eddbacd40349e7fe",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
