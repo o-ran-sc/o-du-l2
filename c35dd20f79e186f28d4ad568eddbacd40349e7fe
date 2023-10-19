@@ -3,6 +3,40 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "012fb150_ce3788e6",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 416,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-10-19T15:47:54Z",
+      "side": 1,
+      "message": "please use the same format as we have used in previous few gerrits.\nLets use __func__ and __LINE__ to print function name and line number where error occurred.\n\nMUST be followed for all prints in this gerrit and future gerrits",
+      "revId": "c35dd20f79e186f28d4ad568eddbacd40349e7fe",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8b27143e_be6bb679",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 555,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-10-19T15:47:54Z",
+      "side": 1,
+      "message": "Here there is no action being taken when E2 removal request is received.\nIs there no action required?",
+      "revId": "c35dd20f79e186f28d4ad568eddbacd40349e7fe",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "4ceb0e86_019f9d12",
         "filename": "src/du_app/du_e2ap_msg_hdl.c",
         "patchSetId": 2
@@ -37,6 +71,63 @@
         "endLine": 561,
         "endChar": 14
       },
+      "revId": "c35dd20f79e186f28d4ad568eddbacd40349e7fe",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "269dd670_765a6efb",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 571,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-10-19T15:47:54Z",
+      "side": 1,
+      "message": "since the failure is only in case of retrieval of transaction id, can we mention a more appropriate failure cause.",
+      "range": {
+        "startLine": 571,
+        "startChar": 27,
+        "endLine": 571,
+        "endChar": 61
+      },
+      "revId": "c35dd20f79e186f28d4ad568eddbacd40349e7fe",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8371da43_bbc058f4",
+        "filename": "src/ric_stub/ric_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 231,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-10-19T15:47:54Z",
+      "side": 1,
+      "message": "in case E2 removal procedure, we do not need to remove anything from RIC DB?\nIf yes, then check if it to be removed when sending request or after receiving response?",
+      "revId": "c35dd20f79e186f28d4ad568eddbacd40349e7fe",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "307ee4fa_63664db1",
+        "filename": "src/ric_stub/ric_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 5935,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-10-19T15:47:54Z",
+      "side": 1,
+      "message": "Add receival of E2 removal response and failure.",
       "revId": "c35dd20f79e186f28d4ad568eddbacd40349e7fe",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
