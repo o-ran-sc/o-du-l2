@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4ceb0e86_019f9d12",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 557,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-10-19T15:26:43Z",
+      "side": 1,
+      "message": "please add the default case",
+      "revId": "c35dd20f79e186f28d4ad568eddbacd40349e7fe",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a7d97346_c4730dd7",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 561,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-10-19T15:26:43Z",
+      "side": 1,
+      "message": "Since we are running the for loop till the \u0027count\u0027 value in any case, arrIdx \u003d\u003d count.\n\nI think u shld may be have a bool variable validTransIdRecv to set in case of transId received.",
+      "range": {
+        "startLine": 561,
+        "startChar": 13,
+        "endLine": 561,
+        "endChar": 14
+      },
+      "revId": "c35dd20f79e186f28d4ad568eddbacd40349e7fe",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
