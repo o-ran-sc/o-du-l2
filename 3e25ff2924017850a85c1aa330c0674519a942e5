@@ -26,6 +26,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c36821a0_40520c5e",
+        "filename": "src/du_app/du_e2ap_mgr.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 459,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-10-19T07:48:04Z",
+      "side": 1,
+      "message": "do we need it to be a pointer?",
+      "range": {
+        "startLine": 459,
+        "startChar": 18,
+        "endLine": 459,
+        "endChar": 37
+      },
+      "revId": "3e25ff2924017850a85c1aa330c0674519a942e5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b05c0273_86893696",
         "filename": "src/du_app/du_e2ap_msg_hdl.c",
         "patchSetId": 4
@@ -100,6 +123,30 @@
       "writtenOn": "2023-10-19T07:09:53Z",
       "side": 1,
       "message": "As discussed, please check if we shld break from here if E2 node component filling fails or go ahead with sending F1SetupReq to CU ?",
+      "range": {
+        "startLine": 1762,
+        "startChar": 9,
+        "endLine": 1762,
+        "endChar": 35
+      },
+      "revId": "3e25ff2924017850a85c1aa330c0674519a942e5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e691008f_6f14169b",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1762,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-10-19T07:48:04Z",
+      "side": 1,
+      "message": "We cannot have more than 1 F1 interface because 1 DU can connect to only 1 CU.\nHowever, we can check if this 1:1 relation applies to other E2 node components as well.\n\nAnyway, since this is a generic function, it will be good if we pass the componentId.",
+      "parentUuid": "548e78d2_ab3f4748",
       "range": {
         "startLine": 1762,
         "startChar": 9,
@@ -208,6 +255,29 @@
         "startChar": 13,
         "endLine": 15787,
         "endChar": 20
+      },
+      "revId": "3e25ff2924017850a85c1aa330c0674519a942e5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "54bb3217_ce4abd4a",
+        "filename": "src/du_app/du_mgr_main.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 589,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-10-19T07:48:04Z",
+      "side": 1,
+      "message": "revert",
+      "range": {
+        "startLine": 589,
+        "startChar": 5,
+        "endLine": 589,
+        "endChar": 28
       },
       "revId": "3e25ff2924017850a85c1aa330c0674519a942e5",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
