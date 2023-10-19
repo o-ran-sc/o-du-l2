@@ -202,6 +202,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d71879b8_403288cb",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 571,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-10-19T16:56:52Z",
+      "side": 1,
+      "message": "we can use: \nProtocol cause : Abstract Syntax Error (Falsely Constructed Message),",
+      "parentUuid": "b9d5cd98_d6870983",
+      "range": {
+        "startLine": 571,
+        "startChar": 27,
+        "endLine": 571,
+        "endChar": 61
+      },
+      "revId": "c35dd20f79e186f28d4ad568eddbacd40349e7fe",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8371da43_bbc058f4",
         "filename": "src/ric_stub/ric_e2ap_msg_hdl.c",
         "patchSetId": 2
