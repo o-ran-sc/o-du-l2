@@ -1432,6 +1432,103 @@ void fetchRicSubsToBeDeleted(CmLListCp *ricSubsToBeDelList)
    }
 }
 
+/******************************************************************
+ *
+ * @brief Delete E2 component node from the database
+ *
+ * @details
+ *
+ *    Function : deleteE2ComponentNode 
+ *
+ *    Functionality: Delete E2 component node 
+ *
+ * @params[in]
+ *    E2 component node 
+ *
+ * @return void 
+ *
+ * ****************************************************************/
+void deleteE2ComponentNode(E2NodeComponent *e2NodeComponentInfo)
+{
+   if(e2NodeComponentInfo->addConfiguration)
+   {
+      DU_FREE(e2NodeComponentInfo->addConfiguration->componentRequestPart, e2NodeComponentInfo->addConfiguration->reqBufSize);
+      DU_FREE(e2NodeComponentInfo->addConfiguration->componentResponsePart, e2NodeComponentInfo->addConfiguration->rspBufSize);
+      DU_FREE(e2NodeComponentInfo->addConfiguration, sizeof(E2NodeConfig));
+   }
+   if(e2NodeComponentInfo->updateConfiguration)
+   {
+      DU_FREE(e2NodeComponentInfo->updateConfiguration->componentRequestPart, e2NodeComponentInfo->updateConfiguration->reqBufSize);
+      DU_FREE(e2NodeComponentInfo->updateConfiguration->componentResponsePart, e2NodeComponentInfo->updateConfiguration->rspBufSize);
+      DU_FREE(e2NodeComponentInfo->updateConfiguration, sizeof(E2NodeConfig));
+   }
+   memset(e2NodeComponentInfo, 0, sizeof(E2NodeComponent));
+}
+
+/******************************************************************
+ *
+ * @brief Delete E2 Node Config List from the database
+ *
+ * @details
+ *
+ *    Function : deleteE2NodeConfigList
+ *
+ *    Functionality: Delete E2 Node Config List 
+ *
+ * @params[in]
+ *    E2 Node Config List to be deleted 
+ *
+ * @return void 
+ *
+ * ****************************************************************/
+void deleteE2NodeConfigList(CmLListCp *e2NodeComponentList)
+{
+   CmLList *cfgNode=NULLP;
+   E2NodeComponent *e2NodeComponentInfo= NULLP;
+   
+   CM_LLIST_FIRST_NODE(e2NodeComponentList, cfgNode);
+   while(cfgNode)
+   {
+      cmLListDelFrm(e2NodeComponentList, cfgNode);
+      deleteE2ComponentNode((E2NodeComponent*)cfgNode->node);
+      cfgNode = NULLP;
+      CM_LLIST_FIRST_NODE(e2NodeComponentList, cfgNode);
+   }
+}
+
+/******************************************************************
+ *
+ * @brief Delete e2 node information from the database
+ *
+ * @details
+ *
+ *    Function : removeE2NodeInformation 
+ *
+ *    Functionality: Delete e2 node information from the database 
+ *
+ * @params[in]
+ *
+ * @return void 
+ *
+******************************************************************/
+void removeE2NodeInformation()
+{
+   uint16_t ranFuncIdx = 0;
+   
+   DU_LOG("\nINFO  -->  E2AP : Deleting all the E2 node configuration");
+   for(ranFuncIdx=0; ranFuncIdx<MAX_RAN_FUNCTION; ranFuncIdx++)
+   {
+      if(duCb.e2apDb.ranFunction[ranFuncIdx].id >0)
+      {
+         deleteRicSubscriptionList(&(duCb.e2apDb.ranFunction[ranFuncIdx].subscriptionList));
+         memset(&(duCb.e2apDb.ranFunction[ranFuncIdx].pendingSubsRspInfo), 0, MAX_PENDING_SUBSCRIPTION_RSP*sizeof(PendingSubsRspInfo));
+      }
+   }
+   
+   deleteE2NodeConfigList(&duCb.e2apDb.e2NodeComponentList);
+   memset(&duCb.e2apDb, 0, sizeof(E2apDb));
+   memset(&ricParams, 0, sizeof(DuSctpDestCb));
+}
 /**********************************************************************
   End of file
  **********************************************************************/
