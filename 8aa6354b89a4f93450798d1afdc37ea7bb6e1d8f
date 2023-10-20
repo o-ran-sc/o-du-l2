@@ -18,6 +18,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f89c76a2_0e7df92e",
+        "filename": "src/ric_stub/ric_e2ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 6015,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-10-20T09:37:12Z",
+      "side": 1,
+      "message": "yes",
+      "parentUuid": "b63851eb_29ff0876",
+      "revId": "8aa6354b89a4f93450798d1afdc37ea7bb6e1d8f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "177ea87c_634ee10f",
@@ -31,6 +49,24 @@
       "writtenOn": "2023-10-19T16:56:52Z",
       "side": 1,
       "message": "call a proc  here, that will decode the E2 Removal failure and prints the transId and cause of failure",
+      "revId": "8aa6354b89a4f93450798d1afdc37ea7bb6e1d8f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d2dbb34e_0f7321e6",
+        "filename": "src/ric_stub/ric_e2ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 6039,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-10-20T09:37:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "177ea87c_634ee10f",
       "revId": "8aa6354b89a4f93450798d1afdc37ea7bb6e1d8f",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }

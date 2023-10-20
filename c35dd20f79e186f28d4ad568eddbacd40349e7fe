@@ -224,6 +224,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "084ae2f5_54d909d0",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 571,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-10-20T09:37:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d71879b8_403288cb",
+      "range": {
+        "startLine": 571,
+        "startChar": 27,
+        "endLine": 571,
+        "endChar": 61
+      },
+      "revId": "c35dd20f79e186f28d4ad568eddbacd40349e7fe",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8371da43_bbc058f4",
