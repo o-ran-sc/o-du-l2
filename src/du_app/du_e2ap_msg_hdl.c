@@ -482,6 +482,7 @@ uint8_t BuildAndSendRemovalResponse(uint8_t transId)
    }while(true);
 
    FreeE2RemovalResponse(e2apMsg);
+   removeE2NodeInformation();
    return ret;
 }
 
@@ -537,14 +538,13 @@ void freeAperDecodingOfE2RemovalReq(E2RemovalRequest_t *removalReq)
 
 void procE2RemovalRequest(E2AP_PDU_t  *e2apMsg)
 {
-   uint8_t arrIdx =0, transId =0, count =0;
+   uint8_t arrIdx =0, transId =0;
    E2FailureCause failureCause;
    E2RemovalRequest_t *removalReq=NULLP;
 
    DU_LOG("\nINFO   -->  E2AP : E2 Removal request received");
    removalReq = &e2apMsg->choice.initiatingMessage->value.choice.E2RemovalRequest;
    
-   count =removalReq->protocolIEs.list.count;
    for(arrIdx=0; arrIdx<removalReq->protocolIEs.list.count; arrIdx++)
    {
       switch(removalReq->protocolIEs.list.array[arrIdx]->id)

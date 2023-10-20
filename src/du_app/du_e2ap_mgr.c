@@ -1432,6 +1432,40 @@ void fetchRicSubsToBeDeleted(CmLListCp *ricSubsToBeDelList)
    }
 }
 
+/******************************************************************
+ *
+ * @brief Delete e2 node information from the database
+ *
+ * @details
+ *
+ *    Function : removeE2NodeInformation 
+ *
+ *    Functionality: Delete e2 node information from the database 
+ *
+ * @params[in]
+ *
+ * @return void 
+ *
+******************************************************************/
+void removeE2NodeInformation()
+{
+   uint16_t ranFuncIdx = 0;
+   
+   DU_LOG("\nINFO  -->  E2AP : Deleting all the E2 node configuration");
+   for(ranFuncIdx=0; ranFuncIdx<MAX_RAN_FUNCTION; ranFuncIdx++)
+   {
+      if(duCb.e2apDb.ranFunction[ranFuncIdx].id >0)
+      {
+         deleteRicSubscriptionList(&(duCb.e2apDb.ranFunction[ranFuncIdx].subscriptionList));
+         memset(&(duCb.e2apDb.ranFunction[ranFuncIdx].pendingSubsRspInfo), 0, MAX_PENDING_SUBSCRIPTION_RSP*sizeof(PendingSubsRspInfo));
+      }
+   }
+   memset(&duCb.e2apDb.ricId, 0, sizeof(GlobalRicId));
+   duCb.e2apDb.numOfTNLAssoc = 0;
+   memset(&duCb.e2apDb.tnlAssoc, 0, MAX_TNL_ASSOCIATION*sizeof(TNLAssociation));
+   cmInetClose(&ricParams.sockFd);
+   memset(&ricParams, 0, sizeof(DuSctpDestCb));
+}
 /**********************************************************************
   End of file
  **********************************************************************/
