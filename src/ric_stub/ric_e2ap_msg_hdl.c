@@ -1049,6 +1049,7 @@ void ProcE2NodeConfigUpdate(uint32_t duId, E2nodeConfigurationUpdate_t *e2NodeCo
          return;
       }
    }
+   BuildAndSendRemovalRequest(duDb);
 }
 /*******************************************************************
  *
@@ -5984,6 +5985,104 @@ void ProcE2RemovalFailure(E2RemovalFailure_t *e2RemovalFailure)
 }
 
 /*******************************************************************
+ *
+ * @brief process the E2 node information from ric db
+ *
+ * @details
+ *
+ *    Function : deleteE2NodeInfo
+ *
+ * Functionality: process the E2 node information from ric db
+ *
+ * @params[in] 
+ *       du Id
+ *      
+ * @return void
+ *
+ ******************************************************************/
+void deleteE2NodeInfo(DuDb *duDb)
+{
+   uint16_t ranFuncIdx =0;
+   RanFunction *ranFuncDb=NULLP;
+
+   DU_LOG("\nINFO  -->  E2AP : Removing all the E2 node information");
+   for(ranFuncIdx = 0; ranFuncIdx < MAX_RAN_FUNCTION; ranFuncIdx++)
+   {
+      ranFuncDb = &duDb->ranFunction[ranFuncIdx];
+      if(ranFuncDb->id > 0)
+      {
+         deleteRicSubscriptionList(&ranFuncDb->subscriptionList);
+      }
+   }
+
+   cmInetClose(&sctpCb.e2LstnSockFd);
+}
+
+/*******************************************************************
+ *
+ * @brief process the E2 Removal Response
+ *
+ * @details
+ *
+ *    Function : ProcRemovalResponse 
+ *
+ * Functionality: Process E2 Removal Response 
+ *
+ * @params[in] 
+ *       du Id
+ *       Pointer to removal response 
+ * @return void
+ *
+ ******************************************************************/
+
+void ProcRemovalResponse(uint32_t duId, E2RemovalResponse_t *removalRsp)
+{
+   uint8_t ieIdx = 0, duIdx =0;
+   DuDb *duDb = NULLP;
+   RanFunction *ranFuncDb = NULLP;
+   uint16_t ranFuncIdx = 0;
+
+   SEARCH_DU_DB(duIdx, duId, duDb);
+   if(duDb == NULLP)
+   {
+      DU_LOG("\nERROR  -->  E2AP : duDb is not present for duId %d",duId);
+      return;
+   }
+
+   if(!removalRsp)
+   {
+      DU_LOG("\nERROR  -->  E2AP : removalRsp pointer is null"); 
+      return;
+   }
+
+   if(!removalRsp->protocolIEs.list.array)      
+   {
+      DU_LOG("\nERROR  -->  E2AP : removalRsp array pointer is null");
+      return;
+   }
+
+   for(ieIdx=0; ieIdx < removalRsp->protocolIEs.list.count; ieIdx++)
+   {
+      if(removalRsp->protocolIEs.list.array[ieIdx])
+      {
+         switch(removalRsp->protocolIEs.list.array[ieIdx]->id)
+         {
+            case ProtocolIE_IDE2_id_TransactionID:
+               {
+                  deleteE2NodeInfo(duDb);
+                  break;
+               }
+            default:
+               {
+                  DU_LOG("\nERROR  -->  E2AP : Received Invalid Ie [%ld]", removalRsp->protocolIEs.list.array[ieIdx]->id);
+                  break;
+               }
+         }
+      }
+   }
+}
+
+/*******************************************************************
 *
 * @brief Handles received E2AP message and sends back response  
 *
@@ -6131,6 +6230,7 @@ void E2APMsgHdlr(uint32_t *duId, Buffer *mBuf)
                   }
                case SuccessfulOutcomeE2__value_PR_E2RemovalResponse:
                   {
+                     ProcRemovalResponse(*duId, &e2apMsg->choice.successfulOutcome->value.choice.E2RemovalResponse);
                      break;
                   }
                default:
