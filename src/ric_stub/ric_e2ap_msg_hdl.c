@@ -6080,6 +6080,387 @@ void ProcRemovalResponse(uint32_t duId, E2RemovalResponse_t *removalRsp)
       }
    }
 }
+/*******************************************************************
+ *
+ * @brief Deallocate the memory allocated for E2 Removal Failure
+ *
+ * @details
+ *
+ *    Function : FreeE2RemovalFailure
+ *
+ *    Functionality:
+ *       - freeing the memory allocated for E2RemovalFailure
+ *
+ * @params[in] E2AP_PDU_t *e2apMsg
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+void FreeE2RemovalFailure(E2AP_PDU_t *e2apMsg)
+{
+   uint8_t ieIdx =0;
+   E2RemovalFailure_t *e2RemovalFailure=NULLP;
+
+   if(e2apMsg != NULLP)
+   {
+      if(e2apMsg->choice.unsuccessfulOutcome != NULLP)
+      {
+         e2RemovalFailure = &e2apMsg->choice.unsuccessfulOutcome->value.choice.E2RemovalFailure;
+         if(e2RemovalFailure->protocolIEs.list.array)
+         {
+            for(ieIdx=0; ieIdx < e2RemovalFailure->protocolIEs.list.count; ieIdx++)
+            {
+               if(e2RemovalFailure->protocolIEs.list.array[ieIdx])
+               {
+                  RIC_FREE(e2RemovalFailure->protocolIEs.list.array[ieIdx], sizeof(E2RemovalFailureIEs_t));
+               }
+            }
+            RIC_FREE(e2RemovalFailure->protocolIEs.list.array, e2RemovalFailure->protocolIEs.list.size);
+         }
+         RIC_FREE(e2apMsg->choice.unsuccessfulOutcome, sizeof(UnsuccessfulOutcomeE2_t));
+      }
+      RIC_FREE(e2apMsg, sizeof(E2AP_PDU_t));
+   }
+}
+
+/*******************************************************************
+ *
+ * @brief Buld and send the E2 Removal Failure msg
+ *
+ * @details
+ *
+ *    Function : BuildAndSendE2RemovalFailure
+ *
+ *    Functionality:
+ *         - Buld and send the E2 Removal Failure Message
+ * @params[in] 
+ *    DU Id
+ *    Trans Id 
+ *    Type of failure 
+ *    Cause of failure
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+
+uint8_t BuildAndSendRemovalFailure(uint32_t duId, uint8_t transId,  CauseE2_PR causePresent, uint8_t reason)
+{
+   uint8_t           ieIdx = 0, elementCnt = 0;
+   uint8_t           ret = RFAILED;
+   E2AP_PDU_t        *e2apMsg = NULLP;
+   E2RemovalFailure_t *e2RemovalFailure=NULLP;
+   asn_enc_rval_t    encRetVal;       /* Encoder return value */
+
+   DU_LOG("\nINFO   -->  E2AP : Building E2 Removal Failure Message\n");
+   do
+   {
+      RIC_ALLOC(e2apMsg, sizeof(E2AP_PDU_t));
+      if(e2apMsg == NULLP)
+      {
+         DU_LOG("\nERROR  -->  E2AP : Memory allocation failed in %s at line %d", __func__, __LINE__);
+         break;
+      }
+      e2apMsg->present = E2AP_PDU_PR_unsuccessfulOutcome;
+
+      RIC_ALLOC(e2apMsg->choice.unsuccessfulOutcome, sizeof(UnsuccessfulOutcomeE2_t));
+      if(e2apMsg->choice.unsuccessfulOutcome == NULLP)
+      {
+         DU_LOG("\nERROR  -->  E2AP : Memory allocation failed in %s at line %d", __func__, __LINE__);
+         break;
+      }
+
+      e2apMsg->choice.unsuccessfulOutcome->procedureCode = ProcedureCodeE2_id_E2removal;
+      e2apMsg->choice.unsuccessfulOutcome->criticality = CriticalityE2_reject;
+      e2apMsg->choice.unsuccessfulOutcome->value.present = UnsuccessfulOutcomeE2__value_PR_E2RemovalFailure;
+      e2RemovalFailure = &e2apMsg->choice.unsuccessfulOutcome->value.choice.E2RemovalFailure;
+
+      elementCnt = 2;
+      e2RemovalFailure->protocolIEs.list.count = elementCnt;
+      e2RemovalFailure->protocolIEs.list.size = elementCnt * sizeof(E2RemovalFailureIEs_t *);
+      RIC_ALLOC(e2RemovalFailure->protocolIEs.list.array, e2RemovalFailure->protocolIEs.list.size);
+      if(!e2RemovalFailure->protocolIEs.list.array)
+      {
+         DU_LOG("\nERROR  -->  E2AP : Memory allocation failed in %s at line %d", __func__, __LINE__);
+         break;
+      }
+
+      for(ieIdx=0; ieIdx < elementCnt; ieIdx++)
+      {
+         RIC_ALLOC(e2RemovalFailure->protocolIEs.list.array[ieIdx], sizeof(E2RemovalFailureIEs_t));
+         if(!e2RemovalFailure->protocolIEs.list.array[ieIdx])
+         {
+            DU_LOG("\nERROR  -->  E2AP : Memory allocation failed in %s at line %d", __func__, __LINE__);
+            break;
+         }
+      }
+      if(ieIdx < elementCnt)
+         break;
+
+      ieIdx = 0;
+      e2RemovalFailure->protocolIEs.list.array[ieIdx]->id =  ProtocolIE_IDE2_id_TransactionID;
+      e2RemovalFailure->protocolIEs.list.array[ieIdx]->criticality = CriticalityE2_reject;
+      e2RemovalFailure->protocolIEs.list.array[ieIdx]->value.present = E2RemovalFailureIEs__value_PR_TransactionID;
+      e2RemovalFailure->protocolIEs.list.array[ieIdx]->value.choice.TransactionID = transId;
+
+      /* Cause */
+      ieIdx++;
+      e2RemovalFailure->protocolIEs.list.array[ieIdx]->id = ProtocolIE_IDE2_id_CauseE2;
+      e2RemovalFailure->protocolIEs.list.array[ieIdx]->criticality = CriticalityE2_ignore;
+      e2RemovalFailure->protocolIEs.list.array[ieIdx]->value.present = ErrorIndicationE2_IEs__value_PR_CauseE2;
+      fillE2FailureCause(&e2RemovalFailure->protocolIEs.list.array[ieIdx]->value.choice.CauseE2, causePresent, reason);
+      
+      xer_fprint(stdout, &asn_DEF_E2AP_PDU, e2apMsg);
+
+      memset(encBuf, 0, ENC_BUF_MAX_LEN);
+      encBufSize = 0;
+      encRetVal = aper_encode(&asn_DEF_E2AP_PDU, 0, e2apMsg, PrepFinalEncBuf, encBuf);
+      if(encRetVal.encoded == ENCODE_FAIL)
+      {
+         DU_LOG("\nERROR  -->  E2AP : Could not encode E2 removal failure structure (at %s)\n",\
+               encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
+         break;
+      }
+      else
+      {
+         DU_LOG("\nDEBUG  -->  E2AP : Created APER encoded buffer for E2 Removal Failure \n");
+         for(int i=0; i< encBufSize; i++)
+         {
+            DU_LOG("%x",encBuf[i]);
+         }
+      }
+
+      /* Sending msg */
+      if(SendE2APMsg(RIC_APP_MEM_REG, RIC_POOL, duId) != ROK)
+      {
+         DU_LOG("\nERROR  -->  E2AP : Failed to send E2 Removal Failure");
+         break;
+      }
+
+      ret = ROK;
+      break;
+   }while(true);
+
+   FreeE2RemovalFailure(e2apMsg);
+   return ret;
+}
+
+/*******************************************************************
+ *
+ * @brief Deallocate the memory allocated for E2 Removal Response
+ *
+ * @details
+ *
+ *    Function : FreeE2RemovalResponse
+ *
+ *    Functionality:
+ *       - freeing the memory allocated for E2RemovalResponse
+ *
+ * @params[in] E2AP_PDU_t *e2apMsg
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+void FreeE2RemovalResponse(E2AP_PDU_t *e2apMsg)
+{
+   uint8_t ieIdx =0;
+   E2RemovalResponse_t *e2RemovalResponse=NULLP;
+
+   if(e2apMsg != NULLP)
+   {
+      if(e2apMsg->choice.successfulOutcome != NULLP)
+      {
+         e2RemovalResponse = &e2apMsg->choice.successfulOutcome->value.choice.E2RemovalResponse;
+         if(e2RemovalResponse->protocolIEs.list.array)
+         {
+            for(ieIdx=0; ieIdx < e2RemovalResponse->protocolIEs.list.count; ieIdx++)
+            {
+               if(e2RemovalResponse->protocolIEs.list.array[ieIdx])
+               {
+                  RIC_FREE(e2RemovalResponse->protocolIEs.list.array[ieIdx], sizeof(E2RemovalResponseIEs_t));
+               }
+            }
+            RIC_FREE(e2RemovalResponse->protocolIEs.list.array, e2RemovalResponse->protocolIEs.list.size);
+         }
+         RIC_FREE(e2apMsg->choice.successfulOutcome, sizeof(SuccessfulOutcomeE2_t));
+      }
+      RIC_FREE(e2apMsg, sizeof(E2AP_PDU_t));
+   }
+}
+
+/*******************************************************************
+ *
+ * @brief Buld and send the E2 Removal Response msg
+ *
+ * @details
+ *
+ *    Function : BuildAndSendE2RemovalResponse
+ *
+ *    Functionality:
+ *         - Buld and send the E2 Removal Response Message
+ * @params[in] Trans Id 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t BuildAndSendRemovalResponse(uint32_t duId, uint8_t transId)
+{
+   uint8_t ieIdx = 0, elementCnt = 0;
+   uint8_t ret = RFAILED, duIdx =0;
+   E2AP_PDU_t *e2apMsg = NULLP;
+   DuDb *duDb = NULLP;
+   E2RemovalResponse_t *e2RemovalResponse=NULLP;
+   asn_enc_rval_t    encRetVal;       /* Encoder return value */
+
+   DU_LOG("\nINFO   -->  E2AP : Building E2 Removal Response Message\n");
+   do
+   {
+      SEARCH_DU_DB(duIdx, duId, duDb);
+      if(duDb == NULLP)
+      {
+         DU_LOG("\nERROR  -->  E2AP : duDb is not present for duId %d",duId);
+         return;
+      }
+   
+      RIC_ALLOC(e2apMsg, sizeof(E2AP_PDU_t));
+      if(e2apMsg == NULLP)
+      {
+         DU_LOG("\nERROR  -->  E2AP : Memory allocation failed in %s at line %d", __func__, __LINE__);
+         break;
+      }
+      e2apMsg->present = E2AP_PDU_PR_successfulOutcome;
+
+      RIC_ALLOC(e2apMsg->choice.successfulOutcome, sizeof(SuccessfulOutcomeE2_t));
+      if(e2apMsg->choice.successfulOutcome == NULLP)
+      {
+         DU_LOG("\nERROR  -->  E2AP : Memory allocation failed in %s at line %d", __func__, __LINE__);
+         break;
+      }
+
+      e2apMsg->choice.successfulOutcome->procedureCode = ProcedureCodeE2_id_E2removal;
+      e2apMsg->choice.successfulOutcome->criticality = CriticalityE2_reject;
+      e2apMsg->choice.successfulOutcome->value.present = SuccessfulOutcomeE2__value_PR_E2RemovalResponse;
+      e2RemovalResponse = &e2apMsg->choice.successfulOutcome->value.choice.E2RemovalResponse;
+
+      elementCnt = 1;
+      e2RemovalResponse->protocolIEs.list.count = elementCnt;
+      e2RemovalResponse->protocolIEs.list.size = elementCnt * sizeof(E2RemovalResponseIEs_t *);
+      RIC_ALLOC(e2RemovalResponse->protocolIEs.list.array, e2RemovalResponse->protocolIEs.list.size);
+      if(!e2RemovalResponse->protocolIEs.list.array)
+      {
+         DU_LOG("\nERROR  -->  E2AP : Memory allocation failed in %s at line %d", __func__, __LINE__);
+         break;
+      }
+
+      for(ieIdx=0; ieIdx < elementCnt; ieIdx++)
+      {
+         RIC_ALLOC(e2RemovalResponse->protocolIEs.list.array[ieIdx], sizeof(E2RemovalResponseIEs_t));
+         if(!e2RemovalResponse->protocolIEs.list.array[ieIdx])
+         {
+            DU_LOG("\nERROR  -->  E2AP : Memory allocation failed in %s at line %d", __func__, __LINE__);
+            break;
+         }
+      }
+      if(ieIdx < elementCnt)
+         break;
+
+      ieIdx = 0;
+      e2RemovalResponse->protocolIEs.list.array[ieIdx]->id =  ProtocolIE_IDE2_id_TransactionID;
+      e2RemovalResponse->protocolIEs.list.array[ieIdx]->criticality = CriticalityE2_reject;
+      e2RemovalResponse->protocolIEs.list.array[ieIdx]->value.present = E2RemovalResponseIEs__value_PR_TransactionID;
+      e2RemovalResponse->protocolIEs.list.array[ieIdx]->value.choice.TransactionID = transId;
+
+      xer_fprint(stdout, &asn_DEF_E2AP_PDU, e2apMsg);
+
+      memset(encBuf, 0, ENC_BUF_MAX_LEN);
+      encBufSize = 0;
+      encRetVal = aper_encode(&asn_DEF_E2AP_PDU, 0, e2apMsg, PrepFinalEncBuf, encBuf);
+      if(encRetVal.encoded == ENCODE_FAIL)
+      {
+         DU_LOG("\nERROR  -->  E2AP : Could not encode E2 removal response structure (at %s)\n",\
+               encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
+         break;
+      }
+      else
+      {
+         DU_LOG("\nDEBUG  -->  E2AP : Created APER encoded buffer for E2 Removal Response \n");
+         for(int i=0; i< encBufSize; i++)
+         {
+            DU_LOG("%x",encBuf[i]);
+         }
+      }
+
+      /* Sending msg */
+      if(SendE2APMsg(RIC_APP_MEM_REG, RIC_POOL, duId) != ROK)
+      {
+         DU_LOG("\nERROR  -->  E2AP : Failed to send E2 Removal Response");
+         break;
+      }
+
+      ret = ROK;
+      break;
+   }while(true);
+
+   FreeE2RemovalResponse(e2apMsg);
+   deleteE2NodeInfo(duDb);
+   return ret;
+}
+
+/*******************************************************************
+ *
+ * @brief Process Removal req received from RIC
+ *
+ * @details
+ *
+ *    Function : procE2RemovalRequest
+ *
+ * Functionality: Process Removal req received from RIC
+ *
+ * @param  
+ *    DU id
+ *    E2 Removal Request 
+ * @return void
+ *
+ ******************************************************************/
+
+void procE2RemovalRequest(uint32_t duId, E2RemovalRequest_t *removalReq)
+{
+   uint8_t arrIdx =0, transId =0, count =0;
+
+   DU_LOG("\nINFO   -->  E2AP : E2 Removal request received");
+   
+   count =removalReq->protocolIEs.list.count;
+   for(arrIdx=0; arrIdx<removalReq->protocolIEs.list.count; arrIdx++)
+   {
+      switch(removalReq->protocolIEs.list.array[arrIdx]->id)
+      {
+         case ProtocolIE_IDE2_id_TransactionID:
+            {
+               transId = removalReq->protocolIEs.list.array[arrIdx]->value.choice.TransactionID;
+               break;
+            }
+         default:
+            {
+               DU_LOG("\nERROR  -->  E2AP : Invalid IE recevied [%d]", transId);
+               break;
+            }
+      }
+   }
+   
+   if(transId>=0 && transId<=255)
+   {
+      if(BuildAndSendRemovalResponse(duId, transId) != ROK)
+      {
+         DU_LOG("\nERROR  -->  E2AP : Failed to build and send Removal response");
+      }
+   }
+   else
+   {
+      if(BuildAndSendRemovalFailure(duId, transId, CauseE2_PR_protocol, CauseE2Protocol_abstract_syntax_error_falsely_constructed_message) != ROK)
+      {
+         DU_LOG("\nERROR  -->  E2AP : Failed to build and send Removal response");
+      }
+   }
+}
 
 /*******************************************************************
 *
@@ -6200,6 +6581,13 @@ void E2APMsgHdlr(uint32_t *duId, Buffer *mBuf)
                case InitiatingMessageE2__value_PR_ErrorIndicationE2:
                   {
                      DU_LOG("\nINFO  -->  E2AP : Error indication received");
+                     break;
+                  }
+               case InitiatingMessageE2__value_PR_E2RemovalRequest:
+                  {
+                     DU_LOG("\nINFO  -->  E2AP : E2 Removal request received");
+                     procE2RemovalRequest(*duId,\
+                     &e2apMsg->choice.initiatingMessage->value.choice.E2RemovalRequest);
                      break;
                   }
                default:
