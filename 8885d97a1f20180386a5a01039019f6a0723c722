@@ -20,6 +20,46 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c3d0e08e_fa066a06",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 8229,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-10-26T07:34:14Z",
+      "side": 1,
+      "message": "from here we just need to bring down SCTP association.\nAt SCTP module, when shutdown is complete, then delete E2 node information",
+      "revId": "8885d97a1f20180386a5a01039019f6a0723c722",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cd607936_4e42f8fc",
+        "filename": "src/du_app/du_mgr_main.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 589,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-10-26T07:34:14Z",
+      "side": 1,
+      "message": "revert",
+      "range": {
+        "startLine": 589,
+        "startChar": 5,
+        "endLine": 589,
+        "endChar": 28
+      },
+      "revId": "8885d97a1f20180386a5a01039019f6a0723c722",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1a1abb78_55251dca",
         "filename": "src/ric_stub/ric_e2ap_msg_hdl.c",
         "patchSetId": 1
@@ -48,6 +88,52 @@
       "writtenOn": "2023-10-25T12:24:04Z",
       "side": 1,
       "message": "update",
+      "revId": "8885d97a1f20180386a5a01039019f6a0723c722",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6ff8774f_d653ebd9",
+        "filename": "src/ric_stub/ric_e2ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 6404,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-10-26T07:34:14Z",
+      "side": 1,
+      "message": "as per E2GAP spec, deletion at DU \u0026 RIC should happen after SCTP connection goes down.\n\nCheck the same for RIC initiated removal procedure",
+      "range": {
+        "startLine": 6404,
+        "startChar": 3,
+        "endLine": 6404,
+        "endChar": 19
+      },
+      "revId": "8885d97a1f20180386a5a01039019f6a0723c722",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "adc45652_55dce0e5",
+        "filename": "src/ric_stub/ric_e2ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 6431,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-10-26T07:34:14Z",
+      "side": 1,
+      "message": "this count is not used anywhere.",
+      "range": {
+        "startLine": 6431,
+        "startChar": 3,
+        "endLine": 6431,
+        "endChar": 8
+      },
       "revId": "8885d97a1f20180386a5a01039019f6a0723c722",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
