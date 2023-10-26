@@ -2006,6 +2006,7 @@ uint8_t lwr_mac_procConfigReqEvt(void *msg)
    uint16_t cellIdx =0;
    uint32_t msgLen = 0;
    uint32_t mib = 0;
+   uint32_t dlFreq = 0, ulFreq = 0;
    MacCellCfg macCfgParams;
    fapi_vendor_msg_t *vendorMsg;
    fapi_config_req_t *configReq;
@@ -2079,8 +2080,9 @@ uint8_t lwr_mac_procConfigReqEvt(void *msg)
 
    fillTlvs(&configReq->tlvs[index++], FAPI_DL_BANDWIDTH_TAG,           \
          sizeof(uint32_t), macCfgParams.carrCfg.dlBw, &msgLen);
+   dlFreq = convertArfcnToFreqKhz(macCfgParams.carrCfg.arfcnDL);
    fillTlvs(&configReq->tlvs[index++], FAPI_DL_FREQUENCY_TAG,           \
-         sizeof(uint32_t), macCfgParams.carrCfg.dlFreq, &msgLen);
+         sizeof(uint32_t), dlFreq, &msgLen);
    /* Due to bug in Intel FT code, commenting TLVs that are are not 
     * needed to avoid error. Must be uncommented when FT bug is fixed */
    //fillTlvs(&configReq->tlvs[index++], FAPI_DL_K0_TAG,                  \
@@ -2091,8 +2093,9 @@ uint8_t lwr_mac_procConfigReqEvt(void *msg)
          sizeof(uint16_t), macCfgParams.carrCfg.numTxAnt, &msgLen);
    fillTlvs(&configReq->tlvs[index++], FAPI_UPLINK_BANDWIDTH_TAG,       \
          sizeof(uint32_t), macCfgParams.carrCfg.ulBw, &msgLen);
+   ulFreq = convertArfcnToFreqKhz(macCfgParams.carrCfg.arfcnUL);
    fillTlvs(&configReq->tlvs[index++], FAPI_UPLINK_FREQUENCY_TAG,       \
-         sizeof(uint32_t), macCfgParams.carrCfg.ulFreq, &msgLen);
+         sizeof(uint32_t), ulFreq, &msgLen);
    //fillTlvs(&configReq->tlvs[index++], FAPI_UL_K0_TAG,                  \
    sizeof(uint16_t), macCfgParams.ulCarrCfg.k0[0], &msgLen);
    //fillTlvs(&configReq->tlvs[index++], FAPI_UL_GRID_SIZE_TAG,           \

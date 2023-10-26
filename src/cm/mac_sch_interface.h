@@ -1972,7 +1972,6 @@ typedef struct schModulationInfo
 typedef struct schUeCfgReq
 {
    uint16_t           cellId;
-   uint8_t            ueId;
    uint8_t            beamIdx; 
    uint16_t           crnti;
    bool               macCellGrpCfgPres;
@@ -1992,7 +1991,6 @@ typedef struct schUeCfgReq
 typedef struct schUeRecfgReq
 {
    uint16_t         cellId;
-   uint8_t          ueId;
    uint8_t          beamIdx;
    uint16_t         crnti;
    bool             macCellGrpRecfgPres;
@@ -2021,7 +2019,6 @@ typedef struct schUeCfgRsp
 {
    uint16_t   cellId;
    uint8_t    beamIdx;
-   uint16_t   ueId;
    uint16_t   crnti;
    SchMacRsp  rsp;
    CauseOfResult cause;
