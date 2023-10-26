@@ -607,9 +607,9 @@ typedef struct failureCause
 typedef struct carrierCfg
 {
    uint32_t   dlBw;                   /* DL bandwidth */
-   uint32_t   dlFreq;                 /* Absolute frequency of DL point A in KHz */
+   uint32_t   arfcnDL;                 /* Absolute frequency Number of DL */
    uint32_t   ulBw;                   /* UL bandwidth */
-   uint32_t   ulFreq;                 /* Absolute frequency of UL point A in KHz */
+   uint32_t   arfcnUL;                 /* Absolute frequency Number of UL */
    uint16_t   numTxAnt;               /* Number of Tx antennas */
    uint16_t   numRxAnt;               /* Number of Rx antennas */
 }CarrierCfg;

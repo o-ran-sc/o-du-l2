@@ -54,7 +54,6 @@ void SchSendUeCfgRspToMac(SchUeCfgReq *ueCfg, Inst inst,\
    Pst rspPst;
 
    cfgRsp->cellId = ueCfg->cellId;
-   cfgRsp->ueId = ueCfg->ueId;
    cfgRsp->crnti = ueCfg->crnti;
    cfgRsp->rsp = result;   
 
@@ -87,7 +86,6 @@ void SchSendUeRecfgRspToMac(SchUeRecfgReq *ueRecfgReq, Inst inst,\
    Pst rspPst;
 
    reCfgRsp->cellId = ueRecfgReq->cellId;
-   reCfgRsp->ueId = ueRecfgReq->ueId;
    reCfgRsp->crnti = ueRecfgReq->crnti;
    reCfgRsp->rsp = result;   
 
@@ -296,7 +294,7 @@ uint8_t fillSchUeCbFrmCfgReq(Inst inst, SchUeCb *ueCb, SchUeCfgReq *ueCfg)
    bool isLcIdValid = FALSE;
 
    ueCb->ueCfg.cellId = ueCfg->cellId;
-   ueCb->ueCfg.ueId = ueCfg->ueId;
+   ueCb->ueCfg.ueId = ueCb->ueId;
    ueCb->ueCfg.crnti = ueCfg->crnti;
    if(ueCfg->macCellGrpCfgPres == true)
    {
@@ -462,8 +460,8 @@ uint8_t fillSchUeCbFrmRecfgReq(Inst inst, SchUeCb *ueCb, SchUeRecfgReq *ueRecfg)
 
 
    ueCb->ueCfg.cellId = ueRecfg->cellId;
-   ueCb->ueCfg.ueId = ueRecfg->ueId;
    ueCb->ueCfg.crnti = ueRecfg->crnti;
+   GET_UE_ID(ueRecfg->crnti, ueCb->ueCfg.ueId);
    ueCb->ueCfg.dataTransmissionAction = ueRecfg->dataTransmissionInfo;
    if(ueRecfg->macCellGrpRecfgPres == true)
    {
@@ -746,6 +744,7 @@ SchCellCb *getSchCellCb(uint16_t srcEvent, Inst inst, uint16_t cellId)
 uint8_t SchAddUeConfigReq(Pst *pst, SchUeCfgReq *ueCfg)
 {
    uint8_t      lcIdx = 0, ret = ROK, idx = 0;
+   uint16_t     ueId = 0;
    SchCellCb    *cellCb = NULLP;
    SchUeCb      *ueCb = NULLP;
    SchUeCfgRsp  cfgRsp;
@@ -766,7 +765,8 @@ uint8_t SchAddUeConfigReq(Pst *pst, SchUeCfgReq *ueCfg)
       return RFAILED; 
    }
    /* Search if UE already configured */
-   ueCb = &cellCb->ueCb[ueCfg->ueId - 1];
+   GET_UE_ID(ueCfg->crnti, ueId);
+   ueCb = &cellCb->ueCb[ueId - 1];
 
    if((ueCb->crnti == ueCfg->crnti) && (ueCb->state == SCH_UE_STATE_ACTIVE))
    {
@@ -778,11 +778,11 @@ uint8_t SchAddUeConfigReq(Pst *pst, SchUeCfgReq *ueCfg)
    /* Fill received Ue Configuration in UeCb */
    memset(ueCb, 0, sizeof(SchUeCb));
 
-   ueCb->ueId = ueCfg->ueId;
    ueCb->crnti = ueCfg->crnti;
+   GET_UE_ID(ueCb->crnti, ueCb->ueId);
    ueCb->cellCb = cellCb;
-   schUlHqEntInit(cellCb, &cellCb->ueCb[ueCfg->ueId-1]);
-   schDlHqEntInit(cellCb, &cellCb->ueCb[ueCfg->ueId-1]);
+   schUlHqEntInit(cellCb, &cellCb->ueCb[ueCb->ueId-1]);
+   schDlHqEntInit(cellCb, &cellCb->ueCb[ueCb->ueId-1]);
    SCH_ALLOC(ueCb->hqDlmap, sizeof(SchHqDlMap*)*(ueCb->cellCb->numSlots));
    SCH_ALLOC(ueCb->hqUlmap, sizeof(SchHqUlMap*)*(ueCb->cellCb->numSlots));
 
