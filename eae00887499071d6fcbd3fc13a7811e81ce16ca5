@@ -24,6 +24,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b3493fce_fa6625a3",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 8389,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-10-27T10:30:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a46907b7_9d314b4e",
+      "range": {
+        "startLine": 8389,
+        "startChar": 21,
+        "endLine": 8389,
+        "endChar": 40
+      },
+      "revId": "eae00887499071d6fcbd3fc13a7811e81ce16ca5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "533c9548_f9ffc64a",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-10-27T10:22:50Z",
       "side": 1,
       "message": "as discussed pls check if uint8_t is sufficient for transId because the validity check for transId to be between 0 and 255 stands invalid.\nMoreover , the type of \"removalReq-\u003eprotocolIEs.list.array[arrIdx]-\u003evalue.choice.TransactionID\" is long\n\nPlease check for this at all places in duapp file also",
+      "range": {
+        "startLine": 6426,
+        "startChar": 3,
+        "endLine": 6426,
+        "endChar": 11
+      },
+      "revId": "eae00887499071d6fcbd3fc13a7811e81ce16ca5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d0e5cafd_75b5f4f2",
+        "filename": "src/ric_stub/ric_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 6426,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-10-27T10:30:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "533c9548_f9ffc64a",
       "range": {
         "startLine": 6426,
         "startChar": 3,
