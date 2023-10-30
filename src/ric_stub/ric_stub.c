@@ -132,7 +132,7 @@ void readRicCfg()
    ricCb.ricCfgParams.sctpParams.localIpAddr.ipV4Addr = ipv4_ric;
    ricCb.ricCfgParams.sctpParams.localIpAddr.ipV6Pres = false;
    ricCb.ricCfgParams.sctpParams.e2SctpPort = g_cfg.RIC_Port;
-
+   ricCb.ricCfgParams.sctpParams.usage = BOTH_FUNCTIONALITY;
    ricCb.ricCfgParams.sctpParams.numDestNode = 1;
 
 #else
@@ -142,6 +142,7 @@ void readRicCfg()
    ricCb.ricCfgParams.sctpParams.localIpAddr.ipV4Addr = ipv4_ric;
    ricCb.ricCfgParams.sctpParams.localIpAddr.ipV6Pres = false;
    ricCb.ricCfgParams.sctpParams.e2SctpPort = E2_SCTP_PORT;
+   ricCb.ricCfgParams.sctpParams.usage = BOTH_FUNCTIONALITY;
 
    ricCb.ricCfgParams.sctpParams.numDestNode = 0;
    numDu = &ricCb.ricCfgParams.sctpParams.numDestNode;

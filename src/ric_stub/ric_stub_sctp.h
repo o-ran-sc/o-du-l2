@@ -28,7 +28,15 @@
 
 /* Global variable declaration */
 uint8_t   socket_type;      /* Socket type */
-  
+
+/* O-RAN.WG3.E2AP-R003-v03.00 : Section 9.2.30 */
+typedef enum
+{
+   RIC_SERVICE,
+   SUPPORT_FUNCTIONS,
+   BOTH_FUNCTIONALITY
+}AssocUsage;
+
 typedef struct
 {
    uint16_t           numFd;
@@ -74,6 +82,7 @@ typedef struct ricSctpParams
    uint16_t       e2SctpPort;
    uint8_t        numDestNode;
    SctpDestInfo   destCb[MAX_DU_SUPPORTED];
+   AssocUsage     usage;
 }RicSctpParams;
 
 typedef struct sctpGlobalCb
