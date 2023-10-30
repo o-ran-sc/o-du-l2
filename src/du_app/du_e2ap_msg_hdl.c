@@ -8246,6 +8246,275 @@ void ProcE2RemovalResponse(E2AP_PDU_t *e2apMsg)
 
 /*******************************************************************
  *
+ * @brief Deallocate the memory allocated for E2 Connection Update Failure
+ *
+ * @details
+ *
+ *    Function : FreeE2ConnectionUpdateFailure
+ *
+ *    Functionality:
+ *       - freeing the memory allocated for E2ConnectionUpdateFailure
+ *
+ * @params[in] E2AP_PDU_t *e2apMsg
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+void FreeE2ConnectionUpdateFailure(E2AP_PDU_t *e2apMsg)
+{
+   uint8_t ieIdx =0;
+   E2connectionUpdateFailure_t *e2ConnectionUpdateFailure=NULLP;
+
+   if(e2apMsg != NULLP)
+   {
+      if(e2apMsg->choice.unsuccessfulOutcome != NULLP)
+      {
+         e2ConnectionUpdateFailure = &e2apMsg->choice.unsuccessfulOutcome->value.choice.E2connectionUpdateFailure;
+         if(e2ConnectionUpdateFailure->protocolIEs.list.array)
+         {
+            for(ieIdx=0; ieIdx < e2ConnectionUpdateFailure->protocolIEs.list.count; ieIdx++)
+            {
+               DU_FREE(e2ConnectionUpdateFailure->protocolIEs.list.array[ieIdx], sizeof(E2connectionUpdateFailure_IEs_t));
+            }
+            DU_FREE(e2ConnectionUpdateFailure->protocolIEs.list.array, e2ConnectionUpdateFailure->protocolIEs.list.size);
+         }
+         DU_FREE(e2apMsg->choice.unsuccessfulOutcome, sizeof(UnsuccessfulOutcomeE2_t));
+      }
+      DU_FREE(e2apMsg, sizeof(E2AP_PDU_t));
+   }
+}
+
+/*******************************************************************
+ *
+ * @brief Buld and send the E2 Connection Update Failure msg
+ *
+ * @details
+ *
+ *    Function : BuildAndSendE2ConnectionUpdateFailure
+ *
+ *    Functionality:
+ *         - Buld and send the E2 Connection Update Failure Message
+ * @params[in] 
+ *    Trans Id 
+ *    Failure Cause
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+
+uint8_t BuildAndSendConnectionUpdateFailure(uint16_t transId, E2FailureCause failureCause)
+{
+   uint8_t           ieIdx = 0, elementCnt = 0;
+   uint8_t           ret = RFAILED;
+   E2AP_PDU_t        *e2apMsg = NULLP;
+   E2connectionUpdateFailure_t *e2ConnectionUpdateFailure=NULLP;
+   asn_enc_rval_t    encRetVal;       /* Encoder return value */
+
+   DU_LOG("\nINFO   -->  E2AP : Building E2 Connection Update Failure Message\n");
+   do
+   {
+      DU_ALLOC(e2apMsg, sizeof(E2AP_PDU_t));
+      if(e2apMsg == NULLP)
+      {
+         DU_LOG("\nERROR  -->  E2AP : Memory allocation failed in %s at line %d", __func__, __LINE__);
+         break;
+      }
+      e2apMsg->present = E2AP_PDU_PR_unsuccessfulOutcome;
+
+      DU_ALLOC(e2apMsg->choice.unsuccessfulOutcome, sizeof(UnsuccessfulOutcomeE2_t));
+      if(e2apMsg->choice.unsuccessfulOutcome == NULLP)
+      {
+         DU_LOG("\nERROR  -->  E2AP : Memory allocation failed in %s at line %d", __func__, __LINE__);
+         break;
+      }
+
+      e2apMsg->choice.unsuccessfulOutcome->procedureCode = ProcedureCodeE2_id_E2connectionUpdate;
+      e2apMsg->choice.unsuccessfulOutcome->criticality = CriticalityE2_reject;
+      e2apMsg->choice.unsuccessfulOutcome->value.present = UnsuccessfulOutcomeE2__value_PR_E2connectionUpdateFailure;
+      e2ConnectionUpdateFailure = &e2apMsg->choice.unsuccessfulOutcome->value.choice.E2connectionUpdateFailure;
+
+      elementCnt = 2;
+      e2ConnectionUpdateFailure->protocolIEs.list.count = elementCnt;
+      e2ConnectionUpdateFailure->protocolIEs.list.size = elementCnt * sizeof(E2connectionUpdateFailure_IEs_t *);
+      DU_ALLOC(e2ConnectionUpdateFailure->protocolIEs.list.array, e2ConnectionUpdateFailure->protocolIEs.list.size);
+      if(!e2ConnectionUpdateFailure->protocolIEs.list.array)
+      {
+         DU_LOG("\nERROR  -->  E2AP : Memory allocation failed in %s at line %d", __func__, __LINE__);
+         break;
+      }
+
+      for(ieIdx=0; ieIdx < elementCnt; ieIdx++)
+      {
+         DU_ALLOC(e2ConnectionUpdateFailure->protocolIEs.list.array[ieIdx], sizeof(E2connectionUpdateFailure_IEs_t));
+         if(!e2ConnectionUpdateFailure->protocolIEs.list.array[ieIdx])
+         {
+            DU_LOG("\nERROR  -->  E2AP : Memory allocation failed in %s at line %d", __func__, __LINE__);
+            break;
+         }
+      }
+      if(ieIdx < elementCnt)
+         break;
+
+      ieIdx = 0;
+      e2ConnectionUpdateFailure->protocolIEs.list.array[ieIdx]->id =  ProtocolIE_IDE2_id_TransactionID;
+      e2ConnectionUpdateFailure->protocolIEs.list.array[ieIdx]->criticality = CriticalityE2_reject;
+      e2ConnectionUpdateFailure->protocolIEs.list.array[ieIdx]->value.present = E2connectionUpdateFailure_IEs__value_PR_TransactionID;
+      e2ConnectionUpdateFailure->protocolIEs.list.array[ieIdx]->value.choice.TransactionID = transId;
+
+      /* Cause */
+      ieIdx++;
+      e2ConnectionUpdateFailure->protocolIEs.list.array[ieIdx]->id = ProtocolIE_IDE2_id_CauseE2;
+      e2ConnectionUpdateFailure->protocolIEs.list.array[ieIdx]->criticality = CriticalityE2_ignore;
+      e2ConnectionUpdateFailure->protocolIEs.list.array[ieIdx]->value.present = E2connectionUpdateFailure_IEs__value_PR_CauseE2;
+      fillE2Cause(&e2ConnectionUpdateFailure->protocolIEs.list.array[ieIdx]->value.choice.CauseE2, failureCause);
+      
+      xer_fprint(stdout, &asn_DEF_E2AP_PDU, e2apMsg);
+
+      memset(encBuf, 0, ENC_BUF_MAX_LEN);
+      encBufSize = 0;
+      encRetVal = aper_encode(&asn_DEF_E2AP_PDU, 0, e2apMsg, PrepFinalEncBuf, encBuf);
+      if(encRetVal.encoded == ENCODE_FAIL)
+      {
+         DU_LOG("\nERROR  -->  E2AP : Could not encode E2 connection update failure structure (at %s)\n",\
+               encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
+         break;
+      }
+      else
+      {
+         DU_LOG("\nDEBUG  -->  E2AP : Created APER encoded buffer for E2 Connection Update Failure \n");
+         for(int i=0; i< encBufSize; i++)
+         {
+            DU_LOG("%x",encBuf[i]);
+         }
+      }
+
+      /* Sending msg */
+      if(SendE2APMsg(DU_APP_MEM_REGION, DU_POOL, encBuf, encBufSize) != ROK)
+      {
+         DU_LOG("\nERROR  -->  E2AP : Failed to send E2 Connection Update Failure");
+         break;
+      }
+
+      ret = ROK;
+      break;
+   }while(true);
+
+   FreeE2ConnectionUpdateFailure(e2apMsg);
+   return ret;
+}
+
+/******************************************************************
+ *
+ * @brief Deallocation of memory allocated by aper decoder for 
+ * E2 Connection Update
+ *
+ * @details
+ *
+ *    Function :freeAperDecodingOfE2ConnectionUpdate 
+ *
+ *    Functionality: Deallocation of memory allocated by aper decoder for
+ *    E2 Connection Update
+ *
+ * @params[in] Pointer to connectionUpdate 
+ * @return void
+ *
+ * ****************************************************************/
+
+void freeAperDecodingOfE2ConnectionUpdate(E2connectionUpdate_t *connectionUpdate)
+{
+   uint8_t ieIdx =0, arrIdx=0;
+   E2connectionUpdate_List_t *connectionToBeModifyList = NULLP;
+
+   if(connectionUpdate->protocolIEs.list.array)
+   {
+      for(ieIdx = 0; ieIdx < connectionUpdate->protocolIEs.list.count; ieIdx++)
+      {
+         switch(connectionUpdate->protocolIEs.list.array[ieIdx]->id)
+         {
+            case ProtocolIE_IDE2_id_TransactionID:
+               break;
+
+            case ProtocolIE_IDE2_id_E2connectionUpdateModify:
+               {
+                  connectionToBeModifyList = &connectionUpdate->protocolIEs.list.array[ieIdx]->value.choice.E2connectionUpdate_List;
+                  if(connectionToBeModifyList->list.array)
+                  {
+                     for(arrIdx= 0; arrIdx< connectionToBeModifyList->list.count; arrIdx++)
+                     {
+                        free(connectionToBeModifyList->list.array[arrIdx]);
+                     }
+                     free(connectionToBeModifyList->list.array);
+                  }
+                  break;
+               }
+         }
+         free(connectionUpdate->protocolIEs.list.array[ieIdx]);
+      }
+      free(connectionUpdate->protocolIEs.list.array);
+   }
+}
+
+/*******************************************************************
+ *
+ * @brief Process e2 connection update received from RIC
+ *
+ * @details
+ *
+ *    Function : procE2ConnectionUpdate
+ *
+ * Functionality: Process e2 connection update received from RIC
+ *
+ * @param  E2AP_PDU_t  *e2apMsg
+ * @return void
+ *
+ ******************************************************************/
+
+void procE2ConnectionUpdate(E2AP_PDU_t  *e2apMsg)
+{
+   uint8_t arrIdx =0, transId =0, count=0;
+   E2FailureCause failureCause;
+   E2connectionUpdate_t *connectionUpdate=NULLP;
+
+   DU_LOG("\nINFO   -->  E2AP : E2 connection update received");
+   connectionUpdate = &e2apMsg->choice.initiatingMessage->value.choice.E2connectionUpdate;
+   
+   count = connectionUpdate->protocolIEs.list.count;
+   for(arrIdx=0; arrIdx<connectionUpdate->protocolIEs.list.count; arrIdx++)
+   {
+      switch(connectionUpdate->protocolIEs.list.array[arrIdx]->id)
+      {
+         case ProtocolIE_IDE2_id_TransactionID:
+            {
+               transId = connectionUpdate->protocolIEs.list.array[arrIdx]->value.choice.TransactionID;
+               break;
+            }
+         case ProtocolIE_IDE2_id_E2connectionUpdateModify:
+            {
+               /*TODO*/
+               break;
+            }
+      }
+   }
+
+   if(arrIdx<count)
+   {
+      failureCause.causeType = E2_MISCELLANEOUS;
+      failureCause.cause = E2_MISCELLANEOUS_CAUSE_UNSPECIFIED;
+      if(BuildAndSendConnectionUpdateFailure(transId, failureCause) != ROK)
+      {
+         DU_LOG("\nERROR  -->  E2AP : Failed to build and send E2 connection update failure");
+      }
+   }
+   else
+   {
+      /*TODO*/
+   }
+
+   freeAperDecodingOfE2ConnectionUpdate(connectionUpdate);
+}
+
+/*******************************************************************
+ *
  * @brief Handles received E2AP message and sends back response  
  *
  * @details
@@ -8436,6 +8705,12 @@ void E2APMsgHdlr(Buffer *mBuf)
                   {
                      DU_LOG("\nINFO  -->  E2AP : E2 Removal request received");
                      procE2RemovalRequest(e2apMsg);
+                     break;
+                  }
+               case InitiatingMessageE2__value_PR_E2connectionUpdate:
+                  {
+                     DU_LOG("\nINFO  -->  E2AP : E2 coneection update received");
+                     procE2ConnectionUpdate(e2apMsg);
                      break;
                   }
                default:
