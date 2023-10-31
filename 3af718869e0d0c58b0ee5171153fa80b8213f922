@@ -1,0 +1,158 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d353ddc4_248032fc",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 8432,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-10-31T08:38:59Z",
+      "side": 1,
+      "message": "add null check for connectionUpdate-\u003eprotocolIEs.list.array[ieIdx] before using it",
+      "range": {
+        "startLine": 8432,
+        "startChar": 16,
+        "endLine": 8432,
+        "endChar": 63
+      },
+      "revId": "3af718869e0d0c58b0ee5171153fa80b8213f922",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c67e3f08_3db4547b",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 8488,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-10-31T08:38:59Z",
+      "side": 1,
+      "message": "Check if transId is within range, if not, break from here and send E2 connection update failure with appropriate failure cause",
+      "revId": "3af718869e0d0c58b0ee5171153fa80b8213f922",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ca881e8c_20dcbf2a",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 8503,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-10-31T08:38:59Z",
+      "side": 1,
+      "message": "rename to BuildAndSendE2ConnectionUpdateFailure",
+      "revId": "3af718869e0d0c58b0ee5171153fa80b8213f922",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "24f2d6db_f79182ff",
+        "filename": "src/du_app/du_mgr_main.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 589,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-10-31T08:38:59Z",
+      "side": 1,
+      "message": "revert",
+      "range": {
+        "startLine": 589,
+        "startChar": 5,
+        "endLine": 589,
+        "endChar": 28
+      },
+      "revId": "3af718869e0d0c58b0ee5171153fa80b8213f922",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "32ebccdf_89552293",
+        "filename": "src/ric_stub/ric_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 6496,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-10-31T08:38:59Z",
+      "side": 1,
+      "message": "Is there a way to fetch this details from DU_IP_ADDRESS macro.",
+      "revId": "3af718869e0d0c58b0ee5171153fa80b8213f922",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bc791e79_e971e494",
+        "filename": "src/ric_stub/ric_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 6498,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-10-31T08:38:59Z",
+      "side": 1,
+      "message": "what is the tunnel usage set for this connection initially?",
+      "range": {
+        "startLine": 6498,
+        "startChar": 36,
+        "endLine": 6498,
+        "endChar": 49
+      },
+      "revId": "3af718869e0d0c58b0ee5171153fa80b8213f922",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6071d2b4_f4a752d4",
+        "filename": "src/ric_stub/ric_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 6589,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-10-31T08:38:59Z",
+      "side": 1,
+      "message": "add null check for connectionUpdate-\u003eprotocolIEs.list.array[ieIdx] before using it",
+      "revId": "3af718869e0d0c58b0ee5171153fa80b8213f922",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "47ab63c3_e7a361fd",
+        "filename": "src/ric_stub/ric_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 6932,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-10-31T08:38:59Z",
+      "side": 1,
+      "message": "decode and print transId and failure cause",
+      "revId": "3af718869e0d0c58b0ee5171153fa80b8213f922",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
