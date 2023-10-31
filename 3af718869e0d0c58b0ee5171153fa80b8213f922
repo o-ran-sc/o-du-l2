@@ -24,6 +24,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e33f2188_018eec96",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 8432,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-10-31T11:03:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d353ddc4_248032fc",
+      "range": {
+        "startLine": 8432,
+        "startChar": 16,
+        "endLine": 8432,
+        "endChar": 63
+      },
+      "revId": "3af718869e0d0c58b0ee5171153fa80b8213f922",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c67e3f08_3db4547b",
@@ -41,6 +65,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "122dbfb7_bc0d0e2e",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 8488,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-10-31T11:03:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c67e3f08_3db4547b",
+      "revId": "3af718869e0d0c58b0ee5171153fa80b8213f922",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ca881e8c_20dcbf2a",
@@ -54,6 +96,24 @@
       "writtenOn": "2023-10-31T08:38:59Z",
       "side": 1,
       "message": "rename to BuildAndSendE2ConnectionUpdateFailure",
+      "revId": "3af718869e0d0c58b0ee5171153fa80b8213f922",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0228483d_25353a06",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 8503,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-10-31T11:03:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ca881e8c_20dcbf2a",
       "revId": "3af718869e0d0c58b0ee5171153fa80b8213f922",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -98,6 +158,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a3409793_50ba0e8a",
+        "filename": "src/ric_stub/ric_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 6496,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-10-31T11:03:44Z",
+      "side": 1,
+      "message": "stored the Near-RT RIC\u0027s address.",
+      "parentUuid": "32ebccdf_89552293",
+      "revId": "3af718869e0d0c58b0ee5171153fa80b8213f922",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bc791e79_e971e494",
@@ -111,6 +189,30 @@
       "writtenOn": "2023-10-31T08:38:59Z",
       "side": 1,
       "message": "what is the tunnel usage set for this connection initially?",
+      "range": {
+        "startLine": 6498,
+        "startChar": 36,
+        "endLine": 6498,
+        "endChar": 49
+      },
+      "revId": "3af718869e0d0c58b0ee5171153fa80b8213f922",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "71847edc_485cc24e",
+        "filename": "src/ric_stub/ric_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 6498,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-10-31T11:03:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bc791e79_e971e494",
       "range": {
         "startLine": 6498,
         "startChar": 36,
@@ -138,6 +240,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a8154fe1_835c5581",
+        "filename": "src/ric_stub/ric_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 6589,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-10-31T11:03:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6071d2b4_f4a752d4",
+      "revId": "3af718869e0d0c58b0ee5171153fa80b8213f922",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "47ab63c3_e7a361fd",
@@ -151,6 +271,24 @@
       "writtenOn": "2023-10-31T08:38:59Z",
       "side": 1,
       "message": "decode and print transId and failure cause",
+      "revId": "3af718869e0d0c58b0ee5171153fa80b8213f922",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "58d7623b_e5c5b1d5",
+        "filename": "src/ric_stub/ric_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 6932,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-10-31T11:03:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "47ab63c3_e7a361fd",
       "revId": "3af718869e0d0c58b0ee5171153fa80b8213f922",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
