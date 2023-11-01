@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4e87199c_9c7081d8",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 8454,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-11-01T18:46:08Z",
+      "side": 1,
+      "message": "this free should be within if condition for its null check",
+      "revId": "9bb2a6112eef794bf0c097aa11d2bf51c9a8adde",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c8d96d9c_8adc97a5",
+        "filename": "src/ric_stub/ric_e2ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 6611,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-11-01T18:46:08Z",
+      "side": 1,
+      "message": "this free should be within if condition of its null check",
+      "revId": "9bb2a6112eef794bf0c097aa11d2bf51c9a8adde",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9d1599a8_a3636ab0",
+        "filename": "src/ric_stub/ric_e2ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 6810,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-11-01T18:46:08Z",
+      "side": 1,
+      "message": "add line break after this function ends",
+      "revId": "9bb2a6112eef794bf0c097aa11d2bf51c9a8adde",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
