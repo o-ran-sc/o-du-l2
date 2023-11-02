@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d21daa25_0504cde4",
+        "filename": "src/du_app/du_e2ap_mgr.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 506,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-11-02T13:54:53Z",
+      "side": 1,
+      "message": "i will rename-\u003e\nsetupE2ConnectionCount to numOfE2ConnectionSetup\nfailedToSetupE2ConnectionCount to numOfE2ConnectionFailedToSetup",
+      "revId": "3825c8e980c3bea86264c49b53e165fc53d7da4f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
