@@ -6474,28 +6474,53 @@ void procE2RemovalRequest(uint32_t duId, E2RemovalRequest_t *removalReq)
  *
  * @params[in]
  *    E2connectionUpdate Item to be filled
- *
+ *    Protocol Id
  * @return ROK - success
  *         RFAILED - failure
  * ****************************************************************/
 
-uint8_t fillE2connectionUpdateItem(E2connectionUpdate_Item_t *connectionModifyItem)
+uint8_t fillE2connectionUpdateItem(PTR connectionInfo, uint8_t protocolId)
 {
-   connectionModifyItem->tnlInformation.tnlAddress.size =  4*sizeof(uint8_t);
-   RIC_ALLOC(connectionModifyItem->tnlInformation.tnlAddress.buf, \
-         connectionModifyItem->tnlInformation.tnlAddress.size);
-   if(!connectionModifyItem->tnlInformation.tnlAddress.buf)
+   E2connectionUpdateRemove_Item_t *connectionRemoveITem=NULLP;
+   E2connectionUpdate_Item_t *connectionModifyItem=NULLP;
+   TNLinformation_t *tnlInformation = NULLP;
+   TNLusage_t  *tnlUsage=NULLP;
+
+   switch(protocolId)
+   {
+      case ProtocolIE_IDE2_id_E2connectionUpdate_Item:
+      {
+         connectionModifyItem = (E2connectionUpdate_Item_t*)connectionInfo;
+         tnlInformation = &connectionModifyItem->tnlInformation;
+         tnlUsage = &connectionModifyItem->tnlUsage;
+         break;
+      }
+
+      case ProtocolIE_IDE2_id_E2connectionUpdateRemove_Item:
+      {
+         connectionRemoveITem = (E2connectionUpdateRemove_Item_t*)connectionInfo;
+         tnlInformation= &connectionRemoveITem->tnlInformation;
+         break;
+      }
+   }
+   
+   tnlInformation->tnlAddress.size =  4*sizeof(uint8_t);
+   RIC_ALLOC(tnlInformation->tnlAddress.buf, tnlInformation->tnlAddress.size);
+   if(!tnlInformation->tnlAddress.buf)
    {
       DU_LOG("\nERROR  -->  E2AP : Memory allocation failed in %s at line %d", __func__, __LINE__);
       return RFAILED;
    }
-
-   connectionModifyItem->tnlInformation.tnlAddress.buf[0] =  ricCb.ricCfgParams.sctpParams.localIpAddr.ipV4Addr & 0xFF; 
-   connectionModifyItem->tnlInformation.tnlAddress.buf[1] = (ricCb.ricCfgParams.sctpParams.localIpAddr.ipV4Addr>> 8) & 0xFF;
-   connectionModifyItem->tnlInformation.tnlAddress.buf[2] = (ricCb.ricCfgParams.sctpParams.localIpAddr.ipV4Addr>> 16) & 0xFF;
-   connectionModifyItem->tnlInformation.tnlAddress.buf[3] = (ricCb.ricCfgParams.sctpParams.localIpAddr.ipV4Addr>> 24) & 0xFF;
-   connectionModifyItem->tnlInformation.tnlAddress.bits_unused = 0;
-   connectionModifyItem->tnlUsage = TNLusage_support_function; 
+   
+   tnlInformation->tnlAddress.buf[3] =  ricCb.ricCfgParams.sctpParams.localIpAddr.ipV4Addr & 0xFF; 
+   tnlInformation->tnlAddress.buf[2] = (ricCb.ricCfgParams.sctpParams.localIpAddr.ipV4Addr>> 8) & 0xFF;
+   tnlInformation->tnlAddress.buf[1] = (ricCb.ricCfgParams.sctpParams.localIpAddr.ipV4Addr>> 16) & 0xFF;
+   tnlInformation->tnlAddress.buf[0] = (ricCb.ricCfgParams.sctpParams.localIpAddr.ipV4Addr>> 24) & 0xFF;
+   tnlInformation->tnlAddress.bits_unused = 0;
+   if(protocolId == ProtocolIE_IDE2_id_E2connectionUpdate_Item)
+   {
+      *tnlUsage = TNLusage_support_function; 
+   }
    return ROK;
 }
 
@@ -6519,7 +6544,7 @@ uint8_t fillE2connectionUpdateItem(E2connectionUpdate_Item_t *connectionModifyIt
 uint8_t BuildE2ConnectionModifyList(E2connectionUpdate_List_t *connectionToBeModifyList)
 {
    uint8_t arrIdx = 0;
-   E2connectionUpdate_ItemIEs_t *ConnectionModify=NULL;
+   E2connectionUpdate_ItemIEs_t *connectionModify=NULL;
 
    connectionToBeModifyList->list.count = 1;
  
@@ -6535,11 +6560,67 @@ uint8_t BuildE2ConnectionModifyList(E2connectionUpdate_List_t *connectionToBeMod
             DU_LOG("\nERROR  -->  E2AP : Memory allocation failed in %s at line %d", __func__, __LINE__);
             return RFAILED;
          }
-         ConnectionModify = (E2connectionUpdate_ItemIEs_t*)connectionToBeModifyList->list.array[arrIdx];
-         ConnectionModify->id = ProtocolIE_IDE2_id_E2connectionUpdate_Item;
-         ConnectionModify->criticality= CriticalityE2_ignore;
-         ConnectionModify->value.present = E2connectionUpdate_ItemIEs__value_PR_E2connectionUpdate_Item;
-         if(fillE2connectionUpdateItem(&ConnectionModify->value.choice.E2connectionUpdate_Item) != ROK)
+         connectionModify = (E2connectionUpdate_ItemIEs_t*)connectionToBeModifyList->list.array[arrIdx];
+         connectionModify->id = ProtocolIE_IDE2_id_E2connectionUpdate_Item;
+         connectionModify->criticality= CriticalityE2_ignore;
+         connectionModify->value.present = E2connectionUpdate_ItemIEs__value_PR_E2connectionUpdate_Item;
+         if(fillE2connectionUpdateItem((PTR)&connectionModify->value.choice.E2connectionUpdate_Item, ProtocolIE_IDE2_id_E2connectionUpdate_Item) != ROK)
+         {
+            DU_LOG("\nERROR  -->  E2AP : Failed to fill E2 connection update item");
+            return RFAILED;
+         }
+         
+      }
+   }
+   else
+   {
+      DU_LOG("\nERROR  -->  E2AP : Memory allocation failed in %s at line %d", __func__, __LINE__);
+      return RFAILED;
+   }
+   return ROK;
+}
+
+/*******************************************************************
+ *
+ * @brief Build E2 connection remove list
+ *
+ * @details
+ *
+ *    Function : BuildE2ConnectionRemoveList
+ *
+ *    Functionality: Build E2 connection remove list
+ *
+ * @params[in]
+ *    E2 connection remove list to be filled
+ *
+ * @return ROK - success
+ *         RFAILED - failure
+ * ****************************************************************/
+
+uint8_t BuildE2ConnectionRemoveList(E2connectionUpdateRemove_List_t *connectionToBeRemoveList)
+{
+   uint8_t arrIdx = 0;
+   E2connectionUpdateRemove_ItemIEs_t *connectionRemove=NULL;
+
+   connectionToBeRemoveList->list.count = 1;
+ 
+   connectionToBeRemoveList->list.size = connectionToBeRemoveList->list.count*sizeof(E2connectionUpdateRemove_ItemIEs_t*);
+   RIC_ALLOC(connectionToBeRemoveList->list.array, connectionToBeRemoveList->list.size);
+   if(connectionToBeRemoveList->list.array)
+   {
+      for(arrIdx = 0; arrIdx< connectionToBeRemoveList->list.count; arrIdx++)
+      {
+         RIC_ALLOC(connectionToBeRemoveList->list.array[arrIdx], sizeof(E2connectionUpdateRemove_ItemIEs_t));
+         if(connectionToBeRemoveList->list.array[arrIdx] == NULLP)
+         {
+            DU_LOG("\nERROR  -->  E2AP : Memory allocation failed in %s at line %d", __func__, __LINE__);
+            return RFAILED;
+         }
+         connectionRemove = (E2connectionUpdateRemove_ItemIEs_t*)connectionToBeRemoveList->list.array[arrIdx];
+         connectionRemove->id = ProtocolIE_IDE2_id_E2connectionUpdateRemove_Item;
+         connectionRemove->criticality= CriticalityE2_ignore;
+         connectionRemove->value.present = E2connectionUpdateRemove_ItemIEs__value_PR_E2connectionUpdateRemove_Item;
+         if(fillE2connectionUpdateItem((PTR)&connectionRemove->value.choice.E2connectionUpdateRemove_Item, ProtocolIE_IDE2_id_E2connectionUpdateRemove_Item) != ROK)
          {
             DU_LOG("\nERROR  -->  E2AP : Failed to fill E2 connection update item");
             return RFAILED;
@@ -6576,6 +6657,7 @@ void FreeE2ConnectionUpdate(E2AP_PDU_t *e2apMsg)
    uint8_t ieIdx =0, arrIdx=0;
    E2connectionUpdate_t  *connectionUpdate = NULLP;
    E2connectionUpdate_List_t *connectionToBeModifyList = NULLP;
+   E2connectionUpdateRemove_List_t *connectionToBeRemoveList = NULLP;
 
    if(e2apMsg != NULLP)
    {
@@ -6606,6 +6688,20 @@ void FreeE2ConnectionUpdate(E2AP_PDU_t *e2apMsg)
                            }
                            break;
                         }
+
+                     case ProtocolIE_IDE2_id_E2connectionUpdateRemove:
+                        {
+                           connectionToBeRemoveList = &connectionUpdate->protocolIEs.list.array[ieIdx]->value.choice.E2connectionUpdateRemove_List;
+                           if(connectionToBeRemoveList->list.array)
+                           {
+                              for(arrIdx = 0; arrIdx < connectionToBeRemoveList->list.count; arrIdx++)
+                              {
+                                 RIC_FREE(connectionToBeRemoveList->list.array[arrIdx], sizeof(E2connectionUpdateRemove_ItemIEs_t));
+                              }
+                              RIC_FREE(connectionToBeRemoveList->list.array, connectionToBeRemoveList->list.size);
+                           }
+                           break;
+                        }
                   }
                   RIC_FREE(connectionUpdate->protocolIEs.list.array[ieIdx], sizeof(E2connectionUpdate_IEs_t));
                }
@@ -6630,12 +6726,13 @@ void FreeE2ConnectionUpdate(E2AP_PDU_t *e2apMsg)
  *         - Buld and send the E2 Connection Update Message
  * @params[in] 
  *    Du Id
+ *    E2 connection to be modify or delete
  * @return ROK     - success
  *         RFAILED - failure
  *
  * ****************************************************************/
 
-uint8_t BuildAndSendE2ConnectionUpdate(uint32_t duId)
+uint8_t BuildAndSendE2ConnectionUpdate(uint32_t duId, E2Connection connectionInfo)
 {
    uint8_t ieIdx = 0, elementCnt = 0;
    uint8_t ret = RFAILED, duIdx =0;
@@ -6674,7 +6771,12 @@ uint8_t BuildAndSendE2ConnectionUpdate(uint32_t duId)
       e2apMsg->choice.initiatingMessage->value.present = InitiatingMessageE2__value_PR_E2connectionUpdate;
       e2ConnectionUpdate = &e2apMsg->choice.initiatingMessage->value.choice.E2connectionUpdate;
 
-      elementCnt = 2;
+      elementCnt = 1;
+      if(connectionInfo == MODIFY_CONNECTION) 
+         elementCnt++;
+      if(connectionInfo == REMOVE_CONNECTION)
+         elementCnt++;
+
       e2ConnectionUpdate->protocolIEs.list.count = elementCnt;
       e2ConnectionUpdate->protocolIEs.list.size = elementCnt * sizeof(E2connectionUpdate_IEs_t*);
       RIC_ALLOC(e2ConnectionUpdate->protocolIEs.list.array, e2ConnectionUpdate->protocolIEs.list.size);
@@ -6702,14 +6804,30 @@ uint8_t BuildAndSendE2ConnectionUpdate(uint32_t duId)
       e2ConnectionUpdate->protocolIEs.list.array[ieIdx]->value.present = E2connectionUpdate_IEs__value_PR_TransactionID;
       e2ConnectionUpdate->protocolIEs.list.array[ieIdx]->value.choice.TransactionID = assignTransactionId(duDb);
 
-      ieIdx++;
-      e2ConnectionUpdate->protocolIEs.list.array[ieIdx]->id =  ProtocolIE_IDE2_id_E2connectionUpdateModify;
-      e2ConnectionUpdate->protocolIEs.list.array[ieIdx]->criticality = CriticalityE2_reject;
-      e2ConnectionUpdate->protocolIEs.list.array[ieIdx]->value.present = E2connectionUpdate_IEs__value_PR_E2connectionUpdate_List;
-      if(BuildE2ConnectionModifyList(&e2ConnectionUpdate->protocolIEs.list.array[ieIdx]->value.choice.E2connectionUpdate_List) != ROK)
+      if(connectionInfo == MODIFY_CONNECTION)
       {
-         DU_LOG("\nERROR  -->  E2AP : Failed to build the connection update modify list");
-         break;
+         ieIdx++;
+         e2ConnectionUpdate->protocolIEs.list.array[ieIdx]->id =  ProtocolIE_IDE2_id_E2connectionUpdateModify;
+         e2ConnectionUpdate->protocolIEs.list.array[ieIdx]->criticality = CriticalityE2_reject;
+         e2ConnectionUpdate->protocolIEs.list.array[ieIdx]->value.present = E2connectionUpdate_IEs__value_PR_E2connectionUpdate_List;
+         if(BuildE2ConnectionModifyList(&e2ConnectionUpdate->protocolIEs.list.array[ieIdx]->value.choice.E2connectionUpdate_List) != ROK)
+         {
+            DU_LOG("\nERROR  -->  E2AP : Failed to build the connection update modify list");
+            break;
+         }
+      }
+      
+      if(connectionInfo == REMOVE_CONNECTION)
+      {
+         ieIdx++;
+         e2ConnectionUpdate->protocolIEs.list.array[ieIdx]->id =  ProtocolIE_IDE2_id_E2connectionUpdateRemove;
+         e2ConnectionUpdate->protocolIEs.list.array[ieIdx]->criticality = CriticalityE2_reject;
+         e2ConnectionUpdate->protocolIEs.list.array[ieIdx]->value.present = E2connectionUpdate_IEs__value_PR_E2connectionUpdateRemove_List;
+         if(BuildE2ConnectionRemoveList(&e2ConnectionUpdate->protocolIEs.list.array[ieIdx]->value.choice.E2connectionUpdateRemove_List) != ROK)
+         {
+            DU_LOG("\nERROR  -->  E2AP : Failed to build the connection update modify list");
+            break;
+         }
       }
 
       xer_fprint(stdout, &asn_DEF_E2AP_PDU, e2apMsg);

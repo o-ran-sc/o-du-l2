@@ -495,6 +495,20 @@ typedef struct
    E2TimersInfo     e2TimersInfo;
 }E2apDb;
 
+typedef struct e2ConnectionItem
+{
+   uint32_t    ipV4Addr;
+   AssocUsage  usage;
+}E2ConnectionItem;
+
+typedef struct e2ConnectionList
+{
+   uint8_t numOfE2ConnectionSetup;
+   E2ConnectionItem setupE2Connection[MAX_TNL_ASSOCIATION];
+   uint8_t numOfE2ConnectionFailedToSetup;
+   E2ConnectionItem failedToSetupE2Connection[MAX_TNL_ASSOCIATION];
+}E2ConnectionList;
+
 uint8_t assignTransactionId();
 ActionInfo *fetchActionInfoFromActionId(uint8_t actionId, RicSubscription *ricSubscriptionInfo);
 RicSubscription *fetchSubsInfoFromRicReqId(RicRequestId ricReqId, RanFunction *ranFuncDb, CmLList **ricSubscriptionNode);
