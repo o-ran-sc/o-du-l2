@@ -64,7 +64,7 @@ E2NodeComponent *fetchE2NodeComponentInfo(DuDb *duDb, InterfaceType interfaceTyp
 uint8_t handleE2NodeComponentAction(DuDb *duDb, PTR e2NodeCfg, uint8_t protocolId, E2NodeConfigItem *storeCfg);
 uint8_t BuildAndSendE2NodeConfigUpdateAck(DuDb *duDb, uint8_t transId,  E2NodeConfigList *e2NodeList);
 uint8_t BuildAndSendConnectionUpdate(uint32_t duId);
-
+uint8_t BuildAndSendE2ConnectionUpdate(uint32_t duId, E2Connection connectionInfo);
 /**********************************************************************
          End of file
 **********************************************************************/

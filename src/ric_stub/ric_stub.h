@@ -82,6 +82,13 @@
    }\
 }
 
+typedef enum
+{
+   ADD_CONNECTION,
+   MODIFY_CONNECTION,
+   REMOVE_CONNECTION
+}E2Connection;
+
 /* O-RAN.WG3.E2AP-R003-v03.00 : Section 9.2.26 */
 typedef enum
 {
