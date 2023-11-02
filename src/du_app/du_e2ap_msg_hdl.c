@@ -8403,6 +8403,434 @@ uint8_t BuildAndSendE2ConnectionUpdateFailure(uint16_t transId, E2FailureCause f
    return ret;
 }
 
+/*******************************************************************
+ *
+ * @brief fill E2 connection update item
+ *
+ * @details
+ *
+ *    Function : fillE2connectionUpdateItem
+ *
+ *    Functionality: fill E2 connection update item
+ *
+ * @params[in]
+ *    E2connectionUpdate Item to be filled
+ *    Protocol Id
+ *    IP Address
+ *    Usage
+ * @return ROK - success
+ *         RFAILED - failure
+ * ****************************************************************/
+
+uint8_t fillE2connectionUpdateItem(PTR connectionInfo, uint8_t protocolId, uint32_t ipAddress, AssocUsage usage)
+{
+   CauseE2_t *cause=NULLP;
+   TNLusage_t  *tnlUsage=NULLP;
+   E2FailureCause failureCause;
+   TNLinformation_t *tnlInformation = NULLP;
+   E2connectionUpdate_Item_t *connectionModifyItem=NULLP;
+   E2connectionSetupFailed_Item_t *connectionRemoveITem=NULLP;
+
+   switch(protocolId)
+   {
+      case ProtocolIE_IDE2_id_E2connectionUpdate_Item:
+      {
+         connectionModifyItem = (E2connectionUpdate_Item_t*)connectionInfo;
+         tnlInformation = &connectionModifyItem->tnlInformation;
+         tnlUsage = &connectionModifyItem->tnlUsage;
+         break;
+      }
+
+      case ProtocolIE_IDE2_id_E2connectionSetupFailed_Item:
+      {
+         connectionRemoveITem = (E2connectionSetupFailed_Item_t*)connectionInfo;
+         tnlInformation= &connectionRemoveITem->tnlInformation;
+         cause = &connectionRemoveITem->cause;
+         break;
+      }
+      default:
+         return RFAILED;
+   }
+
+   tnlInformation->tnlAddress.size =  4*sizeof(uint8_t);
+   DU_ALLOC(tnlInformation->tnlAddress.buf, tnlInformation->tnlAddress.size);
+   if(!tnlInformation->tnlAddress.buf)
+   {
+      DU_LOG("\nERROR  -->  E2AP : Memory allocation failed in %s at line %d", __func__, __LINE__);
+      return RFAILED;
+   }
+
+   tnlInformation->tnlAddress.buf[3] =  ipAddress & 0xFF;
+   tnlInformation->tnlAddress.buf[2] = (ipAddress>> 8) & 0xFF;
+   tnlInformation->tnlAddress.buf[1] = (ipAddress>> 16) & 0xFF;
+   tnlInformation->tnlAddress.buf[0] = (ipAddress>> 24) & 0xFF;
+   tnlInformation->tnlAddress.bits_unused = 0;
+
+   switch(protocolId)
+   {
+      case ProtocolIE_IDE2_id_E2connectionUpdate_Item:
+         {
+            *tnlUsage = usage;
+            break;
+         }
+      case ProtocolIE_IDE2_id_E2connectionSetupFailed_Item:
+         {
+            failureCause.causeType = E2_TRANSPORT;
+            failureCause.cause = E2_TRANSPORT_CAUSE_UNSPECIFIED;
+            fillE2Cause(cause, failureCause);
+            break;
+         }
+      default:
+         return RFAILED;
+   }
+   return ROK;
+}
+
+
+/*******************************************************************
+ *
+ * @brief Build E2 connection modification list
+ *
+ * @details
+ *
+ *    Function :BuildE2ConnectionUpdateList 
+ *
+ *    Functionality: Build E2 connection modification list
+ *
+ * @params[in]
+ *    E2 connection update list to be filled
+ *    Count of E2 connection to be added in the list    
+ *    Received list of E2 connection
+ *
+ * @return ROK - success
+ *         RFAILED - failure
+ * ****************************************************************/
+
+uint8_t BuildE2ConnectionUpdateList(E2connectionUpdate_List_t *connectionSetupList, uint8_t count, E2ConnectionItem *tmpConnectionList)
+{
+   uint8_t arrIdx = 0;
+   E2connectionUpdate_ItemIEs_t *connectionSetupItem=NULLP;
+
+   connectionSetupList->list.count = count;
+
+   connectionSetupList->list.size = connectionSetupList->list.count*sizeof(E2connectionUpdate_ItemIEs_t*);
+   DU_ALLOC(connectionSetupList->list.array, connectionSetupList->list.size);
+   if(connectionSetupList->list.array)
+   {
+      for(arrIdx = 0; arrIdx< connectionSetupList->list.count; arrIdx++)
+      {
+         DU_ALLOC(connectionSetupList->list.array[arrIdx], sizeof(E2connectionUpdate_ItemIEs_t));
+         if(connectionSetupList->list.array[arrIdx] == NULLP)
+         {
+            DU_LOG("\nERROR  -->  E2AP : Memory allocation failed in %s at line %d", __func__, __LINE__);
+            return RFAILED;
+         }
+         connectionSetupItem = (E2connectionUpdate_ItemIEs_t*)connectionSetupList->list.array[arrIdx];
+         connectionSetupItem->id = ProtocolIE_IDE2_id_E2connectionUpdate_Item;
+         connectionSetupItem->criticality= CriticalityE2_ignore;
+         connectionSetupItem->value.present = E2connectionUpdate_ItemIEs__value_PR_E2connectionUpdate_Item;
+         if(fillE2connectionUpdateItem((PTR)&connectionSetupItem->value.choice.E2connectionUpdate_Item, ProtocolIE_IDE2_id_E2connectionUpdate_Item,\
+          tmpConnectionList[arrIdx].ipV4Addr, tmpConnectionList[arrIdx].usage) != ROK)
+         {
+            DU_LOG("\nERROR  -->  E2AP : Failed to fill E2 connection update item");
+            return RFAILED;
+         }
+
+      }
+   }
+   else
+   {
+      DU_LOG("\nERROR  -->  E2AP : Memory allocation failed in %s at line %d", __func__, __LINE__);
+      return RFAILED;
+   }
+   return ROK;
+}
+
+/*******************************************************************
+ *
+ * @brief Build E2 connection setup failed list
+ *
+ * @details
+ *
+ *    Function : BuildE2ConnectionSetupFailedList
+ *
+ *    Functionality: Build E2 connection setup failed list
+ *
+ * @params[in]
+ *    E2 connection setup failed list to be filled
+ *    Count of E2 connection to be added in the list    
+ *    Received list of E2 connection
+ *
+ * @return ROK - success
+ *         RFAILED - failure
+ * ****************************************************************/
+
+uint8_t BuildE2ConnectionSetupFailedList(E2connectionSetupFailed_List_t *setupFailedList, uint8_t count, E2ConnectionItem *tmpConnectionList)
+{
+   uint8_t arrIdx = 0;
+   E2connectionSetupFailed_ItemIEs_t *setupFailedItem=NULLP;
+
+   setupFailedList->list.count = 1;
+
+   setupFailedList->list.size = setupFailedList->list.count*sizeof(E2connectionSetupFailed_ItemIEs_t *);
+   DU_ALLOC(setupFailedList->list.array, setupFailedList->list.size);
+   if(setupFailedList->list.array)
+   {
+      for(arrIdx = 0; arrIdx< setupFailedList->list.count; arrIdx++)
+      {
+         DU_ALLOC(setupFailedList->list.array[arrIdx], sizeof(E2connectionSetupFailed_ItemIEs_t));
+         if(setupFailedList->list.array[arrIdx] == NULLP)
+         {
+            DU_LOG("\nERROR  -->  E2AP : Memory allocation failed in %s at line %d", __func__, __LINE__);
+            return RFAILED;
+         }
+         setupFailedItem = (E2connectionSetupFailed_ItemIEs_t*)setupFailedList->list.array[arrIdx];
+         setupFailedItem->id = ProtocolIE_IDE2_id_E2connectionSetupFailed_Item;
+         setupFailedItem->criticality= CriticalityE2_ignore;
+         setupFailedItem->value.present = E2connectionSetupFailed_ItemIEs__value_PR_E2connectionSetupFailed_Item;
+         if(fillE2connectionUpdateItem((PTR)&setupFailedItem->value.choice.E2connectionSetupFailed_Item, ProtocolIE_IDE2_id_E2connectionSetupFailed_Item,\
+          tmpConnectionList[arrIdx].ipV4Addr, tmpConnectionList[arrIdx].usage) != ROK)
+         {
+            DU_LOG("\nERROR  -->  E2AP : Failed to fill E2 connection failed to update item");
+            return RFAILED;
+         }
+
+      }
+   }
+   else
+   {
+      DU_LOG("\nERROR  -->  E2AP : Memory allocation failed in %s at line %d", __func__, __LINE__);
+      return RFAILED;
+   }
+   return ROK;
+}
+
+/*******************************************************************
+ *
+ * @brief Deallocate the memory allocated for E2 Connection
+ * Update ack msg 
+ *
+ * @details
+ *
+ *    Function :FreeE2ConnectionUpdateAcknowledge 
+ *
+ *    Functionality:
+ *       - freeing the memory allocated for E2 Connection
+ * Update ack msg
+ *
+ * @params[in] E2AP_PDU_t *e2apMsg
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+
+void FreeE2ConnectionUpdateAcknowledge(E2AP_PDU_t *e2apMsg)
+{
+   uint8_t ieIdx =0, arrIdx=0;
+   E2connectionUpdateAcknowledge_t *connectionUpdate = NULLP;
+   E2connectionUpdate_List_t *connectionSetupList = NULLP;
+   E2connectionSetupFailed_List_t *setupFailedList = NULLP;
+
+   if(e2apMsg != NULLP)
+   {
+      if(e2apMsg->choice.successfulOutcome != NULLP)
+      {
+         connectionUpdate = &e2apMsg->choice.successfulOutcome->value.choice.E2connectionUpdateAcknowledge;
+         if(connectionUpdate->protocolIEs.list.array)
+         {
+            for(ieIdx = 0; ieIdx < connectionUpdate->protocolIEs.list.count; ieIdx++)
+            {
+               if(connectionUpdate->protocolIEs.list.array[ieIdx])
+               {
+                  switch(connectionUpdate->protocolIEs.list.array[ieIdx]->id)
+                  {
+                     case ProtocolIE_IDE2_id_TransactionID:
+                        break;
+
+                     case ProtocolIE_IDE2_id_E2connectionSetup:
+                        {
+                           connectionSetupList = &connectionUpdate->protocolIEs.list.array[ieIdx]->value.choice.E2connectionUpdate_List;
+                           if(connectionSetupList->list.array)
+                           {
+                              for(arrIdx = 0; arrIdx < connectionSetupList->list.count; arrIdx++)
+                              {
+                                 DU_FREE(connectionSetupList->list.array[arrIdx], sizeof(E2connectionUpdate_ItemIEs_t));
+                              }
+                              DU_FREE(connectionSetupList->list.array, connectionSetupList->list.size);
+                           }
+                           break;
+                        }
+
+                     case ProtocolIE_IDE2_id_E2connectionSetupFailed:
+                        {
+                           setupFailedList = &connectionUpdate->protocolIEs.list.array[ieIdx]->value.choice.E2connectionSetupFailed_List;
+                           if(setupFailedList->list.array)
+                           {
+                              for(arrIdx = 0; arrIdx < setupFailedList->list.count; arrIdx++)
+                              {
+                                 DU_FREE(setupFailedList->list.array[arrIdx], sizeof(E2connectionSetupFailed_ItemIEs_t));
+                              }
+                              DU_FREE(setupFailedList->list.array, setupFailedList->list.size);
+                           }
+                           break;
+                        }
+                  }
+                  DU_FREE(connectionUpdate->protocolIEs.list.array[ieIdx], sizeof(E2connectionUpdateAck_IEs_t));
+               }
+            }
+            DU_FREE(connectionUpdate->protocolIEs.list.array, connectionUpdate->protocolIEs.list.size);
+         }
+         DU_FREE(e2apMsg->choice.successfulOutcome, sizeof(SuccessfulOutcomeE2_t));
+      }
+      DU_FREE(e2apMsg, sizeof(E2AP_PDU_t));
+   }
+}
+
+/*******************************************************************
+ *
+ * @brief Buld and send the E2 Connection Update Acknowledge msg
+ *
+ * @details
+ *
+ *    Function : BuildAndSendE2ConnectionUpdateAcknowledge
+ *
+ *    Functionality:
+ *         - Buld and send the E2 Connection Update Acknowledge Message
+ * @params[in] 
+ *    Trans Id 
+ *    List of E2 connection needs to fill in IE 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+
+uint8_t BuildAndSendE2ConnectionUpdateAcknowledge(uint16_t transId,  E2ConnectionList connectionInfoList)
+{
+   uint8_t           ieIdx = 0, elementCnt = 0;
+   uint8_t           ret = RFAILED;
+   E2AP_PDU_t        *e2apMsg = NULLP;
+   asn_enc_rval_t    encRetVal;       
+   E2connectionUpdateAcknowledge_t *e2ConnectionUpdateAcknowledge=NULLP;
+
+   DU_LOG("\nINFO   -->  E2AP : Building E2 Connection Update Acknowledge Message\n");
+   do
+   {
+      DU_ALLOC(e2apMsg, sizeof(E2AP_PDU_t));
+      if(e2apMsg == NULLP)
+      {
+         DU_LOG("\nERROR  -->  E2AP : Memory allocation failed in %s at line %d", __func__, __LINE__);
+         break;
+      }
+      e2apMsg->present = E2AP_PDU_PR_successfulOutcome;
+
+      DU_ALLOC(e2apMsg->choice.successfulOutcome, sizeof(SuccessfulOutcomeE2_t));
+      if(e2apMsg->choice.successfulOutcome == NULLP)
+      {
+         DU_LOG("\nERROR  -->  E2AP : Memory allocation failed in %s at line %d", __func__, __LINE__);
+         break;
+      }
+
+      e2apMsg->choice.successfulOutcome->procedureCode = ProcedureCodeE2_id_E2connectionUpdate;
+      e2apMsg->choice.successfulOutcome->criticality = CriticalityE2_reject;
+      e2apMsg->choice.successfulOutcome->value.present = SuccessfulOutcomeE2__value_PR_E2connectionUpdateAcknowledge;
+      e2ConnectionUpdateAcknowledge = &e2apMsg->choice.successfulOutcome->value.choice.E2connectionUpdateAcknowledge;
+
+      elementCnt = 1;
+      if(connectionInfoList.setupE2ConnectionCount)
+         elementCnt++;
+      if(connectionInfoList.failedToSetupE2ConnectionCount)
+         elementCnt++;
+
+      e2ConnectionUpdateAcknowledge->protocolIEs.list.count = elementCnt;
+      e2ConnectionUpdateAcknowledge->protocolIEs.list.size = elementCnt * sizeof(E2connectionUpdateAck_IEs_t*);
+      DU_ALLOC(e2ConnectionUpdateAcknowledge->protocolIEs.list.array, e2ConnectionUpdateAcknowledge->protocolIEs.list.size);
+      if(!e2ConnectionUpdateAcknowledge->protocolIEs.list.array)
+      {
+         DU_LOG("\nERROR  -->  E2AP : Memory allocation failed in %s at line %d", __func__, __LINE__);
+         break;
+      }
+
+      for(ieIdx=0; ieIdx < elementCnt; ieIdx++)
+      {
+         DU_ALLOC(e2ConnectionUpdateAcknowledge->protocolIEs.list.array[ieIdx], sizeof(E2connectionUpdateAck_IEs_t));
+         if(!e2ConnectionUpdateAcknowledge->protocolIEs.list.array[ieIdx])
+         {
+            DU_LOG("\nERROR  -->  E2AP : Memory allocation failed in %s at line %d", __func__, __LINE__);
+            break;
+         }
+      }
+      if(ieIdx < elementCnt)
+         break;
+
+      ieIdx = 0;
+      e2ConnectionUpdateAcknowledge->protocolIEs.list.array[ieIdx]->id =  ProtocolIE_IDE2_id_TransactionID;
+      e2ConnectionUpdateAcknowledge->protocolIEs.list.array[ieIdx]->criticality = CriticalityE2_reject;
+      e2ConnectionUpdateAcknowledge->protocolIEs.list.array[ieIdx]->value.present = E2connectionUpdateAck_IEs__value_PR_TransactionID;
+      e2ConnectionUpdateAcknowledge->protocolIEs.list.array[ieIdx]->value.choice.TransactionID = transId;
+
+      if(connectionInfoList.setupE2ConnectionCount)
+      {
+         ieIdx++;
+         e2ConnectionUpdateAcknowledge->protocolIEs.list.array[ieIdx]->id =  ProtocolIE_IDE2_id_E2connectionSetup;
+         e2ConnectionUpdateAcknowledge->protocolIEs.list.array[ieIdx]->criticality = CriticalityE2_reject;
+         e2ConnectionUpdateAcknowledge->protocolIEs.list.array[ieIdx]->value.present = E2connectionUpdateAck_IEs__value_PR_E2connectionUpdate_List;
+         if(BuildE2ConnectionUpdateList(&e2ConnectionUpdateAcknowledge->protocolIEs.list.array[ieIdx]->value.choice.E2connectionUpdate_List, \
+                  connectionInfoList.setupE2ConnectionCount, connectionInfoList.setupE2Connection) != ROK)
+         {
+            DU_LOG("\nERROR  -->  E2AP : Failed to send E2 Connection setup list");
+            break;
+         }
+      }
+      
+      if(connectionInfoList.failedToSetupE2ConnectionCount)
+      {
+         ieIdx++;
+         e2ConnectionUpdateAcknowledge->protocolIEs.list.array[ieIdx]->id =  ProtocolIE_IDE2_id_E2connectionSetup;
+         e2ConnectionUpdateAcknowledge->protocolIEs.list.array[ieIdx]->criticality = CriticalityE2_reject;
+         e2ConnectionUpdateAcknowledge->protocolIEs.list.array[ieIdx]->value.present = E2connectionUpdateAck_IEs__value_PR_E2connectionUpdate_List;
+         if(BuildE2ConnectionUpdateList(&e2ConnectionUpdateAcknowledge->protocolIEs.list.array[ieIdx]->value.choice.E2connectionUpdate_List, \
+               connectionInfoList.failedToSetupE2ConnectionCount, connectionInfoList.failedToSetupE2Connection) != ROK) 
+         {
+            DU_LOG("\nERROR  -->  E2AP : Failed to send E2 Connection failed to setup list");
+            break;
+         }
+      }
+
+      xer_fprint(stdout, &asn_DEF_E2AP_PDU, e2apMsg);
+
+      memset(encBuf, 0, ENC_BUF_MAX_LEN);
+      encBufSize = 0;
+      encRetVal = aper_encode(&asn_DEF_E2AP_PDU, 0, e2apMsg, PrepFinalEncBuf, encBuf);
+      if(encRetVal.encoded == ENCODE_FAIL)
+      {
+         DU_LOG("\nERROR  -->  E2AP : Could not encode E2 connection update acknowledge failure structure (at %s)\n",\
+               encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
+         break;
+      }
+      else
+      {
+         DU_LOG("\nDEBUG  -->  E2AP : Created APER encoded buffer for E2 Connection Update Acknowledge \n");
+         for(int i=0; i< encBufSize; i++)
+         {
+            DU_LOG("%x",encBuf[i]);
+         }
+      }
+
+      /* Sending msg */
+      if(SendE2APMsg(DU_APP_MEM_REGION, DU_POOL, encBuf, encBufSize) != ROK)
+      {
+         DU_LOG("\nERROR  -->  E2AP : Failed to send E2 Connection Update Acknowledge");
+         break;
+      }
+
+      ret = ROK;
+      break;
+   }while(true);
+
+   FreeE2ConnectionUpdateAcknowledge(e2apMsg);
+   return ret;
+}
+
 /******************************************************************
  *
  * @brief Deallocation of memory allocated by aper decoder for 
@@ -8424,6 +8852,7 @@ void freeAperDecodingOfE2ConnectionUpdate(E2connectionUpdate_t *connectionUpdate
 {
    uint8_t ieIdx =0, arrIdx=0;
    E2connectionUpdate_List_t *connectionToBeModifyList = NULLP;
+   E2connectionUpdateRemove_List_t *connectionToBeRemoveList = NULLP;
 
    if(connectionUpdate->protocolIEs.list.array)
    {
@@ -8449,11 +8878,85 @@ void freeAperDecodingOfE2ConnectionUpdate(E2connectionUpdate_t *connectionUpdate
                      }
                      break;
                   }
+               case ProtocolIE_IDE2_id_E2connectionUpdateRemove:
+                  {
+                     connectionToBeRemoveList = &connectionUpdate->protocolIEs.list.array[ieIdx]->value.choice.E2connectionUpdateRemove_List;
+                     if(connectionToBeRemoveList->list.array)
+                     {
+                        for(arrIdx= 0; arrIdx< connectionToBeRemoveList->list.count; arrIdx++)
+                        {
+                           free(connectionToBeRemoveList->list.array[arrIdx]);
+                        }
+                        free(connectionToBeRemoveList->list.array);
+                     }
+                     break;
+                  }
             }
             free(connectionUpdate->protocolIEs.list.array[ieIdx]);
          }
       }
       free(connectionUpdate->protocolIEs.list.array);
+   }
+}
+
+/*******************************************************************
+ *
+ * @brief Handling of E2 connection modification Ie
+ *
+ * @details
+ *
+ *    Function : handle2ConnectionModification 
+ *
+ * Functionality: Handling of E2 connection modification Ie
+ *
+ * @param  E2AP_PDU_t  *e2apMsg
+ * @return void
+ *
+ ******************************************************************/
+
+void handle2ConnectionModification(E2connectionUpdate_List_t *connectionUpdateList, E2ConnectionList *connectionInfoList)
+{
+   uint32_t ipAddress=0;
+   bool infoFound = false;
+   uint8_t arrIdx=0,idx=0, count =0;
+   E2connectionUpdate_ItemIEs_t *connectionModifyItem=NULLP;
+
+   if(connectionUpdateList->list.array)
+   {
+      for(arrIdx = 0; arrIdx < connectionUpdateList->list.count; arrIdx++)
+      {
+         connectionModifyItem= (E2connectionUpdate_ItemIEs_t*)connectionUpdateList->list.array[arrIdx];
+         bitStringToInt(&connectionModifyItem->value.choice.E2connectionUpdate_Item.tnlInformation.tnlAddress, &ipAddress);
+         for(idx=0; idx<duCb.e2apDb.numOfTNLAssoc; idx++)
+         {
+            /* If the TNL information is found in the data base, update the
+             * information in the database */
+            if(duCb.e2apDb.tnlAssoc[idx].destIpAddress.ipV4Addr == ipAddress)
+            {
+               duCb.e2apDb.tnlAssoc[idx].usage = connectionModifyItem->value.choice.E2connectionUpdate_Item.tnlUsage;
+               infoFound = true;
+               break;
+            }
+         }
+         
+         /* If the TNL information is found in the data base, then add the
+          * information in setupE2Connection array else add in failedToSetupE2Connection array */
+         if(infoFound == true)
+         {
+            count =connectionInfoList->setupE2ConnectionCount;
+            connectionInfoList->setupE2Connection[count].ipV4Addr =  duCb.e2apDb.tnlAssoc[idx].destIpAddress.ipV4Addr;
+            connectionInfoList->setupE2Connection[count].usage = duCb.e2apDb.tnlAssoc[idx].usage;
+            connectionInfoList->setupE2ConnectionCount++;
+         }
+         else
+         {
+            count = connectionInfoList->failedToSetupE2ConnectionCount;
+            connectionInfoList->failedToSetupE2Connection[count].ipV4Addr =  ipAddress;
+            connectionInfoList->failedToSetupE2Connection[count].usage = connectionModifyItem->value.choice.E2connectionUpdate_Item.tnlUsage;
+            connectionInfoList->failedToSetupE2ConnectionCount++;
+         }
+      }
+
    }
 }
 
@@ -8475,14 +8978,15 @@ void freeAperDecodingOfE2ConnectionUpdate(E2connectionUpdate_t *connectionUpdate
 void procE2ConnectionUpdate(E2AP_PDU_t  *e2apMsg)
 {
    bool invalidTransId = false;
-   uint8_t arrIdx =0, transId =0, count=0;
+   uint8_t arrIdx =0, transId =0;
    E2FailureCause failureCause;
    E2connectionUpdate_t *connectionUpdate=NULLP;
+   E2ConnectionList connectionInfoList;
 
    DU_LOG("\nINFO   -->  E2AP : E2 connection update received");
    connectionUpdate = &e2apMsg->choice.initiatingMessage->value.choice.E2connectionUpdate;
    
-   count = connectionUpdate->protocolIEs.list.count;
+   memset(&connectionInfoList, 0, sizeof(E2ConnectionList));
    for(arrIdx=0; arrIdx<connectionUpdate->protocolIEs.list.count; arrIdx++)
    {
       switch(connectionUpdate->protocolIEs.list.array[arrIdx]->id)
@@ -8496,7 +9000,14 @@ void procE2ConnectionUpdate(E2AP_PDU_t  *e2apMsg)
                }
                break;
             }
+
          case ProtocolIE_IDE2_id_E2connectionUpdateModify:
+            {
+               handle2ConnectionModification(&connectionUpdate->protocolIEs.list.array[arrIdx]->value.choice.E2connectionUpdate_List, &connectionInfoList);
+               break;
+            }
+
+         case ProtocolIE_IDE2_id_E2connectionUpdateRemove:
             {
                /*TODO*/
                break;
@@ -8518,7 +9029,10 @@ void procE2ConnectionUpdate(E2AP_PDU_t  *e2apMsg)
    }
    else
    {
-      /*TODO*/
+      if(BuildAndSendE2ConnectionUpdateAcknowledge(transId, connectionInfoList) != ROK)
+      {
+         DU_LOG("\nERROR  -->  E2AP : Failed to build and send E2 connection update ack");
+      }
    }
 
    freeAperDecodingOfE2ConnectionUpdate(connectionUpdate);
