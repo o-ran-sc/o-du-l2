@@ -16,6 +16,154 @@
       "message": "i will rename-\u003e\nsetupE2ConnectionCount to numOfE2ConnectionSetup\nfailedToSetupE2ConnectionCount to numOfE2ConnectionFailedToSetup",
       "revId": "3825c8e980c3bea86264c49b53e165fc53d7da4f",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f12d5e6e_0dd34155",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 8788,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-11-03T08:55:01Z",
+      "side": 1,
+      "message": "ProtocolIE_IDE2_id_E2connectionSetupFailed",
+      "range": {
+        "startLine": 8788,
+        "startChar": 77,
+        "endLine": 8788,
+        "endChar": 113
+      },
+      "revId": "3825c8e980c3bea86264c49b53e165fc53d7da4f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f9a460ea_62eb9a06",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 8790,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-11-03T08:55:01Z",
+      "side": 1,
+      "message": "E2connectionUpdateAck_IEs__value_PR_E2connectionSetupFailed_List",
+      "revId": "3825c8e980c3bea86264c49b53e165fc53d7da4f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "23a1f870_2402e901",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 8791,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-11-03T08:55:01Z",
+      "side": 1,
+      "message": "E2connectionSetupFailed_List",
+      "range": {
+        "startLine": 8791,
+        "startChar": 116,
+        "endLine": 8791,
+        "endChar": 139
+      },
+      "revId": "3825c8e980c3bea86264c49b53e165fc53d7da4f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "45d95dcd_1fbda8b8",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 8791,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-11-03T08:55:01Z",
+      "side": 1,
+      "message": "use BuildE2ConnectionSetupFailedList",
+      "revId": "3825c8e980c3bea86264c49b53e165fc53d7da4f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2f4f9667_4a2cf04f",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 9006,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-11-03T08:55:01Z",
+      "side": 1,
+      "message": "in case all e2 connection update failed, we will be sending E2 connection update ack with failure to setup list IE only or we should be sending E2 connection update failure? Please check.",
+      "revId": "3825c8e980c3bea86264c49b53e165fc53d7da4f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c42ac1e3_ae7531dc",
+        "filename": "src/ric_stub/ric_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 6547,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-11-03T08:55:01Z",
+      "side": 1,
+      "message": "first letter of any variable must be small",
+      "revId": "3825c8e980c3bea86264c49b53e165fc53d7da4f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e8ae853c_c31473ad",
+        "filename": "src/ric_stub/ric_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 6603,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-11-03T08:55:01Z",
+      "side": 1,
+      "message": "first letter of any variable must be small",
+      "revId": "3825c8e980c3bea86264c49b53e165fc53d7da4f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4399198f_7b95bd43",
+        "filename": "src/ric_stub/ric_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 6775,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-11-03T08:55:01Z",
+      "side": 1,
+      "message": "if in future there are multiple connections and some need to be modified and some need to be deleted, then we will need both IEs",
+      "revId": "3825c8e980c3bea86264c49b53e165fc53d7da4f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
   ]
 }
