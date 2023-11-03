@@ -18,6 +18,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4f642b6e_bde35fed",
+        "filename": "src/du_app/du_e2ap_mgr.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 506,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-11-03T10:00:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d21daa25_0504cde4",
+      "revId": "3825c8e980c3bea86264c49b53e165fc53d7da4f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f12d5e6e_0dd34155",
@@ -41,6 +59,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "17bdbc9f_66e22f6e",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 8788,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-11-03T10:00:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f12d5e6e_0dd34155",
+      "range": {
+        "startLine": 8788,
+        "startChar": 77,
+        "endLine": 8788,
+        "endChar": 113
+      },
+      "revId": "3825c8e980c3bea86264c49b53e165fc53d7da4f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f9a460ea_62eb9a06",
@@ -54,6 +96,24 @@
       "writtenOn": "2023-11-03T08:55:01Z",
       "side": 1,
       "message": "E2connectionUpdateAck_IEs__value_PR_E2connectionSetupFailed_List",
+      "revId": "3825c8e980c3bea86264c49b53e165fc53d7da4f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "733816ef_4f7b0236",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 8790,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-11-03T10:00:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f9a460ea_62eb9a06",
       "revId": "3825c8e980c3bea86264c49b53e165fc53d7da4f",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -98,6 +158,48 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2a5b2a41_7c19346a",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 8791,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-11-03T10:00:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "45d95dcd_1fbda8b8",
+      "revId": "3825c8e980c3bea86264c49b53e165fc53d7da4f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4bb7e50b_6376dbf1",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 8791,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-11-03T10:00:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "23a1f870_2402e901",
+      "range": {
+        "startLine": 8791,
+        "startChar": 116,
+        "endLine": 8791,
+        "endChar": 139
+      },
+      "revId": "3825c8e980c3bea86264c49b53e165fc53d7da4f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2f4f9667_4a2cf04f",
@@ -111,6 +213,24 @@
       "writtenOn": "2023-11-03T08:55:01Z",
       "side": 1,
       "message": "in case all e2 connection update failed, we will be sending E2 connection update ack with failure to setup list IE only or we should be sending E2 connection update failure? Please check.",
+      "revId": "3825c8e980c3bea86264c49b53e165fc53d7da4f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e2a27f1c_9b446864",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 9006,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-11-03T10:00:42Z",
+      "side": 1,
+      "message": "Even all the e2 connection update fail then will send the failure",
+      "parentUuid": "2f4f9667_4a2cf04f",
       "revId": "3825c8e980c3bea86264c49b53e165fc53d7da4f",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -132,6 +252,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f539b9b6_71716daf",
+        "filename": "src/ric_stub/ric_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 6547,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-11-03T10:00:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c42ac1e3_ae7531dc",
+      "revId": "3825c8e980c3bea86264c49b53e165fc53d7da4f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e8ae853c_c31473ad",
@@ -149,6 +287,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0f2f812b_7057ccb0",
+        "filename": "src/ric_stub/ric_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 6603,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-11-03T10:00:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e8ae853c_c31473ad",
+      "revId": "3825c8e980c3bea86264c49b53e165fc53d7da4f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4399198f_7b95bd43",
@@ -162,6 +318,24 @@
       "writtenOn": "2023-11-03T08:55:01Z",
       "side": 1,
       "message": "if in future there are multiple connections and some need to be modified and some need to be deleted, then we will need both IEs",
+      "revId": "3825c8e980c3bea86264c49b53e165fc53d7da4f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "de0ebaba_b3e21136",
+        "filename": "src/ric_stub/ric_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 6775,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-11-03T10:00:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4399198f_7b95bd43",
       "revId": "3825c8e980c3bea86264c49b53e165fc53d7da4f",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
