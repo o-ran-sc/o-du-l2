@@ -26,6 +26,7 @@
 #include "du_e2ap_mgr.h"
 #include "du_e2ap_msg_hdl.h"
 #include "du_cfg.h"
+#include "du_sctp.h"
 #include "du_mgr.h"
 #include "du_mgr_main.h"
 #include "du_utils.h"
@@ -482,7 +483,6 @@ uint8_t BuildAndSendRemovalResponse(uint16_t transId)
    }while(true);
 
    FreeE2RemovalResponse(e2apMsg);
-   removeE2NodeInformation();
    return ret;
 }
 
@@ -8223,8 +8223,10 @@ void ProcE2RemovalResponse(E2AP_PDU_t *e2apMsg)
                   if((duCb.e2apDb.e2TransInfo.e2InitTransaction[transId].transactionId == transId) &&\
                         (duCb.e2apDb.e2TransInfo.e2InitTransaction[transId].procedureCode == e2apMsg->choice.unsuccessfulOutcome->procedureCode))
                   {
-                     removeE2NodeInformation();
+                     DU_LOG("\nINFO  -->  E2AP : Sending request to close the sctp connection");
+                     cmInetClose(&ricParams.sockFd);
                      memset(&duCb.e2apDb.e2TransInfo.e2InitTransaction[transId], 0, sizeof(E2TransInfo));
+                     removeE2NodeInformation();
                   }
                   else
                   {
@@ -8905,16 +8907,18 @@ void freeAperDecodingOfE2ConnectionUpdate(E2connectionUpdate_t *connectionUpdate
  *
  * @details
  *
- *    Function : handle2ConnectionModification 
+ *    Function : handleE2ConnectionModification 
  *
  * Functionality: Handling of E2 connection modification Ie
  *
- * @param  E2AP_PDU_t  *e2apMsg
+ * @param 
+ *        E2 Connection update list
+ *        E2 connection list which needs to be filled
  * @return void
  *
  ******************************************************************/
 
-void handle2ConnectionModification(E2connectionUpdate_List_t *connectionUpdateList, E2ConnectionList *connectionInfoList)
+void handleE2ConnectionModification(E2connectionUpdate_List_t *connectionUpdateList, E2ConnectionList *connectionInfoList)
 {
    uint32_t ipAddress=0;
    bool infoFound = false;
@@ -8962,6 +8966,48 @@ void handle2ConnectionModification(E2connectionUpdate_List_t *connectionUpdateLi
 
 /*******************************************************************
  *
+ * @brief Handling of E2 connection removal Ie
+ *
+ * @details
+ *
+ *    Function : handleE2ConnectionRemoval 
+ *
+ * Functionality: Handling of E2 connection removal Ie
+ *
+ * @param  
+ *    E2 Connection removal List 
+ * @return void
+ *
+ ******************************************************************/
+
+void handleE2ConnectionRemoval(E2connectionUpdateRemove_List_t *connectionRemovalList)
+{
+   uint32_t ipAddress=0;
+   uint8_t arrIdx=0,idx=0;
+   E2connectionUpdateRemove_ItemIEs_t *connectionRemovalItem=NULLP;
+
+   if(connectionRemovalList->list.array)
+   {
+      for(arrIdx = 0; arrIdx < connectionRemovalList->list.count; arrIdx++)
+      {
+         connectionRemovalItem= (E2connectionUpdateRemove_ItemIEs_t*)connectionRemovalList->list.array[arrIdx];
+         bitStringToInt(&connectionRemovalItem->value.choice.E2connectionUpdateRemove_Item.tnlInformation.tnlAddress, &ipAddress);
+         for(idx=0; idx<duCb.e2apDb.numOfTNLAssoc; idx++)
+         {
+            if(duCb.e2apDb.tnlAssoc[idx].destIpAddress.ipV4Addr == ipAddress)
+            {
+               cmInetClose(&ricParams.sockFd);
+               removeE2NodeInformation();
+               break;
+            }
+         }
+         
+      }
+   }
+}
+
+/*******************************************************************
+ *
  * @brief Process e2 connection update received from RIC
  *
  * @details
@@ -8977,11 +9023,11 @@ void handle2ConnectionModification(E2connectionUpdate_List_t *connectionUpdateLi
 
 void procE2ConnectionUpdate(E2AP_PDU_t  *e2apMsg)
 {
-   bool invalidTransId = false, connectionFailedToUpdate=false;
    uint8_t arrIdx =0, transId =0;
+   bool invalidTransId = false, connectionFailedToUpdate=false;
    E2FailureCause failureCause;
-   E2connectionUpdate_t *connectionUpdate=NULLP;
    E2ConnectionList connectionInfoList;
+   E2connectionUpdate_t *connectionUpdate=NULLP;
 
    DU_LOG("\nINFO   -->  E2AP : E2 connection update received");
    connectionUpdate = &e2apMsg->choice.initiatingMessage->value.choice.E2connectionUpdate;
@@ -9005,7 +9051,8 @@ void procE2ConnectionUpdate(E2AP_PDU_t  *e2apMsg)
 
          case ProtocolIE_IDE2_id_E2connectionUpdateModify:
             {
-               handle2ConnectionModification(&connectionUpdate->protocolIEs.list.array[arrIdx]->value.choice.E2connectionUpdate_List, &connectionInfoList);
+               handleE2ConnectionModification(&connectionUpdate->protocolIEs.list.array[arrIdx]->value.choice.E2connectionUpdate_List,\
+                     &connectionInfoList);
                if((connectionInfoList.numOfE2ConnectionSetup == 0) && (connectionInfoList.numOfE2ConnectionFailedToSetup > 0))
                {
                   failureCause.causeType = E2_TRANSPORT;
@@ -9018,7 +9065,13 @@ void procE2ConnectionUpdate(E2AP_PDU_t  *e2apMsg)
 
          case ProtocolIE_IDE2_id_E2connectionUpdateRemove:
             {
-               /*TODO*/
+               handleE2ConnectionRemoval(&connectionUpdate->protocolIEs.list.array[arrIdx]->value.choice.E2connectionUpdateRemove_List);
+               break;
+            }
+
+         default:
+            {
+               DU_LOG("\nERROR  -->  E2AP : Invalid IE received[%ld]",connectionUpdate->protocolIEs.list.array[arrIdx]->id);
                break;
             }
       }
