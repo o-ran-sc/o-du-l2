@@ -5983,6 +5983,36 @@ void ProcE2RemovalFailure(E2RemovalFailure_t *e2RemovalFailure)
       }
    }
 }
+/*******************************************************************
+ *
+ * @brief Delete E2 component node list
+ *
+ * @details
+ *
+ *    Function : deleteE2ComponentNodeList 
+ *
+ * Functionality: Delete E2 component node  list
+ *
+ * @params[in] E2 component node list
+ * @return void
+
+ *
+ ******************************************************************/
+
+void deleteE2ComponentNodeList(CmLListCp *componentList)
+{
+   E2NodeComponent *cfgInfo = NULLP;
+   CmLList *e2ComponentNode = NULLP;
+
+   CM_LLIST_FIRST_NODE(componentList, e2ComponentNode);
+   while(e2ComponentNode)
+   {
+      cfgInfo = (E2NodeComponent*)e2ComponentNode->node;
+      cmLListDelFrm(componentList, e2ComponentNode);
+      memset(cfgInfo, 0, sizeof(E2NodeComponent));
+      CM_LLIST_FIRST_NODE(componentList, e2ComponentNode);
+   }
+}
 
 /*******************************************************************
  *
@@ -6014,8 +6044,7 @@ void deleteE2NodeInfo(DuDb *duDb)
          deleteRicSubscriptionList(&ranFuncDb->subscriptionList);
       }
    }
-
-   cmInetClose(&sctpCb.e2LstnSockFd);
+   deleteE2ComponentNodeList(&duDb->e2NodeComponent);
 }
 
 /*******************************************************************
@@ -6067,8 +6096,10 @@ void ProcE2RemovalResponse(uint32_t duId, E2RemovalResponse_t *removalRsp)
          {
             case ProtocolIE_IDE2_id_TransactionID:
                {
+                  DU_LOG("\nINFO  -->  E2AP : Sending request to close the sctp connection");
+                  cmInetClose(&sctpCb.e2LstnSockFd);
                   deleteE2NodeInfo(duDb);
-                  break;
+                  exit(0);
                }
             default:
                {
@@ -6401,7 +6432,6 @@ uint8_t BuildAndSendRemovalResponse(uint32_t duId, uint16_t transId)
    }while(true);
 
    FreeE2RemovalResponse(e2apMsg);
-   deleteE2NodeInfo(duDb);
    return ret;
 }
 
@@ -6928,6 +6958,114 @@ void ProcE2connectionUpdateFailure(E2connectionUpdateFailure_t *updateFailure)
 }
 
 /*******************************************************************
+ *
+ * @brief process the E2 Connection update ack
+ *
+ * @details
+ *
+ *    Function : ProcE2ConnectionUpdateAck 
+ *
+ * Functionality: Process E2 Connection update ack 
+ *
+ * @params[in] 
+ *       du Id
+ *       Pointer to Connection update ack 
+ * @return void
+ *
+ ******************************************************************/
+
+void ProcE2ConnectionUpdateAck(uint32_t duId, E2connectionUpdateAcknowledge_t *connectionUpdateAck)
+{
+   uint16_t transId =0;
+   uint32_t ipAddress=0;
+   DuDb *duDb = NULLP;
+   uint8_t ieIdx = 0, duIdx =0, arrIdx=0;
+   E2connectionUpdate_Item_t *connectionSetupItem=NULLP;
+   E2connectionUpdate_ItemIEs_t *connectionSetupItemIe=NULLP;
+   E2connectionUpdate_List_t *connectionSetupList=NULLP;
+   E2connectionSetupFailed_Item_t *setupFailedItem =NULLP;
+   E2connectionSetupFailed_List_t *setupFailedList=NULLP;
+   E2connectionSetupFailed_ItemIEs_t *setupFailedItemIe =NULLP;
+
+   SEARCH_DU_DB(duIdx, duId, duDb);
+   if(duDb == NULLP)
+   {
+      DU_LOG("\nERROR  -->  E2AP : duDb is not present for duId %d",duId);
+      return;
+   }
+
+   if(!connectionUpdateAck)
+   {
+      DU_LOG("\nERROR  -->  E2AP : connectionUpdateAck pointer is null"); 
+      return;
+   }
+
+   if(!connectionUpdateAck->protocolIEs.list.array)      
+   {
+      DU_LOG("\nERROR  -->  E2AP : connectionUpdateAck array pointer is null");
+      return;
+   }
+
+   for(ieIdx=0; ieIdx < connectionUpdateAck->protocolIEs.list.count; ieIdx++)
+   {
+      if(connectionUpdateAck->protocolIEs.list.array[ieIdx])
+      {
+         switch(connectionUpdateAck->protocolIEs.list.array[ieIdx]->id)
+         {
+            case ProtocolIE_IDE2_id_TransactionID:
+               {
+                  transId = connectionUpdateAck->protocolIEs.list.array[arrIdx]->value.choice.TransactionID;
+                  if(transId>255)
+                  {
+                     DU_LOG("\nERROR  -->  E2AP : Received invalid trans id %d ",transId);
+                     return;
+                  }
+                  break;
+               }
+            case ProtocolIE_IDE2_id_E2connectionSetup:
+               {
+                  connectionSetupList=&connectionUpdateAck->protocolIEs.list.array[ieIdx]->value.choice.E2connectionUpdate_List;
+                  if(connectionSetupList->list.array)
+                  {
+                     for(arrIdx = 0; arrIdx< connectionSetupList->list.count; arrIdx++)
+                     {
+                        connectionSetupItemIe = (E2connectionUpdate_ItemIEs_t*)connectionSetupList->list.array[arrIdx];
+                        connectionSetupItem = &connectionSetupItemIe->value.choice.E2connectionUpdate_Item;
+                        bitStringToInt(&connectionSetupItem->tnlInformation.tnlAddress, &ipAddress);
+                        if(ricCb.ricCfgParams.sctpParams.localIpAddr.ipV4Addr == ipAddress)
+                        {
+                            ricCb.ricCfgParams.sctpParams.usage = connectionSetupItem->tnlUsage;
+                        }
+                     }
+                  }
+                  break;
+               }
+
+            case ProtocolIE_IDE2_id_E2connectionSetupFailed:
+               {
+                  setupFailedList=&connectionUpdateAck->protocolIEs.list.array[ieIdx]->value.choice.E2connectionSetupFailed_List;
+                  if(setupFailedList->list.array)
+                  {
+                     for(arrIdx = 0; arrIdx< setupFailedList->list.count; arrIdx++)
+                     {
+                        setupFailedItemIe = (E2connectionSetupFailed_ItemIEs_t*)setupFailedList->list.array[arrIdx];
+                        setupFailedItem = &setupFailedItemIe->value.choice.E2connectionSetupFailed_Item;
+                        printE2ErrorCause(&setupFailedItem->cause);
+                     }
+                  }
+                  break;
+               }
+            default:
+               {
+                  DU_LOG("\nERROR  -->  E2AP : Received Invalid Ie [%ld]", connectionUpdateAck->protocolIEs.list.array[ieIdx]->id);
+                  break;
+               }
+         }
+      }
+   }
+}
+
+/*******************************************************************
 *
 * @brief Handles received E2AP message and sends back response  
 *
@@ -7083,6 +7221,11 @@ void E2APMsgHdlr(uint32_t *duId, Buffer *mBuf)
                case SuccessfulOutcomeE2__value_PR_E2RemovalResponse:
                   {
                      ProcE2RemovalResponse(*duId, &e2apMsg->choice.successfulOutcome->value.choice.E2RemovalResponse);
+                     break;
+                  }
+               case SuccessfulOutcomeE2__value_PR_E2connectionUpdateAcknowledge:
+                  {
+                     ProcE2ConnectionUpdateAck(*duId, &e2apMsg->choice.successfulOutcome->value.choice.E2connectionUpdateAcknowledge);
                      break;
                   }
                default:

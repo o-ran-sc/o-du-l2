@@ -1463,7 +1463,6 @@ void removeE2NodeInformation()
    memset(&duCb.e2apDb.ricId, 0, sizeof(GlobalRicId));
    duCb.e2apDb.numOfTNLAssoc = 0;
    memset(&duCb.e2apDb.tnlAssoc, 0, MAX_TNL_ASSOCIATION*sizeof(TNLAssociation));
-   cmInetClose(&ricParams.sockFd);
    memset(&ricParams, 0, sizeof(DuSctpDestCb));
 }
 /**********************************************************************

@@ -323,6 +323,7 @@ uint8_t sctpNtfyHdlr(RicSctpAssocCb *assocCb, CmInetSctpNotification *ntfy)
       case CM_INET_SCTP_SHUTDOWN_EVENT : /* peer socket gracefully closed */
          DU_LOG("\nINFO   -->  SCTP : Shutdown Event notification received\n");
          assocCb->connUp = FALSE;
+         deleteE2NodeInfo(&ricCb.duInfo[0]);
          exit(0);
          break;
       case CM_INET_SCTP_ADAPTATION_INDICATION :
