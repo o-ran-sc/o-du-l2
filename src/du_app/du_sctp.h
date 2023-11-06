@@ -34,6 +34,13 @@ bool pollingState;
 CmInetNetAddrLst localAddrLst;
 CmInetNetAddrLst remoteAddrLst;
 
+typedef enum
+{
+   F1_SHUTDOWN,
+   E2_SHUTDOWN,
+   BOTH_SHUTDOWN
+}Shutdown;
+
 typedef struct
 {
    uint8_t     numFd;            /* Total count number of receivers socket Fd */

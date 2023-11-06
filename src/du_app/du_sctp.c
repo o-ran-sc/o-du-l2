@@ -571,7 +571,7 @@ void sendToDuApp(Buffer *mBuf, Event event)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t sctpNtfyHdlr(CmInetSctpNotification *ntfy, uint8_t *itfState)
+uint8_t sctpNtfyHdlr(CmInetSctpNotification *ntfy, uint8_t *itfState, Shutdown shutdownCase)
 {
    Pst pst;
 
@@ -617,10 +617,21 @@ uint8_t sctpNtfyHdlr(CmInetSctpNotification *ntfy, uint8_t *itfState)
          DU_LOG("\nINFO   -->  SCTP : Send Failed notification received\n");
          break;
       case CM_INET_SCTP_SHUTDOWN_EVENT : /* peer socket gracefully closed */
-         DU_LOG("\nINFO   -->  SCTP : Shutdown Event notification received\n");
-         *itfState = DU_SCTP_DOWN;
-         exit(0);
-         break;
+         {
+            DU_LOG("\nINFO   -->  SCTP : Shutdown Event notification received\n");
+            *itfState = DU_SCTP_DOWN;
+            switch(shutdownCase)
+            {
+               case F1_SHUTDOWN:
+                  break;
+               case E2_SHUTDOWN:
+                  removeE2NodeInformation();
+                  break;
+               case BOTH_SHUTDOWN:
+                  exit(0);
+            }
+            break;
+         }
       case CM_INET_SCTP_ADAPTATION_INDICATION :
          DU_LOG("\nINFO   -->  SCTP : Adaptation Indication received\n");
          break;
@@ -707,13 +718,13 @@ uint8_t  processPolling(sctpSockPollParams *pollParams, CmInetFd *sockFd, uint32
             {
                f1Params.assocId = pollParams->ntfy.u.assocChange.assocId;
                DU_LOG("\nDEBUG   -->  SCTP : AssocId assigned to F1Params from PollParams [%d]\n", f1Params.assocId);
-               ret = sctpNtfyHdlr(&pollParams->ntfy, &f1Params.itfState);
+               ret = sctpNtfyHdlr(&pollParams->ntfy, &f1Params.itfState, F1_SHUTDOWN);
             }
             else if(pollParams->port == ricParams.destPort)
             {
                ricParams.assocId = pollParams->ntfy.u.assocChange.assocId;
                DU_LOG("\nDEBUG   -->  SCTP : AssocId assigned to ricParams from PollParams [%d]\n", ricParams.assocId);
-               ret = sctpNtfyHdlr(&pollParams->ntfy, &ricParams.itfState);
+               ret = sctpNtfyHdlr(&pollParams->ntfy, &ricParams.itfState, E2_SHUTDOWN);
             }
             else
             {

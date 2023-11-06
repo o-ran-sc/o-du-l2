@@ -26,6 +26,7 @@
 #include "du_e2ap_mgr.h"
 #include "du_e2ap_msg_hdl.h"
 #include "du_cfg.h"
+#include "du_sctp.h"
 #include "du_mgr.h"
 #include "du_mgr_main.h"
 #include "du_utils.h"
@@ -482,7 +483,6 @@ uint8_t BuildAndSendRemovalResponse(uint16_t transId)
    }while(true);
 
    FreeE2RemovalResponse(e2apMsg);
-   removeE2NodeInformation();
    return ret;
 }
 
@@ -8223,8 +8223,10 @@ void ProcE2RemovalResponse(E2AP_PDU_t *e2apMsg)
                   if((duCb.e2apDb.e2TransInfo.e2InitTransaction[transId].transactionId == transId) &&\
                         (duCb.e2apDb.e2TransInfo.e2InitTransaction[transId].procedureCode == e2apMsg->choice.unsuccessfulOutcome->procedureCode))
                   {
-                     removeE2NodeInformation();
+                     DU_LOG("\nINFO  -->  E2AP : Sending request to close the sctp connection");
+                     cmInetClose(&ricParams.sockFd);
                      memset(&duCb.e2apDb.e2TransInfo.e2InitTransaction[transId], 0, sizeof(E2TransInfo));
+                     removeE2NodeInformation();
                   }
                   else
                   {
@@ -9184,6 +9186,7 @@ void E2APMsgHdlr(Buffer *mBuf)
                case SuccessfulOutcomeE2__value_PR_E2nodeConfigurationUpdateAcknowledge:
                   {
                      procE2NodeConfigUpdateAck(e2apMsg);
+                     //BuildAndSendRemovalRequest();
                      break;
                   }
                case SuccessfulOutcomeE2__value_PR_E2RemovalResponse:
