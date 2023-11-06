@@ -18,6 +18,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d11cd45b_7e72f204",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 9048,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-11-06T09:02:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7acebb6c_5646e2d1",
+      "revId": "c146c66a6e2ce6636e3516c4f4fef6c0c688d56c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "499f5418_ec7bff50",
@@ -31,6 +49,30 @@
       "writtenOn": "2023-11-06T08:39:14Z",
       "side": 1,
       "message": "This function is called for all types of notification, not just shutdown.\nHence lets pass interface name only for eg: pass F1/E2 instead of F1_SHUTDOWN/E2_SHUTDOWN",
+      "range": {
+        "startLine": 721,
+        "startChar": 73,
+        "endLine": 721,
+        "endChar": 84
+      },
+      "revId": "c146c66a6e2ce6636e3516c4f4fef6c0c688d56c",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "10002ca4_d723a5d4",
+        "filename": "src/du_app/du_sctp.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 721,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-11-06T09:02:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "499f5418_ec7bff50",
       "range": {
         "startLine": 721,
         "startChar": 73,
