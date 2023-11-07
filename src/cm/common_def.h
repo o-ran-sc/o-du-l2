@@ -263,7 +263,8 @@ typedef enum
    RESOURCE_UNAVAILABLE,  
    SLICE_NOT_FOUND,
    DUPLICATE_ENTRY,
-   PARAM_INVALID
+   PARAM_INVALID,
+   STATS_ID_NOT_FOUND
 }CauseOfResult ;
 
 typedef enum
