@@ -1465,6 +1465,56 @@ void removeE2NodeInformation()
    memset(&duCb.e2apDb.tnlAssoc, 0, MAX_TNL_ASSOCIATION*sizeof(TNLAssociation));
    memset(&ricParams, 0, sizeof(DuSctpDestCb));
 }
+
+/*******************************************************************
+ *
+ * @brief Extract statistics received from DU layers and delete
+ * Ric subscription info
+ *
+ * @details
+ *
+ *    Function :e2ProcStatsDeleteRsp 
+ *
+ *    Functionality: Extract statistics received from DU layers
+ *       and delete ric subscription iformation form db
+ *
+ * @params[in] Statistics delete rsp from MAC
+ * @return ROK-success
+ *         RFAILED-failure
+ *
+ * ****************************************************************/
+uint8_t e2ProcStatsDeleteRsp(MacStatsDeleteRsp *statsDeleteRsp)
+{
+   RanFunction *ranFuncDb = NULLP;
+   CmLList *ricSubscriptionNode = NULLP;
+   RicSubscription *ricSubscriptionInfo = NULLP;
+   E2FailureCause failureCause;
+
+   /* Fetch RAN Function and Subscription DB using subscription Id received
+    * in statistics delete response */
+   if(fetchSubsInfoFromSubsId(statsDeleteRsp->subscriptionId, &ranFuncDb, &ricSubscriptionNode, &ricSubscriptionInfo) != ROK)
+   {
+      DU_LOG("\nERROR  -->  E2AP : extractStatsMeasurement: Failed to fetch subscriprtion details");
+      return RFAILED;
+   }
+
+   deleteRicSubscriptionNode(ricSubscriptionNode);
+#if 0
+   /* TODO */
+   if(statsDeleteRsp->result == MAC_DU_APP_RSP_NOK && statsDeleteRsp->status == STATS_ID_NOT_FOUND)
+   {
+      failureCause->causeType =E2_RIC_REQUEST;
+      failureCause->cause = E2_REQUEST_INFORMATION_UNAVAILABLE;
+      BuildAndSendRicSubscriptionDeleteFailure(ricSubscriptionInfo->ranFuncId, ricSubscriptionInfo->requestId, failureCause);
+   }
+   else
+   {
+      BuildAndSendRicSubscriptionDeleteResponse(ricSubscriptionInfo->ranFuncId, ricSubscriptionInfo->requestId);
+   }
+#endif
+   return ROK;
+}
+
 /**********************************************************************
   End of file
  **********************************************************************/

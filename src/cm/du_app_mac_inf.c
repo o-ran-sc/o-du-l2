@@ -2555,6 +2555,164 @@ uint8_t unpackDuMacStatsInd(MacDuStatsIndFunc func, Pst *pst, Buffer *mBuf)
     return RFAILED;
 }
 
+/*******************************************************************
+*
+* @brief Packs and Sends Statistics Delete Request from DUAPP to MAC
+*
+* @details
+*
+*    Function : packDuMacStatsDeleteReq
+*
+*    Functionality:
+*       Packs and Sends statistics Delete Request from DUAPP to MAC
+*
+*
+* @params[in] Post structure pointer
+*             StatsDeleteReq pointer
+* @return ROK     - success
+*         RFAILED - failure
+*
+* ****************************************************************/
+uint8_t packDuMacStatsDeleteReq(Pst *pst, MacStatsDeleteReq *statsDeleteReq)
+{
+    Buffer *mBuf = NULLP;
+
+    if(pst->selector == ODU_SELECTOR_LWLC)
+    {
+       if (ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf) != ROK)
+       {
+          DU_LOG("\nERROR  --> MAC : Memory allocation failed at packDuMacStatsDeleteReq");
+          return RFAILED;
+       }
+       /* pack the address of the structure */
+       CMCHKPK(oduPackPointer,(PTR)statsDeleteReq, mBuf);
+    }
+    else
+    {
+       DU_LOG("\nERROR  -->  MAC: Only LWLC supported for packDuMacStatsDeleteReq");
+       return RFAILED;
+    }
+    return ODU_POST_TASK(pst,mBuf);
+}
+
+/*******************************************************************
+*
+* @brief Unpacks Statistics Delete Request received from DU APP
+*
+* @details
+*
+*    Function : unpackMacStatsDeleteReq
+*
+*    Functionality:
+*         Unpacks Statistics Delete Request received from DU APP
+*
+* @params[in] Pointer to Handler
+*             Post structure pointer
+*             Message Buffer
+* @return ROK     - success
+*         RFAILED - failure
+*
+* ****************************************************************/
+uint8_t unpackMacStatsDeleteReq(DuMacStatsDeleteReqFunc func, Pst *pst, Buffer *mBuf)
+{
+    if(pst->selector == ODU_SELECTOR_LWLC)
+    {
+       MacStatsDeleteReq *statsDeleteReq;
+
+       /* unpack the address of the structure */
+       CMCHKUNPK(oduUnpackPointer, (PTR *)&statsDeleteReq, mBuf);
+       ODU_PUT_MSG_BUF(mBuf);
+       return (*func)(pst, statsDeleteReq);
+    }
+    else
+    {
+       /* Nothing to do for other selectors */
+       DU_LOG("\nERROR  -->  DU APP : Only LWLC supported for Statistics Delete Request ");
+       ODU_PUT_MSG_BUF(mBuf);
+    }
+
+    return RFAILED;
+}
+
+/*******************************************************************
+*
+* @brief Packs and Sends Statistics Delete Response from MAC to DUAPP
+*
+* @details
+*
+*    Function : packDuMacStatsDeleteRsp
+*
+*    Functionality:
+*       Packs and Sends Statistics Delete Response from MAC to DUAPP
+*
+*
+* @params[in] Post structure pointer
+*             StatsDeleteRsp pointer
+* @return ROK     - success
+*         RFAILED - failure
+*
+* ****************************************************************/
+uint8_t packDuMacStatsDeleteRsp(Pst *pst, MacStatsDeleteRsp *statsRsp)
+{
+    Buffer *mBuf = NULLP;
+
+    if(pst->selector == ODU_SELECTOR_LWLC)
+    {
+       if (ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf) != ROK)
+       {
+          DU_LOG("\nERROR  --> MAC : Memory allocation failed at packDuMacStatsDeleteRsp");
+          return RFAILED;
+       }
+       /* pack the address of the structure */
+       CMCHKPK(oduPackPointer,(PTR)statsRsp, mBuf);
+    }
+    else
+    {
+       DU_LOG("\nERROR  -->  MAC: Only LWLC supported for packDuMacStatsDeleteRsp");
+       return RFAILED;
+    }
+    return ODU_POST_TASK(pst,mBuf);
+}
+
+/*******************************************************************
+*
+* @brief Unpacks Statistics Delete Response received from MAC
+*
+* @details
+*
+*    Function : unpackDuMacStatsDeleteRsp
+*
+*    Functionality:
+*         Unpacks Statistics Delete Response received from MAC
+*
+* @params[in] Pointer to Handler
+*             Post structure pointer
+*             Message Buffer
+* @return ROK     - success
+*         RFAILED - failure
+*
+* ****************************************************************/
+uint8_t unpackDuMacStatsDeleteRsp(MacDuStatsDeleteRspFunc func, Pst *pst, Buffer *mBuf)
+{
+    if(pst->selector == ODU_SELECTOR_LWLC)
+    {
+       MacStatsDeleteRsp *statsRsp;
+
+       /* unpack the address of the structure */
+       CMCHKUNPK(oduUnpackPointer, (PTR *)&statsRsp, mBuf);
+       ODU_PUT_MSG_BUF(mBuf);
+       return (*func)(pst, statsRsp);
+    }
+    else
+    {
+       /* Nothing to do for other selectors */
+       DU_LOG("\nERROR  -->  DU APP : Only LWLC supported for Statistics Delete Response ");
+       ODU_PUT_MSG_BUF(mBuf);
+    }
+
+    return RFAILED;
+}
+
 /**********************************************************************
   End of file
  **********************************************************************/

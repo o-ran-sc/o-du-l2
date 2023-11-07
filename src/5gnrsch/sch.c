@@ -2945,6 +2945,154 @@ uint8_t schCalcAndSendGrpStats(SchStatsGrp *grpInfo)
    return SchSendStatsIndToMac(grpInfo->schInst, &statsInd);
 }
 
+/*******************************************************************
+ *
+ * @brief Fill and send Statistics Delete Response to MAC
+ *
+ * @details
+ *
+ *    Function :  SchSendStatsDeleteRspToMac
+ *
+ *    Functionality: Fill and send Statistics Delete Response to MAC
+ *
+ * @params[in]  
+ *       Statistics Delete Request from MAC
+ *       Statistics Delete result
+ *       Cause of response
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t SchSendStatsDeleteRspToMac(SchStatsDeleteReq *statsDeleteReq, SchMacRsp rsp, CauseOfResult cause)
+{
+   Pst rspPst;
+   uint8_t ret = ROK;
+   SchStatsDeleteRsp  *schStatsDeleteRsp;
+
+   DU_LOG("\nINFO   --> SCH : Filling Statistics Delete Response");
+   SCH_ALLOC(schStatsDeleteRsp, sizeof(SchStatsDeleteRsp));
+   if(schStatsDeleteRsp == NULLP)
+   {
+      DU_LOG("\nERROR  --> SCH : Failed to allocate memory in SchSendStatsDeleteRspToMac()");
+      return RFAILED;
+   }
+   
+   schStatsDeleteRsp->subscriptionId=statsDeleteReq->subscriptionId;
+   schStatsDeleteRsp->rsp=rsp;
+   schStatsDeleteRsp->cause=cause;
+   /* Filling response post */
+   memset(&rspPst, 0, sizeof(Pst));
+   FILL_PST_SCH_TO_MAC(rspPst, inst);
+   rspPst.event = EVENT_STATISTICS_DELETE_RSP_TO_MAC;
+
+   ret = MacMessageRouter(&rspPst, (void *)schStatsDeleteRsp);
+   if(ret == RFAILED)
+   {
+      DU_LOG("\nERROR  -->  SCH : SchSendStatsDeleteRspToMac(): Failed to send Statistics Response");
+      return ret;
+   }
+   return ret;
+}
+
+/*******************************************************************
+ *
+ * @brief Delete statistics information 
+ *
+ * @details
+ *
+ *    Function : deleteStatsInfo 
+ *
+ *    Functionality:
+ *    Delete statistics information
+ *
+ * @params[in] 
+ *             Instance
+ *             Subscription id 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t deleteStatsInfo(Inst inst, uint64_t subscriptionId)
+{
+   bool statsFound=false;
+   uint8_t idx=0, statsGrpIdx=0;
+   SchStatsGrp *statsGrpInfo=NULLP;
+
+   if(schCb[inst].statistics.numOfStatsCfgd)
+   {
+      for(idx=0;idx<schCb[inst].statistics.numOfStatsCfgd; idx++)
+      {
+         for(statsGrpIdx=0;statsGrpIdx<schCb[inst].statistics.statsInfoList[idx].numStatsGroup; statsGrpIdx++)
+         {
+            statsGrpInfo = &schCb[inst].statistics.statsInfoList[idx].statsGrpList[statsGrpIdx];
+            if(statsGrpInfo->subscriptionId ==subscriptionId)
+            {
+               SCH_FREE(statsGrpInfo->kpiStats.dlTotalPrbUsage, sizeof(TotalPrbUsage));
+               SCH_FREE(statsGrpInfo->kpiStats.ulTotalPrbUsage, sizeof(TotalPrbUsage));
+               if(schChkTmr((PTR)statsGrpInfo, EVENT_STATISTICS_TMR) == true)
+               {
+                  schStopTmr(&schCb[inst], (PTR)statsGrpInfo, EVENT_STATISTICS_TMR);
+               }
+               memset(statsGrpInfo, 0, sizeof(SchStatsGrp));
+               statsFound = true;
+               break;
+            }
+         }
+      }
+   }
+
+   if(statsFound ==false)
+   {
+      DU_LOG("\nERROR  -->  SCH : SchProcStatsDeleteReq(): Statistics information is not present");
+      return RFAILED;
+   }
+   return ROK;
+}
+
+/*******************************************************************
+ *
+ * @brief Processes Statistics Delete Request from MAC
+ *
+ * @details
+ *
+ *    Function : SchProcStatsDeleteReq
+ *
+ *    Functionality:
+ *     This function process the statistics delete request from MAC:
+ *
+ * @params[in] Post structure
+ *             Statistics Delete Request from MAC
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t SchProcStatsDeleteReq(Pst *pst, SchStatsDeleteReq *statsDeleteReq)
+{
+   uint8_t ret =ROK;
+   Inst    inst = pst->dstInst - SCH_INST_START;
+
+   DU_LOG("\nINFO   -->  SCH : Received Statistics Delete Request from MAC");
+
+   if(statsDeleteReq == NULLP)
+   {
+      DU_LOG("\nERROR  -->  SCH : SchProcStatsDeleteReq(): Received Null pointer");
+      return RFAILED;
+   }
+
+   ret = deleteStatsInfo(inst, statsDeleteReq->subscriptionId);
+   if(ret == ROK)
+   {
+      SchSendStatsDeleteRspToMac(statsDeleteReq, RSP_OK, SUCCESSFUL);
+   }
+   else
+   {
+      SchSendStatsDeleteRspToMac(statsDeleteReq, RSP_NOK, STATS_ID_NOT_FOUND);
+   }
+   SCH_FREE(statsDeleteReq, sizeof(SchStatsDeleteReq));
+
+   return ret;
+} /* End of SchProcStatsDeleteReq */
+
 /**********************************************************************
   End of file
  **********************************************************************/
