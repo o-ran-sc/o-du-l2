@@ -192,6 +192,13 @@ void MacHdlDuappEvents(Pst *pst, Buffer *mBuf)
             /* Process Statistics Request */
             unpackMacStatsReq(MacProcStatsReq, pst, mBuf);
          }
+      
+      case EVENT_MAC_STATS_DELETE_REQ:
+         {
+            /* Process Statistics Delete Request */
+            unpackMacStatsDeleteReq(MacProcStatsDeleteReq, pst, mBuf);
+         }
+
 
       default:
          RG_FREE_MSG(mBuf);
@@ -637,6 +644,11 @@ uint8_t MacMessageRouter(Pst *pst, void *msg)
       case EVENT_STATISTICS_IND_TO_MAC:
          {
             MacProcSchStatsInd(pst, (SchStatsInd *)msg);
+            break;
+         }
+      case EVENT_STATISTICS_DELETE_RSP_TO_MAC:
+         {
+            MacProcSchStatsDeleteRsp(pst, (SchStatsDeleteRsp *)msg);
             break;
          }
       default:

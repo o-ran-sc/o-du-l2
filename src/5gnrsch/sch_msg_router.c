@@ -376,6 +376,10 @@ uint8_t SchMessageRouter(Pst *pst, void *msg)
          SchProcStatsReq(pst, (SchStatsReq *)msg);
          break;
       }
+      case EVENT_STATISTICS_DELETE_REQ_TO_SCH:
+      {
+         SchProcStatsDeleteReq(pst, (SchStatsDeleteReq *)msg);
+      }
       default:
       {
          DU_LOG("\nERROR  -->  SCH : SchMessageRouter(): Invalid event [%d] received", pst->event);

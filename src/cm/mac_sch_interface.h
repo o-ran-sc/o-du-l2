@@ -54,6 +54,8 @@
 #define EVENT_STATISTICS_REQ_TO_SCH  35
 #define EVENT_STATISTICS_RSP_TO_MAC  36
 #define EVENT_STATISTICS_IND_TO_MAC  37
+#define EVENT_STATISTICS_DELETE_REQ_TO_SCH  38
+#define EVENT_STATISTICS_DELETE_RSP_TO_MAC  39
 
 /*macros*/
 #define MAX_SSB_IDX 1 /* forcing it as 1 for now. Right value is 64 */
@@ -2292,6 +2294,17 @@ typedef struct schStatsInd
    SchStats    measuredStatsList[MAX_NUM_STATS];
 }SchStatsInd;
 
+typedef struct schStatsDeleteReq
+{
+   uint64_t  subscriptionId;
+}SchStatsDeleteReq;
+
+typedef struct schStatsDeleteRsp
+{
+   uint64_t      subscriptionId;
+   SchMacRsp     rsp;
+   CauseOfResult cause;
+}SchStatsDeleteRsp;
 
 /* function declarations */
 uint8_t MacMessageRouter(Pst *pst, void *msg);
