@@ -249,6 +249,11 @@ void callFlowSchMsgRouter(Pst *pst)
             strcpy(message,"EVENT_STATISTICS_REQ_TO_SCH");
             break;
          }
+      case EVENT_STATISTICS_DELETE_REQ_TO_SCH:
+         {
+            strcpy(message,"EVENT_STATISTICS_DELETE_REQ_TO_SCH");
+            break;
+         }
       default:
          strcpy(message,"Invalid Event");
          break;
@@ -374,6 +379,11 @@ uint8_t SchMessageRouter(Pst *pst, void *msg)
       case EVENT_STATISTICS_REQ_TO_SCH:
       {
          SchProcStatsReq(pst, (SchStatsReq *)msg);
+         break;
+      }
+      case EVENT_STATISTICS_DELETE_REQ_TO_SCH:
+      {
+         SchProcStatsDeleteReq(pst, (SchStatsDeleteReq *)msg);
          break;
       }
       default:

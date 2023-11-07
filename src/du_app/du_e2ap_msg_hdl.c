@@ -7640,7 +7640,10 @@ void procRicSubscriptionDeleteRequest(E2AP_PDU_t *e2apMsg)
                      break;
                   }
 
-                  //TODO : Send statistics delete request to MAC 
+                  if(BuildAndSendStatsDeleteReq(ricSubsDb) != ROK)
+                  {
+                     DU_LOG("\nERROR  -->  E2AP : Failed to build and send ric subscription delete req to du layers");
+                  }
                   break;
                }
 

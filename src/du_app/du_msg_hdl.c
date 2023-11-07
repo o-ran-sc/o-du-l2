@@ -66,6 +66,7 @@ uint8_t BuildAndSendDUConfigUpdate();
 uint16_t getTransId();
 uint8_t cmPkLrgSchCfgReq(Pst * pst,RgMngmt * cfg);
 uint8_t sendCellDeleteReqToMac(uint16_t cellId);
+uint8_t BuildAndSendStatsDeleteReq(RicSubscription *ricSubscriptionInfo);
 
 packMacCellCfgReq packMacCellCfgOpts[] =
 {
@@ -108,6 +109,13 @@ DuMacStatsReqFunc packMacStatsReqOpts[]=
    packDuMacStatsReq,          /* Loose Coupling */
    MacProcStatsReq,            /* Tight Coupling */
    packDuMacStatsReq           /* Light weight-loose coupling */
+};
+
+DuMacStatsDeleteReqFunc packMacStatsDeleteReqOpts[]=
+{
+   packDuMacStatsDeleteReq,          /* Loose Coupling */
+   MacProcStatsDeleteReq,            /* Tight Coupling */
+   packDuMacStatsDeleteReq           /* Light weight-loose coupling */
 };
 
 /**************************************************************************
@@ -2270,6 +2278,119 @@ uint8_t DuProcMacStatsInd(Pst *pst, MacStatsInd *statsInd)
       DU_LOG("\nINFO  -->  DU_APP : DuProcMacStatsInd: Received NULL Pointer");
    }
    return ret;
+}
+
+/*******************************************************************
+ *
+ * @brief Process statistics delete response from MAC
+ *
+ * @details
+ *
+ *    Function : DuProcMacStatsDeleteRsp
+ *
+ *    Functionality: Processes statistics delete response
+ *       from MAC. 
+ 
+ * @params[in]
+ *    Pst Information
+ *    Mac stats delete rsp
+ *
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+
+uint8_t DuProcMacStatsDeleteRsp(Pst *pst, MacStatsDeleteRsp *statsDeleteRsp)
+{
+   uint8_t ret = RFAILED;
+   DU_LOG("\nINFO  -->  DU_APP : DuProcMacStatsDeleteRsp: Received Statistics Response from MAC");
+
+   if(statsDeleteRsp)
+   {
+      if((ret = e2ProcStatsDeleteRsp(statsDeleteRsp)) != ROK)
+      {
+          DU_LOG("\nINFO  -->  DU_APP : Failed in %s at line %d", __func__, __LINE__);
+      }
+      DU_FREE_SHRABL_BUF(pst->region, pst->pool, statsDeleteRsp, sizeof(MacStatsDeleteRsp));
+   }
+   else
+   {
+      DU_LOG("\nERROR  -->  DU_APP : DuProcMacStatsDeleteRsp: Received NULL Pointer");
+   }
+   return ret;
+}
+
+/*******************************************************************
+ *
+ * @brief Send Statistics delete req to MAC
+ *
+ * @details
+ *
+ *    Function : BuildAndSendStatsDeleteReqToMac()
+ *
+ *    Functionality: Send Statistics delete req To Mac
+ *
+ * @params[in]
+ *     Subscription Info
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t BuildAndSendStatsDeleteReqToMac(RicSubscription *ricSubscriptionInfo)
+{
+   Pst pst;
+   MacStatsDeleteReq *macStatsDelete = NULLP;
+
+   /* Fill MAC statistics delete */
+   DU_ALLOC_SHRABL_BUF(macStatsDelete, sizeof(MacStatsDeleteReq));
+   if(macStatsDelete == NULLP)
+   {
+      DU_LOG("\nERROR  -->  DU_APP : Memory allocation failed for macStatsDelete in BuildAndSendStatsDeleteReqToMac");
+      return RFAILED;
+   }
+
+   /* Generate subscription ID using RIC Request ID and RAN Function ID */
+   encodeSubscriptionId(&macStatsDelete->subscriptionId, ricSubscriptionInfo->ranFuncId, ricSubscriptionInfo->requestId);
+
+   DU_LOG("\nDEBUG  -->  DU_APP: Sending Statistics delete req to MAC ");
+   FILL_PST_DUAPP_TO_MAC(pst, EVENT_MAC_STATS_DELETE_REQ);
+   
+   if( (*packMacStatsDeleteReqOpts[pst.selector])(&pst, macStatsDelete) != ROK)
+   { 
+      DU_LOG("\nERROR  -->  DU_APP: Failed to send Statistics delete req to MAC");
+      DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, macStatsDelete, sizeof(MacStatsDeleteReq));
+      return RFAILED;
+   }
+   
+  return ROK;  
+}
+
+
+/*******************************************************************
+ *
+ * @brief Statistics delete to DU layers
+ *
+ * @details
+ *
+ *    Function : BuildAndSendStatsDeleteReq()
+ *
+ *    Functionality:  Statistics delete to DU layers
+ *
+ * @params[in] Subscription Info
+ *
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t BuildAndSendStatsDeleteReq(RicSubscription *ricSubscriptionInfo)
+{
+   /* Build and sent subscription information to MAC in Statistics delete */
+   if(BuildAndSendStatsDeleteReqToMac(ricSubscriptionInfo) != ROK)
+   {
+      DU_LOG("\nERROR  -->  DU_APP : Failed at BuildAndSendStatsDeleteReqToMac()");
+      return RFAILED;
+   }
+   return ROK;
 }
 
 /**********************************************************************

@@ -92,6 +92,8 @@
 #define EVENT_MAC_STATISTICS_REQ     229
 #define EVENT_MAC_STATISTICS_RSP     230
 #define EVENT_MAC_STATISTICS_IND     231
+#define EVENT_MAC_STATS_DELETE_REQ   232
+#define EVENT_MAC_STATS_DELETE_RSP   233
 
 #define BSR_PERIODIC_TIMER_SF_10 10
 #define BSR_RETX_TIMER_SF_320 320
@@ -1899,6 +1901,18 @@ typedef struct macStatsInd
    MacStats    measuredStatsList[MAX_NUM_STATS];
 }MacStatsInd;
 
+typedef struct macStatsDeleteReq
+{
+   uint64_t      subscriptionId;
+}MacStatsDeleteReq;
+
+typedef struct macStatsDeleteRsp
+{
+   uint64_t      subscriptionId;
+   MacRsp        result;
+   CauseOfResult status;
+}MacStatsDeleteRsp;
+
 /****************** FUNCTION POINTERS ********************************/
 
 /* DL broadcast req from DU APP to MAC*/
@@ -2068,6 +2082,16 @@ typedef uint8_t (*MacDuStatsIndFunc) ARGS((
       Pst *pst,
       MacStatsInd *statsInd));
 
+/* Statitics Delete Request from DU APP to MAC */
+typedef uint8_t (*DuMacStatsDeleteReqFunc) ARGS((
+         Pst *pst,
+         MacStatsDeleteReq *statsDeleteReq));
+
+/* Statistics Delete Response from MAC to DU APP */
+typedef uint8_t (*MacDuStatsDeleteRspFunc) ARGS((
+         Pst *pst,
+         MacStatsDeleteRsp *statsDeleteRsp));
+
 /******************** FUNCTION DECLARATIONS ********************************/
 uint8_t packMacCellUpInd(Pst *pst, OduCellId *cellId);
 uint8_t unpackMacCellUpInd(DuMacCellUpInd func, Pst *pst, Buffer *mBuf);
@@ -2200,6 +2224,15 @@ uint8_t unpackDuMacStatsRsp(MacDuStatsRspFunc func, Pst *pst, Buffer *mBuf);
 uint8_t packDuMacStatsInd(Pst *pst, MacStatsInd *statsRsp);
 uint8_t DuProcMacStatsInd(Pst *pst, MacStatsInd *statsRsp);
 uint8_t unpackDuMacStatsInd(MacDuStatsIndFunc func, Pst *pst, Buffer *mBuf);
+
+uint8_t packDuMacStatsDeleteReq(Pst *pst, MacStatsDeleteReq *statsDeleteReq);
+uint8_t MacProcStatsDeleteReq(Pst *pst, MacStatsDeleteReq *statsDeleteReq);
+uint8_t unpackMacStatsDeleteReq(DuMacStatsDeleteReqFunc func, Pst *pst, Buffer *mBuf);
+
+uint8_t packDuMacStatsDeleteRsp(Pst *pst, MacStatsDeleteRsp *statsDeleteRsp);
+uint8_t DuProcMacStatsDeleteRsp(Pst *pst, MacStatsDeleteRsp *statsDeleteRsp);
+uint8_t unpackDuMacStatsDeleteRsp(MacDuStatsDeleteRspFunc func, Pst *pst, Buffer *mBuf);
+
 #endif
 
 
