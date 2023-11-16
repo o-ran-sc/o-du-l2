@@ -3,6 +3,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "4e801bb6_b947880a",
+        "filename": "src/5gnrmac/mac_cfg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1453,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-11-16T12:12:38Z",
+      "side": 1,
+      "message": "send stats delete response with failure cause \"resource unavailable\"\n\njust set ret\u003d RFAILED here. In that case, at line 1465, failure will be sent",
+      "revId": "df0c8cf49bde837913b8a6f82ae4410f8da160cf",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f5b1f59e_e19d5fa3",
         "filename": "src/5gnrsch/sch.c",
         "patchSetId": 2
@@ -14,6 +31,29 @@
       "writtenOn": "2023-11-16T10:03:50Z",
       "side": 1,
       "message": "here it breaks from the inner for loop, if u want to also break from outer loop then pls check for StatsFound as TRUE and trigger another break.",
+      "range": {
+        "startLine": 3038,
+        "startChar": 15,
+        "endLine": 3038,
+        "endChar": 20
+      },
+      "revId": "df0c8cf49bde837913b8a6f82ae4410f8da160cf",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "adb4a524_64684168",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 3038,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-11-16T12:12:38Z",
+      "side": 1,
+      "message": "There can be multiple entries with same subscription Id and different groupId.\nHence we must not break here and let the for loop traverse all entries",
       "range": {
         "startLine": 3038,
         "startChar": 15,
@@ -42,6 +82,29 @@
         "startChar": 17,
         "endLine": 2374,
         "endChar": 40
+      },
+      "revId": "df0c8cf49bde837913b8a6f82ae4410f8da160cf",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bcd802ee_f51e9b0b",
+        "filename": "src/du_app/du_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2384,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-11-16T12:12:38Z",
+      "side": 1,
+      "message": "caller of this function?",
+      "range": {
+        "startLine": 2384,
+        "startChar": 8,
+        "endLine": 2384,
+        "endChar": 31
       },
       "revId": "df0c8cf49bde837913b8a6f82ae4410f8da160cf",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
