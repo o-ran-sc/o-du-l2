@@ -7065,6 +7065,75 @@ void ProcE2ConnectionUpdateAck(uint32_t duId, E2connectionUpdateAcknowledge_t *c
    }
 }
 
+/******************************************************************
+ *
+ * @brief Processes the Ric Subs delete failure msg
+ *
+ * @details
+ *
+ *    Function : procRicSubsDeleteFailure
+ *
+ *    Functionality: Processes the Ric Subs delete failure msg
+ *
+ * @params[in]
+ *       Ric Subs delete failure information
+ *
+ * @return void
+ *
+ * ****************************************************************/
+void ProcRicSubsDeleteFailure(RICsubscriptionDeleteFailure_t *ricSubsDeleteFail)
+{
+   uint8_t ieIdx = 0;
+   uint16_t ranFuncId=0;
+   CauseE2_t *cause = NULLP;
+   RICrequestID_t  ricRequestID;
+
+   if(!ricSubsDeleteFail)
+   {
+      DU_LOG("\nERROR  -->  E2AP : ricSubsDeleteFail pointer is null");
+      return;
+   }
+
+   if(!ricSubsDeleteFail->protocolIEs.list.array)
+   {
+      DU_LOG("\nERROR  -->  E2AP : ricSubsDeleteFail array pointer is null");
+      return;
+   }
+
+   for(ieIdx=0; ieIdx < ricSubsDeleteFail->protocolIEs.list.count; ieIdx++)
+   {
+      if(ricSubsDeleteFail->protocolIEs.list.array[ieIdx])
+      {
+         switch(ricSubsDeleteFail->protocolIEs.list.array[ieIdx]->id)
+         {
+            case ProtocolIE_IDE2_id_RICrequestID:
+               {
+                  memcpy(&ricSubsDeleteFail->protocolIEs.list.array[ieIdx]->value.choice.RICrequestID, &ricRequestID, sizeof(RICrequestID_t));
+                  DU_LOG("\nERROR  -->  E2AP : Received RicReqId %ld and InstanceId %ld", ricRequestID.ricRequestorID, ricRequestID.ricInstanceID);
+                  break;
+               }
+            case ProtocolIE_IDE2_id_RANfunctionID:
+               {
+                  ranFuncId = ricSubsDeleteFail->protocolIEs.list.array[ieIdx]->value.choice.RANfunctionID;
+                  DU_LOG("\nERROR  -->  E2AP : Received ranfuncId %d", ranFuncId);
+                  break;
+               }
+            case ProtocolIE_IDE2_id_CauseE2:
+               {
+                   cause = &ricSubsDeleteFail->protocolIEs.list.array[ieIdx]->value.choice.CauseE2;
+                   printE2ErrorCause(cause);
+                   break;
+               }
+            default:
+               {
+                  DU_LOG("\nERROR  -->  E2AP : Received Invalid Ie [%ld]", ricSubsDeleteFail->protocolIEs.list.array[ieIdx]->id);
+                  break;
+               }
+         }
+      }
+   }
+}
+
 /*******************************************************************
 *
 * @brief Handles received E2AP message and sends back response  
@@ -7256,6 +7325,11 @@ void E2APMsgHdlr(uint32_t *duId, Buffer *mBuf)
                case UnsuccessfulOutcomeE2__value_PR_E2connectionUpdateFailure:
                   {
                      ProcE2connectionUpdateFailure(&e2apMsg->choice.unsuccessfulOutcome->value.choice.E2connectionUpdateFailure);
+                     break;
+                  }
+               case UnsuccessfulOutcomeE2__value_PR_RICsubscriptionDeleteFailure:
+                  {
+                     ProcRicSubsDeleteFailure(&e2apMsg->choice.unsuccessfulOutcome->value.choice.RICsubscriptionDeleteFailure);
                      break;
                   }
                default:
