@@ -7513,6 +7513,176 @@ uint8_t BuildAndSendRicSubscriptionDeleteRequired()
 
 /*******************************************************************
  *
+ * @brief Free RIC Subscription Delete Failure Message
+ *
+ * @details
+ *
+ *    Function : FreeRicSubscriptionDeleteFailure
+ *
+ * Functionality:  Free RIC Subscription Delete Failure
+ *
+ * @param  E2AP Message PDU
+ * @return void
+ *
+ ******************************************************************/
+void FreeRicSubscriptionDeleteFailure(E2AP_PDU_t *e2apMsg)
+{
+   uint8_t ieIdx = 0, arrIdx = 0;
+   RICsubscriptionDeleteFailure_t *ricSubsDelFailure = NULLP;
+
+   if(e2apMsg)
+   {
+      if(e2apMsg->choice.unsuccessfulOutcome)
+      {
+         ricSubsDelFailure = &e2apMsg->choice.unsuccessfulOutcome->value.choice.RICsubscriptionDeleteFailure;
+         if(ricSubsDelFailure->protocolIEs.list.array)
+         {
+            for(ieIdx = 0; ieIdx < ricSubsDelFailure->protocolIEs.list.count; ieIdx++)
+            {
+               DU_FREE(ricSubsDelFailure->protocolIEs.list.array[ieIdx], sizeof(RICsubscriptionDeleteFailure_IEs_t));
+            }
+            DU_FREE(ricSubsDelFailure->protocolIEs.list.array, ricSubsDelFailure->protocolIEs.list.size);
+         }
+         DU_FREE(e2apMsg->choice.unsuccessfulOutcome, sizeof(UnsuccessfulOutcomeE2_t));
+      }
+      DU_FREE(e2apMsg, sizeof(E2AP_PDU_t));;
+   }
+}
+
+/*******************************************************************
+ *
+ * @brief Builds and Send RIC Subscription Delete Failure
+ *
+ * @details
+ *
+ *    Function : BuildAndSendRicSubscriptionDeleteFailure
+ *
+ * Functionality: Build and send RIC Subscription Delete Failure.
+ *
+ * @params[in] 
+ *          Ran Func Id
+ *          Ric Req Id
+ *          E2 failure cause
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ ******************************************************************/
+uint8_t BuildAndSendRicSubscriptionDeleteFailure(uint16_t ranFuncId,  RicRequestId requestId, E2FailureCause failureCause)
+{
+   uint8_t elementCnt = 0, ieIdx = 0, ret = RFAILED;
+   E2AP_PDU_t         *e2apMsg = NULLP;
+   RICsubscriptionDeleteFailure_t *ricSubsDelFailure = NULLP;
+   RICsubscriptionDeleteFailure_IEs_t *ricSubsDelFailureIe = NULLP;
+   asn_enc_rval_t     encRetVal;        /* Encoder return value */
+
+   while(true)
+   {
+      DU_LOG("\nINFO   -->  E2AP : Building RIC Subscription Delete Failure Message\n");
+
+      DU_ALLOC(e2apMsg, sizeof(E2AP_PDU_t));
+      if(e2apMsg == NULLP)
+      {
+         DU_LOG("\nERROR  -->  E2AP : %s: Memory allocation for E2AP-PDU failed at line %d",__func__, __LINE__);
+         break;
+      }
+
+      e2apMsg->present = E2AP_PDU_PR_unsuccessfulOutcome;
+      DU_ALLOC(e2apMsg->choice.unsuccessfulOutcome, sizeof(UnsuccessfulOutcomeE2_t));
+      if(e2apMsg->choice.unsuccessfulOutcome == NULLP)
+      {
+         DU_LOG("\nERROR  -->  E2AP : %s: Memory allocation for E2AP-PDU failed at line %d",__func__, __LINE__);
+         break;
+      }
+      e2apMsg->choice.unsuccessfulOutcome->procedureCode = ProcedureCodeE2_id_RICsubscriptionDelete;
+      e2apMsg->choice.unsuccessfulOutcome->criticality = CriticalityE2_reject;
+      e2apMsg->choice.unsuccessfulOutcome->value.present = UnsuccessfulOutcomeE2__value_PR_RICsubscriptionDeleteFailure;
+
+
+      ricSubsDelFailure = &e2apMsg->choice.unsuccessfulOutcome->value.choice.RICsubscriptionDeleteFailure;
+
+      elementCnt = 3;
+      ricSubsDelFailure->protocolIEs.list.count = elementCnt;
+      ricSubsDelFailure->protocolIEs.list.size = elementCnt * sizeof(RICsubscriptionDeleteFailure_IEs_t *);
+
+      DU_ALLOC(ricSubsDelFailure->protocolIEs.list.array, ricSubsDelFailure->protocolIEs.list.size);
+      if(ricSubsDelFailure->protocolIEs.list.array == NULLP)
+      {
+         DU_LOG("\nERROR  -->  E2AP : %s: Memory allocation failed for array elements at line %d",__func__, __LINE__);
+         break;
+      }
+
+      for(ieIdx = 0; ieIdx < elementCnt; ieIdx++)
+      {
+         DU_ALLOC(ricSubsDelFailure->protocolIEs.list.array[ieIdx], sizeof(RICsubscriptionDeleteFailure_IEs_t));
+         if(ricSubsDelFailure->protocolIEs.list.array[ieIdx] == NULLP)
+         {
+            DU_LOG("\nERROR  -->  E2AP : %s: Memory allocation failed for index [%d] at line %d", \
+                  __func__, ieIdx, __LINE__);
+            break;
+         }
+      }
+      if(ieIdx < elementCnt)
+         break;
+
+      ieIdx = 0;
+      ricSubsDelFailureIe = ricSubsDelFailure->protocolIEs.list.array[ieIdx];
+      ricSubsDelFailureIe->id = ProtocolIE_IDE2_id_RICrequestID;
+      ricSubsDelFailureIe->criticality = CriticalityE2_reject;
+      ricSubsDelFailureIe->value.present = RICsubscriptionDeleteFailure_IEs__value_PR_RICrequestID;
+      ricSubsDelFailureIe->value.choice.RICrequestID.ricRequestorID= requestId.requestorId;
+      ricSubsDelFailureIe->value.choice.RICrequestID.ricInstanceID = requestId.instanceId;
+
+      ieIdx++;
+      ricSubsDelFailureIe = ricSubsDelFailure->protocolIEs.list.array[ieIdx];
+      ricSubsDelFailureIe->id = ProtocolIE_IDE2_id_RANfunctionID;
+      ricSubsDelFailureIe->criticality = CriticalityE2_reject;
+      ricSubsDelFailureIe->value.present = RICsubscriptionDeleteFailure_IEs__value_PR_RANfunctionID;
+      ricSubsDelFailureIe->value.choice.RANfunctionID = ranFuncId;
+      
+      ieIdx++;
+      ricSubsDelFailureIe->id = ProtocolIE_IDE2_id_CauseE2;
+      ricSubsDelFailureIe->criticality = CriticalityE2_ignore;
+      ricSubsDelFailureIe->value.present = RICsubscriptionDeleteFailure_IEs__value_PR_CauseE2;
+      fillE2Cause(&ricSubsDelFailureIe->value.choice.CauseE2, failureCause);
+
+      /* Prints the Msg formed */
+      xer_fprint(stdout, &asn_DEF_E2AP_PDU, e2apMsg);
+      memset(encBuf, 0, ENC_BUF_MAX_LEN);
+      encBufSize = 0;
+      encRetVal = aper_encode(&asn_DEF_E2AP_PDU, 0, e2apMsg, PrepFinalEncBuf, encBuf);
+      if(encRetVal.encoded == ENCODE_FAIL)
+      {
+         DU_LOG("\nERROR  -->  E2AP : Could not encode RIC Subscription Delete Failure Message (at %s)\n",\
+               encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
+         break;
+      }
+      else
+      {
+         DU_LOG("\nDEBUG  -->  E2AP : Created APER encoded buffer for RIC Subscription Delete Failure Message \n");
+#ifdef DEBUG_ASN_PRINT
+         for(int i=0; i< encBufSize; i++)
+         {
+            printf("%x",encBuf[i]);
+         }
+#endif
+      }
+
+      if(SendE2APMsg(DU_APP_MEM_REGION, DU_POOL, encBuf, encBufSize) != ROK)
+      {
+         DU_LOG("\nERROR   -->  E2AP : Failed to send RIC Susbcription Delete Failure Message");
+         break;
+      }
+
+      ret = ROK;
+      break;
+   }
+
+   FreeRicSubscriptionDeleteFailure(e2apMsg);
+   return ret;
+}
+
+/*******************************************************************
+ *
  * @brief Free RIC Subscription Delete Request Message
  *
  * @details
