@@ -24,6 +24,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bc22c909_27fdc8c0",
+        "filename": "src/du_app/du_e2ap_mgr.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1503,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-11-17T09:56:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cd918e26_7b5a1219",
+      "range": {
+        "startLine": 1503,
+        "startChar": 32,
+        "endLine": 1503,
+        "endChar": 51
+      },
+      "revId": "7c8d4ceaa584627437fc74535f47ddc2ed2a858f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4a9e2cf8_845f4309",
@@ -37,6 +61,24 @@
       "writtenOn": "2023-11-17T08:49:36Z",
       "side": 1,
       "message": "here dont we need to send a Delete Failure to RIC?",
+      "revId": "7c8d4ceaa584627437fc74535f47ddc2ed2a858f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c62d1ceb_478b458f",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 7978,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-11-17T09:56:21Z",
+      "side": 1,
+      "message": "we are sending the failure msg to Ric for all the failure cases.\nIn this case, I have called the failure message inside BuildAndSendStatsDeleteReq function",
+      "parentUuid": "4a9e2cf8_845f4309",
       "revId": "7c8d4ceaa584627437fc74535f47ddc2ed2a858f",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
