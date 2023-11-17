@@ -31,6 +31,8 @@ uint8_t BuildAndSendStatsReq(RicSubscription *ricSubscriptionInfo);
 uint8_t BuildAndSendRicSubscriptionRsp(PendingSubsRspInfo *subsRspInfo);
 uint8_t BuildAndSendRicSubscriptionFailure(RicRequestId ricReqId, uint16_t ranFuncId, E2FailureCause failureCause);
 uint8_t BuildAndSendRicIndication(RicSubscription *ricSubscriptionInfo, ActionInfo *actionInfo);
+uint8_t BuildAndSendRicSubscriptionDeleteResponse(uint16_t ranFuncId,  RicRequestId requestId);
+uint8_t BuildAndSendRicSubscriptionDeleteFailure(uint16_t ranFuncId,  RicRequestId requestId, E2FailureCause failureCause);
 
 /**********************************************************************
   End of file

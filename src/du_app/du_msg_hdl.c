@@ -2339,6 +2339,7 @@ uint8_t DuProcMacStatsDeleteRsp(Pst *pst, MacStatsDeleteRsp *statsDeleteRsp)
 uint8_t BuildAndSendStatsDeleteReqToMac(RicSubscription *ricSubscriptionInfo)
 {
    Pst pst;
+   E2FailureCause failureCause;
    MacStatsDeleteReq *macStatsDelete = NULLP;
 
    /* Fill MAC statistics delete */
@@ -2346,6 +2347,14 @@ uint8_t BuildAndSendStatsDeleteReqToMac(RicSubscription *ricSubscriptionInfo)
    if(macStatsDelete == NULLP)
    {
       DU_LOG("\nERROR  -->  DU_APP : Memory allocation failed for macStatsDelete in BuildAndSendStatsDeleteReqToMac");
+      failureCause.causeType = E2_MISCELLANEOUS;
+      failureCause.cause = E2_MISCELLANEOUS_CAUSE_UNSPECIFIED;
+
+      if(BuildAndSendRicSubscriptionDeleteFailure(ricSubscriptionInfo->ranFuncId, ricSubscriptionInfo->requestId, failureCause) != ROK)
+      {
+         DU_LOG("\nERROR  -->  E2AP : e2ProcStatsDeleteRsp: failed to build and send ric subs delete failure");
+         return RFAILED;
+      }
       return RFAILED;
    }
 

@@ -1494,24 +1494,40 @@ uint8_t e2ProcStatsDeleteRsp(MacStatsDeleteRsp *statsDeleteRsp)
     * in statistics delete response */
    if(fetchSubsInfoFromSubsId(statsDeleteRsp->subscriptionId, &ranFuncDb, &ricSubscriptionNode, &ricSubscriptionInfo) != ROK)
    {
-      DU_LOG("\nERROR  -->  E2AP : extractStatsMeasurement: Failed to fetch subscriprtion details");
+      DU_LOG("\nERROR  -->  E2AP : e2ProcStatsDeleteRsp: Failed to fetch subscriprtion details");
       return RFAILED;
    }
 
    deleteRicSubscriptionNode(ricSubscriptionNode);
-#if 0
-   /* TODO */
-   if(statsDeleteRsp->result == MAC_DU_APP_RSP_NOK && statsDeleteRsp->status == STATS_ID_NOT_FOUND)
+   
+   if(statsDeleteRsp->result == MAC_DU_APP_RSP_NOK)
    {
-      failureCause->causeType =E2_RIC_REQUEST;
-      failureCause->cause = E2_REQUEST_INFORMATION_UNAVAILABLE;
-      BuildAndSendRicSubscriptionDeleteFailure(ricSubscriptionInfo->ranFuncId, ricSubscriptionInfo->requestId, failureCause);
+      if(statsDeleteRsp->status == STATS_ID_NOT_FOUND)
+      {
+         failureCause.causeType =E2_RIC_REQUEST;
+         failureCause.cause = E2_REQUEST_INFORMATION_UNAVAILABLE;
+      }
+      else
+      {
+         failureCause.causeType = E2_MISCELLANEOUS;
+         failureCause.cause = E2_MISCELLANEOUS_CAUSE_UNSPECIFIED;
+      }
+
+      if(BuildAndSendRicSubscriptionDeleteFailure(ricSubscriptionInfo->ranFuncId, ricSubscriptionInfo->requestId, failureCause) != ROK)
+      {
+         DU_LOG("\nERROR  -->  E2AP : e2ProcStatsDeleteRsp: failed to build and send ric subs delete failure");
+         return RFAILED;
+      }
    }
    else
    {
-      BuildAndSendRicSubscriptionDeleteResponse(ricSubscriptionInfo->ranFuncId, ricSubscriptionInfo->requestId);
+      if(BuildAndSendRicSubscriptionDeleteResponse(ricSubscriptionInfo->ranFuncId, ricSubscriptionInfo->requestId) != ROK)
+      {
+         DU_LOG("\nERROR  -->  E2AP : e2ProcStatsDeleteRsp: failed to build and send ric subs delete rsp");
+         return RFAILED;
+      }
    }
-#endif
+   
    return ROK;
 }
 

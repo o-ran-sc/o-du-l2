@@ -7134,6 +7134,92 @@ void ProcRicSubsDeleteFailure(RICsubscriptionDeleteFailure_t *ricSubsDeleteFail)
    }
 }
 
+
+/******************************************************************
+ *
+ * @brief Processes the Ric Subs delete rsp msg
+ *
+ * @details
+ *
+ *    Function : ProcRicSubsDeleteRsp
+ *
+ *    Functionality: Processes the Ric Subs delete rsp msg
+ *
+ * @params[in]
+ *       Ric Subs delete rsp information
+ *
+ * @return void
+ *
+ * ****************************************************************/
+void ProcRicSubsDeleteRsp(uint32_t duId, RICsubscriptionDeleteResponse_t *ricSubsDeleteRsp)
+{
+   uint8_t ieIdx = 0;
+   uint8_t duIdx= 0;
+   uint16_t ranFuncId=0;
+   RanFunction *ranFuncDb = NULLP;
+   RicRequestId ricReqId;
+   DuDb    *duDb = NULLP;
+   RicSubscription *ricSubs = NULLP;
+   CmLList *ricSubsNode = NULLP;
+
+   SEARCH_DU_DB(duIdx, duId, duDb);
+   if(duDb == NULLP)
+   {
+      DU_LOG("\nERROR  -->  E2AP : duDb is not present for duId %d",duId);
+      return;
+   }
+
+   if(!ricSubsDeleteRsp)
+   {
+      DU_LOG("\nERROR  -->  E2AP : ricSubsDeleteRsp pointer is null");
+      return;
+   }
+
+   if(!ricSubsDeleteRsp->protocolIEs.list.array)
+   {
+      DU_LOG("\nERROR  -->  E2AP : ricSubsDeleteRsp array pointer is null");
+      return;
+   }
+   for(ieIdx=0; ieIdx < ricSubsDeleteRsp->protocolIEs.list.count; ieIdx++)
+   {
+      if(ricSubsDeleteRsp->protocolIEs.list.array[ieIdx])
+      {
+         switch(ricSubsDeleteRsp->protocolIEs.list.array[ieIdx]->id)
+         {
+            case ProtocolIE_IDE2_id_RICrequestID:
+               {
+                  ricReqId.requestorId = ricSubsDeleteRsp->protocolIEs.list.array[ieIdx]->value.choice.RICrequestID.ricRequestorID;
+                  ricReqId.instanceId = ricSubsDeleteRsp->protocolIEs.list.array[ieIdx]->value.choice.RICrequestID.ricInstanceID;
+                  break;
+               }
+            case ProtocolIE_IDE2_id_RANfunctionID:
+               {
+                  ranFuncId = ricSubsDeleteRsp->protocolIEs.list.array[ieIdx]->value.choice.RANfunctionID;
+                  ranFuncDb = fetchRanFuncFromRanFuncId(duDb, ranFuncId);
+                  if(!ranFuncDb)
+                  {
+                     DU_LOG("\nERROR  -->  E2AP : Invalid Ran Function id %d received",ranFuncId);
+                     return;
+                  }
+
+                  ricSubs = fetchSubsInfoFromRicReqId(ricReqId, ranFuncDb, &ricSubsNode);
+                  if(ricSubs)
+                  {
+                     deleteRicSubscriptionNode(ricSubsNode);
+                     DU_LOG("\nINFO  -->  E2AP : Ric subscription node deleted successfully");
+                  }
+                  else
+                  {
+                     DU_LOG("\nERROR  -->  E2AP : Ric subscription node is not present ");
+                     return;
+                  }
+                  break;
+               }
+         }
+      }
+   }
+}
+
 /*******************************************************************
 *
 * @brief Handles received E2AP message and sends back response  
@@ -7295,6 +7381,11 @@ void E2APMsgHdlr(uint32_t *duId, Buffer *mBuf)
                case SuccessfulOutcomeE2__value_PR_E2connectionUpdateAcknowledge:
                   {
                      ProcE2ConnectionUpdateAck(*duId, &e2apMsg->choice.successfulOutcome->value.choice.E2connectionUpdateAcknowledge);
+                     break;
+                  }
+               case SuccessfulOutcomeE2__value_PR_RICsubscriptionDeleteResponse:
+                  {
+                     ProcRicSubsDeleteRsp(*duId, &e2apMsg->choice.successfulOutcome->value.choice.RICsubscriptionDeleteResponse);
                      break;
                   }
                default:
