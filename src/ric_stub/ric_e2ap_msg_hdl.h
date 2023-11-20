@@ -31,7 +31,10 @@
 #define CELL_INDEX      0
 
 #define RIC_STYLE_TYPE  1
-#define RIC_ACTION_GRANULARITY_PERIOD 100
+
+#define RIC_ACTION_GRANULARITY_PERIOD(_configType, _actionId)   \
+   ((_configType == CONFIG_ADD) ? 100 : 200) + 50 * (_actionId - 1)
+
 /* allocate and zero out a static buffer */
 #define RIC_ALLOC(_datPtr, _size)                                \
 {                                                               \
