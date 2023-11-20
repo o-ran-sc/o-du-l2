@@ -31,7 +31,10 @@
 #define CELL_INDEX      0
 
 #define RIC_STYLE_TYPE  1
-#define RIC_ACTION_GRANULARITY_PERIOD 100
+
+#define RIC_ACTION_GRANULARITY_PERIOD(_configType, _actionId)   \
+   ((_configType == CONFIG_ADD) ? 100 : 200) + 50 * (_actionId - 1)
+
 /* allocate and zero out a static buffer */
 #define RIC_ALLOC(_datPtr, _size)                                \
 {                                                               \
@@ -66,6 +69,8 @@ uint8_t BuildAndSendE2NodeConfigUpdateAck(DuDb *duDb, uint8_t transId,  E2NodeCo
 uint8_t BuildAndSendConnectionUpdate(uint32_t duId);
 uint8_t BuildAndSendE2ConnectionUpdate(uint32_t duId, E2Connection connectionInfo);
 uint8_t BuildAndSendRicSubscriptionDeleteRequest(uint32_t duId, RicSubscription *ricSubsDb);
+void BuildRicSubsModificationReq(DuDb *duDb);
+
 /**********************************************************************
          End of file
 **********************************************************************/
