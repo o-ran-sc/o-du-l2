@@ -1,0 +1,140 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e7a3d2e4_ae76c28e",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 9461,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-11-21T11:07:26Z",
+      "side": 1,
+      "message": "free action definition as well",
+      "revId": "b74c300b2c2ec9dc0aaff38b2ed985c79f523c4d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "afe7d941_f67cac90",
+        "filename": "src/ric_stub/ric_e2ap_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1853,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-11-21T11:07:26Z",
+      "side": 1,
+      "message": "configType",
+      "revId": "b74c300b2c2ec9dc0aaff38b2ed985c79f523c4d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "07e1763f_5905f358",
+        "filename": "src/ric_stub/ric_e2ap_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 7270,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-11-21T11:07:26Z",
+      "side": 1,
+      "message": "fill action type as well",
+      "revId": "b74c300b2c2ec9dc0aaff38b2ed985c79f523c4d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "43699014_dfbd2c14",
+        "filename": "src/ric_stub/ric_e2ap_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 7388,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-11-21T11:07:26Z",
+      "side": 1,
+      "message": "fill RIC Action Type as well",
+      "revId": "b74c300b2c2ec9dc0aaff38b2ed985c79f523c4d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a7ca5a3f_021f49dc",
+        "filename": "src/ric_stub/ric_e2ap_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 7423,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-11-21T11:07:26Z",
+      "side": 1,
+      "message": "Free RIC Action definition buffer as well",
+      "revId": "b74c300b2c2ec9dc0aaff38b2ed985c79f523c4d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d84ade93_83896220",
+        "filename": "src/ric_stub/ric_e2ap_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 7510,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-11-21T11:07:26Z",
+      "side": 1,
+      "message": "keep all the build and fill functions together and all free functions together.\nAs of now they are jumbled causing difficulty to read.",
+      "revId": "b74c300b2c2ec9dc0aaff38b2ed985c79f523c4d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e84e5f67_986c430a",
+        "filename": "src/ric_stub/ric_e2ap_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 7776,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-11-21T11:07:26Z",
+      "side": 1,
+      "message": "lets not always assume that modification request will be sent for first subscription.\nInstead, pass the subscription node into this function as an input param.",
+      "revId": "b74c300b2c2ec9dc0aaff38b2ed985c79f523c4d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e4a8880c_c83501bc",
+        "filename": "src/ric_stub/ric_e2ap_msg_hdl.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-11-21T11:07:26Z",
+      "side": 1,
+      "message": "Add comment explaining the logic",
+      "revId": "b74c300b2c2ec9dc0aaff38b2ed985c79f523c4d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
