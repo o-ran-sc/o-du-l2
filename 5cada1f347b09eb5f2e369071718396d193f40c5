@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8862b7a8_f9e09273",
+        "filename": "src/ric_stub/ric_e2ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 7363,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-11-21T06:32:37Z",
+      "side": 1,
+      "message": "here pass total number of actions to be added instead of adding those number of actions which are added",
+      "range": {
+        "startLine": 7363,
+        "startChar": 46,
+        "endLine": 7363,
+        "endChar": 58
+      },
+      "revId": "5cada1f347b09eb5f2e369071718396d193f40c5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "99439061_1f0dede1",
+        "filename": "src/ric_stub/ric_e2ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 7387,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-11-21T06:32:37Z",
+      "side": 1,
+      "message": "it is wrong to pass the already added actionId. Please pass the new actionId i.e. \"ricSubsInfo-\u003enumOfActions\"",
+      "range": {
+        "startLine": 7387,
+        "startChar": 26,
+        "endLine": 7387,
+        "endChar": 27
+      },
+      "revId": "5cada1f347b09eb5f2e369071718396d193f40c5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8176c956_ed99fd69",
+        "filename": "src/ric_stub/ric_e2ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 7687,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-11-21T06:32:37Z",
+      "side": 1,
+      "message": "It can be seen that same ricSubsInfo is passed to Remove,Modify and Add the Actions of that subscription. As discussed, please pass the actionId too along with ConfigType so that we are clear what all actions to be removed, modified,",
+      "range": {
+        "startLine": 7687,
+        "startChar": 21,
+        "endLine": 7687,
+        "endChar": 32
+      },
+      "revId": "5cada1f347b09eb5f2e369071718396d193f40c5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
