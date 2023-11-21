@@ -202,22 +202,6 @@ typedef struct e2NodeCfgList
    E2NodeConfigItem removedE2Node[MAX_E2_NODE_COMPONENT];
 }E2NodeConfigList;
 
-typedef struct ricSubsActionInfo
-{
-   ConfigType  configType; 
-   uint16_t    actionId;
-}RicSubsActionInfo;
-
-typedef struct ricSubsModReq
-{ 
-    uint16_t   numOfActionToBeAdded;
-    ActionInfo actionToBeAdded[MAX_RIC_ACTION]; 
-    uint16_t   numOfActionToBeModify;
-    ActionInfo actionToBeModify[MAX_RIC_ACTION]; 
-    uint16_t   numOfActionToBeRemove;
-    ActionInfo actionToBeRemove[MAX_RIC_ACTION]; 
-}RicSubsModReq;
-
 void readRicCfg();
 void cuAppInmsgHdlr(Buffer *mBuf);
 void sctpNtfyInd(CmInetSctpNotification *ntfy);
