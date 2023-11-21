@@ -1,0 +1,9 @@
+Verified+1: Harshita Lal <harshita.lal@radisys.com>
+Code-Review+2: Harshita Lal <harshita.lal@radisys.com>
+Verified+1: ORAN Required GHA <releng+oran.required.gha@linuxfoundation.org>
+Verified+1: ORAN Jobbuilder <releng+oran-jobbuilder@linuxfoundation.org>
+Submitted-by: Priyanka Borla <pborla@radisys.com>
+Submitted-at: Tue, 21 Nov 2023 13:17:17 +0000
+Reviewed-on: https://gerrit.o-ran-sc.org/r/c/o-du/l2/+/12071
+Project: o-du/l2
+Branch: refs/heads/master
