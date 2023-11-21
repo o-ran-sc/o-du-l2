@@ -9436,6 +9436,278 @@ void procE2ConnectionUpdate(E2AP_PDU_t  *e2apMsg)
 
 /*******************************************************************
  *
+ * @brief Free RIC Subscription  action to be added list
+ *
+ * @details
+ *
+ *    Function : freeAperDecodingOfRicSubsActionToBeAdded
+ *
+ *    Functionality: Free the RIC Subscription action to be added list
+ *
+ * @params[in] RICactions_ToBeAddedForModification_List_t *subsDetails
+ * @return void
+ *
+ * ****************************************************************/
+void freeAperDecodingOfRicSubsActionToBeAdded(RICactions_ToBeAddedForModification_List_t *subsDetails)
+{
+   uint8_t elementIdx = 0;
+   RICaction_ToBeAddedForModification_ItemIEs_t *addedActionItemIe=NULLP;
+
+   if(subsDetails->list.array)
+   {
+      for(elementIdx = 0; elementIdx < subsDetails->list.count; elementIdx++)
+      {
+         if(subsDetails->list.array[elementIdx])
+         {
+            addedActionItemIe = (RICaction_ToBeAddedForModification_ItemIEs_t*)subsDetails->list.array[elementIdx];
+            free(addedActionItemIe->value.choice.RICaction_ToBeAddedForModification_Item.ricActionDefinition.buf);
+            free(subsDetails->list.array[elementIdx]);
+         }
+      }
+      free(subsDetails->list.array);
+   }
+}
+
+/*******************************************************************
+ *
+ * @brief Deallocation of memory allocated by aper decoder for
+ * RIC Subscription  action to be removed list
+ *
+ * @details
+ *
+ *    Function : freeAperDecodingOfRicSubsActionToBeRemoved
+ *
+ *    Functionality: Free the RIC Subscription action to be removed list
+ *
+ * @params[in] RICactions_ToBeRemovedForModification_List_t *subsDetails
+ * @return void
+ *
+ * ****************************************************************/
+void freeAperDecodingOfRicSubsActionToBeRemoved(RICactions_ToBeRemovedForModification_List_t *subsDetails)
+{
+   uint8_t elementIdx = 0;
+
+   if(subsDetails->list.array)
+   {
+      for(elementIdx = 0; elementIdx < subsDetails->list.count; elementIdx++)
+      {
+         if(subsDetails->list.array[elementIdx])
+         {
+            free(subsDetails->list.array[elementIdx]);
+         }
+      }
+      free(subsDetails->list.array);
+   }
+}
+
+/*******************************************************************
+ *
+ * @brief Deallocation of memory allocated by aper decoder for
+ * RIC Subscription action to be modify
+ *
+ * @details
+ *
+ *    Function : freeAperDecodingOfRicSubsActionToBeModified
+ *
+ *    Functionality: Free the RIC Subscription action to be modify
+ *
+ * @params[in] RICactions_ToBeModifiedForModification_List_t List
+ * @return void
+ *
+ * ****************************************************************/
+void freeAperDecodingOfRicSubsActionToBeModified(RICactions_ToBeModifiedForModification_List_t *subsDetails)
+{
+   uint8_t elementIdx = 0;
+   RICaction_ToBeModifiedForModification_ItemIEs_t *actionItem = NULLP;
+
+   if(subsDetails->list.array)
+   {
+      for(elementIdx = 0; elementIdx < subsDetails->list.count; elementIdx++)
+      {
+         if(subsDetails->list.array[elementIdx])
+         {
+            actionItem = (RICaction_ToBeModifiedForModification_ItemIEs_t *)subsDetails->list.array[elementIdx];
+            if(actionItem->value.choice.RICaction_ToBeModifiedForModification_Item.ricActionDefinition)
+            {
+               free(actionItem->value.choice.RICaction_ToBeModifiedForModification_Item.ricActionDefinition->buf);
+               free(actionItem->value.choice.RICaction_ToBeModifiedForModification_Item.ricActionDefinition);
+            }
+            free(subsDetails->list.array[elementIdx]);
+         }
+      }
+      free(subsDetails->list.array);
+   }
+}
+
+/*******************************************************************
+ *
+ * @brief Deallocation of memory allocated by aper decoder for 
+ * RIC Subscription modification Request
+ *
+ * @details
+ *
+ *    Function freeAperDecodingOfRicSubsModificationReq
+ *
+ * Functionality : Free RIC Subscription modification Request
+ *
+ * @params[in] E2AP_PDU  
+ * @return void
+ *
+ ******************************************************************/
+void freeAperDecodingOfRicSubsModificationReq(E2AP_PDU_t *e2apRicMsg)
+{
+   uint8_t idx = 0;
+   RICsubscriptionModificationRequest_t   *ricSubscriptionModReq;
+   RICsubscriptionModificationRequest_IEs_t *ricSubscriptionModReqIe;
+
+   ricSubscriptionModReq = &e2apRicMsg->choice.initiatingMessage->value.choice.RICsubscriptionModificationRequest;
+   
+   if(ricSubscriptionModReq->protocolIEs.list.array)
+   {
+      for(idx=0; idx < ricSubscriptionModReq->protocolIEs.list.count; idx++)
+      {
+         if(ricSubscriptionModReq->protocolIEs.list.array[idx])
+         {
+            ricSubscriptionModReqIe = ricSubscriptionModReq->protocolIEs.list.array[idx];
+
+            switch(ricSubscriptionModReq->protocolIEs.list.array[idx]->id)
+            {
+               case ProtocolIE_IDE2_id_RICrequestID:
+                  break;
+               
+               case ProtocolIE_IDE2_id_RANfunctionID:
+                  break;
+
+               case ProtocolIE_IDE2_id_RICactionsToBeRemovedForModification_List:
+                  {
+                     freeAperDecodingOfRicSubsActionToBeRemoved(&(ricSubscriptionModReqIe->value.choice.RICactions_ToBeRemovedForModification_List));
+                     break;
+                  }
+               case ProtocolIE_IDE2_id_RICactionsToBeModifiedForModification_List:
+                  {
+                     freeAperDecodingOfRicSubsActionToBeModified(&(ricSubscriptionModReqIe->value.choice.RICactions_ToBeModifiedForModification_List));
+                     break;
+                  }
+               case ProtocolIE_IDE2_id_RICactionsToBeAddedForModification_List:
+                  {
+                     freeAperDecodingOfRicSubsActionToBeAdded(&(ricSubscriptionModReqIe->value.choice.RICactions_ToBeAddedForModification_List));
+                     break;
+                  }
+               default:
+                  {
+                     DU_LOG("\nERROR  -->  E2AP : Received Invalid Ie [%ld]", ricSubscriptionModReq->protocolIEs.list.array[idx]->id);
+                     break;
+                  }
+
+            }
+
+            free(ricSubscriptionModReq->protocolIEs.list.array[idx]);
+         }
+      }
+      free(ricSubscriptionModReq->protocolIEs.list.array);
+   }
+}
+
+/*******************************************************************
+ *
+ * @brief Process RIC Subscription modification request
+ *
+ * @details
+ *
+ *    Function : procRicSubscriptionModificationRequest
+ *
+ * Functionality: Process RIC subscription modification request.
+ *
+ * @params[in] E2AP PDU
+ * @return void
+ *
+ ******************************************************************/
+void procRicSubscriptionModificationRequest(E2AP_PDU_t *e2apMsg)
+{
+   uint8_t ieIdx = 0;
+   uint16_t ranFuncId = 0;
+   bool procFailure = false;
+   RicRequestId ricReqId;
+   RanFunction *ranFuncDb = NULLP;
+   CmLList *ricSubsNode = NULLP;
+   RicSubscription *ricSubsDb = NULLP;
+   RICsubscriptionModificationRequest_t *ricSubsModifyReq = NULLP;
+   RICsubscriptionModificationRequest_IEs_t *ricSubsModifyReqIe = NULLP;
+
+   DU_LOG("\nINFO   -->  E2AP : %s: Received RIC Subscription Modification Request", __func__);
+
+   do{
+      if(!e2apMsg)
+      {
+         DU_LOG("\nERROR  -->  E2AP : %s: E2AP Message is NULL", __func__);
+         break;
+      }
+
+      if(!e2apMsg->choice.initiatingMessage)
+      {
+         DU_LOG("\nERROR  -->  E2AP : %s: Initiating Message in E2AP PDU is NULL", __func__);
+         break;
+      }
+      
+      ricSubsModifyReq =  &e2apMsg->choice.initiatingMessage->value.choice.RICsubscriptionModificationRequest;
+      for(ieIdx = 0; ieIdx < ricSubsModifyReq->protocolIEs.list.count; ieIdx++)
+      {
+         if(!ricSubsModifyReq->protocolIEs.list.array[ieIdx])
+         {
+            DU_LOG("\nERROR  -->  E2AP : %s: IE at index [%d] in E2AP message IEs list is null", __func__, ieIdx);
+            break;
+         }
+
+         ricSubsModifyReqIe = ricSubsModifyReq->protocolIEs.list.array[ieIdx];
+         switch(ricSubsModifyReqIe->id)
+         {
+            case ProtocolIE_IDE2_id_RICrequestID:
+               {
+                  memset(&ricReqId, 0, sizeof(RicRequestId));
+                  ricReqId.requestorId = ricSubsModifyReqIe->value.choice.RICrequestID.ricRequestorID;
+                  ricReqId.instanceId = ricSubsModifyReqIe->value.choice.RICrequestID.ricInstanceID;
+                  break;
+               }
+
+            case ProtocolIE_IDE2_id_RANfunctionID:
+               {
+                  ranFuncId = ricSubsModifyReqIe->value.choice.RANfunctionID;
+                  ranFuncDb = fetchRanFuncFromRanFuncId(ranFuncId);
+                  if(!ranFuncDb)
+                  {
+                     DU_LOG("\nERROR  -->  E2AP : %s: RAN Function ID [%d] not found", __func__, ranFuncId);
+                     procFailure = true;
+                     break;
+                  }
+
+                  ricSubsDb = fetchSubsInfoFromRicReqId(ricReqId, ranFuncDb, &ricSubsNode);
+                  if(!ricSubsDb)
+                  {
+                     DU_LOG("\nERROR  -->  E2AP : %s: RIC Subscription not found for Requestor_ID [%d] Instance_ID [%d]",\
+                           __func__, ricReqId.requestorId, ricReqId.instanceId);
+                     procFailure = true;
+                     break;
+                  }
+
+                  break;
+               }
+
+            default:
+               break;
+         } /* End of switch for Protocol IE Id */
+
+         if(procFailure)
+            break;
+      } /* End of for loop for Protocol IE list */
+
+      break;
+   }while(true);
+
+   freeAperDecodingOfRicSubsModificationReq(e2apMsg);
+}
+
+/*******************************************************************
+ *
  * @brief Handles received E2AP message and sends back response  
  *
  * @details
@@ -9632,6 +9904,12 @@ void E2APMsgHdlr(Buffer *mBuf)
                   {
                      DU_LOG("\nINFO  -->  E2AP : E2 coneection update received");
                      procE2ConnectionUpdate(e2apMsg);
+                     break;
+                  }
+               case InitiatingMessageE2__value_PR_RICsubscriptionModificationRequest:
+                  {
+                     DU_LOG("\nINFO  -->  E2AP : RIC Subscription Modification Request received");
+                     procRicSubscriptionModificationRequest(e2apMsg);
                      break;
                   }
                default:
