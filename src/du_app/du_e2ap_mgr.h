@@ -400,8 +400,7 @@ typedef struct
    RicRequestId           requestId;
    uint16_t               ranFuncId;
    EventTriggerDefinition eventTriggerDefinition;
-   uint8_t                numOfActions;
-   ActionInfo             actionSequence[MAX_RIC_ACTION];  
+   CmLListCp              actionSequence; 
    CmTimer                ricSubsReportTimer;
    ConfigType             action;
    E2FailureCause         failureCause; /* Used only when a subscription is required to be deleted */
@@ -510,7 +509,7 @@ typedef struct e2ConnectionList
 }E2ConnectionList;
 
 uint8_t assignTransactionId();
-ActionInfo *fetchActionInfoFromActionId(uint8_t actionId, RicSubscription *ricSubscriptionInfo);
+ActionInfo *fetchActionInfoFromActionId(uint8_t actionId, RicSubscription *ricSubscriptionInfo, CmLList ** actionNode);
 RicSubscription *fetchSubsInfoFromRicReqId(RicRequestId ricReqId, RanFunction *ranFuncDb, CmLList **ricSubscriptionNode);
 RanFunction *fetchRanFuncFromRanFuncId(uint16_t ranFuncId);
 uint8_t fetchSubsInfoFromSubsId(uint64_t subscriptionId, RanFunction **ranFuncDb, CmLList **ricSubscriptionNode, \
@@ -530,7 +529,7 @@ uint8_t fillE2NodeComponentRspInfo(InterfaceType interfaceType, uint64_t compone
 void deleteRicSubscriptionList(CmLListCp *subscriptionList);
 void deleteRicSubscriptionNode(CmLList *ricSubscriptionInfo);
 void deleteMeasurementInfoList(CmLListCp *measInfoList);
-void deleteActionSequence(ActionInfo *action);
+void deleteActionSequence(CmLList *action);
 void deleteMeasuredValueList(CmLListCp *measuredValueList);
 void removeE2NodeInformation();
 void encodeSubscriptionId(uint64_t *subscriptionId, uint16_t ranFuncId, RicRequestId ricReqId);
