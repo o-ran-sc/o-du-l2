@@ -1903,14 +1903,25 @@ typedef struct macStatsInd
 
 typedef struct macStatsDeleteReq
 {
-   uint64_t      subscriptionId;
+   uint64_t    subscriptionId;
+   uint8_t     numStatsGroupToBeDeleted;
+   uint8_t     statsGrpIdToBeDelList[MAX_NUM_STATS_GRP];
 }MacStatsDeleteReq;
+
+typedef struct macStatsDeleteInfo
+{
+   uint8_t       groupId;
+   MacRsp        statsGrpDelRsp;
+   CauseOfResult statsGrpDelCause;
+}MacStatsDeleteInfo;
 
 typedef struct macStatsDeleteRsp
 {
-   uint64_t      subscriptionId;
-   MacRsp        result;
-   CauseOfResult status;
+   uint64_t           subscriptionId; /* subscription Id */
+   MacRsp             subsDelRsp;    /* deletion status of all statsGrp with given subscriptionId */
+   CauseOfResult      subsDelCause;  /* cause of failure in deletion of all statsGrp with given subscriptionId */
+   uint8_t            numStatsGroupDeleted; /* number of actions to deleted */ 
+   MacStatsDeleteInfo statsGrpDelInfo[MAX_NUM_STATS_GRP]; /*list of the deletion statuses for specific actions */
 }MacStatsDeleteRsp;
 
 /****************** FUNCTION POINTERS ********************************/

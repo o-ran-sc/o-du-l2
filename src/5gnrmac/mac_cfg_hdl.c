@@ -1349,39 +1349,98 @@ uint8_t MacProcSchStatsRsp(Pst *pst, SchStatsRsp *schStatsRsp)
  *     Function : MacSendStatsDeleteRspToDuApp
  *
  *     Fill and send statistics delete response to DU APP
+ *  [Step-1] In SCH delete response is received, fill MAC stats delete 
+ *    response with info from SCH stats delete response.
+ *  [Step-2] If a failure occurs while processing MAC stats delete request, 
+ *    then fill MAC stats delete rsp with failure using info from MAC stats delete request.
+ *  [Step-3] Else if numStatsGroup > 0, then send stats delete response 
+ *    with deletion status of each stats group.
+ *  [Step-4] If numStatsGroup = 0, send Stats delete response 
+ *    for deletion of complete subscription.
  *
- *  @param[in]  Response
- *  @param[in]  Cause of response
+ *  @param[in]  SchStatsDeleteRsp
+ *  @param[in]  MacStatsDeleteReq
  *  @return  int
  *      -# ROK
  **/
-uint8_t MacSendStatsDeleteRspToDuApp(uint64_t subscriptionId, MacRsp result, CauseOfResult status)
+uint8_t MacSendStatsDeleteRspToDuApp(SchStatsDeleteRsp *schStatsDeleteRsp,  MacStatsDeleteReq *macStatsDeleteReq)
 {
-   uint8_t ret = ROK;
    Pst  pst;
-   MacStatsDeleteRsp *macStatsDeleteRsp = NULLP;
-
-    DU_LOG("\nINFO  -->  MAC : MacSendStatsDeleteRspToDuApp: Sending Delete Statistics Response to DU APP");
+   uint8_t ret = ROK, idx=0;
+   MacStatsDeleteRsp *macStatsDeleteRsp=NULLP;
 
    MAC_ALLOC_SHRABL_BUF(macStatsDeleteRsp, sizeof(MacStatsDeleteRsp));
    if(macStatsDeleteRsp == NULLP)
    {
-      DU_LOG("\nERROR  -->  MAC : Failed to allocate memory in MacSendStatsDeleteRspToDuApp");
+      DU_LOG("\nERROR  -->  MAC : Failed to allocate memory in MacProcSchStatsDeleteRsp");
       ret = RFAILED;
+   }
+   
+   if(schStatsDeleteRsp)
+   {
+      /* [Step-1] */ 
+      macStatsDeleteRsp->subscriptionId = schStatsDeleteRsp->subscriptionId;
+      macStatsDeleteRsp->numStatsGroupDeleted = schStatsDeleteRsp->numStatsGroupDeleted;
+
+      if(macStatsDeleteRsp->numStatsGroupDeleted)
+      {
+         /* [Step-3] */ 
+         for(idx =0;idx<macStatsDeleteRsp->numStatsGroupDeleted; idx++)
+         {
+            if(schStatsDeleteRsp->statsGrpDelInfo[idx].statsGrpDelRsp == RSP_OK)
+            {
+               macStatsDeleteRsp->statsGrpDelInfo[idx].statsGrpDelRsp =MAC_DU_APP_RSP_OK;
+               macStatsDeleteRsp->statsGrpDelInfo[idx].statsGrpDelCause =schStatsDeleteRsp->statsGrpDelInfo[idx].statsGrpDelCause;
+            }
+            else
+            {
+               macStatsDeleteRsp->statsGrpDelInfo[idx].statsGrpDelRsp =MAC_DU_APP_RSP_NOK;
+               macStatsDeleteRsp->statsGrpDelInfo[idx].statsGrpDelCause =schStatsDeleteRsp->statsGrpDelInfo[idx].statsGrpDelCause;
+            }
+         }
+      }
+      else
+      {
+         /* [Step-4] */ 
+         if(schStatsDeleteRsp->subsDelRsp == RSP_OK)
+            macStatsDeleteRsp->subsDelRsp = MAC_DU_APP_RSP_OK;
+         else
+            macStatsDeleteRsp->subsDelRsp = MAC_DU_APP_RSP_NOK;
+         macStatsDeleteRsp->subsDelCause = schStatsDeleteRsp->subsDelCause;
+      }
    }
    else
    {
-      macStatsDeleteRsp->subscriptionId= subscriptionId;
-      macStatsDeleteRsp->result = result;
-      macStatsDeleteRsp->status = status;
-      memset(&pst, 0, sizeof(Pst));
-      FILL_PST_MAC_TO_DUAPP(pst, EVENT_MAC_STATS_DELETE_RSP);
-      if(((*macDuStatsDeleteRspOpts[pst.selector])(&pst, macStatsDeleteRsp))!= ROK)
+      /* [Step-2] */ 
+      macStatsDeleteRsp->subscriptionId = macStatsDeleteReq->subscriptionId;
+      macStatsDeleteRsp->numStatsGroupDeleted= macStatsDeleteReq->numStatsGroupToBeDeleted;
+      
+      if(macStatsDeleteRsp->numStatsGroupDeleted)
       {
-         DU_LOG("\nERROR  -->  MAC : Failed to send statistics delete response to DU APP");
-         MAC_FREE_SHRABL_BUF(MAC_MEM_REGION, MAC_POOL, macStatsDeleteRsp, sizeof(MacStatsDeleteRsp));
-         ret = RFAILED;
+         /* [Step-3] */ 
+         for(idx =0;idx<macStatsDeleteRsp->numStatsGroupDeleted; idx++)
+         {
+            macStatsDeleteRsp->statsGrpDelInfo[idx].statsGrpDelRsp =MAC_DU_APP_RSP_NOK;
+            macStatsDeleteRsp->statsGrpDelInfo[idx].statsGrpDelCause = RESOURCE_UNAVAILABLE;
+         }
       }
+      else
+      {
+         /* [Step-4] */ 
+         macStatsDeleteRsp->subsDelRsp = MAC_DU_APP_RSP_NOK;
+         macStatsDeleteRsp->subsDelCause = RESOURCE_UNAVAILABLE;
+      }
+   }
+
+   DU_LOG("\nINFO  -->  MAC : MacSendStatsDeleteRspToDuApp: Sending Delete Statistics Response to DU APP");
+
+   memset(&pst, 0, sizeof(Pst));
+   FILL_PST_MAC_TO_DUAPP(pst, EVENT_MAC_STATS_DELETE_RSP);
+   if(((*macDuStatsDeleteRspOpts[pst.selector])(&pst, macStatsDeleteRsp))!= ROK)
+   {
+      DU_LOG("\nERROR  -->  MAC : Failed to send statistics delete response to DU APP");
+      MAC_FREE_SHRABL_BUF(MAC_MEM_REGION, MAC_POOL, macStatsDeleteRsp, sizeof(MacStatsDeleteRsp));
+      ret = RFAILED;
    }
 
    return ret;
@@ -1407,13 +1466,9 @@ uint8_t MacProcSchStatsDeleteRsp(Pst *pst, SchStatsDeleteRsp *schStatsDeleteRsp)
 
    if(schStatsDeleteRsp)
    {
-     if(schStatsDeleteRsp->rsp == RSP_OK)
-      ret = MacSendStatsDeleteRspToDuApp(schStatsDeleteRsp->subscriptionId,MAC_DU_APP_RSP_OK,schStatsDeleteRsp->cause);
-     else
-        ret = MacSendStatsDeleteRspToDuApp(schStatsDeleteRsp->subscriptionId,MAC_DU_APP_RSP_NOK,schStatsDeleteRsp->cause);
-     
+      ret = MacSendStatsDeleteRspToDuApp(schStatsDeleteRsp, NULLP);
+      MAC_FREE(schStatsDeleteRsp, sizeof(SchStatsDeleteRsp));
    }
-   MAC_FREE(schStatsDeleteRsp, sizeof(SchStatsDeleteRsp));
    return ret;
 }
 
@@ -1452,15 +1507,17 @@ uint8_t MacProcStatsDeleteReq(Pst *pst, MacStatsDeleteReq *macStatsDeleteReq)
    }
    else
    {
+      /* fill all the information in schStatsDeleteReq structure */
       schStatsDeleteReq->subscriptionId = macStatsDeleteReq->subscriptionId;
+      schStatsDeleteReq->numStatsGroupToBeDeleted = macStatsDeleteReq->numStatsGroupToBeDeleted;
+      memcpy(&schStatsDeleteReq->statsGrpIdToBeDelList, &macStatsDeleteReq->statsGrpIdToBeDelList, schStatsDeleteReq->numStatsGroupToBeDeleted*sizeof(uint8_t)); 
       FILL_PST_MAC_TO_SCH(schPst, EVENT_STATISTICS_DELETE_REQ_TO_SCH);
       ret = SchMessageRouter(&schPst, (void *)schStatsDeleteReq);
    }
 
    if(ret != ROK)
    {
-      MAC_FREE(schStatsDeleteReq, sizeof(SchStatsDeleteReq));
-      ret = MacSendStatsDeleteRspToDuApp(macStatsDeleteReq->subscriptionId , MAC_DU_APP_RSP_NOK, RESOURCE_UNAVAILABLE);
+      ret = MacSendStatsDeleteRspToDuApp(NULLP, macStatsDeleteReq);
    }
 
    MAC_FREE_SHRABL_BUF(pst->region, pst->pool, macStatsDeleteReq, sizeof(MacStatsDeleteReq));

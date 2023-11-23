@@ -2297,13 +2297,24 @@ typedef struct schStatsInd
 typedef struct schStatsDeleteReq
 {
    uint64_t  subscriptionId;
+   uint8_t   numStatsGroupToBeDeleted;
+   uint8_t   statsGrpIdToBeDelList[MAX_NUM_STATS_GRP];
 }SchStatsDeleteReq;
+
+typedef struct statsDeleteResult
+{
+   uint8_t       groupId;
+   SchMacRsp     statsGrpDelRsp;
+   CauseOfResult statsGrpDelCause;
+}StatsDeleteResult;
 
 typedef struct schStatsDeleteRsp
 {
-   uint64_t      subscriptionId;
-   SchMacRsp     rsp;
-   CauseOfResult cause;
+   uint64_t          subscriptionId; /* subscription Id */
+   SchMacRsp         subsDelRsp;    /* deletion status of all statsGrp with given subscriptionId */
+   CauseOfResult     subsDelCause;  /* cause of failure in deletion of all statsGrp with given subscriptionId*/
+   uint8_t           numStatsGroupDeleted; /* num of action deleted */ 
+   StatsDeleteResult statsGrpDelInfo[MAX_NUM_STATS_GRP]; /* list of the deletion status for specific actions */
 }SchStatsDeleteRsp;
 
 /* function declarations */
