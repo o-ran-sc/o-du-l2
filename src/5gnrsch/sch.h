@@ -630,14 +630,12 @@ typedef struct schStatsGrp
 
 typedef struct schStatsInfo
 {
-   uint8_t     numStatsGroup;
-   SchStatsGrp statsGrpList[MAX_NUM_STATS_GRP];
+   CmLListCp  statsGrpList;
 }SchStatsInfo;
 
 typedef struct schStatistics
 {
-   uint16_t      numOfStatsCfgd;
-   SchStatsInfo  statsInfoList[MAX_NUM_STATS_CFG];
+   CmLListCp     statsInfoList;
    SchKpiActive  activeKpiList;
 }SchStatistics;
 

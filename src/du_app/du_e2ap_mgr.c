@@ -1365,7 +1365,6 @@ void deleteActionSequenceList(CmLListCp *actionList)
       deleteActionSequence(actionNode);
       CM_LLIST_FIRST_NODE(actionList, actionNode);
    }
-
 }
 
 /******************************************************************
@@ -1545,9 +1544,9 @@ uint8_t e2ProcStatsDeleteRsp(MacStatsDeleteRsp *statsDeleteRsp)
 
    deleteRicSubscriptionNode(ricSubscriptionNode);
    
-   if(statsDeleteRsp->result == MAC_DU_APP_RSP_NOK)
+   if(statsDeleteRsp->rsp == MAC_DU_APP_RSP_NOK)
    {
-      if(statsDeleteRsp->status == STATS_ID_NOT_FOUND)
+      if(statsDeleteRsp->cause == STATS_ID_NOT_FOUND)
       {
          failureCause.causeType =E2_RIC_REQUEST;
          failureCause.cause = E2_REQUEST_INFORMATION_UNAVAILABLE;
