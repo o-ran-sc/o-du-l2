@@ -175,6 +175,52 @@ uint8_t assignTransactionId(DuDb *duDb)
    return currTransId;
 }
 
+ /*******************************************************************
+ *
+ * @brief add RIC Subs action info
+ *
+ * @details
+ *
+ *    Function : addRicSubsAction
+ *
+ * Functionality: add Ric Subs action info
+ *
+ * @parameter
+ *    RIC action id
+ *    List of action 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ ******************************************************************/
+CmLList *addRicSubsAction(uint8_t ricActionID, CmLListCp *actionSequence)
+{
+   ActionInfo *actionDb = NULLP;
+   CmLList *actionNode=NULLP;
+   
+   RIC_ALLOC(actionDb, sizeof(ActionInfo));
+   if(actionDb==NULLP)
+   {
+      DU_LOG("\nERROR  -->  E2AP : Memory allocation failed in %s at %d",__func__,__LINE__);
+      return NULLP;
+   }
+   
+   actionDb->actionId = ricActionID;   
+   RIC_ALLOC(actionNode, sizeof(CmLList));
+   if(actionNode)
+   {
+      actionNode->node = (PTR) actionDb;
+      cmLListAdd2Tail(actionSequence, actionNode);
+   }
+   else
+   {
+      DU_LOG("\nERROR  -->  E2AP : Memory allocation failed in %s at %d",__func__,__LINE__);
+      RIC_FREE(actionDb, sizeof(ActionInfo));
+      return NULLP;
+   }
+   
+   return actionNode;
+}
+
 /*******************************************************************
 *
 * @brief Sends E2 msg over SCTP
@@ -479,22 +525,30 @@ RicSubscription *fetchSubsInfoFromRicReqId(RicRequestId ricReqId, RanFunction *r
  *
  * @params[in] Action ID
  *             RIC Subscription DB
+ *             List of action 
  * @return Action Info DB
  *         NULL, in case of failure
  *
  * ****************************************************************/
-ActionInfo *fetchActionInfoFromActionId(uint8_t actionId, RicSubscription *ricSubscriptionInfo)
+ActionInfo *fetchActionInfoFromActionId(uint8_t actionId, RicSubscription *ricSubscriptionInfo, CmLList ** actionNode)
 {
    ActionInfo *actionInfoDb = NULLP;
-   if(ricSubscriptionInfo->actionSequence[actionId].actionId == actionId)
+
+   CM_LLIST_FIRST_NODE(&ricSubscriptionInfo->actionSequence, *actionNode);
+   while(actionNode)
    {
-      actionInfoDb = &ricSubscriptionInfo->actionSequence[actionId];
+       actionInfoDb = (ActionInfo*)((*actionNode)->node);
+      if(actionInfoDb->actionId == actionId)
+      {
+         break;
+      }
+      *actionNode= (*actionNode)->next;
    }
-   else
+   if(actionInfoDb==NULLP) 
    {
       DU_LOG("\nERROR  -->  E2AP : fetchActionInfoFromActionId: Action Id [%d] not found in \
-         subscription info [Requestor id : %d] [Instance Id : %d]", actionId,\
-         ricSubscriptionInfo->requestId.requestorId, ricSubscriptionInfo->requestId.instanceId);
+            subscription info [Requestor id : %d] [Instance Id : %d]", actionId,\
+            ricSubscriptionInfo->requestId.requestorId, ricSubscriptionInfo->requestId.instanceId);
 
    }
    return actionInfoDb;
@@ -1903,7 +1957,7 @@ uint8_t fillRicActionDef(RICactionDefinition_t *ricActionDef, uint8_t ricActionI
 uint8_t fillActionToBeSetup(RICaction_ToBeSetup_ItemIEs_t *actionItem, RicSubscription *ricSubsDb)
 {
    static uint8_t ricActionId = 0;
-
+   CmLList *actionNode=NULLP;
    if(actionItem == NULLP)
    {
       DU_LOG("\nERROR  -->  E2AP : Failed at [%s] : line [%d]", __func__, __LINE__);
@@ -1918,8 +1972,7 @@ uint8_t fillActionToBeSetup(RICaction_ToBeSetup_ItemIEs_t *actionItem, RicSubscr
       
       /* RIC Action ID */
       actionItem->value.choice.RICaction_ToBeSetup_Item.ricActionID = ricActionId;
-      ricSubsDb->actionSequence[ricActionId].actionId = \
-         actionItem->value.choice.RICaction_ToBeSetup_Item.ricActionID;
+      actionNode = addRicSubsAction(ricActionId, &ricSubsDb->actionSequence);
       ricActionId++;
 
       /* RIC Action Type */
@@ -1938,12 +1991,13 @@ uint8_t fillActionToBeSetup(RICaction_ToBeSetup_ItemIEs_t *actionItem, RicSubscr
          break;
       }
       
-      ricSubsDb->numOfActions++;
       return ROK;
    }
-
-   memset(&ricSubsDb->actionSequence[ricActionId], 0, sizeof(ActionInfo));
-   ricSubsDb->actionSequence[ricActionId].actionId = -1;
+   
+   if(actionNode)
+   {
+      deleteActionSequence(actionNode);
+   }
    return RFAILED;
 }
 
@@ -2156,10 +2210,6 @@ uint8_t BuildAndSendRicSubscriptionReq(DuDb *duDb)
       DU_LOG("\nERROR  -->  E2AP : Memory allocation failed at [%s] : line [%d]", __func__, __LINE__);
       return RFAILED;
    }
-   for(actionIdx = 0; actionIdx < MAX_RIC_ACTION; actionIdx++)
-   {
-      ricSubsInfo->actionSequence[actionIdx].actionId = -1;
-   }
 
    while(true)
    {
@@ -2319,6 +2369,7 @@ void ProcRicSubscriptionResponse(uint32_t duId, RICsubscriptionResponse_t  *ricS
    RanFunction  *ranFuncDb = NULLP;
    RicSubscription *ricSubs = NULLP;
    CmLList *ricSubsNode = NULLP;
+   CmLList *actionNode = NULLP;
    ActionInfo *action = NULLP;
    RICsubscriptionResponse_IEs_t *ricSubsRspIe = NULLP;
    RICaction_NotAdmitted_List_t *notAdmitList = NULLP;
@@ -2375,6 +2426,7 @@ void ProcRicSubscriptionResponse(uint32_t duId, RICsubscriptionResponse_t  *ricS
                         notAdmitList = &ricSubsRspIe->value.choice.RICaction_NotAdmitted_List;
                         for(notAdmitIdx = 0; notAdmitIdx < notAdmitList->list.count; notAdmitIdx++)
                         {
+                           actionNode=NULLP;
                            actionId = ((RICaction_NotAdmitted_ItemIEs_t *)(notAdmitList->list.array[notAdmitIdx]))->\
                               value.choice.RICaction_NotAdmitted_Item.ricActionID;
 
@@ -2382,12 +2434,10 @@ void ProcRicSubscriptionResponse(uint32_t duId, RICsubscriptionResponse_t  *ricS
                            ricSubs = fetchSubsInfoFromRicReqId(ricReqId, ranFuncDb, &ricSubsNode);
                            if(ricSubs)
                            {
-                              action = fetchActionInfoFromActionId(actionId, ricSubs);
+                              action = fetchActionInfoFromActionId(actionId, ricSubs, &actionNode);
                               if(action)
                               {
-                                 memset(action, 0, sizeof(ActionInfo));
-                                 ricSubs->actionSequence[actionId].actionId = -1;
-                                 ricSubs->numOfActions--;
+                                 deleteActionSequence(action);
                               }
                            }
                         }
@@ -4479,6 +4529,7 @@ uint8_t ProcRicSubsModReqd(uint32_t duId, RICsubscriptionModificationRequired_t 
    RanFunction *ranFuncDb = NULLP;
    RicSubscription *ricSubs = NULLP;
    CmLList *ricSubsNode = NULLP;
+   CmLList *actionNode = NULLP;
    ActionInfo *action = NULLP;
    RICsubscriptionModificationRequired_IEs_t *ricSubsModReqdIe = NULLP;
    RICactions_RequiredToBeModified_List_t *actionToBeModList = NULLP;
@@ -4537,9 +4588,10 @@ uint8_t ProcRicSubsModReqd(uint32_t duId, RICsubscriptionModificationRequired_t 
                actionToBeModList = &ricSubsModReqdIe->value.choice.RICactions_RequiredToBeModified_List;
                for(actionIdx = 0; actionIdx < actionToBeModList->list.count; actionIdx++)
                {
+                  actionNode=NULLP;
                   actionToBeMod = (RICaction_RequiredToBeModified_ItemIEs_t *)actionToBeModList->list.array[actionIdx];
                   actionId = actionToBeMod->value.choice.RICaction_RequiredToBeModified_Item.ricActionID;
-                  action = fetchActionInfoFromActionId(actionId, ricSubs);
+                  action = fetchActionInfoFromActionId(actionId, ricSubs, &actionNode);
                   if(action)
                   {
                      /* No modification required as of now, hence directly adding to the list */
@@ -4562,15 +4614,14 @@ uint8_t ProcRicSubsModReqd(uint32_t duId, RICsubscriptionModificationRequired_t 
                actionToBeRmvList = &ricSubsModReqdIe->value.choice.RICactions_RequiredToBeRemoved_List;
                for(actionIdx = 0; actionIdx < actionToBeRmvList->list.count; actionIdx++)
                {
+                  actionNode=NULLP;
                   actionToBeRmv = (RICaction_RequiredToBeRemoved_ItemIEs_t *)actionToBeRmvList->list.array[actionIdx];
                   actionId = actionToBeRmv->value.choice.RICaction_RequiredToBeRemoved_Item.ricActionID;
-                  action = fetchActionInfoFromActionId(actionId, ricSubs);
+                  action = fetchActionInfoFromActionId(actionId, ricSubs, &actionNode);
                   if(action)
                   {
                      tmpActionList.actionRemovedList[tmpActionList.numActionRemoved++] = actionId;
-                     memset(action, 0, sizeof(ActionInfo));
-                     action->actionId = -1;
-                     ricSubs->numOfActions--;
+                     deleteActionSequence(action);
                   }
                }
                break;
@@ -4965,6 +5016,63 @@ uint8_t BuildAndSendResetRequest(DuDb *duDb, CauseE2_PR causePresent, uint8_t re
 
 /******************************************************************
  *
+ * @brief Delete Ric subscription action
+ *
+ * @details
+ *
+ *    Function : deleteActionSequence
+ *
+ *    Functionality: Delete Ric subscription action
+ *
+ * @params[in] Action info
+ *
+ * @return void
+ *
+ * ****************************************************************/
+void deleteActionSequence(CmLList *actionNode)
+{
+   ActionInfo *action = NULLP;
+
+   if(actionNode)
+   {
+      action = (ActionInfo*)actionNode->node;
+      memset(action, 0, sizeof(ActionInfo));
+      RIC_FREE(actionNode->node, sizeof(ActionInfo));
+      RIC_FREE(actionNode, sizeof(CmLList));
+   }
+}
+
+/******************************************************************
+ *
+ * @brief Delete Ric subscription action list
+ *
+ * @details
+ *
+ *    Function : deleteActionSequenceList
+ *
+ *    Functionality: Delete Ric subscription action list
+ *
+ * @params[in] Action info list
+ *
+ * @return void
+ *
+ * ****************************************************************/
+void deleteActionSequenceList(CmLListCp *actionList)
+{
+   CmLList *actionNode=NULLP;
+
+   CM_LLIST_FIRST_NODE(actionList, actionNode);
+   while(actionNode)
+   {
+      cmLListDelFrm(actionList, actionNode);
+      deleteActionSequence(actionNode);
+      CM_LLIST_FIRST_NODE(actionList, actionNode);
+   }
+
+}
+
+/******************************************************************
+ *
  * @brief Delete Ric subscription node
  *
  * @details
@@ -4984,14 +5092,9 @@ void deleteRicSubscriptionNode(CmLList *subscriptionNode)
    RicSubscription *ricSubscriptionInfo = NULLP;
 
    ricSubscriptionInfo = (RicSubscription*)subscriptionNode->node;
-
-   for(actionIdx = 0; actionIdx < MAX_RIC_ACTION; actionIdx++)
-   {
-      if(ricSubscriptionInfo->actionSequence[actionIdx].actionId > -1)
-      {
-         memset(&ricSubscriptionInfo->actionSequence[actionIdx], 0, sizeof(ActionInfo));
-      }
-   }
+   
+   deleteActionSequenceList(&ricSubscriptionInfo->actionSequence);
+   
    memset(ricSubscriptionInfo, 0, sizeof(RicSubscription));
    RIC_FREE(subscriptionNode->node, sizeof(RicSubscription));
    RIC_FREE(subscriptionNode, sizeof(CmLList));
@@ -7607,6 +7710,7 @@ uint8_t BuildRicSubsActionToBeRemoved(RICactions_ToBeRemovedForModification_List
 uint8_t BuildRicSubsActionToBeAdded(RICactions_ToBeAddedForModification_List_t *addedActionList, RicSubscription **ricSubsInfo, uint8_t numOfActionToBeAdded, ActionInfo *actionToBeAdded)
 {
    uint8_t arrIdx=0;
+   CmLList *actionNode=NULLP;
    RICaction_ToBeAddedForModification_ItemIEs_t *addedActionItemIe;
 
    addedActionList->list.count = numOfActionToBeAdded;
@@ -7640,8 +7744,13 @@ uint8_t BuildRicSubsActionToBeAdded(RICactions_ToBeAddedForModification_List_t *
          DU_LOG("\nERROR  -->  E2AP : Failed at [%s] : line [%d]", __func__, __LINE__);
          break;
       }
-      (*ricSubsInfo)->actionSequence[(*ricSubsInfo)->numOfActions].actionId =  (*ricSubsInfo)->numOfActions;
-      (*ricSubsInfo)->numOfActions++;
+      
+      actionNode = addRicSubsAction((*ricSubsInfo)->actionSequence.count, &(*ricSubsInfo)->actionSequence);
+      if(actionNode == NULLP)
+      {
+         DU_LOG("\nERROR  -->  E2AP : Failed at [%s] : line [%d]", __func__, __LINE__);
+         return RFAILED;
+      }
    }
    return ROK;
 }
@@ -7847,32 +7956,38 @@ uint8_t BuildAndSendRicSubscriptionModReq(DuDb *duDb, RicSubscription **ricSubsI
 
 void BuildRicSubsModificationReq(DuDb *duDb, RicSubscription *ricSubsInfo)
 {
+   CmLList *actionNode=NULLP;
    uint8_t actionToBeAdded =0;
    uint8_t actionIdx =0, tmpActionIdx=0;
+   ActionInfo *actionInfoDb = NULLP;
    RicSubsModReq ricSubsModReq;
 
    if(ricSubsInfo)
    {
       memset(&ricSubsModReq, 0, sizeof(RicSubsModReq));
-      for(actionIdx=0; actionIdx<ricSubsInfo->numOfActions; actionIdx++)
+      
+
+      CM_LLIST_FIRST_NODE(&ricSubsInfo->actionSequence, actionNode);
+      while(actionNode)
       {
+         actionInfoDb = (ActionInfo*)(actionNode->node);
          /* Change the condition based on the action required to be modiified or removed */
-         if(actionIdx%2 == 0)
+         if(((actionInfoDb->actionId)%2) == 0)
          {
             tmpActionIdx = ricSubsModReq.numOfActionToBeModify; 
-            ricSubsModReq.actionToBeModify[tmpActionIdx].actionId = ricSubsInfo->actionSequence[actionIdx].actionId;
+            ricSubsModReq.actionToBeModify[tmpActionIdx].actionId = actionInfoDb->actionId;
             ricSubsModReq.numOfActionToBeModify++;
          }
          else
          {
             tmpActionIdx = ricSubsModReq.numOfActionToBeRemove; 
-            ricSubsModReq.actionToBeRemove[tmpActionIdx].actionId = ricSubsInfo->actionSequence[actionIdx].actionId;
+            ricSubsModReq.actionToBeRemove[tmpActionIdx].actionId = actionInfoDb->actionId;
             ricSubsModReq.numOfActionToBeRemove++;
          }
       }
       /* Change the value of actionToBeAdded based on the number of action required to be added */
       actionToBeAdded =1;
-      tmpActionIdx = ricSubsInfo->numOfActions;
+      tmpActionIdx = ricSubsInfo->actionSequence.count;
       for(actionIdx=0; actionIdx<actionToBeAdded; actionIdx++)
       {
          ricSubsModReq.actionToBeAdded[actionIdx].actionId = tmpActionIdx;

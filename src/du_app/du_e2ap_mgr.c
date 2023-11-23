@@ -201,22 +201,32 @@ MeasurementInfo *fetchMeasInfoFromMeasTypeName(char *e2MeasTypeName, CmLListCp *
  *
  * @params[in] Action ID 
  *             RIC Subscription DB
+ *             Ric Action Node
  * @return Action Info DB
  *         NULL, in case of failure
  *
  * ****************************************************************/
-ActionInfo *fetchActionInfoFromActionId(uint8_t actionId, RicSubscription *ricSubscriptionInfo)
+ActionInfo *fetchActionInfoFromActionId(uint8_t actionId, RicSubscription *ricSubscriptionInfo, CmLList ** actionNode)
 {
    ActionInfo *actionInfoDb = NULLP;
-   if(ricSubscriptionInfo->actionSequence[actionId].actionId == actionId)
+
+   CM_LLIST_FIRST_NODE(&ricSubscriptionInfo->actionSequence, *actionNode);
+   while(actionNode)
    {
-      actionInfoDb = &ricSubscriptionInfo->actionSequence[actionId];
+      actionInfoDb = (ActionInfo*)((*actionNode)->node);
+      if(actionInfoDb && actionInfoDb->actionId == actionId)
+      {
+         break;
+      }
+      *actionNode= (*actionNode)->next;
+      actionInfoDb = NULLP;
    }
-   else
+   
+   if(!actionInfoDb) 
    {
       DU_LOG("\nERROR  -->  E2AP : fetchActionInfoFromActionId: Action Id [%d] not found in \
-         subscription info [Requestor id : %d] [Instance Id : %d]", actionId,\
-         ricSubscriptionInfo->requestId.requestorId, ricSubscriptionInfo->requestId.instanceId);
+            subscription info [Requestor id : %d] [Instance Id : %d]", actionId,\
+            ricSubscriptionInfo->requestId.requestorId, ricSubscriptionInfo->requestId.instanceId);
 
    }
    return actionInfoDb;
@@ -474,17 +484,19 @@ uint8_t fillRicSubsInMacStatsReq(MacStatsReq *macStatsReq, RicSubscription* ricS
    uint8_t    actionIdx = 0, grpIdx = 0, statsIdx = 0;
    uint64_t   subscriptionId = 0;
    ActionInfo *actionDb = NULLP;
+   CmLList *actionNode = NULLP;
    ActionDefFormat1 *format1Action = NULLP;
 
    /* Generate subscription ID using RIC Request ID and RAN Function ID */
    encodeSubscriptionId(&subscriptionId, ricSubscriptionInfo->ranFuncId, ricSubscriptionInfo->requestId);
 
    macStatsReq->subscriptionId = subscriptionId;
-   for(actionIdx = 0; actionIdx < MAX_RIC_ACTION; actionIdx++)
+   CM_LLIST_FIRST_NODE(&ricSubscriptionInfo->actionSequence, actionNode);
+   while(actionNode)
    {
-      if(ricSubscriptionInfo->actionSequence[actionIdx].action == CONFIG_ADD)
+      actionDb = (ActionInfo*)(actionNode->node);
+      if(actionDb->action == CONFIG_ADD)
       {
-         actionDb = &ricSubscriptionInfo->actionSequence[actionIdx];
          macStatsReq->statsGrpList[grpIdx].groupId = actionDb->actionId;
          switch(actionDb->definition.formatType)
          {
@@ -533,6 +545,7 @@ uint8_t fillRicSubsInMacStatsReq(MacStatsReq *macStatsReq, RicSubscription* ricS
          if(macStatsReq->statsGrpList[grpIdx].numStats)
             grpIdx++;
       }
+      actionNode = actionNode->next;
    }
 
    macStatsReq->numStatsGroup = grpIdx;
@@ -609,6 +622,7 @@ uint8_t e2ProcStatsRsp(MacStatsRsp *statsRsp)
    uint32_t reportingPeriod = 0;
    RanFunction *ranFuncDb = NULLP;
    CmLList *ricSubscriptionNode = NULLP;
+   CmLList *actionNode = NULLP;
    RicSubscription *ricSubscriptionInfo = NULLP;
    ActionInfo *actionInfoDb = NULLP;
    PendingSubsRspInfo *pendingSubsRsp = NULLP;
@@ -682,7 +696,7 @@ uint8_t e2ProcStatsRsp(MacStatsRsp *statsRsp)
          actionInfoDb = NULLP;
 
          actionId = statsRsp->statsGrpAcceptedList[idx];
-         actionInfoDb = fetchActionInfoFromActionId(actionId, ricSubscriptionInfo);
+         actionInfoDb = fetchActionInfoFromActionId(actionId, ricSubscriptionInfo, &actionNode);
          if(actionInfoDb && (actionInfoDb->action == CONFIG_ADD))
          {
             actionInfoDb->action = CONFIG_UNKNOWN;
@@ -696,12 +710,12 @@ uint8_t e2ProcStatsRsp(MacStatsRsp *statsRsp)
        */
       for(idx=0; idx<statsRsp->numGrpRejected; idx++)
       {
+         actionInfoDb = NULLP;
          actionId = statsRsp->statsGrpRejectedList[idx].groupId;
-         if(ricSubscriptionInfo->actionSequence[actionId].actionId == actionId)
+         actionInfoDb = fetchActionInfoFromActionId(actionId, ricSubscriptionInfo, &actionNode);
+         if(actionInfoDb->actionId == actionId)
          {
-            memset(&ricSubscriptionInfo->actionSequence[actionId], 0, sizeof(ActionInfo));
-            ricSubscriptionInfo->numOfActions--;
-
+            deleteActionSequence(actionNode);
             pendingSubsRsp->rejectedActionList[pendingSubsRsp->numOfRejectedActions].id = actionId;
             convertDuCauseToE2Cause(statsRsp->statsGrpRejectedList[idx].cause, \
                   &pendingSubsRsp->rejectedActionList[pendingSubsRsp->numOfRejectedActions].failureCause);
@@ -738,6 +752,7 @@ uint8_t e2ProcStatsInd(MacStatsInd *statsInd)
    uint8_t statsIdx = 0;
    RanFunction *ranFuncDb = NULLP;
    CmLList *ricSubscriptionNode = NULLP;
+   CmLList *actionNode = NULLP;
    RicSubscription *ricSubscriptionInfo = NULLP;
    ActionInfo *actionInfo = NULLP;
    ActionDefFormat1 *actionFormat = NULLP;
@@ -763,7 +778,7 @@ uint8_t e2ProcStatsInd(MacStatsInd *statsInd)
    }
 
    /* Fetch RIC subscription's action DB */
-   actionInfo = fetchActionInfoFromActionId(statsInd->groupId, ricSubscriptionInfo);
+   actionInfo = fetchActionInfoFromActionId(statsInd->groupId, ricSubscriptionInfo, &actionNode);
    if(actionInfo == NULLP)
    {
       DU_LOG("\nERROR  -->  E2AP : extractStatsMeasurement: Failed to fetch action ID [%d]", statsInd->groupId);
@@ -851,13 +866,15 @@ void E2apHdlRicSubsReportTmrExp(RicSubscription *ricSubscription)
 {
    uint8_t actionIdx = 0;
    uint32_t reportingPeriod = 0;
+   ActionInfo *action=NULLP;
+   CmLList *actionNode=NULLP;
 
-   for(actionIdx = 0; actionIdx < MAX_RIC_ACTION; actionIdx++)
+   CM_LLIST_FIRST_NODE(&ricSubscription->actionSequence, actionNode);
+   while(actionNode)
    {
-      if(ricSubscription->actionSequence[actionIdx].actionId >= 0)
-      {
-         BuildAndSendRicIndication(ricSubscription, &ricSubscription->actionSequence[actionIdx]);  
-      }
+      action = (ActionInfo*)actionNode->node;
+      BuildAndSendRicIndication(ricSubscription, action);
+      actionNode = actionNode->next;
    }
 
    /* Start RIC Subscription reporting timer again */
@@ -1288,31 +1305,67 @@ void deleteMeasurementInfoList(CmLListCp *measInfoList)
  * @return void 
  *
  * ****************************************************************/
-void deleteActionSequence(ActionInfo *action)
+void deleteActionSequence(CmLList *actionNode)
 {
+   ActionInfo *action = NULLP;
    ActionDefinition *definition=NULLP;
-   definition= &action->definition;       
    
-   switch(definition->formatType)
+   if(actionNode)
    {
-      case 1:
-         {
-            deleteMeasurementInfoList(&definition->choice.format1.measurementInfoList);
-            break;
-         }
+      action = (ActionInfo*)actionNode->node;
+      definition= &action->definition;       
 
-      case 2:
-      case 3:
-      case 4:
-      case 5:
-      default:
+      switch(definition->formatType)
       {
-         DU_LOG("\nERROR  -->  E2AP : Format %d does not supported", definition->formatType);
-         break;
+         case 1:
+            {
+               deleteMeasurementInfoList(&definition->choice.format1.measurementInfoList);
+               break;
+            }
+
+         case 2:
+         case 3:
+         case 4:
+         case 5:
+         default:
+            {
+               DU_LOG("\nERROR  -->  E2AP : Format %d does not supported", definition->formatType);
+               break;
+            }
       }
+      memset(action, 0, sizeof(ActionInfo));
+      DU_FREE(actionNode->node, sizeof(ActionInfo));
+      DU_FREE(actionNode, sizeof(CmLList));
    }
-   memset(action, 0, sizeof(ActionInfo));
-   action->actionId = -1;
+}
+
+/******************************************************************
+ *
+ * @brief Delete Ric subscription action list
+ *
+ * @details
+ *
+ *    Function : deleteActionSequenceList
+ *
+ *    Functionality: Delete Ric subscription action list
+ *
+ * @params[in] Action info list
+ *
+ * @return void
+ *
+ * ****************************************************************/
+void deleteActionSequenceList(CmLListCp *actionList)
+{
+   CmLList *actionNode=NULLP;
+
+   CM_LLIST_FIRST_NODE(actionList, actionNode);
+   while(actionNode)
+   {
+      cmLListDelFrm(actionList, actionNode);
+      deleteActionSequence(actionNode);
+      CM_LLIST_FIRST_NODE(actionList, actionNode);
+   }
+
 }
 
 /******************************************************************
@@ -1332,19 +1385,11 @@ void deleteActionSequence(ActionInfo *action)
  * ****************************************************************/
 void deleteRicSubscriptionNode(CmLList *subscriptionNode)
 {
-   uint8_t actionIdx=0;
    RicSubscription *ricSubscriptionInfo = NULLP;
 
    ricSubscriptionInfo = (RicSubscription*)subscriptionNode->node;    
 
-   for(actionIdx = 0; actionIdx < MAX_RIC_ACTION; actionIdx++)
-   {
-      if(ricSubscriptionInfo->actionSequence[actionIdx].actionId > -1)
-      {
-         deleteActionSequence(&ricSubscriptionInfo->actionSequence[actionIdx]);
-      }
-   }
-
+   deleteActionSequenceList(&ricSubscriptionInfo->actionSequence);
    if(duChkTmr((PTR)ricSubscriptionInfo, EVENT_RIC_SUBSCRIPTION_REPORTING_TMR) == TRUE)
    {
       duStopTmr((PTR)ricSubscriptionInfo, EVENT_RIC_SUBSCRIPTION_REPORTING_TMR);

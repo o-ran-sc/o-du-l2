@@ -3246,6 +3246,112 @@ uint8_t extractRicActionDef(RanFunction *ranFuncDb, ActionDefinition *actionDefD
 
 /*******************************************************************
  *
+ * @brief add RIC Subs action info
+ *
+ * @details
+ *
+ *    Function : addRicSubsAction
+ *
+ * Functionality: add Ric Subs action info
+ *
+ * @parameter
+ *    RAN function DB
+ *    Pointer to Ric Subc info
+ *    Action Sequence list
+ *    Procedure Code
+ *    E2 Failure Cause
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ ******************************************************************/
+
+CmLList *addRicSubsAction(RanFunction *ranFuncDb, PTR ricSubsInfo, CmLListCp *actionSequence, uint8_t procedureCode, E2FailureCause *failureCause)
+{
+   CmLList *actionNode = NULLP;
+   ActionInfo *actionDb = NULLP;
+   RICactionID_t ricActionID;
+   RICactionType_t ricActionType;
+   RICactionDefinition_t *ricActionDefinition= NULLP;
+   RICaction_ToBeSetup_Item_t *setupItem= NULLP;
+   RICaction_ToBeAddedForModification_Item_t *addIem= NULLP;
+   RICaction_ToBeModifiedForModification_Item_t *modifiedItem= NULLP;
+   RICaction_ToBeRemovedForModification_Item_t *removedItem= NULLP;
+
+   switch(procedureCode)
+   {
+      case ProtocolIE_IDE2_id_RICaction_ToBeSetup_Item:
+         {
+            setupItem = (RICaction_ToBeSetup_Item_t *)ricSubsInfo;
+            ricActionID= setupItem->ricActionID;
+            ricActionType= setupItem->ricActionType;
+            if(setupItem->ricActionDefinition)
+            {
+               ricActionDefinition = setupItem->ricActionDefinition;
+            }
+            break;
+         }
+      case ProtocolIE_IDE2_id_RICactionsToBeAddedForModification_List:
+         {
+            addIem = (RICaction_ToBeAddedForModification_Item_t*) ricSubsInfo;
+            ricActionID= addIem->ricActionID;
+            ricActionType= addIem->ricActionType;
+            ricActionDefinition = &addIem->ricActionDefinition;
+
+            break;
+         }
+      case  ProtocolIE_IDE2_id_RICactionsToBeModifiedForModification_List:
+         {
+            modifiedItem= (RICaction_ToBeModifiedForModification_Item_t*)ricSubsInfo;
+            ricActionID= modifiedItem->ricActionID;
+            if(modifiedItem->ricActionDefinition)
+            {
+               ricActionDefinition = modifiedItem->ricActionDefinition;
+            }
+            break;
+         }
+      case ProtocolIE_IDE2_id_RICactionsToBeRemovedForModification_List:
+         {
+            removedItem= (RICaction_ToBeRemovedForModification_Item_t*)ricSubsInfo;
+            ricActionID= removedItem->ricActionID;
+            break;
+         }
+   }
+
+
+   DU_ALLOC(actionDb, sizeof(ActionInfo));   
+   if(actionDb==NULLP)
+   {
+      DU_LOG("\nERROR  -->  E2AP : Memory allocation failed in %s at %d",__func__,__LINE__);
+      return NULLP;
+   }
+   if(ricActionType== RICactionType_report)
+   {
+      actionDb->actionId = ricActionID;
+      actionDb->type = REPORT;
+
+      if(extractRicActionDef(ranFuncDb, &actionDb->definition, ricActionDefinition, failureCause) == ROK)
+      {
+         actionDb->action = CONFIG_ADD;
+      }
+
+      DU_ALLOC(actionNode, sizeof(CmLList));
+      if(actionNode)
+      {
+         actionNode->node = (PTR) actionDb;
+         cmLListAdd2Tail(actionSequence, actionNode);
+      }
+      else
+      {
+         DU_LOG("\nERROR  -->  E2AP : Memory allocation failed in %s at %d",__func__,__LINE__);
+         DU_FREE(actionDb, sizeof(ActionInfo));
+         return NULLP;
+      }
+   }
+   return actionNode;
+  
+}
+/*******************************************************************
+ *
  * @brief Extract RIC Action to be setup
  *
  * @details
@@ -3266,6 +3372,7 @@ uint8_t extractRicActionDef(RanFunction *ranFuncDb, ActionDefinition *actionDefD
 uint8_t extractRicActionToBeSetup(RanFunction *ranFuncDb, RicSubscription *ricSubscriptionInfo, \
    RICactions_ToBeSetup_List_t *actionList, E2FailureCause *failureCause, PendingSubsRspInfo *subsRsp)
 {
+   CmLList *actionNode = NULLP;
    uint8_t actionIdx = 0;
    uint8_t ricActionId = 0;
    RICaction_ToBeSetup_ItemIEs_t *actionItem = NULLP;
@@ -3283,35 +3390,25 @@ uint8_t extractRicActionToBeSetup(RanFunction *ranFuncDb, RicSubscription *ricSu
                    * If RIC action definition's extraction and validation passes, 
                    * Then : 
                    * This action is added to action sequence list of subscription info */
-                  ricActionId = actionItem->value.choice.RICaction_ToBeSetup_Item.ricActionID;
-
-                  if(actionItem->value.choice.RICaction_ToBeSetup_Item.ricActionType == RICactionType_report)
+                  actionNode = addRicSubsAction(ranFuncDb, (PTR)&actionItem->value.choice.RICaction_ToBeSetup_Item,\
+                  &ricSubscriptionInfo->actionSequence, ProtocolIE_IDE2_id_RICaction_ToBeSetup_Item, failureCause);
+                  
+                  if(!actionNode)
                   {
-                     ricSubscriptionInfo->actionSequence[ricActionId].actionId = ricActionId;
-                     ricSubscriptionInfo->actionSequence[ricActionId].type = REPORT;
+                     /* In case of any failure, action is rejected
+                      * Added to rejected-action-list in subscription response */
+                     deleteActionSequence(actionNode);
 
-                     if(extractRicActionDef(ranFuncDb, &ricSubscriptionInfo->actionSequence[ricActionId].definition, \
-                        actionItem->value.choice.RICaction_ToBeSetup_Item.ricActionDefinition, failureCause) == ROK)
+                     subsRsp->rejectedActionList[subsRsp->numOfRejectedActions].id = ricActionId;
+                     if(failureCause->causeType == E2_NOTHING)
                      {
-                        ricSubscriptionInfo->actionSequence[ricActionId].action = CONFIG_ADD;
-                        ricSubscriptionInfo->numOfActions++;
-                        break;
+                        failureCause->causeType = E2_RIC_REQUEST;
+                        failureCause->cause = E2_ACTION_NOT_SUPPORTED;
                      }
+                     memcpy(&subsRsp->rejectedActionList[subsRsp->numOfRejectedActions].failureCause, \
+                           failureCause, sizeof(E2FailureCause));
+                     subsRsp->numOfRejectedActions++;
                   }
-
-                  /* In case of any failure, action is rejected
-                   * Added to rejected-action-list in subscription response */
-                  deleteActionSequence(&ricSubscriptionInfo->actionSequence[ricActionId]);
-
-                  subsRsp->rejectedActionList[subsRsp->numOfRejectedActions].id = ricActionId;
-                  if(failureCause->causeType == E2_NOTHING)
-                  {
-                     failureCause->causeType = E2_RIC_REQUEST;
-                     failureCause->cause = E2_ACTION_NOT_SUPPORTED;
-                  }
-                  memcpy(&subsRsp->rejectedActionList[subsRsp->numOfRejectedActions].failureCause, \
-                        failureCause, sizeof(E2FailureCause));
-                  subsRsp->numOfRejectedActions++;
                   break;
                }
             default:
@@ -3322,7 +3419,7 @@ uint8_t extractRicActionToBeSetup(RanFunction *ranFuncDb, RicSubscription *ricSu
    }
 
    /* If there is even 1 action that can be added, return ROK */
-   if(ricSubscriptionInfo->numOfActions)
+   if(ricSubscriptionInfo->actionSequence.count)
       return ROK;
 
    if(failureCause->causeType == E2_NOTHING)
@@ -3350,7 +3447,7 @@ uint8_t extractRicActionToBeSetup(RanFunction *ranFuncDb, RicSubscription *ricSu
  * ****************************************************************/
 uint8_t procRicSubscriptionRequest(E2AP_PDU_t *e2apMsg)
 {
-   uint8_t idx = 0, actionIdx = 0; 
+   uint8_t idx = 0; 
    uint8_t ret = ROK;
    uint16_t ranFuncId = 0;
    RicRequestId ricReqId;
@@ -3416,11 +3513,6 @@ uint8_t procRicSubscriptionRequest(E2AP_PDU_t *e2apMsg)
                   ricSubscriptionInfo->requestId.requestorId = ricReqId.requestorId;
                   ricSubscriptionInfo->requestId.instanceId = ricReqId.instanceId;
                   ricSubscriptionInfo->ranFuncId = ranFuncId;
-
-                  for(actionIdx = 0; actionIdx < MAX_RIC_ACTION; actionIdx++)
-                  {
-                     ricSubscriptionInfo->actionSequence[actionIdx].actionId = -1;
-                  }
 
                   memset(&ranFuncDb->pendingSubsRspInfo[ranFuncDb->numPendingSubsRsp], 0, sizeof(PendingSubsRspInfo));
                   memcpy(&ranFuncDb->pendingSubsRspInfo[ranFuncDb->numPendingSubsRsp].requestId, 
@@ -6207,10 +6299,12 @@ void FreeRicSubsModRequired(E2AP_PDU_t *e2apMsg)
  *         RFAILED - failure
  *
  ******************************************************************/
-uint8_t FillActionReqdToBeModList(RICactions_RequiredToBeModified_List_t *actionToBeModList, uint8_t numActionsMod, \
-   RicSubscription *ricSubscription)
+uint8_t FillActionReqdToBeModList(RICactions_RequiredToBeModified_List_t *actionToBeModList, uint8_t numActionsMod,\
+      RicSubscription *ricSubscription)
 {
-   uint8_t arrIdx = 0, actionIdx = 0;
+   uint8_t arrIdx = 0;
+   CmLList *actionNode = NULLP;
+   ActionInfo *actionDb = NULLP;
    RICaction_RequiredToBeModified_ItemIEs_t *actionToBeMod = NULL;
 
    actionToBeModList->list.count = numActionsMod;
@@ -6223,9 +6317,11 @@ uint8_t FillActionReqdToBeModList(RICactions_RequiredToBeModified_List_t *action
    }
 
    arrIdx = 0;
-   for(actionIdx = 0; actionIdx < MAX_RIC_ACTION; actionIdx++)
+   CM_LLIST_FIRST_NODE(&ricSubscription->actionSequence, actionNode);
+   while(actionNode)
    {
-      if(ricSubscription->actionSequence[actionIdx].action == CONFIG_MOD)
+      actionDb = (ActionInfo*)(actionNode->node);
+      if(actionDb->action == CONFIG_MOD)
       {
          DU_ALLOC(actionToBeModList->list.array[arrIdx], sizeof(RICaction_RequiredToBeModified_ItemIEs_t));
          if(!actionToBeModList->list.array[arrIdx])
@@ -6240,7 +6336,7 @@ uint8_t FillActionReqdToBeModList(RICactions_RequiredToBeModified_List_t *action
          actionToBeMod->value.present = \
             RICaction_RequiredToBeModified_ItemIEs__value_PR_RICaction_RequiredToBeModified_Item;
          actionToBeMod->value.choice.RICaction_RequiredToBeModified_Item.ricActionID = \
-            ricSubscription->actionSequence[actionIdx].actionId;
+            actionDb->actionId;
          actionToBeMod->value.choice.RICaction_RequiredToBeModified_Item.ricTimeToWait = RICtimeToWait_w5ms;
 
          arrIdx++;
@@ -6250,7 +6346,6 @@ uint8_t FillActionReqdToBeModList(RICactions_RequiredToBeModified_List_t *action
    return ROK;
 }
 #endif
-
 /*******************************************************************
  *
  * @brief Fill Action required to be removed list
@@ -6271,7 +6366,9 @@ uint8_t FillActionReqdToBeModList(RICactions_RequiredToBeModified_List_t *action
 uint8_t FillActionReqdToBeRmvList(RICactions_RequiredToBeRemoved_List_t *actionToBeRmvList, uint8_t numActionsRmv, \
    RicSubscription *ricSubscription)
 {
-   uint8_t arrIdx = 0, actionIdx = 0;
+   uint8_t arrIdx = 0;
+   CmLList *actionNode = NULLP;
+   ActionInfo *actionDb = NULLP;
    RICaction_RequiredToBeRemoved_ItemIEs_t *actionToBeRmv = NULL;
 
    actionToBeRmvList->list.count = numActionsRmv;
@@ -6284,9 +6381,11 @@ uint8_t FillActionReqdToBeRmvList(RICactions_RequiredToBeRemoved_List_t *actionT
    }
 
    arrIdx = 0;
-   for(actionIdx = 0; actionIdx < MAX_RIC_ACTION; actionIdx++)
+   CM_LLIST_FIRST_NODE(&ricSubscription->actionSequence, actionNode);
+   while(actionNode)
    {
-      if(ricSubscription->actionSequence[actionIdx].action == CONFIG_DEL)
+      actionDb = (ActionInfo*)(actionNode->node);
+      if(actionDb->action == CONFIG_DEL)
       {
          DU_ALLOC(actionToBeRmvList->list.array[arrIdx], sizeof(RICaction_RequiredToBeRemoved_ItemIEs_t));
          if(!actionToBeRmvList->list.array[arrIdx])
@@ -6300,11 +6399,8 @@ uint8_t FillActionReqdToBeRmvList(RICactions_RequiredToBeRemoved_List_t *actionT
          actionToBeRmv->criticality = CriticalityE2_reject;
          actionToBeRmv->value.present = \
             RICaction_RequiredToBeRemoved_ItemIEs__value_PR_RICaction_RequiredToBeRemoved_Item;
-         actionToBeRmv->value.choice.RICaction_RequiredToBeRemoved_Item.ricActionID = \
-            ricSubscription->actionSequence[actionIdx].actionId;
-         fillE2Cause(&actionToBeRmv->value.choice.RICaction_RequiredToBeRemoved_Item.cause, \
-            ricSubscription->actionSequence[actionIdx].failureCause);
-
+         actionToBeRmv->value.choice.RICaction_RequiredToBeRemoved_Item.ricActionID = actionDb->actionId;
+         fillE2Cause(&actionToBeRmv->value.choice.RICaction_RequiredToBeRemoved_Item.cause, actionDb->failureCause);
          arrIdx++;
       }
    }
@@ -6330,7 +6426,9 @@ uint8_t FillActionReqdToBeRmvList(RICactions_RequiredToBeRemoved_List_t *actionT
  ******************************************************************/
 uint8_t FillRicSubsModRequired(RICsubscriptionModificationRequired_t *ricSubsModReqd, RicSubscription *ricSubscription)
 {
-   uint8_t ieIdx = 0, elementCnt=0, actionIdx = 0;
+   ActionInfo * actionDb=NULLP;
+   CmLList *actionNode = NULLP;
+   uint8_t ieIdx = 0, elementCnt=0;
    uint8_t numActionsMod = 0, numActionsRmv = 0;
    RICsubscriptionModificationRequired_IEs_t *ricSubsModReqdIe = NULLP;
    RICactions_RequiredToBeRemoved_List_t  *actionToBeRmvList = NULLP;
@@ -6341,12 +6439,15 @@ uint8_t FillRicSubsModRequired(RICsubscriptionModificationRequired_t *ricSubsMod
 #endif
 
    /* Count number of Actions to be modified or deleted */
-   for(actionIdx = 0; actionIdx < MAX_RIC_ACTION; actionIdx++)
+   CM_LLIST_FIRST_NODE(&ricSubscription->actionSequence, actionNode);
+   while(actionNode)
    {
-      if(ricSubscription->actionSequence[actionIdx].action == CONFIG_MOD)
-         numActionsMod++;
-      else if(ricSubscription->actionSequence[actionIdx].action == CONFIG_DEL)
-         numActionsRmv++;
+       actionDb = (ActionInfo*)(actionNode->node);
+       if(actionDb->action == CONFIG_MOD)
+          numActionsMod++;
+       else if(actionDb->action == CONFIG_DEL)
+          numActionsRmv++;
+       actionNode = actionNode->next;
    }
 
    /* Count number of IEs to be added to messages */
@@ -6659,6 +6760,7 @@ void procRicSubscriptionModificationConfirm(E2AP_PDU_t *e2apMsg)
    RicRequestId ricReqId;
    RanFunction *ranFuncDb = NULLP;
    CmLList *ricSubsNode = NULLP;
+   CmLList *actionNode= NULLP;
    RicSubscription *ricSubsDb = NULLP;
    ActionInfo *actionDb = NULLP;
 
@@ -6758,7 +6860,7 @@ void procRicSubscriptionModificationConfirm(E2AP_PDU_t *e2apMsg)
                      modCfmListItem = (RICaction_ConfirmedForModification_ItemIEs_t *)modCfmList->list.array[arrIdx];
                      actionId = modCfmListItem->value.choice.RICaction_ConfirmedForModification_Item.ricActionID;
 
-                     actionDb = fetchActionInfoFromActionId(actionId, ricSubsDb);
+                     actionDb = fetchActionInfoFromActionId(actionId, ricSubsDb, &actionNode);
                      if(!actionDb)
                      {
                         DU_LOG("\nERROR  -->  E2AP : %s: Action ID [%d] not found", __func__, actionId);
@@ -6781,7 +6883,7 @@ void procRicSubscriptionModificationConfirm(E2AP_PDU_t *e2apMsg)
                   {
                     modRefusedListItem = (RICaction_RefusedToBeModified_ItemIEs_t *)modRefusedList->list.array[arrIdx];
                     actionId = modRefusedListItem->value.choice.RICaction_RefusedToBeModified_Item.ricActionID;
-                    actionDb = fetchActionInfoFromActionId(actionId, ricSubsDb);
+                    actionDb = fetchActionInfoFromActionId(actionId, ricSubsDb, &actionNode);
                     if(!actionDb)
                     {
                        DU_LOG("\nERROR  -->  E2AP : %s: Action ID [%d] not found", __func__, actionId);
@@ -6806,16 +6908,15 @@ void procRicSubscriptionModificationConfirm(E2AP_PDU_t *e2apMsg)
                   {
                      rmvCfmListItem = (RICaction_ConfirmedForRemoval_ItemIEs_t *)rmvCfmList->list.array[arrIdx];
                      actionId = rmvCfmListItem->value.choice.RICaction_ConfirmedForRemoval_Item.ricActionID;
-                     actionDb = fetchActionInfoFromActionId(actionId, ricSubsDb);
+                     actionDb = fetchActionInfoFromActionId(actionId, ricSubsDb, &actionNode);
                      if(!actionDb)
                      {
                         DU_LOG("\nERROR  -->  E2AP : %s: Action ID [%d] not found", __func__, actionId);
                      }
                      else
                      {
-                        deleteActionSequence(actionDb);
+                        deleteActionSequence(actionNode);
                         actionDb =NULLP;
-                        ricSubsDb->numOfActions--;
                         /* Further handling can include :
                          * Deletion of this action from all DU layers 
                          */
@@ -6832,7 +6933,7 @@ void procRicSubscriptionModificationConfirm(E2AP_PDU_t *e2apMsg)
                   {
                      rmvFailListItem = (RICaction_RefusedToBeRemoved_ItemIEs_t *)rmvFailList->list.array[arrIdx];
                      actionId = rmvFailListItem->value.choice.RICaction_RefusedToBeRemoved_Item.ricActionID;
-                     actionDb = fetchActionInfoFromActionId(actionId, ricSubsDb);
+                     actionDb = fetchActionInfoFromActionId(actionId, ricSubsDb,  &actionNode);
                      if(!actionDb)
                      {
                         DU_LOG("\nERROR  -->  E2AP : %s: Action ID [%d] not found", __func__, actionId);
@@ -9649,7 +9750,7 @@ void procRicSubscriptionModificationRequest(E2AP_PDU_t *e2apMsg)
          DU_LOG("\nERROR  -->  E2AP : %s: Initiating Message in E2AP PDU is NULL", __func__);
          break;
       }
-      
+
       ricSubsModifyReq =  &e2apMsg->choice.initiatingMessage->value.choice.RICsubscriptionModificationRequest;
       for(ieIdx = 0; ieIdx < ricSubsModifyReq->protocolIEs.list.count; ieIdx++)
       {
@@ -9683,6 +9784,8 @@ void procRicSubscriptionModificationRequest(E2AP_PDU_t *e2apMsg)
 
                   ricSubsDb = fetchSubsInfoFromRicReqId(ricReqId, ranFuncDb, &ricSubsNode);
                   if(!ricSubsDb)
+
+
                   {
                      DU_LOG("\nERROR  -->  E2AP : %s: RIC Subscription not found for Requestor_ID [%d] Instance_ID [%d]",\
                            __func__, ricReqId.requestorId, ricReqId.instanceId);

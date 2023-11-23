@@ -116,8 +116,7 @@ typedef struct ricSubscription
 {
    RicRequestId    requestId;
    uint16_t        ranFuncId;
-   uint8_t         numOfActions;
-   ActionInfo      actionSequence[MAX_RIC_ACTION];
+   CmLListCp       actionSequence;
 }RicSubscription;
 
 typedef struct
