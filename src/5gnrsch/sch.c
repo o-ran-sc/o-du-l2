@@ -2678,7 +2678,7 @@ uint8_t SchProcStatsReq(Pst *pst, SchStatsReq *statsReq)
    Inst    inst = pst->dstInst - SCH_INST_START;
    bool    measTypeInvalid;
    CauseOfResult cause;
-   SchStatsInfo  *statsInfo = NULLP;
+   CmLList *statsGrpNode=NULLP; 
    SchStatsGrpInfo *grpInfo = NULLP;
    SchStatsGrp *grpInfoDb = NULLP;
    SchStatsRsp schStatsRsp;
@@ -2694,7 +2694,7 @@ uint8_t SchProcStatsReq(Pst *pst, SchStatsReq *statsReq)
    /* [Step 1] Basic validation. If fails, all stats group in stats request are rejected */
    
    /* If maximum number of statistics already configured */
-   if(schCb[inst].statistics.numOfStatsCfgd >= MAX_NUM_STATS_CFG)
+   if(schCb[inst].statistics.statsGrpList.count >= MAX_NUM_STATS_GRP)
    {
       DU_LOG("\nERROR  -->  SCH : SchProcStatsReq: Maximum number of statistics configured. \
             Cannot process new request.");
@@ -2706,111 +2706,121 @@ uint8_t SchProcStatsReq(Pst *pst, SchStatsReq *statsReq)
    memset(&schStatsRsp, 0, sizeof(SchStatsRsp));
 
    /* [Step 2] Traverse all stats group and validate each measurement types in each group */
-   statsInfo = &schCb[inst].statistics.statsInfoList[schCb[inst].statistics.numOfStatsCfgd];
-   statsInfo->numStatsGroup = 0;
    for(reqGrpIdx=0; reqGrpIdx<statsReq->numStatsGroup && grpIdx<MAX_NUM_STATS; reqGrpIdx++)
    {
-       measTypeInvalid = false;
-       grpInfo = &statsReq->statsGrpList[reqGrpIdx];
-       grpInfoDb = &statsInfo->statsGrpList[grpIdx];
-       for(reqMeasIdx = 0; reqMeasIdx < grpInfo->numStats; reqMeasIdx++)
-       {
-          switch(grpInfo->statsList[reqMeasIdx])
-          {
-             case SCH_DL_TOTAL_PRB_USAGE:
-                {
-                   /* Allocate memory */
-                   SCH_ALLOC(grpInfoDb->kpiStats.dlTotalPrbUsage, sizeof(TotalPrbUsage));
-                   if(!grpInfoDb->kpiStats.dlTotalPrbUsage)
-                   {
-                      DU_LOG("\nERROR   -->  SCH : Memory allocation failed for dlTotalPrbUsage in \
-                            SchProcStatsReq()");
-                      measTypeInvalid = true;
-                      cause = RESOURCE_UNAVAILABLE;
-                   }
-                   break;
-                }
+      measTypeInvalid = false;
+      grpInfo = &statsReq->statsGrpList[reqGrpIdx];
+      SCH_ALLOC(grpInfoDb, sizeof(SchStatsGrp));
+      if(grpInfoDb == NULLP)
+      {
 
-             case SCH_UL_TOTAL_PRB_USAGE:
-                {
-                   /* Allocate memory */
-                   SCH_ALLOC(grpInfoDb->kpiStats.ulTotalPrbUsage, sizeof(TotalPrbUsage));
-                   if(!grpInfoDb->kpiStats.ulTotalPrbUsage)
-                   {
-                      DU_LOG("\nERROR   -->  SCH : Memory allocation failed for dlTotalPrbUsage in \
-                            SchProcStatsReq()");
-                      measTypeInvalid = true;
-                      cause = RESOURCE_UNAVAILABLE;
-                   }
-                   break;
-                }
+         DU_LOG("\nERROR   -->  SCH : Memory allocation failed for dlTotalPrbUsage in \
+               SchProcStatsReq()");
+         measTypeInvalid = true;
+         cause = RESOURCE_UNAVAILABLE;
+      }
+      else
+      {
+         for(reqMeasIdx = 0; reqMeasIdx < grpInfo->numStats; reqMeasIdx++)
+         {
+            switch(grpInfo->statsList[reqMeasIdx])
+            {
+               case SCH_DL_TOTAL_PRB_USAGE:
+                  {
+                     /* Allocate memory */
+                     SCH_ALLOC(grpInfoDb->kpiStats.dlTotalPrbUsage, sizeof(TotalPrbUsage));
+                     if(!grpInfoDb->kpiStats.dlTotalPrbUsage)
+                     {
+                        DU_LOG("\nERROR  -->  E2AP : Memory allocation failed in %s at line %d",__func__, __LINE__);
+                        measTypeInvalid = true;
+                        cause = RESOURCE_UNAVAILABLE;
+                     }
+                     break;
+                  }
 
-             default:
-                {
-                   DU_LOG("\nERROR  -->  SCH : SchProcStatsReq: Invalid measurement type [%d]", \
-                         grpInfo->statsList[reqMeasIdx]);
-                   measTypeInvalid = true;
-                   cause = PARAM_INVALID;
-                   break;
-                }
-          }
+               case SCH_UL_TOTAL_PRB_USAGE:
+                  {
+                     /* Allocate memory */
+                     SCH_ALLOC(grpInfoDb->kpiStats.ulTotalPrbUsage, sizeof(TotalPrbUsage));
+                     if(!grpInfoDb->kpiStats.ulTotalPrbUsage)
+                     {
+                        DU_LOG("\nERROR  -->  E2AP : Memory allocation failed in %s at line %d",__func__, __LINE__);
+                        measTypeInvalid = true;
+                        cause = RESOURCE_UNAVAILABLE;
+                     }
+                     break;
+                  }
 
-          /* [Step 3 a] If any measurement type validation fails in a group, that group
-           *  is not configured */
-          if(measTypeInvalid)
-          {
-             SCH_FREE(grpInfoDb->kpiStats.dlTotalPrbUsage, sizeof(TotalPrbUsage));
-             SCH_FREE(grpInfoDb->kpiStats.ulTotalPrbUsage, sizeof(TotalPrbUsage));
-             memset(grpInfoDb, 0, sizeof(SchStatsGrp));   
-             break;
-          }
-       }
-   
-       /* [Step 4] If a group passes all validation, it is added to SCH database.
-        * A timer is started for this group. And the group is added to
-        * stats-group-accepted-list in sch-stats-response message. */
-       if(!measTypeInvalid)
-       {
-          /* Add this group's configured KPIs to list of Active KPIs */
-          if(schAddToKpiActiveList(inst, grpInfoDb) == ROK)
-          {
-             grpInfoDb->schInst = inst;
-             grpInfoDb->subscriptionId = statsReq->subscriptionId;
-             grpInfoDb->groupId = grpInfo->groupId;
-             grpInfoDb->periodicity = grpInfo->periodicity;
+               default:
+                  {
+                     DU_LOG("\nERROR  -->  SCH : SchProcStatsReq: Invalid measurement type [%d]", \
+                           grpInfo->statsList[reqMeasIdx]);
+                     measTypeInvalid = true;
+                     cause = PARAM_INVALID;
+                     break;
+                  }
+            }
+
+            /* [Step 3 a] If any measurement type validation fails in a group, that group
+             *  is not configured */
+            if(measTypeInvalid)
+            {
+               SCH_FREE(grpInfoDb->kpiStats.dlTotalPrbUsage, sizeof(TotalPrbUsage));
+               SCH_FREE(grpInfoDb->kpiStats.ulTotalPrbUsage, sizeof(TotalPrbUsage));
+               memset(grpInfoDb, 0, sizeof(SchStatsGrp));   
+               break;
+            }
+         }
+      } 
+      /* [Step 4] If a group passes all validation, it is added to SCH database.
+       * A timer is started for this group. And the group is added to
+       * stats-group-accepted-list in sch-stats-response message. */
+      if(!measTypeInvalid)
+      {
+         /* Add this group's configured KPIs to list of Active KPIs */
+         if(schAddToKpiActiveList(inst, grpInfoDb) == ROK)
+         {
+            grpInfoDb->schInst = inst;
+            grpInfoDb->subscriptionId = statsReq->subscriptionId;
+            grpInfoDb->groupId = grpInfo->groupId;
+            grpInfoDb->periodicity = grpInfo->periodicity;
 
 
-             /* Start timer */
-             cmInitTimers(&(grpInfoDb->periodTimer), 1);
-             schStartTmr(&schCb[inst], (PTR)(grpInfoDb), EVENT_STATISTICS_TMR, grpInfoDb->periodicity);
+            /* Start timer */
+            cmInitTimers(&(grpInfoDb->periodTimer), 1);
+            schStartTmr(&schCb[inst], (PTR)(grpInfoDb), EVENT_STATISTICS_TMR, grpInfoDb->periodicity);
 
-             schStatsRsp.statsGrpAcceptedList[schStatsRsp.numGrpAccepted] = grpInfo->groupId;
-             schStatsRsp.numGrpAccepted++;
-             grpIdx++;
-          }
-          else
-          {
-            memset(grpInfoDb, 0, sizeof(SchStatsGrp));
-          }
-       }
-       else
-       {
-          /* [Step 3 b] The rejected group is added to stats-group-rejected-list in
-           * sch-stats-response message */
-          memset(grpInfoDb, 0, sizeof(SchStatsGrp));
-          schStatsRsp.statsGrpRejectedList[schStatsRsp.numGrpRejected].groupId = grpInfo->groupId;
-          schStatsRsp.statsGrpRejectedList[schStatsRsp.numGrpRejected].cause = cause;
-          schStatsRsp.numGrpRejected++;
-       }
-   }
-   statsInfo->numStatsGroup = grpIdx;
-   if(statsInfo->numStatsGroup)
-   {
-      schCb[inst].statistics.numOfStatsCfgd++;
-   }
-   else
-   {
-      memset(statsInfo, 0, sizeof(SchStatsInfo));
+
+            /* Adding the information in link list*/
+            SCH_ALLOC(statsGrpNode, sizeof(CmLList));
+            if(statsGrpNode)
+            {
+               statsGrpNode->node = (PTR) grpInfoDb;
+               cmLListAdd2Tail(&schCb[inst].statistics.statsGrpList, statsGrpNode);
+               schStatsRsp.statsGrpAcceptedList[schStatsRsp.numGrpAccepted] = grpInfo->groupId;
+               schStatsRsp.numGrpAccepted++;
+               grpIdx++;
+            }
+            else
+            {
+               DU_LOG("\nERROR  -->  E2AP : Memory allocation failed in %s at %d",__func__,__LINE__);
+               SCH_FREE(grpInfoDb->kpiStats.dlTotalPrbUsage, sizeof(TotalPrbUsage));
+               SCH_FREE(grpInfoDb->kpiStats.ulTotalPrbUsage, sizeof(TotalPrbUsage));
+               SCH_FREE(grpInfoDb, sizeof(SchStatsGrp));
+               schStatsRsp.statsGrpRejectedList[schStatsRsp.numGrpRejected].groupId = grpInfo->groupId;
+               schStatsRsp.statsGrpRejectedList[schStatsRsp.numGrpRejected].cause = cause;
+               schStatsRsp.numGrpRejected++;
+            }
+         }
+      }
+      else
+      {
+         /* [Step 3 b] The rejected group is added to stats-group-rejected-list in
+          * sch-stats-response message */
+         schStatsRsp.statsGrpRejectedList[schStatsRsp.numGrpRejected].groupId = grpInfo->groupId;
+         schStatsRsp.statsGrpRejectedList[schStatsRsp.numGrpRejected].cause = cause;
+         schStatsRsp.numGrpRejected++;
+      }
    }
    schStatsRsp.subscriptionId = statsReq->subscriptionId;
 
@@ -2947,51 +2957,117 @@ uint8_t schCalcAndSendGrpStats(SchStatsGrp *grpInfo)
 
 /*******************************************************************
  *
- * @brief Fill and send Statistics Delete Response to MAC
+ * @brief Delete statistics group
  *
  * @details
  *
- *    Function :  SchSendStatsDeleteRspToMac
+ *    Function : deleteStatsGrp
  *
- *    Functionality: Fill and send Statistics Delete Response to MAC
+ *    Functionality:
+ *    Delete statistics group
  *
- * @params[in]  
- *       Statistics Delete Request from MAC
- *       Statistics Delete result
- *       Cause of response
+ * @params[in]
+ *           Inst
+ *           Stats Grp Node
  * @return ROK     - success
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t SchSendStatsDeleteRspToMac(SchStatsDeleteReq *statsDeleteReq, SchMacRsp rsp, CauseOfResult cause)
+void deleteStatsGrp(Inst inst, CmLList *grpNode)
 {
-   Pst rspPst;
-   uint8_t ret = ROK;
-   SchStatsDeleteRsp  *schStatsDeleteRsp;
-
-   DU_LOG("\nINFO   --> SCH : Filling Statistics Delete Response");
-   SCH_ALLOC(schStatsDeleteRsp, sizeof(SchStatsDeleteRsp));
-   if(schStatsDeleteRsp == NULLP)
-   {
-      DU_LOG("\nERROR  --> SCH : Failed to allocate memory in SchSendStatsDeleteRspToMac()");
-      return RFAILED;
-   }
+   SchStatsGrp *statsGrpInfo=NULLP;
    
-   schStatsDeleteRsp->subscriptionId=statsDeleteReq->subscriptionId;
-   schStatsDeleteRsp->rsp=rsp;
-   schStatsDeleteRsp->cause=cause;
-   /* Filling response post */
-   memset(&rspPst, 0, sizeof(Pst));
-   FILL_PST_SCH_TO_MAC(rspPst, inst);
-   rspPst.event = EVENT_STATISTICS_DELETE_RSP_TO_MAC;
-
-   ret = MacMessageRouter(&rspPst, (void *)schStatsDeleteRsp);
-   if(ret == RFAILED)
+   if(grpNode)
    {
-      DU_LOG("\nERROR  -->  SCH : SchSendStatsDeleteRspToMac(): Failed to send Statistics Response");
-      return ret;
+      statsGrpInfo = (SchStatsGrp*)grpNode->node;
+      SCH_FREE(statsGrpInfo->kpiStats.dlTotalPrbUsage, sizeof(TotalPrbUsage));
+      SCH_FREE(statsGrpInfo->kpiStats.ulTotalPrbUsage, sizeof(TotalPrbUsage));
+      if(schChkTmr((PTR)statsGrpInfo, EVENT_STATISTICS_TMR) == true)
+      {
+         schStopTmr(&schCb[inst], (PTR)statsGrpInfo, EVENT_STATISTICS_TMR);
+      }
+      memset(statsGrpInfo, 0, sizeof(SchStatsGrp));
+      SCH_FREE(grpNode->node, sizeof(SchStatsGrp));
+      SCH_FREE(grpNode, sizeof(CmLList));
    }
-   return ret;
+}
+
+/******************************************************************
+ *
+ * @brief Delete Ric subscription grp list
+ *
+ * @details
+ *
+ *    Function : deleteStatsGrpList
+ *
+ *    Functionality: Delete Ric subscription grp list
+ *    [Step 1]: travers the complete statsGrpList
+ *       check the all nodes
+ *    [Step 2]: if the node's subscriptionId is not same 
+ *       as the subscriptionId received then we will 
+ *       mode to the next node else check the deleteAllGrp value
+ *    [Step 3]: If deleteAllGrp true then delete the node
+ *       else we will compare the node's groupId and with the
+ *       groupId received then delete the node
+ *
+ * @params[in] 
+ *           Inst
+ *           Stats Grp List 
+ *           Subscription Id
+ *           Group Id
+ *           boolen of deleteAllGrp
+ * @return void
+ *
+ * ****************************************************************/
+uint8_t deleteStatsGrpList(Inst inst, CmLListCp *statsGrpList, uint64_t  subscriptionId, uint8_t  groupId, bool deleteAllGrp)
+{
+   bool statsFound=false;
+   SchStatsGrp *statsGrpInfo=NULLP;
+   CmLList *grpNode=NULLP;
+
+   CM_LLIST_FIRST_NODE(statsGrpList, grpNode);
+   while(grpNode)
+   {
+      statsGrpInfo = (SchStatsGrp*)grpNode->node;
+
+      /* compare the subscriptionId before deletion */
+      if(statsGrpInfo->subscriptionId== subscriptionId) 
+      {
+         /* If deleteAllGrp is true, then remove the node immediately;
+          * otherwise, compare the groupId; if the groupIds are the same, then
+          * delete the node from list */
+         if(deleteAllGrp == true)
+         {
+            cmLListDelFrm(statsGrpList, grpNode);
+            deleteStatsGrp(inst, grpNode);
+         }
+         else
+         {
+            if(statsGrpInfo->groupId== groupId) 
+            {
+               cmLListDelFrm(statsGrpList, grpNode);
+               deleteStatsGrp(inst, grpNode);
+               statsFound = true;
+            }
+         }
+      }
+      CM_LLIST_FIRST_NODE(statsGrpList, grpNode);
+   }
+
+   /* If deleteAllGrp is true, we will return ROK; 
+    * otherwise, we will check to see if the group info is present in the list; 
+    * if not, we will return RFAILED;
+    * otherwise, we will return ROK.*/
+   if(deleteAllGrp == true)
+   {
+      return ROK;
+   }
+   else
+   {
+      if(statsFound == true)
+         return ROK;
+   }
+   return RFAILED;
 }
 
 /*******************************************************************
@@ -3004,46 +3080,74 @@ uint8_t SchSendStatsDeleteRspToMac(SchStatsDeleteReq *statsDeleteReq, SchMacRsp 
  *
  *    Functionality:
  *    Delete statistics information
- *
+ *    [Step 1] :
+ *    If numStatsGroup returned by statsDeleteReq is 0, 
+ *    then call deleteStatsGrpList with inst, statsGrpList,
+ *    subscriptionId, and 0 as group id as well as true as
+ *    the complete ric subs deletion; otherwise, call 
+ *    deleteStatsGrpList with inst, statsGrpList, subscriptionId, 
+ *    group Id as well as false as the specific group deletion.
+ *    [Setup 2]:
+ *    Fill the stats delete response based on the response received from
+ *    function deleteStatsGrpList 
  * @params[in] 
  *             Instance
- *             Subscription id 
+ *             Subscription delete req
+ *             Subscription delete rsp
  * @return ROK     - success
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t deleteStatsInfo(Inst inst, uint64_t subscriptionId)
+uint8_t deleteStatsInfo(Inst inst, SchStatsDeleteReq *statsDeleteReq, SchStatsDeleteRsp  *schStatsDeleteRsp)
 {
-   bool statsFound=false;
-   uint8_t idx=0, statsGrpIdx=0;
-   SchStatsGrp *statsGrpInfo=NULLP;
+   uint8_t statsGrpIdx=0;
+   CmLListCp  *statsGrpList =NULLP;
 
-   if(schCb[inst].statistics.numOfStatsCfgd)
+   statsGrpList = &schCb[inst].statistics.statsGrpList;
+   
+   /* If numStatsGroup is zero, it indicates that we have received a request to
+    * delete the whole RIC subscription; if not, it indicates that we have
+    * received a request to delete some specific RIC subscription group.*/
+   if(!statsDeleteReq->numStatsGroup)
    {
-      for(idx=0;idx<schCb[inst].statistics.numOfStatsCfgd; idx++)
+      /* Deleting the complete stats information from the database */
+      if(deleteStatsGrpList(inst,statsGrpList, statsDeleteReq->subscriptionId, 0, true) == ROK)
       {
-         for(statsGrpIdx=0;statsGrpIdx<schCb[inst].statistics.statsInfoList[idx].numStatsGroup; statsGrpIdx++)
-         {
-            statsGrpInfo = &schCb[inst].statistics.statsInfoList[idx].statsGrpList[statsGrpIdx];
-            if(statsGrpInfo->subscriptionId ==subscriptionId)
-            {
-               SCH_FREE(statsGrpInfo->kpiStats.dlTotalPrbUsage, sizeof(TotalPrbUsage));
-               SCH_FREE(statsGrpInfo->kpiStats.ulTotalPrbUsage, sizeof(TotalPrbUsage));
-               if(schChkTmr((PTR)statsGrpInfo, EVENT_STATISTICS_TMR) == true)
-               {
-                  schStopTmr(&schCb[inst], (PTR)statsGrpInfo, EVENT_STATISTICS_TMR);
-               }
-               memset(statsGrpInfo, 0, sizeof(SchStatsGrp));
-               statsFound = true;
-            }
-         }
+         /* Filling the deletion outcome and the cause for complete RIC
+          * subscription deletion */
+         schStatsDeleteRsp->cmpltStatsDelrsp = RSP_OK;  
+         schStatsDeleteRsp->cmpltStatsDelcause = SUCCESSFUL;
+      }
+      else
+      {
+         /* Filling the deletion outcome and the cause for complete RIC
+          * subscription deletion */
+         schStatsDeleteRsp->cmpltStatsDelrsp = RSP_NOK;  
+         schStatsDeleteRsp->cmpltStatsDelcause = STATS_ID_NOT_FOUND; 
       }
    }
-
-   if(statsFound ==false)
+   else
    {
-      DU_LOG("\nERROR  -->  SCH : SchProcStatsDeleteReq(): Statistics information is not present");
-      return RFAILED;
+      /* Deleting only those group which are requested to be deleted */ 
+      for(statsGrpIdx=0; statsGrpIdx<statsDeleteReq->numStatsGroup; statsGrpIdx++)
+      {
+         if(deleteStatsGrpList(inst, statsGrpList, statsDeleteReq->subscriptionId,\
+                  statsDeleteReq->statsGrpIdList[statsGrpIdx], false) != ROK)
+         {
+            /* Filling in the deletion outcome and the reason for the particular
+             * group deletion */
+            schStatsDeleteRsp->statsGrpInfo[statsGrpIdx].rsp = RSP_OK;  
+            schStatsDeleteRsp->statsGrpInfo[statsGrpIdx].cause = SUCCESSFUL; 
+         }
+         else
+         {
+            /* Filling in the deletion outcome and the reason for the particular
+             * group deletion */
+            schStatsDeleteRsp->statsGrpInfo[statsGrpIdx].rsp = RSP_NOK;  
+            schStatsDeleteRsp->statsGrpInfo[statsGrpIdx].cause = STATS_ID_NOT_FOUND; 
+         }
+      }
+      schStatsDeleteRsp->numStatsGroup = statsDeleteReq->numStatsGroup;
    }
    return ROK;
 }
@@ -3067,7 +3171,9 @@ uint8_t deleteStatsInfo(Inst inst, uint64_t subscriptionId)
  * ****************************************************************/
 uint8_t SchProcStatsDeleteReq(Pst *pst, SchStatsDeleteReq *statsDeleteReq)
 {
+   Pst rspPst;
    uint8_t ret =ROK;
+   SchStatsDeleteRsp  *schStatsDeleteRsp;
    Inst    inst = pst->dstInst - SCH_INST_START;
 
    DU_LOG("\nINFO   -->  SCH : Received Statistics Delete Request from MAC");
@@ -3078,14 +3184,26 @@ uint8_t SchProcStatsDeleteReq(Pst *pst, SchStatsDeleteReq *statsDeleteReq)
       return RFAILED;
    }
 
-   ret = deleteStatsInfo(inst, statsDeleteReq->subscriptionId);
-   if(ret == ROK)
+   SCH_ALLOC(schStatsDeleteRsp, sizeof(SchStatsDeleteRsp));
+   if(schStatsDeleteRsp == NULLP)
    {
-      SchSendStatsDeleteRspToMac(statsDeleteReq, RSP_OK, SUCCESSFUL);
+      DU_LOG("\nERROR  --> SCH : Failed to allocate memory in SchProcStatsDeleteReq()");
+      return RFAILED;
    }
-   else
+
+   /* Fill the subscriptionId */
+   schStatsDeleteRsp->subscriptionId=statsDeleteReq->subscriptionId;
+   /* delete the stats and fill the deletion rsp in schStatsDeleteRsp */
+   deleteStatsInfo(inst, statsDeleteReq, schStatsDeleteRsp);
+   
+   memset(&rspPst, 0, sizeof(Pst));
+   FILL_PST_SCH_TO_MAC(rspPst, inst);
+   rspPst.event = EVENT_STATISTICS_DELETE_RSP_TO_MAC;
+
+   ret = MacMessageRouter(&rspPst, (void *)schStatsDeleteRsp);
+   if(ret == RFAILED)
    {
-      SchSendStatsDeleteRspToMac(statsDeleteReq, RSP_NOK, STATS_ID_NOT_FOUND);
+      DU_LOG("\nERROR  -->  SCH : SchProcStatsDeleteReq(): Failed to send Statistics Response");
    }
    SCH_FREE(statsDeleteReq, sizeof(SchStatsDeleteReq));
 

@@ -2307,9 +2307,19 @@ uint8_t DuProcMacStatsDeleteRsp(Pst *pst, MacStatsDeleteRsp *statsDeleteRsp)
 
    if(statsDeleteRsp)
    {
-      if((ret = e2ProcStatsDeleteRsp(statsDeleteRsp)) != ROK)
+      /* numStatsGroup is 0 means, received a response for complete ric
+       * subscription deletion else, received a response for action to
+       * be deleted */
+      if(statsDeleteRsp->numStatsGroup==0)
       {
-          DU_LOG("\nINFO  -->  DU_APP : Failed in %s at line %d", __func__, __LINE__);
+         if((ret = e2ProcStatsDeleteRsp(statsDeleteRsp)) != ROK)
+         {
+            DU_LOG("\nINFO  -->  DU_APP : Failed in %s at line %d", __func__, __LINE__);
+         }
+      }
+      else
+      {
+         /* TODO calling ric sub modification action to be deleted functions */
       }
       DU_FREE_SHRABL_BUF(pst->region, pst->pool, statsDeleteRsp, sizeof(MacStatsDeleteRsp));
    }
@@ -2332,13 +2342,17 @@ uint8_t DuProcMacStatsDeleteRsp(Pst *pst, MacStatsDeleteRsp *statsDeleteRsp)
  *
  * @params[in]
  *     Subscription Info
+ *     delete All Stats
  * @return ROK     - success
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t BuildAndSendStatsDeleteReqToMac(RicSubscription *ricSubscriptionInfo)
+uint8_t BuildAndSendStatsDeleteReqToMac(RicSubscription *ricSubscriptionInfo, bool deleteAllStats)
 {
    Pst pst;
+   uint8_t actionIdx=0;
+   CmLList *actionNode=NULLP;
+   ActionInfo *actionDb = NULLP;
    E2FailureCause failureCause;
    MacStatsDeleteReq *macStatsDelete = NULLP;
 
@@ -2357,9 +2371,29 @@ uint8_t BuildAndSendStatsDeleteReqToMac(RicSubscription *ricSubscriptionInfo)
       }
       return RFAILED;
    }
-
+   
+   memset(macStatsDelete, 0, sizeof(MacStatsDeleteReq));
    /* Generate subscription ID using RIC Request ID and RAN Function ID */
    encodeSubscriptionId(&macStatsDelete->subscriptionId, ricSubscriptionInfo->ranFuncId, ricSubscriptionInfo->requestId);
+
+   /* If deleteAllStats is true, then we don't need to fill in the
+    * statsGrpIdList with action details; otherwise, we must fill in the
+    * statsGrpIdList with action-related data that is set to CONFIG_DEL.*/
+   if(!deleteAllStats)
+   {
+      actionIdx=0;
+      CM_LLIST_FIRST_NODE(&ricSubscriptionInfo->actionSequence, actionNode);
+      while(actionNode)
+      {
+         actionDb = (ActionInfo*)(actionNode->node);
+         if(actionDb->action == CONFIG_DEL)
+         {
+            macStatsDelete->statsGrpIdList[actionIdx] = actionDb->actionId;
+            actionIdx++;
+         }
+      }
+      macStatsDelete->numStatsGroup=actionIdx;
+   }
 
    DU_LOG("\nDEBUG  -->  DU_APP: Sending Statistics delete req to MAC ");
    FILL_PST_DUAPP_TO_MAC(pst, EVENT_MAC_STATS_DELETE_REQ);
@@ -2394,7 +2428,7 @@ uint8_t BuildAndSendStatsDeleteReqToMac(RicSubscription *ricSubscriptionInfo)
 uint8_t BuildAndSendStatsDeleteReq(RicSubscription *ricSubscriptionInfo)
 {
    /* Build and sent subscription information to MAC in Statistics delete */
-   if(BuildAndSendStatsDeleteReqToMac(ricSubscriptionInfo) != ROK)
+   if(BuildAndSendStatsDeleteReqToMac(ricSubscriptionInfo, true) != ROK)
    {
       DU_LOG("\nERROR  -->  DU_APP : Failed at BuildAndSendStatsDeleteReqToMac()");
       return RFAILED;

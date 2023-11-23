@@ -1365,7 +1365,6 @@ void deleteActionSequenceList(CmLListCp *actionList)
       deleteActionSequence(actionNode);
       CM_LLIST_FIRST_NODE(actionList, actionNode);
    }
-
 }
 
 /******************************************************************
@@ -1530,6 +1529,8 @@ void removeE2NodeInformation()
  * ****************************************************************/
 uint8_t e2ProcStatsDeleteRsp(MacStatsDeleteRsp *statsDeleteRsp)
 {
+   RicRequestId    requestId;
+   uint16_t        ranFuncId;
    RanFunction *ranFuncDb = NULLP;
    CmLList *ricSubscriptionNode = NULLP;
    RicSubscription *ricSubscriptionInfo = NULLP;
@@ -1542,12 +1543,14 @@ uint8_t e2ProcStatsDeleteRsp(MacStatsDeleteRsp *statsDeleteRsp)
       DU_LOG("\nERROR  -->  E2AP : e2ProcStatsDeleteRsp: Failed to fetch subscriprtion details");
       return RFAILED;
    }
+   ranFuncId = ricSubscriptionInfo->ranFuncId;
+   memcpy(&requestId, &ricSubscriptionInfo->requestId, sizeof(RicRequestId));
 
    deleteRicSubscriptionNode(ricSubscriptionNode);
    
-   if(statsDeleteRsp->result == MAC_DU_APP_RSP_NOK)
+   if(statsDeleteRsp->cmpltStatsDelrsp == MAC_DU_APP_RSP_NOK)
    {
-      if(statsDeleteRsp->status == STATS_ID_NOT_FOUND)
+      if(statsDeleteRsp->cmpltStatsDelcause == STATS_ID_NOT_FOUND)
       {
          failureCause.causeType =E2_RIC_REQUEST;
          failureCause.cause = E2_REQUEST_INFORMATION_UNAVAILABLE;
@@ -1558,7 +1561,7 @@ uint8_t e2ProcStatsDeleteRsp(MacStatsDeleteRsp *statsDeleteRsp)
          failureCause.cause = E2_MISCELLANEOUS_CAUSE_UNSPECIFIED;
       }
 
-      if(BuildAndSendRicSubscriptionDeleteFailure(ricSubscriptionInfo->ranFuncId, ricSubscriptionInfo->requestId, failureCause) != ROK)
+      if(BuildAndSendRicSubscriptionDeleteFailure(ranFuncId, requestId, failureCause) != ROK)
       {
          DU_LOG("\nERROR  -->  E2AP : e2ProcStatsDeleteRsp: failed to build and send ric subs delete failure");
          return RFAILED;
@@ -1566,7 +1569,7 @@ uint8_t e2ProcStatsDeleteRsp(MacStatsDeleteRsp *statsDeleteRsp)
    }
    else
    {
-      if(BuildAndSendRicSubscriptionDeleteResponse(ricSubscriptionInfo->ranFuncId, ricSubscriptionInfo->requestId) != ROK)
+      if(BuildAndSendRicSubscriptionDeleteResponse(ranFuncId, requestId) != ROK)
       {
          DU_LOG("\nERROR  -->  E2AP : e2ProcStatsDeleteRsp: failed to build and send ric subs delete rsp");
          return RFAILED;
