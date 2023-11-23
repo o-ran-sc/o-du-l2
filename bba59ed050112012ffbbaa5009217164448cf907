@@ -24,6 +24,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "30c585d7_cd750048",
+        "filename": "src/du_app/du_e2ap_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 214,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-11-23T10:58:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "69af91c9_078f3e2c",
+      "range": {
+        "startLine": 214,
+        "startChar": 9,
+        "endLine": 214,
+        "endChar": 19
+      },
+      "revId": "bba59ed050112012ffbbaa5009217164448cf907",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "43705b57_5bf91f24",
@@ -37,6 +61,24 @@
       "writtenOn": "2023-11-23T10:48:26Z",
       "side": 1,
       "message": "if this function is just for addition of subscription action, then why are we checking cases for modification and removal?",
+      "revId": "bba59ed050112012ffbbaa5009217164448cf907",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1e5137fe_219742e9",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 3312,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-11-23T10:58:56Z",
+      "side": 1,
+      "message": "I am going to update this function for modification and removal in my upcoming Gerrit.",
+      "parentUuid": "43705b57_5bf91f24",
       "revId": "bba59ed050112012ffbbaa5009217164448cf907",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -58,6 +100,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f7976000_f3989f72",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 3400,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-11-23T10:58:56Z",
+      "side": 1,
+      "message": "deleteActionSequence Not required. Thanks",
+      "parentUuid": "58e39e8d_cbc22eaf",
+      "revId": "bba59ed050112012ffbbaa5009217164448cf907",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "28ac6424_a7f2ef70",
@@ -71,6 +131,24 @@
       "writtenOn": "2023-11-23T10:48:26Z",
       "side": 1,
       "message": "2 extra lines here. please remove",
+      "revId": "bba59ed050112012ffbbaa5009217164448cf907",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "eb7aceed_18670213",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 9788,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-11-23T10:58:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "28ac6424_a7f2ef70",
       "revId": "bba59ed050112012ffbbaa5009217164448cf907",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
