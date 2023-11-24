@@ -18,6 +18,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "81514130_e14c2bdb",
+        "filename": "src/5gnrmac/mac_cfg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1370,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-11-24T12:01:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d743ab9f_dfb14958",
+      "revId": "fc57c47083db3ed194f44a5632dfd63049982efc",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a5e6e73e_e702dcaf",
@@ -35,6 +53,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "24c4cbbc_9f352881",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 3081,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-11-24T12:01:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a5e6e73e_e702dcaf",
+      "revId": "fc57c47083db3ed194f44a5632dfd63049982efc",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fbb35a39_5879c971",
@@ -48,6 +84,24 @@
       "writtenOn": "2023-11-24T09:25:06Z",
       "side": 1,
       "message": "Doesnt feel right to have rsp/cause in this structure and then again within StatsDeleteResult.\n\nCan we restructure the delete result ?",
+      "revId": "fc57c47083db3ed194f44a5632dfd63049982efc",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d52f832e_a050fa6e",
+        "filename": "src/cm/mac_sch_interface.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 2319,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-11-24T12:01:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fbb35a39_5879c971",
       "revId": "fc57c47083db3ed194f44a5632dfd63049982efc",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
