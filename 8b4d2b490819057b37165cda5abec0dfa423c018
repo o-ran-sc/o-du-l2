@@ -1,0 +1,118 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e5349a0d_7c4a2ebf",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 2997,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-11-24T15:12:55Z",
+      "side": 1,
+      "message": "Lets not use RIC related terms here. It will cause confusion.\n\nSay \"Deletion of node from statistics group list\"",
+      "range": {
+        "startLine": 2997,
+        "startChar": 17,
+        "endLine": 2997,
+        "endChar": 37
+      },
+      "revId": "8b4d2b490819057b37165cda5abec0dfa423c018",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6beb6a9f_5d4a893f",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 3001,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-11-24T15:12:55Z",
+      "side": 1,
+      "message": "This name means that the whole list will be deleted. However, this function is also used in cases where only certain statsGroup needs to be deleted from list.\n\nHence rename to deleteFromStatsGrpList",
+      "revId": "8b4d2b490819057b37165cda5abec0dfa423c018",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bf2cdc5b_806ad7f8",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 3003,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-11-24T15:12:55Z",
+      "side": 1,
+      "message": "Say \"Deletion of node from statistics group list\"",
+      "revId": "8b4d2b490819057b37165cda5abec0dfa423c018",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ee086520_5e5b205a",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 3098,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-11-24T15:12:55Z",
+      "side": 1,
+      "message": "SCH does not understand RIC related terms, so lets use terms like:\n1. Deletion of all stats group belonging to received subscription Id\n2. Deletion of individual statGrp from list\n\n\nAvoid using terms related to RIC at MAC and SCH",
+      "revId": "8b4d2b490819057b37165cda5abec0dfa423c018",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2e27989c_e073b781",
+        "filename": "src/cm/mac_sch_interface.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 2314,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-11-24T15:12:55Z",
+      "side": 1,
+      "message": "say \"deletion status of all statsGrp with given subscriptionId\"",
+      "range": {
+        "startLine": 2314,
+        "startChar": 72,
+        "endLine": 2314,
+        "endChar": 75
+      },
+      "revId": "8b4d2b490819057b37165cda5abec0dfa423c018",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1e027614_0a7cd61d",
+        "filename": "src/cm/mac_sch_interface.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 2315,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-11-24T15:12:55Z",
+      "side": 1,
+      "message": "just say, \"cause of failure in deletion of all statsGrp with given subscriptionId\"",
+      "revId": "8b4d2b490819057b37165cda5abec0dfa423c018",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
