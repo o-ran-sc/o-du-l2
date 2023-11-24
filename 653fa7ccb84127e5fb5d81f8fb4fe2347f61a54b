@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c61adf06_9ddaf445",
+        "filename": "src/5gnrmac/mac_cfg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1357,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-11-24T12:56:00Z",
+      "side": 1,
+      "message": "please also mention in step 3. if case is for \u0027RIC_SUB_MOD_REQ with actionTOBeDeleted and step 4 if for  \u0027RIC_SUBS_DELETE_REQ\u0027",
+      "revId": "653fa7ccb84127e5fb5d81f8fb4fe2347f61a54b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0a58fa0f_83aef656",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 3084,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-11-24T12:56:00Z",
+      "side": 1,
+      "message": "please mention the reaosn for why we are not sending any specific groupId.\n\"If numStatsGroup \u003d 0\u0027 indicates the Deletion procedure triggered by \u0027RIC_SUBS_DELETION_REQ\u0027 wherein all the groups of this particular Subscription has to be removed else when \"numStatsGroup !\u003d 0\" then this is for RIC_SUBS_MOD_REQ\u0027s actionToBeDEleted wherein particular action(s) has to be removed thus need to pass groupId belonging to that subscription which has to be deleted.\u0027",
+      "revId": "653fa7ccb84127e5fb5d81f8fb4fe2347f61a54b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f1d260f9_e1410b88",
+        "filename": "src/du_app/du_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2312,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-11-24T12:56:00Z",
+      "side": 1,
+      "message": "mention in else that it is for RIC_SUBS_MOD_REQ\u0027s actionToBeDeleted",
+      "revId": "653fa7ccb84127e5fb5d81f8fb4fe2347f61a54b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
