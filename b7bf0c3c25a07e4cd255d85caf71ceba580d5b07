@@ -1,0 +1,191 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a376165e_0ce1fd8b",
+        "filename": "src/5gnrmac/mac_cfg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1362,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-11-24T13:34:27Z",
+      "side": 1,
+      "message": "[1] In SCH delete response is received, fill MAC stats delete response with info from SCH stats delete response.\n[2] If a failure occurs while processing MAC stats delete request, then fill MAC stats delete rsp with failure using info from MAC stats delete request.\n[3] If numStatsGroup \u003d 0, send Stats delete response for deletion of complete subscription.\n[4] Else if numStatsGroup \u003e 0, then send stats delete response with deletion status of each stats group.",
+      "revId": "b7bf0c3c25a07e4cd255d85caf71ceba580d5b07",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6ac48e94_621706fb",
+        "filename": "src/5gnrmac/mac_cfg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1383,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-11-24T13:34:27Z",
+      "side": 1,
+      "message": "remove text from function code, only mention step number",
+      "revId": "b7bf0c3c25a07e4cd255d85caf71ceba580d5b07",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ade34603_922939a6",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 3015,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-11-24T13:34:27Z",
+      "side": 1,
+      "message": "rephrase as discussed.",
+      "revId": "b7bf0c3c25a07e4cd255d85caf71ceba580d5b07",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a2ea0437_27ac68e1",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 3040,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-11-24T13:34:27Z",
+      "side": 1,
+      "message": "remove text",
+      "revId": "b7bf0c3c25a07e4cd255d85caf71ceba580d5b07",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ce300543_6d852cba",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 3195,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-11-24T13:34:27Z",
+      "side": 1,
+      "message": "Add comment \"Process Stats delete request and fill stats delete response simultaneously\"",
+      "revId": "b7bf0c3c25a07e4cd255d85caf71ceba580d5b07",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "80f5fb72_fe8c5b42",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 3203,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-11-24T13:34:27Z",
+      "side": 1,
+      "message": "comment not needed",
+      "revId": "b7bf0c3c25a07e4cd255d85caf71ceba580d5b07",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7b1d7100_aa79d489",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 3205,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-11-24T13:34:27Z",
+      "side": 1,
+      "message": "remove comment",
+      "revId": "b7bf0c3c25a07e4cd255d85caf71ceba580d5b07",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "860d3edc_e370cc16",
+        "filename": "src/cm/du_app_mac_inf.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 1914,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-11-24T13:34:27Z",
+      "side": 1,
+      "message": "statsGrpDelRsp\nstatsGrpDelCause",
+      "revId": "b7bf0c3c25a07e4cd255d85caf71ceba580d5b07",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dd87ee2d_b69cb807",
+        "filename": "src/cm/du_app_mac_inf.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 1922,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-11-24T13:34:27Z",
+      "side": 1,
+      "message": "statsGrpDelInfo",
+      "revId": "b7bf0c3c25a07e4cd255d85caf71ceba580d5b07",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cf2b7adf_380aeb4d",
+        "filename": "src/cm/du_app_mac_inf.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 1923,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-11-24T13:34:27Z",
+      "side": 1,
+      "message": "subsDelRsp\nsubsDelCause",
+      "revId": "b7bf0c3c25a07e4cd255d85caf71ceba580d5b07",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eaa12585_caf135ba",
+        "filename": "src/cm/mac_sch_interface.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 2317,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-11-24T13:34:27Z",
+      "side": 1,
+      "message": "rename as suggested in du_app_mac_inf.h",
+      "revId": "b7bf0c3c25a07e4cd255d85caf71ceba580d5b07",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
