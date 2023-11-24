@@ -18,6 +18,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fa63f07c_27c98025",
+        "filename": "src/5gnrmac/mac_cfg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1357,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-11-24T13:12:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c61adf06_9ddaf445",
+      "revId": "653fa7ccb84127e5fb5d81f8fb4fe2347f61a54b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0a58fa0f_83aef656",
@@ -35,6 +53,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e3d13744_8d3846d3",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 3084,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-11-24T13:12:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0a58fa0f_83aef656",
+      "revId": "653fa7ccb84127e5fb5d81f8fb4fe2347f61a54b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f1d260f9_e1410b88",
@@ -48,6 +84,24 @@
       "writtenOn": "2023-11-24T12:56:00Z",
       "side": 1,
       "message": "mention in else that it is for RIC_SUBS_MOD_REQ\u0027s actionToBeDeleted",
+      "revId": "653fa7ccb84127e5fb5d81f8fb4fe2347f61a54b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2f3a8259_a1868311",
+        "filename": "src/du_app/du_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2312,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-11-24T13:12:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f1d260f9_e1410b88",
       "revId": "653fa7ccb84127e5fb5d81f8fb4fe2347f61a54b",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
