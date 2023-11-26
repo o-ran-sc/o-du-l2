@@ -1579,6 +1579,116 @@ uint8_t e2ProcStatsDeleteRsp(MacStatsDeleteRsp *statsDeleteRsp)
    return ROK;
 }
 
+/*******************************************************************
+ *
+ * @brief Fill RIC Subscription datils in MAC Statistics 
+ * ModificationRequest
+ *
+ * @details
+ *
+ *    Function : fillRicSubsInMacStatsModificationReq
+ *
+ *    Functionality: Fill RIC Subscription datils in MAC 
+ * Modification Statistics Request
+ *    [Step -1] Generate subscription ID using RIC Request ID and 
+ *    RAN Function ID
+ *    [Step -2] Check all the action staus of each action present
+ *    in the ric subscription. If action is CONFIG_MOD then fill
+ *    the information in stats group list.
+ *    [Step -3] Fill group related information in stats modification 
+ *    req's in stats group list
+ *    [Step -4] fill measurement information in stats group list
+ *    [Step -5] If the number of stats which needs to modify is 
+ *    greater then zero then return ROK else return RFAILED
+ *
+ * @params[in] MAC Statistics Modification Request to be filled
+ *             RIC Subscription Info
+ *
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t fillRicSubsInMacStatsModificationReq(MacStatsModificationReq *macStatsModificationReq, RicSubscription* ricSubscriptionInfo)
+{
+   uint8_t    grpIdx = 0;
+   uint8_t statsModifyReqIdx = 0;
+   uint64_t   subscriptionId = 0;
+   ActionInfo *actionDb = NULLP;
+   CmLList *actionNode = NULLP;
+   ActionDefFormat1 *format1Action = NULLP;
+
+   /* [Step -1] */
+   encodeSubscriptionId(&subscriptionId, ricSubscriptionInfo->ranFuncId, ricSubscriptionInfo->requestId);
+
+   macStatsModificationReq->subscriptionId = subscriptionId;
+   CM_LLIST_FIRST_NODE(&ricSubscriptionInfo->actionSequence, actionNode);
+   while(actionNode)
+   {
+      actionDb = (ActionInfo*)(actionNode->node);
+      /* [Step -2] */
+      if(actionDb->action == CONFIG_MOD)
+      {
+         /* [Step -3] */
+         macStatsModificationReq->statsGrpList[grpIdx].groupId = actionDb->actionId;
+         switch(actionDb->definition.formatType)
+         {
+            case 1:
+               {
+                  format1Action = &actionDb->definition.choice.format1;
+                  macStatsModificationReq->statsGrpList[grpIdx].periodicity = format1Action->granularityPeriod;
+
+                  CmLList *node = NULLP;
+                  MeasurementInfo *measInfo = NULLP;
+                  statsModifyReqIdx = 0;
+                  node = cmLListFirst(&format1Action->measurementInfoList);
+                  while(node)
+                  {
+                     /* [Step -4] */
+                     measInfo = (MeasurementInfo *)(node->node);
+                     switch(measInfo->measurementTypeId)
+                     {
+                        case 1:
+                           {
+                              macStatsModificationReq->statsGrpList[grpIdx].statsList[statsModifyReqIdx++] = MAC_DL_TOTAL_PRB_USAGE;
+                              break;
+                           }
+                        case 2:
+                           {
+                              macStatsModificationReq->statsGrpList[grpIdx].statsList[statsModifyReqIdx++] = MAC_UL_TOTAL_PRB_USAGE;
+                              break;
+                           }
+                        default:
+                           {
+                              DU_LOG("\nERROR  -->  E2AP : Invalid measurement name");
+                              break;
+                           }
+                     }
+                     node = node->next;
+                  }
+                  macStatsModificationReq->statsGrpList[grpIdx].numStats = statsModifyReqIdx;
+                  break;
+               }
+            default:
+               {
+                  DU_LOG("\nERROR  -->  E2AP : fillRicSubsInMacStatsModificationReq: Only Action Definition Format 1 supported");
+                  break;
+               }
+         }
+         if(macStatsModificationReq->statsGrpList[grpIdx].numStats)
+            grpIdx++;
+      }
+      actionNode = actionNode->next;
+   }
+
+   /* [Step -5] */
+   macStatsModificationReq->numStatsGroup = grpIdx;
+   if(macStatsModificationReq->numStatsGroup)
+   {
+      return ROK;
+   }
+   return RFAILED;
+}
+
 /**********************************************************************
   End of file
  **********************************************************************/

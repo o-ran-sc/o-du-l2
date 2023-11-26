@@ -534,6 +534,7 @@ void deleteMeasuredValueList(CmLListCp *measuredValueList);
 void removeE2NodeInformation();
 void encodeSubscriptionId(uint64_t *subscriptionId, uint16_t ranFuncId, RicRequestId ricReqId);
 uint8_t e2ProcStatsDeleteRsp(MacStatsDeleteRsp *statsDeleteRsp);
+uint8_t fillRicSubsInMacStatsModificationReq(MacStatsModificationReq *macStatsModificationReqReq, RicSubscription* ricSubscriptionInfo);
 
 /**********************************************************************
   End of file
