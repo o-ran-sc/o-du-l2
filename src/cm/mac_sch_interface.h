@@ -56,6 +56,8 @@
 #define EVENT_STATISTICS_IND_TO_MAC  37
 #define EVENT_STATISTICS_DELETE_REQ_TO_SCH  38
 #define EVENT_STATISTICS_DELETE_RSP_TO_MAC  39
+#define EVENT_STATISTICS_MODIFY_REQ_TO_SCH  40
+#define EVENT_STATISTICS_MODIFY_RSP_TO_MAC  41
 
 /*macros*/
 #define MAX_SSB_IDX 1 /* forcing it as 1 for now. Right value is 64 */
@@ -2262,6 +2264,9 @@ typedef struct schStatsReq
    uint8_t   numStatsGroup;
    SchStatsGrpInfo   statsGrpList[MAX_NUM_STATS_GRP];
 }SchStatsReq;
+
+typedef struct schStatsReq SchStatsModificationReq;
+typedef struct schStatsRsp SchStatsModificationRsp;
 
 /* Statistics Response from SCH to MAC */
 typedef struct schStatsGrpRejected
