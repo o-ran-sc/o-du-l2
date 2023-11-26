@@ -757,8 +757,11 @@ uint8_t SchProcSlotInd(Pst *pst, SlotTimingInfo *slotInd)
    while(node)
    {
       dlTotalPrbUsage = (TotalPrbUsage *)node->node;
-      dlTotalPrbUsage->numPrbUsedForTx += cell->schDlSlotInfo[slot]->prbAlloc.numPrbAlloc;
-      dlTotalPrbUsage->totalPrbAvailForTx += MAX_NUM_RB;
+      if(dlTotalPrbUsage)
+      {
+         dlTotalPrbUsage->numPrbUsedForTx += cell->schDlSlotInfo[slot]->prbAlloc.numPrbAlloc;
+         dlTotalPrbUsage->totalPrbAvailForTx += MAX_NUM_RB;
+      }
       node = node->next;
    }
    

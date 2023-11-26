@@ -3207,6 +3207,355 @@ uint8_t SchProcStatsDeleteReq(Pst *pst, SchStatsDeleteReq *statsDeleteReq)
    return ret;
 } /* End of SchProcStatsDeleteReq */
 
+/*******************************************************************
+ *
+ * @brief Fill and send statistics modification response to MAC
+ *
+ * @details
+ *
+ *    Function :  SchSendStatsRspToMac
+ *
+ *    Functionality: Fill and send statistics
+ * modification response to MAC
+ *
+ * @params[in]  Inst inst, SchMacRsp result
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t SchSendStatsModificationRspToMac(SchStatsModificationRsp *tmpSchStatsModRsp)
+{
+   Pst rspPst;
+   uint8_t ret = ROK;
+   SchStatsModificationRsp  *schStatsModificationRsp=NULLP;
+
+   DU_LOG("\nINFO   --> SCH : Filling statistics modification response");
+   SCH_ALLOC(schStatsModificationRsp, sizeof(SchStatsModificationRsp));
+   if(schStatsModificationRsp == NULLP)
+   {
+      DU_LOG("\nERROR  --> SCH : Failed to allocate memory in SchSendStatsModificationRspToMac()");
+      return RFAILED;
+   }
+
+   memcpy(schStatsModificationRsp, tmpSchStatsModRsp, sizeof(SchStatsModificationRsp));
+   memset(tmpSchStatsModRsp, 0, sizeof(SchStatsModificationRsp));
+
+   /* Filling response post */
+   memset(&rspPst, 0, sizeof(Pst));
+   FILL_PST_SCH_TO_MAC(rspPst, inst);
+   rspPst.event = EVENT_STATISTICS_MODIFY_RSP_TO_MAC;
+
+   ret = MacMessageRouter(&rspPst, (void *)schStatsModificationRsp);
+   if(ret == RFAILED)
+   {
+      DU_LOG("\nERROR  -->  SCH : SchSendStatsModificationRspToMac(): Failed to send Statistics Modification Response");
+      return ret;
+   }
+   return ret;
+}
+
+/*******************************************************************
+ *
+ * @brief Rejects all statistics modification group requested by MAC
+ *
+ * @details
+ *
+ *    Function : SchRejectAllStatsModification
+ *
+ *    Functionality: Add all statistics modification group received in statistics
+ *       request from MAC, to Reject-StatsModification-Group-List in statistics
+ *       response to MAC
+ *
+ * @params[in]  Statistics request from MAC
+ *              Cause of rejection
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t SchRejectAllStatsModification(SchStatsModificationReq *statsModificationReq, CauseOfResult cause)
+{
+   uint8_t grpIdx = 0;
+   SchStatsModificationRsp statsModificationRsp;
+
+   memset(&statsModificationRsp, 0, sizeof(SchStatsModificationRsp));
+
+   /* fill the subscriptionId and the rejected list in stats modification rsp */
+   statsModificationRsp.subscriptionId = statsModificationReq->subscriptionId;
+   for(grpIdx = 0; grpIdx < statsModificationReq->numStatsGroup; grpIdx++)
+   {
+      statsModificationRsp.statsGrpRejectedList[grpIdx].groupId = statsModificationReq->statsGrpList[grpIdx].groupId;
+      statsModificationRsp.statsGrpRejectedList[grpIdx].cause = cause;
+   }
+   statsModificationRsp.numGrpRejected = statsModificationReq->numStatsGroup;
+
+   return SchSendStatsModificationRspToMac(&statsModificationRsp);
+}
+
+/*******************************************************************
+ *
+ * @brief Update active KPI pointers to KPI-Active-List
+ *
+ * @details
+ *
+ *    Function : schUpdateToKpiActiveList
+ *
+ *    Functionality: For each active statistics group for which timer
+ *       is running, add its KPI pointer to KPI-Active-List.
+ *       Use case :
+ *       When it is needed to update a KPI parameters, we need not
+ *       traverse all statistics group and all KPIs within a group
+ *       to get the specific KPI pointer to be updated.
+ *       Instead, we can traverse through KPI-Active-List and update
+ *       all entries in this list.
+ *
+ * @params[in]  Inst
+ *              Stats group info
+ *              Boolean variable for DL or UL
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t schUpdateToKpiActiveList(Inst inst, SchStatsGrp *grpInfo, bool isDlUpdate)
+{
+   CmLList  *node = NULLP;
+   
+   if(isDlUpdate == true)
+   {
+      /* If DL Kpi needs to update */
+      SCH_ALLOC(node, sizeof(CmLList));
+      if(node)
+      {
+         node->node = (PTR)grpInfo->kpiStats.dlTotalPrbUsage;
+         cmLListAdd2Tail(&schCb[inst].statistics.activeKpiList.dlTotPrbUseList, node);
+      }
+   }
+   else
+   {
+      /* If UL Kpi needs to update */
+     node = NULLP;
+      SCH_ALLOC(node, sizeof(CmLList));
+      if(node)
+      {
+         node->node = (PTR)grpInfo->kpiStats.ulTotalPrbUsage;
+         cmLListAdd2Tail(&schCb[inst].statistics.activeKpiList.ulTotPrbUseList, node);
+      }
+   }
+
+   return ROK;
+}
+
+/****************************************************************************************
+*
+* @brief Processes Statistics modification Request from MAC
+*
+* @details
+*
+*    Function :SchProcStatsModificationReq 
+*
+*    Functionality:
+*     This function process the statistics modification request from MAC:
+*     [Step -1] Check the stored stats group list empty
+*        [Step - 1.1] If empty Send the rejected group list to MAC as a stats 
+*        modification response.
+*        [Step - 1.2] Else go to step 2.
+*     [Step -2] Traverse all stats group and validate each measurement types in
+*     each group.
+*     [Step -3] Check if the received subscriptionId and groupId match the values 
+*     with the database node. 
+*        [Step -3.1] If doesn't match then fill in the group related information
+*           in stats modification rsp's rejected list.
+*        [Step -3.2] Else follow the below mentioned steps.
+*           [Step -3.2.1] Stop the timer.
+*           [Step -3.2.2] Clean all statistics stored so far for this stats group.
+*           [Step -3.2.3] Reconfigure stats group.
+*           [Step -3.2.4] Update active kpi list.
+*           [Step -3.2.5] Restart timer
+*           [Step -3.2.6] Once everything completed sucessfully then fill the group related
+*           info in stats modification rsp's accepted list.
+*           [Step -3.2.7] Else fill the group related info in stats modification rsp's
+*           rejected list.
+*     [Step -4] Send the stats modification rsp to MAC
+* @params[in] Post structure
+*             Statistics modification Request from MAC
+* @return ROK     - success
+*         RFAILED - failure
+*
+* *******************************************************************************************/
+uint8_t SchProcStatsModificationReq(Pst *pst, SchStatsModificationReq *statsModificationReq)
+{
+   Inst inst;
+   uint8_t ret =ROK;
+   uint8_t reqGrpIdx = 0;
+   uint8_t reqMeasIdx=0;
+   uint64_t subscriptionId =0;
+   CauseOfResult cause;
+   CmLList *grpNode = NULLP;
+   SchStatsGrp *statsGrpInfo=NULLP;
+   SchStatsGrpInfo statsGrpToModify;
+   SchStatsModificationRsp statsModificationRsp;
+   bool statsFound=false, measTypeInvalid=false;
+   bool successfulDlAlloc=false, successfulUlAlloc=false;
+
+   inst=pst->dstInst - SCH_INST_START;
+
+   DU_LOG("\nINFO   -->  SCH : Received Statistics modification request from MAC");
+
+   if(statsModificationReq == NULLP)
+   {
+      DU_LOG("\nERROR  -->  SCH : SchProcStatsModificationReq(): Received Null pointer");
+      return RFAILED;
+   }
+   memset(&statsModificationRsp, 0, sizeof(SchStatsRsp));
+
+   /* [Step -1] */
+   if(schCb[inst].statistics.statsGrpList.count)
+   {
+      /* [Step -1.2] */
+      subscriptionId = statsModificationReq->subscriptionId;
+      /* [Step - 2] */
+      for(reqGrpIdx=0; reqGrpIdx<statsModificationReq->numStatsGroup; reqGrpIdx++)
+      {
+         statsFound = false;
+         statsGrpToModify = statsModificationReq->statsGrpList[reqGrpIdx];
+
+         CM_LLIST_FIRST_NODE(&schCb[inst].statistics.statsGrpList, grpNode);
+         while(grpNode)
+         {
+            statsGrpInfo = (SchStatsGrp*)grpNode->node;
+            if((statsGrpInfo->subscriptionId== subscriptionId) && (statsGrpInfo->groupId== statsGrpToModify.groupId))
+            {
+               statsFound = true;     
+               break; 
+            }
+            grpNode = grpNode->next;
+         }
+
+         /* [Step -3] */
+         if(statsFound == false) 
+         {
+            statsModificationRsp.statsGrpRejectedList[statsModificationRsp.numGrpRejected].groupId = statsGrpToModify.groupId;
+            statsModificationRsp.statsGrpRejectedList[statsModificationRsp.numGrpRejected].cause = STATS_ID_NOT_FOUND;
+            statsModificationRsp.numGrpRejected++;
+         }
+         else
+         {
+            /*[Step -3.2.1]*/
+            if(schChkTmr((PTR)statsGrpInfo, EVENT_STATISTICS_TMR) == true)
+            {
+               schStopTmr(&schCb[inst], (PTR)statsGrpInfo, EVENT_STATISTICS_TMR);
+            }
+            
+            
+            /*[Step -3.2.2]*/
+            memset(statsGrpInfo->kpiStats.dlTotalPrbUsage, 0, sizeof(TotalPrbUsage));
+            memset(statsGrpInfo->kpiStats.ulTotalPrbUsage, 0, sizeof(TotalPrbUsage));
+            
+            /*[Step -3.2.3]*/
+            for(reqMeasIdx = 0; reqMeasIdx < statsGrpToModify.numStats; reqMeasIdx++)
+            {
+               switch(statsGrpToModify.statsList[reqMeasIdx])
+               {
+                  case SCH_DL_TOTAL_PRB_USAGE:
+                     {
+                        if(!statsGrpInfo->kpiStats.dlTotalPrbUsage)
+                        {
+                           SCH_ALLOC(statsGrpInfo->kpiStats.dlTotalPrbUsage, sizeof(TotalPrbUsage));
+                           if(!statsGrpInfo->kpiStats.dlTotalPrbUsage)
+                           {
+                              DU_LOG("\nERROR  -->  E2AP : Memory allocation failed in %s at line %d",__func__, __LINE__);
+                              measTypeInvalid = true;
+                              cause = RESOURCE_UNAVAILABLE;
+                           }
+                           successfulDlAlloc =  true;
+                        }
+                        break;
+                     }
+
+                  case SCH_UL_TOTAL_PRB_USAGE:
+                     {
+                        if(!statsGrpInfo->kpiStats.ulTotalPrbUsage)
+                        {
+                           SCH_ALLOC(statsGrpInfo->kpiStats.ulTotalPrbUsage, sizeof(TotalPrbUsage));
+                           if(!statsGrpInfo->kpiStats.ulTotalPrbUsage)
+                           {
+                              DU_LOG("\nERROR  -->  E2AP : Memory allocation failed in %s at line %d",__func__, __LINE__);
+                              measTypeInvalid = true;
+                              cause = RESOURCE_UNAVAILABLE;
+                           }
+                           successfulUlAlloc = true;
+                        }  
+                        break;
+                     }
+
+                  default:
+                     {
+                        DU_LOG("\nERROR  -->  SCH : SchProcStatsReq: Invalid measurement type [%d]", \
+                              statsGrpToModify.statsList[reqMeasIdx]);
+                        measTypeInvalid = true;
+                        cause = PARAM_INVALID;
+                        break;
+                     }
+               }
+
+               if(measTypeInvalid)
+               {
+                  if(successfulDlAlloc)
+                     SCH_FREE(statsGrpInfo->kpiStats.dlTotalPrbUsage, sizeof(TotalPrbUsage));
+                  if(successfulUlAlloc)
+                     SCH_FREE(statsGrpInfo->kpiStats.ulTotalPrbUsage, sizeof(TotalPrbUsage));
+                  break;
+               }
+            }
+
+            if(!measTypeInvalid)
+            {
+               /*[Step -3.2.4]*/
+               if(successfulDlAlloc)
+                  ret = schUpdateToKpiActiveList(inst, statsGrpInfo, true);
+               else
+                  ret = schUpdateToKpiActiveList(inst, statsGrpInfo, false);
+
+               if(ret == ROK)
+               {
+                  /*[Step -3.2.5]*/
+                  statsGrpInfo->periodicity = statsGrpToModify.periodicity;
+                  cmInitTimers(&(statsGrpInfo->periodTimer), 1);
+                  schStartTmr(&schCb[inst], (PTR)(statsGrpInfo), EVENT_STATISTICS_TMR, statsGrpInfo->periodicity);
+                  
+                  /*[Step -3.2.6]*/
+                  statsModificationRsp.statsGrpAcceptedList[statsModificationRsp.numGrpAccepted] = statsGrpToModify.groupId;
+                  statsModificationRsp.numGrpAccepted++;
+               }
+               else
+               {
+                  /*[Step -3.2.7]*/
+                  statsModificationRsp.statsGrpRejectedList[statsModificationRsp.numGrpRejected].groupId = statsGrpToModify.groupId;
+                  statsModificationRsp.statsGrpRejectedList[statsModificationRsp.numGrpRejected].cause = cause;
+                  statsModificationRsp.numGrpRejected++;
+               }
+            }
+            else
+            {
+               /*[Step -3.2.7]*/
+               statsModificationRsp.statsGrpRejectedList[statsModificationRsp.numGrpRejected].groupId = statsGrpToModify.groupId;
+               statsModificationRsp.statsGrpRejectedList[statsModificationRsp.numGrpRejected].cause = cause;
+               statsModificationRsp.numGrpRejected++;
+            }
+         }
+      }
+      statsModificationRsp.subscriptionId = statsModificationReq->subscriptionId;
+
+      /* [Step -4] */
+      SchSendStatsModificationRspToMac(&statsModificationRsp);
+   }
+   else
+   {
+      /* [Step -1.1] */
+      SchRejectAllStatsModification(statsModificationReq, STATS_ID_NOT_FOUND);
+   }
+   SCH_FREE(statsModificationReq, sizeof(SchStatsModificationReq));
+   return ROK;
+}
 /**********************************************************************
   End of file
  **********************************************************************/
