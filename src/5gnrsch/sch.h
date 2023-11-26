@@ -818,6 +818,8 @@ uint8_t SchProcStatsReq(Pst *pst, SchStatsReq *statsReq);
 uint8_t SchSendStatsIndToMac(Inst inst, SchStatsInd  *statsInd);
 uint8_t schCalcAndSendGrpStats(SchStatsGrp *grpInfo);
 uint8_t SchProcStatsDeleteReq(Pst *pst, SchStatsDeleteReq *statsDeleteReq);
+uint8_t SchProcStatsModificationReq(Pst *pst, SchStatsModificationReq *statsModificationReq);
+void deleteStatsGrpInfo(Inst inst, SchStatsGrp *statsGrpInfo);
 /**********************************************************************
   End of file
  **********************************************************************/

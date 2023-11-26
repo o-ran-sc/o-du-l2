@@ -2713,6 +2713,164 @@ uint8_t unpackDuMacStatsDeleteRsp(MacDuStatsDeleteRspFunc func, Pst *pst, Buffer
     return RFAILED;
 }
 
+/*******************************************************************
+*
+* @brief Packs and Sends Statistics Modification Request from DUAPP to MAC
+*
+* @details
+*
+*    Function : packDuMacStatsModificationReq
+*
+*    Functionality:
+*       Packs and Sends statistics Modification request from DUAPP to MAC
+*
+*
+* @params[in] Post structure pointer
+*             StatsModificationReq pointer
+* @return ROK     - success
+*         RFAILED - failure
+*
+* ****************************************************************/
+uint8_t packDuMacStatsModificationReq(Pst *pst, MacStatsModificationReq *statsModificationReq)
+{
+    Buffer *mBuf = NULLP;
+
+    if(pst->selector == ODU_SELECTOR_LWLC)
+    {
+       if (ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf) != ROK)
+       {
+          DU_LOG("\nERROR  --> MAC : Memory allocation failed at packDuMacStatsModificationReq");
+          return RFAILED;
+       }
+       /* pack the address of the structure */
+       CMCHKPK(oduPackPointer,(PTR)statsModificationReq, mBuf);
+    }
+    else
+    {
+       DU_LOG("\nERROR  -->  MAC: Only LWLC supported for packDuMacStatsModificationReq");
+       return RFAILED;
+    }
+    return ODU_POST_TASK(pst,mBuf);
+}
+
+/*******************************************************************
+*
+* @brief Unpacks Statistics Modification Request received from DU APP
+*
+* @details
+*
+*    Function : unpackMacStatsModificationReq
+*
+*    Functionality:
+*         Unpacks Statistics Modification Request received from DU APP
+*
+* @params[in] Pointer to Handler
+*             Post structure pointer
+*             Message Buffer
+* @return ROK     - success
+*         RFAILED - failure
+*
+* ****************************************************************/
+uint8_t unpackMacStatsModificationReq(DuMacStatsModificationReqFunc func, Pst *pst, Buffer *mBuf)
+{
+    if(pst->selector == ODU_SELECTOR_LWLC)
+    {
+       MacStatsModificationReq *statsModificationReq=NULLP;
+
+       /* unpack the address of the structure */
+       CMCHKUNPK(oduUnpackPointer, (PTR *)&statsModificationReq, mBuf);
+       ODU_PUT_MSG_BUF(mBuf);
+       return (*func)(pst, statsModificationReq);
+    }
+    else
+    {
+       /* Nothing to do for other selectors */
+       DU_LOG("\nERROR  -->  DU APP : Only LWLC supported for Statistics Modification Request ");
+       ODU_PUT_MSG_BUF(mBuf);
+    }
+
+    return RFAILED;
+}
+
+/*******************************************************************
+*
+* @brief Packs and Sends Statistics Modification Response from MAC to DUAPP
+*
+* @details
+*
+*    Function : packDuMacStatsModificationRsp
+*
+*    Functionality:
+*       Packs and Sends statistics Modification response from MAC to DUAPP
+*
+*
+* @params[in] Post structure pointer
+*             StatsModificationRsp pointer
+* @return ROK     - success
+*         RFAILED - failure
+*
+* ****************************************************************/
+uint8_t packDuMacStatsModificationRsp(Pst *pst, MacStatsModificationRsp *statsModificationRsp)
+{
+    Buffer *mBuf = NULLP;
+
+    if(pst->selector == ODU_SELECTOR_LWLC)
+    {
+       if (ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf) != ROK)
+       {
+          DU_LOG("\nERROR  --> MAC : Memory allocation failed at packDuMacStatsModificationRsp");
+          return RFAILED;
+       }
+       /* pack the address of the structure */
+       CMCHKPK(oduPackPointer,(PTR)statsModificationRsp, mBuf);
+    }
+    else
+    {
+       DU_LOG("\nERROR  -->  MAC: Only LWLC supported for packDuMacStatsModificationRsp");
+       return RFAILED;
+    }
+    return ODU_POST_TASK(pst,mBuf);
+}
+
+/*******************************************************************
+*
+* @brief Unpacks Statistics Modification Response received from MAC
+*
+* @details
+*
+*    Function : unpackDuMacStatsModificationRsp
+*
+*    Functionality:
+*         Unpacks Statistics Modification Response received from MAC
+*
+* @params[in] Pointer to Handler
+*             Post structure pointer
+*             Message Buffer
+* @return ROK     - success
+*         RFAILED - failure
+*
+* ****************************************************************/
+uint8_t unpackDuMacStatsModificationRsp(MacDuStatsModificationRspFunc func, Pst *pst, Buffer *mBuf)
+{
+    if(pst->selector == ODU_SELECTOR_LWLC)
+    {
+       MacStatsModificationRsp *statsModificationRsp=NULLP;
+
+       /* unpack the address of the structure */
+       CMCHKUNPK(oduUnpackPointer, (PTR *)&statsModificationRsp, mBuf);
+       ODU_PUT_MSG_BUF(mBuf);
+       return (*func)(pst, statsModificationRsp);
+    }
+    else
+    {
+       /* Nothing to do for other selectors */
+       DU_LOG("\nERROR  -->  DU APP : Only LWLC supported for Statistics Modification Response ");
+       ODU_PUT_MSG_BUF(mBuf);
+    }
+
+    return RFAILED;
+}
+
 /**********************************************************************
   End of file
  **********************************************************************/
