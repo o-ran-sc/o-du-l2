@@ -502,6 +502,11 @@ void callFlowMacActvTsk(Pst *pst)
                         strcpy(message,"EVENT_STATISTICS_DELETE_RSP_TO_MAC");
                         break;
                      }
+                  case EVENT_STATISTICS_MODIFY_RSP_TO_MAC:
+                     {
+                        strcpy(message,"EVENT_STATISTICS_MODIFY_RSP_TO_MAC");
+                        break;
+                     }
                   default:
                      strcpy(message,"Invalid Event");
                      break;
@@ -659,6 +664,11 @@ uint8_t MacMessageRouter(Pst *pst, void *msg)
       case EVENT_STATISTICS_DELETE_RSP_TO_MAC:
          {
             MacProcSchStatsDeleteRsp(pst, (SchStatsDeleteRsp *)msg);
+            break;
+         }
+      case EVENT_STATISTICS_MODIFY_RSP_TO_MAC:
+         {
+            MacProcSchStatsModificationRsp(pst, (SchStatsModificationRsp *)msg);
             break;
          }
       default:

@@ -3207,6 +3207,156 @@ uint8_t SchProcStatsDeleteReq(Pst *pst, SchStatsDeleteReq *statsDeleteReq)
    return ret;
 } /* End of SchProcStatsDeleteReq */
 
+/*******************************************************************
+ *
+ * @brief Fill and send statistics modification response to MAC
+ *
+ * @details
+ *
+ *    Function :  SchSendStatsRspToMac
+ *
+ *    Functionality: Fill and send statistics
+ * modification response to MAC
+ *
+ * @params[in]  Inst inst, SchMacRsp result
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t SchSendStatsModificationRspToMac(SchStatsModificationRsp *schStatsModifyRsp)
+{
+   Pst rspPst;
+   uint8_t ret = ROK;
+   SchStatsModificationRsp  *schStatsModificationRsp=NULLP;
+
+   DU_LOG("\nINFO   --> SCH : Filling statistics modification response");
+   SCH_ALLOC(schStatsModificationRsp, sizeof(SchStatsModificationRsp));
+   if(schStatsModificationRsp == NULLP)
+   {
+      DU_LOG("\nERROR  --> SCH : Failed to allocate memory in SchSendStatsModificationRspToMac()");
+      return RFAILED;
+   }
+
+   memcpy(schStatsModificationRsp, schStatsModifyRsp, sizeof(SchStatsModificationRsp));
+   memset(schStatsModifyRsp, 0, sizeof(SchStatsModificationRsp));
+
+   /* Filling response post */
+   memset(&rspPst, 0, sizeof(Pst));
+   FILL_PST_SCH_TO_MAC(rspPst, inst);
+   rspPst.event = EVENT_STATISTICS_MODIFY_RSP_TO_MAC;
+
+   ret = MacMessageRouter(&rspPst, (void *)schStatsModificationRsp);
+   if(ret == RFAILED)
+   {
+      DU_LOG("\nERROR  -->  SCH : SchSendStatsModificationRspToMac(): Failed to send Statistics Modification Response");
+      return ret;
+   }
+   return ret;
+}
+
+/*******************************************************************
+*
+* @brief Processes Statistics modification Request from MAC
+*
+* @details
+*
+*    Function : SchProcStatsDeleteReq
+*
+*    Functionality:
+*     This function process the statistics modification request from MAC:
+*     [Step -1] If the stored stats group list empty, send the rejected group list
+*     to MAC as a stats modification response.
+*     [Step -2] Traverse all stats group and validate each measurement types in
+*     each group.
+*     [Step -3] If the received subscriptionId and groupId match the values in the 
+*     database node, update the node with the latest values. Once the value has been 
+*     updated, fill in the stats modification rsp's accepted list; 
+*     if the information does not exist, fill in the rejected list.
+*     [Step -4] Send the stats modification rsp to MAC
+* @params[in] Post structure
+*             Statistics modification Request from MAC
+* @return ROK     - success
+*         RFAILED - failure
+*
+* ****************************************************************/
+uint8_t SchProcStatsModificationReq(Pst *pst, SchStatsModificationReq *statsModificationReq)
+{
+   uint8_t reqGrpIdx = 0;
+   bool    statsFound = false;
+   uint64_t  subscriptionId =0;
+   CmLList *grpNode=NULLP;
+   SchStatsGrpInfo   statsGrpList;
+   SchStatsGrp *statsGrpInfo=NULLP;
+   SchStatsModificationRsp statsModificationRsp;
+   Inst inst = pst->dstInst - SCH_INST_START;
+
+   DU_LOG("\nINFO   -->  SCH : Received Statistics modification request from MAC");
+
+   if(statsModificationReq == NULLP)
+   {
+      DU_LOG("\nERROR  -->  SCH : SchProcStatsModificationReq(): Received Null pointer");
+      return RFAILED;
+   }
+   memset(&statsModificationRsp, 0, sizeof(SchStatsRsp));
+   
+   /* [Step -1] */
+   if(schCb[inst].statistics.statsGrpList.count)
+   {
+      /* [Step -2] */
+      for(reqGrpIdx=0; reqGrpIdx<statsModificationReq->numStatsGroup; reqGrpIdx++)
+      {
+         statsFound = false;
+         subscriptionId = statsModificationReq->subscriptionId;
+         statsGrpList = statsModificationReq->statsGrpList[reqGrpIdx];
+         
+         CM_LLIST_FIRST_NODE(&schCb[inst].statistics.statsGrpList, grpNode);
+         while(grpNode)
+         {
+            statsGrpInfo = (SchStatsGrp*)grpNode->node;
+            if((statsGrpInfo->subscriptionId== subscriptionId) && (statsGrpInfo->groupId== statsGrpList.groupId))
+            {
+               statsGrpInfo->periodicity = statsGrpList.periodicity;
+               if(schChkTmr((PTR)statsGrpInfo, EVENT_STATISTICS_TMR) == true)
+               {
+                  schStopTmr(&schCb[inst], (PTR)statsGrpInfo, EVENT_STATISTICS_TMR);
+               }
+               schStartTmr(&schCb[inst], (PTR)(statsGrpInfo), EVENT_STATISTICS_TMR, statsGrpInfo->periodicity);
+               statsFound = true;     
+               break; 
+            }
+            grpNode = grpNode->next;
+         }
+
+         /* [Step -3] */
+         if(statsFound == false) 
+         {
+            statsModificationRsp.statsGrpRejectedList[statsModificationRsp.numGrpRejected].groupId = statsGrpList.groupId;
+            statsModificationRsp.statsGrpRejectedList[statsModificationRsp.numGrpRejected].cause = STATS_ID_NOT_FOUND;
+            statsModificationRsp.numGrpRejected++;
+         }
+         else
+         {
+            statsModificationRsp.statsGrpAcceptedList[statsModificationRsp.numGrpAccepted] = statsGrpList.groupId;
+            statsModificationRsp.numGrpAccepted++;
+         }
+      }
+   }
+   else
+   {
+      for(reqGrpIdx=0; reqGrpIdx<statsModificationReq->numStatsGroup; reqGrpIdx++)
+      {
+         statsModificationRsp.statsGrpRejectedList[reqGrpIdx].groupId = statsModificationReq->statsGrpList[reqGrpIdx].groupId;
+         statsModificationRsp.statsGrpRejectedList[reqGrpIdx].cause = STATS_ID_NOT_FOUND;
+         statsModificationRsp.numGrpRejected++;
+      }
+   }
+   statsModificationRsp.subscriptionId = statsModificationReq->subscriptionId;
+   
+   /* [Step -4] */
+   SchSendStatsModificationRspToMac(&statsModificationRsp);
+   SCH_FREE(statsModificationReq, sizeof(SchStatsModificationReq));
+   return ROK;
+}
 /**********************************************************************
   End of file
  **********************************************************************/
