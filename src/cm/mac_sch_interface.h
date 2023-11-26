@@ -56,6 +56,8 @@
 #define EVENT_STATISTICS_IND_TO_MAC  37
 #define EVENT_STATISTICS_DELETE_REQ_TO_SCH  38
 #define EVENT_STATISTICS_DELETE_RSP_TO_MAC  39
+#define EVENT_STATISTICS_MODIFY_REQ_TO_SCH  40
+#define EVENT_STATISTICS_MODIFY_RSP_TO_MAC  41
 
 /*macros*/
 #define MAX_SSB_IDX 1 /* forcing it as 1 for now. Right value is 64 */
@@ -2263,6 +2265,9 @@ typedef struct schStatsReq
    SchStatsGrpInfo   statsGrpList[MAX_NUM_STATS_GRP];
 }SchStatsReq;
 
+typedef struct schStatsReq SchStatsModificationReq;
+typedef struct schStatsRsp SchStatsModificationRsp;
+
 /* Statistics Response from SCH to MAC */
 typedef struct schStatsGrpRejected
 {
@@ -2316,7 +2321,39 @@ typedef struct schStatsDeleteRsp
    uint8_t           numStatsGroupDeleted; /* num of action deleted */ 
    StatsDeleteResult statsGrpDelInfo[MAX_NUM_STATS_GRP]; /* list of the deletion status for specific actions */
 }SchStatsDeleteRsp;
+#if 0
+/* Statistics Modification Request from MAC to SCH */
+typedef struct schStatsModifyGrpInfo
+{
+   uint8_t   groupId;
+   uint16_t  periodicity;  /* In milliseconds */
+   uint8_t   numStats;
+   SchMeasurementType statsList[MAX_NUM_STATS];
+}SchStatsModifyGrpInfo;
 
+typedef struct schStatsModificationReq
+{
+   uint64_t  subscriptionId;
+   uint8_t   numStatsGroup;
+   SchStatsModifyGrpInfo   statsGrpList[MAX_NUM_STATS_GRP];
+}SchStatsModificationReq;
+
+/* Statistics Modification Response from SCH to MAC */
+typedef struct schStatsModifyGrpRejected
+{
+   uint8_t   groupId;
+   CauseOfResult cause;
+}SchStatsModifyGrpRejected;
+
+typedef struct schStatsModificationRsp
+{
+   uint64_t             subscriptionId;
+   uint8_t              numGrpAccepted;
+   uint8_t              statsGrpAcceptedList[MAX_NUM_STATS_GRP];
+   uint8_t              numGrpRejected;
+   SchStatsModifyGrpRejected  statsGrpRejectedList[MAX_NUM_STATS_GRP];
+}SchStatsModificationRsp;
+#endif
 /* function declarations */
 uint8_t MacMessageRouter(Pst *pst, void *msg);
 uint8_t SchMessageRouter(Pst *pst, void *msg);

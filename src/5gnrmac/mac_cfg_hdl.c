@@ -77,6 +77,13 @@ MacDuStatsDeleteRspFunc macDuStatsDeleteRspOpts[] =
    packDuMacStatsDeleteRsp   /* packing for light weight loosly coupled */
 };
 
+MacDuStatsModificationRspFunc macDuStatsModificationRspOpts[] =
+{
+   packDuMacStatsModificationRsp,   /* packing for loosely coupled */
+   DuProcMacStatsModificationRsp,   /* packing for tightly coupled */
+   packDuMacStatsModificationRsp   /* packing for light weight loosly coupled */
+};
+
 /**
  * @brief Layer Manager  Configuration request handler for Scheduler
  *
@@ -1521,6 +1528,272 @@ uint8_t MacProcStatsDeleteReq(Pst *pst, MacStatsDeleteReq *macStatsDeleteReq)
    }
 
    MAC_FREE_SHRABL_BUF(pst->region, pst->pool, macStatsDeleteReq, sizeof(MacStatsDeleteReq));
+   return ret;
+}
+
+/**
+ * @brief Fill and send statistics modification response to DU APP
+ *
+ * @details
+ *
+ *     Function : MacSendStatsRspToDuApp
+ *
+ *     Fill and send statistics modification response to DU APP
+ *
+ *  @param[in]  Response
+ *  @param[in]  Cause of response
+ *  @return  int
+ *      -# ROK
+ **/
+uint8_t MacSendStatsModificationRspToDuApp(MacStatsModificationRsp *statsModificationRsp)
+{
+   uint8_t ret = ROK;
+   Pst  pst;
+   MacStatsModificationRsp *macStatsModificationRsp = NULLP;
+
+    DU_LOG("\nINFO  -->  MAC : MacSendStatsModificationRspToDuApp: Sending Statistics Response to DU APP");
+
+   MAC_ALLOC_SHRABL_BUF(macStatsModificationRsp, sizeof(MacStatsModificationRsp));
+   if(macStatsModificationRsp == NULLP)
+   {
+      DU_LOG("\nERROR  -->  MAC : Failed to allocate memory in MacProcSchStatsModificationRsp");
+      ret = RFAILED;
+   }
+   else
+   {
+      memcpy(macStatsModificationRsp, statsModificationRsp, sizeof(MacStatsModificationRsp));
+      memset(statsModificationRsp, 0, sizeof(MacStatsModificationRsp));
+
+      memset(&pst, 0, sizeof(Pst));
+      FILL_PST_MAC_TO_DUAPP(pst, EVENT_MAC_STATISTICS_MODIFY_RSP);
+      if(((*macDuStatsModificationRspOpts[pst.selector])(&pst, macStatsModificationRsp))!= ROK)
+      {
+         DU_LOG("\nERROR  -->  MAC : Failed to send statistics modification response to DU APP");
+         MAC_FREE_SHRABL_BUF(MAC_MEM_REGION, MAC_POOL, macStatsModificationRsp, sizeof(MacStatsModificationRsp));
+         ret = RFAILED;
+      }
+   }
+
+   return ret;
+}
+
+/**
+ * @brief Mac process the statistics modification rsp received from sch.
+ *
+ * @details
+ *
+ *     Function : MacProcSchStatsModificationRsp
+ *
+ *     This function  process the statistics modification response received from sch
+ *
+ *  @param[in]  Pst           *pst
+ *  @param[in]  SchStatsModificationRsp *schStatsModificationRsp
+ *  @return  int
+ *      -# ROK
+ **/
+uint8_t MacProcSchStatsModificationRsp(Pst *pst, SchStatsModificationRsp *schStatsModificationRsp)
+{
+   uint8_t idx = 0, accptdIdx = 0, rjctdIdx = 0;
+   uint8_t ret = RFAILED;
+   MacStatsModificationRsp *macStatsModificationRsp = NULLP;
+
+   if(schStatsModificationRsp)
+   {
+      /* Fetch pointer to statistics response from pending list saved at MAC
+       * during processing statistics request from DU APP */
+      for(idx = 0; idx < macCb.statistics.numPendingStatsRsp; idx++)
+      {
+         if(macCb.statistics.pendingStatsRsp[idx].subscriptionId == schStatsModificationRsp->subscriptionId)
+         {
+            macStatsModificationRsp = &macCb.statistics.pendingStatsRsp[idx];
+            break;
+         }
+      }
+
+      if(macStatsModificationRsp == NULLP)
+      {
+         MAC_FREE(schStatsModificationRsp, sizeof(SchStatsModificationRsp));
+         return RFAILED;
+      }
+
+      for(accptdIdx = 0; accptdIdx<schStatsModificationRsp->numGrpAccepted && macStatsModificationRsp->numGrpAccepted<MAX_NUM_STATS_GRP; accptdIdx++)
+      {
+         macStatsModificationRsp->statsGrpAcceptedList[macStatsModificationRsp->numGrpAccepted++] = schStatsModificationRsp->statsGrpAcceptedList[accptdIdx];
+      }
+
+      for(rjctdIdx = 0; rjctdIdx < schStatsModificationRsp->numGrpRejected && macStatsModificationRsp->numGrpRejected<MAX_NUM_STATS_GRP; rjctdIdx++)
+      {
+         macStatsModificationRsp->statsGrpRejectedList[macStatsModificationRsp->numGrpRejected].groupId = \
+            schStatsModificationRsp->statsGrpRejectedList[rjctdIdx].groupId;
+         macStatsModificationRsp->statsGrpRejectedList[macStatsModificationRsp->numGrpRejected].cause = \
+            schStatsModificationRsp->statsGrpRejectedList[rjctdIdx].cause;
+         macStatsModificationRsp->numGrpRejected++;
+      }
+
+      /* Send statistics modification response to DU APP */
+      ret = MacSendStatsModificationRspToDuApp(macStatsModificationRsp);
+   }
+   MAC_FREE(schStatsModificationRsp, sizeof(SchStatsModificationRsp));
+   return ret;
+}
+
+/**
+ * @brief Mac process the statistics Modification Req received from DUAPP
+ *
+ * @details
+ *
+ *     Function : MacProcStatsModificationReq
+ *
+ *     This function process the statistics Modification request from duapp:
+ *     [Step 1] Basic validation. If fails, all stats group in stats request are
+ *     rejected.
+ *     [Step 2] If basic validations passed, traverse all stats group and
+ *     validate each measurement types in each group.
+ *     [Step 3] If any measurement type validation fails in a group, that group
+ *     is not configured and it is added to stats-group-rejected-list in
+ *     mac-stats-response message.
+ *     [Step 4] Even if one group passes all validation, it is sent to SCH in
+ *     statistics request. The mac-stats-response message is added to
+ *     pending-response list. This will be sent to DU APP after stats response
+ *     is received from SCH.
+ *     [Step 5] If none of the groups passes all validation, mac-stats-response
+ *     is sent to du app with all group as part of stats-group-rejected-list.
+ *
+ *  @param[in]  Pst      *pst
+ *  @param[in]  StatsModificationReq *statsModificationReq
+ *  @return  int
+ *      -# ROK
+ **/
+uint8_t MacProcStatsModificationReq(Pst *pst, MacStatsModificationReq *macStatsModificationReq)
+{
+   uint8_t       macStatsGrpIdx = 0, macStatsIdx = 0, schStatsGrpIdx = 0, schStatsIdx = 0;
+   uint8_t       ret = RFAILED;
+   bool          measTypeInvalid = false;
+   Pst           schPst;
+   MacStatsGrpInfo *macStatsGrp = NULLP;
+   SchStatsModificationReq     *schStatsModificationReq = NULLP;
+   MacStatsModificationRsp     *macStatsModificationRsp = NULLP;
+
+   DU_LOG("\nINFO   -->  MAC : Received Statistics Modification Request from DU_APP");
+
+   if(macStatsModificationReq == NULLP)
+   {
+      DU_LOG("\nERROR  -->  MAC : MacProcStatsModificationReq(): Received Null pointer");
+      return RFAILED;
+   }
+
+   /* [Step 1] Basic validation. If fails, statistics response is sent to DU APP
+    * that rejectes all stats */
+
+   /* If number of statistics request for which response is still pending
+    * towards DU APP has reached its maximum limit */
+   if(macCb.statistics.numPendingStatsRsp>= MAX_PENDING_STATS_RSP)
+   {
+      DU_LOG("\nERROR  -->  MAC : MacProcStatsModificationReq: Maximum number of statistics response is pending. \
+         Cannot process new request.");
+      MacRejectAllStats(macStatsModificationReq, RESOURCE_UNAVAILABLE);
+      MAC_FREE_SHRABL_BUF(pst->region, pst->pool, macStatsModificationReq, sizeof(MacStatsModificationReq));
+      return RFAILED;
+   }
+
+   /* If memory resources are unavailable */
+   MAC_ALLOC(schStatsModificationReq, sizeof(SchStatsModificationReq));
+   if(schStatsModificationReq == NULLP)
+   {
+      DU_LOG("\nERROR  -->  MAC : MacProcStatsModificationReq: Failed to allocate memory");
+      MacRejectAllStats(macStatsModificationReq, RESOURCE_UNAVAILABLE);
+      MAC_FREE_SHRABL_BUF(pst->region, pst->pool, macStatsModificationReq, sizeof(MacStatsModificationReq));
+      return RFAILED;
+   }
+
+   /* Add stats response to pending response list */
+   macStatsModificationRsp = &macCb.statistics.pendingStatsRsp[macCb.statistics.numPendingStatsRsp];
+   memset(macStatsModificationRsp, 0, sizeof(MacStatsModificationRsp));
+
+   /* [Step 2] Traverse all stats group and validate each measurement types in each group */
+   schStatsModificationReq->subscriptionId = macStatsModificationReq->subscriptionId;
+   schStatsModificationReq->numStatsGroup = 0;
+   for(macStatsGrpIdx = 0; macStatsGrpIdx < macStatsModificationReq->numStatsGroup; macStatsGrpIdx++)
+   {
+      measTypeInvalid = false;
+      schStatsIdx = 0;
+      macStatsGrp = &macStatsModificationReq->statsGrpList[macStatsGrpIdx];
+
+      for(macStatsIdx=0; macStatsIdx < macStatsGrp->numStats; macStatsIdx++)
+      {
+         /* Validate each measurement type */
+         switch(macStatsGrp->statsList[macStatsIdx])
+         {
+            case MAC_DL_TOTAL_PRB_USAGE:
+               {
+                  schStatsModificationReq->statsGrpList[schStatsGrpIdx].statsList[schStatsIdx] = SCH_DL_TOTAL_PRB_USAGE;
+                  break;
+               }
+            case MAC_UL_TOTAL_PRB_USAGE:
+               {
+                  schStatsModificationReq->statsGrpList[schStatsGrpIdx].statsList[schStatsIdx] = SCH_UL_TOTAL_PRB_USAGE;
+                  break;
+               }
+            default:
+               {
+                  DU_LOG("\nERROR  -->  MAC : MacProcStatsModificationReq: Invalid measurement type [%d]", \
+                     macStatsGrp->statsList[macStatsIdx]);
+                  measTypeInvalid = true;
+               }
+         }
+
+         /* Even if one measurement type is invalid, this group is rejected */
+         if(measTypeInvalid)
+         {
+            memset(&schStatsModificationReq->statsGrpList[schStatsGrpIdx], 0, sizeof(SchStatsGrpInfo));
+            break;
+         }
+
+         schStatsIdx++;
+      }
+
+      /* If all measurement type is valid, add group info to send to SCH */
+      if(!measTypeInvalid)
+      {
+         schStatsModificationReq->statsGrpList[schStatsGrpIdx].groupId = macStatsGrp->groupId;
+         schStatsModificationReq->statsGrpList[schStatsGrpIdx].periodicity = macStatsGrp->periodicity;
+         schStatsModificationReq->statsGrpList[schStatsGrpIdx].numStats = schStatsIdx;
+         schStatsGrpIdx++;
+      }
+      else
+      {
+         /* [Step 3] If any measurement type validation fails in a group, that group
+          * is not configured and it is added to stats-group-rejected-list in
+          * mac-stats-response message */
+         macStatsModificationRsp->statsGrpRejectedList[macStatsModificationRsp->numGrpRejected].groupId = macStatsGrp->groupId;
+         macStatsModificationRsp->statsGrpRejectedList[macStatsModificationRsp->numGrpRejected].cause = PARAM_INVALID;
+         macStatsModificationRsp->numGrpRejected++;
+      }
+   }
+   schStatsModificationReq->numStatsGroup = schStatsGrpIdx;
+
+   macStatsModificationRsp->subscriptionId = macStatsModificationReq->subscriptionId;
+
+   if(schStatsModificationReq->numStatsGroup)
+   {
+      /* [Step 4] Even if one group passes all validation, it is sent to SCH in
+       * statistics request. The mac-stats-response message is added to
+       * pending-response list. */
+      macCb.statistics.numPendingStatsRsp++;
+
+      FILL_PST_MAC_TO_SCH(schPst, EVENT_STATISTICS_MODIFY_REQ_TO_SCH);
+      ret = SchMessageRouter(&schPst, (void *)schStatsModificationReq);
+   }
+   else
+   {
+      /* [Step 5] If none of the groups passes all validation, mac-stats-response
+       * is sent to du app with all group as part of stats-group-rejected-list. */
+      DU_LOG("\nERROR  -->  MAC : MacProcStatsModificationReq: All statistics group found invalid");
+      MAC_FREE(schStatsModificationReq, sizeof(SchStatsModificationReq));
+      ret = MacSendStatsModificationRspToDuApp(macStatsModificationRsp);
+   }
+
+   MAC_FREE_SHRABL_BUF(pst->region, pst->pool, macStatsModificationReq, sizeof(MacStatsModificationReq));
    return ret;
 }
 

@@ -118,6 +118,13 @@ DuMacStatsDeleteReqFunc packMacStatsDeleteReqOpts[]=
    packDuMacStatsDeleteReq           /* Light weight-loose coupling */
 };
 
+DuMacStatsModificationReqFunc packMacStatsModificationReqOpts[]=
+{
+   packDuMacStatsModificationReq,          /* Loose Coupling */
+   MacProcStatsModificationReq,            /* Tight Coupling */
+   packDuMacStatsModificationReq           /* Light weight-loose coupling */
+};
+
 /**************************************************************************
  * @brief Function to fill configs required by RLC
  *
@@ -2434,6 +2441,143 @@ uint8_t BuildAndSendStatsDeleteReq(RicSubscription *ricSubscriptionInfo)
       return RFAILED;
    }
    return ROK;
+}
+
+ /*******************************************************************
+ *
+ * @brief Send Statistics Modification request to MAC
+ *
+ * @details
+ *
+ *    Function : BuildAndSendStatsModificationReqToMac()
+ *
+ *    Functionality: Send Statistics Modification Request To Mac
+ *
+ * @params[in]
+ *
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t BuildAndSendStatsModificationReqToMac(RicSubscription *ricSubscriptionInfo)
+{
+   Pst pst;
+   MacStatsModificationReq *macStatsModificationReq = NULLP;
+
+   /* Fill MAC statistics modification request */
+   DU_ALLOC_SHRABL_BUF(macStatsModificationReq, sizeof(MacStatsModificationReq));
+   if(macStatsModificationReq == NULLP)
+   {
+      DU_LOG("\nERROR  -->  DU_APP : Memory allocation failed for macStatsModificationReq in BuildAndSendStatsModificationReqToMac");
+      return RFAILED;
+   }
+
+   /* Fill E2 Subscription Info in MAC Statistics Modification Request and send to MAC */
+   if(fillRicSubsInMacStatsModificationReq(macStatsModificationReq, ricSubscriptionInfo) == ROK)
+   {
+      DU_LOG("\nDEBUG  -->  DU_APP: Sending Statistics Modification Request to MAC ");
+      FILL_PST_DUAPP_TO_MAC(pst, EVENT_MAC_STATISTICS_MODIFY_REQ);
+
+      if( (*packMacStatsModificationReqOpts[pst.selector])(&pst, macStatsModificationReq) == ROK)
+         return ROK;
+
+      DU_LOG("\nERROR  -->  DU_APP: Failed to send Statistics Modification Request to MAC");
+   }
+
+   DU_LOG("\nERROR  -->  DU_APP: No Statistics group found valid. Hence statistics Modification request is not sent to MAC");
+   DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, macStatsModificationReq, sizeof(MacStatsModificationReq));
+   return RFAILED;
+}
+/*******************************************************************
+ *
+ * @brief Send Statistics Modification request to DU layers
+ *
+ * @details
+ *
+ *    Function : BuildAndSendStatsModificationReq()
+ *
+ *    Functionality: Check if there is an update in statistics
+ *       reporting configuration. If so, send the update Modification to
+ *       respective layer.
+ *
+ * @params[in] Subscription Info
+ *
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t BuildAndSendStatsModificationReq(RicSubscription *ricSubscriptionInfo)
+{
+   /* Build and sent subscription information to MAC in Statistics Modification Request */
+   if(BuildAndSendStatsModificationReqToMac(ricSubscriptionInfo) != ROK)
+   {
+      DU_LOG("\nERROR  -->  DU_APP : Failed at BuildAndSendStatsModificationReqToMac()");
+      return RFAILED;
+   }
+
+   /* TODO : When KPI collection from RLC will be supported, this function will be
+    * called to configure KPIs to be colled */
+
+   return ROK;
+}
+
+/*******************************************************************
+ *
+ * @brief Process statistics modification response from MAC
+ *
+ * @details
+ *
+ *    Function : DuProcMacStatsModificationRsp
+ *
+ *    Functionality: Processes statistics modification configuration 
+ *       response from MAC. If configuration is succsessful, DUAPP starts
+ *       reporting period timer for this subscription request
+ *       from RIC
+ *
+ * @params[in]
+ *
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t DuProcMacStatsModificationRsp(Pst *pst, MacStatsModificationRsp *statsModificationRsp)
+{
+   uint8_t ret = RFAILED;
+   DU_LOG("\nINFO  -->  DU_APP : DuProcMacStatsModificationRsp: Received Statistics Modification Response from MAC");
+
+   if(statsModificationRsp)
+   {
+#ifdef DEBUG_PRINT
+      uint8_t idx = 0;
+      DU_LOG("\n  Subscription Id [%ld]", statsModificationRsp->subscriptionId);
+
+      DU_LOG("\n  Number of Accepted Groups [%d]", statsModificationRsp->numGrpAccepted);
+      for(idx=0; idx<statsModificationRsp->numGrpAccepted; idx++)
+      {
+         DU_LOG("\n    Group Id [%d]", statsModificationRsp->statsGrpAcceptedList[idx]);
+      }
+
+      DU_LOG("\n  Number of Rejected Groups [%d]", statsModificationRsp->numGrpRejected);
+      for(idx=0; idx<statsModificationRsp->numGrpRejected; idx++)
+      {
+         DU_LOG("\n    Group Id [%d]", statsModificationRsp->statsGrpRejectedList[idx].groupId);
+      }
+#endif
+
+      /* Check the list of accepted and rejected statistics group and send
+       * Ric subscription response/failure accordingly */
+      //if((ret = e2ProcStatsModificationRsp(statsModificationRsp)) != ROK)
+      {
+         DU_LOG("\nERROR  -->  DU_APP : DuProcMacStatsModificationRsp: Failed in %s at line %d", __func__, __LINE__);
+      }
+
+      DU_FREE_SHRABL_BUF(pst->region, pst->pool, statsModificationRsp, sizeof(MacStatsModificationRsp));
+   }
+   else
+   {
+      DU_LOG("\nERROR  -->  DU_APP : DuProcMacStatsModificationRsp: Received NULL Pointer");
+   }
+   return ret;
 }
 
 /**********************************************************************

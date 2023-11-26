@@ -1579,6 +1579,102 @@ uint8_t e2ProcStatsDeleteRsp(MacStatsDeleteRsp *statsDeleteRsp)
    return ROK;
 }
 
+/*******************************************************************
+ *
+ * @brief Fill RIC Subscription datils in MAC Statistics 
+ * ModificationRequest
+ *
+ * @details
+ *
+ *    Function : fillRicSubsInMacStatsModificationReq
+ *
+ *    Functionality: Fill RIC Subscription datils in MAC 
+ * Modification Statistics Request
+ *
+ * @params[in] MAC Statistics Modification Request to be filled
+ *             RIC Subscription Info
+ *
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t fillRicSubsInMacStatsModificationReq(MacStatsModificationReq *macStatsModificationReqReq, RicSubscription* ricSubscriptionInfo)
+{
+   uint8_t    actionIdx = 0, grpIdx = 0, statsModificationReqIdx = 0;
+   uint64_t   subscriptionId = 0;
+   ActionInfo *actionDb = NULLP;
+   CmLList *actionNode = NULLP;
+   ActionDefFormat1 *format1Action = NULLP;
+
+   /* Generate subscription ID using RIC Request ID and RAN Function ID */
+   encodeSubscriptionId(&subscriptionId, ricSubscriptionInfo->ranFuncId, ricSubscriptionInfo->requestId);
+
+   macStatsModificationReqReq->subscriptionId = subscriptionId;
+   CM_LLIST_FIRST_NODE(&ricSubscriptionInfo->actionSequence, actionNode);
+   while(actionNode)
+   {
+      actionDb = (ActionInfo*)(actionNode->node);
+      if(actionDb->action == CONFIG_ADD)
+      {
+         macStatsModificationReqReq->statsGrpList[grpIdx].groupId = actionDb->actionId;
+         switch(actionDb->definition.formatType)
+         {
+            case 1:
+               {
+                  format1Action = &actionDb->definition.choice.format1;
+                  macStatsModificationReqReq->statsGrpList[grpIdx].periodicity = format1Action->granularityPeriod;
+
+                  CmLList *node = NULLP;
+                  MeasurementInfo *measInfo = NULLP;
+                  statsModificationReqIdx = 0;
+                  /* Update DL PRB Usage for all statsModificationReq group which requested for DL Total PRB Usage */
+                  node = cmLListFirst(&format1Action->measurementInfoList);
+                  while(node)
+                  {
+                     measInfo = (MeasurementInfo *)(node->node);
+                     switch(measInfo->measurementTypeId)
+                     {
+                        case 1:
+                           {
+                              macStatsModificationReqReq->statsGrpList[grpIdx].statsList[statsModificationReqIdx++] = MAC_DL_TOTAL_PRB_USAGE;
+                              break;
+                           }
+                        case 2:
+                           {
+                              macStatsModificationReqReq->statsGrpList[grpIdx].statsList[statsModificationReqIdx++] = MAC_UL_TOTAL_PRB_USAGE;
+                              break;
+                           }
+                        default:
+                           {
+                              DU_LOG("\nERROR  -->  E2AP : Invalid measurement name");
+                              break;
+                           }
+                     }
+                     node = node->next;
+                  }
+                  macStatsModificationReqReq->statsGrpList[grpIdx].numStats = statsModificationReqIdx;
+                  break;
+               }
+            default:
+               {
+                  DU_LOG("\nERROR  -->  E2AP : fillRicSubsInMacStatsModificationReq: Only Action Definition Format 1 supported");
+                  break;
+               }
+         }
+         if(macStatsModificationReqReq->statsGrpList[grpIdx].numStats)
+            grpIdx++;
+      }
+      actionNode = actionNode->next;
+   }
+
+   macStatsModificationReqReq->numStatsGroup = grpIdx;
+   if(macStatsModificationReqReq->numStatsGroup)
+   {
+      return ROK;
+   }
+   return RFAILED;
+}
+
 /**********************************************************************
   End of file
  **********************************************************************/

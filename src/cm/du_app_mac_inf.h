@@ -94,6 +94,8 @@
 #define EVENT_MAC_STATISTICS_IND     231
 #define EVENT_MAC_STATS_DELETE_REQ   232
 #define EVENT_MAC_STATS_DELETE_RSP   233
+#define EVENT_MAC_STATISTICS_MODIFY_REQ     234
+#define EVENT_MAC_STATISTICS_MODIFY_RSP     235
 
 #define BSR_PERIODIC_TIMER_SF_10 10
 #define BSR_RETX_TIMER_SF_320 320
@@ -1924,6 +1926,34 @@ typedef struct macStatsDeleteRsp
    MacStatsDeleteInfo statsGrpDelInfo[MAX_NUM_STATS_GRP]; /*list of the deletion statuses for specific actions */
 }MacStatsDeleteRsp;
 
+#if 0
+typedef struct macStatsModifyGrpInfo
+{
+   uint8_t   groupId;
+   uint16_t  periodicity;  /* In milliseconds */
+   uint8_t   numStats;
+   MacMeasurementType statsList[MAX_NUM_STATS];
+}MacStatsModifyGrpInfo;
+
+typedef struct macStatsModificationReqReq
+{
+   uint64_t    subscriptionId;
+   uint8_t     numStatsGroup;
+   MacStatsModifyGrpInfo statsGrpList[MAX_NUM_STATS_GRP];
+}MacStatsModificationReq;
+
+typedef struct macStatsModificationRsp
+{
+   uint64_t             subscriptionId;
+   uint8_t              numGrpAccepted;
+   uint8_t              statsGrpAcceptedList[MAX_NUM_STATS_GRP];
+   uint8_t              numGrpRejected;
+   MacStatsGrpRejected  statsGrpRejectedList[MAX_NUM_STATS_GRP];
+}MacStatsModificationRsp;
+#endif
+
+typedef struct macStatsReq MacStatsModificationReq;
+typedef struct macStatsRsp MacStatsModificationRsp;
 /****************** FUNCTION POINTERS ********************************/
 
 /* DL broadcast req from DU APP to MAC*/
@@ -2103,6 +2133,16 @@ typedef uint8_t (*MacDuStatsDeleteRspFunc) ARGS((
          Pst *pst,
          MacStatsDeleteRsp *statsDeleteRsp));
 
+/* Statitics Modification Request from DU APP to MAC */
+typedef uint8_t (*DuMacStatsModificationReqFunc) ARGS((
+      Pst *pst,
+      MacStatsModificationReq *statsModificationReq));
+
+/* Statistics Modification Response from MAC to DU APP */
+typedef uint8_t (*MacDuStatsModificationRspFunc) ARGS((
+      Pst *pst,
+      MacStatsModificationRsp *statsModificationRsp));
+
 /******************** FUNCTION DECLARATIONS ********************************/
 uint8_t packMacCellUpInd(Pst *pst, OduCellId *cellId);
 uint8_t unpackMacCellUpInd(DuMacCellUpInd func, Pst *pst, Buffer *mBuf);
@@ -2243,6 +2283,15 @@ uint8_t unpackMacStatsDeleteReq(DuMacStatsDeleteReqFunc func, Pst *pst, Buffer *
 uint8_t packDuMacStatsDeleteRsp(Pst *pst, MacStatsDeleteRsp *statsDeleteRsp);
 uint8_t DuProcMacStatsDeleteRsp(Pst *pst, MacStatsDeleteRsp *statsDeleteRsp);
 uint8_t unpackDuMacStatsDeleteRsp(MacDuStatsDeleteRspFunc func, Pst *pst, Buffer *mBuf);
+
+uint8_t packDuMacStatsModificationReq(Pst *pst, MacStatsModificationReq *statsModificationReq);
+uint8_t MacProcStatsModificationReq(Pst *pst, MacStatsModificationReq *statsModificationReq);
+uint8_t unpackMacStatsModificationReq(DuMacStatsModificationReqFunc func, Pst *pst, Buffer *mBuf);
+
+uint8_t packDuMacStatsModificationRsp(Pst *pst, MacStatsModificationRsp *statsModificationRsp);
+uint8_t DuProcMacStatsModificationRsp(Pst *pst, MacStatsModificationRsp *statsModificationRsp);
+uint8_t unpackDuMacStatsModificationRsp(MacDuStatsModificationRspFunc func, Pst *pst, Buffer *mBuf);
+
 
 #endif
 
