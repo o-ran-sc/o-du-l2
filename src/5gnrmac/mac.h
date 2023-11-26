@@ -303,6 +303,7 @@ uint8_t MacProcSchCellDeleteRsp(Pst *pst, SchCellDeleteRsp *schCellDeleteRsp);
 uint8_t MacProcSchStatsRsp(Pst *pst, SchStatsRsp *schStatsRsp);
 uint8_t MacProcSchStatsInd(Pst *pst, SchStatsInd *schStatsInd);
 uint8_t MacProcSchStatsDeleteRsp(Pst *pst, SchStatsDeleteRsp *schStatsDeleteRsp);
+uint8_t MacProcSchStatsModificationRsp(Pst *pst, SchStatsModificationRsp *schStatsModificationRsp);
 
 #endif
 /**********************************************************************
