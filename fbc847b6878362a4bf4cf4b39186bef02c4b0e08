@@ -1,0 +1,209 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9a807f92_0b298bbb",
+        "filename": "src/5gnrmac/mac_cfg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1547,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-11-27T18:05:09Z",
+      "side": 1,
+      "message": "call this tmpMacStatsModRsp to avoid confusion with macStatsModificationRsp below",
+      "range": {
+        "startLine": 1547,
+        "startChar": 68,
+        "endLine": 1547,
+        "endChar": 88
+      },
+      "revId": "fbc847b6878362a4bf4cf4b39186bef02c4b0e08",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4f974149_acbc9c0c",
+        "filename": "src/5gnrmac/mac_cfg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1730,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-11-27T18:05:09Z",
+      "side": 1,
+      "message": "we should be comparing with max allowed pending response",
+      "range": {
+        "startLine": 1730,
+        "startChar": 45,
+        "endLine": 1730,
+        "endChar": 46
+      },
+      "revId": "fbc847b6878362a4bf4cf4b39186bef02c4b0e08",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5523380d_26aa5929",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 3226,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-11-27T18:05:09Z",
+      "side": 1,
+      "message": "lets call this tmpSchStatsModRsp to avoid confusion with schStatsModificationRsp",
+      "revId": "fbc847b6878362a4bf4cf4b39186bef02c4b0e08",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ac3ea15d_f5116675",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 3263,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-11-27T18:05:09Z",
+      "side": 1,
+      "message": "wrong name",
+      "revId": "fbc847b6878362a4bf4cf4b39186bef02c4b0e08",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f6fd2807_c262f7d6",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 3274,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-11-27T18:05:09Z",
+      "side": 1,
+      "message": "also explain the steps of modification for stats group found in sch db.",
+      "revId": "fbc847b6878362a4bf4cf4b39186bef02c4b0e08",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a8d572d6_2e5dea73",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 3291,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-11-27T18:05:09Z",
+      "side": 1,
+      "message": "Format the above list of variable definition, to avoid clumsiness",
+      "revId": "fbc847b6878362a4bf4cf4b39186bef02c4b0e08",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5c266721_d519cf15",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 3309,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-11-27T18:05:09Z",
+      "side": 1,
+      "message": "move outside the loop",
+      "revId": "fbc847b6878362a4bf4cf4b39186bef02c4b0e08",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5e37da8d_8ae67f56",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 3310,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-11-27T18:05:09Z",
+      "side": 1,
+      "message": "This is one statsGrp and not statsGrpList, so rename to statsGrpToModify",
+      "range": {
+        "startLine": 3310,
+        "startChar": 9,
+        "endLine": 3310,
+        "endChar": 21
+      },
+      "revId": "fbc847b6878362a4bf4cf4b39186bef02c4b0e08",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a506859b_918078b5",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 3325,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-11-27T18:05:09Z",
+      "side": 1,
+      "message": "The sequence of actions must be as follows:\n1. stop the timer, \n2. clean all statistics calculated and stored so far for this stats group\n3. reconfigure stats group\n4. restart timer",
+      "revId": "fbc847b6878362a4bf4cf4b39186bef02c4b0e08",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "57f3b615_c5e1948f",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 3351,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-11-27T18:05:09Z",
+      "side": 1,
+      "message": "call a function called reject all stats modification, similar to what is done in MAC.\nIn that function, fill all stats group from mod request to rejected list in mod response.\n\nBenefit of creating such function is that in future it can be used if we are able to identify any more negative scenarios.",
+      "revId": "fbc847b6878362a4bf4cf4b39186bef02c4b0e08",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4ad7877d_b6b99403",
+        "filename": "src/du_app/du_e2ap_mgr.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1641,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-11-27T18:05:09Z",
+      "side": 1,
+      "message": "move variable definition to beginning of the function",
+      "revId": "fbc847b6878362a4bf4cf4b39186bef02c4b0e08",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
