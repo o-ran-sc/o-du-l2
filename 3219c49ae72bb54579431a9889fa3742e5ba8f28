@@ -18,6 +18,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "93464f84_f3e8de53",
+        "filename": "src/du_app/du_e2ap_mgr.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 537,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-11-28T11:59:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "984185dc_981e5f17",
+      "revId": "3219c49ae72bb54579431a9889fa3742e5ba8f28",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9e5fbf6c_e685c873",
@@ -41,6 +59,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f95be41b_23cd7662",
+        "filename": "src/du_app/du_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2510,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-11-28T11:59:42Z",
+      "side": 1,
+      "message": "yes, this is not been added yet but I will add that in my next Gerrit.",
+      "parentUuid": "9e5fbf6c_e685c873",
+      "range": {
+        "startLine": 2510,
+        "startChar": 8,
+        "endLine": 2510,
+        "endChar": 40
+      },
+      "revId": "3219c49ae72bb54579431a9889fa3742e5ba8f28",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7037453d_2e5e4a7a",
@@ -54,6 +96,24 @@
       "writtenOn": "2023-11-27T18:05:09Z",
       "side": 1,
       "message": "in case failure is returned, we should be sending Subscription Modification failure right?\nPlease check.",
+      "revId": "3219c49ae72bb54579431a9889fa3742e5ba8f28",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "956603a7_a20ccd39",
+        "filename": "src/du_app/du_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2517,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-11-28T11:59:42Z",
+      "side": 1,
+      "message": "yes we need the handling I will add that handling wherever I will  call this function",
+      "parentUuid": "7037453d_2e5e4a7a",
       "revId": "3219c49ae72bb54579431a9889fa3742e5ba8f28",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
