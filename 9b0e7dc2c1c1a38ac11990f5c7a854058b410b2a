@@ -1,0 +1,146 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "17e3101e_c8e47eb5",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 3318,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-11-28T13:47:01Z",
+      "side": 1,
+      "message": "2nd Param :(PTR)grpInfo-\u003ekpiStats.dlTotalPrbUsage/grpInfo-\u003ekpiStats.ulTotalPrbUsage\n3rd Param : \u0026schCb[inst].statistics.activeKpiList.dlTotPrbUseList/\u0026schCb[inst].statistics.activeKpiList.ulTotPrbUseList\n\n\nRemove this function\nUpdate above changes in schAddToKpiActiveList",
+      "revId": "9b0e7dc2c1c1a38ac11990f5c7a854058b410b2a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e40ccd59_319a24b2",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 3451,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-11-28T13:47:01Z",
+      "side": 1,
+      "message": "I think we should have a null check for dlTotalPrbUsage \u0026 ulTotalPrbUsage before sending in memset function. otherwise it may lead to seg fault if the pointer is not allocated memory.",
+      "revId": "9b0e7dc2c1c1a38ac11990f5c7a854058b410b2a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cbd6de7a_c87bce21",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 3467,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-11-28T13:47:01Z",
+      "side": 1,
+      "message": "break from here",
+      "revId": "9b0e7dc2c1c1a38ac11990f5c7a854058b410b2a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a1085894_f818500a",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 3483,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-11-28T13:47:01Z",
+      "side": 1,
+      "message": "break from here",
+      "range": {
+        "startLine": 3483,
+        "startChar": 30,
+        "endLine": 3483,
+        "endChar": 36
+      },
+      "revId": "9b0e7dc2c1c1a38ac11990f5c7a854058b410b2a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "84ededac_1b13c246",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 3515,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-11-28T13:47:01Z",
+      "side": 1,
+      "message": "if(successfulUlAlloc)",
+      "revId": "9b0e7dc2c1c1a38ac11990f5c7a854058b410b2a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dae74582_93266688",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 3522,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-11-28T13:47:01Z",
+      "side": 1,
+      "message": "we do not need to initiatlize timer in case of modification because it is already initialised when statsGrp was added earlier",
+      "revId": "9b0e7dc2c1c1a38ac11990f5c7a854058b410b2a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b60a0b37_52266446",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 3535,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-11-28T13:47:01Z",
+      "side": 1,
+      "message": "In case of rejection of stats group, free statsGrpInfo-\u003ekpiStats.dlTotalPrbUsage and node from actoveKPI list",
+      "revId": "9b0e7dc2c1c1a38ac11990f5c7a854058b410b2a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f177051d_e0b9a297",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 3543,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-11-28T13:47:01Z",
+      "side": 1,
+      "message": "write a common function for all failure case containing following:\n1. from lines 3502 to 3505\n2. Updation of group info to statsRejectedList\n3. Freeing node from activeKpiList if added",
+      "revId": "9b0e7dc2c1c1a38ac11990f5c7a854058b410b2a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
