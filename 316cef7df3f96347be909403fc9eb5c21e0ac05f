@@ -1,0 +1,375 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "22338b4d_f7382f23",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 2615,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-11-29T13:48:08Z",
+      "side": 1,
+      "message": "KpiStatsInfo",
+      "range": {
+        "startLine": 2615,
+        "startChar": 57,
+        "endLine": 2615,
+        "endChar": 68
+      },
+      "revId": "316cef7df3f96347be909403fc9eb5c21e0ac05f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fd2ce63b_3b12f5e0",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 2615,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-11-29T13:48:08Z",
+      "side": 1,
+      "message": "KpiList",
+      "range": {
+        "startLine": 2615,
+        "startChar": 41,
+        "endLine": 2615,
+        "endChar": 51
+      },
+      "revId": "316cef7df3f96347be909403fc9eb5c21e0ac05f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e02e73f4_00e12b31",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 2641,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-11-29T13:48:08Z",
+      "side": 1,
+      "message": "remove \"move\"",
+      "revId": "316cef7df3f96347be909403fc9eb5c21e0ac05f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5701106c_370b2518",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 2645,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-11-29T13:48:08Z",
+      "side": 1,
+      "message": "Else reject the complete stats group and go to step 3",
+      "range": {
+        "startLine": 2645,
+        "startChar": 38,
+        "endLine": 2645,
+        "endChar": 50
+      },
+      "revId": "316cef7df3f96347be909403fc9eb5c21e0ac05f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "676519da_7778084a",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 2652,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-11-29T13:48:08Z",
+      "side": 1,
+      "message": "Add each KPI/measurementCfg into activeKpiList one by one. If it fails for any KPI, reject the whole statsGrp and go to step 3.\n\nstep 2.2/2.3 are redundant.",
+      "revId": "316cef7df3f96347be909403fc9eb5c21e0ac05f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e32ae28c_5b44fe9d",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 2656,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-11-29T13:48:08Z",
+      "side": 1,
+      "message": "Once all validation and configuration is successful, add statsGrp into statistic\u0027s StatsGrpList",
+      "revId": "316cef7df3f96347be909403fc9eb5c21e0ac05f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d01da1a8_39e4ad27",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 2688,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-11-29T13:48:08Z",
+      "side": 1,
+      "message": "not needed in this case",
+      "revId": "316cef7df3f96347be909403fc9eb5c21e0ac05f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1e014a14_97b1cdbd",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 2690,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-11-29T13:48:08Z",
+      "side": 1,
+      "message": "set ret \u003d RFAILED",
+      "revId": "316cef7df3f96347be909403fc9eb5c21e0ac05f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6be976cf_a00ef164",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 2742,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-11-29T13:48:08Z",
+      "side": 1,
+      "message": "move the while loop within above else{}",
+      "revId": "316cef7df3f96347be909403fc9eb5c21e0ac05f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "00ed7896_c22cb3c6",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 3050,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-11-29T13:48:08Z",
+      "side": 1,
+      "message": "kpiNodeInfoToDel",
+      "revId": "316cef7df3f96347be909403fc9eb5c21e0ac05f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "34a8c91e_9d8ceb2d",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 3050,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-11-29T13:48:08Z",
+      "side": 1,
+      "message": "deleteNodeFrmKpiList",
+      "range": {
+        "startLine": 3050,
+        "startChar": 5,
+        "endLine": 3050,
+        "endChar": 31
+      },
+      "revId": "316cef7df3f96347be909403fc9eb5c21e0ac05f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "60b3555f_26c28e8f",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 3050,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-11-29T13:48:08Z",
+      "side": 1,
+      "message": "kpiList",
+      "range": {
+        "startLine": 3050,
+        "startChar": 43,
+        "endLine": 3050,
+        "endChar": 54
+      },
+      "revId": "316cef7df3f96347be909403fc9eb5c21e0ac05f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "de313cef_d9cff6ec",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 3057,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-11-29T13:48:08Z",
+      "side": 1,
+      "message": "check kpiNode-\u003enode \u003d\u003d kpiNodeInfoToDel",
+      "range": {
+        "startLine": 3057,
+        "startChar": 9,
+        "endLine": 3057,
+        "endChar": 15
+      },
+      "revId": "316cef7df3f96347be909403fc9eb5c21e0ac05f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b437b731_bd86bfec",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 3059,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-11-29T13:48:08Z",
+      "side": 1,
+      "message": "free kpiNode",
+      "revId": "316cef7df3f96347be909403fc9eb5c21e0ac05f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "204cc2ca_436620d6",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 3463,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-11-29T13:48:08Z",
+      "side": 1,
+      "message": "remove this function",
+      "revId": "316cef7df3f96347be909403fc9eb5c21e0ac05f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "70708872_356d29d7",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 3514,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-11-29T13:48:08Z",
+      "side": 1,
+      "message": "Reconfigure stats group by adding a new entry for this statsGroup with updated configuration in database",
+      "range": {
+        "startLine": 3514,
+        "startChar": 26,
+        "endLine": 3514,
+        "endChar": 49
+      },
+      "revId": "316cef7df3f96347be909403fc9eb5c21e0ac05f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d119c639_10d9c8cc",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 3514,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-11-29T13:48:08Z",
+      "side": 1,
+      "message": "if configured successfully, store stats info into stats mod rsp-\u003e accepted list, restart timer and then go to step 4.1.4",
+      "revId": "316cef7df3f96347be909403fc9eb5c21e0ac05f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "06f81910_828b4cf6",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 3518,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-11-29T13:48:08Z",
+      "side": 1,
+      "message": "delete the old entry of this stats group.",
+      "range": {
+        "startLine": 3518,
+        "startChar": 26,
+        "endLine": 3518,
+        "endChar": 81
+      },
+      "revId": "316cef7df3f96347be909403fc9eb5c21e0ac05f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "25c52d5e_bfafb831",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 3571,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-11-29T13:48:08Z",
+      "side": 1,
+      "message": "rename to statsGrpFound",
+      "revId": "316cef7df3f96347be909403fc9eb5c21e0ac05f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
