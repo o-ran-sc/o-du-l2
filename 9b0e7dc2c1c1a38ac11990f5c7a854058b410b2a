@@ -18,6 +18,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a66e2d76_6f4902b9",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 3318,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-11-29T04:58:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "17e3101e_c8e47eb5",
+      "revId": "9b0e7dc2c1c1a38ac11990f5c7a854058b410b2a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e40ccd59_319a24b2",
@@ -35,6 +53,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "895490eb_c34a8f8a",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 3451,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-11-29T04:58:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e40ccd59_319a24b2",
+      "revId": "9b0e7dc2c1c1a38ac11990f5c7a854058b410b2a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cbd6de7a_c87bce21",
@@ -48,6 +84,24 @@
       "writtenOn": "2023-11-28T13:47:01Z",
       "side": 1,
       "message": "break from here",
+      "revId": "9b0e7dc2c1c1a38ac11990f5c7a854058b410b2a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9215d3b0_84de51e4",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 3467,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-11-29T04:58:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cbd6de7a_c87bce21",
       "revId": "9b0e7dc2c1c1a38ac11990f5c7a854058b410b2a",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -75,6 +129,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5a8a44aa_5e050afa",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 3483,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-11-29T04:58:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a1085894_f818500a",
+      "range": {
+        "startLine": 3483,
+        "startChar": 30,
+        "endLine": 3483,
+        "endChar": 36
+      },
+      "revId": "9b0e7dc2c1c1a38ac11990f5c7a854058b410b2a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "84ededac_1b13c246",
@@ -88,6 +166,24 @@
       "writtenOn": "2023-11-28T13:47:01Z",
       "side": 1,
       "message": "if(successfulUlAlloc)",
+      "revId": "9b0e7dc2c1c1a38ac11990f5c7a854058b410b2a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d7bc9954_2d7c2061",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 3515,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-11-29T04:58:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "84ededac_1b13c246",
       "revId": "9b0e7dc2c1c1a38ac11990f5c7a854058b410b2a",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -109,6 +205,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f15f60fc_da9203da",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 3522,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-11-29T04:58:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dae74582_93266688",
+      "revId": "9b0e7dc2c1c1a38ac11990f5c7a854058b410b2a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b60a0b37_52266446",
@@ -126,6 +240,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "061de8ea_72df0287",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 3535,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-11-29T04:58:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b60a0b37_52266446",
+      "revId": "9b0e7dc2c1c1a38ac11990f5c7a854058b410b2a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f177051d_e0b9a297",
@@ -139,6 +271,24 @@
       "writtenOn": "2023-11-28T13:47:01Z",
       "side": 1,
       "message": "write a common function for all failure case containing following:\n1. from lines 3502 to 3505\n2. Updation of group info to statsRejectedList\n3. Freeing node from activeKpiList if added",
+      "revId": "9b0e7dc2c1c1a38ac11990f5c7a854058b410b2a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "77e25409_6a19e106",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 3543,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-11-29T04:58:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f177051d_e0b9a297",
       "revId": "9b0e7dc2c1c1a38ac11990f5c7a854058b410b2a",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
