@@ -1,0 +1,250 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "46650807_77cdf613",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 2640,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-11-29T07:43:10Z",
+      "side": 1,
+      "message": "missing a verb.. i m guessing \u0027fill\u0027",
+      "range": {
+        "startLine": 2640,
+        "startChar": 22,
+        "endLine": 2640,
+        "endChar": 23
+      },
+      "revId": "3454d0875f2ea0ee5ea5a88039a095a1997e68db",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5ed52e87_87d6fb5c",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 2686,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-11-29T07:43:10Z",
+      "side": 1,
+      "message": "initialize ret \u003d ROK",
+      "revId": "3454d0875f2ea0ee5ea5a88039a095a1997e68db",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3a532390_858f6692",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 2747,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-11-29T07:43:10Z",
+      "side": 1,
+      "message": "while(measTypeInvalid \u003d\u003d false)",
+      "range": {
+        "startLine": 2747,
+        "startChar": 7,
+        "endLine": 2747,
+        "endChar": 22
+      },
+      "revId": "3454d0875f2ea0ee5ea5a88039a095a1997e68db",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1685abd7_fb629ab6",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 2749,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-11-29T07:43:10Z",
+      "side": 1,
+      "message": "my view is that we dont need an extra bool param for ul/dl successful allocation . here we can directly check \"grpInfoDb-\u003ekpiStats.dlTotalPrbUsage\"",
+      "range": {
+        "startLine": 2749,
+        "startChar": 9,
+        "endLine": 2749,
+        "endChar": 26
+      },
+      "revId": "3454d0875f2ea0ee5ea5a88039a095a1997e68db",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ddeebcd5_687f4adf",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 2754,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-11-29T07:43:10Z",
+      "side": 1,
+      "message": "step 2.2.1",
+      "range": {
+        "startLine": 2754,
+        "startChar": 20,
+        "endLine": 2754,
+        "endChar": 26
+      },
+      "revId": "3454d0875f2ea0ee5ea5a88039a095a1997e68db",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9e11e2a8_24a82509",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 2764,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-11-29T07:43:10Z",
+      "side": 1,
+      "message": "same comment as given in line 2820. here mark ret \u003d R_FAILED and break from while loop",
+      "range": {
+        "startLine": 2764,
+        "startChar": 19,
+        "endLine": 2764,
+        "endChar": 26
+      },
+      "revId": "3454d0875f2ea0ee5ea5a88039a095a1997e68db",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dc8f05e8_85040955",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 2768,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-11-29T07:43:10Z",
+      "side": 1,
+      "message": "Here also we dont need an extra bool param for ul/dl successful allocation . here we can directly check \"grpInfoDb-\u003ekpiStats.ulTotalPrbUsage\"",
+      "range": {
+        "startLine": 2768,
+        "startChar": 9,
+        "endLine": 2768,
+        "endChar": 26
+      },
+      "revId": "3454d0875f2ea0ee5ea5a88039a095a1997e68db",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "04f49800_1ffca973",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 2783,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-11-29T07:43:10Z",
+      "side": 1,
+      "message": "same comment as given in line 2820. here mark ret \u003d R_FAILED and break from while loop",
+      "revId": "3454d0875f2ea0ee5ea5a88039a095a1997e68db",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fcd6f665_bb732fe0",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 2820,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-11-29T07:43:10Z",
+      "side": 1,
+      "message": "line 2813 to line 2820 is repeated again and again repeated in all fail cases. For readability purpose we can mark some variable like ret \u003d RFAILED and put whole failure handling(freeing and marking group into rejected list) into that variable so that redundant operation  can be saved.",
+      "revId": "3454d0875f2ea0ee5ea5a88039a095a1997e68db",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0e46c0a9_e8de7253",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 2826,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-11-29T07:43:10Z",
+      "side": 1,
+      "message": "here we should put the whole failure handling so that all the failure cases hit these process",
+      "revId": "3454d0875f2ea0ee5ea5a88039a095a1997e68db",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9be15dde_5fa576f1",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 2826,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-11-29T07:43:10Z",
+      "side": 1,
+      "message": "Here also we should check if ulTotalPrbUsage/dlTotalPrbUsage are allocated or not\n\ni.e. step  2.2.1 and step 2.3.1",
+      "revId": "3454d0875f2ea0ee5ea5a88039a095a1997e68db",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "599b6f68_1b6bb861",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 2911,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-11-29T07:43:10Z",
+      "side": 1,
+      "message": "instead of nested if , we can put the inner if condition in \"\u0026\u0026\" operator.",
+      "range": {
+        "startLine": 2911,
+        "startChar": 18,
+        "endLine": 2911,
+        "endChar": 29
+      },
+      "revId": "3454d0875f2ea0ee5ea5a88039a095a1997e68db",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
