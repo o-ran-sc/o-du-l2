@@ -690,7 +690,7 @@ uint8_t procStatsRspForSubsModReq(MacStatsRsp *statsRsp, RanFunction *ranFuncDb,
    
    /* Step - 4 */
    pendingSubsModRsp->addActionCompleted =true; 
-   if(duProcPendingSubsModRsp(pendingSubsModRsp) != ROK)
+   if(duProcPendingSubsModRsp(ricSubscriptionInfo, pendingSubsModRsp) != ROK)
    {
       DU_LOG("\nERROR  -->  E2AP : failed in function %s at line %d",__func__,__LINE__);
       return RFAILED;
@@ -1848,7 +1848,7 @@ uint8_t e2ProcActionDeleteRsp(MacStatsDeleteRsp *statsDeleteRsp)
    
    /* [Step-4]  */
    pendingSubsModRsp->removeActionCompleted = true;
-   if(duProcPendingSubsModRsp(pendingSubsModRsp) != ROK)
+   if(duProcPendingSubsModRsp(ricSubscriptionInfo, pendingSubsModRsp) != ROK)
    {
       DU_LOG("\nERROR  -->  E2AP : failed to process subscription modification rsp");
       return RFAILED;
@@ -1869,23 +1869,65 @@ uint8_t e2ProcActionDeleteRsp(MacStatsDeleteRsp *statsDeleteRsp)
  *                If processing of add, mod and remove action completes 
  *                then send the ric sub modification rsp
  *
- * @params[in] Pending Subs modification rsp
+ * @params[in] 
+ *             Ric subscription info
+ *             Pending Subs modification rsp
  *
  * @return ROK     - success
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t duProcPendingSubsModRsp( PendingSubsModRspInfo *pendingSubsModRsp)
+uint8_t duProcPendingSubsModRsp(RicSubscription *ricSubscriptionInfo, PendingSubsModRspInfo *pendingSubsModRsp)
 {
-   if(pendingSubsModRsp->addActionCompleted && pendingSubsModRsp->removeActionCompleted && pendingSubsModRsp->modActionCompleted)
+   uint8_t ret = RFAILED;
+   uint32_t reportingPeriod = 0;
+   
+   while(1)
    {
-#if 0
-       BuildAndSendRicSubsModRsp(pendingSubsModRsp);
-#endif
-       memset(pendingSubsModRsp, 0, sizeof(PendingSubsModRspInfo));
-       DU_LOG("\nProcessing of RIC subscription modification completed");
+      if(pendingSubsModRsp->addActionCompleted && pendingSubsModRsp->removeActionCompleted && pendingSubsModRsp->modActionCompleted)
+      {
+         switch(ricSubscriptionInfo->eventTriggerDefinition.formatType)
+         {
+            case 1:
+               {
+                  reportingPeriod = ricSubscriptionInfo->eventTriggerDefinition.choice.format1.reportingPeriod;
+                  storeReportStartTime(&ricSubscriptionInfo->eventTriggerDefinition.choice.format1.startTime);
+                  break;
+               }
+            default:
+               {
+                  DU_LOG("\nERROR  -->  E2AP : Invalid event trigger format of RIC subscription");
+                  break;
+               }
+         }
+
+         if(duChkTmr((PTR)ricSubscriptionInfo, EVENT_RIC_SUBSCRIPTION_REPORTING_TMR) != true)
+         {
+            duStartTmr((PTR)ricSubscriptionInfo, EVENT_RIC_SUBSCRIPTION_REPORTING_TMR, reportingPeriod);
+         }
+         else
+         {
+            DU_LOG("\nERROR  -->  E2AP : RIC Subscription reporting timer already running for RIC Subscription");
+            break;
+         }
+
+         if(BuildAndSendRicSubscriptionModificationResponse(pendingSubsModRsp) != ROK)
+         {
+            DU_LOG("\nERROR  -->  E2AP : failed in function %s at line %d",__func__,__LINE__);
+            break;
+         }
+
+         memset(pendingSubsModRsp, 0, sizeof(PendingSubsModRspInfo));
+         DU_LOG("\nProcessing of RIC subscription modification completed");
+         ret = ROK;
+      }
+      else
+      {
+         ret = ROK;
+         break;
+      }
    }
-   return ROK;
+   return ret;
 }
 /*******************************************************************
  *
@@ -2003,7 +2045,7 @@ uint8_t e2ProcStatsModificationRsp(MacStatsModificationRsp *statsModificationRsp
    
    /* [Step-5] */
    pendingSubsModRsp->modActionCompleted = true;
-   if(duProcPendingSubsModRsp(pendingSubsModRsp) != ROK)
+   if(duProcPendingSubsModRsp(ricSubscriptionInfo, pendingSubsModRsp) != ROK)
    {
       DU_LOG("\nERROR  -->  E2AP : failed to process subscription modification rsp");
       return RFAILED;

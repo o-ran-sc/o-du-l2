@@ -559,7 +559,8 @@ uint8_t e2ProcStatsDeleteRsp(MacStatsDeleteRsp *statsDeleteRsp);
 uint8_t fillRicSubsInMacStatsModificationReq(MacStatsModificationReq *macStatsModReq, RicSubscription* ricSubscriptionInfo);
 uint8_t e2ProcActionDeleteRsp(MacStatsDeleteRsp *statsDeleteRsp);
 uint8_t e2ProcStatsModificationRsp(MacStatsModificationRsp *statsModificationRsp);
-uint8_t duProcPendingSubsModRsp( PendingSubsModRspInfo *pendingSubsModRsp);
+uint8_t duProcPendingSubsModRsp(RicSubscription *ricSubscriptionInfo, PendingSubsModRspInfo *pendingSubsModRsp);
+
 /**********************************************************************
   End of file
  **********************************************************************/

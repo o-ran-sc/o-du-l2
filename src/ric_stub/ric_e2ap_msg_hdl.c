@@ -1996,6 +1996,7 @@ uint8_t fillActionToBeSetup(RICaction_ToBeSetup_ItemIEs_t *actionItem, RicSubscr
    
    if(actionNode)
    {
+      cmLListDelFrm(&ricSubsDb->actionSequence, actionNode);
       deleteActionSequence(actionNode);
    }
    return RFAILED;
@@ -2437,7 +2438,8 @@ void ProcRicSubscriptionResponse(uint32_t duId, RICsubscriptionResponse_t  *ricS
                               action = fetchActionInfoFromActionId(actionId, ricSubs, &actionNode);
                               if(action)
                               {
-                                 deleteActionSequence(action);
+                                 cmLListDelFrm(&ricSubs->actionSequence, actionNode);
+                                 deleteActionSequence(actionNode);
                               }
                            }
                         }
@@ -4621,7 +4623,8 @@ uint8_t ProcRicSubsModReqd(uint32_t duId, RICsubscriptionModificationRequired_t 
                   if(action)
                   {
                      tmpActionList.actionRemovedList[tmpActionList.numActionRemoved++] = actionId;
-                     deleteActionSequence(action);
+                     cmLListDelFrm(&ricSubs->actionSequence, actionNode);
+                     deleteActionSequence(actionNode);
                   }
                }
                break;
@@ -8004,6 +8007,368 @@ void BuildRicSubsModificationReq(DuDb *duDb, RicSubscription *ricSubsInfo)
    }
 }
 
+/****************************************************************
+ *
+ * @brief Processing RIC Subscription action modified list
+ *
+ * @details
+ *
+ *    Function :ProcessingRicSubsActionModified 
+ *
+ *    Functionality: Processing the RIC Subscription action modified list
+ *
+ * @params[in] RICactions_AddedForModification_List_t
+ * @return void
+ *
+ * ****************************************************************/
+void ProcessingRicSubsActionModified(RICactions_ModifiedForModification_List_t *actionModifiedList)
+{
+   uint8_t actionId=0;
+   uint8_t elementIdx = 0;
+   ActionInfo *action=NULLP;
+   CmLList *actionNode =NULLP;
+   RICaction_ModifiedForModification_ItemIEs_t *modifiedActionItemIe =NULLP;
+
+   if(actionModifiedList->list.array)
+   {
+      for(elementIdx = 0; elementIdx < actionModifiedList->list.count; elementIdx++)
+      {
+         if(actionModifiedList->list.array[elementIdx])
+         {
+            modifiedActionItemIe=(RICaction_ModifiedForModification_ItemIEs_t*)actionModifiedList->list.array[elementIdx];
+            actionId = modifiedActionItemIe->value.choice.RICaction_ModifiedForModification_Item.ricActionID;
+            DU_LOG("\nInfo  -->  E2AP : Action id %d modified successfully",  actionId);
+         }
+
+      }
+
+   }
+}
+
+/****************************************************************
+ *
+ * @brief Processing RIC Subscription action added list
+ *
+ * @details
+ *
+ *    Function : ProcessingRicSubsActionAdded
+ *
+ *    Functionality: Processing RIC Subscription action added  list
+ *
+ * @params[in] RICactions_AddedForModification_List_t
+ * @return void
+ *
+ * ****************************************************************/
+void ProcessingRicSubsActionAdded(RICactions_AddedForModification_List_t *actionAddedList)
+{
+   uint8_t actionId=0;
+   uint8_t elementIdx = 0;
+   ActionInfo *action=NULLP;
+   CmLList *actionNode =NULLP;
+   RICaction_AddedForModification_ItemIEs_t *addedActionItemIe =NULLP;
+
+   if(actionAddedList->list.array)
+   {
+      for(elementIdx = 0; elementIdx < actionAddedList->list.count; elementIdx++)
+      {
+         if(actionAddedList->list.array[elementIdx])
+         {
+            addedActionItemIe=(RICaction_AddedForModification_ItemIEs_t*)actionAddedList->list.array[elementIdx];
+            actionId = addedActionItemIe->value.choice.RICaction_AddedForModification_Item.ricActionID;
+            DU_LOG("\nInfo  -->  E2AP : Action id %d added successfully",  actionId);
+         }
+
+      }
+
+   }
+}
+
+/****************************************************************
+ *
+ * @brief Processing RIC Subscription action deleted list
+ *
+ * @details
+ *
+ *    Function : ProcessingRicSubsActionRemoved
+ *
+ *    Functionality: Processing RIC Subscription action deleted list
+ *
+ * @params[in] RICactions_RemovedForModification_List_t
+ *             Ric Subscription info
+ * @return void
+ *
+ * ****************************************************************/
+void ProcessingRicSubsActionRemoved(RICactions_RemovedForModification_List_t *actionRemovedList, RicSubscription *ricSubs)
+{
+   uint8_t actionId=0;
+   uint8_t elementIdx = 0;
+   ActionInfo *action=NULLP;
+   CmLList *actionNode =NULLP;
+   RICaction_RemovedForModification_ItemIEs_t *removedActionItemIe =NULLP;
+
+   if(actionRemovedList->list.array)
+   {
+      for(elementIdx = 0; elementIdx < actionRemovedList->list.count; elementIdx++)
+      {
+         if(actionRemovedList->list.array[elementIdx])
+         {
+            removedActionItemIe=(RICaction_RemovedForModification_ItemIEs_t*)actionRemovedList->list.array[elementIdx];
+            actionId = removedActionItemIe->value.choice.RICaction_RemovedForModification_Item.ricActionID;
+            action = fetchActionInfoFromActionId(actionId, ricSubs, &actionNode);
+            if(action)
+            {
+               cmLListDelFrm(&ricSubs->actionSequence, actionNode);
+               deleteActionSequence(actionNode);
+               DU_LOG("\nInfo  -->  E2AP : Action id %d removed successfully",  actionId);
+            }
+         }
+
+      }
+
+   }
+}
+
+/*******************************************************************
+ *
+ * @brief Processing RIC Subscription action failed to be
+ * removed list
+ *
+ * @details
+ *
+ *    Function : ProcessingRicSubsActionFailedToBeRemoved
+ *
+ *    Functionality: Processing the RIC Subscription action failed
+ *    to be removed list
+ *
+ * @params[in] RICactions_FailedToBeRemovedForModification_List_t 
+ * @return void
+ *
+ * ****************************************************************/
+void ProcessingRicSubsActionFailedToBeRemoved(RICactions_FailedToBeRemovedForModification_List_t *actionFailedToBeRemoved)
+{
+   uint8_t actionId=0;
+   uint8_t elementIdx = 0;
+   RICaction_FailedToBeRemovedForModification_ItemIEs_t *failedToBeRemovedActionItemIe =NULLP;
+
+   if(actionFailedToBeRemoved->list.array)
+   {
+      for(elementIdx = 0; elementIdx < actionFailedToBeRemoved->list.count; elementIdx++)
+      {
+         if(actionFailedToBeRemoved->list.array[elementIdx])
+         {
+            failedToBeRemovedActionItemIe=(RICaction_FailedToBeRemovedForModification_ItemIEs_t*)actionFailedToBeRemoved->list.array[elementIdx];
+            actionId = failedToBeRemovedActionItemIe->value.choice.RICaction_FailedToBeRemovedForModification_Item.ricActionID;
+            DU_LOG("\nERROR  -->  E2AP : Failed to remove action id %d in %s", actionId, __func__);
+            printE2ErrorCause(&failedToBeRemovedActionItemIe->value.choice.RICaction_FailedToBeRemovedForModification_Item.cause);
+         }
+
+      }
+
+   }
+}
+
+/****************************************************************
+ *
+ * @brief Processing RIC Subscription action failed to be
+ * add list
+ *
+ * @details
+ *
+ *    Function : ProcessingRicSubsActionFailedToBeAdded
+ *
+ *    Functionality: Processing the RIC Subscription action failed
+ *    to be add list
+ *
+ * @params[in] RICactions_FailedToBeAddedForModification_List_t 
+ * @return void
+ *
+ * ****************************************************************/
+void ProcessingRicSubsActionFailedToBeAdded(RICactions_FailedToBeAddedForModification_List_t *actionfailedToBeAddedList, RicSubscription *ricSubs)
+{
+   uint8_t actionId=0;
+   uint8_t elementIdx = 0;
+   ActionInfo *action=NULLP;
+   CmLList *actionNode =NULLP;
+   RICaction_FailedToBeAddedForModification_ItemIEs_t *failedToBeAddedActionItemIe =NULLP;
+
+   if(actionfailedToBeAddedList->list.array)
+   {
+      for(elementIdx = 0; elementIdx < actionfailedToBeAddedList->list.count; elementIdx++)
+      {
+         if(actionfailedToBeAddedList->list.array[elementIdx])
+         {
+            failedToBeAddedActionItemIe=(RICaction_FailedToBeAddedForModification_ItemIEs_t*)actionfailedToBeAddedList->list.array[elementIdx];
+            actionId = failedToBeAddedActionItemIe->value.choice.RICaction_FailedToBeAddedForModification_Item.ricActionID;
+            action = fetchActionInfoFromActionId(actionId, ricSubs, &actionNode);
+            if(action)
+            {
+               cmLListDelFrm(&ricSubs->actionSequence, actionNode);
+               deleteActionSequence(actionNode);
+            }
+            DU_LOG("\nERROR  -->  E2AP : Failed to remove action id %d in %s", actionId,__func__);
+            printE2ErrorCause(&failedToBeAddedActionItemIe->value.choice.RICaction_FailedToBeAddedForModification_Item.cause);
+         }
+
+      }
+
+   }
+}
+
+/*******************************************************************
+ *
+ * @brief Processing RIC Subscription action failed to be
+ * modified list
+ *
+ * @details
+ *
+ *    Function :ProcessingRicSubsActionFailedToBeModified 
+ *
+ *    Functionality: Processing the RIC Subscription action failed
+ *    to be modified list
+ *
+ * @params[in] RICactions_FailedToBeModifiedForModification_List_t 
+ * @return void
+ *
+ * ****************************************************************/
+void ProcessingRicSubsActionFailedToBeModified(RICactions_FailedToBeModifiedForModification_List_t *actionFailedToBeModifiedList)
+{
+   uint8_t actionId=0;
+   uint8_t elementIdx = 0;
+   RICaction_FailedToBeModifiedForModification_ItemIEs_t *failedToBeModifiedActionItemIe =NULLP;
+
+   if(actionFailedToBeModifiedList->list.array)
+   {
+      for(elementIdx = 0; elementIdx < actionFailedToBeModifiedList->list.count; elementIdx++)
+      {
+         if(actionFailedToBeModifiedList->list.array[elementIdx])
+         {
+            failedToBeModifiedActionItemIe=(RICaction_FailedToBeModifiedForModification_ItemIEs_t*)actionFailedToBeModifiedList->list.array[elementIdx];
+            actionId = failedToBeModifiedActionItemIe->value.choice.RICaction_FailedToBeModifiedForModification_Item.ricActionID;
+            DU_LOG("\nERROR  -->  E2AP : Failed to remove action id %d in %s", actionId,__func__);
+            printE2ErrorCause(&failedToBeModifiedActionItemIe->value.choice.RICaction_FailedToBeModifiedForModification_Item.cause);
+         }
+
+      }
+
+   }
+}
+
+/******************************************************************
+ *
+ * @brief Processes the Ric Subs modification rsp msg
+ *
+ * @details
+ *
+ *    Function : ProcRicSubsModificationRsp
+ *
+ *    Functionality: Processes the Ric Subs modification rsp msg
+ *
+ * @params[in]
+ *       Ric Subs modification rsp information
+ *
+ * @return void
+ *
+ * ****************************************************************/
+void ProcRicSubsModificationRsp(uint32_t duId, RICsubscriptionModificationResponse_t *ricSubsModificationRsp)
+{
+   uint8_t ieIdx = 0;
+   uint8_t duIdx= 0;
+   uint16_t ranFuncId=0;
+   RanFunction *ranFuncDb = NULLP;
+   RicRequestId ricReqId;
+   DuDb    *duDb = NULLP;
+   RicSubscription *ricSubs = NULLP;
+   CmLList *ricSubsNode = NULLP;
+
+   SEARCH_DU_DB(duIdx, duId, duDb);
+   if(duDb == NULLP)
+   {
+      DU_LOG("\nERROR  -->  E2AP : duDb is not present for duId %d",duId);
+      return;
+   }
+
+   if(!ricSubsModificationRsp)
+   {
+      DU_LOG("\nERROR  -->  E2AP : ricSubsModificationRsp pointer is null");
+      return;
+   }
+
+   if(!ricSubsModificationRsp->protocolIEs.list.array)
+   {
+      DU_LOG("\nERROR  -->  E2AP : ricSubsModificationRsp array pointer is null");
+      return;
+   }
+
+   for(ieIdx=0; ieIdx < ricSubsModificationRsp->protocolIEs.list.count; ieIdx++)
+   {
+      if(ricSubsModificationRsp->protocolIEs.list.array[ieIdx])
+      {
+         switch(ricSubsModificationRsp->protocolIEs.list.array[ieIdx]->id)
+         {
+            case ProtocolIE_IDE2_id_RICrequestID:
+               {
+                  ricReqId.requestorId = ricSubsModificationRsp->protocolIEs.list.array[ieIdx]->value.choice.RICrequestID.ricRequestorID;
+                  ricReqId.instanceId = ricSubsModificationRsp->protocolIEs.list.array[ieIdx]->value.choice.RICrequestID.ricInstanceID;
+                  break;
+               }
+            case ProtocolIE_IDE2_id_RANfunctionID:
+               {
+                  ranFuncId = ricSubsModificationRsp->protocolIEs.list.array[ieIdx]->value.choice.RANfunctionID;
+                  ranFuncDb = fetchRanFuncFromRanFuncId(duDb, ranFuncId);
+                  if(!ranFuncDb)
+                  {
+                     DU_LOG("\nERROR  -->  E2AP : Invalid Ran Function id %d received",ranFuncId);
+                     return;
+                  }
+
+                  ricSubs = fetchSubsInfoFromRicReqId(ricReqId, ranFuncDb, &ricSubsNode);
+                  if(!ricSubs)
+                  {
+                     DU_LOG("\nERROR  -->  E2AP : Ric subscription node is not present ");
+                     return;
+                  }
+                  break;
+               }
+            case ProtocolIE_IDE2_id_RICactionsRemovedForModification_List:
+               {
+                  ProcessingRicSubsActionRemoved(&ricSubsModificationRsp->protocolIEs.list.array[ieIdx]->value.choice.RICactions_RemovedForModification_List, ricSubs);
+                  break;
+               }
+            case ProtocolIE_IDE2_id_RICactionsFailedToBeRemovedForModification_List:
+               {
+                  ProcessingRicSubsActionFailedToBeRemoved(&ricSubsModificationRsp->protocolIEs.list.array[ieIdx]->value.choice.RICactions_FailedToBeRemovedForModification_List);
+                  break;
+               }
+            case ProtocolIE_IDE2_id_RICactionsModifiedForModification_List:
+               {
+                  ProcessingRicSubsActionModified(&ricSubsModificationRsp->protocolIEs.list.array[ieIdx]->value.choice.RICactions_ModifiedForModification_List);
+                  break;
+               }
+            case ProtocolIE_IDE2_id_RICactionsFailedToBeModifiedForModification_List:
+               {
+                  ProcessingRicSubsActionFailedToBeModified(&ricSubsModificationRsp->protocolIEs.list.array[ieIdx]->value.choice.RICactions_FailedToBeModifiedForModification_List);
+                  break;
+               }
+            case ProtocolIE_IDE2_id_RICactionsAddedForModification_List:
+               {
+                  ProcessingRicSubsActionAdded(&ricSubsModificationRsp->protocolIEs.list.array[ieIdx]->value.choice.RICactions_AddedForModification_List);
+                  break;
+               }
+            case ProtocolIE_IDE2_id_RICactionsFailedToBeAddedForModification_List:
+               {
+                  ProcessingRicSubsActionFailedToBeAdded(&ricSubsModificationRsp->protocolIEs.list.array[ieIdx]->value.choice.RICactions_FailedToBeAddedForModification_List, ricSubs);
+                  break;
+               }
+            default:
+               {
+                  DU_LOG("\nERROR  -->  E2AP : Received Invalid Ie [%ld]", ricSubsModificationRsp->protocolIEs.list.array[ieIdx]->id);
+                  break;
+               }
+         }
+      }
+   }
+}
+
 /*******************************************************************
 *
 * @brief Handles received E2AP message and sends back response  
@@ -8170,6 +8535,11 @@ void E2APMsgHdlr(uint32_t *duId, Buffer *mBuf)
                case SuccessfulOutcomeE2__value_PR_RICsubscriptionDeleteResponse:
                   {
                      ProcRicSubsDeleteRsp(*duId, &e2apMsg->choice.successfulOutcome->value.choice.RICsubscriptionDeleteResponse);
+                     break;
+                  }
+               case SuccessfulOutcomeE2__value_PR_RICsubscriptionModificationResponse:
+                  {
+                     ProcRicSubsModificationRsp(*duId, &e2apMsg->choice.successfulOutcome->value.choice.RICsubscriptionModificationResponse);
                      break;
                   }
                default:

@@ -34,6 +34,7 @@ uint8_t BuildAndSendRicIndication(RicSubscription *ricSubscriptionInfo, ActionIn
 uint8_t BuildAndSendRicSubscriptionDeleteResponse(uint16_t ranFuncId,  RicRequestId requestId);
 uint8_t BuildAndSendRicSubscriptionDeleteFailure(uint16_t ranFuncId,  RicRequestId requestId, E2FailureCause failureCause);
 uint8_t BuildAndSendRicSubscriptionModificationFailure(uint16_t ranFuncId,  RicRequestId requestId, E2FailureCause failureCause);
+uint8_t BuildAndSendRicSubscriptionModificationResponse(PendingSubsModRspInfo *pendingSubsModRsp);
 
 /**********************************************************************
   End of file
