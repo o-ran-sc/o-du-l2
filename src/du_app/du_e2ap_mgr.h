@@ -508,6 +508,22 @@ typedef struct e2ConnectionList
    E2ConnectionItem failedToSetupE2Connection[MAX_TNL_ASSOCIATION];
 }E2ConnectionList;
 
+typedef struct ricSubsModificationReq
+{
+   uint8_t numActionRemoved;
+   uint8_t actionRemovedList[MAX_RIC_ACTION];
+   uint8_t numActionModified;
+   uint8_t actionModifiedList[MAX_RIC_ACTION];
+   uint8_t numActionAdded;
+   uint8_t actionAddedList[MAX_RIC_ACTION];
+   uint8_t numActionFailedToBeRemoved;
+   RejectedAction actionFailedToBeRemovedList[MAX_RIC_ACTION];
+   uint8_t numActionFailedToBeModified;
+   RejectedAction actionFailedToBeModifiedList[MAX_RIC_ACTION];
+   uint8_t numActionFailedToBeAdded;
+   RejectedAction actionFailedToBeAddedList[MAX_RIC_ACTION];
+}RicSubsModificationReq;
+
 uint8_t assignTransactionId();
 ActionInfo *fetchActionInfoFromActionId(uint8_t actionId, RicSubscription *ricSubscriptionInfo, CmLList ** actionNode);
 RicSubscription *fetchSubsInfoFromRicReqId(RicRequestId ricReqId, RanFunction *ranFuncDb, CmLList **ricSubscriptionNode);
