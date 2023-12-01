@@ -16,24 +16,19 @@
 ################################################################################
 *******************************************************************************/
 
-/* This file contains all E2AP message handler related functionality */
 
-#define ENCODE_FAIL -1
+uint8_t packRlcConfigReq(Pst *pst, RlcMngmt *cfg);
+uint8_t cmPkLkwCntrlReq(Pst *pst, RlcMngmt *cfg);
+uint8_t cmPkLrgCfgReq(Pst *pst, RgMngmt *cfg);
+uint8_t egtpHdlDatInd(EgtpMsg egtpMsg);
+uint8_t BuildAndSendDUConfigUpdate();
+uint16_t getTransId();
+uint8_t cmPkLrgSchCfgReq(Pst * pst,RgMngmt * cfg);
+uint8_t sendCellDeleteReqToMac(uint16_t cellId);
+uint8_t BuildAndSendStatsDeleteReq(RicSubscription *ricSubscriptionInfo, bool deleteAllStats);
+uint8_t BuildAndSendStatsModificationReqToMac(RicSubscription *ricSubscriptionInfo);
+uint8_t BuildAndSendStatsModificationReq(RicSubscription *ricSubscriptionInfo);
 
-void    E2APMsgHdlr(Buffer *mBuf);
-uint8_t BuildAndSendE2SetupReq();
-uint8_t BuildAndSendE2ResetRequest(E2FailureCause resetCause);
-uint8_t BuildAndSendE2NodeConfigUpdate(E2NodeConfigList *recvList);
-uint8_t BuildAndSendRicServiceUpdate(RicServiceUpdate serviceUpdate);
-uint8_t duSendE2NodeConfigurationUpdate();
-
-uint8_t BuildAndSendStatsReq(RicSubscription *ricSubscriptionInfo);
-uint8_t BuildAndSendRicSubscriptionRsp(PendingSubsRspInfo *subsRspInfo);
-uint8_t BuildAndSendRicSubscriptionFailure(RicRequestId ricReqId, uint16_t ranFuncId, E2FailureCause failureCause);
-uint8_t BuildAndSendRicIndication(RicSubscription *ricSubscriptionInfo, ActionInfo *actionInfo);
-uint8_t BuildAndSendRicSubscriptionDeleteResponse(uint16_t ranFuncId,  RicRequestId requestId);
-uint8_t BuildAndSendRicSubscriptionDeleteFailure(uint16_t ranFuncId,  RicRequestId requestId, E2FailureCause failureCause);
-uint8_t BuildAndSendRicSubscriptionModificationFailure(uint16_t ranFuncId,  RicRequestId requestId, E2FailureCause failureCause);
 
 /**********************************************************************
   End of file
