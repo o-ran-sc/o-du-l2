@@ -2326,7 +2326,10 @@ uint8_t DuProcMacStatsDeleteRsp(Pst *pst, MacStatsDeleteRsp *statsDeleteRsp)
       }
       else
       {
-         /* TODO calling ric sub modification action to be deleted functions */
+         if((ret = e2ProcActionDeleteRsp(statsDeleteRsp)) != ROK)
+         {
+            DU_LOG("\nINFO  -->  DU_APP : Failed in %s at line %d", __func__, __LINE__);
+         }
       }
       DU_FREE_SHRABL_BUF(pst->region, pst->pool, statsDeleteRsp, sizeof(MacStatsDeleteRsp));
    }
@@ -2563,15 +2566,10 @@ uint8_t DuProcMacStatsModificationRsp(Pst *pst, MacStatsModificationRsp *statsMo
          DU_LOG("\n    Group Id [%d]", statsModificationRsp->statsGrpRejectedList[idx].groupId);
       }
 #endif
-#if 0
-      /*TODO*/
-      /* Check the list of accepted and rejected statistics group and send
-       * Ric subscription modification response/failure accordingly */
       if((ret = e2ProcStatsModificationRsp(statsModificationRsp)) != ROK)
       {
          DU_LOG("\nERROR  -->  DU_APP : DuProcMacStatsModificationRsp: Failed in %s at line %d", __func__, __LINE__);
       }
-#endif
       DU_FREE_SHRABL_BUF(pst->region, pst->pool, statsModificationRsp, sizeof(MacStatsModificationRsp));
    }
    else
