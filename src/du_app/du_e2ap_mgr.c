@@ -202,11 +202,12 @@ MeasurementInfo *fetchMeasInfoFromMeasTypeName(char *e2MeasTypeName, CmLListCp *
  * @params[in] Action ID 
  *             RIC Subscription DB
  *             Ric Action Node
+ *             Config Type
  * @return Action Info DB
  *         NULL, in case of failure
  *
  * ****************************************************************/
-ActionInfo *fetchActionInfoFromActionId(uint8_t actionId, RicSubscription *ricSubscriptionInfo, CmLList ** actionNode)
+ActionInfo *fetchActionInfoFromActionId(uint8_t actionId, RicSubscription *ricSubscriptionInfo, CmLList ** actionNode, ConfigType cfgType)
 {
    ActionInfo *actionInfoDb = NULLP;
 
@@ -214,7 +215,7 @@ ActionInfo *fetchActionInfoFromActionId(uint8_t actionId, RicSubscription *ricSu
    while(*actionNode)
    {
       actionInfoDb = (ActionInfo*)((*actionNode)->node);
-      if(actionInfoDb && actionInfoDb->actionId == actionId)
+      if(actionInfoDb && (actionInfoDb->actionId == actionId) && (actionInfoDb->action == cfgType))
       {
          break;
       }
@@ -481,7 +482,7 @@ uint8_t ResetE2Request(E2ProcedureDirection dir, E2FailureCause resetCause)
  * ****************************************************************/
 uint8_t fillRicSubsInMacStatsReq(MacStatsReq *macStatsReq, RicSubscription* ricSubscriptionInfo)
 {
-   uint8_t    actionIdx = 0, grpIdx = 0, statsIdx = 0;
+   uint8_t    grpIdx = 0, statsIdx = 0;
    uint64_t   subscriptionId = 0;
    ActionInfo *actionDb = NULLP;
    CmLList *actionNode = NULLP;
@@ -598,43 +599,143 @@ uint8_t rejectAllStatsGroup(RanFunction *ranFuncDb, CmLList *ricSubscriptionNode
 
 /*******************************************************************
  *
- * @brief Process statistics response from MAC
+ * @brief Process statistics response received for subscription 
+ * modification req and send the ric subscription response msg
  *
  * @details
  *
- *    Function : e2ProcStatsRsp
+ *    Function : procStatsRspForSubsModReq
  *
  *    Functionality: Processes statistics configuration response
- *       from MAC. If configuration is succsessful, DUAPP starts
- *       reporting period timer for this subscription request
- *       from RIC
+ *     received for subscription modification req. 
+ *     [Step 1] - Fetch pendingSubsModRsp list from ran func db 
+ *     based on RIC request info.
+ *     [Step 2] - Traverse each index of accepted list received in
+ *     stats response.
+ *          [Step 2.1] - Added each action related info in pending 
+ *          rsp's accepted list and mark action status CONFIG_UNKNOWN.
+ *     [Step 3] - Traverse each index of rejected list received in
+ *     stats response.
+ *          [Step 3.1] - Added each action related info in pending 
+ *          rsp's rejected list and delete the action info from Db.
+ *     [Step 4] - Set addActionCompleted true, and  process the Pending
+ *          Subscription modification rsp list.
  *
- * @params[in] Statistics response received from MAC
+ * @params[in]
+ *             Mac Stats Rsp
+ *             Ran Function info
+ *             Ric subscription info
  *
  * @return ROK     - success
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t e2ProcStatsRsp(MacStatsRsp *statsRsp)
+uint8_t procStatsRspForSubsModReq(MacStatsRsp *statsRsp, RanFunction *ranFuncDb, RicSubscription *ricSubscriptionInfo)
+{
+   uint8_t idx = 0;
+   uint8_t actionId = 0;
+   CmLList *actionNode = NULLP;
+   ActionInfo *actionInfoDb = NULLP;
+   PendingSubsModRspInfo *pendingSubsModRsp = NULLP;
+   
+   /* Step - 1 */
+   for(idx=0; idx<ranFuncDb->numPendingSubsModRsp; idx++)
+   {
+      if((ranFuncDb->pendingSubsModRspInfo[idx].requestId.requestorId == ricSubscriptionInfo->requestId.requestorId) &&
+            (ricSubscriptionInfo->requestId.instanceId == ricSubscriptionInfo->requestId.instanceId))
+      {
+         pendingSubsModRsp = &ranFuncDb->pendingSubsModRspInfo[idx];
+         break;
+      }
+   }
+
+   /* Step - 2 */
+   for(idx=0; idx<statsRsp->numGrpAccepted; idx++)
+   {
+      actionInfoDb = NULLP;
+
+      actionId = statsRsp->statsGrpAcceptedList[idx];
+      actionInfoDb = fetchActionInfoFromActionId(actionId, ricSubscriptionInfo, &actionNode, CONFIG_ADD);
+      if(actionInfoDb)
+      {
+         /* Step - 2.1 */
+         actionInfoDb->action = CONFIG_UNKNOWN;
+         pendingSubsModRsp->addActionStats.acceptedActionList[pendingSubsModRsp->addActionStats.numOfAcceptedActions++] = actionId;
+      }
+   }
+
+   /* Step - 3 */
+   for(idx=0; idx<statsRsp->numGrpRejected; idx++)
+   {
+      actionInfoDb = NULLP;
+      actionId = statsRsp->statsGrpRejectedList[idx].groupId;
+      actionInfoDb = fetchActionInfoFromActionId(actionId, ricSubscriptionInfo, &actionNode, CONFIG_ADD);
+      if(actionInfoDb)
+      {
+         /* Step - 3.1 */
+         cmLListDelFrm(&ricSubscriptionInfo->actionSequence, actionNode);
+         deleteActionSequence(actionNode);
+         pendingSubsModRsp->addActionStats.rejectedActionList[pendingSubsModRsp->addActionStats.numOfRejectedActions].id = actionId;
+         convertDuCauseToE2Cause(statsRsp->statsGrpRejectedList[idx].cause, \
+               &pendingSubsModRsp->addActionStats.rejectedActionList[pendingSubsModRsp->addActionStats.numOfRejectedActions].failureCause);
+         pendingSubsModRsp->addActionStats.numOfRejectedActions++;
+      }
+   }
+   
+   /* Step - 4 */
+   pendingSubsModRsp->addActionCompleted =true; 
+   if(duProcPendingSubsModRsp(pendingSubsModRsp) != ROK)
+   {
+      DU_LOG("\nERROR  -->  E2AP : failed to process subscription modification rsp");
+      return RFAILED;
+   }
+   return ROK;
+}
+
+/*******************************************************************
+ *
+ * @brief Process statistics response for subscription req and 
+ * send the ric subscription response msg
+ *
+ * @details
+ *
+ *    Function : procStatsRspForSubsReq
+ *
+ *    Functionality: Processes statistics configuration response
+ *     received for subscription req.  
+ *     [Step 1] - Fetch PendingSubsRspInfo list from ran func db 
+ *     based on RIC request info.
+ *     [Step 2] - Store and start RIC Subscription reporting timer.
+ *     [Step 3] - Traverse each index of accepted list received in
+ *     stats response.
+ *          [Step 3.1] - Added each action related info in pending 
+ *          rsp's accepted list and mark action status CONFIG_UNKNOWN.
+ *     [Step 4] - Traverse each index of rejected list received in
+ *     stats response.
+ *          [Step 4.1] - Added each action related info in pending 
+ *          rsp's rejected list and delete the action info from Db.
+ *     [Step 5] - Send subscription response with accepted and rejected 
+ *     action lists to RIC.
+ *
+ * @params[in] 
+ *             Mac Stats Rsp
+ *             Ran Function info
+ *             Ric subscription info
+ *
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t procStatsRspForSubsReq(MacStatsRsp *statsRsp, RanFunction *ranFuncDb, RicSubscription *ricSubscriptionInfo)
 {
    uint8_t idx = 0;
    uint8_t actionId = 0;
    uint32_t reportingPeriod = 0;
-   RanFunction *ranFuncDb = NULLP;
-   CmLList *ricSubscriptionNode = NULLP;
    CmLList *actionNode = NULLP;
-   RicSubscription *ricSubscriptionInfo = NULLP;
    ActionInfo *actionInfoDb = NULLP;
    PendingSubsRspInfo *pendingSubsRsp = NULLP;
 
-   /* Fetch RAN Function and Subscription DB using subscription Id received in statistics response */
-   if(fetchSubsInfoFromSubsId(statsRsp->subscriptionId, &ranFuncDb, &ricSubscriptionNode, &ricSubscriptionInfo) != ROK)
-   {
-      DU_LOG("\nERROR  -->  E2AP : DuProcMacStatsRsp: Failed to fetch subscriprtion details");
-      return RFAILED;
-   }
-
-   /* Fetch pre-stored statistics response info by DU APP */
+   /* [Step 1]  */
    for(idx=0; idx<ranFuncDb->numPendingSubsRsp; idx++)
    {
       if((ranFuncDb->pendingSubsRspInfo[idx].requestId.requestorId == ricSubscriptionInfo->requestId.requestorId) &&
@@ -645,88 +746,141 @@ uint8_t e2ProcStatsRsp(MacStatsRsp *statsRsp)
       }
    }
 
-   /* If no action is accepted
-    *  a. Remove subcription entry from RAN Function
-    *  b. Send RIC subscription failure */
-   if(statsRsp->numGrpAccepted == 0)
+   /* [Step 2 ]  */
+   switch(ricSubscriptionInfo->eventTriggerDefinition.formatType)
    {
-      rejectAllStatsGroup(ranFuncDb, ricSubscriptionNode, statsRsp);
-   }
-   else
-   {
-      /* Once RIC subscription is successful, mark the config action as unknown */
-      ricSubscriptionInfo->action = CONFIG_UNKNOWN;
-
-      /* Start RIC Subscription reporting timer */
-      switch(ricSubscriptionInfo->eventTriggerDefinition.formatType)
-      {
-         case 1:
-            {
-               reportingPeriod = ricSubscriptionInfo->eventTriggerDefinition.choice.format1.reportingPeriod;
-
-               /* Save the start time of reporting period */
-               storeReportStartTime(&ricSubscriptionInfo->eventTriggerDefinition.choice.format1.startTime);
-               break;
-            }
-         default:
+      case 1:
+         {
+            reportingPeriod = ricSubscriptionInfo->eventTriggerDefinition.choice.format1.reportingPeriod;
+            storeReportStartTime(&ricSubscriptionInfo->eventTriggerDefinition.choice.format1.startTime);
+            break;
+         }
+      default:
          {
             DU_LOG("\nERROR  -->  E2AP : Invalid event trigger format of RIC subscription");
             return RFAILED;
          }
-      }
-      if(duChkTmr((PTR)ricSubscriptionInfo, EVENT_RIC_SUBSCRIPTION_REPORTING_TMR) != true)
+   }
+   if(duChkTmr((PTR)ricSubscriptionInfo, EVENT_RIC_SUBSCRIPTION_REPORTING_TMR) != true)
+   {
+      duStartTmr((PTR)ricSubscriptionInfo, EVENT_RIC_SUBSCRIPTION_REPORTING_TMR, reportingPeriod);
+   }
+   else
+   {
+      DU_LOG("\nERROR  -->  E2AP : RIC Subscription reporting timer already running for RIC Subscription");
+      return RFAILED;
+   }
+
+
+   /* [ Step 3 ]  */
+   for(idx=0; idx<statsRsp->numGrpAccepted; idx++)
+   {
+      actionInfoDb = NULLP;
+
+      actionId = statsRsp->statsGrpAcceptedList[idx];
+      actionInfoDb = fetchActionInfoFromActionId(actionId, ricSubscriptionInfo, &actionNode, CONFIG_ADD);
+      if(actionInfoDb)
       {
-         duStartTmr((PTR)ricSubscriptionInfo, EVENT_RIC_SUBSCRIPTION_REPORTING_TMR, reportingPeriod);
+         /* [ Step 3.1 ]  */
+         actionInfoDb->action = CONFIG_UNKNOWN;
+         pendingSubsRsp->acceptedActionList[pendingSubsRsp->numOfAcceptedActions++] = actionId;
+      }
+   }
+
+   /* [ Step 4 ]  */
+   for(idx=0; idx<statsRsp->numGrpRejected; idx++)
+   {
+      actionInfoDb = NULLP;
+      actionId = statsRsp->statsGrpRejectedList[idx].groupId;
+      actionInfoDb = fetchActionInfoFromActionId(actionId, ricSubscriptionInfo, &actionNode, CONFIG_ADD);
+      if(actionInfoDb)
+      {
+         /* [ Step 4.1 ]  */
+         cmLListDelFrm(&ricSubscriptionInfo->actionSequence, actionNode);
+         deleteActionSequence(actionNode);
+         pendingSubsRsp->rejectedActionList[pendingSubsRsp->numOfRejectedActions].id = actionId;
+         convertDuCauseToE2Cause(statsRsp->statsGrpRejectedList[idx].cause, \
+               &pendingSubsRsp->rejectedActionList[pendingSubsRsp->numOfRejectedActions].failureCause);
+         pendingSubsRsp->numOfRejectedActions++;
+      }
+   }
+
+   /* [ Step 5]  */
+   if(BuildAndSendRicSubscriptionRsp(pendingSubsRsp) != ROK)
+   {
+      DU_LOG("\nERROR  -->  E2AP : Failed to build and send RIC Subscription rsp");
+      return RFAILED;
+   }
+   ricSubscriptionInfo->action = CONFIG_UNKNOWN;
+   return ROK;
+}
+
+/*******************************************************************
+ *
+ * @brief Process statistics response from MAC
+ *
+ * @details
+ *
+ *    Function : e2ProcStatsRsp
+ *
+ *    Functionality: Processes statistics configuration response
+ *       from MAC.
+ *       [Step -1]Fetch RAN Function and Subscription DB using 
+ *       subscription Id received in statistics response
+ *       [Step -2]check ricSubscriptionInfo's action
+ *          [Step 2.1]if action == CONFIG_ADD, if no group 
+ *          accepted then reject all stats group and send ric
+ *          subscription failure. Else process stats rsp for 
+ *          RIC subscription response.
+ *          [Step 2.1]if action == CONFIG_MOD, process stats rsp 
+ *          for RIC subscription modification response.
+ *
+ * @params[in] Statistics response received from MAC
+ *
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t e2ProcStatsRsp(MacStatsRsp *statsRsp)
+{
+   RanFunction *ranFuncDb = NULLP;
+   CmLList *ricSubscriptionNode = NULLP;
+   RicSubscription *ricSubscriptionInfo = NULLP;
+
+   /*  [Step -1] */
+   if(fetchSubsInfoFromSubsId(statsRsp->subscriptionId, &ranFuncDb, &ricSubscriptionNode, &ricSubscriptionInfo) != ROK)
+   {
+      DU_LOG("\nERROR  -->  E2AP : DuProcMacStatsRsp: Failed to fetch subscriprtion details");
+      return RFAILED;
+   }
+   
+   /*  [Step -2] */
+   if(ricSubscriptionInfo->action == CONFIG_ADD)
+   {
+      /*  [Step -2.1] */
+      if(statsRsp->numGrpAccepted == 0)
+      {
+         rejectAllStatsGroup(ranFuncDb, ricSubscriptionNode, statsRsp);
       }
       else
       {
-         DU_LOG("\nERROR  -->  E2AP : RIC Subscription reporting timer already running for RIC Subscription");  
+         if(procStatsRspForSubsReq(statsRsp, ranFuncDb, ricSubscriptionInfo) != ROK)
+         {
+            rejectAllStatsGroup(ranFuncDb, ricSubscriptionNode, statsRsp);
+            DU_LOG("\nERROR  -->  E2AP : Failed to build and send RIC Subscription rsp");
+            return RFAILED;
+         }
+      }
+   }
+   else if(ricSubscriptionInfo->action == CONFIG_MOD)
+   {
+      /*  [Step -2.2] */
+      if(procStatsRspForSubsModReq(statsRsp, ranFuncDb, ricSubscriptionInfo) != ROK)
+      {
+         DU_LOG("\nERROR  -->  E2AP : Failed to build and send RIC Subscription rsp");
          return RFAILED;
       }
-
-
-      /* If even 1 action is accepted :
-       *
-       * For accepted groups:
-       *    Mark subscribed-action's -> action = CONFIG_UNKNOWN
-       *    Add to accepted-action-list of subscription response
-       */
-      for(idx=0; idx<statsRsp->numGrpAccepted; idx++)
-      {
-         actionInfoDb = NULLP;
-
-         actionId = statsRsp->statsGrpAcceptedList[idx];
-         actionInfoDb = fetchActionInfoFromActionId(actionId, ricSubscriptionInfo, &actionNode);
-         if(actionInfoDb && (actionInfoDb->action == CONFIG_ADD))
-         {
-            actionInfoDb->action = CONFIG_UNKNOWN;
-            pendingSubsRsp->acceptedActionList[pendingSubsRsp->numOfAcceptedActions++] = actionId;
-         }
-      }
-
-      /* For rejected groups:
-       *    Remove entry from DU's RAN Function->subscription->actionList
-       *    Add to rejected-action-list in subscription response
-       */
-      for(idx=0; idx<statsRsp->numGrpRejected; idx++)
-      {
-         actionInfoDb = NULLP;
-         actionId = statsRsp->statsGrpRejectedList[idx].groupId;
-         actionInfoDb = fetchActionInfoFromActionId(actionId, ricSubscriptionInfo, &actionNode);
-         if(actionInfoDb->actionId == actionId)
-         {
-            deleteActionSequence(actionNode);
-            pendingSubsRsp->rejectedActionList[pendingSubsRsp->numOfRejectedActions].id = actionId;
-            convertDuCauseToE2Cause(statsRsp->statsGrpRejectedList[idx].cause, \
-                  &pendingSubsRsp->rejectedActionList[pendingSubsRsp->numOfRejectedActions].failureCause);
-            pendingSubsRsp->numOfRejectedActions++;
-         }
-      }
-
-      /* Send subscription response with accepted and rejected action lists to RIC */
-      BuildAndSendRicSubscriptionRsp(pendingSubsRsp);
    }
-   memset(pendingSubsRsp, 0, sizeof(PendingSubsRspInfo));
    return ROK;
 }
 
@@ -778,7 +932,7 @@ uint8_t e2ProcStatsInd(MacStatsInd *statsInd)
    }
 
    /* Fetch RIC subscription's action DB */
-   actionInfo = fetchActionInfoFromActionId(statsInd->groupId, ricSubscriptionInfo, &actionNode);
+   actionInfo = fetchActionInfoFromActionId(statsInd->groupId, ricSubscriptionInfo, &actionNode, CONFIG_UNKNOWN);
    if(actionInfo == NULLP)
    {
       DU_LOG("\nERROR  -->  E2AP : extractStatsMeasurement: Failed to fetch action ID [%d]", statsInd->groupId);
@@ -864,7 +1018,6 @@ uint8_t e2ProcStatsInd(MacStatsInd *statsInd)
  * ****************************************************************/
 void E2apHdlRicSubsReportTmrExp(RicSubscription *ricSubscription)
 {
-   uint8_t actionIdx = 0;
    uint32_t reportingPeriod = 0;
    ActionInfo *action=NULLP;
    CmLList *actionNode=NULLP;
@@ -1581,6 +1734,268 @@ uint8_t e2ProcStatsDeleteRsp(MacStatsDeleteRsp *statsDeleteRsp)
 
 /*******************************************************************
  *
+ * @brief Extract statistics received from DU layers and delete
+ * Ric subscription's action info
+ *
+ * @details
+ *
+ *    Function : e2ProcActionDeleteRsp
+ *
+ *    Functionality: 
+ *       [Step-1] Fetch RAN Function and Subscription DB using 
+ *       subscription Id received in statistics delete response.
+ *       [Step-2] Fetch pending ric subs modification rsp info
+ *       from ran func db based on ric request information.
+ *       [Step 3] - Traverse each index of stats group delete list 
+ *       received in stats delete response.
+ *         [Step 3.1] - If action deleted successfully, delete the 
+ *         node from DB and fill the action info in the pending ric 
+ *         subs modification rsp's accepted list.
+ *         [Step 3.1] - Else fill the action info in the pending ric 
+ *         subs modification rsp's rejected list.
+ *       [Step 4] - Set removeActionCompleted true and process the 
+ *       Pending Subscription modification rsp list.
+ *
+ *
+ * @params[in] Statistics delete rsp 
+ * @return ROK-success
+ *         RFAILED-failure
+ *
+ * ****************************************************************/
+uint8_t e2ProcActionDeleteRsp(MacStatsDeleteRsp *statsDeleteRsp)
+{
+   uint8_t idx = 0;
+   uint8_t actionId = 0;
+   uint8_t tmpIndex = 0;
+   CmLList *actionNode = NULLP;
+   ActionInfo *actionInfoDb = NULLP;
+   PendingSubsModRspInfo *pendingSubsModRsp = NULLP;
+   RanFunction *ranFuncDb = NULLP;
+   CmLList *ricSubscriptionNode = NULLP;
+   RicSubscription *ricSubscriptionInfo = NULLP;
+
+   /* [Step-1]  */
+   if(fetchSubsInfoFromSubsId(statsDeleteRsp->subscriptionId, &ranFuncDb, &ricSubscriptionNode, &ricSubscriptionInfo) != ROK)
+   {
+      DU_LOG("\nERROR  -->  E2AP : e2ProcStatsDeleteRsp: Failed to fetch subscriprtion details");
+      return RFAILED;
+   }
+   
+   /* [Step-2]  */
+   if(fetchSubsInfoFromSubsId(statsDeleteRsp->subscriptionId, &ranFuncDb, &ricSubscriptionNode, &ricSubscriptionInfo) != ROK)
+   for(idx=0; idx<ranFuncDb->numPendingSubsModRsp; idx++)
+   {
+      if((ranFuncDb->pendingSubsModRspInfo[idx].requestId.requestorId == ricSubscriptionInfo->requestId.requestorId) &&
+            (ricSubscriptionInfo->requestId.instanceId == ricSubscriptionInfo->requestId.instanceId))
+      {
+         pendingSubsModRsp = &ranFuncDb->pendingSubsModRspInfo[idx];
+         break;
+      }
+   }
+
+   /* [Step-3]  */
+   if(fetchSubsInfoFromSubsId(statsDeleteRsp->subscriptionId, &ranFuncDb, &ricSubscriptionNode, &ricSubscriptionInfo) != ROK)
+   for(idx=0; idx<statsDeleteRsp->numStatsGroupDeleted; idx++)
+   {
+      actionInfoDb = NULLP;
+      actionId = statsDeleteRsp->statsGrpDelInfo[idx].groupId;
+      actionInfoDb = fetchActionInfoFromActionId(actionId, ricSubscriptionInfo, &actionNode, CONFIG_DEL);
+      if(actionInfoDb)
+      {
+         if(statsDeleteRsp->statsGrpDelInfo[idx].statsGrpDelRsp == MAC_DU_APP_RSP_OK)
+         {
+            /* [Step-3.1]  */
+            tmpIndex = pendingSubsModRsp->removeActionStats.numOfAcceptedActions;
+            actionInfoDb->action = CONFIG_UNKNOWN;
+            cmLListDelFrm(&ricSubscriptionInfo->actionSequence, actionNode);
+            deleteActionSequence(actionNode);
+            pendingSubsModRsp->removeActionStats.acceptedActionList[tmpIndex] = actionId;
+            pendingSubsModRsp->removeActionStats.numOfAcceptedActions++;
+         }
+         else
+         {
+            /* [Step-3.2]  */
+            tmpIndex = pendingSubsModRsp->removeActionStats.numOfRejectedActions;
+            pendingSubsModRsp->removeActionStats.rejectedActionList[tmpIndex].id = actionId;
+            if(statsDeleteRsp->statsGrpDelInfo[idx].statsGrpDelCause ==STATS_ID_NOT_FOUND)
+            {
+               pendingSubsModRsp->removeActionStats.rejectedActionList[tmpIndex].failureCause.causeType = E2_RIC_REQUEST;
+               pendingSubsModRsp->removeActionStats.rejectedActionList[tmpIndex].failureCause.cause =E2_ACTION_NOT_SUPPORTED;
+            }
+            pendingSubsModRsp->removeActionStats.numOfRejectedActions++;
+         }
+      }
+   }
+   
+   /* [Step-4]  */
+   pendingSubsModRsp->removeActionCompleted = true;
+   if(duProcPendingSubsModRsp(pendingSubsModRsp) != ROK)
+   {
+      DU_LOG("\nERROR  -->  E2AP : failed to process subscription modification rsp");
+      return RFAILED;
+   }
+   return ROK;
+}
+
+/*******************************************************************
+ *
+ * @brief du process pending ric subscription modification rsp 
+ * recieved from the layers
+ *
+ * @details
+ *
+ *    Function : duProcPendingSubsModRsp 
+ *
+ *    Functionality: Process pending subscription modification response 
+ *                If processing of add, mod and remove action completes 
+ *                then send the ric sub modification rsp
+ *
+ * @params[in] Pending Subs modification rsp
+ *
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t duProcPendingSubsModRsp( PendingSubsModRspInfo *pendingSubsModRsp)
+{
+   if(pendingSubsModRsp->addActionCompleted && pendingSubsModRsp->removeActionCompleted && pendingSubsModRsp->modActionCompleted)
+   {
+#if 0
+       BuildAndSendRicSubsModRsp(ricSubscriptionInfo);
+#endif
+       DU_LOG("\nProcessing of RIC subscription modification completed");
+   }
+   return ROK;
+}
+/*******************************************************************
+ *
+ * @brief Process statistics modification response from MAC
+ *
+ * @details
+ *
+ *    Function : e2ProcStatsModificationRsp
+ *
+ *    Functionality: Processes statistics modification configuration 
+ *     response from MAC.
+ *     [Step-1] Fetch RAN Function and Subscription DB using subs Id
+ *     received in statistics modification response.
+ *     [Step-2] Fetch pre-stored statistics mod response info by DUAPP.
+ *     [Step 3] - Traverse each index of accepted list received in
+ *     stats modification response.
+ *          [Step 3.1] - fetch action info from databse which is set
+ *          as CONFIG_UNKNOWN and then delete the node.
+ *          [Step 3.1] - Again fetch action info from databse which is 
+ *          set as CONFIG_MOD. Change the action status as CONFIG_UNKNOWN.
+ *          fill the action in pending subscription modification rsp's 
+ *          accepted list.
+ *     [Step 4] - Traverse each index of rejected list received in
+ *     stats modification response.
+ *          [Step 4.1] - fetch action info from databse and delete 
+ *          the action node which is set as CONFIG_MOD. and then 
+ *          fill the action in pending subscription modification rsp's 
+ *          rejected list.
+ *     [Step 5] - Send subscription response with accepted and rejected 
+ * @params[in] Statistics modification response received from MAC
+ *
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t e2ProcStatsModificationRsp(MacStatsModificationRsp *statsModificationRsp)
+{
+   uint8_t idx = 0;
+   uint8_t actionId = 0;
+   uint8_t tempCount = 0;
+   RanFunction *ranFuncDb = NULLP;
+   CmLList *actionNode = NULLP;
+   ActionInfo *actionInfoDb = NULLP;
+   CmLList *ricSubscriptionNode = NULLP;
+   RicSubscription *ricSubscriptionInfo = NULLP;
+   PendingSubsModRspInfo *pendingSubsModRsp = NULLP;
+
+
+   /* [Step-1] */
+   if(fetchSubsInfoFromSubsId(statsModificationRsp->subscriptionId, &ranFuncDb, &ricSubscriptionNode, &ricSubscriptionInfo) != ROK)
+   {
+      DU_LOG("\nERROR  -->  E2AP : DuProcMacStatsRsp: Failed to fetch subscriprtion details");
+      return RFAILED;
+   }
+
+   /* [Step-2] */
+   for(idx=0; idx<ranFuncDb->numPendingSubsModRsp; idx++)
+   {
+      if((ranFuncDb->pendingSubsModRspInfo[idx].requestId.requestorId == ricSubscriptionInfo->requestId.requestorId) &&
+            (ricSubscriptionInfo->requestId.instanceId == ricSubscriptionInfo->requestId.instanceId))
+      {
+         pendingSubsModRsp = &ranFuncDb->pendingSubsModRspInfo[idx];
+         break;
+      }
+   }
+
+   /* [Step-3] */
+   for(idx=0; idx<statsModificationRsp->numGrpAccepted; idx++)
+   {
+      actionInfoDb = NULLP;
+      actionId = statsModificationRsp->statsGrpAcceptedList[idx];
+      
+      /* [Step-3.1] */
+      actionInfoDb = fetchActionInfoFromActionId(actionId, ricSubscriptionInfo, &actionNode,CONFIG_UNKNOWN);
+      if(actionInfoDb)
+      {
+         cmLListDelFrm(&ricSubscriptionInfo->actionSequence, actionNode);
+         deleteActionSequence(actionNode);
+      }
+      
+      /* [Step-3.2] */
+      actionNode=NULLP;
+      actionInfoDb = fetchActionInfoFromActionId(actionId, ricSubscriptionInfo, &actionNode,CONFIG_MOD);
+      if(actionInfoDb)
+      {
+         actionInfoDb->action = CONFIG_UNKNOWN;
+      }
+      pendingSubsModRsp->modActionStats.acceptedActionList[pendingSubsModRsp->modActionStats.numOfAcceptedActions++] = actionId;
+   }
+
+   /* [Step-4] */
+   for(idx=0; idx<statsModificationRsp->numGrpRejected; idx++)
+   {
+      actionInfoDb = NULLP;
+      actionId = statsModificationRsp->statsGrpRejectedList[idx].groupId;
+
+      /* [Step-4.1] */
+      actionInfoDb = fetchActionInfoFromActionId(actionId, ricSubscriptionInfo, &actionNode, CONFIG_MOD);
+      if(actionInfoDb)
+      {
+         cmLListDelFrm(&ricSubscriptionInfo->actionSequence, actionNode);
+         deleteActionSequence(actionNode);
+         tempCount = pendingSubsModRsp->modActionStats.numOfRejectedActions;
+         pendingSubsModRsp->modActionStats.rejectedActionList[tempCount].id = actionId;
+         if(statsModificationRsp->statsGrpRejectedList[idx].cause ==STATS_ID_NOT_FOUND)
+         {
+            pendingSubsModRsp->modActionStats.rejectedActionList[tempCount].failureCause.causeType = E2_RIC_REQUEST;
+            pendingSubsModRsp->modActionStats.rejectedActionList[tempCount].failureCause.cause =E2_ACTION_NOT_SUPPORTED;
+         }
+         else
+         {
+            pendingSubsModRsp->modActionStats.rejectedActionList[tempCount].failureCause.causeType = E2_MISCELLANEOUS;
+            pendingSubsModRsp->modActionStats.rejectedActionList[tempCount].failureCause.cause =E2_MISCELLANEOUS_CAUSE_UNSPECIFIED;
+         }
+         pendingSubsModRsp->modActionStats.numOfRejectedActions++;
+      }
+   }
+   
+   /* [Step-5] */
+   pendingSubsModRsp->modActionCompleted = true;
+   if(duProcPendingSubsModRsp(pendingSubsModRsp) != ROK)
+   {
+      DU_LOG("\nERROR  -->  E2AP : failed to process subscription modification rsp");
+      return RFAILED;
+   }
+   return ROK;
+}
+
+/*******************************************************************
+ *
  * @brief Fill RIC Subscription datils in MAC Statistics 
  * ModificationRequest
  *
@@ -1589,7 +2004,7 @@ uint8_t e2ProcStatsDeleteRsp(MacStatsDeleteRsp *statsDeleteRsp)
  *    Function : fillRicSubsInMacStatsModificationReq
  *
  *    Functionality: Fill RIC Subscription datils in MAC 
- * Modification Statistics Request
+ *    Modification Statistics Request
  *    [Step -1] Generate subscription ID using RIC Request ID and 
  *    RAN Function ID
  *    [Step -2] Check all the action staus of each action present
