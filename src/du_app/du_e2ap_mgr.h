@@ -422,6 +422,26 @@ typedef struct pendingSubsRspInfo
    RejectedAction  rejectedActionList[MAX_RIC_ACTION];
 }PendingSubsRspInfo;
 
+typedef struct actionStatus
+{
+   uint8_t         numOfAcceptedActions;
+   uint8_t         acceptedActionList[MAX_RIC_ACTION];
+   uint8_t         numOfRejectedActions;
+   RejectedAction  rejectedActionList[MAX_RIC_ACTION];
+}ActionStats;
+
+typedef struct pendingSubsModRspInfo 
+{
+   RicRequestId requestId;
+   uint16_t     ranFuncId;
+   bool         addActionCompleted;
+   ActionStats  addActionStats;
+   bool         modActionCompleted;
+   ActionStats  modActionStats;
+   bool         removeActionCompleted;
+   ActionStats  removeActionStats;
+}PendingSubsModRspInfo;
+
 typedef struct
 {
    /* O-RAN.WG3.E2SM-KPM-R003-v03.00 : Section 8.2.2.1 */
@@ -438,6 +458,8 @@ typedef struct
    CmLListCp        subscriptionList;
    uint8_t          numPendingSubsRsp;
    PendingSubsRspInfo pendingSubsRspInfo[MAX_PENDING_SUBSCRIPTION_RSP];
+   uint8_t            numPendingSubsModRsp;
+   PendingSubsModRspInfo pendingSubsModRspInfo[MAX_PENDING_SUBSCRIPTION_RSP];
 }RanFunction;
 
 /* O-RAN.WG3.E2AP-R003-v03.00 : Section 9.2.26-9.2.27 */
@@ -509,7 +531,7 @@ typedef struct e2ConnectionList
 }E2ConnectionList;
 
 uint8_t assignTransactionId();
-ActionInfo *fetchActionInfoFromActionId(uint8_t actionId, RicSubscription *ricSubscriptionInfo, CmLList ** actionNode);
+ActionInfo *fetchActionInfoFromActionId(uint8_t actionId, RicSubscription *ricSubscriptionInfo, CmLList ** actionNode, ConfigType configType);
 RicSubscription *fetchSubsInfoFromRicReqId(RicRequestId ricReqId, RanFunction *ranFuncDb, CmLList **ricSubscriptionNode);
 RanFunction *fetchRanFuncFromRanFuncId(uint16_t ranFuncId);
 uint8_t fetchSubsInfoFromSubsId(uint64_t subscriptionId, RanFunction **ranFuncDb, CmLList **ricSubscriptionNode, \
@@ -535,7 +557,9 @@ void removeE2NodeInformation();
 void encodeSubscriptionId(uint64_t *subscriptionId, uint16_t ranFuncId, RicRequestId ricReqId);
 uint8_t e2ProcStatsDeleteRsp(MacStatsDeleteRsp *statsDeleteRsp);
 uint8_t fillRicSubsInMacStatsModificationReq(MacStatsModificationReq *macStatsModReq, RicSubscription* ricSubscriptionInfo);
-
+uint8_t e2ProcActionDeleteRsp(MacStatsDeleteRsp *statsDeleteRsp);
+uint8_t e2ProcStatsModificationRsp(MacStatsModificationRsp *statsModificationRsp);
+uint8_t duProcPendingSubsModRsp( PendingSubsModRspInfo *pendingSubsModRsp);
 /**********************************************************************
   End of file
  **********************************************************************/
