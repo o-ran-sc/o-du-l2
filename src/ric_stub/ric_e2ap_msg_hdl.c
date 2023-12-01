@@ -7972,7 +7972,7 @@ void BuildRicSubsModificationReq(DuDb *duDb, RicSubscription *ricSubsInfo)
       {
          actionInfoDb = (ActionInfo*)(actionNode->node);
          /* Change the condition based on the action required to be modiified or removed */
-         if(((actionInfoDb->actionId)%2) == 0)
+         if(((actionInfoDb->actionId+1)%2) == 0)
          {
             tmpActionIdx = ricSubsModReq.numOfActionToBeModify; 
             ricSubsModReq.actionToBeModify[tmpActionIdx].actionId = actionInfoDb->actionId;
@@ -7984,6 +7984,7 @@ void BuildRicSubsModificationReq(DuDb *duDb, RicSubscription *ricSubsInfo)
             ricSubsModReq.actionToBeRemove[tmpActionIdx].actionId = actionInfoDb->actionId;
             ricSubsModReq.numOfActionToBeRemove++;
          }
+         actionNode= actionNode->next;
       }
       /* Change the value of actionToBeAdded based on the number of action required to be added */
       actionToBeAdded =1;

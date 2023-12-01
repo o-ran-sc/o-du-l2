@@ -41,6 +41,7 @@
 #include "legtp.h"
 #include "du_utils.h"
 #include "du_cell_mgr.h" 
+#include "du_msg_hdl.h"
 
 #ifdef O1_ENABLE
 
@@ -56,17 +57,6 @@ uint8_t rlcUlCfg = 0;
 uint8_t numRlcMacSaps = 0;
 uint8_t macCfg = 0;
 uint8_t macCfgInst = 0;
-
-DuCfgParams duCfgParam;
-uint8_t packRlcConfigReq(Pst *pst, RlcMngmt *cfg);
-uint8_t cmPkLkwCntrlReq(Pst *pst, RlcMngmt *cfg);
-uint8_t cmPkLrgCfgReq(Pst *pst, RgMngmt *cfg);
-uint8_t egtpHdlDatInd(EgtpMsg egtpMsg);
-uint8_t BuildAndSendDUConfigUpdate();
-uint16_t getTransId();
-uint8_t cmPkLrgSchCfgReq(Pst * pst,RgMngmt * cfg);
-uint8_t sendCellDeleteReqToMac(uint16_t cellId);
-uint8_t BuildAndSendStatsDeleteReq(RicSubscription *ricSubscriptionInfo);
 
 packMacCellCfgReq packMacCellCfgOpts[] =
 {
@@ -2326,7 +2316,10 @@ uint8_t DuProcMacStatsDeleteRsp(Pst *pst, MacStatsDeleteRsp *statsDeleteRsp)
       }
       else
       {
-         /* TODO calling ric sub modification action to be deleted functions */
+         if((ret = e2ProcActionDeleteRsp(statsDeleteRsp)) != ROK)
+         {
+            DU_LOG("\nINFO  -->  DU_APP : Failed in %s at line %d", __func__, __LINE__);
+         }
       }
       DU_FREE_SHRABL_BUF(pst->region, pst->pool, statsDeleteRsp, sizeof(MacStatsDeleteRsp));
    }
@@ -2398,6 +2391,7 @@ uint8_t BuildAndSendStatsDeleteReqToMac(RicSubscription *ricSubscriptionInfo, bo
             macStatsDelete->statsGrpIdToBeDelList[actionIdx] = actionDb->actionId;
             actionIdx++;
          }
+         actionNode= actionNode->next;
       }
       macStatsDelete->numStatsGroupToBeDeleted=actionIdx;
    }
@@ -2432,10 +2426,10 @@ uint8_t BuildAndSendStatsDeleteReqToMac(RicSubscription *ricSubscriptionInfo, bo
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t BuildAndSendStatsDeleteReq(RicSubscription *ricSubscriptionInfo)
+uint8_t BuildAndSendStatsDeleteReq(RicSubscription *ricSubscriptionInfo, bool deleteAllStats)
 {
    /* Build and sent subscription information to MAC in Statistics delete */
-   if(BuildAndSendStatsDeleteReqToMac(ricSubscriptionInfo, true) != ROK)
+   if(BuildAndSendStatsDeleteReqToMac(ricSubscriptionInfo, deleteAllStats) != ROK)
    {
       DU_LOG("\nERROR  -->  DU_APP : Failed at BuildAndSendStatsDeleteReqToMac()");
       return RFAILED;
@@ -2563,15 +2557,10 @@ uint8_t DuProcMacStatsModificationRsp(Pst *pst, MacStatsModificationRsp *statsMo
          DU_LOG("\n    Group Id [%d]", statsModificationRsp->statsGrpRejectedList[idx].groupId);
       }
 #endif
-#if 0
-      /*TODO*/
-      /* Check the list of accepted and rejected statistics group and send
-       * Ric subscription modification response/failure accordingly */
       if((ret = e2ProcStatsModificationRsp(statsModificationRsp)) != ROK)
       {
          DU_LOG("\nERROR  -->  DU_APP : DuProcMacStatsModificationRsp: Failed in %s at line %d", __func__, __LINE__);
       }
-#endif
       DU_FREE_SHRABL_BUF(pst->region, pst->pool, statsModificationRsp, sizeof(MacStatsModificationRsp));
    }
    else
