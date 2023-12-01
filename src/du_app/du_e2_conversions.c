@@ -90,6 +90,7 @@ void convertDuCauseToE2Cause(CauseOfResult l2Cause, E2FailureCause *failureCause
 {
    switch(l2Cause)
    {
+      case STATS_ID_NOT_FOUND:
       case PARAM_INVALID:
          {
             failureCause->causeType = E2_RIC_REQUEST;

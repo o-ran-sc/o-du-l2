@@ -3272,7 +3272,7 @@ uint8_t deleteStatsInfo(Inst inst, SchStatsDeleteReq *statsDeleteReq, SchStatsDe
       {
          /* [Step-2] */
          if(deleteFromStatsGrpList(inst, statsGrpList, statsDeleteReq->subscriptionId,\
-                  statsDeleteReq->statsGrpIdToBeDelList[statsGrpIdx], false) != ROK)
+                  statsDeleteReq->statsGrpIdToBeDelList[statsGrpIdx], false) == ROK)
          {
             /* [Step-3]*/
             schStatsDeleteRsp->statsGrpDelInfo[statsGrpIdx].statsGrpDelRsp = RSP_OK;  
