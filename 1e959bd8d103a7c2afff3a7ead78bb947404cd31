@@ -1,0 +1,288 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9068159b_aa8f7a35",
+        "filename": "src/du_app/du_e2ap_mgr.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 651,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-12-04T16:35:27Z",
+      "side": 1,
+      "message": "if pendingSubsModRsp is null, return failure",
+      "revId": "1e959bd8d103a7c2afff3a7ead78bb947404cd31",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5b7833f4_1f0d2279",
+        "filename": "src/du_app/du_e2ap_mgr.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 748,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-12-04T16:35:27Z",
+      "side": 1,
+      "message": "check if pendingSubsRsp is null, return failure",
+      "revId": "1e959bd8d103a7c2afff3a7ead78bb947404cd31",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a7a89fa2_6bd66d38",
+        "filename": "src/du_app/du_e2ap_mgr.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 767,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-12-04T16:35:27Z",
+      "side": 1,
+      "message": "In the earlier implementation of e2ProcStasRsp, reporting timer is started only after checking that at least 1 group is accepted.\nAny specific reason to change ?",
+      "revId": "1e959bd8d103a7c2afff3a7ead78bb947404cd31",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cac7af76_78b11333",
+        "filename": "src/du_app/du_e2ap_mgr.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 853,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-12-04T16:35:27Z",
+      "side": 1,
+      "message": "incorrect function name. use __func__ to print function name at all logs.",
+      "revId": "1e959bd8d103a7c2afff3a7ead78bb947404cd31",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ac37968a_f10b351a",
+        "filename": "src/du_app/du_e2ap_mgr.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 1780,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-12-04T16:35:27Z",
+      "side": 1,
+      "message": "function name incorrect, thats why from now on lets use __func__ to print function names in all logs rather than hardcoding.",
+      "revId": "1e959bd8d103a7c2afff3a7ead78bb947404cd31",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e1651f60_07a97c80",
+        "filename": "src/du_app/du_e2ap_mgr.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 1794,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-12-04T16:35:27Z",
+      "side": 1,
+      "message": "check if pendingSubsModRsp is not null.\nIf it is null, return here with failure",
+      "revId": "1e959bd8d103a7c2afff3a7ead78bb947404cd31",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e8da6b3a_e1e7fa86",
+        "filename": "src/du_app/du_e2ap_mgr.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 1822,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-12-04T16:35:27Z",
+      "side": 1,
+      "message": "use function convertDuCauseToE2Cause",
+      "revId": "1e959bd8d103a7c2afff3a7ead78bb947404cd31",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "31f7d607_14d8d7cb",
+        "filename": "src/du_app/du_e2ap_mgr.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 1862,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-12-04T16:35:27Z",
+      "side": 1,
+      "message": "I think you\u0027ll need to pass pendingSubsModRsp also to BuildAndSendRicSubsModRsp",
+      "range": {
+        "startLine": 1862,
+        "startChar": 7,
+        "endLine": 1862,
+        "endChar": 32
+      },
+      "revId": "1e959bd8d103a7c2afff3a7ead78bb947404cd31",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c005d9bc_7b8f3c5c",
+        "filename": "src/du_app/du_e2ap_mgr.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 1864,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-12-04T16:35:27Z",
+      "side": 1,
+      "message": "After sending subscription modification response, memset pendingSubsModRsp in DB",
+      "revId": "1e959bd8d103a7c2afff3a7ead78bb947404cd31",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "31e0a13b_f366fdea",
+        "filename": "src/du_app/du_e2ap_mgr.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 1918,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-12-04T16:35:27Z",
+      "side": 1,
+      "message": "function name incorrect",
+      "revId": "1e959bd8d103a7c2afff3a7ead78bb947404cd31",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ac87fe08_82ab1396",
+        "filename": "src/du_app/du_e2ap_mgr.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 1933,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-12-04T16:35:27Z",
+      "side": 1,
+      "message": "check if pendingSubsModRsp is not null.\nIf it is null, return here with failure",
+      "revId": "1e959bd8d103a7c2afff3a7ead78bb947404cd31",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ab96dce1_11fac5fb",
+        "filename": "src/du_app/du_e2ap_mgr.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 1980,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-12-04T16:35:27Z",
+      "side": 1,
+      "message": "use function convertDuCauseToE2Cause",
+      "revId": "1e959bd8d103a7c2afff3a7ead78bb947404cd31",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "172ca831_814ff883",
+        "filename": "src/du_app/du_e2ap_mgr.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 442,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-12-04T16:35:27Z",
+      "side": 1,
+      "message": "we have used \"stats\" for statistics.\nHence use the word \"status\" here  to avoid confusion",
+      "revId": "1e959bd8d103a7c2afff3a7ead78bb947404cd31",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "25caa8a2_6167cdf9",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 9904,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-12-04T16:35:27Z",
+      "side": 1,
+      "message": "rename to actionFound or actionValid\nReason explained the comment below",
+      "range": {
+        "startLine": 9904,
+        "startChar": 6,
+        "endLine": 9904,
+        "endChar": 20
+      },
+      "revId": "1e959bd8d103a7c2afff3a7ead78bb947404cd31",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2ac77d31_7cdde135",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 9958,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-12-04T16:35:27Z",
+      "side": 1,
+      "message": "action Id is empty here",
+      "revId": "1e959bd8d103a7c2afff3a7ead78bb947404cd31",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fa272196_5e0b446c",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 9988,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-12-04T16:35:27Z",
+      "side": 1,
+      "message": "actionRemoved means that we have successfully removed the action, however thats not true. We are just validating/searching the action here.\nSo rename to actionFound or actionValid",
+      "revId": "1e959bd8d103a7c2afff3a7ead78bb947404cd31",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}

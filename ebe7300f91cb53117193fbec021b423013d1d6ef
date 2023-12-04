@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8bbe022b_1124aca4",
+        "filename": "src/du_app/du_e2ap_mgr.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 654,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-12-04T16:35:27Z",
+      "side": 0,
+      "message": "do we not need this check?\nIf not, then rejectAllStatsGroup() function is of use at any other place or do we remove its definition all together?",
+      "revId": "ebe7300f91cb53117193fbec021b423013d1d6ef",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
