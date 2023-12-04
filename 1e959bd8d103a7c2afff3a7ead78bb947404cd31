@@ -230,6 +230,120 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7a32638c_bf379ef7",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 3401,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-12-04T16:55:58Z",
+      "side": 1,
+      "message": "in case of addRicSubsAction, the actionNode value will NULL in case of memory failure. so I guess, ACTION_NOT_SUPPORTED doesnt seem correct cause of this. U can check causes like E2_CONTROL_FAILED_TO_EXECUTE, SYSTEM_NOT_READY, etc",
+      "range": {
+        "startLine": 3401,
+        "startChar": 46,
+        "endLine": 3401,
+        "endChar": 69
+      },
+      "revId": "1e959bd8d103a7c2afff3a7ead78bb947404cd31",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c6a1436a_7128c875",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 9764,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-12-04T16:55:58Z",
+      "side": 1,
+      "message": "in case of addRicSubsAction, the actionNode value will NULL in case of memory failure. so I guess, ACTION_NOT_SUPPORTED doesnt seem correct cause of this. U can check causes like E2_CONTROL_FAILED_TO_EXECUTE, SYSTEM_NOT_READY, etc",
+      "range": {
+        "startLine": 9764,
+        "startChar": 38,
+        "endLine": 9764,
+        "endChar": 48
+      },
+      "revId": "1e959bd8d103a7c2afff3a7ead78bb947404cd31",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f415002f_a254049d",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 9773,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-12-04T16:55:58Z",
+      "side": 1,
+      "message": "dont we need to set the actionDb-\u003eaction to CONFIG_ADD?",
+      "revId": "1e959bd8d103a7c2afff3a7ead78bb947404cd31",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2a67b71a_de73c4e9",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 9779,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-12-04T16:55:58Z",
+      "side": 1,
+      "message": "dont we need to fill failureCause in the default case",
+      "revId": "1e959bd8d103a7c2afff3a7ead78bb947404cd31",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "41fa6d2b_ddf6bf04",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 9879,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-12-04T16:55:58Z",
+      "side": 1,
+      "message": "in case of addRicSubsAction, the actionNode value will NULL in case of memory failure. so I guess, ACTION_NOT_SUPPORTED doesnt seem correct cause of this. U can check causes like E2_CONTROL_FAILED_TO_EXECUTE, SYSTEM_NOT_READY, etc",
+      "revId": "1e959bd8d103a7c2afff3a7ead78bb947404cd31",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e9c458f3_eb4e70e0",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 9897,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-12-04T16:55:58Z",
+      "side": 1,
+      "message": "dont we need to fill failureCause in the default case?",
+      "revId": "1e959bd8d103a7c2afff3a7ead78bb947404cd31",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "25caa8a2_6167cdf9",
         "filename": "src/du_app/du_e2ap_msg_hdl.c",
         "patchSetId": 6
@@ -264,6 +378,23 @@
       "writtenOn": "2023-12-04T16:35:27Z",
       "side": 1,
       "message": "action Id is empty here",
+      "revId": "1e959bd8d103a7c2afff3a7ead78bb947404cd31",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "94f00a5b_03093e9b",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 9981,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-12-04T16:55:58Z",
+      "side": 1,
+      "message": "In default case, dont we need to fill failureCause?",
       "revId": "1e959bd8d103a7c2afff3a7ead78bb947404cd31",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
