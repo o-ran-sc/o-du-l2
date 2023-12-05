@@ -24,6 +24,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "206f27bc_1950dc0c",
+        "filename": "src/du_app/du_e2ap_mgr.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 525,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-12-05T10:37:28Z",
+      "side": 1,
+      "message": "not required i will remove this in next patch",
+      "parentUuid": "e9f877e5_47ebcab1",
+      "range": {
+        "startLine": 525,
+        "startChar": 1,
+        "endLine": 525,
+        "endChar": 23
+      },
+      "revId": "fb521b5fcad437fa277ef703700b9f25ec204d2f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "da9a1e8d_0e2ea3cd",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-12-01T07:42:44Z",
       "side": 1,
       "message": "tempModifyRsp",
+      "range": {
+        "startLine": 10434,
+        "startChar": 124,
+        "endLine": 10434,
+        "endChar": 137
+      },
+      "revId": "fb521b5fcad437fa277ef703700b9f25ec204d2f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "25ac3258_8062b06b",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 10434,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-12-05T10:37:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "da9a1e8d_0e2ea3cd",
       "range": {
         "startLine": 10434,
         "startChar": 124,
