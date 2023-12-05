@@ -136,6 +136,8 @@ void deleteLcLL(CmLListCp *lcLL);
 CmLList *schPageInfoSearchFromPageList(SlotTimingInfo slotInfo, CmLListCp *storedPageList);
 void schDeleteFromPageInfoList(CmLListCp *list, CmLList *node);
 
+uint8_t countRBGFrmCoresetFreqRsrc(uint8_t *freqDomainRsrc);
+uint8_t findSsStartSymbol(uint8_t *mSymbolsWithinSlot);
 #if 0
 /*Will be enabled for debugging*/
 void printLcLL(CmLListCp *lcLL);

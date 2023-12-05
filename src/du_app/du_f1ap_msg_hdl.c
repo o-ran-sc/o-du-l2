@@ -3956,6 +3956,76 @@ uint8_t BuildControlRSetToAddModList(PdcchConfig *pdcchCfg, struct PDCCH_Config_
 
 /*******************************************************************
  *
+ * @brief build SlotOffset for SearchSpace
+ *
+ * @details
+ *
+ *    Function : BuildSearchSpcSlotOffset
+ *
+ *    Functionality: Build Slot Offset for search space to add/modify list
+ *
+ * @params[in] SearchSpace__monitoringSlotPeriodicityAndOffset *mSlotPeriodicityAndOffset
+ *             uint16_t slotOffset
+ * @return void
+ *
+ * ****************************************************************/
+void BuildSearchSpcSlotOffset(struct SearchSpace__monitoringSlotPeriodicityAndOffset *mSlotPeriodicityAndOffset,  uint16_t slotOffset)
+{
+   switch(mSlotPeriodicityAndOffset->present)
+   {
+      case SearchSpace__monitoringSlotPeriodicityAndOffset_PR_sl1:
+          mSlotPeriodicityAndOffset->choice.sl1 = slotOffset;
+           break;
+      case SearchSpace__monitoringSlotPeriodicityAndOffset_PR_sl2:
+          mSlotPeriodicityAndOffset->choice.sl2 = slotOffset;
+           break;
+      case SearchSpace__monitoringSlotPeriodicityAndOffset_PR_sl4:
+          mSlotPeriodicityAndOffset->choice.sl4 = slotOffset;
+           break;
+      case SearchSpace__monitoringSlotPeriodicityAndOffset_PR_sl5:
+          mSlotPeriodicityAndOffset->choice.sl5 = slotOffset;
+           break;
+      case SearchSpace__monitoringSlotPeriodicityAndOffset_PR_sl8:
+          mSlotPeriodicityAndOffset->choice.sl8 = slotOffset;
+           break;
+      case SearchSpace__monitoringSlotPeriodicityAndOffset_PR_sl10:
+          mSlotPeriodicityAndOffset->choice.sl10 = slotOffset;
+           break;
+      case SearchSpace__monitoringSlotPeriodicityAndOffset_PR_sl16:
+          mSlotPeriodicityAndOffset->choice.sl16 = slotOffset;
+           break;
+      case SearchSpace__monitoringSlotPeriodicityAndOffset_PR_sl20:
+          mSlotPeriodicityAndOffset->choice.sl10 = slotOffset;
+           break;
+      case SearchSpace__monitoringSlotPeriodicityAndOffset_PR_sl40:
+          mSlotPeriodicityAndOffset->choice.sl40 = slotOffset;
+           break;
+      case SearchSpace__monitoringSlotPeriodicityAndOffset_PR_sl80:
+          mSlotPeriodicityAndOffset->choice.sl80 = slotOffset;
+           break;
+      case SearchSpace__monitoringSlotPeriodicityAndOffset_PR_sl160:
+          mSlotPeriodicityAndOffset->choice.sl160 = slotOffset;
+           break;
+      case SearchSpace__monitoringSlotPeriodicityAndOffset_PR_sl320:
+          mSlotPeriodicityAndOffset->choice.sl320 = slotOffset;
+           break;
+      case SearchSpace__monitoringSlotPeriodicityAndOffset_PR_sl640:
+          mSlotPeriodicityAndOffset->choice.sl640 = slotOffset;
+           break;
+      case SearchSpace__monitoringSlotPeriodicityAndOffset_PR_sl1280:
+          mSlotPeriodicityAndOffset->choice.sl1280 = slotOffset;
+           break;
+      case SearchSpace__monitoringSlotPeriodicityAndOffset_PR_sl2560:
+          mSlotPeriodicityAndOffset->choice.sl2560 = slotOffset;
+           break;
+      default:
+           break;
+   }
+}
+
+
+/*******************************************************************
+ *
  * @brief Build search space to add/modify list
  *
  * @details
@@ -4036,7 +4106,12 @@ uint8_t BuildSearchSpcToAddModList(PdcchConfig *pdcchCfg, struct PDCCH_Config__s
       if(pdcchCfg == NULLP)
          searchSpc->monitoringSlotPeriodicityAndOffset->present = SearchSpace__monitoringSlotPeriodicityAndOffset_PR_sl1;
       else
-         searchSpc->monitoringSlotPeriodicityAndOffset->present = pdcchCfg->searchSpcToAddModList[idx].mSlotPeriodicityAndOffset;
+      {
+         searchSpc->monitoringSlotPeriodicityAndOffset->present = \
+                     pdcchCfg->searchSpcToAddModList[idx].mSlotPeriodicityAndOffset.mSlotPeriodicity;
+         BuildSearchSpcSlotOffset(searchSpc->monitoringSlotPeriodicityAndOffset, \
+                     pdcchCfg->searchSpcToAddModList[idx].mSlotPeriodicityAndOffset.mSlotOffset);
+      }
 
       searchSpc->duration = NULLP;
       searchSpc->monitoringSymbolsWithinSlot = NULLP;
@@ -4182,7 +4257,6 @@ uint8_t BuildBWPDlDedPdcchCfg(PdcchConfig *pdcchCfgDb, struct PDCCH_Config *pdcc
 }
 
 /*******************************************************************
- *
  * @brief Builds DMRS DL PDSCH Mapping type A
  *
  * @details
@@ -11038,6 +11112,80 @@ void extractTagReconfig(TAG_Config_t *cuTagCfg, TagCfg *macTagCfg)
 
 /*******************************************************************
  *
+ * @brief Fills SlotOffset value for SearchSpace received by CU
+ *
+ * @details
+ *
+ *    Function : extractSlotOffset
+ *
+ *    Functionality: Fills SlotOffset received  by CU
+ *
+ * @params[in] SearchSpace__monitoringSlotPeriodicityAndOffset *mSlotPeriodicityOffset,
+ *             uint16_t *slotOffset
+ * @return void
+ *
+ *
+ ****************************************************************/
+void extractSlotOffset(struct SearchSpace__monitoringSlotPeriodicityAndOffset *mSlotPeriodicityAndOffset, uint16_t *slotOffset)
+{
+   switch(mSlotPeriodicityAndOffset->present)
+   {
+      case SearchSpace__monitoringSlotPeriodicityAndOffset_PR_NOTHING:
+         *slotOffset = NULLD;
+         break;
+      case SearchSpace__monitoringSlotPeriodicityAndOffset_PR_sl1:
+         *slotOffset = mSlotPeriodicityAndOffset->choice.sl1;
+         break;
+      case SearchSpace__monitoringSlotPeriodicityAndOffset_PR_sl2:
+         *slotOffset = mSlotPeriodicityAndOffset->choice.sl2;
+         break;
+      case SearchSpace__monitoringSlotPeriodicityAndOffset_PR_sl4:
+         *slotOffset = mSlotPeriodicityAndOffset->choice.sl4;
+         break;
+      case SearchSpace__monitoringSlotPeriodicityAndOffset_PR_sl5:
+         *slotOffset = mSlotPeriodicityAndOffset->choice.sl5;
+         break;
+      case SearchSpace__monitoringSlotPeriodicityAndOffset_PR_sl8:
+         *slotOffset = mSlotPeriodicityAndOffset->choice.sl8;
+         break;
+      case SearchSpace__monitoringSlotPeriodicityAndOffset_PR_sl10:
+         *slotOffset = mSlotPeriodicityAndOffset->choice.sl10;
+         break;
+      case SearchSpace__monitoringSlotPeriodicityAndOffset_PR_sl16:
+         *slotOffset = mSlotPeriodicityAndOffset->choice.sl16;
+         break;
+      case SearchSpace__monitoringSlotPeriodicityAndOffset_PR_sl20:
+         *slotOffset = mSlotPeriodicityAndOffset->choice.sl10;
+         break;
+      case SearchSpace__monitoringSlotPeriodicityAndOffset_PR_sl40:
+         *slotOffset = mSlotPeriodicityAndOffset->choice.sl40;
+         break;
+      case SearchSpace__monitoringSlotPeriodicityAndOffset_PR_sl80:
+         *slotOffset = mSlotPeriodicityAndOffset->choice.sl80;
+         break;
+      case SearchSpace__monitoringSlotPeriodicityAndOffset_PR_sl160:
+         *slotOffset = mSlotPeriodicityAndOffset->choice.sl160;
+         break;
+      case SearchSpace__monitoringSlotPeriodicityAndOffset_PR_sl320:
+         *slotOffset = mSlotPeriodicityAndOffset->choice.sl320;
+         break;
+      case SearchSpace__monitoringSlotPeriodicityAndOffset_PR_sl640:
+         *slotOffset = mSlotPeriodicityAndOffset->choice.sl640;
+         break;
+      case SearchSpace__monitoringSlotPeriodicityAndOffset_PR_sl1280:
+         *slotOffset = mSlotPeriodicityAndOffset->choice.sl1280;
+         break;
+      case SearchSpace__monitoringSlotPeriodicityAndOffset_PR_sl2560:
+         *slotOffset = mSlotPeriodicityAndOffset->choice.sl2560;
+         break;
+      default:
+         *slotOffset = 0;
+   }
+}
+
+
+/*******************************************************************
+ *
  * @brief Fills PdcchCfg received by CU
  *
  * @details
@@ -11128,8 +11276,10 @@ void extractPdcchCfg(PDCCH_Config_t *cuPdcchCfg, PdcchConfig *macPdcchCfg)
                                                                     *(srchSpcToAddModList->list.array[srchSpcIdx]->controlResourceSetId);
             if(srchSpcToAddModList->list.array[srchSpcIdx]->monitoringSlotPeriodicityAndOffset)
             {
-               macPdcchCfg->searchSpcToAddModList[srchSpcIdx].mSlotPeriodicityAndOffset =\
-                                                                                         srchSpcToAddModList->list.array[srchSpcIdx]->monitoringSlotPeriodicityAndOffset->present;
+               macPdcchCfg->searchSpcToAddModList[srchSpcIdx].mSlotPeriodicityAndOffset.mSlotPeriodicity =\
+                                               srchSpcToAddModList->list.array[srchSpcIdx]->monitoringSlotPeriodicityAndOffset->present;
+               extractSlotOffset(srchSpcToAddModList->list.array[srchSpcIdx]->monitoringSlotPeriodicityAndOffset,\
+                                               &macPdcchCfg->searchSpcToAddModList[srchSpcIdx].mSlotPeriodicityAndOffset.mSlotOffset);
             }
             if(srchSpcToAddModList->list.array[srchSpcIdx]->monitoringSymbolsWithinSlot)
             {

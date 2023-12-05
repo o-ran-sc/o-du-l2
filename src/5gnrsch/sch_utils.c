@@ -1786,6 +1786,91 @@ uint8_t calculateSlotPatternLength(uint8_t scs, uint8_t periodicity)
 }
 #endif
 
+/**
+ * @brief Function to find start Symbol Index of Coreset defined in SearchSpace(SS)
+ *
+ * @details
+ *
+ *     Function: findSsStartSymbol
+ *
+ *     This function finds first the startSymbol Index of a CORESET 
+ *     which is defined in SearchSpace.monitoringSymbolWithinSlot parameter
+ *
+ *  @param[in]  uint8_t mSymbolsWithinSlot[2]
+ *        mSymbolsWithinSlot[0] >> MSB as 7th Symbol to LSB as 0th Symbol
+ *        mSymbolsWithinSlot[1] >> 0th bit as 8th Symbol, 1st bit as 9th,
+ *                                   ...,5th bit as 13th symbol
+ *  @return     Success : First SS Symbol Index
+ *              Failure : MAX_SYMB_PER_SLOT(Invalid value of SymbolIndex = 14)
+**/
+uint8_t findSsStartSymbol(uint8_t *mSymbolsWithinSlot)
+{
+   uint8_t symbolIdx = 0;
+
+   for(symbolIdx = 0; symbolIdx < MONITORING_SYMB_WITHIN_SLOT_SIZE; symbolIdx++)
+   {
+      uint8_t i = 1, symPos = 0;
+      while(i)
+      {
+         /*The first Symbol(or bit) enabled(set) is the StartSymbol of SS thus
+          *returning if we find that bitPosition */
+         if(mSymbolsWithinSlot[symbolIdx] & i)
+         {
+            /*Adding (SymbolIdx*8) for SymbolIndex between 8 and 13*/
+            return (symPos + (symbolIdx * 8));
+         }
+         i = i << 1;
+         symPos++;
+      }
+   }
+   return(MAX_SYMB_PER_SLOT);
+}
+
+/**
+ * @brief Function to count number of RBG from Coreset's FreqDomainResource 
+ *
+ * @details
+ *
+ *     Function: countRBGFrmCoresetFreqRsrc
+ *
+ * This function counts RBG for calculating the coresetSize using CORESET.freqDomainResource 
+ * In this, we will find the number of RBG groups which are allowed for this
+ * coreset
+ *
+ *  @param[in]  uint8_t freqDomainRsrc[6]
+ *              freqDomainRsrc[0] =RBG0 to RBG7
+ *              freqDomainRsrc[1] =RBG8 to RBG15
+ *              ...
+ *              freqDomainRsrc[5] =RBG40 to RBG47
+ *              (Every RBG has 6 PRBs)
+ *  @return     Success : Total Number of PRBs in CORESET which can be allocated
+ *              Failure : 0
+**/
+uint8_t countRBGFrmCoresetFreqRsrc(uint8_t *freqDomainRsrc)
+{
+   uint8_t freqIdx = 0, idx = 1;
+   uint8_t count = 0;
+
+   for(freqIdx = 0; freqIdx < FREQ_DOM_RSRC_SIZE; freqIdx++)
+   {
+      if(freqDomainRsrc[freqIdx] & 0xFF)
+      {
+         idx = 1;
+         count = 0;
+         while(idx)
+         {
+           if(freqDomainRsrc[freqIdx] & idx)
+           {
+               count++;
+           }
+           idx = idx << 1;
+         }
+         return count;
+      }
+   }
+   return 0;
+}
+
 /**********************************************************************
          End of file
 **********************************************************************/

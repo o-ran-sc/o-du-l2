@@ -379,7 +379,7 @@ typedef enum
    SLOTPERIODICITYANDOFFSET_PR_SL640,
    SLOTPERIODICITYANDOFFSET_PR_SL1280,
    SLOTPERIODICITYANDOFFSET_PR_SL2560
-}MSlotPeriodAndOffset;
+}MSlotPeriodicity;
 
 typedef enum
 {
@@ -1009,6 +1009,12 @@ typedef struct controlRsrcSet
    PrecoderGranul precoderGranularity;
    uint16_t    dmrsScramblingId;
 }ControlRsrcSet;
+
+typedef struct mSlotPeriodAndOffset
+{
+   MSlotPeriodicity  mSlotPeriodicity;
+   uint16_t          mSlotOffset;
+}MSlotPeriodAndOffset;
 
 /* Search Space info */
 typedef struct searchSpace
