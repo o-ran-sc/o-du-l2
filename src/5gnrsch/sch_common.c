@@ -819,12 +819,13 @@ uint8_t schDlRsrcAllocDlMsg(SchCellCb *cell, SlotTimingInfo slotTime, uint16_t c
                 uint8_t pdschNumSymbols, bool isRetx, SchDlHqProcCb *hqP)
 {
    uint8_t ueId=0;
-   uint8_t cwCount = 0;
+   uint8_t cwCount = 0, rbgCount = 0, pdcchStartSymbol = 0;
    PdcchCfg *pdcch = NULLP;
    PdschCfg *pdsch = NULLP;
    BwpCfg *bwp = NULLP;
    SchUeCb ueCb;
    SchControlRsrcSet coreset1;
+   SchSearchSpace searchSpace;
    SchPdschConfig pdschCfg;
    uint8_t dmrsStartSymbol, startSymbol, numSymbol;
 
@@ -840,6 +841,7 @@ uint8_t schDlRsrcAllocDlMsg(SchCellCb *cell, SlotTimingInfo slotTime, uint16_t c
    GET_UE_ID(crnti, ueId);
    ueCb  = cell->ueCb[ueId-1];
    coreset1 = ueCb.ueCfg.spCellCfg.servCellRecfg.initDlBwp.pdcchCfg.cRSetToAddModList[0];
+   searchSpace = ueCb.ueCfg.spCellCfg.servCellRecfg.initDlBwp.pdcchCfg.searchSpcToAddModList[0];
    pdschCfg = ueCb.ueCfg.spCellCfg.servCellRecfg.initDlBwp.pdschCfg;
 
    /* fill BWP */
@@ -849,22 +851,44 @@ uint8_t schDlRsrcAllocDlMsg(SchCellCb *cell, SlotTimingInfo slotTime, uint16_t c
    bwp->cyclicPrefix = cell->sib1SchCfg.bwp.cyclicPrefix;
 
    /* fill the PDCCH PDU */
-   //Considering coreset1 also starts from same symbol as coreset0
-   pdcch->coresetCfg.startSymbolIndex = coresetIdxTable[0][3];
+   /*StartSymbol of PDCCH*/
+   pdcchStartSymbol = findSsStartSymbol(searchSpace.mSymbolsWithinSlot);
+   if(pdcchStartSymbol < MAX_SYMB_PER_SLOT)
+      pdcch->coresetCfg.startSymbolIndex = pdcchStartSymbol;
+   else
+   {
+      DU_LOG("\nERROR  -->  SCH : Invalid SymbolIndex in schDlRsrcAllocDlMsg");
+      return RFAILED;
+   }
    pdcch->coresetCfg.durationSymbols = coreset1.duration;
    memcpy(pdcch->coresetCfg.freqDomainResource, coreset1.freqDomainRsrc, FREQ_DOM_RSRC_SIZE);
    pdcch->coresetCfg.cceRegMappingType = coreset1.cceRegMappingType; /* non-interleaved */
    pdcch->coresetCfg.regBundleSize = 6;   /* must be 6 for non-interleaved */
    pdcch->coresetCfg.interleaverSize = 0; /* NA for non-interleaved */
    pdcch->coresetCfg.coreSetType = 1; /* non PBCH coreset */
-   //Considering number of RBs in coreset1 is same as coreset0
-   pdcch->coresetCfg.coreSetSize = coresetIdxTable[0][1];
+
+   /*Size of coreset: Number of PRBs in a coreset*/
+   rbgCount = countRBGFrmCoresetFreqRsrc(coreset1.freqDomainRsrc);
+   if(rbgCount)
+   {
+      pdcch->coresetCfg.coreSetSize = ((rbgCount) * NUM_PRBS_PER_RBG);
+   }
+   else
+   {
+      DU_LOG("\nERROR  -->  SCH : CORESETSize is zero in schDlRsrcAllocDlMsg");
+      return RFAILED;
+   }
+
    pdcch->coresetCfg.shiftIndex = cell->cellCfg.phyCellId;
    pdcch->coresetCfg.precoderGranularity =  coreset1.precoderGranularity;
    pdcch->numDlDci = 1;
    pdcch->dci.rnti = ueCb.crnti;
    pdcch->dci.scramblingId = cell->cellCfg.phyCellId;
    pdcch->dci.scramblingRnti = 0;
+
+   /*TODO below assumptions of CCE Index is wrong:
+    * Range 0 to 135 as per ORAN.WG8.AAD Table 9-35 CORESET configuration and
+    * it has to be calculated using the formula given in 3GPP TS 38.213, Sec 10.1 */
    pdcch->dci.cceIndex = 0; /* 0-3 for UL and 4-7 for DL */
    pdcch->dci.aggregLevel = 4;
    pdcch->dci.beamPdcchInfo.numPrgs = 1;
