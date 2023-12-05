@@ -595,7 +595,7 @@ uint8_t fillSchSib1Cfg(uint8_t mu, uint8_t bandwidth, uint8_t numSlots,SchPdcchC
    uint8_t mValue = 0;
    uint8_t firstSymbol = 0; /* need to calculate using formula mentioned in 38.213 */
    uint8_t slotIndex = 0;
-   uint8_t FreqDomainResource[FREQ_DOM_RSRC_SIZE] = {0};
+   uint8_t freqDomainResource[FREQ_DOM_RSRC_SIZE] = {0};
    uint16_t tbSize = 0;
    uint8_t ssbIdx = 0;
    PdcchCfg *pdcch;
@@ -655,8 +655,8 @@ uint8_t fillSchSib1Cfg(uint8_t mu, uint8_t bandwidth, uint8_t numSlots,SchPdcchC
    pdcch->coresetCfg.durationSymbols = numSymbols;
    
    /* Fill Bitmap for PRBs in coreset */
-   fillCoresetFeqDomAllocMap(((offsetPointA-offset)/6), (numRbs/6), FreqDomainResource);
-   covertFreqDomRsrcMapToIAPIFormat(FreqDomainResource, pdcch->coresetCfg.freqDomainResource);
+   fillCoresetFeqDomAllocMap(((offsetPointA-offset)/6), (numRbs/6), freqDomainResource);
+   memcpy(pdcch->coresetCfg.freqDomainResource, freqDomainResource, FREQ_DOM_RSRC_SIZE);
 
    pdcch->coresetCfg.cceRegMappingType = 1; /* coreset0 is always interleaved */
    pdcch->coresetCfg.regBundleSize = 6;    /* spec-38.211 sec 7.3.2.2 */
@@ -782,9 +782,8 @@ uint8_t SchProcCellCfgReq(Pst *pst, SchCellCfg *schCellCfg)
    offset = coresetIdxTable[coreset0Idx][3];
    fillCoresetFeqDomAllocMap(((cellCb->cellCfg.dlCfgCommon.schFreqInfoDlSib.offsetToPointA - offset)/6), \
                                   (numRbs/6), freqDomainResource);
-   covertFreqDomRsrcMapToIAPIFormat(freqDomainResource, \
-      cellCb->cellCfg.dlCfgCommon.schInitialDlBwp.pdcchCommon.commonSearchSpace.freqDomainRsrc);
-
+   memcpy(cellCb->cellCfg.dlCfgCommon.schInitialDlBwp.pdcchCommon.commonSearchSpace.freqDomainRsrc,\
+               freqDomainResource,FREQ_DOM_RSRC_SIZE);
    /* Fill K0 - K1 table for common cfg*/ 
    BuildK0K1Table(cellCb, &cellCb->k0K1InfoTbl, true, cellCb->cellCfg.dlCfgCommon.schInitialDlBwp.pdschCommon,
                    pdschCfg, DEFAULT_UL_ACK_LIST_COUNT, defaultUlAckTbl);

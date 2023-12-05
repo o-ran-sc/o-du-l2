@@ -287,7 +287,6 @@ void fillSpCellInSchCb(SchSpCellRecfg *destSpCellCfg, SchSpCellCfg *srcSpCellCfg
 uint8_t fillSchUeCbFrmCfgReq(Inst inst, SchUeCb *ueCb, SchUeCfgReq *ueCfg)
 {
    uint8_t   lcIdx, ueLcIdx, idx;
-   uint8_t   freqDomainResource[FREQ_DOM_RSRC_SIZE] = {0};
    SchPdschCfgCmn pdschCfg;
    SchPucchDlDataToUlAck *dlDataToUlAck;
    uint8_t retDL = ROK, retUL = ROK;
@@ -361,11 +360,6 @@ uint8_t fillSchUeCbFrmCfgReq(Inst inst, SchUeCb *ueCb, SchUeCfgReq *ueCfg)
          }
       }
       fillSpCellInSchCb(&ueCb->ueCfg.spCellCfg, &ueCfg->spCellCfg);
-
-      covertFreqDomRsrcMapToIAPIFormat(ueCb->ueCfg.spCellCfg.servCellRecfg.initDlBwp.pdcchCfg.cRSetToAddModList[0].freqDomainRsrc,\
-            freqDomainResource);
-      memset(ueCb->ueCfg.spCellCfg.servCellRecfg.initDlBwp.pdcchCfg.cRSetToAddModList[0].freqDomainRsrc, 0, FREQ_DOM_RSRC_SIZE);
-      memcpy(ueCb->ueCfg.spCellCfg.servCellRecfg.initDlBwp.pdcchCfg.cRSetToAddModList[0].freqDomainRsrc, freqDomainResource, FREQ_DOM_RSRC_SIZE);
 
       ueCb->ueCfg.spCellCfgPres = true;
       dlDataToUlAck = ueCfg->spCellCfg.servCellCfg.initUlBwp.pucchCfg.dlDataToUlAck;
@@ -452,7 +446,6 @@ uint8_t fillSchUeCbFrmCfgReq(Inst inst, SchUeCb *ueCb, SchUeCfgReq *ueCfg)
 uint8_t fillSchUeCbFrmRecfgReq(Inst inst, SchUeCb *ueCb, SchUeRecfgReq *ueRecfg)
 {
    uint8_t   lcIdx, ueLcIdx, idx;
-   uint8_t   freqDomainResource[FREQ_DOM_RSRC_SIZE] = {0};
    SchPdschCfgCmn pdschCfg;
    SchPucchDlDataToUlAck *dlDataToUlAck;
    uint8_t retDL = ROK, retUL = ROK;
@@ -539,11 +532,6 @@ uint8_t fillSchUeCbFrmRecfgReq(Inst inst, SchUeCb *ueCb, SchUeRecfgReq *ueRecfg)
          }
       }
       memcpy(&ueCb->ueCfg.spCellCfg , &ueRecfg->spCellRecfg, sizeof(SchSpCellRecfg));
-
-      covertFreqDomRsrcMapToIAPIFormat(ueCb->ueCfg.spCellCfg.servCellRecfg.initDlBwp.pdcchCfg.cRSetToAddModList[0].freqDomainRsrc,\
-            freqDomainResource);
-      memset(ueCb->ueCfg.spCellCfg.servCellRecfg.initDlBwp.pdcchCfg.cRSetToAddModList[0].freqDomainRsrc, 0, FREQ_DOM_RSRC_SIZE);
-      memcpy(ueCb->ueCfg.spCellCfg.servCellRecfg.initDlBwp.pdcchCfg.cRSetToAddModList[0].freqDomainRsrc, freqDomainResource, FREQ_DOM_RSRC_SIZE);
 
       ueCb->ueCfg.spCellCfgPres = true;
       dlDataToUlAck = ueRecfg->spCellRecfg.servCellRecfg.initUlBwp.pucchCfg.dlDataToUlAck;
