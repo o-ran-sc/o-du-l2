@@ -22,6 +22,30 @@
       },
       "revId": "0b5368c55b825351a4c78fc685a2b7677550fd8f",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2fffdf89_6514a486",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 659,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-12-05T09:10:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "07d3de18_61885189",
+      "range": {
+        "startLine": 659,
+        "startChar": 48,
+        "endLine": 659,
+        "endChar": 66
+      },
+      "revId": "0b5368c55b825351a4c78fc685a2b7677550fd8f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
   ]
 }
