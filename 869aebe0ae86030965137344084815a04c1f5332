@@ -18,6 +18,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "adee12a8_9243f487",
+        "filename": "src/du_app/du_e2ap_mgr.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1886,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-12-05T17:39:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a61e9180_558f9973",
+      "revId": "869aebe0ae86030965137344084815a04c1f5332",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "68838e25_8b4ef978",
@@ -31,6 +49,24 @@
       "writtenOn": "2023-12-05T13:56:23Z",
       "side": 1,
       "message": "pendingSubsModRsp should be memset even if failure occurs",
+      "revId": "869aebe0ae86030965137344084815a04c1f5332",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0adad2ef_98fa0f28",
+        "filename": "src/du_app/du_e2ap_mgr.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1894,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-12-05T17:39:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "68838e25_8b4ef978",
       "revId": "869aebe0ae86030965137344084815a04c1f5332",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -52,6 +88,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "04d91c7b_f418beac",
+        "filename": "src/du_app/du_e2ap_mgr.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 547,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-12-05T17:39:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e66f0d6e_37f279dc",
+      "revId": "869aebe0ae86030965137344084815a04c1f5332",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6cdd1a6b_7caf81b1",
@@ -65,6 +119,24 @@
       "writtenOn": "2023-12-05T13:56:23Z",
       "side": 1,
       "message": "add null check for ricSubsModResponse-\u003eprotocolIEs.list.array[ieIdx] before using it",
+      "revId": "869aebe0ae86030965137344084815a04c1f5332",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "387fc57e_4144da54",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 10380,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-12-05T17:39:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6cdd1a6b_7caf81b1",
       "revId": "869aebe0ae86030965137344084815a04c1f5332",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -92,6 +164,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f34d7e4e_19872811",
+        "filename": "src/du_app/du_e2ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 10483,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-12-05T17:39:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c8a84ba7_7157a5f6",
+      "range": {
+        "startLine": 10483,
+        "startChar": 42,
+        "endLine": 10483,
+        "endChar": 55
+      },
+      "revId": "869aebe0ae86030965137344084815a04c1f5332",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a3a77168_df769f6f",
@@ -105,6 +201,24 @@
       "writtenOn": "2023-12-05T13:56:23Z",
       "side": 1,
       "message": "modify\n\nAlso add function print in all logs to avoid confusion amongst prints",
+      "revId": "869aebe0ae86030965137344084815a04c1f5332",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0885650e_d56cf10f",
+        "filename": "src/ric_stub/ric_e2ap_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 8246,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-12-05T17:39:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a3a77168_df769f6f",
       "revId": "869aebe0ae86030965137344084815a04c1f5332",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
