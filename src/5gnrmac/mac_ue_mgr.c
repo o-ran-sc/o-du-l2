@@ -1215,8 +1215,10 @@ uint8_t fillInitDlBwpPdcchCfg(PdcchConfig macPdcchCfg, SchPdcchConfig *schPdcchC
          macPdcchCfg.searchSpcToAddModList[idx].searchSpaceId;
       schPdcchCfg->searchSpcToAddModList[idx].cRSetId = \
 	 macPdcchCfg.searchSpcToAddModList[idx].cRSetId;
-      schPdcchCfg->searchSpcToAddModList[idx].mSlotPeriodicityAndOffset = \
-	 macPdcchCfg.searchSpcToAddModList[idx].mSlotPeriodicityAndOffset;
+     schPdcchCfg->searchSpcToAddModList[idx].mSlotPeriodicityAndOffset.mSlotPeriodicity = \
+        macPdcchCfg.searchSpcToAddModList[idx].mSlotPeriodicityAndOffset.mSlotPeriodicity;
+     schPdcchCfg->searchSpcToAddModList[idx].mSlotPeriodicityAndOffset.mSlotOffset =
+        macPdcchCfg.searchSpcToAddModList[idx].mSlotPeriodicityAndOffset.mSlotOffset;
       memcpy(&schPdcchCfg->searchSpcToAddModList[idx].mSymbolsWithinSlot,
 	 &macPdcchCfg.searchSpcToAddModList[idx].mSymbolsWithinSlot, \
 	 MONITORING_SYMB_WITHIN_SLOT_SIZE);

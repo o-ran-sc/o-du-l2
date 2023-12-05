@@ -737,7 +737,9 @@ uint8_t fillDefaultInitDlBwp(InitialDlBwp *initDlBwp)
          {
             initDlBwp->pdcchCfg.searchSpcToAddModList[idx].searchSpaceId = PDCCH_SRCH_SPC_TWO_ID;
             initDlBwp->pdcchCfg.searchSpcToAddModList[idx].cRSetId = PDCCH_CTRL_RSRC_SET_ONE_ID;
-            initDlBwp->pdcchCfg.searchSpcToAddModList[idx].mSlotPeriodicityAndOffset = SLOTPERIODICITYANDOFFSET_PR_SL1;
+            initDlBwp->pdcchCfg.searchSpcToAddModList[idx].mSlotPeriodicityAndOffset.mSlotPeriodicity\
+                                                                   = SLOTPERIODICITYANDOFFSET_PR_SL1;
+            initDlBwp->pdcchCfg.searchSpcToAddModList[idx].mSlotPeriodicityAndOffset.mSlotOffset = 0;
             memset(initDlBwp->pdcchCfg.searchSpcToAddModList[idx].mSymbolsWithinSlot, 0, MONITORING_SYMB_WITHIN_SLOT_SIZE);
             initDlBwp->pdcchCfg.searchSpcToAddModList[idx].mSymbolsWithinSlot[idx] = PDCCH_SYMBOL_WITHIN_SLOT;
             initDlBwp->pdcchCfg.searchSpcToAddModList[idx].numCandidatesAggLevel1 = AGGREGATIONLEVEL_N8; 
