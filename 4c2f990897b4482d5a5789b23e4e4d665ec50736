@@ -18,6 +18,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "15e7b856_4ce910b6",
+        "filename": "src/du_app/du_e2ap_mgr.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1885,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-12-06T09:17:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e339ca4f_f5415323",
+      "revId": "4c2f990897b4482d5a5789b23e4e4d665ec50736",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "69f28101_009ff339",
@@ -35,6 +53,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "48458317_cd4af8d3",
+        "filename": "src/du_app/du_e2ap_mgr.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1902,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-12-06T09:17:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "69f28101_009ff339",
+      "revId": "4c2f990897b4482d5a5789b23e4e4d665ec50736",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "46b868c0_4a57b788",
@@ -48,6 +84,24 @@
       "writtenOn": "2023-12-06T08:12:41Z",
       "side": 1,
       "message": "even now for all the failure cases, we are breaking out of while loop however not memsetting pendingSubsModRsp",
+      "revId": "4c2f990897b4482d5a5789b23e4e4d665ec50736",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "34153708_7cd3b8e9",
+        "filename": "src/du_app/du_e2ap_mgr.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1924,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-12-06T09:17:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "46b868c0_4a57b788",
       "revId": "4c2f990897b4482d5a5789b23e4e4d665ec50736",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
