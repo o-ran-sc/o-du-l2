@@ -3,6 +3,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "10535fda_a6d73e5a",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 874,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-12-06T15:52:20Z",
+      "side": 1,
+      "message": "Are we multiplying rbgCount with FREQ_DOM_RSRC_SIZE to calculate total number of PRBs?\nIf so, then lets define separate macro for number_of_PRBs_per_RBG to avoid any confusion.",
+      "revId": "e23f079bfa5fd343e40f82d8d5d69e9edd08c003",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "26090582_031b5e85",
         "filename": "src/5gnrsch/sch_utils.c",
         "patchSetId": 2
@@ -26,6 +43,74 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "80c1d091_51915d45",
+        "filename": "src/5gnrsch/sch_utils.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1846,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-12-06T15:52:20Z",
+      "side": 1,
+      "message": "I think here it should be RBGs since the function is returning total number of RBGs",
+      "revId": "e23f079bfa5fd343e40f82d8d5d69e9edd08c003",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ecf8caa6_cba7dd0a",
+        "filename": "src/5gnrsch/sch_utils.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1868,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-12-06T15:52:20Z",
+      "side": 1,
+      "message": "As per my understanding, we should traverse all 6 indices of freqDomainRsrc to calculate total number of RBG for this coreset.\n\nHowever if we return from here, then for loop will break and we wont be checking freqDomainRsrc[] for indices after the first freqIdx where an RBG is present.\n\nIf my understanding is correct then we can directly return count at line 1871.",
+      "revId": "e23f079bfa5fd343e40f82d8d5d69e9edd08c003",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c3ceac31_8f3046e5",
+        "filename": "src/cm/du_app_mac_inf.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 381,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-12-06T15:52:20Z",
+      "side": 1,
+      "message": "can we rename the enum values as well to slot periodicity",
+      "revId": "e23f079bfa5fd343e40f82d8d5d69e9edd08c003",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "25a8a73e_fd1832c3",
+        "filename": "src/cm/mac_sch_interface.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 309,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-12-06T15:52:20Z",
+      "side": 1,
+      "message": "can we rename ENUM values to SLOT_PERIODICITY_******",
+      "revId": "e23f079bfa5fd343e40f82d8d5d69e9edd08c003",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "46375307_22b3407a",
         "filename": "src/du_app/du_f1ap_msg_hdl.c",
         "patchSetId": 2
@@ -42,6 +127,52 @@
         "startChar": 10,
         "endLine": 3977,
         "endChar": 35
+      },
+      "revId": "e23f079bfa5fd343e40f82d8d5d69e9edd08c003",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7888f26c_0b196628",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 3998,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-12-06T15:52:20Z",
+      "side": 1,
+      "message": "sl20",
+      "range": {
+        "startLine": 3998,
+        "startChar": 44,
+        "endLine": 3998,
+        "endChar": 49
+      },
+      "revId": "e23f079bfa5fd343e40f82d8d5d69e9edd08c003",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1e3b26ee_8f721fed",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 11158,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-12-06T15:52:20Z",
+      "side": 1,
+      "message": "sl20",
+      "range": {
+        "startLine": 11158,
+        "startChar": 57,
+        "endLine": 11158,
+        "endChar": 61
       },
       "revId": "e23f079bfa5fd343e40f82d8d5d69e9edd08c003",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
