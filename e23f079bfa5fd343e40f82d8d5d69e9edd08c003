@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "26090582_031b5e85",
+        "filename": "src/5gnrsch/sch_utils.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1812,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-12-06T09:53:46Z",
+      "side": 1,
+      "message": "please define this outside the loop and initialize it here.",
+      "range": {
+        "startLine": 1812,
+        "startChar": 21,
+        "endLine": 1812,
+        "endChar": 27
+      },
+      "revId": "e23f079bfa5fd343e40f82d8d5d69e9edd08c003",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "46375307_22b3407a",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 3977,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-12-06T09:53:46Z",
+      "side": 1,
+      "message": "indentation.",
+      "range": {
+        "startLine": 3977,
+        "startChar": 10,
+        "endLine": 3977,
+        "endChar": 35
+      },
+      "revId": "e23f079bfa5fd343e40f82d8d5d69e9edd08c003",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
