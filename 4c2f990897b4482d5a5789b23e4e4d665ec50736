@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e339ca4f_f5415323",
+        "filename": "src/du_app/du_e2ap_mgr.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1885,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-12-06T08:12:41Z",
+      "side": 1,
+      "message": "can we avoid using while here?",
+      "revId": "4c2f990897b4482d5a5789b23e4e4d665ec50736",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "69f28101_009ff339",
+        "filename": "src/du_app/du_e2ap_mgr.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1902,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-12-06T08:12:41Z",
+      "side": 1,
+      "message": "if default case is hit it means its a failure case.\nSo after switch check if reportingPeriod is 0, the break out of while",
+      "revId": "4c2f990897b4482d5a5789b23e4e4d665ec50736",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "46b868c0_4a57b788",
+        "filename": "src/du_app/du_e2ap_mgr.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1924,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-12-06T08:12:41Z",
+      "side": 1,
+      "message": "even now for all the failure cases, we are breaking out of while loop however not memsetting pendingSubsModRsp",
+      "revId": "4c2f990897b4482d5a5789b23e4e4d665ec50736",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
