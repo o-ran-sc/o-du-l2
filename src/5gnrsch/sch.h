@@ -79,6 +79,9 @@
 
 #define SCH_TQ_SIZE 10
 
+/*3GPP 38.331,'frequencyDomainResources' :Number of PRBs per Resource Block Group*/
+#define NUM_PRBS_PER_RBG 6 
+
 typedef struct schDlHqProcCb SchDlHqProcCb;
 typedef struct schUlHqEnt SchUlHqEnt;
 typedef struct schRaReq SchRaReq;
