@@ -480,6 +480,7 @@ typedef struct schPdcchInfo
    uint8_t           nrOfPRBPerCce; /*CCE Size*/
    uint8_t           totalCceCount; /*Count of CCE in this CORESET*/
    uint8_t           cqiIndxAggLvlMap[MAX_NUM_CQI_IDX];/*Agg Level to be used for each CQI Index*/
+   uint32_t          *y; /*Coefficient variable to calculate CCE Index as per 3gpp Spec 38.213 Sec 10.1*/
 }SchPdcchInfo;
 
 /**
@@ -682,7 +683,7 @@ typedef struct schCellCb
    SchUeCb       ueCb[MAX_NUM_UE];                  /*!< Pointer to UE contexts of this cell */
    SchPageCb     pageCb;                            /*!< Page Record at Schedular*/
 #ifdef NR_TDD
-   uint8_t       numSlotsInPeriodicity;             /*!< number of slots in configured periodicity and SCS */
+   uint8_t       numSlotsInPeriodiUcity;             /*!< number of slots in configured periodicity and SCS */
    uint32_t      slotFrmtBitMap;                    /*!< 2 bits must be read together to determine D/U/S slots. 00-D, 01-U, 10-S */
    SchSymbolConfig       slotCfg[MAX_TDD_PERIODICITY_SLOTS][MAX_SYMB_PER_SLOT];
 #endif

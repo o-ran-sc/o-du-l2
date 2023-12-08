@@ -2005,6 +2005,77 @@ void fillCqiAggLvlMapping(SchPdcchInfo *pdcchInfo)
    }
 }
 
+/*
+ * @brief Function to calculate Value Y 
+ *
+ *   Function: schUpdValY
+ *
+ *   Calculates value of YpKp as per [10.1,TS38.213].
+ *   A0 is for first CS, A1 for second and A2 is for third CS
+ *
+ *   @params[in]: coresetId and Previous Y
+ * */
+uint32_t schCalY(uint8_t csId, uint32_t prevY)
+{
+   uint32_t A0 = 39827, A1 = 39829, A2 = 39839;
+   uint32_t D = 65537;
+
+   switch(csId % 3)
+   {
+      case 0:
+        {
+           return((A0 * prevY) % D);                 
+        } 
+      case 1:
+        {
+           return((A1 * prevY) % D);                 
+        } 
+      case 2:
+        {
+           return((A2 * prevY) % D);                 
+        }
+      default:
+        {
+           DU_LOG("\nERROR  --> SCH: Issue in calculating value of Y");
+           return(0);
+        }
+   }
+   return 0;
+}
+
+/*
+ * @brief Function to calculate the value Y used for CCE Index formula
+ *
+ *   Function: schUpdValY
+ *
+ *   As per Spec 38.213, Sec 10.1 Formula for CCE Index contains a coefficient
+ *   value called 'Y' and storing the same in the ueCb which will be later used
+ *   in pdcch allocation
+ *
+ * @params[in] : SchUeCb
+ *
+ * */
+void schUpdValY(SchUeCb *ueCb, SchPdcchInfo *pdcchInfo)
+{
+   uint8_t numSlotsPerRadioFrame = 0, slotIdx = 0;
+
+   numSlotsPerRadioFrame = (1 << ueCb->cellCb->numerology) * 10;
+
+   SCH_ALLOC(pdcchInfo->y, (sizeof(uint32_t) * numSlotsPerRadioFrame));
+
+   pdcchInfo->cRSetRef = &ueCb->ueCfg.spCellCfg.servCellRecfg.initDlBwp.pdcchCfg.cRSetToAddModList[0];
+   for(slotIdx= 0 ; slotIdx < numSlotsPerRadioFrame; slotIdx++)
+   {
+      if(slotIdx == 0)
+      {
+         pdcchInfo->y[slotIdx] = schCalY(pdcchInfo->cRSetRef->cRSetId, ueCb->crnti);
+      }
+      else
+      {
+         pdcchInfo->y[slotIdx] = schCalY(pdcchInfo->cRSetRef->cRSetId, pdcchInfo->y[slotIdx - 1]);
+      }
+   }
+}
 /**********************************************************************
          End of file
 **********************************************************************/
