@@ -18,6 +18,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "00a1914c_8d0a1aab",
+        "filename": "src/5gnrsch/sch_utils.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 793,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-12-08T13:33:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7b771a4a_96e4556a",
+      "revId": "1b086cb5a1f8ebf4f4c45fe060ba1184f73fdc64",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f879e4f6_89f5cc8b",
@@ -35,6 +53,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ee62add1_0d22b152",
+        "filename": "src/5gnrsch/sch_utils.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1905,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-12-08T13:33:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f879e4f6_89f5cc8b",
+      "revId": "1b086cb5a1f8ebf4f4c45fe060ba1184f73fdc64",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cb4df7c2_ce25ad8f",
@@ -48,6 +84,30 @@
       "writtenOn": "2023-12-08T12:28:52Z",
       "side": 1,
       "message": "Need to change the description",
+      "range": {
+        "startLine": 1947,
+        "startChar": 4,
+        "endLine": 1947,
+        "endChar": 9
+      },
+      "revId": "1b086cb5a1f8ebf4f4c45fe060ba1184f73fdc64",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2104d23b_dd9a60b1",
+        "filename": "src/5gnrsch/sch_utils.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1947,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-12-08T13:33:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cb4df7c2_ce25ad8f",
       "range": {
         "startLine": 1947,
         "startChar": 4,
@@ -81,6 +141,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "40ceae50_da7b623c",
+        "filename": "src/5gnrsch/sch_utils.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1983,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-12-08T13:33:51Z",
+      "side": 1,
+      "message": "theres a typo of MAX_NUM_CQI_IDX ..it shld be 16. COrrected that in sch.h",
+      "parentUuid": "3644237f_a3c124d3",
+      "range": {
+        "startLine": 1983,
+        "startChar": 19,
+        "endLine": 1983,
+        "endChar": 43
+      },
+      "revId": "1b086cb5a1f8ebf4f4c45fe060ba1184f73fdc64",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "30648971_5dcf857b",
@@ -98,6 +182,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d09a2668_5113f3cf",
+        "filename": "src/5gnrsch/sch_utils.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1989,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-12-08T13:33:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "30648971_5dcf857b",
+      "revId": "1b086cb5a1f8ebf4f4c45fe060ba1184f73fdc64",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "41170e1e_93cab5c8",
@@ -111,6 +213,24 @@
       "writtenOn": "2023-12-08T12:28:52Z",
       "side": 1,
       "message": "If no aggregation level could accommodate pddcchBits, then we assign aggLevelIdx 4 to it? Is my understanding correct? Can we add a small comment explaining this?",
+      "revId": "1b086cb5a1f8ebf4f4c45fe060ba1184f73fdc64",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "607e066f_c3e515d2",
+        "filename": "src/5gnrsch/sch_utils.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2000,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-12-08T13:33:51Z",
+      "side": 1,
+      "message": "yes u are correct. Added comment",
+      "parentUuid": "41170e1e_93cab5c8",
       "revId": "1b086cb5a1f8ebf4f4c45fe060ba1184f73fdc64",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
