@@ -138,6 +138,7 @@ void schDeleteFromPageInfoList(CmLListCp *list, CmLList *node);
 
 uint8_t countRBGFrmCoresetFreqRsrc(uint8_t *freqDomainRsrc);
 uint8_t findSsStartSymbol(uint8_t *mSymbolsWithinSlot);
+void fillCqiAggLvlMapping(SchPdcchInfo *pdcchInfo);
 #if 0
 /*Will be enabled for debugging*/
 void printLcLL(CmLListCp *lcLL);
