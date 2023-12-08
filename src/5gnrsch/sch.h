@@ -82,6 +82,9 @@
 /*3GPP 38.331,'frequencyDomainResources' :Number of PRBs per Resource Block Group*/
 #define NUM_PRBS_PER_RBG 6 
 
+/*3GPP 38.214 Table 5.2.2.1-2*/
+#define MAX_NUM_CQI_IDX 1
+
 typedef struct schDlHqProcCb SchDlHqProcCb;
 typedef struct schUlHqEnt SchUlHqEnt;
 typedef struct schRaReq SchRaReq;
@@ -465,6 +468,17 @@ typedef struct  schDrxUeCb
    CmLList   *shortCycleTmrExpiryNodeInfo; /* Node present in short cycle exp list*/
 }SchDrxUeCb;
 #endif
+
+typedef struct schPdcchInfo
+{
+   SchControlRsrcSet *cRSetRef; /*Coreset Cfg reference from SchUeCfgCb*/
+   SchSearchSpace    *ssRef;    /*SearchSpace Cfg reference from SchUeCfgCb*/
+   uint16_t          totalPrbs; /*Total PRBs configured for this CORESET*/
+   uint8_t           nrOfPRBPerCce; /*CCE Size*/
+   uint8_t           totalCceCount; /*Count of CCE in this CORESET*/
+   uint8_t           cqiIndxAggLvlMap[MAX_NUM_CQI_IDX];/*Agg Level to be used for each CQI Index*/
+}SchPdcchInfo;
+
 /**
  * @brief
  * UE control block
@@ -497,6 +511,7 @@ typedef struct schUeCb
    SchK0K1TimingInfoTbl k0K1InfoTbl;
    bool                 k2TblPrsnt;
    SchK2TimingInfoTbl   k2InfoTbl;
+   SchPdcchInfo         pdcchInfo[MAX_NUM_CRSET];
 }SchUeCb;
 
 /**
