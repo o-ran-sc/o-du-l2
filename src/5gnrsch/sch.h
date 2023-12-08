@@ -480,6 +480,7 @@ typedef struct schPdcchInfo
    uint8_t           nrOfPRBPerCce; /*CCE Size*/
    uint8_t           totalCceCount; /*Count of CCE in this CORESET*/
    uint8_t           cqiIndxAggLvlMap[MAX_NUM_CQI_IDX];/*Agg Level to be used for each CQI Index*/
+   uint32_t          *y; /*Coefficient variable to calculate CCE Index as per 3gpp Spec 38.213 Sec 10.1*/
 }SchPdcchInfo;
 
 /**
