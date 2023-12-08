@@ -766,6 +766,36 @@ uint8_t pucchResourceSet[MAX_PUCCH_RES_SET_IDX][4] = {
 { 1,   0, 14,  0 }, /* index 15 */
 };
 
+/*CQI Table From Spec 38.214 Table 5.2.2.1-2
+ * {Modulation Scheme, CodeRate, Efficiency(bits per symbol)}
+ * Modulation Scheme is numbered based on bit rate as follows
+ * QPSK = 2, 16QAM = 4, 64QAM = 6
+ * */
+unsigned long cqiTable1[MAX_NUM_CQI_IDX][3] = {
+{ 0, 0, 0},        /*index 0*/
+{ 2, 78, 0.1523},  /*index 1*/
+{ 2, 120, 0.2344}, /*index 2*/
+{ 2, 193, 0.3770}, /*index 3*/
+{ 2, 308, 0.6016}, /*index 4*/
+{ 2, 449, 0.8770}, /*index 5*/
+{ 2, 602, 1.1758}, /*index 6*/
+{ 4, 378, 1.4766}, /*index 7*/
+{ 4, 490, 1.9141}, /*index 8*/
+{ 4, 616, 2.4063}, /*index 9*/
+{ 6, 466, 2.7305}, /*index 10*/
+{ 6, 567, 3.3223}, /*index 11*/
+{ 6, 666, 3.9023}, /*index 12*/
+{ 6, 772, 4.5234}, /*index 13*/
+{ 6, 873, 5.1152}, /*index 14*/
+{ 6, 948, 5.5547}, /*index 15*/
+};
+
+/*As per Spec Table 7.3.2.1-1, using number of CCE per AggLevel 
+ * Num of RE for Agg Level = numCCEPerAggLevel * (6 REG) * (12 Subcarriers)
+ */
+uint16_t totalRE_PerAggLevel[5]= {72, 144, 288, 576, 1152};
+
+
 /* Minimum Msg3 scheduling time should be calculated based on N1+N2+NTAmax+0.5
  * ms formula.
  * Refer spec 38.213 section 8.3.
@@ -1869,6 +1899,105 @@ uint8_t countRBGFrmCoresetFreqRsrc(uint8_t *freqDomainRsrc)
       }
    }
    return count;
+}
+
+/*
+ * @brief Function to count number of RBG from Coreset's FreqDomainResource 
+ *
+ * @details
+ *
+ *   Function: calcUeDciSizeFormat1_0
+ *   Calculates the totalBit Size for sending this DCI format 1_0 
+ *   Spec Reference: 38.212, Format 1_0 scrambled using C_RNTI
+ *
+ * @Params[in] : CoresetSize (for calculating Frequency domain
+ *          resource assignment)
+ **/
+
+uint16_t calcUeDciSizeFormat1_0(uint16_t coresetSize)
+{
+   uint16_t dciSizeInBits = 0;
+
+   /* Size(in bits) of each field in DCI format 1_0 */
+   uint8_t dciFormatIdSize    = 1;
+   uint8_t freqDomResAssignSize = 0;
+   uint8_t timeDomResAssignSize = 4;
+   uint8_t VRB2PRBMapSize       = 1;
+   uint8_t modNCodSchemeSize    = 5;
+   uint8_t ndiSize              = 1;
+   uint8_t redundancyVerSize    = 2;
+   uint8_t harqProcessNumSize   = 4;
+   uint8_t dlAssignmentIdxSize  = 2;
+   uint8_t pucchTpcSize         = 2;
+   uint8_t pucchResoIndSize     = 3;
+   uint8_t harqFeedbackIndSize  = 3;
+
+   freqDomResAssignSize = ceil(log2(coresetSize * (coresetSize + 1) / 2));
+
+   dciSizeInBits = (dciFormatIdSize + freqDomResAssignSize\
+         + timeDomResAssignSize + VRB2PRBMapSize + modNCodSchemeSize\
+         + ndiSize + redundancyVerSize + harqProcessNumSize + dlAssignmentIdxSize\
+         + pucchTpcSize + pucchResoIndSize + harqFeedbackIndSize);
+
+   return(dciSizeInBits);
+}
+
+/*
+ * @brief Function to count number of RBG from Coreset's FreqDomainResource 
+ *
+ * @details
+ *
+ *   Function: fillCqiAggLvlMapping
+ *
+ *   Fills the CQI index and Agg level mapping based on 3gpp 38.214,Table 5.2.2.1-2
+ *   The mapping will be later during PDCCH allocation
+ *   [Step 1]: Calculate the DciSize in bits. This will be UE-specific as it depends
+ *             on CORESET.size
+ *   [Step 2]: Starting from CqiIdx = 0, calculate the efficientPdcchBits which
+ *   can be sent for that CQI and check if the availBits for each agg level is
+ *   sufficient for that pdcch required bits.
+ *        > If the bits required by PDCCH can be contained with Agg Level's
+ *        availBits then that is assigned.
+ *  Note:: Good channel, CQI (high value) then Aggrevation level is assigned
+ *  less(less number of CCE is sufficient) and vice versa for low CQI
+ *
+ *  @param[in]: PDCCH Info inside ueCb
+ *
+ *       [return]: void
+ **/
+
+void fillCqiAggLvlMapping(SchPdcchInfo *pdcchInfo)
+{
+   uint8_t cqiIdx = 0, aggLvlIdx =0;
+   uint16_t numOfBitsAvailForAggLevel = 0, dciSize = 0, pdcchBits = 0;
+
+   /*[Step 1]:*/
+   dciSize = calcUeDciSizeFormat1_0(pdcchInfo->totalPrbs);
+
+   /* Initializing the map array*/
+   memset(pdcchInfo->cqiIndxAggLvlMap, 0, MAX_NUM_CQI_IDX);
+
+   /*Note: For CqiIdx = 0, aggLevel is marked as 0 which means that Channel
+    * Quality isnot suitable for any transmission*/
+   for(cqiIdx = 1; cqiIdx < MAX_NUM_CQI_IDX; cqiIdx++)
+   {
+      /*CQI table number 1 is used Spec 38.214 Table 5.2.2.1-2 by default.
+       *TODO: cqi-table param in CSI-RepotConfig(3gpp 38.331) will report
+       * which table to be used*/
+      pdcchBits = dciSize / cqiTable1[cqiIdx][2];
+      for(aggLvlIdx = 0; (aggLvlIdx < 5) && (pdcchBits != 0); aggLvlIdx++)
+      {
+         numOfBitsAvailForAggLevel = (totalRE_PerAggLevel[aggLvlIdx] * cqiTable1[cqiIdx][0]);
+         /*Check if AggLevel has sufficient bits available for pdcchBits*/
+         if(pdcchBits < numOfBitsAvailForAggLevel)
+         {
+            pdcchInfo->cqiIndxAggLvlMap[cqiIdx] = 1 << aggLvlIdx;
+            break;
+         }
+      }
+      if(!pdcchInfo->cqiIndxAggLvlMap[cqiIdx])
+         pdcchInfo->cqiIndxAggLvlMap[cqiIdx] = 16;
+   }
 }
 
 /**********************************************************************
