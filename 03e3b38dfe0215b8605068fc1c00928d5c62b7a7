@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "12209d80_24b61a0f",
+        "filename": "src/5gnrsch/sch.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 483,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-12-09T12:03:03Z",
+      "side": 1,
+      "message": "can\u0027t we use any other name for this variable?",
+      "range": {
+        "startLine": 483,
+        "startChar": 23,
+        "endLine": 483,
+        "endChar": 24
+      },
+      "revId": "03e3b38dfe0215b8605068fc1c00928d5c62b7a7",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dbe8a106_b0fe8210",
+        "filename": "src/5gnrsch/sch.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 686,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-12-09T12:03:03Z",
+      "side": 1,
+      "message": "is it Periodicity or PeriodiUcity?",
+      "range": {
+        "startLine": 686,
+        "startChar": 17,
+        "endLine": 686,
+        "endChar": 39
+      },
+      "revId": "03e3b38dfe0215b8605068fc1c00928d5c62b7a7",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ad5bfc85_071aefe0",
+        "filename": "src/5gnrsch/sch_utils.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2014,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-12-09T12:03:03Z",
+      "side": 1,
+      "message": "second CS",
+      "range": {
+        "startLine": 2014,
+        "startChar": 32,
+        "endLine": 2014,
+        "endChar": 38
+      },
+      "revId": "03e3b38dfe0215b8605068fc1c00928d5c62b7a7",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
