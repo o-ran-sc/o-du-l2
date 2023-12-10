@@ -72,6 +72,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8d309a48_e7673fe5",
+        "filename": "src/5gnrsch/sch.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 483,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-12-10T19:06:19Z",
+      "side": 1,
+      "message": "THis is my understanding after reading spec that its kind of coeff, Technically, a coefficient cant be chaging but y changes for each UE. THus naming it Y is chosed and its widely accepted among other DU code as well",
+      "parentUuid": "e7c4f091_5ae98a8e",
+      "range": {
+        "startLine": 483,
+        "startChar": 23,
+        "endLine": 483,
+        "endChar": 24
+      },
+      "revId": "03e3b38dfe0215b8605068fc1c00928d5c62b7a7",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "dbe8a106_b0fe8210",
