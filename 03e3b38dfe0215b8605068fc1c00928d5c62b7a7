@@ -48,6 +48,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e7c4f091_5ae98a8e",
+        "filename": "src/5gnrsch/sch.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 483,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-12-10T18:53:27Z",
+      "side": 1,
+      "message": "no because spec refer to this as Y only and it is purely mathematical term so thus cant use any other name",
+      "parentUuid": "12209d80_24b61a0f",
+      "range": {
+        "startLine": 483,
+        "startChar": 23,
+        "endLine": 483,
+        "endChar": 24
+      },
+      "revId": "03e3b38dfe0215b8605068fc1c00928d5c62b7a7",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "dbe8a106_b0fe8210",
@@ -71,6 +95,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "40cb5e67_c5f970a6",
+        "filename": "src/5gnrsch/sch.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 686,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-12-10T18:53:27Z",
+      "side": 1,
+      "message": "Sorry it was a typo.. thats why job builder is giving -1",
+      "parentUuid": "dbe8a106_b0fe8210",
+      "range": {
+        "startLine": 686,
+        "startChar": 17,
+        "endLine": 686,
+        "endChar": 39
+      },
+      "revId": "03e3b38dfe0215b8605068fc1c00928d5c62b7a7",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ad5bfc85_071aefe0",
@@ -84,6 +132,30 @@
       "writtenOn": "2023-12-09T12:03:03Z",
       "side": 1,
       "message": "second CS",
+      "range": {
+        "startLine": 2014,
+        "startChar": 32,
+        "endLine": 2014,
+        "endChar": 38
+      },
+      "revId": "03e3b38dfe0215b8605068fc1c00928d5c62b7a7",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "31fcf2b0_ee9c4fc7",
+        "filename": "src/5gnrsch/sch_utils.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2014,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-12-10T18:53:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ad5bfc85_071aefe0",
       "range": {
         "startLine": 2014,
         "startChar": 32,
