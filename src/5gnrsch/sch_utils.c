@@ -771,7 +771,7 @@ uint8_t pucchResourceSet[MAX_PUCCH_RES_SET_IDX][4] = {
  * Modulation Scheme is numbered based on bit rate as follows
  * QPSK = 2, 16QAM = 4, 64QAM = 6
  * */
-unsigned long cqiTable1[MAX_NUM_CQI_IDX][3] = {
+float cqiTable1[MAX_NUM_CQI_IDX][3] = {
 { 0, 0, 0},        /*index 0*/
 { 2, 78, 0.1523},  /*index 1*/
 { 2, 120, 0.2344}, /*index 2*/
@@ -1271,6 +1271,7 @@ void schInitDlSlot(SchDlSlotInfo *schDlSlotInfo)
       freeBlock->endPrb = MAX_NUM_RB-1;
       addNodeToLList(&schDlSlotInfo->prbAlloc.freePrbBlockList, freeBlock, NULL);
    }
+   memset(schDlSlotInfo->usedRbgForPdcch, 0, (sizeof(uint32_t) * FREQ_DOM_RSRC_SIZE));
 }
 
 /**
@@ -1985,7 +1986,7 @@ void fillCqiAggLvlMapping(SchPdcchInfo *pdcchInfo)
       /*CQI table number 1 is used Spec 38.214 Table 5.2.2.1-2 by default.
        *TODO: cqi-table param in CSI-RepotConfig(3gpp 38.331) will report
        * which table to be used*/
-      pdcchBits = dciSize / cqiTable1[cqiIdx][2];
+      pdcchBits = ceil(dciSize / cqiTable1[cqiIdx][2]);
       for(aggLvlIdx = 0; (aggLvlIdx < MAX_NUM_AGG_LVL) && (pdcchBits != 0); aggLvlIdx++)
       {
          numOfBitsAvailForAggLevel = (totalRE_PerAggLevel[aggLvlIdx] * cqiTable1[cqiIdx][0]);
@@ -2053,13 +2054,19 @@ uint32_t schCalY(uint8_t csId, uint32_t prevY)
  *   in pdcch allocation
  *
  * @params[in] : SchUeCb, PdcchInfo
+ *    [return] : uint8_t ROK, RFAILED : Memory allocation status
  *
  * */
-void schUpdValY(SchUeCb *ueCb, SchPdcchInfo *pdcchInfo)
+uint8_t schUpdValY(SchUeCb *ueCb, SchPdcchInfo *pdcchInfo)
 {
    uint8_t slotIdx = 0;
 
    SCH_ALLOC(pdcchInfo->y, (sizeof(uint32_t) *  ueCb->cellCb->numSlots));
+   if(pdcchInfo->y == NULLP)
+   {
+      DU_LOG("\nERROR  --> SCH: Memory Allocation of Y failed");
+      return RFAILED;
+   }
 
    for(slotIdx= 0 ; slotIdx < ueCb->cellCb->numSlots; slotIdx++)
    {
