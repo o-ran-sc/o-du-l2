@@ -326,6 +326,9 @@ typedef struct schDlSlotInfo
    SsbInfo      ssbInfo[MAX_SSB_IDX];     /*!< SSB info */
    bool         sib1Pres;                 /*!< Flag to determine if SIB1 is present in this slot */
    uint8_t      pdcchUe;                  /*!< UE for which PDCCH is scheduled in this slot */
+   /*TODO: will remove the above parameter which is stopping multiUE allocation
+    * for PDCCH*/
+   uint32_t     usedRbgForPdcch[FREQ_DOM_RSRC_SIZE]; /*Bitmap for used RBG during PDCCH allocation in this slot.*/
    uint8_t      pdschUe;                  /*!< UE for which PDSCH is scheduled in this slot */
    RarAlloc     *rarAlloc[MAX_NUM_UE];    /*!< RAR allocation per UE*/
    DciInfo      *ulGrant;
@@ -803,6 +806,7 @@ LcInfo* handleLcLList(CmLListCp *lcLL, uint8_t lcId, ActionTypeLL action);
 void prbAllocUsingRRMPolicy(CmLListCp *lcLL, bool dedicatedPRB, uint16_t mcsIdx,uint8_t numSymbols,\
                       uint16_t *sharedPRB, uint16_t *reservedPRB, bool *isTxPayloadLenAdded, bool *srRcvd);
 void updateBsrAndLcList(CmLListCp *lcLL, BsrInfo *bsrInfo, uint8_t status);
+void fillUeCoresetAndSsInfo(SchUeCb *ue);
 
 /*Paging Functions*/
 void schProcPagingCfg(SchCellCb *cell);
