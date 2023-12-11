@@ -2323,6 +2323,77 @@ bool schGetMsg3K2(SchCellCb *cell, SchUlHqProcCb* msg3HqProc, uint16_t dlTime, S
    return k2Found;
 }
 
+/*
+ *  * @brief : This Function fills the Coreset and SS info based on PDCCH Cfg received for a UE
+ *
+ *     Function : fillUeCoresetAndSsInfo
+ *
+ * For a Coreset, capture the following details which will be used during pdcch allocation
+ *   [Step 1]: Count number of RBG and calculate TotalPRBs which can be used 
+ *   [Step 2]: Get the reference pointer for Coreset and Its SearchSpace.
+ *   [Step 3]: A CCE will have 6 RBs in TOTAL. If duration increases, CCE will
+ *             occupy less number of PRBs(1RB x 1 OFDM Symbol). Eg. If duration = 2, then
+ *             instead of 6 PRBs, CCE will only occupy 3 PRBs and 2 OFDM symbols.
+ *   [Step 4]: Based on CoresetSize, fill AggLvl-CQI mapping by calculating the dciSize.
+ *   [Step 5]: Calculate Y value for this coreset and UE
+ *
+ *   @Params[in]: UeCb,
+ *  [return]: ROK, RFAILED : Memory allocation failure.
+ **/
+uint8_t fillUeCoresetAndSsInfo(SchUeCb *ue)
+{
+   uint8_t  cRSetIdx = 0,ssIdx = 0; 
+   uint16_t rbgCount = 0;
+   SchPdcchConfig *pdcchCfg = NULLP;
+
+   pdcchCfg =  &ue->ueCfg.spCellCfg.servCellRecfg.initDlBwp.pdcchCfg;
+   if(pdcchCfg == NULLP)
+   {
+     DU_LOG("\nERROR  --> SCH: PDCCH Cfg is not received thus skip filling of Coreset & SS info");
+     return RFAILED;
+   }
+   for(cRSetIdx = 0; cRSetIdx < pdcchCfg->numCRsetToAddMod; cRSetIdx++ )
+   {
+      /*[Step 1]: *//*Size of coreset: Number of PRBs in a coreset*/
+      rbgCount = countRBGFrmCoresetFreqRsrc(pdcchCfg->cRSetToAddModList[cRSetIdx].freqDomainRsrc);
+      if(rbgCount)
+      {
+         ue->pdcchInfo[cRSetIdx].totalPrbs = ((rbgCount) * NUM_PRBS_PER_RBG);
+      }
+      else
+      {
+         DU_LOG("\nERROR  -->  SCH : CORESETSize is zero in fillCoresetAndSsConfg");
+         continue;
+      }
+      /*[Step 2]:*/
+      ue->pdcchInfo[cRSetIdx].cRSetRef = &pdcchCfg->cRSetToAddModList[cRSetIdx];
+      for(ssIdx = 0; ssIdx < pdcchCfg->numSearchSpcToAddMod; ssIdx++)
+      {
+         if(pdcchCfg->searchSpcToAddModList[ssIdx].cRSetId == pdcchCfg->cRSetToAddModList[cRSetIdx].cRSetId)
+         {
+            ue->pdcchInfo[cRSetIdx].ssRef = &pdcchCfg->searchSpcToAddModList[ssIdx];
+            break;
+         }
+      }
+
+      /*[Step 3]:*/
+      /*nrOfPRBPerCce is Number of PRBs occupied by a CCE based on Duration*/
+      ue->pdcchInfo[cRSetIdx].nrOfPRBPerCce = NUM_PRBS_PER_RBG/pdcchCfg->cRSetToAddModList[cRSetIdx].duration;
+      ue->pdcchInfo[cRSetIdx].totalCceCount = rbgCount * pdcchCfg->cRSetToAddModList[cRSetIdx].duration;
+
+      /*[Step 4]:*/
+      fillCqiAggLvlMapping(&ue->pdcchInfo[cRSetIdx]);
+
+      /*[Step 5]:*/
+      if(RFAILED == schUpdValY(ue, &ue->pdcchInfo[cRSetIdx]))
+      {
+         return RFAILED;
+      }
+   }
+   return ROK;
+}
+
+
 /**********************************************************************
   End of file
  **********************************************************************/
