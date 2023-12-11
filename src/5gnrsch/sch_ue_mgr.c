@@ -793,7 +793,12 @@ uint8_t SchAddUeConfigReq(Pst *pst, SchUeCfgReq *ueCfg)
       cmLListInit(&ueCb->hqUlmap[idx]->hqList);
    }
    ret = fillSchUeCbFrmCfgReq(inst, ueCb, ueCfg);
-
+   
+   if(fillUeCoresetAndSsInfo(ueCb) == RFAILED)
+   {
+       DU_LOG("\nERROR  -->  SCH : Memory Allocation Failed");
+       return RFAILED;
+   }
    if(ret == ROK)
    {
       /* If UE has initiated RACH and then UE context is created, it means UE is
@@ -1152,7 +1157,7 @@ uint8_t SchModUeConfigReq(Pst *pst, SchUeRecfgReq *ueRecfg)
    SchUeRecfgRsp  recfgRsp;
    Inst         inst = pst->dstInst - SCH_INST_START;
    memset(&recfgRsp, 0, sizeof(SchUeRecfgRsp));
-  
+
    if(!ueRecfg)
    {
       DU_LOG("\nERROR  -->  SCH : Modifying Ue Config request failed at SchModUeConfigReq()");
@@ -1170,7 +1175,7 @@ uint8_t SchModUeConfigReq(Pst *pst, SchUeRecfgReq *ueRecfg)
    /* Search if UE already configured */
    GET_UE_ID(ueRecfg->crnti, ueId);
    ueCb = &cellCb->ueCb[ueId -1];
-   
+
    if(!ueCb)
    {
       DU_LOG("\nERROR  -->  SCH : SchUeCb not found at SchModUeConfigReq() ");
@@ -1181,6 +1186,11 @@ uint8_t SchModUeConfigReq(Pst *pst, SchUeRecfgReq *ueRecfg)
    {
       /* Found the UeCb to Reconfig */
       ret = fillSchUeCbFrmRecfgReq(inst, ueCb, ueRecfg);
+      if(fillUeCoresetAndSsInfo(ueCb) == RFAILED)
+      {
+         DU_LOG("\nERROR  -->  SCH : Memory Allocation Failed");
+         return RFAILED;
+      }
       if(ret == ROK)
       {
          ueCb->cellCb = cellCb;
@@ -1292,7 +1302,7 @@ void deleteSchPdschServCellCfg(SchPdschServCellCfg *pdschServCellCfg)
 * ****************************************************************/
 void deleteSchUeCb(SchUeCb *ueCb) 
 {
-   uint8_t timeDomRsrcIdx = 0, ueLcIdx = 0, idx =0;
+   uint8_t timeDomRsrcIdx = 0, ueLcIdx = 0, slotIdx =0, cRSetIdx = 0;
    SchPucchCfg *pucchCfg = NULLP;
    SchPdschConfig *pdschCfg = NULLP;
 
@@ -1300,12 +1310,12 @@ void deleteSchUeCb(SchUeCb *ueCb)
    {
       if(ueCb->hqDlmap)
       {
-         for (idx = 0; idx<ueCb->cellCb->numSlots; idx++)
+         for (slotIdx = 0; slotIdx<ueCb->cellCb->numSlots; slotIdx++)
          {
-            if(ueCb->hqDlmap[idx])
+            if(ueCb->hqDlmap[slotIdx])
             {
-               cmLListDeleteLList(&ueCb->hqDlmap[idx]->hqList);
-               SCH_FREE(ueCb->hqDlmap[idx], sizeof(SchHqDlMap));
+               cmLListDeleteLList(&ueCb->hqDlmap[slotIdx]->hqList);
+               SCH_FREE(ueCb->hqDlmap[slotIdx], sizeof(SchHqDlMap));
             }
          }
          SCH_FREE(ueCb->hqDlmap, sizeof(SchHqDlMap*)*(ueCb->cellCb->numSlots));
@@ -1313,12 +1323,12 @@ void deleteSchUeCb(SchUeCb *ueCb)
 
       if(ueCb->hqUlmap)
       {
-         for (idx = 0; idx<ueCb->cellCb->numSlots; idx++)
+         for (slotIdx = 0; slotIdx<ueCb->cellCb->numSlots; slotIdx++)
          {
-            if(ueCb->hqUlmap[idx])
+            if(ueCb->hqUlmap[slotIdx])
             {
-               cmLListDeleteLList(&ueCb->hqUlmap[idx]->hqList);
-               SCH_FREE(ueCb->hqUlmap[idx], sizeof(SchHqUlMap));
+               cmLListDeleteLList(&ueCb->hqUlmap[slotIdx]->hqList);
+               SCH_FREE(ueCb->hqUlmap[slotIdx], sizeof(SchHqUlMap));
             }
          }
          SCH_FREE(ueCb->hqUlmap, sizeof(SchHqUlMap*)*(ueCb->cellCb->numSlots));
@@ -1373,6 +1383,11 @@ void deleteSchUeCb(SchUeCb *ueCb)
          ueCb->ueDrxInfoPres = false;
       }
 #endif
+ 
+      for(cRSetIdx=0; cRSetIdx < MAX_NUM_CRSET; cRSetIdx++)
+      {
+         SCH_FREE(ueCb->pdcchInfo[cRSetIdx].y, (sizeof(uint32_t) * ueCb->cellCb->numSlots));
+      }
       memset(ueCb, 0, sizeof(SchUeCb));
    }
 }
