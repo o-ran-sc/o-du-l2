@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "29dbc507_4ddc2705",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 2353,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-12-11T16:27:57Z",
+      "side": 1,
+      "message": "return RFAILED",
+      "revId": "83e594501ba971b301535c65634dba3f4fea4173",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
