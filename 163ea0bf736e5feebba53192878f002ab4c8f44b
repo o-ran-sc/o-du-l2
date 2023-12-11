@@ -1,0 +1,158 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "603ae785_b2410c55",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2327,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-12-11T11:58:08Z",
+      "side": 1,
+      "message": "coreset",
+      "range": {
+        "startLine": 2327,
+        "startChar": 39,
+        "endLine": 2327,
+        "endChar": 46
+      },
+      "revId": "163ea0bf736e5feebba53192878f002ab4c8f44b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f36ace48_05e88bf4",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2343,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-12-11T11:58:08Z",
+      "side": 1,
+      "message": "please check and change the return type based on memory allocation failure.",
+      "revId": "163ea0bf736e5feebba53192878f002ab4c8f44b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "73ff0ab9_71962959",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2345,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-12-11T11:58:08Z",
+      "side": 1,
+      "message": "crsetIdx",
+      "range": {
+        "startLine": 2345,
+        "startChar": 12,
+        "endLine": 2345,
+        "endChar": 20
+      },
+      "revId": "163ea0bf736e5feebba53192878f002ab4c8f44b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9cd81322_f740eec5",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2388,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-12-11T11:58:08Z",
+      "side": 1,
+      "message": "in this function memory allocation is happening so we should have a check for that.",
+      "revId": "163ea0bf736e5feebba53192878f002ab4c8f44b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "56445d88_edcf415b",
+        "filename": "src/5gnrsch/sch_ue_mgr.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 797,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-12-11T11:58:08Z",
+      "side": 1,
+      "message": "i think this should be added inside ret \u003d\u003d ROK.\nif changing the return type of fillUeCoresetAndSsInfo function\nthen check the return type here as well before sending a response to MAC",
+      "revId": "163ea0bf736e5feebba53192878f002ab4c8f44b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "62232d99_1c607ee8",
+        "filename": "src/5gnrsch/sch_ue_mgr.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1185,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-12-11T11:58:08Z",
+      "side": 1,
+      "message": "i think this should be added inside ret \u003d\u003d ROK.\nif changing the return type fillUeCoresetAndSsInfo of this function \nthen check the return type here as well before sending a response to MAC",
+      "revId": "163ea0bf736e5feebba53192878f002ab4c8f44b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1a7f83e6_d009dff1",
+        "filename": "src/5gnrsch/sch_utils.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2059,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-12-11T11:58:08Z",
+      "side": 1,
+      "message": "needs to change this as well",
+      "revId": "163ea0bf736e5feebba53192878f002ab4c8f44b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fc0f58a5_8c38eec2",
+        "filename": "src/5gnrsch/sch_utils.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2063,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-12-11T11:58:08Z",
+      "side": 1,
+      "message": "add a comment in case of failure and return fail from here.",
+      "range": {
+        "startLine": 2063,
+        "startChar": 3,
+        "endLine": 2063,
+        "endChar": 12
+      },
+      "revId": "163ea0bf736e5feebba53192878f002ab4c8f44b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
