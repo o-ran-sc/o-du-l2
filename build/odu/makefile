@@ -109,7 +109,11 @@ export BUILD
 export I_OPTS
 
 # Add to the linker options the platform specific components
-L_OPTS+=-lnsl -lrt -lm -lpthread -lsctp 
+L_OPTS+=-lnsl -lrt -lm -lpthread -lsctp
+ifdef XML_BASED_CONFIG
+L_OPTS+=-lxml2
+endif
+
 ifeq ($(PHY), INTEL_L1)
 	L_OPTS+=-L/root/Intel-L1-20.11.1/phy/wls_lib/ -lwls                         \
         -lhugetlbfs -lnuma -ldl -L/root/Intel-L1-20.11.1/dpdk-20.11.1/build/lib                        \
