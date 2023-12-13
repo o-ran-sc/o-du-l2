@@ -22,6 +22,30 @@
       },
       "revId": "500ff6c4cc7dceb70d6b415f619f794f7b157379",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6c1e6048_07c00165",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2542,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-12-13T13:08:50Z",
+      "side": 1,
+      "message": "correct.. I will put continue",
+      "parentUuid": "1f625ee5_e264df59",
+      "range": {
+        "startLine": 2542,
+        "startChar": 0,
+        "endLine": 2542,
+        "endChar": 16
+      },
+      "revId": "500ff6c4cc7dceb70d6b415f619f794f7b157379",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
   ]
 }
