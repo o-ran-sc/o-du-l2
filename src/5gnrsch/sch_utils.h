@@ -98,6 +98,7 @@
    _pst.selector  = ODU_SELECTOR_TC;                         \
 }
 
+
 /* Table array declarations */
 int8_t coresetIdxTable[MAX_CORESET_INDEX][4];
 int8_t searchSpaceIdxTable[MAX_SEARCH_SPACE_INDEX][4];
@@ -140,6 +141,9 @@ uint8_t countRBGFrmCoresetFreqRsrc(uint8_t *freqDomainRsrc);
 uint8_t findSsStartSymbol(uint8_t *mSymbolsWithinSlot);
 void fillCqiAggLvlMapping(SchPdcchInfo *pdcchInfo);
 uint8_t schUpdValY(SchUeCb *ueCb, SchPdcchInfo *pdcchInfo);
+uint16_t extractStartPrbForRBG(uint8_t *freqDomaRsrc, uint8_t rbgIndex);
+uint16_t schConvertSlotPeriodicityEnumToValue(SchMSlotPeriodicity slotPeriod);
+uint8_t extractNumOfCandForAggLvl(SchSearchSpace *searchSpace, uint8_t aggLvl);
 #if 0
 /*Will be enabled for debugging*/
 void printLcLL(CmLListCp *lcLL);

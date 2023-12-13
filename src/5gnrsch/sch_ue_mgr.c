@@ -33,6 +33,7 @@
 #include "sch_drx.h"
 #endif
 
+//uint8_t defaultUlAckTbl[DEFAULT_UL_ACK_LIST_COUNT]= {1, 2, 3 , 4, 5, 6, 7, 8};
 /*******************************************************************
  *
  * @brief Fill and send UE cfg response to MAC
@@ -370,12 +371,17 @@ uint8_t fillSchUeCbFrmCfgReq(Inst inst, SchUeCb *ueCb, SchUeCfgReq *ueCfg)
             BuildK0K1Table(ueCb->cellCb, &ueCb->k0K1InfoTbl, false, pdschCfg,\
                   ueCfg->spCellCfg.servCellCfg.initDlBwp.pdschCfg, dlDataToUlAck->dlDataToUlAckListCount,\
                   dlDataToUlAck->dlDataToUlAckList);
+         }
+         else
+         {
+            BuildK0K1Table(ueCb->cellCb, &ueCb->k0K1InfoTbl, false, pdschCfg,\
+                  ueCfg->spCellCfg.servCellCfg.initDlBwp.pdschCfg, DEFAULT_UL_ACK_LIST_COUNT, defaultUlAckTbl);
+         }
             ueCb->k0K1TblPrsnt = true;
             BuildK2InfoTable(ueCb->cellCb, ueCfg->spCellCfg.servCellCfg.initUlBwp.puschCfg.timeDomRsrcAllocList,\
                   ueCfg->spCellCfg.servCellCfg.initUlBwp.puschCfg.numTimeDomRsrcAlloc,\
                   NULLP, &ueCb->k2InfoTbl);
             ueCb->k2TblPrsnt = true;
-         }
       }
    }
 
