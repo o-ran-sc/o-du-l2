@@ -156,83 +156,107 @@ As shown in Figure 3, O-DU High interfaces with the following modules:
 
   - Interface Management
 
-    - F1 Setup
-
-    - gNB-DU Configuration Update
-
-    - F1 Reset
-
-    - PAGING
+      - F1 Setup
+       
+      - gNB-DU Configuration Update
+       
+      - F1 Reset
+       
+      - PAGING
 
   - UE Context Management 
 
-    - UE Context Setup
+      - UE Context Setup
 
-    - UE Context Modification
+      - UE Context Modification
 
-    - UE Context Release
+      - UE Context Release
 
   - RRC Message Transfer
 		
-    - Initial UL RRC Message Transfer
+      - Initial UL RRC Message Transfer
 
-    - DL RRC Message Transfer
+      - DL RRC Message Transfer
 
-    - UL RRC Message Transfer
+      - UL RRC Message Transfer
 
-    - RRC Delivery Report
+      - RRC Delivery Report
 
 - Near RT RIC: O-DU High communicates with Near RT RIC on the E2 interface. The below E2AP messages are
-  implemented, as per ORAN WG3.E2AP v02.00:
+  implemented, as per O-RAN.WG3.E2GAP-R003-v03.00, O-RAN.WG3.E2AP-R003-v03.00 and O-RAN.WG3.E2SM-KPM-R003-v03.00.
 
   - Global Procedures
 
-    - E2 Setup
+      - E2 Setup
 
-    - E2 Node Configuration Update 
+      - E2 Node Configuration Update 
     
-    - E2 Reset
+      - RIC Service Update 
 
+      - E2 Connection Update
+
+      - E2 Removal
+    
+      - E2 Reset
+
+      - Error Indication
+      
   - Near RT RIC Functional Procedures
 		
-    - RIC Subscription
+      - RIC Subscription
 
-    - RIC Indication
+      - RIC Subscription Modification
+
+      - RIC Subscription Modification Required
+
+      - RIC Subscription Delete
+
+      - RIC Subscription Delete Required
+
+      - RIC Indication
+
+  - GNB-DU releated KPIs 
+   
+      - Radio resource utilization 
+      
+         - DL Total PRB Usage
+         
+         - UL Total PRB Usage
 
 - O-DU Low: O-DU High communicates with O-DU Low on the FAPI interface. The below FAPI messages are supported, 
   as per FAPI interface files shared by Intel:
 
   - P5 messages - PHY mode control interface
-	
-    - PARAM.request/PARAM.response
+	   
+      - PARAM.request/PARAM.response
 
-    - CONFIG.request/CONFIG.response
+      - CONFIG.request/CONFIG.response
 
-    - START.request
+      - START.request
 
-    - STOP.request
+      - STOP.request
 
-    - STOP.indication
+      - STOP.indication
 
   - P7 messages - Main data path interface
 
-    - DL_TTI.request
+      - DL_TTI.request
 
-    - UL_TTI.request
+      - UL_TTI.request
 
-    - SLOT.indication
+      - SLOT.indication
 
-    - UL_DCI.request
+      - UL_DCI.request
 
-    - TX_Data.request
+      - TX_Data.request
 
-    - RX_Data.indication
+      - RX_Data.indication
 
-    - CRC.indication
+      - CRC.indication
 
-    - UCI.indication
+      - UCI.indication
 
-    - RACH.indication
+      - RACH.indication
 
 - OAM: O-DU High communicates with OAM on the O1 interface.
 
@@ -617,6 +641,184 @@ This section describes the Discontinuous reception (DRX) feature within O-DU Hig
   Figure 15 - UL Harq Retransmission Timers flow
 
 - If O-DU receives DRX configuration release indicator IE as a part of UE CONTEXT MODIFICATION REQUEST from O-CU, DU APP will forward this indicator to MAC which forwards it to SCH as part of UE reconfiguration request. In this case SCH stops all DRX timers, deletes DRX configuration and marks UE as active by default. 
+
+===========================
+E2AP Flow Triggered In Code
+===========================
+
+This section describes the E2AP messaged triggered within O-DU High.
+
+
+.. figure:: E2AP_Flow_Triggered_In_Code.PNG
+  :width: 600
+  :alt: E2AP Flow Triggered In Code 
+
+  Figure 16 - E2AP Flow Triggered In Code
+
+- DU module stores the E2 related configurations in its local database.
+
+- Once the SCTP connection gets establish between the O-DU and Near-RT RIC, then O-DU sends E2 Setup Request to Near-RT RIC. This message contains the list RAN functions and E2 node component configuration that the O-DU has been configured with.
+
+- The Near-RT RIC responds with E2 Setup Response. This message contains RIC Service and E2 Node configuration Acknowledge list.
+
+- If there is any E2 node component changes O-DU sends E2 Node Configuration Update message to Near-RT RIC. This message contains the list of E2 node component which needs to add, modify or delete.
+
+- Once Near-RT RIC updates everything these information, It sends the E2 Node Configuration Update Acknowledge To O-DU.
+
+- If Near-RT RIC creates new RIC subscription, it sends the RIC Subscription Request consisting the list the action, reporting period and granularity period information.
+
+- O-DU stores subscription information in it's database and starts the "Granularity Period" timer for each action as well as start the "Reporting Period" timer for subscription. Once all processing completes O-DU sends RIC Subscription Response to Near-RT RIC consisting the list of accepted and rejected actions.
+
+- Each time when "Granularity Period" timer expires at DU layers it sends calculate and sends the KPIs to O-DU and restart the "Granularity Period" timer again, O-DU stores those KPI information in database and once "Reporting Period" timer expires it sends all the KPI values to Near-RT RIC as part of RIC Indication message.
+
+===================
+E2AP Supported APIs
+===================
+
+This section describes the E2AP APIs which are either triggered or not triggered in code, but supported in code as per the E2 specification. Below mentioned flow diagram explains the complete working of each APIS between the O-DU High and Near-RT RIC.
+
+
+E2 Setup Procedure
+******************
+
+
+This section describes the E2 Setup Procedure within O-DU High and Near-RT RIC. 
+
+
+.. figure:: E2_Setup_Procedure.PNG 
+   :width: 600
+   :alt: E2 Setup Procedure
+
+   Figure 17 - E2 Setup Procedure
+
+E2 Node Configuration Update Procedure
+**************************************
+
+This section describes the E2 Node Configuration Procedure within O-DU High and Near-RT RIC. 
+
+.. figure:: E2_Node_Configuration_Update_Procedure.PNG
+   :width: 600
+   :alt: E2 Node Configuration Update Procedure
+
+   Figure 18 - E2 Node Configuration Update Procedure
+
+
+RIC Service Update procedure
+****************************
+
+This section describes the RIC Service Update Procedure within O-DU High and Near-RT RIC.
+Note - This API is not currently triggered by O-DU.
+
+.. figure:: RIC_Service_Update_Procedure.PNG 
+   :width: 600
+   :alt: RIC Service Update Procedure
+
+   Figure 19 - RIC Service Update Procedure
+
+
+E2 Connection Update Procedure
+******************************
+
+This section describes the E2 Connection Update Procedure within O-DU High and Near-RT RIC.
+Note - This API is not currently triggered by stub-based framework.
+
+.. figure:: E2_Connection_Update_Procedure.PNG 
+   :width: 600
+   :alt: E2 Connection Update Procedure
+
+   Figure 20 - E2 Connection Update Procedure
+
+
+E2 Removal Procedure
+********************
+
+This section describes the E2 removal Procedure from both DU-initiated and RIC-initiated within O-DU High and Near-RT RIC.
+Note - This API is not currently triggered in the code.
+
+.. figure:: E2_Removal_Procedure(DU-initiated).PNG 
+   :width: 600
+   :alt: E2 Removal Procedure(DU-initiated)
+
+   Figure 21 - E2 Removal Procedure(DU-initiated)
+
+.. figure:: E2_Removal_Procedure(RIC-initiated).PNG 
+   :width: 600
+   :alt: E2 Removal Procedure(RIC-initiated)
+
+   Figure 22 - E2 Removal Procedure(RIC-initiated)
+
+
+Reset Procedure
+***************
+
+This section describes the Reset Procedure from both DU-initiated and RIC-initiated within O-DU High and Near-RT RIC.
+Note - This API is not currently triggered in the code.
+
+.. figure:: Reset_Procedure(DU-initiated).PNG 
+   :width: 600
+   :alt: Reset Procedure(DU-initiated)
+
+   Figure 23 - Reset Procedure(DU-initiated)
+
+.. figure:: Reset_Procedure(RIC-initiated).PNG 
+   :width: 600
+   :alt: Reset Procedure(RIC-initiated)
+
+   Figure 24 - Reset Procedure(RIC-initiated)
+
+
+
+
+Error Indication Procedure
+**************************
+
+This procedure can be triggered from either O-DU or Near-RT RIC. It infroms that an error has been found in the DU or the Near-RT RIC.
+Note - This API is not currently triggered in the code.
+
+RIC Subscription Procedure/RIC Indication
+*****************************************
+
+This section describes the RIC Subscription Procedure within O-DU High and Near-RT RIC. In addition to this procedure, the RIC indication procedure has been described.
+
+.. figure:: RIC_Subscription_Procedure.PNG 
+   :width: 600
+   :alt: RIC Subscription Procedure
+
+   Figure 25 - RIC Subscription Procedure
+
+
+RIC Subscription Modification Required
+**************************************
+
+Only framework is added as part of this procedure. The Complete handling and flow will be added once use-case is determined.
+
+
+RIC Subscription Modification Procedure
+***************************************
+
+This section describes the RIC Subscription Modification Procedure within O-DU High and Near-RT RIC.
+Note - This API is not currently triggered by a stub-based framework.
+
+.. figure:: RIC_Subscription_Modification_Procedure.png
+   :width: 600
+   :alt: RIC Subscription Modification Procedure
+
+   Figure 26 - RIC Subscription Modification Procedure
+
+
+RIC Subscription Delete Procedure
+*********************************
+
+This section describes the RIC Subscription Delete Procedure within O-DU High and Near-RT RIC.
+Note - This API is not currently triggered by a stub-based framework.
+
+.. figure:: RIC_Subscription_Delete_Procedure.PNG
+   :width: 600
+   :alt: RIC Subscription Delete Procedure
+
+   Figure 27 - RIC Subscription Delete Procedure
+
+
 
 ***********************
 OSC Testcases Supported
