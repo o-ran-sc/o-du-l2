@@ -31,6 +31,9 @@ B. Pre-requisite for Compilation :
 4. Install PCAP:
    a. On ubuntu : sudo apt-get install -y libpcap-dev
    b. On CentOS : sudo yum install -y libpcap-devel
+5. Install libxml2:
+   a. On Ubuntu : sudo apt-get install -y libxml2-dev
+   b. On CentOS : sudo yum install -y libxml2
 
 
 C. Pre-requisite for O1 Interface (Required only if run with O1 interface enabled) 
