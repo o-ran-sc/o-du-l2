@@ -1858,6 +1858,60 @@ uint8_t findSsStartSymbol(uint8_t *mSymbolsWithinSlot)
    return(MAX_SYMB_PER_SLOT);
 }
 
+/*
+ *  @brief: Function will extract the StartPrb as per the given RBGIndex 
+ *
+ *  Function: extractStartPrbForRBG
+ *
+ *  This function will extract the StartPrb of a rbgIndex. This RbgIndex doesnt
+ *  have direct mapping with index in FreqDomRsrc instead it is mapping with
+ *  those rbg which is set(i.e. available for PDCCH)
+ *
+ *  @param[in]  uint8_t freqDomainRsrc[6] (As per Spec 38.331, ControlResourceSet.frequencyDomainResources)
+ *                 freqDomainRsrc[0] =RBG0 to RBG7
+ *                 freqDomainRsrc[1] =RBG8 to RBG15
+ *                 ...
+ *                 freqDomainRsrc[5] =RBG40 to RBG47
+ *                 (Every RBG has 6 PRBs)
+ *
+ *              uint8_t rbgIndex
+ *
+ *
+ *         [return]: startPrb of that rbgIndex
+ * */
+uint16_t extractStartPrbForRBG(uint8_t *freqDomainRsrc, uint8_t rbgIndex)
+{
+   uint8_t freqIdx = 0, idx = 0;
+   uint8_t count = 0, bitPos = 0;
+   uint8_t totalPrbPerFreqIdx = NUM_PRBS_PER_RBG * 8; /*8 = no. of Bits in uint8_t*/
+   uint16_t startPrb = MAX_NUM_RB;
+
+   for(freqIdx = 0; freqIdx < FREQ_DOM_RSRC_SIZE; freqIdx++)
+   {
+      if(freqDomainRsrc[freqIdx] & 0xFF)
+      {
+         /*Tracking from the 7th Bit because in FreqDomRsrc , lowestPRB is
+          * stored in MSB and so on*/
+         idx = 128;
+         bitPos = 0;
+         while(idx)
+         {
+           if(freqDomainRsrc[freqIdx] & idx)
+           {
+               if(count == rbgIndex)
+               {
+                  startPrb = (totalPrbPerFreqIdx * freqIdx) + (bitPos * NUM_PRBS_PER_RBG);
+                  return startPrb;
+               }
+               count++;
+           }
+           bitPos++;
+           idx = idx >> 1;
+         }
+      }
+   }
+   return startPrb;
+}
 /**
  * @brief Function to count number of RBG from Coreset's FreqDomainResource 
  *
@@ -1880,7 +1934,7 @@ uint8_t findSsStartSymbol(uint8_t *mSymbolsWithinSlot)
 **/
 uint8_t countRBGFrmCoresetFreqRsrc(uint8_t *freqDomainRsrc)
 {
-   uint8_t freqIdx = 0, idx = 1;
+   uint8_t freqIdx = 0, idx = 0;
    uint8_t count = 0;
 
    for(freqIdx = 0; freqIdx < FREQ_DOM_RSRC_SIZE; freqIdx++)
@@ -1888,7 +1942,6 @@ uint8_t countRBGFrmCoresetFreqRsrc(uint8_t *freqDomainRsrc)
       if(freqDomainRsrc[freqIdx] & 0xFF)
       {
          idx = 1;
-         count = 0;
          while(idx)
          {
            if(freqDomainRsrc[freqIdx] & idx)
@@ -2080,6 +2133,157 @@ uint8_t schUpdValY(SchUeCb *ueCb, SchPdcchInfo *pdcchInfo)
       }
    }
    return ROK;
+}
+
+/*
+ *  @brief : Function to convert SlotPeriodicity to Value
+ *
+ *  Function: schConvertSlotPeriodicityEnumToValue
+ *
+ *  @param[IN]: SchMSlotPeriodicity enum
+ *        [return]: slotOffsetVal
+ * */
+uint16_t schConvertSlotPeriodicityEnumToValue(SchMSlotPeriodicity slotPeriod)
+{
+   uint16_t slotPeriodVal = 0;
+
+   switch(slotPeriod)
+   {
+      case SLOT_PERIODICITY_SL_1:
+      {
+         slotPeriodVal = 1;
+         break;
+      }
+      case SLOT_PERIODICITY_SL_2:
+      {
+         slotPeriodVal = 2;
+         break;
+      }
+      case SLOT_PERIODICITY_SL_4:
+      {
+         slotPeriodVal = 4;
+         break;
+      }
+      case SLOT_PERIODICITY_SL_5:
+      {
+         slotPeriodVal = 5;
+         break;
+      }
+      case SLOT_PERIODICITY_SL_8:
+      {
+         slotPeriodVal = 8;
+         break;
+      }
+      case SLOT_PERIODICITY_SL_10:
+      {
+         slotPeriodVal = 10;
+         break;
+      }
+      case SLOT_PERIODICITY_SL_16:
+      {
+         slotPeriodVal = 16;
+         break;
+      }
+      case SLOT_PERIODICITY_SL_20:
+      {
+         slotPeriodVal = 20;
+         break;
+      }
+      case SLOT_PERIODICITY_SL_40:
+      {
+         slotPeriodVal = 40;
+         break;
+      }
+      case SLOT_PERIODICITY_SL_80:
+      {
+         slotPeriodVal = 80;
+         break;
+      }
+      case SLOT_PERIODICITY_SL_160:
+      {
+         slotPeriodVal = 160;
+         break;
+      }
+      case SLOT_PERIODICITY_SL_320:
+      {
+         slotPeriodVal = 320;
+         break;
+      }
+      case SLOT_PERIODICITY_SL_640:
+      {
+         slotPeriodVal = 640;
+         break;
+      }
+      case SLOT_PERIODICITY_SL_1280:
+      {
+         slotPeriodVal = 1280;
+         break;
+      }
+      case SLOT_PERIODICITY_SL_2560:
+      {
+         slotPeriodVal = 2560;
+         break;
+      }
+      default:
+      {
+         slotPeriodVal = 0;
+         break;
+      }
+   }
+   return slotPeriodVal;
+}
+
+/*
+ *  @brief: Function to extract the numCandidates from aggLevel.
+ *
+ *  Function: extractNumOfCandForAggLvl
+ *
+ *  @params[IN]: SearchSpace, aggLevel
+ *         [RETURN]: numCandidates.
+ * */
+uint8_t extractNumOfCandForAggLvl(SchSearchSpace *searchSpace, uint8_t aggLvl)
+{
+   uint8_t numCand = 0;
+
+   switch(aggLvl)
+   {
+      case 1:
+      {
+         numCand = searchSpace->numCandidatesAggLevel1;
+         break;
+      }
+      case 2:
+      {
+         numCand = searchSpace->numCandidatesAggLevel2;
+         break;
+      }
+      case 4:
+      {
+         numCand = searchSpace->numCandidatesAggLevel4;
+         break;
+      }
+      case 8:
+      {
+         numCand = searchSpace->numCandidatesAggLevel8;
+         break;
+      }
+      case 16:
+      {
+         numCand = searchSpace->numCandidatesAggLevel16;
+         break;
+      }
+      default:
+      {
+         numCand = 0;
+      }
+      /*AGGREGATION_LEVEL_N8 enum Value is 7 thus hardcoding the correct Value
+       * (8)*/
+      if(numCand == AGGREGATION_LEVEL_N8)
+      {
+         numCand = 8;
+      }
+   }
+   return numCand;
 }
 /**********************************************************************
          End of file

@@ -2393,7 +2393,203 @@ uint8_t fillUeCoresetAndSsInfo(SchUeCb *ue)
    return ROK;
 }
 
+/*
+ *  @brief: Function will validate a slot for PDCCH allocation
+ *
+ *  Function: schPdcchSlotValidation
+ *
+ *  As per 3gpp Spec 38.331, SearchSpace parameter, Every SearchSpace will have
+ *  details of which slot and after how many slot the UE will monitor for PDCCH.
+ *  Thus, while PDCCH allocation we need to ensure the above validation passes.
+ *
+ *  @param [IN]: PDCCH time, SearchSpace Info, numSlots in Cell
+ *         [RETURN]: Flag depicting the slot validation
+ * */
+bool schPdcchSlotValidation(SlotTimingInfo pdcchTime, SchSearchSpace *searchSpace, uint16_t numSlots)
+{
+    bool     isSlotValid = false;
+    uint16_t slotNum = 0, mSlotPeriodicityVal = 0;
 
+    /*Converting the timing info in units of Slots*/
+    slotNum = (pdcchTime.sfn * numSlots)+pdcchTime.slot;
+
+    mSlotPeriodicityVal = \
+    schConvertSlotPeriodicityEnumToValue(searchSpace->mSlotPeriodicityAndOffset.mSlotPeriodicity);
+
+    if(!mSlotPeriodicityVal)
+    {
+       DU_LOG("\nERROR   --> SCH: Slot Periodicity is ZERO thus cant proceed with this SearchSpace");
+       return false;
+    }
+    /*The Monitoring slot begins from offset thus skip the slots which are less
+     * than offset value*/
+    if((slotNum >= searchSpace->mSlotPeriodicityAndOffset.mSlotOffset))
+    {
+        /*A pdcch Slot will start after Slotoffset and will get repeated after every
+         * SlotPeriodicity*/
+        if(((slotNum - searchSpace->mSlotPeriodicityAndOffset.mSlotOffset) % mSlotPeriodicityVal) == 0) 
+        {
+           DU_LOG("\nINFO   --> SCH: SFN:%d/Slot:%d, is a Valid PDCCH slot",pdcchTime.sfn, pdcchTime.slot);
+           isSlotValid = true;
+        }
+        else
+        {
+           DU_LOG("\nINFO   --> SCH: SFN:%d/Slot:%d, is InValid PDCCH slot",pdcchTime.sfn, pdcchTime.slot);
+        }
+    }
+    return (isSlotValid); 
+}
+
+/*
+ *  @brief: Function to check if PDCCH is available for a cceIndex
+ *
+ *  Function: schCheckPdcchAvail
+ *
+ *   This function checks if the PRBs available for a particular CCE during
+ *   PDCCH allocation
+ *   [Step 1]: Calculate the rbgIndex from cceIndex which depends on Coreset symbol duration
+ *   i.e. a) If symbolDuration = 1; numPrbs in RBG (6) = numPrbPerCCE thus one on
+ *        one mapping between rbgIndex and cceIndex
+ *        b) if SymbolDuration =2; NumPrbs in RBG(6) = numPrbPerCCE * duration
+ *        as CCE needs 6 REG thus in 3 PRBs whole CCE can contain 
+ *        c) and so on
+ *
+ *   [Step 2]: Again StartPRB for a rbgIndex may not be same for CCE Index which
+ *             depends on duration. If duration=2, then two CCE can be occupied
+ *             in one RBGIndex thus StarPrb for secondCCE will be
+ *             numPrbsPerCCE(3) away.
+ *
+ *   @params[in]: CellCb, SlotTime, cceIndex, PDcchInfo, aggLvl
+ * */
+bool schCheckPdcchAvail(SchCellCb *cellCb, SlotTimingInfo slotTime, uint8_t cceIndex,\
+                    SchPdcchInfo *pdcchInfo, uint8_t aggLvl )
+{
+    uint8_t rbgIndex = 0, ret = 0, startSymbol = 0;
+    uint16_t startPrb = MAX_NUM_RB, numPrb = 0;
+
+    /*[Step 1]: rbgIndex to locate in FreqDomainResource parmaeter in
+     * SearchSpace*/
+    rbgIndex = cceIndex / (pdcchInfo->cRSetRef->duration);
+   
+    /*Extract StartPRB for that RBGIndex*/
+    startPrb = extractStartPrbForRBG(pdcchInfo->cRSetRef->freqDomainRsrc, rbgIndex);
+    if(startPrb == MAX_NUM_RB)
+    {
+       DU_LOG("\nERROR  -->  SCH: No RBG is allocated for PDCCH in this Coreset");
+       return false;
+    }
+    /*[Step 2]: Adjust StartPrb based on CCEIndex and duration*/
+    startPrb = startPrb + ((cceIndex % pdcchInfo->cRSetRef->duration) * (pdcchInfo->nrOfPRBPerCce));
+    startSymbol = findSsStartSymbol(pdcchInfo->ssRef->mSymbolsWithinSlot);
+
+    /*numPrb will also get adjusted with duration*/
+    numPrb = (NUM_PRBS_PER_RBG * aggLvl) / pdcchInfo->cRSetRef->duration;
+    DU_LOG("\nDEBUG  -->  SCH: RBG found for cceIndex:%d, AggLvl:%d and SymbolDuration%d with StartPrb:%d, numPrb:%d",\
+            cceIndex, aggLvl, pdcchInfo->cRSetRef->duration, startPrb, numPrb);
+
+    ret = allocatePrbDl(cellCb, slotTime, startSymbol,\
+                         pdcchInfo->cRSetRef->duration, &startPrb, numPrb);
+    
+    if(ret == RFAILED)
+    {
+       DU_LOG("\nERROR -->  SCH: PRBs can't be allocated as they are unavailable");
+       return false;
+    }
+    return true;
+
+}
+
+/*
+ * @brief: Function to select particular UE based on validation of PDCCH allocation
+ *
+ *    Function: 
+ *    This function will have multiple layers of validation for PDCCH allocation 
+ *    based on CORESET and SearchSpace configuration and availability.
+ *
+ *    [Step 1]: Check if the slot is pdcch Slot or not based on SearchSpace's
+ *    monitoringSlotInfo.
+ *    [Step 2]: Check the CQI for this UE and decide upon which Agg Level has to
+ *    be used for this PDCCH transmission
+ *    [Step 3]: find the AggLevel for this CQI = base aggregation level
+ *    [Step 4]: NextLowerAggLvl will be the next lower aggLevel when PDCCH
+ *    allocation fails for base agg Level.
+ *    [Step 5]: For each candidate , calculate the CCE Index as per TS
+ *    38.213v15, Sec 10.1 and also check PRBs falling in that CCEIndex is free.
+ *    [Step 6]: If Step 5 fails, move to next candidate and if Candidate gets
+ *    exhausted then fallback to nextAggLevel. Because as we decrease aggLevel,
+ *    numberOfCCEReq decreases so chances of PDCCH allocation increases even
+ *    though lowerAggLevel will not guarantee transmission of PDCCH as per CQI
+ *    reported.(CQI less, AggiLvlRequried is More)
+ *
+ *    @params[IN]: SchUeCb and PdcchTime
+ *          [RETURN]: isPDCCHAllocted flag(true = UE can be selected as a
+ *          candidate )
+ * */
+bool schDlCandidateSelection(SchUeCb *ueCb, SlotTimingInfo pdcchTime)
+{
+    uint8_t cRSetIdx = 0, cceIndex = 0;
+    uint8_t cqi = 0, candIdx = 0;
+    uint8_t baseAggLvl = 0, nextLowerAggLvl = 0, numCandidates = 0;
+    SchPdcchInfo *pdcchInfo = NULLP;
+    uint32_t a = 0, b = 0;
+
+    for(cRSetIdx = 0; cRSetIdx < MAX_NUM_CRSET; cRSetIdx++)
+    {
+       pdcchInfo = &ueCb->pdcchInfo[cRSetIdx];
+       if(pdcchInfo->cRSetRef == NULLP)
+       {
+          DU_LOG("\nINFO   -->  SCH: Coreset is not availabe at Index:%d",cRSetIdx);
+          break;
+       }
+       /*[Step 1]:*/
+       if(false == schPdcchSlotValidation(pdcchTime, pdcchInfo->ssRef, ueCb->cellCb->numSlots))
+       {
+          DU_LOG("\nINFO   -->  SCH: This slot is not valid for PDCCH in this CORESET:%d.",pdcchInfo->cRSetRef->cRSetId);
+          break;
+       }
+       /*[Step 2]:*/
+       /*TODO: CQI is reported in DL_CQI_IND which has to be processed and
+        * report has to be stored in ueCb.For now, HardCoding the value*/
+        cqi = 5;
+
+        /*[Step 3]: */
+        baseAggLvl = pdcchInfo->cqiIndxAggLvlMap[cqi];
+
+        /*[Step 4]:*/
+        nextLowerAggLvl = baseAggLvl;
+
+        /*Loop to traverse through each AggLvl from higher value of aggLevel to
+         * 1 AggLvl*/
+        do
+        {
+           /*Configured num of candidates for each Agg Level in search space */
+           numCandidates = extractNumOfCandForAggLvl(pdcchInfo->ssRef, nextLowerAggLvl); 
+           if(!numCandidates)
+           {
+             DU_LOG("\nINFO   --> SCH:  Num Of Candidates configured for this AggLvel:%d is ZERO",baseAggLvl);
+           }
+
+           /*[Step 5]:*/
+           for(candIdx= 0; candIdx < numCandidates; candIdx++)
+           {
+               /*Formula reference 3GPP TS 38.213v15, Sec 10.1, Variable 'a' and
+                * 'b' is used for segmenting the formulat for readability purpose
+                * */
+               a = pdcchInfo->y[pdcchTime.slot] + \
+                     ceil((candIdx * pdcchInfo->totalCceCount)/(baseAggLvl * numCandidates));
+               b = ceil(pdcchInfo->totalCceCount * baseAggLvl);
+               cceIndex = baseAggLvl * (a % b); 
+               if(schCheckPdcchAvail(ueCb->cellCb, pdcchTime, cceIndex, pdcchInfo,nextLowerAggLvl) == true)
+               {
+                  DU_LOG("\nINFO   -->  SCH: PDCCH allocation is successful at cceIndex:%d",cceIndex);
+                  return true;  
+               }
+           }
+           nextLowerAggLvl = nextLowerAggLvl >> 1;
+        }while(nextLowerAggLvl > 0 && nextLowerAggLvl <= 16);
+    }
+    return false;
+}
 /**********************************************************************
   End of file
  **********************************************************************/
