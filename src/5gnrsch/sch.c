@@ -928,13 +928,13 @@ void deleteSchCellCb(SchCellCb *cellCb)
 
    for(plmnIdx = 0; plmnIdx < MAX_PLMN; plmnIdx++)
    {
-      if(cellCb->cellCfg.plmnInfoList[plmnIdx].snssai)
+      if(cellCb->cellCfg.plmnInfoList[plmnIdx].suppSliceList.snssai)
       {
-         for(sliceIdx=0; sliceIdx<cellCb->cellCfg.plmnInfoList[plmnIdx].numSliceSupport; sliceIdx++)
+         for(sliceIdx=0; sliceIdx<cellCb->cellCfg.plmnInfoList[plmnIdx].suppSliceList.numSupportedSlices; sliceIdx++)
          {
-            SCH_FREE(cellCb->cellCfg.plmnInfoList[plmnIdx].snssai[sliceIdx], sizeof(Snssai));
+            SCH_FREE(cellCb->cellCfg.plmnInfoList[plmnIdx].suppSliceList.snssai[sliceIdx], sizeof(Snssai));
          }
-         SCH_FREE(cellCb->cellCfg.plmnInfoList[plmnIdx].snssai, cellCb->cellCfg.plmnInfoList[plmnIdx].numSliceSupport*sizeof(Snssai*));
+         SCH_FREE(cellCb->cellCfg.plmnInfoList[plmnIdx].suppSliceList.snssai, cellCb->cellCfg.plmnInfoList[plmnIdx].suppSliceList.numSupportedSlices*sizeof(Snssai*));
       }
    }
 
@@ -1765,10 +1765,10 @@ uint8_t fillSliceCfgRsp(Inst inst, CmLListCp *storedSliceCfg, SchCellCb *cellCb,
       /* Here comparing the slice cfg request with the slice stored in cellCfg */
       for(plmnIdx = 0; plmnIdx < MAX_PLMN; plmnIdx++)
       {
-         for(sliceIdx = 0; sliceIdx<cellCb->cellCfg.plmnInfoList[plmnIdx].numSliceSupport; sliceIdx++)
+         for(sliceIdx = 0; sliceIdx<cellCb->cellCfg.plmnInfoList[plmnIdx].suppSliceList.numSupportedSlices; sliceIdx++)
          {
             /* If we find the SliceCfgReq's SNSSAI in CellCb's SNSSAI DB, we mark this slice as configured and add it to Sch's DB. */ 
-            if(!memcmp(&schSliceCfgReq->listOfSlices[cfgIdx]->snssai, cellCb->cellCfg.plmnInfoList[plmnIdx].snssai[sliceIdx], sizeof(Snssai)))
+            if(!memcmp(&schSliceCfgReq->listOfSlices[cfgIdx]->snssai, cellCb->cellCfg.plmnInfoList[plmnIdx].suppSliceList.snssai[sliceIdx], sizeof(Snssai)))
             {
                if(addSliceCfgInSchDb(storedSliceCfg, schSliceCfgReq->listOfSlices[cfgIdx]) == ROK)
                {

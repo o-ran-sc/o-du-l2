@@ -687,17 +687,11 @@ typedef struct epIpAddrPort
    char   port[2];
 }EpIpAddrPort;
 
-typedef struct f1TaiSliceSuppLst
-{
-   uint8_t    numSupportedSlices;
-   Snssai    **snssai;   
-}F1TaiSliceSuppLst;
-
 typedef struct f1SrvdPlmn
 {
    Plmn   plmn;
    Plmn   extPlmn;    /* Extended available PLMN list */
-   F1TaiSliceSuppLst taiSliceSuppLst;
+   SupportedSliceList taiSliceSuppLst;
 }F1SrvdPlmn;
 
 typedef struct f1BrdcstPlmnInfo
@@ -1254,12 +1248,14 @@ typedef struct sib1Params
 }Sib1Params;
 
 typedef struct duCfgParams
-{
-   SctpParams         sctpParams;                  /* SCTP Params */
-   F1EgtpParams       egtpParams;                  /* EGTP Params */
-   uint32_t           maxUe;
+{  
    uint32_t           duId;
    char               *duName;
+   uint16_t           maxNumDrb;
+   uint16_t           maxSupportedUes;
+   uint32_t           maxUe;
+   SctpParams         sctpParams;                  /* SCTP Params */
+   F1EgtpParams       egtpParams;                  /* EGTP Params */
    SchedulerCfg       schedCfg;
    F1DuSrvdCellInfo   srvdCellLst[MAX_NUM_CELL];  /* Serving cell list *///TODO: this must be removed eventually
    F1RrcVersion       rrcVersion;                 /* RRC version */
@@ -1307,6 +1303,10 @@ DuCfgParams duCfgParam;
 uint8_t readClCfg();
 uint8_t readCfg();
 uint8_t duReadCfg(); 
+void printDuConfig();
+
+uint8_t fillDuSrvdCellSysInfo(F1DuSysInfo *sysInfo);
+
 uint16_t calcSliv(uint8_t startSymbol, uint8_t lengthSymbol);
 uint8_t cpyRrmPolicyInDuCfgParams(RrmPolicyList rrmPolicy[], uint8_t policyNum, MacSliceCfgReq *tempSliceCfg);
 
