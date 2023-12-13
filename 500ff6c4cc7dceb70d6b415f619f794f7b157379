@@ -63,6 +63,24 @@
       "message": "revert",
       "revId": "500ff6c4cc7dceb70d6b415f619f794f7b157379",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d70581c0_1b50a891",
+        "filename": "src/du_app/du_mgr_main.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 589,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-12-13T13:15:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2b159bf5_8d9db2fb",
+      "revId": "500ff6c4cc7dceb70d6b415f619f794f7b157379",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
   ]
 }
