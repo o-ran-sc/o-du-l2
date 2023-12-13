@@ -26,9 +26,9 @@ O-DU High uses C languages. The coding guidelines followed are:
 
 .. figure:: LicHeader.jpg
   :width: 600
-  :alt: Figure 17 License Header and Footer
+  :alt: Figure 29 License Header and Footer
 
-  Figure 17 : License Header and Footer
+  Figure 29 : License Header and Footer
 
 O-DU High code
 ---------------
@@ -280,9 +280,9 @@ Here,
 
 .. figure:: ModeofCommunication.jpg
    :width: 600
-   :alt: Figure 18 Mode of communication between O-DU High entities
+   :alt: Figure 30 Mode of communication between O-DU High entities
 
-   Figure 18: Mode of communication between O-DU High entities
+   Figure 30: Mode of communication between O-DU High entities
 
 Steps of Communication
 ++++++++++++++++++++++
@@ -344,9 +344,9 @@ Below figure summarized the above steps of intra O-DU High communication
 
 .. figure:: StepsOfCommunication.jpg
    :width: 600
-   :alt: Figure 19 Communication between entities
+   :alt: Figure 31 Communication between entities
 
-   Figure 19: Steps of Communication between O-DU High entities
+   Figure 31: Steps of Communication between O-DU High entities
 
 
 Communication with Intel O-DU Low
@@ -614,7 +614,7 @@ Design
    :width: 600
    :alt: 5G NR Scheduler Framework Design
    
-   Figure 20: 5G NR Scheduler Framework Design
+   Figure 32: 5G NR Scheduler Framework Design
 
 - The code for scheduler has been divided into 2 parts i.e. the common APIs and scheduler-specific APIs. 
 - Any code (structure/API) which is specific to a scheduling algorithm must be within scheduler-specific files such as sch_rr.c and sch_rr.h for round-roubin scheduler.
@@ -632,7 +632,7 @@ Call Flow
    :width: 600
    :alt: Call flow example of Multi-Scheduling Algorithm framework
 
-   Figure 21: Example of a call flow in multi-scheduling algorithm framework
+   Figure 33: Example of a call flow in multi-scheduling algorithm framework
 
 Additional Utility Functions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^

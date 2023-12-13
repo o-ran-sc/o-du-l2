@@ -4,7 +4,7 @@
 User Guide
 ***********
 
-This is the user guide for H release of O-DU/l2.
+This is the user guide for I release of O-DU/l2.
 Follow installation-guide to get all the dependencies ready.
 
 .. contents::
@@ -197,9 +197,9 @@ Following diagram shows P5 messages exchanged with O-DU Low in timer mode.
 
 .. figure:: O-DU_High_Low_Flow.PNG
   :width: 600
-  :alt: Figure 16 O-DU High - O-DU Low Message Flow Diagram
+  :alt: Figure 28 O-DU High - O-DU Low Message Flow Diagram
 
-  Figure 16 - O-DU High - O-DU Low Message Flow Diagram
+  Figure 28 - O-DU High - O-DU Low Message Flow Diagram
 
 Note: UL IQ-Sample request and response are needed by Intel O-DU Low in timer mode(testing mode) only. Code changes for
 these are guarded under INTEL_TIMER_MODE flag which can be enabled using compilation option "PHY_MODE=TIMER", as
