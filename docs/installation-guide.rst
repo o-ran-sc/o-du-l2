@@ -18,6 +18,9 @@ Version history
 | **Date**           | **Ver.**           | **Author**         | **Comment**        |
 |                    |                    |                    |                    |
 +--------------------+--------------------+--------------------+--------------------+
+| 2023-12-14         |  7.0.1             |  Radisys           |  I release         |
+|                    |                    |                    |                    |
++--------------------+--------------------+--------------------+--------------------+
 | 2023-06-13         |  6.0.1             |  Radisys           |  H release         |
 |                    |                    |                    |                    |
 +--------------------+--------------------+--------------------+--------------------+
@@ -110,6 +113,9 @@ Following libraries are required to compile and execute O-DU High:
    - Ubuntu : sudo apt-get install -y libpcap-dev
    - CentOS : sudo yum install -y libpcap-devel
 
+- libxml2
+   - Ubuntu : sudo apt-get install -y libxml2-dev
+   - CentOS : sudo yum install -y libxml2
 
 
 Cloning code

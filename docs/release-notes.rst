@@ -5,7 +5,7 @@
 Release-Notes
 **************
 
-This document provides the release notes for H Release of O-DU-L2.
+This document provides the release notes for I Release of O-DU-L2.
 
 .. contents::
    :depth: 3
@@ -17,6 +17,9 @@ Version history
 
 +--------------------+--------------------+--------------------+--------------------+
 | **Date**           | **Ver.**           | **Author**         | **Comment**        |
+|                    |                    |                    |                    |
++--------------------+--------------------+--------------------+--------------------+
+| 2023-12-14         | 9.0.0              | Radisys            | I release          |
 |                    |                    |                    |                    |
 +--------------------+--------------------+--------------------+--------------------+
 | 2023-05-15         | 8.0.0              | Radisys            | H release          |
@@ -53,6 +56,22 @@ Version history
 Summary
 -------
 
+I- release
+^^^^^^^^^^
+This release contains the following:
+
+ - Alignment to E2 interface "O-RAN.WG3.E2AP-R003-v03.00" and "O-RAN.WG3.E2SM-KPM-R003-v03.00" specifications
+      - All Global Procedures 
+      - Near-RT RIC Functional Procedures
+      - Supporting Radio resource utilization related KPIs
+
+ - Alignment to latest "O-RAN WG8 AAD v09.00" Specification
+
+ - Multi UE (max=2) scheduling per TTI in scheduler
+      - Supporting DL scheduling only
+
+ - XML based input configuration for ODU-High
+
 H- release
 ^^^^^^^^^^
 This release contains the following:
@@ -65,12 +84,12 @@ This release contains the following:
  
  - Upgrade to E2AP v3.0 and implementation of E2 messages
    
-   - E2 Setup failure
-   - Reset Procedure
+      - E2 Setup failure
+      - Reset Procedure
 
  - End-to-end integration support
 
-   - Testing with TM500 UE simulator to detect broadcast message
+      - Testing with TM500 UE simulator to detect broadcast message
 
 G- release
 ^^^^^^^^^^
@@ -84,9 +103,9 @@ This release contains the following:
 
  - End-to-end integration support 
    
-   - WLS memory management update aligned with latest odu-low (FlexRAN 21.11 intel L1)
-   - Upgrade to the latest FAPI Interface and vendor-specific messages
-   - Successfully tested broadcast message reception at L1
+      - WLS memory management update aligned with latest odu-low (FlexRAN 21.11 intel L1)
+      - Upgrade to the latest FAPI Interface and vendor-specific messages
+      - Successfully tested broadcast message reception at L1
 
 F- release
 ^^^^^^^^^^
@@ -215,6 +234,25 @@ This release contains the following:
 
 Release Data
 ------------
+I release
+^^^^^^^^^^
++--------------------------------------+------------------------------------------+
+| **Project**                          | ODUHIGH                                  |
+|                                      |                                          |   
++--------------------------------------+------------------------------------------+
+| **Repo/commit-ID**                   | o-du/l2/                                 |
+|                                      | I79a886d474175ca20d2b7e8b38fa63a0ce1b3477|
++--------------------------------------+------------------------------------------+
+| **Release designation**              | I release                                |
+|                                      |                                          |   
++--------------------------------------+------------------------------------------+
+| **Release date**                     | 2023-12-14                               |
+|                                      |                                          |   
++--------------------------------------+------------------------------------------+
+| **Purpose of the delivery**          | I release                                |
+|                                      |                                          |   
++--------------------------------------+------------------------------------------+
+
 H release
 ^^^^^^^^^^
 +--------------------------------------+------------------------------------------+
@@ -383,6 +421,27 @@ Feature Additions
 ------------------
 
 **JIRA BACK-LOG:**
+
+I-release
+^^^^^^^^^^
+
++-----------------------------------------------+-----------------------------------------------+
+| **JIRA REFERENCE**                            | **SLOGAN**                                    |
+|                                               |                                               |
++-----------------------------------------------+-----------------------------------------------+
+| https://jira.o-ran-sc.org/browse/ODUHIGH-516  | Alignment to "O-RAN.WG3.E2AP-R003-v03.00" and |
+|                                               | "O-RAN.WG3.E2SM-KPM-R003-v03.00"              |
+|                                               |                                               |
++-----------------------------------------------+-----------------------------------------------+
+| https://jira.o-ran-sc.org/browse/ODUHIGH-517  | Multi UE per slot scheduling                  |
+|                                               |                                               |
++-----------------------------------------------+-----------------------------------------------+
+| https://jira.o-ran-sc.org/browse/ODUHIGH-518  | Alignment to ORAN WG8 AAD v9.0 specification  |
+|                                               |                                               |
++-----------------------------------------------+-----------------------------------------------+
+| https://jira.o-ran-sc.org/browse/ODUHIGH-538  | XML based input configuration for ODU-High    |
+|                                               |                                               |
++-----------------------------------------------+-----------------------------------------------+
 
 H-release
 ^^^^^^^^^^
@@ -639,14 +698,12 @@ System Limitations
 
 - Cell broadcast is for SSB and SIB1 only.
 
-- FAPI files not in-line with SCF FAPI 1.0.5.
+- FAPI files not in-line with SCF FAPI 222.10.02.
   O-DU High currently compatible with FAPI files provided by Intel.
 
 - Implementation of F1 reset is limited to intializing UE contexts.
 
-- E2 interface is limited to Traffic Steering Usecase.
-
-- Forming of RIC event trigger definition, RIC indication header and RIC indication message is unclear in the E2AP draft spec versions. Therefore, implementation does not contain accurate values. Contents of RIC indication message are mocked and triggered just once.
+- E2 interface is limited to KPM service model.
 
 - On the F1-U interface, UE, RB and tunnel configurations are static.
 
@@ -659,6 +716,15 @@ System Limitations
 - Current code supports two Network Slices, One Default and other one Dedicated Slice.
 
 - We have to manually download the 3GPP yang models and install.
+
+- Currently, only two Radio resource utilization related KPIs are calculated.
+      - DL Total PRB Usage.
+      - UL Total PRB Usage.
+
+- Multi UE scheduling per TTI is supported up to 2 UEs as of now.
+
+- Currently, only DL supports multi-UE scheduling. UL supports single-UE scheduling per TTI
+
 
 Known Issues
 ^^^^^^^^^^^^^
@@ -686,36 +752,42 @@ NA
 Workarounds
 ^^^^^^^^^^^
 
-O-DU High uses FAPI interface files provided by Intel and therefore, not completely in-line with SCF FAPI 1.0.5.
+O-DU High uses FAPI interface files provided by Intel and therefore, not completely in-line with SCF FAPI 222.10.02.
 
 
 
 References
 ----------
-1. ORAN-WG8.AAD.0-v07.00.00
+1. ORAN-WG8.AAD.0-v09.00.00
 
 2. O-RAN.WG5.C.1-v05.00
 
-3. ORAN WG3.E2AP v03.00
+3. O-RAN.WG3.E2GAP-R003-v03.00
 
-4. 3GPP 38.473-f60 v15.3
+4. O-RAN.WG3.E2AP-R003-v03.00
 
-5. 3GPP TS 38.211 v15.3
+5. O-RAN.WG3.E2SM-KPM-R003-v03.00
 
-6. 3GPP TS 38.212 v15.3
+6. 3GPP TS 28 552 V15.6.0
 
-7. 3GPP TS 38.213 v15.3
+7. 3GPP TS 38.473 v15.3
 
-8. 3GPP TS 38.214 v15.3
+8. 3GPP TS 38.211 v15.3
 
-9. 3GPP TS 38.321 v15.3
+9. 3GPP TS 38.212 v15.3
 
-10. 3GPP TS 38.331 v15.3
+10. 3GPP TS 38.213 v15.3
 
-11. 5G PHY FAPI Specification v1.0.5
+11. 3GPP TS 38.214 v15.3
 
-12. 3GPP TS 28.541 Specfication V16.6
+12. 3GPP TS 38.321 v15.3
 
-13. O-RAN WG1.O1-Interface v04.00
+13. 3GPP TS 38.331 v15.3
 
-14. O-RAN WG1.OAM-Architecture v04.00
+14. 5G PHY FAPI Specification v1.0.5
+
+15. 3GPP TS 28.541 Specfication V16.6
+
+16. O-RAN WG1.O1-Interface v04.00
+
+17. O-RAN WG1.OAM-Architecture v04.00

@@ -1,9 +1,9 @@
 .. This work is licensed under a Creative Commons Attribution 4.0 International License.
 .. SPDX-License-Identifier: CC-BY-4.0
 
-##################
+==================
 O-DU High Overview
-##################
+==================
 
 **********************
 O-DU High Architecture
@@ -20,9 +20,9 @@ O-DU modules are developed as shown in the below diagram.
 
   Figure 1 - O-DU High Architecture Diagram
 
-==============================
+******************************
 O-DU High Thread Architecture
-==============================
+******************************
 
 As shown in Figure 1, there are multiple entities within O-DU High. Modules sharing a
 given color belong to one thread. O-DU architecture can be defined at a thread
@@ -44,12 +44,12 @@ level as follows:
 
 - Thread 8: O1
 
-=================
+*****************
 O-DU High Modules
-=================
+*****************
 
 DU APP 
-************
+------
 
 This module configures and manages all the operations of O-DU.
 It interfaces with external entities as follows:
@@ -78,7 +78,7 @@ DU App submodules are as follows:
 - ASN.1 Codecs contain ASN.1 encode/decode functions which are used for System information, F1AP and E2AP messages.
 
 5G NR RLC
-************
+---------
 
 This module provides services for transferring the control and data messages
 between MAC layer and O-CU (via DU App).
@@ -87,7 +87,7 @@ between MAC layer and O-CU (via DU App).
 uplink and downlink functionality respectively. 
 
 5G NR MAC
-************
+------------
 
 This module uses the services of the NR physical layer to send and receive data
 on the various logical channels.
@@ -98,20 +98,20 @@ Functions of the 5G NR MAC module are as follows:
   specification. It has a receiver thread to handle messages from L1.
 
 5G NR SCH
-**********
+----------
 
 - This module is completely encapuslated withing 5G NR MAC i.e. all interactions of the 5G NR SCH is via the 5G NR MAC.
 - Schedules resources in UL and DL for cell and UE based procedures.
 - SCH framework design supports plugging-in new scheduling algorithm easily. Refer to section "Scheduler Framework with plug-in support" in Developer-Guide document for details.
 
 O-DU Utility and Common Functions
-*********************************
+---------------------------------
 
 These modules contain platform specific files and support O-DU High functionality and message exchanges.
 
 
 O1 Module
-*********
+---------
 
 .. figure:: ODU-O1-Arch.jpg
   :width: 554
@@ -156,83 +156,99 @@ As shown in Figure 3, O-DU High interfaces with the following modules:
 
   - Interface Management
 
-    - F1 Setup
-
-    - gNB-DU Configuration Update
-
-    - F1 Reset
-
-    - PAGING
+      - F1 Setup
+       
+      - gNB-DU Configuration Update
+       
+      - F1 Reset
+       
+      - PAGING
 
   - UE Context Management 
 
-    - UE Context Setup
+      - UE Context Setup
 
-    - UE Context Modification
+      - UE Context Modification
 
-    - UE Context Release
+      - UE Context Release
 
   - RRC Message Transfer
 		
-    - Initial UL RRC Message Transfer
+      - Initial UL RRC Message Transfer
 
-    - DL RRC Message Transfer
+      - DL RRC Message Transfer
 
-    - UL RRC Message Transfer
+      - UL RRC Message Transfer
 
-    - RRC Delivery Report
+      - RRC Delivery Report
 
 - Near RT RIC: O-DU High communicates with Near RT RIC on the E2 interface. The below E2AP messages are
-  implemented, as per ORAN WG3.E2AP v02.00:
+  implemented, as per O-RAN.WG3.E2GAP-R003-v03.00 and O-RAN.WG3.E2AP-R003-v03.00.
 
   - Global Procedures
 
-    - E2 Setup
+      - E2 Setup
 
-    - E2 Node Configuration Update 
+      - E2 Node Configuration Update 
     
-    - E2 Reset
+      - RIC Service Update 
 
+      - E2 Connection Update
+
+      - E2 Removal
+    
+      - E2 Reset
+
+      - Error Indication
+      
   - Near RT RIC Functional Procedures
 		
-    - RIC Subscription
+      - RIC Subscription
 
-    - RIC Indication
+      - RIC Subscription Modification
+
+      - RIC Subscription Modification Required
+
+      - RIC Subscription Delete
+
+      - RIC Subscription Delete Required
+
+      - RIC Indication
 
 - O-DU Low: O-DU High communicates with O-DU Low on the FAPI interface. The below FAPI messages are supported, 
   as per FAPI interface files shared by Intel:
 
   - P5 messages - PHY mode control interface
-	
-    - PARAM.request/PARAM.response
+	   
+      - PARAM.request/PARAM.response
 
-    - CONFIG.request/CONFIG.response
+      - CONFIG.request/CONFIG.response
 
-    - START.request
+      - START.request
 
-    - STOP.request
+      - STOP.request
 
-    - STOP.indication
+      - STOP.indication
 
   - P7 messages - Main data path interface
 
-    - DL_TTI.request
+      - DL_TTI.request
 
-    - UL_TTI.request
+      - UL_TTI.request
 
-    - SLOT.indication
+      - SLOT.indication
 
-    - UL_DCI.request
+      - UL_DCI.request
 
-    - TX_Data.request
+      - TX_Data.request
 
-    - RX_Data.indication
+      - RX_Data.indication
 
-    - CRC.indication
+      - CRC.indication
 
-    - UCI.indication
+      - UCI.indication
 
-    - RACH.indication
+      - RACH.indication
 
 - OAM: O-DU High communicates with OAM on the O1 interface.
 
@@ -242,9 +258,8 @@ As shown in Figure 3, O-DU High interfaces with the following modules:
 O-DU High functionality
 ***********************
 
-===============================
 Cell Up and Broadcast Procedure
-===============================
+-------------------------------
 
 This section describes the cell-up procedure within O-DU High.
 
@@ -288,9 +303,8 @@ As seen in the Figure 4,
 - The 5G NR MAC mutiplexes the PDU and sends SSB/SIB1 packets towards the O-DU Low through the Lower MAC.
 
 
-=====================
 UE Related Procedure
-=====================
+---------------------
 
 The O-DU High supports 
 
@@ -352,9 +366,8 @@ Figure 5 below depicts the above call flow, inclusive of all interfaces:
 
   - RRC Release
 
-================================
 Closed Loop Automation Procedure
-================================
+--------------------------------
 
 This section describes the closed loop automation procedure within O-DU High.
 
@@ -379,9 +392,8 @@ This section describes the closed loop automation procedure within O-DU High.
 
 7. On receiving cell bring up command from SMO, the complete Cell bring up and UE attach procedure will be repeated (as explained in above sections)
 
-===================================
 O1 Netconf get-alarm list procedure
-===================================
+-----------------------------------
 
 This section describes the *Health Status Retrieval* scenario of O-DU High health-check. It enables a northbound client(SMO) to retrieve the health of the O-DU High based on the last self-check performed. The alarm-list is provided as the response to the request via O1 Netconf interface.
 
@@ -404,9 +416,8 @@ As seen in the Figure 7,
 
 - The callback function fetches the alarm list from Alarm Manager and sends it back to the client (SMO/OAM) via  Netconf interface. 
 
-==========================
 Network Slicing procedure
-==========================
+--------------------------
 
 This section describes the Network Slicing feature within O-DU High.
 
@@ -431,9 +442,8 @@ As seen in the Figure 8,
 
 - Scheduler updates the received Slice Configuration in its DB and sends back the Slice Reconfiguration Response to MAC and further MAC forwards it to DU APP. Scheduler applies the optimized RRM policies for the dedicated slice.
 
-==========================
 Idle Mode Paging procedure
-==========================
+--------------------------
 
 This section describes the Idle Mode Paging procedure within O-DU High.
 
@@ -456,9 +466,8 @@ As seen in the Figure 9,
 
 - MAC forwards the PAGE to PHY in TX_Data.Request.
 
-==============================
 Inter-DU Handover within O-CU
-==============================
+------------------------------
 
 This section describes the handling of inter-DU handover of a UE within O-DU High.
 
@@ -502,9 +511,8 @@ Assumption: UE is RRC connected with DU and PDU data session is active.
 
 - The source O-DU responds to O-CU with UE CONTEXT RELEASE COMPLETE message.
 
-==============================
 Inter-CU Handover (Xn-Based)
-==============================
+------------------------------
 
 This section describes the handling of inter-CU handover of a UE over Xn interface.
 
@@ -569,9 +577,8 @@ Call Flow :
 
 - DU releases UE context at all layers and responds to source GNB CU with UE CONTEXT RELEASE COMPLETE message.
 
-=============================
 Discontinuous reception (DRX)
-=============================
+-----------------------------
 
 This section describes the Discontinuous reception (DRX) feature within O-DU High.
 
@@ -618,9 +625,185 @@ This section describes the Discontinuous reception (DRX) feature within O-DU Hig
 
 - If O-DU receives DRX configuration release indicator IE as a part of UE CONTEXT MODIFICATION REQUEST from O-CU, DU APP will forward this indicator to MAC which forwards it to SCH as part of UE reconfiguration request. In this case SCH stops all DRX timers, deletes DRX configuration and marks UE as active by default. 
 
-***********************
+
+E2AP Functionality
+------------------
+
+O-DU High communicates with Near RT RIC on the E2 interface using various Global Procedures and Near-RT RIC Functional Procedures.
+The implementation of these procedures are strictly compliant to O-RAN.WG3.E2GAP-R003-v03.00, O-RAN.WG3.E2AP-R003-v03.00.
+
+ODU-High supports E2 Service Model-Key Performance Measurement, compliant to O-RAN.WG3.E2SM-KPM-R003-v03.00.
+Following KPIs are implemented in ODU-High as part of E2SM-KPM. These comply with 3GPP 28.552 v15.6.0 section 5.1.1.2 Radio resource utilization.
+
++--------------------------------+-----------+-----------------------------------------+
+|    KPI                         | Section   | Remark                                  |
++================================+===========+=========================================+
+|DL Total PRB Usage(RRU.PrbTotDl)| 5.1.1.2.1 | Calulates the total usage of PRBs on DL |
++--------------------------------+-----------+-----------------------------------------+
+|UL Total PRB Usage(RRU.PrbTotUl)| 5.1.1.2.2 | Calulates the total usage of PRBs on UL |
++--------------------------------+-----------+-----------------------------------------+
+
+E2 API Flow Triggered in ODU-High's stub-based test framework 
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+This section describes the E2AP messages triggered when executing O-DU High in stub-based test framework.
+
+
+.. figure:: E2AP_Flow_Triggered_In_Code.PNG
+  :width: 600
+  :alt: E2AP Flow Triggered In Code 
+
+  Figure 16 - E2AP Flow Triggered In Code
+
+E2AP Procedures Supported in ODU-High
+++++++++++++++++++++++++++++++++++++++
+
+This section contains flow diagrams for E2AP procedures that may/may not be triggered in ODU-High, however the code supports its working  as per O-RAN WG3 E2 specifications.
+
+
+E2 Setup Procedure
+^^^^^^^^^^^^^^^^^^
+
+
+This section describes the E2 Setup Procedure within O-DU High and Near-RT RIC. 
+
+
+.. figure:: E2_Setup_Procedure.PNG 
+   :width: 600
+   :alt: E2 Setup Procedure
+
+   Figure 17 - E2 Setup Procedure
+
+E2 Node Configuration Update Procedure
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+This section describes the E2 Node Configuration Procedure within O-DU High and Near-RT RIC. 
+
+.. figure:: E2_Node_Configuration_Update_Procedure.PNG
+   :width: 600
+   :alt: E2 Node Configuration Update Procedure
+
+   Figure 18 - E2 Node Configuration Update Procedure
+
+
+RIC Service Update procedure
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+This section describes the RIC Service Update Procedure within O-DU High and Near-RT RIC.
+Note - This API is not currently triggered by ODU-High.
+
+.. figure:: RIC_Service_Update_Procedure.PNG 
+   :width: 600
+   :alt: RIC Service Update Procedure
+
+   Figure 19 - RIC Service Update Procedure
+
+
+E2 Connection Update Procedure
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+This section describes the E2 Connection Update Procedure within O-DU High and Near-RT RIC.
+Note - This API is not currently triggered by stub-based framework.
+
+.. figure:: E2_Connection_Update_Procedure.PNG 
+   :width: 600
+   :alt: E2 Connection Update Procedure
+
+   Figure 20 - E2 Connection Update Procedure
+
+
+E2 Removal Procedure
+^^^^^^^^^^^^^^^^^^^^
+
+This section describes the E2 removal Procedure from both DU-initiated and RIC-initiated within O-DU High and Near-RT RIC.
+Note - This API is not currently triggered by ODU-High or Stub-based test framework as of now.
+
+.. figure:: E2_Removal_Procedure(DU-initiated).PNG 
+   :width: 600
+   :alt: E2 Removal Procedure(DU-initiated)
+
+   Figure 21 - E2 Removal Procedure(DU-initiated)
+
+.. figure:: E2_Removal_Procedure(RIC-initiated).PNG 
+   :width: 600
+   :alt: E2 Removal Procedure(RIC-initiated)
+
+   Figure 22 - E2 Removal Procedure(RIC-initiated)
+
+
+Reset Procedure
+^^^^^^^^^^^^^^^
+
+This section describes the Reset Procedure from both DU-initiated and RIC-initiated within O-DU High and Near-RT RIC.
+Note - This API is not currently triggered by ODU-High or Stub-based test framework as of now.
+
+.. figure:: Reset_Procedure(DU-initiated).PNG 
+   :width: 600
+   :alt: Reset Procedure(DU-initiated)
+
+   Figure 23 - Reset Procedure(DU-initiated)
+
+.. figure:: Reset_Procedure(RIC-initiated).PNG 
+   :width: 600
+   :alt: Reset Procedure(RIC-initiated)
+
+   Figure 24 - Reset Procedure(RIC-initiated)
+
+
+
+
+Error Indication Procedure
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+This procedure can be triggered from either O-DU or Near-RT RIC. It informs that an error has been found in DU or Near-RT RIC.
+Note - This API is not currently triggered by ODU-High or Stub-based test framework as of now.
+
+RIC Subscription Procedure / RIC Indication
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+This section describes the RIC Subscription Procedure within O-DU High and Near-RT RIC. In addition to this procedure, the RIC indication procedure has been described.
+
+.. figure:: RIC_Subscription_Procedure.PNG 
+   :width: 600
+   :alt: RIC Subscription Procedure
+
+   Figure 25 - RIC Subscription Procedure
+
+
+RIC Subscription Modification Required
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Only framework is added as part of this procedure. The complete handling and flow will be added once use-case is determined.
+
+
+RIC Subscription Modification Procedure
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+This section describes the RIC Subscription Modification Procedure within O-DU High and Near-RT RIC.
+Note - This API is not currently triggered by stub-based framework.
+
+.. figure:: RIC_Subscription_Modification_Procedure.png
+   :width: 600
+   :alt: RIC Subscription Modification Procedure
+
+   Figure 26 - RIC Subscription Modification Procedure
+
+
+RIC Subscription Delete Procedure
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+This section describes the RIC Subscription Delete Procedure within O-DU High and Near-RT RIC.
+Note - This API is not currently triggered by stub-based framework.
+
+.. figure:: RIC_Subscription_Delete_Procedure.PNG
+   :width: 600
+   :alt: RIC Subscription Delete Procedure
+
+   Figure 27 - RIC Subscription Delete Procedure
+
+
 OSC Testcases Supported
-***********************
+-----------------------
 
 The O-DU High partially supports below use-cases:
 
