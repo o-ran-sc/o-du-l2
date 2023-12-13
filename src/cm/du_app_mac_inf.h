@@ -649,8 +649,7 @@ typedef enum
 typedef struct plmnInfoList
 {
    Plmn           plmn;
-   uint8_t        numSupportedSlice; /* Total slice supporting */
-   Snssai         **snssai;         /* List of supporting snssai*/
+   SupportedSliceList suppSliceList;
 }PlmnInfoList;
 
 typedef struct schPageCfg
