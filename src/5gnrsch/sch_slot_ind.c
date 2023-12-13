@@ -238,7 +238,6 @@ bool schFillBoGrantDlSchedInfo(SchCellCb *cell, SlotTimingInfo currTime, uint8_t
 
    schAllocPucchResource(cell, pucchTime, crnti, ueCb, isRetx, *hqP);
 
-   cell->schDlSlotInfo[pdcchTime.slot]->pdcchUe = ueId;
    cell->schDlSlotInfo[pdschTime.slot]->pdschUe = ueId;
    cell->schUlSlotInfo[pucchTime.slot]->pucchUe = ueId;
 
@@ -429,15 +428,15 @@ bool findValidK0K1Value(SchCellCb *cell, SlotTimingInfo currTime, uint8_t ueId, 
    }
 #endif
 
-   if(cell->schDlSlotInfo[pdcchTime->slot]->pdcchUe != 0)
-   {
-      return false;
-   }
-
    if(dedMsg == true)
    {
       ueCb = &cell->ueCb[ueId-1];
       k0K1InfoTbl = &ueCb->k0K1InfoTbl;
+      if(schDlCandidateSelection(ueCb, *pdcchTime) == false)
+      {
+        DU_LOG("\nDEBUG  --> SCH: DL candidate Selection failed bcz PDCCH is unavailable for this slot");
+        return false;     
+      }
    }
    else
    {
@@ -461,6 +460,12 @@ bool findValidK0K1Value(SchCellCb *cell, SlotTimingInfo currTime, uint8_t ueId, 
             k0Val = *(ueCb->ueCfg.spCellCfg.servCellRecfg.initDlBwp.pdschCfg.timeDomRsrcAllociList[k0Index].k0);
             *pdschStartSymbol = ueCb->ueCfg.spCellCfg.servCellRecfg.initDlBwp.pdschCfg.timeDomRsrcAllociList[k0Index].startSymbol;
             *pdschSymblLen = ueCb->ueCfg.spCellCfg.servCellRecfg.initDlBwp.pdschCfg.timeDomRsrcAllociList[k0Index].symbolLength;
+         }
+         else
+         {
+            k0Val = cell->cellCfg.dlCfgCommon.schInitialDlBwp.pdschCommon.timeDomRsrcAllocList[k0Index].k0;
+            *pdschStartSymbol = cell->cellCfg.dlCfgCommon.schInitialDlBwp.pdschCommon.timeDomRsrcAllocList[k0Index].startSymbol;
+            *pdschSymblLen = cell->cellCfg.dlCfgCommon.schInitialDlBwp.pdschCommon.timeDomRsrcAllocList[k0Index].lengthSymbol;
          }
       }
 
@@ -489,6 +494,10 @@ bool findValidK0K1Value(SchCellCb *cell, SlotTimingInfo currTime, uint8_t ueId, 
             if(ueCb->ueCfg.spCellCfg.servCellRecfg.initUlBwp.pucchCfg.dlDataToUlAck)
             {
                k1Val = ueCb->ueCfg.spCellCfg.servCellRecfg.initUlBwp.pucchCfg.dlDataToUlAck->dlDataToUlAckList[k1Index];
+            }
+            else
+            {
+               k1Val = defaultUlAckTbl[k1Index];
             }
          }
          ADD_DELTA_TO_TIME((*pdschTime),(*pucchTime), k1Val, cell->numSlots);
