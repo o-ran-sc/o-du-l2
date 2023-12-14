@@ -238,7 +238,6 @@ bool schFillBoGrantDlSchedInfo(SchCellCb *cell, SlotTimingInfo currTime, uint8_t
 
    schAllocPucchResource(cell, pucchTime, crnti, ueCb, isRetx, *hqP);
 
-   cell->schDlSlotInfo[pdschTime.slot]->pdschUe = ueId;
    cell->schUlSlotInfo[pucchTime.slot]->pucchUe = ueId;
 
    /*Re-setting the BO's of all DL LCs in this UE*/
@@ -476,10 +475,6 @@ bool findValidK0K1Value(SchCellCb *cell, SlotTimingInfo currTime, uint8_t ueId, 
          continue;
       }
 #endif
-      if(cell->schDlSlotInfo[pdschTime->slot]->pdschUe != 0)
-      {
-         continue; 
-      }
 
       numK1 = k0K1InfoTbl->k0k1TimingInfo[pdcchTime->slot].k0Indexes[k0TblIdx].k1TimingInfo.numK1;
       for(k1TblIdx = 0; k1TblIdx < numK1; k1TblIdx++)

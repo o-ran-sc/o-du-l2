@@ -1896,7 +1896,6 @@ uint8_t schProcessMsg4Req(SchCellCb *cell, SlotTimingInfo currTime, uint8_t ueId
    schAllocPucchResource(cell, pucchTime, cell->raCb[ueId-1].tcrnti, &cell->ueCb[ueId-1], isRetxMsg4, *msg4HqProc);
 
    cell->schDlSlotInfo[pdcchTime.slot]->pdcchUe = ueId;
-   cell->schDlSlotInfo[pdschTime.slot]->pdschUe = ueId;
    cell->schUlSlotInfo[pucchTime.slot]->pucchUe = ueId;
    cell->raCb[ueId-1].msg4recvd = FALSE;
    if(isRetxMsg4)
