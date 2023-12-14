@@ -16,6 +16,75 @@
       "message": "add commands to install libxml2 \nalso add in readme",
       "revId": "86d569fa45c56cbd9370b59e00f925c9348a739d",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cdc434fa_d28715cf",
+        "filename": "docs/user-guide.rst",
+        "patchSetId": 2
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-12-14T10:20:37Z",
+      "side": 1,
+      "message": "9.0.1",
+      "range": {
+        "startLine": 69,
+        "startChar": 61,
+        "endLine": 69,
+        "endChar": 66
+      },
+      "revId": "86d569fa45c56cbd9370b59e00f925c9348a739d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "02ccbf44_462090e1",
+        "filename": "docs/user-guide.rst",
+        "patchSetId": 2
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-12-14T10:20:37Z",
+      "side": 1,
+      "message": "9.0.1",
+      "range": {
+        "startLine": 74,
+        "startChar": 57,
+        "endLine": 74,
+        "endChar": 62
+      },
+      "revId": "86d569fa45c56cbd9370b59e00f925c9348a739d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "afbd23d5_dbff4145",
+        "filename": "docs/user-guide.rst",
+        "patchSetId": 2
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-12-14T10:20:37Z",
+      "side": 1,
+      "message": "9.0.1",
+      "range": {
+        "startLine": 79,
+        "startChar": 49,
+        "endLine": 79,
+        "endChar": 54
+      },
+      "revId": "86d569fa45c56cbd9370b59e00f925c9348a739d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
   ]
 }
