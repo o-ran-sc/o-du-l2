@@ -247,6 +247,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1d6d4b37_d151c00e",
+        "filename": "docs/overview.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 675,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-12-14T09:59:16Z",
+      "side": 1,
+      "message": "E2AP Procedures Supported in ODU-High",
+      "range": {
+        "startLine": 675,
+        "startChar": 5,
+        "endLine": 675,
+        "endChar": 15
+      },
+      "revId": "86091fb99614aeaa217cc334a92ad1efdfeee313",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2247bc55_f4c5bc24",
         "filename": "docs/release-notes.rst",
         "patchSetId": 1
