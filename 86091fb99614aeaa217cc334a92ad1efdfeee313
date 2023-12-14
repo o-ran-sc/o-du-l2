@@ -18,6 +18,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4a398316_5f69febb",
+        "filename": "docs/api-docs.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-12-14T10:09:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ad3323b4_d2454234",
+      "revId": "86091fb99614aeaa217cc334a92ad1efdfeee313",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5d205aed_2f1a5136",
@@ -31,6 +49,24 @@
       "writtenOn": "2023-12-14T08:24:31Z",
       "side": 1,
       "message": "F1 Interface APIs",
+      "revId": "86091fb99614aeaa217cc334a92ad1efdfeee313",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "aac162a7_c6939106",
+        "filename": "docs/api-docs.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-12-14T10:09:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5d205aed_2f1a5136",
       "revId": "86091fb99614aeaa217cc334a92ad1efdfeee313",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -58,6 +94,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "84e02d21_68175630",
+        "filename": "docs/api-docs.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-12-14T10:09:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7f9c1e50_26fe5cf6",
+      "range": {
+        "startLine": 93,
+        "startChar": 28,
+        "endLine": 93,
+        "endChar": 45
+      },
+      "revId": "86091fb99614aeaa217cc334a92ad1efdfeee313",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f6ab2f0d_03fbda52",
@@ -71,6 +131,24 @@
       "writtenOn": "2023-12-14T08:24:31Z",
       "side": 1,
       "message": "ODU-High Internal Interface APIs",
+      "revId": "86091fb99614aeaa217cc334a92ad1efdfeee313",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fd74d95d_9c06ec78",
+        "filename": "docs/api-docs.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-12-14T10:09:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f6ab2f0d_03fbda52",
       "revId": "86091fb99614aeaa217cc334a92ad1efdfeee313",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -92,6 +170,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "dc7d7e97_a83b5183",
+        "filename": "docs/api-docs.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-12-14T10:09:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4def6e6c_e1778946",
+      "revId": "86091fb99614aeaa217cc334a92ad1efdfeee313",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "89bea8af_d419664b",
@@ -105,6 +201,24 @@
       "writtenOn": "2023-12-14T08:24:31Z",
       "side": 1,
       "message": "E2 Interface APIs",
+      "revId": "86091fb99614aeaa217cc334a92ad1efdfeee313",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c0d901f8_5128c06c",
+        "filename": "docs/api-docs.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 320,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-12-14T10:09:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "89bea8af_d419664b",
       "revId": "86091fb99614aeaa217cc334a92ad1efdfeee313",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -126,6 +240,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2d9c8d7c_7636e39e",
+        "filename": "docs/api-docs.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 324,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-12-14T10:09:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0b899a08_d29cd944",
+      "revId": "86091fb99614aeaa217cc334a92ad1efdfeee313",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1af3d21a_bd44a092",
@@ -139,6 +271,24 @@
       "writtenOn": "2023-12-14T08:24:31Z",
       "side": 1,
       "message": "Since we have mentioned both E2AP and E2GAP spec above, the reader will not know that the sections listed below are from which spec.\n\nSo mention in Section from O-RAN.WG3.E2AP-R003-v03.00",
+      "revId": "86091fb99614aeaa217cc334a92ad1efdfeee313",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1b3844e6_ae6fdc19",
+        "filename": "docs/api-docs.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 327,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-12-14T10:09:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1af3d21a_bd44a092",
       "revId": "86091fb99614aeaa217cc334a92ad1efdfeee313",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -160,6 +310,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7ade8f74_c9e27132",
+        "filename": "docs/api-docs.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 366,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-12-14T10:09:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c8020b73_b4569064",
+      "revId": "86091fb99614aeaa217cc334a92ad1efdfeee313",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3c18d373_5b82d7a6",
@@ -173,6 +341,24 @@
       "writtenOn": "2023-12-14T08:24:31Z",
       "side": 1,
       "message": "This is not API, hence it should be part of E2AP feature development section",
+      "revId": "86091fb99614aeaa217cc334a92ad1efdfeee313",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e2fd67ff_d3d81ad1",
+        "filename": "docs/api-docs.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 411,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-12-14T10:09:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3c18d373_5b82d7a6",
       "revId": "86091fb99614aeaa217cc334a92ad1efdfeee313",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -194,6 +380,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "82e19a16_f75f816b",
+        "filename": "docs/installation-guide.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-12-14T10:09:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "22e926ca_3f2d7436",
+      "revId": "86091fb99614aeaa217cc334a92ad1efdfeee313",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6de5845a_93b7225d",
@@ -207,6 +411,24 @@
       "writtenOn": "2023-12-14T08:24:31Z",
       "side": 1,
       "message": "No need to mention E2SM-KPM here",
+      "revId": "86091fb99614aeaa217cc334a92ad1efdfeee313",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "277fd2eb_964d5da9",
+        "filename": "docs/overview.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 186,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-12-14T10:09:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6de5845a_93b7225d",
       "revId": "86091fb99614aeaa217cc334a92ad1efdfeee313",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -228,6 +450,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2a1322ca_d3039fca",
+        "filename": "docs/overview.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 224,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-12-14T10:09:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "182a3228_419a33ba",
+      "revId": "86091fb99614aeaa217cc334a92ad1efdfeee313",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5fae6f89_9234c27d",
@@ -241,6 +481,24 @@
       "writtenOn": "2023-12-14T08:24:31Z",
       "side": 1,
       "message": "Make a parent section for E2AP and keep below 2 sections as sub-sections within it",
+      "revId": "86091fb99614aeaa217cc334a92ad1efdfeee313",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "33ba12e0_a5cf9689",
+        "filename": "docs/overview.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 644,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-12-14T10:09:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5fae6f89_9234c27d",
       "revId": "86091fb99614aeaa217cc334a92ad1efdfeee313",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -268,6 +526,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4a1439e8_fe1a3cea",
+        "filename": "docs/overview.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 675,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-12-14T10:09:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1d6d4b37_d151c00e",
+      "range": {
+        "startLine": 675,
+        "startChar": 5,
+        "endLine": 675,
+        "endChar": 15
+      },
+      "revId": "86091fb99614aeaa217cc334a92ad1efdfeee313",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2247bc55_f4c5bc24",
@@ -281,6 +563,24 @@
       "writtenOn": "2023-12-14T08:24:31Z",
       "side": 1,
       "message": "update date",
+      "revId": "86091fb99614aeaa217cc334a92ad1efdfeee313",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "984b9730_0fee1e12",
+        "filename": "docs/release-notes.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-12-14T10:09:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2247bc55_f4c5bc24",
       "revId": "86091fb99614aeaa217cc334a92ad1efdfeee313",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -319,6 +619,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ba20c261_6f81bfbc",
+        "filename": "docs/release-notes.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 249,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-12-14T10:09:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9da7e73c_2c7ebf93",
+      "revId": "86091fb99614aeaa217cc334a92ad1efdfeee313",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3ca1705b_d46048cf",
@@ -332,6 +650,24 @@
       "writtenOn": "2023-12-14T08:24:31Z",
       "side": 1,
       "message": "E2 interface is limited to KPM service model.",
+      "revId": "86091fb99614aeaa217cc334a92ad1efdfeee313",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a2b92ca7_d542f01a",
+        "filename": "docs/release-notes.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 706,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-12-14T10:09:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3ca1705b_d46048cf",
       "revId": "86091fb99614aeaa217cc334a92ad1efdfeee313",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -359,6 +695,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "abac37f3_5981b27c",
+        "filename": "docs/release-notes.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 720,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-12-14T10:09:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7a459995_cd2f217d",
+      "range": {
+        "startLine": 720,
+        "startChar": 2,
+        "endLine": 720,
+        "endChar": 128
+      },
+      "revId": "86091fb99614aeaa217cc334a92ad1efdfeee313",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ae3f14e1_35be928e",
@@ -376,6 +736,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "032a18d9_fc8aeb25",
+        "filename": "docs/release-notes.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 722,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-12-14T10:09:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ae3f14e1_35be928e",
+      "revId": "86091fb99614aeaa217cc334a92ad1efdfeee313",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "792b518c_973125ab",
@@ -389,6 +767,24 @@
       "writtenOn": "2023-12-14T08:24:31Z",
       "side": 1,
       "message": "version 9\n\nCheck in all files",
+      "revId": "86091fb99614aeaa217cc334a92ad1efdfeee313",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f8f80a44_f9b50e13",
+        "filename": "docs/release-notes.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 757,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-12-14T10:09:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "792b518c_973125ab",
       "revId": "86091fb99614aeaa217cc334a92ad1efdfeee313",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
