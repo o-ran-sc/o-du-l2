@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "17c79693_79616cfc",
+        "filename": "docs/installation-guide.rst",
+        "patchSetId": 2
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-12-14T10:16:24Z",
+      "side": 1,
+      "message": "add commands to install libxml2 \nalso add in readme",
+      "revId": "86d569fa45c56cbd9370b59e00f925c9348a739d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
