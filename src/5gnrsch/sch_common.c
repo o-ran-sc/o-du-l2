@@ -816,9 +816,9 @@ uint16_t schAllocPucchResource(SchCellCb *cell, SlotTimingInfo pucchTime, uint16
  * ****************************************************************/
 uint8_t schDlRsrcAllocDlMsg(SchCellCb *cell, SlotTimingInfo slotTime, uint16_t crnti,
                 uint32_t tbSize, DlMsgSchInfo *dlMsgAlloc, uint16_t startPRB, uint8_t pdschStartSymbol,
-                uint8_t pdschNumSymbols, bool isRetx, SchDlHqProcCb *hqP)
+                uint8_t pdschNumSymbols, bool isRetx, SchDlHqProcCb *hqP, SchPdcchAllocInfo pdcchAllocInfo)
 {
-   uint8_t ueId=0;
+   uint8_t ueId=0, ssIdx = 0, cRSetIdx = 0;;
    uint8_t cwCount = 0, rbgCount = 0, pdcchStartSymbol = 0;
    PdcchCfg *pdcch = NULLP;
    PdschCfg *pdsch = NULLP;
@@ -840,8 +840,25 @@ uint8_t schDlRsrcAllocDlMsg(SchCellCb *cell, SlotTimingInfo slotTime, uint16_t c
 
    GET_UE_ID(crnti, ueId);
    ueCb  = cell->ueCb[ueId-1];
-   coreset1 = ueCb.ueCfg.spCellCfg.servCellRecfg.initDlBwp.pdcchCfg.cRSetToAddModList[0];
-   searchSpace = ueCb.ueCfg.spCellCfg.servCellRecfg.initDlBwp.pdcchCfg.searchSpcToAddModList[0];
+
+   for(cRSetIdx = 0; cRSetIdx < ueCb.ueCfg.spCellCfg.servCellRecfg.initDlBwp.pdcchCfg.numCRsetToAddMod; cRSetIdx++)
+   {
+      if(ueCb.ueCfg.spCellCfg.servCellRecfg.initDlBwp.pdcchCfg.cRSetToAddModList[cRSetIdx].cRSetId\
+                   == pdcchAllocInfo.cRSetId)
+      {
+         coreset1 = ueCb.ueCfg.spCellCfg.servCellRecfg.initDlBwp.pdcchCfg.cRSetToAddModList[cRSetIdx];
+         break;
+      }
+   }
+   for(ssIdx = 0; ssIdx < ueCb.ueCfg.spCellCfg.servCellRecfg.initDlBwp.pdcchCfg.numSearchSpcToAddMod; ssIdx++)
+   {
+      if(ueCb.ueCfg.spCellCfg.servCellRecfg.initDlBwp.pdcchCfg.searchSpcToAddModList[ssIdx].searchSpaceId\
+                     ==  pdcchAllocInfo.ssId)
+      {
+         searchSpace = ueCb.ueCfg.spCellCfg.servCellRecfg.initDlBwp.pdcchCfg.searchSpcToAddModList[ssIdx];
+         break;
+      }
+   }
    pdschCfg = ueCb.ueCfg.spCellCfg.servCellRecfg.initDlBwp.pdschCfg;
 
    /* fill BWP */
@@ -889,8 +906,8 @@ uint8_t schDlRsrcAllocDlMsg(SchCellCb *cell, SlotTimingInfo slotTime, uint16_t c
    /*TODO below assumptions of CCE Index is wrong:
     * Range 0 to 135 as per ORAN.WG8.AAD Table 9-35 CORESET configuration and
     * it has to be calculated using the formula given in 3GPP TS 38.213, Sec 10.1 */
-   pdcch->dci.cceIndex = 0; /* 0-3 for UL and 4-7 for DL */
-   pdcch->dci.aggregLevel = 4;
+   pdcch->dci.cceIndex = pdcchAllocInfo.cceIndex; 
+   pdcch->dci.aggregLevel = pdcchAllocInfo.aggLvl;
    pdcch->dci.beamPdcchInfo.numPrgs = 1;
    pdcch->dci.beamPdcchInfo.prgSize = 1;
    pdcch->dci.beamPdcchInfo.digBfInterfaces = 0;
@@ -1797,7 +1814,7 @@ uint8_t schProcessMsg4Req(SchCellCb *cell, SlotTimingInfo currTime, uint8_t ueId
    }
 
    if(findValidK0K1Value(cell, currTime, ueId, false, &pdschStartSymbol, &pdschNumSymbols, &pdcchTime, &pdschTime,\
-            &pucchTime, isRetxMsg4, *msg4HqProc) != true )
+            &pucchTime, isRetxMsg4, *msg4HqProc, NULLP) != true )
    {
       DU_LOG("\nERROR  -->  SCH: schProcessMsg4Req() : k0 k1 not found");
       return RFAILED;
@@ -2525,7 +2542,7 @@ bool schCheckPdcchAvail(SchCellCb *cellCb, SlotTimingInfo slotTime, uint8_t cceI
  *          [RETURN]: isPDCCHAllocted flag(true = UE can be selected as a
  *          candidate )
  * */
-bool schDlCandidateSelection(SchUeCb *ueCb, SlotTimingInfo pdcchTime)
+bool schDlCandidateSelection(SchUeCb *ueCb, SlotTimingInfo pdcchTime, SchPdcchAllocInfo *pdcchAllocInfo)
 {
     uint8_t cRSetIdx = 0, cceIndex = 0;
     uint8_t cqi = 0, candIdx = 0;
@@ -2582,6 +2599,10 @@ bool schDlCandidateSelection(SchUeCb *ueCb, SlotTimingInfo pdcchTime)
                if(schCheckPdcchAvail(ueCb->cellCb, pdcchTime, cceIndex, pdcchInfo,nextLowerAggLvl) == true)
                {
                   DU_LOG("\nINFO   -->  SCH: PDCCH allocation is successful at cceIndex:%d",cceIndex);
+                  pdcchAllocInfo->cRSetId = pdcchInfo->cRSetRef->cRSetId;
+                  pdcchAllocInfo->aggLvl = nextLowerAggLvl;
+                  pdcchAllocInfo->cceIndex = cceIndex;
+                  pdcchAllocInfo->ssId = pdcchInfo->ssRef->searchSpaceId;
                   return true;  
                }
            }

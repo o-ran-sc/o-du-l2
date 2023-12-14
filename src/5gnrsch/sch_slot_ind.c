@@ -100,6 +100,7 @@ bool schFillBoGrantDlSchedInfo(SchCellCb *cell, SlotTimingInfo currTime, uint8_t
    SchUeCb *ueCb = NULLP;
    DlMsgSchInfo *dciSlotAlloc, *dlMsgAlloc;
    SlotTimingInfo pdcchTime, pdschTime, pucchTime;
+   SchPdcchAllocInfo pdcchAllocInfo;
 
    GET_CRNTI(crnti,ueId);
    ueCb = &cell->ueCb[ueId-1];
@@ -113,7 +114,8 @@ bool schFillBoGrantDlSchedInfo(SchCellCb *cell, SlotTimingInfo currTime, uint8_t
    }
 
    if(findValidK0K1Value(cell, currTime, ueId, ueCb->k0K1TblPrsnt,\
-            &pdschStartSymbol, &pdschNumSymbols, &pdcchTime, &pdschTime, &pucchTime, isRetx, *hqP) != true )
+            &pdschStartSymbol, &pdschNumSymbols, &pdcchTime, &pdschTime, \
+            &pucchTime, isRetx, *hqP, &pdcchAllocInfo) != true )
    {
       /* If a valid combination of slots to scheduled PDCCH, PDSCH and PUCCH is
        * not found, do not perform resource allocation. Return from here. */
@@ -148,7 +150,8 @@ bool schFillBoGrantDlSchedInfo(SchCellCb *cell, SlotTimingInfo currTime, uint8_t
       return false;
 
    /*[Step6]: pdcch and pdsch data is filled */
-   if((schDlRsrcAllocDlMsg(cell, pdschTime, crnti, accumalatedSize, dciSlotAlloc, startPrb, pdschStartSymbol, pdschNumSymbols, isRetx, *hqP)) != ROK)
+   if((schDlRsrcAllocDlMsg(cell, pdschTime, crnti, accumalatedSize, dciSlotAlloc, startPrb,\
+                           pdschStartSymbol, pdschNumSymbols, isRetx, *hqP, pdcchAllocInfo)) != ROK)
    {
       DU_LOG("\nERROR  --> SCH : Scheduling of DL dedicated message failed");
 
@@ -412,7 +415,8 @@ PduTxOccsaion schCheckSib1Occ(SchCellCb *cell, SlotTimingInfo slotTime)
  *******************************************************************/
 bool findValidK0K1Value(SchCellCb *cell, SlotTimingInfo currTime, uint8_t ueId, bool dedMsg,
                         uint8_t *pdschStartSymbol, uint8_t *pdschSymblLen, SlotTimingInfo *pdcchTime,
-                        SlotTimingInfo *pdschTime, SlotTimingInfo *pucchTime, bool isRetx, SchDlHqProcCb *hqP)
+                        SlotTimingInfo *pdschTime, SlotTimingInfo *pucchTime, bool isRetx, SchDlHqProcCb *hqP,
+                        SchPdcchAllocInfo *pdcchAllocInfo)
 {
    uint8_t numK0 = 0, k0TblIdx = 0, k0Val = 0, k0Index =0 ;
    uint8_t k1TblIdx = 0, k1Index = 0, k1Val = 0, numK1 = 0;
@@ -432,7 +436,7 @@ bool findValidK0K1Value(SchCellCb *cell, SlotTimingInfo currTime, uint8_t ueId, 
    {
       ueCb = &cell->ueCb[ueId-1];
       k0K1InfoTbl = &ueCb->k0K1InfoTbl;
-      if(schDlCandidateSelection(ueCb, *pdcchTime) == false)
+      if(schDlCandidateSelection(ueCb, *pdcchTime, pdcchAllocInfo) == false)
       {
         DU_LOG("\nDEBUG  --> SCH: DL candidate Selection failed bcz PDCCH is unavailable for this slot");
         return false;     
