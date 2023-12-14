@@ -602,6 +602,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "09bf856f_d7d6818f",
+        "filename": "docs/release-notes.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 243,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-12-14T10:43:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a5885a60_10ce03ce",
+      "revId": "86091fb99614aeaa217cc334a92ad1efdfeee313",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9da7e73c_2c7ebf93",
