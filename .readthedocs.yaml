@@ -6,6 +6,8 @@ formats:
 
 build:
   os : ubuntu-20.04
+  tools:
+    python: "3.7"
   image: latest
 
 python:
