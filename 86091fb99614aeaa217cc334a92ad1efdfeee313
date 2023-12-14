@@ -1,0 +1,373 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ad3323b4_d2454234",
+        "filename": "docs/api-docs.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-12-14T08:24:31Z",
+      "side": 1,
+      "message": "Changes pending in \ncontainer-tag.yaml\nl2/releases/container-release-o-du-l2\nl2/releases/container-release-o-du-l2-cu-stub",
+      "revId": "86091fb99614aeaa217cc334a92ad1efdfeee313",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5d205aed_2f1a5136",
+        "filename": "docs/api-docs.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-12-14T08:24:31Z",
+      "side": 1,
+      "message": "F1 Interface APIs",
+      "revId": "86091fb99614aeaa217cc334a92ad1efdfeee313",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7f9c1e50_26fe5cf6",
+        "filename": "docs/api-docs.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-12-14T08:24:31Z",
+      "side": 1,
+      "message": "Notification",
+      "range": {
+        "startLine": 93,
+        "startChar": 28,
+        "endLine": 93,
+        "endChar": 45
+      },
+      "revId": "86091fb99614aeaa217cc334a92ad1efdfeee313",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f6ab2f0d_03fbda52",
+        "filename": "docs/api-docs.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-12-14T08:24:31Z",
+      "side": 1,
+      "message": "ODU-High Internal Interface APIs",
+      "revId": "86091fb99614aeaa217cc334a92ad1efdfeee313",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4def6e6c_e1778946",
+        "filename": "docs/api-docs.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-12-14T08:24:31Z",
+      "side": 1,
+      "message": "add E2 Handler",
+      "revId": "86091fb99614aeaa217cc334a92ad1efdfeee313",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "89bea8af_d419664b",
+        "filename": "docs/api-docs.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 320,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-12-14T08:24:31Z",
+      "side": 1,
+      "message": "E2 Interface APIs",
+      "revId": "86091fb99614aeaa217cc334a92ad1efdfeee313",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0b899a08_d29cd944",
+        "filename": "docs/api-docs.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 324,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-12-14T08:24:31Z",
+      "side": 1,
+      "message": "I dont this we need to mention E2SM-KPM here because APIs are listed in E2GAP and E2AP only",
+      "revId": "86091fb99614aeaa217cc334a92ad1efdfeee313",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1af3d21a_bd44a092",
+        "filename": "docs/api-docs.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 327,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-12-14T08:24:31Z",
+      "side": 1,
+      "message": "Since we have mentioned both E2AP and E2GAP spec above, the reader will not know that the sections listed below are from which spec.\n\nSo mention in Section from O-RAN.WG3.E2AP-R003-v03.00",
+      "revId": "86091fb99614aeaa217cc334a92ad1efdfeee313",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c8020b73_b4569064",
+        "filename": "docs/api-docs.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 366,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-12-14T08:24:31Z",
+      "side": 1,
+      "message": "Club this table with ODU-High Internal Interface APIs table",
+      "revId": "86091fb99614aeaa217cc334a92ad1efdfeee313",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3c18d373_5b82d7a6",
+        "filename": "docs/api-docs.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 411,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-12-14T08:24:31Z",
+      "side": 1,
+      "message": "This is not API, hence it should be part of E2AP feature development section",
+      "revId": "86091fb99614aeaa217cc334a92ad1efdfeee313",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "22e926ca_3f2d7436",
+        "filename": "docs/installation-guide.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-12-14T08:24:31Z",
+      "side": 1,
+      "message": "update to 14th",
+      "revId": "86091fb99614aeaa217cc334a92ad1efdfeee313",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6de5845a_93b7225d",
+        "filename": "docs/overview.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 186,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-12-14T08:24:31Z",
+      "side": 1,
+      "message": "No need to mention E2SM-KPM here",
+      "revId": "86091fb99614aeaa217cc334a92ad1efdfeee313",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "182a3228_419a33ba",
+        "filename": "docs/overview.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 224,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-12-14T08:24:31Z",
+      "side": 1,
+      "message": "Remove KPIs",
+      "revId": "86091fb99614aeaa217cc334a92ad1efdfeee313",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5fae6f89_9234c27d",
+        "filename": "docs/overview.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 644,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-12-14T08:24:31Z",
+      "side": 1,
+      "message": "Make a parent section for E2AP and keep below 2 sections as sub-sections within it",
+      "revId": "86091fb99614aeaa217cc334a92ad1efdfeee313",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2247bc55_f4c5bc24",
+        "filename": "docs/release-notes.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-12-14T08:24:31Z",
+      "side": 1,
+      "message": "update date",
+      "revId": "86091fb99614aeaa217cc334a92ad1efdfeee313",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a5885a60_10ce03ce",
+        "filename": "docs/release-notes.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 243,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-12-14T08:24:31Z",
+      "side": 1,
+      "message": "Add commit ID for last patch of documentation gerrits after all other gerrits are merged",
+      "revId": "86091fb99614aeaa217cc334a92ad1efdfeee313",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9da7e73c_2c7ebf93",
+        "filename": "docs/release-notes.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 249,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-12-14T08:24:31Z",
+      "side": 1,
+      "message": "update date",
+      "revId": "86091fb99614aeaa217cc334a92ad1efdfeee313",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3ca1705b_d46048cf",
+        "filename": "docs/release-notes.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 706,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-12-14T08:24:31Z",
+      "side": 1,
+      "message": "E2 interface is limited to KPM service model.",
+      "revId": "86091fb99614aeaa217cc334a92ad1efdfeee313",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7a459995_cd2f217d",
+        "filename": "docs/release-notes.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 720,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-12-14T08:24:31Z",
+      "side": 1,
+      "message": "Currently, only two Radio resource utilization related KPIs are calculated \n   - DL Total PRB Usage \n   - UL Total PRB Usage.",
+      "range": {
+        "startLine": 720,
+        "startChar": 2,
+        "endLine": 720,
+        "endChar": 128
+      },
+      "revId": "86091fb99614aeaa217cc334a92ad1efdfeee313",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ae3f14e1_35be928e",
+        "filename": "docs/release-notes.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 722,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-12-14T08:24:31Z",
+      "side": 1,
+      "message": "break into 2 points\n- Multi UE scheduling per TTI is supported up to 2 UEs as of now.\n- Currently, only DL supports multi-UE scheduling. UL supports single-UE scheduling per TTI",
+      "revId": "86091fb99614aeaa217cc334a92ad1efdfeee313",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "792b518c_973125ab",
+        "filename": "docs/release-notes.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 757,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-12-14T08:24:31Z",
+      "side": 1,
+      "message": "version 9\n\nCheck in all files",
+      "revId": "86091fb99614aeaa217cc334a92ad1efdfeee313",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
