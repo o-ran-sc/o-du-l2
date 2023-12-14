@@ -123,6 +123,13 @@
 #define MAX_PHR_REPORT 1 /*TODO: Range of PHR reports in multiple PHR.*/
 #define MAX_FAILURE_DET_RESOURCES 10 /*Spec 38.331 'maxNrofFailureDetectionResources'*/
 
+/*As per SCF222_5GFAPI, 'MaxDciPerSlot' defines this value but this parameter value is missing in Spec.*/
+#ifdef INTEL_FAPI
+   #define MAX_NUM_PDCCH 1
+#else
+   #define MAX_NUM_PDCCH 2 
+#endif
+
 #define ADD_DELTA_TO_TIME(crntTime, toFill, incr, numOfSlot)          \
 {                                                          \
    if ((crntTime.slot + incr) > (numOfSlot - 1))           \
@@ -617,7 +624,7 @@ typedef struct pdcchCfg
    /* coreset-0 configuration */
    CoresetCfg coresetCfg;
    uint16_t   numDlDci;
-   DlDCI      dci; /* as of now its only one DCI, later it will be numDlCi */
+   DlDCI      dci[MAX_NUM_PDCCH]; 
 } PdcchCfg;
 /* end of SIB1 PDCCH structures */
 
