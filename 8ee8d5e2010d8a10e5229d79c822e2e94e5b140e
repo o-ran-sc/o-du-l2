@@ -1,5 +1,52 @@
 {
-  "comments": [],
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e627ae90_ccd9ad19",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 3003,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-12-14T07:28:28Z",
+      "side": 1,
+      "message": "dciIndex",
+      "range": {
+        "startLine": 3003,
+        "startChar": 32,
+        "endLine": 3003,
+        "endChar": 33
+      },
+      "revId": "8ee8d5e2010d8a10e5229d79c822e2e94e5b140e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "146b97f6_579745a1",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 3022,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-12-14T07:28:28Z",
+      "side": 1,
+      "message": "dciIndex",
+      "range": {
+        "startLine": 3022,
+        "startChar": 43,
+        "endLine": 3022,
+        "endChar": 44
+      },
+      "revId": "8ee8d5e2010d8a10e5229d79c822e2e94e5b140e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ],
   "submitRequirementResults": [
     {
       "submitRequirement": {
