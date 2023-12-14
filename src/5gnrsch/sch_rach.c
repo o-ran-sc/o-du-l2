@@ -596,10 +596,6 @@ bool schProcessRaReq(Inst schInst, SchCellCb *cell, SlotTimingInfo currTime, uin
             ADD_DELTA_TO_TIME(dciTime, rarTime, k0, cell->numSlots);
             rarSlot = rarTime.slot;
             
-            /* If PDSCH is already scheduled on this slot, cannot schedule PDSCH for another UE here. */
-            if(cell->schDlSlotInfo[rarSlot]->pdschUe != 0)
-               continue;
-
             /* If Contention-FREE RA is in progress, allocate resources for
              * PUCCH for next UL message */
             if(cell->raReq[ueId-1]->isCFRA)
@@ -784,7 +780,6 @@ bool schProcessRaReq(Inst schInst, SchCellCb *cell, SlotTimingInfo currTime, uin
       }
 
       cell->schDlSlotInfo[dciSlot]->pdcchUe = ueId;
-      cell->schDlSlotInfo[rarSlot]->pdschUe = ueId;
       if(cell->raReq[ueId-1]->isCFRA)
          cell->schUlSlotInfo[pucchTime.slot]->pucchUe = ueId;
       else
