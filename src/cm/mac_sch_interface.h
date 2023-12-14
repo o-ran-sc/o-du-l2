@@ -789,8 +789,7 @@ typedef struct schBwpUlCfg
 typedef struct schPlmnInfoList
 {
    Plmn           plmn;
-   uint8_t        numSliceSupport; /* Total slice supporting */
-   Snssai         **snssai;         /* List of supporting snssai*/
+   SupportedSliceList suppSliceList;
 }SchPlmnInfoList;
 
 #ifdef NR_DRX

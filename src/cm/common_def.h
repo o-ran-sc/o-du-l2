@@ -362,6 +362,12 @@ typedef struct snssai
    uint8_t   sd[SD_SIZE];
 }Snssai;
 
+typedef struct supportedSliceList
+{
+   uint8_t    numSupportedSlices;
+   Snssai    **snssai;
+}SupportedSliceList;
+
 typedef struct oduCellId
 {
    uint16_t cellId;
