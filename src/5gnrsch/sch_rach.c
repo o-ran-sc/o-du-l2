@@ -731,7 +731,7 @@ bool schProcessRaReq(Inst schInst, SchCellCb *cell, SlotTimingInfo currTime, uin
          SCH_ALLOC(dciSlotAlloc->rarPdschCfg, sizeof(PdschCfg));
          if(dciSlotAlloc->rarPdschCfg)
          {
-             memcpy(dciSlotAlloc->rarPdschCfg, &dciSlotAlloc->rarPdcchCfg->dci.pdschCfg, sizeof(PdschCfg));
+             memcpy(dciSlotAlloc->rarPdschCfg, &dciSlotAlloc->rarPdcchCfg->dci[0].pdschCfg, sizeof(PdschCfg));
          }
          else
          {
@@ -766,7 +766,7 @@ bool schProcessRaReq(Inst schInst, SchCellCb *cell, SlotTimingInfo currTime, uin
          SCH_ALLOC(rarSlotAlloc->rarPdschCfg, sizeof(PdschCfg));
          if(rarSlotAlloc->rarPdschCfg)
          {
-            memcpy(rarSlotAlloc->rarPdschCfg, &dciSlotAlloc->rarPdcchCfg->dci.pdschCfg,sizeof(PdschCfg));
+            memcpy(rarSlotAlloc->rarPdschCfg, &dciSlotAlloc->rarPdcchCfg->dci[0].pdschCfg,sizeof(PdschCfg));
          }
          else
          {
@@ -945,20 +945,20 @@ uint8_t schFillRar(SchCellCb *cell, SlotTimingInfo rarTime, uint16_t ueId, RarAl
    pdcch->coresetCfg.shiftIndex = cell->cellCfg.phyCellId;
    pdcch->coresetCfg.precoderGranularity = 0; /* sameAsRegBundle */
    pdcch->numDlDci = 1;
-   pdcch->dci.rnti = cell->raReq[ueId-1]->raRnti; /* RA-RNTI */
-   pdcch->dci.scramblingId = cell->cellCfg.phyCellId;
-   pdcch->dci.scramblingRnti = 0;
-   pdcch->dci.cceIndex = 4; /* considering SIB1 is sent at cce 0-1-2-3 */
-   pdcch->dci.aggregLevel = 4;
-   pdcch->dci.beamPdcchInfo.numPrgs = 1;
-   pdcch->dci.beamPdcchInfo.prgSize = 1;
-   pdcch->dci.beamPdcchInfo.digBfInterfaces = 0;
-   pdcch->dci.beamPdcchInfo.prg[0].pmIdx = 0;
-   pdcch->dci.beamPdcchInfo.prg[0].beamIdx[0] = 0;
-   pdcch->dci.txPdcchPower.beta_pdcch_1_0 = 0;
-   pdcch->dci.txPdcchPower.powerControlOffsetSS = 0;
+   pdcch->dci[0].rnti = cell->raReq[ueId-1]->raRnti; /* RA-RNTI */
+   pdcch->dci[0].scramblingId = cell->cellCfg.phyCellId;
+   pdcch->dci[0].scramblingRnti = 0;
+   pdcch->dci[0].cceIndex = 4; /* considering SIB1 is sent at cce 0-1-2-3 */
+   pdcch->dci[0].aggregLevel = 4;
+   pdcch->dci[0].beamPdcchInfo.numPrgs = 1;
+   pdcch->dci[0].beamPdcchInfo.prgSize = 1;
+   pdcch->dci[0].beamPdcchInfo.digBfInterfaces = 0;
+   pdcch->dci[0].beamPdcchInfo.prg[0].pmIdx = 0;
+   pdcch->dci[0].beamPdcchInfo.prg[0].beamIdx[0] = 0;
+   pdcch->dci[0].txPdcchPower.beta_pdcch_1_0 = 0;
+   pdcch->dci[0].txPdcchPower.powerControlOffsetSS = 0;
 
-   pdsch = &pdcch->dci.pdschCfg;
+   pdsch = &pdcch->dci[0].pdschCfg;
    /* fill the PDSCH PDU */
    uint8_t cwCount = 0;
    pdsch->pduBitmap = 0; /* PTRS and CBG params are excluded */
