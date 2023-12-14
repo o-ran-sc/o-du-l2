@@ -335,7 +335,6 @@ typedef struct schDlSlotInfo
    SsbInfo      ssbInfo[MAX_SSB_IDX];     /*!< SSB info */
    bool         sib1Pres;                 /*!< Flag to determine if SIB1 is present in this slot */
    uint8_t      pdcchUe;                  /*!< UE for which PDCCH Common is scheduled in this slot */
-   uint8_t      pdschUe;                  /*!< UE for which PDSCH is scheduled in this slot */
    RarAlloc     *rarAlloc[MAX_NUM_UE];    /*!< RAR allocation per UE*/
    DciInfo      *ulGrant;
    DlMsgSchInfo *dlMsgAlloc[MAX_NUM_UE];  /*!< Dl msg allocation per UE*/
