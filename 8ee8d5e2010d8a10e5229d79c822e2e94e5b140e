@@ -45,6 +45,23 @@
       },
       "revId": "8ee8d5e2010d8a10e5229d79c822e2e94e5b140e",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "72b8901b_6500dacd",
+        "filename": "src/5gnrsch/sch_slot_ind.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2023-12-14T07:29:15Z",
+      "side": 1,
+      "message": "memset pdcchAllocInfo here",
+      "revId": "8ee8d5e2010d8a10e5229d79c822e2e94e5b140e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
   ],
   "submitRequirementResults": [
