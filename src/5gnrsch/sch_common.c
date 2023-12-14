@@ -139,9 +139,9 @@ uint8_t schBroadcastSib1Alloc(SchCellCb *cell, SlotTimingInfo slotTime, DlBrdcst
    }
    
    dlBrdcstAlloc->crnti = SI_RNTI;
-   dmrs = cell->sib1SchCfg.sib1PdcchCfg.dci.pdschCfg.dmrs;
-   freqAlloc = cell->sib1SchCfg.sib1PdcchCfg.dci.pdschCfg.pdschFreqAlloc;
-   timeAlloc = cell->sib1SchCfg.sib1PdcchCfg.dci.pdschCfg.pdschTimeAlloc;
+   dmrs = cell->sib1SchCfg.sib1PdcchCfg.dci[0].pdschCfg.dmrs;
+   freqAlloc = cell->sib1SchCfg.sib1PdcchCfg.dci[0].pdschCfg.pdschFreqAlloc;
+   timeAlloc = cell->sib1SchCfg.sib1PdcchCfg.dci[0].pdschCfg.pdschTimeAlloc;
    schDlSlotInfo = cell->schDlSlotInfo[slotTime.slot];
 
    /* Find total symbols used including DMRS */
@@ -658,19 +658,19 @@ uint8_t schDlRsrcAllocMsg4(SchCellCb *cell, SlotTimingInfo msg4Time, uint8_t ueI
    pdcch->coresetCfg.shiftIndex = cell->cellCfg.phyCellId;
    pdcch->coresetCfg.precoderGranularity = 0; /* sameAsRegBundle */
    pdcch->numDlDci = 1;
-   pdcch->dci.rnti = cell->raCb[ueId-1].tcrnti;
-   pdcch->dci.scramblingId = cell->cellCfg.phyCellId;
-   pdcch->dci.scramblingRnti = 0;
-   pdcch->dci.cceIndex = 4; /* considering SIB1 is sent at cce 0-1-2-3 */
-   pdcch->dci.aggregLevel = 4;
-   pdcch->dci.beamPdcchInfo.numPrgs = 1;
-   pdcch->dci.beamPdcchInfo.prgSize = 1;
-   pdcch->dci.beamPdcchInfo.digBfInterfaces = 0;
-   pdcch->dci.beamPdcchInfo.prg[0].pmIdx = 0;
-   pdcch->dci.beamPdcchInfo.prg[0].beamIdx[0] = 0;
-   pdcch->dci.txPdcchPower.beta_pdcch_1_0 = 0;
-   pdcch->dci.txPdcchPower.powerControlOffsetSS = 0;
-   pdsch = &pdcch->dci.pdschCfg; 
+   pdcch->dci[0].rnti = cell->raCb[ueId-1].tcrnti;
+   pdcch->dci[0].scramblingId = cell->cellCfg.phyCellId;
+   pdcch->dci[0].scramblingRnti = 0;
+   pdcch->dci[0].cceIndex = 4; /* considering SIB1 is sent at cce 0-1-2-3 */
+   pdcch->dci[0].aggregLevel = 4;
+   pdcch->dci[0].beamPdcchInfo.numPrgs = 1;
+   pdcch->dci[0].beamPdcchInfo.prgSize = 1;
+   pdcch->dci[0].beamPdcchInfo.digBfInterfaces = 0;
+   pdcch->dci[0].beamPdcchInfo.prg[0].pmIdx = 0;
+   pdcch->dci[0].beamPdcchInfo.prg[0].beamIdx[0] = 0;
+   pdcch->dci[0].txPdcchPower.beta_pdcch_1_0 = 0;
+   pdcch->dci[0].txPdcchPower.powerControlOffsetSS = 0;
+   pdsch = &pdcch->dci[0].pdschCfg; 
    
    /* fill the PDSCH PDU */
    uint8_t cwCount = 0;
@@ -816,9 +816,9 @@ uint16_t schAllocPucchResource(SchCellCb *cell, SlotTimingInfo pucchTime, uint16
  * ****************************************************************/
 uint8_t schDlRsrcAllocDlMsg(SchCellCb *cell, SlotTimingInfo slotTime, uint16_t crnti,
                 uint32_t tbSize, DlMsgSchInfo *dlMsgAlloc, uint16_t startPRB, uint8_t pdschStartSymbol,
-                uint8_t pdschNumSymbols, bool isRetx, SchDlHqProcCb *hqP)
+                uint8_t pdschNumSymbols, bool isRetx, SchDlHqProcCb *hqP, SchPdcchAllocInfo pdcchAllocInfo)
 {
-   uint8_t ueId=0;
+   uint8_t ueId=0, ssIdx = 0, cRSetIdx = 0;;
    uint8_t cwCount = 0, rbgCount = 0, pdcchStartSymbol = 0;
    PdcchCfg *pdcch = NULLP;
    PdschCfg *pdsch = NULLP;
@@ -840,8 +840,25 @@ uint8_t schDlRsrcAllocDlMsg(SchCellCb *cell, SlotTimingInfo slotTime, uint16_t c
 
    GET_UE_ID(crnti, ueId);
    ueCb  = cell->ueCb[ueId-1];
-   coreset1 = ueCb.ueCfg.spCellCfg.servCellRecfg.initDlBwp.pdcchCfg.cRSetToAddModList[0];
-   searchSpace = ueCb.ueCfg.spCellCfg.servCellRecfg.initDlBwp.pdcchCfg.searchSpcToAddModList[0];
+
+   for(cRSetIdx = 0; cRSetIdx < ueCb.ueCfg.spCellCfg.servCellRecfg.initDlBwp.pdcchCfg.numCRsetToAddMod; cRSetIdx++)
+   {
+      if(ueCb.ueCfg.spCellCfg.servCellRecfg.initDlBwp.pdcchCfg.cRSetToAddModList[cRSetIdx].cRSetId\
+            == pdcchAllocInfo.cRSetId)
+      {
+         coreset1 = ueCb.ueCfg.spCellCfg.servCellRecfg.initDlBwp.pdcchCfg.cRSetToAddModList[cRSetIdx];
+         break;
+      }
+   }
+   for(ssIdx = 0; ssIdx < ueCb.ueCfg.spCellCfg.servCellRecfg.initDlBwp.pdcchCfg.numSearchSpcToAddMod; ssIdx++)
+   {
+      if(ueCb.ueCfg.spCellCfg.servCellRecfg.initDlBwp.pdcchCfg.searchSpcToAddModList[ssIdx].searchSpaceId\
+            ==  pdcchAllocInfo.ssId)
+      {
+         searchSpace = ueCb.ueCfg.spCellCfg.servCellRecfg.initDlBwp.pdcchCfg.searchSpcToAddModList[ssIdx];
+         break;
+      }
+   }
    pdschCfg = ueCb.ueCfg.spCellCfg.servCellRecfg.initDlBwp.pdschCfg;
 
    /* fill BWP */
@@ -881,25 +898,31 @@ uint8_t schDlRsrcAllocDlMsg(SchCellCb *cell, SlotTimingInfo slotTime, uint16_t c
 
    pdcch->coresetCfg.shiftIndex = cell->cellCfg.phyCellId;
    pdcch->coresetCfg.precoderGranularity =  coreset1.precoderGranularity;
-   pdcch->numDlDci = 1;
-   pdcch->dci.rnti = ueCb.crnti;
-   pdcch->dci.scramblingId = cell->cellCfg.phyCellId;
-   pdcch->dci.scramblingRnti = 0;
+   if(pdcch->numDlDci >= MAX_NUM_PDCCH)
+   {
+      DU_LOG("\nERROR  -->  SCH: MAX number of PDCCH allocted for this slot.");
+      return RFAILED;
+   }
+   pdcch->dci[pdcch->numDlDci].rnti = ueCb.crnti;
+   pdcch->dci[pdcch->numDlDci].scramblingId = cell->cellCfg.phyCellId;
+   pdcch->dci[pdcch->numDlDci].scramblingRnti = 0;
 
    /*TODO below assumptions of CCE Index is wrong:
     * Range 0 to 135 as per ORAN.WG8.AAD Table 9-35 CORESET configuration and
     * it has to be calculated using the formula given in 3GPP TS 38.213, Sec 10.1 */
-   pdcch->dci.cceIndex = 0; /* 0-3 for UL and 4-7 for DL */
-   pdcch->dci.aggregLevel = 4;
-   pdcch->dci.beamPdcchInfo.numPrgs = 1;
-   pdcch->dci.beamPdcchInfo.prgSize = 1;
-   pdcch->dci.beamPdcchInfo.digBfInterfaces = 0;
-   pdcch->dci.beamPdcchInfo.prg[0].pmIdx = 0;
-   pdcch->dci.beamPdcchInfo.prg[0].beamIdx[0] = 0;
-   pdcch->dci.txPdcchPower.beta_pdcch_1_0 = 0;
-   pdcch->dci.txPdcchPower.powerControlOffsetSS = 0;
+   pdcch->dci[pdcch->numDlDci].cceIndex = pdcchAllocInfo.cceIndex; 
+   pdcch->dci[pdcch->numDlDci].aggregLevel = pdcchAllocInfo.aggLvl;
+   pdcch->dci[pdcch->numDlDci].beamPdcchInfo.numPrgs = 1;
+   pdcch->dci[pdcch->numDlDci].beamPdcchInfo.prgSize = 1;
+   pdcch->dci[pdcch->numDlDci].beamPdcchInfo.digBfInterfaces = 0;
+   pdcch->dci[pdcch->numDlDci].beamPdcchInfo.prg[0].pmIdx = 0;
+   pdcch->dci[pdcch->numDlDci].beamPdcchInfo.prg[0].beamIdx[0] = 0;
+   pdcch->dci[pdcch->numDlDci].txPdcchPower.beta_pdcch_1_0 = 0;
+   pdcch->dci[pdcch->numDlDci].txPdcchPower.powerControlOffsetSS = 0;
 
-   pdsch = &pdcch->dci.pdschCfg;
+   pdsch = &pdcch->dci[pdcch->numDlDci].pdschCfg;
+   pdcch->numDlDci++;
+
    pdsch->pduBitmap = 0; /* PTRS and CBG params are excluded */
    pdsch->rnti = ueCb.crnti;
    pdsch->pduIndex = 0;
@@ -959,7 +982,7 @@ uint8_t schDlRsrcAllocDlMsg(SchCellCb *cell, SlotTimingInfo slotTime, uint16_t c
 
    /* Allocate the number of PRBs required for DL PDSCH */
    if((allocatePrbDl(cell, slotTime, startSymbol, numSymbol,\
-      &pdsch->pdschFreqAlloc.startPrb, pdsch->pdschFreqAlloc.numPrb)) != ROK)
+               &pdsch->pdschFreqAlloc.startPrb, pdsch->pdschFreqAlloc.numPrb)) != ROK)
    {
       DU_LOG("\nERROR  --> SCH : allocatePrbDl() failed for DL MSG");
       SCH_FREE(dlMsgAlloc->dlMsgPdcchCfg, sizeof(PdcchCfg));
@@ -1797,7 +1820,7 @@ uint8_t schProcessMsg4Req(SchCellCb *cell, SlotTimingInfo currTime, uint8_t ueId
    }
 
    if(findValidK0K1Value(cell, currTime, ueId, false, &pdschStartSymbol, &pdschNumSymbols, &pdcchTime, &pdschTime,\
-            &pucchTime, isRetxMsg4, *msg4HqProc) != true )
+            &pucchTime, isRetxMsg4, *msg4HqProc, NULLP) != true )
    {
       DU_LOG("\nERROR  -->  SCH: schProcessMsg4Req() : k0 k1 not found");
       return RFAILED;
@@ -1843,7 +1866,7 @@ uint8_t schProcessMsg4Req(SchCellCb *cell, SlotTimingInfo currTime, uint8_t ueId
          cell->schDlSlotInfo[pdcchTime.slot]->dlMsgAlloc[ueId-1] = NULLP;
          return RFAILED;
       }
-      memcpy(dciSlotAlloc->dlMsgPdschCfg, &dciSlotAlloc->dlMsgPdcchCfg->dci.pdschCfg, sizeof(PdschCfg));
+      memcpy(dciSlotAlloc->dlMsgPdschCfg, &dciSlotAlloc->dlMsgPdcchCfg->dci[0].pdschCfg, sizeof(PdschCfg));
    }
    else
    {
@@ -1874,7 +1897,7 @@ uint8_t schProcessMsg4Req(SchCellCb *cell, SlotTimingInfo currTime, uint8_t ueId
       SCH_ALLOC(msg4SlotAlloc->dlMsgPdschCfg, sizeof(PdschCfg));
       if(msg4SlotAlloc->dlMsgPdschCfg)
       {
-         memcpy(msg4SlotAlloc->dlMsgPdschCfg, &dciSlotAlloc->dlMsgPdcchCfg->dci.pdschCfg, sizeof(PdschCfg));
+         memcpy(msg4SlotAlloc->dlMsgPdschCfg, &dciSlotAlloc->dlMsgPdcchCfg->dci[0].pdschCfg, sizeof(PdschCfg));
       }
       else
       {
@@ -2525,7 +2548,7 @@ bool schCheckPdcchAvail(SchCellCb *cellCb, SlotTimingInfo slotTime, uint8_t cceI
  *          [RETURN]: isPDCCHAllocted flag(true = UE can be selected as a
  *          candidate )
  * */
-bool schDlCandidateSelection(SchUeCb *ueCb, SlotTimingInfo pdcchTime)
+bool schDlCandidateSelection(SchUeCb *ueCb, SlotTimingInfo pdcchTime, SchPdcchAllocInfo *pdcchAllocInfo)
 {
     uint8_t cRSetIdx = 0, cceIndex = 0;
     uint8_t cqi = 0, candIdx = 0;
@@ -2582,6 +2605,10 @@ bool schDlCandidateSelection(SchUeCb *ueCb, SlotTimingInfo pdcchTime)
                if(schCheckPdcchAvail(ueCb->cellCb, pdcchTime, cceIndex, pdcchInfo,nextLowerAggLvl) == true)
                {
                   DU_LOG("\nINFO   -->  SCH: PDCCH allocation is successful at cceIndex:%d",cceIndex);
+                  pdcchAllocInfo->cRSetId = pdcchInfo->cRSetRef->cRSetId;
+                  pdcchAllocInfo->aggLvl = nextLowerAggLvl;
+                  pdcchAllocInfo->cceIndex = cceIndex;
+                  pdcchAllocInfo->ssId = pdcchInfo->ssRef->searchSpaceId;
                   return true;  
                }
            }
