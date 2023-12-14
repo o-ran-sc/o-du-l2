@@ -24,6 +24,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7251afc2_f6020311",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 3003,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-12-14T08:11:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e627ae90_ccd9ad19",
+      "range": {
+        "startLine": 3003,
+        "startChar": 32,
+        "endLine": 3003,
+        "endChar": 33
+      },
+      "revId": "8ee8d5e2010d8a10e5229d79c822e2e94e5b140e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "146b97f6_579745a1",
@@ -47,6 +71,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0e93c522_091f11c7",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 3022,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-12-14T08:11:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "146b97f6_579745a1",
+      "range": {
+        "startLine": 3022,
+        "startChar": 43,
+        "endLine": 3022,
+        "endChar": 44
+      },
+      "revId": "8ee8d5e2010d8a10e5229d79c822e2e94e5b140e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "72b8901b_6500dacd",
@@ -60,6 +108,24 @@
       "writtenOn": "2023-12-14T07:29:15Z",
       "side": 1,
       "message": "memset pdcchAllocInfo here",
+      "revId": "8ee8d5e2010d8a10e5229d79c822e2e94e5b140e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e853cdc8_80217e1c",
+        "filename": "src/5gnrsch/sch_slot_ind.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-12-14T08:11:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "72b8901b_6500dacd",
       "revId": "8ee8d5e2010d8a10e5229d79c822e2e94e5b140e",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
