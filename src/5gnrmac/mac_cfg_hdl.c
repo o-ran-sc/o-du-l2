@@ -1060,8 +1060,8 @@ uint8_t MacSendStatsRspToDuApp(MacStatsRsp *statsRsp)
 
    /* Workaround : To skip corrupted memory, allocating a pointer that will
     * remain unused */
-   uint8_t *dummyPtr = NULLP;
-   MAC_ALLOC_SHRABL_BUF(dummyPtr, sizeof(uint8_t));
+   //uint8_t *dummyPtr = NULLP;
+   //MAC_ALLOC_SHRABL_BUF(dummyPtr, sizeof(uint8_t));
 
    MAC_ALLOC_SHRABL_BUF(macStatsRsp, sizeof(MacStatsRsp));
    if(macStatsRsp == NULLP)
@@ -1085,7 +1085,7 @@ uint8_t MacSendStatsRspToDuApp(MacStatsRsp *statsRsp)
    }
 
    /* Workaround : Freeing the dummy pointer */
-   MAC_FREE_SHRABL_BUF(MAC_MEM_REGION, MAC_POOL, dummyPtr, sizeof(uint8_t));
+  // MAC_FREE_SHRABL_BUF(MAC_MEM_REGION, MAC_POOL, dummyPtr, sizeof(uint8_t));
    return ret;
 }
 

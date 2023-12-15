@@ -21,7 +21,7 @@
 #define ENCODE_FAIL -1
 #define TRANS_ID 1
 #define RRC_SIZE 1
-#define ENC_BUF_MAX_LEN 100
+//#define ENC_BUF_MAX_LEN 100
 #define SUL_BAND_COUNT  0
 #define UL_SRBID        1
 #define DL_SRBID        0
@@ -39,41 +39,24 @@
 #define RIC_ACTION_GRANULARITY_PERIOD(_configType, _actionId)   \
    ((_configType == CONFIG_ADD) ?  (100 + 100 * _actionId ) : ( 100 + 50 *( _actionId +1))) 
 
-/* allocate and zero out a static buffer */
-#define RIC_ALLOC(_datPtr, _size)                                \
-{                                                               \
-   uint8_t _ret;                                                    \
-   _ret = SGetSBuf(RIC_APP_MEM_REG, RIC_POOL,                  \
-                    (Data **)&_datPtr, _size);                  \
-   if(_ret == ROK)                                              \
-      memset(_datPtr, 0, _size);                         \
-   else                                                         \
-      _datPtr = NULLP;                                          \
-}
-
-/* free a static buffer */
-#define RIC_FREE(_datPtr, _size)                                 \
-   if(_datPtr)                                                  \
-      SPutSBuf(RIC_APP_MEM_REG, RIC_POOL,                      \
-         (Data *)_datPtr, _size);
-
-
-
 
 void E2APMsgHdlr(uint32_t *duId, Buffer *mBuf);
-uint8_t BuildAndSendE2SetupRsp(DuDb *duDb, uint8_t transId, E2NodeConfigList e2NodeList);
+uint8_t BuildAndSendE2SetupRsp(DuDb *duDb, uint16_t transId, E2NodeConfigList e2NodeList);
 uint8_t BuildAndSendRicSubscriptionReq(DuDb *duDb);
 uint8_t SendE2APMsg(Region region, Pool pool, uint32_t duId);
 uint8_t BuildAndSendRicServiceQuery(DuDb *duDb);
-uint8_t BuildAndSendE2NodeConfigUpdateFailure(uint32_t duId, uint8_t transId, uint8_t causeInfo, uint8_t causeReason);
+uint8_t BuildAndSendE2NodeConfigUpdateFailure(uint32_t duId, uint16_t transId, uint8_t causeInfo, uint8_t causeReason);
 uint8_t fillE2NodeConfigAck(PTR e2NodeCfg, uint8_t procedureCode, E2NodeComponent *componentInfo, bool isSuccessful);
 E2NodeComponent *fetchE2NodeComponentInfo(DuDb *duDb, InterfaceType interfaceType,CmLList **e2ComponentNode);
 uint8_t handleE2NodeComponentAction(DuDb *duDb, PTR e2NodeCfg, uint8_t protocolId, E2NodeConfigItem *storeCfg);
-uint8_t BuildAndSendE2NodeConfigUpdateAck(DuDb *duDb, uint8_t transId,  E2NodeConfigList *e2NodeList);
+uint8_t BuildAndSendE2NodeConfigUpdateAck(DuDb *duDb, uint16_t transId,  E2NodeConfigList *e2NodeList);
 uint8_t BuildAndSendConnectionUpdate(uint32_t duId);
 uint8_t BuildAndSendE2ConnectionUpdate(uint32_t duId, E2Connection connectionInfo);
 uint8_t BuildAndSendRicSubscriptionDeleteRequest(uint32_t duId, RicSubscription *ricSubsDb);
 void BuildRicSubsModificationReq(DuDb *duDb, RicSubscription *ricSubsInfo);
+void deleteActionSequence(CmLList *actionNode);
+void deleteRicSubscriptionNode(CmLList *subscriptionNode);
+void deleteE2NodeInfo(DuDb *duDb);
 
 /**********************************************************************
          End of file
