@@ -146,7 +146,7 @@ uint8_t sctpStartReq()
       {
          DU_LOG("\nERROR  -->  SCTP: Binding failed at RIC");
       }
-      else if(ret = cmInetListen(&sctpCb.e2LstnSockFd, 1) != ROK)
+      else if((ret = cmInetListen(&sctpCb.e2LstnSockFd, 1)) != ROK)
       {
          DU_LOG("\nERROR  -->  SCTP: Unable to accept the connection at CU");
          DU_LOG("\nERROR  -->  SCTP : Listening on socket failed");

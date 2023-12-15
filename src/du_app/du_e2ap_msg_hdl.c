@@ -646,7 +646,7 @@ void FreeErrorIndication(E2AP_PDU_t  *e2apMsg)
  *
  ******************************************************************/
 
-uint8_t BuildAndSendErrorIndication(int8_t transId, RicRequestId requestId, uint16_t ranFuncId,  E2FailureCause failureCause)
+uint8_t BuildAndSendErrorIndication(uint16_t transId, RicRequestId requestId, uint16_t ranFuncId,  E2FailureCause failureCause)
 {
    uint8_t elementCnt =0, arrIdx=0, ret = RFAILED;
    E2AP_PDU_t         *e2apMsg = NULLP;
@@ -835,7 +835,8 @@ void freeAperDecodingOfE2NodeConfigUpdateFailure(E2nodeConfigurationUpdateFailur
 
 void procE2NodeConfigUpdateFailure(E2AP_PDU_t *e2apMsg)
 {
-   uint8_t arrIdx =0, transId =0, timerValue=0;
+   uint8_t arrIdx =0, timerValue=0;
+   uint16_t transId =0;
    E2nodeConfigurationUpdateFailure_t *e2NodeCfgUpdFail=NULL;
 
    DU_LOG("\nINFO   -->  E2AP : E2 Node Config Update failure received");
@@ -1993,8 +1994,8 @@ void FreeE2SetupReq(E2AP_PDU_t *e2apMsg)
 
 uint8_t BuildAndSendE2SetupReq()
 {
-   uint8_t arrIdx = 0, elementCnt=0;
-   uint8_t transId = 0, ret = RFAILED;
+   uint16_t transId = 0;
+   uint8_t arrIdx = 0, elementCnt=0, ret =RFAILED;
    bool memAllocFailed = false;
    E2AP_PDU_t        *e2apMsg = NULLP;
    E2setupRequest_t  *e2SetupReq = NULLP;
@@ -2704,7 +2705,8 @@ void handleE2NodeConfigUpdateAckIes(PTR e2NodeCfg, uint8_t procedureCode)
 void procE2SetupRsp(E2AP_PDU_t *e2apMsg)
 {
    bool invalidTransId = false;
-   uint8_t arrIdx =0, transId=0, idx=0; 
+   uint8_t arrIdx =0, idx=0;
+   uint16_t transId=0;
    uint32_t recvBufLen;             
    E2setupResponse_t *e2SetRspMsg=NULL;
    E2nodeComponentConfigAdditionAck_List_t *e2NodeCfgAckList=NULL;
@@ -4873,7 +4875,8 @@ void FreeE2NodeConfigUpdate(E2AP_PDU_t *e2apMsg)
 uint8_t BuildAndSendE2NodeConfigUpdate(E2NodeConfigList *e2NodeList)
 {
    uint8_t ret = RFAILED;
-   uint8_t arrIdx = 0,elementCnt = 0, transId=0;
+   uint8_t arrIdx = 0,elementCnt = 0;
+   uint16_t transId=0;
    E2AP_PDU_t  *e2apMsg = NULLP;
    asn_enc_rval_t     encRetVal;       /* Encoder return value */
    E2nodeConfigurationUpdate_t *e2NodeConfigUpdate = NULLP;
@@ -5081,7 +5084,8 @@ void FreeE2ResetRequest(E2AP_PDU_t *e2apMsg)
  * ****************************************************************/
 uint8_t BuildAndSendE2ResetRequest(E2FailureCause resetCause)
 {
-   uint8_t ieIdx = 0, elementCnt = 0, transId = 0;
+   uint8_t ieIdx = 0, elementCnt = 0;
+   uint16_t transId = 0;
    uint8_t ret = RFAILED;
    E2AP_PDU_t        *e2apMsg = NULLP;
    ResetRequestE2_t  *resetReq = NULLP;
@@ -5254,7 +5258,8 @@ void freeAperDecodingOfE2ResetRsp(ResetResponseE2_t *resetResponse)
 void procResetResponse(E2AP_PDU_t *e2apMsg)
 {
    bool invalidTransId=false;
-   uint8_t ieIdx =0, transId =0;
+   uint8_t ieIdx =0;
+   uint16_t transId =0;
    uint16_t ranFuncIdx=0;
    ResetResponseE2_t *resetResponse =NULLP;
 
@@ -5360,7 +5365,8 @@ void freeAperDecodingOfE2SetupFailure(E2setupFailure_t *e2SetupFailure)
  * ****************************************************************/
 void procE2SetupFailure(E2AP_PDU_t *e2apMsg)
 {
-   uint8_t arrIdx =0, transId =0, timerValue=0; 
+   uint16_t  transId =0;
+   uint8_t arrIdx =0, timerValue=0; 
    E2setupFailure_t *e2SetupFailure;
 
    DU_LOG("\nINFO   -->  E2AP : E2 Setup failure received"); 
@@ -5622,9 +5628,9 @@ void FreeRicServiceUpdate(E2AP_PDU_t *e2apMsg)
 
 uint8_t BuildAndSendRicServiceUpdate(RicServiceUpdate serviceUpdate)
 {
-   uint8_t arrIdx = 0, elementCnt=0;
-   uint8_t transId = 0, ret = RFAILED;
+   uint16_t transId = 0;
    bool memAllocFailed =false;
+   uint8_t arrIdx = 0, elementCnt=0,ret = RFAILED;
    E2AP_PDU_t        *e2apMsg = NULLP;
    RICserviceUpdate_t  *ricServiceUpdate = NULLP;
    asn_enc_rval_t     encRetVal;       /* Encoder return value */
@@ -5970,7 +5976,8 @@ void freeAperDecodingOfRicServiceUpdateAck(RICserviceUpdateAcknowledge_t *ricSer
 
 void procRicServiceUpdateAck(E2AP_PDU_t *e2apMsg)
 {
-   uint8_t arrIdx =0, transId =0; 
+   uint8_t arrIdx =0;
+   uint16_t transId =0; 
    uint16_t id =0, tmpIdx=0, ranFuncIdx=0;
    RicServiceUpdate serviceUpdate;
    RANfunctionsIDcause_List_t *rejectedList=NULL;
@@ -7017,7 +7024,7 @@ void FreeE2ResetResponse(E2AP_PDU_t *e2apMsg)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t BuildAndSendResetResponse(uint8_t transId)
+uint8_t BuildAndSendResetResponse(uint16_t transId)
 {
    uint8_t           ieIdx = 0, elementCnt = 0;
    uint8_t           ret = RFAILED;
@@ -7163,8 +7170,9 @@ void freeAperDecodingOfE2ResetReq(ResetRequestE2_t *resetReq)
 
 void procE2ResetRequest(E2AP_PDU_t  *e2apMsg)
 {
+   uint8_t arrIdx =0;
+   uint16_t transId =0;
    uint16_t ranFuncIdx=0;
-   uint8_t arrIdx =0, transId =0;
    ResetRequestE2_t *resetReq;
 
    DU_LOG("\nINFO   -->  E2AP : E2 Reset request received");
@@ -8373,8 +8381,9 @@ void FreeRemovalRequest(E2AP_PDU_t *e2apMsg)
 
 uint8_t BuildAndSendRemovalRequest()
 {
-   uint8_t ieIdx = 0, elementCnt = 0, transId = 0;
+   uint16_t transId = 0;
    uint8_t ret = RFAILED;
+   uint8_t ieIdx = 0, elementCnt = 0;
    E2AP_PDU_t        *e2apMsg = NULLP;
    E2RemovalRequest_t  *removalReq = NULLP;
    asn_enc_rval_t     encRetVal;       /* Encoder return value */
@@ -8531,7 +8540,8 @@ void freeAperDecodingOfE2RemovalFailure(E2RemovalFailure_t *removalFailure)
  * ****************************************************************/
 void ProcE2RemovalFailure(E2AP_PDU_t *e2apMsg) 
 {
-   uint8_t ieIdx = 0, transId=0;
+   uint8_t ieIdx = 0;
+   uint16_t transId=0;
    CauseE2_t *cause = NULLP;
    E2RemovalFailure_t *e2RemovalFailure=NULLP;
 
@@ -8634,7 +8644,8 @@ void ProcE2RemovalFailure(E2AP_PDU_t *e2apMsg)
 
 void ProcE2RemovalResponse(E2AP_PDU_t *e2apMsg)
 {
-   uint8_t ieIdx = 0, transId=0;
+   uint8_t ieIdx = 0;
+   uint16_t transId=0;
    E2RemovalResponse_t *removalRsp = NULLP;
    
    removalRsp = &e2apMsg->choice.successfulOutcome->value.choice.E2RemovalResponse;
@@ -9457,7 +9468,8 @@ void handleE2ConnectionRemoval(E2connectionUpdateRemove_List_t *connectionRemova
 
 void procE2ConnectionUpdate(E2AP_PDU_t  *e2apMsg)
 {
-   uint8_t arrIdx =0, transId =0;
+   uint8_t arrIdx =0;
+   uint16_t transId =0;
    bool invalidTransId = false, connectionFailedToUpdate=false;
    E2FailureCause failureCause;
    E2ConnectionList connectionInfoList;
