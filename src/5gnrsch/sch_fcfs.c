@@ -1153,18 +1153,19 @@ void schFcfsScheduleSlot(SchCellCb *cell, SlotTimingInfo *slotInd, Inst schInst)
    SchUlHqProcCb  *ulHqP = NULLP;
    CmLList        *pendingUeNode;
    CmLList        *node;
-   uint8_t        ueId;
+   uint8_t        ueId, ueCount = 0;
    bool           isRarPending = false, isRarScheduled = false;
    bool           isMsg4Pending = false, isMsg4Scheduled = false;
    bool           isDlMsgPending = false, isDlMsgScheduled = false;
    bool           isUlGrantPending = false, isUlGrantScheduled = false;
-   bool           isNodeFreed = false;
 
    fcfsCell = (SchFcfsCellCb *)cell->schSpcCell;
    
    /* Select first UE in the linked list to be scheduled next */
    pendingUeNode = fcfsCell->ueToBeScheduled.first;
-   while(pendingUeNode)
+   ueCount = fcfsCell->ueToBeScheduled.count;
+   
+   while(pendingUeNode && ueCount > 0)
    {
       if(pendingUeNode->node)
       {
@@ -1216,7 +1217,6 @@ void schFcfsScheduleSlot(SchCellCb *cell, SlotTimingInfo *slotInd, Inst schInst)
             if(isRarScheduled || isMsg4Scheduled)
             {
                schFcfsRemoveUeFrmScheduleLst(cell, pendingUeNode);
-               isNodeFreed = true;
             }
             /* If RAR/MSG4 is pending but couldnt be scheduled then,
              * put this UE at the end of linked list to be scheduled later */
@@ -1321,7 +1321,6 @@ void schFcfsScheduleSlot(SchCellCb *cell, SlotTimingInfo *slotInd, Inst schInst)
             else
             {
                schFcfsRemoveUeFrmScheduleLst(cell, pendingUeNode);
-               isNodeFreed = true;
             }
          }
       }
@@ -1330,14 +1329,8 @@ void schFcfsScheduleSlot(SchCellCb *cell, SlotTimingInfo *slotInd, Inst schInst)
         DU_LOG("\nINFO   -->  SCH: No PRB available to proceed with next UE");
         return;     
       }
-      if(isNodeFreed == false)
-      {
-         pendingUeNode= pendingUeNode->next;
-      }
-      else
-      {
-        pendingUeNode = fcfsCell->ueToBeScheduled.first;
-      }
+      pendingUeNode = fcfsCell->ueToBeScheduled.first;
+      ueCount--;
    }
 }
 

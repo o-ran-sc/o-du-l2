@@ -44,18 +44,18 @@
  **/
 uint8_t SchProcCrcInd(Pst *pst, CrcIndInfo *crcInd)
 {
-   uint16_t count=0;
+   uint16_t crcCnt=0;
    uint8_t  ueId=0;
    SchUlHqProcCb *hqP = NULLP;
    Inst  schInst = pst->dstInst - SCH_INST_START;
    SchCellCb *cell = schCb[schInst].cells[schInst];
    
-   while(count  <crcInd->numCrcInd)
+   while(crcCnt < crcInd->numCrcInd)
    {
       GET_UE_ID(crcInd->crnti, ueId);
       if (cell->raCb[ueId-1].raState == SCH_RA_STATE_MSG3_PENDING)
       {
-         if (crcInd->crcInd[count])
+         if (crcInd->crcInd[crcCnt])
          {
             /* failure case*/
             if (cell->raCb[ueId-1].msg3HqProc.tbInfo.txCntr < cell->maxMsg3Tx)
@@ -81,21 +81,24 @@ uint8_t SchProcCrcInd(Pst *pst, CrcIndInfo *crcInd)
          if (cell->ueCb[ueId-1].hqUlmap[crcInd->timingInfo.slot]->hqList.count == 0)
          {
             DU_LOG("\n ERROR no harq stored in ul hq map at slot %d ue id %d\n",crcInd->timingInfo.slot, ueId);
+            crcCnt++;
             continue;
          }
          if (cell->ueCb[ueId-1].hqUlmap[crcInd->timingInfo.slot]->hqList.first == 0)
          {
             DU_LOG("\n ERROR NULL harq stored in ul hq map at slot %d ue id %d\n",crcInd->timingInfo.slot, ueId);
+            crcCnt++;
             continue;
          }
          hqP = (SchUlHqProcCb*) cell->ueCb[ueId-1].hqUlmap[crcInd->timingInfo.slot]->hqList.first->node;
          if(hqP == NULLP)
          {
+            crcCnt++;
             continue;
          }
          else
          {
-            if (crcInd->crcInd[count])
+            if (crcInd->crcInd[crcCnt])
             {             
                /* failure case*/
                schUlHqProcessNack(hqP);
@@ -108,7 +111,7 @@ uint8_t SchProcCrcInd(Pst *pst, CrcIndInfo *crcInd)
          }
          cmLListDelFrm(&(cell->ueCb[ueId-1].hqUlmap[crcInd->timingInfo.slot]->hqList), &hqP->ulSlotLnk);
       }
-      count++;
+      crcCnt++;
    }
    return ROK;
 }
