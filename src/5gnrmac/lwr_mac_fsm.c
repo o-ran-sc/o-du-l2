@@ -125,7 +125,7 @@ uint8_t lwr_mac_procInvalidEvt(void *msg)
  * @return void
  *
  * ****************************************************************/
-void fillMsgHeader(fapi_msg_t *hdr, uint16_t msgType, uint16_t msgLen)
+void fillMsgHeader(fapi_msg_t *hdr, uint16_t msgType, uint32_t msgLen)
 {
    memset(hdr, 0, sizeof(fapi_msg_t));
    hdr->msg_id = msgType;
