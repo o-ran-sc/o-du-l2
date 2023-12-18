@@ -930,7 +930,7 @@ S16 l1HdlStartReq(uint32_t msgLen, void *msg)
  *
  * ****************************************************************/
 
-S16 l1HdlDlTtiReq(uint16_t msgLen, void *msg)
+S16 l1HdlDlTtiReq(uint32_t msgLen, void *msg)
 {
 #ifdef INTEL_FAPI
    p_fapi_api_queue_elem_t dlTtiElem = (p_fapi_api_queue_elem_t)msg;
@@ -989,7 +989,7 @@ S16 l1HdlDlTtiReq(uint16_t msgLen, void *msg)
  *
  * ****************************************************************/
 
-S16 l1HdlTxDataReq(uint16_t msgLen, void *msg)
+S16 l1HdlTxDataReq(uint32_t msgLen, void *msg)
 {
 #ifdef INTEL_FAPI
    p_fapi_api_queue_elem_t txDataElem = (p_fapi_api_queue_elem_t)msg;
@@ -1206,7 +1206,7 @@ uint8_t l1BuildAndSendUciInd(uint16_t slot, uint16_t sfn, fapi_ul_pucch_pdu_t pu
  *
  * ****************************************************************/
 
-S16 l1HdlUlTtiReq(uint16_t msgLen, void *msg)
+S16 l1HdlUlTtiReq(uint32_t msgLen, void *msg)
 {
 #ifdef INTEL_FAPI
    p_fapi_api_queue_elem_t ulTtiElem = (p_fapi_api_queue_elem_t)msg;
@@ -1502,7 +1502,7 @@ uint8_t l1BuildAndSendMsg5(uint16_t sfn, uint16_t slot)
  *
  * ****************************************************************/
 
-S16 l1HdlUlDciReq(uint16_t msgLen, void *msg)
+S16 l1HdlUlDciReq(uint32_t msgLen, void *msg)
 {
 #ifdef INTEL_FAPI
    p_fapi_api_queue_elem_t ulDciElem = (p_fapi_api_queue_elem_t)msg;

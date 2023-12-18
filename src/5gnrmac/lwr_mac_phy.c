@@ -271,7 +271,7 @@ uint8_t LwrMacSendToL1(void *msg)
 {
    uint8_t ret = ROK;
 #ifdef INTEL_FAPI
-   uint16_t msgLen =0;
+   uint32_t msgLen =0;
    p_fapi_api_queue_elem_t currMsg = NULLP;
 
 #ifdef CALL_FLOW_DEBUG_LOG   

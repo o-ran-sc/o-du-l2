@@ -210,7 +210,7 @@ extern "C" {
 #define FAPI_MAX_NUM_DIGBFINTERFACES                        4   // Based on RF, 5G FAPI says {0,255}
 #define FAPI_MAX_NUM_PRGS_PER_TTI                           4   // Based on 38.214 5.1.2.3
 #define FAPI_DCI_PAYLOAD_BYTE_LEN                           32  // Based on Intel API MAX_DCI_BIT_BYTE_LEN
-#define FAPI_MAX_NUMBER_DL_DCI                              1   // Based on Intel API MAX_NUM_PDCCH
+#define FAPI_MAX_NUMBER_DL_DCI                              3   // Based on Intel API MAX_NUM_PDCCH
 #define FAPI_MAX_NUMBER_OF_CODEWORDS_PER_PDU                2   // Based on MAX_DL_CODEWORD
 // Based on (MAX_NUM_PDSCH*MAX_DL_CODEWORD + MAX_NUM_PDCCH + MAX_NUM_SRS +
 // 1 PBCH/SLOT)
