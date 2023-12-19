@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "29021e00_b3f0e207",
+        "filename": "src/cu_stub/cu_stub_egtp.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-12-19T08:02:49Z",
+      "side": 1,
+      "message": "are  we keeping this change?",
+      "range": {
+        "startLine": 46,
+        "startChar": 8,
+        "endLine": 46,
+        "endChar": 32
+      },
+      "revId": "6a6a7f501d08ba858a33d8b4ac66304c904f83a6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c5abb3eb_ec87c3e6",
+        "filename": "src/du_app/du_mgr_main.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 589,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-12-19T08:02:49Z",
+      "side": 1,
+      "message": "revert",
+      "range": {
+        "startLine": 589,
+        "startChar": 5,
+        "endLine": 589,
+        "endChar": 28
+      },
+      "revId": "6a6a7f501d08ba858a33d8b4ac66304c904f83a6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d9dc0c66_249b4b6e",
+        "filename": "src/phy_stub/phy_stub_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1241,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2023-12-19T08:02:49Z",
+      "side": 1,
+      "message": "are we keeping this change?",
+      "revId": "6a6a7f501d08ba858a33d8b4ac66304c904f83a6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
