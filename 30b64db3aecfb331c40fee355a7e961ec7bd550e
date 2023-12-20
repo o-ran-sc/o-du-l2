@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a2a41cc4_7f177256",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-12-20T05:38:31Z",
+      "side": 1,
+      "message": "ODUHIGH-553. PLS CORRECT THE TASKiD.. THE GERRIT IS STILL NOT LINKED TO 553 JIRA",
+      "range": {
+        "startLine": 7,
+        "startChar": 28,
+        "endLine": 7,
+        "endChar": 30
+      },
+      "revId": "30b64db3aecfb331c40fee355a7e961ec7bd550e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "37cd721f_5ef2e342",
+        "filename": "src/phy_stub/phy_stub.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-12-20T05:38:31Z",
+      "side": 1,
+      "message": "REVERT",
+      "range": {
+        "startLine": 21,
+        "startChar": 32,
+        "endLine": 21,
+        "endChar": 46
+      },
+      "revId": "30b64db3aecfb331c40fee355a7e961ec7bd550e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b3c4b62b_f81a710e",
+        "filename": "src/phy_stub/phy_stub.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-12-20T05:38:31Z",
+      "side": 1,
+      "message": "REVERT",
+      "range": {
+        "startLine": 22,
+        "startChar": 78,
+        "endLine": 22,
+        "endChar": 92
+      },
+      "revId": "30b64db3aecfb331c40fee355a7e961ec7bd550e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "34e3e075_0b3ee3fb",
+        "filename": "src/phy_stub/phy_stub.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2023-12-20T05:38:31Z",
+      "side": 1,
+      "message": "REVEERT",
+      "range": {
+        "startLine": 23,
+        "startChar": 33,
+        "endLine": 23,
+        "endChar": 34
+      },
+      "revId": "30b64db3aecfb331c40fee355a7e961ec7bd550e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
