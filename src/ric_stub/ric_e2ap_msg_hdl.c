@@ -333,7 +333,8 @@ void FreeRemovalRequest(E2AP_PDU_t *e2apMsg)
  * ****************************************************************/
 uint8_t BuildAndSendRemovalRequest(DuDb *duDb)
 {
-   uint8_t ieIdx = 0, elementCnt = 0, transId = 0;
+   uint8_t ieIdx = 0, elementCnt = 0;
+   uint16_t transId = 0;
    uint8_t ret = RFAILED;
    E2AP_PDU_t        *e2apMsg = NULLP;
    E2RemovalRequest_t  *removalReq = NULLP;
@@ -829,7 +830,7 @@ void FreeE2ConfigUpdateFail(E2AP_PDU_t *e2apMsg)
  *
  * ****************************************************************/
 
-uint8_t BuildAndSendE2NodeConfigUpdateFailure(uint32_t duId, uint8_t transId, uint8_t causeInfo, uint8_t causeReason)
+uint8_t BuildAndSendE2NodeConfigUpdateFailure(uint32_t duId, uint16_t transId, uint8_t causeInfo, uint8_t causeReason)
 {
    E2AP_PDU_t         *e2apMsg = NULL;
    asn_enc_rval_t     encRetVal;
@@ -965,7 +966,8 @@ void ProcE2NodeConfigUpdate(uint32_t duId, E2nodeConfigurationUpdate_t *e2NodeCo
    DuDb    *duDb = NULLP;
    E2NodeConfigList tmpE2NodeList;
    uint16_t arrIdx=0;
-   uint8_t ieIdx = 0, duIdx = 0, elementCnt=0, transId = 0; 
+   uint8_t ieIdx = 0, duIdx = 0, elementCnt=0;
+   uint16_t transId = 0; 
    E2nodeComponentConfigAddition_List_t *e2NodeAddList=NULL;
    E2nodeComponentConfigAddition_ItemIEs_t *e2NodeAddItemIe=NULL;
    E2nodeComponentConfigAddition_Item_t *e2NodeAddItem=NULL;
@@ -1360,10 +1362,7 @@ uint8_t fillE2NodeConfigAck(PTR e2NodeCfg, uint8_t procedureCode, E2NodeComponen
 uint8_t BuildE2nodeComponentConfigAdditionAck(E2nodeComponentConfigAdditionAck_List_t *e2NodeConfigAdditionAckList, \
 uint16_t addedE2NodeCount, E2NodeConfigItem *addedE2Node)
 {
-   E2NodeComponent *e2NodeComponentInfo=NULLP;
-   CmLList *node=NULLP;
    uint16_t arrIdx = 0;
-   E2nodeComponentConfigAdditionAck_Item_t *e2NodeAddAckItem=NULLP;
    E2nodeComponentConfigAdditionAck_ItemIEs_t *e2NodeAddAckItemIe=NULLP;
   
    e2NodeConfigAdditionAckList->list.count = addedE2NodeCount;
@@ -1388,7 +1387,6 @@ uint16_t addedE2NodeCount, E2NodeConfigItem *addedE2Node)
       e2NodeAddAckItemIe->id = ProtocolIE_IDE2_id_E2nodeComponentConfigAdditionAck_Item;
       e2NodeAddAckItemIe->criticality = CriticalityE2_reject;
       e2NodeAddAckItemIe->value.present = E2nodeComponentConfigAdditionAck_ItemIEs__value_PR_E2nodeComponentConfigAdditionAck_Item;
-      e2NodeAddAckItem = &e2NodeAddAckItemIe->value.choice.E2nodeComponentConfigAdditionAck_Item;
 
       /* Filling the e2 node config addition ack item */
       fillE2NodeConfigAck((PTR)&e2NodeAddAckItemIe->value.choice.E2nodeComponentConfigAdditionAck_Item, ProtocolIE_IDE2_id_E2nodeComponentConfigAdditionAck,\
@@ -1496,7 +1494,7 @@ uint8_t BuildRanFunctionAcceptedList(DuDb *duDb, uint8_t count, RanFunction *ran
  *
  * ****************************************************************/
 
-uint8_t BuildAndSendE2SetupRsp(DuDb *duDb, uint8_t transId, E2NodeConfigList e2NodeList)
+uint8_t BuildAndSendE2SetupRsp(DuDb *duDb, uint16_t transId, E2NodeConfigList e2NodeList)
 {
    E2AP_PDU_t         *e2apMsg = NULL;
    E2setupResponse_t  *e2SetupRsp;
@@ -2194,7 +2192,6 @@ uint8_t BuildAndSendRicSubscriptionReq(DuDb *duDb)
    uint8_t         ret = RFAILED;
    uint8_t         elementCnt = 0;
    uint8_t         idx = 0;
-   uint8_t         actionIdx = 0;
    asn_enc_rval_t  encRetVal;        /* Encoder return value */
    E2AP_PDU_t                 *e2apRicMsg = NULL;
    RICsubscriptionRequest_t   *ricSubscriptionReq;
@@ -2505,7 +2502,7 @@ void FreeE2SetupFailure(E2AP_PDU_t *e2apMsg)
  *
  * ****************************************************************/
 
-uint8_t BuildAndSendE2SetupFailure(uint32_t duId, uint8_t transId)
+uint8_t BuildAndSendE2SetupFailure(uint32_t duId, uint16_t transId)
 {
    uint8_t            ret = RFAILED;
    E2AP_PDU_t         *e2apMsg = NULL;
@@ -2636,11 +2633,11 @@ uint8_t BuildAndSendE2SetupFailure(uint32_t duId, uint8_t transId)
 
 void ProcE2SetupReq(uint32_t *duId, E2setupRequest_t  *e2SetupReq)
 {
-   uint8_t arrIdx = 0, duIdx = 0, transId =0;
+   uint8_t arrIdx = 0, duIdx = 0;
+   uint16_t transId =0;
    uint16_t ranFuncIdx=0, e2NodeAddListIdx =0;
    E2NodeConfigList tmpE2NodeList;
    DuDb    *duDb = NULLP;
-   bool ieProcessingFailed = false;
    E2nodeComponentConfigAddition_List_t *e2NodeAddList=NULLP;
    E2nodeComponentConfigAddition_ItemIEs_t *e2NodeAddItem=NULLP;
    RANfunction_ItemIEs_t *ranFuncItemIe=NULLP;
@@ -2799,7 +2796,7 @@ void FreeE2ResetResponse(E2AP_PDU_t *e2apMsg)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t BuildAndSendResetResponse(uint32_t duId, uint8_t transId)
+uint8_t BuildAndSendResetResponse(uint32_t duId, uint16_t transId)
 {
    uint8_t           ieIdx = 0, elementCnt = 0;
    uint8_t           ret = RFAILED;
@@ -3143,7 +3140,7 @@ void FreeRicServiceUpdateFailure(E2AP_PDU_t *e2apMsg)
  *
  ******************************************************************/
 
-uint8_t BuildAndSendRicServiceUpdateFailure(uint32_t duId, int8_t transId, CauseE2_PR causePresent, uint8_t reason)
+uint8_t BuildAndSendRicServiceUpdateFailure(uint32_t duId, uint16_t transId, CauseE2_PR causePresent, uint8_t reason)
 {
 
    E2AP_PDU_t         *e2apMsg = NULL;
@@ -3396,7 +3393,7 @@ uint8_t BuildRanFunctionRejectedList(uint8_t count, RanFunction *ranFunRejectedL
  *
  ******************************************************************/
 
-uint8_t BuildAndSendRicServiceUpdateAcknowledge(DuDb *duDb, int8_t transId, RicTmpRanFunList ricRanFuncList)
+uint8_t BuildAndSendRicServiceUpdateAcknowledge(DuDb *duDb, uint16_t transId, RicTmpRanFunList ricRanFuncList)
 {
    E2AP_PDU_t         *e2apMsg = NULL;
    asn_enc_rval_t     encRetVal;
@@ -4715,7 +4712,7 @@ void FreeErrorIndication(E2AP_PDU_t  *e2apMsg)
  *
  ******************************************************************/
 
-uint8_t BuildAndSendErrorIndication(uint32_t duId, int8_t transId, RicRequestId requestId, uint16_t ranFuncId, uint8_t reason)
+uint8_t BuildAndSendErrorIndication(uint32_t duId, uint16_t transId, RicRequestId requestId, uint16_t ranFuncId, uint8_t reason)
 {
    uint8_t elementCnt =0, arrIdx=0, ret = RFAILED;
    E2AP_PDU_t         *e2apMsg = NULLP;
@@ -4908,7 +4905,8 @@ void FreeResetRequest(E2AP_PDU_t *e2apMsg)
  * ****************************************************************/
 uint8_t BuildAndSendResetRequest(DuDb *duDb, CauseE2_PR causePresent, uint8_t reason)
 {
-   uint8_t ieIdx = 0, elementCnt = 0, transId = 0;
+   uint8_t ieIdx = 0, elementCnt = 0;
+   uint16_t transId = 0;
    uint8_t ret = RFAILED;
    E2AP_PDU_t        *e2apMsg = NULLP;
    ResetRequestE2_t  *resetReq = NULLP;
@@ -5091,7 +5089,6 @@ void deleteActionSequenceList(CmLListCp *actionList)
  * ****************************************************************/
 void deleteRicSubscriptionNode(CmLList *subscriptionNode)
 {
-   uint8_t actionIdx=0;
    RicSubscription *ricSubscriptionInfo = NULLP;
 
    ricSubscriptionInfo = (RicSubscription*)subscriptionNode->node;
@@ -5221,7 +5218,8 @@ void ProcResetResponse(uint32_t duId, ResetResponseE2_t *resetRsp)
 
 void ProcResetRequest(uint32_t duId, ResetRequestE2_t *resetReq)
 {
-   uint8_t ieIdx = 0, duIdx =0, transId=0;
+   uint8_t ieIdx = 0, duIdx =0;
+   uint16_t transId=0;
    DuDb *duDb = NULLP;
    RanFunction *ranFuncDb = NULLP;
    uint16_t ranFuncIdx = 0;
@@ -5294,7 +5292,7 @@ void ProcResetRequest(uint32_t duId, ResetRequestE2_t *resetReq)
  ******************************************************************/
 void FreeRicSubscriptionDeleteRequest(E2AP_PDU_t *e2apMsg)
 {
-   uint8_t ieIdx = 0, arrIdx = 0;
+   uint8_t ieIdx = 0;
    RICsubscriptionDeleteRequest_t *ricSubsDelReq = NULLP;
 
    if(e2apMsg)
@@ -5883,7 +5881,7 @@ uint16_t updatedE2NodeCount, E2NodeConfigItem *updatedE2Node)
  *
  * ****************************************************************/
 
-uint8_t BuildAndSendE2NodeConfigUpdateAck(DuDb *duDb, uint8_t transId,  E2NodeConfigList *e2NodeList)
+uint8_t BuildAndSendE2NodeConfigUpdateAck(DuDb *duDb, uint16_t transId,  E2NodeConfigList *e2NodeList)
 {
    uint8_t ret = RFAILED;
    uint8_t arrIdx = 0,elementCnt = 0;
@@ -6047,7 +6045,8 @@ uint8_t BuildAndSendE2NodeConfigUpdateAck(DuDb *duDb, uint8_t transId,  E2NodeCo
  * ****************************************************************/
 void ProcE2RemovalFailure(E2RemovalFailure_t *e2RemovalFailure) 
 {
-   uint8_t ieIdx = 0, transId=0;
+   uint8_t ieIdx = 0;
+   uint16_t transId=0;
    CauseE2_t *cause = NULLP;
 
    if(!e2RemovalFailure)
@@ -6082,7 +6081,7 @@ void ProcE2RemovalFailure(E2RemovalFailure_t *e2RemovalFailure)
                }
             default:
                {
-                  DU_LOG("\nERROR  -->  E2AP : Received Invalid Ie [%d]", e2RemovalFailure->protocolIEs.list.array[ieIdx]->id);
+                  DU_LOG("\nERROR  -->  E2AP : Received Invalid Ie [%ld]", e2RemovalFailure->protocolIEs.list.array[ieIdx]->id);
                   break;
                }
          }
@@ -6455,7 +6454,7 @@ uint8_t BuildAndSendRemovalResponse(uint32_t duId, uint16_t transId)
       if(duDb == NULLP)
       {
          DU_LOG("\nERROR  -->  E2AP : duDb is not present for duId %d",duId);
-         return;
+         return RFAILED;
       }
    
       RIC_ALLOC(e2apMsg, sizeof(E2AP_PDU_t));
@@ -7055,7 +7054,7 @@ void ProcE2connectionUpdateFailure(E2connectionUpdateFailure_t *updateFailure)
                }
             default:
                {
-                  DU_LOG("\nERROR  -->  E2AP : Received Invalid Ie [%d]", updateFailure->protocolIEs.list.array[ieIdx]->id);
+                  DU_LOG("\nERROR  -->  E2AP : Received Invalid Ie [%ld]", updateFailure->protocolIEs.list.array[ieIdx]->id);
                   break;
                }
          }
@@ -7781,12 +7780,10 @@ uint8_t BuildAndSendRicSubscriptionModReq(DuDb *duDb, RicSubscription **ricSubsI
 {
    uint8_t         ret = RFAILED;
    uint8_t         elementCnt = 0;
-   uint8_t         idx = 0, cfgIdx=0;
+   uint8_t         idx = 0;
    asn_enc_rval_t  encRetVal;        /* Encoder return value */
    E2AP_PDU_t                 *e2apRicMsg = NULL;
    RICsubscriptionModificationRequest_t   *ricSubscriptionModReq;
-   RanFunction  *ranFuncDb = &duDb->ranFunction[0];
-   CmLList *subscriptionNode = NULLP;
    
    DU_LOG("\nINFO   -->  E2AP : Building RIC Subscription Request\n");
 
@@ -8025,8 +8022,6 @@ void ProcessingRicSubsActionModified(RICactions_ModifiedForModification_List_t *
 {
    uint8_t actionId=0;
    uint8_t elementIdx = 0;
-   ActionInfo *action=NULLP;
-   CmLList *actionNode =NULLP;
    RICaction_ModifiedForModification_ItemIEs_t *modifiedActionItemIe =NULLP;
 
    if(actionModifiedList->list.array)
@@ -8063,8 +8058,6 @@ void ProcessingRicSubsActionAdded(RICactions_AddedForModification_List_t *action
 {
    uint8_t actionId=0;
    uint8_t elementIdx = 0;
-   ActionInfo *action=NULLP;
-   CmLList *actionNode =NULLP;
    RICaction_AddedForModification_ItemIEs_t *addedActionItemIe =NULLP;
 
    if(actionAddedList->list.array)
