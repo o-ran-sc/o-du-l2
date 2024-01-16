@@ -44,6 +44,8 @@
 #include "E2SM-KPM-EventTriggerDefinition.h"
 #include "E2connectionUpdate-Item.h"
 
+
+char encBuf[ENC_BUF_MAX_LEN];
 /*******************************************************************
  *
  * @brief Printing Type and Cause of failure

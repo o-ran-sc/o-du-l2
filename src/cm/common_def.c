@@ -17,6 +17,9 @@
 *******************************************************************************/
 
 #include "common_def.h"
+OduCellStatus gCellStatus;
+uint64_t gSlotCount;
+uint64_t gDlDataRcvdCnt;   /* Number of DL data received at EGTP */
 
 /*Spec 38.104, Table 5.4.2.1-1 ARFCN - FREQ mapping*/
 /*{  F_REF(Mhz), ΔF_Global, F_REF-Offs, N_REF-offs, Range of N_REF }*/

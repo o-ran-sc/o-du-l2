@@ -1297,7 +1297,7 @@ typedef struct rrmPolicyList
 }RrmPolicyList;
 #endif
 
-DuCfgParams duCfgParam;
+extern DuCfgParams duCfgParam;
 
 /*function declarations */
 uint8_t readClCfg();
