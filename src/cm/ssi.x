@@ -701,10 +701,10 @@ typedef Void (*PDPR) ARGS((PTR cxt)); /* pointer to DPR function handler */
 #ifdef SS                        /* Common System Services */
 
 /* for SGetOpt() */
- S16 msOptInd;
- S8  *msOptArg;
- Txt **msArgv;
- S16 msArgc;
+extern S16 msOptInd;
+extern S8  *msOptArg;
+extern Txt **msArgv;
+extern S16 msArgc;
 
 /* task related stuff */
 /* data range modified */

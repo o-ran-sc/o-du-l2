@@ -36,7 +36,7 @@
 
 /* This file contains message handling functionality for MAC */
 
-MacCb  macCb;
+extern MacCb  macCb;
 
 MacDuStatsIndFunc macDuStatsIndOpts[] =
 {

@@ -307,7 +307,7 @@ typedef struct ssRegCfg
 } SsRegCfg;
 
 
-
+#ifdef ANKIT
 /* external variable declaration */
 /*ss014.301  osCp as volatile for SSI-4GMX*/
 #ifdef  SS_4GMX_LCORE
@@ -315,6 +315,16 @@ volatile SsOs osCp;
 #else
 SsOs osCp;
 #endif
+#else
+/* external variable declaration */
+/*ss014.301  osCp as volatile for SSI-4GMX*/
+#ifdef  SS_4GMX_LCORE
+extern volatile SsOs osCp;
+#else
+extern SsOs osCp;
+#endif
+#endif
+
 
 
 /* functions */

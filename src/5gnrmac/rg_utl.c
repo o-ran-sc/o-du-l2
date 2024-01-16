@@ -63,6 +63,7 @@
 /* local defines */
 #define RG_NON_MIMO_IDX 0
 
+RgCb rgCb[RG_MAX_INST];
 /***********************************************************
  *
  *     Func : rgAllocSBuf

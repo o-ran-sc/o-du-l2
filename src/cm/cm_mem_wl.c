@@ -220,10 +220,10 @@ typedef struct cmMemDoubleFree
 }CmMemDoubleFree;
 
 PTR prvAllocPtr[8];
-uint8_t stopBtInfo = FALSE;
+extern uint8_t stopBtInfo = FALSE;
 Buffer *palBuffer;
-Buffer *mtTskBuffer1;
-Buffer *mtTskBuffer2;
+extern Buffer *mtTskBuffer1;
+extern Buffer *mtTskBuffer2;
 
 #ifdef SS_USE_ICC_MEMORY
 static pthread_mutex_t iccAllocFreeLock;
@@ -334,8 +334,8 @@ static Txt dbgPrntBuf[200];        /* print buffer */
 #endif
 
 uint32_t num_times = 0;
-pthread_t tmpRegTidMap[20];
-Bool g_usettitmr;
+extern pthread_t tmpRegTidMap[20];
+extern Bool g_usettitmr;
 void DumpLayersDebugInformation()
 {
    DumpSSIDemandQDebugInformation();

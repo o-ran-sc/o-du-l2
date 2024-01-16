@@ -148,6 +148,8 @@
 #include "cu_f1ap_msg_hdl.h"
 #include "cu_stub.h"
 
+CuGlobalCb cuCb;
+char encBuf[ENC_BUF_MAX_LEN];
 uint8_t fillCellGrpCfg(CuUeCb *ueCb, OCTET_STRING_t *cellGrp, bool updateAllRbCfg);
 uint8_t fillRrcReconfig(CuUeCb *ueCb, RRCReconfiguration_t *rrcReconfig, bool updateAllRbCfg);
 

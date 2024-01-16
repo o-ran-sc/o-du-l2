@@ -181,6 +181,7 @@ struct sigcontext my_uc_mcontext = { 0 };
 #include <ucontext.h>
 #include <dlfcn.h>
 
+uint32_t gt[128];
 
 #define SIGSEGV_STACK_GENERIC
 #define REGFORMAT "%x\n"
@@ -306,8 +307,8 @@ void *pthreadCreateHdlr(void*  arg);
 Buffer *mtTskBuffer1;
 Buffer *mtTskBuffer2;
 
-pthread_t tmpRegTidMap[20];
-uint8_t stopBtInfo;
+extern pthread_t tmpRegTidMap[20];
+extern uint8_t stopBtInfo;
 S16 SGlobMemInfoShow(void);
 #endif /* SS_LOCKLESS_MEMORY */
 

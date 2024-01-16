@@ -384,9 +384,9 @@ typedef struct tddCfg
 }TDDCfg;
 #endif
 
-OduCellStatus gCellStatus;
-uint64_t gSlotCount;
-uint64_t gDlDataRcvdCnt;   /* Number of DL data received at EGTP */
+extern OduCellStatus gCellStatus;
+extern uint64_t gSlotCount;
+extern uint64_t gDlDataRcvdCnt;   /* Number of DL data received at EGTP */
 
 void fillCoresetFeqDomAllocMap(uint16_t startPrb, uint16_t prbSize, uint8_t *freqDomain);
 void oduCpyFixBufToMsg(uint8_t *fixBuf, Buffer *mBuf, uint16_t len);
