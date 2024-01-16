@@ -110,7 +110,7 @@ uint16_t prachCfgIdxTable[MAX_PRACH_CONFIG_IDX][8];
 uint16_t numRbForPrachTable[MAX_RACH_NUM_RB_IDX][5];
 uint8_t schCmnDlRvTbl[4];
 uint16_t fiveQiIdxTable[MAX_5QI_TABLE_IDX];
-uint16_t fiveQiTable[MAX_5QI_TABLE_IDX][2];
+uint16_t fiveQiTable[MAX_5QI_TABLE_IDX][3];
 
 /* Functions declarations : Linked list handler */
 uint8_t addNodeToLList(CmLListCp *llist, void *blockToAdd, CmLList *currNode);

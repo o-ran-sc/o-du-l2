@@ -173,7 +173,7 @@ void SchFcfsModUeConfigReq(SchUeCb *ueCb)
  *
  * @details
  *
- *    Function : SchFcfsSliceCfgReq
+ *    Function : schFcfsSliceCfgReq
  *
  *    Functionality: 
  *
@@ -181,7 +181,7 @@ void SchFcfsModUeConfigReq(SchUeCb *ueCb)
  * @return void
  *
  * ****************************************************************/
-void SchFcfsSliceCfgReq(SchCellCb *cellCb)
+void schFcfsSliceCfgReq(SchCellCb *cellCb)
 {
    return;
 }
@@ -192,7 +192,7 @@ void SchFcfsSliceCfgReq(SchCellCb *cellCb)
  *
  * @details
  *
- *    Function : SchFcfsSliceRecfgReq
+ *    Function : schFcfsSliceRecfgReq
  *
  *    Functionality: 
  *
@@ -200,7 +200,7 @@ void SchFcfsSliceCfgReq(SchCellCb *cellCb)
  * @return void
  *
  * ****************************************************************/
-void SchFcfsSliceRecfgReq(SchCellCb *cellCb)
+void schFcfsSliceRecfgReq(SchCellCb *cellCb)
 {
    return;
 }
@@ -1394,8 +1394,8 @@ void schFcfsAllApisInit(SchAllApis *allFcfsApi)
     allFcfsApi->SchDlRlcBoInfo = schFcfsDlRlcBoInfo;
     allFcfsApi->SchSrUciInd = schFcfsSrUciInd;
     allFcfsApi->SchBsr = schFcfsBsr;
-    allFcfsApi->SchSliceCfgReq = SchFcfsSliceCfgReq;
-    allFcfsApi->SchSliceRecfgReq = SchFcfsSliceRecfgReq;
+    allFcfsApi->SchSliceCfgReq = schFcfsSliceCfgReq;
+    allFcfsApi->SchSliceRecfgReq = schFcfsSliceRecfgReq;
 
     /* Internal API function pointers */
     allFcfsApi->SchAddToDlHqRetxList = schFcfsAddToDlHqRetxList;
