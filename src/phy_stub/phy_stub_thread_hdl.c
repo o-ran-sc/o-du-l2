@@ -27,10 +27,14 @@
 #include "phy_stub.h"
 #include "mac_sch_interface.h"
 
+uint16_t sfnValue;
+uint16_t slotValue;
+PhyDb phyDb;
 extern uint16_t l1BuildAndSendBSR(uint8_t ueIdx, BsrType bsrType,\
              LcgBufferSize lcgBsIdx[MAX_NUM_LOGICAL_CHANNEL_GROUPS]);
 pthread_t thread = 0;
 int socket_fd =0;
+bool     slotIndicationStarted;
 
 /*******************************************************************
  *

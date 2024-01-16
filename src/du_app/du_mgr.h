@@ -383,7 +383,7 @@ typedef struct statistics
 }Statistics;
 
 /* global variables */
-DuCb duCb;
+extern DuCb duCb;
 //DuCfgParams duCfgParam;
 
 /* DU Cell Functions */

@@ -114,10 +114,15 @@ volatile SsOs     osCp;           /* common OS control point */
 #else
 SsOs     osCp;           /* common OS control point */
 #endif
+/* for SGetOpt() */
+extern S16 msOptInd;
+extern S8  *msOptArg;
+extern Txt **msArgv;
+extern S16 msArgc;
 
  
-Cntr     cfgNumRegs;
-SsRegCfg cfgRegInfo[SS_MAX_REGS];
+extern Cntr     cfgNumRegs;
+extern SsRegCfg cfgRegInfo[SS_MAX_REGS];
 
 
 /* ss029.103: modification: multiple procId related changes */ 

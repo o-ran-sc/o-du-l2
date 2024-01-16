@@ -62,6 +62,7 @@
 #include "E2SM-KPM-IndicationHeader.h"
 #include "E2SM-KPM-IndicationHeader-Format1.h"
 #include "LabelInfoItem.h"
+extern DuCb duCb;
 
 /*******************************************************************
  *

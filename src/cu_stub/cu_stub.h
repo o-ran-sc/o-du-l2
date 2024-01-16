@@ -370,7 +370,7 @@ typedef struct cuGlobalCb
    uint32_t    gnbCuUeF1apIdGenerator;   /* Generating CU UE F1AP ID */
 }CuGlobalCb;
 
-CuGlobalCb cuCb;
+extern CuGlobalCb cuCb;
 
 void readCuCfg();
 void cuAppInmsgHdlr(Buffer *mBuf);

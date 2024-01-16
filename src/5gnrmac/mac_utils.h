@@ -145,8 +145,8 @@
 }
 
 /* Function declaration */
-uint32_t shortBsrBytesTable[MAX_SHORT_BSR_TABLE_ENTRIES];
-uint32_t longBsrBytesTable[MAX_LONG_BSR_TABLE_ENTRIES];
+extern uint32_t shortBsrBytesTable[MAX_SHORT_BSR_TABLE_ENTRIES];
+extern uint32_t longBsrBytesTable[MAX_LONG_BSR_TABLE_ENTRIES];
 
 /**********************************************************************
          End of file

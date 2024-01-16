@@ -105,7 +105,7 @@
 #define MAX_PLMN 2
 
 /********************* Global Variable ********************/
-uint64_t ueBitMapPerCell[MAX_NUM_CELL]; /* Bit Map to store used/free UE-IDX per Cell */
+extern uint64_t ueBitMapPerCell[MAX_NUM_CELL]; /* Bit Map to store used/free UE-IDX per Cell */
 
 /********************* Interface structure definition ********************/
 typedef enum

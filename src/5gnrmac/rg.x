@@ -651,7 +651,7 @@ struct _rgCb
 };
 
 /* Declaration for RgCb */
-RgCb rgCb[RG_MAX_INST];
+extern RgCb rgCb[RG_MAX_INST];
 
 /** 
   * @brief
