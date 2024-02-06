@@ -540,7 +540,7 @@ bool schProcessRaReq(Inst schInst, SchCellCb *cell, SlotTimingInfo currTime, uin
    uint8_t   k0TblIdx = 0, k1TblIdx = 0, k2TblIdx = 0;
    uint8_t   k0Index = 0, k1Index = 0, k2Index = 0;
    uint8_t   k0 = 0, k1 = 0, k2 = 0;
-   uint8_t   numK1 = 0;
+   uint8_t   numK1 = 0, ret = OK;
    uint8_t   puschMu = 0;
    uint8_t   msg3Delta = 0, msg3MinSchTime = 0;
 #ifdef NR_TDD
@@ -697,10 +697,20 @@ bool schProcessRaReq(Inst schInst, SchCellCb *cell, SlotTimingInfo currTime, uin
       if(cell->raReq[ueId-1]->isCFRA)
       {
          /* Allocate resources for PUCCH */
-         schAllocPucchResource(cell, pucchTime, cell->raReq[ueId-1]->rachInd->crnti,NULLP, FALSE, NULLP);
+         cell->schUlSlotInfo[pucchTime.slot]->pucchUe = ueId;
+         ret = schAllocPucchResource(cell, pucchTime, NULLP, FALSE, NULLP);
+         if(ret == RFAILED)
+         {
+            SCH_FREE(dciSlotAlloc, sizeof(RarAlloc));
+            cell->schDlSlotInfo[dciSlot]->rarAlloc[ueId-1] = NULLP;
+            DU_LOG("\nERROR  -->  SCH : Resource allocation for PUCCH failed for CFRA!");
+            return false;
+            
+         }
       }
       else
       {
+         cell->schUlSlotInfo[msg3Time.slot]->puschUe = ueId;
          /* Allocate resources for msg3 */
          msg3PuschInfo = schAllocMsg3Pusch(schInst, cell->raReq[ueId-1]->rachInd->crnti, k2Index, msg3Time, &(cell->raCb[ueId-1].msg3HqProc), FALSE);
          if(msg3PuschInfo)
@@ -780,10 +790,6 @@ bool schProcessRaReq(Inst schInst, SchCellCb *cell, SlotTimingInfo currTime, uin
       }
 
       cell->schDlSlotInfo[dciSlot]->pdcchUe = ueId;
-      if(cell->raReq[ueId-1]->isCFRA)
-         cell->schUlSlotInfo[pucchTime.slot]->pucchUe = ueId;
-      else
-         cell->schUlSlotInfo[msg3Time.slot]->puschUe = ueId;
 
       /* Create raCb at SCH */
       createSchRaCb(ueId, cell->raReq[ueId-1], schInst);

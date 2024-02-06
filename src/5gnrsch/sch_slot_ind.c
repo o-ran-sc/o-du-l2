@@ -242,10 +242,6 @@ bool schFillBoGrantDlSchedInfo(SchCellCb *cell, SlotTimingInfo currTime, uint8_t
       }
    }
 
-   schAllocPucchResource(cell, pucchTime, crnti, ueCb, isRetx, *hqP);
-
-   cell->schUlSlotInfo[pucchTime.slot]->pucchUe = ueId;
-
    /*Re-setting the BO's of all DL LCs in this UE*/
    for(lcIdx = 0; lcIdx < MAX_NUM_LC; lcIdx++)
    {
@@ -422,6 +418,7 @@ bool findValidK0K1Value(SchCellCb *cell, SlotTimingInfo currTime, uint8_t ueId, 
 {
    uint8_t numK0 = 0, k0TblIdx = 0, k0Val = 0, k0Index =0 ;
    uint8_t k1TblIdx = 0, k1Index = 0, k1Val = 0, numK1 = 0;
+   uint8_t ret = RFAILED;
    SchUeCb *ueCb = NULLP;
    SchK0K1TimingInfoTbl *k0K1InfoTbl;
 
@@ -434,14 +431,14 @@ bool findValidK0K1Value(SchCellCb *cell, SlotTimingInfo currTime, uint8_t ueId, 
    }
 #endif
 
+   ueCb = &cell->ueCb[ueId-1];
    if(dedMsg == true)
    {
-      ueCb = &cell->ueCb[ueId-1];
       k0K1InfoTbl = &ueCb->k0K1InfoTbl;
       if(schDlCandidateSelection(ueCb, *pdcchTime, pdcchAllocInfo) == false)
       {
-        DU_LOG("\nDEBUG  --> SCH: DL candidate Selection failed bcz PDCCH is unavailable for this slot");
-        return false;     
+         DU_LOG("\nDEBUG  --> SCH: DL candidate Selection failed bcz PDCCH is unavailable for this slot");
+         return false;     
       }
    }
    else
@@ -520,9 +517,17 @@ bool findValidK0K1Value(SchCellCb *cell, SlotTimingInfo currTime, uint8_t ueId, 
          pdcchTime->cellId = cell->cellId;
          pdschTime->cellId = cell->cellId;
 
+         cell->schUlSlotInfo[pucchTime->slot]->pucchUe = ueId;
+         ret = schAllocPucchResource(cell, *pucchTime, ueCb, isRetx, hqP);
+         if(ret == RFAILED)
+         {
+            return false;
+         }
          return true;
       }
    }
+
+
    /*
     * Number of symbols in case of retransmisson should be same as it was in
     * original transmisson. Symbol availablity checks need to be added.

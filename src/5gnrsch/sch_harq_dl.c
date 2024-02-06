@@ -88,7 +88,7 @@ void schDlHqEntReset(SchCellCb *cellCb, SchUeCb *ueCb, SchDlHqEnt *hqE)
       hqP->maxHqTxPerHqP = hqE->maxHqTx;
       hqP->dlHqEntLnk.node = (PTR)hqP;
       hqP->dlHqProcLink.node = (PTR)hqP;
-      hqP->ulSlotLnk.node = (PTR)hqP;
+      hqP->dlSlotLnk.node = (PTR)hqP;
       cellCb->api->SchInitDlHqProcCb(hqP);
       schDlHqAddToFreeList(hqP);
    }
