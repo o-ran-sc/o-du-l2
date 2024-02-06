@@ -1518,7 +1518,7 @@ void schUpdateHarqFdbk(SchUeCb *ueCb, uint8_t numHarq, uint8_t *harqPayload, Slo
 {
    SchDlHqProcCb *hqP;
    SchHqDlMap *hqDlMap;
-   CmLList  *node;
+   CmLList  *node = NULLP;
    uint8_t fdbkPos = 0;
 
    hqDlMap = ueCb->hqDlmap[slotInd->slot];
@@ -1527,28 +1527,36 @@ void schUpdateHarqFdbk(SchUeCb *ueCb, uint8_t numHarq, uint8_t *harqPayload, Slo
    {
       return;
    }
-   if (ueCb->cellCb->raCb[ueCb->ueId-1].raState != SCH_RA_STATE_MSG4_PENDING)
+
+   while(fdbkPos < numHarq)
    {
       node = hqDlMap->hqList.first;
-      while(node)
+      if(node == NULLP)
+      {
+         DU_LOG("\nERROR :  SCH --> DL HARQ list is empty thus no need to process the dl harq feedback!");
+         return;
+      }
+      if (ueCb->cellCb->raCb[ueCb->ueId-1].raState != SCH_RA_STATE_MSG4_PENDING)
+      {
+         while(node)
+         {
+            hqP = (SchDlHqProcCb*)node->node;
+            node = node->next;
+            cmLListDelFrm(&hqDlMap->hqList, &hqP->dlSlotLnk);
+            /* 
+               Decode harq feedback if needed post FAPI message decoding also or check how to decode this FAPI msg.
+               case 1 semi static harq Ack/Nack codebook //Supported
+               case 2 dynamic harq ACK/NACK codebook //Not supported
+               */
+            schDlHqFeedbackUpdate(hqP, harqPayload[fdbkPos++], HQ_TB_ACKED);//Marking 2nd TB as ACKED for now as only one TB to be used
+         }
+      }
+      else
       {
          hqP = (SchDlHqProcCb*)node->node;
-         node = node->next;
-         cmLListDelFrm(&hqDlMap->hqList, &hqP->ulSlotLnk);
-         /* 
-            Decode harq feedback if needed post FAPI message decoding also or check how to decode this FAPI msg.
-            case 1 semi static harq Ack/Nack codebook //Supported
-            case 2 dynamic harq ACK/NACK codebook //Not supported
-         */
-         schDlHqFeedbackUpdate(hqP, harqPayload[fdbkPos++], HQ_TB_ACKED);//Marking 2nd TB as ACKED for now as only one TB to be used
+         cmLListDelFrm(&hqDlMap->hqList, &hqP->dlSlotLnk);
+         schMsg4FeedbackUpdate(hqP, harqPayload[fdbkPos++]);
       }
-   }
-   else
-   {
-      node = hqDlMap->hqList.first;
-      hqP = (SchDlHqProcCb*)node->node;
-      cmLListDelFrm(&hqDlMap->hqList, &hqP->ulSlotLnk);
-      schMsg4FeedbackUpdate(hqP, harqPayload[fdbkPos++]);
    }
 }
 /**********************************************************************
