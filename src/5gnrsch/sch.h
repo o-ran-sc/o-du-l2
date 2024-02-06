@@ -250,7 +250,7 @@ struct schDlHqProcCb
    SchDlHqEnt        *hqEnt;
    uint8_t           maxHqTxPerHqP;
    CmLList           dlHqEntLnk;
-   CmLList           ulSlotLnk;
+   CmLList           dlSlotLnk;
    SchDlHqTbCb       tbInfo[2];
    uint8_t           k1;
    void              *schSpcDlHqProcCb;  /*!< Scheduler specific HARQ Proc CB */
@@ -796,7 +796,7 @@ uint8_t schUlResAlloc(SchCellCb *cell, Inst schInst);
 bool schCheckPrachOcc(SchCellCb *cell, SlotTimingInfo prachOccasionTimingInfo);
 uint8_t schCalcPrachNumRb(SchCellCb *cell);
 void schPrachResAlloc(SchCellCb *cell, UlSchedInfo *ulSchedInfo, SlotTimingInfo prachOccasionTimingInfo);
-uint16_t schAllocPucchResource(SchCellCb *cell, SlotTimingInfo pucchTime, uint16_t crnti,SchUeCb *ueCb, bool isRetx, SchDlHqProcCb *hqP);
+uint8_t schAllocPucchResource(SchCellCb *cell, SlotTimingInfo pucchTime, SchUeCb *ueCb, bool isRetx, SchDlHqProcCb *hqP);
 uint8_t schFillUlDci(SchUeCb *ueCb, SchPuschInfo *puschInfo, DciInfo *dciInfo, bool isRetx, SchUlHqProcCb *hqP);
 uint8_t schFillPuschAlloc(SchUeCb *ueCb, SlotTimingInfo puschTime, uint32_t tbSize,
                             uint8_t startSymb, uint8_t symbLen, uint16_t startPrb, bool isRetx, SchUlHqProcCb *hqP);
