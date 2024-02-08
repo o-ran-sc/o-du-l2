@@ -326,7 +326,7 @@ uint8_t readMacCfg()
 
    /* fill PUCCH config common */
    duCfgParam.macCellCfg.cellCfg.initialUlBwp.pucchCommon.pucchResourceCommon = PUCCH_RSRC_COMMON;
-   duCfgParam.macCellCfg.cellCfg.initialUlBwp.pucchCommon.pucchGroupHopping = PUCCH_GROUP_HOPPING;
+   duCfgParam.macCellCfg.cellCfg.initialUlBwp.pucchCommon.pucchGroupHopping = PUCCH_NEITHER_HOPPING;
 
 
 #ifndef O1_ENABLE
@@ -2962,7 +2962,7 @@ uint8_t parsePucchConfigCommon(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur, Pucch
          pucchCfgCmn->pucchResourceCommon = atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
       }
 
-      if ((!xmlStrcmp(cur->name, (const xmlChar *)"PUCCH_GROUP_HOPPING")) && (cur->ns == ns))
+      if ((!xmlStrcmp(cur->name, (const xmlChar *)"PUCCH_NEITHER_HOPPING")) && (cur->ns == ns))
       {
          pucchCfgCmn->pucchGroupHopping = atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
       }

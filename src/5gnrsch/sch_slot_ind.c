@@ -522,7 +522,7 @@ bool findValidK0K1Value(SchCellCb *cell, SlotTimingInfo currTime, uint8_t ueId, 
          cell->schUlSlotInfo[pucchTime->slot]->pucchUe = ueId;
 
          /*Availability of PUCCH for HARQ resources*/
-         ret = schAllocPucchResource(cell, *pucchTime, ueCb, isRetx, hqP);
+         ret = schAllocPucchResource(cell, *pucchTime, ueCb, hqP, pdcchAllocInfo);
          if(ret == RFAILED)
          {
             /*DL allocation can't go through as PUCCH is unavailable*/
