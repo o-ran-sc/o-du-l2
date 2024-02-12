@@ -1,0 +1,1092 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+ADD_REMOVE_BBU_CORES	common_mac_phy_api.h	/^} ADD_REMOVE_BBU_CORES, *PADD_REMOVE_BBU_CORES;$/;"	t	typeref:struct:tAddRemoveBbuCoresStruct
+ADD_REMOVE_BBU_CORES_NR5G	nr5g_mac_phy_api.h	/^} ADD_REMOVE_BBU_CORES_NR5G, *PADD_REMOVE_BBU_CORES_NR5G;$/;"	t	typeref:struct:tAddRemoveBbuCoresNr5g
+BBUPOOL_CORE_OPERATION	common_mac_phy_api.h	/^} BBUPOOL_CORE_OPERATION;$/;"	t	typeref:enum:__anon3
+BBUPOOL_SLEEP_ENABLE	common_mac_phy_api.h	/^    BBUPOOL_SLEEP_ENABLE,$/;"	e	enum:__anon2
+BBU_CORE_ADD	common_mac_phy_api.h	/^    BBU_CORE_ADD = 0,  \/*! add core(s) to BBU Pool *\/$/;"	e	enum:__anon3
+BBU_CORE_REMOVE	common_mac_phy_api.h	/^    BBU_CORE_REMOVE,   \/*! remove core(s) to BBU Pool *\/$/;"	e	enum:__anon3
+BBU_CORE_RESUME	common_mac_phy_api.h	/^    BBU_CORE_RESUME,   \/*! wake up core(s) that have been suspended *\/$/;"	e	enum:__anon3
+BBU_CORE_SET_CORE	common_mac_phy_api.h	/^    BBU_CORE_SET_CORE, \/*! wake up core(s) that have been suspended *\/$/;"	e	enum:__anon3
+BBU_CORE_SUSPEND	common_mac_phy_api.h	/^    BBU_CORE_SUSPEND,  \/*! suspend core(s) that are already added to BBU Pool *\/$/;"	e	enum:__anon3
+BCHPDUStruct	nr5g_mac_phy_api.h	/^} BCHPDUStruct, *PBCHPDUStruct;$/;"	t	typeref:struct:tDlBchPdu
+BCH_MS10	nr5g_mac_phy_api.h	/^    BCH_MS5 = 0, BCH_MS10, BCH_MS20, BCH_MS40, BCH_MS80, BCH_MS160$/;"	e	enum:BchPeriodOptions
+BCH_MS160	nr5g_mac_phy_api.h	/^    BCH_MS5 = 0, BCH_MS10, BCH_MS20, BCH_MS40, BCH_MS80, BCH_MS160$/;"	e	enum:BchPeriodOptions
+BCH_MS20	nr5g_mac_phy_api.h	/^    BCH_MS5 = 0, BCH_MS10, BCH_MS20, BCH_MS40, BCH_MS80, BCH_MS160$/;"	e	enum:BchPeriodOptions
+BCH_MS40	nr5g_mac_phy_api.h	/^    BCH_MS5 = 0, BCH_MS10, BCH_MS20, BCH_MS40, BCH_MS80, BCH_MS160$/;"	e	enum:BchPeriodOptions
+BCH_MS5	nr5g_mac_phy_api.h	/^    BCH_MS5 = 0, BCH_MS10, BCH_MS20, BCH_MS40, BCH_MS80, BCH_MS160$/;"	e	enum:BchPeriodOptions
+BCH_MS80	nr5g_mac_phy_api.h	/^    BCH_MS5 = 0, BCH_MS10, BCH_MS20, BCH_MS40, BCH_MS80, BCH_MS160$/;"	e	enum:BchPeriodOptions
+BF_WEIGHT_GEN_GRANULARITY	common_mac_phy_api.h	/^    BF_WEIGHT_GEN_GRANULARITY,$/;"	e	enum:__anon2
+BOOLEAN	common_typedef.h	/^typedef Bool BOOLEAN;$/;"	t
+BchPeriodOptions	nr5g_mac_phy_api.h	/^enum BchPeriodOptions$/;"	g
+BeamMatrixStruct	nr5g_mac_phy_api.h	/^} BeamMatrixStruct, *PBeamMatrixStruct;  $/;"	t	typeref:struct:__anon4
+Bits	common_typedef.h	/^typedef	signed short  Bits; $/;"	t
+CELLINFOREQUESTStruct	nr5g_mac_phy_api.h	/^} CELLINFOREQUESTStruct, *PCELLINFOREQUESTStruct;$/;"	t	typeref:struct:tCellInfoRequestStruct
+CELL_MASK	common_mac_phy_api.h	/^    CELL_MASK = 0,$/;"	e	enum:__anon1
+CE_INTERP_METHOD	common_mac_phy_api.h	/^    CE_INTERP_METHOD,$/;"	e	enum:__anon2
+CHANNEL_SPLIT_OPTIONS	common_mac_phy_api.h	/^} CHANNEL_SPLIT_OPTIONS;$/;"	t	typeref:enum:__anon2
+COMPLEX16	common_typedef.h	/^} COMPLEX16;$/;"	t	typeref:struct:__anon6
+CONFIGREQUESTStruct	nr5g_mac_phy_api.h	/^} CONFIGREQUESTStruct, *PCONFIGREQUESTStruct;$/;"	t	typeref:struct:tConfigReq
+CONFIGRESPONSEStruct	nr5g_mac_phy_api.h	/^} CONFIGRESPONSEStruct, *PCONFIGRESPONSEStruct;$/;"	t	typeref:struct:tConfigInd
+CORE_MASK_OPTIONS	common_mac_phy_api.h	/^} CORE_MASK_OPTIONS;$/;"	t	typeref:enum:__anon1
+CRCIndicationStruct	nr5g_mac_phy_api.h	/^} CRCIndicationStruct, *PCRCIndicationStruct;$/;"	t	typeref:struct:tCrcIndicationStruct
+CSIRSPDUStruct	nr5g_mac_phy_api.h	/^} CSIRSPDUStruct, *PCSIRSPDUStruct;$/;"	t	typeref:struct:tCsiRsPduStruct
+CellInfoPdu	nr5g_mac_phy_api.h	/^} CellInfoPdu, *PCellInfoPdu;$/;"	t	typeref:struct:tCellInfoPdu
+ChBwOptionsNr5g	nr5g_mac_phy_api.h	/^enum ChBwOptionsNr5g$/;"	g
+CsiPart2InfoStruct	nr5g_mac_phy_api.h	/^} CsiPart2InfoStruct;$/;"	t	typeref:struct:tUlSchCsiPart2Info
+CyclicPrefixTypeOptionsNr5g	nr5g_mac_phy_api.h	/^enum CyclicPrefixTypeOptionsNr5g$/;"	g
+DCIPDUStruct	nr5g_mac_phy_api.h	/^} DCIPDUStruct, *PDCIPDUStruct;$/;"	t	typeref:struct:tDciPduStruct
+DLBEAM_MASK	common_mac_phy_api.h	/^    DLBEAM_MASK,$/;"	e	enum:__anon1
+DLConfigRequestStruct	nr5g_mac_phy_api.h	/^} DLConfigRequestStruct, *PDLConfigRequestStruct;$/;"	t	typeref:struct:tDlConfigRequestStruct
+DLPDUDataStruct	nr5g_mac_phy_api.h	/^} DLPDUDataStruct, *PDLPDUDataStruct;$/;"	t	typeref:struct:tDlPduDataStruct
+DLSCHPDUStruct	nr5g_mac_phy_api.h	/^} DLSCHPDUStruct, *PDLSCHPDUStruct;$/;"	t	typeref:struct:tDlSchPdu
+DL_PDU_TYPE_CSIRS	nr5g_mac_phy_api.h	137;"	d
+DL_PDU_TYPE_DCI	nr5g_mac_phy_api.h	134;"	d
+DL_PDU_TYPE_DLSCH	nr5g_mac_phy_api.h	135;"	d
+DL_PDU_TYPE_PBCH	nr5g_mac_phy_api.h	136;"	d
+DOUBLE64	common_typedef.h	/^typedef double DOUBLE64;$/;"	t
+DirectionNr5g	nr5g_mac_phy_api.h	/^enum DirectionNr5g$/;"	g
+EBBU_POOL_MAX_CONTEXT_FETCH	common_mac_phy_api.h	/^    EBBU_POOL_MAX_CONTEXT_FETCH,$/;"	e	enum:__anon2
+EBBU_POOL_NUM_CONTEXT	common_mac_phy_api.h	/^    EBBU_POOL_NUM_CONTEXT,$/;"	e	enum:__anon2
+EBBU_POOL_NUM_QUEUE	common_mac_phy_api.h	/^    EBBU_POOL_NUM_QUEUE,$/;"	e	enum:__anon2
+EBBU_POOL_QUEUE_SIZE	common_mac_phy_api.h	/^    EBBU_POOL_QUEUE_SIZE,$/;"	e	enum:__anon2
+ERRORIndicationStruct	nr5g_mac_phy_api.h	/^} ERRORIndicationStruct, *PERRORIndicationStruct;$/;"	t	typeref:struct:tErrorIndicationStruct
+FAILURE	common_typedef.h	81;"	d
+FALSE	common_typedef.h	71;"	d
+FEC_DEC_EARLY_TERM_DISABLE	common_mac_phy_api.h	/^    FEC_DEC_EARLY_TERM_DISABLE,$/;"	e	enum:__anon2
+FEC_DEC_NUM_ITER	common_mac_phy_api.h	/^    FEC_DEC_NUM_ITER,$/;"	e	enum:__anon2
+FEC_DEC_SPLIT	common_mac_phy_api.h	/^    FEC_DEC_SPLIT,$/;"	e	enum:__anon2
+FEC_ENC_SPLIT	common_mac_phy_api.h	/^    FEC_ENC_SPLIT,$/;"	e	enum:__anon2
+FILE_ID	common_mac_phy_api.h	20;"	d
+FILE_ID	common_mac_phy_api.h	22;"	d
+FILE_ID	common_typedef.h	2;"	d
+FILE_ID	common_typedef.h	4;"	d
+FILE_ID	nr5g_mac_phy_api.h	31;"	d
+FILE_ID	nr5g_mac_phy_api.h	33;"	d
+FLOAT32	common_typedef.h	/^typedef float FLOAT32;$/;"	t
+FapiToIapiConvertAndSend	Fapi_To_Iapi.c	/^void FapiToIapiConvertAndSend(p_fapi_api_queue_elem_t headerElem)$/;"	f
+FrTypDuplexNr5g	nr5g_mac_phy_api.h	/^enum FrTypDuplexNr5g$/;"	g
+L1L2MessageHdr	nr5g_mac_phy_api.h	/^} L1L2MessageHdr, *PL1L2MessageHdr;$/;"	t	typeref:struct:tL1L2MessageHeader
+LINEAR_INTERP_ENABLE	common_mac_phy_api.h	/^    LINEAR_INTERP_ENABLE,$/;"	e	enum:__anon2
+MAC2PHY_QUEUE_EL	common_mac_phy_api.h	/^} MAC2PHY_QUEUE_EL, *PMAC2PHY_QUEUE_EL;$/;"	t	typeref:struct:tMac2PhyApiQueueElem
+MAX_DCI_BIT_BYTE_LEN	nr5g_mac_phy_api.h	55;"	d
+MAX_DL_CSIRS_PORT_NUM	nr5g_mac_phy_api.h	70;"	d
+MAX_DL_HARQ_PROCESS_ID	nr5g_mac_phy_api.h	59;"	d
+MAX_DL_INPUT_TRANSPORT_BYTE_SIZE_NR5G	nr5g_mac_phy_api.h	57;"	d
+MAX_DL_IQ_SAMPLE_PORTS	common_mac_phy_api.h	125;"	d
+MAX_DL_PARIED_UE_NUM	nr5g_mac_phy_api.h	42;"	d
+MAX_DL_PER_UE_CODEWORD_NUM	nr5g_mac_phy_api.h	44;"	d
+MAX_DL_PER_UE_DMRS_PORT_NUM	nr5g_mac_phy_api.h	47;"	d
+MAX_DL_PER_UE_PTRS_PORT_NUM	nr5g_mac_phy_api.h	49;"	d
+MAX_DL_RBG_BIT_NUM	nr5g_mac_phy_api.h	45;"	d
+MAX_DL_REAL_PORTS	nr5g_mac_phy_api.h	52;"	d
+MAX_DL_UL_IQ_FILE_NAME_LEN	common_mac_phy_api.h	126;"	d
+MAX_GROUP_NUM	common_mac_phy_api.h	106;"	d
+MAX_MASK_OPTIONS	common_mac_phy_api.h	/^    MAX_MASK_OPTIONS$/;"	e	enum:__anon1
+MAX_MIMO_GROUP_NUM	nr5g_mac_phy_api.h	37;"	d
+MAX_MIMO_GROUP_NUM	nr5g_mac_phy_api.h	39;"	d
+MAX_NUM_ANT_NR5G	nr5g_mac_phy_api.h	74;"	d
+MAX_NUM_CELLS	common_mac_phy_api.h	104;"	d
+MAX_NUM_DL_LAYERS	nr5g_mac_phy_api.h	58;"	d
+MAX_NUM_OF_SYMBOL_PER_SLOT	nr5g_mac_phy_api.h	66;"	d
+MAX_NUM_PART1_PARAMS	nr5g_mac_phy_api.h	88;"	d
+MAX_NUM_RBG	nr5g_mac_phy_api.h	87;"	d
+MAX_NUM_SET_CORE_MASK	common_mac_phy_api.h	105;"	d
+MAX_PANEL_NUM	nr5g_mac_phy_api.h	80;"	d
+MAX_REPORT_UL_PORTS	nr5g_mac_phy_api.h	72;"	d
+MAX_REPORT_UL_PORTS	nr5g_mac_phy_api.h	86;"	d
+MAX_RXRU_NUM	nr5g_mac_phy_api.h	68;"	d
+MAX_RX_SRS_STREAM_NUM	nr5g_mac_phy_api.h	71;"	d
+MAX_SIZE_CSI_PART2_MAP	nr5g_mac_phy_api.h	89;"	d
+MAX_TDD_PERIODICITY	nr5g_mac_phy_api.h	65;"	d
+MAX_TXRU_NUM	nr5g_mac_phy_api.h	67;"	d
+MAX_UCI_BIT_BYTE_LEN	nr5g_mac_phy_api.h	56;"	d
+MAX_UE_MANAGEMENT_NUM	nr5g_mac_phy_api.h	61;"	d
+MAX_UL_HARQ_PROCESS_ID	nr5g_mac_phy_api.h	63;"	d
+MAX_UL_INPUT_TRANSPORT_BYTE_SIZE_NR5G	nr5g_mac_phy_api.h	62;"	d
+MAX_UL_IQ_SAMPLE_ANT	common_mac_phy_api.h	124;"	d
+MAX_UL_IQ_SAMPLE_PORTS	common_mac_phy_api.h	123;"	d
+MAX_UL_PARIED_UE_NUM	nr5g_mac_phy_api.h	43;"	d
+MAX_UL_PDU_NUM	nr5g_mac_phy_api.h	60;"	d
+MAX_UL_PER_UE_DMRS_PORT_NUM	nr5g_mac_phy_api.h	48;"	d
+MAX_UL_PER_UE_PTRS_PORT_NUM	nr5g_mac_phy_api.h	50;"	d
+MAX_UL_PORTS_PER_UE	nr5g_mac_phy_api.h	76;"	d
+MAX_UL_PORTS_PER_UE	nr5g_mac_phy_api.h	78;"	d
+MAX_UL_RBG_BIT_NUM	nr5g_mac_phy_api.h	46;"	d
+MSG_INVALID_CONFIG	nr5g_mac_phy_api.h	151;"	d
+MSG_INVALID_STATE	nr5g_mac_phy_api.h	150;"	d
+MSG_OK	nr5g_mac_phy_api.h	149;"	d
+MSG_PHY_ZBC_BLOCK0_REQ	nr5g_mac_phy_api.h	121;"	d
+MSG_PHY_ZBC_BLOCK1_REQ	nr5g_mac_phy_api.h	122;"	d
+MSG_PHY_ZBC_BLOCK_IND	nr5g_mac_phy_api.h	125;"	d
+MSG_TYPE_PHY_ADD_REMOVE_CORE	common_mac_phy_api.h	28;"	d
+MSG_TYPE_PHY_CELL_INFO_REQ	nr5g_mac_phy_api.h	103;"	d
+MSG_TYPE_PHY_CONFIG_REQ	nr5g_mac_phy_api.h	93;"	d
+MSG_TYPE_PHY_CONFIG_RESP	nr5g_mac_phy_api.h	94;"	d
+MSG_TYPE_PHY_CRC_IND	nr5g_mac_phy_api.h	110;"	d
+MSG_TYPE_PHY_DL_BEAM_WEIGHTS	common_mac_phy_api.h	33;"	d
+MSG_TYPE_PHY_DL_CONFIG_REQ	nr5g_mac_phy_api.h	106;"	d
+MSG_TYPE_PHY_DL_IQ_SAMPLES	common_mac_phy_api.h	25;"	d
+MSG_TYPE_PHY_ERR_IND	nr5g_mac_phy_api.h	99;"	d
+MSG_TYPE_PHY_RX_CHAN_EST_OUTPUT_IND	common_mac_phy_api.h	31;"	d
+MSG_TYPE_PHY_RX_RACH_IND	nr5g_mac_phy_api.h	113;"	d
+MSG_TYPE_PHY_RX_SRS_IND	nr5g_mac_phy_api.h	114;"	d
+MSG_TYPE_PHY_RX_ULSCH_IND	nr5g_mac_phy_api.h	111;"	d
+MSG_TYPE_PHY_RX_ULSCH_UCI_IND	nr5g_mac_phy_api.h	118;"	d
+MSG_TYPE_PHY_SHUTDOWN_REQ	nr5g_mac_phy_api.h	100;"	d
+MSG_TYPE_PHY_SHUTDOWN_RESP	nr5g_mac_phy_api.h	101;"	d
+MSG_TYPE_PHY_SLOT_IND	nr5g_mac_phy_api.h	105;"	d
+MSG_TYPE_PHY_START_REQ	nr5g_mac_phy_api.h	95;"	d
+MSG_TYPE_PHY_START_RESP	nr5g_mac_phy_api.h	96;"	d
+MSG_TYPE_PHY_STOP_REQ	nr5g_mac_phy_api.h	97;"	d
+MSG_TYPE_PHY_STOP_RESP	nr5g_mac_phy_api.h	98;"	d
+MSG_TYPE_PHY_TEST_CONFIG_INFO	common_mac_phy_api.h	35;"	d
+MSG_TYPE_PHY_TX_REQ	nr5g_mac_phy_api.h	109;"	d
+MSG_TYPE_PHY_UCI_IND	nr5g_mac_phy_api.h	112;"	d
+MSG_TYPE_PHY_UL_BEAM_WEIGHTS	common_mac_phy_api.h	34;"	d
+MSG_TYPE_PHY_UL_CONFIG_REQ	nr5g_mac_phy_api.h	107;"	d
+MSG_TYPE_PHY_UL_DCI_REQ	nr5g_mac_phy_api.h	108;"	d
+MSG_TYPE_PHY_UL_IQ_SAMPLES	common_mac_phy_api.h	26;"	d
+MSG_TYPE_PHY_UL_MMIMO_SRS_IQ_SAMPLES	common_mac_phy_api.h	30;"	d
+MSG_TYPE_PHY_UL_PRACH_IQ_SAMPLES	common_mac_phy_api.h	29;"	d
+MSG_TYPE_PHY_UL_UNCODED_BITS	common_mac_phy_api.h	27;"	d
+MSG_TYPE_UE_MANAGEMENT_REQ	nr5g_mac_phy_api.h	116;"	d
+ModulationOptionsNr5g	nr5g_mac_phy_api.h	/^enum ModulationOptionsNr5g$/;"	g
+NR5G_BPSK	nr5g_mac_phy_api.h	/^    NR5G_BPSK, NR5G_QPSK, NR5G_QAM16, NR5G_QAM64, NR5G_QAM256$/;"	e	enum:ModulationOptionsNr5g
+NR5G_BW_100_0_MHZ	nr5g_mac_phy_api.h	/^    NR5G_BW_80_0_MHZ = 80, NR5G_BW_90_0_MHZ = 90, NR5G_BW_100_0_MHZ = 100, NR5G_BW_200_0_MHZ = 200, NR5G_BW_400_0_MHZ = 400$/;"	e	enum:ChBwOptionsNr5g
+NR5G_BW_10_0_MHZ	nr5g_mac_phy_api.h	/^    NR5G_BW_5_0_MHZ = 5,   NR5G_BW_10_0_MHZ = 10, NR5G_BW_15_0_MHZ = 15, NR5G_BW_20_0_MHZ = 20, NR5G_BW_25_0_MHZ = 25,$/;"	e	enum:ChBwOptionsNr5g
+NR5G_BW_15_0_MHZ	nr5g_mac_phy_api.h	/^    NR5G_BW_5_0_MHZ = 5,   NR5G_BW_10_0_MHZ = 10, NR5G_BW_15_0_MHZ = 15, NR5G_BW_20_0_MHZ = 20, NR5G_BW_25_0_MHZ = 25,$/;"	e	enum:ChBwOptionsNr5g
+NR5G_BW_200_0_MHZ	nr5g_mac_phy_api.h	/^    NR5G_BW_80_0_MHZ = 80, NR5G_BW_90_0_MHZ = 90, NR5G_BW_100_0_MHZ = 100, NR5G_BW_200_0_MHZ = 200, NR5G_BW_400_0_MHZ = 400$/;"	e	enum:ChBwOptionsNr5g
+NR5G_BW_20_0_MHZ	nr5g_mac_phy_api.h	/^    NR5G_BW_5_0_MHZ = 5,   NR5G_BW_10_0_MHZ = 10, NR5G_BW_15_0_MHZ = 15, NR5G_BW_20_0_MHZ = 20, NR5G_BW_25_0_MHZ = 25,$/;"	e	enum:ChBwOptionsNr5g
+NR5G_BW_25_0_MHZ	nr5g_mac_phy_api.h	/^    NR5G_BW_5_0_MHZ = 5,   NR5G_BW_10_0_MHZ = 10, NR5G_BW_15_0_MHZ = 15, NR5G_BW_20_0_MHZ = 20, NR5G_BW_25_0_MHZ = 25,$/;"	e	enum:ChBwOptionsNr5g
+NR5G_BW_30_0_MHZ	nr5g_mac_phy_api.h	/^    NR5G_BW_30_0_MHZ = 30, NR5G_BW_40_0_MHZ = 40, NR5G_BW_50_0_MHZ = 50, NR5G_BW_60_0_MHZ = 60, NR5G_BW_70_0_MHZ = 70,$/;"	e	enum:ChBwOptionsNr5g
+NR5G_BW_400_0_MHZ	nr5g_mac_phy_api.h	/^    NR5G_BW_80_0_MHZ = 80, NR5G_BW_90_0_MHZ = 90, NR5G_BW_100_0_MHZ = 100, NR5G_BW_200_0_MHZ = 200, NR5G_BW_400_0_MHZ = 400$/;"	e	enum:ChBwOptionsNr5g
+NR5G_BW_40_0_MHZ	nr5g_mac_phy_api.h	/^    NR5G_BW_30_0_MHZ = 30, NR5G_BW_40_0_MHZ = 40, NR5G_BW_50_0_MHZ = 50, NR5G_BW_60_0_MHZ = 60, NR5G_BW_70_0_MHZ = 70,$/;"	e	enum:ChBwOptionsNr5g
+NR5G_BW_50_0_MHZ	nr5g_mac_phy_api.h	/^    NR5G_BW_30_0_MHZ = 30, NR5G_BW_40_0_MHZ = 40, NR5G_BW_50_0_MHZ = 50, NR5G_BW_60_0_MHZ = 60, NR5G_BW_70_0_MHZ = 70,$/;"	e	enum:ChBwOptionsNr5g
+NR5G_BW_5_0_MHZ	nr5g_mac_phy_api.h	/^    NR5G_BW_5_0_MHZ = 5,   NR5G_BW_10_0_MHZ = 10, NR5G_BW_15_0_MHZ = 15, NR5G_BW_20_0_MHZ = 20, NR5G_BW_25_0_MHZ = 25,$/;"	e	enum:ChBwOptionsNr5g
+NR5G_BW_60_0_MHZ	nr5g_mac_phy_api.h	/^    NR5G_BW_30_0_MHZ = 30, NR5G_BW_40_0_MHZ = 40, NR5G_BW_50_0_MHZ = 50, NR5G_BW_60_0_MHZ = 60, NR5G_BW_70_0_MHZ = 70,$/;"	e	enum:ChBwOptionsNr5g
+NR5G_BW_70_0_MHZ	nr5g_mac_phy_api.h	/^    NR5G_BW_30_0_MHZ = 30, NR5G_BW_40_0_MHZ = 40, NR5G_BW_50_0_MHZ = 50, NR5G_BW_60_0_MHZ = 60, NR5G_BW_70_0_MHZ = 70,$/;"	e	enum:ChBwOptionsNr5g
+NR5G_BW_80_0_MHZ	nr5g_mac_phy_api.h	/^    NR5G_BW_80_0_MHZ = 80, NR5G_BW_90_0_MHZ = 90, NR5G_BW_100_0_MHZ = 100, NR5G_BW_200_0_MHZ = 200, NR5G_BW_400_0_MHZ = 400$/;"	e	enum:ChBwOptionsNr5g
+NR5G_BW_90_0_MHZ	nr5g_mac_phy_api.h	/^    NR5G_BW_80_0_MHZ = 80, NR5G_BW_90_0_MHZ = 90, NR5G_BW_100_0_MHZ = 100, NR5G_BW_200_0_MHZ = 200, NR5G_BW_400_0_MHZ = 400$/;"	e	enum:ChBwOptionsNr5g
+NR5G_DL	nr5g_mac_phy_api.h	/^    NR5G_DL = 0, NR5G_UL, NR5G_SPECIAL$/;"	e	enum:DirectionNr5g
+NR5G_EXTENDED	nr5g_mac_phy_api.h	/^    NR5G_NORMAL = 0, NR5G_EXTENDED$/;"	e	enum:CyclicPrefixTypeOptionsNr5g
+NR5G_FDD	nr5g_mac_phy_api.h	/^    NR5G_FDD = 0, NR5G_TDD, NR5G_TDD_DL$/;"	e	enum:FrTypDuplexNr5g
+NR5G_FORMAT0	nr5g_mac_phy_api.h	/^    NR5G_FORMAT0 = 0, NR5G_FORMAT1, NR5G_FORMAT2, NR5G_FORMAT3, NR5G_FORMAT4$/;"	e	enum:PucchFormatOptionsNr5g
+NR5G_FORMAT1	nr5g_mac_phy_api.h	/^    NR5G_FORMAT0 = 0, NR5G_FORMAT1, NR5G_FORMAT2, NR5G_FORMAT3, NR5G_FORMAT4$/;"	e	enum:PucchFormatOptionsNr5g
+NR5G_FORMAT2	nr5g_mac_phy_api.h	/^    NR5G_FORMAT0 = 0, NR5G_FORMAT1, NR5G_FORMAT2, NR5G_FORMAT3, NR5G_FORMAT4$/;"	e	enum:PucchFormatOptionsNr5g
+NR5G_FORMAT3	nr5g_mac_phy_api.h	/^    NR5G_FORMAT0 = 0, NR5G_FORMAT1, NR5G_FORMAT2, NR5G_FORMAT3, NR5G_FORMAT4$/;"	e	enum:PucchFormatOptionsNr5g
+NR5G_FORMAT4	nr5g_mac_phy_api.h	/^    NR5G_FORMAT0 = 0, NR5G_FORMAT1, NR5G_FORMAT2, NR5G_FORMAT3, NR5G_FORMAT4$/;"	e	enum:PucchFormatOptionsNr5g
+NR5G_NORMAL	nr5g_mac_phy_api.h	/^    NR5G_NORMAL = 0, NR5G_EXTENDED$/;"	e	enum:CyclicPrefixTypeOptionsNr5g
+NR5G_PRB_12	nr5g_mac_phy_api.h	/^    NR5G_PRB_12 = 12, NR5G_PRB_24 = 24$/;"	e	enum:PhyResBwNr5g
+NR5G_PRB_24	nr5g_mac_phy_api.h	/^    NR5G_PRB_12 = 12, NR5G_PRB_24 = 24$/;"	e	enum:PhyResBwNr5g
+NR5G_QAM16	nr5g_mac_phy_api.h	/^    NR5G_BPSK, NR5G_QPSK, NR5G_QAM16, NR5G_QAM64, NR5G_QAM256$/;"	e	enum:ModulationOptionsNr5g
+NR5G_QAM256	nr5g_mac_phy_api.h	/^    NR5G_BPSK, NR5G_QPSK, NR5G_QAM16, NR5G_QAM64, NR5G_QAM256$/;"	e	enum:ModulationOptionsNr5g
+NR5G_QAM64	nr5g_mac_phy_api.h	/^    NR5G_BPSK, NR5G_QPSK, NR5G_QAM16, NR5G_QAM64, NR5G_QAM256$/;"	e	enum:ModulationOptionsNr5g
+NR5G_QPSK	nr5g_mac_phy_api.h	/^    NR5G_BPSK, NR5G_QPSK, NR5G_QAM16, NR5G_QAM64, NR5G_QAM256$/;"	e	enum:ModulationOptionsNr5g
+NR5G_SPECIAL	nr5g_mac_phy_api.h	/^    NR5G_DL = 0, NR5G_UL, NR5G_SPECIAL$/;"	e	enum:DirectionNr5g
+NR5G_TDD	nr5g_mac_phy_api.h	/^    NR5G_FDD = 0, NR5G_TDD, NR5G_TDD_DL$/;"	e	enum:FrTypDuplexNr5g
+NR5G_TDD_DL	nr5g_mac_phy_api.h	/^    NR5G_FDD = 0, NR5G_TDD, NR5G_TDD_DL$/;"	e	enum:FrTypDuplexNr5g
+NR5G_UL	nr5g_mac_phy_api.h	/^    NR5G_DL = 0, NR5G_UL, NR5G_SPECIAL$/;"	e	enum:DirectionNr5g
+NUMEROLOGY_0	nr5g_mac_phy_api.h	/^    NUMEROLOGY_0 = 0, NUMEROLOGY_1 = 1, NUMEROLOGY_2 = 2, NUMEROLOGY_3 = 3, NUMEROLOGY_4 = 4, NUMEROLOGY_MAX$/;"	e	enum:__anon5
+NUMEROLOGY_1	nr5g_mac_phy_api.h	/^    NUMEROLOGY_0 = 0, NUMEROLOGY_1 = 1, NUMEROLOGY_2 = 2, NUMEROLOGY_3 = 3, NUMEROLOGY_4 = 4, NUMEROLOGY_MAX$/;"	e	enum:__anon5
+NUMEROLOGY_2	nr5g_mac_phy_api.h	/^    NUMEROLOGY_0 = 0, NUMEROLOGY_1 = 1, NUMEROLOGY_2 = 2, NUMEROLOGY_3 = 3, NUMEROLOGY_4 = 4, NUMEROLOGY_MAX$/;"	e	enum:__anon5
+NUMEROLOGY_3	nr5g_mac_phy_api.h	/^    NUMEROLOGY_0 = 0, NUMEROLOGY_1 = 1, NUMEROLOGY_2 = 2, NUMEROLOGY_3 = 3, NUMEROLOGY_4 = 4, NUMEROLOGY_MAX$/;"	e	enum:__anon5
+NUMEROLOGY_4	nr5g_mac_phy_api.h	/^    NUMEROLOGY_0 = 0, NUMEROLOGY_1 = 1, NUMEROLOGY_2 = 2, NUMEROLOGY_3 = 3, NUMEROLOGY_4 = 4, NUMEROLOGY_MAX$/;"	e	enum:__anon5
+NUMEROLOGY_MAX	nr5g_mac_phy_api.h	/^    NUMEROLOGY_0 = 0, NUMEROLOGY_1 = 1, NUMEROLOGY_2 = 2, NUMEROLOGY_3 = 3, NUMEROLOGY_4 = 4, NUMEROLOGY_MAX$/;"	e	enum:__anon5
+NUM_SPLIT_OPTIONS	common_mac_phy_api.h	/^    NUM_SPLIT_OPTIONS$/;"	e	enum:__anon2
+ORANRFCfgStruct	nr5g_mac_phy_api.h	/^} ORANRFCfgStruct, *PORANRFCfgStruct;$/;"	t	typeref:struct:ORANRFCfg_tag
+ORANRFCfg_tag	nr5g_mac_phy_api.h	/^typedef struct ORANRFCfg_tag$/;"	s
+PADD_REMOVE_BBU_CORES	common_mac_phy_api.h	/^} ADD_REMOVE_BBU_CORES, *PADD_REMOVE_BBU_CORES;$/;"	t	typeref:struct:tAddRemoveBbuCoresStruct
+PADD_REMOVE_BBU_CORES_NR5G	nr5g_mac_phy_api.h	/^} ADD_REMOVE_BBU_CORES_NR5G, *PADD_REMOVE_BBU_CORES_NR5G;$/;"	t	typeref:struct:tAddRemoveBbuCoresNr5g
+PBCHPDUStruct	nr5g_mac_phy_api.h	/^} BCHPDUStruct, *PBCHPDUStruct;$/;"	t	typeref:struct:tDlBchPdu
+PBeamMatrixStruct	nr5g_mac_phy_api.h	/^} BeamMatrixStruct, *PBeamMatrixStruct;  $/;"	t	typeref:struct:__anon4
+PCELLINFOREQUESTStruct	nr5g_mac_phy_api.h	/^} CELLINFOREQUESTStruct, *PCELLINFOREQUESTStruct;$/;"	t	typeref:struct:tCellInfoRequestStruct
+PCONFIGREQUESTStruct	nr5g_mac_phy_api.h	/^} CONFIGREQUESTStruct, *PCONFIGREQUESTStruct;$/;"	t	typeref:struct:tConfigReq
+PCONFIGRESPONSEStruct	nr5g_mac_phy_api.h	/^} CONFIGRESPONSEStruct, *PCONFIGRESPONSEStruct;$/;"	t	typeref:struct:tConfigInd
+PCRCIndicationStruct	nr5g_mac_phy_api.h	/^} CRCIndicationStruct, *PCRCIndicationStruct;$/;"	t	typeref:struct:tCrcIndicationStruct
+PCSIRSPDUStruct	nr5g_mac_phy_api.h	/^} CSIRSPDUStruct, *PCSIRSPDUStruct;$/;"	t	typeref:struct:tCsiRsPduStruct
+PCellInfoPdu	nr5g_mac_phy_api.h	/^} CellInfoPdu, *PCellInfoPdu;$/;"	t	typeref:struct:tCellInfoPdu
+PDCIPDUStruct	nr5g_mac_phy_api.h	/^} DCIPDUStruct, *PDCIPDUStruct;$/;"	t	typeref:struct:tDciPduStruct
+PDLConfigRequestStruct	nr5g_mac_phy_api.h	/^} DLConfigRequestStruct, *PDLConfigRequestStruct;$/;"	t	typeref:struct:tDlConfigRequestStruct
+PDLPDUDataStruct	nr5g_mac_phy_api.h	/^} DLPDUDataStruct, *PDLPDUDataStruct;$/;"	t	typeref:struct:tDlPduDataStruct
+PDLSCHPDUStruct	nr5g_mac_phy_api.h	/^} DLSCHPDUStruct, *PDLSCHPDUStruct;$/;"	t	typeref:struct:tDlSchPdu
+PDSCHGroupInfoStruct	nr5g_mac_phy_api.h	/^} PDSCHGroupInfoStruct, *PPDSCHGroupInfoStruct;$/;"	t	typeref:struct:tPdschGroupInfoStruct
+PDSCH_DL_WEIGHT_SPLIT	common_mac_phy_api.h	/^    PDSCH_DL_WEIGHT_SPLIT,$/;"	e	enum:__anon2
+PDSCH_OFDM_SPLT_ENABLE	common_mac_phy_api.h	/^    PDSCH_OFDM_SPLT_ENABLE,$/;"	e	enum:__anon2
+PDSCH_SPLIT	common_mac_phy_api.h	/^    PDSCH_SPLIT = 0,$/;"	e	enum:__anon2
+PDUStruct	nr5g_mac_phy_api.h	/^} PDUStruct, *PPDUStruct;$/;"	t	typeref:struct:tPduStruct
+PERRORIndicationStruct	nr5g_mac_phy_api.h	/^} ERRORIndicationStruct, *PERRORIndicationStruct;$/;"	t	typeref:struct:tErrorIndicationStruct
+PHY_DL_UL_IQ_SAMPLES	common_mac_phy_api.h	/^} PHY_DL_UL_IQ_SAMPLES, *PPHY_DL_UL_IQ_SAMPLES;$/;"	t	typeref:struct:tDlUlIqSamplesStruct
+PHY_DL_UL_IQ_SAMPLES_NR5G	nr5g_mac_phy_api.h	/^} PHY_DL_UL_IQ_SAMPLES_NR5G, *PPHY_DL_UL_IQ_SAMPLES_NR5G;$/;"	t	typeref:struct:tDlUlIqSamplesNr5g
+PL1L2MessageHdr	nr5g_mac_phy_api.h	/^} L1L2MessageHdr, *PL1L2MessageHdr;$/;"	t	typeref:struct:tL1L2MessageHeader
+PMAC2PHY_QUEUE_EL	common_mac_phy_api.h	/^} MAC2PHY_QUEUE_EL, *PMAC2PHY_QUEUE_EL;$/;"	t	typeref:struct:tMac2PhyApiQueueElem
+PORANRFCfgStruct	nr5g_mac_phy_api.h	/^} ORANRFCfgStruct, *PORANRFCfgStruct;$/;"	t	typeref:struct:ORANRFCfg_tag
+PPDSCHGroupInfoStruct	nr5g_mac_phy_api.h	/^} PDSCHGroupInfoStruct, *PPDSCHGroupInfoStruct;$/;"	t	typeref:struct:tPdschGroupInfoStruct
+PPDUStruct	nr5g_mac_phy_api.h	/^} PDUStruct, *PPDUStruct;$/;"	t	typeref:struct:tPduStruct
+PPHY_DL_UL_IQ_SAMPLES	common_mac_phy_api.h	/^} PHY_DL_UL_IQ_SAMPLES, *PPHY_DL_UL_IQ_SAMPLES;$/;"	t	typeref:struct:tDlUlIqSamplesStruct
+PPHY_DL_UL_IQ_SAMPLES_NR5G	nr5g_mac_phy_api.h	/^} PHY_DL_UL_IQ_SAMPLES_NR5G, *PPHY_DL_UL_IQ_SAMPLES_NR5G;$/;"	t	typeref:struct:tDlUlIqSamplesNr5g
+PPRACHPDUStruct	nr5g_mac_phy_api.h	/^}PRACHPDUStruct,*PPRACHPDUStruct;$/;"	t	typeref:struct:tPrachPduStruct
+PPUSCHGroupInfoStruct	nr5g_mac_phy_api.h	/^} PUSCHGroupInfoStruct, *PPUSCHGroupInfoStruct;$/;"	t	typeref:struct:tPuschGroupInfoStruct
+PPreambleStruct	nr5g_mac_phy_api.h	/^} PreambleStruct, *PPreambleStruct;$/;"	t	typeref:struct:tPreambleStruct
+PRACHPDUStruct	nr5g_mac_phy_api.h	/^}PRACHPDUStruct,*PPRACHPDUStruct;$/;"	t	typeref:struct:tPrachPduStruct
+PRERESERVED_DATA_HEADER_LEN	nr5g_mac_phy_api.h	64;"	d
+PRXPUSCHChanEstIndicationStruct	nr5g_mac_phy_api.h	/^} RXPUSCHChanEstIndicationStruct, *PRXPUSCHChanEstIndicationStruct;$/;"	t	typeref:struct:tRxPuschChanEstIndicationStruct
+PRXRACHIndicationStruct	nr5g_mac_phy_api.h	/^} RXRACHIndicationStruct, *PRXRACHIndicationStruct;$/;"	t	typeref:struct:tRxPrachIndicationStruct
+PRXSRSIndicationStruct	nr5g_mac_phy_api.h	/^} RXSRSIndicationStruct, *PRXSRSIndicationStruct;$/;"	t	typeref:struct:tRxSrsIndicationStruct
+PRXUCIIndicationStruct	nr5g_mac_phy_api.h	/^} RXUCIIndicationStruct, *PRXUCIIndicationStruct;$/;"	t	typeref:struct:tRxUciIndicationStruct
+PRXULSCHIndicationStruct	nr5g_mac_phy_api.h	/^} RXULSCHIndicationStruct, *PRXULSCHIndicationStruct;$/;"	t	typeref:struct:tRxUlSchIndicationStruct
+PRXULSCHUCIIndicationStruct	nr5g_mac_phy_api.h	/^} RXULSCHUCIIndicationStruct, *PRXULSCHUCIIndicationStruct;$/;"	t	typeref:struct:tRxUlSchUciIndicationStruct
+PSFN_SlotStruct	nr5g_mac_phy_api.h	/^} SFN_SlotStruct, *PSFN_SlotStruct;$/;"	t	typeref:struct:tSfnSlot
+PSHUTDOWNREQUESTStruct	nr5g_mac_phy_api.h	/^} SHUTDOWNREQUESTStruct, *PSHUTDOWNREQUESTStruct;$/;"	t	typeref:struct:tShutdownRequestStruct
+PSHUTDOWNRESPONSEStruct	nr5g_mac_phy_api.h	/^} SHUTDOWNRESPONSEStruct, *PSHUTDOWNRESPONSEStruct;$/;"	t	typeref:struct:tShutdownResponseStruct
+PSLOTCONFIGStruct	nr5g_mac_phy_api.h	/^} SLOTCONFIGStruct, *PSLOTCONFIGStruct;$/;"	t	typeref:struct:tSlotConfigReq
+PSRSPDUStruct	nr5g_mac_phy_api.h	/^}SRSPDUStruct,*PSRSPDUStruct;$/;"	t	typeref:struct:tSrsPduStruct
+PSTARTREQUESTStruct	nr5g_mac_phy_api.h	/^} STARTREQUESTStruct, *PSTARTREQUESTStruct;$/;"	t	typeref:struct:tStartReq
+PSTARTRESPONSEStruct	nr5g_mac_phy_api.h	/^} STARTRESPONSEStruct, *PSTARTRESPONSEStruct;$/;"	t	typeref:struct:tStartResponseStruct
+PSTOPREQUESTStruct	nr5g_mac_phy_api.h	/^} STOPREQUESTStruct, *PSTOPREQUESTStruct;$/;"	t	typeref:struct:tStopRequestStruct
+PSTOPRESPONSEStruct	nr5g_mac_phy_api.h	/^} STOPRESPONSEStruct, *PSTOPRESPONSEStruct;$/;"	t	typeref:struct:tStopResponseStruct
+PSlotIndicationStruct	nr5g_mac_phy_api.h	/^} SlotIndicationStruct, *PSlotIndicationStruct;$/;"	t	typeref:struct:tPhyMsgSlotInd
+PTEST_FILE_CONFIG	common_mac_phy_api.h	/^} TEST_FILE_CONFIG, *PTEST_FILE_CONFIG;$/;"	t	typeref:struct:tTestFileConfig
+PTEST_FILE_CONFIG_NR5G	nr5g_mac_phy_api.h	/^} TEST_FILE_CONFIG_NR5G, *PTEST_FILE_CONFIG_NR5G;$/;"	t	typeref:struct:tTestFileConfigNr5g
+PTXRequestStruct	nr5g_mac_phy_api.h	/^} TXRequestStruct, *PTXRequestStruct;$/;"	t	typeref:struct:tTxRequestStruct
+PUCCH_FORMAT0	nr5g_mac_phy_api.h	/^    PUCCH_FORMAT0 = 0, PUCCH_FORMAT1, PUCCH_FORMAT2, PUCCH_FORMAT3, PUCCH_FORMAT4$/;"	e	enum:PucchFormatType
+PUCCH_FORMAT1	nr5g_mac_phy_api.h	/^    PUCCH_FORMAT0 = 0, PUCCH_FORMAT1, PUCCH_FORMAT2, PUCCH_FORMAT3, PUCCH_FORMAT4$/;"	e	enum:PucchFormatType
+PUCCH_FORMAT2	nr5g_mac_phy_api.h	/^    PUCCH_FORMAT0 = 0, PUCCH_FORMAT1, PUCCH_FORMAT2, PUCCH_FORMAT3, PUCCH_FORMAT4$/;"	e	enum:PucchFormatType
+PUCCH_FORMAT3	nr5g_mac_phy_api.h	/^    PUCCH_FORMAT0 = 0, PUCCH_FORMAT1, PUCCH_FORMAT2, PUCCH_FORMAT3, PUCCH_FORMAT4$/;"	e	enum:PucchFormatType
+PUCCH_FORMAT4	nr5g_mac_phy_api.h	/^    PUCCH_FORMAT0 = 0, PUCCH_FORMAT1, PUCCH_FORMAT2, PUCCH_FORMAT3, PUCCH_FORMAT4$/;"	e	enum:PucchFormatType
+PUCCH_SPLIT	common_mac_phy_api.h	/^    PUCCH_SPLIT,$/;"	e	enum:__anon2
+PUEMANAGEMENTPDUStruct	nr5g_mac_phy_api.h	/^} UEMANAGEMENTPDUStruct,*PUEMANAGEMENTPDUStruct;$/;"	t	typeref:struct:tUeManagementPduStruct
+PUEManagementRequestStruct	nr5g_mac_phy_api.h	/^} UEManagementRequestStruct, *PUEManagementRequestStruct;$/;"	t	typeref:struct:tUeManagementRequestStruct
+PULCCHUCIPDUStruct	nr5g_mac_phy_api.h	/^} ULCCHUCIPDUStruct, *PULCCHUCIPDUStruct;$/;"	t	typeref:struct:tUlUcchPduInfo
+PULCRCStruct	nr5g_mac_phy_api.h	/^} ULCRCStruct, *PULCRCStruct;$/;"	t	typeref:struct:tUlCrcStruct
+PULConfigRequestStruct	nr5g_mac_phy_api.h	/^} ULConfigRequestStruct, *PULConfigRequestStruct;$/;"	t	typeref:struct:tUlConfigRequestStruct
+PULDCIRequestStruct	nr5g_mac_phy_api.h	/^} ULDCIRequestStruct, *PULDCIRequestStruct;$/;"	t	typeref:struct:tUlDciRequestStruct
+PULPUSCHChanEstStruct	nr5g_mac_phy_api.h	/^} ULPUSCHChanEstStruct, *PULPUSCHChanEstStruct;$/;"	t	typeref:struct:tUlPuschChanEstStruct
+PULSCHPDUDataStruct	nr5g_mac_phy_api.h	/^} ULSCHPDUDataStruct, *PULSCHPDUDataStruct;$/;"	t	typeref:struct:tUlSchPduDataStruct
+PULSCHPDUStruct	nr5g_mac_phy_api.h	/^} ULSCHPDUStruct, *PULSCHPDUStruct;$/;"	t	typeref:struct:tUlSchPduInfo
+PULSCHUCIPDUDataStruct	nr5g_mac_phy_api.h	/^} ULSCHUCIPDUDataStruct, *PULSCHUCIPDUDataStruct;$/;"	t	typeref:struct:tUlSchUciPduDataStruct
+PULSRSEstStruct	nr5g_mac_phy_api.h	/^} ULSRSEstStruct, *PULSRSEstStruct;$/;"	t	typeref:struct:tUlSrsEstStruct
+PULUCIPDUDataStruct	nr5g_mac_phy_api.h	/^} ULUCIPDUDataStruct, *PULUCIPDUDataStruct;$/;"	t	typeref:struct:tUlUciPduDataStruct
+PUSCHGroupInfoStruct	nr5g_mac_phy_api.h	/^} PUSCHGroupInfoStruct, *PPUSCHGroupInfoStruct;$/;"	t	typeref:struct:tPuschGroupInfoStruct
+PUSCH_CHANEST_SPLIT	common_mac_phy_api.h	/^    PUSCH_CHANEST_SPLIT,$/;"	e	enum:__anon2
+PUSCH_LLR_RX_SPLIT	common_mac_phy_api.h	/^    PUSCH_LLR_RX_SPLIT,$/;"	e	enum:__anon2
+PUSCH_MMSE_SPLIT	common_mac_phy_api.h	/^    PUSCH_MMSE_SPLIT,$/;"	e	enum:__anon2
+PUSCH_UL_WEIGHT_SPLIT	common_mac_phy_api.h	/^    PUSCH_UL_WEIGHT_SPLIT,$/;"	e	enum:__anon2
+PWR_INVALID	nr5g_mac_phy_api.h	83;"	d
+PhaseCompensationEnable	common_mac_phy_api.h	/^    uint32_t PhaseCompensationEnable;$/;"	m	struct:tDlUlIqSamplesStruct
+PhyResBwNr5g	nr5g_mac_phy_api.h	/^enum PhyResBwNr5g$/;"	g
+PreambleStruct	nr5g_mac_phy_api.h	/^} PreambleStruct, *PPreambleStruct;$/;"	t	typeref:struct:tPreambleStruct
+PucchFormatOptionsNr5g	nr5g_mac_phy_api.h	/^enum PucchFormatOptionsNr5g$/;"	g
+PucchFormatType	nr5g_mac_phy_api.h	/^enum PucchFormatType$/;"	g
+REMOVE_MEMCPY_MEMSET	common_mac_phy_api.h	/^    REMOVE_MEMCPY_MEMSET,$/;"	e	enum:__anon2
+RFInfoVal	nr5g_mac_phy_api.h	/^    uint8_t RFInfoVal; \/* RU configure vaild flag. 0: not vaild; 1: the ru configure vaild *\/$/;"	m	struct:tConfigReq
+RUN_TIME_APIS_FROM_MAC_NR5G	nr5g_mac_phy_api.h	128;"	d
+RXPUSCHChanEstIndicationStruct	nr5g_mac_phy_api.h	/^} RXPUSCHChanEstIndicationStruct, *PRXPUSCHChanEstIndicationStruct;$/;"	t	typeref:struct:tRxPuschChanEstIndicationStruct
+RXRACHIndicationStruct	nr5g_mac_phy_api.h	/^} RXRACHIndicationStruct, *PRXRACHIndicationStruct;$/;"	t	typeref:struct:tRxPrachIndicationStruct
+RXSRSIndicationStruct	nr5g_mac_phy_api.h	/^} RXSRSIndicationStruct, *PRXSRSIndicationStruct;$/;"	t	typeref:struct:tRxSrsIndicationStruct
+RXUCIIndicationStruct	nr5g_mac_phy_api.h	/^} RXUCIIndicationStruct, *PRXUCIIndicationStruct;$/;"	t	typeref:struct:tRxUciIndicationStruct
+RXULSCHIndicationStruct	nr5g_mac_phy_api.h	/^} RXULSCHIndicationStruct, *PRXULSCHIndicationStruct;$/;"	t	typeref:struct:tRxUlSchIndicationStruct
+RXULSCHUCIIndicationStruct	nr5g_mac_phy_api.h	/^} RXULSCHUCIIndicationStruct, *PRXULSCHUCIIndicationStruct;$/;"	t	typeref:struct:tRxUlSchUciIndicationStruct
+RadioTypeIndex	nr5g_mac_phy_api.h	/^  uint8_t RadioTypeIndex;              \/* which can detail the radio configuration in future, eg: cata-a, cata-b, … detail compression, PRPCH… in xml file *\/$/;"	m	struct:ORANRFCfg_tag
+SFN_SlotStruct	nr5g_mac_phy_api.h	/^} SFN_SlotStruct, *PSFN_SlotStruct;$/;"	t	typeref:struct:tSfnSlot
+SHUTDOWNREQUESTStruct	nr5g_mac_phy_api.h	/^} SHUTDOWNREQUESTStruct, *PSHUTDOWNREQUESTStruct;$/;"	t	typeref:struct:tShutdownRequestStruct
+SHUTDOWNRESPONSEStruct	nr5g_mac_phy_api.h	/^} SHUTDOWNRESPONSEStruct, *PSHUTDOWNRESPONSEStruct;$/;"	t	typeref:struct:tShutdownResponseStruct
+SINR_STEP_SIZE	nr5g_mac_phy_api.h	81;"	d
+SLOTCONFIGStruct	nr5g_mac_phy_api.h	/^} SLOTCONFIGStruct, *PSLOTCONFIGStruct;$/;"	t	typeref:struct:tSlotConfigReq
+SRSPDUStruct	nr5g_mac_phy_api.h	/^}SRSPDUStruct,*PSRSPDUStruct;$/;"	t	typeref:struct:tSrsPduStruct
+SRS_APERIODIC	nr5g_mac_phy_api.h	/^    SRS_APERIODIC = 0, SRS_SEMI_PERSISTENT = 1, SRS_PERIODIC = 2$/;"	e	enum:SrsResourceType
+SRS_GROUP_HOPPING	nr5g_mac_phy_api.h	/^    SRS_NEITHER_HOPPING = 0, SRS_GROUP_HOPPING = 1, SRS_SEQUENCE_HOPPING = 2$/;"	e	enum:SrsHopping
+SRS_MASK	common_mac_phy_api.h	/^    SRS_MASK,$/;"	e	enum:__anon1
+SRS_NEITHER_HOPPING	nr5g_mac_phy_api.h	/^    SRS_NEITHER_HOPPING = 0, SRS_GROUP_HOPPING = 1, SRS_SEQUENCE_HOPPING = 2$/;"	e	enum:SrsHopping
+SRS_PERIODIC	nr5g_mac_phy_api.h	/^    SRS_APERIODIC = 0, SRS_SEMI_PERSISTENT = 1, SRS_PERIODIC = 2$/;"	e	enum:SrsResourceType
+SRS_SEMI_PERSISTENT	nr5g_mac_phy_api.h	/^    SRS_APERIODIC = 0, SRS_SEMI_PERSISTENT = 1, SRS_PERIODIC = 2$/;"	e	enum:SrsResourceType
+SRS_SEQUENCE_HOPPING	nr5g_mac_phy_api.h	/^    SRS_NEITHER_HOPPING = 0, SRS_GROUP_HOPPING = 1, SRS_SEQUENCE_HOPPING = 2$/;"	e	enum:SrsHopping
+SRS_SPLIT	common_mac_phy_api.h	/^    SRS_SPLIT,$/;"	e	enum:__anon2
+STARTREQUESTStruct	nr5g_mac_phy_api.h	/^} STARTREQUESTStruct, *PSTARTREQUESTStruct;$/;"	t	typeref:struct:tStartReq
+STARTRESPONSEStruct	nr5g_mac_phy_api.h	/^} STARTRESPONSEStruct, *PSTARTRESPONSEStruct;$/;"	t	typeref:struct:tStartResponseStruct
+STOPREQUESTStruct	nr5g_mac_phy_api.h	/^} STOPREQUESTStruct, *PSTOPREQUESTStruct;$/;"	t	typeref:struct:tStopRequestStruct
+STOPRESPONSEStruct	nr5g_mac_phy_api.h	/^} STOPRESPONSEStruct, *PSTOPRESPONSEStruct;$/;"	t	typeref:struct:tStopResponseStruct
+SUCCESS	common_typedef.h	76;"	d
+SYMBOL_TYPE_DL	nr5g_mac_phy_api.h	/^    SYMBOL_TYPE_DL = 0, SYMBOL_TYPE_UL = 1, SYMBOL_TYPE_GUARD = 2$/;"	e	enum:TddSymbolType
+SYMBOL_TYPE_GUARD	nr5g_mac_phy_api.h	/^    SYMBOL_TYPE_DL = 0, SYMBOL_TYPE_UL = 1, SYMBOL_TYPE_GUARD = 2$/;"	e	enum:TddSymbolType
+SYMBOL_TYPE_UL	nr5g_mac_phy_api.h	/^    SYMBOL_TYPE_DL = 0, SYMBOL_TYPE_UL = 1, SYMBOL_TYPE_GUARD = 2$/;"	e	enum:TddSymbolType
+SendIapiToL1	Fapi_To_Iapi.c	/^void SendIapiToL1(PMAC2PHY_QUEUE_EL iapiQueueElem)$/;"	f
+SlotIndicationStruct	nr5g_mac_phy_api.h	/^} SlotIndicationStruct, *PSlotIndicationStruct;$/;"	t	typeref:struct:tPhyMsgSlotInd
+SrsHopping	nr5g_mac_phy_api.h	/^enum SrsHopping$/;"	g
+SrsResourceType	nr5g_mac_phy_api.h	/^enum SrsResourceType$/;"	g
+T1aMaxCpDl	nr5g_mac_phy_api.h	/^  uint16_t T1aMaxCpDl;                 \/* the max t1a time value in microsecond ,for downlink cp message. for value 0, this field is not vaild,use default config in the xml.*\/$/;"	m	struct:ORANRFCfg_tag
+T1aMaxCpUl	nr5g_mac_phy_api.h	/^  uint16_t T1aMaxCpUl;                 \/* the max t1a time value in microsecond ,for uplink cp message. for value 0, this field is not vaild,use default config in the xml.*\/$/;"	m	struct:ORANRFCfg_tag
+T1aMaxUp	nr5g_mac_phy_api.h	/^  uint16_t T1aMaxUp;                   \/* the max t1a time value in microsecond ,for downlink up message. for value 0, this field is not vaild,use default config in the xml.*\/$/;"	m	struct:ORANRFCfg_tag
+T1aMinCpDl	nr5g_mac_phy_api.h	/^  uint16_t T1aMinCpDl;                 \/* the min t1a time value in microsecond ,for downlink cp message. for value 0, this field is not vaild,use default config in the xml.*\/$/;"	m	struct:ORANRFCfg_tag
+T1aMinCpUl	nr5g_mac_phy_api.h	/^  uint16_t T1aMinCpUl;                 \/* the min t1a time value in microsecond ,for uplink cp message. for value 0, this field is not vaild,use default config in the xml.*\/$/;"	m	struct:ORANRFCfg_tag
+T1aMinUp	nr5g_mac_phy_api.h	/^  uint16_t T1aMinUp;                   \/* the min t1a time value in microsecond ,for downlink up message. for value 0, this field is not vaild,use default config in the xml.*\/$/;"	m	struct:ORANRFCfg_tag
+TEST_FILE_CONFIG	common_mac_phy_api.h	/^} TEST_FILE_CONFIG, *PTEST_FILE_CONFIG;$/;"	t	typeref:struct:tTestFileConfig
+TEST_FILE_CONFIG_NR5G	nr5g_mac_phy_api.h	/^} TEST_FILE_CONFIG_NR5G, *PTEST_FILE_CONFIG_NR5G;$/;"	t	typeref:struct:tTestFileConfigNr5g
+TIMER_MODE_MULTI_CELL_DELAY	common_mac_phy_api.h	/^    TIMER_MODE_MULTI_CELL_DELAY,$/;"	e	enum:__anon2
+TRUE	common_typedef.h	68;"	d
+TXRequestStruct	nr5g_mac_phy_api.h	/^} TXRequestStruct, *PTXRequestStruct;$/;"	t	typeref:struct:tTxRequestStruct
+Ta4Max	nr5g_mac_phy_api.h	/^  uint16_t Ta4Max;                     \/* the max ta4 time value in microsecond . for value 0, this field is not vaild,use default config in the xml.*\/$/;"	m	struct:ORANRFCfg_tag
+Ta4Min	nr5g_mac_phy_api.h	/^  uint16_t Ta4Min;                     \/* the min ta4 time value in microsecond . for value 0, this field is not vaild,use default config in the xml.*\/$/;"	m	struct:ORANRFCfg_tag
+TadvCpDl	nr5g_mac_phy_api.h	/^  uint16_t TadvCpDl;                   \/* cp adv up time in microsecond *\/$/;"	m	struct:ORANRFCfg_tag
+TddSymbolType	nr5g_mac_phy_api.h	/^enum TddSymbolType$/;"	g
+TimerModeFreqDomain	common_mac_phy_api.h	/^    uint32_t TimerModeFreqDomain;$/;"	m	struct:tDlUlIqSamplesStruct
+UEMANAGEMENTPDUStruct	nr5g_mac_phy_api.h	/^} UEMANAGEMENTPDUStruct,*PUEMANAGEMENTPDUStruct;$/;"	t	typeref:struct:tUeManagementPduStruct
+UEManagementRequestStruct	nr5g_mac_phy_api.h	/^} UEManagementRequestStruct, *PUEManagementRequestStruct;$/;"	t	typeref:struct:tUeManagementRequestStruct
+UE_MANAGEMENT_PDU	nr5g_mac_phy_api.h	146;"	d
+ULCCHUCIPDUStruct	nr5g_mac_phy_api.h	/^} ULCCHUCIPDUStruct, *PULCCHUCIPDUStruct;$/;"	t	typeref:struct:tUlUcchPduInfo
+ULCRCStruct	nr5g_mac_phy_api.h	/^} ULCRCStruct, *PULCRCStruct;$/;"	t	typeref:struct:tUlCrcStruct
+ULConfigRequestStruct	nr5g_mac_phy_api.h	/^} ULConfigRequestStruct, *PULConfigRequestStruct;$/;"	t	typeref:struct:tUlConfigRequestStruct
+ULDCIRequestStruct	nr5g_mac_phy_api.h	/^} ULDCIRequestStruct, *PULDCIRequestStruct;$/;"	t	typeref:struct:tUlDciRequestStruct
+ULPUSCHChanEstStruct	nr5g_mac_phy_api.h	/^} ULPUSCHChanEstStruct, *PULPUSCHChanEstStruct;$/;"	t	typeref:struct:tUlPuschChanEstStruct
+ULSCHPDUDataStruct	nr5g_mac_phy_api.h	/^} ULSCHPDUDataStruct, *PULSCHPDUDataStruct;$/;"	t	typeref:struct:tUlSchPduDataStruct
+ULSCHPDUStruct	nr5g_mac_phy_api.h	/^} ULSCHPDUStruct, *PULSCHPDUStruct;$/;"	t	typeref:struct:tUlSchPduInfo
+ULSCHUCIPDUDataStruct	nr5g_mac_phy_api.h	/^} ULSCHUCIPDUDataStruct, *PULSCHUCIPDUDataStruct;$/;"	t	typeref:struct:tUlSchUciPduDataStruct
+ULSRSEstStruct	nr5g_mac_phy_api.h	/^} ULSRSEstStruct, *PULSRSEstStruct;$/;"	t	typeref:struct:tUlSrsEstStruct
+ULUCIPDUDataStruct	nr5g_mac_phy_api.h	/^} ULUCIPDUDataStruct, *PULUCIPDUDataStruct;$/;"	t	typeref:struct:tUlUciPduDataStruct
+UL_PDU_TYPE_PRACH	nr5g_mac_phy_api.h	144;"	d
+UL_PDU_TYPE_SRS	nr5g_mac_phy_api.h	143;"	d
+UL_PDU_TYPE_ULCCH_UCI	nr5g_mac_phy_api.h	141;"	d
+UL_PDU_TYPE_ULSCH	nr5g_mac_phy_api.h	140;"	d
+UL_PDU_TYPE_ULSCH_UCI	nr5g_mac_phy_api.h	142;"	d
+URLLC_MASK	common_mac_phy_api.h	/^    URLLC_MASK,$/;"	e	enum:__anon1
+UWORD16	common_typedef.h	/^typedef unsigned short UWORD16;$/;"	t
+UWORD32	common_typedef.h	/^typedef unsigned int UWORD32;$/;"	t
+UWORD64	common_typedef.h	/^typedef unsigned long long UWORD64;$/;"	t
+UWORD8	common_typedef.h	/^typedef unsigned char UWORD8;$/;"	t
+WLS_BUFFER_SIZE	Fapi_To_Iapi.c	17;"	d	file:
+WORD16	common_typedef.h	/^typedef short WORD16;$/;"	t
+WORD32	common_typedef.h	/^typedef int WORD32;$/;"	t
+WORD64	common_typedef.h	/^typedef long WORD64;$/;"	t
+WORD8	common_typedef.h	/^typedef char WORD8;$/;"	t
+_COMMON_MAC_PHY_API_H_	common_mac_phy_api.h	16;"	d
+_COMMON_TYPEDEF_H_	common_typedef.h	23;"	d
+_NR5G_MAC_PHY_API_H_	nr5g_mac_phy_api.h	15;"	d
+buffer	common_mac_phy_api.h	/^    uint8_t buffer[4096];$/;"	m	struct:tDlUlIqSamplesStruct
+carrNum	common_mac_phy_api.h	/^    uint32_t carrNum;$/;"	m	struct:tDlUlIqSamplesStruct
+convertConfigReqFapiToIapi	Fapi_To_Iapi.c	/^void convertConfigReqFapiToIapi(uint8_t phyHandle, p_fapi_api_queue_elem_t cfgReqElem, \\$/;"	f
+convertDlTtiReqFapiToIapi	Fapi_To_Iapi.c	/^void convertDlTtiReqFapiToIapi(p_fapi_api_queue_elem_t dlTtiReqElem, uint32_t l2ToL1MsgLen, PMAC2PHY_QUEUE_EL iapiQueueElem)$/;"	f
+convertStartReqFapiToIapi	Fapi_To_Iapi.c	/^void convertStartReqFapiToIapi(uint8_t phyHandle, p_fapi_api_queue_elem_t startReqElem, \\$/;"	f
+eOption	common_mac_phy_api.h	/^    BBUPOOL_CORE_OPERATION eOption;$/;"	m	struct:tAddRemoveBbuCoresStruct
+filename_in_prach_iq	common_mac_phy_api.h	/^    char filename_in_prach_iq[MAX_UL_IQ_SAMPLE_PORTS][MAX_DL_UL_IQ_FILE_NAME_LEN];$/;"	m	struct:tDlUlIqSamplesStruct
+filename_in_srs_iq	common_mac_phy_api.h	/^    char filename_in_srs_iq[MAX_UL_IQ_SAMPLE_ANT][MAX_DL_UL_IQ_FILE_NAME_LEN];$/;"	m	struct:tDlUlIqSamplesStruct
+filename_in_ul_iq	common_mac_phy_api.h	/^    char filename_in_ul_iq[MAX_UL_IQ_SAMPLE_PORTS][MAX_DL_UL_IQ_FILE_NAME_LEN];$/;"	m	struct:tDlUlIqSamplesStruct
+filename_in_ul_iq_compressed	common_mac_phy_api.h	/^    char filename_in_ul_iq_compressed[MAX_UL_IQ_SAMPLE_PORTS][MAX_DL_UL_IQ_FILE_NAME_LEN];$/;"	m	struct:tDlUlIqSamplesStruct
+filename_out_dl_beam	common_mac_phy_api.h	/^    char filename_out_dl_beam[MAX_DL_IQ_SAMPLE_PORTS][MAX_DL_UL_IQ_FILE_NAME_LEN];$/;"	m	struct:tDlUlIqSamplesStruct
+filename_out_dl_iq	common_mac_phy_api.h	/^    char filename_out_dl_iq[MAX_DL_UL_IQ_FILE_NAME_LEN];$/;"	m	struct:tDlUlIqSamplesStruct
+filename_out_dl_iq_compressed	common_mac_phy_api.h	/^    char filename_out_dl_iq_compressed[MAX_DL_UL_IQ_FILE_NAME_LEN];$/;"	m	struct:tDlUlIqSamplesStruct
+filename_out_ul_beam	common_mac_phy_api.h	/^    char filename_out_ul_beam[MAX_UL_IQ_SAMPLE_PORTS][MAX_DL_UL_IQ_FILE_NAME_LEN];$/;"	m	struct:tDlUlIqSamplesStruct
+filename_out_ul_pucch_beam	common_mac_phy_api.h	/^    char filename_out_ul_pucch_beam[MAX_UL_IQ_SAMPLE_PORTS][MAX_DL_UL_IQ_FILE_NAME_LEN];$/;"	m	struct:tDlUlIqSamplesStruct
+fillBchPdu	Fapi_To_Iapi.c	/^void fillBchPdu(BCHPDUStruct *iapiBchPdu, fapi_dl_ssb_pdu_t *fapiSsbPdu)$/;"	f
+fillDlSchPdu	Fapi_To_Iapi.c	/^void fillDlSchPdu(DLSCHPDUStruct *iapiDlSchPdu, fapi_dl_pdsch_pdu_t *fapiPdschPdu, \\$/;"	f
+im	common_typedef.h	/^    WORD16 im; \/*!<description>*\/$/;"	m	struct:__anon6
+isLBRMSupp	nr5g_mac_phy_api.h	/^    uint32_t    isLBRMSupp;$/;"	m	struct:tUlSchPduInfo
+modType	nr5g_mac_phy_api.h	/^    uint8_t    modType;             \/\/ Modulation type for PUCCH format 3 and 4, Value: 1-pi\/2 BPSK or 2-QPSK$/;"	m	struct:tUlUcchPduInfo
+n1n2	nr5g_mac_phy_api.h	/^    uint16_t  n1n2;                     \/\/ n1_n2=n1<<8+n2,n1 n2 values are according to table 5.2.2.2.1-2 in 38.214$/;"	m	struct:tDlSchPdu
+n2ndHopPRB	nr5g_mac_phy_api.h	/^    uint16_t   n2ndHopPRB;          \/\/ Index of the first PRB after frequency hopping, Value: 0~272$/;"	m	struct:tUlUcchPduInfo
+nAck	nr5g_mac_phy_api.h	/^    uint16_t   nAck;                    \/\/ number of HARQ bits$/;"	m	struct:tUlSchPduInfo
+nAddDmrsFlag	nr5g_mac_phy_api.h	/^    uint8_t    nAddDmrsFlag;        \/\/ Flag for additional DMRS, Value: 0 or 1, valid for format3\/4$/;"	m	struct:tUlUcchPduInfo
+nAggrLvl	nr5g_mac_phy_api.h	/^    uint8_t      nAggrLvl;$/;"	m	struct:tDciPduStruct
+nAlignOffset	common_mac_phy_api.h	/^    uint32_t nAlignOffset;                       \/\/ 14-17$/;"	m	struct:tMac2PhyApiQueueElem
+nAlphaScaling	nr5g_mac_phy_api.h	/^    uint8_t    nAlphaScaling;       \/\/ configured by higher parameter scaling, ENUMERATED for UCI-onPUSCH RRC { f0p5, f0p65, f0p8, f1 }, Value 0->3$/;"	m	struct:tUlSchPduInfo
+nBHop	nr5g_mac_phy_api.h	/^    uint8_t    nBHop;                   \/* b-hop, freqHopping, 3GPP 38.211, Sec 6.4.1.4.3, Table 2.  Values: 0 -> 3 *\/$/;"	m	struct:tSrsPduStruct
+nBWPSize	nr5g_mac_phy_api.h	/^    uint16_t     nBWPSize;$/;"	m	struct:tCsiRsPduStruct
+nBWPSize	nr5g_mac_phy_api.h	/^    uint16_t     nBWPSize;$/;"	m	struct:tDciPduStruct
+nBWPSize	nr5g_mac_phy_api.h	/^    uint16_t   nBWPSize;                \/* bandwidth part size,Value: 20->275 *\/$/;"	m	struct:tSrsPduStruct
+nBWPSize	nr5g_mac_phy_api.h	/^    uint16_t   nBWPSize;            \/\/ bandwidth part size,Value: 20->275$/;"	m	struct:tUlSchPduInfo
+nBWPSize	nr5g_mac_phy_api.h	/^    uint16_t   nBWPSize;            \/\/ bandwidth part size,Value: 20->275$/;"	m	struct:tUlUcchPduInfo
+nBWPSize	nr5g_mac_phy_api.h	/^    uint16_t  nBWPSize;                         \/\/ bandwidth part size,Value: 20->275$/;"	m	struct:tDlSchPdu
+nBWPStart	nr5g_mac_phy_api.h	/^    uint16_t     nBWPStart;$/;"	m	struct:tCsiRsPduStruct
+nBWPStart	nr5g_mac_phy_api.h	/^    uint16_t     nBWPStart;$/;"	m	struct:tDciPduStruct
+nBWPStart	nr5g_mac_phy_api.h	/^    uint16_t   nBWPStart;               \/* bandwidth part start RB index,Value: 0->254 *\/$/;"	m	struct:tSrsPduStruct
+nBWPStart	nr5g_mac_phy_api.h	/^    uint16_t   nBWPStart;           \/\/ bandwidth part start RB index,Value: 0->254$/;"	m	struct:tUlSchPduInfo
+nBWPStart	nr5g_mac_phy_api.h	/^    uint16_t   nBWPStart;           \/\/ bandwidth part start RB index,Value: 0->254$/;"	m	struct:tUlUcchPduInfo
+nBWPStart	nr5g_mac_phy_api.h	/^    uint16_t  nBWPStart;                        \/\/ bandwidth part start RB index,Value: 0->254$/;"	m	struct:tDlSchPdu
+nBeamId	nr5g_mac_phy_api.h	/^    int16_t      nBeamId;\/* beamID for DCI. Value:0~4095*\/$/;"	m	struct:tDciPduStruct
+nBeamId	nr5g_mac_phy_api.h	/^    int16_t     nBeamId[MAX_DL_CSIRS_PORT_NUM];$/;"	m	struct:tCsiRsPduStruct
+nBeamId	nr5g_mac_phy_api.h	/^    int16_t     nBeamId[MAX_RX_SRS_STREAM_NUM];\/* Beamid table for each SRS iq stream *\/$/;"	m	struct:tSrsPduStruct
+nBeamId	nr5g_mac_phy_api.h	/^    int16_t    nBeamId;$/;"	m	struct:tDlBchPdu
+nBeamId	nr5g_mac_phy_api.h	/^    int16_t    nBeamId[4];$/;"	m	struct:tDlBchPdu
+nBeamId	nr5g_mac_phy_api.h	/^    int16_t    nBeamId[MAX_RXRU_NUM];$/;"	m	struct:tUlSchPduInfo
+nBeamId	nr5g_mac_phy_api.h	/^    int16_t    nBeamId[MAX_RXRU_NUM];\/\/ beamID table for each pucch iq-stream$/;"	m	struct:tUlUcchPduInfo
+nBeamId	nr5g_mac_phy_api.h	/^    int16_t  nBeamId[MAX_TXRU_NUM];$/;"	m	struct:tDlSchPdu
+nBeamId	nr5g_mac_phy_api.h	/^    uint8_t      nBeamId;$/;"	m	struct:tCsiRsPduStruct
+nBeamId	nr5g_mac_phy_api.h	/^    uint8_t      nBeamId;$/;"	m	struct:tDciPduStruct
+nBeamId	nr5g_mac_phy_api.h	/^    uint8_t    nBeamId;               \/\/ Beam index value:0~63$/;"	m	struct:tUlSchPduInfo
+nBeamId	nr5g_mac_phy_api.h	/^    uint8_t    nBeamId;$/;"	m	struct:tDlBchPdu
+nBeamId	nr5g_mac_phy_api.h	/^    uint8_t    nBeamId;$/;"	m	struct:tDlSchPdu
+nBeamId	nr5g_mac_phy_api.h	/^    uint8_t    nBeamId;$/;"	m	struct:tSrsPduStruct
+nBeamId	nr5g_mac_phy_api.h	/^    uint8_t    nBeamId;$/;"	m	struct:tUlUcchPduInfo
+nBeamId	nr5g_mac_phy_api.h	/^    uint8_t nBeamId[MAX_NUM_ANT_NR5G];$/;"	m	struct:tConfigReq
+nBeamId1	nr5g_mac_phy_api.h	/^    int16_t    nBeamId1;$/;"	m	struct:tDlBchPdu
+nBeamId1	nr5g_mac_phy_api.h	/^    uint8_t    nBeamId1;$/;"	m	struct:tDlBchPdu
+nBeamIdPerSlot	nr5g_mac_phy_api.h	/^    uint8_t     nBeamIdPerSlot[MAX_PANEL_NUM];$/;"	m	struct:tPrachPduStruct
+nBetaOffsetACKIndex	nr5g_mac_phy_api.h	/^    uint8_t    nBetaOffsetACKIndex; \/\/ BetaoffsetAck index$/;"	m	struct:tUlSchPduInfo
+nBetaOffsetCSIP1Index	nr5g_mac_phy_api.h	/^    uint8_t    nBetaOffsetCSIP1Index;   \/\/ BetaoffsetCsi-part1 index$/;"	m	struct:tUlSchPduInfo
+nBetaOffsetCSIP2Index	nr5g_mac_phy_api.h	/^    uint8_t    nBetaOffsetCSIP2Index;   \/\/ BetaoffsetCsi-part2 index$/;"	m	struct:tUlSchPduInfo
+nBitLenUci	nr5g_mac_phy_api.h	/^    uint16_t   nBitLenUci;          \/\/ Bit length of UCI payload for format1\/2\/3\/4 or bit length of UCI payload exclude SR for format0$/;"	m	struct:tUlUcchPduInfo
+nBlockSNR	nr5g_mac_phy_api.h	/^    int8_t    nBlockSNR[4][68];  \/\/ SNR in db measured within 4 RBs on each symbols, up to 68 blocks in case of SRS bandwidth 272 RBs$/;"	m	struct:tUlSrsEstStruct
+nBsrs	nr5g_mac_phy_api.h	/^    uint8_t    nBsrs;                   \/* b-SRS, SRS bandwidth index, 3GPP 38.211, Sec 6.4.1.4.3, Table 2.  Values: 0 -> 3 *\/$/;"	m	struct:tSrsPduStruct
+nCCEStartIndex	nr5g_mac_phy_api.h	/^    uint8_t      nCCEStartIndex;$/;"	m	struct:tDciPduStruct
+nCCEToREGType	nr5g_mac_phy_api.h	/^    uint8_t      nCCEToREGType;$/;"	m	struct:tDciPduStruct
+nCCID	nr5g_mac_phy_api.h	/^  uint8_t nCCID;                       \/* vaulue 0 - 15. use for multi carrier per Radio*\/$/;"	m	struct:ORANRFCfg_tag
+nCDMType	nr5g_mac_phy_api.h	/^    uint8_t      nCDMType;$/;"	m	struct:tCsiRsPduStruct
+nCSIPart1	nr5g_mac_phy_api.h	/^    uint16_t   nCSIPart1;             \/\/ number of CSI part1 bits$/;"	m	struct:tUlSchPduInfo
+nCSIPart2	nr5g_mac_phy_api.h	/^    uint16_t   nCSIPart2;             \/\/ Number of CSI part2, Value: 0 -> No CSI part 2, others -> Number of CSI part2$/;"	m	struct:tUlSchPduInfo
+nCSIPart2	nr5g_mac_phy_api.h	/^    uint16_t nCSIPart2;              \/\/ Number of CSI part2, Value: 0 -> No CSI part 2, others -> Number of CSI part2$/;"	m	struct:tUlUcchPduInfo
+nCSIPart2	nr5g_mac_phy_api.h	/^    uint16_t nCSIPart2;      \/\/ Number of CSI part2, Value: 0 -> No CSI part 2, others -> Number of CSI part2$/;"	m	struct:tUlUcchPduInfo
+nCSIType	nr5g_mac_phy_api.h	/^    uint8_t      nCSIType;$/;"	m	struct:tCsiRsPduStruct
+nCarrierAggregationLevel	nr5g_mac_phy_api.h	/^    uint8_t      nCarrierAggregationLevel;$/;"	m	struct:tConfigReq
+nCarrierIdx	nr5g_mac_phy_api.h	/^    uint32_t nCarrierIdx:5; \/\/ carrier index, 0->23$/;"	m	struct:tSfnSlot
+nCarrierIdx	nr5g_mac_phy_api.h	/^    uint32_t nCarrierIdx:6; \/\/ carrier index, 0->63$/;"	m	struct:tSfnSlot
+nCarrierIdx	nr5g_mac_phy_api.h	/^    uint8_t        nCarrierIdx;$/;"	m	struct:tConfigInd
+nCarrierIdx	nr5g_mac_phy_api.h	/^    uint8_t      nCarrierIdx;$/;"	m	struct:tConfigReq
+nChanAlignOffset	nr5g_mac_phy_api.h	/^    uint16_t  nChanAlignOffset;  \/\/ Offset in bytes to the next DMRS ChanEst for each layer,port index$/;"	m	struct:tUlPuschChanEstStruct
+nChanDetected	nr5g_mac_phy_api.h	/^    uint8_t  nChanDetected; \/\/Channel Detected flag. 0: possible DTX detected for channel, 1: channel detected$/;"	m	struct:tUlCrcStruct
+nCodebookMode	nr5g_mac_phy_api.h	/^    uint8_t   nCodebookMode;            \/\/ 0: codebook mode 1; 1: codebook mode 2$/;"	m	struct:tDlSchPdu
+nCodebookType	nr5g_mac_phy_api.h	/^    uint8_t   nCodebookType;            \/\/ 0: single-panel type1;1: multi-panel type1;2: type2;3: port selection port2;$/;"	m	struct:tDlSchPdu
+nComb	nr5g_mac_phy_api.h	/^    uint8_t    nComb;                   \/* Transmission Comb, KTC , 3GPP 38.211, Sec 6.4.1.4.3, Table 2.  Values: 2, 4 *\/$/;"	m	struct:tSrsPduStruct
+nCombOffset	nr5g_mac_phy_api.h	/^    uint8_t      nCombOffset;$/;"	m	struct:tCsiRsPduStruct
+nCombOffset	nr5g_mac_phy_api.h	/^    uint8_t    nCombOffset;             \/* Comb Offset, 3GPP 38.211, Sec 6.4.1.4.3, Table 2.  Values: 0 -> 3 *\/$/;"	m	struct:tSrsPduStruct
+nConfLvl	nr5g_mac_phy_api.h	/^    uint8_t  nConfLvl;      \/\/ the level of confidence for Timing advance measure. value is 0-2. 0 is low, 1 is high. $/;"	m	struct:tUlCrcStruct
+nCoreMask	common_mac_phy_api.h	/^    uint64_t nCoreMask[MAX_MASK_OPTIONS][MAX_NUM_SET_CORE_MASK];$/;"	m	struct:tAddRemoveBbuCoresStruct
+nCoreSetType	nr5g_mac_phy_api.h	/^    uint8_t      nCoreSetType;$/;"	m	struct:tDciPduStruct
+nCount	nr5g_mac_phy_api.h	/^    uint32_t nCount;$/;"	m	struct:tStartReq
+nCpType	nr5g_mac_phy_api.h	/^    uint8_t      nCpType;        \/\/ Cyclic prefix type  0: Normal; 1: Extended$/;"	m	struct:tCsiRsPduStruct
+nCpType	nr5g_mac_phy_api.h	/^    uint8_t      nCpType;        \/\/ Cyclic prefix type  0: Normal; 1: Extended$/;"	m	struct:tDciPduStruct
+nCpType	nr5g_mac_phy_api.h	/^    uint8_t    nCpType;                 \/* Cyclic prefix type  0: Normal; 1: Extended *\/$/;"	m	struct:tSrsPduStruct
+nCpType	nr5g_mac_phy_api.h	/^    uint8_t    nCpType;             \/\/ Cyclic prefix type  0: Normal; 1: Extended$/;"	m	struct:tUlSchPduInfo
+nCpType	nr5g_mac_phy_api.h	/^    uint8_t    nCpType;             \/\/ Cyclic prefix type  0: Normal; 1: Extended$/;"	m	struct:tUlUcchPduInfo
+nCpType	nr5g_mac_phy_api.h	/^    uint8_t   nCpType;                          \/\/ Cyclic prefix type  0: Normal; 1: Extended$/;"	m	struct:tDlSchPdu
+nCrc	nr5g_mac_phy_api.h	/^    uint8_t    nCrc;        \/\/ Number of CRCs included in this message:Value: 0->255$/;"	m	struct:tCrcIndicationStruct
+nCrcFlag	nr5g_mac_phy_api.h	/^    uint8_t  nCrcFlag;      \/\/CRC flag to indicate if error detected:0: CRC error ,1: CRC correct$/;"	m	struct:tUlCrcStruct
+nCsrs	nr5g_mac_phy_api.h	/^    uint8_t    nCsrs;                   \/* c-SRS, SRS bandwidth config index, 3GPP 38.211, Sec 6.4.1.4.3, Table 2.  Values: 0 -> 63 *\/$/;"	m	struct:tSrsPduStruct
+nCyclicPrefix	nr5g_mac_phy_api.h	/^    uint8_t      nCyclicPrefix;$/;"	m	struct:tConfigReq
+nCyclicShift	nr5g_mac_phy_api.h	/^    uint8_t    nCyclicShift;            \/* Cyclic Shift, 3GPP 38.211, Sec 6.4.1.4.3, Table 2.  Values: 0 -> 11 *\/$/;"	m	struct:tSrsPduStruct
+nDCI	nr5g_mac_phy_api.h	/^    uint8_t        nDCI;                \/\/Number of DCIs that are included in this message.,$/;"	m	struct:tDlConfigRequestStruct
+nDCI	nr5g_mac_phy_api.h	/^    uint8_t   nDCI;          \/\/ Number of DCIs that are included in this message.,$/;"	m	struct:tUlDciRequestStruct
+nDLAbsFrePointA	nr5g_mac_phy_api.h	/^    uint32_t     nDLAbsFrePointA;$/;"	m	struct:tConfigReq
+nDLBandwidth	nr5g_mac_phy_api.h	/^    uint16_t     nDLBandwidth;$/;"	m	struct:tConfigReq
+nDLCompScaleFactor	common_mac_phy_api.h	/^    uint16_t nDLCompScaleFactor;$/;"	m	struct:tDlUlIqSamplesStruct
+nDLCompiqWidth	common_mac_phy_api.h	/^    uint16_t nDLCompiqWidth;$/;"	m	struct:tDlUlIqSamplesStruct
+nDLCompreMask	common_mac_phy_api.h	/^    uint16_t nDLCompreMask;$/;"	m	struct:tDlUlIqSamplesStruct
+nDLCompressionIdx	common_mac_phy_api.h	/^    uint16_t nDLCompressionIdx;$/;"	m	struct:tDlUlIqSamplesStruct
+nDLFftSize	nr5g_mac_phy_api.h	/^    uint16_t     nDLFftSize;$/;"	m	struct:tConfigReq
+nDLK0	nr5g_mac_phy_api.h	/^    uint8_t      nDLK0;$/;"	m	struct:tConfigReq
+nDMRSAddPos	nr5g_mac_phy_api.h	/^    uint8_t    nDMRSAddPos;         \/\/ UL additional DMRS position,UL-DMRS-add-pos,Value: 0->3$/;"	m	struct:tUlSchPduInfo
+nDMRSAddPos	nr5g_mac_phy_api.h	/^    uint8_t   nDMRSAddPos;       \/\/ DL additional DMRS position,DL-DMRS-add-pos,Value: 0->3$/;"	m	struct:tDlSchPdu
+nDMRSConfigType	nr5g_mac_phy_api.h	/^    uint8_t    nDMRSConfigType;     \/\/ UL DMRS config type,0: type 1,1: type2$/;"	m	struct:tUlSchPduInfo
+nDMRSConfigType	nr5g_mac_phy_api.h	/^    uint8_t   nDMRSConfigType;   \/\/ DL DMRS config type,0: type 1,1: type2$/;"	m	struct:tDlSchPdu
+nDMRSPwrDBFS	nr5g_mac_phy_api.h	/^    int16_t  nDMRSPwrDBFS;  \/\/receive DMRS amplitude in dBFS, 0.01 dB step$/;"	m	struct:tUlCrcStruct
+nDMRSTypeAPos	nr5g_mac_phy_api.h	/^    uint8_t      nDMRSTypeAPos;$/;"	m	struct:tConfigReq
+nDciBits	nr5g_mac_phy_api.h	/^    uint8_t      nDciBits[MAX_DCI_BIT_BYTE_LEN];$/;"	m	struct:tDciPduStruct
+nDmrsGroupSeqHop	nr5g_mac_phy_api.h	/^    uint8_t    nDmrsGroupSeqHop;     \/\/groupOrSequenceHopping for transform precoding, value:0->2, 0: neither, 1: groupHopping, 2: sequenceHopping $/;"	m	struct:tUlSchPduInfo
+nDmrsSymbolIdx	nr5g_mac_phy_api.h	/^    uint16_t  nDmrsSymbolIdx[MAX_UL_PER_UE_DMRS_PORT_NUM];  \/\/dmrs symbol indexes$/;"	m	struct:tUlPuschChanEstStruct
+nDtxDetected	nr5g_mac_phy_api.h	/^    uint8_t  nDtxDetected;  \/\/DTX detected.  0: channel present, 1: DTX detected for channel$/;"	m	struct:tUlCrcStruct
+nEpreRatioOfDmrsToSSB	nr5g_mac_phy_api.h	/^    uint16_t     nEpreRatioOfDmrsToSSB;$/;"	m	struct:tDciPduStruct
+nEpreRatioOfDmrsToSSB	nr5g_mac_phy_api.h	/^    uint16_t  nEpreRatioOfDmrsToSSB;    \/\/ ratio of PDSCH EPRE to DMRS EPRE,Value :1->20000,0.001 dB step, -6dB to 14 dB$/;"	m	struct:tDlSchPdu
+nEpreRatioOfPDCCHToSSB	nr5g_mac_phy_api.h	/^    uint16_t     nEpreRatioOfPDCCHToSSB;$/;"	m	struct:tDciPduStruct
+nEpreRatioOfPDSCHToPTRS	nr5g_mac_phy_api.h	/^    uint8_t   nEpreRatioOfPDSCHToPTRS;$/;"	m	struct:tDlSchPdu
+nEpreRatioOfPDSCHToSSB	nr5g_mac_phy_api.h	/^    uint16_t   nEpreRatioOfPDSCHToSSB;$/;"	m	struct:tDlSchPdu
+nEpreRatioToSSB	nr5g_mac_phy_api.h	/^    uint16_t      nEpreRatioToSSB;$/;"	m	struct:tCsiRsPduStruct
+nFloatSrsEst	nr5g_mac_phy_api.h	/^    uint8_t    nFloatSrsEst; \/\/ SRS est channel: 0 fixed-point datatype, 1 float16 datatype.$/;"	m	struct:tRxSrsIndicationStruct
+nFmt1OrthCCodeIdx	nr5g_mac_phy_api.h	/^    uint8_t    nFmt1OrthCCodeIdx;   \/\/ An index of an orthogonal cover code in case of PUCCH format 1, Value: 0~6$/;"	m	struct:tUlUcchPduInfo
+nFmt4OrthCCodeIdx	nr5g_mac_phy_api.h	/^    uint8_t    nFmt4OrthCCodeIdx;   \/\/ An index of an orthogonal cover code in case of PUCCH format 4, Value: 0~3$/;"	m	struct:tUlUcchPduInfo
+nFmt4OrthCCodeLength	nr5g_mac_phy_api.h	/^    uint8_t    nFmt4OrthCCodeLength;\/\/ A length of an orthogonal cover code in case of PUCCH format 4, Value: 2 or 4$/;"	m	struct:tUlUcchPduInfo
+nFormat	nr5g_mac_phy_api.h	/^    uint8_t    nFormat;             \/\/ PUCCH format, Value:0~4$/;"	m	struct:tUlUcchPduInfo
+nFrameDuplexType	nr5g_mac_phy_api.h	/^    uint8_t      nFrameDuplexType;$/;"	m	struct:tConfigReq
+nFreqDensity	nr5g_mac_phy_api.h	/^    uint8_t      nFreqDensity;$/;"	m	struct:tCsiRsPduStruct
+nFreqDomain	nr5g_mac_phy_api.h	/^    uint16_t     nFreqDomain;$/;"	m	struct:tCsiRsPduStruct
+nFreqDomain	nr5g_mac_phy_api.h	/^    uint32_t     nFreqDomain[2];$/;"	m	struct:tDciPduStruct
+nFreqHopFlag	nr5g_mac_phy_api.h	/^    uint8_t    nFreqHopFlag;        \/\/ Frequency hopping for a PUCCH resource enabled or disabled, Value: 0 or 1, valid for format1\/3\/4$/;"	m	struct:tUlUcchPduInfo
+nFreqIdx	nr5g_mac_phy_api.h	/^    uint16_t    nFreqIdx;$/;"	m	struct:tPreambleStruct
+nFreqPos	nr5g_mac_phy_api.h	/^    uint8_t    nFreqPos;                \/* RRC Config message, SRS-Resource.freqDomainPosition, n_rrc  value: 0 -> 67 *\/$/;"	m	struct:tSrsPduStruct
+nFreqShift	nr5g_mac_phy_api.h	/^    uint16_t   nFreqShift;              \/* RRC config message, SRS-Resource.freqDomainShift, nShift   value: 0 -> 268 *\/$/;"	m	struct:tSrsPduStruct
+nGroup	nr5g_mac_phy_api.h	/^    uint8_t        nGroup;              \/\/Number of UE Groups included in this message.$/;"	m	struct:tDlConfigRequestStruct
+nGroup	nr5g_mac_phy_api.h	/^    uint8_t    nGroup;       \/\/ Number of UE Groups included in this message. Value: 1-8$/;"	m	struct:tUlConfigRequestStruct
+nGroupHopFlag	nr5g_mac_phy_api.h	/^    uint8_t    nGroupHopFlag;$/;"	m	struct:tConfigReq
+nGroupId	nr5g_mac_phy_api.h	/^    uint16_t   nGroupId;$/;"	m	struct:tUlUcchPduInfo
+nHARQID	nr5g_mac_phy_api.h	/^    uint8_t    nHARQID;             \/\/ HARQ Process number.$/;"	m	struct:tUlSchPduInfo
+nHARQID	nr5g_mac_phy_api.h	/^    uint8_t   nHARQID;           \/\/HARQ Process number, 0->15$/;"	m	struct:tDlSchPdu
+nHopping	nr5g_mac_phy_api.h	/^    uint8_t    nHopping;                \/* groupOrSequenceHopping, value:0->2, 0: neither, 1: groupHopping, 2: sequenceHopping *\/$/;"	m	struct:tSrsPduStruct
+nHoppingId	nr5g_mac_phy_api.h	/^    uint16_t   nHoppingId;$/;"	m	struct:tConfigReq
+nID	nr5g_mac_phy_api.h	/^    uint16_t     nID;$/;"	m	struct:tDciPduStruct
+nID	nr5g_mac_phy_api.h	/^    uint16_t   nID;                 \/\/ Data scrambling ID if high layer configured, otherwise is cellID, Value: 0~1023, valid for format2\/3\/4$/;"	m	struct:tUlUcchPduInfo
+nID	nr5g_mac_phy_api.h	/^    uint16_t   nID;                 \/\/ nID used for data scrambling[38.211&6.3.2.5.1\/6.3.2.6.1].Valid for format2\/3\/4, Value:0~1023$/;"	m	struct:tUlUcchPduInfo
+nInterleaveSize	nr5g_mac_phy_api.h	/^    uint8_t      nInterleaveSize;$/;"	m	struct:tDciPduStruct
+nIntfNoisePwr	nr5g_mac_phy_api.h	/^	int16_t    nIntfNoisePwr[(int)(MAX_5GNR_PRB\/4+1)]; \/\/ Subband granularity for RBG size of 4$/;"	m	struct:tCrcIndicationStruct
+nIntfNoisePwr	nr5g_mac_phy_api.h	/^    int16_t    nIntfNoisePwr[MAX_NUM_RBG]; \/\/ Subband granularity for RBG size of 4$/;"	m	struct:tCrcIndicationStruct
+nIsChanEstPres	nr5g_mac_phy_api.h	/^    uint8_t   nIsChanEstPres;           \/\/ If 1, then pSrsChanEst is filled with valid pointers.$/;"	m	struct:tUlSrsEstStruct
+nIsRadioMode	common_mac_phy_api.h	/^    uint32_t nIsRadioMode;$/;"	m	struct:tDlUlIqSamplesStruct
+nLinearInterMode	nr5g_mac_phy_api.h	/^    uint8_t   nLinearInterMode;  \/\/ Linear interpolation granularity$/;"	m	struct:tUlPuschChanEstStruct
+nLte_CRS_Present	nr5g_mac_phy_api.h	/^    uint8_t        nLte_CRS_Present;    \/\/LTE 4G being transmitted concurrently on this slot, 0 = no 4g, 1 = lte present, only valid for mu = 0$/;"	m	struct:tDlConfigRequestStruct
+nLte_CRS_carrierBandwidthDL	nr5g_mac_phy_api.h	/^    uint8_t        nLte_CRS_carrierBandwidthDL; \/\/LTE 4G bandwidth, number of resource blocks {n6, n15, n25, n50, n75, n100, spare2, spare1}$/;"	m	struct:tDlConfigRequestStruct
+nLte_CRS_carrierFreqDL	nr5g_mac_phy_api.h	/^    uint16_t       nLte_CRS_carrierFreqDL;      \/\/LTE 4G Downlink Center frequency (0 ... 16383)$/;"	m	struct:tDlConfigRequestStruct
+nLte_CRS_nrofCRS_Ports	nr5g_mac_phy_api.h	/^    uint8_t        nLte_CRS_nrofCRS_Ports;      \/\/LTE 4G, number of Tx Antennas {n1, n2, n4}$/;"	m	struct:tDlConfigRequestStruct
+nLte_CRS_v_shift	nr5g_mac_phy_api.h	/^    uint8_t        nLte_CRS_v_shift;            \/\/LTE 4G vShift = nPhyCellId % 6.  {n0, n1, n2, n3, n4, n5}$/;"	m	struct:tDlConfigRequestStruct
+nM0	nr5g_mac_phy_api.h	/^    uint16_t   nM0;                 \/\/ Initial Cyclic Shift Value: 0~11, valid for format0\/1$/;"	m	struct:tUlUcchPduInfo
+nMCS	nr5g_mac_phy_api.h	/^    uint8_t    nMCS;                \/\/ MCS index value: 0->31$/;"	m	struct:tUlSchPduInfo
+nMCS	nr5g_mac_phy_api.h	/^    uint8_t   nMCS[MAX_DL_PER_UE_CODEWORD_NUM]; \/\/ MCS index value: 0->31$/;"	m	struct:tDlSchPdu
+nMIB	nr5g_mac_phy_api.h	/^    uint8_t      nMIB[3];$/;"	m	struct:tConfigReq
+nMIB	nr5g_mac_phy_api.h	/^    uint8_t      nMIB[3];$/;"	m	struct:tDlBchPdu
+nMMimoMode	nr5g_mac_phy_api.h	/^    uint8_t   nMMimoMode;               \/\/ 0->non Massive Mimo PDU, 1-> beamID + matrix mode,wideband+subband,  Beam Matrix generated by L1 , 2-> beamID + matrix mode, wideband+subband, Beam Matrix generated by L2$/;"	m	struct:tDlSchPdu
+nMMimoMode	nr5g_mac_phy_api.h	/^    uint8_t   nMMimoMode;               \/\/ 0->non Massive Mimo PDU, 1->SRS based Massive MIMO$/;"	m	struct:tDlSchPdu
+nMMimoMode	nr5g_mac_phy_api.h	/^    uint8_t   nMMimoMode;             \/\/ 0->non Massive Mimo PDU, 1-> beamID + matrix mode,wideband+subband,  Beam Matrix generated by L1 ,using SRS, 2-> beamID + matrix mode, wideband+subband, Beam Matrix generated by L2 $/;"	m	struct:tUlSchPduInfo
+nMMimoMode	nr5g_mac_phy_api.h	/^    uint8_t   nMMimoMode;             \/\/ 0->non Massive Mimo PDU, 1->SRS based Massive MIMO$/;"	m	struct:tUlSchPduInfo
+nMacOptions	common_mac_phy_api.h	/^    uint32_t nMacOptions[NUM_SPLIT_OPTIONS];$/;"	m	struct:tAddRemoveBbuCoresStruct
+nMappingType	nr5g_mac_phy_api.h	/^    uint8_t    nMappingType;        \/\/.PUSCH mapping Type,0: mapping type A,1: mapping type B$/;"	m	struct:tUlSchPduInfo
+nMappingType	nr5g_mac_phy_api.h	/^    uint8_t   nMappingType;      \/\/ PDSCH mapping Type,	0: mapping type A,	1: mapping type B$/;"	m	struct:tDlSchPdu
+nMatrixBeamID	nr5g_mac_phy_api.h	/^    int8_t  nMatrixBeamID; \/* 0:L1 create beamID with matrix input,1: use both beamId and matrix input, 2: use beamID only without matrix*\/$/;"	m	struct:__anon4
+nMaxCodeRate	nr5g_mac_phy_api.h	/^    uint8_t    nMaxCodeRate;        \/\/ Max coding rate to determine how to feedback UCI on PUCCH for format 3 or 4, Value 0 -> 6: max code rate per Table 9.2.5.2-1 of 3GPP TS 28.213. 255: not applicable (e.g., formats 0 or 1)$/;"	m	struct:tUlUcchPduInfo
+nMcsTable	nr5g_mac_phy_api.h	/^    uint8_t    nMcsTable;           \/\/ MCS-Table-PUSCH 0: not set to '256QAM' 1: set to '256QAM'$/;"	m	struct:tUlSchPduInfo
+nMcsTable	nr5g_mac_phy_api.h	/^    uint8_t   nMcsTable;                        \/\/ MCS-Table-PDSCH0: not set to '256QAM' 1: set to '256QAM'$/;"	m	struct:tDlSchPdu
+nMessageLen	common_mac_phy_api.h	/^    uint32_t nMessageLen;                        \/\/ 9-12$/;"	m	struct:tMac2PhyApiQueueElem
+nMessageLen	nr5g_mac_phy_api.h	/^    uint16_t nMessageLen;$/;"	m	struct:tL1L2MessageHeader
+nMessageType	common_mac_phy_api.h	/^    uint8_t  nMessageType;                       \/\/ 8$/;"	m	struct:tMac2PhyApiQueueElem
+nMessageType	nr5g_mac_phy_api.h	/^    uint16_t nMessageType;$/;"	m	struct:tL1L2MessageHeader
+nMode	nr5g_mac_phy_api.h	/^    uint32_t nMode;             \/\/ 0 = Radio (non-oran compliant), 1 = timer mode, 4 = Radio (oran\/xran compliant)$/;"	m	struct:tStartReq
+nNDI	nr5g_mac_phy_api.h	/^    uint8_t    nNDI;                \/\/ Specify whether this received PUSCH is a new transmission from UE. This should match the value sent in the DCI Format 0 PDU which allocated this grant.$/;"	m	struct:tUlSchPduInfo
+nNDI	nr5g_mac_phy_api.h	/^    uint8_t   nNDI[MAX_DL_PER_UE_CODEWORD_NUM]; \/\/ New data indication,0: retransmission,1: new data$/;"	m	struct:tDlSchPdu
+nNIDnSCID	nr5g_mac_phy_api.h	/^    uint16_t   nNIDnSCID;           \/\/ DL-DMRS-Scrambling-ID, For DMRS generation Value : 0->65535$/;"	m	struct:tUlSchPduInfo
+nNIDnSCID	nr5g_mac_phy_api.h	/^    uint16_t  nNIDnSCID;         \/\/ DL-DMRS-Scrambling-ID, For DMRS generation Value : 0->65535$/;"	m	struct:tDlSchPdu
+nNid	nr5g_mac_phy_api.h	/^    uint16_t   nNid;                    \/\/ Data-scrambling-IdentityValue : 0->1023$/;"	m	struct:tDlSchPdu
+nNid	nr5g_mac_phy_api.h	/^    uint16_t   nNid;                \/\/ Data-scrambling-IdentityValue : 0->1023$/;"	m	struct:tUlSchPduInfo
+nNrOfAntennaPorts	nr5g_mac_phy_api.h	/^    uint8_t    nNrOfAntennaPorts;   \/\/number of antenna ports,Value: 1,2,4$/;"	m	struct:tUlSchPduInfo
+nNrOfAntennaPorts	nr5g_mac_phy_api.h	/^    uint8_t   nNrOfAntennaPorts;                \/\/ Number of antenna ports Value : 1->8, for DL, the nuuber of ports is equal to the number of layers$/;"	m	struct:tDlSchPdu
+nNrOfAntennaPorts	nr5g_mac_phy_api.h	/^    uint8_t   nNrOfAntennaPorts;                \/\/ Number of antenna ports Value : 1->8,$/;"	m	struct:tDlSchPdu
+nNrOfBlocks	nr5g_mac_phy_api.h	/^    uint8_t   nNrOfBlocks;       \/\/ Number of frequency sub block, one sub block covers 4 RBs$/;"	m	struct:tUlSrsEstStruct
+nNrOfCDMs	nr5g_mac_phy_api.h	/^    uint8_t    nNrOfCDMs;           \/\/ Number of DM-RS CDM groups without data, it determines the ratio of PUSCH EPRE to DM-RS EPRE.  refer to Table 6.2.2-1 in [5]$/;"	m	struct:tUlSchPduInfo
+nNrOfCDMs	nr5g_mac_phy_api.h	/^    uint8_t   nNrOfCDMs;         \/\/ Number of DM-RS CDM groups without data$/;"	m	struct:tDlSchPdu
+nNrOfCodeWords	nr5g_mac_phy_api.h	/^    uint8_t   nNrOfCodeWords;                   \/\/ Up to 2 codewords,Value: 1 -> 2$/;"	m	struct:tDlSchPdu
+nNrOfDLCSIRSPorts	nr5g_mac_phy_api.h	/^    uint8_t    nNrOfDLCSIRSPorts;$/;"	m	struct:tConfigReq
+nNrOfDLPorts	nr5g_mac_phy_api.h	/^    uint8_t      nNrOfDLPorts;$/;"	m	struct:tConfigReq
+nNrOfDMRSAssPTRS	nr5g_mac_phy_api.h	/^    uint8_t   nNrOfDMRSAssPTRS[MAX_DL_PER_UE_PTRS_PORT_NUM];\/\/The number of DM-RS ports associated to PT-RS  Value: 1->6$/;"	m	struct:tDlSchPdu
+nNrOfDMRSSymbols	nr5g_mac_phy_api.h	/^    uint8_t    nNrOfDMRSSymbols;    \/\/ Number of UL DMRS symbols,1: single symbol,2: double symbol$/;"	m	struct:tUlSchPduInfo
+nNrOfDMRSSymbols	nr5g_mac_phy_api.h	/^    uint8_t   nNrOfDMRSSymbols;  \/\/ DL DMRS symbol number,1: single symbol,2: double symbol$/;"	m	struct:tDlSchPdu
+nNrOfLayers	nr5g_mac_phy_api.h	/^    uint8_t    nNrOfLayers;         \/\/ number of layers,Value: 1,2,4$/;"	m	struct:tUlSchPduInfo
+nNrOfLayers	nr5g_mac_phy_api.h	/^    uint8_t   nNrOfLayers;                      \/\/ Layer number,Value : 1->8,single user, up to 8 layers,multi-user, up to 4 layers$/;"	m	struct:tDlSchPdu
+nNrOfPTRSPorts	nr5g_mac_phy_api.h	/^    uint8_t    nNrOfPTRSPorts;      \/\/.UL-PTRS-ports. Up to 2 ports,Value: 1->2$/;"	m	struct:tUlSchPduInfo
+nNrOfPTRSPorts	nr5g_mac_phy_api.h	/^    uint8_t   nNrOfPTRSPorts;    \/\/ Up to 2 ports,DL-PTRS-ports.Value: 1->2$/;"	m	struct:tDlSchPdu
+nNrOfPort	nr5g_mac_phy_api.h	/^    uint8_t   nNrOfPort;         \/\/ Number of SRS ports programmed by MAC for this user$/;"	m	struct:tUlSrsEstStruct
+nNrOfPorts	nr5g_mac_phy_api.h	/^    uint8_t      nNrOfPorts;$/;"	m	struct:tCsiRsPduStruct
+nNrOfPreamb	nr5g_mac_phy_api.h	/^    uint8_t    nNrOfPreamb;     \/\/ Number of preambles detected.$/;"	m	struct:tRxPrachIndicationStruct
+nNrOfRBGs	nr5g_mac_phy_api.h	/^    uint8_t    nNrOfRBGs;           \/\/ For resource allocation type 1.Number of RBGs$/;"	m	struct:tUlSchPduInfo
+nNrOfRBGs	nr5g_mac_phy_api.h	/^    uint8_t   nNrOfRBGs;         \/\/For resource allocation type 1.Number of RBGs$/;"	m	struct:tDlSchPdu
+nNrOfRBs	nr5g_mac_phy_api.h	/^    uint16_t     nNrOfRBs;       \/\/ Number of PRBs across which this CSI resource spans. Only multiples of 4 are allowed$/;"	m	struct:tCsiRsPduStruct
+nNrOfRbs	nr5g_mac_phy_api.h	/^    uint16_t  nNrOfRbs;                 \/\/ Number of RBs based on numerology and bandwidth for this user$/;"	m	struct:tUlSrsEstStruct
+nNrOfRbs	nr5g_mac_phy_api.h	/^    uint16_t  nNrOfRbs;          \/\/ Number of RBs based on numerology and bandwidth for this user$/;"	m	struct:tUlPuschChanEstStruct
+nNrOfRxAnt	nr5g_mac_phy_api.h	/^    uint8_t      nNrOfRxAnt;$/;"	m	struct:tConfigReq
+nNrOfRxAnt	nr5g_mac_phy_api.h	/^    uint8_t   nNrOfRxAnt;        \/\/ Number of Rx Ant programmed by MAC for this user$/;"	m	struct:tUlSrsEstStruct
+nNrOfRxPort	nr5g_mac_phy_api.h	/^    uint8_t   nNrOfRxPort;       \/\/ Number of Rx Ports programmed by MAC for this user$/;"	m	struct:tUlPuschChanEstStruct
+nNrOfSrs	nr5g_mac_phy_api.h	/^    uint8_t    nNrOfSrs;     \/\/ Number of SRS$/;"	m	struct:tRxSrsIndicationStruct
+nNrOfSrsPorts	nr5g_mac_phy_api.h	/^    uint8_t    nNrOfSrsPorts;           \/* port number could be {1,2,4} *\/$/;"	m	struct:tSrsPduStruct
+nNrOfSymbols	nr5g_mac_phy_api.h	/^    uint8_t      nNrOfSymbols;$/;"	m	struct:tDciPduStruct
+nNrOfSymbols	nr5g_mac_phy_api.h	/^    uint8_t    nNrOfSymbols;            \/* Number of SRS symbols, Value: 1 ,2 ,4 *\/$/;"	m	struct:tSrsPduStruct
+nNrOfSymbols	nr5g_mac_phy_api.h	/^    uint8_t    nNrOfSymbols;        \/\/ PUSCH duration in symbols Value: 1->14$/;"	m	struct:tUlSchPduInfo
+nNrOfSymbols	nr5g_mac_phy_api.h	/^    uint8_t   nNrOfSymbols;      \/\/ Number of DMRS symbols$/;"	m	struct:tUlPuschChanEstStruct
+nNrOfSymbols	nr5g_mac_phy_api.h	/^    uint8_t   nNrOfSymbols;      \/\/ Number of symbols$/;"	m	struct:tUlSrsEstStruct
+nNrOfSymbols	nr5g_mac_phy_api.h	/^    uint8_t   nNrOfSymbols;      \/\/ PDSCH duration in symbols Value: 1->14$/;"	m	struct:tDlSchPdu
+nNrOfTxAnt	nr5g_mac_phy_api.h	/^    uint8_t      nNrOfTxAnt;$/;"	m	struct:tConfigReq
+nNrOfULPorts	nr5g_mac_phy_api.h	/^    uint8_t      nNrOfULPorts;$/;"	m	struct:tConfigReq
+nNrOfUePort	nr5g_mac_phy_api.h	/^    uint8_t   nNrOfUePort;       \/\/ Number of UE ports or number of layers for this user$/;"	m	struct:tUlPuschChanEstStruct
+nNrofBeamPerOcas	nr5g_mac_phy_api.h	/^    uint8_t     nNrofBeamPerOcas;$/;"	m	struct:tPrachPduStruct
+nNrofPrachOcas	nr5g_mac_phy_api.h	/^    uint8_t     nNrofPrachOcas;$/;"	m	struct:tPrachPduStruct
+nNrofRxRU	nr5g_mac_phy_api.h	/^    uint8_t    nNrofRxRU;             \/\/ Number of RxRU value:1~4*\/$/;"	m	struct:tUlSchPduInfo
+nNrofRxRU	nr5g_mac_phy_api.h	/^    uint8_t    nNrofRxRU;$/;"	m	struct:tSrsPduStruct
+nNrofRxRU	nr5g_mac_phy_api.h	/^    uint8_t    nNrofRxRU;$/;"	m	struct:tUlUcchPduInfo
+nNrofRxRuPerBeam	nr5g_mac_phy_api.h	/^    uint8_t     nNrofRxRuPerBeam [MAX_PANEL_NUM];$/;"	m	struct:tPrachPduStruct
+nNrofTxRU	nr5g_mac_phy_api.h	/^    uint8_t      nNrofTxRU;$/;"	m	struct:tCsiRsPduStruct
+nNrofTxRU	nr5g_mac_phy_api.h	/^    uint8_t      nNrofTxRU;$/;"	m	struct:tDciPduStruct
+nNrofTxRU	nr5g_mac_phy_api.h	/^    uint8_t    nNrofTxRU;$/;"	m	struct:tDlSchPdu
+nNrofTxRUPerBeam	nr5g_mac_phy_api.h	/^    uint8_t nNrofTxRUPerBeam[MAX_NUM_ANT_NR5G];$/;"	m	struct:tConfigReq
+nNumCells	nr5g_mac_phy_api.h	/^    uint32_t nNumCells;$/;"	m	struct:tCellInfoRequestStruct
+nNumCsiRs	nr5g_mac_phy_api.h	/^    uint16_t nNumCsiRs;$/;"	m	struct:tCellInfoPdu
+nNumMessageInBlock	common_mac_phy_api.h	/^    uint8_t  nNumMessageInBlock;                 \/\/ 13$/;"	m	struct:tMac2PhyApiQueueElem
+nNumPRG	nr5g_mac_phy_api.h	/^    int16_t nNumPRG;\/* the number of Matrix pre layer,$/;"	m	struct:__anon4
+nNumPbch	nr5g_mac_phy_api.h	/^    uint16_t nNumPbch;$/;"	m	struct:tCellInfoPdu
+nNumPdcch	nr5g_mac_phy_api.h	/^    uint16_t nNumPdcch;$/;"	m	struct:tCellInfoPdu
+nNumPdsch	nr5g_mac_phy_api.h	/^    uint16_t nNumPdsch;$/;"	m	struct:tCellInfoPdu
+nNumPrach	nr5g_mac_phy_api.h	/^    uint16_t nNumPrach;$/;"	m	struct:tCellInfoPdu
+nNumPucch	nr5g_mac_phy_api.h	/^    uint16_t nNumPucch;$/;"	m	struct:tCellInfoPdu
+nNumPusch	nr5g_mac_phy_api.h	/^    uint16_t nNumPusch;$/;"	m	struct:tCellInfoPdu
+nNumPuschUci	nr5g_mac_phy_api.h	/^    uint16_t nNumPuschUci;$/;"	m	struct:tCellInfoPdu
+nNumSrs	nr5g_mac_phy_api.h	/^    uint16_t nNumSrs;$/;"	m	struct:tCellInfoPdu
+nNumUE	nr5g_mac_phy_api.h	/^    uint16_t   nNumUE;                   \/* Number of UEs included in this PDU whose SRS buffers and UE context can be cleared. *\/$/;"	m	struct:tUeManagementPduStruct
+nNumUEs	nr5g_mac_phy_api.h	/^    uint16_t   nNumUEs;         \/\/ Number of UEs that are included in this message.Range 0 -> MAX_UE_MANAGEMENT_NUM$/;"	m	struct:tUeManagementRequestStruct
+nOccasionId	nr5g_mac_phy_api.h	/^    uint8_t     nOccasionId;$/;"	m	struct:tPreambleStruct
+nPDU	nr5g_mac_phy_api.h	/^    uint16_t   nPDU;         \/\/ Number of PDUs that are included in this message.Range 0 -> 255$/;"	m	struct:tUlConfigRequestStruct
+nPDU	nr5g_mac_phy_api.h	/^    uint8_t        nPDU;                \/\/Number of PDUs that are included in this message.,$/;"	m	struct:tDlConfigRequestStruct
+nPDU	nr5g_mac_phy_api.h	/^    uint8_t    nPDU;        \/\/ Number of PDUs that are included in this message.Range 0 -> 514$/;"	m	struct:tTxRequestStruct
+nPDUSize	nr5g_mac_phy_api.h	/^    uint16_t nPDUSize;\/\/Size of the PDU control information (in bytes). This length value includes the 4 bytes required for the PDU type and PDU size parameters.$/;"	m	struct:tPduStruct
+nPDUType	nr5g_mac_phy_api.h	/^    uint16_t nPDUType;$/;"	m	struct:tPduStruct
+nPMI	nr5g_mac_phy_api.h	/^    uint8_t    nPMI;                \/\/ Precoding matrix indicator,Value: 0->27$/;"	m	struct:tUlSchPduInfo
+nPMI	nr5g_mac_phy_api.h	/^    uint8_t   nPMI;                     \/\/ pmi, maximun 63 for 4 ports Tx$/;"	m	struct:tDlSchPdu
+nPRBs	nr5g_mac_phy_api.h	/^    uint16_t   nPRBs;               \/\/ A number of PRBs, Value: 1~273, valid for format2\/3$/;"	m	struct:tUlUcchPduInfo
+nPRGSize	nr5g_mac_phy_api.h	/^    int16_t nPRGSize;\/* number of prb for bundling.$/;"	m	struct:__anon4
+nPTRSFreqDensity	nr5g_mac_phy_api.h	/^    uint8_t    nPTRSFreqDensity;    \/\/ PT-RS frequency density,Value: 0, 2 or 4,0 means PT-RS is not present$/;"	m	struct:tUlSchPduInfo
+nPTRSFreqDensity	nr5g_mac_phy_api.h	/^    uint8_t   nPTRSFreqDensity;         \/\/ PT-RS frequency density,Value: 0, 2 or 4,0 means PT-RS is not present$/;"	m	struct:tDlSchPdu
+nPTRSPortIndex	nr5g_mac_phy_api.h	/^    uint8_t    nPTRSPortIndex[MAX_UL_PER_UE_PTRS_PORT_NUM];\/\/0: port 1000,1: port 1001 . 11: port 1011$/;"	m	struct:tUlSchPduInfo
+nPTRSPortIndex	nr5g_mac_phy_api.h	/^    uint8_t   nPTRSPortIndex[MAX_DL_PER_UE_PTRS_PORT_NUM];  \/\/0: port 1000,1: port 1001. 11: port 1011$/;"	m	struct:tDlSchPdu
+nPTRSPresent	nr5g_mac_phy_api.h	/^    uint8_t    nPTRSPresent;        \/\/.UL-PTRS-present,0: PT-RS is not present,1: PT-RS is present$/;"	m	struct:tUlSchPduInfo
+nPTRSPresent	nr5g_mac_phy_api.h	/^    uint8_t   nPTRSPresent;      \/\/ DL-PTRS-present,0: PT-RS is not present,1: PT-RS is present$/;"	m	struct:tDlSchPdu
+nPTRSReOffset	nr5g_mac_phy_api.h	/^    uint8_t    nPTRSReOffset;       \/\/ UL-PTRS-RE-offset , refer to Table 6.4.1.2.2.1-1 in [2] Value: 0->3$/;"	m	struct:tUlSchPduInfo
+nPTRSReOffset	nr5g_mac_phy_api.h	/^    uint8_t   nPTRSReOffset;            \/\/ DL-PTRS-RE-offset,$/;"	m	struct:tDlSchPdu
+nPTRSTimeDensity	nr5g_mac_phy_api.h	/^    uint8_t    nPTRSTimeDensity;    \/\/.PT-RS time density,Value: 0,1, 2 or 4,0 means PT-RS is not present$/;"	m	struct:tUlSchPduInfo
+nPTRSTimeDensity	nr5g_mac_phy_api.h	/^    uint8_t   nPTRSTimeDensity;  \/\/ PT-RS time density,Value: 0,1, 2 or 4,0 means PT-RS is not present$/;"	m	struct:tDlSchPdu
+nPart1ParamOffsets	nr5g_mac_phy_api.h	/^    uint16_t  nPart1ParamOffsets[MAX_NUM_PART1_PARAMS];    \/\/Ordered list of parameter offsets (offset from 0 = first bit of part1)$/;"	m	struct:tUlSchCsiPart2Info
+nPart1ParamSize	nr5g_mac_phy_api.h	/^    uint8_t   nPart1ParamSize[MAX_NUM_PART1_PARAMS];       \/\/Bitsizes of part 1 param in the same order as nPart1ParamOffsets, sum(nPart1ParamSize[*]) shall not exceed 12$/;"	m	struct:tUlSchCsiPart2Info
+nPart1Params	nr5g_mac_phy_api.h	/^    uint8_t   nPart1Params;                                \/\/Number of Part 1 parameters that influence the size of this part 2.$/;"	m	struct:tUlSchCsiPart2Info
+nPart2Size	nr5g_mac_phy_api.h	/^    uint16_t   nPart2Size[MAX_SIZE_CSI_PART2_MAP];      \/\/Array indicating the uci Part2 size, as a function the part1$/;"	m	struct:tCsiPart2SizeMap
+nPart2SizeMapIndex	nr5g_mac_phy_api.h	/^    uint16_t  nPart2SizeMapIndex;                          \/\/Index of one of the maps for determining the size of a part2, from the part 1 parameter values.$/;"	m	struct:tUlSchCsiPart2Info
+nPart2SizeMapScope	nr5g_mac_phy_api.h	/^    uint8_t   nPart2SizeMapScope;                          \/\/ 0: nPart2SizeMapIndex shall be looked up in common map(cell0) in PHY_CONFIG_REQ shared by all cells; 1: nPart2SizeMapIndex shall be looked up PHY_CONFIG_REQ in this cell.$/;"	m	struct:tUlSchCsiPart2Info
+nPdcchPrecoderEn	nr5g_mac_phy_api.h	/^    uint8_t        nPdcchPrecoderEn;$/;"	m	struct:tDlConfigRequestStruct
+nPdschLayers	nr5g_mac_phy_api.h	/^    uint16_t nPdschLayers;$/;"	m	struct:tCellInfoPdu
+nPdschTput	nr5g_mac_phy_api.h	/^    uint32_t nPdschTput;   \/\/ in bytes \/ TTI$/;"	m	struct:tCellInfoPdu
+nPduBitLen	nr5g_mac_phy_api.h	/^    uint16_t  nPduBitLen;    \/\/ The total length (in bits) of PDU Payload, Value: 0~640?$/;"	m	struct:tUlUciPduDataStruct
+nPduIdx	nr5g_mac_phy_api.h	/^    uint8_t   nPduIdx;      \/\/ This value is an index for number of PDU identified by nPDU in DL_CONFIG.request message$/;"	m	struct:tDlPduDataStruct
+nPduIdx	nr5g_mac_phy_api.h	/^    uint8_t  nPduIdx[MAX_DL_PARIED_UE_NUM];\/\/This value is an index for number of PDU identified by nPDU in this message$/;"	m	struct:tPdschGroupInfoStruct
+nPduIdx	nr5g_mac_phy_api.h	/^    uint8_t nPduIdx[MAX_UL_PARIED_UE_NUM];\/\/ This value is an index for number of PDU identified by nPDU in this message$/;"	m	struct:tPuschGroupInfoStruct
+nPduLen	nr5g_mac_phy_api.h	/^    uint32_t  nPduLen;      \/\/ The total length (in bytes) of PDU payload, without the padding bytes.$/;"	m	struct:tUlSchPduDataStruct
+nPduLen1	nr5g_mac_phy_api.h	/^    uint32_t  nPduLen1;     \/\/ length of first transport block in byte$/;"	m	struct:tDlPduDataStruct
+nPduLen2	nr5g_mac_phy_api.h	/^    uint32_t  nPduLen2;     \/\/ length of second transport block in byte$/;"	m	struct:tDlPduDataStruct
+nPduPart2BitLen	nr5g_mac_phy_api.h	/^    uint16_t nPduPart2BitLen;       \/\/ The total length (in bits) of Ulcch UCI CsiP2 PDU payload, without the padding bytes.$/;"	m	struct:tUlUciPduDataStruct
+nPduUciAckLen	nr5g_mac_phy_api.h	/^    uint16_t nPduUciAckLen;         \/\/ The total length (in bits) of UlSch UCI Ack\/Nack PDU payload, without the padding bytes.$/;"	m	struct:tUlSchUciPduDataStruct
+nPduUciCsiP1Len	nr5g_mac_phy_api.h	/^    uint16_t nPduUciCsiP1Len;       \/\/ The total length (in bits) of UlSch UCI CsiP1 PDU payload, without the padding bytes.$/;"	m	struct:tUlSchUciPduDataStruct
+nPduUciCsiP2Len	nr5g_mac_phy_api.h	/^    uint16_t nPduUciCsiP2Len;       \/\/ The total length (in bits) of UlSch UCI CsiP2 PDU payload, without the padding bytes.$/;"	m	struct:tUlSchUciPduDataStruct
+nPeriod	nr5g_mac_phy_api.h	/^    uint32_t nPeriod;$/;"	m	struct:tStartReq
+nPhyCellId	nr5g_mac_phy_api.h	/^    uint16_t     nPhyCellId;$/;"	m	struct:tConfigReq
+nPortIndex	nr5g_mac_phy_api.h	/^    uint8_t    nPortIndex[MAX_UL_PER_UE_DMRS_PORT_NUM];\/\/Up to 4 ports,0: port 1000,1: port 1001 . 11: port 1011$/;"	m	struct:tUlSchPduInfo
+nPortIndex	nr5g_mac_phy_api.h	/^    uint8_t   nPortIndex[MAX_DL_PER_UE_DMRS_PORT_NUM];\/\/ 0: port 1000,1: port 1001 . 11: port 1011$/;"	m	struct:tDlSchPdu
+nPortIndex	nr5g_mac_phy_api.h	/^    uint8_t   nPortIndex[MAX_DL_REAL_PORTS];\/\/ 0: port 1000,1: port 1001 . 11: port 1011$/;"	m	struct:tDlSchPdu
+nPortInfoBitMap	nr5g_mac_phy_api.h	/^    uint8_t    nPortInfoBitMap;$/;"	m	struct:tDlSchPdu
+nPortInfoBitMap	nr5g_mac_phy_api.h	/^    uint8_t    nPortInfoBitMap;$/;"	m	struct:tSrsPduStruct
+nPortInfoBitMap	nr5g_mac_phy_api.h	/^    uint8_t    nPortInfoBitMap;$/;"	m	struct:tUlSchPduInfo
+nPrachConfIdx	nr5g_mac_phy_api.h	/^    uint8_t      nPrachConfIdx;$/;"	m	struct:tConfigReq
+nPrachFdm	nr5g_mac_phy_api.h	/^    uint8_t      nPrachFdm;$/;"	m	struct:tConfigReq
+nPrachFreqStart	nr5g_mac_phy_api.h	/^    uint16_t     nPrachFreqStart;$/;"	m	struct:tConfigReq
+nPrachNrofRxRU	nr5g_mac_phy_api.h	/^    uint8_t      nPrachNrofRxRU;$/;"	m	struct:tConfigReq
+nPrachRestrictSet	nr5g_mac_phy_api.h	/^    uint8_t      nPrachRestrictSet;$/;"	m	struct:tConfigReq
+nPrachRootSeqIdx	nr5g_mac_phy_api.h	/^    uint16_t     nPrachRootSeqIdx;$/;"	m	struct:tConfigReq
+nPrachSsbRach	nr5g_mac_phy_api.h	/^    uint8_t      nPrachSsbRach;$/;"	m	struct:tConfigReq
+nPrachSubcSpacing	nr5g_mac_phy_api.h	/^    uint8_t      nPrachSubcSpacing;$/;"	m	struct:tConfigReq
+nPrachZeroCorrConf	nr5g_mac_phy_api.h	/^    uint8_t      nPrachZeroCorrConf;$/;"	m	struct:tConfigReq
+nPreambIdx	nr5g_mac_phy_api.h	/^    uint8_t     nPreambIdx;     \/\/ Preamble index$/;"	m	struct:tPreambleStruct
+nPreambPwr	nr5g_mac_phy_api.h	/^    uint32_t    nPreambPwr;$/;"	m	struct:tPreambleStruct
+nPrimeRUPortIndex	nr5g_mac_phy_api.h	/^  uint8_t nPrimeRUPortIndex;           \/* the Port index in L1 XML file *\/$/;"	m	struct:ORANRFCfg_tag
+nPriority	nr5g_mac_phy_api.h	/^    uint16_t  nPriority;                                   \/\/Priority of the part 2 report;L2 shall signal part2 parameters in increasing order of priorities.$/;"	m	struct:tUlSchCsiPart2Info
+nPssEpreOffset	nr5g_mac_phy_api.h	/^    uint8_t      nPssEpreOffset;$/;"	m	struct:tDlBchPdu
+nPuschInterOptions	common_mac_phy_api.h	/^    uint8_t nPuschInterOptions[MAX_NUM_CELLS][MAX_GROUP_NUM];$/;"	m	struct:tAddRemoveBbuCoresStruct
+nPuschLayers	nr5g_mac_phy_api.h	/^    uint16_t nPuschLayers;$/;"	m	struct:tCellInfoPdu
+nPuschTput	nr5g_mac_phy_api.h	/^    uint32_t nPuschTput;   \/\/ in bytes \/ TTI$/;"	m	struct:tCellInfoPdu
+nRBBundleSize	nr5g_mac_phy_api.h	/^    uint8_t    nRBBundleSize;       \/\/ Resource block bundle size L, refer to section 7.3.1.6 in [2]$/;"	m	struct:tUlSchPduInfo
+nRBBundleSize	nr5g_mac_phy_api.h	/^    uint8_t   nRBBundleSize;     \/\/ Resource block bundle size L, refer to section 7.3.1.6 in [2]$/;"	m	struct:tDlSchPdu
+nRBGIndex	nr5g_mac_phy_api.h	/^    uint32_t   nRBGIndex;\/\/For resource allocation type 1.RBG index allocated for this ULSCH.The maximum number is 138 with 275 RBs and RBG size 4.$/;"	m	struct:tUlSchPduInfo
+nRBGIndex	nr5g_mac_phy_api.h	/^    uint32_t  nRBGIndex;\/\/For resource allocation type 0.RBG index allocated for this DLSCH.	The maximum number is 138 with 275 RBs and RBG size 2.$/;"	m	struct:tDlSchPdu
+nRBGSize	nr5g_mac_phy_api.h	/^    uint8_t    nRBGSize;            \/\/ For resource allocation type 1.RBG size,Value: 2,4,8,16$/;"	m	struct:tUlSchPduInfo
+nRBGSize	nr5g_mac_phy_api.h	/^    uint8_t   nRBGSize;          \/\/For resource allocation type 1.RBG size,Value: 2,4,8,16$/;"	m	struct:tDlSchPdu
+nRBSize	nr5g_mac_phy_api.h	/^    uint16_t   nRBSize;             \/\/ For resource allocation type 0.The number of resource block allocated to this ULSCH grant.This should match the value sent in the DCI Format 0 PDU which allocated this grant.$/;"	m	struct:tUlSchPduInfo
+nRBSize	nr5g_mac_phy_api.h	/^    uint16_t  nRBSize;           \/\/For resource allocation type 0.The number of resource block allocated to this DLSCH grant.,This should match the value sent in the DL DCI,PDU which allocated this grant.$/;"	m	struct:tDlSchPdu
+nRBStart	nr5g_mac_phy_api.h	/^    uint16_t   nRBStart;            \/\/ For resource allocation type 0.The starting resource block for this ULSCH allocation.$/;"	m	struct:tUlSchPduInfo
+nRBStart	nr5g_mac_phy_api.h	/^    uint16_t  nRBStart;          \/\/For resource allocation type 0.The starting resource block for this ULSCH allocation.$/;"	m	struct:tDlSchPdu
+nREGBundleSize	nr5g_mac_phy_api.h	/^    uint8_t      nREGBundleSize;$/;"	m	struct:tDciPduStruct
+nRFDesPrimMacAddress	nr5g_mac_phy_api.h	/^    uint8_t nRFDesPrimMacAddress[6];     \/* the major mac addr of the RU. *\/$/;"	m	struct:ORANRFCfg_tag
+nRFDesPrimMacAddress	nr5g_mac_phy_api.h	/^  uint8_t nRFDesPrimMacAddress[6];     \/* the major mac addr of the RU. *\/$/;"	m	struct:ORANRFCfg_tag
+nRFDesSecMacAddress	nr5g_mac_phy_api.h	/^    uint8_t nRFDesSecMacAddress[6];      \/* the secondary mac addr of the RU,is used only for nRUPortNum is 2. *\/$/;"	m	struct:ORANRFCfg_tag
+nRFDesSecMacAddress	nr5g_mac_phy_api.h	/^  uint8_t nRFDesSecMacAddress[6];      \/* the secondary mac addr of the RU,is used only for nRUPortNum is 2. *\/$/;"	m	struct:ORANRFCfg_tag
+nRNTI	nr5g_mac_phy_api.h	/^    uint16_t     nRNTI;$/;"	m	struct:tDciPduStruct
+nRNTI	nr5g_mac_phy_api.h	/^    uint16_t   nRNTI;                   \/* The RNTI used for identifying the UE when receiving the PDU,Value: 1 -> 65535. *\/$/;"	m	struct:tSrsPduStruct
+nRNTI	nr5g_mac_phy_api.h	/^    uint16_t   nRNTI;               \/\/ The RNTI used for identifying the UE when receiving the PDU,Value: 1 -> 65535.$/;"	m	struct:tUlSchPduInfo
+nRNTI	nr5g_mac_phy_api.h	/^    uint16_t   nRNTI;               \/\/ The RNTI used for identifying the UE when receiving the PDU,Value: 1 -> 65535.$/;"	m	struct:tUlUcchPduInfo
+nRNTI	nr5g_mac_phy_api.h	/^    uint16_t  nRNTI;                            \/\/ The RNTI used for identifying the UE when receiving the PDU,Value: 1 -> 65535.$/;"	m	struct:tDlSchPdu
+nRNTI	nr5g_mac_phy_api.h	/^    uint16_t  nRNTI;             \/\/ The RNTI associated with the UE,Value: 1 -> 65535$/;"	m	struct:tUlPuschChanEstStruct
+nRNTI	nr5g_mac_phy_api.h	/^    uint16_t  nRNTI;             \/\/ The RNTI associated with the UE,Value: 1 -> 65535$/;"	m	struct:tUlSrsEstStruct
+nRNTI	nr5g_mac_phy_api.h	/^    uint16_t  nRNTI;        \/\/ The RNTI associated with the UE,Value: 1 -> 65535$/;"	m	struct:tUlSchPduDataStruct
+nRNTI	nr5g_mac_phy_api.h	/^    uint16_t  nRNTI;        \/\/ The RNTI associated with the UE,Value: 1 -> 65535$/;"	m	struct:tUlUciPduDataStruct
+nRNTI	nr5g_mac_phy_api.h	/^    uint16_t nRNTI;         \/\/ The RNTI associated with the UE,Value: 1 -> 65535$/;"	m	struct:tUlCrcStruct
+nRNTI	nr5g_mac_phy_api.h	/^    uint16_t nRNTI;        \/\/ The RNTI associated with the UE,Value: 1 -> 65535$/;"	m	struct:tUlSchUciPduDataStruct
+nRNTIScramb	nr5g_mac_phy_api.h	/^    uint16_t      nRNTIScramb;$/;"	m	struct:tDciPduStruct
+nRUPortNum	nr5g_mac_phy_api.h	/^  uint8_t nRUPortNum;                  \/* the number of RU used eth points. 1 or 2*\/$/;"	m	struct:ORANRFCfg_tag
+nRV	nr5g_mac_phy_api.h	/^    uint8_t    nRV;                 \/\/ Redundancy version,Value: 0 -> 3$/;"	m	struct:tUlSchPduInfo
+nRV	nr5g_mac_phy_api.h	/^    uint8_t   nRV[MAX_DL_PER_UE_CODEWORD_NUM];  \/\/ Redundancy version,Value : 0->3$/;"	m	struct:tDlSchPdu
+nRachPresent	nr5g_mac_phy_api.h	/^    uint8_t     nRachPresent;$/;"	m	struct:tUlConfigRequestStruct
+nRefPoint	nr5g_mac_phy_api.h	/^    uint8_t   nRefPoint;         \/\/ 0 - refence point is subcarrier 0 in common resource block 0, 1 - refence point is subcarrier 0 of the lowest-numbered resource block in CORESET 0$/;"	m	struct:tDlSchPdu
+nRepetition	nr5g_mac_phy_api.h	/^    uint8_t    nRepetition;             \/* repetitionFactor, Value: 1 ,2 ,4 *\/$/;"	m	struct:tSrsPduStruct
+nResourceAllocType	nr5g_mac_phy_api.h	/^    uint8_t    nResourceAllocType;  \/\/ resource allocation type,0: type 0,1: type 1$/;"	m	struct:tUlSchPduInfo
+nResourceAllocType	nr5g_mac_phy_api.h	/^    uint8_t   nResourceAllocType;\/\/resource allocation type,0: type 0,1: type 1$/;"	m	struct:tDlSchPdu
+nResourceType	nr5g_mac_phy_api.h	/^    uint8_t    nResourceType;           \/* 0: aperiodic, 1: semi-persistent, 2: periodic *\/$/;"	m	struct:tSrsPduStruct
+nRev	nr5g_mac_phy_api.h	/^    uint8_t    nRev;$/;"	m	struct:tDlSchPdu
+nRi	nr5g_mac_phy_api.h	/^    uint8_t    nRi;               \/\/ Selected RI based on SRS, range 1-4 for UE using layer 1-4$/;"	m	struct:tUlSrsEstStruct
+nRnti	nr5g_mac_phy_api.h	/^    uint16_t   nRnti;       \/* RNTI for UE whose SRS buffers and context to be cleared *\/$/;"	m	struct:tUeManagementPduStruct
+nRntiList	nr5g_mac_phy_api.h	/^    uint16_t   nRntiList[MAX_UE_MANAGEMENT_NUM];    \/* List of RNTIs for UEs whose SRS buffers and context to be cleared *\/$/;"	m	struct:tUeManagementPduStruct
+nRow	nr5g_mac_phy_api.h	/^    uint8_t      nRow;$/;"	m	struct:tCsiRsPduStruct
+nRsv	nr5g_mac_phy_api.h	/^    uint16_t   nRsv;$/;"	m	struct:tUeManagementPduStruct
+nRsv	nr5g_mac_phy_api.h	/^    uint16_t   nRsv;$/;"	m	struct:tUeManagementRequestStruct
+nRsv	nr5g_mac_phy_api.h	/^    uint32_t nRsv:3;$/;"	m	struct:tSfnSlot
+nRsv	nr5g_mac_phy_api.h	/^    uint32_t nRsv:4;$/;"	m	struct:tSfnSlot
+nRsv	nr5g_mac_phy_api.h	/^    uint8_t        nRsv[1];$/;"	m	struct:tDlConfigRequestStruct
+nRsv	nr5g_mac_phy_api.h	/^    uint8_t    nRsv;$/;"	m	struct:tUlUcchPduInfo
+nRsv	nr5g_mac_phy_api.h	/^    uint8_t nRsv[3];$/;"	m	struct:ORANRFCfg_tag
+nRsv	nr5g_mac_phy_api.h	/^  uint8_t nRsv;                        $/;"	m	struct:ORANRFCfg_tag
+nRsv0	nr5g_mac_phy_api.h	/^    uint8_t      nRsv0;$/;"	m	struct:tDciPduStruct
+nRsv1	nr5g_mac_phy_api.h	/^    int16_t      nRsv1;$/;"	m	struct:tDciPduStruct
+nRsv1	nr5g_mac_phy_api.h	/^    uint8_t    nRsv1;$/;"	m	struct:tDlBchPdu
+nRsv1	nr5g_mac_phy_api.h	/^    uint8_t    nRsv1;$/;"	m	struct:tUlSchPduInfo
+nRsv2	nr5g_mac_phy_api.h	/^    uint8_t      nRsv2;$/;"	m	struct:tDlBchPdu
+nRsvForBeamMatrixStruct	nr5g_mac_phy_api.h	/^    uint32_t  nRsvForBeamMatrixStruct;\/\/ for stBeamMatrixInfo 8 bytes alain !!!!!$/;"	m	struct:tDlSchPdu
+nRsvForBeamMatrixStruct	nr5g_mac_phy_api.h	/^    uint32_t  nRsvForBeamMatrixStruct;\/\/ for stBeamMatrixInfo 8 bytes alain !!!!!$/;"	m	struct:tUlSchPduInfo
+nRxRUIdx	nr5g_mac_phy_api.h	/^    uint8_t     nRxRUIdx[MAX_PANEL_NUM][MAX_RXRU_NUM];$/;"	m	struct:tPrachPduStruct
+nRxRUIdx	nr5g_mac_phy_api.h	/^    uint8_t    nRxRUIdx[MAX_RXRU_NUM];$/;"	m	struct:tSrsPduStruct
+nRxRUIdx	nr5g_mac_phy_api.h	/^    uint8_t    nRxRUIdx[MAX_RXRU_NUM];$/;"	m	struct:tUlSchPduInfo
+nRxRUIdx	nr5g_mac_phy_api.h	/^    uint8_t    nRxRUIdx[MAX_RXRU_NUM];$/;"	m	struct:tUlUcchPduInfo
+nRxRUIdx	nr5g_mac_phy_api.h	/^    uint8_t    nRxRUIdx[MAX_RX_SRS_STREAM_NUM];$/;"	m	struct:tSrsPduStruct
+nSCID	nr5g_mac_phy_api.h	/^    uint8_t    nSCID;               \/\/ For DMRS generatio Value : 0->1$/;"	m	struct:tUlSchPduInfo
+nSCID	nr5g_mac_phy_api.h	/^    uint8_t   nSCID;             \/\/ For DMRS generatio Value : 0->1$/;"	m	struct:tDlSchPdu
+nSFN	nr5g_mac_phy_api.h	/^    uint32_t nSFN:10;       \/\/ system frame number 0->1023$/;"	m	struct:tSfnSlot
+nSNR	nr5g_mac_phy_api.h	/^    int16_t  nSNR;          \/\/ Reported SNR in 1\/256 dB steps, estimated by this PUCCH$/;"	m	struct:tUlUciPduDataStruct
+nSNR	nr5g_mac_phy_api.h	/^    int16_t  nSNR;          \/\/ Reported SNR in 1\/256 dB steps, estimated by this PUSCH$/;"	m	struct:tUlCrcStruct
+nSRPresent	nr5g_mac_phy_api.h	/^    uint8_t   nSRPresent;    \/\/ Whether SR present, Value 0~1, valid for format0$/;"	m	struct:tUlUciPduDataStruct
+nSRPriodAriv	nr5g_mac_phy_api.h	/^    uint8_t    nSRPriodAriv;        \/\/ whether SR period arrived, Value:0 or 1, valid for format0$/;"	m	struct:tUlUcchPduInfo
+nSRSChanEstBufferIndx	nr5g_mac_phy_api.h	/^    uint8_t    nSRSChanEstBufferIndx;$/;"	m	struct:tDlSchPdu
+nSRSChanEstBufferIndx	nr5g_mac_phy_api.h	/^    uint8_t    nSRSChanEstBufferIndx;$/;"	m	struct:tUlSchPduInfo
+nSRSChanEstBufferIndx	nr5g_mac_phy_api.h	/^    uint8_t   nSRSChanEstBufferIndx;    \/\/ SRS Channel Estimation Buffer Index updated$/;"	m	struct:tUlSrsEstStruct
+nSSBAbsFre	nr5g_mac_phy_api.h	/^    uint32_t     nSSBAbsFre;$/;"	m	struct:tConfigReq
+nSSBMask	nr5g_mac_phy_api.h	/^    uint32_t     nSSBMask[2];$/;"	m	struct:tConfigReq
+nSSBPeriod	nr5g_mac_phy_api.h	/^    uint8_t      nSSBPeriod;$/;"	m	struct:tConfigReq
+nSSBPrbOffset	nr5g_mac_phy_api.h	/^    uint8_t      nSSBPrbOffset;$/;"	m	struct:tConfigReq
+nSSBPrbOffset	nr5g_mac_phy_api.h	/^    uint8_t      nSSBPrbOffset;$/;"	m	struct:tDlBchPdu
+nSSBPrecoderEn	nr5g_mac_phy_api.h	/^    uint8_t        nSSBPrecoderEn;$/;"	m	struct:tDlConfigRequestStruct
+nSSBPwr	nr5g_mac_phy_api.h	/^    uint32_t     nSSBPwr;$/;"	m	struct:tConfigReq
+nSSBSubcOffset	nr5g_mac_phy_api.h	/^    uint8_t      nSSBSubcOffset;$/;"	m	struct:tConfigReq
+nSSBSubcOffset	nr5g_mac_phy_api.h	/^    uint8_t      nSSBSubcOffset;$/;"	m	struct:tDlBchPdu
+nSSBSubcSpacing	nr5g_mac_phy_api.h	/^    uint8_t      nSSBSubcSpacing;$/;"	m	struct:tConfigReq
+nScid	nr5g_mac_phy_api.h	/^    uint16_t      nScid;$/;"	m	struct:tDciPduStruct
+nScramID	nr5g_mac_phy_api.h	/^    uint16_t   nScramID;            \/\/ Using for reference signal scrambling, Value:0~65535, valid for format2$/;"	m	struct:tUlUcchPduInfo
+nScramID	nr5g_mac_phy_api.h	/^    uint16_t   nScramID;            \/\/ nID0 used for reference signal scrambling[38.211&6.4.1.3.2.1].Valid for format2, Value:0~65535$/;"	m	struct:tUlUcchPduInfo
+nScrambId	nr5g_mac_phy_api.h	/^    uint16_t     nScrambId;$/;"	m	struct:tCsiRsPduStruct
+nSecondRUPortIndex	nr5g_mac_phy_api.h	/^  uint8_t nSecondRUPortIndex;          \/* the Port index in L1 XML file, is used only for nRUPortNum is 2.*\/$/;"	m	struct:ORANRFCfg_tag
+nSequenceHopFlag	nr5g_mac_phy_api.h	/^    uint8_t    nSequenceHopFlag;$/;"	m	struct:tConfigReq
+nShift	nr5g_mac_phy_api.h	/^    uint16_t     nShift;$/;"	m	struct:tDciPduStruct
+nSigPwr	nr5g_mac_phy_api.h	/^	int16_t  nSigPwr[MAX_REPORT_UL_PORTS];  \/\/ 8 received signal power from antennas in 1\/256 dBm steps $/;"	m	struct:tUlCrcStruct
+nSigPwr	nr5g_mac_phy_api.h	/^	int16_t  nSigPwr[MAX_UL_REAL_PORTS];  \/\/ 8 received signal power from antennas in 1\/256 dBm steps $/;"	m	struct:tUlCrcStruct
+nSigPwr	nr5g_mac_phy_api.h	/^    int16_t  nSigPwr[MAX_REPORT_UL_PORTS];  \/\/ 8 received signal power from antennas in 1\/256 dBm steps$/;"	m	struct:tUlCrcStruct
+nSlot	nr5g_mac_phy_api.h	/^    uint32_t nSlot:9;       \/\/ slot number 0->319$/;"	m	struct:tSfnSlot
+nSrBitLen	nr5g_mac_phy_api.h	/^    int8_t   nSrBitLen;    \/\/ Indicate if valid bit length in nSRPresent field for format0$/;"	m	struct:tUlUciPduDataStruct
+nSrcPrimMacAddress	nr5g_mac_phy_api.h	/^    uint8_t nSrcPrimMacAddress[6];     \/* the major mac addr of the local VF. *\/$/;"	m	struct:ORANRFCfg_tag
+nSrcSecMacAddress	nr5g_mac_phy_api.h	/^    uint8_t nSrcSecMacAddress[6];      \/* the secondary mac addr of the local VF,is used only for nRUPortNum is 2. *\/$/;"	m	struct:ORANRFCfg_tag
+nSrsId	nr5g_mac_phy_api.h	/^    uint16_t   nSrsId;                  \/* RRC Config message, SRS-Resource.sequenceID, nSRSid srs sequence identity is assigned by high layer,  value = 0->1023 *\/$/;"	m	struct:tSrsPduStruct
+nStartPRB	nr5g_mac_phy_api.h	/^    uint16_t   nStartPRB;           \/\/ Index of the first PRB prior to frequency hopping or no-hopping, Value: 0~272$/;"	m	struct:tUlUcchPduInfo
+nStartPos	nr5g_mac_phy_api.h	/^    uint8_t    nStartPos;               \/* Starting position in time domain, l_offset, 3GPP 38.211, Sec 6.4.1.4.3, Table 2.  Values: 0 -> 5 *\/$/;"	m	struct:tSrsPduStruct
+nStartRB	nr5g_mac_phy_api.h	/^    uint16_t     nStartRB;       \/\/ PRB where this CSI resource starts, Only multiples of 4 are allowed$/;"	m	struct:tCsiRsPduStruct
+nStartSlotdx	nr5g_mac_phy_api.h	/^    uint16_t    nStartSlotdx;$/;"	m	struct:tPreambleStruct
+nStartSymbIdx	nr5g_mac_phy_api.h	/^    uint8_t     nStartSymbIdx;  \/\/ the index of the first OFDM symbol of the specified PRACH$/;"	m	struct:tPreambleStruct
+nStartSymbolIndex	nr5g_mac_phy_api.h	/^    uint8_t      nStartSymbolIndex;$/;"	m	struct:tDciPduStruct
+nStartSymbolIndex	nr5g_mac_phy_api.h	/^    uint8_t    nStartSymbolIndex;   \/\/ start symbol index of PUSCH mapping  Value: 0, 2 or 3 for PUSCH mapping type A:  [2 or 3] for PUSCH mapping type B:  [0]$/;"	m	struct:tUlSchPduInfo
+nStartSymbolIndex	nr5g_mac_phy_api.h	/^    uint8_t   nStartSymbolIndex; \/\/ start symbol index of PDSCH mapping Value: 0, 2 or 3 for PDSCH mapping type A:  [2 or 3] for PDSCH mapping type B:  [0]$/;"	m	struct:tDlSchPdu
+nStartSymbolx	nr5g_mac_phy_api.h	/^    uint8_t    nStartSymbolx;       \/\/ index of first symbol, Value: 0~13$/;"	m	struct:tUlUcchPduInfo
+nStatus	nr5g_mac_phy_api.h	/^    uint32_t nStatus;$/;"	m	struct:tShutdownResponseStruct
+nStatus	nr5g_mac_phy_api.h	/^    uint8_t        nStatus; \/\/ MSG_OK or MSG_INVALID_STATE or MSG_INVALID_CONFIG$/;"	m	struct:tConfigInd
+nStatus	nr5g_mac_phy_api.h	/^    uint8_t      nStatus;$/;"	m	struct:tErrorIndicationStruct
+nStatus	nr5g_mac_phy_api.h	/^    uint8_t      nStatus;$/;"	m	struct:tStartResponseStruct
+nStatus	nr5g_mac_phy_api.h	/^    uint8_t      nStatus;$/;"	m	struct:tStopResponseStruct
+nSubBandSNR	nr5g_mac_phy_api.h	/^    int16_t    nSubBandSNR[68];   \/\/ Subband (with size of 4 PRB) post MMSE SNR in dB based on the selected RI and PMI (averaged by RI in linear scale)$/;"	m	struct:tUlSrsEstStruct
+nSubcCommon	nr5g_mac_phy_api.h	/^    uint8_t      nSubcCommon;$/;"	m	struct:tConfigReq
+nSubcSpacing	nr5g_mac_phy_api.h	/^    uint8_t      nSubcSpacing;   \/\/ subcarrierSpacing value:0->4$/;"	m	struct:tCsiRsPduStruct
+nSubcSpacing	nr5g_mac_phy_api.h	/^    uint8_t      nSubcSpacing;   \/\/ subcarrierSpacing value:0->4$/;"	m	struct:tDciPduStruct
+nSubcSpacing	nr5g_mac_phy_api.h	/^    uint8_t    nSubcSpacing;            \/* subcarrierSpacing value:0->4 *\/$/;"	m	struct:tSrsPduStruct
+nSubcSpacing	nr5g_mac_phy_api.h	/^    uint8_t    nSubcSpacing;        \/\/ subcarrierSpacing value:0->4$/;"	m	struct:tUlSchPduInfo
+nSubcSpacing	nr5g_mac_phy_api.h	/^    uint8_t    nSubcSpacing;        \/\/ subcarrierSpacing value:0->4$/;"	m	struct:tUlUcchPduInfo
+nSubcSpacing	nr5g_mac_phy_api.h	/^    uint8_t   nSubcSpacing;                     \/\/ subcarrierSpacing value:0->4$/;"	m	struct:tDlSchPdu
+nSym	nr5g_mac_phy_api.h	/^    uint32_t nSym:4;        \/\/ Symbol Number, 0->13$/;"	m	struct:tSfnSlot
+nSymbL0	nr5g_mac_phy_api.h	/^    uint8_t      nSymbL0;$/;"	m	struct:tCsiRsPduStruct
+nSymbL1	nr5g_mac_phy_api.h	/^    uint8_t      nSymbL1;$/;"	m	struct:tCsiRsPduStruct
+nSymbolType	nr5g_mac_phy_api.h	/^    uint8_t nSymbolType[MAX_NUM_OF_SYMBOL_PER_SLOT];    \/\/ Defines the Symbol type for all 14 symbols in a slot. 0: DL, 1: UL, 2: Guard$/;"	m	struct:tSlotConfigReq
+nSymbols	nr5g_mac_phy_api.h	/^    uint8_t    nSymbols;            \/\/ Number of symbols, Value:1,2,4~14$/;"	m	struct:tUlUcchPduInfo
+nTA	nr5g_mac_phy_api.h	/^    int16_t  nTA;           \/\/ Reported Timing advance value 0 -> 63 ,estimated by this PUCCH, unit is 16 * 64 \/ 2^u Tc$/;"	m	struct:tUlUciPduDataStruct
+nTA	nr5g_mac_phy_api.h	/^    int16_t  nTA;           \/\/ Reported Timing advance value in samples ,estimated by this PUSCH$/;"	m	struct:tUlCrcStruct
+nTA	nr5g_mac_phy_api.h	/^    uint8_t  nTA;           \/\/ Reported Timing advance value 0 -> 63 ,estimated by this PUSCH,  unit is 16 * 64 \/ 2^u Tc$/;"	m	struct:tUlCrcStruct
+nTANanos	nr5g_mac_phy_api.h	/^    int16_t  nTANanos;      \/\/ Reported Timing advance in nanoseconds. value -16800 -> 16800 nanoseconds。0xFFFF is not vaild this field.$/;"	m	struct:tUlCrcStruct
+nTBSize	nr5g_mac_phy_api.h	/^    uint32_t   nTBSize;             \/\/ transmit block size (in bytes)$/;"	m	struct:tUlSchPduInfo
+nTBSize	nr5g_mac_phy_api.h	/^    uint32_t  nTBSize[MAX_DL_PER_UE_CODEWORD_NUM];    \/\/ transmit block size (in bytes)$/;"	m	struct:tDlSchPdu
+nTBSlbrm	nr5g_mac_phy_api.h	/^    uint32_t    nTBSlbrm;$/;"	m	struct:tDlSchPdu
+nTBSlbrm	nr5g_mac_phy_api.h	/^    uint32_t    nTBSlbrm;$/;"	m	struct:tUlSchPduInfo
+nTPPuschID	nr5g_mac_phy_api.h	/^    uint16_t   nTPPuschID;            \/\/ nPUSCH-Identity$/;"	m	struct:tUlSchPduInfo
+nTPPuschID	nr5g_mac_phy_api.h	/^    uint16_t   nTPPuschID;            \/\/ nRSID, refer to 38.211 6.4.1.1.1.2$/;"	m	struct:tUlSchPduInfo
+nTa	nr5g_mac_phy_api.h	/^    uint16_t    nTa;            \/\/ Timing advance$/;"	m	struct:tPreambleStruct
+nTddPeriod	nr5g_mac_phy_api.h	/^    uint8_t      nTddPeriod;$/;"	m	struct:tConfigReq
+nTestMode	nr5g_mac_phy_api.h	/^    uint8_t        nTestMode;            \/\/Enable or disable FR1 Test Models per spec 38.141 sec4.9.2.2. Value 0 - Disabled and Value 1 - Test Mode Enabled$/;"	m	struct:tDlConfigRequestStruct
+nTestType	nr5g_mac_phy_api.h	/^    uint32_t nTestType;$/;"	m	struct:tShutdownRequestStruct
+nTimeStamp	common_mac_phy_api.h	/^    uint64_t nTimeStamp;                         \/\/ 18-25$/;"	m	struct:tMac2PhyApiQueueElem
+nToffset	nr5g_mac_phy_api.h	/^    uint16_t   nToffset;                \/* SRS-Periodicity offset in slots, of type 'periodicityAndOffset-p' RRC Config Message *\/$/;"	m	struct:tSrsPduStruct
+nTotalBits	nr5g_mac_phy_api.h	/^    uint16_t      nTotalBits;$/;"	m	struct:tDciPduStruct
+nTotalPdschRBs	nr5g_mac_phy_api.h	/^    uint32_t nTotalPdschRBs;$/;"	m	struct:tCellInfoPdu
+nTotalPuschRBs	nr5g_mac_phy_api.h	/^    uint32_t nTotalPuschRBs;$/;"	m	struct:tCellInfoPdu
+nTotalSigPwr	nr5g_mac_phy_api.h	/^	int16_t   nTotalSigPwr;      \/\/ Received total signal power for all ports in 1\/256 dBm steps$/;"	m	struct:tUlUciPduDataStruct
+nTotalSigPwr	nr5g_mac_phy_api.h	/^	int16_t  nTotalSigPwr;  \/\/ Sum of received signal power from all antennas in 1\/256 dBm steps $/;"	m	struct:tUlCrcStruct
+nTpPi2BPSK	nr5g_mac_phy_api.h	/^    uint8_t    nTpPi2BPSK;          \/\/TP with Pi2BPSK .0 : TpPi2BPSK disable ,1 : TpPi2BPSK enable$/;"	m	struct:tUlSchPduInfo
+nTpmi	nr5g_mac_phy_api.h	/^    uint8_t    nTpmi;              \/\/ Selected TPMI based on SRS, same as spec defined$/;"	m	struct:tUlSrsEstStruct
+nTransPrecode	nr5g_mac_phy_api.h	/^    uint8_t    nTransPrecode;       \/\/ 0: transform precoding disabled,1: transform precoding enabled$/;"	m	struct:tUlSchPduInfo
+nTransmissionScheme	nr5g_mac_phy_api.h	/^    uint8_t    nTransmissionScheme; \/\/ 0: non-codebook-based transmission,1: codebook-based transmission$/;"	m	struct:tUlSchPduInfo
+nTransmissionScheme	nr5g_mac_phy_api.h	/^    uint8_t   nTransmissionScheme;      \/\/ 0: static precoder; 1: codebook-based transmission$/;"	m	struct:tDlSchPdu
+nTsrs	nr5g_mac_phy_api.h	/^    uint16_t   nTsrs;                   \/* SRS-Periodicity in slots, of type 'periodicityAndOffset-p' RRC Config Message *\/$/;"	m	struct:tSrsPduStruct
+nTxRUIdx	nr5g_mac_phy_api.h	/^    uint8_t      nTxRUIdx[MAX_TXRU_NUM];$/;"	m	struct:tCsiRsPduStruct
+nTxRUIdx	nr5g_mac_phy_api.h	/^    uint8_t      nTxRUIdx[MAX_TXRU_NUM];$/;"	m	struct:tDciPduStruct
+nTxRUIdx	nr5g_mac_phy_api.h	/^    uint8_t    nTxRUIdx[MAX_DL_REAL_PORTS];$/;"	m	struct:tDlSchPdu
+nTxRUIdx	nr5g_mac_phy_api.h	/^    uint8_t    nTxRUIdx[MAX_TXRU_NUM];$/;"	m	struct:tDlSchPdu
+nTxRUIdx	nr5g_mac_phy_api.h	/^    uint8_t nTxRUIdx[MAX_NUM_ANT_NR5G][MAX_TXRU_NUM];$/;"	m	struct:tConfigReq
+nType	nr5g_mac_phy_api.h	/^    int8_t  nType;\/*0:pmi based mimo 1:srs algo1 based mimo , or any others*\/$/;"	m	struct:__anon4
+nUCI	nr5g_mac_phy_api.h	/^    uint8_t   nUCI;         \/\/ Number of UCI PDUs included in this message. Value: 0->255$/;"	m	struct:tRxUciIndicationStruct
+nUE	nr5g_mac_phy_api.h	/^    uint8_t  nUE;                          \/\/ Number of UE in this group,For SU-MIMO, one group includes one UE only. For MU-MIMO, one group includes up to 6 UEs.Value: 1-6$/;"	m	struct:tPuschGroupInfoStruct
+nUE	nr5g_mac_phy_api.h	/^    uint8_t  nUE;\/\/Number of UE in this group,For SU-MIMO, one group includes one UE only. For MU-MIMO, one group includes up to 6 UEs.$/;"	m	struct:tPdschGroupInfoStruct
+nUEId	nr5g_mac_phy_api.h	/^    uint16_t   nUEId;                   \/* UE index in the sector,Value:0 -> 1199 *\/$/;"	m	struct:tSrsPduStruct
+nUEId	nr5g_mac_phy_api.h	/^    uint16_t   nUEId;               \/\/ UE index in the sector,Value:0 -> 1199$/;"	m	struct:tUlSchPduInfo
+nUEId	nr5g_mac_phy_api.h	/^    uint16_t   nUEId;               \/\/ UE index in the sector,Value:0 -> 1199$/;"	m	struct:tUlUcchPduInfo
+nUEId	nr5g_mac_phy_api.h	/^    uint16_t  nUEId;                            \/\/ UE index in the sector,Value:0 -> 1199$/;"	m	struct:tDlSchPdu
+nUEId	nr5g_mac_phy_api.h	/^    uint16_t  nUEId;             \/\/ UE index in the sector;Value:0 -> 1199$/;"	m	struct:tUlPuschChanEstStruct
+nUEId	nr5g_mac_phy_api.h	/^    uint16_t  nUEId;             \/\/ UE index in the sector;Value:0 -> 1199$/;"	m	struct:tUlSrsEstStruct
+nUEId	nr5g_mac_phy_api.h	/^    uint16_t  nUEId;        \/\/ UE index in the sector;Value:0 -> 1199$/;"	m	struct:tUlSchPduDataStruct
+nUEId	nr5g_mac_phy_api.h	/^    uint16_t  nUEId;        \/\/ UE index in the sector;Value:0 -> 1199$/;"	m	struct:tUlUciPduDataStruct
+nUEId	nr5g_mac_phy_api.h	/^    uint16_t nUEId;         \/\/ UE index in the sector;Value:0 -> 1199$/;"	m	struct:tUlCrcStruct
+nUEId	nr5g_mac_phy_api.h	/^    uint16_t nUEId;        \/\/ UE index in the sector;Value:0 -> 1199$/;"	m	struct:tUlSchUciPduDataStruct
+nULAbsFrePointA	nr5g_mac_phy_api.h	/^    uint32_t     nULAbsFrePointA;$/;"	m	struct:tConfigReq
+nULBandwidth	nr5g_mac_phy_api.h	/^    uint16_t     nULBandwidth;$/;"	m	struct:tConfigReq
+nULDecompiqWidth	common_mac_phy_api.h	/^    uint16_t nULDecompiqWidth;$/;"	m	struct:tDlUlIqSamplesStruct
+nULDecompressionIdx	common_mac_phy_api.h	/^    uint16_t nULDecompressionIdx;$/;"	m	struct:tDlUlIqSamplesStruct
+nULFftSize	nr5g_mac_phy_api.h	/^    uint16_t     nULFftSize;$/;"	m	struct:tConfigReq
+nULK0	nr5g_mac_phy_api.h	/^    uint8_t      nULK0;$/;"	m	struct:tConfigReq
+nULType	nr5g_mac_phy_api.h	/^    uint8_t    nULType;             \/\/ 0: NR UL ; 1: supplementary UL$/;"	m	struct:tUlSchPduInfo
+nULType	nr5g_mac_phy_api.h	/^    uint8_t    nULType;             \/\/ 0: NR UL ; 1: supplementary UL$/;"	m	struct:tUlUcchPduInfo
+nUci2Maps	nr5g_mac_phy_api.h	/^    uint16_t   nUci2Maps;$/;"	m	struct:tConfigReq
+nUciAckBits	nr5g_mac_phy_api.h	/^    uint8_t nUciAckBits[MAX_UCI_BIT_BYTE_LEN];      \/\/buffer for ACK\/NACK bits in UCI over PUSCH$/;"	m	struct:tUlSchUciPduDataStruct
+nUciBits	nr5g_mac_phy_api.h	/^    uint8_t   nUciBits[MAX_UCI_BIT_BYTE_LEN];\/\/Contents of the ULUCI PDU$/;"	m	struct:tUlUciPduDataStruct
+nUciCrc	nr5g_mac_phy_api.h	/^    uint8_t  nUciCrc;               \/\/ for polar coded Ack UCI, CRC flag to indicate if error detected:0: CRC error ,1: CRC correct$/;"	m	struct:tUlSchUciPduDataStruct
+nUciCsiP1Bits	nr5g_mac_phy_api.h	/^    uint8_t nUciCsiP1Bits[MAX_UCI_BIT_BYTE_LEN];    \/\/buffer for CSI Part 1 bits in UCI over PUSCH$/;"	m	struct:tUlSchUciPduDataStruct
+nUciCsiP1Crc	nr5g_mac_phy_api.h	/^    uint8_t  nUciCsiP1Crc;          \/\/ for polar coded Csi Part 1, UCI, CRC flag to indicate if error detected:0: CRC error ,1: CRC correct$/;"	m	struct:tUlSchUciPduDataStruct
+nUciCsiP1Detected	nr5g_mac_phy_api.h	/^    uint8_t  nUciCsiP1Detected;     \/\/ Indicates if L1 was able to decode UCI or not (0- detected \/ 1 - dtx ), for sizes < 11$/;"	m	struct:tUlSchUciPduDataStruct
+nUciCsiP2Bits	nr5g_mac_phy_api.h	/^    uint8_t nUciCsiP2Bits[MAX_UCI_BIT_BYTE_LEN];    \/\/buffer for CSI Part 2 bits in UCI over PUSCH$/;"	m	struct:tUlSchUciPduDataStruct
+nUciCsiP2Crc	nr5g_mac_phy_api.h	/^    uint8_t  nUciCsiP2Crc;          \/\/ for polar coded Csi Part 2, UCI, CRC flag to indicate if error detected:0: CRC error ,1: CRC correct$/;"	m	struct:tUlSchUciPduDataStruct
+nUciCsiP2Detected	nr5g_mac_phy_api.h	/^    uint8_t  nUciCsiP2Detected;     \/\/ Indicates if L1 was able to decode UCI or not (0- detected \/ 1 - dtx ), for sizes < 11$/;"	m	struct:tUlSchUciPduDataStruct
+nUciDetected	nr5g_mac_phy_api.h	/^    uint8_t  nUciDetected;          \/\/ Indicates if L1 was able to decode Ack UCI or not (0- detected \/ 1 - dtx ), for sizes < 11$/;"	m	struct:tUlSchUciPduDataStruct
+nUciPart2Bits	nr5g_mac_phy_api.h	/^    uint8_t   nUciPart2Bits[MAX_UCI_BIT_BYTE_LEN];\/\/Contents of the ULUCI PDU, CSI part2$/;"	m	struct:tUlUciPduDataStruct
+nUlCarrier	nr5g_mac_phy_api.h	/^    uint8_t     nUlCarrier;$/;"	m	struct:tPreambleStruct
+nUlcch	nr5g_mac_phy_api.h	/^    uint16_t    nUlcch;      \/\/ Number of ULCCH that are included in this message.$/;"	m	struct:tUlConfigRequestStruct
+nUlsch	nr5g_mac_phy_api.h	/^    uint8_t    nUlsch;       \/\/ Number of ULSCH that are included in this message.$/;"	m	struct:tUlConfigRequestStruct
+nUlsch	nr5g_mac_phy_api.h	/^    uint8_t    nUlsch;     \/\/ Number of Pusch$/;"	m	struct:tRxPuschChanEstIndicationStruct
+nUlsch	nr5g_mac_phy_api.h	/^    uint8_t   nUlsch;       \/\/ Number of ULSCH PDUs included in this message. Value: 0->255$/;"	m	struct:tRxUlSchIndicationStruct
+nUlschUci	nr5g_mac_phy_api.h	/^    uint8_t   nUlschUci; \/\/ Number of ULSCH UCI PDUs included in this message. Value: 0->255$/;"	m	struct:tRxUlSchUciIndicationStruct
+nUlsrs	nr5g_mac_phy_api.h	/^    uint8_t     nUlsrs;      \/\/ Number of UL SRS that are included in this message$/;"	m	struct:tUlConfigRequestStruct
+nUrllcCapable	nr5g_mac_phy_api.h	/^    uint16_t   nUrllcCapable;$/;"	m	struct:tConfigReq
+nUrllcMiniSlotMask	nr5g_mac_phy_api.h	/^    uint16_t   nUrllcMiniSlotMask;$/;"	m	struct:tConfigReq
+nVRBtoPRB	nr5g_mac_phy_api.h	/^    uint8_t    nVRBtoPRB;           \/\/ VRB-to-PRB-mapping 0: non-interleaved VRB-to-PRB mapping 1: interleaved VRB-to-PRB mapping$/;"	m	struct:tUlSchPduInfo
+nVRBtoPRB	nr5g_mac_phy_api.h	/^    uint8_t   nVRBtoPRB;         \/\/ VRB-to-PRB-mapping 0: non-interleaved VRB-to-PRB mapping 1: interleaved VRB-to-PRB mapping$/;"	m	struct:tDlSchPdu
+nWeightnorm	nr5g_mac_phy_api.h	/^    uint8_t    nWeightnorm;$/;"	m	struct:tDlSchPdu
+nWideBandSNR	nr5g_mac_phy_api.h	/^    int8_t    nWideBandSNR[4];   \/\/ SNR in db measured within configured SRS bandwidth on each symbols, up to 4 symbols can be configured$/;"	m	struct:tUlSrsEstStruct
+npadding	nr5g_mac_phy_api.h	/^    uint8_t    npadding[3];$/;"	m	struct:tDlSchPdu
+nr5g_fapi_calc_fft_size	utilities.c	/^uint16_t nr5g_fapi_calc_fft_size($/;"	f
+nrsv	nr5g_mac_phy_api.h	/^    int8_t  nrsv[2];$/;"	m	struct:__anon4
+nrsv	nr5g_mac_phy_api.h	/^    uint8_t      nrsv[2];$/;"	m	struct:tDlBchPdu
+nrsv	nr5g_mac_phy_api.h	/^    uint8_t    nrsv[3];$/;"	m	struct:tUlSchPduInfo
+nrsv0	nr5g_mac_phy_api.h	/^    uint8_t    nrsv0;             $/;"	m	struct:tUlSchPduInfo
+nrsv0	nr5g_mac_phy_api.h	/^    uint8_t    nrsv0;$/;"	m	struct:tSrsPduStruct
+numSubframes	common_mac_phy_api.h	/^    uint32_t numSubframes;$/;"	m	struct:tDlUlIqSamplesStruct
+pMatrixBeamID	nr5g_mac_phy_api.h	/^    int16_t *pMatrixBeamID; \/* pMatrixBeamID is a physical address$/;"	m	struct:__anon4
+pMatrixBuff	nr5g_mac_phy_api.h	/^    int32_t *pMatrixBuff; \/* pMatrixBuff is a physical address, $/;"	m	struct:__anon4
+pNext	common_mac_phy_api.h	/^    struct tMac2PhyApiQueueElem* pNext;         \/\/ 0-7 byte$/;"	m	struct:tMac2PhyApiQueueElem	typeref:struct:tMac2PhyApiQueueElem::tMac2PhyApiQueueElem
+pPayload	nr5g_mac_phy_api.h	/^    uint8_t   *pPayload;    \/\/ Contents of the ULSCH PDU, should be only a buffer address in current implementation,the first PRERESERVED_DATA_HEADER_LEN bytes are reserved for SW-FPGA header$/;"	m	struct:tUlSchPduDataStruct
+pPayload1	nr5g_mac_phy_api.h	/^    uint8_t   *pPayload1;   \/\/ Content of first transport block, the first PRERESERVED_DATA_HEADER_LEN bytes are reserved for SW-FPGA header$/;"	m	struct:tDlPduDataStruct
+pPayload2	nr5g_mac_phy_api.h	/^    uint8_t   *pPayload2;   \/\/ Content of second transport block in case of 2 TBs,the first PRERESERVED_DATA_HEADER_LEN bytes are reserved for SW-FPGA header$/;"	m	struct:tDlPduDataStruct
+pPuschChanEst	nr5g_mac_phy_api.h	/^    int16_t   *pPuschChanEst[MAX_UL_PORTS_PER_UE][MAX_RXRU_NUM];  \/\/ Pointer to PUSCH Channel Estimates, each buffer contains ChanEst for all DMRS$/;"	m	struct:tUlPuschChanEstStruct
+pSrsChanEst	nr5g_mac_phy_api.h	/^    int16_t   *pSrsChanEst[MAX_UL_PORTS_PER_UE][MAX_NUM_ANT_NR5G];  \/\/ Pointer to SRS Channel Estimates$/;"	m	struct:tUlSrsEstStruct
+pucchDetected	nr5g_mac_phy_api.h	/^    uint8_t   pucchDetected; \/\/ Indicates if L1 was able to decode PUCCH or not (0 - CRC fail \/ 1 - CRC pass \/ 2 - DTX \/ 3 - UE has left the cell)$/;"	m	struct:tUlUciPduDataStruct
+re	common_typedef.h	/^    WORD16 re; \/*!<description>*\/$/;"	m	struct:__anon6
+refPoint	nr5g_mac_phy_api.h	/^    uint8_t   refPoint;$/;"	m	struct:tDlSchPdu
+reserved	common_mac_phy_api.h	/^    uint8_t  reserved[6];                        \/\/ 26-31$/;"	m	struct:tMac2PhyApiQueueElem
+reserved	nr5g_mac_phy_api.h	/^    uint8_t reserved[2];$/;"	m	struct:tSlotConfigReq
+rsv	nr5g_mac_phy_api.h	/^    uint8_t      rsv[2];$/;"	m	struct:tCsiRsPduStruct
+rsv	nr5g_mac_phy_api.h	/^    uint8_t     rsv[2];$/;"	m	struct:tPrachPduStruct
+rsv	nr5g_mac_phy_api.h	/^    uint8_t    rsv;$/;"	m	struct:tUlUcchPduInfo
+rsv	nr5g_mac_phy_api.h	/^    uint8_t   rsv;$/;"	m	struct:tDlSchPdu
+rsv	nr5g_mac_phy_api.h	/^    uint8_t   rsv[2];$/;"	m	struct:tUlSchCsiPart2Info
+rsv	nr5g_mac_phy_api.h	/^    uint8_t rsv[3];$/;"	m	struct:tConfigReq
+rsv0	nr5g_mac_phy_api.h	/^    uint8_t      rsv0;$/;"	m	struct:tCsiRsPduStruct
+rsv0	nr5g_mac_phy_api.h	/^    uint8_t  rsv0[2];$/;"	m	struct:tUlCrcStruct
+rsv1	nr5g_mac_phy_api.h	/^	uint8_t    rsv1[2];																			  $/;"	m	struct:tUlUciPduDataStruct
+rsv1	nr5g_mac_phy_api.h	/^    uint8_t        rsv1[2];$/;"	m	struct:tConfigInd
+rsv1	nr5g_mac_phy_api.h	/^    uint8_t      rsv1[3];$/;"	m	struct:tConfigReq
+rsv1	nr5g_mac_phy_api.h	/^    uint8_t      rsv1[3];$/;"	m	struct:tErrorIndicationStruct
+rsv1	nr5g_mac_phy_api.h	/^    uint8_t      rsv1[3];$/;"	m	struct:tStartResponseStruct
+rsv1	nr5g_mac_phy_api.h	/^    uint8_t      rsv1[3];$/;"	m	struct:tStopResponseStruct
+rsv1	nr5g_mac_phy_api.h	/^    uint8_t     rsv1[2];$/;"	m	struct:tPreambleStruct
+rsv1	nr5g_mac_phy_api.h	/^    uint8_t    rsv1;$/;"	m	struct:tSrsPduStruct
+rsv1	nr5g_mac_phy_api.h	/^    uint8_t    rsv1;$/;"	m	struct:tUlSchPduInfo
+rsv1	nr5g_mac_phy_api.h	/^    uint8_t    rsv1[1];$/;"	m	struct:tUlUciPduDataStruct
+rsv1	nr5g_mac_phy_api.h	/^    uint8_t    rsv1[2];$/;"	m	struct:tRxSrsIndicationStruct
+rsv1	nr5g_mac_phy_api.h	/^    uint8_t    rsv1[2];$/;"	m	struct:tUlSrsEstStruct
+rsv1	nr5g_mac_phy_api.h	/^    uint8_t    rsv1[3];$/;"	m	struct:tCrcIndicationStruct
+rsv1	nr5g_mac_phy_api.h	/^    uint8_t    rsv1[3];$/;"	m	struct:tRxPrachIndicationStruct
+rsv1	nr5g_mac_phy_api.h	/^    uint8_t    rsv1[3];$/;"	m	struct:tRxPuschChanEstIndicationStruct
+rsv1	nr5g_mac_phy_api.h	/^    uint8_t    rsv1[3];$/;"	m	struct:tRxSrsIndicationStruct
+rsv1	nr5g_mac_phy_api.h	/^    uint8_t    rsv1[3];$/;"	m	struct:tTxRequestStruct
+rsv1	nr5g_mac_phy_api.h	/^    uint8_t   rsv1[3];      \/\/ rsv1[0] is reserved to indicate using PUSCH float16 or not: 0 fixed-point datatype, 1 float16 datatype.$/;"	m	struct:tRxUlSchIndicationStruct
+rsv1	nr5g_mac_phy_api.h	/^    uint8_t   rsv1[3];$/;"	m	struct:tDlPduDataStruct
+rsv1	nr5g_mac_phy_api.h	/^    uint8_t   rsv1[3];$/;"	m	struct:tRxUciIndicationStruct
+rsv1	nr5g_mac_phy_api.h	/^    uint8_t   rsv1[3];$/;"	m	struct:tRxUlSchUciIndicationStruct
+rsv1	nr5g_mac_phy_api.h	/^    uint8_t   rsv1[3];$/;"	m	struct:tUlDciRequestStruct
+rsv1	nr5g_mac_phy_api.h	/^    uint8_t  rsv1[1];$/;"	m	struct:tUlCrcStruct
+rsv1	nr5g_mac_phy_api.h	/^    uint8_t  rsv1[3];$/;"	m	struct:tPdschGroupInfoStruct
+rsv1	nr5g_mac_phy_api.h	/^    uint8_t  rsv1[3];$/;"	m	struct:tPuschGroupInfoStruct
+rsv2	nr5g_mac_phy_api.h	/^    uint8_t    rsv2[1];$/;"	m	struct:tConfigReq
+rsv2	nr5g_mac_phy_api.h	/^    uint8_t    rsv2[1];$/;"	m	struct:tSrsPduStruct
+rsv2	nr5g_mac_phy_api.h	/^    uint8_t    rsv2[2];	$/;"	m	struct:tCrcIndicationStruct
+rsv2	nr5g_mac_phy_api.h	/^    uint8_t    rsv2[2];$/;"	m	struct:tUlUciPduDataStruct
+rsv2	nr5g_mac_phy_api.h	/^    uint8_t  rsv2[2];$/;"	m	struct:tUlCrcStruct
+rsv2	nr5g_mac_phy_api.h	/^    uint8_t rsv2[2];$/;"	m	struct:tUlUcchPduInfo
+rsv3	nr5g_mac_phy_api.h	/^	uint8_t  rsv3[2];	$/;"	m	struct:tUlCrcStruct
+sAddRemoveBbuCores	nr5g_mac_phy_api.h	/^    ADD_REMOVE_BBU_CORES sAddRemoveBbuCores;$/;"	m	struct:tAddRemoveBbuCoresNr5g
+sCSIPart2	nr5g_mac_phy_api.h	/^    CsiPart2InfoStruct sCSIPart2[];  \/\/ Maps info for determining the size of a part2, from the part 1 parameter values, dimension is nCSIPart2$/;"	m	struct:tUlUcchPduInfo
+sCSIPart2	nr5g_mac_phy_api.h	/^    CsiPart2InfoStruct sCSIPart2[];$/;"	m	struct:tUlSchPduInfo
+sCellInfoPDU	nr5g_mac_phy_api.h	/^    CellInfoPdu    sCellInfoPDU[];$/;"	m	struct:tCellInfoRequestStruct
+sDLPDU	nr5g_mac_phy_api.h	/^    PDUStruct      sDLPDU[];$/;"	m	struct:tDlConfigRequestStruct
+sDLPDUDataStruct	nr5g_mac_phy_api.h	/^    DLPDUDataStruct sDLPDUDataStruct[];$/;"	m	struct:tTxRequestStruct
+sDlUlIqSamples	nr5g_mac_phy_api.h	/^    PHY_DL_UL_IQ_SAMPLES sDlUlIqSamples;$/;"	m	struct:tDlUlIqSamplesNr5g
+sMsgHdr	nr5g_mac_phy_api.h	/^    L1L2MessageHdr sMsgHdr;$/;"	m	struct:tAddRemoveBbuCoresNr5g
+sMsgHdr	nr5g_mac_phy_api.h	/^    L1L2MessageHdr sMsgHdr;$/;"	m	struct:tCellInfoRequestStruct
+sMsgHdr	nr5g_mac_phy_api.h	/^    L1L2MessageHdr sMsgHdr;$/;"	m	struct:tConfigInd
+sMsgHdr	nr5g_mac_phy_api.h	/^    L1L2MessageHdr sMsgHdr;$/;"	m	struct:tConfigReq
+sMsgHdr	nr5g_mac_phy_api.h	/^    L1L2MessageHdr sMsgHdr;$/;"	m	struct:tCrcIndicationStruct
+sMsgHdr	nr5g_mac_phy_api.h	/^    L1L2MessageHdr sMsgHdr;$/;"	m	struct:tDlConfigRequestStruct
+sMsgHdr	nr5g_mac_phy_api.h	/^    L1L2MessageHdr sMsgHdr;$/;"	m	struct:tDlUlIqSamplesNr5g
+sMsgHdr	nr5g_mac_phy_api.h	/^    L1L2MessageHdr sMsgHdr;$/;"	m	struct:tErrorIndicationStruct
+sMsgHdr	nr5g_mac_phy_api.h	/^    L1L2MessageHdr sMsgHdr;$/;"	m	struct:tPhyMsgSlotInd
+sMsgHdr	nr5g_mac_phy_api.h	/^    L1L2MessageHdr sMsgHdr;$/;"	m	struct:tRxPrachIndicationStruct
+sMsgHdr	nr5g_mac_phy_api.h	/^    L1L2MessageHdr sMsgHdr;$/;"	m	struct:tRxPuschChanEstIndicationStruct
+sMsgHdr	nr5g_mac_phy_api.h	/^    L1L2MessageHdr sMsgHdr;$/;"	m	struct:tRxSrsIndicationStruct
+sMsgHdr	nr5g_mac_phy_api.h	/^    L1L2MessageHdr sMsgHdr;$/;"	m	struct:tRxUciIndicationStruct
+sMsgHdr	nr5g_mac_phy_api.h	/^    L1L2MessageHdr sMsgHdr;$/;"	m	struct:tRxUlSchIndicationStruct
+sMsgHdr	nr5g_mac_phy_api.h	/^    L1L2MessageHdr sMsgHdr;$/;"	m	struct:tRxUlSchUciIndicationStruct
+sMsgHdr	nr5g_mac_phy_api.h	/^    L1L2MessageHdr sMsgHdr;$/;"	m	struct:tShutdownRequestStruct
+sMsgHdr	nr5g_mac_phy_api.h	/^    L1L2MessageHdr sMsgHdr;$/;"	m	struct:tShutdownResponseStruct
+sMsgHdr	nr5g_mac_phy_api.h	/^    L1L2MessageHdr sMsgHdr;$/;"	m	struct:tStartReq
+sMsgHdr	nr5g_mac_phy_api.h	/^    L1L2MessageHdr sMsgHdr;$/;"	m	struct:tStartResponseStruct
+sMsgHdr	nr5g_mac_phy_api.h	/^    L1L2MessageHdr sMsgHdr;$/;"	m	struct:tStopRequestStruct
+sMsgHdr	nr5g_mac_phy_api.h	/^    L1L2MessageHdr sMsgHdr;$/;"	m	struct:tStopResponseStruct
+sMsgHdr	nr5g_mac_phy_api.h	/^    L1L2MessageHdr sMsgHdr;$/;"	m	struct:tTestFileConfigNr5g
+sMsgHdr	nr5g_mac_phy_api.h	/^    L1L2MessageHdr sMsgHdr;$/;"	m	struct:tTxRequestStruct
+sMsgHdr	nr5g_mac_phy_api.h	/^    L1L2MessageHdr sMsgHdr;$/;"	m	struct:tUeManagementRequestStruct
+sMsgHdr	nr5g_mac_phy_api.h	/^    L1L2MessageHdr sMsgHdr;$/;"	m	struct:tUlConfigRequestStruct
+sMsgHdr	nr5g_mac_phy_api.h	/^    L1L2MessageHdr sMsgHdr;$/;"	m	struct:tUlDciRequestStruct
+sPDSCHGroupInfoStruct	nr5g_mac_phy_api.h	/^    PDSCHGroupInfoStruct sPDSCHGroupInfoStruct[MAX_MIMO_GROUP_NUM];$/;"	m	struct:tDlConfigRequestStruct
+sPDUHdr	nr5g_mac_phy_api.h	/^    PDUStruct    sPDUHdr;$/;"	m	struct:tCsiRsPduStruct
+sPDUHdr	nr5g_mac_phy_api.h	/^    PDUStruct    sPDUHdr;$/;"	m	struct:tDciPduStruct
+sPDUHdr	nr5g_mac_phy_api.h	/^    PDUStruct  sPDUHdr;$/;"	m	struct:tDlBchPdu
+sPDUHdr	nr5g_mac_phy_api.h	/^    PDUStruct  sPDUHdr;$/;"	m	struct:tPrachPduStruct
+sPDUHdr	nr5g_mac_phy_api.h	/^    PDUStruct  sPDUHdr;$/;"	m	struct:tSrsPduStruct
+sPDUHdr	nr5g_mac_phy_api.h	/^    PDUStruct  sPDUHdr;$/;"	m	struct:tUeManagementPduStruct
+sPDUHdr	nr5g_mac_phy_api.h	/^    PDUStruct  sPDUHdr;$/;"	m	struct:tUlSchPduInfo
+sPDUHdr	nr5g_mac_phy_api.h	/^    PDUStruct  sPDUHdr;$/;"	m	struct:tUlUcchPduInfo
+sPDUHdr	nr5g_mac_phy_api.h	/^    PDUStruct sPDUHdr;$/;"	m	struct:tDlSchPdu
+sPUSCHGroupInfoStruct	nr5g_mac_phy_api.h	/^    PUSCHGroupInfoStruct sPUSCHGroupInfoStruct[MAX_MIMO_GROUP_NUM];$/;"	m	struct:tUlConfigRequestStruct
+sPart2SizeMap	nr5g_mac_phy_api.h	/^    tCsiPart2SizeMapStruct  sPart2SizeMap[];$/;"	m	struct:tConfigReq
+sPreambleStruct	nr5g_mac_phy_api.h	/^    PreambleStruct    sPreambleStruct[];$/;"	m	struct:tRxPrachIndicationStruct
+sSFN_Slot	nr5g_mac_phy_api.h	/^    SFN_SlotStruct sSFN_Slot;   \/\/A 32-bit value where,[24:9] SFN, range 0 -> 1023,[8:0] SF, range 0 -> 319$/;"	m	struct:tUeManagementRequestStruct
+sSFN_Slot	nr5g_mac_phy_api.h	/^    SFN_SlotStruct sSFN_Slot;$/;"	m	struct:tAddRemoveBbuCoresNr5g
+sSFN_Slot	nr5g_mac_phy_api.h	/^    SFN_SlotStruct sSFN_Slot;$/;"	m	struct:tCellInfoRequestStruct
+sSFN_Slot	nr5g_mac_phy_api.h	/^    SFN_SlotStruct sSFN_Slot;$/;"	m	struct:tCrcIndicationStruct
+sSFN_Slot	nr5g_mac_phy_api.h	/^    SFN_SlotStruct sSFN_Slot;$/;"	m	struct:tDlConfigRequestStruct
+sSFN_Slot	nr5g_mac_phy_api.h	/^    SFN_SlotStruct sSFN_Slot;$/;"	m	struct:tDlUlIqSamplesNr5g
+sSFN_Slot	nr5g_mac_phy_api.h	/^    SFN_SlotStruct sSFN_Slot;$/;"	m	struct:tErrorIndicationStruct
+sSFN_Slot	nr5g_mac_phy_api.h	/^    SFN_SlotStruct sSFN_Slot;$/;"	m	struct:tPhyMsgSlotInd
+sSFN_Slot	nr5g_mac_phy_api.h	/^    SFN_SlotStruct sSFN_Slot;$/;"	m	struct:tRxPrachIndicationStruct
+sSFN_Slot	nr5g_mac_phy_api.h	/^    SFN_SlotStruct sSFN_Slot;$/;"	m	struct:tRxPuschChanEstIndicationStruct
+sSFN_Slot	nr5g_mac_phy_api.h	/^    SFN_SlotStruct sSFN_Slot;$/;"	m	struct:tRxSrsIndicationStruct
+sSFN_Slot	nr5g_mac_phy_api.h	/^    SFN_SlotStruct sSFN_Slot;$/;"	m	struct:tRxUciIndicationStruct
+sSFN_Slot	nr5g_mac_phy_api.h	/^    SFN_SlotStruct sSFN_Slot;$/;"	m	struct:tRxUlSchIndicationStruct
+sSFN_Slot	nr5g_mac_phy_api.h	/^    SFN_SlotStruct sSFN_Slot;$/;"	m	struct:tRxUlSchUciIndicationStruct
+sSFN_Slot	nr5g_mac_phy_api.h	/^    SFN_SlotStruct sSFN_Slot;$/;"	m	struct:tShutdownRequestStruct
+sSFN_Slot	nr5g_mac_phy_api.h	/^    SFN_SlotStruct sSFN_Slot;$/;"	m	struct:tShutdownResponseStruct
+sSFN_Slot	nr5g_mac_phy_api.h	/^    SFN_SlotStruct sSFN_Slot;$/;"	m	struct:tStartReq
+sSFN_Slot	nr5g_mac_phy_api.h	/^    SFN_SlotStruct sSFN_Slot;$/;"	m	struct:tStartResponseStruct
+sSFN_Slot	nr5g_mac_phy_api.h	/^    SFN_SlotStruct sSFN_Slot;$/;"	m	struct:tStopRequestStruct
+sSFN_Slot	nr5g_mac_phy_api.h	/^    SFN_SlotStruct sSFN_Slot;$/;"	m	struct:tStopResponseStruct
+sSFN_Slot	nr5g_mac_phy_api.h	/^    SFN_SlotStruct sSFN_Slot;$/;"	m	struct:tTestFileConfigNr5g
+sSFN_Slot	nr5g_mac_phy_api.h	/^    SFN_SlotStruct sSFN_Slot;$/;"	m	struct:tTxRequestStruct
+sSFN_Slot	nr5g_mac_phy_api.h	/^    SFN_SlotStruct sSFN_Slot;\/\/A 32-bit value where,[24:9] SFN, range 0 -> 1023,[8:0] SF, range 0 -> 319$/;"	m	struct:tUlConfigRequestStruct
+sSFN_Slot	nr5g_mac_phy_api.h	/^    SFN_SlotStruct sSFN_Slot;\/\/A 32-bit value where,[24:9] SFN, range 0 -> 1023,[8:0] SF, range 0 -> 319$/;"	m	struct:tUlDciRequestStruct
+sSlotConfig	nr5g_mac_phy_api.h	/^    SLOTCONFIGStruct sSlotConfig[MAX_TDD_PERIODICITY];$/;"	m	struct:tConfigReq
+sTestFileConfig	nr5g_mac_phy_api.h	/^    TEST_FILE_CONFIG sTestFileConfig;$/;"	m	struct:tTestFileConfigNr5g
+sTestFileName	common_mac_phy_api.h	/^    char sTestFileName[512];$/;"	m	struct:tTestFileConfig
+sULCRCStruct	nr5g_mac_phy_api.h	/^    ULCRCStruct sULCRCStruct[];$/;"	m	struct:tCrcIndicationStruct
+sULDCIPDU	nr5g_mac_phy_api.h	/^    DCIPDUStruct sULDCIPDU[];$/;"	m	struct:tUlDciRequestStruct
+sULPDU	nr5g_mac_phy_api.h	/^    PDUStruct sULPDU[];$/;"	m	struct:tUlConfigRequestStruct
+sULPuschChanEstStruct	nr5g_mac_phy_api.h	/^    ULPUSCHChanEstStruct    sULPuschChanEstStruct[];$/;"	m	struct:tRxPuschChanEstIndicationStruct
+sULSCHPDUDataStruct	nr5g_mac_phy_api.h	/^    ULSCHPDUDataStruct sULSCHPDUDataStruct[];$/;"	m	struct:tRxUlSchIndicationStruct
+sULSCHUCIPDUDataStruct	nr5g_mac_phy_api.h	/^    ULSCHUCIPDUDataStruct sULSCHUCIPDUDataStruct[];$/;"	m	struct:tRxUlSchUciIndicationStruct
+sULSRSEstStruct	nr5g_mac_phy_api.h	/^    ULSRSEstStruct    sULSRSEstStruct[];$/;"	m	struct:tRxSrsIndicationStruct
+sULUCIPDUDataStruct	nr5g_mac_phy_api.h	/^    ULUCIPDUDataStruct sULUCIPDUDataStruct[];$/;"	m	struct:tRxUciIndicationStruct
+sUeManagement	nr5g_mac_phy_api.h	/^    UEMANAGEMENTPDUStruct sUeManagement[];$/;"	m	struct:tUeManagementRequestStruct
+scsCommon	Fapi_To_Iapi.c	/^uin32_t scsCommon;$/;"	v
+stBeamMatrixInfo	nr5g_mac_phy_api.h	/^    BeamMatrixStruct stBeamMatrixInfo;$/;"	m	struct:tDlSchPdu
+stBeamMatrixInfo	nr5g_mac_phy_api.h	/^    BeamMatrixStruct stBeamMatrixInfo;$/;"	m	struct:tUlSchPduInfo
+stOranCfgInfo	nr5g_mac_phy_api.h	/^    ORANRFCfgStruct stOranCfgInfo; \/* only used when the RFInfoVal field is 1*\/$/;"	m	struct:tConfigReq
+startFrameNum	common_mac_phy_api.h	/^    uint32_t startFrameNum;$/;"	m	struct:tDlUlIqSamplesStruct
+startSlotNum	common_mac_phy_api.h	/^    uint32_t startSlotNum;$/;"	m	struct:tDlUlIqSamplesStruct
+startSymNum	common_mac_phy_api.h	/^    uint32_t startSymNum;$/;"	m	struct:tDlUlIqSamplesStruct
+tAddRemoveBbuCoresNr5g	nr5g_mac_phy_api.h	/^typedef struct tAddRemoveBbuCoresNr5g$/;"	s
+tAddRemoveBbuCoresStruct	common_mac_phy_api.h	/^typedef struct tAddRemoveBbuCoresStruct$/;"	s
+tCellInfoPdu	nr5g_mac_phy_api.h	/^typedef struct tCellInfoPdu$/;"	s
+tCellInfoRequestStruct	nr5g_mac_phy_api.h	/^typedef struct tCellInfoRequestStruct$/;"	s
+tConfigInd	nr5g_mac_phy_api.h	/^typedef struct tConfigInd$/;"	s
+tConfigReq	nr5g_mac_phy_api.h	/^typedef struct tConfigReq$/;"	s
+tCrcIndicationStruct	nr5g_mac_phy_api.h	/^typedef struct tCrcIndicationStruct$/;"	s
+tCsiPart2SizeMap	nr5g_mac_phy_api.h	/^typedef struct tCsiPart2SizeMap$/;"	s
+tCsiPart2SizeMapStruct	nr5g_mac_phy_api.h	/^}tCsiPart2SizeMapStruct;$/;"	t	typeref:struct:tCsiPart2SizeMap
+tCsiRsPduStruct	nr5g_mac_phy_api.h	/^typedef struct tCsiRsPduStruct$/;"	s
+tDciPduStruct	nr5g_mac_phy_api.h	/^typedef struct tDciPduStruct$/;"	s
+tDlBchPdu	nr5g_mac_phy_api.h	/^typedef struct tDlBchPdu$/;"	s
+tDlConfigRequestStruct	nr5g_mac_phy_api.h	/^typedef struct tDlConfigRequestStruct$/;"	s
+tDlPduDataStruct	nr5g_mac_phy_api.h	/^typedef struct tDlPduDataStruct$/;"	s
+tDlSchPdu	nr5g_mac_phy_api.h	/^typedef struct tDlSchPdu$/;"	s
+tDlUlIqSamplesNr5g	nr5g_mac_phy_api.h	/^typedef struct tDlUlIqSamplesNr5g$/;"	s
+tDlUlIqSamplesStruct	common_mac_phy_api.h	/^typedef struct tDlUlIqSamplesStruct$/;"	s
+tErrorIndicationStruct	nr5g_mac_phy_api.h	/^typedef struct tErrorIndicationStruct$/;"	s
+tL1L2MessageHeader	nr5g_mac_phy_api.h	/^typedef struct tL1L2MessageHeader$/;"	s
+tMac2PhyApiQueueElem	common_mac_phy_api.h	/^typedef struct tMac2PhyApiQueueElem$/;"	s
+tPdschGroupInfoStruct	nr5g_mac_phy_api.h	/^typedef struct tPdschGroupInfoStruct$/;"	s
+tPduStruct	nr5g_mac_phy_api.h	/^typedef struct tPduStruct$/;"	s
+tPhyMsgSlotInd	nr5g_mac_phy_api.h	/^typedef struct tPhyMsgSlotInd$/;"	s
+tPrachPduStruct	nr5g_mac_phy_api.h	/^typedef struct  tPrachPduStruct$/;"	s
+tPreambleStruct	nr5g_mac_phy_api.h	/^typedef struct tPreambleStruct$/;"	s
+tPuschGroupInfoStruct	nr5g_mac_phy_api.h	/^typedef struct tPuschGroupInfoStruct$/;"	s
+tRxPrachIndicationStruct	nr5g_mac_phy_api.h	/^typedef struct tRxPrachIndicationStruct$/;"	s
+tRxPuschChanEstIndicationStruct	nr5g_mac_phy_api.h	/^typedef struct tRxPuschChanEstIndicationStruct$/;"	s
+tRxSrsIndicationStruct	nr5g_mac_phy_api.h	/^typedef struct tRxSrsIndicationStruct$/;"	s
+tRxUciIndicationStruct	nr5g_mac_phy_api.h	/^typedef struct tRxUciIndicationStruct$/;"	s
+tRxUlSchIndicationStruct	nr5g_mac_phy_api.h	/^typedef struct tRxUlSchIndicationStruct$/;"	s
+tRxUlSchUciIndicationStruct	nr5g_mac_phy_api.h	/^typedef struct tRxUlSchUciIndicationStruct$/;"	s
+tSfnSlot	nr5g_mac_phy_api.h	/^typedef struct tSfnSlot$/;"	s
+tShutdownRequestStruct	nr5g_mac_phy_api.h	/^typedef struct tShutdownRequestStruct$/;"	s
+tShutdownResponseStruct	nr5g_mac_phy_api.h	/^typedef struct tShutdownResponseStruct$/;"	s
+tSlotConfigReq	nr5g_mac_phy_api.h	/^typedef struct tSlotConfigReq$/;"	s
+tSrsPduStruct	nr5g_mac_phy_api.h	/^typedef struct  tSrsPduStruct$/;"	s
+tStartReq	nr5g_mac_phy_api.h	/^typedef struct tStartReq$/;"	s
+tStartResponseStruct	nr5g_mac_phy_api.h	/^typedef struct tStartResponseStruct$/;"	s
+tStopRequestStruct	nr5g_mac_phy_api.h	/^typedef struct tStopRequestStruct$/;"	s
+tStopResponseStruct	nr5g_mac_phy_api.h	/^typedef struct tStopResponseStruct$/;"	s
+tTestFileConfig	common_mac_phy_api.h	/^typedef struct tTestFileConfig$/;"	s
+tTestFileConfigNr5g	nr5g_mac_phy_api.h	/^typedef struct tTestFileConfigNr5g$/;"	s
+tTxRequestStruct	nr5g_mac_phy_api.h	/^typedef struct tTxRequestStruct$/;"	s
+tUeManagementPduStruct	nr5g_mac_phy_api.h	/^typedef struct tUeManagementPduStruct$/;"	s
+tUeManagementRequestStruct	nr5g_mac_phy_api.h	/^typedef struct tUeManagementRequestStruct$/;"	s
+tUlConfigRequestStruct	nr5g_mac_phy_api.h	/^typedef struct tUlConfigRequestStruct$/;"	s
+tUlCrcStruct	nr5g_mac_phy_api.h	/^typedef struct tUlCrcStruct$/;"	s
+tUlDciRequestStruct	nr5g_mac_phy_api.h	/^typedef struct tUlDciRequestStruct$/;"	s
+tUlPuschChanEstStruct	nr5g_mac_phy_api.h	/^typedef struct tUlPuschChanEstStruct$/;"	s
+tUlSchCsiPart2Info	nr5g_mac_phy_api.h	/^typedef struct tUlSchCsiPart2Info$/;"	s
+tUlSchPduDataStruct	nr5g_mac_phy_api.h	/^typedef struct tUlSchPduDataStruct$/;"	s
+tUlSchPduInfo	nr5g_mac_phy_api.h	/^typedef struct tUlSchPduInfo$/;"	s
+tUlSchUciPduDataStruct	nr5g_mac_phy_api.h	/^typedef struct tUlSchUciPduDataStruct$/;"	s
+tUlSrsEstStruct	nr5g_mac_phy_api.h	/^typedef struct tUlSrsEstStruct$/;"	s
+tUlUcchPduInfo	nr5g_mac_phy_api.h	/^typedef struct tUlUcchPduInfo$/;"	s
+tUlUciPduDataStruct	nr5g_mac_phy_api.h	/^typedef struct tUlUciPduDataStruct$/;"	s

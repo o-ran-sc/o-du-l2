@@ -575,71 +575,71 @@ void procPhyMessages(uint16_t msgType, uint32_t msgSize, void *msg)
          } 
 #endif
       case FAPI_PARAM_RESPONSE:
-	 {
+         {
             sendToLowerMac(PARAM_RESPONSE, msgSize, msg);
-	    break;
-	 }
+            break;
+         }
       case FAPI_CONFIG_RESPONSE:
-	 {
-	    sendToLowerMac(CONFIG_RESPONSE, msgSize, msg);
-	    break;
-	 }
+         {
+            sendToLowerMac(CONFIG_RESPONSE, msgSize, msg);
+            break;
+         }
       case FAPI_SLOT_INDICATION:
-	 {
-	    if(lwrMacCb.phyState == PHY_STATE_CONFIGURED)
-	    {
-	       DU_LOG("\nINFO  -->  LWR_MAC: PHY has moved to running state");
-	       lwrMacCb.phyState = PHY_STATE_RUNNING;
-	       lwrMacCb.cellCb[0].state = PHY_STATE_RUNNING;
-	    }
+         {
+            if(lwrMacCb.phyState == PHY_STATE_CONFIGURED)
+            {
+               DU_LOG("\nINFO  -->  LWR_MAC: PHY has moved to running state");
+               lwrMacCb.phyState = PHY_STATE_RUNNING;
+               lwrMacCb.cellCb[0].state = PHY_STATE_RUNNING;
+            }
 
-	    fapi_slot_ind_t *slotInd = NULLP;
-	    slotInd  = (fapi_slot_ind_t *)msg;
-	    procSlotInd(slotInd);
-	    break;
-	 }
+            fapi_slot_ind_t *slotInd = NULLP;
+            slotInd  = (fapi_slot_ind_t *)msg;
+            procSlotInd(slotInd);
+            break;
+         }
       case FAPI_ERROR_INDICATION:
-	 {
-	    break;
-	 }
+         {
+            break;
+         }
       case FAPI_RX_DATA_INDICATION:
-	 {
-	    fapi_rx_data_indication_t *rxDataInd;
-	    rxDataInd = (fapi_rx_data_indication_t *)msg;
-	    procRxDataInd(rxDataInd);
-	    break;
-	 }  
+         {
+            fapi_rx_data_indication_t *rxDataInd;
+            rxDataInd = (fapi_rx_data_indication_t *)msg;
+            procRxDataInd(rxDataInd);
+            break;
+         }  
       case FAPI_CRC_INDICATION:
-	 {
-	    fapi_crc_ind_t  *crcInd;
-	    crcInd = (fapi_crc_ind_t *)msg;
-	    procCrcInd(crcInd);
-	    break;
-	 }  
+         {
+            fapi_crc_ind_t  *crcInd;
+            crcInd = (fapi_crc_ind_t *)msg;
+            procCrcInd(crcInd);
+            break;
+         }  
       case FAPI_UCI_INDICATION:
-	 {
-	    fapi_uci_indication_t *phyUciInd = NULLP;
-	    phyUciInd = (fapi_uci_indication_t*)msg;
-	    procUciInd(phyUciInd);
-	    break;
-	 }
+         {
+            fapi_uci_indication_t *phyUciInd = NULLP;
+            phyUciInd = (fapi_uci_indication_t*)msg;
+            procUciInd(phyUciInd);
+            break;
+         }
       case FAPI_SRS_INDICATION:
-	 {
-	    break;
-	 }  
+         {
+            break;
+         }  
       case FAPI_RACH_INDICATION:
-	 {
-	    fapi_rach_indication_t  *rachInd;
-	    rachInd = (fapi_rach_indication_t *)msg;
-	    procRachInd(rachInd);
-	    break;
-	 }
+         {
+            fapi_rach_indication_t  *rachInd;
+            rachInd = (fapi_rach_indication_t *)msg;
+            procRachInd(rachInd);
+            break;
+         }
       case FAPI_STOP_INDICATION:
-	 {
-	    DU_LOG("\nINFO  -->  LWR_MAC: Handling Stop Indication");
-	    procStopInd();
-	    break;
-	 }  
+         {
+            DU_LOG("\nINFO  -->  LWR_MAC: Handling Stop Indication");
+            procStopInd();
+            break;
+         }  
    }
 #endif
 }

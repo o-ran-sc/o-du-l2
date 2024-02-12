@@ -1409,7 +1409,7 @@ uint8_t lwr_mac_procParamRspEvt(void *msg)
       if(cellParam != NULLP)
       {
 	 DU_LOG("\nDEBUG  -->  LWR_MAC: Filling TLVS into MAC API");
-	 if(paramRsp->error_code == MSG_OK)
+	 if(paramRsp->error_code == MSG_STATE_OK)
 	 {
 	    for(index = 0; index < paramRsp->number_of_tlvs; index++)
 	    {
@@ -2238,9 +2238,13 @@ uint8_t lwr_mac_procConfigReqEvt(void *msg)
    msgHeader = (fapi_msg_header_t *)(headerElem + 1);
    msgHeader->num_msg = 2; /* Config req msg and vendor specific msg */
    msgHeader->handle = 0;
+#endif
 
+#ifndef INTEL_API
    DU_LOG("\nDEBUG  -->  LWR_MAC: Sending Config Request to Phy");
    LwrMacSendToL1(headerElem);
+#else
+   FapiToIapiConvertAndSend(headerElem);
 #endif
 
    return ROK;
@@ -2274,7 +2278,7 @@ uint8_t lwr_mac_procConfigRspEvt(void *msg)
 
    if(configRsp != NULL)
    {
-      if(configRsp->error_code == MSG_OK)
+      if(configRsp->error_code == MSG_STATE_OK)
       {
 	 DU_LOG("\nDEBUG  -->  LWR_MAC: PHY has moved to Configured state \n");
 	 lwrMacCb.phyState = PHY_STATE_CONFIGURED;
@@ -2377,11 +2381,15 @@ uint8_t lwr_mac_procStartReqEvt(void *msg)
    msgHeader = (fapi_msg_header_t *)(headerElem + 1);
    msgHeader->num_msg = 2; /* Start req msg and vendor specific msg */
    msgHeader->handle = 0;
+#endif
 
+#ifndef INTEL_API
    /* Send to PHY */
    DU_LOG("\nDEBUG  -->  LWR_MAC: Sending Start Request to Phy");
    LwrMacSendToL1(headerElem);
-#endif
+#else   
+   FapiToIapiConvertAndSend(headerElem);
+#endif   
    return ROK;
 } /* lwr_mac_procStartReqEvt */
 
@@ -3858,8 +3866,8 @@ uint16_t fillDlTtiReq(SlotTimingInfo currTimingInfo)
 		   dlTtiReq->nPdus = calcDlTtiReqPduCount(currDlSlot);  /* get total Pdus */
 		   nPdu = dlTtiReq->nPdus;
 
-                   vendorMsg->p7_req_vendor.dl_tti_req.num_pdus = nPdu;
-                   vendorMsg->p7_req_vendor.dl_tti_req.sym = 0;
+         vendorMsg->p7_req_vendor.dl_tti_req.num_pdus = nPdu;
+         vendorMsg->p7_req_vendor.dl_tti_req.sym = 0;
 
 		   dlTtiReq->nGroup = 0;
 		   if(dlTtiReq->nPdus > 0)
@@ -4052,7 +4060,11 @@ uint16_t fillDlTtiReq(SlotTimingInfo currTimingInfo)
             prevElem = prevElem->p_next;
 		   }
 		   prevElem->p_next = vendorMsgQElem;
+#ifndef INTEL_API
+         FapiToIapiConvertAndSend(headerElem);
+#else         
 		   LwrMacSendToL1(headerElem);
+#endif         
 		   memset(currDlSlot, 0, sizeof(MacDlSlot));
 		   return ROK;
 	   }

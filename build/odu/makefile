@@ -89,7 +89,10 @@ endif
 ifeq ($(PHY), INTEL_L1)
 	PLTFRM_FLAGS+=-DSS_USE_WLS_MEM -DINTEL_WLS_MEM -DDEBUG_MODE -DINTEL_L1_V20_03_ONWARDS -DINTEL_THREAD_AFFINITY
 ifeq ($(PHY_MODE),TIMER)
-	PLTFRM_FLAGS+=-DINTEL_TIMER_MODE
+	PLTFRM_FLAGS+= -DINTEL_TIMER_MODE
+endif
+ifeq ($(PHY_INTERFACE),IAPI)
+   PLTFRM_FLAGS+= -DINTEL_API -DINTEL_L1_V22_11
 endif
 endif
 
@@ -162,6 +165,7 @@ help:
 		@echo -e "$(OPTS)    MODE=TDD             - If not specified, MODE=FDD$(NORM)"
 		@echo -e "$(OPTS)    PHY=INTEL_L1         - If not specified, Phy stub is used$(NORM)"
 		@echo -e "$(OPTS)    PHY_MODE=TIMER       - Testing mode for INTEL_L1"
+		@echo -e "$(OPTS)    PHY_INTERFACE=IAPI   - If not specified, FAPI interface is used with INTEL L1"
 		@echo -e "$(OPTS)    COVERAGE=ENABLE      - To record the code coverage stats. Disabled by default"
 		@echo -e "******************************************************************"
 
@@ -203,6 +207,10 @@ du:
 		
 ifneq ($(PHY), INTEL_L1)
 		$(Q)$(MAKE) -j -f $(COM_BUILD_DIR)/phy_stub.mak OBJ_DIR=$(OBJ_ROOT)/odu LIB_DIR=$(LIB_ROOT)/odu LOG_DIR=$(LOG_ROOT)/odu CC='$(CC1)'
+else
+ifeq ($(PHY_INTERFACE),IAPI)
+		$(Q)$(MAKE) -j -f $(COM_BUILD_DIR)/iapi_cl.mak OBJ_DIR=$(OBJ_ROOT)/odu LIB_DIR=$(LIB_ROOT)/odu LOG_DIR=$(LOG_ROOT)/odu CC='$(CC1)'
+endif
 endif
 ifeq ($(O1_ENABLE),YES)
 		$(Q)$(MAKE) -j -f $(COM_BUILD_DIR)/o1.mak OBJ_DIR=$(OBJ_ROOT)/odu LIB_DIR=$(LIB_ROOT)/odu LOG_DIR=$(LOG_ROOT)/odu CC='$(CCPP1)'
@@ -228,6 +236,10 @@ clean_odu:
 		
 ifneq ($(PHY), INTEL_L1)
 		$(Q)$(MAKE) -j -f $(COM_BUILD_DIR)/phy_stub.mak clean OBJ_DIR=$(OBJ_ROOT)/odu LIB_DIR=$(LIB_ROOT)/odu LOG_DIR=$(LOG_ROOT)/odu CC='$(CC1)'
+else
+ifeq ($(PHY_INTERFACE),IAPI)
+		$(Q)$(MAKE) -j -f $(COM_BUILD_DIR)/iapi_cl.mak clean OBJ_DIR=$(OBJ_ROOT)/odu LIB_DIR=$(LIB_ROOT)/odu LOG_DIR=$(LOG_ROOT)/odu CC='$(CC1)'
+endif
 endif
 ifeq ($(O1_ENABLE),YES)
 		$(Q)$(MAKE) -j -f $(COM_BUILD_DIR)/o1.mak clean OBJ_DIR=$(OBJ_ROOT)/odu LIB_DIR=$(LIB_ROOT)/odu LOG_DIR=$(LOG_ROOT)/odu CC='$(CCPP1)'

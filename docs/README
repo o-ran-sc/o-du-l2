@@ -94,7 +94,9 @@ D. How to Clean and Build:
       iii. MODE=FDD/TDD        - Specify duplex mode. Default is FDD
       iv.  PHY=INTEL_L1        - Specify type of phy. If not specified, PHY stub is used
       v.   PHY_MODE=TIMER      - Specify mode of phy. Used only if PHY=INTEL_L1. Default is radio mode
-      vi.  O1_ENABLE=YES       - Specify if O1 interface is enabled. If not specified, it is disabled 
+      vi.  PHY_INTERFACE=IAPI  - Specify interface used to communicate with L1.
+      Used only if PHY=INTEL_L1. Default is FAPI. 
+      vii. O1_ENABLE=YES       - Specify if O1 interface is enabled. If not specified, it is disabled 
 
 2. Building ODU binary:
    a. Build folder
@@ -207,7 +209,8 @@ I. Compilation
       c. Build folder
                 cd l2/build/odu
       d. Build ODU Binary:
-		          make odu PHY=<refer section D.1.h> PHY_MODE=<refer section D.1.h> MACHINE=<refer section D.1.h> MODE=<refer section D.1.h>
+		          make odu PHY=<refer section D.1.h> PHY_MODE=<refer section
+                D.1.h> PHY_INTERFACE=<refer section D.1.h> MACHINE=<refer section D.1.h> MODE=<refer section D.1.h>
 
    2. Build CU Stub and RIC Stub:
       a. Execute steps in sections D.3 and D.4
