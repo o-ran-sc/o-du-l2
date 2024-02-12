@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "89be6aba_613f4c83",
+        "filename": "src/du_app/du_mgr_main.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 639,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2024-02-12T08:47:45Z",
+      "side": 1,
+      "message": "uncomment",
+      "revId": "92636b7cc29c81edb27f20a6df85204c85144aca",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
