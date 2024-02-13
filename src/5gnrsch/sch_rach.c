@@ -698,7 +698,7 @@ bool schProcessRaReq(Inst schInst, SchCellCb *cell, SlotTimingInfo currTime, uin
       {
          /* Allocate resources for PUCCH */
          cell->schUlSlotInfo[pucchTime.slot]->pucchUe = ueId;
-         ret = schAllocPucchResource(cell, pucchTime, NULLP, FALSE, NULLP);
+         ret = schAllocPucchResource(cell, pucchTime, NULLP, NULLP, NULLP);
          if(ret == RFAILED)
          {
             SCH_FREE(dciSlotAlloc, sizeof(RarAlloc));
