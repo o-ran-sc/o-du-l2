@@ -588,7 +588,7 @@ uint8_t commonInit()
    }
 
 #ifdef INTEL_THREAD_AFFINITY
-   ODU_SET_THREAD_AFFINITY(&du_app_stsk, SS_AFFINITY_MODE_EXCL, 16, 0);
+   //ODU_SET_THREAD_AFFINITY(&du_app_stsk, SS_AFFINITY_MODE_EXCL, 16, 0);
 #endif
 
    /* system task for EGTP */
@@ -599,7 +599,7 @@ uint8_t commonInit()
    }
 
 #ifdef INTEL_THREAD_AFFINITY
-   ODU_SET_THREAD_AFFINITY(&egtp_stsk, SS_AFFINITY_MODE_EXCL, 27, 0);
+   //ODU_SET_THREAD_AFFINITY(&egtp_stsk, SS_AFFINITY_MODE_EXCL, 27, 0);
 #endif
 
    /* system task for RLC_DL and MAC */
@@ -611,7 +611,7 @@ uint8_t commonInit()
    pthread_attr_init(&attr);
    pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
 #ifdef INTEL_THREAD_AFFINITY
-   ODU_SET_THREAD_AFFINITY(&rlc_mac_cl_stsk, SS_AFFINITY_MODE_EXCL, 18, 0);
+   //ODU_SET_THREAD_AFFINITY(&rlc_mac_cl_stsk, SS_AFFINITY_MODE_EXCL, 18, 0);
 #endif
 
    /* system task for RLC UL */
@@ -621,7 +621,7 @@ uint8_t commonInit()
       return RFAILED;
    }
 #ifdef INTEL_THREAD_AFFINITY
-   ODU_SET_THREAD_AFFINITY(&rlc_ul_stsk, SS_AFFINITY_MODE_EXCL, 22, 0);
+   //ODU_SET_THREAD_AFFINITY(&rlc_ul_stsk, SS_AFFINITY_MODE_EXCL, 22, 0);
 #endif
    
    /* system task for SCH */
@@ -631,7 +631,7 @@ uint8_t commonInit()
       return RFAILED;
    }
 #ifdef INTEL_THREAD_AFFINITY
-   ODU_SET_THREAD_AFFINITY(&sch_stsk, SS_AFFINITY_MODE_EXCL, 22, 0);
+   //ODU_SET_THREAD_AFFINITY(&sch_stsk, SS_AFFINITY_MODE_EXCL, 22, 0);
 #endif
 
    /* system task for SCTP receiver thread */
@@ -641,7 +641,7 @@ uint8_t commonInit()
       return RFAILED;
    }
 #ifdef INTEL_THREAD_AFFINITY
-   ODU_SET_THREAD_AFFINITY(&sctp_stsk, SS_AFFINITY_MODE_EXCL, 25, 0);
+   //ODU_SET_THREAD_AFFINITY(&sctp_stsk, SS_AFFINITY_MODE_EXCL, 25, 0);
 #endif
 
    /* system task for lower-mac receiver thread */
@@ -651,7 +651,7 @@ uint8_t commonInit()
       return RFAILED;
    }
 #ifdef INTEL_THREAD_AFFINITY
-   ODU_SET_THREAD_AFFINITY(&lwr_mac_stsk, SS_AFFINITY_MODE_EXCL, 21, 0);
+   //ODU_SET_THREAD_AFFINITY(&lwr_mac_stsk, SS_AFFINITY_MODE_EXCL, 21, 0);
 #endif
 
 #ifndef INTEL_WLS_MEM

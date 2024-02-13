@@ -1167,6 +1167,7 @@ void schFcfsScheduleSlot(SchCellCb *cell, SlotTimingInfo *slotInd, Inst schInst)
 
    while(pendingUeNode && ueCount > 0)
    {
+      DU_LOG("\nSANGEETA ueCount : %d", ueCount);
       /*Since Multi-UE perTTI is not supported, re-init following parameters.*/
       isRarPending = false; isRarScheduled = false;
       isMsg4Pending = false; isMsg4Scheduled = false;
@@ -1249,6 +1250,7 @@ void schFcfsScheduleSlot(SchCellCb *cell, SlotTimingInfo *slotInd, Inst schInst)
                node = fcfsUeCb->hqRetxCb.dlRetxHqList.first;
             if(node != NULLP)
             {
+               DU_LOG("\nSANGEETA reTx DL DATA ueID:%d", ueId);
                /* DL Data ReTransmisson */
                isDlMsgPending = true;
                isDlMsgScheduled = schFillBoGrantDlSchedInfo(cell, *slotInd, ueId, TRUE, ((SchDlHqProcCb**) &(node->node)));
@@ -1262,6 +1264,7 @@ void schFcfsScheduleSlot(SchCellCb *cell, SlotTimingInfo *slotInd, Inst schInst)
             }
             else
             {
+               DU_LOG("\nSANGEETA new DL DATA ueID:%d", ueId);
                /* DL Data new transmission */
                if((cell->boIndBitMap) & (1<<ueId))
                {
