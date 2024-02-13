@@ -407,19 +407,19 @@ uint8_t fillUlSchedPucchDedicatedCfg(SchCellCb *cell, SchPucchCfg *pucchDedCfg,\
  *  @return  ROK/RFAILED
  **/
 
-uint16_t fillPucchResourceInfo(SchCellCb *cell, uint8_t ueId, SchPucchInfo *schPucchInfo, SlotTimingInfo slotInfo)
+uint16_t fillPucchResourceInfo(SchCellCb *cell, uint8_t ueId, SchPucchInfo *schPucchInfo, SlotTimingInfo slotInfo,\
+                                SchPdcchAllocInfo *pdcchAllocInfo)
 {
    uint8_t ret = RFAILED,  ueIdx = 0, pucchIdx = 0;
+   uint8_t val_pri = 0, r_pucch = 0, cRSetIdx = 0;
+   uint16_t startPrb = 0, n_cce = 0, N_cce = 0;
    SchPucchCfgCmn *pucchCfg = NULLP;
-   SchBwpParams *ulBwp = NULLP;
-#ifdef NR_DRX 
+   SchBwpDlCfg *initialBwp = NULLP;
    SchUeCb *ueCb = NULLP;
-#endif
-   uint16_t startPrb;
 
    ueIdx = ueId -1;
-#ifdef NR_DRX 
    ueCb = &(cell->ueCb[ueIdx]); 
+#ifdef NR_DRX 
    if(ueCb->ueDrxInfoPres)
    {
       if(!ueCb->drxUeCb.drxUlUeActiveStatus)
@@ -441,16 +441,55 @@ uint16_t fillPucchResourceInfo(SchCellCb *cell, uint8_t ueId, SchPucchInfo *schP
    else
    {
       /* fill pucch common cfg */
-      /* derive pucchResourceSet from schCellCfg */
       pucchCfg = &cell->cellCfg.ulCfgCommon.schInitialUlBwp.pucchCommon;
       pucchIdx = pucchCfg->pucchResourceCommon;
-      ulBwp = &cell->cellCfg.ulCfgCommon.schInitialUlBwp.bwp;
-      startPrb = ulBwp->freqAlloc.startPrb + pucchResourceSet[pucchIdx][3];
+
+      /*As per Spec 38.213, Sec 9.2.1, StartPrb is determined by by DCI and PDCCH CCE location
+       * N_cce = Num of CCEs in COreset used for PDCCH
+       * n_cce = first index of CCE used for PDCCH
+       * val_pri = PUCCH resource indicator field in DCI format 1_0/1_1*/
+      /* derive pucchResourceSet from schCellCfg */
+      if(pdcchAllocInfo != NULLP)
+      {
+         for(cRSetIdx = 0; cRSetIdx < MAX_NUM_CRSET; cRSetIdx++ )
+         {
+            if(ueCb->pdcchInfo[cRSetIdx].cRSetRef->cRSetId == pdcchAllocInfo->cRSetId)
+            {
+               N_cce = ueCb->pdcchInfo[cRSetIdx].totalCceCount;
+               break;
+            }
+         }
+         n_cce = pdcchAllocInfo->cceIndex;
+
+      }
+      else
+      {
+         /*CORESET0 configurations*/
+         initialBwp   = &cell->cellCfg.dlCfgCommon.schInitialDlBwp;
+          /* derive the sib1 coreset0 params from table 13-1 spec 38.213 */
+         N_cce = coresetIdxTable[initialBwp->pdcchCommon.commonSearchSpace.coresetId][1] * \
+                   coresetIdxTable[initialBwp->pdcchCommon.commonSearchSpace.coresetId][2];
+         n_cce = 4;
+      }
+      val_pri = PUCCH_RES_IND;
+
+      /*Following calculation are derived from Spec 38.213, Sec 9.2.1*/
+      r_pucch = (floor((2 * n_cce)/N_cce)) + (2 * val_pri);
+
+      if((floor(r_pucch/8)) == 0)
+      {
+         startPrb = pucchResourceSet[pucchIdx][3] + (floor(r_pucch/pucchResourceSet[pucchIdx][4]));
+      }      
+      else
+      {
+         startPrb = MAX_NUM_RB - 1 - pucchResourceSet[pucchIdx][3] - \
+                        (floor((r_pucch - 8)/pucchResourceSet[pucchIdx][4]));
+      }
       ret = allocatePrbUl(cell, slotInfo, pucchResourceSet[pucchIdx][1], pucchResourceSet[pucchIdx][2],\
             &startPrb, PUCCH_NUM_PRB_FORMAT_0_1_4);
       if (ret == ROK)
       {
-         schPucchInfo->fdAlloc.startPrb = ulBwp->freqAlloc.startPrb + pucchResourceSet[pucchIdx][3];
+         schPucchInfo->fdAlloc.startPrb = startPrb;
          schPucchInfo->fdAlloc.numPrb = PUCCH_NUM_PRB_FORMAT_0_1_4;
          schPucchInfo->tdAlloc.startSymb = pucchResourceSet[pucchIdx][1];
          schPucchInfo->tdAlloc.numSymb = pucchResourceSet[pucchIdx][2];
@@ -758,14 +797,14 @@ uint8_t schDlRsrcAllocMsg4(SchCellCb *cell, SlotTimingInfo msg4Time, uint8_t ueI
  *       Scheduling for Pucch Resource
  *
  * @params[in] SchCellCb *cell, SlotTimingInfo pucchTime, crnti
- * @params[in] SchUeCb *ueCb, bool isRetx, SchDlHqProcCb *hqP
+ * @params[in] SchUeCb *ueCb, SchDlHqProcCb *hqP, SchPdcchAllocInfo *pdcchAllocInfo
  * @return ROK     - success
  *         RFAILED - failure
  *
  *******************************************************************/
 
-uint8_t schAllocPucchResource(SchCellCb *cell, SlotTimingInfo pucchTime,
-                               SchUeCb *ueCb, bool isRetx, SchDlHqProcCb *hqP)
+uint8_t schAllocPucchResource(SchCellCb *cell, SlotTimingInfo pucchTime, SchUeCb *ueCb,\
+                                SchDlHqProcCb *hqP, SchPdcchAllocInfo *pdcchAllocInfo)
 {
    uint8_t ret = RFAILED;
    uint16_t pucchSlot = 0;
@@ -775,7 +814,8 @@ uint8_t schAllocPucchResource(SchCellCb *cell, SlotTimingInfo pucchTime,
    schUlSlotInfo = cell->schUlSlotInfo[pucchSlot];
    memset(&schUlSlotInfo->schPucchInfo, 0, sizeof(SchPucchInfo));
 
-   ret = fillPucchResourceInfo(cell, schUlSlotInfo->pucchUe, &schUlSlotInfo->schPucchInfo, pucchTime);
+   ret = fillPucchResourceInfo(cell, schUlSlotInfo->pucchUe, &schUlSlotInfo->schPucchInfo,\
+                                 pucchTime, pdcchAllocInfo);
    if(ret != ROK)
    {
       return ret;  
@@ -1770,7 +1810,7 @@ void fillDlMsgInfo(DlMsgSchInfo *dlMsgSchInfo, uint16_t crnti, bool isRetx, SchD
    dlMsgSchInfo->harqProcNum = hqP->procId;
    dlMsgSchInfo->dlAssignIdx = 0;
    dlMsgSchInfo->pucchTpc = 0;
-   dlMsgSchInfo->pucchResInd = 0;
+   dlMsgSchInfo->pucchResInd = PUCCH_RES_IND;
    dlMsgSchInfo->harqFeedbackInd = hqP->k1;
    dlMsgSchInfo->dciFormatId = 1;
 }

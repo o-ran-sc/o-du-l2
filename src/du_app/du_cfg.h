@@ -179,7 +179,7 @@
 
 /* Macro define for PUCCH Configuration */
 #define PUCCH_RSRC_COMMON  0
-#define PUCCH_GROUP_HOPPING 0 /* Neither sequence hopping nor group hopping */
+#define PUCCH_NEITHER_HOPPING 0 /* Neither sequence hopping nor group hopping */
 #define PUCCH_P0_NOMINAL   -74
 
 /* MACRO defines for TDD DL-UL Configuration */
