@@ -104,7 +104,7 @@ int8_t coresetIdxTable[MAX_CORESET_INDEX][4];
 int8_t searchSpaceIdxTable[MAX_SEARCH_SPACE_INDEX][4];
 uint8_t defaultUlAckTbl[DEFAULT_UL_ACK_LIST_COUNT];
 uint8_t minMsg3SchTime[MAX_NUM_MU];
-uint8_t pucchResourceSet[MAX_PUCCH_RES_SET_IDX][4];
+uint8_t pucchResourceSet[MAX_PUCCH_RES_SET_IDX][5];
 uint8_t puschDeltaTable[MAX_MU_PUSCH];
 uint16_t prachCfgIdxTable[MAX_PRACH_CONFIG_IDX][8];
 uint16_t numRbForPrachTable[MAX_RACH_NUM_RB_IDX][5];
