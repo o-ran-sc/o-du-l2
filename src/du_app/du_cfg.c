@@ -5489,7 +5489,7 @@ uint8_t duReadCfg()
    }
 
    cur = xmlDocGetRootElement(doc);
-   ns = xmlSearchNsByHref(doc, cur, (const xmlChar *)"odu_config.xml");
+   ns = xmlSearchNsByHref(doc, cur, (const xmlChar *)"urn:o-ran:odu:configuration");
    if(ns == NULL)
    {
       DU_LOG("\nERROR  --> DU_APP: XML Namespace not found.\n");
@@ -5498,7 +5498,7 @@ uint8_t duReadCfg()
       return RFAILED;
    }
 
-   parseDuCfgParams(doc, ns, cur);
+   //parseDuCfgParams(doc, ns, cur);
 
    xmlFreeDoc(doc);
    xmlCleanupParser();
@@ -5506,8 +5506,6 @@ uint8_t duReadCfg()
 
    Pst pst;
    Buffer *mBuf;
-
-   memset(&duCfgParam, 0, sizeof(DuCfgParams));
 
    /* Read configs into duCfgParams */
    if(readCfg() != ROK)
