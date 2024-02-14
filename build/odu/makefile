@@ -74,7 +74,7 @@ endif
 # macro for output file name and makefile name
 #
 
-PLTFRM_FLAGS= -UMSPD -DODU -DINTEL_FAPI -UODU_MEMORY_DEBUG_LOG -DDEBUG_ASN_PRINT -UDEBUG_PRINT -DERROR_PRINT -USTART_DL_UL_DATA -UNR_DRX -UCALL_FLOW_DEBUG_LOG -UODU_SLOT_IND_DEBUG_LOG 
+PLTFRM_FLAGS=-UMSPD -DODU -DINTEL_FAPI -UODU_MEMORY_DEBUG_LOG -DDEBUG_ASN_PRINT -UDEBUG_PRINT -DERROR_PRINT -USTART_DL_UL_DATA -UNR_DRX -UCALL_FLOW_DEBUG_LOG -UODU_SLOT_IND_DEBUG_LOG 
 
 ifeq ($(MODE),TDD)
    PLTFRM_FLAGS += -DNR_TDD
@@ -109,10 +109,7 @@ export BUILD
 export I_OPTS
 
 # Add to the linker options the platform specific components
-L_OPTS+=-lnsl -lrt -lm -lpthread -lsctp
-ifdef XML_BASED_CONFIG
-L_OPTS+=-lxml2
-endif
+L_OPTS+=-lnsl -lrt -lm -lpthread -lsctp -lxml2
 
 ifeq ($(PHY), INTEL_L1)
 	L_OPTS+=-L/root/Intel-L1-20.11.1/phy/wls_lib/ -lwls                         \
@@ -144,6 +141,7 @@ export CNM_ENABLE
 export TEXT_LOG
 export CA_ENABLE
 export O1_ENABLE
+export C_INCLUDE_PATH:=/usr/include/libxml2/
 
 help:
 		@echo -e "******************************************************************"

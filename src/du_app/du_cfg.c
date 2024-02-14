@@ -19,12 +19,10 @@
 /* This file contains all utility functions */
 #include "common_def.h"
 
-#ifdef XML_BASED_CONFIG
 #include <libxml/parser.h>
 #include <libxml/tree.h>
 #include <libxml/xmlmemory.h>
 #include <arpa/inet.h>
-#endif
 
 #include "du_tmr.h"
 #include "legtp.h"
@@ -5475,7 +5473,6 @@ uint8_t parseDuCfgParams(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur)
  * ****************************************************************/
 uint8_t duReadCfg()
 {
-#ifdef XML_BASED_CONFIG
    const char *filename = "../build/config/odu_config.xml";
    xmlDocPtr doc = NULLP;
    xmlNodePtr cur = NULLP;
@@ -5489,7 +5486,7 @@ uint8_t duReadCfg()
    }
 
    cur = xmlDocGetRootElement(doc);
-   ns = xmlSearchNsByHref(doc, cur, (const xmlChar *)"odu_config.xml");
+   ns = xmlSearchNsByHref(doc, cur, (const xmlChar *)"urn:o-ran:odu:configuration");
    if(ns == NULL)
    {
       DU_LOG("\nERROR  --> DU_APP: XML Namespace not found.\n");
@@ -5498,16 +5495,15 @@ uint8_t duReadCfg()
       return RFAILED;
    }
 
+#ifdef XML_BASED_CONFIG
    parseDuCfgParams(doc, ns, cur);
+#endif
 
    xmlFreeDoc(doc);
    xmlCleanupParser();
-#endif
 
    Pst pst;
    Buffer *mBuf;
-
-   memset(&duCfgParam, 0, sizeof(DuCfgParams));
 
    /* Read configs into duCfgParams */
    if(readCfg() != ROK)
