@@ -581,7 +581,7 @@ uint8_t commonInit()
 
    /* Intel L1 using core 0-15. ODU-High using 16-21 */
    /* system task for DU APP */
-   if(ODU_CREATE_TASK(PRIOR0, &du_app_stsk) != ROK)
+   if(ODU_CREATE_TASK(PRIOR0, &duCfgParam.threaInfo.duAppSTskId) != ROK)
    {
       DU_LOG("\nERROR  -->  DU_APP : System Task creation for DU APP failed");
       return RFAILED;
@@ -592,7 +592,7 @@ uint8_t commonInit()
 #endif
 
    /* system task for EGTP */
-   if(ODU_CREATE_TASK(PRIOR0, &egtp_stsk) != ROK)
+   if(ODU_CREATE_TASK(PRIOR0, &duCfgParam.threaInfo.egtpSTskId) != ROK)
    {
       DU_LOG("\nERROR  -->  DU_APP : System Task creation for EGTP failed");
       return RFAILED;
@@ -603,7 +603,7 @@ uint8_t commonInit()
 #endif
 
    /* system task for RLC_DL and MAC */
-   if(ODU_CREATE_TASK(PRIOR0, &rlc_mac_cl_stsk) != ROK)
+   if(ODU_CREATE_TASK(PRIOR0, &duCfgParam.threaInfo.rlcMacSTskId) != ROK)
    {
       DU_LOG("\nERROR  -->  DU_APP : System Task creation for RLC DL/MAC failed");
       return RFAILED;
@@ -615,7 +615,7 @@ uint8_t commonInit()
 #endif
 
    /* system task for RLC UL */
-   if(ODU_CREATE_TASK(PRIOR1, &rlc_ul_stsk) != ROK)
+   if(ODU_CREATE_TASK(PRIOR1, &duCfgParam.threaInfo.rlcUlSTskId) != ROK)
    {
       DU_LOG("\nERROR  -->  DU_APP : System Task creation for RLC UL failed");
       return RFAILED;
@@ -625,7 +625,7 @@ uint8_t commonInit()
 #endif
    
    /* system task for SCH */
-   if(ODU_CREATE_TASK(PRIOR1, &sch_stsk) != ROK)
+   if(ODU_CREATE_TASK(PRIOR1, &duCfgParam.threaInfo.schSTskId) != ROK)
    {
       DU_LOG("\nERROR  -->  DU_APP : System Task creation for SCH failed");
       return RFAILED;
@@ -635,7 +635,7 @@ uint8_t commonInit()
 #endif
 
    /* system task for SCTP receiver thread */
-   if(ODU_CREATE_TASK(PRIOR0, &sctp_stsk) != ROK)
+   if(ODU_CREATE_TASK(PRIOR0, &duCfgParam.threaInfo.sctpSTskId) != ROK)
    {
       DU_LOG("\nERROR  -->  DU_APP : System Task creation for SCTP failed");
       return RFAILED;
@@ -645,7 +645,7 @@ uint8_t commonInit()
 #endif
 
    /* system task for lower-mac receiver thread */
-   if(ODU_CREATE_TASK(PRIOR0, &lwr_mac_stsk) != ROK)
+   if(ODU_CREATE_TASK(PRIOR0, &duCfgParam.threaInfo.lwrMacSTskId) != ROK)
    {
       DU_LOG("\nERROR  -->  DU_APP : System Task creation for Lower MAC failed");
       return RFAILED;
@@ -656,7 +656,7 @@ uint8_t commonInit()
 
 #ifndef INTEL_WLS_MEM
    /* system task for phy stub's slot indication generator thread */
-   if(ODU_CREATE_TASK(PRIOR0, &phy_stub_slot_ind_stsk) != ROK)
+   if(ODU_CREATE_TASK(PRIOR0, &duCfgParam.threaInfo.phyStubSlotIndSTskId) != ROK)
    {
       DU_LOG("\nERROR  -->  DU_APP : System Task creation for Phy stub slot indication generator failed. MAX STSK [%d]", SS_MAX_STSKS);
       return RFAILED;
@@ -775,6 +775,9 @@ uint8_t tst(void)
    if(start_O1_module() != ROK)
       return RFAILED;
 #endif
+
+   memset(&duCfgParam, 0, sizeof(DuCfgParams));
+
    //Initialize TAPA layers
    if(duInit() != ROK)
    {
