@@ -35,9 +35,7 @@ HDR_FILES+=$(wildcard $(CM_DIR)/lrg*.[hx])
 lib: $(LIB_DIR)/libduapp.a
 include $(COM_BUILD_DIR)/compile.mak
 
-ifdef XML_BASED_CONFIG
-I_OPTS+=-I/usr/include/libxml2
-endif
+I_OPTS+=-I/usr/include/libxml2/
 I_OPTS+=-I$(ROOT_DIR)/src/mt
 I_OPTS+=-I$(ROOT_DIR)/src/codec_utils/common
 I_OPTS+=-I$(ROOT_DIR)/src/codec_utils/F1AP
