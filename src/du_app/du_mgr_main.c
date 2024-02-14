@@ -775,6 +775,9 @@ uint8_t tst(void)
    if(start_O1_module() != ROK)
       return RFAILED;
 #endif
+
+   memset(&duCfgParam, 0, sizeof(DuCfgParams));
+
    //Initialize TAPA layers
    if(duInit() != ROK)
    {

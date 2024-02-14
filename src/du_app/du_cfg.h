@@ -1247,6 +1247,18 @@ typedef struct sib1Params
    SrvCellCfgCommSib     srvCellCfgCommSib;
 }Sib1Params;
 
+typedef struct threadInfo
+{
+   SSTskId duAppSTskId;
+   SSTskId egtpSTskId;
+   SSTskId sctpSTskId;
+   SSTskId rlcUlSTskId;
+   SSTskId rlcMacSTskId;
+   SSTskId schSTskId;
+   SSTskId lwrMacSTskId;
+   SSTskId phyStubSlotIndSTskId;
+}ThreadInfo;
+
 typedef struct duCfgParams
 {  
    uint32_t           duId;
@@ -1254,6 +1266,7 @@ typedef struct duCfgParams
    uint16_t           maxNumDrb;
    uint16_t           maxSupportedUes;
    uint32_t           maxUe;
+   ThreadInfo         threaInfo;
    SctpParams         sctpParams;                  /* SCTP Params */
    F1EgtpParams       egtpParams;                  /* EGTP Params */
    SchedulerCfg       schedCfg;
