@@ -5,7 +5,7 @@ FROM nexus3.o-ran-sc.org:10002/o-ran-sc/bldr-ubuntu18-c-go:1.9.0
 ADD . /opt/o-du-l2
 WORKDIR /opt/o-du-l2
 
-RUN apt-get update && apt-get install -y libpcap-dev
+RUN apt-get update && apt-get install -y libpcap-dev && apt-get install libxml2-dev
 
 RUN cd build/odu && make clean_odu odu MACHINE=BIT64 MODE=FDD
 
