@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "261b2d00_a6e6dbb8",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 485,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2024-02-15T08:28:27Z",
+      "side": 1,
+      "message": "should we not use the bwp size configured ?",
+      "range": {
+        "startLine": 485,
+        "startChar": 20,
+        "endLine": 485,
+        "endChar": 31
+      },
+      "revId": "1771a7520256e06253f353fa55bf77b05c5551ee",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "51edd23a_8e60e757",
+        "filename": "src/5gnrsch/sch_fcfs.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1170,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2024-02-15T08:28:27Z",
+      "side": 1,
+      "message": "May be we can keep the debug prints under some flag until these are removed.",
+      "range": {
+        "startLine": 1170,
+        "startChar": 6,
+        "endLine": 1170,
+        "endChar": 12
+      },
+      "revId": "1771a7520256e06253f353fa55bf77b05c5551ee",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c505c3d0_c1622f16",
+        "filename": "src/du_app/du_mgr_main.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 591,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2024-02-15T08:28:27Z",
+      "side": 1,
+      "message": "there is no need to comment/uncomment AFFINITY macro while testing since these are under flag INTEL_THREAD_AFFINITY now and this flag is undefined by default.",
+      "range": {
+        "startLine": 591,
+        "startChar": 5,
+        "endLine": 591,
+        "endChar": 28
+      },
+      "revId": "1771a7520256e06253f353fa55bf77b05c5551ee",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "48a69fe9_0be07fd6",
+        "filename": "src/phy_stub/phy_stub_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1250,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2024-02-15T08:28:27Z",
+      "side": 1,
+      "message": "Are we planning to keep 2 UE attach flow active by default?",
+      "revId": "1771a7520256e06253f353fa55bf77b05c5551ee",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
