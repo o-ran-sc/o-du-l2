@@ -45,6 +45,54 @@
       },
       "revId": "eb9cd95a557b01f5749428587aaac3f0c7aecff4",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cc9abc09_6d8ce379",
+        "filename": "build/common/du_app.mak",
+        "patchSetId": 10
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2024-02-15T08:53:23Z",
+      "side": 1,
+      "message": "removed libxml from path.",
+      "parentUuid": "18817011_08eb5bcb",
+      "range": {
+        "startLine": 38,
+        "startChar": 31,
+        "endLine": 38,
+        "endChar": 37
+      },
+      "revId": "eb9cd95a557b01f5749428587aaac3f0c7aecff4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2c1ae557_90d1af71",
+        "filename": "build/common/du_app.mak",
+        "patchSetId": 10
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2024-02-15T08:53:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d5f1e015_6a7bd8c2",
+      "range": {
+        "startLine": 38,
+        "startChar": 11,
+        "endLine": 38,
+        "endChar": 14
+      },
+      "revId": "eb9cd95a557b01f5749428587aaac3f0c7aecff4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
   ]
 }
