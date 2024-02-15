@@ -5280,6 +5280,80 @@ uint8_t parseMacSliceCfgReq(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur,MacSliceC
    }
    return ROK;
 }
+#endif
+
+#ifdef THREAD_AFFINITY
+/*******************************************************************
+ *
+ * @brief Set thread affinity to the core configured via XML file
+ *
+ * @details
+ *
+ *    Function : parseThreadAffinity
+ *
+ *    Functionality: Set thread affinity to the core configured 
+ *       via XML file
+ *
+ * @params[in] XML document pointer
+ *             XML namespace
+ *             Current node in XML
+ *             Thread information
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t parseThreadAffinity(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur, ThreadInfo *threads)
+{
+   cur = cur -> xmlChildrenNode;
+   while(cur != NULL)
+   {
+      if ((!xmlStrcmp(cur->name, (const xmlChar *)"DU_APP_CORE")) && (cur->ns == ns))
+      {
+         threads->duAppCoreId = atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
+         ODU_SET_THREAD_AFFINITY(&threads->duAppSTskId, SS_AFFINITY_MODE_EXCL, threads->duAppCoreId, 0);
+      }
+
+      if ((!xmlStrcmp(cur->name, (const xmlChar *)"EGTP_CORE")) && (cur->ns == ns))
+      {
+         threads->egtpCoreId = atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
+         ODU_SET_THREAD_AFFINITY(&threads->egtpSTskId, SS_AFFINITY_MODE_EXCL, threads->egtpCoreId, 0);
+      }
+
+      if ((!xmlStrcmp(cur->name, (const xmlChar *)"RLC_MAC_CORE")) && (cur->ns == ns))
+      {
+         threads->rlcMacCoreId = atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
+         ODU_SET_THREAD_AFFINITY(&threads->rlcMacSTskId, SS_AFFINITY_MODE_EXCL, threads->rlcMacCoreId, 0);
+      }
+
+      if ((!xmlStrcmp(cur->name, (const xmlChar *)"RLC_UL_CORE")) && (cur->ns == ns))
+      {
+         threads->rlcUlCoreId = atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
+         ODU_SET_THREAD_AFFINITY(&threads->rlcUlSTskId, SS_AFFINITY_MODE_EXCL, threads->rlcUlCoreId, 0);
+      }
+
+      if ((!xmlStrcmp(cur->name, (const xmlChar *)"SCH_CORE")) && (cur->ns == ns))
+      {
+         threads->schCoreId = atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
+         ODU_SET_THREAD_AFFINITY(&threads->schSTskId, SS_AFFINITY_MODE_EXCL, threads->schCoreId, 0);
+      }
+
+      if ((!xmlStrcmp(cur->name, (const xmlChar *)"SCTP_CORE")) && (cur->ns == ns))
+      {
+         threads->sctpCoreId = atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
+         ODU_SET_THREAD_AFFINITY(&threads->sctpSTskId, SS_AFFINITY_MODE_EXCL, threads->sctpCoreId, 0);
+      }
+
+      if ((!xmlStrcmp(cur->name, (const xmlChar *)"LOWER_MAC_CORE")) && (cur->ns == ns))
+      {
+         threads->lwrMacCoreId = atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
+         ODU_SET_THREAD_AFFINITY(&threads->lwrMacSTskId, SS_AFFINITY_MODE_EXCL, threads->lwrMacCoreId, 0);
+      }
+
+      cur = cur -> next;
+   }
+   return ROK;
+}
+#endif
 
 /*******************************************************************
  *
@@ -5308,10 +5382,20 @@ uint8_t parseDuCfgParams(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur)
    CmInetIpAddr cuIp;
    CmInetIpAddr ricIp;
 
-   memset(&duCfgParam, 0, sizeof(struct duCfgParams));
    cur = cur->xmlChildrenNode;
    while(cur != NULL)
    {
+      if ((!xmlStrcmp(cur->name, (const xmlChar *)"THREAD_AFFINITY")) && (cur->ns == ns))
+      {
+#ifdef THREAD_AFFINITY      
+         if(parseThreadAffinity(doc, ns, cur, &duCfgParam.threadInfo) != ROK)
+         {
+            return RFAILED;
+         }
+#endif         
+      }
+
+#ifdef XML_BASED_CONFIG
       if ((!xmlStrcmp(cur->name, (const xmlChar *)"MAX_NUM_DRB")) && (cur->ns == ns))
       {
          duCfgParam.maxNumDrb = atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
@@ -5447,12 +5531,12 @@ uint8_t parseDuCfgParams(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur)
             return RFAILED;
          }
       }
+#endif      
 
       cur = cur -> next;
    }
    return ROK;
 }
-#endif
 
 /*******************************************************************
  *
@@ -5495,9 +5579,7 @@ uint8_t duReadCfg()
       return RFAILED;
    }
 
-#ifdef XML_BASED_CONFIG
    parseDuCfgParams(doc, ns, cur);
-#endif
 
    xmlFreeDoc(doc);
    xmlCleanupParser();
@@ -5645,6 +5727,16 @@ void printDuConfig()
    DU_LOG("\n ** DU CONFIGURATION ** \n");
    DU_LOG("DU ID %d\n", duCfgParam.duId);
    DU_LOG("DU Name %s\n", duCfgParam.duName);
+
+   DU_LOG("\n ** Thread Affinity ** \n");
+   DU_LOG("DU APP CORE ID %d\n", duCfgParam.threadInfo.duAppCoreId);
+   DU_LOG("EGTP CORE ID %d\n", duCfgParam.threadInfo.egtpCoreId);
+   DU_LOG("SCTP CORE ID %d\n", duCfgParam.threadInfo.sctpCoreId);
+   DU_LOG("RLC-UL CORE ID %d\n", duCfgParam.threadInfo.rlcUlCoreId);
+   DU_LOG("RLC-DL and MAC CORE ID %d\n", duCfgParam.threadInfo.rlcMacCoreId);
+   DU_LOG("SCH CORE ID %d\n", duCfgParam.threadInfo.schCoreId);
+   DU_LOG("Lower MAC CORE ID %d\n", duCfgParam.threadInfo.lwrMacCoreId);
+
    DU_LOG("MAX NUM DRB %d\n", duCfgParam.maxNumDrb);
    DU_LOG("MAX SUPPORTED UE %d\n", duCfgParam.maxSupportedUes);
    DU_LOG("MAX UE %d\n",duCfgParam.maxUe);

@@ -1250,13 +1250,19 @@ typedef struct sib1Params
 typedef struct threadInfo
 {
    SSTskId duAppSTskId;
+   uint8_t duAppCoreId;
    SSTskId egtpSTskId;
+   uint8_t egtpCoreId;
    SSTskId sctpSTskId;
+   uint8_t sctpCoreId;
    SSTskId rlcUlSTskId;
+   uint8_t rlcUlCoreId;
    SSTskId rlcMacSTskId;
+   uint8_t rlcMacCoreId;
    SSTskId schSTskId;
+   uint8_t schCoreId;
    SSTskId lwrMacSTskId;
-   SSTskId phyStubSlotIndSTskId;
+   uint8_t lwrMacCoreId;
 }ThreadInfo;
 
 typedef struct duCfgParams

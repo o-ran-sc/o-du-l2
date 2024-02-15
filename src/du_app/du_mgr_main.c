@@ -573,7 +573,7 @@ uint8_t phyStubInit(SSTskId sysTskId)
 uint8_t commonInit()
 {
    /* Declare system task Ids */
-   SSTskId du_app_stsk, egtp_stsk, sctp_stsk, rlc_ul_stsk, rlc_mac_cl_stsk, sch_stsk, lwr_mac_stsk, phy_stub_slot_ind_stsk;
+   SSTskId phyStubSlotIndSTskId;
 
    pthread_attr_t attr;
 
@@ -587,20 +587,12 @@ uint8_t commonInit()
       return RFAILED;
    }
 
-#ifdef INTEL_THREAD_AFFINITY
-   ODU_SET_THREAD_AFFINITY(&du_app_stsk, SS_AFFINITY_MODE_EXCL, 16, 0);
-#endif
-
    /* system task for EGTP */
    if(ODU_CREATE_TASK(PRIOR0, &duCfgParam.threadInfo.egtpSTskId) != ROK)
    {
       DU_LOG("\nERROR  -->  DU_APP : System Task creation for EGTP failed");
       return RFAILED;
    }
-
-#ifdef INTEL_THREAD_AFFINITY
-   ODU_SET_THREAD_AFFINITY(&egtp_stsk, SS_AFFINITY_MODE_EXCL, 27, 0);
-#endif
 
    /* system task for RLC_DL and MAC */
    if(ODU_CREATE_TASK(PRIOR0, &duCfgParam.threadInfo.rlcMacSTskId) != ROK)
@@ -610,9 +602,6 @@ uint8_t commonInit()
    }
    pthread_attr_init(&attr);
    pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
-#ifdef INTEL_THREAD_AFFINITY
-   ODU_SET_THREAD_AFFINITY(&rlc_mac_cl_stsk, SS_AFFINITY_MODE_EXCL, 18, 0);
-#endif
 
    /* system task for RLC UL */
    if(ODU_CREATE_TASK(PRIOR1, &duCfgParam.threadInfo.rlcUlSTskId) != ROK)
@@ -620,9 +609,6 @@ uint8_t commonInit()
       DU_LOG("\nERROR  -->  DU_APP : System Task creation for RLC UL failed");
       return RFAILED;
    }
-#ifdef INTEL_THREAD_AFFINITY
-   ODU_SET_THREAD_AFFINITY(&rlc_ul_stsk, SS_AFFINITY_MODE_EXCL, 22, 0);
-#endif
    
    /* system task for SCH */
    if(ODU_CREATE_TASK(PRIOR1, &duCfgParam.threadInfo.schSTskId) != ROK)
@@ -630,9 +616,6 @@ uint8_t commonInit()
       DU_LOG("\nERROR  -->  DU_APP : System Task creation for SCH failed");
       return RFAILED;
    }
-#ifdef INTEL_THREAD_AFFINITY
-   ODU_SET_THREAD_AFFINITY(&sch_stsk, SS_AFFINITY_MODE_EXCL, 22, 0);
-#endif
 
    /* system task for SCTP receiver thread */
    if(ODU_CREATE_TASK(PRIOR0, &duCfgParam.threadInfo.sctpSTskId) != ROK)
@@ -640,9 +623,6 @@ uint8_t commonInit()
       DU_LOG("\nERROR  -->  DU_APP : System Task creation for SCTP failed");
       return RFAILED;
    }
-#ifdef INTEL_THREAD_AFFINITY
-   ODU_SET_THREAD_AFFINITY(&sctp_stsk, SS_AFFINITY_MODE_EXCL, 25, 0);
-#endif
 
    /* system task for lower-mac receiver thread */
    if(ODU_CREATE_TASK(PRIOR0, &duCfgParam.threadInfo.lwrMacSTskId) != ROK)
@@ -650,13 +630,10 @@ uint8_t commonInit()
       DU_LOG("\nERROR  -->  DU_APP : System Task creation for Lower MAC failed");
       return RFAILED;
    }
-#ifdef INTEL_THREAD_AFFINITY
-   ODU_SET_THREAD_AFFINITY(&lwr_mac_stsk, SS_AFFINITY_MODE_EXCL, 21, 0);
-#endif
 
 #ifndef INTEL_WLS_MEM
    /* system task for phy stub's slot indication generator thread */
-   if(ODU_CREATE_TASK(PRIOR0, &duCfgParam.threadInfo.phyStubSlotIndSTskId) != ROK)
+   if(ODU_CREATE_TASK(PRIOR0, &phyStubSlotIndSTskId) != ROK)
    {
       DU_LOG("\nERROR  -->  DU_APP : System Task creation for Phy stub slot indication generator failed. MAX STSK [%d]", SS_MAX_STSKS);
       return RFAILED;
@@ -708,7 +685,7 @@ uint8_t commonInit()
    }
 
 #ifndef INTEL_WLS_MEM
-   if(phyStubInit(duCfgParam.threadInfo.phyStubSlotIndSTskId) != ROK)
+   if(phyStubInit(phyStubSlotIndSTskId) != ROK)
    {
       DU_LOG("\nERROR  -->  DU_APP : PHY stub slot indication Tapa Task initialization failed");
       return RFAILED;
