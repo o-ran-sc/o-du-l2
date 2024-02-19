@@ -1,0 +1,187 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "01d07392_2e2b61d4",
+        "filename": "build/config/odu_config.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 689,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2024-02-19T09:24:32Z",
+      "side": 1,
+      "message": "move on top before DU_ID once this is enabled",
+      "revId": "3d55072a26b13d02e673f84b36aa67bdc7a65e3f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4aacba3e_0cd2bf0f",
+        "filename": "build/config/odu_config.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 700,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2024-02-19T09:24:32Z",
+      "side": 1,
+      "message": "this we do not need as we had discussed.\nWe need to write an optimized code.\n\"TNL_ASSOC_LIST\" itself tells that this is a list. we dont need to again add \"LIST\"",
+      "revId": "3d55072a26b13d02e673f84b36aa67bdc7a65e3f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "609a6ae4_fc1fb18c",
+        "filename": "build/config/odu_config.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 704,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2024-02-19T09:24:32Z",
+      "side": 1,
+      "message": "Lets avoid using short names as much possible in XML\nrename to destination_ip and port",
+      "range": {
+        "startLine": 704,
+        "startChar": 13,
+        "endLine": 704,
+        "endChar": 20
+      },
+      "revId": "3d55072a26b13d02e673f84b36aa67bdc7a65e3f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bc1beec4_b70be9ce",
+        "filename": "build/config/odu_config.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 712,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2024-02-19T09:24:32Z",
+      "side": 1,
+      "message": "same as above",
+      "range": {
+        "startLine": 712,
+        "startChar": 10,
+        "endLine": 712,
+        "endChar": 14
+      },
+      "revId": "3d55072a26b13d02e673f84b36aa67bdc7a65e3f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1e2a8a52_7e86df8e",
+        "filename": "build/config/odu_config.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 723,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2024-02-19T09:24:32Z",
+      "side": 1,
+      "message": "same as above",
+      "range": {
+        "startLine": 723,
+        "startChar": 16,
+        "endLine": 723,
+        "endChar": 20
+      },
+      "revId": "3d55072a26b13d02e673f84b36aa67bdc7a65e3f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "660544c8_78dbb6b3",
+        "filename": "build/config/odu_config.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 727,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2024-02-19T09:24:32Z",
+      "side": 1,
+      "message": "FORMAT spelling incorrect",
+      "revId": "3d55072a26b13d02e673f84b36aa67bdc7a65e3f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "47eab2d6_93124056",
+        "filename": "build/config/odu_config.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 733,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2024-02-19T09:24:32Z",
+      "side": 1,
+      "message": "same as above",
+      "revId": "3d55072a26b13d02e673f84b36aa67bdc7a65e3f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "be86567e_a9e2c0ce",
+        "filename": "build/config/odu_config.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 738,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2024-02-19T09:24:32Z",
+      "side": 1,
+      "message": "FORMAT spelling incorrect",
+      "range": {
+        "startLine": 738,
+        "startChar": 22,
+        "endLine": 738,
+        "endChar": 34
+      },
+      "revId": "3d55072a26b13d02e673f84b36aa67bdc7a65e3f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0e89124b_029d15e7",
+        "filename": "build/config/odu_config.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 742,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2024-02-19T09:24:32Z",
+      "side": 1,
+      "message": "same as above",
+      "range": {
+        "startLine": 742,
+        "startChar": 22,
+        "endLine": 742,
+        "endChar": 26
+      },
+      "revId": "3d55072a26b13d02e673f84b36aa67bdc7a65e3f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
