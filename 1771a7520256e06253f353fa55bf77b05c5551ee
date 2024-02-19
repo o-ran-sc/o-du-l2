@@ -24,6 +24,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5d7cc989_06c54335",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 485,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-02-19T17:12:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "261b2d00_a6e6dbb8",
+      "range": {
+        "startLine": 485,
+        "startChar": 20,
+        "endLine": 485,
+        "endChar": 31
+      },
+      "revId": "1771a7520256e06253f353fa55bf77b05c5551ee",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "51edd23a_8e60e757",
@@ -37,6 +61,30 @@
       "writtenOn": "2024-02-15T08:28:27Z",
       "side": 1,
       "message": "May be we can keep the debug prints under some flag until these are removed.",
+      "range": {
+        "startLine": 1170,
+        "startChar": 6,
+        "endLine": 1170,
+        "endChar": 12
+      },
+      "revId": "1771a7520256e06253f353fa55bf77b05c5551ee",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dac1bc23_d71aa617",
+        "filename": "src/5gnrsch/sch_fcfs.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1170,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-02-19T17:12:26Z",
+      "side": 1,
+      "message": "I will remove these before merging this gerrit..",
+      "parentUuid": "51edd23a_8e60e757",
       "range": {
         "startLine": 1170,
         "startChar": 6,
@@ -70,6 +118,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4e0713c5_1afa197c",
+        "filename": "src/du_app/du_mgr_main.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 591,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-02-19T17:12:26Z",
+      "side": 1,
+      "message": "sure noted",
+      "parentUuid": "c505c3d0_c1622f16",
+      "range": {
+        "startLine": 591,
+        "startChar": 5,
+        "endLine": 591,
+        "endChar": 28
+      },
+      "revId": "1771a7520256e06253f353fa55bf77b05c5551ee",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "48a69fe9_0be07fd6",
@@ -83,6 +155,24 @@
       "writtenOn": "2024-02-15T08:28:27Z",
       "side": 1,
       "message": "Are we planning to keep 2 UE attach flow active by default?",
+      "revId": "1771a7520256e06253f353fa55bf77b05c5551ee",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "06206933_cea5d81c",
+        "filename": "src/phy_stub/phy_stub_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1250,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-02-19T17:12:26Z",
+      "side": 1,
+      "message": "no no just for testing purpose",
+      "parentUuid": "48a69fe9_0be07fd6",
       "revId": "1771a7520256e06253f353fa55bf77b05c5551ee",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
