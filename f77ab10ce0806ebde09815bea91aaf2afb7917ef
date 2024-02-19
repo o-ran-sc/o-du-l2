@@ -41,6 +41,48 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "348e76d7_46a5d779",
+        "filename": "build/config/odu_config.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 689,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-02-19T08:12:36Z",
+      "side": 1,
+      "message": "gnbID is a part of DuCb which we configure statically. That\u0027s why added this parameter before E2 config.",
+      "parentUuid": "1e443f47_d4fbbfab",
+      "revId": "f77ab10ce0806ebde09815bea91aaf2afb7917ef",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3c336f9a_ef3d6ba1",
+        "filename": "build/config/odu_config.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 689,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-02-19T08:12:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "45321a6b_51bdd11f",
+      "range": {
+        "startLine": 689,
+        "startChar": 4,
+        "endLine": 689,
+        "endChar": 9
+      },
+      "revId": "f77ab10ce0806ebde09815bea91aaf2afb7917ef",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "af4eefd1_1b1afdce",
@@ -54,6 +96,30 @@
       "writtenOn": "2024-02-19T06:55:46Z",
       "side": 1,
       "message": "E2AP_CFG",
+      "range": {
+        "startLine": 690,
+        "startChar": 4,
+        "endLine": 690,
+        "endChar": 10
+      },
+      "revId": "f77ab10ce0806ebde09815bea91aaf2afb7917ef",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ffed9e6f_c96bb78a",
+        "filename": "build/config/odu_config.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 690,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-02-19T08:12:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "af4eefd1_1b1afdce",
       "range": {
         "startLine": 690,
         "startChar": 4,
@@ -87,6 +153,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5a5a92d1_f9f965c6",
+        "filename": "build/config/odu_config.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 691,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-02-19T08:12:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cb5b7713_3e5eabf5",
+      "range": {
+        "startLine": 691,
+        "startChar": 7,
+        "endLine": 691,
+        "endChar": 15
+      },
+      "revId": "f77ab10ce0806ebde09815bea91aaf2afb7917ef",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c3aadb23_d91333f1",
@@ -100,6 +190,30 @@
       "writtenOn": "2024-02-19T06:55:46Z",
       "side": 1,
       "message": "since number of tnl assoc can be more that one, we should create a list which each node containing local IP/port, dest IP/port and usage",
+      "range": {
+        "startLine": 692,
+        "startChar": 7,
+        "endLine": 692,
+        "endChar": 23
+      },
+      "revId": "f77ab10ce0806ebde09815bea91aaf2afb7917ef",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7b94dbcc_31dd794e",
+        "filename": "build/config/odu_config.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 692,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-02-19T08:12:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c3aadb23_d91333f1",
       "range": {
         "startLine": 692,
         "startChar": 7,
@@ -127,6 +241,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "57e49155_0b1f5c57",
+        "filename": "build/config/odu_config.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 694,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-02-19T08:12:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "edc82585_8aa3f898",
+      "revId": "f77ab10ce0806ebde09815bea91aaf2afb7917ef",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3c59817c_845d40dd",
@@ -150,6 +282,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e09af877_c10a5f56",
+        "filename": "build/config/odu_config.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 703,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-02-19T08:12:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3c59817c_845d40dd",
+      "range": {
+        "startLine": 703,
+        "startChar": 10,
+        "endLine": 703,
+        "endChar": 46
+      },
+      "revId": "f77ab10ce0806ebde09815bea91aaf2afb7917ef",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ba712fee_92801fa9",
@@ -163,6 +319,30 @@
       "writtenOn": "2024-02-19T06:55:46Z",
       "side": 1,
       "message": "same as above",
+      "range": {
+        "startLine": 709,
+        "startChar": 10,
+        "endLine": 709,
+        "endChar": 39
+      },
+      "revId": "f77ab10ce0806ebde09815bea91aaf2afb7917ef",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ad65f864_843d38f4",
+        "filename": "build/config/odu_config.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 709,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-02-19T08:12:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ba712fee_92801fa9",
       "range": {
         "startLine": 709,
         "startChar": 10,
@@ -209,6 +389,48 @@
       "writtenOn": "2024-02-19T06:55:46Z",
       "side": 1,
       "message": "Inside measurement info list create a child node called MEASUREMENT_INFO and inside this create 2 child \"id\" and \"name\"",
+      "revId": "f77ab10ce0806ebde09815bea91aaf2afb7917ef",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a8c4958a_6c816a96",
+        "filename": "build/config/odu_config.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 716,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-02-19T08:12:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a8abc534_8d1d562d",
+      "revId": "f77ab10ce0806ebde09815bea91aaf2afb7917ef",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "87d91e1d_f19d4d9e",
+        "filename": "build/config/odu_config.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 716,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-02-19T08:12:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0e31034d_ba82e2cf",
+      "range": {
+        "startLine": 716,
+        "startChar": 13,
+        "endLine": 716,
+        "endChar": 34
+      },
       "revId": "f77ab10ce0806ebde09815bea91aaf2afb7917ef",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
