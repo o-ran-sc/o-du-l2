@@ -27,22 +27,10 @@
 #define GNB_ID  1 /* As per 38.423,Sec 9.2.2.1, gnbId range b/w 0 to 4294967295 */
 
 #define DU_INST 0
-#define DU_ID 1
 
-#ifndef O1_ENABLE
-#define DU_IP_V4_ADDR "192.168.130.81"
-#define CU_IP_V4_ADDR "192.168.130.82"
-#define RIC_IP_V4_ADDR "192.168.130.80"
-
-#define F1_SCTP_PORT 38472  /* As per the spec 38.472, the registered port number for F1AP is 38472 */
-#define E2_SCTP_PORT 36421
-#endif
-
-#define F1_EGTP_PORT  2152  /* As per the spec 29.281, the registered port number for GTP-U is 2152 */
 #define NR_PCI 1
 #define NR_CELL_ID 1
 
-#define DU_NAME "ORAN OAM DU"
 #define CELL_TYPE SMALL
 
 //TODO: while testing for TDD, Mu1 and 100 MHz, this flag must be enabled
@@ -1275,9 +1263,7 @@ typedef struct duCfgParams
    ThreadInfo         threadInfo;
    SctpParams         sctpParams;                  /* SCTP Params */
    F1EgtpParams       egtpParams;                  /* EGTP Params */
-   SchedulerCfg       schedCfg;
    F1DuSrvdCellInfo   srvdCellLst[MAX_NUM_CELL];  /* Serving cell list *///TODO: this must be removed eventually
-   F1RrcVersion       rrcVersion;                 /* RRC version */
    MacCellCfg	       macCellCfg;	              /* MAC cell configuration */
    MibParams          mibParams;                  /* MIB Params */
    Sib1Params         sib1Params;                 /* SIB1 Params */

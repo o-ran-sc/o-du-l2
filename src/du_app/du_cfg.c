@@ -357,35 +357,6 @@ uint8_t readMacCfg()
  *
  * @details
  *
- *    Function : fillDuPort
- *
- *    Functionality:
- *       - fills the DU Ports.  
- *
- * @params[in] duPort array to be filled
- * @return ROK     - success
- *         RFAILED - failure
- *
- * ****************************************************************/
-uint8_t fillDuPort(uint16_t *duPort)
-{
-
-#ifdef O1_ENABLE
-   duPort[F1_INTERFACE]   = g_cfg.DU_Port;
-   duPort[E2_INTERFACE]   = g_cfg.RIC_Port;
-#else
-   duPort[F1_INTERFACE]   = F1_SCTP_PORT;     /* DU Port idx  0 38472 */
-   duPort[E2_INTERFACE]   = E2_SCTP_PORT;    /* RIC Port idx 1 36421 */
-#endif
-   return ROK;
-}
-
-/*******************************************************************
- *
- * @brief Configures the DU Parameters
- *
- * @details
- *
  *    Function : calcSliv
  *
  *    Functionality:
@@ -604,7 +575,6 @@ uint8_t readCfg()
    CmLList *node;
    uint8_t srvdCellIdx, bandIdx, sliceIdx, plmnIdx, ranFuncIdx, eventTriggerStyleIdx, reportStyleIdx, tnlAssocIdx;
    uint8_t brdcstPlmnIdx, freqBandIdx, srvdPlmnIdx;
-   uint32_t ipv4_du, ipv4_cu, ipv4_ric;
    MibParams mib;
    Sib1Params sib1;
    SupportedSliceList *taiSliceSuppLst;
@@ -623,61 +593,8 @@ uint8_t readCfg()
    /* Gnb Id */
    duCb.gnbId = GNB_ID;
    
-#ifdef O1_ENABLE
-   if( getStartupConfig(&g_cfg) != ROK )
-   {
-      RETVALUE(RFAILED);
-   }
-   cmInetAddr((S8*)g_cfg.DU_IPV4_Addr, &ipv4_du);
-   cmInetAddr((S8*)g_cfg.CU_IPV4_Addr, &ipv4_cu);
-   cmInetAddr((S8*)g_cfg.RIC_IPV4_Addr, &ipv4_ric);
-
-   duCfgParam.sctpParams.cuPort = g_cfg.CU_Port;
-   duCfgParam.sctpParams.ricPort = g_cfg.RIC_Port;
-#else   
-   cmInetAddr((S8*)DU_IP_V4_ADDR, &ipv4_du);
-   cmInetAddr((S8*)CU_IP_V4_ADDR, &ipv4_cu);
-   cmInetAddr((S8*)RIC_IP_V4_ADDR, &ipv4_ric);
-
-   duCfgParam.sctpParams.cuPort = F1_SCTP_PORT;
-   duCfgParam.sctpParams.ricPort = E2_SCTP_PORT;
-#endif
-
-   fillDuPort(duCfgParam.sctpParams.duPort);
-   
-   /* F1 DU IP Address and Port*/
-   duCfgParam.sctpParams.duIpAddr.ipV4Addr = ipv4_du;
-
-   /* F1 CU IP Address and Port*/
-   duCfgParam.sctpParams.cuIpAddr.ipV4Addr = ipv4_cu;
-
-   /* Fill RIC Params */
-   duCfgParam.sctpParams.ricIpAddr.ipV4Addr = ipv4_ric;
-
-   /* EGTP Parameters */
-   duCfgParam.egtpParams.localIp.ipV4Pres = TRUE;
-   duCfgParam.egtpParams.localIp.ipV4Addr = ipv4_du;
-   duCfgParam.egtpParams.localPort = F1_EGTP_PORT;
-   duCfgParam.egtpParams.destIp.ipV4Pres = TRUE;
-   duCfgParam.egtpParams.destIp.ipV4Addr = ipv4_cu;
-   duCfgParam.egtpParams.destPort = F1_EGTP_PORT;
-   duCfgParam.egtpParams.minTunnelId = MIN_TEID;
-   duCfgParam.egtpParams.maxTunnelId = MAX_TEID;
-
-   duCfgParam.maxUe = 32; //TODO: Check
-   
-   /* DU Info */
-   duCfgParam.duId = DU_ID;
-   DU_ALLOC(duCfgParam.duName, sizeof(DU_NAME));
-   if(!duCfgParam.duName)
-   {
-      DU_LOG("\nDEBUG --> DU_APP: readCfg(): Memory allocation failure for DU name");   
-      return RFAILED;
-   }
-   strcpy((char*)duCfgParam.duName,DU_NAME);
-
    memset(&duCb.e2apDb, 0, sizeof(E2apDb));
-   duCb.e2apDb.e2NodeId =  DU_ID;
+   duCb.e2apDb.e2NodeId =  1; //Will be removed as part of E2 config parser
    duCb.e2apDb.e2TransInfo.transIdCounter = 0;
 
    duCb.e2apDb.numOfTNLAssoc = 1;
@@ -1129,7 +1046,6 @@ uint8_t cpyRrmPolicyInDuCfgParams(RrmPolicyList rrmPolicy[], uint8_t policyNum, 
    return ROK;
 }
 
-#ifdef XML_BASED_CONFIG
 /*******************************************************************
  *
  * @brief Fill SCTP Parameters
@@ -1167,6 +1083,11 @@ uint8_t parseSctpParams(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur, SctpParams *
             sctp->duPort[E2_INTERFACE] = e2_sctp_port;    /* RIC Port idx 1  */
          }
       }
+
+#ifdef O1_ENABLE
+      sctp->cuPort = g_cfg.CU_Port;
+      sctp->ricPort = g_cfg.RIC_Port;
+#else
       if ((!xmlStrcmp(cur->name, (const xmlChar *)"F1_SCTP_PORT")) && (cur->ns == ns))
       {
          f1_sctp_port = atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
@@ -1176,10 +1097,6 @@ uint8_t parseSctpParams(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur, SctpParams *
          e2_sctp_port = atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
       }
 
-#ifdef O1_ENABLE
-      sctp->cuPort = g_cfg.CU_Port;
-      sctp->ricPort = g_cfg.RIC_Port;
-#else
       sctp->cuPort = f1_sctp_port;
       sctp->ricPort = e2_sctp_port;
 #endif
@@ -1229,6 +1146,7 @@ uint8_t parseEgtpParams(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur, F1EgtpParams
    return ROK;
 }
 
+#ifdef XML_BASED_CONFIG
 /*******************************************************************
  *
  * @brief Fill MIB configuration 
@@ -5395,17 +5313,6 @@ uint8_t parseDuCfgParams(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur)
 #endif         
       }
 
-#ifdef XML_BASED_CONFIG
-      if ((!xmlStrcmp(cur->name, (const xmlChar *)"MAX_NUM_DRB")) && (cur->ns == ns))
-      {
-         duCfgParam.maxNumDrb = atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
-      }
-
-      if ((!xmlStrcmp(cur->name, (const xmlChar *)"MAX_NUM_UE_SUPPORTED")) && (cur->ns == ns))
-      {
-         duCfgParam.maxSupportedUes = atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
-      }
-
       if ((!xmlStrcmp(cur->name, (const xmlChar *)"DU_ID")) && (cur->ns == ns))
       {
          duCfgParam.duId = atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
@@ -5421,6 +5328,16 @@ uint8_t parseDuCfgParams(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur)
             return RFAILED;
          }
          strcpy((char*)duCfgParam.duName, tempDuName);
+      }
+
+      if ((!xmlStrcmp(cur->name, (const xmlChar *)"MAX_NUM_DRB")) && (cur->ns == ns))
+      {
+         duCfgParam.maxNumDrb = atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
+      }
+
+      if ((!xmlStrcmp(cur->name, (const xmlChar *)"MAX_NUM_UE_SUPPORTED")) && (cur->ns == ns))
+      {
+         duCfgParam.maxSupportedUes = atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
       }
 
       if ((!xmlStrcmp(cur->name, (const xmlChar *)"MAX_NUM_UE")) && (cur->ns == ns))
@@ -5441,7 +5358,7 @@ uint8_t parseDuCfgParams(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur)
       if ((!xmlStrcmp(cur->name, (const xmlChar *)"DU_IP_V4_ADDR")) && (cur->ns == ns))
       {
          duIpV4Addr = (char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1);
-         cmInetAddr(duIpV4Addr, &(duIp));
+         cmInetAddr((int8_t *)duIpV4Addr, &(duIp));
       }
 
       if ((!xmlStrcmp(cur->name, (const xmlChar *)"CU_IP_V4_ADDR")) && (cur->ns == ns))
@@ -5484,6 +5401,7 @@ uint8_t parseDuCfgParams(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur)
          duCfgParam.egtpParams.maxTunnelId = duCfgParam.maxNumDrb * duCfgParam.maxSupportedUes; 
       }
 
+#ifdef XML_BASED_CONFIG
       if ((!xmlStrcmp(cur->name, (const xmlChar *)"MIB_PARAMS")) && (cur->ns == ns))
       {
          if(parseMibParams(doc, ns, cur, &duCfgParam.mibParams) != ROK)

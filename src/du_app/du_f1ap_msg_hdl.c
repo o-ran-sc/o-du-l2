@@ -10567,7 +10567,7 @@ uint8_t extractUpTnlInfo(uint8_t drbId, uint8_t configType,\
 #ifdef O1_ENABLE
    cmInetAddr((S8*)g_cfg.DU_IPV4_Addr, &ipv4_du);
 #else
-   cmInetAddr((char *)DU_IP_V4_ADDR, &ipv4_du);
+   ipv4_du = duCfgParam.egtpParams.localIp.ipV4Addr;
 #endif
 
    for(tnlIdx=0; tnlIdx < tnlInfo->list.count; tnlIdx++)
