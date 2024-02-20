@@ -590,24 +590,7 @@ uint8_t readCfg()
    Snssai snssai[NUM_OF_SUPPORTED_SLICE] = {{1,{2,3,4}},{5,{6,7,8}}};
 #endif
 
-   /* Gnb Id */
-   duCb.gnbId = GNB_ID;
-   
-   memset(&duCb.e2apDb, 0, sizeof(E2apDb));
-   duCb.e2apDb.e2NodeId =  1; //Will be removed as part of E2 config parser
    duCb.e2apDb.e2TransInfo.transIdCounter = 0;
-
-   duCb.e2apDb.numOfTNLAssoc = 1;
-   for(tnlAssocIdx =0; tnlAssocIdx<duCb.e2apDb.numOfTNLAssoc; tnlAssocIdx++)
-   {
-      duCb.e2apDb.tnlAssoc[tnlAssocIdx].localIpAddress.ipV4Pres = duCfgParam.sctpParams.duIpAddr.ipV4Pres;
-      duCb.e2apDb.tnlAssoc[tnlAssocIdx].localIpAddress.ipV4Addr = duCfgParam.sctpParams.duIpAddr.ipV4Addr;
-      duCb.e2apDb.tnlAssoc[tnlAssocIdx].localPort = duCfgParam.sctpParams.duPort[E2_INTERFACE];
-      duCb.e2apDb.tnlAssoc[tnlAssocIdx].destIpAddress.ipV4Pres = duCfgParam.sctpParams.ricIpAddr.ipV4Pres;
-      duCb.e2apDb.tnlAssoc[tnlAssocIdx].destIpAddress.ipV4Addr = duCfgParam.sctpParams.ricIpAddr.ipV4Addr;
-      duCb.e2apDb.tnlAssoc[tnlAssocIdx].destPort = duCfgParam.sctpParams.ricPort;
-      duCb.e2apDb.tnlAssoc[tnlAssocIdx].usage = BOTH_FUNCTIONALITY;
-   }
    duCb.e2apDb.numOfRanFunction = 1;
    for(ranFuncIdx =0; ranFuncIdx<duCb.e2apDb.numOfRanFunction; ranFuncIdx++)
    {
@@ -5239,6 +5222,209 @@ uint8_t parseThreadAffinity(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur, ThreadIn
 
 /*******************************************************************
  *
+ * @brief Fill tmrTqCp
+ *
+ * @details
+ *
+ *    Function : parseTmrTqCp
+ *
+ *    Functionality: Fill tmrTqCp
+ *
+ * @params[in] XML document pointer
+ *             XML namespace
+ *             Current node in XML
+ *             Pointer to structure to be filled
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t parseTmrTqCp(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur, CmTqCp *tmrTqCp)
+{
+   memset(tmrTqCp, 0, sizeof(CmTqCp));
+   cur = cur ->xmlChildrenNode;
+   while(cur != NULL)
+   {
+      if ((!xmlStrcmp(cur->name, (const xmlChar *)"TIMER_LEN")) && (cur->ns == ns))
+      {
+         tmrTqCp->tmrLen = atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
+      }
+      cur = cur -> next;
+   }
+   return ROK;
+}
+
+/*******************************************************************
+ *
+ * @brief Fill DU timer Parameters
+ *
+ * @details
+ *
+ *    Function : parseDuTimerParams
+ *
+ *    Functionality: Fill DU timer Parmeters
+ *
+ * @params[in] XML document pointer
+ *             XML namespace
+ *             Current node in XML
+ *             Pointer to structure to be filled
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t parseDuTimerParams(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur, DuTimers  *duTimers)
+{
+   memset(duTimers, 0, sizeof(DuTimers));
+   
+   cur = cur->xmlChildrenNode;
+   while (cur != NULL)
+   {
+      if ((!xmlStrcmp(cur->name, (const xmlChar *)"TIMER_TQ_CP")) && (cur->ns == ns))
+      {
+         if(parseTmrTqCp(doc, ns, cur, &duTimers->tmrTqCp) != ROK)
+         {
+            return RFAILED;
+         }
+         else
+         {
+            /* Initialzie the timer queue */   
+            memset(&(duTimers->tmrTq), 0, sizeof(CmTqType) * duTimers->tmrTqCp.tmrLen);
+         }
+      }
+
+      if ((!xmlStrcmp(cur->name, (const xmlChar *)"TIMER_RESOLUTION")) && (cur->ns == ns))
+      {
+         duTimers->tmrRes = atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
+      }
+      cur = cur -> next;
+   }
+   return ROK;
+}
+
+/*******************************************************************
+ *
+ * @brief Fill TNL assoc 
+ *
+ * @details
+ *
+ *    Function : parseTnlAssoc
+ *
+ *    Functionality: Fill TNL assoc
+ *
+ * @params[in] XML document pointer
+ *             XML namespace
+ *             Current node in XML
+ *             Pointer to structure to be filled
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t parseTnlAssoc(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur, TNLAssociation *tnlAssoc)
+{
+   char *duIpV4Addr;
+   char *ricIpV4Addr;
+   CmInetIpAddr duIp;
+   CmInetIpAddr ricIp;
+
+   memset(tnlAssoc, 0, sizeof(TNLAssociation));
+   cur = cur ->xmlChildrenNode;
+   while(cur != NULL)
+   {
+      if ((!xmlStrcmp(cur->name, (const xmlChar *)"LOCAL_IP")) && (cur->ns == ns))
+      {
+         duIpV4Addr = (char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1);
+         cmInetAddr(duIpV4Addr, &(duIp));
+         tnlAssoc->localIpAddress.ipV4Pres = true;
+         tnlAssoc->localIpAddress.ipV4Addr = duIp;
+      }
+
+      if ((!xmlStrcmp(cur->name, (const xmlChar *)"LOCAL_PORT")) && (cur->ns == ns))
+      {
+         tnlAssoc->localPort = atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
+      }
+
+      if ((!xmlStrcmp(cur->name, (const xmlChar *)"DESTINATION_IP")) && (cur->ns == ns))
+      {
+         ricIpV4Addr = (char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1);
+         cmInetAddr(ricIpV4Addr, &(ricIp));
+         tnlAssoc->destIpAddress.ipV4Pres = true;
+         tnlAssoc->destIpAddress.ipV4Addr = ricIp;
+      }
+
+      if ((!xmlStrcmp(cur->name, (const xmlChar *)"DESTINATION_PORT")) && (cur->ns == ns))
+      {
+         tnlAssoc->destPort = atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
+      }
+
+      if ((!xmlStrcmp(cur->name, (const xmlChar *)"ASSOC_USAGE")) && (cur->ns == ns))
+      {
+         tnlAssoc->usage = atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
+      }
+      cur = cur -> next;
+   }
+   return ROK;
+}
+
+/*******************************************************************
+ *
+ * @brief Fill E2 config Parameters
+ *
+ * @details
+ *
+ *    Function : parseE2ConfigParams
+ *
+ *    Functionality: Fill E2 config Parmeters
+ *
+ * @params[in] XML document pointer
+ *             XML namespace
+ *             Current node in XML
+ *             Pointer to structure to be filled
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t parseE2ConfigParams(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur, E2apDb *e2apDb)
+{
+   uint8_t tnlIdx=0;
+   xmlNodePtr child = NULLP;
+
+   memset(e2apDb, 0, sizeof(E2apDb));
+   cur = cur->xmlChildrenNode;
+   while (cur != NULL)
+   {
+      if ((!xmlStrcmp(cur->name, (const xmlChar *)"E2_NODE_ID")) && (cur->ns == ns))
+      {
+         e2apDb->e2NodeId = atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
+      }
+
+      if ((!xmlStrcmp(cur->name, (const xmlChar *)"NUM_OF_TNL_ASSOC")) && (cur->ns == ns))
+      {
+         e2apDb->numOfTNLAssoc = atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
+      }
+
+      if ((!xmlStrcmp(cur->name, (const xmlChar *)"TNL_ASSOC_LIST")) && (cur->ns == ns))
+      {
+         child = cur->xmlChildrenNode;
+         while(child != NULL)
+         {
+            if ((!xmlStrcmp(child->name, (const xmlChar *)"TNL_ASSOC")) && (child->ns == ns))
+           {
+              if(parseTnlAssoc(doc, ns, child,&e2apDb->tnlAssoc[tnlIdx]) != ROK)
+              {
+                 return RFAILED;
+              }
+              tnlIdx++;
+
+           }
+           child = child -> next;
+        }
+     }
+     cur = cur -> next;
+   }
+   return ROK;
+}
+
+/*******************************************************************
+ *
  * @brief Fill DU Config Parmeters 
  *
  * @details
@@ -5275,6 +5461,11 @@ uint8_t parseDuCfgParams(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur)
             return RFAILED;
          }
 #endif         
+      }
+
+      if ((!xmlStrcmp(cur->name, (const xmlChar *)"GNB_ID")) && (cur->ns == ns))
+      {
+         duCb.gnbId = atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
       }
 
       if ((!xmlStrcmp(cur->name, (const xmlChar *)"DU_ID")) && (cur->ns == ns))
@@ -5407,6 +5598,21 @@ uint8_t parseDuCfgParams(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur)
       }
 #endif      
 
+      if((!xmlStrcmp(cur->name, (const xmlChar *)"DU_TIMER_INFO")) && (cur->ns == ns))
+      {
+         if(parseDuTimerParams(doc, ns, cur, &duCb.duTimersInfo) != ROK)
+         {
+            return RFAILED;
+         }
+      }
+
+      if((!xmlStrcmp(cur->name, (const xmlChar *)"E2AP_CFG")) && (cur->ns == ns))
+      {
+         if(parseE2ConfigParams(doc, ns, cur, &duCb.e2apDb) != ROK)
+         {
+            return RFAILED;
+         }
+      }
       cur = cur -> next;
    }
    return ROK;
@@ -5486,16 +5692,6 @@ uint8_t duReadCfg()
    cmInitTimers(&(duCb.e2apDb.e2TimersInfo.e2Timers.ricServiceUpdateTimer.timer), 1);
    cmInitTimers(&(duCb.e2apDb.e2TimersInfo.e2Timers.e2NodeConfigUpdate.timer), 1);
 
-   /* Initialzie the timer queue */   
-   memset(&(duCb.duTimersInfo.tmrTq), 0, sizeof(CmTqType) * DU_TQ_SIZE);
-   
-   /* Initialize the timer control point */
-   memset(&(duCb.duTimersInfo.tmrTqCp), 0, sizeof(CmTqCp));
-   duCb.duTimersInfo.tmrTqCp.tmrLen = DU_TQ_SIZE;
-   
-   /* Initialize the timer resolution */
-   duCb.duTimersInfo.tmrRes = DU_TIMER_RESOLUTION;
-   
    /* Timer Registration request to system services */
    if (ODU_REG_TMR_MT(pst.srcEnt, pst.srcInst, duCb.duTimersInfo.tmrRes, duActvTmr) != ROK)
    {
