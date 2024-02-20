@@ -88,6 +88,8 @@
 /*3GPP 38.211 Table 7.3.2.1-1*/
 #define MAX_NUM_AGG_LVL 5
 
+#define PUCCH_RES_IND 0
+
 typedef struct schDlHqProcCb SchDlHqProcCb;
 typedef struct schUlHqEnt SchUlHqEnt;
 typedef struct schRaReq SchRaReq;
@@ -796,7 +798,7 @@ uint8_t schUlResAlloc(SchCellCb *cell, Inst schInst);
 bool schCheckPrachOcc(SchCellCb *cell, SlotTimingInfo prachOccasionTimingInfo);
 uint8_t schCalcPrachNumRb(SchCellCb *cell);
 void schPrachResAlloc(SchCellCb *cell, UlSchedInfo *ulSchedInfo, SlotTimingInfo prachOccasionTimingInfo);
-uint8_t schAllocPucchResource(SchCellCb *cell, SlotTimingInfo pucchTime, SchUeCb *ueCb, bool isRetx, SchDlHqProcCb *hqP);
+uint8_t schAllocPucchResource(SchCellCb *cell, SlotTimingInfo pucchTime, SchUeCb *ueCb, SchDlHqProcCb *hqP, SchPdcchAllocInfo *pdcchAllocInfo);
 uint8_t schFillUlDci(SchUeCb *ueCb, SchPuschInfo *puschInfo, DciInfo *dciInfo, bool isRetx, SchUlHqProcCb *hqP);
 uint8_t schFillPuschAlloc(SchUeCb *ueCb, SlotTimingInfo puschTime, uint32_t tbSize,
                             uint8_t startSymb, uint8_t symbLen, uint16_t startPrb, bool isRetx, SchUlHqProcCb *hqP);
