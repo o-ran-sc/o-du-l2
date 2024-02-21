@@ -24,6 +24,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6f4ffb12_100abe34",
+        "filename": "src/du_app/du_cfg.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 5620,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-02-21T09:22:18Z",
+      "side": 0,
+      "message": "Yes this macro is used.",
+      "parentUuid": "1a69813f_e70a5deb",
+      "range": {
+        "startLine": 5620,
+        "startChar": 38,
+        "endLine": 5620,
+        "endChar": 48
+      },
+      "revId": "d18d80cc82c8bae113c62a45b30345bfb4ca570f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8c24219c_a65a983a",
@@ -37,6 +61,30 @@
       "writtenOn": "2024-02-21T07:48:10Z",
       "side": 0,
       "message": "same as above",
+      "range": {
+        "startLine": 5623,
+        "startChar": 30,
+        "endLine": 5623,
+        "endChar": 49
+      },
+      "revId": "d18d80cc82c8bae113c62a45b30345bfb4ca570f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "db042208_c06056ab",
+        "filename": "src/du_app/du_cfg.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 5623,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-02-21T09:22:18Z",
+      "side": 0,
+      "message": "Done",
+      "parentUuid": "8c24219c_a65a983a",
       "range": {
         "startLine": 5623,
         "startChar": 30,
