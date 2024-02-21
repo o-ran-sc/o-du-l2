@@ -75,13 +75,10 @@
 #define NORMAL_CYCLIC_PREFIX 0
 #define OFFSET_TO_POINT_A 24                     /* PRB Offset to Point A */
 #define BETA_PSS BETA_PSS_0DB  
-#define SSB_PERIODICITY 20
 #define SSB_SUBCARRIER_OFFSET 0         
 #define SSB_FREQUENCY  3000000   /*ssbFrequency in kHz*/
 #define SSB_MULT_CARRIER_BAND FALSE
 #define MULT_CELL_CARRIER FALSE
-#define FREQ_LOC_BW  28875             /* DL frequency location and bandwidth. Spec 38.508 Table 4.3.1.0B-1*/
-#define UL_P_MAX  23
 #define DMRS_TYPE_A_POS 2
 #define NUM_SYMBOLS_PER_SLOT 14       /* Number of symbols within a slot */
 #define CORESET0_END_PRB   48
@@ -107,9 +104,7 @@
 #define SSB_PER_RACH 1
 #define CB_PREAMBLE_PER_SSB 8
 #define PRACH_MULT_CARRIER_BAND FALSE
-#define PRACH_PREAMBLE_RCVD_TGT_PWR  -74   
 #define NUM_RA_PREAMBLE  63
-#define RSRP_THRESHOLD_SSB   31
 
 #ifdef NR_TDD
 #define TDD_PERIODICITY TX_PRDCTY_MS_5 
@@ -120,12 +115,6 @@
 #define RA_RSP_WINDOW 10
 
 /* MACRCO Ddefine for PDCCH Configuration */
-#define PDCCH_SEARCH_SPACE_ID      1    /* Common search space id */
-#define PDCCH_CTRL_RSRC_SET_ID     0    /* Control resource set id */
-#define PDCCH_SEARCH_SPACE_ID_SIB1 1    /* Search space id for sib1 */
-#define PDCCH_SEARCH_SPACE_ID_PAGING 1  /* Search space id for paging */
-#define PDCCH_SEARCH_SPACE_ID_RA   1    /* Search spaced id for random access */
-#define PDCCH_SERACH_SPACE_DCI_FORMAT 0
 #define PDCCH_CTRL_RSRC_SET_ONE_ID  1
 #define PDCCH_CTRL_RSRC_SET_ONE_DURATION 2  /* Duration for control resource set id i */
 #define PDCCH_CTRL_RSRC_SET_ONE_PRECOD_GRANULARITY 1   /* Precoded granularity */
@@ -137,9 +126,6 @@
 #define PDCCH_SRCH_SPC_TWO_AGG_LVL16_CANDIDATE 1  /* Num of candidate at aggregation level 16 */
 #define PDCCH_SRCH_SPC_TWO_UE_SPEC_DCI_FORMAT  0  /* format 0-0 and 1-0 */
 #define PDCCH_SYMBOL_WITHIN_SLOT 128     /* Symbol within Slot Value */
-
-
-#define SIB1_VALUE_TAG 10
 
 /* MACRO Ddefine for PDSCH Configuration */
 #define NUM_TIME_DOM_RSRC_ALLOC 2
@@ -159,8 +145,6 @@
 #define PUSCH_START_SYMBOL  3
 #define PUSCH_LENGTH_SYMBOL 11
 
-#define PUSCH_MSG3_DELTA_PREAMBLE 0
-#define PUSCH_P0_NOMINAL_WITH_GRANT -70
 #define PUSCH_TRANSFORM_PRECODER    1      /* 1: Disabled */
 #define PUSCH_MAX_MIMO_LAYERS       1
 #define PUSCH_PROCESS_TYPE2_ENABLED false
@@ -168,7 +152,6 @@
 /* Macro define for PUCCH Configuration */
 #define PUCCH_RSRC_COMMON  0
 #define PUCCH_NEITHER_HOPPING 0 /* Neither sequence hopping nor group hopping */
-#define PUCCH_P0_NOMINAL   -74
 
 /* MACRO defines for TDD DL-UL Configuration */
 #define NUM_DL_SLOTS 7
@@ -223,7 +206,6 @@
 
 /* Macro definitions for MIB/SIB1 */
 #define SPARE 0
-#define DU_RANAC 1
 #define CELL_IDENTITY 1
 
 /* Macro definitions for DUtoCuRrcContainer */

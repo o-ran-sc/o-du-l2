@@ -360,176 +360,6 @@ uint16_t calcSliv(uint8_t startSymbol, uint8_t lengthSymbol)
    return sliv;
 }
 
-
-/*******************************************************************
- *
- * @brief Configures serving cell config common in sib1
- *
- * @details
- *
- *    Function : fillServCellCfgCommSib
- *
- *    Functionality:
- *       - fills Serving cell config common for SIB1
- *
- * @params[in] SrvCellCfgCommSib pointer
- * @return ROK     - success
- *         RFAILED - failure
- * 
- ** ****************************************************************/
-uint8_t fillServCellCfgCommSib(SrvCellCfgCommSib *srvCellCfgComm)
-{
-   PdcchCfgCommon   pdcchCfg;
-   PdschCfgCommon   pdschCfg;
-   PcchCfg          pcchCfg;
-   RachCfgCommon    rachCfg;
-   PuschCfgCommon   puschCfg;
-   PucchCfgCommon   pucchCfg;
-   TddUlDlCfgCommon   tddCfg;
-
-#ifdef O1_ENABLE
-   srvCellCfgComm->scs = convertScsValToScsEnum(cellParams.ssbSubCarrierSpacing);
-#else
-   srvCellCfgComm->scs = NR_SCS;
-#endif
-
-   /* Configuring DL Config Common for SIB1*/
-   srvCellCfgComm->dlCfg.freqBandInd = NR_FREQ_BAND; 
-   srvCellCfgComm->dlCfg.offsetToPointA = OFFSET_TO_POINT_A;
-#ifdef O1_ENABLE
-   srvCellCfgComm->dlCfg.dlScsCarrier.scsOffset =  cellParams.ssbOffset;
-   srvCellCfgComm->dlCfg.dlScsCarrier.scs = convertScsValToScsEnum(cellParams.ssbSubCarrierSpacing);
-   srvCellCfgComm->dlCfg.dlScsCarrier.scsBw =  cellParams.bSChannelBwUL;
-#else
-   srvCellCfgComm->dlCfg.dlScsCarrier.scsOffset = SSB_SUBCARRIER_OFFSET;
-   srvCellCfgComm->dlCfg.dlScsCarrier.scs = NR_SCS;
-   srvCellCfgComm->dlCfg.dlScsCarrier.scsBw = NR_BANDWIDTH;
-#endif   
-   srvCellCfgComm->dlCfg.locAndBw = FREQ_LOC_BW;
-
-   /* Configuring PDCCH Config Common For SIB1 */
-   pdcchCfg.present = BWP_DownlinkCommon__pdcch_ConfigCommon_PR_setup;
-   pdcchCfg.ctrlRsrcSetZero = CORESET_0_INDEX;
-   pdcchCfg.searchSpcZero = SEARCHSPACE_0_INDEX;
-   pdcchCfg.searchSpcId = PDCCH_SEARCH_SPACE_ID;
-   pdcchCfg.ctrlRsrcSetId = PDCCH_CTRL_RSRC_SET_ID;
-   pdcchCfg.monitorSlotPrdAndOffPresent = SearchSpace__monitoringSlotPeriodicityAndOffset_PR_sl1;
-   //pdcchCfg.monitorSlotPrdAndOff = \
-   SearchSpace__monitoringSlotPeriodicityAndOffset_PR_sl1;
-   pdcchCfg.monitorSymbolsInSlot[0] = 128;
-   pdcchCfg.monitorSymbolsInSlot[1] = 0;
-   pdcchCfg.numCandAggLvl1 = SearchSpace__nrofCandidates__aggregationLevel1_n8;
-   pdcchCfg.numCandAggLvl2 = SearchSpace__nrofCandidates__aggregationLevel2_n4;
-   pdcchCfg.numCandAggLvl4 = SearchSpace__nrofCandidates__aggregationLevel4_n2;
-   pdcchCfg.numCandAggLvl8 = SearchSpace__nrofCandidates__aggregationLevel8_n1;
-   pdcchCfg.numCandAggLvl16 = SearchSpace__nrofCandidates__aggregationLevel16_n0;
-   pdcchCfg.searchSpcType = SearchSpace__searchSpaceType_PR_common;
-   pdcchCfg.commSrchSpcDciFrmt = PDCCH_SERACH_SPACE_DCI_FORMAT;
-   pdcchCfg.searchSpcSib1 = PDCCH_SEARCH_SPACE_ID_SIB1;
-   pdcchCfg.pagingSearchSpc = PDCCH_SEARCH_SPACE_ID_PAGING;
-   pdcchCfg.raSearchSpc = PDCCH_SEARCH_SPACE_ID_PAGING;
-   srvCellCfgComm->dlCfg.pdcchCfg = pdcchCfg;
-
-   /* Configuring PDSCH Config Common For SIB1 */
-   pdschCfg.present = BWP_DownlinkCommon__pdsch_ConfigCommon_PR_setup;
-   pdschCfg.numTimeDomRsrcAlloc = 2;
-   pdschCfg.timeDomAlloc[0].k0 = PDSCH_K0_CFG1;
-   pdschCfg.timeDomAlloc[0].mapType = PDSCH_TimeDomainResourceAllocation__mappingType_typeA;
-   pdschCfg.timeDomAlloc[0].sliv = calcSliv(PDSCH_START_SYMBOL,PDSCH_LENGTH_SYMBOL);
-
-   pdschCfg.timeDomAlloc[1].k0 = PDSCH_K0_CFG2;
-   pdschCfg.timeDomAlloc[1].mapType = PDSCH_TimeDomainResourceAllocation__mappingType_typeA;
-   pdschCfg.timeDomAlloc[1].sliv = calcSliv(PDSCH_START_SYMBOL,PDSCH_LENGTH_SYMBOL);
-
-   srvCellCfgComm->dlCfg.pdschCfg = pdschCfg;
-
-   /* Configuring BCCH Config for SIB1 */
-   srvCellCfgComm->dlCfg.bcchCfg.modPrdCoeff = BCCH_Config__modificationPeriodCoeff_n16;
-
-   /* Configuring PCCH Config for SIB1 */
-   pcchCfg.dfltPagingCycle = convertPagingCycleEnumToValue(PagingCycle_rf256);
-   pcchCfg.nAndPagingFrmOffsetType = PCCH_Config__nAndPagingFrameOffset_PR_oneT;
-   pcchCfg.pageFrameOffset = 0;
-   pcchCfg.ns = convertNsEnumToValue(PCCH_Config__ns_one);
-   pcchCfg.firstPDCCHMontioringType = PCCH_Config__firstPDCCH_MonitoringOccasionOfPO_PR_sCS30KHZoneT_SCS15KHZhalfT;
-   memset(pcchCfg.firstPDCCHMontioringInfo, 0, sizeof(uint16_t));
-   pcchCfg.firstPDCCHMontioringInfo[0] = 44;
-   
-   srvCellCfgComm->dlCfg.pcchCfg = pcchCfg;
-
-
-   /* Configuring UL Config Common */
-#ifdef O1_ENABLE
-   srvCellCfgComm->ulCfg.ulScsCarrier.scsOffset =  cellParams.ssbOffset;
-   srvCellCfgComm->ulCfg.ulScsCarrier.scs = convertScsValToScsEnum(cellParams.ssbSubCarrierSpacing);
-   srvCellCfgComm->ulCfg.ulScsCarrier.scsBw = cellParams.bSChannelBwUL; 
-#else
-   srvCellCfgComm->ulCfg.ulScsCarrier.scsOffset = SSB_SUBCARRIER_OFFSET;
-   srvCellCfgComm->ulCfg.ulScsCarrier.scs = NR_SCS;
-   srvCellCfgComm->ulCfg.ulScsCarrier.scsBw = NR_BANDWIDTH;
-#endif   
-   srvCellCfgComm->ulCfg.freqBandInd = NR_FREQ_BAND;
-   srvCellCfgComm->ulCfg.pMax = UL_P_MAX;
-   srvCellCfgComm->ulCfg.locAndBw = FREQ_LOC_BW;
-   srvCellCfgComm->ulCfg.timeAlignTimerComm = TimeAlignmentTimer_infinity;
-
-   /* Configuring RACH Config Common for SIB1 */
-   rachCfg.present = BWP_UplinkCommon__rach_ConfigCommon_PR_setup;
-   rachCfg.prachCfgIdx = PRACH_CONFIG_IDX;
-   rachCfg.msg1Fdm = RACH_ConfigGeneric__msg1_FDM_one;
-   rachCfg.msg1FreqStart = PRACH_FREQ_START;
-   rachCfg.zeroCorrZoneCfg = ZERO_CORRELATION_ZONE_CFG;
-   rachCfg.preambleRcvdTgtPwr = PRACH_PREAMBLE_RCVD_TGT_PWR;
-   rachCfg.preambleTransMax = RACH_ConfigGeneric__preambleTransMax_n200;
-   rachCfg.pwrRampingStep = RACH_ConfigGeneric__powerRampingStep_dB2;
-   rachCfg.raRspWindow = RACH_ConfigGeneric__ra_ResponseWindow_sl10;
-   rachCfg.numRaPreamble = NUM_RA_PREAMBLE;
-   rachCfg.numSsbPerRachOcc = RACH_ConfigCommon__ssb_perRACH_OccasionAndCB_PreamblesPerSSB_PR_one;
-   rachCfg.numCbPreamblePerSsb = CB_PREAMBLE_PER_SSB;
-   rachCfg.contResTimer = RACH_ConfigCommon__ra_ContentionResolutionTimer_sf64;
-   rachCfg.rsrpThreshSsb = RSRP_THRESHOLD_SSB;
-   rachCfg.rootSeqIdxPresent = RACH_ConfigCommon__prach_RootSequenceIndex_PR_l139;
-   rachCfg.rootSeqIdx = ROOT_SEQ_IDX;
-   rachCfg.msg1Scs = PRACH_SUBCARRIER_SPACING ;
-   rachCfg.restrictedSetCfg = PRACH_RESTRICTED_SET_CFG;
-   srvCellCfgComm->ulCfg.rachCfg = rachCfg;
-
-   /* Configuring PUSCH Config Common for SIB1 */
-   puschCfg.puschCfgPresent = BWP_UplinkCommon__pusch_ConfigCommon_PR_setup;
-   puschCfg.numTimeDomRsrcAlloc = 2;
-   puschCfg.timeDomAllocList[0].k2 = PUSCH_K2_CFG1;
-   puschCfg.timeDomAllocList[0].mapType = PUSCH_TimeDomainResourceAllocation__mappingType_typeA;
-   puschCfg.timeDomAllocList[0].sliv = calcSliv(PUSCH_START_SYMBOL,PUSCH_LENGTH_SYMBOL);
-   puschCfg.timeDomAllocList[1].k2 = PUSCH_K2_CFG2;
-   puschCfg.timeDomAllocList[1].mapType = PUSCH_TimeDomainResourceAllocation__mappingType_typeA;
-   puschCfg.timeDomAllocList[1].sliv = calcSliv(PUSCH_START_SYMBOL,PUSCH_LENGTH_SYMBOL);
-   puschCfg.msg3DeltaPreamble = PUSCH_MSG3_DELTA_PREAMBLE;
-   puschCfg.p0NominalWithGrant = PUSCH_P0_NOMINAL_WITH_GRANT;
-   srvCellCfgComm->ulCfg.puschCfg = puschCfg;
-
-   /* Configuring PUCCH Config Common for SIB1 */
-   pucchCfg.present = BWP_UplinkCommon__pucch_ConfigCommon_PR_setup;
-   pucchCfg.rsrcComm = PUCCH_RSRC_COMMON;
-   pucchCfg.grpHop = PUCCH_ConfigCommon__pucch_GroupHopping_neither;
-   pucchCfg.p0Nominal = PUCCH_P0_NOMINAL;
-   srvCellCfgComm->ulCfg.pucchCfg = pucchCfg;
-
-   /* Configuring TDD UL DL config common */
-   tddCfg.refScs = SubcarrierSpacing_kHz30;
-   tddCfg.txPrd = TDD_UL_DL_Pattern__dl_UL_TransmissionPeriodicity_ms5;
-   tddCfg.numDlSlots = NUM_DL_SLOTS;
-   tddCfg.numDlSymbols = NUM_DL_SYMBOLS;
-   tddCfg.numUlSlots = NUM_UL_SLOTS;
-   tddCfg.numUlSymbols = NUM_UL_SYMBOLS;
-   srvCellCfgComm->tddCfg = tddCfg;
-
-   srvCellCfgComm->ssbPosInBurst = 192;
-   srvCellCfgComm->ssbPrdServingCell = SSB_PERIODICITY;
-   srvCellCfgComm->ssPbchBlockPwr = SSB_PBCH_PWR;
-
-   return ROK;
-}
-
 /*******************************************************************
  *
  * @brief Configures the DU Parameters
@@ -625,38 +455,6 @@ uint8_t readCfg()
    memset(duCb.e2apDb.e2TransInfo.e2InitTransaction, 0, MAX_NUM_TRANSACTION * sizeof(E2TransInfo));
    memset(duCb.e2apDb.e2TransInfo.ricInitTransaction, 0, MAX_NUM_TRANSACTION * sizeof(E2TransInfo));
    
-   /* SIB1 Params */
-   memset(&sib1.plmn, 0, sizeof(Plmn));
-   sib1.plmn.mcc[0] = PLMN_MCC0;
-   sib1.plmn.mcc[1] = PLMN_MCC1;
-   sib1.plmn.mcc[2] = PLMN_MCC2;
-   sib1.plmn.mnc[0] = PLMN_MNC0;
-   sib1.plmn.mnc[1] = PLMN_MNC1;
-   sib1.ranac = DU_RANAC;
-
-#ifdef O1_ENABLE
-   sib1.tac =  cellParams.nRTAC;
-   sib1.cellIdentity =  CELL_IDENTITY *  cellParams.cellLocalId;
-   DU_LOG("\nDEBUG --> DU_APP: readCfg(): OAM CellLocalId=%d", \
-              sib1.cellIdentity);
-#else
-   sib1.tac = DU_TAC;
-   sib1.cellIdentity = CELL_IDENTITY * NR_CELL_ID;
-#endif
-   sib1.cellResvdForOpUse = PLMN_IdentityInfo__cellReservedForOperatorUse_notReserved;
-   sib1.connEstFailCnt = ConnEstFailureControl__connEstFailCount_n3;
-   sib1.connEstFailOffValidity = ConnEstFailureControl__connEstFailOffsetValidity_s900;
-   sib1.connEstFailOffset = 15;
-   sib1.siSchedInfo.winLen = SI_SchedulingInfo__si_WindowLength_s5;
-   sib1.siSchedInfo.broadcastSta = SchedulingInfo__si_BroadcastStatus_broadcasting;
-   sib1.siSchedInfo.preiodicity = SchedulingInfo__si_Periodicity_rf8;
-   sib1.siSchedInfo.sibType = SIB_TypeInfo__type_sibType2;
-   sib1.siSchedInfo.sibValTag = SIB1_VALUE_TAG;
-
-   fillServCellCfgCommSib(&sib1.srvCellCfgCommSib);
-
-   duCfgParam.sib1Params = sib1;
-
    for(srvdCellIdx=0; srvdCellIdx<DEFAULT_CELLS; srvdCellIdx++)
    { 
       memset(&duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.cellInfo.nrCgi.plmn, 0, sizeof(Plmn));
@@ -3730,6 +3528,7 @@ uint8_t parseMacCellCfg(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur,MacCellCfg *m
    }
    return ROK;
 }
+#endif
 
 /*******************************************************************
  *
@@ -3835,22 +3634,13 @@ uint8_t parsePuschCfgCommon(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur,PuschCfgC
          child = cur->xmlChildrenNode;
          while (child != NULL)
          {
-            if ((!xmlStrcmp(child->name, (const xmlChar *)"LIST")) && (child->ns == ns))
+            if ((!xmlStrcmp(child->name, (const xmlChar *)"PUSCH_TIME_DOM_RSRC_ALLOC")) && (child->ns == ns))
             {
-               rsrcNode = child->xmlChildrenNode;
-               while (rsrcNode != NULL)
+               if(parsePuschCmnTimeDomRsrcAlloc(doc, ns, child, &puschCfgCmn->timeDomAllocList[rsrcIdx]) != ROK)
                {
-                  if ((!xmlStrcmp(rsrcNode->name, (const xmlChar *)"PUSCH_TIME_DOM_RSRC_ALLOC")) \
-                     && (rsrcNode->ns == ns))
-                  {
-                     if(parsePuschCmnTimeDomRsrcAlloc(doc, ns, rsrcNode, &puschCfgCmn->timeDomAllocList[rsrcIdx]) != ROK)
-                     {
-                        return RFAILED;
-                     }
-                     rsrcIdx++;
-                  }
-                  rsrcNode = rsrcNode->next;
+                  return RFAILED;
                }
+               rsrcIdx++;
             }
             child = child->next;
          }
@@ -4055,9 +3845,15 @@ uint8_t parseRachCfgCommon(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur, RachCfgCo
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t parseScsSpecCarrier(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur,ScsSpecCarrier *scsSpecCrr)
+uint8_t parseScsSpecCarrier(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur, ScsSpecCarrier *scsSpecCrr)
 {
    memset(scsSpecCrr, 0, sizeof(ScsSpecCarrier));
+
+#ifdef O1_ENABLE
+   scsSpecCrr->scsOffset = cellParams.ssbOffset;
+   scsSpecCrr->scs = convertScsValToScsEnum(cellParams.ssbSubCarrierSpacing);
+   scsSpecCrr->scsBw = cellParams.bSChannelBwUL;
+#else
    cur = cur -> xmlChildrenNode;
    while(cur != NULL)
    {
@@ -4077,6 +3873,7 @@ uint8_t parseScsSpecCarrier(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur,ScsSpecCa
       }
       cur = cur -> next;
    }
+#endif   
    return ROK;
 }
 
@@ -4248,17 +4045,17 @@ uint8_t parsePcchCfg(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur,PcchCfg *pcchCfg
    cur = cur -> xmlChildrenNode;
    while(cur != NULL)
    {
-      if ((!xmlStrcmp(cur->name, (const xmlChar *)"DFLT_PAGING_CYCLE")) && (cur->ns == ns))
+      if ((!xmlStrcmp(cur->name, (const xmlChar *)"DEFAULT_PAGING_CYCLE")) && (cur->ns == ns))
       {
          pcchCfg->dfltPagingCycle = atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
       }
 
-      if ((!xmlStrcmp(cur->name, (const xmlChar *)"NAND_PAGING_FRM_OFFSET")) && (cur->ns == ns))
+      if ((!xmlStrcmp(cur->name, (const xmlChar *)"NAND_PAGING_FRAME_OFFSET")) && (cur->ns == ns))
       {
          pcchCfg->nAndPagingFrmOffsetType = atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
       }
 
-      if ((!xmlStrcmp(cur->name, (const xmlChar *)"PAGE_FRM_OFFSET")) && (cur->ns == ns))
+      if ((!xmlStrcmp(cur->name, (const xmlChar *)"PAGE_FRAME_OFFSET")) && (cur->ns == ns))
       {
          pcchCfg->pageFrameOffset = atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
       }
@@ -4273,25 +4070,17 @@ uint8_t parsePcchCfg(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur,PcchCfg *pcchCfg
          pcchCfg->firstPDCCHMontioringType = atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
       }
 
-      if ((!xmlStrcmp(cur->name, (const xmlChar *)"LIST")) && (cur->ns == ns))
+      if ((!xmlStrcmp(cur->name, (const xmlChar *)"FIRST_PDCCH_LIST")) && (cur->ns == ns))
       {
          child = cur->xmlChildrenNode;
-         while(child != NULL)
+         while (child != NULL)
          {
-            if ((!xmlStrcmp(child->name, (const xmlChar *)"FIRST_PDCCH_LIST")) && (child->ns == ns))
+            if ((!xmlStrcmp(child->name, (const xmlChar *)"FIRST_PDCCH_MONITORING_INFO")) && (child->ns == ns))
             {
-               firstPdcchNode = child->xmlChildrenNode;
-               while (firstPdcchNode != NULL)
-               {
-                  if ((!xmlStrcmp(firstPdcchNode->name, (const xmlChar *)"FIRST_PDCCH_MONITORING_INFO")) && (firstPdcchNode->ns == ns))
-                  {
-                     pcchCfg->firstPDCCHMontioringInfo[idx] = atoi((char *)xmlNodeListGetString(doc, firstPdcchNode->xmlChildrenNode, 1));
-                     idx++;
-                  }
-                  firstPdcchNode = firstPdcchNode->next;
-               }
+               pcchCfg->firstPDCCHMontioringInfo[idx] = atoi((char *)xmlNodeListGetString(doc, child->xmlChildrenNode, 1));
+               idx++;
             }
-            child = child -> next;
+            child = child->next;
          }
       }
       cur = cur -> next;
@@ -4374,7 +4163,6 @@ uint8_t parsePdschCfgCommon(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur,PdschCfgC
 {
    uint8_t     idx = 0;
    xmlNodePtr  child = NULLP; 
-   xmlNodePtr  listChild = NULLP; 
 
    memset(pdschCfgCmn, 0, sizeof(PdschCfgCommon));
    cur = cur -> xmlChildrenNode;
@@ -4395,21 +4183,13 @@ uint8_t parsePdschCfgCommon(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur,PdschCfgC
          child = cur->xmlChildrenNode;
          while (child != NULL)
          {
-            if ((!xmlStrcmp(child->name, (const xmlChar *)"LIST")) && (child->ns == ns))
+            if ((!xmlStrcmp(child->name, (const xmlChar *)"PDSCH_TIME_DOM_RSRC_ALLOC")) && (child->ns == ns))
             {
-               listChild = child->xmlChildrenNode;
-               while (listChild != NULL)
+               if(parsePdschTimeDomRsrcAlloc(doc, ns, child, &pdschCfgCmn->timeDomAlloc[idx]) != ROK)
                {
-                  if ((!xmlStrcmp(listChild->name, (const xmlChar *)"PDSCH_TIME_DOM_RSRC_ALLOC")) && (listChild->ns == ns))
-                  {
-                     if(parsePdschTimeDomRsrcAlloc(doc, ns, listChild, &pdschCfgCmn->timeDomAlloc[idx]) != ROK)
-                     {
-                        return RFAILED;
-                     }
-                     idx++;
-                  }
-                  listChild = listChild->next;
+                  return RFAILED;
                }
+               idx++;
             }
             child = child->next;
          }
@@ -4474,7 +4254,6 @@ uint8_t parsePdcchConfigCommon(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur, Pdcch
 {
    uint8_t idx = 0;
    xmlNodePtr child = NULLP;
-   xmlNodePtr listChild = NULLP;
 
    memset(pdccgCfgCmn, 0, sizeof( PdcchCfgCommon));
    cur = cur -> xmlChildrenNode;
@@ -4505,64 +4284,56 @@ uint8_t parsePdcchConfigCommon(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur, Pdcch
          pdccgCfgCmn->ctrlRsrcSetId = atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
       }
 
-      if ((!xmlStrcmp(cur->name, (const xmlChar *)"MONITOR_SLOT_PRD_OFFPRESENT")) && (cur->ns == ns))
+      if ((!xmlStrcmp(cur->name, (const xmlChar *)"MONITOR_SLOT_PERIOD_OFFSET_PRESENT")) && (cur->ns == ns))
       {
          pdccgCfgCmn->monitorSlotPrdAndOffPresent = atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
       }
 
-      if ((!xmlStrcmp(cur->name, (const xmlChar *)"LIST")) && (cur->ns == ns))
+      if ((!xmlStrcmp(cur->name, (const xmlChar *)"MONITOR_LIST")) && (cur->ns == ns))
       {
          child = cur->xmlChildrenNode;
          while (child)
          {
-            if ((!xmlStrcmp(child->name, (const xmlChar *)"MONITOR_LIST")) && (child->ns == ns))
+            if ((!xmlStrcmp(child->name, (const xmlChar *)"MONITOR_SYMBOL_IN_SLOT")) && (child->ns == ns))
             {
-               listChild = child->xmlChildrenNode;
-               while (listChild != NULL)
-               {
-                  if ((!xmlStrcmp(listChild->name, (const xmlChar *)"MONITOR_SYMBOL_INSLOT")) && (listChild->ns == ns))
-                  {
-                     pdccgCfgCmn->monitorSymbolsInSlot[idx] = atoi((char *)xmlNodeListGetString(doc, listChild->xmlChildrenNode, 1));
-                     idx++;
-                  }
-                  listChild = listChild->next;
-               }
+               pdccgCfgCmn->monitorSymbolsInSlot[idx] = atoi((char *)xmlNodeListGetString(doc, child->xmlChildrenNode, 1));
+               idx++;
             }
             child = child->next;
          }
       }
 
-      if ((!xmlStrcmp(cur->name, (const xmlChar *)"NUMC_AGG_LVL1")) && (cur->ns == ns))
+      if ((!xmlStrcmp(cur->name, (const xmlChar *)"NUM_CANDIDATE_AGG_LVL_1")) && (cur->ns == ns))
       {
          pdccgCfgCmn->numCandAggLvl1 = atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
       }
 
-      if ((!xmlStrcmp(cur->name, (const xmlChar *)"NUMC_AGG_LVL2")) && (cur->ns == ns))
+      if ((!xmlStrcmp(cur->name, (const xmlChar *)"NUM_CANDIDATE_AGG_LVL_2")) && (cur->ns == ns))
       {
          pdccgCfgCmn->numCandAggLvl2 = atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
       }
 
-      if ((!xmlStrcmp(cur->name, (const xmlChar *)"NUMC_AGG_LVL4")) && (cur->ns == ns))
+      if ((!xmlStrcmp(cur->name, (const xmlChar *)"NUM_CANDIDATE_AGG_LVL_4")) && (cur->ns == ns))
       {
          pdccgCfgCmn->numCandAggLvl4 = atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
       }
 
-      if ((!xmlStrcmp(cur->name, (const xmlChar *)"NUMC_AGG_LVL8")) && (cur->ns == ns))
+      if ((!xmlStrcmp(cur->name, (const xmlChar *)"NUM_CANDIDATE_AGG_LVL_8")) && (cur->ns == ns))
       {
          pdccgCfgCmn->numCandAggLvl8 = atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
       }
 
-      if ((!xmlStrcmp(cur->name, (const xmlChar *)"NUMC_AGG_LVL16")) && (cur->ns == ns))
+      if ((!xmlStrcmp(cur->name, (const xmlChar *)"NUM_CANDIDATE_AGG_LVL_16")) && (cur->ns == ns))
       {
          pdccgCfgCmn->numCandAggLvl16 = atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
       }
 
-      if ((!xmlStrcmp(cur->name, (const xmlChar *)"SEARCH_SPC_TYPE")) && (cur->ns == ns))
+      if ((!xmlStrcmp(cur->name, (const xmlChar *)"SEARCH_SPACE_TYPE")) && (cur->ns == ns))
       {
          pdccgCfgCmn->searchSpcType = atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
       }
 
-      if ((!xmlStrcmp(cur->name, (const xmlChar *)"PDCCH_SERACH_SPACE_DCI_FORMAT")) && (cur->ns == ns))
+      if ((!xmlStrcmp(cur->name, (const xmlChar *)"PDCCH_SEARCH_SPACE_DCI_FORMAT")) && (cur->ns == ns))
       {
          pdccgCfgCmn->commSrchSpcDciFrmt = atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
       }
@@ -4577,7 +4348,7 @@ uint8_t parsePdcchConfigCommon(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur, Pdcch
          pdccgCfgCmn->pagingSearchSpc = atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
       }
 
-      if ((!xmlStrcmp(cur->name, (const xmlChar *)"RA_PDCCH_SEARCH_SPACE_ID_PAGING")) && (cur->ns == ns))
+      if ((!xmlStrcmp(cur->name, (const xmlChar *)"PDCCH_SEARCH_SPACE_ID_RA")) && (cur->ns == ns))
       {
          pdccgCfgCmn->raSearchSpc = atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
       }
@@ -4665,7 +4436,6 @@ uint8_t parseDlCfgCommon(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur,DlCfgCommon 
             return RFAILED;
          }
       }
-
       cur = cur -> next;
    }
    return ROK;
@@ -4694,11 +4464,14 @@ uint8_t parseSrvCellCfgCmnSib(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur,SrvCell
    cur = cur -> xmlChildrenNode;
    while(cur != NULL)
    {
+#ifdef O1_ENABLE
+      srvCellCfgCmnSib->scs = convertScsValToScsEnum(cellParams.ssbSubCarrierSpacing);
+#else
       if ((!xmlStrcmp(cur->name, (const xmlChar *)"NR_SCS")) && (cur->ns == ns))
       {
          srvCellCfgCmnSib->scs = atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
       }
-
+#endif
       if ((!xmlStrcmp(cur->name, (const xmlChar *)"SSB_POS_INBURST")) && (cur->ns == ns))
       {
          srvCellCfgCmnSib->ssbPosInBurst = atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
@@ -4772,7 +4545,7 @@ uint8_t parseSiSchedInfo(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur,SiSchedInfo 
          siSchedInfo->winLen = atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
       }
 
-      if ((!xmlStrcmp(cur->name, (const xmlChar *)"BROADCAST_STA")) && (cur->ns == ns))
+      if ((!xmlStrcmp(cur->name, (const xmlChar *)"BROADCAST_STATUS")) && (cur->ns == ns))
       {
          siSchedInfo->broadcastSta = atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
       }
@@ -4787,7 +4560,7 @@ uint8_t parseSiSchedInfo(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur,SiSchedInfo 
          siSchedInfo->sibType = atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
       }
 
-      if ((!xmlStrcmp(cur->name, (const xmlChar *)"SIB1_VAL_TAG")) && (cur->ns == ns))
+      if ((!xmlStrcmp(cur->name, (const xmlChar *)"SIB1_VALUE_TAG")) && (cur->ns == ns))
       {
          siSchedInfo->sibValTag = atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
       }
@@ -4821,6 +4594,22 @@ uint8_t parseSib1Params(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur,Sib1Params *s
    cur = cur -> xmlChildrenNode;
    while(cur != NULL)
    {
+#ifdef O1_ENABLE
+   sib1Params-> tac = cellParams.nRTAC;
+   sib1Params->cellIdentity = CELL_IDENTITY *  cellParams.cellLocalId;
+   DU_LOG("\nDEBUG --> DU_APP: readCfg(): OAM CellLocalId=%d", sib1.cellIdentity);
+#else
+      if ((!xmlStrcmp(cur->name, (const xmlChar *)"TAC")) && (cur->ns == ns))
+      {
+         sib1Params-> tac = atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
+      }
+
+      if ((!xmlStrcmp(cur->name, (const xmlChar *)"CELL_IDENTITY")) && (cur->ns == ns))
+      {
+         sib1Params->cellIdentity = atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
+      }
+#endif
+
       if ((!xmlStrcmp(cur->name, (const xmlChar *)"PLMN")) && (cur->ns == ns))
       {
          if(parsePlmn(doc, ns, cur, &sib1Params->plmn) != ROK)
@@ -4829,19 +4618,9 @@ uint8_t parseSib1Params(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur,Sib1Params *s
          }
       }
 
-      if ((!xmlStrcmp(cur->name, (const xmlChar *)"TAC")) && (cur->ns == ns))
-      {
-         sib1Params-> tac = atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
-      }
-
       if ((!xmlStrcmp(cur->name, (const xmlChar *)"RANAC")) && (cur->ns == ns))
       {
          sib1Params->ranac = atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
-      }
-
-      if ((!xmlStrcmp(cur->name, (const xmlChar *)"CELL_IDENTITY")) && (cur->ns == ns))
-      {
-         sib1Params->cellIdentity = atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
       }
 
       if ((!xmlStrcmp(cur->name, (const xmlChar *)"CELL_RESVD_OPUSE")) && (cur->ns == ns))
@@ -4872,7 +4651,7 @@ uint8_t parseSib1Params(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur,Sib1Params *s
          }
       }
 
-      if ((!xmlStrcmp(cur->name, (const xmlChar *)"SRV_CELLCFG_COM_SIB")) && (cur->ns == ns))
+      if ((!xmlStrcmp(cur->name, (const xmlChar *)"SRV_CELL_CFG_COM_SIB")) && (cur->ns == ns))
       {
          if(parseSrvCellCfgCmnSib(doc, ns, cur, &sib1Params->srvCellCfgCommSib) != ROK)
          {
@@ -4884,7 +4663,6 @@ uint8_t parseSib1Params(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur,Sib1Params *s
    }
    return ROK;
 }
-#endif
 
 #ifndef O1_ENABLE
 /*******************************************************************
@@ -5528,7 +5306,6 @@ uint8_t parseDuCfgParams(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur)
          }
       }
 
-#ifdef XML_BASED_CONFIG
       if ((!xmlStrcmp(cur->name, (const xmlChar *)"SIB1_PARAMS")) && (cur->ns == ns))
       {
          if(parseSib1Params(doc, ns, cur, &duCfgParam.sib1Params) != ROK)
@@ -5537,6 +5314,7 @@ uint8_t parseDuCfgParams(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur)
          }
       }
 
+#ifdef XML_BASED_CONFIG
       if ((!xmlStrcmp(cur->name, (const xmlChar *)"F1_DU_SRVD_CELL_INFO")) && (cur->ns == ns))
       {
          if(parseF1DuServedCellInfo(doc, ns, cur, &duCfgParam.srvdCellLst[0]) != ROK)
