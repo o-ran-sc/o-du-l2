@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2f0099ed_45fa3c8d",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 10568,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-02-21T05:56:22Z",
+      "side": 1,
+      "message": "in O1 we don\u0027t receive the egtp ip but I think sctp local Ip and egtp local ip are the same.\nSo we can use this duCfgParam.sctpParams.duIpAddr.ipV4Addr here?",
+      "range": {
+        "startLine": 10568,
+        "startChar": 19,
+        "endLine": 10568,
+        "endChar": 24
+      },
+      "revId": "65220b76dddf293947c2db719167f8bfe75def04",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
