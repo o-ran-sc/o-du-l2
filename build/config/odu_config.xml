@@ -458,11 +458,11 @@
       <INTRA_FREQ_RESELECT>1</INTRA_FREQ_RESELECT>
    </MIB_PARAMS>
    <SLICE_CFG>
-      <NUM_RRC_POLICY>1</NUM_RRC_POLICY>
+      <NUM_RRM_POLICY>1</NUM_RRM_POLICY>
       <MAC_SLICE_RRM_POLICY>
-         <RESOURCE_TYPE>1</RESOURCE_TYPE>
-         <NUM_RRC_POLICY_MEM>1</NUM_RRC_POLICY_MEM>
-         <RRM_POLICY_MUM_LIST>
+         <RESOURCE_TYPE>0</RESOURCE_TYPE>
+         <NUM_RRM_POLICY_MEMBER>1</NUM_RRM_POLICY_MEMBER>
+         <RRM_POLICY_MEMBER_LIST>
             <PLMN>
                <MCC>
                   <PLMN_MCC0>3</PLMN_MCC0>
@@ -483,7 +483,7 @@
                <SD>4</SD>
                </SD_SIZE>
             </SNSSAI>
-         </RRM_POLICY_MUM_LIST>
+         </RRM_POLICY_MEMBER_LIST>
          <RRM_POLICY_RATIO>
             <MAX_RATIO>90</MAX_RATIO>
             <MIN_RATIO>30</MIN_RATIO>

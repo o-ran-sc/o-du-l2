@@ -326,28 +326,6 @@ uint8_t readMacCfg()
    duCfgParam.macCellCfg.cellCfg.initialUlBwp.pucchCommon.pucchResourceCommon = PUCCH_RSRC_COMMON;
    duCfgParam.macCellCfg.cellCfg.initialUlBwp.pucchCommon.pucchGroupHopping = PUCCH_NEITHER_HOPPING;
 
-
-#ifndef O1_ENABLE
-
-   /*Note: Static Configuration, when O1 is not configuring the RRM policy*/
-   RrmPolicyList rrmPolicy;
-   rrmPolicy.id[0] = 1;
-   rrmPolicy.resourceType = PRB;
-   rrmPolicy.rRMMemberNum = 1;
-   memcpy(rrmPolicy.rRMPolicyMemberList[0].mcc,duCfgParam.macCellCfg.cellCfg.plmnInfoList[0].plmn.mcc, 3*sizeof(uint8_t));
-   memcpy(rrmPolicy.rRMPolicyMemberList[0].mnc,duCfgParam.macCellCfg.cellCfg.plmnInfoList[0].plmn.mnc, 3*sizeof(uint8_t));
-   rrmPolicy.rRMPolicyMemberList[0].sst = 1;
-   rrmPolicy.rRMPolicyMemberList[0].sd[0] = 2;
-   rrmPolicy.rRMPolicyMemberList[0].sd[1] = 3;
-   rrmPolicy.rRMPolicyMemberList[0].sd[2] = 4;
-   rrmPolicy.rRMPolicyMaxRatio = 90;
-   rrmPolicy.rRMPolicyMinRatio = 30;
-   rrmPolicy.rRMPolicyDedicatedRatio = 10;
-
-   cpyRrmPolicyInDuCfgParams(&rrmPolicy, 1, &duCfgParam.tempSliceCfg);
-
-#endif
-
    return ROK;
 }
 
@@ -647,21 +625,6 @@ uint8_t readCfg()
    memset(duCb.e2apDb.e2TransInfo.e2InitTransaction, 0, MAX_NUM_TRANSACTION * sizeof(E2TransInfo));
    memset(duCb.e2apDb.e2TransInfo.ricInitTransaction, 0, MAX_NUM_TRANSACTION * sizeof(E2TransInfo));
    
-   /* Mib Params */
-   mib.sysFrmNum = SYS_FRAME_NUM;
-#ifdef NR_TDD
-   mib.subCarrierSpacingCommon = MIB__subCarrierSpacingCommon_scs30or120;
-#else
-   mib.subCarrierSpacingCommon = MIB__subCarrierSpacingCommon_scs15or60;
-#endif
-   mib.ssb_SubcarrierOffset = SSB_SC_OFFSET; //Kssb
-   mib.dmrs_TypeA_Position = MIB__dmrs_TypeA_Position_pos2;
-   mib.controlResourceSetZero = CORESET_0_INDEX;
-   mib.searchSpaceZero = SEARCHSPACE_0_INDEX;
-   mib.cellBarred = MIB__cellBarred_notBarred;
-   mib.intraFreqReselection = MIB__intraFreqReselection_notAllowed;
-   duCfgParam.mibParams = mib;
-
    /* SIB1 Params */
    memset(&sib1.plmn, 0, sizeof(Plmn));
    sib1.plmn.mcc[0] = PLMN_MCC0;
@@ -1131,7 +1094,6 @@ uint8_t parseEgtpParams(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur, F1EgtpParams
    return ROK;
 }
 
-#ifdef XML_BASED_CONFIG
 /*******************************************************************
  *
  * @brief Fill MIB configuration 
@@ -1224,17 +1186,17 @@ uint8_t parsePlmn(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur, Plmn *plmn)
          child = cur->xmlChildrenNode;
          while (child != NULL)
          {
-            if ((!xmlStrcmp(child->name, (const xmlChar *)"plmn_MCC0")) && (child->ns == ns))
+            if ((!xmlStrcmp(child->name, (const xmlChar *)"PLMN_MCC0")) && (child->ns == ns))
             {
                plmn->mcc[0] = atoi((char *)xmlNodeListGetString(doc, child->xmlChildrenNode, 1));
             }
 
-            if ((!xmlStrcmp(child->name, (const xmlChar *)"plmn_MCC1")) && (child->ns == ns))
+            if ((!xmlStrcmp(child->name, (const xmlChar *)"PLMN_MCC1")) && (child->ns == ns))
             {
                plmn->mcc[1] = atoi((char *)xmlNodeListGetString(doc, child->xmlChildrenNode, 1));
             }
 
-            if ((!xmlStrcmp(child->name, (const xmlChar *)"plmn_MCC2")) && (child->ns == ns))
+            if ((!xmlStrcmp(child->name, (const xmlChar *)"PLMN_MCC2")) && (child->ns == ns))
             {
                plmn->mcc[2] = atoi((char *)xmlNodeListGetString(doc, child->xmlChildrenNode, 1));
             }
@@ -1248,17 +1210,17 @@ uint8_t parsePlmn(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur, Plmn *plmn)
          child = cur->xmlChildrenNode;
          while (child != NULL)
          {
-            if ((!xmlStrcmp(child->name, (const xmlChar *)"plmn_MNC0")) && (child->ns == ns))
+            if ((!xmlStrcmp(child->name, (const xmlChar *)"PLMN_MNC0")) && (child->ns == ns))
             {
                plmn->mnc[0] = atoi((char *)xmlNodeListGetString(doc, child->xmlChildrenNode, 1));  
             }
 
-            if ((!xmlStrcmp(child->name, (const xmlChar *)"plmn_MNC1")) && (child->ns == ns))
+            if ((!xmlStrcmp(child->name, (const xmlChar *)"PLMN_MNC1")) && (child->ns == ns))
             {
                plmn->mnc[1] = atoi((char *)xmlNodeListGetString(doc, child->xmlChildrenNode, 1));
             }
 
-            if ((!xmlStrcmp(child->name, (const xmlChar *)"plmn_MNC2")) && (child->ns == ns))
+            if ((!xmlStrcmp(child->name, (const xmlChar *)"PLMN_MNC2")) && (child->ns == ns))
             {
                plmn->mnc[2] = atoi((char *)xmlNodeListGetString(doc, child->xmlChildrenNode, 1));
             }
@@ -1365,6 +1327,7 @@ uint8_t parseSnssai(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur, Snssai *snssai)
    return ROK;
 }
 
+#ifdef XML_BASED_CONFIG
 /*******************************************************************
  *
  * @brief Fill Supported Slice List
@@ -4921,7 +4884,9 @@ uint8_t parseSib1Params(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur,Sib1Params *s
    }
    return ROK;
 }
+#endif
 
+#ifndef O1_ENABLE
 /*******************************************************************
  *
  * @brief Fill RRM Policy List
@@ -5012,7 +4977,6 @@ uint8_t parseRrmPolicyRatio(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur, RrmPolic
 }
 
 /*******************************************************************
-/*******************************************************************
  *
  * @brief Fill MAC Slice RRM Policy
  *
@@ -5043,12 +5007,12 @@ uint8_t parseMacSliceRrmPolicy(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur, MacSl
          rrmPolicy->resourceType = atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
       }
 
-      if ((!xmlStrcmp(cur->name, (const xmlChar *)"NUM_RRC_POLICY_MEM")) && (cur->ns == ns))
+      if ((!xmlStrcmp(cur->name, (const xmlChar *)"NUM_RRM_POLICY_MEMBER")) && (cur->ns == ns))
       {
          rrmPolicy->numOfRrmPolicyMem = atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
       }
 
-      if ((!xmlStrcmp(cur->name, (const xmlChar *)"RRM_POLICY_MUM_LIST")) && (cur->ns == ns))
+      if ((!xmlStrcmp(cur->name, (const xmlChar *)"RRM_POLICY_MEMBER_LIST")) && (cur->ns == ns))
       {
          DU_ALLOC_SHRABL_BUF(rrmPolicy->rRMPolicyMemberList,\
                rrmPolicy->numOfRrmPolicyMem * sizeof(RrmPolicyMemberList*));
@@ -5113,7 +5077,7 @@ uint8_t parseMacSliceCfgReq(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur,MacSliceC
    cur = cur -> xmlChildrenNode;
    while(cur != NULL)
    {
-      if ((!xmlStrcmp(cur->name, (const xmlChar *)"NUM_RRC_POLICY")) && (cur->ns == ns))
+      if ((!xmlStrcmp(cur->name, (const xmlChar *)"NUM_RRM_POLICY")) && (cur->ns == ns))
       {
          macSliceCfgReq->numOfRrmPolicy = atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
       }
@@ -5556,10 +5520,18 @@ uint8_t parseDuCfgParams(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur)
          duCfgParam.egtpParams.maxTunnelId = duCfgParam.maxNumDrb * duCfgParam.maxSupportedUes; 
       }
 
-#ifdef XML_BASED_CONFIG
       if ((!xmlStrcmp(cur->name, (const xmlChar *)"MIB_PARAMS")) && (cur->ns == ns))
       {
          if(parseMibParams(doc, ns, cur, &duCfgParam.mibParams) != ROK)
+         {
+            return RFAILED;
+         }
+      }
+
+#ifdef XML_BASED_CONFIG
+      if ((!xmlStrcmp(cur->name, (const xmlChar *)"SIB1_PARAMS")) && (cur->ns == ns))
+      {
+         if(parseSib1Params(doc, ns, cur, &duCfgParam.sib1Params) != ROK)
          {
             return RFAILED;
          }
@@ -5580,15 +5552,9 @@ uint8_t parseDuCfgParams(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur)
             return RFAILED;
          }
       }
+#endif      
 
-      if ((!xmlStrcmp(cur->name, (const xmlChar *)"SIB1_PARAMS")) && (cur->ns == ns))
-      {
-         if(parseSib1Params(doc, ns, cur, &duCfgParam.sib1Params) != ROK)
-         {
-            return RFAILED;
-         }
-      }
-
+#ifndef O1_ENABLE
       if ((!xmlStrcmp(cur->name, (const xmlChar *)"SLICE_CFG")) && (cur->ns == ns))
       {
          if(parseMacSliceCfgReq(doc, ns, cur, &duCfgParam.tempSliceCfg) != ROK)
@@ -6376,7 +6342,7 @@ void printDuConfig()
    for(policyIdx = 0; policyIdx < macSliceCfg->numOfRrmPolicy; policyIdx++)
    {
       rrmPolicy = macSliceCfg->listOfRrmPolicy[policyIdx];
-      DU_LOG("RRM Policy [%d]", policyIdx);
+      DU_LOG("RRM Policy [%d]\n", policyIdx);
       DU_LOG("\tResource Type %d\n", rrmPolicy->resourceType);
 
       rrmPolicyRatio = &rrmPolicy ->policyRatio;
@@ -6388,7 +6354,7 @@ void printDuConfig()
       for(memIdx = 0; memIdx < rrmPolicy->numOfRrmPolicyMem; memIdx++)
       {
          rrmPolicyMemberList = rrmPolicy->rRMPolicyMemberList[memIdx];
-         DU_LOG("\tRRM Policy Member [%d]", memIdx);
+         DU_LOG("\tRRM Policy Member [%d]\n", memIdx);
          DU_LOG("\t\tPLMN : mcc[0] %d\n", rrmPolicyMemberList->plmn.mcc[0]);
          DU_LOG("\t\tPLMN : mcc[1] %d\n", rrmPolicyMemberList->plmn.mcc[1]);
          DU_LOG("\t\tPLMN : mcc[2] %d\n", rrmPolicyMemberList->plmn.mcc[2]);

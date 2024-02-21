@@ -222,9 +222,7 @@
 #define IE_EXTENSION_LIST_COUNT 1
 
 /* Macro definitions for MIB/SIB1 */
-#define SYS_FRAME_NUM 0
 #define SPARE 0
-#define SSB_SC_OFFSET 0
 #define DU_RANAC 1
 #define CELL_IDENTITY 1
 
