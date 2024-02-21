@@ -24,6 +24,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4da9f027_5a57d40b",
+        "filename": "src/du_app/du_cfg.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1070,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2024-02-21T07:21:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fa559159_3c06bd30",
+      "range": {
+        "startLine": 1070,
+        "startChar": 12,
+        "endLine": 1070,
+        "endChar": 24
+      },
+      "revId": "65220b76dddf293947c2db719167f8bfe75def04",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c177a474_b4454cf9",
@@ -47,6 +71,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "857cbb2a_05304e92",
+        "filename": "src/du_app/du_cfg.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1082,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2024-02-21T07:21:00Z",
+      "side": 1,
+      "message": "Reverted the changes as it was earlier",
+      "parentUuid": "c177a474_b4454cf9",
+      "range": {
+        "startLine": 1082,
+        "startChar": 41,
+        "endLine": 1082,
+        "endChar": 53
+      },
+      "revId": "65220b76dddf293947c2db719167f8bfe75def04",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2f0099ed_45fa3c8d",
@@ -60,6 +108,30 @@
       "writtenOn": "2024-02-21T05:56:22Z",
       "side": 1,
       "message": "in O1 we don\u0027t receive the egtp ip but I think sctp local Ip and egtp local ip are the same.\nSo we can use this duCfgParam.sctpParams.duIpAddr.ipV4Addr here?",
+      "range": {
+        "startLine": 10568,
+        "startChar": 19,
+        "endLine": 10568,
+        "endChar": 24
+      },
+      "revId": "65220b76dddf293947c2db719167f8bfe75def04",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cff5f0a0_317eb451",
+        "filename": "src/du_app/du_f1ap_msg_hdl.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 10568,
+      "author": {
+        "id": 1000087
+      },
+      "writtenOn": "2024-02-21T07:21:00Z",
+      "side": 1,
+      "message": "Even if in O1 there is no separate param for EGTP IP, they are using same varibale i.e. g_Cfg.DU_IPV4_Addr to fetch IP address.\n\nHowever, in our case we have 2 separate structure to store EGTP and SCTP configurations. This function is meant to fetch EGTP tunnel info, hence we should fetch config from EGTP config structure and not from SCTP",
+      "parentUuid": "2f0099ed_45fa3c8d",
       "range": {
         "startLine": 10568,
         "startChar": 19,
