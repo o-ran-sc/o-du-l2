@@ -550,81 +550,16 @@ uint8_t fillServCellCfgCommSib(SrvCellCfgCommSib *srvCellCfgComm)
 
 uint8_t readCfg()
 {
-   CmLList *node;
-   uint8_t srvdCellIdx, bandIdx, sliceIdx, plmnIdx, ranFuncIdx, eventTriggerStyleIdx, reportStyleIdx, tnlAssocIdx;
+   uint8_t srvdCellIdx, bandIdx, sliceIdx, plmnIdx;
    uint8_t brdcstPlmnIdx, freqBandIdx, srvdPlmnIdx;
-   MibParams mib;
    Sib1Params sib1;
    SupportedSliceList *taiSliceSuppLst;
-   uint8_t measurementInfoIdx =0, measurementInfoLen=0;
-   char shortName[] = SHORT_NAME;
-   char serviceModelOID[]= SERVICE_MODEL_OID;
-   char  description[] = DESCRIPTION;
-   char event_trigger_style_name[]= EVENT_TRIGGER_STYLE_NAME;
-   char ric_report_style_name[]= REPORT_STYLE_NAME;
 
 #ifndef O1_ENABLE
    /* Note: Added these below variable for local testing*/
    Snssai snssai[NUM_OF_SUPPORTED_SLICE] = {{1,{2,3,4}},{5,{6,7,8}}};
 #endif
 
-   duCb.e2apDb.e2TransInfo.transIdCounter = 0;
-   duCb.e2apDb.numOfRanFunction = 1;
-   for(ranFuncIdx =0; ranFuncIdx<duCb.e2apDb.numOfRanFunction; ranFuncIdx++)
-   {
-      duCb.e2apDb.ranFunction[ranFuncIdx].id = ranFuncIdx + 1;
-      memcpy(&duCb.e2apDb.ranFunction[ranFuncIdx].name.shortName, shortName, sizeof(shortName));
-      memcpy(&duCb.e2apDb.ranFunction[ranFuncIdx].name.serviceModelOID, serviceModelOID, sizeof(serviceModelOID));
-      memcpy(&duCb.e2apDb.ranFunction[ranFuncIdx].name.description, description, sizeof(description));
-      duCb.e2apDb.ranFunction[ranFuncIdx].revisionCounter = 0;
-      
-      duCb.e2apDb.ranFunction[ranFuncIdx].numOfEventTriggerStyleSupported  = NUM_OF_EVENT_TRIGGER_STYLE_SUPPORTED;
-      for(eventTriggerStyleIdx=0; eventTriggerStyleIdx<duCb.e2apDb.ranFunction[ranFuncIdx].numOfEventTriggerStyleSupported; eventTriggerStyleIdx++)
-      {
-         duCb.e2apDb.ranFunction[ranFuncIdx].eventTriggerStyleList[eventTriggerStyleIdx].styleType = EVENT_TRIGGER_STYLE_TYPE;
-         duCb.e2apDb.ranFunction[ranFuncIdx].eventTriggerStyleList[eventTriggerStyleIdx].formatType = EVENT_TRIGGER_STYLE_FORMAT_TYPE;
-         memcpy(duCb.e2apDb.ranFunction[ranFuncIdx].eventTriggerStyleList[eventTriggerStyleIdx].name, event_trigger_style_name, sizeof(event_trigger_style_name));
-      }
-      
-      duCb.e2apDb.ranFunction[ranFuncIdx].numOfReportStyleSupported= NUM_OF_RIC_REPORT_STYLE_SUPPORTED;
-      for(reportStyleIdx=0; reportStyleIdx<duCb.e2apDb.ranFunction[ranFuncIdx].numOfReportStyleSupported; reportStyleIdx++)
-      {
-         duCb.e2apDb.ranFunction[ranFuncIdx].reportStyleList[reportStyleIdx].reportStyle.styleType = REPORT_STYLE_TYPE;
-         duCb.e2apDb.ranFunction[ranFuncIdx].reportStyleList[reportStyleIdx].reportStyle.formatType = REPORT_ACTION_FORMAT_TYPE;
-         memcpy(duCb.e2apDb.ranFunction[ranFuncIdx].reportStyleList[reportStyleIdx].reportStyle.name, ric_report_style_name, sizeof(ric_report_style_name));
-         
-         for(measurementInfoIdx =0; measurementInfoIdx<NUM_OF_MEASUREMENT_INFO_SUPPORTED(CONFIG_ADD); measurementInfoIdx++)
-         {
-            measurementInfoLen= strlen(MEASUREMENT_TYPE_NAME[measurementInfoIdx]);
-            MeasurementInfoForAction *measurementInfoForAction;
-            DU_ALLOC(measurementInfoForAction, sizeof(MeasurementInfoForAction));
-            if(measurementInfoForAction)
-            {
-               measurementInfoForAction->measurementTypeId = measurementInfoIdx+1;
-               memcpy(measurementInfoForAction->measurementTypeName, MEASUREMENT_TYPE_NAME[measurementInfoIdx], measurementInfoLen+1);
-            }
-            DU_ALLOC(node, sizeof(CmLList));
-            if(node)
-            {
-               node->node = (PTR) measurementInfoForAction;
-               cmLListAdd2Tail(&duCb.e2apDb.ranFunction[ranFuncIdx].reportStyleList[reportStyleIdx].measurementInfoList, node);
-            }
-            else
-            {
-
-               DU_FREE(measurementInfoForAction, sizeof(MeasurementInfoForAction));
-            }
-         }
-      }
-      
-      duCb.e2apDb.ranFunction[ranFuncIdx].ricIndicationHeaderFormat = RIC_INDICATION_HEADER_FORMAT;
-      duCb.e2apDb.ranFunction[ranFuncIdx].ricIndicationMessageFormat = RIC_INDICATION_MESSAGE_FORMAT; 
-
-      cmLListInit(&duCb.e2apDb.ranFunction[ranFuncIdx].subscriptionList);
-   }
-   memset(duCb.e2apDb.e2TransInfo.e2InitTransaction, 0, MAX_NUM_TRANSACTION * sizeof(E2TransInfo));
-   memset(duCb.e2apDb.e2TransInfo.ricInitTransaction, 0, MAX_NUM_TRANSACTION * sizeof(E2TransInfo));
-   
    /* SIB1 Params */
    memset(&sib1.plmn, 0, sizeof(Plmn));
    sib1.plmn.mcc[0] = PLMN_MCC0;
@@ -5330,6 +5265,336 @@ uint8_t parseTnlAssoc(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur, TNLAssociation
 
 /*******************************************************************
  *
+ * @brief Fill ric style parmeters
+ *
+ * @details
+ *
+ *    Function : parseRicStyle
+ *
+ *    Functionality: Fill ric style parmeters
+ *
+ * @params[in] XML document pointer
+ *             XML namespace
+ *             Current node in XML
+ *             Pointer to structure to be filled
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t parseRicStyle(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur, RicStyle  *ricStyle)
+{
+   char *tempName;
+   memset(ricStyle, 0, sizeof(RicStyle));
+
+   cur = cur->xmlChildrenNode;
+   while (cur != NULL)
+   {
+      if ((!xmlStrcmp(cur->name, (const xmlChar *)"STYLE_TYPE")) && (cur->ns == ns))
+      {
+         ricStyle->styleType = atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
+      }
+
+      if ((!xmlStrcmp(cur->name, (const xmlChar *)"NAME")) && (cur->ns == ns))
+      {
+         tempName =(char*) xmlNodeListGetString(doc, cur->xmlChildrenNode, 1);
+         strcpy((char*)ricStyle->name, tempName);
+      }
+
+      if ((!xmlStrcmp(cur->name, (const xmlChar *)"FORMAT_TYPE")) && (cur->ns == ns))
+      {
+         ricStyle->formatType = atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
+      }
+      cur = cur -> next;
+   }
+   return ROK;
+}
+
+/*******************************************************************
+ *
+ * @brief Fill measurement info parameters
+ *
+ * @details
+ *
+ *    Function : parseMeasurementInfo
+ *
+ *    Functionality: Fill measurement info parmeters
+ *
+ * @params[in] XML document pointer
+ *             XML namespace
+ *             Current node in XML
+ *             Pointer to structure to be filled
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t parseMeasurementInfo(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur, CmLListCp  *measurementInfoList)
+{
+   CmLList *node;
+   char *tempName;
+   MeasurementInfoForAction *measurementInfoForAction;
+
+   DU_ALLOC(measurementInfoForAction, sizeof(MeasurementInfoForAction));
+   if(!measurementInfoForAction)
+   {
+      return RFAILED;
+   }
+
+   cur = cur->xmlChildrenNode;
+   while (cur != NULL)
+   {
+      if ((!xmlStrcmp(cur->name, (const xmlChar *)"ID")) && (cur->ns == ns))
+      {
+         measurementInfoForAction->measurementTypeId = atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
+      }
+
+      if ((!xmlStrcmp(cur->name, (const xmlChar *)"NAME")) && (cur->ns == ns))
+      {
+         tempName =(char*) xmlNodeListGetString(doc, cur->xmlChildrenNode, 1);
+         strcpy((char*)measurementInfoForAction->measurementTypeName, tempName);
+      }
+
+      cur = cur -> next;
+   }
+
+   DU_ALLOC(node, sizeof(CmLList));
+   if(node)
+   {
+      node->node = (PTR) measurementInfoForAction;
+      cmLListAdd2Tail(measurementInfoList, node);
+   }
+   else
+   {
+      DU_FREE(measurementInfoForAction, sizeof(MeasurementInfoForAction));
+      return RFAILED;
+   }
+
+   return ROK;
+}
+
+/*******************************************************************
+ *
+ * @brief Fill report style parameters
+ *
+ * @details
+ *
+ *    Function : parseReportStyle
+ *
+ *    Functionality: Fill report style parmeters
+ *
+ * @params[in] XML document pointer
+ *             XML namespace
+ *             Current node in XML
+ *             Pointer to structure to be filled
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t parseReportStyle(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur, RicReportStyle  *reportStyle)
+{
+   xmlNodePtr child = NULLP;
+   uint8_t numOfMeasurementInfo=0;
+   memset(reportStyle, 0, sizeof(RicReportStyle));
+
+   cur = cur->xmlChildrenNode;
+   while (cur != NULL)
+   {
+      if ((!xmlStrcmp(cur->name, (const xmlChar *)"RIC_STYLE")) && (cur->ns == ns))
+      {
+         if(parseRicStyle(doc, ns, cur, &reportStyle->reportStyle) != ROK)
+         {
+            return RFAILED;
+         }
+      }
+
+      if ((!xmlStrcmp(cur->name, (const xmlChar *)"NUM_OF_MEASUREMENT_INFO")) && (cur->ns == ns))
+      {
+         numOfMeasurementInfo = atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
+      }
+
+      if ((!xmlStrcmp(cur->name, (const xmlChar *)"MEASUREMENT_INFO_LIST")) && (cur->ns == ns))
+      {
+         child = cur->xmlChildrenNode;
+         while(child != NULL)
+         {
+            if ((!xmlStrcmp(child->name, (const xmlChar *)"MEASUREMENT_INFO")) && (child->ns == ns))
+            {
+               if(parseMeasurementInfo(doc, ns, child, &reportStyle->measurementInfoList) != ROK)
+               {
+                  return RFAILED;
+               }
+            }
+            child = child -> next;
+         }
+      }
+
+      cur = cur -> next;
+   }
+   return ROK;
+}
+
+/*******************************************************************
+ *
+ * @brief Fill RAN function name parameters
+ *
+ * @details
+ *
+ *    Function : parseRanFuncName
+ *
+ *    Functionality: Fill RAN function name parmeters
+ *
+ * @params[in] XML document pointer
+ *             XML namespace
+ *             Current node in XML
+ *             Pointer to structure to be filled
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t parseRanFuncName(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur, RanFunctionName  *ranFunctionName)
+{
+   char *tempShortName;
+   char *tempServiceModelOid;
+   char *tempDiscription;
+
+   memset(ranFunctionName, 0, sizeof(RanFunctionName));
+
+   cur = cur->xmlChildrenNode;
+   while (cur != NULL)
+   {
+      if ((!xmlStrcmp(cur->name, (const xmlChar *)"SHORT_NAME")) && (cur->ns == ns))
+      {
+         tempShortName =(char*) xmlNodeListGetString(doc, cur->xmlChildrenNode, 1);
+         strcpy((char*)ranFunctionName->shortName, tempShortName);
+      }
+
+      if ((!xmlStrcmp(cur->name, (const xmlChar *)"SEVICE_MODEL_OID")) && (cur->ns == ns))
+      {
+         tempServiceModelOid =(char*) xmlNodeListGetString(doc, cur->xmlChildrenNode, 1);
+         strcpy((char*)ranFunctionName->serviceModelOID, tempServiceModelOid);
+      }
+
+      if ((!xmlStrcmp(cur->name, (const xmlChar *)"DESCRIPTION")) && (cur->ns == ns))
+      {
+         tempDiscription =(char*) xmlNodeListGetString(doc, cur->xmlChildrenNode, 1);
+         strcpy((char*)ranFunctionName->description, tempDiscription);
+      }
+      cur = cur -> next;
+   }
+   return ROK;
+}
+
+/*******************************************************************
+ *
+ * @brief Fill RAN function parameters
+ *
+ * @details
+ *
+ *    Function : parseRanFunctionParams
+ *
+ *    Functionality: Fill RAN function parmeters
+ *
+ * @params[in] XML document pointer
+ *             XML namespace
+ *             Current node in XML
+ *             Pointer to structure to be filled
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t parseRanFunctionParams(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur, RanFunction  *ranFunction)
+{
+   xmlNodePtr child = NULLP;
+   uint8_t eventTriggerStyleIdx=0, reportStyleIdx=0;
+
+   memset(ranFunction, 0, sizeof(RanFunction));
+
+   cur = cur->xmlChildrenNode;
+
+   while (cur != NULL)
+   {
+      if ((!xmlStrcmp(cur->name, (const xmlChar *)"ID")) && (cur->ns == ns))
+      {
+         ranFunction->id = atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
+      }
+
+      if ((!xmlStrcmp(cur->name, (const xmlChar *)"RAN_FUNCTION_NAME")) && (cur->ns == ns))
+      {
+         if(parseRanFuncName(doc, ns, cur, &ranFunction->name) != ROK)
+         {
+            return RFAILED;
+         }
+      }
+
+      if ((!xmlStrcmp(cur->name, (const xmlChar *)"REVISION_COUNTER")) && (cur->ns == ns))
+      {
+         ranFunction->revisionCounter = atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
+      }
+
+      if ((!xmlStrcmp(cur->name, (const xmlChar *)"NUM_OF_EVENT_TRIGGER_STYLE_SUPPORTED")) && (cur->ns == ns))
+      {
+         ranFunction->numOfEventTriggerStyleSupported = atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
+      }
+
+
+      if ((!xmlStrcmp(cur->name, (const xmlChar *)"EVENT_TRIGGERED_STYLE_LIST")) && (cur->ns == ns))
+      {
+         child = cur->xmlChildrenNode;
+         while(child != NULL)
+         {
+            if ((!xmlStrcmp(child->name, (const xmlChar *)"EVENT_TRIGGERED_STYLE")) && (child->ns == ns))
+            {
+               if(parseRicStyle(doc, ns, child,&ranFunction->eventTriggerStyleList[eventTriggerStyleIdx]) != ROK)
+               {
+                  return RFAILED;
+               }
+               eventTriggerStyleIdx++;
+
+            }
+            child = child -> next;
+         }
+
+      }
+
+      if ((!xmlStrcmp(cur->name, (const xmlChar *)"NUM_OF_REPORT_STYLE_SUPPORTED")) && (cur->ns == ns))
+      {
+         ranFunction->numOfReportStyleSupported = atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
+      }
+
+      if ((!xmlStrcmp(cur->name, (const xmlChar *)"REPORT_STYLE_SUPPORTED_LIST")) && (cur->ns == ns))
+      {
+         child = cur->xmlChildrenNode;
+         while(child != NULL)
+         {
+            if ((!xmlStrcmp(child->name, (const xmlChar *)"REPORT_STYLE")) && (child->ns == ns))
+            {
+               if(parseReportStyle(doc, ns, child,&ranFunction->reportStyleList[reportStyleIdx]) != ROK)
+               {
+                  return RFAILED;
+               }
+               reportStyleIdx++;
+
+            }
+            child = child -> next;
+         }
+
+      }
+
+      if ((!xmlStrcmp(cur->name, (const xmlChar *)"RIC_INDICATION_HEADER_FORMAT")) && (cur->ns == ns))
+      {
+         ranFunction->ricIndicationHeaderFormat = atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
+      }
+
+      if ((!xmlStrcmp(cur->name, (const xmlChar *)"RIC_INDICATION_MESSAGE_FORMAT")) && (cur->ns == ns))
+      {
+         ranFunction->ricIndicationMessageFormat = atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
+      }
+      cur = cur -> next;
+   }
+   return ROK;
+}
+
+/*******************************************************************
+ *
  * @brief Fill E2 config Parameters
  *
  * @details
@@ -5348,7 +5613,7 @@ uint8_t parseTnlAssoc(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur, TNLAssociation
  * ****************************************************************/
 uint8_t parseE2ConfigParams(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur, E2apDb *e2apDb)
 {
-   uint8_t tnlIdx=0;
+   uint8_t tnlIdx=0,ranFuncIdx=0;
    xmlNodePtr child = NULLP;
 
    memset(e2apDb, 0, sizeof(E2apDb));
@@ -5371,18 +5636,43 @@ uint8_t parseE2ConfigParams(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur, E2apDb *
          while(child != NULL)
          {
             if ((!xmlStrcmp(child->name, (const xmlChar *)"TNL_ASSOC")) && (child->ns == ns))
-           {
-              if(parseTnlAssoc(doc, ns, child,&e2apDb->tnlAssoc[tnlIdx]) != ROK)
-              {
-                 return RFAILED;
-              }
-              tnlIdx++;
+            {
+               if(parseTnlAssoc(doc, ns, child,&e2apDb->tnlAssoc[tnlIdx]) != ROK)
+               {
+                  return RFAILED;
+               }
+               tnlIdx++;
 
-           }
-           child = child -> next;
-        }
-     }
-     cur = cur -> next;
+            }
+            child = child -> next;
+         }
+      }
+
+      if ((!xmlStrcmp(cur->name, (const xmlChar *)"NUM_OF_RAN_FUNCTION")) && (cur->ns == ns))
+      {
+         e2apDb->numOfRanFunction = atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
+      }
+
+      if ((!xmlStrcmp(cur->name, (const xmlChar *)"RAN_FUNCTION_LIST")) && (cur->ns == ns))
+      {
+         child = cur->xmlChildrenNode;
+         while(child != NULL)
+         {
+            if ((!xmlStrcmp(child->name, (const xmlChar *)"RAN_FUNCTION")) && (child->ns == ns))
+            {
+               if(parseRanFunctionParams(doc, ns, child,&e2apDb->ranFunction[ranFuncIdx]) != ROK)
+               {
+                  return RFAILED;
+               }
+               cmLListInit(&e2apDb->ranFunction[ranFuncIdx].subscriptionList);
+               ranFuncIdx++;
+
+            }
+            child = child -> next;
+         }
+      }
+
+      cur = cur -> next;
    }
    return ROK;
 }
@@ -5578,6 +5868,12 @@ uint8_t parseDuCfgParams(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur)
          {
             return RFAILED;
          }
+         else
+         {
+            cmInitTimers(&(duCb.e2apDb.e2TimersInfo.e2Timers.e2SetupTimer), 1);
+            cmInitTimers(&(duCb.e2apDb.e2TimersInfo.e2Timers.ricServiceUpdateTimer.timer), 1);
+            cmInitTimers(&(duCb.e2apDb.e2TimersInfo.e2Timers.e2NodeConfigUpdate.timer), 1);
+         }
       }
       cur = cur -> next;
    }
@@ -5653,10 +5949,6 @@ uint8_t duReadCfg()
    pst.selector = ODU_SELECTOR_TC;
    pst.pool= DU_POOL;
 
-   /* Initialize the timer blocks */
-   cmInitTimers(&(duCb.e2apDb.e2TimersInfo.e2Timers.e2SetupTimer), 1);
-   cmInitTimers(&(duCb.e2apDb.e2TimersInfo.e2Timers.ricServiceUpdateTimer.timer), 1);
-   cmInitTimers(&(duCb.e2apDb.e2TimersInfo.e2Timers.e2NodeConfigUpdate.timer), 1);
 
    /* Timer Registration request to system services */
    if (ODU_REG_TMR_MT(pst.srcEnt, pst.srcInst, duCb.duTimersInfo.tmrRes, duActvTmr) != ROK)
