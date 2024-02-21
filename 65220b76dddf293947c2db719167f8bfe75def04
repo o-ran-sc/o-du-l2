@@ -3,6 +3,52 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "fa559159_3c06bd30",
+        "filename": "src/du_app/du_cfg.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1070,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-02-21T06:04:25Z",
+      "side": 1,
+      "message": "please initialize",
+      "range": {
+        "startLine": 1070,
+        "startChar": 12,
+        "endLine": 1070,
+        "endChar": 24
+      },
+      "revId": "65220b76dddf293947c2db719167f8bfe75def04",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c177a474_b4454cf9",
+        "filename": "src/du_app/du_cfg.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1082,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-02-21T06:04:25Z",
+      "side": 1,
+      "message": "in case of O1_enable, this(f1_sctp_port, e2_sctp_port) will have undefined value right?",
+      "range": {
+        "startLine": 1082,
+        "startChar": 41,
+        "endLine": 1082,
+        "endChar": 53
+      },
+      "revId": "65220b76dddf293947c2db719167f8bfe75def04",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2f0099ed_45fa3c8d",
         "filename": "src/du_app/du_f1ap_msg_hdl.c",
         "patchSetId": 4
