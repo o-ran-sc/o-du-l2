@@ -24,6 +24,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f11cff73_31029be1",
+        "filename": "src/du_app/du_cfg.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 5403,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-02-22T06:14:38Z",
+      "side": 1,
+      "message": "this is correct but I renamed the reportStyle as ricReportStyle.",
+      "parentUuid": "1dceef10_b63f20ca",
+      "range": {
+        "startLine": 5403,
+        "startChar": 41,
+        "endLine": 5403,
+        "endChar": 65
+      },
+      "revId": "e60f9a2a3deb15e430c13ca54bd5632452fac0c7",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7534453f_a5605590",
@@ -37,6 +61,24 @@
       "writtenOn": "2024-02-22T05:45:35Z",
       "side": 1,
       "message": "reset the child to null before reusing below",
+      "revId": "e60f9a2a3deb15e430c13ca54bd5632452fac0c7",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "52f2b443_9d396328",
+        "filename": "src/du_app/du_cfg.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 5558,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-02-22T06:14:38Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7534453f_a5605590",
       "revId": "e60f9a2a3deb15e430c13ca54bd5632452fac0c7",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
