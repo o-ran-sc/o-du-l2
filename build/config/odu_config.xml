@@ -708,7 +708,6 @@
                      <NAME>E2 Node Measurement</NAME>
                      <FORMAT_TYPE>1</FORMAT_TYPE>
                   </RIC_STYLE>
-                  <NUM_OF_MEASUREMENT_INFO>2</NUM_OF_MEASUREMENT_INFO>
                   <MEASUREMENT_INFO_LIST>
                      <MEASUREMENT_INFO>
                         <ID>1</ID>
