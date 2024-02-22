@@ -4925,7 +4925,6 @@ uint8_t parseMeasurementInfo(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur, CmLList
 uint8_t parseReportStyle(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur, RicReportStyle  *ricReportStyle)
 {
    xmlNodePtr child = NULLP;
-   uint8_t numOfMeasurementInfo=0;
    memset(ricReportStyle, 0, sizeof(RicReportStyle));
 
    cur = cur->xmlChildrenNode;
@@ -4937,11 +4936,6 @@ uint8_t parseReportStyle(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur, RicReportSt
          {
             return RFAILED;
          }
-      }
-
-      if ((!xmlStrcmp(cur->name, (const xmlChar *)"NUM_OF_MEASUREMENT_INFO")) && (cur->ns == ns))
-      {
-         numOfMeasurementInfo = atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
       }
 
       if ((!xmlStrcmp(cur->name, (const xmlChar *)"MEASUREMENT_INFO_LIST")) && (cur->ns == ns))
@@ -5523,6 +5517,9 @@ uint8_t duReadCfg()
  * ****************************************************************/
 void printDuConfig()
 {
+   
+   uint16_t ranFuncIdx;
+   uint8_t reportStyleIdx =0, eventStyleIdx=0, tnlIdx=0;
    uint8_t sliceIdx = 0, pfIdx = 0, rsrcIdx = 0, ssbMaskIdx = 0, fdmIdx = 0;
    uint8_t monitoringSymbIdx = 0, poIdx = 0, policyIdx = 0, memIdx = 0;
    __attribute__((unused)) SctpParams *sctp;
@@ -5580,7 +5577,11 @@ void printDuConfig()
    MacSliceRrmPolicy *rrmPolicy;
    __attribute__((unused)) RrmPolicyRatio *rrmPolicyRatio;
    __attribute__((unused)) RrmPolicyMemberList *rrmPolicyMemberList;
-
+   CmLList *node;
+   E2apDb *e2apDb;
+   RanFunction *ranFunc;
+   CmLListCp *measurementInfoList;
+   MeasurementInfoForAction *measurementInfoForAction;
 #ifdef NR_TDD
    F1NrTddInfo *f1NrTddInfo;
    TDDCfg *tddCfg;
@@ -6190,6 +6191,65 @@ void printDuConfig()
          DU_LOG("\t\tSST %d\n",rrmPolicyMemberList->snssai.sst);
          DU_LOG("\t\tSD %d %d %d\n",rrmPolicyMemberList->snssai.sd[0],rrmPolicyMemberList->snssai.sd[1],rrmPolicyMemberList->snssai.sd[2]);
       }
+   }
+   
+   DU_LOG("\n ** E2 configuration ** \n");
+   e2apDb = &duCb.e2apDb;
+   DU_LOG("E2 node id %lu\n", e2apDb->e2NodeId);
+   DU_LOG("Number of RAN function %d\n", e2apDb->numOfRanFunction);
+   for(ranFuncIdx=0; ranFuncIdx<e2apDb->numOfRanFunction; ranFuncIdx++)
+   {
+      ranFunc = &e2apDb->ranFunction[ranFuncIdx];
+      DU_LOG("RAN function id %d\n", ranFunc->id);
+      DU_LOG("Short Name %s\n", ranFunc->name.shortName);
+      DU_LOG("Service Model OID %s\n", ranFunc->name.serviceModelOID);
+      DU_LOG("Description %s\n", ranFunc->name.description);
+      
+      DU_LOG("RevisionCounter %d\n",ranFunc->revisionCounter);
+      DU_LOG("NUM of Event Trigger Style Supported %d\n",ranFunc->numOfEventTriggerStyleSupported);
+      for(eventStyleIdx=0;eventStyleIdx<ranFunc->numOfEventTriggerStyleSupported; eventStyleIdx++)
+      {
+         DU_LOG("Style Type %d\n",ranFunc->eventTriggerStyleList[eventStyleIdx].styleType);
+         DU_LOG("Name %s\n",ranFunc->eventTriggerStyleList[eventStyleIdx].name);
+         DU_LOG("Format type %d\n",ranFunc->eventTriggerStyleList[eventStyleIdx].formatType);
+      }
+
+      DU_LOG("Num of Report Style Supported %d\n",ranFunc->numOfReportStyleSupported);
+      for(reportStyleIdx=0;reportStyleIdx<ranFunc->numOfReportStyleSupported; reportStyleIdx++)
+      {
+         DU_LOG("Style Type %d\n",ranFunc->reportStyleList[reportStyleIdx].reportStyle.styleType);
+         DU_LOG("Name %s\n",ranFunc->reportStyleList[reportStyleIdx].reportStyle.name);
+         DU_LOG("Format type %d\n",ranFunc->reportStyleList[reportStyleIdx].reportStyle.formatType);
+         measurementInfoList = &ranFunc->reportStyleList[reportStyleIdx].measurementInfoList;
+         if(measurementInfoList->count)
+         {
+            CM_LLIST_FIRST_NODE(measurementInfoList, node);
+            while(node)
+            {
+               measurementInfoForAction = (MeasurementInfoForAction*) node->node;
+               if(measurementInfoForAction)
+               {
+                  DU_LOG("Measurement Type Name %s\n",measurementInfoForAction->measurementTypeName);
+                  DU_LOG("Measurement Type Id %d\n",measurementInfoForAction->measurementTypeId);
+               }
+               node = node->next;
+            }
+         }
+      }
+      DU_LOG("Ric Indication header format %d\n",ranFunc->ricIndicationHeaderFormat);
+      DU_LOG("Ric indication message format %d\n",ranFunc->ricIndicationMessageFormat);
+
+   }
+   DU_LOG("Number of TNL association %d\n", e2apDb->numOfTNLAssoc);
+   for(tnlIdx=0;tnlIdx<e2apDb->numOfTNLAssoc;tnlIdx++)
+   {
+      DU_LOG("Local IPv4 Address present %u\n", e2apDb->tnlAssoc[tnlIdx].localIpAddress.ipV4Pres);
+      DU_LOG("local IP Address %u\n", e2apDb->tnlAssoc[tnlIdx].localIpAddress.ipV4Addr);
+      DU_LOG("Destination IPv4 Address present %u\n", e2apDb->tnlAssoc[tnlIdx].destIpAddress.ipV4Pres);
+      DU_LOG("Destination IP Address %u\n", e2apDb->tnlAssoc[tnlIdx].destIpAddress.ipV4Addr);
+      DU_LOG("Local port %d\n", e2apDb->tnlAssoc[tnlIdx].localPort);
+      DU_LOG("Destination port %d\n", e2apDb->tnlAssoc[tnlIdx].destPort);
+      DU_LOG("Tnl usage %d\n", e2apDb->tnlAssoc[tnlIdx].usage);
    }
 }
 
