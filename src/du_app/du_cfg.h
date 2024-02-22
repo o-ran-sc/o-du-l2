@@ -35,19 +35,15 @@
 
 //TODO: while testing for TDD, Mu1 and 100 MHz, this flag must be enabled
 #ifdef NR_TDD
-#define DUPLEX_MODE DUP_MODE_TDD
 #define NR_DL_ARFCN 623400
 #define NR_UL_ARFCN 623400
 #define NR_FREQ_BAND 78
 #define NR_SCS SCS_30KHZ
-#define NR_BANDWIDTH BANDWIDTH_100MHZ
 #else
-#define DUPLEX_MODE DUP_MODE_FDD
 #define NR_DL_ARFCN 428000
 #define NR_UL_ARFCN 390000
 #define NR_FREQ_BAND 1
 #define NR_SCS SCS_15KHZ
-#define NR_BANDWIDTH BANDWIDTH_20MHZ
 #endif
 
 #define TRANS_ID 1
@@ -67,52 +63,21 @@
 #define TIME_CFG 4
 #define MEAS_TIMING_ARFCN 630432
 #define CARRIER_IDX 1
-#define NUM_TX_ANT 2
-#define NUM_RX_ANT 2
 #define FREQ_SHIFT_7P5KHZ FALSE
-#define SSB_PBCH_PWR 0
-#define BCH_PAYLOAD PHY_GEN_TIMING_PBCH_BIT
-#define NORMAL_CYCLIC_PREFIX 0
-#define OFFSET_TO_POINT_A 24                     /* PRB Offset to Point A */
-#define BETA_PSS BETA_PSS_0DB  
-#define SSB_SUBCARRIER_OFFSET 0         
-#define SSB_FREQUENCY  3000000   /*ssbFrequency in kHz*/
 #define SSB_MULT_CARRIER_BAND FALSE
 #define MULT_CELL_CARRIER FALSE
-#define DMRS_TYPE_A_POS 2
 #define NUM_SYMBOLS_PER_SLOT 14       /* Number of symbols within a slot */
 #define CORESET0_END_PRB   48
 #define CORESET1_NUM_PRB   24
 
 /* MACRO defines for PRACH Configuration */
-#ifndef NR_TDD
-#define PRACH_CONFIG_IDX   16
-#else
-#define PRACH_CONFIG_IDX   88
-#endif
 #define PRACH_MAX_PRB  24  /* As per (spec 38.211-Table 6.3.3.2-1), max allocated PRBs can go upto 24 */
-#define PRACH_FREQ_START  (MAX_NUM_RB - PRACH_MAX_PRB) /* In order to allocate PRACH from end of the resource grid */
-#define PRACH_SEQ_LEN SHORT_SEQUENCE
-#define PRACH_SUBCARRIER_SPACING NR_SCS
-#define PRACH_RESTRICTED_SET_CFG 0
-#define NUM_PRACH_FDM 1
-#define ROOT_SEQ_IDX 0
-#define NUM_ROOT_SEQ 1
-#define ZERO_CORRELATION_ZONE_CFG 4
 #define NUM_UNUSED_ROOT_SEQ 0
 #define UNUSED_ROOT_SEQ 1
-#define SSB_PER_RACH 1
-#define CB_PREAMBLE_PER_SSB 8
 #define PRACH_MULT_CARRIER_BAND FALSE
-#define NUM_RA_PREAMBLE  63
-
-#ifdef NR_TDD
-#define TDD_PERIODICITY TX_PRDCTY_MS_5 
-#endif
 
 #define RSS_MEASUREMENT_UNIT DONT_REPORT_RSSI
 #define RA_CONT_RES_TIMER 64
-#define RA_RSP_WINDOW 10
 
 /* MACRCO Ddefine for PDCCH Configuration */
 #define PDCCH_CTRL_RSRC_SET_ONE_ID  1
@@ -129,8 +94,6 @@
 
 /* MACRO Ddefine for PDSCH Configuration */
 #define NUM_TIME_DOM_RSRC_ALLOC 2
-#define PDSCH_K0_CFG1  0
-#define PDSCH_K0_CFG2  1
 #define PDSCH_START_SYMBOL  3
 #define PDSCH_LENGTH_SYMBOL 11
 #define PDSCH_RES_ALLOC_TYPE       1          /* Resource allocation type */
@@ -148,17 +111,6 @@
 #define PUSCH_TRANSFORM_PRECODER    1      /* 1: Disabled */
 #define PUSCH_MAX_MIMO_LAYERS       1
 #define PUSCH_PROCESS_TYPE2_ENABLED false
-
-/* Macro define for PUCCH Configuration */
-#define PUCCH_RSRC_COMMON  0
-#define PUCCH_NEITHER_HOPPING 0 /* Neither sequence hopping nor group hopping */
-
-/* MACRO defines for TDD DL-UL Configuration */
-#define NUM_DL_SLOTS 7
-#define NUM_DL_SYMBOLS 12 
-#define NUM_UL_SLOTS 2
-#define NUM_UL_SYMBOLS 1
-#define GUARD_SLOT_IDX 7
 
 /* MACRO defines for SRC config */
 #define SRS_RSRC_ID  1
