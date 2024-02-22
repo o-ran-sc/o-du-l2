@@ -71,264 +71,6 @@ extern NRCellDU cellParams;
 
 char encBuf[ENC_BUF_MAX_LEN];
 
-
-/* Filling Slot configuration as :
- * Slot Sym 0 Sym 1 Sym 2 Sym 3 Sym 4 Sym 5 Sym 6 Sym 7 Sym 8 Sym 9 Sym10 Sym11 Sym12 Sym13
- *   0   DL    DL    DL    DL    DL    DL    DL    DL    DL    DL    DL    DL    DL    DL
- *   1   DL    DL    DL    DL    DL    DL    DL    DL    DL    DL    DL    DL    DL    DL
- *   2   DL    DL    DL    DL    DL    DL    DL    DL    DL    DL    DL    DL    DL    DL
-     3   DL    DL    DL    DL    DL    DL    DL    DL    DL    DL    DL    DL    DL    DL
-     4   DL    DL    DL    DL    DL    DL    DL    DL    DL    DL    DL    DL    DL    DL
-     5   DL    DL    DL    DL    DL    DL    DL    DL    DL    DL    DL    DL    DL    DL
-     6   DL    DL    DL    DL    DL    DL    DL    DL    DL    DL    DL    DL    DL    DL
-     7   DL    DL    DL    DL    DL    DL    DL    DL    DL    DL    DL    DL    F     UL
-     8   UL    UL    UL    UL    UL    UL    UL    UL    UL    UL    UL    UL    UL    UL
-     9   UL    UL    UL    UL    UL    UL    UL    UL    UL    UL    UL    UL    UL    UL  
- */
-
-/*******************************************************************
- * @brief Reads the CL Configuration.
- *
- * @details
- *
- *    Function : readMacCfg
- *
- *    Functionality:
- *       - Fills up the cell configuration for CL.
- *       - Calls FillSlotConfig()  
- *
- * @params[in] void
- * @return ROK     - success
- *         RFAILED - failure
- *
- * ****************************************************************/
-
-uint8_t readMacCfg()
-{
-   uint8_t idx=0, sliceIdx=0,plmnIdx = 0;
-   SupportedSliceList *taiSliceSuppLst;
-
-   /* DL carrier configuration */
-#ifdef O1_ENABLE
-   duCfgParam.macCellCfg.cellId = cellParams.cellLocalId;
-   duCfgParam.macCellCfg.carrCfg.dlBw = cellParams.bSChannelBwDL;
-   duCfgParam.macCellCfg.carrCfg.arfcnDL = cellParams.arfcnDL;
-#else
-   duCfgParam.macCellCfg.cellId = NR_CELL_ID;
-   duCfgParam.macCellCfg.carrCfg.dlBw = NR_BANDWIDTH;
-   duCfgParam.macCellCfg.carrCfg.arfcnDL  = NR_DL_ARFCN;
-#endif
-   duCfgParam.macCellCfg.carrCfg.numTxAnt = NUM_TX_ANT;
-   /* UL Carrier configuration */
-#ifdef O1_ENABLE
-   duCfgParam.macCellCfg.carrCfg.ulBw = cellParams.bSChannelBwUL;
-   duCfgParam.macCellCfg.carrCfg.arfcnUL = cellParams.arfcnUL;
-#else   
-   duCfgParam.macCellCfg.carrCfg.ulBw = NR_BANDWIDTH;
-   duCfgParam.macCellCfg.carrCfg.arfcnUL =  NR_UL_ARFCN;
-#endif   
-   duCfgParam.macCellCfg.carrCfg.numRxAnt = NUM_RX_ANT;
-
-   /* Cell configuration */
-#ifdef O1_ENABLE
-   duCfgParam.macCellCfg.cellCfg.opState    = cellParams.operationalState;
-   duCfgParam.macCellCfg.cellCfg.adminState = cellParams.administrativeState;
-   duCfgParam.macCellCfg.cellCfg.cellState  = cellParams.cellState;
-   duCfgParam.macCellCfg.cellCfg.phyCellId  = cellParams.nRPCI;
-   duCfgParam.macCellCfg.cellCfg.tac        = cellParams.nRTAC;
-   duCfgParam.macCellCfg.cellCfg.ssbFreq    = cellParams.ssbFrequency;
-#else
-   duCfgParam.macCellCfg.cellCfg.opState    = OP_DISABLED; 
-   duCfgParam.macCellCfg.cellCfg.adminState = ADMIN_UNLOCKED;
-   duCfgParam.macCellCfg.cellCfg.cellState  = CELL_INACTIVE;
-   duCfgParam.macCellCfg.cellCfg.phyCellId  = NR_PCI;
-   duCfgParam.macCellCfg.cellCfg.tac        = DU_TAC; 
-   duCfgParam.macCellCfg.cellCfg.ssbFreq    = SSB_FREQUENCY;
-#endif
-   /* Plmn And SNSSAI Configuration */
-   for(plmnIdx = 0; plmnIdx < MAX_PLMN; plmnIdx++)
-   {
-      memcpy(&duCfgParam.macCellCfg.cellCfg.plmnInfoList[plmnIdx].plmn, &duCfgParam.srvdCellLst[0].duCellInfo.cellInfo.srvdPlmn[plmnIdx].plmn,\
-            sizeof(Plmn));
-      taiSliceSuppLst = &duCfgParam.srvdCellLst[0].duCellInfo.cellInfo.srvdPlmn[plmnIdx].taiSliceSuppLst;
-      duCfgParam.macCellCfg.cellCfg.plmnInfoList[plmnIdx].suppSliceList.numSupportedSlices = taiSliceSuppLst->numSupportedSlices;
-      if(taiSliceSuppLst->snssai)
-      {
-         DU_ALLOC_SHRABL_BUF(duCfgParam.macCellCfg.cellCfg.plmnInfoList[plmnIdx].suppSliceList.snssai, (duCfgParam.macCellCfg.cellCfg.plmnInfoList[plmnIdx].suppSliceList.numSupportedSlices) * sizeof(Snssai*));
-         if(duCfgParam.macCellCfg.cellCfg.plmnInfoList[plmnIdx].suppSliceList.snssai == NULLP)
-         {
-            DU_LOG("\nERROR  --> DU_APP: Memory allocation failed at readMacCfg");
-            return RFAILED;
-         }
-      }
-      for(sliceIdx=0; sliceIdx < taiSliceSuppLst->numSupportedSlices; sliceIdx++)
-      {
-         if(taiSliceSuppLst->snssai[sliceIdx] != NULLP)
-         {
-            DU_ALLOC_SHRABL_BUF(duCfgParam.macCellCfg.cellCfg.plmnInfoList[plmnIdx].suppSliceList.snssai[sliceIdx], sizeof(Snssai));
-            if(duCfgParam.macCellCfg.cellCfg.plmnInfoList[plmnIdx].suppSliceList.snssai[sliceIdx] == NULLP)
-            {
-               DU_LOG("\nERROR  --> DU_APP: Memory allocation failed at readMacCfg");
-               return RFAILED;
-            }
-            memcpy(duCfgParam.macCellCfg.cellCfg.plmnInfoList[plmnIdx].suppSliceList.snssai[sliceIdx], taiSliceSuppLst->snssai[sliceIdx], sizeof(Snssai));
-         }
-      }
-   }
-   duCfgParam.macCellCfg.cellCfg.subCarrSpacing = NR_SCS;
-   duCfgParam.macCellCfg.cellCfg.dupType    = DUPLEX_MODE;
-
-   /* SSB configuration */
-   duCfgParam.macCellCfg.ssbCfg.ssbPbchPwr = SSB_PBCH_PWR;
-   duCfgParam.macCellCfg.ssbCfg.bchPayloadFlag = BCH_PAYLOAD;
-   duCfgParam.macCellCfg.ssbCfg.ssbOffsetPointA = OFFSET_TO_POINT_A;
-   duCfgParam.macCellCfg.ssbCfg.betaPss = BETA_PSS;
-#ifdef O1_ENABLE
-   duCfgParam.macCellCfg.ssbCfg.scsCmn = convertScsValToScsEnum(cellParams.ssbSubCarrierSpacing);
-   duCfgParam.macCellCfg.ssbCfg.ssbPeriod = convertSSBPeriodicityToEnum(cellParams.ssbPeriodicity);
-   duCfgParam.macCellCfg.ssbCfg.ssbScOffset = cellParams.ssbOffset;
-#else
-   duCfgParam.macCellCfg.ssbCfg.scsCmn = NR_SCS;
-   duCfgParam.macCellCfg.ssbCfg.ssbPeriod = SSB_PRDCTY_MS_20;
-   duCfgParam.macCellCfg.ssbCfg.ssbScOffset = SSB_SUBCARRIER_OFFSET;
-#endif
-   duCfgParam.macCellCfg.ssbCfg.ssbMask[0] = 1; /* only one SSB is transmitted */
-   if(BuildMibPdu() != ROK)
-   {
-      DU_LOG("\nERROR  -->  Failed to build MIB PDU");
-      memset(&duCfgParam.macCellCfg.ssbCfg.mibPdu, 0, 3*sizeof(uint8_t));
-   }
-   else
-   {
-      memcpy(&duCfgParam.macCellCfg.ssbCfg.mibPdu, encBuf,encBufSize);
-   }
-
-   /* PRACH configuration */
-   duCfgParam.macCellCfg.prachCfg.prachSeqLen = PRACH_SEQ_LEN;
-   duCfgParam.macCellCfg.prachCfg.prachSubcSpacing = convertScsEnumValToScsVal(PRACH_SUBCARRIER_SPACING);
-   duCfgParam.macCellCfg.prachCfg.prachCfgIdx = PRACH_CONFIG_IDX;
-   duCfgParam.macCellCfg.prachCfg.msg1Fdm = NUM_PRACH_FDM;
-   duCfgParam.macCellCfg.prachCfg.fdm[0].rootSeqIdx = ROOT_SEQ_IDX;
-   duCfgParam.macCellCfg.prachCfg.fdm[0].numRootSeq = NUM_ROOT_SEQ;
-   duCfgParam.macCellCfg.prachCfg.fdm[0].k1 = 0;
-   duCfgParam.macCellCfg.prachCfg.fdm[0].zeroCorrZoneCfg = ZERO_CORRELATION_ZONE_CFG;
-   duCfgParam.macCellCfg.prachCfg.prachRstSetCfg = PRACH_RESTRICTED_SET_CFG;
-   duCfgParam.macCellCfg.prachCfg.ssbPerRach = SSB_PER_RACH;
-   duCfgParam.macCellCfg.prachCfg.msg1FreqStart = PRACH_FREQ_START;
-
-   duCfgParam.macCellCfg.prachCfg.totalNumRaPreamble = NUM_RA_PREAMBLE;
-   duCfgParam.macCellCfg.prachCfg.numCbPreamblePerSsb = CB_PREAMBLE_PER_SSB;
-   duCfgParam.macCellCfg.prachCfg.raRspWindow = RA_RSP_WINDOW;
-   
-   /* TDD configuration */
-#ifdef NR_TDD   
-   duCfgParam.macCellCfg.tddCfg.tddPeriod = TDD_PERIODICITY;
-   duCfgParam.macCellCfg.tddCfg.nrOfDlSlots = NUM_DL_SLOTS;
-   duCfgParam.macCellCfg.tddCfg.nrOfDlSymbols = NUM_DL_SYMBOLS;
-   duCfgParam.macCellCfg.tddCfg.nrOfUlSlots = NUM_UL_SLOTS;
-   duCfgParam.macCellCfg.tddCfg.nrOfUlSymbols = NUM_UL_SYMBOLS;
-
-   //FillSlotConfig();
-
-#endif
-
-   /* fill SIB1 configuration */
-   duCfgParam.macCellCfg.cellCfg.sib1Cfg.sib1PduLen = duCfgParam.srvdCellLst[0].duSysInfo.sib1Len;
-   DU_ALLOC_SHRABL_BUF(duCfgParam.macCellCfg.cellCfg.sib1Cfg.sib1Pdu,duCfgParam.srvdCellLst[0].duSysInfo.sib1Len);
-   memcpy(duCfgParam.macCellCfg.cellCfg.sib1Cfg.sib1Pdu, duCfgParam.srvdCellLst[0].duSysInfo.sib1Msg, \
-         duCfgParam.srvdCellLst[0].duSysInfo.sib1Len);
-   duCfgParam.macCellCfg.cellCfg.sib1Cfg.pdcchCfgSib1.coresetZeroIndex = CORESET_0_INDEX;
-   duCfgParam.macCellCfg.cellCfg.sib1Cfg.pdcchCfgSib1.searchSpaceZeroIndex = SEARCHSPACE_0_INDEX;
-
-   duCfgParam.macCellCfg.cellCfg.sib1Cfg.pagingCfg.numPO = duCfgParam.sib1Params.srvCellCfgCommSib.dlCfg.pcchCfg.ns;
-   if((duCfgParam.sib1Params.srvCellCfgCommSib.dlCfg.pcchCfg.firstPDCCHMontioringType != \
-            PCCH_Config__firstPDCCH_MonitoringOccasionOfPO_PR_NOTHING) && (duCfgParam.macCellCfg.cellCfg.sib1Cfg.pagingCfg.numPO != 0))
-   {
-      duCfgParam.macCellCfg.cellCfg.sib1Cfg.pagingCfg.poPresent = TRUE;
-      memcpy(duCfgParam.macCellCfg.cellCfg.sib1Cfg.pagingCfg.pagingOcc, 
-            duCfgParam.sib1Params.srvCellCfgCommSib.dlCfg.pcchCfg.firstPDCCHMontioringInfo,MAX_PO_PER_PF);
-   }
-   else
-   {
-      duCfgParam.macCellCfg.cellCfg.sib1Cfg.pagingCfg.poPresent = FALSE;
-   }
-
-   /* fill Intial DL BWP */
-   duCfgParam.macCellCfg.cellCfg.initialDlBwp.bwp.firstPrb = 0;
-   duCfgParam.macCellCfg.cellCfg.initialDlBwp.bwp.numPrb = MAX_NUM_RB; /* configured to total BW */
-   duCfgParam.macCellCfg.cellCfg.initialDlBwp.bwp.scs = duCfgParam.macCellCfg.ssbCfg.scsCmn;
-   duCfgParam.macCellCfg.cellCfg.initialDlBwp.bwp.cyclicPrefix = NORMAL_CYCLIC_PREFIX;
-   duCfgParam.macCellCfg.cellCfg.initialDlBwp.pdcchCommon.commonSearchSpace.searchSpaceId = SEARCHSPACE_1_INDEX;
-   duCfgParam.macCellCfg.cellCfg.initialDlBwp.pdcchCommon.commonSearchSpace.coresetId = CORESET_0_INDEX;
-   duCfgParam.macCellCfg.cellCfg.initialDlBwp.pdcchCommon.commonSearchSpace.monitoringSlot =
-      SS_MONITORING_SLOT_SL1; /* sl1 - all slots */
-   duCfgParam.macCellCfg.cellCfg.initialDlBwp.pdcchCommon.commonSearchSpace.duration = 0;
-   duCfgParam.macCellCfg.cellCfg.initialDlBwp.pdcchCommon.commonSearchSpace.monitoringSymbol =
-      SS_MONITORING_SYMBOL;
-   duCfgParam.macCellCfg.cellCfg.initialDlBwp.pdcchCommon.commonSearchSpace.
-      candidate.aggLevel1	= 8;
-   duCfgParam.macCellCfg.cellCfg.initialDlBwp.pdcchCommon.commonSearchSpace.
-      candidate.aggLevel2	= 4;
-   duCfgParam.macCellCfg.cellCfg.initialDlBwp.pdcchCommon.commonSearchSpace.
-      candidate.aggLevel4	= 2;
-   duCfgParam.macCellCfg.cellCfg.initialDlBwp.pdcchCommon.commonSearchSpace.
-      candidate.aggLevel8	= 1;
-   duCfgParam.macCellCfg.cellCfg.initialDlBwp.pdcchCommon.commonSearchSpace.
-      candidate.aggLevel16	= 0;
-
-   duCfgParam.macCellCfg.cellCfg.initialDlBwp.pdschCommon.numTimeDomAlloc = NUM_TIME_DOM_RSRC_ALLOC;
-   idx = 0;
-   duCfgParam.macCellCfg.cellCfg.initialDlBwp.pdschCommon.timeDomRsrcAllocList[idx].k0 = PDSCH_K0_CFG1;
-   duCfgParam.macCellCfg.cellCfg.initialDlBwp.pdschCommon.timeDomRsrcAllocList[idx].mappingType = 
-      PDSCH_MAPPING_TYPE_A;
-   duCfgParam.macCellCfg.cellCfg.initialDlBwp.pdschCommon.timeDomRsrcAllocList[idx].startSymbol = 
-      PDSCH_START_SYMBOL;
-   duCfgParam.macCellCfg.cellCfg.initialDlBwp.pdschCommon.timeDomRsrcAllocList[idx].lengthSymbol =
-      PDSCH_LENGTH_SYMBOL;
-
-   idx++;
-   duCfgParam.macCellCfg.cellCfg.initialDlBwp.pdschCommon.timeDomRsrcAllocList[idx].k0 = PDSCH_K0_CFG2;
-   duCfgParam.macCellCfg.cellCfg.initialDlBwp.pdschCommon.timeDomRsrcAllocList[idx].mappingType = 
-      PDSCH_MAPPING_TYPE_A;
-   duCfgParam.macCellCfg.cellCfg.initialDlBwp.pdschCommon.timeDomRsrcAllocList[idx].startSymbol = 
-      PDSCH_START_SYMBOL;
-   duCfgParam.macCellCfg.cellCfg.initialDlBwp.pdschCommon.timeDomRsrcAllocList[idx].lengthSymbol =
-      PDSCH_LENGTH_SYMBOL;
-
-   /* ra-searchSpace ID is set to 1 */
-   duCfgParam.macCellCfg.cellCfg.initialDlBwp.pdcchCommon.raSearchSpaceId = SEARCHSPACE_1_INDEX;
-
-   /* fill Intial UL BWP */
-   duCfgParam.macCellCfg.cellCfg.initialUlBwp.bwp.firstPrb = 0;
-   duCfgParam.macCellCfg.cellCfg.initialUlBwp.bwp.numPrb = MAX_NUM_RB; /* configured to total BW */
-   duCfgParam.macCellCfg.cellCfg.initialUlBwp.bwp.scs = duCfgParam.macCellCfg.ssbCfg.scsCmn;
-   duCfgParam.macCellCfg.cellCfg.initialUlBwp.bwp.cyclicPrefix = NORMAL_CYCLIC_PREFIX;
-   duCfgParam.macCellCfg.cellCfg.initialUlBwp.puschCommon.numTimeDomRsrcAlloc = 2;
-   duCfgParam.macCellCfg.cellCfg.initialUlBwp.puschCommon.timeDomRsrcAllocList[0].k2 = PUSCH_K2_CFG1;
-   duCfgParam.macCellCfg.cellCfg.initialUlBwp.puschCommon.timeDomRsrcAllocList[0].mappingType = 
-      PUSCH_MAPPING_TYPE_A;
-   duCfgParam.macCellCfg.cellCfg.initialUlBwp.puschCommon.timeDomRsrcAllocList[0].startSymbol = 
-      PUSCH_START_SYMBOL;
-   duCfgParam.macCellCfg.cellCfg.initialUlBwp.puschCommon.timeDomRsrcAllocList[0].symbolLength =
-      PUSCH_LENGTH_SYMBOL;
-
-   duCfgParam.macCellCfg.cellCfg.initialUlBwp.puschCommon.timeDomRsrcAllocList[1].k2 = PUSCH_K2_CFG2;
-   duCfgParam.macCellCfg.cellCfg.initialUlBwp.puschCommon.timeDomRsrcAllocList[1].mappingType = 
-      PUSCH_MAPPING_TYPE_A;
-   duCfgParam.macCellCfg.cellCfg.initialUlBwp.puschCommon.timeDomRsrcAllocList[1].startSymbol = 
-      PUSCH_START_SYMBOL;
-   duCfgParam.macCellCfg.cellCfg.initialUlBwp.puschCommon.timeDomRsrcAllocList[1].symbolLength =
-      PUSCH_LENGTH_SYMBOL;
-
-   duCfgParam.macCellCfg.ssbCfg.dmrsTypeAPos = DMRS_TYPE_A_POS; 
-
-   /* fill PUCCH config common */
-   duCfgParam.macCellCfg.cellCfg.initialUlBwp.pucchCommon.pucchResourceCommon = PUCCH_RSRC_COMMON;
-   duCfgParam.macCellCfg.cellCfg.initialUlBwp.pucchCommon.pucchGroupHopping = PUCCH_NEITHER_HOPPING;
-
-   return ROK;
-}
-
 /*******************************************************************
  *
  * @brief Configures the DU Parameters
@@ -633,12 +375,6 @@ uint8_t readCfg()
             encBuf,encBufSize);
       duCfgParam.srvdCellLst[srvdCellIdx].duSysInfo.sib1Len = encBufSize;
 
-   }
-
-   if(readMacCfg() != ROK)
-   {
-      DU_LOG("\nERROR  -->  DU_APP : Failed while reading MAC config");
-      return RFAILED;
    }
 
    return ROK;
@@ -1060,7 +796,6 @@ uint8_t parseSnssai(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur, Snssai *snssai)
    return ROK;
 }
 
-#ifdef XML_BASED_CONFIG
 /*******************************************************************
  *
  * @brief Fill Supported Slice List
@@ -1083,7 +818,6 @@ uint8_t parseSupportedSliceList(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur, Supp
 {
    uint8_t sliceIdx = 0;
    xmlNodePtr child = NULLP;
-   xmlNodePtr snssaiNode = NULLP;
 
    memset(sliceSuppLst, 0, sizeof(SupportedSliceList));
    cur = cur->xmlChildrenNode;
@@ -1127,25 +861,17 @@ uint8_t parseSupportedSliceList(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur, Supp
          }
 
 #ifndef O1_ENABLE
+         sliceIdx = 0;
          child = cur->xmlChildrenNode;
          while (child != NULL)
          {
-            if ((!xmlStrcmp(child->name, (const xmlChar *)"LIST")) && (child->ns == ns))
-            {     
-               sliceIdx = 0;
-               snssaiNode = child->xmlChildrenNode;
-               while (snssaiNode != NULL)
+            if ((!xmlStrcmp(child->name, (const xmlChar *)"SNSSAI")) && (child->ns == ns))
+            {
+               if(parseSnssai(doc, ns, child, sliceSuppLst->snssai[sliceIdx]) != ROK)
                {
-                  if ((!xmlStrcmp(snssaiNode->name, (const xmlChar *)"SNSSAI")) && (snssaiNode->ns == ns))
-                  {
-                     if(parseSnssai(doc, ns, snssaiNode, sliceSuppLst->snssai[sliceIdx]) != ROK)
-                     {
-                        return RFAILED;
-                     }
-                     sliceIdx++;
-                  }
-                  snssaiNode = snssaiNode->next;
+                  return RFAILED;
                }
+               sliceIdx++;
             }
             child = child->next;
          }
@@ -1157,6 +883,7 @@ uint8_t parseSupportedSliceList(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur, Supp
    return ROK;
 }
 
+#ifdef XML_BASED_CONFIG
 /*******************************************************************
  *
  * @brief Fill Served PLMN
@@ -1931,6 +1658,7 @@ void fillPlmnFromO1(Plmn *PLMN, uint8_t srvdPlmnIdx)
    PLMN->mnc[2] = cellParams.plmnList[srvdPlmnIdx].mnc[2];
 }
 #endif
+#endif
 
 /*******************************************************************
  *
@@ -2187,7 +1915,7 @@ uint8_t parsePrachCfg(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur, PrachCfg *prac
 
       if ((!xmlStrcmp(cur->name, (const xmlChar *)"CB_PREAMBLE_PER_SSB")) && (cur->ns == ns))
       {
-         prachCfg->totalNumRaPreamble = atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
+         prachCfg->numCbPreamblePerSsb = atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
       }
 
       if ((!xmlStrcmp(cur->name, (const xmlChar *)"MAX_NUM_RB")) && (cur->ns == ns))
@@ -2323,19 +2051,14 @@ uint8_t parseSsbCfg(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur, SsbCfg *ssbCfg)
    cur = cur -> xmlChildrenNode;
    while(cur != NULL)
    {
-      if ((!xmlStrcmp(cur->name, (const xmlChar *)"SSB_PBSC_PWR")) && (cur->ns == ns))
-      {
-         ssbCfg->ssbPbchPwr = atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
-      }
-
+#ifdef O1_ENABLE
+      ssbCfg->scsCmn = convertScsValToScsEnum(cellParams.ssbSubCarrierSpacing);
+      ssbCfg->ssbPeriod = convertSSBPeriodicityToEnum(cellParams.ssbPeriodicity);
+      ssbCfg->ssbScOffset = cellParams.ssbOffset;
+#else
       if ((!xmlStrcmp(cur->name, (const xmlChar *)"SCS_CMN")) && (cur->ns == ns))
       {
          ssbCfg->scsCmn = atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
-      }
-
-      if ((!xmlStrcmp(cur->name, (const xmlChar *)"SSB_OFF_PT_A")) && (cur->ns == ns))
-      {
-         ssbCfg->ssbOffsetPointA = atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
       }
 
       if ((!xmlStrcmp(cur->name, (const xmlChar *)"SSB_PERIOD")) && (cur->ns == ns))
@@ -2343,12 +2066,23 @@ uint8_t parseSsbCfg(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur, SsbCfg *ssbCfg)
          ssbCfg->ssbPeriod = atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
       }
 
-      if ((!xmlStrcmp(cur->name, (const xmlChar *)"SSB_SC_OFF")) && (cur->ns == ns))
+      if ((!xmlStrcmp(cur->name, (const xmlChar *)"SSB_SC_OFFSET")) && (cur->ns == ns))
       {
          ssbCfg->ssbScOffset = atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
       }
+#endif
 
-      if ((!xmlStrcmp(cur->name, (const xmlChar *)"SSB_LIST")) && (cur->ns == ns))
+      if ((!xmlStrcmp(cur->name, (const xmlChar *)"SSB_OFFSET_PT_A")) && (cur->ns == ns))
+      {
+         ssbCfg->ssbOffsetPointA = atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
+      }
+
+      if ((!xmlStrcmp(cur->name, (const xmlChar *)"SSB_PBSC_PWR")) && (cur->ns == ns))
+      {
+         ssbCfg->ssbPbchPwr = atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
+      }
+
+      if ((!xmlStrcmp(cur->name, (const xmlChar *)"SSB_MASK_LIST")) && (cur->ns == ns))
       {
          child = cur -> xmlChildrenNode;
          while(child != NULL)
@@ -2372,18 +2106,29 @@ uint8_t parseSsbCfg(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur, SsbCfg *ssbCfg)
          ssbCfg->betaPss = atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
       }
 
-      if ((!xmlStrcmp(cur->name, (const xmlChar *)"BCH_PAY_FLAG")) && (cur->ns == ns))
+      if ((!xmlStrcmp(cur->name, (const xmlChar *)"BCH_PAYLOAD_FLAG")) && (cur->ns == ns))
       {
          ssbCfg->bchPayloadFlag = atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
       }
 
-      if ((!xmlStrcmp(cur->name, (const xmlChar *)"DMRS_TYPE_A_PROS")) && (cur->ns == ns))
+      if ((!xmlStrcmp(cur->name, (const xmlChar *)"DMRS_TYPE_A_POS")) && (cur->ns == ns))
       {
          ssbCfg->dmrsTypeAPos = atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
       }
 
       cur = cur -> next;
    }
+
+   if(BuildMibPdu() != ROK)
+   {
+      DU_LOG("\nERROR  -->  Failed to build MIB PDU");
+      memset(&ssbCfg->mibPdu, 0, 3*sizeof(uint8_t));
+   }
+   else
+   {
+      memcpy(&ssbCfg->mibPdu, encBuf, encBufSize);
+   }
+
    return ROK;
 }
 
@@ -2411,6 +2156,12 @@ uint8_t parseCarrierCfg(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur,CarrierCfg *c
    cur = cur -> xmlChildrenNode;
    while(cur != NULL)
    {
+#ifdef O1_ENABLE
+      carrierCfg->dlBw = cellParams.bSChannelBwDL;
+      carrierCfg->arfcnDL = cellParams.arfcnDL;
+      carrierCfg->ulBw = cellParams.bSChannelBwUL;
+      carrierCfg->arfcnUL = cellParams.arfcnUL;
+#else
       if ((!xmlStrcmp(cur->name, (const xmlChar *)"DL_BW")) && (cur->ns == ns))
       {
          carrierCfg->dlBw = atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
@@ -2430,6 +2181,7 @@ uint8_t parseCarrierCfg(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur,CarrierCfg *c
       {
          carrierCfg->arfcnUL = convertArfcnToFreqKhz(atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1)));
       }
+#endif
 
       if ((!xmlStrcmp(cur->name, (const xmlChar *)"NUM_TX_ANT")) && (cur->ns == ns))
       {
@@ -2605,7 +2357,6 @@ uint8_t parsePuschConfigCommon(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur,PuschC
 {
    uint8_t idx = 0;
    xmlNodePtr child = NULLP;
-   xmlNodePtr pdschNode = NULLP;
 
    memset(puschCfgCmn, 0, sizeof(PuschConfigCommon));
    cur = cur -> xmlChildrenNode;
@@ -2621,23 +2372,14 @@ uint8_t parsePuschConfigCommon(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur,PuschC
          child = cur->xmlChildrenNode;
          while(child != NULL)
          {
-            if ((!xmlStrcmp(cur->name, (const xmlChar *)"LIST")) && (cur->ns == ns))
+            if ((!xmlStrcmp(child->name, (const xmlChar *)"PUSCH_COMM_TIME_ALLOC")) && (child->ns == ns))
             {
-               pdschNode = child->xmlChildrenNode;
-               while(pdschNode != NULL)
+               if(parsePuschTimeDomRsrcAlloc(doc, ns, child, &puschCfgCmn->timeDomRsrcAllocList[idx]) != ROK)
                {
-                  if ((!xmlStrcmp(pdschNode->name, (const xmlChar *)"PUSCH_COMM_TIME_ALLOC")) && (pdschNode->ns == ns))
-                  {
-                     if(parsePuschTimeDomRsrcAlloc(doc, ns, child,&puschCfgCmn->timeDomRsrcAllocList[idx]) != ROK)
-                     {
-                        return RFAILED;
-                     }
-                     idx++;
-                  }
-                  pdschNode = pdschNode -> next;
+                  return RFAILED;
                }
+               idx++;
             }
-
             child = child -> next;
          }
       }
@@ -2882,6 +2624,18 @@ uint8_t parseSib1CellCfg(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur, Sib1CellCfg
 
       cur = cur -> next;
    }
+
+   sib1CellCfg->sib1PduLen = duCfgParam.srvdCellLst[0].duSysInfo.sib1Len;
+   if(sib1CellCfg->sib1PduLen > 0)
+   {
+      DU_ALLOC_SHRABL_BUF(sib1CellCfg->sib1Pdu, sib1CellCfg->sib1PduLen);
+      if(!sib1CellCfg->sib1Pdu)
+      {
+         DU_LOG("\nERROR  --> DU APP : %s: Memory allocation failed at line %d", __func__, __LINE__);
+         return RFAILED;
+      }
+      memcpy(sib1CellCfg->sib1Pdu, duCfgParam.srvdCellLst[0].duSysInfo.sib1Msg, sib1CellCfg->sib1PduLen);
+   }
    return ROK;
 }
 
@@ -3033,7 +2787,7 @@ uint8_t parsePdcchCfgCommon(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur,PdcchConf
          }
       }
 
-      if ((!xmlStrcmp(cur->name, (const xmlChar *)"SEARCHSPACE_1_INDEX")) && (cur->ns == ns))
+      if ((!xmlStrcmp(cur->name, (const xmlChar *)"RA_SEARCH_SPACE_INDEX")) && (cur->ns == ns))
       {
          pdcchCfgCm->raSearchSpaceId = atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
       }
@@ -3129,23 +2883,14 @@ uint8_t parsePdschConfigCommon(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur, Pdsch
          child = cur->xmlChildrenNode;
          while(child != NULL)  
          {
-            if ((!xmlStrcmp(cur->name, (const xmlChar *)"LIST")) && (cur->ns == ns))
-            {
-               pdschNode = child->xmlChildrenNode;
-               while(pdschNode != NULL)
+            if ((!xmlStrcmp(child->name, (const xmlChar *)"PDSCH_COMM_TIME_ALLOC")) && (child->ns == ns))
+            {   
+               if(parsePdschCmnTimeDomRsrcAlloc(doc, ns, child, &pdschCfgCmn->timeDomRsrcAllocList[idx]) != ROK)
                {
-                  if ((!xmlStrcmp(pdschNode->name, (const xmlChar *)"PDSCH_COMM_TIME_ALLOC")) && (pdschNode->ns == ns))
-                  {   
-                     if(parsePdschCmnTimeDomRsrcAlloc(doc, ns, child, &pdschCfgCmn->timeDomRsrcAllocList[idx]) != ROK)
-                     {
-                        return RFAILED;
-                     }
-                     idx++;
-                  }
-                  pdschNode = pdschNode -> next;
+                  return RFAILED;
                }
+               idx++;
             }
-
             child = child -> next;
          }
       }
@@ -3231,6 +2976,14 @@ uint8_t parseCellCfg(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur,CellCfg *cellCfg
    cur = cur -> xmlChildrenNode;
    while(cur != NULL)
    {
+#ifdef O1_ENABLE   
+      cellCfg->opState = cellParams.operationalState;
+      cellCfg->adminState = cellParams.administrativeState;
+      cellCfg->cellState = cellParams.cellState;
+      cellCfg->phyCellId = cellParams.nRPCI;
+      cellCfg->tac = cellParams.nRTAC;
+      cellCfg->ssbFreq = cellParams.ssbFrequency;
+#else
       if ((!xmlStrcmp(cur->name, (const xmlChar *)"MAC_OP_STATE")) && (cur->ns == ns))
       {
          cellCfg->opState = atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
@@ -3246,14 +2999,6 @@ uint8_t parseCellCfg(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur,CellCfg *cellCfg
          cellCfg->cellState = atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
       }
 
-      if ((!xmlStrcmp(cur->name, (const xmlChar *)"PLMN_INFO")) && (cur->ns == ns))
-      {
-         if(parsePlmnInfo(doc, ns, cur, &cellCfg->plmnInfoList[0]) != ROK)
-         {
-            return RFAILED;
-         }
-      }
-
       if ((!xmlStrcmp(cur->name, (const xmlChar *)"NR_PCI")) && (cur->ns == ns))
       {
          cellCfg->phyCellId = atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
@@ -3267,6 +3012,15 @@ uint8_t parseCellCfg(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur,CellCfg *cellCfg
       if ((!xmlStrcmp(cur->name, (const xmlChar *)"SSB_FREQUENCY")) && (cur->ns == ns))
       {
          cellCfg->ssbFreq = atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
+      }
+#endif
+
+      if ((!xmlStrcmp(cur->name, (const xmlChar *)"PLMN_INFO")) && (cur->ns == ns))
+      {
+         if(parsePlmnInfo(doc, ns, cur, &cellCfg->plmnInfoList[0]) != ROK)
+         {
+            return RFAILED;
+         }
       }
 
       if ((!xmlStrcmp(cur->name, (const xmlChar *)"NR_SCS")) && (cur->ns == ns))
@@ -3302,7 +3056,6 @@ uint8_t parseCellCfg(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur,CellCfg *cellCfg
             return RFAILED;
          }
       }
-
       cur = cur -> next;
    }
    return ROK;
@@ -3388,10 +3141,14 @@ uint8_t parseMacCellCfg(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur,MacCellCfg *m
    cur = cur -> xmlChildrenNode;
    while(cur != NULL)
    {
+#ifdef O1_ENABLE
+      macCellCfg->cellId = cellParams.cellLocalId;
+#else
       if ((!xmlStrcmp(cur->name, (const xmlChar *)"CELL_ID")) && (cur->ns == ns))
       {
          macCellCfg->cellId = atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
       }
+#endif
 
       if ((!xmlStrcmp(cur->name, (const xmlChar *)"CARRIER_CFG")) && (cur->ns == ns))
       {
@@ -3463,7 +3220,6 @@ uint8_t parseMacCellCfg(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur,MacCellCfg *m
    }
    return ROK;
 }
-#endif
 
 /*******************************************************************
  *
@@ -3973,7 +3729,6 @@ uint8_t parseTddUlDlCfgCommon(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur, TddUlD
 uint8_t parsePcchCfg(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur,PcchCfg *pcchCfg)
 {
    xmlNodePtr child = NULLP;
-   xmlNodePtr firstPdcchNode = NULLP;
    uint8_t  idx = 0;
 
    memset(pcchCfg, 0, sizeof(PcchCfg));
@@ -5613,6 +5368,7 @@ uint8_t parseDuCfgParams(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur)
             return RFAILED;
          }
       }
+#endif      
 
       if ((!xmlStrcmp(cur->name, (const xmlChar *)"MAC_CELL_CFG")) && (cur->ns == ns))
       {
@@ -5621,7 +5377,6 @@ uint8_t parseDuCfgParams(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur)
             return RFAILED;
          }
       }
-#endif      
 
 #ifndef O1_ENABLE
       if ((!xmlStrcmp(cur->name, (const xmlChar *)"SLICE_CFG")) && (cur->ns == ns))
@@ -6044,8 +5799,8 @@ void printDuConfig()
    
    DU_LOG("\n ** MAC Cell Configuration : Cell Configuration : SIB1 ** \n");
    sib1Cfg = &cellCfg->sib1Cfg;
-   DU_LOG("SIB1 PDU Length %d", sib1Cfg->sib1PduLen);
-   DU_LOG("SIB1 PDU %s", sib1Cfg->sib1Pdu);
+   DU_LOG("SIB1 PDU Length %d\n", sib1Cfg->sib1PduLen);
+   DU_LOG("SIB1 PDU %s\n", sib1Cfg->sib1Pdu);
 
    DU_LOG("\n ** MAC Cell Configuration : Cell Configuration : SIB1 : Paging Configuration ** \n");
    pageCfg = &sib1Cfg->pagingCfg;
@@ -6151,7 +5906,7 @@ void printDuConfig()
    DU_LOG("Beam ID %d\n", ssbCfg->beamId[0]);
    DU_LOG("BETA PSS %d\n", ssbCfg->betaPss);
    DU_LOG("BCH Payloag Flag %d\n", ssbCfg->bchPayloadFlag);
-   DU_LOG("MIB PDU %d %d %d", ssbCfg->mibPdu[0], ssbCfg->mibPdu[1], ssbCfg->mibPdu[2]);
+   DU_LOG("MIB PDU %d %d %d \n", ssbCfg->mibPdu[0], ssbCfg->mibPdu[1], ssbCfg->mibPdu[2]);
    DU_LOG("DMRS Type-A Position %d\n", ssbCfg->dmrsTypeAPos);
 
    DU_LOG("\n ** MAC Cell Configuration : CSI RS Configuration ** \n");
