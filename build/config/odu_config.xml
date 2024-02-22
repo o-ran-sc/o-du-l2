@@ -239,25 +239,22 @@
                <F1_SLICE_SUPP_LST>
                   <NUM_SUPPORT_SLICE>2</NUM_SUPPORT_SLICE>
                   <SNSSAI_LIST>
-                     <NUM_NSSAI>2</NUM_NSSAI>
-                     <LIST>
                      <SNSSAI>
                         <SST>1</SST>
                         <SD_SIZE>
-                        <SD>2</SD>
-                        <SD>3</SD>
-                        <SD>4</SD>
+                           <SD>2</SD>
+                           <SD>3</SD>
+                           <SD>4</SD>
                         </SD_SIZE>
                      </SNSSAI>
                      <SNSSAI>
                         <SST>5</SST>
                         <SD_SIZE>
-                        <SD>6</SD>
-                        <SD>7</SD>
-                        <SD>8</SD>
+                           <SD>6</SD>
+                           <SD>7</SD>
+                           <SD>8</SD>
                         </SD_SIZE>
                      </SNSSAI>
-                     </LIST>
                   </SNSSAI_LIST>
                </F1_SLICE_SUPP_LST>
             </F1_SRVD_PLMN>
@@ -276,18 +273,14 @@
                         <F1_NRB>14</F1_NRB>
                      </F1_TX_BW>
                   </F1_SUL_INFO>
+                   <MAX_NRCELL_BANDS>2</MAX_NRCELL_BANDS>
                   <F1_FREQ_BAND_LIST>
-                     <MAX_NRCELL_BANDS>2</MAX_NRCELL_BANDS>
-                     <LIST>
                      <F1_FREQ_BAND>
                         <NR_FREQ_BAND>1</NR_FREQ_BAND>
                         <SUL_BAND_LIST>
-                        <LIST>
                            <SUL_BAND>2</SUL_BAND>
-                        </LIST>
                         </SUL_BAND_LIST>
                      </F1_FREQ_BAND>
-                     </LIST>
                   </F1_FREQ_BAND_LIST>
                </F1_NR_FREQ_INFO_UL>
                <F1_NR_FREQ_INFO_DL>
@@ -299,18 +292,14 @@
                         <F1_NRB>14</F1_NRB>
                      </F1_TX_BW>
                   </F1_SUL_INFO>
+                  <MAX_NRCELL_BANDS>2</MAX_NRCELL_BANDS>
                   <F1_FREQ_BAND_LIST>
-                     <MAX_NRCELL_BANDS>2</MAX_NRCELL_BANDS>
-                     <LIST>
                      <F1_FREQ_BAND>
                         <NR_FREQ_BAND>1</NR_FREQ_BAND>
                         <SUL_BAND_LIST>
-                        <LIST>
                            <SUL_BAND>2</SUL_BAND>
-                        </LIST>
                         </SUL_BAND_LIST>
                      </F1_FREQ_BAND>
-                     </LIST>
                   </F1_FREQ_BAND_LIST>
                </F1_NR_FREQ_INFO_DL>
                <F1_TX_BW_UL>
@@ -332,18 +321,14 @@
                         <F1_NRB>28</F1_NRB>
                      </F1_TX_BW>
                   </F1_SUL_INFO>
+                  <MAX_NRCELL_BANDS>2</MAX_NRCELL_BANDS>
                   <F1_FREQ_BAND_LIST>
-                     <MAX_NRCELL_BANDS>2</MAX_NRCELL_BANDS>
-                     <LIST>
                      <F1_FREQ_BAND>
                         <NR_FREQ_BAND>78</NR_FREQ_BAND>
                         <SUL_BAND_LIST>
-                        <LIST>
                               <SUL_BAND>2</SUL_BAND>
-                        </LIST>
                         </SUL_BAND_LIST>
                      </F1_FREQ_BAND>
-                     </LIST>
                   </F1_FREQ_BAND_LIST>
                </F1_NR_FREQ_INFO>
                <F1_TX_BW>

@@ -104,284 +104,6 @@ uint16_t calcSliv(uint8_t startSymbol, uint8_t lengthSymbol)
 
 /*******************************************************************
  *
- * @brief Configures the DU Parameters
- *
- * @details
- *
- *    Function : readCfg
- *
- *    Functionality:
- *       - Initializes the DuCfg members.  
- *       - Calls readMacCfg()  
- *
- * @params[in] system task ID
- * @return ROK     - success
- *         RFAILED - failure
- *
- * ****************************************************************/
-
-uint8_t readCfg()
-{
-   uint8_t srvdCellIdx, bandIdx, sliceIdx, plmnIdx;
-   uint8_t brdcstPlmnIdx, freqBandIdx, srvdPlmnIdx;
-   Sib1Params sib1;
-   SupportedSliceList *taiSliceSuppLst;
-
-#ifndef O1_ENABLE
-   /* Note: Added these below variable for local testing*/
-   Snssai snssai[NUM_OF_SUPPORTED_SLICE] = {{1,{2,3,4}},{5,{6,7,8}}};
-#endif
-
-   for(srvdCellIdx=0; srvdCellIdx<DEFAULT_CELLS; srvdCellIdx++)
-   { 
-      memset(&duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.cellInfo.nrCgi.plmn, 0, sizeof(Plmn));
-      duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.cellInfo.nrCgi.plmn.mcc[0] = PLMN_MCC0;
-      duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.cellInfo.nrCgi.plmn.mcc[1] = PLMN_MCC1;
-      duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.cellInfo.nrCgi.plmn.mcc[2] = PLMN_MCC2;
-      duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.cellInfo.nrCgi.plmn.mnc[0] = PLMN_MNC0;
-      duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.cellInfo.nrCgi.plmn.mnc[1] = PLMN_MNC1;
-
-      /*Cell ID */
- #ifdef O1_ENABLE
-      duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.cellInfo.nrPci = cellParams.nRPCI;
- #else
-      duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.cellInfo.nrPci = NR_PCI;
-#endif
-      /* List of Available PLMN */
-      for(srvdPlmnIdx=0; srvdPlmnIdx<MAX_PLMN; srvdPlmnIdx++)
-      {
-         /* As per spec 38.473, Plmn identity consists of 3 digit from mcc
-          * followed by either 2 digit or 3 digits of mnc */ 
-
-         memset(&duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.cellInfo.srvdPlmn[srvdPlmnIdx].plmn, 0,\
-         sizeof(Plmn));
- #ifdef O1_ENABLE
-         duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.cellInfo.srvdPlmn[srvdPlmnIdx].plmn.mcc[0] = cellParams.plmnList[srvdPlmnIdx].mcc[0];
-         duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.cellInfo.srvdPlmn[srvdPlmnIdx].plmn.mcc[1] = cellParams.plmnList[srvdPlmnIdx].mcc[1];
-         duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.cellInfo.srvdPlmn[srvdPlmnIdx].plmn.mcc[2] = cellParams.plmnList[srvdPlmnIdx].mcc[2];
-         duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.cellInfo.srvdPlmn[srvdPlmnIdx].plmn.mnc[0] = cellParams.plmnList[srvdPlmnIdx].mnc[0];
-         duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.cellInfo.srvdPlmn[srvdPlmnIdx].plmn.mnc[1] = cellParams.plmnList[srvdPlmnIdx].mnc[1];
-         duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.cellInfo.srvdPlmn[srvdPlmnIdx].plmn.mnc[2] = cellParams.plmnList[srvdPlmnIdx].mnc[2];
- #else
-         duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.cellInfo.srvdPlmn[srvdPlmnIdx].plmn.mcc[0] = PLMN_MCC0;
-         duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.cellInfo.srvdPlmn[srvdPlmnIdx].plmn.mcc[1] = PLMN_MCC1;
-         duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.cellInfo.srvdPlmn[srvdPlmnIdx].plmn.mcc[2] = PLMN_MCC2;
-         duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.cellInfo.srvdPlmn[srvdPlmnIdx].plmn.mnc[0] = PLMN_MNC0;
-         duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.cellInfo.srvdPlmn[srvdPlmnIdx].plmn.mnc[1] = PLMN_MNC1;
-#endif
-      }
-      /* List of Extended PLMN */
-      for(srvdPlmnIdx=0; srvdPlmnIdx<MAX_PLMN; srvdPlmnIdx++)
-      {
-         /* As per spec 38.473, Plmn identity consists of 3 digit from mcc
-          * followed by either 2 digit or 3 digits of mnc */ 
-
-         memset(&duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.cellInfo.srvdPlmn[srvdPlmnIdx].extPlmn, 0, sizeof(Plmn));
-         duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.cellInfo.srvdPlmn[srvdPlmnIdx].extPlmn.mcc[0] = PLMN_MCC0;
-         duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.cellInfo.srvdPlmn[srvdPlmnIdx].extPlmn.mcc[1] = PLMN_MCC1;
-         duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.cellInfo.srvdPlmn[srvdPlmnIdx].extPlmn.mcc[2] = PLMN_MCC2;
-         duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.cellInfo.srvdPlmn[srvdPlmnIdx].extPlmn.mnc[0] = PLMN_MNC0;
-         duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.cellInfo.srvdPlmn[srvdPlmnIdx].extPlmn.mnc[1] = PLMN_MNC1;
-      } 
-      /* List of Supporting Slices */
-      for(srvdPlmnIdx=0; srvdPlmnIdx<MAX_PLMN; srvdPlmnIdx++)
-      {
-         taiSliceSuppLst = &duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.cellInfo.srvdPlmn[srvdPlmnIdx].\
-         taiSliceSuppLst;
-         
-         /* TODO Calculte the exact number of supported slices once will get
-          * cell configuration from O1 */
-         taiSliceSuppLst->numSupportedSlices = NUM_OF_SUPPORTED_SLICE;
-         if(taiSliceSuppLst->numSupportedSlices > MAX_NUM_OF_SLICE_ITEMS)
-         {
-            DU_LOG("\nERROR --> DU_APP: readCfg(): Number of supported slice [%d] is more than 1024",\
-            taiSliceSuppLst->numSupportedSlices);
-            return RFAILED;
-         }
-
-         DU_ALLOC(taiSliceSuppLst->snssai, taiSliceSuppLst->numSupportedSlices*sizeof(Snssai*));
-         if(taiSliceSuppLst->snssai == NULLP)
-         {
-            DU_LOG("\nERROR --> DU_APP: readCfg():Memory allocation failed");
-            return RFAILED;
-         }
-         
-         for(sliceIdx=0; sliceIdx<taiSliceSuppLst->numSupportedSlices; sliceIdx++)
-         {
-            DU_ALLOC(taiSliceSuppLst->snssai[sliceIdx], sizeof(Snssai));
-            if(taiSliceSuppLst->snssai[sliceIdx] == NULLP)
-            {
-               DU_LOG("\nERROR --> DU_APP: readCfg():Memory allocation failed");
-               return RFAILED;
-            }
-#ifdef O1_ENABLE
-            memcpy(taiSliceSuppLst->snssai[sliceIdx]->sd, cellParams.plmnList[sliceIdx].sd, \
-                  SD_SIZE*sizeof(uint8_t));
-            taiSliceSuppLst->snssai[sliceIdx]->sst = cellParams.plmnList[sliceIdx].sst;
-#else
-            memcpy(taiSliceSuppLst->snssai[sliceIdx], &snssai[sliceIdx], sizeof(Snssai));
-#endif
-         }
-      }
-
-      /* NR Mode info */
-#ifdef NR_TDD
-      /* NR TDD Mode info */
-#ifdef O1_ENABLE      
-      duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.f1Mode.mode.tdd.nrFreqInfo.nrArfcn = cellParams.arfcnUL;
-      duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.f1Mode.mode.tdd.nrFreqInfo.sulInfo.sulArfcn = cellParams.arfcnSUL;
-      duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.f1Mode.mode.tdd.nrFreqInfo.sulInfo.sulTxBw.nrScs = convertScsValToScsEnum(cellParams.ssbSubCarrierSpacing); 		
-#else
-      duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.f1Mode.mode.tdd.nrFreqInfo.nrArfcn = NR_UL_ARFCN;
-      duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.f1Mode.mode.tdd.nrFreqInfo.sulInfo.sulArfcn = SUL_ARFCN;
-      duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.f1Mode.mode.tdd.nrFreqInfo.sulInfo.sulTxBw.nrScs = NR_SCS; 		
-#endif      
-      duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.f1Mode.mode.tdd.nrFreqInfo.sulInfo.sulTxBw.nrb = NRB_273;	       
-
-      for(freqBandIdx=0; freqBandIdx<MAX_NRCELL_BANDS; freqBandIdx++)
-      {
-         duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.f1Mode.mode.tdd.nrFreqInfo.freqBand[freqBandIdx].nrFreqBand =\
-                                                                                                                     NR_FREQ_BAND;
-         for(bandIdx=0; bandIdx<MAX_NRCELL_BANDS; bandIdx++)
-         {
-            duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.f1Mode.mode.tdd.nrFreqInfo.freqBand[freqBandIdx].sulBand[bandIdx]\
-               = SUL_BAND; 	
-         }
-      }
-#else
-      /* NR FDD Mode info */
-#ifdef O1_ENABLE
-      duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.f1Mode.mode.fdd.ulNrFreqInfo.nrArfcn = cellParams.arfcnUL;
-      duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.f1Mode.mode.fdd.ulNrFreqInfo.sulInfo.sulArfcn = cellParams.arfcnSUL;
-      duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.f1Mode.mode.fdd.ulTxBw.nrScs = convertScsValToScsEnum(cellParams.ssbSubCarrierSpacing);
-      duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.f1Mode.mode.fdd.ulNrFreqInfo.sulInfo.sulTxBw.nrScs = convertScsValToScsEnum(cellParams.ssbSubCarrierSpacing);
-      duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.f1Mode.mode.fdd.dlNrFreqInfo.nrArfcn = cellParams.arfcnDL;
-      duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.f1Mode.mode.fdd.dlNrFreqInfo.sulInfo.sulArfcn = cellParams.arfcnSUL;
-      duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.f1Mode.mode.fdd.dlNrFreqInfo.sulInfo.sulTxBw.nrScs = convertScsValToScsEnum(cellParams.ssbSubCarrierSpacing);
-      duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.f1Mode.mode.fdd.dlTxBw.nrScs = convertScsValToScsEnum(cellParams.ssbSubCarrierSpacing);
-#else
-      duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.f1Mode.mode.fdd.ulNrFreqInfo.nrArfcn = NR_UL_ARFCN;
-      duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.f1Mode.mode.fdd.ulNrFreqInfo.sulInfo.sulArfcn = SUL_ARFCN;
-      duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.f1Mode.mode.fdd.ulTxBw.nrScs = NR_SCS;
-      duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.f1Mode.mode.fdd.ulNrFreqInfo.sulInfo.sulTxBw.nrScs = NR_SCS;
-      duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.f1Mode.mode.fdd.dlNrFreqInfo.nrArfcn = NR_DL_ARFCN;
-      duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.f1Mode.mode.fdd.dlNrFreqInfo.sulInfo.sulArfcn = SUL_ARFCN;
-      duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.f1Mode.mode.fdd.dlNrFreqInfo.sulInfo.sulTxBw.nrScs = NR_SCS;
-      duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.f1Mode.mode.fdd.dlTxBw.nrScs = NR_SCS;
-#endif
-      duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.f1Mode.mode.fdd.ulNrFreqInfo.sulInfo.sulTxBw.nrb = NRB_106;
-      for(freqBandIdx=0; freqBandIdx<MAX_NRCELL_BANDS; freqBandIdx++)
-      {
-         duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.f1Mode.mode.fdd.ulNrFreqInfo.freqBand[freqBandIdx].\
-         nrFreqBand = NR_FREQ_BAND;
-         for(bandIdx=0; bandIdx<MAX_NRCELL_BANDS; bandIdx++)
-         {
-            duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.f1Mode.mode.fdd.ulNrFreqInfo.freqBand[freqBandIdx].\
-            sulBand[bandIdx] = SUL_BAND;
-         }
-      }
-      duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.f1Mode.mode.fdd.dlNrFreqInfo.sulInfo.sulTxBw.nrb = NRB_106;
-      for(freqBandIdx=0; freqBandIdx<MAX_NRCELL_BANDS; freqBandIdx++)
-      {
-         duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.f1Mode.mode.fdd.dlNrFreqInfo.freqBand[freqBandIdx].\
-         nrFreqBand = NR_FREQ_BAND;
-         for(bandIdx=0; bandIdx<MAX_NRCELL_BANDS; bandIdx++)
-         {
-            duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.f1Mode.mode.fdd.dlNrFreqInfo.freqBand[freqBandIdx].\
-            sulBand[bandIdx] = SUL_BAND;
-         }
-      }
-
-      duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.f1Mode.mode.fdd.ulTxBw.nrb = NRB_106;
-      duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.f1Mode.mode.fdd.dlTxBw.nrb = NRB_106;
-#endif
-
-      /*Measurement Config and Cell Config */ 
-      duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.measTimeCfgDuration = TIME_CFG; 
-
-      duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.cellDir = DL_UL; 
-
-      duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.cellType=CELL_TYPE;
-
-      /* Broadcast PLMN Identity */
-      for(brdcstPlmnIdx=0; brdcstPlmnIdx<MAX_BPLMN_NRCELL_MINUS_1; brdcstPlmnIdx++)
-      { 
-         for(plmnIdx=0; plmnIdx<MAX_PLMN; plmnIdx++)
-         {
-            memset(&duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.brdcstPlmnInfo[brdcstPlmnIdx].plmn[plmnIdx],\
-            0, sizeof(Plmn));
-            duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.brdcstPlmnInfo[brdcstPlmnIdx].plmn[plmnIdx].mcc[0] =\
-            PLMN_MCC0;
-            duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.brdcstPlmnInfo[brdcstPlmnIdx].plmn[plmnIdx].mcc[1] =\
-            PLMN_MCC1;
-            duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.brdcstPlmnInfo[brdcstPlmnIdx].plmn[plmnIdx].mcc[2] =\
-            PLMN_MCC2;
-            duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.brdcstPlmnInfo[brdcstPlmnIdx].plmn[plmnIdx].mnc[0] =\
-            PLMN_MNC0;
-            duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.brdcstPlmnInfo[brdcstPlmnIdx].plmn[plmnIdx].mnc[1] =\
-            PLMN_MNC1;
-         }
-         /* Extended PLMN List */	 
-         for(plmnIdx=0; plmnIdx<MAX_PLMN; plmnIdx++)
-         {
-            memset(&duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.brdcstPlmnInfo[brdcstPlmnIdx].\
-            extPlmn[plmnIdx], 0, sizeof(Plmn));
-            duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.brdcstPlmnInfo[brdcstPlmnIdx].\
-            extPlmn[plmnIdx].mcc[0] = PLMN_MCC0;
-            duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.brdcstPlmnInfo[brdcstPlmnIdx].\
-            extPlmn[plmnIdx].mcc[1] = PLMN_MCC1;
-            duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.brdcstPlmnInfo[brdcstPlmnIdx].\
-            extPlmn[plmnIdx].mcc[2] = PLMN_MCC2;
-            duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.brdcstPlmnInfo[brdcstPlmnIdx].\
-            extPlmn[plmnIdx].mnc[0] = PLMN_MNC0;
-            duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.brdcstPlmnInfo[brdcstPlmnIdx].\
-            extPlmn[plmnIdx].mnc[1] = PLMN_MNC1;
-         }
-#ifdef O1_ENABLE
-         duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.epsTac = cellParams.nRTAC; //TODO : to check and fill
-         duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.tac = cellParams.nRTAC;
-         duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.brdcstPlmnInfo[brdcstPlmnIdx].tac = cellParams.nRTAC;
-         duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.brdcstPlmnInfo[brdcstPlmnIdx].nrCellId = cellParams.cellLocalId;
-#else       
-         duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.epsTac = DU_TAC; //TODO : to check and fill
-         duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.tac = DU_TAC;
-         duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.brdcstPlmnInfo[brdcstPlmnIdx].tac = DU_TAC;
-         duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.brdcstPlmnInfo[brdcstPlmnIdx].nrCellId = NR_CELL_ID;
-#endif     
-         duCfgParam.srvdCellLst[srvdCellIdx].duCellInfo.brdcstPlmnInfo[brdcstPlmnIdx].ranac = NR_RANAC;
-      }
-
-      /*gnb DU System Info mib msg*/
-      BuildMibMsg();
-      DU_ALLOC(duCfgParam.srvdCellLst[srvdCellIdx].duSysInfo.mibMsg, encBufSize);
-      if(!(duCfgParam.srvdCellLst[srvdCellIdx].duSysInfo.mibMsg))
-      {
-         DU_LOG("\nERROR  -->  DU APP : Memory allocation failure at readCfg");
-         return RFAILED;
-      }
-      memcpy(duCfgParam.srvdCellLst[srvdCellIdx].duSysInfo.mibMsg, encBuf, encBufSize);
-      duCfgParam.srvdCellLst[srvdCellIdx].duSysInfo.mibLen = encBufSize;
-
-      /*gnb DU System Info mib msg*/
-      BuildSib1Msg();
-      DU_ALLOC(duCfgParam.srvdCellLst[srvdCellIdx].duSysInfo.sib1Msg,\
-            encBufSize);
-      if(!(duCfgParam.srvdCellLst[srvdCellIdx].duSysInfo.sib1Msg))
-      {
-         DU_LOG("\nERROR  -->  DU APP : Memory allocation failure at readCfg");
-         return RFAILED;
-      }
-      memcpy(duCfgParam.srvdCellLst[srvdCellIdx].duSysInfo.sib1Msg,\
-            encBuf,encBufSize);
-      duCfgParam.srvdCellLst[srvdCellIdx].duSysInfo.sib1Len = encBufSize;
-
-   }
-
-   return ROK;
-}
-
-/*******************************************************************
- *
  * @brief Copy Slice Cfg in temp structre in duCfgParams 
  *
  * @details
@@ -883,7 +605,6 @@ uint8_t parseSupportedSliceList(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur, Supp
    return ROK;
 }
 
-#ifdef XML_BASED_CONFIG
 /*******************************************************************
  *
  * @brief Fill Served PLMN
@@ -1018,7 +739,6 @@ uint8_t parseF1FreqBand(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur, F1FreqBand *
    uint8_t sulIdx = 0;
    uint16_t sulValue = 0;
    xmlNodePtr child;
-   xmlNodePtr sulChild;
 
    memset(freqBand, 0, sizeof(F1FreqBand));
    cur = cur->xmlChildrenNode;
@@ -1034,27 +754,19 @@ uint8_t parseF1FreqBand(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur, F1FreqBand *
          child = cur->xmlChildrenNode;
          while (child != NULL) 
          {
-            if ((!xmlStrcmp(child->name, (const xmlChar *)"LIST")) && (child->ns == ns)) 
+            sulIdx = 0;
+            if ((!xmlStrcmp(child->name, (const xmlChar *)"SUL_BAND")) && (child->ns == ns)) 
             {
-               sulChild = child->xmlChildrenNode;
-               sulIdx = 0;
-               while (sulChild != NULL) 
+               sulValue = atoi((char *)xmlNodeListGetString(doc, child->xmlChildrenNode, 1));
+               if (sulIdx < MAX_NRCELL_BANDS)
                {
-                  if ((!xmlStrcmp(sulChild->name, (const xmlChar *)"SUL_BAND")) && (sulChild->ns == ns)) 
-                  {
-                     sulValue = atoi((char *)xmlNodeListGetString(doc, sulChild->xmlChildrenNode, 1));
-                     if (sulIdx < MAX_NRCELL_BANDS) 
-                     {
-                        freqBand->sulBand[sulIdx] = sulValue;
-                        sulIdx++;
-                     } 
-                     else 
-                     {
-                        DU_LOG("ERROR  -->  DU_APP : %s :  SUL_BAND array overflow\n", __func__);
-                        return RFAILED;
-                     }
-                  }
-                  sulChild = sulChild->next;
+                  freqBand->sulBand[sulIdx] = sulValue;
+                  sulIdx++;
+               } 
+               else 
+               {
+                  DU_LOG("ERROR  -->  DU_APP : %s :  SUL_BAND array overflow\n", __func__);
+                  return RFAILED;
                }
             }
             child = child->next;
@@ -1087,27 +799,17 @@ uint8_t parseF1FreqBandList(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur, F1NrFreq
 {
    uint8_t idx = 0;
 
-   xmlNodePtr child;
    cur = cur->xmlChildrenNode;
    while(cur != NULL)
    {
-      if ((!xmlStrcmp(cur->name, (const xmlChar *)"LIST")) && (cur->ns == ns))
+      if ((!xmlStrcmp(cur->name, (const xmlChar *)"F1_FREQ_BAND")) && (cur->ns == ns))
       {
-         child = cur->xmlChildrenNode;
-         while(child != NULL)
+         if(parseF1FreqBand(doc, ns, cur, &nrFreqInfo->freqBand[idx]) != ROK)
          {
-            if ((!xmlStrcmp(child->name, (const xmlChar *)"F1_FREQ_BAND")) && (child->ns == ns))
-            {
-               if(parseF1FreqBand(doc, ns, child, &nrFreqInfo->freqBand[idx]) != ROK)
-               {
-                  return RFAILED;
-               }
-               idx++;
-            }
-            child = child -> next;
+            return RFAILED;
          }
+         idx++;
       }
-
       cur = cur -> next;
    }
    return ROK;
@@ -1137,10 +839,14 @@ uint8_t parseF1TxBw(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur, F1TxBw *txBw)
    cur = cur->xmlChildrenNode;
    while(cur != NULL)
    {
+#ifdef O1_ENABLE
+      txBw->nrScs = convertScsValToScsEnum(cellParams.ssbSubCarrierSpacing);
+#else
       if ((!xmlStrcmp(cur->name, (const xmlChar *)"F1_NR_SCS")) && (cur->ns == ns))
       {
          txBw->nrScs = atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
       }
+#endif
 
       if ((!xmlStrcmp(cur->name, (const xmlChar *)"F1_NRB")) && (cur->ns == ns))
       {
@@ -1176,10 +882,14 @@ uint8_t parseF1SulInfo(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur, F1SulInfo *su
    cur = cur->xmlChildrenNode;
    while(cur != NULL)
    {
+#ifdef O1_ENABLE
+      sulInfo->sulArfcn = cellParams.arfcnSUL;
+#else
       if ((!xmlStrcmp(cur->name, (const xmlChar *)"SUL_ARFCN")) && (cur->ns == ns))
       {
          sulInfo->sulArfcn = atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
       }
+#endif
 
       if ((!xmlStrcmp(cur->name, (const xmlChar *)"F1_TX_BW")) && (cur->ns == ns))
       {
@@ -1218,10 +928,14 @@ uint8_t parseF1NrFreqInfo(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur, F1NrFreqIn
    cur = cur->xmlChildrenNode;
    while(cur != NULL)
    {
+#if O1_ENABLE
+      nrFreqInfo->nrArfcn = cellParams.arfcnUL;
+#else
       if ((!xmlStrcmp(cur->name, (const xmlChar *)"NR_ARFCN")) && (cur->ns == ns))
       {
          nrFreqInfo->nrArfcn = atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
       }
+#endif      
 
       if ((!xmlStrcmp(cur->name, (const xmlChar *)"F1_SUL_INFO")) && (cur->ns == ns))
       {
@@ -1305,6 +1019,7 @@ uint8_t parseF1NrFddInfo(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur, F1NrFddInfo
    return ROK;
 }
 
+#ifdef NR_TDD
 /*******************************************************************
  *
  * @brief Fill NR TDD Info
@@ -1349,6 +1064,7 @@ uint8_t parseF1NrTddInfo(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur, F1NrTddInfo
    }
    return ROK;
 }
+#endif
 
 /*******************************************************************
  *
@@ -1381,6 +1097,7 @@ uint8_t parseNrModeInfo(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur, NrModeInfo *
          strcpy((char*)modeCfg, (char*)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));      
       }
 
+#ifndef NR_TDD
       if ((!xmlStrcmp(cur->name, (const xmlChar *)"F1_NR_FDD_INFO")) && (cur->ns == ns))
       {
          if(strcmp(modeCfg, "FDD") == 0)
@@ -1391,7 +1108,7 @@ uint8_t parseNrModeInfo(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur, NrModeInfo *
             }
          }
       }
-
+#else
       if ((!xmlStrcmp(cur->name, (const xmlChar *)"F1_NR_TDD_INFO")) && (cur->ns == ns))
       {
          if(strcmp(modeCfg, "TDD") == 0)
@@ -1403,6 +1120,7 @@ uint8_t parseNrModeInfo(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur, NrModeInfo *
          }
       }
 
+#endif            
       cur = cur -> next;
    }
    return ROK;
@@ -1500,6 +1218,10 @@ uint8_t parseF1DuCellInfo(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur, F1DuCellIn
          }
       }
 
+#ifdef O1_ENABLE
+      duCellInfo->tac = cellParams.nRTAC;
+      duCellInfo->epsTac = cellParams.nRTAC;
+#else
       if ((!xmlStrcmp(cur->name, (const xmlChar *)"TAC")) && (cur->ns == ns))
       {
          duCellInfo->tac = atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
@@ -1509,6 +1231,7 @@ uint8_t parseF1DuCellInfo(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur, F1DuCellIn
       {
          duCellInfo->epsTac = atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
       }
+#endif
 
       if ((!xmlStrcmp(cur->name, (const xmlChar *)"NR_MODE_INFO")) && (cur->ns == ns))
       {
@@ -1540,7 +1263,6 @@ uint8_t parseF1DuCellInfo(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur, F1DuCellIn
             return RFAILED;
          }
       }
-
       cur = cur -> next;
    }
    return ROK;
@@ -1657,7 +1379,6 @@ void fillPlmnFromO1(Plmn *PLMN, uint8_t srvdPlmnIdx)
    PLMN->mnc[1] = cellParams.plmnList[srvdPlmnIdx].mnc[1];
    PLMN->mnc[2] = cellParams.plmnList[srvdPlmnIdx].mnc[2];
 }
-#endif
 #endif
 
 /*******************************************************************
@@ -2867,7 +2588,6 @@ uint8_t parsePdschConfigCommon(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur, Pdsch
 {
    uint8_t idx = 0;
    xmlNodePtr child = NULLP;
-   xmlNodePtr pdschNode = NULLP;
 
    memset(pdschCfgCmn, 0, sizeof(PdschConfigCommon));
    cur = cur -> xmlChildrenNode;
@@ -3294,7 +3014,6 @@ uint8_t parsePuschCfgCommon(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur,PuschCfgC
 {
    uint8_t rsrcIdx = 0;
    xmlNodePtr child = NULLP;
-   xmlNodePtr rsrcNode = NULLP;
 
    memset(puschCfgCmn, 0, sizeof(PuschCfgCommon));
    cur = cur -> xmlChildrenNode;
@@ -4287,7 +4006,7 @@ uint8_t parseSib1Params(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur,Sib1Params *s
 #ifdef O1_ENABLE
    sib1Params-> tac = cellParams.nRTAC;
    sib1Params->cellIdentity = CELL_IDENTITY *  cellParams.cellLocalId;
-   DU_LOG("\nDEBUG --> DU_APP: readCfg(): OAM CellLocalId=%d", sib1Params->cellIdentity);
+   DU_LOG("\nDEBUG --> DU_APP: parseSib1Params(): OAM CellLocalId=%d", sib1Params->cellIdentity);
 #else
       if ((!xmlStrcmp(cur->name, (const xmlChar *)"TAC")) && (cur->ns == ns))
       {
@@ -5360,7 +5079,6 @@ uint8_t parseDuCfgParams(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur)
          }
       }
 
-#ifdef XML_BASED_CONFIG
       if ((!xmlStrcmp(cur->name, (const xmlChar *)"F1_DU_SRVD_CELL_INFO")) && (cur->ns == ns))
       {
          if(parseF1DuServedCellInfo(doc, ns, cur, &duCfgParam.srvdCellLst[0]) != ROK)
@@ -5368,7 +5086,6 @@ uint8_t parseDuCfgParams(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur)
             return RFAILED;
          }
       }
-#endif      
 
       if ((!xmlStrcmp(cur->name, (const xmlChar *)"MAC_CELL_CFG")) && (cur->ns == ns))
       {
@@ -5437,7 +5154,10 @@ uint8_t duReadCfg()
    xmlDocPtr doc = NULLP;
    xmlNodePtr cur = NULLP;
    xmlNsPtr ns = NULLP;
+   Pst pst;
+   Buffer *mBuf;
 
+   /* Parse, store and print DU configurations from XML file */
    doc = xmlParseFile(filename);
    if(doc == NULL)
    {
@@ -5456,20 +5176,10 @@ uint8_t duReadCfg()
    }
 
    parseDuCfgParams(doc, ns, cur);
+   printDuConfig();
 
    xmlFreeDoc(doc);
    xmlCleanupParser();
-
-   Pst pst;
-   Buffer *mBuf;
-
-   /* Read configs into duCfgParams */
-   if(readCfg() != ROK)
-   {
-      DU_LOG("\nERROR  -->  DU_APP : Reading configuration failed");
-      return RFAILED;
-   }
-   printDuConfig();
 
    /* Fill pst structure */
    memset(&(pst), 0, sizeof(Pst));
