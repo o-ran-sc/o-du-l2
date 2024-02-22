@@ -31,36 +31,9 @@
 #define NR_PCI 1
 #define NR_CELL_ID 1
 
-#define CELL_TYPE SMALL
-
-//TODO: while testing for TDD, Mu1 and 100 MHz, this flag must be enabled
-#ifdef NR_TDD
-#define NR_DL_ARFCN 623400
-#define NR_UL_ARFCN 623400
-#define NR_FREQ_BAND 78
-#define NR_SCS SCS_30KHZ
-#else
-#define NR_DL_ARFCN 428000
-#define NR_UL_ARFCN 390000
-#define NR_FREQ_BAND 1
-#define NR_SCS SCS_15KHZ
-#endif
-
 #define TRANS_ID 1
-#define DU_TAC 1
-#define PLMN_MCC0 3
-#define PLMN_MCC1 1
-#define PLMN_MCC2 1
-#define PLMN_MNC0 4
-#define PLMN_MNC1 8
-#define PLMN_MNC2 0
 #define PLMN_SIZE 3
 
-/* Spec 38.104 Table 5.4.2.3-1:Applicable NR-ARFCN per operating band in FR1 */
-#define SUL_ARFCN 100
-#define SUL_BAND 2
-
-#define TIME_CFG 4
 #define MEAS_TIMING_ARFCN 630432
 #define CARRIER_IDX 1
 #define FREQ_SHIFT_7P5KHZ FALSE
@@ -152,7 +125,6 @@
 #define MAX_NUM_OF_UE_ID       65536    /* Max num of UEs served by DU */
 #define MAXNUMOFUACPLMN    12       /* Maximum number of PLMN ids*/
 #define MAXNUMOFUACPERPLMN 64       /* Maximum number of signalled categories per PLMN */
-#define NR_RANAC           150      /* RANAC */
 #define DEFAULT_CELLS      1        /* Max num of broadcast PLMN ids */
 #define IE_EXTENSION_LIST_COUNT 1
 
@@ -217,7 +189,6 @@
 #define MAX_RATIO        30
 #define MIN_RATIO        20
 #define DEDICATED_RATIO  10
-#define NUM_OF_SUPPORTED_SLICE  2
 
 #ifdef NR_DRX
 /* Macros for Drx configuration */
