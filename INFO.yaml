@@ -64,10 +64,10 @@ committers:
       company: 'Radisys'
       id: 'pborla'
       timezone: 'Asia/Kolkata'
-    - name: 'Ray-Guang Cheng'
-      email: 'crg@mail.ntust.edu.tw'
+    - name: 'bimo fransiscus asisi'
+      email: 'd11002806@gapps.ntust.edu.tw'
       company: 'NTUST'
-      id: 'crg'
+      id: 'frbimo2'
       timezone: 'Asia/Taipei'
 tsc:
     # yamllint disable rule:line-length
