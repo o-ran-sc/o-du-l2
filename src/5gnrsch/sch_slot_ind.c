@@ -313,11 +313,11 @@ void schCalcSlotValues(SlotTimingInfo slotInd, SchSlotValue *schSlotValue, uint1
     *        on PHY_DELTA + SCHED_DELTA + BO_DELTA                 *
     ****************************************************************/
 
-   ADD_DELTA_TO_TIME(slotInd, schSlotValue->currentTime, PHY_DELTA_DL, numOfSlots);
-   ADD_DELTA_TO_TIME(slotInd, schSlotValue->broadcastTime, PHY_DELTA_DL + SCHED_DELTA, numOfSlots);
-   ADD_DELTA_TO_TIME(slotInd, schSlotValue->rarTime, PHY_DELTA_DL + SCHED_DELTA, numOfSlots);
-   ADD_DELTA_TO_TIME(slotInd, schSlotValue->dlMsgTime, PHY_DELTA_DL + SCHED_DELTA, numOfSlots);
-   ADD_DELTA_TO_TIME(slotInd, schSlotValue->ulDciTime, PHY_DELTA_DL + SCHED_DELTA, numOfSlots);
+   ADD_DELTA_TO_TIME(slotInd, schSlotValue->currentTime, gConfigInfo.phyDeltaDl, numOfSlots);
+   ADD_DELTA_TO_TIME(slotInd, schSlotValue->broadcastTime, gConfigInfo.phyDeltaDl + SCHED_DELTA, numOfSlots);
+   ADD_DELTA_TO_TIME(slotInd, schSlotValue->rarTime, gConfigInfo.phyDeltaDl + SCHED_DELTA, numOfSlots);
+   ADD_DELTA_TO_TIME(slotInd, schSlotValue->dlMsgTime, gConfigInfo.phyDeltaDl + SCHED_DELTA, numOfSlots);
+   ADD_DELTA_TO_TIME(slotInd, schSlotValue->ulDciTime, gConfigInfo.phyDeltaDl + SCHED_DELTA, numOfSlots);
 }
 
 /*******************************************************************
@@ -424,7 +424,7 @@ bool findValidK0K1Value(SchCellCb *cell, SlotTimingInfo currTime, uint8_t ueId, 
    SchUeCb *ueCb = NULLP;
    SchK0K1TimingInfoTbl *k0K1InfoTbl;
 
-   ADD_DELTA_TO_TIME(currTime, (*pdcchTime), PHY_DELTA_DL + SCHED_DELTA, cell->numSlots);
+   ADD_DELTA_TO_TIME(currTime, (*pdcchTime), gConfigInfo.phyDeltaDl + SCHED_DELTA, cell->numSlots);
 #ifdef NR_TDD
    if(schGetSlotSymbFrmt(pdcchTime->slot, cell->slotFrmtBitMap) != DL_SLOT)
    {
@@ -577,7 +577,7 @@ uint8_t schProcDlPageAlloc(SchCellCb *cell, SlotTimingInfo currTime, Inst schIns
    {
       dlPageAlloc.cellId = currTime.cellId;
 
-      ADD_DELTA_TO_TIME(currTime, dlPageAlloc.dlPageTime, PHY_DELTA_DL + SCHED_DELTA, cell->numSlots);
+      ADD_DELTA_TO_TIME(currTime, dlPageAlloc.dlPageTime, gConfigInfo.phyDeltaDl + SCHED_DELTA, cell->numSlots);
       dlPageAlloc.shortMsgInd  = FALSE;
       pdschTime = dlPageAlloc.dlPageTime;
 

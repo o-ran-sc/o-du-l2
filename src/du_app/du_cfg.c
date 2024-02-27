@@ -4991,12 +4991,7 @@ uint8_t parseDuCfgParams(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur)
          duCfgParam.maxNumDrb = atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
       }
 
-      if ((!xmlStrcmp(cur->name, (const xmlChar *)"MAX_NUM_UE_SUPPORTED")) && (cur->ns == ns))
-      {
-         duCfgParam.maxSupportedUes = atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
-      }
-
-      if ((!xmlStrcmp(cur->name, (const xmlChar *)"MAX_NUM_UE")) && (cur->ns == ns))
+      if ((!xmlStrcmp(cur->name, (const xmlChar *)"MAX_NUM_UE_IN_DU")) && (cur->ns == ns))
       {
          duCfgParam.maxUe = atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
       }
@@ -5054,7 +5049,7 @@ uint8_t parseDuCfgParams(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur)
          duCfgParam.egtpParams.localIp.ipV4Pres = true;
          duCfgParam.egtpParams.destIp.ipV4Pres = true;
          duCfgParam.egtpParams.destIp.ipV4Addr = cuIp;
-         duCfgParam.egtpParams.maxTunnelId = duCfgParam.maxNumDrb * duCfgParam.maxSupportedUes; 
+         duCfgParam.egtpParams.maxTunnelId = duCfgParam.maxNumDrb * MAX_NUM_UE; 
       }
 
       if ((!xmlStrcmp(cur->name, (const xmlChar *)"MIB_PARAMS")) && (cur->ns == ns))
@@ -5120,6 +5115,32 @@ uint8_t parseDuCfgParams(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur)
             cmInitTimers(&(duCb.e2apDb.e2TimersInfo.e2Timers.e2NodeConfigUpdate.timer), 1);
          }
       }
+      
+      if ((!xmlStrcmp(cur->name, (const xmlChar *)"RADIO_FRAME_DURATION")) && (cur->ns == ns))
+      {
+         gConfigInfo.radioFrameDuration = atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
+      }
+
+      if ((!xmlStrcmp(cur->name, (const xmlChar *)"ODU_UE_THROUGHPUT_PRINT_TIME_INTERVAL")) && (cur->ns == ns))
+      {
+         gConfigInfo.ueThrptTimeIntervl = atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
+      }
+
+      if ((!xmlStrcmp(cur->name, (const xmlChar *)"ODU_SNSSAI_THROUGHPUT_PRINT_TIME_INTERVAL")) && (cur->ns == ns))
+      {
+         gConfigInfo.snssaiThrptTimeIntervl = atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
+      }
+
+      if ((!xmlStrcmp(cur->name, (const xmlChar *)"PHY_DELTA_DL")) && (cur->ns == ns))
+      {
+         gConfigInfo.phyDeltaDl = atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
+      }
+
+      if ((!xmlStrcmp(cur->name, (const xmlChar *)"PHY_DELTA_UL")) && (cur->ns == ns))
+      {
+         gConfigInfo.phyDeltaUl = atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
+      }
+
       cur = cur -> next;
    }
    return ROK;

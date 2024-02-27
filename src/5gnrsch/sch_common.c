@@ -534,7 +534,7 @@ uint8_t schUlResAlloc(SchCellCb *cell, Inst schInst)
    memset(&ulSchedInfo, 0, sizeof(UlSchedInfo));
 
    /* add PHY delta */
-   ADD_DELTA_TO_TIME(cell->slotInfo,ulTimingInfo,PHY_DELTA_UL+SCHED_DELTA, cell->numSlots);
+   ADD_DELTA_TO_TIME(cell->slotInfo,ulTimingInfo,gConfigInfo.phyDeltaUl+SCHED_DELTA, cell->numSlots);
 
    ulSchedInfo.cellId = cell->cellId;
    ulSchedInfo.slotIndInfo.cellId = ulSchedInfo.cellId;
@@ -2081,7 +2081,7 @@ bool schProcessSrOrBsrReq(SchCellCb *cell, SlotTimingInfo currTime, uint8_t ueId
    }
 
    /* Calculating time frame to send DCI for SR */
-   ADD_DELTA_TO_TIME(currTime, dciTime, PHY_DELTA_DL + SCHED_DELTA, cell->numSlots);
+   ADD_DELTA_TO_TIME(currTime, dciTime, gConfigInfo.phyDeltaDl + SCHED_DELTA, cell->numSlots);
 #ifdef NR_TDD
    if(schGetSlotSymbFrmt(dciTime.slot, cell->slotFrmtBitMap) == DL_SLOT)
 #endif
@@ -2264,7 +2264,7 @@ uint8_t schMsg3RetxSchedulingForUe(SchRaCb *raCb)
    currTime = cell->slotInfo;
 
    /* Calculating time frame to send DCI for MSG3 Retx*/
-   ADD_DELTA_TO_TIME(currTime, dciTime, PHY_DELTA_DL + SCHED_DELTA, cell->numSlots);
+   ADD_DELTA_TO_TIME(currTime, dciTime, gConfigInfo.phyDeltaDl + SCHED_DELTA, cell->numSlots);
 #ifdef NR_TDD
    /* Consider this slot for sending DCI, only if it is a DL slot */
    if(schGetSlotSymbFrmt(dciSlot, raCb->cell->slotFrmtBitMap) == DL_SLOT)

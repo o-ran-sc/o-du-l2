@@ -56,7 +56,6 @@
 #define SCH_INST_START 1
 #define SCH_MAX_INST 1
 
-#define RADIO_FRAME_DURATION 10 /* Time duration of a radio frame in ms */
 /* MAX values */
 #define MAX_NUM_CELL 2 /* Changed to 2 to support cell Id 2 even if there is only one cell in DU */
 #define MAX_NUM_MU   4
@@ -68,15 +67,6 @@
 #define MAX_NUM_SSB  64   /* spec 28.331, maxNrofSSBs */
 #define MAX_NUM_HARQ_PROC 16 /* spec 38.331, nrofHARQ-ProcessesForPDSCH */
 #define MAX_NUM_TB_PER_UE 2  /* spec 38.331, maxNrofCodeWordsScheduledByDCI */
-
-/* 5G ORAN phy delay */
-#ifdef NR_TDD
-#define PHY_DELTA_DL 2
-#define PHY_DELTA_UL 0
-#else
-#define PHY_DELTA_DL 1
-#define PHY_DELTA_UL 0
-#endif
 
  /* SELECTORS */ 
 #define ODU_SELECTOR_LC 0
@@ -115,9 +105,6 @@
 #define MAX_NUM_RB TOTAL_PRB_20MHZ_MU0 /* value for numerology 0, 20 MHz */
 #endif
 
-#define ODU_UE_THROUGHPUT_PRINT_TIME_INTERVAL      5     /* in milliseconds */
-#define ODU_SNSSAI_THROUGHPUT_PRINT_TIME_INTERVAL  60000 /* in milliseconds */
-
 /*Spec 38.331 Sec 6.4: Maximum number of paging occasion per paging frame*/
 #define MAX_PO_PER_PF 4
 
@@ -132,7 +119,6 @@
 /*First SCS in kHz as per 3gpp spec 38.211 Table 4.2-1 */
 #define BASE_SCS 15
 
-#define MAX_NUM_STATS_CFG 2 /* Max number of statistics configuration/Subscription supported */
 #define MAX_NUM_STATS_GRP 5 /* Max number of statistics group per configuration request */
 #define MAX_NUM_STATS 10    /* Max number of statistics per group */
 
@@ -384,9 +370,19 @@ typedef struct tddCfg
 }TDDCfg;
 #endif
 
-OduCellStatus gCellStatus;
-uint64_t gSlotCount;
-uint64_t gDlDataRcvdCnt;   /* Number of DL data received at EGTP */
+typedef struct gConfiguration
+{
+   uint8_t phyDeltaDl;
+   uint8_t phyDeltaUl;
+   uint8_t ueThrptTimeIntervl;
+   uint8_t snssaiThrptTimeIntervl;
+   uint8_t radioFrameDuration;
+   OduCellStatus gCellStatus;
+   uint64_t gSlotCount;
+   uint64_t gDlDataRcvdCnt;   /* Number of DL data received at EGTP */
+}GConfiguration;
+
+GConfiguration gConfigInfo;
 
 void fillCoresetFeqDomAllocMap(uint16_t startPrb, uint16_t prbSize, uint8_t *freqDomain);
 void oduCpyFixBufToMsg(uint8_t *fixBuf, Buffer *mBuf, uint16_t len);

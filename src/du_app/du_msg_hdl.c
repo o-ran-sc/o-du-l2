@@ -397,7 +397,7 @@ uint8_t duProcCfgComplete()
          }
          cell->cellInfo.maxUe = duCfgParam.maxUe;
          cell->cellStatus = CELL_OUT_OF_SERVICE;
-         gCellStatus = CELL_DOWN;
+         gConfigInfo.gCellStatus = CELL_DOWN;
          duCb.cfgCellLst[duCb.numCfgCells] = cell;
          duCb.numCfgCells++;
       }
