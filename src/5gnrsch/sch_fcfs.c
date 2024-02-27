@@ -1274,7 +1274,7 @@ void schFcfsScheduleSlot(SchCellCb *cell, SlotTimingInfo *slotInd, Inst schInst)
                   else
                   {
 #ifdef NR_DRX
-                     schHdlDrxInActvStrtTmr(cell, &cell->ueCb[ueId-1], PHY_DELTA_DL + SCHED_DELTA);
+                     schHdlDrxInActvStrtTmr(cell, &cell->ueCb[ueId-1], gConfigInfo.phyDeltaDl + SCHED_DELTA);
 #endif
                   }
                }
@@ -1309,7 +1309,7 @@ void schFcfsScheduleSlot(SchCellCb *cell, SlotTimingInfo *slotInd, Inst schInst)
                   else
                   {
 #ifdef NR_DRX
-                     schHdlDrxInActvStrtTmr(cell, &cell->ueCb[ueId-1], PHY_DELTA_UL + SCHED_DELTA);
+                     schHdlDrxInActvStrtTmr(cell, &cell->ueCb[ueId-1], gConfigInfo.phyDeltaUl + SCHED_DELTA);
 #endif
                   }
                }

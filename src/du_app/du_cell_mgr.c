@@ -366,7 +366,7 @@ uint8_t duHandleCellUpInd(Pst *pst, OduCellId *cellId)
    {
       DU_LOG("\nINFO   -->  DU APP : 5G-NR Cell %d is UP", cellId->cellId);
       cellCb->cellStatus = ACTIVATED;
-      gCellStatus = CELL_UP;
+      gConfigInfo.gCellStatus = CELL_UP;
 
       if(duCfgParam.tempSliceCfg.numOfRrmPolicy)
          BuildAndSendSliceConfigReq();
@@ -425,7 +425,7 @@ uint8_t DuProcMacCellDeleteRsp(Pst *pst, MacCellDeleteRsp *deleteRsp)
             }
 
             memset(duCb.actvCellLst[cellIdx], 0, sizeof(DuCellCb));
-            gCellStatus = CELL_DOWN;
+            gConfigInfo.gCellStatus = CELL_DOWN;
 
 #ifdef O1_ENABLE
             DU_LOG("\nINFO   -->  DU APP : Raise cell down alarm for cell id=%d", deleteRsp->cellId);

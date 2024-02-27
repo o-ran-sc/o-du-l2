@@ -60,7 +60,7 @@ uint8_t egtpActvInit(Ent entity, Inst inst, Region region, Reason reason)
 
   memset (&egtpCb, 0, sizeof(EgtpGlobalCb));
   protType = CM_INET_PROTO_UDP;
-  gDlDataRcvdCnt = 0;
+  gConfigInfo.gDlDataRcvdCnt = 0;
 
   return ROK;
 }
@@ -920,10 +920,10 @@ uint8_t egtpRecvMsg()
       ret = cmInetRecvMsg(&egtpCb.sockFd, &egtpCb.dstCb.dstAddr, &memInfo, &recvBuf, (int16_t *)&bufLen, CM_INET_NO_FLAG);
       if(ret == ROK && recvBuf != NULLP)
       {  
-         DU_LOG("\nDEBUG  -->  EGTP : Received DL Message[%ld]\n", gDlDataRcvdCnt + 1);
+         DU_LOG("\nDEBUG  -->  EGTP : Received DL Message[%ld]\n", gConfigInfo.gDlDataRcvdCnt + 1);
          //ODU_PRINT_MSG(recvBuf, 0 ,0);
          egtpHdlRecvData(recvBuf);
-         gDlDataRcvdCnt++;
+         gConfigInfo.gDlDataRcvdCnt++;
          
       }
    }

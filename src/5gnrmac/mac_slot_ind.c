@@ -333,7 +333,7 @@ void buildAndSendMuxPdu(SlotTimingInfo currTimingInfo)
 
    GET_CELL_IDX(currTimingInfo.cellId, cellIdx);
 
-   ADD_DELTA_TO_TIME(currTimingInfo, muxTimingInfo, PHY_DELTA_DL, macCb.macCell[cellIdx]->numOfSlots);
+   ADD_DELTA_TO_TIME(currTimingInfo, muxTimingInfo, gConfigInfo.phyDeltaDl, macCb.macCell[cellIdx]->numOfSlots);
    currDlSlot = &macCb.macCell[cellIdx]->dlSlot[muxTimingInfo.slot];
 
    for(ueIdx=0; ueIdx<MAX_NUM_UE; ueIdx++)
@@ -526,9 +526,9 @@ uint8_t fapiMacSlotInd(Pst *pst, SlotTimingInfo *slotInd)
 #endif
    /*starting Task*/
    ODU_START_TASK(&startTime, PID_MAC_TTI_IND);
-   gSlotCount++;
+   gConfigInfo.gSlotCount++;
 
-   if(gSlotCount == 1)
+   if(gConfigInfo.gSlotCount == 1)
    {
 	   GET_CELL_IDX(slotInd->cellId, cellIdx);
 	   macCb.macCell[cellIdx]->state = CELL_STATE_UP;
@@ -557,7 +557,7 @@ uint8_t fapiMacSlotInd(Pst *pst, SlotTimingInfo *slotInd)
 
    /*First Slot Ind is for CellUp. Any other Slot, will be notified to DUAPP as
     * SLOT_IND*/
-   if(gSlotCount == 1)   
+   if(gConfigInfo.gSlotCount == 1)   
    {
       /* send cell up indication to du app */
       ret = sendCellUpIndMacToDuApp(slotInd->cellId);

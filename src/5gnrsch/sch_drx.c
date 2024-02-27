@@ -515,17 +515,17 @@ void schDrxUeReCfgTimer(SchCellCb *cell, SchUeCb *ueCb)
    if((ueCb->drxUeCb.onDurationExpiryDistance != SCH_DRX_INVALID_DISTANCE) && (ueCb->drxUeCb.onDurationExpiryIndex != SCH_DRX_INVALID_INDEX))
    {
        currentSlotTime = cell->slotInfo.sfn * cell->numSlots + cell->slotInfo.slot;
-       currentSlotIndx = (currentSlotTime + PHY_DELTA_DL + SCHED_DELTA)%MAX_DRX_SIZE;
+       currentSlotIndx = (currentSlotTime + gConfigInfo.phyDeltaDl + SCHED_DELTA)%MAX_DRX_SIZE;
        if(currentSlotIndx >= ueCb->drxUeCb.onDurationExpiryIndex )
        {
          onDurExpSlotTime = currentSlotTime + ((ueCb->drxUeCb.onDurationExpiryDistance +1) * MAX_DRX_SIZE) +\
-         (ueCb->drxUeCb.onDurationExpiryIndex - currentSlotIndx + PHY_DELTA_DL + SCHED_DELTA);
+         (ueCb->drxUeCb.onDurationExpiryIndex - currentSlotIndx + gConfigInfo.phyDeltaDl + SCHED_DELTA);
        }
        else
        {
          
          onDurExpSlotTime = currentSlotTime + ((ueCb->drxUeCb.onDurationExpiryDistance) * MAX_DRX_SIZE) +\
-         (ueCb->drxUeCb.onDurationExpiryIndex - currentSlotIndx + PHY_DELTA_DL + SCHED_DELTA);
+         (ueCb->drxUeCb.onDurationExpiryIndex - currentSlotIndx + gConfigInfo.phyDeltaDl + SCHED_DELTA);
        }
        if(onDurTime <= onDurExpSlotTime)
        {
@@ -717,8 +717,8 @@ void schHdlDrxOnDurStrtTimer(SchCellCb  *cell)
    uint16_t dlIndx = 0, ulIndx=0;
    SlotTimingInfo dlSlotInfo, ulSlotInfo;
 
-   ADD_DELTA_TO_TIME(cell->slotInfo, dlSlotInfo,  PHY_DELTA_DL + SCHED_DELTA, cell->numSlots);
-   ADD_DELTA_TO_TIME(cell->slotInfo, ulSlotInfo,  PHY_DELTA_UL + SCHED_DELTA, cell->numSlots);
+   ADD_DELTA_TO_TIME(cell->slotInfo, dlSlotInfo,  gConfigInfo.phyDeltaDl + SCHED_DELTA, cell->numSlots);
+   ADD_DELTA_TO_TIME(cell->slotInfo, ulSlotInfo,  gConfigInfo.phyDeltaUl + SCHED_DELTA, cell->numSlots);
 
    dlIndx = (dlSlotInfo.sfn*MAX_SLOTS+dlSlotInfo.slot)%MAX_DRX_SIZE;
    ulIndx = (ulSlotInfo.sfn*MAX_SLOTS+ulSlotInfo.slot)%MAX_DRX_SIZE;
@@ -803,7 +803,7 @@ void schHdlDrxStartShortCycleTimer(SchCellCb  *cell, SchUeCb *ueCb)
    } 
 
    /* recalculate the new index of on duration start based on short cycle */
-   schAddUeInOndurationList(cell, ueCb, PHY_DELTA_DL + SCHED_DELTA);
+   schAddUeInOndurationList(cell, ueCb, gConfigInfo.phyDeltaDl + SCHED_DELTA);
 
    /* if any node is present in short cycle exp list then remove the node from list  */
    if(ueCb->drxUeCb.shortCycleExpiryIndex != SCH_DRX_INVALID_INDEX && ueCb->drxUeCb.shortCycleDistance != SCH_DRX_INVALID_DISTANCE)
@@ -923,8 +923,8 @@ void schHdlDrxDlHqRetxStrtTimer(SchCellCb  *cell)
    uint16_t dlIndx = 0, ulIndx=0;
    SlotTimingInfo dlSlotInfo, ulSlotInfo;
 
-   ADD_DELTA_TO_TIME(cell->slotInfo, dlSlotInfo,  PHY_DELTA_DL + SCHED_DELTA, cell->numSlots);
-   ADD_DELTA_TO_TIME(cell->slotInfo, ulSlotInfo,  PHY_DELTA_UL + SCHED_DELTA, cell->numSlots);
+   ADD_DELTA_TO_TIME(cell->slotInfo, dlSlotInfo,  gConfigInfo.phyDeltaDl + SCHED_DELTA, cell->numSlots);
+   ADD_DELTA_TO_TIME(cell->slotInfo, ulSlotInfo,  gConfigInfo.phyDeltaUl + SCHED_DELTA, cell->numSlots);
 
    dlIndx = (dlSlotInfo.sfn*MAX_SLOTS+dlSlotInfo.slot)%MAX_DRX_SIZE;
    ulIndx = (ulSlotInfo.sfn*MAX_SLOTS+ulSlotInfo.slot)%MAX_DRX_SIZE;
@@ -1086,8 +1086,8 @@ void schHdlDrxUlHqRetxStrtTimer(SchCellCb  *cell)
    uint16_t dlIndx = 0, ulIndx=0;
    SlotTimingInfo dlSlotInfo, ulSlotInfo;
 
-   ADD_DELTA_TO_TIME(cell->slotInfo, dlSlotInfo,  PHY_DELTA_DL + SCHED_DELTA, cell->numSlots);
-   ADD_DELTA_TO_TIME(cell->slotInfo, ulSlotInfo,  PHY_DELTA_UL + SCHED_DELTA, cell->numSlots);
+   ADD_DELTA_TO_TIME(cell->slotInfo, dlSlotInfo,  gConfigInfo.phyDeltaDl + SCHED_DELTA, cell->numSlots);
+   ADD_DELTA_TO_TIME(cell->slotInfo, ulSlotInfo,  gConfigInfo.phyDeltaUl + SCHED_DELTA, cell->numSlots);
 
    dlIndx = (dlSlotInfo.sfn*MAX_SLOTS+dlSlotInfo.slot)%MAX_DRX_SIZE;
    ulIndx = (ulSlotInfo.sfn*MAX_SLOTS+ulSlotInfo.slot)%MAX_DRX_SIZE;
@@ -1227,8 +1227,8 @@ void schHdlDrxOnDurExpiryTimer(SchCellCb  *cell)
    uint16_t dlIndx = 0, ulIndx = 0;
    SlotTimingInfo dlSlotInfo, ulSlotInfo;
 
-   ADD_DELTA_TO_TIME(cell->slotInfo, dlSlotInfo, PHY_DELTA_DL + SCHED_DELTA, cell->numSlots);
-   ADD_DELTA_TO_TIME(cell->slotInfo, ulSlotInfo, PHY_DELTA_UL + SCHED_DELTA, cell->numSlots);
+   ADD_DELTA_TO_TIME(cell->slotInfo, dlSlotInfo, gConfigInfo.phyDeltaDl + SCHED_DELTA, cell->numSlots);
+   ADD_DELTA_TO_TIME(cell->slotInfo, ulSlotInfo, gConfigInfo.phyDeltaUl + SCHED_DELTA, cell->numSlots);
    dlIndx = (dlSlotInfo.sfn*MAX_SLOTS+dlSlotInfo.slot)%MAX_DRX_SIZE;
    ulIndx = (ulSlotInfo.sfn*MAX_SLOTS+ulSlotInfo.slot)%MAX_DRX_SIZE;
 
@@ -1348,8 +1348,8 @@ void schHdlDrxInActvExpiryTimer(SchCellCb  *cell)
    uint16_t dlIndx = 0, ulIndx = 0;
    SlotTimingInfo dlSlotInfo, ulSlotInfo;
 
-   ADD_DELTA_TO_TIME(cell->slotInfo, dlSlotInfo, PHY_DELTA_DL + SCHED_DELTA, cell->numSlots);
-   ADD_DELTA_TO_TIME(cell->slotInfo, ulSlotInfo, PHY_DELTA_UL + SCHED_DELTA, cell->numSlots);
+   ADD_DELTA_TO_TIME(cell->slotInfo, dlSlotInfo, gConfigInfo.phyDeltaDl + SCHED_DELTA, cell->numSlots);
+   ADD_DELTA_TO_TIME(cell->slotInfo, ulSlotInfo, gConfigInfo.phyDeltaUl + SCHED_DELTA, cell->numSlots);
    dlIndx = (dlSlotInfo.sfn*MAX_SLOTS+dlSlotInfo.slot)%MAX_DRX_SIZE;
    ulIndx = (ulSlotInfo.sfn*MAX_SLOTS+ulSlotInfo.slot)%MAX_DRX_SIZE;
 
@@ -1403,7 +1403,7 @@ void schHdlDrxShortCycleExpiryTimerForDlDirection(SchCellCb  *cell, uint16_t dlI
          ueCb->drxUeCb.onDurationStartDistance = SCH_DRX_INVALID_DISTANCE; 
 
          /* Recalculate on-duration with  long cycle */
-         schAddUeInOndurationList(cell, ueCb, PHY_DELTA_DL + SCHED_DELTA);
+         schAddUeInOndurationList(cell, ueCb, gConfigInfo.phyDeltaDl + SCHED_DELTA);
       }
    }
 }
@@ -1470,8 +1470,8 @@ void schHdlDrxShortCycleExpiryTimer(SchCellCb  *cell)
    uint16_t dlIndx = 0, ulIndx= 0;
    SlotTimingInfo dlSlotInfo, ulSlotInfo;
 
-   ADD_DELTA_TO_TIME(cell->slotInfo, dlSlotInfo, PHY_DELTA_DL + SCHED_DELTA, cell->numSlots);
-   ADD_DELTA_TO_TIME(cell->slotInfo, ulSlotInfo, PHY_DELTA_UL + SCHED_DELTA, cell->numSlots);
+   ADD_DELTA_TO_TIME(cell->slotInfo, dlSlotInfo, gConfigInfo.phyDeltaDl + SCHED_DELTA, cell->numSlots);
+   ADD_DELTA_TO_TIME(cell->slotInfo, ulSlotInfo, gConfigInfo.phyDeltaUl + SCHED_DELTA, cell->numSlots);
    dlIndx = (dlSlotInfo.sfn*MAX_SLOTS+dlSlotInfo.slot)%MAX_DRX_SIZE;
    ulIndx = (ulSlotInfo.sfn*MAX_SLOTS+ulSlotInfo.slot)%MAX_DRX_SIZE;
 
@@ -1646,8 +1646,8 @@ void schHdlDrxDlHarqExpireTimer(SchCellCb  *cell)
    uint16_t dlIndx = 0, ulIndx = 0;
    SlotTimingInfo dlSlotInfo, ulSlotInfo;
 
-   ADD_DELTA_TO_TIME(cell->slotInfo, dlSlotInfo, PHY_DELTA_DL + SCHED_DELTA, cell->numSlots);
-   ADD_DELTA_TO_TIME(cell->slotInfo, ulSlotInfo, PHY_DELTA_UL + SCHED_DELTA, cell->numSlots);
+   ADD_DELTA_TO_TIME(cell->slotInfo, dlSlotInfo, gConfigInfo.phyDeltaDl + SCHED_DELTA, cell->numSlots);
+   ADD_DELTA_TO_TIME(cell->slotInfo, ulSlotInfo, gConfigInfo.phyDeltaUl + SCHED_DELTA, cell->numSlots);
    dlIndx = (dlSlotInfo.sfn*MAX_SLOTS+dlSlotInfo.slot)%MAX_DRX_SIZE;
    ulIndx = (ulSlotInfo.sfn*MAX_SLOTS+ulSlotInfo.slot)%MAX_DRX_SIZE;
    
@@ -1872,8 +1872,8 @@ void schHdlDrxUlHarqExpireTimer(SchCellCb  *cell)
    uint16_t dlIndx = 0, ulIndx = 0;
    SlotTimingInfo dlSlotInfo, ulSlotInfo;
 
-   ADD_DELTA_TO_TIME(cell->slotInfo, dlSlotInfo, PHY_DELTA_DL + SCHED_DELTA, cell->numSlots);
-   ADD_DELTA_TO_TIME(cell->slotInfo, ulSlotInfo, PHY_DELTA_UL + SCHED_DELTA, cell->numSlots);
+   ADD_DELTA_TO_TIME(cell->slotInfo, dlSlotInfo, gConfigInfo.phyDeltaDl + SCHED_DELTA, cell->numSlots);
+   ADD_DELTA_TO_TIME(cell->slotInfo, ulSlotInfo, gConfigInfo.phyDeltaUl + SCHED_DELTA, cell->numSlots);
    dlIndx = (dlSlotInfo.sfn*MAX_SLOTS+dlSlotInfo.slot)%MAX_DRX_SIZE;
    ulIndx = (ulSlotInfo.sfn*MAX_SLOTS+ulSlotInfo.slot)%MAX_DRX_SIZE;
    

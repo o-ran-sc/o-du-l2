@@ -5120,6 +5120,32 @@ uint8_t parseDuCfgParams(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur)
             cmInitTimers(&(duCb.e2apDb.e2TimersInfo.e2Timers.e2NodeConfigUpdate.timer), 1);
          }
       }
+      
+      if ((!xmlStrcmp(cur->name, (const xmlChar *)"RADIO_FRAME_DURATION")) && (cur->ns == ns))
+      {
+         gConfigInfo.radioFrameDuration = atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
+      }
+
+      if ((!xmlStrcmp(cur->name, (const xmlChar *)"ODU_UE_THROUGHPUT_PRINT_TIME_INTERVAL")) && (cur->ns == ns))
+      {
+         gConfigInfo.ueThrptTimeIntervl = atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
+      }
+
+      if ((!xmlStrcmp(cur->name, (const xmlChar *)"ODU_SNSSAI_THROUGHPUT_PRINT_TIME_INTERVAL")) && (cur->ns == ns))
+      {
+         gConfigInfo.snssaiThrptTimeIntervl = atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
+      }
+
+      if ((!xmlStrcmp(cur->name, (const xmlChar *)"PHY_DELTA_DL")) && (cur->ns == ns))
+      {
+         gConfigInfo.phyDeltaDl = atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
+      }
+
+      if ((!xmlStrcmp(cur->name, (const xmlChar *)"PHY_DELTA_UL")) && (cur->ns == ns))
+      {
+         gConfigInfo.phyDeltaUl = atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
+      }
+
       cur = cur -> next;
    }
    return ROK;
