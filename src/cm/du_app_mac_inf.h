@@ -875,7 +875,7 @@ typedef struct beamformingConf
 
 typedef struct csiRsCfg
 {
-   uint8_t   *csiFreqDomainAlloc;
+   uint8_t    *csiFreqDomainAlloc;
    uint8_t    csiNrofPorts;
    uint8_t    csirsfirstOFDMSymbolInTimeDomain;
    uint8_t    csirsfirstOFDMSymbolInTimeDomain2;
@@ -893,7 +893,7 @@ typedef struct macCellCfg
    CarrierCfg       carrCfg;          /* Carrier configuration */
    CellCfg          cellCfg;          /* Cell Configuration*/
    SsbCfg           ssbCfg;           /* SSB configuration */          
-   CsiRsCfg         csiRsCfg;         /*Reference: 38.331 CSI-MeasConfig*/
+   CsiRsCfg         csiRsCfg;         /*Reference: 38.331 CSI-RS-ResourceMapping */
    PrachCfg         prachCfg;         /* PRACH Configuration */
 #ifdef NR_TDD
    TDDCfg           tddCfg;           /* TDD periodicity and slot configuration */

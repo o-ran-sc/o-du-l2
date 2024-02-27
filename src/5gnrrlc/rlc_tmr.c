@@ -159,7 +159,7 @@ void rlcStartTmr(RlcCb *gCb, PTR cb, int16_t tmrEvnt)
       case EVENT_RLC_UE_THROUGHPUT_TMR:
       {
          RlcThpt *thptCb = (RlcThpt *)cb;
-         TMR_CALCUATE_WAIT(arg.wait, ODU_UE_THROUGHPUT_PRINT_TIME_INTERVAL, gCb->genCfg.timeRes);
+         TMR_CALCUATE_WAIT(arg.wait, gConfigInfo.gUeThrptTimeIntervl, gCb->genCfg.timeRes);
          arg.timers = &thptCb->ueTputInfo.ueThptTmr;
          arg.max = RLC_MAX_THPT_TMR; 
          break;
@@ -175,7 +175,7 @@ void rlcStartTmr(RlcCb *gCb, PTR cb, int16_t tmrEvnt)
       case EVENT_RLC_SNSSAI_THROUGHPUT_TMR:
       {
          RlcThpt *thptCb = (RlcThpt *)cb;
-         TMR_CALCUATE_WAIT(arg.wait, ODU_SNSSAI_THROUGHPUT_PRINT_TIME_INTERVAL, gCb->genCfg.timeRes);
+         TMR_CALCUATE_WAIT(arg.wait, gConfigInfo.gSnssaiThrptTimeIntervl, gCb->genCfg.timeRes);
          arg.timers = &thptCb->snssaiTputInfo.snssaiThptTmr;
          arg.max = RLC_MAX_THPT_TMR; 
          break;
@@ -515,7 +515,7 @@ void rlcUeThptTmrExpiry(PTR cb)
    RlcThpt *rlcThptCb = (RlcThpt*)cb; 
    
    /* If cell is not up, throughput details cannot be printed */
-   if(gCellStatus != CELL_UP)
+   if(gConfigInfo.gCellStatus != CELL_UP)
    {
       /* Restart timer */
       rlcStartTmr(RLC_GET_RLCCB(rlcThptCb->inst), (PTR)(rlcThptCb), EVENT_RLC_UE_THROUGHPUT_TMR);
@@ -537,7 +537,7 @@ void rlcUeThptTmrExpiry(PTR cb)
              * Since our dataVol is in bytes, multiplying 0.008 to covert into kilobits i.e. 
              * Throughput[kbits/sec] = (dataVol * 0.008 * 1000)/time in ms
              */
-             tpt = (double)(rlcThptCb->ueTputInfo.thptPerUe[ueIdx].dataVol * 8)/(double)ODU_UE_THROUGHPUT_PRINT_TIME_INTERVAL;
+             tpt = (double)(rlcThptCb->ueTputInfo.thptPerUe[ueIdx].dataVol * 8)/(double)gConfigInfo.gUeThrptTimeIntervl;
       
              DU_LOG("\nUE Id : %d   DL Tpt : %.2Lf", rlcThptCb->ueTputInfo.thptPerUe[ueIdx].ueId, tpt);
              rlcThptCb->ueTputInfo.thptPerUe[ueIdx].dataVol = 0;
@@ -571,7 +571,7 @@ void rlcSnssaiThptTmrExpiry(PTR cb)
    static uint8_t snssaiTputBitmap = DIR_NONE;
 
    /* If cell is not up, throughput details cannot be printed */
-   if(gCellStatus != CELL_UP)
+   if(gConfigInfo.gCellStatus != CELL_UP)
    {
       /* Restart timer */
       rlcStartTmr(RLC_GET_RLCCB(rlcThptCb->inst), (PTR)(rlcThptCb), EVENT_RLC_SNSSAI_THROUGHPUT_TMR);

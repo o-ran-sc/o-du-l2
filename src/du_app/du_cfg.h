@@ -1161,8 +1161,6 @@ typedef struct duCfgParams
    uint32_t           duId;
    char               *duName;
    uint16_t           maxNumDrb;
-   uint16_t           maxSupportedUes;
-   uint32_t           maxUe;
    ThreadInfo         threadInfo;
    SctpParams         sctpParams;                  /* SCTP Params */
    F1EgtpParams       egtpParams;                  /* EGTP Params */

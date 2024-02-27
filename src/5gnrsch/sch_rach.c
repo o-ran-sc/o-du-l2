@@ -568,7 +568,7 @@ bool schProcessRaReq(Inst schInst, SchCellCb *cell, SlotTimingInfo currTime, uin
    }
 
    /* Calculating time frame to send DCI for RAR */
-   ADD_DELTA_TO_TIME(currTime, dciTime, PHY_DELTA_DL + SCHED_DELTA, cell->numSlots);
+   ADD_DELTA_TO_TIME(currTime, dciTime, gConfigInfo.gPhyDeltaDl + SCHED_DELTA, cell->numSlots);
    dciSlot = dciTime.slot;
 #ifdef NR_TDD
    /* Consider this slot for sending DCI, only if it is a DL slot */
