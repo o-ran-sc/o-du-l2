@@ -1074,7 +1074,7 @@ uint8_t rlcCalculateTputPerSnssai(CmLListCp *snssaiList, Direction dir)
    while(node)
    {
       snssaiNode = (RlcTptPerSnssai *)node->node;
-      snssaiNode->tpt =  (double)(snssaiNode->dataVol * 8)/(double)(ODU_SNSSAI_THROUGHPUT_PRINT_TIME_INTERVAL * 0.001);
+      snssaiNode->tpt =  (double)(snssaiNode->dataVol * 8)/(double)(gConfigInfo.gSnssaiThrptTimeIntervl * 0.001);
      
       if(dir == DIR_DL)
       {

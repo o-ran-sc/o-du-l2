@@ -1686,13 +1686,21 @@ uint8_t parsePrachCfg(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur, PrachCfg *prac
  * ****************************************************************/
 uint8_t parseCsiRsCfg(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur, CsiRsCfg *csiRsCfg)
 {
+   uint8_t csiFreqDomainAlloc=0;
    memset(csiRsCfg, 0, sizeof(CsiRsCfg));
    cur = cur -> xmlChildrenNode;
    while(cur != NULL)
    {
       if ((!xmlStrcmp(cur->name, (const xmlChar *)"CSIRS_FREQ")) && (cur->ns == ns))
       {
-         csiRsCfg->csiFreqDomainAlloc = atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
+         csiFreqDomainAlloc = atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
+         DU_ALLOC(csiRsCfg->csiFreqDomainAlloc, sizeof(uint8_t));
+         if(!csiRsCfg->csiFreqDomainAlloc)
+         {
+            DU_LOG("\nERROR  --> DU APP : %s: Memory allocation failed at line %d", __func__, __LINE__);
+            return RFAILED;
+         }
+         memcpy(csiRsCfg->csiFreqDomainAlloc, &csiFreqDomainAlloc,  sizeof(uint8_t));
       }
 
       if ((!xmlStrcmp(cur->name, (const xmlChar *)"CSIRS_PORTS")) && (cur->ns == ns))
@@ -4926,6 +4934,61 @@ uint8_t parseE2ConfigParams(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur, E2apDb *
 
 /*******************************************************************
  *
+ * @brief Fill Global config Parameters
+ *
+ * @details
+ *
+ *    Function : parseGlobalConfigParams
+ *
+ *    Functionality: Fill Global config Parmeters
+ *
+ * @params[in] XML document pointer
+ *             XML namespace
+ *             Current node in XML
+ *             Pointer to structure to be filled
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t parseGlobalConfigParams(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur)
+{
+
+   memset(&gConfigInfo, 0, sizeof(GConfiguration));
+   cur = cur->xmlChildrenNode;
+   while (cur != NULL)
+   {
+
+     if ((!xmlStrcmp(cur->name, (const xmlChar *)"RADIO_FRAME_DURATION")) && (cur->ns == ns))
+     {
+        gConfigInfo.gRadioFrameDuration = atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
+     }
+
+     if ((!xmlStrcmp(cur->name, (const xmlChar *)"ODU_UE_THROUGHPUT_PRINT_TIME_INTERVAL")) && (cur->ns == ns))
+     {
+        gConfigInfo.gUeThrptTimeIntervl = atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
+     }
+
+     if ((!xmlStrcmp(cur->name, (const xmlChar *)"ODU_SNSSAI_THROUGHPUT_PRINT_TIME_INTERVAL")) && (cur->ns == ns))
+     {
+        gConfigInfo.gSnssaiThrptTimeIntervl = atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
+     }
+
+     if ((!xmlStrcmp(cur->name, (const xmlChar *)"PHY_DELTA_DL")) && (cur->ns == ns))
+     {
+        gConfigInfo.gPhyDeltaDl = atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
+     }
+
+     if ((!xmlStrcmp(cur->name, (const xmlChar *)"PHY_DELTA_UL")) && (cur->ns == ns))
+     {
+        gConfigInfo.gPhyDeltaUl = atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
+     }
+      cur = cur -> next;
+   }
+   return ROK;
+}
+
+/*******************************************************************
+ *
  * @brief Fill DU Config Parmeters 
  *
  * @details
@@ -4991,16 +5054,6 @@ uint8_t parseDuCfgParams(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur)
          duCfgParam.maxNumDrb = atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
       }
 
-      if ((!xmlStrcmp(cur->name, (const xmlChar *)"MAX_NUM_UE_SUPPORTED")) && (cur->ns == ns))
-      {
-         duCfgParam.maxSupportedUes = atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
-      }
-
-      if ((!xmlStrcmp(cur->name, (const xmlChar *)"MAX_NUM_UE")) && (cur->ns == ns))
-      {
-         duCfgParam.maxUe = atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
-      }
-
 #ifdef O1_ENABLE
       if( getStartupConfig(&g_cfg) != ROK )
       {
@@ -5054,7 +5107,7 @@ uint8_t parseDuCfgParams(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur)
          duCfgParam.egtpParams.localIp.ipV4Pres = true;
          duCfgParam.egtpParams.destIp.ipV4Pres = true;
          duCfgParam.egtpParams.destIp.ipV4Addr = cuIp;
-         duCfgParam.egtpParams.maxTunnelId = duCfgParam.maxNumDrb * duCfgParam.maxSupportedUes; 
+         duCfgParam.egtpParams.maxTunnelId = duCfgParam.maxNumDrb * MAX_NUM_UE; 
       }
 
       if ((!xmlStrcmp(cur->name, (const xmlChar *)"MIB_PARAMS")) && (cur->ns == ns))
@@ -5120,6 +5173,15 @@ uint8_t parseDuCfgParams(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur)
             cmInitTimers(&(duCb.e2apDb.e2TimersInfo.e2Timers.e2NodeConfigUpdate.timer), 1);
          }
       }
+      
+      if((!xmlStrcmp(cur->name, (const xmlChar *)"GLOBAL_CFG")) && (cur->ns == ns))
+      {
+         if(parseGlobalConfigParams(doc, ns, cur) != ROK)
+         {
+            return RFAILED;
+         }
+      }
+
       cur = cur -> next;
    }
    return ROK;
@@ -5311,8 +5373,6 @@ void printDuConfig()
    DU_LOG("Lower MAC CORE ID %d\n", duCfgParam.threadInfo.lwrMacCoreId);
 
    DU_LOG("MAX NUM DRB %d\n", duCfgParam.maxNumDrb);
-   DU_LOG("MAX SUPPORTED UE %d\n", duCfgParam.maxSupportedUes);
-   DU_LOG("MAX UE %d\n",duCfgParam.maxUe);
 
    sctp = &duCfgParam.sctpParams;
    DU_LOG("\n ** SCTP PARAMETER ** \n");

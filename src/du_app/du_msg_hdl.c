@@ -142,7 +142,7 @@ uint8_t duBuildRlcCfg(Inst inst)
    genCfg   = &(rlcMngmt.t.cfg.s.gen);
 
    /*----------- Fill General Configuration Parameters ---------*/
-   genCfg->maxUe       = duCfgParam.maxUe;
+   genCfg->maxUe       = MAX_NUM_UE;
    genCfg->maxKwuSaps  = 2;
    genCfg->maxUdxSaps  = 1; 
    genCfg->rlcMode     = (inst == RLC_UL_INST) ?
@@ -395,9 +395,9 @@ uint8_t duProcCfgComplete()
             cell->cellInfo.plmn[idx1].mnc[1] = duCfgParam.srvdCellLst[0].duCellInfo.cellInfo.srvdPlmn[0].plmn.mnc[1];
             cell->cellInfo.plmn[idx1].mnc[2] = duCfgParam.srvdCellLst[0].duCellInfo.cellInfo.srvdPlmn[0].plmn.mnc[2];
          }
-         cell->cellInfo.maxUe = duCfgParam.maxUe;
+         cell->cellInfo.maxUe = MAX_NUM_UE;
          cell->cellStatus = CELL_OUT_OF_SERVICE;
-         gCellStatus = CELL_DOWN;
+         gConfigInfo.gCellStatus = CELL_DOWN;
          duCb.cfgCellLst[duCb.numCfgCells] = cell;
          duCb.numCfgCells++;
       }
