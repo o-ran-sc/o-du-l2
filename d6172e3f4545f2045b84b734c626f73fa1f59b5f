@@ -3,6 +3,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "54896a0d_f76d0d4f",
+        "filename": "build/config/odu_config.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 629,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-02-29T06:11:12Z",
+      "side": 1,
+      "message": "this param and next4 param are from commonDef. Is it correct to keep these under DU_CFG_PARAMS header?",
+      "range": {
+        "startLine": 629,
+        "startChar": 4,
+        "endLine": 629,
+        "endChar": 24
+      },
+      "revId": "d6172e3f4545f2045b84b734c626f73fa1f59b5f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "722259af_506bdeff",
         "filename": "src/cm/common_def.h",
         "patchSetId": 2
