@@ -24,6 +24,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c754a9c8_be6930ab",
+        "filename": "src/du_app/du_cfg.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 4996,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-02-29T11:16:11Z",
+      "side": 0,
+      "message": "Done",
+      "parentUuid": "66faa81b_f17a5b27",
+      "range": {
+        "startLine": 4996,
+        "startChar": 20,
+        "endLine": 4996,
+        "endChar": 36
+      },
+      "revId": "19cfa92f2e0896a19c779a0507068cd00884537e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0a3e02ec_979b7cbc",
@@ -37,6 +61,30 @@
       "writtenOn": "2024-02-29T05:30:25Z",
       "side": 0,
       "message": "still thinking we dont need this parameter as well.. Not sure why we set it as 32.. We will discuss this",
+      "range": {
+        "startLine": 5001,
+        "startChar": 20,
+        "endLine": 5001,
+        "endChar": 25
+      },
+      "revId": "19cfa92f2e0896a19c779a0507068cd00884537e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e8c7ab30_36617066",
+        "filename": "src/du_app/du_cfg.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 5001,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-02-29T11:16:11Z",
+      "side": 0,
+      "message": "Done",
+      "parentUuid": "0a3e02ec_979b7cbc",
       "range": {
         "startLine": 5001,
         "startChar": 20,
