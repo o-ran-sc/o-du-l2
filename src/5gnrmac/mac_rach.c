@@ -475,7 +475,7 @@ uint8_t MacProcUlSchInfo(Pst *pst, UlSchedInfo *ulSchedInfo)
    {
       MacUlSlot *currUlSlot = 
 	 &macCb.macCell[cellIdx]->ulSlot[ulSchedInfo->slotIndInfo.slot % macCb.macCell[cellIdx]->numOfSlots];
-      memcpy(&currUlSlot->ulInfo, ulSchedInfo, sizeof(UlSchedInfo)); 
+      memcpy(&currUlSlot->ulSchInfo, ulSchedInfo, sizeof(UlSchedInfo)); 
    }
    return ROK;
 }

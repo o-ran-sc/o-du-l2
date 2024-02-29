@@ -115,7 +115,7 @@ typedef struct macDlSlot
 
 typedef struct macUlSlot
 {
-   UlSchedInfo  ulInfo;
+   UlSchedInfo  ulSchInfo;
 }MacUlSlot;
 
 typedef struct macCbInfo
