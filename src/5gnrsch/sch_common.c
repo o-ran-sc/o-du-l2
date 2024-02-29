@@ -488,6 +488,7 @@ uint16_t fillPucchResourceInfo(SchCellCb *cell, uint8_t ueId, SchPucchInfo *schP
       else
       {
          DU_LOG("\nERROR  -->  SCH: Invalid value of r_pucch:%d (greater than 15) ", r_pucch);
+         memset(schPucchInfo, 0, sizeof(SchPucchInfo));
          return ret;
       }
       ret = allocatePrbUl(cell, slotInfo, pucchResourceSet[pucchIdx][1], pucchResourceSet[pucchIdx][2],\
@@ -522,6 +523,7 @@ uint16_t fillPucchResourceInfo(SchCellCb *cell, uint8_t ueId, SchPucchInfo *schP
 uint8_t schUlResAlloc(SchCellCb *cell, Inst schInst)
 {
    int ret = ROK;
+   uint8_t ueIdx = 0;
 #ifdef NR_DRX 
    SchUeCb   *ueCb;
 #endif
@@ -548,30 +550,26 @@ uint8_t schUlResAlloc(SchCellCb *cell, Inst schInst)
    schUlSlotInfo = cell->schUlSlotInfo[ulTimingInfo.slot]; 
    if(schUlSlotInfo->schPuschInfo)
    {
-      GET_CRNTI(ulSchedInfo.crnti, schUlSlotInfo->puschUe);
       /* Check the ue drx status if the UE is active for uplink scheduling or not  */
-#ifdef NR_DRX 
-      ueCb = schGetUeCb(cell, ulSchedInfo.crnti);
-      if(ueCb->ueDrxInfoPres)
-      {
-         if(!ueCb->drxUeCb.drxUlUeActiveStatus)
-            return RFAILED;
-      }
-#endif
       ulSchedInfo.dataType |= SCH_DATATYPE_PUSCH;
-      memcpy(&ulSchedInfo.schPuschInfo, schUlSlotInfo->schPuschInfo,
-            sizeof(SchPuschInfo));
-      SCH_FREE(schUlSlotInfo->schPuschInfo, sizeof(SchPuschInfo));
-      schUlSlotInfo->schPuschInfo = NULL;
+      for(ueIdx = 0; ueIdx < MAX_NUM_UE; ueIdx++)
+      {
+         if(schUlSlotInfo->schPuschInfo[ueIdx] != NULLP)
+         {
+            memcpy(&ulSchedInfo.schPuschInfo[ueIdx], schUlSlotInfo->schPuschInfo[ueIdx],
+                         sizeof(SchPuschInfo));
+            SCH_FREE(schUlSlotInfo->schPuschInfo[ueIdx], sizeof(SchPuschInfo));
+            schUlSlotInfo->schPuschInfo[ueIdx] = NULL;
+         }
+      }
    }
 
    if(schUlSlotInfo->pucchPres)
    {
-      GET_CRNTI(ulSchedInfo.crnti, schUlSlotInfo->pucchUe); 
       ulSchedInfo.dataType |= SCH_DATATYPE_UCI;
       memcpy(&ulSchedInfo.schPucchInfo, &schUlSlotInfo->schPucchInfo,
-            sizeof(SchPucchInfo));
-      memset(&schUlSlotInfo->schPucchInfo, 0, sizeof(SchPucchInfo));
+              (sizeof(SchPucchInfo) * MAX_NUM_UE));
+      memset(&schUlSlotInfo->schPucchInfo, 0, (sizeof(SchPucchInfo) * MAX_NUM_UE));
    }
 
    /* Send msg to MAC */
@@ -808,7 +806,7 @@ uint8_t schDlRsrcAllocMsg4(SchCellCb *cell, SlotTimingInfo msg4Time, uint8_t ueI
  *
  *******************************************************************/
 
-uint8_t schAllocPucchResource(SchCellCb *cell, SlotTimingInfo pucchTime, SchUeCb *ueCb,\
+uint8_t schAllocPucchResource(SchCellCb *cell, uint8_t ueId, SlotTimingInfo pucchTime, SchUeCb *ueCb,\
                                 SchDlHqProcCb *hqP, SchPdcchAllocInfo *pdcchAllocInfo)
 {
    uint8_t ret = RFAILED;
@@ -817,21 +815,19 @@ uint8_t schAllocPucchResource(SchCellCb *cell, SlotTimingInfo pucchTime, SchUeCb
 
    pucchSlot = pucchTime.slot;
    schUlSlotInfo = cell->schUlSlotInfo[pucchSlot];
-   memset(&schUlSlotInfo->schPucchInfo, 0, sizeof(SchPucchInfo));
 
-   ret = fillPucchResourceInfo(cell, schUlSlotInfo->pucchUe, &schUlSlotInfo->schPucchInfo,\
+   ret = fillPucchResourceInfo(cell, ueId, &schUlSlotInfo->schPucchInfo[ueId - 1],\
                                  pucchTime, pdcchAllocInfo);
    if(ret != ROK)
    {
       return ret;  
    }
-   
-   schUlSlotInfo->pucchPres = true;
 
+   schUlSlotInfo->pucchPres = true; 
    if(ueCb != NULLP)
    {
       /* set HARQ flag to true */
-      schUlSlotInfo->schPucchInfo.harqInfo.harqBitLength = 1; /* 1 bit for HARQ */
+      schUlSlotInfo->schPucchInfo[ueId - 1].harqInfo.harqBitLength = 1; /* 1 bit for HARQ */
       ADD_DELTA_TO_TIME(pucchTime, pucchTime, 3, cell->numSlots); /* SLOT_DELAY=3 */
       cmLListAdd2Tail(&(ueCb->hqDlmap[pucchTime.slot]->hqList), &hqP->dlSlotLnk);
    }
@@ -1960,7 +1956,6 @@ uint8_t schProcessMsg4Req(SchCellCb *cell, SlotTimingInfo currTime, uint8_t ueId
    }
 
    cell->schDlSlotInfo[pdcchTime.slot]->pdcchUe = ueId;
-   cell->schUlSlotInfo[pucchTime.slot]->pucchUe = ueId;
    
    cell->raCb[ueId-1].msg4recvd = FALSE;
    if(isRetxMsg4)
@@ -2114,7 +2109,8 @@ bool schProcessSrOrBsrReq(SchCellCb *cell, SlotTimingInfo currTime, uint8_t ueId
          if(schGetSlotSymbFrmt(puschTime.slot, cell->slotFrmtBitMap) == DL_SLOT)
             continue;
 #endif
-         if(cell->schUlSlotInfo[puschTime.slot]->puschUe != 0)
+         if((cell->schUlSlotInfo[puschTime.slot]->schPuschInfo[ueId - 1] != NULLP) 
+              && cell->schUlSlotInfo[puschTime.slot]->schPuschInfo[ueId - 1]->crnti == ueCb->crnti)
          {
             continue;
          }
@@ -2134,7 +2130,7 @@ bool schProcessSrOrBsrReq(SchCellCb *cell, SlotTimingInfo currTime, uint8_t ueId
    }
    else
    {
-      DU_LOG("\nDEBUG  -->  SCH : schProcessSrOrBsrReq(): K2 value is not found");
+      /* K2 value not found*/
       return false;     
    }
    return true;
@@ -2274,7 +2270,7 @@ uint8_t schMsg3RetxSchedulingForUe(SchRaCb *raCb)
       if(cell->schDlSlotInfo[dciSlot]->pdcchUe != 0)
          return false;
 
-      k2Found = schGetMsg3K2(cell, &raCb->msg3HqProc, dciTime.slot, &msg3Time, TRUE);
+      k2Found = schGetMsg3K2(cell, raCb->ueId,  &raCb->msg3HqProc, dciTime.slot, &msg3Time, TRUE);
 
       if (!k2Found)
       {
@@ -2287,9 +2283,9 @@ uint8_t schMsg3RetxSchedulingForUe(SchRaCb *raCb)
          return RFAILED;
       }
       cell->schDlSlotInfo[msg3Time.slot]->ulGrant = dciInfo;
-      SCH_ALLOC(cell->schUlSlotInfo[msg3Time.slot]->schPuschInfo, sizeof(SchPuschInfo));
+      SCH_ALLOC(cell->schUlSlotInfo[msg3Time.slot]->schPuschInfo[raCb->ueId - 1], sizeof(SchPuschInfo));
       memset(dciInfo,0,sizeof(DciInfo));
-      schFillUlDciForMsg3Retx(raCb, cell->schUlSlotInfo[msg3Time.slot]->schPuschInfo, dciInfo);
+      schFillUlDciForMsg3Retx(raCb, cell->schUlSlotInfo[msg3Time.slot]->schPuschInfo[raCb->ueId - 1], dciInfo);
    }   
    raCb->retxMsg3HqProc = NULLP;
    return ROK;
@@ -2313,7 +2309,7 @@ uint8_t schMsg3RetxSchedulingForUe(SchRaCb *raCb)
  *      -# true
  *      -# false
  **/
-bool schGetMsg3K2(SchCellCb *cell, SchUlHqProcCb* msg3HqProc, uint16_t dlTime, SlotTimingInfo *msg3Time, bool isRetx)
+bool schGetMsg3K2(SchCellCb *cell, uint8_t ueId, SchUlHqProcCb* msg3HqProc, uint16_t dlTime, SlotTimingInfo *msg3Time, bool isRetx)
 {
    bool      k2Found = false;
    uint8_t   k2TblIdx = 0;
@@ -2325,6 +2321,7 @@ bool schGetMsg3K2(SchCellCb *cell, SchUlHqProcCb* msg3HqProc, uint16_t dlTime, S
 #ifdef NR_TDD
    uint8_t   totalCfgSlot = 0;
 #endif
+   uint16_t crnti = 0;
    SchK2TimingInfoTbl   *msg3K2InfoTbl=NULLP;
    SlotTimingInfo       currTime, msg3TempTime;
    currTime = cell->slotInfo;
@@ -2347,7 +2344,8 @@ bool schGetMsg3K2(SchCellCb *cell, SchUlHqProcCb* msg3HqProc, uint16_t dlTime, S
       msg3MinSchTime = minMsg3SchTime[cell->numerology];
       msg3Delta = puschDeltaTable[puschMu];
    }
-
+ 
+   GET_UE_ID(crnti, ueId);
    for(k2TblIdx = 0; k2TblIdx < numK2; k2TblIdx++)
    {
       k2Index = msg3K2InfoTbl->k2TimingInfo[dlTime].k2Indexes[k2TblIdx];
@@ -2370,9 +2368,10 @@ bool schGetMsg3K2(SchCellCb *cell, SchUlHqProcCb* msg3HqProc, uint16_t dlTime, S
          if(schGetSlotSymbFrmt(msg3TempTime.slot % totalCfgSlot, cell->slotFrmtBitMap) == DL_SLOT)
             continue;
 #endif
-         /* If PUSCH is already scheduled on this slot, another PUSCH
-          * pdu cannot be scheduled here */
-         if(cell->schUlSlotInfo[msg3TempTime.slot]->puschUe != 0)
+         /* If PUSCH is already scheduled on this slot for this UE, another PUSCH
+          * pdu cannot be scheduled here for same UE*/
+         if((cell->schUlSlotInfo[msg3TempTime.slot]->schPuschInfo[ueId - 1] != NULLP) 
+              && cell->schUlSlotInfo[msg3TempTime.slot]->schPuschInfo[ueId - 1]->crnti == crnti)
             continue;
          k2Found = true;
          break;

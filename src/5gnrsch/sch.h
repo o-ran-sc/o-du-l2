@@ -362,13 +362,10 @@ typedef struct schRaCb
 typedef struct schUlSlotInfo
 {
    SchPrbAlloc  prbAlloc;         /*!< PRB allocated/available per symbol */
-   uint8_t      puschCurrentPrb;  /*!< Current PRB for PUSCH allocation */
-   bool         puschPres;        /*!< PUSCH presence field */
-   SchPuschInfo *schPuschInfo;    /*!< PUSCH info */
-   bool         pucchPres;        /*!< PUCCH presence field */
-   SchPucchInfo schPucchInfo;     /*!< PUCCH info */
-   uint8_t      pucchUe;          /*!< Store UE id for which PUCCH is scheduled */
-   uint8_t      puschUe;          /*!< Store UE id for which PUSCH is scheduled */
+   bool         puschPres;
+   SchPuschInfo *schPuschInfo[MAX_NUM_UE];    /*!< PUSCH info */
+   bool         pucchPres;
+   SchPucchInfo schPucchInfo[MAX_NUM_UE];     /*!< PUCCH info */
 }SchUlSlotInfo;
 
 /**
@@ -798,7 +795,7 @@ uint8_t schUlResAlloc(SchCellCb *cell, Inst schInst);
 bool schCheckPrachOcc(SchCellCb *cell, SlotTimingInfo prachOccasionTimingInfo);
 uint8_t schCalcPrachNumRb(SchCellCb *cell);
 void schPrachResAlloc(SchCellCb *cell, UlSchedInfo *ulSchedInfo, SlotTimingInfo prachOccasionTimingInfo);
-uint8_t schAllocPucchResource(SchCellCb *cell, SlotTimingInfo pucchTime, SchUeCb *ueCb, SchDlHqProcCb *hqP, SchPdcchAllocInfo *pdcchAllocInfo);
+uint8_t schAllocPucchResource(SchCellCb *cell, uint8_t ueId, SlotTimingInfo pucchTime, SchUeCb *ueCb, SchDlHqProcCb *hqP, SchPdcchAllocInfo *pdcchAllocInfo);
 uint8_t schFillUlDci(SchUeCb *ueCb, SchPuschInfo *puschInfo, DciInfo *dciInfo, bool isRetx, SchUlHqProcCb *hqP);
 uint8_t schFillPuschAlloc(SchUeCb *ueCb, SlotTimingInfo puschTime, uint32_t tbSize,
                             uint8_t startSymb, uint8_t symbLen, uint16_t startPrb, bool isRetx, SchUlHqProcCb *hqP);
@@ -844,7 +841,7 @@ void schUpdateHarqFdbk(SchUeCb *ueCb, uint8_t numHarq, uint8_t *harqPayload,Slot
 
 /* Round Robbin Scheduler funtions*/
 uint8_t schFillUlDciForMsg3Retx(SchRaCb *raCb, SchPuschInfo *puschInfo, DciInfo *dciInfo);
-bool schGetMsg3K2(SchCellCb *cell, SchUlHqProcCb* msg3HqProc, uint16_t dlTime, SlotTimingInfo *msg3Time, bool isRetx);
+bool schGetMsg3K2(SchCellCb *cell, uint8_t ueId, SchUlHqProcCb* msg3HqProc, uint16_t dlTime, SlotTimingInfo *msg3Time, bool isRetx);
 void schMsg4Complete(SchUeCb *ueCb);
 
 /* Statistics Function */

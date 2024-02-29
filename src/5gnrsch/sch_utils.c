@@ -1199,6 +1199,7 @@ SchUeCb* schGetUeCb(SchCellCb *cellCb, uint16_t crnti)
  **/
 void schInitUlSlot(SchUlSlotInfo *schUlSlotInfo)
 {
+   uint8_t ueIdx = 0;
    CmLList *node = NULLP, *next = NULLP;
    FreePrbBlock *freeBlock;
 
@@ -1227,9 +1228,12 @@ void schInitUlSlot(SchUlSlotInfo *schUlSlotInfo)
       freeBlock->endPrb = MAX_NUM_RB-1;
       addNodeToLList(&schUlSlotInfo->prbAlloc.freePrbBlockList, freeBlock, NULL);
    }
-
+ 
    schUlSlotInfo->puschCurrentPrb = PUSCH_START_RB;
-   schUlSlotInfo->schPuschInfo = NULLP;
+   for(ueIdx = 0; ueIdx < MAX_NUM_UE; ueIdx++)
+   {
+      schUlSlotInfo->schPuschInfo[ueIdx] = NULLP;
+   }
 }
 
 /**

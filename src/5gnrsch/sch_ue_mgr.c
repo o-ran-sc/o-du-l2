@@ -878,6 +878,7 @@ uint8_t schFillPuschAlloc(SchUeCb *ueCb, SlotTimingInfo puschTime, uint32_t tbSi
    if (isRetx == FALSE)
    {
       puschInfo.harqProcId                       = SCH_HARQ_PROC_ID;
+      puschInfo.crnti                            = ueCb->crnti;
       puschInfo.fdAlloc.resAllocType             = SCH_ALLOC_TYPE_1;
       puschInfo.fdAlloc.resAlloc.type1.startPrb  = startPrb;
       puschInfo.fdAlloc.resAlloc.type1.numPrb    = numRb;
@@ -915,6 +916,7 @@ uint8_t schFillPuschAlloc(SchUeCb *ueCb, SlotTimingInfo puschTime, uint32_t tbSi
    else
    {
       puschInfo.harqProcId                       = hqP->procId;
+      puschInfo.crnti                            = ueCb->crnti;
       puschInfo.fdAlloc.resAllocType             = hqP->puschResType;
       puschInfo.fdAlloc.resAlloc.type1.startPrb  = hqP->puschStartPrb;
       puschInfo.fdAlloc.resAlloc.type1.numPrb    = hqP->puschNumPrb;
@@ -934,16 +936,17 @@ uint8_t schFillPuschAlloc(SchUeCb *ueCb, SlotTimingInfo puschTime, uint32_t tbSi
 #endif 
   }
   schUlSlotInfo = cellCb->schUlSlotInfo[puschTime.slot];
-  SCH_ALLOC(schUlSlotInfo->schPuschInfo, sizeof(SchPuschInfo));
-  if(!schUlSlotInfo->schPuschInfo)
+  SCH_ALLOC(schUlSlotInfo->schPuschInfo[ueCb->ueId - 1], sizeof(SchPuschInfo));
+  if(!schUlSlotInfo->schPuschInfo[ueCb->ueId - 1])
   {
      DU_LOG("\nERROR  -->  SCH: Memory allocation failed in schAllocMsg3Pusch");
      return RFAILED;
   }
-  memcpy(schUlSlotInfo->schPuschInfo, &puschInfo, sizeof(SchPuschInfo));
+  memcpy(schUlSlotInfo->schPuschInfo[ueCb->ueId - 1], &puschInfo, sizeof(SchPuschInfo));
 
   return ROK;
 }
+
 /*******************************************************************
 *
 * @brief Fills UL DCI information for MSG3 retransmission

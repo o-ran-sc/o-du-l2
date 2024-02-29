@@ -414,7 +414,7 @@ SchPuschInfo* schAllocMsg3Pusch(Inst schInst, uint16_t crnti, uint8_t k2Index, S
    SchCellCb      *cell          = NULLP;
    SchUlSlotInfo  *schUlSlotInfo = NULLP;
    uint8_t    mcs       = DEFAULT_MCS;
-   uint8_t    startSymb = 0;
+   uint8_t    startSymb = 0, ueId = 0;
    uint8_t    symbLen   = 0; 
    uint16_t   startRb   = 0;
    uint16_t   numRb     = 0;
@@ -427,6 +427,7 @@ SchPuschInfo* schAllocMsg3Pusch(Inst schInst, uint16_t crnti, uint8_t k2Index, S
       return NULLP;
    }
 
+   GET_UE_ID(crnti, ueId);
    /* Allocate time-domain and frequency-domain resource for MSG3 PUSCH */
    startSymb = cell->cellCfg.ulCfgCommon.schInitialUlBwp.puschCommon.timeDomRsrcAllocList[k2Index].startSymbol;
    symbLen = cell->cellCfg.ulCfgCommon.schInitialUlBwp.puschCommon.timeDomRsrcAllocList[k2Index].symbolLength;
@@ -439,8 +440,8 @@ SchPuschInfo* schAllocMsg3Pusch(Inst schInst, uint16_t crnti, uint8_t k2Index, S
 
    /* Fill PUSCH scheduling details in Slot structure */
    schUlSlotInfo = cell->schUlSlotInfo[msg3SlotTime.slot];
-   SCH_ALLOC(schUlSlotInfo->schPuschInfo, sizeof(SchPuschInfo));
-   if(!schUlSlotInfo->schPuschInfo)
+   SCH_ALLOC(schUlSlotInfo->schPuschInfo[ueId - 1], sizeof(SchPuschInfo));
+   if(!schUlSlotInfo->schPuschInfo[ueId - 1])
    {
       DU_LOG("\nERROR  -->  SCH :  Memory allocation failed in schAllocMsg3Pusch");
       return NULLP;
@@ -450,44 +451,45 @@ SchPuschInfo* schAllocMsg3Pusch(Inst schInst, uint16_t crnti, uint8_t k2Index, S
    tbSize = schCalcTbSizeFromNPrb(numRb, mcs, NUM_PDSCH_SYMBOL);
    tbSize = tbSize / 8 ; /*bits to byte conversion*/
 
-   schUlSlotInfo->schPuschInfo->harqProcId        = msg3HqProc->procId;
-   schUlSlotInfo->schPuschInfo->fdAlloc.resAllocType      = SCH_ALLOC_TYPE_1;
-   schUlSlotInfo->schPuschInfo->fdAlloc.resAlloc.type1.startPrb  = startRb;
-   schUlSlotInfo->schPuschInfo->fdAlloc.resAlloc.type1.numPrb    = numRb;
-   schUlSlotInfo->schPuschInfo->tdAlloc.startSymb = startSymb;
-   schUlSlotInfo->schPuschInfo->tdAlloc.numSymb   = symbLen;
-   schUlSlotInfo->schPuschInfo->tbInfo.qamOrder   = QPSK_MODULATION;  /* QPSK modulation */
-   schUlSlotInfo->schPuschInfo->tbInfo.mcs	     = mcs;
-   schUlSlotInfo->schPuschInfo->tbInfo.mcsTable   = SCH_MCS_TABLE_QAM_64;
-   schUlSlotInfo->schPuschInfo->tbInfo.ndi        = NEW_TRANSMISSION; /* new transmission */
-   schUlSlotInfo->schPuschInfo->tbInfo.rv	        = 0;
-   schUlSlotInfo->schPuschInfo->tbInfo.tbSize     = tbSize;
+   schUlSlotInfo->schPuschInfo[ueId - 1]->harqProcId        = msg3HqProc->procId;
+   schUlSlotInfo->schPuschInfo[ueId - 1]->crnti             = crnti;
+   schUlSlotInfo->schPuschInfo[ueId - 1]->fdAlloc.resAllocType      = SCH_ALLOC_TYPE_1;
+   schUlSlotInfo->schPuschInfo[ueId - 1]->fdAlloc.resAlloc.type1.startPrb  = startRb;
+   schUlSlotInfo->schPuschInfo[ueId - 1]->fdAlloc.resAlloc.type1.numPrb    = numRb;
+   schUlSlotInfo->schPuschInfo[ueId - 1]->tdAlloc.startSymb = startSymb;
+   schUlSlotInfo->schPuschInfo[ueId - 1]->tdAlloc.numSymb   = symbLen;
+   schUlSlotInfo->schPuschInfo[ueId - 1]->tbInfo.qamOrder   = QPSK_MODULATION;  /* QPSK modulation */
+   schUlSlotInfo->schPuschInfo[ueId - 1]->tbInfo.mcs	     = mcs;
+   schUlSlotInfo->schPuschInfo[ueId - 1]->tbInfo.mcsTable   = SCH_MCS_TABLE_QAM_64;
+   schUlSlotInfo->schPuschInfo[ueId - 1]->tbInfo.ndi        = NEW_TRANSMISSION; /* new transmission */
+   schUlSlotInfo->schPuschInfo[ueId - 1]->tbInfo.rv	        = 0;
+   schUlSlotInfo->schPuschInfo[ueId - 1]->tbInfo.tbSize     = tbSize;
 #ifdef INTEL_FAPI   
-   schUlSlotInfo->schPuschInfo->dmrsMappingType   = DMRS_MAP_TYPE_A;  /* Setting Type-A */
-   schUlSlotInfo->schPuschInfo->nrOfDmrsSymbols   = NUM_DMRS_SYMBOLS;
-   schUlSlotInfo->schPuschInfo->dmrsAddPos        = DMRS_ADDITIONAL_POS;
+   schUlSlotInfo->schPuschInfo[ueId - 1]->dmrsMappingType   = DMRS_MAP_TYPE_A;  /* Setting Type-A */
+   schUlSlotInfo->schPuschInfo[ueId - 1]->nrOfDmrsSymbols   = NUM_DMRS_SYMBOLS;
+   schUlSlotInfo->schPuschInfo[ueId - 1]->dmrsAddPos        = DMRS_ADDITIONAL_POS;
 #endif   
    
    if(!isRetx)
    {
       msg3HqProc->strtSymbl = startSymb;
       msg3HqProc->numSymbl = symbLen;
-      msg3HqProc->puschResType = schUlSlotInfo->schPuschInfo->fdAlloc.resAllocType;
-      msg3HqProc->puschStartPrb = schUlSlotInfo->schPuschInfo->fdAlloc.resAlloc.type1.startPrb;
-      msg3HqProc->puschNumPrb = schUlSlotInfo->schPuschInfo->fdAlloc.resAlloc.type1.numPrb;
-      msg3HqProc->tbInfo.qamOrder = schUlSlotInfo->schPuschInfo->tbInfo.qamOrder;
-      msg3HqProc->tbInfo.iMcs = schUlSlotInfo->schPuschInfo->tbInfo.mcs;
-      msg3HqProc->tbInfo.mcsTable = schUlSlotInfo->schPuschInfo->tbInfo.mcsTable;
-      msg3HqProc->tbInfo.ndi = schUlSlotInfo->schPuschInfo->tbInfo.ndi;
-      msg3HqProc->tbInfo.rv = schUlSlotInfo->schPuschInfo->tbInfo.rv;
-      msg3HqProc->tbInfo.tbSzReq = schUlSlotInfo->schPuschInfo->tbInfo.tbSize;
+      msg3HqProc->puschResType = schUlSlotInfo->schPuschInfo[ueId - 1]->fdAlloc.resAllocType;
+      msg3HqProc->puschStartPrb = schUlSlotInfo->schPuschInfo[ueId - 1]->fdAlloc.resAlloc.type1.startPrb;
+      msg3HqProc->puschNumPrb = schUlSlotInfo->schPuschInfo[ueId - 1]->fdAlloc.resAlloc.type1.numPrb;
+      msg3HqProc->tbInfo.qamOrder = schUlSlotInfo->schPuschInfo[ueId - 1]->tbInfo.qamOrder;
+      msg3HqProc->tbInfo.iMcs = schUlSlotInfo->schPuschInfo[ueId - 1]->tbInfo.mcs;
+      msg3HqProc->tbInfo.mcsTable = schUlSlotInfo->schPuschInfo[ueId - 1]->tbInfo.mcsTable;
+      msg3HqProc->tbInfo.ndi = schUlSlotInfo->schPuschInfo[ueId - 1]->tbInfo.ndi;
+      msg3HqProc->tbInfo.rv = schUlSlotInfo->schPuschInfo[ueId - 1]->tbInfo.rv;
+      msg3HqProc->tbInfo.tbSzReq = schUlSlotInfo->schPuschInfo[ueId - 1]->tbInfo.tbSize;
 #ifdef INTEL_FAPI      
-      msg3HqProc->dmrsMappingType = schUlSlotInfo->schPuschInfo->dmrsMappingType;
-      msg3HqProc->nrOfDmrsSymbols = schUlSlotInfo->schPuschInfo->nrOfDmrsSymbols;
-      msg3HqProc->dmrsAddPos = schUlSlotInfo->schPuschInfo->dmrsAddPos;
+      msg3HqProc->dmrsMappingType = schUlSlotInfo->schPuschInfo[ueId - 1]->dmrsMappingType;
+      msg3HqProc->nrOfDmrsSymbols = schUlSlotInfo->schPuschInfo[ueId - 1]->nrOfDmrsSymbols;
+      msg3HqProc->dmrsAddPos = schUlSlotInfo->schPuschInfo[ueId - 1]->dmrsAddPos;
 #endif
    }
-   return schUlSlotInfo->schPuschInfo;
+   return schUlSlotInfo->schPuschInfo[ueId - 1];
 }
 
 /**
@@ -546,7 +548,7 @@ bool schProcessRaReq(Inst schInst, SchCellCb *cell, SlotTimingInfo currTime, uin
 #ifdef NR_TDD
    uint8_t   totalCfgSlot = 0;
 #endif
-   uint16_t             dciSlot = 0, rarSlot = 0;
+   uint16_t             dciSlot = 0, rarSlot = 0, crnti = 0;
    SlotTimingInfo       dciTime, rarTime, msg3Time, pucchTime;
    RarAlloc             *dciSlotAlloc = NULLP;    /* Stores info for transmission of PDCCH for RAR */
    RarAlloc             *rarSlotAlloc = NULLP;    /* Stores info for transmission of RAR PDSCH */
@@ -554,7 +556,8 @@ bool schProcessRaReq(Inst schInst, SchCellCb *cell, SlotTimingInfo currTime, uin
    SchK0K1TimingInfoTbl *k0K1InfoTbl=NULLP;    
    SchK2TimingInfoTbl   *msg3K2InfoTbl=NULLP;
    RaRspWindowStatus    windowStatus=0;
-   
+ 
+   GET_CRNTI(crnti, ueId);
 #ifdef NR_TDD
    totalCfgSlot = calculateSlotPatternLength(cell->cellCfg.ssbScs, cell->cellCfg.tddCfg.tddPeriod);
 #endif
@@ -619,8 +622,11 @@ bool schProcessRaReq(Inst schInst, SchCellCb *cell, SlotTimingInfo currTime, uin
                   if(schGetSlotSymbFrmt(pucchTime.slot, cell->slotFrmtBitMap) == DL_SLOT)
                      continue;
 #endif
-                  if(cell->schUlSlotInfo[pucchTime.slot]->pucchUe != 0)
+                  /*In this pucchTime, this particular UE/CRNTI is already scheduled thus checking 
+                   * for next pucchTime for the same UE*/
+                  if(cell->schUlSlotInfo[pucchTime.slot]->schPucchInfo[ueId - 1].crnti == crnti)
                      continue;
+
                   k1Found = true;
                   break;
                }
@@ -642,9 +648,9 @@ bool schProcessRaReq(Inst schInst, SchCellCb *cell, SlotTimingInfo currTime, uin
                      if(schGetSlotSymbFrmt(msg3Time.slot % totalCfgSlot, cell->slotFrmtBitMap) == DL_SLOT)
                         continue;
 #endif
-                     /* If PUSCH is already scheduled on this slot, another PUSCH
-                      * pdu cannot be scheduled here */
-                     if(cell->schUlSlotInfo[msg3Time.slot]->puschUe != 0)
+                     /* If PUSCH is already scheduled on this slot for this UE, another PUSCH
+                      * pdu cannot be scheduled here for same UE*/
+                     if(cell->schUlSlotInfo[msg3Time.slot]->schPuschInfo[ueId - 1]->crnti == crnti)
                         continue;
 
                      k2Found = true;
@@ -696,9 +702,9 @@ bool schProcessRaReq(Inst schInst, SchCellCb *cell, SlotTimingInfo currTime, uin
 
       if(cell->raReq[ueId-1]->isCFRA)
       {
+         cell->schUlSlotInfo[pucchTime.slot]->schPucchInfo[ueId - 1].crnti = crnti; 
          /* Allocate resources for PUCCH */
-         cell->schUlSlotInfo[pucchTime.slot]->pucchUe = ueId;
-         ret = schAllocPucchResource(cell, pucchTime, NULLP, NULLP, NULLP);
+         ret = schAllocPucchResource(cell, ueId, pucchTime, NULLP, NULLP, NULLP);
          if(ret == RFAILED)
          {
             SCH_FREE(dciSlotAlloc, sizeof(RarAlloc));
@@ -710,7 +716,7 @@ bool schProcessRaReq(Inst schInst, SchCellCb *cell, SlotTimingInfo currTime, uin
       }
       else
       {
-         cell->schUlSlotInfo[msg3Time.slot]->puschUe = ueId;
+         cell->schUlSlotInfo[msg3Time.slot]->schPuschInfo[ueId - 1]->crnti = crnti;
          /* Allocate resources for msg3 */
          msg3PuschInfo = schAllocMsg3Pusch(schInst, cell->raReq[ueId-1]->rachInd->crnti, k2Index, msg3Time, &(cell->raCb[ueId-1].msg3HqProc), FALSE);
          if(msg3PuschInfo)
