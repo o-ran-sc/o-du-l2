@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "722259af_506bdeff",
+        "filename": "src/cm/common_def.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 375,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-02-29T05:30:25Z",
+      "side": 1,
+      "message": "pls add prefix g in every variable to get the idea that it is a global varialbe",
+      "range": {
+        "startLine": 375,
+        "startChar": 11,
+        "endLine": 375,
+        "endChar": 21
+      },
+      "revId": "d6172e3f4545f2045b84b734c626f73fa1f59b5f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
