@@ -80,13 +80,13 @@ uint8_t SchProcCrcInd(Pst *pst, CrcIndInfo *crcInd)
       {
          if (cell->ueCb[ueId-1].hqUlmap[crcInd->timingInfo.slot]->hqList.count == 0)
          {
-            DU_LOG("\n ERROR no harq stored in ul hq map at slot %d ue id %d\n",crcInd->timingInfo.slot, ueId);
             crcCnt++;
             continue;
          }
          if (cell->ueCb[ueId-1].hqUlmap[crcInd->timingInfo.slot]->hqList.first == 0)
          {
-            DU_LOG("\n ERROR NULL harq stored in ul hq map at slot %d ue id %d\n",crcInd->timingInfo.slot, ueId);
+            DU_LOG("\nERROR  --> SCH: NULL harq stored in ul hq map at slot %d ue id %d\n",\
+                               crcInd->timingInfo.slot, ueId);
             crcCnt++;
             continue;
          }

@@ -906,8 +906,8 @@ uint8_t schFcfsScheduleUlLc(SlotTimingInfo dciTime, SlotTimingInfo puschTime, ui
    uint8_t ret = RFAILED;
    uint16_t startPrb = 0;
    uint32_t totDataReq = 0; /* in bytes */
-   SchUeCb *ueCb;
-   SchPuschInfo *puschInfo;
+   SchUeCb *ueCb = NULLP;
+   SchPuschInfo *puschInfo = NULLP;
    DciInfo  *dciInfo = NULLP;
 
    cell = (*hqP)->hqEnt->cell;
@@ -936,16 +936,15 @@ uint8_t schFcfsScheduleUlLc(SlotTimingInfo dciTime, SlotTimingInfo puschTime, ui
       /* Update PUSCH allocation */
       if(schFillPuschAlloc(ueCb, puschTime, totDataReq, startSymb, symbLen, startPrb, isRetx, *hqP) == ROK)
       {
-         if(cell->schUlSlotInfo[puschTime.slot]->schPuschInfo)
+         if(cell->schUlSlotInfo[puschTime.slot]->schPuschInfo[ueCb->ueId])
          {
-            puschInfo = cell->schUlSlotInfo[puschTime.slot]->schPuschInfo;
+            puschInfo = cell->schUlSlotInfo[puschTime.slot]->schPuschInfo[ueCb->ueId];
             if(puschInfo != NULLP)
             {
                /* Fill DCI for UL grant */
                schFillUlDci(ueCb, puschInfo, dciInfo, isRetx, *hqP);
                ueCb->srRcvd = false;
                ueCb->bsrRcvd = false;
-               cell->schUlSlotInfo[puschTime.slot]->puschUe = ueCb->ueId;
                if(fcfsHqProcCb->lcCb.dedLcList.count != 0)
                   updateBsrAndLcList(&(fcfsHqProcCb->lcCb.dedLcList), ueCb->bsrInfo, ROK);
                updateBsrAndLcList(&(fcfsHqProcCb->lcCb.defLcList), ueCb->bsrInfo, ROK);
@@ -1279,7 +1278,18 @@ void schFcfsScheduleSlot(SchCellCb *cell, SlotTimingInfo *slotInd, Inst schInst)
                   }
                }
             }
-
+         }
+#ifdef NR_DRX 
+         if((cell->ueCb[ueId-1].ueDrxInfoPres == true) && (cell->ueCb[ueId-1].drxUeCb.drxUlUeActiveStatus != true))
+         {
+            if(pendingUeNode->node)
+            {
+               cmLListAdd2Tail(&fcfsCell->ueToBeScheduled, cmLListDelFrm(&fcfsCell->ueToBeScheduled, pendingUeNode));
+            }
+         }
+         else 
+#endif
+         {
             /* Scheduling of UL grant */
             node = NULLP;
             if(fcfsUeCb)

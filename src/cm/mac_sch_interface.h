@@ -1289,6 +1289,7 @@ typedef struct tbInfo
 typedef struct schPuschInfo
 {
    uint8_t          harqProcId;   /* HARQ Process ID */
+   uint16_t         crnti;
    FreqDomainAlloc  fdAlloc;      /* Freq domain allocation */
    TimeDomainAlloc  tdAlloc;      /* Time domain allocation */
    TbInfo           tbInfo;       /* TB info */
@@ -1333,6 +1334,7 @@ typedef struct schPucchFormatCfg
 
 typedef struct schPucchInfo
 {
+   uint16_t         crnti;
    FreqDomainRsrc   fdAlloc;      
    TimeDomainAlloc  tdAlloc;      
    uint8_t          srFlag;
@@ -1353,6 +1355,7 @@ typedef struct schPucchInfo
 typedef struct schPuschUci
 {
    uint8_t          harqProcId;   /* HARQ Process ID */
+   uint16_t         crnti;
    FreqDomainAlloc  fdAlloc;      /* Freq domain allocation */
    TimeDomainAlloc  tdAlloc;      /* Time domain allocation */
    TbInfo           tbInfo;       /* TB information */
@@ -1364,13 +1367,12 @@ typedef struct schPuschUci
 typedef struct ulSchedInfo
 {
    uint16_t         cellId;         /* Cell Id */
-   uint16_t         crnti;          /* CRNI */
    SlotTimingInfo   slotIndInfo;    /* Slot Info: sfn, slot number */
    uint8_t          dataType;       /* Type of info being scheduled */
    SchPrachInfo     prachSchInfo;   /* Prach scheduling info */
-   SchPuschInfo     schPuschInfo;   /* Pusch scheduling info */
-   SchPuschUci      schPuschUci;    /* Pusch Uci */
-   SchPucchInfo     schPucchInfo;   /* Pucch and Uci scheduling info */
+   SchPuschInfo     schPuschInfo[MAX_NUM_UE];   /* Pusch scheduling info */
+   SchPuschUci      schPuschUci[MAX_NUM_UE];    /* Pusch Uci */
+   SchPucchInfo     schPucchInfo[MAX_NUM_UE];   /* Pucch and Uci scheduling info */
 }UlSchedInfo;
 
 /* Info of Scheduling Request to Add/Modify */

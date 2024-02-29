@@ -886,6 +886,7 @@ uint8_t SchSendCellDeleteRspToMac(SchCellDeleteReq  *ueDelete, Inst inst, SchMac
 void deleteSchCellCb(SchCellCb *cellCb)
 {
    uint8_t sliceIdx=0, slotIdx=0, plmnIdx = 0;
+   uint8_t ueIdx = 0;
    CmLListCp *list=NULL;
    CmLList *node=NULL, *next=NULL;
    SchPageInfo *tempNode = NULLP;
@@ -903,6 +904,12 @@ void deleteSchCellCb(SchCellCb *cellCb)
             deleteNodeFromLList(list, node);
             node = next;
          }
+         for(ueIdx = 0; ueIdx< MAX_NUM_UE; ueIdx++)
+         {
+            SCH_FREE(cellCb->schDlSlotInfo[slotIdx]->rarAlloc[ueIdx], sizeof(RarAlloc));
+            SCH_FREE(cellCb->schDlSlotInfo[slotIdx]->dlMsgAlloc[ueIdx], sizeof(DlMsgSchInfo));
+         }
+         SCH_FREE(cellCb->schDlSlotInfo[slotIdx]->ulGrant, sizeof(DciInfo));
          SCH_FREE(cellCb->schDlSlotInfo[slotIdx], sizeof(SchDlSlotInfo));
       }
       SCH_FREE(cellCb->schDlSlotInfo, cellCb->numSlots *sizeof(SchDlSlotInfo*));
@@ -920,6 +927,10 @@ void deleteSchCellCb(SchCellCb *cellCb)
             SCH_FREE(node->node, sizeof(FreePrbBlock));
             deleteNodeFromLList(list, node);
             node = next;
+         }
+         for(ueIdx = 0; ueIdx< MAX_NUM_UE; ueIdx++)
+         {
+            SCH_FREE(cellCb->schUlSlotInfo[slotIdx]->schPuschInfo[ueIdx], sizeof(SchPuschInfo));
          }
          SCH_FREE(cellCb->schUlSlotInfo[slotIdx], sizeof(SchUlSlotInfo));  
       }
