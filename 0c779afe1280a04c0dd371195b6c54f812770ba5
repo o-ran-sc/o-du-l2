@@ -1,0 +1,158 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7a7d9510_42327602",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 4505,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-03-01T12:23:49Z",
+      "side": 1,
+      "message": "initalize this.",
+      "revId": "0c779afe1280a04c0dd371195b6c54f812770ba5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "926fe044_a608c3a2",
+        "filename": "src/5gnrsch/sch.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 366,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-03-01T12:23:49Z",
+      "side": 1,
+      "message": "I think we might need to make some changes in the free part of deleteSchCellCb or deleteSchUeCb function. Please check.",
+      "revId": "0c779afe1280a04c0dd371195b6c54f812770ba5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8c42a69b_0bc2e348",
+        "filename": "src/5gnrsch/sch.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 844,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-03-01T12:23:49Z",
+      "side": 1,
+      "message": "schUeCfgCb [uint8_t ueId;] and schUeCb[ uint16_t ueId] please check which is the correct data type",
+      "range": {
+        "startLine": 844,
+        "startChar": 43,
+        "endLine": 844,
+        "endChar": 47
+      },
+      "revId": "0c779afe1280a04c0dd371195b6c54f812770ba5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7a241904_840b741f",
+        "filename": "src/5gnrsch/sch_common.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2133,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-03-01T12:23:49Z",
+      "side": 1,
+      "message": "don\u0027t we need this comment?",
+      "revId": "0c779afe1280a04c0dd371195b6c54f812770ba5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "310be5c8_511ab9d5",
+        "filename": "src/5gnrsch/sch_crc.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-03-01T12:23:49Z",
+      "side": 1,
+      "message": "uncomment/remove this comment.",
+      "revId": "0c779afe1280a04c0dd371195b6c54f812770ba5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ca293036_8e67c8fe",
+        "filename": "src/5gnrsch/sch_crc.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-03-01T12:23:49Z",
+      "side": 1,
+      "message": "we only provide the layer name here. SO please change to SCH_CRC to SCH.",
+      "range": {
+        "startLine": 89,
+        "startChar": 33,
+        "endLine": 89,
+        "endChar": 40
+      },
+      "revId": "0c779afe1280a04c0dd371195b6c54f812770ba5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "af957207_685966d9",
+        "filename": "src/5gnrsch/sch_fcfs.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 909,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-03-01T12:23:49Z",
+      "side": 1,
+      "message": "initialise.",
+      "revId": "0c779afe1280a04c0dd371195b6c54f812770ba5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "01f7c06c_61b5a252",
+        "filename": "src/5gnrsch/sch_rach.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 417,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-03-01T12:23:49Z",
+      "side": 1,
+      "message": "uint16_t?",
+      "range": {
+        "startLine": 417,
+        "startChar": 29,
+        "endLine": 417,
+        "endChar": 33
+      },
+      "revId": "0c779afe1280a04c0dd371195b6c54f812770ba5",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
