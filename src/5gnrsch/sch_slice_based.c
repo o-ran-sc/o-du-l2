@@ -906,7 +906,7 @@ uint8_t schSliceBasedScheduleUlLc(SlotTimingInfo dciTime, SlotTimingInfo puschTi
    uint16_t startPrb = 0;
    uint32_t totDataReq = 0; /* in bytes */
    SchUeCb *ueCb;
-   SchPuschInfo *puschInfo;
+   SchPuschInfo *puschInfo = NULLP;
    DciInfo  *dciInfo = NULLP;
 
    cell = (*hqP)->hqEnt->cell;
@@ -935,16 +935,15 @@ uint8_t schSliceBasedScheduleUlLc(SlotTimingInfo dciTime, SlotTimingInfo puschTi
       /* Update PUSCH allocation */
       if(schFillPuschAlloc(ueCb, puschTime, totDataReq, startSymb, symbLen, startPrb, isRetx, *hqP) == ROK)
       {
-         if(cell->schUlSlotInfo[puschTime.slot]->schPuschInfo)
+         if(cell->schUlSlotInfo[puschTime.slot]->schPuschInfo[ueCb->ueId - 1])
          {
-            puschInfo = cell->schUlSlotInfo[puschTime.slot]->schPuschInfo;
+            puschInfo = cell->schUlSlotInfo[puschTime.slot]->schPuschInfo[ueCb->ueId - 1];
             if(puschInfo != NULLP)
             {
                /* Fill DCI for UL grant */
                schFillUlDci(ueCb, puschInfo, dciInfo, isRetx, *hqP);
                ueCb->srRcvd = false;
                ueCb->bsrRcvd = false;
-               cell->schUlSlotInfo[puschTime.slot]->puschUe = ueCb->ueId;
                if(schSpcHqProcCb->lcCb.dedLcList.count != 0)
                   updateBsrAndLcList(&(schSpcHqProcCb->lcCb.dedLcList), ueCb->bsrInfo, ROK);
                updateBsrAndLcList(&(schSpcHqProcCb->lcCb.defLcList), ueCb->bsrInfo, ROK);

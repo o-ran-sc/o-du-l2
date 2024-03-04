@@ -242,8 +242,6 @@ bool schFillBoGrantDlSchedInfo(SchCellCb *cell, SlotTimingInfo currTime, uint8_t
       }
    }
 
-   cell->schUlSlotInfo[pucchTime.slot]->pucchUe = ueId;
-
    /*Re-setting the BO's of all DL LCs in this UE*/
    for(lcIdx = 0; lcIdx < MAX_NUM_LC; lcIdx++)
    {
@@ -421,6 +419,7 @@ bool findValidK0K1Value(SchCellCb *cell, SlotTimingInfo currTime, uint8_t ueId, 
    uint8_t numK0 = 0, k0TblIdx = 0, k0Val = 0, k0Index =0 ;
    uint8_t k1TblIdx = 0, k1Index = 0, k1Val = 0, numK1 = 0;
    uint8_t ret = RFAILED;
+   uint16_t  crnti = 0;
    SchUeCb *ueCb = NULLP;
    SchK0K1TimingInfoTbl *k0K1InfoTbl;
 
@@ -434,6 +433,7 @@ bool findValidK0K1Value(SchCellCb *cell, SlotTimingInfo currTime, uint8_t ueId, 
 #endif
 
    ueCb = &cell->ueCb[ueId-1];
+   GET_CRNTI(crnti, ueId);
    if(dedMsg == true)
    {
       k0K1InfoTbl = &ueCb->k0K1InfoTbl;
@@ -508,7 +508,7 @@ bool findValidK0K1Value(SchCellCb *cell, SlotTimingInfo currTime, uint8_t ueId, 
             continue;
          }
 #endif
-         if(cell->schUlSlotInfo[pucchTime->slot]->pucchUe != 0)
+         if(cell->schUlSlotInfo[pucchTime->slot]->schPucchInfo[ueId - 1].crnti == crnti)
          {
             continue; 
          }
@@ -518,11 +518,11 @@ bool findValidK0K1Value(SchCellCb *cell, SlotTimingInfo currTime, uint8_t ueId, 
          }
          pdcchTime->cellId = cell->cellId;
          pdschTime->cellId = cell->cellId;
-
-         cell->schUlSlotInfo[pucchTime->slot]->pucchUe = ueId;
+         
+         cell->schUlSlotInfo[pucchTime->slot]->schPucchInfo[ueId - 1].crnti = crnti;
 
          /*Availability of PUCCH for HARQ resources*/
-         ret = schAllocPucchResource(cell, *pucchTime, ueCb, hqP, pdcchAllocInfo);
+         ret = schAllocPucchResource(cell, ueId, *pucchTime, ueCb, hqP, pdcchAllocInfo);
          if(ret == RFAILED)
          {
             /*DL allocation can't go through as PUCCH is unavailable*/
