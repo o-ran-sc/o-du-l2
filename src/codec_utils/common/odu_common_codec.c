@@ -4,6 +4,7 @@
 #include "asn_codecs.h"
 #include "odu_common_codec.h"
 
+int  encBufSize;
 /*******************************************************************
  *
  * @brief Writes the encoded chunks into a buffer

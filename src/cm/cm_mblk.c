@@ -33,7 +33,7 @@
 #include "common_def.h"       /* Header file */
 
 #ifdef SS_LOCKLESS_MEMORY
-pthread_t tmpRegTidMap[20];
+extern pthread_t tmpRegTidMap[20];
 #define CM_MEM_GET_REGION(_region)                        \
 {                                                         \
    uint8_t  _regCnt;                                           \

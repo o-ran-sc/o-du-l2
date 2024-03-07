@@ -48,6 +48,7 @@
 
 #endif
 
+GConfiguration gConfigInfo;
 DuMacCellDeleteReq packMacCellDeleteReqOpts[] =
 {
    packDuMacCellDeleteReq,       /* Loose coupling */

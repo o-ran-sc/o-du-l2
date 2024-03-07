@@ -30,6 +30,10 @@
 #include "cm_inet.x"
 #include "cm_tpt.x"
 
+uint8_t sockType;
+uint8_t protType;
+EgtpGlobalCb egtpCb;
+
 /**************************************************************************
  * @brief Task Initiation callback function. 
  *

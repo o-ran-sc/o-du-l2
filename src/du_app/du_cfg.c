@@ -4334,43 +4334,57 @@ uint8_t parseThreadAffinity(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur, ThreadIn
       if ((!xmlStrcmp(cur->name, (const xmlChar *)"DU_APP_CORE")) && (cur->ns == ns))
       {
          threads->duAppCoreId = atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
+#ifdef INTEL_THREAD_AFFINITY
          ODU_SET_THREAD_AFFINITY(&threads->duAppSTskId, SS_AFFINITY_MODE_EXCL, threads->duAppCoreId, 0);
+#endif
       }
 
       if ((!xmlStrcmp(cur->name, (const xmlChar *)"EGTP_CORE")) && (cur->ns == ns))
       {
          threads->egtpCoreId = atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
+#ifdef INTEL_THREAD_AFFINITY
          ODU_SET_THREAD_AFFINITY(&threads->egtpSTskId, SS_AFFINITY_MODE_EXCL, threads->egtpCoreId, 0);
+#endif
       }
 
       if ((!xmlStrcmp(cur->name, (const xmlChar *)"RLC_MAC_CORE")) && (cur->ns == ns))
       {
          threads->rlcMacCoreId = atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
+#ifdef INTEL_THREAD_AFFINITY
          ODU_SET_THREAD_AFFINITY(&threads->rlcMacSTskId, SS_AFFINITY_MODE_EXCL, threads->rlcMacCoreId, 0);
+#endif
       }
 
       if ((!xmlStrcmp(cur->name, (const xmlChar *)"RLC_UL_CORE")) && (cur->ns == ns))
       {
          threads->rlcUlCoreId = atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
+#ifdef INTEL_THREAD_AFFINITY
          ODU_SET_THREAD_AFFINITY(&threads->rlcUlSTskId, SS_AFFINITY_MODE_EXCL, threads->rlcUlCoreId, 0);
+#endif
       }
 
       if ((!xmlStrcmp(cur->name, (const xmlChar *)"SCH_CORE")) && (cur->ns == ns))
       {
          threads->schCoreId = atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
+#ifdef INTEL_THREAD_AFFINITY
          ODU_SET_THREAD_AFFINITY(&threads->schSTskId, SS_AFFINITY_MODE_EXCL, threads->schCoreId, 0);
+#endif
       }
 
       if ((!xmlStrcmp(cur->name, (const xmlChar *)"SCTP_CORE")) && (cur->ns == ns))
       {
          threads->sctpCoreId = atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
+#ifdef INTEL_THREAD_AFFINITY
          ODU_SET_THREAD_AFFINITY(&threads->sctpSTskId, SS_AFFINITY_MODE_EXCL, threads->sctpCoreId, 0);
+#endif
       }
 
       if ((!xmlStrcmp(cur->name, (const xmlChar *)"LOWER_MAC_CORE")) && (cur->ns == ns))
       {
          threads->lwrMacCoreId = atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
+#ifdef INTEL_THREAD_AFFINITY
          ODU_SET_THREAD_AFFINITY(&threads->lwrMacSTskId, SS_AFFINITY_MODE_EXCL, threads->lwrMacCoreId, 0);
+#endif
       }
 
       cur = cur -> next;

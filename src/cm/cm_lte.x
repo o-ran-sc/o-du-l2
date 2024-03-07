@@ -271,7 +271,7 @@ typedef struct cmTtiProc
 	uint32_t phyReptTtiStretchCount;
 }CmTtiProc;
 
-CmTtiProc ttiProc;
+extern CmTtiProc ttiProc;
 
 Void cmUpdateTtiCounters(uint32_t ttiProcessingTime);
 Void cmResetTtiCounters(Void); 

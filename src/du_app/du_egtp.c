@@ -34,6 +34,9 @@
 #include "du_utils.h"
 
 
+uint8_t unpackEgtpSrvOpenReq(EgtpSrvOpenReq func, Pst *pst, Buffer *mBuf);
+uint8_t         protType;
+EgtpGlobalCb egtpCb;   /* EGTP global control block */
 /**************************************************************************
  * @brief Task Initiation callback function. 
  *

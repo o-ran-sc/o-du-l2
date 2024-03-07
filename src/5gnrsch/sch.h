@@ -731,7 +731,7 @@ typedef struct schCb
 }SchCb;
 
 /* Declaration for scheduler control blocks */
-SchCb schCb[SCH_MAX_INST];
+extern SchCb schCb[SCH_MAX_INST];
 
 /* function declarations */
 short int schActvTmr(Ent ent,Inst inst);

@@ -46,8 +46,8 @@
 #define NUM_TUNNEL_TO_PUMP_DATA 4
 #define NUM_DL_PACKETS 1
 
-uint8_t         sockType;
-uint8_t         protType;
+extern uint8_t sockType;
+extern uint8_t protType;
 
 typedef enum egtpMsgType
 {
@@ -136,7 +136,8 @@ typedef struct egtpGlobalCb
    EgtpDstCb    dstCb[MAX_DU_SUPPORTED];          /* Destination endpoint */
    uint8_t      gCntPdu[MAX_TEID+1]; /* Maintaining PDU count for each bearer */
 }EgtpGlobalCb;
-EgtpGlobalCb egtpCb;   /* EGTP global control block */
+
+extern EgtpGlobalCb egtpCb;   /* EGTP global control block */
 
 S16 egtpActvInit();
 S16 cuEgtpCfgReq();

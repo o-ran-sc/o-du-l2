@@ -28,7 +28,7 @@
 #ifdef O1_ENABLE
 extern StartupConfig g_cfg;
 #endif
-
+ RicGlobalCb ricCb;
 /*******************************************************************
  *
  * @brief Handles SCTP notification 

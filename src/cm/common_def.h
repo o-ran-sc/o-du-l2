@@ -382,7 +382,7 @@ typedef struct gConfiguration
    uint64_t gDlDataRcvdCnt;   /* Number of DL data received at EGTP */
 }GConfiguration;
 
-GConfiguration gConfigInfo;
+extern GConfiguration gConfigInfo;
 
 void fillCoresetFeqDomAllocMap(uint16_t startPrb, uint16_t prbSize, uint8_t *freqDomain);
 void oduCpyFixBufToMsg(uint8_t *fixBuf, Buffer *mBuf, uint16_t len);

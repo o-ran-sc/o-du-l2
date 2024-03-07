@@ -191,7 +191,7 @@
 extern StartupConfig g_cfg;
 #endif
 
-DuCfgParams duCfgParam;
+extern DuCfgParams duCfgParam;
 
 /******************************************************************
  *

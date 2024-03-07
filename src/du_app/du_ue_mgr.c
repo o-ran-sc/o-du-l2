@@ -41,6 +41,7 @@
 #include "CmInterface.h"
 #endif
 
+extern DuCb duCb;
 DuRlcUeReestablishReq packRlcUeReestablishReqOpts[] =
 {
    packDuRlcUeReestablishReq,       /* Loose coupling */

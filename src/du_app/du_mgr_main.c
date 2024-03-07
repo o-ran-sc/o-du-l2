@@ -33,6 +33,8 @@
 #include "du_egtp.h"
 #include "du_cell_mgr.h"
 #include "du_f1ap_msg_hdl.h"
+/* global variables */
+DuCb duCb;
 
 #ifdef O1_ENABLE
 

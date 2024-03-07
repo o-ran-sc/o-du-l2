@@ -28,7 +28,7 @@
 #define MAX_ASSOC_SUPPORTED (MAX_DU_SUPPORTED + MAX_REMOTE_CU_SUPPORTED)
 
 /* Global variable declaration */
-uint8_t   socket_type;      /* Socket type */
+extern uint8_t   socket_type;      /* Socket type */
 
 typedef enum
 {
@@ -108,7 +108,7 @@ typedef struct
    CuSctpAssocCb    assocCb[MAX_ASSOC_SUPPORTED];
 }SctpGlobalCb;
 
-SctpGlobalCb sctpCb;
+extern SctpGlobalCb sctpCb;
 
 uint8_t sctpActvInit();
 uint8_t sctpStartReq();
