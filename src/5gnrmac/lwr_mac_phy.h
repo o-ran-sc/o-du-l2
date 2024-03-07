@@ -77,7 +77,7 @@ typedef struct wlsBlockToFree
    uint32_t size;
 }WlsBlockToFree;
 
-CmLListCp wlsBlockToFreeList[WLS_MEM_FREE_PRD];
+extern CmLListCp wlsBlockToFreeList[WLS_MEM_FREE_PRD];
 
 void addWlsBlockToFree(void *msg, uint32_t msgLen, uint8_t idx);
 void freeWlsBlockList(uint8_t idx);

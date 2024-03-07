@@ -156,7 +156,7 @@ typedef struct cuGlobalCb
    DuDb         duInfo[MAX_DU_SUPPORTED];
 }RicGlobalCb;
 
-RicGlobalCb ricCb;
+extern RicGlobalCb ricCb;
 
 typedef struct
 {

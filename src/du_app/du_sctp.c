@@ -33,6 +33,16 @@
 #include "du_app_rlc_inf.h"
 #include "du_mgr.h"
 #include "du_utils.h"
+/* Global variable declaration */
+uint8_t   socket_type;      /* Socket type */
+bool nonblocking;      /* Blocking/Non-blocking socket */
+bool connUp;           /* Is connection up */
+bool pollingState; 
+CmInetNetAddrLst localAddrLst;
+CmInetNetAddrLst remoteAddrLst;
+/* Global variable declaration */
+DuSctpDestCb f1Params;     /* SCTP configurations at DU */ 
+DuSctpDestCb ricParams;    /* SCTP configurations at DU */ 
 
 /**************************************************************************
  * @brief Task Initiation callback function. 

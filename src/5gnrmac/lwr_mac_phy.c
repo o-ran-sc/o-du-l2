@@ -38,6 +38,10 @@
 #include "wls_lib.h"
 #endif
 
+#ifdef INTEL_WLS_MEM
+CmLListCp wlsBlockToFreeList[WLS_MEM_FREE_PRD];
+#endif
+
 uint8_t rgClHndlCfgReq ARGS((void *msg));
 void l1ProcessFapiRequest ARGS((uint8_t msgType, uint32_t msgLen, void *msg));
 

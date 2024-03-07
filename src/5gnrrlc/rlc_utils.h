@@ -1218,7 +1218,7 @@ typedef struct _rlcStats
    UMRLCStats   umRlcStats;
 }RLCStats;
 
-RLCStats gRlcStats;
+extern RLCStats gRlcStats;
 
 /* kw005.201 added support for L2 Measurement */
 #ifdef LTE_L2_MEAS
@@ -1779,9 +1779,9 @@ typedef struct rlcCb
    RlcThpt    rlcThpt;   /*!< Throughput at RLC*/
 }RlcCb;
 
-RlcCb *rlcCb[MAX_RLC_INSTANCES];   /*!< RLC global control block */
+extern RlcCb *rlcCb[MAX_RLC_INSTANCES];   /*!< RLC global control block */
 
-CmLListCp *arrTputPerSnssai[DIR_BOTH]; /*Stores the address of Througput LL*/
+extern CmLListCp *arrTputPerSnssai[DIR_BOTH]; /*Stores the address of Througput LL*/
 /****************************************************************************
  *                      Declarations
  ***************************************************************************/

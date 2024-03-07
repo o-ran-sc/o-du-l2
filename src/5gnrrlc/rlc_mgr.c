@@ -34,6 +34,7 @@
 #include "rlc_utils.h"            /* RLC defines */
 #include "du_app_rlc_inf.h"
 #include "rlc_mgr.h"
+CmLListCp *arrTputPerSnssai[DIR_BOTH]; /*Stores the address of Througput LL*/
 
 RlcDuUeCreateRsp rlcUeCreateRspOpts[] =
 {

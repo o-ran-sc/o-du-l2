@@ -213,7 +213,7 @@ static Buffer *DupMsg ARGS((Region region, Buffer *buffer));
 }
 
 
-pthread_t tmpRegTidMap[20];
+extern pthread_t tmpRegTidMap[20];
 #define CM_MEM_GET_REGION(_region)                        \
 {                                                         \
    uint8_t  _regCnt;                                           \

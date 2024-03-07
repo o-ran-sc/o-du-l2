@@ -27,7 +27,7 @@
 #define MAX_ASSOC_SUPPORTED MAX_DU_SUPPORTED
 
 /* Global variable declaration */
-uint8_t   socket_type;      /* Socket type */
+extern uint8_t   socket_type;      /* Socket type */
 
 /* O-RAN.WG3.E2AP-R003-v03.00 : Section 9.2.30 */
 typedef enum
@@ -94,7 +94,7 @@ typedef struct sctpGlobalCb
    RicSctpAssocCb   assocCb[MAX_ASSOC_SUPPORTED]; 
 }SctpGlobalCb;
 
-SctpGlobalCb sctpCb;
+extern SctpGlobalCb sctpCb;
 
 uint8_t sctpActvInit();
 uint8_t sctpSend(uint32_t duId, Buffer *mBuf);
