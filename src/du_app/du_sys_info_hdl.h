@@ -39,8 +39,8 @@ void FreeBwpDlCommon(BWP_DownlinkCommon_t *bwp);
 void FreeBwpUlCommon(BWP_UplinkCommon_t *bwp);
 void FreeBcchDlSchMsg(BCCH_DL_SCH_Message_t bcchMsg);
 
-char encBuf[ENC_BUF_MAX_LEN];
-DuCfgParams duCfgParam;
+extern char encBuf[ENC_BUF_MAX_LEN];
+extern DuCfgParams duCfgParam;
 
 /**********************************************************************
          End of file

@@ -269,7 +269,7 @@ typedef struct macCb
 }MacCb;
 
 /* global variable */
-MacCb macCb;
+extern MacCb macCb;
 
 /* Function declarations */
 uint8_t macActvInit ARGS((Ent entity, Inst inst, Region region, Reason reason));

@@ -46,9 +46,9 @@
 #define CB_RA_PREAMBLE_IDX 3  /* For contention based RA */
 #define CF_RA_PREAMBLE_IDX 8  /* For contention free RA */
 
-bool     slotIndicationStarted;
-uint16_t sfnValue;
-uint16_t slotValue;
+extern bool     slotIndicationStarted;
+extern uint16_t sfnValue;
+extern uint16_t slotValue;
 
 /*Mapping between LCG ID and BSR Idx*/
 typedef struct lcgBufferSize
@@ -100,7 +100,7 @@ typedef struct phyDb
    UeDb    ueDb;
 }PhyDb;
 
-PhyDb phyDb;
+extern PhyDb phyDb;
 
 typedef enum
 {

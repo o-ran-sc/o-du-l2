@@ -27,12 +27,12 @@
 #define MAX_RETRY 5
 
 /* Global variable declaration */
-uint8_t   socket_type;      /* Socket type */
-bool nonblocking;      /* Blocking/Non-blocking socket */
-bool connUp;           /* Is connection up */
-bool pollingState; 
-CmInetNetAddrLst localAddrLst;
-CmInetNetAddrLst remoteAddrLst;
+extern uint8_t   socket_type;      /* Socket type */
+extern bool nonblocking;      /* Blocking/Non-blocking socket */
+extern bool connUp;           /* Is connection up */
+extern bool pollingState; 
+extern CmInetNetAddrLst localAddrLst;
+extern CmInetNetAddrLst remoteAddrLst;
 
 typedef struct
 {
@@ -61,8 +61,8 @@ typedef struct
 }DuSctpDestCb;
 
 /* Global variable declaration */
-DuSctpDestCb f1Params;     /* SCTP configurations at DU */ 
-DuSctpDestCb ricParams;    /* SCTP configurations at DU */ 
+extern DuSctpDestCb f1Params;     /* SCTP configurations at DU */ 
+extern DuSctpDestCb ricParams;    /* SCTP configurations at DU */ 
 
 
 uint8_t sctpActvInit(Ent entity, Inst inst, Region region, Reason reason);

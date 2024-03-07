@@ -37,8 +37,8 @@
 #define EGTP_MASK_BIT7                   0x40
 #define EGTP_MASK_BIT8                   0x80
 
-uint8_t unpackEgtpSrvOpenReq(EgtpSrvOpenReq func, Pst *pst, Buffer *mBuf);
-uint8_t         protType;
+extern uint8_t unpackEgtpSrvOpenReq(EgtpSrvOpenReq func, Pst *pst, Buffer *mBuf);
+extern uint8_t         protType;
 
 typedef struct EgtpTeIdCb
 {
@@ -66,7 +66,7 @@ typedef struct egtpGlobalCb
    EgtpDstCb    dstCb;           /* Destination endpoint */
 }EgtpGlobalCb;
 
-EgtpGlobalCb egtpCb;   /* EGTP global control block */
+extern EgtpGlobalCb egtpCb;   /* EGTP global control block */
 
 uint8_t duHdlEgtpDlData(EgtpMsg  *egtpMsg);
 uint8_t egtpActvInit(Ent entity, Inst inst, Region region, Reason reason);

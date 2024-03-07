@@ -24,6 +24,9 @@
 #include "ric_e2ap_msg_hdl.h"
 #include "E2AP-PDU.h"
 
+uint8_t   socket_type;
+SctpGlobalCb sctpCb;
+
 /**************************************************************************
  * @brief Function to configure the Sctp Params during config Request
  *

@@ -18,6 +18,8 @@
 
 #include "common_def.h"
 #include "du_app_mac_inf.h"
+/********************* Global Variable ********************/
+uint64_t ueBitMapPerCell[MAX_NUM_CELL]; /* Bit Map to store used/free UE-IDX per Cell */
 
 /**************************************************************************
  * @brief Function to pack Loose Coupled 

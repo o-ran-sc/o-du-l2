@@ -30,7 +30,8 @@
 #include "cm_inet.x"
 #include "cm_tpt.x"
 
-
+ SctpGlobalCb sctpCb;
+uint8_t   socket_type; 
 /**************************************************************************
  * @brief Task Initiation callback function. 
  *

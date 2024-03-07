@@ -50,6 +50,7 @@
 #include "sch_utils.h"
 #include "sch_fcfs.h"
 #include "sch_slice_based.h"
+SchCb schCb[SCH_MAX_INST];
 
 /**
  * @brief Scheduler All Apis initialized. 
