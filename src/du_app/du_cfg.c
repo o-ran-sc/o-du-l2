@@ -5003,6 +5003,149 @@ uint8_t parseGlobalConfigParams(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur)
 
 /*******************************************************************
  *
+ * @brief Free the memory allocate for slice supported list 
+ *
+ * @details
+ *
+ *    Function : parseDuCfgParams
+ *
+ *    Functionality: Free the memory allocate for slice supported list 
+ *
+ * @return void
+ *
+ * ****************************************************************/
+void freeSliceSuppLst(SupportedSliceList *sliceSuppLst) 
+{
+   uint8_t sliceIdx=0;
+
+   if(sliceSuppLst->numSupportedSlices&&sliceSuppLst->snssai)
+   {
+      for(sliceIdx=0;sliceIdx<sliceSuppLst->numSupportedSlices;sliceIdx++)
+      {
+         if(sliceSuppLst->snssai)
+         {
+            if(sliceSuppLst->snssai[sliceIdx])
+            {
+               DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, sliceSuppLst->snssai[sliceIdx], sizeof(Snssai));
+            }
+            DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, \
+            sliceSuppLst->snssai, (sliceSuppLst->numSupportedSlices) * sizeof(Snssai*));
+         }
+      }
+   }
+}
+
+/*******************************************************************
+ *
+ * @brief Free the memory allocate in parseDuCfgParams 
+ *
+ * @details
+ *
+ *    Function : parseDuCfgParams
+ *
+ *    Functionality: Free the memory allocate in parseDuCfgParams
+ *
+ * @return void
+ *
+ * ****************************************************************/
+void freeDuCfgParams()
+{
+   uint8_t ranFuncIdx=0,reportStyleIdx=0;
+   uint8_t policyIdx = 0,memIdx=0;
+   MacSliceRrmPolicy *rrmPolicy =NULLP;
+   MacSliceCfgReq *macSliceCfgReq=NULLP;
+   F1DuSysInfo *sysInfo;
+   CsiRsCfg *csiRsCfg;
+   RanFunction  *ranFunction;
+   RicReportStyle  *ricReportStyle;
+   CmLListCp  *measurementInfoList;
+   CmLList *measInfoNode = NULLP;
+
+   if(duCfgParam.duName)
+   {
+      DU_FREE(duCfgParam.duName, strlen(duCfgParam.duName));
+   }
+   
+   freeSliceSuppLst(&duCfgParam.macCellCfg.cellCfg.plmnInfoList[0].suppSliceList);
+   csiRsCfg=&duCfgParam.macCellCfg.csiRsCfg;
+   if(csiRsCfg->csiFreqDomainAlloc)
+   {
+      DU_FREE(csiRsCfg->csiFreqDomainAlloc, sizeof(uint8_t));
+   }
+   if(duCfgParam.macCellCfg.cellCfg.sib1Cfg.sib1Pdu)
+   {
+      DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, \
+      duCfgParam.macCellCfg.cellCfg.sib1Cfg.sib1Pdu, duCfgParam.macCellCfg.cellCfg.sib1Cfg.sib1PduLen);
+   }
+
+   if(duCb.e2apDb.numOfRanFunction)
+   {
+      for(ranFuncIdx=0;ranFuncIdx<duCb.e2apDb.numOfRanFunction;ranFuncIdx++)
+      {
+         ranFunction=&duCb.e2apDb.ranFunction[ranFuncIdx];
+         for(reportStyleIdx=0;reportStyleIdx<ranFunction->numOfReportStyleSupported;reportStyleIdx++)
+         {
+            ricReportStyle=&ranFunction->reportStyleList[reportStyleIdx];
+            measurementInfoList=&ricReportStyle->measurementInfoList;
+            CM_LLIST_FIRST_NODE(measurementInfoList, measInfoNode);
+            while(measInfoNode)
+            {
+               MeasurementInfoForAction *measurementInfoForAction;
+               measurementInfoForAction= (MeasurementInfoForAction*)measInfoNode->node;
+               cmLListDelFrm(measurementInfoList, measInfoNode);
+               DU_FREE(measurementInfoForAction, sizeof(MeasurementInfoForAction));
+               DU_FREE(measInfoNode, sizeof(CmLList));
+               CM_LLIST_FIRST_NODE(measurementInfoList, measInfoNode);
+            }
+         }
+      }
+   }
+   
+   freeSliceSuppLst(&duCfgParam.srvdCellLst[0].duCellInfo.cellInfo.srvdPlmn[0].taiSliceSuppLst);
+   sysInfo=&duCfgParam.srvdCellLst[0].duSysInfo;
+   if(sysInfo->mibMsg)
+   {
+      DU_FREE(sysInfo->mibMsg, sysInfo->mibLen);
+   }
+   if(sysInfo->sib1Msg)
+   {
+      DU_FREE(sysInfo->sib1Msg, sysInfo->sib1Len);
+   }
+
+   macSliceCfgReq=&duCfgParam.tempSliceCfg;
+   if(macSliceCfgReq->listOfRrmPolicy)
+   {
+      for(policyIdx = 0; policyIdx < macSliceCfgReq->numOfRrmPolicy; policyIdx++)
+      {
+         if (macSliceCfgReq->listOfRrmPolicy[policyIdx])
+         {
+            rrmPolicy=macSliceCfgReq->listOfRrmPolicy[policyIdx];
+            if(rrmPolicy->rRMPolicyMemberList)
+            {
+               for(memIdx = 0; memIdx < rrmPolicy->numOfRrmPolicyMem; memIdx++)
+               {
+                  if (rrmPolicy->rRMPolicyMemberList[memIdx])
+                  {
+                     DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL,\
+                           rrmPolicy->rRMPolicyMemberList[memIdx], sizeof(RrmPolicyMemberList));
+                  }
+               }
+               DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL,rrmPolicy->rRMPolicyMemberList,\
+                     rrmPolicy->numOfRrmPolicyMem * sizeof(RrmPolicyMemberList*));
+            }
+
+            DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, \
+                  macSliceCfgReq->listOfRrmPolicy[policyIdx], sizeof(MacSliceRrmPolicy));
+         }
+      }
+      DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, \
+            macSliceCfgReq->listOfRrmPolicy,  macSliceCfgReq->numOfRrmPolicy * sizeof(MacSliceRrmPolicy*));
+   }
+}
+
+
+/*******************************************************************
+ *
  * @brief Fill DU Config Parmeters 
  *
  * @details
@@ -5020,6 +5163,7 @@ uint8_t parseGlobalConfigParams(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur)
  * ****************************************************************/
 uint8_t parseDuCfgParams(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur)
 {
+   uint8_t ret=ROK;
    char *tempDuName = "";
    char *duIpV4Addr;
    char *cuIpV4Addr;
@@ -5036,7 +5180,8 @@ uint8_t parseDuCfgParams(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur)
 #ifdef THREAD_AFFINITY      
          if(parseThreadAffinity(doc, ns, cur, &duCfgParam.threadInfo) != ROK)
          {
-            return RFAILED;
+            ret = RFAILED;
+            break;
          }
 #endif         
       }
@@ -5058,7 +5203,8 @@ uint8_t parseDuCfgParams(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur)
          if(!duCfgParam.duName)
          {
             DU_LOG("\nERROR --> DU_APP: %s: Memory allocation failed at line %d", __func__, __LINE__);
-            return RFAILED;
+            ret = RFAILED;
+            break;
          }
          strcpy((char*)duCfgParam.duName, tempDuName);
       }
@@ -5101,7 +5247,8 @@ uint8_t parseDuCfgParams(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur)
       {
          if(parseSctpParams(doc, ns, cur, &duCfgParam.sctpParams) != ROK)
          {
-            return RFAILED;
+            ret = RFAILED;
+            break;
          }
          duCfgParam.sctpParams.duIpAddr.ipV4Pres = true;
          duCfgParam.sctpParams.duIpAddr.ipV4Addr = duIp;
@@ -5115,7 +5262,8 @@ uint8_t parseDuCfgParams(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur)
       {
          if(parseEgtpParams(doc, ns, cur, &duCfgParam.egtpParams) != ROK)
          {
-            return RFAILED;
+            ret = RFAILED;
+            break;
          }
          duCfgParam.egtpParams.localIp.ipV4Addr = duIp;
          duCfgParam.egtpParams.localIp.ipV4Pres = true;
@@ -5128,7 +5276,8 @@ uint8_t parseDuCfgParams(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur)
       {
          if(parseMibParams(doc, ns, cur, &duCfgParam.mibParams) != ROK)
          {
-            return RFAILED;
+            ret = RFAILED;
+            break;
          }
       }
 
@@ -5136,7 +5285,8 @@ uint8_t parseDuCfgParams(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur)
       {
          if(parseSib1Params(doc, ns, cur, &duCfgParam.sib1Params) != ROK)
          {
-            return RFAILED;
+            ret = RFAILED;
+            break;
          }
       }
 
@@ -5144,7 +5294,8 @@ uint8_t parseDuCfgParams(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur)
       {
          if(parseF1DuServedCellInfo(doc, ns, cur, &duCfgParam.srvdCellLst[0]) != ROK)
          {
-            return RFAILED;
+            ret = RFAILED;
+            break;
          }
       }
 
@@ -5152,7 +5303,8 @@ uint8_t parseDuCfgParams(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur)
       {
          if(parseMacCellCfg(doc, ns, cur, &duCfgParam.macCellCfg) != ROK)
          {
-            return RFAILED;
+            ret = RFAILED;
+            break;
          }
       }
 
@@ -5161,7 +5313,8 @@ uint8_t parseDuCfgParams(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur)
       {
          if(parseMacSliceCfgReq(doc, ns, cur, &duCfgParam.tempSliceCfg) != ROK)
          {
-            return RFAILED;
+            ret = RFAILED;
+            break;
          }
       }
 #endif      
@@ -5170,7 +5323,8 @@ uint8_t parseDuCfgParams(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur)
       {
          if(parseDuTimerParams(doc, ns, cur, &duCb.duTimersInfo) != ROK)
          {
-            return RFAILED;
+            ret = RFAILED;
+            break;
          }
       }
 
@@ -5178,7 +5332,8 @@ uint8_t parseDuCfgParams(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur)
       {
          if(parseE2ConfigParams(doc, ns, cur, &duCb.e2apDb) != ROK)
          {
-            return RFAILED;
+            ret = RFAILED;
+            break;
          }
          else
          {
@@ -5192,13 +5347,19 @@ uint8_t parseDuCfgParams(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur)
       {
          if(parseGlobalConfigParams(doc, ns, cur) != ROK)
          {
-            return RFAILED;
+            ret = RFAILED;
+            break;
          }
       }
 
       cur = cur -> next;
    }
-   return ROK;
+
+   if(ret != ROK)
+   {
+      freeDuCfgParams();
+   }
+   return ret;
 }
 
 /*******************************************************************
