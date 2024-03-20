@@ -4534,6 +4534,9 @@ uint16_t fillUlTtiReq(SlotTimingInfo currTimingInfo, p_fapi_api_queue_elem_t pre
          ulTtiReq->nGroup = 0;
          if(ulTtiReq->nPdus > 0)
          {
+#ifdef ODU_SLOT_IND_DEBUG_LOG
+               DU_LOG("\nDEBUG --> LWR_MAC: UL_TTI_REQ, datatype:%d, sfn/slot:%d/%d", currUlSlot->ulSchInfo.dataType,  ulTtiReq->sfn,  ulTtiReq->slot);
+#endif
             /* Fill Prach Pdu */
             if(currUlSlot->ulSchInfo.dataType & SCH_DATATYPE_PRACH)
             {
@@ -4548,6 +4551,9 @@ uint16_t fillUlTtiReq(SlotTimingInfo currTimingInfo, p_fapi_api_queue_elem_t pre
                {
                   if(currUlSlot->ulSchInfo.schPuschInfo[ueIdx].crnti != 0)
                   {
+#ifdef ODU_SLOT_IND_DEBUG_LOG
+               DU_LOG("\nDEBUG --> LWR_MAC: UL_TTI_REQ, PUSCH PDU ueId:%d", ueIdx);
+#endif
                      pduIdx++;
                      fillPuschPdu(&ulTtiReq->pdus[pduIdx], &vendorUlTti->ul_pdus[pduIdx], &macCellCfg, &currUlSlot->ulSchInfo.schPuschInfo[ueIdx]);
                      ulTtiReq->nUlsch++;
