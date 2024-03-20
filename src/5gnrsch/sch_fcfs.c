@@ -936,21 +936,18 @@ uint8_t schFcfsScheduleUlLc(SlotTimingInfo dciTime, SlotTimingInfo puschTime, ui
       /* Update PUSCH allocation */
       if(schFillPuschAlloc(ueCb, puschTime, totDataReq, startSymb, symbLen, startPrb, isRetx, *hqP) == ROK)
       {
-         if(cell->schUlSlotInfo[puschTime.slot]->schPuschInfo[ueCb->ueId])
+         puschInfo = cell->schUlSlotInfo[puschTime.slot]->schPuschInfo[ueCb->ueId - 1];
+         if(puschInfo != NULLP)
          {
-            puschInfo = cell->schUlSlotInfo[puschTime.slot]->schPuschInfo[ueCb->ueId];
-            if(puschInfo != NULLP)
-            {
-               /* Fill DCI for UL grant */
-               schFillUlDci(ueCb, puschInfo, dciInfo, isRetx, *hqP);
-               ueCb->srRcvd = false;
-               ueCb->bsrRcvd = false;
-               if(fcfsHqProcCb->lcCb.dedLcList.count != 0)
-                  updateBsrAndLcList(&(fcfsHqProcCb->lcCb.dedLcList), ueCb->bsrInfo, ROK);
-               updateBsrAndLcList(&(fcfsHqProcCb->lcCb.defLcList), ueCb->bsrInfo, ROK);
-               cmLListAdd2Tail(&(ueCb->hqUlmap[puschTime.slot]->hqList), &(*hqP)->ulSlotLnk);                  
-               return ROK;
-            }
+            /* Fill DCI for UL grant */
+            schFillUlDci(ueCb, puschInfo, dciInfo, isRetx, *hqP);
+            ueCb->srRcvd = false;
+            ueCb->bsrRcvd = false;
+            if(fcfsHqProcCb->lcCb.dedLcList.count != 0)
+               updateBsrAndLcList(&(fcfsHqProcCb->lcCb.dedLcList), ueCb->bsrInfo, ROK);
+            updateBsrAndLcList(&(fcfsHqProcCb->lcCb.defLcList), ueCb->bsrInfo, ROK);
+            cmLListAdd2Tail(&(ueCb->hqUlmap[puschTime.slot]->hqList), &(*hqP)->ulSlotLnk); 
+            return ROK;
          }
       }
       if(fcfsHqProcCb->lcCb.dedLcList.count != 0)
