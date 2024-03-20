@@ -2116,12 +2116,14 @@ uint32_t schCalY(uint8_t csId, uint32_t prevY)
 uint8_t schUpdValY(SchUeCb *ueCb, SchPdcchInfo *pdcchInfo)
 {
    uint8_t slotIdx = 0;
-
-   SCH_ALLOC(pdcchInfo->y, (sizeof(uint32_t) *  ueCb->cellCb->numSlots));
    if(pdcchInfo->y == NULLP)
    {
-      DU_LOG("\nERROR  --> SCH: Memory Allocation of Y failed");
-      return RFAILED;
+      SCH_ALLOC(pdcchInfo->y, (sizeof(uint32_t) *  ueCb->cellCb->numSlots));
+      if(pdcchInfo->y == NULLP)
+      {
+         DU_LOG("\nERROR  --> SCH: Memory Allocation of Y failed");
+         return RFAILED;
+      }
    }
 
    for(slotIdx= 0 ; slotIdx < ueCb->cellCb->numSlots; slotIdx++)

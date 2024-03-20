@@ -1417,8 +1417,10 @@ void freeE2smKpmRanFunctionDefinition(E2SM_KPM_RANfunction_Description_t *ranFun
                            DU_FREE(measInfoList->measName.buf, measInfoList->measName.size);
                            DU_FREE(measInfoList,sizeof(MeasurementInfo_Action_Item_t)); 
                         }
+                        DU_FREE(measInfoList, sizeof(MeasurementInfo_Action_Item_t));
                      }
-                     DU_FREE(measInfoList,ricReportStyle->list.array[reportStyleIdx]->measInfo_Action_List.list.size);
+                     DU_FREE(ricReportStyle->list.array[reportStyleIdx]->measInfo_Action_List.list.array\
+                     ,ricReportStyle->list.array[reportStyleIdx]->measInfo_Action_List.list.size);
                   }
                   DU_FREE(ricReportStyle->list.array[reportStyleIdx], sizeof(RIC_ReportStyle_Item_t));
                }

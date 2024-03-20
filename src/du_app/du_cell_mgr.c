@@ -437,7 +437,6 @@ uint8_t DuProcMacCellDeleteRsp(Pst *pst, MacCellDeleteRsp *deleteRsp)
             duCb.numActvCells--;
             duCb.numCfgCells--;
             DU_FREE(duCb.actvCellLst[cellIdx], sizeof(DuCellCb));
-
          }
          else
          {
