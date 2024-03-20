@@ -778,6 +778,7 @@ void freeMacSliceCfgReq(MacSliceCfgReq *cfgReq,Pst *pst)
           MAC_FREE_SHRABL_BUF(pst->region, pst->pool, cfgReq->listOfRrmPolicy, cfgReq->numOfRrmPolicy  * sizeof(MacSliceRrmPolicy*));
        }
     }
+    MAC_FREE_SHRABL_BUF(pst->region, pst->pool, cfgReq, sizeof(MacSliceCfgReq));
 
 }
 
