@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a5620631_301de1a5",
+        "filename": "src/5gnrsch/sch_utils.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2121,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-03-28T05:50:47Z",
+      "side": 1,
+      "message": "reason for checking y before allocation?",
+      "range": {
+        "startLine": 2121,
+        "startChar": 16,
+        "endLine": 2121,
+        "endChar": 25
+      },
+      "revId": "8264f7ce2ba9f4a1874c4ec1018127cc27fa12cb",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6b7c6046_a4f9fdd5",
+        "filename": "src/du_app/du_cfg.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 5360,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-03-28T05:50:47Z",
+      "side": 1,
+      "message": "Dont we need to put it when DU is shutting down or when we are not reading from XML?",
+      "range": {
+        "startLine": 5360,
+        "startChar": 6,
+        "endLine": 5360,
+        "endChar": 21
+      },
+      "revId": "8264f7ce2ba9f4a1874c4ec1018127cc27fa12cb",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ceeacf2e_34a306f0",
+        "filename": "src/du_app/du_cfg.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 5360,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-03-28T05:50:47Z",
+      "side": 1,
+      "message": "since this must be a corner scenario how it resolved the memory leak issue shown in memtool?",
+      "range": {
+        "startLine": 5360,
+        "startChar": 6,
+        "endLine": 5360,
+        "endChar": 21
+      },
+      "revId": "8264f7ce2ba9f4a1874c4ec1018127cc27fa12cb",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
