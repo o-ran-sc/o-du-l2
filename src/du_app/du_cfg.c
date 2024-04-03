@@ -5381,7 +5381,11 @@ uint8_t parseDuCfgParams(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur)
  * ****************************************************************/
 uint8_t duReadCfg()
 {
-   const char *filename = "../build/config/odu_config.xml";
+#ifdef NR_TDD
+   const char *filename = "../build/config/tdd_odu_config.xml";
+#else
+   const char *filename = "../build/config/fdd_odu_config.xml";
+#endif
    xmlDocPtr doc = NULLP;
    xmlNodePtr cur = NULLP;
    xmlNsPtr ns = NULLP;
