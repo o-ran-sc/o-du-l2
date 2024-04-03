@@ -1019,7 +1019,6 @@ uint8_t parseF1NrFddInfo(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur, F1NrFddInfo
    return ROK;
 }
 
-#ifdef NR_TDD
 /*******************************************************************
  *
  * @brief Fill NR TDD Info
@@ -1064,7 +1063,6 @@ uint8_t parseF1NrTddInfo(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur, F1NrTddInfo
    }
    return ROK;
 }
-#endif
 
 /*******************************************************************
  *
@@ -1097,10 +1095,9 @@ uint8_t parseNrModeInfo(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur, NrModeInfo *
          strcpy((char*)modeCfg, (char*)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));      
       }
 
-#ifndef NR_TDD
-      if ((!xmlStrcmp(cur->name, (const xmlChar *)"F1_NR_FDD_INFO")) && (cur->ns == ns))
+      if(strcmp(modeCfg, "FDD") == 0)
       {
-         if(strcmp(modeCfg, "FDD") == 0)
+         if ((!xmlStrcmp(cur->name, (const xmlChar *)"F1_NR_FDD_INFO")) && (cur->ns == ns))
          {
             if(parseF1NrFddInfo(doc, ns, cur, &nrModeInfo->mode.fdd) != ROK)
             {
@@ -1108,10 +1105,9 @@ uint8_t parseNrModeInfo(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur, NrModeInfo *
             }
          }
       }
-#else
-      if ((!xmlStrcmp(cur->name, (const xmlChar *)"F1_NR_TDD_INFO")) && (cur->ns == ns))
+      else
       {
-         if(strcmp(modeCfg, "TDD") == 0)
+         if ((!xmlStrcmp(cur->name, (const xmlChar *)"F1_NR_TDD_INFO")) && (cur->ns == ns))
          {
             if(parseF1NrTddInfo(doc, ns, cur, &nrModeInfo->mode.tdd) != ROK)
             {
@@ -1120,7 +1116,6 @@ uint8_t parseNrModeInfo(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur, NrModeInfo *
          }
       }
 
-#endif            
       cur = cur -> next;
    }
    return ROK;
@@ -1898,7 +1893,7 @@ uint8_t parseCarrierCfg(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur,CarrierCfg *c
 
       if ((!xmlStrcmp(cur->name, (const xmlChar *)"NR_DL_ARFCN")) && (cur->ns == ns))
       {
-         carrierCfg->arfcnDL = convertArfcnToFreqKhz(atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1)));
+         carrierCfg->arfcnDL = atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
       }
 
       if ((!xmlStrcmp(cur->name, (const xmlChar *)"UL_BW")) && (cur->ns == ns))
@@ -1908,7 +1903,7 @@ uint8_t parseCarrierCfg(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur,CarrierCfg *c
 
       if ((!xmlStrcmp(cur->name, (const xmlChar *)"NR_UL_ARFCN")) && (cur->ns == ns))
       {
-         carrierCfg->arfcnUL = convertArfcnToFreqKhz(atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1)));
+         carrierCfg->arfcnUL = atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
       }
 #endif
 
@@ -5381,7 +5376,11 @@ uint8_t parseDuCfgParams(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur)
  * ****************************************************************/
 uint8_t duReadCfg()
 {
-   const char *filename = "../build/config/odu_config.xml";
+#ifdef NR_TDD
+   const char *filename = "../build/config/tdd_odu_config.xml";
+#else
+   const char *filename = "../build/config/fdd_odu_config.xml";
+#endif
    xmlDocPtr doc = NULLP;
    xmlNodePtr cur = NULLP;
    xmlNsPtr ns = NULLP;
