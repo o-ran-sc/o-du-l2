@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e535a9ec_8a067850",
+        "filename": "build/config/tdd_odu_config.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 263,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-04-04T05:44:18Z",
+      "side": 1,
+      "message": "change to TDD",
+      "range": {
+        "startLine": 263,
+        "startChar": 21,
+        "endLine": 263,
+        "endChar": 24
+      },
+      "revId": "672e9d21e7c1b0b66cbc1b96ff1b2c9a30c72c1e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "845d6c84_85e8c5b1",
+        "filename": "build/config/tdd_odu_config.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 492,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-04-04T05:44:18Z",
+      "side": 1,
+      "message": "check for this . PRB should depend on  numerology and BW. So Mu1, BW 100, PRB\u003d273",
+      "range": {
+        "startLine": 492,
+        "startChar": 16,
+        "endLine": 492,
+        "endChar": 23
+      },
+      "revId": "672e9d21e7c1b0b66cbc1b96ff1b2c9a30c72c1e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a797b996_b497b487",
+        "filename": "build/config/tdd_odu_config.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 564,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-04-04T05:44:18Z",
+      "side": 1,
+      "message": "check for this . PRB should depend on  numerology and BW. So Mu1, BW 100, PRB\u003d273",
+      "range": {
+        "startLine": 564,
+        "startChar": 21,
+        "endLine": 564,
+        "endChar": 24
+      },
+      "revId": "672e9d21e7c1b0b66cbc1b96ff1b2c9a30c72c1e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bc515408_ca3d4a2b",
+        "filename": "src/du_app/du_cfg.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1100,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-04-04T05:44:18Z",
+      "side": 1,
+      "message": "As discussed, we dont need to check the compilation flag for TDD/FDD. Instead we can use the modeCfg flag to distinguish",
+      "revId": "672e9d21e7c1b0b66cbc1b96ff1b2c9a30c72c1e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
