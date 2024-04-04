@@ -3,6 +3,46 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6c1a414e_5b446c2f",
+        "filename": "build/config/fdd_odu_config.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 549,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-04-04T06:37:11Z",
+      "side": 1,
+      "message": "please recheck if we need to put value \u003d 30kHz or enum of it.. Bcz in whole doc it is used in form of enum.. 0 \u003d 15kHz and 1 \u003d 30kHz",
+      "range": {
+        "startLine": 549,
+        "startChar": 17,
+        "endLine": 549,
+        "endChar": 19
+      },
+      "revId": "672e9d21e7c1b0b66cbc1b96ff1b2c9a30c72c1e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7237dc8d_ae3a578a",
+        "filename": "build/config/fdd_odu_config.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 691,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-04-04T06:37:11Z",
+      "side": 1,
+      "message": "PHY_DELTA_UL and PHY_DELTA_DL has separate values for TDD and FDD.\nFor TDD, DL -\u003e 2, UL-\u003e 0\nFOr FDD, DL-\u003e1 , UL-\u003e0",
+      "revId": "672e9d21e7c1b0b66cbc1b96ff1b2c9a30c72c1e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e535a9ec_8a067850",
         "filename": "build/config/tdd_odu_config.xml",
         "patchSetId": 1
@@ -26,6 +66,75 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d07ee322_2264c103",
+        "filename": "build/config/tdd_odu_config.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 385,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-04-04T06:37:11Z",
+      "side": 1,
+      "message": "these BW shld be 100 for TDD? both UL and DL",
+      "range": {
+        "startLine": 385,
+        "startChar": 16,
+        "endLine": 385,
+        "endChar": 18
+      },
+      "revId": "672e9d21e7c1b0b66cbc1b96ff1b2c9a30c72c1e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "edb13a5f_39f7af02",
+        "filename": "build/config/tdd_odu_config.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 386,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-04-04T06:37:11Z",
+      "side": 1,
+      "message": "For TDD, DL_ARFCN \u003d 623400",
+      "range": {
+        "startLine": 386,
+        "startChar": 22,
+        "endLine": 386,
+        "endChar": 28
+      },
+      "revId": "672e9d21e7c1b0b66cbc1b96ff1b2c9a30c72c1e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bc233ab4_70d97af9",
+        "filename": "build/config/tdd_odu_config.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 388,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-04-04T06:37:11Z",
+      "side": 1,
+      "message": "For TDD, UL_ARFCN \u003d 623400",
+      "range": {
+        "startLine": 388,
+        "startChar": 22,
+        "endLine": 388,
+        "endChar": 28
+      },
+      "revId": "672e9d21e7c1b0b66cbc1b96ff1b2c9a30c72c1e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "845d6c84_85e8c5b1",
         "filename": "build/config/tdd_odu_config.xml",
         "patchSetId": 1
@@ -42,6 +151,29 @@
         "startChar": 16,
         "endLine": 492,
         "endChar": 23
+      },
+      "revId": "672e9d21e7c1b0b66cbc1b96ff1b2c9a30c72c1e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c4d928f4_ca2c40fc",
+        "filename": "build/config/tdd_odu_config.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 549,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-04-04T06:37:11Z",
+      "side": 1,
+      "message": "please recheck if we need to put value \u003d 30kHz or enum of it.. Bcz in whole doc it is used in form of enum.. 0 \u003d 15kHz and 1 \u003d 30kHz",
+      "range": {
+        "startLine": 549,
+        "startChar": 10,
+        "endLine": 549,
+        "endChar": 16
       },
       "revId": "672e9d21e7c1b0b66cbc1b96ff1b2c9a30c72c1e",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
