@@ -1771,10 +1771,11 @@ CmInetNetAddrLst  *addrLst,      /* destination Internet address list */
 uint16_t          port          /* port number */
 )
 {
-   S32   ret;   
-   uint32_t   cnt;
+   int tempErrorNo=0;
+   S32   ret =0;   
+   uint32_t   cnt=0;
    /* cm_inet_c_001.main_46: Removed SS_LINUX flag */
-   S32   idx;
+   S32   idx=0;
 
 /* cm_inet_c_001.main_64: New variable used as an argument for sctp_connectx */
 #ifdef SCTP_CONNECTX_NEW
@@ -2144,7 +2145,7 @@ uint16_t          port          /* port number */
 
 #endif /* CMINET_SUN_CONNECTX */
 #endif /* SS_LINUX */
-
+   tempErrorNo = INET_ERR_CODE;
    if (ret == INET_ERR)
    {
 #ifdef CMINETDBG
@@ -2152,15 +2153,15 @@ uint16_t          port          /* port number */
       /* cm_inet_c_001.main_54: CMINETLOGERROR added insted of SDisp */
       /* cm_inet_c_001.main_62:Warning fix */
       snprintf(prntBuf, CMINET_PRNT_BUF_SIZE, "CmInetSctpConnectx() Failed : error(%d), port(0x%1x),"
-            " sockFd->fd(%ld)\n", INET_ERR_CODE, port, sockFd->fd);
+            " sockFd->fd(%ld)\n", tempErrorNo, port, sockFd->fd);
       CMINETLOGERROR(ERRCLS_DEBUG, ECMINET010, 0, prntBuf);
 #else
       DU_LOG("\nCmInetSctpConnectx() Failed : error(%d), port(0x%1x),\
-		   sockFd->fd(%d)\n", INET_ERR_CODE, port, sockFd->fd);
+		   sockFd->fd(%d)\n", tempErrorNo, port, sockFd->fd);
 #endif /*ALIGN_64BIT*/
 #endif /* CMINETDBG */
 
-      switch (INET_ERR_CODE)
+      switch (tempErrorNo)
       {
          /* non-blocking: connection is in progress */
          case ERR_INPROGRESS:
