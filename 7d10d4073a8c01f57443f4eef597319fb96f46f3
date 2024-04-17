@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c622bd65_44d16ba6",
+        "filename": "src/cm/cm_inet.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1774,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-04-17T06:02:28Z",
+      "side": 1,
+      "message": "Also check for initalization of this variable. like what value can be used?",
+      "range": {
+        "startLine": 1774,
+        "startChar": 11,
+        "endLine": 1774,
+        "endChar": 22
+      },
+      "revId": "7d10d4073a8c01f57443f4eef597319fb96f46f3",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "43f122fa_1db3274c",
+        "filename": "src/cm/cm_inet.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1774,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-04-17T06:02:28Z",
+      "side": 1,
+      "message": "errno can range from negative number and upto number greater than 255. Even in example given in man page of errno., this variable is of type int(eg, shown below)\n\n\"if (somecall() \u003d\u003d -1) {\n               int errsv \u003d errno;\n               printf(\"somecall() failed\\n\");\n               if (errsv \u003d\u003d ...) { ... }\n           }\n\"",
+      "range": {
+        "startLine": 1774,
+        "startChar": 3,
+        "endLine": 1774,
+        "endChar": 11
+      },
+      "revId": "7d10d4073a8c01f57443f4eef597319fb96f46f3",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
