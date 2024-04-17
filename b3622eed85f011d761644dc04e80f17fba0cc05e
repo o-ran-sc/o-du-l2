@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6e2fe21d_a9367024",
+        "filename": "src/cm/cm_inet.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1774,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-04-17T07:29:14Z",
+      "side": 1,
+      "message": "use \"int32_t\"",
+      "range": {
+        "startLine": 1774,
+        "startChar": 7,
+        "endLine": 1774,
+        "endChar": 18
+      },
+      "revId": "b3622eed85f011d761644dc04e80f17fba0cc05e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
