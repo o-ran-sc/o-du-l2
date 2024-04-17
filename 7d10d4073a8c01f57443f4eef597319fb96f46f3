@@ -45,6 +45,54 @@
       },
       "revId": "7d10d4073a8c01f57443f4eef597319fb96f46f3",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "35a01e28_5892e7fe",
+        "filename": "src/cm/cm_inet.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1774,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-04-17T07:08:17Z",
+      "side": 1,
+      "message": "changed uint8_t to int now.",
+      "parentUuid": "43f122fa_1db3274c",
+      "range": {
+        "startLine": 1774,
+        "startChar": 3,
+        "endLine": 1774,
+        "endChar": 11
+      },
+      "revId": "7d10d4073a8c01f57443f4eef597319fb96f46f3",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bcb74604_a997a709",
+        "filename": "src/cm/cm_inet.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1774,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-04-17T07:08:17Z",
+      "side": 1,
+      "message": "Initializing tempErrorNo\u003d0 becz if the return value of errno is 0 it means no error was received. \ntempErrorNo \u003d INET_ERR_CODE will update the value later in the function.",
+      "parentUuid": "c622bd65_44d16ba6",
+      "range": {
+        "startLine": 1774,
+        "startChar": 11,
+        "endLine": 1774,
+        "endChar": 22
+      },
+      "revId": "7d10d4073a8c01f57443f4eef597319fb96f46f3",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
   ]
 }
