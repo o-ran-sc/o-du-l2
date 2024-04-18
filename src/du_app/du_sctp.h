@@ -53,7 +53,6 @@ typedef struct
    uint16_t              destPort;         /* Refers to the destination port of F1/E2 */
    uint16_t              srcPort;          /* Refers to respective src port of DU */
    uint32_t              assocId;          
-   bool             recvMsgSet;
    F1IpAddr         destIpAddr;       /* Refers to te destination Ip Address */
    CmInetFd         sockFd;           /* Socket file descriptor */
    CmInetNetAddrLst destAddrLst;      /* Refers to the destinaiton Addr Lst in CmInetNetAddrLst format */
@@ -77,7 +76,7 @@ uint8_t establishReq(DuSctpDestCb *paramPtr);
 uint8_t duSctpAssocReq(uint8_t itfType);
 uint8_t duFillSctpPst(Pst *pst, Event event);
 uint8_t sctpSetSockOpts(CmInetFd *sock_Fd);
-uint8_t processPolling(sctpSockPollParams *pollParams, CmInetFd *sockFd, uint32_t *timeoutPtr, CmInetMemInfo *memInfo, bool recvMsgSet);
+uint8_t processPolling(sctpSockPollParams *pollParams, CmInetFd *sockFd, uint32_t *timeoutPtr, CmInetMemInfo *memInfo);
 uint8_t sctpSockPoll();
 
 #endif
