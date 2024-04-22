@@ -37,6 +37,7 @@
 #include "lwr_mac_phy.h"
 #include "lwr_mac_utils.h"
 #include "mac_utils.h"
+#include "nfapi_interface.h"
 
 #define MIB_SFN_BITMASK 0xFC
 #define PDCCH_PDU_TYPE 0
