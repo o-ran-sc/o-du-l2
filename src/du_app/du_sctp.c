@@ -222,7 +222,6 @@ uint8_t duSctpCfgReq(SctpParams sctpCfg)
    f1Params.destPort             = sctpCfg.cuPort;
    f1Params.itfState             = DU_SCTP_DOWN;
    f1Params.srcPort              = sctpCfg.duPort[F1_INTERFACE];
-   f1Params.recvMsgSet           = ROK;
    memset (&f1Params.sockFd, -1, sizeof(CmInetFd));
    fillDestNetAddr(&f1Params.destIpNetAddr, &f1Params.destIpAddr);
    fillAddrLst(&f1Params.destAddrLst, &f1Params.destIpAddr);
@@ -233,7 +232,6 @@ uint8_t duSctpCfgReq(SctpParams sctpCfg)
    ricParams.destPort            = sctpCfg.ricPort;
    ricParams.itfState            = DU_SCTP_DOWN;
    ricParams.srcPort             = sctpCfg.duPort[E2_INTERFACE];
-   ricParams.recvMsgSet          = ROK;
    memset (&ricParams.sockFd, -1, sizeof(CmInetFd));
    fillDestNetAddr(&ricParams.destIpNetAddr, &ricParams.destIpAddr);
    fillAddrLst(&ricParams.destAddrLst, &ricParams.destIpAddr);
@@ -692,14 +690,14 @@ uint8_t sctpNtfyHdlr(CmInetSctpNotification *ntfy, uint8_t *itfState, uint8_t in
  * @params[in]  Params required for polling
  * @params[in]  SockFd for file descriptor
  * @params[in]  timeoutPtr indicates the timeout value
- * @params[in]  MemInfo, recvMsgSet
+ * @params[in]  MemInfo
  *
  * @return ROK     - success
  *         RFAILED - failure
  *
  * ****************************************************************/
 
-uint8_t  processPolling(sctpSockPollParams *pollParams, CmInetFd *sockFd, uint32_t *timeoutPtr, CmInetMemInfo *memInfo, bool recvMsgSet)
+uint8_t  processPolling(sctpSockPollParams *pollParams, CmInetFd *sockFd, uint32_t *timeoutPtr, CmInetMemInfo *memInfo)
 {
    uint8_t ret = ROK;
    CM_INET_FD_SET(sockFd, &pollParams->readFd);
@@ -712,7 +710,7 @@ uint8_t  processPolling(sctpSockPollParams *pollParams, CmInetFd *sockFd, uint32
       if(ret != ROK)
       {
          DU_LOG("\nERROR   -->  SCTP: Failed to receive sctp msg for sockFd[%d]\n", sockFd->fd);
-         recvMsgSet = RFAILED;
+         ret = RFAILED;
       }
       else
       {
@@ -761,7 +759,7 @@ uint8_t  processPolling(sctpSockPollParams *pollParams, CmInetFd *sockFd, uint32
          }
       }
   }
-  return ROK;
+  return ret;
 }
 /*******************************************************************
  *
@@ -812,14 +810,14 @@ uint8_t sctpSockPoll()
    {
       if(f1Params.itfState)
       {
-         if((ret = processPolling(&f1PollParams, &f1Params.sockFd, timeout_Ptr, &memInfo, f1Params.recvMsgSet)) != ROK)
+         if((ret = processPolling(&f1PollParams, &f1Params.sockFd, timeout_Ptr, &memInfo)) != ROK)
          {
             DU_LOG("\nERROR  -->  SCTP : Failed to RecvMsg for F1\n");
          }
       }
       if(ricParams.itfState)
       {
-         if((ret = processPolling(&e2PollParams, &ricParams.sockFd, timeout_Ptr, &memInfo, ricParams.recvMsgSet)) != ROK)
+         if((ret = processPolling(&e2PollParams, &ricParams.sockFd, timeout_Ptr, &memInfo)) != ROK)
          {
             DU_LOG("\nERROR  -->  SCTP : Failed to RecvMsg for E2\n");
          }
