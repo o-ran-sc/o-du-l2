@@ -206,6 +206,9 @@ uint8_t parseSctpParams(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur, SctpParams *
    uint8_t max_du_port = 0;
    uint16_t f1_sctp_port = 0;
    uint16_t e2_sctp_port = 0;
+#ifdef NFAPI_ENABLED
+   uint16_t pnf_p5_sctp_port = 0;
+#endif
 
    memset(sctp, 0, sizeof(SctpParams));
    cur = cur->xmlChildrenNode;
@@ -220,7 +223,7 @@ uint8_t parseSctpParams(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur, SctpParams *
       if ((!xmlStrcmp(cur->name, (const xmlChar *)"MAX_DU_PORT")) && (cur->ns == ns))
       {
          max_du_port = atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
-         if (max_du_port == 2 )
+         if (max_du_port >= 2 )
          {
             sctp->duPort[F1_INTERFACE] = f1_sctp_port;     /* DU Port idx  0  */
             sctp->duPort[E2_INTERFACE] = e2_sctp_port;    /* RIC Port idx 1  */
@@ -238,6 +241,20 @@ uint8_t parseSctpParams(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur, SctpParams *
 
       sctp->cuPort = f1_sctp_port;
       sctp->ricPort = e2_sctp_port;
+#endif
+#ifdef NFAPI_ENABLED
+      /*TODO: Need to add PNF_PF Interface's SCTP confg in O1 Module then can be
+       * moved inside O1_ENABLE flag*/
+      if(max_du_port == 3)
+      {
+         sctp->duPort[PNF_P5_INTERFACE] = pnf_p5_sctp_port;
+      }
+
+      if ((!xmlStrcmp(cur->name, (const xmlChar *)"PNF_P5_SCTP_PORT")) && (cur->ns == ns))
+      {
+         pnf_p5_sctp_port = atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
+      }
+      sctp->pnfP5Port = pnf_p5_sctp_port;
 #endif
       cur = cur->next;
    }
@@ -5163,6 +5180,10 @@ uint8_t parseDuCfgParams(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur)
    char *duIpV4Addr;
    char *cuIpV4Addr;
    char *ricIpV4Addr;
+#ifdef NFAPI_ENABLED
+   char *pnfP5IpV4Addr;
+   CmInetIpAddr pnfP5Ip;
+#endif
    CmInetIpAddr duIp;
    CmInetIpAddr cuIp;
    CmInetIpAddr ricIp;
@@ -5237,7 +5258,13 @@ uint8_t parseDuCfgParams(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur)
          cmInetAddr(ricIpV4Addr, &(ricIp));
       }
 #endif
-
+#ifdef NFAPI_ENABLED
+      if ((!xmlStrcmp(cur->name, (const xmlChar *)"PNF_P5_IP_V4_ADDR")) && (cur->ns == ns))
+      {
+         pnfP5IpV4Addr = (char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1);
+         cmInetAddr(pnfP5IpV4Addr, &(pnfP5Ip));
+      }
+#endif
       if ((!xmlStrcmp(cur->name, (const xmlChar *)"SCTP")) && (cur->ns == ns))
       {
          if(parseSctpParams(doc, ns, cur, &duCfgParam.sctpParams) != ROK)
@@ -5251,6 +5278,10 @@ uint8_t parseDuCfgParams(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur)
          duCfgParam.sctpParams.cuIpAddr.ipV4Addr = cuIp;
          duCfgParam.sctpParams.ricIpAddr.ipV4Pres = true;
          duCfgParam.sctpParams.ricIpAddr.ipV4Addr = ricIp;
+#ifdef NFAPI_ENABLED
+         duCfgParam.sctpParams.pnfP5IpAddr.ipV4Pres = true;
+         duCfgParam.sctpParams.pnfP5IpAddr.ipV4Addr = pnfP5Ip;
+#endif
       }
 
       if ((!xmlStrcmp(cur->name, (const xmlChar *)"EGTP")) && (cur->ns == ns))
@@ -5556,10 +5587,18 @@ void printDuConfig()
    DU_LOG("CU IP Address %u\n", sctp->cuIpAddr.ipV4Addr);
    DU_LOG("RIC IPv4 Address present %u\n", sctp->ricIpAddr.ipV4Pres);
    DU_LOG("RIC IP Address %u\n", sctp->ricIpAddr.ipV4Addr);
+#ifdef NFAPI_ENABLED
+   DU_LOG("PNF P5 IPv4 Address present %u\n", sctp->pnfP5IpAddr.ipV4Pres);
+   DU_LOG("PNF P5 IP Address %u\n", sctp->pnfP5IpAddr.ipV4Addr);
+#endif
    DU_LOG("SCTP Port at DU for F1 Interface %d\n", sctp->duPort[F1_INTERFACE]);
    DU_LOG("SCTP Port at CU for F1 Interface %d\n", sctp->cuPort);
    DU_LOG("SCTP Port at DU for E2 Interface %d\n", sctp->duPort[E2_INTERFACE]);
    DU_LOG("SCTP Port at RIC for E2 Interface %d\n", sctp->ricPort);
+#ifdef NFAPI_ENABLED
+   DU_LOG("SCTP Port at DU for PNF P5 Interface %d\n", sctp->duPort[PNF_P5_INTERFACE]);
+   DU_LOG("SCTP Port at PNF for PNF P5 Interface %d\n", sctp->pnfP5Port);
+#endif
 
    egtp = &duCfgParam.egtpParams;
    DU_LOG("\n ** EGTP PARAMETER ** \n");

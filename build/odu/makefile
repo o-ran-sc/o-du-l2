@@ -74,7 +74,7 @@ endif
 # macro for output file name and makefile name
 #
 
-PLTFRM_FLAGS=-UMSPD -DODU -DINTEL_FAPI -UODU_MEMORY_DEBUG_LOG -DDEBUG_ASN_PRINT -UDEBUG_PRINT -DERROR_PRINT -USTART_DL_UL_DATA -UNR_DRX -UCALL_FLOW_DEBUG_LOG -UODU_SLOT_IND_DEBUG_LOG -UNFAPI_ENABLED
+PLTFRM_FLAGS=-UMSPD -DODU -DINTEL_FAPI -UODU_MEMORY_DEBUG_LOG -DDEBUG_ASN_PRINT -UDEBUG_PRINT -DERROR_PRINT -USTART_DL_UL_DATA -UNR_DRX -UCALL_FLOW_DEBUG_LOG -UODU_SLOT_IND_DEBUG_LOG -DNFAPI_ENABLED
 
 ifeq ($(MODE),TDD)
    PLTFRM_FLAGS += -DNR_TDD
@@ -152,13 +152,15 @@ help:
 		@echo -e "$(RULE)odu       - Builds all components of ODU$(NORM)"
 		@echo -e "$(RULE)cu_stub   - Builds all CU Stub$(NORM)"
 		@echo -e "$(RULE)ric_stub   - Builds all RIC_Stub$(NORM)"
+		@echo -e "$(RULE)pnf_stub   - Builds all PNF_Stub$(NORM)"
 		@echo -e "$(RULE)clean_odu - clean up ODU$(NORM)"
 		@echo -e "$(RULE)clean_cu  - clean up CU Stub$(NORM)"
 		@echo -e "$(RULE)clean_ric  - clean up RIC Stub$(NORM)"
+		@echo -e "$(RULE)clean_pnf  - clean up PNF Stub$(NORM)"
 		@echo -e "$(RULE)clean_all - cleanup everything$(NORM)"
 		@echo -e "$(OPTS)options: $(NORM)"
 		@echo -e "$(OPTS)    MACHINE=BIT64/BIT32  - Default is BIT32$(NORM)"
-		@echo -e "$(OPTS)    NODE=TEST_STUB       - Mandatory option for cu_stub/ric_stub$(NORM)"
+		@echo -e "$(OPTS)    NODE=TEST_STUB       - Mandatory option for cu_stub/ric_stub/pnf_stub$(NORM)"
 		@echo -e "$(OPTS)    MODE=TDD             - If not specified, MODE=FDD$(NORM)"
 		@echo -e "$(OPTS)    PHY=INTEL_L1         - If not specified, Phy stub is used$(NORM)"
 		@echo -e "$(OPTS)    PHY_MODE=TIMER       - Testing mode for INTEL_L1"
@@ -186,6 +188,13 @@ prepare_ric_dirs:
 	 $(Q)mkdir -p $(BUILD_DIR)/obj/ric_stub
 	 $(Q)mkdir -p $(LIB_ROOT)/ric_stub
 	 $(Q)mkdir -p $(BIN_DIR)/ric_stub
+	 $(Q)echo -e "Directories are successfully prepared"
+
+prepare_pnf_dirs:
+	 $(Q)echo -e "Preparing directories for build..."
+	 $(Q)mkdir -p $(BUILD_DIR)/obj/pnf_stub
+	 $(Q)mkdir -p $(LIB_ROOT)/pnf_stub
+	 $(Q)mkdir -p $(BIN_DIR)/pnf_stub
 	 $(Q)echo -e "Directories are successfully prepared"
 
 du:
@@ -239,7 +248,7 @@ endif
 	   $(Q)rm -rf $(ROOT_DIR)/bin/odu
 	   $(Q)echo -e "***** ODU CLEAN COMPLETE *****"
 
-clean_all: clean_odu clean_cu clean_ric
+clean_all: clean_odu clean_cu clean_ric clean_pnf
 			  $(Q)rm -rf $(OBJ_ROOT)
 			  $(Q)rm -rf $(LIB_ROOT)
 			  $(Q)rm -rf $(LOG_ROOT)
@@ -323,6 +332,29 @@ link_ric:
 		$(Q)cp -f ../scripts/start_ric_stub_logging.sh $(ROOT_DIR)/bin/ric_stub
 		$(Q)echo -e "***** RIC STUB BUILD COMPLETE *****"
 
+pnf: 
+	 $(Q)$(MAKE) -j -f $(COM_BUILD_DIR)/pnf_stub.mak OBJ_DIR=$(OBJ_ROOT)/pnf_stub LIB_DIR=$(LIB_ROOT)/pnf_stub LOG_DIR=$(LOG_ROOT)/pnf_stub CC='$(CC1)'
+	 $(Q)$(MAKE) -j -f $(COM_BUILD_DIR)/cm.mak OBJ_DIR=$(OBJ_ROOT)/pnf_stub LIB_DIR=$(LIB_ROOT)/pnf_stub LOG_DIR=$(LOG_ROOT)/pnf_stub CC='$(CC1)'
+	 $(Q)$(MAKE) -j -f $(COM_BUILD_DIR)/mt.mak OBJ_DIR=$(OBJ_ROOT)/pnf_stub LIB_DIR=$(LIB_ROOT)/pnf_stub LOG_DIR=$(LOG_ROOT)/pnf_stub CC='$(CC1)'
+
+clean_pnf:
+	 $(Q)$(MAKE) -j -f $(COM_BUILD_DIR)/pnf_stub.mak clean OBJ_DIR=$(OBJ_ROOT)/pnf_stub LIB_DIR=$(LIB_ROOT)/pnf_stub LOG_DIR=$(LOG_ROOT)/pnf_stub CC='$(CC1)'
+	 $(Q)$(MAKE) -j -f $(COM_BUILD_DIR)/cm.mak clean OBJ_DIR=$(OBJ_ROOT)/pnf_stub LIB_DIR=$(LIB_ROOT)/pnf_stub LOG_DIR=$(LOG_ROOT)/pnf_stub CC='$(CC1)'
+	 $(Q)$(MAKE) -j -f $(COM_BUILD_DIR)/mt.mak clean OBJ_DIR=$(OBJ_ROOT)/pnf_stub LIB_DIR=$(LIB_ROOT)/pnf_stub LOG_DIR=$(LOG_ROOT)/pnf_stub CC='$(CC1)'
+	 $(Q)rm -rf $(OBJ_ROOT)/pnf_stub/*
+	 $(Q)rm -rf $(LIB_ROOT)/pnf_stub/*
+	 $(Q)rm -rf $(BIN_DIR)/pnf_stub/*
+	 $(Q)rm -rf $(ROOT_DIR)/bin/pnf_stub
+	 $(Q)echo -e "***** PNF STUB CLEAN COMPLETE *****"
+
+
+link_pnf: 
+		$(Q)$(CC1) -g -o $(OBJ_ROOT)/pnf_stub/pnf_stub -Wl,-R../lib/:. $(OBJ_ROOT)/pnf_stub/*.o\
+		$(L_OPTS) -L$(LIB_ROOT)/pnf_stub -L$(ROOT_DIR)/libs/pnf_stub
+		$(Q)cp -f ./obj/pnf_stub/pnf_stub ./bin/pnf_stub
+		$(Q)cp -rf ./bin/pnf_stub $(ROOT_DIR)/bin/
+		$(Q)cp -f ../scripts/start_pnf_stub_logging.sh $(ROOT_DIR)/bin/pnf_stub
+		$(Q)echo -e "***** PNF STUB BUILD COMPLETE *****"
 
 copy_build: link_du
 			$(Q)cp -f ./obj/odu/odu ./bin/odu
@@ -335,6 +367,7 @@ copy_build: link_du
 odu: prepare_dirs copy_build
 cu_stub: prepare_cu_dirs cu link_cu
 ric_stub: prepare_ric_dirs ric link_ric
+pnf_stub: prepare_pnf_dirs pnf link_pnf
 
 #**********************************************************************
 #         End of file
