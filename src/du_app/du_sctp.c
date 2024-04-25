@@ -33,6 +33,8 @@
 #include "du_app_rlc_inf.h"
 #include "du_mgr.h"
 #include "du_utils.h"
+#include "lwr_mac_sctp_inf.h"
+
 /* Global variable declaration */
 uint8_t   socket_type;      /* Socket type */
 bool nonblocking;      /* Blocking/Non-blocking socket */
@@ -43,6 +45,9 @@ CmInetNetAddrLst remoteAddrLst;
 /* Global variable declaration */
 DuSctpDestCb f1Params;     /* SCTP configurations at DU */ 
 DuSctpDestCb ricParams;    /* SCTP configurations at DU */ 
+#ifdef NFAPI_ENABLED
+DuSctpDestCb pnfP5Params;    /* SCTP configurations for PNF */ 
+#endif
 
 /**************************************************************************
  * @brief Task Initiation callback function. 
@@ -74,6 +79,10 @@ uint8_t sctpActvInit(Ent entity, Inst inst, Region region, Reason reason)
    f1Params.assocId = -1;
    memset(&ricParams, 0, sizeof(DuSctpDestCb));
    ricParams.assocId = -1;
+#ifdef NFAPI_ENABLED
+   memset(&pnfP5Params, 0, sizeof(DuSctpDestCb));
+   pnfP5Params.assocId = -1;
+#endif
    nonblocking = FALSE;
    return ROK;
 
@@ -235,6 +244,18 @@ uint8_t duSctpCfgReq(SctpParams sctpCfg)
    memset (&ricParams.sockFd, -1, sizeof(CmInetFd));
    fillDestNetAddr(&ricParams.destIpNetAddr, &ricParams.destIpAddr);
    fillAddrLst(&ricParams.destAddrLst, &ricParams.destIpAddr);
+
+#ifdef NFAPI_ENABLED
+/* Fill PNF Params */
+   pnfP5Params.destIpAddr.ipV4Pres  = sctpCfg.pnfP5IpAddr.ipV4Pres;
+   pnfP5Params.destIpAddr.ipV4Addr  = sctpCfg.pnfP5IpAddr.ipV4Addr;
+   pnfP5Params.destPort             = sctpCfg.pnfP5Port;
+   pnfP5Params.itfState             = DU_SCTP_DOWN;
+   pnfP5Params.srcPort              = sctpCfg.duPort[PNF_P5_INTERFACE];
+   memset (&pnfP5Params.sockFd, -1, sizeof(CmInetFd));
+   fillDestNetAddr(&pnfP5Params.destIpNetAddr, &pnfP5Params.destIpAddr);
+   fillAddrLst(&pnfP5Params.destAddrLst, &pnfP5Params.destIpAddr);
+#endif
 
 /* Fill AddressList */
    fillAddrLst(&localAddrLst, &sctpCfg.duIpAddr);
@@ -422,6 +443,14 @@ uint8_t duSctpAssocReq(uint8_t itfType)
          ret = establishReq(paramPtr);
          break;
       }
+#ifdef NFAPI_ENABLED
+      case PNF_P5_INTERFACE:
+      {
+         paramPtr = &pnfP5Params;
+         ret = establishReq(paramPtr);
+         break;
+      }
+#endif
       default:
       {
          DU_LOG("\nERROR  -->  SCTP : Invalid Interface Type %d", itfType);
@@ -559,9 +588,55 @@ void sendToDuApp(Buffer *mBuf, Event event)
 
    if (ODU_POST_TASK(&pst, mBuf) != ROK)
    {
-      DU_LOG("\nERROR  -->  SCTP : ODU_POST_TASK failed in duReadCfg");
+      DU_LOG("\nERROR  -->  SCTP : ODU_POST_TASK failed in sendToDuApp");
    }
 }
+
+#ifdef NFAPI_ENABLED
+/*******************************************************************
+ *
+ * @brief Post received data/notification to LWR_MAC 
+ *
+ * @details
+ *
+ *    Function : sendToLwrMac
+ *
+ *    Functionality:
+ *         Post received data/notification to LWR_MAC
+ *
+ * @params[in]  Message buffer
+ *              Message event
+ *
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+void sendToLwrMac(Buffer *mBuf, Event event)
+{
+   Pst pst;
+   DU_LOG("\nDEBUG   -->  SCTP : Forwarding received message to Lwr MAC");
+   ODU_PRINT_MSG(mBuf, 0, 0);
+
+   ODU_GET_MSG_BUF(pst.region, pst.pool, &mBuf);
+
+   memset(&(pst), 0, sizeof(Pst));
+   pst.srcEnt = (Ent)ENTSCTP;
+   pst.srcInst = (Inst)SCTP_INST;
+   pst.srcProcId = DU_PROC;
+   pst.dstEnt = (Ent)ENTLWRMAC;
+   pst.dstInst = 0;
+   pst.dstProcId = pst.srcProcId;
+   pst.event = event;
+   pst.selector = ODU_SELECTOR_LWLC;
+   pst.pool= DU_POOL;
+   pst.region = DFLT_REGION;
+
+   if (ODU_POST_TASK(&pst, mBuf) != ROK)
+   {
+      DU_LOG("\nERROR  -->  SCTP : ODU_POST_TASK failed in sendToLwrMac");
+   }
+}
+#endif
 
 /*******************************************************************
  *
@@ -651,25 +726,36 @@ uint8_t sctpNtfyHdlr(CmInetSctpNotification *ntfy, uint8_t *itfState, uint8_t in
          break;
    }
 
-   /* Pack notification and send to APP */
-   DU_LOG("\nDEBUG   -->  SCTP : Forwarding received message to duApp");
-    
-   memset(&(pst), 0, sizeof(Pst));
-   pst.srcEnt = (Ent)ENTSCTP;
-   pst.srcInst = (Inst)SCTP_INST;
-   pst.srcProcId = DU_PROC;
-   pst.dstEnt = (Ent)ENTDUAPP;
-   pst.dstInst = (Inst)DU_INST;
-   pst.dstProcId = pst.srcProcId;
-   pst.event = EVENT_SCTP_NTFY;
-   pst.selector = ODU_SELECTOR_LC;
-   pst.pool= DU_POOL;
-   pst.region = DU_APP_MEM_REGION;
-   
-   if(cmPkSctpNtfy(&pst, ntfy) != ROK)
+#ifdef NFAPI_ENABLED
+   if(interface == PNF_P5_INTERFACE)
    {
-      DU_LOG("\nERROR  -->  SCTP : Failed to pack SCTP notification");
-      return RFAILED;
+      /*TODO: Need to check if SCTP Notification for this interface has to be handled*/
+      DU_LOG("\nDEBUG   -->  SCTP : SCTP Notification received for PNF_P5 Interface");
+      return ROK;
+   }
+   else
+#endif
+   {
+      /* Pack notification and send to APP */
+      DU_LOG("\nDEBUG   -->  SCTP : Forwarding received message to duApp");
+
+      memset(&(pst), 0, sizeof(Pst));
+      pst.srcEnt = (Ent)ENTSCTP;
+      pst.srcInst = (Inst)SCTP_INST;
+      pst.srcProcId = DU_PROC;
+      pst.dstEnt = (Ent)ENTDUAPP;
+      pst.dstInst = (Inst)DU_INST;
+      pst.dstProcId = pst.srcProcId;
+      pst.event = EVENT_SCTP_NTFY;
+      pst.selector = ODU_SELECTOR_LC;
+      pst.pool= DU_POOL;
+      pst.region = DU_APP_MEM_REGION;
+
+      if(cmPkSctpNtfy(&pst, ntfy) != ROK)
+      {
+         DU_LOG("\nERROR  -->  SCTP : Failed to pack SCTP notification");
+         return RFAILED;
+      }
    }
    return ROK;
 }
@@ -710,7 +796,6 @@ uint8_t  processPolling(sctpSockPollParams *pollParams, CmInetFd *sockFd, uint32
       if(ret != ROK)
       {
          DU_LOG("\nERROR   -->  SCTP: Failed to receive sctp msg for sockFd[%d]\n", sockFd->fd);
-         ret = RFAILED;
       }
       else
       {
@@ -734,6 +819,14 @@ uint8_t  processPolling(sctpSockPollParams *pollParams, CmInetFd *sockFd, uint32
                DU_LOG("\nDEBUG   -->  SCTP : AssocId assigned to ricParams from PollParams [%d]\n", ricParams.assocId);
                ret = sctpNtfyHdlr(&pollParams->ntfy, &ricParams.itfState, E2_INTERFACE);
             }
+#ifdef NFAPI_ENABLED
+            else if(pollParams->port == pnfP5Params.destPort)
+            {
+               pnfP5Params.assocId = pollParams->ntfy.u.assocChange.assocId;
+               DU_LOG("\nDEBUG   -->  SCTP : AssocId assigned to PNF_P5 Params from PollParams [%d]\n", pnfP5Params.assocId);
+               ret = sctpNtfyHdlr(&pollParams->ntfy, &pnfP5Params.itfState, PNF_P5_INTERFACE);
+            }
+#endif
             else
             {
                DU_LOG("\nERROR  -->  SCTP : Failed to fill AssocId\n");
@@ -752,14 +845,19 @@ uint8_t  processPolling(sctpSockPollParams *pollParams, CmInetFd *sockFd, uint32
          {  
             sendToDuApp(pollParams->mBuf, EVENT_RIC_DATA);
          }
-
+#ifdef NFAPI_ENABLED
+         else if(pnfP5Params.itfState & (pollParams->port == pnfP5Params.destPort))
+         {
+            sendToLwrMac(pollParams->mBuf, EVENT_PNF_DATA);
+         }
+#endif
          else
          {
             ODU_PUT_MSG_BUF(pollParams->mBuf);
          }
       }
   }
-  return ret;
+  return ROK;
 }
 /*******************************************************************
  *
@@ -784,14 +882,25 @@ uint8_t sctpSockPoll()
    uint32_t *timeout_Ptr;
    CmInetMemInfo memInfo;
    sctpSockPollParams f1PollParams, e2PollParams;
+#ifdef NFAPI_ENABLED
+   sctpSockPollParams pnfP5PollParams;
+#endif
 
    memset(&f1PollParams, 0, sizeof(sctpSockPollParams));
    memset(&e2PollParams, 0, sizeof(sctpSockPollParams));
+#ifdef NFAPI_ENABLED
+   memset(&pnfP5PollParams, 0, sizeof(sctpSockPollParams));
+#endif
 
    if (f1Params.sockFd.blocking & ricParams.sockFd.blocking)
    {
-      /* blocking */
-      timeout_Ptr = NULLP;
+#ifdef NFAPI_ENABLED
+      if(pnfP5Params.sockFd.blocking)
+#endif
+      {
+         /* blocking */
+         timeout_Ptr = NULLP;
+      }
    }
    else
    {
@@ -804,6 +913,9 @@ uint8_t sctpSockPoll()
 
    CM_INET_FD_ZERO(&f1PollParams.readFd);
    CM_INET_FD_ZERO(&e2PollParams.readFd);
+#ifdef NFAPI_ENABLED
+   CM_INET_FD_ZERO(&pnfP5PollParams.readFd);
+#endif
 
    DU_LOG("\nINFO   -->  SCTP : Polling started at DU\n");
    while(true)
@@ -822,6 +934,15 @@ uint8_t sctpSockPoll()
             DU_LOG("\nERROR  -->  SCTP : Failed to RecvMsg for E2\n");
          }
       }
+#ifdef NFAPI_ENABLED
+      if(pnfP5Params.itfState)
+      {
+         if((ret = processPolling(&pnfP5PollParams, &pnfP5Params.sockFd, timeout_Ptr, &memInfo)) != ROK)
+         {
+            DU_LOG("\nERROR  -->  SCTP : Failed to RecvMsg for E2\n");
+         }
+      }
+#endif
    };
    return (ret);
 }/* End of sctpSockPoll() */
@@ -879,7 +1000,16 @@ uint8_t sctpSend(Buffer *mBuf, uint8_t itfType)
 #endif
       ret = cmInetSctpSendMsg(&ricParams.sockFd, &ricParams.destIpNetAddr, ricParams.destPort, &memInfo, mBuf, &len, 0, FALSE, 0, 0/*SCT_PROTID_NONE*/, RWOULDBLOCK);
    }
-
+#ifdef NFAPI_ENABLED
+   if(itfType == PNF_P5_INTERFACE)
+   {
+      DU_LOG("\nDEBUG  -->  SCTP : sending the message to PNF");
+#ifdef CALL_FLOW_DEBUG_LOG
+      DU_LOG("\nCall Flow: ENTSCTP -> PNF : EVENT_P5_MSG_TO_PNF\n");
+#endif
+      ret = cmInetSctpSendMsg(&pnfP5Params.sockFd, &pnfP5Params.destIpNetAddr, pnfP5Params.destPort, &memInfo, mBuf, &len, 0, FALSE, 0, 0/*SCT_PROTID_NONE*/, RWOULDBLOCK);
+   }
+#endif
    if(ret != ROK && ret != RWOULDBLOCK)
    {
       DU_LOG("\nERROR  -->  SCTP : Failed sending the message");

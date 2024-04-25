@@ -16,8 +16,8 @@
  ################################################################################
  *******************************************************************************/
 
- #ifndef _LWR_MAC_NFAPI_H_
- #define _LWR_MAC_NFAPI_H_
+#ifndef _LWR_MAC_NFAPI_H_
+#define _LWR_MAC_NFAPI_H_
 
 #include "nfapi_interface.h"
 
