@@ -30,6 +30,9 @@ make cu_stub NODE=TEST_STUB MACHINE=BIT64 MODE=FDD
 echo ""
 echo "***** Building RIC Stub Binary *****"
 make ric_stub NODE=TEST_STUB MACHINE=BIT64 MODE=FDD
+echo ""
+echo "***** Building PNF Stub Binary *****"
+make pnf_stub NODE=TEST_STUB MACHINE=BIT64 MODE=FDD
 
 echo ""
 echo "***** Assigning IP addresses *****"
@@ -38,10 +41,13 @@ INTERFACE="$(echo -e "${INTERFACE}" | tr -d '[:space:]')"
 ifconfig $INTERFACE:ODU "192.168.130.81"
 ifconfig $INTERFACE:CU_STUB "192.168.130.82"
 ifconfig $INTERFACE:RIC_STUB "192.168.130.80"
+ifconfig $INTERFACE:PNF_STUB "192.168.130.79"
 
 xterm -hold -e "cd $ROOT_DIR/bin/cu_stub; chmod 777 *; ./start_cu_stub_logging.sh && ./cu_stub" &
 sleep 2
 xterm -hold -e "cd $ROOT_DIR/bin/ric_stub; chmod 777 *; ./start_ric_stub_logging.sh && ./ric_stub" &
+sleep 2
+xterm -hold -e "cd $ROOT_DIR/bin/pnf_stub; chmod 777 *; ./start_pnf_stub_logging.sh && ./pnf_stub" &
 sleep 2
 xterm -hold -e "cd $ROOT_DIR/bin/odu; chmod 777 *; ./start_du_logging.sh && ./odu" &
 
