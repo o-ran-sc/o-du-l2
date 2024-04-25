@@ -29,6 +29,9 @@
 #ifndef INTEL_WLS_MEM
 #include "lwr_mac_phy_stub_inf.h"
 #endif
+#ifdef NFAPI_ENABLED
+#include "lwr_mac_du_app_inf.h"
+#endif
 
 /**************************************************************************
  * @brief Task Initiation callback function. 
@@ -126,6 +129,26 @@ void callFlowlwrMacActvTsk(Pst *pst)
             break;
          }
 #endif
+     case ENTSCTP:
+     {
+         strcpy(sourceTask,"SCTP");
+         switch(pst->event)
+         {
+#ifdef NFAPI_ENABLED
+             case EVENT_PNF_DATA:
+               {
+                  strcpy(message,"EVENT_PNF_DATA");
+                  break;
+               }
+#endif
+             default:
+               {
+                  strcpy(message,"Invalid Event");
+                  break;
+               }
+         }
+         break;
+      }
 
       default:
          {
@@ -229,7 +252,24 @@ uint8_t lwrMacActvTsk(Pst *pst, Buffer *mBuf)
             break;
          }
 #endif
-
+     case ENTSCTP:
+       {
+          switch(pst->event)
+           {
+#ifdef NFAPI_ENABLED
+             case EVENT_PNF_DATA:
+               {
+                   
+                   break;
+               }
+#endif
+             default:
+                {
+                    DU_LOG("\nERROR  -->  LWR_MAC: Invalid event %d received from SCTP", pst->event);
+                }
+           }
+           break;
+       }
       default:
          {
             ODU_PUT_MSG_BUF(mBuf);

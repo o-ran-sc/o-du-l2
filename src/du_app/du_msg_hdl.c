@@ -1398,7 +1398,13 @@ uint8_t duLayerConfigComplete()
       DU_LOG("\nERROR  -->  DU_APP : Failed to send AssocReq E2");
       ret = RFAILED;
    }
-
+#ifdef NFAPI_ENABLED
+   if((ret = duSctpAssocReq(PNF_P5_INTERFACE)) != ROK)
+   {
+      DU_LOG("\nERROR  -->  DU_APP : Failed to send AssocReq PNF P5");
+      ret = RFAILED;
+   }
+#endif
    return (ret); 
 } 
 

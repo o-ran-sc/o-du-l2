@@ -25,58 +25,58 @@
 /*Table 2-7 Dedicated NFAPI message IDs*/
 
 /*P5 Messages*/
-#define NFAPI_PNF_PARAM_REQ    0x0100
-#define NFAPI_PNF_PARAM_RESP   0x0101
-#define NFAPI_PNF_CONFIG_REQ   0x0102
-#define NFAPI_PNF_CONFIG_RESP  0x0103
-#define NFAPI_PNF_START_REQ    0x0104
-#define NFAPI_PNF_START_RESP   0x0105
-#define NFAPI_PNF_STOP_REQ     0x0106
-#define NFAPI_PNF_STOP_RESP    0x0107
-#define NFAPI_START_RESPONSE         0x0108
-#define NFAPI_PNF_READY_IND    0x0109
+#define TAG_NFAPI_PNF_PARAM_REQ    0x0100
+#define TAG_NFAPI_PNF_PARAM_RESP   0x0101
+#define TAG_NFAPI_PNF_CONFIG_REQ   0x0102
+#define TAG_NFAPI_PNF_CONFIG_RESP  0x0103
+#define TAG_NFAPI_PNF_START_REQ    0x0104
+#define TAG_NFAPI_PNF_START_RESP   0x0105
+#define TAG_NFAPI_PNF_STOP_REQ     0x0106
+#define TAG_NFAPI_PNF_STOP_RESP    0x0107
+#define TAG_NFAPI_START_RESPONSE         0x0108
+#define TAG_NFAPI_PNF_READY_IND    0x0109
 
-/*Reserved for P5 Dedicated NFAPI Messages 0x010A - 0x017F */
+/*Reserved for P5 Dedicated TAG_NFAPI Messages 0x010A - 0x017F */
 
 /*P7 messages*/
-#define NFAPI_DL_NODE_SYNC     0x0180
-#define NFAPI_UL_NODE_SYNC     0x0181
-#define NFAPI_TIMING_INFO      0x0182
+#define TAG_NFAPI_DL_NODE_SYNC     0x0180
+#define TAG_NFAPI_UL_NODE_SYNC     0x0181
+#define TAG_NFAPI_TIMING_INFO      0x0182
 
-/*Reserved for P7 Dedicated NFAPI Messages 0x0183 - 0x01ff*/
+/*Reserved for P7 Dedicated TAG_NFAPI Messages 0x0183 - 0x01ff*/
 /*RESERVED for Vendor Extension messages 0x0300 - 0x03ff*/
 
 /*Table 3-16 nFAPI TLVs included in PARAM.response and 
  *Table 3-19 nFAPI TLVs included in CONFIG.request*/
 //PNF and VNF Parameters
-#define NFAPI_P7_VNF_ADD_IPV4              0x0100
-#define NFAPI_P7_VNF_ADD_IPV6              0x0101
-#define NFAPI_P7_VNF_PORT                  0x0102
-#define NFAPI_P7_PNF_ADD_IPV4              0x0103
-#define NFAPI_P7_PNF_ADD_IPV6              0x0104
-#define NFAPI_P7_PNF_PORT                  0x0105
+#define TAG_NFAPI_P7_VNF_ADD_IPV4              0x0100
+#define TAG_NFAPI_P7_VNF_ADD_IPV6              0x0101
+#define TAG_NFAPI_P7_VNF_PORT                  0x0102
+#define TAG_NFAPI_P7_PNF_ADD_IPV4              0x0103
+#define TAG_NFAPI_P7_PNF_ADD_IPV6              0x0104
+#define TAG_NFAPI_P7_PNF_PORT                  0x0105
 //TTI Related Parameters
-#define NFAPI_DL_TTI_TIMING_OFFSET         0x0106
-#define NFAPI_UL_TTI_TIMING_OFFSET         0x0107
-#define NFAPI_UL_DCI_TIMING_OFFSET         0x0108
-#define NFAPI_TX_DATA_TIMING_OFFSET        0x0109
+#define TAG_NFAPI_DL_TTI_TIMING_OFFSET         0x0106
+#define TAG_NFAPI_UL_TTI_TIMING_OFFSET         0x0107
+#define TAG_NFAPI_UL_DCI_TIMING_OFFSET         0x0108
+#define TAG_NFAPI_TX_DATA_TIMING_OFFSET        0x0109
 //Timing Related Parameters
-#define NFAPI_TIMING_WINDOW                0x011E
-#define NFAPI_TIMING_INFO_MODE             0x011F
-#define NFAPI_TIMING_INFO_PERIOD           0x0120
+#define TAG_NFAPI_TIMING_WINDOW                0x011E
+#define TAG_NFAPI_TIMING_INFO_MODE             0x011F
+#define TAG_NFAPI_TIMING_INFO_PERIOD           0x0120
 //P7 Transport Related Parameters
-#define NFAPI_P7_IP_FRAGMENTATION_ALLOWED  0x0121
-#define NFAPI_P7_TRANSPORT                 0x0122
-#define NFAPI_P7_PNF_ETHERNET_ADD          0x0123
-#define NFAPI_P7_VNF_ETHERNET_ADD          0x0124
+#define TAG_NFAPI_P7_IP_FRAGMENTATION_ALLOWED  0x0121
+#define TAG_NFAPI_P7_TRANSPORT                 0x0122
+#define TAG_NFAPI_P7_PNF_ETHERNET_ADD          0x0123
+#define TAG_NFAPI_P7_VNF_ETHERNET_ADD          0x0124
 //CPRI Related Parameters
-#define NFAPI_ECPRI_MSG_TYPE               0x0125
-#define NFAPI_ECPRI_PHY_TRANSPORT_ID       0x0126
+#define TAG_NFAPI_ECPRI_MSG_TYPE               0x0125
+#define TAG_NFAPI_ECPRI_PHY_TRANSPORT_ID       0x0126
 
-#define NFAPI_5G_FAPI_MSG_BODY             0x0F00
+#define TAG_NFAPI_5G_FAPI_MSG_BODY             0x0F00
 
 /*Table 3-2*/
-#define NFAPI_PNF_PARAM_GENERAL            0x1000 
+#define TAG_NFAPI_PNF_PARAM_GENERAL            0x1000 
 
 /*As per Table 3-15 and Table 3-17*/
 #define MAX_NUM_TLV_IN_PARAM_RESP          19

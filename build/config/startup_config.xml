@@ -15,5 +15,10 @@
 <interface-address>192.168.130.80</interface-address>
 <port>36422</port>
 </interface>
+<interface>
+<interface-name>pnf</interface-name>
+<interface-address>192.168.130.83</interface-address>
+<port>7701</port>
+</interface>
 </interfaces>
 </odu>
