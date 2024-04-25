@@ -101,9 +101,13 @@
 #define DU_PROC  0
 #define DU_INST 0
 #define DU_POOL  1
-#define MAX_DU_PORT 2
+#define MAX_DU_PORT 3
 #define F1_INTERFACE 0
 #define E2_INTERFACE 1
+
+#ifdef NFAPI_ENABLED
+#define PNF_P5_INTERFACE 2
+#endif
 
 #define SCTP_INST 0
 #define EGTP_INST 0
@@ -929,6 +933,10 @@ typedef struct sctpParams
    uint16_t       cuPort;
    F1IpAddr  ricIpAddr;
    uint16_t       ricPort;
+#ifdef NFAPI_ENABLED
+   F1IpAddr  pnfP5IpAddr;
+   uint16_t       pnfP5Port;
+#endif
 }SctpParams;
 
 typedef struct f1EgtpParams
