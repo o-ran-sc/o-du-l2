@@ -1119,6 +1119,10 @@ uint32_t schFcfsScheduleDlLc(SlotTimingInfo pdcchTime, SlotTimingInfo pdschTime,
       /* Not Freeing dlMsgAlloc as ZERO BO REPORT to be sent to RLC so that
        * Allocation can be done in next slot*/
       accumalatedSize = 0;
+
+      /*NTUST XIU WEI: Release schDlSlotInfo if resource crunch. */
+      SCH_FREE(dciSlotAlloc, sizeof(DlMsgSchInfo));
+      (*hqP)->hqEnt->cell->schDlSlotInfo[pdcchTime.slot]->dlMsgAlloc[ueCb->ueId -1] = NULL;
    }
 
    return accumalatedSize;
