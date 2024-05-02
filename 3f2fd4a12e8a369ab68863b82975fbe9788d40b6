@@ -1,0 +1,175 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7c98ed99_6d8d6f8c",
+        "filename": "build/common/pnf_stub.mak",
+        "patchSetId": 3
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-05-02T07:04:06Z",
+      "side": 1,
+      "message": "do we need this common folder?",
+      "range": {
+        "startLine": 38,
+        "startChar": 26,
+        "endLine": 38,
+        "endChar": 37
+      },
+      "revId": "3f2fd4a12e8a369ab68863b82975fbe9788d40b6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e1affd64_52526824",
+        "filename": "build/config/fdd_odu_config.xml",
+        "patchSetId": 3
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-05-02T07:04:06Z",
+      "side": 1,
+      "message": "is this port number fixed or taken randomly?",
+      "range": {
+        "startLine": 24,
+        "startChar": 24,
+        "endLine": 24,
+        "endChar": 28
+      },
+      "revId": "3f2fd4a12e8a369ab68863b82975fbe9788d40b6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ad00cc0e_2efcb1f8",
+        "filename": "build/config/startup_config.xml",
+        "patchSetId": 3
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-05-02T07:04:06Z",
+      "side": 1,
+      "message": "can you please compile this code once with O1 enabled in any of the ubuntu servers.",
+      "range": {
+        "startLine": 20,
+        "startChar": 19,
+        "endLine": 20,
+        "endChar": 33
+      },
+      "revId": "3f2fd4a12e8a369ab68863b82975fbe9788d40b6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "62995dd1_d1e7d52e",
+        "filename": "build/odu/makefile",
+        "patchSetId": 3
+      },
+      "lineNbr": 343,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-05-02T07:04:06Z",
+      "side": 1,
+      "message": "in pnf_stb.mak this is added I_OPTS+\u003d-I$(ROOT_DIR)/src/codec_utils/common\n\nso should we not add this in pnf and clean_pnf\n$(Q)$(MAKE) -j -f $(COM_BUILD_DIR)/asn_common.mak clean OBJ_DIR\u003d$(OBJ_ROOT)/ric_stub LIB_DIR\u003d$(LIB_ROOT)/ric_stub LOG_DIR\u003d$(LOG_ROOT)/ric_stub CC\u003d\u0027$(CC1)\u0027",
+      "revId": "3f2fd4a12e8a369ab68863b82975fbe9788d40b6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "20795b2f_3478c15d",
+        "filename": "src/5gnrmac/lwr_mac_ex_ms.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-05-02T07:04:06Z",
+      "side": 1,
+      "message": "I think we should name this file as\nlwr_mac_du_app_inf-\u003elwr_mac_pnf_stub_inf.\nwhat do you think?",
+      "revId": "3f2fd4a12e8a369ab68863b82975fbe9788d40b6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9eb757fe_12993ebd",
+        "filename": "src/cu_stub/cu_stub.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-05-02T07:04:06Z",
+      "side": 1,
+      "message": "REMOTE_IP_DU-192.168.130.84 and REMOTE_IP_CU-192.168.130.84 same?\nare we planning to have these 2 same?",
+      "revId": "3f2fd4a12e8a369ab68863b82975fbe9788d40b6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "382b1fda_bce483b5",
+        "filename": "src/du_app/du_cfg.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 938,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-05-02T07:04:06Z",
+      "side": 1,
+      "message": "indentation",
+      "revId": "3f2fd4a12e8a369ab68863b82975fbe9788d40b6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "08346eaa_f3705740",
+        "filename": "src/du_app/du_sctp.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 799,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-05-02T07:04:06Z",
+      "side": 1,
+      "message": "why is this commented?",
+      "revId": "3f2fd4a12e8a369ab68863b82975fbe9788d40b6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5b0d269b_ac1964b6",
+        "filename": "src/du_app/du_sctp.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 852,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-05-02T07:04:06Z",
+      "side": 1,
+      "message": "query:-\nlwr_mac is part of mac and du never communicates with lower mac directly.\nthen why we are having this direct communication here?",
+      "revId": "3f2fd4a12e8a369ab68863b82975fbe9788d40b6",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
