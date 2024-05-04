@@ -16,10 +16,32 @@
  ################################################################################
  *******************************************************************************/
 
-#ifndef _LWR_MAC_NFAPI_H_
-#define _LWR_MAC_NFAPI_H_
+/*Reference: SCF225_5G_NFAPI_SPECIFICATION, v225.2.1, Issue Date: 23 Nov 2021*/
+
+#ifndef _NFAPI_VNF_FSM_H_
+#define _NFAPI_VNF_FSM_H_
 
 #include "nfapi_interface.h"
+
+typedef enum {
+   PNF_STATE_IDLE = 0,
+   PNF_STATE_CONFIGURED,
+   PNF_STATE_RUNNING,
+   PNF_MAX_STATE
+}NfapiPnfState;
+
+typedef enum {
+   PNF_READY_IND = 0,
+   PNF_PARAM_REQ,
+   PNF_PARAM_RESP,
+   PNF_CONFIG_REQ,
+   PNF_CONFIG_RESP,
+   PNF_START_REQ,
+   PNF_START_RESP,
+   PNF_STOP_REQ,
+   PNF_STOP_RESP,
+   PNF_MAX_EVENT
+}NfapiPnfEvent;
 
 typedef struct nfapiTransportInfo
 {
@@ -32,7 +54,7 @@ typedef struct nfapiTransportInfo
    CmInetNetAddrLst addrLst;      /* Refers to the destinaiton Addr Lst in CmInetNetAddrLst format */
    CmInetNetAddr    ipNetAddr;    /* Refers to the destination Addr in CmInetNet Addr format */
    
-   /*TODO: later also add the IPV6 support*/
+   /*TODO: Add the IPV6 support*/
 
 }NfapiTransportInfo;
 
@@ -49,21 +71,20 @@ typedef struct nfapiTimingInfo
 
 typedef struct nfapiPnfConfig
 {
-   nFapi_pnf_state  pnfState;
    uint16_t         max_phys;
    NfapiTimingInfo  vnfTimingCfg;
 }NfapiPnfConfig;
 
 typedef struct nfapiSyncInfo
 {
-    uint8_t   phyId;
-    uint8_t   inSync;
-    uint32_t  prev_t1;
-    uint32_t  prev_t2;
-    uint32_t  prev_t3;
+    uint8_t       phyId;
+    uint8_t       inSync;
+    uint32_t      prev_t1;
+    uint32_t      prev_t2;
+    uint32_t      prev_t3;
     uint8_t       sfn;
     uint8_t       slot;
-    NfapiSyncInfo *next;
+    struct nfapiSyncInfo *next;
 }NfapiSyncInfo;
 
 typedef struct nfapiP7VnfInfo
@@ -73,13 +94,40 @@ typedef struct nfapiP7VnfInfo
    NfapiSyncInfo *p7SyncInfo;
 }NfapiP7VnfInfo;
 
+typedef struct nfapiP5Info
+{
+   uint8_t seqNum;
+}NfapiP5Info;
+
 typedef struct nfapiVnfDb
 {
-   NfapiTransportInfo  p5TransInfo;
+   NfapiPnfState       pnfStateAtVnf;
+   NfapiPnfEvent       pnfEvent;
+   NfapiP5Info         p5Info;
    NfapiTransportInfo  p7TransInfo;
    NfapiPnfConfig      pnfConfig;
    NfapiSyncInfo       vnfSynchInfo;
    NfapiP7VnfInfo      vnfP7Info;   
 }NfapiVnfDb;
+
+/* Global variables */
+NfapiVnfDb vnfDb;
+
+void nFapiVnfInit();
+typedef uint8_t (*nFapiVnfFsmHdlr)(nFapi_p5_hdr *, nFapi_msg_header *, void *);
+void sendEventToNfapiVnfFsm(NfapiPnfEvent msgType, nFapi_p5_hdr *p5Hdr, nFapi_msg_header *msgHdr, void *msg);
+
+/*NFAPI Msg Handler Functions*/
+uint8_t nfapi_vnf_procPnfReadyIndEvt(nFapi_p5_hdr *p5Hdr, nFapi_msg_header *msgHdr, void *msg);
+uint8_t nfapi_vnf_procPnfParamReqEvt(nFapi_p5_hdr *p5Hdr, nFapi_msg_header *msgHdr, void *msg);
+uint8_t nfapi_vnf_procPnfParamRespEvt(nFapi_p5_hdr *p5Hdr, nFapi_msg_header *msgHdr, void *msg);
+uint8_t nfapi_vnf_procPnfConfigReqEvt(nFapi_p5_hdr *p5Hdr, nFapi_msg_header *msgHdr, void *msg);
+uint8_t nfapi_vnf_procPnfConfigRespEvt(nFapi_p5_hdr *p5Hdr, nFapi_msg_header *msgHdr, void *msg);
+uint8_t nfapi_vnf_procPnfStartReqEvt(nFapi_p5_hdr *p5Hdr, nFapi_msg_header *msgHdr, void *msg);
+uint8_t nfapi_vnf_procPnfStartRespEvt(nFapi_p5_hdr *p5Hdr, nFapi_msg_header *msgHdr, void *msg);
+uint8_t nfapi_vnf_procPnfStopReqEvt(nFapi_p5_hdr *p5Hdr, nFapi_msg_header *msgHdr, void *msg);
+uint8_t nfapi_vnf_procPnfStopRespEvt(nFapi_p5_hdr *p5Hdr, nFapi_msg_header *msgHdr, void *msg);
+uint8_t nfapi_vnf_procInvalidEvt(nFapi_p5_hdr *p5Hdr, nFapi_msg_header *msgHdr, void *msg);
+
 
 #endif

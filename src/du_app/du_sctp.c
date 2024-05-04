@@ -615,9 +615,6 @@ void sendToLwrMac(Buffer *mBuf, Event event)
 {
    Pst pst;
    DU_LOG("\nDEBUG   -->  SCTP : Forwarding received message to Lwr MAC");
-   ODU_PRINT_MSG(mBuf, 0, 0);
-
-   ODU_GET_MSG_BUF(pst.region, pst.pool, &mBuf);
 
    memset(&(pst), 0, sizeof(Pst));
    pst.srcEnt = (Ent)ENTSCTP;

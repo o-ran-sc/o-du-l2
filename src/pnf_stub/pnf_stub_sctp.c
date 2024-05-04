@@ -192,6 +192,9 @@ uint8_t pnfP5SctpStartReq()
       }
    }
 
+   /*Since Socket is UP and Client(VNF) has responded with CONNECT thus
+    * initating PNF_READY_IND as part of PNF INITIALIZATION msg*/
+   ret = sendReadyInd();
    if(ret == ROK)
    {
       if(pnfP5SctpSockPoll() != ROK)
@@ -390,7 +393,12 @@ uint8_t pnfP5ProcessPolling(PnfP5SctpSockPollParams *pollParams, PnfP5SctpAssocC
          else if(assocCb->connUp)
          {  
              /*TODO: Add the Handler of PNF P5 msgs*/
-            //E2APMsgHdlr(&assocCb->duId, pollParams->mBuf);
+            if(p5MsgHandlerAtPnf(pollParams->mBuf) != ROK)
+            {
+               DU_LOG("\nERROR  --> NFAPI_PNF: Failed to process SCTP msg received from VNF");
+               ODU_PUT_MSG_BUF(pollParams->mBuf);
+               return RFAILED;
+            }
             ODU_PUT_MSG_BUF(pollParams->mBuf);
          }
          else
