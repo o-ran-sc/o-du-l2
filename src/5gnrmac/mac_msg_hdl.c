@@ -515,7 +515,7 @@ uint8_t MacProcCellStart(Pst *pst, CellStartInfo  *cellStart)
 {
    DU_LOG("\nINFO  -->  MAC : Handling cell start request");
    gConfigInfo.gSlotCount = 0;
-   sendToLowerMac(START_REQUEST, 0, cellStart);
+   sendEventToLowerMacFsm(START_REQUEST, 0, cellStart);
 
    MAC_FREE_SHRABL_BUF(pst->region, pst->pool, cellStart, \
 	 sizeof(CellStartInfo));

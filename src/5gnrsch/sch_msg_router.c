@@ -180,7 +180,7 @@ void callFlowSchMsgRouter(Pst *pst)
             strcpy(message,"EVENT_DL_CQI_TO_SCH");
             break;
          }
-      case EVENT_PHR_IND_TO_SCH
+      case EVENT_PHR_IND_TO_SCH:
          {
             strcpy(message,"EVENT_PHR_IND_TO_SCH");
          }

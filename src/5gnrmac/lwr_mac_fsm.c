@@ -1887,7 +1887,7 @@ uint8_t lwr_mac_procParamRspEvt(void *msg)
 	       }
 	    }
 	    MAC_FREE(cellParam, sizeof(ClCellParam));
-	    sendToLowerMac(FAPI_CONFIG_REQUEST, 0, (void *)NULL);
+	    sendEventToLowerMacFsm(FAPI_CONFIG_REQUEST, 0, (void *)NULL);
 	    return ROK;
 	 }
 	 else
@@ -4921,7 +4921,7 @@ lwrMacFsmHdlr fapiEvtHdlr[MAX_STATE][MAX_EVENT] =
  *
  * @details
  *
- *    Function : sendToLowerMac
+ *    Function : sendEventToLowerMacFsm
  *
  *    Functionality:
  *         -Sends message to LowerMac
@@ -4933,7 +4933,7 @@ lwrMacFsmHdlr fapiEvtHdlr[MAX_STATE][MAX_EVENT] =
  * @return void
  *
  ******************************************************************/
-void sendToLowerMac(uint16_t msgType, uint32_t msgLen, void *msg)
+void sendEventToLowerMacFsm(uint16_t msgType, uint32_t msgLen, void *msg)
 {
    lwrMacCb.event = msgType;
    fapiEvtHdlr[lwrMacCb.phyState][lwrMacCb.event](msg);

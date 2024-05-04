@@ -570,18 +570,18 @@ void procPhyMessages(uint16_t msgType, uint32_t msgSize, void *msg)
             DU_LOG("\nDEBUG  -->  LWR_MAC: Received FAPI_VENDOR_EXT_UL_IQ_SAMPLES");
             //send config req
             uint16_t cellId = 1;
-            sendToLowerMac(CONFIG_REQUEST, 0, (void *)&cellId);
+            sendEventToLowerMacFsm(CONFIG_REQUEST, 0, (void *)&cellId);
             break;
          } 
 #endif
       case FAPI_PARAM_RESPONSE:
 	 {
-            sendToLowerMac(PARAM_RESPONSE, msgSize, msg);
+            sendEventToLowerMacFsm(PARAM_RESPONSE, msgSize, msg);
 	    break;
 	 }
       case FAPI_CONFIG_RESPONSE:
 	 {
-	    sendToLowerMac(CONFIG_RESPONSE, msgSize, msg);
+	    sendEventToLowerMacFsm(CONFIG_RESPONSE, msgSize, msg);
 	    break;
 	 }
       case FAPI_SLOT_INDICATION:

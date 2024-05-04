@@ -67,7 +67,7 @@ uint8_t lwr_mac_procParamRspEvt(void *msg);
 uint8_t lwr_mac_procConfigReqEvt(void *msg);
 uint8_t lwr_mac_procConfigRspEvt(void *msg);
 uint8_t lwr_mac_procStartReqEvt(void *msg);
-void sendToLowerMac(uint16_t, uint32_t, void *);
+void sendEventToLowerMacFsm(uint16_t, uint32_t, void *);
 void procPhyMessages(uint16_t msgType, uint32_t msgSize, void *msg);
 uint16_t fillDlTtiReq(SlotTimingInfo currTimingInfo);
 typedef uint8_t (*lwrMacFsmHdlr)(void *);

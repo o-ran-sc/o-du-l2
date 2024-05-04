@@ -937,10 +937,13 @@ S16 rdConQ ARGS((Data data));
 
 S16 SPkS8 ARGS((S8 val,Buffer *mBuf));
 S16 oduUnpackUInt8 ARGS((uint8_t val,Buffer *mBuf));
+S16 oduPackPostUInt8 ARGS((uint8_t val,Buffer *mBuf));
 S16 SPkS16 ARGS((S16 val,Buffer *mBuf));
 S16 oduUnpackUInt16 ARGS((uint16_t val,Buffer *mBuf));
+S16 oduPackPostUInt16 ARGS((uint16_t val,Buffer *mBuf));
 S16 SPkS32 ARGS((S32 val,Buffer *mBuf));
 S16 oduUnpackUInt32 ARGS((uint32_t val,Buffer *mBuf));
+S16 oduPackPostUInt32 ARGS((uint32_t val,Buffer *mBuf));
 /* ssi_x_001.main_49 : added packing of F32 and F64*/
 #ifdef SS_FLOAT
 S16 SPkF32 ARGS((F32 val,Buffer *mBuf));

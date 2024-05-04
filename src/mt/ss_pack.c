@@ -135,6 +135,33 @@ Buffer *mBuf                /* message buffer */
 #endif
    return (ret);
 } /* end of oduUnpackUInt8 */
+
+/*
+*
+*       Fun:   oduPackPostUInt8
+*
+*       Desc:  This function packs an unsigned 8 bit value into a message.
+*
+*       Ret:   ROK      - ok
+*              RFAILED  - failed, general (optional)
+*              ROUTRES  - failed, out of resources (optional)
+*
+*       Notes: None
+*
+*       File:  ss_pack.c
+*
+*/
+S16 oduPackPostUInt8
+(
+uint8_t val,                     /* value */
+Buffer *mBuf                /* message buffer */
+)
+{
+   S16 ret;                 /* return code */
+   ret = SAddPstMsg((Data) val, mBuf);
+   return (ret);
+} /* end of oduPackPostUInt8 */
+
   
 /*
 *
@@ -217,6 +244,37 @@ Buffer *mBuf                /* message buffer */
    return (ret);
 } /* end of oduUnpackUInt16 */
   
+/*
+*
+*       Fun:   oduPackPostUInt16
+*
+*       Desc:  This function packs an unsigned 16 bit value into a message.
+*
+*       Ret:   ROK      - ok
+*              RFAILED  - failed, general (optional)
+*              ROUTRES  - failed, out of resources (optional)
+*
+*       Notes: None
+*
+*       File:  ss_pack.c
+*
+*/
+  
+S16 oduPackPostUInt16
+(
+uint16_t val,                    /* value */
+Buffer *mBuf                /* message buffer */
+)
+{
+   Data pkArray[2];         /* array for packing */
+   S16 ret;                 /* return code */
+
+   pkArray[1] = (Data) GetHiByte(val);
+   pkArray[0] = (Data) GetLoByte(val);
+   ret = SAddPstMsgMult(pkArray, (MsgLen) 2, mBuf);
+   return (ret);
+} /* end of oduPackPostUInt16 */
+
   
 /*
 *
@@ -316,6 +374,42 @@ Buffer *mBuf                /* message buffer */
 #endif
    return (ret);
 } /* end of oduUnpackUInt32 */
+
+/*
+*
+*       Fun:   oduPackPostUInt32
+*
+*       Desc:  This function packs an unsigned 32 bit value into a message.
+*
+*       Ret:   ROK      - ok
+*              RFAILED  - failed, general (optional)
+*              ROUTRES  - failed, out of resources (optional)
+*
+*       Notes: None
+*
+*       File:  ss_pack.c
+*
+*/
+  
+S16 oduPackPostUInt32
+(
+uint32_t val,                    /* value */
+Buffer *mBuf                /* message buffer */
+)
+{
+   uint16_t tmp;                 /* temporary value */
+   Data pkArray[4];         /* packing array */
+   S16 ret;                 /* return code */
+  
+   tmp = (uint16_t) GetHiWord(val);
+   pkArray[3] = (Data) GetHiByte(tmp);
+   pkArray[2] = (Data) GetLoByte(tmp);
+   tmp = (uint16_t) GetLoWord(val);
+   pkArray[1] = (Data) GetHiByte(tmp);
+   pkArray[0] = (Data) GetLoByte(tmp);
+   ret = SAddPstMsgMult(pkArray, (MsgLen) 4, mBuf);
+   return (ret);
+} /* end of oduPackPostUInt32 */
 
 /*ss038.103  1. Added Floating point support*/
 #ifdef SS_FLOAT

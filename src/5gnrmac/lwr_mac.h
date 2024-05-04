@@ -50,6 +50,9 @@ typedef enum{
    CONFIG_REQUEST,
    CONFIG_RESPONSE,
    START_REQUEST,
+#ifdef NFAPI_ENABLED
+   START_RESPONSE,
+#endif
    STOP_REQUEST,
    MAX_EVENT
 }EventState;
