@@ -60,6 +60,24 @@
    _pst.intfVer = 0;                                        \
 }
  
+/* Fill Pst structure for sending msg from Lower MAC to DUAPP */
+#define FILL_PST_LWR_MAC_TO_DUAPP(_pst, _event)           \
+{                                                           \
+   _pst.selector  = ODU_SELECTOR_LWLC;                      \
+   _pst.srcEnt    = ENTLWRMAC;                              \
+   _pst.dstEnt    = ENTDUAPP;                                \
+   _pst.dstInst   = 0;                                      \
+   _pst.srcInst   = 0;                                      \
+   _pst.dstProcId = ODU_GET_PROCID();                       \
+   _pst.srcProcId = ODU_GET_PROCID();                       \
+   _pst.region = MAC_MEM_REGION;                            \
+   _pst.pool = MAC_POOL;                                    \
+   _pst.event = _event;                                     \
+   _pst.route = 0;                                          \
+   _pst.prior = 0;                                          \
+   _pst.intfVer = 0;                                        \
+}
+
 void convertFreqDomRsrcMapToIAPIFormat(uint8_t *sourceBitMap, uint8_t *destBitMap);
 /**********************************************************************
          End of file
