@@ -42,6 +42,10 @@
 #include "du_ue_mgr.h"
 #include "du_utils.h"
 
+#ifdef NFAPI_ENABLED
+#include "lwr_mac_sctp_inf.h"
+#endif
+
 uint8_t unpackRlcConfigCfm(RlcConfigCfm func,Pst *pst, Buffer *mBuf);
 uint8_t cmUnpkLkwCntrlCfm(LkwCntrlCfm func,Pst *pst, Buffer *mBuf);
 uint8_t cmUnpkLrgCfgCfm(LrgCfgCfm func,Pst *pst, Buffer *mBuf);
@@ -373,6 +377,26 @@ void callFlowduActvTsk(Pst *pst)
             }
             break;
          }
+      case ENTLWRMAC:
+         {
+            strcpy(sourceTask,"ENTLWRMAC");
+            switch(pst->event)
+            {
+#ifdef NFAPI_ENABLED
+               case EVENT_PNF_DATA:
+                  {
+                     strcpy(message,"EVENT_PNF_DATA");
+                     break;
+                  }
+#endif
+               default:
+                  {
+                     strcpy(message,"Invalid Event");
+                     break;
+                  }
+            }
+            break;
+         }
       default:
          {
             strcpy(sourceTask,"Invalid Source Entity Id");
@@ -680,6 +704,26 @@ uint8_t duActvTsk(Pst *pst, Buffer *mBuf)
                      unpackEgtpTnlMgmtCfm(duHdlEgtpTnlMgmtCfm, mBuf);
                      break;
                   }
+               default:
+                  {
+                     DU_LOG("\nERROR  -->  DU_APP : Invalid event[%d] received at duActvTsk from ENTEGTP", pst->event);
+                     ret = RFAILED;
+                  }
+            }
+            ODU_PUT_MSG_BUF(mBuf);
+            break;
+         }
+      case ENTLWRMAC:
+         {
+            switch(pst->event)
+            {
+#ifdef NFAPI_ENABLED
+               case EVENT_PNF_DATA:
+                  {
+                     sctpSend(mBuf, PNF_P5_INTERFACE);
+                     break;
+                  }
+#endif
                default:
                   {
                      DU_LOG("\nERROR  -->  DU_APP : Invalid event[%d] received at duActvTsk from ENTEGTP", pst->event);

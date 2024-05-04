@@ -47,5 +47,7 @@ typedef struct pnfGlobalCb
 }PnfGlobalCb;
 
 extern PnfGlobalCb pnfCb;
+void sendReadyInd();
+void p5MsgHandlerAtPnf(Buffer *mBuf);
 
 #endif

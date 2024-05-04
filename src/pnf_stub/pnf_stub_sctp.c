@@ -192,6 +192,9 @@ uint8_t pnfP5SctpStartReq()
       }
    }
 
+   /*Since Socket is UP and Client(VNF) has responded with CONNECT thus
+    * initating PNF_READY_IND as part of PNF INITIALIZATION msg*/
+   sendReadyInd();
    if(ret == ROK)
    {
       if(pnfP5SctpSockPoll() != ROK)
@@ -390,7 +393,7 @@ uint8_t pnfP5ProcessPolling(PnfP5SctpSockPollParams *pollParams, PnfP5SctpAssocC
          else if(assocCb->connUp)
          {  
              /*TODO: Add the Handler of PNF P5 msgs*/
-            //E2APMsgHdlr(&assocCb->duId, pollParams->mBuf);
+            p5MsgHandlerAtPnf(pollParams->mBuf);
             ODU_PUT_MSG_BUF(pollParams->mBuf);
          }
          else

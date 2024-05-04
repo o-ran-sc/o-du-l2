@@ -34,6 +34,7 @@
 #include <unistd.h>
 #include "pnf_stub_sctp.h"
 #include "pnf_stub.h"
+#include "nfapi_interface.h"
 
 PnfGlobalCb pnfCb;
 
@@ -159,5 +160,176 @@ uint8_t tst()
    return ROK;
 }
 
+/*******************************************************************
+ *
+ * @Function Name: nFapiFillP5Hdr
+ *
+ *
+ * @Functionality: 
+ *    It Fills NFAPI P5 Msg Header[as per Table 2-3 " nFapi Header"]
+ *
+ *
+ * @params 
+ *         [OUT]: Msg Buffer to send in SCTP P5 Interface
+ *
+ * ****************************************************************/
+void nfapiFillP5Hdr(Buffer *mBuf)
+{
+    CMCHKPK(oduPackPostUInt16, 0, mBuf);
+    CMCHKPK(oduPackPostUInt8, 0, mBuf);
+    CMCHKPK(oduPackPostUInt8, 0, mBuf);
+    CMCHKPK(oduPackPostUInt32, 0, mBuf);
 
+}
 
+/*********************************************************************************
+ *
+ * @Function Name: nFapiFillMsgHdr
+ *
+ *
+ * @Functionality: 
+ *    It Fills Message Header[as per Table 2-4 " nFapi Msg Header"]
+ *
+ *
+ * @params 
+ *         [IN]: Phy_id, msgId, msgLen
+ *         [OUT]: Msg Buffer to send in SCTP P5 Interface
+ *
+ * *******************************************************************************/
+
+void nfapiFillMsgHdr(Buffer *mBuf, uint8_t phyId, uint16_t msgId, uint32_t msgLen)
+{
+    CMCHKPK(oduPackPostUInt8, 1, mBuf);
+    CMCHKPK(oduPackPostUInt8, phyId, mBuf);
+    CMCHKPK(oduPackPostUInt16, msgId, mBuf);
+    CMCHKPK(oduPackPostUInt32, msgLen, mBuf);
+    
+}
+
+/*********************************************************************************
+ *
+ * @Function Name: nFapiExtractP5Hdr
+ *
+ *
+ * @Functionality: 
+ *    It extracts NFAPI P5 Message Header[as per Table 2-5 "P5 nFapi Header"]
+ *
+ *
+ * @params 
+ *         [IN]: Msg Buffer received in SCTP P5 Interface
+ *         [OUT]: nFapi_p5_hdr *p5Hdr
+ *
+ * *******************************************************************************/
+uint8_t nFapiExtractP5Hdr(nFapi_p5_hdr *p5Hdr, Buffer *mBuf)
+{
+   CMCHKPK(oduPackUInt16, &(p5Hdr->seg_len), mBuf);
+   CMCHKPK(oduPackUInt8, &(p5Hdr->more_segNum), mBuf);
+   CMCHKPK(oduPackUInt8, &(p5Hdr->seq_num), mBuf);
+   CMCHKPK(oduPackUInt32, &(p5Hdr->timeStamp), mBuf);
+   DU_LOG("\nINFo   --> NFAPI_PNF: seqLen:%d, moreSegNum:%d, seqNum:%d, timeStamp:%d",
+        p5Hdr->seg_len,p5Hdr->more_segNum,p5Hdr->seq_num,p5Hdr->timeStamp);
+   return ROK;
+}
+
+/*********************************************************************************
+ *
+ * @Function Name: nFapiExtractMsgHdr
+ *
+ *
+ * @Functionality: 
+ *    It extracts Message Header[as per Table 2-4 "P5 nFapi Msg Header"]
+ *
+ *
+ * @params 
+ *         [IN]: Msg Buffer received in SCTP P5 Interface
+ *         [OUT]: nFapi_msg_header *msgHdr
+ *
+ * *******************************************************************************/
+uint8_t nFapiExtractMsgHdr(nFapi_msg_header *msgHdr, Buffer *mBuf)
+{
+
+    CMCHKPK(oduPackUInt8, &(msgHdr->sRU_termination_type), mBuf);
+    CMCHKPK(oduPackUInt8, &(msgHdr->phy_id), mBuf);
+    CMCHKPK(oduPackUInt16, &(msgHdr->msg_id), mBuf);
+    CMCHKPK(oduPackUInt32, &(msgHdr->length), mBuf);
+
+    DU_LOG("\nINFO  -->  NFAPI_PNF: RUType:%d, phy_id:%d, msgId:%d, len:%d",\
+            msgHdr->sRU_termination_type,msgHdr->phy_id,msgHdr->msg_id,msgHdr->length );
+    return ROK;
+}
+
+/*********************************************************************************
+ *
+ * @Function Name: sendPnfReadyInd
+ *
+ *
+ * @Functionality: 
+ *    It Build And Sends the PNF_READY_IND
+ *
+ *
+ * *******************************************************************************/
+void sendReadyInd()
+{
+   Buffer *mBuf = NULLP;
+
+   if (ODU_GET_MSG_BUF(PNF_APP_MEM_REG, PNF_POOL, &mBuf) != ROK)
+   {
+      DU_LOG("\nERROR  --> NFAPI_PNF : Memory allocation failed in pnf_readyInd");
+      return;
+   }
+   nfapiFillP5Hdr(mBuf);
+   nfapiFillMsgHdr(mBuf, 0, TAG_NFAPI_PNF_READY_IND, 0);
+   CMCHKPK(oduPackPostUInt32, 123, mBuf); //version
+   pnfP5SctpSend(mBuf);
+   return;
+}
+
+void buildAndSendPnfParamResp()
+{
+   Buffer *mBuf = NULLP;
+
+   if (ODU_GET_MSG_BUF(PNF_APP_MEM_REG, PNF_POOL, &mBuf) != ROK)
+   {
+      DU_LOG("\nERROR  --> NFAPI_PNF : Memory allocation failed in pnf_readyInd");
+      return;
+   }
+   nfapiFillP5Hdr(mBuf);
+   nfapiFillMsgHdr(mBuf, 0, TAG_NFAPI_PNF_PARAM_RESP, 0);
+   CMCHKPK(oduPackPostUInt8, 0, mBuf); //errorCode
+   pnfP5SctpSend(mBuf);
+   return;
+}
+
+/*********************************************************************************
+ *
+ * @Function Name: p5MsgHandlerAtPnf
+ *
+ *
+ * @Functionality: 
+ *    Handles the P5 MEssages at PNF SIM
+ *
+ * @Params [IN]: Message Buffer received at SCTP NFAPI P5 Interface
+ *
+ * *******************************************************************************/
+void p5MsgHandlerAtPnf(Buffer *mBuf)
+{
+   nFapi_p5_hdr p5Hdr;
+   nFapi_msg_header msgHdr;
+
+   nFapiExtractP5Hdr(&p5Hdr, mBuf);
+   nFapiExtractMsgHdr(&msgHdr, mBuf);
+
+   switch(msgHdr.msg_id)
+   {
+      case TAG_NFAPI_PNF_PARAM_REQ:
+      {
+         DU_LOG("\nINFO   --> NFAPI_PNF: PNF_PARAM_REQ recevied.");
+         buildAndSendPnfParamResp();
+         break;
+      }
+      default:
+      {
+         DU_LOG("\nERROR  --> NFAPI_PNF: Wrong MSGID of NFAPI P5 Message:%d",msgHdr.msg_id);
+      }
+   }
+}
