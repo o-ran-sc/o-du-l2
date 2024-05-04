@@ -68,6 +68,10 @@
 #include "lwr_mac_fsm.h"
 #include "lwr_mac_phy.h"
 
+#ifdef NFAPI_ENABLED
+#include "nfapi_vnf_fsm.h"
+#endif
+
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */
@@ -171,6 +175,11 @@ Reason reason          /* reason */
 
    /* Initialize lower mac */
    lwrMacLayerInit(region, 0);
+
+#ifdef NFAPI_ENABLED
+   /*Initialize VNF*/
+   nFapiVnfInit();
+#endif
 
    return ROK;
 

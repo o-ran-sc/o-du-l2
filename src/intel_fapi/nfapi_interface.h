@@ -83,12 +83,6 @@
 /*As per Table 3-19*/
 #define MAX_NUM_TLV_IN_CONFIG_REQ          9
 
-typedef enum {
-   PNF_STATE_IDLE = 0,
-   PNF_STATE_CONFIGURED,
-   PNF_STATE_RUNNING
-}nFapi_pnf_state;
-
 /*Table 3-4 and Table 3-7*/
 typedef enum {
    NFAPI_MSG_OK = 0,

@@ -31,6 +31,9 @@
 #endif
 #ifdef NFAPI_ENABLED
 #include "lwr_mac_sctp_inf.h"
+#include "nfapi_interface.h"
+#include "nfapi_common.h"
+#include "nfapi_vnf_fsm.h"
 #endif
 
 /**************************************************************************
@@ -259,7 +262,27 @@ uint8_t lwrMacActvTsk(Pst *pst, Buffer *mBuf)
 #ifdef NFAPI_ENABLED
              case EVENT_PNF_DATA:
                {
+                   nFapi_p5_hdr     p5Hdr;
+                   nFapi_msg_header msgHdr;
+                   NfapiPnfEvent msgType = 0;
+
+                   nFapiExtractP5Hdr(&p5Hdr, mBuf);
+                   nFapiExtractMsgHdr(&msgHdr, mBuf);
                    
+                   if(msgHdr.sRU_termination_type != NFAPI_P5_P7_SRU_TYPE)
+                   {
+                      DU_LOG("\nERROR  --> NFAPI_VNF: Incorrect SRU Termination Type:%d",\
+                               msgHdr.sRU_termination_type);
+                      return RFAILED;
+                   }
+                   msgType = convertNfapiP5TagValToMsgId(msgHdr.msg_id);
+                   if(msgType == PNF_MAX_EVENT)
+                   {
+                      DU_LOG("\nERROR  --> NFAPI_VNF: Incorrect NFAPI MsgID received:%d",\
+                               msgHdr.msg_id);
+                      return RFAILED;
+                   }
+                   sendEventToNfapiVnfFsm(msgType, &p5Hdr, &msgHdr, mBuf);
                    break;
                }
 #endif
