@@ -39,8 +39,8 @@
  ******************************************************************/
 uint8_t packEgtpCfmStatus(CmStatus cfm, Buffer *mBuf)
 {
-   oduUnpackUInt16(cfm.status, mBuf);
-   oduUnpackUInt16(cfm.reason, mBuf);
+   oduPackUInt16(cfm.status, mBuf);
+   oduPackUInt16(cfm.reason, mBuf);
    
    return ROK;
 }
@@ -65,8 +65,8 @@ uint8_t packEgtpCfmStatus(CmStatus cfm, Buffer *mBuf)
 
 uint8_t unpackEgtpCfmStatus(CmStatus *cfm, Buffer *mBuf)
 {
-   oduPackUInt16(&(cfm->reason), mBuf);
-   oduPackUInt16(&(cfm->status), mBuf);
+   oduUnpackUInt16(&(cfm->reason), mBuf);
+   oduUnpackUInt16(&(cfm->status), mBuf);
 
    return ROK;
 }
@@ -99,20 +99,20 @@ uint8_t packEgtpCfgReq(Pst *pst, EgtpConfig egtpCfg)
    }
    if(egtpCfg.localIp.ipV4Pres)
    {
-      oduUnpackUInt32(egtpCfg.localIp.ipV4Addr, mBuf);
+      oduPackUInt32(egtpCfg.localIp.ipV4Addr, mBuf);
    }
    oduPackBool(egtpCfg.localIp.ipV4Pres, mBuf);
-   oduUnpackUInt16(egtpCfg.localPort, mBuf);
+   oduPackUInt16(egtpCfg.localPort, mBuf);
 
    if(egtpCfg.destIp.ipV4Pres)
    {
-      oduUnpackUInt32(egtpCfg.destIp.ipV4Addr, mBuf);
+      oduPackUInt32(egtpCfg.destIp.ipV4Addr, mBuf);
    }
    oduPackBool(egtpCfg.destIp.ipV4Pres, mBuf);
-   oduUnpackUInt16(egtpCfg.destPort, mBuf);
+   oduPackUInt16(egtpCfg.destPort, mBuf);
 
-   oduUnpackUInt32(egtpCfg.minTunnelId, mBuf);
-   oduUnpackUInt32(egtpCfg.maxTunnelId, mBuf);
+   oduPackUInt32(egtpCfg.minTunnelId, mBuf);
+   oduPackUInt32(egtpCfg.maxTunnelId, mBuf);
 
    ODU_POST_TASK(pst, mBuf);
 
@@ -143,21 +143,21 @@ uint8_t unpackEgtpCfgReq(EgtpCfgReq func, Pst *pst, Buffer *mBuf)
 
    memset(&egtpCfg, 0, sizeof(EgtpConfig));
 
-   oduPackUInt32(&(egtpCfg.maxTunnelId), mBuf);
-   oduPackUInt32(&(egtpCfg.minTunnelId), mBuf);
+   oduUnpackUInt32(&(egtpCfg.maxTunnelId), mBuf);
+   oduUnpackUInt32(&(egtpCfg.minTunnelId), mBuf);
   
-   oduPackUInt16(&(egtpCfg.destPort), mBuf);
+   oduUnpackUInt16(&(egtpCfg.destPort), mBuf);
    oduUnpackBool(&(egtpCfg.destIp.ipV4Pres), mBuf);
    if(egtpCfg.destIp.ipV4Pres)
    {  
-      oduPackUInt32(&(egtpCfg.destIp.ipV4Addr), mBuf);
+      oduUnpackUInt32(&(egtpCfg.destIp.ipV4Addr), mBuf);
    }
 
-   oduPackUInt16(&(egtpCfg.localPort), mBuf);
+   oduUnpackUInt16(&(egtpCfg.localPort), mBuf);
    oduUnpackBool(&(egtpCfg.localIp.ipV4Pres), mBuf);
    if(egtpCfg.localIp.ipV4Pres)
    {
-      oduPackUInt32(&(egtpCfg.localIp.ipV4Addr), mBuf);
+      oduUnpackUInt32(&(egtpCfg.localIp.ipV4Addr), mBuf);
    }
    
    ODU_PUT_MSG_BUF(mBuf);
@@ -368,9 +368,9 @@ uint8_t packEgtpTnlMgmtReq(Pst *pst, EgtpTnlEvt tnlEvt)
       return RFAILED;
    }
 
-   oduUnpackUInt8(tnlEvt.action, mBuf);
-   oduUnpackUInt32(tnlEvt.lclTeid, mBuf);
-   oduUnpackUInt32(tnlEvt.remTeid, mBuf);
+   oduPackUInt8(tnlEvt.action, mBuf);
+   oduPackUInt32(tnlEvt.lclTeid, mBuf);
+   oduPackUInt32(tnlEvt.remTeid, mBuf);
 
    ODU_POST_TASK(pst, mBuf);
    return ROK;
@@ -401,9 +401,9 @@ uint8_t unpackEgtpTnlMgmtReq(EgtpTnlMgmtReq func, Pst *pst, Buffer *mBuf)
 
    memset(&tnlEvt, 0, sizeof(EgtpTnlEvt));
 
-   oduPackUInt32(&(tnlEvt.remTeid), mBuf);
-   oduPackUInt32(&(tnlEvt.lclTeid), mBuf);
-   oduPackUInt8(&(tnlEvt.action), mBuf);
+   oduUnpackUInt32(&(tnlEvt.remTeid), mBuf);
+   oduUnpackUInt32(&(tnlEvt.lclTeid), mBuf);
+   oduUnpackUInt8(&(tnlEvt.action), mBuf);
 
    return ((* func)(pst, tnlEvt));
 
@@ -438,9 +438,9 @@ uint8_t packEgtpTnlMgmtCfm(Pst *pst, EgtpTnlEvt tnlEvt)
       return RFAILED;
    }
     
-   oduUnpackUInt8(tnlEvt.action, mBuf);
-   oduUnpackUInt32(tnlEvt.lclTeid, mBuf);
-   oduUnpackUInt32(tnlEvt.remTeid, mBuf);
+   oduPackUInt8(tnlEvt.action, mBuf);
+   oduPackUInt32(tnlEvt.lclTeid, mBuf);
+   oduPackUInt32(tnlEvt.remTeid, mBuf);
    
    packEgtpCfmStatus(tnlEvt.cfmStatus, mBuf);
     
@@ -474,9 +474,9 @@ uint8_t unpackEgtpTnlMgmtCfm(EgtpTnlMgmtCfm func, Buffer *mBuf)
    memset(&tnlEvt, 0, sizeof(EgtpTnlEvt));
 
    unpackEgtpCfmStatus(&(tnlEvt.cfmStatus), mBuf); 
-   oduPackUInt32(&(tnlEvt.remTeid), mBuf);
-   oduPackUInt32(&(tnlEvt.lclTeid), mBuf);
-   oduPackUInt8(&(tnlEvt.action), mBuf);
+   oduUnpackUInt32(&(tnlEvt.remTeid), mBuf);
+   oduUnpackUInt32(&(tnlEvt.lclTeid), mBuf);
+   oduUnpackUInt8(&(tnlEvt.action), mBuf);
  
    return ((* func)(tnlEvt));
  

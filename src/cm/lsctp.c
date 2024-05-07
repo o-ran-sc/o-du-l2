@@ -49,10 +49,10 @@ uint8_t cmPkSctpNtfy(Pst *pst, CmInetSctpNotification *ntfy)
 
    if(ntfy->header.nType == CM_INET_SCTP_ASSOC_CHANGE)
    {
-      oduUnpackUInt16(ntfy->u.assocChange.state, mBuf);
-      oduUnpackUInt32(ntfy->u.assocChange.assocId, mBuf);
+      oduPackUInt16(ntfy->u.assocChange.state, mBuf);
+      oduPackUInt32(ntfy->u.assocChange.assocId, mBuf);
    }
-   oduUnpackUInt16(ntfy->header.nType, mBuf);
+   oduPackUInt16(ntfy->header.nType, mBuf);
 
    if (ODU_POST_TASK(pst, mBuf) != ROK)
    {
@@ -85,11 +85,11 @@ uint8_t cmUnpkSctpNtfy(SctpNtfy func, Pst *pst, Buffer *mBuf)
    CmInetSctpNotification ntfy;
    memset(&ntfy, 0, sizeof(CmInetSctpNotification));
 
-   oduPackUInt16(&(ntfy.header.nType), mBuf);
+   oduUnpackUInt16(&(ntfy.header.nType), mBuf);
    if(ntfy.header.nType == CM_INET_SCTP_ASSOC_CHANGE)
    {
-      oduPackUInt32(&(ntfy.u.assocChange.assocId), mBuf);
-      oduPackUInt16(&(ntfy.u.assocChange.state), mBuf);
+      oduUnpackUInt32(&(ntfy.u.assocChange.assocId), mBuf);
+      oduUnpackUInt16(&(ntfy.u.assocChange.state), mBuf);
    }
 
    return ((*func)(mBuf, &ntfy));

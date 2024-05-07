@@ -94,7 +94,7 @@ S16 cmPkLteRlcId(CmLteRlcId *param,Buffer *mBuf)
 
    CMCHKPK(cmPkLteCellId, param->cellId, mBuf);
    CMCHKPK(cmPkLteRnti, param->ueId, mBuf);
-   CMCHKPK(oduUnpackUInt8, param->rbType, mBuf);
+   CMCHKPK(oduPackUInt8, param->rbType, mBuf);
    CMCHKPK(cmPkLteRbId, param->rbId, mBuf);
    return ROK;
 }
@@ -121,7 +121,7 @@ S16 cmUnpkLteRlcId(CmLteRlcId *param,Buffer *mBuf)
 
 
    CMCHKUNPK(cmUnpkLteRbId, &param->rbId, mBuf);
-   CMCHKUNPK(oduPackUInt8, &param->rbType, mBuf);
+   CMCHKUNPK(oduUnpackUInt8, &param->rbType, mBuf);
    CMCHKUNPK(cmUnpkLteRnti, &param->ueId, mBuf);
    CMCHKUNPK(cmUnpkLteCellId, &param->cellId, mBuf);
    return ROK;
@@ -148,9 +148,9 @@ S16 cmPkLteTimingInfo(CmLteTimingInfo *param,Buffer *mBuf)
 {
 
 
-   CMCHKPK(oduUnpackUInt16, param->slot, mBuf);
-   CMCHKPK(oduUnpackUInt16, param->sfn, mBuf);
-   //CMCHKPK(oduUnpackUInt16, param->hSfn, mBuf);
+   CMCHKPK(oduPackUInt16, param->slot, mBuf);
+   CMCHKPK(oduPackUInt16, param->sfn, mBuf);
+   //CMCHKPK(oduPackUInt16, param->hSfn, mBuf);
    return ROK;
 }
 
@@ -175,9 +175,9 @@ S16 cmUnpkLteTimingInfo(CmLteTimingInfo *param,Buffer *mBuf)
 {
 
 
-   //CMCHKUNPK(oduPackUInt16, &param->hSfn, mBuf);
-   CMCHKUNPK(oduPackUInt16, &param->sfn, mBuf);
-   CMCHKUNPK(oduPackUInt16,&param->slot, mBuf);
+   //CMCHKUNPK(oduUnpackUInt16, &param->hSfn, mBuf);
+   CMCHKUNPK(oduUnpackUInt16, &param->sfn, mBuf);
+   CMCHKUNPK(oduUnpackUInt16,&param->slot, mBuf);
    return ROK;
 }
 
@@ -202,7 +202,7 @@ S16 cmPkLtePdcpId(CmLtePdcpId *param,Buffer *mBuf)
 {
 
 
-   CMCHKPK(oduUnpackUInt8, param->rbType, mBuf);
+   CMCHKPK(oduPackUInt8, param->rbType, mBuf);
    CMCHKPK(cmPkLteRbId, param->rbId, mBuf);
    CMCHKPK(cmPkLteRnti, param->ueId, mBuf);
    CMCHKPK(cmPkLteCellId, param->cellId, mBuf);
@@ -233,7 +233,7 @@ S16 cmUnpkLtePdcpId(CmLtePdcpId *param,Buffer *mBuf)
    CMCHKUNPK(cmUnpkLteCellId, &param->cellId, mBuf);
    CMCHKUNPK(cmUnpkLteRnti, &param->ueId, mBuf);
    CMCHKUNPK(cmUnpkLteRbId, &param->rbId, mBuf);
-   CMCHKUNPK(oduPackUInt8, &param->rbType, mBuf);
+   CMCHKUNPK(oduUnpackUInt8, &param->rbType, mBuf);
    return ROK;
 }
 #ifdef LTE_L2_MEAS 
