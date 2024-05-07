@@ -18,6 +18,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1aea3dcb_9523162b",
+        "filename": "src/5gnrmac/nfapi_vnf_fsm.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-05-07T06:35:15Z",
+      "side": 1,
+      "message": "since this is a event handler and status of this processing doesn\u0027t affect its parent function thus no need of return",
+      "parentUuid": "78f12f11_5cd85e7f",
+      "revId": "a2bd133c1e9a6b0d83151e7f059e8777fa6a08bd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a024e3b4_6230d57e",
@@ -31,6 +49,24 @@
       "writtenOn": "2024-05-06T11:55:59Z",
       "side": 1,
       "message": "nothing is returning in case of faliure.",
+      "revId": "a2bd133c1e9a6b0d83151e7f059e8777fa6a08bd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b42febc9_8b6b36f7",
+        "filename": "src/5gnrmac/nfapi_vnf_fsm.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 271,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-05-07T06:35:15Z",
+      "side": 1,
+      "message": "As discussed and also quoted in above comment",
+      "parentUuid": "a024e3b4_6230d57e",
       "revId": "a2bd133c1e9a6b0d83151e7f059e8777fa6a08bd",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -58,6 +94,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "31a96309_61730382",
+        "filename": "src/pnf_stub/pnf_stub.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 277,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-05-07T06:35:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "66b8e9ea_227254ee",
+      "range": {
+        "startLine": 277,
+        "startChar": 21,
+        "endLine": 277,
+        "endChar": 23
+      },
+      "revId": "a2bd133c1e9a6b0d83151e7f059e8777fa6a08bd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "54a15eaa_22586bf1",
@@ -71,6 +131,24 @@
       "writtenOn": "2024-05-06T11:55:59Z",
       "side": 1,
       "message": "change data type",
+      "revId": "a2bd133c1e9a6b0d83151e7f059e8777fa6a08bd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3f12b8eb_d5659e82",
+        "filename": "src/pnf_stub/pnf_stub.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 287,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-05-07T06:35:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "54a15eaa_22586bf1",
       "revId": "a2bd133c1e9a6b0d83151e7f059e8777fa6a08bd",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -98,6 +176,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1f778cd5_cccc8283",
+        "filename": "src/pnf_stub/pnf_stub.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 294,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-05-07T06:35:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f4a3bdfd_b177e6b7",
+      "range": {
+        "startLine": 294,
+        "startChar": 12,
+        "endLine": 294,
+        "endChar": 13
+      },
+      "revId": "a2bd133c1e9a6b0d83151e7f059e8777fa6a08bd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "587cd920_7809ce82",
@@ -111,6 +213,24 @@
       "writtenOn": "2024-05-06T11:55:59Z",
       "side": 1,
       "message": "change data type",
+      "revId": "a2bd133c1e9a6b0d83151e7f059e8777fa6a08bd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d62b5f8a_f976202f",
+        "filename": "src/pnf_stub/pnf_stub.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 314,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-05-07T06:35:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "587cd920_7809ce82",
       "revId": "a2bd133c1e9a6b0d83151e7f059e8777fa6a08bd",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -138,6 +258,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ed34f575_dadeb696",
+        "filename": "src/pnf_stub/pnf_stub.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 327,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-05-07T06:35:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0a77fe92_911585e3",
+      "range": {
+        "startLine": 327,
+        "startChar": 9,
+        "endLine": 327,
+        "endChar": 33
+      },
+      "revId": "a2bd133c1e9a6b0d83151e7f059e8777fa6a08bd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a951953e_b21d8b02",
@@ -155,6 +299,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "04f18a2c_252b11c8",
+        "filename": "src/pnf_stub/pnf_stub_sctp.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 197,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-05-07T06:35:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a951953e_b21d8b02",
+      "revId": "a2bd133c1e9a6b0d83151e7f059e8777fa6a08bd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b3114c40_0f9265f1",
@@ -168,6 +330,24 @@
       "writtenOn": "2024-05-06T11:55:59Z",
       "side": 1,
       "message": "ret \u003d p5MsgHandlerAtPnf(assocCb, \u0026pollParams-\u003entfy);\nif(ret !\u003d ROK)\n{\nDU_LOG(\"\\nERROR  --\u003e  SCTP : Failed to process sctp notify msg\\n\");\nret \u003d RFAILED;\n}",
+      "revId": "a2bd133c1e9a6b0d83151e7f059e8777fa6a08bd",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "83d665b3_234c906d",
+        "filename": "src/pnf_stub/pnf_stub_sctp.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 396,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-05-07T06:35:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b3114c40_0f9265f1",
       "revId": "a2bd133c1e9a6b0d83151e7f059e8777fa6a08bd",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
