@@ -122,7 +122,7 @@ Buffer                   *mBuf      /* message buffer */
 {
 
    CMCHKPK(cmPkCmIpv4NetAddr, pkParam->address, mBuf);
-   CMCHKPK(oduUnpackUInt16, pkParam->port, mBuf);
+   CMCHKPK(oduPackUInt16, pkParam->port, mBuf);
 
    return ROK;
 } /* cmPkCmIpv4TptAddr */
@@ -152,7 +152,7 @@ Buffer         *mBuf         /* message buffer */
 
    for(num = 0; num < CM_IPV6ADDR_SIZE; num++)
    {
-      CMCHKPK(oduUnpackUInt8, *(ptr+num), mBuf);
+      CMCHKPK(oduPackUInt8, *(ptr+num), mBuf);
    }
 
    return ROK;
@@ -180,7 +180,7 @@ Buffer         *mBuf         /* message buffer */
 {
 
    CMCHKPK(cmPkCmIpv6NetAddr, &pkParam->ipv6NetAddr, mBuf);
-   CMCHKPK(oduUnpackUInt16, pkParam->port, mBuf);
+   CMCHKPK(oduPackUInt16, pkParam->port, mBuf);
 
    return ROK;
 }   /* cmPkCmIpv6TptAddr */
@@ -222,7 +222,7 @@ Buffer         *mBuf          /* message buffer */
    }
 
    /* Pack the total number of addresses present in the table */
-   CMCHKPK(oduUnpackUInt16, pkParam->count, mBuf);
+   CMCHKPK(oduPackUInt16, pkParam->count, mBuf);
 
    return ROK;
 
@@ -264,7 +264,7 @@ Buffer     *mBuf         /* message buffer */
       default:
          return RFAILED;
    }
-   CMCHKPK(oduUnpackUInt8, pkParam->type, mBuf);
+   CMCHKPK(oduPackUInt8, pkParam->type, mBuf);
 
    return ROK;
 }   /* cmPkCmNetAddr */
@@ -306,7 +306,7 @@ Buffer     *mBuf         /* message buffer */
       default:
          return RFAILED;
    }
-   CMCHKPK(oduUnpackUInt8, pkParam->type, mBuf);
+   CMCHKPK(oduPackUInt8, pkParam->type, mBuf);
 
    return ROK;
 }   /* cmPkCmTptAddr */
@@ -339,10 +339,10 @@ Buffer         *mBuf       /* message buffer */
       /* pack the actual interface address */ 
       CMCHKPK(cmPkCmNetAddr, &pkParam->localIfAddr, mBuf); 
       /* pack the interface index value */
-      CMCHKPK(oduUnpackUInt32, pkParam->localIf, mBuf);
+      CMCHKPK(oduPackUInt32, pkParam->localIf, mBuf);
    }
    /* pack the boll which indicates if valid local intf is present or not */
-   CMCHKPK(oduUnpackUInt8, pkParam->intfPrsnt, mBuf);
+   CMCHKPK(oduPackUInt8, pkParam->intfPrsnt, mBuf);
    return ROK;
 }   /* cmPkCmTptLocalInf */
 #endif /* LOCAL_INTF */
@@ -370,7 +370,7 @@ Buffer          *mBuf         /* message buffer */
 {
 
    CMCHKPK(cmPkCmIpv6NetAddr, &pkParam->mCastAddr, mBuf);
-   CMCHKPK(oduUnpackUInt32, pkParam->localInf, mBuf);
+   CMCHKPK(oduPackUInt32, pkParam->localInf, mBuf);
 
    return ROK;
 }   /* cmPkCmNetMCastInf6 */
@@ -420,17 +420,17 @@ Buffer     *mBuf         /* message buffer */
          break;
 
       case CM_SOCKOPT_OPT_MCAST6_IF:
-         CMCHKPK(oduUnpackUInt32, pkParam->optVal.infId, mBuf);
+         CMCHKPK(oduPackUInt32, pkParam->optVal.infId, mBuf);
          break;
 
 #endif /* IPV6_SUPPORTED */
 
       default:
-         CMCHKPK(oduUnpackUInt32, pkParam->optVal.value, mBuf);
+         CMCHKPK(oduPackUInt32, pkParam->optVal.value, mBuf);
          break;
    }
-   CMCHKPK(oduUnpackUInt32, pkParam->option, mBuf);
-   CMCHKPK(oduUnpackUInt32, pkParam->level, mBuf);
+   CMCHKPK(oduPackUInt32, pkParam->option, mBuf);
+   CMCHKPK(oduPackUInt32, pkParam->level, mBuf);
 
    return ROK;
 }   /* cmPkCmSockOpts */
@@ -466,8 +466,8 @@ Buffer      *mBuf         /* message buffer */
    {
       CMCHKPK(cmPkCmSockOpts, &pkParam->sockOpts[num], mBuf);
    }
-   CMCHKPK(oduUnpackUInt8, pkParam->numOpts, mBuf);
-   CMCHKPK(oduUnpackUInt8, pkParam->listenQSize, mBuf);
+   CMCHKPK(oduPackUInt8, pkParam->numOpts, mBuf);
+   CMCHKPK(oduPackUInt8, pkParam->listenQSize, mBuf);
 
    return ROK;
 }   /* cmPkCmSockParam */
@@ -504,8 +504,8 @@ Buffer      *mBuf         /* message buffer */
    {
       CMCHKPK(cmPkCmSockOpts, &pkParam->sockOpts[num], mBuf);
    }
-   CMCHKPK(oduUnpackUInt8, pkParam->numOpts, mBuf);
-   CMCHKPK(oduUnpackUInt8, pkParam->listenQSize, mBuf);
+   CMCHKPK(oduPackUInt8, pkParam->numOpts, mBuf);
+   CMCHKPK(oduPackUInt8, pkParam->listenQSize, mBuf);
    CMCHKPK(SPkS16, pkParam->ctxId, mBuf);
 
    return ROK;
@@ -559,7 +559,7 @@ Buffer     *mBuf         /* message buffer */
          return RFAILED;
    }
 
-   CMCHKPK(oduUnpackUInt8, pkParam->type, mBuf);
+   CMCHKPK(oduPackUInt8, pkParam->type, mBuf);
 
    return ROK;
 }   /* cmPkCmTptParam */
@@ -591,7 +591,7 @@ Buffer        *mBuf           /* message buffer */
 )
 {
 
-   CMCHKUNPK(oduPackUInt16, &unpkParam->port, mBuf);
+   CMCHKUNPK(oduUnpackUInt16, &unpkParam->port, mBuf);
    CMCHKUNPK(cmUnpkCmIpv4NetAddr, &unpkParam->address, mBuf);
 
    return ROK;
@@ -625,7 +625,7 @@ Buffer         *mBuf         /* message buffer */
 
    for(num = 0; num < CM_IPV6ADDR_SIZE; num++)
    {
-      CMCHKUNPK(oduPackUInt8, (ptr-num), mBuf);
+      CMCHKUNPK(oduUnpackUInt8, (ptr-num), mBuf);
    }
 
    return ROK;
@@ -652,7 +652,7 @@ Buffer         *mBuf         /* message buffer */
 )
 {
 
-   CMCHKUNPK(oduPackUInt16, &unpkParam->port, mBuf);
+   CMCHKUNPK(oduUnpackUInt16, &unpkParam->port, mBuf);
    CMCHKUNPK(cmUnpkCmIpv6NetAddr, &unpkParam->ipv6NetAddr, mBuf);
 
    return ROK;
@@ -682,7 +682,7 @@ Buffer        *mBuf          /* message buffer */
    CmNetAddr  *netAddr;      /* Network Address */
    
    /* Unpack the count */
-   CMCHKUNPK(oduPackUInt16, &(unpkParam->count), mBuf);
+   CMCHKUNPK(oduUnpackUInt16, &(unpkParam->count), mBuf);
 
    /* Unpack the addresses */
    for (idx = 0; idx < unpkParam->count; idx++)
@@ -718,7 +718,7 @@ Buffer    *mBuf         /* message buffer */
 )
 {
 
-   CMCHKUNPK(oduPackUInt8, &unpkParam->type, mBuf);
+   CMCHKUNPK(oduUnpackUInt8, &unpkParam->type, mBuf);
 
    switch (unpkParam->type)
    {
@@ -761,7 +761,7 @@ Buffer    *mBuf         /* message buffer */
 )
 {
 
-   CMCHKUNPK(oduPackUInt8, &unpkParam->type, mBuf);
+   CMCHKUNPK(oduUnpackUInt8, &unpkParam->type, mBuf);
 
    switch (unpkParam->type)
    {
@@ -806,7 +806,7 @@ Buffer         *mBuf         /* message buffer */
 )
 {
 
-    CMCHKUNPK(oduPackUInt32, &unpkParam->localInf, mBuf);
+    CMCHKUNPK(oduUnpackUInt32, &unpkParam->localInf, mBuf);
     CMCHKUNPK(cmUnpkCmIpv6NetAddr, &unpkParam->mCastAddr, mBuf);
 
    return ROK;
@@ -834,8 +834,8 @@ Buffer     *mBuf         /* message buffer */
 )
 {
 
-   CMCHKUNPK(oduPackUInt32, &unpkParam->level, mBuf);
-   CMCHKUNPK(oduPackUInt32, &unpkParam->option, mBuf);
+   CMCHKUNPK(oduUnpackUInt32, &unpkParam->level, mBuf);
+   CMCHKUNPK(oduUnpackUInt32, &unpkParam->option, mBuf);
 
    switch (unpkParam->option)
    {
@@ -862,12 +862,12 @@ Buffer     *mBuf         /* message buffer */
          break;
 
       case CM_SOCKOPT_OPT_MCAST6_IF:
-         CMCHKUNPK(oduPackUInt32, &unpkParam->optVal.infId, mBuf);
+         CMCHKUNPK(oduUnpackUInt32, &unpkParam->optVal.infId, mBuf);
          break;
 #endif /* IPV6_SUPPORTED */
 
       default:
-         CMCHKUNPK(oduPackUInt32, &unpkParam->optVal.value, mBuf);
+         CMCHKUNPK(oduUnpackUInt32, &unpkParam->optVal.value, mBuf);
          break;
    }
 
@@ -897,8 +897,8 @@ Buffer      *mBuf         /* message buffer */
    uint32_t num;
 
 
-   CMCHKUNPK(oduPackUInt8, &unpkParam->listenQSize, mBuf);
-   CMCHKUNPK(oduPackUInt8, &unpkParam->numOpts, mBuf);
+   CMCHKUNPK(oduUnpackUInt8, &unpkParam->listenQSize, mBuf);
+   CMCHKUNPK(oduUnpackUInt8, &unpkParam->numOpts, mBuf);
 
    if( unpkParam->numOpts > CM_MAX_SOCK_OPTS)
    {
@@ -938,8 +938,8 @@ Buffer      *mBuf         /* message buffer */
 
 
    CMCHKUNPK(SUnpkS16, &unpkParam->ctxId, mBuf);
-   CMCHKUNPK(oduPackUInt8, &unpkParam->listenQSize, mBuf);
-   CMCHKUNPK(oduPackUInt8, &unpkParam->numOpts, mBuf);
+   CMCHKUNPK(oduUnpackUInt8, &unpkParam->listenQSize, mBuf);
+   CMCHKUNPK(oduUnpackUInt8, &unpkParam->numOpts, mBuf);
 
    if( unpkParam->numOpts > CM_MAX_SOCK_OPTS)
    {
@@ -977,7 +977,7 @@ Buffer      *mBuf         /* message buffer */
 )
 {
 
-   CMCHKUNPK(oduPackUInt8, &unpkParam->type, mBuf);
+   CMCHKUNPK(oduUnpackUInt8, &unpkParam->type, mBuf);
 
    switch (unpkParam->type)
    {
@@ -1066,7 +1066,7 @@ Buffer      *mBuf       /* message buffer */
       default:
          return RFAILED;
    }
-   CMCHKPK(oduUnpackUInt8, pkParam->type, mBuf);
+   CMCHKPK(oduPackUInt8, pkParam->type, mBuf);
 
    return ROK;
 }   /* End of cmPkCmIpHdrParm */
@@ -1102,7 +1102,7 @@ Buffer        *mBuf       /* message buffer */
     * to get the local intf index and intf address */   
    if (unpkParam->intfPrsnt == TRUE)
    {   
-      CMCHKUNPK(oduPackUInt32, &unpkParam->localIf, mBuf);
+      CMCHKUNPK(oduUnpackUInt32, &unpkParam->localIf, mBuf);
       CMCHKUNPK(cmUnpkCmNetAddr, &unpkParam->localIfAddr, mBuf); 
    }
    return ROK;
@@ -1178,8 +1178,8 @@ Buffer      *mBuf      /* message buffer */
       CMCHKPK(cmPkCmIpv6NetAddr, &pkParam->ipv6Addrs[idx], mBuf);
    }
    /* pack reserve byte & strict/loose bit map */
-   CMCHKPK(oduUnpackUInt32, pkParam->slMap, mBuf);
-   CMCHKPK(oduUnpackUInt8, pkParam->numAddrs, mBuf);  
+   CMCHKPK(oduPackUInt32, pkParam->slMap, mBuf);
+   CMCHKPK(oduPackUInt8, pkParam->numAddrs, mBuf);  
 
    return ROK;
 } /* end of cmPkCmIpv6RtHdr */
@@ -1210,10 +1210,10 @@ Mem         *memInfo     /* meminfo to allocate for Route hdr */
    S32 retVal; /* temporary return value */
    
    
-   CMCHKUNPK(oduPackUInt8, &unpkParam->numAddrs, mBuf);
+   CMCHKUNPK(oduUnpackUInt8, &unpkParam->numAddrs, mBuf);
    
    /* unpack reserve byte & strict/loose bit map */
-   CMCHKUNPK(oduPackUInt32, &unpkParam->slMap, mBuf);
+   CMCHKUNPK(oduUnpackUInt32, &unpkParam->slMap, mBuf);
    
    retVal = SGetSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,memInfo->region,    
                   memInfo->pool,                     
@@ -1301,7 +1301,7 @@ Buffer            *mBuf      /* message buffer */
    /* pack all HBH options */
    for(numOptions = 0; numOptions<pkParam->numDestOpts; numOptions++)  
       CMCHKPK(cmPkCmIpv6DestOptsHdr, &pkParam->destOpts[numOptions], mBuf);
-   CMCHKPK(oduUnpackUInt8, pkParam->numDestOpts, mBuf);  
+   CMCHKPK(oduPackUInt8, pkParam->numDestOpts, mBuf);  
 
    return ROK;
 } /* end of cmPkCmIpv6DestOptsArr */
@@ -1331,10 +1331,10 @@ Buffer            *mBuf      /* message buffer */
 
    for(optLen = 0; optLen < pkParam->length; optLen++)
    {
-      CMCHKPK(oduUnpackUInt8, pkParam->value[optLen], mBuf);
+      CMCHKPK(oduPackUInt8, pkParam->value[optLen], mBuf);
    }
-   CMCHKPK(oduUnpackUInt8, pkParam->length, mBuf);  
-   CMCHKPK(oduUnpackUInt8, pkParam->type, mBuf);  
+   CMCHKPK(oduPackUInt8, pkParam->length, mBuf);  
+   CMCHKPK(oduPackUInt8, pkParam->type, mBuf);  
 
    return ROK;
 } /* end of cmPkCmIpv6DestOptsHdr */
@@ -1365,8 +1365,8 @@ Mem               *memInfo   /* meminfo to allocate mem for dest opt */
 
   
    /* unpack type, length */
-   CMCHKUNPK(oduPackUInt8, &unpkParam->type, mBuf);  
-   CMCHKUNPK(oduPackUInt8, &unpkParam->length, mBuf);
+   CMCHKUNPK(oduUnpackUInt8, &unpkParam->type, mBuf);  
+   CMCHKUNPK(oduUnpackUInt8, &unpkParam->length, mBuf);
 
    /* allocate static memory to hold the unpacked values */
    retVal = SGetSBufNewForDebug(__FILE__,__FUNCTION__,__LINE__,memInfo->region,                   
@@ -1380,7 +1380,7 @@ Mem               *memInfo   /* meminfo to allocate mem for dest opt */
    /* unpack value fieldof this option */
    for(optLen = 0; optLen<unpkParam->length; optLen++)
    {
-      CMCHKUNPK(oduPackUInt8, &unpkParam->value[optLen], mBuf);  
+      CMCHKUNPK(oduUnpackUInt8, &unpkParam->value[optLen], mBuf);  
    }    
    
    return ROK;
@@ -1411,7 +1411,7 @@ Mem               *memInfo    /* meminfo to allocate mem for dest opts */
    S16 retVal;
    
 
-   CMCHKUNPK(oduPackUInt8, &unpkParam->numDestOpts, mBuf); 
+   CMCHKUNPK(oduUnpackUInt8, &unpkParam->numDestOpts, mBuf); 
    if (unpkParam->numDestOpts)
    {
       /* allocate mem to hold all dest options */
@@ -1461,7 +1461,7 @@ Buffer          *mBuf      /* message buffer */
    for(numOptions = 0; numOptions<pkParam->numHBHOpts; numOptions++)
       CMCHKPK(cmPkCmIpv6HBHHdr, &pkParam->hbhOpts[numOptions], mBuf);
                           
-   CMCHKPK(oduUnpackUInt8, pkParam->numHBHOpts, mBuf);  
+   CMCHKPK(oduPackUInt8, pkParam->numHBHOpts, mBuf);  
 
    return ROK;
 } /* end of cmPkCmIpv6HBHHdrArr */
@@ -1492,12 +1492,12 @@ Buffer       *mBuf      /* message buffer */
    /* pack value field */
    for(optLen = 0; optLen<pkParam->length; optLen++)
    {
-      CMCHKPK(oduUnpackUInt8, pkParam->value[optLen], mBuf);
+      CMCHKPK(oduPackUInt8, pkParam->value[optLen], mBuf);
    }
 
    /* pack type, length fields */
-   CMCHKPK(oduUnpackUInt8, pkParam->length, mBuf);  
-   CMCHKPK(oduUnpackUInt8, pkParam->type, mBuf);  
+   CMCHKPK(oduPackUInt8, pkParam->length, mBuf);  
+   CMCHKPK(oduPackUInt8, pkParam->type, mBuf);  
 
    return ROK;
 } /* end of cmPkCmIpv6HBHHdr */
@@ -1526,8 +1526,8 @@ Mem          *memInfo   /* meminfo to allocate mem for HBH opt */
    S32 retVal;                     /* temporary return value */
    uint8_t optLen;                      /* length of value field */
    
-   CMCHKUNPK(oduPackUInt8, &unpkParam->type, mBuf);   
-   CMCHKUNPK(oduPackUInt8, &unpkParam->length, mBuf);
+   CMCHKUNPK(oduUnpackUInt8, &unpkParam->type, mBuf);   
+   CMCHKUNPK(oduUnpackUInt8, &unpkParam->length, mBuf);
 
    /* allocate static memory to hold the unpacked values */
    if (unpkParam->length)
@@ -1541,7 +1541,7 @@ Mem          *memInfo   /* meminfo to allocate mem for HBH opt */
       }
 
       for(optLen = 0; optLen<unpkParam->length; optLen++)
-         CMCHKUNPK(oduPackUInt8, &unpkParam->value[optLen], mBuf);  
+         CMCHKUNPK(oduUnpackUInt8, &unpkParam->value[optLen], mBuf);  
    } 
       
    return ROK;
@@ -1572,7 +1572,7 @@ Mem             *memInfo     /* meminfo to allocate space for HBH opt */
    S16 retVal;
 
 
-   CMCHKUNPK(oduPackUInt8, &unpkParam->numHBHOpts, mBuf);   
+   CMCHKUNPK(oduUnpackUInt8, &unpkParam->numHBHOpts, mBuf);   
    if (unpkParam->numHBHOpts)
    {
       /*  allocate space for all HBH options */
@@ -1624,7 +1624,7 @@ Buffer                   *mBuf     /* message buffer */
 #endif /* IPV6_OPTS_SUPPORTED */
 {
 
-   CMCHKUNPK(oduPackUInt8, &unpkParam->type, mBuf);
+   CMCHKUNPK(oduUnpackUInt8, &unpkParam->type, mBuf);
 
    switch (unpkParam->type)
    {
@@ -1697,15 +1697,15 @@ Buffer       *mBuf       /* message buffer */
       case CM_ICMPVER4_FILTER:
          for(idx = (pkParam->u.icmpv4Filter.num-1); idx >= 0; idx--)
          {
-            CMCHKPK(oduUnpackUInt32, pkParam->u.icmpv4Filter.icmpError[idx].errCodeMask,
+            CMCHKPK(oduPackUInt32, pkParam->u.icmpv4Filter.icmpError[idx].errCodeMask,
                     mBuf);
-            CMCHKPK(oduUnpackUInt8, pkParam->u.icmpv4Filter.icmpError[idx].errType,
+            CMCHKPK(oduPackUInt8, pkParam->u.icmpv4Filter.icmpError[idx].errType,
                     mBuf);
          }
-         CMCHKPK(oduUnpackUInt8, pkParam->u.icmpv4Filter.num, mBuf);
-         CMCHKPK(oduUnpackUInt8, pkParam->u.icmpv4Filter.protocol, mBuf);
-         CMCHKPK(oduUnpackUInt8, pkParam->u.icmpv4Filter.allMsg, mBuf);
-         CMCHKPK(oduUnpackUInt8, pkParam->u.icmpv4Filter.icmpMsgFlag, mBuf);
+         CMCHKPK(oduPackUInt8, pkParam->u.icmpv4Filter.num, mBuf);
+         CMCHKPK(oduPackUInt8, pkParam->u.icmpv4Filter.protocol, mBuf);
+         CMCHKPK(oduPackUInt8, pkParam->u.icmpv4Filter.allMsg, mBuf);
+         CMCHKPK(oduPackUInt8, pkParam->u.icmpv4Filter.icmpMsgFlag, mBuf);
          break;
 
       case CM_ICMPVER6_FILTER:
@@ -1714,21 +1714,21 @@ Buffer       *mBuf       /* message buffer */
 #ifdef IPV6_SUPPORTED
          for(idx = (pkParam->u.icmpv6Filter.num - 1); idx >= 0; idx--)
          {
-            CMCHKPK(oduUnpackUInt32, pkParam->u.icmpv6Filter.icmpError[idx].errCodeMask,
+            CMCHKPK(oduPackUInt32, pkParam->u.icmpv6Filter.icmpError[idx].errCodeMask,
                     mBuf);
-            CMCHKPK(oduUnpackUInt8, pkParam->u.icmpv6Filter.icmpError[idx].errType,
+            CMCHKPK(oduPackUInt8, pkParam->u.icmpv6Filter.icmpError[idx].errType,
                     mBuf);
          }
-         CMCHKPK(oduUnpackUInt8, pkParam->u.icmpv6Filter.num, mBuf);
-         CMCHKPK(oduUnpackUInt8, pkParam->u.icmpv4Filter.allMsg, mBuf); 
-         CMCHKPK(oduUnpackUInt8, pkParam->u.icmpv4Filter.icmpMsgFlag, mBuf);
+         CMCHKPK(oduPackUInt8, pkParam->u.icmpv6Filter.num, mBuf);
+         CMCHKPK(oduPackUInt8, pkParam->u.icmpv4Filter.allMsg, mBuf); 
+         CMCHKPK(oduPackUInt8, pkParam->u.icmpv4Filter.icmpMsgFlag, mBuf);
 #endif /* IPV6_SUPPORTED */
          break;
    
       default:
          return RFAILED;
    }
-   CMCHKPK(oduUnpackUInt8, pkParam->type, mBuf);
+   CMCHKPK(oduPackUInt8, pkParam->type, mBuf);
 
    return ROK;
 }
@@ -1756,7 +1756,7 @@ Buffer       *mBuf         /* message buffer */
    /* Variable declaration */ 
    S16     idx;
 
-   CMCHKUNPK(oduPackUInt8, &unpkParam->type, mBuf);
+   CMCHKUNPK(oduUnpackUInt8, &unpkParam->type, mBuf);
 
    switch (unpkParam->type)
    {
@@ -1764,16 +1764,16 @@ Buffer       *mBuf         /* message buffer */
          break;
 
       case CM_ICMPVER4_FILTER:
-         CMCHKUNPK(oduPackUInt8, &unpkParam->u.icmpv4Filter.icmpMsgFlag, mBuf);
-         CMCHKUNPK(oduPackUInt8, &unpkParam->u.icmpv4Filter.allMsg, mBuf);
-         CMCHKUNPK(oduPackUInt8, &unpkParam->u.icmpv4Filter.protocol, mBuf);
-         CMCHKUNPK(oduPackUInt8, &unpkParam->u.icmpv4Filter.num, mBuf);
+         CMCHKUNPK(oduUnpackUInt8, &unpkParam->u.icmpv4Filter.icmpMsgFlag, mBuf);
+         CMCHKUNPK(oduUnpackUInt8, &unpkParam->u.icmpv4Filter.allMsg, mBuf);
+         CMCHKUNPK(oduUnpackUInt8, &unpkParam->u.icmpv4Filter.protocol, mBuf);
+         CMCHKUNPK(oduUnpackUInt8, &unpkParam->u.icmpv4Filter.num, mBuf);
 
          for(idx = 0; idx < (unpkParam->u.icmpv4Filter.num); idx++)
          {
-            CMCHKUNPK(oduPackUInt8, 
+            CMCHKUNPK(oduUnpackUInt8, 
                       &unpkParam->u.icmpv4Filter.icmpError[idx].errType, mBuf);
-            CMCHKUNPK(oduPackUInt32, 
+            CMCHKUNPK(oduUnpackUInt32, 
                       &unpkParam->u.icmpv4Filter.icmpError[idx].errCodeMask, 
                       mBuf);
          }
@@ -1781,15 +1781,15 @@ Buffer       *mBuf         /* message buffer */
 
       case CM_ICMPVER6_FILTER:
 #ifdef IPV6_SUPPORTED
-         CMCHKUNPK(oduPackUInt8, &unpkParam->u.icmpv6Filter.icmpMsgFlag, mBuf);
-         CMCHKUNPK(oduPackUInt8, &unpkParam->u.icmpv6Filter.allMsg, mBuf); 
-         CMCHKUNPK(oduPackUInt8, &unpkParam->u.icmpv6Filter.num, mBuf);
+         CMCHKUNPK(oduUnpackUInt8, &unpkParam->u.icmpv6Filter.icmpMsgFlag, mBuf);
+         CMCHKUNPK(oduUnpackUInt8, &unpkParam->u.icmpv6Filter.allMsg, mBuf); 
+         CMCHKUNPK(oduUnpackUInt8, &unpkParam->u.icmpv6Filter.num, mBuf);
 
          for(idx = 0; idx < (unpkParam->u.icmpv6Filter.num); idx++)
          {
-            CMCHKUNPK(oduPackUInt8, 
+            CMCHKUNPK(oduUnpackUInt8, 
                       &unpkParam->u.icmpv6Filter.icmpError[idx].errType, mBuf);
-            CMCHKUNPK(oduPackUInt32, 
+            CMCHKUNPK(oduUnpackUInt32, 
                       &unpkParam->u.icmpv6Filter.icmpError[idx].errCodeMask, 
                       mBuf);
          }

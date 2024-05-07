@@ -73,7 +73,7 @@ uint8_t nfapi_vnf_procPnfReadyIndEvt(nFapi_p5_hdr *p5Hdr, nFapi_msg_header *msgH
    DU_LOG("\nINFO   -->  NFAPI_VNF: Received EVENT[%d] at STATE[%d]",\
          vnfDb.pnfEvent, vnfDb.pnfStateAtVnf);
 
-   CMCHKPK(oduPackUInt32, &(version), msg);
+   CMCHKPK(oduUnpackUInt32, &(version), msg);
    
    DU_LOG("\nINFO   --> NFAPI_VNF: PNF_READY_IND version:%d",version);
 
@@ -139,7 +139,7 @@ uint8_t nfapi_vnf_procPnfParamRespEvt(nFapi_p5_hdr *p5Hdr, nFapi_msg_header *msg
    DU_LOG("\nINFO   -->  NFAPI_VNF: Received EVENT[%d] at STATE[%d]",\
          vnfDb.pnfEvent, vnfDb.pnfStateAtVnf);
 
-   CMCHKPK(oduPackUInt8, &(errorCode), msg);
+   CMCHKPK(oduUnpackUInt8, &(errorCode), msg);
    
    DU_LOG("\nINFO   --> NFAPI_VNF: PNF_PARAM_RESP errCode:%d",errorCode);
 

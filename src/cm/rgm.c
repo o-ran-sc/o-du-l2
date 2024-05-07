@@ -61,9 +61,9 @@ RgmPrbRptPerQci *qciPrbRprt,
 Buffer *mBuf
 )
 {
-   CMCHKPK(oduUnpackUInt8, qciPrbRprt->bQci, mBuf);
-   CMCHKPK(oduUnpackUInt8, qciPrbRprt->bAvgPrbUlUsage, mBuf);
-   CMCHKPK(oduUnpackUInt8, qciPrbRprt->bAvgPrbDlUsage, mBuf);
+   CMCHKPK(oduPackUInt8, qciPrbRprt->bQci, mBuf);
+   CMCHKPK(oduPackUInt8, qciPrbRprt->bAvgPrbUlUsage, mBuf);
+   CMCHKPK(oduPackUInt8, qciPrbRprt->bAvgPrbDlUsage, mBuf);
 
    return ROK;
 }
@@ -86,9 +86,9 @@ RgmPrbRptPerQci *qciPrbRprt,
 Buffer *mBuf
 )
 {
-   CMCHKUNPK(oduPackUInt8, &qciPrbRprt->bAvgPrbDlUsage, mBuf);
-   CMCHKUNPK(oduPackUInt8, &qciPrbRprt->bAvgPrbUlUsage, mBuf);
-   CMCHKUNPK(oduPackUInt8, &qciPrbRprt->bQci, mBuf);
+   CMCHKUNPK(oduUnpackUInt8, &qciPrbRprt->bAvgPrbDlUsage, mBuf);
+   CMCHKUNPK(oduUnpackUInt8, &qciPrbRprt->bAvgPrbUlUsage, mBuf);
+   CMCHKUNPK(oduUnpackUInt8, &qciPrbRprt->bQci, mBuf);
 
    return ROK;
 }
@@ -120,8 +120,8 @@ Buffer *mBuf
    {
       CMCHKPK(cmPkRgmPrbQciRpt, &prbRprtInd->stQciPrbRpts[idx], mBuf);
    }
-   CMCHKPK(oduUnpackUInt8, prbRprtInd->bPrbUsageMask, mBuf);
-   CMCHKPK(oduUnpackUInt8, prbRprtInd->bCellId, mBuf);
+   CMCHKPK(oduPackUInt8, prbRprtInd->bPrbUsageMask, mBuf);
+   CMCHKPK(oduPackUInt8, prbRprtInd->bCellId, mBuf);
    /* RRM_SP1_END */
    return ROK;
 }
@@ -148,8 +148,8 @@ Buffer *mBuf
 
 
    /* RRM_SP1_START */
-   CMCHKUNPK(oduPackUInt8, &prbRprtInd->bCellId, mBuf);
-   CMCHKUNPK(oduPackUInt8, &prbRprtInd->bPrbUsageMask, mBuf);
+   CMCHKUNPK(oduUnpackUInt8, &prbRprtInd->bCellId, mBuf);
+   CMCHKUNPK(oduUnpackUInt8, &prbRprtInd->bPrbUsageMask, mBuf);
    for(idx = 0; idx < RGM_MAX_QCI_REPORTS; idx++)
    {
       CMCHKUNPK(cmUnpkRgmPrbQciRpt, &prbRprtInd->stQciPrbRpts[idx], mBuf);
@@ -266,9 +266,9 @@ RgmTransModeInd *transModeInd,
 Buffer *mBuf
 )
 {
-   CMCHKPK(oduUnpackUInt32, transModeInd->eMode, mBuf);
-   CMCHKPK(oduUnpackUInt16, transModeInd->usCrnti, mBuf);
-   CMCHKPK(oduUnpackUInt8, transModeInd->bCellId, mBuf);
+   CMCHKPK(oduPackUInt32, transModeInd->eMode, mBuf);
+   CMCHKPK(oduPackUInt16, transModeInd->usCrnti, mBuf);
+   CMCHKPK(oduPackUInt8, transModeInd->bCellId, mBuf);
    return ROK;
 }
 
@@ -291,9 +291,9 @@ Buffer *mBuf
 )
 {
    uint32_t tmpModeEnum;
-   CMCHKUNPK(oduPackUInt8, &transModeInd->bCellId, mBuf);
-   CMCHKUNPK(oduPackUInt16, &transModeInd->usCrnti, mBuf);
-   CMCHKUNPK(oduPackUInt32, (uint32_t *)&tmpModeEnum, mBuf);
+   CMCHKUNPK(oduUnpackUInt8, &transModeInd->bCellId, mBuf);
+   CMCHKUNPK(oduUnpackUInt16, &transModeInd->usCrnti, mBuf);
+   CMCHKUNPK(oduUnpackUInt32, (uint32_t *)&tmpModeEnum, mBuf);
    transModeInd->eMode = (RgmTxnMode)tmpModeEnum;
    return ROK;
 }

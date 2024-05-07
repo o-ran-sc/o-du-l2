@@ -222,10 +222,10 @@ void nfapiFillMsgHdr(Buffer *mBuf, uint8_t phyId, uint16_t msgId, uint32_t msgLe
  * *******************************************************************************/
 void nFapiExtractP5Hdr(nFapi_p5_hdr *p5Hdr, Buffer *mBuf)
 {
-   CMCHKPK(oduPackUInt16, &(p5Hdr->seg_len), mBuf);
-   CMCHKPK(oduPackUInt8, &(p5Hdr->more_segNum), mBuf);
-   CMCHKPK(oduPackUInt8, &(p5Hdr->seq_num), mBuf);
-   CMCHKPK(oduPackUInt32, &(p5Hdr->timeStamp), mBuf);
+   CMCHKPK(oduUnpackUInt16, &(p5Hdr->seg_len), mBuf);
+   CMCHKPK(oduUnpackUInt8, &(p5Hdr->more_segNum), mBuf);
+   CMCHKPK(oduUnpackUInt8, &(p5Hdr->seq_num), mBuf);
+   CMCHKPK(oduUnpackUInt32, &(p5Hdr->timeStamp), mBuf);
    DU_LOG("\nINFo   --> NFAPI_PNF: seqLen:%d, moreSegNum:%d, seqNum:%d, timeStamp:%d",
         p5Hdr->seg_len,p5Hdr->more_segNum,p5Hdr->seq_num,p5Hdr->timeStamp);
    return;
@@ -248,10 +248,10 @@ void nFapiExtractP5Hdr(nFapi_p5_hdr *p5Hdr, Buffer *mBuf)
 void nFapiExtractMsgHdr(nFapi_msg_header *msgHdr, Buffer *mBuf)
 {
 
-    CMCHKPK(oduPackUInt8, &(msgHdr->sRU_termination_type), mBuf);
-    CMCHKPK(oduPackUInt8, &(msgHdr->phy_id), mBuf);
-    CMCHKPK(oduPackUInt16, &(msgHdr->msg_id), mBuf);
-    CMCHKPK(oduPackUInt32, &(msgHdr->length), mBuf);
+    CMCHKPK(oduUnpackUInt8, &(msgHdr->sRU_termination_type), mBuf);
+    CMCHKPK(oduUnpackUInt8, &(msgHdr->phy_id), mBuf);
+    CMCHKPK(oduUnpackUInt16, &(msgHdr->msg_id), mBuf);
+    CMCHKPK(oduUnpackUInt32, &(msgHdr->length), mBuf);
 
     DU_LOG("\nINFO  -->  NFAPI_PNF: RUType:%d, phy_id:%d, msgId:%d, len:%d",\
             msgHdr->sRU_termination_type,msgHdr->phy_id,msgHdr->msg_id,msgHdr->length );

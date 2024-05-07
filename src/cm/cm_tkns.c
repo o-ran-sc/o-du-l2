@@ -80,7 +80,7 @@ Buffer *mBuf                /* message buffer */
    }
 
    /* Token Header */
-   CMCHKPK(oduUnpackUInt8, tknS16->pres, mBuf);
+   CMCHKPK(oduPackUInt8, tknS16->pres, mBuf);
 
    return ROK;
 } /* end of cmPkTknS16 */
@@ -197,13 +197,13 @@ Buffer     *mBuf                /* message buffer */
       /* Value */
       for (ndx = 0; ndx < tknStr->len; ndx++)
       {
-         CMCHKPK(oduUnpackUInt8, tknStr->val[ndx], mBuf);
+         CMCHKPK(oduPackUInt8, tknStr->val[ndx], mBuf);
       }
       /* Length */
-      CMCHKPK(oduUnpackUInt16, tknStr->len, mBuf);
+      CMCHKPK(oduPackUInt16, tknStr->len, mBuf);
    }
    /* Token Header */
-   CMCHKPK(oduUnpackUInt8, tknStr->pres, mBuf);
+   CMCHKPK(oduPackUInt8, tknStr->pres, mBuf);
 
    return ROK;
 
@@ -245,13 +245,13 @@ Buffer     *mBuf              /* message buffer */
       /* Value */
       for (ndx = 0; ndx < len; ndx++)
       {
-         CMCHKPK(oduUnpackUInt8, tknStr->val[ndx], mBuf);
+         CMCHKPK(oduPackUInt8, tknStr->val[ndx], mBuf);
       }
       /* Length */
-      CMCHKPK(oduUnpackUInt16, tknStr->len, mBuf);
+      CMCHKPK(oduPackUInt16, tknStr->len, mBuf);
    }
    /* Token Header */
-   CMCHKPK(oduUnpackUInt8, tknStr->pres, mBuf);
+   CMCHKPK(oduPackUInt8, tknStr->pres, mBuf);
 
    return ROK;
 
@@ -286,15 +286,15 @@ Buffer     *mBuf                /* message buffer */
       /* Value */
       for (ndx = 0; ndx < tknStr->len; ndx++)
       {
-         CMCHKPK(oduUnpackUInt16, tknStr->val[ndx], mBuf);
+         CMCHKPK(oduPackUInt16, tknStr->val[ndx], mBuf);
       }
 
       /* Length */
-      CMCHKPK(oduUnpackUInt8, tknStr->len, mBuf);
+      CMCHKPK(oduPackUInt8, tknStr->len, mBuf);
    }
 
    /* Token Header */
-   CMCHKPK(oduUnpackUInt8, tknStr->pres, mBuf);
+   CMCHKPK(oduPackUInt8, tknStr->pres, mBuf);
 
    return ROK;
 } /* end of cmPkTknStrBMP4 */
@@ -328,13 +328,13 @@ Buffer     *mBuf                /* message buffer */
       /* Value */
       for (ndx = 0; ndx < tknStr->len; ndx++)
       {
-         CMCHKPK(oduUnpackUInt16, tknStr->val[ndx], mBuf);
+         CMCHKPK(oduPackUInt16, tknStr->val[ndx], mBuf);
       }
       /* Length */
-      CMCHKPK(oduUnpackUInt16, tknStr->len, mBuf);
+      CMCHKPK(oduPackUInt16, tknStr->len, mBuf);
    }
    /* Token Header */
-   CMCHKPK(oduUnpackUInt8, tknStr->pres, mBuf);
+   CMCHKPK(oduPackUInt8, tknStr->pres, mBuf);
 
    return ROK;
 } /* end of cmPkTknStrBMPXL */
@@ -368,15 +368,15 @@ Buffer     *mBuf                /* message buffer */
       /* Value */
       for (ndx = 0; ndx < tknStr->len; ndx++)
       {
-         CMCHKPK(oduUnpackUInt32, tknStr->val[ndx], mBuf);
+         CMCHKPK(oduPackUInt32, tknStr->val[ndx], mBuf);
       }
 
       /* Length */
-      CMCHKPK(oduUnpackUInt8, tknStr->len, mBuf);
+      CMCHKPK(oduPackUInt8, tknStr->len, mBuf);
    }
 
    /* Token Header */
-   CMCHKPK(oduUnpackUInt8, tknStr->pres, mBuf);
+   CMCHKPK(oduPackUInt8, tknStr->pres, mBuf);
 
    return ROK;
 } /* end of cmPkTknStrUNI4 */
@@ -410,13 +410,13 @@ Buffer     *mBuf                /* message buffer */
       /* Value */
       for (ndx = 0; ndx < tknStr->len; ndx++)
       {
-         CMCHKPK(oduUnpackUInt32, tknStr->val[ndx], mBuf);
+         CMCHKPK(oduPackUInt32, tknStr->val[ndx], mBuf);
       }
       /* Length */
-      CMCHKPK(oduUnpackUInt16, tknStr->len, mBuf);
+      CMCHKPK(oduPackUInt16, tknStr->len, mBuf);
    }
    /* Token Header */
-   CMCHKPK(oduUnpackUInt8, tknStr->pres, mBuf);
+   CMCHKPK(oduPackUInt8, tknStr->pres, mBuf);
 
    return ROK;
 } /* end of cmPkTknStrUNIXL */
@@ -447,7 +447,7 @@ Buffer *mBuf                /* message buffer */
 {
 
    /* Token Header */
-   CMCHKUNPK(oduPackUInt8, &tknS16->pres, mBuf);
+   CMCHKUNPK(oduUnpackUInt8, &tknS16->pres, mBuf);
 
    if (tknS16->pres)
    {
@@ -566,12 +566,12 @@ Ptr         ptr                 /* pointer to memory control block */
 {
    uint16_t ndx;
 
-   CMCHKUNPK(oduPackUInt8, &tknStr->pres, mBuf);
+   CMCHKUNPK(oduUnpackUInt8, &tknStr->pres, mBuf);
 
    if(tknStr->pres)
    {
       /* Length */
-      CMCHKUNPK(oduPackUInt16, &tknStr->len, mBuf);
+      CMCHKUNPK(oduUnpackUInt16, &tknStr->len, mBuf);
 
       if( cmGetMem(ptr, tknStr->len, (Ptr *)&tknStr->val) != ROK)
       {
@@ -580,7 +580,7 @@ Ptr         ptr                 /* pointer to memory control block */
       /* Value */
       for (ndx = 1; ndx <= tknStr->len; ndx++)
       {
-         CMCHKUNPK(oduPackUInt8, &tknStr->val[tknStr->len - ndx], mBuf);
+         CMCHKUNPK(oduUnpackUInt8, &tknStr->val[tknStr->len - ndx], mBuf);
       }
    }
 
@@ -615,12 +615,12 @@ Buffer     *mBuf                /* message buffer */
    uint16_t len;
 
 
-   CMCHKUNPK(oduPackUInt8, &tknStr->pres, mBuf);
+   CMCHKUNPK(oduUnpackUInt8, &tknStr->pres, mBuf);
 
    if(tknStr->pres)
    {
       /* Length */
-      CMCHKUNPK(oduPackUInt16, &tknStr->len, mBuf);
+      CMCHKUNPK(oduUnpackUInt16, &tknStr->len, mBuf);
 
       if (tknStr->len % 8)
          len = (tknStr->len/8) + 1;
@@ -634,7 +634,7 @@ Buffer     *mBuf                /* message buffer */
       /* Value */
       for (ndx = 1; ndx <= len; ndx++)
       {
-         CMCHKUNPK(oduPackUInt8, &tknStr->val[len - ndx], mBuf);
+         CMCHKUNPK(oduUnpackUInt8, &tknStr->val[len - ndx], mBuf);
       }
    }
 
@@ -667,17 +667,17 @@ Buffer     *mBuf                /* message buffer */
 
 
    /* Token Header */
-   CMCHKUNPK(oduPackUInt8, &tknStr->pres, mBuf);
+   CMCHKUNPK(oduUnpackUInt8, &tknStr->pres, mBuf);
 
    if(tknStr->pres)
    {
       /* Length */
-      CMCHKUNPK(oduPackUInt8, &tknStr->len, mBuf);
+      CMCHKUNPK(oduUnpackUInt8, &tknStr->len, mBuf);
 
       /* Value */
       for (ndx = 1; ndx <= tknStr->len; ndx++)
       {
-         CMCHKUNPK(oduPackUInt16, &tknStr->val[tknStr->len - ndx], mBuf);
+         CMCHKUNPK(oduUnpackUInt16, &tknStr->val[tknStr->len - ndx], mBuf);
       }
    }
 
@@ -709,12 +709,12 @@ Ptr          ptr                 /* pointer to memory control block */
    uint16_t ndx;
 
 
-   CMCHKUNPK(oduPackUInt8, &tknStr->pres, mBuf);
+   CMCHKUNPK(oduUnpackUInt8, &tknStr->pres, mBuf);
 
    if(tknStr->pres)
    {
       /* Length */
-      CMCHKUNPK(oduPackUInt16, &tknStr->len, mBuf);
+      CMCHKUNPK(oduUnpackUInt16, &tknStr->len, mBuf);
 
       /* Each BMP Character is 2 octet long */
       if( cmGetMem(ptr, 2*(tknStr->len), (Ptr *)&tknStr->val) != ROK)
@@ -724,7 +724,7 @@ Ptr          ptr                 /* pointer to memory control block */
       /* Value */
       for (ndx = 1; ndx <= tknStr->len; ndx++)
       {
-         CMCHKUNPK(oduPackUInt16, &tknStr->val[tknStr->len - ndx], mBuf);
+         CMCHKUNPK(oduUnpackUInt16, &tknStr->val[tknStr->len - ndx], mBuf);
       }
    }
 
@@ -757,17 +757,17 @@ Buffer     *mBuf                /* message buffer */
 
 
    /* Token Header */
-   CMCHKUNPK(oduPackUInt8, &tknStr->pres, mBuf);
+   CMCHKUNPK(oduUnpackUInt8, &tknStr->pres, mBuf);
 
    if(tknStr->pres)
    {
       /* Length */
-      CMCHKUNPK(oduPackUInt8, &tknStr->len, mBuf);
+      CMCHKUNPK(oduUnpackUInt8, &tknStr->len, mBuf);
 
       /* Value */
       for (ndx = 1; ndx <= tknStr->len; ndx++)
       {
-         CMCHKUNPK(oduPackUInt32, &tknStr->val[tknStr->len - ndx], mBuf);
+         CMCHKUNPK(oduUnpackUInt32, &tknStr->val[tknStr->len - ndx], mBuf);
       }
    }
 
@@ -799,12 +799,12 @@ Ptr          ptr                 /* pointer to memory control block */
    uint16_t ndx;
 
 
-   CMCHKUNPK(oduPackUInt8, &tknStr->pres, mBuf);
+   CMCHKUNPK(oduUnpackUInt8, &tknStr->pres, mBuf);
 
    if(tknStr->pres)
    {
       /* Length */
-      CMCHKUNPK(oduPackUInt16, &tknStr->len, mBuf);
+      CMCHKUNPK(oduUnpackUInt16, &tknStr->len, mBuf);
 
       /* Each UNI Character is 4 octets long */
       if( cmGetMem(ptr, 4*tknStr->len, (Ptr *)&tknStr->val) != ROK)
@@ -814,7 +814,7 @@ Ptr          ptr                 /* pointer to memory control block */
       /* Value */
       for (ndx = 1; ndx <= tknStr->len; ndx++)
       {
-         CMCHKUNPK(oduPackUInt32, &tknStr->val[tknStr->len - ndx], mBuf);
+         CMCHKUNPK(oduUnpackUInt32, &tknStr->val[tknStr->len - ndx], mBuf);
       }
    }
 
