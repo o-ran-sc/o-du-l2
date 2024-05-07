@@ -129,8 +129,8 @@ uint8_t  packMacCellCfgCfm(Pst *pst, MacCellCfgCfm *macCellCfgCfm)
       }
 
       /* pack the transaction ID in CNF structure */
-      CMCHKPK(oduUnpackUInt16, macCellCfgCfm->cellId, mBuf);
-      CMCHKPK(oduUnpackUInt8, macCellCfgCfm->rsp, mBuf);
+      CMCHKPK(oduPackUInt16, macCellCfgCfm->cellId, mBuf);
+      CMCHKPK(oduPackUInt8, macCellCfgCfm->rsp, mBuf);
 
       return ODU_POST_TASK(pst,mBuf);
    }
@@ -166,8 +166,8 @@ uint8_t unpackMacCellCfgCfm(DuMacCellCfgCfm func, Pst *pst, Buffer *mBuf)
    if(pst->selector == ODU_SELECTOR_LC)
    {
       /* unpack the transaction ID in CNF structure */
-      CMCHKUNPK(oduPackUInt8, &(macCellCfgCfm.rsp), mBuf);
-      CMCHKUNPK(oduPackUInt16, &(macCellCfgCfm.cellId), mBuf);
+      CMCHKUNPK(oduUnpackUInt8, &(macCellCfgCfm.rsp), mBuf);
+      CMCHKUNPK(oduUnpackUInt16, &(macCellCfgCfm.cellId), mBuf);
       return (*func)(pst, &macCellCfgCfm);
    }
    else
@@ -364,7 +364,7 @@ uint8_t packMacCellUpInd(Pst *pst, OduCellId *cellId)
 
    if(pst->selector == ODU_SELECTOR_LC)
    {
-      CMCHKPK(oduUnpackUInt16, cellId->cellId, mBuf);
+      CMCHKPK(oduPackUInt16, cellId->cellId, mBuf);
       CM_FREE_SHRABL_BUF(pst->region, pst->pool, cellId, sizeof(OduCellId));
       cellId = NULL;
    }
@@ -413,7 +413,7 @@ uint8_t unpackMacCellUpInd(DuMacCellUpInd func, Pst *pst, Buffer *mBuf)
    else if(pst->selector == ODU_SELECTOR_LC)
    {
       OduCellId cellId;
-      CMCHKUNPK(oduPackUInt16, &cellId.cellId, mBuf);
+      CMCHKUNPK(oduUnpackUInt16, &cellId.cellId, mBuf);
       ODU_PUT_MSG_BUF(mBuf);
       return (*func)(pst, &cellId);
    }
@@ -455,7 +455,7 @@ uint8_t packMacStopInd(Pst *pst, OduCellId *cellId)
    if(pst->selector == ODU_SELECTOR_LC)
    {
       /*pack the payload here*/
-      CMCHKPK(oduUnpackUInt16, cellId->cellId, mBuf);
+      CMCHKPK(oduPackUInt16, cellId->cellId, mBuf);
       CM_FREE_SHRABL_BUF(pst->region, pst->pool, cellId, sizeof(OduCellId));
       cellId = NULL;
    }
@@ -503,7 +503,7 @@ uint8_t unpackMacStopInd(DuMacStopInd func, Pst *pst, Buffer *mBuf)
    else if(pst->selector == ODU_SELECTOR_LC)
    {
       OduCellId cellId;
-      CMCHKUNPK(oduPackUInt16, &(cellId.cellId), mBuf);
+      CMCHKUNPK(oduUnpackUInt16, &(cellId.cellId), mBuf);
 
       ODU_PUT_MSG_BUF(mBuf);
       return (*func)(pst, &cellId);

@@ -107,7 +107,7 @@ Buffer *mBuf                /* message buffer */
   
 /*
 *
-*       Fun:   oduUnpackUInt8
+*       Fun:   oduPackUInt8
 *
 *       Desc:  This function packs an unsigned 8 bit value into a message.
 *
@@ -121,7 +121,7 @@ Buffer *mBuf                /* message buffer */
 *
 */
   
-S16 oduUnpackUInt8
+S16 oduPackUInt8
 (
 uint8_t val,                     /* value */
 Buffer *mBuf                /* message buffer */
@@ -134,7 +134,7 @@ Buffer *mBuf                /* message buffer */
       SSLOGERROR(ERRCLS_ADD_RES, ESS243, (ErrVal)ret, "SAddPreMsg() failed");
 #endif
    return (ret);
-} /* end of oduUnpackUInt8 */
+} /* end of oduPackUInt8 */
   
 /*
 *
@@ -179,7 +179,7 @@ Buffer *mBuf                /* message buffer */
   
 /*
 *
-*       Fun:   oduUnpackUInt16
+*       Fun:   oduPackUInt16
 *
 *       Desc:  This function packs an unsigned 16 bit value into a message.
 *
@@ -193,7 +193,7 @@ Buffer *mBuf                /* message buffer */
 *
 */
   
-S16 oduUnpackUInt16
+S16 oduPackUInt16
 (
 uint16_t val,                    /* value */
 Buffer *mBuf                /* message buffer */
@@ -215,7 +215,7 @@ Buffer *mBuf                /* message buffer */
       SSLOGERROR(ERRCLS_ADD_RES, ESS245, (ErrVal)ret, "SAddPreMsgMult() failed");
 #endif
    return (ret);
-} /* end of oduUnpackUInt16 */
+} /* end of oduPackUInt16 */
   
   
 /*
@@ -270,7 +270,7 @@ Buffer *mBuf                /* message buffer */
   
 /*
 *
-*       Fun:   oduUnpackUInt32
+*       Fun:   oduPackUInt32
 *
 *       Desc:  This function packs an unsigned 32 bit value into a message.
 *
@@ -284,7 +284,7 @@ Buffer *mBuf                /* message buffer */
 *
 */
   
-S16 oduUnpackUInt32
+S16 oduPackUInt32
 (
 uint32_t val,                    /* value */
 Buffer *mBuf                /* message buffer */
@@ -315,7 +315,7 @@ Buffer *mBuf                /* message buffer */
       SSLOGERROR(ERRCLS_ADD_RES, ESS247, (ErrVal)ret, "SAddPreMsgMult() failed");
 #endif
    return (ret);
-} /* end of oduUnpackUInt32 */
+} /* end of oduPackUInt32 */
 
 /*ss038.103  1. Added Floating point support*/
 #ifdef SS_FLOAT
@@ -469,7 +469,7 @@ Buffer *mBuf                /* message buffer */
   
 /*
 *
-*       Fun:   oduPackUInt8
+*       Fun:   oduUnpackUInt8
 *
 *       Desc:  This function unpacks an unsigned 8 bit value from a message.
 *
@@ -481,7 +481,7 @@ Buffer *mBuf                /* message buffer */
 *
 */
   
-S16 oduPackUInt8
+S16 oduUnpackUInt8
 (
 uint8_t *val,                    /* pointer to value */
 Buffer *mBuf                /* message buffer */
@@ -495,7 +495,7 @@ Buffer *mBuf                /* message buffer */
    /* check data pointer */
    if (!val)
    {
-      SSLOGERROR(ERRCLS_INT_PAR, ESS252, ERRZERO, "oduPackUInt8 : Null value");
+      SSLOGERROR(ERRCLS_INT_PAR, ESS252, ERRZERO, "oduUnpackUInt8 : Null value");
       return RFAILED;
    }
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
@@ -507,7 +507,7 @@ Buffer *mBuf                /* message buffer */
 #endif
    *val = (uint8_t) tmp;
    return (ret);
-} /* end of oduPackUInt8 */
+} /* end of oduUnpackUInt8 */
   
 /*
 *
@@ -563,7 +563,7 @@ Buffer *mBuf                /* message buffer */
   
 /*
 *
-*       Fun:   oduPackUInt16
+*       Fun:   oduUnpackUInt16
 *
 *       Desc:  This function unpacks an unsigned 16 bit value from a message.
 *
@@ -575,7 +575,7 @@ Buffer *mBuf                /* message buffer */
 *
 */
   
-S16 oduPackUInt16
+S16 oduUnpackUInt16
 (
 uint16_t *val,                   /* pointer to value */
 Buffer *mBuf                /* message buffer */
@@ -590,7 +590,7 @@ Buffer *mBuf                /* message buffer */
    /* check data pointer */
    if (!val)
    {
-      SSLOGERROR(ERRCLS_INT_PAR, ESS256, ERRZERO, "oduPackUInt16 : Null value");
+      SSLOGERROR(ERRCLS_INT_PAR, ESS256, ERRZERO, "oduUnpackUInt16 : Null value");
       return RFAILED;
    }
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
@@ -610,7 +610,7 @@ Buffer *mBuf                /* message buffer */
 #endif
    *val = tmp16;
    return (ret);
-} /* end of oduPackUInt16 */
+} /* end of oduUnpackUInt16 */
   
   
 /*
@@ -677,7 +677,7 @@ Buffer *mBuf                /* message buffer */
   
 /*
 *
-*       Fun:   oduPackUInt32
+*       Fun:   oduUnpackUInt32
 *
 *       Desc:  This function unpacks an unsigned 32 bit value from a message.
 *
@@ -689,7 +689,7 @@ Buffer *mBuf                /* message buffer */
 *
 */
   
-S16 oduPackUInt32
+S16 oduUnpackUInt32
 (
 uint32_t *val,                   /* pointer to value */
 Buffer *mBuf                /* message buffer */
@@ -707,7 +707,7 @@ Buffer *mBuf                /* message buffer */
    /* check data pointer */
    if (!val)
    {
-      SSLOGERROR(ERRCLS_INT_PAR, ESS260, ERRZERO, "oduPackUInt32 : Null value");
+      SSLOGERROR(ERRCLS_INT_PAR, ESS260, ERRZERO, "oduUnpackUInt32 : Null value");
       return RFAILED;
    }
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
@@ -737,7 +737,7 @@ Buffer *mBuf                /* message buffer */
 #endif
    *val = tmp32;
    return (ret);
-} /* end of oduPackUInt32 */
+} /* end of oduUnpackUInt32 */
 
 /*ss038.103  1. Added Floating point support*/
 #ifdef SS_FLOAT

@@ -29,8 +29,8 @@ uint8_t packMacSchSlotInd(Pst *pst, SlotTimingInfo *slotInd)
    }
 
    /* pack SFN and slot value */
-   CMCHKPK(oduUnpackUInt16,slotInd->sfn, mBuf);
-   CMCHKPK(oduUnpackUInt16,slotInd->slot, mBuf);
+   CMCHKPK(oduPackUInt16,slotInd->sfn, mBuf);
+   CMCHKPK(oduPackUInt16,slotInd->slot, mBuf);
 
    return ODU_POST_TASK(pst,mBuf);
 }

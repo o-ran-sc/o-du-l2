@@ -106,15 +106,15 @@ Buffer *mBuf              /* message buffer */
 
    /*-- cm_gen_c_001.main_36 - added for micro seconds --*/
 #ifdef SS_DATETIME_USEC
-   CMCHKPK(oduUnpackUInt32, dateTime->usec, mBuf);
+   CMCHKPK(oduPackUInt32, dateTime->usec, mBuf);
 #endif /*-- SS_DATETIME_USEC --*/
-   CMCHKPK(oduUnpackUInt8, dateTime->tenths, mBuf);
-   CMCHKPK(oduUnpackUInt8, dateTime->sec, mBuf); 
-   CMCHKPK(oduUnpackUInt8, dateTime->min, mBuf); 
-   CMCHKPK(oduUnpackUInt8, dateTime->hour, mBuf);
-   CMCHKPK(oduUnpackUInt8, dateTime->year, mBuf);
-   CMCHKPK(oduUnpackUInt8, dateTime->day, mBuf);
-   CMCHKPK(oduUnpackUInt8, dateTime->month, mBuf);
+   CMCHKPK(oduPackUInt8, dateTime->tenths, mBuf);
+   CMCHKPK(oduPackUInt8, dateTime->sec, mBuf); 
+   CMCHKPK(oduPackUInt8, dateTime->min, mBuf); 
+   CMCHKPK(oduPackUInt8, dateTime->hour, mBuf);
+   CMCHKPK(oduPackUInt8, dateTime->year, mBuf);
+   CMCHKPK(oduPackUInt8, dateTime->day, mBuf);
+   CMCHKPK(oduPackUInt8, dateTime->month, mBuf);
 
    return ROK;
 } /* end of cmPkDateTime */
@@ -141,11 +141,11 @@ Buffer   *mBuf             /* message buffer */
 )
 {
 
-   CMCHKPK(oduUnpackUInt8, duration->tenths, mBuf);
-   CMCHKPK(oduUnpackUInt8, duration->secs,   mBuf);
-   CMCHKPK(oduUnpackUInt8, duration->mins,   mBuf);
-   CMCHKPK(oduUnpackUInt8, duration->hours,  mBuf);
-   CMCHKPK(oduUnpackUInt8, duration->days,   mBuf);
+   CMCHKPK(oduPackUInt8, duration->tenths, mBuf);
+   CMCHKPK(oduPackUInt8, duration->secs,   mBuf);
+   CMCHKPK(oduPackUInt8, duration->mins,   mBuf);
+   CMCHKPK(oduPackUInt8, duration->hours,  mBuf);
+   CMCHKPK(oduPackUInt8, duration->days,   mBuf);
 
    return ROK;
 } /* end of cmPkDuration */
@@ -409,16 +409,16 @@ Buffer       *mBuf       /* buffer */
 
 
 #ifdef CM_ARI2
-   CMCHKPK(oduUnpackUInt32, pAddr->autoSysId, mBuf);  
+   CMCHKPK(oduPackUInt32, pAddr->autoSysId, mBuf);  
    CMCHKPK(oduPackBool, pAddr->autoSysIdPres, mBuf);  
 #endif /* CM_ARI2 */
 
    for (j = pAddr->len; j; j--)
-      CMCHKPK(oduUnpackUInt8, pAddr->address[j - 1], mBuf);  
+      CMCHKPK(oduPackUInt8, pAddr->address[j - 1], mBuf);  
 
-   CMCHKPK(oduUnpackUInt8,  pAddr->preLen, mBuf);  
-   CMCHKPK(oduUnpackUInt8,  pAddr->len, mBuf);  
-   CMCHKPK(oduUnpackUInt16, pAddr->protType, mBuf);  
+   CMCHKPK(oduPackUInt8,  pAddr->preLen, mBuf);  
+   CMCHKPK(oduPackUInt8,  pAddr->len, mBuf);  
+   CMCHKPK(oduPackUInt16, pAddr->protType, mBuf);  
        
    return ROK;
 
@@ -460,19 +460,19 @@ Buffer       *mBuf          /* buffer */
        pAddr = &(protAddr->addr[i - 1]);
 
 #ifdef CM_ARI2
-       CMCHKPK(oduUnpackUInt32, pAddr->autoSysId, mBuf);  
+       CMCHKPK(oduPackUInt32, pAddr->autoSysId, mBuf);  
        CMCHKPK(oduPackBool, pAddr->autoSysIdPres, mBuf);  
 #endif /* CM_ARI2 */
 
        for (j = pAddr->len; j; j--)
-          CMCHKPK(oduUnpackUInt8, pAddr->address[j - 1], mBuf);  
+          CMCHKPK(oduPackUInt8, pAddr->address[j - 1], mBuf);  
         
-       CMCHKPK(oduUnpackUInt8, pAddr->preLen, mBuf);  
-       CMCHKPK(oduUnpackUInt8,  pAddr->len, mBuf);  
-       CMCHKPK(oduUnpackUInt16,  pAddr->protType, mBuf);  
+       CMCHKPK(oduPackUInt8, pAddr->preLen, mBuf);  
+       CMCHKPK(oduPackUInt8,  pAddr->len, mBuf);  
+       CMCHKPK(oduPackUInt16,  pAddr->protType, mBuf);  
        
    }
-   CMCHKPK(oduUnpackUInt8, protAddr->count, mBuf);  
+   CMCHKPK(oduPackUInt8, protAddr->count, mBuf);  
 
    return ROK;
 } /* end of cmPkProtAddrTbl */
@@ -507,10 +507,10 @@ Buffer *mBuf            /* message buffer */
 
    for (i = addrs->length; i; i--)
    {
-      CMCHKPK(oduUnpackUInt8, addrs->strg[i-1], mBuf);
+      CMCHKPK(oduPackUInt8, addrs->strg[i-1], mBuf);
    }
 
-   CMCHKPK(oduUnpackUInt8, addrs->length, mBuf);
+   CMCHKPK(oduPackUInt8, addrs->length, mBuf);
 
    return ROK;
 } /* end of cmPkAddrs */
@@ -545,10 +545,10 @@ Buffer    *mBuf            /* message buffer */
 
    for (i = addrs->length; i; i--)
    {
-      CMCHKPK(oduUnpackUInt8, addrs->strg[i-1], mBuf);
+      CMCHKPK(oduPackUInt8, addrs->strg[i-1], mBuf);
    }
 
-   CMCHKPK(oduUnpackUInt8, addrs->length, mBuf);
+   CMCHKPK(oduPackUInt8, addrs->length, mBuf);
 
    return ROK;
 } /* end of cmPkShrtAddrs */
@@ -580,7 +580,7 @@ Buffer  *mBuf         /* message buffer */
    /* pack address mask */
    for (i = (ADRLEN - 1); i >= 0; i--)
    {
-      CMCHKPK(oduUnpackUInt8, mask[i], mBuf);
+      CMCHKPK(oduPackUInt8, mask[i], mBuf);
    }
 
    return ROK;
@@ -618,9 +618,9 @@ Buffer *mBuf            /* message buffer */
    CMCHKPK(cmPkRegion, bndCfg->region, mBuf);
    CMCHKPK(cmPkInst, bndCfg->inst, mBuf);
    CMCHKPK(cmPkEnt, bndCfg->ent, mBuf);
-   CMCHKPK(oduUnpackUInt8, bndCfg->wdw, mBuf);
-   CMCHKPK(oduUnpackUInt8, bndCfg->flcTyp, mBuf);
-   CMCHKPK(oduUnpackUInt8, bndCfg->bufOwnshp, mBuf);
+   CMCHKPK(oduPackUInt8, bndCfg->wdw, mBuf);
+   CMCHKPK(oduPackUInt8, bndCfg->flcTyp, mBuf);
+   CMCHKPK(oduPackUInt8, bndCfg->bufOwnshp, mBuf);
 
    for (p = bndCfg->usrId; *p; p++);
    for (; p != bndCfg->usrId; p--);
@@ -691,14 +691,14 @@ Buffer  *mBuf                /* message buffer */
 {
  
 #if (LCAMT || ATM_BISUP)
-      CMCHKPK(oduUnpackUInt16, m->compInd, mBuf);
+      CMCHKPK(oduPackUInt16, m->compInd, mBuf);
 #endif /* LCAMT || ATM_BISUP */
 
 #if (LCAMT || ATM_BISUP)
    /* Pack action indicator field */
    if (m->pres)
    {
-     CMCHKPK(oduUnpackUInt8, m->actnInd, mBuf);
+     CMCHKPK(oduPackUInt8, m->actnInd, mBuf);
    }
 #endif
 
@@ -733,11 +733,11 @@ Buffer *mBuf                /* message buffer */
    if (tknUInt8->pres)
    {
       /* Value */
-      CMCHKPK(oduUnpackUInt8, tknUInt8->val, mBuf);
+      CMCHKPK(oduPackUInt8, tknUInt8->val, mBuf);
    }
 
    /* Token Header */
-   CMCHKPK(oduUnpackUInt8, tknUInt8->pres, mBuf);
+   CMCHKPK(oduPackUInt8, tknUInt8->pres, mBuf);
 
    return ROK;
 } /* end of cmPkTknUInt8 */
@@ -771,7 +771,7 @@ Buffer *mBuf                /* message buffer */
    }
  
    /* Token Header */
-   CMCHKPK(oduUnpackUInt8, tknS8->pres, mBuf);
+   CMCHKPK(oduPackUInt8, tknS8->pres, mBuf);
  
    return ROK;
 } /* end of cmPkTknS8 */
@@ -801,11 +801,11 @@ Buffer *mBuf                /* message buffer */
    if (tknUInt16->pres)
    {
       /* Value */
-      CMCHKPK(oduUnpackUInt16, tknUInt16->val, mBuf);
+      CMCHKPK(oduPackUInt16, tknUInt16->val, mBuf);
    }
 
    /* Token Header */
-   CMCHKPK(oduUnpackUInt8, tknUInt16->pres, mBuf);
+   CMCHKPK(oduPackUInt8, tknUInt16->pres, mBuf);
 
    return ROK;
 } /* end of cmPkTknUInt16 */
@@ -835,11 +835,11 @@ Buffer *mBuf                /* message buffer */
    if (tknUInt32->pres)
    {
       /* Value */
-      CMCHKPK(oduUnpackUInt32, tknUInt32->val, mBuf);
+      CMCHKPK(oduPackUInt32, tknUInt32->val, mBuf);
    }
 
    /* Token Header */
-   CMCHKPK(oduUnpackUInt8, tknUInt32->pres, mBuf);
+   CMCHKPK(oduPackUInt8, tknUInt32->pres, mBuf);
 
    return ROK;
 } /* end of cmPkTknUInt32 */
@@ -873,15 +873,15 @@ Buffer *mBuf                /* message buffer */
       /* Value */
       for (i = 0; i < (S16) tknStr->len; i++)
       {
-         CMCHKPK(oduUnpackUInt8, tknStr->val[i], mBuf);
+         CMCHKPK(oduPackUInt8, tknStr->val[i], mBuf);
       }
 
       /* Length */
-      CMCHKPK(oduUnpackUInt8, tknStr->len, mBuf);
+      CMCHKPK(oduPackUInt8, tknStr->len, mBuf);
    }
  
    /* Token Header */
-   CMCHKPK(oduUnpackUInt8, tknStr->pres, mBuf);
+   CMCHKPK(oduPackUInt8, tknStr->pres, mBuf);
 
    return ROK;
 } /* end of cmPkTknStr */
@@ -915,15 +915,15 @@ Buffer *mBuf                /* message buffer */
       /* Value */
       for (i = 0; i < (S16) tknStr->len; i++)
       {
-         CMCHKPK(oduUnpackUInt8, tknStr->val[i], mBuf);
+         CMCHKPK(oduPackUInt8, tknStr->val[i], mBuf);
       }
 
       /* Length */
-      CMCHKPK(oduUnpackUInt8, tknStr->len, mBuf);
+      CMCHKPK(oduPackUInt8, tknStr->len, mBuf);
    }
  
    /* Token Header */
-   CMCHKPK(oduUnpackUInt8, tknStr->pres, mBuf);
+   CMCHKPK(oduPackUInt8, tknStr->pres, mBuf);
 
    return ROK;
 } /* end of cmPkTknStrM */
@@ -957,15 +957,15 @@ Buffer *mBuf                /* message buffer */
       /* Value */
       for (i = 0; i < (S16) tknStr->len; i++)
       {
-         CMCHKPK(oduUnpackUInt8, tknStr->val[i], mBuf);
+         CMCHKPK(oduPackUInt8, tknStr->val[i], mBuf);
       }
 
       /* Length */
-      CMCHKPK(oduUnpackUInt8, tknStr->len, mBuf);
+      CMCHKPK(oduPackUInt8, tknStr->len, mBuf);
    }
  
    /* Token Header */
-   CMCHKPK(oduUnpackUInt8, tknStr->pres, mBuf);
+   CMCHKPK(oduPackUInt8, tknStr->pres, mBuf);
 
    return ROK;
 } /* end of cmPkTknStrS */
@@ -999,15 +999,15 @@ Buffer *mBuf                /* message buffer */
       /* Value */
       for (i = 0; i < (S16) tknStr->len; i++)
       {
-         CMCHKPK(oduUnpackUInt8, tknStr->val[i], mBuf);
+         CMCHKPK(oduPackUInt8, tknStr->val[i], mBuf);
       }
 
       /* Length */
-      CMCHKPK(oduUnpackUInt8, tknStr->len, mBuf);
+      CMCHKPK(oduPackUInt8, tknStr->len, mBuf);
    }
  
    /* Token Header */
-   CMCHKPK(oduUnpackUInt8, tknStr->pres, mBuf);
+   CMCHKPK(oduPackUInt8, tknStr->pres, mBuf);
 
    return ROK;
 } /* end of cmPkTknStrE */
@@ -1040,7 +1040,7 @@ Buffer *mBuf        /* message buffer */
    
    for (i = PN_NODEID_LEN - 1; i >= 0; i--)
    {
-      CMCHKPK(oduUnpackUInt8, src->id[i], mBuf);
+      CMCHKPK(oduPackUInt8, src->id[i], mBuf);
    }
    
    return ROK;
@@ -1249,16 +1249,16 @@ Buffer   *mBuf                /* message buffer */
          /* cm_gen_c_001.main_33: changes for TknOid value from uint16_t to uint32_t
           * with compilation flag TKNOID_UINT16 */
 #ifndef TKNOID_UINT16
-         CMCHKPK(oduUnpackUInt32, tknOid->val[i], mBuf);
+         CMCHKPK(oduPackUInt32, tknOid->val[i], mBuf);
 #else
-         CMCHKPK(oduUnpackUInt16, tknOid->val[i], mBuf);
+         CMCHKPK(oduPackUInt16, tknOid->val[i], mBuf);
 #endif  /* !TKNOID_UINT16 */
       }
       /* Pack the length */
-      CMCHKPK(oduUnpackUInt8, tknOid->len, mBuf);
+      CMCHKPK(oduPackUInt8, tknOid->len, mBuf);
    }
    /* Pack the token header */
-   CMCHKPK(oduUnpackUInt8, tknOid->pres, mBuf);
+   CMCHKPK(oduPackUInt8, tknOid->pres, mBuf);
 
    return ROK;
 } /* end of cmPkTknOid */
@@ -1292,7 +1292,7 @@ Buffer *mBuf                /* message buffer */
    }
 
    /* Token Header */
-   CMCHKPK(oduUnpackUInt8, tknS32->pres, mBuf);
+   CMCHKPK(oduPackUInt8, tknS32->pres, mBuf);
 
    return ROK;
 } /* end of cmPkTknS32 */
@@ -1328,10 +1328,10 @@ Buffer *mBuf                /* message buffer */
 #endif /* LMINT3 */
    CMCHKPK(cmPkElmntId, &header->elmId, mBuf);
    CMCHKPK(cmPkEntityId, &header->entId, mBuf);
-   CMCHKPK(oduUnpackUInt16, header->seqNmb, mBuf);
-   CMCHKPK(oduUnpackUInt8, header->version, mBuf);
-   CMCHKPK(oduUnpackUInt8, header->msgType, mBuf);
-   CMCHKPK(oduUnpackUInt16, header->msgLen, mBuf);
+   CMCHKPK(oduPackUInt16, header->seqNmb, mBuf);
+   CMCHKPK(oduPackUInt8, header->version, mBuf);
+   CMCHKPK(oduPackUInt8, header->msgType, mBuf);
+   CMCHKPK(oduPackUInt16, header->msgLen, mBuf);
 
    return ROK;
 } /* end of cmPkHeader */
@@ -1358,8 +1358,8 @@ Buffer *mBuf                /* message buffer */
 )
 {
 
-   CMCHKPK(oduUnpackUInt16, sta->reason, mBuf);
-   CMCHKPK(oduUnpackUInt16, sta->status, mBuf);
+   CMCHKPK(oduPackUInt16, sta->reason, mBuf);
+   CMCHKPK(oduPackUInt16, sta->status, mBuf);
 
    return ROK;
 } /* end of cmPkCmStatus */
@@ -1386,9 +1386,9 @@ Buffer  *mBuf              /* message buffer */
 )
 {
 
-   CMCHKPK(oduUnpackUInt16, alarm->cause, mBuf);
-   CMCHKPK(oduUnpackUInt16, alarm->event, mBuf);
-   CMCHKPK(oduUnpackUInt16, alarm->category, mBuf);
+   CMCHKPK(oduPackUInt16, alarm->cause, mBuf);
+   CMCHKPK(oduPackUInt16, alarm->event, mBuf);
+   CMCHKPK(oduPackUInt16, alarm->category, mBuf);
    CMCHKPK(cmPkDateTime, &alarm->dt, mBuf);
 
    return ROK;
@@ -1449,7 +1449,7 @@ Buffer *mBuf            /* message buffer */
 )
 {
 
-   CMCHKPK(oduUnpackUInt16, tmrCfg->val, mBuf);
+   CMCHKPK(oduPackUInt16, tmrCfg->val, mBuf);
    CMCHKPK(oduPackBool, tmrCfg->enb, mBuf);
 
    return ROK;
@@ -1491,7 +1491,7 @@ Buffer    *mBuf                /* message buffer */
    }
   
    /* Token Header */
-   CMCHKPK(oduUnpackUInt8, tknBuf->pres, mBuf);
+   CMCHKPK(oduPackUInt8, tknBuf->pres, mBuf);
 
    return ROK;
 } /* end of cmPkTknBuf */
@@ -1552,17 +1552,17 @@ Buffer *mBuf         /* message buffer */
 )
 {
 
-   CMCHKUNPK(oduPackUInt8, &dateTime->month, mBuf); 
-   CMCHKUNPK(oduPackUInt8, &dateTime->day, mBuf); 
-   CMCHKUNPK(oduPackUInt8, &dateTime->year, mBuf); 
-   CMCHKUNPK(oduPackUInt8, &dateTime->hour, mBuf); 
-   CMCHKUNPK(oduPackUInt8, &dateTime->min, mBuf); 
-   CMCHKUNPK(oduPackUInt8, &dateTime->sec, mBuf); 
-   CMCHKUNPK(oduPackUInt8, &dateTime->tenths, mBuf);
+   CMCHKUNPK(oduUnpackUInt8, &dateTime->month, mBuf); 
+   CMCHKUNPK(oduUnpackUInt8, &dateTime->day, mBuf); 
+   CMCHKUNPK(oduUnpackUInt8, &dateTime->year, mBuf); 
+   CMCHKUNPK(oduUnpackUInt8, &dateTime->hour, mBuf); 
+   CMCHKUNPK(oduUnpackUInt8, &dateTime->min, mBuf); 
+   CMCHKUNPK(oduUnpackUInt8, &dateTime->sec, mBuf); 
+   CMCHKUNPK(oduUnpackUInt8, &dateTime->tenths, mBuf);
 
    /*-- added for micro seconds --*/
 #ifdef SS_DATETIME_USEC
-   CMCHKUNPK(oduPackUInt32, &dateTime->usec, mBuf);
+   CMCHKUNPK(oduUnpackUInt32, &dateTime->usec, mBuf);
 #endif /*-- SS_DATETIME_USEC --*/
 
    return ROK;
@@ -1590,11 +1590,11 @@ Buffer *mBuf         /* message buffer */
 )
 {
 
-   CMCHKUNPK(oduPackUInt8, &duration->days, mBuf); 
-   CMCHKUNPK(oduPackUInt8, &duration->hours, mBuf); 
-   CMCHKUNPK(oduPackUInt8, &duration->mins, mBuf); 
-   CMCHKUNPK(oduPackUInt8, &duration->secs, mBuf); 
-   CMCHKUNPK(oduPackUInt8, &duration->tenths, mBuf);
+   CMCHKUNPK(oduUnpackUInt8, &duration->days, mBuf); 
+   CMCHKUNPK(oduUnpackUInt8, &duration->hours, mBuf); 
+   CMCHKUNPK(oduUnpackUInt8, &duration->mins, mBuf); 
+   CMCHKUNPK(oduUnpackUInt8, &duration->secs, mBuf); 
+   CMCHKUNPK(oduUnpackUInt8, &duration->tenths, mBuf);
 
    return ROK;
 } /* end of cmUnpkDuration */
@@ -1875,16 +1875,16 @@ Buffer       *mBuf           /* buffer */
    uint8_t               j;                  /* Index */
 
 
-   CMCHKUNPK(oduPackUInt16,  &(pAddr->protType), mBuf);  
-   CMCHKUNPK(oduPackUInt8,   &(pAddr->len), mBuf);  
-   CMCHKUNPK(oduPackUInt8,   &(pAddr->preLen), mBuf);  
+   CMCHKUNPK(oduUnpackUInt16,  &(pAddr->protType), mBuf);  
+   CMCHKUNPK(oduUnpackUInt8,   &(pAddr->len), mBuf);  
+   CMCHKUNPK(oduUnpackUInt8,   &(pAddr->preLen), mBuf);  
 
    for (j =0; j <  pAddr->len; j++)
-      CMCHKUNPK(oduPackUInt8, &pAddr->address[j], mBuf);  
+      CMCHKUNPK(oduUnpackUInt8, &pAddr->address[j], mBuf);  
    
 #ifdef CM_ARI2
    CMCHKUNPK(oduUnpackBool,   &(pAddr->autoSysIdPres), mBuf);  
-   CMCHKUNPK(oduPackUInt32,  &(pAddr->autoSysId), mBuf);  
+   CMCHKUNPK(oduUnpackUInt32,  &(pAddr->autoSysId), mBuf);  
 #endif /* CM_ARI2 */
    return ROK;
 
@@ -1917,22 +1917,22 @@ Buffer       *mBuf           /* buffer */
    ProtAddr         *pAddr;             /* Protocol Address */
 
 
-   CMCHKUNPK(oduPackUInt8, &protAddr->count, mBuf);  
+   CMCHKUNPK(oduUnpackUInt8, &protAddr->count, mBuf);  
    for (i = 0;  i < protAddr->count; i++)
    {
        pAddr = &(protAddr->addr[i]);
 
-       CMCHKUNPK(oduPackUInt16,  &(pAddr->protType), mBuf);  
-       CMCHKUNPK(oduPackUInt8,  &(pAddr->len), mBuf);  
-       CMCHKUNPK(oduPackUInt8, &(pAddr->preLen), mBuf);  
+       CMCHKUNPK(oduUnpackUInt16,  &(pAddr->protType), mBuf);  
+       CMCHKUNPK(oduUnpackUInt8,  &(pAddr->len), mBuf);  
+       CMCHKUNPK(oduUnpackUInt8, &(pAddr->preLen), mBuf);  
 
         
        for (j =0; j <  pAddr->len; j++)
-          CMCHKUNPK(oduPackUInt8, &pAddr->address[j], mBuf);  
+          CMCHKUNPK(oduUnpackUInt8, &pAddr->address[j], mBuf);  
 
 #ifdef CM_ARI2
        CMCHKUNPK(oduUnpackBool,   &(pAddr->autoSysIdPres), mBuf);
-       CMCHKUNPK(oduPackUInt32,  &(pAddr->autoSysId), mBuf);
+       CMCHKUNPK(oduUnpackUInt32,  &(pAddr->autoSysId), mBuf);
 #endif /* CM_ARI2 */
    }
    return ROK;
@@ -1962,14 +1962,14 @@ Buffer *mBuf      /* message buffer */
    uint8_t i;          /* loop counter */
 
 
-   CMCHKUNPK(oduPackUInt8, &addrs->length, mBuf);
+   CMCHKUNPK(oduUnpackUInt8, &addrs->length, mBuf);
 
    if (addrs->length > ADRLEN)
       return RFAILED;
    
    for(i = 0; i < addrs->length; i++)
    {
-      CMCHKUNPK(oduPackUInt8, &addrs->strg[i], mBuf);
+      CMCHKUNPK(oduUnpackUInt8, &addrs->strg[i], mBuf);
    }
 
    return ROK;
@@ -1998,14 +1998,14 @@ Buffer    *mBuf      /* message buffer */
    uint8_t i;          /* loop counter */
 
 
-   CMCHKUNPK(oduPackUInt8, &addrs->length, mBuf);
+   CMCHKUNPK(oduUnpackUInt8, &addrs->length, mBuf);
 
    if (addrs->length > SHRTADRLEN)
       return RFAILED;
    
    for(i = 0; i < addrs->length; i++)
    {
-      CMCHKUNPK(oduPackUInt8, &addrs->strg[i], mBuf);
+      CMCHKUNPK(oduUnpackUInt8, &addrs->strg[i], mBuf);
    }
    return ROK;
 } /* end of cmUnpkShrtAddrs */
@@ -2037,7 +2037,7 @@ Buffer  *mBuf         /* message buffer */
    /* unpack address mask */
    for (i = 0; i< ADRLEN; i++) 
    {
-      CMCHKUNPK(oduPackUInt8, &mask[i], mBuf);
+      CMCHKUNPK(oduUnpackUInt8, &mask[i], mBuf);
    }
    return ROK;
 } /* end of cmUnpkAddrMask */
@@ -2069,9 +2069,9 @@ Buffer *mBuf            /* message buffer */
    for (i = 0; bndCfg->usrId[i]; i++);
    CMCHKUNPK(cmUnpkTxt, bndCfg->usrId+i, mBuf);
 
-   CMCHKUNPK(oduPackUInt8, &bndCfg->bufOwnshp, mBuf); 
-   CMCHKUNPK(oduPackUInt8, &bndCfg->flcTyp, mBuf); 
-   CMCHKUNPK(oduPackUInt8, &bndCfg->wdw, mBuf); 
+   CMCHKUNPK(oduUnpackUInt8, &bndCfg->bufOwnshp, mBuf); 
+   CMCHKUNPK(oduUnpackUInt8, &bndCfg->flcTyp, mBuf); 
+   CMCHKUNPK(oduUnpackUInt8, &bndCfg->wdw, mBuf); 
    CMCHKUNPK(cmUnpkEnt, &bndCfg->ent, mBuf); 
    CMCHKUNPK(cmUnpkInst, &bndCfg->inst, mBuf); 
    CMCHKUNPK(cmUnpkRegion, &bndCfg->region, mBuf); 
@@ -2152,12 +2152,12 @@ Buffer  *mBuf                /* message buffer */
    /* Unpack action indicator field */
    if (m->pres)
    {
-      CMCHKUNPK(oduPackUInt8, &m->actnInd, mBuf);
+      CMCHKUNPK(oduUnpackUInt8, &m->actnInd, mBuf);
    }
 #endif
 
 #if (LCAMT || ATM_BISUP)
-      CMCHKUNPK(oduPackUInt16, &m->compInd, mBuf);
+      CMCHKUNPK(oduUnpackUInt16, &m->compInd, mBuf);
 #endif /* LCAMT || ATM_BISUP */
 
    return ROK;
@@ -2186,12 +2186,12 @@ Buffer *mBuf                /* message buffer */
 {
 
    /* Token Header */
-   CMCHKUNPK(oduPackUInt8, &tknUInt8->pres, mBuf);
+   CMCHKUNPK(oduUnpackUInt8, &tknUInt8->pres, mBuf);
 
    if (tknUInt8->pres)
    {
       /* Value */
-      CMCHKUNPK(oduPackUInt8, &tknUInt8->val, mBuf);
+      CMCHKUNPK(oduUnpackUInt8, &tknUInt8->val, mBuf);
    }
 
    return ROK;
@@ -2220,7 +2220,7 @@ Buffer *mBuf                /* message buffer */
 {
  
    /* Token Header */
-   CMCHKUNPK(oduPackUInt8, &tknS8->pres, mBuf);
+   CMCHKUNPK(oduUnpackUInt8, &tknS8->pres, mBuf);
  
    if (tknS8->pres)
    {
@@ -2254,12 +2254,12 @@ Buffer *mBuf                /* message buffer */
 {
 
    /* Token Header */
-   CMCHKUNPK(oduPackUInt8, &tknUInt16->pres, mBuf);
+   CMCHKUNPK(oduUnpackUInt8, &tknUInt16->pres, mBuf);
 
    if (tknUInt16->pres)
    {
       /* Value */
-      CMCHKUNPK(oduPackUInt16, &tknUInt16->val, mBuf);
+      CMCHKUNPK(oduUnpackUInt16, &tknUInt16->val, mBuf);
    }
 
    return ROK;
@@ -2288,12 +2288,12 @@ Buffer *mBuf                /* message buffer */
 {
 
    /* Token Header */
-   CMCHKUNPK(oduPackUInt8, &tknUInt32->pres, mBuf);
+   CMCHKUNPK(oduUnpackUInt8, &tknUInt32->pres, mBuf);
 
    if (tknUInt32->pres)
    {
       /* Value */
-      CMCHKUNPK(oduPackUInt32, &tknUInt32->val, mBuf);
+      CMCHKUNPK(oduUnpackUInt32, &tknUInt32->val, mBuf);
    }
 
    return ROK;
@@ -2323,17 +2323,17 @@ Buffer *mBuf                /* message buffer */
 
 
    /* Token Header */
-   CMCHKUNPK(oduPackUInt8, &tknStr->pres, mBuf);
+   CMCHKUNPK(oduUnpackUInt8, &tknStr->pres, mBuf);
 
    if (tknStr->pres)
    {
       /* Length */
-      CMCHKUNPK(oduPackUInt8, &tknStr->len, mBuf);
+      CMCHKUNPK(oduUnpackUInt8, &tknStr->len, mBuf);
 
       /* Value */
       for (i = (tknStr->len - 1); i >= 0; i--)
       {
-         CMCHKUNPK(oduPackUInt8, &tknStr->val[i], mBuf);
+         CMCHKUNPK(oduUnpackUInt8, &tknStr->val[i], mBuf);
       }
    }
    else
@@ -2366,17 +2366,17 @@ Buffer *mBuf                /* message buffer */
 
 
    /* Token Header */
-   CMCHKUNPK(oduPackUInt8, &tknStr->pres, mBuf);
+   CMCHKUNPK(oduUnpackUInt8, &tknStr->pres, mBuf);
 
    if (tknStr->pres)
    {
       /* Length */
-      CMCHKUNPK(oduPackUInt8, &tknStr->len, mBuf);
+      CMCHKUNPK(oduUnpackUInt8, &tknStr->len, mBuf);
 
       /* Value */
       for (i = (tknStr->len - 1); i >= 0; i--)
       {
-         CMCHKUNPK(oduPackUInt8, &tknStr->val[i], mBuf);
+         CMCHKUNPK(oduUnpackUInt8, &tknStr->val[i], mBuf);
       }
    }
    else
@@ -2410,17 +2410,17 @@ Buffer *mBuf                /* message buffer */
 
 
    /* Token Header */
-   CMCHKUNPK(oduPackUInt8, &tknStr->pres, mBuf);
+   CMCHKUNPK(oduUnpackUInt8, &tknStr->pres, mBuf);
 
    if (tknStr->pres)
    {
       /* Length */
-      CMCHKUNPK(oduPackUInt8, &tknStr->len, mBuf);
+      CMCHKUNPK(oduUnpackUInt8, &tknStr->len, mBuf);
 
       /* Value */
       for (i = (tknStr->len - 1); i >= 0; i--)
       {
-         CMCHKUNPK(oduPackUInt8, &tknStr->val[i], mBuf);
+         CMCHKUNPK(oduUnpackUInt8, &tknStr->val[i], mBuf);
       }
    }
    else
@@ -2454,17 +2454,17 @@ Buffer *mBuf                /* message buffer */
 
 
    /* Token Header */
-   CMCHKUNPK(oduPackUInt8, &tknStr->pres, mBuf);
+   CMCHKUNPK(oduUnpackUInt8, &tknStr->pres, mBuf);
 
    if (tknStr->pres)
    {
       /* Length */
-      CMCHKUNPK(oduPackUInt8, &tknStr->len, mBuf);
+      CMCHKUNPK(oduUnpackUInt8, &tknStr->len, mBuf);
 
       /* Value */
       for (i = (tknStr->len - 1); i >= 0; i--)
       {
-         CMCHKUNPK(oduPackUInt8, &tknStr->val[i], mBuf);
+         CMCHKUNPK(oduUnpackUInt8, &tknStr->val[i], mBuf);
       }
    }
    else
@@ -2501,7 +2501,7 @@ Buffer *mBuf        /* message buffer */
    
    for (i = 0; i < PN_NODEID_LEN; i++)
    {
-      CMCHKUNPK(oduPackUInt8, &dst->id[i], mBuf);
+      CMCHKUNPK(oduUnpackUInt8, &dst->id[i], mBuf);
    }
    
    return ROK;
@@ -2703,12 +2703,12 @@ Buffer   *mBuf                /* message buffer */
 
  
    /* Unpack the token header */
-   CMCHKUNPK(oduPackUInt8, &tknOid->pres, mBuf);
+   CMCHKUNPK(oduUnpackUInt8, &tknOid->pres, mBuf);
 
    if (tknOid->pres == TRUE)
    {
       /* Unpack the length */
-      CMCHKUNPK(oduPackUInt8, &tknOid->len, mBuf);
+      CMCHKUNPK(oduUnpackUInt8, &tknOid->len, mBuf);
 
       /* Pack the value */
       for (i = 1; i <= (uint16_t)tknOid->len; i++)
@@ -2716,9 +2716,9 @@ Buffer   *mBuf                /* message buffer */
          /* cm_gen_c_001.main_33: changes for TknOid value from uint16_t to uint32_t
           * with compilation flag TKNOID_UINT16 */
 #ifndef TKNOID_UINT16
-         CMCHKUNPK(oduPackUInt32, &tknOid->val[tknOid->len - i], mBuf);
+         CMCHKUNPK(oduUnpackUInt32, &tknOid->val[tknOid->len - i], mBuf);
 #else
-         CMCHKUNPK(oduPackUInt16, &tknOid->val[tknOid->len - i], mBuf);
+         CMCHKUNPK(oduUnpackUInt16, &tknOid->val[tknOid->len - i], mBuf);
 #endif /* !TKNOID_UINT16 */
       }
    }
@@ -2749,7 +2749,7 @@ Buffer *mBuf                /* message buffer */
 {
 
    /* Token Header */
-   CMCHKUNPK(oduPackUInt8, &tknS32->pres, mBuf);
+   CMCHKUNPK(oduUnpackUInt8, &tknS32->pres, mBuf);
 
    if (tknS32->pres)
    {
@@ -2782,10 +2782,10 @@ Buffer *mBuf      /* message buffer */
 )
 {
 
-   CMCHKUNPK(oduPackUInt16, &header->msgLen, mBuf); 
-   CMCHKUNPK(oduPackUInt8, &header->msgType, mBuf); 
-   CMCHKUNPK(oduPackUInt8, &header->version, mBuf); 
-   CMCHKUNPK(oduPackUInt16, &header->seqNmb, mBuf); 
+   CMCHKUNPK(oduUnpackUInt16, &header->msgLen, mBuf); 
+   CMCHKUNPK(oduUnpackUInt8, &header->msgType, mBuf); 
+   CMCHKUNPK(oduUnpackUInt8, &header->version, mBuf); 
+   CMCHKUNPK(oduUnpackUInt16, &header->seqNmb, mBuf); 
    CMCHKUNPK(cmUnpkEntityId, &header->entId, mBuf);    
    CMCHKUNPK(cmUnpkElmntId, &header->elmId, mBuf);
 #ifdef LMINT3
@@ -2821,8 +2821,8 @@ Buffer *mBuf                /* message buffer */
 )
 {
 
-   CMCHKUNPK(oduPackUInt16, &sta->status, mBuf);
-   CMCHKUNPK(oduPackUInt16, &sta->reason, mBuf);
+   CMCHKUNPK(oduUnpackUInt16, &sta->status, mBuf);
+   CMCHKUNPK(oduUnpackUInt16, &sta->reason, mBuf);
 
    return ROK;
 } /* end of cmUnpkCmStatus */
@@ -2850,9 +2850,9 @@ Buffer *mBuf                /* message buffer */
 {
 
    CMCHKUNPK(cmUnpkDateTime, &alarm->dt, mBuf);
-   CMCHKUNPK(oduPackUInt16, &alarm->category, mBuf);
-   CMCHKUNPK(oduPackUInt16, &alarm->event, mBuf);
-   CMCHKUNPK(oduPackUInt16, &alarm->cause, mBuf);
+   CMCHKUNPK(oduUnpackUInt16, &alarm->category, mBuf);
+   CMCHKUNPK(oduUnpackUInt16, &alarm->event, mBuf);
+   CMCHKUNPK(oduUnpackUInt16, &alarm->cause, mBuf);
 
    return ROK;
 } /* end of cmUnpkCmAlarm */
@@ -2913,7 +2913,7 @@ Buffer *mBuf            /* message buffer */
 {
 
    CMCHKUNPK(oduUnpackBool, &tmrCfg->enb, mBuf); 
-   CMCHKUNPK(oduPackUInt16, &tmrCfg->val, mBuf);
+   CMCHKUNPK(oduUnpackUInt16, &tmrCfg->val, mBuf);
 
    return ROK;
 } /* end of cmUnpkTmrCfg */
@@ -2945,7 +2945,7 @@ Buffer    **tBuf                /* message buffer */
    mBuf = *tBuf;
   
    /* Token Header */
-   CMCHKUNPK(oduPackUInt8, &tknBuf->pres, mBuf);
+   CMCHKUNPK(oduUnpackUInt8, &tknBuf->pres, mBuf);
 
    if(tknBuf->pres)
    {

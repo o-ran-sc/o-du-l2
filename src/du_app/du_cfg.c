@@ -4301,7 +4301,6 @@ uint8_t parseMacSliceCfgReq(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur,MacSliceC
 }
 #endif
 
-#ifdef THREAD_AFFINITY
 /*******************************************************************
  *
  * @brief Set thread affinity to the core configured via XML file
@@ -4386,7 +4385,6 @@ uint8_t parseThreadAffinity(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur, ThreadIn
    }
    return ROK;
 }
-#endif
 
 /*******************************************************************
  *
@@ -5172,13 +5170,11 @@ uint8_t parseDuCfgParams(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur)
    {
       if ((!xmlStrcmp(cur->name, (const xmlChar *)"THREAD_AFFINITY")) && (cur->ns == ns))
       {
-#ifdef THREAD_AFFINITY      
          if(parseThreadAffinity(doc, ns, cur, &duCfgParam.threadInfo) != ROK)
          {
             ret = RFAILED;
             break;
          }
-#endif         
       }
 
       if ((!xmlStrcmp(cur->name, (const xmlChar *)"GNB_ID")) && (cur->ns == ns))
