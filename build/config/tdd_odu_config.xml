@@ -3,7 +3,7 @@
 <DU_CFG_PARAMS xmlns = "urn:o-ran:odu:configuration">
    <THREAD_AFFINITY>
       <DU_APP_CORE>16</DU_APP_CORE>
-      <EGTP_CORE>27</EGTP_CORE>
+      <EGTP_CORE>55</EGTP_CORE>
       <RLC_MAC_CORE>18</RLC_MAC_CORE>
       <RLC_UL_CORE>22</RLC_UL_CORE>
       <SCH_CORE>22</SCH_CORE>

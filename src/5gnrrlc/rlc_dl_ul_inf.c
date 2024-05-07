@@ -192,7 +192,7 @@ S16 cmPkUdxBndCfm(Pst *pst,SuId suId,uint8_t status)
 #endif /*  ERRCLASS & ERRCLS_ADD_RES  */
        return (ret1);
     }
-    CMCHKPKLOG(oduUnpackUInt8, status, mBuf, EUDXXXX, pst);
+    CMCHKPKLOG(oduPackUInt8, status, mBuf, EUDXXXX, pst);
     CMCHKPKLOG(SPkS16, suId, mBuf, EUDXXXX, pst);
     pst->event = (Event) UDX_EVT_BND_CFM;
 
@@ -378,7 +378,7 @@ CkwUeInfo  *newUeInfo
        }
 #endif
     }
-    CMCHKPKLOG(oduUnpackUInt32, transId, mBuf, EUDXXXX, pst);
+    CMCHKPKLOG(oduPackUInt32, transId, mBuf, EUDXXXX, pst);
     CMCHKPKLOG(SPkS16, spId, mBuf, EUDXXXX, pst);
     pst->event = (Event) UDX_EVT_UEIDCHG_REQ;
 
@@ -419,7 +419,7 @@ S16 cmPkUdxUeIdChgCfm(Pst *pst,SuId suId,uint32_t transId,CmStatus status)
     }
     
     CMCHKPK(cmPkCmStatus, &status, mBuf); 
-    CMCHKPKLOG(oduUnpackUInt32, transId, mBuf, EUDXXXX, pst);
+    CMCHKPKLOG(oduPackUInt32, transId, mBuf, EUDXXXX, pst);
     CMCHKPKLOG(SPkS16, suId, mBuf, EUDXXXX, pst);
     pst->event = (Event) UDX_EVT_UEIDCHG_CFM;
 
@@ -728,7 +728,7 @@ S16 cmPkUdxL2MeasSendReq(Pst  *pst,uint8_t measType)
        case UDX_SEL_LC:
        case UDX_SEL_LWLC:
        {
-          CMCHKPKLOG(oduUnpackUInt8, measType, mBuf, EUDXXXX, pst);
+          CMCHKPKLOG(oduPackUInt8, measType, mBuf, EUDXXXX, pst);
           break;
        }
     }
@@ -772,7 +772,7 @@ S16 cmPkUdxL2MeasStopReq(Pst *pst,uint8_t measType)
        case UDX_SEL_LC:
        case UDX_SEL_LWLC:
        {
-          CMCHKPKLOG(oduUnpackUInt8, measType, mBuf, EUDXXXX, pst);
+          CMCHKPKLOG(oduPackUInt8, measType, mBuf, EUDXXXX, pst);
           break;
        }
     }
@@ -854,7 +854,7 @@ S16 cmUnpkUdxBndCfm(UdxBndCfm func,Pst *pst,Buffer *mBuf)
     uint8_t         status = 0;
     
     CMCHKUNPKLOG(SUnpkS16, &suId, mBuf, EUDXXXX, pst);
-    CMCHKUNPKLOG(oduPackUInt8, &status, mBuf, EUDXXXX, pst);
+    CMCHKUNPKLOG(oduUnpackUInt8, &status, mBuf, EUDXXXX, pst);
     ODU_PUT_MSG_BUF(mBuf);
 
     return ((*func)(pst, suId, status));
@@ -1006,7 +1006,7 @@ S16 cmUnpkUdxUeIdChgReq(UdxUeIdChgReq func,Pst *pst,Buffer *mBuf)
     CkwUeInfo *newUeInfo;
     
     CMCHKUNPK(SUnpkS16, &(spId), mBuf);
-    CMCHKUNPKLOG(oduPackUInt32, &transId, mBuf, EUDXXXX, pst);
+    CMCHKUNPKLOG(oduUnpackUInt32, &transId, mBuf, EUDXXXX, pst);
 
     switch(pst->selector)
     {
@@ -1062,7 +1062,7 @@ S16 cmUnpkUdxUeIdChgCfm(UdxUeIdChgCfm func,Pst  *pst,Buffer *mBuf)
     memset(&status, 0, sizeof(CmStatus));
 
     CMCHKUNPK(SUnpkS16, &suId, mBuf);
-    CMCHKUNPKLOG(oduPackUInt32, &transId, mBuf, EUDXXXX, pst);
+    CMCHKUNPKLOG(oduUnpackUInt32, &transId, mBuf, EUDXXXX, pst);
 
     CMCHKUNPK(cmUnpkCmStatus, &status, mBuf);
 
@@ -1322,7 +1322,7 @@ S16 cmUnpkUdxL2MeasSendReq(UdxL2MeasSendReq func,Pst *pst,Buffer *mBuf)
        case UDX_SEL_LC:
        case UDX_SEL_LWLC:
        {
-          CMCHKUNPK(oduPackUInt8, &measType, mBuf);
+          CMCHKUNPK(oduUnpackUInt8, &measType, mBuf);
          break;
        }
     }
@@ -1351,7 +1351,7 @@ S16 cmUnpkUdxL2MeasStopReq(UdxL2MeasStopReq func,Pst *pst,Buffer *mBuf)
        case UDX_SEL_LC:
        case UDX_SEL_LWLC:
        {
-          CMCHKUNPK(oduPackUInt8, &measType, mBuf);
+          CMCHKUNPK(oduUnpackUInt8, &measType, mBuf);
          break;
        }
     }

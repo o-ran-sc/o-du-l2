@@ -173,7 +173,7 @@ uint8_t status
 #endif
       return RFAILED;
    }
-   if (oduUnpackUInt8(status, mBuf) != ROK) {
+   if (oduPackUInt8(status, mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
       SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
          __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
@@ -230,7 +230,7 @@ Buffer *mBuf
 #endif
       return RFAILED;
    }
-   if (oduPackUInt8(&status, mBuf) != ROK) {
+   if (oduUnpackUInt8(&status, mBuf) != ROK) {
       SPutMsg(mBuf);
 #if (ERRCLASS & ERRCLS_ADD_RES)
       SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
@@ -377,7 +377,7 @@ uint8_t status
       return RFAILED;
    }
 /* crg_c_001.main_5 - ADD - Added the packing for status. */
-   if (oduUnpackUInt8(status, mBuf) != ROK) {
+   if (oduPackUInt8(status, mBuf) != ROK) {
 #if (ERRCLASS & ERRCLS_ADD_RES)
       SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
          __FILE__, __LINE__, (ErrCls)ERRCLS_ADD_RES,
@@ -453,7 +453,7 @@ Buffer *mBuf
 #endif
       return RFAILED;
    }
-   if (oduPackUInt8(&status, mBuf) != ROK) {
+   if (oduUnpackUInt8(&status, mBuf) != ROK) {
       SPutMsg(mBuf);
 #if (ERRCLASS & ERRCLS_ADD_RES)
       SLogError(pst->srcEnt, pst->srcInst, pst->srcProcId,
@@ -492,7 +492,7 @@ Buffer *mBuf
    S32 i;
 
    for (i=CRG_CFG_TRANSID_SIZE-1; i >= 0; i--) {
-      CMCHKPK(oduUnpackUInt8, param->trans[i], mBuf);
+      CMCHKPK(oduPackUInt8, param->trans[i], mBuf);
    }
    return ROK;
 }
@@ -524,7 +524,7 @@ Buffer *mBuf
    S32 i;
 
    for (i=0; i<CRG_CFG_TRANSID_SIZE; i++) {
-      CMCHKUNPK(oduPackUInt8, &param->trans[i], mBuf);
+      CMCHKUNPK(oduUnpackUInt8, &param->trans[i], mBuf);
    }
    return ROK;
 }
@@ -554,7 +554,7 @@ Buffer *mBuf
 {
 
 
-   CMCHKPK(oduUnpackUInt8, param->maxUlHqTx, mBuf);
+   CMCHKPK(oduPackUInt8, param->maxUlHqTx, mBuf);
    return ROK;
 }
 
@@ -582,8 +582,8 @@ Buffer *mBuf
 {
    CMCHKPK(SPkS16, param->rguDlSapId, mBuf);
    CMCHKPK(SPkS16, param->rguUlSapId, mBuf);
-   CMCHKPK(oduUnpackUInt8, param->macInst, mBuf);
-   CMCHKPK(oduUnpackUInt16, param->sCellId, mBuf);
+   CMCHKPK(oduPackUInt8, param->macInst, mBuf);
+   CMCHKPK(oduPackUInt16, param->sCellId, mBuf);
 
    return ROK;
 }
@@ -608,8 +608,8 @@ CrgUeSCellInfo *param,
 Buffer *mBuf
 )
 {
-   CMCHKUNPK(oduPackUInt16, &param->sCellId, mBuf);
-   CMCHKUNPK(oduPackUInt8, &param->macInst, mBuf);
+   CMCHKUNPK(oduUnpackUInt16, &param->sCellId, mBuf);
+   CMCHKUNPK(oduUnpackUInt8, &param->macInst, mBuf);
    CMCHKUNPK(SUnpkS16, &param->rguUlSapId, mBuf);
    CMCHKUNPK(SUnpkS16, &param->rguDlSapId, mBuf);
    return ROK;
@@ -641,8 +641,8 @@ Buffer *mBuf
       CMCHKPK(cmPkCrgUeSCellCfg, &param->ueSCellCfg[(uint8_t)idx], mBuf);
    }
 
-   CMCHKPK(oduUnpackUInt8, param->numSCells, mBuf);
-   CMCHKPK(oduUnpackUInt8, param->isSCellCfgPres, mBuf);
+   CMCHKPK(oduPackUInt8, param->numSCells, mBuf);
+   CMCHKPK(oduPackUInt8, param->isSCellCfgPres, mBuf);
 
    return ROK;
 }
@@ -670,10 +670,10 @@ Buffer *mBuf
 {
    uint8_t idx;
 
-   CMCHKUNPK(oduPackUInt8, &param->isSCellCfgPres, mBuf);
+   CMCHKUNPK(oduUnpackUInt8, &param->isSCellCfgPres, mBuf);
    if(TRUE == param->isSCellCfgPres)
    {
-      CMCHKUNPK(oduPackUInt8, &param->numSCells, mBuf);
+      CMCHKUNPK(oduUnpackUInt8, &param->numSCells, mBuf);
 
       for(idx = 0; idx < param->numSCells; idx++)
       {

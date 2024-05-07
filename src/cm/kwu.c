@@ -102,7 +102,7 @@ S16 cmPkKwuBndCfm(Pst * pst,SuId suId,uint8_t status)
       return (ret1);
    }
 
-   CMCHKPKLOG(oduUnpackUInt8, status, mBuf, EKWU005, pst);
+   CMCHKPKLOG(oduPackUInt8, status, mBuf, EKWU005, pst);
    CMCHKPKLOG(SPkS16, suId, mBuf, EKWU006, pst);
    pst->event = (Event) KWU_EVT_BND_CFM;
    return (SPstTsk(pst,mBuf));
@@ -147,8 +147,8 @@ uint8_t cmPkRlcDatReqInfo(RlcDatReqInfo *param,Buffer *mBuf)
       case  CM_LTE_LCH_PCCH:
          CMCHKPK(cmPkLteTimingInfo, &param->tm.tmg, mBuf);
 #ifdef EMTC_ENABLE
-         CMCHKPK(oduUnpackUInt8, param->emtcDiReason,mBuf);
-         CMCHKPK(oduUnpackUInt8, param->pnb,mBuf);
+         CMCHKPK(oduPackUInt8, param->emtcDiReason,mBuf);
+         CMCHKPK(oduPackUInt8, param->pnb,mBuf);
 #endif
          break;
       case CM_LTE_LCH_DTCH:
@@ -160,7 +160,7 @@ uint8_t cmPkRlcDatReqInfo(RlcDatReqInfo *param,Buffer *mBuf)
    CMCHKPK(cmPkLteLcType, param->lcType, mBuf);
 
 #endif
-   CMCHKPK(oduUnpackUInt32, param->sduId, mBuf);
+   CMCHKPK(oduPackUInt32, param->sduId, mBuf);
    CMCHKPK(cmPkLteRlcId, &param->rlcId, mBuf);
    return ROK;
 } /* cmPkRlcDatReqInfo */
@@ -332,7 +332,7 @@ uint8_t cmPkRlcDatReq(Pst * pst,RlcDatReqInfo* datReq,Buffer * mBuf)
 uint8_t cmPkKwuDatIndInfo(KwuDatIndInfo *param,Buffer *mBuf)
 {
 
-   CMCHKPK(oduUnpackUInt8, param->isOutOfSeq, mBuf);
+   CMCHKPK(oduPackUInt8, param->isOutOfSeq, mBuf);
 #ifdef CCPU_OPT
    CMCHKPK(cmPkLteRnti, param->tCrnti, mBuf);
 #endif
@@ -427,9 +427,9 @@ S16 cmPkKwuDatCfmInfo(KwuDatCfmInfo *param,Buffer *mBuf)
 
    for(iter = 0; iter < param->numSduIds; iter++)
    {
-      CMCHKPK(oduUnpackUInt32, param->sduIds[iter], mBuf);
+      CMCHKPK(oduPackUInt32, param->sduIds[iter], mBuf);
    }
-   CMCHKPK(oduUnpackUInt32, param->numSduIds, mBuf);
+   CMCHKPK(oduPackUInt32, param->numSduIds, mBuf);
    CMCHKPK(cmPkLteRlcId, &param->rlcId, mBuf);
    return ROK;
 } /* cmPkKwuDatCfmInfo */
@@ -569,9 +569,9 @@ S16 cmPkKwuStaIndInfo(KwuStaIndInfo *param,Buffer *mBuf)
 
    for (i = (param->numSdu - 1); i >= 0; i--)
    {
-      CMCHKPK(oduUnpackUInt32, param->sduId[(uint16_t)i], mBuf);
+      CMCHKPK(oduPackUInt32, param->sduId[(uint16_t)i], mBuf);
    }
-   CMCHKPK(oduUnpackUInt32, param->numSdu, mBuf);
+   CMCHKPK(oduPackUInt32, param->numSdu, mBuf);
    CMCHKPK(cmPkLteRlcId, &param->rlcId, mBuf);
    return ROK;
 }
@@ -579,7 +579,7 @@ S16 cmPkKwuStaIndInfo(KwuStaIndInfo *param,Buffer *mBuf)
 S16 cmPkKwuFlowCntrlIndInfo(KwuFlowCntrlIndInfo *param,Buffer *mBuf)
 {
 
-   CMCHKPK(oduUnpackUInt32, param->pktAdmitCnt, mBuf);   
+   CMCHKPK(oduPackUInt32, param->pktAdmitCnt, mBuf);   
    CMCHKPK(cmPkLteRlcId, &param->rlcId, mBuf);
 
    return ROK;
@@ -589,7 +589,7 @@ S16 cmUnpkKwuFlowCntrlIndInfo(KwuFlowCntrlIndInfo *param,Buffer *mBuf)
 {
    
    CMCHKUNPK(cmUnpkLteRlcId, &param->rlcId, mBuf);
-   CMCHKUNPK(oduPackUInt32, &param->pktAdmitCnt, mBuf);
+   CMCHKUNPK(oduUnpackUInt32, &param->pktAdmitCnt, mBuf);
   
    return ROK;
 } /* cmUnpkKwuFlowCntrlIndInfo */
@@ -816,7 +816,7 @@ S16 cmPkKwuDatAckInfo(KwuDatAckInfo *param,Buffer *mBuf)
 {
 
    CMCHKPK(cmPkLteRlcId, &param->rlcId, mBuf);
-   CMCHKPK(oduUnpackUInt32, param->sduId, mBuf);
+   CMCHKPK(oduPackUInt32, param->sduId, mBuf);
    return ROK;
 }
 
@@ -879,7 +879,7 @@ S16 cmUnpkKwuBndCfm(KwuBndCfm func,Pst *pst,Buffer *mBuf)
 
 
    CMCHKUNPKLOG(SUnpkS16, &suId, mBuf, EKWU022, pst);
-   CMCHKUNPKLOG(oduPackUInt8, &status, mBuf, EKWU023, pst);
+   CMCHKUNPKLOG(oduUnpackUInt8, &status, mBuf, EKWU023, pst);
    SPutMsg(mBuf);
 
    return ((*func)(pst, suId, status));
@@ -905,7 +905,7 @@ S16 cmUnpkRlcDatReqInfo(RlcDatReqInfo *param,Buffer *mBuf)
 
 
    CMCHKUNPK(cmUnpkLteRlcId, &param->rlcId, mBuf);
-   CMCHKUNPK(oduPackUInt32, &param->sduId, mBuf);
+   CMCHKUNPK(oduUnpackUInt32, &param->sduId, mBuf);
 
 #ifdef CCPU_OPT
    CMCHKUNPK(cmUnpkLteLcType, &param->lcType, mBuf);
@@ -913,8 +913,8 @@ S16 cmUnpkRlcDatReqInfo(RlcDatReqInfo *param,Buffer *mBuf)
       case CM_LTE_LCH_BCCH:
       case  CM_LTE_LCH_PCCH:
 #ifdef EMTC_ENABLE
-         CMCHKUNPK(oduPackUInt8,&param->pnb , mBuf);
-         CMCHKUNPK(oduPackUInt8,&param->emtcDiReason , mBuf);
+         CMCHKUNPK(oduUnpackUInt8,&param->pnb , mBuf);
+         CMCHKUNPK(oduUnpackUInt8,&param->emtcDiReason , mBuf);
 #endif         
          CMCHKUNPK(cmUnpkLteTimingInfo, &param->tm.tmg, mBuf);
 
@@ -1001,7 +1001,7 @@ uint8_t cmUnpkKwuDatIndInfo(KwuDatIndInfo *param,Buffer *mBuf)
 #ifdef CCPU_OPT
    CMCHKUNPK(cmUnpkLteRnti, &param->tCrnti, mBuf);
 #endif
-   CMCHKUNPK(oduPackUInt8, &param->isOutOfSeq, mBuf);
+   CMCHKUNPK(oduUnpackUInt8, &param->isOutOfSeq, mBuf);
    return ROK;
 }
 
@@ -1082,7 +1082,7 @@ S16 cmUnpkKwuDatCfmInfo(KwuDatCfmInfo *param,Buffer *mBuf)
    register S32 iter;
 
    CMCHKUNPK(cmUnpkLteRlcId, &param->rlcId, mBuf);
-   CMCHKUNPK(oduPackUInt32, &param->numSduIds, mBuf);
+   CMCHKUNPK(oduUnpackUInt32, &param->numSduIds, mBuf);
 
 #ifdef L2_L3_SPLIT /*Work Around */
    if (param->numSduIds >= KWU_MAX_DAT_CFM)
@@ -1090,7 +1090,7 @@ S16 cmUnpkKwuDatCfmInfo(KwuDatCfmInfo *param,Buffer *mBuf)
 #endif
    for(iter = param->numSduIds -1; iter >= 0 ; iter--)
    {
-      CMCHKUNPK(oduPackUInt32, &param->sduIds[iter], mBuf);
+      CMCHKUNPK(oduUnpackUInt32, &param->sduIds[iter], mBuf);
    }
    return ROK;
 }
@@ -1221,10 +1221,10 @@ S16 cmUnpkKwuStaIndInfo(KwuStaIndInfo *param,Buffer *mBuf)
    uint32_t i;
 
    CMCHKUNPK(cmUnpkLteRlcId, &param->rlcId, mBuf);
-   CMCHKUNPK(oduPackUInt32, &param->numSdu, mBuf);
+   CMCHKUNPK(oduUnpackUInt32, &param->numSdu, mBuf);
    for (i = 0; i < param->numSdu; i++)
    {
-      CMCHKUNPK(oduPackUInt32, &param->sduId[i], mBuf);
+      CMCHKUNPK(oduUnpackUInt32, &param->sduId[i], mBuf);
    }
 
    return ROK;
@@ -1430,7 +1430,7 @@ S16 cmUnpkKwuFlowCntrlInd(KwuFlowCntrlInd func,Pst *pst,Buffer *mBuf)
 S16 cmUnpkKwuDatAckInfo(KwuDatAckInfo *param,Buffer *mBuf)
 {
 
-   CMCHKUNPK(oduPackUInt32, &param->sduId, mBuf);
+   CMCHKUNPK(oduUnpackUInt32, &param->sduId, mBuf);
    CMCHKUNPK(cmUnpkLteRlcId, &param->rlcId, mBuf);
 
    return ROK;
