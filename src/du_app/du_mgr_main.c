@@ -52,9 +52,14 @@ uint8_t schActvTsk (Pst *, Buffer *);
 uint8_t schActvInit(Ent, Inst, Region, Reason);
 uint8_t lwrMacActvTsk(Pst *, Buffer *);
 uint8_t lwrMacActvInit(Ent, Inst, Region, Reason);
-#ifndef INTEL_WLS_MEM
+#if !(defined(NFAPI_ENABLED) || defined (INTEL_WLS_MEM))
 uint8_t phyStubActvTsk(Pst *, Buffer *);
 uint8_t phyStubActvInit(Ent, Inst, Region, Reason);
+#else
+#ifdef NFAPI_ENABLED
+uint8_t udpP7ActvTsk(Pst *, Buffer *);
+uint8_t udpP7ActvInit(Ent, Inst, Region, Reason);
+#endif
 #endif
 
 /* Global variable */
@@ -518,7 +523,7 @@ uint8_t lwrMacInit(SSTskId sysTskId)
    return ROK;
 }
 
-#ifndef INTEL_WLS_MEM
+#if !(defined(NFAPI_ENABLED) || defined (INTEL_WLS_MEM))
 /*******************************************************************
  *
  * @brief Initializes Phy stub slot indication generator task
@@ -554,6 +559,43 @@ uint8_t phyStubInit(SSTskId sysTskId)
          sysTskId);
    return ROK;
 }
+#else
+#ifdef NFAPI_ENABLED
+/*******************************************************************
+ *
+ * @brief Initializes UDP P7 task
+ *
+ * @details
+ *
+ *    Function : udpP7Init
+ *
+ *    Functionality:
+ *       - Registers and attaches TAPA tasks for UDP P7
+ *
+ * @params[in] system task ID
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t udpP7Init(SSTskId sysTskId)
+{
+   /* Register UDP P7 TAPA Task */
+   if(ODU_REG_TTSK((Ent)ENTUDP7, (Inst)0, (Ttype)TTNORM, (Prior)PRIOR0,
+            udpP7ActvInit, (ActvTsk)udpP7ActvTsk) != ROK)
+   {
+      return RFAILED;
+   }
+   /* Attach UDP P7 TAPA Task */
+   if (ODU_ATTACH_TTSK((Ent)ENTUDP7, (Inst)0, sysTskId)!= ROK)
+   {
+      return RFAILED;
+   }
+
+   DU_LOG("\nINFO   -->  DU_APP : UDP P7 TAPA task created and registered to %d sys task",
+         sysTskId);
+   return ROK;
+}
+#endif
 #endif
 
 /*******************************************************************
@@ -575,7 +617,9 @@ uint8_t phyStubInit(SSTskId sysTskId)
 uint8_t commonInit()
 {
    /* Declare system task Ids */
+#if !(defined(NFAPI_ENABLED) || defined (INTEL_WLS_MEM))
    SSTskId phyStubSlotIndSTskId;
+#endif
 
    pthread_attr_t attr;
 
@@ -633,14 +677,31 @@ uint8_t commonInit()
       return RFAILED;
    }
 
-#ifndef INTEL_WLS_MEM
+/*UDP P7 Socket thread is required for NFAPI. Following conditions are framed as below:
+ * 1. If NFAPI is enabled and
+ *   i. INTEL_L1 is not used then PHY thread is not created as PNF will be replacing PHY.
+ *   ii. INTEL_L1 is used then also we need UDP socket for P7 coomunication.
+ * 2. In case of NFAPI is disabled 
+ *   i. INTEL_L1 is not used then we need PHY thread
+ *   ii. INTEL_L1 is used as PHY then neither of PHY nor UDPP7 thread is required*/
+#if !(defined(NFAPI_ENABLED) || defined (INTEL_WLS_MEM))
    /* system task for phy stub's slot indication generator thread */
    if(ODU_CREATE_TASK(PRIOR0, &phyStubSlotIndSTskId) != ROK)
    {
       DU_LOG("\nERROR  -->  DU_APP : System Task creation for Phy stub slot indication generator failed. MAX STSK [%d]", SS_MAX_STSKS);
       return RFAILED;
    }
-
+   DU_LOG("\nINFO  --> SANGEETA: PHY STUB THREAD CREATED");
+#else
+#ifdef NFAPI_ENABLED
+   /* system task for UDP-P7 thread */
+   if(ODU_CREATE_TASK(PRIOR0, &duCfgParam.threadInfo.udpP7STskId) != ROK)
+   {
+      DU_LOG("\nERROR  -->  DU_APP : System Task creation for UDP P7 Interface failed. MAX STSK [%d]", SS_MAX_STSKS);
+      return RFAILED;
+   }
+   DU_LOG("\nINFO  --> SANGEETA: UDP P7 THREAD CREATED");
+#endif
 #endif
 
    /* Create TAPA tasks */
@@ -686,14 +747,21 @@ uint8_t commonInit()
       return RFAILED;
    }
 
-#ifndef INTEL_WLS_MEM
+#if !(defined(NFAPI_ENABLED) || defined (INTEL_WLS_MEM))
    if(phyStubInit(phyStubSlotIndSTskId) != ROK)
    {
       DU_LOG("\nERROR  -->  DU_APP : PHY stub slot indication Tapa Task initialization failed");
       return RFAILED;
    }
+#else
+#ifdef NFAPI_ENABLED
+   if(udpP7Init(duCfgParam.threadInfo.udpP7STskId) != ROK)
+   {
+      DU_LOG("\nERROR  -->  DU_APP : UDP P7 Tapa Task initialization failed");
+      return RFAILED;
+   }
 #endif
-
+#endif
 
    return ROK;
 }
