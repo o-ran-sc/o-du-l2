@@ -1162,6 +1162,8 @@ typedef struct threadInfo
    uint8_t schCoreId;
    SSTskId lwrMacSTskId;
    uint8_t lwrMacCoreId;
+   SSTskId udpP7STskId;
+   uint8_t udpP7CoreId;
 }ThreadInfo;
 
 typedef struct duCfgParams

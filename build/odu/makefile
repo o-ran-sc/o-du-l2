@@ -74,7 +74,7 @@ endif
 # macro for output file name and makefile name
 #
 
-PLTFRM_FLAGS=-UMSPD -DODU -DINTEL_FAPI -UODU_MEMORY_DEBUG_LOG -DDEBUG_ASN_PRINT -UDEBUG_PRINT -DERROR_PRINT -USTART_DL_UL_DATA -UNR_DRX -UCALL_FLOW_DEBUG_LOG -UODU_SLOT_IND_DEBUG_LOG -DNFAPI_ENABLED
+PLTFRM_FLAGS=-UMSPD -DODU -DINTEL_FAPI -UODU_MEMORY_DEBUG_LOG -DDEBUG_ASN_PRINT -UDEBUG_PRINT -DERROR_PRINT -USTART_DL_UL_DATA -DNR_DRX -DCALL_FLOW_DEBUG_LOG -UODU_SLOT_IND_DEBUG_LOG -DTHREAD_AFFINITY
 
 ifeq ($(MODE),TDD)
    PLTFRM_FLAGS += -DNR_TDD
@@ -86,9 +86,6 @@ endif
 ifeq ($(NODE),TEST_STUB)
 	PLTFRM_FLAGS+=-DODU_TEST_STUB
 endif
-ifdef PHY
-   PLTFRM_FLAGS+=-DTHREAD_AFFINITY
-endif	
 ifeq ($(PHY), INTEL_L1)
 	PLTFRM_FLAGS+=-DSS_USE_WLS_MEM -DINTEL_WLS_MEM -DDEBUG_MODE -DINTEL_L1_V20_03_ONWARDS -DINTEL_THREAD_AFFINITY
 ifeq ($(PHY_MODE),TIMER)
@@ -98,6 +95,10 @@ endif
 
 ifeq ($(O1_ENABLE),YES)
 	PLTFRM_FLAGS+=-DO1_ENABLE
+endif
+
+ifeq ($(NFAPI_ENABLE),YES)
+	PLTFRM_FLAGS+=-DNFAPI_ENABLED
 endif
 
 # The include options get merged with the options needed by
@@ -211,7 +212,9 @@ du:
 		$(Q)$(MAKE) -j -f $(COM_BUILD_DIR)/mt.mak OBJ_DIR=$(OBJ_ROOT)/odu LIB_DIR=$(LIB_ROOT)/odu LOG_DIR=$(LOG_ROOT)/odu CC='$(CC1)'
 		
 ifneq ($(PHY), INTEL_L1)
+ifneq ($(NFAPI_ENABLE),YES)
 		$(Q)$(MAKE) -j -f $(COM_BUILD_DIR)/phy_stub.mak OBJ_DIR=$(OBJ_ROOT)/odu LIB_DIR=$(LIB_ROOT)/odu LOG_DIR=$(LOG_ROOT)/odu CC='$(CC1)'
+endif
 endif
 ifeq ($(O1_ENABLE),YES)
 		$(Q)$(MAKE) -j -f $(COM_BUILD_DIR)/o1.mak OBJ_DIR=$(OBJ_ROOT)/odu LIB_DIR=$(LIB_ROOT)/odu LOG_DIR=$(LOG_ROOT)/odu CC='$(CCPP1)'
@@ -236,7 +239,9 @@ clean_odu:
 		$(Q)$(MAKE) -j -f $(COM_BUILD_DIR)/mt.mak clean OBJ_DIR=$(OBJ_ROOT)/odu LIB_DIR=$(LIB_ROOT)/odu LOG_DIR=$(LOG_ROOT)/odu CC='$(CC1)'
 		
 ifneq ($(PHY), INTEL_L1)
+ifneq ($(NFAPI_ENABLE),YES)
 		$(Q)$(MAKE) -j -f $(COM_BUILD_DIR)/phy_stub.mak clean OBJ_DIR=$(OBJ_ROOT)/odu LIB_DIR=$(LIB_ROOT)/odu LOG_DIR=$(LOG_ROOT)/odu CC='$(CC1)'
+endif
 endif
 ifeq ($(O1_ENABLE),YES)
 		$(Q)$(MAKE) -j -f $(COM_BUILD_DIR)/o1.mak clean OBJ_DIR=$(OBJ_ROOT)/odu LIB_DIR=$(LIB_ROOT)/odu LOG_DIR=$(LOG_ROOT)/odu CC='$(CCPP1)'
