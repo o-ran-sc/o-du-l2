@@ -1338,10 +1338,12 @@
 #define ENTUZ       0xd2             /* S1AP User */
 /* ssi_h_001.main_134 : Adtion for eGTP protocol */
 #define ENTEG       0xd3            /*  EGTP Layer */
-#ifndef INTEL_WLS_MEM
+#if !(defined(NFAPI_ENABLED) || defined (INTEL_WLS_MEM))
 #define ENTPHYSTUB  0xd4
 #else
-#define ENTEU       0xd4            /* EGTP USER */
+#ifdef NFAPI_ENABLED
+#define ENTUDP7       0xd4            /* UDP P7 */
+#endif
 #endif
 /* ssi_h_001.main_135 : addition of LTE related entities */
 #define ENTLWRMAC       0xd5             /* LTE-PHY */

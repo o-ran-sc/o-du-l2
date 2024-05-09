@@ -26,7 +26,7 @@
 #include "nr5g_fapi_internal.h"
 #include "fapi_vendor_extension.h"
 #endif
-#ifndef INTEL_WLS_MEM
+#if !(defined(NFAPI_ENABLED) || defined (INTEL_WLS_MEM))
 #include "lwr_mac_phy_stub_inf.h"
 #endif
 #ifdef NFAPI_ENABLED
@@ -106,7 +106,7 @@ void callFlowlwrMacActvTsk(Pst *pst)
             break;
          }
 
-#ifndef INTEL_WLS_MEM
+#if !(defined(NFAPI_ENABLED) || defined (INTEL_WLS_MEM))
       case ENTPHYSTUB:
          {
             strcpy(sourceTask,"PHY");
@@ -220,7 +220,7 @@ uint8_t lwrMacActvTsk(Pst *pst, Buffer *mBuf)
             break;
          }
 
-#ifndef INTEL_WLS_MEM
+#if !(defined(NFAPI_ENABLED) || defined (INTEL_WLS_MEM))
       case ENTPHYSTUB:
          {
             switch(pst->event)
