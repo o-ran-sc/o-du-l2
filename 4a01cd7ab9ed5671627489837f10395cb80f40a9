@@ -24,6 +24,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "eeef23c7_b88772a9",
+        "filename": "build/config/tdd_odu_config.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-05-09T09:52:15Z",
+      "side": 1,
+      "message": "reverted the changes",
+      "parentUuid": "7484165c_2e400b5c",
+      "range": {
+        "startLine": 6,
+        "startChar": 21,
+        "endLine": 6,
+        "endChar": 30
+      },
+      "revId": "4a01cd7ab9ed5671627489837f10395cb80f40a9",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "12e85369_8f2d7b5b",
@@ -37,6 +61,30 @@
       "writtenOn": "2024-05-09T05:14:00Z",
       "side": 1,
       "message": "Why we need this flag \"THREAD_AFFINITY\"?",
+      "range": {
+        "startLine": 77,
+        "startChar": 225,
+        "endLine": 77,
+        "endChar": 240
+      },
+      "revId": "4a01cd7ab9ed5671627489837f10395cb80f40a9",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "793b516b_ca9ceb1b",
+        "filename": "build/odu/makefile",
+        "patchSetId": 1
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-05-09T09:52:15Z",
+      "side": 1,
+      "message": "removed",
+      "parentUuid": "12e85369_8f2d7b5b",
       "range": {
         "startLine": 77,
         "startChar": 225,
