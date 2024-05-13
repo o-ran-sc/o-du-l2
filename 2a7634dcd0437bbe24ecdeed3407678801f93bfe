@@ -1,0 +1,141 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "66bbe7a7_dab492e5",
+        "filename": "build/config/fdd_odu_config.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-05-13T09:10:28Z",
+      "side": 1,
+      "message": "can we rename it something like this UDP_NFAPI_P7_CORE, so that we will have the idea that this is specifically for nfapi p7 msg?",
+      "range": {
+        "startLine": 12,
+        "startChar": 7,
+        "endLine": 12,
+        "endChar": 18
+      },
+      "revId": "2a7634dcd0437bbe24ecdeed3407678801f93bfe",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "60723cb6_875fd1a2",
+        "filename": "build/config/tdd_odu_config.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-05-13T09:10:28Z",
+      "side": 1,
+      "message": "can we rename this as UDP_NFAPI_P7_CORE?",
+      "range": {
+        "startLine": 12,
+        "startChar": 7,
+        "endLine": 12,
+        "endChar": 18
+      },
+      "revId": "2a7634dcd0437bbe24ecdeed3407678801f93bfe",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a15f6159_7a94d043",
+        "filename": "build/odu/makefile",
+        "patchSetId": 1
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-05-13T09:10:28Z",
+      "side": 1,
+      "message": "change to UTHREAD_AFFINITY, becz we dont need thread affinity in regular testing.",
+      "revId": "2a7634dcd0437bbe24ecdeed3407678801f93bfe",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "43faeb24_228d7866",
+        "filename": "build/odu/makefile",
+        "patchSetId": 1
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-05-13T09:10:28Z",
+      "side": 1,
+      "message": "i think we dont need this.",
+      "revId": "2a7634dcd0437bbe24ecdeed3407678801f93bfe",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b33d1588_29df7b04",
+        "filename": "src/du_app/du_cfg.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 4406,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-05-13T09:10:28Z",
+      "side": 1,
+      "message": "check if this is required  INTEL_THREAD_AFFINITY not becz we already have one flag THREAD_AFFINITY",
+      "revId": "2a7634dcd0437bbe24ecdeed3407678801f93bfe",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "25df5e09_223f66bc",
+        "filename": "src/du_app/du_mgr_main.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 694,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-05-13T09:10:28Z",
+      "side": 1,
+      "message": "remove SANGEETA name from prints",
+      "range": {
+        "startLine": 694,
+        "startChar": 23,
+        "endLine": 694,
+        "endChar": 31
+      },
+      "revId": "2a7634dcd0437bbe24ecdeed3407678801f93bfe",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3a71a746_3d111820",
+        "filename": "src/du_app/du_mgr_main.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 703,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-05-13T09:10:28Z",
+      "side": 1,
+      "message": "same here",
+      "revId": "2a7634dcd0437bbe24ecdeed3407678801f93bfe",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
