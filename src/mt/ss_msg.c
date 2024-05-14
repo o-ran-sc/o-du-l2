@@ -5392,8 +5392,9 @@ S16 dst                     /* destination id */
    Buffer *tmp = NULLP;             /* buffer ptr */
    Data *cptr =NULLP;
 /* ss012.13: Addition */
+#ifdef DEBUG_PRINT
    Data reg =0;
-
+#endif
 
 
    if (mBuf == NULLP)
@@ -5407,7 +5408,9 @@ S16 dst                     /* destination id */
    for (qlen = 0, tmp = mBuf->b_cont; tmp; qlen++)
       tmp = tmp->b_cont;
    mlen = ((SsMsgInfo*)(mBuf->b_rptr))->len;
+#ifdef DEBUG_PRINT
    reg = ((SsMsgInfo*)(mBuf->b_rptr))->region;
+#endif
    /*ss013.301: Fixed Warnings for 32/64 bit compilation*/
 #ifdef DEBUG_PRINT
    sprintf(prntBuf,"\nmsg: qlen: %04d mlen: %04d   %02d-->%02d region: %02d\n",
