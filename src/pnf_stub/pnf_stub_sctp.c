@@ -194,7 +194,7 @@ uint8_t pnfP5SctpStartReq()
 
    /*Since Socket is UP and Client(VNF) has responded with CONNECT thus
     * initating PNF_READY_IND as part of PNF INITIALIZATION msg*/
-   ret = sendReadyInd();
+   ret = buildAndSendPnfReadyInd();
    if(ret == ROK)
    {
       if(pnfP5SctpSockPoll() != ROK)

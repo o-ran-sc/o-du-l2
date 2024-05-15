@@ -48,6 +48,8 @@ void nFapiVnfInit()
    vnfDb.pnfEvent      = 0;
 }
 
+
+
 /*******************************************************************
  *
  * @brief Processes NFAPI PNF_READY_IND from PNF
@@ -134,25 +136,107 @@ uint8_t nfapi_vnf_procPnfParamReqEvt(nFapi_p5_hdr *p5Hdr, nFapi_msg_header *msgH
 
 uint8_t nfapi_vnf_procPnfParamRespEvt(nFapi_p5_hdr *p5Hdr, nFapi_msg_header *msgHdr, void *msg)
 {
-   uint8_t errorCode = 1;
-
-   DU_LOG("\nINFO   -->  NFAPI_VNF: Received EVENT[%d] at STATE[%d]",\
-         vnfDb.pnfEvent, vnfDb.pnfStateAtVnf);
-
-   CMCHKPK(oduUnpackUInt8, &(errorCode), msg);
+   uint16_t tag=0, len=0;
+   uint8_t errorCode = 1,idx=0,numtlv=0;
+   nFapi_pnf_param_general paramGeneral;
    
-   DU_LOG("\nINFO   --> NFAPI_VNF: PNF_PARAM_RESP errCode:%d",errorCode);
+   DU_LOG("\nINFO   -->  NFAPI_VNF: Received EVENT[%d] at STATE[%d]",vnfDb.pnfEvent, vnfDb.pnfStateAtVnf);
+   CMCHKPK(oduUnpackUInt8, &(errorCode), msg);
+   if(errorCode != NFAPI_MSG_OK)
+   {
+      DU_LOG("\nERROR   -->  NFAPI_VNF: Param response error code is not okay, errCode:%d", errorCode);
+      return RFAILED;
+   }
 
+   CMCHKPK(oduUnpackUInt8, &(numtlv), msg);
+   CMCHKPK(oduUnpackUInt16, &(tag), msg);
+   CMCHKPK(oduUnpackUInt16, &(len), msg);
+   CMCHKPK(oduUnpackUInt8, &paramGeneral.nFapi_sync_mode, msg);
+   CMCHKPK(oduUnpackUInt8, &paramGeneral.loc_mode, msg);
+   CMCHKPK(oduUnpackUInt16, &paramGeneral.max_num_phy, msg);
+   for(idx =0; idx < 3; idx++)
+   {
+      CMCHKPK(oduUnpackUInt8, &paramGeneral.oui[idx], msg);
+   }
+   CMCHKPK(oduUnpackUInt16, &paramGeneral.numRfInstances, msg);
+   CMCHKPK(oduUnpackUInt16, &paramGeneral.numDfeInstances, msg);
+   
+   DU_LOG("\nINFO   --> NFAPI_VNF: PNF_PARAM_RESP errCode:%d, numtlv:%d",errorCode,numtlv);
+   sendEventToNfapiVnfFsm(PNF_CONFIG_REQ, NULLP, NULLP, NULLP);
    return ROK;
 }
 
+/*******************************************************************
+ *
+ * @brief Processes NFAPI PNF_CONFIG_REQ from PNF
+ *
+ * @details
+ *
+ *    Function : nfapi_vnf_procPnfConfigReqEvt
+ *
+ *    Functionality:
+ *         - Builds and Sends PNF_CONFIG_REQ(Ref: SCF 225, Sec 3.1.3)
+ *
+ * @params[in]
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
 uint8_t nfapi_vnf_procPnfConfigReqEvt(nFapi_p5_hdr *p5Hdr, nFapi_msg_header *msgHdr, void *msg)
 {
-   return ROK;
+   Buffer *mBuf = NULLP;
+   Pst pst;
+
+   if (ODU_GET_MSG_BUF(MAC_MEM_REGION, MAC_POOL, &mBuf) != ROK)
+   {
+      DU_LOG("\nERROR  --> NFAPI_VNF : Memory allocation failed in packPnfConfigReq");
+      return RFAILED;
+   }
+   nfapiFillP5Hdr(mBuf);
+   nfapiFillMsgHdr(mBuf, NFAPI_P5_PHY_ID, TAG_NFAPI_PNF_CONFIG_REQ, 0);
+   CMCHKPK(oduPackPostUInt8, 0, mBuf);
+   
+   DU_LOG("\nINFO   -->  NFAPI_VNF: Sending config request");
+   FILL_PST_LWR_MAC_TO_DUAPP(pst, EVENT_PNF_DATA);
+   return ODU_POST_TASK(&pst, mBuf);
 }
+
+/*******************************************************************
+ *
+ * @brief Processes NFAPI PNF_CONFIG_RSP from PNF
+ *
+ * @details
+ *
+ *    Function : nfapi_vnf_procPnfConfigRespEvt
+ *
+ *    Functionality:
+ *         - Processes PNF_CONFIG_RSP(Ref: SCF 225, Sec 3.1.4)
+ *         - Starts the PNF Initalization(Ref: SCF 225, Sec 2.1.1.1)
+ *
+ * @params[in]
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
 
 uint8_t nfapi_vnf_procPnfConfigRespEvt(nFapi_p5_hdr *p5Hdr, nFapi_msg_header *msgHdr, void *msg)
 {
+   uint8_t errCode = 0;
+   DU_LOG("\nINFO   -->  NFAPI_VNF: Received EVENT[%d] at STATE[%d]",\
+         vnfDb.pnfEvent, vnfDb.pnfStateAtVnf);
+
+   CMCHKPK(oduUnpackUInt8, &(errCode), msg);
+   
+   if(errCode == NFAPI_MSG_OK)
+   {
+      vnfDb.pnfStateAtVnf=PNF_STATE_CONFIGURED;
+      DU_LOG("\nINFO   -->  NFAPI_VNF: PNF STATE[%d]",vnfDb.pnfStateAtVnf);
+   }
+   else
+   {
+      DU_LOG("\nERROR   -->  NFAPI_VNF: Config response error code is not okay, errCode:%d", errCode);
+      return RFAILED;
+   }
    return ROK;
 }
 
