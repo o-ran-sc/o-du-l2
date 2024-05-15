@@ -260,15 +260,15 @@ void nFapiExtractMsgHdr(nFapi_msg_header *msgHdr, Buffer *mBuf)
 
 /*********************************************************************************
  *
- * @Function Name: sendPnfReadyInd
+ * @Function Name: buildAndSendPnfReadyInd 
  *
  *
  * @Functionality: 
- *    It Build And Sends the PNF_READY_IND
+ *   Builds and Sends PNF_READY_IND(Ref: SCF 225, Sec 3.1.0)
  *
  *
  * *******************************************************************************/
-uint8_t sendReadyInd()
+uint8_t buildAndSendPnfReadyInd()
 {
    uint8_t ret = ROK;
    Buffer *mBuf = NULLP;
@@ -289,10 +289,25 @@ uint8_t sendReadyInd()
    return ret;
 }
 
+/*********************************************************************************
+ *
+ * @Function Name: buildAndSendPnfParamResp 
+ *
+ * @Functionality: 
+ *    Build Pnf Param rsp as per  5G nFAPI Specification 3.1.2 PNF_PARAM.response 
+ *    And Send to VNF
+ *
+ * *******************************************************************************/
+
 uint8_t buildAndSendPnfParamResp()
 {
-   uint8_t ret = ROK;
+   uint8_t ret = ROK,idx=0, array_size=0;
    Buffer *mBuf = NULLP;
+   nFapi_pnf_param_general paramGeneral;
+
+   memset(&paramGeneral, 0, sizeof(nFapi_pnf_param_general));
+   array_size = sizeof(paramGeneral.loc_coordinates) / sizeof(paramGeneral.loc_coordinates[0]);
+   paramGeneral.max_num_phy=1;
 
    if (ODU_GET_MSG_BUF(PNF_APP_MEM_REG, PNF_POOL, &mBuf) != ROK)
    {
@@ -301,7 +316,51 @@ uint8_t buildAndSendPnfParamResp()
    }
    nfapiFillP5Hdr(mBuf);
    nfapiFillMsgHdr(mBuf, 0, TAG_NFAPI_PNF_PARAM_RESP, 0);
-   CMCHKPK(oduPackPostUInt8, 0, mBuf); //errorCode
+   CMCHKPK(oduPackPostUInt8, 0, mBuf); 
+   CMCHKPK(oduPackPostUInt8, 1, mBuf); 
+   CMCHKPK(oduPackPostUInt16, TAG_NFAPI_PNF_PARAM_GENERAL, mBuf);
+   CMCHKPK(oduPackPostUInt16, sizeof(nFapi_pnf_param_general), mBuf);
+   CMCHKPK(oduPackPostUInt8, paramGeneral.nFapi_sync_mode, mBuf); 
+   CMCHKPK(oduPackPostUInt8, paramGeneral.loc_mode, mBuf);
+   CMCHKPK(oduPackPostUInt16, paramGeneral.max_num_phy, mBuf); 
+   for(idx =0; idx < 3; idx++)
+   {
+      CMCHKPK(oduPackPostUInt8, paramGeneral.oui[idx], mBuf); 
+   }
+   CMCHKPK(oduPackPostUInt16, paramGeneral.numRfInstances, mBuf); 
+   CMCHKPK(oduPackPostUInt16, paramGeneral.numDfeInstances, mBuf); 
+
+   ret = pnfP5SctpSend(mBuf);
+   if(ret == RFAILED)
+   {
+      ODU_PUT_MSG_BUF(mBuf);
+   }
+   return ret;
+}
+
+/*********************************************************************************
+ *
+ * @Function Name: buildAndSendPnfConfigResp
+ *
+ *
+ * @Functionality:
+ *   Builds and Sends PNF_CONFIG_RSP(Ref: SCF 225, Sec 3.1.4)
+ *
+ *
+ * *******************************************************************************/
+uint8_t buildAndSendPnfConfigResp()
+{
+   uint8_t ret = ROK;
+   Buffer *mBuf = NULLP;
+
+   if (ODU_GET_MSG_BUF(PNF_APP_MEM_REG, PNF_POOL, &mBuf) != ROK)
+   {
+      DU_LOG("\nERROR  --> NFAPI_PNF : Memory allocation failed in pnf config rsp");
+      return RFAILED;
+   }
+   nfapiFillP5Hdr(mBuf);
+   nfapiFillMsgHdr(mBuf, 0, TAG_NFAPI_PNF_CONFIG_RESP, 0);
+   CMCHKPK(oduPackPostUInt32, 0, mBuf); //Error Code
    ret = pnfP5SctpSend(mBuf);
    if(ret == RFAILED)
    {
@@ -333,15 +392,26 @@ uint8_t  p5MsgHandlerAtPnf(Buffer *mBuf)
    switch(msgHdr.msg_id)
    {
       case TAG_NFAPI_PNF_PARAM_REQ:
-      {
-         DU_LOG("\nINFO   --> NFAPI_PNF: PNF_PARAM_REQ recevied.");
-         ret = buildAndSendPnfParamResp();
-         break;
-      }
+         {
+            DU_LOG("\nINFO   --> NFAPI_PNF: PNF_PARAM_REQ recevied.");
+            ret = buildAndSendPnfParamResp();
+            break;
+         }
+      case TAG_NFAPI_PNF_CONFIG_REQ:
+         {
+            DU_LOG("\nINFO   --> NFAPI_PNF: PNF_CONFIG_REQ recevied.");
+            ret = buildAndSendPnfConfigResp();
+            break;
+         }
       default:
       {
          DU_LOG("\nERROR  --> NFAPI_PNF: Wrong MSGID of NFAPI P5 Message:%d",msgHdr.msg_id);
       }
+   }
+
+   if(ret == RFAILED)
+   {
+      return RFAILED;
    }
    return ret;
 }
