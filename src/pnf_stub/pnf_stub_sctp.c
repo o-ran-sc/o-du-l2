@@ -20,6 +20,7 @@
 
 #include "common_def.h" 
 #include "pnf_stub_sctp.h"
+#include "pnf_stub_p7_udp.h"
 #include "pnf_stub.h"
 
 uint8_t   socket_type;      /* Socket type */
@@ -312,8 +313,14 @@ uint8_t pnfP5SctpSockPoll()
    uint16_t           ret = ROK;
    uint32_t           timeout;
    uint32_t           *timeoutPtr;
+   uint64_t           numMsgRcvd = 0;
+   Buffer             *pnfP7UdpBuf;
+   MsgLen             pnfP7UdpBufLen;
+   CmInetAddr         fromAddr;
    CmInetMemInfo      memInfo;
    PnfP5SctpSockPollParams pnfP5PollParams;
+   
+   char msg[255];
 
    memset(&pnfP5PollParams, 0, sizeof(PnfP5SctpSockPollParams));
     
@@ -333,8 +340,21 @@ uint8_t pnfP5SctpSockPoll()
       {
          if((ret = pnfP5ProcessPolling(&pnfP5PollParams, &pnfP5SctpCb.assocCb[assocIdx], timeoutPtr, &memInfo)) != ROK)
          {
-            DU_LOG("\nERROR  -->  SCTP : Failed to RecvMsg for PNF at P5 Interface \n");
+            DU_LOG("\nERROR  -->  P5_SCTP : Failed to RecvMsg for PNF at P5 Interface \n");
          }
+      }
+
+      /* Receiving UDP data */
+      pnfP7UdpBufLen = -1;
+      ret = cmInetRecvMsg(&(pnfP7Cb.sockFd), &fromAddr, &memInfo, &pnfP7UdpBuf, &pnfP7UdpBufLen, CM_INET_NO_FLAG);
+      if(ret == ROK && pnfP7UdpBuf != NULLP)
+      {
+          if((fromAddr.port == pnfP7Cb.srcAddr.port) && (fromAddr.address == pnfP7Cb.srcAddr.address))
+          {
+               DU_LOG("\nINFO  -->  P7_UDP : Received P7 Message [%ld] \n", numMsgRcvd+1);
+               numMsgRcvd++;
+               break;
+          }
       }
    };
    return (ret);

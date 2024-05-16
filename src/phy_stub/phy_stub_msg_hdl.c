@@ -180,8 +180,8 @@ S16 l1BldAndSndParamRsp(void *msg)
 }
 
 /*******************************************************************
- *
- * @brief Builds and sends config response to lower mac
+    *
+    * @brief Builds and sends config response to lower mac
  *
  * @details
  *

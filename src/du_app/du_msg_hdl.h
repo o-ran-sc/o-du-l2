@@ -28,7 +28,7 @@ uint8_t sendCellDeleteReqToMac(uint16_t cellId);
 uint8_t BuildAndSendStatsDeleteReq(RicSubscription *ricSubscriptionInfo, bool deleteAllStats);
 uint8_t BuildAndSendStatsModificationReqToMac(RicSubscription *ricSubscriptionInfo);
 uint8_t BuildAndSendStatsModificationReq(RicSubscription *ricSubscriptionInfo);
-
+uint8_t BuildAndSendNfapiP7UdpConfig();
 
 /**********************************************************************
   End of file

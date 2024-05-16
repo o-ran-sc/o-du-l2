@@ -69,6 +69,7 @@
 #include "lwr_mac_phy.h"
 
 #ifdef NFAPI_ENABLED
+#include "nfapi_interface.h"
 #include "nfapi_vnf_fsm.h"
 #endif
 
