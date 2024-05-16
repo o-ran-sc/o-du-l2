@@ -21,13 +21,14 @@
 /* header include files -- defines (.h) */
 #include "common_def.h"
 #include "lwr_mac.h"
-#include "nfapi_vnf_fsm.h"
 #include "nfapi_interface.h"
+#include "nfapi_vnf_fsm.h"
 #include "nfapi_common.h"
 #include "lwr_mac_utils.h"
 #include "lwr_mac_sctp_inf.h"
 #include "mac_utils.h"
 #include "lwr_mac_fsm.h"
+#include "nfapi_udp_p7.h"
 
 /*******************************************************************
  *
@@ -77,9 +78,12 @@ uint8_t nfapi_vnf_procPnfReadyIndEvt(nFapi_p5_hdr *p5Hdr, nFapi_msg_header *msgH
          vnfDb.pnfEvent, vnfDb.pnfStateAtVnf);
 
    CMCHKPK(oduUnpackUInt32, &(version), msg);
-   
+
    DU_LOG("\nINFO   --> NFAPI_VNF: PNF_READY_IND version:%d",version);
 
+   /*TODO: Need to put it when START.RESPONSE is received.*/
+   nfapiP7UdpOpenReq(); 
+   
    sendEventToNfapiVnfFsm(PNF_PARAM_REQ, NULLP, NULLP, NULLP);
    return ROK;
 }

@@ -21,8 +21,6 @@
 #ifndef _NFAPI_VNF_FSM_H_
 #define _NFAPI_VNF_FSM_H_
 
-#include "nfapi_interface.h"
-
 typedef enum {
    PNF_STATE_IDLE = 0,
    PNF_STATE_CONFIGURED,
@@ -46,13 +44,14 @@ typedef enum {
 typedef struct nfapiTransportInfo
 {
    uint32_t         assocId;
-   uint8_t          srcIpv4Address[4];   /*Src :: PNF Address Details*/
+   uint32_t         srcIpv4Address;   /*Src :: PNF Address Details*/
    uint16_t         srcIpv4Port;          
-   uint8_t          destIpv4Address[4];  /*Dest :: VNF Address Details*/
+   uint32_t         destIpv4Address;  /*Dest :: VNF Address Details*/
    uint16_t         destIpv4Port;
    CmInetFd         sockFd;           /* Socket file descriptor */
-   CmInetNetAddrLst addrLst;      /* Refers to the destinaiton Addr Lst in CmInetNetAddrLst format */
-   CmInetNetAddr    ipNetAddr;    /* Refers to the destination Addr in CmInetNet Addr format */
+   CmInetAddr       srcIpNetAddr;    /* Refers to the Source(VNF) Addr in CmInetNet Addr format */
+   CmInetAddr       destIpNetAddr;    /* Refers to the destination(PNF) Addr in CmInetNet Addr format */
+   //CmInetNetAddrLst addrLst;      /* Refers to the destinaiton Addr Lst in CmInetNetAddrLst format */
    
    /*TODO: Add the IPV6 support*/
 

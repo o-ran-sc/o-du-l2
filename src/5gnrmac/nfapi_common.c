@@ -22,8 +22,8 @@
 #include "common_def.h"
 #include "mac_utils.h"
 #include "lwr_mac.h"
-#include "nfapi_vnf_fsm.h"
 #include "nfapi_interface.h"
+#include "nfapi_vnf_fsm.h"
 #include "nfapi_common.h"
 
 /*********************************************************************************

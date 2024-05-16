@@ -304,6 +304,43 @@ uint8_t parseEgtpParams(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur, F1EgtpParams
 
 /*******************************************************************
  *
+ * @brief Fill P7 UDP Parameters
+ *
+ * @details
+ *
+ *    Function : parseP7UdpParams
+ *
+ *    Functionality: Fill P7 UDP Parmeters
+ *
+ * @params[in] XML document pointer
+ *             XML namespace
+ *             Current node in XML
+ *             Pointer to structure to be filled
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t parseP7UdpParams(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur, NfapiP7UdpCfg *p7Udp) 
+{
+   memset(p7Udp, 0, sizeof(NfapiP7UdpCfg));
+   cur = cur->xmlChildrenNode;
+   while (cur != NULL) 
+   {
+      if ((!xmlStrcmp(cur->name, (const xmlChar *)"VNF_P7_UDP_PORT")) && (cur->ns == ns))
+      {
+         p7Udp->p7VnfPort = atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
+      }
+      if ((!xmlStrcmp(cur->name, (const xmlChar *)"PNF_P7_UDP_PORT")) && (cur->ns == ns))
+      {
+         p7Udp->p7PnfPort = atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
+      }
+      cur = cur -> next;
+   }
+   return ROK;
+}
+
+/*******************************************************************
+ *
  * @brief Fill MIB configuration 
  *
  * @details
@@ -5304,6 +5341,21 @@ uint8_t parseDuCfgParams(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur)
          duCfgParam.egtpParams.maxTunnelId = duCfgParam.maxNumDrb * MAX_NUM_UE; 
       }
 
+#ifdef NFAPI_ENABLED
+      if ((!xmlStrcmp(cur->name, (const xmlChar *)"P7_UDP")) && (cur->ns == ns))
+      {
+         parseP7UdpParams(doc, ns, cur, &duCfgParam.tempNFapiP7UdpCfg); 
+         if(duCfgParam.sctpParams.duIpAddr.ipV4Pres)
+         {
+            duCfgParam.tempNFapiP7UdpCfg.ipv4P7VnfPres = true;
+            duCfgParam.tempNFapiP7UdpCfg.ipv4P7VnfAddr = duIp;
+            duCfgParam.tempNFapiP7UdpCfg.ipv6P7VnfPres = false;
+            duCfgParam.tempNFapiP7UdpCfg.ipv6P7VnfAddr = 0;
+            duCfgParam.tempNFapiP7UdpCfg.ipv4P7PnfPres = true;
+            duCfgParam.tempNFapiP7UdpCfg.ipv4P7PnfAddr = pnfP5Ip;
+         }
+      }
+#endif
       if ((!xmlStrcmp(cur->name, (const xmlChar *)"MIB_PARAMS")) && (cur->ns == ns))
       {
          if(parseMibParams(doc, ns, cur, &duCfgParam.mibParams) != ROK)

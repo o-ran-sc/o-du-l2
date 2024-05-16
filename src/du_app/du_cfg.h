@@ -22,7 +22,9 @@
 #ifdef O1_ENABLE
 #include "CmInterface.h"
 #endif
-
+#ifdef NFAPI_ENABLED
+#include "du_app_p7udp_inf.h"
+#endif
 /* MACROS */
 #define GNB_ID  1 /* As per 38.423,Sec 9.2.2.1, gnbId range b/w 0 to 4294967295 */
 
@@ -1179,6 +1181,9 @@ typedef struct duCfgParams
    MibParams          mibParams;                  /* MIB Params */
    Sib1Params         sib1Params;                 /* SIB1 Params */
    MacSliceCfgReq     tempSliceCfg;
+#ifdef NFAPI_ENABLED
+   NfapiP7UdpCfg      tempNFapiP7UdpCfg;
+#endif
 }DuCfgParams;
 
 #ifndef O1_ENABLE

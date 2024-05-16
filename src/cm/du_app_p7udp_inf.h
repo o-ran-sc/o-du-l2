@@ -14,54 +14,40 @@
 #   See the License for the specific language governing permissions and        #
 #   limitations under the License.                                             #
 ################################################################################
-*******************************************************************************/
+ *******************************************************************************/
 
-#ifndef __PNF_MAIN_H
-#define __PNF_MAIN_H
+/* Defines APIs exchanged between du_app and UDP P7 module */
+#ifndef __DUAPP_P7UDP_INF_H__
+#define __DUAPP_P7UDP_INF_H__
 
-#define PNF_NAME_LEN_MAX 30
-#define PNF_ID 1
-#define PNF_NAME "ORAN_OAM_PNF"
+#define EVENT_NFAPI_P7_UDP_CFG 1
 
-#define LOCAL_IP_PNF "192.168.130.79"
+/********************* Global Variable ********************/
 
-#define PNF_P5_SCTP_PORT 7701
-#define NUM_PNF_P5_ASSOC 1 
-#define REMOTE_IP_DU (char*[]){"192.168.130.81", "192.168.130.83"}
+typedef struct nfapiP7UdpCfg{
+   bool      ipv4P7VnfPres;
+   uint32_t  ipv4P7VnfAddr;
+   bool      ipv6P7VnfPres;
+   uint32_t  ipv6P7VnfAddr;
+   bool      ipv4P7PnfPres;
+   uint32_t  ipv4P7PnfAddr;
+   uint16_t  p7VnfPort;
+   uint16_t  p7PnfPort;
 
-/*P7 UDP Teansport Cfg Details*/
-#define PNF_P7_UDP_PORT 9876
+}NfapiP7UdpCfg;
 
-#define PNF_APP_MEM_REG 1
-#define PNF_POOL 1
+typedef uint8_t (* DuNfapiP7UdpCfgFunc) ARGS((
+      Pst *pst,
+      NfapiP7UdpCfg *nfapiP7UdpCfg));
 
-typedef enum
-{
-   PNF_IDLE,
-   PNF_CONFIGURED,
-   PNF_RUNNING
-}PnfState;
 
-typedef struct pnfCfgParams
-{
-   PnfState          pnfState;
-   uint32_t          pnfId;
-   char              pnfName[PNF_NAME_LEN_MAX];
-   PnfP5SctpParams   pnfP5SctpParams;
-   PnfP7UdpParams    pnfP7UdpParams;
-}PnfCfgParams;
+/******************** FUNCTION DECLARATIONS ********************************/
+uint8_t packDuNfapiP7UdpCfg(Pst *pst, NfapiP7UdpCfg *nfapiP7UdpCfg);
+uint8_t NfapiProcP7UdpCfg(Pst *pst, NfapiP7UdpCfg *nfapiP7UdpCfg);
+uint8_t unpackDuNfapiP7UdpCfg(DuNfapiP7UdpCfgFunc func, Pst *pst, Buffer *mBuf);
 
-typedef struct pnfGlobalCb
-{
-   PnfCfgParams pnfCfgParams;
-   uint8_t      numDu;
-   //DuDb         duInfo[MAX_DU_SUPPORTED]; /*TODO: VNF Database can be added*/
-}PnfGlobalCb;
-
-extern PnfGlobalCb pnfCb;
-uint8_t p5MsgHandlerAtPnf(Buffer *mBuf);
-void nfapiFillP5Hdr(Buffer *mBuf);
-void nfapiFillMsgHdr(Buffer *mBuf, uint8_t phyId, uint16_t msgId, uint32_t msgLen);
-void nFapiExtractP5Hdr(nFapi_p5_hdr *p5Hdr, Buffer *mBuf);
-void nFapiExtractMsgHdr(nFapi_msg_header *msgHdr, Buffer *mBuf);
 #endif
+
+/**********************************************************************
+  End of file
+ **********************************************************************/

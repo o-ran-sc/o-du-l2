@@ -283,6 +283,7 @@ uint8_t lwrMacActvTsk(Pst *pst, Buffer *mBuf)
                       return RFAILED;
                    }
                    sendEventToNfapiVnfFsm(msgType, &p5Hdr, &msgHdr, mBuf);
+                   ODU_PUT_MSG_BUF(mBuf);
                    break;
                }
 #endif
