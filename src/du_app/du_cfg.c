@@ -5304,6 +5304,19 @@ uint8_t parseDuCfgParams(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur)
          duCfgParam.egtpParams.maxTunnelId = duCfgParam.maxNumDrb * MAX_NUM_UE; 
       }
 
+#ifdef NFAPI_ENABLED
+      if ((!xmlStrcmp(cur->name, (const xmlChar *)"VNF_P7_UDP_PORT")) && (cur->ns == ns))
+      {
+         duCfgParam.nFapiP7UdpCfgReq.p7VnfPort = atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
+         if(duCfgParam.sctpParams.duIpAddr.ipV4Pres)
+         {
+            duCfgParam.nFapiP7UdpCfgReq.ipv4P7VnfPres = true;
+            duCfgParam.nFapiP7UdpCfgReq.ipv4P7VnfAddr = duIp;
+            duCfgParam.nFapiP7UdpCfgReq.ipv6P7VnfPres = false;
+            duCfgParam.nFapiP7UdpCfgReq.ipv6P7VnfAddr = 0;
+         }
+      }
+#endif
       if ((!xmlStrcmp(cur->name, (const xmlChar *)"MIB_PARAMS")) && (cur->ns == ns))
       {
          if(parseMibParams(doc, ns, cur, &duCfgParam.mibParams) != ROK)

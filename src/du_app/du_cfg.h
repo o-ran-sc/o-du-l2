@@ -1179,6 +1179,9 @@ typedef struct duCfgParams
    MibParams          mibParams;                  /* MIB Params */
    Sib1Params         sib1Params;                 /* SIB1 Params */
    MacSliceCfgReq     tempSliceCfg;
+#ifdef NFAPI_ENABLED
+   NfapiP7UdpCfgReq   nFapiP7UdpCfgReq;
+#endif
 }DuCfgParams;
 
 #ifndef O1_ENABLE

@@ -115,6 +115,15 @@ DuMacStatsModificationReqFunc packMacStatsModificationReqOpts[]=
    packDuMacStatsModificationReq           /* Light weight-loose coupling */
 };
 
+#ifdef NFAPI_ENABLED
+DuNfapiP7UdpCfgFunc packNfapiP7UdpCfgOpts[]=
+{
+   packDuNfapiP7UdpCfg,       /*Loose Coupling*/
+   NfapiProcP7UdpCfg,
+   packDuNfapiP7UdpCfg      /*Light weight-loose coupling */
+};
+#endif
+
 /**************************************************************************
  * @brief Function to fill configs required by RLC
  *
@@ -2577,6 +2586,50 @@ uint8_t DuProcMacStatsModificationRsp(Pst *pst, MacStatsModificationRsp *statsMo
    }
    return ret;
 }
+
+#ifdef NFAPI_ENABLED
+/*******************************************************************
+ *
+ * @brief Fill the NFAPI P7 UDP Socket Config to NFAPI UDP P7 (VNF)
+ * 
+ * @details
+ *
+ *    Function : BuildAndNfapiP7UdpConfig 
+ *
+ *    Functionality: Fill the NFAPI P7 UDP Socket Config 
+ *
+ * @params[in]
+ *             
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t BuildAndNfapiP7UdpConfig()
+{
+   Pst pst;
+   NfapiP7UdpCfg *p7UdpCfg;
+
+   DU_ALLOC_SHRABL_BUF(p7UdpCfg, sizeof(NfapiP7UdpCfg));
+   if(p7UdpCfg == NULLP)
+   {
+      DU_LOG("\nERROR  -->  DU_APP : Memory allocation failed in BuildAndNfapiP7UdpConfig");
+      return RFAILED;
+   }
+   else
+   {
+      memcpy(p7UdpCfg,  &duCfgParam.nFapiP7UdpCfg, sizeof(NfapiP7UdpCfg));
+      FILL_PST_DUAPP_TO_NFAPIP7(pst, EVENT_NFAPI_P7_UDP_CFG);
+
+      DU_LOG("\nDEBUG  -->  DU_APP : Sending NFAPI P7 UDP Cfg to NFAPI P7 (VNF)");
+      if((*packNfapiP7UdpCfgOpts[pst.selector])(&pst, p7UdpCfg) == RFAILED)
+      {
+         DU_LOG("\nERROR  -->  DU_APP : Failed to send NFAPI P7 UDP Cfg to NFAPI P7");
+         DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, p7UdpCfg, sizeof(NfapiP7UdpCfg));
+      }
+   }
+   return ROK;  
+}
+#endif
 
 /**********************************************************************
   End of file
