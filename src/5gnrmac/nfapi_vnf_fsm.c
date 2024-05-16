@@ -237,29 +237,241 @@ uint8_t nfapi_vnf_procPnfConfigRespEvt(nFapi_p5_hdr *p5Hdr, nFapi_msg_header *ms
       DU_LOG("\nERROR   -->  NFAPI_VNF: Config response error code is not okay, errCode:%d", errCode);
       return RFAILED;
    }
+   sendEventToNfapiVnfFsm(PNF_START_REQ, NULLP, NULLP, NULLP);
    return ROK;
 }
+
+/*******************************************************************
+ *
+ * @brief Processes NFAPI PNF_START_REQ from PNF
+ *
+ * @details
+ *
+ *    Function : nfapi_vnf_procPnfStartReqEvt
+ *
+ *    Functionality:
+ *         - Builds and Sends PNF_START_REQ(Ref: SCF 225, Sec 3.1.5)
+ *
+ * @params[in]
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
 
 uint8_t nfapi_vnf_procPnfStartReqEvt(nFapi_p5_hdr *p5Hdr, nFapi_msg_header *msgHdr, void *msg)
 {
-   return ROK;
+   Buffer *mBuf = NULLP;
+   Pst pst;
+
+   DU_LOG("\nINFO   -->  NFAPI_VNF: Building the Pnf start request");
+   if (ODU_GET_MSG_BUF(MAC_MEM_REGION, MAC_POOL, &mBuf) != ROK)
+   {
+      DU_LOG("\nERROR  --> NFAPI_VNF : Memory allocation failed in packPnfStartReq");
+      return RFAILED;
+   }
+   nfapiFillP5Hdr(mBuf);
+   nfapiFillMsgHdr(mBuf, NFAPI_P5_PHY_ID, TAG_NFAPI_PNF_START_REQ, 0);
+   FILL_PST_LWR_MAC_TO_DUAPP(pst, EVENT_PNF_DATA);
+   return ODU_POST_TASK(&pst, mBuf);
 }
+
+/*******************************************************************
+ *
+ * @brief Processes NFAPI PNF_START_RSP from PNF
+ *
+ * @details
+ *
+ *    Function : nfapi_vnf_procPnfStartRespEvt
+ *
+ *    Functionality:
+ *         - Processes PNF_START_RSP(Ref: SCF 225, Sec 3.1.6)
+ *         if start response received from PNF Restart procedure
+ *         then set pnfRestarted as complete.
+ *         if start response received from PNF Reconfigure procedure
+ *         then set pnfReconfigured as complete.
+ *
+ *
+ * @params[in]
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
 
 uint8_t nfapi_vnf_procPnfStartRespEvt(nFapi_p5_hdr *p5Hdr, nFapi_msg_header *msgHdr, void *msg)
 {
+   uint8_t errCode = 0;
+   DU_LOG("\nINFO   -->  NFAPI_VNF: Received EVENT[%d] at STATE[%d]",\
+         vnfDb.pnfEvent, vnfDb.pnfStateAtVnf);
+
+   CMCHKPK(oduUnpackUInt8, &(errCode), msg);
+
+   if(errCode == NFAPI_MSG_OK)
+   {
+      vnfDb.pnfStateAtVnf=PNF_STATE_RUNNING;
+      if(vnfDb.pnfRestarted == true)
+      {
+         vnfDb.pnfRestarted =false;
+      }
+      else if(vnfDb.pnfReconfigured == true)
+      {
+         vnfDb.pnfReconfigured = false;
+      }
+   }
+   else
+   {
+      DU_LOG("\nERROR   -->  NFAPI_VNF: Start response error code is not okay, errCode:%d", errCode);
+      return RFAILED;
+   }
+
    return ROK;
 }
+
+/*******************************************************************
+ *
+ * @brief Processes NFAPI PNF_STOP_REQ from PNF
+ *
+ * @details
+ *
+ *    Function : nfapi_vnf_procPnfStopReqEvt
+ *
+ *    Functionality:
+ *         - Builds and Sends PNF_STOP_REQ(Ref: SCF 225, Sec 3.1.7)
+ *
+ * @params[in]
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
 
 uint8_t nfapi_vnf_procPnfStopReqEvt(nFapi_p5_hdr *p5Hdr, nFapi_msg_header *msgHdr, void *msg)
 {
-   return ROK;
+   Buffer *mBuf = NULLP;
+   Pst pst;
+
+   DU_LOG("\nINFO   -->  NFAPI_VNF: Building the Pnf stop request");
+   if (ODU_GET_MSG_BUF(MAC_MEM_REGION, MAC_POOL, &mBuf) != ROK)
+   {
+      DU_LOG("\nERROR  --> NFAPI_VNF : Memory allocation failed in packPnfStopReq");
+      return RFAILED;
+   }
+   nfapiFillP5Hdr(mBuf);
+   nfapiFillMsgHdr(mBuf, NFAPI_P5_PHY_ID, TAG_NFAPI_PNF_STOP_REQ, 0);
+   FILL_PST_LWR_MAC_TO_DUAPP(pst, EVENT_PNF_DATA);
+   return ODU_POST_TASK(&pst, mBuf);
 }
+/*******************************************************************
+ *
+ * @brief Processes NFAPI PNF_STOP_RSP from PNF
+ *
+ * @details
+ *
+ *    Function : nfapi_vnf_procPnfStopRespEvt
+ *
+ *    Functionality:
+ *         - Processes PNF_STOP_RSP(Ref: SCF 225, Sec 3.1.8, 2.1.1.3
+ *          and 2.1.1.4)
+ *         - If stop response received as part of Restart procedure
+ *         then send PNF_START request.
+ *         - If stop response received as part of PNF Reconfigure procedure
+ *         then send PNF_CONFIG request.
+ *
+ *
+ * @params[in]
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
 
 uint8_t nfapi_vnf_procPnfStopRespEvt(nFapi_p5_hdr *p5Hdr, nFapi_msg_header *msgHdr, void *msg)
 {
+   uint8_t errCode = 0;
+   DU_LOG("\nINFO   -->  NFAPI_VNF: Received EVENT[%d] at STATE[%d]",\
+         vnfDb.pnfEvent, vnfDb.pnfStateAtVnf);
+
+   CMCHKPK(oduUnpackUInt8, &(errCode), msg);
+
+   if(errCode == NFAPI_MSG_OK)
+   {
+      vnfDb.pnfStateAtVnf=PNF_STATE_CONFIGURED;
+      DU_LOG("\nINFO   -->  NFAPI_VNF: PNF STATE[%d]",vnfDb.pnfStateAtVnf);
+   }
+   else
+   {
+      DU_LOG("\nERROR   -->  NFAPI_VNF: Stop response error code is not okay, errCode:%d", errCode);
+      return RFAILED;
+   }
+
+   if(vnfDb.pnfRestarted == true)
+   {
+      sendEventToNfapiVnfFsm(PNF_START_REQ, NULLP, NULLP, NULLP);
+   }
+   else if(vnfDb.pnfReconfigured == true)
+   {
+      sendEventToNfapiVnfFsm(PNF_CONFIG_REQ, NULLP, NULLP, NULLP);
+   }
+
    return ROK;
 }
 
+/*******************************************************************
+ *
+ * @brief Build and send PNF Restart procedure
+ *
+ * @details
+ *
+ *    Function : BuildAndSendPnfRestart
+ *
+ *    Functionality:
+ *         - Build and send PNF Restart procedure as per 2.1.1.3
+ *
+ * @params[in]
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t BuildAndSendPnfRestart()
+{
+   DU_LOG("\nINFO   -->  NFAPI_VNF: Build and send PNF Restart procedure");
+
+   vnfDb.pnfRestarted = true;
+   sendEventToNfapiVnfFsm(PNF_STOP_REQ, NULLP, NULLP, NULLP);
+   return ROK;
+}
+
+
+/*******************************************************************
+ *
+ * @brief Build and send PNF Reconfigured procedure
+ *
+ * @details
+ *
+ *    Function : BuildAndSendPnfReconfigured
+ *
+ *    Functionality:
+ *         - Build and send PNF Reconfigured procedure as per 2.1.1.3
+ *         - If PNF state is running then send PNF_STOP_REQ
+ *         - If PNF state is not running then send PNF_CONFIG_REQ
+ *
+ * @params[in]
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t BuildAndSendPnfReconfigured()
+{
+   DU_LOG("\nINFO   -->  NFAPI_VNF: Build and send PNF Recfg procedure");
+   
+   vnfDb.pnfReconfigured = true;
+   if(vnfDb.pnfStateAtVnf==PNF_STATE_RUNNING)
+   {
+      sendEventToNfapiVnfFsm(PNF_STOP_REQ, NULLP, NULLP, NULLP);
+   }
+   else if(vnfDb.pnfStateAtVnf== PNF_STATE_CONFIGURED)
+   {
+      sendEventToNfapiVnfFsm(PNF_CONFIG_REQ, NULLP, NULLP, NULLP);
+   }
+   return ROK;
+}
 /*******************************************************************
  *
  * @brief Handles Invalid Request Event
