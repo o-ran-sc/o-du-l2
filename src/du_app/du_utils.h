@@ -23,6 +23,9 @@
 #define RLC_UL_MEM_REGION    1
 #define RLC_DL_MEM_REGION    4
 #define MAC_MEM_REGION       4
+#ifdef NFAPI_ENABLED
+#define NFAPI_UDP_P7_MEM_REGION   5
+#endif
 
 #define DU_POOL  1
 #define RLC_POOL  1
@@ -106,6 +109,26 @@
        _buf = NULLP;                                            \
    }                                                            \
 }
+
+#ifdef NFAPI_ENABLED
+/* Fill Pst structure for sending msg from DU APP to NFAPI UDP P7 */
+#define FILL_PST_DUAPP_TO_NFAPIUDPP7(_pst, _event)                 \
+{                                                           \
+   _pst.selector  = ODU_SELECTOR_LWLC;                      \
+   _pst.srcEnt    = ENTDUAPP;                               \
+   _pst.dstEnt    = ENTUDPP7;                                  \
+   _pst.dstInst   = 0;                                      \
+   _pst.srcInst   = 0;                                      \
+   _pst.dstProcId = DU_PROC;                                \
+   _pst.srcProcId = DU_PROC;                                \
+   _pst.region = DU_APP_MEM_REGION;                         \
+   _pst.pool = DU_POOL;                                     \
+   _pst.event = _event;                                     \
+   _pst.route = 0;                                          \
+   _pst.prior = 0;                                          \
+   _pst.intfVer = 0;                                        \
+}
+#endif
 
 /* Fill Pst structure for sending msg from DU APP to MAC */
 #define FILL_PST_DUAPP_TO_MAC(_pst, _event)                 \

@@ -19,6 +19,9 @@
 /* This file is the entry point for UDP P7 */
 
 #include "common_def.h"
+#include "du_app_p7udp_inf.h"
+#include "nfapi_vnf_fsm.h"
+#include "nfapi_common.h"
 
 /**************************************************************************
  * @brief Task Initiation callback function. 
@@ -68,5 +71,71 @@ uint8_t udpP7ActvInit(Ent entity, Inst inst, Region region, Reason reason)
 uint8_t udpP7ActvTsk(Pst *pst, Buffer *mBuf)
 {
    uint8_t ret = ROK;
+
+   switch(pst->srcEnt)
+   {
+       case ENTDUAPP:
+       {
+          if(pst->event == EVENT_NFAPI_P7_UDP_CFG)
+          {
+             unpackDuNfapiP7UdpCfg(NfapiProcP7UdpCfg, pst, mBuf);
+          }
+          else
+          {
+             DU_LOG("\nERROR  -> NFAPI_VNF: UDP Act task received Incorrect event:%d",\
+                                                                  pst->event);
+          }
+          break;
+       }
+       default:
+       {
+          DU_LOG("\nERROR  --> NFAPI_VNF: UDP Act task received from wrong Entity:%d",\
+                                                                  pst->srcEnt);
+          ret = RFAILED;
+       }
+   }
+   
+   ODU_EXIT_TASK();
+   return ret;
+}
+
+/**************************************************************************
+ * @brief Handles the NFAPI_UDP_P7 Configuration received from DUAPP 
+ *
+ * @details
+ *
+ *      Function : NfapiProcP7UdpCfg 
+ * 
+ *      Functionality: UDP P7 Configuration recevied from DUAPP has to be stored
+ *      in Database of NFAPI which will be used during UDP Socket Establishment
+ *     
+ * @param[in]  Pst     *pst, Post structure of the primitive.     
+ * @param[in]  Buffer *mBuf, Packed primitive parameters in the
+ *  buffer.
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ ***************************************************************************/
+uint8_t NfapiProcP7UdpCfg(Pst *pst, NfapiP7UdpCfg *nfapiP7UdpCfg)
+{
+   uint8_t ret = ROK;
+   
+   DU_LOG("INFO --> NFAPI_VNF: Received UDP P7 Configuration from DUAPP");
+   if(nfapiP7UdpCfg)
+   {
+      if(nfapiP7UdpCfg->ipv4P7VnfPres)
+      {
+         vnfDb.p7TransInfo.srcIpv4Address = nfapiP7UdpCfg->ipv4P7VnfAddr;
+         vnfDb.p7TransInfo.srcIpv4Port = nfapiP7UdpCfg->p7VnfPort;
+         vnfDb.p7TransInfo.ipNetAddr.address = CM_INET_NTOH_UINT32(vnfDb.p7TransInfo.srcIpv4Address);
+      }
+
+      NFAPI_UDP_P7_FREE_SHRABL_BUF(pst->region, pst->pool, nfapiP7UdpCfg, sizeof(NfapiP7UdpCfg));
+   }
+   else
+   {
+      DU_LOG("\nINFO  -->  MAC : Received NfapiP7UdpCfg is NULL");
+      ret =  RFAILED;
+   }
    return ret;
 }

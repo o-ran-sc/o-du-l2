@@ -14,21 +14,36 @@
 #   See the License for the specific language governing permissions and        #
 #   limitations under the License.                                             #
 ################################################################################
-*******************************************************************************/
+ *******************************************************************************/
+
+/* Defines APIs exchanged between du_app and UDP P7 module */
+#ifndef __DUAPP_P7UDP_INF_H__
+#define __DUAPP_P7UDP_INF_H__
+
+#define EVENT_NFAPI_P7_UDP_CFG 1
+
+/********************* Global Variable ********************/
+
+typedef struct nfapiP7UdpCfg{
+   bool      ipv4P7VnfPres;
+   uint32_t  ipv4P7VnfAddr;
+   bool      ipv6P7VnfPres;
+   uint32_t  ipv6P7VnfAddr;
+   uint16_t  p7VnfPort;
+
+}NfapiP7UdpCfg;
+
+typedef uint8_t (* DuNfapiP7UdpCfgFunc) ARGS((
+      Pst *pst,
+      NfapiP7UdpCfg *nfapiP7UdpCfg));
 
 
-uint8_t packRlcConfigReq(Pst *pst, RlcMngmt *cfg);
-uint8_t cmPkLkwCntrlReq(Pst *pst, RlcMngmt *cfg);
-uint8_t cmPkLrgCfgReq(Pst *pst, RgMngmt *cfg);
-uint8_t egtpHdlDatInd(EgtpMsg egtpMsg);
-uint8_t BuildAndSendDUConfigUpdate();
-uint16_t getTransId();
-uint8_t cmPkLrgSchCfgReq(Pst * pst,RgMngmt * cfg);
-uint8_t sendCellDeleteReqToMac(uint16_t cellId);
-uint8_t BuildAndSendStatsDeleteReq(RicSubscription *ricSubscriptionInfo, bool deleteAllStats);
-uint8_t BuildAndSendStatsModificationReqToMac(RicSubscription *ricSubscriptionInfo);
-uint8_t BuildAndSendStatsModificationReq(RicSubscription *ricSubscriptionInfo);
-uint8_t BuildAndSendNfapiP7UdpConfig();
+/******************** FUNCTION DECLARATIONS ********************************/
+uint8_t packDuNfapiP7UdpCfg(Pst *pst, NfapiP7UdpCfg *nfapiP7UdpCfg);
+uint8_t NfapiProcP7UdpCfg(Pst *pst, NfapiP7UdpCfg *nfapiP7UdpCfg);
+uint8_t unpackDuNfapiP7UdpCfg(DuNfapiP7UdpCfgFunc func, Pst *pst, Buffer *mBuf);
+
+#endif
 
 /**********************************************************************
   End of file
