@@ -32,8 +32,16 @@
 #define PNF_APP_MEM_REG 1
 #define PNF_POOL 1
 
+typedef enum
+{
+   PNF_IDLE,
+   PNF_CONFIGURED,
+   PNF_RUNNING
+}PnfState;
+
 typedef struct pnfCfgParams
 {
+   PnfState          pnfState;
    uint32_t          pnfId;
    char              pnfName[PNF_NAME_LEN_MAX];
    PnfP5SctpParams   pnfP5SctpParams;

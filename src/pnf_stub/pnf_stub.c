@@ -66,7 +66,8 @@ void readPnfCfg()
    uint32_t ipv4_vnf = 0, ipv4_pnf = 0;
 
    DU_LOG("\nDEBUG  -->  PNF_STUB : Reading PNF P5 configurations");
-
+   
+   pnfCb.pnfCfgParams.pnfState=PNF_IDLE;
    pnfCb.pnfCfgParams.pnfId = PNF_ID;
    strcpy(pnfCb.pnfCfgParams.pnfName, PNF_NAME);
 
@@ -353,13 +354,84 @@ uint8_t buildAndSendPnfConfigResp()
    uint8_t ret = ROK;
    Buffer *mBuf = NULLP;
 
-   if (ODU_GET_MSG_BUF(PNF_APP_MEM_REG, PNF_POOL, &mBuf) != ROK)
+   DU_LOG("\nINFO   --> NFAPI_PNF: Building PNF_CONFIG_RSP");
+   pnfCb.pnfCfgParams.pnfState=PNF_CONFIGURED;
+   
+   if(ODU_GET_MSG_BUF(PNF_APP_MEM_REG, PNF_POOL, &mBuf) != ROK)
    {
       DU_LOG("\nERROR  --> NFAPI_PNF : Memory allocation failed in pnf config rsp");
       return RFAILED;
    }
    nfapiFillP5Hdr(mBuf);
    nfapiFillMsgHdr(mBuf, 0, TAG_NFAPI_PNF_CONFIG_RESP, 0);
+   CMCHKPK(oduPackPostUInt32, 0, mBuf); //Error Code
+   ret = pnfP5SctpSend(mBuf);
+   if(ret == RFAILED)
+   {
+      ODU_PUT_MSG_BUF(mBuf);
+   }
+   return ret;
+}
+
+/*********************************************************************************
+ *
+ * @Function Name: buildAndSendPnfStartResp
+ *
+ *
+ * @Functionality:
+ *   Builds and Sends PNF_START_RSP(Ref: SCF 225, Sec 3.1.6)
+ *
+ *
+ * *******************************************************************************/
+uint8_t buildAndSendPnfStartResp()
+{
+   uint8_t ret = ROK;
+   Buffer *mBuf = NULLP;
+
+   DU_LOG("\nINFO   --> NFAPI_PNF: Building PNF_START_RSP");
+   pnfCb.pnfCfgParams.pnfState=PNF_RUNNING;
+   
+   if(ODU_GET_MSG_BUF(PNF_APP_MEM_REG, PNF_POOL, &mBuf) != ROK)
+   {
+      DU_LOG("\nERROR  --> NFAPI_PNF : Memory allocation failed in pnf start rsp");
+      return RFAILED;
+   }
+   nfapiFillP5Hdr(mBuf);
+   nfapiFillMsgHdr(mBuf, 0, TAG_NFAPI_PNF_START_RESP, 0);
+   CMCHKPK(oduPackPostUInt32, 0, mBuf); //Error Code
+   ret = pnfP5SctpSend(mBuf);
+   if(ret == RFAILED)
+   {
+      ODU_PUT_MSG_BUF(mBuf);
+   }
+   return ret;
+}
+
+/*********************************************************************************
+ *
+ * @Function Name: buildAndSendPnfStopResp
+ *
+ *
+ * @Functionality:
+ *   Builds and Sends PNF_STOP_RSP(Ref: SCF 225, Sec 3.1.8)
+ *
+ *
+ * *******************************************************************************/
+uint8_t buildAndSendPnfStopResp()
+{
+   uint8_t ret = ROK;
+   Buffer *mBuf = NULLP;
+
+   DU_LOG("\nINFO   --> NFAPI_PNF: Building PNF_STOP_RSP");
+   pnfCb.pnfCfgParams.pnfState=PNF_CONFIGURED;
+
+   if(ODU_GET_MSG_BUF(PNF_APP_MEM_REG, PNF_POOL, &mBuf) != ROK)
+   {
+      DU_LOG("\nERROR  --> NFAPI_PNF : Memory allocation failed in pnf stop rsp");
+      return RFAILED;
+   }
+   nfapiFillP5Hdr(mBuf);
+   nfapiFillMsgHdr(mBuf, 0, TAG_NFAPI_PNF_STOP_RESP, 0);
    CMCHKPK(oduPackPostUInt32, 0, mBuf); //Error Code
    ret = pnfP5SctpSend(mBuf);
    if(ret == RFAILED)
@@ -401,6 +473,18 @@ uint8_t  p5MsgHandlerAtPnf(Buffer *mBuf)
          {
             DU_LOG("\nINFO   --> NFAPI_PNF: PNF_CONFIG_REQ recevied.");
             ret = buildAndSendPnfConfigResp();
+            break;
+         }
+      case TAG_NFAPI_PNF_START_REQ:
+         {
+            DU_LOG("\nINFO   --> NFAPI_PNF: PNF_START_REQ recevied.");
+            ret = buildAndSendPnfStartResp();
+            break;
+         }
+      case TAG_NFAPI_PNF_STOP_REQ:
+         {
+            DU_LOG("\nINFO   --> NFAPI_PNF: PNF_STOP_REQ recevied.");
+            ret = buildAndSendPnfStopResp();
             break;
          }
       default:

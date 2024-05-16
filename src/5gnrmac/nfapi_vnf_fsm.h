@@ -101,6 +101,8 @@ typedef struct nfapiP5Info
 
 typedef struct nfapiVnfDb
 {
+   bool                pnfToRestart;
+   bool                pnfToReconfigure;
    NfapiPnfState       pnfStateAtVnf;
    NfapiPnfEvent       pnfEvent;
    NfapiP5Info         p5Info;
@@ -129,5 +131,7 @@ uint8_t nfapi_vnf_procPnfStopReqEvt(nFapi_p5_hdr *p5Hdr, nFapi_msg_header *msgHd
 uint8_t nfapi_vnf_procPnfStopRespEvt(nFapi_p5_hdr *p5Hdr, nFapi_msg_header *msgHdr, void *msg);
 uint8_t nfapi_vnf_procInvalidEvt(nFapi_p5_hdr *p5Hdr, nFapi_msg_header *msgHdr, void *msg);
 
-
+/*NFAPI Misc procedure*/
+uint8_t TriggerPnfRestartProcedure();
+uint8_t TriggerPnfReconfigureProcedure();
 #endif
