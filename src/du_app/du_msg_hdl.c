@@ -51,6 +51,10 @@
 
 #endif 
 
+#ifdef NFAPI_ENABLED
+#include "du_app_p7udp_inf.h"
+#endif
+
 uint8_t rlcDlCfg = 0;
 uint8_t numRlcDlSaps = 0;
 uint8_t rlcUlCfg = 0;
@@ -114,6 +118,15 @@ DuMacStatsModificationReqFunc packMacStatsModificationReqOpts[]=
    MacProcStatsModificationReq,            /* Tight Coupling */
    packDuMacStatsModificationReq           /* Light weight-loose coupling */
 };
+
+#ifdef NFAPI_ENABLED
+DuNfapiP7UdpCfgFunc packNfapiP7UdpCfgOpts[]=
+{
+   packDuNfapiP7UdpCfg,      /*Loose Coupling*/
+   NfapiProcP7UdpCfg,        /*Tight-Coupling*/
+   packDuNfapiP7UdpCfg       /*Light weight-loose coupling */
+};
+#endif
 
 /**************************************************************************
  * @brief Function to fill configs required by RLC
@@ -406,9 +419,13 @@ uint8_t duProcCfgComplete()
    {
       //Start layer configs
       ret = duSendRlcUlCfg();
+#ifdef NFAPI_ENABLED
+      ret = BuildAndSendNfapiP7UdpConfig();
+#endif
    }
    return ret;
 }
+
 /**************************************************************************
  * @brief Function to invoke DU Layer Configs
  *
@@ -2577,6 +2594,51 @@ uint8_t DuProcMacStatsModificationRsp(Pst *pst, MacStatsModificationRsp *statsMo
    }
    return ret;
 }
+
+#ifdef NFAPI_ENABLED
+/*******************************************************************
+ *
+ * @brief Fill the NFAPI P7 UDP Socket Config to NFAPI UDP P7 (VNF)
+ * 
+ * @details
+ *
+ *    Function : BuildAndSendNfapiP7UdpConfig 
+ *
+ *    Functionality: Fill the NFAPI P7 UDP Socket Config 
+ *
+ * @params[in]
+ *             
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t BuildAndSendNfapiP7UdpConfig()
+{
+   Pst pst;
+   NfapiP7UdpCfg *p7UdpCfg = NULLP;
+
+   DU_ALLOC_SHRABL_BUF(p7UdpCfg, sizeof(NfapiP7UdpCfg));
+   if(p7UdpCfg == NULLP)
+   {
+      DU_LOG("\nERROR  -->  DU_APP : Memory allocation failed in BuildAndSendNfapiP7UdpConfig");
+      return RFAILED;
+   }
+   else
+   {
+      memcpy(p7UdpCfg,  &duCfgParam.tempNFapiP7UdpCfg, sizeof(NfapiP7UdpCfg));
+      FILL_PST_DUAPP_TO_NFAPIUDPP7(pst, EVENT_NFAPI_P7_UDP_CFG);
+
+      DU_LOG("\nDEBUG  -->  DU_APP : Sending NFAPI P7 UDP Cfg to NFAPI P7 (VNF)");
+      if((*packNfapiP7UdpCfgOpts[pst.selector])(&pst, p7UdpCfg) == RFAILED)
+      {
+         DU_LOG("\nERROR  -->  DU_APP : Failed to send NFAPI P7 UDP Cfg to NFAPI P7");
+         DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, p7UdpCfg, sizeof(NfapiP7UdpCfg));
+         return RFAILED;
+      }
+   }
+   return ROK;  
+}
+#endif
 
 /**********************************************************************
   End of file

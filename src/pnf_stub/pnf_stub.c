@@ -34,6 +34,7 @@
 #include <unistd.h>
 #include "nfapi_interface.h"
 #include "pnf_stub_sctp.h"
+#include "pnf_stub_p7_udp.h"
 #include "pnf_stub.h"
 #include "pnf_stub_p5_msg_hdl.h"
 
@@ -100,7 +101,13 @@ void readPnfCfg()
    }
 
    pnfCb.pnfCfgParams.pnfP5SctpParams.numDestNode = cntNumVnf;
-  
+ 
+   /*P7 UDP Transport Cfg*/
+   pnfCb.pnfCfgParams.pnfP7UdpParams.srcIpv4P7Addr = ipv4_pnf;
+   pnfCb.pnfCfgParams.pnfP7UdpParams.srcIpv4Port = PNF_P7_UDP_PORT;
+   pnfCb.pnfCfgParams.pnfP7UdpParams.destIpv4P7Addr = ipv4_vnf;
+   pnfCb.pnfCfgParams.pnfP7UdpParams.destIpv4Port = PNF_P7_UDP_PORT;
+
 } /* End of readPnfCfg */
 
 
@@ -152,12 +159,16 @@ uint8_t tst()
    /* Initializing SCTP global parameters */
    pnfP5SctpActvInit();
  
-   /* Start PNF-P5-SCTP to listen on incoming connection */
    pnfP5SctpCfgReq();
-   
+  
+   /* Initializing UDP global parameters */
+   pnfP7UdpActvInit();
+   pnfP7UdpCfgReq();
+
    /*Sleep is introduced for GDB to increase the waiting time for PNF Configuration from VNF*/
    sleep(1);
    
+   /* Start PNF-P5-SCTP to listen on incoming connection */
    pnfP5SctpStartReq();
 
    return ROK;
@@ -264,4 +275,3 @@ void nFapiExtractMsgHdr(nFapi_msg_header *msgHdr, Buffer *mBuf)
 /**********************************************************************
 End of file
 **********************************************************************/
-

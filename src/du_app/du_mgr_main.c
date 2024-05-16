@@ -580,13 +580,13 @@ uint8_t phyStubInit(SSTskId sysTskId)
 uint8_t udpP7Init(SSTskId sysTskId)
 {
    /* Register UDP P7 TAPA Task */
-   if(ODU_REG_TTSK((Ent)ENTUDP7, (Inst)0, (Ttype)TTNORM, (Prior)PRIOR0,
+   if(ODU_REG_TTSK((Ent)ENTUDPP7, (Inst)0, (Ttype)TTNORM, (Prior)PRIOR0,
             udpP7ActvInit, (ActvTsk)udpP7ActvTsk) != ROK)
    {
       return RFAILED;
    }
    /* Attach UDP P7 TAPA Task */
-   if (ODU_ATTACH_TTSK((Ent)ENTUDP7, (Inst)0, sysTskId)!= ROK)
+   if (ODU_ATTACH_TTSK((Ent)ENTUDPP7, (Inst)0, sysTskId)!= ROK)
    {
       return RFAILED;
    }

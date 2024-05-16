@@ -1342,7 +1342,7 @@
 #define ENTPHYSTUB  0xd4
 #else
 #ifdef NFAPI_ENABLED
-#define ENTUDP7       0xd4            /* UDP P7 */
+#define ENTUDPP7       0xd4            /* UDP P7 */
 #endif
 #endif
 /* ssi_h_001.main_135 : addition of LTE related entities */

@@ -15,53 +15,33 @@
 #   limitations under the License.                                             #
 ################################################################################
 *******************************************************************************/
+ 
+/* This file contains all SCTP related functionality */
+ 
+#ifndef __PNF_STUB_P7_UDP_H__
+#define __PNF_STUB_P7_UDP_H__
 
-#ifndef __PNF_MAIN_H
-#define __PNF_MAIN_H
-
-#define PNF_NAME_LEN_MAX 30
-#define PNF_ID 1
-#define PNF_NAME "ORAN_OAM_PNF"
-
-#define LOCAL_IP_PNF "192.168.130.79"
-
-#define PNF_P5_SCTP_PORT 7701
-#define NUM_PNF_P5_ASSOC 1 
-#define REMOTE_IP_DU (char*[]){"192.168.130.81", "192.168.130.83"}
-
-/*P7 UDP Teansport Cfg Details*/
-#define PNF_P7_UDP_PORT 9876
-
-#define PNF_APP_MEM_REG 1
-#define PNF_POOL 1
-
-typedef enum
+typedef struct pnfP7UdpParams
 {
-   PNF_IDLE,
-   PNF_CONFIGURED,
-   PNF_RUNNING
-}PnfState;
+   uint32_t     srcIpv4P7Addr;  /*PNF P7*/
+   uint16_t     srcIpv4Port;          
+   uint32_t     destIpv4P7Addr; /*VNF P7*/
+   uint16_t     destIpv4Port;          
+}PnfP7UdpParams;
 
-typedef struct pnfCfgParams
+typedef struct pnfP7UdpGlobalCb
 {
-   PnfState          pnfState;
-   uint32_t          pnfId;
-   char              pnfName[PNF_NAME_LEN_MAX];
-   PnfP5SctpParams   pnfP5SctpParams;
-   PnfP7UdpParams    pnfP7UdpParams;
-}PnfCfgParams;
+   CmInetAddr   srcAddr;        /*PNF IP Address*/
+   CmInetAddr   destAddr;       /*VNF IP Address*/
+   CmInetFd     sockFd;         /* Socket file descriptor */
+   uint16_t     gCntMsg; 
+}PnfP7UdpGlobalCb;
 
-typedef struct pnfGlobalCb
-{
-   PnfCfgParams pnfCfgParams;
-   uint8_t      numDu;
-   //DuDb         duInfo[MAX_DU_SUPPORTED]; /*TODO: VNF Database can be added*/
-}PnfGlobalCb;
+PnfP7UdpGlobalCb pnfP7Cb;
 
-extern PnfGlobalCb pnfCb;
-uint8_t p5MsgHandlerAtPnf(Buffer *mBuf);
-void nfapiFillP5Hdr(Buffer *mBuf);
-void nfapiFillMsgHdr(Buffer *mBuf, uint8_t phyId, uint16_t msgId, uint32_t msgLen);
-void nFapiExtractP5Hdr(nFapi_p5_hdr *p5Hdr, Buffer *mBuf);
-void nFapiExtractMsgHdr(nFapi_msg_header *msgHdr, Buffer *mBuf);
+uint8_t pnfP7UdpActvInit();
+uint8_t pnfP7UdpCfgReq();
+void    pnfP7UdpHdlRecvMsg(Buffer *buf);
+
 #endif
+
