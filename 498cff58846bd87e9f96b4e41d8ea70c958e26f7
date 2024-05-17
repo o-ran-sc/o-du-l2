@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5bc3233d_6cafcafd",
+        "filename": "src/5gnrmac/nfapi_vnf_fsm.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-05-17T11:55:36Z",
+      "side": 1,
+      "message": "spelling mistake.. Reconfigure",
+      "range": {
+        "startLine": 136,
+        "startChar": 8,
+        "endLine": 136,
+        "endChar": 37
+      },
+      "revId": "498cff58846bd87e9f96b4e41d8ea70c958e26f7",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
