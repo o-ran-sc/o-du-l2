@@ -18,6 +18,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6b16397d_dcab6207",
+        "filename": "src/5gnrmac/nfapi_vnf_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 189,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-05-17T11:42:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0cdd2d55_a8b0eb73",
+      "revId": "cfce39f24e5cef417e1e495852c56d6c2ac74760",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5ac60b2d_17c699e9",
@@ -31,6 +49,30 @@
       "writtenOn": "2024-05-17T10:19:24Z",
       "side": 1,
       "message": "please check the state here. Below lines( till line 273) will be valid for PNF_STATE !\u003d RUNNING.\n\nIf PNF_STATE \u003d RUNNING then trigger the \"Re-START procedure\" as discussed",
+      "range": {
+        "startLine": 261,
+        "startChar": 8,
+        "endLine": 261,
+        "endChar": 36
+      },
+      "revId": "cfce39f24e5cef417e1e495852c56d6c2ac74760",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ef00e60e_fca1d407",
+        "filename": "src/5gnrmac/nfapi_vnf_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 261,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-05-17T11:42:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5ac60b2d_17c699e9",
       "range": {
         "startLine": 261,
         "startChar": 8,
@@ -64,6 +106,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f4c5d871_2ed253e7",
+        "filename": "src/5gnrmac/nfapi_vnf_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 432,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-05-17T11:42:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a7c6f9ac_0d3eb5a6",
+      "range": {
+        "startLine": 432,
+        "startChar": 8,
+        "endLine": 432,
+        "endChar": 30
+      },
+      "revId": "cfce39f24e5cef417e1e495852c56d6c2ac74760",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6e6056b2_850cc616",
@@ -77,6 +143,30 @@
       "writtenOn": "2024-05-17T10:19:24Z",
       "side": 1,
       "message": "please change the name of the variable.. this is implying that pnf is already restarted. May be we can name it as pnfToRestart",
+      "range": {
+        "startLine": 436,
+        "startChar": 9,
+        "endLine": 436,
+        "endChar": 21
+      },
+      "revId": "cfce39f24e5cef417e1e495852c56d6c2ac74760",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "50710ac3_64f1cc69",
+        "filename": "src/5gnrmac/nfapi_vnf_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 436,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-05-17T11:42:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6e6056b2_850cc616",
       "range": {
         "startLine": 436,
         "startChar": 9,
@@ -110,6 +200,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c25df441_b1b27c9f",
+        "filename": "src/5gnrmac/nfapi_vnf_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 460,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-05-17T11:42:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ba721365_1b4a8c48",
+      "range": {
+        "startLine": 460,
+        "startChar": 8,
+        "endLine": 460,
+        "endChar": 35
+      },
+      "revId": "cfce39f24e5cef417e1e495852c56d6c2ac74760",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fb585df2_586e0d49",
@@ -123,6 +237,30 @@
       "writtenOn": "2024-05-17T10:19:24Z",
       "side": 1,
       "message": "please change the name of the variable.. this is implying that pnf is already reconfigured. May be we can name it as pnfToReconfigure",
+      "range": {
+        "startLine": 464,
+        "startChar": 9,
+        "endLine": 464,
+        "endChar": 25
+      },
+      "revId": "cfce39f24e5cef417e1e495852c56d6c2ac74760",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d781d494_ea5699c3",
+        "filename": "src/5gnrmac/nfapi_vnf_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 464,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-05-17T11:42:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fb585df2_586e0d49",
       "range": {
         "startLine": 464,
         "startChar": 9,
@@ -156,6 +294,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f4db4835_5e19b49b",
+        "filename": "src/5gnrmac/nfapi_vnf_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 469,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-05-17T11:42:37Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "e17bf3ab_930306ae",
+      "range": {
+        "startLine": 469,
+        "startChar": 3,
+        "endLine": 469,
+        "endChar": 7
+      },
+      "revId": "cfce39f24e5cef417e1e495852c56d6c2ac74760",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d77e5d5f_35eed050",
@@ -169,6 +331,30 @@
       "writtenOn": "2024-05-17T10:19:24Z",
       "side": 1,
       "message": "i think we should make it InvalidEvt becasue START_RESP received in IDLE should not be processed",
+      "range": {
+        "startLine": 511,
+        "startChar": 6,
+        "endLine": 511,
+        "endChar": 35
+      },
+      "revId": "cfce39f24e5cef417e1e495852c56d6c2ac74760",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b267fdeb_537ef100",
+        "filename": "src/5gnrmac/nfapi_vnf_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 511,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-05-17T11:42:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d77e5d5f_35eed050",
       "range": {
         "startLine": 511,
         "startChar": 6,
@@ -202,6 +388,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0207c6ff_fee90545",
+        "filename": "src/5gnrmac/nfapi_vnf_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 513,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-05-17T11:42:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7bff669f_163ec9ab",
+      "range": {
+        "startLine": 513,
+        "startChar": 6,
+        "endLine": 513,
+        "endChar": 34
+      },
+      "revId": "cfce39f24e5cef417e1e495852c56d6c2ac74760",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "15cfcefd_206d758b",
@@ -215,6 +425,30 @@
       "writtenOn": "2024-05-17T10:19:24Z",
       "side": 1,
       "message": "Even PARAM_REQUEST and PARAM_RESPONSE in PNF_CONFIGURED state doesnt make sense to me. Whats ur thought?",
+      "range": {
+        "startLine": 518,
+        "startChar": 6,
+        "endLine": 518,
+        "endChar": 34
+      },
+      "revId": "cfce39f24e5cef417e1e495852c56d6c2ac74760",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ba686c05_a37b8dd4",
+        "filename": "src/5gnrmac/nfapi_vnf_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 518,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-05-17T11:42:37Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "15cfcefd_206d758b",
       "range": {
         "startLine": 518,
         "startChar": 6,
@@ -248,6 +482,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2ec345c7_556970a2",
+        "filename": "src/5gnrmac/nfapi_vnf_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 525,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-05-17T11:42:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8395d211_10d69219",
+      "range": {
+        "startLine": 525,
+        "startChar": 6,
+        "endLine": 525,
+        "endChar": 34
+      },
+      "revId": "cfce39f24e5cef417e1e495852c56d6c2ac74760",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "59a12502_8e2415ae",
@@ -261,6 +519,30 @@
       "writtenOn": "2024-05-17T10:19:24Z",
       "side": 1,
       "message": "As disussed, pls mark it INVALID",
+      "range": {
+        "startLine": 531,
+        "startChar": 6,
+        "endLine": 531,
+        "endChar": 35
+      },
+      "revId": "cfce39f24e5cef417e1e495852c56d6c2ac74760",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4a93d4af_d3e2a8c9",
+        "filename": "src/5gnrmac/nfapi_vnf_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 531,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-05-17T11:42:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "59a12502_8e2415ae",
       "range": {
         "startLine": 531,
         "startChar": 6,
@@ -294,6 +576,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c73cd7d7_a8a20078",
+        "filename": "src/5gnrmac/nfapi_vnf_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 533,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-05-17T11:42:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7a6da893_a3a27bee",
+      "range": {
+        "startLine": 533,
+        "startChar": 6,
+        "endLine": 533,
+        "endChar": 36
+      },
+      "revId": "cfce39f24e5cef417e1e495852c56d6c2ac74760",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "80147612_3948cc9e",
@@ -317,6 +623,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "98b06e51_4262212b",
+        "filename": "src/5gnrmac/nfapi_vnf_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 534,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-05-17T11:42:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "80147612_3948cc9e",
+      "range": {
+        "startLine": 534,
+        "startChar": 6,
+        "endLine": 534,
+        "endChar": 30
+      },
+      "revId": "cfce39f24e5cef417e1e495852c56d6c2ac74760",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "54ccb773_d4a5628a",
@@ -330,6 +660,30 @@
       "writtenOn": "2024-05-17T10:19:24Z",
       "side": 1,
       "message": "Pls mark it as invalid",
+      "range": {
+        "startLine": 535,
+        "startChar": 6,
+        "endLine": 535,
+        "endChar": 35
+      },
+      "revId": "cfce39f24e5cef417e1e495852c56d6c2ac74760",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ed4af785_2e9538be",
+        "filename": "src/5gnrmac/nfapi_vnf_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 535,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-05-17T11:42:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "54ccb773_d4a5628a",
       "range": {
         "startLine": 535,
         "startChar": 6,
