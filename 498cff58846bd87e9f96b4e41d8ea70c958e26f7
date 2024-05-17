@@ -22,6 +22,30 @@
       },
       "revId": "498cff58846bd87e9f96b4e41d8ea70c958e26f7",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b769d974_cfa85e05",
+        "filename": "src/5gnrmac/nfapi_vnf_fsm.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-05-17T11:57:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5bc3233d_6cafcafd",
+      "range": {
+        "startLine": 136,
+        "startChar": 8,
+        "endLine": 136,
+        "endChar": 37
+      },
+      "revId": "498cff58846bd87e9f96b4e41d8ea70c958e26f7",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
   ]
 }
