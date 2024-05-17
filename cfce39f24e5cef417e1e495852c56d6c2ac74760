@@ -1,0 +1,343 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0cdd2d55_a8b0eb73",
+        "filename": "src/5gnrmac/nfapi_vnf_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 189,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-05-17T10:19:24Z",
+      "side": 1,
+      "message": "please check the state here. Below lines( till line 199) will be valid for PNF_STATE !\u003d RUNNING.\n\nIf PNF_STATE \u003d RUNNING then trigger the \"Re-configure procedure\" as discussed",
+      "revId": "cfce39f24e5cef417e1e495852c56d6c2ac74760",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5ac60b2d_17c699e9",
+        "filename": "src/5gnrmac/nfapi_vnf_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 261,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-05-17T10:19:24Z",
+      "side": 1,
+      "message": "please check the state here. Below lines( till line 273) will be valid for PNF_STATE !\u003d RUNNING.\n\nIf PNF_STATE \u003d RUNNING then trigger the \"Re-START procedure\" as discussed",
+      "range": {
+        "startLine": 261,
+        "startChar": 8,
+        "endLine": 261,
+        "endChar": 36
+      },
+      "revId": "cfce39f24e5cef417e1e495852c56d6c2ac74760",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a7c6f9ac_0d3eb5a6",
+        "filename": "src/5gnrmac/nfapi_vnf_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 432,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-05-17T10:19:24Z",
+      "side": 1,
+      "message": "as discussed please rename this function to TriggerPnfRestartProcedure and  and call it when START_REQ is received in RUNNING_STATE",
+      "range": {
+        "startLine": 432,
+        "startChar": 8,
+        "endLine": 432,
+        "endChar": 30
+      },
+      "revId": "cfce39f24e5cef417e1e495852c56d6c2ac74760",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6e6056b2_850cc616",
+        "filename": "src/5gnrmac/nfapi_vnf_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 436,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-05-17T10:19:24Z",
+      "side": 1,
+      "message": "please change the name of the variable.. this is implying that pnf is already restarted. May be we can name it as pnfToRestart",
+      "range": {
+        "startLine": 436,
+        "startChar": 9,
+        "endLine": 436,
+        "endChar": 21
+      },
+      "revId": "cfce39f24e5cef417e1e495852c56d6c2ac74760",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ba721365_1b4a8c48",
+        "filename": "src/5gnrmac/nfapi_vnf_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 460,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-05-17T10:19:24Z",
+      "side": 1,
+      "message": "as discussed please rename this function to TriggerPnfRconfigureProcedure and call it when CONFIG_REQ is received in RUNNING_STATE",
+      "range": {
+        "startLine": 460,
+        "startChar": 8,
+        "endLine": 460,
+        "endChar": 35
+      },
+      "revId": "cfce39f24e5cef417e1e495852c56d6c2ac74760",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fb585df2_586e0d49",
+        "filename": "src/5gnrmac/nfapi_vnf_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 464,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-05-17T10:19:24Z",
+      "side": 1,
+      "message": "please change the name of the variable.. this is implying that pnf is already reconfigured. May be we can name it as pnfToReconfigure",
+      "range": {
+        "startLine": 464,
+        "startChar": 9,
+        "endLine": 464,
+        "endChar": 25
+      },
+      "revId": "cfce39f24e5cef417e1e495852c56d6c2ac74760",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e17bf3ab_930306ae",
+        "filename": "src/5gnrmac/nfapi_vnf_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 469,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-05-17T10:19:24Z",
+      "side": 1,
+      "message": "remove the else if",
+      "range": {
+        "startLine": 469,
+        "startChar": 3,
+        "endLine": 469,
+        "endChar": 7
+      },
+      "revId": "cfce39f24e5cef417e1e495852c56d6c2ac74760",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d77e5d5f_35eed050",
+        "filename": "src/5gnrmac/nfapi_vnf_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 511,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-05-17T10:19:24Z",
+      "side": 1,
+      "message": "i think we should make it InvalidEvt becasue START_RESP received in IDLE should not be processed",
+      "range": {
+        "startLine": 511,
+        "startChar": 6,
+        "endLine": 511,
+        "endChar": 35
+      },
+      "revId": "cfce39f24e5cef417e1e495852c56d6c2ac74760",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7bff669f_163ec9ab",
+        "filename": "src/5gnrmac/nfapi_vnf_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 513,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-05-17T10:19:24Z",
+      "side": 1,
+      "message": "i think we should make it InvalidEvt becasue STOP_RESP received in IDLE should not be processed",
+      "range": {
+        "startLine": 513,
+        "startChar": 6,
+        "endLine": 513,
+        "endChar": 34
+      },
+      "revId": "cfce39f24e5cef417e1e495852c56d6c2ac74760",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "15cfcefd_206d758b",
+        "filename": "src/5gnrmac/nfapi_vnf_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 518,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-05-17T10:19:24Z",
+      "side": 1,
+      "message": "Even PARAM_REQUEST and PARAM_RESPONSE in PNF_CONFIGURED state doesnt make sense to me. Whats ur thought?",
+      "range": {
+        "startLine": 518,
+        "startChar": 6,
+        "endLine": 518,
+        "endChar": 34
+      },
+      "revId": "cfce39f24e5cef417e1e495852c56d6c2ac74760",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8395d211_10d69219",
+        "filename": "src/5gnrmac/nfapi_vnf_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 525,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-05-17T10:19:24Z",
+      "side": 1,
+      "message": "i think we should make it InvalidEvt becasue STOP_RESP received in CONFIGURED state should not be processed",
+      "range": {
+        "startLine": 525,
+        "startChar": 6,
+        "endLine": 525,
+        "endChar": 34
+      },
+      "revId": "cfce39f24e5cef417e1e495852c56d6c2ac74760",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "59a12502_8e2415ae",
+        "filename": "src/5gnrmac/nfapi_vnf_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 531,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-05-17T10:19:24Z",
+      "side": 1,
+      "message": "As disussed, pls mark it INVALID",
+      "range": {
+        "startLine": 531,
+        "startChar": 6,
+        "endLine": 531,
+        "endChar": 35
+      },
+      "revId": "cfce39f24e5cef417e1e495852c56d6c2ac74760",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7a6da893_a3a27bee",
+        "filename": "src/5gnrmac/nfapi_vnf_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 533,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-05-17T10:19:24Z",
+      "side": 1,
+      "message": "pls mark it INVALID",
+      "range": {
+        "startLine": 533,
+        "startChar": 6,
+        "endLine": 533,
+        "endChar": 36
+      },
+      "revId": "cfce39f24e5cef417e1e495852c56d6c2ac74760",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "80147612_3948cc9e",
+        "filename": "src/5gnrmac/nfapi_vnf_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 534,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-05-17T10:19:24Z",
+      "side": 1,
+      "message": "pls change it to  nfapi_vnf_procPnfStartReqEvt",
+      "range": {
+        "startLine": 534,
+        "startChar": 6,
+        "endLine": 534,
+        "endChar": 30
+      },
+      "revId": "cfce39f24e5cef417e1e495852c56d6c2ac74760",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "54ccb773_d4a5628a",
+        "filename": "src/5gnrmac/nfapi_vnf_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 535,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-05-17T10:19:24Z",
+      "side": 1,
+      "message": "Pls mark it as invalid",
+      "range": {
+        "startLine": 535,
+        "startChar": 6,
+        "endLine": 535,
+        "endChar": 35
+      },
+      "revId": "cfce39f24e5cef417e1e495852c56d6c2ac74760",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
