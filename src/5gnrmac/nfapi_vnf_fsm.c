@@ -332,6 +332,7 @@ uint8_t nfapi_vnf_procPnfStartRespEvt(nFapi_p5_hdr *p5Hdr, nFapi_msg_header *msg
       {
          vnfDb.pnfToReconfigure = false;
       }
+      sendEventToLowerMacFsm(PARAM_REQUEST, 0, NULL);
    }
    else
    {

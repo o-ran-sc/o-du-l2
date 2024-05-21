@@ -38,6 +38,8 @@
 #include "lwr_mac_utils.h"
 #include "mac_utils.h"
 #include "nfapi_interface.h"
+#include "lwr_mac_sctp_inf.h"
+#include "nfapi_common.h"
 
 #define MIB_SFN_BITMASK 0xFC
 #define PDCCH_PDU_TYPE 0
@@ -1334,6 +1336,23 @@ uint8_t lwr_mac_procParamReqEvt(void *msg)
    DU_LOG("\nCall Flow: ENTMAC -> ENTLWRMAC : PARAM_REQ\n");
 #endif
 
+#ifdef NFAPI_ENABLED
+   Buffer *mBuf = NULLP;
+   Pst pst;
+
+   DU_LOG("\nCall Flow: ENTMAC -> ENTLWRMAC : NFAPI P5 PARAM_REQ\n");
+   if (ODU_GET_MSG_BUF(MAC_MEM_REGION, MAC_POOL, &mBuf) != ROK)
+   {
+      DU_LOG("\nERROR  --> NFAPI_VNF : Memory allocation failed in packPnfParamReq");
+      return RFAILED;
+   }
+   nfapiFillP5Hdr(mBuf);
+   nfapiFillMsgHdr(mBuf, NFAPI_P5_PHY_ID, FAPI_PARAM_REQUEST, 0);
+
+   FILL_PST_LWR_MAC_TO_DUAPP(pst, EVENT_PNF_DATA);
+   return ODU_POST_TASK(&pst, mBuf);
+
+#else
    /* startGuardTimer(); */
    fapi_param_req_t         *paramReq = NULL;
    fapi_msg_header_t        *msgHeader;
@@ -1371,6 +1390,7 @@ uint8_t lwr_mac_procParamReqEvt(void *msg)
       DU_LOG("\nERROR  -->  LWR_MAC: Failed to allocate memory for Param Request");
       return RFAILED;
    }
+#endif
 #endif
    return ROK;
 }

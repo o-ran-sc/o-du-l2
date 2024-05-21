@@ -19,7 +19,9 @@
 /* This file contains all SCTP related functionality */
 
 #include "common_def.h" 
+#include "nfapi_interface.h"
 #include "pnf_stub_sctp.h"
+#include "pnf_stub_p5_msg_hdl.h"
 #include "pnf_stub.h"
 
 uint8_t   socket_type;      /* Socket type */
