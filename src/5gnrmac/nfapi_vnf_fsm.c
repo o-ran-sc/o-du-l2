@@ -27,6 +27,7 @@
 #include "lwr_mac_utils.h"
 #include "lwr_mac_sctp_inf.h"
 #include "mac_utils.h"
+#include "lwr_mac_fsm.h"
 
 /*******************************************************************
  *
@@ -332,6 +333,7 @@ uint8_t nfapi_vnf_procPnfStartRespEvt(nFapi_p5_hdr *p5Hdr, nFapi_msg_header *msg
       {
          vnfDb.pnfToReconfigure = false;
       }
+      sendEventToLowerMacFsm(PARAM_REQUEST, 0, NULL);
    }
    else
    {
