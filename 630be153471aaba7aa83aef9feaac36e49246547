@@ -1,0 +1,107 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "045a1040_9f5ce240",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-05-21T11:35:46Z",
+      "side": 1,
+      "message": "this file also inside NFAPI_ENABLED flag",
+      "range": {
+        "startLine": 41,
+        "startChar": 10,
+        "endLine": 41,
+        "endChar": 26
+      },
+      "revId": "630be153471aaba7aa83aef9feaac36e49246547",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7b827928_d802b0cf",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-05-21T11:35:46Z",
+      "side": 1,
+      "message": "put all nfapi files under #ifdef NFAPI_ENABLED",
+      "revId": "630be153471aaba7aa83aef9feaac36e49246547",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "953a369f_4b2d6284",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1339,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-05-21T11:35:46Z",
+      "side": 1,
+      "message": "move it outside INTEL_FAPI also",
+      "range": {
+        "startLine": 1339,
+        "startChar": 7,
+        "endLine": 1339,
+        "endChar": 20
+      },
+      "revId": "630be153471aaba7aa83aef9feaac36e49246547",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3fbe36f3_213eb551",
+        "filename": "src/5gnrmac/nfapi_vnf_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 335,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-05-21T11:35:46Z",
+      "side": 1,
+      "message": "thsi function has been declared in lwr_mac_fsm.h.. Dont we need to include this in here?",
+      "revId": "630be153471aaba7aa83aef9feaac36e49246547",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1d7186c7_ad78ae41",
+        "filename": "src/pnf_stub/pnf_stub_p5_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 276,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-05-21T11:35:46Z",
+      "side": 1,
+      "message": "can we place it after PNF_STOP_REQ as PNF procedures precedes PHY prciedures",
+      "range": {
+        "startLine": 276,
+        "startChar": 11,
+        "endLine": 276,
+        "endChar": 29
+      },
+      "revId": "630be153471aaba7aa83aef9feaac36e49246547",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
