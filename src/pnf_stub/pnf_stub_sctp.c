@@ -322,8 +322,6 @@ uint8_t pnfP5SctpSockPoll()
    CmInetMemInfo      memInfo;
    PnfP5SctpSockPollParams pnfP5PollParams;
    
-   char msg[255];
-
    memset(&pnfP5PollParams, 0, sizeof(PnfP5SctpSockPollParams));
     
    /* All sockets are non-blocking */

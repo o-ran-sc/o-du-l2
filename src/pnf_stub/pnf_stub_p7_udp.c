@@ -20,6 +20,7 @@
 
 #include "common_def.h"
 #include "cm_inet.x"
+#include "nfapi_interface.h"
 #include "pnf_stub_p7_udp.h"
 #include "pnf_stub_sctp.h"
 #include "pnf_stub.h"

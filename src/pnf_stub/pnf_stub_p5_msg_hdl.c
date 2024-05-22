@@ -36,6 +36,7 @@
 #include "pnf_stub_p5_msg_hdl.h"
 #include "nfapi_interface.h"
 #include "pnf_stub_sctp.h"
+#include "pnf_stub_p7_udp.h"
 #include "pnf_stub.h"
 
 PnfGlobalCb pnfCb;
@@ -232,9 +233,7 @@ uint8_t buildAndSendPnfStopResp()
 
 uint8_t buildAndSendParamResp()
 {
-   uint8_t ret = ROK,idx=0;
    Buffer *mBuf = NULLP;
-   fapi_param_resp_t *fapiParamRsp;
 
    if (ODU_GET_MSG_BUF(PNF_APP_MEM_REG, PNF_POOL, &mBuf) != ROK)
    {
