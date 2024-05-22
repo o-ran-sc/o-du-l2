@@ -1,0 +1,140 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "03f00c9c_6b490bc0",
+        "filename": "src/5gnrmac/nfapi_udp_p7.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 184,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-05-22T06:46:55Z",
+      "side": 1,
+      "message": "Functionality description is missing here",
+      "revId": "989d2fd81030678343c152db685e1626e0b0d4c0",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7c7f1c84_1b678a12",
+        "filename": "src/5gnrmac/nfapi_udp_p7.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 371,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-05-22T06:46:55Z",
+      "side": 1,
+      "message": "i think this parameter value numDataSent will always prints 0, because everytime when we call this function \" static uint64_t numDataSent \u003d 0\" this line will set the parameter value as 0\ncan u check.",
+      "revId": "989d2fd81030678343c152db685e1626e0b0d4c0",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0f7611c2_86103812",
+        "filename": "src/du_app/du_cfg.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 5355,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-05-22T06:46:55Z",
+      "side": 1,
+      "message": "storing pnfP5Ip in pnfp7add doesn\u0027t seems correct. we can rename pnfP5Ip vairbale to something else like pnfIp.",
+      "revId": "989d2fd81030678343c152db685e1626e0b0d4c0",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "81cb0448_56c490ff",
+        "filename": "src/du_app/du_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-05-22T06:46:55Z",
+      "side": 1,
+      "message": "add /* Tight Coupling */",
+      "revId": "989d2fd81030678343c152db685e1626e0b0d4c0",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "88c60e73_622f3d21",
+        "filename": "src/du_app/du_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2618,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-05-22T06:46:55Z",
+      "side": 1,
+      "message": "NfapiP7UdpCfg *p7UdpCfg\u003dNULL;",
+      "revId": "989d2fd81030678343c152db685e1626e0b0d4c0",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9017e184_f23baf60",
+        "filename": "src/du_app/du_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2635,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-05-22T06:46:55Z",
+      "side": 1,
+      "message": "return RFAILED",
+      "revId": "989d2fd81030678343c152db685e1626e0b0d4c0",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "718229cb_30cfc00e",
+        "filename": "src/phy_stub/phy_stub_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 184,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-05-22T06:46:55Z",
+      "side": 1,
+      "message": "revert",
+      "revId": "989d2fd81030678343c152db685e1626e0b0d4c0",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4c60de62_dcebbe94",
+        "filename": "src/pnf_stub/pnf_stub.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-05-22T06:46:55Z",
+      "side": 1,
+      "message": "please provide reference details here if available.",
+      "revId": "989d2fd81030678343c152db685e1626e0b0d4c0",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
