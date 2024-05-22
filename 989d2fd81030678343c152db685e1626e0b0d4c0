@@ -18,6 +18,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b02d0900_e460b5d2",
+        "filename": "src/5gnrmac/nfapi_udp_p7.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 184,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-05-22T07:27:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "03f00c9c_6b490bc0",
+      "revId": "989d2fd81030678343c152db685e1626e0b0d4c0",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7c7f1c84_1b678a12",
@@ -31,6 +49,24 @@
       "writtenOn": "2024-05-22T06:46:55Z",
       "side": 1,
       "message": "i think this parameter value numDataSent will always prints 0, because everytime when we call this function \" static uint64_t numDataSent \u003d 0\" this line will set the parameter value as 0\ncan u check.",
+      "revId": "989d2fd81030678343c152db685e1626e0b0d4c0",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "01fdaf1a_9fe5cfd9",
+        "filename": "src/5gnrmac/nfapi_udp_p7.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 371,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-05-22T07:27:23Z",
+      "side": 1,
+      "message": "since its a static variable thus it preserves the value and initialized only once when the function is called for the first time",
+      "parentUuid": "7c7f1c84_1b678a12",
       "revId": "989d2fd81030678343c152db685e1626e0b0d4c0",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -52,6 +88,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f1ebee09_046885f1",
+        "filename": "src/du_app/du_cfg.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 5355,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-05-22T07:27:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0f7611c2_86103812",
+      "revId": "989d2fd81030678343c152db685e1626e0b0d4c0",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "81cb0448_56c490ff",
@@ -65,6 +119,24 @@
       "writtenOn": "2024-05-22T06:46:55Z",
       "side": 1,
       "message": "add /* Tight Coupling */",
+      "revId": "989d2fd81030678343c152db685e1626e0b0d4c0",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f816a6c7_9bb20720",
+        "filename": "src/du_app/du_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-05-22T07:27:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "81cb0448_56c490ff",
       "revId": "989d2fd81030678343c152db685e1626e0b0d4c0",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -86,6 +158,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a1d7e7eb_e35c3ef4",
+        "filename": "src/du_app/du_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2618,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-05-22T07:27:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "88c60e73_622f3d21",
+      "revId": "989d2fd81030678343c152db685e1626e0b0d4c0",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9017e184_f23baf60",
@@ -99,6 +189,24 @@
       "writtenOn": "2024-05-22T06:46:55Z",
       "side": 1,
       "message": "return RFAILED",
+      "revId": "989d2fd81030678343c152db685e1626e0b0d4c0",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "06a6735f_1044e870",
+        "filename": "src/du_app/du_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2635,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-05-22T07:27:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9017e184_f23baf60",
       "revId": "989d2fd81030678343c152db685e1626e0b0d4c0",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -120,6 +228,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e3d8e42a_139a3a51",
+        "filename": "src/phy_stub/phy_stub_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 184,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-05-22T07:27:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "718229cb_30cfc00e",
+      "revId": "989d2fd81030678343c152db685e1626e0b0d4c0",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4c60de62_dcebbe94",
@@ -133,6 +259,24 @@
       "writtenOn": "2024-05-22T06:46:55Z",
       "side": 1,
       "message": "please provide reference details here if available.",
+      "revId": "989d2fd81030678343c152db685e1626e0b0d4c0",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2b1d39e1_66dfb664",
+        "filename": "src/pnf_stub/pnf_stub.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-05-22T07:27:23Z",
+      "side": 1,
+      "message": "I took this number from stack code so no standard reference",
+      "parentUuid": "4c60de62_dcebbe94",
       "revId": "989d2fd81030678343c152db685e1626e0b0d4c0",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
