@@ -20,6 +20,7 @@
 
 #include "common_def.h"
 #include "mac_utils.h"
+#include "lwr_mac.h"
 #include "lwr_mac_fsm.h"
 #include "lwr_mac_phy.h"
 #ifdef INTEL_FAPI
@@ -162,6 +163,75 @@ void callFlowlwrMacActvTsk(Pst *pst)
 }
 #endif
 
+#ifdef NFAPI_ENABLED
+/**************************************************************************
+* @brief process param response received from PNF_STUB, fill p7TransInfo 
+* parameter and send the param reponse to lwr mac for furthur processing
+*
+* @details
+*
+*     Function : sendParamRspToLowerMacFsm 
+*
+*     Functionality:
+*           process param response received from PNF_STUB, fill p7TransInfo
+*     parameter and send the param reponse to lwr mac for furthur processing
+*
+* @param[in]  Param response buffer
+* @return ROK     - success
+*         RFAILED - failure
+***************************************************************************/
+
+uint8_t sendParamRspToLowerMacFsm(Buffer *mBuf)
+{
+   uint8_t pnfAdd[4];
+   uint8_t errorCode = 1,idx=0,numtlv=0;
+   uint16_t port=0, tag =0, len=0;
+   CmInetIpAddr vnfIp;
+   char newIp[INET_ADDRSTRLEN];
+   memset(newIp, 0, INET_ADDRSTRLEN);
+   
+   DU_LOG("\nINFO  -->  LWR MAC: Extracting information from param resp message");
+   //Upacking error code and number of tlv as per : 5G nFAPI Specification,
+   //section 3.2.2 PARAM.response, Table 3-14
+   CMCHKPK(oduUnpackUInt8, &(errorCode), mBuf);
+   if(errorCode != 0)
+   {
+      DU_LOG("\nERROR  -->  LWR MAC: Param rsp errorCode is %d", errorCode);
+      return RFAILED;
+   }
+
+   CMCHKPK(oduUnpackUInt8, &(numtlv), mBuf);
+   
+   //unpacking P7 PNF Address Ipv4 tlv mentioned in table 3-15
+   CMCHKPK(oduUnpackUInt16, &(tag), mBuf);
+   CMCHKPK(oduUnpackUInt16, &(len), mBuf);
+   for(idx=0; idx<4; idx++)
+   {
+      CMCHKPK(oduUnpackUInt8, &(pnfAdd[idx]), mBuf);
+   }
+   
+   //unpacking P7 PNF Port tlv mentioned in table 3-15
+   CMCHKPK(oduUnpackUInt16, &(tag), mBuf);
+   CMCHKPK(oduUnpackUInt16, &(len), mBuf);
+   CMCHKPK(oduUnpackUInt16, &(port), mBuf);
+   if (inet_ntop(AF_INET, pnfAdd, newIp, INET_ADDRSTRLEN) == NULL) 
+   {
+      DU_LOG("\nERROR  -->  LWR MAC: failed to convert the pnf ip");
+      return RFAILED;
+   }
+   cmInetAddr((S8*)newIp, &vnfIp);
+
+   //storing the information in vnf db
+   vnfDb.p7TransInfo.destIpv4Address = vnfIp;
+   vnfDb.p7TransInfo.destIpv4Port = port;
+   vnfDb.p7TransInfo.destIpNetAddr.address = CM_INET_NTOH_UINT32(vnfDb.p7TransInfo.destIpv4Address);
+   vnfDb.p7TransInfo.destIpNetAddr.port = vnfDb.p7TransInfo.destIpv4Port;
+   DU_LOG("\nINFO  -->  LWR MAC: Sending param response message body buffer to lower mac");
+   //sendEventToLowerMacFsm(PARAM_RESPONSE, 0, mBuf); TODO 
+   return ROK;
+}
+#endif
+
 /**************************************************************************
  * @brief Task Activation callback function. 
  *
@@ -264,25 +334,48 @@ uint8_t lwrMacActvTsk(Pst *pst, Buffer *mBuf)
                {
                    nFapi_p5_hdr     p5Hdr;
                    nFapi_msg_header msgHdr;
-                   NfapiPnfEvent msgType = 0;
-
+                   EventState phyEvent;
+                   NfapiPnfEvent nfapiPnfEvent;
+            
                    nFapiExtractP5Hdr(&p5Hdr, mBuf);
                    nFapiExtractMsgHdr(&msgHdr, mBuf);
                    
                    if(msgHdr.sRU_termination_type != NFAPI_P5_P7_SRU_TYPE)
                    {
+                      ODU_PUT_MSG_BUF(mBuf);
                       DU_LOG("\nERROR  --> NFAPI_VNF: Incorrect SRU Termination Type:%d",\
-                               msgHdr.sRU_termination_type);
+                            msgHdr.sRU_termination_type);
                       return RFAILED;
                    }
-                   msgType = convertNfapiP5TagValToMsgId(msgHdr.msg_id);
-                   if(msgType == PNF_MAX_EVENT)
+                   if(convertNfapiP5TagValToMsgId(msgHdr.msg_id, &nfapiPnfEvent, &phyEvent)!=ROK)
                    {
+                      ODU_PUT_MSG_BUF(mBuf);
                       DU_LOG("\nERROR  --> NFAPI_VNF: Incorrect NFAPI MsgID received:%d",\
-                               msgHdr.msg_id);
+                            msgHdr.msg_id);
                       return RFAILED;
                    }
-                   sendEventToNfapiVnfFsm(msgType, &p5Hdr, &msgHdr, mBuf);
+                   if(nfapiPnfEvent!= PNF_MAX_EVENT)
+                   {
+                      sendEventToNfapiVnfFsm(nfapiPnfEvent, &p5Hdr, &msgHdr, mBuf);
+                   }
+                   else if(phyEvent != MAX_EVENT)
+                   {
+
+                      if(phyEvent == PARAM_RESPONSE)
+                      {
+                         if(sendParamRspToLowerMacFsm(mBuf) != ROK)
+                         {
+                            ODU_PUT_MSG_BUF(mBuf);
+                            DU_LOG("\nERROR  --> NFAPI_VNF: Failed to process param response");
+                            return RFAILED;
+                         }
+                           
+                      }
+                      else
+                      {
+                         sendEventToLowerMacFsm(phyEvent, msgHdr.length, mBuf);  
+                      }
+                   }
                    ODU_PUT_MSG_BUF(mBuf);
                    break;
                }
