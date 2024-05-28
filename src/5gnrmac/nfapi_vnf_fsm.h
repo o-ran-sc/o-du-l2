@@ -38,6 +38,14 @@ typedef enum {
    PNF_START_RESP,
    PNF_STOP_REQ,
    PNF_STOP_RESP,
+   PARAM_REQ,
+   PARAM_RESP,
+   CONFIG_REQ,
+   CONFIG_RESP,
+   START_REQ,
+   STOP_REQ,
+   STOP_IND,
+   ERROR_IND,
    PNF_MAX_EVENT
 }NfapiPnfEvent;
 

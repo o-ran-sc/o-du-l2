@@ -282,7 +282,14 @@ uint8_t lwrMacActvTsk(Pst *pst, Buffer *mBuf)
                                msgHdr.msg_id);
                       return RFAILED;
                    }
-                   sendEventToNfapiVnfFsm(msgType, &p5Hdr, &msgHdr, mBuf);
+                   if(msgType>=PNF_READY_IND && msgType<=PNF_STOP_RESP)
+                   {
+                      sendEventToNfapiVnfFsm(msgType, &p5Hdr, &msgHdr, mBuf);
+                   }
+                   else if(msgType>= PARAM_REQ && msgType<=ERROR_IND)
+                   {
+                     //sendEventToLowerMacFsm(msgType%PARAM_REQ, msgHdr.length, mBuf);  TODO
+                   }
                    ODU_PUT_MSG_BUF(mBuf);
                    break;
                }

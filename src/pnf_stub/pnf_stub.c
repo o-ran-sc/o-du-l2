@@ -272,6 +272,64 @@ void nFapiExtractMsgHdr(nFapi_msg_header *msgHdr, Buffer *mBuf)
     return;
 }
 
+/*********************************************************************************
+ *
+ * @Function Name: convertIpStringToUInt8
+ *
+ *
+ * @Functionality: 
+ *    convert the ip address and store in uint8_t array[4]
+ *
+ * @params 
+ *         [IN]: Ip address which needs to convert
+ *         [IN]: Array to store the result
+ *
+ * *******************************************************************************/
+void convertIpStringToUInt8(const char *ip_str, uint8_t ip_address[]) 
+{
+    char ip_copy[16];
+    strncpy(ip_copy, ip_str, sizeof(ip_copy) - 1);
+    ip_copy[sizeof(ip_copy) - 1] = '\0';  // Ensure null-terminated
+
+    char *token = strtok(ip_copy, ".");
+    for (int i = 0; token != NULL && i < 4; i++) {
+        ip_address[i] = (uint8_t)atoi(token);  // Convert each token to an integer
+        token = strtok(NULL, ".");
+    }
+}
+
+void fillTlvOfArrayOfUint8(Buffer *mBuf, uint16_t tag, uint16_t length, uint8_t *value)
+{
+   uint8_t arraySize=0;
+   CMCHKPK(oduPackPostUInt16, tag, mBuf);
+   CMCHKPK(oduPackPostUInt16, length, mBuf);
+   for(uint8_t idx=0;idx<arraySize;idx++)
+   {
+      CMCHKPK(oduPackPostUInt8, value[idx], mBuf);
+   }
+}
+
+void fillTlvOfSizeUint8(Buffer *mBuf, uint16_t tag, uint16_t length, uint8_t value)
+{
+   CMCHKPK(oduPackPostUInt16, tag, mBuf);
+   CMCHKPK(oduPackPostUInt16, length, mBuf);
+   CMCHKPK(oduPackPostUInt8, value, mBuf);
+}
+
+void fillTlvOfSizeUint16(Buffer *mBuf, uint16_t tag, uint16_t length, uint16_t value)
+{
+   CMCHKPK(oduPackPostUInt16, tag, mBuf);
+   CMCHKPK(oduPackPostUInt16, length, mBuf);
+   CMCHKPK(oduPackPostUInt16, value, mBuf);
+}
+
+void fillTlvOfSizeUint32(Buffer *mBuf, uint16_t tag, uint16_t length, uint32_t value)
+{
+   CMCHKPK(oduPackPostUInt16, tag, mBuf);
+   CMCHKPK(oduPackPostUInt16, length, mBuf);
+   CMCHKPK(oduPackPostUInt32, value, mBuf);
+}
+
 /**********************************************************************
 End of file
 **********************************************************************/

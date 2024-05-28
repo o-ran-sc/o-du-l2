@@ -64,4 +64,10 @@ void nfapiFillP5Hdr(Buffer *mBuf);
 void nfapiFillMsgHdr(Buffer *mBuf, uint8_t phyId, uint16_t msgId, uint32_t msgLen);
 void nFapiExtractP5Hdr(nFapi_p5_hdr *p5Hdr, Buffer *mBuf);
 void nFapiExtractMsgHdr(nFapi_msg_header *msgHdr, Buffer *mBuf);
+void convertIpStringToUInt8(const char *ip_str, uint8_t ip_address[]); 
+void fillTlvOfArrayOfUint8(Buffer *mBuf, uint16_t tag, uint16_t length, uint8_t *value);
+void fillTlvOfSizeUint8(Buffer *mBuf, uint16_t tag, uint16_t length, uint8_t value);
+void fillTlvOfSizeUint16(Buffer *mBuf, uint16_t tag, uint16_t length, uint16_t value);
+void fillTlvOfSizeUint32(Buffer *mBuf, uint16_t tag, uint16_t length, uint32_t value);
+
 #endif
