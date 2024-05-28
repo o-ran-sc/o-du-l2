@@ -139,55 +139,98 @@ void nFapiExtractMsgHdr(nFapi_msg_header *msgHdr, Buffer *mBuf)
  *
  * @params 
  *         [IN]: tagVal from (SCF 225 Table 2-7 "Dedicated nFAPI messages")
- *         [OUT]: NfapiPnfEvent
+ *         [IN]: Nfapi Pnf Event
+ *         [IN]: Phy Event State
+ *         [OUT]: ROK or RFAILED 
  *
  * *******************************************************************************/
-NfapiPnfEvent convertNfapiP5TagValToMsgId(uint16_t tagVal)
+uint8_t convertNfapiP5TagValToMsgId(uint16_t tagVal, NfapiPnfEvent *nfapiPnfEvent, EventState *phyEvent)
 {
+   *nfapiPnfEvent=PNF_MAX_EVENT;
+   *phyEvent=MAX_EVENT;
 
    switch(tagVal)
    {
       case TAG_NFAPI_PNF_READY_IND:
         {
-           return PNF_READY_IND;
+           *(nfapiPnfEvent)  = PNF_READY_IND;
+           break;
         }
       case TAG_NFAPI_PNF_PARAM_REQ:
         {
-           return PNF_PARAM_REQ;
+           *(nfapiPnfEvent)  = PNF_PARAM_REQ;
+           break;
         }
       case TAG_NFAPI_PNF_PARAM_RESP:
         {
-           return PNF_PARAM_RESP;
+           *(nfapiPnfEvent)  = PNF_PARAM_RESP;
+           break;
         }
       case TAG_NFAPI_PNF_CONFIG_REQ:
         {
-           return PNF_CONFIG_REQ;
+           *(nfapiPnfEvent)  = PNF_CONFIG_REQ;
+           break;
         }
       case TAG_NFAPI_PNF_CONFIG_RESP:
         {
-           return PNF_CONFIG_RESP;
+           *(nfapiPnfEvent)  = PNF_CONFIG_RESP;
+           break;
         }
       case TAG_NFAPI_PNF_START_REQ:
         {
-           return PNF_START_REQ;
+           *(nfapiPnfEvent)  = PNF_START_REQ;
+           break;
         }
       case TAG_NFAPI_PNF_START_RESP:
         {
-           return PNF_START_RESP;
+           *(nfapiPnfEvent)  = PNF_START_RESP;
+           break;
         }
       case TAG_NFAPI_PNF_STOP_REQ:
         {
-           return PNF_STOP_REQ;
+           *(nfapiPnfEvent)  = PNF_STOP_REQ;
+           break;
         }
       case TAG_NFAPI_PNF_STOP_RESP:
         {
-           return PNF_STOP_RESP;
+           *nfapiPnfEvent = PNF_STOP_RESP;
+           break;
+        }
+      case FAPI_PARAM_REQUEST:
+        {
+           *(phyEvent) = PARAM_REQUEST;
+           break;
+        }
+      case FAPI_PARAM_RESPONSE: 
+        {
+           *(phyEvent) = PARAM_RESPONSE;
+           break;
+        }
+      case FAPI_CONFIG_REQUEST:
+        {
+           *(phyEvent) = CONFIG_REQUEST;
+           break;
+        }
+      case FAPI_CONFIG_RESPONSE: 
+        {
+           *(phyEvent) = CONFIG_RESPONSE;
+           break;
+        }
+      case FAPI_START_REQUEST:
+        {
+           *(phyEvent) = START_REQUEST;
+           break;
+        }
+      case FAPI_STOP_REQUEST:
+        {
+           *(phyEvent) = STOP_REQUEST;
+           break;
         }
       default:
         {
            DU_LOG("\n Incorrect TAG VALUE of NFAPI P5 Messages:%d",tagVal);
-           return PNF_MAX_EVENT;
+           return RFAILED;
         }
    }
-   return PNF_MAX_EVENT;
+   return ROK;
 }
