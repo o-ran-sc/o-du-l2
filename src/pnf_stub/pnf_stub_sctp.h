@@ -54,10 +54,10 @@ typedef struct pnfP5SctpAssocCb
 
 typedef struct pnfP5SctpIpAddr
 {
- bool      ipV4Pres;
- uint32_t  ipV4Addr;
- bool      ipV6Pres;
- uint8_t   ipV6Addr[MAX_IPV6_LEN];
+   bool      ipV4Pres;
+   uint32_t  ipV4Addr;
+   bool      ipV6Pres;
+   uint8_t   ipV6Addr[MAX_IPV6_LEN];
 }PnfP5SctpIpAddr;
 
 typedef struct pnfP5SctpDestInfo

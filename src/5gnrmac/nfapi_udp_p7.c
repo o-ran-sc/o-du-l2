@@ -19,6 +19,7 @@
 /* This file is the entry point for UDP P7 */
 
 #include "common_def.h"
+#include "lwr_mac.h"
 #include "du_app_p7udp_inf.h"
 #include "nfapi_interface.h"
 #include "nfapi_vnf_fsm.h"
