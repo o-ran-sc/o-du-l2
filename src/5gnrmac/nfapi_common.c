@@ -183,6 +183,38 @@ NfapiPnfEvent convertNfapiP5TagValToMsgId(uint16_t tagVal)
         {
            return PNF_STOP_RESP;
         }
+      case FAPI_PARAM_REQUEST:
+        {
+           return PHY_PARAM_REQ;
+        }
+      case FAPI_PARAM_RESPONSE: 
+        {
+           return PHY_PARAM_RESP;
+        }
+      case FAPI_CONFIG_REQUEST:
+        {
+           return PHY_CONFIG_REQ;
+        }
+      case FAPI_CONFIG_RESPONSE: 
+        {
+           return PHY_CONFIG_RESP;
+        }
+      case FAPI_START_REQUEST:
+        {
+           return PHY_START_REQ;
+        }
+      case FAPI_STOP_REQUEST:
+        {
+           return PHY_STOP_REQ;
+        }
+      case FAPI_STOP_INDICATION: 
+        {
+           return PHY_STOP_IND;
+        }
+      case FAPI_ERROR_INDICATION: 
+        {
+           return PHY_ERROR_IND;
+        }
       default:
         {
            DU_LOG("\n Incorrect TAG VALUE of NFAPI P5 Messages:%d",tagVal);

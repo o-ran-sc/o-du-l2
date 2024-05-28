@@ -233,6 +233,9 @@ uint8_t buildAndSendPnfStopResp()
 
 uint8_t buildAndSendParamResp()
 {
+   uint8_t index = 0;
+   uint8_t pnfAdd[4];
+   uint32_t len = 20+sizeof(fapi_param_resp_t); //As per Figure 2–21 Combined P5 message (PARAM.response)
    Buffer *mBuf = NULLP;
 
    if (ODU_GET_MSG_BUF(PNF_APP_MEM_REG, PNF_POOL, &mBuf) != ROK)
@@ -240,13 +243,99 @@ uint8_t buildAndSendParamResp()
       DU_LOG("\nERROR  --> NFAPI_PNF : Memory allocation failed in pnf_readyInd");
       return RFAILED;
    }
-   nfapiFillP5Hdr(mBuf);
-   nfapiFillMsgHdr(mBuf, 0, FAPI_PARAM_RESPONSE, 0);
-   CMCHKPK(oduPackPostUInt8, 0, mBuf); 
-   CMCHKPK(oduPackPostUInt8, 1, mBuf);
-   //TODO->
-   //Fill TLVs
 
+   nfapiFillP5Hdr(mBuf);
+   nfapiFillMsgHdr(mBuf, 0, FAPI_PARAM_RESPONSE, len);
+   CMCHKPK(oduPackPostUInt8, 0, mBuf); 
+   CMCHKPK(oduPackPostUInt8, 3, mBuf);
+   
+   /* Table 3-15 nFAPI TLVs included in PARAM.response when the PHY instance is
+    * in IDLE state 
+    * SInce we are only supporting ipv4 that's why fiiling only P7 PNF Address
+    * Ipv4 and P7 PNF Port */
+   convertIpStringToUInt8(LOCAL_IP_PNF, pnfAdd);
+   fillTlvOfArrayOfUint8(mBuf, TAG_NFAPI_P7_PNF_ADD_IPV4, sizeof(pnfAdd), pnfAdd);
+   fillTlvOfSizeUint16(mBuf, TAG_NFAPI_P7_PNF_PORT, sizeof(uint16_t), PNF_P5_SCTP_PORT);
+   
+   /* filling 5G_FAPI_MSG_BODY */
+   CMCHKPK(oduPackPostUInt16, TAG_NFAPI_5G_FAPI_MSG_BODY, mBuf);
+   CMCHKPK(oduPackPostUInt16, sizeof(fapi_param_resp_t), mBuf);
+
+   /* Cell Params */
+   fillTlvOfSizeUint16(mBuf,FAPI_RELEASE_CAPABILITY_TAG, sizeof(uint16_t), 1);
+   fillTlvOfSizeUint16(mBuf,FAPI_PHY_STATE_TAG, sizeof(uint16_t), 0);
+   fillTlvOfSizeUint8(mBuf, FAPI_SKIP_BLANK_DL_CONFIG_TAG, sizeof(uint8_t),  0);
+   fillTlvOfSizeUint8(mBuf, FAPI_SKIP_BLANK_UL_CONFIG_TAG,  sizeof(uint8_t),  0);
+   fillTlvOfSizeUint8(mBuf, FAPI_NUM_CONFIG_TLVS_TO_REPORT_TYPE_TAG,  sizeof(uint8_t),  0);
+
+   /* Carrier Params */
+   fillTlvOfSizeUint8(mBuf, FAPI_CYCLIC_PREFIX_TAG, sizeof(uint8_t),  1);
+   fillTlvOfSizeUint8(mBuf, FAPI_SUPPORTED_SUBCARRIER_SPACING_DL_TAG,  sizeof(uint8_t),  1);
+   fillTlvOfSizeUint16(mBuf,FAPI_SUPPORTED_BANDWIDTH_DL_TAG, sizeof(uint16_t), 1);
+   fillTlvOfSizeUint8(mBuf, FAPI_SUPPORTED_SUBCARRIER_SPACING_UL_TAG, sizeof(uint8_t),  0);
+   fillTlvOfSizeUint16(mBuf,FAPI_SUPPORTED_BANDWIDTH_UL_TAG, sizeof(uint16_t), 0);
+
+   /* PDCCH Param*/
+   fillTlvOfSizeUint8(mBuf, FAPI_CCE_MAPPING_TYPE_TAG,  sizeof(uint8_t), 0);
+   fillTlvOfSizeUint8(mBuf, FAPI_CORESET_OUTSIDE_FIRST_3_OFDM_SYMS_OF_SLOT_TAG, sizeof(uint8_t), 0);
+   fillTlvOfSizeUint8(mBuf, FAPI_PRECODER_GRANULARITY_CORESET_TAG, sizeof(uint8_t), 0);
+   fillTlvOfSizeUint8(mBuf, FAPI_PDCCH_MU_MIMO_TAG, sizeof(uint8_t), 0);
+   fillTlvOfSizeUint8(mBuf, FAPI_PDCCH_PRECODER_CYCLING_TAG, sizeof(uint8_t), 0);
+   fillTlvOfSizeUint8(mBuf, FAPI_MAX_PDCCHS_PER_SLOT_TAG,  sizeof(uint8_t), 0);
+
+   /* PUCCH Param */
+   fillTlvOfSizeUint8(mBuf, FAPI_PUCCH_FORMATS_TAG, sizeof(uint8_t), 0);
+   fillTlvOfSizeUint8(mBuf, FAPI_MAX_PUCCHS_PER_SLOT_TAG, sizeof(uint8_t), 0);
+
+   /* PDSCH Param */
+   fillTlvOfSizeUint8(mBuf, FAPI_PDSCH_MAPPING_TYPE_TAG, sizeof(uint8_t), 0);
+   fillTlvOfSizeUint8(mBuf, FAPI_PDSCH_ALLOCATION_TYPES_TAG, sizeof(uint8_t), 0);
+   fillTlvOfSizeUint8(mBuf, FAPI_PDSCH_VRB_TO_PRB_MAPPING_TAG, sizeof(uint8_t), 0);
+   fillTlvOfSizeUint8(mBuf, FAPI_PDSCH_CBG_TAG, sizeof(uint8_t), 0);
+   fillTlvOfSizeUint8(mBuf, FAPI_PDSCH_DMRS_CONFIG_TYPES_TAG,  sizeof(uint8_t), 0);
+   fillTlvOfSizeUint8(mBuf, FAPI_PDSCH_DMRS_MAX_LENGTH_TAG, sizeof(uint8_t), 0);
+   fillTlvOfSizeUint8(mBuf, FAPI_PDSCH_DMRS_ADDITIONAL_POS_TAG,  sizeof(uint8_t), 0);
+   fillTlvOfSizeUint8(mBuf, FAPI_MAX_PDSCHS_TBS_PER_SLOT_TAG,  sizeof(uint8_t), 0);
+   fillTlvOfSizeUint8(mBuf, FAPI_MAX_NUMBER_MIMO_LAYERS_PDSCH_TAG, sizeof(uint8_t), 0);
+   fillTlvOfSizeUint8(mBuf, FAPI_SUPPORTED_MAX_MODULATION_ORDER_DL_TAG, sizeof(uint8_t), 0);
+   fillTlvOfSizeUint8(mBuf, FAPI_MAX_MU_MIMO_USERS_DL_TAG,  sizeof(uint8_t), 0);
+   fillTlvOfSizeUint8(mBuf, FAPI_PDSCH_DATA_IN_DMRS_SYMBOLS_TAG, sizeof(uint8_t), 0);
+   fillTlvOfSizeUint8(mBuf, FAPI_PREMPTIONSUPPORT_TAG, sizeof(uint8_t), 0);
+   fillTlvOfSizeUint8(mBuf, FAPI_PDSCH_NON_SLOT_SUPPORT_TAG, sizeof(uint8_t), 0);
+
+   /* PUSCH Param */
+   fillTlvOfSizeUint8(mBuf, FAPI_UCI_MUX_ULSCH_IN_PUSCH_TAG, sizeof(uint8_t), 0);
+   fillTlvOfSizeUint8(mBuf, FAPI_UCI_ONLY_PUSCH_TAG,  sizeof(uint8_t), 0);
+   fillTlvOfSizeUint8(mBuf, FAPI_PUSCH_FREQUENCY_HOPPING_TAG,  sizeof(uint8_t), 0);
+   fillTlvOfSizeUint8(mBuf, FAPI_PUSCH_DMRS_CONFIG_TYPES_TAG,  sizeof(uint8_t), 0);
+   fillTlvOfSizeUint8(mBuf, FAPI_PUSCH_DMRS_MAX_LEN_TAG, sizeof(uint8_t), 0);
+   fillTlvOfSizeUint8(mBuf, FAPI_PUSCH_DMRS_ADDITIONAL_POS_TAG,  sizeof(uint8_t), 0);
+   fillTlvOfSizeUint8(mBuf, FAPI_PUSCH_CBG_TAG, sizeof(uint8_t), 0);
+   fillTlvOfSizeUint8(mBuf, FAPI_PUSCH_MAPPING_TYPE_TAG,  sizeof(uint8_t), 0);
+   fillTlvOfSizeUint8(mBuf, FAPI_PUSCH_ALLOCATION_TYPES_TAG, sizeof(uint8_t), 0);
+   fillTlvOfSizeUint8(mBuf, FAPI_PUSCH_VRB_TO_PRB_MAPPING_TAG, sizeof(uint8_t), 0);
+   fillTlvOfSizeUint8(mBuf, FAPI_PUSCH_MAX_PTRS_PORTS_TAG, sizeof(uint8_t), 0);
+   fillTlvOfSizeUint8(mBuf, FAPI_MAX_PDUSCHS_TBS_PER_SLOT_TAG, sizeof(uint8_t), 0);
+   fillTlvOfSizeUint8(mBuf, FAPI_MAX_NUMBER_MIMO_LAYERS_NON_CB_PUSCH_TAG, sizeof(uint8_t), 0);
+   fillTlvOfSizeUint8(mBuf, FAPI_SUPPORTED_MODULATION_ORDER_UL_TAG, sizeof(uint8_t), 0);
+   fillTlvOfSizeUint8(mBuf, FAPI_MAX_MU_MIMO_USERS_UL_TAG, sizeof(uint8_t), 0);
+   fillTlvOfSizeUint8(mBuf, FAPI_DFTS_OFDM_SUPPORT_TAG, sizeof(uint8_t), 0);
+   fillTlvOfSizeUint8(mBuf, FAPI_PUSCH_AGGREGATION_FACTOR_TAG,  sizeof(uint8_t), 0);
+
+   /* PRACH Params */
+   fillTlvOfSizeUint8(mBuf, FAPI_PRACH_LONG_FORMATS_TAG, sizeof(uint8_t), 0);
+   fillTlvOfSizeUint8(mBuf, FAPI_PRACH_SHORT_FORMATS_TAG, sizeof(uint8_t), 0);
+   fillTlvOfSizeUint8(mBuf, FAPI_PRACH_RESTRICTED_SETS_TAG,  sizeof(uint8_t), 0);
+   fillTlvOfSizeUint8(mBuf, FAPI_MAX_PRACH_FD_OCCASIONS_IN_A_SLOT_TAG, sizeof(uint8_t), 0);
+
+   /* MEASUREMENT TAG */
+   fillTlvOfSizeUint8(mBuf, FAPI_RSSI_MEASUREMENT_SUPPORT_TAG,  sizeof(uint8_t), 0);
+
+   DU_LOG("\nINFO   --> NFAPI_PNF: Sending PARAM_RESP ");
+   if(pnfP5SctpSend(mBuf) == RFAILED)
+   {
+      ODU_PUT_MSG_BUF(mBuf);
+   }
    return ROK;
 }
 
