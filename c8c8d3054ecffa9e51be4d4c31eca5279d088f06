@@ -24,6 +24,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "79f23731_cb7321c8",
+        "filename": "src/5gnrmac/lwr_mac_ex_ms.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 291,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-05-29T10:31:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "93dee8f2_f6ac45df",
+      "range": {
+        "startLine": 291,
+        "startChar": 23,
+        "endLine": 291,
+        "endChar": 45
+      },
+      "revId": "c8c8d3054ecffa9e51be4d4c31eca5279d088f06",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a241fe2a_b2bfa751",
@@ -37,6 +61,24 @@
       "writtenOn": "2024-05-28T10:52:13Z",
       "side": 1,
       "message": "As discussed lets covert the pnfEvent and Phy Event separately and return PASS/FAIL bool status to the caller",
+      "revId": "c8c8d3054ecffa9e51be4d4c31eca5279d088f06",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a0d36949_a9b41407",
+        "filename": "src/5gnrmac/nfapi_common.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-05-29T10:31:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a241fe2a_b2bfa751",
       "revId": "c8c8d3054ecffa9e51be4d4c31eca5279d088f06",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -58,6 +100,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f889206c_737d4d23",
+        "filename": "src/5gnrmac/nfapi_vnf_fsm.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-05-29T10:31:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fb621ec4_52ef795f",
+      "revId": "c8c8d3054ecffa9e51be4d4c31eca5279d088f06",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1b91c531_3aa26abc",
@@ -71,6 +131,30 @@
       "writtenOn": "2024-05-28T10:52:13Z",
       "side": 1,
       "message": "pls mention the value\u003d20 justification",
+      "range": {
+        "startLine": 238,
+        "startChar": 18,
+        "endLine": 238,
+        "endChar": 20
+      },
+      "revId": "c8c8d3054ecffa9e51be4d4c31eca5279d088f06",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "73ffc321_e7742c81",
+        "filename": "src/pnf_stub/pnf_stub_p5_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 238,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-05-29T10:31:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1b91c531_3aa26abc",
       "range": {
         "startLine": 238,
         "startChar": 18,
@@ -104,6 +188,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f64d2445_4b38b7b3",
+        "filename": "src/pnf_stub/pnf_stub_p5_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 249,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-05-29T10:31:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c6d58732_ec7c4d7d",
+      "range": {
+        "startLine": 249,
+        "startChar": 37,
+        "endLine": 249,
+        "endChar": 39
+      },
+      "revId": "c8c8d3054ecffa9e51be4d4c31eca5279d088f06",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "35493f58_ad437909",
@@ -127,6 +235,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a292e6b1_cc17cac5",
+        "filename": "src/pnf_stub/pnf_stub_p5_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 250,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-05-29T10:31:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "35493f58_ad437909",
+      "range": {
+        "startLine": 250,
+        "startChar": 11,
+        "endLine": 250,
+        "endChar": 27
+      },
+      "revId": "c8c8d3054ecffa9e51be4d4c31eca5279d088f06",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ed99f1ee_2d43ca34",
@@ -140,6 +272,30 @@
       "writtenOn": "2024-05-28T10:52:13Z",
       "side": 1,
       "message": "pls remember since u are filling the IP address directly.. once u extract at VNF side before storing it in the VNF db , u need to convert it into CmInet format. You can refer to this function for the same \"parseDuCfgParams if ((!xmlStrcmp(cur-\u003ename, (const xmlChar *)\"PNF_P5_IP_V4_ADDR\")) \u0026\u0026 (cur-\u003ens \u003d\u003d ns))\n5306       {\n5307          pnfP5IpV4Addr \u003d (char *)xmlNodeListGetString(doc, cur-\u003exmlChildrenNode, 1);\n5308          cmInetAddr(pnfP5IpV4Addr, \u0026(pnfIp));\n5309       }\n\n\nAnd also pls refer to \"NfapiProcP7UdpCfg\" as following parameters needs to be updated\n1. vnfDb.p7TransInfo.destIpv4Address\n2. vnfDb.p7TransInfo.destIpv4Port \n3. vnfDb.p7TransInfo.destIpNetAddr.address\n4. vnfDb.p7TransInfo.destIpNetAddr.port",
+      "range": {
+        "startLine": 257,
+        "startChar": 31,
+        "endLine": 257,
+        "endChar": 56
+      },
+      "revId": "c8c8d3054ecffa9e51be4d4c31eca5279d088f06",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dfdaf4b8_b838d414",
+        "filename": "src/pnf_stub/pnf_stub_p5_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 257,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-05-29T10:31:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ed99f1ee_2d43ca34",
       "range": {
         "startLine": 257,
         "startChar": 31,
