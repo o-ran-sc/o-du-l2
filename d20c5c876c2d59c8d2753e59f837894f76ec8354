@@ -24,6 +24,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3c1acc2c_7016eb03",
+        "filename": "src/5gnrmac/lwr_mac_ex_ms.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 166,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-05-29T11:25:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "017b58ed_e6cefc85",
+      "range": {
+        "startLine": 166,
+        "startChar": 35,
+        "endLine": 166,
+        "endChar": 36
+      },
+      "revId": "d20c5c876c2d59c8d2753e59f837894f76ec8354",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5c53247e_05b28dba",
@@ -37,6 +61,30 @@
       "writtenOn": "2024-05-29T10:48:57Z",
       "side": 1,
       "message": "Can we check the errorCode before proceeding",
+      "range": {
+        "startLine": 194,
+        "startChar": 29,
+        "endLine": 194,
+        "endChar": 38
+      },
+      "revId": "d20c5c876c2d59c8d2753e59f837894f76ec8354",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ef36d797_3435bcaf",
+        "filename": "src/5gnrmac/lwr_mac_ex_ms.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 194,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-05-29T11:25:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5c53247e_05b28dba",
       "range": {
         "startLine": 194,
         "startChar": 29,
@@ -70,6 +118,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0fefcd09_7508d906",
+        "filename": "src/5gnrmac/lwr_mac_ex_ms.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 211,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-05-29T11:25:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "89e4ed3d_5cd1f305",
+      "range": {
+        "startLine": 211,
+        "startChar": 6,
+        "endLine": 211,
+        "endChar": 13
+      },
+      "revId": "d20c5c876c2d59c8d2753e59f837894f76ec8354",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f9d162af_490ef0a4",
@@ -83,6 +155,30 @@
       "writtenOn": "2024-05-29T10:48:57Z",
       "side": 1,
       "message": "pls modify the IN and OUT param of this func",
+      "range": {
+        "startLine": 142,
+        "startChar": 18,
+        "endLine": 142,
+        "endChar": 31
+      },
+      "revId": "d20c5c876c2d59c8d2753e59f837894f76ec8354",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "19413aed_e856401a",
+        "filename": "src/5gnrmac/nfapi_common.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-05-29T11:25:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f9d162af_490ef0a4",
       "range": {
         "startLine": 142,
         "startChar": 18,
