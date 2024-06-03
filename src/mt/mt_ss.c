@@ -528,11 +528,35 @@ SsRegCfg cfgRegInfo[SS_MAX_REGS] =
             { SS_POOL_STATIC, 0 }
          }
       }
+   ,
+      {
+         SS_DFLT_REGION + 9, SS_MAX_POOLS_PER_REG - 1,
+         {
+            { SS_POOL_DYNAMIC, MT_POOL_0_DSIZE },
+            { SS_POOL_DYNAMIC, MT_POOL_1_DSIZE },
+            { SS_POOL_DYNAMIC, MT_POOL_2_DSIZE },
+            { SS_POOL_DYNAMIC, MT_POOL_3_DSIZE },
+            { SS_POOL_DYNAMIC, MT_POOL_4_DSIZE },
+            { SS_POOL_STATIC, 0 }
+         }
+      }
 #else
 #ifdef NFAPI_ENABLED
    ,
       {
          SS_DFLT_REGION + 8, SS_MAX_POOLS_PER_REG - 1,
+         {
+            { SS_POOL_DYNAMIC, MT_POOL_0_DSIZE },
+            { SS_POOL_DYNAMIC, MT_POOL_1_DSIZE },
+            { SS_POOL_DYNAMIC, MT_POOL_2_DSIZE },
+            { SS_POOL_DYNAMIC, MT_POOL_3_DSIZE },
+            { SS_POOL_DYNAMIC, MT_POOL_4_DSIZE },
+            { SS_POOL_STATIC, 0 }
+         }
+      }
+   ,
+      {
+         SS_DFLT_REGION + 9, SS_MAX_POOLS_PER_REG - 1,
          {
             { SS_POOL_DYNAMIC, MT_POOL_0_DSIZE },
             { SS_POOL_DYNAMIC, MT_POOL_1_DSIZE },
@@ -666,11 +690,37 @@ MtDynMemCfg mtDynMemoCfg =
                {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD}
             }
          }
+      ,
+         {
+            SS_DFLT_REGION + 9,                         /* region id */
+            MT_MAX_BKTS,                            /* number of buckets */
+            {
+               /* block size, no. of blocks, Upper threshold, lower threshold */
+               {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD},
+               {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD},
+               {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD},
+               {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD},
+               {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD}
+            }
+         }
 #else
 #ifdef NFAPI_ENABLED
       ,
          {
             SS_DFLT_REGION + 8,                         /* region id */
+            MT_MAX_BKTS,                            /* number of buckets */
+            {
+               /* block size, no. of blocks, Upper threshold, lower threshold */
+               {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD},
+               {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD},
+               {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD},
+               {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD},
+               {SS_BLK_RELEASE_THRESHOLD, SS_BLK_ACQUIRE_THRESHOLD}
+            }
+         }
+      ,
+         {
+            SS_DFLT_REGION + 9,                         /* region id */
             MT_MAX_BKTS,                            /* number of buckets */
             {
                /* block size, no. of blocks, Upper threshold, lower threshold */
@@ -876,11 +926,37 @@ MtMemCfg mtMemoCfg =
                {MT_BKT_4_DSIZE, MT_BKT_4_STATIC_NUMBLKS}    /* block size, no. of blocks */
             }
          }
+      ,
+         {
+            SS_DFLT_REGION + 9,                         /* region id */
+            MT_MAX_BKTS,                            /* number of buckets */
+            MT_HEAP_SIZE,                           /* heap size */
+            {
+               {MT_BKT_0_DSIZE, MT_BKT_0_STATIC_NUMBLKS},   /* block size, no. of blocks */
+               {MT_BKT_1_DSIZE, MT_BKT_1_STATIC_NUMBLKS},    /* block size, no. of blocks */
+               {MT_BKT_2_DSIZE, MT_BKT_2_STATIC_NUMBLKS},   /* block size, no. of blocks */
+               {MT_BKT_3_DSIZE, MT_BKT_3_STATIC_NUMBLKS},    /* block size, no. of blocks */
+               {MT_BKT_4_DSIZE, MT_BKT_4_STATIC_NUMBLKS}    /* block size, no. of blocks */
+            }
+         }
 #else
 #ifdef NFAPI_ENABLED
       ,
          {
             SS_DFLT_REGION + 8,                         /* region id */
+            MT_MAX_BKTS,                            /* number of buckets */
+            MT_HEAP_SIZE,                           /* heap size */
+            {
+               {MT_BKT_0_DSIZE, MT_BKT_0_STATIC_NUMBLKS},   /* block size, no. of blocks */
+               {MT_BKT_1_DSIZE, MT_BKT_1_STATIC_NUMBLKS},    /* block size, no. of blocks */
+               {MT_BKT_2_DSIZE, MT_BKT_2_STATIC_NUMBLKS},   /* block size, no. of blocks */
+               {MT_BKT_3_DSIZE, MT_BKT_3_STATIC_NUMBLKS},    /* block size, no. of blocks */
+               {MT_BKT_4_DSIZE, MT_BKT_4_STATIC_NUMBLKS}    /* block size, no. of blocks */
+            }
+         }
+      ,
+         {
+            SS_DFLT_REGION + 9,                         /* region id */
             MT_MAX_BKTS,                            /* number of buckets */
             MT_HEAP_SIZE,                           /* heap size */
             {

@@ -500,11 +500,11 @@ uint8_t macProcSlotInd(SlotTimingInfo slotInd)
 }  /* macProcSlotInd */
 
 /**
- * @brief Transmission time interval indication from PHY.
+ * @brief Transmission time interval indication from PHY/VNF.
  *
  * @details
  *
- *     Function : fapiMacSlotInd 
+ *     Function : procMacSlotInd 
  *      
  *      This API is invoked by PHY to indicate TTI indication to MAC for a cell.
  *           
@@ -515,7 +515,7 @@ uint8_t macProcSlotInd(SlotTimingInfo slotInd)
  *      -# ROK 
  *      -# RFAILED 
  **/
-uint8_t fapiMacSlotInd(Pst *pst, SlotTimingInfo *slotInd)
+uint8_t procMacSlotInd(Pst *pst, SlotTimingInfo *slotInd)
 {
    uint8_t               ret = ROK;
    uint16_t              cellIdx;
@@ -590,7 +590,7 @@ uint8_t fapiMacSlotInd(Pst *pst, SlotTimingInfo *slotInd)
 #endif
 
    return ret;
-}  /* fapiMacSlotInd */
+}  /* procMacSlotInd */
 
 /**********************************************************************
   End of file

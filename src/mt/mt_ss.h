@@ -64,10 +64,10 @@
 #endif
 #else 
 #ifndef INTEL_WLS_MEM
-#define SS_MAX_STSKS                    9
+#define SS_MAX_STSKS                    10
 #else
 #ifdef NFAPI_ENABLED
-#define SS_MAX_STSKS                    9
+#define SS_MAX_STSKS                    10
 #else
 #define SS_MAX_STSKS                    8
 #endif
