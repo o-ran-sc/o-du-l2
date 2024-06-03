@@ -30,6 +30,12 @@
 #include "lwr_mac_fsm.h"
 #include "mac_utils.h"
 #include "lwr_mac_phy.h"
+#ifdef NFAPI_ENABLED
+#include "nfapi_interface.h"
+#include "nfapi_vnf_fsm.h"
+
+extern NfapiVnfDb vnfDb;
+#endif
 
 uint8_t ssbPeriodicity[6] = {5, 10, 20, 40, 80, 160};
 
@@ -177,6 +183,10 @@ uint8_t MacProcCellCfgReq(Pst *pst, MacCellCfg *macCellCfg)
    
    /*Ref : 3GPP 38.211 Table 4.2-1: SCS = (2 ^ numerology * 15kHz)*/
    macCb.macCell[cellIdx]->numerology = log2(scsInKhz/BASE_SCS);
+#ifdef NFAPI_ENABLED
+   vnfDb.numerology = macCb.macCell[cellIdx]->numerology;
+   vnfDb.cellId     = macCellCfg->cellId;
+#endif
    macCb.macCell[cellIdx]->numOfSlots = 10 * (1 << (macCb.macCell[cellIdx]->numerology));
    memcpy(&macCb.macCell[cellIdx]->macCellCfg, macCellCfg, sizeof(MacCellCfg));
 

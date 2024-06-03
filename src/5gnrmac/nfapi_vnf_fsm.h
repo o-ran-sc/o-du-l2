@@ -81,16 +81,15 @@ typedef struct nfapiSyncInfo
     uint32_t      prev_t1;
     uint32_t      prev_t2;
     uint32_t      prev_t3;
-    uint8_t       sfn;
+    uint16_t      sfn;
     uint8_t       slot;
     struct nfapiSyncInfo *next;
 }NfapiSyncInfo;
 
 typedef struct nfapiP7VnfInfo
 {
-   uint32_t      sfnStartTime;
-   uint32_t      slotStartTime;
-   NfapiSyncInfo *p7SyncInfo;
+   uint32_t      t_ref_ns;
+   NfapiSyncInfo p7SyncInfo;
 }NfapiP7VnfInfo;
 
 typedef struct nfapiP5Info
@@ -107,8 +106,9 @@ typedef struct nfapiVnfDb
    NfapiP5Info         p5Info;
    NfapiTransportInfo  p7TransInfo;
    NfapiPnfConfig      pnfConfig;
-   NfapiSyncInfo       vnfSynchInfo;
-   NfapiP7VnfInfo      vnfP7Info;   
+   NfapiP7VnfInfo      vnfP7Info;
+   uint8_t             numerology;
+   uint16_t            cellId;
 }NfapiVnfDb;
 
 /* Global variables */

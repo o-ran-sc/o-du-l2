@@ -59,6 +59,8 @@ uint8_t phyStubActvInit(Ent, Inst, Region, Reason);
 #ifdef NFAPI_ENABLED
 uint8_t udpP7ActvTsk(Pst *, Buffer *);
 uint8_t udpP7ActvInit(Ent, Inst, Region, Reason);
+uint8_t nfapiP7ClkActvTsk(Pst *, Buffer *);
+uint8_t nfapiP7ClkActvInit(Ent, Inst, Region, Reason);
 #endif
 #endif
 
@@ -595,6 +597,41 @@ uint8_t udpP7Init(SSTskId sysTskId)
          sysTskId);
    return ROK;
 }
+
+/*******************************************************************
+ *
+ * @brief Initializes NFAPI P7 CLK task
+ *
+ * @details
+ *
+ *    Function : nfapiP7ClkInit
+ *
+ *    Functionality:
+ *       - Registers and attaches TAPA tasks for NFAPI P7 CLK
+ *
+ * @params[in] system task ID
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t nfapiP7ClkInit(SSTskId sysTskId)
+{
+   /* Register UDP P7 TAPA Task */
+   if(ODU_REG_TTSK((Ent)ENTP7CLK, (Inst)0, (Ttype)TTNORM, (Prior)PRIOR0,
+            nfapiP7ClkActvInit, (ActvTsk)nfapiP7ClkActvTsk) != ROK)
+   {
+      return RFAILED;
+   }
+   /* Attach NFAPI P7 CLK TAPA Task */
+   if (ODU_ATTACH_TTSK((Ent)ENTP7CLK, (Inst)0, sysTskId)!= ROK)
+   {
+      return RFAILED;
+   }
+
+   DU_LOG("\nINFO   -->  DU_APP : NFAPI P7 CLK TAPA task created and registered to %d sys task",
+         sysTskId);
+   return ROK;
+}
 #endif
 #endif
 
@@ -699,6 +736,12 @@ uint8_t commonInit()
       DU_LOG("\nERROR  -->  DU_APP : System Task creation for UDP P7 Interface failed. MAX STSK [%d]", SS_MAX_STSKS);
       return RFAILED;
    }
+   /* system task for NFAPI-P7-CLK thread */
+   if(ODU_CREATE_TASK(PRIOR0, &duCfgParam.threadInfo.nfapiP7ClkSTskId) != ROK)
+   {
+      DU_LOG("\nERROR  -->  DU_APP : System Task creation for NFAPI P7 CLK Interface failed. MAX STSK [%d]", SS_MAX_STSKS);
+      return RFAILED;
+   }
 #endif
 #endif
 
@@ -756,6 +799,11 @@ uint8_t commonInit()
    if(udpP7Init(duCfgParam.threadInfo.udpP7STskId) != ROK)
    {
       DU_LOG("\nERROR  -->  DU_APP : UDP P7 Tapa Task initialization failed");
+      return RFAILED;
+   }
+   if(nfapiP7ClkInit(duCfgParam.threadInfo.nfapiP7ClkSTskId) != ROK)
+   {
+      DU_LOG("\nERROR  -->  DU_APP : NFAPI P7 CLK Tapa Task initialization failed");
       return RFAILED;
    }
 #endif
