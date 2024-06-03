@@ -48,6 +48,11 @@ void nFapiVnfInit()
    memset(&vnfDb, 0, sizeof(NfapiVnfDb));
    vnfDb.pnfStateAtVnf = PNF_STATE_IDLE;
    vnfDb.pnfEvent      = 0;
+   vnfDb.vnfP7Info.p7SyncInfo.slot = 0xFF;
+   vnfDb.vnfP7Info.p7SyncInfo.sfn = 0xFFFF;
+   vnfDb.cellId = 0xFFFF;
+      DU_LOG("\nVNF_NFAPI :Init  Sangeeta SFN/Slot:%d,%d",\
+                          vnfDb.vnfP7Info.p7SyncInfo.sfn, vnfDb.vnfP7Info.p7SyncInfo.slot);
 }
 
 

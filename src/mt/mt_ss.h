@@ -64,10 +64,10 @@
 #endif
 #else 
 #ifndef INTEL_WLS_MEM
-#define SS_MAX_STSKS                    9
+#define SS_MAX_STSKS                    10
 #else
 #ifdef NFAPI_ENABLED
-#define SS_MAX_STSKS                    9
+#define SS_MAX_STSKS                    10
 #else
 #define SS_MAX_STSKS                    8
 #endif
@@ -318,10 +318,10 @@ that are configured below.
 /* mt001.301 : Additions */
 /*mt004.301- changed heap size for FAP */
 #ifdef SS_FAP
-#define MT_HEAP_SIZE            5242880U
+#define MT_HEAP_SIZE            8000000U
 #else
 #ifdef XEON_SPECIFIC_CHANGES
-#define MT_HEAP_SIZE            6194304U
+#define MT_HEAP_SIZE            8000000U
 #else
 #define MT_HEAP_SIZE            1004800U /*PAL FIX: 4MB to 6MB flexran */
 #endif

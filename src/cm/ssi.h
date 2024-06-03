@@ -1408,6 +1408,9 @@
 #define ENTF1AP     0xed             /* ORAN F1AP */
 #define ENTEGTP     0xee             /* ORAN EGTP */
 #endif //ORAN
+#ifdef NFAPI_ENABLED
+#define ENTP7CLK       0xef            /* NFAPI P7 Ticks/Clock */
+#endif
 /* un-configured procId */ 
 #ifdef SS_MULTIPLE_PROCS
 #define PROCNC      0xFFFF            /* Processor not configured */

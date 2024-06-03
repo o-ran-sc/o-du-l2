@@ -4443,6 +4443,13 @@ uint8_t parseThreadAffinity(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur, ThreadIn
          ODU_SET_THREAD_AFFINITY(&threads->udpP7STskId, SS_AFFINITY_MODE_EXCL, threads->udpP7CoreId, 0);
 #endif
       }
+      if ((!xmlStrcmp(cur->name, (const xmlChar *)"NFAPI_P7_CLK_CORE")) && (cur->ns == ns))
+      {
+         threads->nfapiP7ClkCoreId = atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
+#ifdef THREAD_AFFINITY
+         ODU_SET_THREAD_AFFINITY(&threads->nfapiP7ClkSTskId, SS_AFFINITY_MODE_EXCL, threads->nfapiP7ClkCoreId, 0);
+#endif
+      }
 #endif
 
       cur = cur -> next;
@@ -5636,6 +5643,7 @@ void printDuConfig()
    DU_LOG("Lower MAC CORE ID %d\n", duCfgParam.threadInfo.lwrMacCoreId);
 #ifdef NFAPI_ENABLED
    DU_LOG("UDP P7 CORE ID %d\n", duCfgParam.threadInfo.udpP7CoreId);
+   DU_LOG("NFAPI P7 CLK CORE ID %d\n", duCfgParam.threadInfo.nfapiP7ClkCoreId);
 #endif
 
    DU_LOG("MAX NUM DRB %d\n", duCfgParam.maxNumDrb);

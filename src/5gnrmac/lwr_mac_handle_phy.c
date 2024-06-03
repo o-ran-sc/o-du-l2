@@ -41,7 +41,7 @@
 SlotIndFunc sendSlotIndOpts[] =
 {
    packSlotInd,  /* packing for loosely coupled */
-   fapiMacSlotInd, /* packing for tightly coupled */
+   procMacSlotInd, /* packing for tightly coupled */
    packSlotInd /* packing for light weight loosly coupled */
 };
 

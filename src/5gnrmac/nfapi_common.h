@@ -36,6 +36,11 @@
 #define NFAPI_UDP_P7_INST         0
 #define NFAPI_UDP_P7_PROC         0
 #define EVTSTARTNFAPIP7POLL       2
+#define EVENT_NFAPI_P7_START_CLK  3
+#define NFAPI_P7_CLK_INST         0
+#define NFAPI_P7_CLK_PROC         0
+#define NFAPI_P7_CLK_MEM_REGION   6
+#define NFAPI_P7_CLK_POOL         2
 
 #ifdef ODU_MEMORY_DEBUG_LOG
 #define NFAPI_UDP_P7_MEM_LOG(_macro, _file, _line, _func, _size, _datPtr)\
@@ -104,6 +109,30 @@
    }                                                         \
 }
 
+#define NFAPI_P7_CLK_ALLOC_SHRABL_BUF(_buf, _size)                    \
+{                                                            \
+   if(SGetStaticBuffer(NFAPI_P7_CLK_MEM_REGION, NFAPI_P7_CLK_POOL,             \
+	    (Data **)&_buf, (Size) _size, 0) == ROK)              \
+   {                                                         \
+      NFAPI_UDP_P7_MEM_LOG("NFAPI_P7_CLK,ALLOC_SHRABL_BUF", __FILE__, __LINE__, __FUNCTION__, _size, _buf);\
+      memset((_buf), 0, _size);                              \
+   }                                                         \
+   else                                                      \
+   {                                                         \
+      (_buf) = NULLP;                                        \
+   }                                                         \
+}
+
+#define NFAPI_P7_CLK_FREE_SHRABL_BUF(_region, _pool,_buf, _size)      \
+{                                                            \
+   if (_buf != NULLP)                                        \
+   {                                                         \
+      NFAPI_UDP_P7_MEM_LOG("NFAPI_P7_CLK,FREE_SHRABL_BUF", __FILE__, __LINE__, __FUNCTION__, _size, _buf);\
+      (Void) SPutStaticBuffer(_region, _pool,                \
+	    (Data *) _buf, (Size) _size, 0);                 \
+      _buf = NULLP;                                          \
+   }                                                         \
+}
 
 /*Common Functions*/
 void nfapiFillP5Hdr(Buffer *mBuf);
@@ -114,5 +143,6 @@ void nFapiExtractMsgHdr(nFapi_msg_header *msgHdr, Buffer *mBuf);
 
 NfapiPnfEvent convertNfapiP5TagValToMsgId(uint16_t tagVal);
 uint8_t nfapiP7UdpRecvMsg();
-
+void nfapiGenerateTicks();
+uint8_t nfapiSendSlotIndToMac();
 #endif
