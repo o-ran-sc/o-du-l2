@@ -349,7 +349,7 @@ uint8_t pnfP5SctpSockPoll()
       ret = cmInetRecvMsg(&(pnfP7Cb.sockFd), &fromAddr, &memInfo, &pnfP7UdpBuf, &pnfP7UdpBufLen, CM_INET_NO_FLAG);
       if(ret == ROK && pnfP7UdpBuf != NULLP)
       {
-          if((fromAddr.port == pnfP7Cb.srcAddr.port) && (fromAddr.address == pnfP7Cb.srcAddr.address))
+          if((fromAddr.port == pnfP7Cb.destAddr.port) && (fromAddr.address == pnfP7Cb.destAddr.address))
           {
                DU_LOG("\nINFO  -->  P7_UDP : Received P7 Message [%ld] \n", numMsgRcvd+1);
                numMsgRcvd++;

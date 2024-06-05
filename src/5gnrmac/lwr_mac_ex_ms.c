@@ -33,7 +33,6 @@
 #include "lwr_mac_sctp_inf.h"
 #include "nfapi_interface.h"
 #include "nfapi_common.h"
-#include "nfapi_vnf_fsm.h"
 #endif
 
 /**************************************************************************
