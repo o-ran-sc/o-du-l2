@@ -22,7 +22,6 @@
 #include "common_def.h"
 #include "lwr_mac.h"
 #include "nfapi_interface.h"
-#include "nfapi_vnf_fsm.h"
 #include "nfapi_common.h"
 #include "lwr_mac_utils.h"
 #include "lwr_mac_sctp_inf.h"
@@ -48,8 +47,8 @@ void nFapiVnfInit()
    memset(&vnfDb, 0, sizeof(NfapiVnfDb));
    vnfDb.pnfStateAtVnf = PNF_STATE_IDLE;
    vnfDb.pnfEvent      = 0;
-   vnfDb.vnfP7Info.p7SyncInfo.slot = 0xFF;
-   vnfDb.vnfP7Info.p7SyncInfo.sfn = 0xFFFF;
+   vnfDb.vnfP7Info.p7SyncInfo.frameInfo.slot = 0xFF;
+   vnfDb.vnfP7Info.p7SyncInfo.frameInfo.sfn = 0xFFFF;
    vnfDb.cellId = 0xFFFF;
 }
 

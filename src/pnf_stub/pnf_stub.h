@@ -31,6 +31,7 @@
 
 /*P7 UDP Teansport Cfg Details*/
 #define PNF_P7_UDP_PORT 9876
+#define VNF_P7_UDP_PORT 6789
 
 #define PNF_APP_MEM_REG 1
 #define PNF_POOL 1

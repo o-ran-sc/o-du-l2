@@ -22,7 +22,6 @@
 #include "lwr_mac.h"
 #include "du_app_p7udp_inf.h"
 #include "nfapi_interface.h"
-#include "nfapi_vnf_fsm.h"
 #include "nfapi_common.h"
 
 /**************************************************************************

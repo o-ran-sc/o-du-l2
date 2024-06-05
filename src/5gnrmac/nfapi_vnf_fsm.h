@@ -74,16 +74,23 @@ typedef struct nfapiPnfConfig
    NfapiTimingInfo  vnfTimingCfg;
 }NfapiPnfConfig;
 
+typedef struct nfapiFrameInfo
+{
+    uint16_t       hSfn;    /*Hyper System Frame Number*/
+    uint16_t       sfn;     /*System Frame Number*/
+    uint8_t        slot;    /*Sub Frame Number*/
+}NfapiFrameInfo;
+
 typedef struct nfapiSyncInfo
 {
-    uint8_t       phyId;
-    uint8_t       inSync;
-    uint32_t      prev_t1;
-    uint32_t      prev_t2;
-    uint32_t      prev_t3;
-    uint16_t      sfn;
-    uint8_t       slot;
-    struct nfapiSyncInfo *next;
+   uint8_t        phyId;
+   NfapiFrameInfo frameInfo; 
+   uint8_t        inSync;
+   uint32_t       prev_t1;
+   uint32_t       prev_t2;
+   uint32_t       prev_t3;
+   int32_t        delta_sfn_slot;
+   struct nfapiSyncInfo *next;
 }NfapiSyncInfo;
 
 typedef struct nfapiP7VnfInfo

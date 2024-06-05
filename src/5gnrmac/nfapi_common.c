@@ -23,7 +23,6 @@
 #include "mac_utils.h"
 #include "lwr_mac.h"
 #include "nfapi_interface.h"
-#include "nfapi_vnf_fsm.h"
 #include "nfapi_common.h"
 
 /*********************************************************************************
@@ -42,13 +41,36 @@
 
 void nfapiFillP5Hdr(Buffer *mBuf)
 {
-   uint8_t moreSeqNum = 0;
-   moreSeqNum = NFAPI_MORE_SEG_NUM(NFAPI_P5_MORE, NFAPI_P5_SEG_NUM);
+   uint8_t moreSegNum = 0;
+   moreSegNum = NFAPI_MORE_SEG_NUM(NFAPI_P5_MORE, NFAPI_P5_SEG_NUM);
 
    CMCHKPK(oduPackPostUInt16, NFAPI_P5_SEG_NUM, mBuf);
-   CMCHKPK(oduPackPostUInt8, moreSeqNum, mBuf);
+   CMCHKPK(oduPackPostUInt8, moreSegNum, mBuf);
    CMCHKPK(oduPackPostUInt8, vnfDb.p5Info.seqNum, mBuf);
    CMCHKPK(oduPackPostUInt32, NFAPI_P5_TIMESTAMP, mBuf);
+
+}
+
+/*********************************************************************************
+ *
+ * @Function Name: nFapiFillP7Hdr
+ *
+ *
+ * @Functionality: 
+ *    It Fills NFAPI P7 Msg Header[as per Table 2-5 " P7 nFapi Header"]
+ *
+ *
+ * @params 
+ *         [OUT]: Msg Buffer to send in UDP P7 Interface
+ *
+ * *******************************************************************************/
+
+void nfapiFillP7Hdr(Buffer *mBuf,uint32_t totSduLen, uint32_t byteOffset, uint32_t time)
+{
+   CMCHKPK(oduPackPostUInt16, 0, mBuf);
+   CMCHKPK(oduPackPostUInt32, totSduLen, mBuf);
+   CMCHKPK(oduPackPostUInt32, byteOffset, mBuf);
+   CMCHKPK(oduPackPostUInt32, time, mBuf);
 
 }
 

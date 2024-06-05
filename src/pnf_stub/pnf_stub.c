@@ -106,7 +106,7 @@ void readPnfCfg()
    pnfCb.pnfCfgParams.pnfP7UdpParams.srcIpv4P7Addr = ipv4_pnf;
    pnfCb.pnfCfgParams.pnfP7UdpParams.srcIpv4Port = PNF_P7_UDP_PORT;
    pnfCb.pnfCfgParams.pnfP7UdpParams.destIpv4P7Addr = ipv4_vnf;
-   pnfCb.pnfCfgParams.pnfP7UdpParams.destIpv4Port = PNF_P7_UDP_PORT;
+   pnfCb.pnfCfgParams.pnfP7UdpParams.destIpv4Port = VNF_P7_UDP_PORT;
 
 } /* End of readPnfCfg */
 
