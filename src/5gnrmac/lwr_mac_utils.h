@@ -79,6 +79,14 @@
 }
 
 void convertFreqDomRsrcMapToIAPIFormat(uint8_t *sourceBitMap, uint8_t *destBitMap);
+#ifdef NFAPI_ENABLED
+void fillTlvOfArrayOfUint16(Buffer *mBuf, uint16_t tag, uint16_t length, uint16_t *value);
+void fillTlvOfArrayOfUint8(Buffer *mBuf, uint16_t tag, uint16_t length, uint8_t *value);
+void fillTlvOfSizeUint8(Buffer *mBuf, uint16_t tag, uint16_t length, uint8_t value);
+void fillTlvOfSizeUint16(Buffer *mBuf, uint16_t tag, uint16_t length, uint16_t value);
+void fillTlvOfSizeUint32(Buffer *mBuf, uint16_t tag, uint16_t length, uint32_t value);
+void extractVnfIp(uint32_t vnfIp, uint8_t bytes[4]); 
+#endif
 /**********************************************************************
          End of file
 **********************************************************************/

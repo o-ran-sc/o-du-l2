@@ -19,6 +19,7 @@
 /* This file is the entry point for Lower MAC */
 
 #include "common_def.h"
+#include <arpa/inet.h>
 #include "mac_utils.h"
 #include "lwr_mac.h"
 #include "lwr_mac_fsm.h"
@@ -227,7 +228,7 @@ uint8_t sendParamRspToLowerMacFsm(Buffer *mBuf)
    vnfDb.p7TransInfo.destIpNetAddr.address = CM_INET_NTOH_UINT32(vnfDb.p7TransInfo.destIpv4Address);
    vnfDb.p7TransInfo.destIpNetAddr.port = vnfDb.p7TransInfo.destIpv4Port;
    DU_LOG("\nINFO  -->  LWR MAC: Sending param response message body buffer to lower mac");
-   //sendEventToLowerMacFsm(PARAM_RESPONSE, 0, mBuf); TODO 
+   sendEventToLowerMacFsm(PARAM_RESPONSE, 0, mBuf); 
    return ROK;
 }
 #endif

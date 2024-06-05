@@ -188,6 +188,136 @@ void convertFreqDomRsrcMapToIAPIFormat(uint8_t *sourceBitMap, uint8_t *destBitMa
    }
 }
 
+#ifdef NFAPI_ENABLED
+/*********************************************************************************
+ *
+ * @Function Name: fillTlvOfArrayOfUint16
+ *
+ *
+ * @Functionality:
+ *    fill tlv of array of size uint16
+ *
+ * @params
+ *         [IN]: Buffer, tag, length, value
+ *
+ * *******************************************************************************/
+void fillTlvOfArrayOfUint16(Buffer *mBuf, uint16_t tag, uint16_t length, uint16_t *value)
+{
+   uint8_t arraySize=5;
+   CMCHKPK(oduPackPostUInt16, tag, mBuf);
+   CMCHKPK(oduPackPostUInt16, length, mBuf);
+   for(uint8_t idx=0;idx<arraySize;idx++)
+   {
+      CMCHKPK(oduPackPostUInt16, value[idx], mBuf);
+   }
+}
+
+/*********************************************************************************
+ *
+ * @Function Name: fillTlvOfArrayOfUint8
+ *
+ *
+ * @Functionality:
+ *    fill tlv of array of size uint8
+ *
+ * @params
+ *         [IN]: Buffer, tag, length, value
+ *
+ * *******************************************************************************/
+void fillTlvOfArrayOfUint8(Buffer *mBuf, uint16_t tag, uint16_t length, uint8_t *value)
+{
+   uint8_t arraySize=4;
+   CMCHKPK(oduPackPostUInt16, tag, mBuf);
+   CMCHKPK(oduPackPostUInt16, length, mBuf);
+   for(uint8_t idx=0;idx<arraySize;idx++)
+   {
+      CMCHKPK(oduPackPostUInt8, value[idx], mBuf);
+   }
+}
+
+/*********************************************************************************
+ *
+ * @Function Name: fillTlvOfSizeUint8
+ *
+ *
+ * @Functionality:
+ *    fill tlv of size uint8
+ *
+ * @params
+ *         [IN]: Buffer, tag, length, value
+ *
+ * *******************************************************************************/
+void fillTlvOfSizeUint8(Buffer *mBuf, uint16_t tag, uint16_t length, uint8_t value)
+{
+   CMCHKPK(oduPackPostUInt16, tag, mBuf);
+   CMCHKPK(oduPackPostUInt16, length, mBuf);
+   CMCHKPK(oduPackPostUInt8, value, mBuf);
+}
+
+/*********************************************************************************
+ *
+ * @Function Name: fillTlvOfSizeUint16
+ *
+ *
+ * @Functionality:
+ *    fill tlv of size uint16
+ *
+ * @params
+ *         [IN]: Buffer, tag, length, value
+ *
+ * *******************************************************************************/
+void fillTlvOfSizeUint16(Buffer *mBuf, uint16_t tag, uint16_t length, uint16_t value)
+{
+   CMCHKPK(oduPackPostUInt16, tag, mBuf);
+   CMCHKPK(oduPackPostUInt16, length, mBuf);
+   CMCHKPK(oduPackPostUInt16, value, mBuf);
+}
+
+/*********************************************************************************
+ *
+ * @Function Name: fillTlvOfSizeUint32
+ *
+ *
+ * @Functionality:
+ *    fill tlv of size uint32
+ *
+ * @params
+ *         [IN]: Buffer, tag, length, value
+ *
+ * *******************************************************************************/
+void fillTlvOfSizeUint32(Buffer *mBuf, uint16_t tag, uint16_t length, uint32_t value)
+{
+   CMCHKPK(oduPackPostUInt16, tag, mBuf);
+   CMCHKPK(oduPackPostUInt16, length, mBuf);
+   CMCHKPK(oduPackPostUInt32, value, mBuf);
+}
+
+/*******************************************************************
+ *
+ * @brief extract vnf ip from vnf CmInetAddr formate
+ *
+ * @details
+ *
+ *    Function : extractVnfIp
+ *
+ *    Functionality:
+ *         - extract vnf ip from vnf CmInetAddr formate
+ *
+ * @params[in] vnfIp stored as CmInetAddr
+ * @params[in] vnfIp  to be store as uint8_t bytes[4]
+ * @return void  
+ *
+ * ****************************************************************/
+void extractVnfIp(uint32_t vnfIp, uint8_t bytes[4]) 
+{
+   bytes[0] = (vnfIp >> 24) & 0xFF;
+   bytes[1] = (vnfIp >> 16) & 0xFF;
+   bytes[2] = (vnfIp >> 8) & 0xFF;
+   bytes[3] = vnfIp & 0xFF;
+}
+
+#endif
+
 /**********************************************************************
   End of file
  **********************************************************************/
