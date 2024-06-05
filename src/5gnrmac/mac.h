@@ -256,6 +256,12 @@ typedef struct macStatistics
     * the statistics to be calculated at MAC */
 }MacStatistics;
 
+typedef struct macNfapiState
+{
+   uint8_t paramMsgComp;
+   uint8_t configMsgComp;
+}MacNfapiState;
+
 typedef struct macCb
 {
    Inst        macInst;
@@ -266,6 +272,7 @@ typedef struct macCb
    CmTimer     tmrBlk[MAX_NUM_TIMER];     /*!< Timer Block */
    MacCellCb   *macCell[MAX_NUM_CELL];
    MacStatistics  statistics;
+   MacNfapiState fapiState;
 }MacCb;
 
 /* global variable */
