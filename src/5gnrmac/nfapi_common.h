@@ -112,7 +112,7 @@ void nfapiFillMsgHdr(Buffer *mBuf, uint8_t phyId, uint16_t msgId, uint32_t msgle
 void nFapiExtractP5Hdr(nFapi_p5_hdr *p5Hdr, Buffer *mBuf);
 void nFapiExtractMsgHdr(nFapi_msg_header *msgHdr, Buffer *mBuf);
 
-uint8_t convertNfapiP5TagValToMsgId(uint16_t tagVal,  NfapiPnfEvent *nfapiPnfEvent, EventState *phyEvent);
+uint8_t convertNfapiP5TagValToMsgId(uint16_t tagVal,  NfapiPnfEvent *nfapiPnfEvent, EventState *phyEvent, bool *startRsp);
 uint8_t nfapiP7UdpRecvMsg();
 
 #endif

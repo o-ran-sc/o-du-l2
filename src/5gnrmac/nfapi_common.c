@@ -144,8 +144,9 @@ void nFapiExtractMsgHdr(nFapi_msg_header *msgHdr, Buffer *mBuf)
  *         [OUT]: ROK or RFAILED 
  *
  * *******************************************************************************/
-uint8_t convertNfapiP5TagValToMsgId(uint16_t tagVal, NfapiPnfEvent *nfapiPnfEvent, EventState *phyEvent)
+uint8_t convertNfapiP5TagValToMsgId(uint16_t tagVal, NfapiPnfEvent *nfapiPnfEvent, EventState *phyEvent, bool *startRsp)
 {
+   *startRsp = false;
    *nfapiPnfEvent=PNF_MAX_EVENT;
    *phyEvent=MAX_EVENT;
 
@@ -224,6 +225,11 @@ uint8_t convertNfapiP5TagValToMsgId(uint16_t tagVal, NfapiPnfEvent *nfapiPnfEven
       case FAPI_STOP_REQUEST:
         {
            *(phyEvent) = STOP_REQUEST;
+           break;
+        }
+      case TAG_NFAPI_START_RESPONSE:
+        {
+           *(startRsp) = true;
            break;
         }
       default:

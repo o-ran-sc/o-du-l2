@@ -227,7 +227,7 @@ uint8_t sendParamRspToLowerMacFsm(Buffer *mBuf)
    vnfDb.p7TransInfo.destIpNetAddr.address = CM_INET_NTOH_UINT32(vnfDb.p7TransInfo.destIpv4Address);
    vnfDb.p7TransInfo.destIpNetAddr.port = vnfDb.p7TransInfo.destIpv4Port;
    DU_LOG("\nINFO  -->  LWR MAC: Sending param response message body buffer to lower mac");
-   //sendEventToLowerMacFsm(PARAM_RESPONSE, 0, mBuf); TODO 
+   sendEventToLowerMacFsm(PARAM_RESPONSE, 0, mBuf); 
    return ROK;
 }
 #endif
@@ -332,6 +332,7 @@ uint8_t lwrMacActvTsk(Pst *pst, Buffer *mBuf)
 #ifdef NFAPI_ENABLED
              case EVENT_PNF_DATA:
                {
+                   bool startRsp;
                    nFapi_p5_hdr     p5Hdr;
                    nFapi_msg_header msgHdr;
                    EventState phyEvent;
@@ -347,7 +348,7 @@ uint8_t lwrMacActvTsk(Pst *pst, Buffer *mBuf)
                             msgHdr.sRU_termination_type);
                       return RFAILED;
                    }
-                   if(convertNfapiP5TagValToMsgId(msgHdr.msg_id, &nfapiPnfEvent, &phyEvent)!=ROK)
+                   if(convertNfapiP5TagValToMsgId(msgHdr.msg_id, &nfapiPnfEvent, &phyEvent, &startRsp)!=ROK)
                    {
                       ODU_PUT_MSG_BUF(mBuf);
                       DU_LOG("\nERROR  --> NFAPI_VNF: Incorrect NFAPI MsgID received:%d",\
@@ -375,6 +376,11 @@ uint8_t lwrMacActvTsk(Pst *pst, Buffer *mBuf)
                       {
                          sendEventToLowerMacFsm(phyEvent, msgHdr.length, mBuf);  
                       }
+                   }
+                   else if(startRsp ==true)
+                   {
+                      DU_LOG("\nINFO  -->  LWR MAC: Start resp message received");
+                      //TODO handling of  start rsp
                    }
                    ODU_PUT_MSG_BUF(mBuf);
                    break;

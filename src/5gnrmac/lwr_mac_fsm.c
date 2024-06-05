@@ -63,6 +63,111 @@ uint16_t fillUlTtiReq(SlotTimingInfo currTimingInfo, p_fapi_api_queue_elem_t pre
 uint16_t fillUlDciReq(SlotTimingInfo currTimingInfo, p_fapi_api_queue_elem_t prevElem, fapi_vendor_ul_dci_req_t *vendorUlDciReq);
 uint8_t lwr_mac_procStopReqEvt(SlotTimingInfo slotInfo, p_fapi_api_queue_elem_t  prevElem, fapi_stop_req_vendor_msg_t *vendorMsg);
 
+
+/*********************************************************************************
+ *
+ * @Function Name: fillTlvOfArrayOfUint16
+ *
+ *
+ * @Functionality:
+ *    fill tlv of array of size uint16
+ *
+ * @params
+ *         [IN]: Buffer, tag, length, value
+ *
+ * *******************************************************************************/
+void fillTlvOfArrayOfUint16(Buffer *mBuf, uint16_t tag, uint16_t length, uint16_t *value)
+{
+   uint8_t arraySize=5;
+   CMCHKPK(oduPackPostUInt16, tag, mBuf);
+   CMCHKPK(oduPackPostUInt16, length, mBuf);
+   for(uint8_t idx=0;idx<arraySize;idx++)
+   {
+      CMCHKPK(oduPackPostUInt16, value[idx], mBuf);
+   }
+}
+
+/*********************************************************************************
+ *
+ * @Function Name: fillTlvOfArrayOfUint8
+ *
+ *
+ * @Functionality:
+ *    fill tlv of array of size uint8
+ *
+ * @params
+ *         [IN]: Buffer, tag, length, value
+ *
+ * *******************************************************************************/
+void fillTlvOfArrayOfUint8(Buffer *mBuf, uint16_t tag, uint16_t length, uint8_t *value)
+{
+   uint8_t arraySize=4;
+   CMCHKPK(oduPackPostUInt16, tag, mBuf);
+   CMCHKPK(oduPackPostUInt16, length, mBuf);
+   for(uint8_t idx=0;idx<arraySize;idx++)
+   {
+      CMCHKPK(oduPackPostUInt8, value[idx], mBuf);
+   }
+}
+
+/*********************************************************************************
+ *
+ * @Function Name: fillTlvOfSizeUint8
+ *
+ *
+ * @Functionality:
+ *    fill tlv of size uint8
+ *
+ * @params
+ *         [IN]: Buffer, tag, length, value
+ *
+ * *******************************************************************************/
+void fillTlvOfSizeUint8(Buffer *mBuf, uint16_t tag, uint16_t length, uint8_t value)
+{
+   CMCHKPK(oduPackPostUInt16, tag, mBuf);
+   CMCHKPK(oduPackPostUInt16, length, mBuf);
+   CMCHKPK(oduPackPostUInt8, value, mBuf);
+}
+
+/*********************************************************************************
+ *
+ * @Function Name: fillTlvOfSizeUint16
+ *
+ *
+ * @Functionality:
+ *    fill tlv of size uint16
+ *
+ * @params
+ *         [IN]: Buffer, tag, length, value
+ *
+ * *******************************************************************************/
+void fillTlvOfSizeUint16(Buffer *mBuf, uint16_t tag, uint16_t length, uint16_t value)
+{
+   CMCHKPK(oduPackPostUInt16, tag, mBuf);
+   CMCHKPK(oduPackPostUInt16, length, mBuf);
+   CMCHKPK(oduPackPostUInt16, value, mBuf);
+}
+
+/*********************************************************************************
+ *
+ * @Function Name: fillTlvOfSizeUint32
+ *
+ *
+ * @Functionality:
+ *    fill tlv of size uint32
+ *
+ * @params
+ *         [IN]: Buffer, tag, length, value
+ *
+ * *******************************************************************************/
+void fillTlvOfSizeUint32(Buffer *mBuf, uint16_t tag, uint16_t length, uint32_t value)
+{
+   CMCHKPK(oduPackPostUInt16, tag, mBuf);
+   CMCHKPK(oduPackPostUInt16, length, mBuf);
+   CMCHKPK(oduPackPostUInt32, value, mBuf);
+}
+
+
 void lwrMacLayerInit(Region region, Pool pool)
 {
 #ifdef INTEL_WLS_MEM
@@ -1418,6 +1523,13 @@ uint8_t lwr_mac_procParamReqEvt(void *msg)
 
 uint8_t lwr_mac_procParamRspEvt(void *msg)
 {
+
+#ifdef NFAPI_ENABLED
+     
+   sendEventToLowerMacFsm(CONFIG_REQUEST, 0, (void *)NULL);
+   DU_LOG("\nINFO  -->  LWR_MAC: Received EVENT[%d] at STATE[%d]", lwrMacCb.event, lwrMacCb.phyState);
+   return ROK;
+#endif
 #ifdef INTEL_FAPI
    /* stopGuardTimer(); */
    uint8_t index;
@@ -2000,6 +2112,14 @@ uint8_t lwr_mac_procIqSamplesReqEvt(void *msg)
 }
 #endif
 
+void extract_bytes(uint32_t hostlong, uint8_t bytes[4]) 
+{
+   bytes[0] = (hostlong >> 24) & 0xFF;
+   bytes[1] = (hostlong >> 16) & 0xFF;
+   bytes[2] = (hostlong >> 8) & 0xFF;
+   bytes[3] = hostlong & 0xFF;
+}
+
 /*******************************************************************
  *
  * @brief Sends FAPI Config req to PHY
@@ -2019,6 +2139,181 @@ uint8_t lwr_mac_procIqSamplesReqEvt(void *msg)
 
 uint8_t lwr_mac_procConfigReqEvt(void *msg)
 {
+#ifdef NFAPI_ENABLED
+   uint32_t mib = 0;
+   uint16_t cellIdx =0;
+   MacCellCfg macCfgParams;
+   uint8_t timingModeInfo=0;
+   uint32_t dlFreq = 0, ulFreq = 0;
+   uint8_t vnfIp[4];
+   Buffer *mBuf = NULLP;
+   Pst pst;
+
+   macCfgParams = macCb.macCell[cellIdx]->macCellCfg;
+   
+   /* Fill Cell Configuration in lwrMacCb */
+   memset(&lwrMacCb.cellCb[lwrMacCb.numCell], 0, sizeof(LwrMacCellCb));
+   lwrMacCb.cellCb[lwrMacCb.numCell].cellId = macCfgParams.cellId;
+   lwrMacCb.cellCb[lwrMacCb.numCell].phyCellId = macCfgParams.cellCfg.phyCellId; 
+
+   DU_LOG("\nCall Flow: ENTMAC -> ENTLWRMAC : NFAPI P5 CONFIG_REQ %d\n",cellIdx);
+
+   if (ODU_GET_MSG_BUF(MAC_MEM_REGION, MAC_POOL, &mBuf) != ROK)
+   {
+      DU_LOG("\nERROR  --> NFAPI_VNF : Memory allocation failed in packPnfConfigReq");
+      return RFAILED;
+   }
+
+   nfapiFillP5Hdr(mBuf);
+   nfapiFillMsgHdr(mBuf, NFAPI_P5_PHY_ID, FAPI_CONFIG_REQUEST, 0);
+
+   CMCHKPK(oduPackPostUInt8, 0, mBuf);  //Error Code
+   
+   //As per 5G nFAPI Specification, Table 3-19 nFAPI TLVs included in
+   //CONFIG.request for IDLE and CONFIGURED states
+   if(timingModeInfo!=0)
+   {
+      CMCHKPK(oduPackPostUInt8, 7, mBuf);  //Num TLVs = 7
+   }
+   else
+   {
+      CMCHKPK(oduPackPostUInt8, 6, mBuf);  //Num TLVs = 7
+   }
+
+   /* P7 VNF Address Ipv4 */
+   extract_bytes(vnfDb.p7TransInfo.srcIpNetAddr.address, vnfIp);
+   DU_LOG("Extracted vnfIp: %u.%u.%u.%u\n", vnfIp[0], vnfIp[1], vnfIp[2], vnfIp[3]);
+   fillTlvOfArrayOfUint8(mBuf, TAG_NFAPI_P7_VNF_ADD_IPV4, sizeof(vnfIp), vnfIp);  
+   
+   /* P7 VNF Port */
+   fillTlvOfSizeUint16(mBuf, TAG_NFAPI_P7_VNF_PORT, sizeof(uint16_t), vnfDb.p7TransInfo.srcIpNetAddr.port); 
+
+   /*P7 Transport*/
+   fillTlvOfSizeUint8(mBuf, TAG_NFAPI_P7_TRANSPORT, sizeof(uint8_t),  1);
+
+   /*Timing window*/
+   fillTlvOfSizeUint16(mBuf, TAG_NFAPI_TIMING_WINDOW, sizeof(uint8_t),  0);
+   
+   /*Timing info mode*/
+   fillTlvOfSizeUint8(mBuf, TAG_NFAPI_TIMING_INFO_MODE, sizeof(uint8_t),  timingModeInfo);
+   
+   /*Timing info period*/
+   if(timingModeInfo !=0)
+   {
+      fillTlvOfSizeUint8(mBuf, TAG_NFAPI_TIMING_INFO_PERIOD, sizeof(uint8_t),  1);
+   }
+
+   /*5G_FAPI_MSG_BODY*/
+   //As per 5G FAPI: PHY API, section 3.3.2.1 PARAM.response, Table 3-17
+   //PARAM.response message body
+   CMCHKPK(oduPackPostUInt8, 54, mBuf);  //Num TLVs = 54
+   
+   /* Carrier Config */
+   fillTlvOfSizeUint16(mBuf, FAPI_DL_BANDWIDTH_TAG, sizeof(uint32_t), macCfgParams.carrCfg.dlBw);
+   dlFreq = convertArfcnToFreqKhz(macCfgParams.carrCfg.arfcnDL);
+   fillTlvOfSizeUint32(mBuf, FAPI_DL_FREQUENCY_TAG, sizeof(uint32_t), dlFreq);
+   //fillTlvOfArrayOfUint16(mBuf, FAPI_DL_K0_TAG, sizeof(uint16_t), macCfgParams.dlCarrCfg.k0[0]);
+   // fillTlvOfArrayOfUint16(mBuf, FAPI_DL_GRIDSIZE_TAG, sizeof(uint16_t), macCfgParams.dlCarrCfg.gridSize[0]);
+   fillTlvOfSizeUint16(mBuf, FAPI_NUM_TX_ANT_TAG, sizeof(uint16_t), macCfgParams.carrCfg.numTxAnt);
+   fillTlvOfSizeUint16(mBuf, FAPI_UPLINK_BANDWIDTH_TAG, sizeof(uint32_t), macCfgParams.carrCfg.ulBw);
+   ulFreq = convertArfcnToFreqKhz(macCfgParams.carrCfg.arfcnUL);
+   fillTlvOfSizeUint32(mBuf, FAPI_UPLINK_FREQUENCY_TAG, sizeof(uint32_t), ulFreq);
+   //fillTlvOfArrayOfUint16(mBuf, FAPI_UL_K0_TAG, sizeof(uint16_t), macCfgParams.ulCarrCfg.k0[0]);
+   //fillTlvOfArrayOfUint16(mBuf, FAPI_UL_GRID_SIZE_TAG, sizeof(uint16_t), macCfgParams.ulCarrCfg.gridSize[0]);
+   fillTlvOfSizeUint16(mBuf, FAPI_NUM_RX_ANT_TAG, sizeof(uint16_t), macCfgParams.carrCfg.numRxAnt);
+   fillTlvOfSizeUint8(mBuf, FAPI_FREQUENCY_SHIFT_7P5_KHZ_TAG,sizeof(uint8_t), 0);
+   
+   /* fill cell config */
+   fillTlvOfSizeUint16(mBuf, FAPI_PHY_CELL_ID_TAG,  sizeof(uint8_t), macCfgParams.cellCfg.phyCellId);
+   fillTlvOfSizeUint8(mBuf, FAPI_FRAME_DUPLEX_TYPE_TAG, sizeof(uint8_t), macCfgParams.cellCfg.dupType);
+   
+   /* fill SSB configuration */
+   fillTlvOfSizeUint32(mBuf, FAPI_SS_PBCH_POWER_TAG, sizeof(uint32_t), macCfgParams.ssbCfg.ssbPbchPwr);
+   fillTlvOfSizeUint8(mBuf, FAPI_BCH_PAYLOAD_TAG, sizeof(uint8_t), macCfgParams.ssbCfg.bchPayloadFlag);
+   fillTlvOfSizeUint8(mBuf, FAPI_SCS_COMMON_TAG,    sizeof(uint8_t), macCfgParams.ssbCfg.scsCmn);
+   
+   /* fill PRACH configuration */
+   //fillTlvOfSizeUint8(mBuf, FAPI_PRACH_SEQUENCE_LENGTH_TAG, sizeof(uint8_t), macCfgParams.prachCfg.prachSeqLen);
+   fillTlvOfSizeUint8(mBuf, FAPI_PRACH_SUBC_SPACING_TAG, sizeof(uint8_t), convertScsValToScsEnum(macCfgParams.prachCfg.prachSubcSpacing));
+   fillTlvOfSizeUint8(mBuf, FAPI_RESTRICTED_SET_CONFIG_TAG, sizeof(uint8_t), macCfgParams.prachCfg.prachRstSetCfg);
+   fillTlvOfSizeUint8(mBuf, FAPI_NUM_PRACH_FD_OCCASIONS_TAG, sizeof(uint8_t), macCfgParams.prachCfg.msg1Fdm);
+   fillTlvOfSizeUint8(mBuf, FAPI_PRACH_CONFIG_INDEX_TAG, sizeof(uint8_t), macCfgParams.prachCfg.prachCfgIdx);
+   fillTlvOfSizeUint16(mBuf, FAPI_PRACH_ROOT_SEQUENCE_INDEX_TAG, sizeof(uint16_t), macCfgParams.prachCfg.fdm[0].rootSeqIdx);
+   //fillTlvOfSizeUint8(mBuf, FAPI_NUM_ROOT_SEQUENCES_TAG, sizeof(uint8_t), macCfgParams.prachCfg.fdm[0].numRootSeq);
+   fillTlvOfSizeUint16(mBuf, FAPI_K1_TAG, sizeof(uint16_t), macCfgParams.prachCfg.fdm[0].k1);
+   fillTlvOfSizeUint8(mBuf, FAPI_PRACH_ZERO_CORR_CONF_TAG , sizeof(uint8_t), macCfgParams.prachCfg.fdm[0].zeroCorrZoneCfg);
+   //fillTlvOfSizeUint16(mBuf, FAPI_NUM_UNUSED_ROOT_SEQUENCES_TAG, sizeof(uint8_t), macCfgParams.prachCfg.fdm[0].numUnusedRootSeq);
+   /* if(macCfgParams.prachCfg.fdm[0].numUnusedRootSeq)
+      {
+      for(idx = 0; idx < macCfgParams.prachCfg.fdm[0].numUnusedRootSeq; idx++)
+      fillTlvOfSizeUint16(mBuf, FAPI_UNUSED_ROOT_SEQUENCES_TAG,   \
+      sizeof(uint16_t), macCfgParams.prachCfg.fdm[0].unsuedRootSeq[idx]);
+      }
+      else
+      {
+      macCfgParams.prachCfg.fdm[0].unsuedRootSeq = NULL;
+      }*/
+
+   fillTlvOfSizeUint8(mBuf, FAPI_SSB_PER_RACH_TAG, sizeof(uint8_t), macCfgParams.prachCfg.ssbPerRach);
+   //fillTlvOfSizeUint8(mBuf, FAPI_PRACH_MULTIPLE_CARRIERS_IN_A_BAND_TAG, sizeof(uint8_t), macCfgParams.prachCfg.prachMultCarrBand);
+
+#ifdef NR_TDD
+   /* fill TDD table */
+   fillTlvOfSizeUint8(mBuf, FAPI_TDD_PERIOD_TAG, sizeof(uint8_t), macCfgParams.tddCfg.tddPeriod);
+
+   for(slotIdx =0 ;slotIdx < MAX_TDD_PERIODICITY_SLOTS; slotIdx++)
+   {
+      for(symbolIdx = 0; symbolIdx < MAX_SYMB_PER_SLOT; symbolIdx++)
+      {
+         /*Fill Full-DL Slots as well as DL symbols ini 1st Flexi Slo*/
+         if(slotIdx < macCfgParams.tddCfg.nrOfDlSlots || \
+               (slotIdx == macCfgParams.tddCfg.nrOfDlSlots && symbolIdx < macCfgParams.tddCfg.nrOfDlSymbols))
+         {
+            fillTlvOfSizeUint8(mBuf, FAPI_SLOT_CONFIG_TAG, sizeof(uint8_t), DL_SYMBOL);
+         }
+
+         /*Fill Full-FLEXI SLOT and as well as Flexi Symbols in 1 slot preceding FULL-UL slot*/
+         else if(slotIdx < (MAX_TDD_PERIODICITY_SLOTS - macCfgParams.tddCfg.nrOfUlSlots -1) ||  \
+               (slotIdx == (MAX_TDD_PERIODICITY_SLOTS - macCfgParams.tddCfg.nrOfUlSlots -1) && \
+                symbolIdx < (MAX_SYMB_PER_SLOT - macCfgParams.tddCfg.nrOfUlSymbols)))
+         {
+            fillTlvOfSizeUint8(mBuf, FAPI_SLOT_CONFIG_TAG, sizeof(uint8_t), FLEXI_SYMBOL);
+         }
+         /*Fill Partial UL symbols and Full-UL slot*/
+         else
+         {
+            fillTlvOfSizeUint8(mBuf, FAPI_SLOT_CONFIG_TAG, sizeof(uint8_t), UL_SYMBOL);
+         }
+      }
+   }
+#endif
+   
+   /* fill SSB table */
+   fillTlvOfSizeUint16(mBuf, FAPI_SSB_OFFSET_POINT_A_TAG, sizeof(uint16_t), macCfgParams.ssbCfg.ssbOffsetPointA);
+   //fillTlvOfSizeUint8(mBuf, FAPI_BETA_PSS_TAG, sizeof(uint8_t),  macCfgParams.ssbCfg.betaPss);
+   fillTlvOfSizeUint8(mBuf, FAPI_SSB_PERIOD_TAG, sizeof(uint8_t),  macCfgParams.ssbCfg.ssbPeriod);
+   fillTlvOfSizeUint8(mBuf, FAPI_SSB_SUBCARRIER_OFFSET_TAG, sizeof(uint8_t),  macCfgParams.ssbCfg.ssbScOffset);
+
+   setMibPdu(macCfgParams.ssbCfg.mibPdu, &mib, 0);
+   fillTlvOfSizeUint32(mBuf, FAPI_MIB_TAG , sizeof(uint32_t), mib);
+
+   fillTlvOfSizeUint32(mBuf, FAPI_SSB_MASK_TAG, sizeof(uint32_t), macCfgParams.ssbCfg.ssbMask[0]);
+   fillTlvOfSizeUint8(mBuf, FAPI_BEAM_ID_TAG, sizeof(uint8_t),  macCfgParams.ssbCfg.beamId[0]);
+   //fillTlvOfSizeUint8(mBuf, FAPI_SS_PBCH_MULTIPLE_CARRIERS_IN_A_BAND_TAG, sizeof(uint8_t), macCfgParams.ssbCfg.multCarrBand);
+   //fillTlvOfSizeUint8(mBuf, FAPI_MULTIPLE_CELLS_SS_PBCH_IN_A_CARRIER_TAG, sizeof(uint8_t), macCfgParams.ssbCfg.multCellCarr);
+
+ 
+   /* fill measurement config */
+   fillTlvOfSizeUint8(mBuf, FAPI_RSSI_MEASUREMENT_TAG, sizeof(uint8_t), 0);
+   
+   //TODO /* fill  Beamforming Tables and fill  Precoding Table */
+
+   DU_LOG("\nCall Flow: ENTMAC -> ENTLWRMAC : Sending P5 CONFIG_REQ\n");
+   FILL_PST_LWR_MAC_TO_DUAPP(pst, EVENT_PNF_DATA);
+   return ODU_POST_TASK(&pst, mBuf);
+
+#else
+
 #ifdef INTEL_FAPI
 #ifdef CALL_FLOW_DEBUG_LOG
    DU_LOG("\nCall Flow: ENTMAC -> ENTLWRMAC : CONFIG_REQ\n");
@@ -2267,6 +2562,7 @@ uint8_t lwr_mac_procConfigReqEvt(void *msg)
    DU_LOG("\nDEBUG  -->  LWR_MAC: Sending Config Request to Phy");
    LwrMacSendToL1(headerElem);
 #endif
+#endif
 
    return ROK;
 } /* lwr_mac_handleConfigReqEvt */
@@ -2290,6 +2586,32 @@ uint8_t lwr_mac_procConfigReqEvt(void *msg)
 
 uint8_t lwr_mac_procConfigRspEvt(void *msg)
 {
+#ifdef NFAPI_ENABLED
+   uint8_t errCode = 0;
+   DU_LOG("\nINFO  -->  LWR_MAC: Received EVENT[%d] at STATE[%d]", lwrMacCb.event, lwrMacCb.phyState);
+
+   CMCHKPK(oduUnpackUInt8, &(errCode), msg);
+
+   if(errCode == NFAPI_MSG_OK)
+   {
+      DU_LOG("\nDEBUG  -->  LWR_MAC: PHY has moved to Configured state \n");
+      lwrMacCb.phyState = PHY_STATE_CONFIGURED;
+      lwrMacCb.cellCb[0].state = PHY_STATE_CONFIGURED;
+      /* TODO :
+       * Store config response into an intermediate
+       * struture and send to MAC
+       * Support LC and LWLC for sending config
+       * rsp to MAC
+       */
+      fapiMacConfigRsp(lwrMacCb.cellCb[0].cellId);
+   }
+   else
+   {
+      DU_LOG("\nERROR   -->  NFAPI_VNF: Config response error code is not okay, errCode:%d", errCode);
+      return RFAILED;
+   }
+
+#else
 #ifdef INTEL_FAPI
    fapi_config_resp_t *configRsp;
    configRsp = (fapi_config_resp_t *)msg;
@@ -2301,19 +2623,19 @@ uint8_t lwr_mac_procConfigRspEvt(void *msg)
    {
       if(configRsp->error_code == MSG_OK)
       {
-	 DU_LOG("\nDEBUG  -->  LWR_MAC: PHY has moved to Configured state \n");
-	 lwrMacCb.phyState = PHY_STATE_CONFIGURED;
-	 lwrMacCb.cellCb[0].state = PHY_STATE_CONFIGURED;
-	 /* TODO : 
-	  * Store config response into an intermediate struture and send to MAC
-	  * Support LC and LWLC for sending config rsp to MAC 
-	  */
-	 fapiMacConfigRsp(lwrMacCb.cellCb[0].cellId);
+         DU_LOG("\nDEBUG  -->  LWR_MAC: PHY has moved to Configured state \n");
+         lwrMacCb.phyState = PHY_STATE_CONFIGURED;
+         lwrMacCb.cellCb[0].state = PHY_STATE_CONFIGURED;
+         /* TODO : 
+          * Store config response into an intermediate struture and send to MAC
+          * Support LC and LWLC for sending config rsp to MAC 
+          */
+         fapiMacConfigRsp(lwrMacCb.cellCb[0].cellId);
       }
       else
       {
-	 DU_LOG("\nERROR  -->  LWR_MAC: Invalid error code %d", configRsp->error_code);
-	 return RFAILED;
+         DU_LOG("\nERROR  -->  LWR_MAC: Invalid error code %d", configRsp->error_code);
+         return RFAILED;
       }
    }
    else
@@ -2321,6 +2643,7 @@ uint8_t lwr_mac_procConfigRspEvt(void *msg)
       DU_LOG("\nERROR  -->  LWR_MAC: Config Response received from PHY is NULL");
       return RFAILED;
    }
+#endif
 #endif
 
    return ROK;
@@ -2344,6 +2667,26 @@ uint8_t lwr_mac_procConfigRspEvt(void *msg)
  * ****************************************************************/
 uint8_t lwr_mac_procStartReqEvt(void *msg)
 {
+
+#ifdef NFAPI_ENABLED
+
+   Buffer *mBuf = NULLP;
+   Pst pst;
+
+   DU_LOG("\nCall Flow: ENTMAC -> ENTLWRMAC : NFAPI P5 START_REQ\n");
+   if (ODU_GET_MSG_BUF(MAC_MEM_REGION, MAC_POOL, &mBuf) != ROK)
+   {
+      DU_LOG("\nERROR  --> NFAPI_VNF : Memory allocation failed in StartReq");
+      return RFAILED;
+   }
+   nfapiFillP5Hdr(mBuf);
+   nfapiFillMsgHdr(mBuf, NFAPI_P5_PHY_ID, FAPI_START_REQUEST, 0);
+
+   FILL_PST_LWR_MAC_TO_DUAPP(pst, EVENT_PNF_DATA);
+   return ODU_POST_TASK(&pst, mBuf);
+
+#else
+
 #ifdef INTEL_FAPI
 #ifdef CALL_FLOW_DEBUG_LOG
    DU_LOG("\nCall Flow: ENTMAC -> ENTLWRMAC : START_REQ\n");
@@ -2406,6 +2749,7 @@ uint8_t lwr_mac_procStartReqEvt(void *msg)
    /* Send to PHY */
    DU_LOG("\nDEBUG  -->  LWR_MAC: Sending Start Request to Phy");
    LwrMacSendToL1(headerElem);
+#endif
 #endif
    return ROK;
 } /* lwr_mac_procStartReqEvt */
