@@ -269,7 +269,7 @@ void MacHdlLwrMacEvents(Pst *pst, Buffer *mBuf)
    switch(pst->event)
    {
       case EVENT_SLOT_IND_TO_MAC:
-         unpackSlotInd(fapiMacSlotInd, pst, mBuf);
+         unpackSlotInd(procMacSlotInd, pst, mBuf);
          break;
       case EVENT_STOP_IND_TO_MAC:
          unpackStopInd(fapiMacStopInd, pst, mBuf);
@@ -523,6 +523,21 @@ void callFlowMacActvTsk(Pst *pst)
             }
             break;
          }
+      case ENTP7CLK:
+         {
+            strcpy(sourceTask,"ENTP7CLK");
+            switch(pst->event)
+            {
+               case EVENT_SLOT_IND_TO_MAC:
+                  strcpy(message,"EVENT_SLOT_IND_TO_MAC");
+                  break;
+               default:
+                  strcpy(message,"Invalid Event");
+                  break;
+            }
+            break;
+         }
+
       default:
          {
             strcpy(sourceTask,"Invalid Source Entity Id");
@@ -570,6 +585,14 @@ uint8_t macActvTsk(Pst *pst, Buffer *mBuf)
       case ENTLWRMAC:
          MacHdlLwrMacEvents(pst, mBuf);
          break;
+      case ENTP7CLK:
+         { 
+            if(pst->event == EVENT_SLOT_IND_TO_MAC)
+            {
+               unpackSlotInd(procMacSlotInd, pst, mBuf);   
+            }
+            break;
+         }
       default:
          RG_FREE_MSG(mBuf);
          break;

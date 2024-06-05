@@ -90,6 +90,7 @@ uint8_t udpP7ActvTsk(Pst *pst, Buffer *mBuf)
                 DU_LOG("\nERROR  -> NFAPI_VNF: UDP Act task received Incorrect event:%d",\
                                                                   pst->event);
                 ret = RFAILED;
+                break;
             }
           }
           break;
@@ -100,6 +101,7 @@ uint8_t udpP7ActvTsk(Pst *pst, Buffer *mBuf)
            {
               case EVTSTARTNFAPIP7POLL:
               {
+                 DU_LOG("\nINFO   --> VNF_NFAPI:Start Polling");
                  nfapiP7UdpRecvMsg();
                  ODU_PUT_MSG_BUF(mBuf);
                  break;
@@ -289,6 +291,8 @@ uint8_t nfapiP7UdpOpenReq()
    nfapiP7Pst.pool= NFAPI_UDP_P7_POOL;
    packNfapiP7UdpStartPollingReq(&nfapiP7Pst);
 
+   /*Trigger P7 Clock as well */
+   nfapiTriggerP7Clock();
    return ret;
 }
 
