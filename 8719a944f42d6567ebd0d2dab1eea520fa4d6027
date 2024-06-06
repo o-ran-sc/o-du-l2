@@ -24,6 +24,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "399cd8ad_f59c5b17",
+        "filename": "src/5gnrmac/lwr_mac_ex_ms.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 351,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-06-06T12:36:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dde543a7_47f9b23c",
+      "range": {
+        "startLine": 351,
+        "startChar": 93,
+        "endLine": 351,
+        "endChar": 101
+      },
+      "revId": "8719a944f42d6567ebd0d2dab1eea520fa4d6027",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5ad4144f_76e2893d",
@@ -37,6 +61,24 @@
       "writtenOn": "2024-06-06T07:14:10Z",
       "side": 1,
       "message": "newly added function to put under NFAPI_ENABLED flag and move it in other file.. may be lwr_mac_utils.c",
+      "revId": "8719a944f42d6567ebd0d2dab1eea520fa4d6027",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e95e6454_a0255aee",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-06-06T12:36:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5ad4144f_76e2893d",
       "revId": "8719a944f42d6567ebd0d2dab1eea520fa4d6027",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -64,6 +106,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b2d19600_9fc910fc",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2117,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-06-06T12:36:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b654b82e_5c87bc0e",
+      "range": {
+        "startLine": 2117,
+        "startChar": 15,
+        "endLine": 2117,
+        "endChar": 16
+      },
+      "revId": "8719a944f42d6567ebd0d2dab1eea520fa4d6027",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4f134833_a275fecb",
@@ -77,6 +143,24 @@
       "writtenOn": "2024-06-06T07:14:10Z",
       "side": 1,
       "message": "move it in lwr_mac_utils.c file",
+      "revId": "8719a944f42d6567ebd0d2dab1eea520fa4d6027",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ed212432_597dc9ea",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2131,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-06-06T12:36:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4f134833_a275fecb",
       "revId": "8719a944f42d6567ebd0d2dab1eea520fa4d6027",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -98,6 +182,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ba40596e_bea4529f",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2159,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-06-06T12:36:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "61ab8327_22651fe4",
+      "revId": "8719a944f42d6567ebd0d2dab1eea520fa4d6027",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1ce48359_ecbe06ee",
@@ -111,6 +213,24 @@
       "writtenOn": "2024-06-06T07:14:10Z",
       "side": 1,
       "message": "discuss?",
+      "revId": "8719a944f42d6567ebd0d2dab1eea520fa4d6027",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ca2b27e2_3ccfeeab",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2625,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-06-06T12:36:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1ce48359_ecbe06ee",
       "revId": "8719a944f42d6567ebd0d2dab1eea520fa4d6027",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -132,6 +252,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "619da58f_10347665",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 2628,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-06-06T12:36:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e982e995_59231526",
+      "revId": "8719a944f42d6567ebd0d2dab1eea520fa4d6027",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "dad85f09_9b50470f",
@@ -145,6 +283,24 @@
       "writtenOn": "2024-06-06T07:14:10Z",
       "side": 1,
       "message": "here after this add InvalidEvt (corresponding to START.RESPONSE) and under NFAPI_ENABLED",
+      "revId": "8719a944f42d6567ebd0d2dab1eea520fa4d6027",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f6a1358f_4f6e3676",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 5280,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-06-06T12:36:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dad85f09_9b50470f",
       "revId": "8719a944f42d6567ebd0d2dab1eea520fa4d6027",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -166,6 +322,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "aed3ea57_7a215483",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 5292,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-06-06T12:36:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d0aa46f9_105a9334",
+      "revId": "8719a944f42d6567ebd0d2dab1eea520fa4d6027",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c9a4c6bb_7536fe60",
@@ -179,6 +353,30 @@
       "writtenOn": "2024-06-06T07:14:10Z",
       "side": 1,
       "message": "discuss?",
+      "range": {
+        "startLine": 481,
+        "startChar": 43,
+        "endLine": 481,
+        "endChar": 45
+      },
+      "revId": "8719a944f42d6567ebd0d2dab1eea520fa4d6027",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ec2ed896_fdc6b3b0",
+        "filename": "src/5gnrmac/mac_cfg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 481,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-06-06T12:36:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c9a4c6bb_7536fe60",
       "range": {
         "startLine": 481,
         "startChar": 43,
