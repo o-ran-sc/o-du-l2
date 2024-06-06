@@ -18,6 +18,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "50ee5efb_7bbfda67",
+        "filename": "src/5gnrmac/lwr_mac.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 282,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-06-06T18:15:10Z",
+      "side": 1,
+      "message": "we don\u0027t have lwr_mac_util.h. we have declared functions from lwr_mac_util.c in lwr_mac.h",
+      "parentUuid": "a6964c28_0114a989",
+      "revId": "ede336af09b2ba5565146b8664cdf47eb7582aae",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6f89a630_37110fc1",
@@ -41,6 +59,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7be9dec2_0acb8cf0",
+        "filename": "src/5gnrmac/mac.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 261,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-06-06T18:15:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6f89a630_37110fc1",
+      "range": {
+        "startLine": 261,
+        "startChar": 23,
+        "endLine": 261,
+        "endChar": 24
+      },
+      "revId": "ede336af09b2ba5565146b8664cdf47eb7582aae",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2756db5a_f06e1918",
@@ -54,6 +96,30 @@
       "writtenOn": "2024-06-06T17:23:39Z",
       "side": 1,
       "message": "i think nomenclature is not very on point. May be we can name the structure as \u0027MacNfapiMsgCompStatus\" .. because it is depicting as if we are trying to save the State of NFAPI.",
+      "range": {
+        "startLine": 275,
+        "startChar": 3,
+        "endLine": 275,
+        "endChar": 16
+      },
+      "revId": "ede336af09b2ba5565146b8664cdf47eb7582aae",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0084d3c1_e8171e94",
+        "filename": "src/5gnrmac/mac.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 275,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-06-06T18:15:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2756db5a_f06e1918",
       "range": {
         "startLine": 275,
         "startChar": 3,
