@@ -256,6 +256,14 @@ typedef struct macStatistics
     * the statistics to be calculated at MAC */
 }MacStatistics;
 
+#ifdef NFAPI_ENABLED
+typedef struct macNfapiMsgCompStatus
+{
+   uint8_t paramMsgComp; //0th(LSB) bit indicates PARAM_RSP received from PNF where as 1st bit indicates cell configuration confirmation received from SCH
+   uint8_t configMsgComp; //0th(LSB) bit indicates CONFIG_RSP received from PNF where as 1st bit indicates Cell start received from DU
+}MacNfapiMsgCompStatus;
+#endif
+
 typedef struct macCb
 {
    Inst        macInst;
@@ -266,6 +274,9 @@ typedef struct macCb
    CmTimer     tmrBlk[MAX_NUM_TIMER];     /*!< Timer Block */
    MacCellCb   *macCell[MAX_NUM_CELL];
    MacStatistics  statistics;
+#ifdef NFAPI_ENABLED
+   MacNfapiMsgCompStatus fapiMsgCompStatus;
+#endif
 }MacCb;
 
 /* global variable */

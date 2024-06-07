@@ -278,7 +278,6 @@ uint8_t LwrMacSendToL1(void *msg)
 #ifndef NFAPI_ENABLED
    uint32_t msgLen =0;
 #endif
-   p_fapi_api_queue_elem_t currMsg = NULLP;
 
 #ifdef CALL_FLOW_DEBUG_LOG   
    char message[100];

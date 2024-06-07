@@ -350,6 +350,73 @@ uint8_t buildAndSendParamResp()
 
 /*********************************************************************************
  *
+ * @Function Name: buildAndSendConfigResp
+ *
+ * @Functionality:
+ *    Build  Config rsp as per 5G nFAPI Specification 3.2.4 CONFIG.response
+ *    And Send to VNF
+ *
+ * *******************************************************************************/
+
+uint8_t buildAndSendConfigResp()
+{
+   Buffer *mBuf = NULLP;
+
+   if (ODU_GET_MSG_BUF(PNF_APP_MEM_REG, PNF_POOL, &mBuf) != ROK)
+   {
+      DU_LOG("\nERROR  --> NFAPI_PNF : Memory allocation failed in %s",__func__);
+      return RFAILED;
+   }
+
+   nfapiFillP5Hdr(mBuf);
+   nfapiFillMsgHdr(mBuf, 0, FAPI_CONFIG_RESPONSE, 0);
+
+   //As per 5G nFAPI Specification, section 3.2.4 CONFIG.response
+   CMCHKPK(oduPackPostUInt8, 0, mBuf);  //Error Code
+
+   DU_LOG("\nINFO   --> NFAPI_PNF: Sending CONFIG_RESP ");
+   if(pnfP5SctpSend(mBuf) == RFAILED)
+   {
+      ODU_PUT_MSG_BUF(mBuf);
+   }
+   return ROK;
+}
+
+/*********************************************************************************
+ *
+ * @Function Name: buildAndSendStartResp
+ *
+ * @Functionality:
+ *    Build  Start rsp as per 5G nFAPI Specification 3.1.9 START.response
+ *    And Send to VNF
+ *
+ *
+ *******************************************************************************/
+
+uint8_t buildAndSendStartResp()
+{
+   Buffer *mBuf = NULLP;
+
+   if (ODU_GET_MSG_BUF(PNF_APP_MEM_REG, PNF_POOL, &mBuf) != ROK)
+   {
+      DU_LOG("\nERROR  --> NFAPI_PNF : Memory allocation failed in start response");
+      return RFAILED;
+   }
+
+   nfapiFillP5Hdr(mBuf);
+   nfapiFillMsgHdr(mBuf, 0, TAG_NFAPI_START_RESPONSE, 0);
+
+   CMCHKPK(oduPackPostUInt8, 0, mBuf);  //Error Code
+
+   DU_LOG("\nINFO   --> NFAPI_PNF: Sending START_RESP ");
+   if(pnfP5SctpSend(mBuf) == RFAILED)
+   {
+      ODU_PUT_MSG_BUF(mBuf);
+   }
+   return ROK;
+}
+/*********************************************************************************
+ *
  * @Function Name: p5MsgHandlerAtPnf
  *
  *
@@ -396,8 +463,21 @@ uint8_t  p5MsgHandlerAtPnf(Buffer *mBuf)
          }
       case FAPI_PARAM_REQUEST:
          {
+            sleep(1);
             DU_LOG("\nINFO   --> NFAPI_PNF: PHY_PARAM_REQ recevied.");
             ret = buildAndSendParamResp();
+            break;
+         }
+      case FAPI_CONFIG_REQUEST:
+         {
+            DU_LOG("\nINFO   --> NFAPI_PNF: PHY_CONFIG_REQ recevied.");
+            ret = buildAndSendConfigResp();
+            break;
+         }
+      case FAPI_START_REQUEST:
+         {
+            DU_LOG("\nINFO   --> NFAPI_PNF: PHY_START_REQ recevied.");
+            ret = buildAndSendStartResp();
             break;
          }
       default:

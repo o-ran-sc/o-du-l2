@@ -203,6 +203,8 @@ uint8_t MacProcCellCfgReq(Pst *pst, MacCellCfg *macCellCfg)
    for(plmnIdx = 0; plmnIdx < MAX_PLMN; plmnIdx++)
    {
       macCb.macCell[cellIdx]->macCellCfg.cellCfg.plmnInfoList[plmnIdx].suppSliceList.numSupportedSlices = macCellCfg->cellCfg.plmnInfoList[plmnIdx].suppSliceList.numSupportedSlices;
+      if(macCb.macCell[cellIdx]->macCellCfg.cellCfg.plmnInfoList[plmnIdx].suppSliceList.numSupportedSlices ==0)
+         break;
       MAC_ALLOC(macCb.macCell[cellIdx]->macCellCfg.cellCfg.plmnInfoList[plmnIdx].suppSliceList.snssai, macCb.macCell[cellIdx]->macCellCfg.cellCfg.plmnInfoList[plmnIdx].suppSliceList.numSupportedSlices\
             * sizeof(Snssai*));
       if(macCb.macCell[cellIdx]->macCellCfg.cellCfg.plmnInfoList[plmnIdx].suppSliceList.snssai == NULLP)
@@ -485,7 +487,17 @@ uint8_t MacProcSchCellCfgCfm(Pst *pst, SchCellCfgCfm *schCellCfgCfm)
 #ifdef INTEL_TIMER_MODE
       sendEventToLowerMacFsm(UL_IQ_SAMPLE, 0, (void *)cellId);
 #else
+
+#ifndef NFAPI_ENABLED
       sendEventToLowerMacFsm(CONFIG_REQUEST, 0, (void *)cellId);
+ #else
+      if(macCb.fapiMsgCompStatus.paramMsgComp & 1) 
+      {
+         sendEventToLowerMacFsm(CONFIG_REQUEST, 0, (void *)cellId);
+      }
+      macCb.fapiMsgCompStatus.paramMsgComp = (macCb.fapiMsgCompStatus.paramMsgComp | (1 << 1)); 
+#endif
+
 #endif
    }
    else

@@ -226,6 +226,11 @@ uint8_t convertNfapiP5TagValToMsgId(uint16_t tagVal, NfapiPnfEvent *nfapiPnfEven
            *(phyEvent) = STOP_REQUEST;
            break;
         }
+      case TAG_NFAPI_START_RESPONSE:
+        {
+           *(phyEvent) = START_RESPONSE;
+           break;
+        }
       default:
         {
            DU_LOG("\n Incorrect TAG VALUE of NFAPI P5 Messages:%d",tagVal);
