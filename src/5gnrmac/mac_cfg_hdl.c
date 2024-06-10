@@ -193,6 +193,10 @@ uint8_t MacProcCellCfgReq(Pst *pst, MacCellCfg *macCellCfg)
    for(plmnIdx = 0; plmnIdx < MAX_PLMN; plmnIdx++)
    {
       macCb.macCell[cellIdx]->macCellCfg.cellCfg.plmnInfoList[plmnIdx].suppSliceList.numSupportedSlices = macCellCfg->cellCfg.plmnInfoList[plmnIdx].suppSliceList.numSupportedSlices;
+
+      if(macCb.macCell[cellIdx]->macCellCfg.cellCfg.plmnInfoList[plmnIdx].suppSliceList.numSupportedSlices==0)
+         break;
+
       MAC_ALLOC(macCb.macCell[cellIdx]->macCellCfg.cellCfg.plmnInfoList[plmnIdx].suppSliceList.snssai, macCb.macCell[cellIdx]->macCellCfg.cellCfg.plmnInfoList[plmnIdx].suppSliceList.numSupportedSlices\
             * sizeof(Snssai*));
       if(macCb.macCell[cellIdx]->macCellCfg.cellCfg.plmnInfoList[plmnIdx].suppSliceList.snssai == NULLP)

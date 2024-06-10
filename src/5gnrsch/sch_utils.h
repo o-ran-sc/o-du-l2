@@ -48,6 +48,15 @@
 }
 
 /* allocate and zero out a static buffer */
+#ifdef MEM_SIZE_CHECK
+#define SCH_MEMORY_ALLOC_SIZE_LOG(_line, _func, _size) \
+{\
+   DU_LOG("\n SCH line = %d, func = %s, _size= %d ", _line, _func, _size); \
+}
+#else
+#define SCH_MEMORY_ALLOC_SIZE_LOG(_line, _func, _size) {}
+#endif
+
 #ifdef ODU_MEMORY_DEBUG_LOG
 #define SCH_MEM_LOG(_macro, _file, _line, _func, _size, _datPtr)\
 {\
@@ -60,7 +69,8 @@
 
 #define SCH_ALLOC(_datPtr, _size)                               \
 {                                                               \
-   uint8_t _ret;                                                    \
+   SCH_MEMORY_ALLOC_SIZE_LOG(__LINE__, __FUNCTION__, _size);         \
+   uint8_t _ret;                                                \
    _ret = SGetSBuf(SCH_MEM_REGION, SCH_POOL,                    \
           (Data **)&_datPtr, _size);                             \
    if(_ret == ROK)                                              \
