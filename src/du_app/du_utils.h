@@ -44,6 +44,16 @@
 
 /* allocate and zero out a static buffer */
 
+#ifdef MEM_SIZE_CHECK
+#define DU_APP_MEMORY_ALLOC_SIZE_LOG(_line, _func, _size) \
+{\
+   DU_LOG("\n DUAPP line = %d, func = %s, _size= %d ", _line, _func, _size); \
+}
+#else
+#define DU_APP_MEMORY_ALLOC_SIZE_LOG(_line, _func, _size) {}
+#endif
+
+
 #ifdef ODU_MEMORY_DEBUG_LOG
 #define DU_MEM_LOG(_macro, _file, _line, _func, _size, _datPtr)\
 {\
@@ -56,6 +66,7 @@
 
 #define DU_ALLOC(_datPtr, _size)                                \
 {                                                               \
+   DU_APP_MEMORY_ALLOC_SIZE_LOG(__LINE__, __FUNCTION__, _size); \
    int _ret;                                                    \
    _ret = SGetSBuf(DU_APP_MEM_REGION, DU_POOL,                  \
                     (Data **)&_datPtr, _size);                  \
@@ -83,6 +94,7 @@
  * during inter-layer communication */
 #define DU_ALLOC_SHRABL_BUF(_buf, _size)                     \
 {                                                            \
+   DU_APP_MEMORY_ALLOC_SIZE_LOG(__LINE__, __FUNCTION__, _size); \
    if(SGetStaticBuffer(DU_APP_MEM_REGION, DU_POOL,           \
       (Data **)&_buf, (Size) _size, 0) == ROK)               \
    {                                                         \
