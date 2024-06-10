@@ -5156,7 +5156,7 @@ void freeDuCfgParams()
  * ****************************************************************/
 uint8_t parseDuCfgParams(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur)
 {
-   uint8_t ret=ROK;
+   uint8_t ret=RFAILED;
    char *tempDuName = "";
    char *duIpV4Addr;
    char *cuIpV4Addr;
