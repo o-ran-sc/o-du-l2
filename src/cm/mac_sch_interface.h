@@ -117,7 +117,7 @@
 #define DEFAULT_K2_VALUE_FOR_SCS60  2
 #define DEFAULT_K2_VALUE_FOR_SCS120 3 
 
-#define MAX_PLMN 2
+#define MAX_PLMN 1
 #define DL_DMRS_SYMBOL_POS 4 /* Bitmap value 00000000000100 i.e. using 3rd symbol for PDSCH DMRS */
 
 #define MAX_PHR_REPORT 1 /*TODO: Range of PHR reports in multiple PHR.*/
