@@ -39,7 +39,7 @@
 #include "pnf_stub_p7_udp.h"
 #include "pnf_stub.h"
 
-PnfGlobalCb pnfCb;
+extern PnfGlobalCb pnfCb;
 /*********************************************************************************
  *
  * @Function Name: buildAndSendPnfReadyInd 

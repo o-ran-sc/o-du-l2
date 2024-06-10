@@ -31,7 +31,7 @@
  *
  *
  * @Functionality: 
- *    It Fills NFAPI P5 Msg Header[as per Table 2-3 " nFapi Header"]
+ *    It Fills NFAPI P5 Msg Header[as per Table 2-3 " P5 nFapi Header"]
  *
  *
  * @params 
@@ -104,7 +104,7 @@ void nfapiFillMsgHdr(Buffer *mBuf, uint8_t phyId, uint16_t msgId, uint32_t msgLe
  *
  *
  * @Functionality: 
- *    It extracts NFAPI P5 Message Header[as per Table 2-5 "P5 nFapi Header"]
+ *    It extracts NFAPI P5 Message Header[as per Table 2-3 "P5 nFapi Header"]
  *
  *
  * @params 
@@ -121,6 +121,31 @@ void nFapiExtractP5Hdr(nFapi_p5_hdr *p5Hdr, Buffer *mBuf)
    CMCHKPK(oduUnpackUInt32, &(p5Hdr->timeStamp), mBuf);
    DU_LOG("\nINFo   --> NFAPI_VNF: seqLen:%d, moreSegNum:%d, seqNum:%d, timeStamp:%d",
         p5Hdr->seg_len,p5Hdr->more_segNum,p5Hdr->seq_num,p5Hdr->timeStamp);
+}
+
+/*********************************************************************************
+ *
+ * @Function Name: nFapiExtractP7Hdr
+ *
+ *
+ * @Functionality: 
+ *    It extracts NFAPI P7 Message Header[as per Table 2-5 "P7 nFapi Header"]
+ *
+ *
+ * @params 
+ *         [IN]: Msg Buffer received in UDP P7 Interface
+ *         [OUT]: nFapi_p7_hdr *p7Hdr
+ *
+ * *******************************************************************************/
+
+void nFapiExtractP7Hdr(nFapi_p7_hdr *p7Hdr, Buffer *mBuf)
+{
+   CMCHKPK(oduUnpackUInt16, &(p7Hdr->seq_num), mBuf);
+   CMCHKPK(oduUnpackUInt32, &(p7Hdr->tot_SDU_len), mBuf);
+   CMCHKPK(oduUnpackUInt32, &(p7Hdr->byteOffset), mBuf);
+   CMCHKPK(oduUnpackUInt32, &(p7Hdr->timeStamp), mBuf);
+   DU_LOG("\nINFo   --> NFAPI_VNF: se1_num:%d, totSdu len:%u, byteOffset:%u, timeStamp:%u",
+        p7Hdr->seq_num,p7Hdr->tot_SDU_len, p7Hdr->byteOffset, p7Hdr->timeStamp);
 }
 
 /*********************************************************************************

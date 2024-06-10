@@ -353,6 +353,7 @@ uint8_t pnfP5SctpSockPoll()
           {
                DU_LOG("\nINFO  -->  P7_UDP : Received P7 Message [%ld] \n", numMsgRcvd+1);
                numMsgRcvd++;
+               pnfP7MsgHandler(pnfP7UdpBuf);
                break;
           }
       }

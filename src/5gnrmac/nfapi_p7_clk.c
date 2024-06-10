@@ -163,14 +163,14 @@ void nfapiGenerateTicks()
      
       if((vnfDb.vnfP7Info.p7SyncInfo.frameInfo.slot == 0xFF && vnfDb.vnfP7Info.p7SyncInfo.frameInfo.sfn == 0xFFFF))
       {
-         clock_gettime(CLOCK_REALTIME, &currTime);
-         currTime_ns = currTime.tv_sec * 1000000000 +  currTime.tv_nsec;
-         vnfDb.vnfP7Info.t_ref_ns = currTime_ns;
-         
          /*Calculating the Slot Duration*/
          slotDur_ms = 1/pow(2,vnfDb.numerology);
          tti_req.tv_sec = 0;
          tti_req.tv_nsec = slotDur_ms * 1000000L * ratio;
+         
+         clock_gettime(CLOCK_REALTIME, &currTime);
+         currTime_ns = currTime.tv_sec * 1000000000 +  currTime.tv_nsec;
+         vnfDb.vnfP7Info.t_ref_ns = currTime_ns;
 
          PER_TTI_TIME_USEC = slotDur_ms * 1000;
          NUM_SLOTS_PER_SUBFRAME = (pow(2, vnfDb.numerology) * 10);
