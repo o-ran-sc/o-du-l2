@@ -5,7 +5,7 @@
 Release-Notes
 **************
 
-This document provides the release notes for I Release of O-DU-L2.
+This document provides the release notes for J Release of O-DU-L2.
 
 .. contents::
    :depth: 3
@@ -17,6 +17,9 @@ Version history
 
 +--------------------+--------------------+--------------------+--------------------+
 | **Date**           | **Ver.**           | **Author**         | **Comment**        |
+|                    |                    |                    |                    |
++--------------------+--------------------+--------------------+--------------------+
+| 2024-06-10         | 10.0.0             | Radisys            | J release          |
 |                    |                    |                    |                    |
 +--------------------+--------------------+--------------------+--------------------+
 | 2023-12-14         | 9.0.0              | Radisys            | I release          |
@@ -55,6 +58,18 @@ Version history
 
 Summary
 -------
+
+J- release
+^^^^^^^^^^
+This release contains the following:
+
+ - Multi UE (max=2) scheduling per TTI in scheduler
+      - Supporting both DL and UL scheduling
+
+ - XML based input configuration for ODU-High
+      - Added E2 related configurations
+
+ - Code changes upgraded to Gcc version 11.4.0
 
 I- release
 ^^^^^^^^^^
@@ -234,6 +249,25 @@ This release contains the following:
 
 Release Data
 ------------
+J release
+^^^^^^^^^^
++--------------------------------------+------------------------------------------+
+| **Project**                          | ODUHIGH                                  |
+|                                      |                                          |   
++--------------------------------------+------------------------------------------+
+| **Repo/commit-ID**                   | o-du/l2/                                 |
+|                                      | I512cbbc3d79ec7b4bb7c3f9eb07585b04dad9a5a|
++--------------------------------------+------------------------------------------+
+| **Release designation**              | J release                                |
+|                                      |                                          |   
++--------------------------------------+------------------------------------------+
+| **Release date**                     | 2024-06-10                               |
+|                                      |                                          |   
++--------------------------------------+------------------------------------------+
+| **Purpose of the delivery**          | J release                                |
+|                                      |                                          |   
++--------------------------------------+------------------------------------------+
+
 I release
 ^^^^^^^^^^
 +--------------------------------------+------------------------------------------+
@@ -421,6 +455,26 @@ Feature Additions
 ------------------
 
 **JIRA BACK-LOG:**
+
+J-release
+^^^^^^^^^^
+
++-----------------------------------------------+-----------------------------------------------+
+| **JIRA REFERENCE**                            | **SLOGAN**                                    |
+|                                               |                                               |
++-----------------------------------------------+-----------------------------------------------+
+| https://jira.o-ran-sc.org/browse/ODUHIGH-556  | Multi UE per slot scheduling UL               |
+|                                               |                                               |
++-----------------------------------------------+-----------------------------------------------+
+| https://jira.o-ran-sc.org/browse/ODUHIGH-538  | XML based input configuration for ODU-High    |
+|                                               |                                               |
++-----------------------------------------------+-----------------------------------------------+
+| https://jira.o-ran-sc.org/browse/ODUHIGH-557  | OSC-OAI Collaboration                         |
+|                                               |                                               |
++-----------------------------------------------+-----------------------------------------------+
+| https://jira.o-ran-sc.org/browse/ODUHIGH-475  | Integration of ODU-High with intel L1         |
+|                                               |                                               |
++-----------------------------------------------+-----------------------------------------------+
 
 I-release
 ^^^^^^^^^^
@@ -644,7 +698,25 @@ Bug Corrections
 
 **JIRA TICKETS:**
 
-NA
+J-release
+^^^^^^^^^^
+
++----------------------------------------------+-------------------------------------------------+
+| **JIRA REFERENCE**                           | **BUG DESCRIPTION**                             |
+|                                              |                                                 |
++----------------------------------------------+-------------------------------------------------+
+| https://jira.o-ran-sc.org/browse/ODUHIGH-606 | Fixing null memory size allocation issue        |
+|                                              |                                                 |
++----------------------------------------------+-------------------------------------------------+
+| https://jira.o-ran-sc.org/browse/ODUHIGH-593 | Pack and unpack function nomenclature correction|
+|                                              |                                                 |
++----------------------------------------------+-------------------------------------------------+
+| https://jira.o-ran-sc.org/browse/ODUHIGH-584 | Fixing the error number issue CmInetSctpConnectx|
+|                                              | function                                        |
++----------------------------------------------+-------------------------------------------------+
+| https://jira.o-ran-sc.org/browse/ODUHIGH-574 | Fix for Inconsistent behavious in ML            |
+|                                              |                                                 |
++----------------------------------------------+-------------------------------------------------+
 
 
 Deliverables
@@ -722,9 +794,6 @@ System Limitations
       - UL Total PRB Usage.
 
 - Multi UE scheduling per TTI is supported up to 2 UEs as of now.
-
-- Currently, only DL supports multi-UE scheduling. UL supports single-UE scheduling per TTI
-
 
 Known Issues
 ^^^^^^^^^^^^^
