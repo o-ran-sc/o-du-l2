@@ -18,6 +18,9 @@ Version history
 | **Date**           | **Ver.**           | **Author**         | **Comment**        |
 |                    |                    |                    |                    |
 +--------------------+--------------------+--------------------+--------------------+
+| 2023-06-10         |  8.0.1             |  Radisys           |  J release         |
+|                    |                    |                    |                    |
++--------------------+--------------------+--------------------+--------------------+
 | 2023-12-14         |  7.0.1             |  Radisys           |  I release         |
 |                    |                    |                    |                    |
 +--------------------+--------------------+--------------------+--------------------+
@@ -101,7 +104,7 @@ Following libraries are required to compile and execute O-DU High:
    - Ubuntu : sudo apt-get install -y build-essential
    - CentOS : sudo yum groups mark install -y “Development Tools”
 
-   Ensure the version is 4.6.3 and above using
+   Ensure the version is 11.4.0 and above using
 
    -	gcc --version
 
