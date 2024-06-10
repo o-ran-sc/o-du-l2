@@ -488,7 +488,7 @@ uint8_t parseNrCgi(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur, NrEcgi *nrCgi)
 uint8_t parseSnssai(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur, Snssai *snssai)
 {
    uint8_t sdIdx = 0;
-   xmlNodePtr child;
+   xmlNodePtr child = NULLP;
 
    memset(snssai, 0, sizeof(Snssai));
    cur = cur ->xmlChildrenNode;
@@ -5156,7 +5156,7 @@ void freeDuCfgParams()
  * ****************************************************************/
 uint8_t parseDuCfgParams(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur)
 {
-   uint8_t ret=ROK;
+   uint8_t ret=RFAILED;
    char *tempDuName = "";
    char *duIpV4Addr;
    char *cuIpV4Addr;
