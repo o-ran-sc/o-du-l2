@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "13124fe9_ab8513b1",
+        "filename": "build/scripts/install_lib_O1.sh",
+        "patchSetId": 3
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-06-11T06:52:19Z",
+      "side": 1,
+      "message": "remove this lone",
+      "range": {
+        "startLine": 100,
+        "startChar": 20,
+        "endLine": 100,
+        "endChar": 24
+      },
+      "revId": "666701aebc17e9f0160ad0f763497503d7c67870",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
