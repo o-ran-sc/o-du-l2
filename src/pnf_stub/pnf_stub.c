@@ -38,8 +38,9 @@
 #include "pnf_stub.h"
 #include "pnf_stub_p5_msg_hdl.h"
 
-
-PnfGlobalCb pnfCb;
+extern uint32_t PER_TTI_TIME_USEC;
+extern uint8_t  NUM_SLOTS_PER_SUBFRAME;
+extern PnfGlobalCb pnfCb;
 
 void init_log()
 {
@@ -106,10 +107,74 @@ void readPnfCfg()
    pnfCb.pnfCfgParams.pnfP7UdpParams.srcIpv4P7Addr = ipv4_pnf;
    pnfCb.pnfCfgParams.pnfP7UdpParams.srcIpv4Port = PNF_P7_UDP_PORT;
    pnfCb.pnfCfgParams.pnfP7UdpParams.destIpv4P7Addr = ipv4_vnf;
-   pnfCb.pnfCfgParams.pnfP7UdpParams.destIpv4Port = PNF_P7_UDP_PORT;
+   pnfCb.pnfCfgParams.pnfP7UdpParams.destIpv4Port = VNF_P7_UDP_PORT;
+
+   pnfCb.pnfSlotInfo.sfn = 0xFFFF;
+   pnfCb.pnfSlotInfo.slot = 0xFF;
 
 } /* End of readPnfCfg */
 
+/*******************************************************************
+ *
+ * @brief Trigger Pnf Clock from this function
+ *
+ * @details
+ *
+ *    Function : pnfClock
+ *
+ *    Functionality:
+ *            - This function will trigger the PNF clock generation 
+ *              and 
+ *
+ * @params[in] 
+ * @return void
+ *
+ * ****************************************************************/
+void *pnfClock()
+{
+   float  slotDur_ms = 0;
+   struct timespec tti_req = {0}, currTime = {0};
+   uint8_t ratio = 1;
+   uint32_t currTime_ns = 0;
+
+   /* Currently the code takes longer that one slot indication to execute.
+    * Hence, multiplying slot time interval by 2 in order to give enough time 
+    * for L2 to complete one slot processing.
+    * The ratio must be removed once code optimization is complete */
+
+   while(true)
+   {
+      if((pnfCb.pnfSlotInfo.slot == 0xFF && pnfCb.pnfSlotInfo.sfn == 0xFFFF))
+      {
+         /*Calculating the Slot Duration*/
+         slotDur_ms = 1/pow(2, NUMEROLOGY);
+         tti_req.tv_sec = 0;
+         tti_req.tv_nsec = slotDur_ms * 1000000L * ratio;
+
+         clock_gettime(CLOCK_REALTIME, &currTime);
+         currTime_ns = currTime.tv_sec * 1000000000 +  currTime.tv_nsec;
+         pnfCb.pnfP7Info.t_ref_ns = currTime_ns;
+         
+         PER_TTI_TIME_USEC = slotDur_ms * 1000;
+         NUM_SLOTS_PER_SUBFRAME = (pow(2,NUMEROLOGY) * 10);
+      
+         pnfCb.pnfSlotInfo.sfn++;
+         pnfCb.pnfSlotInfo.slot++;
+         DU_LOG("\nPNF_NFAPI : Starting to generate slot indications t_ref:%llu, slotDur:%f, perTTi:%u, slotsPerFrame:%d, nanoSec:%d",\
+               pnfCb.pnfP7Info.t_ref_ns, slotDur_ms, PER_TTI_TIME_USEC, NUM_SLOTS_PER_SUBFRAME, tti_req.tv_nsec);
+      }
+      else
+      {
+         CALC_NEXT_SFN_SLOT(pnfCb.pnfSlotInfo);
+      }
+
+#ifdef ODU_SLOT_IND_DEBUG_LOG
+      DU_LOG("\nVNF_NFAPI -->  DEBUG:  SFN/Slot:%d,%d",\
+               pnfCb.pnfSlotInfo.sfn, pnfCb.pnfSlotInfo.slot);
+#endif
+      clock_nanosleep(CLOCK_REALTIME, 0, &tti_req, NULL); 
+   }
+}
 
 /*******************************************************************
  *
@@ -131,7 +196,7 @@ void readPnfCfg()
 
 uint8_t tst()
 {
-#if 0
+#if 1
    int retVal=0;
    pthread_t conThrdId;
    pthread_attr_t attr;
@@ -141,18 +206,6 @@ uint8_t tst()
    DU_LOG("\nINFO   -->  PNF_STUB : Starting PNF_STUB\n");
 
    /* TODO: Start thread to receive console input */
-#if 0
-   pthread_attr_init(&attr);
-   pthread_attr_setstacksize(&attr, (size_t)NULLD);
-   pthread_attr_setscope(&attr, PTHREAD_SCOPE_SYSTEM);
-   pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
-   retVal = pthread_create(&conThrdId, &attr, vnfConsoleHandler, NULLP);
-   if(retVal != 0)
-   {
-      DU_LOG("\nERROR  -->  PNF_STUB :  Thread creation failed. Cause %d", retVal);
-   }
-   pthread_attr_destroy(&attr);
-#endif
    /* Read PNF configurations */
    readPnfCfg();
 
@@ -168,6 +221,19 @@ uint8_t tst()
    /*Sleep is introduced for GDB to increase the waiting time for PNF Configuration from VNF*/
    sleep(1);
    
+#if 1
+   pthread_attr_init(&attr);
+   pthread_attr_setstacksize(&attr, (size_t)NULLD);
+   pthread_attr_setscope(&attr, PTHREAD_SCOPE_SYSTEM);
+   pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
+   retVal = pthread_create(&conThrdId, &attr, pnfClock, NULLP);
+   if(retVal != 0)
+   {
+      DU_LOG("\nERROR  -->  PNF_STUB :  Thread creation failed. Cause %d", retVal);
+   }
+   pthread_attr_destroy(&attr);
+#endif
+
    /* Start PNF-P5-SCTP to listen on incoming connection */
    pnfP5SctpStartReq();
 
@@ -270,6 +336,54 @@ void nFapiExtractMsgHdr(nFapi_msg_header *msgHdr, Buffer *mBuf)
     DU_LOG("\nINFO  -->  NFAPI_PNF: RUType:%d, phy_id:%d, msgId:%d, len:%d",\
             msgHdr->sRU_termination_type,msgHdr->phy_id,msgHdr->msg_id,msgHdr->length );
     return;
+}
+
+/*********************************************************************************
+ *
+ * @Function Name: nFapiFillP7Hdr
+ *
+ *
+ * @Functionality: 
+ *    It Fills NFAPI P7 Msg Header[as per Table 2-5 " P7 nFapi Header"]
+ *
+ *
+ * @params 
+ *         [OUT]: Msg Buffer to send in UDP P7 Interface
+ *
+ * *******************************************************************************/
+
+void nfapiFillP7Hdr(Buffer *mBuf,uint32_t totSduLen, uint32_t byteOffset, uint32_t time)
+{
+   CMCHKPK(oduPackPostUInt16, 0, mBuf);
+   CMCHKPK(oduPackPostUInt32, totSduLen, mBuf);
+   CMCHKPK(oduPackPostUInt32, byteOffset, mBuf);
+   CMCHKPK(oduPackPostUInt32, time, mBuf);
+
+}
+
+/*********************************************************************************
+ *
+ * @Function Name: nFapiExtractP7Hdr
+ *
+ *
+ * @Functionality: 
+ *    It extracts NFAPI P7 Message Header[as per Table 2-5 "P7 nFapi Header"]
+ *
+ *
+ * @params 
+ *         [IN]: Msg Buffer received in UDP P7 Interface
+ *         [OUT]: nFapi_p7_hdr *p7Hdr
+ *
+ * *******************************************************************************/
+
+void nFapiExtractP7Hdr(nFapi_p7_hdr *p7Hdr, Buffer *mBuf)
+{
+   CMCHKPK(oduUnpackUInt16, &(p7Hdr->seq_num), mBuf);
+   CMCHKPK(oduUnpackUInt32, &(p7Hdr->tot_SDU_len), mBuf);
+   CMCHKPK(oduUnpackUInt32, &(p7Hdr->byteOffset), mBuf);
+   CMCHKPK(oduUnpackUInt32, &(p7Hdr->timeStamp), mBuf);
+   DU_LOG("\nINFo   --> NFAPI_VNF: se1_num:%d, totSdu len:%u, byteOffset:%u, timeStamp:%u",
+        p7Hdr->seq_num,p7Hdr->tot_SDU_len, p7Hdr->byteOffset, p7Hdr->timeStamp);
 }
 
 /*********************************************************************************

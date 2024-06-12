@@ -42,6 +42,8 @@
 #define NFAPI_P7_CLK_MEM_REGION   6
 #define NFAPI_P7_CLK_POOL         2
 
+#define NFAPI_P7_SEG_NUM      0
+
 #ifdef ODU_MEMORY_DEBUG_LOG
 #define NFAPI_UDP_P7_MEM_LOG(_macro, _file, _line, _func, _size, _datPtr)\
 {\
@@ -134,10 +136,29 @@
    }                                                         \
 }
 
+#define CALC_NEXT_SFN_SLOT(_frameInfo)\
+{ \
+  if((_frameInfo.slot + 1) >= NUM_SLOTS_PER_SUBFRAME) \
+  {                                                  \
+     _frameInfo.sfn++;                               \
+  }                                                  \
+  _frameInfo.slot = (_frameInfo.slot + 1) % NUM_SLOTS_PER_SUBFRAME; \
+  if(_frameInfo.sfn >= 1024)                                  \
+  {                                                           \
+     _frameInfo.sfn = _frameInfo.sfn % 1024;                  \
+  }                                                           \
+}
+
+#define CALC_TIME_USEC_FROM_SFNSLOT(_frameInfo) (_frameInfo.sfn * 10000) + (_frameInfo.slot * PER_TTI_TIME_USEC)
+
+/*Global Variable*/
+uint32_t PER_TTI_TIME_USEC;
+uint8_t  NUM_SLOTS_PER_SUBFRAME;
+
 /*Common Functions*/
 void nfapiFillP5Hdr(Buffer *mBuf);
 void nfapiFillMsgHdr(Buffer *mBuf, uint8_t phyId, uint16_t msgId, uint32_t msglen);
-
+void nfapiFillP7Hdr(Buffer *mBuf,uint32_t totSduLen, uint32_t byteOffset, uint32_t time);
 void nFapiExtractP5Hdr(nFapi_p5_hdr *p5Hdr, Buffer *mBuf);
 void nFapiExtractMsgHdr(nFapi_msg_header *msgHdr, Buffer *mBuf);
 

@@ -21,9 +21,10 @@
 #include "common_def.h" 
 #include "nfapi_interface.h"
 #include "pnf_stub_sctp.h"
-#include "pnf_stub_p5_msg_hdl.h"
 #include "pnf_stub_p7_udp.h"
 #include "pnf_stub.h"
+#include "pnf_stub_p5_msg_hdl.h"
+#include "pnf_stub_p7_msg_hdl.h"
 
 uint8_t   socket_type;      /* Socket type */
 PnfP5SctpGlobalCb pnfP5SctpCb;
@@ -349,10 +350,11 @@ uint8_t pnfP5SctpSockPoll()
       ret = cmInetRecvMsg(&(pnfP7Cb.sockFd), &fromAddr, &memInfo, &pnfP7UdpBuf, &pnfP7UdpBufLen, CM_INET_NO_FLAG);
       if(ret == ROK && pnfP7UdpBuf != NULLP)
       {
-          if((fromAddr.port == pnfP7Cb.srcAddr.port) && (fromAddr.address == pnfP7Cb.srcAddr.address))
+          if((fromAddr.port == pnfP7Cb.destAddr.port) && (fromAddr.address == pnfP7Cb.destAddr.address))
           {
                DU_LOG("\nINFO  -->  P7_UDP : Received P7 Message [%ld] \n", numMsgRcvd+1);
                numMsgRcvd++;
+               pnfP7MsgHandler(pnfP7UdpBuf);
                break;
           }
       }

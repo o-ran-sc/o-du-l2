@@ -17,18 +17,17 @@
  *******************************************************************************/
 
 /*Reference: SCF225_5G_NFAPI_SPECIFICATION, v225.2.1, Issue Date: 23 Nov 2021*/
+#ifdef NFAPI_ENABLED
 
 /* header include files -- defines (.h) */
 #include "common_def.h"
 #include "lwr_mac.h"
 #include "nfapi_interface.h"
-#include "nfapi_vnf_fsm.h"
 #include "nfapi_common.h"
 #include "lwr_mac_utils.h"
 #include "lwr_mac_sctp_inf.h"
 #include "mac_utils.h"
 #include "lwr_mac_fsm.h"
-#include "nfapi_udp_p7.h"
 
 /*******************************************************************
  *
@@ -48,8 +47,8 @@ void nFapiVnfInit()
    memset(&vnfDb, 0, sizeof(NfapiVnfDb));
    vnfDb.pnfStateAtVnf = PNF_STATE_IDLE;
    vnfDb.pnfEvent      = 0;
-   vnfDb.vnfP7Info.p7SyncInfo.slot = 0xFF;
-   vnfDb.vnfP7Info.p7SyncInfo.sfn = 0xFFFF;
+   vnfDb.vnfP7Info.p7SyncInfo.frameInfo.slot = 0xFF;
+   vnfDb.vnfP7Info.p7SyncInfo.frameInfo.sfn = 0xFFFF;
    vnfDb.cellId = 0xFFFF;
 }
 
@@ -84,9 +83,6 @@ uint8_t nfapi_vnf_procPnfReadyIndEvt(nFapi_p5_hdr *p5Hdr, nFapi_msg_header *msgH
 
    DU_LOG("\nINFO   --> NFAPI_VNF: PNF_READY_IND version:%d",version);
 
-   /*TODO: Need to put it when START.RESPONSE is received.*/
-   nfapiP7UdpOpenReq(); 
-   
    sendEventToNfapiVnfFsm(PNF_PARAM_REQ, NULLP, NULLP, NULLP);
    return ROK;
 }
@@ -584,6 +580,7 @@ void sendEventToNfapiVnfFsm(NfapiPnfEvent msgType, nFapi_p5_hdr *p5Hdr, nFapi_ms
    }
 }
 
+#endif
 /**********************************************************************
   End of file
  **********************************************************************/

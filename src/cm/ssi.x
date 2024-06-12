@@ -942,6 +942,7 @@ S16 SPkS16 ARGS((S16 val,Buffer *mBuf));
 S16 oduPackUInt16 ARGS((uint16_t val,Buffer *mBuf));
 S16 oduPackPostUInt16 ARGS((uint16_t val,Buffer *mBuf));
 S16 SPkS32 ARGS((S32 val,Buffer *mBuf));
+S16 SPkPostS32 ARGS((S32 val,Buffer *mBuf));
 S16 oduPackUInt32 ARGS((uint32_t val,Buffer *mBuf));
 S16 oduPackPostUInt32 ARGS((uint32_t val,Buffer *mBuf));
 /* ssi_x_001.main_49 : added packing of F32 and F64*/

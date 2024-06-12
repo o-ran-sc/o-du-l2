@@ -110,7 +110,7 @@ uint8_t lwr_mac_procInvalidEvt(void *msg)
    DU_LOG("\nCall Flow: ENTMAC -> ENTLWRMAC : INVALID_EVENT\n");
 #endif
    DU_LOG("\nERROR  -->  LWR_MAC: Error Indication Event[%d] received in state [%d]", lwrMacCb.event, lwrMacCb.phyState);
-   return ROK;
+   return RFAILED;
 }
 
 #ifdef INTEL_FAPI
@@ -1354,6 +1354,7 @@ uint8_t lwr_mac_procParamReqEvt(void *msg)
    return ODU_POST_TASK(&pst, mBuf);
 
 #else
+
 #ifdef INTEL_FAPI
 #ifdef CALL_FLOW_DEBUG_LOG 
    DU_LOG("\nCall Flow: ENTMAC -> ENTLWRMAC : PARAM_REQ\n");
@@ -1397,6 +1398,7 @@ uint8_t lwr_mac_procParamReqEvt(void *msg)
       return RFAILED;
    }
 #endif
+
 #endif
    return ROK;
 }
@@ -1422,13 +1424,15 @@ uint8_t lwr_mac_procParamRspEvt(void *msg)
 {
 
 #ifdef NFAPI_ENABLED
+   uint8_t ret = ROK;
+
    if ((macCb.fapiMsgCompStatus.paramMsgComp >> 1) & 1) 
    {
-      sendEventToLowerMacFsm(CONFIG_REQUEST, 0, (void *)NULL);
+      ret = sendEventToLowerMacFsm(CONFIG_REQUEST, 0, (void *)NULL);
       DU_LOG("\nINFO  -->  LWR_MAC: Received EVENT[%d] at STATE[%d]", lwrMacCb.event, lwrMacCb.phyState);
    }
    macCb.fapiMsgCompStatus.paramMsgComp = (macCb.fapiMsgCompStatus.paramMsgComp | 1);
-   return ROK;
+   return ret;
 #endif
 #ifdef INTEL_FAPI
    /* stopGuardTimer(); */
@@ -5282,13 +5286,16 @@ lwrMacFsmHdlr fapiEvtHdlr[MAX_STATE][MAX_EVENT] =
  *             Message Length
  *             Messaga Pointer
  *
- * @return void
+ * @return ROK/RFAILED
  *
  ******************************************************************/
-void sendEventToLowerMacFsm(uint16_t msgType, uint32_t msgLen, void *msg)
+uint8_t sendEventToLowerMacFsm(uint16_t msgType, uint32_t msgLen, void *msg)
 {
+   uint8_t ret = RFAILED;
+
    lwrMacCb.event = msgType;
-   fapiEvtHdlr[lwrMacCb.phyState][lwrMacCb.event](msg);
+   ret = fapiEvtHdlr[lwrMacCb.phyState][lwrMacCb.event](msg);
+   return ret;
 }
 
 /**********************************************************************

@@ -325,6 +325,47 @@ Buffer *mBuf                /* message buffer */
    return (ret);
 } /* end of SPkS32 */
   
+/*
+*
+*       Fun:   SPkPostS32
+*
+*       Desc:  This function packs a signed 32 bit value into a message.
+*
+*       Ret:   ROK      - ok
+*              RFAILED  - failed, general (optional)
+*              ROUTRES  - failed, out of resources (optional)
+*
+*       Notes: None
+*
+*       File:  ss_pack.c
+*
+*/
+  
+S16 SPkPostS32
+(
+S32 val,                    /* value */
+Buffer *mBuf                /* message buffer */
+)
+{
+   uint16_t tmp;                 /* temporary value */
+   Data pkArray[4];         /* packing array */
+   S16 ret;                 /* return code */
+  
+   tmp = (uint16_t) GetHiWord(val);
+   pkArray[3] = (Data) GetHiByte(tmp);
+   pkArray[2] = (Data) GetLoByte(tmp);
+   tmp = (uint16_t) GetLoWord(val);
+   pkArray[1] = (Data) GetHiByte(tmp);
+   pkArray[0] = (Data) GetLoByte(tmp);
+   
+   ret = SAddPstMsgMult(pkArray, (MsgLen) 4, mBuf);
+#if (ERRCLASS & ERRCLS_ADD_RES)
+   if (ret != ROK)
+      SSLOGERROR(ERRCLS_ADD_RES, ESS246, (ErrVal)ret, "SAddPstMsgMult() failed");
+#endif
+   return (ret);
+} /* end of SPkPostS32 */
+
   
 /*
 *
