@@ -18,10 +18,9 @@
 
 /*Reference: SCF225_5G_NFAPI_SPECIFICATION, v225.2.1, Issue Date: 23 Nov 2021*/
 
-#ifndef _NFAPI_UDP_P7_H__
-#define _NFAPI_UDP_P7_H__
+#ifndef _NFAPI_P7_MSG_HDL_H
+#define _NFAPI_P7_MSG_HDL_H
 
-uint8_t nfapiP7UdpOpenReq();
-uint8_t nfapiP7UdpSendMsg(Buffer *mBuf);
+uint8_t nfapiBuildAndSendDlNodeSync();
 
 #endif

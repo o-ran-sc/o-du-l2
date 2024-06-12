@@ -523,6 +523,7 @@ void callFlowMacActvTsk(Pst *pst)
             }
             break;
          }
+#ifdef NFAPI_ENABLED
       case ENTP7CLK:
          {
             strcpy(sourceTask,"ENTP7CLK");
@@ -537,7 +538,7 @@ void callFlowMacActvTsk(Pst *pst)
             }
             break;
          }
-
+#endif
       default:
          {
             strcpy(sourceTask,"Invalid Source Entity Id");
@@ -585,6 +586,7 @@ uint8_t macActvTsk(Pst *pst, Buffer *mBuf)
       case ENTLWRMAC:
          MacHdlLwrMacEvents(pst, mBuf);
          break;
+#ifdef NFAPI_ENABLED
       case ENTP7CLK:
          { 
             if(pst->event == EVENT_SLOT_IND_TO_MAC)
@@ -593,6 +595,7 @@ uint8_t macActvTsk(Pst *pst, Buffer *mBuf)
             }
             break;
          }
+#endif
       default:
          RG_FREE_MSG(mBuf);
          break;

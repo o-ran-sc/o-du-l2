@@ -31,12 +31,18 @@
 
 
 /* This file is the entry point for NFAPI P7 CLOCK*/
+#ifdef NFAPI_ENABLED
 
 #include "common_def.h"
+#include "lwr_mac.h"
 #include "nfapi_interface.h"
 #include "nfapi_common.h"
 #include "lwr_mac_upr_inf.h"
 #include "mac_utils.h"
+#include "nfapi_p7_msg_hdl.h"
+
+extern uint32_t PER_TTI_TIME_USEC;
+extern uint8_t  NUM_SLOTS_PER_SUBFRAME;
 
 /**************************************************************************
  * @brief Task Initiation callback function. 
@@ -139,9 +145,9 @@ uint8_t nfapiP7ClkActvTsk(Pst *pst, Buffer *mBuf)
  * ****************************************************************/
 void nfapiGenerateTicks()
 {
-   float  slotDur_ms = 1/pow(2,vnfDb.numerology);
+   float  slotDur_ms = 0;
    struct timespec tti_req = {0}, currTime = {0};
-   uint8_t ratio = 2;
+   uint8_t ratio = 1;
    uint32_t currTime_ns = 0;
 
    /* Currently the code takes longer that one slot indication to execute.
@@ -149,8 +155,6 @@ void nfapiGenerateTicks()
     * for L2 to complete one slot processing.
     * The ratio must be removed once code optimization is complete */
 
-   tti_req.tv_sec = 0;
-   tti_req.tv_nsec = slotDur_ms * 1000000L * ratio;
    while(true)
    {
       if(vnfDb.cellId == 0xFFFF)
@@ -158,16 +162,30 @@ void nfapiGenerateTicks()
          /*Still Cell not configured thus skipping Slot Ind*/
          continue;
       }
-      if((vnfDb.vnfP7Info.p7SyncInfo.slot == 0xFF && vnfDb.vnfP7Info.p7SyncInfo.sfn == 0xFFFF))
+
+      if((vnfDb.vnfP7Info.p7SyncInfo.frameInfo.slot == 0xFF && vnfDb.vnfP7Info.p7SyncInfo.frameInfo.sfn == 0xFFFF))
       {
+         /*Calculating the Slot Duration*/
+         slotDur_ms = 1/pow(2,vnfDb.numerology);
+         tti_req.tv_sec = 0;
+         tti_req.tv_nsec = slotDur_ms * 1000000L * ratio;
+         
          clock_gettime(CLOCK_REALTIME, &currTime);
          currTime_ns = currTime.tv_sec * 1000000000 +  currTime.tv_nsec;
          vnfDb.vnfP7Info.t_ref_ns = currTime_ns;
-         DU_LOG("\nVNF_NFAPI : Starting to generate slot indications t_ref:%llu, slotDur:%f",\
-               vnfDb.vnfP7Info.t_ref_ns, slotDur_ms);
+
+         PER_TTI_TIME_USEC = slotDur_ms * 1000;
+         NUM_SLOTS_PER_SUBFRAME = (pow(2, vnfDb.numerology) * 10);
+      
+         vnfDb.vnfP7Info.p7SyncInfo.frameInfo.sfn++;
+         vnfDb.vnfP7Info.p7SyncInfo.frameInfo.slot++;
+         DU_LOG("\nVNF_NFAPI : Starting to generate slot indications t_ref:%llu, slotDur:%f, perTTi:%u, slotsPerFrame:%d, nanoSec:%d",\
+               vnfDb.vnfP7Info.t_ref_ns, slotDur_ms, PER_TTI_TIME_USEC, NUM_SLOTS_PER_SUBFRAME, tti_req.tv_nsec);
       }
-      vnfDb.vnfP7Info.p7SyncInfo.sfn++;
-      vnfDb.vnfP7Info.p7SyncInfo.slot++;
+      else
+      {
+         CALC_NEXT_SFN_SLOT(vnfDb.vnfP7Info.p7SyncInfo.frameInfo);
+      }
 #if 0
       /*TODO: To enable when P5 messages are all done and implemented*/
       if(nfapiSendSlotIndToMac() != ROK)
@@ -179,8 +197,12 @@ void nfapiGenerateTicks()
 
 #ifdef ODU_SLOT_IND_DEBUG_LOG
       DU_LOG("\nVNF_NFAPI -->  DEBUG:  SFN/Slot:%d,%d",\
-               vnfDb.vnfP7Info.p7SyncInfo.sfn, vnfDb.vnfP7Info.p7SyncInfo.slot);
+               vnfDb.vnfP7Info.p7SyncInfo.frameInfo.sfn, vnfDb.vnfP7Info.p7SyncInfo.frameInfo.slot);
 #endif
+     if(vnfDb.vnfP7Info.p7SyncInfo.frameInfo.slot == 5 && vnfDb.vnfP7Info.p7SyncInfo.frameInfo.sfn == 1)
+     {
+        nfapiBuildAndSendDlNodeSync(); 
+     }
       clock_nanosleep(CLOCK_REALTIME, 0, &tti_req, NULL); 
    }
 }
@@ -253,8 +275,8 @@ uint8_t nfapiSendSlotIndToMac()
    if(slotInd)
    {
       slotInd->cellId = vnfDb.cellId; 
-      slotInd->sfn    = vnfDb.vnfP7Info.p7SyncInfo.sfn;
-      slotInd->slot   = vnfDb.vnfP7Info.p7SyncInfo.slot;
+      slotInd->sfn    = vnfDb.vnfP7Info.p7SyncInfo.frameInfo.sfn;
+      slotInd->slot   = vnfDb.vnfP7Info.p7SyncInfo.frameInfo.slot;
       pst.selector    = ODU_SELECTOR_LWLC;
       pst.srcEnt      = ENTP7CLK;
       pst.dstEnt      = ENTMAC;
@@ -282,3 +304,4 @@ uint8_t nfapiSendSlotIndToMac()
    }
    return ROK;
 }
+#endif

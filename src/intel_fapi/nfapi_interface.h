@@ -110,7 +110,6 @@ typedef struct nFapi_p5_hdr_t{
 /*Table 2-5*/
 typedef struct nFapi_p7_hdr_t{
    uint16_t seq_num;       /*Sequence Number*/
-   uint16_t pad;           /*Padding for Byte alignment*/
    uint32_t tot_SDU_len;   /*Total SDU length*/
    uint32_t byteOffset;    /*Byte Offset: Offset specifying the start of a segment*/
    uint32_t timeStamp;     /*Transit TimeStamp*/
