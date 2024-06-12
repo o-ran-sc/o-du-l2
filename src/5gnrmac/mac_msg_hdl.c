@@ -514,7 +514,7 @@ uint8_t sendSchedRptToRlc(DlSchedInfo dlInfo, SlotTimingInfo slotInfo, uint8_t u
 uint8_t MacProcCellStart(Pst *pst, CellStartInfo  *cellStart)
 {
    DU_LOG("\nINFO  -->  MAC : Handling cell start request");
-#ifndef NFAPI_ENABLE
+#ifndef NFAPI_ENABLED
    gConfigInfo.gSlotCount = 0;
    sendEventToLowerMacFsm(START_REQUEST, 0, cellStart);
 #else

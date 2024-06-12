@@ -277,6 +277,7 @@ uint8_t LwrMacSendToL1(void *msg)
 #ifdef INTEL_FAPI
 #ifndef NFAPI_ENABLED
    uint32_t msgLen =0;
+    p_fapi_api_queue_elem_t currMsg = NULLP;
 #endif
 
 #ifdef CALL_FLOW_DEBUG_LOG   
