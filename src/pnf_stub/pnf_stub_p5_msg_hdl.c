@@ -233,7 +233,6 @@ uint8_t buildAndSendPnfStopResp()
 
 uint8_t buildAndSendParamResp()
 {
-   uint8_t index = 0;
    uint8_t pnfAdd[4];
    Buffer *mBuf = NULLP;
    uint32_t len = 20+sizeof(fapi_param_resp_t); //As per 5G nFAPI Specification, figure 2–21 Combined P5 message (PARAM.response),
@@ -257,7 +256,7 @@ uint8_t buildAndSendParamResp()
     * Ipv4 and P7 PNF Port */
    convertIpStringToUInt8(LOCAL_IP_PNF, pnfAdd);
    fillTlvOfArrayOfUint8(mBuf, TAG_NFAPI_P7_PNF_ADD_IPV4, sizeof(pnfAdd), pnfAdd);  /* P7 PNF Address Ipv4 */
-   fillTlvOfSizeUint16(mBuf, TAG_NFAPI_P7_PNF_PORT, sizeof(uint16_t), PNF_P5_SCTP_PORT); /* P7 PNF Port */
+   fillTlvOfSizeUint16(mBuf, TAG_NFAPI_P7_PNF_PORT, sizeof(uint16_t), PNF_P7_UDP_PORT); /* P7 PNF Port */
    
    /* filling 5G_FAPI_MSG_BODY */
    CMCHKPK(oduPackPostUInt16, TAG_NFAPI_5G_FAPI_MSG_BODY, mBuf); //5G_FAPI_MSG_BODY tag

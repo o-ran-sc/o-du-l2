@@ -302,6 +302,7 @@ uint8_t parseEgtpParams(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur, F1EgtpParams
    return ROK;
 }
 
+#ifdef NFAPI_ENABLED
 /*******************************************************************
  *
  * @brief Fill P7 UDP Parameters
@@ -338,6 +339,7 @@ uint8_t parseP7UdpParams(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur, NfapiP7UdpC
    }
    return ROK;
 }
+#endif
 
 /*******************************************************************
  *

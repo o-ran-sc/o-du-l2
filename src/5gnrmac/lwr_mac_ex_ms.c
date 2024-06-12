@@ -35,7 +35,7 @@
 #include "lwr_mac_sctp_inf.h"
 #include "nfapi_interface.h"
 #include "nfapi_common.h"
-#include "nfapi_vnf_fsm.h"
+#include "nfapi_udp_p7.h"
 #endif
 
 /**************************************************************************
@@ -333,6 +333,8 @@ uint8_t lwrMacActvTsk(Pst *pst, Buffer *mBuf)
 #ifdef NFAPI_ENABLED
              case EVENT_PNF_DATA:
                {
+                   uint8_t retVal = RFAILED;
+
                    nFapi_p5_hdr     p5Hdr;
                    nFapi_msg_header msgHdr;
                    EventState phyEvent;
@@ -361,7 +363,6 @@ uint8_t lwrMacActvTsk(Pst *pst, Buffer *mBuf)
                    }
                    else if(phyEvent != MAX_EVENT)
                    {
-
                       if(phyEvent == PARAM_RESPONSE)
                       {
                          if(sendParamRspToLowerMacFsm(mBuf) != ROK)
@@ -374,7 +375,12 @@ uint8_t lwrMacActvTsk(Pst *pst, Buffer *mBuf)
                       }
                       else
                       {
-                         sendEventToLowerMacFsm(phyEvent, msgHdr.length, mBuf);  
+                         retVal = sendEventToLowerMacFsm(phyEvent, msgHdr.length, mBuf);
+                         if(phyEvent == START_RESPONSE && retVal == ROK)
+                         {
+                            DU_LOG("\nDEBUG  --> NFAPI_VNF: Opening UDP Socket");
+                            nfapiP7UdpOpenReq(); 
+                         }
                       }
                    }
                    ODU_PUT_MSG_BUF(mBuf);

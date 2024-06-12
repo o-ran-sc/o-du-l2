@@ -17,12 +17,12 @@
 *******************************************************************************/
 
 /* This file is the entry point for UDP P7 */
+#ifdef NFAPI_ENABLED
 
 #include "common_def.h"
 #include "lwr_mac.h"
 #include "du_app_p7udp_inf.h"
 #include "nfapi_interface.h"
-#include "nfapi_vnf_fsm.h"
 #include "nfapi_common.h"
 
 /**************************************************************************
@@ -260,7 +260,6 @@ uint8_t packNfapiP7UdpStartPollingReq(Pst *pst)
 
 uint8_t nfapiP7UdpOpenReq()
 {
-
    uint8_t  ret = ROK;       /* Return value */
    Pst      nfapiP7Pst;   /* Self post */
    uint8_t  sockType;  /* Socket type */
@@ -276,7 +275,7 @@ uint8_t nfapiP7UdpOpenReq()
       return ret;
    }
 
-   DU_LOG("\nDEBUG   -->  NFAPI_VNF : Socket [%d] is open", vnfDb.p7TransInfo.sockFd.fd);
+   DU_LOG("\nDEBUG  -->  NFAPI_VNF : Socket [%d] is open", vnfDb.p7TransInfo.sockFd.fd);
 
    /* Start Socket polling */
    memset(&nfapiP7Pst, 0, sizeof(nfapiP7Pst));
@@ -292,6 +291,7 @@ uint8_t nfapiP7UdpOpenReq()
    packNfapiP7UdpStartPollingReq(&nfapiP7Pst);
 
    /*Trigger P7 Clock as well */
+   DU_LOG("\nDEBUG  -->  NFAPI_VNF : Triggering Clock");
    nfapiTriggerP7Clock();
    return ret;
 }
@@ -364,6 +364,7 @@ uint8_t nfapiP7UdpSendMsg(Buffer *mBuf)
    info.region = NFAPI_UDP_P7_MEM_REGION;
    info.pool = NFAPI_UDP_P7_POOL;
 
+   DU_LOG("\n udp sending: add:0x%x, port:%d",  vnfDb.p7TransInfo.destIpNetAddr.address,  vnfDb.p7TransInfo.destIpNetAddr.port );
    ret = cmInetSendMsg(&vnfDb.p7TransInfo.sockFd, &vnfDb.p7TransInfo.destIpNetAddr, &info, mBuf, (int16_t *)&txLen, CM_INET_NO_FLAG);
    if(ret != ROK && ret != RWOULDBLOCK)
    {
@@ -379,6 +380,7 @@ uint8_t nfapiP7UdpSendMsg(Buffer *mBuf)
    return ROK;
 }
 
+#endif
 /**********************************************************************
          End of file
 **********************************************************************/
