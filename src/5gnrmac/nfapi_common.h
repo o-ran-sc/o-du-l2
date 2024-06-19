@@ -151,6 +151,55 @@
 
 #define CALC_TIME_USEC_FROM_SFNSLOT(_frameInfo) (_frameInfo.sfn * 10000) + (_frameInfo.slot * PER_TTI_TIME_USEC)
 
+#define EXTRACT_SFN_SLOT_FROM_TIME(_t, _frameInfo)  \
+{                                                   \
+   unsigned int time;                                      \
+   time = _t / PER_TTI_TIME_USEC;                   \
+   _frameInfo.sfn = time / NUM_SLOTS_PER_SUBFRAME;  \
+   _frameInfo.slot = time % NUM_SLOTS_PER_SUBFRAME; \
+}
+
+/*_cmpStatus: -1 when CurrTime is ahead and vice-versa */
+#define CMP_INFO(_t1, _currTime, _cmpStatus) \
+{                                                             \
+   uint32_t t1Val = (_t1.sfn * NUM_SLOTS_PER_SUBFRAME) + _t1.slot; \
+   uint32_t currTimeVal = (_currTime.sfn * NUM_SLOTS_PER_SUBFRAME) + _currTime.slot; \
+   uint32_t halfCycle = (1024 * NUM_SLOTS_PER_SUBFRAME) / 2;  \
+   if( t1Val == currTimeVal)                                  \
+   {                                                          \
+      _cmpStatus = 0;                                         \
+   }                                                          \
+   else                                                       \
+   {                                                          \
+       if(t1Val > currTimeVal)                                       \
+       {                                                             \
+         _cmpStatus = ((t1Val - currTimeVal) > halfCycle) ? 1 : -1;  \
+       }                                                             \
+       else                                                          \
+       {                                                             \
+         _cmpStatus = ((currTimeVal - t1Val) > halfCycle) ? -1 : 1;  \
+       }                                                             \
+   }                                                                 \
+}
+
+#define CALC_TIME_DIFF(_t1, _t2, _numSlots)                                                     \
+{                                                                                               \
+   if((_t1.sfn * NUM_SLOTS_PER_SUBFRAME + _t1.slot)                                             \
+           >= (_t2.sfn * NUM_SLOTS_PER_SUBFRAME + _t2.slot))                                    \
+   {                                                                                            \
+      _numSlots = (_t1.sfn * NUM_SLOTS_PER_SUBFRAME + _t1.slot) -                               \
+                          (_t2.sfn * NUM_SLOTS_PER_SUBFRAME + _t2.slot);                        \
+       printf("\n t1 > t2,(%d, %d) ",(_t1.sfn * NUM_SLOTS_PER_SUBFRAME + _t1.slot),(_t2.sfn * NUM_SLOTS_PER_SUBFRAME + _t2.slot));\
+   }                                                                                            \
+   else                                                                                         \
+   {                                                                                            \
+      _numSlots = (_t1.sfn * NUM_SLOTS_PER_SUBFRAME + _t1.slot) +                               \
+                 ((1024 * NUM_SLOTS_PER_SUBFRAME) - (_t2.sfn*NUM_SLOTS_PER_SUBFRAME+_t2.slot)); \
+       printf("\n t1 < t2,(%d, %d) ",(_t1.sfn * NUM_SLOTS_PER_SUBFRAME + _t1.slot),((1024 * NUM_SLOTS_PER_SUBFRAME) - (_t2.sfn * NUM_SLOTS_PER_SUBFRAME + _t2.slot)));\
+   }                                                                                            \
+   printf("\n numSLots:%d", _numSlots);\
+}
+
 /*Global Variable*/
 uint32_t PER_TTI_TIME_USEC;
 uint8_t  NUM_SLOTS_PER_SUBFRAME;
@@ -160,6 +209,7 @@ void nfapiFillP5Hdr(Buffer *mBuf);
 void nfapiFillMsgHdr(Buffer *mBuf, uint8_t phyId, uint16_t msgId, uint32_t msglen);
 void nfapiFillP7Hdr(Buffer *mBuf,uint32_t totSduLen, uint32_t byteOffset, uint32_t time);
 void nFapiExtractP5Hdr(nFapi_p5_hdr *p5Hdr, Buffer *mBuf);
+void nFapiExtractP7Hdr(nFapi_p7_hdr *p7Hdr, Buffer *mBuf);
 void nFapiExtractMsgHdr(nFapi_msg_header *msgHdr, Buffer *mBuf);
 
 uint8_t convertNfapiP5TagValToMsgId(uint16_t tagVal,  NfapiPnfEvent *nfapiPnfEvent, EventState *phyEvent);
