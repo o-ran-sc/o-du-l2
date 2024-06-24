@@ -18,6 +18,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "769e810a_0d3e6f30",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-06-24T16:32:35Z",
+      "side": 1,
+      "message": "Actually this whole function is called because an event has been received which was not properly processed due to incorrect state of LWR_MAC. If we return ROK then if the triggrer of the event wants to know if it is properly processed or not then it will be conveyed incorrectly.",
+      "parentUuid": "2e022d58_4ffc7939",
+      "revId": "af938b8895c410b520116ed97d307df046aefa4b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6e94fc16_b2933147",
@@ -31,6 +49,24 @@
       "writtenOn": "2024-06-24T12:26:03Z",
       "side": 1,
       "message": "complete the description add parameters.",
+      "revId": "af938b8895c410b520116ed97d307df046aefa4b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f6c09824_f35728d6",
+        "filename": "src/5gnrmac/nfapi_common.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-06-24T16:32:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6e94fc16_b2933147",
       "revId": "af938b8895c410b520116ed97d307df046aefa4b",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -52,6 +88,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3d6dfd06_fa97bc15",
+        "filename": "src/5gnrmac/nfapi_p7_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-06-24T16:32:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6198d42b_0d6a6062",
+      "revId": "af938b8895c410b520116ed97d307df046aefa4b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a48d7a5b_b10bc835",
@@ -65,6 +119,24 @@
       "writtenOn": "2024-06-24T12:26:03Z",
       "side": 1,
       "message": "please remove.",
+      "revId": "af938b8895c410b520116ed97d307df046aefa4b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "00a024ea_623ffb33",
+        "filename": "src/5gnrmac/nfapi_p7_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-06-24T16:32:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a48d7a5b_b10bc835",
       "revId": "af938b8895c410b520116ed97d307df046aefa4b",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -86,6 +158,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cdef7f20_47f7847a",
+        "filename": "src/pnf_stub/pnf_stub.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-06-24T16:32:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5f91bbad_df83a9b6",
+      "revId": "af938b8895c410b520116ed97d307df046aefa4b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "61a5816d_2f8b1a0c",
@@ -99,6 +189,24 @@
       "writtenOn": "2024-06-24T12:26:03Z",
       "side": 1,
       "message": "add function description.",
+      "revId": "af938b8895c410b520116ed97d307df046aefa4b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f12920a8_eab1c8e0",
+        "filename": "src/pnf_stub/pnf_stub.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-06-24T16:32:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "61a5816d_2f8b1a0c",
       "revId": "af938b8895c410b520116ed97d307df046aefa4b",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -126,6 +234,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2b94574a_2e7d784d",
+        "filename": "src/pnf_stub/pnf_stub.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 157,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-06-24T16:32:35Z",
+      "side": 1,
+      "message": "this will be done once synching is properly done. THis will be enabled in DL_TTI_REQ",
+      "parentUuid": "58c20859_07cbb3f0",
+      "range": {
+        "startLine": 157,
+        "startChar": 9,
+        "endLine": 157,
+        "endChar": 30
+      },
+      "revId": "af938b8895c410b520116ed97d307df046aefa4b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "85374755_26159b85",
@@ -139,6 +271,24 @@
       "writtenOn": "2024-06-24T12:26:03Z",
       "side": 1,
       "message": "add description here as well.",
+      "revId": "af938b8895c410b520116ed97d307df046aefa4b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9b11aa72_7c8460bd",
+        "filename": "src/pnf_stub/pnf_stub_p7_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-06-24T16:32:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "85374755_26159b85",
       "revId": "af938b8895c410b520116ed97d307df046aefa4b",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
