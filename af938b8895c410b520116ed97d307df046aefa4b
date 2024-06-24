@@ -1,0 +1,146 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2e022d58_4ffc7939",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-06-24T12:26:03Z",
+      "side": 1,
+      "message": "why are we returning RFAILED from here?",
+      "revId": "af938b8895c410b520116ed97d307df046aefa4b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6e94fc16_b2933147",
+        "filename": "src/5gnrmac/nfapi_common.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-06-24T12:26:03Z",
+      "side": 1,
+      "message": "complete the description add parameters.",
+      "revId": "af938b8895c410b520116ed97d307df046aefa4b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6198d42b_0d6a6062",
+        "filename": "src/5gnrmac/nfapi_p7_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-06-24T12:26:03Z",
+      "side": 1,
+      "message": "move this comment inside the description.",
+      "revId": "af938b8895c410b520116ed97d307df046aefa4b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a48d7a5b_b10bc835",
+        "filename": "src/5gnrmac/nfapi_p7_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-06-24T12:26:03Z",
+      "side": 1,
+      "message": "please remove.",
+      "revId": "af938b8895c410b520116ed97d307df046aefa4b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5f91bbad_df83a9b6",
+        "filename": "src/pnf_stub/pnf_stub.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-06-24T12:26:03Z",
+      "side": 1,
+      "message": "remove extra line.",
+      "revId": "af938b8895c410b520116ed97d307df046aefa4b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "61a5816d_2f8b1a0c",
+        "filename": "src/pnf_stub/pnf_stub.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-06-24T12:26:03Z",
+      "side": 1,
+      "message": "add function description.",
+      "revId": "af938b8895c410b520116ed97d307df046aefa4b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "58c20859_07cbb3f0",
+        "filename": "src/pnf_stub/pnf_stub.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 157,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-06-24T12:26:03Z",
+      "side": 1,
+      "message": "we can move this now. since we have already complete the p5 msg.",
+      "range": {
+        "startLine": 157,
+        "startChar": 9,
+        "endLine": 157,
+        "endChar": 30
+      },
+      "revId": "af938b8895c410b520116ed97d307df046aefa4b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "85374755_26159b85",
+        "filename": "src/pnf_stub/pnf_stub_p7_msg_hdl.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-06-24T12:26:03Z",
+      "side": 1,
+      "message": "add description here as well.",
+      "revId": "af938b8895c410b520116ed97d307df046aefa4b",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
