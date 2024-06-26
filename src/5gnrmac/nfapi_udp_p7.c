@@ -24,6 +24,7 @@
 #include "du_app_p7udp_inf.h"
 #include "nfapi_interface.h"
 #include "nfapi_common.h"
+#include "nfapi_p7_msg_hdl.h"
 
 /**************************************************************************
  * @brief Task Initiation callback function. 
@@ -331,6 +332,8 @@ uint8_t nfapiP7UdpRecvMsg()
       if(ret == ROK && recvBuf != NULLP)
       {
          DU_LOG("\nDEBUG  -->  NFAPI_VNF : Received P7 Message\n");
+  
+         nfapiP7MsgHandler(recvBuf);
          ODU_PUT_MSG_BUF(recvBuf);
       }
    }

@@ -22,5 +22,6 @@
 #define _NFAPI_P7_MSG_HDL_H
 
 uint8_t nfapiBuildAndSendDlNodeSync();
+uint8_t nfapiP7MsgHandler(Buffer *mBuf);
 
 #endif

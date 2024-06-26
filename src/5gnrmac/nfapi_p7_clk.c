@@ -179,7 +179,7 @@ void nfapiGenerateTicks()
       
          vnfDb.vnfP7Info.p7SyncInfo.frameInfo.sfn++;
          vnfDb.vnfP7Info.p7SyncInfo.frameInfo.slot++;
-         DU_LOG("\nVNF_NFAPI : Starting to generate slot indications t_ref:%llu, slotDur:%f, perTTi:%u, slotsPerFrame:%d, nanoSec:%d",\
+         DU_LOG("\nINFO  --> VNF_NFAPI : Starting to generate slot indications t_ref:%llu, slotDur:%f, perTTi:%u, slotsPerFrame:%d, nanoSec:%d",\
                vnfDb.vnfP7Info.t_ref_ns, slotDur_ms, PER_TTI_TIME_USEC, NUM_SLOTS_PER_SUBFRAME, tti_req.tv_nsec);
          nfapiBuildAndSendDlNodeSync(); 
       }
