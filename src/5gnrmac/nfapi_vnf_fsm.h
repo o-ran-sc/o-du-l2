@@ -85,7 +85,7 @@ typedef struct nfapiSyncInfo
 {
    uint8_t        phyId;
    NfapiFrameInfo frameInfo; 
-   uint8_t        inSync;
+   bool           inSync;
    uint32_t       prev_t1;
    uint32_t       prev_t2;
    uint32_t       prev_t3;
