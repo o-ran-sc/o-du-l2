@@ -2010,7 +2010,7 @@ uint8_t lwr_mac_procConfigReqEvt(void *msg)
    uint32_t mib = 0;
    uint32_t dlFreq = 0, ulFreq = 0;
    MacCellCfg macCfgParams;
-   fapi_vendor_msg_t *vendorMsg;
+   fapi_vendor_msg_t *vendorMsg; //Comment
    fapi_config_req_t *configReq;
    fapi_msg_header_t *msgHeader;
    p_fapi_api_queue_elem_t  headerElem;
