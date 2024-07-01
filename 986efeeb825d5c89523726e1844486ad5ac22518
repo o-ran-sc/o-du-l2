@@ -1,0 +1,95 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bc5684e5_bd04a4c2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-07-01T08:18:52Z",
+      "side": 1,
+      "message": "c",
+      "revId": "986efeeb825d5c89523726e1844486ad5ac22518",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "47376ebd_4253bc46",
+        "filename": "src/5gnrmac/nfapi_p7_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-07-01T08:18:52Z",
+      "side": 1,
+      "message": "add parameter.",
+      "revId": "986efeeb825d5c89523726e1844486ad5ac22518",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cc63bf31_c032d596",
+        "filename": "src/5gnrmac/nfapi_p7_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-07-01T08:18:52Z",
+      "side": 1,
+      "message": "same of above.",
+      "revId": "986efeeb825d5c89523726e1844486ad5ac22518",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "53b5d6eb_b244adce",
+        "filename": "src/5gnrmac/nfapi_p7_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 172,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-07-01T08:18:52Z",
+      "side": 1,
+      "message": "add a failure comment here.",
+      "revId": "986efeeb825d5c89523726e1844486ad5ac22518",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "05936af5_03d7d43c",
+        "filename": "src/pnf_stub/pnf_stub_p7_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-07-01T08:18:52Z",
+      "side": 1,
+      "message": "add a check here and return RFAILED in case of failure",
+      "range": {
+        "startLine": 152,
+        "startChar": 4,
+        "endLine": 152,
+        "endChar": 26
+      },
+      "revId": "986efeeb825d5c89523726e1844486ad5ac22518",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
