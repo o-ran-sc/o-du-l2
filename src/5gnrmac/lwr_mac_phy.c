@@ -256,6 +256,17 @@ void LwrMacRecvPhyMsg()
 
 #endif /* INTEL_WLS_MEM */
 
+void hexdump1(void *data, uint32_t size) {
+    const unsigned char *byte = (const unsigned char *)data;
+    for (size_t i = 0; i < size; i++) {
+        printf("%02x ", byte[i]);
+        if ((i + 1) % 16 == 0) {
+            printf(" ");
+        }
+    }
+    printf("\n");
+}
+
 /*******************************************************************
  *
  * @brief Send FAPI messages to Intel PHY/Phy stub
@@ -349,8 +360,18 @@ uint8_t LwrMacSendToL1(void *msg)
 	 /* Sending the next msg */
 	 msgLen = currMsg->msg_len + sizeof(fapi_api_queue_elem_t);
 	 addWlsBlockToFree(currMsg, msgLen, (lwrMacCb.phySlotIndCntr-1));
+		 if(currMsg->msg_type==FAPI_CONFIG_REQUEST)
+		 {
+			 DU_LOG("\npborlacurrMsg->msg_type == FAPI_CONFIG_REQUEST\n");
+			 //hexdump1( (void *)(currMsg+ 1), currMsg->msg_len);
+		 }
 	 if(currMsg->p_next != NULLP)
 	 {
+		 if(currMsg->msg_type==FAPI_CONFIG_REQUEST)
+		 {
+			 DU_LOG("\npborlacurrMsg->msg_type == FAPI_CONFIG_REQUEST\n");
+			 //hexdump1( (void *)(currMsg+ 1), currMsg->msg_len);
+		 }
 	    ret = WLS_Put(wlsHdlr, WLS_VA2PA(wlsHdlr, currMsg), msgLen, currMsg->msg_type, WLS_SG_NEXT);
 	    if(ret != 0)
 	    {
@@ -361,6 +382,11 @@ uint8_t LwrMacSendToL1(void *msg)
 	 }
 	 else
 	 {
+		 if(currMsg->msg_type==FAPI_CONFIG_REQUEST)
+		 {
+			 DU_LOG("\npborlacurrMsg->msg_type == FAPI_CONFIG_REQUEST\n");
+			 //hexdump1( (void *)(currMsg + 1), currMsg->msg_len);
+		 }
 	    /* Sending last msg */
 	    ret = WLS_Put(wlsHdlr, WLS_VA2PA(wlsHdlr, currMsg), msgLen, currMsg->msg_type, WLS_SG_LAST);
 	    if(ret != 0)
