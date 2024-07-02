@@ -1,0 +1,147 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "df28fdc7_1387f10c",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-07-02T10:22:01Z",
+      "side": 1,
+      "message": "if we do changes in this function.. are we not impacting the ones which are intended for OAI testing.",
+      "range": {
+        "startLine": 142,
+        "startChar": 17,
+        "endLine": 142,
+        "endChar": 31
+      },
+      "revId": "5eb5ea08cf53a5b5d37497c4dc3c606794fd0263",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e9cb6265_52245a55",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 168,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-07-02T10:22:01Z",
+      "side": 1,
+      "message": "same as above",
+      "range": {
+        "startLine": 168,
+        "startChar": 20,
+        "endLine": 168,
+        "endChar": 34
+      },
+      "revId": "5eb5ea08cf53a5b5d37497c4dc3c606794fd0263",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9701a102_39b334ce",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1988,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-07-02T10:22:01Z",
+      "side": 1,
+      "message": "the whole function should be under OAI_TESTING?",
+      "revId": "5eb5ea08cf53a5b5d37497c4dc3c606794fd0263",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "16f65ef2_277b2927",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2005,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-07-02T10:22:01Z",
+      "side": 1,
+      "message": "I observed that this function has lot of lines which are redundant.. Cant we just isolate those lines using OAI_TESTING flag?",
+      "range": {
+        "startLine": 2005,
+        "startChar": 8,
+        "endLine": 2005,
+        "endChar": 36
+      },
+      "revId": "5eb5ea08cf53a5b5d37497c4dc3c606794fd0263",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a8160996_11fcf72b",
+        "filename": "src/intel_fapi/fapi_interface.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 279,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-07-02T10:22:01Z",
+      "side": 1,
+      "message": "please use flag to comment out padding instead of commenting it. Like #ifndef OAI_TESTING",
+      "revId": "5eb5ea08cf53a5b5d37497c4dc3c606794fd0263",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cf79ea9d_c010b980",
+        "filename": "src/intel_fapi/fapi_interface.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 285,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-07-02T10:22:01Z",
+      "side": 1,
+      "message": "I suggest please put these changes in OAI_TESTING flag",
+      "revId": "5eb5ea08cf53a5b5d37497c4dc3c606794fd0263",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0282ba05_9bcf5867",
+        "filename": "src/intel_fapi/fapi_interface.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 286,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-07-02T10:22:01Z",
+      "side": 1,
+      "message": "pls correct the spelling. Opaque",
+      "range": {
+        "startLine": 286,
+        "startChar": 16,
+        "endLine": 286,
+        "endChar": 22
+      },
+      "revId": "5eb5ea08cf53a5b5d37497c4dc3c606794fd0263",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
