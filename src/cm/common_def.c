@@ -18,6 +18,15 @@
 
 #include "common_def.h"
 
+#ifdef MEM_SIZE_CHECK
+#define CM_MEMORY_ALLOC_SIZE_LOG(_line, _func, _size) \
+{\
+   DU_LOG("\nRLC line = %d, func = %s, _size= %d ", _line, _func, _size); \
+}
+#else
+#define CM_MEMORY_ALLOC_SIZE_LOG(_line, _func, _size) {}
+#endif
+
 /*Spec 38.104, Table 5.4.2.1-1 ARFCN - FREQ mapping*/
 /*{  F_REF(Mhz), ΔF_Global, F_REF-Offs, N_REF-offs, Range of N_REF }*/
 uint32_t arfcnFreqTable[3][5] = {
@@ -286,6 +295,7 @@ uint8_t convertSSBPeriodicityToEnum(uint32_t num)
 * ****************************************************************/
 uint8_t SGetSBufNewForDebug(char *file, const char *func, int line, Region region, Pool pool, Data **ptr, Size size)
 {
+   CM_MEMORY_ALLOC_SIZE_LOG(line, func, size);
    if(SGetSBuf(region, pool, ptr, size) == ROK)
    {
 #ifdef ODU_MEMORY_DEBUG_LOG
@@ -354,6 +364,7 @@ uint8_t SPutSBufNewForDebug(char *file, const char *func, int line, Region regio
 uint8_t SGetStaticBufNewForDebug(char *file, const char *func, int line, \
 Region region, Pool pool, Data **ptr, Size size, uint8_t memType)
 {
+   CM_MEMORY_ALLOC_SIZE_LOG(line, func, size);
    if(SGetStaticBuffer(region, pool, ptr, size, memType) == ROK)
    {
 #ifdef ODU_MEMORY_DEBUG_LOG
