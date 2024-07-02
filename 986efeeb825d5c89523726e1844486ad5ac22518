@@ -53,6 +53,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f8ba6814_8ff53e7a",
+        "filename": "src/5gnrmac/nfapi_p7_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-07-02T06:45:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "47376ebd_4253bc46",
+      "revId": "986efeeb825d5c89523726e1844486ad5ac22518",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cc63bf31_c032d596",
@@ -66,6 +84,24 @@
       "writtenOn": "2024-07-01T08:18:52Z",
       "side": 1,
       "message": "same of above.",
+      "revId": "986efeeb825d5c89523726e1844486ad5ac22518",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f49e273d_b1f17386",
+        "filename": "src/5gnrmac/nfapi_p7_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-07-02T06:45:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cc63bf31_c032d596",
       "revId": "986efeeb825d5c89523726e1844486ad5ac22518",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -87,6 +123,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b1b9642d_19422fc8",
+        "filename": "src/5gnrmac/nfapi_p7_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 172,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-07-02T06:45:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "53b5d6eb_b244adce",
+      "revId": "986efeeb825d5c89523726e1844486ad5ac22518",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "05936af5_03d7d43c",
@@ -100,6 +154,30 @@
       "writtenOn": "2024-07-01T08:18:52Z",
       "side": 1,
       "message": "add a check here and return RFAILED in case of failure",
+      "range": {
+        "startLine": 152,
+        "startChar": 4,
+        "endLine": 152,
+        "endChar": 26
+      },
+      "revId": "986efeeb825d5c89523726e1844486ad5ac22518",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9e290f44_17c3be43",
+        "filename": "src/pnf_stub/pnf_stub_p7_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-07-02T06:45:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "05936af5_03d7d43c",
       "range": {
         "startLine": 152,
         "startChar": 4,
