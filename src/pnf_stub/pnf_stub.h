@@ -52,6 +52,12 @@
    _frameInfo.slot = time % NUM_SLOTS_PER_SUBFRAME; \
 }
 
+#define EXTRACT_SFN_SLOT_FROM_DELTA(_delta, _sfnSlot) \
+{                                                    \
+   _sfnSlot.slot = _delta % NUM_SLOTS_PER_SUBFRAME;  \
+   _sfnSlot.sfn = _delta / NUM_SLOTS_PER_SUBFRAME;   \
+}
+
 /*P7 UDP Teansport Cfg Details*/
 #define PNF_P7_UDP_PORT 9876
 #define VNF_P7_UDP_PORT 6789
