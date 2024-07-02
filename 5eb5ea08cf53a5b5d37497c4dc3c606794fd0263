@@ -177,6 +177,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3f2466b9_984cfcd3",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2005,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-07-02T11:59:34Z",
+      "side": 1,
+      "message": "Ok noted",
+      "parentUuid": "2c29d9ca_c01846fc",
+      "range": {
+        "startLine": 2005,
+        "startChar": 8,
+        "endLine": 2005,
+        "endChar": 36
+      },
+      "revId": "5eb5ea08cf53a5b5d37497c4dc3c606794fd0263",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a8160996_11fcf72b",
@@ -208,6 +232,24 @@
       "side": 1,
       "message": "Prithika will be raising a separate Gerrit for this activity.",
       "parentUuid": "a8160996_11fcf72b",
+      "revId": "5eb5ea08cf53a5b5d37497c4dc3c606794fd0263",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ebddefec_ed66edcc",
+        "filename": "src/intel_fapi/fapi_interface.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 279,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-07-02T11:59:34Z",
+      "side": 1,
+      "message": "Also please take care of _attribute((packed)) line as well to put it inside flag",
+      "parentUuid": "e740de19_d5231eaf",
       "revId": "5eb5ea08cf53a5b5d37497c4dc3c606794fd0263",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
