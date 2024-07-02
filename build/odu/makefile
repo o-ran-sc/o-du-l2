@@ -86,9 +86,11 @@ endif
 ifeq ($(NODE),TEST_STUB)
 	PLTFRM_FLAGS+=-DODU_TEST_STUB
 endif
-
+ifdef PHY
+   PLTFRM_FLAGS+=-DTHREAD_AFFINITY
+endif	
 ifeq ($(PHY), INTEL_L1)
-	PLTFRM_FLAGS+=-DSS_USE_WLS_MEM -DINTEL_WLS_MEM -DDEBUG_MODE -DINTEL_L1_V20_03_ONWARDS 
+	PLTFRM_FLAGS+=-DSS_USE_WLS_MEM -DINTEL_WLS_MEM -DDEBUG_MODE -DINTEL_L1_V20_03_ONWARDS -DINTEL_THREAD_AFFINITY -DOAI_TESTING
 ifeq ($(PHY_MODE),TIMER)
 	PLTFRM_FLAGS+=-DINTEL_TIMER_MODE
 endif
@@ -113,8 +115,8 @@ export I_OPTS
 L_OPTS+=-lnsl -lrt -lm -lpthread -lsctp -lxml2
 
 ifeq ($(PHY), INTEL_L1)
-	L_OPTS+=-L/root/Intel-L1-20.11.1/phy/wls_lib/ -lwls                         \
-        -lhugetlbfs -lnuma -ldl -L/root/Intel-L1-20.11.1/dpdk-20.11.1/build/lib                        \
+	L_OPTS+=-L/usr/local/lib -lwls                         \
+        -lhugetlbfs -lnuma -ldl -L/usr/local/lib/x86_64-linux-gnu                        \
         -lrte_gso -lrte_acl -lrte_hash -lrte_bbdev -lrte_ip_frag -lrte_bitratestats -lrte_ipsec        \
         -lrte_bpf -lrte_jobstats -lrte_telemetry -lrte_kni -lrte_kvargs -lrte_latencystats -lrte_port  \
         -lrte_lpm -lrte_power -lrte_mbuf -lrte_rawdev -lrte_member -lrte_cfgfile -lrte_mempool         \
