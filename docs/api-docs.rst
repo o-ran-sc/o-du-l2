@@ -6,7 +6,7 @@
 API-Docs
 ########
 
-This is the API-docs for I release o-du/l2.
+This is the API-docs for J release o-du/l2.
 
 .. contents::
    :depth: 3

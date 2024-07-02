@@ -23,6 +23,17 @@
 #define MAC_MEM_REGION   4
 #define MAC_POOL         1
 
+/* allocate and zero out a static buffer */
+
+#ifdef MEM_SIZE_CHECK
+#define MAC_MEMORY_ALLOC_SIZE_LOG(_line, _func, _size) \
+{\
+   DU_LOG("\n MAC line = %d, func = %s, _size= %d ", _line, _func, _size); \
+}
+#else
+#define MAC_MEMORY_ALLOC_SIZE_LOG(_line, _func, _size) {}
+#endif
+
 #ifdef ODU_MEMORY_DEBUG_LOG
 #define MAC_MEM_LOG(_macro, _file, _line, _func, _size, _datPtr)\
 {\
@@ -36,6 +47,7 @@
 /* allocate and zero out a MAC static buffer */
 #define MAC_ALLOC(_datPtr, _size)                            \
 {                                                            \
+   MAC_MEMORY_ALLOC_SIZE_LOG(__LINE__, __FUNCTION__, _size);      \
    uint8_t _ret;                                             \
    _ret = SGetSBuf(MAC_MEM_REGION, MAC_POOL,                 \
 	 (Data **)&_datPtr, _size);                               \
@@ -66,6 +78,7 @@
  * during inter-layer communication */
 #define MAC_ALLOC_SHRABL_BUF(_buf, _size)                    \
 {                                                            \
+   MAC_MEMORY_ALLOC_SIZE_LOG(__LINE__, __FUNCTION__, _size);      \
    if(SGetStaticBuffer(MAC_MEM_REGION, MAC_POOL,             \
 	    (Data **)&_buf, (Size) _size, 0) == ROK)              \
    {                                                         \

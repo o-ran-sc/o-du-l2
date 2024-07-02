@@ -98,7 +98,7 @@
 #define BSR_SR_DELAY_TMR_2560 2560
 
 #define PAGING_SCHED_DELTA  4
-#define MAX_PLMN 2
+#define MAX_PLMN 1
 
 /********************* Global Variable ********************/
 extern uint64_t ueBitMapPerCell[MAX_NUM_CELL]; /* Bit Map to store used/free UE-IDX per Cell */
