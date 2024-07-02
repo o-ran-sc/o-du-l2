@@ -32,6 +32,15 @@ typedef enum
    MSG_TX_ERR
 }ErrorCode;
 
+#ifdef MEM_SIZE_CHECK
+#define WLS_MEMORY_ALLOC_SIZE_LOG(_line, _func, _size) \
+{\
+   DU_LOG("\nRLC line = %d, func = %s, _size= %d ", _line, _func, _size); \
+}
+#else
+#define WLS_MEMORY_ALLOC_SIZE_LOG(_line, _func, _size) {}
+#endif
+
 #ifdef ODU_MEMORY_DEBUG_LOG
 #define WLS_MEM_LOG(_macro, _file, _line, _func, _size, _datPtr)\
 {\
@@ -51,6 +60,7 @@ typedef enum
 /* allocate static buffer from WLS memory */
 #define WLS_MEM_ALLOC(_datPtr, _size)                        \
 {                                                            \
+   WLS_MEMORY_ALLOC_SIZE_LOG(__LINE__, __FUNCTION__, _size);  \
    uint8_t _ret;                                             \
    _ret = SGetSBufWls(0, 0, (Data **)&_datPtr, _size);       \
    if(_ret == ROK)                                           \
