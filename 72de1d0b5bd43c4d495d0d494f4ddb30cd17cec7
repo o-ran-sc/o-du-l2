@@ -24,6 +24,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c433e01e_e7532122",
+        "filename": "src/intel_fapi/fapi_interface.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 280,
+      "author": {
+        "id": 1002532
+      },
+      "writtenOn": "2024-07-04T15:55:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "de36c6c7_25f1980e",
+      "range": {
+        "startLine": 280,
+        "startChar": 7,
+        "endLine": 280,
+        "endChar": 8
+      },
+      "revId": "72de1d0b5bd43c4d495d0d494f4ddb30cd17cec7",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6ac38bb3_2bd8cc0c",
@@ -47,6 +71,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "94c316f1_95807730",
+        "filename": "src/intel_fapi/fapi_interface.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 713,
+      "author": {
+        "id": 1002532
+      },
+      "writtenOn": "2024-07-04T15:55:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6ac38bb3_2bd8cc0c",
+      "range": {
+        "startLine": 713,
+        "startChar": 20,
+        "endLine": 713,
+        "endChar": 21
+      },
+      "revId": "72de1d0b5bd43c4d495d0d494f4ddb30cd17cec7",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6224938f_a83ed667",
@@ -60,6 +108,30 @@
       "writtenOn": "2024-07-04T05:44:24Z",
       "side": 1,
       "message": "Please check this tab space",
+      "range": {
+        "startLine": 1273,
+        "startChar": 5,
+        "endLine": 1273,
+        "endChar": 6
+      },
+      "revId": "72de1d0b5bd43c4d495d0d494f4ddb30cd17cec7",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9c7f12b1_0fcdea01",
+        "filename": "src/intel_fapi/fapi_interface.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 1273,
+      "author": {
+        "id": 1002532
+      },
+      "writtenOn": "2024-07-04T15:55:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6224938f_a83ed667",
       "range": {
         "startLine": 1273,
         "startChar": 5,
