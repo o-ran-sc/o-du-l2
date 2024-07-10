@@ -263,7 +263,7 @@ void callFlowSchMsgRouter(Pst *pst)
          strcpy(message,"Invalid Event");
          break;
    }
-   DU_LOG("\nCall Flow: %s -> %s : %s\n", sourceTask, destTask, message);
+   DU_LOG("Call Flow: %s -> %s : %s\n", sourceTask, destTask, message);
 }
 #endif
 
@@ -398,7 +398,7 @@ uint8_t SchMessageRouter(Pst *pst, void *msg)
       }
       default:
       {
-         DU_LOG("\nERROR  -->  SCH : SchMessageRouter(): Invalid event [%d] received", pst->event);
+         DU_LOG("ERROR  -->  SCH : SchMessageRouter(): Invalid event [%d] received", pst->event);
          return RFAILED;
       }
    }

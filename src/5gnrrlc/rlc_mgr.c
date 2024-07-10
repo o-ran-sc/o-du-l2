@@ -79,7 +79,7 @@ uint8_t SendRlcUeCreateRspToDu(Pst *pst, RlcCfgCfmInfo *cfgRsp)
    RLC_ALLOC_SHRABL_BUF(pst->region, pst->pool, ueRsp, sizeof(RlcUeCreateRsp));
    if(!ueRsp)
    {  
-      DU_LOG("\nERROR  -->  RLC: Memory allocation failed for ueRsp at SendRlcUeCreateRspToDu()");
+      DU_LOG("ERROR  -->  RLC: Memory allocation failed for ueRsp at SendRlcUeCreateRspToDu()");
       ret = RFAILED;
    }
    else
@@ -91,13 +91,13 @@ uint8_t SendRlcUeCreateRspToDu(Pst *pst, RlcCfgCfmInfo *cfgRsp)
          ret = (*rlcUeCreateRspOpts[pst->selector])(pst, ueRsp);
          if(ret)
          {
-            DU_LOG("\nERROR  -->  RLC: Failed at SendRlcUeCreateRspToDu()");
+            DU_LOG("ERROR  -->  RLC: Failed at SendRlcUeCreateRspToDu()");
             RLC_FREE_SHRABL_BUF(pst->region, pst->pool, ueRsp, sizeof(RlcUeCreateRsp));
          }
       }
       else
       {
-         DU_LOG("\nERROR  -->  RLC: Failed at fillRlcUeCreateRsp() for event %d", pst->event);
+         DU_LOG("ERROR  -->  RLC: Failed at fillRlcUeCreateRsp() for event %d", pst->event);
          RLC_FREE_SHRABL_BUF(pst->region, pst->pool, ueRsp, sizeof(RlcUeCreateRsp));
       }
    }
@@ -134,7 +134,7 @@ uint8_t SendRlcUeReconfigRspToDu(Pst *pst, RlcCfgCfmInfo *cfgRsp)
    RLC_ALLOC_SHRABL_BUF(pst->region, pst->pool, ueRsp, sizeof(RlcUeReconfigRsp));
    if(!ueRsp)
    {  
-      DU_LOG("\nERROR  -->  RLC: Memory allocation failed for ueRsp at SendRlcUeReconfigRspToDu()");
+      DU_LOG("ERROR  -->  RLC: Memory allocation failed for ueRsp at SendRlcUeReconfigRspToDu()");
       ret = RFAILED;
    }
    else
@@ -146,13 +146,13 @@ uint8_t SendRlcUeReconfigRspToDu(Pst *pst, RlcCfgCfmInfo *cfgRsp)
          ret = (*rlcUeReconfigRspOpts[pst->selector])(pst, ueRsp);
          if(ret)
          {
-            DU_LOG("\nERROR  -->  RLC: Failed at SendRlcUeReconfigRspToDu()");
+            DU_LOG("ERROR  -->  RLC: Failed at SendRlcUeReconfigRspToDu()");
             RLC_FREE_SHRABL_BUF(pst->region, pst->pool, ueRsp, sizeof(RlcUeReconfigRsp));
          }
       }
       else
       {
-         DU_LOG("\nERROR  -->  RLC: Failed at fillRlcUeCreateRsp() for event %d", pst->event);
+         DU_LOG("ERROR  -->  RLC: Failed at fillRlcUeCreateRsp() for event %d", pst->event);
          RLC_FREE_SHRABL_BUF(pst->region, pst->pool, ueRsp, sizeof(RlcUeReconfigRsp));
       }
    }

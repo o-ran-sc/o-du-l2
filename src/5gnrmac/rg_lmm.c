@@ -218,7 +218,7 @@ RgMngmt  *cfg     /* config structure  */
 
 
 
-   DU_LOG("\nINFO    -->  MAC : Received CfgReq for MAC layer, Entity = %d, Instance = %d", pst->srcEnt, pst->srcInst);
+   DU_LOG("INFO    -->  MAC : Received CfgReq for MAC layer, Entity = %d, Instance = %d", pst->srcEnt, pst->srcInst);
 
    RG_IS_INST_VALID(pst->dstInst);
    inst = pst->dstInst - RG_INST_START;
@@ -251,7 +251,7 @@ RgMngmt  *cfg     /* config structure  */
       default:
 	 ret = LCM_PRIM_NOK;
 	 reason = LCM_REASON_INVALID_ELMNT;
-	 DU_LOG("\nERROR  -->  MAC : Invalid Elmnt=%d",
+	 DU_LOG("ERROR  -->  MAC : Invalid Elmnt=%d",
 	       cfg->hdr.elmId.elmnt);
 	 break;
    }
@@ -321,7 +321,7 @@ RgMngmt  *sts     /* statistics structure  */
       cfm.cfm.status = LCM_PRIM_NOK;
       cfm.cfm.reason = LCM_REASON_GENCFG_NOT_DONE;
       RgMiLrgStsCfm(&cfmPst,&cfm);
-      DU_LOG("\nERROR  -->  MAC : Gen Cfg not done");
+      DU_LOG("ERROR  -->  MAC : Gen Cfg not done");
       return ROK;
    }
 
@@ -429,7 +429,7 @@ RgMngmt  *sts     /* statistics structure  */
       default:
 	 cfm.cfm.status = LCM_PRIM_NOK;
 	 cfm.cfm.reason = LCM_REASON_INVALID_ELMNT;
-	 DU_LOG("\nERROR  -->  MAC : Invalid Elmnt = %d",sts->hdr.elmId.elmnt);
+	 DU_LOG("ERROR  -->  MAC : Invalid Elmnt = %d",sts->hdr.elmId.elmnt);
 	 break;     
    }
    RgMiLrgStsCfm(&cfmPst,&cfm);
@@ -481,7 +481,7 @@ Elmnt sapType             /* Sap Type */
 	       (cfg->s.rguSap.selector != ODU_SELECTOR_LC))
 	 {
 	    ret = LCM_REASON_INVALID_PAR_VAL;
-	    DU_LOG("\nERROR  -->  MAC : unsupported Selector value for RGU");
+	    DU_LOG("ERROR  -->  MAC : unsupported Selector value for RGU");
 	    break;
 	 }
 	 upSapCb = &(rgCb[inst].rguSap[cfg->s.rguSap.spId]);
@@ -512,7 +512,7 @@ Elmnt sapType             /* Sap Type */
 	       (cfg->s.crgSap.selector != ODU_SELECTOR_LC))
 	 {
 	    ret = LCM_REASON_INVALID_PAR_VAL;
-	    DU_LOG("\nERROR  -->  MAC : unsupported Selector value for CRG");
+	    DU_LOG("ERROR  -->  MAC : unsupported Selector value for CRG");
 	    break;
 	 }
 	 if(rgCb[inst].crgSap.sapSta.sapState == LRG_NOT_CFG)
@@ -542,7 +542,7 @@ Elmnt sapType             /* Sap Type */
 	       (cfg->s.tfuSap.selector != ODU_SELECTOR_LC))
 	 {
 	    ret = LCM_REASON_INVALID_PAR_VAL;
-	    DU_LOG("\nERROR  -->  MAC : unsupported Selector value for TFU");
+	    DU_LOG("ERROR  -->  MAC : unsupported Selector value for TFU");
 	    break;
 	 }
 #endif
@@ -613,7 +613,7 @@ RgCfg *cfg            /* Configuaration information */
    if ((cfg->s.genCfg.lmPst.selector != ODU_SELECTOR_TC) &&
 	 (cfg->s.genCfg.lmPst.selector != ODU_SELECTOR_LC))
    {
-      DU_LOG("\nERROR  -->  MAC : unsupported Selector value for RGU");
+      DU_LOG("ERROR  -->  MAC : unsupported Selector value for RGU");
       return (LCM_REASON_INVALID_PAR_VAL);
    }
    /* Update the Pst structure for LM interface */
@@ -638,7 +638,7 @@ RgCfg *cfg            /* Configuaration information */
 
    if(cfg->s.genCfg.numRguSaps == 0)
    {
-      DU_LOG("\nERROR  -->  MAC : rgGenCfg(): Invalid numRguSap.\n");
+      DU_LOG("ERROR  -->  MAC : rgGenCfg(): Invalid numRguSap.\n");
       return RFAILED;
    }
 
@@ -646,7 +646,7 @@ RgCfg *cfg            /* Configuaration information */
    MAC_ALLOC(rgCb[inst].rguSap, sizeof(RgUpSapCb) * cfg->s.genCfg.numRguSaps);
    if(rgCb[inst].rguSap == NULLP)
    {
-      DU_LOG("\nERROR  -->  MAC : rgGenCfg(): Failed to allocate mem for RGU SAP's.\n");
+      DU_LOG("ERROR  -->  MAC : rgGenCfg(): Failed to allocate mem for RGU SAP's.\n");
       return RFAILED;
    }
    rgCb[inst].numRguSaps = cfg->s.genCfg.numRguSaps;
@@ -669,7 +669,7 @@ RgCfg *cfg            /* Configuaration information */
    if(ODU_REG_TMR_MT(ENTMAC, macCb.macInst, macCb.tmrRes, macActvTmr) != ROK)
    {
 
-      DU_LOG("\nERROR  -->  MAC : Failed to register timer");
+      DU_LOG("ERROR  -->  MAC : Failed to register timer");
 
       MAC_FREE(rgCb[inst].rguSap,
 	    (sizeof(RgUpSapCb) * cfg->s.genCfg.numRguSaps));
@@ -888,7 +888,7 @@ S16 tmrEvnt           /* Timer Event */
          }
          break;
       default:
-         DU_LOG("\nERROR  -->  MAC : Invalid tmrEvnt=%d",tmrEvnt);
+         DU_LOG("ERROR  -->  MAC : Invalid tmrEvnt=%d",tmrEvnt);
          ret = RFAILED;
          break;
    }

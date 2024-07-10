@@ -85,7 +85,7 @@ bool schCheckPrachOcc(SchCellCb *cell, SlotTimingInfo prachOccasionTimingInfo)
          if(UL_SLOT != schGetSlotSymbFrmt(prachOccasionTimingInfo.slot % cell->numSlotsInPeriodicity,\
                                              cell->slotFrmtBitMap))
          {
-            DU_LOG("\nERROR  --> SCH : PrachCfgIdx %d doesn't support UL slot", prachCfgIdx);
+            DU_LOG("ERROR  --> SCH : PrachCfgIdx %d doesn't support UL slot", prachCfgIdx);
             return FALSE;
          }
 #endif
@@ -151,7 +151,7 @@ void schPrachResAlloc(SchCellCb *cell, UlSchedInfo *ulSchedInfo, SlotTimingInfo 
 
    if(cell == NULLP)
    {
-      DU_LOG("\nERROR  --> SCH : schPrachResAlloc(): Received cellCb is null");
+      DU_LOG("ERROR  --> SCH : schPrachResAlloc(): Received cellCb is null");
       return;
    }
 
@@ -182,7 +182,7 @@ void schPrachResAlloc(SchCellCb *cell, UlSchedInfo *ulSchedInfo, SlotTimingInfo 
    ulSchedInfo->prachSchInfo.prachFormat    = prachFormat;
    ulSchedInfo->prachSchInfo.numRa          = numRa;
    ulSchedInfo->prachSchInfo.prachStartSymb = prachStartSymbol;
-   DU_LOG("\nINFO   -->  SCH : RACH occassion set for slot %d", prachOccasionTimingInfo.slot);
+   DU_LOG("INFO   -->  SCH : RACH occassion set for slot %d", prachOccasionTimingInfo.slot);
 }
 
 /**
@@ -214,14 +214,14 @@ uint8_t SchProcRachRsrcReq(Pst *pst, SchRachRsrcReq *schRachRsrcReq)
    SchUeCb      *ueCb = NULLP;
    SchRachRsrcRsp *rachRsrcRsp = NULLP;
 
-   DU_LOG("\nINFO  -->  SCH : Received RACH resource request for Cell ID [%d] CRNTI [%d]", \
+   DU_LOG("INFO  -->  SCH : Received RACH resource request for Cell ID [%d] CRNTI [%d]", \
          schRachRsrcReq->cellId, schRachRsrcReq->crnti);
 
  /* Fill RACH resource response to MAC */
    SCH_ALLOC(rachRsrcRsp, sizeof(SchRachRsrcRsp));
    if(!rachRsrcRsp)
    {   
-      DU_LOG("\nERROR  -->  SCH : Memory allocation failed for RACH resource response");
+      DU_LOG("ERROR  -->  SCH : Memory allocation failed for RACH resource response");
       return RFAILED;
    }   
    rachRsrcRsp->cellId = schRachRsrcReq->cellId;
@@ -249,13 +249,13 @@ uint8_t SchProcRachRsrcReq(Pst *pst, SchRachRsrcReq *schRachRsrcReq)
       ueCb = schGetUeCb(cellCb, schRachRsrcReq->crnti);
       if(ueCb->crnti != schRachRsrcReq->crnti)
       {
-         DU_LOG("\nERROR  -->  SCH : CRNTI [%d] not found" ,schRachRsrcReq->crnti);
+         DU_LOG("ERROR  -->  SCH : CRNTI [%d] not found" ,schRachRsrcReq->crnti);
          rachRsrcRsp->result = RSP_NOK;
       }
    }
    else
    {
-      DU_LOG("\nERROR  -->  SCH : Cell ID [%d] not found" ,schRachRsrcReq->cellId);
+      DU_LOG("ERROR  -->  SCH : Cell ID [%d] not found" ,schRachRsrcReq->cellId);
       rachRsrcRsp->result = RSP_NOK;
    }
 
@@ -301,7 +301,7 @@ uint8_t SchProcRachRsrcReq(Pst *pst, SchRachRsrcReq *schRachRsrcReq)
          }
          else
          {
-            DU_LOG("\nINFO : SCH : No dedicated preameble availble to assign to ssbIdx[%d]", schRachRsrcReq->ssbIdx[ssbIdx]);
+            DU_LOG("INFO : SCH : No dedicated preameble availble to assign to ssbIdx[%d]", schRachRsrcReq->ssbIdx[ssbIdx]);
             /* Breaking out of for loop since no dedicated preambles are available
              * for remaining ssbIdx too */
             break;
@@ -423,7 +423,7 @@ SchPuschInfo* schAllocMsg3Pusch(Inst schInst, uint16_t crnti, uint8_t k2Index, S
    cell = schCb[schInst].cells[schInst];
    if(cell == NULL)
    {
-      DU_LOG("\n\nERROR  -->  SCH :  Failed to find cell in schAllocMsg3Pusch");
+      DU_LOG("ERROR  -->  SCH :  Failed to find cell in schAllocMsg3Pusch");
       return NULLP;
    }
 
@@ -443,7 +443,7 @@ SchPuschInfo* schAllocMsg3Pusch(Inst schInst, uint16_t crnti, uint8_t k2Index, S
    SCH_ALLOC(schUlSlotInfo->schPuschInfo[ueId - 1], sizeof(SchPuschInfo));
    if(!schUlSlotInfo->schPuschInfo[ueId - 1])
    {
-      DU_LOG("\nERROR  -->  SCH :  Memory allocation failed in schAllocMsg3Pusch");
+      DU_LOG("ERROR  -->  SCH :  Memory allocation failed in schAllocMsg3Pusch");
       return NULLP;
    }
    cell->schUlSlotInfo[msg3SlotTime.slot]->puschPres = true;
@@ -678,7 +678,7 @@ bool schProcessRaReq(Inst schInst, SchCellCb *cell, SlotTimingInfo currTime, uin
       SCH_ALLOC(dciSlotAlloc, sizeof(RarAlloc));
       if(dciSlotAlloc == NULLP)
       {
-         DU_LOG("\nERROR  -->  SCH : Memory Allocation failed for dciSlotAlloc");
+         DU_LOG("ERROR  -->  SCH : Memory Allocation failed for dciSlotAlloc");
          return false;
       }
       cell->schDlSlotInfo[dciSlot]->rarAlloc[ueId-1] = dciSlotAlloc;
@@ -686,7 +686,7 @@ bool schProcessRaReq(Inst schInst, SchCellCb *cell, SlotTimingInfo currTime, uin
       /* Fill PDCCH and PDSCH scheduling information for RAR */
       if((schFillRar(cell, rarTime, ueId, dciSlotAlloc, k0Index)) != ROK)
       {
-         DU_LOG("\nERROR  -->  SCH: Scheduling of RAR failed in slot [%d]", rarSlot);
+         DU_LOG("ERROR  -->  SCH: Scheduling of RAR failed in slot [%d]", rarSlot);
          if(!dciSlotAlloc->rarPdschCfg)
          {
             SCH_FREE(dciSlotAlloc, sizeof(RarAlloc));
@@ -710,7 +710,7 @@ bool schProcessRaReq(Inst schInst, SchCellCb *cell, SlotTimingInfo currTime, uin
          {
             SCH_FREE(dciSlotAlloc, sizeof(RarAlloc));
             cell->schDlSlotInfo[dciSlot]->rarAlloc[ueId-1] = NULLP;
-            DU_LOG("\nERROR  -->  SCH : Resource allocation for PUCCH failed for CFRA!");
+            DU_LOG("ERROR  -->  SCH : Resource allocation for PUCCH failed for CFRA!");
             return false;
             
          }
@@ -750,7 +750,7 @@ bool schProcessRaReq(Inst schInst, SchCellCb *cell, SlotTimingInfo currTime, uin
             SCH_FREE(dciSlotAlloc->rarPdcchCfg, sizeof(PdcchCfg));
             SCH_FREE(dciSlotAlloc, sizeof(RarAlloc));
             cell->schDlSlotInfo[dciSlot]->rarAlloc[ueId-1] = NULLP;
-            DU_LOG("\nERROR  -->  SCH : Memory Allocation failed for dciSlotAlloc->rarPdschCfg");
+            DU_LOG("ERROR  -->  SCH : Memory Allocation failed for dciSlotAlloc->rarPdschCfg");
             return false;
          }
 
@@ -761,7 +761,7 @@ bool schProcessRaReq(Inst schInst, SchCellCb *cell, SlotTimingInfo currTime, uin
          SCH_ALLOC(rarSlotAlloc, sizeof(RarAlloc));
          if(rarSlotAlloc == NULLP)
          {
-            DU_LOG("\nERROR  -->  SCH : Memory Allocation failed for rarSlotAlloc");
+            DU_LOG("ERROR  -->  SCH : Memory Allocation failed for rarSlotAlloc");
             SCH_FREE(dciSlotAlloc->rarPdcchCfg, sizeof(PdcchCfg));
             if(!dciSlotAlloc->rarPdschCfg)
             {
@@ -782,7 +782,7 @@ bool schProcessRaReq(Inst schInst, SchCellCb *cell, SlotTimingInfo currTime, uin
          }
          else
          {
-            DU_LOG("\nERROR  -->  SCH : Memory Allocation failed for rarSlotAlloc->rarPdschCfg");
+            DU_LOG("ERROR  -->  SCH : Memory Allocation failed for rarSlotAlloc->rarPdschCfg");
             SCH_FREE(dciSlotAlloc->rarPdcchCfg, sizeof(PdcchCfg));
             if(!dciSlotAlloc->rarPdschCfg)
             {
@@ -831,11 +831,11 @@ uint8_t SchProcRachInd(Pst *pst, RachIndInfo *rachInd)
    Inst      schInst = pst->dstInst-SCH_INST_START;
    SchCellCb *cell = schCb[schInst].cells[schInst];
 
-   DU_LOG("\nINFO  -->  SCH : Received Rach indication");
+   DU_LOG("INFO  -->  SCH : Received Rach indication");
 
    if(cell == NULLP)
    {
-      DU_LOG("\nERROR  -->  SCH: Failed to find cell in SchProcRachInd");
+      DU_LOG("ERROR  -->  SCH: Failed to find cell in SchProcRachInd");
       return RFAILED;
    }
 
@@ -843,14 +843,14 @@ uint8_t SchProcRachInd(Pst *pst, RachIndInfo *rachInd)
    GET_UE_ID(rachInd->crnti, ueId);
    if(ueId <= 0)
    {
-      DU_LOG("\nERROR  -->  SCH: Invalid CRNTI [%d]", rachInd->crnti);
+      DU_LOG("ERROR  -->  SCH: Invalid CRNTI [%d]", rachInd->crnti);
       return RFAILED;
    }
 
    SCH_ALLOC(raReq, sizeof(SchRaReq));
    if(!raReq)
    {
-      DU_LOG("\nERROR  -->  SCH : Memory allocation failure in SchProcRachInd");
+      DU_LOG("ERROR  -->  SCH : Memory allocation failure in SchProcRachInd");
       SCH_FREE(rachInd, sizeof(RachIndInfo));
       return RFAILED;
    }
@@ -910,7 +910,7 @@ uint8_t schFillRar(SchCellCb *cell, SlotTimingInfo rarTime, uint16_t ueId, RarAl
    SCH_ALLOC(rarAlloc->rarPdcchCfg, sizeof(PdcchCfg));
    if(rarAlloc->rarPdcchCfg == NULLP)
    {
-      DU_LOG("\nERROR  --> SCH : Memory allocation failed in %s",__func__);
+      DU_LOG("ERROR  --> SCH : Memory allocation failed in %s",__func__);
       return RFAILED;
    }
    PdcchCfg *pdcch = rarAlloc->rarPdcchCfg;
@@ -1027,7 +1027,7 @@ uint8_t schFillRar(SchCellCb *cell, SlotTimingInfo rarTime, uint16_t ueId, RarAl
    if((allocatePrbDl(cell, rarTime, startSymbol, numSymbol,\
       &pdsch->pdschFreqAlloc.startPrb, pdsch->pdschFreqAlloc.numPrb)) != ROK)
    {
-      DU_LOG("\nERROR  --> SCH : allocatePrbDl() failed for RAR");
+      DU_LOG("ERROR  --> SCH : allocatePrbDl() failed for RAR");
       SCH_FREE(rarAlloc->rarPdcchCfg, sizeof(PdcchCfg));
       return RFAILED;
    }
@@ -1067,7 +1067,7 @@ uint8_t SchProcRachRsrcRel(Pst *pst, SchRachRsrcRel *schRachRsrcRel)
    SchCellCb    *cellCb = NULLP;
    SchUeCb      *ueCb = NULLP;
 
-   DU_LOG("\nINFO  -->  SCH : Received RACH resource release for Cell ID [%d] CRNTI [%d]", \
+   DU_LOG("INFO  -->  SCH : Received RACH resource release for Cell ID [%d] CRNTI [%d]", \
          schRachRsrcRel->cellId, schRachRsrcRel->crnti);
 
    /* Fetch Cell CB */
@@ -1086,13 +1086,13 @@ uint8_t SchProcRachRsrcRel(Pst *pst, SchRachRsrcRel *schRachRsrcRel)
       ueCb = schGetUeCb(cellCb, schRachRsrcRel->crnti);
       if(ueCb->crnti != schRachRsrcRel->crnti)
       {
-         DU_LOG("\nERROR  -->  SCH : CRNTI [%d] not found", schRachRsrcRel->crnti);
+         DU_LOG("ERROR  -->  SCH : CRNTI [%d] not found", schRachRsrcRel->crnti);
          ret = RFAILED;
       }
    }
    else
    {
-      DU_LOG("\nERROR  -->  SCH : Cell ID [%d] not found", schRachRsrcRel->cellId);
+      DU_LOG("ERROR  -->  SCH : Cell ID [%d] not found", schRachRsrcRel->cellId);
       ret = RFAILED;
    }
 
@@ -1134,7 +1134,7 @@ uint8_t SchProcRachRsrcRel(Pst *pst, SchRachRsrcRel *schRachRsrcRel)
  */
 void schMsg4Complete(SchUeCb *ueCb)
 {
-   DU_LOG("\nINFO --> SCH: State change for ueId[%2d] to SCH_RA_STATE_MSG4_DONE\n",ueCb->ueId);
+   DU_LOG("INFO --> SCH: State change for ueId[%2d] to SCH_RA_STATE_MSG4_DONE\n",ueCb->ueId);
    ueCb->cellCb->raCb[ueCb->ueId-1].raState = SCH_RA_STATE_MSG4_DONE;
    ueCb->msg4HqProc = ueCb->retxMsg4HqProc = NULLP;
 }

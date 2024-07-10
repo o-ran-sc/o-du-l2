@@ -182,7 +182,7 @@ MeasurementInfo *fetchMeasInfoFromMeasTypeName(char *e2MeasTypeName, CmLListCp *
 
    if(!measInfo)
    {
-      DU_LOG("\nERROR  -->  E2AP : fetchMeasInfoFromMeasTypeName: Measurement [%s] not found", e2MeasTypeName);
+      DU_LOG("ERROR  -->  E2AP : fetchMeasInfoFromMeasTypeName: Measurement [%s] not found", e2MeasTypeName);
    }
 
    return measInfo;
@@ -225,7 +225,7 @@ ActionInfo *fetchActionInfoFromActionId(uint8_t actionId, RicSubscription *ricSu
    
    if(!actionInfoDb) 
    {
-      DU_LOG("\nERROR  -->  E2AP : fetchActionInfoFromActionId: Action Id [%d] not found in \
+      DU_LOG("ERROR  -->  E2AP : fetchActionInfoFromActionId: Action Id [%d] not found in \
             subscription info [Requestor id : %d] [Instance Id : %d]", actionId,\
             ricSubscriptionInfo->requestId.requestorId, ricSubscriptionInfo->requestId.instanceId);
 
@@ -271,7 +271,7 @@ RicSubscription *fetchSubsInfoFromRicReqId(RicRequestId ricReqId, RanFunction *r
 
    if(!ricSubscriptionInfo)
    {
-      DU_LOG("\nERROR  -->  E2AP : fetchSubsInfoFromRicReqId: Subscription not found for Requestor ID [%d] \
+      DU_LOG("ERROR  -->  E2AP : fetchSubsInfoFromRicReqId: Subscription not found for Requestor ID [%d] \
          Instance ID [%d] in RAN Function ID [%d]", ricReqId.requestorId, ricReqId.instanceId, ranFuncDb->id);
    }
 
@@ -305,7 +305,7 @@ RanFunction *fetchRanFuncFromRanFuncId(uint16_t ranFuncId)
    }
    else
    {
-      DU_LOG("\nERROR  -->  E2AP : fetchRanFuncFromRanFuncId: Invalid RAN Function ID[%d]", ranFuncId);
+      DU_LOG("ERROR  -->  E2AP : fetchRanFuncFromRanFuncId: Invalid RAN Function ID[%d]", ranFuncId);
    }
 
    return ranFuncDb;
@@ -390,14 +390,14 @@ uint8_t SendE2APMsg(Region region, Pool pool, char *encBuf, int encBufSize)
 
          if(sctpSend(mBuf, E2_INTERFACE) != ROK)
          {
-            DU_LOG("\nERROR  -->  E2AP : SCTP Send for E2  failed");
+            DU_LOG("ERROR  -->  E2AP : SCTP Send for E2  failed");
             ODU_PUT_MSG_BUF(mBuf);
             return RFAILED;
          }
       }
       else
       {
-         DU_LOG("\nERROR  -->  E2AP : ODU_ADD_POST_MSG_MULT failed");
+         DU_LOG("ERROR  -->  E2AP : ODU_ADD_POST_MSG_MULT failed");
          ODU_PUT_MSG_BUF(mBuf);
          return RFAILED;
       }
@@ -405,7 +405,7 @@ uint8_t SendE2APMsg(Region region, Pool pool, char *encBuf, int encBufSize)
    }
    else
    {
-      DU_LOG("\nERROR  -->  E2AP : Failed to allocate memory");
+      DU_LOG("ERROR  -->  E2AP : Failed to allocate memory");
       return RFAILED;
    }
 
@@ -443,7 +443,7 @@ uint8_t ResetE2Request(E2ProcedureDirection dir, E2FailureCause resetCause)
    {
       if(BuildAndSendE2ResetRequest(resetCause) != ROK)
       {
-         DU_LOG("\nERROR  -->  E2AP : BuildAndSendE2ResetRequest failed");
+         DU_LOG("ERROR  -->  E2AP : BuildAndSendE2ResetRequest failed");
          return RFAILED;
       }
    }
@@ -528,7 +528,7 @@ uint8_t fillRicSubsInMacStatsReq(MacStatsReq *macStatsReq, RicSubscription* ricS
                            }
                         default:
                            {
-                              DU_LOG("\nERROR  -->  E2AP : Invalid measurement name");
+                              DU_LOG("ERROR  -->  E2AP : Invalid measurement name");
                               break;
                            }
                      }
@@ -539,7 +539,7 @@ uint8_t fillRicSubsInMacStatsReq(MacStatsReq *macStatsReq, RicSubscription* ricS
                }
             default:
                {
-                  DU_LOG("\nERROR  -->  E2AP : fillRicSubsInMacStatsReq: Only Action Definition Format 1 supported");
+                  DU_LOG("ERROR  -->  E2AP : fillRicSubsInMacStatsReq: Only Action Definition Format 1 supported");
                   break;
                }
          }
@@ -651,7 +651,7 @@ uint8_t procStatsRspForSubsModReq(MacStatsRsp *statsRsp, RanFunction *ranFuncDb,
    
    if(pendingSubsModRsp == NULLP)
    {
-      DU_LOG("\nERROR  -->  E2AP : failed in function %s at line %d",__func__,__LINE__);
+      DU_LOG("ERROR  -->  E2AP : failed in function %s at line %d",__func__,__LINE__);
       return RFAILED;
    }
 
@@ -692,7 +692,7 @@ uint8_t procStatsRspForSubsModReq(MacStatsRsp *statsRsp, RanFunction *ranFuncDb,
    pendingSubsModRsp->addActionCompleted =true; 
    if(duProcPendingSubsModRsp(ricSubscriptionInfo, pendingSubsModRsp) != ROK)
    {
-      DU_LOG("\nERROR  -->  E2AP : failed in function %s at line %d",__func__,__LINE__);
+      DU_LOG("ERROR  -->  E2AP : failed in function %s at line %d",__func__,__LINE__);
       return RFAILED;
    }
    return ROK;
@@ -758,7 +758,7 @@ uint8_t procStatsRspForSubsReq(MacStatsRsp *statsRsp, RanFunction *ranFuncDb,  C
    
    if(pendingSubsRsp == NULLP)
    {
-      DU_LOG("\nERROR  -->  E2AP : failed in function %s at line %d",__func__,__LINE__);
+      DU_LOG("ERROR  -->  E2AP : failed in function %s at line %d",__func__,__LINE__);
       return RFAILED;
    }
    
@@ -780,7 +780,7 @@ uint8_t procStatsRspForSubsReq(MacStatsRsp *statsRsp, RanFunction *ranFuncDb,  C
             }
          default:
             {
-               DU_LOG("\nERROR  -->  E2AP : Invalid event trigger format of RIC subscription");
+               DU_LOG("ERROR  -->  E2AP : Invalid event trigger format of RIC subscription");
                return RFAILED;
             }
       }
@@ -790,7 +790,7 @@ uint8_t procStatsRspForSubsReq(MacStatsRsp *statsRsp, RanFunction *ranFuncDb,  C
       }
       else
       {
-         DU_LOG("\nERROR  -->  E2AP : RIC Subscription reporting timer already running for RIC Subscription");
+         DU_LOG("ERROR  -->  E2AP : RIC Subscription reporting timer already running for RIC Subscription");
          return RFAILED;
       }
 
@@ -831,7 +831,7 @@ uint8_t procStatsRspForSubsReq(MacStatsRsp *statsRsp, RanFunction *ranFuncDb,  C
       /* [ Step 6]  */
       if(BuildAndSendRicSubscriptionRsp(pendingSubsRsp) != ROK)
       {
-         DU_LOG("\nERROR  -->  E2AP : Failed to build and send RIC Subscription rsp");
+         DU_LOG("ERROR  -->  E2AP : Failed to build and send RIC Subscription rsp");
          return RFAILED;
       }
    }
@@ -875,7 +875,7 @@ uint8_t e2ProcStatsRsp(MacStatsRsp *statsRsp)
    /*  [Step -1] */
    if(fetchSubsInfoFromSubsId(statsRsp->subscriptionId, &ranFuncDb, &ricSubscriptionNode, &ricSubscriptionInfo) != ROK)
    {
-      DU_LOG("\nERROR  -->  E2AP : failed in function %s at line %d",__func__,__LINE__);
+      DU_LOG("ERROR  -->  E2AP : failed in function %s at line %d",__func__,__LINE__);
       return RFAILED;
    }
    
@@ -886,7 +886,7 @@ uint8_t e2ProcStatsRsp(MacStatsRsp *statsRsp)
       if(procStatsRspForSubsReq(statsRsp, ranFuncDb, ricSubscriptionNode, ricSubscriptionInfo) != ROK)
       {
          rejectAllStatsGroup(ranFuncDb, ricSubscriptionNode, statsRsp);
-         DU_LOG("\nERROR  -->  E2AP : Failed to build and send RIC Subscription rsp");
+         DU_LOG("ERROR  -->  E2AP : Failed to build and send RIC Subscription rsp");
          return RFAILED;
       }
    }
@@ -895,7 +895,7 @@ uint8_t e2ProcStatsRsp(MacStatsRsp *statsRsp)
       /*  [Step -2.2] */
       if(procStatsRspForSubsModReq(statsRsp, ranFuncDb, ricSubscriptionInfo) != ROK)
       {
-         DU_LOG("\nERROR  -->  E2AP : Failed to build and send RIC Subscription rsp");
+         DU_LOG("ERROR  -->  E2AP : Failed to build and send RIC Subscription rsp");
          return RFAILED;
       }
    }
@@ -945,7 +945,7 @@ uint8_t e2ProcStatsInd(MacStatsInd *statsInd)
     * in statistics response */
    if(fetchSubsInfoFromSubsId(statsInd->subscriptionId, &ranFuncDb, &ricSubscriptionNode, &ricSubscriptionInfo) != ROK)
    {
-      DU_LOG("\nERROR  -->  E2AP : %s : Failed to fetch subscriprtion details",__func__);
+      DU_LOG("ERROR  -->  E2AP : %s : Failed to fetch subscriprtion details",__func__);
       return RFAILED;
    }
 
@@ -953,7 +953,7 @@ uint8_t e2ProcStatsInd(MacStatsInd *statsInd)
    actionInfo = fetchActionInfoFromActionId(statsInd->groupId, ricSubscriptionInfo, &actionNode, CONFIG_UNKNOWN);
    if(actionInfo == NULLP)
    {
-      DU_LOG("\nERROR  -->  E2AP : %s: Failed to fetch action ID [%d]",__func__, statsInd->groupId);
+      DU_LOG("ERROR  -->  E2AP : %s: Failed to fetch action ID [%d]",__func__, statsInd->groupId);
       return RFAILED;
    }
 
@@ -967,7 +967,7 @@ uint8_t e2ProcStatsInd(MacStatsInd *statsInd)
          }
       default:
          {
-            DU_LOG("\nERROR  -->  E2AP : %s: Action Format [%d] is not supported", __func__,\
+            DU_LOG("ERROR  -->  E2AP : %s: Action Format [%d] is not supported", __func__,\
                   actionInfo->definition.formatType);
             return RFAILED;
          }
@@ -983,7 +983,7 @@ uint8_t e2ProcStatsInd(MacStatsInd *statsInd)
       /* Convert Measurement type from MAC-supported format to E2-supported format */
       if(convertMacMeasTypeToE2MeasType(statsInd->measuredStatsList[statsIdx].type, e2MeasTypeName) != ROK)
       {
-         DU_LOG("\nERROR  -->  E2AP : %s: Failed to convert measurement type from MAC-supported\
+         DU_LOG("ERROR  -->  E2AP : %s: Failed to convert measurement type from MAC-supported\
             MAC-supported format to E2-supported format",__func__);
          continue;
       }
@@ -992,7 +992,7 @@ uint8_t e2ProcStatsInd(MacStatsInd *statsInd)
       measInfo = fetchMeasInfoFromMeasTypeName(e2MeasTypeName, &actionFormat->measurementInfoList, &measInfoNode); 
       if(measInfo == NULLP)
       {
-         DU_LOG("\nERROR  -->  E2AP : %s: Measurement Type Name [%s] not found", __func__,e2MeasTypeName); 
+         DU_LOG("ERROR  -->  E2AP : %s: Measurement Type Name [%s] not found", __func__,e2MeasTypeName); 
          continue;
       }
       
@@ -1000,7 +1000,7 @@ uint8_t e2ProcStatsInd(MacStatsInd *statsInd)
       DU_ALLOC(measValue, sizeof(double));
       if(!measValue)
       {
-         DU_LOG("\nERROR  -->  E2AP : %s: Memory allocation failed at line [%d]",__func__, __LINE__);
+         DU_LOG("ERROR  -->  E2AP : %s: Memory allocation failed at line [%d]",__func__, __LINE__);
          return RFAILED; 
       }
       *measValue = statsInd->measuredStatsList[statsIdx].value;
@@ -1008,7 +1008,7 @@ uint8_t e2ProcStatsInd(MacStatsInd *statsInd)
       DU_ALLOC(measValueNode, sizeof(CmLList));
       if(!measValueNode)
       {
-         DU_LOG("\nERROR  -->  E2AP : %s : Memory allocation failed at line [%d]",__func__, __LINE__);
+         DU_LOG("ERROR  -->  E2AP : %s : Memory allocation failed at line [%d]",__func__, __LINE__);
          DU_FREE(measValue, sizeof(double));
          return RFAILED; 
       }
@@ -1067,7 +1067,7 @@ void E2apHdlRicSubsReportTmrExp(RicSubscription *ricSubscription)
    }
    else
    {
-      DU_LOG("\nERROR  -->  E2AP : Failed in %s at line %d", __func__, __LINE__);
+      DU_LOG("ERROR  -->  E2AP : Failed in %s at line %d", __func__, __LINE__);
       return;
    }
 }
@@ -1141,7 +1141,7 @@ uint8_t fillE2NodeComponentRspInfo(InterfaceType interfaceType, uint64_t compone
    e2NodeComponentInfo = fetchE2NodeComponentInfo(interfaceType, componentId, &node);
    if(!e2NodeComponentInfo) 
    {
-      DU_LOG("\nERROR  -->  E2AP : Unable to find the node");
+      DU_LOG("ERROR  -->  E2AP : Unable to find the node");
       return RFAILED;
    }
 
@@ -1159,14 +1159,14 @@ uint8_t fillE2NodeComponentRspInfo(InterfaceType interfaceType, uint64_t compone
          }
       default:
          {
-            DU_LOG("\nERROR  -->  E2AP : Invalid action %d received",action);
+            DU_LOG("ERROR  -->  E2AP : Invalid action %d received",action);
             return RFAILED;
          }
    }
 
    if(configInfo->componentRequestPart== NULLP)
    {
-      DU_LOG("\nERROR  -->  E2AP : E2 node Component request part is not present");
+      DU_LOG("ERROR  -->  E2AP : E2 node Component request part is not present");
       return RFAILED;
    }
 
@@ -1174,7 +1174,7 @@ uint8_t fillE2NodeComponentRspInfo(InterfaceType interfaceType, uint64_t compone
    DU_ALLOC(configInfo->componentResponsePart, bufSize);
    if(configInfo->componentResponsePart == NULLP)
    {
-      DU_LOG("\nERROR  -->  E2AP : Memory allocation failed to store the encoding of rsp");
+      DU_LOG("ERROR  -->  E2AP : Memory allocation failed to store the encoding of rsp");
       return RFAILED;
    }
    memcpy(configInfo->componentResponsePart, bufString, configInfo->rspBufSize);
@@ -1209,7 +1209,7 @@ uint8_t addE2NodeComponent(InterfaceType interfaceType, uint64_t componentId,  u
    DU_ALLOC(e2NodeComponentInfo, sizeof(E2NodeComponent));
    if(!e2NodeComponentInfo)
    {
-      DU_LOG("\nERROR  -->  E2AP : Memory allocation failed in %s at %d",__func__,__LINE__);
+      DU_LOG("ERROR  -->  E2AP : Memory allocation failed in %s at %d",__func__,__LINE__);
       return RFAILED;
    }
    e2NodeComponentInfo->interfaceType =interfaceType;
@@ -1218,7 +1218,7 @@ uint8_t addE2NodeComponent(InterfaceType interfaceType, uint64_t componentId,  u
    DU_ALLOC(e2NodeComponentInfo->addConfiguration, sizeof(E2NodeConfig));
    if(!e2NodeComponentInfo->addConfiguration)
    {
-      DU_LOG("\nERROR  -->  E2AP : Memory allocation failed in %s at %d",__func__,__LINE__);
+      DU_LOG("ERROR  -->  E2AP : Memory allocation failed in %s at %d",__func__,__LINE__);
       return RFAILED;
    }
 
@@ -1227,7 +1227,7 @@ uint8_t addE2NodeComponent(InterfaceType interfaceType, uint64_t componentId,  u
    DU_ALLOC(e2NodeComponentInfo->addConfiguration->componentRequestPart, bufSize);
    if(e2NodeComponentInfo->addConfiguration->componentRequestPart == NULLP)
    {
-      DU_LOG("\nERROR  -->  E2AP : Memory allocation failed in %s at %d",__func__,__LINE__);
+      DU_LOG("ERROR  -->  E2AP : Memory allocation failed in %s at %d",__func__,__LINE__);
       DU_FREE(e2NodeComponentInfo, sizeof(E2NodeComponent));
       return RFAILED;
    }
@@ -1242,7 +1242,7 @@ uint8_t addE2NodeComponent(InterfaceType interfaceType, uint64_t componentId,  u
    }
    else
    {
-      DU_LOG("\nERROR  -->  E2AP : Memory allocation failed in %s at %d",__func__,__LINE__);
+      DU_LOG("ERROR  -->  E2AP : Memory allocation failed in %s at %d",__func__,__LINE__);
       DU_FREE(e2NodeComponentInfo->addConfiguration->componentRequestPart, bufSize);
       DU_FREE(e2NodeComponentInfo->addConfiguration, sizeof(E2NodeConfig));
       DU_FREE(e2NodeComponentInfo, sizeof(E2NodeComponent));
@@ -1278,14 +1278,14 @@ uint8_t updateE2NodeComponent(InterfaceType interfaceType, uint64_t componentId,
    e2NodeComponentInfo = fetchE2NodeComponentInfo(interfaceType, componentId, &node);
    if(!e2NodeComponentInfo)
    {
-      DU_LOG("\nERROR  -->  E2AP : Received null information in %s",__func__);
+      DU_LOG("ERROR  -->  E2AP : Received null information in %s",__func__);
       return RFAILED;
    }
    
    DU_ALLOC(e2NodeComponentInfo->updateConfiguration, sizeof(E2NodeConfig));
    if(!e2NodeComponentInfo->updateConfiguration)
    {
-      DU_LOG("\nERROR  -->  E2AP : Memory allocation failed in %s at %d",__func__,__LINE__);
+      DU_LOG("ERROR  -->  E2AP : Memory allocation failed in %s at %d",__func__,__LINE__);
       return RFAILED;
    }
 
@@ -1294,7 +1294,7 @@ uint8_t updateE2NodeComponent(InterfaceType interfaceType, uint64_t componentId,
    DU_ALLOC(e2NodeComponentInfo->updateConfiguration->componentRequestPart, bufSize);
    if(e2NodeComponentInfo->updateConfiguration->componentRequestPart == NULLP)
    {
-      DU_LOG("\nERROR  -->  E2AP : Memory allocation failed in %s at %d",__func__,__LINE__);
+      DU_LOG("ERROR  -->  E2AP : Memory allocation failed in %s at %d",__func__,__LINE__);
       DU_FREE(e2NodeComponentInfo->updateConfiguration, sizeof(E2NodeConfig));
       return RFAILED;
    }
@@ -1330,7 +1330,7 @@ uint8_t deleteE2NodeComponent(InterfaceType interfaceType, uint64_t componentId)
    e2NodeComponentInfo = fetchE2NodeComponentInfo(interfaceType, componentId, &node);
    if(!e2NodeComponentInfo)
    {
-      DU_LOG("\nERROR  -->  E2AP : Received null information in %s",__func__);
+      DU_LOG("ERROR  -->  E2AP : Received null information in %s",__func__);
       return RFAILED;
    }
    
@@ -1366,7 +1366,7 @@ uint8_t fillE2NodeComponentReqInfo(InterfaceType interfaceType, uint64_t compone
          {
             if(addE2NodeComponent(interfaceType, componentId, bufSize, bufString) != ROK)
             {
-               DU_LOG("\nERROR  -->  E2AP : Failed to add e2 node component");
+               DU_LOG("ERROR  -->  E2AP : Failed to add e2 node component");
                return RFAILED;
             }
             break;
@@ -1375,7 +1375,7 @@ uint8_t fillE2NodeComponentReqInfo(InterfaceType interfaceType, uint64_t compone
          {
             if(updateE2NodeComponent(interfaceType, componentId, bufSize, bufString) != ROK)
             {
-               DU_LOG("\nERROR  -->  E2AP : Failed to update e2 node component");
+               DU_LOG("ERROR  -->  E2AP : Failed to update e2 node component");
                return RFAILED;
             }
             break;
@@ -1384,14 +1384,14 @@ uint8_t fillE2NodeComponentReqInfo(InterfaceType interfaceType, uint64_t compone
          {
             if(deleteE2NodeComponent(interfaceType, componentId) != ROK)
             {
-               DU_LOG("\nERROR  -->  E2AP : Failed to delete e2 node component");
+               DU_LOG("ERROR  -->  E2AP : Failed to delete e2 node component");
                return RFAILED;
             }
             break;
          }
       default:
          {
-            DU_LOG("\nERROR  -->  E2AP : Invalid action %d received",action);
+            DU_LOG("ERROR  -->  E2AP : Invalid action %d received",action);
             return RFAILED;
          }
    }
@@ -1500,7 +1500,7 @@ void deleteActionSequence(CmLList *actionNode)
          case 5:
          default:
             {
-               DU_LOG("\nERROR  -->  E2AP : Format %d does not supported", definition->formatType);
+               DU_LOG("ERROR  -->  E2AP : Format %d does not supported", definition->formatType);
                break;
             }
       }
@@ -1634,7 +1634,7 @@ void fetchRicSubsToBeDeleted(CmLListCp *ricSubsToBeDelList)
                DU_ALLOC(subsToDelNode, sizeof(CmLList));
                if(!subsToDelNode)
                {
-                  DU_LOG("\nERROR  -->  E2AP : %s: Memory allocation failure at %d", __func__, __LINE__); 
+                  DU_LOG("ERROR  -->  E2AP : %s: Memory allocation failure at %d", __func__, __LINE__); 
                   return;
                }
                subsToDelNode->node = subsNode->node;
@@ -1666,7 +1666,7 @@ void removeE2NodeInformation()
 {
    uint16_t ranFuncIdx = 0;
    
-   DU_LOG("\nINFO  -->  E2AP : Deleting all the E2 node configuration");
+   DU_LOG("INFO  -->  E2AP : Deleting all the E2 node configuration");
    for(ranFuncIdx=0; ranFuncIdx<MAX_RAN_FUNCTION; ranFuncIdx++)
    {
       if(duCb.e2apDb.ranFunction[ranFuncIdx].id >0)
@@ -1711,7 +1711,7 @@ uint8_t e2ProcStatsDeleteRsp(MacStatsDeleteRsp *statsDeleteRsp)
     * in statistics delete response */
    if(fetchSubsInfoFromSubsId(statsDeleteRsp->subscriptionId, &ranFuncDb, &ricSubscriptionNode, &ricSubscriptionInfo) != ROK)
    {
-      DU_LOG("\nERROR  -->  E2AP : e2ProcStatsDeleteRsp: Failed to fetch subscriprtion details");
+      DU_LOG("ERROR  -->  E2AP : e2ProcStatsDeleteRsp: Failed to fetch subscriprtion details");
       return RFAILED;
    }
    ranFuncId = ricSubscriptionInfo->ranFuncId;
@@ -1734,7 +1734,7 @@ uint8_t e2ProcStatsDeleteRsp(MacStatsDeleteRsp *statsDeleteRsp)
 
       if(BuildAndSendRicSubscriptionDeleteFailure(ranFuncId, requestId, failureCause) != ROK)
       {
-         DU_LOG("\nERROR  -->  E2AP : e2ProcStatsDeleteRsp: failed to build and send ric subs delete failure");
+         DU_LOG("ERROR  -->  E2AP : e2ProcStatsDeleteRsp: failed to build and send ric subs delete failure");
          return RFAILED;
       }
    }
@@ -1742,7 +1742,7 @@ uint8_t e2ProcStatsDeleteRsp(MacStatsDeleteRsp *statsDeleteRsp)
    {
       if(BuildAndSendRicSubscriptionDeleteResponse(ranFuncId, requestId) != ROK)
       {
-         DU_LOG("\nERROR  -->  E2AP : e2ProcStatsDeleteRsp: failed to build and send ric subs delete rsp");
+         DU_LOG("ERROR  -->  E2AP : e2ProcStatsDeleteRsp: failed to build and send ric subs delete rsp");
          return RFAILED;
       }
    }
@@ -1795,7 +1795,7 @@ uint8_t e2ProcActionDeleteRsp(MacStatsDeleteRsp *statsDeleteRsp)
    /* [Step-1]  */
    if(fetchSubsInfoFromSubsId(statsDeleteRsp->subscriptionId, &ranFuncDb, &ricSubscriptionNode, &ricSubscriptionInfo) != ROK)
    {
-      DU_LOG("\nERROR  -->  E2AP : failed in function %s at line %d",__func__,__LINE__);
+      DU_LOG("ERROR  -->  E2AP : failed in function %s at line %d",__func__,__LINE__);
       return RFAILED;
    }
    
@@ -1812,7 +1812,7 @@ uint8_t e2ProcActionDeleteRsp(MacStatsDeleteRsp *statsDeleteRsp)
 
    if(pendingSubsModRsp == NULLP)
    {
-      DU_LOG("\nERROR  -->  E2AP : failed in function %s at line %d",__func__,__LINE__);
+      DU_LOG("ERROR  -->  E2AP : failed in function %s at line %d",__func__,__LINE__);
       return RFAILED;
    }
 
@@ -1850,7 +1850,7 @@ uint8_t e2ProcActionDeleteRsp(MacStatsDeleteRsp *statsDeleteRsp)
    pendingSubsModRsp->removeActionCompleted = true;
    if(duProcPendingSubsModRsp(ricSubscriptionInfo, pendingSubsModRsp) != ROK)
    {
-      DU_LOG("\nERROR  -->  E2AP : failed to process subscription modification rsp");
+      DU_LOG("ERROR  -->  E2AP : failed to process subscription modification rsp");
       return RFAILED;
    }
    return ROK;
@@ -1896,13 +1896,13 @@ uint8_t duProcPendingSubsModRsp(RicSubscription *ricSubscriptionInfo, PendingSub
                }
             default:
                {
-                  DU_LOG("\nERROR  -->  E2AP : Invalid event trigger format of RIC subscription");
+                  DU_LOG("ERROR  -->  E2AP : Invalid event trigger format of RIC subscription");
                   break;
                }
          }
          if(reportingPeriod == 0)
          {
-            DU_LOG("\nERROR  -->  E2AP : failed in function %s at line %d",__func__,__LINE__);
+            DU_LOG("ERROR  -->  E2AP : failed in function %s at line %d",__func__,__LINE__);
             break;
          }
 
@@ -1912,18 +1912,18 @@ uint8_t duProcPendingSubsModRsp(RicSubscription *ricSubscriptionInfo, PendingSub
          }
          else
          {
-            DU_LOG("\nERROR  -->  E2AP : RIC Subscription reporting timer already running for RIC Subscription");
+            DU_LOG("ERROR  -->  E2AP : RIC Subscription reporting timer already running for RIC Subscription");
             break;
          }
 
          if(BuildAndSendRicSubscriptionModificationResponse(pendingSubsModRsp) != ROK)
          {
-            DU_LOG("\nERROR  -->  E2AP : failed in function %s at line %d",__func__,__LINE__);
+            DU_LOG("ERROR  -->  E2AP : failed in function %s at line %d",__func__,__LINE__);
             break;
          }
 
          memset(pendingSubsModRsp, 0, sizeof(PendingSubsModRspInfo));
-         DU_LOG("\nProcessing of RIC subscription modification completed");
+         DU_LOG("Processing of RIC subscription modification completed");
          ret = ROK;
          break;
       }
@@ -1990,7 +1990,7 @@ uint8_t e2ProcStatsModificationRsp(MacStatsModificationRsp *statsModificationRsp
    /* [Step-1] */
    if(fetchSubsInfoFromSubsId(statsModificationRsp->subscriptionId, &ranFuncDb, &ricSubscriptionNode, &ricSubscriptionInfo) != ROK)
    {
-      DU_LOG("\nERROR  -->  E2AP : failed in function %s at line %d",__func__,__LINE__);
+      DU_LOG("ERROR  -->  E2AP : failed in function %s at line %d",__func__,__LINE__);
       return RFAILED;
    }
 
@@ -2006,7 +2006,7 @@ uint8_t e2ProcStatsModificationRsp(MacStatsModificationRsp *statsModificationRsp
    }
    if(pendingSubsModRsp == NULLP)
    {
-      DU_LOG("\nERROR  -->  E2AP : failed in function %s at line %d",__func__,__LINE__);
+      DU_LOG("ERROR  -->  E2AP : failed in function %s at line %d",__func__,__LINE__);
       return RFAILED;
    }
 
@@ -2058,7 +2058,7 @@ uint8_t e2ProcStatsModificationRsp(MacStatsModificationRsp *statsModificationRsp
    pendingSubsModRsp->modActionCompleted = true;
    if(duProcPendingSubsModRsp(ricSubscriptionInfo, pendingSubsModRsp) != ROK)
    {
-      DU_LOG("\nERROR  -->  E2AP : failed to process subscription modification rsp");
+      DU_LOG("ERROR  -->  E2AP : failed to process subscription modification rsp");
       return RFAILED;
    }
    return ROK;
@@ -2144,7 +2144,7 @@ uint8_t fillRicSubsInMacStatsModificationReq(MacStatsModificationReq *macStatsMo
                            }
                         default:
                            {
-                              DU_LOG("\nERROR  -->  E2AP : Invalid measurement name");
+                              DU_LOG("ERROR  -->  E2AP : Invalid measurement name");
                               break;
                            }
                      }
@@ -2155,7 +2155,7 @@ uint8_t fillRicSubsInMacStatsModificationReq(MacStatsModificationReq *macStatsMo
                }
             default:
                {
-                  DU_LOG("\nERROR  -->  E2AP : fillRicSubsInMacStatsModificationReq: Only Action Definition Format 1 supported");
+                  DU_LOG("ERROR  -->  E2AP : fillRicSubsInMacStatsModificationReq: Only Action Definition Format 1 supported");
                   break;
                }
          }

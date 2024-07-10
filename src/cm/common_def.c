@@ -21,7 +21,7 @@
 #ifdef MEM_SIZE_CHECK
 #define CM_MEMORY_ALLOC_SIZE_LOG(_line, _func, _size) \
 {\
-   DU_LOG("\nRLC line = %d, func = %s, _size= %d ", _line, _func, _size); \
+   DU_LOG("CM line = %d, func = %s, _size= %d ", _line, _func, _size); \
 }
 #else
 #define CM_MEMORY_ALLOC_SIZE_LOG(_line, _func, _size) {}

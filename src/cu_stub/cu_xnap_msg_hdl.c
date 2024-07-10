@@ -58,7 +58,7 @@ void BuildAndSendXnSetupReq()
             ODU_PRINT_MSG(mBuf, 0,0);
             if(sendOnSctpAssoc(assocCb, mBuf) != ROK)
             {
-               DU_LOG("\nERROR  -->  CU_STUB: Failed to send XN setup request to peer CU");
+               DU_LOG("ERROR  -->  CU_STUB: Failed to send XN setup request to peer CU");
             }
          }
          break;
@@ -86,7 +86,7 @@ void XNAPProcXnSetupReq(uint32_t *destId, Buffer *mBuf)
 {
    uint8_t cuId;
 
-   DU_LOG("\nINFO  -->  CU STUB : Received XN Setup Request");
+   DU_LOG("INFO  -->  CU STUB : Received XN Setup Request");
    CMCHKUNPK(oduUnpackUInt8, &(cuId), mBuf)
    *destId = cuId;
 
@@ -118,7 +118,7 @@ void BuildAndSendXnSetupRsp(uint32_t destId)
       CMCHKPK(oduPackUInt8, XN_SETUP_RSP, mBuf);
       if(sctpSend(XN_INTERFACE, destId, mBuf))
       {
-         DU_LOG("\nERROR  -->  CU_STUB: Failed to send XN setup response to peer CU");
+         DU_LOG("ERROR  -->  CU_STUB: Failed to send XN setup response to peer CU");
       }   
    }   
 }
@@ -143,7 +143,7 @@ void XNAPProcXnSetupRsp(uint32_t *destId, Buffer *mBuf)
 {
    uint8_t cuId;
 
-   DU_LOG("\nINFO  -->  CU STUB : Received XN Setup Response");
+   DU_LOG("INFO  -->  CU STUB : Received XN Setup Response");
    CMCHKUNPK(oduUnpackUInt8, &(cuId), mBuf)
    *destId = cuId;
 }
@@ -179,7 +179,7 @@ void BuildAndSendHOReq(CuUeCb *ueCb, char *xnMsg, MsgLen xnMsgLen)
          CMCHKPK(oduPackUInt8, HO_REQ, mBuf);
          if(sctpSend(XN_INTERFACE, ueCb->hoInfo.tgtNodeId, mBuf) != ROK)
          {
-            DU_LOG("\nERROR  -->  CU_STUB: Failed to send handover request to peer CU");
+            DU_LOG("ERROR  -->  CU_STUB: Failed to send handover request to peer CU");
             ueCb->state = UE_ACTIVE;
             memset(&ueCb->hoInfo, 0, sizeof(HandoverInfo));
          }
@@ -215,7 +215,7 @@ void XNAPProcHandoverReq(uint32_t destId, Buffer *mBuf)
    DuDb *duDb;
    CuCellCb *cellCb;
 
-   DU_LOG("\nINFO  -->  CU STUB : Received Handover Request");
+   DU_LOG("INFO  -->  CU STUB : Received Handover Request");
    
    /* Find DU Db and Cell Cb from cellId */
    CMCHKUNPK(oduUnpackUInt32, &(cellId), mBuf);
@@ -228,7 +228,7 @@ void XNAPProcHandoverReq(uint32_t destId, Buffer *mBuf)
    }
    if(!cellCb)
    {
-      DU_LOG("\nERROR  -->  CU_STUB: Failed to find Cell Id [%d] received in HO Request", cellId);
+      DU_LOG("ERROR  -->  CU_STUB: Failed to find Cell Id [%d] received in HO Request", cellId);
       return;
    }
 
@@ -240,7 +240,7 @@ void XNAPProcHandoverReq(uint32_t destId, Buffer *mBuf)
    CU_ALLOC(duDb->tempUeCtxtInHo, sizeof(CuUeCb));
    if(!duDb->tempUeCtxtInHo)
    {
-      DU_LOG("\nERROR  -->  XNAP : Failed to allocate memory to temporary UE context for UE in handover");
+      DU_LOG("ERROR  -->  XNAP : Failed to allocate memory to temporary UE context for UE in handover");
       return;
    }
    memset(duDb->tempUeCtxtInHo, 0, sizeof(CuUeCb));
@@ -264,7 +264,7 @@ void XNAPProcHandoverReq(uint32_t destId, Buffer *mBuf)
    memset(f1apMsg, 0, sizeof(F1AP_PDU_t));
    if(F1APDecodeMsg(f1apMsg, mBuf, &recvBuf, &recvBufLen) != ROK)
    {
-      DU_LOG("\nERROR  -->  F1AP : F1AP PDU decode failed");
+      DU_LOG("ERROR  -->  F1AP : F1AP PDU decode failed");
       return;
    }
    CU_FREE(recvBuf, recvBufLen);
@@ -301,7 +301,7 @@ void BuildAndSendHOReqAck(CuUeCb *ueCb, char *xnMsg, MsgLen xnMsgLen)
          CMCHKPK(oduPackUInt8, HO_REQ_ACK, mBuf);
          if(sctpSend(XN_INTERFACE, ueCb->hoInfo.srcNodeId, mBuf) != ROK)
          {
-            DU_LOG("\nERROR  -->  CU_STUB: Failed to send handover request ack to peer CU");
+            DU_LOG("ERROR  -->  CU_STUB: Failed to send handover request ack to peer CU");
          }
       }
    }
@@ -338,7 +338,7 @@ void XNAPProcHandoverReqAck(uint32_t destId, Buffer *mBuf)
    DuDb      *duDb;
    CuUeCb    *ueCb;
 
-   DU_LOG("\nINFO  -->  CU STUB : Received Handover Request Acknowledgement");
+   DU_LOG("INFO  -->  CU STUB : Received Handover Request Acknowledgement");
    
    /* Fetch UE CB and DU DB in Source CU for UE under Inter-CU Handover */
    CMCHKUNPK(oduUnpackUInt8, &(cuUeF1apIdSrc), mBuf);
@@ -358,7 +358,7 @@ void XNAPProcHandoverReqAck(uint32_t destId, Buffer *mBuf)
    }
    if(!duDb || !ueCb)
    {
-      DU_LOG("\nERROR  -->  CU STUB : UE CB not found for CU UE F1AP ID [%d]", cuUeF1apIdSrc);
+      DU_LOG("ERROR  -->  CU STUB : UE CB not found for CU UE F1AP ID [%d]", cuUeF1apIdSrc);
       return;
    }
 
@@ -378,12 +378,12 @@ void XNAPProcHandoverReqAck(uint32_t destId, Buffer *mBuf)
    CU_ALLOC(rrcCont.buf, rrcCont.size);
    if(rrcCont.buf == NULLP)
    {
-      DU_LOG("\nERROR  -->  XNAP : Memory allocation failed");
+      DU_LOG("ERROR  -->  XNAP : Memory allocation failed");
       return;
    }
    if(ODU_COPY_MSG_TO_FIX_BUF(mBuf, 0, rrcCont.size, (Data *)rrcCont.buf, &copyCnt) != ROK)
    {
-      DU_LOG("\nERROR  -->  F1AP : Failed while copying %d", copyCnt);
+      DU_LOG("ERROR  -->  F1AP : Failed while copying %d", copyCnt);
       return;
    }
 
@@ -396,7 +396,7 @@ void XNAPProcHandoverReqAck(uint32_t destId, Buffer *mBuf)
     * Xn Handover Request Ack */
    if(BuildAndSendUeContextModificationReq(duDb->duId, ueCb, STOP_DATA_TX) != ROK)
    {
-      DU_LOG("\nERROR  ->  F1AP : Failed at BuildAndSendUeContextModificationReq()");
+      DU_LOG("ERROR  ->  F1AP : Failed at BuildAndSendUeContextModificationReq()");
       return;
    }
 }
@@ -426,7 +426,7 @@ void BuildAndSendUeContextRelease(CuUeCb *ueCb)
       CMCHKPK(oduPackUInt8, UE_CTXT_REL, mBuf);
       if(sctpSend(XN_INTERFACE, ueCb->hoInfo.srcNodeId, mBuf) != ROK)
       {
-         DU_LOG("\nERROR  -->  CU_STUB: Failed to send UE context release to peer CU");
+         DU_LOG("ERROR  -->  CU_STUB: Failed to send UE context release to peer CU");
       }
    }
 
@@ -457,7 +457,7 @@ void XNAPProcUeContextRel(uint32_t destId, Buffer *mBuf)
    DuDb      *duDb;
    CuUeCb    *ueCb;
 
-   DU_LOG("\nINFO  -->  CU STUB : Received UE Context Release");
+   DU_LOG("INFO  -->  CU STUB : Received UE Context Release");
 
    /* Fetch UE CB and DU DB in Source CU for UE under Inter-CU Handover */
    CMCHKUNPK(oduUnpackUInt8, &(cuUeF1apIdSrc), mBuf);
@@ -477,7 +477,7 @@ void XNAPProcUeContextRel(uint32_t destId, Buffer *mBuf)
    }
    if(!duDb || !ueCb)
    {
-      DU_LOG("\nERROR  -->  CU STUB : UE CB not found for CU UE F1AP ID [%d]", cuUeF1apIdSrc);
+      DU_LOG("ERROR  -->  CU STUB : UE CB not found for CU UE F1AP ID [%d]", cuUeF1apIdSrc);
       return;
    }
 
@@ -538,7 +538,7 @@ void XNAPMsgHdlr(uint32_t *destId, Buffer *mBuf)
             break;
          }
       default:
-         DU_LOG("\nERROR  --> CU_STUB : Invalid event [%d] received at XN interface", event);
+         DU_LOG("ERROR  --> CU_STUB : Invalid event [%d] received at XN interface", event);
          break;
    }
 }

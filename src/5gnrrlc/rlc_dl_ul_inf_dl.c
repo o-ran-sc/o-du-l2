@@ -114,7 +114,7 @@ SpId   spId
          /* Update the State */
          udxSap->state = RLC_SAP_BND;
 
-         DU_LOG("\nINFO   --> RLC_DL : UDX SAP state [%d]", udxSap->state);
+         DU_LOG("INFO   --> RLC_DL : UDX SAP state [%d]", udxSap->state);
          break;
       }
       /* SAP is already bound */
@@ -132,7 +132,7 @@ SpId   spId
             RLC_SEND_SAPID_ALARM(tRlcCb, spId, 
                                 LKW_EVENT_UDX_BND_REQ, LCM_CAUSE_INV_PAR_VAL);
 
-            DU_LOG("\nERROR  --> RLC_DL : UDX SAP already Bound");
+            DU_LOG("ERROR  --> RLC_DL : UDX SAP already Bound");
             rlcDlUdxBndCfm(&(udxSap->pst), udxSap->suId, CM_BND_NOK);
          }
          break;
@@ -144,7 +144,7 @@ SpId   spId
          RLC_SEND_SAPID_ALARM(tRlcCb,spId, 
                              LKW_EVENT_CKW_BND_REQ, LCM_CAUSE_INV_STATE);
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
-         DU_LOG("\nERROR  --> RLC_DL : Invalid UDX SAP State in Bind Req");
+         DU_LOG("ERROR  --> RLC_DL : Invalid UDX SAP State in Bind Req");
          rlcDlUdxBndCfm(&(udxSap->pst), udxSap->suId, CM_BND_NOK);
          break;
       }
@@ -184,7 +184,7 @@ Reason   reason
 
    tRlcCb = RLC_GET_RLCCB(pst->dstInst);
 
-   DU_LOG("\nDEBUG  --> RLC_DL : Unbind Req for spId[%d], reason[%d]", 
+   DU_LOG("DEBUG  --> RLC_DL : Unbind Req for spId[%d], reason[%d]", 
                 spId, reason);
    UNUSED(reason);
    /* disable upper sap (CKW) */
@@ -251,7 +251,7 @@ RlcCfgInfo   *cfg
 #if (ERRCLASS & ERRCLS_ADD_RES)
    if (cfgCfm == NULLP)
    {
-      DU_LOG("\nERROR  --> RLC_DL : Memory Allocation Failed.");
+      DU_LOG("ERROR  --> RLC_DL : Memory Allocation Failed.");
       /* kw002.201 Freeing from proper region */
       /* RLC_PST_FREE(pst->region, pst->pool, cfg, sizeof(RlcCfgInfo)); */
       return RFAILED;
@@ -277,7 +277,7 @@ RlcCfgInfo   *cfg
                   if (rlcCfgAddDlRb(tRlcCb,cfg->ueId, cfg->cellId,\
                               entCfg, entCfgCfm) != ROK)
                   {
-                     DU_LOG("\nERROR  --> RLC_DL : Addition Failed due to[%d]",
+                     DU_LOG("ERROR  --> RLC_DL : Addition Failed due to[%d]",
                            entCfgCfm->status.reason);
                   }
                }
@@ -291,7 +291,7 @@ RlcCfgInfo   *cfg
                   if (rlcCfgReCfgDlRb(tRlcCb,cfg->ueId, cfg->cellId,\
                            entCfg, entCfgCfm) != ROK)
                   {
-                     DU_LOG("\nERROR  --> RLC_DL : ReCfg Failed due to[%d]",
+                     DU_LOG("ERROR  --> RLC_DL : ReCfg Failed due to[%d]",
                            entCfgCfm->status.reason);
                   }
                }
@@ -306,7 +306,7 @@ RlcCfgInfo   *cfg
                   if (rlcCfgDelDlRb(tRlcCb,cfg->ueId, cfg->cellId,\
                         entCfg, entCfgCfm) != ROK)
                   {
-                     DU_LOG("\nERROR  --> RLC_DL : Deletion Failed due to[%d]",
+                     DU_LOG("ERROR  --> RLC_DL : Deletion Failed due to[%d]",
                            entCfgCfm->status.reason);
                   } 
                }
@@ -329,7 +329,7 @@ RlcCfgInfo   *cfg
                   if (rlcCfgReEstDlRb(tRlcCb,cfg->ueId, cfg->cellId,
                                      sndReEst,entCfg, entCfgCfm) != ROK)
                   {
-                     DU_LOG("\nERROR  --> RLC_DL : Reest Failed due to[%d]",
+                     DU_LOG("ERROR  --> RLC_DL : Reest Failed due to[%d]",
                            entCfgCfm->status.reason);
                   }
                }
@@ -342,12 +342,12 @@ RlcCfgInfo   *cfg
                if (rlcCfgDelDlUe(tRlcCb,cfg->ueId, cfg->cellId,
                                 entCfg, entCfgCfm) != ROK)
                {
-                  DU_LOG("\nERROR  --> RLC_DL : deletion Failed due to[%d]",
+                  DU_LOG("ERROR  --> RLC_DL : deletion Failed due to[%d]",
                            entCfgCfm->status.reason);
                }
                else
                {
-                  DU_LOG("\nDEBUG  -->  RLC_DL: UE information is deleted for UEId[%d] and CellId[%d]",\
+                  DU_LOG("DEBUG  -->  RLC_DL: UE information is deleted for UEId[%d] and CellId[%d]",\
                   cfg->ueId, cfg->cellId);
                }
                break;
@@ -357,7 +357,7 @@ RlcCfgInfo   *cfg
                if (rlcCfgDelDlCell(tRlcCb,cfg->cellId,entCfg,entCfgCfm) 
                                                                 != ROK )
                {
-                  DU_LOG("\nERROR  --> RLC_DL : deletion Failed due to[%d]",
+                  DU_LOG("ERROR  --> RLC_DL : deletion Failed due to[%d]",
                            entCfgCfm->status.reason);
                } 
                break;
@@ -367,7 +367,7 @@ RlcCfgInfo   *cfg
             {
                RLC_CFG_FILL_CFG_CFM(entCfgCfm, entCfg->rbId, entCfg->rbType,\
                                    CKW_CFG_CFM_NOK, CKW_CFG_REAS_INVALID_CFG);
-               DU_LOG("\nERROR  --> RLC_DL : Invalid CfgType");
+               DU_LOG("ERROR  --> RLC_DL : Invalid CfgType");
             }
       }
    }
@@ -437,7 +437,7 @@ CkwUeInfo   *newUeInfo
    
    if (rlcCfgDlUeIdChng(tRlcCb, ueInfo, newUeInfo, &status) != ROK)
    {
-      DU_LOG("\nERROR  --> RLC_DL : Failure due to[%d]",
+      DU_LOG("ERROR  --> RLC_DL : Failure due to[%d]",
              status.reason);
    }
    rlcDlUdxUeIdChgCfm(&(tRlcCb->u.dlCb->udxDlSap[spId].pst),
@@ -477,7 +477,7 @@ RlcUdxDlStaPdu   *pStaPdu
    rlcDbmFetchDlRbCbByRbId(tRlcCb, rlcId, &rbCb); /* Fetch DBM RbCb */
    if (!rbCb)
    {
-      DU_LOG("\nERROR  --> RLC_DL : CellId [%u]:RbId[%d] not found",
+      DU_LOG("ERROR  --> RLC_DL : CellId [%u]:RbId[%d] not found",
             rlcId->cellId,rlcId->rbId);
       RLC_FREE_SHRABL_BUF(pst->region, 
 			 pst->pool, 
@@ -532,7 +532,7 @@ RlcUdxStaPdu   *pStaPdu
    rlcDbmFetchDlRbCbByRbId(tRlcCb, rlcId, &rbCb);
    if (!rbCb)
    {
-      DU_LOG("\nERROR  --> RLC_DL : CellId [%u]:RbId[%d] not found",
+      DU_LOG("ERROR  --> RLC_DL : CellId [%u]:RbId[%d] not found",
             rlcId->cellId,rlcId->rbId);
       return RFAILED;
    }

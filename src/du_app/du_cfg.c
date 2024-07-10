@@ -127,7 +127,7 @@ uint8_t cpyRrmPolicyInDuCfgParams(RrmPolicyList rrmPolicy[], uint8_t policyNum, 
       DU_ALLOC_SHRABL_BUF(tempSliceCfg->listOfRrmPolicy, tempSliceCfg->numOfRrmPolicy  * sizeof(MacSliceRrmPolicy*));
       if(!tempSliceCfg->listOfRrmPolicy)
       {
-         DU_LOG("\nERROR  --> DU APP : Memory allocation failed in cpyRrmPolicyInDuCfgParams");
+         DU_LOG("ERROR  --> DU APP : Memory allocation failed in cpyRrmPolicyInDuCfgParams");
          return RFAILED;
       }
 
@@ -136,7 +136,7 @@ uint8_t cpyRrmPolicyInDuCfgParams(RrmPolicyList rrmPolicy[], uint8_t policyNum, 
          DU_ALLOC_SHRABL_BUF(tempSliceCfg->listOfRrmPolicy[policyIdx], sizeof(MacSliceRrmPolicy));
          if(!tempSliceCfg->listOfRrmPolicy[policyIdx])
          {
-            DU_LOG("\nERROR  --> DU APP : Memory allocation failed in cpyRrmPolicyInDuCfgParams");
+            DU_LOG("ERROR  --> DU APP : Memory allocation failed in cpyRrmPolicyInDuCfgParams");
             return RFAILED;
          }
 
@@ -151,7 +151,7 @@ uint8_t cpyRrmPolicyInDuCfgParams(RrmPolicyList rrmPolicy[], uint8_t policyNum, 
 
             if(!tempSliceCfg->listOfRrmPolicy[policyIdx]->rRMPolicyMemberList)
             {
-               DU_LOG("\nERROR  --> DU APP : Memory allocation failed in cpyRrmPolicyInDuCfgParams");
+               DU_LOG("ERROR  --> DU APP : Memory allocation failed in cpyRrmPolicyInDuCfgParams");
                return RFAILED;
             }
 
@@ -161,7 +161,7 @@ uint8_t cpyRrmPolicyInDuCfgParams(RrmPolicyList rrmPolicy[], uint8_t policyNum, 
                DU_ALLOC_SHRABL_BUF(tempSliceCfg->listOfRrmPolicy[policyIdx]->rRMPolicyMemberList[memberListIdx], sizeof(RrmPolicyMemberList));
                if(!tempSliceCfg->listOfRrmPolicy[policyIdx]->rRMPolicyMemberList[memberListIdx])
                {
-                  DU_LOG("\nERROR  --> DU APP : Memory allocation failed in cpyRrmPolicyInDuCfgParams");
+                  DU_LOG("ERROR  --> DU APP : Memory allocation failed in cpyRrmPolicyInDuCfgParams");
                   return RFAILED;
                }
                memcpy(&tempSliceCfg->listOfRrmPolicy[policyIdx]->rRMPolicyMemberList[memberListIdx]->snssai.sd,\
@@ -606,7 +606,7 @@ uint8_t parseSupportedSliceList(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur, Supp
          sliceSuppLst->numSupportedSlices = atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
          if(sliceSuppLst->numSupportedSlices > MAX_NUM_OF_SLICE_ITEMS)
          {
-            DU_LOG("\nERROR --> DU_APP: %s: Number of supported slice [%d] is more than 1024",\
+            DU_LOG("ERROR --> DU_APP: %s: Number of supported slice [%d] is more than 1024",\
                   __func__, sliceSuppLst->numSupportedSlices);
             return RFAILED;
          }
@@ -617,7 +617,7 @@ uint8_t parseSupportedSliceList(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur, Supp
          DU_ALLOC_SHRABL_BUF(sliceSuppLst->snssai, (sliceSuppLst->numSupportedSlices) * sizeof(Snssai*));
          if (sliceSuppLst->snssai == NULLP)
          {
-            DU_LOG("\nERROR  --> DU_APP: %s: Memory allocation failed at line %d", __func__, __LINE__);
+            DU_LOG("ERROR  --> DU_APP: %s: Memory allocation failed at line %d", __func__, __LINE__);
             return RFAILED;
          }
 
@@ -626,7 +626,7 @@ uint8_t parseSupportedSliceList(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur, Supp
             DU_ALLOC_SHRABL_BUF(sliceSuppLst->snssai[sliceIdx], sizeof(Snssai));
             if (sliceSuppLst->snssai[sliceIdx] == NULLP)
             {
-               DU_LOG("\nERROR  --> DU_APP: %s: Memory allocation failed at line %d", __func__, __LINE__);
+               DU_LOG("ERROR  --> DU_APP: %s: Memory allocation failed at line %d", __func__, __LINE__);
                return RFAILED;
             }
             else
@@ -1382,7 +1382,7 @@ uint8_t fillDuSrvdCellSysInfo(F1DuSysInfo *sysInfo)
    DU_ALLOC(sysInfo->mibMsg, encBufSize);
    if(!(sysInfo->mibMsg))
    {
-      DU_LOG("\nERROR  -->  DU APP : %s : Memory allocation failure at line %d", __func__, __LINE__);
+      DU_LOG("ERROR  -->  DU APP : %s : Memory allocation failure at line %d", __func__, __LINE__);
       return RFAILED;
    }
    memcpy(sysInfo->mibMsg, encBuf, encBufSize);
@@ -1393,7 +1393,7 @@ uint8_t fillDuSrvdCellSysInfo(F1DuSysInfo *sysInfo)
    DU_ALLOC(sysInfo->sib1Msg, encBufSize);
    if(!(sysInfo->sib1Msg))
    {
-      DU_LOG("\nERROR  -->  DU APP : %s : Memory allocation failure at line %d", __func__, __LINE__);
+      DU_LOG("ERROR  -->  DU APP : %s : Memory allocation failure at line %d", __func__, __LINE__);
       return RFAILED;
    }
    memcpy(sysInfo->sib1Msg, encBuf,encBufSize);
@@ -1748,7 +1748,7 @@ uint8_t parseCsiRsCfg(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur, CsiRsCfg *csiR
          DU_ALLOC(csiRsCfg->csiFreqDomainAlloc, sizeof(uint8_t));
          if(!csiRsCfg->csiFreqDomainAlloc)
          {
-            DU_LOG("\nERROR  --> DU APP : %s: Memory allocation failed at line %d", __func__, __LINE__);
+            DU_LOG("ERROR  --> DU APP : %s: Memory allocation failed at line %d", __func__, __LINE__);
             return RFAILED;
          }
          memcpy(csiRsCfg->csiFreqDomainAlloc, &csiFreqDomainAlloc,  sizeof(uint8_t));
@@ -1901,7 +1901,7 @@ uint8_t parseSsbCfg(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur, SsbCfg *ssbCfg)
 
    if(BuildMibPdu() != ROK)
    {
-      DU_LOG("\nERROR  -->  Failed to build MIB PDU");
+      DU_LOG("ERROR  -->  Failed to build MIB PDU");
       memset(&ssbCfg->mibPdu, 0, 3*sizeof(uint8_t));
    }
    else
@@ -2411,7 +2411,7 @@ uint8_t parseSib1CellCfg(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur, Sib1CellCfg
       DU_ALLOC_SHRABL_BUF(sib1CellCfg->sib1Pdu, sib1CellCfg->sib1PduLen);
       if(!sib1CellCfg->sib1Pdu)
       {
-         DU_LOG("\nERROR  --> DU APP : %s: Memory allocation failed at line %d", __func__, __LINE__);
+         DU_LOG("ERROR  --> DU APP : %s: Memory allocation failed at line %d", __func__, __LINE__);
          return RFAILED;
       }
       memcpy(sib1CellCfg->sib1Pdu, duCfgParam.srvdCellLst[0].duSysInfo.sib1Msg, sib1CellCfg->sib1PduLen);
@@ -4065,7 +4065,7 @@ uint8_t parseSib1Params(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur,Sib1Params *s
 #ifdef O1_ENABLE
    sib1Params-> tac = cellParams.nRTAC;
    sib1Params->cellIdentity = CELL_IDENTITY *  cellParams.cellLocalId;
-   DU_LOG("\nDEBUG --> DU_APP: parseSib1Params(): OAM CellLocalId=%d", sib1Params->cellIdentity);
+   DU_LOG("DEBUG --> DU_APP: parseSib1Params(): OAM CellLocalId=%d", sib1Params->cellIdentity);
 #else
       if ((!xmlStrcmp(cur->name, (const xmlChar *)"TAC")) && (cur->ns == ns))
       {
@@ -4265,7 +4265,7 @@ uint8_t parseMacSliceRrmPolicy(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur, MacSl
 
          if(!rrmPolicy->rRMPolicyMemberList)
          {
-            DU_LOG("\nERROR  --> DU APP : %s: Memory allocation failed at line %d", __func__, __LINE__);
+            DU_LOG("ERROR  --> DU APP : %s: Memory allocation failed at line %d", __func__, __LINE__);
             return RFAILED;
          }
 
@@ -4274,7 +4274,7 @@ uint8_t parseMacSliceRrmPolicy(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur, MacSl
             DU_ALLOC_SHRABL_BUF(rrmPolicy->rRMPolicyMemberList[memIdx], sizeof(RrmPolicyMemberList));
             if (rrmPolicy->rRMPolicyMemberList[memIdx] == NULLP)
             {
-               DU_LOG("\nERROR  --> DU_APP: %s: Memory allocation failed at line %d", __func__, __LINE__);
+               DU_LOG("ERROR  --> DU_APP: %s: Memory allocation failed at line %d", __func__, __LINE__);
                return RFAILED;
             }
 
@@ -4333,7 +4333,7 @@ uint8_t parseMacSliceCfgReq(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur,MacSliceC
          DU_ALLOC_SHRABL_BUF(macSliceCfgReq->listOfRrmPolicy,  macSliceCfgReq->numOfRrmPolicy * sizeof(MacSliceRrmPolicy*));
          if(!macSliceCfgReq->listOfRrmPolicy)
          {
-            DU_LOG("\nERROR  --> DU APP: %s: Memory allocation failed at line %d", __func__, __LINE__);
+            DU_LOG("ERROR  --> DU APP: %s: Memory allocation failed at line %d", __func__, __LINE__);
             return RFAILED;
          }
 
@@ -4342,7 +4342,7 @@ uint8_t parseMacSliceCfgReq(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur,MacSliceC
             DU_ALLOC_SHRABL_BUF(macSliceCfgReq->listOfRrmPolicy[policyIdx], sizeof(MacSliceRrmPolicy));
             if (macSliceCfgReq->listOfRrmPolicy[policyIdx] == NULLP)
             {
-               DU_LOG("\nERROR  --> DU_APP: %s: Memory allocation failed at line %d", __func__, __LINE__);
+               DU_LOG("ERROR  --> DU_APP: %s: Memory allocation failed at line %d", __func__, __LINE__);
             }
             
             if(parseMacSliceRrmPolicy(doc, ns, cur, macSliceCfgReq->listOfRrmPolicy[policyIdx]) != ROK)
@@ -5270,7 +5270,7 @@ uint8_t parseDuCfgParams(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur)
          DU_ALLOC(duCfgParam.duName, strlen(tempDuName));
          if(!duCfgParam.duName)
          {
-            DU_LOG("\nERROR --> DU_APP: %s: Memory allocation failed at line %d", __func__, __LINE__);
+            DU_LOG("ERROR --> DU_APP: %s: Memory allocation failed at line %d", __func__, __LINE__);
             ret = RFAILED;
             break;
          }
@@ -5489,7 +5489,7 @@ uint8_t duReadCfg()
    doc = xmlParseFile(filename);
    if(doc == NULL)
    {
-      DU_LOG("\nERROR  --> DU_APP: Failed to parse the XML file");
+      DU_LOG("ERROR  --> DU_APP: Failed to parse the XML file");
       return RFAILED;
    }
 
@@ -5497,7 +5497,7 @@ uint8_t duReadCfg()
    ns = xmlSearchNsByHref(doc, cur, (const xmlChar *)"urn:o-ran:odu:configuration");
    if(ns == NULL)
    {
-      DU_LOG("\nERROR  --> DU_APP: XML Namespace not found.\n");
+      DU_LOG("ERROR  --> DU_APP: XML Namespace not found.\n");
       xmlFreeDoc(doc);
       xmlCleanupParser();
       return RFAILED;
@@ -5525,19 +5525,19 @@ uint8_t duReadCfg()
    /* Timer Registration request to system services */
    if (ODU_REG_TMR_MT(pst.srcEnt, pst.srcInst, duCb.duTimersInfo.tmrRes, duActvTmr) != ROK)
    {
-      DU_LOG("\nERROR  -->  DU_APP : Failed to register timer");
+      DU_LOG("ERROR  -->  DU_APP : Failed to register timer");
       return RFAILED;
    }   
               
    if(ODU_GET_MSG_BUF(DFLT_REGION, DU_POOL, &mBuf) != ROK)
    {
-      DU_LOG("\nERROR  -->  DU_APP : Memory allocation failed in duReadCfg");
+      DU_LOG("ERROR  -->  DU_APP : Memory allocation failed in duReadCfg");
       return RFAILED;
    }
 
    if (ODU_POST_TASK(&pst, mBuf) != ROK)
    {
-      DU_LOG("\nERROR  -->  DU_APP : ODU_POST_TASK failed in duReadCfg");
+      DU_LOG("ERROR  -->  DU_APP : ODU_POST_TASK failed in duReadCfg");
       return RFAILED;
    }
 
@@ -5631,11 +5631,11 @@ void printDuConfig()
    TDDCfg *tddCfg;
 #endif
 
-   DU_LOG("\n ** DU CONFIGURATION ** \n");
+   DU_LOG(" ** DU CONFIGURATION ** \n");
    DU_LOG("DU ID %d\n", duCfgParam.duId);
    DU_LOG("DU Name %s\n", duCfgParam.duName);
 
-   DU_LOG("\n ** Thread Affinity ** \n");
+   DU_LOG(" ** Thread Affinity ** \n");
    DU_LOG("DU APP CORE ID %d\n", duCfgParam.threadInfo.duAppCoreId);
    DU_LOG("EGTP CORE ID %d\n", duCfgParam.threadInfo.egtpCoreId);
    DU_LOG("SCTP CORE ID %d\n", duCfgParam.threadInfo.sctpCoreId);
@@ -5651,7 +5651,7 @@ void printDuConfig()
    DU_LOG("MAX NUM DRB %d\n", duCfgParam.maxNumDrb);
 
    sctp = &duCfgParam.sctpParams;
-   DU_LOG("\n ** SCTP PARAMETER ** \n");
+   DU_LOG(" ** SCTP PARAMETER ** \n");
    DU_LOG("DU IPv4 Address present %u\n", sctp->duIpAddr.ipV4Pres);
    DU_LOG("DU IP Address %u\n", sctp->duIpAddr.ipV4Addr);
    DU_LOG("CU IPv4 Address present %u\n", sctp->cuIpAddr.ipV4Pres);
@@ -5672,7 +5672,7 @@ void printDuConfig()
 #endif
 
    egtp = &duCfgParam.egtpParams;
-   DU_LOG("\n ** EGTP PARAMETER ** \n");
+   DU_LOG(" ** EGTP PARAMETER ** \n");
    DU_LOG("DU IP Address %d\n", egtp->localIp.ipV4Addr);
    DU_LOG("CU IP Address %d\n", egtp->destIp.ipV4Addr);
    DU_LOG("EGTP Port at DU %d\n", egtp->localPort);
@@ -5681,7 +5681,7 @@ void printDuConfig()
    DU_LOG("Maximum Tunnel ID %d\n",egtp->maxTunnelId);
 
    mib = &duCfgParam.mibParams;
-   DU_LOG("\n ** MIB PARAMETER ** \n");
+   DU_LOG(" ** MIB PARAMETER ** \n");
    DU_LOG("System Frame Number %d\n", mib->sysFrmNum);
    DU_LOG("Subcarrier Spacing Common %ld\n", mib->subCarrierSpacingCommon);
    DU_LOG("SSB Subcarrier Offset %ld\n", mib->ssb_SubcarrierOffset);
@@ -5692,14 +5692,14 @@ void printDuConfig()
    DU_LOG("Intra Frequency Reselection %ld\n", mib->intraFreqReselection);
    
    duSysInfo = &duCfgParam.srvdCellLst[0].duSysInfo;
-   DU_LOG("\n ** DU System Information ** \n");
+   DU_LOG(" ** DU System Information ** \n");
    DU_LOG("MIB length %d\n", duSysInfo->mibLen);
    DU_LOG("MIB message  %s\n", duSysInfo->mibMsg);
    DU_LOG("SIB1 length  %d\n", duSysInfo->sib1Len);
    DU_LOG("SIB1 message  %s\n", duSysInfo->sib1Msg);
    
    f1DuCellInfo = &duCfgParam.srvdCellLst[0].duCellInfo;
-   DU_LOG("\n ** DU Cell Information ** \n");
+   DU_LOG(" ** DU Cell Information ** \n");
 
    f1CellInfo = &f1DuCellInfo->cellInfo;
    DU_LOG("NR PCI %d\n", f1CellInfo->nrPci);
@@ -5709,7 +5709,7 @@ void printDuConfig()
    DU_LOG("Cell Direction %d\n", f1DuCellInfo->cellDir);
    DU_LOG("Cell Type %d\n", f1DuCellInfo->cellType);
 
-   DU_LOG("\n ** Cell  Info : NR CGI ** \n");
+   DU_LOG(" ** Cell  Info : NR CGI ** \n");
    DU_LOG("Cell Id %d\n",f1CellInfo->nrCgi.cellId);
    DU_LOG("PLMN : mcc[0] %d\n", f1CellInfo->nrCgi.plmn.mcc[0]);
    DU_LOG("PLMN : mcc[1] %d\n", f1CellInfo->nrCgi.plmn.mcc[1]);
@@ -5719,7 +5719,7 @@ void printDuConfig()
    DU_LOG("PLMN : mnc[2] %d\n", f1CellInfo->nrCgi.plmn.mnc[2]);
 
    srvdPlmn = &f1CellInfo->srvdPlmn[0];
-   DU_LOG("\n ** Cell  Info : Served PLMN ** \n");
+   DU_LOG(" ** Cell  Info : Served PLMN ** \n");
    DU_LOG("PLMN : mcc[0] %d\n", srvdPlmn->plmn.mcc[0]);
    DU_LOG("PLMN : mcc[1] %d\n", srvdPlmn->plmn.mcc[1]);
    DU_LOG("PLMN : mcc[2] %d\n", srvdPlmn->plmn.mcc[2]);
@@ -5734,7 +5734,7 @@ void printDuConfig()
    DU_LOG("EXT_PLMN : mnc[2] %d\n", srvdPlmn->extPlmn.mnc[2]);
 
    sliceSuppLst = &srvdPlmn->taiSliceSuppLst;
-   DU_LOG("\n ** Cell  Info : Served PLMN : Supported Slice List ** \n");
+   DU_LOG(" ** Cell  Info : Served PLMN : Supported Slice List ** \n");
    DU_LOG("Number of Slices supported %d\n", sliceSuppLst->numSupportedSlices);
    for (sliceIdx = 0; sliceIdx < sliceSuppLst->numSupportedSlices; sliceIdx++)
    {
@@ -5745,7 +5745,7 @@ void printDuConfig()
    }
    
    brdcstPlmnInfo = &f1DuCellInfo->brdcstPlmnInfo[0];
-   DU_LOG("\n ** DU Cell Information : Broadcast PLMN Info ** \n");
+   DU_LOG(" ** DU Cell Information : Broadcast PLMN Info ** \n");
    DU_LOG("TAC %d\n", brdcstPlmnInfo->tac);
    DU_LOG("NR Cell Id %d\n", brdcstPlmnInfo->nrCellId);
    DU_LOG("RANAC %d\n", brdcstPlmnInfo->ranac);
@@ -5766,10 +5766,10 @@ void printDuConfig()
 
    nrModeInfo = &f1DuCellInfo->f1Mode;
    f1NrFddInfo = &nrModeInfo->mode.fdd;
-   DU_LOG("\n ** DU Cell Information : NR Mode Info ** \n");
+   DU_LOG(" ** DU Cell Information : NR Mode Info ** \n");
 #ifndef NR_TDD   
-   DU_LOG("\n ** NR Mode Info : FDD ** \n");
-   DU_LOG("\n ** NR Mode Info : FDD : UL NR Frequency ** \n");
+   DU_LOG(" ** NR Mode Info : FDD ** \n");
+   DU_LOG(" ** NR Mode Info : FDD : UL NR Frequency ** \n");
    DU_LOG("NR ARFCN %d\n", f1NrFddInfo->ulNrFreqInfo.nrArfcn);
    DU_LOG("SUL : ARFCN %d\n",f1NrFddInfo->ulNrFreqInfo.sulInfo.sulArfcn);
    DU_LOG("SUL : Transmission BW Subcarrier Spacing %d\n", f1NrFddInfo->ulNrFreqInfo.sulInfo.sulTxBw.nrScs);
@@ -5777,7 +5777,7 @@ void printDuConfig()
    DU_LOG("NR Frequency Band %d\n", f1NrFddInfo->ulNrFreqInfo.freqBand[0].nrFreqBand);
    DU_LOG("SUL Band %d\n", f1NrFddInfo->ulNrFreqInfo.freqBand[0].sulBand[0]);
 
-   DU_LOG("\n ** NR Mode Info : FDD : DL NR Frequency ** \n");
+   DU_LOG(" ** NR Mode Info : FDD : DL NR Frequency ** \n");
    DU_LOG("NR ARFCN %d\n", f1NrFddInfo->dlNrFreqInfo.nrArfcn);
    DU_LOG("SUL : ARFCN %d\n",f1NrFddInfo->dlNrFreqInfo.sulInfo.sulArfcn);
    DU_LOG("SUL : Transmission BW Subcarrier Sapcing %d\n", f1NrFddInfo->dlNrFreqInfo.sulInfo.sulTxBw.nrScs);
@@ -5785,11 +5785,11 @@ void printDuConfig()
    DU_LOG("NR Frequency Band %d\n", f1NrFddInfo->dlNrFreqInfo.freqBand[0].nrFreqBand);
    DU_LOG("SUL Band %d\n", f1NrFddInfo->dlNrFreqInfo.freqBand[0].sulBand[0]);
 
-   DU_LOG("\n ** NR Mode Info : FDD : UL Transmission Bandwidth ** \n");
+   DU_LOG(" ** NR Mode Info : FDD : UL Transmission Bandwidth ** \n");
    DU_LOG("Subscarrier spacing %d\n", f1NrFddInfo->ulTxBw.nrScs);
    DU_LOG("Number of RBs %d\n", f1NrFddInfo->ulTxBw.nrb);
   
-   DU_LOG("\n ** NR Mode Info : FDD : DL Transmission Bandwidth ** \n");
+   DU_LOG(" ** NR Mode Info : FDD : DL Transmission Bandwidth ** \n");
    DU_LOG("Subcarrier Spacing %d\n", f1NrFddInfo->dlTxBw.nrScs);
    DU_LOG("Number of RBs %d\n", f1NrFddInfo->dlTxBw.nrb);
 
@@ -5797,7 +5797,7 @@ void printDuConfig()
 
    f1NrTddInfo = &nrModeInfo ->mode.tdd; 
 
-   DU_LOG("\n ** NR Mode Info : TDD : NR Frequency ** \n");
+   DU_LOG(" ** NR Mode Info : TDD : NR Frequency ** \n");
    DU_LOG("NR ARFCN %d\n", f1NrTddInfo->nrFreqInfo.nrArfcn);
    DU_LOG("SUL : ARFCN %d\n",f1NrTddInfo->nrFreqInfo.sulInfo.sulArfcn);
    DU_LOG("SUL : Transmission BW Subscarrier Spacing %d\n", f1NrTddInfo->nrFreqInfo.sulInfo.sulTxBw.nrScs);
@@ -5805,16 +5805,16 @@ void printDuConfig()
    DU_LOG("NR Frequency Band %d\n", f1NrTddInfo->nrFreqInfo.freqBand[0].nrFreqBand);
    DU_LOG("SUL Band %d\n", f1NrTddInfo->nrFreqInfo.freqBand[0].sulBand[0]);
 
-   DU_LOG("\n ** NR Mode Info : TDD : NR Transmission Bandwidth ** \n");
+   DU_LOG(" ** NR Mode Info : TDD : NR Transmission Bandwidth ** \n");
    DU_LOG("Subcarrier Spacing %d\n", f1NrTddInfo->nrTxBw.nrScs);
    DU_LOG("Number of RBs %d\n", f1NrTddInfo->nrTxBw.nrb);
 #endif
 
    macCellCfg = &duCfgParam.macCellCfg;
-   DU_LOG("\n ** MAC CELL CONFIGURATION ** \n");
+   DU_LOG(" ** MAC CELL CONFIGURATION ** \n");
    DU_LOG("Cell Id %d\n", macCellCfg->cellId);
 
-   DU_LOG("\n ** MAC Cell Configuration : Carrier Configuration ** \n");
+   DU_LOG(" ** MAC Cell Configuration : Carrier Configuration ** \n");
    carrierCfg = &macCellCfg ->carrCfg;
    DU_LOG("DL Bandwidth %d\n", carrierCfg->dlBw);
    DU_LOG("DL ARFCN %d\n", carrierCfg->arfcnDL);
@@ -5823,7 +5823,7 @@ void printDuConfig()
    DU_LOG("Number of Transmission Antenna %d\n", carrierCfg->numTxAnt);
    DU_LOG("Number of Received Antenna %d\n", carrierCfg->numRxAnt);
 
-   DU_LOG("\n ** MAC Cell Configuration : Cell Configuration ** \n");
+   DU_LOG(" ** MAC Cell Configuration : Cell Configuration ** \n");
    cellCfg = &macCellCfg ->cellCfg;
    DU_LOG("Operational State %d\n", cellCfg->opState);
    DU_LOG("Administration State %d\n", cellCfg->adminState);
@@ -5834,7 +5834,7 @@ void printDuConfig()
    DU_LOG("Subcarrier Spacing: %d\n", cellCfg->subCarrSpacing);
    DU_LOG("Duplex Mode %d\n", cellCfg->dupType);
 
-   DU_LOG("\n ** MAC Cell Configuration : Cell Configuration : PLMN Info List ** \n");
+   DU_LOG(" ** MAC Cell Configuration : Cell Configuration : PLMN Info List ** \n");
    plmnInfoList = &cellCfg ->plmnInfoList[0];
    DU_LOG("PLMN : mcc[0] %d\n", plmnInfoList->plmn.mcc[0]);
    DU_LOG("PLMN : mcc[1] %d\n", plmnInfoList->plmn.mcc[1]);
@@ -5847,17 +5847,17 @@ void printDuConfig()
    for(sliceIdx = 0; sliceIdx < plmnInfoList->suppSliceList.numSupportedSlices; sliceIdx++)
    {
       DU_LOG("Slice\n");
-      DU_LOG("\nSST %d\n", (*plmnInfoList->suppSliceList.snssai[sliceIdx]).sst);
-      DU_LOG("\nSD %d %d %d\n", (*plmnInfoList->suppSliceList.snssai[sliceIdx]).sd[0], \
+      DU_LOG("SST %d\n", (*plmnInfoList->suppSliceList.snssai[sliceIdx]).sst);
+      DU_LOG("SD %d %d %d\n", (*plmnInfoList->suppSliceList.snssai[sliceIdx]).sd[0], \
          (*plmnInfoList->suppSliceList.snssai[sliceIdx]).sd[1],(*plmnInfoList->suppSliceList.snssai[sliceIdx]).sd[2]);
    }
    
-   DU_LOG("\n ** MAC Cell Configuration : Cell Configuration : SIB1 ** \n");
+   DU_LOG(" ** MAC Cell Configuration : Cell Configuration : SIB1 ** \n");
    sib1Cfg = &cellCfg->sib1Cfg;
    DU_LOG("SIB1 PDU Length %d\n", sib1Cfg->sib1PduLen);
    DU_LOG("SIB1 PDU %s\n", sib1Cfg->sib1Pdu);
 
-   DU_LOG("\n ** MAC Cell Configuration : Cell Configuration : SIB1 : Paging Configuration ** \n");
+   DU_LOG(" ** MAC Cell Configuration : Cell Configuration : SIB1 : Paging Configuration ** \n");
    pageCfg = &sib1Cfg->pagingCfg;
 
    DU_LOG("Number of Paging Occassion %d\n", pageCfg->numPO);
@@ -5872,25 +5872,25 @@ void printDuConfig()
    }
 
    pdcchConfigSib1 = &sib1Cfg->pdcchCfgSib1;
-   DU_LOG("\n ** MAC Cell Configuration : Cell Configuration : SIB1 : PDCCH ** \n");
+   DU_LOG(" ** MAC Cell Configuration : Cell Configuration : SIB1 : PDCCH ** \n");
    DU_LOG("Coreset Zero Index %d\n", pdcchConfigSib1->coresetZeroIndex);
    DU_LOG("Search Space Zero Index %d\n", pdcchConfigSib1->searchSpaceZeroIndex);
 
    bwpDlCfg = &cellCfg->initialDlBwp;
-   DU_LOG("\n ** MAC Cell Configuration : Cell Configuration : DL BWP Configuration ** \n");
+   DU_LOG(" ** MAC Cell Configuration : Cell Configuration : DL BWP Configuration ** \n");
 
-   DU_LOG("\n ** MAC Cell Configuration : Cell Configuration : DL BWP : BWP ** \n");
+   DU_LOG(" ** MAC Cell Configuration : Cell Configuration : DL BWP : BWP ** \n");
    bwp = &bwpDlCfg->bwp;
    DU_LOG("First PRB %d\n", bwp->firstPrb);
    DU_LOG("Number of PRBs %d\n", bwp->numPrb);
    DU_LOG("Subcarrier Spacing %d\n", bwp->scs);
    DU_LOG("Cyclic Perfix %d\n", bwp->cyclicPrefix);
 
-   DU_LOG("\n ** MAC Cell Configuration : Cell Configuration : DL BWP : PDCCH Config Common ** \n");
+   DU_LOG(" ** MAC Cell Configuration : Cell Configuration : DL BWP : PDCCH Config Common ** \n");
    pdcchCfgCmn = &bwpDlCfg->pdcchCommon;
    DU_LOG("RA Search Space ID %d\n", pdcchCfgCmn->raSearchSpaceId);
 
-   DU_LOG("\n ** MAC Cell Configuration : Cell Configuration : DL BWP : PDCCH Config Common : Search Space ** \n");
+   DU_LOG(" ** MAC Cell Configuration : Cell Configuration : DL BWP : PDCCH Config Common : Search Space ** \n");
    searchSpaceCfg = &pdcchCfgCmn->commonSearchSpace;
    DU_LOG("Search Space ID %d\n", searchSpaceCfg->searchSpaceId);
    DU_LOG("Coreset ID %d\n", searchSpaceCfg->coresetId);
@@ -5905,7 +5905,7 @@ void printDuConfig()
    DU_LOG("Number of Candidates in Aggregation Level_8 %d\n", candidateInfo->aggLevel8);
    DU_LOG("Number of Candidates in Aggregation Level_16 %d\n", candidateInfo->aggLevel16);
 
-   DU_LOG("\n ** MAC Cell Configuration : Cell Configuration : DL BWP : PDSCH Config Common ** \n");
+   DU_LOG(" ** MAC Cell Configuration : Cell Configuration : DL BWP : PDSCH Config Common ** \n");
    pdschCfgCmn = &bwpDlCfg->pdschCommon;
    DU_LOG("Number of Time Domain Resource Allocation %d\n", pdschCfgCmn->numTimeDomAlloc);
   
@@ -5919,21 +5919,21 @@ void printDuConfig()
       DU_LOG("\tPDSCH Symbol Length %d\n", pdschCmnTimeDomRsrcAlloc->lengthSymbol);
    }
 
-   DU_LOG("\n ** MAC Cell Configuration : Cell Configuration : UL BWP Configuration ** \n");
+   DU_LOG(" ** MAC Cell Configuration : Cell Configuration : UL BWP Configuration ** \n");
    bwpUlCfg = &cellCfg->initialUlBwp;
 
-   DU_LOG("\n ** MAC Cell Configuration : Cell Configuration : UL BWP : BWP ** \n");
+   DU_LOG(" ** MAC Cell Configuration : Cell Configuration : UL BWP : BWP ** \n");
    DU_LOG("First PRB %d\n", bwpUlCfg->bwp.firstPrb);
    DU_LOG("Number of PRBs %d\n", bwpUlCfg->bwp.numPrb);
    DU_LOG("Subcarrier Spacing %d\n", bwpUlCfg->bwp.scs);
    DU_LOG("Cyclic Prefix %d\n", bwpUlCfg->bwp.cyclicPrefix);
    
-   DU_LOG("\n ** MAC Cell Configuration : Cell Configuration : UL BWP : PUCCH Config Common ** \n");
+   DU_LOG(" ** MAC Cell Configuration : Cell Configuration : UL BWP : PUCCH Config Common ** \n");
    pucchCfgCmn = &bwpUlCfg->pucchCommon;
    DU_LOG("PUCCH Resource Common %d\n", pucchCfgCmn->pucchResourceCommon);
    DU_LOG("Group Hopping %d\n", pucchCfgCmn->pucchGroupHopping);
 
-   DU_LOG("\n ** MAC Cell Configuration : Cell Configuration : UL BWP : PUSCH Config Common ** \n");
+   DU_LOG(" ** MAC Cell Configuration : Cell Configuration : UL BWP : PUSCH Config Common ** \n");
    puschCfgCmn = &bwpUlCfg ->puschCommon;
    DU_LOG("Number of Time Domain Resource Allocation %d\n", puschCfgCmn->numTimeDomRsrcAlloc);
    for (rsrcIdx = 0; rsrcIdx <  puschCfgCmn->numTimeDomRsrcAlloc; rsrcIdx++)
@@ -5947,7 +5947,7 @@ void printDuConfig()
       DU_LOG("\tPUSCH Start Symbol And Length %d\n", puschTimeDomRsrcAlloc->startSymbolAndLength);
    }
 
-   DU_LOG("\n ** MAC Cell Configuration : SSB Configuration** \n");
+   DU_LOG(" ** MAC Cell Configuration : SSB Configuration** \n");
    ssbCfg = &macCellCfg ->ssbCfg;
    DU_LOG("SSB PDCH Power %d\n", ssbCfg->ssbPbchPwr);
    DU_LOG("Subcarrier Spacing Common %d\n", ssbCfg->scsCmn);
@@ -5964,7 +5964,7 @@ void printDuConfig()
    DU_LOG("MIB PDU %d %d %d \n", ssbCfg->mibPdu[0], ssbCfg->mibPdu[1], ssbCfg->mibPdu[2]);
    DU_LOG("DMRS Type-A Position %d\n", ssbCfg->dmrsTypeAPos);
 
-   DU_LOG("\n ** MAC Cell Configuration : CSI RS Configuration ** \n");
+   DU_LOG(" ** MAC Cell Configuration : CSI RS Configuration ** \n");
    csiRsCfg = &macCellCfg->csiRsCfg;
    DU_LOG("Frequency Domain Allocation %s\n", csiRsCfg->csiFreqDomainAlloc);
    DU_LOG("Number of Ports %d\n", csiRsCfg->csiNrofPorts);
@@ -5977,7 +5977,7 @@ void printDuConfig()
    DU_LOG("Power Control Offset Search Space %d\n", csiRsCfg->powerControlOffsetSS);
    DU_LOG("Periodicity And Offset %d\n", csiRsCfg->periodicityAndOffset);
 
-   DU_LOG("\n ** MAC Cell Configuration : PRACH Configuration ** \n");
+   DU_LOG(" ** MAC Cell Configuration : PRACH Configuration ** \n");
    prachCfg = &macCellCfg->prachCfg;
    DU_LOG("PRACH Sequence Length %d\n", prachCfg->prachSeqLen);
    DU_LOG("Subcarrier Spacing %d\n", prachCfg->prachSubcSpacing);
@@ -6002,7 +6002,7 @@ void printDuConfig()
    }
 
 #ifdef NR_TDD
-   DU_LOG("\n ** MAC Cell Configuration : TDD Configuration ** \n");
+   DU_LOG(" ** MAC Cell Configuration : TDD Configuration ** \n");
    tddCfg = &macCellCfg->tddCfg;
    DU_LOG("TDD Slot Periodicity %d\n", tddCfg->tddPeriod);
    DU_LOG("Number of DL Slots %d\n", tddCfg->nrOfDlSlots);
@@ -6011,12 +6011,12 @@ void printDuConfig()
    DU_LOG("Number of UL Symbols %d\n", tddCfg->nrOfUlSymbols);
 #endif
 
-   DU_LOG("\n ** MAC Cell Configuration : Precoding Configuration ** \n");
+   DU_LOG(" ** MAC Cell Configuration : Precoding Configuration ** \n");
    precodCfg = &macCellCfg->precodingConf;
    DU_LOG("Number of Layers %d\n", precodCfg->numLayers);
    DU_LOG("Number of Antenna Ports %d\n", precodCfg->numAntPorts);
 
-   DU_LOG("\n ** MAC Cell Config : BEAM FORMING  CFG ** \n");
+   DU_LOG(" ** MAC Cell Config : BEAM FORMING  CFG ** \n");
    beamFormingCfg = &macCellCfg ->beamCfg;
    DU_LOG("Number of Beams %d\n", beamFormingCfg->numOfBeams);
    DU_LOG("Number of Tx RUs %d\n", beamFormingCfg->numTxRUs);
@@ -6030,7 +6030,7 @@ void printDuConfig()
    DU_LOG("Digitak Tilt %d\n",beamFormingCfg ->digitalTilt);
    DU_LOG("Digital Azimuth %d\n", beamFormingCfg->digitalAzimuth);
 
-   DU_LOG("\n ** SIB1 Configuration ** \n");
+   DU_LOG(" ** SIB1 Configuration ** \n");
    sib1Params = &duCfgParam.sib1Params;
    DU_LOG("TAC %d\n", sib1Params->tac);
    DU_LOG("RANAC %ld\n", sib1Params->ranac);
@@ -6046,7 +6046,7 @@ void printDuConfig()
    DU_LOG("PLMN : mnc[1] %d\n", sib1Params->plmn.mnc[1]);
    DU_LOG("PLMN : mnc[2] %d\n", sib1Params->plmn.mnc[2]);
 
-   DU_LOG("\n ** SIB1 : SI Scheduling Info ** \n");
+   DU_LOG(" ** SIB1 : SI Scheduling Info ** \n");
    siSchedInfo = &sib1Params ->siSchedInfo;
    DU_LOG("Windown Length %ld\n", siSchedInfo->winLen);
    DU_LOG("Broadcast Status %ld\n", siSchedInfo->broadcastSta);
@@ -6054,14 +6054,14 @@ void printDuConfig()
    DU_LOG("SIB Type %ld\n", siSchedInfo->sibType);
    DU_LOG("SIB Value Tag %ld\n", siSchedInfo->sibValTag);
 
-   DU_LOG("\n ** SIB1 : Serving Cell Configuration Common SIB ** \n");
+   DU_LOG(" ** SIB1 : Serving Cell Configuration Common SIB ** \n");
    srvCellCfgCmnSib = &sib1Params->srvCellCfgCommSib;
    DU_LOG("Subcarrier Spacing %ld\n", srvCellCfgCmnSib->scs);
    DU_LOG("SSB Position in Burst %d\n", srvCellCfgCmnSib->ssbPosInBurst);
    DU_LOG("SSB Periodicity %ld\n", srvCellCfgCmnSib->ssbPrdServingCell);
    DU_LOG("SS PBCH Power %ld\n", srvCellCfgCmnSib->ssPbchBlockPwr);
 
-   DU_LOG("\n ** SIB1 : Serving Cell Config Common SIB : DL Config Common ** \n");
+   DU_LOG(" ** SIB1 : Serving Cell Config Common SIB : DL Config Common ** \n");
    dlCfgCmn = &srvCellCfgCmnSib->dlCfg;
    DU_LOG("Frequency Band Indicator %ld\n", dlCfgCmn->freqBandInd);
    DU_LOG("Offset to Point A %ld\n", dlCfgCmn->offsetToPointA);
@@ -6070,7 +6070,7 @@ void printDuConfig()
    DU_LOG("Subcarrier Spacing %ld\n", dlCfgCmn->dlScsCarrier.scs);
    DU_LOG("Bandwidth considering Subcarrier Spacing %ld\n", dlCfgCmn->dlScsCarrier.scsBw);
 
-   DU_LOG("\n ** SIB1 : Serving Cell Config Common SIB : DL Config Common : PDCCH Config Common ** \n");
+   DU_LOG(" ** SIB1 : Serving Cell Config Common SIB : DL Config Common : PDCCH Config Common ** \n");
    pdcchCfgCommon = &dlCfgCmn->pdcchCfg;
    if(pdcchCfgCommon->present)
    {
@@ -6100,7 +6100,7 @@ void printDuConfig()
       DU_LOG("PDCCH Config Common not Present");
    }
 
-   DU_LOG("\n ** SIB1 : Serving Cell Config Common : DL Config Common : PDSCH Config Common ** \n");
+   DU_LOG(" ** SIB1 : Serving Cell Config Common : DL Config Common : PDSCH Config Common ** \n");
    pdschCfgCommon = &dlCfgCmn->pdschCfg;
    DU_LOG("PDSCH Config Common Present %d\n", pdschCfgCommon->present);
    if(pdschCfgCommon->present)
@@ -6120,11 +6120,11 @@ void printDuConfig()
       DU_LOG("PDSCH Config Common not Present");
    }
 
-   DU_LOG("\n ** SIB1 : Serving Cell Config Common : DL Config Common : BCCH Config Common ** \n");
+   DU_LOG(" ** SIB1 : Serving Cell Config Common : DL Config Common : BCCH Config Common ** \n");
    bcchCfg = &dlCfgCmn->bcchCfg;
    DU_LOG("Modification Period Coefficient %ld\n", bcchCfg->modPrdCoeff);
 
-   DU_LOG("\n ** SIB1 : Serving Cell Config Common : DL Config Common : PCCH Config Common ** \n");
+   DU_LOG(" ** SIB1 : Serving Cell Config Common : DL Config Common : PCCH Config Common ** \n");
    pcchCfg = &dlCfgCmn->pcchCfg;
    DU_LOG("Default Paging Cycle %d\n", pcchCfg->dfltPagingCycle);
    DU_LOG("Number of PF in Paging Cycle %d\n", pcchCfg->nAndPagingFrmOffsetType);
@@ -6136,7 +6136,7 @@ void printDuConfig()
       DU_LOG("First PDCCH Monitoring Occassion in P0 [%d] %d\n", poIdx, pcchCfg->firstPDCCHMontioringInfo[poIdx]);
    }
 
-   DU_LOG("\n ** SIB1 : Serving Cell Config Common : UL Config Common ** \n");
+   DU_LOG(" ** SIB1 : Serving Cell Config Common : UL Config Common ** \n");
    ulCfgCmn = &srvCellCfgCmnSib->ulCfg;
    DU_LOG("Frequency Band Indicator %ld\n", ulCfgCmn->freqBandInd);
    DU_LOG("Maximum Transmission Power %ld\n", ulCfgCmn->pMax);
@@ -6146,7 +6146,7 @@ void printDuConfig()
    DU_LOG("Subcarrier Spacing %ld\n", ulCfgCmn->ulScsCarrier.scs);
    DU_LOG("Carrier BW considering Subcarrier Spacing %ld\n", ulCfgCmn->ulScsCarrier.scsBw);
 
-   DU_LOG("\n ** SIB1 : Serving Cell Config Common : UL Config Common : RACH Config Common ** \n");
+   DU_LOG(" ** SIB1 : Serving Cell Config Common : UL Config Common : RACH Config Common ** \n");
    rachCfgCmn = &ulCfgCmn ->rachCfg;
    if(rachCfgCmn->present)
    {
@@ -6173,7 +6173,7 @@ void printDuConfig()
       DU_LOG("RACH Config Common not present\n");
    }
 
-   DU_LOG("\n ** SIB1 : Serving Cell Config Common : UL Config Common : PUSCH Config Common ** \n");
+   DU_LOG(" ** SIB1 : Serving Cell Config Common : UL Config Common : PUSCH Config Common ** \n");
    puschCfgCommon = &ulCfgCmn ->puschCfg;
    if(puschCfgCommon->puschCfgPresent)
    {
@@ -6194,7 +6194,7 @@ void printDuConfig()
       DU_LOG("PUSCH Config Common not present\n");
    }
    
-   DU_LOG("\n ** SIB1 : Serving Cell Config Common : UL Config Common : PUCCH Config Common **\n");
+   DU_LOG(" ** SIB1 : Serving Cell Config Common : UL Config Common : PUCCH Config Common **\n");
    pucchCfgCommon = &ulCfgCmn->pucchCfg;
    if(pucchCfgCommon->present)
    {
@@ -6207,7 +6207,7 @@ void printDuConfig()
       DU_LOG("PUCCH Config Common not present\n");
    }
  
-   DU_LOG("\n ** SIB1 : Serving Cell Config Common : TDD UL DL Config Common ** \n");
+   DU_LOG(" ** SIB1 : Serving Cell Config Common : TDD UL DL Config Common ** \n");
    tddUlDlCfgCmn = &srvCellCfgCmnSib->tddCfg;
    DU_LOG("Reference Subcarrier Spacing %ld\n", tddUlDlCfgCmn->refScs);
    DU_LOG("Transmission Periodicity %ld\n", tddUlDlCfgCmn->txPrd);
@@ -6216,7 +6216,7 @@ void printDuConfig()
    DU_LOG("Number of UL Slots %ld\n", tddUlDlCfgCmn->numUlSlots);
    DU_LOG("Number of UL Symbols %ld\n", tddUlDlCfgCmn->numUlSymbols);
 
-   DU_LOG("\n ** MAC SLICE CONFIG REQUEST ** \n");
+   DU_LOG(" ** MAC SLICE CONFIG REQUEST ** \n");
    macSliceCfg = &duCfgParam.tempSliceCfg;
    DU_LOG("Number of RRM Policy %d\n",macSliceCfg->numOfRrmPolicy);
 
@@ -6247,7 +6247,7 @@ void printDuConfig()
       }
    }
    
-   DU_LOG("\n ** E2 configuration ** \n");
+   DU_LOG(" ** E2 configuration ** \n");
    e2apDb = &duCb.e2apDb;
    DU_LOG("E2 node id %lu\n", e2apDb->e2NodeId);
    DU_LOG("Number of RAN function %d\n", e2apDb->numOfRanFunction);

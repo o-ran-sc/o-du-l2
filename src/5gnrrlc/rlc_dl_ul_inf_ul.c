@@ -112,7 +112,7 @@ uint8_t status
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if (tRlcCb->init.cfgDone != TRUE)
    {
-      DU_LOG("\nERROR  -->  RLC_UL : General configuration not done");
+      DU_LOG("ERROR  -->  RLC_UL : General configuration not done");
       RLC_SEND_SAPID_ALARM(tRlcCb,suId, 
                           LKW_EVENT_LI_BND_CFM, LCM_CAUSE_INV_STATE);
 
@@ -121,7 +121,7 @@ uint8_t status
 
    if (suId < 0)
    {
-      DU_LOG("\nERROR  -->  RLC_UL : Invalid suId");
+      DU_LOG("ERROR  -->  RLC_UL : Invalid suId");
       RLC_SEND_SAPID_ALARM(tRlcCb,suId, 
                            LKW_EVENT_LI_BND_CFM, LCM_CAUSE_INV_SUID);
 
@@ -216,7 +216,7 @@ RlcCfgCfmInfo   *cfmInfo
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if (suId < 0)
    {
-      DU_LOG("\nERROR  -->  RLC_UL : Invalid suId");
+      DU_LOG("ERROR  -->  RLC_UL : Invalid suId");
       RLC_SEND_SAPID_ALARM(tRlcCb,suId, 
                            LKW_EVENT_LI_BND_CFM, LCM_CAUSE_INV_SUID);
       RLC_FREE_SHRABL_BUF(pst->region,
@@ -229,7 +229,7 @@ RlcCfgCfmInfo   *cfmInfo
 
    if(ROK != rlcDbmFindUlTransaction(tRlcCb,cfmInfo->transId, &cfgTmpData))
    {
-      DU_LOG("\nERROR  -->  RLC_UL : Invalid transId");
+      DU_LOG("ERROR  -->  RLC_UL : Invalid transId");
       RLC_FREE_SHRABL_BUF(pst->region,
                          pst->pool,
 	                 cfmInfo,
@@ -250,7 +250,7 @@ RlcCfgCfmInfo   *cfmInfo
 #if (ERRCLASS & ERRCLS_ADD_RES)
    if (cfgCfm == NULLP)
    {
-      DU_LOG("\nERROR  -->  RLC_UL : Memory Allocation failed.");
+      DU_LOG("ERROR  -->  RLC_UL : Memory Allocation failed.");
       RLC_FREE_SHRABL_BUF(pst->region,
                          pst->pool,
 	                 cfmInfo,
@@ -345,14 +345,14 @@ CmStatus   status
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if (suId < 0)
    {
-      DU_LOG("\nERROR  -->  RLC_UL : Invalid suId");
+      DU_LOG("ERROR  -->  RLC_UL : Invalid suId");
       return RFAILED;
    }
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
 
    if(ROK != rlcDbmFindUlTransaction(tRlcCb, transId, &cfgTmpData))
    {
-      DU_LOG("\nERROR  -->  RLC_UL : Invalid transId");
+      DU_LOG("ERROR  -->  RLC_UL : Invalid transId");
       return  (RFAILED);
    }
 
@@ -410,7 +410,7 @@ CmLteRlcId   *rlcId
    rlcDbmFetchUlRbCbByRbId(tRlcCb, rlcId, &rbCb);
    if (rbCb == NULLP)
    {    
-      DU_LOG("\nERROR  -->  RLC_UL : CellId [%u]:RbId[%d] not found",
+      DU_LOG("ERROR  -->  RLC_UL : CellId [%u]:RbId[%d] not found",
             rlcId->cellId,rlcId->rbId);
       return RFAILED;
    }
@@ -496,7 +496,7 @@ RlcCfgCfmInfo    *cfgCfm
                {
 		            RLC_CFG_FILL_CFG_CFM(entCfgCfm, entCfg->rbId, entCfg->rbType,
 				           CKW_CFG_CFM_NOK, CKW_CFG_REAS_INVALID_DIR);
-                  DU_LOG("\nDEBUG  -->  RLC_UL : RBID[%d] direction[%d] is invalid",
+                  DU_LOG("DEBUG  -->  RLC_UL : RBID[%d] direction[%d] is invalid",
                          entCfg->rbId,entCfg->dir);
                }
                break;
@@ -567,7 +567,7 @@ RlcCfgCfmInfo    *cfgCfm
                RLC_CFG_FILL_CFG_CFM(entCfgCfm, entCfg->rbId, entCfg->rbType,
                                    CKW_CFG_CFM_NOK, CKW_CFG_REAS_INVALID_CFG);
 
-               DU_LOG("\nERROR  -->  RLC_UL : Invalid configuration type");
+               DU_LOG("ERROR  -->  RLC_UL : Invalid configuration type");
             }
       }
    }

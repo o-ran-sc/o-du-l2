@@ -109,7 +109,7 @@ uint8_t MacSchGenCfgReq(Pst *pst, RgMngmt *cfg)
 {
    Pst schPst;
 
-   DU_LOG("\nINFO  -->  MAC : Received Scheduler gen config at MAC");
+   DU_LOG("INFO  -->  MAC : Received Scheduler gen config at MAC");
    memset(&schPst, 0, sizeof(Pst));
    FILL_PST_MAC_TO_SCH(schPst, EVENT_SCH_GEN_CFG);
    
@@ -133,7 +133,7 @@ uint8_t MacSchGenCfgReq(Pst *pst, RgMngmt *cfg)
  **/
 uint8_t SchSendCfgCfm(Pst *pst, RgMngmt  *cfm)
 {
-   DU_LOG("\nDEBUG  -->  MAC : Sending Scheduler config confirm to DU APP");
+   DU_LOG("DEBUG  -->  MAC : Sending Scheduler config confirm to DU APP");
    pst->dstEnt = ENTDUAPP;
    pst->dstInst = 0;
    pst->srcInst = 0;
@@ -171,7 +171,7 @@ uint8_t MacProcCellCfgReq(Pst *pst, MacCellCfg *macCellCfg)
    MAC_ALLOC(macCellCb, sizeof(MacCellCb));
    if(macCellCb == NULLP)
    {
-      DU_LOG("\nERROR  -->  MAC : macCellCb is NULL at handling of macCellCfg\n");
+      DU_LOG("ERROR  -->  MAC : macCellCb is NULL at handling of macCellCfg\n");
       return RFAILED;
    }
    memset(macCellCb, 0, sizeof(MacCellCb));
@@ -194,7 +194,7 @@ uint8_t MacProcCellCfgReq(Pst *pst, MacCellCfg *macCellCfg)
          macCb.macCell[cellIdx]->macCellCfg.cellCfg.sib1Cfg.sib1PduLen);
    if(macCb.macCell[cellIdx]->macCellCfg.cellCfg.sib1Cfg.sib1Pdu == NULLP)
    {
-      DU_LOG("\nERROR  -->  MAC : macCellCb is NULL at handling of sib1Pdu of macCellCfg\n");
+      DU_LOG("ERROR  -->  MAC : macCellCb is NULL at handling of sib1Pdu of macCellCfg\n");
       return RFAILED;
    }
    memcpy(macCb.macCell[cellIdx]->macCellCfg.cellCfg.sib1Cfg.sib1Pdu, macCellCfg->cellCfg.sib1Cfg.sib1Pdu, \
@@ -211,7 +211,7 @@ uint8_t MacProcCellCfgReq(Pst *pst, MacCellCfg *macCellCfg)
             * sizeof(Snssai*));
       if(macCb.macCell[cellIdx]->macCellCfg.cellCfg.plmnInfoList[plmnIdx].suppSliceList.snssai == NULLP)
       {
-         DU_LOG("\nERROR  --> MAC: Memory allocation failed at MacProcCellCfgReq");
+         DU_LOG("ERROR  --> MAC: Memory allocation failed at MacProcCellCfgReq");
          return RFAILED;
       }
 
@@ -224,7 +224,7 @@ uint8_t MacProcCellCfgReq(Pst *pst, MacCellCfg *macCellCfg)
                MAC_ALLOC(macCb.macCell[cellIdx]->macCellCfg.cellCfg.plmnInfoList[plmnIdx].suppSliceList.snssai[sliceIdx], sizeof(Snssai));
                if(!macCb.macCell[cellIdx]->macCellCfg.cellCfg.plmnInfoList[plmnIdx].suppSliceList.snssai[sliceIdx])
                {
-                  DU_LOG("\nERROR  --> MAC: Memory allocation failed at MacProcCellCfgReq");
+                  DU_LOG("ERROR  --> MAC: Memory allocation failed at MacProcCellCfgReq");
                   return RFAILED;
                }
                memcpy(macCb.macCell[cellIdx]->macCellCfg.cellCfg.plmnInfoList[plmnIdx].suppSliceList.snssai[sliceIdx], macCellCfg->cellCfg.plmnInfoList[plmnIdx].suppSliceList.snssai[sliceIdx],\
@@ -287,7 +287,7 @@ uint8_t MacSchCellCfgReq(Pst *pst, MacCellCfg *macCellCfg)
          MAC_ALLOC(schCellCfg.plmnInfoList[plmnIdx].suppSliceList.snssai, schCellCfg.plmnInfoList[plmnIdx].suppSliceList.numSupportedSlices * sizeof(Snssai*));
          if(!schCellCfg.plmnInfoList[plmnIdx].suppSliceList.snssai)
          {
-            DU_LOG("\nERROR  --> MAC: Memory allocation failed at MacSchCellCfgReq");
+            DU_LOG("ERROR  --> MAC: Memory allocation failed at MacSchCellCfgReq");
             return RFAILED;
          }
          for(sliceIdx=0; sliceIdx<schCellCfg.plmnInfoList[plmnIdx].suppSliceList.numSupportedSlices; sliceIdx++)
@@ -297,7 +297,7 @@ uint8_t MacSchCellCfgReq(Pst *pst, MacCellCfg *macCellCfg)
                MAC_ALLOC(schCellCfg.plmnInfoList[plmnIdx].suppSliceList.snssai[sliceIdx], sizeof(Snssai));
                if(!schCellCfg.plmnInfoList[plmnIdx].suppSliceList.snssai[sliceIdx])
                {
-                  DU_LOG("\nERROR  --> MAC: Memory allocation failed at MacSchCellCfgReq");
+                  DU_LOG("ERROR  --> MAC: Memory allocation failed at MacSchCellCfgReq");
                   return RFAILED;
                }
                memcpy(schCellCfg.plmnInfoList[plmnIdx].suppSliceList.snssai[sliceIdx], macCellCfg->cellCfg.plmnInfoList[plmnIdx].suppSliceList.snssai[sliceIdx],  sizeof(Snssai));
@@ -480,7 +480,7 @@ uint8_t MacProcSchCellCfgCfm(Pst *pst, SchCellCfgCfm *schCellCfgCfm)
    uint16_t *cellId = NULLP;
 
 #ifdef CALL_FLOW_DEBUG_LOG
-   DU_LOG("\nCall Flow: ENTSCH -> ENTMAC : EVENT_SCH_CELL_CFG_CFM\n");
+   DU_LOG("Call Flow: ENTSCH -> ENTMAC : EVENT_SCH_CELL_CFG_CFM\n");
 #endif
 
    if(schCellCfgCfm->rsp == RSP_OK)
@@ -557,7 +557,7 @@ uint8_t MacSendCellDeleteRsp(CauseOfResult  status, uint8_t cellId)
    MAC_ALLOC_SHRABL_BUF(deleteRsp, sizeof(MacCellDeleteRsp));
    if(!deleteRsp)
    {
-      DU_LOG("\nERROR  -->  MAC : MacSendCellDeleteRsp(): Memory allocation for Cell delete response failed");
+      DU_LOG("ERROR  -->  MAC : MacSendCellDeleteRsp(): Memory allocation for Cell delete response failed");
       return RFAILED;
    }
 
@@ -597,14 +597,14 @@ uint8_t MacProcSchCellDeleteRsp(Pst *pst, SchCellDeleteRsp *schCellDelRsp)
    CauseOfResult  cause;
 
 #ifdef CALL_FLOW_DEBUG_LOG
-   DU_LOG("\nCall Flow: ENTSCH -> ENTMAC : EVENT_CELL_DELETE_RSP_TO_MAC\n");
+   DU_LOG("Call Flow: ENTSCH -> ENTMAC : EVENT_CELL_DELETE_RSP_TO_MAC\n");
 #endif  
 
    if(schCellDelRsp)
    {
       if(schCellDelRsp->rsp == RSP_OK)
       {
-         DU_LOG("\nINFO   -->  MAC : SCH CELL Delete response for cellId[%d] is successful ", \
+         DU_LOG("INFO   -->  MAC : SCH CELL Delete response for cellId[%d] is successful ", \
                schCellDelRsp->cellId);
          GET_CELL_IDX(schCellDelRsp->cellId, cellIdx);
          if(macCb.macCell[cellIdx])
@@ -650,14 +650,14 @@ uint8_t MacProcSchCellDeleteRsp(Pst *pst, SchCellDeleteRsp *schCellDelRsp)
       }
       if(MacSendCellDeleteRsp(cause, schCellDelRsp->cellId) != ROK)
       {
-         DU_LOG("\nERROR  -->  MAC: MacProcSchCellDeleteRsp(): Failed to send CELL delete response");
+         DU_LOG("ERROR  -->  MAC: MacProcSchCellDeleteRsp(): Failed to send CELL delete response");
          ret = RFAILED;
       }
 
    }
    else
    {
-      DU_LOG("\nERROR  -->  MAC: MacProcSchCellDeleteRsp(): schCellDelRsp is NULL");
+      DU_LOG("ERROR  -->  MAC: MacProcSchCellDeleteRsp(): schCellDelRsp is NULL");
       ret = RFAILED;
    }
    return ret;
@@ -707,7 +707,7 @@ uint8_t MacProcCellDeleteReq(Pst *pst, MacCellDeleteReq *cellDelete)
    uint8_t ret = ROK, cellIdx=0;
    SchCellDeleteReq schCellDelete;
 
-   DU_LOG("\nINFO   -->  MAC : Cell Delete Request received for cellId[%d]", cellDelete->cellId);
+   DU_LOG("INFO   -->  MAC : Cell Delete Request received for cellId[%d]", cellDelete->cellId);
 
    if(cellDelete)
    {
@@ -721,30 +721,30 @@ uint8_t MacProcCellDeleteReq(Pst *pst, MacCellDeleteReq *cellDelete)
             ret = sendCellDelReqToSch(&schCellDelete);
             if(ret != ROK)
             {
-               DU_LOG("\nERROR  -->  MAC : MacProcCellDeleteReq(): Failed to send UE Delete Request to SCH");
+               DU_LOG("ERROR  -->  MAC : MacProcCellDeleteReq(): Failed to send UE Delete Request to SCH");
                ret = RFAILED;
             }
          }
          else
          {
-            DU_LOG("\nERROR  -->  MAC : MacProcCellDeleteReq(): Failed to find the MacUeCb of CellId = %d",\
+            DU_LOG("ERROR  -->  MAC : MacProcCellDeleteReq(): Failed to find the MacUeCb of CellId = %d",\
             cellDelete->cellId);
             ret = RFAILED;
          }
       }
       else
       {
-         DU_LOG("\nERROR  -->  MAC : MacProcCellDeleteReq(): Failed to find the MacUeCb of CellId = %d",\
+         DU_LOG("ERROR  -->  MAC : MacProcCellDeleteReq(): Failed to find the MacUeCb of CellId = %d",\
                cellDelete->cellId);
          ret = RFAILED;
       }
 
       if(ret == RFAILED)
       {
-          DU_LOG("\nERROR  -->  MAC : MacProcCellDeleteReq(): Sending failure response to DU");
+          DU_LOG("ERROR  -->  MAC : MacProcCellDeleteReq(): Sending failure response to DU");
           if(MacSendCellDeleteRsp(CELLID_INVALID, cellDelete->cellId) != ROK)
           {
-             DU_LOG("\nERROR  -->  MAC : MacProcCellDeleteReq(): failed to send cell delete rsp for cellID[%d]",\
+             DU_LOG("ERROR  -->  MAC : MacProcCellDeleteReq(): failed to send cell delete rsp for cellID[%d]",\
              cellDelete->cellId);
           }
 
@@ -753,7 +753,7 @@ uint8_t MacProcCellDeleteReq(Pst *pst, MacCellDeleteReq *cellDelete)
    }
    else
    {
-      DU_LOG("\nERROR  -->  MAC : MacProcCellDeleteReq(): Received MacCellDelete is NULL");
+      DU_LOG("ERROR  -->  MAC : MacProcCellDeleteReq(): Received MacCellDelete is NULL");
       ret = RFAILED;
    }
    return ret;
@@ -853,7 +853,7 @@ uint8_t MacProcSchSliceCfgRsp(Pst *pst, SchSliceCfgRsp *schSliceCfgRsp)
       MAC_ALLOC_SHRABL_BUF(macSliceCfgRsp, sizeof(MacSliceCfgRsp));
       if(macSliceCfgRsp == NULLP)
       {
-          DU_LOG("\nERROR  -->  MAC : Failed to allocate memory in MacProcSchSliceCfgRsp");
+          DU_LOG("ERROR  -->  MAC : Failed to allocate memory in MacProcSchSliceCfgRsp");
           return RFAILED;
       }
       macSliceCfgRsp->snssai = schSliceCfgRsp->snssai;
@@ -915,7 +915,7 @@ uint8_t MacProcSchSliceRecfgRsp(Pst *pst, SchSliceRecfgRsp *schSliceRecfgRsp)
       MAC_ALLOC_SHRABL_BUF(macSliceRecfgRsp, sizeof(MacSliceRecfgRsp));
       if(macSliceRecfgRsp == NULLP)
       {
-          DU_LOG("\nERROR  -->  MAC : Failed to allocate memory in MacProcSchSliceRecfgRsp");
+          DU_LOG("ERROR  -->  MAC : Failed to allocate memory in MacProcSchSliceRecfgRsp");
           return RFAILED;
       }
 
@@ -955,26 +955,26 @@ uint8_t MacProcDlPcchInd(Pst *pst, DlPcchInd *pcchInd)
 
    if(pcchInd)
    {
-      DU_LOG("\nINFO   -->  MAC : Received DL PCCH IND from DU_APP for cellId[%d]", pcchInd->cellId);
+      DU_LOG("INFO   -->  MAC : Received DL PCCH IND from DU_APP for cellId[%d]", pcchInd->cellId);
       
       GET_CELL_IDX(pcchInd->cellId, cellIdx);
 
       if(macCb.macCell[cellIdx] == NULLP || macCb.macCell[cellIdx]->cellId != pcchInd->cellId)
       {
-         DU_LOG("\nERROR  -->  MAC : MacProcDlPcchInd(): CellId[%d] does not exist", pcchInd->cellId);
+         DU_LOG("ERROR  -->  MAC : MacProcDlPcchInd(): CellId[%d] does not exist", pcchInd->cellId);
       }
       else
       {
          if((pcchInd->pcchPdu == NULLP) || (pcchInd->pduLen <= 0))
          {
-            DU_LOG("\nERROR  -->  MAC : MacProcDlPcchInd(): Received Pcch pdu is null");
+            DU_LOG("ERROR  -->  MAC : MacProcDlPcchInd(): Received Pcch pdu is null");
          }
          else
          {
             MAC_ALLOC(schPageInd, sizeof(SchPageInd));
             if(schPageInd == NULLP)
             {
-               DU_LOG("\nERROR  -->  MAC : MacProcDlPcchInd(): Failed to allocate memory");
+               DU_LOG("ERROR  -->  MAC : MacProcDlPcchInd(): Failed to allocate memory");
             }
             else
             {
@@ -986,7 +986,7 @@ uint8_t MacProcDlPcchInd(Pst *pst, DlPcchInd *pcchInd)
                MAC_ALLOC(schPageInd->pagePdu, pcchInd->pduLen);
                if(schPageInd->pagePdu == NULLP)
                {
-                  DU_LOG("\nERROR  -->  MAC : MacProcDlPcchInd(): Failed to allocate memory");
+                  DU_LOG("ERROR  -->  MAC : MacProcDlPcchInd(): Failed to allocate memory");
                   MAC_FREE(schPageInd, sizeof(SchPageInd));
                }
                else
@@ -1007,7 +1007,7 @@ uint8_t MacProcDlPcchInd(Pst *pst, DlPcchInd *pcchInd)
    }
    else
    {
-      DU_LOG("\nERROR  -->  MAC : MacProcDlPcchInd(): Received Null pointer");
+      DU_LOG("ERROR  -->  MAC : MacProcDlPcchInd(): Received Null pointer");
    }
    return ret;
 }
@@ -1033,14 +1033,14 @@ uint8_t MacProcDlBroadcastReq(Pst *pst, MacDlBroadcastReq *dlBroadcastReq)
 
    if(dlBroadcastReq)
    {
-      DU_LOG("\nINFO   -->  MAC : Received DL braodcast req from DU_APP for cellId[%d]", dlBroadcastReq->cellId);
+      DU_LOG("INFO   -->  MAC : Received DL braodcast req from DU_APP for cellId[%d]", dlBroadcastReq->cellId);
       
       GET_CELL_IDX(dlBroadcastReq->cellId, cellIdx);
 
       if(macCb.macCell[cellIdx] == NULLP || macCb.macCell[cellIdx]->cellId != dlBroadcastReq->cellId)
       {
          ret = RFAILED;
-         DU_LOG("\nERROR  -->  MAC : MacProcDlBroadcastReq(): CellId[%d] does not exist", dlBroadcastReq->cellId);
+         DU_LOG("ERROR  -->  MAC : MacProcDlBroadcastReq(): CellId[%d] does not exist", dlBroadcastReq->cellId);
       }
       else
       {
@@ -1056,7 +1056,7 @@ uint8_t MacProcDlBroadcastReq(Pst *pst, MacDlBroadcastReq *dlBroadcastReq)
    else
    {
       ret = RFAILED;
-      DU_LOG("\nERROR  -->  MAC : MacProcDlBroadcastReq(): Received Null pointer");
+      DU_LOG("ERROR  -->  MAC : MacProcDlBroadcastReq(): Received Null pointer");
    }
    return ret;
 }
@@ -1081,12 +1081,12 @@ uint8_t MacSendStatsRspToDuApp(MacStatsRsp *statsRsp)
    Pst  pst;
    MacStatsRsp *macStatsRsp = NULLP;
 
-    DU_LOG("\nINFO  -->  MAC : MacSendStatsRspToDuApp: Sending Statistics Response to DU APP");
+    DU_LOG("INFO  -->  MAC : MacSendStatsRspToDuApp: Sending Statistics Response to DU APP");
 
    MAC_ALLOC_SHRABL_BUF(macStatsRsp, sizeof(MacStatsRsp));
    if(macStatsRsp == NULLP)
    {
-      DU_LOG("\nERROR  -->  MAC : Failed to allocate memory in MacProcSchStatsRsp");
+      DU_LOG("ERROR  -->  MAC : Failed to allocate memory in MacProcSchStatsRsp");
       ret = RFAILED;
    }
    else
@@ -1098,7 +1098,7 @@ uint8_t MacSendStatsRspToDuApp(MacStatsRsp *statsRsp)
       FILL_PST_MAC_TO_DUAPP(pst, EVENT_MAC_STATISTICS_RSP);
       if(((*macDuStatsRspOpts[pst.selector])(&pst, macStatsRsp))!= ROK)
       {
-         DU_LOG("\nERROR  -->  MAC : Failed to send statistics response to DU APP");
+         DU_LOG("ERROR  -->  MAC : Failed to send statistics response to DU APP");
          MAC_FREE_SHRABL_BUF(MAC_MEM_REGION, MAC_POOL, macStatsRsp, sizeof(MacStatsRsp));
          ret = RFAILED;
       }
@@ -1181,11 +1181,11 @@ uint8_t MacProcStatsReq(Pst *pst, MacStatsReq *macStatsReq)
    SchStatsReq     *schStatsReq = NULLP;
    MacStatsRsp     *macStatsRsp = NULLP;
 
-   DU_LOG("\nINFO   -->  MAC : Received Statistics Request from DU_APP");
+   DU_LOG("INFO   -->  MAC : Received Statistics Request from DU_APP");
 
    if(macStatsReq == NULLP)
    {
-      DU_LOG("\nERROR  -->  MAC : MacProcStatsReq(): Received Null pointer");
+      DU_LOG("ERROR  -->  MAC : MacProcStatsReq(): Received Null pointer");
       return RFAILED;
    }
    
@@ -1196,7 +1196,7 @@ uint8_t MacProcStatsReq(Pst *pst, MacStatsReq *macStatsReq)
     * towards DU APP has reached its maximum limit */
    if(macCb.statistics.numPendingStatsRsp >= MAX_PENDING_STATS_RSP)
    {
-      DU_LOG("\nERROR  -->  MAC : MacProcStatsReq: Maximum number of statistics response is pending. \
+      DU_LOG("ERROR  -->  MAC : MacProcStatsReq: Maximum number of statistics response is pending. \
          Cannot process new request."); 
       MacRejectAllStats(macStatsReq, RESOURCE_UNAVAILABLE);
       MAC_FREE_SHRABL_BUF(pst->region, pst->pool, macStatsReq, sizeof(MacStatsReq));
@@ -1207,7 +1207,7 @@ uint8_t MacProcStatsReq(Pst *pst, MacStatsReq *macStatsReq)
    MAC_ALLOC(schStatsReq, sizeof(SchStatsReq));
    if(schStatsReq == NULLP)
    {
-      DU_LOG("\nERROR  -->  MAC : MacProcStatsReq: Failed to allocate memory");
+      DU_LOG("ERROR  -->  MAC : MacProcStatsReq: Failed to allocate memory");
       MacRejectAllStats(macStatsReq, RESOURCE_UNAVAILABLE);
       MAC_FREE_SHRABL_BUF(pst->region, pst->pool, macStatsReq, sizeof(MacStatsReq));
       return RFAILED;
@@ -1243,7 +1243,7 @@ uint8_t MacProcStatsReq(Pst *pst, MacStatsReq *macStatsReq)
                }
             default:
                {
-                  DU_LOG("\nERROR  -->  MAC : MacProcStatsReq: Invalid measurement type [%d]", \
+                  DU_LOG("ERROR  -->  MAC : MacProcStatsReq: Invalid measurement type [%d]", \
                      macStatsGrp->statsList[macStatsIdx]);
                   measTypeInvalid = true;
                }
@@ -1295,7 +1295,7 @@ uint8_t MacProcStatsReq(Pst *pst, MacStatsReq *macStatsReq)
    {
       /* [Step 5] If none of the groups passes all validation, mac-stats-response
        * is sent to du app with all group as part of stats-group-rejected-list. */
-      DU_LOG("\nERROR  -->  MAC : MacProcStatsReq: All statistics group found invalid");
+      DU_LOG("ERROR  -->  MAC : MacProcStatsReq: All statistics group found invalid");
       MAC_FREE(schStatsReq, sizeof(SchStatsReq));
       ret = MacSendStatsRspToDuApp(macStatsRsp);
    }
@@ -1397,7 +1397,7 @@ uint8_t MacSendStatsDeleteRspToDuApp(SchStatsDeleteRsp *schStatsDeleteRsp,  MacS
    MAC_ALLOC_SHRABL_BUF(macStatsDeleteRsp, sizeof(MacStatsDeleteRsp));
    if(macStatsDeleteRsp == NULLP)
    {
-      DU_LOG("\nERROR  -->  MAC : Failed to allocate memory in MacProcSchStatsDeleteRsp");
+      DU_LOG("ERROR  -->  MAC : Failed to allocate memory in MacProcSchStatsDeleteRsp");
       ret = RFAILED;
    }
    
@@ -1457,13 +1457,13 @@ uint8_t MacSendStatsDeleteRspToDuApp(SchStatsDeleteRsp *schStatsDeleteRsp,  MacS
       }
    }
 
-   DU_LOG("\nINFO  -->  MAC : MacSendStatsDeleteRspToDuApp: Sending Delete Statistics Response to DU APP");
+   DU_LOG("INFO  -->  MAC : MacSendStatsDeleteRspToDuApp: Sending Delete Statistics Response to DU APP");
 
    memset(&pst, 0, sizeof(Pst));
    FILL_PST_MAC_TO_DUAPP(pst, EVENT_MAC_STATS_DELETE_RSP);
    if(((*macDuStatsDeleteRspOpts[pst.selector])(&pst, macStatsDeleteRsp))!= ROK)
    {
-      DU_LOG("\nERROR  -->  MAC : Failed to send statistics delete response to DU APP");
+      DU_LOG("ERROR  -->  MAC : Failed to send statistics delete response to DU APP");
       MAC_FREE_SHRABL_BUF(MAC_MEM_REGION, MAC_POOL, macStatsDeleteRsp, sizeof(MacStatsDeleteRsp));
       ret = RFAILED;
    }
@@ -1517,18 +1517,18 @@ uint8_t MacProcStatsDeleteReq(Pst *pst, MacStatsDeleteReq *macStatsDeleteReq)
    uint8_t   ret = RFAILED;
    SchStatsDeleteReq  *schStatsDeleteReq = NULLP;
  
-   DU_LOG("\nINFO   -->  MAC : Received Statistics delete Request from DU_APP");
+   DU_LOG("INFO   -->  MAC : Received Statistics delete Request from DU_APP");
 
    if(macStatsDeleteReq == NULLP)
    {
-      DU_LOG("\nERROR  -->  MAC : MacProcStatsDeleteReq(): Received Null pointer");
+      DU_LOG("ERROR  -->  MAC : MacProcStatsDeleteReq(): Received Null pointer");
       return RFAILED;
    }
    
    MAC_ALLOC(schStatsDeleteReq, sizeof(SchStatsDeleteReq));
    if(schStatsDeleteReq == NULLP)
    {
-      DU_LOG("\nERROR  -->  MAC : MacProcStatsDeleteReq: Failed to allocate memory");
+      DU_LOG("ERROR  -->  MAC : MacProcStatsDeleteReq: Failed to allocate memory");
    }
    else
    {
@@ -1568,13 +1568,13 @@ uint8_t MacSendStatsModificationRspToDuApp(MacStatsModificationRsp *tmpMacStatsM
    uint8_t ret = ROK;
    MacStatsModificationRsp *macStatsModificationRsp = NULLP;
 
-   DU_LOG("\nINFO  -->  MAC : MacSendStatsModificationRspToDuApp: Sending Statistics Modification Response to DU APP");
+   DU_LOG("INFO  -->  MAC : MacSendStatsModificationRspToDuApp: Sending Statistics Modification Response to DU APP");
 
 
    MAC_ALLOC_SHRABL_BUF(macStatsModificationRsp, sizeof(MacStatsModificationRsp));
    if(macStatsModificationRsp == NULLP)
    {
-      DU_LOG("\nERROR  -->  MAC : Failed to allocate memory in MacProcSchStatsModificationRsp");
+      DU_LOG("ERROR  -->  MAC : Failed to allocate memory in MacProcSchStatsModificationRsp");
       ret = RFAILED;
    }
    else
@@ -1586,7 +1586,7 @@ uint8_t MacSendStatsModificationRspToDuApp(MacStatsModificationRsp *tmpMacStatsM
       FILL_PST_MAC_TO_DUAPP(pst, EVENT_MAC_STATISTICS_MODIFY_RSP);
       if(((*macDuStatsModificationRspOpts[pst.selector])(&pst, macStatsModificationRsp))!= ROK)
       {
-         DU_LOG("\nERROR  -->  MAC : Failed to send statistics modification response to DU APP");
+         DU_LOG("ERROR  -->  MAC : Failed to send statistics modification response to DU APP");
          MAC_FREE_SHRABL_BUF(MAC_MEM_REGION, MAC_POOL, macStatsModificationRsp, sizeof(MacStatsModificationRsp));
          ret = RFAILED;
       }
@@ -1736,18 +1736,18 @@ uint8_t MacProcStatsModificationReq(Pst *pst, MacStatsModificationReq *macStatsM
    SchStatsModificationReq  *schStatsModificationReq = NULLP;
    MacStatsModificationRsp  *macStatsModificationRsp = NULLP;
 
-   DU_LOG("\nINFO   -->  MAC : Received Statistics Modification Request from DU_APP");
+   DU_LOG("INFO   -->  MAC : Received Statistics Modification Request from DU_APP");
 
    if(macStatsModificationReq == NULLP)
    {
-      DU_LOG("\nERROR  -->  MAC : MacProcStatsModificationReq(): Received Null pointer");
+      DU_LOG("ERROR  -->  MAC : MacProcStatsModificationReq(): Received Null pointer");
       return RFAILED;
    }
 
    /* [Step -1] */
    if(macCb.statistics.numPendingStatsRsp >= MAX_PENDING_STATS_RSP)
    {
-      DU_LOG("\nERROR  -->  MAC : MacProcStatsModificationReq: Maximum number of statistics response is pending. \
+      DU_LOG("ERROR  -->  MAC : MacProcStatsModificationReq: Maximum number of statistics response is pending. \
          Cannot process new request.");
       MacRejectAllStatsModification(macStatsModificationReq, RESOURCE_UNAVAILABLE);
       MAC_FREE_SHRABL_BUF(pst->region, pst->pool, macStatsModificationReq, sizeof(MacStatsModificationReq));
@@ -1757,7 +1757,7 @@ uint8_t MacProcStatsModificationReq(Pst *pst, MacStatsModificationReq *macStatsM
    MAC_ALLOC(schStatsModificationReq, sizeof(SchStatsModificationReq));
    if(schStatsModificationReq == NULLP)
    {
-      DU_LOG("\nERROR  -->  MAC : MacProcStatsModificationReq: Failed to allocate memory");
+      DU_LOG("ERROR  -->  MAC : MacProcStatsModificationReq: Failed to allocate memory");
       MacRejectAllStatsModification(macStatsModificationReq, RESOURCE_UNAVAILABLE);
       MAC_FREE_SHRABL_BUF(pst->region, pst->pool, macStatsModificationReq, sizeof(MacStatsModificationReq));
       return RFAILED;
@@ -1791,7 +1791,7 @@ uint8_t MacProcStatsModificationReq(Pst *pst, MacStatsModificationReq *macStatsM
                }
             default:
                {
-                  DU_LOG("\nERROR  -->  MAC : MacProcStatsModificationReq: Invalid measurement type [%d]", \
+                  DU_LOG("ERROR  -->  MAC : MacProcStatsModificationReq: Invalid measurement type [%d]", \
                      macStatsGrp->statsList[macStatsIdx]);
                   measTypeInvalid = true;
                }
@@ -1835,7 +1835,7 @@ uint8_t MacProcStatsModificationReq(Pst *pst, MacStatsModificationReq *macStatsM
    else
    {
       /* [Step 5] */
-      DU_LOG("\nERROR  -->  MAC : MacProcStatsModificationReq: All statistics group found invalid");
+      DU_LOG("ERROR  -->  MAC : MacProcStatsModificationReq: All statistics group found invalid");
       MAC_FREE(schStatsModificationReq, sizeof(SchStatsModificationReq));
       ret = MacSendStatsModificationRspToDuApp(macStatsModificationRsp);
    }

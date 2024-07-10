@@ -106,7 +106,7 @@ uint8_t nfapiP7ClkActvTsk(Pst *pst, Buffer *mBuf)
             }
             default:
             {
-                DU_LOG("\nERROR  -> NFAPI_VNF: P7 CLOCK Act task received Incorrect event:%d",\
+                DU_LOG("ERROR  -> NFAPI_VNF: P7 CLOCK Act task received Incorrect event:%d",\
                                                                   pst->event);
                 ret = RFAILED;
                 break;
@@ -116,7 +116,7 @@ uint8_t nfapiP7ClkActvTsk(Pst *pst, Buffer *mBuf)
       }
       default:
       {
-         DU_LOG("\nERROR  --> NFAPI_VNF: P7 CLOCK Act task received from wrong Entity:%d",\
+         DU_LOG("ERROR  --> NFAPI_VNF: P7 CLOCK Act task received from wrong Entity:%d",\
                                                                   pst->srcEnt);
          ret = RFAILED;
          break;
@@ -179,7 +179,7 @@ void nfapiGenerateTicks()
       
          vnfDb.vnfP7Info.p7SyncInfo.frameInfo.sfn++;
          vnfDb.vnfP7Info.p7SyncInfo.frameInfo.slot++;
-         DU_LOG("\nINFO  --> VNF_NFAPI : Starting to generate slot indications t_ref:%llu, slotDur:%f, perTTi:%u, slotsPerFrame:%d, nanoSec:%d",\
+         DU_LOG("INFO  --> VNF_NFAPI : Starting to generate slot indications t_ref:%llu, slotDur:%f, perTTi:%u, slotsPerFrame:%d, nanoSec:%d",\
                vnfDb.vnfP7Info.t_ref_ns, slotDur_ms, PER_TTI_TIME_USEC, NUM_SLOTS_PER_SUBFRAME, tti_req.tv_nsec);
          nfapiBuildAndSendDlNodeSync(); 
       }
@@ -191,13 +191,13 @@ void nfapiGenerateTicks()
       /*TODO: To enable when P5 messages are all done and implemented*/
       if(nfapiSendSlotIndToMac() != ROK)
       {
-         DU_LOG("\nERROR  -> NFAPI_VNF: Memory Corruption issue while sending SLOT IND to MAC");
+         DU_LOG("ERROR  -> NFAPI_VNF: Memory Corruption issue while sending SLOT IND to MAC");
          break;
       }
 #endif
 
 #ifdef ODU_SLOT_IND_DEBUG_LOG
-      DU_LOG("\nVNF_NFAPI -->  DEBUG:  SFN/Slot:%d,%d",\
+      DU_LOG("VNF_NFAPI -->  DEBUG:  SFN/Slot:%d,%d",\
                vnfDb.vnfP7Info.p7SyncInfo.frameInfo.sfn, vnfDb.vnfP7Info.p7SyncInfo.frameInfo.slot);
 #endif
       clock_nanosleep(CLOCK_REALTIME, 0, &tti_req, NULL); 
@@ -238,7 +238,7 @@ uint8_t nfapiTriggerP7Clock()
 
    if(ODU_GET_MSG_BUF(DFLT_REGION, nfapiP7Pst.pool, &mBuf) != ROK)
    {
-      DU_LOG("\nERROR  -->  NFAPI_VNF : Failed to allocate memory");
+      DU_LOG("ERROR  -->  NFAPI_VNF : Failed to allocate memory");
       return RFAILED;
    }
 
@@ -289,14 +289,14 @@ uint8_t nfapiSendSlotIndToMac()
       pst.intfVer     = 0;
       if(packSlotInd(&pst, slotInd) != ROK)
       {
-         DU_LOG("\nERROR  --> NFAPI_VNF:  Unable to Send Slot Ind to MAC");
+         DU_LOG("ERROR  --> NFAPI_VNF:  Unable to Send Slot Ind to MAC");
          NFAPI_P7_CLK_FREE_SHRABL_BUF(pst.region, pst.pool, slotInd, sizeof(SlotTimingInfo));
          return RFAILED;
       }
    }
    else
    {
-      DU_LOG("\nERROR  -->  NFAPI_VNF: Memory allocation failed in procSlotInd");
+      DU_LOG("ERROR  -->  NFAPI_VNF: Memory allocation failed in procSlotInd");
       return RFAILED;
    }
    return ROK;

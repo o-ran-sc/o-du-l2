@@ -46,7 +46,7 @@ LwrMacCellCb * lwrMacGetCellCb
 
    if(cellId >= MAX_NUM_CELL)
    {
-      DU_LOG("\nERROR  -->  Invalid Cell Id [%d]. rgClUtlGetCellCb failed.", cellId);
+      DU_LOG("ERROR  -->  Invalid Cell Id [%d]. rgClUtlGetCellCb failed.", cellId);
       return NULLP;
    }
    

@@ -92,7 +92,7 @@ void  callFlowPhyStubActvTsk(Pst *pst)
          }
       }
    }
-   DU_LOG("\nCall Flow: %s -> %s : %s\n", sourceTask, destTask, message);
+   DU_LOG("Call Flow: %s -> %s : %s\n", sourceTask, destTask, message);
 }
 #endif
 
@@ -114,7 +114,7 @@ void  callFlowPhyStubActvTsk(Pst *pst)
 * ****************************************************************/
 uint8_t phyStubActvTsk(Pst *pst, Buffer *mBuf)
 {
-   DU_LOG("\nPHY_STUB: Received Event [%d]", pst->event);
+   DU_LOG("PHY_STUB: Received Event [%d]", pst->event);
    
 #ifdef CALL_FLOW_DEBUG_LOG   
    callFlowPhyStubActvTsk(pst);

@@ -102,7 +102,7 @@ uint8_t duAppInit(SSTskId sysTskId)
       return RFAILED;
    }
 
-   DU_LOG("\nINFO   -->  DU_APP : DU APP created and registered \
+   DU_LOG("INFO   -->  DU_APP : DU APP created and registered \
    to %d sys task", sysTskId);
    return ROK;
 }
@@ -128,38 +128,38 @@ uint8_t duAppInit(SSTskId sysTskId)
 
 uint8_t setRrmPolicy(RrmPolicyList rrmPolicy[], uint8_t policyNum)
 {
-   DU_LOG("\nINFO   -->  DU_APP : DU APP RRM number of policy %d,", \
+   DU_LOG("INFO   -->  DU_APP : DU APP RRM number of policy %d,", \
 	  policyNum);
    for(uint8_t i=0; i<policyNum ; i++)
    {
-      DU_LOG("\nINFO   -->  DU_APP : DU APP  id = %s",rrmPolicy[i].id);
-      DU_LOG("\nINFO   -->  DU_APP : DU APP  resourceType = %d", \
+      DU_LOG("INFO   -->  DU_APP : DU APP  id = %s",rrmPolicy[i].id);
+      DU_LOG("INFO   -->  DU_APP : DU APP  resourceType = %d", \
 		rrmPolicy[i].resourceType);
-      DU_LOG("\nINFO   -->  DU_APP : DU APP  rRMPolicyMaxRatio = %d", \
+      DU_LOG("INFO   -->  DU_APP : DU APP  rRMPolicyMaxRatio = %d", \
 		rrmPolicy[i].rRMPolicyMaxRatio);
-      DU_LOG("\nINFO   -->  DU_APP : DU APP  rRMPolicyMinRatio = %d", \
+      DU_LOG("INFO   -->  DU_APP : DU APP  rRMPolicyMinRatio = %d", \
 		rrmPolicy[i].rRMPolicyMinRatio);
-      DU_LOG("\nINFO   -->  DU_APP : DU APP  rRMPolicyDedicatedRatio = %d", \
+      DU_LOG("INFO   -->  DU_APP : DU APP  rRMPolicyDedicatedRatio = %d", \
 		rrmPolicy[i].rRMPolicyDedicatedRatio);
-      DU_LOG("\nINFO   -->  DU_APP : DU APP  rRMMemberNum = %d", \
+      DU_LOG("INFO   -->  DU_APP : DU APP  rRMMemberNum = %d", \
 		rrmPolicy[i].rRMMemberNum);
       for(uint8_t j=0; j<rrmPolicy[i].rRMMemberNum ; j++)
       {
-         DU_LOG("\nINFO   -->  DU_APP : DU APP  mcc = %d%d%d", \
+         DU_LOG("INFO   -->  DU_APP : DU APP  mcc = %d%d%d", \
                  rrmPolicy[i].rRMPolicyMemberList[j].mcc[0], \
 		 rrmPolicy[i].rRMPolicyMemberList[j].mcc[1], \
 		 rrmPolicy[i].rRMPolicyMemberList[j].mcc[2]);
-         DU_LOG("\nINFO   -->  DU_APP : DU APP  mnc = %d%d%d", \
+         DU_LOG("INFO   -->  DU_APP : DU APP  mnc = %d%d%d", \
 		   rrmPolicy[i].rRMPolicyMemberList[j].mnc[0], \
 		   rrmPolicy[i].rRMPolicyMemberList[j].mnc[1], \
 		   rrmPolicy[i].rRMPolicyMemberList[j].mnc[2]);
 
-         DU_LOG("\nINFO   -->  DU_APP : DU APP  sd = %d%d%d", \
+         DU_LOG("INFO   -->  DU_APP : DU APP  sd = %d%d%d", \
 	           rrmPolicy[i].rRMPolicyMemberList[j].sd[0], \
 		   rrmPolicy[i].rRMPolicyMemberList[j].sd[1], \
 		   rrmPolicy[i].rRMPolicyMemberList[j].sd[2]);
 
-         DU_LOG("\nINFO   -->  DU_APP : DU APP  sst = %d\n", \
+         DU_LOG("INFO   -->  DU_APP : DU APP  sst = %d\n", \
 		   rrmPolicy[i].rRMPolicyMemberList[j].sst);
       }
 
@@ -230,49 +230,49 @@ bool bringCellUp(uint16_t cellId)
 uint8_t setCellParam()
 {
    //Read all the configs from smo edit-config into cellParams
-   DU_LOG("\nO1 configurecell du_app enterd");
-   DU_LOG("\nDU_APP configurecell cellLocalId value:%d",cellParams.cellLocalId);
-   DU_LOG("\nDU_APP configurecell operationalState value:%d", \
+   DU_LOG("O1 configurecell du_app enterd");
+   DU_LOG("DU_APP configurecell cellLocalId value:%d",cellParams.cellLocalId);
+   DU_LOG("DU_APP configurecell operationalState value:%d", \
              cellParams.operationalState);
-   DU_LOG("\nDU_APP configurecell administrativeState value:%d", \
+   DU_LOG("DU_APP configurecell administrativeState value:%d", \
              cellParams.administrativeState);
-   DU_LOG("\nDU_APP configurecell cellState value:%d",cellParams.cellState);
-   DU_LOG("\nDU_APP configurecell nRPCI value:%d",cellParams.nRPCI);
-   DU_LOG("\nDU_APP configurecell nRTAC value:%d",cellParams.nRTAC);
-   DU_LOG("\nDU_APP configurecell arfcnDL value:%d",cellParams.arfcnDL);
-   DU_LOG("\nDU_APP configurecell arfcnUL value:%d",cellParams.arfcnUL);
-   DU_LOG("\nDU_APP configurecell arfcnSUL value:%d",cellParams.arfcnSUL);
-   DU_LOG("\nDU_APP configurecell ssbFrequency value:%d",cellParams.ssbFrequency);
-   DU_LOG("\nDU_APP configurecell ssbPeriodicity value:%d", \
+   DU_LOG("DU_APP configurecell cellState value:%d",cellParams.cellState);
+   DU_LOG("DU_APP configurecell nRPCI value:%d",cellParams.nRPCI);
+   DU_LOG("DU_APP configurecell nRTAC value:%d",cellParams.nRTAC);
+   DU_LOG("DU_APP configurecell arfcnDL value:%d",cellParams.arfcnDL);
+   DU_LOG("DU_APP configurecell arfcnUL value:%d",cellParams.arfcnUL);
+   DU_LOG("DU_APP configurecell arfcnSUL value:%d",cellParams.arfcnSUL);
+   DU_LOG("DU_APP configurecell ssbFrequency value:%d",cellParams.ssbFrequency);
+   DU_LOG("DU_APP configurecell ssbPeriodicity value:%d", \
              cellParams.ssbPeriodicity);
-   DU_LOG("\nDU_APP configurecell ssbSubCarrierSpacing value:%d", \
+   DU_LOG("DU_APP configurecell ssbSubCarrierSpacing value:%d", \
              cellParams.ssbSubCarrierSpacing);
-   DU_LOG("\nDU_APP configurecell ssbOffset value:%d",cellParams.ssbOffset);
-   DU_LOG("\nDU_APP configurecell ssbDuration value:%d",cellParams.ssbDuration);
-   DU_LOG("\nDU_APP configurecell bSChannelBwUL value:%d", \
+   DU_LOG("DU_APP configurecell ssbOffset value:%d",cellParams.ssbOffset);
+   DU_LOG("DU_APP configurecell ssbDuration value:%d",cellParams.ssbDuration);
+   DU_LOG("DU_APP configurecell bSChannelBwUL value:%d", \
 	     cellParams.bSChannelBwUL);
-   DU_LOG("\nDU_APP configurecell bSChannelBwDL value:%d", \
+   DU_LOG("DU_APP configurecell bSChannelBwDL value:%d", \
 	     cellParams.bSChannelBwDL);
-   DU_LOG("\nDU_APP configurecell bSChannelBwSUL value:%d", \
+   DU_LOG("DU_APP configurecell bSChannelBwSUL value:%d", \
 	     cellParams.bSChannelBwSUL);
    for (int i=0 ; i<MAX_SUPPORTED_PLMN; i++)
    {
 
-       DU_LOG("\nINFO   -->  DU_APP : DU APP  mcellParams.plmnList[%d].mcc = %d%d%d", i,\
+       DU_LOG("INFO   -->  DU_APP : DU APP  mcellParams.plmnList[%d].mcc = %d%d%d", i,\
                  cellParams.plmnList[i].mcc[0], \
 		 cellParams.plmnList[i].mcc[1], \
 		 cellParams.plmnList[i].mcc[2]);
-         DU_LOG("\nINFO   -->  DU_APP : DU APP  cellParams.plmnList[%d].mnc = %d%d%d", i,\
+         DU_LOG("INFO   -->  DU_APP : DU APP  cellParams.plmnList[%d].mnc = %d%d%d", i,\
 		   cellParams.plmnList[i].mnc[0], \
 		   cellParams.plmnList[i].mnc[1], \
 		   cellParams.plmnList[i].mnc[2]);
 
-         DU_LOG("\nINFO   -->  DU_APP : DU APP  cellParams.plmnList[%d].sd = %d%d%d", i,\
+         DU_LOG("INFO   -->  DU_APP : DU APP  cellParams.plmnList[%d].sd = %d%d%d", i,\
 	           cellParams.plmnList[i].sd[0], \
 		   cellParams.plmnList[i].sd[1], \
 		   cellParams.plmnList[i].sd[2]);
 
-         DU_LOG("\nINFO   -->  DU_APP : DU APP  cellParams.plmnList[%d].sst = %d\n", i,\
+         DU_LOG("INFO   -->  DU_APP : DU APP  cellParams.plmnList[%d].sst = %d\n", i,\
 		   cellParams.plmnList[i].sst);
 
    }
@@ -335,7 +335,7 @@ uint8_t egtpInit(SSTskId sysTskId)
       return RFAILED;
    }
  
-    DU_LOG("\nINFO   -->  DU_APP : EGTP created and registered \
+    DU_LOG("INFO   -->  DU_APP : EGTP created and registered \
     to %d sys task", sysTskId);
     return ROK;
 }
@@ -371,7 +371,7 @@ uint8_t sctpInit(SSTskId sysTskId)
       return RFAILED;
    }
 
-   DU_LOG("\nINFO   -->  DU_APP : SCTP TAPA task created and registered to %d sys task", 
+   DU_LOG("INFO   -->  DU_APP : SCTP TAPA task created and registered to %d sys task", 
          sysTskId);
    return ROK;
 }
@@ -451,7 +451,7 @@ uint8_t rlcDlInit(SSTskId sysTskId)
    }
 
 
-   DU_LOG("\nINFO   -->  DU_APP : SCH TAPA task created and registered to \
+   DU_LOG("INFO   -->  DU_APP : SCH TAPA task created and registered to \
          %d sys task", sysTskId);
    return ROK;
 }
@@ -485,7 +485,7 @@ uint8_t rlcUlInit(SSTskId sysTskId)
    {
       return RFAILED;
    }
-   DU_LOG("\nINFO   -->  DU_APP : RLC UL TAPA task created and registered to \
+   DU_LOG("INFO   -->  DU_APP : RLC UL TAPA task created and registered to \
    %d sys task", sysTskId);
    return ROK;
 }
@@ -520,7 +520,7 @@ uint8_t lwrMacInit(SSTskId sysTskId)
       return RFAILED;
    }
 
-   DU_LOG("\nINFO   -->  DU_APP : LWR MAC TAPA task created and registered to %d sys task",
+   DU_LOG("INFO   -->  DU_APP : LWR MAC TAPA task created and registered to %d sys task",
          sysTskId);
    return ROK;
 }
@@ -557,7 +557,7 @@ uint8_t phyStubInit(SSTskId sysTskId)
       return RFAILED;
    }
 
-   DU_LOG("\nINFO   -->  DU_APP : PHY stub slot indication TAPA task created and registered to %d sys task",
+   DU_LOG("INFO   -->  DU_APP : PHY stub slot indication TAPA task created and registered to %d sys task",
          sysTskId);
    return ROK;
 }
@@ -593,7 +593,7 @@ uint8_t udpP7Init(SSTskId sysTskId)
       return RFAILED;
    }
 
-   DU_LOG("\nINFO   -->  DU_APP : UDP P7 TAPA task created and registered to %d sys task",
+   DU_LOG("INFO   -->  DU_APP : UDP P7 TAPA task created and registered to %d sys task",
          sysTskId);
    return ROK;
 }
@@ -628,7 +628,7 @@ uint8_t nfapiP7ClkInit(SSTskId sysTskId)
       return RFAILED;
    }
 
-   DU_LOG("\nINFO   -->  DU_APP : NFAPI P7 CLK TAPA task created and registered to %d sys task",
+   DU_LOG("INFO   -->  DU_APP : NFAPI P7 CLK TAPA task created and registered to %d sys task",
          sysTskId);
    return ROK;
 }
@@ -666,21 +666,21 @@ uint8_t commonInit()
    /* system task for DU APP */
    if(ODU_CREATE_TASK(PRIOR0, &duCfgParam.threadInfo.duAppSTskId) != ROK)
    {
-      DU_LOG("\nERROR  -->  DU_APP : System Task creation for DU APP failed");
+      DU_LOG("ERROR  -->  DU_APP : System Task creation for DU APP failed");
       return RFAILED;
    }
 
    /* system task for EGTP */
    if(ODU_CREATE_TASK(PRIOR0, &duCfgParam.threadInfo.egtpSTskId) != ROK)
    {
-      DU_LOG("\nERROR  -->  DU_APP : System Task creation for EGTP failed");
+      DU_LOG("ERROR  -->  DU_APP : System Task creation for EGTP failed");
       return RFAILED;
    }
 
    /* system task for RLC_DL and MAC */
    if(ODU_CREATE_TASK(PRIOR0, &duCfgParam.threadInfo.rlcMacSTskId) != ROK)
    {
-      DU_LOG("\nERROR  -->  DU_APP : System Task creation for RLC DL/MAC failed");
+      DU_LOG("ERROR  -->  DU_APP : System Task creation for RLC DL/MAC failed");
       return RFAILED;
    }
    pthread_attr_init(&attr);
@@ -689,28 +689,28 @@ uint8_t commonInit()
    /* system task for RLC UL */
    if(ODU_CREATE_TASK(PRIOR1, &duCfgParam.threadInfo.rlcUlSTskId) != ROK)
    {
-      DU_LOG("\nERROR  -->  DU_APP : System Task creation for RLC UL failed");
+      DU_LOG("ERROR  -->  DU_APP : System Task creation for RLC UL failed");
       return RFAILED;
    }
    
    /* system task for SCH */
    if(ODU_CREATE_TASK(PRIOR1, &duCfgParam.threadInfo.schSTskId) != ROK)
    {
-      DU_LOG("\nERROR  -->  DU_APP : System Task creation for SCH failed");
+      DU_LOG("ERROR  -->  DU_APP : System Task creation for SCH failed");
       return RFAILED;
    }
 
    /* system task for SCTP receiver thread */
    if(ODU_CREATE_TASK(PRIOR0, &duCfgParam.threadInfo.sctpSTskId) != ROK)
    {
-      DU_LOG("\nERROR  -->  DU_APP : System Task creation for SCTP failed");
+      DU_LOG("ERROR  -->  DU_APP : System Task creation for SCTP failed");
       return RFAILED;
    }
 
    /* system task for lower-mac receiver thread */
    if(ODU_CREATE_TASK(PRIOR0, &duCfgParam.threadInfo.lwrMacSTskId) != ROK)
    {
-      DU_LOG("\nERROR  -->  DU_APP : System Task creation for Lower MAC failed");
+      DU_LOG("ERROR  -->  DU_APP : System Task creation for Lower MAC failed");
       return RFAILED;
    }
 
@@ -725,7 +725,7 @@ uint8_t commonInit()
    /* system task for phy stub's slot indication generator thread */
    if(ODU_CREATE_TASK(PRIOR0, &phyStubSlotIndSTskId) != ROK)
    {
-      DU_LOG("\nERROR  -->  DU_APP : System Task creation for Phy stub slot indication generator failed. MAX STSK [%d]", SS_MAX_STSKS);
+      DU_LOG("ERROR  -->  DU_APP : System Task creation for Phy stub slot indication generator failed. MAX STSK [%d]", SS_MAX_STSKS);
       return RFAILED;
    }
 #else
@@ -733,13 +733,13 @@ uint8_t commonInit()
    /* system task for UDP-P7 thread */
    if(ODU_CREATE_TASK(PRIOR0, &duCfgParam.threadInfo.udpP7STskId) != ROK)
    {
-      DU_LOG("\nERROR  -->  DU_APP : System Task creation for UDP P7 Interface failed. MAX STSK [%d]", SS_MAX_STSKS);
+      DU_LOG("ERROR  -->  DU_APP : System Task creation for UDP P7 Interface failed. MAX STSK [%d]", SS_MAX_STSKS);
       return RFAILED;
    }
    /* system task for NFAPI-P7-CLK thread */
    if(ODU_CREATE_TASK(PRIOR0, &duCfgParam.threadInfo.nfapiP7ClkSTskId) != ROK)
    {
-      DU_LOG("\nERROR  -->  DU_APP : System Task creation for NFAPI P7 CLK Interface failed. MAX STSK [%d]", SS_MAX_STSKS);
+      DU_LOG("ERROR  -->  DU_APP : System Task creation for NFAPI P7 CLK Interface failed. MAX STSK [%d]", SS_MAX_STSKS);
       return RFAILED;
    }
 #endif
@@ -748,62 +748,62 @@ uint8_t commonInit()
    /* Create TAPA tasks */
    if(duAppInit(duCfgParam.threadInfo.duAppSTskId) != ROK)
    {
-      DU_LOG("\nERROR  -->  DU_APP : DU APP TAPA Task initialization failed");
+      DU_LOG("ERROR  -->  DU_APP : DU APP TAPA Task initialization failed");
       return RFAILED;
    }
 
    if(egtpInit(duCfgParam.threadInfo.egtpSTskId) != ROK)
    {
-      DU_LOG("\nERROR  -->  DU_APP : EGTP TAPA Task initialization failed");
+      DU_LOG("ERROR  -->  DU_APP : EGTP TAPA Task initialization failed");
       return RFAILED;
    }
 
    if(sctpInit(duCfgParam.threadInfo.sctpSTskId) != ROK)
    {
-      DU_LOG("\nERROR  -->  DU_APP : SCTP TAPA Task initialization failed");
+      DU_LOG("ERROR  -->  DU_APP : SCTP TAPA Task initialization failed");
       return RFAILED;
    }
 
    if(rlcDlInit(duCfgParam.threadInfo.rlcMacSTskId) != ROK)
    {
-      DU_LOG("\nERROR  -->  DU_APP : RLC DL Tapa Task initialization failed");
+      DU_LOG("ERROR  -->  DU_APP : RLC DL Tapa Task initialization failed");
       return RFAILED;
    } 
 
    if(rlcUlInit(duCfgParam.threadInfo.rlcUlSTskId) != ROK)
    {
-     DU_LOG("\nERROR  -->  DU_APP : RLC UL Tapa Task initialization failed");
+     DU_LOG("ERROR  -->  DU_APP : RLC UL Tapa Task initialization failed");
      return RFAILED;
    } 
 
    if(schInit(duCfgParam.threadInfo.schSTskId) != ROK)
    {
-      DU_LOG("\nERROR  -->  DU_APP : SCH Tapa Task initialization failed");
+      DU_LOG("ERROR  -->  DU_APP : SCH Tapa Task initialization failed");
       return RFAILED;
    }
 
    if(lwrMacInit(duCfgParam.threadInfo.lwrMacSTskId) != ROK)
    {
-      DU_LOG("\nERROR  -->  DU_APP : Lower MAC Tapa Task initialization failed");
+      DU_LOG("ERROR  -->  DU_APP : Lower MAC Tapa Task initialization failed");
       return RFAILED;
    }
 
 #if !(defined(NFAPI_ENABLED) || defined (INTEL_WLS_MEM))
    if(phyStubInit(phyStubSlotIndSTskId) != ROK)
    {
-      DU_LOG("\nERROR  -->  DU_APP : PHY stub slot indication Tapa Task initialization failed");
+      DU_LOG("ERROR  -->  DU_APP : PHY stub slot indication Tapa Task initialization failed");
       return RFAILED;
    }
 #else
 #ifdef NFAPI_ENABLED
    if(udpP7Init(duCfgParam.threadInfo.udpP7STskId) != ROK)
    {
-      DU_LOG("\nERROR  -->  DU_APP : UDP P7 Tapa Task initialization failed");
+      DU_LOG("ERROR  -->  DU_APP : UDP P7 Tapa Task initialization failed");
       return RFAILED;
    }
    if(nfapiP7ClkInit(duCfgParam.threadInfo.nfapiP7ClkSTskId) != ROK)
    {
-      DU_LOG("\nERROR  -->  DU_APP : NFAPI P7 CLK Tapa Task initialization failed");
+      DU_LOG("ERROR  -->  DU_APP : NFAPI P7 CLK Tapa Task initialization failed");
       return RFAILED;
    }
 #endif

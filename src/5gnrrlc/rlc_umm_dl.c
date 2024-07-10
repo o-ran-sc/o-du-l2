@@ -110,7 +110,7 @@ void rlcUmmQSdu(RlcCb *gCb, RlcDlRbCb *rbCb, RlcDatReqInfo *datReq, Buffer *mBuf
 #if (ERRCLASS & ERRCLS_ADD_RES)
    if ( sdu == NULLP )
    {
-      DU_LOG("\nERROR  -->  RLC DL : Memory allocation failed in rlcUmmQSdu for UEID:%d CELLID:%d",\
+      DU_LOG("ERROR  -->  RLC DL : Memory allocation failed in rlcUmmQSdu for UEID:%d CELLID:%d",\
                rbCb->rlcId.ueId,
                rbCb->rlcId.cellId);
       ODU_PUT_MSG_BUF(mBuf);

@@ -1882,25 +1882,25 @@ Data  **ptr          /* Reference to pointer for which need to be allocate */
    /* error check on parameters */
    if(regCb == NULLP)
    {
-      DU_LOG("\nERROR  --> CM: cmDynAlloc(): Received memory region pointer is null");
+      DU_LOG("ERROR  --> CM: cmDynAlloc(): Received memory region pointer is null");
       return RFAILED;
    }
    
    if(ptr == NULLP)
    {
-      DU_LOG("\nERROR  --> CM: cmDynAlloc(): Received memory block pointer is null");
+      DU_LOG("ERROR  --> CM: cmDynAlloc(): Received memory block pointer is null");
       return RFAILED;
    }
    
    if(size == NULLP)
    {
-      DU_LOG("\nERROR  --> CM: cmDynAlloc(): Received memory size pointer null");
+      DU_LOG("ERROR  --> CM: cmDynAlloc(): Received memory size pointer null");
       return RFAILED;  
    }
    
    if(!(*size))
    {
-      DU_LOG("\nERROR  --> CM: cmDynAlloc(): Received memory block size is 0");
+      DU_LOG("ERROR  --> CM: cmDynAlloc(): Received memory block size is 0");
       return RFAILED;
    }
 #endif
@@ -1933,14 +1933,14 @@ Data  **ptr          /* Reference to pointer for which need to be allocate */
 #if (ERRCLASS & ERRCLS_DEBUG)
       if (regCb->mapTbl[idx].bktIdx == 0xFF)
       {
-         DU_LOG("\nERROR  --> CM: cmDynAlloc(): Failed to get the buffer of size %d\n", *size);
+         DU_LOG("ERROR  --> CM: cmDynAlloc(): Failed to get the buffer of size %d\n", *size);
          /* Some fatal error in the map table initialization. */
          return RFAILED;
       }
 #endif
      if (idx > 512)
      {
-         DU_LOG("\nERROR  --> CM: cmDynAlloc(): idx value is greater than 512");
+         DU_LOG("ERROR  --> CM: cmDynAlloc(): idx value is greater than 512");
          return RFAILED;
      }
       /* Dequeue the memory block and return it to the user */
@@ -1962,7 +1962,7 @@ Data  **ptr          /* Reference to pointer for which need to be allocate */
       if(dynMemElem == NULLP)
       {
 #ifndef ALIGN_64BIT
-         DU_LOG("\nERROR  --> CM: cmDynAlloc(): Failed to get the buffer of size %ld\n", *size);
+         DU_LOG("ERROR  --> CM: cmDynAlloc(): Failed to get the buffer of size %ld\n", *size);
 #else
          printf("\nERROR  --> CM: cmDynAlloc(): Failed to get the buffer of size %d\n", *size);
 #endif
@@ -1980,7 +1980,7 @@ Data  **ptr          /* Reference to pointer for which need to be allocate */
       *ptr = dynMemElem->nextBktPtr;
       if (*ptr == NULLP)
       {
-        DU_LOG("\nERROR  --> CM: cmDynAlloc(): nextBktPtr is null");
+        DU_LOG("ERROR  --> CM: cmDynAlloc(): nextBktPtr is null");
         return RFAILED;
       }
       dynMemElem->nextBktPtr = *((CmMmEntry **)(*ptr));
@@ -2022,9 +2022,9 @@ Data  **ptr          /* Reference to pointer for which need to be allocate */
 
    /* If the size is not matching, return failure to caller */
 #ifndef ALIGN_64BIT
-   DU_LOG("\nERROR  --> CM : cmDynAlloc(): Failed to get the buffer of size %ld\n", *size);
+   DU_LOG("ERROR  --> CM : cmDynAlloc(): Failed to get the buffer of size %ld\n", *size);
 #else
-   DU_LOG("\nERROR  --> CM: cmDynAlloc(): Failed to get the buffer of size %d\n", *size);
+   DU_LOG("ERROR  --> CM: cmDynAlloc(): Failed to get the buffer of size %d\n", *size);
 #endif
    return RFAILED;
    
@@ -2040,7 +2040,7 @@ Data  **ptr          /* Reference to pointer for which need to be allocate */
 
    if ( (*ptr) == NULLP)
    {
-       DU_LOG("\nERROR  --> CM : cmDynAlloc(): Data ptr is null");
+       DU_LOG("ERROR  --> CM : cmDynAlloc(): Data ptr is null");
        return RFAILED; 
    }
    /* avail_size -= *size; */
@@ -2194,25 +2194,25 @@ Data  **ptr
    /* error check on parameters */
    if(regCb == NULL)
    {
-      DU_LOG("\nERROR  --> CM: cmDynAlloc(): Received memory region pointer is null");
+      DU_LOG("ERROR  --> CM: cmDynAlloc(): Received memory region pointer is null");
       return RFAILED;
    }
 
    if(ptr == NULLP)
    {
-      DU_LOG("\nERROR  --> CM: cmDynAlloc(): Received memory block pointer is null");
+      DU_LOG("ERROR  --> CM: cmDynAlloc(): Received memory block pointer is null");
       return RFAILED;
    }
 
    if(size == NULLP)
    {
-      DU_LOG("\nERROR  --> CM: cmDynAlloc(): Received memory size pointer null");
+      DU_LOG("ERROR  --> CM: cmDynAlloc(): Received memory size pointer null");
       return RFAILED;
    }
 
    if(!(*size))
    {
-      DU_LOG("\nERROR  --> CM: cmDynAlloc(): Received memory block size is 0");
+      DU_LOG("ERROR  --> CM: cmDynAlloc(): Received memory block size is 0");
       return RFAILED;
    }
 #endif
@@ -2222,7 +2222,7 @@ Data  **ptr
 #if (ERRCLASS & ERRCLS_INT_PAR)
       if ((memType != CMM_STATIC_MEM_FLAG) && (memType != CMM_DYNAMIC_MEM_FLAG))
       {
-         DU_LOG("\nERROR  --> CM : cmAlloc(): memType[%d] is invalid",memType);
+         DU_LOG("ERROR  --> CM : cmAlloc(): memType[%d] is invalid",memType);
          return RFAILED;
       }
 #endif /* (ERRCLASS & ERRCLS_INT_PAR) */
@@ -2267,7 +2267,7 @@ Data  **ptr
       if (regCb->mapTbl[idx].bktIdx == 0xFF)
       { 
          /* Some fatal error in the map table initialization. */
-         DU_LOG("\nERROR  --> CM : cmAlloc(): bktIdx is invalid");
+         DU_LOG("ERROR  --> CM : cmAlloc(): bktIdx is invalid");
          return RFAILED;
       }
 #endif
@@ -2356,7 +2356,7 @@ Data  **ptr
 #else
                   (Void) SUnlock(&(bkt->bktLock));
 #endif
-                  DU_LOG("\nERROR  --> CM : cmAlloc(): Sanity check returns failure");
+                  DU_LOG("ERROR  --> CM : cmAlloc(): Sanity check returns failure");
                   /* return RFAILED */
                   return RFAILED;
                }
@@ -2554,7 +2554,7 @@ Data  **ptr
    }
 
    /* No memory available */
-   DU_LOG("\nERROR  --> CM : cmAlloc(): No memory available in heap");
+   DU_LOG("ERROR  --> CM : cmAlloc(): No memory available in heap");
    return RFAILED;
 #else /* use pure is on */
 /*cm_mem_c_001.main_27 SSI-4GMX specfic changes*/   
@@ -2566,7 +2566,7 @@ Data  **ptr
 #endif
    if ( (*ptr) == NULLP)
    {
-       DU_LOG("\nERROR  --> CM : cmAlloc(): ptr is null");
+       DU_LOG("ERROR  --> CM : cmAlloc(): ptr is null");
        return RFAILED;
    }
    avail_size -= *size;
@@ -2798,7 +2798,7 @@ Size    size        /* Size of the block */
    /* error check on parameters */
    if ((regCb == NULLP) || (!size) || (ptr == NULLP))
    {
-      DU_LOG("\nERROR --> CM : cmDynFree(): Received memory region[%p] or size[%p] or block[%p] is invalid",regCb,size,ptr);
+      DU_LOG("ERROR --> CM : cmDynFree(): Received memory region[%p] or size[%p] or block[%p] is invalid",regCb,size,ptr);
       return RFAILED;
    }
 
@@ -2806,13 +2806,13 @@ Size    size        /* Size of the block */
    if (ptr >= ((CmMmRegCb *)regCb)->regInfo.start +
                ((CmMmRegCb *)regCb)->regInfo.size) 
    {
-      DU_LOG("\nERROR --> CM : cmDynFree(): Memory block[%p] not from region[%d]", ptr, ((CmMmRegCb *)regCb)->region);
+      DU_LOG("ERROR --> CM : cmDynFree(): Memory block[%p] not from region[%d]", ptr, ((CmMmRegCb *)regCb)->region);
       return RFAILED;
    }
 	/* cm_mem_c_001.main_20 Addition */
 	if (ptr < regCb->regInfo.start)
 	{
-	   DU_LOG("\nERROR --> CM : cmDynFree(): Memory block[%p] not from region[%d]", ptr, ((CmMmRegCb *)regCb)->region);
+	   DU_LOG("ERROR --> CM : cmDynFree(): Memory block[%p] not from region[%d]", ptr, ((CmMmRegCb *)regCb)->region);
       return RFAILED;
 	}
 
@@ -2830,7 +2830,7 @@ Size    size        /* Size of the block */
 #if (ERRCLASS & ERRCLS_DEBUG)
    if (regCb->mapTbl[idx].bktIdx == 0xFF)
    { 
-      DU_LOG("\nERROR --> CM : cmDynFree(): bktIdx is not valid");
+      DU_LOG("ERROR --> CM : cmDynFree(): bktIdx is not valid");
       /* Some fatal error in the map table initialization. */
       return RFAILED;
    }
@@ -2868,7 +2868,7 @@ Size    size        /* Size of the block */
    /* Check if the bucket index, if its not valid, return failure */
    if(dynMemElem == NULLP)
    {
-      DU_LOG("\nERROR --> CM : cmDynFree(): dynMemElem is null");
+      DU_LOG("ERROR --> CM : cmDynFree(): dynMemElem is null");
       return RFAILED;
    }
 
@@ -3018,7 +3018,7 @@ Size    size
    /* error check on parameters */
    if ((regCb == NULLP) || (!size) || (ptr == NULLP))
    {
-      DU_LOG("\nERROR --> CM : cmFree(): Received memory region[%p] or size[%p] or block[%p] is invalid",regCb,size,ptr);
+      DU_LOG("ERROR --> CM : cmFree(): Received memory region[%p] or size[%p] or block[%p] is invalid",regCb,size,ptr);
       return RFAILED;
    }
 
@@ -3026,13 +3026,13 @@ Size    size
    if (ptr >= ((CmMmRegCb *)regCb)->regInfo.start +
                ((CmMmRegCb *)regCb)->regInfo.size) 
    {
-      DU_LOG("\nERROR --> CM : cmFree(): Memory block[%p] not from region[%d]",ptr,regCb.region);
+      DU_LOG("ERROR --> CM : cmFree(): Memory block[%p] not from region[%d]",ptr,regCb.region);
       return RFAILED;
    }
 	/* cm_mem_c_001.main_20 Addition */
 	if (ptr < regCb->regInfo.start)
 	{
-     DU_LOG("\nERROR --> CM : cmFree(): Memory block[%p] not from region[%d]",ptr,regCb.region);
+     DU_LOG("ERROR --> CM : cmFree(): Memory block[%p] not from region[%d]",ptr,regCb.region);
 	  return RFAILED;
 	}
 
@@ -3058,7 +3058,7 @@ Size    size
       if (regCb->mapTbl[idx].bktIdx == 0xFF)
       { 
          /* Some fatal error in the map table initialization. */
-         DU_LOG("\nERROR --> CM : cmFree(): Invalid bktIdx");
+         DU_LOG("ERROR --> CM : cmFree(): Invalid bktIdx");
          return RFAILED;
       }
 #endif
@@ -3142,7 +3142,7 @@ Size    size
 #endif
 
                 /* handle RTRAMPLINGNOK in SFree/SPutSBuf */
-                DU_LOG("\nERROR  --> CM : cmFree(): Sanity check returns failure");    
+                DU_LOG("ERROR  --> CM : cmFree(): Sanity check returns failure");    
                 return (RTRAMPLINGNOK);
            }
       }
@@ -3175,7 +3175,7 @@ Size    size
 #endif
 
           /* handle RDBLFREE in SFree/SPutSBuf */
-          DU_LOG("\nERROR  --> CM : cmFree(): Memory block is already freed");    
+          DU_LOG("ERROR  --> CM : cmFree(): Memory block is already freed");    
           return (RDBLFREE);
       }
       if (CMM_IS_STATIC(ptrHdr->memFlags))
@@ -3232,7 +3232,7 @@ Size    size
 #endif
 
             /* handle RTRAMPLINGNOK in SFree/SPutSBuf */
-            DU_LOG("\nERROR  --> CM : cmFree(): Sanity check returns failure");    
+            DU_LOG("ERROR  --> CM : cmFree(): Sanity check returns failure");    
             return (RTRAMPLINGNOK);
          }
       }

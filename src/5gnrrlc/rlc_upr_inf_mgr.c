@@ -108,7 +108,7 @@ SpId   spId
 
    tRlcCb = RLC_GET_RLCCB(pst->dstInst);
 
-   DU_LOG("\nDEBUG  -->  RLC_UL : spId(%d), suId(%d)", spId, suId);
+   DU_LOG("DEBUG  -->  RLC_UL : spId(%d), suId(%d)", spId, suId);
    ckwSap = &(tRlcCb->u.ulCb->ckwSap);
    /* Take action based on the current state of the SAP */
    switch(ckwSap->state)
@@ -126,7 +126,7 @@ SpId   spId
          /* Update the State */
          ckwSap->state = RLC_SAP_BND;
 
-         DU_LOG("\nDEBUG  -->  RLC_UL : RlcUiCkwBndReq: state (%d)", ckwSap->state);
+         DU_LOG("DEBUG  -->  RLC_UL : RlcUiCkwBndReq: state (%d)", ckwSap->state);
          break;
       }
       case RLC_SAP_BND:
@@ -143,7 +143,7 @@ SpId   spId
                                 LKW_EVENT_CKW_BND_REQ, 
                                 LCM_CAUSE_INV_PAR_VAL);
 
-            DU_LOG("\nERROR  -->  RLC_UL : CKW SAP already Bound");
+            DU_LOG("ERROR  -->  RLC_UL : CKW SAP already Bound");
             RlcUiCkwBndCfm(&(ckwSap->pst), ckwSap->suId, CM_BND_NOK);
             return (RFAILED);
          }
@@ -152,7 +152,7 @@ SpId   spId
       default:
       {
 #if (ERRCLASS & ERRCLS_INT_PAR)
-         DU_LOG("\nERROR  -->  RLC_UL : Invalid CKW SAP State in Bind Req");
+         DU_LOG("ERROR  -->  RLC_UL : Invalid CKW SAP State in Bind Req");
          RLC_SEND_SAPID_ALARM(tRlcCb,
                              spId, 
                              LKW_EVENT_CKW_BND_REQ, 
@@ -204,7 +204,7 @@ Reason   reason
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
    tRlcCb = RLC_GET_RLCCB(pst->dstInst);
 
-   DU_LOG("\nDEBUG  -->  RLC_UL : spId(%d), reason(%d)", 
+   DU_LOG("DEBUG  -->  RLC_UL : spId(%d), reason(%d)", 
                 spId, 
                 reason);
 
@@ -284,7 +284,7 @@ RlcCfgInfo   *cfg
    tRlcCb->u.ulCb->rlcUlUdxEventType = pst->event;
    if (rlcDbmAddUlTransaction(tRlcCb, cfgTmpData) != ROK)
    {
-      DU_LOG("\nERROR  -->  RLC_UL : Addition to UL transId Lst Failed");
+      DU_LOG("ERROR  -->  RLC_UL : Addition to UL transId Lst Failed");
       for(cfgIdx=0; cfgIdx<cfg->numEnt; cfgIdx++)
       {
          RLC_PST_FREE(pst->region, pst->pool, cfg->entCfg[cfgIdx].snssai, sizeof(Snssai)); 
@@ -344,11 +344,11 @@ CkwUeInfo   *newUeInfo
 
       tRlcCb = RLC_GET_RLCCB(pst->dstInst);
 #ifndef ALIGN_64BIT
-      DU_LOG("\nDEBUG  -->  RLC_UL : RlcUiCkwUeIdChgReq(pst, spId(%d), transId(%ld))", 
+      DU_LOG("DEBUG  -->  RLC_UL : RlcUiCkwUeIdChgReq(pst, spId(%d), transId(%ld))", 
                    spId, 
                    transId);
 #else
-      DU_LOG("\nDEBUG  -->  RLC_UL : RlcUiCkwUeIdChgReq(pst, spId(%d), transId(%d))\n", 
+      DU_LOG("DEBUG  -->  RLC_UL : RlcUiCkwUeIdChgReq(pst, spId(%d), transId(%d))\n", 
                  spId, transId);
 #endif
 
@@ -365,7 +365,7 @@ CkwUeInfo   *newUeInfo
 
       if (rlcDbmAddUlTransaction(tRlcCb, cfgTmpData))
       {
-         DU_LOG("\nERROR  -->  RLC_UL : Addition to UL transId Lst Failed");
+         DU_LOG("ERROR  -->  RLC_UL : Addition to UL transId Lst Failed");
          ret = RFAILED;
          break;
       }
@@ -389,7 +389,7 @@ CkwUeInfo   *newUeInfo
 
    if(ROK != rlcCfgValidateUeIdChng(tRlcCb,ueInfo,newUeInfo,cfgTmpData))
    {
-      DU_LOG("\nERROR  -->  RLC_UL : Validation Failure for UeId change");
+      DU_LOG("ERROR  -->  RLC_UL : Validation Failure for UeId change");
    }
 
    rlcUlUdxUeIdChgReq(&(RLC_GET_UDX_SAP(tRlcCb)->pst),
@@ -445,7 +445,7 @@ RlcCfgInfo      *cfg
                                            &cfgTmpData->cfgEntData[idx],
                                            cfgTmpData))
                {
-                  DU_LOG("\nERROR  -->  RLC_UL : CELLID [%u]:Validation Failure for UL RB [%d]",
+                  DU_LOG("ERROR  -->  RLC_UL : CELLID [%u]:Validation Failure for UL RB [%d]",
                          cfg->cellId,cfg->entCfg[idx].rbId);
                   cfgTmpData->cfgEntData[idx].entUlCfgCfm.status.status = CKW_CFG_CFM_NOK;
                   /*Validation is getting failed so no need to do configuration at DL.
@@ -476,7 +476,7 @@ RlcCfgInfo      *cfg
                                               &cfg->entCfg[idx], 
                                               &cfgTmpData->cfgEntData[idx]))
                {
-                  DU_LOG("\nERROR  -->  RLC_UL : CellID [%u]:Validation Failure for Reest UL RB [%d]",
+                  DU_LOG("ERROR  -->  RLC_UL : CellID [%u]:Validation Failure for Reest UL RB [%d]",
                         cfg->cellId,cfg->entCfg[idx].rbId);
                   cfgTmpData->cfgEntData[idx].entUlCfgCfm.status.status = CKW_CFG_CFM_NOK;
                   /* Setting dir as UL, so that no configuration is done at DL */
@@ -505,7 +505,7 @@ RlcCfgInfo      *cfg
                                            &cfgTmpData->cfgEntData[idx],
                                            cfgTmpData))
             {
-               DU_LOG("\nERROR  -->  RLC_UL : UL UEID [%d]:Validation Failure",
+               DU_LOG("ERROR  -->  RLC_UL : UL UEID [%d]:Validation Failure",
                      cfgTmpData->ueId);
                cfgTmpData->cfgEntData[idx].entUlCfgCfm.status.status = CKW_CFG_CFM_NOK;
                /* Setting dir as UL, so that no configuration is done at DL */
@@ -521,7 +521,7 @@ RlcCfgInfo      *cfg
                                              &cfgTmpData->cfgEntData[idx],
                                              cfgTmpData))
             {
-               DU_LOG("\nERROR  -->  RLC_UL : Del UL Cell Validation Failure");
+               DU_LOG("ERROR  -->  RLC_UL : Del UL Cell Validation Failure");
                cfgTmpData->cfgEntData[idx].entUlCfgCfm.status.status = CKW_CFG_CFM_NOK;
                /* Setting dir as UL, so that no configuration is done at DL */
                cfg->entCfg[idx].dir = RLC_DIR_UL;
@@ -574,13 +574,13 @@ SpId   spId
    }
 #endif
    tRlcCb = RLC_GET_RLCCB(pst->dstInst);
-   DU_LOG("\nDEBUG  -->  RLC_UL : RlcUiKwuBndReq(pst, spId(%d), suId(%d))", spId, suId);
+   DU_LOG("DEBUG  -->  RLC_UL : RlcUiKwuBndReq(pst, spId(%d), suId(%d))", spId, suId);
 
     /* Validation of input parameters */
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if(!((spId < (S16) tRlcCb->genCfg.maxKwuSaps) && (spId >=0))) 
    {
-      DU_LOG("\nERROR  -->  RLC_UL : Invalid spId");
+      DU_LOG("ERROR  -->  RLC_UL : Invalid spId");
       RLC_SEND_SAPID_ALARM(tRlcCb,spId, LKW_EVENT_KWU_BND_REQ, LCM_CAUSE_INV_SAP);
       return RFAILED; 
    }
@@ -607,7 +607,7 @@ SpId   spId
          /* Update the State */
          rlckwuSap->state = RLC_SAP_BND;
 
-         DU_LOG("\nDEBUG  -->  RLC_UL : RlcUiKwuBndReq: state (%d)", rlckwuSap->state);
+         DU_LOG("DEBUG  -->  RLC_UL : RlcUiKwuBndReq: state (%d)", rlckwuSap->state);
          break;
       }
       case RLC_SAP_BND:
@@ -622,7 +622,7 @@ SpId   spId
                                 spId, 
                                 LKW_EVENT_KWU_BND_REQ, 
                                 LCM_CAUSE_INV_PAR_VAL);
-            DU_LOG("\nERROR  -->  RLC_UL : RLC Mode [%d] : KWU SAP already Bound",
+            DU_LOG("ERROR  -->  RLC_UL : RLC Mode [%d] : KWU SAP already Bound",
                   tRlcCb->genCfg.rlcMode);
             RlcUiKwuBndCfm(&(rlckwuSap->pst), rlckwuSap->suId, CM_BND_NOK);
             return (RFAILED);
@@ -633,7 +633,7 @@ SpId   spId
      default:
       {
 #if (ERRCLASS & ERRCLS_INT_PAR)
-         DU_LOG("\nERROR  -->  RLC_UL : RLC Mode [%d]:Invalid KWU SAP State in Bind Req",
+         DU_LOG("ERROR  -->  RLC_UL : RLC Mode [%d]:Invalid KWU SAP State in Bind Req",
                tRlcCb->genCfg.rlcMode);
          RLC_SEND_SAPID_ALARM(tRlcCb,
                              spId,
@@ -688,7 +688,7 @@ Reason   reason
 
    tRlcCb = RLC_GET_RLCCB(pst->dstInst);
 
-   DU_LOG("\nDEBUG  -->  RLC_UL : spId(%d), reason(%d)", 
+   DU_LOG("DEBUG  -->  RLC_UL : spId(%d), reason(%d)", 
                 spId, 
                 reason);
 
@@ -724,7 +724,7 @@ uint8_t rlcProcDlData(Pst *pst, RlcDatReqInfo *datReq, Buffer *mBuf)
    RlcDlRbCb     *rbCb;       /* RB Control Block */
    RlcCb         *tRlcCb;
 
-   DU_LOG("\nDEBUG  -->  RLC_DL : Received DL Data");
+   DU_LOG("DEBUG  -->  RLC_DL : Received DL Data");
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if(pst->dstInst >= MAX_RLC_INSTANCES)
@@ -740,7 +740,7 @@ uint8_t rlcProcDlData(Pst *pst, RlcDatReqInfo *datReq, Buffer *mBuf)
    rlcDbmFetchDlRbCbByRbId(tRlcCb, &datReq->rlcId, &rbCb);
    if(!rbCb)
    {
-      DU_LOG("\nERROR  -->  RLC_DL : CellId[%u]:DL RbId [%d] not found",
+      DU_LOG("ERROR  -->  RLC_DL : CellId[%u]:DL RbId [%d] not found",
             datReq->rlcId.cellId,datReq->rlcId.rbId);
       ODU_PUT_MSG_BUF(mBuf);
 
@@ -778,7 +778,7 @@ uint8_t rlcProcDlData(Pst *pst, RlcDatReqInfo *datReq, Buffer *mBuf)
       }
       default:
       {
-         DU_LOG("\nERROR  -->  RLC_DL : Invalid RB Mode");
+         DU_LOG("ERROR  -->  RLC_DL : Invalid RB Mode");
          break;
       }
    }
@@ -855,7 +855,7 @@ RlcTptPerSnssai* rlcHandleSnssaiTputlist(RlcCb *gCb, Snssai *snssai, ActionTypeL
       {
          if(snssaiList == NULLP)
          {
-            DU_LOG("\nERROR --> RLC: SNSSAI DL list doesnt exist!");
+            DU_LOG("ERROR --> RLC: SNSSAI DL list doesnt exist!");
             return NULLP;
          }
       }
@@ -876,14 +876,14 @@ RlcTptPerSnssai* rlcHandleSnssaiTputlist(RlcCb *gCb, Snssai *snssai, ActionTypeL
       {
          if(snssaiList == NULLP)
          {
-            DU_LOG("\nERROR --> RLC: SNSSAI UL list doesnt exist!");
+            DU_LOG("ERROR --> RLC: SNSSAI UL list doesnt exist!");
             return NULLP;
          }
       }
    }
    else
    {
-      DU_LOG("\nERROR  -->  RLC : Direction:%d is invalid", dir);
+      DU_LOG("ERROR  -->  RLC : Direction:%d is invalid", dir);
       return NULLP;
    }
 
@@ -895,7 +895,7 @@ RlcTptPerSnssai* rlcHandleSnssaiTputlist(RlcCb *gCb, Snssai *snssai, ActionTypeL
       snssaiNode = (RlcTptPerSnssai *)node->node;
       if(memcmp(snssaiNode->snssai, snssai, sizeof(Snssai)) == 0)
       { 
-         DU_LOG("\nDEBUG  -->  RLC : SNSSAI found in LL");
+         DU_LOG("DEBUG  -->  RLC : SNSSAI found in LL");
          found = TRUE;
          break;
       }
@@ -926,7 +926,7 @@ RlcTptPerSnssai* rlcHandleSnssaiTputlist(RlcCb *gCb, Snssai *snssai, ActionTypeL
                RLC_ALLOC(gCb, snssaiNode->snssai, sizeof(Snssai));
                if(snssaiNode->snssai == NULLP)
                {
-                 DU_LOG("\nERROR  --> RLC : Allocation of SNSSAI node failed");
+                 DU_LOG("ERROR  --> RLC : Allocation of SNSSAI node failed");
                  return NULLP;
                }
                memcpy(snssaiNode->snssai,snssai,sizeof(Snssai));
@@ -934,7 +934,7 @@ RlcTptPerSnssai* rlcHandleSnssaiTputlist(RlcCb *gCb, Snssai *snssai, ActionTypeL
             }
             else
             {
-               DU_LOG("\nERROR  --> RLC : Allocation of SNSSAI node failed");
+               DU_LOG("ERROR  --> RLC : Allocation of SNSSAI node failed");
                return NULLP;
             }
 
@@ -947,10 +947,10 @@ RlcTptPerSnssai* rlcHandleSnssaiTputlist(RlcCb *gCb, Snssai *snssai, ActionTypeL
             }
             else
             {
-               DU_LOG("\nERROR  --> RLC : Allocation of SNSSAI node failed");
+               DU_LOG("ERROR  --> RLC : Allocation of SNSSAI node failed");
                return NULLP;
             }
-            DU_LOG("\nDEBUG  --> RLC : SNSSAI node added successfully");
+            DU_LOG("DEBUG  --> RLC : SNSSAI node added successfully");
             return (snssaiNode);
          }
 
@@ -961,17 +961,17 @@ RlcTptPerSnssai* rlcHandleSnssaiTputlist(RlcCb *gCb, Snssai *snssai, ActionTypeL
                node = cmLListDelFrm(snssaiList, node);
                RLC_FREE(gCb, node, sizeof(CmLList));
                RLC_FREE(gCb, snssaiNode, sizeof(RlcTptPerSnssai));
-               DU_LOG("\nDEBUG  --> RLC : SNSSAI node found and deletion performed");
+               DU_LOG("DEBUG  --> RLC : SNSSAI node found and deletion performed");
 
                if(snssaiList->count == 0)
                {
                   RLC_FREE(gCb, snssaiList, sizeof(CmLListCp));
-                  DU_LOG("\nINFO   --> RLC : This SNSSAI was last in the list thus freeing the list also");
+                  DU_LOG("INFO   --> RLC : This SNSSAI was last in the list thus freeing the list also");
                }
             }
             else
             {
-               DU_LOG("\nERROR  --> RLC : SNSSAI node not found in List thus no deletion performed");
+               DU_LOG("ERROR  --> RLC : SNSSAI node not found in List thus no deletion performed");
             }
             return NULLP;
          }
@@ -982,7 +982,7 @@ RlcTptPerSnssai* rlcHandleSnssaiTputlist(RlcCb *gCb, Snssai *snssai, ActionTypeL
          }
        default:
          {
-            DU_LOG("\nERROR  -> RLC: Incorrect ActionType:%d",action);
+            DU_LOG("ERROR  -> RLC: Incorrect ActionType:%d",action);
             break;
          }
    }
@@ -1017,12 +1017,12 @@ uint8_t rlcDelTputSnssaiList(RlcCb *gCb, Direction dir)
    }
    else
    {
-      DU_LOG("\nERROR  -->  RLC: Invalid direction:%d",dir);
+      DU_LOG("ERROR  -->  RLC: Invalid direction:%d",dir);
       return RFAILED;
    }
    if(snssaiList == NULLP)
    {
-      DU_LOG("\nERROR -->  RLC: SnssaiList not exist");
+      DU_LOG("ERROR -->  RLC: SnssaiList not exist");
       return RFAILED;
    }
    node = snssaiList->first;
@@ -1040,7 +1040,7 @@ uint8_t rlcDelTputSnssaiList(RlcCb *gCb, Direction dir)
    if(snssaiList->count == 0)
    {
       RLC_FREE(gCb, snssaiList, sizeof(CmLListCp));
-      DU_LOG("\nDEBUG   -->  RLC : This SNSSAI was last in the list thus freeing the list also");
+      DU_LOG("DEBUG   -->  RLC : This SNSSAI was last in the list thus freeing the list also");
    }
    return ROK;
 }
@@ -1067,7 +1067,7 @@ uint8_t rlcCalculateTputPerSnssai(CmLListCp *snssaiList, Direction dir)
    node = snssaiList->first;
    if(node == NULLP)
    {
-      DU_LOG("\n No SNSSAI in list");
+      DU_LOG(" No SNSSAI in list");
       return(snssaiCnt);
    }
    /*Traversing the LC LinkList*/
@@ -1078,12 +1078,12 @@ uint8_t rlcCalculateTputPerSnssai(CmLListCp *snssaiList, Direction dir)
      
       if(dir == DIR_DL)
       {
-         DU_LOG("\nDEBUG  -->  RLC_DL: SNSSAI(sst:%d,sd [%d,%d, %d]), DL Tpt : %.5lf", snssaiNode->snssai->sst,\
+         DU_LOG("DEBUG  -->  RLC_DL: SNSSAI(sst:%d,sd [%d,%d, %d]), DL Tpt : %.5lf", snssaiNode->snssai->sst,\
                snssaiNode->snssai->sd[0], snssaiNode->snssai->sd[1],snssaiNode->snssai->sd[2] , snssaiNode->tpt);
       }
       if(dir == DIR_UL)
       {
-         DU_LOG("\nDEBUG  -->  RLC_UL: SNSSAI(sst:%d,sd [%d,%d, %d]), UL Tpt : %.5lf", snssaiNode->snssai->sst,\
+         DU_LOG("DEBUG  -->  RLC_UL: SNSSAI(sst:%d,sd [%d,%d, %d]), UL Tpt : %.5lf", snssaiNode->snssai->sst,\
                snssaiNode->snssai->sd[0], snssaiNode->snssai->sd[1],snssaiNode->snssai->sd[2] , snssaiNode->tpt);
       }
 

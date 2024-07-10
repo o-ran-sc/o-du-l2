@@ -111,7 +111,7 @@ Size    size                /* size */
      /*  Send an alarm to Layer Manager */
      rgLMMStaInd(inst,LCM_CATEGORY_RESOURCE, LCM_EVENT_SMEM_ALLOC_FAIL,
                                        LCM_CAUSE_MEM_ALLOC_FAIL, &dgn);
-      DU_LOG("\nERROR  -->  MAC : Unable to Allocate Buffer");
+      DU_LOG("ERROR  -->  MAC : Unable to Allocate Buffer");
       return RFAILED;
    }
 
@@ -205,7 +205,7 @@ Size size            /* size */
 
    if (data != NULLP)
    {
-      DU_LOG("\nERROR  -->  MAC : rgFreeSBuf failed.\n");
+      DU_LOG("ERROR  -->  MAC : rgFreeSBuf failed.\n");
       return;
    }
 

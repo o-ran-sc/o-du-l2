@@ -67,7 +67,7 @@ void LwrMacStartWlsRcvr()
    Pst pst;
    Buffer *mBuf;
 
-   DU_LOG("\nINFO  -->  LWR MAC : Requesting to start WLS receiver thread");
+   DU_LOG("INFO  -->  LWR MAC : Requesting to start WLS receiver thread");
 
    /* Filling post */
    memset(&pst, 0, sizeof(Pst));
@@ -75,7 +75,7 @@ void LwrMacStartWlsRcvr()
 
    if (ODU_GET_MSG_BUF(pst.region, pst.pool, &mBuf) != ROK)
    {
-      DU_LOG("\nERROR  -->  LWR MAC : Memory allocation failed for LwrMacStartWlsRcvr");
+      DU_LOG("ERROR  -->  LWR MAC : Memory allocation failed for LwrMacStartWlsRcvr");
       return;
    }
 
@@ -316,7 +316,7 @@ uint8_t LwrMacSendToL1(void *msg)
             strcpy(message, "INVALID_MSG");
             break;
       }
-      DU_LOG("\nCall Flow: ENTLWRMAC -> PHY : %s\n",message);
+      DU_LOG("Call Flow: ENTLWRMAC -> PHY : %s\n",message);
       currMsg = currMsg->p_next;
    }
 #endif
@@ -333,7 +333,7 @@ uint8_t LwrMacSendToL1(void *msg)
       addWlsBlockToFree(currMsg, msgLen, (lwrMacCb.phySlotIndCntr-1));
       if(currMsg->p_next == NULLP)
       {
-         DU_LOG("\nERROR  -->  LWR MAC : There cannot be only one block to send");
+         DU_LOG("ERROR  -->  LWR MAC : There cannot be only one block to send");
          return RFAILED;
       }
 
@@ -341,7 +341,7 @@ uint8_t LwrMacSendToL1(void *msg)
       ret = WLS_Put(wlsHdlr, WLS_VA2PA(wlsHdlr, currMsg), msgLen, currMsg->msg_type, WLS_SG_FIRST);
       if(ret != 0)
       {
-         DU_LOG("\nERROR  -->  LWR MAC : Failure in sending message to PHY");
+         DU_LOG("ERROR  -->  LWR MAC : Failure in sending message to PHY");
          return RFAILED;
       }
       currMsg = currMsg->p_next;
@@ -356,7 +356,7 @@ uint8_t LwrMacSendToL1(void *msg)
             ret = WLS_Put(wlsHdlr, WLS_VA2PA(wlsHdlr, currMsg), msgLen, currMsg->msg_type, WLS_SG_NEXT);
             if(ret != 0)
             {
-               DU_LOG("\nERROR  -->  LWR MAC : Failure in sending message to PHY");
+               DU_LOG("ERROR  -->  LWR MAC : Failure in sending message to PHY");
                return RFAILED;
             }
             currMsg = currMsg->p_next;
@@ -367,7 +367,7 @@ uint8_t LwrMacSendToL1(void *msg)
             ret = WLS_Put(wlsHdlr, WLS_VA2PA(wlsHdlr, currMsg), msgLen, currMsg->msg_type, WLS_SG_LAST);
             if(ret != 0)
             {
-               DU_LOG("\nERROR  -->  LWR MAC : Failure in sending message to PHY");
+               DU_LOG("ERROR  -->  LWR MAC : Failure in sending message to PHY");
                return RFAILED;
             }
             currMsg = NULLP;

@@ -148,7 +148,7 @@ static Buffer* TSInfUtlAllocMsg(Pst   *pst)
 
 
    if (SGetMsg(pst->region, pst->pool, &mBuf) != ROK) {
-      DU_LOG("\nERROR  -->  RLC : MBuf Allocation failed\n");
+      DU_LOG("ERROR  -->  RLC : MBuf Allocation failed\n");
    }
    return (mBuf);
 }

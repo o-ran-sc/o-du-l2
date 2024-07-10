@@ -926,7 +926,7 @@ CmLList* isPrbAvailable(CmLListCp *freePrbBlockList, uint16_t startPrb, uint16_t
       /* Check if requested number of blocks can be allocated from the current block */
       if(freeBlock->numFreePrb < numPrb)
       {
-         DU_LOG("\nINFO   --> SCH: In isPrbAvailable, numFreePrb:%d is less than reqPrb:%d", freeBlock->numFreePrb, numPrb);
+         DU_LOG("INFO   --> SCH: In isPrbAvailable, numFreePrb:%d is less than reqPrb:%d", freeBlock->numFreePrb, numPrb);
          node = node->next;
          continue;
       }
@@ -1388,7 +1388,7 @@ LcInfo* handleLcLList(CmLListCp *lcLL, uint8_t lcId, ActionTypeLL action)
 
    if(lcLL == NULLP)
    {
-      DU_LOG("\nERROR  -->  SCH: LcList doesnt exist");
+      DU_LOG("ERROR  -->  SCH: LcList doesnt exist");
       return NULLP;
    }
    node = lcLL->first;
@@ -1441,13 +1441,13 @@ LcInfo* handleLcLList(CmLListCp *lcLL, uint8_t lcId, ActionTypeLL action)
             }
             else
             {
-               DU_LOG("\nERROR  -->  SCH : Allocation of List failed,lcId:%d",lcId);
+               DU_LOG("ERROR  -->  SCH : Allocation of List failed,lcId:%d",lcId);
                return NULLP;
             }
 
             if(addNodeToLList(lcLL, lcNode, NULLP) == RFAILED)
             {
-               DU_LOG("\nERROR  -->  SCH : failed to Add Node,lcId:%d",lcId);
+               DU_LOG("ERROR  -->  SCH : failed to Add Node,lcId:%d",lcId);
                SCH_FREE(lcNode, sizeof(LcInfo));
                return NULLP;
             }
@@ -1458,14 +1458,14 @@ LcInfo* handleLcLList(CmLListCp *lcLL, uint8_t lcId, ActionTypeLL action)
          {
             if(!found ||  lcNode == NULLP)
             {
-               DU_LOG("\nERROR  -->  SCH: LCID%d not found; thus Deletion unsuccessful",lcId);
+               DU_LOG("ERROR  -->  SCH: LCID%d not found; thus Deletion unsuccessful",lcId);
             }
             else
             {
                if(deleteNodeFromLList(lcLL, node) == ROK)
                   SCH_FREE(lcNode, sizeof(LcInfo));
 
-               DU_LOG("\nDEBUG  -->  SCH: LCID%d Deleted successfully",lcId);
+               DU_LOG("DEBUG  -->  SCH: LCID%d Deleted successfully",lcId);
             }
             return NULLP; 
          }
@@ -1476,7 +1476,7 @@ LcInfo* handleLcLList(CmLListCp *lcLL, uint8_t lcId, ActionTypeLL action)
         }
       default:
          {
-            DU_LOG("\nERROR  -->  SCH: Action type wrong: %d",action);
+            DU_LOG("ERROR  -->  SCH: Action type wrong: %d",action);
             break;
          }
    }
@@ -1509,7 +1509,7 @@ uint8_t updateLcListReqPRB(CmLListCp *lcLL, uint8_t lcId, uint32_t payloadSize)
 
    if(lcNode == NULLP)
    {
-      DU_LOG("\nERROR  -->  SCH : LC is neither present nor able to create in List lcId:%d",lcId);
+      DU_LOG("ERROR  -->  SCH : LC is neither present nor able to create in List lcId:%d",lcId);
       return RFAILED;
    }
 
@@ -1542,7 +1542,7 @@ void deleteLcLL(CmLListCp *lcLL)
 
    if(lcLL == NULLP)
    {
-      DU_LOG("\nERROR  -->  SCH: LcList doesnt exist");
+      DU_LOG("ERROR  -->  SCH: LcList doesnt exist");
       return;
    }
    node = lcLL->first;
@@ -1661,7 +1661,7 @@ CmLList *schPageInfoSearchFromPageList(SlotTimingInfo slotInfo, CmLListCp *store
          pageInfo = (SchPageInfo*)node->node;
          if(pageInfo == NULLP)
          {
-            DU_LOG("\nERROR  --> SCH: PageInfo empty");
+            DU_LOG("ERROR  --> SCH: PageInfo empty");
          }
          else if(pageInfo->pageTxTime.sfn == slotInfo.sfn && 
                (pageInfo->pageTxTime.slot == slotInfo.slot))
@@ -1700,7 +1700,7 @@ void printLcLL(CmLListCp *lcLL)
 
    if(lcLL == NULLP)
    {
-      DU_LOG("\nINFO   -->  SCH: LcList doesnt exist");
+      DU_LOG("INFO   -->  SCH: LcList doesnt exist");
       return;
    }
    node = lcLL->first;
@@ -1709,7 +1709,7 @@ void printLcLL(CmLListCp *lcLL)
       lcNode = (LcInfo *)node->node;
       if(lcNode)
       {
-         DU_LOG("\nINFO   -->  SCH : LcID:%d, [reqBO, allocBO, allocPRB]:[%d,%d,%d]",\
+         DU_LOG("INFO   -->  SCH : LcID:%d, [reqBO, allocBO, allocPRB]:[%d,%d,%d]",\
                lcNode->lcId,lcNode->reqBO, lcNode->allocBO, lcNode->allocPRB);
       }
 
@@ -2093,7 +2093,7 @@ uint32_t schCalY(uint8_t csId, uint32_t prevY)
         }
       default:
         {
-           DU_LOG("\nERROR  --> SCH: Issue in calculating value of Y");
+           DU_LOG("ERROR  --> SCH: Issue in calculating value of Y");
            return(0);
         }
    }
@@ -2121,7 +2121,7 @@ uint8_t schUpdValY(SchUeCb *ueCb, SchPdcchInfo *pdcchInfo)
       SCH_ALLOC(pdcchInfo->y, (sizeof(uint32_t) *  ueCb->cellCb->numSlots));
       if(pdcchInfo->y == NULLP)
       {
-         DU_LOG("\nERROR  --> SCH: Memory Allocation of Y failed");
+         DU_LOG("ERROR  --> SCH: Memory Allocation of Y failed");
          return RFAILED;
       }
    }

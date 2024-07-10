@@ -56,7 +56,7 @@ uint8_t fillBitString(BIT_STRING_t *id, uint8_t unusedBits, uint8_t byteSize, ui
 
    if(id->buf == NULLP)
    {
-      DU_LOG("\nERROR  --> DU_APP : Buffer allocation is empty");
+      DU_LOG("ERROR  --> DU_APP : Buffer allocation is empty");
       return RFAILED;
    }
    memset(id->buf, 0, byteSize);
@@ -99,7 +99,7 @@ uint8_t bitStringToInt(BIT_STRING_t *bitString, void *value)
 
    if(bitString->buf == NULL || bitString->size <= 0)
    {
-      DU_LOG("\nERROR  --> DU_APP : Bit string is empty");
+      DU_LOG("ERROR  --> DU_APP : Bit string is empty");
       return RFAILED;
    }
 

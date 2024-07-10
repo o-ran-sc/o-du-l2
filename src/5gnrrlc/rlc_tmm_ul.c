@@ -114,7 +114,7 @@ uint8_t rrcUeCapabilityInfo[] =
   
    SAddPstMsgMult(rrcConReq,6,pdu);
 
-   DU_LOG("\nINFO  -->  RLC_UL : Profiling Framework Sending RRC Connection Req to RRC for UE :%d\n",crnti);
+   DU_LOG("INFO  -->  RLC_UL : Profiling Framework Sending RRC Connection Req to RRC for UE :%d\n",crnti);
    rlcSendUlDataToDu(&ulPst1, datIndInfo, pdu);
  }
  else if(2 == rrcMsgType)
@@ -130,7 +130,7 @@ uint8_t rrcUeCapabilityInfo[] =
   
     SAddPstMsgMult(rrcConSetupComplete,34,pdu);
 
-    DU_LOG("\nINFO  -->  RLC_UL : Profiling Framework: Sending RRC Connection Setup Complete to RRC for UE :%d\n",crnti);
+    DU_LOG("INFO  -->  RLC_UL : Profiling Framework: Sending RRC Connection Setup Complete to RRC for UE :%d\n",crnti);
 #ifdef PJ
     PjUiPjuDatInd(&ulPst2, 1, &pdcpId, pdu);
 #endif
@@ -152,7 +152,7 @@ uint8_t rrcUeCapabilityInfo[] =
 #else    
     SAddPstMsgMult(rrcUeCapabilityInfo,sizeof(rrcUeCapabilityInfo),pdu);
 #endif
-    DU_LOG("\nINFO  -->  RLC_UL : Profiling Framework: Sending RRC UE Capability Info to RRC for UE :%d\n",crnti);
+    DU_LOG("INFO  -->  RLC_UL : Profiling Framework: Sending RRC UE Capability Info to RRC for UE :%d\n",crnti);
 #ifdef PJ
     PjUiPjuDatInd(&ulPst2, 1, &pdcpId, pdu);
 #endif
@@ -172,7 +172,7 @@ uint8_t rrcUeCapabilityInfo[] =
   
     SAddPstMsgMult(rrcSecurityModeComplete,2,pdu);
 
-    DU_LOG("\nINFO  -->  RLC_UL : Profiling Framework: Sending RRC Security Mode Complete to RRC for UE :%d\n",crnti);
+    DU_LOG("INFO  -->  RLC_UL : Profiling Framework: Sending RRC Security Mode Complete to RRC for UE :%d\n",crnti);
 #ifdef PJ
     PjUiPjuDatInd(&ulPst2, 1, &pdcpId, pdu);
 #endif
@@ -191,7 +191,7 @@ uint8_t rrcUeCapabilityInfo[] =
   
     SAddPstMsgMult(rrcReconfigComplete,2,pdu);
 
-    DU_LOG("\nINFO  -->  RLC_UL : Profiling Framework: Sending RRC Reconfig Complete to RRC for UE :%d\n",crnti);
+    DU_LOG("INFO  -->  RLC_UL : Profiling Framework: Sending RRC Reconfig Complete to RRC for UE :%d\n",crnti);
 #ifdef PJ
     PjUiPjuDatInd(&ulPst2, 1, &pdcpId, pdu);
 #ifdef EG_GEN_LOAD_5GTF
@@ -263,12 +263,12 @@ void rlcTmmRcvFrmMac(RlcCb *gCb, RlcUlRbCb *rbCb, Buffer *pdu)
       }
       else
       {
-         DU_LOG("\nERROR  -->  RLC_UL : rlcTmmRcvFrmMac: Memory allocation failed for UL RRC Msg");
+         DU_LOG("ERROR  -->  RLC_UL : rlcTmmRcvFrmMac: Memory allocation failed for UL RRC Msg");
       }
    }
    else
    {
-      DU_LOG("\nERROR  -->  RLC_UL : rlcTmmRcvFrmMac: Memory allocation failed for ulRrcMsgInfo");
+      DU_LOG("ERROR  -->  RLC_UL : rlcTmmRcvFrmMac: Memory allocation failed for ulRrcMsgInfo");
    }
  
    return;
@@ -293,7 +293,7 @@ RlcCb        *gCb,
 RlcUlRbCb    *rbCb        
 )
 {
-   DU_LOG("\nINFO  -->  RLC_UL : do nothing for TMM for ReEstablish");
+   DU_LOG("INFO  -->  RLC_UL : do nothing for TMM for ReEstablish");
    return;
 }
 
