@@ -3,6 +3,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e0041ba9_1b62ee75",
+        "filename": "src/5gnrmac/lwr_mac_phy.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-07-10T11:02:33Z",
+      "side": 1,
+      "message": "MAC",
+      "revId": "107152d1c69fbae7fcd9a31ef878c50e5f7f7b85",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3f89b4f2_ba83d40e",
         "filename": "src/cm/common_def.c",
         "patchSetId": 2
