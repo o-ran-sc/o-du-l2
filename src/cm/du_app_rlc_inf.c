@@ -47,7 +47,7 @@ uint8_t packRlcDuMaxRetransInd(Pst *pst, RlcMaxRetransInfo *maxRetransInfo)
    {
       if (ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf) != ROK)
       {
-         DU_LOG("\nERROR  --> RLC : Memory allocation failed at packRlcDuMaxRetransInd");
+         DU_LOG("ERROR  --> RLC : Memory allocation failed at packRlcDuMaxRetransInd");
          return RFAILED;
       }
       /* pack the address of the structure */
@@ -55,7 +55,7 @@ uint8_t packRlcDuMaxRetransInd(Pst *pst, RlcMaxRetransInfo *maxRetransInfo)
    }
    else
    {
-      DU_LOG("\nERROR  -->  RLC: Only LWLC supported for packRlcDuMaxRetransInd");
+      DU_LOG("ERROR  -->  RLC: Only LWLC supported for packRlcDuMaxRetransInd");
       return RFAILED;
    }
 
@@ -94,7 +94,7 @@ uint8_t unpackRlcMaxRetransInd(RlcDuMaxRetransInd func, Pst *pst, Buffer *mBuf)
     else
     {
        /* Nothing to do for other selectors */
-       DU_LOG("\nERROR  -->  RLC: Only LWLC supported for Max Retransmission Reached Info ");
+       DU_LOG("ERROR  -->  RLC: Only LWLC supported for Max Retransmission Reached Info ");
        ODU_PUT_MSG_BUF(mBuf);
     }
 
@@ -127,7 +127,7 @@ uint8_t packDuRlcUeCreateReq(Pst *pst, RlcUeCreate *ueCfg)
    {
       if (ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf) != ROK)
       {
-         DU_LOG("\nERROR  --> RLC : Memory allocation failed at packDuRlcUeCreateReq");
+         DU_LOG("ERROR  --> RLC : Memory allocation failed at packDuRlcUeCreateReq");
          return RFAILED;
       }
       /* pack the address of the structure */
@@ -135,7 +135,7 @@ uint8_t packDuRlcUeCreateReq(Pst *pst, RlcUeCreate *ueCfg)
    }
    else
    {
-      DU_LOG("\nERROR  -->  RLC: Only LWLC supported for packDuRlcUeCreateReq");
+      DU_LOG("ERROR  -->  RLC: Only LWLC supported for packDuRlcUeCreateReq");
       return RFAILED;
    }
 
@@ -173,7 +173,7 @@ uint8_t unpackRlcUeCreateReq(DuRlcUeCreateReq func, Pst *pst, Buffer *mBuf)
    else
    {
       /* Nothing to do for other selectors */
-      DU_LOG("\nERROR  -->  RLC: Only LWLC supported for UE Create Request ");
+      DU_LOG("ERROR  -->  RLC: Only LWLC supported for UE Create Request ");
       ODU_PUT_MSG_BUF(mBuf);
    }
 
@@ -206,7 +206,7 @@ uint8_t packRlcDuUeCreateRsp(Pst *pst, RlcUeCreateRsp *ueCfg)
    {
       if (ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf) != ROK)
       {
-         DU_LOG("\nERROR  --> RLC : Memory allocation failed at packRlcDuUeCreateRsp");
+         DU_LOG("ERROR  --> RLC : Memory allocation failed at packRlcDuUeCreateRsp");
          return RFAILED;
       }
       /* pack the address of the structure */
@@ -214,7 +214,7 @@ uint8_t packRlcDuUeCreateRsp(Pst *pst, RlcUeCreateRsp *ueCfg)
    }
    else
    {
-      DU_LOG("\nERROR  -->  RLC: Only LWLC supported for packRlcDuUeCreateRsp");
+      DU_LOG("ERROR  -->  RLC: Only LWLC supported for packRlcDuUeCreateRsp");
       return RFAILED;
    }
 
@@ -252,7 +252,7 @@ uint8_t unpackRlcUeCreateRsp(RlcDuUeCreateRsp func, Pst *pst, Buffer *mBuf)
    else
    {
       /* Nothing to do for other selectors */
-      DU_LOG("\nERROR  -->  RLC: Only LWLC supported for UE Cfg Response ");
+      DU_LOG("ERROR  -->  RLC: Only LWLC supported for UE Cfg Response ");
       ODU_PUT_MSG_BUF(mBuf);
    }
 
@@ -285,7 +285,7 @@ uint8_t packRlcDuUeReconfigRsp(Pst *pst, RlcUeReconfigRsp *ueCfg)
    {
       if (ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf) != ROK)
       {
-         DU_LOG("\nERROR  --> RLC : Memory allocation failed at packRlcDuUeReconfigRsp");
+         DU_LOG("ERROR  --> RLC : Memory allocation failed at packRlcDuUeReconfigRsp");
          return RFAILED;
       }
       /* pack the address of the structure */
@@ -293,7 +293,7 @@ uint8_t packRlcDuUeReconfigRsp(Pst *pst, RlcUeReconfigRsp *ueCfg)
    }
    else
    {
-      DU_LOG("\nERROR  -->  RLC: Only LWLC supported for packRlcDuUeReconfigRsp");
+      DU_LOG("ERROR  -->  RLC: Only LWLC supported for packRlcDuUeReconfigRsp");
       return RFAILED;
    }
 
@@ -331,7 +331,7 @@ uint8_t unpackRlcUeReconfigRsp(RlcDuUeReconfigRsp func, Pst *pst, Buffer *mBuf)
    else
    {
       /* Nothing to do for other selectors */
-      DU_LOG("\nERROR  -->  RLC: Only LWLC supported for UE Re-Cfg Response ");
+      DU_LOG("ERROR  -->  RLC: Only LWLC supported for UE Re-Cfg Response ");
       ODU_PUT_MSG_BUF(mBuf);
    }
 
@@ -363,7 +363,7 @@ uint8_t packRlcUlRrcMsgToDu(Pst *pst, RlcUlRrcMsgInfo *ulRrcMsgInfo)
    {
       if (ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf) != ROK)
       {
-         DU_LOG("\nERROR  --> RLC : Memory allocation failed at packRlcUlRrcMsgToDu");
+         DU_LOG("ERROR  --> RLC : Memory allocation failed at packRlcUlRrcMsgToDu");
          return RFAILED;
       }
       /* pack the address of the structure */
@@ -372,7 +372,7 @@ uint8_t packRlcUlRrcMsgToDu(Pst *pst, RlcUlRrcMsgInfo *ulRrcMsgInfo)
    }
    else
    {
-      DU_LOG("\nERROR  -->  RLC: Only LWLC supported for packRlcUlRrcMsgToDu");
+      DU_LOG("ERROR  -->  RLC: Only LWLC supported for packRlcUlRrcMsgToDu");
    }
    return RFAILED;
 }
@@ -406,7 +406,7 @@ uint8_t unpackRlcUlRrcMsgToDu(RlcUlRrcMsgToDuFunc func, Pst *pst, Buffer *mBuf)
    else
    {
       /* Nothing to do for other selectors */
-      DU_LOG("\nERROR  -->  RLC: Only LWLC supported for UL RRC Message transfer ");
+      DU_LOG("ERROR  -->  RLC: Only LWLC supported for UL RRC Message transfer ");
       ODU_PUT_MSG_BUF(mBuf);
    }
 
@@ -437,7 +437,7 @@ uint8_t packDlRrcMsgToRlc(Pst *pst, RlcDlRrcMsgInfo *dlRrcMsgInfo)
    {
       if (ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf) != ROK)
       {
-         DU_LOG("\nERROR  --> RLC : Memory allocation failed at packRlcDlRrcMsgToRlc");
+         DU_LOG("ERROR  --> RLC : Memory allocation failed at packRlcDlRrcMsgToRlc");
          return RFAILED;
       }
       /* pack the address of the structure */
@@ -446,7 +446,7 @@ uint8_t packDlRrcMsgToRlc(Pst *pst, RlcDlRrcMsgInfo *dlRrcMsgInfo)
    }
    else
    {
-      DU_LOG("\nERROR  -->  RLC: Only LWLC supported for packDlRrcMsgToRlc");
+      DU_LOG("ERROR  -->  RLC: Only LWLC supported for packDlRrcMsgToRlc");
    }
    return RFAILED;
 }
@@ -482,7 +482,7 @@ uint8_t unpackDlRrcMsgToRlc(DuDlRrcMsgToRlcFunc func, Pst *pst, Buffer *mBuf)
    else
    {
       /* Nothing to do for other selectors */
-      DU_LOG("\nERROR  -->  RLC: Only LWLC supported for UL RRC Message transfer ");
+      DU_LOG("ERROR  -->  RLC: Only LWLC supported for UL RRC Message transfer ");
       ODU_PUT_MSG_BUF(mBuf);
    }
    return RFAILED;
@@ -514,7 +514,7 @@ uint8_t packRrcDeliveryReportToDu(Pst *pst, RrcDeliveryReport *rrcDeliveryReport
     {
        if (ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf) != ROK)
        {
-          DU_LOG("\nERROR  --> RLC : Memory allocation failed at packRrcDeliveryReportToDu");
+          DU_LOG("ERROR  --> RLC : Memory allocation failed at packRrcDeliveryReportToDu");
           return RFAILED;
        }
        /* pack the address of the structure */
@@ -523,7 +523,7 @@ uint8_t packRrcDeliveryReportToDu(Pst *pst, RrcDeliveryReport *rrcDeliveryReport
     }
     else
     {
-       DU_LOG("\nERROR  -->  RLC: Only LWLC supported for packRrcDeliveryReportToDu");
+       DU_LOG("ERROR  -->  RLC: Only LWLC supported for packRrcDeliveryReportToDu");
     }
     return RFAILED;
  }
@@ -559,7 +559,7 @@ uint8_t unpackRrcDeliveryReportToDu(RlcRrcDeliveryReportToDuFunc func, Pst *pst,
     else
     {
        /* Nothing to do for other selectors */
-       DU_LOG("\nERROR  -->  RLC: Only LWLC supported for RRC delivery Message transfer ");
+       DU_LOG("ERROR  -->  RLC: Only LWLC supported for RRC delivery Message transfer ");
        ODU_PUT_MSG_BUF(mBuf);
     }
 
@@ -592,7 +592,7 @@ uint8_t packDuRlcUeReconfigReq(Pst *pst, RlcUeRecfg *ueRecfg)
    {
       if (ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf) != ROK)
       {
-         DU_LOG("\nERROR  --> RLC : Memory allocation failed at packDuRlcUeReconfigReq");
+         DU_LOG("ERROR  --> RLC : Memory allocation failed at packDuRlcUeReconfigReq");
          return RFAILED;
       }
       /* pack the address of the structure */
@@ -600,7 +600,7 @@ uint8_t packDuRlcUeReconfigReq(Pst *pst, RlcUeRecfg *ueRecfg)
    }
    else
    {
-      DU_LOG("\nERROR  -->  RLC: Only LWLC supported for packDuRlcUeReconfigReq");
+      DU_LOG("ERROR  -->  RLC: Only LWLC supported for packDuRlcUeReconfigReq");
       return RFAILED;
    }
 
@@ -637,7 +637,7 @@ uint8_t unpackRlcUeReconfigReq(DuRlcUeReconfigReq func, Pst *pst, Buffer *mBuf)
    else
    {
       /* Nothing to do for other selectors */
-      DU_LOG("\nERROR  -->  RLC: Only LWLC supported for UE Create Request ");
+      DU_LOG("ERROR  -->  RLC: Only LWLC supported for UE Create Request ");
       ODU_PUT_MSG_BUF(mBuf);
    }
    return RFAILED;
@@ -668,7 +668,7 @@ uint8_t packRlcDlRrcMsgRspToDu(Pst *pst, RlcDlRrcMsgRsp *dlRrcMsgRsp)
    {
       if (ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf) != ROK)
       {
-         DU_LOG("\nERROR  --> RLC : Memory allocation failed at packRlcDlRrcMsgRspToDu");
+         DU_LOG("ERROR  --> RLC : Memory allocation failed at packRlcDlRrcMsgRspToDu");
          return RFAILED;
       }
       /* pack the address of the structure */
@@ -677,7 +677,7 @@ uint8_t packRlcDlRrcMsgRspToDu(Pst *pst, RlcDlRrcMsgRsp *dlRrcMsgRsp)
    }
    else
    {
-      DU_LOG("\nERROR  -->  RLC: Only LWLC supported for packRlcDlRrcMsgRspToDu");
+      DU_LOG("ERROR  -->  RLC: Only LWLC supported for packRlcDlRrcMsgRspToDu");
    }
    return RFAILED;
 }
@@ -711,7 +711,7 @@ uint8_t unpackRlcDlRrcMsgRspToDu(RlcDlRrcMsgRspToDuFunc func, Pst *pst, Buffer *
    else
    {
       /* Nothing to do for other selectors */
-      DU_LOG("\nERROR  -->  RLC: Only LWLC supported for DL RRC Message transfer ");
+      DU_LOG("ERROR  -->  RLC: Only LWLC supported for DL RRC Message transfer ");
       ODU_PUT_MSG_BUF(mBuf);
    }
    return RFAILED;
@@ -742,7 +742,7 @@ uint8_t packRlcUlUserDataToDu(Pst *pst, RlcUlUserDatInfo *ulUserData)
    {
       if (ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf) != ROK)
       {
-         DU_LOG("\nERROR  -->  RLC UL: Memory allocation failed at packRlcUlUserDataToDu");
+         DU_LOG("ERROR  -->  RLC UL: Memory allocation failed at packRlcUlUserDataToDu");
          return RFAILED;
       }
       /* pack the address of the structure */
@@ -751,7 +751,7 @@ uint8_t packRlcUlUserDataToDu(Pst *pst, RlcUlUserDatInfo *ulUserData)
    }
    else
    {
-      DU_LOG("\nERROR  -->  RLC UL: Only LWLC supported for packRlcUlUserDataToDu");
+      DU_LOG("ERROR  -->  RLC UL: Only LWLC supported for packRlcUlUserDataToDu");
    }
    return RFAILED;
 }
@@ -785,7 +785,7 @@ uint8_t unpackRlcUlUserDataToDu(RlcUlUserDataToDuFunc func, Pst *pst, Buffer *mB
    else
    {
       /* Nothing to do for other selectors */
-      DU_LOG("\nERROR  --> RLC UL: Only LWLC supported for UL User data transfer ");
+      DU_LOG("ERROR  --> RLC UL: Only LWLC supported for UL User data transfer ");
       ODU_PUT_MSG_BUF(mBuf);
    }
 
@@ -819,7 +819,7 @@ uint8_t packRlcDlUserDataToRlc(Pst *pst, RlcDlUserDataInfo *dlUserData)
    }
    else
    {
-      DU_LOG("\nERROR  -->  RLC DL: Only LWLC supported for packRlcUlUserDataToDu");
+      DU_LOG("ERROR  -->  RLC DL: Only LWLC supported for packRlcUlUserDataToDu");
    }
    return RFAILED;
 }
@@ -852,7 +852,7 @@ uint8_t unpackRlcDlUserDataToRlc(DuRlcDlUserDataToRlcFunc func, Pst *pst, Buffer
    else
    {
       /* Nothing to do for other selectors */
-      DU_LOG("\nERROR  --> RLC DL: Only LWLC supported for UL User data transfer ");
+      DU_LOG("ERROR  --> RLC DL: Only LWLC supported for UL User data transfer ");
       ODU_PUT_MSG_BUF(mBuf);
    }
 
@@ -886,7 +886,7 @@ uint8_t packDuRlcUeDeleteReq(Pst *pst, RlcUeDelete *ueDelete)
    {
       if (ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf) != ROK)
       {
-         DU_LOG("\nERROR  --> RLC : Memory allocation failed at packDuRlcUeDeleteReq");
+         DU_LOG("ERROR  --> RLC : Memory allocation failed at packDuRlcUeDeleteReq");
          return RFAILED;
       }
       /* pack the address of the structure */
@@ -894,7 +894,7 @@ uint8_t packDuRlcUeDeleteReq(Pst *pst, RlcUeDelete *ueDelete)
    }
    else
    {
-      DU_LOG("\nERROR  -->  RLC: Only LWLC supported for packDuRlcUeDeleteReq");
+      DU_LOG("ERROR  -->  RLC: Only LWLC supported for packDuRlcUeDeleteReq");
       return RFAILED;
    }
 
@@ -932,7 +932,7 @@ uint8_t unpackRlcUeDeleteReq(DuRlcUeDeleteReq func, Pst *pst, Buffer *mBuf)
     else
     {
        /* Nothing to do for other selectors */
-       DU_LOG("\nERROR  -->  RLC: Only LWLC supported for UE Delete Request ");
+       DU_LOG("ERROR  -->  RLC: Only LWLC supported for UE Delete Request ");
        ODU_PUT_MSG_BUF(mBuf);
     }
     return RFAILED;
@@ -966,7 +966,7 @@ uint8_t packRlcDuUeDeleteRsp(Pst *pst, RlcUeDeleteRsp *ueDelRsp)
    {
       if (ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf) != ROK)
       {
-         DU_LOG("\nERROR  --> RLC : Memory allocation failed at packRlcDuUeDeleteRsp");
+         DU_LOG("ERROR  --> RLC : Memory allocation failed at packRlcDuUeDeleteRsp");
          return RFAILED;
       }
       /* pack the address of the structure */
@@ -974,7 +974,7 @@ uint8_t packRlcDuUeDeleteRsp(Pst *pst, RlcUeDeleteRsp *ueDelRsp)
    }
    else
    {
-      DU_LOG("\nERROR  -->  RLC: Only LWLC supported for packRlcDuUeDeleteRsp");
+      DU_LOG("ERROR  -->  RLC: Only LWLC supported for packRlcDuUeDeleteRsp");
       return RFAILED;
    }
 
@@ -1013,7 +1013,7 @@ uint8_t unpackRlcUeDeleteRsp(RlcDuUeDeleteRsp func, Pst *pst, Buffer *mBuf)
     else
     {
        /* Nothing to do for other selectors */
-       DU_LOG("\nERROR  -->  RLC: Only LWLC supported for UE Del Response ");
+       DU_LOG("ERROR  -->  RLC: Only LWLC supported for UE Del Response ");
        ODU_PUT_MSG_BUF(mBuf);
     }
 
@@ -1048,7 +1048,7 @@ uint8_t packRlcDuSlicePm(Pst *pst, SlicePmList *sliceStats)
    {
       if (ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf) != ROK)
       {
-         DU_LOG("\nERROR  --> RLC : Memory allocation failed at packRlcDuSlicePm");
+         DU_LOG("ERROR  --> RLC : Memory allocation failed at packRlcDuSlicePm");
          return RFAILED;
       }
       /* pack the address of the structure */
@@ -1056,7 +1056,7 @@ uint8_t packRlcDuSlicePm(Pst *pst, SlicePmList *sliceStats)
    }
    else
    {
-      DU_LOG("\nERROR  -->  RLC: Only LWLC supported for packRlcDuSlicePm");
+      DU_LOG("ERROR  -->  RLC: Only LWLC supported for packRlcDuSlicePm");
       return RFAILED;
    }
 
@@ -1095,7 +1095,7 @@ uint8_t unpackRlcSlicePm(RlcSlicePmToDuFunc func, Pst *pst, Buffer *mBuf)
     else
     {
        /* Nothing to do for other selectors */
-       DU_LOG("\nERROR  -->  RLC: Only LWLC supported for Slice Metrics ");
+       DU_LOG("ERROR  -->  RLC: Only LWLC supported for Slice Metrics ");
        ODU_PUT_MSG_BUF(mBuf);
     }
 
@@ -1129,7 +1129,7 @@ uint8_t packDuRlcUeReestablishReq(Pst *pst, RlcUeReestablishReq *ueDelete)
    {
       if (ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf) != ROK)
       {
-         DU_LOG("\nERROR  --> RLC : Memory allocation failed at packDuRlcUeReestablishReq");
+         DU_LOG("ERROR  --> RLC : Memory allocation failed at packDuRlcUeReestablishReq");
          return RFAILED;
       }
       /* pack the address of the structure */
@@ -1137,7 +1137,7 @@ uint8_t packDuRlcUeReestablishReq(Pst *pst, RlcUeReestablishReq *ueDelete)
    }
    else
    {
-      DU_LOG("\nERROR  -->  RLC: Only LWLC supported for packDuRlcUeReestablishReq");
+      DU_LOG("ERROR  -->  RLC: Only LWLC supported for packDuRlcUeReestablishReq");
       return RFAILED;
    }
 
@@ -1175,7 +1175,7 @@ uint8_t unpackRlcUeReestablishReq(DuRlcUeReestablishReq func, Pst *pst, Buffer *
     else
     {
        /* Nothing to do for other selectors */
-       DU_LOG("\nERROR  -->  RLC: Only LWLC supported for UE Reestablishment Req ");
+       DU_LOG("ERROR  -->  RLC: Only LWLC supported for UE Reestablishment Req ");
        ODU_PUT_MSG_BUF(mBuf);
     }
     return RFAILED;
@@ -1209,7 +1209,7 @@ uint8_t packRlcDuUeReestablishRsp(Pst *pst, RlcUeReestablishRsp *ueReestablish)
    {
       if (ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf) != ROK)
       {
-         DU_LOG("\nERROR  --> RLC : Memory allocation failed at packRlcDuUeReestablishRsp");
+         DU_LOG("ERROR  --> RLC : Memory allocation failed at packRlcDuUeReestablishRsp");
          return RFAILED;
       }
       /* pack the address of the structure */
@@ -1217,7 +1217,7 @@ uint8_t packRlcDuUeReestablishRsp(Pst *pst, RlcUeReestablishRsp *ueReestablish)
    }
    else
    {
-      DU_LOG("\nERROR  -->  RLC: Only LWLC supported for packRlcDuUeReestablishRsp");
+      DU_LOG("ERROR  -->  RLC: Only LWLC supported for packRlcDuUeReestablishRsp");
       return RFAILED;
    }
 
@@ -1256,7 +1256,7 @@ uint8_t unpackRlcUeReestablishRsp(RlcDuUeReestablishRsp func, Pst *pst, Buffer *
     else
     {
        /* Nothing to do for other selectors */
-       DU_LOG("\nERROR  -->  RLC: Only LWLC supported for UE Reestablishment Response ");
+       DU_LOG("ERROR  -->  RLC: Only LWLC supported for UE Reestablishment Response ");
        ODU_PUT_MSG_BUF(mBuf);
     }
 

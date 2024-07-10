@@ -3777,7 +3777,7 @@ Void ssdStart(void)
 	 ret = pthread_create(&sTsk->dep.tId, &attr, mtTskHdlr, (Ptr)sTsk);
 	 if (ret != 0)
 	 {
-	    DU_LOG("\nDU APP : Failed to create thread. Cause[%d]",ret);
+	    DU_LOG("DU APP : Failed to create thread. Cause[%d]",ret);
 	    pthread_attr_destroy(&attr);
 
 #if (ERRCLASS & ERRCLS_DEBUG)

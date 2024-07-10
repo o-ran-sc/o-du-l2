@@ -122,7 +122,7 @@ void nFapiExtractP5Hdr(nFapi_p5_hdr *p5Hdr, Buffer *mBuf)
    CMCHKPK(oduUnpackUInt8, &(p5Hdr->more_segNum), mBuf);
    CMCHKPK(oduUnpackUInt8, &(p5Hdr->seq_num), mBuf);
    CMCHKPK(oduUnpackUInt32, &(p5Hdr->timeStamp), mBuf);
-   DU_LOG("\nINFo   --> NFAPI_VNF: seqLen:%d, moreSegNum:%d, seqNum:%d, timeStamp:%d",
+   DU_LOG("INFo   --> NFAPI_VNF: seqLen:%d, moreSegNum:%d, seqNum:%d, timeStamp:%d",
         p5Hdr->seg_len,p5Hdr->more_segNum,p5Hdr->seq_num,p5Hdr->timeStamp);
 }
 
@@ -147,7 +147,7 @@ void nFapiExtractP7Hdr(nFapi_p7_hdr *p7Hdr, Buffer *mBuf)
    CMCHKPK(oduUnpackUInt32, &(p7Hdr->tot_SDU_len), mBuf);
    CMCHKPK(oduUnpackUInt32, &(p7Hdr->byteOffset), mBuf);
    CMCHKPK(oduUnpackUInt32, &(p7Hdr->timeStamp), mBuf);
-   DU_LOG("\nINFo   --> NFAPI_VNF: se1_num:%d, totSdu len:%u, byteOffset:%u, timeStamp:%u",
+   DU_LOG("INFo   --> NFAPI_VNF: se1_num:%d, totSdu len:%u, byteOffset:%u, timeStamp:%u",
         p7Hdr->seq_num,p7Hdr->tot_SDU_len, p7Hdr->byteOffset, p7Hdr->timeStamp);
 }
 
@@ -174,7 +174,7 @@ void nFapiExtractMsgHdr(nFapi_msg_header *msgHdr, Buffer *mBuf)
     CMCHKPK(oduUnpackUInt16, &(msgHdr->msg_id), mBuf);
     CMCHKPK(oduUnpackUInt32, &(msgHdr->length), mBuf);
 
-    DU_LOG("\nINFO  -->  NFAPI_VNF: RUType:%d, phy_id:%d, msgId:%d, len:%d",\
+    DU_LOG("INFO  -->  NFAPI_VNF: RUType:%d, phy_id:%d, msgId:%d, len:%d",\
             msgHdr->sRU_termination_type,msgHdr->phy_id,msgHdr->msg_id,msgHdr->length );
 }
 
@@ -283,7 +283,7 @@ uint8_t convertNfapiP5TagValToMsgId(uint16_t tagVal, NfapiPnfEvent *nfapiPnfEven
         }
       default:
         {
-           DU_LOG("\n Incorrect TAG VALUE of NFAPI P5 Messages:%d",tagVal);
+           DU_LOG(" Incorrect TAG VALUE of NFAPI P5 Messages:%d",tagVal);
            return RFAILED;
         }
    }

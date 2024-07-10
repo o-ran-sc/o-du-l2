@@ -4561,7 +4561,7 @@ Buffer *mBuf
 #endif
    if(param->unLicnsdCfgPres)
    {   
-      DU_LOG("\nDEBUG  -->  pverma param->unLicnsdCfgPres cm/ctf -->%d\n",param->unLicnsdCfgPres);
+      DU_LOG("DEBUG  -->  pverma param->unLicnsdCfgPres cm/ctf -->%d\n",param->unLicnsdCfgPres);
       CMCHKPK(cmPkCtfUnLicnsdCellParam, &param->lteUCfg, mBuf);
    }
    CMCHKPK(oduPackUInt8, param->unLicnsdCfgPres, mBuf);
@@ -4795,7 +4795,7 @@ Buffer *mBuf
 
    if(param->unLicnsdCfgPres)
    {
-      DU_LOG("\nDEBUG  -->  pverma param->unLicnsdCfgPres 2 -->%d \n",param->unLicnsdCfgPres);
+      DU_LOG("DEBUG  -->  pverma param->unLicnsdCfgPres 2 -->%d \n",param->unLicnsdCfgPres);
       CMCHKUNPK(cmUnpkCtfUnLicnsdCellParam, &param->lteUCfg, mBuf);
    }   
 #ifdef EMTC_ENABLE
@@ -5009,7 +5009,7 @@ Buffer *mBuf
    CMCHKUNPK(SUnpkS16, &param->pilotSigPwr, mBuf);
    CMCHKUNPK(SUnpkS16, &param->priSigPwr, mBuf);
    CMCHKUNPK(SUnpkS16, &param->secSigPwr, mBuf);
-   DU_LOG("\nDEBUG  -->  param->pilotSigPwr = %d\nparam->priSigPwr = %d\n param->secSigPwr = %d\n",param->pilotSigPwr,param->priSigPwr,param->secSigPwr); 
+   DU_LOG("DEBUG  -->  param->pilotSigPwr = %d\nparam->priSigPwr = %d\n param->secSigPwr = %d\n",param->pilotSigPwr,param->priSigPwr,param->secSigPwr); 
 #ifdef ENABLE_API_LOG
    CMCHKUNPK(oduUnpackUInt8, &param->enableAPILog, mBuf);
 #endif /* ENABLE_API_LOG */

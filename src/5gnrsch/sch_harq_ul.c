@@ -124,7 +124,7 @@ void schUlHqDeleteFromFreeList(SchUlHqProcCb *hqP)
 {
    if(hqP->hqEnt->free.count == 0)
    {
-      DU_LOG("\n ERROR schUlHqDeleteFromInUseList no proc in in free\n");
+      DU_LOG(" ERROR schUlHqDeleteFromInUseList no proc in in free\n");
    }
    cmLListDelFrm(&(hqP->hqEnt->free), &hqP->ulHqEntLnk);
 }
@@ -162,7 +162,7 @@ void schUlHqDeleteFromInUseList(SchUlHqProcCb *hqP)
 {
    if(hqP->hqEnt->inUse.count == 0)
    {
-      DU_LOG("\n ERROR schUlHqDeleteFromInUseList no proc in in use\n");
+      DU_LOG(" ERROR schUlHqDeleteFromInUseList no proc in in use\n");
    }
    cmLListDelFrm(&(hqP->hqEnt->inUse), &hqP->ulHqEntLnk);
 }

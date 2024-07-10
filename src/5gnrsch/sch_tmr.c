@@ -41,14 +41,14 @@ bool schChkTmr(PTR cb, int16_t tmrEvnt)
          {
             if(((SchStatsGrp *)cb)->periodTimer.tmrEvnt == EVENT_STATISTICS_TMR)
             {
-               DU_LOG("\nDEBUG  -->  SCH : schChkTmr: Timer Evnt [%d] already running", tmrEvnt);
+               DU_LOG("DEBUG  -->  SCH : schChkTmr: Timer Evnt [%d] already running", tmrEvnt);
                return TRUE;
             }
             break;
          }
       default:
          {
-            DU_LOG("\nERROR  -->  SCH : schChkTmr: Invalid tmr Evnt [%d]", tmrEvnt);
+            DU_LOG("ERROR  -->  SCH : schChkTmr: Invalid tmr Evnt [%d]", tmrEvnt);
          }
    }
    return FALSE;
@@ -70,7 +70,7 @@ void schStartTmr(SchCb *gCb, PTR cb, int16_t tmrEvnt, uint16_t timerValue)
    arg.wait = 0;
 
 #ifdef DEBUG_PRINT
-   DU_LOG("\nDEBUG   -->  SCH : Starting Timer Event [%d] with Wait Time [%d] ms", \
+   DU_LOG("DEBUG   -->  SCH : Starting Timer Event [%d] with Wait Time [%d] ms", \
       tmrEvnt, timerValue);
 #endif      
    
@@ -88,7 +88,7 @@ void schStartTmr(SchCb *gCb, PTR cb, int16_t tmrEvnt, uint16_t timerValue)
 
       default:
       {
-         DU_LOG("\nERROR  -->  SCH : schStartTmr: Invalid tmr Evnt [%d]", tmrEvnt);
+         DU_LOG("ERROR  -->  SCH : schStartTmr: Invalid tmr Evnt [%d]", tmrEvnt);
       }
    }
 
@@ -121,7 +121,7 @@ void schStopTmr(SchCb *gCb, PTR cb, uint8_t tmrType)
    arg.timers = NULLP;
 
 #ifdef DEBUG_PRINT
-   DU_LOG("\nDEBUG   -->  SCH : Stopping Timer Event [%d]", tmrType);
+   DU_LOG("DEBUG   -->  SCH : Stopping Timer Event [%d]", tmrType);
 #endif   
 
    switch (tmrType)
@@ -135,7 +135,7 @@ void schStopTmr(SchCb *gCb, PTR cb, uint8_t tmrType)
 
       default:
       {
-         DU_LOG("\nERROR  -->  SCH : schStopTmr: Invalid tmr Evnt[%d]", tmrType);
+         DU_LOG("ERROR  -->  SCH : schStopTmr: Invalid tmr Evnt[%d]", tmrType);
          break;
       }
    }
@@ -174,7 +174,7 @@ uint8_t SchProcStatisticsGrpTmrExp(SchStatsGrp *cb)
 {
    if(schCalcAndSendGrpStats(cb) != ROK)
    {
-      DU_LOG("\nERROR  -->  SCH : SchProcStatisticsGrpTmrExp: Fails to send group statistics");
+      DU_LOG("ERROR  -->  SCH : SchProcStatisticsGrpTmrExp: Fails to send group statistics");
    }
    schStartTmr(&schCb[cb->schInst], (PTR)(cb), EVENT_STATISTICS_TMR, cb->periodicity);
    return ROK;
@@ -199,7 +199,7 @@ uint8_t SchProcStatisticsGrpTmrExp(SchStatsGrp *cb)
 uint8_t schTmrExpiry(PTR cb, uint8_t tmrEvnt)
 {
 #ifdef DEBUG_PRINT
-   DU_LOG("\nDEBUG   -->  SCH : Timer Expired. Event [%d]", tmrEvnt);
+   DU_LOG("DEBUG   -->  SCH : Timer Expired. Event [%d]", tmrEvnt);
 #endif
 
    switch (tmrEvnt)
@@ -207,7 +207,7 @@ uint8_t schTmrExpiry(PTR cb, uint8_t tmrEvnt)
       case EVENT_STATISTICS_TMR:
          {
 #ifdef DEBUG_PRINT
-            DU_LOG("\nDEBUG   -->  SCH : Statistics Timer Expired for Subscription Id [%ld] GroupId [%d]", \
+            DU_LOG("DEBUG   -->  SCH : Statistics Timer Expired for Subscription Id [%ld] GroupId [%d]", \
                   ((SchStatsGrp*)cb)->subscriptionId, ((SchStatsGrp*)cb)->groupId);
 #endif
             SchProcStatisticsGrpTmrExp((SchStatsGrp*)cb);
@@ -216,7 +216,7 @@ uint8_t schTmrExpiry(PTR cb, uint8_t tmrEvnt)
 
       default:
          {
-            DU_LOG("\nERROR  -->  DU : duStartTmr: Invalid tmr Evnt [%d]", tmrEvnt);
+            DU_LOG("ERROR  -->  DU : duStartTmr: Invalid tmr Evnt [%d]", tmrEvnt);
             break;
          }
    }

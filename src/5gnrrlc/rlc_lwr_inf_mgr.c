@@ -107,12 +107,12 @@ S16 RlcLiRguBndCfm(Pst *pst,SuId suId,uint8_t status)
 #endif
    tRlcCb = RLC_GET_RLCCB(pst->dstInst);
 
-   DU_LOG("\nDEBUG  -->  RLC UL : RlcLiRguBndCfm(suId(%d), status(%d)", suId, status);
+   DU_LOG("DEBUG  -->  RLC UL : RlcLiRguBndCfm(suId(%d), status(%d)", suId, status);
 
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if (tRlcCb->init.cfgDone != TRUE)
    {
-      DU_LOG("\nERROR  -->  RLC UL : General configuration not done");
+      DU_LOG("ERROR  -->  RLC UL : General configuration not done");
       
       RLC_SEND_SAPID_ALARM(tRlcCb,suId,LKW_EVENT_LI_BND_CFM, LCM_CAUSE_INV_STATE);
 
@@ -121,7 +121,7 @@ S16 RlcLiRguBndCfm(Pst *pst,SuId suId,uint8_t status)
 
    if ((suId >= tRlcCb->genCfg.maxRguSaps) || (suId < 0))
    {
-      DU_LOG("\nERROR  -->  RLC UL : Invalid suId");
+      DU_LOG("ERROR  -->  RLC UL : Invalid suId");
       
       RLC_SEND_SAPID_ALARM(tRlcCb,suId, LKW_EVENT_LI_BND_CFM, LCM_CAUSE_INV_SUID);
 
@@ -132,7 +132,7 @@ S16 RlcLiRguBndCfm(Pst *pst,SuId suId,uint8_t status)
    rguSap = (tRlcCb->genCfg.rlcMode == LKW_RLC_MODE_DL) ?
             &(tRlcCb->u.dlCb->rguDlSap[suId]) : &(tRlcCb->u.ulCb->rguUlSap[suId]);
 
-   DU_LOG("\nDEBUG  -->  RLC UL : RlcLiRguBndCfm: For RGU SAP state=%d", rguSap->state);
+   DU_LOG("DEBUG  -->  RLC UL : RlcLiRguBndCfm: For RGU SAP state=%d", rguSap->state);
 
    switch (rguSap->state)
    {
@@ -216,7 +216,7 @@ uint8_t rlcProcCommLcUlData(Pst *pst, SuId suId, RguCDatIndInfo *datInd)
 #if (ERRCLASS & ERRCLS_DEBUG)
    if(RLC_MAX_LCH_PER_CELL <= datInd->lcId)
    {
-      DU_LOG("\nERROR  -->  RLC UL : rlcProcCommLcUlData : Invalid LcId [%d], Max is [%d]",\
+      DU_LOG("ERROR  -->  RLC UL : rlcProcCommLcUlData : Invalid LcId [%d], Max is [%d]",\
          datInd->lcId, RLC_MAX_LCH_PER_CELL);
       RLC_SHRABL_STATIC_BUF_FREE(RLC_MEM_REGION_UL, RLC_POOL, datInd, sizeof(RguCDatIndInfo));
       return RFAILED;
@@ -227,7 +227,7 @@ uint8_t rlcProcCommLcUlData(Pst *pst, SuId suId, RguCDatIndInfo *datInd)
    rlcDbmFetchUlRbCbFromLchId(tRlcCb, datInd->rnti, datInd->cellId, datInd->lcId, &rbCb);
    if (!rbCb)
    {
-      DU_LOG("\nERROR  -->  RLC UL : rlcProcCommLcUlData : LcId [%d] not found",
+      DU_LOG("ERROR  -->  RLC UL : rlcProcCommLcUlData : LcId [%d] not found",
          datInd->lcId);
       RLC_SHRABL_STATIC_BUF_FREE(RLC_MEM_REGION_UL, RLC_POOL, datInd, sizeof(RguCDatIndInfo));
       return RFAILED;
@@ -277,7 +277,7 @@ uint8_t rlcProcDedLcUlData(Pst *pst, SuId suId, RguDDatIndInfo *datInd)
 #if (ERRCLASS & ERRCLS_DEBUG)
    if (((RlcCb*)RLC_GET_RLCCB(pst->dstInst))->genCfg.rlcMode == LKW_RLC_MODE_DL)
    {
-       DU_LOG("\nDEBUG  -->  RLC UL : rlcProcDedLcUlData : suId(%d))recieved in DL Inst", suId);
+       DU_LOG("DEBUG  -->  RLC UL : rlcProcDedLcUlData : suId(%d))recieved in DL Inst", suId);
        RLC_SHRABL_STATIC_BUF_FREE(RLC_MEM_REGION_UL, RLC_POOL, datInd, sizeof(RguDDatIndInfo));
        return RFAILED;
    }
@@ -330,12 +330,12 @@ uint8_t rlcProcCommLcSchedRpt(Pst *pst, SuId suId, RguCStaIndInfo *staInd)
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if ((suId >= tRlcCb->genCfg.maxRguSaps) || (suId < 0))
    {
-      DU_LOG("\nERROR  -->  RLC UL : rlcProcCommLcSchedRpt: Invalid RGU suId %d\n", suId);
+      DU_LOG("ERROR  -->  RLC UL : rlcProcCommLcSchedRpt: Invalid RGU suId %d\n", suId);
       return RFAILED; 
    }
    if (tRlcCb->genCfg.rlcMode == LKW_RLC_MODE_UL)
    {
-       DU_LOG("\nDEBUG  -->  RLC UL : rlcProcCommLcSchedRpt: Received in RLC UL CELLID:%d",
+       DU_LOG("DEBUG  -->  RLC UL : rlcProcCommLcSchedRpt: Received in RLC UL CELLID:%d",
              staInd->cellId);
        RLC_SHRABL_STATIC_BUF_FREE(RLC_MEM_REGION_DL, RLC_POOL, staInd, sizeof(RguCStaIndInfo));
        return RFAILED;
@@ -348,7 +348,7 @@ uint8_t rlcProcCommLcSchedRpt(Pst *pst, SuId suId, RguCStaIndInfo *staInd)
 #if (ERRCLASS & ERRCLS_DEBUG)
    if(RLC_MAX_LCH_PER_CELL < staInd->lcId)
    {
-      DU_LOG("\nERROR  -->  RLC UL : rlcProcCommLcSchedRpt: Invalid LcId, Max is [%d] CELLID:%d",
+      DU_LOG("ERROR  -->  RLC UL : rlcProcCommLcSchedRpt: Invalid LcId, Max is [%d] CELLID:%d",
          RLC_MAX_LCH_PER_CELL, staInd->cellId);
       RLC_SHRABL_STATIC_BUF_FREE(RLC_MEM_REGION_DL, RLC_POOL, staInd, sizeof(RguCStaIndInfo));
       return RFAILED;
@@ -358,7 +358,7 @@ uint8_t rlcProcCommLcSchedRpt(Pst *pst, SuId suId, RguCStaIndInfo *staInd)
    rlcDbmFetchDlRbCbFromLchId(tRlcCb,0, staInd->cellId, staInd->lcId, &rbCb);
    if(!rbCb)                                               
    {
-      DU_LOG("\nERROR  -->  RLC UL : rlcProcCommLcSchedRpt: LcId [%d] not found CELLID:%d",
+      DU_LOG("ERROR  -->  RLC UL : rlcProcCommLcSchedRpt: LcId [%d] not found CELLID:%d",
          staInd->lcId, staInd->cellId);
       RLC_SHRABL_STATIC_BUF_FREE(RLC_MEM_REGION_DL, RLC_POOL, staInd, sizeof(RguCStaIndInfo));
       return RFAILED;
@@ -415,13 +415,13 @@ uint8_t rlcProcDedLcSchedRpt(Pst *pst, SuId suId, RguDStaIndInfo *staInd)
 #if (ERRCLASS & ERRCLS_INT_PAR)
    if (((RlcCb*)RLC_GET_RLCCB(pst->dstInst))->genCfg.rlcMode == LKW_RLC_MODE_UL)
    {
-       DU_LOG("\nDEBUG  -->  RLC UL : rlcProcDedLcSchedRpt: Received in RLC UL ");
+       DU_LOG("DEBUG  -->  RLC UL : rlcProcDedLcSchedRpt: Received in RLC UL ");
        RLC_SHRABL_STATIC_BUF_FREE(RLC_MEM_REGION_DL, RLC_POOL, staInd, sizeof(RguDStaIndInfo));
        return RFAILED;
    }
    if ((suId >= gCb->genCfg.maxRguSaps) || (suId < 0))
    {
-      DU_LOG("\nERROR  -->  RLC UL : rlcProcDedLcSchedRpt: Invalid RGU suId %d\n", suId);
+      DU_LOG("ERROR  -->  RLC UL : rlcProcDedLcSchedRpt: Invalid RGU suId %d\n", suId);
       return (RFAILED); 
    }
 #endif

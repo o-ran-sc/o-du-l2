@@ -103,7 +103,7 @@ uint8_t duProcCellsToBeActivated(uint8_t *plmnStr, uint16_t nci, uint16_t nRPci)
       }
       else
       {
-         DU_LOG("\nERROR  -->  DU APP : No Cell found for NCI %d", nci);
+         DU_LOG("ERROR  -->  DU APP : No Cell found for NCI %d", nci);
          return RFAILED;
       }
    }
@@ -122,7 +122,7 @@ uint8_t duProcCellsToBeActivated(uint8_t *plmnStr, uint16_t nci, uint16_t nRPci)
 
    if(duBuildAndSendMacCellCfg(cellCb->cellId) != ROK)
    {
-      DU_LOG("\nERROR  -->  DU APP : macCellCfg build and send failed");
+      DU_LOG("ERROR  -->  DU APP : macCellCfg build and send failed");
       /* Delete cell from actvCellList */
       duCb.actvCellLst[cellCb->cellId -1] = NULLP;
       --(duCb.numActvCells);
@@ -148,7 +148,7 @@ uint8_t duProcCellsToBeActivated(uint8_t *plmnStr, uint16_t nci, uint16_t nRPci)
  ******************************************************************/
 void duProcF1SetupRsp()
 {
-   DU_LOG("\nINFO   -->  DU_APP : F1 Setup Response received");
+   DU_LOG("INFO   -->  DU_APP : F1 Setup Response received");
    duCb.f1Status = TRUE; //Set F1 status as true
 }
 
@@ -182,7 +182,7 @@ uint8_t duGetCellCb(uint16_t cellId, DuCellCb **cellCb)
 
    if(!*cellCb)
    {
-      DU_LOG("\nERROR  -->  DU APP : Cell Id %d not found in DU APP", cellId);
+      DU_LOG("ERROR  -->  DU APP : Cell Id %d not found in DU APP", cellId);
       return RFAILED;
    }
 
@@ -229,7 +229,7 @@ uint8_t checkPagingRecord(DuCellCb *cellCb)
       {
          if(BuildAndSendDlPcchIndToMac(cellCb->cellId, pf, pagInfo->i_s, &(pagInfo->pagUeList)) != ROK)
          {
-            DU_LOG("\nERROR  -->  DU APP: Issue in Building Page RRC PDU i_s:%d",pagInfo->i_s);
+            DU_LOG("ERROR  -->  DU APP: Issue in Building Page RRC PDU i_s:%d",pagInfo->i_s);
             return RFAILED; 
          }
          handlePageInfoLL(pf, pagInfo->i_s, &(pagInfoLLFromPF->pagInfoList), DELETE);
@@ -274,12 +274,12 @@ uint8_t sendDlPcchIndToMac(DlPcchInd *pcchInd)
       ret = (*packMacDlPcchIndOpts[pst.selector])(&pst, pcchInd);
       if(ret == RFAILED)
       {
-         DU_LOG("\nERROR  -->  DU APP : sendDlPcchIndToMac(): Failed to DL PCCH indication to MAC");
+         DU_LOG("ERROR  -->  DU APP : sendDlPcchIndToMac(): Failed to DL PCCH indication to MAC");
       }
    }
    else
    {
-      DU_LOG("\nERROR  -->  DU APP: sendDlPcchIndToMac(): Received pcchInd is NULLP");
+      DU_LOG("ERROR  -->  DU APP: sendDlPcchIndToMac(): Received pcchInd is NULLP");
       ret = RFAILED;
    }
    return ret;
@@ -321,14 +321,14 @@ uint8_t duHandleSlotInd(Pst *pst, SlotTimingInfo *slotIndInfo)
       }
       else
       {
-         DU_LOG("\nERROR  -->  DU APP : CellId[%d] doesnot exist", slotIndInfo->cellId);
+         DU_LOG("ERROR  -->  DU APP : CellId[%d] doesnot exist", slotIndInfo->cellId);
          ret = RFAILED;
       }
       DU_FREE_SHRABL_BUF(pst->region, pst->pool, slotIndInfo, sizeof(SlotTimingInfo));
    }
    else
    {
-      DU_LOG("\nERROR  -->  DU APP : Recevied null pointer from MAC");
+      DU_LOG("ERROR  -->  DU APP : Recevied null pointer from MAC");
       ret = RFAILED;
    }
    return(ret);
@@ -356,7 +356,7 @@ uint8_t duHandleCellUpInd(Pst *pst, OduCellId *cellId)
 
    if(cellId->cellId <=0 || cellId->cellId > MAX_NUM_CELL)
    {
-      DU_LOG("\nERROR  -->  DU APP : Invalid Cell Id %d in duHandleCellUpInd()", cellId->cellId);
+      DU_LOG("ERROR  -->  DU APP : Invalid Cell Id %d in duHandleCellUpInd()", cellId->cellId);
       return RFAILED;
    }
 
@@ -365,14 +365,14 @@ uint8_t duHandleCellUpInd(Pst *pst, OduCellId *cellId)
 
    if((cellCb != NULL) && (cellCb->cellStatus == ACTIVATION_IN_PROGRESS))
    {
-      DU_LOG("\nINFO   -->  DU APP : 5G-NR Cell %d is UP", cellId->cellId);
+      DU_LOG("INFO   -->  DU APP : 5G-NR Cell %d is UP", cellId->cellId);
       cellCb->cellStatus = ACTIVATED;
       gConfigInfo.gCellStatus = CELL_UP;
 
       if(duCfgParam.tempSliceCfg.numOfRrmPolicy)
          BuildAndSendSliceConfigReq();
 #ifdef O1_ENABLE
-      DU_LOG("\nINFO   -->  DU APP : Raise cell UP alarm for cell id=%d", cellId->cellId);
+      DU_LOG("INFO   -->  DU APP : Raise cell UP alarm for cell id=%d", cellId->cellId);
       raiseCellAlrm(CELL_UP_ALARM_ID, cellId->cellId);
       setCellOpState(cellId->cellId, ENABLED, ACTIVE);
 #endif
@@ -412,7 +412,7 @@ uint8_t DuProcMacCellDeleteRsp(Pst *pst, MacCellDeleteRsp *deleteRsp)
       if(deleteRsp->status == SUCCESSFUL)
       {
          GET_CELL_IDX(deleteRsp->cellId, cellIdx);
-         DU_LOG("\nINFO   -->  DU APP : MAC CELL Delete Response : SUCCESS [CELL IDX : %d]", deleteRsp->cellId);
+         DU_LOG("INFO   -->  DU APP : MAC CELL Delete Response : SUCCESS [CELL IDX : %d]", deleteRsp->cellId);
          if(duCb.actvCellLst[cellIdx] && (duCb.actvCellLst[cellIdx]->cellId == deleteRsp->cellId))
          {
             for(pfIdx =0; pfIdx < MAX_SFN; pfIdx++)
@@ -429,7 +429,7 @@ uint8_t DuProcMacCellDeleteRsp(Pst *pst, MacCellDeleteRsp *deleteRsp)
             gConfigInfo.gCellStatus = CELL_DOWN;
 
 #ifdef O1_ENABLE
-            DU_LOG("\nINFO   -->  DU APP : Raise cell down alarm for cell id=%d", deleteRsp->cellId);
+            DU_LOG("INFO   -->  DU APP : Raise cell down alarm for cell id=%d", deleteRsp->cellId);
             raiseCellAlrm(CELL_DOWN_ALARM_ID, deleteRsp->cellId);
             setCellOpState(deleteRsp->cellId, DISABLED, INACTIVE);
 #endif
@@ -440,13 +440,13 @@ uint8_t DuProcMacCellDeleteRsp(Pst *pst, MacCellDeleteRsp *deleteRsp)
          }
          else
          {
-            DU_LOG("\nERROR  -->  DU APP : DuProcMacCellDeleteRsp(): CellId [%d] doesnot exist", deleteRsp->cellId);
+            DU_LOG("ERROR  -->  DU APP : DuProcMacCellDeleteRsp(): CellId [%d] doesnot exist", deleteRsp->cellId);
             ret = RFAILED;
          }
       }
       else
       {
-         DU_LOG("\nERROR  -->  DU APP : DuProcMacCellDeleteRsp(): MAC CELL Delete Response : FAILED\
+         DU_LOG("ERROR  -->  DU APP : DuProcMacCellDeleteRsp(): MAC CELL Delete Response : FAILED\
          [CELL IDX : %d]", deleteRsp->cellId);
          ret = RFAILED;
       }
@@ -454,7 +454,7 @@ uint8_t DuProcMacCellDeleteRsp(Pst *pst, MacCellDeleteRsp *deleteRsp)
    }
    else
    {
-      DU_LOG("\nERROR  -->  DU APP : DuProcMacCellDeleteRsp(): Received MAC cell delete response is NULL");
+      DU_LOG("ERROR  -->  DU APP : DuProcMacCellDeleteRsp(): Received MAC cell delete response is NULL");
       ret = RFAILED;
    }
    return ret;
@@ -490,18 +490,18 @@ uint8_t sendCellDeleteReqToMac(uint16_t cellId)
       cellDelete->cellId = cellId;
       FILL_PST_DUAPP_TO_MAC(pst, EVENT_MAC_CELL_DELETE_REQ);
 
-      DU_LOG("\nINFO   -->  DU APP : Sending Cell Delete Request to MAC");  
+      DU_LOG("INFO   -->  DU APP : Sending Cell Delete Request to MAC");  
       /* Processing one Cell at a time to MAC */
       ret = (*packMacCellDeleteReqOpts[pst.selector])(&pst, cellDelete);
       if(ret == RFAILED)
       {
-         DU_LOG("\nERROR  -->  DU APP : sendCellDeleteReqToMac(): Failed to send Cell delete Req to MAC");
+         DU_LOG("ERROR  -->  DU APP : sendCellDeleteReqToMac(): Failed to send Cell delete Req to MAC");
          DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, cellDelete, sizeof(MacCellDeleteReq));
       }
    }
    else
    {
-      DU_LOG("\nERROR  -->   DU APP : sendCellDeleteReqToMac(): Failed to allocate memory"); 
+      DU_LOG("ERROR  -->   DU APP : sendCellDeleteReqToMac(): Failed to allocate memory"); 
       ret = RFAILED;
    }
    return ret;
@@ -526,32 +526,32 @@ uint8_t sendCellDeleteReqToMac(uint16_t cellId)
 uint8_t duSendCellDeletReq(uint16_t cellId)
 {
    uint16_t cellIdx = 0;
-   DU_LOG("\nINFO   -->  DU APP : Processing Cell Delete Request ");
+   DU_LOG("INFO   -->  DU APP : Processing Cell Delete Request ");
    GET_CELL_IDX(cellId, cellIdx);
 
    if(duCb.actvCellLst[cellIdx] == NULLP)
    {
-      DU_LOG("\nERROR  -->  DU APP : duSendCellDeletReq(): CellId[%d] is not found", cellId);
+      DU_LOG("ERROR  -->  DU APP : duSendCellDeletReq(): CellId[%d] is not found", cellId);
       return RFAILED;
    }
    
    if(duCb.actvCellLst[cellIdx]->cellId != cellId)
    {
-      DU_LOG("\nERROR  -->  DU APP : duSendCellDeletReq(): CellId[%d] is not found", cellId);
+      DU_LOG("ERROR  -->  DU APP : duSendCellDeletReq(): CellId[%d] is not found", cellId);
       return RFAILED;
 
    }  
    
    if(duCb.actvCellLst[cellIdx]->cellStatus != DELETION_IN_PROGRESS)
    {
-      DU_LOG("\nERROR  -->  DU APP : duSendCellDeletReq(): CellStatus[%d] of cellId[%d] is not correct.\
+      DU_LOG("ERROR  -->  DU APP : duSendCellDeletReq(): CellStatus[%d] of cellId[%d] is not correct.\
       Expected CellStatus is DELETION_IN_PROGRESS",duCb.actvCellLst[cellIdx]->cellStatus, cellId);
       return RFAILED;  
    }
 
    if(duBuildAndSendMacCellStop(cellId) == RFAILED)
    {
-      DU_LOG("\nERROR  -->  DU APP : duSendCellDeletReq(): Failed to build and send cell stop request to MAC for\
+      DU_LOG("ERROR  -->  DU APP : duSendCellDeletReq(): Failed to build and send cell stop request to MAC for\
             cellId[%d]",cellId);
       return RFAILED;
    }
@@ -641,7 +641,7 @@ uint8_t BuildAndSendDlPcchIndToMac(uint16_t cellId, uint16_t pf, uint8_t i_s, Cm
 
    if(pageUeLL == NULLP || pageUeLL->count == 0)
    {
-      DU_LOG("\nERROR  -->  DU APP: UE Page Record LL is empty");
+      DU_LOG("ERROR  -->  DU APP: UE Page Record LL is empty");
       return RFAILED;
    }
 
@@ -651,14 +651,14 @@ uint8_t BuildAndSendDlPcchIndToMac(uint16_t cellId, uint16_t pf, uint8_t i_s, Cm
       DU_ALLOC(pcchMsg , sizeof(PCCH_Message_t));
       if(pcchMsg == NULLP)
       {
-         DU_LOG("\nERROR  -->  DU APP: BuildAndSendDlPcchIndToMac(): (pccchMsg) Memory Alloction failed!");
+         DU_LOG("ERROR  -->  DU APP: BuildAndSendDlPcchIndToMac(): (pccchMsg) Memory Alloction failed!");
          break;
       }
       pcchMsg->message.present = PCCH_MessageType_PR_c1;
       DU_ALLOC(pcchMsg->message.choice.c1 , sizeof(PCCH_MessageType_t));
       if(pcchMsg->message.choice.c1 == NULLP)
       {
-         DU_LOG("\nERROR  -->  DU APP: BuildAndSendDlPcchIndToMac(); (C1) Memory Alloction failed!");
+         DU_LOG("ERROR  -->  DU APP: BuildAndSendDlPcchIndToMac(); (C1) Memory Alloction failed!");
          break;
       }
       pcchMsg->message.choice.c1->present = PCCH_MessageType__c1_PR_paging;
@@ -667,13 +667,13 @@ uint8_t BuildAndSendDlPcchIndToMac(uint16_t cellId, uint16_t pf, uint8_t i_s, Cm
       pagingMsg = pcchMsg->message.choice.c1->choice.paging;
       if(pagingMsg == NULLP)
       {
-         DU_LOG("\nERROR  -->  DU APP: BuildAndSendDlPcchIndToMac(); (Paging) Memory Alloction failed!");
+         DU_LOG("ERROR  -->  DU APP: BuildAndSendDlPcchIndToMac(); (Paging) Memory Alloction failed!");
          break;
       }
       DU_ALLOC(pagingMsg->pagingRecordList, sizeof(PagingRecordList_t));
       if(pagingMsg->pagingRecordList == NULLP)
       {
-         DU_LOG("\nERROR  -->  DU APP: BuildAndSendDlPcchIndToMac(); (Paging Record List) Memory Alloction failed!");
+         DU_LOG("ERROR  -->  DU APP: BuildAndSendDlPcchIndToMac(); (Paging Record List) Memory Alloction failed!");
          break;
       }
 
@@ -689,7 +689,7 @@ uint8_t BuildAndSendDlPcchIndToMac(uint16_t cellId, uint16_t pf, uint8_t i_s, Cm
       DU_ALLOC(pagingMsg->pagingRecordList->list.array, pagingMsg->pagingRecordList->list.size);
       if(pagingMsg->pagingRecordList->list.array == NULLP)
       {
-         DU_LOG("\nERROR  -->  DU APP: BuildAndSendDlPcchIndToMac(); (Array) Memory Alloction failed!");
+         DU_LOG("ERROR  -->  DU APP: BuildAndSendDlPcchIndToMac(); (Array) Memory Alloction failed!");
          break;
       }
       for(recordIdx = 0; recordIdx < pageUeLL->count; recordIdx++)
@@ -697,7 +697,7 @@ uint8_t BuildAndSendDlPcchIndToMac(uint16_t cellId, uint16_t pf, uint8_t i_s, Cm
          DU_ALLOC(pagingMsg->pagingRecordList->list.array[recordIdx], sizeof(PagingRecord_t));
          if(pagingMsg->pagingRecordList->list.array[recordIdx] == NULLP)
          {
-            DU_LOG("\nERROR  -->  DU APP: BuildAndSendDlPcchIndToMac(); (Record) Memory Alloction failed!");
+            DU_LOG("ERROR  -->  DU APP: BuildAndSendDlPcchIndToMac(); (Record) Memory Alloction failed!");
             break;
          }
       }
@@ -716,7 +716,7 @@ uint8_t BuildAndSendDlPcchIndToMac(uint16_t cellId, uint16_t pf, uint8_t i_s, Cm
                   pagingMsg->pagingRecordList->list.array[recordIdx]->ue_Identity.choice.ng_5G_S_TMSI.size);
             if(pagingMsg->pagingRecordList->list.array[recordIdx]->ue_Identity.choice.ng_5G_S_TMSI.buf == NULLP)
             {
-               DU_LOG("\nERROR  -->  DU APP: BuildAndSendDlPcchIndToMac(); (5gsTmsi buffer) Memory Allocation failed!");
+               DU_LOG("ERROR  -->  DU APP: BuildAndSendDlPcchIndToMac(); (5gsTmsi buffer) Memory Allocation failed!");
                break;
             }
             fillBitString(&pagingMsg->pagingRecordList->list.array[recordIdx]->ue_Identity.choice.ng_5G_S_TMSI,\
@@ -743,18 +743,18 @@ uint8_t BuildAndSendDlPcchIndToMac(uint16_t cellId, uint16_t pf, uint8_t i_s, Cm
 
       if(encRetVal.encoded == ENCODE_FAIL)
       {
-         DU_LOG("\nERROR  -->  F1AP : Could not encode Paging structure (at %s)\n",\
+         DU_LOG("ERROR  -->  F1AP : Could not encode Paging structure (at %s)\n",\
                encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
          break;
       }
       else
       {
-         DU_LOG("\nDEBUG  -->  F1AP : Created APER encoded buffer for RRC PDU for Pcch indication \n");
+         DU_LOG("DEBUG  -->  F1AP : Created APER encoded buffer for RRC PDU for Pcch indication \n");
          
          DU_ALLOC_SHRABL_BUF(macPcchInd, sizeof(DlPcchInd));
          if(macPcchInd == NULLP)
          {
-            DU_LOG("\nERROR  -->  DU APP: BuildAndSendDlPcchIndToMac(); (macPcchInd) Memory Alloction failed!");
+            DU_LOG("ERROR  -->  DU APP: BuildAndSendDlPcchIndToMac(); (macPcchInd) Memory Alloction failed!");
             break;
          }
          
@@ -765,7 +765,7 @@ uint8_t BuildAndSendDlPcchIndToMac(uint16_t cellId, uint16_t pf, uint8_t i_s, Cm
          DU_ALLOC_SHRABL_BUF(macPcchInd->pcchPdu, macPcchInd->pduLen);
          if(macPcchInd->pcchPdu == NULLP)
          {
-            DU_LOG("\nERROR  -->  DU APP: BuildAndSendDlPcchIndToMac(); (PcchPDU) Memory Alloction failed!");
+            DU_LOG("ERROR  -->  DU APP: BuildAndSendDlPcchIndToMac(); (PcchPDU) Memory Alloction failed!");
             break;
          }
          memcpy(macPcchInd->pcchPdu, encBuf, macPcchInd->pduLen);
@@ -816,7 +816,7 @@ uint8_t insertPagingRecord(DuCellCb* cellCb, DuPagingMsg *rcvdF1apPagingParam, u
    maxIterations = MAX_SFN/rcvdF1apPagingParam->T;
    if(iterations >= maxIterations)
    {
-      DU_LOG("\nERROR  --> DU APP: MAX Iterations reached for UEID:%d, thus Paging is dropped!", rcvdF1apPagingParam->pagUeId);
+      DU_LOG("ERROR  --> DU APP: MAX Iterations reached for UEID:%d, thus Paging is dropped!", rcvdF1apPagingParam->pagUeId);
       return RFAILED;
    }
 
@@ -839,17 +839,17 @@ uint8_t insertPagingRecord(DuCellCb* cellCb, DuPagingMsg *rcvdF1apPagingParam, u
 
             if(ueRecord == NULLP)
             {
-               DU_LOG("\nERROR  --> DU APP: Unable to create UE Record in PagingList");
+               DU_LOG("ERROR  --> DU APP: Unable to create UE Record in PagingList");
                return RFAILED;
             }
-            DU_LOG("\nDEBUG  --> DU APP: UE Record created successfully in PagingList");
+            DU_LOG("DEBUG  --> DU APP: UE Record created successfully in PagingList");
             return ROK;
          }
          else
          {
             /*Since MAX Page record has reached for this PF thus calculating and
              *moving this UE to next Paging Cycle*/
-            DU_LOG("\nINFO   --> DU APP: Max Page Record reached for PagingFrame:%d",rcvdF1apPagingParam->pagingFrame);
+            DU_LOG("INFO   --> DU APP: Max Page Record reached for PagingFrame:%d",rcvdF1apPagingParam->pagingFrame);
             rcvdF1apPagingParam->pagingFrame = ((rcvdF1apPagingParam->pagingFrame + rcvdF1apPagingParam->T) % MAX_SFN);
             iterations++;
 
@@ -864,7 +864,7 @@ uint8_t insertPagingRecord(DuCellCb* cellCb, DuPagingMsg *rcvdF1apPagingParam, u
 
    if(pagInfoLLFromPF == NULLP)
    {
-      DU_LOG("\nERROR  --> DU APP: PageInfo Map allocation failed.");
+      DU_LOG("ERROR  --> DU APP: PageInfo Map allocation failed.");
       return RFAILED;
    }
    pagInfoLLFromPF->pf = rcvdF1apPagingParam->pagingFrame;
@@ -872,7 +872,7 @@ uint8_t insertPagingRecord(DuCellCb* cellCb, DuPagingMsg *rcvdF1apPagingParam, u
    ueRecord = handlePageUeLL(rcvdF1apPagingParam->pagUeId, rcvdF1apPagingParam->sTmsi, &(pageUeLL->pagUeList), CREATE);
    if(cmHashListInsert(&(cellCb->pagingInfoMap), (PTR)pagInfoLLFromPF, (uint8_t *)&(pagInfoLLFromPF->pf), sizeof(uint16_t)) == RFAILED)
    {
-      DU_LOG("\nERROR  --> DU APP: Hash Map Insertion Failed for PF:%d.",rcvdF1apPagingParam->pagingFrame);
+      DU_LOG("ERROR  --> DU APP: Hash Map Insertion Failed for PF:%d.",rcvdF1apPagingParam->pagingFrame);
    }
 
 #if 0
@@ -1023,7 +1023,7 @@ uint8_t calcAndFillPagingInfoInCellCb(DuCellCb* cellCb, DuPagingMsg *rcvdF1apPag
    }
    else
    {
-      DU_LOG("\nINFO  --> DU APP : calcAndFillPagingInfoInCellCb(): Received null pointer");
+      DU_LOG("INFO  --> DU APP : calcAndFillPagingInfoInCellCb(): Received null pointer");
       return RFAILED;
    }
    return ROK;
@@ -1053,18 +1053,18 @@ uint8_t processPagingMsg(uint16_t cellId, DuPagingMsg *rcvdF1apPagingParam)
 
    if(duCb.actvCellLst[cellIdx] == NULLP || duCb.actvCellLst[cellIdx]->cellId != cellId)
    {
-      DU_LOG("\nERROR  -->  DU APP : processPagingMsg(): CellId[%d] is not found", cellId);
+      DU_LOG("ERROR  -->  DU APP : processPagingMsg(): CellId[%d] is not found", cellId);
       return RFAILED;
    }
    
    if(calcAndFillPagingInfoInCellCb(duCb.actvCellLst[cellIdx], rcvdF1apPagingParam) != ROK)
    {
-      DU_LOG("\nERROR  --> DU APP : CellCb:%d not present to fill UE Paging Information",cellId);
+      DU_LOG("ERROR  --> DU APP : CellCb:%d not present to fill UE Paging Information",cellId);
       return RFAILED;
    }
    if(insertPagingRecord(duCb.actvCellLst[cellIdx], rcvdF1apPagingParam, iteration) != ROK)
    {
-      DU_LOG("\nERROR  --> DU APP : Insertion Failed ofUE Paging Information");
+      DU_LOG("ERROR  --> DU APP : Insertion Failed ofUE Paging Information");
       return RFAILED;
    }
    return ROK;
@@ -1094,7 +1094,7 @@ uint8_t duBuildAndSendDlBroadcastReq()
    uint8_t ret =ROK;
    MacDlBroadcastReq *dlBroadcast=NULLP;
 
-   DU_LOG("\nDEBUG  -->  DU_APP : Building Dl broadcast request");
+   DU_LOG("DEBUG  -->  DU_APP : Building Dl broadcast request");
 
    DU_ALLOC_SHRABL_BUF(dlBroadcast, sizeof(MacDlBroadcastReq));
    if(dlBroadcast)
@@ -1103,17 +1103,17 @@ uint8_t duBuildAndSendDlBroadcastReq()
       
       FILL_PST_DUAPP_TO_MAC(pst, EVENT_MAC_DL_BROADCAST_REQ);
 
-      DU_LOG("\nDEBUG  -->  DU_APP: Sending Dl broadcast  Request to MAC ");
+      DU_LOG("DEBUG  -->  DU_APP: Sending Dl broadcast  Request to MAC ");
       ret = (*packMacDlBroadcastReqOpts[pst.selector])(&pst, dlBroadcast);
       if(ret == RFAILED)
       {
-         DU_LOG("\nERROR  -->  DU_APP: sendDlBroadcastReqToMac(): Failed to send Dl broadcast  Req to MAC");
+         DU_LOG("ERROR  -->  DU_APP: sendDlBroadcastReqToMac(): Failed to send Dl broadcast  Req to MAC");
          DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, dlBroadcast, sizeof(MacDlBroadcastReq));
       }
    }
    else
    {
-      DU_LOG("\nERROR  -->   DU_APP: sendDlBroadcastReqToMac(): Failed to allocate memory"); 
+      DU_LOG("ERROR  -->   DU_APP: sendDlBroadcastReqToMac(): Failed to allocate memory"); 
       ret =  RFAILED;
    }
 

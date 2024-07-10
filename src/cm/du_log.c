@@ -14,30 +14,26 @@
 #   See the License for the specific language governing permissions and        #
 #   limitations under the License.                                             #
 ################################################################################
-*******************************************************************************/
+ *******************************************************************************/
 
-/* This file contains system logging functionality for DU */
+#include <stdio.h>
+#include <time.h> 
+#include <sys/time.h> 
 
-#ifndef __DU_LOGS_H__
-#define __DU_LOGS_H__
+char* getFormattedTime(void) 
+{
+   struct timeval tp;
+   gettimeofday(&tp, 0);
 
-#include<syslog.h>
+   time_t rawtime;
+   struct tm* timeinfo;
 
-char* getFormattedTime(void);
+   rawtime = tp.tv_sec;
+   timeinfo = localtime(&rawtime);
 
-/*MACROS*/
-#ifndef LOG_TIMESTAMP
-#define DU_LOG(...) ({\
-		printf(__VA_ARGS__);\
-		syslog(LOG_DEBUG,__VA_ARGS__);\
-		})
-#else
-#define __LOG__(format,...) ({\
-		printf(" %s " format "\n", getFormattedTime(), ## __VA_ARGS__);\
-		})
 
-#define DU_LOG(format,...) __LOG__(format, ## __VA_ARGS__)
-#endif
+   static char _retval[30];
+   snprintf(_retval, sizeof(_retval), "[%02d:%02d:%02d:%03d]",  timeinfo->tm_hour, timeinfo->tm_min, timeinfo->tm_sec, tp.tv_usec/1000);
 
-#endif
-			
+   return _retval;
+}

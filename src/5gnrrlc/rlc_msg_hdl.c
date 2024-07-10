@@ -68,7 +68,7 @@ uint8_t BuildAndSendRlcMaxRetransIndToDu(uint16_t cellId,uint8_t ueId, uint8_t l
    RLC_ALLOC_SHRABL_BUF(pst.region, pst.pool, maxRetransInfo, sizeof(RlcMaxRetransInfo));
    if(!maxRetransInfo)
    {
-      DU_LOG("\nERROR  -->  RLC: sendRlcMaxRetransIndToDu(): Memory allocation failed ");
+      DU_LOG("ERROR  -->  RLC: sendRlcMaxRetransIndToDu(): Memory allocation failed ");
       return RFAILED;
    }
    else
@@ -80,11 +80,11 @@ uint8_t BuildAndSendRlcMaxRetransIndToDu(uint16_t cellId,uint8_t ueId, uint8_t l
   
       if(rlcSendMaxRetransIndToDu(&pst, maxRetransInfo) == ROK)
       {
-         DU_LOG("\nDEBUG  -->  RLC: UE [ %d] max retransmission information sent successfully",ueId);
+         DU_LOG("DEBUG  -->  RLC: UE [ %d] max retransmission information sent successfully",ueId);
       }
       else
       {
-         DU_LOG("\nERROR  -->  RLC: SendRlcMaxRetransIndToDu(): fail to send UeId's[%d] maximum retransmission information", ueId);
+         DU_LOG("ERROR  -->  RLC: SendRlcMaxRetransIndToDu(): fail to send UeId's[%d] maximum retransmission information", ueId);
          RLC_FREE_SHRABL_BUF(pst.region, pst.pool, maxRetransInfo, sizeof(RlcMaxRetransInfo));
          return RFAILED;
       }
@@ -175,7 +175,7 @@ void fillEntModeAndDir(uint8_t *entMode, uint8_t *direction, RlcMode rlcMode)
          *direction = RLC_CFG_DIR_DL;
          break;
       default : 
-         DU_LOG("\nERROR  -->  RLC: Rlc Mode invalid %d", rlcMode);
+         DU_LOG("ERROR  -->  RLC: Rlc Mode invalid %d", rlcMode);
     break;
    }
 }
@@ -212,7 +212,7 @@ uint8_t fillLcCfg(RlcCb *gCb, RlcEntCfgInfo *rlcUeCfg, RlcBearerCfg *duRlcUeCfg)
       RLC_ALLOC(gCb, rlcUeCfg->snssai, sizeof(Snssai));
       if(rlcUeCfg->snssai == NULLP)
       {
-         DU_LOG("\nERROR  --> RLC : fillLcCfg(): Failed to allocate memory for snssai");
+         DU_LOG("ERROR  --> RLC : fillLcCfg(): Failed to allocate memory for snssai");
          return RFAILED;
       }
       memcpy(rlcUeCfg->snssai, duRlcUeCfg->snssai, sizeof(Snssai));
@@ -286,7 +286,7 @@ uint8_t fillRlcCfg(RlcCb *gCb, RlcCfgInfo *rlcUeCfg, RlcUeCreate *ueCfg)
    {
       if(fillLcCfg(gCb, &rlcUeCfg->entCfg[lcIdx], &ueCfg->rlcLcCfgAdd[lcIdx]) != ROK)
       {
-          DU_LOG("\nERROR  --> RLC : fillRlcCfg(): Failed to fill LC configuration");
+          DU_LOG("ERROR  --> RLC : fillRlcCfg(): Failed to fill LC configuration");
           return RFAILED;
       }
       rlcUeCfg->entCfg[lcIdx].cfgType = CONFIG_ADD; 
@@ -326,7 +326,7 @@ uint8_t updateRlcCfg(RlcCb *gCb, RlcCfgInfo *rlcUeCfg, RlcUeRecfg *ueRecfg)
    {
       if(fillLcCfg(gCb, &rlcUeCfg->entCfg[rlcUeCfg->numEnt], &ueRecfg->rlcLcCfgAdd[lcIdx]) != ROK)
       {
-          DU_LOG("\nERROR  --> RLC : fillRlcCfg(): Failed to fill LC configuration");
+          DU_LOG("ERROR  --> RLC : fillRlcCfg(): Failed to fill LC configuration");
           return RFAILED;
       }
       rlcUeCfg->entCfg[rlcUeCfg->numEnt].cfgType = CONFIG_ADD;
@@ -336,7 +336,7 @@ uint8_t updateRlcCfg(RlcCb *gCb, RlcCfgInfo *rlcUeCfg, RlcUeRecfg *ueRecfg)
    {
       if(fillLcCfg(gCb, &rlcUeCfg->entCfg[rlcUeCfg->numEnt], &ueRecfg->rlcLcCfgMod[lcIdx]) != ROK)
       {
-          DU_LOG("\nERROR  --> RLC : fillRlcCfg(): Failed to fill LC configuration");
+          DU_LOG("ERROR  --> RLC : fillRlcCfg(): Failed to fill LC configuration");
           return RFAILED;
       }
       rlcUeCfg->entCfg[rlcUeCfg->numEnt].cfgType = CONFIG_MOD;
@@ -346,7 +346,7 @@ uint8_t updateRlcCfg(RlcCb *gCb, RlcCfgInfo *rlcUeCfg, RlcUeRecfg *ueRecfg)
    {
       if(fillLcCfg(gCb, &rlcUeCfg->entCfg[rlcUeCfg->numEnt], &ueRecfg->rlcLcCfgRel[lcIdx]) != ROK)
       {
-          DU_LOG("\nERROR  --> RLC : fillRlcCfg(): Failed to fill LC configuration");
+          DU_LOG("ERROR  --> RLC : fillRlcCfg(): Failed to fill LC configuration");
           return RFAILED;
       }
       rlcUeCfg->entCfg[rlcUeCfg->numEnt].cfgType = CONFIG_DEL;
@@ -465,7 +465,7 @@ uint8_t RlcProcUeCreateReq(Pst *pst, RlcUeCreate *ueCfg)
    RLC_ALLOC(gCb, rlcUeCfg, sizeof(RlcCfgInfo));
    if(rlcUeCfg == NULLP)
    {
-      DU_LOG("\nERROR  -->  RLC: Failed to allocate memory at RlcProcUeCreateReq()");
+      DU_LOG("ERROR  -->  RLC: Failed to allocate memory at RlcProcUeCreateReq()");
       ret = RFAILED;
    }
    else
@@ -474,7 +474,7 @@ uint8_t RlcProcUeCreateReq(Pst *pst, RlcUeCreate *ueCfg)
       ret = fillRlcCfg(gCb, rlcUeCfg, ueCfg); 
       if(ret != ROK)
       {
-         DU_LOG("\nERROR  -->  RLC: Failed to fill configuration at RlcProcUeCreateReq()");
+         DU_LOG("ERROR  -->  RLC: Failed to fill configuration at RlcProcUeCreateReq()");
          FILL_PST_RLC_TO_DUAPP(rspPst, RLC_UL_INST, EVENT_RLC_UE_CREATE_RSP);
          fillRlcCfgFailureRsp(&cfgRsp, ueCfg);
          SendRlcUeCreateRspToDu(&rspPst, &cfgRsp);
@@ -484,7 +484,7 @@ uint8_t RlcProcUeCreateReq(Pst *pst, RlcUeCreate *ueCfg)
       {
          ret = RlcProcCfgReq(pst, rlcUeCfg);
          if(ret != ROK)
-            DU_LOG("\nERROR  -->  RLC: Failed to configure Add/Mod/Del entities at RlcProcUeCreateReq()");
+            DU_LOG("ERROR  -->  RLC: Failed to configure Add/Mod/Del entities at RlcProcUeCreateReq()");
       }
    }
    RLC_FREE_SHRABL_BUF(pst->region, pst->pool, ueCfg, sizeof(RlcUeCreate));
@@ -510,7 +510,7 @@ uint8_t BuildAndSendRrcDeliveryReportToDu( RlcDlRrcMsgInfo *dlRrcMsgInfo )
     Pst             pst;
     RrcDeliveryReport *rrcDelivery;
 
-    DU_LOG("\nINFO  -->  RLC : Filling RRC Delivery Report");
+    DU_LOG("INFO  -->  RLC : Filling RRC Delivery Report");
     RLC_ALLOC_SHRABL_BUF(RLC_MEM_REGION_UL, RLC_POOL, rrcDelivery, sizeof(RrcDeliveryReport));
 
     if(rrcDelivery)
@@ -528,7 +528,7 @@ uint8_t BuildAndSendRrcDeliveryReportToDu( RlcDlRrcMsgInfo *dlRrcMsgInfo )
     }
     else
     {
-       DU_LOG("\nERROR  -->  RLC : Memory allocation failed");
+       DU_LOG("ERROR  -->  RLC : Memory allocation failed");
     }
 
    return ROK;
@@ -557,7 +557,7 @@ uint8_t RlcProcDlRrcMsgTransfer(Pst *pst, RlcDlRrcMsgInfo *dlRrcMsgInfo)
    RLC_SHRABL_STATIC_BUF_ALLOC(RLC_MEM_REGION_DL, RLC_POOL, datReqInfo, sizeof(RlcDatReqInfo));
    if(!datReqInfo)
    {
-      DU_LOG("\nERROR  -->  RLC : Memory allocation failed in RlcProcDlRrcMsgTransfer");
+      DU_LOG("ERROR  -->  RLC : Memory allocation failed in RlcProcDlRrcMsgTransfer");
       RLC_SHRABL_STATIC_BUF_FREE(pst->region, pst->pool, dlRrcMsgInfo->rrcMsg, dlRrcMsgInfo->msgLen);
       RLC_SHRABL_STATIC_BUF_FREE(pst->region, pst->pool, dlRrcMsgInfo, sizeof(RlcDlRrcMsgInfo));
       return RFAILED;
@@ -573,7 +573,7 @@ uint8_t RlcProcDlRrcMsgTransfer(Pst *pst, RlcDlRrcMsgInfo *dlRrcMsgInfo)
    /* Copy fixed buffer to message */
    if(ODU_GET_MSG_BUF(RLC_MEM_REGION_UL, RLC_POOL, &mBuf) != ROK)
    {
-      DU_LOG("\nERROR  -->  RLC : Memory allocation failed at RlcMacProcUlData");
+      DU_LOG("ERROR  -->  RLC : Memory allocation failed at RlcMacProcUlData");
       RLC_SHRABL_STATIC_BUF_FREE(RLC_MEM_REGION_DL, RLC_POOL, datReqInfo, sizeof(RlcDatReqInfo));
       RLC_SHRABL_STATIC_BUF_FREE(pst->region, pst->pool, dlRrcMsgInfo->rrcMsg, dlRrcMsgInfo->msgLen);
       RLC_SHRABL_STATIC_BUF_FREE(pst->region, pst->pool, dlRrcMsgInfo, sizeof(RlcDlRrcMsgInfo));
@@ -628,7 +628,7 @@ uint8_t RlcProcUlData(Pst *pst, RlcUlData *ulData)
    RguDDatIndInfo  *dLchUlDat;              /* UL data on dedicated logical channel */
 
    /* Initializing dedicated logical channel Database */
-   DU_LOG("\nDEBUG  -->  RLC: Received UL Data request from MAC");
+   DU_LOG("DEBUG  -->  RLC: Received UL Data request from MAC");
    for(idx = 0; idx < MAX_NUM_LC; idx++)
    {
       dLchData[idx].lcId = idx;
@@ -646,7 +646,7 @@ uint8_t RlcProcUlData(Pst *pst, RlcUlData *ulData)
                sizeof(RguDDatIndInfo));
          if(!dLchUlDat)
          {
-            DU_LOG("\nERROR  -->  RLC : Memory allocation failed at RlcMacProcUlData");
+            DU_LOG("ERROR  -->  RLC : Memory allocation failed at RlcMacProcUlData");
             ret = RFAILED;
             break;
          }
@@ -658,7 +658,7 @@ uint8_t RlcProcUlData(Pst *pst, RlcUlData *ulData)
       if(ODU_GET_MSG_BUF(RLC_MEM_REGION_UL, RLC_POOL, \
                &dLchData[lcId].pdu.mBuf[dLchData[lcId].pdu.numPdu]) != ROK)
       {
-         DU_LOG("\nERROR  -->  RLC : Memory allocation failed at RlcMacProcUlData");
+         DU_LOG("ERROR  -->  RLC : Memory allocation failed at RlcMacProcUlData");
          for(pduIdx=0; pduIdx < dLchData[lcId].pdu.numPdu; pduIdx++)
          {
             ODU_PUT_MSG_BUF(dLchData[lcId].pdu.mBuf[dLchData[lcId].pdu.numPdu]);
@@ -732,7 +732,7 @@ uint8_t RlcProcSchedResultRpt(Pst *pst, RlcSchedResultRpt *schRep)
    uint8_t nmbDLch = 0;                 /* Number of dedicated logical channles */
    RguDStaIndInfo   *dLchSchInfo;  /* Dedicated logical channel scheduling result */
 
-   DU_LOG("\nDEBUG  -->  RLC : Received scheduling report from MAC");
+   DU_LOG("DEBUG  -->  RLC : Received scheduling report from MAC");
    for(idx=0; idx < schRep->numLc; idx++)
    {
       /* Fill status info structure if at least one channel's scheduling report is received */
@@ -742,7 +742,7 @@ uint8_t RlcProcSchedResultRpt(Pst *pst, RlcSchedResultRpt *schRep)
                sizeof(RguDStaIndInfo));
          if(!dLchSchInfo)
          {
-            DU_LOG("\nERROR  -->  RLC: RlcProcSchedResultRpt: Memory allocation failed for dLchSchInfo");
+            DU_LOG("ERROR  -->  RLC: RlcProcSchedResultRpt: Memory allocation failed for dLchSchInfo");
             ret = RFAILED;
             break;
          }
@@ -809,13 +809,13 @@ uint8_t RlcProcUeReconfigReq(Pst *pst, RlcUeRecfg *ueRecfg)
    RlcCfgCfmInfo cfgRsp; 
    Pst rspPst;
    
-   DU_LOG("\nDEBUG  -->  RLC: UE reconfig request received. CellID[%d] UEID[%d]",ueRecfg->cellId, ueRecfg->ueId);
+   DU_LOG("DEBUG  -->  RLC: UE reconfig request received. CellID[%d] UEID[%d]",ueRecfg->cellId, ueRecfg->ueId);
 
    rlcUeCb = RLC_GET_RLCCB(pst->dstInst);
    RLC_ALLOC(rlcUeCb, rlcUeCfg, sizeof(RlcCfgInfo));
    if(rlcUeCfg == NULLP)
    {
-      DU_LOG("\nERROR  -->  RLC: Failed to allocate memory at RlcProcUeReconfigReq()");
+      DU_LOG("ERROR  -->  RLC: Failed to allocate memory at RlcProcUeReconfigReq()");
       ret = RFAILED;
    }
    else
@@ -824,7 +824,7 @@ uint8_t RlcProcUeReconfigReq(Pst *pst, RlcUeRecfg *ueRecfg)
       ret = updateRlcCfg(rlcUeCb, rlcUeCfg, ueRecfg);
       if(ret != ROK)
       {
-         DU_LOG("\nERROR  -->  RLC: Failed to fill configuration at RlcProcUeReconfigReq()");
+         DU_LOG("ERROR  -->  RLC: Failed to fill configuration at RlcProcUeReconfigReq()");
          FILL_PST_RLC_TO_DUAPP(rspPst, RLC_UL_INST, EVENT_RLC_UE_RECONFIG_RSP);
          fillRlcRecfgFailureRsp(&cfgRsp, ueRecfg);
          SendRlcUeReconfigRspToDu(&rspPst, &cfgRsp);
@@ -833,7 +833,7 @@ uint8_t RlcProcUeReconfigReq(Pst *pst, RlcUeRecfg *ueRecfg)
       {
          ret = RlcProcCfgReq(pst, rlcUeCfg);
          if(ret != ROK)
-            DU_LOG("\nERROR  -->  RLC: Failed to configure Add/Mod/Del entities at RlcProcUeReconfigReq()");
+            DU_LOG("ERROR  -->  RLC: Failed to configure Add/Mod/Del entities at RlcProcUeReconfigReq()");
       }
    }
    
@@ -864,13 +864,13 @@ uint8_t RlcProcDlUserDataTransfer(Pst *pst, RlcDlUserDataInfo *dlDataMsgInfo)
 
    if(dlDataMsgInfo->dlMsg == NULLP)
    {
-      DU_LOG("\nERROR  -->  RLC_DL : Received DL message is NULLP in RlcProcDlUserDataTransfer()");
+      DU_LOG("ERROR  -->  RLC_DL : Received DL message is NULLP in RlcProcDlUserDataTransfer()");
       return RFAILED;
    }
    RLC_SHRABL_STATIC_BUF_ALLOC(RLC_MEM_REGION_DL, RLC_POOL, datReqInfo, sizeof(RlcDatReqInfo));
    if(!datReqInfo)
    {
-      DU_LOG("\nERROR  -->  RLC_DL : Memory allocation failed for DatReq in RlcProcDlUserDataTransfer()");
+      DU_LOG("ERROR  -->  RLC_DL : Memory allocation failed for DatReq in RlcProcDlUserDataTransfer()");
       ODU_PUT_MSG_BUF(dlDataMsgInfo->dlMsg);
       RLC_SHRABL_STATIC_BUF_FREE(pst->region, pst->pool, dlDataMsgInfo, sizeof(RlcDlUserDataInfo));
       return RFAILED;
@@ -921,7 +921,7 @@ uint8_t sendRlcUeDeleteRspToDu(uint16_t cellId,uint8_t ueId, CauseOfResult  stat
    RLC_ALLOC_SHRABL_BUF(pst.region, pst.pool, ueDeleteRsp, sizeof(RlcUeDeleteRsp));
    if(!ueDeleteRsp)
    {
-      DU_LOG("\nERROR  -->  RLC: sendRlcUeDeleteRspToDu(): Memory allocation failed ");
+      DU_LOG("ERROR  -->  RLC: sendRlcUeDeleteRspToDu(): Memory allocation failed ");
       return RFAILED;
    }
    else
@@ -932,11 +932,11 @@ uint8_t sendRlcUeDeleteRspToDu(uint16_t cellId,uint8_t ueId, CauseOfResult  stat
   
       if(rlcSendUeDeleteRspToDu(&pst, ueDeleteRsp) == ROK)
       {
-         DU_LOG("\nDEBUG  -->  RLC: UE Delete response send successfully");
+         DU_LOG("DEBUG  -->  RLC: UE Delete response send successfully");
       }
       else
       {
-         DU_LOG("\nERROR  -->  RLC: SendRlcUeDeleteRspToDu():Failed to send UE Delete response to DU");
+         DU_LOG("ERROR  -->  RLC: SendRlcUeDeleteRspToDu():Failed to send UE Delete response to DU");
          RLC_FREE_SHRABL_BUF(pst.region, pst.pool, ueDeleteRsp, sizeof(RlcUeDeleteRsp));
          return RFAILED;
       }
@@ -969,7 +969,7 @@ uint8_t RlcProcUeDeleteReq(Pst *pst, RlcUeDelete *ueDelete)
    RlcUlUeCb *ueCb = NULLP;
    CauseOfResult  status =SUCCESSFUL;
 
-   DU_LOG("\nDEBUG  -->  RLC: UE Delete request received. CellID[%d] UEID[%d]",ueDelete->cellId, ueDelete->ueId);
+   DU_LOG("DEBUG  -->  RLC: UE Delete request received. CellID[%d] UEID[%d]",ueDelete->cellId, ueDelete->ueId);
 
    if(ueDelete != NULLP)
    {
@@ -1000,14 +1000,14 @@ uint8_t RlcProcUeDeleteReq(Pst *pst, RlcUeDelete *ueDelete)
          ret = sendRlcUeDeleteRspToDu(ueDelete->cellId, ueDelete->ueId, status);
          if(ret != ROK)
          {
-            DU_LOG("\nERROR  -->  RLC: RlcProcUeDeleteReq():Failed to send UE Delete response to DU");
+            DU_LOG("ERROR  -->  RLC: RlcProcUeDeleteReq():Failed to send UE Delete response to DU");
          }
       }
       RLC_FREE_SHRABL_BUF(pst->region, pst->pool, ueDelete, sizeof(RlcUeDelete));
    }
    else
    {
-      DU_LOG("\nERROR  -->  RLC: RlcProcUeDeleteReq(): Recieved NULL pointer UE Delete ");
+      DU_LOG("ERROR  -->  RLC: RlcProcUeDeleteReq(): Recieved NULL pointer UE Delete ");
       ret = RFAILED;
    }
    return ret;
@@ -1039,18 +1039,18 @@ uint8_t sendSlicePmToDu(SlicePmList *sliceStats)
 
    if(!sliceStats)
    {
-      DU_LOG("\nERROR  -->  RLC: sendSlicePmToDu(): Memory allocation failed ");
+      DU_LOG("ERROR  -->  RLC: sendSlicePmToDu(): Memory allocation failed ");
       return RFAILED;
    }
    else
    {
       if(rlcSendSlicePmToDu(&pst, sliceStats) == ROK)
       {
-         DU_LOG("\nDEBUG  -->  RLC: Slice PM send successfully");
+         DU_LOG("DEBUG  -->  RLC: Slice PM send successfully");
       }
       else
       {
-         DU_LOG("\nERROR  -->  RLC: sendSlicePmToDu():Failed to send Slice PM to DU");
+         DU_LOG("ERROR  -->  RLC: sendSlicePmToDu():Failed to send Slice PM to DU");
          RLC_FREE_SHRABL_BUF(pst.region, pst.pool, sliceStats, sizeof(SlicePmList));
          return RFAILED;
       }
@@ -1119,21 +1119,21 @@ uint8_t BuildSliceReportToDu(uint8_t snssaiCnt)
 
    if(snssaiCnt == 0)
    {
-      DU_LOG("\nERROR  -->  RLC: No SNSSAI to send the SLice PM");
+      DU_LOG("ERROR  -->  RLC: No SNSSAI to send the SLice PM");
       return RFAILED;
    }
 
    RLC_ALLOC_SHRABL_BUF(RLC_MEM_REGION_UL, RLC_POOL, sliceStats, sizeof(SlicePmList));
    if(sliceStats == NULLP)
    {
-      DU_LOG("\nERROR  -->  RLC: Memory Allocation Failed");
+      DU_LOG("ERROR  -->  RLC: Memory Allocation Failed");
       return RFAILED;
    }
    RLC_ALLOC_SHRABL_BUF(RLC_MEM_REGION_UL, RLC_POOL, sliceStats->sliceRecord, snssaiCnt * (sizeof(SlicePm)));
 
    if(sliceStats->sliceRecord == NULLP)
    {
-      DU_LOG("\nERROR  -->  RLC: Memory Allocation Failed");
+      DU_LOG("ERROR  -->  RLC: Memory Allocation Failed");
       RLC_FREE_SHRABL_BUF(RLC_MEM_REGION_UL, RLC_POOL, sliceStats, sizeof(SlicePmList));
       return RFAILED;
    }
@@ -1142,7 +1142,7 @@ uint8_t BuildSliceReportToDu(uint8_t snssaiCnt)
       node = arrTputPerSnssai[dir]->first;
       if(node == NULLP)
       {
-         DU_LOG("\nERROR  -->  RLC: No SNSSAI in list");
+         DU_LOG("ERROR  -->  RLC: No SNSSAI in list");
          RLC_FREE_SHRABL_BUF(RLC_MEM_REGION_UL, RLC_POOL, sliceStats, sizeof(SlicePmList));
          RLC_FREE_SHRABL_BUF(RLC_MEM_REGION_UL, RLC_POOL, sliceStats->sliceRecord, (snssaiCnt * (sizeof(SlicePm))));
          return RFAILED;
@@ -1204,7 +1204,7 @@ uint8_t sendRlcUeReestablishRspToDu(uint16_t cellId,uint8_t ueId, CauseOfResult 
    RLC_ALLOC_SHRABL_BUF(pst.region, pst.pool, ueReestablishRsp, sizeof(RlcUeReestablishRsp));
    if(!ueReestablishRsp)
    {
-      DU_LOG("\nERROR  -->  RLC: sendRlcUeReestablishRspToDu(): Memory allocation failed ");
+      DU_LOG("ERROR  -->  RLC: sendRlcUeReestablishRspToDu(): Memory allocation failed ");
       return RFAILED;
    }
    else
@@ -1215,11 +1215,11 @@ uint8_t sendRlcUeReestablishRspToDu(uint16_t cellId,uint8_t ueId, CauseOfResult 
   
       if(rlcSendUeReestablishRspToDu(&pst, ueReestablishRsp) == ROK)
       {
-         DU_LOG("\nDEBUG  -->  RLC: UE Reestablishment response send successfully");
+         DU_LOG("DEBUG  -->  RLC: UE Reestablishment response send successfully");
       }
       else
       {
-         DU_LOG("\nERROR  -->  RLC: SendRlcUeReestablishRspToDu():Failed to send UE Reestablishment response to DU");
+         DU_LOG("ERROR  -->  RLC: SendRlcUeReestablishRspToDu():Failed to send UE Reestablishment response to DU");
          RLC_FREE_SHRABL_BUF(pst.region, pst.pool, ueReestablishRsp, sizeof(RlcUeReestablishRsp));
          return RFAILED;
       }
@@ -1268,27 +1268,27 @@ uint8_t RlcProcUeReestablishReq(Pst *pst, RlcUeReestablishReq *ueReestablishReq)
          else
          {
             status = CELLID_INVALID;
-            DU_LOG("\nERROR  -->  SCH : RlcProcUeReestablishReq(): cell Id[%d] not found", ueReestablishReq->cellId);
+            DU_LOG("ERROR  -->  SCH : RlcProcUeReestablishReq(): cell Id[%d] not found", ueReestablishReq->cellId);
          }
       }
       else
       {
          status = UEID_INVALID;
-         DU_LOG("\nERROR  -->  SCH : RlcProcUeReestablishReq(): ue Id[%d] not found", ueReestablishReq->cellId);
+         DU_LOG("ERROR  -->  SCH : RlcProcUeReestablishReq(): ue Id[%d] not found", ueReestablishReq->cellId);
       }
 
       if(status != SUCCESSFUL)
       {
          if(sendRlcUeReestablishRspToDu(ueReestablishReq->cellId, ueReestablishReq->ueId, status)  != ROK)
          {
-            DU_LOG("\nERROR  -->  RLC: RlcProcUeReestablishReq():Failed to send UE Reestablishment response to DU");
+            DU_LOG("ERROR  -->  RLC: RlcProcUeReestablishReq():Failed to send UE Reestablishment response to DU");
          }
       }
       RLC_FREE_SHRABL_BUF(pst->region, pst->pool, ueReestablishReq, sizeof(RlcUeDelete));
    }
    else
    {
-      DU_LOG("\nERROR  -->  RLC: RlcProcUeReestablishReq(): Recieved NULL pointer UE Reestablishment ");
+      DU_LOG("ERROR  -->  RLC: RlcProcUeReestablishReq(): Recieved NULL pointer UE Reestablishment ");
    }
    return ret;
 }

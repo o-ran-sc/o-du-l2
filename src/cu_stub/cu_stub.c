@@ -83,7 +83,7 @@ uint8_t tst()
    pthread_attr_t attr;
 
    init_log();   
-   DU_LOG("\nINFO   -->  CU_STUB : Starting CU_STUB\n");
+   DU_LOG("INFO   -->  CU_STUB : Starting CU_STUB\n");
 
    /* Start thread to receive console input */
    pthread_attr_init(&attr);
@@ -93,7 +93,7 @@ uint8_t tst()
    retVal = pthread_create(&conThrdId, &attr, cuConsoleHandler, NULLP);
    if(retVal != 0)
    {
-      DU_LOG("\nERROR  -->  CU_STUB :  Thread creation failed. Cause %d", retVal);
+      DU_LOG("ERROR  -->  CU_STUB :  Thread creation failed. Cause %d", retVal);
    }
    pthread_attr_destroy(&attr);
 
@@ -136,7 +136,7 @@ void readCuCfg()
    uint8_t  numDu, *numRemoteCu;
    uint32_t ipv4_du, ipv4_cu, ipv4_remote_cu;
 
-   DU_LOG("\nDEBUG  -->  CU_STUB : Reading CU configurations");
+   DU_LOG("DEBUG  -->  CU_STUB : Reading CU configurations");
 
    cuCb.cuCfgParams.cuId = CU_ID;
    strcpy(cuCb.cuCfgParams.cuName, CU_NAME);
@@ -144,7 +144,7 @@ void readCuCfg()
 #ifdef O1_ENABLE
    if( getStartupConfigForStub(&g_cfg) != ROK )
    {
-      DU_LOG("\nError  -->  CU_STUB : Could not fetch startup "\
+      DU_LOG("Error  -->  CU_STUB : Could not fetch startup "\
              "configurations from Netconf interface\n");
       exit(1);
    }
@@ -276,7 +276,7 @@ void initiateInterDuHandover(uint32_t sourceDuId, uint32_t targetDuId, uint32_t 
    DuDb *duDb = NULLP;
    CuUeCb *ueCb = NULLP;
 
-   DU_LOG("\nINFO  --> CU_STUB: Inter-DU Handover Started for ueId [%d] from DU ID [%d] to DU ID [%d]", \
+   DU_LOG("INFO  --> CU_STUB: Inter-DU Handover Started for ueId [%d] from DU ID [%d] to DU ID [%d]", \
          duUeF1apId, sourceDuId, targetDuId);
 
    SEARCH_DU_DB(duIdx, sourceDuId, duDb); 
@@ -293,7 +293,7 @@ void initiateInterDuHandover(uint32_t sourceDuId, uint32_t targetDuId, uint32_t 
    }
    else
    {
-      DU_LOG("\nINFO  --> CU_STUB: DU UE F1AP ID [%d] not found", duUeF1apId);
+      DU_LOG("INFO  --> CU_STUB: DU UE F1AP ID [%d] not found", duUeF1apId);
    }
 }
 
@@ -321,7 +321,7 @@ void initiateInterCuHandover(uint32_t targetCuId, uint32_t cellId, uint32_t cuUe
     uint8_t  duIdx, ueIdx;
     CuUeCb   *ueCb = NULLP;
 
-    DU_LOG("\nINFO  --> CU_STUB: Inter-CU Handover Started for ueId [%d] to CU ID [%d]", \
+    DU_LOG("INFO  --> CU_STUB: Inter-CU Handover Started for ueId [%d] to CU ID [%d]", \
           cuUeF1apId, targetCuId);
 
     for(duIdx = 0; duIdx < cuCb.numDu; duIdx++)
@@ -352,7 +352,7 @@ void initiateInterCuHandover(uint32_t targetCuId, uint32_t cellId, uint32_t cuUe
     }   
     else
     {
-       DU_LOG("\nINFO  --> CU_STUB: CU UE F1AP ID [%d] not found", cuUeF1apId);
+       DU_LOG("INFO  --> CU_STUB: CU UE F1AP ID [%d] not found", cuUeF1apId);
     }
 }
 
@@ -392,13 +392,13 @@ uint8_t startDlData()
             if(teidCb)
             {
                cnt =0;
-               DU_LOG("\nDEBUG  -->  EGTP: Sending DL User Data(duId %d, teId:%d)\n", duId, teId);
+               DU_LOG("DEBUG  -->  EGTP: Sending DL User Data(duId %d, teId:%d)\n", duId, teId);
                while(cnt < NUM_DL_PACKETS)
                {
                   ret =  cuEgtpDatReq(duId, teId);      
                   if(ret != ROK)
                   {
-                     DU_LOG("\nERROR --> EGTP: Issue with teid=%d\n",teId);
+                     DU_LOG("ERROR --> EGTP: Issue with teid=%d\n",teId);
                      break;
                   }
                   /* TODO : sleep(1) will be removed later once we will be able to
@@ -409,7 +409,7 @@ uint8_t startDlData()
             }
             else
             {
-               DU_LOG("\nDEBUG  -->  EGTP: TunnelId Not Found for (duId %d, teId:%d)\n", duId, teId);
+               DU_LOG("DEBUG  -->  EGTP: TunnelId Not Found for (duId %d, teId:%d)\n", duId, teId);
             }
          }
       }
@@ -447,17 +447,17 @@ void *cuConsoleHandler(void *args)
 
          /* Change #if 0 to #if 1 to take input from user */
 #if 0
-         DU_LOG("\n EGTP --> : Enter TEID id(1..10) where DL Data to be sent\n");
+         DU_LOG(" EGTP --> : Enter TEID id(1..10) where DL Data to be sent\n");
          scanf("%d",&teId);
 
          if(teId > MAX_TEID || teId < MIN_TEID)
          {
-            DU_LOG("\nERROR  -->  EGTP : TEID(%x) OUT Of Range",teId);
+            DU_LOG("ERROR  -->  EGTP : TEID(%x) OUT Of Range",teId);
             printf("\n");
             continue;
          }
          /* Start Pumping data from CU to DU */
-         DU_LOG("\nDEBUG  -->  EGTP: Sending DL User Data(teId:%d)\n",teId);
+         DU_LOG("DEBUG  -->  EGTP: Sending DL User Data(teId:%d)\n",teId);
 
          cnt =0;
          while(cnt < NUM_DL_PACKETS)
@@ -465,7 +465,7 @@ void *cuConsoleHandler(void *args)
             ret =  cuEgtpDatReq(teId);
             if(ret != ROK)
             {
-               DU_LOG("\nERROR --> EGTP: Issue with teid=%d\n",teId);
+               DU_LOG("ERROR --> EGTP: Issue with teid=%d\n",teId);
                break;
             }
             cnt++;
@@ -490,27 +490,27 @@ void *cuConsoleHandler(void *args)
          HandoverType hoType;
          uint32_t srcNodeId, tgtNodeId, targetCellId, ueId;
 
-         DU_LOG("\n\nChoose the type of handover to initiate : \nEnter 1 for Inter-CU Handover over Xn interface\nEnter 2 for Inter-DU Handover\n");
+         DU_LOG("Choose the type of handover to initiate : \nEnter 1 for Inter-CU Handover over Xn interface\nEnter 2 for Inter-DU Handover\n");
          scanf("%d", &hoType);
 
          if(hoType == Xn_Based_Inter_CU_HO)
          {
-            DU_LOG("\nEnter Target CU ID for Inter-CU Handover : ");
+            DU_LOG("Enter Target CU ID for Inter-CU Handover : ");
             scanf("%d", &tgtNodeId);
-            DU_LOG("\nEnter Target Physical Cell ID for Inter-CU Handover : ");
+            DU_LOG("Enter Target Physical Cell ID for Inter-CU Handover : ");
             scanf("%d", &targetCellId);
-            DU_LOG("\nEnter CU UE F1AP ID to be handed over : ");
+            DU_LOG("Enter CU UE F1AP ID to be handed over : ");
             scanf("%d", &ueId);
 
             initiateInterCuHandover(tgtNodeId, targetCellId, ueId);
          }
          else if(hoType == Inter_DU_HO)
          {
-            DU_LOG("\nEnter Source DU ID for Inter-DU Handover : ");
+            DU_LOG("Enter Source DU ID for Inter-DU Handover : ");
             scanf("%d", &srcNodeId);
-            DU_LOG("\nEnter Target DU ID for Inter-DU Handover : ");
+            DU_LOG("Enter Target DU ID for Inter-DU Handover : ");
             scanf("%d", &tgtNodeId);
-            DU_LOG("\nEnter DU UE F1AP ID to be handed over : ");
+            DU_LOG("Enter DU UE F1AP ID to be handed over : ");
             scanf("%d", &ueId);
 
             initiateInterDuHandover(srcNodeId, tgtNodeId, ueId);
@@ -522,14 +522,14 @@ void *cuConsoleHandler(void *args)
          uint64_t sTmsi = 0;
          uint8_t duId = 0;
 
-         DU_LOG("\nEnter DU ID on which this UE to be pagged");
+         DU_LOG("Enter DU ID on which this UE to be pagged");
          scanf("%d", &duId);
-         DU_LOG("\nEnter 5g-S-TMSI");
+         DU_LOG("Enter 5g-S-TMSI");
          scanf("%lu", &sTmsi);
 
          if(BuildAndSendPagingMsg(sTmsi, duId) != ROK)
          {
-            DU_LOG("\nERROR --> EGTP: Failed to build and send paging message for 5gsTmsi[%lu]\n", sTmsi);   
+            DU_LOG("ERROR --> EGTP: Failed to build and send paging message for 5gsTmsi[%lu]\n", sTmsi);   
          }
          continue;
       }
@@ -541,12 +541,12 @@ void *cuConsoleHandler(void *args)
          DuDb    *duDb  = NULLP;
          CuUeCb  *ueCb  = NULLP;
 
-         DU_LOG("\nEnter DU ID whose UE has to be modified");
+         DU_LOG("Enter DU ID whose UE has to be modified");
          scanf("%d", &duId);
-         DU_LOG("\nEnter UE ID to be modified");
+         DU_LOG("Enter UE ID to be modified");
          scanf("%d", &ueId);
 
-         DU_LOG("\nINFO  --> CU_STUB: UE Context Mod for ueId [%d] at DU ID [%d]", \
+         DU_LOG("INFO  --> CU_STUB: UE Context Mod for ueId [%d] at DU ID [%d]", \
                   ueId, duId);
 
          SEARCH_DU_DB(duIdx, duId, duDb); 
@@ -569,9 +569,9 @@ void *cuConsoleHandler(void *args)
          uint8_t  duIdx = 0;
          DuDb    *duDb  = NULLP;
          
-         DU_LOG("\nEnter DU ID on which UE has to be released");
+         DU_LOG("Enter DU ID on which UE has to be released");
          scanf("%d", &duId);
-         DU_LOG("\nEnter UE ID to be released");
+         DU_LOG("Enter UE ID to be released");
          scanf("%d", &duUeF1apId);
         
          SEARCH_DU_DB(duIdx, duId, duDb); 

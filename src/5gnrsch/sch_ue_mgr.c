@@ -61,7 +61,7 @@ void SchSendUeCfgRspToMac(SchUeCfgReq *ueCfg, Inst inst,\
    memset(&rspPst, 0, sizeof(Pst));
    FILL_PST_SCH_TO_MAC(rspPst, inst);
    rspPst.event = EVENT_UE_CONFIG_RSP_TO_MAC;
-   DU_LOG("\nINFO  -->  SCH :  Sending UE Config response to MAC");
+   DU_LOG("INFO  -->  SCH :  Sending UE Config response to MAC");
    MacMessageRouter(&rspPst, (void *)cfgRsp);
 }
 
@@ -93,7 +93,7 @@ void SchSendUeRecfgRspToMac(SchUeRecfgReq *ueRecfgReq, Inst inst,\
    memset(&rspPst, 0, sizeof(Pst));
    FILL_PST_SCH_TO_MAC(rspPst, inst);
    rspPst.event = EVENT_UE_RECONFIG_RSP_TO_MAC;
-   DU_LOG("\nINFO  -->  SCH :  Sending UE Reconfig response to MAC");
+   DU_LOG("INFO  -->  SCH :  Sending UE Reconfig response to MAC");
     MacMessageRouter(&rspPst, (void *)reCfgRsp);
 }
 
@@ -211,7 +211,7 @@ uint8_t updateDedLcInfo(Inst inst, Snssai *snssai, uint16_t *rsvdDedicatedPRB, b
          *rsvdDedicatedPRB = \
                              (uint16_t)(((rrmPolicyOfSlices->rrmPolicyRatioInfo.dedicatedRatio)*(MAX_NUM_RB))/100);
          *isDedicated = TRUE;
-         DU_LOG("\nINFO  -->  SCH : Updated RRM policy, reservedPOOL:%d",*rsvdDedicatedPRB);
+         DU_LOG("INFO  -->  SCH : Updated RRM policy, reservedPOOL:%d",*rsvdDedicatedPRB);
          break;
       }
       sliceCfg = sliceCfg->next;
@@ -219,7 +219,7 @@ uint8_t updateDedLcInfo(Inst inst, Snssai *snssai, uint16_t *rsvdDedicatedPRB, b
    /*case: This LcCtxt  is either a Default LC or this LC is part of someother RRM_MemberList*/
    if(*isDedicated != TRUE) 
    {
-      DU_LOG("\nINFO  -->  SCH : This SNSSAI is not a part of this RRMPolicy");
+      DU_LOG("INFO  -->  SCH : This SNSSAI is not a part of this RRMPolicy");
    }
    return ROK;	 
 }
@@ -421,7 +421,7 @@ uint8_t fillSchUeCbFrmCfgReq(Inst inst, SchUeCb *ueCb, SchUeCfgReq *ueCfg)
 
       if(retUL == RFAILED  || retDL == RFAILED)/*FATAL error*/
       {
-         DU_LOG("\nERROR  -->  SCH : Failure in updateDedLcInfo");
+         DU_LOG("ERROR  -->  SCH : Failure in updateDedLcInfo");
          return RFAILED;
       }
       SCH_FREE(ueCfg->schLcCfg[lcIdx].drbQos, sizeof(SchDrbQosInfo));
@@ -593,7 +593,7 @@ uint8_t fillSchUeCbFrmRecfgReq(Inst inst, SchUeCb *ueCb, SchUeRecfgReq *ueRecfg)
 
       if(retUL == RFAILED  || retDL == RFAILED)/*FATAL error*/
       {
-         DU_LOG("\nERROR  -->  SCH : Failure in updateDedLcInfo");
+         DU_LOG("ERROR  -->  SCH : Failure in updateDedLcInfo");
          return RFAILED;
       }
       SCH_FREE(ueRecfg->schLcCfgAdd[lcIdx].drbQos, sizeof(SchDrbQosInfo));
@@ -648,7 +648,7 @@ uint8_t fillSchUeCbFrmRecfgReq(Inst inst, SchUeCb *ueCb, SchUeRecfgReq *ueRecfg)
          }
          if(retUL == RFAILED)
          {
-            DU_LOG("\nERROR  -->  SCH : Failed in updating Ded Lc info");
+            DU_LOG("ERROR  -->  SCH : Failed in updating Ded Lc info");
             return RFAILED;
          }
       }/*End of UL LC Ctxt*/
@@ -664,7 +664,7 @@ uint8_t fillSchUeCbFrmRecfgReq(Inst inst, SchUeCb *ueCb, SchUeRecfgReq *ueRecfg)
          }
          if(retDL == RFAILED)
          {
-            DU_LOG("\nERROR  -->  SCH : Failed in updating Ded Lc info");
+            DU_LOG("ERROR  -->  SCH : Failed in updating Ded Lc info");
             return RFAILED;
          }
       }/*End of DL LC ctxt*/
@@ -705,14 +705,14 @@ SchCellCb *getSchCellCb(uint16_t srcEvent, Inst inst, uint16_t cellId)
    }
    if((idx == MAX_NUM_CELL) || (cellCb == NULLP))
    {
-      DU_LOG("\nERROR  -->  SCH : Ue create request failed. Invalid cell id %d", cellId);
+      DU_LOG("ERROR  -->  SCH : Ue create request failed. Invalid cell id %d", cellId);
       return NULLP;
    }
 
    /* Check if max number of UE configured */
    if(cellCb->numActvUe > MAX_NUM_UE)
    {
-      DU_LOG("\nERROR  -->  SCH :  Max number of UE [%d] already configured", MAX_NUM_UE);
+      DU_LOG("ERROR  -->  SCH :  Max number of UE [%d] already configured", MAX_NUM_UE);
       return NULLP;
    }
    return cellCb;
@@ -746,10 +746,10 @@ uint8_t SchAddUeConfigReq(Pst *pst, SchUeCfgReq *ueCfg)
   
    if(!ueCfg)
    {
-      DU_LOG("\nERROR  -->  SCH :  Adding UE Config Request failed at SchAddUeConfigReq()");
+      DU_LOG("ERROR  -->  SCH :  Adding UE Config Request failed at SchAddUeConfigReq()");
       return RFAILED;
    }
-   DU_LOG("\nDEBUG  -->  SCH :  Adding UE Config Request for CRNTI[%d]", ueCfg->crnti);
+   DU_LOG("DEBUG  -->  SCH :  Adding UE Config Request for CRNTI[%d]", ueCfg->crnti);
    cellCb = getSchCellCb(pst->event, inst, ueCfg->cellId);
 
    if(cellCb == NULLP)
@@ -763,7 +763,7 @@ uint8_t SchAddUeConfigReq(Pst *pst, SchUeCfgReq *ueCfg)
 
    if((ueCb->crnti == ueCfg->crnti) && (ueCb->state == SCH_UE_STATE_ACTIVE))
    {
-      DU_LOG("\nDEBUG  -->  SCH : CRNTI %d already configured ", ueCfg->crnti);
+      DU_LOG("DEBUG  -->  SCH : CRNTI %d already configured ", ueCfg->crnti);
       SchSendUeCfgRspToMac(ueCfg, inst, RSP_OK, &cfgRsp);
       return ROK;
    }
@@ -781,7 +781,7 @@ uint8_t SchAddUeConfigReq(Pst *pst, SchUeCfgReq *ueCfg)
 
    if ( (ueCb->hqDlmap == NULLP) || (ueCb->hqUlmap == NULLP) )
    {
-      DU_LOG("\nINFO  -->  SCH : Memory Allocation Failed");
+      DU_LOG("INFO  -->  SCH : Memory Allocation Failed");
       return RFAILED;
    }
    for (idx = 0; idx<ueCb->cellCb->numSlots; idx++)
@@ -791,7 +791,7 @@ uint8_t SchAddUeConfigReq(Pst *pst, SchUeCfgReq *ueCfg)
       
       if ( (ueCb->hqDlmap[idx] == NULLP) || (ueCb->hqUlmap[idx] == NULLP) )
       {
-         DU_LOG("\nINFO  -->  SCH : Memory Allocation Failed");
+         DU_LOG("INFO  -->  SCH : Memory Allocation Failed");
          return RFAILED;
       }
       cmLListInit(&ueCb->hqDlmap[idx]->hqList);
@@ -801,7 +801,7 @@ uint8_t SchAddUeConfigReq(Pst *pst, SchUeCfgReq *ueCfg)
    
    if(fillUeCoresetAndSsInfo(ueCb) == RFAILED)
    {
-       DU_LOG("\nERROR  -->  SCH : Memory Allocation Failed");
+       DU_LOG("ERROR  -->  SCH : Memory Allocation Failed");
        return RFAILED;
    }
    if(ret == ROK)
@@ -860,14 +860,14 @@ uint8_t schFillPuschAlloc(SchUeCb *ueCb, SlotTimingInfo puschTime, uint32_t tbSi
   
   if(ueCb == NULLP)
   {
-    DU_LOG("\nERROR --> SCH: UE CB is empty");
+    DU_LOG("ERROR --> SCH: UE CB is empty");
     return RFAILED;
   }
 
   cellCb = ueCb->cellCb;
   if(cellCb == NULLP)
   {
-    DU_LOG("\nERROR --> SCH: CELL CB is empty");
+    DU_LOG("ERROR --> SCH: CELL CB is empty");
     return RFAILED;
   }
 
@@ -939,7 +939,7 @@ uint8_t schFillPuschAlloc(SchUeCb *ueCb, SlotTimingInfo puschTime, uint32_t tbSi
   SCH_ALLOC(schUlSlotInfo->schPuschInfo[ueCb->ueId - 1], sizeof(SchPuschInfo));
   if(!schUlSlotInfo->schPuschInfo[ueCb->ueId - 1])
   {
-     DU_LOG("\nERROR  -->  SCH: Memory allocation failed in schAllocMsg3Pusch");
+     DU_LOG("ERROR  -->  SCH: Memory allocation failed in schAllocMsg3Pusch");
      return RFAILED;
   }
   cellCb->schUlSlotInfo[puschTime.slot]->puschPres = true;
@@ -1169,10 +1169,10 @@ uint8_t SchModUeConfigReq(Pst *pst, SchUeRecfgReq *ueRecfg)
 
    if(!ueRecfg)
    {
-      DU_LOG("\nERROR  -->  SCH : Modifying Ue Config request failed at SchModUeConfigReq()");
+      DU_LOG("ERROR  -->  SCH : Modifying Ue Config request failed at SchModUeConfigReq()");
       return RFAILED;
    }
-   DU_LOG("\nDEBUG  -->  SCH : Modifying Ue Config Request for CRNTI[%d]", ueRecfg->crnti);
+   DU_LOG("DEBUG  -->  SCH : Modifying Ue Config Request for CRNTI[%d]", ueRecfg->crnti);
    cellCb = getSchCellCb(pst->event, inst, ueRecfg->cellId);
 
    if(cellCb == NULLP)
@@ -1187,7 +1187,7 @@ uint8_t SchModUeConfigReq(Pst *pst, SchUeRecfgReq *ueRecfg)
 
    if(!ueCb)
    {
-      DU_LOG("\nERROR  -->  SCH : SchUeCb not found at SchModUeConfigReq() ");
+      DU_LOG("ERROR  -->  SCH : SchUeCb not found at SchModUeConfigReq() ");
       SchSendUeRecfgRspToMac(ueRecfg, inst, RSP_NOK, &recfgRsp);
       return RFAILED;
    }
@@ -1197,7 +1197,7 @@ uint8_t SchModUeConfigReq(Pst *pst, SchUeRecfgReq *ueRecfg)
       ret = fillSchUeCbFrmRecfgReq(inst, ueCb, ueRecfg);
       if(fillUeCoresetAndSsInfo(ueCb) == RFAILED)
       {
-         DU_LOG("\nERROR  -->  SCH : Memory Allocation Failed");
+         DU_LOG("ERROR  -->  SCH : Memory Allocation Failed");
          return RFAILED;
       }
       if(ret == ROK)
@@ -1459,16 +1459,16 @@ uint8_t SchProcUeDeleteReq(Pst *pst, SchUeDelete  *ueDelete)
    
     if(!ueDelete)
     {
-       DU_LOG("\nERROR  -->  SCH : SchProcUeDeleteReq(): Ue Delete request failed");
+       DU_LOG("ERROR  -->  SCH : SchProcUeDeleteReq(): Ue Delete request failed");
        ret = RFAILED;
     }
-    DU_LOG("\nDEBUG  -->  SCH : Ue Delete request received for crnti[%d]", ueDelete->crnti);
+    DU_LOG("DEBUG  -->  SCH : Ue Delete request received for crnti[%d]", ueDelete->crnti);
     
     cellCb = schCb[inst].cells[idx];
 
     if(cellCb->cellId != ueDelete->cellId)
     {
-       DU_LOG("\nERROR  -->  SCH : SchProcUeDeleteReq(): cell Id is not available");
+       DU_LOG("ERROR  -->  SCH : SchProcUeDeleteReq(): cell Id is not available");
        cause =  CELLID_INVALID;
     }
     else
@@ -1484,7 +1484,7 @@ uint8_t SchProcUeDeleteReq(Pst *pst, SchUeDelete  *ueDelete)
        }
        else
        {
-          DU_LOG("\nERROR  -->  SCH : SchProcUeDeleteReq(): SchUeCb not found");
+          DU_LOG("ERROR  -->  SCH : SchProcUeDeleteReq(): SchUeCb not found");
           cause =  UEID_INVALID;
        }
     }
@@ -1537,7 +1537,7 @@ void schUpdateHarqFdbk(SchUeCb *ueCb, uint8_t numHarq, uint8_t *harqPayload, Slo
       node = hqDlMap->hqList.first;
       if(node == NULLP)
       {
-         DU_LOG("\nERROR :  SCH --> DL HARQ list is empty thus no need to process the dl harq feedback!");
+         DU_LOG("ERROR :  SCH --> DL HARQ list is empty thus no need to process the dl harq feedback!");
          return;
       }
       if (ueCb->cellCb->raCb[ueCb->ueId-1].raState != SCH_RA_STATE_MSG4_PENDING)

@@ -73,7 +73,7 @@ void fillUlNodeSync(int32_t delta_sfnSlot, nFapi_ul_node_sync_info *ulSyncInfo)
     }
     else
     {
-       DU_LOG("\nINFO   --> NFAPI_PNF: No Delta between PNF and VNF");
+       DU_LOG("INFO   --> NFAPI_PNF: No Delta between PNF and VNF");
     }
 
     ulSyncInfo->t3 = CALC_TIME_USEC_FROM_SFNSLOT(pnfCb.pnfSlotInfo);
@@ -99,7 +99,7 @@ uint8_t buildAndSendUlNodeSync(nFapi_ul_node_sync_info *ulSyncInfo)
 
    if (ODU_GET_MSG_BUF(PNF_APP_MEM_REG, PNF_POOL, &mBuf) != ROK)
    {
-      DU_LOG("\nERROR  --> NFAPI_PNF : Memory allocation failed in start response");
+      DU_LOG("ERROR  --> NFAPI_PNF : Memory allocation failed in start response");
       return RFAILED;
    }
    nfapiFillP7Hdr(mBuf, (sizeof(nFapi_ul_node_sync_info) + sizeof(nFapi_msg_header)), 0, 0);
@@ -141,7 +141,7 @@ uint8_t pnfDlNodeSyncHandler(Buffer *mBuf)
     CMCHKPK(SUnpkS32, &(dlNodeSync.delta_sfnSlot), mBuf);
     CMCHKPK(oduUnpackUInt8, &(dlNodeSync.scs), mBuf);
 
-    DU_LOG("\n PNF_NFAPI: t1:%u, delta:%d, scs:%d",dlNodeSync.t1, dlNodeSync.delta_sfnSlot, dlNodeSync.scs);
+    DU_LOG(" PNF_NFAPI: t1:%u, delta:%d, scs:%d",dlNodeSync.t1, dlNodeSync.delta_sfnSlot, dlNodeSync.scs);
 
     EXTRACT_SFN_SLOT_FROM_TIME(dlNodeSync.t1, vnfFrameInfo);
 
@@ -178,13 +178,13 @@ uint8_t  pnfP7MsgHandler(Buffer *mBuf)
    {
       case TAG_NFAPI_DL_NODE_SYNC:
          {
-            DU_LOG("\nINFO   --> NFAPI_PNF: DL_NODE_SYNC recevied.");
+            DU_LOG("INFO   --> NFAPI_PNF: DL_NODE_SYNC recevied.");
             ret = pnfDlNodeSyncHandler(mBuf);
             break;
          }
       default:
       {
-         DU_LOG("\nERROR  --> NFAPI_PNF: Wrong MSGID of NFAPI P7 Message:%d",msgHdr.msg_id);
+         DU_LOG("ERROR  --> NFAPI_PNF: Wrong MSGID of NFAPI P7 Message:%d",msgHdr.msg_id);
          ret = RFAILED;
          break;
       }

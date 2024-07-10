@@ -51,7 +51,7 @@
 #ifdef MEM_SIZE_CHECK
 #define SCH_MEMORY_ALLOC_SIZE_LOG(_line, _func, _size) \
 {\
-   DU_LOG("\n SCH line = %d, func = %s, _size= %d ", _line, _func, _size); \
+   DU_LOG(" SCH line = %d, func = %s, _size= %d ", _line, _func, _size); \
 }
 #else
 #define SCH_MEMORY_ALLOC_SIZE_LOG(_line, _func, _size) {}

@@ -97,24 +97,24 @@ Void PrintRLCStats(Void)
    RlcCb* dlInst = rlcCb[1]; 
    RlcCb* ulInst = rlcCb[0]; 
 
-   DU_LOG("\nINFO   -->  RLC_DL : RLC Stats: PDUs Sent = (%ld), PdusRext = (%ld), TimeOut = (%ld), SduDiscarded = (%ld)",
+   DU_LOG("INFO   -->  RLC_DL : RLC Stats: PDUs Sent = (%ld), PdusRext = (%ld), TimeOut = (%ld), SduDiscarded = (%ld)",
                      dlInst->genSts.pdusSent,
                      dlInst->genSts.pdusRetx,
                      dlInst->genSts.protTimeOut,
                      dlInst->genSts.numSduDisc);
-   DU_LOG("\nINFO   -->  RLC_DL : RLC Stats: PDUs Rcvd = (%ld), unexpPdus = (%ld), errorPdus = (%ld)",
+   DU_LOG("INFO   -->  RLC_DL : RLC Stats: PDUs Rcvd = (%ld), unexpPdus = (%ld), errorPdus = (%ld)",
                      ulInst->genSts.pdusRecv,
                      ulInst->genSts.unexpPdusRecv,
                      ulInst->genSts.errorPdusRecv);
-   DU_LOG("\nINFO   -->  RLC_DL : RLC Stats: AMDL: "
+   DU_LOG("INFO   -->  RLC_DL : RLC Stats: AMDL: "
                      "StaPduSent:%lu NacksInStaPdu:%lu BytesUnused:%lu PollTimerExpires SRB:%lu ",
                      gRlcStats.amRlcStats.numDLStaPduSent, gRlcStats.amRlcStats.numDLNacksInStaPdu, 
                      gRlcStats.amRlcStats.numDLBytesUnused, gRlcStats.amRlcStats.numDLPollTimerExpiresSrb);
-   DU_LOG("\nINFO   -->  RLC_DL : RLC Stats: AMDL: "
+   DU_LOG("INFO   -->  RLC_DL : RLC Stats: AMDL: "
                      "DRB:%lu MaxRetx:%lu RetransPdus:%lu", 
                      gRlcStats.amRlcStats.numDLPollTimerExpiresDrb, gRlcStats.amRlcStats.numDLMaxRetx, 
                      gRlcStats.amRlcStats.numDLRetransPdus);
-   DU_LOG("\nINFO   -->  RLC_DL : RLC Stats: AMUL: "
+   DU_LOG("INFO   -->  RLC_DL : RLC Stats: AMUL: "
                      " PdusDiscarded:%lu ReAsmblTimerExpires:%lu StaPduRcvd:%lu NackInStaPduRcvd:%lu ", 
                      gRlcStats.amRlcStats.numULPdusDiscarded, gRlcStats.amRlcStats.numULReAsmblTimerExpires, 
                      gRlcStats.amRlcStats.numULStaPduRcvd, gRlcStats.amRlcStats.numULNackInStaPduRcvd);
@@ -143,24 +143,24 @@ Void PrintRLCStats(Void)
    RlcCb* ulInst = rlcCb[0]; 
 
    DU_LOG ("\n ================================ RLC STATS ===========================\n");
-   DU_LOG("\nINFO   -->  RLC_DL : RLC Stats: PDUs Sent = (%d), PdusRext = (%d), TimeOut = (%d), SduDiscarded = (%d)",
+   DU_LOG("INFO   -->  RLC_DL : RLC Stats: PDUs Sent = (%d), PdusRext = (%d), TimeOut = (%d), SduDiscarded = (%d)",
                      dlInst->genSts.pdusSent,
                      dlInst->genSts.pdusRetx,
                      dlInst->genSts.protTimeOut,
                      dlInst->genSts.numSduDisc);
-   DU_LOG("\nINFO   -->  RLC_DL : RLC Stats: PDUs Rcvd = (%d), unexpPdus = (%d), errorPdus = (%d)",
+   DU_LOG("INFO   -->  RLC_DL : RLC Stats: PDUs Rcvd = (%d), unexpPdus = (%d), errorPdus = (%d)",
                      ulInst->genSts.pdusRecv,
                      ulInst->genSts.unexpPdusRecv,
                      ulInst->genSts.errorPdusRecv);
-   DU_LOG("\nINFO   -->  RLC_DL : RLC Stats: AMDL: "
+   DU_LOG("INFO   -->  RLC_DL : RLC Stats: AMDL: "
                      "StaPduSent:%u NacksInStaPdu:%u BytesUnused:%u PollTimerExpires SRB:%u ",
                      gRlcStats.amRlcStats.numDLStaPduSent, gRlcStats.amRlcStats.numDLNacksInStaPdu, 
                      gRlcStats.amRlcStats.numDLBytesUnused, gRlcStats.amRlcStats.numDLPollTimerExpiresSrb);
-   DU_LOG("\nINFO   -->  RLC_DL : RLC Stats: AMDL: "
+   DU_LOG("INFO   -->  RLC_DL : RLC Stats: AMDL: "
                      "DRB:%u MaxRetx:%u RetransPdus:%u", 
                      gRlcStats.amRlcStats.numDLPollTimerExpiresDrb, gRlcStats.amRlcStats.numDLMaxRetx, 
                      gRlcStats.amRlcStats.numDLRetransPdus);
-   DU_LOG("\nINFO   -->  RLC_DL : RLC Stats: AMUL: "
+   DU_LOG("INFO   -->  RLC_DL : RLC Stats: AMUL: "
                      " PdusDiscarded:%u ReAsmblTimerExpires:%u StaPduRcvd:%u NackInStaPduRcvd:%u ", 
                      gRlcStats.amRlcStats.numULPdusDiscarded, gRlcStats.amRlcStats.numULReAsmblTimerExpires, 
                      gRlcStats.amRlcStats.numULStaPduRcvd, gRlcStats.amRlcStats.numULNackInStaPduRcvd);
@@ -237,7 +237,7 @@ uint8_t rlcSendDedLcDlData(Pst *post, SpId spId, RguDDatReqInfo *datReqInfo)
          dlData, sizeof(RlcDlData));
    if(dlData == NULLP)
    {
-      DU_LOG("\nERROR  -->  RLC_DL : rlcSendDedLcDlData: Memory allocation failed for dl data");
+      DU_LOG("ERROR  -->  RLC_DL : rlcSendDedLcDlData: Memory allocation failed for dl data");
       RLC_FREE_SHRABL_BUF(RLC_MEM_REGION_DL, RLC_POOL,
             datReqInfo, sizeof(RguDDatReqInfo));
       return RFAILED;
@@ -274,7 +274,7 @@ uint8_t rlcSendDedLcDlData(Pst *post, SpId spId, RguDDatReqInfo *datReqInfo)
 
                if (dlData->pduInfo[dlData->numPdu].pduBuf == NULLP )
                {
-                  DU_LOG("\nERROR  -->  RLC_DL : rlcSendDedLcDlData: Memory allocation failed");
+                  DU_LOG("ERROR  -->  RLC_DL : rlcSendDedLcDlData: Memory allocation failed");
                   for(pduIdx = 0; pduIdx < dlData->numPdu; pduIdx++)
                   {
                      RLC_FREE_SHRABL_BUF(RLC_MEM_REGION_DL, RLC_POOL, dlData->pduInfo[pduIdx].pduBuf,\
@@ -313,7 +313,7 @@ uint8_t rlcSendDedLcDlData(Pst *post, SpId spId, RguDDatReqInfo *datReqInfo)
                   boStatus, sizeof(RlcBoStatus));
             if(boStatus == NULLP)
             {
-               DU_LOG("\nERROR  -->  RLC_DL : rlcSendDedLcDlData: Memory allocation failed for boStatus");
+               DU_LOG("ERROR  -->  RLC_DL : rlcSendDedLcDlData: Memory allocation failed for boStatus");
                ret = RFAILED;
                break;
             }
@@ -326,12 +326,12 @@ uint8_t rlcSendDedLcDlData(Pst *post, SpId spId, RguDDatReqInfo *datReqInfo)
             /* Send Status Response to MAC layer */
             if(RlcSendBoStatusToMac(&pst, boStatus) != ROK)
             {
-               DU_LOG("\nERROR  -->  RLC_DL : rlcSendDedLcDlData: Failed to send BO status");
+               DU_LOG("ERROR  -->  RLC_DL : rlcSendDedLcDlData: Failed to send BO status");
                RLC_FREE_SHRABL_BUF(pst.region, pst.pool, boStatus, sizeof(RlcBoStatus));
                ret = RFAILED;
                break;
             }
-            DU_LOG("\nDEBUG  -->  RLC_DL : rlcSendDedLcDlData: BO Status sent successfully for LCID:%d,BO:%d",\
+            DU_LOG("DEBUG  -->  RLC_DL : rlcSendDedLcDlData: BO Status sent successfully for LCID:%d,BO:%d",\
                   boStatus->lcId, boStatus->bo);
          }
          RLC_FREE_SHRABL_BUF(RLC_MEM_REGION_DL, RLC_POOL, dlData, sizeof(RlcDlData));
@@ -342,7 +342,7 @@ uint8_t rlcSendDedLcDlData(Pst *post, SpId spId, RguDDatReqInfo *datReqInfo)
       RLC_ALLOC_SHRABL_BUF(RLC_MEM_REGION_DL, RLC_POOL, dlRrcMsgRsp, sizeof(RlcDlRrcMsgRsp));
       if(dlRrcMsgRsp == NULLP)
       {
-         DU_LOG("\nERROR  -->  RLC_DL : rlcSendDedLcDlData: Memory allocation failed for dlRrcMsgRsp");
+         DU_LOG("ERROR  -->  RLC_DL : rlcSendDedLcDlData: Memory allocation failed for dlRrcMsgRsp");
          for(pduIdx = 0; pduIdx < dlData->numPdu; pduIdx++)
          {
             RLC_FREE_SHRABL_BUF(pst.region, pst.pool, dlData->pduInfo[pduIdx].pduBuf,\
@@ -360,7 +360,7 @@ uint8_t rlcSendDedLcDlData(Pst *post, SpId spId, RguDDatReqInfo *datReqInfo)
       FILL_PST_RLC_TO_MAC(pst, RLC_DL_INST, EVENT_DL_DATA_TO_MAC);
       if(RlcSendDlDataToMac(&pst, dlData) != ROK)
       {
-         DU_LOG("\nERROR  -->  RLC_DL : rlcSendDedLcDlData: Failed to send Dl RRC Msg To Mac");
+         DU_LOG("ERROR  -->  RLC_DL : rlcSendDedLcDlData: Failed to send Dl RRC Msg To Mac");
          dlRrcMsgRsp->state = TRANSMISSION_FAILED;
          for(pduIdx = 0; pduIdx < dlData->numPdu; pduIdx++)
          {
@@ -380,7 +380,7 @@ uint8_t rlcSendDedLcDlData(Pst *post, SpId spId, RguDDatReqInfo *datReqInfo)
       {
          if(rlcSendDlRrcMsgRspToDu(&pst, dlRrcMsgRsp) != ROK)
          {
-            DU_LOG("\nERROR  -->  RLC_DL : rlcSendDedLcDlData: Failed to send Dl RRC Msg Rsp To Du");
+            DU_LOG("ERROR  -->  RLC_DL : rlcSendDedLcDlData: Failed to send Dl RRC Msg Rsp To Du");
             RLC_FREE_SHRABL_BUF(pst.region, pst.pool, dlRrcMsgRsp, sizeof(RlcDlRrcMsgRsp));
             RLC_FREE_SHRABL_BUF(RLC_MEM_REGION_DL, RLC_POOL, datReqInfo, sizeof(RguDDatReqInfo));
             return RFAILED;
@@ -453,7 +453,7 @@ uint8_t rlcUtlSendToMac(RlcCb *gCb, SuId suId, KwDStaIndInfo *staIndInfo)
 #if (ERRCLASS & ERRCLS_ADD_RES)
    if ( datReqInfo == NULLP )
    {
-      DU_LOG("\nERROR  -->  RLC_DL : rlcUtlSendToMac: Memory allocation failed");
+      DU_LOG("ERROR  -->  RLC_DL : rlcUtlSendToMac: Memory allocation failed");
       return RFAILED;
    }
 #endif /* ERRCLASS & ERRCLS_ADD_RES */
@@ -465,7 +465,7 @@ uint8_t rlcUtlSendToMac(RlcCb *gCb, SuId suId, KwDStaIndInfo *staIndInfo)
       if(ROK != rlcDbmFetchDlUeCb(gCb, ueId, staIndInfo->cellId, &ueCb))
       {
          /* Fetch UeCb failed */
-         DU_LOG("\nERROR  -->  RLC_DL : rlcUtlSendToMac: UeId[%u]:ueCb not found",
+         DU_LOG("ERROR  -->  RLC_DL : rlcUtlSendToMac: UeId[%u]:ueCb not found",
                staInd->rnti);
          /* If ueCb is not found for current rnti then continue to look for next rnti*/
          continue; 
@@ -512,7 +512,7 @@ uint8_t rlcUtlSendToMac(RlcCb *gCb, SuId suId, KwDStaIndInfo *staIndInfo)
                   if(snssaiTputNode != NULLP)
                   {
                      snssaiTputNode->dataVol += staIndTb->lchStaInd[count].totBufSize;
-                     DU_LOG("\nINFO   -->  RLC_DL: SNSSAI List Grant:%d, lcId:%d, total :%ld",\
+                     DU_LOG("INFO   -->  RLC_DL: SNSSAI List Grant:%d, lcId:%d, total :%ld",\
                            staIndTb->lchStaInd[count].totBufSize, staIndTb->lchStaInd[count].lcId,\
                            snssaiTputNode->dataVol);
                   }
@@ -1694,9 +1694,9 @@ S16 rlcUtlSndDlL2MeasCfm(RlcCb *gCb,RlcL2MeasEvtCb *measEvtCb)
 
    /* kw006.201 ccpu00120058 emoved 64 bit compilation warning */
 #ifndef ALIGN_64BIT
-   DU_LOG("\nDEBUG  -->  RLC_DL : rlcUtlSndL2MeasCfm(transId(%ld))", measEvtCb->transId);
+   DU_LOG("DEBUG  -->  RLC_DL : rlcUtlSndL2MeasCfm(transId(%ld))", measEvtCb->transId);
 #else
-   DU_LOG("\nDEBUG  -->  RLC_DL : rlcUtlSndL2MeasCfm(transId(%d))", measEvtCb->transId);
+   DU_LOG("DEBUG  -->  RLC_DL : rlcUtlSndL2MeasCfm(transId(%d))", measEvtCb->transId);
 #endif
 
    /* Clean up the RB data structures */
@@ -1912,7 +1912,7 @@ static Void dumpRLCDlRbInformation(RlcDlRbCb* dlRbCb)
 {
    if(dlRbCb->mode == RLC_MODE_UM)
    {
-      DU_LOG("\nDEBUG  -->  RLC_DL : UM Downlink UEID:%d CELLID:%d Q size = %d",
+      DU_LOG("DEBUG  -->  RLC_DL : UM Downlink UEID:%d CELLID:%d Q size = %d",
                        dlRbCb->rlcId.ueId,
                        dlRbCb->rlcId.cellId,
                        (int)dlRbCb->m.umDl.sduQ.count);
@@ -1928,12 +1928,12 @@ static Void dumpRLCDlRbInformation(RlcDlRbCb* dlRbCb)
             numTxPdus++;
          }
       }
-      DU_LOG("\nDEBUG  -->  RLC_DL : AM Downlink UEID:%d CELLID:%d Sizes SDU Q = %d TX Q = %d ",
+      DU_LOG("DEBUG  -->  RLC_DL : AM Downlink UEID:%d CELLID:%d Sizes SDU Q = %d TX Q = %d ",
                        dlRbCb->rlcId.ueId,
                        dlRbCb->rlcId.cellId,
                        (int)dlRbCb->m.amDl.sduQ.count,
                        (int)numTxPdus);
-      DU_LOG("\nDEBUG  -->  RLC_DL : AM Downlink UEID:%d CELLID:%d RETX Q= %d",
+      DU_LOG("DEBUG  -->  RLC_DL : AM Downlink UEID:%d CELLID:%d RETX Q= %d",
                        dlRbCb->rlcId.ueId,
                        dlRbCb->rlcId.cellId,
                        (int)dlRbCb->m.amDl.retxLst.count);
@@ -2161,7 +2161,7 @@ Void rlcUtlDelTxBuf (CmLListCp *txBufLst,RlcTx  *txBuf,RlcCb *gCb)
    hashKey = (txBuf->sn % RLC_TX_BUF_BIN_SIZE ); 
  
    txBufLstCp = &txBufLst[hashKey];
-   //DU_LOG("\nINFO  -->  RLC_DL : D-sn(%d)\n", txBuf->hdr.sn);
+   //DU_LOG("INFO  -->  RLC_DL : D-sn(%d)\n", txBuf->hdr.sn);
    cmLListDelFrm(txBufLstCp, &txBuf->lnk);
    RLC_FREE(gCb, txBuf, sizeof(RlcTx));
    return;
@@ -2189,7 +2189,7 @@ Void rlcUtlRemovTxBuf(CmLListCp *txBufLst,RlcTx  *txBuf,RlcCb *gCb)
    hashKey = (txBuf->sn % RLC_TX_BUF_BIN_SIZE ); 
  
    txBufLstCp = &txBufLst[hashKey];
-   //DU_LOG("\nINFO  -->  RLC_DL : D-sn(%d)\n", txBuf->hdr.sn);
+   //DU_LOG("INFO  -->  RLC_DL : D-sn(%d)\n", txBuf->hdr.sn);
    cmLListDelFrm(txBufLstCp, &txBuf->lnk);
    return;
 } /* rlcUtlRemovTxBuf */

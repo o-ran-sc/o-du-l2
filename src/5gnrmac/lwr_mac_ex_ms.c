@@ -160,7 +160,7 @@ void callFlowlwrMacActvTsk(Pst *pst)
             strcpy(sourceTask,"Invalid Source Entity Id");
          }
    }
-   DU_LOG("\nCall Flow: %s -> %s : %s\n", sourceTask, destTask, message);
+   DU_LOG("Call Flow: %s -> %s : %s\n", sourceTask, destTask, message);
 }
 #endif
 
@@ -191,13 +191,13 @@ uint8_t sendParamRspToLowerMacFsm(Buffer *mBuf)
    char newIp[INET_ADDRSTRLEN];
    memset(newIp, 0, INET_ADDRSTRLEN);
    
-   DU_LOG("\nINFO  -->  LWR MAC: Extracting information from param resp message");
+   DU_LOG("INFO  -->  LWR MAC: Extracting information from param resp message");
    //Upacking error code and number of tlv as per : 5G nFAPI Specification,
    //section 3.2.2 PARAM.response, Table 3-14
    CMCHKPK(oduUnpackUInt8, &(errorCode), mBuf);
    if(errorCode != 0)
    {
-      DU_LOG("\nERROR  -->  LWR MAC: Param rsp errorCode is %d", errorCode);
+      DU_LOG("ERROR  -->  LWR MAC: Param rsp errorCode is %d", errorCode);
       return RFAILED;
    }
 
@@ -217,7 +217,7 @@ uint8_t sendParamRspToLowerMacFsm(Buffer *mBuf)
    CMCHKPK(oduUnpackUInt16, &(port), mBuf);
    if (inet_ntop(AF_INET, pnfAdd, newIp, INET_ADDRSTRLEN) == NULL) 
    {
-      DU_LOG("\nERROR  -->  LWR MAC: failed to convert the pnf ip");
+      DU_LOG("ERROR  -->  LWR MAC: failed to convert the pnf ip");
       return RFAILED;
    }
    cmInetAddr((S8*)newIp, &vnfIp);
@@ -227,7 +227,7 @@ uint8_t sendParamRspToLowerMacFsm(Buffer *mBuf)
    vnfDb.p7TransInfo.destIpv4Port = port;
    vnfDb.p7TransInfo.destIpNetAddr.address = CM_INET_NTOH_UINT32(vnfDb.p7TransInfo.destIpv4Address);
    vnfDb.p7TransInfo.destIpNetAddr.port = vnfDb.p7TransInfo.destIpv4Port;
-   DU_LOG("\nINFO  -->  LWR MAC: Sending param response message body buffer to lower mac");
+   DU_LOG("INFO  -->  LWR MAC: Sending param response message body buffer to lower mac");
    sendEventToLowerMacFsm(PARAM_RESPONSE, 0, mBuf); 
    return ROK;
 }
@@ -276,7 +276,7 @@ uint8_t lwrMacActvTsk(Pst *pst, Buffer *mBuf)
                      LwrMacEnqueueWlsBlock();
 
                      /* Start thread to receive from L1 */
-                     DU_LOG("\nINFO  -->  LWR MAC: Starting WLS receiver thread");
+                     DU_LOG("INFO  -->  LWR MAC: Starting WLS receiver thread");
                      LwrMacRecvPhyMsg();
                      break;
                   }
@@ -284,7 +284,7 @@ uint8_t lwrMacActvTsk(Pst *pst, Buffer *mBuf)
                default:
                   {
                      ODU_PUT_MSG_BUF(mBuf);
-                     DU_LOG("\nERROR  -->  LWR MAC: Invalid event %d received", pst->event);
+                     DU_LOG("ERROR  -->  LWR MAC: Invalid event %d received", pst->event);
                      ret = RFAILED;
                   }
             }
@@ -320,7 +320,7 @@ uint8_t lwrMacActvTsk(Pst *pst, Buffer *mBuf)
                  }
                default:
                   {
-                     DU_LOG("\nERROR  -->  LWR_MAC: Invalid event %d received from PHY STUB", pst->event);
+                     DU_LOG("ERROR  -->  LWR_MAC: Invalid event %d received from PHY STUB", pst->event);
                   }
             }
             break;
@@ -346,14 +346,14 @@ uint8_t lwrMacActvTsk(Pst *pst, Buffer *mBuf)
                    if(msgHdr.sRU_termination_type != NFAPI_P5_P7_SRU_TYPE)
                    {
                       ODU_PUT_MSG_BUF(mBuf);
-                      DU_LOG("\nERROR  --> NFAPI_VNF: Incorrect SRU Termination Type:%d",\
+                      DU_LOG("ERROR  --> NFAPI_VNF: Incorrect SRU Termination Type:%d",\
                             msgHdr.sRU_termination_type);
                       return RFAILED;
                    }
                    if(convertNfapiP5TagValToMsgId(msgHdr.msg_id, &nfapiPnfEvent, &phyEvent)!=ROK)
                    {
                       ODU_PUT_MSG_BUF(mBuf);
-                      DU_LOG("\nERROR  --> NFAPI_VNF: Incorrect NFAPI MsgID received:%d",\
+                      DU_LOG("ERROR  --> NFAPI_VNF: Incorrect NFAPI MsgID received:%d",\
                             msgHdr.msg_id);
                       return RFAILED;
                    }
@@ -368,7 +368,7 @@ uint8_t lwrMacActvTsk(Pst *pst, Buffer *mBuf)
                          if(sendParamRspToLowerMacFsm(mBuf) != ROK)
                          {
                             ODU_PUT_MSG_BUF(mBuf);
-                            DU_LOG("\nERROR  --> NFAPI_VNF: Failed to process param response");
+                            DU_LOG("ERROR  --> NFAPI_VNF: Failed to process param response");
                             return RFAILED;
                          }
                            
@@ -378,7 +378,7 @@ uint8_t lwrMacActvTsk(Pst *pst, Buffer *mBuf)
                          retVal = sendEventToLowerMacFsm(phyEvent, msgHdr.length, mBuf);
                          if(phyEvent == START_RESPONSE && retVal == ROK)
                          {
-                            DU_LOG("\nDEBUG  --> NFAPI_VNF: Opening UDP Socket");
+                            DU_LOG("DEBUG  --> NFAPI_VNF: Opening UDP Socket");
                             nfapiP7UdpOpenReq(); 
                          }
                       }
@@ -389,7 +389,7 @@ uint8_t lwrMacActvTsk(Pst *pst, Buffer *mBuf)
 #endif
              default:
                 {
-                    DU_LOG("\nERROR  -->  LWR_MAC: Invalid event %d received from SCTP", pst->event);
+                    DU_LOG("ERROR  -->  LWR_MAC: Invalid event %d received from SCTP", pst->event);
                 }
            }
            break;
@@ -397,7 +397,7 @@ uint8_t lwrMacActvTsk(Pst *pst, Buffer *mBuf)
       default:
          {
             ODU_PUT_MSG_BUF(mBuf);
-            DU_LOG("\nERROR  -->  LWR MAC: Message from invalid source entity %d", pst->srcEnt);
+            DU_LOG("ERROR  -->  LWR MAC: Message from invalid source entity %d", pst->srcEnt);
             ret = RFAILED;
          }
    }

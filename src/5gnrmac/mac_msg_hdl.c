@@ -187,7 +187,7 @@ uint8_t fapiMacCrcInd(Pst *pst, CrcInd *crcInd)
 {
    uint16_t     cellIdx;
    CrcIndInfo   crcIndInfo;
-   DU_LOG("\nDEBUG  -->  MAC : Received CRC indication");
+   DU_LOG("DEBUG  -->  MAC : Received CRC indication");
    GET_CELL_IDX(crcInd->cellId, cellIdx);
    /* Considering one pdu and one preamble */ 
    crcIndInfo.cellId = macCb.macCell[cellIdx]->cellId;
@@ -222,7 +222,7 @@ uint8_t fapiMacRxDataInd(Pst *pst, RxDataInd *rxDataInd)
 {
    uint8_t ueId = 0;
    uint16_t pduIdx, cellIdx = 0;
-   DU_LOG("\nDEBUG  -->  MAC : Received Rx Data indication");
+   DU_LOG("DEBUG  -->  MAC : Received Rx Data indication");
    /* TODO : compare the handle received in RxDataInd with handle send in PUSCH
     * PDU, which is stored in raCb */
 
@@ -234,7 +234,7 @@ uint8_t fapiMacRxDataInd(Pst *pst, RxDataInd *rxDataInd)
       
       if(macCb.macCell[cellIdx] && macCb.macCell[cellIdx]->ueCb[ueId -1].transmissionAction == STOP_TRANSMISSION)
       {
-         DU_LOG("\nINFO   -->  MAC : UL data transmission not allowed for UE %d", macCb.macCell[cellIdx]->ueCb[ueId -1].ueId);
+         DU_LOG("INFO   -->  MAC : UL data transmission not allowed for UE %d", macCb.macCell[cellIdx]->ueCb[ueId -1].ueId);
       }
       else
       {
@@ -276,7 +276,7 @@ uint8_t MacProcRlcDlData(Pst* pstInfo, RlcDlData *dlData)
    DlRlcBoInfo dlBoInfo;
 
    memset(&macDlData , 0, sizeof(MacDlData));
-   DU_LOG("\nDEBUG  -->  MAC: Received DL data for sfn=%d slot=%d numPdu= %d", \
+   DU_LOG("DEBUG  -->  MAC: Received DL data for sfn=%d slot=%d numPdu= %d", \
       dlData->slotInfo.sfn, dlData->slotInfo.slot, dlData->numPdu);
 
    GET_UE_ID(dlData->rnti, ueId);   
@@ -295,7 +295,7 @@ uint8_t MacProcRlcDlData(Pst* pstInfo, RlcDlData *dlData)
    /* Store DL data in the scheduled slot */
    if(macCb.macCell[cellIdx] ==NULLP)
    {
-      DU_LOG("\nERROR  -->  MAC : MacProcRlcDlData(): macCell does not exists");
+      DU_LOG("ERROR  -->  MAC : MacProcRlcDlData(): macCell does not exists");
       return RFAILED;
    }
    currDlSlot = &macCb.macCell[cellIdx]->dlSlot[dlData->slotInfo.slot];
@@ -308,7 +308,7 @@ uint8_t MacProcRlcDlData(Pst* pstInfo, RlcDlData *dlData)
          MAC_ALLOC(txPdu, txPduLen);
          if(!txPdu)
          {
-            DU_LOG("\nERROR  -->  MAC : Memory allocation failed in MacProcRlcDlData");
+            DU_LOG("ERROR  -->  MAC : Memory allocation failed in MacProcRlcDlData");
             return RFAILED;
          }
          macMuxPdu(&macDlData, NULLP, txPdu, txPduLen);
@@ -378,7 +378,7 @@ uint8_t lcId, uint16_t pduLen, uint8_t *pdu)
    MAC_ALLOC_SHRABL_BUF(ulData, sizeof(RlcUlData));
    if(!ulData)
    {
-      DU_LOG("\nERROR  -->  MAC : Memory allocation failed while sending UL data to RLC");
+      DU_LOG("ERROR  -->  MAC : Memory allocation failed while sending UL data to RLC");
       return RFAILED;
    }
    memset(ulData, 0, sizeof(RlcUlData));
@@ -462,11 +462,11 @@ uint8_t sendSchedRptToRlc(DlSchedInfo dlInfo, SlotTimingInfo slotInfo, uint8_t u
    MAC_ALLOC_SHRABL_BUF(schedRpt, sizeof(RlcSchedResultRpt));
    if(!schedRpt)
    {
-      DU_LOG("\nERROR  -->  MAC: Memory allocation failure in sendSchResultRepToRlc");
+      DU_LOG("ERROR  -->  MAC: Memory allocation failure in sendSchResultRepToRlc");
       return RFAILED;
    }
 
-   DU_LOG("\nDEBUG  -->  MAC: Send scheduled result report for sfn %d slot %d", slotInfo.sfn, slotInfo.slot);
+   DU_LOG("DEBUG  -->  MAC: Send scheduled result report for sfn %d slot %d", slotInfo.sfn, slotInfo.slot);
    schedRpt->cellId = dlInfo.cellId;
    schedRpt->slotInfo.sfn = slotInfo.sfn;
    schedRpt->slotInfo.slot = slotInfo.slot;
@@ -486,7 +486,7 @@ uint8_t sendSchedRptToRlc(DlSchedInfo dlInfo, SlotTimingInfo slotInfo, uint8_t u
    FILL_PST_MAC_TO_RLC(pst, RLC_DL_INST, EVENT_SCHED_RESULT_TO_RLC);
    if(MacSendSchedResultRptToRlc(&pst, schedRpt) != ROK)
    {
-      DU_LOG("\nERROR  -->  MAC: Failed to send Schedule result report to RLC");
+      DU_LOG("ERROR  -->  MAC: Failed to send Schedule result report to RLC");
       MAC_FREE_SHRABL_BUF(MAC_MEM_REGION, MAC_POOL, schedRpt, sizeof(RlcSchedResultRpt));
       return RFAILED;
    }
@@ -513,7 +513,7 @@ uint8_t sendSchedRptToRlc(DlSchedInfo dlInfo, SlotTimingInfo slotInfo, uint8_t u
  * ****************************************************************/
 uint8_t MacProcCellStart(Pst *pst, CellStartInfo  *cellStart)
 {
-   DU_LOG("\nINFO  -->  MAC : Handling cell start request");
+   DU_LOG("INFO  -->  MAC : Handling cell start request");
 #ifndef NFAPI_ENABLED
    gConfigInfo.gSlotCount = 0;
    sendEventToLowerMacFsm(START_REQUEST, 0, cellStart);
@@ -552,7 +552,7 @@ uint8_t MacProcCellStop(Pst *pst, CellStopInfo  *cellStop)
 #ifdef INTEL_FAPI
    uint16_t      cellIdx; 
 
-   DU_LOG("\nINFO  -->  MAC : Sending cell stop request to Lower Mac");
+   DU_LOG("INFO  -->  MAC : Sending cell stop request to Lower Mac");
    GET_CELL_IDX(cellStop->cellId, cellIdx);
    if(macCb.macCell[cellIdx])
    {
@@ -591,7 +591,7 @@ uint8_t MacProcDlCcchInd(Pst *pst, DlCcchIndInfo *dlCcchIndInfo)
    DlRlcBoInfo  dlBoInfo;
    memset(&dlBoInfo, 0, sizeof(DlRlcBoInfo));
 
-   DU_LOG("\nDEBUG  -->  MAC : Handling DL CCCH IND");
+   DU_LOG("DEBUG  -->  MAC : Handling DL CCCH IND");
 
    GET_CELL_IDX(dlCcchIndInfo->cellId, cellIdx);
 
@@ -657,7 +657,7 @@ uint8_t macProcUlCcchInd(uint16_t cellId, uint16_t crnti, uint16_t rrcContSize, 
    MAC_ALLOC_SHRABL_BUF(ulCcchIndInfo, sizeof(UlCcchIndInfo));
    if(!ulCcchIndInfo)
    {
-      DU_LOG("\nERROR  -->  MAC: Memory failed in macProcUlCcchInd");
+      DU_LOG("ERROR  -->  MAC: Memory failed in macProcUlCcchInd");
       return RFAILED;
    }
 
@@ -671,7 +671,7 @@ uint8_t macProcUlCcchInd(uint16_t cellId, uint16_t crnti, uint16_t rrcContSize, 
 
    if(MacDuAppUlCcchInd(&pst, ulCcchIndInfo) != ROK)
    {
-      DU_LOG("\nERROR  -->  MAC: Failed to send UL CCCH Ind to DU APP");
+      DU_LOG("ERROR  -->  MAC: Failed to send UL CCCH Ind to DU APP");
       MAC_FREE_SHRABL_BUF(MAC_MEM_REGION, MAC_POOL, ulCcchIndInfo->ulCcchMsg, ulCcchIndInfo->ulCcchMsgLen);
       MAC_FREE_SHRABL_BUF(MAC_MEM_REGION, MAC_POOL, ulCcchIndInfo, sizeof(UlCcchIndInfo));
       ret = RFAILED;
@@ -878,13 +878,13 @@ uint8_t FapiMacUciInd(Pst *pst, UciInd *macUciInd)
             case UCI_IND_PUCCH_F0F1:
             {
                {
-                  DU_LOG("\nDEBUG  -->  MAC : Received HARQ UCI Indication\n");
+                  DU_LOG("DEBUG  -->  MAC : Received HARQ UCI Indication\n");
                   GET_CELL_IDX(macUciInd->cellId, cellIdx);
                   buildAndSendHarqInd(&macUciInd->pdus[pduIdx].uci.uciPucchF0F1.harqInfo, macUciInd->pdus[pduIdx].uci.uciPucchF0F1.crnti, cellIdx, &macUciInd->slotInd);
                }
                if(macUciInd->pdus[pduIdx].uci.uciPucchF0F1.srInfo.srIndPres)
                {
-                  DU_LOG("\nDEBUG  -->  MAC : Received SR UCI indication");
+                  DU_LOG("DEBUG  -->  MAC : Received SR UCI indication");
                   crnti = macUciInd->pdus[pduIdx].uci.uciPucchF0F1.crnti; 
                   ret = buildAndSendSrInd(macUciInd, crnti);
                }
@@ -893,7 +893,7 @@ uint8_t FapiMacUciInd(Pst *pst, UciInd *macUciInd)
             case UCI_IND_PUCCH_F2F3F4:
                break;
             default:
-               DU_LOG("\nERROR  -->  MAC: Invalid Pdu Type %d at FapiMacUciInd", macUciInd->pdus[pduIdx].pduType);
+               DU_LOG("ERROR  -->  MAC: Invalid Pdu Type %d at FapiMacUciInd", macUciInd->pdus[pduIdx].pduType);
                ret = RFAILED;
                break;
          }
@@ -903,7 +903,7 @@ uint8_t FapiMacUciInd(Pst *pst, UciInd *macUciInd)
    }
    else
    {
-      DU_LOG("\nERROR  -->  MAC: Received Uci Ind is NULL at FapiMacUciInd()");
+      DU_LOG("ERROR  -->  MAC: Received Uci Ind is NULL at FapiMacUciInd()");
       ret = RFAILED;
    }
    MAC_FREE_SHRABL_BUF(pst->region, pst->pool, macUciInd, sizeof(UciInd));
@@ -942,7 +942,7 @@ uint8_t fillSliceCfgInfo(SchSliceCfgReq *schSliceCfgReq, MacSliceCfgReq *macSlic
       MAC_ALLOC(schSliceCfgReq->listOfSlices, schSliceCfgReq->numOfConfiguredSlice *sizeof(SchRrmPolicyOfSlice*));
       if(schSliceCfgReq->listOfSlices == NULLP)
       {
-         DU_LOG("\nERROR  -->  MAC : Memory allocation failed in fillSliceCfgInfo");
+         DU_LOG("ERROR  -->  MAC : Memory allocation failed in fillSliceCfgInfo");
          return RFAILED;
       }
       cfgIdx = 0; 
@@ -957,7 +957,7 @@ uint8_t fillSliceCfgInfo(SchSliceCfgReq *schSliceCfgReq, MacSliceCfgReq *macSlic
                MAC_ALLOC(schSliceCfgReq->listOfSlices[cfgIdx], sizeof(SchRrmPolicyOfSlice));
                if(schSliceCfgReq->listOfSlices[cfgIdx] == NULLP)
                {
-                  DU_LOG("\nERROR  -->  MAC : Memory allocation failed in fillSliceCfgInfo");
+                  DU_LOG("ERROR  -->  MAC : Memory allocation failed in fillSliceCfgInfo");
                   return RFAILED;
                }
 
@@ -997,13 +997,13 @@ uint8_t MacProcSliceCfgReq(Pst *pst, MacSliceCfgReq *macSliceCfgReq)
    Pst schPst;
    SchSliceCfgReq *schSliceCfgReq;
 
-   DU_LOG("\nINFO  -->  MAC : Received Slice Cfg request from DU APP");
+   DU_LOG("INFO  -->  MAC : Received Slice Cfg request from DU APP");
    if(macSliceCfgReq)
    {
       MAC_ALLOC(schSliceCfgReq, sizeof(SchSliceCfgReq));
       if(schSliceCfgReq == NULLP)
       {
-         DU_LOG("\nERROR -->  MAC : Memory allocation failed in MacProcSliceCfgReq");
+         DU_LOG("ERROR -->  MAC : Memory allocation failed in MacProcSliceCfgReq");
          ret = RFAILED;
       }
       else
@@ -1018,7 +1018,7 @@ uint8_t MacProcSliceCfgReq(Pst *pst, MacSliceCfgReq *macSliceCfgReq)
    }
    else
    {
-      DU_LOG("\nINFO  -->  MAC : Received MacSliceCfgReq is NULL");
+      DU_LOG("INFO  -->  MAC : Received MacSliceCfgReq is NULL");
    }
    return ret;
 }
@@ -1046,13 +1046,13 @@ uint8_t MacProcSliceRecfgReq(Pst *pst, MacSliceRecfgReq *macSliceRecfgReq)
    Pst schPst;
    SchSliceRecfgReq *schSliceRecfgReq;
 
-   DU_LOG("\nINFO  -->  MAC : Received Slice ReCfg request from DU APP");
+   DU_LOG("INFO  -->  MAC : Received Slice ReCfg request from DU APP");
    if(macSliceRecfgReq)
    {
       MAC_ALLOC(schSliceRecfgReq, sizeof(SchSliceRecfgReq));
       if(schSliceRecfgReq == NULLP)
       {
-         DU_LOG("\nERROR -->  MAC : Memory allocation failed in MacProcSliceRecfgReq");
+         DU_LOG("ERROR -->  MAC : Memory allocation failed in MacProcSliceRecfgReq");
          ret = RFAILED;
       }
       else
@@ -1067,7 +1067,7 @@ uint8_t MacProcSliceRecfgReq(Pst *pst, MacSliceRecfgReq *macSliceRecfgReq)
    }
    else
    {
-      DU_LOG("\nINFO  -->  MAC : Received MacSliceRecfgReq is NULL");
+      DU_LOG("INFO  -->  MAC : Received MacSliceRecfgReq is NULL");
    }
    return ret;
 }
@@ -1093,19 +1093,19 @@ uint8_t MacProcSchStatsInd(Pst *pst, SchStatsInd *schStatsInd)
    MacStatsInd *macStatsInd;
 
 #ifdef DEBUG_PRINT
-   DU_LOG("\nDEBUG  -->  MAC : MacProcSchStatsInd: Received Statistics Indication from SCH");
+   DU_LOG("DEBUG  -->  MAC : MacProcSchStatsInd: Received Statistics Indication from SCH");
 #endif   
 
    if(schStatsInd == NULLP)
    {
-      DU_LOG("\nERROR  -->  MAC : MacProcSchStatsInd: NULL pointer :schStatsInd");
+      DU_LOG("ERROR  -->  MAC : MacProcSchStatsInd: NULL pointer :schStatsInd");
       return RFAILED;
    }
 
    MAC_ALLOC_SHRABL_BUF(macStatsInd, sizeof(MacStatsInd));
    if(macStatsInd == NULLP)
    {
-      DU_LOG("\nERROR  -->  MAC : Failed to allocate memory in MacProcSchStatsInd");
+      DU_LOG("ERROR  -->  MAC : Failed to allocate memory in MacProcSchStatsInd");
       return RFAILED;
    }
 
@@ -1128,7 +1128,7 @@ uint8_t MacProcSchStatsInd(Pst *pst, SchStatsInd *schStatsInd)
             }
          default:
             {
-               DU_LOG("\nERROR  -->  MAC : MacProcSchStatsInd: Invalid measurement type [%d]", \
+               DU_LOG("ERROR  -->  MAC : MacProcSchStatsInd: Invalid measurement type [%d]", \
                      schStatsInd->measuredStatsList[statsIdx].type);
                MAC_FREE_SHRABL_BUF(MAC_MEM_REGION, MAC_POOL, macStatsInd, sizeof(MacStatsInd));
                return RFAILED;

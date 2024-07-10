@@ -182,7 +182,7 @@ void rlcStartTmr(RlcCb *gCb, PTR cb, int16_t tmrEvnt)
       }
       default:
       {
-         DU_LOG("\nERROR  -->  RLC : rlcStartTmr: Invalid tmr Evnt [%d]", tmrEvnt);
+         DU_LOG("ERROR  -->  RLC : rlcStartTmr: Invalid tmr Evnt [%d]", tmrEvnt);
       }
    } 
 
@@ -282,7 +282,7 @@ void rlcStopTmr(RlcCb *gCb, PTR cb, uint8_t tmrType)
       }
       default:
       {
-         DU_LOG("\nERROR  -->  RLC : rlcStopTmr: Invalid tmr Evnt[%d]", tmrType);
+         DU_LOG("ERROR  -->  RLC : rlcStopTmr: Invalid tmr Evnt[%d]", tmrType);
          break;
       }
    } 
@@ -432,7 +432,7 @@ bool rlcChkTmr(RlcCb *gCb, PTR cb, int16_t tmrEvnt)
       }
       default:
       {
-         DU_LOG("\nERROR  -->  RLC : rlcChkTmr: Invalid tmr Evnt [%d]", tmrEvnt);
+         DU_LOG("ERROR  -->  RLC : rlcChkTmr: Invalid tmr Evnt [%d]", tmrEvnt);
       }
    } 
 
@@ -523,8 +523,8 @@ void rlcUeThptTmrExpiry(PTR cb)
    }
 
    /* If cell is up, print throughout for each UE attached to the cell */
-   DU_LOG("\n===================== DL Throughput Per UE==============================");
-   DU_LOG("\nNumber of UEs : %d", rlcThptCb->ueTputInfo.numActvUe);
+   DU_LOG("===================== DL Throughput Per UE==============================");
+   DU_LOG("Number of UEs : %d", rlcThptCb->ueTputInfo.numActvUe);
    if(rlcThptCb->ueTputInfo.numActvUe)
    {
       for(ueIdx = 0; ueIdx < MAX_NUM_UE; ueIdx++)
@@ -539,12 +539,12 @@ void rlcUeThptTmrExpiry(PTR cb)
              */
              tpt = (double)(rlcThptCb->ueTputInfo.thptPerUe[ueIdx].dataVol * 8)/(double)gConfigInfo.gUeThrptTimeIntervl;
       
-             DU_LOG("\nUE Id : %d   DL Tpt : %.2Lf", rlcThptCb->ueTputInfo.thptPerUe[ueIdx].ueId, tpt);
+             DU_LOG("UE Id : %d   DL Tpt : %.2Lf", rlcThptCb->ueTputInfo.thptPerUe[ueIdx].ueId, tpt);
              rlcThptCb->ueTputInfo.thptPerUe[ueIdx].dataVol = 0;
          }
       }
    }
-   DU_LOG("\n==================================================================");
+   DU_LOG("==================================================================");
 
    /* Restart timer */
    rlcStartTmr(RLC_GET_RLCCB(rlcThptCb->inst), (PTR)rlcThptCb, EVENT_RLC_UE_THROUGHPUT_TMR);
@@ -653,14 +653,14 @@ uint8_t rlcUeDeleteTmrExpiry(PTR cb)
    RLC_ALLOC(gRlcCb, rlcUeCfg, sizeof(RlcCfgInfo));
    if(rlcUeCfg == NULLP)
    {
-      DU_LOG("\nERROR  -->  RLC: rlcUeDeleteTmrExpiry(): Failed to allocate memory");
+      DU_LOG("ERROR  -->  RLC: rlcUeDeleteTmrExpiry(): Failed to allocate memory");
       return RFAILED;
    }
    memset(rlcUeCfg, 0, sizeof(RlcCfgInfo));
    fillRlcUeDelInfo(ueCb, rlcUeCfg);
    if(RlcProcCfgReq(&ueCb->ueDeleteInfo.pst, rlcUeCfg) != ROK)
    {
-      DU_LOG("\nERROR  -->  RLC: rlcUeDeleteTmrExpiry(): Failed to delete UE");
+      DU_LOG("ERROR  -->  RLC: rlcUeDeleteTmrExpiry(): Failed to delete UE");
       if(sendRlcUeDeleteRspToDu(rlcUeCfg->cellId, rlcUeCfg->ueId, UEID_INVALID) != ROK)
       {
          DU_LOG("ERROR  --> RLC: rlcUeDeleteTmrExpiry(): Failed to send UE delete response ");
