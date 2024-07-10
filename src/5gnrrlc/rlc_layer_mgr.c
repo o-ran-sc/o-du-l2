@@ -126,7 +126,7 @@ static S16 rlcLmmGenCfg(RlcCb  *gCb,RlcGenCfg *cfg)
    if(cfg->maxUe > RLC_MAX_UE) 
    {
 #if (ERRCLASS & ERRCLS_INT_PAR)
-      DU_LOG("\nERROR  --> RLC : Invalid maxUe : Max [%lu] Received [%lu]", 
+      DU_LOG("ERROR  --> RLC : Invalid maxUe : Max [%lu] Received [%lu]", 
             RLC_MAX_UE, 
             cfg->maxUe);
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
@@ -136,7 +136,7 @@ static S16 rlcLmmGenCfg(RlcCb  *gCb,RlcGenCfg *cfg)
    if(cfg->maxKwuSaps > RLC_MAX_KWUSAPS)
    {
 #if (ERRCLASS & ERRCLS_INT_PAR)
-      DU_LOG("\nERROR  --> RLC : Invalid maxKwuSaps : Max [%lu] Received [%lu]", 
+      DU_LOG("ERROR  --> RLC : Invalid maxKwuSaps : Max [%lu] Received [%lu]", 
             RLC_MAX_KWUSAPS, 
             cfg->maxKwuSaps);
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
@@ -146,7 +146,7 @@ static S16 rlcLmmGenCfg(RlcCb  *gCb,RlcGenCfg *cfg)
    if(cfg->maxUdxSaps > RLC_MAX_UDXSAPS)
    {
 #if (ERRCLASS & ERRCLS_INT_PAR)
-      DU_LOG("\nERROR  --> RLC : Invalid maxUduSaps : Max [%lu] Received [%lu]", 
+      DU_LOG("ERROR  --> RLC : Invalid maxUduSaps : Max [%lu] Received [%lu]", 
             RLC_MAX_UDXSAPS, 
             cfg->maxUdxSaps);
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
@@ -184,7 +184,7 @@ static S16 rlcLmmGenCfg(RlcCb  *gCb,RlcGenCfg *cfg)
       RLC_ALLOC(gCb,gCb->u.dlCb, sizeof (RlcDlCb));
       if (gCb->u.dlCb == NULLP)
       {  
-         DU_LOG("\nERROR  --> RLC : Memory Allocation failed");   
+         DU_LOG("ERROR  --> RLC : Memory Allocation failed");   
          return (LCM_REASON_MEM_NOAVAIL);
       
       }
@@ -198,7 +198,7 @@ static S16 rlcLmmGenCfg(RlcCb  *gCb,RlcGenCfg *cfg)
       if(gCb->u.dlCb->rlcKwuDlSap == NULLP)
       {
          RLC_FREE(gCb,gCb->u.dlCb, sizeof (RlcDlCb));
-         DU_LOG("\nERROR  --> RLC : Memory Allocation failed");   
+         DU_LOG("ERROR  --> RLC : Memory Allocation failed");   
          return (LCM_REASON_MEM_NOAVAIL);
       }
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
@@ -214,7 +214,7 @@ static S16 rlcLmmGenCfg(RlcCb  *gCb,RlcGenCfg *cfg)
       {
          RLC_FREE(gCb,gCb->u.dlCb->rlcKwuDlSap, rlcSapSize);
          RLC_FREE(gCb,gCb->u.dlCb, sizeof (RlcDlCb));
-         DU_LOG("\nERROR  --> RLC : Memory Allocation failed");   
+         DU_LOG("ERROR  --> RLC : Memory Allocation failed");   
          return (LCM_REASON_MEM_NOAVAIL);
       }
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
@@ -244,7 +244,7 @@ static S16 rlcLmmGenCfg(RlcCb  *gCb,RlcGenCfg *cfg)
          RLC_FREE(gCb,gCb->u.dlCb->rlcKwuDlSap, rlcSapSize);
          RLC_FREE(gCb,gCb->u.dlCb->rguDlSap, rguSapSize);
          RLC_FREE(gCb,gCb->u.dlCb, sizeof (RlcDlCb));
-         DU_LOG("\nERROR  --> RLC_DL : RLC DL Initialization failed");   
+         DU_LOG("ERROR  --> RLC_DL : RLC DL Initialization failed");   
          return (LCM_REASON_MEM_NOAVAIL);
       }
 
@@ -283,7 +283,7 @@ static S16 rlcLmmGenCfg(RlcCb  *gCb,RlcGenCfg *cfg)
       RLC_ALLOC(gCb,gCb->u.ulCb, sizeof (RlcUlCb));
       if (gCb->u.ulCb == NULLP)
       {     
-         DU_LOG("\nERROR  --> RLC : Memory Allocation failed");   
+         DU_LOG("ERROR  --> RLC : Memory Allocation failed");   
          return (LCM_REASON_MEM_NOAVAIL);
       
       }
@@ -297,7 +297,7 @@ static S16 rlcLmmGenCfg(RlcCb  *gCb,RlcGenCfg *cfg)
       if(gCb->u.ulCb->rlcKwuUlSap == NULLP)
       {
          RLC_FREE(gCb,gCb->u.ulCb, sizeof (RlcUlCb));
-         DU_LOG("\nERROR  --> RLC : Memory Allocation failed");   
+         DU_LOG("ERROR  --> RLC : Memory Allocation failed");   
          return (LCM_REASON_MEM_NOAVAIL);
       }
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
@@ -315,7 +315,7 @@ static S16 rlcLmmGenCfg(RlcCb  *gCb,RlcGenCfg *cfg)
       {
          RLC_FREE(gCb,gCb->u.ulCb->rlcKwuUlSap, rlcSapSize);
          RLC_FREE(gCb,gCb->u.ulCb, sizeof (RlcUlCb));
-         DU_LOG("\nERROR  --> RLC : Memory Allocation failed");   
+         DU_LOG("ERROR  --> RLC : Memory Allocation failed");   
          return (LCM_REASON_MEM_NOAVAIL);
       }
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
@@ -344,7 +344,7 @@ static S16 rlcLmmGenCfg(RlcCb  *gCb,RlcGenCfg *cfg)
          RLC_FREE(gCb,gCb->u.ulCb->rlcKwuUlSap, rlcSapSize);
          RLC_FREE(gCb,gCb->u.ulCb->rguUlSap, rlcSapSize);
          RLC_FREE(gCb,gCb->u.ulCb, sizeof (RlcUlCb));
-         DU_LOG("\nERROR  --> RLC_DL : RLC DL Initialization failed");   
+         DU_LOG("ERROR  --> RLC_DL : RLC DL Initialization failed");   
       }
 
       /* Register the timer */
@@ -366,7 +366,7 @@ static S16 rlcLmmGenCfg(RlcCb  *gCb,RlcGenCfg *cfg)
    else
    {
 #if (ERRCLASS & ERRCLS_INT_PAR)
-      DU_LOG("\nERROR  --> RLC : Received Invalid RLC Mode");
+      DU_LOG("ERROR  --> RLC : Received Invalid RLC Mode");
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
 
       return (LCM_REASON_INVALID_PAR_VAL);
@@ -398,14 +398,14 @@ static S16 rlcLmmGenCfg(RlcCb  *gCb,RlcGenCfg *cfg)
       /* Starting timer to print throughput */
       if((rlcChkTmr(gCb, (PTR)(&gCb->rlcThpt), EVENT_RLC_UE_THROUGHPUT_TMR)) == FALSE)
       {
-         DU_LOG("\nINFO    --> RLC_DL : Starting UE Throughput timer");
+         DU_LOG("INFO    --> RLC_DL : Starting UE Throughput timer");
          rlcStartTmr(gCb, (PTR)(&gCb->rlcThpt), EVENT_RLC_UE_THROUGHPUT_TMR);
       }
    }
       /* Starting timer to print throughput */
       if((rlcChkTmr(gCb, (PTR)(&gCb->rlcThpt), EVENT_RLC_SNSSAI_THROUGHPUT_TMR)) == FALSE)
       {
-         DU_LOG("\nINFO    --> RLC_DL : Starting SNSSAI Throughput timer");
+         DU_LOG("INFO    --> RLC_DL : Starting SNSSAI Throughput timer");
          rlcStartTmr(gCb, (PTR)(&gCb->rlcThpt), EVENT_RLC_SNSSAI_THROUGHPUT_TMR);
       }
 
@@ -487,7 +487,7 @@ Header     *hdr
          break;
       default:
 #if (ERRCLASS & ERRCLS_INT_PAR)
-         DU_LOG("\nERROR  --> RLC : Received Invalid Message Type");
+         DU_LOG("ERROR  --> RLC : Received Invalid Message Type");
          if(!gCb)
          {
             fflush(stdout);
@@ -596,7 +596,7 @@ uint8_t RlcMiRlcConfigReq (Pst *pst,RlcMngmt *cfg)
       return (RFAILED);
    }
 
-   DU_LOG("\nDEBUG   -->  RLC : RlcMiRlcConfigReq elmId(%d)", cfg->hdr.elmId.elmnt);
+   DU_LOG("DEBUG   -->  RLC : RlcMiRlcConfigReq elmId(%d)", cfg->hdr.elmId.elmnt);
 
    switch(cfg->hdr.elmId.elmnt)
    {
@@ -734,7 +734,7 @@ uint8_t RlcMiLkwCntrlReq(Pst *pst, RlcMngmt *cntrl)
       rlcLmmSendCfm(tRlcCb,pst, cntrl, TCNTRL, &cntrl->hdr);
       return (RFAILED);
    }
-   DU_LOG("\nDEBUG  --> RLC : RlcMiLkwCntrlReq(elmId(%d))", cntrl->hdr.elmId.elmnt);
+   DU_LOG("DEBUG  --> RLC : RlcMiLkwCntrlReq(elmId(%d))", cntrl->hdr.elmId.elmnt);
 
    /* In normal cases, LCM_REASON_NOT_APPL is returned in cfm.
     * In all error cases appropriate reason is returned
@@ -824,7 +824,7 @@ S16 RlcMiLkwStaReq(Pst *pst,RlcMngmt *sta)
       return (RFAILED);
    }
 
-   DU_LOG("\nDEBUG  --> RLC : Status request for elmId(%d))", sta->hdr.elmId.elmnt);
+   DU_LOG("DEBUG  --> RLC : Status request for elmId(%d))", sta->hdr.elmId.elmnt);
 
    reason = LCM_REASON_NOT_APPL;
 
@@ -946,7 +946,7 @@ S16 RlcMiLkwStsReq (Pst *pst, Action action,RlcMngmt *sts)
       return (RFAILED);
    }
 
-   DU_LOG("\nDEBUG  --> RLC : RlcMiLkwStsReq(elmId(%d),action(%d))", 
+   DU_LOG("DEBUG  --> RLC : RlcMiLkwStsReq(elmId(%d),action(%d))", 
                        action, 
                        sts->hdr.elmId.elmnt);
 
@@ -1100,7 +1100,7 @@ S16 RlcMiLkwL2MeasReq(Pst *pst, RlcL2MeasReqEvt *measReqEvt)
 #if (ERRCLASS & ERRCLS_ADD_RES) /* KW_FIX */ 
       if(measEvt == NULLP)
       {
-         DU_LOG("\nERROR  --> RLC : Memory Allocation failed");   
+         DU_LOG("ERROR  --> RLC : Memory Allocation failed");   
          return RFAILED;
       }   
 #endif      
@@ -1263,7 +1263,7 @@ static S16 rlcLmmCfgKwuSap(RlcCb *gCb,RlcSapCfg *cfg)
    /* Check for reconfiguration */
    if (rlcKwuSapCb->state != RLC_SAP_NOT_CFG)
    {
-      DU_LOG("\nERROR  --> RLC : RLC Mode [%d] : Invalid rlckwuSap State [%d]",
+      DU_LOG("ERROR  --> RLC : RLC Mode [%d] : Invalid rlckwuSap State [%d]",
             gCb->genCfg.rlcMode, rlcKwuSapCb->state);
       /* reconfiguration not allowed */
       return (LCM_REASON_RECONFIG_FAIL);
@@ -1313,7 +1313,7 @@ static S16 rlcLmmCfgCkwSap(RlcCb  *gCb,RlcSapCfg *cfg)
    /* Check for reconfiguration */
    if(ckwSap->state  != RLC_SAP_NOT_CFG)
    {
-      DU_LOG("\nERROR  --> RLC : Invalid rlckwuSap State [%d]",ckwSap->state);
+      DU_LOG("ERROR  --> RLC : Invalid rlckwuSap State [%d]",ckwSap->state);
       return (LCM_REASON_RECONFIG_FAIL);
    }
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
@@ -1357,7 +1357,7 @@ static S16 rlcLmmCfgUdxSap(RlcCb *gCb,RlcSapCfg *cfg)
       /* Check for reconfiguration */
       if(udxDlSap->state != RLC_SAP_NOT_CFG)
       {
-         DU_LOG("\nERROR  --> RLC : Invalid udxDlSap State [%d]",udxDlSap->state);
+         DU_LOG("ERROR  --> RLC : Invalid udxDlSap State [%d]",udxDlSap->state);
          return (LCM_REASON_RECONFIG_FAIL);
       }
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
@@ -1373,7 +1373,7 @@ static S16 rlcLmmCfgUdxSap(RlcCb *gCb,RlcSapCfg *cfg)
    /* Check for reconfiguration */
       if(udxUlSap->state != RLC_SAP_NOT_CFG)
       {
-         DU_LOG("\nERROR  --> RLC : Invalid udxUlSap State [%d]", udxUlSap->state);
+         DU_LOG("ERROR  --> RLC : Invalid udxUlSap State [%d]", udxUlSap->state);
          return (LCM_REASON_RECONFIG_FAIL);
       }
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
@@ -1423,7 +1423,7 @@ static S16 rlcLmmCfgRguSap(RlcCb *gCb,RlcSapCfg *cfg)
    /* Check for reconfiguration */
    if(rguSap->state != RLC_SAP_NOT_CFG)
    {
-      DU_LOG("\nERROR  --> RLC : RLC Mode [%d]: Invalid rguSap State [%d]",
+      DU_LOG("ERROR  --> RLC : RLC Mode [%d]: Invalid rguSap State [%d]",
             gCb->genCfg.rlcMode, rguSap->state);
       return (LCM_REASON_RECONFIG_FAIL);
    }
@@ -1762,7 +1762,7 @@ static S16 rlcLmmUdxSapCntrl(RlcCb *gCb,RlcMngmt *cntrl)
    /* validate SAP */
    if(UDX_SAP.state == RLC_SAP_NOT_CFG)
    {
-      DU_LOG("\nERROR  --> RLC : udxUlSap not configured yet");
+      DU_LOG("ERROR  --> RLC : udxUlSap not configured yet");
       return (LCM_REASON_INVALID_STATE);
    }
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
@@ -1834,7 +1834,7 @@ static S16 rlcLmmLSapCntrl(RlcCb *gCb,RlcMngmt *cntrl)
    /* validate SAP */
    if(rguSap->state == RLC_SAP_NOT_CFG)
    {
-      DU_LOG("\nERROR  --> RLC : RLC Mode [%d]:rguSap not configured yet", gCb->genCfg.rlcMode);
+      DU_LOG("ERROR  --> RLC : RLC Mode [%d]:rguSap not configured yet", gCb->genCfg.rlcMode);
       return (LCM_REASON_INVALID_STATE);
    }
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
@@ -2160,7 +2160,7 @@ S16 rlcLmmSendTrc(RlcCb *gCb,Event event,Buffer *mBuf)
    MsgLen    tempCnt;
    Pst       pst;
 
-   DU_LOG("\nDEBUG  --> RLC : rlcLmmSendTrc(): Trace for event=%d, gCb->trcLen=%d",
+   DU_LOG("DEBUG  --> RLC : rlcLmmSendTrc(): Trace for event=%d, gCb->trcLen=%d",
                      event,
                      gCb->trcLen);
 
@@ -2182,7 +2182,7 @@ S16 rlcLmmSendTrc(RlcCb *gCb,Event event,Buffer *mBuf)
             != ROK)
         {
            /* rg005.201 removed SPutSBuf on error */
-           DU_LOG("\nERROR  --> RLC : SCpyMsgMsg Failed");   
+           DU_LOG("ERROR  --> RLC : SCpyMsgMsg Failed");   
            return RFAILED;
         }
         /* Send Trace Indication to Layer manager */
@@ -2194,7 +2194,7 @@ S16 rlcLmmSendTrc(RlcCb *gCb,Event event,Buffer *mBuf)
         /* Get the length of the recvd message buffer */
         if (SFndLenMsg(mBuf, &bufLen) != ROK)
         {
-           DU_LOG("\nERROR  --> RLC : SFndLenMsg Failed");   
+           DU_LOG("ERROR  --> RLC : SFndLenMsg Failed");   
            return RFAILED;
         }
         /* Check if the recvd buffer size is less than request trace len */
@@ -2205,7 +2205,7 @@ S16 rlcLmmSendTrc(RlcCb *gCb,Event event,Buffer *mBuf)
            if (SCpyMsgMsg(mBuf, pst.region, pst.pool, &dstMbuf)
               != ROK)
            {
-              DU_LOG("\nERROR  --> RLC : SCpyMsgMsg Failed");   
+              DU_LOG("ERROR  --> RLC : SCpyMsgMsg Failed");   
               return RFAILED;
            }
          
@@ -2223,7 +2223,7 @@ S16 rlcLmmSendTrc(RlcCb *gCb,Event event,Buffer *mBuf)
            {
               (Void) SPutSMem(RLC_GET_MEM_REGION(gCb), RLC_GET_MEM_POOL(gCb));
       
-               DU_LOG("\nERROR  --> RLC : Memory Allocation failed");   
+               DU_LOG("ERROR  --> RLC : Memory Allocation failed");   
                return (LCM_REASON_MEM_NOAVAIL);
            }
 #endif /* ERRCLASS & ERRCLS_INT_PAR */
@@ -2231,19 +2231,19 @@ S16 rlcLmmSendTrc(RlcCb *gCb,Event event,Buffer *mBuf)
            /* Copy trcLen nos of bytes from the recvd message */
            if (SCpyMsgFix(mBuf,0,gCb->trcLen,tempBuf,&tempCnt) != ROK)   
            {
-              DU_LOG("\nERROR  --> RLC : SCpyMsgFix Failed");   
+              DU_LOG("ERROR  --> RLC : SCpyMsgFix Failed");   
               return RFAILED;
            }
 
            if (ODU_GET_MSG_BUF(pst.region, pst.pool, &dstMbuf) != ROK)
            {
-              DU_LOG("\nERROR  --> RLC : Memory Allocation failed");   
+              DU_LOG("ERROR  --> RLC : Memory Allocation failed");   
               return RFAILED;
            }
            /* Copy the tempBuf data to dst mBuf */
            if (SCpyFixMsg(tempBuf,dstMbuf,0,gCb->trcLen,&tempCnt) != ROK)
            {
-              DU_LOG("\nERROR  --> RLC : SCpyMsgFix Failed");   
+              DU_LOG("ERROR  --> RLC : SCpyMsgFix Failed");   
               return RFAILED;
            }
   

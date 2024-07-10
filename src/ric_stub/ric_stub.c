@@ -76,7 +76,7 @@ uint8_t tst()
 {
    init_log();   
  
-   DU_LOG("\nINFO  --> RIC : Starting RIC_STUB");
+   DU_LOG("INFO  --> RIC : Starting RIC_STUB");
    /* Read RIC configurations */
    readRicCfg();
 
@@ -110,14 +110,14 @@ void readRicCfg()
    uint8_t *numDu;
    uint32_t ipv4_du, ipv4_ric;
 
-   DU_LOG("\nINFO  --> RIC : Reading RIC configurations");
+   DU_LOG("INFO  --> RIC : Reading RIC configurations");
 
    ricCb.ricCfgParams.ricId = RIC_ID;
    strcpy(ricCb.ricCfgParams.ricName, RIC_NAME);
 #ifdef O1_ENABLE
    if( getStartupConfigForStub(&g_cfg) != ROK )
    {
-      DU_LOG("\nError  -->  RIC : Could not fetch startup "\
+      DU_LOG("Error  -->  RIC : Could not fetch startup "\
              "configurations from Netconf interface\n");
       exit(1);
    }

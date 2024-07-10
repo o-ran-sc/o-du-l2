@@ -114,7 +114,7 @@ uint8_t createMacRaCb(MacCellCb *cellCb, RachIndInfo *rachIndInfo)
       ueIdx = getFreeBitFromUeBitMap(rachIndInfo->cellId);
       if(ueIdx == -1)
       {
-         DU_LOG("\nERROR  -->  MAC : Failed to find free UE Idx in UE bit map of cell Id [%d]", rachIndInfo->cellId);
+         DU_LOG("ERROR  -->  MAC : Failed to find free UE Idx in UE bit map of cell Id [%d]", rachIndInfo->cellId);
          return RFAILED;
       }
 
@@ -162,7 +162,7 @@ uint8_t fapiMacRachInd(Pst *pst, RachInd *rachInd)
    RachIndInfo  *rachIndInfo = NULLP;
    MacCellCb    *cellCb = NULLP;
 
-   DU_LOG("\nINFO  -->  MAC : Received RACH indication");
+   DU_LOG("INFO  -->  MAC : Received RACH indication");
    /* Considering one pdu and one preamble */
    pduIdx = 0;
    preambleIdx = 0;
@@ -174,14 +174,14 @@ uint8_t fapiMacRachInd(Pst *pst, RachInd *rachInd)
 
    if(!cellCb)
    {
-      DU_LOG("\nERROR  --> MAC : Invalid Cell ID [%d] received in RACH Indication", rachInd->cellId);
+      DU_LOG("ERROR  --> MAC : Invalid Cell ID [%d] received in RACH Indication", rachInd->cellId);
       return RFAILED;
    }
 
    MAC_ALLOC(rachIndInfo, sizeof(RachIndInfo));
    if(!rachIndInfo)
    {
-      DU_LOG("\nERROR  --> MAC : Memory allocation failure in fapiMacRachInd");
+      DU_LOG("ERROR  --> MAC : Memory allocation failure in fapiMacRachInd");
       MAC_FREE_SHRABL_BUF(pst->region, pst->pool, rachInd, sizeof(RachInd));
       return RFAILED;
    }
@@ -234,7 +234,7 @@ uint8_t MacProcRachRsrcReq(Pst *pst, MacRachRsrcReq *rachRsrcReq)
    MacUeCb   *ueCb = NULLP;
    SchRachRsrcReq *schRachRsrcReq = NULLP;
 
-   DU_LOG("\nINFO  -->  MAC : Recieved RACH Resource Request for Cell ID [%d] UE ID [%d]",\
+   DU_LOG("INFO  -->  MAC : Recieved RACH Resource Request for Cell ID [%d] UE ID [%d]",\
          rachRsrcReq->cellId, rachRsrcReq->ueId);
 
    /* Fetch Cell Cb */
@@ -262,13 +262,13 @@ uint8_t MacProcRachRsrcReq(Pst *pst, MacRachRsrcReq *rachRsrcReq)
             ret = SchMessageRouter(&schPst, (void *)schRachRsrcReq);
          }
          else
-            DU_LOG("\nERROR  -->  MAC : Memory allocation failed for RACH resource request to SCH");
+            DU_LOG("ERROR  -->  MAC : Memory allocation failed for RACH resource request to SCH");
       }
       else
-         DU_LOG("\nERROR  -->  MAC : UE ID [%d] not found", rachRsrcReq->ueId);
+         DU_LOG("ERROR  -->  MAC : UE ID [%d] not found", rachRsrcReq->ueId);
    }
    else
-      DU_LOG("\nERROR  -->  MAC : Cell ID [%d] not found", rachRsrcReq->cellId);
+      DU_LOG("ERROR  -->  MAC : Cell ID [%d] not found", rachRsrcReq->cellId);
 
    /* Free sharable buffer used to send RACH reource request from DU APP to MAC */
    MAC_FREE_SHRABL_BUF(pst->region, pst->pool, rachRsrcReq, sizeof(MacRachRsrcReq));
@@ -300,14 +300,14 @@ uint8_t MacProcSchRachRsrcRsp(Pst *pst, SchRachRsrcRsp *schRachRsrcRsp)
    MacCellCb *cellCb = NULLP;
    MacUeCb   *ueCb = NULLP;
 
-   DU_LOG("\nINFO  -->  MAC : Received RACH resource response from SCH : Cell ID [%d] CRNTI [%d]", \
+   DU_LOG("INFO  -->  MAC : Received RACH resource response from SCH : Cell ID [%d] CRNTI [%d]", \
          schRachRsrcRsp->cellId, schRachRsrcRsp->crnti);
 
    /* Fill RACH resource response to send to DU APP */
    MAC_ALLOC_SHRABL_BUF(rachRsrcRsp, sizeof(MacRachRsrcRsp));
    if(!rachRsrcRsp)
    {
-      DU_LOG("\nERROR  -->  MAC : Memory allocation failed for RACH resource response");
+      DU_LOG("ERROR  -->  MAC : Memory allocation failed for RACH resource response");
       MAC_FREE(schRachRsrcRsp, sizeof(SchRachRsrcRsp));
       return RFAILED;
    }
@@ -321,12 +321,12 @@ uint8_t MacProcSchRachRsrcRsp(Pst *pst, SchRachRsrcRsp *schRachRsrcRsp)
    /* If negative response is received from SCH, send it further to DU APP */ 
    if(schRachRsrcRsp->result == RSP_NOK)
    {
-      DU_LOG("\nINFO  -->  MAC : RACH Resource response from SCH : Result [FAILURE]");
+      DU_LOG("INFO  -->  MAC : RACH Resource response from SCH : Result [FAILURE]");
       rachRsrcRsp->result = MAC_DU_APP_RSP_NOK;
    }
    else
    {
-      DU_LOG("\nINFO  -->  MAC : RACH Resource response from SCH : Result [SUCCESS]");
+      DU_LOG("INFO  -->  MAC : RACH Resource response from SCH : Result [SUCCESS]");
       
       /* Fetch Cell Cb */
       GET_CELL_IDX(schRachRsrcRsp->cellId, cellIdx);
@@ -339,13 +339,13 @@ uint8_t MacProcSchRachRsrcRsp(Pst *pst, SchRachRsrcRsp *schRachRsrcRsp)
             ueCb = &cellCb->ueCb[rachRsrcRsp->ueId-1];
          else
          {
-            DU_LOG("\nERROR  -->  MAC : CRNTI [%d] not found", schRachRsrcRsp->crnti);
+            DU_LOG("ERROR  -->  MAC : CRNTI [%d] not found", schRachRsrcRsp->crnti);
             rachRsrcRsp->result = MAC_DU_APP_RSP_NOK;
          }   
       }   
       else
       {   
-         DU_LOG("\nERROR  -->  MAC : Cell ID [%d] not found", schRachRsrcRsp->cellId);
+         DU_LOG("ERROR  -->  MAC : Cell ID [%d] not found", schRachRsrcRsp->cellId);
          rachRsrcRsp->result = MAC_DU_APP_RSP_NOK;
       }   
    }
@@ -398,7 +398,7 @@ uint8_t MacProcRachRsrcRel(Pst *pst, MacRachRsrcRel *rachRsrcRel)
    MacUeCb   *ueCb = NULLP;
    SchRachRsrcRel *schRachRsrcRel = NULLP;
 
-   DU_LOG("\nINFO  -->  MAC : Recieved RACH Resource Release for Cell ID [%d] UE ID [%d]",\
+   DU_LOG("INFO  -->  MAC : Recieved RACH Resource Release for Cell ID [%d] UE ID [%d]",\
          rachRsrcRel->cellId, rachRsrcRel->ueId);
 
    /* Fetch Cell Cb */
@@ -429,13 +429,13 @@ uint8_t MacProcRachRsrcRel(Pst *pst, MacRachRsrcRel *rachRsrcRel)
             ret = SchMessageRouter(&schPst, (void *)schRachRsrcRel);
          }
          else
-            DU_LOG("\nERROR  -->  MAC : Memory allocation failed for RACH resource release to SCH");
+            DU_LOG("ERROR  -->  MAC : Memory allocation failed for RACH resource release to SCH");
       }
       else
-         DU_LOG("\nERROR  -->  MAC : UE ID [%d] not found", rachRsrcRel->ueId);
+         DU_LOG("ERROR  -->  MAC : UE ID [%d] not found", rachRsrcRel->ueId);
    }
    else
-      DU_LOG("\nERROR  -->  MAC : Cell ID [%d] not found", rachRsrcRel->cellId);
+      DU_LOG("ERROR  -->  MAC : Cell ID [%d] not found", rachRsrcRel->cellId);
 
    /* Free sharable buffer used to send RACH reource release from DU APP to MAC */
    MAC_FREE_SHRABL_BUF(pst->region, pst->pool, rachRsrcRel, sizeof(MacRachRsrcRel));
@@ -467,7 +467,7 @@ uint8_t MacProcUlSchInfo(Pst *pst, UlSchedInfo *ulSchedInfo)
    uint16_t  cellIdx;
 
 #ifdef CALL_FLOW_DEBUG_LOG
-   DU_LOG("\nCall Flow: ENTSCH -> ENTMAC : EVENT_UL_SCH_INFO\n");
+   DU_LOG("Call Flow: ENTSCH -> ENTMAC : EVENT_UL_SCH_INFO\n");
 #endif
 
    GET_CELL_IDX(ulSchedInfo->cellId, cellIdx);

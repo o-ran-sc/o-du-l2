@@ -67,13 +67,13 @@ uint8_t schBroadcastSsbAlloc(SchCellCb *cell, SlotTimingInfo slotTime, DlBrdcstA
 
    if(cell == NULL)
    {
-      DU_LOG("\nERROR  -->  SCH: schBroadcastSsbAlloc() : Cell is NULL");
+      DU_LOG("ERROR  -->  SCH: schBroadcastSsbAlloc() : Cell is NULL");
       return RFAILED;
    }
 
    if(dlBrdcstAlloc == NULL)
    {
-      DU_LOG("\nERROR  -->  SCH: schBroadcastSsbAlloc() : dlBrdcstAlloc is NULL");
+      DU_LOG("ERROR  -->  SCH: schBroadcastSsbAlloc() : dlBrdcstAlloc is NULL");
       return RFAILED;
    }
 
@@ -95,7 +95,7 @@ uint8_t schBroadcastSsbAlloc(SchCellCb *cell, SlotTimingInfo slotTime, DlBrdcstA
 
    if((allocatePrbDl(cell, slotTime, ssbStartSymb, SCH_SSB_NUM_SYMB, &ssbInfo.fdAlloc.startPrb, ssbInfo.fdAlloc.numPrb)) != ROK)
    {
-       DU_LOG("\nERROR  -->  SCH: PRB allocation failed for SSB in SFN:SLOT [%d : %d]", slotTime.sfn, slotTime.slot);
+       DU_LOG("ERROR  -->  SCH: PRB allocation failed for SSB in SFN:SLOT [%d : %d]", slotTime.sfn, slotTime.slot);
        return RFAILED;
    }
 
@@ -128,13 +128,13 @@ uint8_t schBroadcastSib1Alloc(SchCellCb *cell, SlotTimingInfo slotTime, DlBrdcst
 
    if(cell == NULL)
    {
-      DU_LOG("\nERROR  -->  SCH: schBroadcastSsbAlloc() : Cell is NULL");
+      DU_LOG("ERROR  -->  SCH: schBroadcastSsbAlloc() : Cell is NULL");
       return RFAILED;
    }
 
    if(dlBrdcstAlloc == NULL)
    {
-      DU_LOG("\nERROR  -->  SCH: schBroadcastSsbAlloc() : dlBrdcstAlloc is NULL");
+      DU_LOG("ERROR  -->  SCH: schBroadcastSsbAlloc() : dlBrdcstAlloc is NULL");
       return RFAILED;
    }
    
@@ -163,7 +163,7 @@ uint8_t schBroadcastSib1Alloc(SchCellCb *cell, SlotTimingInfo slotTime, DlBrdcst
    /* Allocate PRB */
    if((allocatePrbDl(cell, slotTime, startSymbol, numSymbol, &freqAlloc.startPrb, freqAlloc.numPrb)) != ROK)
    {
-       DU_LOG("\nERROR  -->  SCH: PRB allocation failed for SIB1 in SFN:Slot [%d : %d]", slotTime.sfn, slotTime.slot);
+       DU_LOG("ERROR  -->  SCH: PRB allocation failed for SIB1 in SFN:Slot [%d : %d]", slotTime.sfn, slotTime.slot);
        return RFAILED;
    }
 
@@ -176,7 +176,7 @@ uint8_t schBroadcastSib1Alloc(SchCellCb *cell, SlotTimingInfo slotTime, DlBrdcst
    }
    else
    {
-      DU_LOG("\nERROR  -->  SCH : Memory allocation failed in %s", __func__);
+      DU_LOG("ERROR  -->  SCH : Memory allocation failed in %s", __func__);
       return RFAILED;
    }
    return ROK;
@@ -302,7 +302,7 @@ uint8_t fillUlSchedPucchFormat(uint8_t pucchFormat, SchPucchInfo *ulSchedPucch,\
          }/* To Add support for more Pucch Format */
 
       default:
-         DU_LOG("\nERROR  --> SCH : Invalid PUCCH format[%d] in fillUlSchedPucchFormatCfg()", pucchFormat);
+         DU_LOG("ERROR  --> SCH : Invalid PUCCH format[%d] in fillUlSchedPucchFormatCfg()", pucchFormat);
 	 ret = RFAILED;
          return ret;
    }
@@ -435,7 +435,7 @@ uint16_t fillPucchResourceInfo(SchCellCb *cell, uint8_t ueId, SchPucchInfo *schP
       if(ret == RFAILED)
       {
          memset(schPucchInfo, 0, sizeof(SchPucchInfo));
-         DU_LOG("\nERROR  --> SCH : Filling PUCCH dedicated cfg failed at fillPucchResourceInfo()");
+         DU_LOG("ERROR  --> SCH : Filling PUCCH dedicated cfg failed at fillPucchResourceInfo()");
          return ret;
       }
    }
@@ -487,7 +487,7 @@ uint16_t fillPucchResourceInfo(SchCellCb *cell, uint8_t ueId, SchPucchInfo *schP
       }
       else
       {
-         DU_LOG("\nERROR  -->  SCH: Invalid value of r_pucch:%d (greater than 15) ", r_pucch);
+         DU_LOG("ERROR  -->  SCH: Invalid value of r_pucch:%d (greater than 15) ", r_pucch);
          memset(schPucchInfo, 0, sizeof(SchPucchInfo));
          return ret;
       }
@@ -575,7 +575,7 @@ uint8_t schUlResAlloc(SchCellCb *cell, Inst schInst)
       ret = sendUlSchInfoToMac(&ulSchedInfo, schInst);
       if(ret != ROK)
       {
-         DU_LOG("\nERROR  -->  SCH : Sending UL Sch info from SCH to MAC failed");
+         DU_LOG("ERROR  -->  SCH : Sending UL Sch info from SCH to MAC failed");
       }
    }
 
@@ -631,13 +631,13 @@ uint8_t schDlRsrcAllocMsg4(SchCellCb *cell, SlotTimingInfo msg4Time, uint8_t ueI
 
    if(cell == NULL)
    {
-      DU_LOG("\nERROR  -->  SCH: schDlRsrcAllocMsg4() : Cell is NULL");
+      DU_LOG("ERROR  -->  SCH: schDlRsrcAllocMsg4() : Cell is NULL");
       return RFAILED;
    }
 
    if(dlMsgAlloc == NULL)
    {
-      DU_LOG("\nERROR  -->  SCH: schDlRsrcAllocMsg4() :  dlMsgAlloc is NULL");
+      DU_LOG("ERROR  -->  SCH: schDlRsrcAllocMsg4() :  dlMsgAlloc is NULL");
       return RFAILED;
    }
 
@@ -647,7 +647,7 @@ uint8_t schDlRsrcAllocMsg4(SchCellCb *cell, SlotTimingInfo msg4Time, uint8_t ueI
 
    if(!msg4Alloc->dlMsgPdcchCfg)
    {
-      DU_LOG("\nERROR  --> SCH : Memory allocation failed in %s",__func__);
+      DU_LOG("ERROR  --> SCH : Memory allocation failed in %s",__func__);
       return RFAILED;
    }
    pdcch = msg4Alloc->dlMsgPdcchCfg;
@@ -772,7 +772,7 @@ uint8_t schDlRsrcAllocMsg4(SchCellCb *cell, SlotTimingInfo msg4Time, uint8_t ueI
    if((allocatePrbDl(cell, msg4Time, startSymbol, numSymbol,\
       &pdsch->pdschFreqAlloc.startPrb, pdsch->pdschFreqAlloc.numPrb)) != ROK)
    {
-      DU_LOG("\nERROR  --> SCH : Resource allocation failed for MSG4");
+      DU_LOG("ERROR  --> SCH : Resource allocation failed for MSG4");
       SCH_FREE(msg4Alloc->dlMsgPdcchCfg, sizeof(PdcchCfg));
       return RFAILED;
    }
@@ -872,7 +872,7 @@ uint8_t schDlRsrcAllocDlMsg(SchCellCb *cell, SlotTimingInfo slotTime, uint16_t c
    SCH_ALLOC(dlMsgAlloc->dlMsgPdcchCfg, sizeof(PdcchCfg));
    if(!dlMsgAlloc->dlMsgPdcchCfg)
    {
-      DU_LOG("\nERROR  -->  SCH : Memory allocation failed in schDlRsrcAllocDlMsg");
+      DU_LOG("ERROR  -->  SCH : Memory allocation failed in schDlRsrcAllocDlMsg");
       return RFAILED;
    }
    pdcch = dlMsgAlloc->dlMsgPdcchCfg;
@@ -914,7 +914,7 @@ uint8_t schDlRsrcAllocDlMsg(SchCellCb *cell, SlotTimingInfo slotTime, uint16_t c
       pdcch->coresetCfg.startSymbolIndex = pdcchStartSymbol;
    else
    {
-      DU_LOG("\nERROR  -->  SCH : Invalid SymbolIndex in schDlRsrcAllocDlMsg");
+      DU_LOG("ERROR  -->  SCH : Invalid SymbolIndex in schDlRsrcAllocDlMsg");
       return RFAILED;
    }
    pdcch->coresetCfg.durationSymbols = coreset1.duration;
@@ -932,7 +932,7 @@ uint8_t schDlRsrcAllocDlMsg(SchCellCb *cell, SlotTimingInfo slotTime, uint16_t c
    }
    else
    {
-      DU_LOG("\nERROR  -->  SCH : CORESETSize is zero in schDlRsrcAllocDlMsg");
+      DU_LOG("ERROR  -->  SCH : CORESETSize is zero in schDlRsrcAllocDlMsg");
       return RFAILED;
    }
 
@@ -940,7 +940,7 @@ uint8_t schDlRsrcAllocDlMsg(SchCellCb *cell, SlotTimingInfo slotTime, uint16_t c
    pdcch->coresetCfg.precoderGranularity =  coreset1.precoderGranularity;
    if(pdcch->numDlDci >= MAX_NUM_PDCCH)
    {
-      DU_LOG("\nERROR  -->  SCH: MAX number of PDCCH allocted for this slot.");
+      DU_LOG("ERROR  -->  SCH: MAX number of PDCCH allocted for this slot.");
       return RFAILED;
    }
    pdcch->dci[pdcch->numDlDci].rnti = ueCb.crnti;
@@ -1024,7 +1024,7 @@ uint8_t schDlRsrcAllocDlMsg(SchCellCb *cell, SlotTimingInfo slotTime, uint16_t c
    if((allocatePrbDl(cell, slotTime, startSymbol, numSymbol,\
                &pdsch->pdschFreqAlloc.startPrb, pdsch->pdschFreqAlloc.numPrb)) != ROK)
    {
-      DU_LOG("\nERROR  --> SCH : allocatePrbDl() failed for DL MSG");
+      DU_LOG("ERROR  --> SCH : allocatePrbDl() failed for DL MSG");
       SCH_FREE(dlMsgAlloc->dlMsgPdcchCfg, sizeof(PdcchCfg));
       return RFAILED;
    }
@@ -1580,7 +1580,7 @@ void prbAllocUsingRRMPolicy(CmLListCp *lcLL, bool isDedicatedPRB, uint16_t mcsId
 
    if(lcLL == NULLP)
    {
-      DU_LOG("\nERROR --> SCH: LcList not present");
+      DU_LOG("ERROR --> SCH: LcList not present");
       return;
    }
    node = lcLL->first;
@@ -1605,7 +1605,7 @@ void prbAllocUsingRRMPolicy(CmLListCp *lcLL, bool isDedicatedPRB, uint16_t mcsId
        * process of LCID which was fully allocated. Check is just for safety purpose*/
       if(lcNode->reqBO == 0 && lcNode->allocBO == 0)
       {
-         DU_LOG("\nERROR --> SCH: LCID:%d has no requirement, clearing this node",\
+         DU_LOG("ERROR --> SCH: LCID:%d has no requirement, clearing this node",\
                lcNode->lcId);
          deleteNodeFromLList(lcLL, node);
          SCH_FREE(lcNode, sizeof(LcInfo));
@@ -1616,7 +1616,7 @@ void prbAllocUsingRRMPolicy(CmLListCp *lcLL, bool isDedicatedPRB, uint16_t mcsId
       /*[Exit1]: All LCs are allocated(allocBO = 0 for fully unallocated LC)*/
       if(lcNode->allocBO != 0)
       {
-         DU_LOG("\nDEBUG  -->  SCH: All LC are allocated [SharedPRB:%d]",*sharedPRB);
+         DU_LOG("DEBUG  -->  SCH: All LC are allocated [SharedPRB:%d]",*sharedPRB);
          return;
       }
 
@@ -1626,7 +1626,7 @@ void prbAllocUsingRRMPolicy(CmLListCp *lcLL, bool isDedicatedPRB, uint16_t mcsId
          /*Loop Exit: All resources exhausted*/
          if(remReservedPRB == 0 && *sharedPRB == 0)
          {
-            DU_LOG("\nDEBUG  -->  SCH: Dedicated resources exhausted for LC:%d",lcNode->lcId);
+            DU_LOG("DEBUG  -->  SCH: Dedicated resources exhausted for LC:%d",lcNode->lcId);
             return;
          }
       }
@@ -1635,7 +1635,7 @@ void prbAllocUsingRRMPolicy(CmLListCp *lcLL, bool isDedicatedPRB, uint16_t mcsId
          /*Loop Exit: All resources exhausted*/
          if(*sharedPRB == 0)
          {
-            DU_LOG("\nDEBUG  -->  SCH: Default resources exhausted for LC:%d",lcNode->lcId);
+            DU_LOG("DEBUG  -->  SCH: Default resources exhausted for LC:%d",lcNode->lcId);
             return;
          }
       }
@@ -1646,7 +1646,7 @@ void prbAllocUsingRRMPolicy(CmLListCp *lcLL, bool isDedicatedPRB, uint16_t mcsId
       /*[Step4]*/
       if((isTxPayloadLenAdded != NULLP) && (*isTxPayloadLenAdded == FALSE))
       {
-         DU_LOG("\nDEBUG  -->  SCH: LC:%d is the First node to be allocated which includes TX_PAYLOAD_HDR_LEN",\
+         DU_LOG("DEBUG  -->  SCH: LC:%d is the First node to be allocated which includes TX_PAYLOAD_HDR_LEN",\
                lcNode->lcId);
          *isTxPayloadLenAdded = TRUE;
          lcNode->allocBO = calculateEstimateTBSize((lcNode->reqBO + TX_PAYLOAD_HDR_LEN),\
@@ -1655,7 +1655,7 @@ void prbAllocUsingRRMPolicy(CmLListCp *lcLL, bool isDedicatedPRB, uint16_t mcsId
       }
       else if((srRcvd != NULLP) && (*srRcvd == TRUE))
       {
-         DU_LOG("\nDEBUG  --> SCH: LC:%d is the First node to be allocated which includes UL_GRANT_SIZE",\
+         DU_LOG("DEBUG  --> SCH: LC:%d is the First node to be allocated which includes UL_GRANT_SIZE",\
                lcNode->lcId);
          *srRcvd = FALSE;
          lcNode->reqBO += UL_GRANT_SIZE;
@@ -1678,7 +1678,7 @@ void prbAllocUsingRRMPolicy(CmLListCp *lcLL, bool isDedicatedPRB, uint16_t mcsId
       {
          if(*sharedPRB <=  (estPrb - remReservedPRB))
          {
-            DU_LOG("\nDEBUG  -->  SCH: SharedPRB is less");
+            DU_LOG("DEBUG  -->  SCH: SharedPRB is less");
             *sharedPRB = 0;
          }
          else
@@ -1729,7 +1729,7 @@ void updateGrantSizeForBoRpt(CmLListCp *lcLL, DlMsgSchInfo *dlMsgAlloc,\
 
    if(lcLL == NULLP)
    {
-      DU_LOG("\nERROR --> SCH: LcList not present");
+      DU_LOG("ERROR --> SCH: LcList not present");
       return;
    }
 
@@ -1750,7 +1750,7 @@ void updateGrantSizeForBoRpt(CmLListCp *lcLL, DlMsgSchInfo *dlMsgAlloc,\
       lcNode = (LcInfo *)node->node;
       if(lcNode != NULLP)
       {
-         DU_LOG("\nINFO   -->  SCH : LcID:%d, [reqBO, allocBO, allocPRB]:[%d,%d,%d]",\
+         DU_LOG("INFO   -->  SCH : LcID:%d, [reqBO, allocBO, allocPRB]:[%d,%d,%d]",\
                lcNode->lcId, lcNode->reqBO, lcNode->allocBO, lcNode->allocPRB);
          if(dlMsgAlloc != NULLP)
          {
@@ -1764,7 +1764,7 @@ void updateGrantSizeForBoRpt(CmLListCp *lcLL, DlMsgSchInfo *dlMsgAlloc,\
             /*Calculate the Total Payload/BO size allocated*/
             *accumalatedBOSize += dlMsgAlloc->transportBlock[0].lcSchInfo[dlMsgAlloc->transportBlock[0].numLc].schBytes; 
 
-            DU_LOG("\nINFO   -->  SCH: Added in MAC BO report: LCID:%d,reqBO:%d,Idx:%d, TotalBO Size:%d",\
+            DU_LOG("INFO   -->  SCH: Added in MAC BO report: LCID:%d,reqBO:%d,Idx:%d, TotalBO Size:%d",\
                   lcNode->lcId,lcNode->reqBO, dlMsgAlloc->transportBlock[0].numLc, *accumalatedBOSize);
 
             dlMsgAlloc->transportBlock[0].numLc++;
@@ -1773,7 +1773,7 @@ void updateGrantSizeForBoRpt(CmLListCp *lcLL, DlMsgSchInfo *dlMsgAlloc,\
          else if(bsrInfo != NULLP)
          {
             *accumalatedBOSize += lcNode->allocBO;   
-            DU_LOG("\nINFO   --> SCH: UL : LCID:%d,reqBO:%d, TotalBO Size:%d",\
+            DU_LOG("INFO   --> SCH: UL : LCID:%d,reqBO:%d, TotalBO Size:%d",\
                   lcNode->lcId,lcNode->reqBO, *accumalatedBOSize);
          }
       }
@@ -1846,7 +1846,7 @@ uint8_t schProcessMsg4Req(SchCellCb *cell, SlotTimingInfo currTime, uint8_t ueId
 
    if(cell == NULL)
    {
-      DU_LOG("\nERROR  -->  SCH: schProcessMsg4Req() : Cell is NULL");
+      DU_LOG("ERROR  -->  SCH: schProcessMsg4Req() : Cell is NULL");
       return RFAILED;
    }
 
@@ -1854,7 +1854,7 @@ uint8_t schProcessMsg4Req(SchCellCb *cell, SlotTimingInfo currTime, uint8_t ueId
    {
       if (RFAILED == schDlGetAvlHqProcess(cell, &cell->ueCb[ueId - 1], msg4HqProc))
       {
-         DU_LOG("\nERROR  -->  SCH: schProcessMsg4Req() : No process");
+         DU_LOG("ERROR  -->  SCH: schProcessMsg4Req() : No process");
          return RFAILED;
       }
    }
@@ -1862,7 +1862,7 @@ uint8_t schProcessMsg4Req(SchCellCb *cell, SlotTimingInfo currTime, uint8_t ueId
    if(findValidK0K1Value(cell, currTime, ueId, false, &pdschStartSymbol, &pdschNumSymbols, &pdcchTime, &pdschTime,\
             &pucchTime, isRetxMsg4, *msg4HqProc, NULLP) != true )
    {
-      DU_LOG("\nERROR  -->  SCH: schProcessMsg4Req() : k0 k1 not found");
+      DU_LOG("ERROR  -->  SCH: schProcessMsg4Req() : k0 k1 not found");
       return RFAILED;
    }
 
@@ -1871,7 +1871,7 @@ uint8_t schProcessMsg4Req(SchCellCb *cell, SlotTimingInfo currTime, uint8_t ueId
       SCH_ALLOC(dciSlotAlloc, sizeof(DlMsgSchInfo));
       if(dciSlotAlloc == NULLP)
       {
-         DU_LOG("\nERROR  -->  SCH : Memory Allocation failed for dciSlotAlloc");
+         DU_LOG("ERROR  -->  SCH : Memory Allocation failed for dciSlotAlloc");
          return RFAILED;
       }
       cell->schDlSlotInfo[pdcchTime.slot]->dlMsgAlloc[ueId-1] = dciSlotAlloc;
@@ -1883,7 +1883,7 @@ uint8_t schProcessMsg4Req(SchCellCb *cell, SlotTimingInfo currTime, uint8_t ueId
    /* Fill PDCCH and PDSCH scheduling information for Msg4 */
    if((schDlRsrcAllocMsg4(cell, pdschTime, ueId, dciSlotAlloc, pdschStartSymbol, pdschNumSymbols, isRetxMsg4, *msg4HqProc)) != ROK)
    {
-      DU_LOG("\nERROR  -->  SCH: Scheduling of Msg4 failed in slot [%d]", pdschTime.slot);
+      DU_LOG("ERROR  -->  SCH: Scheduling of Msg4 failed in slot [%d]", pdschTime.slot);
       if(!dciSlotAlloc->dlMsgPdschCfg)
       {
          SCH_FREE(dciSlotAlloc, sizeof(DlMsgSchInfo));
@@ -1900,7 +1900,7 @@ uint8_t schProcessMsg4Req(SchCellCb *cell, SlotTimingInfo currTime, uint8_t ueId
       SCH_ALLOC(dciSlotAlloc->dlMsgPdschCfg, sizeof(PdschCfg));
       if(!dciSlotAlloc->dlMsgPdschCfg)
       {
-         DU_LOG("\nERROR  -->  SCH : Memory Allocation failed for dciSlotAlloc->dlMsgPdschCfg");
+         DU_LOG("ERROR  -->  SCH : Memory Allocation failed for dciSlotAlloc->dlMsgPdschCfg");
          SCH_FREE(dciSlotAlloc->dlMsgPdcchCfg, sizeof(PdcchCfg));
          SCH_FREE(dciSlotAlloc, sizeof(DlMsgSchInfo));
          cell->schDlSlotInfo[pdcchTime.slot]->dlMsgAlloc[ueId-1] = NULLP;
@@ -1916,7 +1916,7 @@ uint8_t schProcessMsg4Req(SchCellCb *cell, SlotTimingInfo currTime, uint8_t ueId
          SCH_ALLOC(msg4SlotAlloc, sizeof(DlMsgSchInfo));
          if(msg4SlotAlloc == NULLP)
          {
-            DU_LOG("\nERROR  -->  SCH : Memory Allocation failed for msg4SlotAlloc");
+            DU_LOG("ERROR  -->  SCH : Memory Allocation failed for msg4SlotAlloc");
             SCH_FREE(dciSlotAlloc->dlMsgPdcchCfg, sizeof(PdcchCfg));
             if(!dciSlotAlloc->dlMsgPdschCfg)
             {
@@ -1950,7 +1950,7 @@ uint8_t schProcessMsg4Req(SchCellCb *cell, SlotTimingInfo currTime, uint8_t ueId
          }
          SCH_FREE(msg4SlotAlloc, sizeof(DlMsgSchInfo));
          cell->schDlSlotInfo[pdschTime.slot]->dlMsgAlloc[ueId-1] = NULLP;
-         DU_LOG("\nERROR  -->  SCH : Memory Allocation failed for msg4SlotAlloc->dlMsgPdschCfg");
+         DU_LOG("ERROR  -->  SCH : Memory Allocation failed for msg4SlotAlloc->dlMsgPdschCfg");
          return RFAILED;
       }
    }
@@ -1988,7 +1988,7 @@ void updateBsrAndLcList(CmLListCp *lcLL, BsrInfo *bsrInfo, uint8_t status)
 
    if(lcLL == NULLP)
    {
-      DU_LOG("\nERROR --> SCH: LcList not present");
+      DU_LOG("ERROR --> SCH: LcList not present");
       return;
    }
 
@@ -2055,7 +2055,7 @@ bool schProcessSrOrBsrReq(SchCellCb *cell, SlotTimingInfo currTime, uint8_t ueId
    
    if(cell == NULLP)
    {
-      DU_LOG("\nERROR  -->  SCH: schProcessSrOrBsrReq() : Cell is NULL");
+      DU_LOG("ERROR  -->  SCH: schProcessSrOrBsrReq() : Cell is NULL");
       return false;
    }
 
@@ -2063,7 +2063,7 @@ bool schProcessSrOrBsrReq(SchCellCb *cell, SlotTimingInfo currTime, uint8_t ueId
 
    if(ueCb == NULLP)
    {
-      DU_LOG("\nERROR  -->  SCH: schProcessSrOrBsrReq() : UE is NULL");
+      DU_LOG("ERROR  -->  SCH: schProcessSrOrBsrReq() : UE is NULL");
       return false;
    }
 
@@ -2228,7 +2228,7 @@ uint8_t schFillPagePdschCfg(SchCellCb *cell, PageDlSch *pageDlSch, SlotTimingInf
    if((allocatePrbDl(cell, slotTime, startSymbol, numSymbol,\
                &pageDlSch->freqAlloc.startPrb, pageDlSch->freqAlloc.numPrb)) != ROK)
    {
-      DU_LOG("\nERROR  --> SCH : allocatePrbDl() failed for DL MSG");
+      DU_LOG("ERROR  --> SCH : allocatePrbDl() failed for DL MSG");
       return RFAILED;
    }
    return ROK;
@@ -2279,7 +2279,7 @@ uint8_t schMsg3RetxSchedulingForUe(SchRaCb *raCb)
       SCH_ALLOC(dciInfo, sizeof(DciInfo));
       if(!dciInfo)
       {
-         DU_LOG("\nERROR  -->  SCH : Memory Allocation failed for dciInfo alloc");
+         DU_LOG("ERROR  -->  SCH : Memory Allocation failed for dciInfo alloc");
          return RFAILED;
       }
       cell->schDlSlotInfo[msg3Time.slot]->ulGrant = dciInfo;
@@ -2413,7 +2413,7 @@ uint8_t fillUeCoresetAndSsInfo(SchUeCb *ue)
    pdcchCfg =  &ue->ueCfg.spCellCfg.servCellRecfg.initDlBwp.pdcchCfg;
    if(pdcchCfg == NULLP)
    {
-     DU_LOG("\nERROR  --> SCH: PDCCH Cfg is not received thus skip filling of Coreset & SS info");
+     DU_LOG("ERROR  --> SCH: PDCCH Cfg is not received thus skip filling of Coreset & SS info");
      return RFAILED;
    }
    for(cRSetIdx = 0; cRSetIdx < pdcchCfg->numCRsetToAddMod; cRSetIdx++ )
@@ -2426,7 +2426,7 @@ uint8_t fillUeCoresetAndSsInfo(SchUeCb *ue)
       }
       else
       {
-         DU_LOG("\nERROR  -->  SCH : CORESETSize is zero in fillCoresetAndSsConfg");
+         DU_LOG("ERROR  -->  SCH : CORESETSize is zero in fillCoresetAndSsConfg");
          continue;
       }
       /*[Step 2]:*/
@@ -2482,7 +2482,7 @@ bool schPdcchSlotValidation(SlotTimingInfo pdcchTime, SchSearchSpace *searchSpac
 
     if(!mSlotPeriodicityVal)
     {
-       DU_LOG("\nERROR   --> SCH: Slot Periodicity is ZERO thus cant proceed with this SearchSpace");
+       DU_LOG("ERROR   --> SCH: Slot Periodicity is ZERO thus cant proceed with this SearchSpace");
        return false;
     }
     /*The Monitoring slot begins from offset thus skip the slots which are less
@@ -2493,12 +2493,12 @@ bool schPdcchSlotValidation(SlotTimingInfo pdcchTime, SchSearchSpace *searchSpac
          * SlotPeriodicity*/
         if(((slotNum - searchSpace->mSlotPeriodicityAndOffset.mSlotOffset) % mSlotPeriodicityVal) == 0) 
         {
-           DU_LOG("\nINFO   --> SCH: SFN:%d/Slot:%d, is a Valid PDCCH slot",pdcchTime.sfn, pdcchTime.slot);
+           DU_LOG("INFO   --> SCH: SFN:%d/Slot:%d, is a Valid PDCCH slot",pdcchTime.sfn, pdcchTime.slot);
            isSlotValid = true;
         }
         else
         {
-           DU_LOG("\nINFO   --> SCH: SFN:%d/Slot:%d, is InValid PDCCH slot",pdcchTime.sfn, pdcchTime.slot);
+           DU_LOG("INFO   --> SCH: SFN:%d/Slot:%d, is InValid PDCCH slot",pdcchTime.sfn, pdcchTime.slot);
         }
     }
     return (isSlotValid); 
@@ -2539,7 +2539,7 @@ bool schCheckPdcchAvail(SchCellCb *cellCb, SlotTimingInfo slotTime, uint8_t cceI
     startPrb = extractStartPrbForRBG(pdcchInfo->cRSetRef->freqDomainRsrc, rbgIndex);
     if(startPrb == MAX_NUM_RB)
     {
-       DU_LOG("\nERROR  -->  SCH: No RBG is allocated for PDCCH in this Coreset");
+       DU_LOG("ERROR  -->  SCH: No RBG is allocated for PDCCH in this Coreset");
        return false;
     }
     /*[Step 2]: Adjust StartPrb based on CCEIndex and duration*/
@@ -2548,7 +2548,7 @@ bool schCheckPdcchAvail(SchCellCb *cellCb, SlotTimingInfo slotTime, uint8_t cceI
 
     /*numPrb will also get adjusted with duration*/
     numPrb = (NUM_PRBS_PER_RBG * aggLvl) / pdcchInfo->cRSetRef->duration;
-    DU_LOG("\nDEBUG  -->  SCH: RBG found for cceIndex:%d, AggLvl:%d and SymbolDuration%d with StartPrb:%d, numPrb:%d",\
+    DU_LOG("DEBUG  -->  SCH: RBG found for cceIndex:%d, AggLvl:%d and SymbolDuration%d with StartPrb:%d, numPrb:%d",\
             cceIndex, aggLvl, pdcchInfo->cRSetRef->duration, startPrb, numPrb);
 
     ret = allocatePrbDl(cellCb, slotTime, startSymbol,\
@@ -2556,7 +2556,7 @@ bool schCheckPdcchAvail(SchCellCb *cellCb, SlotTimingInfo slotTime, uint8_t cceI
     
     if(ret == RFAILED)
     {
-       DU_LOG("\nERROR -->  SCH: PRBs can't be allocated as they are unavailable");
+       DU_LOG("ERROR -->  SCH: PRBs can't be allocated as they are unavailable");
        return false;
     }
     return true;
@@ -2602,13 +2602,13 @@ bool schDlCandidateSelection(SchUeCb *ueCb, SlotTimingInfo pdcchTime, SchPdcchAl
        pdcchInfo = &ueCb->pdcchInfo[cRSetIdx];
        if(pdcchInfo->cRSetRef == NULLP)
        {
-          DU_LOG("\nINFO   -->  SCH: Coreset is not availabe at Index:%d",cRSetIdx);
+          DU_LOG("INFO   -->  SCH: Coreset is not availabe at Index:%d",cRSetIdx);
           continue;
        }
        /*[Step 1]:*/
        if(false == schPdcchSlotValidation(pdcchTime, pdcchInfo->ssRef, ueCb->cellCb->numSlots))
        {
-          DU_LOG("\nINFO   -->  SCH: This slot is not valid for PDCCH in this CORESET:%d.",pdcchInfo->cRSetRef->cRSetId);
+          DU_LOG("INFO   -->  SCH: This slot is not valid for PDCCH in this CORESET:%d.",pdcchInfo->cRSetRef->cRSetId);
           break;
        }
        /*[Step 2]:*/
@@ -2630,7 +2630,7 @@ bool schDlCandidateSelection(SchUeCb *ueCb, SlotTimingInfo pdcchTime, SchPdcchAl
            numCandidates = extractNumOfCandForAggLvl(pdcchInfo->ssRef, nextLowerAggLvl); 
            if(!numCandidates)
            {
-             DU_LOG("\nINFO   --> SCH:  Num Of Candidates configured for this AggLvel:%d is ZERO",baseAggLvl);
+             DU_LOG("INFO   --> SCH:  Num Of Candidates configured for this AggLvel:%d is ZERO",baseAggLvl);
            }
 
            /*[Step 5]:*/
@@ -2645,7 +2645,7 @@ bool schDlCandidateSelection(SchUeCb *ueCb, SlotTimingInfo pdcchTime, SchPdcchAl
                cceIndex = baseAggLvl * (a % b); 
                if(schCheckPdcchAvail(ueCb->cellCb, pdcchTime, cceIndex, pdcchInfo,nextLowerAggLvl) == true)
                {
-                  DU_LOG("\nINFO   -->  SCH: PDCCH allocation is successful at cceIndex:%d",cceIndex);
+                  DU_LOG("INFO   -->  SCH: PDCCH allocation is successful at cceIndex:%d",cceIndex);
                   pdcchAllocInfo->cRSetId = pdcchInfo->cRSetRef->cRSetId;
                   pdcchAllocInfo->aggLvl = nextLowerAggLvl;
                   pdcchAllocInfo->cceIndex = cceIndex;

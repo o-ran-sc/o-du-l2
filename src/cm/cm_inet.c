@@ -2156,7 +2156,7 @@ uint16_t          port          /* port number */
             " sockFd->fd(%ld)\n", tempErrorNo, port, sockFd->fd);
       CMINETLOGERROR(ERRCLS_DEBUG, ECMINET010, 0, prntBuf);
 #else
-      DU_LOG("\nCmInetSctpConnectx() Failed : error(%d), port(0x%1x),\
+      DU_LOG("CmInetSctpConnectx() Failed : error(%d), port(0x%1x),\
 		   sockFd->fd(%d)\n", tempErrorNo, port, sockFd->fd);
 #endif /*ALIGN_64BIT*/
 #endif /* CMINETDBG */
@@ -2598,7 +2598,7 @@ CmInetSctpNotification *ntfy        /* notification parameters */
             " sockFd->fd(%ld)\n", INET_ERR_CODE, sockFd->fd);
       CMINETLOGERROR(ERRCLS_DEBUG, ECMINET014, 0, prntBuf);
 #else
-      DU_LOG("\ncmInetSctpRecvMsg() Failed : error(%d), sockFd->fd(%d)", \
+      DU_LOG("cmInetSctpRecvMsg() Failed : error(%d), sockFd->fd(%d)", \
          INET_ERR_CODE, sockFd->fd);
 #endif /*ALIGN_64BIT*/
 #endif /* CMINETDBG */

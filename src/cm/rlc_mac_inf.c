@@ -38,7 +38,7 @@ uint8_t packRlcBoStatus(Pst* pst, RlcBoStatus  *boStatus)
  
    if (ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf) != ROK) 
    {
-      DU_LOG("\nERROR  -->  RLC: Memory allocation failed at packBOStatus");
+      DU_LOG("ERROR  -->  RLC: Memory allocation failed at packBOStatus");
       return RFAILED;
    }
 
@@ -109,7 +109,7 @@ uint8_t packRlcSchedResultRpt(Pst* pst, RlcSchedResultRpt *schRep)
  
    if (ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf) != ROK) 
    {
-      DU_LOG("\nERROR  -->  MAC : Memory allocation failed at packSchResultRep");
+      DU_LOG("ERROR  -->  MAC : Memory allocation failed at packSchResultRep");
       return RFAILED;
    }
    if (pst->selector == ODU_SELECTOR_LWLC)
@@ -177,7 +177,7 @@ uint8_t packRlcDlData(Pst* pst, RlcDlData *dlData)
 
    if (ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf) != ROK) 
    {
-      DU_LOG("\nERROR  -->  RLC : Memory allocation failed at packRlcDlData");
+      DU_LOG("ERROR  -->  RLC : Memory allocation failed at packRlcDlData");
       return RFAILED;
    }
  
@@ -245,7 +245,7 @@ uint8_t packRlcUlData(Pst* pst, RlcUlData *ulData)
  
    if (ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf) != ROK) 
    {
-      DU_LOG("\nERROR  -->  MAC : Memory allocation failed at packRlcUlData");
+      DU_LOG("ERROR  -->  MAC : Memory allocation failed at packRlcUlData");
       return RFAILED;
    }
 

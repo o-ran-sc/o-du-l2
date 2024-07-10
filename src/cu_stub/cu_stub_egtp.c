@@ -56,7 +56,7 @@ EgtpGlobalCb egtpCb;
  ***************************************************************************/
 S16 egtpActvInit()
 {
-  DU_LOG("\n\nDEBUG  -->  EGTP : Initializing");
+  DU_LOG("DEBUG  -->  EGTP : Initializing");
   memset (&egtpCb, 0, sizeof(EgtpGlobalCb));
   
   //Initializing with INVALID value
@@ -93,14 +93,14 @@ uint8_t egtpInitReq()
    ret = cuEgtpCfgReq();
    if(ret != ROK)
    {
-      DU_LOG("\nERROR  -->  EGTP : Configuration failed");
+      DU_LOG("ERROR  -->  EGTP : Configuration failed");
       return (ret);
    }
 
    ret = cuEgtpSrvOpenReq();
    if(ret != ROK)
    {
-       DU_LOG("\nERROR  -->  EGTP : Transport server open request failed");
+       DU_LOG("ERROR  -->  EGTP : Transport server open request failed");
        return (ret);
    }
 
@@ -141,12 +141,12 @@ S16 cuEgtpCfgReq()
 
       if(ret != ROK)
       {
-         DU_LOG("\nERROR  -->  EGTP : TeId hash list initialization failed");
+         DU_LOG("ERROR  -->  EGTP : TeId hash list initialization failed");
          return RFAILED;
       }
       else
       {
-         DU_LOG("\nINFO  -->  EGTP : Configuration successful");
+         DU_LOG("INFO  -->  EGTP : Configuration successful");
       }
    }
    egtpCb.numDu = egtpCb.egtpCfg.numDu; 
@@ -176,23 +176,23 @@ S16 cuEgtpSrvOpenReq(Pst *pst)
 
    uint8_t ret, destIdx;
 
-   DU_LOG("\nINFO  -->  EGTP : Received open server request");
+   DU_LOG("INFO  -->  EGTP : Received open server request");
 
    sockType = CM_INET_DGRAM;
    if((ret = (cmInetSocket(sockType, &(egtpCb.sockFd), protType))) != ROK)
    {
-      DU_LOG("\nERROR  -->  EGTP : Failed to open UDP socket");
+      DU_LOG("ERROR  -->  EGTP : Failed to open UDP socket");
       return RFAILED;
    }
 
    ret = cmInetBind(&(egtpCb.sockFd), &(egtpCb.localAddr));
    if(ret != ROK)
    {
-      DU_LOG("\nERROR  -->  EGTP : Failed to bind socket");
+      DU_LOG("ERROR  -->  EGTP : Failed to bind socket");
       return RFAILED;
    }
 
-   DU_LOG("\nINFO  -->  EGTP : Socket[%d] is open", egtpCb.sockFd.fd);
+   DU_LOG("INFO  -->  EGTP : Socket[%d] is open", egtpCb.sockFd.fd);
    return ROK;
 } /* cuEgtpSrvOpenReq */
 
@@ -218,7 +218,7 @@ S16 cuEgtpTnlMgmtReq(uint32_t duId, EgtpTnlEvt tnlEvt)
 {
    S8 ret;
 
-   DU_LOG("\nINFO  -->  EGTP : Received tunnel management request");
+   DU_LOG("INFO  -->  EGTP : Received tunnel management request");
    switch(tnlEvt.action)
    {
       case EGTP_TNL_MGMT_ADD:
@@ -238,7 +238,7 @@ S16 cuEgtpTnlMgmtReq(uint32_t duId, EgtpTnlEvt tnlEvt)
       }
       default:
       {
-         DU_LOG("\nERROR  -->  EGTP : Invalid tunnel management action[%d]", tnlEvt.action);
+         DU_LOG("ERROR  -->  EGTP : Invalid tunnel management action[%d]", tnlEvt.action);
          ret = RFAILED;
       }
    }
@@ -268,13 +268,13 @@ S16 cuEgtpTnlAdd(uint32_t duId, EgtpTnlEvt tnlEvt)
    EgtpMsgHdr   preDefHdr; /* pre-define header for this tunnel */
    
 
-   DU_LOG("\nINFO  -->  EGTP : Tunnel addition : LocalTeid[%d] Remote Teid[%d]", tnlEvt.lclTeid, tnlEvt.remTeid);
+   DU_LOG("INFO  -->  EGTP : Tunnel addition : LocalTeid[%d] Remote Teid[%d]", tnlEvt.lclTeid, tnlEvt.remTeid);
 
    CU_ALLOC(teidCb, (Size)sizeof(EgtpTeIdCb));
 
    if(teidCb == NULLP)
    {
-      DU_LOG("\nERROR  -->  EGTP : Memory allocation failed");
+      DU_LOG("ERROR  -->  EGTP : Memory allocation failed");
       return RFAILED;
    }
 
@@ -285,7 +285,7 @@ S16 cuEgtpTnlAdd(uint32_t duId, EgtpTnlEvt tnlEvt)
    ret = cmHashListInsert(&(egtpCb.dstCb[duId-1].teIdLst), (PTR)teidCb, (uint8_t *)&(teidCb->teId), sizeof(uint32_t));
    if(ret != ROK)
    {
-      DU_LOG("\nERROR  -->  EGTP : Failed to insert in hash list");
+      DU_LOG("ERROR  -->  EGTP : Failed to insert in hash list");
       CU_FREE(teidCb, (Size)sizeof(EgtpTeIdCb));
       return RFAILED;
    }
@@ -329,12 +329,12 @@ S16 cuEgtpTnlMod(uint32_t duId, EgtpTnlEvt tnlEvt)
    S16   ret;
    EgtpTeIdCb     *teidCb = NULLP;
 
-   DU_LOG("\nDEBUG  -->  CU_STUB : Tunnel modification : LocalTeid[%d] Remote Teid[%d]", tnlEvt.lclTeid, tnlEvt.remTeid);
+   DU_LOG("DEBUG  -->  CU_STUB : Tunnel modification : LocalTeid[%d] Remote Teid[%d]", tnlEvt.lclTeid, tnlEvt.remTeid);
 
    cmHashListFind(&(egtpCb.dstCb[duId-1].teIdLst), (uint8_t *)&(tnlEvt.teId), sizeof(uint32_t), 0, (PTR *)&teidCb);
    if(teidCb == NULLP)
    {
-      DU_LOG("\nDEBUG --> CU_STUBTunnel id not found");
+      DU_LOG("DEBUG --> CU_STUBTunnel id not found");
       return RFAILED;
    }  
    
@@ -363,12 +363,12 @@ S16 cuEgtpTnlDel(uint32_t duId, EgtpTnlEvt tnlEvt)
 {
    EgtpTeIdCb     *teidCb = NULLP;
 
-   DU_LOG("\nDEBUG  -->  EGTP : Tunnel deletion : Local Teid[%d] Remote Teid[%d]", tnlEvt.lclTeid, tnlEvt.remTeid);
+   DU_LOG("DEBUG  -->  EGTP : Tunnel deletion : Local Teid[%d] Remote Teid[%d]", tnlEvt.lclTeid, tnlEvt.remTeid);
    
    cmHashListFind(&(egtpCb.dstCb[duId-1].teIdLst), (uint8_t *)&(tnlEvt.lclTeid), sizeof(uint32_t), 0, (PTR *)&teidCb);
    if(teidCb == NULLP)
    {
-      DU_LOG("\nERROR  -->  EGTP : Tunnel id[%d] not configured", tnlEvt.lclTeid);
+      DU_LOG("ERROR  -->  EGTP : Tunnel id[%d] not configured", tnlEvt.lclTeid);
       return RFAILED;
    } 
 
@@ -641,7 +641,7 @@ S16 cuEgtpDecodeHdr(Buffer *mBuf)
       ODU_REM_PRE_MSG(&extHdrType, mBuf);
    }
 
-   DU_LOG("\nDEBUG  -->  EGTP : Message Buffer after decoding header [TEID:%d]",egtpMsg.msgHdr.teId);
+   DU_LOG("DEBUG  -->  EGTP : Message Buffer after decoding header [TEID:%d]",egtpMsg.msgHdr.teId);
    ODU_PRINT_MSG(mBuf, 0, 0);
 
    SPutMsg(mBuf);
@@ -678,14 +678,14 @@ uint16_t cuEgtpDatReq(uint32_t duId, uint8_t teId)
    
    if(egtpCb.gCntPdu[teId] == 0xFF) //DRB not created
    {
-      DU_LOG("\nERROR  -->  EGTP : DRB  not created");
+      DU_LOG("ERROR  -->  EGTP : DRB  not created");
       return RFAILED ;
    }
    /* Build Application message that is supposed to come from app to egtp */
    ret = BuildAppMsg(duId, &egtpMsg);
    if(ret != ROK)
    {
-      DU_LOG("\nERROR  -->  EGTP : Failed to build App Msg");
+      DU_LOG("ERROR  -->  EGTP : Failed to build App Msg");
       return RFAILED;
    }
 
@@ -693,7 +693,7 @@ uint16_t cuEgtpDatReq(uint32_t duId, uint8_t teId)
    ret = BuildEgtpMsg(duId, &egtpMsg);
    if(ret != ROK)
    {
-      DU_LOG("\nERROR  -->  EGTP : Failed to build EGTP Msg");
+      DU_LOG("ERROR  -->  EGTP : Failed to build EGTP Msg");
       return RFAILED;
    }
    cuEgtpSendMsg(duId, egtpMsg.msg);
@@ -741,14 +741,14 @@ S16 BuildAppMsg(uint32_t duId, EgtpMsg  *egtpMsg)
    {
       if(ODU_ADD_POST_MSG_MULT((Data *)data, datSize, mBuf) != ROK)
       {
-         DU_LOG("\nERROR  -->  EGTP : ODU_ADD_POST_MSG_MULT failed");
+         DU_LOG("ERROR  -->  EGTP : ODU_ADD_POST_MSG_MULT failed");
          ODU_PUT_MSG_BUF(mBuf);
          return RFAILED;
       }
    }
    else
    {
-       DU_LOG("\nERROR  -->  EGTP : Failed to allocate memory");
+       DU_LOG("ERROR  -->  EGTP : Failed to allocate memory");
        return RFAILED;
    }
  
@@ -866,7 +866,7 @@ S16 BuildEgtpMsg(uint32_t duId, EgtpMsg *egtpMsg)
    cmHashListFind(&(egtpCb.dstCb[duId-1].teIdLst), (uint8_t *)&(egtpMsg->msgHdr.teId), sizeof(uint32_t), 0, (PTR *)&teidCb);
    if(teidCb == NULLP)
    {
-      DU_LOG("\nERROR  -->  EGTP : Tunnel id[%d] not configured", egtpMsg->msgHdr.teId);
+      DU_LOG("ERROR  -->  EGTP : Tunnel id[%d] not configured", egtpMsg->msgHdr.teId);
       return (LCM_REASON_INVALID_PAR_VAL);
    }
 
@@ -955,11 +955,11 @@ S16 cuEgtpSendMsg(uint32_t duId, Buffer *mBuf)
    ret = cmInetSendMsg(&(egtpCb.sockFd), &egtpCb.dstCb[duId-1].dstAddr, &info, mBuf, &txLen, CM_INET_NO_FLAG);
    if(ret != ROK && ret != RWOULDBLOCK)
    {
-      DU_LOG("\nERROR  -->  EGTP : Message send failure");
+      DU_LOG("ERROR  -->  EGTP : Message send failure");
       return RFAILED;
    }
    
-   DU_LOG("\nDEBUG  -->  EGTP : Message Sent");
+   DU_LOG("DEBUG  -->  EGTP : Message Sent");
  
    return ROK;
 }

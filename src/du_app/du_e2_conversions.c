@@ -63,7 +63,7 @@ uint8_t convertE2WaitTimerEnumToValue(uint8_t timerToWait)
          return 60;
          
       default:
-         DU_LOG("\nERROR  -->  F1AP: Invalid value of E2 Wait timer");
+         DU_LOG("ERROR  -->  F1AP: Invalid value of E2 Wait timer");
    }
    return RFAILED;
 }
@@ -194,7 +194,7 @@ uint8_t convertMacMeasTypeToE2MeasType(MacMeasurementType macMeasName, char *e2M
          }
       default:
          {
-             DU_LOG("\nERROR  -->  E2AP : MAC mesurement type [%d] not supported", macMeasName);
+             DU_LOG("ERROR  -->  E2AP : MAC mesurement type [%d] not supported", macMeasName);
              return RFAILED;
          }
    }

@@ -266,7 +266,7 @@ bool rlcUmmAddRcvdSeg(RlcCb *gCb, RlcUlRbCb *rbCb, RlcUmHdr *umHdr, Buffer *pdu,
       RLC_ALLOC(gCb,recBuf, sizeof(RlcUmRecBuf));
       if (recBuf == NULLP)
       {
-         DU_LOG("\nERROR  -->  RLC_UL : Failed to allocate memory to recv buf for UEID:%d CELLID:%d in rlcUmmAddRcvdSeg()",
+         DU_LOG("ERROR  -->  RLC_UL : Failed to allocate memory to recv buf for UEID:%d CELLID:%d in rlcUmmAddRcvdSeg()",
             rbCb->rlcId.ueId, rbCb->rlcId.cellId);
 
          ODU_PUT_MSG_BUF(pdu);
@@ -292,7 +292,7 @@ bool rlcUmmAddRcvdSeg(RlcCb *gCb, RlcUlRbCb *rbCb, RlcUmHdr *umHdr, Buffer *pdu,
 
    if (expSo > umHdr->so)
    {
-      DU_LOG("\nDEBUG  -->  RLC_UL : Received duplicate segment in rlcUmmAddRcvdSeg()");
+      DU_LOG("DEBUG  -->  RLC_UL : Received duplicate segment in rlcUmmAddRcvdSeg()");
       /* This is a duplicate segment */
       ODU_PUT_MSG_BUF(pdu);
       return FALSE;
@@ -300,7 +300,7 @@ bool rlcUmmAddRcvdSeg(RlcCb *gCb, RlcUlRbCb *rbCb, RlcUmHdr *umHdr, Buffer *pdu,
 
    if ((seg) && (seg->umHdr.so <= soEnd))
    {
-      DU_LOG("\nDEBUG  -->  RLC_UL : Received duplicate segment in rlcUmmAddRcvdSeg()");
+      DU_LOG("DEBUG  -->  RLC_UL : Received duplicate segment in rlcUmmAddRcvdSeg()");
       /* This is a duplicate segment */
       ODU_PUT_MSG_BUF(pdu);
       return FALSE;
@@ -312,7 +312,7 @@ bool rlcUmmAddRcvdSeg(RlcCb *gCb, RlcUlRbCb *rbCb, RlcUmHdr *umHdr, Buffer *pdu,
    RLC_ALLOC_WC(gCb, tseg, sizeof(RlcUmSeg));
    if (tseg == NULLP)
    {
-      DU_LOG("\nERROR -->  RLC_UL : Failed to allocate memory to segment for UEID:%d CELLID:%d in rlcUmmAddRcvdSeg()",
+      DU_LOG("ERROR -->  RLC_UL : Failed to allocate memory to segment for UEID:%d CELLID:%d in rlcUmmAddRcvdSeg()",
          rbCb->rlcId.ueId, rbCb->rlcId.cellId);
       ODU_PUT_MSG_BUF(pdu);
       return FALSE;
@@ -393,7 +393,7 @@ uint8_t rlcUmmProcSeg(RlcCb *gCb, RlcUlRbCb *rbCb, RlcUmHdr *umHdr, Buffer *pdu)
    {
       /* Release the existing SDU as we have PDUs or */
       /* segments that are out of sequence           */
-      DU_LOG("\nDEBUG  -->  RLC_UL : Received Segments are out of sequence in rlcUmmProcSeg()");
+      DU_LOG("DEBUG  -->  RLC_UL : Received Segments are out of sequence in rlcUmmProcSeg()");
       ODU_PUT_MSG_BUF(RLC_UMUL.assembleSdu);
       return RFAILED;
    }
@@ -559,7 +559,7 @@ void rlcUmmProcessPdus(RlcCb *gCb, RlcUlRbCb *rbCb, KwPduInfo *pduInfo)
       /* get the pdu header */
       if (rlcUmmExtractHdr(gCb, rbCb, pdu, &umHdr))  
       {
-         DU_LOG("\nERROR  --> RLC_UL: rlcUmmProcessPdus: Header Extraction Failed UEID:%d CELLID:%d",\
+         DU_LOG("ERROR  --> RLC_UL: rlcUmmProcessPdus: Header Extraction Failed UEID:%d CELLID:%d",\
                rbCb->rlcId.ueId, rbCb->rlcId.cellId);
          ODU_PUT_MSG_BUF(pdu);
          count++;
@@ -574,7 +574,7 @@ void rlcUmmProcessPdus(RlcCb *gCb, RlcUlRbCb *rbCb, KwPduInfo *pduInfo)
          {
             ODU_GET_MSG_LEN(pdu, &pduSz);
             snssaiTputNode->dataVol += (uint64_t)pduSz;
-            DU_LOG("\nINFO  -->  RLC_UL: UMM_UL SNSSAI List PduLen:%d, lcId:%d, total :%ld",\
+            DU_LOG("INFO  -->  RLC_UL: UMM_UL SNSSAI List PduLen:%d, lcId:%d, total :%ld",\
                   pduSz, rbCb->lch.lChId, snssaiTputNode->dataVol);
          }
       }
@@ -597,7 +597,7 @@ void rlcUmmProcessPdus(RlcCb *gCb, RlcUlRbCb *rbCb, KwPduInfo *pduInfo)
       if (seqNum < ur)
       {
          /* PDU needs to be discarded */
-         DU_LOG("\nINFO  -->  RLC_UL: rlcUmmProcessPdus: Received an unexpected pdu with sn %d \
+         DU_LOG("INFO  -->  RLC_UL: rlcUmmProcessPdus: Received an unexpected pdu with sn %d \
                UEID:%d CELLID:%d", curSn, rbCb->rlcId.ueId, rbCb->rlcId.cellId);
 
          ODU_PUT_MSG_BUF(pdu);
@@ -617,7 +617,7 @@ void rlcUmmProcessPdus(RlcCb *gCb, RlcUlRbCb *rbCb, KwPduInfo *pduInfo)
          recBuf = rlcUtlGetUmRecBuf(RLC_UMUL.recBufLst, umHdr.sn);
          if (recBuf == NULLP)
          {
-            DU_LOG("\nERROR  -->  RLC_UL: rlcUmmProcessPdus: recBuf is NULLP UEID:%d CELLID:%d", \
+            DU_LOG("ERROR  -->  RLC_UL: rlcUmmProcessPdus: recBuf is NULLP UEID:%d CELLID:%d", \
                   rbCb->rlcId.ueId, rbCb->rlcId.cellId);
             ODU_PUT_MSG_BUF(pdu);
             count++;
@@ -628,7 +628,7 @@ void rlcUmmProcessPdus(RlcCb *gCb, RlcUlRbCb *rbCb, KwPduInfo *pduInfo)
          if(recBuf != NULLP && recBuf->allSegRcvd)
          {
             rlcUmmReAssembleSdus(gCb, rbCb, recBuf);
-            DU_LOG("\nDEBUG  -->  RLC_UL: rlcUmmProcessPdus: Assembled the Sdus for  sn = %d UEID:%d CELLID:%d",\
+            DU_LOG("DEBUG  -->  RLC_UL: rlcUmmProcessPdus: Assembled the Sdus for  sn = %d UEID:%d CELLID:%d",\
                   umHdr.sn, rbCb->rlcId.ueId, rbCb->rlcId.cellId);
 
             /* if curSn is same as the RX_NEXT_Reassembly */
@@ -642,7 +642,7 @@ void rlcUmmProcessPdus(RlcCb *gCb, RlcUlRbCb *rbCb, KwPduInfo *pduInfo)
          /* If curSn is outside re-assembly window */
          else if (!rlcUmmCheckSnInReassemblyWindow(curSn,&RLC_UMUL))
          {  
-            DU_LOG("\nDEBUG  -->  RLC_UL: rlcUmmProcessPdus: curent sn is outSide the re-Assembly window. \
+            DU_LOG("DEBUG  -->  RLC_UL: rlcUmmProcessPdus: curent sn is outSide the re-Assembly window. \
                   sn = %d UEID:%d CELLID:%d", umHdr.sn, rbCb->rlcId.ueId, rbCb->rlcId.cellId);
 
             /* update RX_NEXT_Highest */
@@ -699,7 +699,7 @@ void rlcUmmProcessPdus(RlcCb *gCb, RlcUlRbCb *rbCb, KwPduInfo *pduInfo)
             {
                rlcStopTmr(gCb,(PTR)rbCb, EVENT_RLC_UMUL_REASSEMBLE_TMR);             
                tmrRunning = FALSE;
-               DU_LOG("\nINFO  --> RLC_UL: rlcUmmProcessPdus: Stopped ReAssembly Timer rxTimerTigger = %d \
+               DU_LOG("INFO  --> RLC_UL: rlcUmmProcessPdus: Stopped ReAssembly Timer rxTimerTigger = %d \
                      rxNextReassembly = %d rxNextHighest = %d ", tRxTimerTigger, tRxNextReassembly, tRxNextHighest);
             }
          }
@@ -711,7 +711,7 @@ void rlcUmmProcessPdus(RlcCb *gCb, RlcUlRbCb *rbCb, KwPduInfo *pduInfo)
             if ((tRxNextHighest > tRxNextReassemblyNxt) || ((tRxNextHighest == tRxNextReassemblyNxt)
                      && (recBuf && (!recBuf->noMissingSeg))))
             {
-               DU_LOG("\nDEBUG  -->  RLC_UL: rlcUmmProcessPdus: Start ReAssembly Timer tRxNextReassemblyNxt = %d \
+               DU_LOG("DEBUG  -->  RLC_UL: rlcUmmProcessPdus: Start ReAssembly Timer tRxNextReassemblyNxt = %d \
                      tRxNextHighest %d", tRxNextReassemblyNxt, tRxNextHighest);
                rlcStartTmr(gCb, (PTR)rbCb, EVENT_RLC_UMUL_REASSEMBLE_TMR); 
                *vrUx = *vrUh;
@@ -720,7 +720,7 @@ void rlcUmmProcessPdus(RlcCb *gCb, RlcUlRbCb *rbCb, KwPduInfo *pduInfo)
       }
       else
       {
-         DU_LOG("\nERROR  -->  RLC_UL: rlcUmmProcessPdus:Failed to assemble the PDU for SN  = %d UEID:%d CELLID:%d",\
+         DU_LOG("ERROR  -->  RLC_UL: rlcUmmProcessPdus:Failed to assemble the PDU for SN  = %d UEID:%d CELLID:%d",\
                umHdr.sn, rbCb->rlcId.ueId, rbCb->rlcId.cellId);
 
       }
@@ -833,7 +833,7 @@ static uint8_t rlcUmmExtractHdr(RlcCb *gCb, RlcUlRbCb *rbCb, Buffer *pdu, RlcUmH
    ret = ODU_REM_PRE_MSG(dst,pdu);
    if (ret != ROK)
    {
-      DU_LOG("\nERROR  -->  RLC_UL: rlcUmmExtractHdr : ODU_REM_PRE_MSG Failed for SI\
+      DU_LOG("ERROR  -->  RLC_UL: rlcUmmExtractHdr : ODU_REM_PRE_MSG Failed for SI\
         UEID:%d CELLID:%d", rbCb->rlcId.ueId, rbCb->rlcId.cellId);
       return RFAILED;
    }
@@ -857,7 +857,7 @@ static uint8_t rlcUmmExtractHdr(RlcCb *gCb, RlcUlRbCb *rbCb, Buffer *pdu, RlcUmH
       ret = ODU_REM_PRE_MSG(dst,pdu);
       if (ret != ROK)
       {
-	 DU_LOG("\nERROR  -->  RLC_UL: rlcUmmExtractHdr : ODU_REM_PRE_MSG Failed for SN\
+	 DU_LOG("ERROR  -->  RLC_UL: rlcUmmExtractHdr : ODU_REM_PRE_MSG Failed for SN\
 	       UEID:%d CELLID:%d", rbCb->rlcId.ueId, rbCb->rlcId.cellId);
 	 return RFAILED;
       }
@@ -870,7 +870,7 @@ static uint8_t rlcUmmExtractHdr(RlcCb *gCb, RlcUlRbCb *rbCb, Buffer *pdu, RlcUmH
       ret = ODU_REM_PRE_MSG_MULT(dst,2,pdu);
       if (ret != ROK)
       {
-         DU_LOG("\nERROR  -->  RLC_UL: rlcUmmExtractHdr : ODU_REM_PRE_MSG_MULT Failed for 16 bits SO \
+         DU_LOG("ERROR  -->  RLC_UL: rlcUmmExtractHdr : ODU_REM_PRE_MSG_MULT Failed for 16 bits SO \
             UEID:%d CELLID:%d", rbCb->rlcId.ueId, rbCb->rlcId.cellId);
          return RFAILED;
       }
@@ -898,7 +898,7 @@ RlcUlRbCb   *rbCb
    RlcSn tRxNextReassembly;
    RlcUmRecBuf *recBuf;
 
-   DU_LOG("\nINFO  -->  RLC_UL: rlcUmmReAsmblTmrExp: UM Re-assembly timer expired");
+   DU_LOG("INFO  -->  RLC_UL: rlcUmmReAsmblTmrExp: UM Re-assembly timer expired");
 
    /* set VR(UR) to SN >= VR(UX) that has not been reassembled */
    rlcUmmFindRxNextReassembly(gCb, &RLC_UMUL, RLC_UMUL.vrUx);

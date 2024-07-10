@@ -53,7 +53,7 @@ uint8_t sendStopIndToDuApp(uint16_t cellId)
    MAC_ALLOC_SHRABL_BUF(oduCellId, sizeof(OduCellId));
    if(!oduCellId)
    {
-      DU_LOG("\nERROR  -->  MAC : Stop Indication memory allocation failed");
+      DU_LOG("ERROR  -->  MAC : Stop Indication memory allocation failed");
       return RFAILED;
    }
    oduCellId->cellId = cellId;
@@ -64,7 +64,7 @@ uint8_t sendStopIndToDuApp(uint16_t cellId)
    ret = MacDuAppStopInd(&pst, oduCellId);
    if(ret != ROK)
    {
-      DU_LOG("\nERROR  -->  MAC: Failed to send stop indication to DU APP");
+      DU_LOG("ERROR  -->  MAC: Failed to send stop indication to DU APP");
       MAC_FREE_SHRABL_BUF(MAC_MEM_REGION, MAC_POOL, oduCellId, sizeof(OduCellId));
    }
    return ROK;

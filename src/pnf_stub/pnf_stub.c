@@ -69,7 +69,7 @@ void readPnfCfg()
    uint8_t  cntNumVnf = 0;
    uint32_t ipv4_vnf = 0, ipv4_pnf = 0;
 
-   DU_LOG("\nDEBUG  -->  PNF_STUB : Reading PNF P5 configurations");
+   DU_LOG("DEBUG  -->  PNF_STUB : Reading PNF P5 configurations");
    
    pnfCb.pnfCfgParams.pnfState=PNF_IDLE;
    pnfCb.pnfCfgParams.pnfId = PNF_ID;
@@ -160,7 +160,7 @@ void *pnfClock()
       
          pnfCb.pnfSlotInfo.sfn++;
          pnfCb.pnfSlotInfo.slot++;
-         DU_LOG("\nPNF_NFAPI : Starting to generate slot indications t_ref:%llu, slotDur:%f, perTTi:%u, slotsPerFrame:%d, nanoSec:%d",\
+         DU_LOG("PNF_NFAPI : Starting to generate slot indications t_ref:%llu, slotDur:%f, perTTi:%u, slotsPerFrame:%d, nanoSec:%d",\
                pnfCb.pnfP7Info.t_ref_ns, slotDur_ms, PER_TTI_TIME_USEC, NUM_SLOTS_PER_SUBFRAME, tti_req.tv_nsec);
       }
       else
@@ -169,7 +169,7 @@ void *pnfClock()
       }
 
 #ifdef ODU_SLOT_IND_DEBUG_LOG
-      DU_LOG("\nVNF_NFAPI -->  DEBUG:  SFN/Slot:%d,%d",\
+      DU_LOG("VNF_NFAPI -->  DEBUG:  SFN/Slot:%d,%d",\
                pnfCb.pnfSlotInfo.sfn, pnfCb.pnfSlotInfo.slot);
 #endif
       clock_nanosleep(CLOCK_REALTIME, 0, &tti_req, NULL); 
@@ -203,7 +203,7 @@ uint8_t tst()
 #endif
 
    init_log();   
-   DU_LOG("\nINFO   -->  PNF_STUB : Starting PNF_STUB\n");
+   DU_LOG("INFO   -->  PNF_STUB : Starting PNF_STUB\n");
 
    /* TODO: Start thread to receive console input */
    /* Read PNF configurations */
@@ -229,7 +229,7 @@ uint8_t tst()
    retVal = pthread_create(&conThrdId, &attr, pnfClock, NULLP);
    if(retVal != 0)
    {
-      DU_LOG("\nERROR  -->  PNF_STUB :  Thread creation failed. Cause %d", retVal);
+      DU_LOG("ERROR  -->  PNF_STUB :  Thread creation failed. Cause %d", retVal);
    }
    pthread_attr_destroy(&attr);
 #endif
@@ -306,7 +306,7 @@ void nFapiExtractP5Hdr(nFapi_p5_hdr *p5Hdr, Buffer *mBuf)
    CMCHKPK(oduUnpackUInt8, &(p5Hdr->more_segNum), mBuf);
    CMCHKPK(oduUnpackUInt8, &(p5Hdr->seq_num), mBuf);
    CMCHKPK(oduUnpackUInt32, &(p5Hdr->timeStamp), mBuf);
-   DU_LOG("\nINFo   --> NFAPI_PNF: seqLen:%d, moreSegNum:%d, seqNum:%d, timeStamp:%d",
+   DU_LOG("INFo   --> NFAPI_PNF: seqLen:%d, moreSegNum:%d, seqNum:%d, timeStamp:%d",
         p5Hdr->seg_len,p5Hdr->more_segNum,p5Hdr->seq_num,p5Hdr->timeStamp);
    return;
 }
@@ -333,7 +333,7 @@ void nFapiExtractMsgHdr(nFapi_msg_header *msgHdr, Buffer *mBuf)
     CMCHKPK(oduUnpackUInt16, &(msgHdr->msg_id), mBuf);
     CMCHKPK(oduUnpackUInt32, &(msgHdr->length), mBuf);
 
-    DU_LOG("\nINFO  -->  NFAPI_PNF: RUType:%d, phy_id:%d, msgId:%d, len:%d",\
+    DU_LOG("INFO  -->  NFAPI_PNF: RUType:%d, phy_id:%d, msgId:%d, len:%d",\
             msgHdr->sRU_termination_type,msgHdr->phy_id,msgHdr->msg_id,msgHdr->length );
     return;
 }
@@ -382,7 +382,7 @@ void nFapiExtractP7Hdr(nFapi_p7_hdr *p7Hdr, Buffer *mBuf)
    CMCHKPK(oduUnpackUInt32, &(p7Hdr->tot_SDU_len), mBuf);
    CMCHKPK(oduUnpackUInt32, &(p7Hdr->byteOffset), mBuf);
    CMCHKPK(oduUnpackUInt32, &(p7Hdr->timeStamp), mBuf);
-   DU_LOG("\nINFo   --> NFAPI_VNF: se1_num:%d, totSdu len:%u, byteOffset:%u, timeStamp:%u",
+   DU_LOG("INFo   --> NFAPI_VNF: se1_num:%d, totSdu len:%u, byteOffset:%u, timeStamp:%u",
         p7Hdr->seq_num,p7Hdr->tot_SDU_len, p7Hdr->byteOffset, p7Hdr->timeStamp);
 }
 

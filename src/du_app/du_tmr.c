@@ -49,7 +49,7 @@ bool duChkTmr(PTR cb, int16_t tmrEvnt)
       {
          if(((CmTimer *)cb)->tmrEvnt == EVENT_E2_SETUP_TMR)
          {
-             DU_LOG("\nERROR  -->  DU_APP : duChkTmr: Invalid tmr Evnt [%d]", tmrEvnt);
+             DU_LOG("ERROR  -->  DU_APP : duChkTmr: Invalid tmr Evnt [%d]", tmrEvnt);
              return TRUE;
          }
          break;
@@ -58,7 +58,7 @@ bool duChkTmr(PTR cb, int16_t tmrEvnt)
       {
          if(((RicServiceUpdateTimer*)cb)->timer.tmrEvnt == EVENT_RIC_SERVICE_UPDATE_TMR)
          {
-            DU_LOG("\nERROR  -->  DU_APP : duChkTmr: Timer already running for event [%d]", tmrEvnt);
+            DU_LOG("ERROR  -->  DU_APP : duChkTmr: Timer already running for event [%d]", tmrEvnt);
             return TRUE;
          }
          break;
@@ -67,7 +67,7 @@ bool duChkTmr(PTR cb, int16_t tmrEvnt)
       {
          if(((E2NodeConfigUpdateTimer *)cb)->timer.tmrEvnt == EVENT_E2_NODE_CONFIG_UPDATE_TMR)
          {
-             DU_LOG("\nERROR  -->  DU_APP : duChkTmr: Invalid tmr Evnt [%d]", tmrEvnt);
+             DU_LOG("ERROR  -->  DU_APP : duChkTmr: Invalid tmr Evnt [%d]", tmrEvnt);
              return TRUE;
          }
          break;
@@ -76,14 +76,14 @@ bool duChkTmr(PTR cb, int16_t tmrEvnt)
       {
          if(((RicSubscription *)cb)->ricSubsReportTimer.tmrEvnt == EVENT_RIC_SUBSCRIPTION_REPORTING_TMR)
          {
-             DU_LOG("\nERROR  -->  DU_APP : duChkTmr: Timer already running for event [%d]", tmrEvnt);
+             DU_LOG("ERROR  -->  DU_APP : duChkTmr: Timer already running for event [%d]", tmrEvnt);
              return TRUE;
          }
          break;
       }
       default:
       {
-         DU_LOG("\nERROR  -->  DU_APP : duChkTmr: Invalid tmr Evnt [%d]", tmrEvnt);
+         DU_LOG("ERROR  -->  DU_APP : duChkTmr: Invalid tmr Evnt [%d]", tmrEvnt);
       }
    }
 
@@ -149,7 +149,7 @@ void duStartTmr(PTR cb, int16_t tmrEvnt, uint32_t timerValue)
       }
       default:
       {
-         DU_LOG("\nERROR  -->  DU : duStartTmr: Invalid tmr Evnt [%d]", tmrEvnt);
+         DU_LOG("ERROR  -->  DU : duStartTmr: Invalid tmr Evnt [%d]", tmrEvnt);
          return;
       }
    }
@@ -216,7 +216,7 @@ void duTmrExpiry(PTR cb,int16_t tmrEvnt)
       }
       default:
       {
-         DU_LOG("\nERROR  -->  DU : duStartTmr: Invalid tmr Evnt [%d]", tmrEvnt);
+         DU_LOG("ERROR  -->  DU : duStartTmr: Invalid tmr Evnt [%d]", tmrEvnt);
          break;
       }
    }
@@ -278,7 +278,7 @@ void duStopTmr(PTR cb, uint8_t tmrType)
       }
       default:
       {
-         DU_LOG("\nERROR  -->  RLC : rlcStopTmr: Invalid tmr Evnt[%d]", tmrType);
+         DU_LOG("ERROR  -->  RLC : rlcStopTmr: Invalid tmr Evnt[%d]", tmrType);
          break;
       }
    }

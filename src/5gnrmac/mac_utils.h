@@ -28,7 +28,7 @@
 #ifdef MEM_SIZE_CHECK
 #define MAC_MEMORY_ALLOC_SIZE_LOG(_line, _func, _size) \
 {\
-   DU_LOG("\n MAC line = %d, func = %s, _size= %d ", _line, _func, _size); \
+   DU_LOG(" MAC line = %d, func = %s, _size= %d ", _line, _func, _size); \
 }
 #else
 #define MAC_MEMORY_ALLOC_SIZE_LOG(_line, _func, _size) {}

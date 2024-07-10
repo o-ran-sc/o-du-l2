@@ -373,7 +373,7 @@ CkwUeInfo  *newUeInfo
           }
        default:
        {
-          DU_LOG("\nERROR  -->  RLC : cmPkUdxUeIdChgReq()- selector =%d not supported \n", pst->selector);
+          DU_LOG("ERROR  -->  RLC : cmPkUdxUeIdChgReq()- selector =%d not supported \n", pst->selector);
           exit(1);
        }
 #endif
@@ -1028,7 +1028,7 @@ S16 cmUnpkUdxUeIdChgReq(UdxUeIdChgReq func,Pst *pst,Buffer *mBuf)
        }
        default:
        {
-          DU_LOG("\nERROR  -->  RLC : cmUnpkUdxUeIdChgReq()- selector =%d not supported \n", pst->selector);
+          DU_LOG("ERROR  -->  RLC : cmUnpkUdxUeIdChgReq()- selector =%d not supported \n", pst->selector);
           exit(1);
        }
 

@@ -42,7 +42,7 @@ uint8_t packCrcInd(Pst *pst, CrcInd *crcInd)
       Buffer *mBuf = NULLP;
       if(ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf) != ROK)
       {
-	 DU_LOG("\nERROR  --> LWR_MAC: Memory allocation failed in packCrcInd");
+	 DU_LOG("ERROR  --> LWR_MAC: Memory allocation failed in packCrcInd");
 	 return RFAILED;
       }
       CMCHKPK(oduPackPointer,(PTR)crcInd, mBuf);
@@ -107,7 +107,7 @@ uint8_t packRxDataInd(Pst *pst, RxDataInd *rxDataInd)
       Buffer *mBuf = NULLP;
       if(ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf) != ROK)
       {
-	 DU_LOG("\nERROR  -->  LWR_MAC: Memory allocation failed in packRxDataInd");
+	 DU_LOG("ERROR  -->  LWR_MAC: Memory allocation failed in packRxDataInd");
 	 return RFAILED;
       }
       CMCHKPK(oduPackPointer,(PTR)rxDataInd, mBuf);
@@ -172,7 +172,7 @@ uint8_t packRachInd(Pst *pst, RachInd *rachInd)
       Buffer *mBuf = NULLP;
       if(ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf) != ROK)
       {
-	 DU_LOG("\nERROR  -->  LWR_MAC: Memory allocation failed in packRachInd");
+	 DU_LOG("ERROR  -->  LWR_MAC: Memory allocation failed in packRachInd");
 	 return RFAILED;
       }
       CMCHKPK(oduPackPointer,(PTR)rachInd, mBuf);
@@ -236,7 +236,7 @@ uint8_t packSlotInd (Pst *pst, SlotTimingInfo *slotInd)
       Buffer *mBuf = NULLP;
       if(ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf) != ROK)
       {
-	 DU_LOG("\nERROR  -->  LWR_MAC: Memory allocation failed in packSlotInd");
+	 DU_LOG("ERROR  -->  LWR_MAC: Memory allocation failed in packSlotInd");
 	 return RFAILED;
       }
       CMCHKPK(oduPackPointer,(PTR)slotInd, mBuf);
@@ -300,7 +300,7 @@ uint8_t packStopInd(Pst *pst, uint16_t *cellId)
       Buffer *mBuf = NULLP;
       if(ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf) != ROK)
       {
-	 DU_LOG("\nERROR  -->  LWR_MAC: Memory allocation failed in packStopInd");
+	 DU_LOG("ERROR  -->  LWR_MAC: Memory allocation failed in packStopInd");
 	 return RFAILED;
       }
       CMCHKPK(oduPackPointer,(PTR)cellId, mBuf);
@@ -363,7 +363,7 @@ uint8_t packUciInd(Pst *pst, UciInd *uciInd)
       Buffer *mBuf = NULLP;
       if(ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf) != ROK)
       {
-	 DU_LOG("\nERROR  -->  LWR_MAC: Memory allocation failed in packUciInd");
+	 DU_LOG("ERROR  -->  LWR_MAC: Memory allocation failed in packUciInd");
 	 return RFAILED;
       }
       CMCHKPK(oduPackPointer,(PTR)uciInd, mBuf);

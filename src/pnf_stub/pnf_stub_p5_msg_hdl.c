@@ -57,7 +57,7 @@ uint8_t buildAndSendPnfReadyInd()
 
    if (ODU_GET_MSG_BUF(PNF_APP_MEM_REG, PNF_POOL, &mBuf) != ROK)
    {
-      DU_LOG("\nERROR  --> NFAPI_PNF : Memory allocation failed in pnf_readyInd");
+      DU_LOG("ERROR  --> NFAPI_PNF : Memory allocation failed in pnf_readyInd");
       return RFAILED;
    }
    nfapiFillP5Hdr(mBuf);
@@ -92,7 +92,7 @@ uint8_t buildAndSendPnfParamResp()
 
    if (ODU_GET_MSG_BUF(PNF_APP_MEM_REG, PNF_POOL, &mBuf) != ROK)
    {
-      DU_LOG("\nERROR  --> NFAPI_PNF : Memory allocation failed in pnf_readyInd");
+      DU_LOG("ERROR  --> NFAPI_PNF : Memory allocation failed in pnf_readyInd");
       return RFAILED;
    }
    nfapiFillP5Hdr(mBuf);
@@ -134,12 +134,12 @@ uint8_t buildAndSendPnfConfigResp()
    uint8_t ret = ROK;
    Buffer *mBuf = NULLP;
 
-   DU_LOG("\nINFO   --> NFAPI_PNF: Building PNF_CONFIG_RSP");
+   DU_LOG("INFO   --> NFAPI_PNF: Building PNF_CONFIG_RSP");
    pnfCb.pnfCfgParams.pnfState=PNF_CONFIGURED;
    
    if(ODU_GET_MSG_BUF(PNF_APP_MEM_REG, PNF_POOL, &mBuf) != ROK)
    {
-      DU_LOG("\nERROR  --> NFAPI_PNF : Memory allocation failed in pnf config rsp");
+      DU_LOG("ERROR  --> NFAPI_PNF : Memory allocation failed in pnf config rsp");
       return RFAILED;
    }
    nfapiFillP5Hdr(mBuf);
@@ -168,12 +168,12 @@ uint8_t buildAndSendPnfStartResp()
    uint8_t ret = ROK;
    Buffer *mBuf = NULLP;
 
-   DU_LOG("\nINFO   --> NFAPI_PNF: Building PNF_START_RSP");
+   DU_LOG("INFO   --> NFAPI_PNF: Building PNF_START_RSP");
    pnfCb.pnfCfgParams.pnfState=PNF_RUNNING;
    
    if(ODU_GET_MSG_BUF(PNF_APP_MEM_REG, PNF_POOL, &mBuf) != ROK)
    {
-      DU_LOG("\nERROR  --> NFAPI_PNF : Memory allocation failed in pnf start rsp");
+      DU_LOG("ERROR  --> NFAPI_PNF : Memory allocation failed in pnf start rsp");
       return RFAILED;
    }
    nfapiFillP5Hdr(mBuf);
@@ -202,12 +202,12 @@ uint8_t buildAndSendPnfStopResp()
    uint8_t ret = ROK;
    Buffer *mBuf = NULLP;
 
-   DU_LOG("\nINFO   --> NFAPI_PNF: Building PNF_STOP_RSP");
+   DU_LOG("INFO   --> NFAPI_PNF: Building PNF_STOP_RSP");
    pnfCb.pnfCfgParams.pnfState=PNF_CONFIGURED;
 
    if(ODU_GET_MSG_BUF(PNF_APP_MEM_REG, PNF_POOL, &mBuf) != ROK)
    {
-      DU_LOG("\nERROR  --> NFAPI_PNF : Memory allocation failed in pnf stop rsp");
+      DU_LOG("ERROR  --> NFAPI_PNF : Memory allocation failed in pnf stop rsp");
       return RFAILED;
    }
    nfapiFillP5Hdr(mBuf);
@@ -240,7 +240,7 @@ uint8_t buildAndSendParamResp()
 
    if (ODU_GET_MSG_BUF(PNF_APP_MEM_REG, PNF_POOL, &mBuf) != ROK)
    {
-      DU_LOG("\nERROR  --> NFAPI_PNF : Memory allocation failed in pnf_readyInd");
+      DU_LOG("ERROR  --> NFAPI_PNF : Memory allocation failed in pnf_readyInd");
       return RFAILED;
    }
 
@@ -339,7 +339,7 @@ uint8_t buildAndSendParamResp()
    /* MEASUREMENT TAG */
    fillTlvOfSizeUint8(mBuf, FAPI_RSSI_MEASUREMENT_SUPPORT_TAG,  sizeof(uint8_t), 0);
 
-   DU_LOG("\nINFO   --> NFAPI_PNF: Sending PARAM_RESP ");
+   DU_LOG("INFO   --> NFAPI_PNF: Sending PARAM_RESP ");
    if(pnfP5SctpSend(mBuf) == RFAILED)
    {
       ODU_PUT_MSG_BUF(mBuf);
@@ -363,7 +363,7 @@ uint8_t buildAndSendConfigResp()
 
    if (ODU_GET_MSG_BUF(PNF_APP_MEM_REG, PNF_POOL, &mBuf) != ROK)
    {
-      DU_LOG("\nERROR  --> NFAPI_PNF : Memory allocation failed in %s",__func__);
+      DU_LOG("ERROR  --> NFAPI_PNF : Memory allocation failed in %s",__func__);
       return RFAILED;
    }
 
@@ -373,7 +373,7 @@ uint8_t buildAndSendConfigResp()
    //As per 5G nFAPI Specification, section 3.2.4 CONFIG.response
    CMCHKPK(oduPackPostUInt8, 0, mBuf);  //Error Code
 
-   DU_LOG("\nINFO   --> NFAPI_PNF: Sending CONFIG_RESP ");
+   DU_LOG("INFO   --> NFAPI_PNF: Sending CONFIG_RESP ");
    if(pnfP5SctpSend(mBuf) == RFAILED)
    {
       ODU_PUT_MSG_BUF(mBuf);
@@ -398,7 +398,7 @@ uint8_t buildAndSendStartResp()
 
    if (ODU_GET_MSG_BUF(PNF_APP_MEM_REG, PNF_POOL, &mBuf) != ROK)
    {
-      DU_LOG("\nERROR  --> NFAPI_PNF : Memory allocation failed in start response");
+      DU_LOG("ERROR  --> NFAPI_PNF : Memory allocation failed in start response");
       return RFAILED;
    }
 
@@ -407,7 +407,7 @@ uint8_t buildAndSendStartResp()
 
    CMCHKPK(oduPackPostUInt8, 0, mBuf);  //Error Code
 
-   DU_LOG("\nINFO   --> NFAPI_PNF: Sending START_RESP ");
+   DU_LOG("INFO   --> NFAPI_PNF: Sending START_RESP ");
    if(pnfP5SctpSend(mBuf) == RFAILED)
    {
       ODU_PUT_MSG_BUF(mBuf);
@@ -438,50 +438,50 @@ uint8_t  p5MsgHandlerAtPnf(Buffer *mBuf)
    {
       case TAG_NFAPI_PNF_PARAM_REQ:
          {
-            DU_LOG("\nINFO   --> NFAPI_PNF: PNF_PARAM_REQ recevied.");
+            DU_LOG("INFO   --> NFAPI_PNF: PNF_PARAM_REQ recevied.");
             ret = buildAndSendPnfParamResp();
             break;
          }
       case TAG_NFAPI_PNF_CONFIG_REQ:
          {
-            DU_LOG("\nINFO   --> NFAPI_PNF: PNF_CONFIG_REQ recevied.");
+            DU_LOG("INFO   --> NFAPI_PNF: PNF_CONFIG_REQ recevied.");
             ret = buildAndSendPnfConfigResp();
             break;
          }
       case TAG_NFAPI_PNF_START_REQ:
          {
-            DU_LOG("\nINFO   --> NFAPI_PNF: PNF_START_REQ recevied.");
+            DU_LOG("INFO   --> NFAPI_PNF: PNF_START_REQ recevied.");
             ret = buildAndSendPnfStartResp();
             break;
          }
       case TAG_NFAPI_PNF_STOP_REQ:
          {
-            DU_LOG("\nINFO   --> NFAPI_PNF: PNF_STOP_REQ recevied.");
+            DU_LOG("INFO   --> NFAPI_PNF: PNF_STOP_REQ recevied.");
             ret = buildAndSendPnfStopResp();
             break;
          }
       case FAPI_PARAM_REQUEST:
          {
             sleep(1);
-            DU_LOG("\nINFO   --> NFAPI_PNF: PHY_PARAM_REQ recevied.");
+            DU_LOG("INFO   --> NFAPI_PNF: PHY_PARAM_REQ recevied.");
             ret = buildAndSendParamResp();
             break;
          }
       case FAPI_CONFIG_REQUEST:
          {
-            DU_LOG("\nINFO   --> NFAPI_PNF: PHY_CONFIG_REQ recevied.");
+            DU_LOG("INFO   --> NFAPI_PNF: PHY_CONFIG_REQ recevied.");
             ret = buildAndSendConfigResp();
             break;
          }
       case FAPI_START_REQUEST:
          {
-            DU_LOG("\nINFO   --> NFAPI_PNF: PHY_START_REQ recevied.");
+            DU_LOG("INFO   --> NFAPI_PNF: PHY_START_REQ recevied.");
             ret = buildAndSendStartResp();
             break;
          }
       default:
       {
-         DU_LOG("\nERROR  --> NFAPI_PNF: Wrong MSGID of NFAPI P5 Message:%d",msgHdr.msg_id);
+         DU_LOG("ERROR  --> NFAPI_PNF: Wrong MSGID of NFAPI P5 Message:%d",msgHdr.msg_id);
       }
    }
 

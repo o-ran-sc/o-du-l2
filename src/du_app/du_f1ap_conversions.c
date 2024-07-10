@@ -287,7 +287,7 @@ uint16_t covertPollRetxTmrEnumToValue(uint8_t pollRetxTmrCfg)
             pollRetxTmr = 800;
             break;
          default:
-            DU_LOG("\nERROR  -->  F1AP: Invalid value of Poll Retransmit timer");
+            DU_LOG("ERROR  -->  F1AP: Invalid value of Poll Retransmit timer");
             pollRetxTmr = 0;
       }
    }
@@ -458,7 +458,7 @@ int32_t covertPollPduEnumToValue(uint8_t pollPduCfg)
          pollPdu = -1;
          break;
       default:
-         DU_LOG("\nERROR  -->  F1AP: Invalid value of poll pdu");
+         DU_LOG("ERROR  -->  F1AP: Invalid value of poll pdu");
          pollPdu = 0;
          break;
    }
@@ -728,7 +728,7 @@ int32_t covertPollByteEnumToValue(uint16_t pollBytesCfg)
          pollBytes = -1;
          break;
       default:
-         DU_LOG("\nERROR  -->  F1AP: Invalid value of poll bytes");
+         DU_LOG("ERROR  -->  F1AP: Invalid value of poll bytes");
          pollBytes = 0;
    }
    return pollBytes;
@@ -816,7 +816,7 @@ uint8_t covertMaxRetxEnumToValue(uint8_t maxRetxCfg)
          maxRetx = 32;
          break;
       default:
-         DU_LOG("\nERROR  -->  F1AP: Invalid configuration for Max retransmission threshold");
+         DU_LOG("ERROR  -->  F1AP: Invalid configuration for Max retransmission threshold");
          maxRetx = 0;
    }
    return maxRetx;
@@ -890,7 +890,7 @@ int8_t convertReasmblTmrEnumToValue(uint8_t reAsmblTmrCfg)
    }
    else
    {
-      DU_LOG("\nERROR  -->  F1AP : Invalid value of Re Assembly timer %d", reAsmblTmrCfg);
+      DU_LOG("ERROR  -->  F1AP : Invalid value of Re Assembly timer %d", reAsmblTmrCfg);
       reAsmblTmr = -1;
    }
    return reAsmblTmr; 

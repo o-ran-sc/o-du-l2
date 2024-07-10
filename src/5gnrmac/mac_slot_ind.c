@@ -58,7 +58,7 @@ uint8_t MacProcDlAlloc(Pst *pst, DlSchedInfo *dlSchedInfo)
    DlHarqProcCb   *hqProcCb = NULLP;
 
 #ifdef CALL_FLOW_DEBUG_LOG
-   DU_LOG("\nCall Flow: ENTSCH -> ENTMAC : EVENT_DL_SCH_INFO\n");
+   DU_LOG("Call Flow: ENTSCH -> ENTMAC : EVENT_DL_SCH_INFO\n");
 #endif
    if(dlSchedInfo != NULLP)
    {
@@ -159,7 +159,7 @@ uint8_t MacProcDlAlloc(Pst *pst, DlSchedInfo *dlSchedInfo)
                      MAC_ALLOC(txPdu, txPduLen);
                      if(!txPdu)
                      {
-                        DU_LOG("\nERROR  -->  MAC : Memory allocation failed in MacProcDlAlloc");
+                        DU_LOG("ERROR  -->  MAC : Memory allocation failed in MacProcDlAlloc");
                         return RFAILED;
                      }   
                      memcpy(txPdu, retxTb,  txPduLen);
@@ -202,7 +202,7 @@ uint8_t MacProcDlPageAlloc(Pst *pst, DlPageAlloc *dlPageAlloc)
    MacDlSlot *currDlSlot = NULLP;
 
 #ifdef CALL_FLOW_DEBUG_LOG
-   DU_LOG("\nCall Flow: ENTSCH -> ENTMAC : EVENT_DL_PAGING_ALLOC\n");
+   DU_LOG("Call Flow: ENTSCH -> ENTMAC : EVENT_DL_PAGING_ALLOC\n");
 #endif
    if(dlPageAlloc != NULLP)
    {
@@ -212,14 +212,14 @@ uint8_t MacProcDlPageAlloc(Pst *pst, DlPageAlloc *dlPageAlloc)
       MAC_ALLOC(currDlSlot->pageAllocInfo, sizeof(DlPageAlloc));
       if(currDlSlot->pageAllocInfo == NULLP)
       {
-         DU_LOG("\nERROR  --> MAC : MacProcDlPageAlloc : Memory Allocation is failed!");
+         DU_LOG("ERROR  --> MAC : MacProcDlPageAlloc : Memory Allocation is failed!");
          return RFAILED;
       }
       memcpy(currDlSlot->pageAllocInfo, dlPageAlloc, sizeof(DlPageAlloc));
    }
    else
    {
-      DU_LOG("\nERROR  --> MAC : DL Paging Allocation is failed!");
+      DU_LOG("ERROR  --> MAC : DL Paging Allocation is failed!");
       return RFAILED;
    }
    return ROK;
@@ -255,7 +255,7 @@ void fillMsg4Pdu(uint16_t cellId, DlMsgSchInfo *msg4SchInfo)
 
    if(macCb.macCell[cellIdx] == NULLP)
    {
-      DU_LOG("\nERROR -->  MAC: Cell Id[%d] not found", cellId);
+      DU_LOG("ERROR -->  MAC: Cell Id[%d] not found", cellId);
       return;
    }
 
@@ -281,7 +281,7 @@ void fillMsg4Pdu(uint16_t cellId, DlMsgSchInfo *msg4SchInfo)
          }
          else
          {
-            DU_LOG("\nERROR  -->  MAC: Failed allocating memory for msg4TxPdu");
+            DU_LOG("ERROR  -->  MAC: Failed allocating memory for msg4TxPdu");
          }
          /* Free memory allocated */
          MAC_FREE(msg4DlData.pduInfo[msg4DlData.numPdu-1].dlPdu, macCb.macCell[cellIdx]->macRaCb[ueIdx].msg4PduLen);
@@ -306,7 +306,7 @@ void fillMsg4Pdu(uint16_t cellId, DlMsgSchInfo *msg4SchInfo)
    }
    else
    {
-      DU_LOG("\nERROR  -->  MAC: Failed at fillMsg4Pdu()");
+      DU_LOG("ERROR  -->  MAC: Failed at fillMsg4Pdu()");
    }
 }
 
@@ -397,7 +397,7 @@ int sendCellUpIndMacToDuApp(uint16_t cellId)
    MAC_ALLOC_SHRABL_BUF(oduCellId, sizeof(OduCellId));
    if(!oduCellId)
    {
-      DU_LOG("\nERROR  -->  MAC : Memory allocation failed for cell up indication");
+      DU_LOG("ERROR  -->  MAC : Memory allocation failed for cell up indication");
       return RFAILED;
    }
    oduCellId->cellId = cellId;
@@ -408,7 +408,7 @@ int sendCellUpIndMacToDuApp(uint16_t cellId)
    ret = MacDuAppCellUpInd(&pst, oduCellId);
    if(ret != ROK)
    {
-      DU_LOG("\nERROR  -->  MAC: Failed to send cell up indication to DU APP");
+      DU_LOG("ERROR  -->  MAC: Failed to send cell up indication to DU APP");
       MAC_FREE_SHRABL_BUF(MAC_MEM_REGION, MAC_POOL, oduCellId, sizeof(OduCellId));
    }
 
@@ -441,7 +441,7 @@ uint8_t sendSlotIndToDuApp(SlotTimingInfo *slotInd)
    MAC_ALLOC_SHRABL_BUF(slotIndInfo, sizeof(SlotTimingInfo));
    if(!slotIndInfo)
    {
-      DU_LOG("\nERROR  -->  MAC : Memory allocation failed for slot indication");
+      DU_LOG("ERROR  -->  MAC : Memory allocation failed for slot indication");
       return RFAILED;
    }
    memcpy(slotIndInfo, slotInd,sizeof(SlotTimingInfo));
@@ -452,7 +452,7 @@ uint8_t sendSlotIndToDuApp(SlotTimingInfo *slotInd)
    ret = MacDuAppSlotInd(&pst, slotIndInfo);
    if(ret != ROK)
    {
-      DU_LOG("\nERROR  -->  MAC: Failed to send slot up indication to DU APP");
+      DU_LOG("ERROR  -->  MAC: Failed to send slot up indication to DU APP");
       MAC_FREE_SHRABL_BUF(MAC_MEM_REGION, MAC_POOL, slotIndInfo, sizeof(SlotTimingInfo));
    }
 
@@ -522,7 +522,7 @@ uint8_t procMacSlotInd(Pst *pst, SlotTimingInfo *slotInd)
    volatile uint32_t     startTime=0;
 
 #ifdef ODU_SLOT_IND_DEBUG_LOG
-   DU_LOG("\nDEBUG  -->  MAC : Slot Indication received. [%d : %d]", slotInd->sfn, slotInd->slot);
+   DU_LOG("DEBUG  -->  MAC : Slot Indication received. [%d : %d]", slotInd->sfn, slotInd->slot);
 #endif
    /*starting Task*/
    ODU_START_TASK(&startTime, PID_MAC_TTI_IND);
@@ -541,7 +541,7 @@ uint8_t procMacSlotInd(Pst *pst, SlotTimingInfo *slotInd)
    ret = sendSlotIndMacToSch(slotInd);
    if(ret != ROK)
    {
-      DU_LOG("\nERROR  -->  MAC : Sending of slot ind msg from MAC to SCH failed");
+      DU_LOG("ERROR  -->  MAC : Sending of slot ind msg from MAC to SCH failed");
       MAC_FREE_SHRABL_BUF(pst->region, pst->pool, slotInd, sizeof(SlotTimingInfo));
       return ret;
    }
@@ -549,7 +549,7 @@ uint8_t procMacSlotInd(Pst *pst, SlotTimingInfo *slotInd)
    ret = macProcSlotInd(*slotInd);
    if(ret != ROK)
    {
-      DU_LOG("\nERROR  -->  MAC : macProcSlotInd failed");
+      DU_LOG("ERROR  -->  MAC : macProcSlotInd failed");
       MAC_FREE_SHRABL_BUF(pst->region, pst->pool, slotInd, sizeof(SlotTimingInfo));
       return ret;
    }
@@ -571,7 +571,7 @@ uint8_t procMacSlotInd(Pst *pst, SlotTimingInfo *slotInd)
    
    if(ret != ROK)
    {
-      DU_LOG("\nERROR  -->  MAC :Sending of slot ind msg from MAC to DU APP failed");
+      DU_LOG("ERROR  -->  MAC :Sending of slot ind msg from MAC to DU APP failed");
       MAC_FREE_SHRABL_BUF(pst->region, pst->pool, slotInd, sizeof(SlotTimingInfo));
       return ret;
    }

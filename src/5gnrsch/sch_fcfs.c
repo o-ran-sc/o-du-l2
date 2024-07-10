@@ -71,7 +71,7 @@ uint8_t schFcfsCellCfgReq(SchCellCb *cellCb)
    SCH_ALLOC(fcfsCellCb, sizeof(SchFcfsCellCb));
    if(!fcfsCellCb)
    {
-      DU_LOG("\nERROR  -->  SCH: Memory allocation failed in schFcfsCellCfgReq");
+      DU_LOG("ERROR  -->  SCH: Memory allocation failed in schFcfsCellCfgReq");
       return RFAILED;
    }
    cmLListInit(&fcfsCellCb->ueToBeScheduled);
@@ -137,7 +137,7 @@ uint8_t SchFcfsAddUeConfigReq(SchUeCb *ueCb)
    SCH_ALLOC(ueFcfsCb, sizeof(SchFcfsHqCb));
    if(!ueFcfsCb)
    {
-      DU_LOG("\nERROR  -->  SCH: Memory allocation failed in SchFcfsAddUeConfigReq");
+      DU_LOG("ERROR  -->  SCH: Memory allocation failed in SchFcfsAddUeConfigReq");
       return RFAILED;
    }
    
@@ -239,7 +239,7 @@ uint8_t schFcfsInitDlHqProcCb(SchDlHqProcCb *hqP)
    SCH_ALLOC(fcfsHqP, sizeof(SchFcfsHqProcCb));
    if(!fcfsHqP)
    {
-      DU_LOG("\nERROR  -->  SCH: Memory allocation failed in schFcfsInitDlHqProcCb");
+      DU_LOG("ERROR  -->  SCH: Memory allocation failed in schFcfsInitDlHqProcCb");
       return RFAILED;
    }
 
@@ -297,7 +297,7 @@ uint8_t schFcfsInitUlHqProcCb(SchUlHqProcCb *hqP)
    SCH_ALLOC(fcfsHqP, sizeof(SchFcfsHqProcCb));
    if(!fcfsHqP)
    {
-      DU_LOG("\nERROR  -->  SCH: Memory allocation failed in schFcfsInitUlHqProcCb");
+      DU_LOG("ERROR  -->  SCH: Memory allocation failed in schFcfsInitUlHqProcCb");
       return RFAILED;
    }
    cmLListInit(&fcfsHqP->lcCb.dedLcList);
@@ -483,13 +483,13 @@ uint8_t schFcfsAddUeToSchedule(SchCellCb *cellCb, uint16_t ueIdToAdd)
    SCH_ALLOC(ueId, sizeof(uint8_t));
    if(!ueId)
    {
-      DU_LOG("\nERROR  -->  SCH : Memory allocation failure in schFcfsAddUeToSchedule");
+      DU_LOG("ERROR  -->  SCH : Memory allocation failure in schFcfsAddUeToSchedule");
       return RFAILED;
    }
    *ueId = ueIdToAdd;
    if(addNodeToLList(&fcfsCellCb->ueToBeScheduled, ueId, NULLP) != ROK)
    {
-      DU_LOG("\nERROR  --> SCH : Failed to add ueId [%d] to cell->ueToBeScheduled list", *ueId);
+      DU_LOG("ERROR  --> SCH : Failed to add ueId [%d] to cell->ueToBeScheduled list", *ueId);
       return RFAILED;
    }
    return ROK;
@@ -802,7 +802,7 @@ uint8_t schFcfsCalculateUlTbs(SchUeCb *ueCb, SlotTimingInfo puschTime, uint8_t s
       /*[Step2]: Update the reqPRB and Payloadsize for this LC in the appropriate List*/
       if(updateLcListReqPRB(lcLL, lcId, ueCb->bsrInfo[lcgIdx].dataVol) != ROK)
       {
-         DU_LOG("\nERROR  --> SCH: LcgId:%d updation failed",lcId);         
+         DU_LOG("ERROR  --> SCH: LcgId:%d updation failed",lcId);         
          return RFAILED;
       }
    }
@@ -832,7 +832,7 @@ uint8_t schFcfsCalculateUlTbs(SchUeCb *ueCb, SlotTimingInfo puschTime, uint8_t s
       if((fcfsHqP->lcCb.dedLcList.count == 0) || ((maxFreePRB < rsvdDedicatedPRB)))
       {
          fcfsHqP->lcCb.sharedNumPrb = maxFreePRB;
-         DU_LOG("\nDEBUG  -->  SCH : UL Only Default Slice is scheduled, sharedPRB Count:%d",\
+         DU_LOG("DEBUG  -->  SCH : UL Only Default Slice is scheduled, sharedPRB Count:%d",\
                fcfsHqP->lcCb.sharedNumPrb);
 
          /*PRB Alloc for Default LCs*/
@@ -866,12 +866,12 @@ uint8_t schFcfsCalculateUlTbs(SchUeCb *ueCb, SlotTimingInfo puschTime, uint8_t s
    {
       if(maxFreePRB == 0)
       {
-         DU_LOG("\nERROR  --> SCH : NO FREE PRB!!");
+         DU_LOG("ERROR  --> SCH : NO FREE PRB!!");
       }
       else
       {
          /*Schedule the LC for next slot*/
-         DU_LOG("\nDEBUG  -->  SCH : No LC has been scheduled");
+         DU_LOG("DEBUG  -->  SCH : No LC has been scheduled");
       }      
       return RFAILED;
    }   
@@ -920,7 +920,7 @@ uint8_t schFcfsScheduleUlLc(SlotTimingInfo dciTime, SlotTimingInfo puschTime, ui
       SCH_ALLOC(dciInfo, sizeof(DciInfo));
       if(!dciInfo)
       {
-         DU_LOG("\nERROR  -->  SCH : Memory Allocation failed for dciInfo alloc");
+         DU_LOG("ERROR  -->  SCH : Memory Allocation failed for dciInfo alloc");
          if(isRetx != TRUE)
          {
             if(fcfsHqProcCb->lcCb.dedLcList.count != 0)
@@ -1024,7 +1024,7 @@ uint32_t schFcfsScheduleDlLc(SlotTimingInfo pdcchTime, SlotTimingInfo pdschTime,
             if(updateLcListReqPRB(lcLL, ueCb->dlInfo.dlLcCtxt[lcIdx].lcId,\
                      (ueCb->dlInfo.dlLcCtxt[lcIdx].bo + MAC_HDR_SIZE)) != ROK)
             {
-               DU_LOG("\nERROR  --> SCH : Updation in LC List Failed");
+               DU_LOG("ERROR  --> SCH : Updation in LC List Failed");
                /* Free the dl ded msg info allocated in macSchDlRlcBoInfo */
                if(!dciSlotAlloc->dlMsgPdschCfg)
                {
@@ -1038,7 +1038,7 @@ uint32_t schFcfsScheduleDlLc(SlotTimingInfo pdcchTime, SlotTimingInfo pdschTime,
 
       if ((fcfsHqProcCb->lcCb.defLcList.count == 0) && (fcfsHqProcCb->lcCb.dedLcList.count == 0))
       {
-         DU_LOG("\nDEBUG  -->  SCH : No pending BO for any LC id\n");
+         DU_LOG("DEBUG  -->  SCH : No pending BO for any LC id\n");
          UNSET_ONE_BIT((*hqP)->hqEnt->ue->ueId, (*hqP)->hqEnt->cell->boIndBitMap);
 
          /* Free the dl ded msg info allocated in macSchDlRlcBoInfo */
@@ -1069,7 +1069,7 @@ uint32_t schFcfsScheduleDlLc(SlotTimingInfo pdcchTime, SlotTimingInfo pdschTime,
          if((fcfsHqProcCb->lcCb.dedLcList.count == NULLP) || ((maxFreePRB < rsvdDedicatedPRB)))
          { 
             fcfsHqProcCb->lcCb.sharedNumPrb = maxFreePRB;
-            DU_LOG("\nDEBUG  -->  SCH : DL Only Default Slice is scheduled, sharedPRB Count:%d",\
+            DU_LOG("DEBUG  -->  SCH : DL Only Default Slice is scheduled, sharedPRB Count:%d",\
                   fcfsHqProcCb->lcCb.sharedNumPrb);
 
             /*PRB Alloc for Default LCs*/
@@ -1109,12 +1109,12 @@ uint32_t schFcfsScheduleDlLc(SlotTimingInfo pdcchTime, SlotTimingInfo pdschTime,
    {
       if(maxFreePRB == 0)
       {
-         DU_LOG("\nERROR  --> SCH : NO FREE PRB!!");
+         DU_LOG("ERROR  --> SCH : NO FREE PRB!!");
       }
       else
       {
          /*Schedule the LC for next slot*/
-         DU_LOG("\nDEBUG  -->  SCH : No LC has been scheduled");
+         DU_LOG("DEBUG  -->  SCH : No LC has been scheduled");
       }
       /* Not Freeing dlMsgAlloc as ZERO BO REPORT to be sent to RLC so that
        * Allocation can be done in next slot*/
@@ -1337,13 +1337,13 @@ void schFcfsScheduleSlot(SchCellCb *cell, SlotTimingInfo *slotInd, Inst schInst)
       }
       if(!isUlGrantPending && !isDlMsgPending && !isRarPending && !isMsg4Pending)
       {
-         DU_LOG("\nERROR  -->  SCH: In SchFcfsScheduleSlot, UE:%d is wrongly queued\
+         DU_LOG("ERROR  -->  SCH: In SchFcfsScheduleSlot, UE:%d is wrongly queued\
                in Pending UE List without any actions, Removing the UE from the list",ueId);
          schFcfsRemoveUeFrmScheduleLst(cell, pendingUeNode);
       }
       if(cell->schDlSlotInfo[slotInd->slot]->prbAlloc.numPrbAlloc >= MAX_NUM_RB)
       {
-         DU_LOG("\nINFO   -->  SCH: No PRB available to proceed with next UE");
+         DU_LOG("INFO   -->  SCH: No PRB available to proceed with next UE");
          return;     
       }
       pendingUeNode = fcfsCell->ueToBeScheduled.first;

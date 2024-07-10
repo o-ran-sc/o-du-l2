@@ -367,7 +367,7 @@ void callFlowRlcDlActvTsk(Pst *pst)
             strcpy(sourceTask,"Invalid Source Entity Id");
          }
     }
-   DU_LOG("\nCall Flow: %s -> %s : %s\n", sourceTask, destTask, message);
+   DU_LOG("Call Flow: %s -> %s : %s\n", sourceTask, destTask, message);
 }
 #endif
 
@@ -463,7 +463,7 @@ Buffer *mBuf            /* message buffer */
                   ODU_PUT_MSG_BUF(mBuf);
                   if (pst->dstInst < MAX_RLC_INSTANCES)
                   {
-                      DU_LOG("\nERROR  --> RLC_DL : Received Invalid Event[%d] from SM",
+                      DU_LOG("ERROR  --> RLC_DL : Received Invalid Event[%d] from SM",
                             pst->event);
                   }
                   ret = RFAILED;
@@ -545,7 +545,7 @@ Buffer *mBuf            /* message buffer */
                   ODU_PUT_MSG_BUF(mBuf);
                   if (pst->dstInst < MAX_RLC_INSTANCES)
                   {
-                      DU_LOG("\nERROR  --> RLC_DL : Received Invalid Event[%d] from RLC UL",
+                      DU_LOG("ERROR  --> RLC_DL : Received Invalid Event[%d] from RLC UL",
                             pst->event);
                   }
                   ret = RFAILED;
@@ -595,7 +595,7 @@ Buffer *mBuf            /* message buffer */
                   ODU_PUT_MSG_BUF(mBuf);
                   if (pst->dstInst < MAX_RLC_INSTANCES)
                   {
-                     DU_LOG("\nERROR  --> RLC_DL : Received Invalid Event[%d] from RRC",
+                     DU_LOG("ERROR  --> RLC_DL : Received Invalid Event[%d] from RRC",
                             pst->event);
                   }
                   ret = RFAILED;
@@ -645,7 +645,7 @@ Buffer *mBuf            /* message buffer */
                   ODU_PUT_MSG_BUF(mBuf);
                   if (pst->dstInst < MAX_RLC_INSTANCES)
                   {
-                     DU_LOG("\nERROR  --> RLC_DL : Received Invalid Event[%d] from PDCP",
+                     DU_LOG("ERROR  --> RLC_DL : Received Invalid Event[%d] from PDCP",
                             pst->event);
                   }
                   ret = RFAILED;
@@ -696,7 +696,7 @@ Buffer *mBuf            /* message buffer */
                   ODU_PUT_MSG_BUF(mBuf);
                   if (pst->dstInst < MAX_RLC_INSTANCES)
                   {
-                      DU_LOG("\nERROR  --> RLC_DL : Received Invalid Event[%d] from MAC",
+                      DU_LOG("ERROR  --> RLC_DL : Received Invalid Event[%d] from MAC",
                             pst->event);
                   }
                   ret = RFAILED;
@@ -756,7 +756,7 @@ Buffer *mBuf            /* message buffer */
             if (pst->dstInst < MAX_RLC_INSTANCES)
             {
                /*RlcCb *tRlcCb = RLC_GET_RLCCB(pst->dstInst);*/
-               DU_LOG("\nERROR  --> RLC_DL : Received Invalid Source Entity[%d]",
+               DU_LOG("ERROR  --> RLC_DL : Received Invalid Source Entity[%d]",
                      pst->event);
             }
             ODU_PUT_MSG_BUF(mBuf);

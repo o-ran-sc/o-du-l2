@@ -46,7 +46,7 @@ uint8_t protType;
  ***************************************************************************/
 uint8_t pnfP7UdpActvInit()
 {
-  DU_LOG("\n\nDEBUG  -->  P7_UDP : Initializing ");
+  DU_LOG("DEBUG  -->  P7_UDP : Initializing ");
   memset (&pnfP7Cb, 0, sizeof(PnfP7UdpGlobalCb));
   
   //Initializing with INVALID value
@@ -75,23 +75,23 @@ uint8_t pnfP7UdpSrvOpenReq()
 {
    uint8_t ret = ROK;
 
-   DU_LOG("\nINFO  -->  P7_UDP: Received open server request");
+   DU_LOG("INFO  -->  P7_UDP: Received open server request");
 
    sockType = CM_INET_DGRAM;
    if((ret = (cmInetSocket(sockType, &(pnfP7Cb.sockFd), protType))) != ROK)
    {
-      DU_LOG("\nERROR  -->  P7_UDP : Failed to open UDP socket");
+      DU_LOG("ERROR  -->  P7_UDP : Failed to open UDP socket");
       return RFAILED;
    }
 
    ret = cmInetBind(&(pnfP7Cb.sockFd), &(pnfP7Cb.srcAddr));
    if(ret != ROK)
    {
-      DU_LOG("\nERROR  -->  P7_UDP : Failed to bind socket");
+      DU_LOG("ERROR  -->  P7_UDP : Failed to bind socket");
       return RFAILED;
    }
 
-   DU_LOG("\nINFO  -->  P7_UDP : Socket[%d] is open", pnfP7Cb.sockFd.fd);
+   DU_LOG("INFO  -->  P7_UDP : Socket[%d] is open", pnfP7Cb.sockFd.fd);
    return ROK;
 } /* pnfP7UdpSrvOpenReq */
 
@@ -120,7 +120,7 @@ uint8_t pnfP7UdpCfgReq()
    ret = pnfP7UdpSrvOpenReq();
    if(ret != ROK)
    {
-       DU_LOG("\nERROR  -->  P7_UDP : Transport server open request failed");
+       DU_LOG("ERROR  -->  P7_UDP : Transport server open request failed");
        return (ret);
    }
 
@@ -156,11 +156,11 @@ S16 pnfP7UdpSendMsg(Buffer *mBuf)
    ret = cmInetSendMsg(&(pnfP7Cb.sockFd), &pnfP7Cb.destAddr, &info, mBuf, &txLen, CM_INET_NO_FLAG);
    if(ret != ROK && ret != RWOULDBLOCK)
    {
-      DU_LOG("\nERROR  -->  P7_UDP : Message send failure");
+      DU_LOG("ERROR  -->  P7_UDP : Message send failure");
       return RFAILED;
    }
    
-   DU_LOG("\nDEBUG  -->  P7_UDP : Message Sent");
+   DU_LOG("DEBUG  -->  P7_UDP : Message Sent");
  
    return ROK;
 }
